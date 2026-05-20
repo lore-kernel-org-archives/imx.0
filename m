@@ -1,166 +1,139 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013049.outbound.protection.outlook.com [40.107.162.49])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EC73451A6
-	for <imx@lists.linux.dev>; Wed, 20 May 2026 06:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779259365; cv=fail; b=OeGwwzC6WBq+kSDd8B16Bpsm59cJcOIuj9tLoL8mWNp9U/fJ49dAy/vpzm0E2fi+XmSxk1PX7KJUBpZ+8yx2QaZg+4OteFhZgeebcJbhXtEtgUkv69hIFLl6T1i3ct6Eo7hbC6VumOquVpHyB2aDI8e00bDtC+rc4GwLUhze2DY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779259365; c=relaxed/simple;
-	bh=Iai30pW1Shd70L4JlwSQId+yZeeM4OLxgfm84JoJWjA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pjE/LGObK6U14vjnyQbep+Hvln3K9AmS0tYrkPgJ9nhbyLpapwDkJNoHWHSZN/h7BshnVO5ORHbYGpwVHpvWL3vVkPQyKP0wMa6QGwQFxziOdwqp3B94ELaj6ko7xEsSwhigslAONjfQ1ExiDkm778NTqMNWY1b/70CVoCZZ+Yw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GT9jUjeA; arc=fail smtp.client-ip=40.107.162.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9DD33F5A8
+	for <imx@lists.linux.dev>; Wed, 20 May 2026 06:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779259568; cv=none; b=WGSlvHiPCwMXTrfuzeYOy+DF+map77RHgzRwHh+JGQk/yRL2FA7YgVlnOTDASatrivDWmgHt3p7c8T9uu8VY/qqFULGX2kqmc99b6doBwhv1UXpv37VJ/dLgvXL9Zzw00vFlRf5BuNUIb2LkoQlvnw9lAhK2z2H2aChJrAA4t4M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779259568; c=relaxed/simple;
+	bh=bPtJ1oJyMMStcYYNIJv9v+aTckbyoymNXck36o7Rqu4=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=uFnRim1ZOTZDhO0qMuRQVYHsCNEr+G/fDWhqAwbkSYzxQTzmLJQWAs5lbFTBwbr1N4VGCP1qbwAW6M2mZpc82Xh8XeqkThlQRGmNsDixP00BNeL8xyJgjclsubb2vWPNBdbwvxDg3UVbS2pYmU+h8XG8d0RpKYwN6yDOyvmzuL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MPo/MyjF; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GT9jUjeA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VXvcRcvsPDU5l7ikuCAMSstNDdUSPnJtkpHZu3OedGssM2/WDuiFdlU+vRW//2bMhwxfGIGWYPL13rHIpaqYDVyu9DWbb+uuL66zHsc/oD9LtJ6CT9cKjbnpTeWuE2Ua+Nnrt3ami8iK52qFZ4zvTV9WAOJy0IoJcBkIXdHVnH8d4EjwJciuD/PDgoLJVz/HLxReL1r8rb4neX+3Gfaiqve5KzdA59/yGOUD3aZqQOKD+G5n1a+hQXOTUrsgnmDz6T1bzHmAOdRUMSG87+Tflymtb9z3XetcTwygd7kDSg+QhjXA3pE7c68pgPTUHF1qHZccs2Ae1q+WeGvb9itThw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=meHXnznMk/D+oKj6hJAkmmLSOfHCYLOIGtqlN45CEnY=;
- b=OWgGmXNBULyhIR4RSG34R76kpf+PVBe7N5a8EChW3fttHAJrjaWXtCORRL7jPIpRvfeSTtiNtlKStVlBpTbI8hJpayzVtHRVg2BsZFz6AdoUWmt3A9KkH/tsH1yeyJTyN91BZQMdlWCsYLT8GtmiYkR9C6Out+x4aIgnDfVXzCTiz0WqXdD56+8ob6663BrKZzMjdCdj+JQxmgg+bNLjLrYLitrdRkzy9dxuRNZIh3SJ9N7AtK5h79ausFR4paoWF/eDblhp401SUMndrt0wjwYTzUlSszbfc2BICnkqAnguVAPmzfbEdfWzxf9ANIxyObwB3e2C+zIpa1RmWOY7ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=meHXnznMk/D+oKj6hJAkmmLSOfHCYLOIGtqlN45CEnY=;
- b=GT9jUjeA3AuhJKpc3F7EgLHI7aDef0TgH78lQo87wN1zyYe7JhrOsQnP2PMA+xdRtm1JN4cODvM/ZNNjlLQKVY/2sjkKHjCIuUaVQb5t6hOTkYdgyaXWmR+rta9NAe7+KDncsJg7bhzaTGBkrCEbuOZoPnV0jIeUGuNnqAvdEYdbiIdrWP3E5Q+Fj9FOphNaVDnb92fUBTJFZ9mrP6gsTN6qzluwrZDNQna4mKR8ixQaN6tmtUH/U9pmQFZwyMDyQZp+GdInSn23K8pXekLwSWwrjmIcnTaQzp2xweYjw8SwNy8b8x8H3/dlYl8ImbSLcKltBbLwWYkwzwM0ertEfA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
- by DB9PR04MB11659.eurprd04.prod.outlook.com (2603:10a6:10:607::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Wed, 20 May
- 2026 06:42:40 +0000
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9913.009; Wed, 20 May 2026
- 06:42:40 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	hramamurthy@google.com
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	catalin.horghidan@nxp.com
-Subject: [PATCH v3 net 9/9] net: enetc: avoid VF->PF mailbox timeout during SR-IOV teardown
-Date: Wed, 20 May 2026 14:44:21 +0800
-Message-Id: <20260520064421.91569-10-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260520064421.91569-1-wei.fang@nxp.com>
-References: <20260520064421.91569-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR04CA0011.apcprd04.prod.outlook.com
- (2603:1096:4:197::10) To DBBPR04MB7500.eurprd04.prod.outlook.com
- (2603:10a6:10:1f4::16)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MPo/MyjF"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 040621A363B;
+	Wed, 20 May 2026 06:46:05 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AC8436070E;
+	Wed, 20 May 2026 06:46:04 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7F087107E8EB1;
+	Wed, 20 May 2026 08:45:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779259562; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=dKcYje4RS7cFmYoZ2tIYKDA+VMl5+PAkjiozJ5zsCH4=;
+	b=MPo/MyjFKZ6BLm7Xiy+fB0ERKTpIT0x6QG+V098ck6ZrRqCxnovmlWjPKem/Awa8nRtVV+
+	I7TOtCWoxJEkX1bOZTr8+JUy26Fm7leRcwuQQFlxzJWJZbVOgmhNoDitsYwqnkKJqipDxb
+	wiKdpc1Vmww38H2Xkj5bjaekS8bK8sdcWHRGOCiVYkeTHonfCOH8g8BKk+x2s8TPSUrDGA
+	FEczjeTg5EUO/2/MDs29H+6Jq/BSFK9aNLeTpyFGmiUK4/rB4fFd68inDJvxE0BjyFkUBt
+	q8c4k1nLmHbvNtJbKPg0Ce8TtFJzhug7firDgpkrVHalWizJUAcg2FPap/P3VA==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|DB9PR04MB11659:EE_
-X-MS-Office365-Filtering-Correlation-Id: 92cd8012-2310-44b7-ee71-08deb63afd02
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|52116014|1800799024|366016|38350700014|56012099003|18002099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	MwK+N1gKYxPN2q+krhqkfIXyrHujwWZIuadlVf3grPsJj5J6XlzfhnfYCvbSqFRbdSZfrfvOBb5W4ufNiJC/CXYb01csji9YwKJF6jpqeLa68F1sk0H70LeIiF498fW9ldGruxiFTjc2VMDBl2zejiT03Iox2TB4hHTatCOCZRiC1kHl+rdhU3mAsmVC+1g8O3NmoDjWZ7rUJPKjTMZJlBYAycL0yL4v774m+98pEAg+PPpLSKtqrolTj+rVIxua7G4x5JeO6q7f7BwuIDTqTgxmrFdxXtRpCNZQiaOj8fFyRnQw9abuzmkWeu2M27crVkjwWftz1CfnDTZfDVYnZtRVKO9m14eIiFl73OrbrryCzyGc7iAYvk2rhJD3CkoIG8xRD7u7Uu3ZsZp2FEG94RbGORi01KvWgtNJurQeDlFOJ6VlMU8pzeKCi0lSJNIFg3ipfnI9xCF1UxntWJCHa1HAFqWuI52ZMrXo+fEHNLCVXk4asoI8wIiRwgcF3iD4Vq+0sQH3juTVdxJktaT2YHbPH0U8IlRuZfSuySwLigx55hO/4NHQepxs4Ib0Rb+2Dv4jKKcP3eIsi2H/+oBTZxcQLNf4Gjovi+3u3e4MnN5Pt2VogznEs3LAuBySRK6qYNz7IzQKceiotnAYD09eyA3UKKRGujaxINC7W41fJBVjp2BtbVN+ghXOuTcssL5de77xGAIEw/JxpBPI/pGJOQRPgzd/sdmcs5PM2kV/y1RnQqAZRszJH3hKBzv5mVpE
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(1800799024)(366016)(38350700014)(56012099003)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HulE00ExeStLK9Lb3jM48g9sWdzI/rJdDNLUOPvIsOWqbsjb2i6i2uVgoDAJ?=
- =?us-ascii?Q?2Y/1EkqFsJSQoBYJrW9FTivTA1HTJnmB4JtAXDkkOzFf58DrbbNECFqeAtjc?=
- =?us-ascii?Q?mmrz0NSKDUgR/SEdSpcoSs/rVJ7doJah4/O2gLOO8HUt6QvRGUTiS86uJoZy?=
- =?us-ascii?Q?bz7lk0fAfCFztjSSMY0UwsaVItgX7mHPfPw08uNkCaCGOsQfEbRauV0Ou6mo?=
- =?us-ascii?Q?Btqgz6qsvDrm/BvCnaGnFPIguHXl7yndBvnFholHd2rR9TkchIRydAu635n0?=
- =?us-ascii?Q?0XNvAxFAyhbgJ/dNDMw5ccYK2pbymqD5nlDr5bzx/7a2ukYZPRkXG1PRjG7F?=
- =?us-ascii?Q?uSv8ul+zHrdDVxwaZxkvXkZRI4BBPFY8PLY17AVlronmsHL4F09wvGoqRsgp?=
- =?us-ascii?Q?5LS2gU+/9GrUIdpQlr3WT4nG57tLce0ehxhiNMU2MgELf9b7E2EahelSEes1?=
- =?us-ascii?Q?3zmdMz0nmD7UjE+Qu3s0W/a+I93ZhSIB1ajDo7nIXZAtrRB2anm/XaNwhx0G?=
- =?us-ascii?Q?+97J57vaJUrfUH5KEHTlvUNoRH3vPWV8NZ0zOJbpNeMKlByAlQgMfkHZVw+G?=
- =?us-ascii?Q?GewZ8ZsMssAUzXdhI+DXIaKFF2UCzf+BO6VbiEID+BBZPj6XVIHawClh+dhU?=
- =?us-ascii?Q?/WZHzI+EkQ2nkK7VNZAdxixPNiv9m1lSx/+hfJrn6YbkKoIBgqqmYhIf+wip?=
- =?us-ascii?Q?JbenQGatOpCABCGbQdlfE/Zoh+s/e3cGCtVn+xl2qIyOLnqegcJUZhNxV5oc?=
- =?us-ascii?Q?zqrqscJb97uLmroJac3aDdp9Ngich/MqFPGFJffKYhAmEcee2K4h5rySrq75?=
- =?us-ascii?Q?VQhm0NvvBTBAZ9g/JcuhgaThLS5WBMZ/vzdz/UIRrdJ2oxEsu2XEy++zRBhh?=
- =?us-ascii?Q?hwy3xXUJ0QVSu69JTmM3P5Ja6cQY27H2GgWUFuqMxOEHHIQHCkSCB5dHeRDG?=
- =?us-ascii?Q?wi2YpHmustfMjiHwYRJ5EyPpRBfXimoDvhAS3H7PIJqMLkPjb6BA4ZzYOaTM?=
- =?us-ascii?Q?43sq/N9xUBs4i3BChArfpEunQ+LPCU1B1O6cxgfdrhbDtdHjdI4pwnFbHUTz?=
- =?us-ascii?Q?114i3JMBXPCqwkGFf0DcaXOpbC4ViYUBWwO1vhuyxfSpMIbbvlaGghJXbt3H?=
- =?us-ascii?Q?ltegoWRIm6HG3bo7MnSx0jU8cDrHjLpmgl73fKMIKkMgA8XuI2otWQvjOTYW?=
- =?us-ascii?Q?VhoBqO6zG3Nhbv5hlzus6mcksuwY/AdAv9/8PRdn7gBaC0m63N0ejSoYVI8z?=
- =?us-ascii?Q?PO0NiIGLz0U62YdyvVggSqqp2Xl2Yho9ATiE/nfvuiVo0iXnIwahOES9f597?=
- =?us-ascii?Q?cvsM4qumzgjTN6E4f/gQNfpc6ObwZ1bfrNI1N20vLhHK3uYqRja3VkwN92qQ?=
- =?us-ascii?Q?lTqUnknkAgaFKn1CKhvrRAdWvbNC6OnI197/2ajj44ACCBaejtLK27OUcjDd?=
- =?us-ascii?Q?7Hh1WcdX5peg+pLrQb+DpF3KoAsw/WBfd/kl3G/ht+jCJzy2jaUBZ2co/iKE?=
- =?us-ascii?Q?GCYQNn2/tFnYUdxCaRC1vIoVoTLDe1/VBWJFsPa8EwOGYFGx380Z2UpNg9L9?=
- =?us-ascii?Q?YjrX8jn18NKD5EGwLgKtpa/hy7md83/trmGjSNgYj1G6l+fJrOOdrk7C4jDu?=
- =?us-ascii?Q?hyPOEDLB4D3mFKwD+6elc7MaLl/gcQBafW3BSNLEFQmQ67RcBqYHrRCPxwYu?=
- =?us-ascii?Q?CmGYFBxtxe+VhKuqpwclW9phZZUa4cPv6GXU60RPL1URIySDwgOZwRK6RADi?=
- =?us-ascii?Q?rfudszjdcA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 92cd8012-2310-44b7-ee71-08deb63afd02
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 06:42:40.7006
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h9FwXRvo7iq9hHUB69oUd8jMUK7SmjetxCbJ5ma62S7oEtx3DoOl0Icchb3eiYtm8q5gIDhcZW4ffeUD+Spz+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11659
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v7 04/23] drm: bridge: dw_hdmi: Hold bridge ref until
+ connector cleanup
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Jonas Karlman <jonas@kwiboo.se>
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Heiko Stuebner <heiko@sntech.de>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, 
+ Louis Chauvet <louis.chauvet@bootlin.com>, Liu Ying <victor.liu@nxp.com>, 
+ Sandy Huang <hjc@rock-chips.com>, Andy Yan <andy.yan@rock-chips.com>, 
+ Chen-Yu Tsai <wens@kernel.org>, 
+ Christian Hewitt <christianshewitt@gmail.com>, 
+ Diederik de Haas <diederik@cknow-tech.com>, 
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <e90eddfc-2f57-418a-ae05-43a411d72b99@kwiboo.se>
+References: <20260518180206.2480119-1-jonas@kwiboo.se>
+ <20260518180206.2480119-5-jonas@kwiboo.se>
+ <177919241969.545972.18169905222569864569.b4-review@b4>
+ <e90eddfc-2f57-418a-ae05-43a411d72b99@kwiboo.se>
+Date: Wed, 20 May 2026 08:45:49 +0200
+Message-Id: <177925954999.1337464.14745526881417951688.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-During SR-IOV teardown, enetc_msg_psi_free() disables the MR interrupt
-before pci_disable_sriov() removes the VFs. If a VF sends a mailbox
-message during this window, the PF cannot receive it, causing the VF to
-timeout waiting for a reply.
+Hello Jonas,
 
-Since the timeout occurs during SR-IOV teardown when the VF is about to
-be removed anyway, it has no functional impact on operation. However,
-more messages will be added in the future, some visible error logs may
-confuse users. So fix it by calling pci_disable_sriov() first to remove
-all VFs, then safely clean up the mailbox resources. This eliminates the
-race window where VFs could send messages to an unresponsive PF.
+On 2026-05-19 17:18 +0200, Jonas Karlman wrote:
+> Hello Luca,
+>
+> On 5/19/2026 2:06 PM, Luca Ceresoli wrote:
+> > On Mon, 18 May 2026 18:01:40 +0000, Jonas Karlman <jonas@kwiboo.se> wrote:
+> >
+> > Hello Jonas,
+> >
+> >>
+> >> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> >> index b7bfc0e9a6b2..9d795c550f8a 100644
+> >> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> >> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> >> @@ -2600,10 +2609,14 @@ static int dw_hdmi_connector_create(struct dw_hdmi *hdmi)
+> >>
+> >>  	drm_connector_helper_add(connector, &dw_hdmi_connector_helper_funcs);
+> >>
+> >> -	drm_connector_init_with_ddc(hdmi->bridge.dev, connector,
+> >> -				    &dw_hdmi_connector_funcs,
+> >> -				    DRM_MODE_CONNECTOR_HDMIA,
+> >> -				    hdmi->ddc);
+> >> +	ret = drm_connector_init_with_ddc(hdmi->bridge.dev, connector,
+> >> +					  &dw_hdmi_connector_funcs,
+> >> +					  DRM_MODE_CONNECTOR_HDMIA,
+> >> +					  hdmi->ddc);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	drm_bridge_get(&hdmi->bridge);
+> >
+> > I'm not fully following the code paths, but both the report and the fix
+> > make sense to me. Only I'd move the drm_bridge_get() before
+> > drm_connector_init_with_ddc(), to avoid a short window where no reference
+> > is held and the bridge might be destroyed before drm_bridge_get() is
+> > called. I'm not sure this can happen, but it's better to write the code in
+> > a way that clearly makes it impossible.
+>
+> dw_hdmi_connector_create() is only called from dw_hdmi_bridge_attach()
+> so the bridge should already have a ref for the lifetime of this call.
 
-Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
- drivers/net/ethernet/freescale/enetc/enetc_pf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ah, that's true. So the patch is correct.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-index 8e11a023d516..3206b3daa1a0 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -563,9 +563,9 @@ static int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
- 	int err;
- 
- 	if (!num_vfs) {
-+		pci_disable_sriov(pdev);
- 		enetc_msg_psi_free(pf);
- 		pf->num_vfs = 0;
--		pci_disable_sriov(pdev);
- 	} else {
- 		pf->num_vfs = num_vfs;
- 
--- 
-2.34.1
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
+In case you send a new iteration, please add this extra explanation to the
+commit message, similar to the above paragraph.
+
+> I explicitly chose the placement after drm_connector_init_with_ddc()
+> to ensure ref count is correctly balanced without having to add a
+> drm_bridge_put() call in any error path. I.e. connector destroy() is
+> only called when drm_connector_init_with_ddc() succeeds.
+>
+> This code/call is also planned to be removed in a future series,
+
+In order to remove the !DRM_BRIDGE_ATTACH_NO_CONNECTOR case? That would be
+welcome!
+
+Luca
 
