@@ -1,151 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011023.outbound.protection.outlook.com [52.101.70.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499F03AFD1B;
-	Wed, 20 May 2026 08:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779267376; cv=none; b=B5EJGN7DlwXZ9GK1jYssOT5dHBgo1nuAJ5ys0ozieUN5TiMfY2XbTFqhB0ebGxHp+jLGXlOpxlRNFAw0Ze2BiUjHieqIOshKtNUMaVwP6IaR5TdhE2WzdvNk7v5yw0FX5HynWTqXEyWiG+ClQxYOkf4/BrBITXnk4LquWiPVRAE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779267376; c=relaxed/simple;
-	bh=SuqMA9SJ5IZjmL+9jNs9DzlqAxqRDC7vtlPVKFr2qjQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nVeuBzTaOZ6ZNDCGJoFWY0I5r7fNdCn/ZoFPeXfJuxnGxGQzdlDq64kjqL49l9qP0B1dbj2eeJqi79vmF+U+Z7qHwS3g7GMo7RJXpD9t1azXo3G57Wx7ySOsA6WB7hms4F7GnIOG2U7CY7OFPzWhsYa6ERg4P7q5goDvX8Ts25I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zwy3bVYT; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDF73B47FD
+	for <imx@lists.linux.dev>; Wed, 20 May 2026 09:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779268032; cv=fail; b=Vg9ezBrO5+FKQNjjlII4qXHeR1FYw1ooRBBYN0Xe53uvEryTFL+fWq1bfSmEGfbEGExODvKfQ9BG9JFwPT6m5Mtm7So2sIDgjmaCn/jc0sZ3mgNEt3mJ+srKNcBGeG+Xnj4fHp4YLYPQM+Lgf/7Ej4N//jsmg+9ioPV1td0XMBI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779268032; c=relaxed/simple;
+	bh=NjMe62FLOQBSSGKY0sdk/UDXhWNAfm320t5C7pNpypk=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kzBhL1Z4kfXzt4Li35ZoeOqlB03mujD1rQQG+gnZlJ8lT+Q8hOj3k+BuzWNRRfOe+igqb8uvzQACYG/lcswMoLEtRCdnUcC+hI8/WH875wENbMEC6N0qeC1sD4FYQJF5Hk57In9/fxm5Ag5J7O1cKNa9iuK92+mV3uWQQlHmLVU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qXZEOqXj; arc=fail smtp.client-ip=52.101.70.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zwy3bVYT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9052F1F000E9;
-	Wed, 20 May 2026 08:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779267373;
-	bh=r9KJxiWJIrStZnSusMULc7O7jauDe1SDXZXWq+Nb8Ro=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Zwy3bVYT7E5swsXlz/mZB7PyqYpKpIkuSEg5EGr6dA5+Ey0CxOduwDNFd9IZP8Qs8
-	 jz+fuQ5SSyoAtzhxu3gvKHLyhkPXbAf0pHMOdZo7usb5fhbI2OxVlYzdZwz0j3dOm8
-	 eVYrcBjqMUrU3i+z/3w94p18HMUeOBxHSJ54L8M79ZF8GYdomYmQmGl+ZCTGBWAAYt
-	 KOb4fOkpuSX9TIbqxgTdphwk57cfBvVlIbJ5MAP7nnOBrQAQhotT9tBn6pYXcd7F7R
-	 U21aS0ZsWKLAUH1QQJdGI70R//0hCvXsEsx3iS+YTs5pQII6iZ9XojpdIY4HzsfspS
-	 0eidCNcY8uuMw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v15 2/3] of: Factor arguments passed to of_map_id() into
- a struct
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vijayanand Jitta" <vijayanand.jitta@oss.qualcomm.com>
-Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-pci@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260520-parse_iommu_cells-v15-2-b5f99ad4e7e8@oss.qualcomm.com>
-References: <20260520-parse_iommu_cells-v15-2-b5f99ad4e7e8@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 20 May 2026 08:56:11 +0000
-Message-Id: <20260520085613.9052F1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qXZEOqXj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yEUHyYLMTN3HIyO4y3tp/DHXKCOp1/QNbr7g7ZthekyuQRijo5jJ5BZxIV/uxzD+GC+rLiC6J8Gpbg3B25lPEfP+9+RF7NdjlpxRJNVhoTgWxrfZEDC32ro/T60le5s3kbgtU2P20Vn2VC37utsrdRLixDznLpT1rhIFOoh9iRohpFCWdj4pyUumN4nPasczrXdftLexCrUiV98w2yu1aUUl4bhHjdXFxSyIZyW7NjimLCZNDy9ROLtflrlpF+SZpCV01jbsDPpfKTF4ZNxauk5DUokiuj0d8r54LhZkv5sLO6KcxhNyWEW8QY0AfxT9MWW7evFBfF/0inj35J8g1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j4CtjOiTU9R5m2IeMHe81HPmmTfZeKtiWDS2pfNRvvw=;
+ b=rBVE/2Fbva6ol0ncbRIsHJTXr/hhmToF9v0UNKFNSRBot2N7MomXUSG0HvhN7owpSqbVB+yl7Ol8TuxL2RsEocTJVdc1BPb4XMfCkJ/ZoiPxAvJypd0Uhvsv8Bzd6bjtJR5SoIlS6Pl/A9v0vxy90DFdeF2Mmcr2KiYRWgNomSr0TIgnsjD7IlFXyPGSVjHIwlc/ombc3/5/2mAPtft+XH+q+Qyu+e3XfJ5qR5RSkZhrgIGdP/7bFMHsr10RZIA9M0KriGGBSxGKZCs82p37qhlVfA9KsoIPYtstZYOhfaYUj2nJEIeBIoEauzwBtCLykNE41yoURq1HMjW3qxb2tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j4CtjOiTU9R5m2IeMHe81HPmmTfZeKtiWDS2pfNRvvw=;
+ b=qXZEOqXjHRqRbZnslGawfOUY1RrV0/l+jtXZ6Hq5k+QsnsHTSfjTBEnH4Whd7bH3TrI+OtNqxhwS/coJwd0zmPLNkhje+TKz4d549OS8Ip0FLKB6vQCqPwOI2I0djdxY44jDJyOA+tBjzYwtUNZMb1J2933faiGREgeP+60oG47FA5kAh0chXJwvDxi8OqrrxEPFWhQhf8rp7r8+4kCFIPG+IsWo9Q8nIPd83YcDms0o562o+ba5vpdpPHRhVbD1pnQj7yaD5IhgwU/0SYJvLyYuUaMyVjzSNB5LRbXAIGUZKfKrBc0HsYYtMGdK6l4he6SevTEUo2r0pvEbF1IKTA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
+ by AS8PR04MB8277.eurprd04.prod.outlook.com (2603:10a6:20b:3fc::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Wed, 20 May
+ 2026 09:07:07 +0000
+Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
+ ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
+ ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0048.013; Wed, 20 May 2026
+ 09:07:07 +0000
+From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+To: aisheng.dong@nxp.com,
+	andi.shyti@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	carlos.song@nxp.com
+Cc: linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PACTH v2] i2c: imx-lpi2c: mark I2C adapter when hardware is powered down
+Date: Wed, 20 May 2026 17:09:10 +0800
+Message-ID: <20260520090910.2879570-1-carlos.song@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI3PR02CA0007.apcprd02.prod.outlook.com
+ (2603:1096:4:295::9) To AM0PR04MB6802.eurprd04.prod.outlook.com
+ (2603:10a6:208:184::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|AS8PR04MB8277:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27b02370-fe1f-4540-f822-08deb64f2ac7
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|38350700014|11063799006|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	yxdOX2MhVZ3bJjykbrjUIs+1EAQqg0Ge5Gc7BFafxyyN2wO64pXbmsiL0vwgkHubNL5L1x9XR1rZF1Ahp/4BfvOLNAzAz813L134OgxSJe8WWxPmta28LM7ae3z//GyY9W3F0sbQ6jTqC3D9wu1mDRdIn3tgBMturvvo0bgLhCvLBt+JFMnCnZuYm8d6rcseqoyL5goW9pcwayJgfemZeig2W9Kzj1s9T9QobdynTzN2ugnJSDe7Jm8hTb0i2gUGiEZtSam4UY4HWaq1+xo1PJDocrL7rQxWGbfgnxCe7rBsgD/BlZh04Q5TrMLIRLeuRP19raztyMhSuhSrb37TWtY1XpPVtdCCPAyktRDrkr7CzSQPY5vRjfPuZcqDqxT6jRNlIJT9E1VUKnNTYpmIHhmRwYPoHBSyfAiZmFQxQBqQsoSN29RphlaTiQfB0FYS04jZ8qMlLmAiijW3As/B7dSFNWt3a7TPJgUmRRYKAVPYRz+9HRvP1fas/HwG3xQXU+FKla8DlAc8PbvdILOJCi/UJBOUGmycXbea318w59Tdua2rVTR7PNoXAGVqcO2cBvaARVdpEuvcvGuVlOODBNpHCdyc+SgCVPyydy2WKyTazJaEqeRyUr0EiPub55iWGhsYAYLUF4uvDNEANVT5PsIul4h5wyOfjuK5CDoRbjv2APQfcZYo4GFZpqLPRTy6oceuYNHQ3vwzUGQ8PZLL0kUOf7tWIwsD4kTYnWgGmTK1f1wkpKqozp9mN2HnUG5c
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(38350700014)(11063799006)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?I7pM9xpeE+3b8Gw/CD07rLJK71uoOYgxV2dmS1BAUdTjXDMEZ/h8pU1yuHA5?=
+ =?us-ascii?Q?TEKFy3tDd8z4dzrOL0S77ZT0ZzHhYP053FDuGkreRTOTTrcgn9PKLVNOSvhH?=
+ =?us-ascii?Q?qSb6/TUV6S74co7g+ZVfq1f+fdi5Zu3v2ywJzf0uhh+cG2Qka9gGbe+xnZ8P?=
+ =?us-ascii?Q?dAvj1KDSYOVhNlvOWwNvL/H1Jc/TU9zpUy0mqGAD23YmRsGLoB7uh24R1MQC?=
+ =?us-ascii?Q?6uxGPcWC2YdprzwBjT49h2e9F0r+8loGFk+A6o99UR8OBlb8UyultOXqZGdk?=
+ =?us-ascii?Q?4+ek72Df2am/kyEe1VE6qQtVTQ706+CRXR9gxb0l83KSC74DzEkaNA/h3Gpm?=
+ =?us-ascii?Q?YFJiS99HvSZ2kGkU3Pn7MZBQIxO/R3d0Vwc7eQyrZO8GnvkZwKvH7zNVmKQs?=
+ =?us-ascii?Q?b8LTedUw3K9rehlh/IGCBvwm0Ed23BOP7DY7jul2N+InltOlv4f3Es82D5Lg?=
+ =?us-ascii?Q?He0VKLdq8FXvMRr1VjKcN5X8/uqVAWlwrGT1bYhs3CBPIvNf5/FrQtoie7KJ?=
+ =?us-ascii?Q?r0BYgcBd5faXp83Y2l9Iu22xJCTONXO77a1dD9vA9+nSHiWg3A9JlqrNVK74?=
+ =?us-ascii?Q?WVSDbIfAjYPsZRE4/3ACAsX3rrognrtOlsoayS+kPUuWDNghZPn4IqcXdOn2?=
+ =?us-ascii?Q?sPYCzatBjREIuyrjRVCA2H0arfz/QHb3UQ+yOKxi6MRvGYzF8Be+3lHKcPtS?=
+ =?us-ascii?Q?gO9XKiz8ecqennu5dl4GaKeCzcjqAP/Hj01DX8xaSognJfyMzRREzh1fam1n?=
+ =?us-ascii?Q?7OIHbrf7qoEyxyhoGbiCatYUdMO6fjsjKjonurQVGX82do35U4hTjyIbOfPu?=
+ =?us-ascii?Q?RwQMrTSH+oxH35Hrty/dpXSm4b/OvMpSA7unhBRVREjRaHgJCN6isYOQ2+vK?=
+ =?us-ascii?Q?G/2tm3m98c6wWWOdpkHgKAWxAyKD7za93V8IayzqS1CiAtcc1EcDki1lmKx2?=
+ =?us-ascii?Q?oZ6aaPICFu10oQOrbCbo9F0nuZ+wjweO/i5cP0I5dZPxDYmxTfEJIo1tT9+K?=
+ =?us-ascii?Q?KRZ19uHnl6jYAwnFTRke5qcPimUE7Xlpdwst8LavI15SOHQNFKDtlnjVpyoP?=
+ =?us-ascii?Q?A1Hc0G1S5PfDQ6BhdhLZqtRZeVxj0iAoJa5+7Ig4SV8ZdXyW/V4hMjsS/w7Z?=
+ =?us-ascii?Q?+ohKJvOFR9/5yLDPLin5lAwrU1m4MirgHCeURaRSXQaZp9IpeR93/XK+MmMC?=
+ =?us-ascii?Q?ADGWNNTtZoCyxDdY+xaPlnxfpX9pBZDeG+ViclV81yMZzr8f6ZGZBusSdWpG?=
+ =?us-ascii?Q?dvbxIRb8TJxEzpH1Lw9r7uymopSwHwBF2ApiPjRPlGaPWdwC0b6hbxGwIu6Q?=
+ =?us-ascii?Q?9lDKQiEhV5odvLmhj2D634Q+1yxLfdq9nycCpLYRHb0LCyor5R2JOjplJy1Z?=
+ =?us-ascii?Q?dHPHuUdUK84ay28EfSG3X8wKr/Jjw6kcLzGtJVsUu5lbrDuZpjzN9kuurpyM?=
+ =?us-ascii?Q?2nN0OytyOW1DCwImoO4ca0JG70/94nXOW1A8RSnUE0vwOUk8wnIeSONLkFLv?=
+ =?us-ascii?Q?oeDKtBpQVIxOWmKZOP7VrL/mk4UqjIE6Z6v72X7Umzu/DqT51NU4qackQtO+?=
+ =?us-ascii?Q?ul4lSoT2P0F3REFeZ+ax7v/Ea0Us/i3NM542aYx636Td4DSbxfVDu6v5XtUf?=
+ =?us-ascii?Q?nNNDq7R9I57NxKZRd6fx71V08zuBoz2cR9WjM3KcGWYjf3kz69bZmG2a9QIs?=
+ =?us-ascii?Q?5VBXbmIOfRANp4S/PR2CxMHN6Xd4G2VYjQz7qafwd3nn4WKt2+U0Hw12Hgs9?=
+ =?us-ascii?Q?XzilZMQwkw=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27b02370-fe1f-4540-f822-08deb64f2ac7
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 09:07:07.1835
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2GWUJsbxFRRiCtxwZiiUWtWXt8gbXI0bxPpTsNdLEXbeqLG/ttmDb+Yi5P7FVMrpGHgLjDB3Gbd4o5pCeNG1wA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8277
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+From: Carlos Song <carlos.song@nxp.com>
 
-Pre-existing issues:
-- [High] Unconditional dereference of `msi_node` in `of_check_msi_parent` w=
-hen it can be NULL.
---
+Mark the I2C adapter as suspended during system suspend to block further
+transfers, and resume it on system resume. This prevents potential hangs
+when the hardware is powered down but clients still attempt I2C transfers.
 
-commit d17879206927f3ee695759bc3559fd04a6a551ab
-Author: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-Subject: of: Factor arguments passed to of_map_id() into a struct
+Fixes: 1ee867e465c1 ("i2c: imx-lpi2c: add target mode support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+---
+Change for v2:
+  - Call i2c_mark_adapter_suspended() before pm_runtime_force_suspend()
+    to prevent potential deadlock if a transfer is active during suspend.
+  - Roll back with i2c_mark_adapter_resumed() if pm_runtime_force_suspend()
+    fails.
+---
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-This patch updates of_map_id() to take a struct of_phandle_args instead of
-passing the target device node and translated IDs separately. It explicitly
-separates the input filter node from the output arguments and transfers
-ownership of the matched node reference to the caller.
-
-> diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-> index e37c1b3f87362..e63a43be6c4a3 100644
-> --- a/drivers/of/irq.c
-> +++ b/drivers/of/irq.c
-> @@ -796,14 +796,15 @@ static int of_check_msi_parent(struct device_node *=
-dev_node, struct device_node
->  /**
->   * of_msi_xlate - map a MSI ID and find relevant MSI controller node
->   * @dev: device for which the mapping is to be done.
-> - * @msi_np: Pointer to target MSI controller node
-> + * @msi_np: Pointer to target MSI controller node, or NULL if the caller
-> + *           only needs the translated ID without receiving the controll=
-er node.
-> + *           If non-NULL and pointing to a non-NULL node, only entries t=
-argeting
-> + *           that node will be matched. If non-NULL and pointing to NULL=
-, it will
-> + *           receive the first matching target node with a reference hel=
-d.
->   * @id_in: Device ID.
->   *
->   * Walk up the device hierarchy looking for devices with a "msi-map"
->   * or "msi-parent" property. If found, apply the mapping to @id_in.
-> - * If @msi_np points to a non-NULL device node pointer, only entries tar=
-geting
-> - * that node will be matched; if it points to a NULL value, it will rece=
-ive the
-> - * device node of the first matching target phandle, with a reference he=
-ld.
->   *
->   * Returns: The mapped MSI id.
->   */
-> @@ -817,8 +818,21 @@ u32 of_msi_xlate(struct device *dev, struct device_n=
-ode **msi_np, u32 id_in)
->  	 * "msi-map" or an "msi-parent" property.
->  	 */
->  	for (parent_dev =3D dev; parent_dev; parent_dev =3D parent_dev->parent)=
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index a01c23696481..01ee38131ef2 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -1635,7 +1635,18 @@ static int __maybe_unused lpi2c_runtime_resume(struct device *dev)
+ 
+ static int __maybe_unused lpi2c_suspend_noirq(struct device *dev)
  {
-> -		if (!of_map_msi_id(parent_dev->of_node, id_in, msi_np, &id_out))
-> +		struct of_phandle_args msi_spec =3D {};
-> +
-> +		if (!of_map_msi_id(parent_dev->of_node, id_in, msi_np, &msi_spec)) {
-> +			if (msi_spec.np) {
-> +				/* msi-map matched: use the translated ID and target node */
-> +				if (msi_spec.args_count > 0)
-> +					id_out =3D msi_spec.args[0];
-> +				if (msi_np && !*msi_np)
-> +					*msi_np =3D of_node_get(msi_spec.np);
-> +				of_node_put(msi_spec.np);
-> +			}
-> +			/* msi-map present but no match =E2=86=92 stop walking */
->  			break;
-> +		}
-> +		/* -ENODEV: msi-map absent =E2=86=92 check for msi-parent */
->  		if (!of_check_msi_parent(parent_dev->of_node, msi_np))
+-	return pm_runtime_force_suspend(dev);
++	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
++	int ret;
++
++	i2c_mark_adapter_suspended(&lpi2c_imx->adapter);
++
++	ret = pm_runtime_force_suspend(dev);
++	if (ret) {
++		i2c_mark_adapter_resumed(&lpi2c_imx->adapter);
++		return ret;
++	}
++
++	return 0;
+ }
+ 
+ static int __maybe_unused lpi2c_resume_noirq(struct device *dev)
+@@ -1655,6 +1666,8 @@ static int __maybe_unused lpi2c_resume_noirq(struct device *dev)
+ 	if (lpi2c_imx->target)
+ 		lpi2c_imx_target_init(lpi2c_imx);
+ 
++	i2c_mark_adapter_resumed(&lpi2c_imx->adapter);
++
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
 
-[Severity: High]
-This is a pre-existing issue, but does of_check_msi_parent() handle a NULL
-msi_np pointer correctly here?
-
-The documentation added above explicitly states that msi_np can be NULL if
-the caller only needs the translated ID without receiving the controller no=
-de.
-However, if msi-map is absent, execution falls through to
-of_check_msi_parent() with that potentially NULL pointer.
-
-Looking at drivers/of/irq.c:of_check_msi_parent(), if the msi-parent
-property is found, it evaluates:
-
-	if ((*msi_node && *msi_node !=3D msi_spec.np) || msi_spec.args_count !=3D =
-0)
-		ret =3D -EINVAL;
-
-	if (!ret) {
-		/* Return with a node reference held */
-		*msi_node =3D msi_spec.np;
-		return 0;
-	}
-
-If msi_np is NULL, wouldn't dereferencing it via *msi_node trigger a NULL
-pointer dereference? Should this be fixed to safely handle a NULL pointer?
-
->  			break;
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260520-parse_iomm=
-u_cells-v15-0-b5f99ad4e7e8@oss.qualcomm.com?part=3D2
