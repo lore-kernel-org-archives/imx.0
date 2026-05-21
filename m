@@ -1,208 +1,123 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2E537F754
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6659439B493
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779358617; cv=none; b=nPeOC2ZDCWaCVdc+M/MfVDHlSIs7gaAbFafkTHtlg+xPa9CdKX5QvpqbdOBQXzlQ9j91itX1CX6tVB3mK5kh4xrHYgDXlSYeYsZzIXFdYT3g7oMLXiS/ww/JuDGjku2/RaGlAXupr7lDuYz9aVJNi/ZEAjYQlyXrT2fOSlKtD8c=
+	t=1779358726; cv=none; b=qISUyDpyYhWf8qv7JOuUVDX/jcSVH8M72z395rfzyZXVzoPm2q887f/NoFAkRmrVyDjrSatQFTJSW9bpGDIqlXAwLkHzMpg62bg/N/UpUr8xeJkoZNhSznl6gv4nVxSvwf3BJjZEjpYPNPDra6d4yYA9WPRP3mr0hFFTx4ZCk/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779358617; c=relaxed/simple;
-	bh=Z3KAG24ikGctN8+3JXxzF/QjpEQrkx80Kwtm6MVN8Zc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mRzwGqar5BzvbyCXwT43naXLFyrX1t1GEDfOnvIdyhnfi9Zgv5aLA/5k93BND7Fn71TIp6LnI/MZfpRr6zB9GYtBPtrPnWAsLafI58IjCJ844Iu0CXIWuFfKEhehP0CtQHl7kqPaT3sAiQqIYW8UY6FfJARTndOxkQnfwCD6RMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=n2KqCiRr; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=OUlhGSh+; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1779358726; c=relaxed/simple;
+	bh=2bYB1xx2/Hr8LzyFvSIy2n94i1GOiw43zEZhsMOD62E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X/+r5alshEkcxYK8chQeZ3cp2htsJSpdBsmEd+BMAXdohcJADX52qI5DxCSB+LMHzfMvDLrhQcq1Grx1/hfSLeq5e/fzeeE6EfhJ0CuTMNCxp51uY8sRqPOPiZBrOkYWdwk30yFM72QlQ1roy0T6v3qTs8GLoclIhGr1lQH6dU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JN1dxdeX; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="n2KqCiRr";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="OUlhGSh+"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L99r7O517909
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:16:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	e35ASpDbu+JzlJXy6vzQPsFHJsqGdEATPmzNaYDOTrk=; b=n2KqCiRrOQrxLNGF
-	XgBkFgRwHC2u1RPF5a/auykres/jpwRgCdtJtROt6BASxFvKYL+Qfhju5Dz6F6mF
-	G+hfxCHv85g3xPYMaJxNlfXoH284Ofwj0oylvJc4GpMK42w4Ykbi3bMFumP3dGVn
-	Of3qQ/AuuJXJ24iKJ65BPO3IerbeKQ8W6XZEqt0Y4INWvvdUnzOxXDCSS5NQP9yU
-	YQ1/YFvSg+qAsf+bIwNfhsp+QmbuH/pux4UglorAuGH+3KDIOePVZTWhcKI3rWkU
-	Bgd5ipAhxEfTGDhgXs+/b86rAa6+H9YyBoLagFfCMGxmomgpsus3+zWqvMYiQ/zc
-	cpABdQ==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e9saa1qps-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:16:54 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-82f9429f49cso8978013b3a.3
-        for <imx@lists.linux.dev>; Thu, 21 May 2026 03:16:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JN1dxdeX"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-44ccbd3290aso5514674f8f.2
+        for <imx@lists.linux.dev>; Thu, 21 May 2026 03:18:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779358614; x=1779963414; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e35ASpDbu+JzlJXy6vzQPsFHJsqGdEATPmzNaYDOTrk=;
-        b=OUlhGSh+cSQLB2BTIim/OpE4QP8qZ+ZuhhXnxMqJxrgkWQ/JEi4DxhZwU3mBPqIt94
-         7m+YrW2nHLd+soCjx+cC617Th80WRcOQ11cIpibfbHZHCtiaiPooQMiXFHNq/fJ+wJAw
-         23pP5b58tHuZGT3U42H+FQrlt72tqnCZ9tmUvz1cMOmL7KPjyeYNaB+OcI8hCQDJDYcV
-         ksk9wseLkYGdx2lbjyaM+Hdl5PVgHBnczOajmOiec7GJCbZsAH9pb+4t+6RE20ZQhUGu
-         i2PixsbxQFr8/8UoSphB14BPJpkKxYa88oev22J1s3yDrAIk0L0m074JTkaOqlp1WpAq
-         q0zA==
+        d=gmail.com; s=20251104; t=1779358723; x=1779963523; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=a+yLXkw2GT7LxR1Ajc513/uXxkuEC8xR05slvUKTHbU=;
+        b=JN1dxdeX3D/dIaUMSbp2wrHw18IltzOTHWotPIyQcK4/6EtaDxE0pXznOdRZ/w8LOX
+         IMDsAORhVfpz+IjD6869UhxGQZBFYGW85WObWyMNVPEPwixgpP+XA8F2+hphLdHHhtN7
+         J7iTbSWDCS3BuINXVYaCuuaoa3KBMU7fB1yHXpfcNOFVXNRGkGOr92R1eQJ/SOagAtgU
+         vsKXM3L4tmnua5/m32kAyYVc0HBaPYUoYzn7f2T7mbiNLn5MsP/4O47TW/bTAieHPRVS
+         T8Sv0bTnlzfAhl1XYJhKXssPB39RuovHtzemIArPQUgqmTikUU5WjFP1lHVv/mlmUzP4
+         2W5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779358614; x=1779963414;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e35ASpDbu+JzlJXy6vzQPsFHJsqGdEATPmzNaYDOTrk=;
-        b=hTJCAkSlzW0msGURsQbzRRzlw+3NQ/+WTD/lozSXjID60NLh/AlOqQth5O2V6c0pyg
-         GSIXVX4wpNntbaMz4+LZ779NUO8SPyFdPoDjtivSzCojCuae+BYZuXhEHOjQJXV+qxQU
-         h9JXDbo59uEBqkbQgeFQpn9NyHev3NqbLt0ZCJnUb60M3u2UcSYCRvI5NfjUhc2GUgF5
-         1M7/C5TKdm+fiNZ+6NQnbP5uCp4xU+y982qoD2VyX9OHvoS5tm6Og1abigcavCnE+TEr
-         T7q3uEliybbqvrRJtQyh4OAcVzjg6SAOj91konhr2QmAg2raEpgJEMIit132Loa2Kga+
-         0oGg==
-X-Forwarded-Encrypted: i=1; AFNElJ+I0B90YC7unZKw9lu4Kg/tdw8dAeJ4/1em4LY7tGqjqLz9wQvG/ve0OlFeFwPrqUGZspo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxmPF3IbojcDkskyrJMKrYykQB+Qp5+Y4m/fMBMOt1wlrsOjfro
-	aSjy5kR+1W2HJzzBS+xn1vuKT4bOgd5304T9skXQ500fyKbxAbgMmsvWNbLBVx4JfUJ+PQloO9N
-	tU4Wkrlt04mzvmYikx2yMMbNrJy4Shq0FDOnGsUspvW75G2rfK/m7kQs=
-X-Gm-Gg: Acq92OGMMqXYdEpp3RPBuChSiogqfxGqzO2a7p4363+1D7iLn013kBHzeWXB8gKGb4y
-	r1vP+AQU5PYGsrb75cWUEAUr97FBW+1DpUBhsE+45cKanU3qrMXIRWmNrAz9Py946mog3hQ1Zc/
-	i6gVDpGkboz9GLEMGJ2uj7eWviRGKz6tO/UnuZSew1vY+oopNcQsCgUOPEz1sM7ouGwVtkkl+03
-	SqCnELInQRHdSrv4h+IvBB6RA1ugYsTKmMFLi7RA0y13OUSRTg/9jFj67JLTPqzCE1jkUzEM0CE
-	H6dGFse9m97eNRn017brJyEn3WlznuPjEbOAY5bwFyVW1J9WrDFBCQBmxEcublYD52fJRXhDlTx
-	caR02UViYDkQg+8iY+7vAWGuCjkqjGZqaJt5esZMQ9FLq5uIzJevV0+yo
-X-Received: by 2002:a05:6a00:330c:b0:82f:390a:69c7 with SMTP id d2e1a72fcca58-8414ae6e041mr2501845b3a.33.1779358614185;
-        Thu, 21 May 2026 03:16:54 -0700 (PDT)
-X-Received: by 2002:a05:6a00:330c:b0:82f:390a:69c7 with SMTP id d2e1a72fcca58-8414ae6e041mr2501811b3a.33.1779358613617;
-        Thu, 21 May 2026 03:16:53 -0700 (PDT)
-Received: from [10.217.219.207] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84154e3d6a7sm997070b3a.55.2026.05.21.03.16.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 May 2026 03:16:53 -0700 (PDT)
-Message-ID: <22af0378-a3c9-4403-a0ee-da794847f41d@oss.qualcomm.com>
-Date: Thu, 21 May 2026 15:46:47 +0530
+        d=1e100.net; s=20251104; t=1779358723; x=1779963523;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a+yLXkw2GT7LxR1Ajc513/uXxkuEC8xR05slvUKTHbU=;
+        b=KpRiuMDjfiLA08yjJl8j3w5ghGrHMuvqnz4287NrufF7jUoIcut9KzkPJLunAxH/IL
+         qlrWsEzA+YKCYm8Hst/DLM5X8SYReM7UMUDcvlhNbWhRZY8hhEt+FKclFxmZPhcs8AFL
+         cXvfSrRhc5WKmy0TNkia3+JvpD2WQ5gG6tcoNgIizliFLbZEOK/fVTv5SlAyIpBugwQY
+         vmfOphkEbNWI9QbWMi8+lv8NfGqAruEYb6ZN0cTy9sSJfka5IZ5PfypS5iDhS3mE/bNd
+         U/L9+3ubWeH4p+u9YDAVJSys6cuGe/u5y2OFZotVhSmCNNtx8qg37L6dNDOX/qP2BAzQ
+         TR/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+mzonWcVzGt7ba9wf42GR6kYcgFnwH7hNx+F/n7PfIq3t/+ll5ndc/tmzPl/IohEwD5sg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzdT+JLh4SdTqYtv/Eig8b6ulJp4wsEckGXaW2QYy9kIZk9r5py
+	l3+KBRx/ajnCHVBIGnuonrjpdTm0yLQKUGSFDiNTxcdau8Omi0dczDeHy6TNdFD2
+X-Gm-Gg: Acq92OHyn5F8ByEdpHLqf4H135ump00pGCkqsPXzojf6oK+H2KuNWLxibtyb/ipyWhl
+	hJ61Y7DB09xcIQrG+eTYLlrtZ9Et3tXftQRpFPh9Tj/6CrTSBhjs2dBoMhuS6hvYoqJu2Ux+QRI
+	qCJEN8ar6o0XRQUIm1+DRAIttwWahDI5/0bPMpFT1HS1pJbnADYtJJbMDE1iYUSWphJ/YLZytZ1
+	X4wtOtYH4ZftU9AXMrkchUdFmpyurmDYMfFkVMiWjZGHdN/GpIat+Db2PY8TKqKUauJF14/jHMu
+	iVKPXcKEXsLalRMKvIR0wl2Jy28sX04BidfyuQ3svjpKIZwRyh/xXk7tmKoujjzuxKbmGMDS1gZ
+	cmelvWfpH7lDZ1kPyhnu3Lg5h/QRmXoCVAfGrGEYStLRsSCHxIJ/cLUWsWb34dqkrvvhhVXJGGB
+	QopyGIMCXyBKSKDcZj2ut7xwfN2g12LehgbMGD4eEwDVh3R+6xSlI2puAD6e9TmC9oYxCrzht7m
+	rC18bfXw9rzqWURPbV8jb9NRlJJ7Yd6FiwbjMo5Q9kVg5rODuZSXrlEqq4uV2cDTFMsOXGeGYSN
+	plgAScUuMQ==
+X-Received: by 2002:a05:6000:4284:b0:43d:dd:8ca4 with SMTP id ffacd0b85a97d-45ea36b88ebmr3980111f8f.14.1779358722497;
+        Thu, 21 May 2026 03:18:42 -0700 (PDT)
+Received: from franzs-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eaa7d9daasm1980702f8f.11.2026.05.21.03.18.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 03:18:42 -0700 (PDT)
+Date: Thu, 21 May 2026 12:18:41 +0200
+From: Franz Schnyder <fra.schnyder@gmail.com>
+To: Frank.Li@nxp.com, sashiko-reviews@lists.linux.dev
+Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, 
+	conor+dt@kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] arm64: dts: freescale: add Aquila iMX95 support
+Message-ID: <3pcmepn2kr2b2gku33mriosmnim4xd7e75pt2j7i7vnt4awhgg@3cptbxl5u4x5>
+References: <20260521-add-aquila-imx95-v3-2-621843807def@toradex.com>
+ <20260521093854.14DAB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] i2c: imx: mark I2C adapter when hardware is powered
- down
-To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>,
-        Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-        "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "andi.shyti@kernel.org" <andi.shyti@kernel.org>,
-        Frank Li
- <frank.li@nxp.com>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        Carlos Song
- <carlos.song@nxp.com>, Bough Chen <haibo.chen@nxp.com>
-Cc: "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "imx@lists.linux.dev" <imx@lists.linux.dev>,
-        "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20260520101504.2885873-1-carlos.song@oss.nxp.com>
- <4979e748-ce4e-4244-8906-e22a1e6472e7@oss.qualcomm.com>
- <AM0PR04MB68027798D1B07FD63AEC5F23E80E2@AM0PR04MB6802.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
-In-Reply-To: <AM0PR04MB68027798D1B07FD63AEC5F23E80E2@AM0PR04MB6802.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDEwMiBTYWx0ZWRfXygmpEaWbWxFt
- Q2owqbZPIsinoDUwz62Gu5eX/+phrK/QnhtaKE2/oHvlQ2bWkwiZ4OihcBv2CdeIFp1cycU4vZM
- 0IiFlPuj+/xKhvHTbf2uy/8FtNg+urFc/hJU71w18vVqJC8GKetQmYv0EwG7wqq5t4cgjL9sEQ3
- R1JeI0ngdvJFueKgnZBNSuwLHKxXDomhaFYyupK8jxJHTliquqiqmuCkLJerAgfKRv748tHy/s2
- /lDKou2U2h9a3ioBY+G6PWxkD/CEF3G2t5LgY5dZKwpb3vg2hWsUc70TTA6YGUs1vbWL0YhsAP9
- TGd5OdPoN5rFOJiI0iHEf+9C02lzKaSbfZjtLtzBY80ao5M0nd1G0VzqEqu3AlNrKBZgpr072UG
- Hv+bd3QxUuPYdmmfCRWyG7LwiQaP5EsqrxWLtjLYgtjLIrb1eygIxv62KPaYKF67dICtREcE1jI
- uSwWqK0E99bCxHAGCPA==
-X-Authority-Analysis: v=2.4 cv=Qe9WeMbv c=1 sm=1 tr=0 ts=6a0edb96 cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=_EeEMxcBAAAA:8 a=EUspDBNiAAAA:8 a=8AirrxEcAAAA:8 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=JfrnYn6hAAAA:8 a=yJUUZN2m8lq9mbh6i7kA:9 a=QEXdDO2ut3YA:10
- a=czjwGCTIUPoA:10 a=zc0IvFSfCIW2DFIPzwfm:22 a=ST-jHhOKWsTCqRlWije3:22
- a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-ORIG-GUID: 8bndGYJdt9neMVYgkoFTgylpQAqUIv4Y
-X-Proofpoint-GUID: 8bndGYJdt9neMVYgkoFTgylpQAqUIv4Y
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-21_01,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 phishscore=0
- suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 malwarescore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605210102
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260521093854.14DAB1F000E9@smtp.kernel.org>
 
-Thanks Carlos !
+> > diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts b/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts
+> > new file mode 100644
+> > index 0000000000000..bb4a3631af9ba
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts
+> 
+> [ ... ]
+> 
+> > +/* Aquila I2S_1 */
+> > +&sai2 {
+> > +	status = "okay";
+> > +};
+> > +
+> > +&som_dsi2dp_bridge {
+> > +	status = "okay";
+> > +};
+> 
+> [Severity: Medium]
+> Will this bridge fail to probe since the DSI input connection is missing?
+> 
+> Looking at the ti-sn65dsi86 driver in ti_sn_bridge_parse_dsi_host(), it uses
+> of_graph_get_remote_node(np, 0, 0) and unconditionally returns -ENODEV if the
+> remote node is missing.
+> 
+> Since the upstream i.MX95 SoC DSI controller doesn't appear to be implemented
+> and linked to the dsi2dp_in endpoint yet, should this node remain disabled
+> until the controller is available?
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260521-add-aquila-imx95-v3-0-621843807def@toradex.com?part=2
 
-On 5/21/2026 1:57 PM, Carlos Song (OSS) wrote:
-> 
-> 
->> -----Original Message-----
->> From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
->> Sent: Thursday, May 21, 2026 3:40 PM
->> To: Carlos Song (OSS) <carlos.song@oss.nxp.com>; o.rempel@pengutronix.de;
->> kernel@pengutronix.de; andi.shyti@kernel.org; Frank Li <frank.li@nxp.com>;
->> s.hauer@pengutronix.de; festevam@gmail.com; Carlos Song
->> <carlos.song@nxp.com>; Bough Chen <haibo.chen@nxp.com>
->> Cc: linux-i2c@vger.kernel.org; imx@lists.linux.dev;
->> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
->> stable@vger.kernel.org
->> Subject: Re: [PATCH v3] i2c: imx: mark I2C adapter when hardware is powered
->> down
->>
->> [You don't often get email from mukesh.savaliya@oss.qualcomm.com. Learn
->> why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->>
->> Hi Carlos,
->>
->> On 5/20/2026 3:45 PM, Carlos Song (OSS) wrote:
->>> From: Carlos Song <carlos.song@nxp.com>
->>>
->>> Mark the I2C adapter as suspended during system suspend to block
->>> further transfers, and resume it on system resume. This prevents
->>> potential hangs when the hardware is powered down but clients still attempt
->> I2C transfers.
->>>
-what was the reason of this hang ? I was thinking you don't have 
-interrupts working when client requested transfer but adapter was 
-suspended. Please correct me if wrong.
+Hi Frank,
 
-And it would be good to mention the actual problem and why/how it occurred.
->> Code changes looks fine to me but have comment on commit log.
->>
->> It seems, you are adding support of _noirq() callbacks to allow transfers during
->> suspend/resume noirq phase of PM.
->>
->> Would it make sense if you can write "Replace system PM callbacks with noirq
->> PM callbacks" OR "Allow transfers during _noirq phase of the PM ops" instead of
->> "mark I2C adapter when hardware is powered down" ?
->>
-> 
-> Hi,
-> 
-> Thank you for your comments!
-> 
-> But this patch is added is not for support noirq PM callback or transfer in noirq phase.
-> 
-Okay, may be actual problem description can help me.
-> In fact, this fix is to mark the I2C adapter as suspended during system noirq suspend to block further
-> transfers, and resume it on system noirq resume. This is to prohibit I2C device calling the I2C controller
-> after the system noirq suspend and before noirq resume, because at this time the I2C instance is powered
-> off or the clock is disabled ... So I want to keep current commit. How do you think?
-completely Makes sense. Please help add how this problem occurred and 
-why ? So the change/fix will be good to understand against it.
-> 
-> Carlos Song
+This is valid point from the bot.
+If there is nothing else, I'll send a v4 that removes '&som_dsi2dp_bridge' 
+from the Dev and Clover board, since the node is disabled in the SoM dtsi.
+
+Thanks,
+
+Franz
 
 
