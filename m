@@ -1,123 +1,103 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6659439B493
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D7337B01A;
+	Thu, 21 May 2026 10:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779358726; cv=none; b=qISUyDpyYhWf8qv7JOuUVDX/jcSVH8M72z395rfzyZXVzoPm2q887f/NoFAkRmrVyDjrSatQFTJSW9bpGDIqlXAwLkHzMpg62bg/N/UpUr8xeJkoZNhSznl6gv4nVxSvwf3BJjZEjpYPNPDra6d4yYA9WPRP3mr0hFFTx4ZCk/8=
+	t=1779359265; cv=none; b=TSpdp7B7qbvqgjxcGoiR3SxXid1zhmq4YlGEHwkma09WbDEOBYo9uqIAJQiJEvVW2b19A51GnjvHH8/jXEXBwBLEEm0aLlyuKLj/PQYBu9RA0NIRdlB0XQu+X2Ir2rOPeb/7PW8HaPVbtw9EA76nDNFtZm37SLuFYwV4eH6pjdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779358726; c=relaxed/simple;
-	bh=2bYB1xx2/Hr8LzyFvSIy2n94i1GOiw43zEZhsMOD62E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X/+r5alshEkcxYK8chQeZ3cp2htsJSpdBsmEd+BMAXdohcJADX52qI5DxCSB+LMHzfMvDLrhQcq1Grx1/hfSLeq5e/fzeeE6EfhJ0CuTMNCxp51uY8sRqPOPiZBrOkYWdwk30yFM72QlQ1roy0T6v3qTs8GLoclIhGr1lQH6dU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JN1dxdeX; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779359265; c=relaxed/simple;
+	bh=QY4O08p8UeC3Kl35zmcup7N0ufYR7vG7/tcw5xu3lHw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=hBmvk9bnphapkx2UIwOCtPfCqW/Qj+kxtNQSNgratLlI641wj1JEypBJdM5GH1RL8GTPbVxN9GlAOlZ9toEM9dCx5YNDZSahSmyUu/fqW6QdLr/I8VDQqsgRanTDHqqcvy24aGTBINWKjAMF56nOFeDI5sJDmTY//oNVbSA/nI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fhK5++h8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JN1dxdeX"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-44ccbd3290aso5514674f8f.2
-        for <imx@lists.linux.dev>; Thu, 21 May 2026 03:18:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779358723; x=1779963523; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=a+yLXkw2GT7LxR1Ajc513/uXxkuEC8xR05slvUKTHbU=;
-        b=JN1dxdeX3D/dIaUMSbp2wrHw18IltzOTHWotPIyQcK4/6EtaDxE0pXznOdRZ/w8LOX
-         IMDsAORhVfpz+IjD6869UhxGQZBFYGW85WObWyMNVPEPwixgpP+XA8F2+hphLdHHhtN7
-         J7iTbSWDCS3BuINXVYaCuuaoa3KBMU7fB1yHXpfcNOFVXNRGkGOr92R1eQJ/SOagAtgU
-         vsKXM3L4tmnua5/m32kAyYVc0HBaPYUoYzn7f2T7mbiNLn5MsP/4O47TW/bTAieHPRVS
-         T8Sv0bTnlzfAhl1XYJhKXssPB39RuovHtzemIArPQUgqmTikUU5WjFP1lHVv/mlmUzP4
-         2W5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779358723; x=1779963523;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a+yLXkw2GT7LxR1Ajc513/uXxkuEC8xR05slvUKTHbU=;
-        b=KpRiuMDjfiLA08yjJl8j3w5ghGrHMuvqnz4287NrufF7jUoIcut9KzkPJLunAxH/IL
-         qlrWsEzA+YKCYm8Hst/DLM5X8SYReM7UMUDcvlhNbWhRZY8hhEt+FKclFxmZPhcs8AFL
-         cXvfSrRhc5WKmy0TNkia3+JvpD2WQ5gG6tcoNgIizliFLbZEOK/fVTv5SlAyIpBugwQY
-         vmfOphkEbNWI9QbWMi8+lv8NfGqAruEYb6ZN0cTy9sSJfka5IZ5PfypS5iDhS3mE/bNd
-         U/L9+3ubWeH4p+u9YDAVJSys6cuGe/u5y2OFZotVhSmCNNtx8qg37L6dNDOX/qP2BAzQ
-         TR/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+mzonWcVzGt7ba9wf42GR6kYcgFnwH7hNx+F/n7PfIq3t/+ll5ndc/tmzPl/IohEwD5sg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzdT+JLh4SdTqYtv/Eig8b6ulJp4wsEckGXaW2QYy9kIZk9r5py
-	l3+KBRx/ajnCHVBIGnuonrjpdTm0yLQKUGSFDiNTxcdau8Omi0dczDeHy6TNdFD2
-X-Gm-Gg: Acq92OHyn5F8ByEdpHLqf4H135ump00pGCkqsPXzojf6oK+H2KuNWLxibtyb/ipyWhl
-	hJ61Y7DB09xcIQrG+eTYLlrtZ9Et3tXftQRpFPh9Tj/6CrTSBhjs2dBoMhuS6hvYoqJu2Ux+QRI
-	qCJEN8ar6o0XRQUIm1+DRAIttwWahDI5/0bPMpFT1HS1pJbnADYtJJbMDE1iYUSWphJ/YLZytZ1
-	X4wtOtYH4ZftU9AXMrkchUdFmpyurmDYMfFkVMiWjZGHdN/GpIat+Db2PY8TKqKUauJF14/jHMu
-	iVKPXcKEXsLalRMKvIR0wl2Jy28sX04BidfyuQ3svjpKIZwRyh/xXk7tmKoujjzuxKbmGMDS1gZ
-	cmelvWfpH7lDZ1kPyhnu3Lg5h/QRmXoCVAfGrGEYStLRsSCHxIJ/cLUWsWb34dqkrvvhhVXJGGB
-	QopyGIMCXyBKSKDcZj2ut7xwfN2g12LehgbMGD4eEwDVh3R+6xSlI2puAD6e9TmC9oYxCrzht7m
-	rC18bfXw9rzqWURPbV8jb9NRlJJ7Yd6FiwbjMo5Q9kVg5rODuZSXrlEqq4uV2cDTFMsOXGeGYSN
-	plgAScUuMQ==
-X-Received: by 2002:a05:6000:4284:b0:43d:dd:8ca4 with SMTP id ffacd0b85a97d-45ea36b88ebmr3980111f8f.14.1779358722497;
-        Thu, 21 May 2026 03:18:42 -0700 (PDT)
-Received: from franzs-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eaa7d9daasm1980702f8f.11.2026.05.21.03.18.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 03:18:42 -0700 (PDT)
-Date: Thu, 21 May 2026 12:18:41 +0200
-From: Franz Schnyder <fra.schnyder@gmail.com>
-To: Frank.Li@nxp.com, sashiko-reviews@lists.linux.dev
-Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, 
-	conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] arm64: dts: freescale: add Aquila iMX95 support
-Message-ID: <3pcmepn2kr2b2gku33mriosmnim4xd7e75pt2j7i7vnt4awhgg@3cptbxl5u4x5>
-References: <20260521-add-aquila-imx95-v3-2-621843807def@toradex.com>
- <20260521093854.14DAB1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fhK5++h8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0981F000E9;
+	Thu, 21 May 2026 10:27:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779359263;
+	bh=ti2ZJxV50WoEVbvDumX+anVxC8PQ556LK3yAqXg+5bA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=fhK5++h8Hl/bE2ZV7bIB+nCbGP1gvHxdgyi6R0dequCqp3HSSggM1w6/j1EFNj6AB
+	 qI2MGNUYlaryZFggwMlBlw619kxRLs7oKd5GpfR71FEQ/eeJ5/mED5tjfC/hlz9KfC
+	 KFLeaKKBAa9EZHwETarLf51KGOahzTlpRtU3l1kn2cijYX2xJmgU/OQNjtBd+q4nPq
+	 kLDnqcTZPF2BKYEQ8ZqPYUMlCxt3eRp9QJGwNXtlaU+CCzvBx/lCgsK0ONH/+SsFKn
+	 Hax3kT0RKRCov/L+v59eKBH0Y8J/JMOl3fPgLTCayVGQWN8nc9WyK1FT5LQvAx13dv
+	 ragY7LD3FpDWg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 2/3] arm64: dts: imx95: Add dma, intr, aer and pme
+ interrupts for PCIe
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Richard Zhu" <hongxing.zhu@nxp.com>
+Cc: devicetree@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260521093255.61585-3-hongxing.zhu@nxp.com>
+References: <20260521093255.61585-3-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 21 May 2026 10:27:42 +0000
+Message-Id: <20260521102743.3D0981F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260521093854.14DAB1F000E9@smtp.kernel.org>
 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts b/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts
-> > new file mode 100644
-> > index 0000000000000..bb4a3631af9ba
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts
-> 
-> [ ... ]
-> 
-> > +/* Aquila I2S_1 */
-> > +&sai2 {
-> > +	status = "okay";
-> > +};
-> > +
-> > +&som_dsi2dp_bridge {
-> > +	status = "okay";
-> > +};
-> 
-> [Severity: Medium]
-> Will this bridge fail to probe since the DSI input connection is missing?
-> 
-> Looking at the ti-sn65dsi86 driver in ti_sn_bridge_parse_dsi_host(), it uses
-> of_graph_get_remote_node(np, 0, 0) and unconditionally returns -ENODEV if the
-> remote node is missing.
-> 
-> Since the upstream i.MX95 SoC DSI controller doesn't appear to be implemented
-> and linked to the dsi2dp_in endpoint yet, should this node remain disabled
-> until the controller is available?
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260521-add-aquila-imx95-v3-0-621843807def@toradex.com?part=2
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Hi Frank,
+Pre-existing issues:
+- [High] The pcie0 node is missing the msi-map-mask property, which can cau=
+se MSI mapping failures for downstream devices on higher bus numbers.
+--
 
-This is valid point from the bot.
-If there is nothing else, I'll send a v4 that removes '&som_dsi2dp_bridge' 
-from the Dev and Clover board, since the node is disabled in the SoM dtsi.
+commit 0e2b46336a5b22c94438abb01ead59266994b86b
+Author: Richard Zhu <hongxing.zhu@nxp.com>
 
-Thanks,
+arm64: dts: imx95: Add dma, intr, aer and pme interrupts for PCIe
 
-Franz
+This commit updates the device tree configurations for pcie0 and pcie1
+on imx95 to include additional interrupts for dma, intr, aer, and pme.
+These new interrupt definitions enable advanced PCIe functionality beyond
+basic MSI support.
 
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
+ts/freescale/imx95.dtsi
+> index 71394871d8dd0..6896d9c15bf53 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -1861,8 +1861,12 @@ pcie0: pcie@4c300000 {
+>  			bus-range =3D <0x00 0xff>;
+>  			num-lanes =3D <1>;
+>  			num-viewport =3D <8>;
+> -			interrupts =3D <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>;
+> -			interrupt-names =3D "msi";
+> +			interrupts =3D <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 311 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names =3D "msi", "dma", "intr", "aer", "pme";
 
+[Severity: High]
+This is a pre-existing issue, but I noticed the pcie0 node is missing an
+msi-map-mask property. The node defines an iommu-map-mask but lacks a
+corresponding msi-map-mask.
+
+Without msi-map-mask, of_map_id() applies a default mask of 0xffffffff to
+the PCI requestor ID during MSI allocation. If a PCIe switch is connected
+and downstream devices are enumerated on a bus number >=3D 2, their request=
+or
+IDs (e.g., 0x200, 0x300) might fail to match the defined msi-map entries
+which only cover 0x0 and 0x100 ranges.
+
+Could this cause of_map_id to bypass translation, leaving the msi domain
+unassigned and breaking MSI functionality for downstream topologies beyond
+the first bus?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521093255.6158=
+5-1-hongxing.zhu@nxp.com?part=3D2
