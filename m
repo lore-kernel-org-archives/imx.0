@@ -1,105 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93ACD379EC4;
-	Thu, 21 May 2026 09:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BC72F362B;
+	Thu, 21 May 2026 09:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779356335; cv=none; b=cLTcwdrrw5aurOQO63yjj47tfHeZjm3IRyjeaoHkzXVhfulmXa28mvgHAuoqsonU5WGdG/0X7poQrdWR3mbnBk+UQCri+tXZm3f4bdS+5ALD+h1LAtMjLDxwTrrswR/W15VNcfe4xe98Nr4U44MzfQo0kMUWezXQ+rLBLo1zipo=
+	t=1779356691; cv=none; b=D1BWJjIrqGYNwsS+EXdLeHTlyBjC9yBwtrIYmk9uzZHfxv0ErMuid87BkwHCJ99ii5MbS8ksZIN8o0NZsKM2npwsSvbDfLUYPZknk+/jUhR/KV1oBDjbkbyiYf31kJvIENYNcLZJQ1OL3GKzG6wOYDcUSvGlJVYS5WgrKpQBO0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779356335; c=relaxed/simple;
-	bh=DA/RYf51b5SOyiR1JvUNI3PuaER23jjOOaCSiMXTM0c=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XWVBwzoHt4UNptA5R8E1qxwqbudKHGOeuCgQtyI7lmUCf3qAlDSSiXEwJEhVChqnNQ4AZU0Cfh9F3T7ab74j7TWHZ7fpR4Bh+ieEH5Kb9Wfg925TepAbXxYldMeDYRcPzUPwEO66WFL8uZJQc2l01kLKnfbKhtO0AKs1Rxtjcrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2g5/V4C; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779356691; c=relaxed/simple;
+	bh=2rSja1deBM1iWbRkxcvTnfwNvq3KSkNDXw0R+RFBDSE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T4b7LvN67SPMmypQu7wZ/uzGud91zqo57D9QcxZN14rhUXAdWVljPUd4AsscEZW9gXPOZ7JS43V501dXBGZUfpP0ziEUSRkqsk1mRIXIkVThWtOlEZQLXupjkfUtgUN69x0skukffyLK63ltc+ei+XLo/2zWWNcckqWt88204EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=V8bj1nfh; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2g5/V4C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DAB1F000E9;
-	Thu, 21 May 2026 09:38:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779356334;
-	bh=5HjCL1M8gW3zyK/axzRJGuv9zTsmKd9E2E69atjBow0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=k2g5/V4CbcTqptBb8rMbqL2fhfbhGwD4wZeupdUydOfCwW07na+mYarvnl3S/uujq
-	 yc+1LJZouGkxyozoqEW8ka3ufKJKzw432QuJa6gjNuuTDUHKOFDrcGTflxHPvevoG/
-	 CXKZS2o3MQDeCtjbRU2MfVBCRMbCnD/DKEJQNpp2VtZ714mZuEicRoAr41eUQEJxz8
-	 3n6MR6rFt08IEc9p5/gV2Uhmvm2grJk2wvCDjcXkTMUUIRyK0f7y7+fUtiVOHfBnDh
-	 bo0W4QI6H1NkB7mzsSgqQh/5GPt20nEI8mCaQTMa/ryqSsF1bdmNi3LbsSjrXF01az
-	 r7BJd8G2dJHPA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/3] arm64: dts: freescale: add Aquila iMX95 support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Franz Schnyder" <fra.schnyder@gmail.com>
-Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260521-add-aquila-imx95-v3-2-621843807def@toradex.com>
-References: <20260521-add-aquila-imx95-v3-2-621843807def@toradex.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 21 May 2026 09:38:53 +0000
-Message-Id: <20260521093854.14DAB1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="V8bj1nfh"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EB8E35FA;
+	Thu, 21 May 2026 02:44:44 -0700 (PDT)
+Received: from [10.57.36.52] (unknown [10.57.36.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 339163F7B4;
+	Thu, 21 May 2026 02:44:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779356689; bh=2rSja1deBM1iWbRkxcvTnfwNvq3KSkNDXw0R+RFBDSE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=V8bj1nfhEwDhWcowxYHmM7Xnhl5rgFZyeqahTQ0ZRV9mLcDf3Ozjm5MGzpI+c1910
+	 XJnMbe6wjO4t7P/70yn6macR20HahHT1WyAarLF6Wb7rYAgJ6Mt3h0WXN9SXMbK7F5
+	 uXAKXzo6njxuRMgh1oQmzIpBuzaBPmmeqI3TXRP8=
+Message-ID: <ddc7098e-5674-4f40-a46b-776c5334bda0@arm.com>
+Date: Thu, 21 May 2026 10:44:24 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/23] iommu/fsl: use platform_device_set_of_node()
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+ Lee Jones <lee@kernel.org>, Mark Brown
+ <broonie@opensource.wolfsonmicro.com>,
+ Thierry Reding <thierry.reding@avionic-design.de>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Srinivas Kandagatla <srini@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Andi Shyti <andi.shyti@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Doug Berger <opendmb@gmail.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>,
+ Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+ driver-core@lists.linux.dev, devicetree@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
+ iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
+ linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org
+References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+ <20260521-pdev-fwnode-ref-v1-12-88c324a1b8d2@oss.qualcomm.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260521-pdev-fwnode-ref-v1-12-88c324a1b8d2@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The DSI-to-DisplayPort bridge (`ti,sn65dsi86`) is enabled but la=
-cks an input connection to a DSI host, causing it to fail probing.
---
+On 2026-05-21 9:36 am, Bartosz Golaszewski wrote:
+> Ahead of reworking the reference counting logic for platform devices,
+> encapsulate the assignment of the OF node for dynamically allocated
+> platform devices with the provided helper.
 
-commit 9b9686b575648bf3682e209a454430bc5a39481e
-Author: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
+FWIW,
 
-arm64: dts: freescale: add Aquila iMX95 support
+Acked-by: Robin Murphy <robin.murphy@arm.com>
 
-Add support for the Toradex Aquila iMX95 and its development carrier
-board, which includes various peripherals such as memory, ethernet,
-display interfaces, and optional addons.
+Although I'm not sure the whole lot couldn't just be replaced with 
+of_platform_device_create(), but then frankly this driver is on life 
+support anyway as it only serves one very niche VFIO use-case and it's 
+not clear whether it has any real mainline users left.
 
-Link: https://www.toradex.com/computer-on-modules/aquila-arm-family/nxp-imx=
-95
-Link: https://www.toradex.com/products/carrier-board/aquila-development-boa=
-rd-kit
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts b/arch/ar=
-m64/boot/dts/freescale/imx95-aquila-dev.dts
-> new file mode 100644
-> index 0000000000000..bb4a3631af9ba
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts
-
-[ ... ]
-
-> +/* Aquila I2S_1 */
-> +&sai2 {
-> +	status =3D "okay";
-> +};
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+>   drivers/iommu/fsl_pamu.c | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iommu/fsl_pamu.c b/drivers/iommu/fsl_pamu.c
+> index 25aa477a95a95cb4fa4e132727cde0a936750ee2..012839fa0d8a27cafc6a441373f4f6da794388c1 100644
+> --- a/drivers/iommu/fsl_pamu.c
+> +++ b/drivers/iommu/fsl_pamu.c
+> @@ -973,7 +973,8 @@ static __init int fsl_pamu_init(void)
+>   		ret = -ENOMEM;
+>   		goto error_device_alloc;
+>   	}
+> -	pdev->dev.of_node = of_node_get(np);
 > +
-> +&som_dsi2dp_bridge {
-> +	status =3D "okay";
-> +};
+> +	platform_device_set_of_node(pdev, np);
+>   
+>   	ret = pamu_domain_init();
+>   	if (ret)
+> @@ -985,12 +986,10 @@ static __init int fsl_pamu_init(void)
+>   		goto error_device_add;
+>   	}
+>   
+> +	of_node_put(np);
+>   	return 0;
+>   
+>   error_device_add:
+> -	of_node_put(pdev->dev.of_node);
+> -	pdev->dev.of_node = NULL;
+> -
+>   	platform_device_put(pdev);
+>   
+>   error_device_alloc:
+> 
 
-[Severity: Medium]
-Will this bridge fail to probe since the DSI input connection is missing?
-
-Looking at the ti-sn65dsi86 driver in ti_sn_bridge_parse_dsi_host(), it uses
-of_graph_get_remote_node(np, 0, 0) and unconditionally returns -ENODEV if t=
-he
-remote node is missing.
-
-Since the upstream i.MX95 SoC DSI controller doesn't appear to be implement=
-ed
-and linked to the dsi2dp_in endpoint yet, should this node remain disabled
-until the controller is available?
-
-> +
-> +/* Aquila PWM_1 */
-> +&tpm3 {
-> +	status =3D "okay";
-> +};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521-add-aquila=
--imx95-v3-0-621843807def@toradex.com?part=3D2
