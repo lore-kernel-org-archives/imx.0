@@ -1,93 +1,93 @@
-Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0673D648A
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E308F3CCFD4;
+	Fri, 22 May 2026 10:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779445128; cv=none; b=gJB2ngCmN+jEEh6tSdLdityt14cOB/pOnpftN3Wt0aPF/4XApwi++5+HnxEKZvO5pnxKIXongQJ2yE8QBUTJMfH1gLntw8bY7X6soeCxZVmyOZSyOVaVUEvI2LB5Bl1/qFMi3geSdzh5k3Q3cGyT2tY0f6agC634INI/412QLOI=
+	t=1779445285; cv=none; b=ESbgLXhGKFjXBSpHTJ7i5fxVqvsrkv1GmcnB/Zp2580C+gJaK3Rg1mDAJSjCpl+p94qZhPcmcLb3GlITtq32upjiiM1hzX0JM+/BRpoGXtJx9UrYfLCAwreczScaAmoj5dsr7Zf7/ADdncT4SjxN9VkY5pxUYY8V/GU0sctiaa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779445128; c=relaxed/simple;
-	bh=pGGYOoltPgaRRnXyzfCNBXs1jvHPDksxLI7XjwOIn7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HX0j1TL6jgTozpDxNkNJrGXD3zjy97RHSSwNtBm/ZMnIkV7VPLiwznPgD6Zh3tHfT0VhlTvNnbUF+QY6jizoCT7p8Ct2Tc7Bx3hwMXrCld/6NCj2UQuoNGZTZaxh5b4M69WmkwzntJwRRLS80hMFIN4LXQjoSGpfPeyOqI4Vww0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
-Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id EC3CB3700293
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:18:22 +0000 (UTC)
-Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id 61DE1B408D6; Fri, 22 May 2026 10:18:21 +0000 (UTC)
-X-Spam-Level: **
-Received: from shepard (unknown [192.168.1.65])
-	by laika.paulk.fr (Postfix) with ESMTP id 5E19EB408CC;
-	Fri, 22 May 2026 10:17:19 +0000 (UTC)
-From: Paul Kocialkowski <paulk@sys-base.io>
-To: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Michael Tretter <m.tretter@pengutronix.de>
-Subject: [PATCH 14/14] arm64: dts: imx8mp: add VC8000E encoder node
-Date: Fri, 22 May 2026 12:16:53 +0200
-Message-ID: <20260522101653.2565125-15-paulk@sys-base.io>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260522101653.2565125-1-paulk@sys-base.io>
-References: <20260522101653.2565125-1-paulk@sys-base.io>
+	s=arc-20240116; t=1779445285; c=relaxed/simple;
+	bh=hQbgFnBSRPPGLtJDVSn8W1/x06HNaDFZgo7K4RTCvJY=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=szxpyWCx0xU8/CwT/m5/w7uBJY8ogKwRluv5XFksxFQq5NkbxfzJOBxNw+cgJV8utAN4CgXUKoJCQ6y2xuGxnRz5HCWT/aHqxkgOtgvs02cmUJbdsP/DwEQ1+ZZ9R0hBRnvPslGMVwZXTUL/LhBqczzPkNNuMscKx+xmDbNA0IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Of9edK5n; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Of9edK5n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B561F000E9;
+	Fri, 22 May 2026 10:21:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779445283;
+	bh=fKVEdOr2RzcA3rdMqyuatu+3TO4o4RuODlSYsnlMFys=;
+	h=From:To:In-Reply-To:References:Subject:Date;
+	b=Of9edK5nBIMY0lUHir4lgmavX7OoGGXmzTVbsJgWQYq9atlY2kfvJ9nZ0Hezhfl0d
+	 qRit2yxmN/VOmQ9g7FarBlVhLVb68/JDuPTUktILE6lel80+rthUWRw1jxTm7UtlJP
+	 Qyk0xpfMf0/NAORIbqelImtm89qYxDXpW83ORhSTbt8Gu2mI2OxBWz0Bj1LeYm2O9A
+	 gsDhn14l5bRuKbgJToRxngKlvNlu5GrqgQeOln1x33tVkJh0tnwcO3W6jd+S0IOzvp
+	 yPJc7/kLGJ5xgD6xuLgZDbP1D2L513wwfQW9ioUKMbdz7uDc9bf1++90NMuRgySQIa
+	 PmJvRQ08ZGE3Q==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, Frank.Li@nxp.com, shengjiu.wang@gmail.com, 
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Chancel Liu <chancel.liu@nxp.com>
+In-Reply-To: <20260331012450.1298115-1-chancel.liu@nxp.com>
+References: <20260331012450.1298115-1-chancel.liu@nxp.com>
+Subject: Re: [PATCH v4] ASoC: dt-bindings: imx-card: Complete the full list
+ of supported DAI formats
+Message-Id: <177940550339.58022.2317951355365638081.b4-ty@b4>
+Date: Fri, 22 May 2026 00:18:23 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1169; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=hQbgFnBSRPPGLtJDVSn8W1/x06HNaDFZgo7K4RTCvJY=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqEC4gILdOGrZTLWv2gfMWgPbwRQgjUIjNKTW51
+ 0aTiuTo2fKJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahAuIAAKCRAk1otyXVSH
+ 0PpLB/0YSaPGbRAdXB2fmsDzvAgb1YXEmRPNp0GMA3E+OKtbVXP/w/vZB3pTHbHqCr5IkdyNB7v
+ qTnRjqFZs37mpGSxSuYV7RDpJ+TQsjeBvB5gApzbcR7wUvfrJAdC430fr+Uu5vIcSJg2PlcsW0/
+ wDr8wx15L5FNcmgISfStNgsbZf0e/ARVF9mX1O4UQy5ew08FeETxnGn7TAIU3+s1WvJI3BxKEQY
+ 2i0AlRbqlnWcPhCdw68fU4n/CQ5v8Svd500VGMWQrDOVkIPHA6tLrOw2AdxsKkeynfGog0j6FoE
+ OWKiOVZC02iWbRmlaOjeV3HtKddGtfLyVRJOBQqvutPugS4w
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+On Tue, 31 Mar 2026 10:24:50 +0900, Chancel Liu wrote:
+> ASoC: dt-bindings: imx-card: Complete the full list of supported DAI formats
 
-Add support for the Versilicon VC8000E multi-codec stateless encoder.
-The IP integrated on the i.MX8MP supports H.264 and H.265 encoding.
+Applied to
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.2
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index a3de6604e29f..4e63c2b16c1a 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -2290,6 +2290,17 @@ vpu_g2: video-codec@38310000 {
- 			power-domains = <&vpumix_blk_ctrl IMX8MP_VPUBLK_PD_G2>;
- 		};
- 
-+		vpu_vc8000e: video-codec@38320000 {
-+			compatible = "nxp,imx8mp-vpu-vc8000e";
-+			reg = <0x38320000 0x10000>;
-+			interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
-+			assigned-clocks = <&clk IMX8MP_CLK_VPU_VC8000E>;
-+			assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
-+			assigned-clock-rates = <400000000>;
-+			power-domains = <&vpumix_blk_ctrl IMX8MP_VPUBLK_PD_VC8000E>;
-+		};
-+
- 		vpumix_blk_ctrl: blk-ctrl@38330000 {
- 			compatible = "fsl,imx8mp-vpu-blk-ctrl", "syscon";
- 			reg = <0x38330000 0x100>;
--- 
-2.53.0
+Thanks!
+
+[1/1] ASoC: dt-bindings: imx-card: Complete the full list of supported DAI formats
+      https://git.kernel.org/broonie/sound/c/caa7a3711862
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
