@@ -1,388 +1,183 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013014.outbound.protection.outlook.com [52.101.72.14])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013070.outbound.protection.outlook.com [40.107.162.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011B3363C55
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 09:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED84A376BD0
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 09:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779355786; cv=fail; b=V8BECgp1zbhIb7fATu94Qt5zV8HmsbZzu0Czc9xTb0oDOsFOGwYfB7sijfTC7NhLNkFaiYgiCDoVwH9/eKTOQuxfD1IpwWDxh1ttz0TFyk+S2LOjiRpkivYzmIpI0hIO0FWXlRPMQJNqN9XAQPaG3hdddJ5e9ILa1L1Ij02lSWY=
+	t=1779355851; cv=fail; b=L9QS9+57q/g3w3Ji63z1rih9+vAIbQRlj9PdOIjP4CWxDVcCYOIBJ3jeCyAbRrHB8bvxzapKGXLHV/+8WA8fqrCiEwHUbP3Y2gh1TPg+iK5RoMtJrwfHUFVfAheCzIsb3NNC+Ims2DC1m027X0K4SYf+lm+PrnHjeDySKrTbHMI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779355786; c=relaxed/simple;
-	bh=tgNfrc7BBE4NFbrht0Arx9diwKi+FG0/0EoRyAlE9do=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=oHVCnkZ1XGHvz2J2y8hOhgFwbt+s013bB2UY5VBd/A6I8KRhTXumytDbmj3A5oY23xWK5AdhR7jKjXSDxcj4qVMy1uArlmLU+QG8yzeNHe0PDqPSwL/GI2fmGN71GK/+QPCemLt1NGmWchkUdp+tk1CYn/b1SJx/bfL9B6AaHBg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bXGpr9Y/; arc=fail smtp.client-ip=52.101.72.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1779355851; c=relaxed/simple;
+	bh=v6xzQDpOD/+7OMBiNwiwJ7L5KioVLHII5+pYaEKzsMM=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Zp6qGBFMH01ltIbkcG6vtCX1vC1VtfwzoWPoHNTHzWaL79ITrQ1UI3FKQRyVW/qtL6UUjrpw6AF29SqNmdoG8DtdO1x9sN9I/PUQwLWY5bQg6NtSrxB3LL8A4Zd2Vzm/1VWpE+DVbaEgDT/TKiQRqot3E/zHtKurs7EKOgkSils=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XDiPJc7+; arc=fail smtp.client-ip=40.107.162.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bXGpr9Y/"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XDiPJc7+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jJcv+zShWkGsmFSRviNLOg3OZ7zoO2LbfleBDsYI8pf6a/tjjpY1EbkeheQ6HT/VPEoC0QPtK33C5vpmVVQSfoCII3Uib0BRqhbD86MYH19QIARJTeeQXehGmREEJ9W0veLz1YSqpyZwkMXMD0gw77VURb0uuZnPznWC0DJ7WZASwYw61vmxHCIfk/VXhxESbxfykqCoR9aaBKpQiIOhLH3T9u8qoQJyUtK8+Hj7bTW9dhsB1VhMLYd5lVKS7bEHGILyV9J6rhHq9nyXe2WYzAzmugpcFvzf2pqIsZbFmGpoXPX/s+n++o+SLh3EUGecPyLf/2fEXz8J7rou4f/Frg==
+ b=QcgWc0fsk0E88kc9FRnOl6UTaOia9hXDUgkjMxFqDLEoX2tZYAH68yoSBonuIleNNvtRBIoP1RQA+y26AbT5LoaplTZQaXJ5BmzcHow2swr+22UpwvpG1xcffzcDPWi+dKoBb4XBkMhkoNLQ25jgL9wBeOWal3dkB/CXLPqcNmMbE5ZS+ow+Fg+OaV+DlM2XCig1io2+MJmNR7mOhMs7Od6RwnmgIK5MGr4B4KpqYPMsLi1f+hZavhN5u9RZ2zXwhrDVGsEQQiQZnQKVBWwPLyPj5lAXOFCMceIZer6r/cDnkdeIimwF2S8CpaQL6syr3yzYAcwF3xCOt6Gaa/c99A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1vxdJ/7D9H4TKn7YPL8bXXHihM6ipwRxiZf86f71IYg=;
- b=f3L4dnyuvXF21viEdk1dsKnxS6nSyC2OSM0VJeLBK46IYYqHxJ7Cqzug+J2TTgv85WBNo5owTsSwKhEHm/ESr0eys3m+foYUdF9TaOFSXLhBfBFi4LcKpBlXB9nPybYD5RYcsboEcuDchyyQWsIo7dyhCNKLBbjey7txOEHQq57g916arezIKU6HA+PTfWmz75yae1TniWZorxkd4narVuBjvG5B+Hb9K9/VKiKWQzToJ8CamuKYZta72PZhTAiCGzk8w3CTAGDDJxP3Z9Qn/N/dfCty5ye7V608LE4GVpfSkSXriA42v7xGFibS0JrNRcUNCU+oTAGBNjhXILKv9A==
+ bh=guGDZmZVlqypmsuatQ+w7LnceZbulMIBy1B73vKCvYM=;
+ b=LoQlqKK+FsRO+0UjEfBgOwc+qK/9AGbW0d1OQLEYdgDOMFKHCH3+RwJmvJph/IrRdnYsNVh0BtXZvy9MqyQarCo9mvWEUbvn+YLZsNNQ1tJyImskBPavQY/qq6jwIfufRueeGMu3DBvPidAN1InqQgiz99fnD3akM0jSjBZ5esKF507fEGVKMMjfbvPnaRCmJTlLyl4Vnf9c1WLmZfK353FmYLuRDqUWUe7Z3AHNVgKrV5QnGbm4diYyU3pXJ+GKqPK111kjeTKinFgtDqMYymuay8Hk7n6iowgGpUikqRxR9lcUkbY3TLpleiLufjMaxt5Xex9KpP0NJ4TV+6iQNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1vxdJ/7D9H4TKn7YPL8bXXHihM6ipwRxiZf86f71IYg=;
- b=bXGpr9Y/qKD1Tzv5TXkye98trWDjFJebaTAdFNkxZWB+5DIZTuTXZdLhLNGcJBgmpvHTnhY6me0C3VquJWfRW4Jh2i3Tf421ijyCRhmDaU1BZAf3a6Ofa4MDQAty99NPVnE9/VcjUXYxkC1tBDOBQLiexe2IBTaDVfcgqXTaUKUs1ZT0AG7nj3HC/a+KBVee+MJEdakjH4Zdc+IcoAUJCm/850OFroD1XqLy6gDIrSd0H3oKl5tnstYRfzcIXtRagwNNyP5sbUQN2Ks9+WcF8yVeQZtcbwOrlYevkrPRRy3Qt6+4VMoAz5DLH3RKriR2ftIRblGzSgd7r03lXH4jIA==
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
- by GV4PR04MB11404.eurprd04.prod.outlook.com (2603:10a6:150:299::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Thu, 21 May
- 2026 09:29:39 +0000
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::92c2:2e03:bf99:68eb%6]) with mapi id 15.21.0048.016; Thu, 21 May 2026
- 09:29:39 +0000
-From: "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>, Michael Riesch
-	<michael.riesch@collabora.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Frank Li <frank.li@nxp.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Bryan O'Donoghue
-	<bryan.odonoghue@linaro.org>, Mehdi Djait <mehdi.djait@linux.intel.com>, Hans
- Verkuil <hverkuil+cisco@kernel.org>, "G.N. Zhou (OSS)"
-	<guoniu.zhou@oss.nxp.com>
-CC: "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-rockchip@lists.infradead.org"
-	<linux-rockchip@lists.infradead.org>, "G.N. Zhou (OSS)"
-	<guoniu.zhou@oss.nxp.com>
-Subject: RE: [PATCH v4 4/6] media: synopsys: Add PHY stopstate wait for i.MX93
-Thread-Topic: [PATCH v4 4/6] media: synopsys: Add PHY stopstate wait for
- i.MX93
-Thread-Index: AQHc5zP2JYPXSBO7kE+Ny5UmAbIYVbYWxKQAgAFy8WA=
-Date: Thu, 21 May 2026 09:29:39 +0000
-Message-ID:
- <AS8PR04MB9080D3B1A6B522F3F9342E23FA0E2@AS8PR04MB9080.eurprd04.prod.outlook.com>
-References: <20260519-csi2_imx95-v4-0-84ea4bb78a88@oss.nxp.com>
- <20260519-csi2_imx95-v4-4-84ea4bb78a88@oss.nxp.com>
- <10853728.nUPlyArG6x@steina-w>
-In-Reply-To: <10853728.nUPlyArG6x@steina-w>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB9080:EE_|GV4PR04MB11404:EE_
-x-ms-office365-filtering-correlation-id: f929aed1-e38c-48f0-e5cf-08deb71b7b5f
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|376014|56012099003|3023799007|38070700021|921020|18002099003|11063799006|4143699003|22082099003|6133799003;
-x-microsoft-antispam-message-info:
- 13Nr+Q4GXMwz46YKa3U/LYauhPdB+Is23P7V1/zIelhrnuzI1YRLX40Za+3RfXbXDDvyC+d5rHlCfXEfGhviIcDYKqIKjK8tZD51Py6Xxk1slxlISXQuwAfON+ISnMqNN4JxpJ6SFmzIN7+967dHJhlHV4vsXLi5p4WsyK7lBxHDMNmN9/OitsJSPocdzaSRODPCaM1q2MHBDAfkalz7YGMb9S60lc6kbR4aVRpbzD8Dxn6OPx0n8ikQwDt0AdSHVaeB/aj4J4UV7q9E/+k128cWvwtvJO6R59nat3PTIfTX3CVF0EFc6tov4l/jbIFUG/3b5wivrEG+yaJ53oefIshZUhHMBdEkRh5IiqbfMy8hxW1KD8LGuX+n7JwZgl7WbrCG3RfPSu3mN65IGlGbzTIL+LLBEwm1s4yQC+4yJpNoEg7E/K/Zf5ftIpb2E6zSjnxJ8Dch3NeJDeVrLJNOToWOFoiigIid1eGTgXzUeULJqJRUd6QWr7k7/w5+NRzG+2dQ6/a0E77z7DlhRbYMzUa1y4UOSjK67qk1NOmZ56Dbs+Q2kXZq4qWccJ57fw0jNFKwISKZ/rAsCa9riU1+2hc92roSZEKJxlRJLpr076THCpGPrEn6t5KeyOugohx74gCKdea4j20HbLPv8kYU1H0TIZZN/Ot0UQsdtJFodzZoswlygb2PUbXDvxwCVfHqzBFKj5ZbqZEj4SLwdmAcRg==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(376014)(56012099003)(3023799007)(38070700021)(921020)(18002099003)(11063799006)(4143699003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?OUs+kTqygGT/o/4MzEoh7vzM9cGPSTMFav+omy84v2XTsWiGGss9XWnvKB?=
- =?iso-8859-1?Q?r13sTeyX7puVSgxrLbzi6YOqdOkGMndhC9Cq3z/yW7fANbly2eYvjYq1uo?=
- =?iso-8859-1?Q?XjWzzO5e2Z1ucd4uV3B9pmLDcc/guR21qbKfD4fZWeN0KRgemrBorJjptZ?=
- =?iso-8859-1?Q?uIprjCF5Ggt/XUjN9TOsZeUsX840YtE+5URVwVA3ok4NOdfBFvOJsYe9iy?=
- =?iso-8859-1?Q?fZtEl2E3ODHBWTfrndaKDNBUI2egTO3VACV9+QOMhMRhmR2oRwDhNiAXS/?=
- =?iso-8859-1?Q?jxC1h+PYi5Pcx6gzrXF/AJ9788a0LFAU3N3/iQ/yLC9pnFGViZE3sMc2Rr?=
- =?iso-8859-1?Q?I8nAKQHYusYx4GqgAfmd/Bx1ngZ/XpYv9d0JFhQwR0N0FGFf2u1gf1cO4C?=
- =?iso-8859-1?Q?SS1oF2QDAxNYR5vL3KYnFOVntROul4DgJ60J65wBy7kugjwUkKzIPnQ+vd?=
- =?iso-8859-1?Q?unFMHYjpEgd5QNrnwspoAmvkrutLWtRHXoFCfBNfBJkiTAdVY/HK7V/6ma?=
- =?iso-8859-1?Q?q0IImral7FFIrmLg15K9Ckn2G8yrvl7/uW/yBb8c98brgjgZ7hkzIVehch?=
- =?iso-8859-1?Q?YdQu0TFgXGKfhvAg/dC7HzFKd/+GDIOX+4MTlt1fRQtJm0w2+Q4IFh/mIP?=
- =?iso-8859-1?Q?cRLTgG00jeTzjoj7/Q8mEweawoWPqJIGXgjqav0f41I4mq+i7c7aVlRZTt?=
- =?iso-8859-1?Q?Lm6Apg2KWE3a4E6OkshNLDRQfOOn5ynpxkTWD3O1jQ3V3o8HnWv+nlMhyp?=
- =?iso-8859-1?Q?uVFe5vvdcP7/i9kpWk6D9PlJ40z9chOzx6j0ghAGVN7TKHKM+RVBPdDwdL?=
- =?iso-8859-1?Q?cOeoTQyBbn14mRDC0kCghj+n/K+tI+qRmOWk70BdqOINbZ39Tb2sSpvq/E?=
- =?iso-8859-1?Q?wVL+3RoKKWceXEOj6GHBwKQ6ru6u6YW70M6pOINqiYqwUwIGuvfO1ALcc4?=
- =?iso-8859-1?Q?6qpWCnTSmBBuzX+XuKcPv4fLxk/Bms1CR+WS1zPYmYeM+HdnDi1ZPcLF4p?=
- =?iso-8859-1?Q?L3Cna6oJ0aZasxOGzgHgMVuBPSqnaHO/w7TOrKpwiPvamozIDTM1Sj02gT?=
- =?iso-8859-1?Q?w81vke+ANX8xqB0zAg8egkIxOOdbBSHmv+N57KQN6s8oDbFQAWuejRZWHq?=
- =?iso-8859-1?Q?C17MoN4IR201vvxcT92OozWtx+5IchsOUbGKr5VomiwEYhoNPctHZ/AS4R?=
- =?iso-8859-1?Q?0a2uhI2UerHk1rVbGSoNmCei7JAP/EiVjJQB0UpjeKUzNG7QQTQ21ZeDuf?=
- =?iso-8859-1?Q?lUrqIJ8zMdURLFgnYJ2ZOtNKmsH3p6MXMB5jK9qBTQvJPN9CGjzwIVbtWY?=
- =?iso-8859-1?Q?cqH/FApROvnqgoyNyap9I7l9lPDB5CGpgW+k7Ovqp9EIip0GpoNCWr0BDn?=
- =?iso-8859-1?Q?LHYWtGeNTgA3f6fIpz7880alpaYd4VWynqASbpKKOERn9ZVG57nhjxoX0D?=
- =?iso-8859-1?Q?GcBPRlS6X4qFxjxEXauzdEAj4vDRS1H/fQwv4xRYkolFFdVUqQ1ChbLpwB?=
- =?iso-8859-1?Q?X1HA817B/lyn6frhMUWZp24+EsLyiomGyNDZ/6egRNakdJxlL86HvUVRQZ?=
- =?iso-8859-1?Q?JWTTcJANzBMLzmMut0OmOKeiBZ5HN4FaLFiv5/N03ESleN5XJZjBelvC1x?=
- =?iso-8859-1?Q?oAafHX5jfSYCq2WxDNFmHCvxxvCbWHcu+fmcOf68NKluQkf6aULPGFdOSg?=
- =?iso-8859-1?Q?n79+ejgCLi+m6XAtA8UoObxLU06VSb8uQ+2KS0C3UBBVl8Lf/07os+8p17?=
- =?iso-8859-1?Q?SZlSAAOs8Vgk8+w+DCvemb8bGmW6S8YtvNcB0/Mdhjnncs?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ bh=guGDZmZVlqypmsuatQ+w7LnceZbulMIBy1B73vKCvYM=;
+ b=XDiPJc7+2VoOrY2gA0G7rDmcDR22FU7BsXHT+eg0roZuPV8YPIemiyr2ROvaAE0vsA9QRbMAGZFNtpyFnwztNMDz4ypKHJ+ipv32Y2tcwPQFaFw0i9nMVIxYi39c9QJ9lZMdH4VRFxmRZF8ivMJe0yHTLAzoJr7b3sEW5bY9+VBqpVWeQSLts86DvYBlLgrTgAlD2ONi/dXSEnjYKRVUGxxpcZpYbD3NJ+4Zzlf+nX12R+GxQ37FnmkqSyv6pLCRDwLWX76HrKfM5Zqmk7I6xXdVLFX4WQFFCAthAo8rMTRqObuvZN2aBSeG0b9LQUuvW6o3mAO7iT+CRCiEYB1lYg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI0PR04MB12008.eurprd04.prod.outlook.com
+ (2603:10a6:800:317::15) by AM9PR04MB7507.eurprd04.prod.outlook.com
+ (2603:10a6:20b:2d7::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Thu, 21 May
+ 2026 09:30:47 +0000
+Received: from VI0PR04MB12008.eurprd04.prod.outlook.com
+ ([fe80::3e42:1e5:5955:d68a]) by VI0PR04MB12008.eurprd04.prod.outlook.com
+ ([fe80::3e42:1e5:5955:d68a%4]) with mapi id 15.21.0048.013; Thu, 21 May 2026
+ 09:30:46 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	bhelgaas@google.com,
+	frank.li@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/3] Add root port reset to support link recovery
+Date: Thu, 21 May 2026 17:32:52 +0800
+Message-Id: <20260521093255.61585-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0049.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::18)
+ To VI0PR04MB12008.eurprd04.prod.outlook.com (2603:10a6:800:317::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR04MB12008:EE_|AM9PR04MB7507:EE_
+X-MS-Office365-Filtering-Correlation-Id: 751d68b0-d268-43af-4219-08deb71ba367
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|376014|52116014|921020|38350700014|56012099003|18002099003|6133799003|11063799006|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	23VD6lvUdb/FbM0wAvyUukelYtr1CN1yBn9Iny4nMP06jGee/dhh3J96/4GKdgCFVqjBNMqLXIB9XzSBjx39ai6MjkUGnGqCzGeMZg9k3AwFMhu8IDetbJilloQVdQ44VskLh/1ZmxE+zjMcHyOh2KppSdpwFjK0+HIUj6QSBgbwjeHZS5MWgJomYSHHsm7r3juEMHvLaVi2oICuPg11Spq1yzm+wKxrPVXyMTrrSVrN66sRJ8j/vA8GRt2U9I+R4Aw49poqp2YdWTKWG+O5DP15/EqR/6FB8ywW7ggCRk5/NDbCoOyEmO95g0mohhx3i02Cbx1wKzR3VMtkgps11V1uwNzBNFU3sJt4buTfR2hhSpFY9zYbaqFH/xZk4IYD0tdTDIVrW599x+SdMhwqohvUiObXKsrve7SqkcCLHXFX63SEa5/v8mkurxAL07f4YfOx8C+Vz0GvLZ51yo6dHnVKwv6NCNju443MQ6stSgOLrqSXe4dahyPn5Vkm+UMoFPhKFJwQ2kIySVDSLIQ5IUA+3M+/0MdXsk9Yf3TejS4xG923GLKi4HzLAL9PlanEfi6BQUUD4wwF0GgdIGDuuWeDovCjukl6l4XouLOq8yt3vGk3Z64gDyhe/CvqSnbPrOBB1mRKsr/nEBgV61Lh08xoDYMiKPW1Zlv7QKqahvN2nnhM3iq01ST77ykxscdgEkf12FhDGU3COQV3JSELZHNT14FD9+8TXgvfMLnrggycrJgq27qa+hpA5LElJUfUCgV0SzyJzmfhlCJLBPyPSg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12008.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(376014)(52116014)(921020)(38350700014)(56012099003)(18002099003)(6133799003)(11063799006)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qhEn/4wwoOzRG8Z2cHcZ1wKjujL+3oRNpQzoGacBGXfrrBoalbtoJH1YfCOS?=
+ =?us-ascii?Q?7za92fjFhZmOip9gteOhih1HDp7Peid9801mJ9Dr+iak3iqlEbkbOPY8DKMJ?=
+ =?us-ascii?Q?DgYiDp5wp4G+RJK4NHrI3fEKBM3GpM9FpdGG5Y00rF64WFbEziqKKoNFyepZ?=
+ =?us-ascii?Q?DFcIeMvAGjNkj0xojU8708MrSWg3DnwUT3Xd9eIoQBrAA3+gb2k/87iK9Zn9?=
+ =?us-ascii?Q?g45yRwH8iB2jSRqiBRMO6shLbkws64Ulm8C5ECrnhKex5ulxx2zJ0abwd3SK?=
+ =?us-ascii?Q?F2DzQnf8SvejslYkqi6lP+64kwqdnG+zbE2DALyRu+rlItAntfHfcPsjH97U?=
+ =?us-ascii?Q?ZCTFNZwQrhHudVZqK3hnaSMybRMmmUuSqewQDSGCVmsph8tGUob8XBOqpOc1?=
+ =?us-ascii?Q?DuyJmvPAbzgXw9T6DuHm8c6zk+PpGe9oEYEzwrSxH2f89a/N4rnAVZA/cobQ?=
+ =?us-ascii?Q?VYR4bgkg7D27+zdh8ahpbvcL+NEEBseavOUWH8l8yYM1MQmSZxwzJMUKXr9K?=
+ =?us-ascii?Q?xrXeTp3IJt+IYnasuBLeWMSh8XEqWX5zqwOmnSRO9WXr/4xnH4N0j2IpNdKe?=
+ =?us-ascii?Q?DFXFCOCGmGJtogRBQXWL311ztEF6+bwh0/7N4RuXcTLdSs1BpHUn/PWT9AHb?=
+ =?us-ascii?Q?bB4emnuInNgeJpKURGyViq+GgqnfOqAgZnvKWT0r9Ar0G70NOgwMGett1XUz?=
+ =?us-ascii?Q?dsxChXIEna4SCKR89c4zZF/W8uZv7iQ2vhjqRsEQogUy70L5h44p4Lnd5BOY?=
+ =?us-ascii?Q?8s/v1KlHNjvu+t7puXFL52fQlLw7aBDWS+PGfKcmKkZJbfoLmC+x3VLiB9DP?=
+ =?us-ascii?Q?ZzHADJQNPE86WQ1mFhODKk54xSQjeml8YkLgWRhSLdwyX9HdyV5cvTnSswIU?=
+ =?us-ascii?Q?rp72vncCMKih5WeVJBawCIkWerLzb/scUrDWP88gHm7gpJsxLwC4zf9etAT7?=
+ =?us-ascii?Q?LnIAQdoynaAI/+jbbTs3rd+7dmZuZYJKXpWX5vRrR+5cSJlAHOCWlye7M5wZ?=
+ =?us-ascii?Q?la5VAmUEpx6ozOmcajrJESxAzmVaLeLnrLLTFfble3pDwcY04dOrHKZp2Haw?=
+ =?us-ascii?Q?hwNE1gY23SRP6a9Kq1BJty9ZafvzP7q9iHRdm2muJkIpLelVTuqq4aEGqCra?=
+ =?us-ascii?Q?EYg81rwmSxdTzAQeeL4bPVm+T3/BsLQcJRVSPBfXD2/ZBbCLVWmi1mMdb8vV?=
+ =?us-ascii?Q?6ja8pGwbxinzYm3lb2H8sromdpBb5izyA/orH1JEkXHM2VokSsQTUlnW+LiV?=
+ =?us-ascii?Q?jm3q31b7t2g9f0h6onW/XpG5sYYO+r4dqtZ72WydICsvfgxSayHhdg2Zjd6t?=
+ =?us-ascii?Q?sxlCOVzkWTZAGQvGBFeKYUy4Dq152GetaZ9pCggXhE5rWKaKSME3q8XZb2zi?=
+ =?us-ascii?Q?qyqITvnRlhico1+VoqBqkzUn2fOrxWtVpbdmTW21W8ifpqBOsVSdK8zLbOl3?=
+ =?us-ascii?Q?KMtH4yFKUlXHgI+MjSVZSr8W5izEUi2yR8cxCIEIVesJ3y16tXJCzYBQhuo6?=
+ =?us-ascii?Q?g0xlTHSc8nRHaXVGwQ0TxfEoXgu0HEsa0equQwIWJTlsAMdfDt7bFdGbKARj?=
+ =?us-ascii?Q?Hl5G8tbdrbNGzIKYu7nYcdQuHaiCJM3IAoDQa87VMX8dh58m5DobYAirOeDt?=
+ =?us-ascii?Q?pdhCrmpsSg0joKDA9g13ZQQU4EeBPd90hgEjdqRAnb8sMEvZHcBtKmN7F1fK?=
+ =?us-ascii?Q?s91ihnSeky54olSeo48E65Ofxhdsdbgv6S3gRKycOfbfpRTiWmKX4AdGmhBR?=
+ =?us-ascii?Q?qSyyGlI27A=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 751d68b0-d268-43af-4219-08deb71ba367
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12008.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f929aed1-e38c-48f0-e5cf-08deb71b7b5f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2026 09:29:39.4623
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 09:30:46.7666
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HN33azddSE2rGP7iO9OsO4nOV128qGJf429rJnJSb+k2zGdeW5G4r6JLxcaEnY+3kKVrOsPH5wQ3MNY5jAp7QA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11404
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: benZw51og9PKvcLTZVWnfcPJk9BOTeQ5+bgQXwGG19hm99JFSY8dKW41nIHsUzoWWn9i5I1/nUhj+AG/uIwGIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7507
 
-Hi Alexander,
+Based on the following patch-set[1] issued by Mani.
+Add support for resetting the Root Port for i.MX PCIe to enable link recovery.
 
-> -----Original Message-----
-> From: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Sent: Wednesday, May 20, 2026 7:12 PM
-> To: Michael Riesch <michael.riesch@collabora.com>; Mauro Carvalho Chehab
-> <mchehab@kernel.org>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
-> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Heiko Stuebner
-> <heiko@sntech.de>; Laurent Pinchart <laurent.pinchart@ideasonboard.com>;
-> Frank Li <frank.li@nxp.com>; Sakari Ailus <sakari.ailus@linux.intel.com>;=
- Bryan
-> O'Donoghue <bryan.odonoghue@linaro.org>; Mehdi Djait
-> <mehdi.djait@linux.intel.com>; Hans Verkuil <hverkuil+cisco@kernel.org>;
-> G.N. Zhou (OSS) <guoniu.zhou@oss.nxp.com>
-> Cc: linux-media@vger.kernel.org; linux-kernel@vger.kernel.org;
-> devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
-> kernel@lists.infradead.org; linux-rockchip@lists.infradead.org; G.N. Zhou=
- (OSS)
-> <guoniu.zhou@oss.nxp.com>
-> Subject: Re: [PATCH v4 4/6] media: synopsys: Add PHY stopstate wait for
-> i.MX93
->=20
-> Hi,
->=20
-> Am Dienstag, 19. Mai 2026, 04:07:41 CEST schrieb Guoniu Zhou:
-> > Implement waiting for D-PHY lanes to enter stop state on i.MX93. This
-> > ensures proper PHY initialization by verifying that the clock lane and
-> > all active data lanes have entered the stop state before proceeding
-> > with further operations.
-> >
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-> > ---
-> > Changes in v2:
-> > - Removes redundant register availability check
-> > - Uses read_poll_timeout() with dw_mipi_csi2rx_read() instead of
-> >   readl_poll_timeout() with direct register address
-> > - Fixes stopstate condition logic
-> > - Check PHY stopstate after sensor enable instead of before to ensure
-> >   correct timing.
-> > - Optimize PHY stopstate polling parameters (1000us->10us, 2s->1ms) to
-> >   balance performance and responsiveness.
-> > ---
-> >  drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 36
-> > ++++++++++++++++++++++++
-> >  1 file changed, 36 insertions(+)
-> >
-> > diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> > b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> > index 92178a3dec5d..8a34aec550ad 100644
-> > --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> > +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> > @@ -11,6 +11,7 @@
-> >  #include <linux/clk.h>
-> >  #include <linux/delay.h>
-> >  #include <linux/io.h>
-> > +#include <linux/iopoll.h>
-> >  #include <linux/module.h>
-> >  #include <linux/of.h>
-> >  #include <linux/phy/phy.h>
-> > @@ -35,6 +36,8 @@
-> >  #define DW_REG_EXIST		BIT(31)
-> >  #define DW_REG(x)		(DW_REG_EXIST | (x))
-> >
-> > +#define DPHY_STOPSTATE_CLK_LANE		BIT(16)
-> > +
-> >  #define DPHY_TEST_CTRL0_TEST_CLR	BIT(0)
-> >
-> >  #define IPI_VCID_VC(x)			FIELD_PREP(GENMASK(1, 0),
-> (x))
-> > @@ -65,6 +68,7 @@ enum dw_mipi_csi2rx_regs_index {
-> >  	DW_MIPI_CSI2RX_PHY_TST_CTRL0,
-> >  	DW_MIPI_CSI2RX_PHY_TST_CTRL1,
-> >  	DW_MIPI_CSI2RX_PHY_SHUTDOWNZ,
-> > +	DW_MIPI_CSI2RX_PHY_STOPSTATE,
-> >  	DW_MIPI_CSI2RX_IPI_DATATYPE,
-> >  	DW_MIPI_CSI2RX_IPI_MEM_FLUSH,
-> >  	DW_MIPI_CSI2RX_IPI_MODE,
-> > @@ -87,6 +91,7 @@ struct dw_mipi_csi2rx_drvdata {
-> >  	void (*dphy_assert_reset)(struct dw_mipi_csi2rx_device *csi2);
-> >  	void (*dphy_deassert_reset)(struct dw_mipi_csi2rx_device *csi2);
-> >  	void (*ipi_enable)(struct dw_mipi_csi2rx_device *csi2);
-> > +	int (*wait_for_phy_stopstate)(struct dw_mipi_csi2rx_device *csi2);
-> >  };
-> >
-> >  struct dw_mipi_csi2rx_format {
-> > @@ -139,6 +144,7 @@ static const u32 imx93_regs[DW_MIPI_CSI2RX_MAX]
-> =3D {
-> >  	[DW_MIPI_CSI2RX_PHY_SHUTDOWNZ] =3D DW_REG(0x40),
-> >  	[DW_MIPI_CSI2RX_DPHY_RSTZ] =3D DW_REG(0x44),
-> >  	[DW_MIPI_CSI2RX_PHY_STATE] =3D DW_REG(0x48),
-> > +	[DW_MIPI_CSI2RX_PHY_STOPSTATE] =3D DW_REG(0x4c),
-> >  	[DW_MIPI_CSI2RX_PHY_TST_CTRL0] =3D DW_REG(0x50),
-> >  	[DW_MIPI_CSI2RX_PHY_TST_CTRL1] =3D DW_REG(0x54),
-> >  	[DW_MIPI_CSI2RX_IPI_MODE] =3D DW_REG(0x80), @@ -556,10 +562,19
-> @@
-> > static int dw_mipi_csi2rx_enable_streams(struct v4l2_subdev *sd,
-> >  	if (ret)
-> >  		goto err_csi_stop;
-> >
-> > +	if (!csi2->enabled_streams &&
-> > +	    csi2->drvdata->wait_for_phy_stopstate) {
-> > +		ret =3D csi2->drvdata->wait_for_phy_stopstate(csi2);
-> > +		if (ret)
-> > +			goto err_disable_streams;
-> > +	}
-> > +
-> >  	csi2->enabled_streams |=3D streams_mask;
-> >
-> >  	return 0;
-> >
-> > +err_disable_streams:
-> > +	v4l2_subdev_disable_streams(remote_sd, remote_pad->index, mask);
-> >  err_csi_stop:
-> >  	/* Stop CSI hardware if no streams are enabled */
-> >  	if (!csi2->enabled_streams)
-> > @@ -871,11 +886,32 @@ static void imx93_csi2rx_dphy_ipi_enable(struct
-> dw_mipi_csi2rx_device *csi2)
-> >  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_IPI_MODE, val);  }
-> >
-> > +static int imx93_csi2rx_wait_for_phy_stopstate(struct
-> > +dw_mipi_csi2rx_device *csi2) {
-> > +	struct device *dev =3D csi2->dev;
-> > +	u32 stopstate_mask;
-> > +	u32 val;
-> > +	int ret;
-> > +
-> > +	stopstate_mask =3D DPHY_STOPSTATE_CLK_LANE | GENMASK(csi2-
-> >lanes_num -
-> > +1, 0);
-> > +
-> > +	ret =3D read_poll_timeout(dw_mipi_csi2rx_read, val,
-> > +				(val & stopstate_mask) =3D=3D stopstate_mask,
-> > +				 10, 1000, true,
-> > +				 csi2, DW_MIPI_CSI2RX_PHY_STOPSTATE);
-> > +	if (ret)
-> > +		dev_err(dev, "lanes are not in stop state: %#x,
-> expected %#x\n",
-> > +			val, stopstate_mask);
->=20
-> Did you actually test this on imx93? I'm trying to get my imx327 sensor t=
-o run,
-> but only run into this error message:
-> dw-mipi-csi2rx 4ae00000.mipi-csi: lanes are not in stop state: 0x0, expec=
-ted
-> 0x10003
+[1] [PATCH v8 0/5] PCI: Add support for resetting the Root Ports in a platform specific way
 
-Thanks for testing. Regarding the lane stop state error on i.MX93 with imx3=
-27:
+PCIe links can go down due to various unexpected circumstances. This patch series
+adds root port reset support for link recovery on i.MX PCIe controllers when the
+optional "intr" interrupt is present.
 
-This error indicates the CSI-2 lanes are not in LP-11 (stop) state when=20
-expected. Please check:
+When a link down event is detected, the root port reset uninitializes and
+reinitializes the PCIe controller, then restarts the PCIe link.
 
-1) Verify the sensor PHY is in LP-11 state before returning from the sensor=
-'s=20
-   s_stream(1) call. The CSI-2 receiver expects lanes to be in stop state=20
-   initially.
+On i.MX95 platforms, link events and PME share the same interrupt line.
+Link event interrupts cannot use only an IRQ thread handler because the PME
+driver uses request_irq() to bind the PME interrupt directly with only the
+IRQF_SHARED flag set.
 
-2) Check if the imx327 driver has a delay between starting the stream and=20
-   returning from s_stream(). If the sensor transitions PHY out of LP-11=20
-   state during this delay, the CSI driver's lane state check will fail=20
-   when it runs later. The sensor should remain in LP-11 until the CSI=20
-   controller completes its initialization.
+To address this, we register one handler with IRQF_SHARED for link event
+interrupts and manipulate the enable bits of link events to ensure the same
+interrupt source is triggered only once at a time.
 
-You may need to remove any delays in the imx327 s_stream implementation, or=
-=20
-ensure the sensor stays in LP-11 state until the CSI receiver is ready.
+Additionally, this series adds 'intr', 'aer', and 'pme' interrupt entries to
+the i.MX6Q PCIe binding to support PCIe event-based interrupts for general
+controller events, Advanced Error Reporting, and Power Management Events
+respectively.
 
-If possible, could you share the imx327 driver code or check its s_stream i=
-mplementation?
+Changes in v5:
+- Update the commit message of the first dt-binding patch for clarity.
+- Add explicit comment explaining that writing 1 to IMX95_LINK_DOWN_INT_STS
+clears the bit
 
-Best Regards
-G.N Zhou
+Changes in v4:
+- Set these new added three interrupts as optional interrupt.
 
->=20
-> Currently I'm using this DT node:
-> --8<--
-> mipi_csi: mipi-csi@4ae00000 {
-> 	compatible =3D "fsl,imx93-mipi-csi2";
-> 	reg =3D <0x4ae00000 0x10000>;
-> 	interrupts =3D <GIC_SPI 175 IRQ_TYPE_LEVEL_HIGH>;
-> 	clocks =3D <&clk IMX93_CLK_MIPI_CSI_GATE>,
-> 			<&clk IMX93_CLK_CAM_PIX>;
-> 	clock-names =3D "per", "pixel";
-> 	assigned-clocks =3D <&clk IMX93_CLK_CAM_PIX>;
-> 	assigned-clock-parents =3D <&clk IMX93_CLK_VIDEO_PLL>;
-> 	assigned-clock-rates =3D <140000000>;
-> 	power-domains =3D <&media_blk_ctrl IMX93_MEDIABLK_PD_MIPI_CSI>;
-> 	phys =3D <&dphy_rx>;
-> 	phy-names =3D "dphy-rx";
-> 	status =3D "disabled";
->=20
-> 	ports {
-> 		#address-cells =3D <1>;
-> 		#size-cells =3D <0>;
->=20
-> 		port@0 {
-> 			reg =3D <0>;
->=20
-> 			mipi_from_sensor: endpoint {
-> 				data-lanes =3D <1 2>;
-> 				bus-type =3D <MEDIA_BUS_TYPE_CSI2_DPHY>;
-> 			};
-> 		};
->=20
-> 		port@1 {
-> 			reg =3D <1>;
->=20
-> 			mipi_to_isi: endpoint {
-> 				remote-endpoint =3D <&isi_in>;
-> 			};
-> 		};
-> 	};
-> };
-> --8<--
->=20
-> Am I'm missing something?
->=20
-> best regards,
-> Alexander
->=20
-> > +
-> > +	return ret;
-> > +}
-> > +
-> >  static const struct dw_mipi_csi2rx_drvdata imx93_drvdata =3D {
-> >  	.regs =3D imx93_regs,
-> >  	.dphy_assert_reset =3D imx93_csi2rx_dphy_assert_reset,
-> >  	.dphy_deassert_reset =3D imx93_csi2rx_dphy_deassert_reset,
-> >  	.ipi_enable =3D imx93_csi2rx_dphy_ipi_enable,
-> > +	.wait_for_phy_stopstate =3D imx93_csi2rx_wait_for_phy_stopstate,
-> >  };
-> >
-> >  static const struct of_device_id dw_mipi_csi2rx_of_match[] =3D {
-> >
-> >
->=20
->=20
-> --
-> TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-> Amtsgericht M=FCnchen, HRB 105018
-> Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-> http://www.tq-group.com/
->=20
+Changes in v3:
+- Don't add a new if:block; Drop the maxItems constraint of the interrupts
+  property for i.MX95 PCIe.
+- Add constraints for the interrupts property for other variants.
+- Regarding the ABI break: add descriptions explaining why these new
+  interrupts are mandatory and required by i.MX95 PCIe.
+
+Changes in v2:
+- Constrain the new added three interrupt entries to be valid only for the
+  i.MX95 variant using conditional schemas
+
+[PATCH v5 1/3] dt-bindings: imx6q-pcie: Add optional interrupt
+[PATCH v5 2/3] arm64: dts: imx95: Add dma, intr, aer and pme
+[PATCH v5 3/3] PCI: imx6: Add root port reset to support link
+
+Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml |   6 +++++
+arch/arm64/boot/dts/freescale/imx95.dtsi                  |  16 +++++++++---
+drivers/pci/controller/dwc/pci-imx6.c                     | 124 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+3 files changed, 142 insertions(+), 4 deletions(-)
 
