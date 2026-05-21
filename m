@@ -1,138 +1,118 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BC72F362B;
-	Thu, 21 May 2026 09:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D43E348C47;
+	Thu, 21 May 2026 09:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779356691; cv=none; b=D1BWJjIrqGYNwsS+EXdLeHTlyBjC9yBwtrIYmk9uzZHfxv0ErMuid87BkwHCJ99ii5MbS8ksZIN8o0NZsKM2npwsSvbDfLUYPZknk+/jUhR/KV1oBDjbkbyiYf31kJvIENYNcLZJQ1OL3GKzG6wOYDcUSvGlJVYS5WgrKpQBO0c=
+	t=1779357247; cv=none; b=CApAPYSvRrnsjpzI1AjdXgSxMnbgo5dSEdp0Pkxk4g3v6WT6adoaDiBWDXGFH1FhnAQhRp8h+kwKiyZ4pDqEyZi4I2fYOQIkGa1TKn9Updy0nh25SSaeSEOLzF2CUgILISGzCVbBXDXxT8iexrZpAhWxRe+3/WEqS4k8OAijEKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779356691; c=relaxed/simple;
-	bh=2rSja1deBM1iWbRkxcvTnfwNvq3KSkNDXw0R+RFBDSE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T4b7LvN67SPMmypQu7wZ/uzGud91zqo57D9QcxZN14rhUXAdWVljPUd4AsscEZW9gXPOZ7JS43V501dXBGZUfpP0ziEUSRkqsk1mRIXIkVThWtOlEZQLXupjkfUtgUN69x0skukffyLK63ltc+ei+XLo/2zWWNcckqWt88204EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=V8bj1nfh; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1779357247; c=relaxed/simple;
+	bh=25s6pRsGSt3bUupVG4S1trH6DP9oIrYLLr31iJXVg5M=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=dzfIW7//9kNC9Qs1uelIh4q57W5dwDaSG46st7rvVpoH+mpJDBU+FFCMaoibv6JY5B3nUIRoE+n6NFvAWN7Z8zz93Bfm5wSG6GtRgha5o7EKPN2PJZQNo9DJOXjksvwVyaec7Mg/xO1RT3IrNMFdrIFwXg/BPYo9FoSRuwdpr1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xt1GoCUB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="V8bj1nfh"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EB8E35FA;
-	Thu, 21 May 2026 02:44:44 -0700 (PDT)
-Received: from [10.57.36.52] (unknown [10.57.36.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 339163F7B4;
-	Thu, 21 May 2026 02:44:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779356689; bh=2rSja1deBM1iWbRkxcvTnfwNvq3KSkNDXw0R+RFBDSE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V8bj1nfhEwDhWcowxYHmM7Xnhl5rgFZyeqahTQ0ZRV9mLcDf3Ozjm5MGzpI+c1910
-	 XJnMbe6wjO4t7P/70yn6macR20HahHT1WyAarLF6Wb7rYAgJ6Mt3h0WXN9SXMbK7F5
-	 uXAKXzo6njxuRMgh1oQmzIpBuzaBPmmeqI3TXRP8=
-Message-ID: <ddc7098e-5674-4f40-a46b-776c5334bda0@arm.com>
-Date: Thu, 21 May 2026 10:44:24 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xt1GoCUB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EFD1F000E9;
+	Thu, 21 May 2026 09:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779357246;
+	bh=aEBWcPXs9aHG6NpITd6et56UobUUpHoNGH6cSlbLzII=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Xt1GoCUB88OHejbBAthwMBqYUkZ+Nek/iTNAIaG67D/CWL2LLobCFUTeGzeGThmX0
+	 Hcm2KeXKtLC/tEjYftktbRf5WxDiiEEeqGSrB1/UdCbPha40usEVahny80udqNrDxo
+	 RdJt/eSy53gJPHPEYBd3LzXw02d6eQ0jnp4etVxF/2K+HpaLl9ruSfKrO8NnWO8hF8
+	 bOt1G02kLWINGv/Hzqu9GusDZk+PkvVH3niX69XlxvhR3QlfMCoD8xEj6jXKP+2qDI
+	 rHbruDA2X0+Yc1MwAgObwp0ur16alCwqpXoR4rftGOiaSdFuzxTClsYjvtkTG3bpmG
+	 6LhZ3WQjsG+yA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 1/3] dt-bindings: imx6q-pcie: Add optional interrupt
+ entries for intr, aer and pme
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Richard Zhu" <hongxing.zhu@nxp.com>
+Cc: devicetree@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260521093255.61585-2-hongxing.zhu@nxp.com>
+References: <20260521093255.61585-2-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 21 May 2026 09:54:05 +0000
+Message-Id: <20260521095405.A5EFD1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/23] iommu/fsl: use platform_device_set_of_node()
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Lee Jones <lee@kernel.org>, Mark Brown
- <broonie@opensource.wolfsonmicro.com>,
- Thierry Reding <thierry.reding@avionic-design.de>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Srinivas Kandagatla <srini@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Andi Shyti <andi.shyti@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Doug Berger <opendmb@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>,
- Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
- driver-core@lists.linux.dev, devicetree@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
- iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
- linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-12-88c324a1b8d2@oss.qualcomm.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260521-pdev-fwnode-ref-v1-12-88c324a1b8d2@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 2026-05-21 9:36 am, Bartosz Golaszewski wrote:
-> Ahead of reworking the reference counting logic for platform devices,
-> encapsulate the assignment of the OF node for dynamically allocated
-> platform devices with the provided helper.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] Expanding the global `interrupts` and `interrupt-names` properti=
+es without adding conditional blocks allows legacy compatibles to incorrect=
+ly pass validation with unsupported interrupts.
+- [Medium] Using an ordered list for `items` fails validation if a device o=
+mits the optional intermediate `dma` interrupt but includes subsequent inte=
+rrupts.
+--
 
-FWIW,
+commit be2769e2cb772d7043d8c01877a0a7fecb468b12
+Author: Richard Zhu <hongxing.zhu@nxp.com>
 
-Acked-by: Robin Murphy <robin.murphy@arm.com>
+dt-bindings: imx6q-pcie: Add optional interrupt entries for intr, aer and p=
+me
 
-Although I'm not sure the whole lot couldn't just be replaced with 
-of_platform_device_create(), but then frankly this driver is on life 
-support anyway as it only serves one very niche VFIO use-case and it's 
-not clear whether it has any real mainline users left.
+This commit adds three new dedicated hardware interrupt lines (intr, aer, p=
+me)
+introduced in the i.MX95 PCIe controller. These interrupts are added to the
+global interrupts property as optional entries to maintain compatibility wi=
+th
+older SoC variants.
 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->   drivers/iommu/fsl_pamu.c | 7 +++----
->   1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iommu/fsl_pamu.c b/drivers/iommu/fsl_pamu.c
-> index 25aa477a95a95cb4fa4e132727cde0a936750ee2..012839fa0d8a27cafc6a441373f4f6da794388c1 100644
-> --- a/drivers/iommu/fsl_pamu.c
-> +++ b/drivers/iommu/fsl_pamu.c
-> @@ -973,7 +973,8 @@ static __init int fsl_pamu_init(void)
->   		ret = -ENOMEM;
->   		goto error_device_alloc;
->   	}
-> -	pdev->dev.of_node = of_node_get(np);
-> +
-> +	platform_device_set_of_node(pdev, np);
->   
->   	ret = pamu_domain_init();
->   	if (ret)
-> @@ -985,12 +986,10 @@ static __init int fsl_pamu_init(void)
->   		goto error_device_add;
->   	}
->   
-> +	of_node_put(np);
->   	return 0;
->   
->   error_device_add:
-> -	of_node_put(pdev->dev.of_node);
-> -	pdev->dev.of_node = NULL;
-> -
->   	platform_device_put(pdev);
->   
->   error_device_alloc:
-> 
+> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/=
+Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> index 9d1349855b422..cf709132ff1e2 100644
+> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> @@ -58,12 +58,18 @@ properties:
+>      items:
+>        - description: builtin MSI controller.
+>        - description: builtin DMA controller.
+> +      - description: PCIe event interrupt.
+> +      - description: builtin AER SPI standalone interrupt line.
+> +      - description: builtin PME SPI standalone interrupt line.
 
+[Severity: Medium]
+Will this expansion allow legacy compatibles to incorrectly pass validation
+with unsupported interrupts?
+
+The commit message notes that earlier i.MX PCIe variants lack these
+dedicated hardware interrupt lines. Without adding an if-then conditional
+block to restrict interrupts and interrupt-names to maxItems: 2 for older
+variants, invalid device trees specifying these unsupported interrupts will
+now silently pass validation.
+
+> =20
+>    interrupt-names:
+>      minItems: 1
+>      items:
+>        - const: msi
+>        - const: dma
+> +      - const: intr
+> +      - const: aer
+> +      - const: pme
+
+[Severity: Medium]
+Does using an ordered list for items cause validation to fail if a device
+omits the optional dma interrupt?
+
+In YAML schema validation, an items list enforces strict positional matchin=
+g.
+If a device tree defines msi, intr, aer, and pme but omits the optional dma
+interrupt, the intr string will appear at index 1 and fail the strict
+evaluation against "- const: dma".
+
+Could the schema use an unordered list (such as oneOf or items: enum: [...])
+to allow independently optional interrupts without strict sequencing errors?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521093255.6158=
+5-1-hongxing.zhu@nxp.com?part=3D1
