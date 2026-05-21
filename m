@@ -1,193 +1,142 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012055.outbound.protection.outlook.com [52.101.66.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870153FB074
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 18:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779389840; cv=fail; b=sdTTG9E5Cu0huQQuMpaq06UK4CjH0LRxD7zai2D3D/Q49qgr2JHSghTk9TpU71i0z5kcCFhHPxniho1R7j3RAPL6UZyYCFqBabXs+gWjDgP0yVa5Wf3yICH3c3HQZ6bsywRKXiOd/vH91Imaa4h84yvE0UnzS+/Atl91lKEdr+w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779389840; c=relaxed/simple;
-	bh=I6jv3ykflDW5yHqVBaabgkEBfSLB2Oxyp5n5rKX+6Qo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eHvxCzCzTucUs60LOCsj1Aw9WuVLtS7Hz0IidXiYEhEyzPlgQs0ohorUvbxIkomGlCRrbExid6ZjilEMj1eBZ/MNjXMfQZUemWBohHXREB5sgkglSvlpRJNsTlGX7zVcBwynPJc+fA09RUwPLEMp/GeBEkdztYEcBwj7aTnMPqk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TR5O7iXO; arc=fail smtp.client-ip=52.101.66.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C44E3FADE9;
+	Thu, 21 May 2026 19:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779390310; cv=none; b=Pv/7DhMh64f2xeH389b7yHdLV6nZsB4f6hBY6pIT3lha9IuLyIwVDRdq7lOjqTcxYc36dD6ZDO6oXENHpB48Mc5ZUcoQs5JDg2uov5iGygOTerZPtm6nDPE6uSzZADFm4xGv8RPyiv644dz9FCAls0JfKMFeVRA+G28PRJ469I8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779390310; c=relaxed/simple;
+	bh=nS1YohvRA6+QYc47+oKdHKG14mzoayhGT0SLjurt5Us=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=L1K6pL3seMLpGrlObOnG0SMo4qo/Cm/kSrJiFux8F/v6J7Pr50oYFYtLeieMo0Isl+eRPBxDD3yA2lMjjI7/7Bg+FchQWiSkkrYR+spC6wSd1q0Aztl7tZrN9nuXSdNRJg3flXAPg715srX/DKq3FXwxORdBLFAi5uIvxPiqc9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SA2ts/Fj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TR5O7iXO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EYikIAkGcIWcuoKlPetK0aqZyiDtzb7jQG5o/KJkDDcywF20sPwghwBKmGOQozQlrlTyK67G0HcGVRf9Bfi1tJ7vEtPFyVP+I4Ibd9n07LVAP73IU170W5s/HvgaMKfbZJ5TmzYmg3SVz+APhq/yzqG5TPZk8oyHvgMkxMjrjK0g+q7V5ixp1YV81X4jOcz6WyRnlEoH/dAX0G8k10HE1vzostnXzXmO+LS+eej8yeyJa1U9CrlyuolW8mFgbTAlGrkqB2LvyypWw74AQXbbtSXYxeSXurvSRsze/n2e80wfK0WuBYXFz6diybsgmCeNu+p4Jn2CmBjHZzEhOBmsjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hQPUvw1EVv3wMo+5XCqi3dBxzVExXxLWd6AksmEn/LY=;
- b=g1GjVfTz2O5J1J/53/Nr3qGTpvRhL5LVdu6MmYwMAGGHPMPEU9uWKfCm/dvVMCf1XAEJV77vc5XEGiAg99Ppo66dpnyjjsiPrgPVhAjlqReWlQG81KVN+WeTwM/9yT2dmbSzdHUVps1qb6tF7EXU6ZrlR6dTZhh686NXllWmC7flcx7R3XsfDEy2qA3lNdLHrzAzh53sGE+3hvZA0C/nw+GwD3zouvAJSXVrDAHbsBgTYYk3Pgon0B47rgz/AQvHLV8tlqW7wLwuVD8WSB/jvsbFuEHY16//kjf7Dq9a16glWNdUlulvBTCfPXyCmSSUGf+yzPrT6kMhuK6pDunwHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hQPUvw1EVv3wMo+5XCqi3dBxzVExXxLWd6AksmEn/LY=;
- b=TR5O7iXO41Iig5fpd4aAwAnn7Ftjl74Mgz3TxQI5P2N68E9X/2icZIAXWX7sh2KoedOe4DkyIAZw8DKWrDpqzTmdotSPvI9l5ttthbYXY2Y73Pg+KoBy1jxcXSYurwPojjqJamiVGZ0rOk87yU+K+ntUyxV8KlQBXb8AY05tqQ1b21bKdoAw/cbSZNf2AFRN5QENExYibcxKPXSvKIstXzH1ru44qsQP9thb1LXJZJyx2CtCd4UpW/sOIIAnH9BSS4EOYYoJ5if6wEfEU1Sd3YpRZ4x3Sd2INyo05h2PDrGQWzq/ndv8U7k1EaKnlDL5zcIfDDmCyWUkNLdzXFrb5A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com (2603:10a6:10:35b::7)
- by DU6PR04MB11159.eurprd04.prod.outlook.com (2603:10a6:10:5c4::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Thu, 21 May
- 2026 18:57:15 +0000
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4]) by DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4%4]) with mapi id 15.21.0048.016; Thu, 21 May 2026
- 18:57:15 +0000
-Date: Thu, 21 May 2026 14:56:48 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Ronaldo Nunez <rnunez@baylibre.com>
-Cc: linux-pwm@vger.kernel.org,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] pwm: imx27: Fix variable truncation in .apply()
-Message-ID: <ag9VcFoodZjxUsBg@lizhi-Precision-Tower-5810>
-References: <20260521000054.4790-1-rnunez@baylibre.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521000054.4790-1-rnunez@baylibre.com>
-X-ClientProxiedBy: PH7P221CA0042.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:33c::10) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SA2ts/Fj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF321F000E9;
+	Thu, 21 May 2026 19:05:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779390304;
+	bh=rrnpxsFPI13KfFrjgq5YPmQff2T/DywbBASDJrqj44I=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=SA2ts/Fj5CsxA2m12xrSqnz0sde4BmS4OWIxBDOj7sXTbJY5n7NJWkjmUQDW2mwOl
+	 D6w6n29ROmzufvdl+6GJO+5UcVwJKSxa93tXuQlc25dYITe+P4wDVrc472YDw/kQx3
+	 2SfTd7w8H4T27vKb7D8ahrIKeukSOrXXv/0gp4glouVc4bxpOmSapRGKIs/esE+3PZ
+	 LtCX0H0tF5NNIM0iYMRyr31lrQFfMwaJQZYnJr1mA/6Df0mCTprd784fejalChw+SG
+	 Pa6CbOxl/BZvr3Zjfn840+hHSyBckSAR9m5j7I/g24JWIRYHjG1XDheAk3bu3AGaVp
+	 GQQQ5vb75xTyQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 7/9] nvmet: pci-epf: Use
+ dmaengine_prep_config_single_safe() API
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Frank.Li@oss.nxp.com
+Cc: imx@lists.linux.dev, linux-pci@vger.kernel.org, vkoul@kernel.org, Frank.Li@kernel.org, dmaengine@vger.kernel.org
+In-Reply-To: <20260521-dma_prep_config-v7-7-1f73f4899883@nxp.com>
+References: <20260521-dma_prep_config-v7-7-1f73f4899883@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 21 May 2026 19:05:03 +0000
+Message-Id: <20260521190503.ABF321F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9372:EE_|DU6PR04MB11159:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2b9681d3-bc80-436d-6430-08deb76abcc6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|19092799006|38350700014|6133799003|11063799006|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	YeDz4+YaGBvLHdNkJEiBJwbo+pRY+1G+YYQNadIG966tRgFseKkc+H0oOyP8liZTxqIZ9mchDgC3ttNJQcpDDRhO4wwBkwA++repejM+CAfzON5ZQOhaVnBJknGfzuuzOqjHtyoDiN4HQXG0qrdukklAPKx0r3hR+9RImACyjjHuSmcujOqRYj5pnfAn0sXL7ch9Tw+ijFfwf5/Hbr08Crlf+ES3tEJwQzJDrsoODaEhwONIfJbu1JogH+3TWDR0J5jNrH3KIuxy2eOyosG5iicES1V3WUlHvbfbU03m8Ivc6JFg7oXNlXWg4cKapNPTxDT25U6xYWrkqWmbumFaNnuny6uAMfUtkOC+iXf1icMP5HFDTkewXcy4RQ/MUlCw+emmZaT6gG/0YvMI9+0ZYrZ4L9L5MMcaWmEfOtpbUM5ouGoFI6k6tLWFia8Efs2u3pjW4J/uW8Ji6DE0x0+LY/qzgkBy0TFdhZKOPJfcNfkGfUoLOVuEndxjySUjidTqFa8lkHw+fEIcCZ1MR6kzlUaxVAuwj62mnolgtbdXafvTKOQasz/xLuOIdi/oZREMfgJKDVHYJLHq+vqEYqYm2vQW96UaQ/fq6Zvp0JH9nAnhZohegX5FELeQtLIOEYHqJI/uDffFwmZ3JDpTlE9PcN+JYBjZ5zrv98UDI/zZx99BO+py5A097iZQXFs+l9a73oLFdnFHP5Bivdm64H3+fnxm+hkESQQ5DAHHu5+rnlR/ASBQuQBIYR9CVvvymbve
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9372.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(19092799006)(38350700014)(6133799003)(11063799006)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+8F1D83dJSfbtYS5YfZpCxeWmjfx52zXwxhyq2yUgDU2UqKiABouWlRIRzdy?=
- =?us-ascii?Q?uEM53lWxHmh7CNaB5fZ/idZGHxIgV+DhrE43C/kRZrGL00Nd6SiOBILdxMhd?=
- =?us-ascii?Q?o9xeU18jlgvyCuNs7B/LpGJCYXi+GzRHfqNZxJnRxp33D5yF/4ir1IAxVj9o?=
- =?us-ascii?Q?GPmvFw7BVnkM3zstueZ7Am+vzuN2KdgoJnL+VuVVtolWdL5yPwFH1BbQ98hR?=
- =?us-ascii?Q?bGgILVNJKudbufFPuVeFxD0urZke8HWzNKVGWTPoTwqx3afLaQdofcXUX+hl?=
- =?us-ascii?Q?wJmkWSxsFww06my59XI6n+mmiGCZZ5jaqkMn22V9Ye/CetWZ/THH8DK4sDka?=
- =?us-ascii?Q?88/k1Lq3YRNcyvGwWy+oB77mTKDTpy75wJtryke5qhqfpcSwTTu5hMmm5Q3J?=
- =?us-ascii?Q?6o53hbiD2LaxlrXZkLokGsjmyA1ee7gm8lJ/KJrE3nYdnvB1d7GmZnHd1lUJ?=
- =?us-ascii?Q?LCy8fmu2wjrrzpszWJB4p59kogtV/8AMyxYzvQwlbTdcPbK0pJoKB0rm73Qq?=
- =?us-ascii?Q?tYmzmaD/4mbqOvn4cWR8I3qxcDYGUEyTud4plDFJV2vx77ecY3ueh+0bZHrd?=
- =?us-ascii?Q?XI/pMo2RmRkpPLndHSJgqYCe3tK5xBiS6PZcaC3ZCiVM1AStIb4eNxKomnqB?=
- =?us-ascii?Q?BCVaKVX5oPJtgxUrj/zBYhh7kKiOkhVQiraFCgki1VOz/54Aa+bdTAW7ycV1?=
- =?us-ascii?Q?l1sJ0fzqaLfhMeX4r1C4nePk7ZNF7xGpMAKb+ikhwUH/zRehOJAyggkIW380?=
- =?us-ascii?Q?jWVRQPRwo4ZORsfvyeyz52WeGDkJ9EZ8n73VrHR/66glBviaWkY96hV9gJx0?=
- =?us-ascii?Q?iPRNKZ2lXsVwdW7Dso2Cheqik5jVmdlr6EoQZGy2nm60gEEvEA/4LxhsTV/m?=
- =?us-ascii?Q?D/638gBNcg0wavr6z9RmfWPceRkVOfck8p8zCjqJPJLHIpjhNy3tCBf9xIYW?=
- =?us-ascii?Q?ZOSN+gXG/hyexnn/hMVchuuDdeN+IgY+l5hIx4MH1FXSyJeJijtgtUuPKQno?=
- =?us-ascii?Q?8J2bLTU1BSxSpecnPCgLDOu0TdpJoUjm0TIB4vy6mDTjBPckglasXO3PaLWH?=
- =?us-ascii?Q?sPHivYfDqbq7+6UzECm2UHL/gbCLKNtdREhU0QdeluYdPTtIGy3svTBb2gZd?=
- =?us-ascii?Q?FeYHXBql/TrhD6scSy2YTr3ysOhghmaf+Vh0aWyvjI/0jgrhWjf+ekJhhFgL?=
- =?us-ascii?Q?9O4Rwe/8MYMAJl3OiRe93YFveGMZhm5ejTy82CwbGw4gKLTLQ3rIZhBbAkpz?=
- =?us-ascii?Q?VuYN7dEpRyOIzO2EuNDcr7PfftvpH+W3niYIR+qQdGNj5Y8dloYy5wRxrumr?=
- =?us-ascii?Q?wo7KubA0glVyC7tuZqXQOdScZW69ovkKcqFCJ6bUqQlJuMpQl0I/eSqylgLZ?=
- =?us-ascii?Q?6pyf3pF66sPMYP7Vixi9bymcHp3lMbMXSKxlZOTx4Lgj5E6tM0/fC7dw/g0n?=
- =?us-ascii?Q?Q1t7rW7igw9Z3C68Pe0ugP8ZiEPGrPfl1kP79/rWbqufKfcfRQPNalWBAc75?=
- =?us-ascii?Q?gZJ1xM6T42nmR8baGRu4qv0dmKYx2TFdlkchnOY4uEh3A3LZowMN4yZaO0k3?=
- =?us-ascii?Q?FSwHNq0O8V8IgI11kGEyhLkfa/hyr0iWaHzdebnD4XQFm8GwU6BCd22Abf/w?=
- =?us-ascii?Q?9QNOEAgNuOjYiYH4C3J/AVo/huxLDul+q1xE6IcEZEPbkUn6tSMEoq5yTUKm?=
- =?us-ascii?Q?N7tHW8DlUwcRMnl9xKIrXaBZs3eZ5N8IBmzbEmeWpXb3aU8t?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b9681d3-bc80-436d-6430-08deb76abcc6
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 18:57:15.0967
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ydTcogGY7JNR6ZWYTb0zwZNy5LPSKV9uxGMf5UbVq6cHEh56dwzFIsBp0eG8HXqYoTyL+1P1r3B92QEWQvmQiQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11159
 
-On Wed, May 20, 2026 at 09:00:54PM -0300, Ronaldo Nunez wrote:
-> This patch fixes a variable truncation when calculating period in
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Removing the DMA channel mutexes allows concurrent synchronous tra=
+nsfers on a shared DMA channel, leading to destructive error handling (casc=
+ading aborts), severe CPU starvation, spurious timeouts, and descriptor poo=
+l exhaustion.
+--
 
-Remove "This Patch" just
+commit 57a71fe2904773875ab4a20b8b7b4de2296d0683
+Author: Frank Li <Frank.Li@nxp.com>
 
-Fix a variable 'tmp' truncation when calculating period in
+nvmet: pci-epf: Use dmaengine_prep_config_single_safe() API
 
-> microseconds as part of the solution for the ERR051198 in .apply()
-> callback.
+This commit replaces the separate DMA channel configuration and descriptor
+preparation steps with the new dmaengine_prep_config_single_safe() API.
+It also removes the dma_tx_lock and dma_rx_lock mutexes, assuming they are
+no longer needed because the new API call is atomic.
+
+> diff --git a/drivers/nvme/target/pci-epf.c b/drivers/nvme/target/pci-epf.c
+> index 2afe8f4d0e461..b1ba2d0bea6d9 100644
+> --- a/drivers/nvme/target/pci-epf.c
+> +++ b/drivers/nvme/target/pci-epf.c
+[ ... ]
+> @@ -388,22 +376,15 @@ static int nvmet_pci_epf_dma_transfer(struct nvmet_=
+pci_epf *nvme_epf,
+>  		return -EINVAL;
+>  	}
+> =20
+> -	mutex_lock(lock);
+> -
+
+[Severity: High]
+Does removing this mutex expose the entire synchronous transfer lifecycle to
+concurrent access?
+
+While dmaengine_prep_config_single_safe() is atomic, the removed mutex
+also protected the subsequent dmaengine_submit() and dma_sync_wait() calls
+in this function. Since NVMe commands are processed concurrently by unbound
+workqueues, multiple worker threads might now share the same global DMA
+channel without synchronization.
+
+If multiple threads concurrently spin in dma_sync_wait() on the same channe=
+l,
+could this cause severe CPU starvation due to its tight busy-wait loop?
+
+Additionally, dma_sync_wait() has a fixed 5-second timeout from the moment
+it is called. With concurrent queuing, a newly submitted transfer's wait ti=
+me
+would include the execution of all preceding queued transfers on the channe=
+l.
+Under high load, might this exceed 5 seconds and cause spurious timeouts?
+
+If a timeout does occur, the error path calls dmaengine_terminate_sync(chan=
+).
+Will this forcefully abort all pending and active transfers on the channel,
+destroying the in-flight DMA operations of all other concurrent NVMe comman=
+ds?
+
+Finally, unbounded concurrent submissions could potentially exhaust the DMA
+engine's hardware descriptor pool under high I/O load, causing
+dmaengine_prep_config_single_safe() to return NULL and fail valid commands.
+
+>  	dma_dev =3D dmaengine_get_dma_device(chan);
+>  	dma_addr =3D dma_map_single(dma_dev, seg->buf, seg->length, dir);
+>  	ret =3D dma_mapping_error(dma_dev, dma_addr);
+>  	if (ret)
+> -		goto unlock;
+> -
+> -	ret =3D dmaengine_slave_config(chan, &sconf);
+> -	if (ret) {
+> -		dev_err(dev, "Failed to configure DMA channel\n");
+> -		goto unmap;
+> -	}
+> +		return ret;
+> =20
+> -	desc =3D dmaengine_prep_slave_single(chan, dma_addr, seg->length,
+> -					   sconf.direction, DMA_CTRL_ACK);
+> +	desc =3D dmaengine_prep_config_single_safe(chan, dma_addr, seg->length,
+> +						 sconf.direction,
+> +						 DMA_CTRL_ACK, &sconf);
+[ ... ]
+> @@ -426,9 +407,6 @@ static int nvmet_pci_epf_dma_transfer(struct nvmet_pc=
+i_epf *nvme_epf,
+>  unmap:
+>  	dma_unmap_single(dma_dev, dma_addr, seg->length, dir);
+> =20
+> -unlock:
+> -	mutex_unlock(lock);
+> -
+>  	return ret;
+>  }
 >
-> The problem was identified when reducing the duty cycle through sysfs,
-> with enable set to 1. The condition to fix errata ERR051198 for period
-> smaller than 2us is always being met, due to a truncation on tmp,
-> variable from .apply() callback, caused by the multiplication of
-> NSEC_PER_SEC, PWMPR (period register) and the prescaler which can easily
-> overflow u32.
 
-It'd better provide actual example value for PWMPR and prescaler when
-overflow happen.
-
-> Declaring tmp as u64 makes it large enough to accommodate
-> larger multiplication results.
->
-> Testing:
-> - Hardware: Udoo Neo Extended with iMX6SoloX SoC
-> - Tools: Verified with a logic analyzer
-
-needn't this part.
-
-Frank
->
-> Signed-off-by: Ronaldo Nunez <rnunez@baylibre.com>
-> ---
->  drivers/pwm/pwm-imx27.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
-> index 3d34cdc4a3a5..c8b801fcb525 100644
-> --- a/drivers/pwm/pwm-imx27.c
-> +++ b/drivers/pwm/pwm-imx27.c
-> @@ -200,7 +200,7 @@ static void pwm_imx27_wait_fifo_slot(struct pwm_chip *chip,
->  static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
->  			   const struct pwm_state *state)
->  {
-> -	unsigned long period_cycles, duty_cycles, prescale, period_us, tmp;
-> +	unsigned long period_cycles, duty_cycles, prescale, period_us;
->  	struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
->  	unsigned long long c;
->  	unsigned long long clkrate;
-> @@ -208,6 +208,7 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
->  	int val;
->  	int ret;
->  	u32 cr;
-> +	u64 tmp;
->
->  	clkrate = clk_get_rate(imx->clks[PWM_IMX27_PER].clk);
->  	c = clkrate * state->period;
-> @@ -249,6 +250,11 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
->  	val = readl(imx->mmio_base + MX3_PWMPR);
->  	val = val >= MX3_PWMPR_MAX ? MX3_PWMPR_MAX : val;
->  	cr = readl(imx->mmio_base + MX3_PWMCR);
-> +
-> +	/*
-> +	 * tmp stores period in nanoseconds. Result fits in u64 since
-> +	 * val <= 0xfffe and prescaler in [1, 0x1000].
-> +	 */
->  	tmp = NSEC_PER_SEC * (u64)(val + 2) * MX3_PWMCR_PRESCALER_GET(cr);
->  	tmp = DIV_ROUND_UP_ULL(tmp, clkrate);
->  	period_us = DIV_ROUND_UP_ULL(tmp, 1000);
-> --
-> 2.53.0
->
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521-dma_prep_c=
+onfig-v7-0-1f73f4899883@nxp.com?part=3D7
