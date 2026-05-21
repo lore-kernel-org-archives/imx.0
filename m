@@ -1,204 +1,339 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012017.outbound.protection.outlook.com [52.101.66.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6FB3812DB;
-	Thu, 21 May 2026 15:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779377631; cv=fail; b=PmYt2MfqzEr5phWDsrmEcf1FmncshEqULLzRF+bKkZAq6caOzTYA0IL844EEFZsbpyxfJ6GEHxcxpAAWg84CFz9Zd3+6j93qh3eZpu65iSCv5NWNyrwRm7Ia2c1rO+wyP+iojwNz14kaCCvR9CynusmchVyiFziXarUZaDlZ//0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779377631; c=relaxed/simple;
-	bh=Xxxb3WvNGrZnopGky0RMx4nHthEr92Nj/Z1vHabT314=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=WH4QLTQdy/ruiG2Py683XtYDLG1eh8MKt1gyv6fwB64LYF46EwqhKSr0iU/ve+/i1czy5rWK79TCipIHVAjM1QZdn/CgTu5r4q5Ct5iFAJ7HaGABScF+5rLMixQyQ1xenpQJBbhTuHRVLuYYHOoE/bMtHeP3GPCk0anJvzIomJE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ifgmwrd3; arc=fail smtp.client-ip=52.101.66.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5E8347BD7
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 15:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779378068; cv=none; b=B1IVSH+2FuPNHK/WrF65OFXS6oma2ho5Xx/L9p23DkzXI66n1KeYVlHbZNzCCa27dg5TJFWcZ+W254QP/Tnl7sOpMJJwjMprc/bSorxeUiOJ95Dr+/HWvxajjrk45LDPVX6thT03tC59q6ajLlrb322JjSN4Sh8FwrnCAPlViv8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779378068; c=relaxed/simple;
+	bh=pqOdvBvUmWULW9jHLKVvyMcN+fzgMi4S9Wk/+nGyUPg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZoOMt/Fc94zliRnVIlZXW6axj1S976XViyRaE/FtrGoSi+xIsBVNaBE1gQ5ioLaAW0QmpqFF08Imc1mQTgyQ7bXdJjH/775KXoK7G0+qX0ilQ9f9pPuJAFZbiAzj8JeM9Vqc7BNeHmsv5gceWNzx/i7WMyhohut3TZuiHg1s3uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cx17tWVb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ifgmwrd3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HVe+Om98naWVp5Y12fvKnVhZrVyUqaVRt+KfbjvgXwvSHS314SaSX9tBHha3YZ36X0RTCFmTivJ+mDGKkGgOrO5asc/LisVT0Y83UnCAQIJjRwxzJutnkzkMH5SDiutFeGnVRZf8k5h2kqj7ZQ7DSSp+MEpj/mo3aA+5S1IRS0NY8A8z+7Zw2mCd1YdZUOUNVNuAA+kg1a2sKqyPe5/LslyWL9mwqxBHPKZGi2tQoHEykqHa8eFtr3HlBUDD5ZbI/ED7SDwu8gyHRopSoRxZar1HxtN5LJqtpn7nL7uhFfr7w8BMcB51DuGYGf9CaNoPPibphk+DcJyaa1NkdLoMVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i/ReP1rgqWrU4/sMzuwdfH3iluXexvaN58iUOEqpsAA=;
- b=nRxV6FDo5Tf71vdghvmN3fvS6D9Ec5ECra/6YNhJKuUQBfJKaVk4TtxuxchO8Aqgkr5g3AOhiEBJewh3OQXMhg9Ah/Hne1T617tyISFUmCCalS/PVpkM9CYnJoRLVJjWNM1zeTSvMzjsA4Ltf038RVYeLRVvsMPuOWrUTFUXmh8PJBH1Cgy91mGF1OQ9b177RmJj/56QcKG+y/3kTGHKD7hN+Sw4pjJ7NqJDVgiixS5GnJMsqRbqMfj7MfBkQNJcJRHMdU4RVYgNBhrni5BsGQJA6L9x2es60WrmO99lwYnqYODOs02b2de997kRSwU2d4v/VHv8jRamlvRC+dI2lw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i/ReP1rgqWrU4/sMzuwdfH3iluXexvaN58iUOEqpsAA=;
- b=ifgmwrd3NzlV/Y9b1w3xEBRZqr2FAPqp5kUxJtlks6KDCSu4AW3t4iByDpGBR2xSFGEeRvdAeavvk6C4oTy9Jcp/oniYxrSL6g+QKgkQNaz0ePEU6ocJ2DKpRh+q4CnP2I49/XIh89AO/BLJOaktnZ7/9cQGzGj1v9MxtNwtqtgI+5h1GvcY0anNDpvi/K0Hm91gJCUrbjBuad6AoHybad/9iHGYkoXBmntD1sCfgnAXNUNLVyW/0SgmNGUdlpGLMQpUJ9/f17hgDjTMif2PCi9ecUw5t2Wybhqk492WSHKftSw17ltPuAMBPAJl0M8eiMbniRKJulUf+capuJZ+3g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU4PR04MB11791.eurprd04.prod.outlook.com (2603:10a6:10:623::11)
- by AMDPR04MB11581.eurprd04.prod.outlook.com (2603:10a6:20b:71d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.16; Thu, 21 May
- 2026 15:33:45 +0000
-Received: from DU4PR04MB11791.eurprd04.prod.outlook.com
- ([fe80::11ca:6b74:3234:d7de]) by DU4PR04MB11791.eurprd04.prod.outlook.com
- ([fe80::11ca:6b74:3234:d7de%4]) with mapi id 15.21.0048.013; Thu, 21 May 2026
- 15:33:45 +0000
-From: Frank.Li@oss.nxp.com
-Date: Thu, 21 May 2026 11:32:55 -0400
-Subject: [PATCH v7 9/9] crypto: atmel: Use dmaengine_prep_config_sg() API
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-dma_prep_config-v7-9-1f73f4899883@nxp.com>
-References: <20260521-dma_prep_config-v7-0-1f73f4899883@nxp.com>
-In-Reply-To: <20260521-dma_prep_config-v7-0-1f73f4899883@nxp.com>
-To: Vinod Koul <vkoul@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>, 
- Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- "David S. Miller" <davem@davemloft.net>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Koichiro Den <den@valinux.co.jp>, 
- Niklas Cassel <cassel@kernel.org>
-Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org, 
- mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
- linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779377571; l=1773;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=erGKLaAZMNXPQALsbiq4uU1FrELcrAtTPXSGZhnyQ3o=;
- b=QKHbZQEkp18U2ITWjZrhkJW46/m4B+DMU571m2yZa9yPRvBA7Xpft6riw3YWQHf519CY3JuIX
- w+7v6kkHY+YBqLDcZ1yAf95BCXLfCAeCDKXwwRVaoWhQnXhUs32Sk2k
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: PH8P220CA0042.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:2d9::14) To DU4PR04MB11791.eurprd04.prod.outlook.com
- (2603:10a6:10:623::11)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cx17tWVb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779378065;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9i9hQRHyOOJEcvkLiHsg6jJhDsG0UxEApBJfSN25LMk=;
+	b=Cx17tWVbS0pidDc0uIq4rtqWdebMABWFerEC6/bFZgIOs8hwcvl8KNhyc53svoAeSjNMJn
+	TZCEdeHMTbBaM79ls3a8C/L+C4n5SG9ym2+1bRsVw99scWkUZmdPk0828GU4IEHnX7m/xH
+	22avQbjQsjUpKkHsRcil8YaWZGQr/V8=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-120-YGC6NOyINT2WGL7mduX2Ww-1; Thu, 21 May 2026 11:41:04 -0400
+X-MC-Unique: YGC6NOyINT2WGL7mduX2Ww-1
+X-Mimecast-MFC-AGG-ID: YGC6NOyINT2WGL7mduX2Ww_1779378063
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5a87eff81fcso377190e87.0
+        for <imx@lists.linux.dev>; Thu, 21 May 2026 08:41:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779378062; x=1779982862;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9i9hQRHyOOJEcvkLiHsg6jJhDsG0UxEApBJfSN25LMk=;
+        b=cLXciIBpg/4fsj4J2byxCA/cyku/gQ024HzSa8T2u0msEEL0DucVNDtotAhN2sthOb
+         ockFDr21I8454zJgeJ0r0btpKixy7J6cm0Njpc5cBuPG5Nr8OMwmrPUIA4xx5//fyKdb
+         BNz13D7LeAAHJ5Q1G3hPaYKrQWZej+txQXntUpYYzZfJfI0zgAWoadsYH3351rdfiHXC
+         BsmlY6qFKuG7BBd5sVw1CLsAEBaMV0zZV1jX8pv8wkjfcbIhIeW0zZ6FlLv/2nUWlHTD
+         N90YjyeUVJdwlqjJK6D0PtBxWIIKRiKSjP4MbuyFrJK430ZfqfPhfP2Puui4oNjpC5R9
+         s+gQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/gR1RgWDcXWIxZcymXrOOzVq3ZBlpk2pZzfZoYX6O4gjboJKSuMPVFsZb7DICX8Ax11b4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzOmvZ5trk2Iwl99ym0yBAAfvOcm5Jn+qFlMumbsaBcXm/tEhks
+	5cezjvEqtdiTeGBigzLBWKeltnzSBIOzCnBgrBhBLMn1fVDKV1MSMk8QN+9w6fGWl6tpte0SKX8
+	L+f/yoipa2zmT2w1+PtHDsoPG6U/LYGwfvMtlZ7W4hdhoh5llE20VsgZTCFTmNkcGeS4uIvc1B0
+	DBtg66A3KFRw7aEOhKnWAvD+ftkvqd
+X-Gm-Gg: Acq92OH7uoffeqOzqimHdSZ2e6l7R6mimaUWBRvwWHlNsMvPz2xFf1phIUiGffrK8AO
+	2QWvlcKkc6aF3244MKEp/MJhq2nTd8OsdxC+vBh0K5fvpezBu+uCBUJM2wlf/WvYg6fyxL0Hq+k
+	ESpoTXxzHihp7wPmZjBxOQepuVttScVRVZpMSI3XrQsu4sip8GM3LjRXP6CFnu2x/+C29fOXwYd
+	HAriBKrfCA7kKM5
+X-Received: by 2002:a05:651c:1446:b0:393:9d8c:73d2 with SMTP id 38308e7fff4ca-395ca54c9bfmr4697141fa.7.1779378062375;
+        Thu, 21 May 2026 08:41:02 -0700 (PDT)
+X-Received: by 2002:a05:651c:1446:b0:393:9d8c:73d2 with SMTP id
+ 38308e7fff4ca-395ca54c9bfmr4696981fa.7.1779378061760; Thu, 21 May 2026
+ 08:41:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU4PR04MB11791:EE_|AMDPR04MB11581:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb9c4b1d-7dff-45fb-b05a-08deb74e58ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|19092799006|11063799006|6133799003|22082099003|56012099003|18002099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	s862SAwdPXq3ZM6se5Au7e+/kEnxXj/A2PXnixdhPWF/KiumghN4v5mBXBzWcLfDqeNcOkVecz2LSYIFHs+74x06rRRmahoJYjEtFuu4J7fB1qxJ0qmliiZdN6vYJIXxW70YrPi2+26teX3AO2aDBEqSOWFstuWVFEd1ljsEVbzAITpsenm/a0Ukp6K+x/hjk6QI0WhpmIVDaZZE60Lk5tTohpDViVSz+kggVNkkHy18xSodhIdhwF9qRMAxQmNfAxapdx48q4QQBv4EHpchABc8fP2/fplQRIHp4RmPLP6hSPvOokHItSfhdEygjaQu5RraGjJ9+JqN5oQlNXhwF1k2qdrOPaBiCIf7h8jPZL43ZcRdzoiLWoKf3hXOpmh3RxqZmRO/9rC0znqVhYD5uln618Gttx/PDn2NM4xlQ35ssTdeS0q8cL7y38hxS4r6KQQKmHAPK1/+J5/qTFeAJqqMA9zbNb3da5Dbu++vfdItlNmPoXTheUXUeKEDFEyq7m7jvBcjX+s6oVao2Ml2MBIxT2vJ4SEecVIduiTopL3+nDltKzWca4m41VTfcDjEmVcrdoUbwJOZe4L8N2mReU6eKhh3bH2dOVNs0weHRsWVHcROznFS9vq/He10j+xLi7k/750e1GaML5o6K6f5yPUUizpbh8hj5Kr6RzOUF1D+v1n3TBO3IYlAIsKzQWoOc2pD1DJRxDpSir/zpnRru59AHgJCFWGdxKS86aUhO1w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4PR04MB11791.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(19092799006)(11063799006)(6133799003)(22082099003)(56012099003)(18002099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SVpGUVJVM0hMUllueE9FNHRuTnRwQnk4Sjl3K0o1SHU2V0YvUHZoNVc1RlZZ?=
- =?utf-8?B?VDF3UWx1UG1IOVBPNzJ3VTIvS3NpNjMwNTcyS1JlYVJIVzE5WWh2YlE3ZGNi?=
- =?utf-8?B?U0tvWlZCNVVzbzdKa1hYNGhlWGN4TzlWZGlqM28wbk53a0dzMnYxTVIzQnNU?=
- =?utf-8?B?TUlqM1ZkVTV0Q2g1a1RoNzMvMjJoRVdoMlVYWFRDcFdjS3dpd0pPT3VUM0I2?=
- =?utf-8?B?aWFCbzE4QzlmQUdOZ1VqaVQzQ1ltY2hzWkxWeHhseUlEVER0U2NESWJkbmhy?=
- =?utf-8?B?Wk9DdTVWWlpKNEtQS21Ga3B0Ti9wR25Kcy93ZHovM2FiN0xsL2pUUGowL21K?=
- =?utf-8?B?N1VJZjJwci84YXg1REpDUVIzbmQxREdwWlh0YjFTQjU0VVZQQlZKb2VLYi9R?=
- =?utf-8?B?YXA1L2xid1pYRnBGaUZYNGN1aFViUm9EbFA0ckUwSFFjMFkzWkx2ZG8vMW9j?=
- =?utf-8?B?cnExZmNpS2RQNHNGTCs4R05ubm1DWFdnQUZycFZhdXo4YVgzeFp2OEd1b1l1?=
- =?utf-8?B?VFZQR2dsNFpYUFd6dFRTQ1BPTitRemFyVkkrMUNxaW9xaG1UdkI4ZWFsZ2dI?=
- =?utf-8?B?V0N4a0pMdWU2dEpJT0pxVzg3ek9MeDhFb0s4Z3BpeGV1TVNLeXM3NWczZVE1?=
- =?utf-8?B?ODJwYnFGbTNqMDczU3YwdWRieXBFN3VLbHhZalNNQ05TQ25pbHgvKzBtbndN?=
- =?utf-8?B?cVAxbmFCeTNLMjV4S1NXdDBPRm1JRUlWN0ZLUzRoMFo0NDJ4T2FzcDdaN0I0?=
- =?utf-8?B?cXdtSGdaZ0xBNnFBMlk3bnFveTR6d2ZEOVd5RHowV2NvcjRvMlcyMVJIOVp0?=
- =?utf-8?B?Mlc3cUMzVk5XeG1EQmZMUjdCVVEvcVE0dHhaSmgyWU43OTVVZlZQaUtzMTk4?=
- =?utf-8?B?YWtqc2hLUWczcGpGdXF1ZUV4ZXVHMWN6UFJJUUY2WmJITjB3R3ZUZkVoOUlr?=
- =?utf-8?B?bGhudE1wcCtNSXhVb0gzQW0rb3BBK1VsK1BKL0YzYW9MNjE4RTVaQ1htWU15?=
- =?utf-8?B?RGJXTGdZTGRYbFBJZm1LWE5Lc2Jwc0tYK3FhYW9QM1B5eWZTT3BabExVUStF?=
- =?utf-8?B?Z2YzanFzTy9aL2xNZm5yRlBSWHVPS2Z3bmthQWtlQjVtTnlScnBtUm01Qjcw?=
- =?utf-8?B?ZFNpcy9Ndm1YY2JDdUNTVWZZZExHN3lxK284a2dmTVp5Yll5WHpEOUVxK0lv?=
- =?utf-8?B?YlV6UzJEM3NvZzFydnZvTUVEbFp3OHpnM3gwNjdkS3NSU0llZlMwQ09qL3A0?=
- =?utf-8?B?U2xIcDc2MGUvWnlaOVk2SmhwdkhPQmVqQ3hQTTdUTmpNWTVvNVJQalcyVFIx?=
- =?utf-8?B?QXovWlFWakh0YXh5cXlWcjEzQzBNNnBEa1FiZGpWbDI1anFHTmFFNSt2THVH?=
- =?utf-8?B?OGJLTEFiOWwwb3FqYk04eldxRTVhZEkzNGhiY1A4ejFrZXA2YXVwN2FYK0JV?=
- =?utf-8?B?TGRVSE00bjZKdndsTkNYekR2TzJmNnV3SnE0RTcrYjNwNzdtMmZYeEYrYVJH?=
- =?utf-8?B?QXJKY0NNakVLZS92aE9sMEdQZ3ZpNWI4THcxbU4rT1djNTBpV2V6T1FOdkJS?=
- =?utf-8?B?b2RyTmQxT1RXdGYvN3dBeCtHckZQZ044UXIyYy82MmdEV09LbHplQmNhQ3hh?=
- =?utf-8?B?QU1XeFI3bDVPNlpFMmNXbUlpUXhEM3MraU96RnhxVnIxSENYOTdURHhZYlhT?=
- =?utf-8?B?SStudmFpd0tMOG1pWW1QWEt0b0FvN0xOSGp4cC93MlRmNjFuQVBUd3hUdytG?=
- =?utf-8?B?TTJLY1g0aThkRmZ1YXRIOStHWkVOZm1EeGlDUW9BRWkxdEdCbDdPbnRVUHVY?=
- =?utf-8?B?TUhQQjZRZGdCTWsrR1diUDhpQVFGLzA1QTZKMlc4eXVqeE9heHJCZ3ZIbThT?=
- =?utf-8?B?T3Z1aHRkL2lzYkhvK09KaGdyV1dmWWE5WWJvTGNhdVd6REZkUVZHMnZsQXll?=
- =?utf-8?B?RTN3RHJ3U0pQclpDZmZTdkFIUGdkT1ErZnV0QmFyN1JvRSs1UWJ4bWRNYThK?=
- =?utf-8?B?VjYyK1VpR1J4R2oyWTF5NnlWY0tIMlNFT3B3YStMMjlGK1FIQTlBdTNaWGwy?=
- =?utf-8?B?ZmFDcFVZbnBFZGN4cld2dzd1QXA0SHc1QVJWd0prb1lHekozM25sazNQeHha?=
- =?utf-8?B?a0tvNXlha3dReXU4d1lNeGxBeXJNbk1RS3RpVC9lMEFzYUI0STByWk4rRkls?=
- =?utf-8?B?MjZNZ2IxVC9oQ2RINXkwSUxyTUpYSWhDOW1qQ3ZFcHZFMjkwUENOdVBuTWNr?=
- =?utf-8?B?clR0RDNWL01OVitXbnRPTk5QSGhhNEJiQUpLck1qWHVSTUVJNXBhRkRhcUw2?=
- =?utf-8?B?RWIxeDNEUEtsTVVwWXVDUHU0UndpTHpMK0pIK2JValJ2MzJVUFY1TDRSMXBa?=
- =?utf-8?Q?sbmQX8QGQIbN/BJ7Z/Uc0AHVsSrbbaMmDFtaC?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb9c4b1d-7dff-45fb-b05a-08deb74e58ae
-X-MS-Exchange-CrossTenant-AuthSource: DU4PR04MB11791.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 15:33:45.7760
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hX7jpJwtZzeD+hsUATEhTrhY0HzVGcARJcr1fyT2nrHCddtfQgSpxwMbvDoB0UPFwEgt6uLYvKRVFur9a/BUf7MSPY6fJYoF90AVd7mvKdJdZn401Aab2xidmLrLlset
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR04MB11581
+References: <20260520151007.4193688-1-khristineandreea.barbulescu@oss.nxp.com> <20260520151007.4193688-2-khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <20260520151007.4193688-2-khristineandreea.barbulescu@oss.nxp.com>
+From: Enric Balletbo i Serra <eballetb@redhat.com>
+Date: Thu, 21 May 2026 17:40:48 +0200
+X-Gm-Features: AVHnY4KYrQdua7SpnLaqwynqHAGj2zpwe2dqjB0Og4OT8dAOLINb_3mUW5_zlqw
+Message-ID: <CALE0LRtZ625eHwsmk-sJhLd-QUPvu+yxKAaWCnHqbJvpTwXcMQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] arm64: dts: Add usbphynop and usbotg pinctrl for
+ S32G platforms
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ajPv2vihxglyGsGRwU9bib7-1jPsK7AYAezgYYN7Yk8_1779378063
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Frank Li <Frank.Li@nxp.com>
+Hi Khristine,
 
-Using new API dmaengine_prep_config_sg() to simple code.
+Thank you to apply my reviews.
 
-dmaengine_prep_config_sg() does not distinguish between configuration
-failures and descriptor preparation failures, as both are reported through
-a NULL return value. Converting both cases to -ENOMEM is therefore
-acceptable and consistent with the helper's abstraction.
+On Wed, May 20, 2026 at 5:10=E2=80=AFPM Khristine Andreea Barbulescu
+<khristineandreea.barbulescu@oss.nxp.com> wrote:
+>
+> Add the usbphynop node and the usbotg pinctrl
+> support for the S32G2 and S32G3 SoCs.
+>
+> This enables the USB controller to reference the
+> generic PHY and use the required pinmux for USB OTG ops.
+>
 
-In practice, most users only care whether the operation succeeds or fails,
-and do not depend on the exact errno value returned from this path.
+I tried testing the patches, but unfortunately, they didn't work for
+me on top of the current mainline. Any idea what could be wrong?
 
-Tested-by: Niklas Cassel <cassel@kernel.org>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v6
-- add commit message about error propagation (sashaki AI)
----
- drivers/crypto/atmel-aes.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+[   40.019850] usb_phy_generic usbphynop: dummy supplies not allowed
+for exclusive requests (id=3Dvbus)
+[   40.268467] imx_usb 44064000.usb: No over current polarity defined
+[   40.293272] ci_hdrc ci_hdrc.0: new USB bus registered, assigned bus numb=
+er 1
+[   40.308834] ci_hdrc ci_hdrc.0: USB 2.0 started, EHCI 1.00
+[   40.309475] usb usb1: New USB device found, idVendor=3D1d6b,
+idProduct=3D0002, bcdDevice=3D 7.01
+[   40.309485] usb usb1: New USB device strings: Mfr=3D3, Product=3D2,
+SerialNumber=3D1
+[   40.309492] usb usb1: Product: EHCI Host Controller
+[   40.309498] usb usb1: Manufacturer: Linux 7.1.0-rc4+ ehci_hcd
+[   40.309503] usb usb1: SerialNumber: ci_hdrc.0
+[   40.311051] hub 1-0:1.0: USB hub found
+[   40.748830] usb 1-1: new high-speed USB device number 2 using ci_hdrc
+[   46.038582] usb 1-1: new full-speed USB device number 3 using ci_hdrc
+[   61.347813] usb 1-1: device descriptor read/64, error -110
+[   76.707030] usb 1-1: device descriptor read/64, error -110
+[   76.817100] usb usb1-port1: attempt power cycle
+[   77.256992] usb 1-1: new full-speed USB device number 4 using ci_hdrc
+[   87.826466] usb 1-1: device not accepting address 4, error -110
+[   87.956454] usb 1-1: new full-speed USB device number 5 using ci_hdrc
+[   98.545933] usb 1-1: device not accepting address 5, error -110
+[   98.546070] usb usb1-port1: unable to enumerate USB device
 
-diff --git a/drivers/crypto/atmel-aes.c b/drivers/crypto/atmel-aes.c
-index b393689400b4c..d890b5a277b9c 100644
---- a/drivers/crypto/atmel-aes.c
-+++ b/drivers/crypto/atmel-aes.c
-@@ -795,7 +795,6 @@ static int atmel_aes_dma_transfer_start(struct atmel_aes_dev *dd,
- 	struct dma_slave_config config;
- 	dma_async_tx_callback callback;
- 	struct atmel_aes_dma *dma;
--	int err;
- 
- 	memset(&config, 0, sizeof(config));
- 	config.src_addr_width = addr_width;
-@@ -820,12 +819,9 @@ static int atmel_aes_dma_transfer_start(struct atmel_aes_dev *dd,
- 		return -EINVAL;
- 	}
- 
--	err = dmaengine_slave_config(dma->chan, &config);
--	if (err)
--		return err;
--
--	desc = dmaengine_prep_slave_sg(dma->chan, dma->sg, dma->sg_len, dir,
--				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	desc = dmaengine_prep_config_sg(dma->chan, dma->sg, dma->sg_len, dir,
-+					DMA_PREP_INTERRUPT | DMA_CTRL_ACK,
-+					&config);
- 	if (!desc)
- 		return -ENOMEM;
- 
+It looks like a problem with the ULPI communication because I cannot
+read the ULPI registers.
 
--- 
-2.43.0
+Thanks,
+   Enric
+
+
+> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@=
+oss.nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/s32g2.dtsi      |  7 ++-
+>  arch/arm64/boot/dts/freescale/s32g3.dtsi      |  7 ++-
+>  .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 46 ++++++++++++++++++-
+>  .../boot/dts/freescale/s32gxxxa-rdb.dtsi      | 46 ++++++++++++++++++-
+>  4 files changed, 102 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/d=
+ts/freescale/s32g2.dtsi
+> index 51d00dac12de..a35bb284270e 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> @@ -3,7 +3,7 @@
+>   * NXP S32G2 SoC family
+>   *
+>   * Copyright (c) 2021 SUSE LLC
+> - * Copyright 2017-2021, 2024-2025 NXP
+> + * Copyright 2017-2021, 2024-2026 NXP
+>   */
+>
+>  #include <dt-bindings/interrupt-controller/arm-gic.h>
+> @@ -108,6 +108,11 @@ psci {
+>                 };
+>         };
+>
+> +       usbphynop: usbphynop {
+> +               compatible =3D "usb-nop-xceiv";
+> +               #phy-cells =3D <0>;
+> +       };
+> +
+>         soc@0 {
+>                 compatible =3D "simple-bus";
+>                 #address-cells =3D <1>;
+> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
+ts/freescale/s32g3.dtsi
+> index e314f3c7d61d..b980e5f2b059 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+>  /*
+> - * Copyright 2021-2025 NXP
+> + * Copyright 2021-2026 NXP
+>   *
+>   * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+>   *          Ciprian Costea <ciprianmarian.costea@nxp.com>
+> @@ -165,6 +165,11 @@ scmi_shmem: shm@d0000000 {
+>                 };
+>         };
+>
+> +       usbphynop: usbphynop {
+> +               compatible =3D "usb-nop-xceiv";
+> +               #phy-cells =3D <0>;
+> +       };
+> +
+>         soc@0 {
+>                 compatible =3D "simple-bus";
+>                 #address-cells =3D <1>;
+> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi b/arch/arm64=
+/boot/dts/freescale/s32gxxxa-evb.dtsi
+> index 803ff4531077..26009c1e90dc 100644
+> --- a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+>  /*
+> - * Copyright 2024 NXP
+> + * Copyright 2024, 2026 NXP
+>   *
+>   * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>   *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
+> @@ -245,6 +245,39 @@ dspi5-grp4 {
+>                         bias-pull-up;
+>                 };
+>         };
+> +
+> +       usbotg_pins: usbotg-pins {
+> +               usbotg-grp0 {
+> +                       pinmux =3D <0x3802>, <0x3812>,
+> +                               <0x3822>, <0x3832>,
+> +                               <0x3842>, <0x3852>,
+> +                               <0x3862>, <0x3872>,
+> +                               <0x37f2>, <0x3882>,
+> +                               <0x3892>;
+> +               };
+> +
+> +               usbotg-grp1 {
+> +                       pinmux =3D <0x3e1>, <0x3f1>,
+> +                               <0x401>, <0x411>,
+> +                               <0xbc1>, <0xbd1>,
+> +                               <0xbe1>, <0x701>;
+> +                       output-enable;
+> +                       input-enable;
+> +                       slew-rate =3D <208>;
+> +               };
+> +
+> +               usbotg-grp2 {
+> +                       pinmux =3D <0xb80>, <0xb90>, <0xbb0>;
+> +                       input-enable;
+> +                       slew-rate =3D <208>;
+> +               };
+> +
+> +               usbotg-grp3 {
+> +                       pinmux =3D <0xba1>;
+> +                       output-enable;
+> +                       slew-rate =3D <208>;
+> +               };
+> +       };
+>  };
+>
+>  &can0 {
+> @@ -304,3 +337,14 @@ &spi5 {
+>         pinctrl-names =3D "default";
+>         status =3D "okay";
+>  };
+> +
+> +&usbmisc {
+> +       status =3D "okay";
+> +};
+> +
+> +&usbotg {
+> +       pinctrl-names =3D "default";
+> +       pinctrl-0 =3D <&usbotg_pins>;
+> +       phys =3D <&usbphynop>;
+> +       status =3D "okay";
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi b/arch/arm64=
+/boot/dts/freescale/s32gxxxa-rdb.dtsi
+> index 979868f6d2c5..a8abb10b0e7a 100644
+> --- a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+>  /*
+> - * Copyright 2024 NXP
+> + * Copyright 2024, 2026 NXP
+>   *
+>   * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>   *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
+> @@ -199,6 +199,39 @@ dspi5-grp4 {
+>                         bias-pull-up;
+>                 };
+>         };
+> +
+> +       usbotg_pins: usbotg-pins {
+> +               usbotg-grp0 {
+> +                       pinmux =3D <0x3802>, <0x3812>,
+> +                               <0x3822>, <0x3832>,
+> +                               <0x3842>, <0x3852>,
+> +                               <0x3862>, <0x3872>,
+> +                               <0x37f2>, <0x3882>,
+> +                               <0x3892>;
+> +               };
+> +
+> +               usbotg-grp1 {
+> +                       pinmux =3D <0x3e1>, <0x3f1>,
+> +                               <0x401>, <0x411>,
+> +                               <0xbc1>, <0xbd1>,
+> +                               <0xbe1>, <0x701>;
+> +                       output-enable;
+> +                       input-enable;
+> +                       slew-rate =3D <208>;
+> +               };
+> +
+> +               usbotg-grp2 {
+> +                       pinmux =3D <0xb80>, <0xb90>, <0xbb0>;
+> +                       input-enable;
+> +                       slew-rate =3D <208>;
+> +               };
+> +
+> +               usbotg-grp3 {
+> +                       pinmux =3D <0xba1>;
+> +                       output-enable;
+> +                       slew-rate =3D <208>;
+> +               };
+> +       };
+>  };
+>
+>  &can0 {
+> @@ -257,3 +290,14 @@ &i2c4 {
+>         pinctrl-1 =3D <&i2c4_gpio_pins>;
+>         status =3D "okay";
+>  };
+> +
+> +&usbmisc {
+> +       status =3D "okay";
+> +};
+> +
+> +&usbotg {
+> +       pinctrl-names =3D "default";
+> +       pinctrl-0 =3D <&usbotg_pins>;
+> +       phys =3D <&usbphynop>;
+> +       status =3D "okay";
+> +};
+> --
+> 2.34.1
+>
 
