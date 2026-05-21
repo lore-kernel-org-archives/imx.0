@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49BF35979
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 00:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735E222332E;
+	Thu, 21 May 2026 00:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779322851; cv=none; b=sC7X0ZyFUSVaCix0KMTG1fJ7JN+2+0DrK1L4bWDN6bBhrdKXxwyMdYQAlgejE9+mH+/kTCAdX807hlzAnSahLuwa9BzIBHJF5a8SH4GXkF6onrDnCt0FKnDi68RCWFyOYhmAu3+8Gb3ecTrPTCpoxNTYemGjnEdrPNd2Qh6QmiM=
+	t=1779323522; cv=none; b=t8PCLoicX4Cwh92Ya/4ubNTuR6oqe3ox89qCMtlCWbbC+dFX+T0bMOdHiJUKQhu7PkYSQlD6Ykv6vDBiCD3LWbSI6/xbf7BBjt75rRmbCqpRObKcZ0wDITIH50uLz6dR3bVBkZ7ODgDHYsNj7kBqCGFluk+li8+9p94yQH6CEY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779322851; c=relaxed/simple;
-	bh=4xRv+KeUmJfOHMcDQwSE4m634AFfQ9398kp8aHhhp2c=;
+	s=arc-20240116; t=1779323522; c=relaxed/simple;
+	bh=IyBba+hARjxB1CZd3SNiua7WkbuaypKLi8pjtkbyoqM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ucOHscCFk2BEBviUQRHrcFf2p+WS3HQRj3DYS8PETCWo2wyB0MLCU+3k9vVxP+HKlvl5nC2RRN3GCkU5ZiLqiUabJhkxXv1FhzIn6PWrTXKvXofG3+/vWkolAT7x1E2VO9V1JvJj7j4kdICBW7sjiPjdI955ldFWdHZZcGibn7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MPNFqeEM; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=rdTr4xjLRLRisBYFq0fo5ZTg1XfCBozVvNAQkQMtVL4WdKTJmiecNQB3hIgh6tnQW5qDQLsb+jsMUBCF6Rh1EBbIMmcCbC5HBE5x7q7P0ZGR9L2+4UoZNeq+x6ppiMBMG7KaUi8Poamu05315Pte1s/3+PegZAv7FX+oiTzRIJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+bStMkm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MPNFqeEM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFE81F000E9;
-	Thu, 21 May 2026 00:20:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+bStMkm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88F11F000E9;
+	Thu, 21 May 2026 00:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779322850;
-	bh=zfjfq/0Wwx8kfF9HVx8zOey8T1SbdNZKf7RkyEDzmJo=;
+	s=k20260515; t=1779323519;
+	bh=B6HaYejqBYs36ZchYaYwGRtS8hgXdSXwNSnnFxZoYXk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MPNFqeEMlkFKsOsTgES/fuTU+4l8rqoMENMt9zt2KPK/Bp3XMj1zGpu+K8go2uLEi
-	 AcQO199rF/a3RBSs43oDCXFKSe5ONf6JEZaubC7DoEQchcpL1H8szn6p6fjaXLumDT
-	 4D8qc5qvgiL2upi2nRZybMQghhOwBJ0RQmJtOVpYFl87ILVRkZQPlHwb5crB6pr6Pu
-	 TtCClN9IHxx6MKfhrtaCHcA8ZWdn0GZwFAXXuRARmOLFZMD46LycSJhd9wo49AWsrP
-	 9Y99FVYRWqLywFuJrRVIRfGHGxLqFDkCJB+hAyegitr6GgUpj6D6XIAyycDEVY4vbH
-	 xXxumGfzF024A==
+	b=S+bStMkm2cUFJVfiNsk0ne+i3xXxWhcDU2YIA2hTLkMCfWbDGNf1xGtYJPK2vz1Xg
+	 3wUMXjnwU5yqHp+KKpqCKWFZHasyJq/q4EoqyG9aMtrR9WLKMlrEDR0wJzr0o/wJ9G
+	 l+Xf9VhtwqZVA2wOaa7wGcB6umggXFkngiMNW6wDdAk5XVZ7MIKu1igs9of6tMpXLI
+	 Y7X3wWsBT6jQdlE01HK1l95RbTgY7GyN88ZC7grLdfXm9n85rXl6TIqPddPSoCdREC
+	 k+fLzq7viZgtjKfDNpEXREuroJFpuPA96WEo7BbqGAQF7+cPbASEDzWo5tZrhTxIjK
+	 lgKJJMz2yTxlQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] pwm: imx27: Fix variable truncation in .apply()
+Subject: Re: [PATCH v6 4/9] dmaengine: dw-edma: Use new
+ .device_prep_config_sg() callback
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ronaldo Nunez" <rnunez@baylibre.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260521000054.4790-1-rnunez@baylibre.com>
-References: <20260521000054.4790-1-rnunez@baylibre.com>
+To: Frank.Li@oss.nxp.com
+Cc: vkoul@kernel.org, Frank.Li@kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org
+In-Reply-To: <20260520-dma_prep_config-v6-4-06e49b7acb38@nxp.com>
+References: <20260520-dma_prep_config-v6-4-06e49b7acb38@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 21 May 2026 00:20:49 +0000
-Message-Id: <20260521002050.4CFE81F000E9@smtp.kernel.org>
+Date: Thu, 21 May 2026 00:31:59 +0000
+Message-Id: <20260521003159.A88F11F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,60 +46,88 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] The function uses `clkrate` as a divisor without verifying if it i=
-s zero, leading to a potential kernel panic.
+- [High] The newly added `dw_edma_device_prep_config_sg` callback modifies =
+shared channel state locklessly, violating dmaengine API atomicity guarante=
+es and potentially corrupting active hardware transfers.
 --
 
-commit 1f32437ab37043997a359448a95a1484d3eb1fbd
-Author: Ronaldo Nunez <rnunez@baylibre.com>
+commit 3f734236aec2497e34a2baf98f60bcd0cd1c6525
+Author: Frank Li <Frank.Li@nxp.com>
+dmaengine: dw-edma: Use new .device_prep_config_sg() callback
 
-pwm: imx27: Fix variable truncation in .apply()
+This commit replaces the device_prep_slave_sg callback with the new
+device_prep_config_sg callback to combine configuration and descriptor
+preparation.
 
-This patch fixes a variable truncation issue in the PWM .apply() callback
-for iMX27 by changing the tmp variable to a u64. This prevents a 32-bit
-overflow when calculating the period, ensuring the ERR051198 errata
-workaround logic evaluates correctly.
-
-> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
-> index 3d34cdc4a3a51..c8b801fcb5251 100644
-> --- a/drivers/pwm/pwm-imx27.c
-> +++ b/drivers/pwm/pwm-imx27.c
-> @@ -208,6 +208,7 @@ static int pwm_imx27_apply(struct pwm_chip *chip, str=
-uct pwm_device *pwm,
->  	int val;
->  	int ret;
->  	u32 cr;
-> +	u64 tmp;
-> =20
->  	clkrate =3D clk_get_rate(imx->clks[PWM_IMX27_PER].clk);
+> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-=
+edma-core.c
+> index c2feb3adc79fa..92572dd8131e6 100644
+> --- a/drivers/dma/dw-edma/dw-edma-core.c
+> +++ b/drivers/dma/dw-edma/dw-edma-core.c
 [ ... ]
-> @@ -249,6 +250,11 @@ static int pwm_imx27_apply(struct pwm_chip *chip, st=
-ruct pwm_device *pwm,
->  	val =3D readl(imx->mmio_base + MX3_PWMPR);
->  	val =3D val >=3D MX3_PWMPR_MAX ? MX3_PWMPR_MAX : val;
->  	cr =3D readl(imx->mmio_base + MX3_PWMCR);
-> +
-> +	/*
-> +	 * tmp stores period in nanoseconds. Result fits in u64 since
-> +	 * val <=3D 0xfffe and prescaler in [1, 0x1000].
-> +	 */
->  	tmp =3D NSEC_PER_SEC * (u64)(val + 2) * MX3_PWMCR_PRESCALER_GET(cr);
->  	tmp =3D DIV_ROUND_UP_ULL(tmp, clkrate);
+> @@ -577,10 +577,11 @@ dw_edma_device_transfer(struct dw_edma_transfer *xf=
+er)
+>  }
+> =20
+>  static struct dma_async_tx_descriptor *
+> -dw_edma_device_prep_slave_sg(struct dma_chan *dchan, struct scatterlist =
+*sgl,
+> -			     unsigned int len,
+> -			     enum dma_transfer_direction direction,
+> -			     unsigned long flags, void *context)
+> +dw_edma_device_prep_config_sg(struct dma_chan *dchan, struct scatterlist=
+ *sgl,
+> +			      unsigned int len,
+> +			      enum dma_transfer_direction direction,
+> +			      unsigned long flags,
+> +			      struct dma_slave_config *config)
+>  {
+>  	struct dw_edma_transfer xfer;
+> =20
+> @@ -591,6 +592,9 @@ dw_edma_device_prep_slave_sg(struct dma_chan *dchan, =
+struct scatterlist *sgl,
+>  	xfer.flags =3D flags;
+>  	xfer.type =3D EDMA_XFER_SCATTER_GATHER;
+> =20
+> +	if (config && dw_edma_device_config(dchan, config))
+> +		return NULL;
 
 [Severity: High]
-This is a pre-existing issue, but could this division trigger a kernel panic
-if the clock subsystem fails to initialize or the hardware clock is
-unexpectedly disabled?
+Does this introduce a data race on the shared channel state?
 
-Earlier in this function, clkrate is fetched using clk_get_rate(), which
-might return 0 if the clock is unavailable. If clkrate is 0, using it as a
-divisor in DIV_ROUND_UP_ULL() will cause a division-by-zero CPU exception.
+By implementing the device_prep_config_sg callback, the driver bypasses
+the dmaengine core's per-channel spinlock, which normally protects
+configuration and preparation.
 
-Would it be safer to add a sanity check (e.g., returning -EINVAL if clkrate
-is 0) immediately after fetching the clock rate?
+However, dw_edma_device_config() modifies global channel state locklessly:
+
+static int dw_edma_device_config(...)
+{
+        ...
+        chan->non_ll =3D false;
+        ...
+        if (cfg_non_ll || non_ll)
+                chan->non_ll =3D true;
+        ...
+        memcpy(&chan->config, config, sizeof(*config));
+        ...
+}
+
+If multiple threads queue transfers concurrently, could this corrupt the
+descriptor configuration?
+
+More importantly, if a new transfer is prepared while the channel is active=
+ly
+executing, the interrupt handler might read the momentarily cleared or
+overwritten chan->non_ll.
+
+Could this cause the interrupt handler to invoke the wrong hardware routine
+and desynchronize the hardware state?
+
+> +
+>  	return dw_edma_device_transfer(&xfer);
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521000054.4790=
--1-rnunez@baylibre.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260520-dma_prep_c=
+onfig-v6-0-06e49b7acb38@nxp.com?part=3D4
