@@ -1,217 +1,438 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013062.outbound.protection.outlook.com [40.107.159.62])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0263B83E8
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 11:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779364065; cv=fail; b=Tf1UuRCtkyYTADOvqnblrtk99xM7C+ME+ZPLDP0BgllzdBvziPEvVwqQJ+RQpDUU3FYVrJGJTaex1HbFvak1Ox2Ya5TaeRkKxQ0WtBFtLXxMMzHSk2RwTTrhuMIxDczoHeSzQbcfLZJel8RkWhrvzRREUhx35KXVOVIdQH2Mtxg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779364065; c=relaxed/simple;
-	bh=LDnUCqqK6ZR5DNnURMBiZScfQgw4QOq1wcf9Dpq4aqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PNAEEnWWYAVPAxH+h4MNZJ9PNif9rj+nRl+yXqKTN3/n08dwUzks8Jcv7koJOpHFk0x48IDGIISPl6EX7JqNTuToiBPF9CXcB3kLvUIMrPBwk0/+SjFw3EQAJzPjbxnOxTdc3HDZk50moSLmpw13SoQEQngyeqhm7EyGVAzRhw8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FVjEbcXg; arc=fail smtp.client-ip=40.107.159.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314B13ACEE0;
+	Thu, 21 May 2026 11:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779364361; cv=none; b=m4Dy9ZH13547hbAgduyVNXR6smOjxiCr+YVL0HaiAzGDN8BJIKf7sBlXG1mGeMNjtvlFTsnMHAarCBTCkYoHW4LbRtGlqoiMa0MnBMhNTHws3keMB+S05oYttEtMkLbasJzlhIsDxphzrxjb8+BJtJgKZkLr40WlLLcUqrdeo0Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779364361; c=relaxed/simple;
+	bh=vbHdOinYV8YgqEE1iYXkqGIFlq0m5mJvmk6QW/IwU8Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oz6T6yK9k+fHVngP4MfymOlNDu+M6w0W3FiFS8IcJG737ZvcVeQrfc6Cw1CQy8kiATBXsLkG2RMj/Zc3EWQHzwTdo2Au2TWcxP9G4enQljBDpo7BYeCl8ksxuO8Ao+26inXj39EYIOmw6afMktiYkJ2A/kE9t3I5CVvshyrCLjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=VkKHzQmz; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FVjEbcXg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kwHyxiC/MGCaZFoeTs7ER8b0m1CMe2rbKmBbFNk+wDMSA8j+SXgYKrcpynr1+vdUxUO9wHmXRLfplF919AHvX7Z19rG6EWQHcWP1hh1l73HA3IoL5+PCrTVtOSjgqeQ5wHscJNchEkboqzo/hBDAO8meN+YHN1koCrSfsKXx/2rxETv9oP7yWMZyuSr+CTPafGLfxbpKmn7AByG7xNVrHcd4np+RcnVtDIvK6Yn+nV6rfQ7QmB8omxDyWxuBqMXfzek+1+AO/yQqiGyN7ycWf38R9D1HL+2Zh4zlRBXoCr0hI3L+lFn8oXEYXv+zpGIp9x2K2qpzH1OBJIt7YFrPNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p/0PS67B/62iA5OE6mRGDNX5q2uSO8eL7LpqZ6F6uAM=;
- b=eT3xtZwkH3zAmmHOVF0KBAnKH0umAFvXMnju2Ci3NkHnNfO6fHJMMAwYEy7tJrT/R86JSyZ0vAnf+VYj+l8w+xvSw5Ev/8ufJPYYxqd9q1myxDZTntpwwqOdzrYliQqNu/MwlWpixc8YVSqigoN3CZQp2SMzcptDweMVhMFMjJgg0vK3e86yDLnfJGp6pw/rhmvi2feXwy5VvxjCXdGzALBiNLWLen6PHs6qcj2RAnYpjqCFxXF2qedB2lkxrUKjq4K8+5P5MaZvfJar4gnGrJLzbCDz2XpHgKv02eyYVDzsDa8MriMLBdcljzCHJvItCoEDSuDzDq3+dDK9hGmrGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p/0PS67B/62iA5OE6mRGDNX5q2uSO8eL7LpqZ6F6uAM=;
- b=FVjEbcXghObGugi6kdbJ0I0YclD45cHWMrSMNS4GB2F1dt+7EG05uwfBe2ne5epLy81l2OMEfNlmAGXImFVYiQiSaKZEIeilRxk6CThM1XvOdsOEdsxpZ/a7mPgnX8EI3HiZt6QscIU0u4tuyoHcVzTgpEGYokfdtPse0n7uei67qchPWKGZHM4W3yM95/aLSN6Cw4OBqdD8uVWn5Sr9ut6PCOaXbawYZaSmn+skmK6Dn/eel3NZzWVINZv0e+4zGAAs/xuObl4lTmb1OHsvkvgEMnJ+Scnyf4C5hkyP7Zq7E+9dZo3H3SH0zRowtKNExqMQHtWJoQEmGfIK3uuo3w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB7821.eurprd04.prod.outlook.com (2603:10a6:102:c5::5)
- by GV4PR04MB11290.eurprd04.prod.outlook.com (2603:10a6:150:28f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Thu, 21 May
- 2026 11:47:38 +0000
-Received: from PA4PR04MB7821.eurprd04.prod.outlook.com
- ([fe80::67dc:4bd2:8552:9b50]) by PA4PR04MB7821.eurprd04.prod.outlook.com
- ([fe80::67dc:4bd2:8552:9b50%6]) with mapi id 15.21.0048.016; Thu, 21 May 2026
- 11:47:38 +0000
-Date: Thu, 21 May 2026 19:49:52 +0800
-From: Robby Cai <robby.cai@nxp.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	s.hauer@pengutronix.de, festevam@gmail.com,
-	sebastian.krzyszkowiak@puri.sm, kernel@pengutronix.de,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] arm64: dts: imx8mq-evk: Enable MIPI CSI and dual
- OV5640 cameras
-Message-ID: <20260521114952.GA215762@shlinux88>
-References: <20260515111143.2980956-1-robby.cai@nxp.com>
- <agcnS4H_XJRL7duw@lizhi-Precision-Tower-5810>
- <20260520065452.GA2269979@shlinux88>
- <ag4C6MjnOJGjEpKN@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ag4C6MjnOJGjEpKN@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SI1PR02CA0040.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::7) To PA4PR04MB7821.eurprd04.prod.outlook.com
- (2603:10a6:102:c5::5)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="VkKHzQmz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=amM9eiEA/pvK+ydwPeVpWCIxUjk/OZPSWjNRu2oMb5w=; b=VkKHzQmzuj8K5qIXEc3DMSVof8
+	/nFs80YrUTxE9QGf2d33GryU1qcU2ADtGgBrf/Jmu1VEW/LlZomuBYf0G+fndUD3+NbCpfh1hltw3
+	giFs5ExG849OROQ2r5GngCS5jciOy/ZT88eEqlZZaFENXyx40SvTyT6KTpt0Ini/lbgxIxvJNJ+6c
+	v6e4Zhy+CZh2JgbIZE0N8Xe8TAF5p9UzCdJ28ExKuwpNXHb5W/TJ6ols5aZLV6UvVecE3iCMjM48O
+	E9KZ637KM2Qn1CslIhUx1QW2jIzxBj0bwtKoijfsbG6D2bx2uUkgUZ04VRflDKxzKqz1O52W+v96N
+	8wYTXDFg==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wQ1x3-000588-1X;
+	Thu, 21 May 2026 13:52:33 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wQ1x2-0009UY-1F;
+	Thu, 21 May 2026 13:52:33 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Michael Riesch <michael.riesch@collabora.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Heiko Stuebner <heiko@sntech.de>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Frank Li <frank.li@nxp.com>, Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Mehdi Djait <mehdi.djait@linux.intel.com>,
+ Hans Verkuil <hverkuil+cisco@kernel.org>,
+ "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>,
+ "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
+Cc: "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
+ "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
+Subject: Re: [PATCH v4 4/6] media: synopsys: Add PHY stopstate wait for i.MX93
+Date: Thu, 21 May 2026 13:52:31 +0200
+Message-ID: <3606153.44csPzL39Z@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To:
+ <AS8PR04MB9080D3B1A6B522F3F9342E23FA0E2@AS8PR04MB9080.eurprd04.prod.outlook.com>
+References:
+ <20260519-csi2_imx95-v4-0-84ea4bb78a88@oss.nxp.com>
+ <10853728.nUPlyArG6x@steina-w>
+ <AS8PR04MB9080D3B1A6B522F3F9342E23FA0E2@AS8PR04MB9080.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB7821:EE_|GV4PR04MB11290:EE_
-X-MS-Office365-Filtering-Correlation-Id: 013cf535-69f0-488f-39de-08deb72ec149
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|7416014|52116014|22082099003|18002099003|56012099003|38350700014|5023799004|4143699003|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	sobfIdYJIb2GoLZLqVZpM2UIDqJOgOvOJxklvqDl4/l/XW/uPMO8aUSt4o6aUAmt0t+u75tirqQwW9gPi54eqvjPM8rmZvcz1VeOW8kojGOEzrwLADFjbLzNzsz3sqvi0T40jrgjm4JwSrCnz1eDpMiVdQWbVtVO/KntnYzcByPer+5/hgKQKxnJl3ktopoFGjnbRxXJJeJLDOgfjKy0ul1NKrG6cBWWot9R8gid3TUWE4rzBhwbd4a2kml43OUVaVSBVPPpDln8rtHO4sWFDUst1GaTicHV0agcQWFRgsu4tWlNr0Xrx3bBm30N1uIqY+4PSpScrewhifdpM52HBtOik+V7R1DxtYmQ1KOxYiSWtYxjZarrB/QZJ3+gbThe1ECjoI9eOdDxMZwKaAJqZAwu3+dbzrHtOYoxLeZPZEtkJsoxrES43s0rEQvtc+kqQXaDihpxRjSZoialy09ntIpQ1VBN8wEgEppBoxVNBBhyyqlCkxTMQV5xWdtdQxDLW7U9MOo7RAvUftBhfuVd+r1F24hXQdtgbc1LlYYKfV25+8+jhc8EZ6jq5XM1vGin/HS/P6TBKJdyvd2c6ob81BZ91/L9oJ6eGoMf42piKaZtNGWYX5HS+8RFmZOelJ7tQZWgrJwat5b5jyalhVOl3u83uroCsszppEHGBYD5o8dQ1gNweERlT3R6rzEa1XpX9mpdovJgdo/j6p0AaSNbe4eP1cAyepoCaD+zv+7KIO6aTJVpUqu/GticiQwRtjUV
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7821.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(7416014)(52116014)(22082099003)(18002099003)(56012099003)(38350700014)(5023799004)(4143699003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sZCUyhhWOyrE2SblYDDbxV/0Dvao1Kp7yI2hlmUIlY+uG2T4Kk1XS5B/EB2g?=
- =?us-ascii?Q?tbss7GYvUPTkZwVAx8sjZoHBP0QKqJVDlANbSLn8BHUXfSgzaB7xu4pjdT5l?=
- =?us-ascii?Q?PcEaWtD20i9qD+oEvXBVwMOcDVaXWZo7BLrv75M16Szv8cXSHU2ZFuuygrJG?=
- =?us-ascii?Q?KSie8C6j2FE6eddTOzCmrpQmteA6qWpeBZDoz5MtB4NluuJFklkA132W7SPT?=
- =?us-ascii?Q?BQNtEHZD+vSSL718RpZziAAj4DWA0hf1AsSYcTvr/Bto9O4QD7szCTHdfpXN?=
- =?us-ascii?Q?278hytZAoJSpSqrBbAdOpyMqkM0kRaw8O7i0vBrCk+vZyoLeAiqXqG5NXQB4?=
- =?us-ascii?Q?GT0qAHrHw2W0zq2JkBMNAJB9lk1RsEvhYhuzoNXbRxPG1ueAVThj7v/gHSnc?=
- =?us-ascii?Q?nV0Et7vlUUC43TPQ4d73MPJj36Iq0FWM2Vm4wO4+UEunbw4n0TM6F3gw9N0c?=
- =?us-ascii?Q?Ao0YfWYOUmKCoxuW65MzAT09B3GvvywDNdV7Iutpg5dkSUWrJqYr/zyLB5TV?=
- =?us-ascii?Q?8EoaygtRKnckRJhPJlW4CvdHj4azXGJ71lLvukcn0dnRy/NNIYtPTTq7tVX0?=
- =?us-ascii?Q?U0i9PEKwVaaG3WsALIkzqQsC044BXDLufBpwFgK+lOD4Tl+hGn68UvTKbg2R?=
- =?us-ascii?Q?TH3K3caqdrB68Y5ZPGFFOZUfxpskrQPRkP/yna19NzSVUu0Wj75yqKXoSrBa?=
- =?us-ascii?Q?GoKjQVNF1uIhsRumUvcc7cxf9hWzbNt9HG27rXm/rSLsiRsiqtVi/S9QH4ss?=
- =?us-ascii?Q?/f/BFKhbb2JWSYEtZVLcOXkJiVWczRlEH8Vo/wWoxbRXkydnkdpjHWfkRWhq?=
- =?us-ascii?Q?vXC1dpeNk1AqQvfL1AJbw48xbQ0QMd/5gkLXGEX8Z4yquYsJ9tjLI41Hmaf9?=
- =?us-ascii?Q?vAFZzM5LbF4YGCFbz3/HJCMdJVowjvhfRlCUZ26qcWtFhCiC50s6VWvObYaE?=
- =?us-ascii?Q?JpFWF+jH/UZFW748I4pMDGoSQakG9alUR+vN4taoanynj5fFtwU3TMdRx+IW?=
- =?us-ascii?Q?TKColMNrbzil6gYw2J2je0ng6kCdbDYdxzHk6LFM4WE8dQdrYbqIOz3FKJF2?=
- =?us-ascii?Q?eg9YohcTDxqsL7CtjK1E9DdLxGjaMR/JBlsorOv5hEvqXVcWZAEsTXNTJuzT?=
- =?us-ascii?Q?werPXknOWKRY7n0vSkYs+6cOhUGDoq+dJGm6Sg46T19sH+axztpqL/lV2r8B?=
- =?us-ascii?Q?oN4YynI/Uy2rpW7e16AT5OsQVCpQQoSm0Kbl8jeS2zbjD9fZxU9e6MCbtRW5?=
- =?us-ascii?Q?3/1W0YZDudvpr0zZ3OcQ7YTu8E3DHjo2jGMIVy8Rqv4hKiMpGzSPGAj/dZwU?=
- =?us-ascii?Q?3P65xptkB3mKmDoAhr6FVWF0GYC0hYIuGyUvqv2K/j2RXfFX+YRoV+K3MGaj?=
- =?us-ascii?Q?ZmN03IRN4HQhuFdS8E25Wv3sDD88D6UQdgQGDyUDCubwmiJdUk80Iih+z3iR?=
- =?us-ascii?Q?1Z5pLey02s11tHcDalaPcqzJpHw/71KGsoJs6oxTTSzxrnd7Wj5fu7TD7R5X?=
- =?us-ascii?Q?Qgjse9xB6ALb/slOUfSjdNTGuJ1zqIhJntoRHvdhbAFapMXdA54dXYB/EpHO?=
- =?us-ascii?Q?1l4aLYOzEGrbg7fVvzczkoDgipvrfj6Wof6qe+BzucVcb3SofUGzXGYdiS+8?=
- =?us-ascii?Q?jfhYcU0VaxpdktkiF8VhdfOCAuEnYKnmWOrV7kg1Df0SNtmyR3gaFuY7l9cC?=
- =?us-ascii?Q?IdD9WoLOamJNXAyHCZHtH0UGu6crjvP6PsGwdJp7E80rKDRr+D/RXIG8iA5y?=
- =?us-ascii?Q?4I/WlxWLWQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 013cf535-69f0-488f-39de-08deb72ec149
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7821.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 11:47:37.7899
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RjjDtGwc8iCj4hBVNpPa72LZWUSUiyWLV/GShjfj6uYK0ylNRvSJHIdOGftEIA3QWupjdmV5G+Y1AjQQss7Dug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11290
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28007/Thu May 21 08:26:28 2026)
 
-On Wed, May 20, 2026 at 02:52:24PM -0400, Frank Li wrote:
-> On Wed, May 20, 2026 at 02:54:52PM +0800, Robby Cai wrote:
-> > On Fri, May 15, 2026 at 10:01:47AM -0400, Frank Li wrote:
-> > > On Fri, May 15, 2026 at 07:11:43PM +0800, Robby Cai wrote:
-> > > > Enable the MIPI CSI bridges and corresponding CSI-2 host interfaces
-> > > > on the i.MX8MQ EVK, and add two OV5640 camera sensors.
-> > > >
-> > > > The sensors are connected via I2C1 and I2C2, each with proper
-> > > > endpoint descriptions to form complete media pipelines.
-> > > >
-> > > > The resulting pipelines are:
-> > > >
-> > > >   - OV5640 (I2C2) -> MIPI CSI1 -> CSI1 bridge
-> > > >   - OV5640 (I2C1) -> MIPI CSI2 -> CSI2 bridge
-> > > >
-> > > > Both pipelines have been validated on the i.MX8MQ EVK using the
-> > > > upstream OV5640 driver.
-> > > >
-> > > > Both OV5640 sensors share a single reset GPIO on this board,
-> > > > which prevents independent hardware reset when both cameras
-> > > > are enabled. As a result, the reset line is kept deasserted
-> > > > via a GPIO hog, and sensor reset is performed via software.
+Hi,
+
+thanks for the replay.
+
+Am Donnerstag, 21. Mai 2026, 11:29:39 CEST schrieb G.N. Zhou (OSS):
+> Hi Alexander,
+>=20
+> > -----Original Message-----
+> > From: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > Sent: Wednesday, May 20, 2026 7:12 PM
+> > To: Michael Riesch <michael.riesch@collabora.com>; Mauro Carvalho Chehab
+> > <mchehab@kernel.org>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
+> > <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Heiko Stuebner
+> > <heiko@sntech.de>; Laurent Pinchart <laurent.pinchart@ideasonboard.com>;
+> > Frank Li <frank.li@nxp.com>; Sakari Ailus <sakari.ailus@linux.intel.com=
+>; Bryan
+> > O'Donoghue <bryan.odonoghue@linaro.org>; Mehdi Djait
+> > <mehdi.djait@linux.intel.com>; Hans Verkuil <hverkuil+cisco@kernel.org>;
+> > G.N. Zhou (OSS) <guoniu.zhou@oss.nxp.com>
+> > Cc: linux-media@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
+> > kernel@lists.infradead.org; linux-rockchip@lists.infradead.org; G.N. Zh=
+ou (OSS)
+> > <guoniu.zhou@oss.nxp.com>
+> > Subject: Re: [PATCH v4 4/6] media: synopsys: Add PHY stopstate wait for
+> > i.MX93
+> >=20
+> > Hi,
+> >=20
+> > Am Dienstag, 19. Mai 2026, 04:07:41 CEST schrieb Guoniu Zhou:
+> > > Implement waiting for D-PHY lanes to enter stop state on i.MX93. This
+> > > ensures proper PHY initialization by verifying that the clock lane and
+> > > all active data lanes have entered the stop state before proceeding
+> > > with further operations.
 > > >
-> > > Does reset_control_get_shared() resolve this problem?
+> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> > > ---
+> > > Changes in v2:
+> > > - Removes redundant register availability check
+> > > - Uses read_poll_timeout() with dw_mipi_csi2rx_read() instead of
+> > >   readl_poll_timeout() with direct register address
+> > > - Fixes stopstate condition logic
+> > > - Check PHY stopstate after sensor enable instead of before to ensure
+> > >   correct timing.
+> > > - Optimize PHY stopstate polling parameters (1000us->10us, 2s->1ms) to
+> > >   balance performance and responsiveness.
+> > > ---
+> > >  drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 36
+> > > ++++++++++++++++++++++++
+> > >  1 file changed, 36 insertions(+)
 > > >
-> >
-> > No, reset_control_get_shared() does not really solve this issue.
-> >
-> > The problem here is not about software coordination, but about the
-> > hardware topology: both sensors are physically tied to the same reset
-> > line. This means any reset operation will always affect both devices
-> > simultaneously, regardless of how the reset framework is used.
-> 
-> Reset framework is resolve this problem. It is quite common that many devices
-> shared one reset pin.
+> > > diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> > > b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> > > index 92178a3dec5d..8a34aec550ad 100644
+> > > --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> > > +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> > > @@ -11,6 +11,7 @@
+> > >  #include <linux/clk.h>
+> > >  #include <linux/delay.h>
+> > >  #include <linux/io.h>
+> > > +#include <linux/iopoll.h>
+> > >  #include <linux/module.h>
+> > >  #include <linux/of.h>
+> > >  #include <linux/phy/phy.h>
+> > > @@ -35,6 +36,8 @@
+> > >  #define DW_REG_EXIST		BIT(31)
+> > >  #define DW_REG(x)		(DW_REG_EXIST | (x))
+> > >
+> > > +#define DPHY_STOPSTATE_CLK_LANE		BIT(16)
+> > > +
+> > >  #define DPHY_TEST_CTRL0_TEST_CLR	BIT(0)
+> > >
+> > >  #define IPI_VCID_VC(x)			FIELD_PREP(GENMASK(1, 0),
+> > (x))
+> > > @@ -65,6 +68,7 @@ enum dw_mipi_csi2rx_regs_index {
+> > >  	DW_MIPI_CSI2RX_PHY_TST_CTRL0,
+> > >  	DW_MIPI_CSI2RX_PHY_TST_CTRL1,
+> > >  	DW_MIPI_CSI2RX_PHY_SHUTDOWNZ,
+> > > +	DW_MIPI_CSI2RX_PHY_STOPSTATE,
+> > >  	DW_MIPI_CSI2RX_IPI_DATATYPE,
+> > >  	DW_MIPI_CSI2RX_IPI_MEM_FLUSH,
+> > >  	DW_MIPI_CSI2RX_IPI_MODE,
+> > > @@ -87,6 +91,7 @@ struct dw_mipi_csi2rx_drvdata {
+> > >  	void (*dphy_assert_reset)(struct dw_mipi_csi2rx_device *csi2);
+> > >  	void (*dphy_deassert_reset)(struct dw_mipi_csi2rx_device *csi2);
+> > >  	void (*ipi_enable)(struct dw_mipi_csi2rx_device *csi2);
+> > > +	int (*wait_for_phy_stopstate)(struct dw_mipi_csi2rx_device *csi2);
+> > >  };
+> > >
+> > >  struct dw_mipi_csi2rx_format {
+> > > @@ -139,6 +144,7 @@ static const u32 imx93_regs[DW_MIPI_CSI2RX_MAX]
+> > =3D {
+> > >  	[DW_MIPI_CSI2RX_PHY_SHUTDOWNZ] =3D DW_REG(0x40),
+> > >  	[DW_MIPI_CSI2RX_DPHY_RSTZ] =3D DW_REG(0x44),
+> > >  	[DW_MIPI_CSI2RX_PHY_STATE] =3D DW_REG(0x48),
+> > > +	[DW_MIPI_CSI2RX_PHY_STOPSTATE] =3D DW_REG(0x4c),
+> > >  	[DW_MIPI_CSI2RX_PHY_TST_CTRL0] =3D DW_REG(0x50),
+> > >  	[DW_MIPI_CSI2RX_PHY_TST_CTRL1] =3D DW_REG(0x54),
+> > >  	[DW_MIPI_CSI2RX_IPI_MODE] =3D DW_REG(0x80), @@ -556,10 +562,19
+> > @@
+> > > static int dw_mipi_csi2rx_enable_streams(struct v4l2_subdev *sd,
+> > >  	if (ret)
+> > >  		goto err_csi_stop;
+> > >
+> > > +	if (!csi2->enabled_streams &&
+> > > +	    csi2->drvdata->wait_for_phy_stopstate) {
+> > > +		ret =3D csi2->drvdata->wait_for_phy_stopstate(csi2);
+> > > +		if (ret)
+> > > +			goto err_disable_streams;
+> > > +	}
+> > > +
+> > >  	csi2->enabled_streams |=3D streams_mask;
+> > >
+> > >  	return 0;
+> > >
+> > > +err_disable_streams:
+> > > +	v4l2_subdev_disable_streams(remote_sd, remote_pad->index, mask);
+> > >  err_csi_stop:
+> > >  	/* Stop CSI hardware if no streams are enabled */
+> > >  	if (!csi2->enabled_streams)
+> > > @@ -871,11 +886,32 @@ static void imx93_csi2rx_dphy_ipi_enable(struct
+> > dw_mipi_csi2rx_device *csi2)
+> > >  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_IPI_MODE, val);  }
+> > >
+> > > +static int imx93_csi2rx_wait_for_phy_stopstate(struct
+> > > +dw_mipi_csi2rx_device *csi2) {
+> > > +	struct device *dev =3D csi2->dev;
+> > > +	u32 stopstate_mask;
+> > > +	u32 val;
+> > > +	int ret;
+> > > +
+> > > +	stopstate_mask =3D DPHY_STOPSTATE_CLK_LANE | GENMASK(csi2-
+> > >lanes_num -
+> > > +1, 0);
+> > > +
+> > > +	ret =3D read_poll_timeout(dw_mipi_csi2rx_read, val,
+> > > +				(val & stopstate_mask) =3D=3D stopstate_mask,
+> > > +				 10, 1000, true,
+> > > +				 csi2, DW_MIPI_CSI2RX_PHY_STOPSTATE);
+> > > +	if (ret)
+> > > +		dev_err(dev, "lanes are not in stop state: %#x,
+> > expected %#x\n",
+> > > +			val, stopstate_mask);
+> >=20
+> > Did you actually test this on imx93? I'm trying to get my imx327 sensor=
+ to run,
+> > but only run into this error message:
+> > dw-mipi-csi2rx 4ae00000.mipi-csi: lanes are not in stop state: 0x0, exp=
+ected
+> > 0x10003
+>=20
+> Thanks for testing. Regarding the lane stop state error on i.MX93 with im=
+x327:
+>=20
+> This error indicates the CSI-2 lanes are not in LP-11 (stop) state when=20
+> expected. Please check:
+>=20
+> 1) Verify the sensor PHY is in LP-11 state before returning from the sens=
+or's=20
+>    s_stream(1) call. The CSI-2 receiver expects lanes to be in stop state=
+=20
+>    initially.
 
-okay, I'll try to switch to use this approach in next revision.
+Well, this might be tricky as I don't have D-PHY capable scopes.
+I can successfully use this sensor on a imx8mp, so I am expecting this to be
+okay.
 
-Some devices require coordinated RESET and PWDN sequencing, but in this
-case the device can be properly initialized with RESET held inactive and
-controlled solely via the PWDN signal, which makes this approach viable.
+> 2) Check if the imx327 driver has a delay between starting the stream and=
+=20
+>    returning from s_stream(). If the sensor transitions PHY out of LP-11=
+=20
+>    state during this delay, the CSI driver's lane state check will fail=20
+>    when it runs later. The sensor should remain in LP-11 until the CSI=20
+>    controller completes its initialization.
 
-> 
-> >
-> > While reset_control_get_shared() introduces reference counting to avoid
-> > unintended assertions, it does not allow independent reset control.
-> > In particular:
-> >
-> >   - A reset operation (assert) will still impact both sensors.
-> 
-> yes, only when first devices toggle reset signal. Second device do nothing.
-> 
-> >   - It does not solve the requirement for per-device hardware reset.
-> 
-> It is hardware limitation.
-> 
-> >
-> > Therefore, using a shared reset control does not provide true isolation
-> > between the two OV5640 instances.
-> 
-> It is not isolation. Just don't allow second device to toggle reset pin.
-> 
-> >
-> > Keeping the reset line permanently deasserted (e.g. via GPIO hog) and
-> > handling initialization through software/power sequencing is a valid
-> > and practical solution for this hardware design.
-> 
-> If use i2c gpio, expandor driver may probe after sensor driver probe. So
-> reset may happen after sensor driver probe.
+In imx290_set_stream() and subsequently imx290_start_streaming() setting
+IMX290_XMSTA starts the stream. I expect this is the point when the sensors
+switches from LP-11 to HS. But again, I can't verify.
+
+With enabling debug
+> echo "module videodev +p" > /sys/kernel/debug/dynamic_debug/control
+> echo 0xff > /sys/class/video4linux/video0/dev_debug
+
+After I setup the media pipeline, running the command
+> v4l2-ctl -z "platform:4ae40000.isi" -d "mxc_isi.0.capture" --stream-mmap =
+=2D-stream-count=3D1 --stream-to=3Dimx93.raw
+I get the following debug output:
+
+=2D-8<--
+plane 0: bytesperline=3D3840 sizeimage=3D4147200
+mxc-isi 4ae40000.isi: validating link "crossbar":2 -> "mxc_isi.0":0
+mxc-isi 4ae40000.isi: validating stream "crossbar":2:0 -> "mxc_isi.0":0:0
+mxc-isi 4ae40000.isi: validating link "dw-mipi-csi2rx 4ae00000.mipi-csi":1 =
+=2D> "crossbar":0
+mxc-isi 4ae40000.isi: validating stream "dw-mipi-csi2rx 4ae00000.mipi-csi":=
+1:0 -> "crossbar":0:0
+mxc-isi 4ae40000.isi: validating link "imx327 4-001a":0 -> "dw-mipi-csi2rx =
+4ae00000.mipi-csi":0
+mxc-isi 4ae40000.isi: validating stream "imx327 4-001a":0:0 -> "dw-mipi-csi=
+2rx 4ae00000.mipi-csi":0:0
+mxc-isi 4ae40000.isi: enable streams "crossbar":2/0x1
+mxc-isi 4ae40000.isi: collect_streams: "crossbar":2: found 0x1 enabled 0x0
+imx290 4-001a: Frame descriptor on pad 0, type CSI-2
+imx290 4-001a:   stream 0, code 0x300f, length 0, flags 0x0000, vc 0, dt 0x=
+2b
+dw-mipi-csi2rx 4ae00000.mipi-csi: Frame descriptor on pad 1, type CSI-2
+dw-mipi-csi2rx 4ae00000.mipi-csi:        stream 0, code 0x300f, length 0, f=
+lags 0x0000, vc 0, dt 0x2b
+mxc-isi 4ae40000.isi: enable streams "dw-mipi-csi2rx 4ae00000.mipi-csi":1/0=
+x1
+dw-mipi-csi2rx 4ae00000.mipi-csi: collect_streams: "dw-mipi-csi2rx 4ae00000=
+=2Emipi-csi":1: found 0x1 enabled 0x0
+mxc-isi 4ae40000.isi: enable streams "imx327 4-001a":0/0x1
+imx290 4-001a: collect_streams: sub-device "imx327 4-001a" does not support=
+ streams
+dw-mipi-csi2rx 4ae00000.mipi-csi: lanes are not in stop state: 0x0, expecte=
+d 0x10003
+mxc-isi 4ae40000.isi: disable streams "imx327 4-001a":0/0x1
+imx290 4-001a: collect_streams: sub-device "imx327 4-001a" does not support=
+ streams
+mxc-isi 4ae40000.isi: enable streams 1:0x1 failed: -110
+mxc-isi 4ae40000.isi: failed to enable streams 0x1 on 'dw-mipi-csi2rx 4ae00=
+000.mipi-csi':1: -110
+mxc-isi 4ae40000.isi: enable streams 2:0x1 failed: -110
+mxc-isi 4ae40000.isi: Failed to enable pipe 0
+video0: VIDIOC_STREAMON: error -110: type=3Dvid-cap-mplane
+videodev: v4l2_release: video0: release
+=2D-8<--
+
+=46or completeness this is my media device config
+=2D-8<--
+# media-ctl  -p
+Media controller API version 7.1.0
+
+Media device information
+=2D-----------------------
+driver          mxc-isi
+model           FSL Capture Media Device
+serial         =20
+bus info        platform:4ae40000.isi
+hw revision     0x0
+driver version  7.1.0
+
+Device topology
+=2D entity 1: crossbar (3 pads, 2 links, 1 route)
+            type V4L2 subdev subtype Unknown flags 0
+            device node name /dev/v4l-subdev0
+        routes:
+                0/0 -> 2/0 [ACTIVE]
+        pad0: SINK,MUST_CONNECT
+                [stream:0 fmt:SRGGB10_1X10/1920x1080 field:none colorspace:=
+raw]
+                <- "dw-mipi-csi2rx 4ae00000.mipi-cs":1 [ENABLED,IMMUTABLE]
+        pad1: SINK,MUST_CONNECT
+        pad2: SOURCE
+                [stream:0 fmt:SRGGB10_1X10/1920x1080 field:none colorspace:=
+raw]
+                -> "mxc_isi.0":0 [ENABLED,IMMUTABLE]
+
+=2D entity 5: mxc_isi.0 (2 pads, 2 links, 0 routes)
+            type V4L2 subdev subtype Unknown flags 0
+            device node name /dev/v4l-subdev1
+        pad0: SINK
+                [stream:0 fmt:SRGGB10_1X10/1920x1080 field:none colorspace:=
+raw
+                 compose.bounds:(0,0)/1920x1080
+                 compose:(0,0)/1920x1080]
+                <- "crossbar":2 [ENABLED,IMMUTABLE]
+        pad1: SOURCE
+                [stream:0 fmt:SRGGB10_1X10/1920x1080 field:none colorspace:=
+jpeg xfer:srgb ycbcr:601 quantization:full-range
+                 crop.bounds:(0,0)/1920x1080
+                 crop:(0,0)/1920x1080]
+                -> "mxc_isi.0.capture":0 [ENABLED,IMMUTABLE]
+
+=2D entity 8: mxc_isi.0.capture (1 pad, 1 link)
+            type Node subtype V4L flags 0
+            device node name /dev/video0
+        pad0: SINK
+                <- "mxc_isi.0":1 [ENABLED,IMMUTABLE]
+
+=2D entity 16: dw-mipi-csi2rx 4ae00000.mipi-cs (2 pads, 2 links, 1 route)
+             type V4L2 subdev subtype Unknown flags 0
+             device node name /dev/v4l-subdev2
+        routes:
+                0/0 -> 1/0 [ACTIVE]
+        pad0: SINK,MUST_CONNECT
+                [stream:0 fmt:SRGGB10_1X10/1920x1080 field:none colorspace:=
+raw xfer:none ycbcr:601 quantization:full-range]
+                <- "imx327 4-001a":0 [ENABLED]
+        pad1: SOURCE
+                [stream:0 fmt:SRGGB10_1X10/1920x1080 field:none colorspace:=
+raw xfer:none ycbcr:601 quantization:full-range]
+                -> "crossbar":0 [ENABLED,IMMUTABLE]
+
+=2D entity 21: imx327 4-001a (1 pad, 1 link, 0 routes)
+             type V4L2 subdev subtype Sensor flags 0
+             device node name /dev/v4l-subdev3
+        pad0: SOURCE
+                [stream:0 fmt:SRGGB10_1X10/1920x1080 field:none colorspace:=
+raw xfer:none ycbcr:601 quantization:full-range
+                 crop.bounds:(0,0)/1945x1097
+                 crop:(12,8)/1920x1080]
+                -> "dw-mipi-csi2rx 4ae00000.mipi-cs":0 [ENABLED]
+=2D-8<--
+
+Anything odd here?
+
+> You may need to remove any delays in the imx327 s_stream implementation, =
+or=20
+> ensure the sensor stays in LP-11 state until the CSI receiver is ready.
+>=20
+> If possible, could you share the imx327 driver code or check its s_stream=
+ implementation?
+
+It's essentially upstream in drivers/media/i2c/imx290.c.
+I only have a dummy implementation for get_frame_desc and a small adjusteme=
+nt
+for my camera module regarding i2c access.
+
+=2D-8<--
+static int imx290_get_frame_desc(struct v4l2_subdev *sd, unsigned int pad,
+				 struct v4l2_mbus_frame_desc *fd)
+{
+	const struct v4l2_mbus_framefmt *format;
+	struct v4l2_subdev_state *state;
+
+	state =3D v4l2_subdev_lock_and_get_active_state(sd);
+	format =3D v4l2_subdev_state_get_format(state, pad);
+	v4l2_subdev_unlock_state(state);
+
+	fd->type =3D V4L2_MBUS_FRAME_DESC_TYPE_CSI2;
+	fd->num_entries =3D 1;
+	fd->entry[0].pixelcode =3D format->code;
+	fd->entry[0].stream =3D 0;
+	fd->entry[0].bus.csi2.vc =3D 0;
+	fd->entry[0].bus.csi2.dt =3D MIPI_CSI2_DT_RAW10; //TODO: get_data_type_by_=
+code(format->code);
+
+	return 0;
+}
+=2D-8<--
+
+Another thing. I use https://lore.kernel.org/imx/20250701-95_cam-v1-2-c5172=
+bab387b@nxp.com/
+for the D-PHY. Is there any update/progress on that driver?
+
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
 
-Just to clarify, the reset GPIO in this design is provided by the SoC GPIO
-controller (gpio1), not an external I2C GPIO expander.
-
-Therefore, the "late reset" issue you mentioned does not apply here.
-
-Regards,
-Robby
-> 
-> Frank
-> >
-> > This matches the intention of the upstream changes as well, where GPIO-
-> > based resets are treated as simple control signals rather than fully
-> > isolated reset domains.
-> >
-> > In practice, using a shared reset here can even introduce subtle
-> > interference between the two cameras during probe or power cycling,
-> > so it is safer to avoid using reset for runtime control entirely.
-> >
-> > Regards,
-> > Robby
-> >
