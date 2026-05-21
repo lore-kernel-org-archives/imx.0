@@ -1,212 +1,388 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013014.outbound.protection.outlook.com [52.101.72.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DA336A352
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 09:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779355008; cv=none; b=S6HxmBLrO+7T/dxo/3FlSgwtDxfd9jqXjTEXpbOK6fARJyPoqhRnH1Pdmab2Cm7dTUnDmve1eh3gDC/YkzbN6LAB2s59aVkq1Sl3eiLD0EVS79jYZeP6WwPwY83nC4jDWHcqW2+xH2CES/aJjklxoaje3yL30U+KLJU84HR52eI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779355008; c=relaxed/simple;
-	bh=1m0AW2cExEyKezaoaqpg9M8Sd9W7xIah4eoQaNoNaio=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eIOxm//9AVYJKykUn2FuM6rPj0lS+GwF3XOxlqX1+48M3Ywg9r03iFPE0hosUuoupb0zJp7T+gOYr9ZCTtku3Ks6p6SYfpfAGKM84k5fqoO/azmTPSe434CrLMGBF3y1nKCxcP9FSFbJvIkrttaXBxgQgh9JJP4nm/2BuK6JoBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=U38oypav; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZzKNs6C5; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011B3363C55
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 09:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779355786; cv=fail; b=V8BECgp1zbhIb7fATu94Qt5zV8HmsbZzu0Czc9xTb0oDOsFOGwYfB7sijfTC7NhLNkFaiYgiCDoVwH9/eKTOQuxfD1IpwWDxh1ttz0TFyk+S2LOjiRpkivYzmIpI0hIO0FWXlRPMQJNqN9XAQPaG3hdddJ5e9ILa1L1Ij02lSWY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779355786; c=relaxed/simple;
+	bh=tgNfrc7BBE4NFbrht0Arx9diwKi+FG0/0EoRyAlE9do=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=oHVCnkZ1XGHvz2J2y8hOhgFwbt+s013bB2UY5VBd/A6I8KRhTXumytDbmj3A5oY23xWK5AdhR7jKjXSDxcj4qVMy1uArlmLU+QG8yzeNHe0PDqPSwL/GI2fmGN71GK/+QPCemLt1NGmWchkUdp+tk1CYn/b1SJx/bfL9B6AaHBg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bXGpr9Y/; arc=fail smtp.client-ip=52.101.72.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="U38oypav";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZzKNs6C5"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L2T6Lf3816809
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 08:37:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	LiqGJIubV46C/XuNtoDonnq8kzRgQ9Nd2r1gbru07SI=; b=U38oypavBMQHX5RM
-	5DGo6FDgcziIR+bFjcD66h11aj4Zak1nBWnsmmy4BL0uNyqk4OOoDi8VlViPoqNz
-	gcwUjAXUut08G0bW+Jku6vIOsM7mx3MUO9LbNdjuEZdKCkz3D78xRbBA3XGVKW1N
-	+EU8lo1LerY6ObmfBqMRLu64nJzLgMwhgfJh3ZiTCZU2WGPZ8qbTCCKXTru3SBCm
-	tmaKbCMYgNpPkycbfHHImPSC1aF1Jexy47T8eyH109lN+2ndPMR1gjwtHffYbIcm
-	bX7/IKe7UXVgnq7l0bzp1rMYGM4p3cB0TM4ANHgxZM2WX3OtuoEDEOEn+WBO0Lna
-	hdw/gA==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e9saa19qs-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 08:37:50 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-50d5d1c2289so172754161cf.2
-        for <imx@lists.linux.dev>; Thu, 21 May 2026 01:37:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779352670; x=1779957470; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LiqGJIubV46C/XuNtoDonnq8kzRgQ9Nd2r1gbru07SI=;
-        b=ZzKNs6C5IHCamKnT56IO5cC31SicY9hSboLzqQd07CwtJCDPAzb5Sh7H70T4GSxTTw
-         bCTvXjZ+tnlfezR1JnG5/t5Hx8XLbB3qrsUTcLvbMdd7l4VcIYp5UhgiOfZRieoY8Xzg
-         1kqlKEe4tG+fZUM3Q0aOHS7ut7FZN31wVZPslI+aTNWztng/jtzxAcabVpIZ191Lelq8
-         VKQUK9ZiTYEGPK8bUdOZX7zJuNeRZGndvSS36LeeRjLLOVOAUNJwUwMaNfwsaA+5OpXN
-         I0X3cnleToNauPJEUDQuuUAt/4lIdBnr9jNIefOtSEiwmLSgsblKGkut7VZJMqZn5Tfv
-         k/Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779352670; x=1779957470;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LiqGJIubV46C/XuNtoDonnq8kzRgQ9Nd2r1gbru07SI=;
-        b=qfnTuZ2QK+gqeXDDbVDH5sAA6K8mWRwbXQwYYiawA0xGqHjI5O4nxDZOZz1DFXvVR9
-         FzcArIA9H44bdC9lUP5x25Fxjt0GbBHgz0Qb1SJxzbZXnZxRU07or3Yxv+f5dK2pGLZE
-         Hztx6i+KOWONt1RlOG/iK1GZvlHM9G1+9eq553G1X8DKb6sQnqERzwg8ZflwO56cbwH7
-         /mCoQ8lJ/oIRIBMpajrqpmwRNDT2D1kJ5Rtr2phHlOYLsPTtvxWif4dhn+ejbeiWag+l
-         ZbBo98X+hIR+FAu15F+yO1akY1VjnJxhyT0R1vSgpudDG4iHx/E+74eMrBlqlkpoBSnF
-         vRgg==
-X-Forwarded-Encrypted: i=1; AFNElJ92Ui6B4HtL7tWZ/oL5+qxtvhcAnmuuE4roGapZMuNUMEfOxxUqaih71rARw22IYkZoGRE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy6B1VhYs3fT/yqNjngFtywURys0ArH7YY3NcPGIGNeAxXqIM8B
-	/To8m0oBLTjN+Kfe7sWuHIiPkrGxUKNzxrs0rwrGjMKUA5dDaR0Q6CCEeYl2x/j5ZFOKdy/ong6
-	uXoqhSIozmRpWWOSRwAUaWNKUUu/fR2RtBM3Dczad3hkQvrzczDIXh/U=
-X-Gm-Gg: Acq92OE1c6/2TlFWqbxXf78ywOCyMTqQ33BN8Cvho3KQNmN4NpqnES5mgXvtaIXUaHL
-	282j1Dr1gijAjIQJxq45jv+SgHenxyKR3ZB43fDPiDtDxvLS3gd6duP+RZsuvv2DX5M1Om+1SDp
-	vj4Vu4UdPqgj4PzOybAdG7krLW51dKLpbx+kcCRCijqBLOi3svq1FJ9LWJNPFLENdKO+vuMwbea
-	gec2FufbQEqSE2oKhIP8zxKP7a2CpjAmz6/TJsi4DPD3g9l+2p3LQE92mStK68yf48q4MS+wQWX
-	eDC4g1MqbcjQ8+sg94/Q8k0+/k+bWSTFEkB5kMf2MxVO/zaNURa1LRdcoDn5f4i1HF2Eom8Nd9C
-	GDjVHYd4cQETKeEsa+0i4jzLNSdSGGvVur+EFCDnSkaPisNrwT3c=
-X-Received: by 2002:a05:622a:4a8b:b0:50d:7f66:dca with SMTP id d75a77b69052e-516c559259cmr24616551cf.33.1779352669714;
-        Thu, 21 May 2026 01:37:49 -0700 (PDT)
-X-Received: by 2002:a05:622a:4a8b:b0:50d:7f66:dca with SMTP id d75a77b69052e-516c559259cmr24615921cf.33.1779352669133;
-        Thu, 21 May 2026 01:37:49 -0700 (PDT)
-Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:bb10:ae82:b7c3:d15a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4903caede9fsm10502405e9.14.2026.05.21.01.37.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 01:37:48 -0700 (PDT)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Date: Thu, 21 May 2026 10:36:37 +0200
-Subject: [PATCH 14/23] pmdomain: imx: use platform_device_set_of_node()
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bXGpr9Y/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jJcv+zShWkGsmFSRviNLOg3OZ7zoO2LbfleBDsYI8pf6a/tjjpY1EbkeheQ6HT/VPEoC0QPtK33C5vpmVVQSfoCII3Uib0BRqhbD86MYH19QIARJTeeQXehGmREEJ9W0veLz1YSqpyZwkMXMD0gw77VURb0uuZnPznWC0DJ7WZASwYw61vmxHCIfk/VXhxESbxfykqCoR9aaBKpQiIOhLH3T9u8qoQJyUtK8+Hj7bTW9dhsB1VhMLYd5lVKS7bEHGILyV9J6rhHq9nyXe2WYzAzmugpcFvzf2pqIsZbFmGpoXPX/s+n++o+SLh3EUGecPyLf/2fEXz8J7rou4f/Frg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1vxdJ/7D9H4TKn7YPL8bXXHihM6ipwRxiZf86f71IYg=;
+ b=f3L4dnyuvXF21viEdk1dsKnxS6nSyC2OSM0VJeLBK46IYYqHxJ7Cqzug+J2TTgv85WBNo5owTsSwKhEHm/ESr0eys3m+foYUdF9TaOFSXLhBfBFi4LcKpBlXB9nPybYD5RYcsboEcuDchyyQWsIo7dyhCNKLBbjey7txOEHQq57g916arezIKU6HA+PTfWmz75yae1TniWZorxkd4narVuBjvG5B+Hb9K9/VKiKWQzToJ8CamuKYZta72PZhTAiCGzk8w3CTAGDDJxP3Z9Qn/N/dfCty5ye7V608LE4GVpfSkSXriA42v7xGFibS0JrNRcUNCU+oTAGBNjhXILKv9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1vxdJ/7D9H4TKn7YPL8bXXHihM6ipwRxiZf86f71IYg=;
+ b=bXGpr9Y/qKD1Tzv5TXkye98trWDjFJebaTAdFNkxZWB+5DIZTuTXZdLhLNGcJBgmpvHTnhY6me0C3VquJWfRW4Jh2i3Tf421ijyCRhmDaU1BZAf3a6Ofa4MDQAty99NPVnE9/VcjUXYxkC1tBDOBQLiexe2IBTaDVfcgqXTaUKUs1ZT0AG7nj3HC/a+KBVee+MJEdakjH4Zdc+IcoAUJCm/850OFroD1XqLy6gDIrSd0H3oKl5tnstYRfzcIXtRagwNNyP5sbUQN2Ks9+WcF8yVeQZtcbwOrlYevkrPRRy3Qt6+4VMoAz5DLH3RKriR2ftIRblGzSgd7r03lXH4jIA==
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
+ by GV4PR04MB11404.eurprd04.prod.outlook.com (2603:10a6:150:299::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Thu, 21 May
+ 2026 09:29:39 +0000
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb%6]) with mapi id 15.21.0048.016; Thu, 21 May 2026
+ 09:29:39 +0000
+From: "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>, Michael Riesch
+	<michael.riesch@collabora.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, Laurent
+ Pinchart <laurent.pinchart@ideasonboard.com>, Frank Li <frank.li@nxp.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Bryan O'Donoghue
+	<bryan.odonoghue@linaro.org>, Mehdi Djait <mehdi.djait@linux.intel.com>, Hans
+ Verkuil <hverkuil+cisco@kernel.org>, "G.N. Zhou (OSS)"
+	<guoniu.zhou@oss.nxp.com>
+CC: "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-rockchip@lists.infradead.org"
+	<linux-rockchip@lists.infradead.org>, "G.N. Zhou (OSS)"
+	<guoniu.zhou@oss.nxp.com>
+Subject: RE: [PATCH v4 4/6] media: synopsys: Add PHY stopstate wait for i.MX93
+Thread-Topic: [PATCH v4 4/6] media: synopsys: Add PHY stopstate wait for
+ i.MX93
+Thread-Index: AQHc5zP2JYPXSBO7kE+Ny5UmAbIYVbYWxKQAgAFy8WA=
+Date: Thu, 21 May 2026 09:29:39 +0000
+Message-ID:
+ <AS8PR04MB9080D3B1A6B522F3F9342E23FA0E2@AS8PR04MB9080.eurprd04.prod.outlook.com>
+References: <20260519-csi2_imx95-v4-0-84ea4bb78a88@oss.nxp.com>
+ <20260519-csi2_imx95-v4-4-84ea4bb78a88@oss.nxp.com>
+ <10853728.nUPlyArG6x@steina-w>
+In-Reply-To: <10853728.nUPlyArG6x@steina-w>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB9080:EE_|GV4PR04MB11404:EE_
+x-ms-office365-filtering-correlation-id: f929aed1-e38c-48f0-e5cf-08deb71b7b5f
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|376014|56012099003|3023799007|38070700021|921020|18002099003|11063799006|4143699003|22082099003|6133799003;
+x-microsoft-antispam-message-info:
+ 13Nr+Q4GXMwz46YKa3U/LYauhPdB+Is23P7V1/zIelhrnuzI1YRLX40Za+3RfXbXDDvyC+d5rHlCfXEfGhviIcDYKqIKjK8tZD51Py6Xxk1slxlISXQuwAfON+ISnMqNN4JxpJ6SFmzIN7+967dHJhlHV4vsXLi5p4WsyK7lBxHDMNmN9/OitsJSPocdzaSRODPCaM1q2MHBDAfkalz7YGMb9S60lc6kbR4aVRpbzD8Dxn6OPx0n8ikQwDt0AdSHVaeB/aj4J4UV7q9E/+k128cWvwtvJO6R59nat3PTIfTX3CVF0EFc6tov4l/jbIFUG/3b5wivrEG+yaJ53oefIshZUhHMBdEkRh5IiqbfMy8hxW1KD8LGuX+n7JwZgl7WbrCG3RfPSu3mN65IGlGbzTIL+LLBEwm1s4yQC+4yJpNoEg7E/K/Zf5ftIpb2E6zSjnxJ8Dch3NeJDeVrLJNOToWOFoiigIid1eGTgXzUeULJqJRUd6QWr7k7/w5+NRzG+2dQ6/a0E77z7DlhRbYMzUa1y4UOSjK67qk1NOmZ56Dbs+Q2kXZq4qWccJ57fw0jNFKwISKZ/rAsCa9riU1+2hc92roSZEKJxlRJLpr076THCpGPrEn6t5KeyOugohx74gCKdea4j20HbLPv8kYU1H0TIZZN/Ot0UQsdtJFodzZoswlygb2PUbXDvxwCVfHqzBFKj5ZbqZEj4SLwdmAcRg==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(376014)(56012099003)(3023799007)(38070700021)(921020)(18002099003)(11063799006)(4143699003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?OUs+kTqygGT/o/4MzEoh7vzM9cGPSTMFav+omy84v2XTsWiGGss9XWnvKB?=
+ =?iso-8859-1?Q?r13sTeyX7puVSgxrLbzi6YOqdOkGMndhC9Cq3z/yW7fANbly2eYvjYq1uo?=
+ =?iso-8859-1?Q?XjWzzO5e2Z1ucd4uV3B9pmLDcc/guR21qbKfD4fZWeN0KRgemrBorJjptZ?=
+ =?iso-8859-1?Q?uIprjCF5Ggt/XUjN9TOsZeUsX840YtE+5URVwVA3ok4NOdfBFvOJsYe9iy?=
+ =?iso-8859-1?Q?fZtEl2E3ODHBWTfrndaKDNBUI2egTO3VACV9+QOMhMRhmR2oRwDhNiAXS/?=
+ =?iso-8859-1?Q?jxC1h+PYi5Pcx6gzrXF/AJ9788a0LFAU3N3/iQ/yLC9pnFGViZE3sMc2Rr?=
+ =?iso-8859-1?Q?I8nAKQHYusYx4GqgAfmd/Bx1ngZ/XpYv9d0JFhQwR0N0FGFf2u1gf1cO4C?=
+ =?iso-8859-1?Q?SS1oF2QDAxNYR5vL3KYnFOVntROul4DgJ60J65wBy7kugjwUkKzIPnQ+vd?=
+ =?iso-8859-1?Q?unFMHYjpEgd5QNrnwspoAmvkrutLWtRHXoFCfBNfBJkiTAdVY/HK7V/6ma?=
+ =?iso-8859-1?Q?q0IImral7FFIrmLg15K9Ckn2G8yrvl7/uW/yBb8c98brgjgZ7hkzIVehch?=
+ =?iso-8859-1?Q?YdQu0TFgXGKfhvAg/dC7HzFKd/+GDIOX+4MTlt1fRQtJm0w2+Q4IFh/mIP?=
+ =?iso-8859-1?Q?cRLTgG00jeTzjoj7/Q8mEweawoWPqJIGXgjqav0f41I4mq+i7c7aVlRZTt?=
+ =?iso-8859-1?Q?Lm6Apg2KWE3a4E6OkshNLDRQfOOn5ynpxkTWD3O1jQ3V3o8HnWv+nlMhyp?=
+ =?iso-8859-1?Q?uVFe5vvdcP7/i9kpWk6D9PlJ40z9chOzx6j0ghAGVN7TKHKM+RVBPdDwdL?=
+ =?iso-8859-1?Q?cOeoTQyBbn14mRDC0kCghj+n/K+tI+qRmOWk70BdqOINbZ39Tb2sSpvq/E?=
+ =?iso-8859-1?Q?wVL+3RoKKWceXEOj6GHBwKQ6ru6u6YW70M6pOINqiYqwUwIGuvfO1ALcc4?=
+ =?iso-8859-1?Q?6qpWCnTSmBBuzX+XuKcPv4fLxk/Bms1CR+WS1zPYmYeM+HdnDi1ZPcLF4p?=
+ =?iso-8859-1?Q?L3Cna6oJ0aZasxOGzgHgMVuBPSqnaHO/w7TOrKpwiPvamozIDTM1Sj02gT?=
+ =?iso-8859-1?Q?w81vke+ANX8xqB0zAg8egkIxOOdbBSHmv+N57KQN6s8oDbFQAWuejRZWHq?=
+ =?iso-8859-1?Q?C17MoN4IR201vvxcT92OozWtx+5IchsOUbGKr5VomiwEYhoNPctHZ/AS4R?=
+ =?iso-8859-1?Q?0a2uhI2UerHk1rVbGSoNmCei7JAP/EiVjJQB0UpjeKUzNG7QQTQ21ZeDuf?=
+ =?iso-8859-1?Q?lUrqIJ8zMdURLFgnYJ2ZOtNKmsH3p6MXMB5jK9qBTQvJPN9CGjzwIVbtWY?=
+ =?iso-8859-1?Q?cqH/FApROvnqgoyNyap9I7l9lPDB5CGpgW+k7Ovqp9EIip0GpoNCWr0BDn?=
+ =?iso-8859-1?Q?LHYWtGeNTgA3f6fIpz7880alpaYd4VWynqASbpKKOERn9ZVG57nhjxoX0D?=
+ =?iso-8859-1?Q?GcBPRlS6X4qFxjxEXauzdEAj4vDRS1H/fQwv4xRYkolFFdVUqQ1ChbLpwB?=
+ =?iso-8859-1?Q?X1HA817B/lyn6frhMUWZp24+EsLyiomGyNDZ/6egRNakdJxlL86HvUVRQZ?=
+ =?iso-8859-1?Q?JWTTcJANzBMLzmMut0OmOKeiBZ5HN4FaLFiv5/N03ESleN5XJZjBelvC1x?=
+ =?iso-8859-1?Q?oAafHX5jfSYCq2WxDNFmHCvxxvCbWHcu+fmcOf68NKluQkf6aULPGFdOSg?=
+ =?iso-8859-1?Q?n79+ejgCLi+m6XAtA8UoObxLU06VSb8uQ+2KS0C3UBBVl8Lf/07os+8p17?=
+ =?iso-8859-1?Q?SZlSAAOs8Vgk8+w+DCvemb8bGmW6S8YtvNcB0/Mdhjnncs?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-pdev-fwnode-ref-v1-14-88c324a1b8d2@oss.qualcomm.com>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
-In-Reply-To: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
-To: Lee Jones <lee@kernel.org>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Thierry Reding <thierry.reding@avionic-design.de>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Srinivas Kandagatla <srini@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Peter Chen <peter.chen@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hansg@kernel.org>,
-        =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-        driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-        iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
-        linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=965;
- i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
- bh=1m0AW2cExEyKezaoaqpg9M8Sd9W7xIah4eoQaNoNaio=;
- b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBqDsQpYiqSx3VXdqiHIpIBUXjGa5jIwrjLGwoyq
- Gc54yDrEJyJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCag7EKQAKCRAFnS7L/zaE
- w87wD/4ovbkfGrByBExY1MPjO+ImreTVfGSAkWmqsKw88uLrhkyEKGHDAQSZTZE3i+FHGY/E2yW
- vuQTwIIwn0C7jebh/ZrW5OyqlKI4SfaTV8SUVza9v/w9itsoAjqdwFfTCAYtkNU0wl3z6zPIVZW
- eC5a4J3DiTbAuwujwfo0CkVMKKHGy6dNnhLhd3c5wk59h91vvRJDexswgzczEKYHYVvQ5PwEm4e
- 1v1iYFCMc+jXWVLyMZMWL3qxn2LKbLI3uzw2KaE5pLc6qjG7WxuULz1fW5kc1tPHEt2UjXdtXoB
- Bu7Z+OiX94cgaD4jcN5Qf59TAYUWoTBWptl6Az7wCYIDSl4Zd4dfb/jPCgTBcEaoQMRxdT7wBp6
- 04C+yAy6ZZFgQPV6NKQYtrhr10zYyMFhXjVosvUBV+a6Ji0EiFri1X1eKbRIDWPoxE/pW/NgzA2
- EIK/OJH+xDImj3AWv689ACL46miN6U4MXZhQgeeo20WrtwVz6rOsNHISp9VfDNfODARqNyRDH4y
- gYdC059xHRA7PTGRRZGWyRdRrxEDYxRds5O0j5sxjShEOV3/CBXZC7cr7dJk55o60cuiR1C1RSD
- DTE3n/guGYAoDroJBWU9vFEHo/tJTqZkDlWp9VK5ukHDUrBufG9yMNLg0PxfB2qf+8O/s29Yr1k
- PBNeRIDE8C5ssiQ==
-X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA4MyBTYWx0ZWRfX7G5B16y6zKo8
- F0v7mbnAxIhqIqjlGcDcA1SmsZELHhZ/teRaife0IC+NqKaUPN1YvjEei2TJspVTCRyZAGiRWz/
- O+NS1Gmpimk/HEC9Qi8x2KU60WROm4X8vsv66lha8A8pLQ5Oxl1e9LOTWzsEdKmZOwhuB9mFtPU
- T9xS+srOUQp6x4RB0ETBYLhosgurSW0gms7+xGKJgh8fe7fcZaUOGAOFDFnJfFEcv6fpX8fhOu4
- fLqyV/S8YYy+f0tPjPgetYXKlzzwlzJb1yP0VNvbLVg9YaAduG+oaZmTqTsvjxvyItS1nLZBfUl
- OkBpKMWdb0YEOziu3VrJNiEoiTy3/qh7wjfHkqAGD0c7UKh8HVDhBE93BgxN0Hh3HJtzZRoBOAc
- k4SNkDutj3XiGYuMWjN5X335JQCrXFeyuHNz61pq+YZ7MIw8vMT219M9jVuQ2RmYtE+tgL8ye8Y
- 6gmJQe7xFd8KwX2Todg==
-X-Authority-Analysis: v=2.4 cv=Qe9WeMbv c=1 sm=1 tr=0 ts=6a0ec45e cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=EUspDBNiAAAA:8
- a=J9-S39C9qTGxOfEZqScA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-ORIG-GUID: z6zab5SxedC-rQyMGBMbafG4Z1zSMQ10
-X-Proofpoint-GUID: z6zab5SxedC-rQyMGBMbafG4Z1zSMQ10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-21_01,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 phishscore=0
- suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 malwarescore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605210083
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f929aed1-e38c-48f0-e5cf-08deb71b7b5f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2026 09:29:39.4623
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: HN33azddSE2rGP7iO9OsO4nOV128qGJf429rJnJSb+k2zGdeW5G4r6JLxcaEnY+3kKVrOsPH5wQ3MNY5jAp7QA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11404
 
-Ahead of reworking the reference counting logic for platform devices,
-encapsulate the assignment of the OF node for dynamically allocated
-platform devices with the provided helper.
+Hi Alexander,
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
----
- drivers/pmdomain/imx/gpc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> -----Original Message-----
+> From: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Sent: Wednesday, May 20, 2026 7:12 PM
+> To: Michael Riesch <michael.riesch@collabora.com>; Mauro Carvalho Chehab
+> <mchehab@kernel.org>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
+> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Heiko Stuebner
+> <heiko@sntech.de>; Laurent Pinchart <laurent.pinchart@ideasonboard.com>;
+> Frank Li <frank.li@nxp.com>; Sakari Ailus <sakari.ailus@linux.intel.com>;=
+ Bryan
+> O'Donoghue <bryan.odonoghue@linaro.org>; Mehdi Djait
+> <mehdi.djait@linux.intel.com>; Hans Verkuil <hverkuil+cisco@kernel.org>;
+> G.N. Zhou (OSS) <guoniu.zhou@oss.nxp.com>
+> Cc: linux-media@vger.kernel.org; linux-kernel@vger.kernel.org;
+> devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
+> kernel@lists.infradead.org; linux-rockchip@lists.infradead.org; G.N. Zhou=
+ (OSS)
+> <guoniu.zhou@oss.nxp.com>
+> Subject: Re: [PATCH v4 4/6] media: synopsys: Add PHY stopstate wait for
+> i.MX93
+>=20
+> Hi,
+>=20
+> Am Dienstag, 19. Mai 2026, 04:07:41 CEST schrieb Guoniu Zhou:
+> > Implement waiting for D-PHY lanes to enter stop state on i.MX93. This
+> > ensures proper PHY initialization by verifying that the clock lane and
+> > all active data lanes have entered the stop state before proceeding
+> > with further operations.
+> >
+> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> > ---
+> > Changes in v2:
+> > - Removes redundant register availability check
+> > - Uses read_poll_timeout() with dw_mipi_csi2rx_read() instead of
+> >   readl_poll_timeout() with direct register address
+> > - Fixes stopstate condition logic
+> > - Check PHY stopstate after sensor enable instead of before to ensure
+> >   correct timing.
+> > - Optimize PHY stopstate polling parameters (1000us->10us, 2s->1ms) to
+> >   balance performance and responsiveness.
+> > ---
+> >  drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 36
+> > ++++++++++++++++++++++++
+> >  1 file changed, 36 insertions(+)
+> >
+> > diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> > b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> > index 92178a3dec5d..8a34aec550ad 100644
+> > --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> > +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> > @@ -11,6 +11,7 @@
+> >  #include <linux/clk.h>
+> >  #include <linux/delay.h>
+> >  #include <linux/io.h>
+> > +#include <linux/iopoll.h>
+> >  #include <linux/module.h>
+> >  #include <linux/of.h>
+> >  #include <linux/phy/phy.h>
+> > @@ -35,6 +36,8 @@
+> >  #define DW_REG_EXIST		BIT(31)
+> >  #define DW_REG(x)		(DW_REG_EXIST | (x))
+> >
+> > +#define DPHY_STOPSTATE_CLK_LANE		BIT(16)
+> > +
+> >  #define DPHY_TEST_CTRL0_TEST_CLR	BIT(0)
+> >
+> >  #define IPI_VCID_VC(x)			FIELD_PREP(GENMASK(1, 0),
+> (x))
+> > @@ -65,6 +68,7 @@ enum dw_mipi_csi2rx_regs_index {
+> >  	DW_MIPI_CSI2RX_PHY_TST_CTRL0,
+> >  	DW_MIPI_CSI2RX_PHY_TST_CTRL1,
+> >  	DW_MIPI_CSI2RX_PHY_SHUTDOWNZ,
+> > +	DW_MIPI_CSI2RX_PHY_STOPSTATE,
+> >  	DW_MIPI_CSI2RX_IPI_DATATYPE,
+> >  	DW_MIPI_CSI2RX_IPI_MEM_FLUSH,
+> >  	DW_MIPI_CSI2RX_IPI_MODE,
+> > @@ -87,6 +91,7 @@ struct dw_mipi_csi2rx_drvdata {
+> >  	void (*dphy_assert_reset)(struct dw_mipi_csi2rx_device *csi2);
+> >  	void (*dphy_deassert_reset)(struct dw_mipi_csi2rx_device *csi2);
+> >  	void (*ipi_enable)(struct dw_mipi_csi2rx_device *csi2);
+> > +	int (*wait_for_phy_stopstate)(struct dw_mipi_csi2rx_device *csi2);
+> >  };
+> >
+> >  struct dw_mipi_csi2rx_format {
+> > @@ -139,6 +144,7 @@ static const u32 imx93_regs[DW_MIPI_CSI2RX_MAX]
+> =3D {
+> >  	[DW_MIPI_CSI2RX_PHY_SHUTDOWNZ] =3D DW_REG(0x40),
+> >  	[DW_MIPI_CSI2RX_DPHY_RSTZ] =3D DW_REG(0x44),
+> >  	[DW_MIPI_CSI2RX_PHY_STATE] =3D DW_REG(0x48),
+> > +	[DW_MIPI_CSI2RX_PHY_STOPSTATE] =3D DW_REG(0x4c),
+> >  	[DW_MIPI_CSI2RX_PHY_TST_CTRL0] =3D DW_REG(0x50),
+> >  	[DW_MIPI_CSI2RX_PHY_TST_CTRL1] =3D DW_REG(0x54),
+> >  	[DW_MIPI_CSI2RX_IPI_MODE] =3D DW_REG(0x80), @@ -556,10 +562,19
+> @@
+> > static int dw_mipi_csi2rx_enable_streams(struct v4l2_subdev *sd,
+> >  	if (ret)
+> >  		goto err_csi_stop;
+> >
+> > +	if (!csi2->enabled_streams &&
+> > +	    csi2->drvdata->wait_for_phy_stopstate) {
+> > +		ret =3D csi2->drvdata->wait_for_phy_stopstate(csi2);
+> > +		if (ret)
+> > +			goto err_disable_streams;
+> > +	}
+> > +
+> >  	csi2->enabled_streams |=3D streams_mask;
+> >
+> >  	return 0;
+> >
+> > +err_disable_streams:
+> > +	v4l2_subdev_disable_streams(remote_sd, remote_pad->index, mask);
+> >  err_csi_stop:
+> >  	/* Stop CSI hardware if no streams are enabled */
+> >  	if (!csi2->enabled_streams)
+> > @@ -871,11 +886,32 @@ static void imx93_csi2rx_dphy_ipi_enable(struct
+> dw_mipi_csi2rx_device *csi2)
+> >  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_IPI_MODE, val);  }
+> >
+> > +static int imx93_csi2rx_wait_for_phy_stopstate(struct
+> > +dw_mipi_csi2rx_device *csi2) {
+> > +	struct device *dev =3D csi2->dev;
+> > +	u32 stopstate_mask;
+> > +	u32 val;
+> > +	int ret;
+> > +
+> > +	stopstate_mask =3D DPHY_STOPSTATE_CLK_LANE | GENMASK(csi2-
+> >lanes_num -
+> > +1, 0);
+> > +
+> > +	ret =3D read_poll_timeout(dw_mipi_csi2rx_read, val,
+> > +				(val & stopstate_mask) =3D=3D stopstate_mask,
+> > +				 10, 1000, true,
+> > +				 csi2, DW_MIPI_CSI2RX_PHY_STOPSTATE);
+> > +	if (ret)
+> > +		dev_err(dev, "lanes are not in stop state: %#x,
+> expected %#x\n",
+> > +			val, stopstate_mask);
+>=20
+> Did you actually test this on imx93? I'm trying to get my imx327 sensor t=
+o run,
+> but only run into this error message:
+> dw-mipi-csi2rx 4ae00000.mipi-csi: lanes are not in stop state: 0x0, expec=
+ted
+> 0x10003
 
-diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index 42e50c9b4fb9ffb96a20a462d4eb5168942a893c..abca5f449a226fbae4213926e1395c413160c950 100644
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -487,8 +487,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 			domain->ipg_rate_mhz = ipg_rate_mhz;
- 
- 			pd_pdev->dev.parent = &pdev->dev;
--			pd_pdev->dev.of_node = of_node_get(np);
--			pd_pdev->dev.fwnode = of_fwnode_handle(np);
-+			platform_device_set_of_node(pd_pdev, np);
- 
- 			ret = platform_device_add(pd_pdev);
- 			if (ret) {
+Thanks for testing. Regarding the lane stop state error on i.MX93 with imx3=
+27:
 
--- 
-2.47.3
+This error indicates the CSI-2 lanes are not in LP-11 (stop) state when=20
+expected. Please check:
+
+1) Verify the sensor PHY is in LP-11 state before returning from the sensor=
+'s=20
+   s_stream(1) call. The CSI-2 receiver expects lanes to be in stop state=20
+   initially.
+
+2) Check if the imx327 driver has a delay between starting the stream and=20
+   returning from s_stream(). If the sensor transitions PHY out of LP-11=20
+   state during this delay, the CSI driver's lane state check will fail=20
+   when it runs later. The sensor should remain in LP-11 until the CSI=20
+   controller completes its initialization.
+
+You may need to remove any delays in the imx327 s_stream implementation, or=
+=20
+ensure the sensor stays in LP-11 state until the CSI receiver is ready.
+
+If possible, could you share the imx327 driver code or check its s_stream i=
+mplementation?
+
+Best Regards
+G.N Zhou
+
+>=20
+> Currently I'm using this DT node:
+> --8<--
+> mipi_csi: mipi-csi@4ae00000 {
+> 	compatible =3D "fsl,imx93-mipi-csi2";
+> 	reg =3D <0x4ae00000 0x10000>;
+> 	interrupts =3D <GIC_SPI 175 IRQ_TYPE_LEVEL_HIGH>;
+> 	clocks =3D <&clk IMX93_CLK_MIPI_CSI_GATE>,
+> 			<&clk IMX93_CLK_CAM_PIX>;
+> 	clock-names =3D "per", "pixel";
+> 	assigned-clocks =3D <&clk IMX93_CLK_CAM_PIX>;
+> 	assigned-clock-parents =3D <&clk IMX93_CLK_VIDEO_PLL>;
+> 	assigned-clock-rates =3D <140000000>;
+> 	power-domains =3D <&media_blk_ctrl IMX93_MEDIABLK_PD_MIPI_CSI>;
+> 	phys =3D <&dphy_rx>;
+> 	phy-names =3D "dphy-rx";
+> 	status =3D "disabled";
+>=20
+> 	ports {
+> 		#address-cells =3D <1>;
+> 		#size-cells =3D <0>;
+>=20
+> 		port@0 {
+> 			reg =3D <0>;
+>=20
+> 			mipi_from_sensor: endpoint {
+> 				data-lanes =3D <1 2>;
+> 				bus-type =3D <MEDIA_BUS_TYPE_CSI2_DPHY>;
+> 			};
+> 		};
+>=20
+> 		port@1 {
+> 			reg =3D <1>;
+>=20
+> 			mipi_to_isi: endpoint {
+> 				remote-endpoint =3D <&isi_in>;
+> 			};
+> 		};
+> 	};
+> };
+> --8<--
+>=20
+> Am I'm missing something?
+>=20
+> best regards,
+> Alexander
+>=20
+> > +
+> > +	return ret;
+> > +}
+> > +
+> >  static const struct dw_mipi_csi2rx_drvdata imx93_drvdata =3D {
+> >  	.regs =3D imx93_regs,
+> >  	.dphy_assert_reset =3D imx93_csi2rx_dphy_assert_reset,
+> >  	.dphy_deassert_reset =3D imx93_csi2rx_dphy_deassert_reset,
+> >  	.ipi_enable =3D imx93_csi2rx_dphy_ipi_enable,
+> > +	.wait_for_phy_stopstate =3D imx93_csi2rx_wait_for_phy_stopstate,
+> >  };
+> >
+> >  static const struct of_device_id dw_mipi_csi2rx_of_match[] =3D {
+> >
+> >
+>=20
+>=20
+> --
+> TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+> Amtsgericht M=FCnchen, HRB 105018
+> Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+> http://www.tq-group.com/
+>=20
 
