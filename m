@@ -1,141 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1718C22A817
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2E537F754
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779357993; cv=none; b=ZDKHLWL3sRvrykIIyiG3/nMeCujGl3CqWUX4C5o7TbIgmtdQK+8pePhV0LE4W6WMlq5fWKPSDH5LcUPYm0TW2rHIM1tGiQll1hl505jqiYIdUrICvFFbuH1LNayx0WMVcFf3Yh/shN2NAxV5xUw8T44L1EVjWeYadNz6biMSKTQ=
+	t=1779358617; cv=none; b=nPeOC2ZDCWaCVdc+M/MfVDHlSIs7gaAbFafkTHtlg+xPa9CdKX5QvpqbdOBQXzlQ9j91itX1CX6tVB3mK5kh4xrHYgDXlSYeYsZzIXFdYT3g7oMLXiS/ww/JuDGjku2/RaGlAXupr7lDuYz9aVJNi/ZEAjYQlyXrT2fOSlKtD8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779357993; c=relaxed/simple;
-	bh=n6MUo44OKLnYGukIgrDbiypKIfEs28ZyYkkJEVI2fKE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MKrFHNNRvHkavsfa13zFNY/3VkzOTjXBfCoulhXNzHpGS7vyRHOIogTc9RPuTC7exkey9tVs0XL9pwqaY+1LJRUCuYj473DrFPiOHgLrEHu4cJphRqcXTyVp8/pqYP7hb9p8EBfd/Nd7or/lHkjyn9B0mfY6QJQd9vJwfqdy9K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4PYI2zr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779358617; c=relaxed/simple;
+	bh=Z3KAG24ikGctN8+3JXxzF/QjpEQrkx80Kwtm6MVN8Zc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mRzwGqar5BzvbyCXwT43naXLFyrX1t1GEDfOnvIdyhnfi9Zgv5aLA/5k93BND7Fn71TIp6LnI/MZfpRr6zB9GYtBPtrPnWAsLafI58IjCJ844Iu0CXIWuFfKEhehP0CtQHl7kqPaT3sAiQqIYW8UY6FfJARTndOxkQnfwCD6RMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=n2KqCiRr; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=OUlhGSh+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4PYI2zr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF5E1F000E9;
-	Thu, 21 May 2026 10:06:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779357991;
-	bh=WiDs6gMI9bVOMAg/t4aiiQEdblHUBeqN0psyKLz8mF8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=S4PYI2zrk7cIUa9z8sVRkh9qM/ZPBkv6FGt3Jh38VZrdMawoyJRWlHgHjo8EOndlt
-	 92V/c++lG3Pyaayp/rzXein+2ZdX1h+QUi7ruVyx2H9B6XY2VW+KAexyyz+FMxdijH
-	 PNVli2b1d1kHEZKD2pkUDLtS2TLrIB2+pD7Bmr6y8DFcI6wOESsnSb3PpCkRilMTmP
-	 5y+4yi7CWbMNTQhBDzO8DK20Y//lOdeU3K4UDW5TaQFPmC7rjjOC0ZOFTwXt9LeVCV
-	 h779EV5KK+rQbxayk6hbfBu+UwBCNVd30h6JUspRHpGTxJza9xFMUVc8CGLqMtVv77
-	 2FzvOhMjdO3pA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/2] media: nxp: imx8-isi: Add virtual channel
- support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guoniu Zhou" <guoniu.zhou@oss.nxp.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260521-isi_vc-v5-2-a38eb4fcd58e@oss.nxp.com>
-References: <20260521-isi_vc-v5-2-a38eb4fcd58e@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 21 May 2026 10:06:31 +0000
-Message-Id: <20260521100631.7CF5E1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="n2KqCiRr";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="OUlhGSh+"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L99r7O517909
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:16:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	e35ASpDbu+JzlJXy6vzQPsFHJsqGdEATPmzNaYDOTrk=; b=n2KqCiRrOQrxLNGF
+	XgBkFgRwHC2u1RPF5a/auykres/jpwRgCdtJtROt6BASxFvKYL+Qfhju5Dz6F6mF
+	G+hfxCHv85g3xPYMaJxNlfXoH284Ofwj0oylvJc4GpMK42w4Ykbi3bMFumP3dGVn
+	Of3qQ/AuuJXJ24iKJ65BPO3IerbeKQ8W6XZEqt0Y4INWvvdUnzOxXDCSS5NQP9yU
+	YQ1/YFvSg+qAsf+bIwNfhsp+QmbuH/pux4UglorAuGH+3KDIOePVZTWhcKI3rWkU
+	Bgd5ipAhxEfTGDhgXs+/b86rAa6+H9YyBoLagFfCMGxmomgpsus3+zWqvMYiQ/zc
+	cpABdQ==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e9saa1qps-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:16:54 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-82f9429f49cso8978013b3a.3
+        for <imx@lists.linux.dev>; Thu, 21 May 2026 03:16:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1779358614; x=1779963414; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e35ASpDbu+JzlJXy6vzQPsFHJsqGdEATPmzNaYDOTrk=;
+        b=OUlhGSh+cSQLB2BTIim/OpE4QP8qZ+ZuhhXnxMqJxrgkWQ/JEi4DxhZwU3mBPqIt94
+         7m+YrW2nHLd+soCjx+cC617Th80WRcOQ11cIpibfbHZHCtiaiPooQMiXFHNq/fJ+wJAw
+         23pP5b58tHuZGT3U42H+FQrlt72tqnCZ9tmUvz1cMOmL7KPjyeYNaB+OcI8hCQDJDYcV
+         ksk9wseLkYGdx2lbjyaM+Hdl5PVgHBnczOajmOiec7GJCbZsAH9pb+4t+6RE20ZQhUGu
+         i2PixsbxQFr8/8UoSphB14BPJpkKxYa88oev22J1s3yDrAIk0L0m074JTkaOqlp1WpAq
+         q0zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779358614; x=1779963414;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e35ASpDbu+JzlJXy6vzQPsFHJsqGdEATPmzNaYDOTrk=;
+        b=hTJCAkSlzW0msGURsQbzRRzlw+3NQ/+WTD/lozSXjID60NLh/AlOqQth5O2V6c0pyg
+         GSIXVX4wpNntbaMz4+LZ779NUO8SPyFdPoDjtivSzCojCuae+BYZuXhEHOjQJXV+qxQU
+         h9JXDbo59uEBqkbQgeFQpn9NyHev3NqbLt0ZCJnUb60M3u2UcSYCRvI5NfjUhc2GUgF5
+         1M7/C5TKdm+fiNZ+6NQnbP5uCp4xU+y982qoD2VyX9OHvoS5tm6Og1abigcavCnE+TEr
+         T7q3uEliybbqvrRJtQyh4OAcVzjg6SAOj91konhr2QmAg2raEpgJEMIit132Loa2Kga+
+         0oGg==
+X-Forwarded-Encrypted: i=1; AFNElJ+I0B90YC7unZKw9lu4Kg/tdw8dAeJ4/1em4LY7tGqjqLz9wQvG/ve0OlFeFwPrqUGZspo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxmPF3IbojcDkskyrJMKrYykQB+Qp5+Y4m/fMBMOt1wlrsOjfro
+	aSjy5kR+1W2HJzzBS+xn1vuKT4bOgd5304T9skXQ500fyKbxAbgMmsvWNbLBVx4JfUJ+PQloO9N
+	tU4Wkrlt04mzvmYikx2yMMbNrJy4Shq0FDOnGsUspvW75G2rfK/m7kQs=
+X-Gm-Gg: Acq92OGMMqXYdEpp3RPBuChSiogqfxGqzO2a7p4363+1D7iLn013kBHzeWXB8gKGb4y
+	r1vP+AQU5PYGsrb75cWUEAUr97FBW+1DpUBhsE+45cKanU3qrMXIRWmNrAz9Py946mog3hQ1Zc/
+	i6gVDpGkboz9GLEMGJ2uj7eWviRGKz6tO/UnuZSew1vY+oopNcQsCgUOPEz1sM7ouGwVtkkl+03
+	SqCnELInQRHdSrv4h+IvBB6RA1ugYsTKmMFLi7RA0y13OUSRTg/9jFj67JLTPqzCE1jkUzEM0CE
+	H6dGFse9m97eNRn017brJyEn3WlznuPjEbOAY5bwFyVW1J9WrDFBCQBmxEcublYD52fJRXhDlTx
+	caR02UViYDkQg+8iY+7vAWGuCjkqjGZqaJt5esZMQ9FLq5uIzJevV0+yo
+X-Received: by 2002:a05:6a00:330c:b0:82f:390a:69c7 with SMTP id d2e1a72fcca58-8414ae6e041mr2501845b3a.33.1779358614185;
+        Thu, 21 May 2026 03:16:54 -0700 (PDT)
+X-Received: by 2002:a05:6a00:330c:b0:82f:390a:69c7 with SMTP id d2e1a72fcca58-8414ae6e041mr2501811b3a.33.1779358613617;
+        Thu, 21 May 2026 03:16:53 -0700 (PDT)
+Received: from [10.217.219.207] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84154e3d6a7sm997070b3a.55.2026.05.21.03.16.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 May 2026 03:16:53 -0700 (PDT)
+Message-ID: <22af0378-a3c9-4403-a0ee-da794847f41d@oss.qualcomm.com>
+Date: Thu, 21 May 2026 15:46:47 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] i2c: imx: mark I2C adapter when hardware is powered
+ down
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>,
+        Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+        "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "andi.shyti@kernel.org" <andi.shyti@kernel.org>,
+        Frank Li
+ <frank.li@nxp.com>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        Carlos Song
+ <carlos.song@nxp.com>, Bough Chen <haibo.chen@nxp.com>
+Cc: "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>,
+        "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260520101504.2885873-1-carlos.song@oss.nxp.com>
+ <4979e748-ce4e-4244-8906-e22a1e6472e7@oss.qualcomm.com>
+ <AM0PR04MB68027798D1B07FD63AEC5F23E80E2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
+In-Reply-To: <AM0PR04MB68027798D1B07FD63AEC5F23E80E2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDEwMiBTYWx0ZWRfXygmpEaWbWxFt
+ Q2owqbZPIsinoDUwz62Gu5eX/+phrK/QnhtaKE2/oHvlQ2bWkwiZ4OihcBv2CdeIFp1cycU4vZM
+ 0IiFlPuj+/xKhvHTbf2uy/8FtNg+urFc/hJU71w18vVqJC8GKetQmYv0EwG7wqq5t4cgjL9sEQ3
+ R1JeI0ngdvJFueKgnZBNSuwLHKxXDomhaFYyupK8jxJHTliquqiqmuCkLJerAgfKRv748tHy/s2
+ /lDKou2U2h9a3ioBY+G6PWxkD/CEF3G2t5LgY5dZKwpb3vg2hWsUc70TTA6YGUs1vbWL0YhsAP9
+ TGd5OdPoN5rFOJiI0iHEf+9C02lzKaSbfZjtLtzBY80ao5M0nd1G0VzqEqu3AlNrKBZgpr072UG
+ Hv+bd3QxUuPYdmmfCRWyG7LwiQaP5EsqrxWLtjLYgtjLIrb1eygIxv62KPaYKF67dICtREcE1jI
+ uSwWqK0E99bCxHAGCPA==
+X-Authority-Analysis: v=2.4 cv=Qe9WeMbv c=1 sm=1 tr=0 ts=6a0edb96 cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=_EeEMxcBAAAA:8 a=EUspDBNiAAAA:8 a=8AirrxEcAAAA:8 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=JfrnYn6hAAAA:8 a=yJUUZN2m8lq9mbh6i7kA:9 a=QEXdDO2ut3YA:10
+ a=czjwGCTIUPoA:10 a=zc0IvFSfCIW2DFIPzwfm:22 a=ST-jHhOKWsTCqRlWije3:22
+ a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-ORIG-GUID: 8bndGYJdt9neMVYgkoFTgylpQAqUIv4Y
+X-Proofpoint-GUID: 8bndGYJdt9neMVYgkoFTgylpQAqUIv4Y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-21_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 phishscore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 malwarescore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605210102
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Pipeline enablement unconditionally fails if the upstream subdevic=
-e does not implement the `get_frame_desc` operation.
-- [Medium] The driver unconditionally accesses CSI-2 specific fields in the=
- frame descriptor without validating the frame descriptor type.
---
+Thanks Carlos !
 
-commit 4d8a62dc345af085b3b0a217c07143648e85fd35
-Author: Guoniu Zhou <guoniu.zhou@nxp.com>
-Subject: media: nxp: imx8-isi: Add virtual channel support
+On 5/21/2026 1:57 PM, Carlos Song (OSS) wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
+>> Sent: Thursday, May 21, 2026 3:40 PM
+>> To: Carlos Song (OSS) <carlos.song@oss.nxp.com>; o.rempel@pengutronix.de;
+>> kernel@pengutronix.de; andi.shyti@kernel.org; Frank Li <frank.li@nxp.com>;
+>> s.hauer@pengutronix.de; festevam@gmail.com; Carlos Song
+>> <carlos.song@nxp.com>; Bough Chen <haibo.chen@nxp.com>
+>> Cc: linux-i2c@vger.kernel.org; imx@lists.linux.dev;
+>> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
+>> stable@vger.kernel.org
+>> Subject: Re: [PATCH v3] i2c: imx: mark I2C adapter when hardware is powered
+>> down
+>>
+>> [You don't often get email from mukesh.savaliya@oss.qualcomm.com. Learn
+>> why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> Hi Carlos,
+>>
+>> On 5/20/2026 3:45 PM, Carlos Song (OSS) wrote:
+>>> From: Carlos Song <carlos.song@nxp.com>
+>>>
+>>> Mark the I2C adapter as suspended during system suspend to block
+>>> further transfers, and resume it on system resume. This prevents
+>>> potential hangs when the hardware is powered down but clients still attempt
+>> I2C transfers.
+>>>
+what was the reason of this hang ? I was thinking you don't have 
+interrupts working when client requested transfer but adapter was 
+suspended. Please correct me if wrong.
 
-This commit introduces virtual channel (VC) support to the i.MX8 ISI driver.
-It retrieves the VC from the remote upstream subdevice's frame descriptor a=
-nd
-applies the required register configurations based on the platform's maximum
-supported VCs.
+And it would be good to mention the actual problem and why/how it occurred.
+>> Code changes looks fine to me but have comment on commit log.
+>>
+>> It seems, you are adding support of _noirq() callbacks to allow transfers during
+>> suspend/resume noirq phase of PM.
+>>
+>> Would it make sense if you can write "Replace system PM callbacks with noirq
+>> PM callbacks" OR "Allow transfers during _noirq phase of the PM ops" instead of
+>> "mark I2C adapter when hardware is powered down" ?
+>>
+> 
+> Hi,
+> 
+> Thank you for your comments!
+> 
+> But this patch is added is not for support noirq PM callback or transfer in noirq phase.
+> 
+Okay, may be actual problem description can help me.
+> In fact, this fix is to mark the I2C adapter as suspended during system noirq suspend to block further
+> transfers, and resume it on system noirq resume. This is to prohibit I2C device calling the I2C controller
+> after the system noirq suspend and before noirq resume, because at this time the I2C instance is powered
+> off or the clock is disabled ... So I want to keep current commit. How do you think?
+completely Makes sense. Please help add how this problem occurred and 
+why ? So the change/fix will be good to understand against it.
+> 
+> Carlos Song
 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/driver=
-s/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> index a41c51dd9ce0f..03e0115b5b5a8 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
 
-[ ... ]
-
-> +static int mxc_isi_get_vc(struct mxc_isi_pipe *pipe)
-> +{
-> +	struct mxc_isi_crossbar *xbar =3D &pipe->isi->crossbar;
-> +	struct device *dev =3D pipe->isi->dev;
-> +	struct v4l2_mbus_frame_desc fd =3D { };
-> +	unsigned int source_pad =3D xbar->num_sinks + pipe->id;
-> +	unsigned int max_vc;
-> +	unsigned int i;
-> +	int ret;
-> +
-> +	ret =3D v4l2_subdev_call(&xbar->sd, pad, get_frame_desc,
-> +			       source_pad, &fd);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed to get source frame desc from pad %u\n",
-> +			source_pad);
-> +		return ret;
-> +	}
-
-[Severity: High]
-If the remote upstream subdevice does not implement the optional
-get_frame_desc operation, v4l2_subdev_call() will return -ENOIOCTLCMD.
-
-Does this mean pipeline enablement will now unconditionally fail for any
-sensor lacking get_frame_desc support?
-
-Prior to this patch, the VC was implicitly hardcoded to 0, which worked
-seamlessly for parallel and legacy CSI-2 sensors. Would it be better to
-explicitly check for -ENOIOCTLCMD (and potentially -EOPNOTSUPP) here and
-gracefully fallback to a default VC of 0 to prevent this regression?
-
-> +
-> +	/* Find stream 0 in the frame descriptor */
-> +	for (i =3D 0; i < fd.num_entries; i++) {
-> +		if (fd.entry[i].stream =3D=3D 0)
-> +			break;
-> +	}
-> +
-> +	if (i =3D=3D fd.num_entries) {
-> +		dev_err(dev, "Failed to find stream from source frame desc\n");
-> +		return -EPIPE;
-> +	}
-> +
-> +	max_vc =3D pipe->isi->pdata->num_vc ? : 1;
-> +
-> +	/* Check virtual channel range */
-> +	if (fd.entry[i].bus.csi2.vc >=3D max_vc) {
-
-[Severity: Medium]
-This code directly accesses fd.entry[i].bus.csi2.vc, but is it guaranteed
-that the frame descriptor type is V4L2_MBUS_FRAME_DESC_TYPE_CSI2?
-
-Since the i.MX8 ISI also supports parallel cameras, fd.type could be
-V4L2_MBUS_FRAME_DESC_TYPE_PARALLEL, making the access to bus.csi2
-semantically invalid.=20
-
-Should there be a check to validate fd.type before accessing the CSI-2
-specific union members to avoid potential undefined behavior?
-
-> +		dev_err(dev, "Virtual channel %u exceeds maximum %u\n",
-> +			fd.entry[i].bus.csi2.vc, max_vc - 1);
-> +		return -EPIPE;
-> +	}
-> +
-> +	return fd.entry[i].bus.csi2.vc;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521-isi_vc-v5-=
-0-a38eb4fcd58e@oss.nxp.com?part=3D2
