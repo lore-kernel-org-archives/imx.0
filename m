@@ -1,101 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB92437105A;
-	Thu, 21 May 2026 16:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2246D3672A0;
+	Thu, 21 May 2026 16:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779379211; cv=none; b=u8gbyvlrp31IjC+cQD7++B/Ot/ilIXKoxemMa03lb3D1+Ng/3MJWCjP0QTnjVmNwFYrH6Ih6plUvaHkCNCbZwbCS25IvjRluffJqhTtplBDxUCYiI6FoFf4MvB/K7Nje56NRFFAkRGrvwvm8IelvU8MJ1DZ9kKI451HBbKz1DP4=
+	t=1779380647; cv=none; b=kyZi2Dw2tFyVCvqWV81cOGpKT7XPxaiFCelRhbXklhEdnwNEVwABJTiIftnO/H1WpJ9bUJ0IsAhEce+U640OHX0nfxmMYb9pWguJv4d8UuI7S4FIVfZ3YPVrPbg0uJo5v1Y40YRQYV2vrn8a01usgmWi4aL4lXvd/dQbiRvMX/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779379211; c=relaxed/simple;
-	bh=ju2uWccE12fiqVm7wE+fKfZwZ6h73RpNrbldnR/9OG8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fUUgCGuDakKSF7slmFdg8YPAK9idIiS4meiYr4NCTX2ac3WK8wFu6N1fOpm2k+cJ2sDNJyWYVpIkqw9PeiVqJHKbmHJXnsVzfSm8WAQ+IzWTIuzwPsM+E1FddQzPW8djUPUW3EwvZpws1jRG6CrnJaNzM8R1hkPPmQC3eTGd02o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBTCkE56; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779380647; c=relaxed/simple;
+	bh=GYidv/I6cRskugQ1KHCwIWAYPn987orkfzQF2MzoIDc=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=kIOvOCXjwHhQXyQlfOk2zPxsJjCCQLuYLE+Eh47gg7xVGVu8T2O8nubq9w4j6bACUpp8zbBUuFFBT4n+75OXpS/IZZ90Ed5Mv//fxU3+KlIDEX0VmcWypFPmAB6zI7tcxo8jRKekKhV6j3yrYjjotlugJLqDZn3TOEJ4/+ZmCtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=s7PzemUL; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YBTCkE56"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF371F000E9;
-	Thu, 21 May 2026 16:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779379210;
-	bh=vRbmhKzqEo/N7s1MY7vJImxIbVLPP2pirP6DywPqASI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=YBTCkE56mBgtCGHZXIOednJ6a5ScxIALFh8Gf9Rt8KHlqTt2aCyq9ThLmbQrO/Idx
-	 el6ichzL/wL8kLD7SrR0EV3LTNc3g+PCt0FdwzIZ4vVOXya2ufsb1e1axW2LoP1dRj
-	 vLk0/e/bhH0dk6VBpEm1D8EQWs+9lcs+PPt+/c+aJlxvcaZI88o1GELP1fTxRqHKg+
-	 SGvrUpF0Z8hKMXKTM1oTiYRoWHLbs1nb6v5bOw6Wzn+9p2YuB9ASFGpKC8QCr79QMW
-	 zN4Nt/KMpEv47lCr5JIMqMJNh1VLCdQ2pxfrK+iMWt/hzrmfSkBPuqSRE60lV8E3Yx
-	 vqmKcWkIGAfEg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5699B3930E0B;
-	Thu, 21 May 2026 16:00:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="s7PzemUL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=default; h=Content-Transfer-Encoding:Mime-Version:Message-Id:Subject:Cc:
+	To:From:Date:subject:date:message-id:reply-to;
+	bh=j9BWViu2SpWt7Rj6XMWPmrgjG6rA+onWCpewnCfYlnQ=; b=s7PzemULtOwfVJPGZe380o8FCH
+	Ox3Fin9xFVsNn6I2c2+c/byyh8SKz+3aGFTyvtsoGgz8uOjibUR9Vvtrxznxc2vCikoRLnqP0+c9l
+	baw9lqMUwBVYAxoDJErmQsJwFhgkBcSblolqdS6T9j77woqnmIzPP00yIL8GRmkEZLp8=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168] helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.98.2)
+	(envelope-from <hugo@hugovil.com>)
+	id 1wQ6Be-000000003xE-2ZGi;
+	Thu, 21 May 2026 12:23:54 -0400
+Date: Thu, 21 May 2026 12:23:53 -0400
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: krzk@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+ rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+ simona@ffwll.ch, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
+ laurent.pinchart+renesas@ideasonboard.com, antonin.godard@bootlin.com,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, Krzysztof Kozlowski
+ <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 14/15] dt-bindings: display/lvds-codec: add
+ ti,sn65lvds93
+Message-Id: <20260521122353.82651a97984e58d2ec8309c5@hugovil.com>
+In-Reply-To: <20260511114406.24673c770d112b2ca4aba2eb@hugovil.com>
+References: <20260305180651.1827087-1-hugo@hugovil.com>
+	<20260305180651.1827087-15-hugo@hugovil.com>
+	<20260511114406.24673c770d112b2ca4aba2eb@hugovil.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net 0/9] net: enetc: SR-IOV robustness and security
- fixes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177937921988.398712.17366244673033381497.git-patchwork-notify@kernel.org>
-Date: Thu, 21 May 2026 16:00:19 +0000
-References: <20260520064421.91569-1-wei.fang@nxp.com>
-In-Reply-To: <20260520064421.91569-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, hramamurthy@google.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- catalin.horghidan@nxp.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam_score: -2.0
+X-Spam_bar: --
 
-Hello:
+On Mon, 11 May 2026 11:44:06 -0400
+Hugo Villeneuve <hugo@hugovil.com> wrote:
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 20 May 2026 14:44:12 +0800 you wrote:
-> This patch series addresses a number of robustness, security, and
-> correctness issues in the ENETC driver's SR-IOV subsystem, focusing
-> primarily on the VF-to-PF mailbox communication path.
+> Hi,
 > 
-> The series can be grouped into the following categories:
+> On Thu,  5 Mar 2026 13:06:29 -0500
+> Hugo Villeneuve <hugo@hugovil.com> wrote:
 > 
-> 1. DoS and security fixes:
->    - Prevent an unbounded loop DoS in the VF-to-PF message handler,
->      which could be triggered by a malicious or misbehaving VF.
->    - Fix a TOCTOU (Time-of-Check-Time-of-Use) race and add proper
->      validation of VF MAC addresses to prevent spoofing or invalid
->      configuration from being applied.
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > 
+> > Add compatible string for TI SN65LVDS93. Similar to
+> > SN65LVDS83 but with an industrial temperature range.
+> > 
+> > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 > 
-> [...]
+> Now that this series landed in linux-next/master, except for this
+> patch, we now have an error since it is required:
+> 
+> https://lore.kernel.org/oe-kbuild-all/202605071909.lXKPelNA-lkp@intel.com/
 
-Here is the summary with links:
-  - [v3,net,1/9] net: enetc: fix incorrect mailbox message status returned to VFs
-    https://git.kernel.org/netdev/net/c/8c84c5ec4aaf
-  - [v3,net,2/9] net: enetc: fix missing error code when pf->vf_state allocation fails
-    https://git.kernel.org/netdev/net/c/5027266dea47
-  - [v3,net,3/9] net: enetc: add ratelimiting to VF mailbox error messages
-    https://git.kernel.org/netdev/net/c/4a995d37b537
-  - [v3,net,4/9] net: enetc: fix TOCTOU race and validate VF MAC address
-    https://git.kernel.org/netdev/net/c/c666fa632fe6
-  - [v3,net,5/9] net: enetc: fix race condition in VF MAC address configuration
-    https://git.kernel.org/netdev/net/c/f262f5d89332
-  - [v3,net,6/9] net: enetc: fix DMA write to freed memory in enetc_msg_free_mbx()
-    https://git.kernel.org/netdev/net/c/adb4599979cd
-  - [v3,net,7/9] net: enetc: fix unbounded loop and interrupt handling in VF-to-PF messaging
-    https://git.kernel.org/netdev/net/c/f8ae63de2a87
-  - [v3,net,8/9] net: enetc: fix init and teardown order to prevent use of unsafe resources
-    https://git.kernel.org/netdev/net/c/54362b017608
-  - [v3,net,9/9] net: enetc: avoid VF->PF mailbox timeout during SR-IOV teardown
-    https://git.kernel.org/netdev/net/c/9e68817f12d5
+Hi DT folks,
+wondering if someone could pick/apply this patch to fix the build error?
 
-You are awesome, thank you!
+Hugo.
+
+
+> > ---
+> >  Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml b/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
+> > index 4f52e35d02537..f2cb74b86cc05 100644
+> > --- a/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
+> > +++ b/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
+> > @@ -37,6 +37,7 @@ properties:
+> >                - ti,ds90c185   # For the TI DS90C185 FPD-Link Serializer
+> >                - ti,ds90c187   # For the TI DS90C187 FPD-Link Serializer
+> >                - ti,sn75lvds83 # For the TI SN75LVDS83 FlatLink transmitter
+> > +              - ti,sn75lvds93 # For the TI SN75LVDS93 FlatLink transmitter
+> >            - const: lvds-encoder # Generic LVDS encoder compatible fallback
+> >        - items:
+> >            - enum:
+> > -- 
+> > 2.47.3
+> > 
+> > 
+> 
+> 
+> Hugo Villeneuve <hugo@hugovil.com>
+
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Hugo Villeneuve
