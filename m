@@ -1,137 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34912F9DA1;
-	Thu, 21 May 2026 17:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8903D9036;
+	Thu, 21 May 2026 17:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779384622; cv=none; b=mlUlERWSgRzlEn30cuCP06yIZmoWjkcSiOxoTkyoVCB8uVBm1YcSiYd31dcsN3gdXrBudMpewIWHf/cDWarjBEqaU/wiMViUfb/kwAeiqsxfZQJA2m05rSXwDzuKs8u6HK3gWnkLiuZkH5OdRnWnoT6iq1eLJ5ofDEx3LvFxvgA=
+	t=1779384662; cv=none; b=nAp4ImNR41GarK2aMU0rN3xdxJAJkVaY/J4LymHQwzlkG1fIbhLRouddKHfpGD2NUPqaqbW1qziwqHKZqVF0+4Ux4Sv9Ug6PNkuuJUkmrmrL6kJYVaVuuj+VqA/mGrpHabOS1CBDd2PCaL3OOXdxNHb0uE0t9QrzamW/WvgfqOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779384622; c=relaxed/simple;
-	bh=OlNqmeui+cpmy8Iowi2tl+N6zKfaammDMIENaa21R5U=;
+	s=arc-20240116; t=1779384662; c=relaxed/simple;
+	bh=9XJdbfgv4z9kk1tnll5YqOQVu2RhWQi9Uybxyermr78=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=I6lkiLstTFHynLggBzbtV/LZR3VUSzcwkzUj7pw41zx4zHqtMV9VOuqzZESMxgi316ztADu7siYaKMWeia+jTHHCWdiKoTI7mSa8B3EdiPhuvVLF/uTdQXFhrxSiA0kcGFKBSOdKu4LZX3sQ6UkLoZxBfYIeGX4H9aEPFRy5BPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUhSTBYm; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=RkqV12WfpieWndm7tux27I5lAG/ggwJBoRIBRH+83RHrrlryHwCbuaqadz+cE5TYOFRZFqljm6bT/c/mTJyPv3+bWHrPql3wajiDMpppcT8aG9+2tV2fe6H8NX56VkW/+Ksu1AYhJVGOqAFDs4YfZrxjVJpzKvwSPemZ7oFh9UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7v2z8ZR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUhSTBYm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A03E1F000E9;
-	Thu, 21 May 2026 17:30:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7v2z8ZR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7131F000E9;
+	Thu, 21 May 2026 17:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779384620;
-	bh=X2bg+L3XfdpbesakUz3ZHBqtrMvx+hp8jzQJ8KVvhxk=;
+	s=k20260515; t=1779384661;
+	bh=8njoPscqTq937OjwscNew/6YWYe+q4Hky/XitnHgDjw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TUhSTBYmHOJ5i5rCparJkisWlcmdBVf0xmCe1JZZSoWyJz/8AF0sVQ/VGpqipMH8+
-	 0Jy9Fsv2zTJxRsGzAgd/kj1SgNvb0VCK2s8+SnAITy7IrhXO41CqJ1KSx1NqdHy5B/
-	 DmoDJYj6jWuwaeF+q+5n27P8K3M/EpZ4felVopi5yZYeLBNLpQOLKzd0rMh9IZEQVd
-	 edDkuwm2ZJo1sxjRxZmFl8pOZIX52eIgAeeFD9wgia6+KoDV/o5GFzkANB61SENcum
-	 jDZkIUhMTC3nec/sI3fXndav/Tq9f8zHsOXm325FSYTLYLDdYi3K17zZpDTKFS1lrh
-	 Zsi/s9kmzPv7A==
+	b=k7v2z8ZRmoeQ7KtOjeJ55ogR0hqmrxP9Q7Hd/l0Mdfz7asL+6KeXcC+w37tgQAmmQ
+	 ql146zABwqAqsNx5hTB02yul/BS7YQBdoyNp/PO4U5VfVZ8fzl/BjhZO7O862SmiJd
+	 hiRVb5SKKh7eFahRL5zhpSyunmvckgNsHiEheeq9P90wHOzF0foWKsww8dxoNa6of5
+	 JNGDIKodtTJ/mgbFEu7d2Q+BvBizdbuMYvtB1J+0djv72dHgbCj10/PFZU9f62Mrxx
+	 awQHh8isG7KV9T4gufh40gr8K0w6xFgvfNb7YjbrX1eNlRUQhOhaLI0FYb+pgnftK3
+	 /V1FW544/QA1Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/3] arm64: dts: freescale: add Aquila iMX95 support
+Subject: Re: [PATCH v7 3/9] PCI: endpoint: pci-epf-test: Use
+ dmaenigne_prep_config_single() to simplify code
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Franz Schnyder" <fra.schnyder@gmail.com>
-Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260521-add-aquila-imx95-v4-2-5a7f86c824f5@toradex.com>
-References: <20260521-add-aquila-imx95-v4-2-5a7f86c824f5@toradex.com>
+To: Frank.Li@oss.nxp.com
+Cc: linux-pci@vger.kernel.org, Frank.Li@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev, vkoul@kernel.org
+In-Reply-To: <20260521-dma_prep_config-v7-3-1f73f4899883@nxp.com>
+References: <20260521-dma_prep_config-v7-3-1f73f4899883@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 21 May 2026 17:30:19 +0000
-Message-Id: <20260521173020.0A03E1F000E9@smtp.kernel.org>
+Date: Thu, 21 May 2026 17:31:00 +0000
+Message-Id: <20260521173101.0A7131F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] The DisplayPort connector references a disabled DisplayPort brid=
-ge, leaving dangling references and rendering the connector non-functional =
-while wasting power.
-- [Medium] The dedicated power supply regulator for the disabled DSI-to-DP =
-bridge is incorrectly marked as always-on, wasting power.
+
+Pre-existing issues:
+- [High] Unvalidated `size` from PCIe test registers leads to arbitrarily l=
+arge `kzalloc` allocations, potentially triggering kernel warnings or panic=
+s.
 --
 
-commit 3392fc6b669bcc9dccbd369d342a80d81c494ed6
-Author: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
+commit a2e73aaa3ad55ca4f65ceeb2cf567d9f9ac1f014
+Author: Frank Li <Frank.Li@nxp.com>
 
-arm64: dts: freescale: add Aquila iMX95 support
+PCI: endpoint: pci-epf-test: Use dmaenigne_prep_config_single() to simplify=
+ code
 
-This commit adds support for the Toradex Aquila iMX95 computer-on-module
-and its corresponding development carrier board.
+This commit simplifies the DMA configuration code by replacing
+dmaengine_slave_config() and dmaengine_prep_slave_single() with a single
+call to dmaengine_prep_config_single().
 
-Link: https://www.toradex.com/computer-on-modules/aquila-arm-family/nxp-imx=
-95
-Link: https://www.toradex.com/products/carrier-board/aquila-development-boa=
-rd-kit
+> diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/=
+endpoint/functions/pci-epf-test.c
+> --- a/drivers/pci/endpoint/functions/pci-epf-test.c
+> +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+> @@ -182,12 +182,8 @@ static int pci_epf_test_data_transfer(struct pci_epf=
+_test *epf_test,
+>  		else
+>  			sconf.src_addr =3D dma_remote;
+> =20
+> -		if (dmaengine_slave_config(chan, &sconf)) {
+> -			dev_err(dev, "DMA slave config fail\n");
+> -			return -EIO;
+> -		}
+> -		tx =3D dmaengine_prep_slave_single(chan, dma_local, len, dir,
+> -						 flags);
+> +		tx =3D dmaengine_prep_config_single(chan, dma_local, len,
+> +						  dir, flags, &sconf);
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts b/arch/ar=
-m64/boot/dts/freescale/imx95-aquila-dev.dts
-> new file mode 100644
-> index 0000000000000..3df17700b632f
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts
-> @@ -0,0 +1,389 @@
-[ ... ]
-> +	aliases {
-> +		eeprom1 =3D &carrier_eeprom;
-> +	};
-> +
-> +	dp_1_connector: dp0-connector {
-> +		compatible =3D "dp-connector";
-> +		dp-pwr-supply =3D <&reg_dp_3p3v>;
-> +		type =3D "full-size";
-> +
-> +		port {
-> +			dp_1_connector_in: endpoint {
-> +				remote-endpoint =3D <&dsi2dp_out>;
-> +			};
-> +		};
-> +	};
+[Severity: High]
+This is a pre-existing issue, but I noticed a potential problem with how the
+len parameter is handled by the callers of this transfer code.
 
-[Severity: Medium]
-Since som_dsi2dp_bridge is disabled by default in imx95-aquila.dtsi and not
-explicitly enabled in this device tree, does this connector node leave
-dangling references?
+The functions pci_epf_test_copy(), pci_epf_test_read(), and
+pci_epf_test_write() read a 32-bit size value directly from the memory-mapp=
+ed
+reg->size register, which is controlled by an external PCIe host.
 
-Without status =3D "disabled" on this node, the display-connector driver wi=
-ll
-probe successfully and unconditionally enable its dp-pwr-supply (reg_dp_3p3=
-v),
-wasting power on the carrier board for an unusable interface.
+This raw size is then passed directly to kzalloc() without any bounds check=
+ing
+or validation.
 
-Should this connector be disabled by default or have the bridge enabled her=
-e?
+Could this allow a malicious or misconfigured PCIe host to pass an arbitrar=
+ily
+large size to kzalloc(), triggering a page allocator warning and stack trace
+that might remotely crash the endpoint kernel if it is configured with
+panic_on_warn?
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi b/arch/arm64=
-/boot/dts/freescale/imx95-aquila.dtsi
-> new file mode 100644
-> index 0000000000000..69dc962a24a1d
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi
-> @@ -0,0 +1,1160 @@
-[ ... ]
-> +	reg_dp_1p2v: regulator-dp-1p2v {
-> +		compatible =3D "regulator-fixed";
-> +		/* CTRL_DP_BRIDGE_EN */
-> +		gpios =3D <&som_gpio_expander_0 7 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +		regulator-always-on;
-> +		regulator-max-microvolt =3D <1200000>;
-> +		regulator-min-microvolt =3D <1200000>;
-> +		regulator-name =3D "On-module +V1.2_DP";
-> +		vin-supply =3D <&reg_1p8v>;
-> +	};
-
-[Severity: Medium]
-Since this regulator is a dedicated power supply for som_dsi2dp_bridge which
-is marked as status =3D "disabled" below, is it necessary to have the
-regulator-always-on property here?
-
-The always-on property bypasses the driver and forces the regulator core to
-unconditionally assert the CTRL_DP_BRIDGE_EN GPIO at boot, continuously
-powering the bridge chip on the module even when disabled.
+>  	} else {
+>  		tx =3D dmaengine_prep_dma_memcpy(chan, dma_dst, dma_src, len,
+>  					       flags);
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521-add-aquila=
--imx95-v4-0-5a7f86c824f5@toradex.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521-dma_prep_c=
+onfig-v7-0-1f73f4899883@nxp.com?part=3D3
