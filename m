@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D43E348C47;
-	Thu, 21 May 2026 09:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1718C22A817
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 10:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779357247; cv=none; b=CApAPYSvRrnsjpzI1AjdXgSxMnbgo5dSEdp0Pkxk4g3v6WT6adoaDiBWDXGFH1FhnAQhRp8h+kwKiyZ4pDqEyZi4I2fYOQIkGa1TKn9Updy0nh25SSaeSEOLzF2CUgILISGzCVbBXDXxT8iexrZpAhWxRe+3/WEqS4k8OAijEKU=
+	t=1779357993; cv=none; b=ZDKHLWL3sRvrykIIyiG3/nMeCujGl3CqWUX4C5o7TbIgmtdQK+8pePhV0LE4W6WMlq5fWKPSDH5LcUPYm0TW2rHIM1tGiQll1hl505jqiYIdUrICvFFbuH1LNayx0WMVcFf3Yh/shN2NAxV5xUw8T44L1EVjWeYadNz6biMSKTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779357247; c=relaxed/simple;
-	bh=25s6pRsGSt3bUupVG4S1trH6DP9oIrYLLr31iJXVg5M=;
+	s=arc-20240116; t=1779357993; c=relaxed/simple;
+	bh=n6MUo44OKLnYGukIgrDbiypKIfEs28ZyYkkJEVI2fKE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dzfIW7//9kNC9Qs1uelIh4q57W5dwDaSG46st7rvVpoH+mpJDBU+FFCMaoibv6JY5B3nUIRoE+n6NFvAWN7Z8zz93Bfm5wSG6GtRgha5o7EKPN2PJZQNo9DJOXjksvwVyaec7Mg/xO1RT3IrNMFdrIFwXg/BPYo9FoSRuwdpr1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xt1GoCUB; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=MKrFHNNRvHkavsfa13zFNY/3VkzOTjXBfCoulhXNzHpGS7vyRHOIogTc9RPuTC7exkey9tVs0XL9pwqaY+1LJRUCuYj473DrFPiOHgLrEHu4cJphRqcXTyVp8/pqYP7hb9p8EBfd/Nd7or/lHkjyn9B0mfY6QJQd9vJwfqdy9K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4PYI2zr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xt1GoCUB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EFD1F000E9;
-	Thu, 21 May 2026 09:54:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4PYI2zr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF5E1F000E9;
+	Thu, 21 May 2026 10:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779357246;
-	bh=aEBWcPXs9aHG6NpITd6et56UobUUpHoNGH6cSlbLzII=;
+	s=k20260515; t=1779357991;
+	bh=WiDs6gMI9bVOMAg/t4aiiQEdblHUBeqN0psyKLz8mF8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Xt1GoCUB88OHejbBAthwMBqYUkZ+Nek/iTNAIaG67D/CWL2LLobCFUTeGzeGThmX0
-	 Hcm2KeXKtLC/tEjYftktbRf5WxDiiEEeqGSrB1/UdCbPha40usEVahny80udqNrDxo
-	 RdJt/eSy53gJPHPEYBd3LzXw02d6eQ0jnp4etVxF/2K+HpaLl9ruSfKrO8NnWO8hF8
-	 bOt1G02kLWINGv/Hzqu9GusDZk+PkvVH3niX69XlxvhR3QlfMCoD8xEj6jXKP+2qDI
-	 rHbruDA2X0+Yc1MwAgObwp0ur16alCwqpXoR4rftGOiaSdFuzxTClsYjvtkTG3bpmG
-	 6LhZ3WQjsG+yA==
+	b=S4PYI2zrk7cIUa9z8sVRkh9qM/ZPBkv6FGt3Jh38VZrdMawoyJRWlHgHjo8EOndlt
+	 92V/c++lG3Pyaayp/rzXein+2ZdX1h+QUi7ruVyx2H9B6XY2VW+KAexyyz+FMxdijH
+	 PNVli2b1d1kHEZKD2pkUDLtS2TLrIB2+pD7Bmr6y8DFcI6wOESsnSb3PpCkRilMTmP
+	 5y+4yi7CWbMNTQhBDzO8DK20Y//lOdeU3K4UDW5TaQFPmC7rjjOC0ZOFTwXt9LeVCV
+	 h779EV5KK+rQbxayk6hbfBu+UwBCNVd30h6JUspRHpGTxJza9xFMUVc8CGLqMtVv77
+	 2FzvOhMjdO3pA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 1/3] dt-bindings: imx6q-pcie: Add optional interrupt
- entries for intr, aer and pme
+Subject: Re: [PATCH v5 2/2] media: nxp: imx8-isi: Add virtual channel
+ support
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Richard Zhu" <hongxing.zhu@nxp.com>
-Cc: devicetree@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260521093255.61585-2-hongxing.zhu@nxp.com>
-References: <20260521093255.61585-2-hongxing.zhu@nxp.com>
+To: "Guoniu Zhou" <guoniu.zhou@oss.nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260521-isi_vc-v5-2-a38eb4fcd58e@oss.nxp.com>
+References: <20260521-isi_vc-v5-2-a38eb4fcd58e@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 21 May 2026 09:54:05 +0000
-Message-Id: <20260521095405.A5EFD1F000E9@smtp.kernel.org>
+Date: Thu, 21 May 2026 10:06:31 +0000
+Message-Id: <20260521100631.7CF5E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,73 +46,96 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] Expanding the global `interrupts` and `interrupt-names` properti=
-es without adding conditional blocks allows legacy compatibles to incorrect=
-ly pass validation with unsupported interrupts.
-- [Medium] Using an ordered list for `items` fails validation if a device o=
-mits the optional intermediate `dma` interrupt but includes subsequent inte=
-rrupts.
+- [High] Pipeline enablement unconditionally fails if the upstream subdevic=
+e does not implement the `get_frame_desc` operation.
+- [Medium] The driver unconditionally accesses CSI-2 specific fields in the=
+ frame descriptor without validating the frame descriptor type.
 --
 
-commit be2769e2cb772d7043d8c01877a0a7fecb468b12
-Author: Richard Zhu <hongxing.zhu@nxp.com>
+commit 4d8a62dc345af085b3b0a217c07143648e85fd35
+Author: Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: media: nxp: imx8-isi: Add virtual channel support
 
-dt-bindings: imx6q-pcie: Add optional interrupt entries for intr, aer and p=
-me
+This commit introduces virtual channel (VC) support to the i.MX8 ISI driver.
+It retrieves the VC from the remote upstream subdevice's frame descriptor a=
+nd
+applies the required register configurations based on the platform's maximum
+supported VCs.
 
-This commit adds three new dedicated hardware interrupt lines (intr, aer, p=
-me)
-introduced in the i.MX95 PCIe controller. These interrupts are added to the
-global interrupts property as optional entries to maintain compatibility wi=
-th
-older SoC variants.
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/driver=
+s/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> index a41c51dd9ce0f..03e0115b5b5a8 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
 
-> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/=
-Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> index 9d1349855b422..cf709132ff1e2 100644
-> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> @@ -58,12 +58,18 @@ properties:
->      items:
->        - description: builtin MSI controller.
->        - description: builtin DMA controller.
-> +      - description: PCIe event interrupt.
-> +      - description: builtin AER SPI standalone interrupt line.
-> +      - description: builtin PME SPI standalone interrupt line.
+[ ... ]
+
+> +static int mxc_isi_get_vc(struct mxc_isi_pipe *pipe)
+> +{
+> +	struct mxc_isi_crossbar *xbar =3D &pipe->isi->crossbar;
+> +	struct device *dev =3D pipe->isi->dev;
+> +	struct v4l2_mbus_frame_desc fd =3D { };
+> +	unsigned int source_pad =3D xbar->num_sinks + pipe->id;
+> +	unsigned int max_vc;
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	ret =3D v4l2_subdev_call(&xbar->sd, pad, get_frame_desc,
+> +			       source_pad, &fd);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to get source frame desc from pad %u\n",
+> +			source_pad);
+> +		return ret;
+> +	}
+
+[Severity: High]
+If the remote upstream subdevice does not implement the optional
+get_frame_desc operation, v4l2_subdev_call() will return -ENOIOCTLCMD.
+
+Does this mean pipeline enablement will now unconditionally fail for any
+sensor lacking get_frame_desc support?
+
+Prior to this patch, the VC was implicitly hardcoded to 0, which worked
+seamlessly for parallel and legacy CSI-2 sensors. Would it be better to
+explicitly check for -ENOIOCTLCMD (and potentially -EOPNOTSUPP) here and
+gracefully fallback to a default VC of 0 to prevent this regression?
+
+> +
+> +	/* Find stream 0 in the frame descriptor */
+> +	for (i =3D 0; i < fd.num_entries; i++) {
+> +		if (fd.entry[i].stream =3D=3D 0)
+> +			break;
+> +	}
+> +
+> +	if (i =3D=3D fd.num_entries) {
+> +		dev_err(dev, "Failed to find stream from source frame desc\n");
+> +		return -EPIPE;
+> +	}
+> +
+> +	max_vc =3D pipe->isi->pdata->num_vc ? : 1;
+> +
+> +	/* Check virtual channel range */
+> +	if (fd.entry[i].bus.csi2.vc >=3D max_vc) {
 
 [Severity: Medium]
-Will this expansion allow legacy compatibles to incorrectly pass validation
-with unsupported interrupts?
+This code directly accesses fd.entry[i].bus.csi2.vc, but is it guaranteed
+that the frame descriptor type is V4L2_MBUS_FRAME_DESC_TYPE_CSI2?
 
-The commit message notes that earlier i.MX PCIe variants lack these
-dedicated hardware interrupt lines. Without adding an if-then conditional
-block to restrict interrupts and interrupt-names to maxItems: 2 for older
-variants, invalid device trees specifying these unsupported interrupts will
-now silently pass validation.
+Since the i.MX8 ISI also supports parallel cameras, fd.type could be
+V4L2_MBUS_FRAME_DESC_TYPE_PARALLEL, making the access to bus.csi2
+semantically invalid.=20
 
-> =20
->    interrupt-names:
->      minItems: 1
->      items:
->        - const: msi
->        - const: dma
-> +      - const: intr
-> +      - const: aer
-> +      - const: pme
+Should there be a check to validate fd.type before accessing the CSI-2
+specific union members to avoid potential undefined behavior?
 
-[Severity: Medium]
-Does using an ordered list for items cause validation to fail if a device
-omits the optional dma interrupt?
-
-In YAML schema validation, an items list enforces strict positional matchin=
-g.
-If a device tree defines msi, intr, aer, and pme but omits the optional dma
-interrupt, the intr string will appear at index 1 and fail the strict
-evaluation against "- const: dma".
-
-Could the schema use an unordered list (such as oneOf or items: enum: [...])
-to allow independently optional interrupts without strict sequencing errors?
+> +		dev_err(dev, "Virtual channel %u exceeds maximum %u\n",
+> +			fd.entry[i].bus.csi2.vc, max_vc - 1);
+> +		return -EPIPE;
+> +	}
+> +
+> +	return fd.entry[i].bus.csi2.vc;
+> +}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521093255.6158=
-5-1-hongxing.zhu@nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521-isi_vc-v5-=
+0-a38eb4fcd58e@oss.nxp.com?part=3D2
