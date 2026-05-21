@@ -1,162 +1,316 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011037.outbound.protection.outlook.com [52.101.70.37])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769BB3BED4A
-	for <imx@lists.linux.dev>; Thu, 21 May 2026 12:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779366466; cv=fail; b=oJO9kPynJyBCovwKyiPcaC33ZdD3PoIKsgWWBA0tWZq9iY5XIUHNwHZksRAWMZyaDfwq6TqlJ1NNYRgz+jEJ4S789I0Bb6JNPUPgINfGRcHBahh9bUUOFiso94cBlUWO4S6rejj7N0RdG4kgqlCr93sQyuf5tCf6hqKoDwA5gvs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779366466; c=relaxed/simple;
-	bh=9oREFo6RBH2P/Vqlv7PPXGurvCB/70m+y6FLe4X36MU=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=e2Tk16xXVG4urBZvSOMbyQxUCXIz5CwSgqd1iJF8NORH/1LrvmTZUj9DwcbXK9sOpU2uNC67c8xrq5JcMr43HtjFYCCWscsIh7h7CckiHUZkWTRU1HVkOhnrxhZN8YuLUQcvFeo5BBIDXgr6PcWg9SZq0aRruTYxPb3kUFVk7uY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nF7D9m41; arc=fail smtp.client-ip=52.101.70.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589AC3C37A9
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 12:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779367203; cv=none; b=dhNPLvhYsq26NaIpYPHN/PuMD/VH61uqZHsJvQ9I1rLKhc6PKpB2Djsbt0WsrPI/GrZ6Pp8Pkak/4TYuQl9EM4NA4olZweQ8sCYpF9vomztRFqi1Gy+4+JrVQiTErpzTXrkYet0i+5smSHkRGrqmKu8dyVXWpdNpuFDnRl0rrqI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779367203; c=relaxed/simple;
+	bh=lE5m9vKNKBhobwgtfEDX9vo4+fc7RBiEF/84RQgcKZ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gIcn5jYXy6A/rx2dKYwsWaX/35uw2EfUO0j7zfTnRMPAfymVBiTiU+QfRUyje2rZ6P0rGEZO+1xY54KvzrUJ7Fz/63ROuyDeGLiARMkJP6AgYuCwzQVjye/09+AH1fSOdu04EFkoLDeCYZBsxTBwZqnyeogVEt9FhvDeGVmmzOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HWeVFYMj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Cq577MiA; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nF7D9m41"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eU3goV9nR6qLYib97PpsoFe96J//6eBl+mrKW7lVQ+umhaAY4KILGKk0ZpLS0P44nDX6SNX7c8Y7o64UzJIyXRLOBPMEuYLuX3kMVIw+901eCZBmzek6+082nFD2Kr0OsIqq97jA0YNktob8NAMWA+DcF76EcczPeIQiRe/RZPqoRnf5hzQCkFX56o3WP56/pJShl88fBfnts7ZLf431vuOMLazSe/fnWEiG7SG40DxEprjSZfZK4fUuDYy+mIWHDT7bVGYu4ljjSKNYKKZLZlMZq1baIfwIux2iF+fcykxEftNFn1MYdU1K7g40bZvSKEIDhbdS/2y9taIJ/3YrYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VlJVG6Pmb0ujXZ3mW0On8EJxoDeWEnFXjk/Lu89fy3s=;
- b=aWjLuGfBjiY2+oVrQ0zIi5q4W7f+bYEVbkEhrFNo6QP0rkwlEj6WcdwGTrONs4SAo2jZZrcdsoGrdlkyJfxALEV2bl/+0inPF3hua+HcIZCTQwkh4rP6Qm6DMU9SAxiV408ktKCWCtSixIRvOZ78EsH0NrcSsnEAoLpzKze8T/dCh+AH7Wxh55/T5m+yTb2NFT0oLbQYGmgFCgMAP4/AVdELR6J++7sunAuP6dGOmpiSexQJlYqtClxkH+uIsfHKmFmfOBn//QpAbyKftY8NnpQNsbneE8qDdOnOZnCgrrvkk0rJ7e70VUvYzgA/u36DDY75sWdMlwB1Lyk3E9AB6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VlJVG6Pmb0ujXZ3mW0On8EJxoDeWEnFXjk/Lu89fy3s=;
- b=nF7D9m41Mrmq1K9yuseMYzOeuMkwfsv7EazJebTPveBqy17LAKEousL6a22mix3SRuXZM7+mHmJgcnJX9A9WvsNkkpEYVd+rMmORnMg+q8ZdxX/AA8zMpcf7Bi49ythwkgudVMTFFOKBUrp9e1kdhqs7C2UcAJyk/zOnrLxAe1KKBqnVM04H9QeapginsQkRPshSYVWdOp7RklbAnD2hiNbxApcTHMmg/0nXhK8gyL21Wh3VZ1JJ+aWVOVKmdFdWiembHo5k6sLqqX0dF8Zfntx4ncdGsmGBWKTLJ4XgbItGj4mSHxr/S4153qSLwsNuo0wKD+pWpOQHKOcUq65FOA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9244.eurprd04.prod.outlook.com (2603:10a6:20b:4e3::9)
- by AMBPR04MB12286.eurprd04.prod.outlook.com (2603:10a6:20b:733::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Thu, 21 May
- 2026 12:27:42 +0000
-Received: from AS4PR04MB9244.eurprd04.prod.outlook.com
- ([fe80::adaf:805c:51c5:9538]) by AS4PR04MB9244.eurprd04.prod.outlook.com
- ([fe80::adaf:805c:51c5:9538%4]) with mapi id 15.21.0048.016; Thu, 21 May 2026
- 12:27:41 +0000
-From: Mirela Rabulea <mirela.rabulea@nxp.com>
-To: sakari.ailus@linux.intel.com,
-	mchehab@kernel.org
-Cc: laurentiu.palcu@nxp.com,
-	robert.chiras@nxp.com,
-	guoniu.zhou@nxp.com,
-	robby.cai@nxp.com,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH] media: v4l2-fwnode: Fix subdev owner overwritten in v4l2_async_register_subdev_sensor()
-Date: Thu, 21 May 2026 15:26:45 +0300
-Message-ID: <20260521122646.600179-1-mirela.rabulea@nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0241.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f5::6) To AS4PR04MB9244.eurprd04.prod.outlook.com
- (2603:10a6:20b:4e3::9)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HWeVFYMj";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Cq577MiA"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L99jCv3527287
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 12:40:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ES2YYruuxFojMvF/pOHGFCJl2UiLVHd+mZIVueL/Tzs=; b=HWeVFYMj4PEPy+2a
+	2Hzq4NalWUT/Twjbj35kS7uC1uIFTltZplcQgTb8C39PiRZ5kfNguz37s+q9OpfQ
+	q7c7vvosyM6mO5n8mPh2i/DZdu9QL3vvVmPxJOrWYpzWtY8l86vZBUmQndvKwPDL
+	mH+pW7LAUPCl3Cc0KXUbSju3987w6uMptiYEUFbtHXQArPcgPwYcCkJ6p3JQJfGZ
+	mHUbBUO7N0WFwHuL8EctNwZgIVygHqIuX4H71ghjmi0c07ktAGkL1JKTeavC1MOz
+	xwO3mTr5F7YeKwwu7T4wERma+X6dIW6xdcKrfLmQvGAwhtlSYvqE0GgfBlp3Pnp1
+	dIbsSQ==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e9vhbhkay-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Thu, 21 May 2026 12:40:00 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2bd00a65673so45198625ad.1
+        for <imx@lists.linux.dev>; Thu, 21 May 2026 05:40:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1779367199; x=1779971999; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ES2YYruuxFojMvF/pOHGFCJl2UiLVHd+mZIVueL/Tzs=;
+        b=Cq577MiAu6zr7o2Lx11oBWtDrRgJpoYlhu3fz86tD6BTOIoicsLAzwHdMHwukSMAXv
+         ntoW1ULPmI/MriMrmdeSMEG3HME23V8y9tzsoBE1S+wzxbQlhEIhiNSn/FF87k98uaC/
+         xBWBGKBSHhnX88tH7vXOyXp9GxUj5Lxx2GQmZLVoXIHP5Z1hUUDYoPRC4K6SVLdRmXlF
+         al9K159uVfymGZgVv69vEDrBgL0RaayDKJVzc6sQ/Fws0YyWBIXYIcUSQohbHO1+T1oN
+         fI425uKPIJKPYCzSTDVvvEM2GCs953h+8nZNvTmJYTJSuThl4qcb9z1f2kr/V5JvuCIs
+         Xa3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779367199; x=1779971999;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ES2YYruuxFojMvF/pOHGFCJl2UiLVHd+mZIVueL/Tzs=;
+        b=KzVrw8PQho9LTY06ACdZv2WQXPuOXLzNoKqIc+cg75L06UDc+0cOkOElD5OD7Y0QM0
+         JGWBaZbjfX/DbqpH+h2pwoKDAXKOuYXsS6MGo+yVU6T4A6mydQTqy7xSAQAbUu57OzEn
+         6wY8u3iAH2OXOgqhfEnMUG7vyDAys/Lu9lWKPStQOGiuJ3NKHbPwrrP2SkkpNCAhF+iJ
+         uyELjIBK9x+BS0WRsHryI2UMlv1MuWR+kN4k1gGFuvuvB70L7E1jJj/3t5XnvJFUffUf
+         exV5+Dsa0mTpbc5ctMPAp+HywDbe+mzSh7DuSwrBi7CaPUNqQq+U0vAkbPNceOxzQbyx
+         GNCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/MCXBRyO/yw+LvczC7laC4r2ZKu6jIEFKXQKHhKWywr89hvpnTdmsD7red7UxGR90xh8M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzY87cDVi/KPRj1KC3rlkYPsuq1c13dwM4DvyKRoBRwFvuaCdbb
+	HGLDf+j5rc/bBkv7SZe0jcU0LQ1nB8mXYxB80Bw9bBK4rkbjJDmWaorAsY4Nm4BSe2Pt+GbAT//
+	TpbUkpDiR5VX79MbWOqhwKUWB2pmY1iJ0uAz7m4ItHD9dirGLVRicchSCsVoa0kQ=
+X-Gm-Gg: Acq92OHQMEjb+BqcTjSaPAEI2HWSnEFqtwLj1X5zZ0UbgTaH4gLI/d3FrodebansJg/
+	ZxZJRxj349tK2PHiJlxZZDDRIL/d1ftVcHKmVfm/0w2wLNAK9l4saMUYUmitnWJBSNvd7bTxofU
+	c/f+FCqzyCop/PHYnX8G5LVp/k1Uprwbikq7Cr5pYD/KSm+X7iB4n+GRzjEWbEG4fYmDFDwiZOM
+	2STA95gUWK5BDlMkmfpjNRq5djv/yHk4onX8TKJMPeFxAAnBnxto0eDV5Wn36f1S97wHcsCgiMz
+	4Ay+kqT4a+hhgksgREA4k74CPhiaO6OU1zXeM8f5XNDlsC8TXhhHPNkLlho1SjFlCw3zB1umHZi
+	m1vliEMPJ9lnUuS4So2qtJQPULrbZ0vcwaeYqx9a1e16zlYV/cJsFQ0AM
+X-Received: by 2002:a17:902:fc50:b0:2b0:91e6:bc18 with SMTP id d9443c01a7336-2bea2641874mr28014305ad.14.1779367199271;
+        Thu, 21 May 2026 05:39:59 -0700 (PDT)
+X-Received: by 2002:a17:902:fc50:b0:2b0:91e6:bc18 with SMTP id d9443c01a7336-2bea2641874mr28013965ad.14.1779367198767;
+        Thu, 21 May 2026 05:39:58 -0700 (PDT)
+Received: from [10.217.219.207] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bea9289e05sm10418955ad.27.2026.05.21.05.39.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 May 2026 05:39:58 -0700 (PDT)
+Message-ID: <315029cc-f04c-4dad-a746-f5d3e7245cdc@oss.qualcomm.com>
+Date: Thu, 21 May 2026 18:09:56 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9244:EE_|AMBPR04MB12286:EE_
-X-MS-Office365-Filtering-Correlation-Id: d645df02-662d-4a3f-48da-08deb7345a33
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|376014|1800799024|366016|38350700014|56012099003|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	sMFBOgOOvCw1psKwwawjsjk5Rgee9SeHvWhPR+70wXKRvFGu9xBV/SlGG4gThJ9UN3ZlyUYd6XXnAGf8vykCCFPrRN87WjyO50cLqdUoFZndCNbFpHDAbyPMU9dhhPAR0ADJ48En8ZqCA1KILBOsIOwM5Oyd5AXEw4ZlTfUPEK7Kj7gZ2ld8ade2aFABP4HhGq+b24VmfiRLHIsS8tcxq1doJQ0fkvQ2X1CqjEy0d5X+l9BdfP+76Nehueywgp4hS6pe5K78b2x8RRPlDhcck4MV5TP21Epi5LTjtxeCpdP6funiGitZHVj67mAIpI7B6j8PdDu659I+nFMrlQ53ptyd8kc2pBYr+C6rbKSwEmNlD1viAP5M73a9jzqiqNwRbxShiqO0boZ2U5i3EovUOrrqwOmhYL2fcl/K0jP9gaoj0AaWKcHsr2TmLvXulUpEI2BkTm5j8ufA9Q1TYTDZq5DsIo1AdGk9gFxwtYnffzeDUD06glDflDlzAknwWwP7nkVukHeBS0aJgYp7QGzz5Ci2jGDm7XKhk1HRl1EZk8euk0Fb6FwhJmP4is4V5qgQ7H+YCQJ9YbS6T4vq2QtF/GsdSBSqRXMSVdaW9PhQwNhOz8JDUzLQz9R+hDTnGsfY1M83bFtVBXFvn5i5QUejOej1PgjmNnDi1b3w74fk8RPGFZ28TziBwLvDQJAr/GsN+N0ahXzo6rBXJYP36MfZUX0P4pEfPO0zTTzIeYB+EpILW7acqdfY7p8CpsetAtL9
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9244.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(1800799024)(366016)(38350700014)(56012099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Pgu1vHsbL8da9weHyWM5KfxswGUbsJFN9ip37ygGRza6pnixRplUgR70M8hN?=
- =?us-ascii?Q?jRl6N7jZURlBc6DnmCqESqqzkFeg1GxT2FaAPxNMNbGxfmsxRRlf9yrM5e7M?=
- =?us-ascii?Q?cwNdSQu3N6K3PKD3eN42vl2N9UntA8oe/vPLQZm2A41Ugj9WlItIAF+rj1/s?=
- =?us-ascii?Q?4cHVbpJFWAzx8zjhsu3KVM+7Dx9Xs1rf4YhDwPXr+2k/cLOR54e+/zpZEYcn?=
- =?us-ascii?Q?dh4zrH304WpabPQzMvbamhIYtyu+4LQSiWWWW1cA9jI8iZJTD0Bt5iUs384h?=
- =?us-ascii?Q?X3B2nf5A22d5SbmgsdcREZ2nDxo1q5R67b0A3VwUdjf39P956FMCRXjzg+QO?=
- =?us-ascii?Q?+NmriDsUcXsRyue091Icp6+i9g1IlZaqxhPfMocPIWBlkgGSLalNlOn4f5Ro?=
- =?us-ascii?Q?t+gz7nJRprOrM2QpqDHNGriCGbY70N2a4aifTfSWf5iVPtW29FcU/KZ+T5hq?=
- =?us-ascii?Q?3vvj0z4Ds5YRdxZDj77h7qlyqpREW8/XiwhG5slxy9l+BzkgmMCV/24Shmjr?=
- =?us-ascii?Q?4EPElqWpHalNJ39H0FLPKoCdDCS9FJezMNdEGEenwgAot2spN7vpqhyTasAc?=
- =?us-ascii?Q?F44ILFuinWbBnUxERFQd+eHjIeGT3x+vSd+bqbmNlSE+sXsEz6VjqnkXX5gf?=
- =?us-ascii?Q?NRkR4qSuiLra+EVgrGXqnMmtNYtIIGJOMOHKuy+Msu3LwAySqIK3nucYASAh?=
- =?us-ascii?Q?nYUb4kYSgn1u88s270Fci/TowuqqiBXi5bnW9d6qyyJ2qaZeRnQQJta+yc5x?=
- =?us-ascii?Q?/yRW4M2wlZWcwE5mO+3mcNPi00umfRvw8WwsSfLTKTMG48o5aDzsSGv9OEVy?=
- =?us-ascii?Q?X3xcvo7iM6iUYc1BkYhRfDi5If6LF84T5VpSE1FcFG4kKClsfk52FiUQZ5eS?=
- =?us-ascii?Q?4yFhw4HQbbeGQw8ZbPHSJ7Uaui+rXvWVZvSSza4QGHNFkuW4fnsSNxmcdgM5?=
- =?us-ascii?Q?T4YWDpsk122Lv9m1r1YF445OKIwc3+7dYLygpzN0n3axseUgu4bCnk0PYA9a?=
- =?us-ascii?Q?fUu9qmzRWHvV6LHZOxBQGZLitqMnDVv92Kniu/oKN6S35JvsIMjD4NTzMYVI?=
- =?us-ascii?Q?iXe5dT7yjYV2w+YOO54ttgBBLSAjb6M8OMb0dc4xqDsH97p6tT3fuaZkVXKk?=
- =?us-ascii?Q?UHSBS3jbSqQP2MeGh5aqhDo1vDW8shBO8js8kGjtm/oWN6SBx57y2z8HriML?=
- =?us-ascii?Q?pGjDtUpzSexTzobkz67hPSdVpY2LLbWAWzLmYxk066YpHcXA2fHyiPJM2sjV?=
- =?us-ascii?Q?y4mSHApsiTo+isRCYgIwHn/PXKNoSerwzPeSE4nLvwOSFIs8GiNDH4tQuByP?=
- =?us-ascii?Q?u6NxA/v4J/eVoAT4tObTvHTxPxKOJT1ntQ79G5uBR0lko7PEIOM91jLol/jS?=
- =?us-ascii?Q?/30fGLw1t9yUjHn+O16de1QcStuoR7PE+wUY8REzxL6eExK8Xr2bcTQRGe4p?=
- =?us-ascii?Q?a9AOFsyFTUPithFCqjTiBgbk1D1vvJORSokoYYt9vHIR59DVltFxJ/8SMN4Z?=
- =?us-ascii?Q?YYFeqATOPJzE7VmVH1GIJHY6mYAYvgfsw2gcH9x9+epkIkzFvVNcSht2hIP+?=
- =?us-ascii?Q?8HHiAXhOsTTPtNgsnDZr8m+kguKB9z6yzbiqwdxD1cuJZiYBvEQ7M7DgCRFO?=
- =?us-ascii?Q?XDHvqnAKwbgdF3DDlR9gf9QGJ3ZA4guLHz2m78McGnIbNZzBzSBRH8+afetU?=
- =?us-ascii?Q?V60wksg8UhqE20eZMhX/1mYb2DA7Jcey4jinIxf/+Oi+xEGe674e9yazq8N6?=
- =?us-ascii?Q?McMCycIjUg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d645df02-662d-4a3f-48da-08deb7345a33
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9244.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 12:27:41.6929
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JkWgi8eQ3cLQyCbHFyu8GnjUFt6j8Rr9G/lfS2o7f7H/z34XBBGd4YzLDuizRjn9rUORBnecR1/42ZB8ulPOtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB12286
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] i2c: imx: mark I2C adapter when hardware is powered
+ down
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>,
+        Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+        "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "andi.shyti@kernel.org" <andi.shyti@kernel.org>,
+        Frank Li
+ <frank.li@nxp.com>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        Carlos Song
+ <carlos.song@nxp.com>, Bough Chen <haibo.chen@nxp.com>
+Cc: "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>,
+        "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260520101504.2885873-1-carlos.song@oss.nxp.com>
+ <4979e748-ce4e-4244-8906-e22a1e6472e7@oss.qualcomm.com>
+ <AM0PR04MB68027798D1B07FD63AEC5F23E80E2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+ <22af0378-a3c9-4403-a0ee-da794847f41d@oss.qualcomm.com>
+ <AM0PR04MB6802FE8B0E0BEF8CDA6DAD5EE80E2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+ <ab96c900-9c77-455a-88f1-b6d8d8e4ff78@oss.qualcomm.com>
+ <AM0PR04MB68024A0FAF0637726C08B87BE80E2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
+In-Reply-To: <AM0PR04MB68024A0FAF0637726C08B87BE80E2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDEyNiBTYWx0ZWRfX8doJJOeoOjG4
+ iYXdLe9fDLmpX70TXnsAon9szT9Nl5wuFhR5yNgMX6OQowa+0mLhRyYORBcDAbZ6gFpBxtjGsUg
+ xGIZNYEHRh6FOY5E7NdtK50jIWkMdn1L0zntY7gpGXH3b2+cjg4DTnIZhyJYTpoICgeMwNioPjZ
+ UfrokCxVk2OyD6jCpoxKA9FOifBNOgB4foZN0QurcPXGp0ZU3TbB1tevHRfUz+fJBGlsq/aASwD
+ 3us/vUw1/OOM/hrdUODxJ5r9OeNbLqCpt4p+gIbqLULCXSW/pyU1MEBr3zUMZhBZlYCyGTWZdUa
+ bjXLttZ5oXoV9Gp3iI9eOW/03KU84a2gP9oFJLd9EcI2UapVY1vSaKA/lYLpfY28WQZSDlW2TQe
+ YIc02dZgiG1+MmqwaHvWegbNLitah8SC/FNDsgWQS7MGI3KrI5yol/0Srifogc6+4Qrd4XM4Cvt
+ HMFcMKtGKpplxHLvc+A==
+X-Authority-Analysis: v=2.4 cv=GYAnWwXL c=1 sm=1 tr=0 ts=6a0efd20 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=EUspDBNiAAAA:8 a=8AirrxEcAAAA:8 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=JfrnYn6hAAAA:8 a=2tUGZl6TGnhxom4q2uIA:9 a=QEXdDO2ut3YA:10
+ a=uG9DUKGECoFWVXl0Dc02:22 a=ST-jHhOKWsTCqRlWije3:22 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-GUID: -iKSbK4OJSJehU3aTDqippmP6m-vWBK4
+X-Proofpoint-ORIG-GUID: -iKSbK4OJSJehU3aTDqippmP6m-vWBK4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-21_02,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210126
 
-The v4l2 helper v4l2_async_register_subdev_sensor() calls
-v4l2_async_register_subdev(), which is a macro that expands to
-__v4l2_async_register_subdev(sd,THIS_MODULE). Since the macro is expanded
-inside v4l2-fwnode.c, THIS_MODULE resolves to the v4l2-fwnode module
-rather than the sensor driver module that originally set sd->owner. When
-v4l2-fwnode is built-in, THIS_MODULE evaluates to NULL, which then
-overwrites the sensor driver's owner with NULL.
 
-This causes the problem that the sensor module's reference count is never
-incremented during async registration, so the module can be removed while
-the subdevice is still in use by a notifier (e.g., a CSI-2 receiver
-bridge driver).
 
-Fix this by calling __v4l2_async_register_subdev() directly with
-sd->owner, which preserves the module owner that the sensor driver set
-during probe via v4l2_i2c_subdev_init() or direct assignment.
+On 5/21/2026 5:32 PM, Carlos Song (OSS) wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
+>> Sent: Thursday, May 21, 2026 7:14 PM
+>> To: Carlos Song (OSS) <carlos.song@oss.nxp.com>; Mukesh Savaliya
+>> <mukesh.savaliya@oss.qualcomm.com>; o.rempel@pengutronix.de;
+>> kernel@pengutronix.de; andi.shyti@kernel.org; Frank Li <frank.li@nxp.com>;
+>> s.hauer@pengutronix.de; festevam@gmail.com; Carlos Song
+>> <carlos.song@nxp.com>; Bough Chen <haibo.chen@nxp.com>
+>> Cc: linux-i2c@vger.kernel.org; imx@lists.linux.dev;
+>> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
+>> stable@vger.kernel.org
+>> Subject: Re: [PATCH v3] i2c: imx: mark I2C adapter when hardware is powered
+>> down
+>>
+>>
+>> On 5/21/2026 4:21 PM, Carlos Song (OSS) wrote:
+>>
+>> [...]
+>>
+>>>>>> -----Original Message-----
+>>>>>> From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
+>>>>>> Sent: Thursday, May 21, 2026 3:40 PM
+>>>>>> To: Carlos Song (OSS) <carlos.song@oss.nxp.com>;
+>>>>>> o.rempel@pengutronix.de; kernel@pengutronix.de;
+>>>>>> andi.shyti@kernel.org; Frank Li <frank.li@nxp.com>;
+>>>>>> s.hauer@pengutronix.de; festevam@gmail.com; Carlos Song
+>>>>>> <carlos.song@nxp.com>; Bough Chen <haibo.chen@nxp.com>
+>>>>>> Cc: linux-i2c@vger.kernel.org; imx@lists.linux.dev;
+>>>>>> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
+>>>>>> stable@vger.kernel.org
+>>>>>> Subject: Re: [PATCH v3] i2c: imx: mark I2C adapter when hardware is
+>>>>>> powered down
+>>>>>>
+>>>>>> Hi Carlos,
+>>>>>>
+>>>>>> On 5/20/2026 3:45 PM, Carlos Song (OSS) wrote:
+>>>>>>> From: Carlos Song <carlos.song@nxp.com>
+>>>>>>>
+>>>>>>> Mark the I2C adapter as suspended during system suspend to block
+>>>>>>> further transfers, and resume it on system resume. This prevents
+>>>>>>> potential hangs when the hardware is powered down but clients
+>>>>>>> still attempt
+>>>>>> I2C transfers.
+>>>>>>>
+>>>> what was the reason of this hang ? I was thinking you don't have
+>>>> interrupts working when client requested transfer but adapter was
+>>>> suspended. Please correct me if wrong.
+>>>>
+>>>> And it would be good to mention the actual problem and why/how it
+>> occurred.
+>>>>>> Code changes looks fine to me but have comment on commit log.
+>>>>>>
+>>>>>> It seems, you are adding support of _noirq() callbacks to allow
+>>>>>> transfers during suspend/resume noirq phase of PM.
+>>>>>>
+>>>>>> Would it make sense if you can write "Replace system PM callbacks
+>>>>>> with noirq PM callbacks" OR "Allow transfers during _noirq phase of
+>>>>>> the PM ops" instead of "mark I2C adapter when hardware is powered
+>>>> down" ?
+>>>>>>
+>>>>>
+>>>>> Hi,
+>>>>>
+>>>>> Thank you for your comments!
+>>>>>
+>>>>> But this patch is added is not for support noirq PM callback or
+>>>>> transfer in noirq
+>>>> phase.
+>>>>>
+>>>> Okay, may be actual problem description can help me.
+>>>>> In fact, this fix is to mark the I2C adapter as suspended during
+>>>>> system noirq suspend to block further transfers, and resume it on
+>>>>> system noirq resume. This is to prohibit I2C device calling the I2C
+>>>>> controller after the system noirq suspend and before noirq resume,
+>>>>> because at
+>>>> this time the I2C instance is powered off or the clock is disabled
+>>>> ... So I want to keep current commit. How do you think?
+>>>> completely Makes sense. Please help add how this problem occurred and
+>> why ?
+>>>> So the change/fix will be good to understand against it.
+>>>
+>>> Hi,
+>>>
+>>> In some I.MX platform, some I2C devices will keep a work queue all
+>>> time, the work queue will trigger I2C xfer every once in a while, but the work
+>> queue shouldn't be free in system suspend.
+>>>
+>>
+>> work queue has transfers queued even if system is suspended ? IMO, the client
+>> i2c devices should not let system go to suspend.
+>>
+> 
+> Hi Mukesh,
+> 
+> Thank you for the detailed discussion.
+> 
+> Yes, I totally agree that I2C client drivers should ideally stop
+> issuing transfers when the system is suspending.
+> 
+> However, in practice there are many different I2C clients, and not all
+> of them strictly adhere to this requirement. Some clients may still
+> trigger transfers through workqueues or deferred contexts during the
+> suspend/resume window.
+> 
+> Therefore, adding this protection at the I2C controller side helps to
+> avoid unexpected accesses when the hardware resources are unavailable,
+> making the system more robust.
+> 
 
-Fixes: aef69d54755d ("media: v4l: fwnode: Add a convenience function for registering sensors")
+Agreed !
 
-Signed-off-by: Mirela Rabulea <mirela.rabulea@nxp.com>
----
- drivers/media/v4l2-core/v4l2-fwnode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>>> Within a very short time window, possibly from noirq_suspend to the
+>>> system actually being suspended, or possibly from the system starting
+>>> to resume to before noirq_resume, this work queue will trigger an I2C
+>>> transfer, and at this time the I2C controller's clk and pinctrl have
+>>> not yet been restored, reading and
+>>
+>> Right, this kind of explains the problem to me. I think you are trying to serve
+>> i2c transfers when your resources(clk, pinctrl) are not turned ON and also
+>> interrupt remains disabled. And that's why you need to add
+>> _noir() PM callbacks supports along with IRQF_NO_SUSPEND |
+>> IRQF_EARLY_RESUME flags.
+>>
+>>> writing I2C registers causes the system to hang. This patch make all
+>>> I2C operations are performed in a safe hardware state.
+>>>
+>>> Is it better if I add these comment to patch commit log?
+>>>>>
+>> if my latest comments makes sense against the issue, you may write
+>> accordingly. if i am wrong, then your explanation makes sense. Cause of the
+>> hang needs to be clearly mention int the commit log in your next patch.
+>>
+> 
+> Based on our discussion, I have updated the commit log as below:
+> 
+> On some i.MX platforms, certain I2C client drivers keep a periodic
+> workqueue which continues to trigger I2C transfers.
+> 
+> During system suspend/resume, there exists a time window between:
+>    - noirq_suspend and full suspend
+>    - resume start and noirq_resume
 
-diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
-index 77f3298821b5..57284b7adddf 100644
---- a/drivers/media/v4l2-core/v4l2-fwnode.c
-+++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-@@ -1282,7 +1282,7 @@ int v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd)
- 	if (ret < 0)
- 		goto out_cleanup;
- 
--	ret = v4l2_async_register_subdev(sd);
-+	ret = __v4l2_async_register_subdev(sd, sd->owner);
- 	if (ret < 0)
- 		goto out_unregister;
- 
--- 
-2.43.0
+- noirq_resume and resume start [Just opposite ?]
+
+> 
+> In this window, the I2C controller resources such as clock and pinctrl
+> may already be disabled or not yet restored.
+> 
+> If a workqueue triggers an I2C transfer in this period, the driver
+> attempts to access I2C registers while the hardware resources are
+> unavailable, which may lead to system hang.
+> 
+> Mark the I2C adapter as suspended during noirq suspend and block new
+> transfers until resume, ensuring that I2C transfers are only issued
+> when hardware resources are available.
+> 
+> Does this look good to you?
+>
+Looks good, Thanks !
+
+>>>>
+>>>
+> 
 
