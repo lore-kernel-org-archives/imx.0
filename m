@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8903D9036;
-	Thu, 21 May 2026 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03343383999;
+	Thu, 21 May 2026 17:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779384662; cv=none; b=nAp4ImNR41GarK2aMU0rN3xdxJAJkVaY/J4LymHQwzlkG1fIbhLRouddKHfpGD2NUPqaqbW1qziwqHKZqVF0+4Ux4Sv9Ug6PNkuuJUkmrmrL6kJYVaVuuj+VqA/mGrpHabOS1CBDd2PCaL3OOXdxNHb0uE0t9QrzamW/WvgfqOA=
+	t=1779386214; cv=none; b=CH1+SKkSbrNeuhTBYfJSwgcRyJL2y6ibRF6vxIVmziu0TEUJEXDoVhzhmaER7apaK9STL/T4ARWaEl+MrQshpePXL5OiX2YYBwBxX8XwLy+xuX4LszrfnywUIp87UepPIa5vIn0Tr0Y63oxx3KPelnhnJjbNVVn8VJU/p4rs8+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779384662; c=relaxed/simple;
-	bh=9XJdbfgv4z9kk1tnll5YqOQVu2RhWQi9Uybxyermr78=;
+	s=arc-20240116; t=1779386214; c=relaxed/simple;
+	bh=XRoTVbnIyqP475fih3SVHdWXf6t892ryq6slZqiiCCE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RkqV12WfpieWndm7tux27I5lAG/ggwJBoRIBRH+83RHrrlryHwCbuaqadz+cE5TYOFRZFqljm6bT/c/mTJyPv3+bWHrPql3wajiDMpppcT8aG9+2tV2fe6H8NX56VkW/+Ksu1AYhJVGOqAFDs4YfZrxjVJpzKvwSPemZ7oFh9UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7v2z8ZR; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WJ5RazSuUsd2XEnou8bv7tY7AFQb2Qe8fZlx8kRvoxoc4v1mO29k+F0vcmlBU1rBZwFPuRjS58ThonQT+7WVQEw/YEN11AjRsP0L1wEdEemAoGiwfC3pTBApamG5y/+FhXFS+jkzQANElKwASJ3bG1VLfZLztDIFuufOexQq6zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VfSyHBKf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7v2z8ZR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7131F000E9;
-	Thu, 21 May 2026 17:31:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VfSyHBKf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6D21F000E9;
+	Thu, 21 May 2026 17:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779384661;
-	bh=8njoPscqTq937OjwscNew/6YWYe+q4Hky/XitnHgDjw=;
+	s=k20260515; t=1779386212;
+	bh=eB/j6ATIwgsH3uci5eOfboJ2Yx8Cpf2o0kuamFrN578=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=k7v2z8ZRmoeQ7KtOjeJ55ogR0hqmrxP9Q7Hd/l0Mdfz7asL+6KeXcC+w37tgQAmmQ
-	 ql146zABwqAqsNx5hTB02yul/BS7YQBdoyNp/PO4U5VfVZ8fzl/BjhZO7O862SmiJd
-	 hiRVb5SKKh7eFahRL5zhpSyunmvckgNsHiEheeq9P90wHOzF0foWKsww8dxoNa6of5
-	 JNGDIKodtTJ/mgbFEu7d2Q+BvBizdbuMYvtB1J+0djv72dHgbCj10/PFZU9f62Mrxx
-	 awQHh8isG7KV9T4gufh40gr8K0w6xFgvfNb7YjbrX1eNlRUQhOhaLI0FYb+pgnftK3
-	 /V1FW544/QA1Q==
+	b=VfSyHBKfeeCbnabMfK5hR7EUDsv3qgqQvFJnrkmoWIZlat1TJMl8h9PLapHzxJpGL
+	 N0epgHsFlt0i0xgTpo6UqthhlYbeu/UZ5vsV446/wEE91FMSdlyztNSzkTzJQMKdrx
+	 a52f5qK8IDkkkba3aMFVDe6S9e6RL8m6Jf3+asbH8p/0TqieQcAKfyiSsZSd1VjDVH
+	 hJBiYIH0LbngHJ8ca/t9sjQSumb3N8d2JtujibLAm0FfYX5RHe75aQ2DisAmKYocCr
+	 kMRYqpyMdWV2nOw6cdnLilerTZFfLKva7mC5J4lgwOlJvYoUqIYr7Noidku6eYF9wT
+	 CxKZCn17xuFzQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 3/9] PCI: endpoint: pci-epf-test: Use
- dmaenigne_prep_config_single() to simplify code
+Subject: Re: [PATCH v7 4/9] dmaengine: dw-edma: Use new
+ .device_prep_config_sg() callback
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: linux-pci@vger.kernel.org, Frank.Li@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev, vkoul@kernel.org
-In-Reply-To: <20260521-dma_prep_config-v7-3-1f73f4899883@nxp.com>
-References: <20260521-dma_prep_config-v7-3-1f73f4899883@nxp.com>
+Cc: dmaengine@vger.kernel.org, vkoul@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260521-dma_prep_config-v7-4-1f73f4899883@nxp.com>
+References: <20260521-dma_prep_config-v7-4-1f73f4899883@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 21 May 2026 17:31:00 +0000
-Message-Id: <20260521173101.0A7131F000E9@smtp.kernel.org>
+Date: Thu, 21 May 2026 17:56:51 +0000
+Message-Id: <20260521175652.5A6D21F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,64 +46,83 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Unvalidated `size` from PCIe test registers leads to arbitrarily l=
-arge `kzalloc` allocations, potentially triggering kernel warnings or panic=
-s.
+- [High] The `dw_edma_device_prep_config_sg` callback modifies channel conf=
+iguration locklessly, breaking the atomicity guarantee expected by the DMA =
+engine framework.
 --
 
-commit a2e73aaa3ad55ca4f65ceeb2cf567d9f9ac1f014
+commit be13dc9c4b2aec5db6e6e0dc4003902282d50c88
 Author: Frank Li <Frank.Li@nxp.com>
 
-PCI: endpoint: pci-epf-test: Use dmaenigne_prep_config_single() to simplify=
- code
+dmaengine: dw-edma: Use new .device_prep_config_sg() callback
 
-This commit simplifies the DMA configuration code by replacing
-dmaengine_slave_config() and dmaengine_prep_slave_single() with a single
-call to dmaengine_prep_config_single().
+This commit implements the new device_prep_config_sg() callback for the
+dw-edma driver. It aims to combine configuration and descriptor preparation
+into a single step.
 
-> diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/=
-endpoint/functions/pci-epf-test.c
-> --- a/drivers/pci/endpoint/functions/pci-epf-test.c
-> +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-> @@ -182,12 +182,8 @@ static int pci_epf_test_data_transfer(struct pci_epf=
-_test *epf_test,
->  		else
->  			sconf.src_addr =3D dma_remote;
+> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-=
+edma-core.c
+> index c2feb3adc79fa..92572dd8131e6 100644
+> --- a/drivers/dma/dw-edma/dw-edma-core.c
+> +++ b/drivers/dma/dw-edma/dw-edma-core.c
+[ ... ]
+> @@ -577,10 +577,11 @@ dw_edma_device_transfer(struct dw_edma_transfer *xf=
+er)
+>  }
 > =20
-> -		if (dmaengine_slave_config(chan, &sconf)) {
-> -			dev_err(dev, "DMA slave config fail\n");
-> -			return -EIO;
-> -		}
-> -		tx =3D dmaengine_prep_slave_single(chan, dma_local, len, dir,
-> -						 flags);
-> +		tx =3D dmaengine_prep_config_single(chan, dma_local, len,
-> +						  dir, flags, &sconf);
+>  static struct dma_async_tx_descriptor *
+> -dw_edma_device_prep_slave_sg(struct dma_chan *dchan, struct scatterlist =
+*sgl,
+> -			     unsigned int len,
+> -			     enum dma_transfer_direction direction,
+> -			     unsigned long flags, void *context)
+> +dw_edma_device_prep_config_sg(struct dma_chan *dchan, struct scatterlist=
+ *sgl,
+> +			      unsigned int len,
+> +			      enum dma_transfer_direction direction,
+> +			      unsigned long flags,
+> +			      struct dma_slave_config *config)
+>  {
+>  	struct dw_edma_transfer xfer;
+> =20
+> @@ -591,6 +592,9 @@ dw_edma_device_prep_slave_sg(struct dma_chan *dchan, =
+struct scatterlist *sgl,
+>  	xfer.flags =3D flags;
+>  	xfer.type =3D EDMA_XFER_SCATTER_GATHER;
+> =20
+> +	if (config && dw_edma_device_config(dchan, config))
+> +		return NULL;
 
 [Severity: High]
-This is a pre-existing issue, but I noticed a potential problem with how the
-len parameter is handled by the callers of this transfer code.
+Does this lockless configuration introduce a race condition?
 
-The functions pci_epf_test_copy(), pci_epf_test_read(), and
-pci_epf_test_write() read a 32-bit size value directly from the memory-mapp=
-ed
-reg->size register, which is controlled by an external PCIe host.
+The dmaengine_prep_config_sg_safe API is documented to be re-entrant and
+skips acquiring the per-channel spinlock if the driver implements the
+device_prep_config_sg callback, relying entirely on the driver to ensure
+atomic configuration and descriptor preparation.
 
-This raw size is then passed directly to kzalloc() without any bounds check=
-ing
-or validation.
+However, dw_edma_device_prep_config_sg() directly calls
+dw_edma_device_config(), which mutates shared channel state (such as
+chan->config, chan->non_ll, and chan->configured) without taking any
+internal locks.
 
-Could this allow a malicious or misconfigured PCIe host to pass an arbitrar=
-ily
-large size to kzalloc(), triggering a page allocator warning and stack trace
-that might remotely crash the endpoint kernel if it is configured with
-panic_on_warn?
+If multiple threads concurrently prepare transfers on the same channel,
+these updates will race. This could lead to corrupted channel states where
+dw_edma_device_transfer() may read interleaved or invalid parameters, such
+as an incorrect non_ll flag.
 
->  	} else {
->  		tx =3D dmaengine_prep_dma_memcpy(chan, dma_dst, dma_src, len,
->  					       flags);
+Note that even if a subsequent patch in the series partially mitigates this
+by passing the config object to resolve source and destination address race=
+s,
+it still calls dw_edma_device_config() which locklessly modifies chan->non_=
+ll
+and chan->config, leaving the underlying race on the shared channel state
+unresolved.
+
+> +
+>  	return dw_edma_device_transfer(&xfer);
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521-dma_prep_c=
-onfig-v7-0-1f73f4899883@nxp.com?part=3D3
+onfig-v7-0-1f73f4899883@nxp.com?part=3D4
