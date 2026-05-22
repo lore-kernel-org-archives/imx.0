@@ -1,233 +1,163 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669A223393C
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 14:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2033644C2
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 14:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779461279; cv=none; b=KuuPyJ0YDsYXqBfT92h9N9GYslOvOEmq9p9EzqM/MuTTYahBWMXR4Lkhc4hYMMt/y96JqQ7TuZg79G28uk0M6TLflh3XSRsU3/o/PGNTyuA+Al9052DGc11hH+/zpFKFJBk1xN/Vq8FAl339tuWBsISRJ9d7sFOwoyltsauGHuo=
+	t=1779461908; cv=none; b=RLHEtiOo/uYNHtV0TtTBAHzu7VCnxuqowyJQlMEj61KaUpmAbQ8PoipcXcNYOlGCVkQXddR5vyZgWnFLsaoRENJ/HoZFdOsu0oof8moNxefkkNEc+KkYW7ohs9qXlteMLUMG0hdb1aSttmJiOHqOGFf7caXmTXzibIPewr23ExI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779461279; c=relaxed/simple;
-	bh=Ohgs1iVDINRnJHGU8dJ4OGndiqK/ImJ5U77RhKBgEuQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BOOBBrIDaYkUOvX93fWUCeKXPep+6IBoBdA9kf6CYrXn/+vDHIpVKBFjdQY0CRRt1Pd1iyBUi7/xJwI2nptHNiogkiqH6TtYkWh5EqrQOrzmIOMqxJrauS01WgoTLpsARa8594tA5TMae2MowkFpJHMSKMFmyvWcukuL1Xe4Gck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ZFWaCwcV; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1779461908; c=relaxed/simple;
+	bh=+QesBWakLzdwWA64H593seTw/u9mrpfWj7AjvjtBkYc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=GnWeJMvxQ2kDHBW0CK4B07pqoDvZfLNdw8eKDkfjIFl5sP7IZGf88Qsu+CkQB38AjPm5LobFCfkTBUXtKrOCmj0RPsNlx/b+fONfvHcY+ieZm4DonqixA036OPNypHABl97vrac/QNwmw9vvQG1mY7wFdAtXSBdaztuk0WdwVV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVJfdp3o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ZFWaCwcV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1779461273;
-	bh=Ohgs1iVDINRnJHGU8dJ4OGndiqK/ImJ5U77RhKBgEuQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=ZFWaCwcVAvhZuTsFjf2NmvpWZaVMmQWx1858SJbOqatFxI4Jd6jN2SqDuEEG6oQ69
-	 wEH6IufPkdFT9kDtJ6Heww5PEYKoUcGSQMt09SEh1Q9dXr6zZDohg9cD91WAYnD7AY
-	 E3oG9WUSwRIwMVeOJqhIF5AfWQ/NY4HhiA2Kn1fqQl+sz48NCVYZF2tM/pSRv+87l8
-	 /PZDujQAeZVU6YjABrGONqha4k6Yvris9tasn5Ay4NHOODIyre0Y9DXhEjqUk5rzVN
-	 hkHarnrEd2g+n0hh6E2tRyJBN7qV5vm+YT3jP/GKywOvCFnl5jXDdOV9sqXBxVqED5
-	 NwUxjYKTBRYqw==
-Received: from [100.64.0.214] (unknown [100.64.0.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id D563717E03B9;
-	Fri, 22 May 2026 16:47:51 +0200 (CEST)
-Message-ID: <ad9788bba0851dcb86c22f40c2562f2a57ac8e6c.camel@collabora.com>
-Subject: Re: [PATCH 00/14] media: Add V4L2 H.264 stateless encode and
- VC8000E support
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: Paul Kocialkowski <paulk@sys-base.io>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,  Pengutronix Kernel Team	
- <kernel@pengutronix.de>, Benjamin Gaignard
- <benjamin.gaignard@collabora.com>,  Philipp Zabel <p.zabel@pengutronix.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil	
- <hverkuil@kernel.org>, Marco Felsch <m.felsch@pengutronix.de>, Michael
- Tretter	 <m.tretter@pengutronix.de>
-Date: Fri, 22 May 2026 10:47:49 -0400
-In-Reply-To: <20260522101653.2565125-1-paulk@sys-base.io>
-References: <20260522101653.2565125-1-paulk@sys-base.io>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Organization: Collabora Canada
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-VKA4WxHE7ilxFEUvDLNz"
-User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVJfdp3o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD8C1F000E9;
+	Fri, 22 May 2026 14:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779461906;
+	bh=2iIVFbt3kEnzypKEhUR8mNAolaDqEcKGKZnb4hIeq24=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hVJfdp3oj4jneiiYS73Gxmui50RcbqjwhHo3krEn+tlecluAK0kEz6gZvxpv6LyVO
+	 MXySjtaW03Ml/Xo/zV8G36NZSf7dm7wbV/MGyk3TUAj5PTfaFsC8yipmJFKUb2ABtd
+	 5FQJijADD9ZOYK4HAj8pzbLGzMEF06e4cZKVp+quivfPPcQIZ23+lwevUKYlgGUPGq
+	 2UbsuGrYoM0ffqIk+eMBVMGu4o/BfOTjk34N1Wrzx7hnOC/lwC+8Vqz1UqUWvXB1gc
+	 IQbRNMEm4yZa2tp41Qx/s0nLbrpjxyu3pwvH9b7sYoAu/89lwYv0uwbBiJJnaafl7N
+	 guvT+9J/jHdsw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] media: v4l2-fwnode: Fix subdev owner overwritten in
+ v4l2_async_register_subdev_sensor()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Mirela Rabulea" <mirela.rabulea@nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260522143120.690330-1-mirela.rabulea@nxp.com>
+References: <20260522143120.690330-1-mirela.rabulea@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 22 May 2026 14:58:25 +0000
+Message-Id: <20260522145826.2CD8C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
---=-VKA4WxHE7ilxFEUvDLNz
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Pre-existing issues:
+- [High] The `v4l2_flash_init()` and `v4l2_flash_indicator_init()` helpers =
+incorrectly attribute the flash subdevice owner to the `v4l2-flash-led-clas=
+s` module instead of the calling LED driver, leading to a Use-After-Free vu=
+lnerability upon premature module unloading.
+- [High] Error handling in `__v4l2_async_register_subdev()` fails to unbind=
+ previously matched connections within the `while` loop, leaking them and c=
+ausing a Use-After-Free when the subdevice is freed.
+--
 
-Hi Paul,
+commit 6f9889016345e2094c47d91f08c20902a0dee478
+Author: Mirela Rabulea <mirela.rabulea@nxp.com>
 
-Le vendredi 22 mai 2026 =C3=A0 12:16 +0200, Paul Kocialkowski a =C3=A9crit=
-=C2=A0:
-> This series introduces support for the V4L2 H.264 stateless encode uAPI,
-> core and support in the hantro driver for the Verisilicon VC8000E.
->=20
-> While this is a first version that will likely need some level of rework,
-> it is already usable for most common use-cases and supports constant
-> bitrate rate-control.
->=20
-> A GStreamer tree can be used to test the series at:
-> https://github.com/paulkocialkowski/gstreamer/tree/v4l2codecs/h264enc
-> And an example pipeline would look like:
-> gst-launch-1.0 videotestsrc pattern=3Dsmpte num-buffers=3D25 ! video/x-ra=
-w,width=3D640,height=3D480 ! v4l2slh264enc rate-control=3Dcbr bitrate=3D800=
-0000 qp-min=3D8 qp-max=3D42 ! h264parse ! matroskamux ! filesink location=
-=3Dencode.mkv
->=20
-> Note that documentation for the new uAPI is intentionally left out of
-> this series since it has not yet received approval.
+media: v4l2-fwnode: Fix subdev owner overwritten in v4l2_async_register_sub=
+dev_sensor()
 
-The unfortunate part is that the spec is important for the actual review an=
-d
-interops analyses. That omission qualify this submission as RFC from my poi=
-nt of
-view. Any chances you can reply to this cover filling the blank for the few
-important bit (something similar but non spec style of:
+The v4l2 helper v4l2_async_register_subdev_sensor() calls
+v4l2_async_register_subdev(), which expands to pass THIS_MODULE. Since
+this happens inside v4l2-fwnode.c, it incorrectly assigns the v4l2-fwnode
+module as the owner instead of the sensor driver module. This prevents
+proper reference counting and allows premature module removal.
 
-https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/dev-stateles=
-s-decoder.html#initialization
+Link: https://lore.kernel.org/linux-media/20240315073125.275501-2-sakari.ai=
+lus@linux.intel.com/
 
-- Querying capabilities
-- Initialization
-- Encoding
-- Dynamic Resolution Changes**
+> diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-c=
+ore/v4l2-fwnode.c
+> index 77f3298821b5c..62a3a452f7884 100644
+> --- a/drivers/media/v4l2-core/v4l2-fwnode.c
+> +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
 
-The other sections are just going to be the same imho. The ** for the DRC i=
-s
-because H.264 is not that complicated, its intra only, so you can reset the
-encoder (use the drain flow). So that's probably something for future us
-(VP9/AV1). Adding your view on these topics (or just matching what you have
-implemented) will make review more constructive.
+[ ... ]
 
-cheers,
-Nicolas
+> @@ -1282,7 +1282,7 @@ int v4l2_async_register_subdev_sensor(struct v4l2_s=
+ubdev *sd)
+>  	if (ret < 0)
+>  		goto out_cleanup;
+> =20
+> -	ret =3D v4l2_async_register_subdev(sd);
+> +	ret =3D __v4l2_async_register_subdev(sd, module);
 
->=20
-> Marco Felsch (2):
-> =C2=A0 media: hantro: use hantro_decoded_buffer only for dst_vq
-> =C2=A0 arm64: dts: imx8mp: add VC8000E encoder node
->=20
-> Paul Kocialkowski (12):
-> =C2=A0 media: h264: Add a more generic reflist builder init
-> =C2=A0 media: uapi: Add H.264 stateless encode support
-> =C2=A0 media: h264: Add SPS video definitions
-> =C2=A0 media: h264: Add stateless encode core
-> =C2=A0 media: h264: Add stateless encode rbsp
-> =C2=A0 media: h264: Add stateless encode reference management
-> =C2=A0 media: h264: Add stateless encode rate control
-> =C2=A0 media: verisilicon: Report default pixel coding for non-JPEG and f=
-ix JPEG case
-> =C2=A0 media: verisilicon: Cancel job with runtime pm put/clk disable on =
-failure
-> =C2=A0 media: verisilicon: Add common encoder parm and frameintervals ioc=
-tls
-> =C2=A0 media: verisilicon: Add support for the VC8000E H.264 encoder
-> =C2=A0 media: verilisicon: imx8m: Add support for the VC8000E on i.MX8MP
->=20
-> =C2=A0arch/arm64/boot/dts/freescale/imx8mp.dtsi=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0=C2=A0 11 +
-> =C2=A0drivers/media/platform/verisilicon/Kconfig=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0=C2=A0 1 +
-> =C2=A0drivers/media/platform/verisilicon/Makefile=C2=A0=C2=A0 |=C2=A0=C2=
-=A0=C2=A0 2 +
-> =C2=A0drivers/media/platform/verisilicon/hantro.h=C2=A0=C2=A0 |=C2=A0=C2=
-=A0 17 +
-> =C2=A0.../media/platform/verisilicon/hantro_drv.c=C2=A0=C2=A0 |=C2=A0 180=
- +-
-> =C2=A0.../media/platform/verisilicon/hantro_h264.c=C2=A0 |=C2=A0=C2=A0=C2=
-=A0 6 +-
-> =C2=A0.../media/platform/verisilicon/hantro_hw.h=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0 28 +
-> =C2=A0.../media/platform/verisilicon/hantro_v4l2.c=C2=A0 |=C2=A0 123 +-
-> =C2=A0.../platform/verisilicon/hantro_vc8000e.c=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0=C2=A0 68 +
-> =C2=A0.../verisilicon/hantro_vc8000e_h264_enc.c=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0 883 +++++++
-> =C2=A0.../verisilicon/hantro_vc8000e_regs.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 | 2129 +++++++++++++++++
-> =C2=A0.../media/platform/verisilicon/imx8m_vpu_hw.c |=C2=A0 113 +
-> =C2=A0drivers/media/v4l2-core/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 4 +
-> =C2=A0drivers/media/v4l2-core/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 2 +
-> =C2=A0drivers/media/v4l2-core/v4l2-ctrls-core.c=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0=C2=A0 62 +
-> =C2=A0drivers/media/v4l2-core/v4l2-ctrls-defs.c=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0=C2=A0=C2=A0 4 +
-> =C2=A0drivers/media/v4l2-core/v4l2-h264-enc-rbsp.c=C2=A0 | 1173 +++++++++
-> =C2=A0drivers/media/v4l2-core/v4l2-h264-enc-rc.c=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 558 +++++
-> =C2=A0drivers/media/v4l2-core/v4l2-h264-enc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 | 1322 ++++++++++
-> =C2=A0drivers/media/v4l2-core/v4l2-h264.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 69 +
-> =C2=A0include/media/v4l2-ctrls.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- |=C2=A0=C2=A0=C2=A0 2 +
-> =C2=A0include/media/v4l2-h264-enc-rbsp.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 72 +
-> =C2=A0include/media/v4l2-h264-enc-rc.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 108 +
-> =C2=A0include/media/v4l2-h264-enc.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 135 ++
-> =C2=A0include/media/v4l2-h264.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0 146 ++
-> =C2=A0include/uapi/linux/v4l2-controls.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 33 +
-> =C2=A0include/uapi/linux/videodev2.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 =
-1 +
-> =C2=A027 files changed, 7231 insertions(+), 21 deletions(-)
-> =C2=A0create mode 100644 drivers/media/platform/verisilicon/hantro_vc8000=
-e.c
-> =C2=A0create mode 100644 drivers/media/platform/verisilicon/hantro_vc8000=
-e_h264_enc.c
-> =C2=A0create mode 100644 drivers/media/platform/verisilicon/hantro_vc8000=
-e_regs.h
-> =C2=A0create mode 100644 drivers/media/v4l2-core/v4l2-h264-enc-rbsp.c
-> =C2=A0create mode 100644 drivers/media/v4l2-core/v4l2-h264-enc-rc.c
-> =C2=A0create mode 100644 drivers/media/v4l2-core/v4l2-h264-enc.c
-> =C2=A0create mode 100644 include/media/v4l2-h264-enc-rbsp.h
-> =C2=A0create mode 100644 include/media/v4l2-h264-enc-rc.h
-> =C2=A0create mode 100644 include/media/v4l2-h264-enc.h
+[Severity: High]
+This is a pre-existing issue, but does __v4l2_async_register_subdev() fail =
+to
+unbind previously matched connections within its match loop if a later
+connection fails?
 
---=-VKA4WxHE7ilxFEUvDLNz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+If a subdevice successfully binds its first connection and moves it to the
+notifier's done_list, but encounters an error on a subsequent iteration of =
+the
+while loop:
 
------BEGIN PGP SIGNATURE-----
+drivers/media/v4l2-core/v4l2-async.c:__v4l2_async_register_subdev() {
+    ...
+		while ((asc =3D v4l2_async_find_match(notifier, sd))) {
+			ret =3D v4l2_async_match_notify(notifier, v4l2_dev, sd,
+						      asc);
+			if (ret)
+				goto err_unlock;
+    ...
+}
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCahBslQAKCRDZQZRRKWBy
-9EIFAQD+XPK0eA31YLOxVvJFJOpY4eKow8Xu+wVO3cYAQikKIgEA1Z8vDV/a/lnN
-lG6HQtcvTgrZ+ieQXdGd37oqqDEBRQA=
-=7nBr
------END PGP SIGNATURE-----
+The error paths appear to only clean up the current iteration's connection =
+or
+perform no cleanup at all.
 
---=-VKA4WxHE7ilxFEUvDLNz--
+Would this leave the first connection dangling in the bridge notifier's
+done_list with asc->sd still pointing to the subdevice? If the registration
+returns an error, the sensor driver might free the subdevice, leading to a
+use-after-free later when the bridge driver unregisters its notifier.
+
+>  	if (ret < 0)
+>  		goto out_unregister;
+> =20
+> diff --git a/include/media/v4l2-async.h b/include/media/v4l2-async.h
+> index f26c323e9c963..54a2d9620ed5b 100644
+> --- a/include/media/v4l2-async.h
+> +++ b/include/media/v4l2-async.h
+
+[ ... ]
+
+> @@ -333,8 +333,10 @@ int __v4l2_async_register_subdev(struct v4l2_subdev =
+*sd, struct module *module);
+>   * An error is returned if the module is no longer loaded on any attempts
+>   * to register it.
+>   */
+> +#define v4l2_async_register_subdev_sensor(sd) \
+> +	__v4l2_async_register_subdev_sensor(sd, THIS_MODULE)
+
+[Severity: High]
+This is a pre-existing issue, but does the exact same ownership problem fix=
+ed
+here also exist for v4l2_flash_init() and v4l2_flash_indicator_init()?
+
+Both functions are compiled into the v4l2-flash-led-class module and intern=
+ally
+call v4l2_async_register_subdev(sd). Since the macro evaluates to THIS_MODU=
+LE,
+would they capture the v4l2-flash-led-class module as the owner instead of =
+the
+calling LED driver (e.g., leds-tps6131x)?
+
+Could this allow a user to unload the LED driver module while the subdevice
+file descriptor remains open, leading to a use-after-free when interacting
+with or closing the freed subdevice?
+
+>  int __must_check
+> -__v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd);
+> +__v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd, struct modul=
+e *module);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522143120.6903=
+30-1-mirela.rabulea@nxp.com?part=3D1
