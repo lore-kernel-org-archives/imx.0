@@ -1,28 +1,28 @@
 Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A6E3D45E6
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0673D648A
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779445119; cv=none; b=Yl4vDxqWIDeE4tFiazDypIx9gWtRhXUPpUv9wQ9Ts5glKsXOlKcbJG+cxKUXhBcpPifNCiUWNJ838zXRtQG4W5j5lA9ZPzVMdkRePWKLvLFH7+9x3ERmyN9rOFGGh0BvfsfNxPZ2eIFMyMuPyPtjx0BrBfOTGKqDyzeXFk0NEgQ=
+	t=1779445128; cv=none; b=gJB2ngCmN+jEEh6tSdLdityt14cOB/pOnpftN3Wt0aPF/4XApwi++5+HnxEKZvO5pnxKIXongQJ2yE8QBUTJMfH1gLntw8bY7X6soeCxZVmyOZSyOVaVUEvI2LB5Bl1/qFMi3geSdzh5k3Q3cGyT2tY0f6agC634INI/412QLOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779445119; c=relaxed/simple;
-	bh=rXg8LTkAKTJ8UbCnuC7jLvsrhh3AX1TUruXRYOQqzbQ=;
+	s=arc-20240116; t=1779445128; c=relaxed/simple;
+	bh=pGGYOoltPgaRRnXyzfCNBXs1jvHPDksxLI7XjwOIn7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sl1mgsskJOXXW6ZMH6eknAz2C/I3CcJqlTSg+RRjbn8o6amfBXSZNFrED5coo3RD+x5wLxc5b+LPjO9VUv1V8Ug3SGYrKiDiaYjkCeFJIgfXu3U/hguafAh6afsKKhBMPsyJqr/VaTdkj4SQIeUlsP09rw+TXcQEU4/6unX1Vto=
+	 MIME-Version; b=HX0j1TL6jgTozpDxNkNJrGXD3zjy97RHSSwNtBm/ZMnIkV7VPLiwznPgD6Zh3tHfT0VhlTvNnbUF+QY6jizoCT7p8Ct2Tc7Bx3hwMXrCld/6NCj2UQuoNGZTZaxh5b4M69WmkwzntJwRRLS80hMFIN4LXQjoSGpfPeyOqI4Vww0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
 Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id 628863700298
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:18:19 +0000 (UTC)
+	by leonov.paulk.fr (Postfix) with ESMTPS id EC3CB3700293
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:18:22 +0000 (UTC)
 Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id C5CA1B408D4; Fri, 22 May 2026 10:18:18 +0000 (UTC)
+	id 61DE1B408D6; Fri, 22 May 2026 10:18:21 +0000 (UTC)
 X-Spam-Level: **
 Received: from shepard (unknown [192.168.1.65])
-	by laika.paulk.fr (Postfix) with ESMTP id BBEE9B408D6;
-	Fri, 22 May 2026 10:17:18 +0000 (UTC)
+	by laika.paulk.fr (Postfix) with ESMTP id 5E19EB408CC;
+	Fri, 22 May 2026 10:17:19 +0000 (UTC)
 From: Paul Kocialkowski <paulk@sys-base.io>
 To: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
@@ -41,11 +41,10 @@ Cc: Rob Herring <robh@kernel.org>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Hans Verkuil <hverkuil@kernel.org>,
 	Marco Felsch <m.felsch@pengutronix.de>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Paul Kocialkowski <paulk@sys-base.io>
-Subject: [PATCH 13/14] media: verilisicon: imx8m: Add support for the VC8000E on i.MX8MP
-Date: Fri, 22 May 2026 12:16:52 +0200
-Message-ID: <20260522101653.2565125-14-paulk@sys-base.io>
+	Michael Tretter <m.tretter@pengutronix.de>
+Subject: [PATCH 14/14] arm64: dts: imx8mp: add VC8000E encoder node
+Date: Fri, 22 May 2026 12:16:53 +0200
+Message-ID: <20260522101653.2565125-15-paulk@sys-base.io>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260522101653.2565125-1-paulk@sys-base.io>
 References: <20260522101653.2565125-1-paulk@sys-base.io>
@@ -57,184 +56,38 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the required platform-specific bits for driving the VC8000E found
-on the NXP i.MX8MP SoC.
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Add support for the Versilicon VC8000E multi-codec stateless encoder.
+The IP integrated on the i.MX8MP supports H.264 and H.265 encoding.
+
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Co-authored-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- .../media/platform/verisilicon/hantro_drv.c   |   1 +
- .../media/platform/verisilicon/hantro_hw.h    |   1 +
- .../media/platform/verisilicon/imx8m_vpu_hw.c | 113 ++++++++++++++++++
- 3 files changed, 115 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
-index 2de27f0a2be0..540e3b647fe4 100644
---- a/drivers/media/platform/verisilicon/hantro_drv.c
-+++ b/drivers/media/platform/verisilicon/hantro_drv.c
-@@ -874,6 +874,7 @@ static const struct of_device_id of_hantro_match[] = {
- #endif
- #ifdef CONFIG_VIDEO_HANTRO_IMX8M
- 	{ .compatible = "nxp,imx8mm-vpu-g1", .data = &imx8mm_vpu_g1_variant, },
-+	{ .compatible = "nxp,imx8mp-vpu-vc8000e", .data = &imx8mp_vpu_vc8000e_variant, },
- 	{ .compatible = "nxp,imx8mq-vpu", .data = &imx8mq_vpu_variant, },
- 	{ .compatible = "nxp,imx8mq-vpu-g1", .data = &imx8mq_vpu_g1_variant },
- 	{ .compatible = "nxp,imx8mq-vpu-g2", .data = &imx8mq_vpu_g2_variant },
-diff --git a/drivers/media/platform/verisilicon/hantro_hw.h b/drivers/media/platform/verisilicon/hantro_hw.h
-index a0c752ef44dd..5f79fb401da5 100644
---- a/drivers/media/platform/verisilicon/hantro_hw.h
-+++ b/drivers/media/platform/verisilicon/hantro_hw.h
-@@ -420,6 +420,7 @@ enum hantro_enc_fmt {
- 	ROCKCHIP_VPU_ENC_FMT_UYVY422 = 3,
- };
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index a3de6604e29f..4e63c2b16c1a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -2290,6 +2290,17 @@ vpu_g2: video-codec@38310000 {
+ 			power-domains = <&vpumix_blk_ctrl IMX8MP_VPUBLK_PD_G2>;
+ 		};
  
-+extern const struct hantro_variant imx8mp_vpu_vc8000e_variant;
- extern const struct hantro_variant imx8mm_vpu_g1_variant;
- extern const struct hantro_variant imx8mq_vpu_g1_variant;
- extern const struct hantro_variant imx8mq_vpu_g2_variant;
-diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-index f9f276385c11..50ce4a5f979d 100644
---- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-@@ -234,6 +234,96 @@ static const struct hantro_fmt imx8m_vpu_g2_dec_fmts[] = {
- 	},
- };
- 
-+static const struct hantro_fmt imx8mp_vc8000e_fmts[] = {
-+	{
-+		.fourcc = V4L2_PIX_FMT_YUV420M,
-+		.codec_mode = HANTRO_MODE_NONE,
-+		.enc_fmt = ROCKCHIP_VPU_ENC_FMT_YUV420P,
-+		.frmsize = {
-+			.min_width = FMT_MIN_WIDTH,
-+			.max_width = FMT_FHD_WIDTH,
-+			.step_width = MB_DIM,
-+			.min_height = FMT_MIN_HEIGHT,
-+			.max_height = FMT_FHD_HEIGHT,
-+			/* TODO: implement dummy reads to relax size restrictions */
-+			.step_height = 64,
-+		},
-+	}, {
-+		.fourcc = V4L2_PIX_FMT_YUV420,
-+		.codec_mode = HANTRO_MODE_NONE,
-+		.enc_fmt = ROCKCHIP_VPU_ENC_FMT_YUV420P,
-+		.frmsize = {
-+			.min_width = FMT_MIN_WIDTH,
-+			.max_width = FMT_FHD_WIDTH,
-+			.step_width = MB_DIM,
-+			.min_height = FMT_MIN_HEIGHT,
-+			.max_height = FMT_FHD_HEIGHT,
-+			/* TODO: implement dummy reads to relax size restrictions */
-+			.step_height = 64,
-+		},
-+	}, {
-+		.fourcc = V4L2_PIX_FMT_NV12M,
-+		.codec_mode = HANTRO_MODE_NONE,
-+		.enc_fmt = ROCKCHIP_VPU_ENC_FMT_YUV420SP,
-+		.frmsize = {
-+			.min_width = FMT_MIN_WIDTH,
-+			.max_width = FMT_FHD_WIDTH,
-+			.step_width = MB_DIM,
-+			.min_height = FMT_MIN_HEIGHT,
-+			.max_height = FMT_FHD_HEIGHT,
-+			.step_height = MB_DIM,
-+		},
-+	}, {
-+		.fourcc = V4L2_PIX_FMT_NV12,
-+		.codec_mode = HANTRO_MODE_NONE,
-+		.enc_fmt = ROCKCHIP_VPU_ENC_FMT_YUV420SP,
-+		.frmsize = {
-+			.min_width = FMT_MIN_WIDTH,
-+			.max_width = FMT_FHD_WIDTH,
-+			.step_width = MB_DIM,
-+			.min_height = FMT_MIN_HEIGHT,
-+			.max_height = FMT_FHD_HEIGHT,
-+			.step_height = MB_DIM,
-+		},
-+	}, {
-+		.fourcc = V4L2_PIX_FMT_YUYV,
-+		.codec_mode = HANTRO_MODE_NONE,
-+		.enc_fmt = ROCKCHIP_VPU_ENC_FMT_YUYV422,
-+		.frmsize = {
-+			.min_width = FMT_MIN_WIDTH,
-+			.max_width = FMT_FHD_WIDTH,
-+			.step_width = MB_DIM,
-+			.min_height = FMT_MIN_HEIGHT,
-+			.max_height = FMT_FHD_HEIGHT,
-+			.step_height = MB_DIM,
-+		},
-+	}, {
-+		.fourcc = V4L2_PIX_FMT_UYVY,
-+		.codec_mode = HANTRO_MODE_NONE,
-+		.enc_fmt = ROCKCHIP_VPU_ENC_FMT_UYVY422,
-+		.frmsize = {
-+			.min_width = FMT_MIN_WIDTH,
-+			.max_width = FMT_FHD_WIDTH,
-+			.step_width = MB_DIM,
-+			.min_height = FMT_MIN_HEIGHT,
-+			.max_height = FMT_FHD_HEIGHT,
-+			.step_height = MB_DIM,
-+		},
-+	}, {
-+		.fourcc = V4L2_PIX_FMT_H264_SLICE,
-+		.codec_mode = HANTRO_MODE_H264_ENC,
-+		.max_depth = 2,
-+		.frmsize = {
-+			.min_width = FMT_MIN_WIDTH,
-+			.max_width = FMT_FHD_WIDTH,
-+			.step_width = MB_DIM,
-+			.min_height = FMT_MIN_HEIGHT,
-+			.max_height = FMT_FHD_HEIGHT,
-+			.step_height = MB_DIM,
-+		},
-+	},
-+};
++		vpu_vc8000e: video-codec@38320000 {
++			compatible = "nxp,imx8mp-vpu-vc8000e";
++			reg = <0x38320000 0x10000>;
++			interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
++			assigned-clocks = <&clk IMX8MP_CLK_VPU_VC8000E>;
++			assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
++			assigned-clock-rates = <400000000>;
++			power-domains = <&vpumix_blk_ctrl IMX8MP_VPUBLK_PD_VC8000E>;
++		};
 +
- static int imx8mq_vpu_hw_init(struct hantro_dev *vpu)
- {
- 	vpu->ctrl_base = vpu->reg_bases[vpu->variant->num_regs - 1];
-@@ -305,6 +395,15 @@ static const struct hantro_codec_ops imx8mq_vpu_g2_codec_ops[] = {
- 	},
- };
- 
-+static const struct hantro_codec_ops imx8mp_vpu_vc8000e_codec_ops[] = {
-+	[HANTRO_MODE_H264_ENC] = {
-+		.run = hantro_vc8000e_h264_enc_run,
-+		.done = hantro_vc8000e_h264_enc_done,
-+		.init = hantro_vc8000e_h264_enc_init,
-+		.exit = hantro_vc8000e_h264_enc_exit,
-+	},
-+};
-+
- /*
-  * VPU variants.
-  */
-@@ -317,6 +416,10 @@ static const struct hantro_irq imx8mq_g2_irqs[] = {
- 	{ "g2", hantro_g2_irq },
- };
- 
-+static const struct hantro_irq imx8mp_vc8000e_irqs[] = {
-+	{ "vc8000e", hantro_vc8000e_irq },
-+};
-+
- static const char * const imx8mq_clk_names[] = { "g1", "g2", "bus" };
- static const char * const imx8mq_reg_names[] = { "g1", "g2", "ctrl" };
- static const char * const imx8mq_g1_clk_names[] = { "g1" };
-@@ -382,3 +485,13 @@ const struct hantro_variant imx8mm_vpu_g1_variant = {
- 	.clk_names = imx8mq_g1_clk_names,
- 	.num_clocks = ARRAY_SIZE(imx8mq_g1_clk_names),
- };
-+
-+const struct hantro_variant imx8mp_vpu_vc8000e_variant = {
-+	.enc_fmts = imx8mp_vc8000e_fmts,
-+	.num_enc_fmts = ARRAY_SIZE(imx8mp_vc8000e_fmts),
-+	.codec = HANTRO_H264_ENCODER,
-+	.codec_ops = imx8mp_vpu_vc8000e_codec_ops,
-+	.irqs = imx8mp_vc8000e_irqs,
-+	.num_irqs = ARRAY_SIZE(imx8mp_vc8000e_irqs),
-+	.num_clocks = 1,
-+};
+ 		vpumix_blk_ctrl: blk-ctrl@38330000 {
+ 			compatible = "fsl,imx8mp-vpu-blk-ctrl", "syscon";
+ 			reg = <0x38330000 0x100>;
 -- 
 2.53.0
 
