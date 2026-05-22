@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6439937C0EB;
-	Fri, 22 May 2026 12:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55729383C80;
+	Fri, 22 May 2026 12:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779452300; cv=none; b=s9MJmurEYQHm27kn3IH9zHdeHJsqWVmQqkaYOP7W7NgC1cSmfaV9e9jy7n7i6mxis/GbqVoX4QgzgtO+0ygbePop3j0i2Pa9raEiRl/V0q8mcDeevUP/uHPFA1SUqy1MhU0yuk/DGMPZLjfcUoLUC20qxkXCoqiYY1jg+ixs7ZI=
+	t=1779453177; cv=none; b=dpMrcYDqgJb3Mcf2o25XzPvS0tT3tvrhgnag5inDZiNo8Q/g3sY3PpMakS1TPyFUPWgjLLrq/SCSCIFDv/bghvi5jvI8kCKItXl1u8FtALIDYnuC9WSZXgFLRYtnkw0APoKMC3sPu7SjZQX6RpPPPCy1HD7u63uvaftgUcB/j6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779452300; c=relaxed/simple;
-	bh=EFqTMRBV9fq5tYmJcAt4/MmFKR/7YwY9tBVT73dnn6I=;
+	s=arc-20240116; t=1779453177; c=relaxed/simple;
+	bh=mVln9+gziMHZN+XkSyHi7csjyiEFVOXmysIqhlJSsZc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HyHj9YqB822/mbhZ6u4BumS6fIwnujnuW+Ojl1yNZqjWuEYU4E9JqcfVbEt1WtHgte4byGzcUe6sTMAdS5QR7fsrBUDn5aBrMy0gQz5qOa4SzYGlQkr8VTxdRPJOpsNM+mXO3JM44AetACl/Ry2bvEkzp3gsr9lNmrm84/PCNy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFe03TYA; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=GbxbvDv1doPjI01WdyADasqMS5OoNoimMKXZP4dQend1ExzaWkAiEsOCtjsCwAxiGYtPTseEEW70pJ0Jmp6jwWhNivOKTCkV9SZBYui8+1V9DBB0sYRYbUCbRsRQ+zYLE0eUz3QLcr9MhN6zmaaxNZ5+fv4vfdimvlK4+VCabOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDruXKAQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFe03TYA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C891F000E9;
-	Fri, 22 May 2026 12:18:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDruXKAQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEB81F000E9;
+	Fri, 22 May 2026 12:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779452299;
-	bh=qiheiti0C4WAH7qF2lXhlekiEPkuhW6mwzjqCjpmvis=;
+	s=k20260515; t=1779453176;
+	bh=Hoju2YgXhT7PtnXSCwVHegZ3+uG0YC8XDJ3Ff3Ga49Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lFe03TYAa+H+mFn0d2ZAIFGfJvLBP880d6DKzZ1mYlvqSdlJscaYd6S0FQ7aFq5sE
-	 xrBbVeZFk1X8e3nomJiHGUEhQB+v4lZwRoPPDfXLVjdkL/HN46H/jpQK7Wha4QedmR
-	 d/TSFn1AeisoZeOUzgLukQl421qOduZCZbnDmM055Dg2oPwPQDQcMZpW/fdVVKax37
-	 9sV56hX8dFBfhg7ehprJmHYVe4RlNBkSAwekNdVMi/H8RAc3QCMtTVRLZ2sv38jm66
-	 l4RWqhD2Hxyh1hKaDNEQ99neWju97IiFOd4X3FLlfUBduMuBv7MRwbIIZNMBIc22gK
-	 k9NdR3yx97bzA==
+	b=BDruXKAQrkK7HuWuDzm0In0UvBjY6LBU/bBX/s6BiJ7LMBnwNoQZBEKRLw8d2Xkh7
+	 Fe1nXPzmHUsqyrSqtb4NCIVXn3iH2abnDbbUoP5ZTeuH0Ml5njYCgAMrYMUIr2f2U7
+	 1eJRtml/aYPfYzf/6eH/15EikcfZdUIPXGvfJRW8CpgX4E2k0sVRj8CulFhh0t+NpQ
+	 3kuNHu4RhiNMUkJDIRLApX948QHHzcfff8qj7xolxFbH3ydQWQC1ob8BhWnXmPTh/H
+	 RpHqdCWWj1W1KuZlBfBnMJVSGjXCiOe/gtLDelP6+VL58UJhcmK1m1w2+SOFZSTWjA
+	 zGoCo/ON5MNsA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/5] arm64: dts: freescale: imx95-toradex-smarc: move
- CM7 node to SoC DTSI
+Subject: Re: [PATCH 4/5] arm64: dts: freescale: imx95-15x15-frdm: remove
+ common rmem regions
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Laurentiu Mihalcea" <laurentiumihalcea111@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org
-In-Reply-To: <20260522111849.783-4-laurentiumihalcea111@gmail.com>
-References: <20260522111849.783-4-laurentiumihalcea111@gmail.com>
+Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260522111849.783-5-laurentiumihalcea111@gmail.com>
+References: <20260522111849.783-5-laurentiumihalcea111@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 22 May 2026 12:18:18 +0000
-Message-Id: <20260522121818.C3C891F000E9@smtp.kernel.org>
+Date: Fri, 22 May 2026 12:32:55 +0000
+Message-Id: <20260522123255.6FEB81F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,53 +46,53 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The patch implicitly disables the CM7 remoteproc on all Verdin pla=
-tforms and leaves a redundant, uncleaned node.
+- [Medium] Incomplete cleanup leaving orphaned remoteproc memory regions (`=
+vdev1vring0` and `vdev1vring1`), causing a code and commit message mismatch.
 --
 
-commit f431dd9d8aa9dbff4c66eec7fa35574389600cc9
+commit c3d174a8ecea96cc404dfedae6ae093499f849dd
 Author: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-arm64: dts: freescale: imx95-toradex-smarc: move CM7 node to SoC DTSI
+arm64: dts: freescale: imx95-15x15-frdm: remove common rmem regions
 
-This commit moves the CM7 remoteproc configuration from the Toradex SMARC
-Device Tree to the common i.MX95 SoC Device Tree. It also splits the
-mailbox channels into separate array entries.
+This commit removes reserved memory regions used for remoteproc on the
+MX95-15x15-FRDM platform, noting they are unused and can be included in an
+RPMSG-specific DTS instead.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
-ts/freescale/imx95.dtsi
-> index 3e35c956a4d7a..f8760ac067faf 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> @@ -272,6 +272,13 @@ opp-1000000000 {
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts b/arch/ar=
+m64/boot/dts/freescale/imx95-15x15-frdm.dts
+> index 0f43e3be70589..f9b0e266754d6 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
+> @@ -188,16 +188,6 @@ linux_cma: linux,cma {
+>  			linux,cma-default;
 >  		};
->  	};
 > =20
-> +	cm7: remoteproc-cm7 {
-> +		compatible =3D "fsl,imx95-cm7";
-> +		mboxes =3D <&mu7 0 1>, <&mu7 1 1>, <&mu7 3 1>;
-> +		mbox-names =3D "tx", "rx", "rxdb";
-> +		status =3D "disabled";
+> -		vdev0vring0: memory@88000000 {
+> -			reg =3D <0 0x88000000 0 0x8000>;
+> -			no-map;
+> -		};
+> -
+> -		vdev0vring1: memory@88008000 {
+> -			reg =3D <0 0x88008000 0 0x8000>;
+> -			no-map;
+> -		};
+> -
+>  		vdev1vring0: memory@88010000 {
+>  			reg =3D <0 0x88010000 0 0x8000>;
+>  			no-map;
+> @@ -208,17 +198,6 @@ vdev1vring1: memory@88018000 {
+>  			no-map;
+>  		};
 
-[Severity: High]
-Does this implicitly disable the CM7 remoteproc on Verdin platforms?
+[Severity: Medium]
+The commit message mentions removing the reserved memory regions used for
+remoteproc. Should vdev1vring0 and vdev1vring1 also be removed here?
 
-Since imx95-verdin.dtsi includes imx95.dtsi and defines its own
-cm7: remoteproc-cm7 node without setting a status property, it appears it
-will inherit this status =3D "disabled" property, whereas it was previously
-implicitly enabled.
-
-Additionally, does imx95-verdin.dtsi need to be updated to match these
-changes? It currently retains the unsplit mboxes array format
-(mboxes =3D <&mu7 0 1 &mu7 1 1 &mu7 3 1>;), which will override the split
-format introduced here.
-
-> +	};
-> +
->  	clk_ext1: clock-ext1 {
->  		compatible =3D "fixed-clock";
->  		#clock-cells =3D <0>;
+Since they retain the no-map property, do these remaining nodes unnecessari=
+ly
+carve out memory without being referenced anymore?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522111849.783-=
-1-laurentiumihalcea111@gmail.com?part=3D3
+1-laurentiumihalcea111@gmail.com?part=3D4
