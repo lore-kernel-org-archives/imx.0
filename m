@@ -1,94 +1,173 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D46A348875;
-	Fri, 22 May 2026 20:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1583438AA;
+	Fri, 22 May 2026 21:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779482926; cv=none; b=VxahT7tl2QRcX00IPRXWf9kfn46AGmu4mjWCYPz43dBWWIwnw8QSJZzl4MbQUXhC2P0ZFDgGacYfka4Z2wCr5EPCOnq7vVio6sqy75sNH7bwR/x/EVvzjwD2LQQyL05kcMGX1VdvBMiczZUEmhhykQvFATEOzmYm7kKmadbnb0s=
+	t=1779484546; cv=none; b=L3QUx9cgKzrU7BYlPpiGBMRiQwPMunAuqMG/kQ6VlrKM8PDBamJyh9niEL8dddfwSFpMQ4oyCNvawq37bRnuX3Zwyto0Gppf0VNwk1xKvnggOdNDsuVlNka9MF2bNLCtg8vPFwCH0luVZURF5kTl2l2vKkc6IAF3+YHog6SgC7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779482926; c=relaxed/simple;
-	bh=iwvXEVwyhoRp94WouqA+ZPTh/8Ik7QHAGEzmxlBLdWc=;
+	s=arc-20240116; t=1779484546; c=relaxed/simple;
+	bh=X+gL7KPKv0P/JUhnSZQWsqu4blH1zFFHId/MZ3M33NM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tDiEqzzldiPE+BysQdO0iz2AffIJ/xqUYkLjlkbaE1hIgzEEecjTEtjrZPbSzwsxnce7ijXSX2a8ZsN0aajO6J7avBCEVSSMbDcHnwQ0EIVxQ642l5mKUdngfH4VyHHwRu73eAhledQILlrbRb9prtp+qGCZ4tkho2dK4HvokFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XorGyPSq; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=IdEtQuY770gjBgWRPLcTsqGOMAKFF/AtsEn6x3Y2cmd9TFCb5HylQPmA3rx6WMzzeJ037pSQ7rbnHMEbhcXB3VzaRgQxWw7ERrTEl70PtVKu3dGMleKPkRnWq95mi8bChUY9vwxQ2su7EdhslM9WfQ7t3gpYtAE6hnEe0/Ka6tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxAzgjUY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XorGyPSq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C181F000E9;
-	Fri, 22 May 2026 20:48:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxAzgjUY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BA01F000E9;
+	Fri, 22 May 2026 21:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779482925;
-	bh=2Pcr5aU2zl+JNFMQjP357INntpb0mAi3czWPKijQlpw=;
+	s=k20260515; t=1779484545;
+	bh=aIVmAckaSAoOeKSIutRlnIIswMal50UXMa4lqth91WI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XorGyPSqsuj1/RFZ5Fw7gbsKgVhIDHH1T+UgCFo7na5GIFg4lJa1xbYhK6YxPToDB
-	 TvQlPms1LG1bEKdPVCfCKXDDRWdRkIBFcFGFrWj4lLTOEpaFl5iaFVc7L9UKnaDR9X
-	 sTeewVelX+vn2/pBUs/PfkwIqWWtXYmVo0DDxzSceLlJUm8H058BhzjdLdTd/YLIpo
-	 GWppCISbq+rM8wQWpoZr0S6vgd3tIqYq1Tl0x1QQiJ3V7A8J4h8rgdBVxeZ+rr0ICQ
-	 Yu6nVuYQ6n11ayEpubNXCcBotF9k045fH/nnfK6EZmMhIImXMjkDNF8oIEASwylMHX
-	 yxY4JHO1OLoKg==
+	b=VxAzgjUYanK0+IJNgHrJh9Xj6tciUxOQaV2TIit0REKRIH7aTUdJOGDwxETS7KptK
+	 h9cyXxNPPf8Tr4pq5PXWPfI0PM7t7DeOrs0dhF4XLx3gOY0CIjhdUuPnVGkXDrHdaw
+	 UMUOl9ogYrrSS8MScEkzzIid2YCL4uMgu+ovjDF7Am8dbqu1abQ/lnRQaE241WVpDv
+	 1b9qFWixxefrNTmygb0EfuwMOCP3kR0OfwJUkaAs4+N8SFCP0uZq0M1VOyhj98EdP3
+	 ZHj4znlXuhVGgQE7HyrVoGZ7SJ8tnirJiiBAyoQR1eztWtWYs/iz2Zq+iS4pqOJMSc
+	 O/vjFwdHO03bA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/1] dt-bindings: trivial-devices: add fsl,mc1323
+Subject: Re: [PATCH v2 2/2] i2c: imx-lpi2c: use dmaengine_prep_submit() to
+ simple code
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260522203810.832631-1-Frank.Li@oss.nxp.com>
-References: <20260522203810.832631-1-Frank.Li@oss.nxp.com>
+Cc: vkoul@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org
+In-Reply-To: <20260522-dma_prep_submit-v2-2-7a87a5a29525@nxp.com>
+References: <20260522-dma_prep_submit-v2-2-7a87a5a29525@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 22 May 2026 20:48:44 +0000
-Message-Id: <20260522204845.16C181F000E9@smtp.kernel.org>
+Date: Fri, 22 May 2026 21:15:44 +0000
+Message-Id: <20260522211545.02BA01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [Low] The complex 802.15.4/ZigBee transceiver (Freescale MC1323) is being=
- incorrectly added to trivial-devices.yaml.
+
+New issues:
+- [Medium] Incomplete implementation of the refactoring pattern intended by=
+ the commit.
+- [Low] The fallback declaration for `dmaengine_prep_submit_slave_single` c=
+ontains semicolons instead of commas, breaking the build when CONFIG_DMA_EN=
+GINE is disabled.
+
+Pre-existing issues:
+- [Critical] A critical double free vulnerability can occur on `dma->rx_cmd=
+_buf` in the error handling path of `lpi2c_imx_dma_xfer()`.
+- [High] DMA channels requested during probe are never released on device r=
+emoval or on a subsequent probe failure.
 --
 
-commit b0a89da340a37ac000b2095bf76877af3c762c6f
+commit c9c1ee53a58bc638a612c603e4f9002874839ea5
 Author: Frank Li <Frank.Li@nxp.com>
 
-dt-bindings: trivial-devices: add fsl,mc1323
+i2c: imx-lpi2c: use dmaengine_prep_submit() to simple code
+   =20
+Use dmaengine_prep_submit() to simple code. No functional change.
 
-This commit adds the Freescale MC1323 2.4 GHz IEEE 802.15.4/ZigBee
-transceiver to the trivial-devices binding. This change is intended to
-resolve dtbs_check warnings on the legacy i.MX53 SMD platform where the
-device was used.
+> Use dmaengine_prep_submit() to simple code. No functional change.
 
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Doc=
-umentation/devicetree/bindings/trivial-devices.yaml
-> index 23fd4513933a4..28b059c858dd1 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -127,6 +127,8 @@ properties:
->            - domintech,dmard09
->              # DMARD10: 3-axis Accelerometer
->            - domintech,dmard10
-> +            # Freescale 2.4 GHz IEEE=C2=AE 802.15.4/ZigBee
-> +          - fsl,mc1323
+[Severity: Medium]
+Is the refactoring incomplete here? The commit message states it simplifies=
+ the
+code by using dmaengine_prep_submit(), but it only updates
+lpi2c_dma_rx_cmd_submit().
+
+An identical DMA preparation sequence exists just below it in lpi2c_dma_sub=
+mit(),
+which continues to manually call dmaengine_prep_slave_single() and
+dmaengine_submit(). Should lpi2c_dma_submit() be updated as well for
+consistency?
+
+> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-=
+imx-lpi2c.c
+> index 2a0962a0b4417..c90f72eec8498 100644
+> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
+> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+> @@ -733,15 +732,11 @@ static int lpi2c_dma_rx_cmd_submit(struct lpi2c_imx=
+_struct *lpi2c_imx)
+>  		return -EINVAL;
+>  	}
+> =20
+> -	rx_cmd_desc =3D dmaengine_prep_slave_single(txchan, dma->dma_tx_addr,
+> -						  dma->rx_cmd_buf_len, DMA_MEM_TO_DEV,
+> -						  DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+> -	if (!rx_cmd_desc) {
+> -		dev_err(&lpi2c_imx->adapter.dev, "DMA prep slave sg failed, use pio\n"=
+);
+> -		goto desc_prepare_err_exit;
+> -	}
+> -
+> -	cookie =3D dmaengine_submit(rx_cmd_desc);
+> +	cookie =3D dmaengine_prep_submit_slave_single(txchan, NULL, NULL,
+> +						    dma->dma_tx_addr,
+> +						    dma->rx_cmd_buf_len,
+> +						    DMA_MEM_TO_DEV,
+> +						    DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
 
 [Severity: Low]
-Is it appropriate to add the Freescale MC1323 to trivial-devices.yaml?
+Will this break the build when CONFIG_DMA_ENGINE is disabled?
 
-The trivial-devices schema is strictly intended for simple I2C/SPI componen=
-ts
-that genuinely require no hardware properties other than a compatible strin=
-g,
-reg, and optionally a single interrupt.=20
+In include/linux/dmaengine.h, the !CONFIG_DMA_ENGINE stub for
+dmaengine_prep_submit_slave_single() contains semicolons instead of commas:
 
-Since the MC1323 is a complex IEEE 802.15.4 MAC/PHY SoC, does using
-trivial-devices.yaml as a workaround for sparse legacy device tree nodes
-create a regression in binding purity?=20
+static inline dma_cookie_t
+dmaengine_prep_submit_slave_single(struct dma_chan *chan,
+				   dma_async_tx_callback cb, void *cb_param;
+				   dma_addr_t buf, size_t len,
+				   enum dma_transfer_direction dir,
+				   unsigned long flags);
+{
+	return -ENODEV;
+}
 
-Would it be better to create a dedicated minimal schema in
-Documentation/devicetree/bindings/net/ieee802154/ instead, even if it
-initially only lists the minimal properties needed to validate the legacy
-i.MX53 SMD device tree?
+This syntax error will cause a compilation failure for any driver calling it
+when CONFIG_DMA_ENGINE is not set.
+
+>  	if (dma_submit_error(cookie)) {
+>  		dev_err(&lpi2c_imx->adapter.dev, "submitting DMA failed, use pio\n");
+>  		goto submit_err_exit;
+
+[ ... ]
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but could this result in a double
+free on dma->rx_cmd_buf in the error handling path of lpi2c_imx_dma_xfer()?
+
+When a read transfer (I2C_M_RD) finishes, dma->rx_cmd_buf is freed at the
+disable_dma label:
+
+	if (dma->dma_msg_flag & I2C_M_RD)
+		kfree(dma->rx_cmd_buf);
+
+However, the pointer is not set to NULL. If a subsequent read transfer fails
+early (e.g., if lpi2c_dma_config() or lpi2c_dma_submit() fails), the code j=
+umps
+to disable_dma before lpi2c_imx_alloc_rx_cmd_buf() can allocate a new buffe=
+r.
+
+Since dma->dma_msg_flag & I2C_M_RD is true, wouldn't kfree() be called a se=
+cond
+time on the dangling pointer from the previous transfer?
+
+[Severity: High]
+This is a pre-existing issue, but are the DMA channels requested during pro=
+be
+leaking on device removal or probe failure?
+
+In lpi2c_dma_init(), the "tx" and "rx" DMA channels are acquired using the
+non-managed dma_request_chan() API. However, the driver's remove function
+lpi2c_imx_remove() does not call dma_release_channel() to free them.
+
+Furthermore, if i2c_add_adapter() fails during lpi2c_imx_probe(), the error=
+ path
+(rpm_disable) fails to release the DMA channels that were successfully acqu=
+ired
+moments earlier. Should these paths be updated to release the channels?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522203810.8326=
-31-1-Frank.Li@oss.nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-dma_prep_s=
+ubmit-v2-0-7a87a5a29525@nxp.com?part=3D2
