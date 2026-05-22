@@ -1,104 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24973F9267;
-	Fri, 22 May 2026 10:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F403D6484
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 11:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779445419; cv=none; b=B5m15hNDBtKvZgq93iO8HM5uQ13s0g3d37au4vpsreLzl3DVqwZ10NFXZUUAzBUP5lWAsRuD5VbYBiuJBK3cDCsrwGlgcF7rXhyngtrYu3YN5bCNaV3Kz/KtBkuwhopPx893pH6aA/f+3lIn2pdG6CVVPABchvZSP+4DFk51FbA=
+	t=1779448832; cv=none; b=bYrQbzTv4oDdONI8B4K7Ly/z2vB95K6mn5HY739s7u3jEOPw9y0LoyCzutF2qmvb9Ri1E1PLGQjAJTFRzY7IP+eSDbRZc8kYXFrw2Vh63YUllfP9WDCOBxmujr9dGfHEHL77pSComQN0IgL0VLQlorGvZ6l7JW4OumpBqELW3y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779445419; c=relaxed/simple;
-	bh=bG53QNlIvVM95nt6OrzkbN1Uag816hCHZAR/0R9tVdQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=CBi8LWP2tJcDCR/j9TYNacsryh/Fg6bJgEeIwGSYAog0DVCE5fwTl8tvTCbKgvRv+9ugU8CJgf6Tj8HsMA/NPg+FyN9wDqTtmh78HkahbqN28yb3BBoO/uw6JvXVaKWV62IJZ26ltk14URLS8upWIHWxXCp2QpyFHj+H4Ec2oJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+ecN4c9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779448832; c=relaxed/simple;
+	bh=2dMtwqfr2ZGbuWNME1mjoFf1yb2LMAL7HBAwNxavaO8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KAZWQ22/TaASLuFUEBW3NE0cSNPFZpS3IYTb1DRSqF5oJc28RYZPw9tvaGIHW1/C63E0S+5xXz9SrjlZRUcMrqqFQDNg1hr/VrW68paWYbZSNdyPql8YTMzW+m7pz0DYoSenAcWQjiM9YPu+LFhC8yQZcXGzAqCo+yL6yNvTFTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UpM5/xZL; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g+ecN4c9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361DD1F000E9;
-	Fri, 22 May 2026 10:23:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779445418;
-	bh=yDrstzdR7pm6qgaRcXyznHIDlRMMlAK2eQAaoYy6AYg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=g+ecN4c9DTbwGbx2PFY2yRiHeTH1ikc3KEeS6J12JW30l5zWHW91IeChQ5gKbijYO
-	 MIKjGOcX07D4IATt8V188hUuOt3l/ygLpTkhTbEXBkwPmgecEl2fiMn4MXVQQNQnSM
-	 DeKHixuqmb0cnE8Dxwjqo5U5FFdXvqgVj4mt4shV0rbOfJ+s2bEB0huPm6bMN4bvrX
-	 2l7y/udXrpTxJ+5f+9oZQGIBuDezrkJvKz8BIUu2hbHMSk/LiKUYvZTHPqTlBlL5+V
-	 wfZLEnPcX7NG9wdOYyZk7AbE7EY490xcd90vaIHY9vHxDSPGwzVfm5mkj0FeLvq8y5
-	 TJ1Z6kMJbV3UA==
-From: Mark Brown <broonie@kernel.org>
-To: Han Xu <han.xu@nxp.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
- Zhengyu He <hezhy472013@gmail.com>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
- Wei Fu <wefu@redhat.com>, Cody Kang <cody.kang.hk@outlook.com>
-In-Reply-To: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-0-52bce26e5fd8@gmail.com>
-References: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-0-52bce26e5fd8@gmail.com>
-Subject: Re: (subset) [PATCH v2 0/2] spi: enable the SpacemiT K3 SoC QSPI
-Message-Id: <177939697296.58022.13134350906146797210.b4-ty@b4>
-Date: Thu, 21 May 2026 21:56:12 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UpM5/xZL"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4893940bb5eso40302925e9.3
+        for <imx@lists.linux.dev>; Fri, 22 May 2026 04:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779448828; x=1780053628; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XwywBvEJpsm1f+bVDJtLQZjSntFIsWCaI5FtaThXLqY=;
+        b=UpM5/xZLoPPox3qfe4c9QTDyuQr4nFd/WYHLJRk0OGru8VGl29I20Hqik6B4nSyA4D
+         okvnGEbGn4C7qLcMfM0YS9hT+LiY/wbk0UM84jQ2V1baBOVCgL1Mn6tCol2v93sCuFgo
+         6qRHSd8XAzq2+irD9XfKtc2sbhCInnJ5SG6yOkSRnp7cjJzAd6k/cIu+WFGCeYreXk7Y
+         eHdh9aBFjCMvQ2t1O2qDiOabEtpnSd8c3qDsnlUXLwxKLqmZi3F9QF+vK8SvDc+ZsQ1O
+         8wpBAUGkVf0t7grTth2dNAytmrIZqcX8L+F6iFZCJx80F458bGcEH7DXo5Hel6+3K08e
+         qvaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779448828; x=1780053628;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XwywBvEJpsm1f+bVDJtLQZjSntFIsWCaI5FtaThXLqY=;
+        b=MEAsJ3rS6kWL0IYPT6xGtAIIXvm+3BvoxYCB24hka59ySODKLK1UCOPnif47Lxm+ug
+         B923E7q/yQ3FXebQiaoiwUxTRruDL0N+L7dSeevZSmGgFDKLL4PujBLIw9jDnCSQa9Az
+         08SGmr20PGwwDbVZrvxouBTsCn1PfzwtwOqO3TXJpgtFodEHfncDmMFsIgz4qRy4da2v
+         0/FrzbDcz4gx2hYsX/AXH5kN1p9etTDS4papyjbjyD88THfqw/olPpDKnv2WXdOGr5dt
+         3b4pFUVS+dZmL2HnzwOWitj4Ya/u5yCivgxHWNeK1wCGw8XxzfyUzmfVf67k8ttsav0M
+         6wkw==
+X-Forwarded-Encrypted: i=1; AFNElJ8Su7AO9uRFGWUyUJmBHi2HLRmIfTsEPjtwGwnMUrpc/P4bs0BNWvwbGsfidH6PRDywFXU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwDhYTPZS+bEHXyAT2NydHImmBL6/MHrqJdtp+dTc8mHHFBu6n4
+	yaxWYmlor3abxRWsaGvDi6UxgzD476ZtHPN7vszCPkKhBekNAfG0I2EJ
+X-Gm-Gg: Acq92OFfNcpygG+6gjZ+RuH7O8loA0ryjX1VFoohqRrqrCre6zwJAgDsB/P+kwu3bfb
+	u9bFOMmOW3LrfxX95LA6u3hgmbLG9nI2YXgKv0P8JbgiUiomKH7XTwvbAvdh9midN+gxQvjclCo
+	L3p8zERgUR9bxmnCCl2sToDqJhAyshrmifuTdxvAT2Gh2hq8rPwzueXwsyYwxZ+TH0aTNXZ7qf7
+	wcFpxxx9JJpUxIVZmitXJeB7lFetBhd8CKHiRxcJjO8GiqLH/6RU026GfTq9mSJ36scRk+4v6nc
+	7cLgh+opcTUhEUhKp+lzdzZ7TGCh6acjQ4fdfZUWvTIA4UXIh1NqMC318vL9lI0/FttR8JNDpqy
+	AqVYd31kYZIg9ntYCH7am+rdsfcu4u1MfW/uV6K2mRJAw2l+hwmnCK/CyM07wnn6z8kvp+6Fhjf
+	ykjjhWr+EQSXIfoxUIFShoIaiC6HunG0jGjjrQ8q5xwim4ShSN1wuoUggJS3zo
+X-Received: by 2002:a05:600c:1c21:b0:490:44eb:c1ea with SMTP id 5b1f17b1804b1-49044ebc2edmr37709105e9.24.1779448828096;
+        Fri, 22 May 2026 04:20:28 -0700 (PDT)
+Received: from SMW024614.wbi.nxp.com ([128.77.115.157])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4904526ca21sm34388355e9.3.2026.05.22.04.20.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 May 2026 04:20:27 -0700 (PDT)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-remoteproc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/5] Add RPROC support for the MX95-15x15-FRDM board
+Date: Fri, 22 May 2026 04:18:44 -0700
+Message-ID: <20260522111849.783-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1313; i=broonie@kernel.org;
- h=from:subject:message-id; bh=bG53QNlIvVM95nt6OrzkbN1Uag816hCHZAR/0R9tVdQ=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqEC6mrJSZNWN8SmN4CqNtHx2CW/DeWM7t3Y7z6
- wBsv7IFkeaJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahAupgAKCRAk1otyXVSH
- 0J6lB/4sm2AekTdbwKgM4nO4GaonO8gR4rnmaqoMa48pK5P2wSta2B2HgLEeCK6BTuDBMGe4PP1
- BjQjUQ5xmFT1H+BTQTx35lk09mODpVXMd2cnirYR2MPc6L0f5n3PcPGzQrkO3/nwGLA70FDesDP
- AMfOkgaR+2WKYaIUtvDf1avZwt3nfBGXfVcvUwDMQsC3ME0GS9kJ3MERs7zTOkuV+xTqqsNsjlV
- VDkYkOXFai1bzHzQZLEMe0G02IujZouXPTBbek2tJIC5TgsOr8/Ck04zcjGjn4RcOfFFXbtKi8Y
- s9UJzxhsOARNT0GIxhmw0brPZIAdgqBJJO0sosbbFvlAqUAy
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
 
-On Thu, 21 May 2026 22:44:44 +0800, Zhengyu He wrote:
-> spi: enable the SpacemiT K3 SoC QSPI
-> 
-> Add the SpacemiT K3 QSPI compatible and enable SPI NOR flash on the
-> K3 Pico-ITX board.
-> 
-> K3 and K1 use the same QSPI controller, so the K3 devicetree uses
-> "spacemit,k1-qspi" as fallback.
-> 
-> [...]
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Applied to
+Hi folks,
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
+As you can see from the title, this series attempts to introduce/enable
+RPROC support for the MX95-15x15-FRDM board.
 
-Thanks!
+For a while now, the imx_rproc driver has been using the reserved memory
+DT nodes as the carveout names, which would force DT writers to go against
+the DT specification's recommendation and use non-generic names (e.g.
+"vdev0vring0", "vdev0vring1", etc...). This series also tries to fix this
+issue by introducing the "memory-region-names" property and using it in
+the imx_rproc driver to figure out the carveout names. The driver will
+still allow the old way of doing things (i.e. no "memory-region-names"
+property) but a warning will now be printed since this should be
+discouraged.
 
-[1/2] spi: dt-bindings: fsl-qspi: support SpacemiT K3
-      https://git.kernel.org/broonie/spi/c/27cd2dde35b2
+Laurentiu Mihalcea (5):
+  dt-bindings: remoteproc: imx_rproc: document optional
+    "memory-region-names"
+  remoteproc: imx_rpoc: fix carveout name parsing
+  arm64: dts: freescale: imx95-toradex-smarc: move CM7 node to SoC DTSI
+  arm64: dts: freescale: imx95-15x15-frdm: remove common rmem regions
+  arm64: dts: freescale: add DT overlay for MX95-15x15-FRDM RPMSG usage
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+ .../bindings/remoteproc/fsl,imx-rproc.yaml    |  8 +++
+ arch/arm64/boot/dts/freescale/Makefile        |  3 +
+ .../dts/freescale/imx95-15x15-frdm-rpmsg.dtso | 65 +++++++++++++++++++
+ .../boot/dts/freescale/imx95-15x15-frdm.dts   | 21 ------
+ .../dts/freescale/imx95-toradex-smarc.dtsi    | 14 ++--
+ arch/arm64/boot/dts/freescale/imx95.dtsi      |  7 ++
+ drivers/remoteproc/imx_rproc.c                |  7 +-
+ drivers/remoteproc/imx_rproc.h                | 19 ++++++
+ 8 files changed, 113 insertions(+), 31 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-- 
+2.43.0
 
