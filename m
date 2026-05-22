@@ -1,156 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D3234CFAB;
-	Fri, 22 May 2026 20:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D46A348875;
+	Fri, 22 May 2026 20:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779482740; cv=none; b=qXysAL+SkNCsao9BOocF7/tD8Wpf2ZZFEfBWlk0g0Cqr/cF1vac0b0LeW0OcqzLA8R+xt+vsp9G/xzZ2IYYpjlyDj+D/tcJRyFJeLkJLoeTdgP2eB45pWdb6vjgjir3X6dDVgeQgiG7QQQb421WJwv45TUNQ6BtHYJ4TPOK/1LE=
+	t=1779482926; cv=none; b=VxahT7tl2QRcX00IPRXWf9kfn46AGmu4mjWCYPz43dBWWIwnw8QSJZzl4MbQUXhC2P0ZFDgGacYfka4Z2wCr5EPCOnq7vVio6sqy75sNH7bwR/x/EVvzjwD2LQQyL05kcMGX1VdvBMiczZUEmhhykQvFATEOzmYm7kKmadbnb0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779482740; c=relaxed/simple;
-	bh=XmUnD8IT1VZLEQjBNsP+6vpSY3qZRjOXV4CmRoEBqt4=;
+	s=arc-20240116; t=1779482926; c=relaxed/simple;
+	bh=iwvXEVwyhoRp94WouqA+ZPTh/8Ik7QHAGEzmxlBLdWc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=U9ZMvSnd3Dn+SU1kztvixNsRflQgxepEsbSXooh+D0bay4yNznYHFjUtK8xD46gVsVQicaHHhGgmN4S6djX7NeHFQjTvSnZ3CRv8hTgcH5BCMstHmrgqbwv1KDsL7zxt5Pi9/Oz2/7fX+xx3tD7xR68neZVtTGg4Eqggnij7IOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0T+ua8T; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=tDiEqzzldiPE+BysQdO0iz2AffIJ/xqUYkLjlkbaE1hIgzEEecjTEtjrZPbSzwsxnce7ijXSX2a8ZsN0aajO6J7avBCEVSSMbDcHnwQ0EIVxQ642l5mKUdngfH4VyHHwRu73eAhledQILlrbRb9prtp+qGCZ4tkho2dK4HvokFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XorGyPSq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0T+ua8T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE9C1F000E9;
-	Fri, 22 May 2026 20:45:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XorGyPSq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C181F000E9;
+	Fri, 22 May 2026 20:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779482739;
-	bh=RG8jzNtY0j6fPSMmsYrnMjwplApDHBCDXP+XzMLyZLo=;
+	s=k20260515; t=1779482925;
+	bh=2Pcr5aU2zl+JNFMQjP357INntpb0mAi3czWPKijQlpw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=W0T+ua8Tz76uyQutMV5Jc2O+RAhReUxa2Di28EA9fZJHHniKBXlrEhkGw9hvm2VCs
-	 txSN8OEtSurOWboZ1WAh5k5/S6+dkOtgKSYyAW9BuT2BPGpNe6MHWygUY0VnISYj4t
-	 o22LMFNXQUlsN2KwetbQP/p+sFmbGpxJU1MGnoH9h4Jo/AieWF0Y6UsJCGAEWqzcsl
-	 9M96J9S3WCf3Ng5aQi0sYAIDSswgIHNJYFPvp46sIpMOuMJwkkJs9V7Kz3wmDhVSiR
-	 ErushI5u0+Doo0WKefdYKQnknkiGJA1ThIPBqnX51e68g9JW3YICNPOgpG37UnwBZU
-	 67S8iRGJPgRNg==
+	b=XorGyPSqsuj1/RFZ5Fw7gbsKgVhIDHH1T+UgCFo7na5GIFg4lJa1xbYhK6YxPToDB
+	 TvQlPms1LG1bEKdPVCfCKXDDRWdRkIBFcFGFrWj4lLTOEpaFl5iaFVc7L9UKnaDR9X
+	 sTeewVelX+vn2/pBUs/PfkwIqWWtXYmVo0DDxzSceLlJUm8H058BhzjdLdTd/YLIpo
+	 GWppCISbq+rM8wQWpoZr0S6vgd3tIqYq1Tl0x1QQiJ3V7A8J4h8rgdBVxeZ+rr0ICQ
+	 Yu6nVuYQ6n11ayEpubNXCcBotF9k045fH/nnfK6EZmMhIImXMjkDNF8oIEASwylMHX
+	 yxY4JHO1OLoKg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] dmaengine: Add helper
- dmaengine_prep_submit_slave_single()
+Subject: Re: [PATCH v3 1/1] dt-bindings: trivial-devices: add fsl,mc1323
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: vkoul@kernel.org, Frank.Li@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260522-dma_prep_submit-v2-1-7a87a5a29525@nxp.com>
-References: <20260522-dma_prep_submit-v2-1-7a87a5a29525@nxp.com>
+Cc: imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260522203810.832631-1-Frank.Li@oss.nxp.com>
+References: <20260522203810.832631-1-Frank.Li@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 22 May 2026 20:45:38 +0000
-Message-Id: <20260522204538.EFE9C1F000E9@smtp.kernel.org>
+Date: Fri, 22 May 2026 20:48:44 +0000
+Message-Id: <20260522204845.16C181F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] The macro accesses the descriptor after calling `dmaengine_sub=
-mit()`, violating the DMA Engine API contract and causing a Use-After-Free.
-- [Medium] Calling `dmaengine_desc_free()` fails to prevent memory leaks fo=
-r standard, non-reusable DMA descriptors, defeating the primary goal of the=
- patch.
-- [Low] The fallback implementation of `dmaengine_prep_submit_slave_single`=
- contains severe syntax errors that break compilation when `CONFIG_DMA_ENGI=
-NE` is disabled.
+- [Low] The complex 802.15.4/ZigBee transceiver (Freescale MC1323) is being=
+ incorrectly added to trivial-devices.yaml.
 --
 
-commit c731d16a7ec5a6fed71b17234ae1bc2184ad8818
+commit b0a89da340a37ac000b2095bf76877af3c762c6f
 Author: Frank Li <Frank.Li@nxp.com>
 
-dmaengine: Add helper dmaengine_prep_submit_slave_single()
+dt-bindings: trivial-devices: add fsl,mc1323
 
-This commit introduces a helper macro and function to combine the preparati=
-on
-and submission of a DMA slave single transfer into a single step. It also
-aims to automatically free the descriptor if the submission fails.
+This commit adds the Freescale MC1323 2.4 GHz IEEE 802.15.4/ZigBee
+transceiver to the trivial-devices binding. This change is intended to
+resolve dtbs_check warnings on the legacy i.MX53 SMD platform where the
+device was used.
 
-> diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-> index ca13cd39330ba..1e25be78a22a5 100644
-> --- a/drivers/dma/dmaengine.c
-> +++ b/drivers/dma/dmaengine.c
-[ ... ]
-> @@ -1619,6 +1619,34 @@ void dma_run_dependencies(struct dma_async_tx_desc=
-riptor *tx)
->  }
->  EXPORT_SYMBOL_GPL(dma_run_dependencies);
-> =20
-> +#define dmaengine_prep_submit(chan, cb, cb_param, func, ...)	\
-> +({	struct dma_async_tx_descriptor *tx =3D			\
-> +		dmaengine_prep_##func(chan, __VA_ARGS__);	\
-> +		dma_cookie_t cookie =3D -ENOMEM;			\
-> +								\
-> +	if (tx) {						\
-> +		tx->callback =3D cb;				\
-> +		tx->callback_param =3D cb_param;			\
-> +		cookie =3D dmaengine_submit(tx);			\
-> +								\
-> +		if (dma_submit_error(cookie))			\
-> +			dmaengine_desc_free(tx);		\
-
-[Severity: Critical]
-Does this access the descriptor after ownership has been transferred?
-
-The DMA Engine API contract specifies that once dmaengine_submit is called,
-the client must consider the descriptor pointer invalid. If submission fail=
-s,
-some DMA providers (like the idxd driver in idxd_dma_tx_submit) internally
-free the descriptor before returning an error.
-
-Calling dmaengine_desc_free here would read tx->flags on an already-freed
-pointer on the error path, resulting in a use-after-free.
-
-[Severity: Medium]
-Will this actually free standard, non-reusable descriptors?
-
-The dmaengine_desc_free function is explicitly designed for reusable
-descriptors. It internally calls dmaengine_desc_test_reuse, which checks
-the DMA_CTRL_REUSE flag and returns -EPERM immediately if it is not set.=20
-
-Since standard descriptors created via dmaengine_prep_slave_single don't=20
-have this flag set by default, it seems this call acts as a no-op and might
-not resolve the resource leak mentioned in the commit message.
-
-> +	}							\
-> +	cookie;							\
-> +})
-> +
-[ ... ]
-> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
-> index 99efe2b9b4ea9..0f789fac7e91a 100644
-> --- a/include/linux/dmaengine.h
-> +++ b/include/linux/dmaengine.h
-[ ... ]
-> @@ -1575,6 +1582,16 @@ static inline int dma_get_slave_caps(struct dma_ch=
-an *chan,
->  {
->  	return -ENXIO;
->  }
-> +
-> +static inline dma_cookie_t
-> +dmaengine_prep_submit_slave_single(struct dma_chan *chan,
-> +				   dma_async_tx_callback cb, void *cb_param;
-> +				   dma_addr_t buf, size_t len,
-> +				   enum dma_transfer_direction dir,
-> +				   unsigned long flags);
-> +{
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Doc=
+umentation/devicetree/bindings/trivial-devices.yaml
+> index 23fd4513933a4..28b059c858dd1 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -127,6 +127,8 @@ properties:
+>            - domintech,dmard09
+>              # DMARD10: 3-axis Accelerometer
+>            - domintech,dmard10
+> +            # Freescale 2.4 GHz IEEE=C2=AE 802.15.4/ZigBee
+> +          - fsl,mc1323
 
 [Severity: Low]
-Are there syntax errors in this fallback implementation?
+Is it appropriate to add the Freescale MC1323 to trivial-devices.yaml?
 
-The parameter list uses a semicolon instead of a comma after cb_param, and
-there is a stray semicolon immediately preceding the function body. This wi=
-ll
-cause a build failure when CONFIG_DMA_ENGINE is disabled.
+The trivial-devices schema is strictly intended for simple I2C/SPI componen=
+ts
+that genuinely require no hardware properties other than a compatible strin=
+g,
+reg, and optionally a single interrupt.=20
 
-> +	return -ENODEV;
-> +}
->  #endif
-> =20
->  static inline int dmaengine_desc_set_reuse(struct dma_async_tx_descripto=
-r *tx)
+Since the MC1323 is a complex IEEE 802.15.4 MAC/PHY SoC, does using
+trivial-devices.yaml as a workaround for sparse legacy device tree nodes
+create a regression in binding purity?=20
+
+Would it be better to create a dedicated minimal schema in
+Documentation/devicetree/bindings/net/ieee802154/ instead, even if it
+initially only lists the minimal properties needed to validate the legacy
+i.MX53 SMD device tree?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-dma_prep_s=
-ubmit-v2-0-7a87a5a29525@nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522203810.8326=
+31-1-Frank.Li@oss.nxp.com?part=3D1
