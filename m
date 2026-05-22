@@ -1,70 +1,64 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011044.outbound.protection.outlook.com [40.107.130.44])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011029.outbound.protection.outlook.com [52.101.70.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5565356746
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 18:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232683655E4
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 18:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779472817; cv=fail; b=u8DFFdGDGVtUOrEwqg5YzbkEKRewIxu9NGyuPbzOXmumYoxvoJHH5QPv4IAbwT5M0rvvKRIOKqmZ8Bc2v9BrNVyAiHKgObrpjbidAVHeZv1PEvSdcmmCl7gd6eV/6OpXjVfu7lbwdLrK4LUCll9pzQh+7aFzrf0qDVlkcMj+HWo=
+	t=1779472910; cv=fail; b=nALsvUSbdlcIoNk0zd0/uwrcEU3PdktFaVO7gihH36UGUPaEfP+4tGx2o0Z747gh/uQIBaDhVQO91jZtlwspvgT62RUiss6VUgtXvIaZXwtLCb+Zh91dbT2YieDRjbAxdaLmX9cpFm0wWhjlycoN3CJkyFn3TJ+6yJzHxWe5EII=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779472817; c=relaxed/simple;
-	bh=qy8RXCVmTL7hTYeMOfHxaHE9G+s0vL8KI0YdsvhR74E=;
+	s=arc-20240116; t=1779472910; c=relaxed/simple;
+	bh=Zdxb6QLpmHkqS30OD7y7awHSta0Gd5gouhB27jsiBGQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tWCmea7cEE9bO2Kc/kf/+vQpGq8Oe59qSjQBbtUWzQOeMjWsOQCoTYPy2NNeJpjvmC/1dtCDiV3gPgSi50Wbt20PkL7pLTRK7HFj41IGLdX46T1E2sQQyd0Oh6ww4bHgbGW72gSliU8hEHMcdi9pZYiuYT/Ei/9HFbXVDPhkGik=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BeOVLRZi; arc=fail smtp.client-ip=40.107.130.44
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kdff6SmPG4YjxRt5qGcEs9b+vvvhBBA7z+QWheQnf0I9L5T4it74iYiHDYpwpnW5HD3zZyvCfSF6fOgpte8BGBCGQtA0S3rpwPotvS80dIrNUvcHXCNtn9jcDs/dwuDfbhOET94A/lAwCE+T+rvLN+B2VR3jllRYkfHAVpVkaso=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=j+Tdmb1o; arc=fail smtp.client-ip=52.101.70.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BeOVLRZi"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="j+Tdmb1o"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b1q7gghJQVHdVUUKpjG4q/IxiiA+zPvDopDHWdQJTvyo5L64sDAbRhJPK0MkJCC37RYTzbGaljul89WBvnXqx87QUe26jIiJUifz47OfLK8+Mfsq5YuGQH9zRPmYe2neOb9qJHR+frEAkXJuVy3C0dwewhoKY+MtbiJTshWM3fsCYBsWeMLhocWucWvb4Ng56UemixK79kF2q+m5KbsSFZJifgtmVZsdyBEli9lXedKiQsGhoe3M8lGcH7Yf0lUwyWAr3h1cToC2bstCuQ8bUV4eauvoS2WSVf3eBEvvsnYInRg3PKiZrljm305nircrb/JOPn00gc0k3rSlCpx5Vg==
+ b=nMcqG1l+j9KKBbOhcMJHL1MoskAuD0HqyGcuYuGldqB/gcS4Gt/ypgYkGCFoz2rG87YfjKgQ9pYNGQ5cDzloEBsI64GipFY+JlhYTbSRwIS8naIAisWC763olPg7mcuVO/3aVex3NVPJc8pwYlq2zfOFqdHbvYyxyUq6UYZeDOeXWaoMkOS/mVUrbh7kfYjHRVZfXBvkvZJZSn3El8XWBgadBf2NPJTLfhOOTRkN93WeOIJO4BYbcPWNWmvqobylrqLDxdr3jNn0y+NBJ+jpU4FSI5tSoyuw3E103Gm5DyZsgN6FdKM+aRVh0w0ChKtMyTCJ67B2J2K3Yq/veHsFyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DNEOjVzES0rYYSXyj5TslS4hE/GKLlMrmeAgorGcFeQ=;
- b=KXaB46KliehqraTtp3a88KA1HgZgQ6TxR3mFZt+XEiD9DKcPbJGZMKYDz+tqR9zbjq+CAb2iV/XUj0J5IDdnyq4TeasXyXda+DxNOzDHAVtLzUcjtXutKygyG4Q2Rz77aCTPV/nP3hfLtiF3fMOwRyksGMIMaAw+z+SsSOAe3zR7VtYs3rFrT9VkHN+razt2AwSzL7QccsJq22coGeDBRLZEcDpw4Ry/mXbQ72AJH1gEITYShJLFzlSkw7ofSsm8rAFxWsggvxsJbSrjqMBwT64770fdwoJaXrIj6F8Ja83ibtuFZ06SQGL1aFR4jiN2V4+bluDdRDqmcg+JM2MoIA==
+ bh=AUg2mikQQ5TOrWFWjUWdw4Gq/m5LrrI+dcM70HQ7L78=;
+ b=Dky96kg64QV1uJKqt4dK2okmqntInDtslVVkAo/sNqwFN5kJbmcVxRzGtR1zJgY4P6wp2gqkZP7301Z+RILEF2OJCsAxqQ/SLlcvbxrcaHKfbJ2rlGZvk4nx4Z/wE0vT4C/x/gWlpL1vU71UPx1tuEzOIyEvo9vuQaHiV2JcZ+U9SE6OP8zoOSGVFK9FWk2gbl5LnEGrhFjr2n6PBMR1+P79xAdOI678tpt4EWORQ8nTiXFka8ra2u5L9ooqzYBBxKo4dmifXf0HNFK8AEbpAPS7Wv4VAzwlhAWLsYYZW03R/jdFo5mq+SBSzWLzR5QCLa59fHT7SC90Kf0LF5sJXw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DNEOjVzES0rYYSXyj5TslS4hE/GKLlMrmeAgorGcFeQ=;
- b=BeOVLRZigmTxYV4vPH5IJiy+mh5z9C41+j3RX0s0s1jcsTIZVRWq6uocKquPQnHQ6pB63RDRBoLTVumUApDDzO/JGJG4CjraMz5qOrXSGzkje4DlvPwfLmifZVVYbjrsghNOhsBu6PlRXp7OCO3bSfU4izGo6HkpZ4GwDZOqQPg5On3vdEDP778o/wvzk1HHW47xrHHPMIzaxXbmk4rnux70pktjQ/QBCkg2cBUR3/le/LEsxiVfsI4Z6BnuKejJxZwm0kwchQ2RnSieH1Vq8XsyeSeEy1JPs2LuTwhqQLlQDqFGlH1phkDpFy07jIHqbqL6Mt9g+3IYSAuuFFMDVw==
+ bh=AUg2mikQQ5TOrWFWjUWdw4Gq/m5LrrI+dcM70HQ7L78=;
+ b=j+Tdmb1o83ZCOTElxXWk1PuJjYG+lnRlT+l7MsUfmlo+fSMwCdXTfydKG1Ri4MSHc79bWXl2m9Pd4Te2hSYTGOazjLtvO+8/Cjymkk3UbgVXz6LrSGi4TbVADIwH1kcW/6NwucQCd2bx+/uumxmbErW/CJZ7d+w13SbIVIA2wSsGr19oFVQoBRclj4oqyfCctrCgucHK4qba0Yo9PZnQH4qwBFv//cTp301U9ukLIldEevCBgVolB9cOcaokJwXpVBZVutyef/FLhYWlUyoE+OKw4fQEbVV+XmgLc1jGD1tRhHOKPpfheLXjmueBLcvNhU3G1lQ6EGE5qKTfqh59mA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
  by DU0PR04MB9300.eurprd04.prod.outlook.com (2603:10a6:10:357::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
- 2026 18:00:10 +0000
+ 2026 18:01:46 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0048.016; Fri, 22 May 2026
- 18:00:10 +0000
-Date: Fri, 22 May 2026 14:00:02 -0400
+ 18:01:42 +0000
+Date: Fri, 22 May 2026 14:01:36 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/5] dt-bindings: remoteproc: imx_rproc: document
- optional "memory-region-names"
-Message-ID: <ahCZonHSLyHH6q67@lizhi-Precision-Tower-5810>
-References: <20260522111849.783-1-laurentiumihalcea111@gmail.com>
- <20260522111849.783-2-laurentiumihalcea111@gmail.com>
+To: Mirela Rabulea <mirela.rabulea@nxp.com>
+Cc: sakari.ailus@linux.intel.com, mchehab@kernel.org,
+	laurentiu.palcu@nxp.com, robert.chiras@nxp.com, guoniu.zhou@nxp.com,
+	robby.cai@nxp.com, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH] media: v4l2-fwnode: Fix subdev owner overwritten in
+ v4l2_async_register_subdev_sensor()
+Message-ID: <ahCaALRo7Nm2E-IS@lizhi-Precision-Tower-5810>
+References: <20260521122646.600179-1-mirela.rabulea@nxp.com>
+ <ag9S0pUw66MDUxRA@lizhi-Precision-Tower-5810>
+ <162ce21f-bff3-441f-bc97-b1d20d947458@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260522111849.783-2-laurentiumihalcea111@gmail.com>
-X-ClientProxiedBy: PH8P220CA0046.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:2d9::22) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <162ce21f-bff3-441f-bc97-b1d20d947458@nxp.com>
+X-ClientProxiedBy: SA9P223CA0009.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:806:26::14) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,99 +68,128 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DU0PR04MB9300:EE_
-X-MS-Office365-Filtering-Correlation-Id: bfd381dd-92fa-4fcf-bca2-08deb82bf732
+X-MS-Office365-Filtering-Correlation-Id: 93bb527e-4eed-4a65-66d0-08deb82c2e40
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|52116014|376014|22082099003|18002099003|56012099003|38350700014|4143699003|11063799006;
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|376014|22082099003|18002099003|56012099003|38350700014|4143699003|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	6untASrq2si1VGch9NhSzM2FvAksYDoQ/b8RumEXx3MFlDpkXfLPp50dZiBDQPMr/zyGl/w8cTm+XXp+dLvQ36f0b0XLt/VGVQ+Au0NSUtDIw7ulUWciAo8vF3xuWC2D6avHGBCrsgcDQ8KJYUx2CC09y92GbKxLu4ygi2kLtQ5aSP7AM1p9lKeDqHEqENkvSKs10MdeuuB9MJI4yOfIJlcAg0VI/NDSOm71WeXzrPNdKJnOttU6BvfzLFljIo5bp6NhdHbkYj2WD8fRQemGVJVw2cjEnFfzcILSEr9QWWO1o8R5t5UTm3ZoFGIGXbxmcqybEOyJL1Mr4YztEJtW1VDO6MhZyuFK+2Vxxry5YWDgBKS+8TIFCqwEyINgoeiBCKd7ziDKh5/J1p/ooRli0RgGiXUwNn4/xK+zkNzehbWL9F6fQLRIWPxPY7lxjGL//KsHBcfibXAyMGwBw7MauuE462jrmUxrubAm7bAB593EQI7h7EQYcjHZhcEpxixtsYukcnZwEsBu7Sm0I1g3wDaVAicNLgbuQTrreHA+g+pBZstH0nQM6eDfA5Yry4Xj+dD/qMJaCbdW0thx5mFdWkNavDVRPYl0ohOnwLSj62rJeeNeJZzOy8rOkfy63SoJjD/C6tMvPslFn821xAfrx4LrUUyM5XCls7JK69udexlkTWCKb0bj6FC6aiDku//6P/CCeDNLTfIGkNK4uWvqt1d0ybmU4gNcIRJ7yl1neZ9XFgXqV+L7IcOewRaKbGqW
+	qEX271t0O2BQ8LeiznuHLcDz6qdBB1VEytW+LeZA6bSBQ0A8JWaUKWCx0GQg1Ria8h1DUHSR0SswFrQtDPgvlBfqaara2/P1/XPK/cHVEniqqkSixVBVCuTNKGO85jZjoAmGIx0pa/p21ZuanlB+6EXRNx0sP2yCLMjvPYZbrKCySqdTq0rgoys2UDdS/GmG+VIz+MhlUzk/rJBWDnGVsqtomarF9hx8V5P3S2OYb8O7USTsGbSd0fS8CE1HTZUni2qG1b/c65CA1ZW2EAS9P49jEk7SxxJs+1LQOKuchYxQ+P5InlMyN6cRo8I3f/9IUnKxtvyGTIM/F7nO8AU6G9PIHLhsO/BQdeMxMySGzaLTt3IQXk1xi+ZJ1p3IBEACQWiS/4wffMbdz7qZOi0yMraqX5X+hjvsgR3l2jGkvo0WJ7uOIGxWQVPQ5UMTQvU+YE/rmPqLY32yzBAf4SSSmKZhZW5dx1QzC3v7aYuVyZjlQC8ff8ptQDbhvyEBvIfZBM4b+KHD6GphFa2SkttmtjZRaCem6XvS1AZBRe46jtkkvblQbvSVm4eDO1cja0E0Wsq8riY+8VEWeGu1nHWVIl/ODMBW2XeD2q9cTSLgLptomm9ZUZhj4l9alo0UoBMnRZlSMqC1FQ5+SM58LQsD5ThIGNJz2AwWaKsGnxYk3Uf7XT1o6qn3m0ZhMPcb9rgbrYWcVUSe+1dZIBm3wZQ/VSU++5ngEf6X5hRrawAQ3hPVDhbB6Q4kuhlvmrhzJ6Z2
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(52116014)(376014)(22082099003)(18002099003)(56012099003)(38350700014)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(376014)(22082099003)(18002099003)(56012099003)(38350700014)(4143699003)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tqH1RQOkGtXdbnh6AgwmM2VdrnKP8rY43cpku7N2kAcqIEO1f8B2zN125MpX?=
- =?us-ascii?Q?xaPG2B9FiAL+lIOFSF1V2ZG3CIDd3mrqv07LfEmy+EvZx/+z0zT/UoyF5Z4y?=
- =?us-ascii?Q?Qq1HYR83dCojSIBcaRGA9NK/lnuehfn+gABDJM7G7OtHLucHGQ4Vjqa0GrkS?=
- =?us-ascii?Q?h5An2wi0sRmtQJLE5W4YmURaBpZhp5N/W/oAJaVLqMMPOAhlygWvDHp6eLWT?=
- =?us-ascii?Q?okf3DwHEalsUh+Mp1tae1MEDP2KfiwhnQ30/1oqm6wypByyhfOhYeLhIEWee?=
- =?us-ascii?Q?UqLJZvk4zJ6OLW/BiAq0ouR4yCpU+pZBw8/TaNF0j/ju/hM16lX0gbVX2ynl?=
- =?us-ascii?Q?yMcf+BLsUgpUlu6Wl4HI/TKvQQaHRLcLJjkvJTiPkvnSI10bcEhLfbhsQBS9?=
- =?us-ascii?Q?icFls9Z1PTN9YEruRwBC3QK70tIGXGjSFbJNeWQ63GZvDdEflKwKMouwSzYQ?=
- =?us-ascii?Q?fv8HPWYEyKJP5P/x6Kueav6pOEiawLOevW2z5CkGyPM7uWXLurtn/BQPSN2M?=
- =?us-ascii?Q?GhVFUE+zh3iapqC7fsvUbY45VJpprhcFDhYiH/OZJXD8UYMnhFEMDBTnf2P0?=
- =?us-ascii?Q?nJS8o+wqCvRqFsYU64/qtw4CfTUklB0/PDwFK1zDr3Ywh4XPf2+OXt+6BX93?=
- =?us-ascii?Q?H+wUS6Xw6Gblw7Hc71C8x54BS0EQjK5VXlJRUWt0UgLV8FIEfLLzl22tP3PZ?=
- =?us-ascii?Q?H9UL+k09kLXVuEGY514gwkrjsgGjNLarsNneIgBLF/gyapv/Y4dhiaw6y8zL?=
- =?us-ascii?Q?FF/d/SDqKQbHpEJMhV0xn3qxi5kesUkse14y1CbreaFoFCwZUcrMLNc+Lped?=
- =?us-ascii?Q?ymVVIMelMR8jhmdkcr0E2BrwS3d1k589ONF834IAi0GuPcwfJnB819mbJzk3?=
- =?us-ascii?Q?jGRpfnoo1mg2XXYZhhxvndq5XsWR/xTTiXjGVj4yjJi0rsnJxpzPsN+ODbF+?=
- =?us-ascii?Q?NVzMDZH25Z2mgANVV7I5M+liXM2De7OsYsUvVkOeFhJkq9YgIPl0CZEPHC+y?=
- =?us-ascii?Q?NJ70GLqzj6L7h9i0HLhpdRJoqY4E24gOs4JEFI+HxSeGzHyRJoeO1K1YgRLE?=
- =?us-ascii?Q?2pGwkAxh5x9xynlUU9Ux9aj+3rgXa4qmZJwyJvblGTwHPb5/gyygmOytfqfj?=
- =?us-ascii?Q?tNI+/NNWuhmjKbH5hzHuII70Me7+htzFD4UuojEPlhVGu+9tfNhLNdK2E+Mn?=
- =?us-ascii?Q?uWxCR8gAvbgnDQCzlGir5QK4xScwlpEP6rOpVSaby87Aof8sQJfNBkK/uE9M?=
- =?us-ascii?Q?CYQa4WVtaOs4Q+fKZD9xxUch3i62BGtt4xajrS9iAIzAL84BOF9e6fqEga/q?=
- =?us-ascii?Q?GcteXd/tZxLNTPCgLGjfrmEcKqrx/yWvpndRn/UJ+magQ4SFhRJUqwQ/peqp?=
- =?us-ascii?Q?bZ0Lge4boiTKw5S85tKvHKt0bUDFbVetdYaVX5oijJDnL9WD5hrAF9Wlshtr?=
- =?us-ascii?Q?XLxbPRWWU1Xpv7lH56o44Qr/AUj1Y72yTqbK0D/SSJRG0BmHPhvlw4tII2w1?=
- =?us-ascii?Q?uc6JPeTdCe0qaJPwd1YTeMurg8U/KUCFc0azRjJvXFTQs0zIBRr2YXi8yPx5?=
- =?us-ascii?Q?4TaYQh7W+DozMDV42dq4+iV9kL7GMHoApnrzyxGJqFd7raOrqVwEUSqZWZhT?=
- =?us-ascii?Q?2YQRV/MO7prm98LDFNyiPrRIIGFaAJfKwHd6AJlNhnobnFzWRlIBGIeMtzFm?=
- =?us-ascii?Q?1qmTrNdRJISl/xmpwYIQEyakU/xRAnOVxcyoYlNP3QgZZzZ5bjuaXSkRecP3?=
- =?us-ascii?Q?eEszuBuQ7w=3D=3D?=
+	=?us-ascii?Q?1NSCd5ZgmfHMmb9PI5ZCFzabljFEYFQwpd1u32EP5TK/zusy6LddNhoAshw4?=
+ =?us-ascii?Q?TC3f5E+XPph7htrANifQqSszQnONQnYSvuD1mt4IucW8TqcVmof/myEZjbB3?=
+ =?us-ascii?Q?ZTvJCZjbhYQem/8JliYB6knl6oCOQXJqxWQrUW7mq7a3zGQicfQfVs7cuA9P?=
+ =?us-ascii?Q?3M4Ew0TZfUw9EgkOaia958ZFDu7FIG0Jnf3vOGJqoVRX5TeugFXU1NMJJQhQ?=
+ =?us-ascii?Q?ZGre7d0T+9ZykxtphrCGC9MaiQcuLqI8qIrHi/yGEWX9QgTkHaP7mhyr4Tlu?=
+ =?us-ascii?Q?P+h1x3Pn1l9yY1igSJrWYO3oc/RkA/tXKYKQ4GB6GqgHQcVAWa4NG8EcLlUX?=
+ =?us-ascii?Q?jXXQwppNEU7q0AktedyHiF0X9saS3iZnERIKjTAiIdJzJPru7EU002rhcth0?=
+ =?us-ascii?Q?GC53YgRjvl7pc1XQuEzZTS2giAJFPupPL/qBQmtULerxjVczfvNJAHvq3Yei?=
+ =?us-ascii?Q?42/nIxB55iTQceqwooDocFaKCpU+b+O9pbFnwldu8LAXXK0jqQBJ9VVWJZEh?=
+ =?us-ascii?Q?vCtRgPOx9ZTk/QMAqRmpAn3ihGCBUtcKW8Yh1VRZuA8hAxSAwtASChI7zAeV?=
+ =?us-ascii?Q?57j6OFrsFCDliAF+NJlpsNr2GC+E5zb638GNpRLFFny7MHqUBlK61wNYadaU?=
+ =?us-ascii?Q?WEqpqcumSAPosv8xwyids4wxLbLqvpraOQeFurcdqEXeam70qbQfPEMT3i7h?=
+ =?us-ascii?Q?ym0BzAKlC4ksJTQTMrJ9EbuJjJKhNithEUL3IVdgT+RUFW1ch2ooZ8g0BsPI?=
+ =?us-ascii?Q?T7eG3Yxmn+GUyhArUTNtcdedMNVT8aZcwCPkgTOsHFIDdGAq1DmYYCQTML8y?=
+ =?us-ascii?Q?KDUAFM2eygKIRJJITgShfGdMGMZLSbKT6gycH3NoWIYOsssL+LT+HoNWE5DZ?=
+ =?us-ascii?Q?Lr1shUnmRYDQnJYMV+8s6RVITI4sNIsC/wvAAjOh6q5Gfx61gDU/rj9G8NHD?=
+ =?us-ascii?Q?o0CzIxUhZW7zXPhbs93A6ybcVoqlYIGC1iP01LalyRTXBmtJnaXwvJjAXWrT?=
+ =?us-ascii?Q?Brq+5Nc/V5iT18BPbcym8/QlyKypfZZ4UjOLHM+3Ad61zS7WQ1yB2RhpGInd?=
+ =?us-ascii?Q?PWUVggtDPlkSKDsRyn9RiGoSln2S/DQC5vL3+4BeqTEaijImc+jd8kQjUmPP?=
+ =?us-ascii?Q?KnzJL67sEcAs8pDmDNyT5iqeelM9s5RlkIAIvdlSk1IkDx7SGj2w5NCwlTfN?=
+ =?us-ascii?Q?hG/TR0FB0s2Ba9bM0BZWlX0OsemOQHUsIjI2srs93swZDtEjGc9LXDY2JR0/?=
+ =?us-ascii?Q?51R3ibsSLRWQoHbV+V1CtoFhqxJpCGyaO8xnIQdl6tLcEV7rKcPOjzqnARSz?=
+ =?us-ascii?Q?MluV3oNFcBxKn38HjicS5MErWGiAoEn8xEfLga57FUd8fxl9X6x3uRMVxJr+?=
+ =?us-ascii?Q?4jAcxc1z6JP9Lsek5JqaHHggDC+2VN9stZVzDKoFuia3STdUdaXOmAYArTcY?=
+ =?us-ascii?Q?fVeZlcAt+p6JjpnRPQIXPjTIzvmgTpvunxhjL4Da1isIJJ/SWwPjmTtV+vPr?=
+ =?us-ascii?Q?rR8NOwnkBE89+DQEaFHMB4rFeoWk6g7WtqzYcNKos4EAfOROpDR/32YW698r?=
+ =?us-ascii?Q?iRAQIr/5KMFFb4UqQsoAZlEss5y0LLoX7M0ekyzfUIvdT9K/O2oqwsJHXKFG?=
+ =?us-ascii?Q?f622UZQe+hoIb3dc7u//ZObOqzr5mDDEl6kStkUZJjizo+y0qfMSuO2YAx9c?=
+ =?us-ascii?Q?0XvDrjjV9dt+Z+XAesjXII7b2WKb9QuncWm4/FXLpfOh7tBG?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfd381dd-92fa-4fcf-bca2-08deb82bf732
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93bb527e-4eed-4a65-66d0-08deb82c2e40
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 18:00:10.4934
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 18:01:42.8572
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JXi40ugmZVtf+bHDeIRcpRdjYshDr7EaXxBx3dbKTYRfdUtmabMZHPkaXvqhoDjn2scZAAt3ZKgDn7OAo1Vl+w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: GpEQLUWrx1tq8zoEuHH+hhtCnAWX/lGIhD4KnGlm47LCxV/qds8HnW2vHHevcl8Tr9ullOKjx2tRcZ/BQ1Rdbw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9300
 
-On Fri, May 22, 2026 at 04:18:45AM -0700, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Fri, May 22, 2026 at 05:30:58PM +0300, Mirela Rabulea wrote:
+> Hi Frank,
 >
-> Document the optional "memory-region-names" property.
+> On 5/21/26 21:45, Frank Li wrote:
+> > On Thu, May 21, 2026 at 03:26:45PM +0300, Mirela Rabulea wrote:
+> > > The v4l2 helper v4l2_async_register_subdev_sensor() calls
+> > > v4l2_async_register_subdev(), which is a macro that expands to
+> > > __v4l2_async_register_subdev(sd,THIS_MODULE). Since the macro is expanded
+> > > inside v4l2-fwnode.c, THIS_MODULE resolves to the v4l2-fwnode module
+> > > rather than the sensor driver module that originally set sd->owner. When
+> > > v4l2-fwnode is built-in, THIS_MODULE evaluates to NULL, which then
+> > > overwrites the sensor driver's owner with NULL.
+> > This is problem. but this patch can't resolve problem 100% because
+> > many sensor driver have not init sd->owner before call
+> > v4l2_async_register_subdev_sensor()
+> Thanks for the suggestion. From what I see, all sensor drivers that use
+> v4l2_async_register_subdev_sensor() also use v4l2_i2c_subdev_init(), which
+>
+> sets sd->owner. However, since your proposal looks more robust and there is
+> already a similar solution accepted for v4l2_async_register_subdev(), I will
+> send a v2 with that approach.
 
-Need add reason why need memory-region-names.
-
-Try to fix previous use undocument ABI method, which depend memory node
-name. But now prefer use morden memory-region-names to fetch related
-resource.
-
-you can rephrase it.
+Okay, that's also make sense. let's wait for maintainers' opinion.
 
 Frank
-
 >
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> ---
->  .../devicetree/bindings/remoteproc/fsl,imx-rproc.yaml     | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> Thanks,
 >
-> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> index c18f71b64889..6679b10f9da5 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> @@ -62,6 +62,14 @@ properties:
->      minItems: 1
->      maxItems: 32
+> Mirela
 >
-> +  memory-region-names:
-> +    minItems: 1
-> +    maxItems: 32
-> +    items:
-> +      oneOf:
-> +        - const: rsc-table
-> +        - pattern: '^vdev[0-9](buffer|vring[0-9])$'
-> +
->    power-domains:
->      minItems: 2
->      maxItems: 8
-> --
-> 2.43.0
->
+> >
+> > suggest solution like what v4l2_async_register_subdev() did
+> >
+> > rename v4l2_async_register_subdev_sensor() to
+> > __v4l2_async_register_subdev_sensor(truct v4l2_subdev *sd, module *this)
+> >
+> > #define v4l2_async_register_subdev_sensor(sd)
+> > 	__v4l2_async_register_subdev_sensor(sd, THIS_MODULE)
+> >
+> > Frank
+> >
+> > > This causes the problem that the sensor module's reference count is never
+> > > incremented during async registration, so the module can be removed while
+> > > the subdevice is still in use by a notifier (e.g., a CSI-2 receiver
+> > > bridge driver).
+> > >
+> > > Fix this by calling __v4l2_async_register_subdev() directly with
+> > > sd->owner, which preserves the module owner that the sensor driver set
+> > > during probe via v4l2_i2c_subdev_init() or direct assignment.
+> > >
+> > > Fixes: aef69d54755d ("media: v4l: fwnode: Add a convenience function for registering sensors")
+> > >
+> > > Signed-off-by: Mirela Rabulea <mirela.rabulea@nxp.com>
+> > > ---
+> > >   drivers/media/v4l2-core/v4l2-fwnode.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
+> > > index 77f3298821b5..57284b7adddf 100644
+> > > --- a/drivers/media/v4l2-core/v4l2-fwnode.c
+> > > +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+> > > @@ -1282,7 +1282,7 @@ int v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd)
+> > >   	if (ret < 0)
+> > >   		goto out_cleanup;
+> > >
+> > > -	ret = v4l2_async_register_subdev(sd);
+> > > +	ret = __v4l2_async_register_subdev(sd, sd->owner);
+> > >   	if (ret < 0)
+> > >   		goto out_unregister;
+> > >
+> > > --
+> > > 2.43.0
+> > >
