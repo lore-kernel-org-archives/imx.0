@@ -1,104 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A384D3438BF;
-	Fri, 22 May 2026 12:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7833402459
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 14:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779454122; cv=none; b=KhCjdQ7fS5/ixvcCJrBYQPyXG01f59YdSml/rTgqg4s1MbkgdGMB5XCgkEtOagQvFoKuJsrQ36Cr5h9G5AF0Fl2y6rVapyZO5KVr5jY1MMvU7AtBkBc/B8FVh1iyC7k2aeTsmgExKaLuOodjFrmUUOWqxiwTMpVUp5SS/F3CqW8=
+	t=1779458593; cv=none; b=f47lMy5F24E6p4GBEchg1vY+2FL/Gw+C4M0/zoMrS1iqA2GV5f7w9NJnBEKD0qqC3a3QvtDJJkiuxEiIssW8JmJaBA3j7Ukko00PADtj+06UQ6YbH4w1E3p/rYKQXeuggdn9aYBEBxDjiTH3tlmWegxTsoIb37b7omRBsykJVJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779454122; c=relaxed/simple;
-	bh=/yQ15zoIUf3PW00iEQHXiEzZ+bQ9BAGBkgtX/DusXJw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OHi8hTztpDZHYzqHdI++Pfep1/K7WPxYDBd1rAD5jYOjHoWW2NWCzwWfmvkDlqMWJkDAPc+6lK3IRLmMMFGD4HZeGEx0RiAj/dXcfcXkI+bNEmodjej9ZRSJ+57Jo7u72E/i7YTFKMp5b1PBVPjX8O1HgX3ydFJGFVl6ecoJlxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efv8wF5c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779458593; c=relaxed/simple;
+	bh=4kSaALWt2CYQtSO08OULmKTu6gRW0vwaKeECn92Cwu0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E30GGCwiPnKpWShrVR9EL0Cijpc4TZ1ZpgHV1kGQ0hbgaua2e6wyKXcBgFNN8NfJXws3CFZ+ITXZn+F+w3w+h0Y4jW1JcNhxNrSaVLp/AzVhaK32rA5wgIyOnIttzNmXvJnlZc6mbgT2Ew22ZpwLQxHoeXvbhfhl+kr4Nkzb7uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=iy8YrBTr; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efv8wF5c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AFD1F000E9;
-	Fri, 22 May 2026 12:48:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779454121;
-	bh=9/KuRQ8AxZuWtUn0RjYkJC48RaqjdGOYWT9OFAWaRAw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=efv8wF5ce7VI5HOf40BgmCAONa9fM17Zg5/sjva9YMsyr6/oyj2S7tN5VKPoKcQr/
-	 NiCliLa9+CugqyOXVjsdqcfCVMX++Re8eF+cMDbCnNRmTD7OUuFJLPifhZNGfFF+xN
-	 gNBGiwxgEth8bY3Ry0rE8/qQbLaFK0fryG+G10yXkrZLWBmYMFmdJuPk7WUR6iNwll
-	 DYfVoNa7wrECRCo8dVQLnsU1Dcmz5gYZjYGSiBK8CHkkJjBwuZs0JD3Czy8z4aaScu
-	 fE1K3zOHaCnWFvqziAsNEyaTZRFzQKXyjPkx6aCMPxJQJYQtDKQqdd/MTyP4P52b8h
-	 /pkST7Sa3ncmw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5/5] arm64: dts: freescale: add DT overlay for
- MX95-15x15-FRDM RPMSG usage
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Laurentiu Mihalcea" <laurentiumihalcea111@gmail.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <20260522111849.783-6-laurentiumihalcea111@gmail.com>
-References: <20260522111849.783-6-laurentiumihalcea111@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 22 May 2026 12:48:40 +0000
-Message-Id: <20260522124841.03AFD1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="iy8YrBTr"
+Received: from francesco-nb (93-38-247-131.ip73.fastwebnet.it [93.38.247.131])
+	by mail11.truemail.it (Postfix) with ESMTPA id ECF911F81F;
+	Fri, 22 May 2026 16:03:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1779458584;
+	bh=aQfUzeILNu5tcktKZdX1Dp06noZVwCjrBQxp9UsjPno=; h=From:To:Subject;
+	b=iy8YrBTrKvM9jFeXPgme3Laz8+PEoMqJufzTCq0Rl15cX0EjncveuErsbv2FyD/AV
+	 HD3E7dH21SGFSibTVLc8JaNqku7hCeyD4JXOm8PGljjOqScxzWzO7iW4mikL2+qFbh
+	 DXGZgaVJs6rb7CTFZ5UJaUl8IxcEHMXrks+N3MLHXzBavEZRP87p0grvzodlGSpDrj
+	 UwzEI9CKcskxWgKh09aVYRS9rTS189LdqHRoG6XdjuiNfgXxUZv7DgJiM2jllfGUWN
+	 gVwYNY9OjYbhbMYs8cRHdpz0x0dxve4e/Z8078dANCCcHFfXXgWvliep7414eivNIJ
+	 TQqmQb2Mbj61Q==
+Date: Fri, 22 May 2026 16:02:57 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/5] arm64: dts: freescale: imx95-toradex-smarc: move CM7
+ node to SoC DTSI
+Message-ID: <20260522140257.GA93826@francesco-nb>
+References: <20260522111849.783-1-laurentiumihalcea111@gmail.com>
+ <20260522111849.783-4-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260522111849.783-4-laurentiumihalcea111@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The `dma-channel-mask` property is incorrectly defined as a mask=
- of unavailable (reserved) channels rather than available channels, violati=
-ng standard DT binding semantics by relying on a buggy driver implementatio=
-n.
---
+On Fri, May 22, 2026 at 04:18:47AM -0700, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> 
+> The CM7 remoteproc configuration is common to multiple MX95-based
+> platforms (e.g. MX95-19x19-EVK, MX95-15x15-FRDM, SMARC-IMX95, etc.).
+> Therefore, move the node to the MX95 SoC DTSI. While at it, split the mbox
+> channels using <>.
+> 
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-commit cbf89994f08b1b68af6ef4fcaffd7d5ceac2c8f0
-Author: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+...
 
-arm64: dts: freescale: add DT overlay for MX95-15x15-FRDM RPMSG usage
-
-This commit adds an RPMSG device tree overlay for the MX95-15x15-FRDM board.
-It configures reserved memory regions for vdev vrings and buffers, and
-updates the cm7, edma, and micfil nodes to support remoteproc and audio
-use cases.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso b/=
-arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
-> new file mode 100644
-> index 0000000000000..b39444dde66e0
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
-
-[ ... ]
-
-> +&edma1 {
-> +	/* reserved for M7 */
-> +	dma-channel-mask =3D <0x40>;
-> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> index 3e35c956a4d7..f8760ac067fa 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -272,6 +272,13 @@ opp-1000000000 {
+>  		};
+>  	};
+>  
+> +	cm7: remoteproc-cm7 {
+> +		compatible = "fsl,imx95-cm7";
+> +		mboxes = <&mu7 0 1>, <&mu7 1 1>, <&mu7 3 1>;
+> +		mbox-names = "tx", "rx", "rxdb";
+> +		status = "disabled";
+> +	};
 > +
-> +&edma2 {
-> +	/* reserved for M7 and V2X */
-> +	dma-channel-mask =3D <0xf>;
-> +};
 
-[Severity: Medium]
-Is this property defining available or reserved channels?
+As sashiko noticed, this is introducing a regression. No-one is enabling
+this node anymore.
 
-The standard device tree binding in dma-common.yaml explicitly defines
-dma-channel-mask as a bitmask of available DMA channels that are not reserv=
-ed
-by firmware. However, the comments here indicate the mask is being used to
-define reserved channels.
+Francesco
 
-While there appears to be an existing bug in the fsl-edma driver where it
-interprets this property as unavailable channels, encoding a driver bug into
-the hardware description breaks the device tree ABI and will cause issues
-if the driver is ever corrected.
 
-Could this be updated to correctly reflect available channels according to =
-the
-standard binding?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522111849.783-=
-1-laurentiumihalcea111@gmail.com?part=3D5
