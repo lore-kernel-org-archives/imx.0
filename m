@@ -1,28 +1,28 @@
 Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6213C9897
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174833CAA52
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779445040; cv=none; b=Po5IHgui9v1AMhMqnyohFbA1D4QC3ff0ri52Eisg7nxSgAYrxlzOLzgg7064GJ7iF/M/cLV0WgpGrRJTroBsuX7spj42rxs4M6Q/knfF0NNDHiHNl3lIEsCAtaaKz4KJedEuhqdlsPzU1pXwlKKhgz+UeDWWpy3XsUoN/NERlaU=
+	t=1779445047; cv=none; b=uLJ7IpQo/Uq7uK5zri6ca1FX/0RY3GACywDvgN3lUuyI5icAAxpmw4X2TjYCoYJbE3nh2xUIrT3RMNLpceG+QdSMpS0x+KC3w38e4cMX6orZHv7LIqNsItgONb7SmLFd1tS5CDWhh0V9hh76tMTb0srS1loQTnX+KnMtxl28v5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779445040; c=relaxed/simple;
-	bh=80baj4TeVCgqH2CoVHmRTCPvO8AbfrVTjiBdQikLsGc=;
+	s=arc-20240116; t=1779445047; c=relaxed/simple;
+	bh=mrP0KMECiXq4KHQaEjRbnH49AXt8cSuAoGNS9rJUjwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R2X65jYAJ8xuZevMkT+Hhii8J3j+ikhDiF1gKhOaCuzBh0CvXnbeXTrAZFmGvGV5riDc0kqWhvlW9JWrntV++DHM7rL1LzKZvMYpsfLzknFjTEYHS12xG7gqmj/a19QudNQfAJtnR+mszgMzuoip22Rb1XCVesRmYzjQjc108Qg=
+	 MIME-Version; b=Xgx+bkSSJSH8FJ/DQJg6pcuneIBBvmvRG0Iz/pGKM4ohlgnlSMFzhCCCo3zGqDAsIxLxISLCC9tW5n/X8iq5C/B/itmCtzzMOmeXs/5lP1ubcMgW3EXpzB8DsFBAdpBTQnh/BmnAIN42cE6EAGJatgNl1lIVyclhTIKnrNYPPUw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
 Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id E73A63700290
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:17:07 +0000 (UTC)
+	by leonov.paulk.fr (Postfix) with ESMTPS id 15EB4370029B
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:17:14 +0000 (UTC)
 Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id 78B52B408CF; Fri, 22 May 2026 10:17:07 +0000 (UTC)
+	id 7C005B408CB; Fri, 22 May 2026 10:17:13 +0000 (UTC)
 X-Spam-Level: **
 Received: from shepard (unknown [192.168.1.65])
-	by laika.paulk.fr (Postfix) with ESMTP id C43FAB408C9;
-	Fri, 22 May 2026 10:16:56 +0000 (UTC)
+	by laika.paulk.fr (Postfix) with ESMTP id 4EBFCB408CA;
+	Fri, 22 May 2026 10:16:57 +0000 (UTC)
 From: Paul Kocialkowski <paulk@sys-base.io>
 To: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
@@ -43,9 +43,9 @@ Cc: Rob Herring <robh@kernel.org>,
 	Marco Felsch <m.felsch@pengutronix.de>,
 	Michael Tretter <m.tretter@pengutronix.de>,
 	Paul Kocialkowski <paulk@sys-base.io>
-Subject: [PATCH 01/14] media: h264: Add a more generic reflist builder init
-Date: Fri, 22 May 2026 12:16:40 +0200
-Message-ID: <20260522101653.2565125-2-paulk@sys-base.io>
+Subject: [PATCH 02/14] media: uapi: Add H.264 stateless encode support
+Date: Fri, 22 May 2026 12:16:41 +0200
+Message-ID: <20260522101653.2565125-3-paulk@sys-base.io>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260522101653.2565125-1-paulk@sys-base.io>
 References: <20260522101653.2565125-1-paulk@sys-base.io>
@@ -57,119 +57,221 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This should become part of a larger reflist builder rework.
+This introduces the stateless H.264 encode params control that allows
+configuring an H.264 encode run.
+
+Note that the current uAPI does not support explicit passing of
+references and works following the sliding window decoded reference
+picture marking process. This may change in the future.
 
 Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
 ---
- drivers/media/v4l2-core/v4l2-h264.c | 69 +++++++++++++++++++++++++++++
- include/media/v4l2-h264.h           |  7 +++
- 2 files changed, 76 insertions(+)
+ drivers/media/v4l2-core/v4l2-ctrls-core.c | 62 +++++++++++++++++++++++
+ drivers/media/v4l2-core/v4l2-ctrls-defs.c |  4 ++
+ include/media/v4l2-ctrls.h                |  2 +
+ include/uapi/linux/v4l2-controls.h        | 33 ++++++++++++
+ include/uapi/linux/videodev2.h            |  1 +
+ 5 files changed, 102 insertions(+)
 
-diff --git a/drivers/media/v4l2-core/v4l2-h264.c b/drivers/media/v4l2-core/v4l2-h264.c
-index c00197d095e7..4e5a177ca2c7 100644
---- a/drivers/media/v4l2-core/v4l2-h264.c
-+++ b/drivers/media/v4l2-core/v4l2-h264.c
-@@ -105,6 +105,75 @@ v4l2_h264_init_reflist_builder(struct v4l2_h264_reflist_builder *b,
- }
- EXPORT_SYMBOL_GPL(v4l2_h264_init_reflist_builder);
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+index 85d07ef44f62..48217811b0f1 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+@@ -382,6 +382,9 @@ void v4l2_ctrl_type_op_log(const struct v4l2_ctrl *ctrl)
+ 	case V4L2_CTRL_TYPE_H264_PRED_WEIGHTS:
+ 		pr_cont("H264_PRED_WEIGHTS");
+ 		break;
++	case V4L2_CTRL_TYPE_H264_ENCODE_PARAMS:
++		pr_cont("H264_ENCODE_PARAMS");
++		break;
+ 	case V4L2_CTRL_TYPE_FWHT_PARAMS:
+ 		pr_cont("FWHT_PARAMS");
+ 		break;
+@@ -880,6 +883,7 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
+ 	struct v4l2_ctrl_h264_pred_weights *p_h264_pred_weights;
+ 	struct v4l2_ctrl_h264_slice_params *p_h264_slice_params;
+ 	struct v4l2_ctrl_h264_decode_params *p_h264_dec_params;
++	struct v4l2_ctrl_h264_encode_params *p_h264_enc_params;
+ 	struct v4l2_ctrl_hevc_sps *p_hevc_sps;
+ 	struct v4l2_ctrl_hevc_pps *p_hevc_pps;
+ 	struct v4l2_ctrl_hdr10_mastering_display *p_hdr10_mastering;
+@@ -1102,6 +1106,61 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
+ 		zero_reserved(*p_h264_dec_params);
+ 		break;
  
-+void
-+v4l2_h264_init_reflist_builder_gen(struct v4l2_h264_reflist_builder *b,
-+		const struct v4l2_ctrl_h264_sps *sps,
-+		const struct v4l2_h264_dpb_entry dpb[V4L2_H264_NUM_DPB_ENTRIES],
-+		unsigned int pic_order_count, unsigned int frame_num, unsigned int fields)
-+{
-+	int cur_frame_num, max_frame_num;
-+	unsigned int i;
++	case V4L2_CTRL_TYPE_H264_ENCODE_PARAMS:
++		p_h264_enc_params = p;
 +
-+	max_frame_num = 1 << (sps->log2_max_frame_num_minus4 + 4);
-+	cur_frame_num = frame_num;
++		if (p_h264_enc_params->slice_type != V4L2_H264_SLICE_TYPE_B)
++			p_h264_enc_params->flags &=
++				~V4L2_H264_ENCODE_FLAG_DIRECT_SPATIAL_MV_PRED;
++		if (!(p_h264_enc_params->flags & V4L2_H264_ENCODE_FLAG_IDR_PIC) ||
++		    !p_h264_enc_params->nal_ref_idc)
++			p_h264_enc_params->flags &=
++				~V4L2_H264_ENCODE_FLAG_LONG_TERM_REFERENCE;
 +
-+	memset(b, 0, sizeof(*b));
-+	b->cur_pic_order_count = pic_order_count;
-+	b->cur_pic_fields = fields;
++		if (p_h264_enc_params->flags & V4L2_H264_ENCODE_FLAG_IDR_PIC &&
++		    p_h264_enc_params->slice_type != V4L2_H264_SLICE_TYPE_I)
++			return -EINVAL;
++		if (p_h264_enc_params->colour_plane_id > 2)
++			return -EINVAL;
++		if (p_h264_enc_params->cabac_init_idc > 2)
++			return -EINVAL;
++		if (p_h264_enc_params->disable_deblocking_filter_idc > 2)
++			return -EINVAL;
++		if (p_h264_enc_params->slice_alpha_c0_offset_div2 < -6 ||
++		    p_h264_enc_params->slice_alpha_c0_offset_div2 > 6)
++			return -EINVAL;
++		if (p_h264_enc_params->slice_beta_offset_div2 < -6 ||
++		    p_h264_enc_params->slice_beta_offset_div2 > 6)
++			return -EINVAL;
 +
-+	for (i = 0; i < V4L2_H264_NUM_DPB_ENTRIES; i++) {
-+		if (!(dpb[i].flags & V4L2_H264_DPB_ENTRY_FLAG_ACTIVE))
-+			continue;
++		if (p_h264_enc_params->slice_type == V4L2_H264_SLICE_TYPE_I ||
++		    p_h264_enc_params->slice_type == V4L2_H264_SLICE_TYPE_SI)
++			p_h264_enc_params->num_ref_idx_l0_active_minus1 = 0;
++		if (p_h264_enc_params->slice_type != V4L2_H264_SLICE_TYPE_B)
++			p_h264_enc_params->num_ref_idx_l1_active_minus1 = 0;
 +
-+		if (dpb[i].flags & V4L2_H264_DPB_ENTRY_FLAG_LONG_TERM)
-+			b->refs[i].longterm = true;
-+
-+		/*
-+		 * Handle frame_num wraparound as described in section
-+		 * '8.2.4.1 Decoding process for picture numbers' of the spec.
-+		 * For long term references, frame_num is set to
-+		 * long_term_frame_idx which requires no wrapping.
-+		 */
-+		if (!b->refs[i].longterm && dpb[i].frame_num > cur_frame_num)
-+			b->refs[i].frame_num = (int)dpb[i].frame_num -
-+					       max_frame_num;
-+		else
-+			b->refs[i].frame_num = dpb[i].frame_num;
-+
-+		b->refs[i].top_field_order_cnt = dpb[i].top_field_order_cnt;
-+		b->refs[i].bottom_field_order_cnt = dpb[i].bottom_field_order_cnt;
-+
-+		if (b->cur_pic_fields == V4L2_H264_FRAME_REF) {
-+			u8 fields = V4L2_H264_FRAME_REF;
-+
-+			b->unordered_reflist[b->num_valid].index = i;
-+			b->unordered_reflist[b->num_valid].fields = fields;
-+			b->num_valid++;
-+			continue;
++		if (p_h264_enc_params->flags & V4L2_H264_ENCODE_FLAG_IDR_PIC) {
++			p_h264_enc_params->frame_num = 0;
++			p_h264_enc_params->pic_order_cnt_lsb = 0;
++			p_h264_enc_params->delta_pic_order_cnt_bottom = 0;
++			p_h264_enc_params->delta_pic_order_cnt0 = 0;
++			p_h264_enc_params->delta_pic_order_cnt1 = 0;
++		} else {
++			p_h264_enc_params->idr_pic_id = 0;
 +		}
 +
-+		if (dpb[i].fields & V4L2_H264_TOP_FIELD_REF) {
-+			u8 fields = V4L2_H264_TOP_FIELD_REF;
++		if (p_h264_enc_params->num_ref_idx_l0_active_minus1 >
++		    (V4L2_H264_REF_LIST_LEN - 1))
++			return -EINVAL;
++		if (p_h264_enc_params->num_ref_idx_l1_active_minus1 >
++		    (V4L2_H264_REF_LIST_LEN - 1))
++			return -EINVAL;
++		memset(&p_h264_enc_params->reserved0, 0,
++		       sizeof(p_h264_enc_params->reserved0));
++		memset(&p_h264_enc_params->reserved1, 0,
++		       sizeof(p_h264_enc_params->reserved1));
++		break;
 +
-+			b->unordered_reflist[b->num_valid].index = i;
-+			b->unordered_reflist[b->num_valid].fields = fields;
-+			b->num_valid++;
-+		}
-+
-+		if (dpb[i].fields & V4L2_H264_BOTTOM_FIELD_REF) {
-+			u8 fields = V4L2_H264_BOTTOM_FIELD_REF;
-+
-+			b->unordered_reflist[b->num_valid].index = i;
-+			b->unordered_reflist[b->num_valid].fields = fields;
-+			b->num_valid++;
-+		}
-+	}
-+
-+	for (i = b->num_valid; i < ARRAY_SIZE(b->unordered_reflist); i++)
-+		b->unordered_reflist[i].index = i;
-+}
-+EXPORT_SYMBOL_GPL(v4l2_h264_init_reflist_builder_gen);
-+
- static s32 v4l2_h264_get_poc(const struct v4l2_h264_reflist_builder *b,
- 			     const struct v4l2_h264_reference *ref)
- {
-diff --git a/include/media/v4l2-h264.h b/include/media/v4l2-h264.h
-index 0d9eaa956123..1833c0556963 100644
---- a/include/media/v4l2-h264.h
-+++ b/include/media/v4l2-h264.h
-@@ -42,6 +42,7 @@ struct v4l2_h264_reflist_builder {
- 	u8 cur_pic_fields;
+ 	case V4L2_CTRL_TYPE_VP8_FRAME:
+ 		p_vp8_frame = p;
  
- 	struct v4l2_h264_reference unordered_reflist[V4L2_H264_REF_LIST_LEN];
-+	/* FIXME: confusing with valid flag (active is checked). Proper terminology is "used" */
- 	u8 num_valid;
+@@ -1913,6 +1972,9 @@ static struct v4l2_ctrl *v4l2_ctrl_new(struct v4l2_ctrl_handler *hdl,
+ 	case V4L2_CTRL_TYPE_H264_PRED_WEIGHTS:
+ 		elem_size = sizeof(struct v4l2_ctrl_h264_pred_weights);
+ 		break;
++	case V4L2_CTRL_TYPE_H264_ENCODE_PARAMS:
++		elem_size = sizeof(struct v4l2_ctrl_h264_encode_params);
++		break;
+ 	case V4L2_CTRL_TYPE_VP8_FRAME:
+ 		elem_size = sizeof(struct v4l2_ctrl_vp8_frame);
+ 		break;
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+index ad41f65374e2..4fa6dc7a3b00 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+@@ -1216,6 +1216,7 @@ const char *v4l2_ctrl_get_name(u32 id)
+ 	case V4L2_CID_STATELESS_H264_PPS:			return "H264 Picture Parameter Set";
+ 	case V4L2_CID_STATELESS_H264_SCALING_MATRIX:		return "H264 Scaling Matrix";
+ 	case V4L2_CID_STATELESS_H264_PRED_WEIGHTS:		return "H264 Prediction Weight Table";
++	case V4L2_CID_STATELESS_H264_ENCODE_PARAMS:		return "H264 Encode Parameters";
+ 	case V4L2_CID_STATELESS_H264_SLICE_PARAMS:		return "H264 Slice Parameters";
+ 	case V4L2_CID_STATELESS_H264_DECODE_PARAMS:		return "H264 Decode Parameters";
+ 	case V4L2_CID_STATELESS_FWHT_PARAMS:			return "FWHT Stateless Parameters";
+@@ -1555,6 +1556,9 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
+ 	case V4L2_CID_STATELESS_H264_PRED_WEIGHTS:
+ 		*type = V4L2_CTRL_TYPE_H264_PRED_WEIGHTS;
+ 		break;
++	case V4L2_CID_STATELESS_H264_ENCODE_PARAMS:
++		*type = V4L2_CTRL_TYPE_H264_ENCODE_PARAMS;
++		break;
+ 	case V4L2_CID_STATELESS_VP8_FRAME:
+ 		*type = V4L2_CTRL_TYPE_VP8_FRAME;
+ 		break;
+diff --git a/include/media/v4l2-ctrls.h b/include/media/v4l2-ctrls.h
+index 31fc1bee3797..54133cda7bc7 100644
+--- a/include/media/v4l2-ctrls.h
++++ b/include/media/v4l2-ctrls.h
+@@ -42,6 +42,7 @@ struct video_device;
+  * @p_h264_scaling_matrix:	Pointer to a struct v4l2_ctrl_h264_scaling_matrix.
+  * @p_h264_slice_params:	Pointer to a struct v4l2_ctrl_h264_slice_params.
+  * @p_h264_decode_params:	Pointer to a struct v4l2_ctrl_h264_decode_params.
++ * @p_h264_encode_params:	Pointer to a struct v4l2_ctrl_h264_encode_params.
+  * @p_h264_pred_weights:	Pointer to a struct v4l2_ctrl_h264_pred_weights.
+  * @p_vp8_frame:		Pointer to a VP8 frame params structure.
+  * @p_vp9_compressed_hdr_probs:	Pointer to a VP9 frame compressed header probs structure.
+@@ -76,6 +77,7 @@ union v4l2_ctrl_ptr {
+ 	struct v4l2_ctrl_h264_scaling_matrix *p_h264_scaling_matrix;
+ 	struct v4l2_ctrl_h264_slice_params *p_h264_slice_params;
+ 	struct v4l2_ctrl_h264_decode_params *p_h264_decode_params;
++	struct v4l2_ctrl_h264_encode_params *p_h264_encode_params;
+ 	struct v4l2_ctrl_h264_pred_weights *p_h264_pred_weights;
+ 	struct v4l2_ctrl_vp8_frame *p_vp8_frame;
+ 	struct v4l2_ctrl_hevc_sps *p_hevc_sps;
+diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
+index 2d30107e047e..9add059ca02a 100644
+--- a/include/uapi/linux/v4l2-controls.h
++++ b/include/uapi/linux/v4l2-controls.h
+@@ -1568,6 +1568,7 @@ struct v4l2_h264_reference {
+ 
+ #define V4L2_H264_SLICE_FLAG_DIRECT_SPATIAL_MV_PRED		0x01
+ #define V4L2_H264_SLICE_FLAG_SP_FOR_SWITCH			0x02
++#define V4L2_H264_SLICE_FLAG_NUM_REF_IDX_ACTIVE_OVERRIDE	0x04
+ 
+ #define V4L2_CID_STATELESS_H264_SLICE_PARAMS	(V4L2_CID_CODEC_STATELESS_BASE + 6)
+ /**
+@@ -1707,6 +1708,38 @@ struct v4l2_ctrl_h264_decode_params {
+ 	__u32 flags;
  };
  
-@@ -51,6 +52,12 @@ v4l2_h264_init_reflist_builder(struct v4l2_h264_reflist_builder *b,
- 		const struct v4l2_ctrl_h264_sps *sps,
- 		const struct v4l2_h264_dpb_entry dpb[V4L2_H264_NUM_DPB_ENTRIES]);
- 
-+void
-+v4l2_h264_init_reflist_builder_gen(struct v4l2_h264_reflist_builder *b,
-+		const struct v4l2_ctrl_h264_sps *sps,
-+		const struct v4l2_h264_dpb_entry dpb[V4L2_H264_NUM_DPB_ENTRIES],
-+		unsigned int pic_order_count, unsigned int frame_num, unsigned int fields);
++#define V4L2_H264_ENCODE_FLAG_IDR_PIC				0x01
++#define V4L2_H264_ENCODE_FLAG_FIELD_PIC				0x02
++#define V4L2_H264_ENCODE_FLAG_BOTTOM_FIELD			0x04
++#define V4L2_H264_ENCODE_FLAG_DIRECT_SPATIAL_MV_PRED		0x08
++#define V4L2_H264_ENCODE_FLAG_NUM_REF_IDX_ACTIVE_OVERRIDE	0x10
++#define V4L2_H264_ENCODE_FLAG_NO_OUTPUT_OF_PRIOR_PICS		0x20
++#define V4L2_H264_ENCODE_FLAG_LONG_TERM_REFERENCE		0x40
 +
- /**
-  * v4l2_h264_build_b_ref_lists() - Build the B0/B1 reference lists
-  *
++#define V4L2_CID_STATELESS_H264_ENCODE_PARAMS	(V4L2_CID_CODEC_STATELESS_BASE + 8)
++struct v4l2_ctrl_h264_encode_params {
++	__u8 nal_ref_idc;
++	__u8 slice_type;
++	__u8 pic_parameter_set_id;
++	__u8 colour_plane_id;
++	__u16 frame_num;
++	__u16 idr_pic_id;
++	__u16 pic_order_cnt_lsb;
++	__u8 reserved0[2];
++	__s32 delta_pic_order_cnt_bottom;
++	__s32 delta_pic_order_cnt0;
++	__s32 delta_pic_order_cnt1;
++	__u8 num_ref_idx_l0_active_minus1;
++	__u8 num_ref_idx_l1_active_minus1;
++	__u8 cabac_init_idc;
++	__s8 slice_qp_delta;
++	__u8 disable_deblocking_filter_idc;
++	__s8 slice_alpha_c0_offset_div2;
++	__s8 slice_beta_offset_div2;
++	__u8 reserved1[6];
++	__u32 flags; /* V4L2_H264_ENCODE_FLAG_ */
++};
++
+ /* Stateless FWHT control, used by the vicodec driver */
+ 
+ /* Current FWHT version */
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index becd08fdbddb..1d5e27b65544 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -1964,6 +1964,7 @@ enum v4l2_ctrl_type {
+ 	V4L2_CTRL_TYPE_H264_SLICE_PARAMS    = 0x0203,
+ 	V4L2_CTRL_TYPE_H264_DECODE_PARAMS   = 0x0204,
+ 	V4L2_CTRL_TYPE_H264_PRED_WEIGHTS    = 0x0205,
++	V4L2_CTRL_TYPE_H264_ENCODE_PARAMS   = 0x0206,
+ 
+ 	V4L2_CTRL_TYPE_FWHT_PARAMS	    = 0x0220,
+ 
 -- 
 2.53.0
 
