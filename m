@@ -1,64 +1,65 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011029.outbound.protection.outlook.com [52.101.70.29])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012057.outbound.protection.outlook.com [52.101.66.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232683655E4
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 18:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E24367F26
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 18:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.57
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779472910; cv=fail; b=nALsvUSbdlcIoNk0zd0/uwrcEU3PdktFaVO7gihH36UGUPaEfP+4tGx2o0Z747gh/uQIBaDhVQO91jZtlwspvgT62RUiss6VUgtXvIaZXwtLCb+Zh91dbT2YieDRjbAxdaLmX9cpFm0wWhjlycoN3CJkyFn3TJ+6yJzHxWe5EII=
+	t=1779473354; cv=fail; b=HL2yFSS6dqhLihHeU+KfNabYr7pyNG/p+1ccDXbR5lLjBDAHqKvla/+Xr+XdxGzVhjNo6rMNyuhscuJqNbPyEpg/vFp6HLAaB+Z9GvEPfL9uKXB/GiH+TNf+mNQxvjbQ8rd2+3X383jYe0R+w8dTWJ6n0xZv3LIEzkeFKCKWuEA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779472910; c=relaxed/simple;
-	bh=Zdxb6QLpmHkqS30OD7y7awHSta0Gd5gouhB27jsiBGQ=;
+	s=arc-20240116; t=1779473354; c=relaxed/simple;
+	bh=g1LinEcvnNOGzJ33TgMXjgNzJIIyY02t+ZraxwtrKIQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kdff6SmPG4YjxRt5qGcEs9b+vvvhBBA7z+QWheQnf0I9L5T4it74iYiHDYpwpnW5HD3zZyvCfSF6fOgpte8BGBCGQtA0S3rpwPotvS80dIrNUvcHXCNtn9jcDs/dwuDfbhOET94A/lAwCE+T+rvLN+B2VR3jllRYkfHAVpVkaso=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=j+Tdmb1o; arc=fail smtp.client-ip=52.101.70.29
+	 Content-Disposition:In-Reply-To:MIME-Version; b=knvIsJUP9hXGIIsPY2ZT5899/PDnXiXv3HBkOYDRlHypNzygNVk8G1sSq5QerOa4P6Uhh/E0x8es4S5C+ER8wAkqzjTrD+ZHpAypv0UjwpvigyKK4d1nqX5M6FfVGTGCkIv30Rb9lQxkSVIQ54CBn4mWlN02YvLc92qfYSHula8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gZXfJXRJ; arc=fail smtp.client-ip=52.101.66.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="j+Tdmb1o"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gZXfJXRJ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nMcqG1l+j9KKBbOhcMJHL1MoskAuD0HqyGcuYuGldqB/gcS4Gt/ypgYkGCFoz2rG87YfjKgQ9pYNGQ5cDzloEBsI64GipFY+JlhYTbSRwIS8naIAisWC763olPg7mcuVO/3aVex3NVPJc8pwYlq2zfOFqdHbvYyxyUq6UYZeDOeXWaoMkOS/mVUrbh7kfYjHRVZfXBvkvZJZSn3El8XWBgadBf2NPJTLfhOOTRkN93WeOIJO4BYbcPWNWmvqobylrqLDxdr3jNn0y+NBJ+jpU4FSI5tSoyuw3E103Gm5DyZsgN6FdKM+aRVh0w0ChKtMyTCJ67B2J2K3Yq/veHsFyA==
+ b=RyzpuA34KZuevObd5/uWF2EK0uq8T7qxqxXJ7b4SO/XL+rVHPqmSLVMU7qdPuFJ3MZPMVO2nV8p1lxANMhoRZRbljIDmaH25m7ZvixSz+wHYq/c+W4mJ6XOMo397x4xC4bdUKqA5kpphiCTZcsqYKOqiDuIjWwcGSGOsqyP4659S7ADVN69NUX/M34pdC6qKYxzAsg3QPxvGm6VrWnL71Vw5EBI4hyZx+LkzMfH4RIXsCNxcJe0AEIo+nWDpmDW6EfZrDx1e9hoFdYNUXhUe3e2X02LFz0ZvPrB9H5aYXtVcJywA5GMV3FxJ9w93yldmXApLntrX6yakpH143bT61g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AUg2mikQQ5TOrWFWjUWdw4Gq/m5LrrI+dcM70HQ7L78=;
- b=Dky96kg64QV1uJKqt4dK2okmqntInDtslVVkAo/sNqwFN5kJbmcVxRzGtR1zJgY4P6wp2gqkZP7301Z+RILEF2OJCsAxqQ/SLlcvbxrcaHKfbJ2rlGZvk4nx4Z/wE0vT4C/x/gWlpL1vU71UPx1tuEzOIyEvo9vuQaHiV2JcZ+U9SE6OP8zoOSGVFK9FWk2gbl5LnEGrhFjr2n6PBMR1+P79xAdOI678tpt4EWORQ8nTiXFka8ra2u5L9ooqzYBBxKo4dmifXf0HNFK8AEbpAPS7Wv4VAzwlhAWLsYYZW03R/jdFo5mq+SBSzWLzR5QCLa59fHT7SC90Kf0LF5sJXw==
+ bh=1UoqHGR4Pet3zSPCBcugehs3kVrNiC7dgogaMeOuTn0=;
+ b=gqHAZHPTOPpiSGEdqyLekVi4D/Ia2lvvpQEmYffJRu6CNabREZMvDKGNbnzndmSU5IN2xwzGbv05sIUec1IpbN3RCQcmOlrbYdFitdOXMdqokkU8IG/TXDfSvm473emtn/8lUKtKCl0xLniiifiqUEljhsYHl61D8ZBKC8nFgPpOfIFbVIb6Mv4crRPsXKcW0CC50ddyk10vIkN1mLeHBmFZfF1XSW+seMYSBdmTcjmpqth7x7h20Dr6XWKYSJfdT68SqF8ivg86nsMMPtbsRbdXGyQMbz6IKzQr6X5vc6VMLUGpltxWq39bHX52U8KVK8ljQNMdMQ948JC8KVstrw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AUg2mikQQ5TOrWFWjUWdw4Gq/m5LrrI+dcM70HQ7L78=;
- b=j+Tdmb1o83ZCOTElxXWk1PuJjYG+lnRlT+l7MsUfmlo+fSMwCdXTfydKG1Ri4MSHc79bWXl2m9Pd4Te2hSYTGOazjLtvO+8/Cjymkk3UbgVXz6LrSGi4TbVADIwH1kcW/6NwucQCd2bx+/uumxmbErW/CJZ7d+w13SbIVIA2wSsGr19oFVQoBRclj4oqyfCctrCgucHK4qba0Yo9PZnQH4qwBFv//cTp301U9ukLIldEevCBgVolB9cOcaokJwXpVBZVutyef/FLhYWlUyoE+OKw4fQEbVV+XmgLc1jGD1tRhHOKPpfheLXjmueBLcvNhU3G1lQ6EGE5qKTfqh59mA==
+ bh=1UoqHGR4Pet3zSPCBcugehs3kVrNiC7dgogaMeOuTn0=;
+ b=gZXfJXRJElZKFZGNRoPWg6/sV6IUiea5+AZnZpOEy/ZdvUfzyxeqvCd41ai8OHAYV1sXqU+iduqZ4djKwJCvjDte0DkWJGXVEjbofIX0dM7WoKw0b0MxhLTU5RH/wri+oR4bnjsuhXEUEOtWD/02e3K7hKIkxJGNR6cJNwLBfzoeUDNcNPmDpBy3Qf7GufM6AdKKj6lYrkCjDgmqq9pTdUmKjohN9NiGhO3J+6/98w6Tqrb/1qiw8zupa5aqw6+uxZCUatj1/si5SbMnd7t/lL/x4DSfsq6Otk78b/clRe3OiOphOQDpRS/s5mo8+Eim2wuYe6V7/PyWqbxGJ8pvQQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by DU0PR04MB9300.eurprd04.prod.outlook.com (2603:10a6:10:357::11) with
+ by GV2PR04MB11423.eurprd04.prod.outlook.com (2603:10a6:150:2a3::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
- 2026 18:01:46 +0000
+ 2026 18:09:06 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0048.016; Fri, 22 May 2026
- 18:01:42 +0000
-Date: Fri, 22 May 2026 14:01:36 -0400
+ 18:09:05 +0000
+Date: Fri, 22 May 2026 14:09:00 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Mirela Rabulea <mirela.rabulea@nxp.com>
-Cc: sakari.ailus@linux.intel.com, mchehab@kernel.org,
-	laurentiu.palcu@nxp.com, robert.chiras@nxp.com, guoniu.zhou@nxp.com,
-	robby.cai@nxp.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH] media: v4l2-fwnode: Fix subdev owner overwritten in
- v4l2_async_register_subdev_sensor()
-Message-ID: <ahCaALRo7Nm2E-IS@lizhi-Precision-Tower-5810>
-References: <20260521122646.600179-1-mirela.rabulea@nxp.com>
- <ag9S0pUw66MDUxRA@lizhi-Precision-Tower-5810>
- <162ce21f-bff3-441f-bc97-b1d20d947458@nxp.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] gpio: mxc: use BIT() macro
+Message-ID: <ahCbvGuFGLdoDKXa@lizhi-Precision-Tower-5810>
+References: <20260522070118.800671-1-alexander.stein@ew.tq-group.com>
+ <20260522070118.800671-2-alexander.stein@ew.tq-group.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <162ce21f-bff3-441f-bc97-b1d20d947458@nxp.com>
-X-ClientProxiedBy: SA9P223CA0009.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:806:26::14) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260522070118.800671-2-alexander.stein@ew.tq-group.com>
+X-ClientProxiedBy: SA0PR11CA0126.namprd11.prod.outlook.com
+ (2603:10b6:806:131::11) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,129 +68,92 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DU0PR04MB9300:EE_
-X-MS-Office365-Filtering-Correlation-Id: 93bb527e-4eed-4a65-66d0-08deb82c2e40
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GV2PR04MB11423:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9505ea18-e991-4bde-41c3-08deb82d3645
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|376014|22082099003|18002099003|56012099003|38350700014|4143699003|11063799006;
+	BCL:0;ARA:13230040|19092799006|52116014|376014|1800799024|7416014|366016|4143699003|11063799006|22082099003|18002099003|56012099003|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	qEX271t0O2BQ8LeiznuHLcDz6qdBB1VEytW+LeZA6bSBQ0A8JWaUKWCx0GQg1Ria8h1DUHSR0SswFrQtDPgvlBfqaara2/P1/XPK/cHVEniqqkSixVBVCuTNKGO85jZjoAmGIx0pa/p21ZuanlB+6EXRNx0sP2yCLMjvPYZbrKCySqdTq0rgoys2UDdS/GmG+VIz+MhlUzk/rJBWDnGVsqtomarF9hx8V5P3S2OYb8O7USTsGbSd0fS8CE1HTZUni2qG1b/c65CA1ZW2EAS9P49jEk7SxxJs+1LQOKuchYxQ+P5InlMyN6cRo8I3f/9IUnKxtvyGTIM/F7nO8AU6G9PIHLhsO/BQdeMxMySGzaLTt3IQXk1xi+ZJ1p3IBEACQWiS/4wffMbdz7qZOi0yMraqX5X+hjvsgR3l2jGkvo0WJ7uOIGxWQVPQ5UMTQvU+YE/rmPqLY32yzBAf4SSSmKZhZW5dx1QzC3v7aYuVyZjlQC8ff8ptQDbhvyEBvIfZBM4b+KHD6GphFa2SkttmtjZRaCem6XvS1AZBRe46jtkkvblQbvSVm4eDO1cja0E0Wsq8riY+8VEWeGu1nHWVIl/ODMBW2XeD2q9cTSLgLptomm9ZUZhj4l9alo0UoBMnRZlSMqC1FQ5+SM58LQsD5ThIGNJz2AwWaKsGnxYk3Uf7XT1o6qn3m0ZhMPcb9rgbrYWcVUSe+1dZIBm3wZQ/VSU++5ngEf6X5hRrawAQ3hPVDhbB6Q4kuhlvmrhzJ6Z2
+	LQvLTOUbCqp7UEofU8wkF5Ds8ItKI9kCCnPj30l75+5ELiSBenMS85tqpDQrghKdcowGwT4GGtXiQz1StWlvHtq1EKrdj47BTG4/rHywA+ZtmLPTpPYYy9yzGFAXrQXyX+hYsfg6XF052VFYeUU2PGtDPpRkqlEXee/spqP/egko667BugfDEpk9JpKnQmYbRSt2wnnoJ+ohaE1saGr+GBnvHz1Y8qy+YQqaKLQSr+HtBzdLUNSG6+yO+0Ad+tYoH0xoAIUaK7CuQDFMJJFKmRcymFzB+lXID7fmwDvDCtH+pkhYgX0d3I3dtSk4GxpNJ0Rcx0elJYnWrPWf3a+xhPZwzQyxuizYAh4JxHuebkeyRS/Mi1fhAKY4y/R+lgp+VXXUCPrgf0EdFMMqwZG02thG6flLa8iCUb13IDjcjoav6Kh5YM21mDRGaoWb/z2D33ZJ+/yoymsGnahoKLw/uAGq+kqcZUIltoV75BbXVVQe1Z+5QsfQ1mJfQwSU7V7kx0TIfRv8qMR2oPTt2RoCWXq7rUgVkBy8/JOzsnwNBB3+KlPRtlxisPIFtwyy3Xg9fk6yCFM7zgbQu9QwRiTu4PDiXWfsMUWOp24mF5Uei8f7fVjXYg0+sEzyoJW/4U/QaM+i4Fq71yJEQPdj63mHWQ9fJGxDljrXcgUJQmZasEsRRokQLVN2B2X8YqCFhX1M/emovFfnqmoFLMZsLezshXqGm496o0WmrWyIxHGUdkAKVOHOC8IEp5YXeL3vDw7Y
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(376014)(22082099003)(18002099003)(56012099003)(38350700014)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(1800799024)(7416014)(366016)(4143699003)(11063799006)(22082099003)(18002099003)(56012099003)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1NSCd5ZgmfHMmb9PI5ZCFzabljFEYFQwpd1u32EP5TK/zusy6LddNhoAshw4?=
- =?us-ascii?Q?TC3f5E+XPph7htrANifQqSszQnONQnYSvuD1mt4IucW8TqcVmof/myEZjbB3?=
- =?us-ascii?Q?ZTvJCZjbhYQem/8JliYB6knl6oCOQXJqxWQrUW7mq7a3zGQicfQfVs7cuA9P?=
- =?us-ascii?Q?3M4Ew0TZfUw9EgkOaia958ZFDu7FIG0Jnf3vOGJqoVRX5TeugFXU1NMJJQhQ?=
- =?us-ascii?Q?ZGre7d0T+9ZykxtphrCGC9MaiQcuLqI8qIrHi/yGEWX9QgTkHaP7mhyr4Tlu?=
- =?us-ascii?Q?P+h1x3Pn1l9yY1igSJrWYO3oc/RkA/tXKYKQ4GB6GqgHQcVAWa4NG8EcLlUX?=
- =?us-ascii?Q?jXXQwppNEU7q0AktedyHiF0X9saS3iZnERIKjTAiIdJzJPru7EU002rhcth0?=
- =?us-ascii?Q?GC53YgRjvl7pc1XQuEzZTS2giAJFPupPL/qBQmtULerxjVczfvNJAHvq3Yei?=
- =?us-ascii?Q?42/nIxB55iTQceqwooDocFaKCpU+b+O9pbFnwldu8LAXXK0jqQBJ9VVWJZEh?=
- =?us-ascii?Q?vCtRgPOx9ZTk/QMAqRmpAn3ihGCBUtcKW8Yh1VRZuA8hAxSAwtASChI7zAeV?=
- =?us-ascii?Q?57j6OFrsFCDliAF+NJlpsNr2GC+E5zb638GNpRLFFny7MHqUBlK61wNYadaU?=
- =?us-ascii?Q?WEqpqcumSAPosv8xwyids4wxLbLqvpraOQeFurcdqEXeam70qbQfPEMT3i7h?=
- =?us-ascii?Q?ym0BzAKlC4ksJTQTMrJ9EbuJjJKhNithEUL3IVdgT+RUFW1ch2ooZ8g0BsPI?=
- =?us-ascii?Q?T7eG3Yxmn+GUyhArUTNtcdedMNVT8aZcwCPkgTOsHFIDdGAq1DmYYCQTML8y?=
- =?us-ascii?Q?KDUAFM2eygKIRJJITgShfGdMGMZLSbKT6gycH3NoWIYOsssL+LT+HoNWE5DZ?=
- =?us-ascii?Q?Lr1shUnmRYDQnJYMV+8s6RVITI4sNIsC/wvAAjOh6q5Gfx61gDU/rj9G8NHD?=
- =?us-ascii?Q?o0CzIxUhZW7zXPhbs93A6ybcVoqlYIGC1iP01LalyRTXBmtJnaXwvJjAXWrT?=
- =?us-ascii?Q?Brq+5Nc/V5iT18BPbcym8/QlyKypfZZ4UjOLHM+3Ad61zS7WQ1yB2RhpGInd?=
- =?us-ascii?Q?PWUVggtDPlkSKDsRyn9RiGoSln2S/DQC5vL3+4BeqTEaijImc+jd8kQjUmPP?=
- =?us-ascii?Q?KnzJL67sEcAs8pDmDNyT5iqeelM9s5RlkIAIvdlSk1IkDx7SGj2w5NCwlTfN?=
- =?us-ascii?Q?hG/TR0FB0s2Ba9bM0BZWlX0OsemOQHUsIjI2srs93swZDtEjGc9LXDY2JR0/?=
- =?us-ascii?Q?51R3ibsSLRWQoHbV+V1CtoFhqxJpCGyaO8xnIQdl6tLcEV7rKcPOjzqnARSz?=
- =?us-ascii?Q?MluV3oNFcBxKn38HjicS5MErWGiAoEn8xEfLga57FUd8fxl9X6x3uRMVxJr+?=
- =?us-ascii?Q?4jAcxc1z6JP9Lsek5JqaHHggDC+2VN9stZVzDKoFuia3STdUdaXOmAYArTcY?=
- =?us-ascii?Q?fVeZlcAt+p6JjpnRPQIXPjTIzvmgTpvunxhjL4Da1isIJJ/SWwPjmTtV+vPr?=
- =?us-ascii?Q?rR8NOwnkBE89+DQEaFHMB4rFeoWk6g7WtqzYcNKos4EAfOROpDR/32YW698r?=
- =?us-ascii?Q?iRAQIr/5KMFFb4UqQsoAZlEss5y0LLoX7M0ekyzfUIvdT9K/O2oqwsJHXKFG?=
- =?us-ascii?Q?f622UZQe+hoIb3dc7u//ZObOqzr5mDDEl6kStkUZJjizo+y0qfMSuO2YAx9c?=
- =?us-ascii?Q?0XvDrjjV9dt+Z+XAesjXII7b2WKb9QuncWm4/FXLpfOh7tBG?=
+	=?us-ascii?Q?8hA0mqzJtFtnhj+CIgXPGTTATv7gRpXzq1Sy05M4Y/d1VFT5GhjwgA/dRhmK?=
+ =?us-ascii?Q?Ek7RHPEEyyxAMzifQvscE/WJaRhrrOFLt+FTjhht7jZjk2r1kd7MXALCgklO?=
+ =?us-ascii?Q?7UmHcjpQysVWDa5o0KtUDFYcucf0zd1ojoIer0+MrWKqDQZiRD6KtGVEZ/RH?=
+ =?us-ascii?Q?NNQzWa0WJBrCdDuQIquM+zhGlWbH/Q7Qv7jwo3TLQo+WsacfHxd3cHh9FmmZ?=
+ =?us-ascii?Q?xm7TBktMwdPmuaweMNfGOVlSbyfccIm0VbN/ZYaCCSm1BceGncwuGhYpSwT+?=
+ =?us-ascii?Q?Pw9gq2PGiD3pB0w9O5m5DSKToIL8bI3CtlfyTTevEiSngBIl9BRG+ctS3V7r?=
+ =?us-ascii?Q?ZNnRlRZ4+ZWB9Smv6Uw7UYPH9oqv0ASUgq2hqxumvUzG300qJbx76Q7y3mLM?=
+ =?us-ascii?Q?6/TTc4DHIYbVBLDUHs9/GTZfxz173gwjurPD5Z86QGWqkyANFo5qrs3m8fj9?=
+ =?us-ascii?Q?16IpgJM7ENcmbL6AbivqFz7lF8nFWlZKIXryLaL6+NSJrPiVGORS3jb3SsBr?=
+ =?us-ascii?Q?OHWs3aaCSDAfH4J8hxq7qr16ZsWT988dQu2V2akDjBkyOb+dWkRjOo0adUAk?=
+ =?us-ascii?Q?DOUXLTR8c0reSv8UQF4w6X2v0m7MLtg4T/NW6jwIXYjy1PHyAvJiOKvS35Os?=
+ =?us-ascii?Q?mjTkySckxp5mfroPrLjlN/YIyX31E2IhyNKmTrzGeboQIdUjpH3IN8uEtUey?=
+ =?us-ascii?Q?7otMDP12NUxziYvUT4I3ChS0qAtnn6qxi3A2OivA3hA8SOv482ZwS5jC30CD?=
+ =?us-ascii?Q?/apKvUW9QDt5ALLkT+vpqC1bm8ZQl1sBWaI7woULT5vzyDAyG/sZMGnKxD/a?=
+ =?us-ascii?Q?/q+QKcoI9lahMwI0SuMuH/cgegFeLOG3N/++sIB0Fztz8rhTSPCAeFXeT24u?=
+ =?us-ascii?Q?65nUmvhYvMmWPhW2dHfE510jHjbgnHjruIFI0HmUzDFDAvSmlHSpUXb8DZqN?=
+ =?us-ascii?Q?xbc8TaCe6gmAA5/qBNiLC9xijypx4oq8XPNl9lb+pDae7i1brGL5/O6RnQFs?=
+ =?us-ascii?Q?Gtx0eVhyd46jc9ZFvhyxeLhBxsHMStIEejxcYmrTtcHwAVfukvvH0qxv2wHD?=
+ =?us-ascii?Q?oNhN8tvVn6nrfuIciSH4lL2PYAbabMje1Cskcn0tCY488dP5PShpqAXQY9rp?=
+ =?us-ascii?Q?bJ6XwXBxfHNo+YfpAavLBDjCvZ4Zj0T2dEYMVTe4DRZAnOWJJvWloGKBNbEh?=
+ =?us-ascii?Q?0KE1221td3gcJEHTcaTnfAIFAdioRT9vf3SKdOW5mNyl9Jfr5HZbzRUV7hzY?=
+ =?us-ascii?Q?1hH1AOE62lJ5KGN4MIa03MpCTVbQuUOqN4wpbrieTBcESVqr32SffsVwL3zk?=
+ =?us-ascii?Q?PvrTdqTeFHlVhypw4QAvidMojWmzaH2I7OLxlL/cW3EMHwkwhzBgf/RCUb0Y?=
+ =?us-ascii?Q?43VSqhC4B/OKox7qOiV9+0aXD+05+XMS9h0+7i7HUU0kLpq4OsEQmh+SRel6?=
+ =?us-ascii?Q?9Jnfj5/9TvvMXu2mKA0Ttgfmz/O2hbS0lYtSJFx4MY7VOu+wowYDo8uoLCyu?=
+ =?us-ascii?Q?vFNaFVtsSewRi2x0ie6MjJs1PtX9zFPg2ZyeE3TzaYJNF+YGdMDPm6cYgRud?=
+ =?us-ascii?Q?4/hscJbzlumst3WH8g/ZaHMkjf9yB7D9T8nwU5JTj9IBJ3+soIER5c+W/jms?=
+ =?us-ascii?Q?fsSSaCf83uygESPWKmsqGFTFLdSED4Uh6wc+v1uKIhkXTRBFg26uA4Rvzz6k?=
+ =?us-ascii?Q?dKbN509MKXplaJIFIGzzzQiHMepUGx50JHgmTPgLVfMVb5bx?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93bb527e-4eed-4a65-66d0-08deb82c2e40
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9505ea18-e991-4bde-41c3-08deb82d3645
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 18:01:42.8572
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 18:09:05.8331
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GpEQLUWrx1tq8zoEuHH+hhtCnAWX/lGIhD4KnGlm47LCxV/qds8HnW2vHHevcl8Tr9ullOKjx2tRcZ/BQ1Rdbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9300
+X-MS-Exchange-CrossTenant-UserPrincipalName: qHOBwn2GR1jurOj9n9PRaGqLSIWg8kEkc0NT537hwEd5lWQe3TdL7rHTt1GY9Iy24STLxkWEOac47mDpJZ+STQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11423
 
-On Fri, May 22, 2026 at 05:30:58PM +0300, Mirela Rabulea wrote:
-> Hi Frank,
->
-> On 5/21/26 21:45, Frank Li wrote:
-> > On Thu, May 21, 2026 at 03:26:45PM +0300, Mirela Rabulea wrote:
-> > > The v4l2 helper v4l2_async_register_subdev_sensor() calls
-> > > v4l2_async_register_subdev(), which is a macro that expands to
-> > > __v4l2_async_register_subdev(sd,THIS_MODULE). Since the macro is expanded
-> > > inside v4l2-fwnode.c, THIS_MODULE resolves to the v4l2-fwnode module
-> > > rather than the sensor driver module that originally set sd->owner. When
-> > > v4l2-fwnode is built-in, THIS_MODULE evaluates to NULL, which then
-> > > overwrites the sensor driver's owner with NULL.
-> > This is problem. but this patch can't resolve problem 100% because
-> > many sensor driver have not init sd->owner before call
-> > v4l2_async_register_subdev_sensor()
-> Thanks for the suggestion. From what I see, all sensor drivers that use
-> v4l2_async_register_subdev_sensor() also use v4l2_i2c_subdev_init(), which
->
-> sets sd->owner. However, since your proposal looks more robust and there is
-> already a similar solution accepted for v4l2_async_register_subdev(), I will
-> send a v2 with that approach.
+On Fri, May 22, 2026 at 09:01:16AM +0200, Alexander Stein wrote:
+> Do not open-code the BIT() macro.
 
-Okay, that's also make sense. let's wait for maintainers' opinion.
+Nit: Replace the open-code with the BIT() macro.
 
-Frank
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
 >
-> Thanks,
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  drivers/gpio/gpio-mxc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> Mirela
+> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+> index 12f11a6c96653..7e2690d92df6f 100644
+> --- a/drivers/gpio/gpio-mxc.c
+> +++ b/drivers/gpio/gpio-mxc.c
+> @@ -330,13 +330,13 @@ static int gpio_set_wake_irq(struct irq_data *d, u32 enable)
+>  			ret = enable_irq_wake(port->irq_high);
+>  		else
+>  			ret = enable_irq_wake(port->irq);
+> -		port->wakeup_pads |= (1 << gpio_idx);
+> +		port->wakeup_pads |= BIT(gpio_idx);
+>  	} else {
+>  		if (port->irq_high && (gpio_idx >= 16))
+>  			ret = disable_irq_wake(port->irq_high);
+>  		else
+>  			ret = disable_irq_wake(port->irq);
+> -		port->wakeup_pads &= ~(1 << gpio_idx);
+> +		port->wakeup_pads &= ~BIT(gpio_idx);
+>  	}
 >
-> >
-> > suggest solution like what v4l2_async_register_subdev() did
-> >
-> > rename v4l2_async_register_subdev_sensor() to
-> > __v4l2_async_register_subdev_sensor(truct v4l2_subdev *sd, module *this)
-> >
-> > #define v4l2_async_register_subdev_sensor(sd)
-> > 	__v4l2_async_register_subdev_sensor(sd, THIS_MODULE)
-> >
-> > Frank
-> >
-> > > This causes the problem that the sensor module's reference count is never
-> > > incremented during async registration, so the module can be removed while
-> > > the subdevice is still in use by a notifier (e.g., a CSI-2 receiver
-> > > bridge driver).
-> > >
-> > > Fix this by calling __v4l2_async_register_subdev() directly with
-> > > sd->owner, which preserves the module owner that the sensor driver set
-> > > during probe via v4l2_i2c_subdev_init() or direct assignment.
-> > >
-> > > Fixes: aef69d54755d ("media: v4l: fwnode: Add a convenience function for registering sensors")
-> > >
-> > > Signed-off-by: Mirela Rabulea <mirela.rabulea@nxp.com>
-> > > ---
-> > >   drivers/media/v4l2-core/v4l2-fwnode.c | 2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
-> > > index 77f3298821b5..57284b7adddf 100644
-> > > --- a/drivers/media/v4l2-core/v4l2-fwnode.c
-> > > +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-> > > @@ -1282,7 +1282,7 @@ int v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd)
-> > >   	if (ret < 0)
-> > >   		goto out_cleanup;
-> > >
-> > > -	ret = v4l2_async_register_subdev(sd);
-> > > +	ret = __v4l2_async_register_subdev(sd, sd->owner);
-> > >   	if (ret < 0)
-> > >   		goto out_unregister;
-> > >
-> > > --
-> > > 2.43.0
-> > >
+>  	return ret;
+> --
+> 2.43.0
+>
