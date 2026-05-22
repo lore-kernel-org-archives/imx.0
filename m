@@ -1,238 +1,124 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E312349CE4;
-	Fri, 22 May 2026 12:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609E7372B23;
+	Fri, 22 May 2026 12:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779451385; cv=none; b=f2pgIoXigG+W89HfLELYWJIoa6YAXPnC6K0D+2n7RcoatGPYZcDFEzBAwyfgwrJImXXw6T6/OWlX4dArjsjD6Dq0lwLMSdRkLnrISSjTZEJ9INK1z4QKS0ucYvyIBKhG7KaJoAWBFHLdYcgKrouaAekZ7WAieYKC09Flc2umXVc=
+	t=1779451460; cv=none; b=uFsWCtsAkFHgYSFRgM9OCAmw0GLwrGuCg1WXOWdh4b6mBBlUINZ/QEA4DSW9o+8FEh8CVkXdFh+VZ3EKX6AMtFFsCw+QZq4ynjs5myKN216NTvexnSuOa08v/N4Kpg/Me8c4ltIKaWyYF7rlKoAxpe7fGbMhmMZ4fgb9eup66sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779451385; c=relaxed/simple;
-	bh=mtP6eQwIAC+5sOyhuqR1fcwb/5Uotac7KXM+4LolK0s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KnBFdFesHq2PNgP7R4ps72rmlClEVtYN/44Vu8P4H8zchfZQvnMkkvXHy3T2f7/4jcSbeHWIbVNUj73ktsQ32vFHY2nfsHkBjdTE87IugxbKlE4HfIZJKMCYLVX3+qu1m6qJfE4cXZLvBlcUb/vA0DOT9CLiif8rOjTEdN+LP7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=hQLcA1R4; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1779451460; c=relaxed/simple;
+	bh=sI0pcR+voaVf7cd9rpPUUuL1ngrj9Qplp5jHZ6qrCgc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=WsP9jGfzyzA6c4VyoW0xNV/q0mEcKaSv4NI8OOus0OMCpJbzvgIGn1pmg7pgXFkIm/T6cDnXB+j6zRDIdrZGPENR0QHxwzt4/zOGgmcrEDfGUKKfuBTlU5jMeH3mJq8rVK+OwAPirstx3pfnosnLDSEnmWf3YK0vwvURmXLNsl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAJEskCe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="hQLcA1R4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=npoaRceVSKcBIA7XnqArtD5X9kOzz4sAZEkny7h7tJ4=; b=hQLcA1R414V+btOIJDOD+tGBES
-	uDEs/ZrExwzWFrdgA2r4itlz8ocKj3qVx/Px03FRFevQRRMraNv3f7W2bvjBN5kFIOJGeb8k7IBXZ
-	6LsHV3nrbRV68SeA96efVg2L53IrdTQBf+ImquXkal8G8iu4FOBfNKYxhu7b5kXN5A4k6B/EG2y0j
-	A2SlkcEx8m3sDfRMwjkN7Q/kmEW5OifhXxKxD9djBPHAr4PZ3yNKA/6oGESvfHi4Gm9OmH4ztnnRQ
-	29d2UdC5J1Q//bqZXoOXiBdQk8M5YpAoUZEm98OEJBD/d6E0QF0umpnWhFoj8xl6vPFKe6cX/3cY2
-	L34qoIfQ==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wQOag-000FcQ-0J;
-	Fri, 22 May 2026 14:02:58 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wQOae-000ErM-1x;
-	Fri, 22 May 2026 14:02:57 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Michael Riesch <michael.riesch@collabora.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Heiko Stuebner <heiko@sntech.de>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Frank Li <frank.li@nxp.com>, Sakari Ailus <sakari.ailus@linux.intel.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Mehdi Djait <mehdi.djait@linux.intel.com>,
- Hans Verkuil <hverkuil+cisco@kernel.org>,
- "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>,
- "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>,
- "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
-Cc: "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
- "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
-Subject: Re: [PATCH v4 4/6] media: synopsys: Add PHY stopstate wait for i.MX93
-Date: Fri, 22 May 2026 14:02:56 +0200
-Message-ID: <118820958.nniJfEyVGO@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To:
- <AS8PR04MB9080844E610F8E8012647B39FA0F2@AS8PR04MB9080.eurprd04.prod.outlook.com>
-References:
- <20260519-csi2_imx95-v4-0-84ea4bb78a88@oss.nxp.com>
- <3606153.44csPzL39Z@steina-w>
- <AS8PR04MB9080844E610F8E8012647B39FA0F2@AS8PR04MB9080.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAJEskCe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5B51F000E9;
+	Fri, 22 May 2026 12:04:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779451457;
+	bh=aZjBtr4bcdeP/8MzweF6WQC3b3kciehtL893LPMB4h4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YAJEskCeVj98yvfwSXEItiCbcracKo5lzyoUpw7wllb0Of/DRdKpSyThScE6RGnjP
+	 J0VVJbKJ8Buuttcd+nb2KLa02oZcnwpGMe4pyf0bg6hoLnLPxhik9Jb+w9AmZ8Mqm8
+	 Gbe3WHcO6A7Uz2LePDxzyzHvwAio5E1OLLduCqLmeohnj+/vV+riBo6zwdoseiGAlB
+	 lgGBi2WSVsl73RiNnqiofbJTjUn//PhoJb7J+P+DkSn7ZEjnZhUn3aJPN6zbT7oQ8i
+	 RFMaNkdOaEzxpFmrx9RiJEPGeEyAD35L+lsbhMISP3BzsScHQB4xvYy/P0SPVY1lzZ
+	 vvPNMHmoFS3+w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/5] remoteproc: imx_rpoc: fix carveout name parsing
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Laurentiu Mihalcea" <laurentiumihalcea111@gmail.com>
+Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260522111849.783-3-laurentiumihalcea111@gmail.com>
+References: <20260522111849.783-3-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 22 May 2026 12:04:16 +0000
+Message-Id: <20260522120416.CC5B51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28008/Fri May 22 08:24:46 2026)
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Incomplete error handling of `of_property_read_string_index()` cau=
+ses driver probe failure and silent truncation of memory regions if `memory=
+-region-names` is malformed.
+- [Low] The header `imx_rproc.h` is missing necessary `#include` directives=
+ for the APIs and types used in the newly added `imx_rproc_rmem_to_resource=
+` inline function.
+--
 
-Am Freitag, 22. Mai 2026, 03:58:56 CEST schrieb G.N. Zhou (OSS):
-> > > Thanks for testing. Regarding the lane stop state error on i.MX93 with
-> > imx327:
-> > >
-> > > This error indicates the CSI-2 lanes are not in LP-11 (stop) state
-> > > when expected. Please check:
-> > >
-> > > 1) Verify the sensor PHY is in LP-11 state before returning from the =
-sensor's
-> > >    s_stream(1) call. The CSI-2 receiver expects lanes to be in stop s=
-tate
-> > >    initially.
-> >=20
-> > Well, this might be tricky as I don't have D-PHY capable scopes.
-> > I can successfully use this sensor on a imx8mp, so I am expecting this =
-to be
-> > okay.
-> >=20
-> > > 2) Check if the imx327 driver has a delay between starting the stream=
- and
-> > >    returning from s_stream(). If the sensor transitions PHY out of LP=
-=2D11
-> > >    state during this delay, the CSI driver's lane state check will fa=
-il
-> > >    when it runs later. The sensor should remain in LP-11 until the CSI
-> > >    controller completes its initialization.
-> >=20
-> > In imx290_set_stream() and subsequently imx290_start_streaming() setting
-> > IMX290_XMSTA starts the stream. I expect this is the point when the sen=
-sors
-> > switches from LP-11 to HS. But again, I can't verify.
->=20
-> As mentioned in #2, I reviewed drivers/media/i2c/imx290.c and identified =
-a 30ms
-> delay that appears to be the root cause of this issue.
->=20
-> The problem occurs because:
->=20
-> The sensor exits LP-11 state and transitions to HS mode after IMX290_XMST=
-A is written
-> The 30ms delay in s_stream() causes the function to return late
-> By the time the CSI controller performs its lane state check, the sensor =
-has already switched
-> from LP-11 to HS mode, causing the check to fail=E3=80=82
+commit 892c9b40a1305beaf42a4c79b061576551f828eb
+Author: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-This sounds wrong, see below.
+remoteproc: imx_rpoc: fix carveout name parsing
+   =20
+This commit modifies carveout name parsing to use the names provided by the
+"memory-region-names" device tree property if available. It introduces a
+common helper function imx_rproc_rmem_to_resource() to fall back to the old
+behavior if the property is not present.
 
->=20
-> Proposed fix:
->=20
-> diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-> index 21cbc81cb2ed..519aa336249a 100644
-> --- a/drivers/media/i2c/imx290.c
-> +++ b/drivers/media/i2c/imx290.c
-> @@ -1059,7 +1059,6 @@ static int imx290_start_streaming(struct imx290 *im=
-x290,
+> diff --git a/drivers/remoteproc/imx_rproc.h b/drivers/remoteproc/imx_rpro=
+c.h
+> --- a/drivers/remoteproc/imx_rproc.h
+> +++ b/drivers/remoteproc/imx_rproc.h
+
+[ ... ]
+
+> @@ -45,4 +45,23 @@ struct imx_rproc_dcfg {
+>  	u32				reset_vector_mask;
+>  };
 > =20
->         cci_write(imx290->regmap, IMX290_STANDBY, 0x00, &ret);
-> =20
-> -       msleep(30);
-> =20
->         /* Start streaming */
->         return cci_write(imx290->regmap, IMX290_XMSTA, 0x00, &ret);
->=20
-> Removing this delay allows s_stream() to return immediately, giving the C=
-SI controller
-> time to complete its initialization before the sensor transitions PHY sta=
-te.
->=20
-> Could you test this patch and confirm if it resolves the lane state check=
- failure?
+> +static inline int imx_rproc_rmem_to_resource(struct device_node *np,
+> +					     int index,
+> +					     struct resource *res)
+> +{
 
-Removing these 30ms does not fix the problem. Actually the delay change is
-hardly measurable, as the i2c transfer take much more time. I added a messa=
-ge
-for start/exit of imx290_enable_streams(). Just the transfers take >600ms.
+[Severity: Low]
+This isn't a bug, but this header file appears to be missing includes for
+<linux/of.h>, <linux/of_reserved_mem.h>, and <linux/ioport.h> which define
+the structures and APIs used in this new inline function.
 
-=2D-8<--
-[   40.507273] plane 0: bytesperline=3D3840 sizeimage=3D4147200
-[   40.512628] mxc-isi 4ae40000.isi: validating link "crossbar":2 -> "mxc_i=
-si.0":0
-[   40.519945] mxc-isi 4ae40000.isi: validating stream "crossbar":2:0 -> "m=
-xc_isi.0":0:0
-[   40.527789] mxc-isi 4ae40000.isi: validating link "dw-mipi-csi2rx 4ae000=
-00.mipi-csi":1 -> "crossbar":0
-[   40.537105] mxc-isi 4ae40000.isi: validating stream "dw-mipi-csi2rx 4ae0=
-0000.mipi-csi":1:0 -> "crossbar":0:0
-[   40.546940] mxc-isi 4ae40000.isi: validating link "imx327 4-001a":0 -> "=
-dw-mipi-csi2rx 4ae00000.mipi-csi":0
-[   40.556680] mxc-isi 4ae40000.isi: validating stream "imx327 4-001a":0:0 =
-=2D> "dw-mipi-csi2rx 4ae00000.mipi-csi":0:0
-[   40.573332] mxc-isi 4ae40000.isi: enable streams "crossbar":2/0x1
-[   40.579446] mxc-isi 4ae40000.isi: collect_streams: "crossbar":2: found 0=
-x1 enabled 0x0
-[   40.587373] imx290 4-001a: Frame descriptor on pad 0, type CSI-2
-[   40.593390] imx290 4-001a:   stream 0, code 0x300f, length 0, flags 0x00=
-00, vc 0, dt 0x2b
-[   40.601489] dw-mipi-csi2rx 4ae00000.mipi-csi: Frame descriptor on pad 1,=
- type CSI-2
-[   40.609147] dw-mipi-csi2rx 4ae00000.mipi-csi:        stream 0, code 0x30=
-0f, length 0, flags 0x0000, vc 0, dt 0x2b
-[   40.618894] mxc-isi 4ae40000.isi: enable streams "dw-mipi-csi2rx 4ae0000=
-0.mipi-csi":1/0x1
-[   40.627082] dw-mipi-csi2rx 4ae00000.mipi-csi: collect_streams: "dw-mipi-=
-csi2rx 4ae00000.mipi-csi":1: found 0x1 enabled 0x0
-[   40.638184] mxc-isi 4ae40000.isi: enable streams "imx327 4-001a":0/0x1
-[   40.644728] imx290 4-001a: collect_streams: sub-device "imx327 4-001a" d=
-oes not support streams
-[   40.653431] imx290 4-001a: imx290_enable_streams start
-[   41.294967] imx290 4-001a: imx290_enable_streams exit
-[   41.301064] dw-mipi-csi2rx 4ae00000.mipi-csi: lanes are not in stop stat=
-e: 0x0, expected 0x10003
-[   41.309884] mxc-isi 4ae40000.isi: disable streams "imx327 4-001a":0/0x1
-[   41.316534] imx290 4-001a: collect_streams: sub-device "imx327 4-001a" d=
-oes not support streams
-[   41.361401] mxc-isi 4ae40000.isi: enable streams 1:0x1 failed: -110
-[   41.367690] mxc-isi 4ae40000.isi: failed to enable streams 0x1 on 'dw-mi=
-pi-csi2rx 4ae00000.mipi-csi':1: -110
-[   41.379854] mxc-isi 4ae40000.isi: enable streams 2:0x1 failed: -110
-[   41.387325] mxc-isi 4ae40000.isi: Failed to enable pipe 0
-[   41.399231] video0: VIDIOC_STREAMON: error -110: type=3Dvid-cap-mplane
-[   41.408340] videodev: v4l2_release: video0: release
-=2D-8<--
+Could this cause build failures in the future if another file includes this
+header without first including the prerequisite headers?
 
-Given this I would ague the CSI host initialization order is wrong. The
-documentation for enable_streams states:
-> The struct v4l2_subdev_pad_ops->enable_streams() and struct
-> v4l2_subdev_pad_ops->disable_streams() callbacks are used by the receiver=
- driver
-> to control the transmitter driver's streaming state.
+> +	int ret;
+> +
+> +	ret =3D of_reserved_mem_region_to_resource(np, index, res);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* "memory-region-names" is optional */
+> +	ret =3D of_property_read_string_index(np, "memory-region-names",
+> +					    index, &res->name);
+> +	if (ret =3D=3D -EINVAL)
+> +		return 0;
 
-So IMHO calling enable_streams it is expected the sensors switched to
-HS mode. Unfortunately even checking PHY stopstate before enabling the subd=
-ev
-streams does not fix this error message.
-There is still=20
-> dw-mipi-csi2rx 4ae00000.mipi-csi: lanes are not in stop state: 0x0, expec=
-ted 0x10003
+[Severity: High]
+If the "memory-region-names" property exists but has fewer entries than the
+"memory-region" array, of_property_read_string_index() can return -ENODATA.
 
-I also noticed that before the s_stream call (imx290_set_stream) call the
-device is powered down. That might explaing that reversing the order will
-not help.
+Will returning -ENODATA here instead of 0 cause imx_rproc_prepare() to break
+prematurely out of its while loop, silently ignoring the remaining valid
+memory regions?
 
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
+Also, could this cause imx_rproc_addr_init() to completely fail the driver
+probe if it encounters an incomplete property? Should this treat any negati=
+ve
+return value from of_property_read_string_index() as non-fatal to properly
+maintain the old fallback behavior?
 
+> +
+> +	return ret;
+> +}
+> +
+>  #endif /* _IMX_RPROC_H */
 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522111849.783-=
+1-laurentiumihalcea111@gmail.com?part=3D2
