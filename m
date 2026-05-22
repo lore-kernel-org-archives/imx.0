@@ -1,61 +1,63 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F403D6484
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 11:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529A03D6495
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 11:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779448832; cv=none; b=bYrQbzTv4oDdONI8B4K7Ly/z2vB95K6mn5HY739s7u3jEOPw9y0LoyCzutF2qmvb9Ri1E1PLGQjAJTFRzY7IP+eSDbRZc8kYXFrw2Vh63YUllfP9WDCOBxmujr9dGfHEHL77pSComQN0IgL0VLQlorGvZ6l7JW4OumpBqELW3y8=
+	t=1779448835; cv=none; b=h5Ftv7hrFVI9HQwR9+TkwOLX87END8q5nk178P7HGmmQ8MPZw5Qx2BgjCsKYT8dTzrzef4ietuYEz+BtKMtqy+J3vfnux+4euO/b2O0VBZvEjSGWWeUdsAqeZJdqs3ObpFv3jAC0UX7CwB2obdEu6SkYJh/Aa6LxFXAtSxMn0To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779448832; c=relaxed/simple;
-	bh=2dMtwqfr2ZGbuWNME1mjoFf1yb2LMAL7HBAwNxavaO8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KAZWQ22/TaASLuFUEBW3NE0cSNPFZpS3IYTb1DRSqF5oJc28RYZPw9tvaGIHW1/C63E0S+5xXz9SrjlZRUcMrqqFQDNg1hr/VrW68paWYbZSNdyPql8YTMzW+m7pz0DYoSenAcWQjiM9YPu+LFhC8yQZcXGzAqCo+yL6yNvTFTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UpM5/xZL; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1779448835; c=relaxed/simple;
+	bh=B23ResA4FCbRNDuiKc1eQnBqPU2ccGIETUQQXvU6O3E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bpXA2CU6QQQm/PdOUfix6CLXxmKNZokxcFE2GHssOZYgWWoMKiK02+QWTAe6QU8h7Bm7OEcWp9InKSO+R87/QioeFXkyyiKWrOMNFO6PNqC754USxWZMKIYGvLZ6LuHC1bGMjTciuy6OUUIPIXtcnncixlgy1Ls6rAcgDy3RX+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gglr0bOU; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UpM5/xZL"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4893940bb5eso40302925e9.3
-        for <imx@lists.linux.dev>; Fri, 22 May 2026 04:20:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gglr0bOU"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so99300265e9.2
+        for <imx@lists.linux.dev>; Fri, 22 May 2026 04:20:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779448828; x=1780053628; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XwywBvEJpsm1f+bVDJtLQZjSntFIsWCaI5FtaThXLqY=;
-        b=UpM5/xZLoPPox3qfe4c9QTDyuQr4nFd/WYHLJRk0OGru8VGl29I20Hqik6B4nSyA4D
-         okvnGEbGn4C7qLcMfM0YS9hT+LiY/wbk0UM84jQ2V1baBOVCgL1Mn6tCol2v93sCuFgo
-         6qRHSd8XAzq2+irD9XfKtc2sbhCInnJ5SG6yOkSRnp7cjJzAd6k/cIu+WFGCeYreXk7Y
-         eHdh9aBFjCMvQ2t1O2qDiOabEtpnSd8c3qDsnlUXLwxKLqmZi3F9QF+vK8SvDc+ZsQ1O
-         8wpBAUGkVf0t7grTth2dNAytmrIZqcX8L+F6iFZCJx80F458bGcEH7DXo5Hel6+3K08e
-         qvaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779448828; x=1780053628;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779448833; x=1780053633; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XwywBvEJpsm1f+bVDJtLQZjSntFIsWCaI5FtaThXLqY=;
-        b=MEAsJ3rS6kWL0IYPT6xGtAIIXvm+3BvoxYCB24hka59ySODKLK1UCOPnif47Lxm+ug
-         B923E7q/yQ3FXebQiaoiwUxTRruDL0N+L7dSeevZSmGgFDKLL4PujBLIw9jDnCSQa9Az
-         08SGmr20PGwwDbVZrvxouBTsCn1PfzwtwOqO3TXJpgtFodEHfncDmMFsIgz4qRy4da2v
-         0/FrzbDcz4gx2hYsX/AXH5kN1p9etTDS4papyjbjyD88THfqw/olPpDKnv2WXdOGr5dt
-         3b4pFUVS+dZmL2HnzwOWitj4Ya/u5yCivgxHWNeK1wCGw8XxzfyUzmfVf67k8ttsav0M
-         6wkw==
-X-Forwarded-Encrypted: i=1; AFNElJ8Su7AO9uRFGWUyUJmBHi2HLRmIfTsEPjtwGwnMUrpc/P4bs0BNWvwbGsfidH6PRDywFXU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwDhYTPZS+bEHXyAT2NydHImmBL6/MHrqJdtp+dTc8mHHFBu6n4
-	yaxWYmlor3abxRWsaGvDi6UxgzD476ZtHPN7vszCPkKhBekNAfG0I2EJ
-X-Gm-Gg: Acq92OFfNcpygG+6gjZ+RuH7O8loA0ryjX1VFoohqRrqrCre6zwJAgDsB/P+kwu3bfb
-	u9bFOMmOW3LrfxX95LA6u3hgmbLG9nI2YXgKv0P8JbgiUiomKH7XTwvbAvdh9midN+gxQvjclCo
-	L3p8zERgUR9bxmnCCl2sToDqJhAyshrmifuTdxvAT2Gh2hq8rPwzueXwsyYwxZ+TH0aTNXZ7qf7
-	wcFpxxx9JJpUxIVZmitXJeB7lFetBhd8CKHiRxcJjO8GiqLH/6RU026GfTq9mSJ36scRk+4v6nc
-	7cLgh+opcTUhEUhKp+lzdzZ7TGCh6acjQ4fdfZUWvTIA4UXIh1NqMC318vL9lI0/FttR8JNDpqy
-	AqVYd31kYZIg9ntYCH7am+rdsfcu4u1MfW/uV6K2mRJAw2l+hwmnCK/CyM07wnn6z8kvp+6Fhjf
-	ykjjhWr+EQSXIfoxUIFShoIaiC6HunG0jGjjrQ8q5xwim4ShSN1wuoUggJS3zo
-X-Received: by 2002:a05:600c:1c21:b0:490:44eb:c1ea with SMTP id 5b1f17b1804b1-49044ebc2edmr37709105e9.24.1779448828096;
-        Fri, 22 May 2026 04:20:28 -0700 (PDT)
+        bh=9LhbdDf4eyswQt9B5NrIPwnpBfgPQtJHaWKySe8smSU=;
+        b=gglr0bOUBsANFPNa1nGasaRXfioLPBHERRdScam55JV3PXaKvIL/NbPIjmFwEASLOC
+         q9TLmMTonZeeSLLEL8gNyop172qEH/pmF/Gr5zNeDJp+gUkoTI40lkGBbUvc1BrnMUZO
+         QrQK2IGlrSpgUPpKjOevDHyYzWYoPAnRuoHVR2f/SqrAtGZgfsbmc2NNgOH/X8VNkQZA
+         YKxm6ozlExBUWKMcnrYIXMx2xsxOC2+qRrMk075FI4Gnzfjpns83P9l7z3zKWKVRcvgy
+         XC81upsG7hWzsbAJPynirbteHiJyW+6p9f7IsY0oi1yRbiHXhT8oYJ/lKxEwfItb0cuj
+         Ym2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779448833; x=1780053633;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9LhbdDf4eyswQt9B5NrIPwnpBfgPQtJHaWKySe8smSU=;
+        b=fzDuyvJnp3uDNcG6Tvfz7gpfM9H7ZwZXHBlqkdMbf94baWVSuSLMMcxa8HqrC3Gbxw
+         ptKSpPKG9ew0mWOMeskxOgbuXPzjijQran4Pt1hopnexeOCcJ+G1gzKpMjEcOr2qn7DV
+         lyW+hC2umSbgKblHB4PVn/ZqYFTCgRKEs9xlgkb193OGrOeALWhpBqMIeXkYN8SGpaDn
+         dUTYCaLtNfUmPah8WmUst+/LvafaZ0KRPtX14eTZ8isJJ4d3XpLIgxFFfYaXJCAQHPIR
+         C8sTHo+s97MciLcFhrWX3MtTLaG5/uu+VrraNnRdwlBTVOjlhqhjBPuH2kfZKqfFu1vb
+         oPrw==
+X-Forwarded-Encrypted: i=1; AFNElJ9Bs08YLjhSDnqJfEi/tOzyz6skkyAvvCbVSmKWXqYzgy9Dmd+Xg30T0U/3QKmutPX/Y4U=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy8X58j0vlGY/9u0WGucYsELmQIe56HCcAOOgAOK0iKML0ikLXE
+	583xeKiRwjcYnkSWYCZyEfDXqHzxUUN/JXZ1Y79aML70Hq1ynKAi/Asc
+X-Gm-Gg: Acq92OEcxM7nviWgtn4UuVW/LLAYRVFZkpp29/h4IRjqYe4PwovwXt1ybcNxysXoMGp
+	sFKl5FxwuWkpCZ/tMPvWOGbxduc8yIh8EpPZMV4EP3UdJshoLes3aq1hQCFAOes4A+Y9K+bjac5
+	8k5LweCuxCB9ZeJK+xl18WMy+zocI3iSPd2TzPWxUfbsQOD6CljTss7EN++SA6PBkiw3KQdQgV/
+	Ei9a9YjMG/AH9eAsmXuInlzhDZrunKTy7S/Htd+kdpkgOM99hj6OY7jyBkJrePne2YjKcslkmDj
+	TKRvhESYbYUfTC1Hg8v3q32UT7JtuyGwBZmiRBaF7ZZcY1ZYG6ymqOGyY4angxBKVhHDwrIcix4
+	/78OA9huF8moYqG3OQDQySfI65VmIvLQYrf8YkAGjHvDVyWuNPs9i5tA4gIRncl6BUcPLoDXT+2
+	hPgxj14XlSn1rYrcGjVI0+r/WOcFFBD+Pw7GEN4YVtorxhawu6Bw==
+X-Received: by 2002:a05:600c:a106:b0:48a:9562:7a30 with SMTP id 5b1f17b1804b1-490426dcb09mr29669825e9.24.1779448832493;
+        Fri, 22 May 2026 04:20:32 -0700 (PDT)
 Received: from SMW024614.wbi.nxp.com ([128.77.115.157])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4904526ca21sm34388355e9.3.2026.05.22.04.20.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4904526ca21sm34388355e9.3.2026.05.22.04.20.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 04:20:27 -0700 (PDT)
+        Fri, 22 May 2026 04:20:32 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Bjorn Andersson <andersson@kernel.org>,
 	Mathieu Poirier <mathieu.poirier@linaro.org>,
@@ -72,10 +74,12 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/5] Add RPROC support for the MX95-15x15-FRDM board
-Date: Fri, 22 May 2026 04:18:44 -0700
-Message-ID: <20260522111849.783-1-laurentiumihalcea111@gmail.com>
+Subject: [PATCH 1/5] dt-bindings: remoteproc: imx_rproc: document optional "memory-region-names"
+Date: Fri, 22 May 2026 04:18:45 -0700
+Message-ID: <20260522111849.783-2-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260522111849.783-1-laurentiumihalcea111@gmail.com>
+References: <20260522111849.783-1-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -86,40 +90,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Hi folks,
+Document the optional "memory-region-names" property.
 
-As you can see from the title, this series attempts to introduce/enable
-RPROC support for the MX95-15x15-FRDM board.
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+---
+ .../devicetree/bindings/remoteproc/fsl,imx-rproc.yaml     | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-For a while now, the imx_rproc driver has been using the reserved memory
-DT nodes as the carveout names, which would force DT writers to go against
-the DT specification's recommendation and use non-generic names (e.g.
-"vdev0vring0", "vdev0vring1", etc...). This series also tries to fix this
-issue by introducing the "memory-region-names" property and using it in
-the imx_rproc driver to figure out the carveout names. The driver will
-still allow the old way of doing things (i.e. no "memory-region-names"
-property) but a warning will now be printed since this should be
-discouraged.
-
-Laurentiu Mihalcea (5):
-  dt-bindings: remoteproc: imx_rproc: document optional
-    "memory-region-names"
-  remoteproc: imx_rpoc: fix carveout name parsing
-  arm64: dts: freescale: imx95-toradex-smarc: move CM7 node to SoC DTSI
-  arm64: dts: freescale: imx95-15x15-frdm: remove common rmem regions
-  arm64: dts: freescale: add DT overlay for MX95-15x15-FRDM RPMSG usage
-
- .../bindings/remoteproc/fsl,imx-rproc.yaml    |  8 +++
- arch/arm64/boot/dts/freescale/Makefile        |  3 +
- .../dts/freescale/imx95-15x15-frdm-rpmsg.dtso | 65 +++++++++++++++++++
- .../boot/dts/freescale/imx95-15x15-frdm.dts   | 21 ------
- .../dts/freescale/imx95-toradex-smarc.dtsi    | 14 ++--
- arch/arm64/boot/dts/freescale/imx95.dtsi      |  7 ++
- drivers/remoteproc/imx_rproc.c                |  7 +-
- drivers/remoteproc/imx_rproc.h                | 19 ++++++
- 8 files changed, 113 insertions(+), 31 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
-
+diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+index c18f71b64889..6679b10f9da5 100644
+--- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
++++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+@@ -62,6 +62,14 @@ properties:
+     minItems: 1
+     maxItems: 32
+ 
++  memory-region-names:
++    minItems: 1
++    maxItems: 32
++    items:
++      oneOf:
++        - const: rsc-table
++        - pattern: '^vdev[0-9](buffer|vring[0-9])$'
++
+   power-domains:
+     minItems: 2
+     maxItems: 8
 -- 
 2.43.0
 
