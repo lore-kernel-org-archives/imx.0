@@ -1,28 +1,28 @@
 Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78D53CC7CE
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E040F3CC33F
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779445094; cv=none; b=PF5plnxqbamHEDjgup9+i/n78Usp0ChFydvl1RNx2j/G6s+TdjFTMr4D5TSk7NovVVCkM73JP/ofeBCEAJvdH6Wu77NDuILXRkPVo+tAs5QO+RvWWdqqP/hvMqcGZ3UQbasQqwgP8Hd6jrQ+SjwhOERGCuBesLVau3EhEieX7EU=
+	t=1779445100; cv=none; b=tNEzsKIq8eDHS9h3xHF+vgiqmGYD60iaExsb8tkITzYvIcA8JTH702LAUEMagSjT8jvvb56q/bTVK8MjLs6OXs0UH7ieYR2m+sxUZwbQXh+p+vyndiP/sF23nFKN0IxjOPSRF9TiqeZm1kdOlbkJJvZxcNji6c+wEA+ecGuWdVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779445094; c=relaxed/simple;
-	bh=H4ahuP7qK6F1laIsAeO9Wq5rgaRo+/IalAB1WKxGgjI=;
+	s=arc-20240116; t=1779445100; c=relaxed/simple;
+	bh=x/6Zg3Wi00xuQO62fUSq4YsyxLHa2RWNHXpPt0DMNDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohKhLXBnCcnoOTyUcoQ5QCZBccSF2LW3hljQAejT97CWze2A9zJixsa4yTPttM+HxenKA9uKahmC3iPKCdSLPCsAsKmbCCD5aULH+zfOdmVaOSWCnRjonjKhYtOcqqaHBMviJFUpQa7VxkQH/zYLhZO+zj0bZZ4eiCP/H5DUHxE=
+	 MIME-Version; b=lUVnAEiXN+GKcF8d7H1XAybE77UJXJSFLcamFVLfj//1CPlMpLjWFSBBI+jZRz4JtJlkcpntgrmxtEmZMWAPEK720q6aHK/LZqz1gh07mmuYTl/u/cAbHdp9XgKShduJNRJbrkMLRLM4kH0QZ74gN+33Zmil/IiI0oI+dZdeCjU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
 Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id 9E117370029C
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:17:54 +0000 (UTC)
+	by leonov.paulk.fr (Postfix) with ESMTPS id 32E9937002A5
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 10:18:00 +0000 (UTC)
 Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id 16C74B408D7; Fri, 22 May 2026 10:17:54 +0000 (UTC)
+	id 7503EB408D8; Fri, 22 May 2026 10:17:55 +0000 (UTC)
 X-Spam-Level: **
 Received: from shepard (unknown [192.168.1.65])
-	by laika.paulk.fr (Postfix) with ESMTP id A4C02B408C9;
-	Fri, 22 May 2026 10:17:08 +0000 (UTC)
+	by laika.paulk.fr (Postfix) with ESMTP id 1FC35B408CF;
+	Fri, 22 May 2026 10:17:09 +0000 (UTC)
 From: Paul Kocialkowski <paulk@sys-base.io>
 To: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
@@ -41,11 +41,10 @@ Cc: Rob Herring <robh@kernel.org>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Hans Verkuil <hverkuil@kernel.org>,
 	Marco Felsch <m.felsch@pengutronix.de>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Paul Kocialkowski <paulk@sys-base.io>
-Subject: [PATCH 09/14] media: verisilicon: Cancel job with runtime pm put/clk disable on failure
-Date: Fri, 22 May 2026 12:16:48 +0200
-Message-ID: <20260522101653.2565125-10-paulk@sys-base.io>
+	Michael Tretter <m.tretter@pengutronix.de>
+Subject: [PATCH 10/14] media: hantro: use hantro_decoded_buffer only for dst_vq
+Date: Fri, 22 May 2026 12:16:49 +0200
+Message-ID: <20260522101653.2565125-11-paulk@sys-base.io>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260522101653.2565125-1-paulk@sys-base.io>
 References: <20260522101653.2565125-1-paulk@sys-base.io>
@@ -57,62 +56,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The no-pm variant of hantro_job_finish is only good to use directly if
-runtime pm get failed. In other cases, we need to do a runtime pm put
-and bulk clk disable to correctly undo what was set up.
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-Fixes: 892bb6ecead9 ("media: hantro: do a PM resume earlier")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+The dst_vq buffer size for encoders should not use the size of the
+'hantro_decoded_buffer'. Make use of 'v4l2_m2m_buffer' instead till some
+encoder requires pre buffer extra data.
+
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- .../media/platform/verisilicon/hantro_drv.c   | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/media/platform/verisilicon/hantro_drv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
-index e0c11fe8b55c..e21306f2bf2e 100644
+index e21306f2bf2e..6f72e25fa88c 100644
 --- a/drivers/media/platform/verisilicon/hantro_drv.c
 +++ b/drivers/media/platform/verisilicon/hantro_drv.c
-@@ -169,29 +169,34 @@ void hantro_end_prepare_run(struct hantro_ctx *ctx)
- static void device_run(void *priv)
- {
- 	struct hantro_ctx *ctx = priv;
-+	struct hantro_dev *vpu = ctx->dev;
- 	struct vb2_v4l2_buffer *src, *dst;
- 	int ret;
- 
- 	src = hantro_get_src_buf(ctx);
- 	dst = hantro_get_dst_buf(ctx);
- 
--	ret = pm_runtime_resume_and_get(ctx->dev->dev);
-+	ret = pm_runtime_resume_and_get(vpu->dev);
- 	if (ret < 0)
--		goto err_cancel_job;
-+		goto err_cancel_job_no_pm;
- 
--	ret = clk_bulk_enable(ctx->dev->variant->num_clocks, ctx->dev->clocks);
-+	ret = clk_bulk_enable(vpu->variant->num_clocks, vpu->clocks);
- 	if (ret)
--		goto err_cancel_job;
-+		goto err_cancel_job_pm;
- 
- 	v4l2_m2m_buf_copy_metadata(src, dst, true);
- 
- 	if (ctx->codec_ops->run(ctx))
--		goto err_cancel_job;
-+		goto err_cancel_job_clk;
- 
- 	return;
- 
--err_cancel_job:
--	hantro_job_finish_no_pm(ctx->dev, ctx, VB2_BUF_STATE_ERROR);
-+err_cancel_job_clk:
-+	clk_bulk_disable(vpu->variant->num_clocks, vpu->clocks);
-+err_cancel_job_pm:
-+	pm_runtime_put_autosuspend(vpu->dev);
-+err_cancel_job_no_pm:
-+	hantro_job_finish_no_pm(vpu, ctx, VB2_BUF_STATE_ERROR);
- }
- 
- static const struct v4l2_m2m_ops vpu_m2m_ops = {
+@@ -248,7 +248,10 @@ queue_init(void *priv, struct vb2_queue *src_vq, struct vb2_queue *dst_vq)
+ 	dst_vq->io_modes = VB2_MMAP | VB2_DMABUF;
+ 	dst_vq->drv_priv = ctx;
+ 	dst_vq->ops = &hantro_queue_ops;
+-	dst_vq->buf_struct_size = sizeof(struct hantro_decoded_buffer);
++	if (ctx->is_encoder)
++		dst_vq->buf_struct_size = sizeof(struct v4l2_m2m_buffer);
++	else
++		dst_vq->buf_struct_size = sizeof(struct hantro_decoded_buffer);
+ 	dst_vq->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;
+ 	dst_vq->lock = &ctx->dev->vpu_mutex;
+ 	dst_vq->dev = ctx->dev->v4l2_dev.dev;
 -- 
 2.53.0
 
