@@ -1,148 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39753FF1
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 07:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6DB1E49F
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 07:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779435045; cv=none; b=qSs02/W0pzvwFQCyh+VGy1PBWcnZ+8aLixUP4ItEEup9kDj11IibTTcBGdSHnoSzcLM5hXjViq8E4pqMhqDdXSXDD3yGKeZbykuSyfWOpmRq93qg7qUVnjCN8Znt+2o9abDlUP+QESKxCcuI/Y/JIE8S8RJja7+QJQCzlmc690Y=
+	t=1779435655; cv=none; b=fpJ41KDIaI9gSp+L+pgIK72rRwFFxpK0pcZW+rugKVFu6Qu6TK6TCOi58jMPhmBQXjNWkcURQtA6+5xaHED475U1esExN7Os3FBgz3GSJpDt6RIOAJbTMNl57avQ35cFjNKLP8bFtVLuj7KWcH/yQ75/iyJQ4ZdnwszLKzRQ9B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779435045; c=relaxed/simple;
-	bh=HNC8kc94IUddRXQpToDDWnk38d8N33E1RmaUtXGbOag=;
+	s=arc-20240116; t=1779435655; c=relaxed/simple;
+	bh=fInRgumXU23fTc9x1pvOQTjgaG8bSVhqndWI/ytCa+g=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ORC4IH+5hWeX5bRmTk0zAgcLCjFaiskeBw1WqZ/2ArVtlD4YWTXkD5XkLxhkhkFBHdR75O1EIjd30ywp6Ylht5sWh+OvQgUZJgz5Uuj2U2kpoOC7andtAV/DgI6rJt7PcG5mWJie8ZyCz7SHJHBqzTKkI2/EOtX6uVe2Mg7PIRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JEKw6uEf; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=f4SNK3mMvsk0tL1djvvsHC86dYxUgbEWhzUnUBKoKP2n0Fvvsj6N+SbuwkjkAj0L9ScYXuqEvKqiQewVwJqQIVGRke36UBarLbl6oMKqJUMa0QzGxG+BK2IT9FEzVTx+0zJi0JgXe8mYnvGZ49kxg1I61LeRtLhrQ2uz57hrd0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XvpohnV8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JEKw6uEf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544681F000E9;
-	Fri, 22 May 2026 07:30:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XvpohnV8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF901F000E9;
+	Fri, 22 May 2026 07:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779435044;
-	bh=1toLHP9m3cvap0WePRFyven1njwhAVogT3DWCq8xQK4=;
+	s=k20260515; t=1779435653;
+	bh=lgwDcXVrXn5cBCRt7jhj15mk9UrpTHeFcfAhcTT6CP0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JEKw6uEfqQij2LVf1tuE+lnl/Qk9HHYhabd2fRFKXYyOoqhGDmX4/5sVqEY+mWrGm
-	 rRYR6WTEgqC7Bt09IsZRwqgvdN6UVpwnUFfIM2mamE2+YlcMovkO4zzi/FVwxaPZT+
-	 ki5J79O8psYhsOSHRHQ5iCFxxy/dy3LuWmEpQ6nmtJM6mFrg8gsBRcU7hhIDvGNrSQ
-	 3LpJzX59PGzjwN7YBCf5KYJ2gbzUHQTPkDXJYL/1VGSmWN5QIfld5icpPsTQ0m7aXo
-	 /9d/jGo2Hgc2aeU18ZshoWvewXKzA69Anult8wxvhnnyDT5Ky2k+FYYMFhcabR/aJn
-	 iTJ41qp0/Wf0Q==
+	b=XvpohnV8dnqUPSKuA3ejWcYpm8hoWJ8BWu4u2bT9thEfmTKcsjkpjID9yuCnNQjrw
+	 lTeAq3t2gRUVHS8CiTNS4Wavl3RB4MqSnwwLRmIXa5oXEBjTQ4gF0EGyrnIPx33MnX
+	 lszoi1F5xDlSDtyYB6FEVjLY+mN4iNP30cqGHfJzYMaBsXuOh8B6Nq6fRKhs3dyiI7
+	 A3vGEqgqVV9OfHcstIJGJh0HT1U/Q/c9/4m6AVD4a2R7nzjaC8CiTfwItjyq8knRRn
+	 gshXL1dP+qyis7+XsrvXtaHCFn22inPP0ebuFFpTzD6uEIAxfZpCWvBgw0f33XFafG
+	 7k9lu3TKlmw3g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] gpio: mxc: fix irq_high handling
+Subject: Re: [PATCH 2/2] gpio: mxc: use BIT() macro
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260522070118.800671-1-alexander.stein@ew.tq-group.com>
-References: <20260522070118.800671-1-alexander.stein@ew.tq-group.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260522070118.800671-2-alexander.stein@ew.tq-group.com>
+References: <20260522070118.800671-2-alexander.stein@ew.tq-group.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 22 May 2026 07:30:43 +0000
-Message-Id: <20260522073044.544681F000E9@smtp.kernel.org>
+Date: Fri, 22 May 2026 07:40:53 +0000
+Message-Id: <20260522074053.7AF901F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Missing teardown of the chained IRQ handler in the `mxc_gpio_probe=
-()` error path leads to a Use-After-Free vulnerability.
-- [High] Calling `clk_prepare_enable()` during `syscore_ops.suspend` violat=
-es atomic context requirements.
-- [High] In `mxc_gpio_runtime_resume()`, the chained IRQ handler is hooked =
-before the GPIO clock is enabled, risking unclocked register access.
-- [High] In `mxc_gpio_runtime_suspend()`, the GPIO clock is disabled before=
- the chained IRQ handler is unhooked, risking unclocked register access.
-- [High] `mx2_gpio_irq_handler` iterates over all GPIO ports and reads thei=
-r registers unconditionally without checking their runtime PM or clock stat=
-e.
+- [High] Unchecked return value from `enable_irq_wake()` leads to permanent=
+ly corrupted wakeup state.
+- [High] Missing locking causes a data race on the shared `port->wakeup_pad=
+s` state.
 --
 
-commit 6fc21eff5d34d702cba087494eeb1fa0e1234c1e
+commit bd0f86527c727096d8a5aca0060d7d08ddaeda28
 Author: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-gpio: mxc: fix irq_high handling
+gpio: mxc: use BIT() macro
 
-This commit fixes an issue where enable_irq_wake() is incorrectly called
-with a negative value when port irq_high is -1 and gpio_idx is >=3D 16.
-It resolves this by initializing irq_high to 0 for the fsl,imx21-gpio
-compatible.
+This commit updates the gpio-mxc driver to use the BIT() macro instead of
+open-coding bit shifts.
 
 > diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-> index 647b6f4861b74..12f11a6c96653 100644
 > --- a/drivers/gpio/gpio-mxc.c
 > +++ b/drivers/gpio/gpio-mxc.c
-> @@ -469,7 +469,7 @@ static int mxc_gpio_probe(struct platform_device *pde=
-v)
->  		 * the handler is needed only once, but doing it for every port
->  		 * is more robust and easier.
->  		 */
-> -		port->irq_high =3D -1;
-> +		port->irq_high =3D 0;
->  		port->mx_irq_handler =3D mx2_gpio_irq_handler;
+
+[ ... ]
+
+> @@ -330,13 +330,13 @@ static int gpio_set_wake_irq(struct irq_data *d, u3=
+2 enable)
+>  			ret =3D enable_irq_wake(port->irq_high);
+>  		else
+>  			ret =3D enable_irq_wake(port->irq);
+> -		port->wakeup_pads |=3D (1 << gpio_idx);
+> +		port->wakeup_pads |=3D BIT(gpio_idx);
 
 [Severity: High]
-This is a pre-existing issue, but does the error path in mxc_gpio_probe()
-properly tear down the chained IRQ handler?
+This is a pre-existing issue, but does this function properly handle
+failures from enable_irq_wake()?
 
-If a subsequent initialization step fails, such as gpio_generic_chip_init()
-or devm_irq_alloc_descs(), the error path does not appear to call
-mxc_update_irq_chained_handler(port, false) to unhook it.
+It appears that port->wakeup_pads is modified before validating the return
+value of enable_irq_wake() or disable_irq_wake(). If enable_irq_wake() fails
+(for instance, if the parent IRQ does not support wakeup), the bit remains
+erroneously set.
 
-Since the port pointer is managed by devres and gets freed upon returning
-the error, could a subsequent parent interrupt cause a use-after-free when
-the IRQ core executes the handler and dereferences the freed port pointer?
+The irq subsystem core reacts to the failure by leaving the child IRQ's
+wake_depth at 0. As a result, subsequent calls to disable_irq_wake() by the
+driver will be ignored (triggering an unbalanced irq wake disable warning)
+and will never invoke gpio_set_wake_irq() to clear the bit. This causes the
+bit to become permanently stuck.=20
 
-[Severity: High]
-This is a pre-existing issue, but is it safe for mx2_gpio_irq_handler()
-to iterate over all GPIO ports without checking their runtime PM or clock
-state?
-
-The handler iterates through the global mxc_gpio_ports list and reads the
-GPIO_IMR and GPIO_ISR registers for every port.
-
-If a port is suspended and its clock is disabled, wouldn't attempting
-to read its registers violate hardware constraints and potentially trigger
-a bus fault?
-
->  	} else
->  		port->mx_irq_handler =3D mx3_gpio_irq_handler;
+During system suspend, mxc_gpio_noirq_suspend() could then erroneously
+program the SCU to enable pad wakeup for this pin, leading to unintended
+system wakeups.
 
 [Severity: High]
-This is a pre-existing issue, but does mxc_gpio_runtime_resume() risk
-accessing unclocked registers?
+This is also a pre-existing issue, but is there a data race when modifying
+port->wakeup_pads?
 
-It calls mxc_update_irq_chained_handler(port, true) to hook the parent IRQ
-handler before calling clk_prepare_enable(port->clk).
+This callback is invoked by irq_set_irq_wake(), which only holds the
+desc->lock of the specific child IRQ (the individual GPIO pin). It does not
+seem to hold the shared GPIO chip's gc->lock.
 
-If an interrupt fires in this window, could the handler execute and
-attempt to read device registers while the hardware clock is still
-disabled?
+Since port->wakeup_pads tracks the wakeup state of all 32 pins on the
+port, if multiple drivers concurrently configure wakeup for different pins =
+on
+the same port, they would hold independent child locks and concurrently
+modify port->wakeup_pads. Could this lead to lost updates, potentially
+resulting in the system failing to wake up from suspend?
 
-[Severity: High]
-This is a pre-existing issue, but there appears to be a similar race in
-mxc_gpio_runtime_suspend().
-
-The hardware clock is disabled via clk_disable_unprepare(port->clk) before
-mxc_update_irq_chained_handler(port, false) unregisters the handler.
-
-If a pending parent interrupt fires between these two calls, could the
-active IRQ handler access the hardware registers without an active clock?
-
-[Severity: High]
-This is a pre-existing issue, but does mxc_gpio_syscore_suspend() violate
-atomic context rules?
-
-It executes in the late stages of system suspend where only one CPU is
-online and local interrupts are hard-disabled. By calling
-clk_prepare_enable(port->clk), it internally calls clk_prepare() which
-takes the global prepare_lock mutex and includes a might_sleep() check.
-
-Could this sleeping or mutex locking in an atomic context cause deadlocks
-or trigger warnings?
+>  	} else {
+>  		if (port->irq_high && (gpio_idx >=3D 16))
+>  			ret =3D disable_irq_wake(port->irq_high);
+>  		else
+>  			ret =3D disable_irq_wake(port->irq);
+> -		port->wakeup_pads &=3D ~(1 << gpio_idx);
+> +		port->wakeup_pads &=3D ~BIT(gpio_idx);
+>  	}
+> =20
+>  	return ret;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522070118.8006=
-71-1-alexander.stein@ew.tq-group.com?part=3D1
+71-1-alexander.stein@ew.tq-group.com?part=3D2
