@@ -1,154 +1,134 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011047.outbound.protection.outlook.com [52.101.70.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F5F372045
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 18:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779474082; cv=fail; b=gAYtNnasRA9A/mMRXdO8fxgbB8Xg4JlglT98rVBCZ7/hmbldwEhoGUuoPrNDJK0YghmjGW7MW/Ia0iTtU8TD5zwL8pIq0GTytY59FDcO4mhOecPHi445ZyVi7qPwFtou24hMWaACQeYv0BH6sZrtY04xhqaDUHwbyJh4h6FlvlM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779474082; c=relaxed/simple;
-	bh=ncijV+ytGpSSbCdPpf7hdyRbPQwDBtAAZJnPmNcd2Vo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=q/oDTRnXUXH2/1h/R+UxCflhOnoxBgzd301UTguKllRIvXC/VWaDL8v1DRhqwhrw9JYVz306sAzP5OU5wnLXGSJT5B6fA2sNXH2Yx7n2ZB3lWCojHppDGrjRkP3WcjaDS/GuV20pQB9Fk/J3TcnHZWFE/M6cC8PnARVISNLHaxs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BOtTErkX; arc=fail smtp.client-ip=52.101.70.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0552F2BF3F4
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 19:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779477262; cv=none; b=XWDVqb0hy7hnOMubYYo3hBRgymDaXecu4CFWzdabGXPC/xkPdSw78q/1g6pqtKkLNBc3SE1l9iLorgxTFcWU3PE9xuL7zQSY1jDVJstjv7Itp9t21T/cRax9HnpFqOTIfbPmXRnxuwVT3i5ax50yj6Y5+ZXFecUoJE5zIgd00fM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779477262; c=relaxed/simple;
+	bh=W95e8kqy+EUnTLn7yhNEZxHMkbNjEJlRwwDjiQMwjXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T4QblnLKDK3DuZEtwkgKR8WLBOxEOauZZuxDuW3TdpxAs+9OoJvXuVBbv+kg4Q2zeTSuQBacD8H2Fqo2wm3JUJvc1JR9rNo7gHWvqT+T5VJOJw0UOBx9N5bdd3K1sPMCAs904x5UE572shvefVrw23uTyYHdzyhP35P/MhNAmNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=TAcePJIa; arc=none smtp.client-ip=209.85.221.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BOtTErkX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Abt8yWESjlf3U6AmXAKtt8Yl+ICrUGZcwKZXN5A8x2dbo4hTGH9bdPRhzYKPGWXhHpYqXykAiQnlmibeV1D6FQG3/qDJwgjYy8UWHDcfQ5lGqa+pj8DVyrVIShplOtnFb336X5QfQi/QgrMlIrdTYrLnFyaTQr6is0AG+5hB9/60OFWVkoVVa0VSsicjuOlODdUQ/UhnYs+OAZHMSNJykAItIizA1yZ2Y4mfrAYSt4WkYA2iTmJQRFrug79TZbJFUsH61Fjmia8EooCTt3a3NelDWEEHvKRDgpeqxG4DTd7yQmSuf3vxRKofeBTpi55HGHbkE1L1lL3lC7fUOEMfrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jzVOTKhM0F+gfjJRqo5IKBO5G1hN2EWFPvj2zuTueVE=;
- b=PUoorZqNJKkLkiK0tOxwnXW+n1K7csWb3L/c8EwBRhiVN4lmhLGyYnFZo2Us2L+okEZmnwOowOZVzwDaeY+kmf6veeOqZgptayqmh/gmTC8RPczZyPBeXhbIbUoMpkSem+n8d8ceYOsTThaJ8IkK/E3P6/chom8vXsRcjAgEEm7tOoZT541IsdWycIPfdBiUB10WsFsyHtBHBohYMhHnndt4J/OGq+8Wu3KkA1elfHmh9m4J4BUz8B1XdhuKsJZyxrwPFU/KLbQEOj6puSMEf1hpXDuyfpiw0DW5iaPLTSrm7DqkAGwofXrAW47kVDh+LwR3pbPWe76+FrvmXVKeCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jzVOTKhM0F+gfjJRqo5IKBO5G1hN2EWFPvj2zuTueVE=;
- b=BOtTErkXjH4H1NCCX4aAv8MLcK2CvcRQAfp76tAeXnHq1gaHVyszkK5qextQ6QFO/MymdvhYnPgGQUHzyRv/PkHjuHT0WFqLvNnKUShNhvZZAyCz7i7LBl8WSI2ZIwwEmLLQvoUbSjmVp63mRtGXB+wlqWMqXfMxKYIwCknZ4jb9rAl4tLOdiCxzdeDIGsADr+7iR1/H/W3dGpkZUlWdlHW6eThMP6o9yYQXE+SJ7Lith5MdPTYkw21wAWXnC2aGIiVcoXnFNPOCfNIDLyWh/gHzkyB1FxgXfIpMEKMqYD+8xNW/LAuiLTqzM8LhlkRMMS9J2IKDEGJYLqVpv2yfKw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by VI0PR04MB11546.eurprd04.prod.outlook.com (2603:10a6:800:301::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
- 2026 18:21:17 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0048.016; Fri, 22 May 2026
- 18:21:17 +0000
-Date: Fri, 22 May 2026 14:21:10 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="TAcePJIa"
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-57533363201so2535111e0c.0
+        for <imx@lists.linux.dev>; Fri, 22 May 2026 12:14:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1779477259; x=1780082059; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bcQfxlYT0WdkNlclpO13skLK1pFgoPq0lf6iXLyTJ4A=;
+        b=TAcePJIanrDST6vfcVef4eme8wnJ0YGHznX+60FUSeIs77wCtpHBOCAepO6Yxz95CT
+         ZdT5bw1g+zaB6jbsrgEGyq7h1UXDch1Yr0IDwtI0c5jJ1X5O2K3GtI60C+GQ9KedJrKl
+         kRotWZ+rTPsZ32OsVhGqrQhUZeDuUYbzKl7qrfY3cSvfbG0KxAEK/3DIJAhLJp7ziTY7
+         7ZFnqB5MXvzS/Qm3WZj36YJaX7ZjJ+pKzepY8f6ngSMNVTFuxY5SDX3vW4U9zfE32bHB
+         n7rhuUnDb1Do1mbFAuxGcBrpBRmvmjPSEpf5NdQIujJQ0oPJs4wPdLgJ/mlR1FBpKTBG
+         vJDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779477259; x=1780082059;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bcQfxlYT0WdkNlclpO13skLK1pFgoPq0lf6iXLyTJ4A=;
+        b=A0azlHRhVXpWr6HqsrmYD/0sAT3VLrVeNGzgMSxdE94tODrygzF3l0+/FyDnmRiEwg
+         xDno1JeB4dSM6W6Jt19/OUQ8zZkJJ3QX1+vfqBlP5vQs7QSHkCPvhDam4WfLtyhiWCxr
+         bnIzonDjWxh0v4DHaBejdIgWDccMdjgeKE3JPkWiPzHLlSQSTbEll69QE8Yo8DFvQBoS
+         UdpOfXSM+EHOBDsRi4ScR3CammOBVxBnKVX9RI1ketSkBE0UNaa2JZzGffBROQt04Z2k
+         7xXsnIBoghX9K9HgeCYbE+2w1CP4cfeRRXNZeJxa2HYN1XADR8kVQMAtp6vpw7mmx1+6
+         NSxg==
+X-Forwarded-Encrypted: i=1; AFNElJ/HW16H8T9fVZmZ3K57SIr0vlSk0kPC9IFNP5bOpzjR+5BLt01ptbew0pf3KY0YrjAP8tc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzklpENVxAnQU0SBLuBy4y5yE+hxBBVVAivJyWaA7EIyFw8sW1V
+	RNjDy54mFKDCqCti05QpFyq8HWkuWXUl3K5KdZmALB4uAx4r4yvoNaapa3EcpRMGo4E=
+X-Gm-Gg: Acq92OGAdGG1bKLmN6TzJPvBIQVwWXA7WwDuEx4Znxsq+46n67MITtTu4x5B4JLJOOA
+	6tsGDz5UmFxvsmiLlB58WbpDYanAaJh7uRBhtvqVCujArJUNm73QIIskgb3sPwgRyqXQYkpHaUd
+	vQ+xtv9uG3Hw7o4cNwWY8swzZdewgPeHYglfSzowH4T+URGTx7tGJvZCKUzeKqQibUw6i37aV3b
+	l8vPpLHcpimjDTpgoIbAl9NqHYdo7z6xFbu1vUx3tz1fEE32iprIhzhnviZOzBHlvFaZUZn9Jm3
+	gvaoRe5MJbAD/uEKDlaanKx1wT1LjQlCw0x/+NiyiJjfLyCb83uUZ1VjtmZvOA7eqO3ZlWJDd2d
+	mv8PyM7D2faEEyGbN4RB2LQziBsuqvc6KEk6gB1wv0Om6NvQweVte5ROWGrI2eiOaxCELdIpmNK
+	7C5XqXz5O4wRdT244WOm+Vh0ZssLxMtaoPHtbQu/rFIQ==
+X-Received: by 2002:a05:6122:330a:b0:56f:adb8:7c54 with SMTP id 71dfb90a1353d-5865e3aff5emr3335785e0c.3.1779477259066;
+        Fri, 22 May 2026 12:14:19 -0700 (PDT)
+Received: from acer-e1.tail6c460f.ts.net ([2804:7f0:7542:7b16:2880:ed6d:f5c:8b9e])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-96173af3e82sm2741013241.10.2026.05.22.12.14.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 May 2026 12:14:18 -0700 (PDT)
+From: Ronaldo Nunez <rnunez@baylibre.com>
+To: linux-pwm@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] gpio: mxc: fix irq_high handling
-Message-ID: <ahCelrB6NWBy9Chc@lizhi-Precision-Tower-5810>
-References: <20260522070118.800671-1-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260522070118.800671-1-alexander.stein@ew.tq-group.com>
-X-ClientProxiedBy: SA0PR12CA0017.namprd12.prod.outlook.com
- (2603:10b6:806:6f::22) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Ronaldo Nunez <rnunez@baylibre.com>
+Subject: [PATCH v2] pwm: imx27: Fix variable truncation in .apply()
+Date: Fri, 22 May 2026 16:13:48 -0300
+Message-ID: <20260522191348.6227-1-rnunez@baylibre.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI0PR04MB11546:EE_
-X-MS-Office365-Filtering-Correlation-Id: a9f1b10c-df23-47e4-a0eb-08deb82eea1b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|7416014|376014|1800799024|366016|56012099003|18002099003|22082099003|11063799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	yR+cEr0DH2XMOQF0YX/qpWdC6gizE3iCTapNaD/jAjS8HFwqQ9TNFOPsZr3Fcq9+gDdmDgqG+mpFNXvfK2UhaujdE2odweTKp9e5yKWoOFmhyNn3g0yk+KfKDiV9Fr9WgKVpD2U/nd/YeM3VL7zV2BxtkJqosBew8heRIT0IamnMXHpSTHkpgHCHcTfR/Ldeeku3zGNf0MM98gKerPdde24qrKIVV0VSCgSCK8vzG0VdUTLEXu+g9aa2Fy3DU5SSfBY+SJwz0uxmM8Fhb5DuIxZgpEUIE/EL0LtewD9u6LAceA+IoIsspwLqvK2sKae4M8JZbcQG7eMivufSWpTKMg8EA/S8zVS7aEkqISZI2e8bRaHQA7RRhretY7dRmdPZrj2p1RUQyDPASqttOrUzDSr5KBrMcNQN3G1nfA4jBUh+QWu6sgEzMy0h6hN/wJhC75vpSxQe7YfYZ2IC2kmfIbUZ8xwBrO1cTX4cvbhR3Cnc+mch+1kOF+eXxaqEja5/YlM0S3ldYOWs+/yBt2eXV6yX774n3DC09djkZawNb1wRlXyJD59xwr6C24Sc5TpDgNzL08ursWylb3WDa+SkANrQSTrsOJBsxjtZrkaZQjMdRTvCH39RuDeJIKAwRfGanGqBFXoxMSNgPLSS/Kq7eJSJMs4lkGKIiN1s19uqzSQ3u0AuQHsPR1AwNuhCghMitgCZnd4PfiWNwNonouuSQ0XeAvqW3AZJyNgNQ+maiJieh6+Ylap0x8yn0C6gl0RX
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(7416014)(376014)(1800799024)(366016)(56012099003)(18002099003)(22082099003)(11063799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nANqjGMRIqmvF8JiprvF2EaO4RRpXyb2rTBq4x8SeJ3fQuofbDdCfEEegjc9?=
- =?us-ascii?Q?Dwfq8EL8N8dqCkf/XFjUgqA594o7R2CXkWNiB9vlkZQE9z94+2BQ6TyZ9M92?=
- =?us-ascii?Q?1cN1B9cASrcee10XRZ3sxVoXP6xqo7aDTcXZjG01MwvXMNzQ8H2CToo64JgC?=
- =?us-ascii?Q?CE5Ugo9PaXkkPxvOmtsBbpQVQqK+NJHmWo2if2zI+qaOPGCCBEniak2Ji6fw?=
- =?us-ascii?Q?AguXNW9jikHQ7bcenDMdP0E07Oluro9e6vWPknw8NA2CWSS1pJRNoCV/UPgd?=
- =?us-ascii?Q?bB41qRyU9paBFq4q/1nca6mIh2hS3oqgTQs1b/0qCM39CyJsTYWH5HBgsDAt?=
- =?us-ascii?Q?FZd/Ft5px5L/iHjoKyQ9WkPCvg5jBgl+ISO8VOUGTPrOZnJ0YEPRuhGaKH0Z?=
- =?us-ascii?Q?QFXgguGKRLpCr21Mrbli19R5Kdf6I6gBoMO1NsgsQ5WFGijuK6lLme2KdtC/?=
- =?us-ascii?Q?1YX3pV+zkH8DqpIbnHnR5Y7ed31NQnDP08GybkrvQlM4/6NABQk4lpVVzlu4?=
- =?us-ascii?Q?KGfbGgc+RaItChk+ov0sOhANC0rIa0IbM8Iy7p4dM8cMc9zT3gLZzlZZ/fIN?=
- =?us-ascii?Q?gdCZZv1lw1PfgWQxZSRZJZUTmlWaussPl5UaBR/gV8QzdVr0M89OUA7odzYO?=
- =?us-ascii?Q?kfIzocYyj861RYXOVJg1vW8q0ZB2fKYjXPgz6Jux6NNrhLb17V98PpVAeYZ9?=
- =?us-ascii?Q?IbMjWN0hiayYjjPDi3fIrklhZ3F3QgV9Mit/zsVYBI1tuge64p1SB6ggRIVX?=
- =?us-ascii?Q?kJWuTeYOKHby0TwkvftR1XgPoTmq+xH/bHmQZlM7f0eC6zv7xkgOsMffvJNG?=
- =?us-ascii?Q?T/4j7y9BzyUxcJLQgBMFldo2m1I3ZkPAilEI1LeDUoydMgjnflX1OrOmN6ZF?=
- =?us-ascii?Q?RXdkp93vf7MAud/2jMrDOrQzQyBZc5RvkiWCG5djdE4sFG4QUkDAKRuWh7G8?=
- =?us-ascii?Q?mnIv69vWhHyd6VCIgJX+dk352uJmft6p5KR99SJWaGtqy2dLyCMmkttrHdBP?=
- =?us-ascii?Q?2MP3f1pO5PCcOJ1hQMRFQgXgh6HokB7cE1HmyVpVBIR4UiONuoSBGz6qyI0U?=
- =?us-ascii?Q?xI1+hZ0Nw7+vbDzjgyFqqfNlf+B01UtGmQkfY4B+pbJrNByp0Pb48xpqZZ1T?=
- =?us-ascii?Q?xkYtPLLENjPgYXSn3wjE01fZ2If4cV9j0DYfY3FYiwMYKbyd20QbYOWrlzKd?=
- =?us-ascii?Q?obKrF/Y1FVCoygsPy1oNRb5URbBUJifypfzCNvYj3Xrn7o/kafhr2qBm8MuU?=
- =?us-ascii?Q?M8U6nXir/5VDIBAn9NAmsi+gCmBTM9fRvsmAUeplfV7UEO4x0yR3M5lm4Mvn?=
- =?us-ascii?Q?eDQXvVLn9A6c041ovStabID32O2n5Dg52ClK79X5XZIC8gPVps3rsiPq1q6L?=
- =?us-ascii?Q?zhNef9T586V2p+IetAFTLEUkYXYJCLzlb5oSMLn84f8ZupfODh8CdT7jjRwQ?=
- =?us-ascii?Q?uMQKdJli+v9aHG8maY9pQUH+D/IyzL61Ct5GqE+qhTHxFrPQZ+zllr+2M3co?=
- =?us-ascii?Q?xxaW5sw/AIgL9gNjqOnybu0l7lOIjhZ66fneKw6eVjQGvCdE8rdjbT/cjV28?=
- =?us-ascii?Q?8gs5cQCy6u3O89oXuCj+FSGKiRTv0ZQEq1tgQNoNEscUrxA/M4zI9xGTnlP9?=
- =?us-ascii?Q?33vQ4THnGWl6qd6jkNrQezeEfVE4TXa5nm1FTGxGA7zJxca22qFvd3dxT6aJ?=
- =?us-ascii?Q?SnJwV0b3ib/PcNat3sJKbTlwRgPvN4PSnz8Z8z+P0uYjPJi3aDZUVcisPPcQ?=
- =?us-ascii?Q?linRnCUe4g=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9f1b10c-df23-47e4-a0eb-08deb82eea1b
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 18:21:17.1312
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mLrbDZPohuoLteDN0n+Bse62e6GlMLOBWvRBPmOuLzRN2B+6Bld3eURs9Ekfr/sjOL/AzGaihMEmEkkgPSce0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11546
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 22, 2026 at 09:01:15AM +0200, Alexander Stein wrote:
-> If port->irq_high is -1 (fsl,imx21-gpio compatible) and gpio_idx is >= 16
-> enable_irq_wake() is called with -1 which is wrong.
->
-> Fixes: 5f6d1998adeb ("gpio: mxc: release the parent IRQ in runtime suspend")
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
-> I don't have hardware to test. I just noticed this by code review.
+Fix a variable truncation when calculating period in microseconds as
+part of the solution for the ERR051198 in .apply() callback.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Example scenario:
+ - Period of 3us (PWMPR = 196 and prescaler = 1)
+ - Expected value in tmp: 198000000000 (NSEC_PER_SEC * (196 + 2) * 1)
+ - Actual value is 431504384 (truncation to u32)
 
->
->  drivers/gpio/gpio-mxc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-> index 647b6f4861b74..12f11a6c96653 100644
-> --- a/drivers/gpio/gpio-mxc.c
-> +++ b/drivers/gpio/gpio-mxc.c
-> @@ -469,7 +469,7 @@ static int mxc_gpio_probe(struct platform_device *pdev)
->  		 * the handler is needed only once, but doing it for every port
->  		 * is more robust and easier.
->  		 */
-> -		port->irq_high = -1;
-> +		port->irq_high = 0;
->  		port->mx_irq_handler = mx2_gpio_irq_handler;
->  	} else
->  		port->mx_irq_handler = mx3_gpio_irq_handler;
-> --
-> 2.43.0
->
+Signed-off-by: Ronaldo Nunez <rnunez@baylibre.com>
+---
+Changes in v2:
+- Added example with actual PWMPR/prescaler values per Frank Li's feedback
+- Dropped testing section
+---
+ drivers/pwm/pwm-imx27.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
+index 3d34cdc4a3a5..c8b801fcb525 100644
+--- a/drivers/pwm/pwm-imx27.c
++++ b/drivers/pwm/pwm-imx27.c
+@@ -200,7 +200,7 @@ static void pwm_imx27_wait_fifo_slot(struct pwm_chip *chip,
+ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			   const struct pwm_state *state)
+ {
+-	unsigned long period_cycles, duty_cycles, prescale, period_us, tmp;
++	unsigned long period_cycles, duty_cycles, prescale, period_us;
+ 	struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
+ 	unsigned long long c;
+ 	unsigned long long clkrate;
+@@ -208,6 +208,7 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	int val;
+ 	int ret;
+ 	u32 cr;
++	u64 tmp;
+ 
+ 	clkrate = clk_get_rate(imx->clks[PWM_IMX27_PER].clk);
+ 	c = clkrate * state->period;
+@@ -249,6 +250,11 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	val = readl(imx->mmio_base + MX3_PWMPR);
+ 	val = val >= MX3_PWMPR_MAX ? MX3_PWMPR_MAX : val;
+ 	cr = readl(imx->mmio_base + MX3_PWMCR);
++
++	/*
++	 * tmp stores period in nanoseconds. Result fits in u64 since
++	 * val <= 0xfffe and prescaler in [1, 0x1000].
++	 */
+ 	tmp = NSEC_PER_SEC * (u64)(val + 2) * MX3_PWMCR_PRESCALER_GET(cr);
+ 	tmp = DIV_ROUND_UP_ULL(tmp, clkrate);
+ 	period_us = DIV_ROUND_UP_ULL(tmp, 1000);
+-- 
+2.53.0
+
