@@ -1,149 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011015.outbound.protection.outlook.com [52.101.70.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED22349CCB
-	for <imx@lists.linux.dev>; Fri, 22 May 2026 19:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779478727; cv=none; b=GpIejP9Qudpqint3LNkXxwuwZXO368L1K1ebHOR+WNQ4xNVQybSNHjGp3Rtv8BZmZj/OGzzKbgHaEMTS/z8rKvZfYId86urrxkdshTfeIC49O4ihpUzq7XBDi0Mtltd52a8c6PK0jTbDKVw749CKJIE20GvstYy7+TNpXo5NBwI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779478727; c=relaxed/simple;
-	bh=+3x0GIpMgBJoV0ZksV/DA0IVYVwcGJ961xsAYEyP6go=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hlx+RYC680quOGIgFvE/zZapDyxxHFL+NCrH0Z175vLFw3jsvs/FgIsYNxR7VKvzYerPalv+/JsRpupw7hJbevQ0ycfrL3U0Oi6eNSAHHtuWgS+J22dvYu/zTe5i3DSgFirPdiMCN+FZE8LnStaie4m1RsC7Th1ZhwyRsVdv3j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lElB4XvA; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF36E368D4F
+	for <imx@lists.linux.dev>; Fri, 22 May 2026 19:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779478838; cv=fail; b=KiVshXRLHwxcsk2SxAyI9spYMcXM408tvlAFlUeO6IZxCLMgnP2mP+qn1QJDm7M49cxMi6VzQO9fwQW4SR7ftfXEEXjLlmmw213WwZpv+uJ3zwCUfAbMMLvgeJsIG7sTVcNzrms2n0wkuFnSb8luIMplFnVrqs93uBTDYRknwTo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779478838; c=relaxed/simple;
+	bh=OyE9HboQXmVU9CzKffn4qL/M+88QFfnJVElcpR54AlI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=JxpMMaZz7OPb+5WzQDoguQY/Jb2LPZUyKnBXq1ulL1Kp9ekNiTPdLqfz5FhjduantIOL/r/uxV+xYW6KvS7yzIujy3vBvBnPSl3uKctdqSkFbugnA2q76aNKSICid42o98n2FzP+FVleLgiSzcjTebmMNQf7B1Ya+9HTdzERXEU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Xl76m0GS; arc=fail smtp.client-ip=52.101.70.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lElB4XvA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384761F000E9;
-	Fri, 22 May 2026 19:38:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779478726;
-	bh=2+mJLEF6FCzPOaRXd9vaEU8oJ770cweynjDCGVRfTJM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lElB4XvAknbwrT4iSp/dHqgPx9ZcKOpnnE0+opKX411u21MxTGRQiWvl80F9Ebe4R
-	 9drkMcVERoH3Z8yEhlWfZBQ/UIs2MwukWFLD9xhNL8jtK10CxuItyr/vdx8F3J+syY
-	 d9Y5h8dnJLEpxLMVVM2Ea9+B55oIjQreNAAUtt7v4osuPWeAtl5jKHjdWCJcs0WBbA
-	 SA3sQJgORVz4iBkBLt0jKxNV2SxeifUJ5ivm5SL3Anw8H7gFkDv0Wrivtrsd/isDDM
-	 wzsN35ePmfw8Jot5OnowGHb415Tl9TPfRakodPrASMpkdM+y7YfnPfm0L9olBRsZxF
-	 vO3eoe4ecoGfA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] pwm: imx27: Fix variable truncation in .apply()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ronaldo Nunez" <rnunez@baylibre.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260522191348.6227-1-rnunez@baylibre.com>
-References: <20260522191348.6227-1-rnunez@baylibre.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 22 May 2026 19:38:45 +0000
-Message-Id: <20260522193846.384761F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Xl76m0GS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cuVYrGa2gHBP49V8VtkeCAo81ssthCmUukhSLkYqs/B6eFG1oMQFPDcrFx7OaIF3gGr2wyGobtAonPFjMoy0Cd6qDkAuuTxxG2rcDeZa4hnaTVjYgtm40VaWw7+kSxbcwvF0SD5OVWLAvTFAVgKRo5f7PleK+EiaoCT1mZDV7HMbD4cHa8+EG3HuB1s9z2csQmZWoFQuqSQBWNdB4+yeJI60zs2G6c1RiZVjHb+a3wbLKipd8v+dEjsNhwsKRnbLB/COQjdB39AR7YN0Y9At0eCJO6OBT30mUWDoy/EIDHXV3iKBA6aUQbA1aOnf9X4PQLEwU42RpUrN4vxlzL+G9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V1XJTNgS2ge3n5YlUmVMTh43rQBttxGnQp34HY3qF/8=;
+ b=JghPJQ+gE/Xczoy5y+ecWZTobREv5Bm26ABhMCvIHvrcLNwkCKTJD6WIGF4vxGcoDoMS0TDhKtzdiYws4fgFFo7sI2UlSXMqr4lAKsSj83EqHrVY/DLos9mOzfD/zE0AeRFaxQ7XHwVGFnSM3rQrUghwUC6KzDVBcZDajGiVVLORiqEtEXiaGzv1H8iW1LPTbxS4rS6Y0B8x4sNoEuSOb08DWNpuIjG7LVq15SuzGciOYzqljiO2i8YnD7j6+wAGQtq/9vP1zSFogwOXdUrWwNY6OjCYomjxR3y7PL3ir/SBCAsRWCLyx3fU3ev2dcY056pRdDvKpCGXhfqc1AYcJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V1XJTNgS2ge3n5YlUmVMTh43rQBttxGnQp34HY3qF/8=;
+ b=Xl76m0GS9pZzGTXgZiXaE17LTZ+0huncIUrMPWxzD6GjQJRd+e6jvYKPiF/7YzN2tmhBE1JdBc3esOhtRl3vGaCMPr2WOg2quMrzPl+tepWlhZoTt21gCIeEPkgeqp8lPH10EjOq5Sf4il49RM5gPzm73X8IQdf2REULiQsbZp3mGNqEJlbNQIJStN6bnBM246AHV2GQ6Msfk/dHBdKEWi0qFKo0wN0sgPdN+t/UMo9Iv/NasxB1VMNfhYhjE3ji6AFr2TYz5KPb/h9F25mWkfHzb7VtZJV0Dr84+UPbN1O/IH0ir6qkS46OuraCGNU0T0fcFp+c2ed0qBnI7AacFA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by PAXPR04MB8813.eurprd04.prod.outlook.com (2603:10a6:102:20c::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Fri, 22 May
+ 2026 19:40:33 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0048.016; Fri, 22 May 2026
+ 19:40:33 +0000
+From: Frank.Li@oss.nxp.com
+To: Hans Verkuil <hans@jjverkuil.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Frank.Li@oss.nxp.com,
+	linux-media@vger.kernel.org,
+	imx@lists.linux.dev,
+	Mark Adamenko <marusik.adamenko@gmail.com>,
+	Shyam Sunder Reddy Padira <shyamsunderreddypadira@gmail.com>,
+	Michael Tretter <m.tretter@pengutronix.de>
+Subject: [GIT PULL FOR v7.2] i.MX NXP stage driver for changes
+Date: Fri, 22 May 2026 15:40:17 -0400
+Message-ID: <20260522194020.693731-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH0PR07CA0079.namprd07.prod.outlook.com
+ (2603:10b6:510:f::24) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB8813:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e7b1433-b6fd-4b66-8276-08deb839fcf4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|376014|366016|18002099003|11063799006|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	xdHyM0wS+IIuW7vC5OKdFBcR9lH62sRER79BnFec+lWt7DOiuKUmIN4z6Oa/J/oUS20QD8NaxF2Znmvbn3lfbBqi8wCNVpUarq+yHa+W7h/c+gMblLU3iQwyeGNh8xO+RaxN0fi5+SR0YEg2TeUQN6hu5gjPNQBxDIMKndrlVE+O3vVjeY86Bz2g0UUXeMiEQD7TihJyRIfHZyLGs4vC9IeNg+VWhvQszYSV7GYn9A2K9ceZSVPMz2H/bJqE+AB3qjRIwQWj/Knn/2A8aI/8CPw0cY5r7c+hJVR7SGCLELC0oRHwVG8nxKH7ckBGx+Xk7ZK7T9kEDrRztnMLs859qTlW5mJY6hMxqqH/QUGaufDAx4VUKPyh0rGs1stkK8KHajjZ/FI6pUKZ5+UPf5JjaihUtQUrvlbEWuwdP/e4I8voaF8J9QjuKpt6td+c6f1XRZgoIYFFhhJ8RLnrTJfLzZwJh3z944wQUbAMp09IULXDnumyXicX/qj+iFrObaTuvDjljl19v7D0OgcxM6NHkwko9yCMBYSekao7XakWdHKCCcsj+iBpVSd4kI0MkL13BSlNhNYsux33vA7fFeXNH2RvPlO/AbugYOFO1oU9rsVHcno2S5qxkECPqRLJqcTKo9pxdCCrgXtXr8kCsKBkTQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(366016)(18002099003)(11063799006)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Y5vt4AYwzZt3oIN5AYQYRlAmH9abki5Bb1DLCmRWGftcvFQYyPSA8hNQ8fL3?=
+ =?us-ascii?Q?uaChilz3RyspRbGfz7+HXzBJZh81vs0Jq1Fv1ErigGBe4RqRiTlvbrPcFO1R?=
+ =?us-ascii?Q?hwo56ftva6AP2ROZSKjsBHSyfW0mmc9kzqcGRORcsBm6H027OJNZtLmOKFPR?=
+ =?us-ascii?Q?5Ud2fGJmnk4zK6N/a/ex3vNThOUHEdgiNvoiEKvvu38XPV430o860csi40Gb?=
+ =?us-ascii?Q?kE3UE8sXIEuxqGLN8ypPhcwGYuYUOXKuK51/hvTPluj+rQex0/h7ECGLuijq?=
+ =?us-ascii?Q?WSM7murzHD4/8AraTWuITHSRbIg/3V0isZiP3JepwXNXYh2azPu96uSGNHKV?=
+ =?us-ascii?Q?rXXpJuXao7QiFMbDFb89Lx0NBgU2AmRdc0LEFUlZYRISgJ4/Pg2tgWcbYXN7?=
+ =?us-ascii?Q?n9u7gmjwFLKHH4R/67JRc7vpcZnhP+D7qzudGHgisy5IiCaswjCEYymgf28w?=
+ =?us-ascii?Q?6qQ784OlhD8NcRRKiXulve9vc6qsu5GqVoUIssmp/IGiSfUbIraNqPLUpsME?=
+ =?us-ascii?Q?LNNuk/ZkjoKzKSvN6nCGays8My4mVNbWek8eUsFLeuQgk1D/8KM+TWYBvaRL?=
+ =?us-ascii?Q?0N3OM7oVJvJABdxh7G6PrzWkTEso1fjXUU7zxvE1alP3aeOaVteEDD3ilXNk?=
+ =?us-ascii?Q?r8QnqgZkg3oJbLToDQQ/lthW+PQdE6CODguwUieRpxh68P/+fsYJdXB3Nee4?=
+ =?us-ascii?Q?jx+fYGCk5Z7cvHG1cMQF4hpy7zinOEYTiCVL5VNpmYGTXvWO1VqjpvUbWXrz?=
+ =?us-ascii?Q?LkvFIT61d7K0psBQwz4jtMnZ6Wq/csiJf8T96gFVjqfGrNG52PFMfV/2LN23?=
+ =?us-ascii?Q?T/Ul45gyCCBAVOQStE5uIDQ4/WLzT8HWiXhJJR+2Ai/N4lMrx+6Kw82UV04i?=
+ =?us-ascii?Q?0T82TYrcIw/UxancE9TkhXdWvYJ6YG/qEGU4PZdzWZGr73ba9+dbgeb+RObh?=
+ =?us-ascii?Q?PpXW7j/DI+KYbjHo/dGbhDrJOmtVvHL0Zg289XVzecXb+EsHajGom3ZLXt2k?=
+ =?us-ascii?Q?gEV8+Mb2l9qGjJXti9TcA9o8NyAVHwVlgNfhN7SHvY9doZ8TNjd1eY0XwAlj?=
+ =?us-ascii?Q?7bDrJ/pyIcaWbtzXkU0xyJXpROdGSN46tpwNBw6ElhQEkP5tti+RzHLSLKwA?=
+ =?us-ascii?Q?k0l4V7llmAeCoYE2PWD0jiQlIFY1Oazpxz89tsB141v/YZnp6/njlu1s2ThS?=
+ =?us-ascii?Q?SeNhTqsVsKS+Q+YR1HNFtvE/bQ5igAZs40P7mZMFqdo0sMVeYhtC1mEB9C8h?=
+ =?us-ascii?Q?E59D9aH4PmJgadL83fjBMk87yBgMPgB2fpQ0yGT+TFS/SZQP2mJuNfiP2+VF?=
+ =?us-ascii?Q?1mc10FcVUDuMsblEC0BtvQHJQgkoOx0/xtDgCs/Ol6vJHOf06/hdXKCIZlsq?=
+ =?us-ascii?Q?0c9PZCM4Bgs7iG58MBR6EKND9kkelnU6k7FGz0heZ2EwGJUpqdor5T7ZDaYo?=
+ =?us-ascii?Q?+/RpP1aXtYjrsa3u+x661HqKFdkvVIPEJJbXITZtqrK0xlyZkxNJZ5AEiQBx?=
+ =?us-ascii?Q?kcZ6y3tNwRMqBZE0cS+uilqj3+OGDHRoXYsfL7onX0NZq3DY5x+MXPfgaMNY?=
+ =?us-ascii?Q?WEgcVzM4TdoYO8pBDYsEqySuHzVun+dP7Cl7j4EHw9kuLIGS6+2oRRKNuAJY?=
+ =?us-ascii?Q?ZB4/B/FaiINyDN4b6R4EUNJFTaxxrX8rop9QEm8Eb81fgI3MzlsdIVdbIXM6?=
+ =?us-ascii?Q?F29+mjhC0dej2LwbcrHbCRDrYVGR0j9T5YUGu1lMU8agAHEz7TVdq1YCJSdF?=
+ =?us-ascii?Q?VbssMPe8EC5bxS5xY69Ger7IIGWarXS76VPWIVlIfM7UOeQJl8gR?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e7b1433-b6fd-4b66-8276-08deb839fcf4
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 19:40:33.2109
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nPBovoGM+7hqH9B9yfMD60noJvHqLq1kp9uLObfzgKLNOumQVwE22LRDdB1K2f5/Cx3bT+v4EnWvZldRyB+R8/tUDJBE1/sm+z9QjoM+zRVCqJqvDgg7SA+vgalEH759
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8813
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+The following changes since commit 940f161f734b25f175a95d2684c2021f6323693a:
 
-Pre-existing issues:
-- [High] Division by zero kernel panic if `clk_get_rate()` returns 0.
-- [High] Missing bounds check on `state->period` causes integer overflows a=
-nd silent hardware misconfiguration.
-- [High] The 1.5us safety margin in the ERR051198 workaround mixes unpresca=
-led and prescaled clock units.
---
+  media: meson: vdec: Fix memory leak in error path of vdec_open (2026-05-21 12:32:22 +0200)
 
-commit e248ca7d296d611230c3b9bc5da0d73a70d0c358
-Author: Ronaldo Nunez <rnunez@baylibre.com>
+are available in the Git repository at:
 
-pwm: imx27: Fix variable truncation in .apply()
+  https://gitlab.freedesktop.org/linux-media/users/frankl.git tags/media-stage-nxp-20260519
 
-Fix a variable truncation when calculating period in microseconds as
-part of the solution for the ERR051198 in .apply() callback.
+for you to fetch changes up to 87ac7ccb322a2cb70957878905fd46d821a919bd:
 
-> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
-> index 3d34cdc4a3a51..c8b801fcb5251 100644
-> --- a/drivers/pwm/pwm-imx27.c
-> +++ b/drivers/pwm/pwm-imx27.c
-[ ... ]
-> @@ -208,6 +208,7 @@ static int pwm_imx27_apply(struct pwm_chip *chip, str=
-uct pwm_device *pwm,
->  	int val;
->  	int ret;
->  	u32 cr;
-> +	u64 tmp;
-> =20
->  	clkrate =3D clk_get_rate(imx->clks[PWM_IMX27_PER].clk);
->  	c =3D clkrate * state->period;
+  media: staging: imx: fix parenthesis ending checks (2026-05-21 12:58:30 -0400)
 
-[Severity: High]
-This is a pre-existing issue, but does this calculation handle excessively
-large periods correctly?
+CI pipeline: https://gitlab.freedesktop.org/linux-media/users/frankl/-/pipelines/1672639
 
-Userspace can request an arbitrarily large state->period. This can cause a
-cascading failure:
+----------------------------------------------------------------
+- Use media_pad_is_streaming helper function for cleaner code
 
-1. c =3D clkrate * state->period can overflow a 64-bit integer.
-2. The 64-bit result is assigned to unsigned long period_cycles, which
-truncates it on 32-bit ARM architectures.
-3. The calculation prescale =3D period_cycles / 0x10000 + 1 can produce a v=
-alue
-exceeding the hardware's 12-bit limit (4096).
-4. MX3_PWMCR_PRESCALER_SET(prescale) uses FIELD_PREP, which masks out higher
-bits, writing incorrect configurations to the hardware instead of rejecting
-unachievable periods with -EINVAL.
+- Fix media pipeline handling in imx-csi driver by explicitly starting
+  pipeline on pad 0 and moving media_pipeline to video device
 
-Could this lead to silent hardware misconfiguration?
+- Fix imx stage driver code style problem
 
-[ ... ]
-> @@ -249,6 +250,11 @@ static int pwm_imx27_apply(struct pwm_chip *chip, st=
-ruct pwm_device *pwm,
->  	val =3D readl(imx->mmio_base + MX3_PWMPR);
->  	val =3D val >=3D MX3_PWMPR_MAX ? MX3_PWMPR_MAX : val;
->  	cr =3D readl(imx->mmio_base + MX3_PWMCR);
-> +
-> +	/*
-> +	 * tmp stores period in nanoseconds. Result fits in u64 since
-> +	 * val <=3D 0xfffe and prescaler in [1, 0x1000].
-> +	 */
->  	tmp =3D NSEC_PER_SEC * (u64)(val + 2) * MX3_PWMCR_PRESCALER_GET(cr);
->  	tmp =3D DIV_ROUND_UP_ULL(tmp, clkrate);
+----------------------------------------------------------------
+Mark Adamenko (1):
+      media: staging: imx: fix parenthesis ending checks
 
-[Severity: High]
-This is a pre-existing issue, but could this lead to a division by zero pan=
-ic?
+Michael Tretter (3):
+      media: staging: imx-csi: move media_pipeline to video device
+      media: staging: imx-csi: explicitly start media pipeline on pad 0
+      media: staging: imx-csi: use media_pad_is_streaming helper
 
-If the clock is disabled, unparented, or misconfigured, clk_get_rate() will
-return 0.
+Shyam Sunder Reddy Padira (1):
+      media: staging: imx: remove unnecessary out-of-memory error message
 
-Since clkrate is directly used as a divisor here, the kernel would panic.
-Should the driver validate that clkrate > 0 before proceeding?
-
->  	period_us =3D DIV_ROUND_UP_ULL(tmp, 1000);
-
-[Severity: High]
-This is a pre-existing issue, but is the 1.5us safety margin mixing
-unprescaled and prescaled clock units?
-
-Later in pwm_imx27_apply(), the safety margin is calculated as:
-
-	c =3D clkrate * 1500;
-	do_div(c, NSEC_PER_SEC);
-
-This yields unprescaled clock cycles. However, val is read from MX3_PWMCNR,
-which increments in prescaled units:
-
-			if ((val + c >=3D duty_cycles && val < imx->duty_cycle) ||
-			    val + c >=3D period_cycles)
-
-Adding c to val directly adds unprescaled ticks to prescaled ticks. When the
-active prescaler is large (e.g., 4096), does this overestimate the safety
-margin by a factor of 4096 (e.g., ~6.1ms instead of 1.5us)?
-
-Could this artificially force the workaround to trigger and unnecessarily
-delay valid duty cycle updates by a full PWM period?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522191348.6227=
--1-rnunez@baylibre.com?part=3D1
+ drivers/staging/media/imx/imx-ic-prpencvf.c   | 16 ++++++----------
+ drivers/staging/media/imx/imx-media-capture.c |  8 ++++----
+ drivers/staging/media/imx/imx-media-utils.c   | 16 +++++++++-------
+ drivers/staging/media/imx/imx-media.h         |  7 ++++---
+ 4 files changed, 23 insertions(+), 24 deletions(-)
