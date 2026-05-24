@@ -1,105 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010016.outbound.protection.outlook.com [52.101.69.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5375A1FE471;
-	Sat, 23 May 2026 16:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779555344; cv=none; b=uIFxGd8gvcC3jIVaIagUPVhC35/KYw8CfZCd0+hZHNkVay8hNjdsMdNPJr/UVW9JNibU4bnlabhjtIlevXsN1PtP6Dj0GxYE8740fkOlP6T5Ze2RDbr96Y7lITtwSgKy/N2TrAqB5rq5WtCapXlLaI0gHGmfWSaLjDiAspGGpLE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779555344; c=relaxed/simple;
-	bh=vGJn79psLNSGbdvWUcF05fHU7TO0h9kIvtXy0kpqX9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dwBQkW4XIxOAAG20QhvODy1Eq8hk0Lip3xooxFIsxk7nV5sMxzMAqes2O0js4aJbbymTVfuiGRE4QI/eI+r4DxwtLUDT9tTBh4GeypL/2FrpClPUjpG77TC0u0jhVcpePEHI0cLKheGl166352Rf21LhMD2l/LdyhWr3I4EptwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTVy7vRc; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7776E38E8DA
+	for <imx@lists.linux.dev>; Sun, 24 May 2026 07:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779607813; cv=fail; b=DiHqqzvKUFzYQJtC0siiSIH+EfzaRMDbyeMfCNCEETLSgVfKI4WhuQbOsuphjmhpAWbvdzt+fuvdDbaXIXX+vOrHvcZseXcujfg1EClDgr2hxOj4PHO8f34YBiaxWubk9CKz0Ox+TesNwtZwx/U8oYvOHzAOI59ogU4NYmzN6z0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779607813; c=relaxed/simple;
+	bh=OqxY+YP86DaRdPF7sMB0z66qrDRty9KWlrcAcURxVHs=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Mo2jBpLxwCmRNNIlYosFTxks8XXgryoSplZ0cdBLx9VUPp6OpYi3kBrMts83wLfbuwNUobtMF1qgCDUoXhEUjINQsMlFgBTJ3iH5bQbOnZhw6yE+eGMCxSFWMTHSnKtForndrK7MF567jebTQ37s93J5PpRrEnN7gOlUiZ6BDxM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Keyt6rSv; arc=fail smtp.client-ip=52.101.69.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTVy7vRc"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 63BF11F000E9;
-	Sat, 23 May 2026 16:55:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779555343;
-	bh=Q/gT+YsJzWyplKB1RZZSInjxfqO5+hC3r72glf2BYWg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HTVy7vRcXSz+roUzS1mOxYzquBSpIPb1CsfPhBY6xVHldUWGGT1OJH/jzf9/cfUki
-	 ep0oaugIHYFiH7fiEJIEjxkyIUYLe6lPtDnBkbmbOwcwFkiuUVs62SQUaBtpsMNmWX
-	 poRy6jfKLruZRuzaSAhulgUY9gp7Zi2M2pSgnnoUyMsjL/0Gu790WbAod3GjHvmVwV
-	 tBs4b7thfoqamJWH/alR0aJT+34kQwlyfbo2EeJhk+nWF3z7mGZjjnS2sMeyOBfaPl
-	 /dArJAtqcB5jOuQUl34hL5i7JDTkPHHNmbhVtzcmh04HDPFegpuGoijxulFaA29WOb
-	 j/9jA0KhZJyUQ==
-Date: Sat, 23 May 2026 18:55:40 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Ronaldo Nunez <rnunez@baylibre.com>
-Cc: linux-pwm@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Keyt6rSv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K6x/GgJP6rGOhCcKkNbS2LDGHLG++O9RwV4P3Z6ZZHUFHVBhjfRFkbsqT3gCf0VTDhwqGP+hzbQJiutza/KrVFPOeoGOE1X4wgzW9LRhJae1ox3O3fkgEGFLD9mk9KcmHijOB8PoJRa4hzrgfw9hu17n6MMR4JWdJ3c+sE9e4Le1uEg1IvLSGiTRwz52vyHB8rHpnfA85S/hkZl9O9n9Un5Tr0DCNc97BF11JGfBFPvEiXS+CSiTtESpb4bMlUoIGj+VDYi1AYmYolVPTJerswJeehhfmGhs2R18CIxZdT9Y/vUftocfyFaY9ovD/bYH3KnDJ2zL/CNyZTpcXqft1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=frqcSUZ/Qf+pPkcSzwOP1bg+8n0Dko7++QmvKILKwVU=;
+ b=i5eKSu/Gd/M2Bip+/NMaiS+jD34S4XfJPKlZMpmnShtqSQMjWnbGQu6iSIfF4l6lCishm4LleLhmXk82917KgwZJ5zo9/cEIWCbrz4Paf1LFRNTyk70n8cNuvZv6xjaqS6ASOxrI3TK46X9GxfOlZw4C1DiT2O/N0/Og/LOWdljmyyrgNnv7IUq3YqoOGFg8rGz8+3Fk2naonplyBLuO3NLgixY/1Tko6AEA7AhixCMB6QXJQaUNcpXHHjK+HpT5zhjwYAbCaW01c0UiVOTQntfRmE3mr2JDPFHMWlRY0yyxYwfHBEEPe/SmSU11M6RwFmC8bnaR4XdK3sgvWpzsfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=frqcSUZ/Qf+pPkcSzwOP1bg+8n0Dko7++QmvKILKwVU=;
+ b=Keyt6rSvmxWm+WOWX+AiuyKCapYqhBFM9j6SLJ//LRzrIa/e8+mVmobiQL8f5sfUsX4Do3AQPgtMYak0sJiNr5/GXYWvWm4WzxUa+/uNDXRYBDRYqY4k+C3hC27+O+Hg5RlPfeIoFwr0mCszwWhNnnahAzAQzzwXvxSTKGdn2+vBVRu67Q5MLdezMX4pU23ycvsV2xCkVy7tzWRTuIL15ncZTq/a8bWhnYbBlzL/Zi4wjrK2DTnx8p3FE3YvDB9pF/j9dlCtkPUvSANPZpqDDFXCGqXluqaNcSId7nFX0G5qDE3x96aWP80rjctT/45aMV6oDdbphIWl3/aqMbMabw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
+ by VI0PR04MB11784.eurprd04.prod.outlook.com (2603:10a6:800:2ea::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Sun, 24 May
+ 2026 07:30:07 +0000
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.21.0048.016; Sun, 24 May 2026
+ 07:30:06 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	olteanv@gmail.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] pwm: imx27: Fix variable truncation in .apply()
-Message-ID: <ahHV_GIwdWvTu-ms@monoceros>
-References: <20260522191348.6227-1-rnunez@baylibre.com>
+Subject: [PATCH net-next] net: dsa: netc: fix unmet Kconfig dependencies for NET_DSA_NETC_SWITCH
+Date: Sun, 24 May 2026 15:03:10 +0800
+Message-Id: <20260524070310.2429819-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0025.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::13) To DBBPR04MB7500.eurprd04.prod.outlook.com
+ (2603:10a6:10:1f4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ph6z6kisszpxnay5"
-Content-Disposition: inline
-In-Reply-To: <20260522191348.6227-1-rnunez@baylibre.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|VI0PR04MB11784:EE_
+X-MS-Office365-Filtering-Correlation-Id: d265b288-ac42-4894-d927-08deb9664724
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|376014|52116014|1800799024|38350700014|56012099003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	Moq8dHK1Zkuq89c5YogWzg5JMpIU+lHSXUWWvYp6Lrii52iBYctT/ap5vKDG1RlS5rXz+zz+zpUDaEbf6UzCQVnepkeo7X/yG1yGXe1Xl9aia6kUtf7mUuQM1POxhn873UZiAdEixiAV5BEqPAkj4Ivj+xWIRcBYsIx9cxEI8EG7IDv6gi/J7m2Ya6Kxc8sGZ5HEHrxdY5qz+mfRNn5AhdbmULSw8OT/9vxmzSoE4T1J8GU+zWA+//wIxdcypRX/iarBVF90hCl7PWA2vdqmyUhlto+g80+b8Gzqx4179kKoyK9nNhlLPMQeN/Qz71A17P65QW07C6VPFdNkbqYzOKpl9abbyDabADGGyrDnXfUwBK6uXWxnjDwIQZQpYFzBUKP3rq1GNmHZJ3LYG5uEPHBzFLIJt4vn+WLRk5sX/oNT8YhavIgSYyQktTlCO97HN6uk4KQEnKeIHYB3m+x208Cg/21jqnaJtcPxsMsDxQIeKk7n0UB2rIaXk3zdowHLZrNmmAziaiAWGZRLHGBb/m7iHE+AKNxtoWryM5/Mhk7megkjAYSNg0TQGcGsSQdIfCy1YUXqugryvJIY5kP8ITb/9Wx5VeSlUgc70TJSLDQ+C68YmyETYuu4eVAgPkSzSYRJTjC2RNpr8vDN6xxN3EPUhjhWvjf0WovSbtniDIyQCKyMVN+ipDGrJxaBnHWoOhczONht5I/gGT3fC7kKyGGBhlL5hHgG49mRV5c2gMKNh2WKk89G2Z93b6BLdSa6
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(52116014)(1800799024)(38350700014)(56012099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?SjUP30OUtBaD82u37IxnrBWbo0zBxL5Mz2YakH/EAIPMr7mcOpOw3+5iCF1J?=
+ =?us-ascii?Q?jsWnILfPdB6OpPMQyXiEfnjFhiN+0jY7OCpU05AngO/ZMF42hNNSfDXfr1cQ?=
+ =?us-ascii?Q?1mCtmKE+0aBYNJNGp3MAMXy7G5tiP0BjUJ3so5rqkk+yaVv25QsYM+lC97cT?=
+ =?us-ascii?Q?KQrT1H49UoGpvBHqo75VEGTip83Xg2dbfJGx1fN6ZclFcTkBjq5LJnEfo5on?=
+ =?us-ascii?Q?PEsAM2QwPIJXmWYTs9nVWhMaYTmOvj+dvZKlllhJ61XCBrcJOIN/iHPoq0QE?=
+ =?us-ascii?Q?Tp9UuDwJym2sJp8uxQsAwsWVc547K464+0pvdeupKxabuPW1Cgku/S78TX1T?=
+ =?us-ascii?Q?ALiT04SxnnqBEl4em53valdtqha13/ohbOuxcmdQzfBmK96/JtMStUej7yEw?=
+ =?us-ascii?Q?ZB0VDcq0JVwqND7qJ54V3A6vUOHL2OGPnSdhKTNvJYiQfT0Fbq0HljibDWxT?=
+ =?us-ascii?Q?PA5qvtU0jnyWIRzxgpELL/hFj2pvsrPr26lHsjChcOs5wJrvd3hEgTQ+6xps?=
+ =?us-ascii?Q?iOFwA7boCj6ZsjECu39zBYUqFrkMlhk1mHRZ5y+2vNZAyYbZiMLMYScGO6MS?=
+ =?us-ascii?Q?aN2EmZ0EmbJtoojtqTaspyo71csFX0C3TafaJrsr/SttLWwbdCFKKhXacLyZ?=
+ =?us-ascii?Q?YL+f9wIoMeTGLAIfvqEtlQYsbMTGMmc1AZmHD9j+gshPVInJo/4n81GjhfvI?=
+ =?us-ascii?Q?v8vryEszG2AnFUDXUiRLT92t01/XUEPHx2g6C+DqoDh9+H97n1rAOA6Tl4tZ?=
+ =?us-ascii?Q?CPLID+cImWxneUAHfWIAp8VR1+Ovg7muRoW8w+WGs+DeW/WM84cC629fYv3/?=
+ =?us-ascii?Q?cBTQKdTznKXPqWP/2zPw0LckE1RFCv3ijnB6WOO7dnvlpyzfxux75jdhPz2k?=
+ =?us-ascii?Q?vpSvfW3p3ddbYosn4MTTN0l0IHL7tpEhPZ+ASk0SU1mA1IdCAgVmzsT0HhsY?=
+ =?us-ascii?Q?N+eoaF2/YVwkyzh0IRQc5ArncmKBSI1F61WX9xlASyq6ufBmGwuXXBfLy+aT?=
+ =?us-ascii?Q?98cM4C4T+c9ZlcrIlqLDMtLukTJu4RgBtsgt8xp2LhmeasHVcOFfi9T4cFLu?=
+ =?us-ascii?Q?felsqbQ3x02rBWH93FxwUYnk1IQCHqk0VHtHBNuj3QN0TL5tejD5yhhub98l?=
+ =?us-ascii?Q?wQj6s6RPzKv2II4+seLcMK6MQHN5qoeeVqGjQBsvp52GVTCWDg5igzaKkMYL?=
+ =?us-ascii?Q?qVk5dY1RXjyKoCtlN2UPTGbpdRdwzrP+USzvA2ysrQHo6E4nvXs4aNlOaKp+?=
+ =?us-ascii?Q?SFXJLHDP0CG77Mda3cbdM9J/gZeqp6b2oWLOzYtut9aqKmfDg8aWT29hewPi?=
+ =?us-ascii?Q?ScaXTAWmoTIiOju6W1iFSswJ0WiBY8UTFHoBAWMmAnBfu6BfKQEe99QRuy+b?=
+ =?us-ascii?Q?OtohPLf8Zu1HAfRNBmZHHp7WXh40BE8lxEJo0Y8ntfAZ6I43oOASNwgD7PBM?=
+ =?us-ascii?Q?KCXwJeAx1/iLb9LW4TJEDohn9R7MRyuWyKAc/FQ/IBw6gqXNHbYlwySIIUra?=
+ =?us-ascii?Q?cHtvT4QCuLfcdt7R2jutB81p+1fV4gGzUNIfk8L2Y2HKYs83Y7SKrAcyU5m8?=
+ =?us-ascii?Q?BJ8GBEJJuiOCdz5ES7KVw/Uy9tIyeg+9XhYIO6u61shddG12DsbGXb/tCOS5?=
+ =?us-ascii?Q?0H+KUtmdnoAre+9JjzAGzNr3j6G65P8L5CgLh+Wz25TNs8GWCcoqGf8iiJQ9?=
+ =?us-ascii?Q?1+LUVoVoYfHRvDuDA3GyJE+g9J/A9iWulYzYXNLdzGY6frM78pv4m2gCysHg?=
+ =?us-ascii?Q?VKOxcDVIKw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d265b288-ac42-4894-d927-08deb9664724
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2026 07:30:06.6973
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TGyDd3BqEU6P3xNYmSVp4ZYJCBqUTGUA+TEDUTCQSIW/GhD4MSRxOy4MVAuQ40pp61RodFSEwIevLXVH4yv+Nw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11784
 
+NET_DSA_NETC_SWITCH selects NXP_NTMP, NXP_NETC_LIB and FSL_ENETC_MDIO,
+but these symbols depend on NET_VENDOR_FREESCALE which may not be
+enabled. This results in Kconfig warnings and linker errors like:
 
---ph6z6kisszpxnay5
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2] pwm: imx27: Fix variable truncation in .apply()
-MIME-Version: 1.0
+  undefined reference to `ntmp_bpt_update_entry'
+  undefined reference to `ntmp_fdbt_search_port_entry'
+  undefined reference to `ntmp_free_cbdr'
+  undefined reference to `enetc_hw_alloc'
+  ...
 
-Hello Ronaldo,
+Therefore, add "depends on NET_VENDOR_FREESCALE" to NET_DSA_NETC_SWITCH,
+ensuring that the selected symbols NXP_NTMP, NXP_NETC_LIB and
+FSL_ENETC_MDIO, which all depend on NET_VENDOR_FREESCALE, can only be
+selected when that dependency is already satisfied.
 
-On Fri, May 22, 2026 at 04:13:48PM -0300, Ronaldo Nunez wrote:
-> Fix a variable truncation when calculating period in microseconds as
-> part of the solution for the ERR051198 in .apply() callback.
->=20
-> Example scenario:
->  - Period of 3us (PWMPR =3D 196 and prescaler =3D 1)
->  - Expected value in tmp: 198000000000 (NSEC_PER_SEC * (196 + 2) * 1)
->  - Actual value is 431504384 (truncation to u32)
->=20
-> Signed-off-by: Ronaldo Nunez <rnunez@baylibre.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202605240046.8MvKuOMg-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202605240706.EuGmnrz5-lkp@intel.com/
+Fixes: 187fbae024c8 ("net: dsa: netc: introduce NXP NETC switch driver for i.MX94")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ drivers/net/dsa/netc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks for your patch. I added
+diff --git a/drivers/net/dsa/netc/Kconfig b/drivers/net/dsa/netc/Kconfig
+index d2f78d74ac23..793f7691a24f 100644
+--- a/drivers/net/dsa/netc/Kconfig
++++ b/drivers/net/dsa/netc/Kconfig
+@@ -3,6 +3,7 @@ config NET_DSA_NETC_SWITCH
+ 	tristate "NXP NETC Ethernet switch support"
+ 	depends on ARM64 || COMPILE_TEST
+ 	depends on NET_DSA && PCI
++	depends on NET_VENDOR_FREESCALE
+ 	select NET_DSA_TAG_NETC
+ 	select FSL_ENETC_MDIO
+ 	select NXP_NTMP
+-- 
+2.34.1
 
-Fixes: a25351e4c774 ("pwm: imx27: Workaround of the pwm output bug when dec=
-rease the duty cycle")
-
-to the trailers and applied it to
-
-https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/fixes
-
-=2E I haven't made up my mind if I create another pull request to get the
-patches from the pwm/fixes branch into 7.1. If not, it will go into
-7.2-rc1.
-
-Sashiko found a few more issues in the imx27 driver, would you like to
-address these, too?
-
-Best regards
-Uwe
-
---ph6z6kisszpxnay5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmoR3AkACgkQj4D7WH0S
-/k7D5gf/WdM3ZZEgTDtL5u4whmCMC9ht8ov24VkAyIcSW1arTUVCvj3+h1336tAU
-kF/jUUgeWjBxXpScxX2A94GB6iv5tTzHI0lKFGqqOVSBL7EWKiJG8u+raDdk+S+R
-sm4QZVqWMBulgGHlb+ZGQhEh7RSf0Shu3rHeGfb3Pfffp7lRlzuN4+ebPSvbzlC2
-uKOJYa3FwVnu6KkNsj41tMLl+wgD7GYhr5h5vFwHYx3oBmNJQfjhmzXBqJFxkgIF
-rC70EW6LkxHTxuxQPxzX2SR0bpH3ezjzbUS3pdE7B6nsRGW5FBW676bvPCJWoFKz
-r6YFGGJX5XwZdGIrtPNzU1159pXtEg==
-=eJk0
------END PGP SIGNATURE-----
-
---ph6z6kisszpxnay5--
