@@ -1,166 +1,177 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013034.outbound.protection.outlook.com [40.107.159.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E44739B952
-	for <imx@lists.linux.dev>; Mon, 25 May 2026 06:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779690127; cv=fail; b=rGXAw+cMPc4V59pOkSVYzMA/x3XCmlYoAr2VG9/zfT+I87SAOXvLX1V3PqTeVNTOa1mFlM/l9VeKcVTHliPV7Lb6cqPJ2OI+jhYaF4b824YNENGAYL4rg5tGbYAEpmgRQuzsjGlHW/T++BT1GbW9aw2o0FpxT+0yvT1VMjFixeI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779690127; c=relaxed/simple;
-	bh=D8lrZFTgUjOokNBKoHKFNFXHCJBG8HuU03uPPRwbkdI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pAZ/vNxFcFVb/KMLpbiUkRD2wQ1tIhXHd0NSIv34CAwKEpl7bOlcbvZE//QUoxj+jnGdOjbqJBI60GUJolCbif41Od5AgFxiwOqYI8r7/I+Km0e26xbM3TBMd8++cRQuLx1k9B32OBojp48viNU1SOWSsTsrDINe56U5uZrnEP8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=WFKOY4BI; arc=fail smtp.client-ip=40.107.159.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68433998BE
+	for <imx@lists.linux.dev>; Mon, 25 May 2026 06:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779690184; cv=none; b=Tuw7ESRtwndRNQpXrbYKSSn0VOREHurRHaV/zszAjgFGnUYnDynDChP3KLjN4qPU07V1m+hQQM9k99HZUmFKQzgzC27/SFxD0SFCVvAdNhIa+2Nu/0Cz6vWSJGRvHDUHRwymiVAHYPl3Sr+ahb2rJ/wSFJaMf1vh99DismLZXq0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779690184; c=relaxed/simple;
+	bh=V6/krKIRwnyk/MjAvekDwfufJEsTskelhC1CWjaoHgo=;
+	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=FxCFnx7K8L+U4lmxhacvhrx4BRylKY5xNWQwfkQ0TL/oyKb1HIagUyeHvHCY74VjBym0hR7MyRMhjXJMQZUWUHQldDvqA4pUGZ0DLZwNvorA//YJiXlS23lUCBjRfEQ99qw1R5PKjRww3ZIQHQJGBatfUpYywzbZXlzr2Bl0ObI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aAckGDZk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="WFKOY4BI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kz5+IBEn8cgNrUWwILJZjT9Mdaw+/j9/cxIsN8mwTWu6Ln+SNoOGKFUzOFwbPoBBreSPeClx0EMVg+Wvsm53PML8G/8dt6RiAoXBZxMpONCm4xOs8PSjNwj9XPQZ5jRQvXldPv0oPHxOjxkPqLr1WnRDUFcM3+Bm2cCsLp/Am0LcEtwPNccUGImuqZ+pUa488phzj5NeG5pZkV9uTOcgwwuka4GnMhp1DYv8zRng86NEfQIMpGBFITqW8hjunkwBaHcBox/7v82Tjz4tLx/sFgVGOCDWVi/tyCaHrt6nEV5Bzm1AYQSmh1eFCTggQC0SUSjq42bixOTtjB4/DGdfmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AXcp5Sff+4hOK7zGUVJ8tnR3+KZH2MhMAPGIW7hWTiU=;
- b=J79+YZfFY5GnAH2vphjKz6e0PYy4T2IOVwV686qxFuyhZNANB0EoMbex4ohjP5BFchogyqhEbDoU4vM1axY0D7V9vEFcRfboToEmeUwAcO7WindYldicHO51q+htvic5qvZT8zRQA9YPKMG+VP+eQyz/lD0IU6vfCX7cRg2hzopymsV4clTuf+hN1dNT50Svt/zhDQrzXuRraaon1tp/DB6mgIzRdE/GtuqNipod3Cdqgqm+y3tc4EFJprXHCRbYPbkMgrVbB0ngXmckv8CCHj16S3L1GkCrT9398xqcR7tFv1+Fmjzc2d8ZZb47oBftudHCA3afRvk/amWEIyF9gw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AXcp5Sff+4hOK7zGUVJ8tnR3+KZH2MhMAPGIW7hWTiU=;
- b=WFKOY4BI9DqcpQBZq0cwZ/oO0yC0ntakKwyy95ipyqC4Ut0jDFkouLgzCp87DZgDoTt5oo5+2b+uk1CKMMutjvMSBUzM24G3ZCsITtsdnzV8YwkO4oW8XXKeo5ysQNr78SeseNfaQznNgk2DBvKKM4VKMsIY9uB3lZYAzIJqL5qWziYOITa9XhSvk8nuBWQKZSpIHXBMl3IOx1XwwKZnWCCePAb1pcj2Fvf3yOd+6AmmRnnBIfRpJwhgfy+ytkhniBsKdwz5n/jd6Ie79guGdpcXM1VoGUr4CcFH95Cw+D32O97IvWuxJbSizSch1/vi9B4d6lZa79xbm6QjW8DW1w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by AM0PR04MB11930.eurprd04.prod.outlook.com (2603:10a6:20b:700::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Mon, 25 May
- 2026 06:22:02 +0000
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0048.016; Mon, 25 May 2026
- 06:22:02 +0000
-From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-To: Frank.Li@nxp.com,
-	broonie@kernel.org,
-	xiaoning.wang@nxp.com
-Cc: linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Carlos Song <carlos.song@nxp.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] spi: fsl-lpspi: terminate the RX channel on TX prepare failure path
-Date: Mon, 25 May 2026 14:23:57 +0800
-Message-ID: <20260525062357.3191349-3-carlos.song@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260525062357.3191349-1-carlos.song@oss.nxp.com>
-References: <20260525062357.3191349-1-carlos.song@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM0P309CA0019.EURP309.PROD.OUTLOOK.COM
- (2603:10a6:20b:28f::29) To AM0PR04MB6802.eurprd04.prod.outlook.com
- (2603:10a6:208:184::17)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aAckGDZk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416671F000E9;
+	Mon, 25 May 2026 06:23:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779690183;
+	bh=mE+A8MoFbAYJqhWELRjpt4tkz6cW9KOmyHxWiW9Lbck=;
+	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
+	b=aAckGDZkLj2Fmd2GUe597Z9a6KJWP1nYXMlXmC2CCtO1Fj4vWwD0/OBoZqX3MvRNS
+	 d8XWzmqIylb1ynB/Yz6AIl15hW1oogwgz4XIZj2xJT8/x6vaChQEgSecLbhRyP0Hn1
+	 CFGExw+o051CuzDGtNgRGpabMBK/8s1XwZGS+SAcjntVBRgpLCQ6PMO1+zU+Fy/m8c
+	 tMnzBp36xRM8SU4DlKk5U/9a4gKdaX90e3YtVWaQoCvHZ3jY/izaU/yxFzQyDQRU0e
+	 ROSQcI7Hh0ohNiqLGKjG5Njue2XjfFaHVzpW85ELLCJi/57/586R2n/qf7r1ocSQ0f
+	 8twS1UKD6NALQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/7] firmware: imx: ele: Correct check condition in
+ se_if_rx_callback
+Reply-To: sashiko-reviews@lists.linux.dev
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260525-ele-v1-v1-1-a9570c4bffc9@nxp.com>
+References: <20260525-ele-v1-v1-1-a9570c4bffc9@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 25 May 2026 06:23:02 +0000
+Message-Id: <20260525062303.416671F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|AM0PR04MB11930:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4416484f-a8e6-4a8f-8a31-08deba25ef4d
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|19092799006|366016|22082099003|18002099003|56012099003|38350700014|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	EJCtYzLESKEMWNDL6NMecLKKY5tBE+WHjgSSLWgBMZcLi+XcizfKLYHEtSoTX9oUSS+YWGdWdxnA7mCdN79ruBnu6ow/7h1x5T9aLFixTszAxgGmDFvoA6kP785z67sPEz8Tzcxzxz3Qc8j26Az5kM9LQKq7vQB/1p5CdTuuF+NtC3koa4InZTWbhlFijyV8BbfRzgPJzDsDeZS+hnwlUt9UL3cZhn1GDclhhmOg4taOab6u+O9sEbYmTDtPgxd1qCw8AM4jcaa5qhRYxl5pvN214Nm8d+foZKysXBopiB0uvxCRk0+dWWfxI1eKImLKWhSeXgTMZwTpRUjJn4ZPcdFv4xGrjjqC/6GY2c0CECKfi3+YHseGjf78BRnpk6ItDgqvnWIXISUx7sXEC0Nr6/HDPTzvkgDvWDORTukv3miml0z4u8eNj4SGTEYQ8PnPq6k1fCn1GTVymH9BXdzBbV8egZVFYNBwquwYbKnVTHUNkP3ifjYvHej6xhoJePFBSTDfQ7s9CboSR9MfZLFnzk91AvyozKp3dfl/li2nvbAbSnpDiWGGV7+4P0L46rBfpFhrv/4FLhgWnYIpKadnqitku0S07DIx9vecrcF42u7EKlx8T5SKBGKHRbKGKd9ESGow3B/Gl5asNCJnbZK5JYeFEmmU1aR4CeaAM5ENb8LfJS/z+a9FExYiSfHzc6GzwaxcaO1M3NBJRGRA0wae2AmjywVVwHAyFlt6ytCjcGUOtJmCoyXcS0d4FnxMLJgX
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(19092799006)(366016)(22082099003)(18002099003)(56012099003)(38350700014)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eYxwkmdIESF4b2UCyXCVJn162OhU0KbrIXaAzz2/40gIPN+4vfyw+9WQc0mh?=
- =?us-ascii?Q?sQe5UytaGMjCxgAj7X86Hd4Q5cHLMg9GWbjV3kkUVlfCHeE8SJgYaPtG+sPl?=
- =?us-ascii?Q?28kF2ztqzR2fu4k+4f5IQsorIqTZcfptfpFirhgnl1euosp+Ai37qxb+Qb9T?=
- =?us-ascii?Q?loxnAyrg3yErW3fuE5febxk327qotw4xYWOzptlIkUzEj5LmCbnBA4SUK2P0?=
- =?us-ascii?Q?56+qJO+01TeA5uUsTo7M6H/8R7SmIu67PXpP4xdGGho7TfFv15Owu8xeHRb4?=
- =?us-ascii?Q?+/vdY00PNKaX1DZWOoHMuBQmddif6wmb0hFalcFXeZqKKATClx3J7PEGDTFV?=
- =?us-ascii?Q?6Oi0lS6i+2BZWi1bX8Q40FxnZ+KuzCW9CSCZtq/Tg1y4Ykgw3sSolMrbPb4j?=
- =?us-ascii?Q?5Uj4CLjOnMp0MZ0VYt34JMsoOnBN0zyDeLbppsYBaPsUc77WsyqBl/LoeQTQ?=
- =?us-ascii?Q?G+gRW2txpotp2am17KkZg9ONrEhv4wjlswO7Vb3YqNArxF9mHn34N5KOqPv5?=
- =?us-ascii?Q?y1qG0ba4WhcOOH+RotAIpfLyPm4K2UcOmph5UbAEe36bFqrl+odz+3qA+U2s?=
- =?us-ascii?Q?dxU/DvPv51rZcURdXUZjJXeAz/FdUfvuNxz+U3i7fcrr7Fe7K1o8MqXkMeNg?=
- =?us-ascii?Q?e75Lw8QJm6d5aATmGL9QUVMp5+opb/xixcPof+Mbs8fESNK491l7d5i1ydWV?=
- =?us-ascii?Q?wNp87PTu/pdL6E4OKI4N2QjbjNH3OAprBm5DkT5/7nKE0xjRnU/IY3sjtfc4?=
- =?us-ascii?Q?lEolZkrse8mmj5YATeTUDCR4ltjT4bixKpLli1M1UXi0p682RBOk/N52jw8J?=
- =?us-ascii?Q?A2ZV+ba/SqfYhAeMVAYOY9asOQJJIv3oxGwa6cRx/EDS2Ulgiwq+mw3bnGhY?=
- =?us-ascii?Q?MRbJSsXbu6MT/lztFd9Rx3svgW0I31HPDIGAMnYK24IkvJZtD+MR4vOZlstO?=
- =?us-ascii?Q?gk/DTs2WnUb60DLDqMebEFUEv/BwuVD/ASjnot/TujJWoPbjBiMht9pqAB4q?=
- =?us-ascii?Q?Z231PT7d2OoMb+pz0+XOIAU4QloGXMG/jD3tBHB9z+STxgyws93g1AHZ3TYv?=
- =?us-ascii?Q?Rvepz2mRWgBQ3Ehn/x4pHpaigw1CdJjor1OEKI2xrLZ/XoTFHyoSDCZA2Sfj?=
- =?us-ascii?Q?GFK7/mfXnPxVsTzajD6dO9EkPhIaz7RP2/TDStpJvlnJshtmaaNDoXlHdTWX?=
- =?us-ascii?Q?WvCUyhJ3EdFsapPdRk8qR3jblofI41qPNWAqY5qjbKYd6DijEDCffMKaePqa?=
- =?us-ascii?Q?wLybRuPWapPRfV51+iO8dz9TM6iu9aOPw4yO/ggkbcyy10Pk4Tg0CRSOk918?=
- =?us-ascii?Q?h8AevKHSUszyfdHm6+DpfkWOAxGPXe6xw2krvl89UjyfVyYZ+UL8jWpU1zSZ?=
- =?us-ascii?Q?Xc1qsNHLIPPgwC24Bi9N+H0eM5FQFP4vSm6C31I0A05kmKEWljC77vK4SSCc?=
- =?us-ascii?Q?6V/6q67TlhsLi/KWw5iojjKZIHQ0M3CUGIpTMHLEGmYfW2p/QG1mSqKqccik?=
- =?us-ascii?Q?DZAEsSsaGwI1CYZip0XBvmccHdm7kXddY+SkVq7q66WHt//EUj9RdZOHOy3L?=
- =?us-ascii?Q?7o7fp4eZ2UmEZBaBwueiCytx/FS5P7bnihVoc1OBNi7PWGpur59F3Ok/6gCA?=
- =?us-ascii?Q?8mirYrngGP9HfqtpLLFYreH2VCDyVtsnW5DI3V7LgyUWK3rL8RIAN1Yhmoar?=
- =?us-ascii?Q?yadTd1WkM8perExk1Uk31QaeyZu5qdwPymWx7lTyY9ymnCpQCSYiD4CBxP95?=
- =?us-ascii?Q?WwySAiNDrA=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4416484f-a8e6-4a8f-8a31-08deba25ef4d
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 06:22:02.7512
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jWIdJUTReoXG52AhDF7Ac1pm4F4DArHmCDemhBwdbTPL7FwtTlKBQM1fuWYzKixOcS66EpJ8zoAs9x/fPEBYmA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB11930
 
-From: Carlos Song <carlos.song@nxp.com>
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
 
-When dmaengine_prep_slave_sg() fails for the TX channel, the error path
-terminates the TX DMA channel but leaves the RX channel running. Since
-the RX channel was already submitted and issued prior to preparing
-the TX descriptor, returning -EINVAL causes the SPI core to unmap the
-DMA buffers while the RX DMA engine continues writing to them, leading
-to potential memory corruption or use-after-free.
+New issues:
+- [Critical] The patch alters the condition for size mismatch handling by n=
+egating `check_hdr_exception_for_sz()`, inadvertently skipping the essentia=
+l size truncation for exception commands and causing an out-of-bounds read =
+and information leak.
+- [Medium] The commit message indicates that the patch should return a fail=
+ure when the size does not match for non-exception APIs, but the code only =
+logs the error and proceeds.
 
-Terminate the RX channel before returning on the TX prepare failure path.
+Pre-existing issues:
+- [Critical] Asynchronous mailbox callbacks can trigger a Null Pointer Dere=
+ference or cross-thread data corruption if the completion wait times out, i=
+s interrupted, or if unsolicited messages arrive.
+- [Critical] The IOCTL handler directly dereferences a user-space pointer d=
+uring header validation, causing memory safety violations and exposing a TO=
+CTOU vulnerability.
+- [High] In NVM command handling, the received message size is unconditiona=
+lly overwritten after being clamped, leading to a heap buffer overflow.
+--
 
-Fixes: 09c04466ce7e ("spi: lpspi: add dma mode support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
----
-Change for v3:
-  - Keep dmaengine_terminate_sync for rx and remove
-    dmaengine_terminate_sync for tx on tx prepare fail path.
-  - Fix title and commit log.
----
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+commit dbd468c11e8d6f15f1dbfe05daf128166c6de3a4
+Author: Peng Fan <peng.fan@nxp.com>
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 1a94a42fac31..e14753144e19 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -647,7 +647,7 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
- 				tx->sgl, tx->nents, DMA_MEM_TO_DEV,
- 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	if (!desc_tx) {
--		dmaengine_terminate_sync(controller->dma_tx);
-+		dmaengine_terminate_sync(controller->dma_rx);
- 		return -EINVAL;
- 	}
- 
--- 
-2.43.0
+firmware: imx: ele: Correct check condition in se_if_rx_callback
 
+This commit updates the response validation logic in the EdgeLock Enclave
+driver to reverse the condition checking whether a command is in the
+exception list for variable length responses.
+
+>     Reverse logic should be used when checking whether response is correc=
+t.
+>     The logic should be when size not match and API is not listed in
+>     exception list, return failure.
+
+[Severity: Medium]
+The commit message states this should return a failure, but does the code
+actually do that?
+
+Looking at the modified code, it only logs a warning with dev_err() and
+clamps the size. Execution then continues to memcpy() and complete(),
+returning a positive size value to the caller, which the IOCTL treats as a
+success. The failure state is never properly propagated.
+
+> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
+_common.c
+> index e5117a1f19959..8daf32eded43c 100644
+> --- a/drivers/firmware/imx/ele_common.c
+> +++ b/drivers/firmware/imx/ele_common.c
+> @@ -219,7 +219,7 @@ void se_if_rx_callback(struct mbox_client *mbox_cl, v=
+oid *msg)
+>  			se_clbk_hdl->dev_ctx->devname, *(u32 *)header);
+> =20
+>  		if (rx_msg_sz !=3D se_clbk_hdl->rx_msg_sz &&
+> -		    check_hdr_exception_for_sz(priv, header)) {
+> +		    !check_hdr_exception_for_sz(priv, header)) {
+
+[Severity: Critical]
+By negating this condition, does this inadvertently skip the size clamping
+logic for exception commands?
+
+If check_hdr_exception_for_sz() returns true, this block is skipped, which
+means se_clbk_hdl->rx_msg_sz retains its potentially large user-controlled
+value instead of being truncated to the actual message size.
+
+The subsequent memcpy() at the end of this function will then read past the
+valid 1024-byte hardware mailbox buffer (msg) into the kernel heap, copying
+out-of-bounds kernel data into rx_msg. This data is eventually returned to
+userspace, resulting in an information disclosure.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the NVM command handling
+unconditionally overwrite the clamped size?
+
+Looking earlier in se_if_rx_callback():
+
+		if (rx_msg_sz > MAX_NVM_MSG_LEN) {
+			dev_err(dev,
+				"%s: CMD-RCVER NVM: hdr(0x%x) with different sz(%d !=3D %d).\n",
+				se_clbk_hdl->dev_ctx->devname, *(u32 *)header,
+				rx_msg_sz, se_clbk_hdl->rx_msg_sz);
+
+			se_clbk_hdl->rx_msg_sz =3D MAX_NVM_MSG_LEN;
+		}
+		se_clbk_hdl->rx_msg_sz =3D rx_msg_sz;
+
+Because there is no else clause, se_clbk_hdl->rx_msg_sz is immediately
+overwritten with the oversized rx_msg_sz. The subsequent memcpy() could then
+write the oversized payload into the pre-allocated NVM buffer, which is
+strictly sized at MAX_NVM_MSG_LEN, overflowing the kernel heap.
+
+[Severity: Critical]
+This is a pre-existing issue, but can this function experience a NULL point=
+er
+dereference if a delayed response arrives after a timeout?
+
+In ele_msg_send_rcv(), if ele_msg_rcv() times out or is interrupted, the
+function returns and clears priv->waiting_rsp_clbk_hdl.dev_ctx to NULL,
+while the rx_msg buffer is freed by the __free(kfree) attribute in the
+ioctl handler.
+
+When a delayed or unsolicited firmware response eventually arrives,
+se_if_rx_callback() accesses se_clbk_hdl->dev_ctx->devname, directly
+dereferencing the NULL dev_ctx. Could this cause a kernel panic, or lead to
+cross-thread data corruption and a Use-After-Free if another thread is
+currently waiting?
+
+[Severity: Critical]
+This is a pre-existing issue, but does the IOCTL handler directly
+dereference a user-space pointer during header validation?
+
+In se_ioctl_cmd_snd_rcv_rsp_handler(), cmd_snd_rcv_rsp_info.tx_buf is a u64
+representing a user-space memory address. It is passed directly to
+se_chk_tx_msg_hdr(), which casts it to a struct se_msg_hdr * and dereferenc=
+es
+it without a prior copy_from_user().
+
+Wouldn't this cause an immediate kernel panic on systems with SMAP or PAN
+enabled? Additionally, it allows a time-of-check to time-of-use (TOCTOU)
+attack where a malicious thread can alter the command ID after the validati=
+on
+check but before memdup_user(), bypassing validation.
+
+>  			dev_err(dev,
+>  				"%s: Rsp to CMD: hdr(0x%x) with different sz(%d !=3D %d).\n",
+>  				se_clbk_hdl->dev_ctx->devname, *(u32 *)header,
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525-ele-v1-v1-=
+0-a9570c4bffc9@nxp.com?part=3D1
