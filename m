@@ -1,129 +1,168 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E93B3BFE5A;
-	Mon, 25 May 2026 07:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AC83C1F5C
+	for <imx@lists.linux.dev>; Mon, 25 May 2026 07:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779693069; cv=none; b=tYaCcyaxw3Yr84RFXYtanEsd7XxYpMuchrknGcmECJ7uSaeqZfn36OSAF8CZWWc9SZgBjftTGnA/6FiFGUILyDAhD09tJ7p9K73MGLqvF0k49nc55r5jEsuMeAp5DuaB26vQxeJB6Sm+uqGF4fsW9T/GEr49nn5Fr2mwH1a+jpA=
+	t=1779693297; cv=none; b=GDQ5aVpAm+5BKtpHmXQoCPrmp0bdS7LqF67D8L6y7zsrDL36+Fo8CioPSI2KzBw21WnfZ0r2El8sPwVOipEKgqLF1P8sYu7xRbTQLXV+P0rHpPVtCEcy04weiVKEBEVeoO/EXG+JX8Yh0bZ/z1AgxcSvYKndtW7kJBUa1+ccuu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779693069; c=relaxed/simple;
-	bh=dUWramHZV89lmlWuUu86XpRZrCSy0baHbbma7koyXKw=;
+	s=arc-20240116; t=1779693297; c=relaxed/simple;
+	bh=7bKij+Juy967yJEpjM8lS9haJ0JUw7XitWQTg87djoc=;
 	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rglOdw7YguzTkNefrjJhv5ismouNQZs4Xei/0MleVcfk0SPZjhGT+u8y2NWC42WiDEQcdDukqWLYhFwvhSJBPI7XGAmM6qdmWpA8Qc5iBe2PcpAgf4EYke67buDOgcrF4f576t/7xpS+rIU36grNL2PDdnBGUa5kFUbNMA9bkMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vba0wNyk; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=RZTzWAKgQLOnmHlPlS+4inEmR41/y3yCVNLmpXCy41CTcnmHkm2mSYTg8eaTPLt1KH28vcggCtqnp54Z8CYmJId3LIjJO85+c0bsi3j8Ghwmat05IikhYCEhtPrU8ioEPGBYExvBisu594DdNUvvb7W1WAiFdbtEKb8XU3Z38og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=it7DOJ8L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vba0wNyk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03071F000E9;
-	Mon, 25 May 2026 07:11:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="it7DOJ8L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7238B1F00A3A;
+	Mon, 25 May 2026 07:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779693067;
-	bh=Ymj6p4G1gd8jUYtvg5dmrv8SQVLwDNMBNQsG3tpyces=;
+	s=k20260515; t=1779693291;
+	bh=J/lILXZfDZs0nznViDCyxPWbQnMCI+S3sUfzIVdsHjc=;
 	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=Vba0wNyk28CmbQFDirtFX7cz0DFdMcWpfFNG9JhO6kblRrBwv1Y6FDYVN2NnwZJpX
-	 ZcrtKpdvL58PbI0EwSMTo6OcuNmjs9NCdwPuwagYqB4Rl7E+FyY1GmRdfFYd4DmVcb
-	 m1LzNCceiCzSHmcqXm/FsKrjPWJcx42edcAc9ZIZQVdKb1CxzAi8uEnlRnj4ofZ/5N
-	 mX1Dl4mjuaUn9jrjDmL4fe9b9QvfiMCqAOFSQaEFClrgRb0u3nlfSnSKGutskR4V3G
-	 pJkHuGqLgymF3N7gcW9DMG/+civ9xlffpBXT/Ma3rfk7fuZQIKTd3A4x4lMSqgMkAV
-	 LXftWdmyOw/9g==
+	b=it7DOJ8LN3qPV3oRNNhIRE1Ehl/PfKGQud1zb/lTXQcQxZ0tOgWiWlEiZXgBuC5sz
+	 Vcn1ZCKio7wGVs6eC1tbeP01ATQ/XBZBc+hYcY2tRHy2/oH2kmysG1aThTkvT0HrC6
+	 khe8K06+fd+hhUSn+kVlYK/i/9nl6i/mSw8AUhMCPDxpq5IqaeCGIQ6TGGpEp7izMx
+	 NLaC2ZFLPcB8F11NQoGWCck1x8Lk1ZIvU9dgSLAzUGCKOiQ3/vTHxoF177Khkm+3+5
+	 9dtnxVVbjc9agqS2xuuW34kQc2C8he52hyZREtvCqaZGXo3ymm/ow6cCzXO0HKyzxg
+	 IsWObimMssXgw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V2 1/2] PCI: host-generic: Simplify return value
- handling in pci_host_common_parse_port(s)
+Subject: Re: [PATCH v2] spi: imx: replace dmaengine_terminate_all() with
+ dmaengine_terminate_sync()
 Reply-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20260525065443.2338629-2-sherry.sun@oss.nxp.com>
-References: <20260525065443.2338629-2-sherry.sun@oss.nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260525062928.3191821-1-carlos.song@oss.nxp.com>
+References: <20260525062928.3191821-1-carlos.song@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 07:11:07 +0000
-Message-Id: <20260525071107.A03071F000E9@smtp.kernel.org>
+Date: Mon, 25 May 2026 07:14:51 +0000
+Message-Id: <20260525071451.7238B1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] The patch changes the return value semantics of `pci_host_common_p=
-arse_ports()` from `-ENODEV` to `0`, silently breaking legacy device tree b=
-ackward compatibility for i.MX6 PCIe.
+
+Pre-existing issues:
+- [High] In target mode, `spi_imx_target_abort()` does not signal the DMA c=
+ompletion variables, leading to an indefinite hang in `spi_imx_dma_submit()=
+`.
+- [High] TX DMA preparation and submission failures do not set `SPI_TRANS_F=
+AIL_NO_START`, preventing a graceful fallback to PIO mode.
+- [High] Aborting an interrupted DMA transfer in target mode bypasses a cri=
+tical hardware workaround, leaving the ECSPI hardware actively shifting out=
+ stale data.
+- [High] Setting `SPI_TRANS_FAIL_NO_START` on partial transfer failure lead=
+s to duplicate data transmission.
 --
 
-commit dd3d8b79463f9da53267b3bb06dcedefaa9d7673
-Author: Sherry Sun <sherry.sun@nxp.com>
+commit 8bfbc10aab79cda2627b885ec509ffea7360e1a1
+Author: Carlos Song <carlos.song@nxp.com>
 
-PCI: host-generic: Simplify return value handling in pci_host_common_parse_=
-port(s)
+spi: imx: replace dmaengine_terminate_all() with dmaengine_terminate_sync()
 
-This commit simplifies pci_host_common_parse_port and=20
-pci_host_common_parse_ports to return 0 when no ports are found instead
-of returning -ENODEV. It also removes the RC-level binding check,
-delegating that policy decision to the caller.
+dmaengine_terminate_all() has been deprecated, so replace it with
+dmaengine_terminate_sync().
 
-> diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/contr=
-oller/pci-host-common.c
-> index 2ce6f4b661334..c93de5a107581 100644
-> --- a/drivers/pci/controller/pci-host-common.c
-> +++ b/drivers/pci/controller/pci-host-common.c
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 480d1e8b281f1..ae9912905c67a 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
 [ ... ]
-> @@ -158,13 +141,11 @@ static int pci_host_common_parse_port(struct device=
- *dev,
->   * Iterate through child nodes of the host bridge and parse Root Port
->   * properties (currently only reset GPIOs).
->   *
-> - * Return: 0 on success, -ENODEV if no ports found or PERST# found in RC
-> - * node (legacy binding should be used), Other negative error codes on
-> - * failure.
-> + * Return: 0 on success, negative error codes on failure.
->   */
->  int pci_host_common_parse_ports(struct device *dev, struct pci_host_brid=
-ge *bridge)
->  {
-> -	int ret =3D -ENODEV;
-> +	int ret =3D 0;
-> =20
->  	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
->  		if (!of_node_is_type(of_port, "pci"))
-> @@ -174,8 +155,8 @@ int pci_host_common_parse_ports(struct device *dev, s=
-truct pci_host_bridge *brid
->  			goto err_cleanup;
->  	}
-> =20
-> -	if (ret)
-> -		return ret;
-> +	if (list_empty(&bridge->ports))
-> +		return 0;
+> @@ -1793,15 +1793,15 @@ static int spi_imx_dma_submit(struct spi_imx_data=
+ *spi_imx,
+>  		if (wait_for_completion_interruptible(&spi_imx->dma_tx_completion) ||
+>  		    READ_ONCE(spi_imx->target_aborted)) {
 
 [Severity: High]
-Does returning 0 instead of -ENODEV here break bisectability for legacy
-device trees on i.MX6?
+This is a pre-existing issue, but does this actually check target_aborted if
+the completion is waiting?
 
-Looking at the caller imx_pcie_host_init() in=20
-drivers/pci/controller/dwc/pci-imx6.c, it relies on this exact -ENODEV=20
-return value to detect the absence of Root Port nodes and fall back to=20
-parsing legacy bindings:
+Due to C short-circuit evaluation, wait_for_completion_interruptible()
+blocks first before the right side of the OR is evaluated.
 
-imx_pcie_host_init()
-    ret =3D pci_host_common_parse_ports(dev, bridge);
-    if (ret =3D=3D -ENODEV)
-        ret =3D imx_pcie_parse_legacy_binding(imx_pcie);
-    if (ret)
-        return ret;
+If the master aborts the transfer, spi_imx_target_abort() sets
+target_aborted =3D true and calls complete(&spi_imx->xfer_done) which
+is only used for PIO mode.
 
-Since this helper now returns 0 when no ports are found, the caller bypasses
-its error-handling and legacy fallback block entirely, leaving the
-bridge->ports list empty. Consequently, imx_pcie_assert_perst() will do
-nothing, and the PERST# GPIO will never be parsed or asserted.
+Since it fails to signal dma_tx_completion or dma_rx_completion, will the
+SPI worker thread hang forever waiting for a DMA completion that will never
+be signaled?
 
-I see that this issue is fixed later in the series by commit=20
-0dd88230fe087b9c6a87eed08edc4d3be7f1fe1a (PCI: imx6: Add
-imx_pcie_perst_found() to inspect the parsed result), but updating the API
-without updating the caller in the same commit could break bisection.
+>  			dev_dbg(spi_imx->dev, "I/O Error in DMA TX interrupted\n");
+> -			dmaengine_terminate_all(controller->dma_tx);
+> -			dmaengine_terminate_all(controller->dma_rx);
+> +			dmaengine_terminate_sync(controller->dma_tx);
+> +			dmaengine_terminate_sync(controller->dma_rx);
+>  			return -EINTR;
 
->  	return devm_add_action_or_reset(dev, pci_host_common_delete_ports,
->  					&bridge->ports);
+[Severity: High]
+This isn't a bug introduced by this patch, but returning directly here
+bypasses the hardware workaround for the ECSPI continuous shifting erratum.
+
+The ECSPI hardware has a known erratum in target mode where it continuously
+shifts out the last word from the TXFIFO even when empty, so the driver
+normally mitigates this by disabling the ECSPI at the end of the transfer.
+
+If the wait is interrupted and returns -EINTR early, it entirely bypasses
+the hardware disable block.
+
+Does this early return leave the hardware in a broken state that corrupts
+the SPI bus?
+
+>  		}
+> =20
+>  		if (wait_for_completion_interruptible(&spi_imx->dma_rx_completion) ||
+>  		    READ_ONCE(spi_imx->target_aborted)) {
+>  			dev_dbg(spi_imx->dev, "I/O Error in DMA RX interrupted\n");
+> -			dmaengine_terminate_all(controller->dma_rx);
+> +			dmaengine_terminate_sync(controller->dma_rx);
+>  			return -EINTR;
+>  		}
+[ ... ]
+> @@ -1818,9 +1818,9 @@ static int spi_imx_dma_submit(struct spi_imx_data *=
+spi_imx,
+>  	return 0;
+> =20
+>  dmaengine_terminate_tx:
+> -	dmaengine_terminate_all(controller->dma_tx);
+> +	dmaengine_terminate_sync(controller->dma_tx);
+
+[Severity: High]
+This is a pre-existing issue, but TX DMA preparation failures jump here and
+return -EINVAL without setting SPI_TRANS_FAIL_NO_START.
+
+When RX DMA preparation fails, the driver sets SPI_TRANS_FAIL_NO_START to
+trigger a graceful fallback to PIO mode in spi_imx_transfer_one().
+
+Does leaving this flag unset for TX failures cause the entire SPI message
+to abort prematurely instead of allowing the fallback?
+
+>  dmaengine_terminate_rx:
+> -	dmaengine_terminate_all(controller->dma_rx);
+> +	dmaengine_terminate_sync(controller->dma_rx);
+
+[Severity: High]
+This is also a pre-existing issue. The RX DMA prep failure path sets
+SPI_TRANS_FAIL_NO_START before jumping to dmaengine_terminate_rx.
+
+For transfers larger than the maximum burst size, spi_imx_dma_transfer()
+splits the transfer into multiple DMA packages in a loop.
+
+If the first package is transmitted successfully but a subsequent package
+fails during RX DMA preparation, this flag is set.
+
+Because spi_imx_pio_transfer() always starts from the beginning of
+transfer->tx_buf, does setting this fallback flag on partial failures cause
+the SPI target to erroneously receive the first package's data twice?
+
+> =20
+>  	return -EINVAL;
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525065443.2338=
-629-1-sherry.sun@oss.nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525062928.3191=
+821-1-carlos.song@oss.nxp.com?part=3D1
