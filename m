@@ -1,131 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013069.outbound.protection.outlook.com [40.107.159.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4AD37DE9F
-	for <imx@lists.linux.dev>; Mon, 25 May 2026 12:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779710646; cv=none; b=gz+FUsOx67yqIOTRRNz44Yhuo8DESz6ejmrqGzA70qVME2e1Z/vr/rdfWG2Rc+eRD5zsvtranpTY0Up+a8hppqmRTCAWB1qqgGd/X3s1KZ6WncTu76z1xHgIIdJMvqxELFtXrs+bL5KEoJLS1Zjr8oQdKvGpUFrhBAwnw/yVHnQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779710646; c=relaxed/simple;
-	bh=2tFAdsReZx1V03oReoipeM4XbTvE8qEFn7sKubfHPx8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fTphCRBQxlKg+rlP0XqPPp3SBl25tfg55oFfCIliwoZke/ApYgEtglybS3LLPqhryL0hSMph8hSxOD2KpCiPuKYwGMbNlKoAdRIz3/9A5SZ/ZJYwtT8q+Qp/BjDnFI5tdxdSmlBE5vkpyUzyXcD7caEKtsw7InkaJsSuphMBdgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LiLXFrOJ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBC82E424F
+	for <imx@lists.linux.dev>; Mon, 25 May 2026 12:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779711617; cv=fail; b=daiyKXWrqJsVqmOr/3hM4dB+4XRDrhdXHrYc6VDa7wkKKTrlaIT3qN+nFi6hawKGp2tYZKxd+SKTX/Wq8sUHXv8sXv0BNMECwPZW9pgMXLDRj1atvRF7Wkhbpxn+xZ/hmiItBOpHU6vOqoU5Hp8DDphKgD1IDdGF8ddkngSR5FM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779711617; c=relaxed/simple;
+	bh=+F2VWSbzex2wlf4uLfclOsooXWOJvhZHSpHC/aBKjSg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=L/sfJJ8pkJFDOk9KUDCNj0h11BAVkmiP6WbBOAaSvPvAzTSwSZF6Akrqm6FpvT6zRIYs5nJ96R40UXPuHiushL9cvLyMO5Z8Bl8X0dZo0VpzkYBzmcGFoIjZH0W6+sTldIeDBAYhibcIj+4zVWOxD9gMADtUOkXJ2tG6oPY2s1Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=EFLgSpYT; arc=fail smtp.client-ip=40.107.159.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LiLXFrOJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF831F000E9;
-	Mon, 25 May 2026 12:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779710644;
-	bh=eyBCEe0Gu2pTUA6hmZdymBWif9ON1pbM2EksfxoLxEw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LiLXFrOJJhHhkfcnQtVaz34IxTBSbHRfyXRw+ujPx27QQ5QMpqg23Shw7pWnrpOmd
-	 qcZk3DWK9Vn9+qykaxscZnvyRLJ48UKiD8FbU97Xv64A2N5mmGOFO+BmBzDlCjLpAP
-	 Bekih4X2xxKIY2L0A6fLYqFM32DeM8DTvfEoAfIX8lMz5QTQN/MTd+d5GsgYa3ZZQk
-	 sYQd//aV8e/YKSI0pr45bFmf4/LiMI6FJhrynclYDpzYNHXjAxzdzc4uSLPtbQnrHI
-	 WEvKP8+aMYBWiEN78pMQJqUNRNSZnB/bPqyjyvXGpRKPyRG7V/F+PtEqPOZwGwnLFa
-	 arV8YHJtFtyEA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] i2c: imx: fix locked bus on SMBus block-read of 0
- (atomic)
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vincent Jardin" <vjardin@free.fr>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-1-f30ab53dd97c@free.fr>
-References: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-1-f30ab53dd97c@free.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 12:04:04 +0000
-Message-Id: <20260525120404.BAF831F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="EFLgSpYT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DHKr/RFstdx09xhH0G0Yx0zW14kn1CdmWOWnI28qzzIdpKSDkpn82mdDJagpPGicq6iBSE7wNiYuZxo9RJmap2Hb6XfKKIDFNXlSU7zGHG4uXI+Zt0wQT3DctYlktdxIygvVVlnxjqc8QFr+vl6nKNCGySF2vYRsQO3lPI/y9aFoz9iHZ+mCNYVeN0Fd2HnjCcdk/wJ2LqdHtkja4UIsdslSprhF38DdFl2sBpQn3v19Q3bsK29YvHzQMClmsxcDJ+1Gl48WMmvi6ci49jPCciTaWBQ6DmgM3WXcRozhVmMphxYxXWNmku4CUdcxKzllZ7wI2Wu/etL+8OHMGb+phQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+F2VWSbzex2wlf4uLfclOsooXWOJvhZHSpHC/aBKjSg=;
+ b=WzFGFUOfOjYfhh7iNiMvCTrstytONFU6s8Yok6x5VzbwLVkeC/sjcbRjPXfrFAUtRBEnIg1eexg5Kn7KRXaC+6WB4rK/yh9ScffMYcJQwYuDEXryqq71goiFmv62sHOHYDShZifAfMWg0GlfKMV4W+dp0Nm5z2aIax9MIRvMiE189mOsSCKyCcmMDeYfcWLZ+I0N6U3rQmahtf8P2ZdnNiErxbYbohgOeB0n8WiecBmXzJf/5zFt92rXwVovSKuKDxFWk7u4Y3hnVZVSrCrwKh653IKsUN30DJq6pOE8xQaBms+rEmxMORAWg27nGRRqkvQSD4g7sKF4LX50dzb++w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+F2VWSbzex2wlf4uLfclOsooXWOJvhZHSpHC/aBKjSg=;
+ b=EFLgSpYT4DZyURNG1FCf6lo0LJg7n6mi80v2DociqbFAyU921ss/XIIqo5szQvvoXavUWnP6E3I18ETcwBpmYJv90W3IfvpI/8J7mT9eW8Jw5XBtnvAAVOe3HOwdFVEswXBJjx9znNtKMWpdyk5zJTbcHW2BkdW8TDIe95HfaFhx6MT7weyXwfck3ufsr6Kl66Y4wfYvNlD4qUNCqxThc9ZPIKnDQPkhAc9RMb30O7V1Ybhmu3TCG2FCshVeoSQBwmNoY5npxvvYRMZ5RmAZQeRDdHgKOPtmIeV4mUQ+GPtA2uVrakYApOIWSTozqvHExjMCEGhcxQ7sM/l0ckVu8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MRWPR04MB12330.eurprd04.prod.outlook.com (2603:10a6:501:7f::23)
+ by DU4PR04MB12009.eurprd04.prod.outlook.com (2603:10a6:10:641::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Mon, 25 May
+ 2026 12:20:13 +0000
+Received: from MRWPR04MB12330.eurprd04.prod.outlook.com
+ ([fe80::ca22:f8c8:6aca:7889]) by MRWPR04MB12330.eurprd04.prod.outlook.com
+ ([fe80::ca22:f8c8:6aca:7889%6]) with mapi id 15.21.0048.016; Mon, 25 May 2026
+ 12:20:13 +0000
+Date: Mon, 25 May 2026 20:23:08 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
+Cc: imx@lists.linux.dev, linux-remoteproc@vger.kernel.org,
+	andersson@kernel.org, mathieu.poirier@linaro.org, Frank.Li@nxp.com,
+	s.hauer@pengutronix.de, festevam@gmail.com
+Subject: Re: [PATCHv3] remoteproc: imx_rproc: add missing DRAM ranges for
+ i.MX93
+Message-ID: <ahQ/LIU4DrtiQERT@shlinux89>
+References: <20260525062031.24725-1-Zhiqiang.Hou@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525062031.24725-1-Zhiqiang.Hou@nxp.com>
+X-ClientProxiedBy: SI3PR03CA0014.apcprd03.prod.outlook.com
+ (2603:1096:4:297::15) To MRWPR04MB12330.eurprd04.prod.outlook.com
+ (2603:10a6:501:7f::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MRWPR04MB12330:EE_|DU4PR04MB12009:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3c2a601-e346-4000-2240-08deba57f8a1
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|376014|52116014|366016|56012099003|38350700014|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	BaII51QV9tp2b992LG4NHn+uvK9827NhHMw72on+YB3BFbDyC+Aqtf4v10G5d2AoeYFoKU7gEnpLIWbzsFhB8T+6GRMmNgDMyAe/3r6f6TrYX8ONlBi7zfYvYAIKwXiakbv/RjmFo2gyi/w6czHjZxhym05qsRbOVljEfGbEJeY+oYHYGVS0EUbEgvYGB8SM/mJtfB9DJKXt8k4yERkTVTvg1VrYnYdYS11H8oPitqSGgcwloSGRPTb40PFfBXUHmmvHqs7yMByUmDAcTDQDsANXSFomY+56TQmRMRyXdhKGR3+T+5X3xchcN5jzbVjhwd+e56iVDaOLsom2ZAHXEcqEFCwcaEunhfIAedXfRedM2ZfH1+zRyv/neeiVEBSLKQk0HInFCRSjg0Z2DR235J47rp55WfGff8Jzbixf2JKX2IKAtybECMFwzPj3x/nMBIxf+CUoYBnkvmYGKBf5zJZ263TIisHJFvYY4htOZjZXuHuX1US7TYaVlCFxfpX9AvzRgX3aR4Vv/xQt9807WFVWY8jzg/axZ7zj/gMRNLfu+0Va+Yo9LWWYZLdBGWWgOkmd/VawHbRdLVjPtefWDR7Yon3euSslW1lGqTqclDHvt8N2TXAFzAsDxlQg+H2iCkLwaY6MMvF4WQyGu+8SmcOhGoLXSL12a/TdXBoUtpCIcOs/66jrwGOJd88n502pVWNSDnlN32rRxUmoKkjSZnYlBoCpAUrtcgSPhUERhGRmcRDOZYVFhXrniUaKJMQc
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRWPR04MB12330.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(52116014)(366016)(56012099003)(38350700014)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QPFotWiXI3uNy+A9uSksN4R0+9OkDazkU5cyOeyTE94BUD5MYjrkT0CYaHZw?=
+ =?us-ascii?Q?SH2D91nZOgdjYB5Pe70WUODKUT2Xecl73d4VecEMZY9H1YmfFUlzlfBK33p8?=
+ =?us-ascii?Q?+xP8601bFbuFAkeE5y9bCTsI0XWpRALQEp3BRuGggpsO7mnXRScQYhPCcXp9?=
+ =?us-ascii?Q?Q62v/eAGMVkNlWzLU6ulSdzNRV2/BLum3wmWGEwx4OSDyTwpWa/4+1uyCSAG?=
+ =?us-ascii?Q?1Bip4yWzYega498bHNUrwhaW+10WeVbTCi5YME/7jzRM57X2VBVmcZo5eta6?=
+ =?us-ascii?Q?3ZnyCxOR0PuxogsEv0Lkyol+wDqw4c/n/41CDD6LDnGSS1aRloGWoGpEcwGH?=
+ =?us-ascii?Q?Hs8O9/hiCM3GLR+aWOUtMqHj5J/CnYShIsfZW/khmAVyt92NnhdzWgUpivi9?=
+ =?us-ascii?Q?J7TyPYpBcB+jhcVourkDxnk2iaQISkExKMMFhNut6s615iqWmAGbAhEm7aWe?=
+ =?us-ascii?Q?qY5IJ9QCNu7MSPAsNm1P9w8G/mnNv67qW3BmdLwnDQKLhJxokfrbM/6bJADF?=
+ =?us-ascii?Q?tsIX6TCBcEcG4OL/eo0nOCgIBy2o4EkgBCobeMTzbZflzjdKly5wy1OswdJN?=
+ =?us-ascii?Q?SLS96fMVrx34WemXmDya11i+qw3jZgsdVGd01qbZetFQs9ZvnsZFjzGOelOl?=
+ =?us-ascii?Q?kgQoGM9jGFxiZfU4NSuVSNPbRThT7lsBkoSP/0uVtTbCtF5BhjFDcJJpkAcf?=
+ =?us-ascii?Q?jatPYmKzKN2J4KOPdUkramCtRQHkG2aNXgI7tJy6oXOTJcZ5IhcQvtSJdpvt?=
+ =?us-ascii?Q?7RrDsdQgLyGKGpxmivl07C4vcvOPVi63uNOQ3k8+AstmfQGcSMGf8LijDiPs?=
+ =?us-ascii?Q?oxxER9g6AyA0lokqa4efzRttlYz5wmBx35C8+l1qu301Z4UOUfS6NtXzSB9d?=
+ =?us-ascii?Q?Qgwh8UJDpGzVCfkrlxQDkUThxA3EE6fWCjSi3GxpseG6Gg4vxWxp1mzNb6BF?=
+ =?us-ascii?Q?pTcvTmtzjKUKKycVp05VCvhB4TdCGC9Owfq64KlBRTX3cNiznyDqhYnVYgOd?=
+ =?us-ascii?Q?gBXr/QXiMRFm/YrXD8cyosQIbonmSuA8dHL+ALqn34yOeOIsjT4VRYyf4MXs?=
+ =?us-ascii?Q?pmx6PoNo3U9MFsm/mlLo0BSwYHsCcicQMsQgMg/KGMHVXL7eC+v0t9CPPv1a?=
+ =?us-ascii?Q?9EooEIArZPCRdRCJI0rqMHX7HfaAe0AHUiB+++UkW/6hAiOFTza2/N/+3hp6?=
+ =?us-ascii?Q?F+uc8S7Pin4ZU/6sldOQlszh8LVAfqCjtfwYBgqw+nYBy/ZDWZ+h9Oy34OhG?=
+ =?us-ascii?Q?0M2ef8bUykmfw9pmfQcfKvyQ1N1zwImz8RiSm6Q0VZUBAQwTrPeddzPRHIkO?=
+ =?us-ascii?Q?S5Zzfo1c9KYVFreB0HGqAw+NSC4KFbcPqBunKJQRmVTH+OwLDSCtkoHkefiq?=
+ =?us-ascii?Q?8QBVVeO91zY20zCP0qkrIhqdXREQhT5sieeVK7L3zvbjWDp+/BBOxokvwLEX?=
+ =?us-ascii?Q?UwTTtlTPAg75QenvTigsPDfw18O56Iot+DL9WuorIkUE+wL318GomYRqsN0T?=
+ =?us-ascii?Q?//3giWtVCrBcLcZGDiMCV0taubaApyoGilJusHxCJzuSP8CvN/uiB2tkoFLr?=
+ =?us-ascii?Q?WVPIGrDyfdosoyRo+q8S5njEgFCfjWcYxRD4SKk6cbB2TFk62XTk1Hd0i21i?=
+ =?us-ascii?Q?zVBeie4jtPmrESWCwxuUd0juBnOx6KLnGZ7/Y4vPMEAm/zsThCulwbs/OGoe?=
+ =?us-ascii?Q?ozcXVOyQO0ZPIGWjeVbpSTMmfwLt86ldkRBHqb8gJ28F03VLpoOvUxtciMDY?=
+ =?us-ascii?Q?w61CUKm66A=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3c2a601-e346-4000-2240-08deba57f8a1
+X-MS-Exchange-CrossTenant-AuthSource: MRWPR04MB12330.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 12:20:13.0797
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x5FQBgMwnHMNPf/AvDTLB+rcmR2VR/phtkKFPKzV6/vH6RR06F5OtlVf840KbvejQdOYz/F/pxlPRheTY51Lsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB12009
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Mon, May 25, 2026 at 02:20:31PM +0800, Zhiqiang Hou wrote:
+>From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+>
+>The M33 DRAM address ranges 0xA0000000-0xAFFFFFFF(None Secure)
+>and 0xB0000000-0xBFFFFFFF(Secure) are both mapped to
+>0xA0000000-0xAFFFFFFF in the A55 address space.
+>
+>These ranges are currently missing from the i.MX93 remoteproc
+>address translation table, which may lead to invalid address
+>translation for firmware accessing these regions.
+>
+>Add the missing mappings to complete the DRAM coverage.
+>
+>Fixes: 9222fabf0e39d ("remoteproc: imx_rproc: Support i.MX93")
+>Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
 
-Pre-existing issues:
-- [High] Atomic SMBus block reads without PEC fail because `i2c_imx_prepare=
-_read` incorrectly NACKs the length byte.
-- [High] Returning `-EPROTO` directly when `len > I2C_SMBUS_BLOCK_MAX` aban=
-dons an in-flight receive cycle, leaving the I2C bus permanently stuck.
---
-
-commit 83c9437aa27a45a7ddaac360874e6cfec57d3cf7
-Author: Vincent Jardin <vjardin@free.fr>
-
-i2c: imx: fix locked bus on SMBus block-read of 0 (atomic)
-
-This commit fixes a locked I2C bus issue in atomic mode when an SMBus
-block-read has a byte count of 0. It handles count=3D0 by NACKing the
-in-flight dummy byte and adjusting the message length to emit a STOP
-condition properly.
-
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -1436,8 +1436,19 @@ static int i2c_imx_atomic_read(struct imx_i2c_stru=
-ct *i2c_imx,
->  		 */
->  		if ((!i) && block_data) {
-
-[Severity: High]
-This is a pre-existing issue, but does i2c_imx_prepare_read() incorrectly
-NACK the length byte for atomic SMBus block reads without PEC?
-
-When i2c_imx_prepare_read() is called earlier in this function to clear the
-I2CR_TXAK flag and ACK the initial bytes, it uses a check for (msgs->len - =
-1).
-For SMBus block reads (I2C_M_RECV_LEN), the initial msgs->len provided by t=
-he
-I2C core is 1.
-
-This causes msgs->len - 1 to evaluate to 0, which leaves TXAK set to 1. The
-controller then NACKs the very first length byte, causing the target to abo=
-rt
-the transfer and immediately fail atomic SMBus block reads.
-
->  			len =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
-> -			if ((len =3D=3D 0) || (len > I2C_SMBUS_BLOCK_MAX))
-> +			if (len > I2C_SMBUS_BLOCK_MAX)
->  				return -EPROTO;
-
-[Severity: High]
-This is a pre-existing issue, but does returning -EPROTO directly here
-abandon an in-flight receive cycle and leave the bus permanently stuck?
-
-When reading the length byte via imx_i2c_read_reg(..., IMX_I2C_I2DR), the
-hardware automatically initiates the reception of the next byte. If the len=
-gth
-exceeds I2C_SMBUS_BLOCK_MAX, returning directly without generating a NACK or
-STOP condition abandons the transfer.
-
-Because the target device remains in the middle of a transmit cycle holding
-SDA low waiting for clock pulses, and atomic polling mode disables sleepable
-GPIO bus recovery functions, does this cause the I2C bus to wedge until a
-power cycle?
-
-Should the same graceful abort sequence used for len =3D=3D 0 (NACKing the
-in-flight dummy byte and emitting a STOP) be applied here as well?
-
-> +			if (len =3D=3D 0) {
-> +				/*
-> +				 * SMBus 3.1 6.5.7: support count byte of 0.
-> +				 */
-> +				temp =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-> +				temp |=3D I2CR_TXAK;
-> +				imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
-> +				msgs->buf[0] =3D 0;
-> +				msgs->len =3D 2;
-> +				continue;
-> +			}
->  			dev_dbg(&i2c_imx->adapter.dev,
->  				"<%s> read length: 0x%X\n",
->  				__func__, len);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525-for-upstre=
-am-i2c-lx2160-fix-v1-v1-0-f30ab53dd97c@free.fr?part=3D1
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
