@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CC01EEE6
-	for <imx@lists.linux.dev>; Mon, 25 May 2026 17:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508A6188CC9
+	for <imx@lists.linux.dev>; Mon, 25 May 2026 18:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779729491; cv=none; b=JTuVNG7mC0dxIX4+FXf6cmwXA8G0HcYsjeu9uOJN5BqqGjvKpoaS6RRGHAh89cFFJYROBHHNVa6KLj6lxC3LRK/MobWWclGf8hMEN5SZg4ID7wk88AUlHi1dyYLAWjNkGzOaZ/1Ex3ASC6BPAaG03ZNILCuFLRQNBkPTHRulVso=
+	t=1779733461; cv=none; b=te8dlCVSrqOruReSORMVwGSWOvv2nRs3LuSq/448W66je93hPplAqO4G8LBEO/Zt5Csr98PCMhOtRK6435y0joccoikh/cEQ4GrbvT5W0UXM0h2gd5YTNX9cjXhWiFk+HIHc9jHOrTkUu5r00sP5rEBx41EaWdEoZF38N/7YKBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779729491; c=relaxed/simple;
-	bh=LqOIoz0R9MD0P64+YsqLL3hneBKOXn2mML0Gj1sw2wY=;
+	s=arc-20240116; t=1779733461; c=relaxed/simple;
+	bh=NQk+oMG5m3QFukfwJzSIPE0+apaOr3io1PM2fs36h9E=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m6YHYEdmWr33E5TwHWiaXua6lKLdrz1UoQ+gV5LKi4VnRpg0/yeyP3ZJZtzjASi9fz1da/ZNi5P/6/Rm99YijucYHFHOd7xt9wYxODhZynVK2JgZs5NWk5TVMprtRn+DZ8pAOZYjAs5GOEh5oEYXqBpVVt1Mlib2zRo7SRAEfkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGu2E27u; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=txPAZUD2r2hRRZ2kyT1D8wp/Bqi3Y3ownnhMCY7M1rSOsfOGoMLXZpVVKyZbaFtZ4ItZHFDrBVfMJGK93cTDDsCz/o6HS42qSfA5V8j1lHxa+40LMuPdr3gxlR8W4ndd88/+8Y0jTXneCU+z0b82JDnjDX88WrWIceKyxw9e4xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RyxzOxwP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGu2E27u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C73A1F000E9;
-	Mon, 25 May 2026 17:18:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RyxzOxwP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AA01F000E9;
+	Mon, 25 May 2026 18:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779729489;
-	bh=AurbEJ1S7LCXhV4ycKM7LRmQAzkEYTVut38845Ja7JY=;
+	s=k20260515; t=1779733460;
+	bh=7nP2/up9CUKbjq5X7AtwDnet1Lgq/dwNG42KZB+wg9M=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZGu2E27u/dRgM+Sz8BJBMVO0sXuDBq4iIyChuUZ/09jScPwIC5AHggG9chWOelEVZ
-	 WOxP+Pc10QUikr8kMb5DK8vRmb9X/cMH5RI90hTCpXWMgt2nXLhBjBfD9Z+shlcLdf
-	 5VPe0YRmnc0dQ8D8gfkY1/WOqjGTma5BaLZlRsU0rJ17pgEU0wA92vpENJJbLxXWyI
-	 YQFGX2tjh2xjUO8aBvlWVmzy22SByNntFy/lyeM0vI/pKtqXTcAQ37W3EW6Oi96peL
-	 YBKi6fdNTqD477et45mnOeLzQvgOzFlYI+UWYEsDmRtJ+ewpiK+2iuJXs1npS6HRna
-	 unuz6fMCvUW7g==
+	b=RyxzOxwPN3jDYOJp0jnqGIett0RU7g9lfjsmP6HZ7c1MZEFFc72r/ILFnG9ToflGm
+	 K3vKmRL5q4p8sm3h4oiaX+ideianiPMwEoW9o//H0l/KC6Tv4wKfcaZtmL+C7d75sW
+	 oJbCDtU9kJgJGjFxdWD4oDXu7Jtr/dO3IT7R68ge9Dxq1LAY8j1h9gZsgOyPv19Awb
+	 X/Kat+jKpHx+T/WE1B81CexmJPN9hTqFbEZXLAF/+fvuA0TlqYMi/Hh44qAT3RQDYL
+	 pr9BrSJFWufU6rs3GCI9pp6lTAEszjVrhMFMLmQi5kmph4taZDfVbn686gkc8kpZpJ
+	 TN/71majUQjCA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] i2c: imx: fix locked bus on SMBus block-read of
- 0 (atomic)
+Subject: Re: [PATCH v2 2/2] i2c: imx: fix locked bus on SMBus block-read of
+ 0 (IRQ)
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Vincent Jardin" <vjardin@free.fr>
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-1-26a3cc8cd055@free.fr>
-References: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-1-26a3cc8cd055@free.fr>
+In-Reply-To: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-2-26a3cc8cd055@free.fr>
+References: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-2-26a3cc8cd055@free.fr>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 17:18:09 +0000
-Message-Id: <20260525171809.8C73A1F000E9@smtp.kernel.org>
+Date: Mon, 25 May 2026 18:24:19 +0000
+Message-Id: <20260525182420.05AA01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,62 +48,66 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] The atomic read setup function `i2c_imx_prepare_read` fails to cle=
-ar the TXAK (NACK) flag for SMBus block reads, causing the controller to in=
-correctly NACK the initial length byte.
+- [High] The driver fails to set the NACK flag (`TXAK`) when an SMBus block=
+ read returns a length of 1, which can cause the I2C bus to hang, similar t=
+o the bug fixed by this patch for length 0.
 --
 
-commit 727a0db8e9f87518943db19107dcd3fd92e92686
+commit 3601c9783ae8f09fb48838879c5dca5379ed7e27
 Author: Vincent Jardin <vjardin@free.fr>
 
-i2c: imx: fix locked bus on SMBus block-read of 0 (atomic)
+i2c: imx: fix locked bus on SMBus block-read of 0 (IRQ)
 
-This patch fixes a locked bus issue during SMBus block reads of 0 in the
-atomic polling path by NACKing the in-flight dummy byte and extending the
-message length to correctly emit a STOP. It also handles the case where
-the byte count exceeds I2C_SMBUS_BLOCK_MAX.
+This commit updates the interrupt-driven SMBus block read state machine to
+support a length of 0 bytes, setting the NACK bit for the in-flight dummy
+byte to avoid bus hangs. It also safely aborts reads larger than the maximum
+allowed size by setting the NACK bit before returning an error.
+
+Cc: <stable@vger.kernel.org> # v6.13+
 
 > diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index a208fefd3c3b3..14107e1ad4138 100644
+> index 14107e1ad4138..8db8d2e10f5c5 100644
 > --- a/drivers/i2c/busses/i2c-imx.c
 > +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -1415,6 +1415,7 @@ static int i2c_imx_atomic_read(struct imx_i2c_struc=
-t *i2c_imx,
->  	int i, result;
->  	unsigned int temp;
->  	int block_data =3D msgs->flags & I2C_M_RECV_LEN;
-> +	int block_err =3D 0;
+> @@ -1061,11 +1061,28 @@ static inline enum imx_i2c_state i2c_imx_isr_read=
+_continue(struct imx_i2c_struct
+>  static inline void i2c_imx_isr_read_block_data_len(struct imx_i2c_struct=
+ *i2c_imx)
+>  {
+>  	u8 len =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
+> +	unsigned int temp;
 > =20
->  	result =3D i2c_imx_prepare_read(i2c_imx, msgs, false);
+>  	if (len =3D=3D 0 || len > I2C_SMBUS_BLOCK_MAX) {
+
+[ ... ]
+
+>  		i2c_imx->isr_result =3D -EPROTO;
+>  		i2c_imx->state =3D IMX_I2C_STATE_FAILED;
+>  		wake_up(&i2c_imx->queue);
+> +		return;
+>  	}
+>  	i2c_imx->msg->len +=3D len;
+>  	i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] =3D len;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but does the atomic read setup
-fail to clear the TXAK flag for SMBus block reads here?
+This is a pre-existing issue, but does this function also need to set the
+TXAK bit when len is exactly 1?
 
-When i2c_imx_prepare_read() is called for SMBus block reads=20
-(I2C_M_RECV_LEN), the I2C core initially sets msgs->len to 1. In=20
-i2c_imx_prepare_read(), we have:
+When the length byte is read here, the hardware immediately starts clocking
+in the next byte, which is the first data byte. If the block read length is
+exactly 1, this first data byte is also the last byte of the transfer.
 
-drivers/i2c/busses/i2c-imx.c:i2c_imx_prepare_read() {
-    ...
-    /*
-     * Reset the I2CR_TXAK flag initially for SMBus block read since the
-     * length is unknown
-     */
-    if (msgs->len - 1)
-        temp &=3D ~I2CR_TXAK;
-    ...
-}
+Because TXAK is explicitly cleared earlier in i2c_imx_isr_read for length
+transfers, the controller will ACK this final data byte if TXAK is not set
+at this point.
 
-Because msgs->len is 1, msgs->len - 1 evaluates to 0, and I2CR_TXAK is not
-cleared. If prior reads left TXAK set, the master will immediately NACK the
-length byte. A NACK on the length byte signals the target to abort the
-transfer, so no subsequent data bytes are transmitted.
+If the slave holds SDA low as a result of receiving an ACK instead of a NACK
+on its final byte, would the subsequent attempt to generate a STOP condition
+in i2c_imx_isr_read_continue fail and permanently hang the bus?
 
-A similar issue was previously identified and fixed in the interrupt-driven
-path by explicitly checking the I2C_M_RECV_LEN flag. Could
-i2c_imx_prepare_read() be missing the same check?
+The atomic path in i2c_imx_atomic_read appears to handle this safely by
+setting TXAK when reading the second-to-last byte.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525-for-upstre=
-am-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr?part=3D1
+am-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr?part=3D2
