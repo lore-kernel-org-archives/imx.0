@@ -1,210 +1,133 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010026.outbound.protection.outlook.com [52.101.69.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5188930C17D
-	for <imx@lists.linux.dev>; Mon, 25 May 2026 13:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779717454; cv=fail; b=rTHusnVmKlZciR2zDVolKGvxRk2+9uXHIUbmG341AuvSWwDkqMLbLEBg50ks2UhJcbAUD0Liz31CV+yI2j48ASJYPcp3HALFsTEuVRVsdvVwiTEako8E0E+rxprJ9uxKE1tc+15Wr1iip4/frW9vW/iqJbUTri8tJ4HQXrfgFd8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779717454; c=relaxed/simple;
-	bh=VjaSl2AKNyHO0kzoBVdNicA+t45RvYW9g7bb3subFgo=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Cw9aVPWXhcwdHtvWpdCrhUKLaRNIgDybNsPVCcWRCGarZv+V75HRRIGKH+TezwstDJsvZuIyAGsZjAzmJSeALEE65DT16bnZcSw1ZDARDQOkUrYOK5rqeeCQPHgKfzl/Xa+DxnnZ4zvlpL2OqfMtmodSdthgUnyq8tYhjizS8FU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XpPUPIJZ; arc=fail smtp.client-ip=52.101.69.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BE8381B1A
+	for <imx@lists.linux.dev>; Mon, 25 May 2026 14:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779720751; cv=none; b=dujSjZr/0xObxe7gkLaIlxsAr/QVKerBxJ3YxJt7Lh2MvX2nL/7FdAhikVvuPdWsqS5aMS/BdSeORxvP0ZZ7roR5m0Ilo1M5sgcNuaCwsSdoe3QgAjvl1mIP7z81kZ5aKFYPhNgmjpe0U5NRLUilYwAXilyqEXzFFCHH1S64wY0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779720751; c=relaxed/simple;
+	bh=B4KVrUQ7tVwcm9ysslsg1SoUXgtzP4XMPnnmGqIi9Qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FUfEdhYcw1gynqC0mRFdSu6MT/N7farimgJaxoA6D2xTC7qzTuhayJThfiKcIeB3bFyQcruKtcfB8dLZMzUrrx/1dP3+4IygmQTx4o69UIO7vzOCKji+51Rs0qaB1l7TrBzPmJzfypqHtLLxl9jjQ4/eRaYjXtxu9H5QR51Gx5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TLEkZJEL; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XpPUPIJZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nbelYM0vqdH9qiBjRRolUjdyjldlIbjOSRKG+yPgw/vN9C5Vc36aLbqS/zYZvHuHEeXrQPWai4015pIXmOfNGDCC6KFvE+/PjcoKFnCyXXZq0KamyqYornYGVWdShJo9I3dD5Hj/k95W+U3DtBanSzv7X7RCOrvK3WMPRn6o6WSAOskOkQmAHArEzKaFrk69HJHKr8vqXWR6gLrwANw44JnlPV39HavhRwuX/3WFD8bphMjQy5Tr9G4N9ojYhyopUcAc/spfjxZFYrSWBjbkhA/dfRC7j3HS7R0Uy9iho7HkPlRg7GwUZIcC1tnoeNw2II2laM+fvD9FtrscmnrBEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4dsYK8MGJ623Wv4i4j03wdHY599I7JFDsGg7jQ0ZPO4=;
- b=jWkY4PYkZKZtyiLljuvrwGiIclQFwqwGsKQNSrld1xAHgND62krJJQbkeEUCcUq32HYPkf45k6km7d0RivM4WwQeq847cpmWXs9np5iFtixXsVepO/sP27w7rhpHwQqJUBEzhyEusY1VF9bk+oicDm2Rk7GKDSkJ+oYJ+yWQa+U4oXdUoExDjwmz//62OZ4d/BswbAtPtUB0uk8i1810PXGREZLSGV8ZCrKkQHRcHR5ZtIIVT0yvQbP9FhYFnI3d07jitLkUm76St0vcW/EWu9yDECRPTNjTLoFi0NGDWkCHDmJJspV6FnlV6cqtoH2lSvr5BoeQ2oWzobUk/R95YQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4dsYK8MGJ623Wv4i4j03wdHY599I7JFDsGg7jQ0ZPO4=;
- b=XpPUPIJZ2pehd4wJXkAg1qhylHJioUpjx3Y4WS0GI3rzq8R9Wq+dAzNIJ1yCdLo+aFwhPuZBXlZ9FrheVN6Wmio/uNtiL7kYP4N7pGZuT/IoVNFCkfGkSKcPErDf+h/bGb1agFOPczJxwHaKDiQhEzWZHejIY0ecjNehXH53MRp+bLWlaN5L29U+4fh/8uiNRBjBqOHAfq0rdr6mcREx+4wFHMf3GRheFfdONcZ+rrtf1E35Xv76vNEHlhpFMhdTSHFcclxKwl7mOUKijftWPdu8k2Y7dN5UcCQ53VF3v82hj+a/ekiByQ06tuh8NlklfzdoOdgo7JaUe7Onjqc9Lw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9244.eurprd04.prod.outlook.com (2603:10a6:20b:4e3::9)
- by DU4PR04MB11859.eurprd04.prod.outlook.com (2603:10a6:10:61e::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Mon, 25 May
- 2026 13:57:29 +0000
-Received: from AS4PR04MB9244.eurprd04.prod.outlook.com
- ([fe80::adaf:805c:51c5:9538]) by AS4PR04MB9244.eurprd04.prod.outlook.com
- ([fe80::adaf:805c:51c5:9538%4]) with mapi id 15.21.0048.019; Mon, 25 May 2026
- 13:57:29 +0000
-Message-ID: <824d2c59-d355-4f8c-a602-bc08e49d52e1@nxp.com>
-Date: Mon, 25 May 2026 17:04:42 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: imx-jpeg: avoid double free on video register
- failure
-To: Guangshuo Li <lgs201920130244@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Hans Verkuil <hverkuil@kernel.org>,
- imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260518130259.1001956-1-lgs201920130244@gmail.com>
-Content-Language: en-US
-From: Mirela Rabulea <mirela.rabulea@nxp.com>
-In-Reply-To: <20260518130259.1001956-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P192CA0008.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:5da::6) To AS4PR04MB9244.eurprd04.prod.outlook.com
- (2603:10a6:20b:4e3::9)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TLEkZJEL"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2bd2c147abaso57739805ad.3
+        for <imx@lists.linux.dev>; Mon, 25 May 2026 07:52:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1779720749; x=1780325549; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PMxNLv05fM25q8J30cDMAB5OgpvYercmYEs6tGB59ds=;
+        b=TLEkZJEL+72W7X2gBMpcRR/EYDoGANxok0S1ZflB+ceIdux9H3YKPkFzDd/PSKwBm7
+         jD8XypLETI6s1cjQrDsEib3RQx44LNrXqcGNUA7EVwcmlGQtpw2eM0FYDPcgpxy1SPoD
+         VPSqyy6hwr5xIuqKyEfVXN269man/9YAt9OBQvA/MRGheWMtc8lT8FjhGHGnHYPvNQuG
+         X2rYbDlHCierNBFptZGBRzMUZ947a0Ro0xllS9miZ7SEoP73VPDiHW+39CHNcy+mxMqy
+         KQ2p0UGQsTxhWSSLqMcbMW958qXY6b6d8kpHUIbMLI037cm/V9r1uOUDD8gTL2jYZOc8
+         u2aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779720749; x=1780325549;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PMxNLv05fM25q8J30cDMAB5OgpvYercmYEs6tGB59ds=;
+        b=lGEcUraq723zvX3M/ovBmFba1aFUtoJGamURABCJPjVRqG/okuC2Zen0q85U8F6dY/
+         O2C29zhTwTnBEt43mhWHrj9LCmFjAEHexdoWKFaFnOBy1y4LRKmneTE2ZNLdcwvCFwPW
+         lkeNuznoAWCk34teV1EtMy1iIVSPyr54mFEYcHRCq4IjiN5baBH0CHjqUR520GTghqj3
+         SerfGp90U/4gd52S4gn6B6POzNQesFwJ7qJow3cyCZt+VtklIu0CQuakcrW5WXt/iiMl
+         QxacnZa8tksKsWOCHlJr58TPk7oS2vDA8mdLKz7RGwxiYpsAQyYKHCF32+vFi7eKhqhp
+         Nz7w==
+X-Gm-Message-State: AOJu0Yyt2XjA38DPTkQ7psfKYz2mGq3Vn0zvjGkL9XoKF0MtshOT+hfs
+	buTXcCLQtPQe1LJucXM6Zlm/9IET2OApfruDwy6FDgbWVqm40P73vc6naKqmpDiPCOI=
+X-Gm-Gg: Acq92OFsrscUhpnKidAa3NnX2wNgRTtfMBAtbxhYJeMPHcXVzbdBSi2c72Y7GI5uBg1
+	epgGSoHyKnXV2UOTTiDrRj/3lNcrSSz4YP+TON9fiVlTZqElY/EKBPCGVjgqlw8jFQCPdzC/fEY
+	z88m1djM6y+IIFBJPwcErDandzfHcsNkDHsIxAjLnud+LdGnFgOCXX8tnizN1mjr3d1v9Fakcyn
+	s9KHV1YsmaThWHRm/qp4ifcF2lc4Hw1ZTcY8jVwIcm3MtpZUj3O644HQBItWJKMzntzPLhyhAKT
+	6JEpmpG0G68I6CNX6P51JkPLwyn5iibckN9O8tllf1HPkkA6l+JahXNfxt1Xisw8mok6kXN4cMZ
+	Y9MGwTjZnyD8tgpjgocpEG1XJ1E9Vb8uexr6EJivMa/25hkFhHMl7u8wNtff1oD3wiVardt/4Qp
+	b7kHpPFt7CG2BsuDpNtXaKAvOlUT0=
+X-Received: by 2002:a17:902:ebc4:b0:2be:9659:591c with SMTP id d9443c01a7336-2beb031ae09mr168901795ad.4.1779720749021;
+        Mon, 25 May 2026 07:52:29 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:bf9f:259d:c433:fb32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb5903bcasm104765695ad.77.2026.05.25.07.52.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 07:52:28 -0700 (PDT)
+Date: Mon, 25 May 2026 08:52:26 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
+Cc: imx@lists.linux.dev, linux-remoteproc@vger.kernel.org,
+	andersson@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+	festevam@gmail.com
+Subject: Re: [PATCHv3] remoteproc: imx_rproc: add missing DRAM ranges for
+ i.MX93
+Message-ID: <ahRiKmwn8YdHGCyZ@p14s>
+References: <20260525062031.24725-1-Zhiqiang.Hou@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9244:EE_|DU4PR04MB11859:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87446aec-3bfb-4be4-951f-08deba658f4e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|19092799006|1800799024|366016|11063799006|18002099003|56012099003|22082099003|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	uviwe5dAAT3Vpd0GJrE8vPPO8j06bXzsuGMafuZPtDqveUXFCU0PBfSCXIoWwAutrz0EWO+Te8pWzN1I3KcNMs2yLhbMUxzBPxSLzZavR40+MgUgZc2LTVnNoO3s4G8XKtxr0nvsFG63CX7ihr8lsMOhuvXl5rnq8FFSTg46XnQZYpP2RViIcQczl+O6W/Azk2cEgJe+sUUwCbZd0SX0B6VLDap8TnR+/6yh4smFzFTvF2P2hF4cvQAMxup2wq6Bq6HVNYl3qgXBX5gNlL61/1WsBkzjN1qR/tL60kFoGwt/SgHycNnkUUAQE6nDDlaPseAB3x+Aim5Y8LORmYNP9WmKQJPAmLSI1Sxq+unK8L5nXwvQaX5Qh2rT3H0BFXH0w8VSFfICOn+l4vBrJA2Y+A+E376mG/lTtZRzF2cqJ9ABgOWirba8cf+taW3rqoXpHFAV6e/f5zlY/UENPkVmg1/KQD/buzdwgQftulisolih0I6KCKmoDTK2eMWr4Hms7dvi9xr0ysvLuDFiOWizfJ12gi4fXFD8kS9eGGaqgImd/c2Aw7tqxp3rGhRohVn3K51YTDIaHEYvK0JwCVVXnIA+1/isWk0vg4G6BfVuUBR4GdMWOSDf/M2ACTf1Gh2UaJZDLpA7Tc/4e2CIYGouEpF4OoC4eKbdYZAjN2y81JfIl6/IOiRuk1G/SaBybGJ0s93QicnfE5TOnM1yM61lNTfVTtNFTPEQV8jUYsPsgSMhB9RdR/8OM15EAOLuSKg4ORxf8p9CXBz7kvEgJZK0vA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9244.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(19092799006)(1800799024)(366016)(11063799006)(18002099003)(56012099003)(22082099003)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TVBxOGFzQ2JJTGxrdmxVTnlOY25PM3pjM3lJUDZJMTdIc0V6ZENtNEpLb05j?=
- =?utf-8?B?WVIxSXFuVVU2bE93K0pMVVFiSnBvMUs4WjNIRVF5ZFQ0R3Q4OWdRT3FNa0t1?=
- =?utf-8?B?bDQ1ajVETk9kYWFjLytmalJYajhDNCtXY00vTmI3d1NjZHpaUUU2K3J1bll6?=
- =?utf-8?B?T1d0RWk3bm5IVHNyRElNU0NJdEcxaGFWV2twNS9OR3dVY0dOSGpYN0EvT04w?=
- =?utf-8?B?TjJWRkI1czgwbllmSTcxN1hxQmV0ekVtQ1laTm9ZWjJSMTlKMlhqbmdmODhC?=
- =?utf-8?B?V3FKQUwxTG5CMjc2UG5jM2hUSnROWW9WV09MYzBadGh2U0xpdUFWZ3RyZTRK?=
- =?utf-8?B?K1BGekh4K2dya0FwcGQyb1I5cUZGaHJuRVJqNXVPNWVhc3pib0xRTFRieDdy?=
- =?utf-8?B?c2tsY1BEdHNIV0VLbzdKT3hXMzJKa1ZPU1BDTXYvdTB0OGVCZGhMellKT0Mr?=
- =?utf-8?B?WEJwOTY4dGVRZytQaXBhaFA5QWpNN2xqRDNncGVyajFCanhIbzhnK2F2NG1a?=
- =?utf-8?B?Ri92QzBXMm5BaGFHNVlFUmFLT2pVNUZYdDR3Q3cvVmdyN0dTWUo5VmZkQmFv?=
- =?utf-8?B?bG1ITVRsa2lEZSt4aGpoYjFvc3owZStTNFRDbm44UmdZQnZHNG9zOWhwblF1?=
- =?utf-8?B?eDdjR2NPd2N4NURyTGtVQTlPckRGcUp1VnJyM1hhSkFHek9JMzVWU3RCYlN4?=
- =?utf-8?B?UDkzS3FSWGlRVGppUWhwSHZ3eDBBSTg3UE1HbmN1eFpGUnQxcUxjNkkzSG9W?=
- =?utf-8?B?L0JUYld0RjNWeTRka3BMRmtGSWtNejRoejYyNWc5ckR0YVpXQ0l4QnpKWnZm?=
- =?utf-8?B?Qlk0bGczSGxGcVFDTjNVUzNHRTFBTGNwTXhHM1U3d1Rpb3VyUTFuN2NyS0Jh?=
- =?utf-8?B?T3NIeWFLRkFsSGFaZnhEZGEyckNaUFNyUC9Ba1IrV0svV2U3V3gvOHo1bEtn?=
- =?utf-8?B?YWJ1bDQxRWlQZlJmRDRVeFlzTUZZeVpjdkhqS1J5akJEVDE2RUpxOHpUSkNt?=
- =?utf-8?B?MmZBTHBNZGNudGE1MFJVSjFaYmpDM2VXdnVISFpjck1mU3IxTzlmb2tKMUk4?=
- =?utf-8?B?OUY4NE5xZTJHMTJQQitWcjUvUWV1OTVxSmQ4UGhpOFdaS1ZZWG5nc0RYS2E0?=
- =?utf-8?B?eDBsQldmc0JpamEwdy9MNk9lWkMxUGI1MWVsWmxZN01nMksxZkhuTVZSNU5R?=
- =?utf-8?B?cDdrb1RhZHhyVlhSSXFmSHRZNHZiTWpDbVYvTEpkckY3OVBveTlsLzdnOUNs?=
- =?utf-8?B?U0VoMVN4em1hN2luTzJjY3dvbnY2WnI2RHd4WUlxaU5Oa3ljUndKbW13a1dn?=
- =?utf-8?B?RkJkTUJ6SXgvTmxTa1VDZDhvdGxtdy9kelQ2ZTdlek84cVE3b0N1clJlZ21W?=
- =?utf-8?B?T1VreWo5WWg0U1ZvLzBPenRtR0dwdDNHQVdteXhMTDV0aUtqMlBPMGFRZVhv?=
- =?utf-8?B?MGhWNFp6b1NjR3lhV3ROYUVFTnZxYnB2d21xTUJWQ3UvTlNBRVU4MnV3NlVQ?=
- =?utf-8?B?YVFSRXl6MGNBR0dma0ZhbS84L2FKTENKeFZ3VlFyQWF2YWVsYllQcm9vR0Er?=
- =?utf-8?B?cHVRaGJCUHluRkpvT1JFVjRCOXB2YnZFM2hlRHRGdzFQMDhrTVdjSGwvc05r?=
- =?utf-8?B?SjNYOXVER0p6Q0VuV3l2ZHBUcWdVRmRSYmJCQlllTzNXbkQ2S0lnM2xCN0tj?=
- =?utf-8?B?MVcveTI1WnM3UEJaSkdPOTgzcVhITnB3WjBXWGF0SVoyYW1ueUZaajhzdnZT?=
- =?utf-8?B?b00vNzE5OVpHRk9VL2xtcS9QMWVFMkpidWV0L0o4KzVleElRVVRQd29zd2NW?=
- =?utf-8?B?ZnNXSWlOODRYVmo0RW9MbS9xQWhtZTlZNVV5YXNJeS85Q3htc3dTeHd2aWZN?=
- =?utf-8?B?OGFCNXdRdDhpYk5FdjdiMEVlL2oySTBvd2FBYk85enpPMnQ3RC9TRWNEci9m?=
- =?utf-8?B?TG9vZVNpNGRaT05PTDlzUFZCL21naTlobGttTGp0WjJYRlhpTDliS0hHQmdk?=
- =?utf-8?B?dDBwR0xHdmI3cWwzZEEzd1k5MVJCSFBFY2FPUGNVQjZOYS92YUx3T0s5bXBa?=
- =?utf-8?B?ZElUMitnSkVYRzN0QVh2SUNRUTB0bGF3U1FiQklxYnRUZzYra3RKakQ1K3Ur?=
- =?utf-8?B?ZzRJM25seGptTHNmMDVsZEZkYXRjZ0dhajBhMVVoV1h6MXFaYXdxb011bys5?=
- =?utf-8?B?QUNscnRwSzBYaEpyK2VxeU1nVjVmNFlxcm15RXNkNW95Z28vbXJKWHFZKzk3?=
- =?utf-8?B?bExzWHNJc0dHTmQ3UTBqa1NGY21IRGdtR2lRRW1BbzNSbyt6Z3EwZ3haeGxs?=
- =?utf-8?B?ZVE5U2d2eFJzaGdQTHJLQ0UrdndiNXdUN3pIY0RQMjVmaVBDTy81UT09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87446aec-3bfb-4be4-951f-08deba658f4e
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9244.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 13:57:29.3228
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: knyE1oIGiaGPq51K56IThXGSYvBAGUW9F8gMVfPqSh4GkIDuuoo7VGY61w5eaGOSMKSSmLgzzQIDNBr7M2kMuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11859
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525062031.24725-1-Zhiqiang.Hou@nxp.com>
 
-> [You don't often get email from lgs201920130244@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->
-> Caution: This is an external email. Please take care when clicking links or opening attachments. When in doubt, report the message using the 'Report this email' button
->
->
-> mxc_jpeg_probe() allocates a video_device with video_device_alloc() and
-> releases it from the err_vdev_register error path if
-> video_register_device() fails.
->
-> This can double free the video_device when __video_register_device()
-> reaches device_register() and that call fails:
->
->    video_register_device()
->      -> __video_register_device()
->         -> device_register() fails
->            -> put_device(&vdev->dev)
->               -> v4l2_device_release()
->                  -> vdev->release(vdev)
->                     -> video_device_release(vdev)
->
->    mxc_jpeg_probe()
->      -> err_vdev_register
->         -> video_device_release(jpeg->dec_vdev)
->
-> Use video_device_release_empty() while registering the device so that
-> registration failure paths do not free jpeg->dec_vdev through
-> vdev->release(). mxc_jpeg_probe() then releases jpeg->dec_vdev exactly
-> once from err_vdev_register. Restore video_device_release() after
-> successful registration so the registered device keeps its normal lifetime
-> handling.
->
-> This issue was found by a static analysis tool I am developing.
->
-> Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+On Mon, May 25, 2026 at 02:20:31PM +0800, Zhiqiang Hou wrote:
+> From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+> 
+> The M33 DRAM address ranges 0xA0000000-0xAFFFFFFF(None Secure)
 
-Hi Guangshuo,
+s/none/non
 
-sorry for the late response, so I assume this patch will be dropped in 
-favor of a fix in v4l2-core, as per discussions here?:
+> and 0xB0000000-0xBFFFFFFF(Secure) are both mapped to
+> 0xA0000000-0xAFFFFFFF in the A55 address space.
+> 
 
-https://lore.kernel.org/linux-media/20260519090819.1041314-1-lgs201920130244@gmail.com/
+So the M33 has secure and non-secure ranges mapped at the same address in the
+A55?  Are you sure it is not the other way around, i.e A55 has secure and
+non-secure address ranges that both map to the same address on M33? 
 
-Thanks,
+More details are needed in this changelog.
 
-Mirela
+I'm also wondering how this problem hasn't been fixed before.  The original
+patch (9222fabf0e39) was merged over 4 years ago...
 
+> These ranges are currently missing from the i.MX93 remoteproc
+> address translation table, which may lead to invalid address
+> translation for firmware accessing these regions.
+> 
+> Add the missing mappings to complete the DRAM coverage.
+> 
+> Fixes: 9222fabf0e39d ("remoteproc: imx_rproc: Support i.MX93")
+
+The SHA should be 12 characters.
+
+> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
 > ---
->   drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> index b442dcba02e7..fe8a373576ef 100644
-> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> @@ -2943,7 +2943,7 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
->          jpeg->dec_vdev->fops = &mxc_jpeg_fops;
->          jpeg->dec_vdev->ioctl_ops = &mxc_jpeg_ioctl_ops;
->          jpeg->dec_vdev->minor = -1;
-> -       jpeg->dec_vdev->release = video_device_release;
-> +       jpeg->dec_vdev->release = video_device_release_empty;
->          jpeg->dec_vdev->lock = &jpeg->lock; /* lock for ioctl serialization */
->          jpeg->dec_vdev->v4l2_dev = &jpeg->v4l2_dev;
->          jpeg->dec_vdev->vfl_dir = VFL_DIR_M2M;
-> @@ -2962,6 +2962,8 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
->                  dev_err(dev, "failed to register video device\n");
->                  goto err_vdev_register;
->          }
-> +       jpeg->dec_vdev->release = video_device_release;
+> V3:
+>  - Added more info in the changelog.
+> 
+>  drivers/remoteproc/imx_rproc.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 7f54322244aca..175c2d3099794 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -198,6 +198,9 @@ static const struct imx_rproc_att imx_rproc_att_imx93[] = {
+>  	{ 0x80000000, 0x80000000, 0x10000000, 0 },
+>  	{ 0x90000000, 0x80000000, 0x10000000, 0 },
+>  
+> +	{ 0xA0000000, 0xA0000000, 0x10000000, 0 },
+> +	{ 0xB0000000, 0xA0000000, 0x10000000, 0 },
 > +
->          if (mode == MXC_JPEG_ENCODE)
->                  v4l2_info(&jpeg->v4l2_dev,
->                            "encoder device registered as /dev/video%d (%d,%d)\n",
-> --
+>  	{ 0xC0000000, 0xC0000000, 0x10000000, 0 },
+>  	{ 0xD0000000, 0xC0000000, 0x10000000, 0 },
+>  };
+> -- 
 > 2.43.0
->
+> 
