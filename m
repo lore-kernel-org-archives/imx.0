@@ -1,128 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBD32EDD6B
-	for <imx@lists.linux.dev>; Mon, 25 May 2026 09:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4C436C0CF;
+	Mon, 25 May 2026 10:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779701661; cv=none; b=qSa5i2dcd6zfPqFPyjOgkvaIkDKwCS71TEi+AD2QI24UYUSByx5/AxweTOiQM4uynfE4Dt/HImLpTDTHq1RzMm6UxrXy3tcJzV22zdecSiL4QuQOZhj8jTd601gyFL19POhIHGudA1+xL2WNdxfIc04kr5hwHi8Ojq0xC7g8Sp0=
+	t=1779705822; cv=none; b=pXjuNTxgc0xP8CbUK5e14iHU6wT+NSfSn2OEIY+Qns4tfLbFrd/SUwNUxOVQqeKVKYdRrFx1YOrsVUuj2avdFQ61M+80jO7artJUq+XwT7GgCupJZZeUWWhFeSm3ZeHHDcVdYrDPTYgCzX5ZaLyLs4JS2rZQj1yOIe0zAldjErQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779701661; c=relaxed/simple;
-	bh=785yMDhbKGp+RYhOY/oQ/TNR3gOPpY+JQW3xzK1+1N4=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=h+eeKZr0Kw8OWYvTfffkIsmJAl+H0qVJRdH8+Ue/YXZwXjPBbIH9KzP/rgy9WxuOo5f/LOrNeKUW1Yq/mTYkoezgkbVAmW7f8D9g7MecXznqAN5UQV7YBnp6iJh0jZlzQO1fFeJYApOHNz/h0frH/Sukc6nJu6FAxFaUuS62Km0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DHHLN81B; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779705822; c=relaxed/simple;
+	bh=Fsxrsphi2dCnqeJa7qeWKFhhL3tAPkBX0WZVGYk+vwU=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=nqjIHlpK3naLOkSoHhltTSlvXbtF1xatZjA25+opj5f/ISUNuUs8D7Hdv53Eq0LwAqdteK2zXwxLLfXU4PNVrYP0BO9TZ3F9YxyzLC8pYg/WefNclR/mjNHUQiwpatXTErlnai3otpZg6OliLUBLCIJrC5UZEsqfDz2tCbz3+Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSCuc8IE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DHHLN81B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47E31F000E9;
-	Mon, 25 May 2026 09:34:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSCuc8IE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236C81F000E9;
+	Mon, 25 May 2026 10:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779701659;
-	bh=sRfIOQdKZkcLw9v49zCLrOa3edIMZNt+vTy9vUM0Quk=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=DHHLN81BddlfvsJiK9caWOEJ6ZBOpHORHu03Ys9W2AsHPsMPgZ6pM71BkppcoO+SM
-	 3ND7i57g8sml+HVZQcPATB3blEDjT8tbsnefYv6qsaauiHj42onDibRzSVD5C0tU+z
-	 WJCm0u2k3M3iUr2DLx8not81tj4j7M908g9uJ5AXKS+H8Nj3mNIvlzA6RNg/xQDfaj
-	 05E2SCGmyuHhGUuZziiVs/MrlOUgwtME0+sb39Ja11CVD39W8yYWb77fGRVk756uK1
-	 yyfZqHRusYYQttENgzqNHbqCWWb3rI3NKWYEfYR2AKEGKOpWUriwy5r0bbj/j8fJBS
-	 myaxQCHXyLOgw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 7/7] firmware: imx: ele: Fix debug dump size handling
-Reply-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260525-ele-v1-v1-7-a9570c4bffc9@nxp.com>
-References: <20260525-ele-v1-v1-7-a9570c4bffc9@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 09:34:19 +0000
-Message-Id: <20260525093419.C47E31F000E9@smtp.kernel.org>
+	s=k20260515; t=1779705819;
+	bh=srjqsu/CzyJPLcISmZtzPE6Hh7zthtKm0bgXC6QNd2o=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=RSCuc8IEgkJu8PXT7ayTk7inXAFejDcQRYa1aZbfh9Zr7qEit8g4+yFvXyD2Ln7+g
+	 9OV4t9U9fgIFBRXpOm69/x6mEvNakoihDrzcpmp8uGbVbep6Fnk6vMHpqVDhJ2Wphv
+	 4g2O1dpHN09pOAyPNPFRKxXj08oPgcy/B9S+ak78QFmJan8Cno182lbgdTpg8mx8Ef
+	 QdXLuCrkKju+UctYLxHWfHhC/0FeZyjCsxNbnGJF1UNFD7EgOwQWw7DziirHb+WI4M
+	 TGXJD+thL/kKPrd3uumOvJ/RTcdUn8HFN27gDneoTjGrons6jncQ1neK98OezxyDMx
+	 e3mzXtiqN9dbA==
+Date: Mon, 25 May 2026 05:43:38 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev, 
+ Conor Dooley <conor+dt@kernel.org>, Guoniu Zhou <guoniu.zhou@nxp.com>, 
+ linux-media@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ linux-arm-kernel@lists.infradead.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Frank Li <Frank.Li@nxp.com>, devicetree@vger.kernel.org, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+In-Reply-To: <20260525-csi_formatter-v8-1-6b646231224b@oss.nxp.com>
+References: <20260525-csi_formatter-v8-0-6b646231224b@oss.nxp.com>
+ <20260525-csi_formatter-v8-1-6b646231224b@oss.nxp.com>
+Message-Id: <177970581844.3566674.15613967035246417411.robh@kernel.org>
+Subject: Re: [PATCH v8 1/2] media: dt-bindings: Add CSI Pixel Formatter DT
+ bindings
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
 
-New issues:
-- [Medium] The patch fails to correctly exclude the CRC from being printed =
-when the number of debug dump words is odd, resulting in an incomplete fix.
+On Mon, 25 May 2026 16:12:22 +0800, Guoniu Zhou wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
+> 
+> The i.MX95 CSI pixel formatting module uses packet info, pixel and
+> non-pixel data from the CSI-2 host controller and reformat them to
+> match Pixel Link(PL) definition.
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+> Changes in v8:
+> - Use standard port reference instead of video-interfaces.yaml
+> - Add parent syscon node in example to show device integration
+> - Add required constraints for port@0 and port@1 in ports node
+> 
+> Changes in v7:
+> - Change compatible to imx95-csi-formatter as IP is i.MX95 specific per Marco's suggestion
+>   Link: https://lore.kernel.org/linux-media/20260511-csi_formatter-v6-0-01028e312e2b@oss.nxp.com/T/#mcd135b3de179b3cb69daa1fd6e0e8e27c85b3332
+> ---
+>  .../bindings/media/fsl,imx95-csi-formatter.yaml    | 92 ++++++++++++++++++++++
+>  1 file changed, 92 insertions(+)
+> 
 
-Pre-existing issues:
-- [Critical] A Use-After-Free (UAF) and NULL pointer dereference vulnerabil=
-ity exists in `se_if_rx_callback` due to improper cleanup after a command t=
-imeout.
---
+My bot found errors running 'make dt_binding_check' on your patch:
 
-commit 71d8abdcd91f20629227af0e25e2702c3ad5260f
-Author: Peng Fan <peng.fan@nxp.com>
+yamllint warnings/errors:
 
-firmware: imx: ele: Fix debug dump size handling
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): '#address-cells', '#size-cells', 'formatter@20' do not match any of the regexes: '^pinctrl-[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): reg: [[0, 1254162432], [0, 65536]] is too long
+	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): '#clock-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): 'power-domains' is a required property
+	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): 'clocks' is a required property
+	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
 
-This commit attempts to fix the ELE debug dump response handling by excludi=
-ng
-the trailing CRC from the valid debug words printed. It updates the size
-threshold condition and decrements the total size.
+doc reference errors (make refcheckdocs):
 
-> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
-le_base_msg.c
-> index 2f0046cd5ad06..ec718d322abcd 100644
-> --- a/drivers/firmware/imx/ele_base_msg.c
-> +++ b/drivers/firmware/imx/ele_base_msg.c
-> @@ -290,7 +290,7 @@ int ele_debug_dump(struct se_if_priv *priv)
+See https://patchwork.kernel.org/project/devicetree/patch/20260525-csi_formatter-v8-1-6b646231224b@oss.nxp.com
 
-[Severity: Critical]
-This is a pre-existing issue, but can a timeout in ele_msg_send_rcv() lead =
-to
-a use-after-free and NULL pointer dereference if a late response arrives?
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
 
-If ele_msg_send_rcv() times out earlier in ele_debug_dump(), it returns
--ETIMEDOUT, causing the function to exit and free the locally allocated
-rx_msg buffer.
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
-Looking at ele_msg_send_rcv() on a timeout path, it sets
-priv->waiting_rsp_clbk_hdl.dev_ctx =3D NULL but appears to leave the
-priv->waiting_rsp_clbk_hdl.rx_msg pointer intact.
+pip3 install dtschema --upgrade
 
-If a late response subsequently arrives with matching tags,
-se_if_rx_callback() will process it:
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
-se_if_rx_callback() {
-    ...
-    dev_dbg(se_clbk_hdl->dev_ctx->devname, ...);
-    ...
-    memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
-}
-
-Would this result in dereferencing the NULL dev_ctx and copying the payload
-into the freed rx_msg buffer?
-
-> =20
->  		rx_msg->header.size -=3D 2;
-> =20
-> -		if (rx_msg->header.size > 4)
-> +		if (rx_msg->header.size > 2)
->  			rx_msg->header.size--;
-> =20
->  		for (i =3D 0; i < rx_msg->header.size; i +=3D 2)
-
-[Severity: Medium]
-Does this fully prevent the CRC from being printed if the firmware returns =
-an
-odd number of debug words?
-
-The loop increments by 2 and unconditionally prints both data[i + 1] and
-data[i + 2].
-
-If the firmware returns 3 debug words and 1 CRC, rx_msg->header.size
-evaluates to 3 after the decrement. The loop will execute for i =3D 2
-(since 2 < 3) and print both data[3] and data[4], which means the CRC at
-data[4] is still printed.
-
-Additionally, does the rx_msg->header.size > 2 condition incorrectly skip
-decrementing the size if the response contains 0 or 1 debug words?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525-ele-v1-v1-=
-0-a9570c4bffc9@nxp.com?part=3D7
