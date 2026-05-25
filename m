@@ -1,33 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E16381AE0;
-	Mon, 25 May 2026 12:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F28346E72
+	for <imx@lists.linux.dev>; Mon, 25 May 2026 12:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779712118; cv=none; b=D+c5N9GxmP2jIA9vyJrQSjhdNKDCALqb42/+6T6kDc+LnahNc8sWZM4iunYrA/aRu+/D5E3wxm9hqwhgJZDM/+0rQGbPSRYL60toUPbUkxDAPYhMeuzpELgQd07Dnq5L65pdXFqarenthm7Q4RHySQ7ZlhYX2QtjudbnBWrkaRY=
+	t=1779712292; cv=none; b=OymPMJXSYDRj+NbEtlIzC3u8KQUxy6ONfLDp/Ly10eEVADrdPXxyhRsnHvsXSH+AspDefFI8/t0zb9tvTe65q39nj3wyBS0bW6hn3BKmRNtVbE1yC5N2AOqHdKfApPhtJcTTtM3iNVEfRlIRmh9dQSwnH0sjzuhBbUSreqk5a4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779712118; c=relaxed/simple;
-	bh=s6EajfLMOM1LDpJPwMs/oSCiSOte87+x4aYrsrt3nac=;
+	s=arc-20240116; t=1779712292; c=relaxed/simple;
+	bh=qpbNNT9LTg/BQrpX4c+/wUPqtP5MSqmpILKrnhojHyI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YLTU3kCVF3FQsE7C2iJ2GkiVCKNhceorh5jQwtmHI08lcFhR4OQ3u4YZubComPFqd09AhUHT+2pqTWs9mFWDUaQs4cnarNuA+SYX2G0ZrycF0OjW+zWuVjxdsgsiLOpXjvWxWbYj06SXqAZx3rq9FQOmcI+WZL/oKtKUm5wRWXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N4zc4RPZ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=b316QOCyQjQdSsv2UvXutUmT/UuGirssa4t0JoLecBfVJiTvZo6BOdI+avkwEUGUbsHJQH93P5BHijOcKiXXc63xdV6MF93IPXBVSnwpFIPFrCIqougO+mzwxIGw4XYfB6R71Jkd9cMScGc380bZB7qjfeY/9fBD3qsY5XnrP+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eRyO/m/c; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N4zc4RPZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B1B1F00A3A;
-	Mon, 25 May 2026 12:28:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779712117;
-	bh=rG5FSAIqm0gl60Kib+PBHlUScNgwLQMgHAfVV2AI5gQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=N4zc4RPZFO/rbuANzKKx7I46HlsqHS8Yv+8jr8VildSSNtdFex5zb/pCwqMDCo7rf
-	 FD/qAaevgeIZNz8vwkRHhgtEjCShBlYOx7mAN5JqUkBn1ahvnYQb4SEaMctG7BpC91
-	 8C7EfQ7udA07EkKbQTcBNlnyRdJktiIRy5Fs4A4gfeg+RfdkFT5Fpm0ebSXa5m2NSi
-	 auxhxZLfp+/DNU7/iYdRi/hqWzeH9k9g92Ysw4WdZjoyUYNzbEynfQlgseeErCd+1f
-	 lKSMfQ3fXBnULPHqn0B4SxDlVBKQLLW5btQOpf77QKmEiQZYElc6TPmeV2ctUvHgtH
-	 56cXvPgYUXxLQ==
-Message-ID: <8046287e-87a2-4d18-ad3d-248620a752a9@kernel.org>
-Date: Mon, 25 May 2026 14:28:32 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eRyO/m/c"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso82043895e9.2
+        for <imx@lists.linux.dev>; Mon, 25 May 2026 05:31:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779712290; x=1780317090; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zrIDVk+3CslyJkUrNGl34AIpYDsI+Gmqf4gQKToWHJM=;
+        b=eRyO/m/c+rwfPt+Sb3EgQziGud7D3E2jkoYdsrqZvjPbjxVxUWSahlBWGil2NmHZgV
+         gDx/jcUtNzzd9XfV5U+WhvQFVyQRlUajj7GNat7BVNEr8gI21akJFxsJNa3ZrEK1OoD+
+         jjZ9giRFubSfgOLhPcJTgLLT8AimocTNFi/BdpeRyLD5d4qlJ5XDh32TwLVKZnp0EFGx
+         Q8GRH6q6E3fBbKtR1IebWIP6G+A6lFBt6iMYIcDmuQ1XoxqEtiWEyTLU1Nkrr3e4XXpe
+         Ppj7JRZ96dxpByt8eLK3oQOy62zHfUIRJrfwysUVPK9ko/7quBupk1yVEDcHhziXm9ub
+         4yCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779712290; x=1780317090;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zrIDVk+3CslyJkUrNGl34AIpYDsI+Gmqf4gQKToWHJM=;
+        b=nQrU0bU9W7dymSdQFgDHOuUVxrlad0Xtk168NPESwHfdit5cVnpY4NzAkADkxQlF+k
+         6oMyo3/Sf4zS0OuqBXfRWCcb4EnNbhbwfzfUfrcRL0CfnWpTvs/m1XHtv83lDqhfX0Wt
+         zJXMMmgRae6PrHh9SlU25YL3VAR1zBevgmLo+/GtpLRuru/8N9MK/cgeS7mocilqk2X5
+         jGZICT9TGJeZ6N4+hbnZo0aPRkSaOliXCeNuKdeasRVc5hjfT9dcfO8cDrg36KGyeKe1
+         oqf7joWKj36RAuvG6i0YA8viE22GzLXldH9leFnyL1DemlbHPK49hIfSKFnk2Goqn3Op
+         bTag==
+X-Forwarded-Encrypted: i=1; AFNElJ9ACxE66iBcRkkc2ItYOcbq8keqq4euf34aUbJkERBBOFCgVFgWVUNBAzJ8r+UKg0087ps=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy5wDt3ub0aROjZmHGZAl1vvW/A+S522jr1haBOqO3Kk29+ObuV
+	pSqPWEADy0s8j79DvYC5mGdDcmA6+shcrZwXeFiBLdNo6CVlc3pu9kfj
+X-Gm-Gg: Acq92OEtxxzYvor8PtX4/U1AshGdCADtZKZyRVAcjwqNgoxKzCq+eecURY7jddRslFV
+	NOAzTyGW+l9z7LpV43pWmamsJPf9QOtjQPQyFfsSWAr36VhI2wMus7fYa3D/5y91bosEjB6Mtie
+	cTAb7GyThOeLG9/Jmh1CTWcchsd2m2CcwtFs7bPdcLD9Gd8sT/azYwcL/3c8kiqe+9WmEjGUymA
+	ogPExIIqTHyktBHR8bz+tH94N/U2gOHYkiIjFgPqTMvPspvGZl3ZabvP9+b/B5zWny6wswZmXWd
+	g44ayHzjGsQXwEnz36AaDensycPzesCGio+V6TL0R+KZDITfPkVjc+5AVh+HMMsRPqRtxjPQBQ3
+	Bmi0hNiFuuvsHRWJ3F5KdjIXMoPnqglJEU8sivVPquTk1Oa5/lCRF7cr0gDKbdGpAedATfEjCPg
+	+Jk4jp6obTaJBwBUpM0GO35/AY5l3aGVcShMvPPjl1pgzyZs/+PL1myPjG
+X-Received: by 2002:a05:600c:3d96:b0:490:5429:1513 with SMTP id 5b1f17b1804b1-49054291bbamr158545285e9.6.1779712289494;
+        Mon, 25 May 2026 05:31:29 -0700 (PDT)
+Received: from [10.25.212.250] ([128.77.115.157])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490428e6d68sm85965215e9.22.2026.05.25.05.31.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 05:31:28 -0700 (PDT)
+Message-ID: <9fb59c65-8cee-4502-bc10-1375f276e25c@gmail.com>
+Date: Mon, 25 May 2026 05:31:24 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,208 +68,77 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] dt-bindings: connector: Add fsl,io-connector binding
-To: "Chancel Liu (OSS)" <chancel.liu@oss.nxp.com>, Frank Li <frank.li@nxp.com>
-Cc: Chancel Liu <chancel.liu@nxp.com>, "robh@kernel.org" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "mturquette@baylibre.com" <mturquette@baylibre.com>,
- "sboyd@kernel.org" <sboyd@kernel.org>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
-References: <20260509024846.2094049-1-chancel.liu@nxp.com>
- <20260509024846.2094049-3-chancel.liu@nxp.com>
- <20260515-resourceful-singing-roadrunner-ce25ec@quoll>
- <AM9PR04MB8353FE81D06852D45514E460E3032@AM9PR04MB8353.eurprd04.prod.outlook.com>
- <d2b13e51-1684-4acb-a5ed-294c8aa95906@kernel.org>
- <AM9PR04MB83538C4A07A6835FF8A74793E3002@AM9PR04MB8353.eurprd04.prod.outlook.com>
- <20260519-macho-degu-from-nibiru-960af2@quoll>
- <AM9PR04MB8353B563519EBC1AD6C5BFE1E3012@AM9PR04MB8353.eurprd04.prod.outlook.com>
- <e23a610f-e1ad-4536-80fb-8b5707e77f39@kernel.org>
- <ag3GMdmxw60B15Oe@lizhi-Precision-Tower-5810>
- <74eb56fb-546d-4b2c-9bbc-01a40937f5d3@kernel.org>
- <AM9PR04MB835333895276201A81251210E30A2@AM9PR04MB8353.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH 2/5] remoteproc: imx_rpoc: fix carveout name parsing
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+ Fabio Estevam <festevam@gmail.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260522111849.783-1-laurentiumihalcea111@gmail.com>
+ <20260522111849.783-3-laurentiumihalcea111@gmail.com>
+ <ahOwO7LBXCYFIngw@shlinux89>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <AM9PR04MB835333895276201A81251210E30A2@AM9PR04MB8353.eurprd04.prod.outlook.com>
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+In-Reply-To: <ahOwO7LBXCYFIngw@shlinux89>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 25/05/2026 08:26, Chancel Liu (OSS) wrote:
->>>>>>>>>>> +description:
->>>>>>>>>>> +  The NXP I/O connector represents a physically present I/O
->>>>>>>>>>> +connector on the
->>>>>>>>>>> +  base board. It acts as a nexus that exposes a constrained
->>>>>>>>>>> +set
->>>>>> of
->>>>>>>>>>> +I/O
->>>>>>>>>>> +  resources, such as GPIOs, clocks, PWMs and interrupts,
->>>>>>>>>>> +through fixed
->>>>>>>>>>> +  electrical wiring. All actual hardware providers reside on
->>>>>>>>>>> +the
->>>>>> base
->>>>>>>> board.
->>>>>>>>>>> +  The connector node only defines index-based mappings to
->>>>>>>>>>> + those
->>>>>>>>>> providers.
->>>>>>>>>>> +
->>>>>>>>>>> +properties:
->>>>>>>>>>> +  compatible:
->>>>>>>>>>> +    const: fsl,io-connector
->>>>>>>>>>
->>>>>>>>>> Everything is IO. Everything is connector, so your compatible
->>>>>>>>>> does not match requirements from writing bindings.
->>>>>>>>>>
->>>>>>>>>
->>>>>>>>> Yes, this compatible is too generic. I will rename the
->>>>>>>>> compatible to fsl,aud-io-connector.
->>>>>>>>
->>>>>>>> aud is not much better. Which boards have it? What's the pinout?
->>>>>> What's
->>>>>>>> standard? Is it described anywhere? If so, provide reference to
->>>>>> spec/docs.
->>>>>>>>
->>>>>>>
->>>>>>> This is not an industry standard electrical interface. This
->>>>>>> connector
->>>>>>
->>>>>> Then if you do not have standard, then you have board specific
->>>>>> layouts thus you need board-specific compatibles. You can use
->>>>>> fallbacks. Generic fallback could work, but both io-connector and
->>>>>> aud-io-connector are just too generic. Every connector is
->>>>>> "connector" and "io", thus absolutely anything can be
->>>>>> "io-connector". "aud" improves it only a bit, thus honestly I would
->> go with board specific fallback as well.
->>>>>>
->>>>>
->>>>> How about board specific + common fallback compatible like this:
->>>>>   compatible:
->>>>>     items:
->>>>>       - enum:
->>>>>           - fsl,imx95-19x19-evk-aud-io-connector
->>>>>           - fsl,imx952-evk-aud-io-connector
->>>>>       - const: fsl,imx-aud-io-connector Since the daughter board is
->>>>> named “IMX-AUD-IO” in publicly available
->>>>
->>>> I don't think it is named like that.
->>>>
->>>> git grep -i imx-aud-io
->>>>
->>>>> documentation, common compatible clearly indicates that this
->>>>> connector is intended for that.
->>>>>
->>>>> Also, I want to talk about the topic of generic connector. It's a
->>>>> common design that daughter board is connected to base board through
->>>>> a connector. This connector more often acts as a nexus that exposes
->>>>> a constrained subset of GPIO, clock, PWM and interrupt resources to
->>>>> the daughter board. Can we document this kind of connector as a
->>>>> generic binding?
->>>>
->>>> So this binding is the connector between carrier and some addon? Then
->>>> you don't get a compatible for that at all, because it is not
->>>> necessary, not useful and NEVER used. Do you see socket LGA "connector"
->> bindings? No.
->>>
->>> Not exactly. Any connector connects a carrier board with an add-on
->> board.
->>> The key point here is that this connector type is reused across
->>> different boards, even though it is not an industry-standard
->>> connector. Both the signal definitions and the mechanical layout are
->> defined.
->>>
->>> The same add-on boards can therefore be reused across different base
->>> boards that use this type of connector.
->>>
->>> There are also GPIO mappings involved. For example, pin 1 on the
->>> connector may represent reset-gpios, but it could be connected to
->>> GPIO0 on board A and GPIO1 on board B.
->>>
->>> Without a connector definition layer, this would create an N × M
->>> combination problem. The Nexus node discussion already covered this
->> topic:
->>> https://osseu2025.sched.com/event/25Vrw
->>>
->>> An LGA socket is a CPU socket, where the signals are completely
->>> transparent to software, so it is not a good comparison. A PCIe M.2
->>> Key-M/E connector would be a more appropriate comparison.
->>>
->>
->> So the terminology of daughter and carrier boards was confusing. If this
->> is a hat, mezzanine or other addon, it's fine.
->>
-> 
-> The IMX-AUD-IO is an add-on board that attaches to the base board. To
-> make it clearer, I will replace "daughter board" with "add-on board"
-> throughout descriptions.
-> 
->> I still insist on board specific compatibles - fallback and specific.
->>
-> 
-> The base board has a slot component that is mechanically compatible
-> with a PCIe x8 connector. However, it carries no PCIe signals and the
-> pins are repurposed to carry fixed board-level audio I/O related
-> signals.
-> 
-> I think we can name a compatible reflects a standard mechanical form
-> factor.
-> For the compatibles (specific + fallback) I propose:
-> - enum:
->     - fsl,imx95-19x19-evk-aud-io-pcie-x8-slot 
->     - fsl,imx952-evk-aud-io-pcie-x8-slot
-> - const: fsl,aud-io-pcie-x8-slot
 
-Does not solve my request, so I won't ack it. Maybe you will get ack
-from other DT maintainer then.
 
-Best regards,
-Krzysztof
+On 5/24/2026 7:13 PM, Peng Fan wrote:
+> On Fri, May 22, 2026 at 04:18:46AM -0700, Laurentiu Mihalcea wrote:
+>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>
+>> The imx remoteproc driver assumes that the names of the reserved memory
+>> regions reflect their usage (e.g. "vdevbuffer", "vdev0vring0", etc.). This
+>> conflicts with the devicetree specification's recommendation, which states
+>> that the names of the devicetree nodes should be generic.
+>>
+>> Therefore, instead of relying on the node names, use the names passed via
+>> the "memory-region-names" property if present. Otherwise, keep the old
+>> behavior.
+>>
+>> The definition of imx_rproc_rmem_to_resource() is added to a common place
+>> as imx_dsp_rproc.c can also use it given that it suffers from the same
+>> aforementioned problem.
+>>
+>> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>> ---
+>> drivers/remoteproc/imx_rproc.c |  7 +++++--
+>> drivers/remoteproc/imx_rproc.h | 19 +++++++++++++++++++
+>> 2 files changed, 24 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+>> index 7f54322244ac..1ee1c658dcc1 100644
+>> --- a/drivers/remoteproc/imx_rproc.c
+>> +++ b/drivers/remoteproc/imx_rproc.c
+>> @@ -672,7 +672,7 @@ static int imx_rproc_prepare(struct rproc *rproc)
+>> 		int err;
+>> 		struct resource res;
+>>
+>> -		err = of_reserved_mem_region_to_resource(np, i++, &res);
+>> +		err = imx_rproc_rmem_to_resource(np, i++, &res);
+>> 		if (err)
+>> 			break;
+>>
+>> @@ -850,11 +850,14 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+>> 	if (nph <= 0)
+>> 		return 0;
+>>
+>> +	if (!of_property_present(np, "memory-region-names"))
+>> +		dev_warn(dev, "using node names for carveouts should be avoided\n");
+> 
+> Please check 'memory-regions && !memory-region-names', some demos may not
+> need to use memory regions.
+> 
+> Regards
+> Peng
+> 
+
+What for? You'll not reach this check unless "memory-regions" is specified?
