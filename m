@@ -1,115 +1,160 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C763A874B
-	for <imx@lists.linux.dev>; Mon, 25 May 2026 06:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93DA30C144
+	for <imx@lists.linux.dev>; Mon, 25 May 2026 07:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779692239; cv=none; b=N/3xsZKSkuyqWd6xMQcRTDIYWBj4VyfKf3tgAfsMys/dIUVLcQsnT8DVzZ1y1lGId1J5Il+EpRy5zcS90zYvHy7CaS5ZcrvAO+Ub5YE3UmhjGwpCMhCl/OHEHdu/+feZoHUWdmz1nQgUZQcf5oopZXa0Z6+sA+/qAlQx5QIJpTo=
+	t=1779692581; cv=none; b=qTZWJc5an+taGqpxRVSVQKEtn1aeu678x7c3y9k1a4m7u0gKEc+ZVwa1fSMvXcUfzxfwEp9ivYHSn8O1F9dHxBCfJg0h+k5COa3Gw9SOuGeuPtEaawrB2OK5dMuvXqKogKivxmf1RRrX6EOW39bVNSgNaX1AoFvbTO5te5VAJVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779692239; c=relaxed/simple;
-	bh=iAB5mpB6eez9XE21ZPVaQ9IxcfnIgbWiX0RNBGlqTC8=;
+	s=arc-20240116; t=1779692581; c=relaxed/simple;
+	bh=oOB5SixJMqRWYz+JhEb8squHcyGqWgrgLqs5wFPH3N0=;
 	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=G0+2KsQSjPudprCjmt7GGFbId/gK6I8fGz8oeHIuVnJE/NOAoXqYaIc7TOkhpLtqk5D1eWIHHnXTnFpehUucWWlWYwiQ4dRG/FX3giunDXjrQs/V073yopRVYF35+Zj0tIi0q3ILmSg5a+TBV9X5uTSJmGkPhbLt47ZC3F2EU1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MI/HCDIQ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=HAWySVskuCdXQBmNcP7gvw0IGEIYv8bgH/HFxbkkbFlLHJH5wnlkqmeybuMvDAWxyDXA1/3Y9He4bHl6D3pdBA/30wmoSs8JHykKJZPemMEg8KDL6l0+TGTzMVur/RIW/6hCFhX+VEv6UteC7FalvHNMaAcmLquMo9xwHYBwDjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9B5msuy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MI/HCDIQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229011F000E9;
-	Mon, 25 May 2026 06:57:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9B5msuy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BDF1F000E9;
+	Mon, 25 May 2026 07:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779692236;
-	bh=AGfC8DgIlsE/OTic9V6mznFl3vl8tQ/OONZc+9q3pco=;
+	s=k20260515; t=1779692575;
+	bh=Kxsr4cPeTTFXO17yXqXp1NJF4FOGZDhLOIxDZqpSYLc=;
 	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=MI/HCDIQLcX/POiY/I1V0yqXons2n1HXRb7LGvIHpVnHlWV5BXB6eD4SKU7AuvP3t
-	 Ag0taHTE5ySRdO1kOgjr71YJII+dyp+Z4ai9Ww4qde9CNqKN395iVT/IP1UId6XeR+
-	 YY+Xe3TUnrNQFKavs5025rN+IKv96Bykt6Mpe2MSrmveQQKOJzacOcXYqgAfSsNfDZ
-	 DvwStU7lPknt1cnnrQRXXOFqHSv8ReFYPbSRSC3QndbYny9e8AuBB6aRdodTeOIzRD
-	 v7HDEc5D8GI2ilYAZxlXRQ+cMWwfV2hqT7132rGYWKS9LTLNb6qE9x7E+b2V+/T9Uv
-	 dyhrRmgt+dbsg==
+	b=J9B5msuyDwBozTcfjL3s+UAnRr3ugrpOmfbP1SnYF/xsgA+9FbP/uxsRVn1PQxtne
+	 DTmqkTMEvf3UZfZyWRfVcTMICqEsHpgItXIhhlhjmbMnTYqxDhOEP83lpzRl9qFuNf
+	 dl676d038c4L/8p8hflAYXGlaXNYhmNiPa+XM4ihyH8w7iVaWFM3gR090RbQhc3YXR
+	 T/sApC2X/mR+gSoiS4XXwiEueJ/Zt8pFWQUco+QEz4bpMrkL+HPUfxHowsUWz7rt3g
+	 mGG+11a+/kdTSJSrTgxvMSOqmlcv2xmbnzdpdkZgkkt7/UloGM36x43kVCzx5+Wng8
+	 1dxrQdoOMSJ5g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/2] spi: fsl-lpspi: replace
- dmaengine_terminate_all() with dmaengine_terminate_sync()
+Subject: Re: [PATCH 2/7] firmware: imx: ele: Correct ele_fw_authenticate API
 Reply-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260525062357.3191349-2-carlos.song@oss.nxp.com>
-References: <20260525062357.3191349-2-carlos.song@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260525-ele-v1-v1-2-a9570c4bffc9@nxp.com>
+References: <20260525-ele-v1-v1-2-a9570c4bffc9@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 06:57:15 +0000
-Message-Id: <20260525065716.229011F000E9@smtp.kernel.org>
+Date: Mon, 25 May 2026 07:02:55 +0000
+Message-Id: <20260525070255.C4BDF1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] The `target_aborted` flag is cleared after starting the DMA transf=
-ers, creating a race condition where a legitimate abort is ignored.
+- [Critical] Dangling pointers left in the global callback handle on error =
+paths lead to Use-After-Free heap corruption or a NULL pointer dereference =
+when a delayed/spurious response arrives.
+- [Critical] Uninitialized physical address used for IMEM export/import.
+- [High] Silent physical address truncation in `ele_service_swap()`.
+- [High] The `ele_msg_rcv()` function causes an infinite busy loop (CPU loc=
+kup) if the calling task receives a signal.
 --
 
-commit b7181deaf26f6bdf80d577aec5e2815b881a3f55
-Author: Carlos Song <carlos.song@nxp.com>
+commit f74ec8f682c5afa2812159200b4566d0c747b041
+Author: Peng Fan <peng.fan@nxp.com>
+Subject: firmware: imx: ele: Correct ele_fw_authenticate API
 
-spi: fsl-lpspi: replace dmaengine_terminate_all() with dmaengine_terminate_=
-sync()
+This commit corrects the ele_fw_authenticate API by enforcing that the upper
+32 bits of both the container and image addresses are zero. It fails the
+command if they are not, and correctly populates only the lower 32 bits in
+the message data.
 
-This commit updates the fsl-lpspi driver by replacing deprecated calls
-to dmaengine_terminate_all with the newer dmaengine_terminate_sync API.
-This ensures that any ongoing dma transfers are fully synchronized and
-terminated before proceeding.
-
-> diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-> index e201309f8aae3..1a94a42fac319 100644
-> --- a/drivers/spi/spi-fsl-lpspi.c
-> +++ b/drivers/spi/spi-fsl-lpspi.c
-[ ... ]
-> @@ -688,8 +688,8 @@ static int fsl_lpspi_dma_transfer(struct spi_controll=
-er *controller,
->  			fsl_lpspi->target_aborted) {
->  			dev_dbg(fsl_lpspi->dev,
->  				"I/O Error in DMA TX interrupted\n");
-> -			dmaengine_terminate_all(controller->dma_tx);
-> -			dmaengine_terminate_all(controller->dma_rx);
-> +			dmaengine_terminate_sync(controller->dma_tx);
-> +			dmaengine_terminate_sync(controller->dma_rx);
->  			fsl_lpspi_reset(fsl_lpspi);
->  			return -EINTR;
->  		}
+> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
+le_base_msg.c
+> index 23f68076b85ce..f6346f1545096 100644
+> --- a/drivers/firmware/imx/ele_base_msg.c
+> +++ b/drivers/firmware/imx/ele_base_msg.c
+> @@ -208,6 +208,11 @@ int ele_fw_authenticate(struct se_if_priv *priv, phy=
+s_addr_t contnr_addr,
+>  	if (!priv)
+>  		return -EINVAL;
+> =20
+> +	if (upper_32_bits(contnr_addr) || upper_32_bits(img_addr)) {
+> +		dev_err(priv->dev, "Wrong address: %pap %pap\n", &contnr_addr, &img_ad=
+dr);
+> +		return -EINVAL;
+> +	}
+> +
 
 [Severity: High]
-This is a pre-existing issue, but could this code miss a target abort due
-to a race condition with the target_aborted flag?
+This is a pre-existing issue, but while you are correctly adding bounds
+checks here, does ele_service_swap() also need a similar fix?
 
-Looking at fsl_lpspi_dma_transfer(), fsl_lpspi->target_aborted is
-unconditionally set to false after issuing the tx and rx dma channels:
+It appears ele_service_swap() accepts a 64-bit phys_addr_t and silently
+truncates it by assigning only lower_32_bits(addr) to the message, ignoring
+the upper 32 bits. On 64-bit systems, could passing physical or dma address=
+es
+above 4gb instruct the firmware to export or import data to the wrong
+physical memory area, leading to memory corruption?
 
-    dma_async_issue_pending(controller->dma_tx);
-    fsl_lpspi->target_aborted =3D false;
+[Severity: Critical]
+This isn't a bug introduced by this patch, but regarding physical addresses,
+is there an uninitialized address used for imem export/import?
 
-If a target abort occurs concurrently immediately after the dma channels
-are issued, fsl_lpspi_target_abort() will execute, set target_aborted
-to true, and complete both dma completions.
+In se_if_probe(), a buffer for the encrypted imem is allocated via
+dmam_alloc_coherent(), which assigns the generated dma address to a local
+variable imem_dma_addr. However, it seems this address is never stored back
+into the load_fw->imem.phyaddr struct field, leaving it zero.
 
-The main thread will then overwrite target_aborted with false.
+During suspend/resume, could se_save_imem_state() pass this zero address to
+ele_service_swap(), instructing the secure enclave firmware to overwrite
+physical address 0x0 with its state?
 
-When it reaches wait_for_completion_interruptible(), it would return 0 due
-to the early completion, and evaluate the target_aborted condition as false.
+>  	struct se_api_msg *tx_msg __free(kfree)	=3D
+>  		kzalloc(ELE_FW_AUTH_REQ_SZ, GFP_KERNEL);
 
-Would this cause the driver to incorrectly assume the transfer was successf=
-ul
-and return 0 without calling dmaengine_terminate_sync()?
+[ ... ]
 
-If so, it appears the spi core could unmap and free the buffers while
-the dma channels are still actively running, potentially leading to
-memory corruption or iommu faults during a subsequent transfer.
+> @@ -224,8 +229,8 @@ int ele_fw_authenticate(struct se_if_priv *priv, phys=
+_addr_t contnr_addr,
+>  		return ret;
+> =20
+>  	tx_msg->data[0] =3D lower_32_bits(contnr_addr);
+> -	tx_msg->data[1] =3D upper_32_bits(contnr_addr);
+> -	tx_msg->data[2] =3D img_addr;
+> +	tx_msg->data[1] =3D 0;
+> +	tx_msg->data[2] =3D lower_32_bits(img_addr);
+> =20
+>  	ret =3D ele_msg_send_rcv(priv->priv_dev_ctx, tx_msg, ELE_FW_AUTH_REQ_SZ=
+, rx_msg,
+>  			       ELE_FW_AUTH_RSP_MSG_SZ);
 
-Is this sequence possible, and should target_aborted be cleared before
-starting the dma transfers instead?
+[Severity: Critical]
+This is a pre-existing issue, but since ele_msg_send_rcv() is called here,
+could dangling pointers left in the global callback handle on error paths
+lead to use-after-free heap corruption or a null pointer dereference?
+
+In ele_msg_send_rcv(), rx_msg and dev_ctx are stored in
+priv->waiting_rsp_clbk_hdl. If ele_msg_send() fails, the function returns
+without clearing them, and the caller frees the heap-allocated rx_msg.
+
+If a delayed or spurious response arrives later, could the asynchronous
+se_if_rx_callback() use the stale handle to blindly copy payload data into
+the freed rx_msg buffer?
+
+Furthermore, if ele_msg_rcv() is interrupted by a signal, it sets dev_ctx to
+null but leaves rx_msg, which could lead se_if_rx_callback() to dereference
+a null pointer when accessing se_clbk_hdl->dev_ctx->devname.
+
+[Severity: High]
+This is another pre-existing issue, but does ele_msg_rcv() have the
+potential to cause an infinite busy loop if the calling task receives a
+signal?
+
+It uses wait_for_completion_interruptible_timeout(), which returns
+-ERESTARTSYS immediately if a signal is pending. In this case, the code
+sets signal_rcvd =3D true and uses continue to restart the loop without
+clearing the signal or returning.
+
+Since the signal remains pending, the next call to the wait function returns
+-ERESTARTSYS immediately again without sleeping. If the hardware never
+responds, could this indefinitely hang the cpu core?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525062357.3191=
-349-1-carlos.song@oss.nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525-ele-v1-v1-=
+0-a9570c4bffc9@nxp.com?part=3D2
