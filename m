@@ -1,308 +1,232 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA9E3E3C72;
-	Mon, 25 May 2026 08:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E710A3E2AAF
+	for <imx@lists.linux.dev>; Mon, 25 May 2026 08:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779698809; cv=none; b=mXgqjtNXvDXqFbac5TSAsaXuhFGGjI81UY+q1qhjG/DlmrQtppGaa5Rw2LwuIKFX0XQQV6d6Jep3RUc4aDW9kokPr/9u/1sddfQVvn3odKr/csgt5fScHQHw76dGgKk3BllZLb7O9KW1xn0ImO2hGd3nf+bfksxz8yoowXfOZv0=
+	t=1779698952; cv=none; b=EgwhXPPpaejCLydXnMF0YWu9nExNnMVP3SXx9OldJyi89j5u3gtQk2D50jAEjtn3FLjAxnlnSjjQl9ClKkA9O9BsjWffg3woT8ebzYL+8voPSbAycYo03tBg82JXim7y3e96e1wSrYpe08VfFEj2V2bz8B5nLDSim88LGxqXLpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779698809; c=relaxed/simple;
-	bh=Stdhza6Oq8FYJWTJilEWVe1tgP2DE3Wa9fnb0UAoCXk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rBJCNHNYF6dGJZfOXLL0h6ZM+1lzci+oFv1OQqfw4PsuZWVydELFRJTsmNTdJ2tyP1lTUVgxZCNP/U9ScvAO6lh951tHhXLeqezeSUxNP/ZRn4zI0iKHunC8UFZ0//qAnwrXcmEMmjkQGYO6dpDIu5fwWtvCRH77IgnD8Mi68+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CtFFQAP9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779698952; c=relaxed/simple;
+	bh=fId8kZ/bRZtUWTdlahE15y8vMLCTZ17gSG+fqAJi62I=;
+	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cjxBJ+6ngvdoKDxNo48d4E2QIy7ihBOgtC6mJ40ivDqmtDvbR0FzvNYziz22NHjsfmfibOG1V8SJTyR1a2LBRCW525iMaK8dc088wzoWJCM/F1qXCc4Y0VP6ku1JtutS6b9fwBRMIUTycDqeBzXotIkPw9XL1WcuT6N7d5UTVog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IYw8uzRw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CtFFQAP9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C99E1F000E9;
-	Mon, 25 May 2026 08:46:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IYw8uzRw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83AC1F000E9;
+	Mon, 25 May 2026 08:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779698806;
-	bh=qHpj2w1rqU8ZRSNh8ayTchKqf0227oMB6jy8M0i++KY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CtFFQAP9od9Tmyp+Y0o/ZRku73PzVb8M4VNNeDLEKuvmRTfp0LyyslJdqJtlStWIa
-	 tv1bGxXtt0ZgeqcpC8yWEXVqESHj2yIylMZ5zDlIQlGdpeJAD3dbfU3lPtL8RCvoBd
-	 RdGeg06jtrZMy5wmiyFfBP6JwoFUHag9R04I1tv7/2yMKPR2SsqK7PO4BupsG+KGq6
-	 XvRTnvFG7+by5DJJ35SSafFiTJ7+pUM9Qu0xJK5M5MonfMeBqAV/77wk65hIwuM53f
-	 WZ2+Oaj3N619lFoWGctogbYw979dDrwg6zhwdWy88h9ZhFkOms8CytDcay2AjQ/xsH
-	 5pHc8DBz7vZ0Q==
+	s=k20260515; t=1779698950;
+	bh=BETNYoFMp4abzaa8RYrJ0lAvyKFYfXGwYGr3M5ODIM0=;
+	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
+	b=IYw8uzRwrT+hN1H1v462BNP9shAaiZ2CE5vlyFnt8hC8sQxRddKfWFbT60AnudM3m
+	 D/RRhOXk8KK3ODOy7popAX3FYcibGiggPqe+dXEqww6ToC4mULrfPMjlN7LUFCoo3i
+	 d8QjhG42S3LnJJGQyLfVd1F6JJu3F2abYzoXYcmnub2OhfY1Gr6iur86WM6+eLZC2r
+	 rIye0utDvJ/rOGYQMKyPQ6dqzUbs6hxDd00jR/W2/iYq1voEqEsuhTZ+p8HOpS6ru2
+	 0Nmgi3kDQztmyUOrrsgjWbjX/R7ia8HJWWfXvGgXJpxwa8GiRTkxpdwn8q/2E5zdr4
+	 2J+JgZNrUU16A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 2/2] media: nxp: Add i.MX95 CSI pixel formatter v4l2
- driver
+Subject: Re: [PATCH 5/7] firmware: imx: ele: Correct
+ check_hdr_exception_for_sz
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guoniu Zhou" <guoniu.zhou@oss.nxp.com>
-Cc: Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260525-csi_formatter-v8-2-6b646231224b@oss.nxp.com>
-References: <20260525-csi_formatter-v8-2-6b646231224b@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260525-ele-v1-v1-5-a9570c4bffc9@nxp.com>
+References: <20260525-ele-v1-v1-5-a9570c4bffc9@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 08:46:45 +0000
-Message-Id: <20260525084646.3C99E1F000E9@smtp.kernel.org>
+Date: Mon, 25 May 2026 08:49:10 +0000
+Message-Id: <20260525084910.B83AC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+Thank you for your contribution! Sashiko AI review found 6 potential issue(=
 s) to consider:
-- [High] Passing the source streams mask instead of the sink streams mask c=
-auses a NULL pointer dereference.
-- [High] `csi_formatter_stop_stream()` uses the logical stream ID as the ha=
-rdware Virtual Channel (VC) ID, corrupting hardware state.
-- [High] Unchecked return value from `v4l2_subdev_state_get_format()` leads=
- to kernel panic (NULL pointer dereference).
-- [Medium] Mixing goto-based error handling with scope-based cleanups viola=
-tes subsystem rules.
-- [Medium] `csi_formatter_subdev_set_fmt()` incorrectly returns `-EINVAL` w=
-hen a stream is unrouted.
+
+Pre-existing issues:
+- [Critical] Use-After-Free in `ele_msg_send_rcv()` if `ele_msg_send()` fai=
+ls.
+- [Critical] Unconditional NULL Pointer Dereference in `se_if_rx_callback()=
+` on unsolicited firmware responses.
+- [Critical] Heap Buffer Overflow in NVM command handler inside `se_if_rx_c=
+allback()`.
+- [Critical] Direct Dereference of User Space Pointers without `copy_from_u=
+ser()` violating SMAP.
+- [High] Unbounded Memory Allocation in `SE_IOCTL_CMD_SEND_RCV_RSP` via `cm=
+d_snd_rcv_rsp_info.rx_buf_sz`.
+- [High] Heap Out-of-Bounds Read and Information Leak due to exception-hand=
+ling bypass in `se_if_rx_callback()`.
 --
 
-commit 4a48a80a7ebf00e31a1265c66f021dc5ed204a58
-Author: Guoniu Zhou <guoniu.zhou@nxp.com>
+commit b7cffebfaeed965de6c2c0dd99ae2c4e1cc48a37
+Author: Peng Fan <peng.fan@nxp.com>
 
-media: nxp: Add i.MX95 CSI pixel formatter v4l2 driver
+firmware: imx: ele: Correct check_hdr_exception_for_sz
    =20
-The CSI pixel formatter is a module found on i.MX95 used to reformat
-packet info, pixel and non-pixel data from CSI-2 host controller to
-match Pixel Link(PL) definition.
+header.size is u8 type, "header.size >=3D 0" will always return true.
+Actually the check condition should be ">=3D 2", because a valid response
+includes at lease header(4bytes) and status(4bytes), total 2 ints.
 
-> diff --git a/drivers/media/platform/nxp/imx95-csi-formatter.c b/drivers/m=
-edia/platform/nxp/imx95-csi-formatter.c
-> new file mode 100644
-> index 0000000000000..671979444d48b
-> --- /dev/null
-> +++ b/drivers/media/platform/nxp/imx95-csi-formatter.c
-> @@ -0,0 +1,757 @@
+And ELE_DEBUG_DUMP_RSP_SZ is counted using bytes, need to divide it by 4.
 
-[ ... ]
+Fixes: 106ffe5d78ad8 ("firmware: imx: add driver for NXP EdgeLock Enclave")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-> +static int csi_formatter_subdev_enum_mbus_code(struct v4l2_subdev *sd,
-> +					       struct v4l2_subdev_state *sd_state,
-> +					       struct v4l2_subdev_mbus_code_enum *code)
-> +{
-> +	if (code->pad =3D=3D CSI_FORMATTER_PAD_SOURCE) {
-> +		struct v4l2_mbus_framefmt *fmt;
-> +
-> +		if (code->index > 0)
-> +			return -EINVAL;
-> +
-> +		fmt =3D v4l2_subdev_state_get_format(sd_state, code->pad,
-> +						   code->stream);
-> +		code->code =3D fmt->code;
+> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
+_common.c
+> index 8daf32eded43c..76bd3841acfcb 100644
+> --- a/drivers/firmware/imx/ele_common.c
+> +++ b/drivers/firmware/imx/ele_common.c
+> @@ -164,7 +164,7 @@ static bool check_hdr_exception_for_sz(struct se_if_p=
+riv *priv,
+>  	 */
+>  	if (header->command =3D=3D ELE_DEBUG_DUMP_REQ &&
+>  	    header->ver =3D=3D priv->if_defs->base_api_ver &&
+> -	    header->size >=3D 0 && header->size <=3D ELE_DEBUG_DUMP_RSP_SZ)
+> +	    header->size >=3D 2 && header->size <=3D (ELE_DEBUG_DUMP_RSP_SZ / 4=
+))
+>  		return true;
+> =20
+>  	return false;
 
 [Severity: High]
-Can fmt be NULL here? If userspace provides an invalid or non-existent
-stream ID, the V4L2 core does not validate it, and
-v4l2_subdev_state_get_format() will return NULL, which would cause a NULL
-pointer dereference.
+This is a pre-existing issue, but I noticed something concerning in how
+check_hdr_exception_for_sz() is used. In se_if_rx_callback(), if this
+function returns true, it skips the size constraint check:
 
-> +		return 0;
-> +	}
-> +
-> +	if (code->index >=3D ARRAY_SIZE(formats))
-> +		return -EINVAL;
-> +
-> +	code->code =3D formats[code->index].code;
-> +
-> +	return 0;
-> +}
-> +
-> +static int csi_formatter_subdev_set_fmt(struct v4l2_subdev *sd,
-> +					struct v4l2_subdev_state *sd_state,
-> +					struct v4l2_subdev_format *sdformat)
-> +{
-> +	struct csi_formatter_pix_format const *format;
-> +	struct v4l2_mbus_framefmt *fmt;
-> +
-> +	if (sdformat->pad =3D=3D CSI_FORMATTER_PAD_SOURCE)
-> +		return v4l2_subdev_get_fmt(sd, sd_state, sdformat);
-> +
-> +	format =3D csi_formatter_find_format(sdformat->format.code);
-> +	if (!format)
-> +		format =3D &formats[0];
-> +
-> +	v4l_bound_align_image(&sdformat->format.width, 1, 0xffff, 2,
-> +			      &sdformat->format.height, 1, 0xffff, 0, 0);
-> +
-> +	fmt =3D v4l2_subdev_state_get_format(sd_state, sdformat->pad,
-> +					   sdformat->stream);
-> +	*fmt =3D sdformat->format;
+drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
+    [ ... ]
+		if (rx_msg_sz !=3D se_clbk_hdl->rx_msg_sz &&
+		    !check_hdr_exception_for_sz(priv, header)) {
+            [ ... ]
+			se_clbk_hdl->rx_msg_sz =3D min(rx_msg_sz, se_clbk_hdl->rx_msg_sz);
+		}
+	}
+    [ ... ]
+	memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
+    [ ... ]
+}
 
-[Severity: High]
-Can fmt be NULL here as well? If the stream ID from userspace is invalid,
-v4l2_subdev_state_get_format() will return NULL, resulting in a NULL pointer
-dereference.
+Does this bypass allow se_clbk_hdl->rx_msg_sz to retain an unvalidated,
+potentially large user-provided value? If so, couldn't the memcpy()
+read past the bounds of the hardware mailbox msg buffer and leak adjacent
+kernel memory to userspace?
 
-> +
-> +	/* Set default code if user set an invalid value */
-> +	fmt->code =3D format->code;
-> +
-> +	/* Propagate the format from sink stream to source stream */
-> +	fmt =3D v4l2_subdev_state_get_opposite_stream_format(sd_state, sdformat=
-->pad,
-> +							   sdformat->stream);
-> +	if (!fmt)
-> +		return -EINVAL;
+[Severity: Critical]
+This is a pre-existing issue, but while looking at se_if_rx_callback(),
+I also noticed what looks like an unconditional overwrite for NVM commands:
 
-[Severity: Medium]
-Should this return 0 instead of -EINVAL? If the stream is not currently
-routed, v4l2_subdev_state_get_opposite_stream_format() correctly returns
-NULL. V4L2 subdevice UAPI semantics allow userspace to set stream formats
-regardless of active routing, so it might be better to just ignore
-propagation and return 0.
+drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
+    [ ... ]
+		if (rx_msg_sz > MAX_NVM_MSG_LEN) {
+            [ ... ]
+			se_clbk_hdl->rx_msg_sz =3D MAX_NVM_MSG_LEN;
+		}
+		se_clbk_hdl->rx_msg_sz =3D rx_msg_sz;
+    [ ... ]
+}
 
-> +
-> +	*fmt =3D sdformat->format;
-> +
-> +	return 0;
-> +}
+Does the assignment se_clbk_hdl->rx_msg_sz =3D rx_msg_sz entirely defeat the
+MAX_NVM_MSG_LEN check? Since the rx_msg buffer is pre-allocated with
+MAX_NVM_MSG_LEN, could a large payload from the firmware cause a heap
+buffer overflow in the subsequent memcpy()?
 
-[ ... ]
+[Severity: Critical]
+This isn't a bug introduced by this patch, but there might be a NULL pointer
+dereference in se_if_rx_callback() when receiving unsolicited messages.
 
-> +static void csi_formatter_stop_stream(struct csi_formatter *formatter,
-> +				      u64 stream_mask)
-> +{
-> +	unsigned int i;
-> +
-> +	for (i =3D 0; i < CSI_FORMATTER_VC_NUM; ++i) {
-> +		if (!(stream_mask & BIT(i)))
-> +			continue;
-> +
-> +		csi_formatter_write(formatter, CSI_VC_PIXEL_DATA_TYPE(i), 0);
+drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
+    [ ... ]
+	if (header->tag =3D=3D priv->if_defs->cmd_tag) {
+		se_clbk_hdl =3D &priv->cmd_receiver_clbk_hdl;
+		dev_dbg(dev, "Selecting cmd receiver:%s for mesg header:0x%x.",
+			se_clbk_hdl->dev_ctx->devname,  *(u32 *)header);
+    [ ... ]
+}
 
-[Severity: High]
-Does this clear the wrong hardware registers? In csi_formatter_start_stream=
-(),
-the driver correctly resolves the physical Virtual Channel ID (vc) and writ=
-es
-to CSI_VC_PIXEL_DATA_TYPE(vc).
+If the driver is idle, won't se_clbk_hdl->dev_ctx be NULL? It looks like
+dereferencing dev_ctx->devname here would cause an Oops if the firmware sen=
+ds
+an unexpected response or command.
 
-Here, the logical stream index i is used as the VC ID. Since logical stream
-IDs do not necessarily match physical VC IDs, this might fail to disable the
-intended stream and potentially corrupt other active streams.
+[Severity: Critical]
+This is a pre-existing issue, but I have a question about the ioctl handler
+se_ioctl_cmd_snd_rcv_rsp_handler() in se_ctrl.c:
 
-> +	}
-> +}
+drivers/firmware/imx/se_ctrl.c:se_ioctl_cmd_snd_rcv_rsp_handler() {
+    [ ... ]
+	err =3D se_chk_tx_msg_hdr(priv, (struct se_msg_hdr *)cmd_snd_rcv_rsp_info.=
+tx_buf);
+    [ ... ]
+	struct se_api_msg *tx_msg __free(kfree) =3D
+		memdup_user(cmd_snd_rcv_rsp_info.tx_buf,
+			    cmd_snd_rcv_rsp_info.tx_buf_sz);
+    [ ... ]
+}
 
-[ ... ]
-
-> +static int csi_formatter_subdev_enable_streams(struct v4l2_subdev *sd,
-> +					       struct v4l2_subdev_state *state,
-> +					       u32 pad, u64 streams_mask)
-> +{
-> +	struct csi_formatter *formatter =3D sd_to_formatter(sd);
-> +	struct device *dev =3D formatter->dev;
-> +	u64 sink_streams;
-> +	int ret;
-> +
-> +	sink_streams =3D v4l2_subdev_state_xlate_streams(state,
-> +						       CSI_FORMATTER_PAD_SOURCE,
-> +						       CSI_FORMATTER_PAD_SINK,
-> +						       &streams_mask);
-> +	if (!sink_streams || !streams_mask)
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&formatter->lock);
-> +
-> +	if (!formatter->enabled_streams) {
-> +		ret =3D pm_runtime_resume_and_get(formatter->dev);
-> +		if (ret < 0) {
-> +			dev_err(dev, "Failed to resume runtime PM: %d\n", ret);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	ret =3D csi_formatter_start_stream(formatter, state, streams_mask);
+Since cmd_snd_rcv_rsp_info.tx_buf is a user-space pointer, is it safe to
+cast it and pass it to se_chk_tx_msg_hdr() before memdup_user() is called?
+Wouldn't direct dereferencing of this pointer inside se_chk_tx_msg_hdr()
+trigger an immediate panic on systems with SMAP enabled, or a page fault if
+the pointer is invalid?
 
 [Severity: High]
-Should this pass sink_streams instead of streams_mask? streams_mask
-applies to the source pad, but it is passed directly to
-csi_formatter_start_stream(). Inside that helper,
-v4l2_subdev_state_get_format() is called using the bits from the source
-mask but with CSI_FORMATTER_PAD_SINK.
+This isn't a bug introduced by this patch, but I spotted a potential unboun=
+ded
+allocation in the same ioctl handler:
 
-If the routing maps a sink stream to a differently-numbered source stream,
-the format query for the sink pad could return NULL, resulting in a NULL
-pointer dereference.
+drivers/firmware/imx/se_ctrl.c:se_ioctl_cmd_snd_rcv_rsp_handler() {
+    [ ... ]
+	struct se_api_msg *rx_msg __free(kfree) =3D
+		kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
+    [ ... ]
+}
 
-> +	if (ret)
-> +		goto err_runtime_put;
+Does this code safely handle large or negative values for rx_buf_sz?
+Since the size comes directly from the user, could a negative value wrap
+to a massive size_t and trigger a kernel warning or memory exhaustion when
+passed to kzalloc()?
 
-[Severity: Medium]
-Does this mix goto-based error handling with scope-based cleanups?
-According to the kernel cleanup subsystem guidelines, functions must not mix
-goto-based error handling with scope-based cleanup macros like guard().
-This creates confusing ownership semantics and increases the risk of bugs
-during future modifications.
+[Severity: Critical]
+This is a pre-existing issue, but there seems to be a possible use-after-fr=
+ee
+involving ele_msg_send_rcv() and se_ioctl_cmd_snd_rcv_rsp_handler():
 
-> +
-> +	ret =3D v4l2_subdev_enable_streams(formatter->csi_sd,
-> +					 formatter->remote_pad,
-> +					 sink_streams);
-> +	if (ret)
-> +		goto err_stop_stream;
-> +
-> +	formatter->enabled_streams |=3D streams_mask;
-> +
-> +	return 0;
-> +
-> +err_stop_stream:
-> +	csi_formatter_stop_stream(formatter, streams_mask);
-> +err_runtime_put:
-> +	if (!formatter->enabled_streams)
-> +		pm_runtime_put(formatter->dev);
-> +	return ret;
-> +}
+drivers/firmware/imx/ele_common.c:ele_msg_send_rcv() {
+    [ ... ]
+	priv->waiting_rsp_clbk_hdl.dev_ctx =3D dev_ctx;
+	priv->waiting_rsp_clbk_hdl.rx_msg_sz =3D exp_rx_msg_sz;
+	priv->waiting_rsp_clbk_hdl.rx_msg =3D rx_msg;
 
-[ ... ]
+	err =3D ele_msg_send(dev_ctx, tx_msg, tx_msg_sz);
+	if (err < 0)
+		return err;
+    [ ... ]
+}
 
-> +static int csi_formatter_async_register(struct csi_formatter *formatter)
-> +{
-> +	struct device *dev =3D formatter->dev;
-> +	struct v4l2_async_connection *asc;
-> +	int ret;
-> +
-> +	struct fwnode_handle *ep __free(fwnode_handle) =3D
-> +		fwnode_graph_get_endpoint_by_id(dev_fwnode(dev), 0, 0,
-> +						FWNODE_GRAPH_ENDPOINT_NEXT);
-> +	if (!ep)
-> +		return -ENOTCONN;
-> +
-> +	v4l2_async_subdev_nf_init(&formatter->notifier, &formatter->sd);
-> +
-> +	asc =3D v4l2_async_nf_add_fwnode_remote(&formatter->notifier, ep,
-> +					      struct v4l2_async_connection);
-> +	if (IS_ERR(asc)) {
-> +		ret =3D PTR_ERR(asc);
-> +		goto err_cleanup_notifier;
+If ele_msg_send() fails, ele_msg_send_rcv() returns immediately while
+priv->waiting_rsp_clbk_hdl.dev_ctx remains non-NULL.
 
-[Severity: Medium]
-Similar to above, does this mix goto-based error handling with scope-based
-cleanups? The function uses __free() for ep but then uses goto for error
-handling.
+Back in se_ioctl_cmd_snd_rcv_rsp_handler():
 
-> +	}
-> +
-> +	formatter->notifier.ops =3D &formatter_notify_ops;
-> +
-> +	ret =3D v4l2_async_nf_register(&formatter->notifier);
-> +	if (ret)
-> +		goto err_cleanup_notifier;
-> +
-> +	ret =3D v4l2_async_register_subdev(&formatter->sd);
-> +	if (ret)
-> +		goto err_unregister_notifier;
-> +
-> +	return 0;
-> +
-> +err_unregister_notifier:
-> +	v4l2_async_nf_unregister(&formatter->notifier);
-> +err_cleanup_notifier:
-> +	v4l2_async_nf_cleanup(&formatter->notifier);
-> +	return ret;
-> +}
+drivers/firmware/imx/se_ctrl.c:se_ioctl_cmd_snd_rcv_rsp_handler() {
+    [ ... ]
+	struct se_api_msg *rx_msg __free(kfree) =3D
+		kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
+    [ ... ]
+	err =3D ele_msg_send_rcv(dev_ctx, tx_msg, cmd_snd_rcv_rsp_info.tx_buf_sz,
+			       rx_msg, cmd_snd_rcv_rsp_info.rx_buf_sz);
+    [ ... ]
+}
+
+When the function returns, rx_msg is automatically freed. If a delayed
+response later arrives from the firmware, wouldn't se_if_rx_callback()
+see a valid dev_ctx and copy the payload into the already-freed rx_msg
+pointer, causing a use-after-free?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525-csi_format=
-ter-v8-0-6b646231224b@oss.nxp.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525-ele-v1-v1-=
+0-a9570c4bffc9@nxp.com?part=3D5
