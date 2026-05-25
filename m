@@ -1,160 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93DA30C144
-	for <imx@lists.linux.dev>; Mon, 25 May 2026 07:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E93B3BFE5A;
+	Mon, 25 May 2026 07:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779692581; cv=none; b=qTZWJc5an+taGqpxRVSVQKEtn1aeu678x7c3y9k1a4m7u0gKEc+ZVwa1fSMvXcUfzxfwEp9ivYHSn8O1F9dHxBCfJg0h+k5COa3Gw9SOuGeuPtEaawrB2OK5dMuvXqKogKivxmf1RRrX6EOW39bVNSgNaX1AoFvbTO5te5VAJVk=
+	t=1779693069; cv=none; b=tYaCcyaxw3Yr84RFXYtanEsd7XxYpMuchrknGcmECJ7uSaeqZfn36OSAF8CZWWc9SZgBjftTGnA/6FiFGUILyDAhD09tJ7p9K73MGLqvF0k49nc55r5jEsuMeAp5DuaB26vQxeJB6Sm+uqGF4fsW9T/GEr49nn5Fr2mwH1a+jpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779692581; c=relaxed/simple;
-	bh=oOB5SixJMqRWYz+JhEb8squHcyGqWgrgLqs5wFPH3N0=;
+	s=arc-20240116; t=1779693069; c=relaxed/simple;
+	bh=dUWramHZV89lmlWuUu86XpRZrCSy0baHbbma7koyXKw=;
 	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HAWySVskuCdXQBmNcP7gvw0IGEIYv8bgH/HFxbkkbFlLHJH5wnlkqmeybuMvDAWxyDXA1/3Y9He4bHl6D3pdBA/30wmoSs8JHykKJZPemMEg8KDL6l0+TGTzMVur/RIW/6hCFhX+VEv6UteC7FalvHNMaAcmLquMo9xwHYBwDjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9B5msuy; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=rglOdw7YguzTkNefrjJhv5ismouNQZs4Xei/0MleVcfk0SPZjhGT+u8y2NWC42WiDEQcdDukqWLYhFwvhSJBPI7XGAmM6qdmWpA8Qc5iBe2PcpAgf4EYke67buDOgcrF4f576t/7xpS+rIU36grNL2PDdnBGUa5kFUbNMA9bkMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vba0wNyk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9B5msuy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BDF1F000E9;
-	Mon, 25 May 2026 07:02:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vba0wNyk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03071F000E9;
+	Mon, 25 May 2026 07:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779692575;
-	bh=Kxsr4cPeTTFXO17yXqXp1NJF4FOGZDhLOIxDZqpSYLc=;
+	s=k20260515; t=1779693067;
+	bh=Ymj6p4G1gd8jUYtvg5dmrv8SQVLwDNMBNQsG3tpyces=;
 	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=J9B5msuyDwBozTcfjL3s+UAnRr3ugrpOmfbP1SnYF/xsgA+9FbP/uxsRVn1PQxtne
-	 DTmqkTMEvf3UZfZyWRfVcTMICqEsHpgItXIhhlhjmbMnTYqxDhOEP83lpzRl9qFuNf
-	 dl676d038c4L/8p8hflAYXGlaXNYhmNiPa+XM4ihyH8w7iVaWFM3gR090RbQhc3YXR
-	 T/sApC2X/mR+gSoiS4XXwiEueJ/Zt8pFWQUco+QEz4bpMrkL+HPUfxHowsUWz7rt3g
-	 mGG+11a+/kdTSJSrTgxvMSOqmlcv2xmbnzdpdkZgkkt7/UloGM36x43kVCzx5+Wng8
-	 1dxrQdoOMSJ5g==
+	b=Vba0wNyk28CmbQFDirtFX7cz0DFdMcWpfFNG9JhO6kblRrBwv1Y6FDYVN2NnwZJpX
+	 ZcrtKpdvL58PbI0EwSMTo6OcuNmjs9NCdwPuwagYqB4Rl7E+FyY1GmRdfFYd4DmVcb
+	 m1LzNCceiCzSHmcqXm/FsKrjPWJcx42edcAc9ZIZQVdKb1CxzAi8uEnlRnj4ofZ/5N
+	 mX1Dl4mjuaUn9jrjDmL4fe9b9QvfiMCqAOFSQaEFClrgRb0u3nlfSnSKGutskR4V3G
+	 pJkHuGqLgymF3N7gcW9DMG/+civ9xlffpBXT/Ma3rfk7fuZQIKTd3A4x4lMSqgMkAV
+	 LXftWdmyOw/9g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/7] firmware: imx: ele: Correct ele_fw_authenticate API
+Subject: Re: [PATCH V2 1/2] PCI: host-generic: Simplify return value
+ handling in pci_host_common_parse_port(s)
 Reply-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260525-ele-v1-v1-2-a9570c4bffc9@nxp.com>
-References: <20260525-ele-v1-v1-2-a9570c4bffc9@nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260525065443.2338629-2-sherry.sun@oss.nxp.com>
+References: <20260525065443.2338629-2-sherry.sun@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 07:02:55 +0000
-Message-Id: <20260525070255.C4BDF1F000E9@smtp.kernel.org>
+Date: Mon, 25 May 2026 07:11:07 +0000
+Message-Id: <20260525071107.A03071F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [Critical] Dangling pointers left in the global callback handle on error =
-paths lead to Use-After-Free heap corruption or a NULL pointer dereference =
-when a delayed/spurious response arrives.
-- [Critical] Uninitialized physical address used for IMEM export/import.
-- [High] Silent physical address truncation in `ele_service_swap()`.
-- [High] The `ele_msg_rcv()` function causes an infinite busy loop (CPU loc=
-kup) if the calling task receives a signal.
+- [High] The patch changes the return value semantics of `pci_host_common_p=
+arse_ports()` from `-ENODEV` to `0`, silently breaking legacy device tree b=
+ackward compatibility for i.MX6 PCIe.
 --
 
-commit f74ec8f682c5afa2812159200b4566d0c747b041
-Author: Peng Fan <peng.fan@nxp.com>
-Subject: firmware: imx: ele: Correct ele_fw_authenticate API
+commit dd3d8b79463f9da53267b3bb06dcedefaa9d7673
+Author: Sherry Sun <sherry.sun@nxp.com>
 
-This commit corrects the ele_fw_authenticate API by enforcing that the upper
-32 bits of both the container and image addresses are zero. It fails the
-command if they are not, and correctly populates only the lower 32 bits in
-the message data.
+PCI: host-generic: Simplify return value handling in pci_host_common_parse_=
+port(s)
 
-> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
-le_base_msg.c
-> index 23f68076b85ce..f6346f1545096 100644
-> --- a/drivers/firmware/imx/ele_base_msg.c
-> +++ b/drivers/firmware/imx/ele_base_msg.c
-> @@ -208,6 +208,11 @@ int ele_fw_authenticate(struct se_if_priv *priv, phy=
-s_addr_t contnr_addr,
->  	if (!priv)
->  		return -EINVAL;
-> =20
-> +	if (upper_32_bits(contnr_addr) || upper_32_bits(img_addr)) {
-> +		dev_err(priv->dev, "Wrong address: %pap %pap\n", &contnr_addr, &img_ad=
-dr);
-> +		return -EINVAL;
-> +	}
-> +
+This commit simplifies pci_host_common_parse_port and=20
+pci_host_common_parse_ports to return 0 when no ports are found instead
+of returning -ENODEV. It also removes the RC-level binding check,
+delegating that policy decision to the caller.
 
-[Severity: High]
-This is a pre-existing issue, but while you are correctly adding bounds
-checks here, does ele_service_swap() also need a similar fix?
-
-It appears ele_service_swap() accepts a 64-bit phys_addr_t and silently
-truncates it by assigning only lower_32_bits(addr) to the message, ignoring
-the upper 32 bits. On 64-bit systems, could passing physical or dma address=
-es
-above 4gb instruct the firmware to export or import data to the wrong
-physical memory area, leading to memory corruption?
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but regarding physical addresses,
-is there an uninitialized address used for imem export/import?
-
-In se_if_probe(), a buffer for the encrypted imem is allocated via
-dmam_alloc_coherent(), which assigns the generated dma address to a local
-variable imem_dma_addr. However, it seems this address is never stored back
-into the load_fw->imem.phyaddr struct field, leaving it zero.
-
-During suspend/resume, could se_save_imem_state() pass this zero address to
-ele_service_swap(), instructing the secure enclave firmware to overwrite
-physical address 0x0 with its state?
-
->  	struct se_api_msg *tx_msg __free(kfree)	=3D
->  		kzalloc(ELE_FW_AUTH_REQ_SZ, GFP_KERNEL);
-
+> diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/contr=
+oller/pci-host-common.c
+> index 2ce6f4b661334..c93de5a107581 100644
+> --- a/drivers/pci/controller/pci-host-common.c
+> +++ b/drivers/pci/controller/pci-host-common.c
 [ ... ]
-
-> @@ -224,8 +229,8 @@ int ele_fw_authenticate(struct se_if_priv *priv, phys=
-_addr_t contnr_addr,
->  		return ret;
+> @@ -158,13 +141,11 @@ static int pci_host_common_parse_port(struct device=
+ *dev,
+>   * Iterate through child nodes of the host bridge and parse Root Port
+>   * properties (currently only reset GPIOs).
+>   *
+> - * Return: 0 on success, -ENODEV if no ports found or PERST# found in RC
+> - * node (legacy binding should be used), Other negative error codes on
+> - * failure.
+> + * Return: 0 on success, negative error codes on failure.
+>   */
+>  int pci_host_common_parse_ports(struct device *dev, struct pci_host_brid=
+ge *bridge)
+>  {
+> -	int ret =3D -ENODEV;
+> +	int ret =3D 0;
 > =20
->  	tx_msg->data[0] =3D lower_32_bits(contnr_addr);
-> -	tx_msg->data[1] =3D upper_32_bits(contnr_addr);
-> -	tx_msg->data[2] =3D img_addr;
-> +	tx_msg->data[1] =3D 0;
-> +	tx_msg->data[2] =3D lower_32_bits(img_addr);
+>  	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
+>  		if (!of_node_is_type(of_port, "pci"))
+> @@ -174,8 +155,8 @@ int pci_host_common_parse_ports(struct device *dev, s=
+truct pci_host_bridge *brid
+>  			goto err_cleanup;
+>  	}
 > =20
->  	ret =3D ele_msg_send_rcv(priv->priv_dev_ctx, tx_msg, ELE_FW_AUTH_REQ_SZ=
-, rx_msg,
->  			       ELE_FW_AUTH_RSP_MSG_SZ);
-
-[Severity: Critical]
-This is a pre-existing issue, but since ele_msg_send_rcv() is called here,
-could dangling pointers left in the global callback handle on error paths
-lead to use-after-free heap corruption or a null pointer dereference?
-
-In ele_msg_send_rcv(), rx_msg and dev_ctx are stored in
-priv->waiting_rsp_clbk_hdl. If ele_msg_send() fails, the function returns
-without clearing them, and the caller frees the heap-allocated rx_msg.
-
-If a delayed or spurious response arrives later, could the asynchronous
-se_if_rx_callback() use the stale handle to blindly copy payload data into
-the freed rx_msg buffer?
-
-Furthermore, if ele_msg_rcv() is interrupted by a signal, it sets dev_ctx to
-null but leaves rx_msg, which could lead se_if_rx_callback() to dereference
-a null pointer when accessing se_clbk_hdl->dev_ctx->devname.
+> -	if (ret)
+> -		return ret;
+> +	if (list_empty(&bridge->ports))
+> +		return 0;
 
 [Severity: High]
-This is another pre-existing issue, but does ele_msg_rcv() have the
-potential to cause an infinite busy loop if the calling task receives a
-signal?
+Does returning 0 instead of -ENODEV here break bisectability for legacy
+device trees on i.MX6?
 
-It uses wait_for_completion_interruptible_timeout(), which returns
--ERESTARTSYS immediately if a signal is pending. In this case, the code
-sets signal_rcvd =3D true and uses continue to restart the loop without
-clearing the signal or returning.
+Looking at the caller imx_pcie_host_init() in=20
+drivers/pci/controller/dwc/pci-imx6.c, it relies on this exact -ENODEV=20
+return value to detect the absence of Root Port nodes and fall back to=20
+parsing legacy bindings:
 
-Since the signal remains pending, the next call to the wait function returns
--ERESTARTSYS immediately again without sleeping. If the hardware never
-responds, could this indefinitely hang the cpu core?
+imx_pcie_host_init()
+    ret =3D pci_host_common_parse_ports(dev, bridge);
+    if (ret =3D=3D -ENODEV)
+        ret =3D imx_pcie_parse_legacy_binding(imx_pcie);
+    if (ret)
+        return ret;
+
+Since this helper now returns 0 when no ports are found, the caller bypasses
+its error-handling and legacy fallback block entirely, leaving the
+bridge->ports list empty. Consequently, imx_pcie_assert_perst() will do
+nothing, and the PERST# GPIO will never be parsed or asserted.
+
+I see that this issue is fixed later in the series by commit=20
+0dd88230fe087b9c6a87eed08edc4d3be7f1fe1a (PCI: imx6: Add
+imx_pcie_perst_found() to inspect the parsed result), but updating the API
+without updating the caller in the same commit could break bisection.
+
+>  	return devm_add_action_or_reset(dev, pci_host_common_delete_ports,
+>  					&bridge->ports);
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525-ele-v1-v1-=
-0-a9570c4bffc9@nxp.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525065443.2338=
+629-1-sherry.sun@oss.nxp.com?part=3D1
