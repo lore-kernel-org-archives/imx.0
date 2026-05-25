@@ -1,115 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp1-g21.free.fr (smtp1-g21.free.fr [212.27.42.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4C436C0CF;
-	Mon, 25 May 2026 10:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAC737E2FE
+	for <imx@lists.linux.dev>; Mon, 25 May 2026 11:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779705822; cv=none; b=pXjuNTxgc0xP8CbUK5e14iHU6wT+NSfSn2OEIY+Qns4tfLbFrd/SUwNUxOVQqeKVKYdRrFx1YOrsVUuj2avdFQ61M+80jO7artJUq+XwT7GgCupJZZeUWWhFeSm3ZeHHDcVdYrDPTYgCzX5ZaLyLs4JS2rZQj1yOIe0zAldjErQ=
+	t=1779708281; cv=none; b=ncgc+pzFsrlOBFUdNRmU2iIMtyPkhYCbAOOwaNemG5QCWbDdHdIbqHlfIcFnBax69tnvG4h3ugmGxP8KfysOhVnt+OuhoDK3/AcKXybK19hvbOxgryOALNlziaH3btwYN8V1CrJYnV7bj/ECnFw4OxzwHH+wgRSbhqb3LvOXluQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779705822; c=relaxed/simple;
-	bh=Fsxrsphi2dCnqeJa7qeWKFhhL3tAPkBX0WZVGYk+vwU=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=nqjIHlpK3naLOkSoHhltTSlvXbtF1xatZjA25+opj5f/ISUNuUs8D7Hdv53Eq0LwAqdteK2zXwxLLfXU4PNVrYP0BO9TZ3F9YxyzLC8pYg/WefNclR/mjNHUQiwpatXTErlnai3otpZg6OliLUBLCIJrC5UZEsqfDz2tCbz3+Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSCuc8IE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779708281; c=relaxed/simple;
+	bh=uxLP8IbyUY1c4syNBTYNja87B/Fv7UleF8C+qDT8zMU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lX7h8prANn5eJz43dma7tEd8H+9o7XWazjP9udnDsyTQtvhc0c3/tsRfqxTKinYCNy4rxHrSJ7glo8b9exoLv77XXBdCeglvNNq07bdc09pK/bNbm+RruqBW4Q/7IB5Lf6JBx419jWgxBQs2aXvtVuvMCxByQsaUjMUBN6EAOfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=jhqCRc/P; arc=none smtp.client-ip=212.27.42.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSCuc8IE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236C81F000E9;
-	Mon, 25 May 2026 10:43:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779705819;
-	bh=srjqsu/CzyJPLcISmZtzPE6Hh7zthtKm0bgXC6QNd2o=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject;
-	b=RSCuc8IEgkJu8PXT7ayTk7inXAFejDcQRYa1aZbfh9Zr7qEit8g4+yFvXyD2Ln7+g
-	 9OV4t9U9fgIFBRXpOm69/x6mEvNakoihDrzcpmp8uGbVbep6Fnk6vMHpqVDhJ2Wphv
-	 4g2O1dpHN09pOAyPNPFRKxXj08oPgcy/B9S+ak78QFmJan8Cno182lbgdTpg8mx8Ef
-	 QdXLuCrkKju+UctYLxHWfHhC/0FeZyjCsxNbnGJF1UNFD7EgOwQWw7DziirHb+WI4M
-	 TGXJD+thL/kKPrd3uumOvJ/RTcdUn8HFN27gDneoTjGrons6jncQ1neK98OezxyDMx
-	 e3mzXtiqN9dbA==
-Date: Mon, 25 May 2026 05:43:38 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="jhqCRc/P"
+Received: from [127.0.1.1] (unknown [91.160.0.144])
+	(Authenticated sender: vjardin@free.fr)
+	by smtp1-g21.free.fr (Postfix) with ESMTPSA id 148BBB0051E;
+	Mon, 25 May 2026 13:24:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1779708269;
+	bh=uxLP8IbyUY1c4syNBTYNja87B/Fv7UleF8C+qDT8zMU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=jhqCRc/PehNw3nqF2B2O4/2bqBpdPkGXQP35+CUsg0a5EMGjXcVS4aNUkDmWMoip3
+	 SzX5bDpg8g5aHmBCAnAf8dnoTyi0C6xrFnNoKAjerNZJCSRjoQJnd5+jDRMUnzHSMl
+	 UH9Qcijk4KsVswkLjpxe11PfaQK2nJF2YC4x8pu7MxMNv1utSQwg6Fs0YGSUcfh46F
+	 bF/CW2Tce/lhGkCpLxOE9kUaOQj2xGu9BVXHxAy1Fy24rwcPFB2GKxT+RJQywoClKi
+	 yZeA1khX9in+kArfr89M6ejVhttRETJE2T3H1Z2rvXNeMd8Iw3ktx2JqxxfwjEAOHP
+	 AF/iXEaLdxedQ==
+From: Vincent Jardin <vjardin@free.fr>
+Subject: [PATCH 0/2] i2c: imx: fix SMBus block-read of 0 locking the bus
+Date: Mon, 25 May 2026 13:24:01 +0200
+Message-Id: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-0-f30ab53dd97c@free.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev, 
- Conor Dooley <conor+dt@kernel.org>, Guoniu Zhou <guoniu.zhou@nxp.com>, 
- linux-media@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
- Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- linux-arm-kernel@lists.infradead.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- Frank Li <Frank.Li@nxp.com>, devicetree@vger.kernel.org, 
- Pengutronix Kernel Team <kernel@pengutronix.de>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-In-Reply-To: <20260525-csi_formatter-v8-1-6b646231224b@oss.nxp.com>
-References: <20260525-csi_formatter-v8-0-6b646231224b@oss.nxp.com>
- <20260525-csi_formatter-v8-1-6b646231224b@oss.nxp.com>
-Message-Id: <177970581844.3566674.15613967035246417411.robh@kernel.org>
-Subject: Re: [PATCH v8 1/2] media: dt-bindings: Add CSI Pixel Formatter DT
- bindings
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFExFGoC/x2NywqEMAwAf0VyNpBGKuiviIfajbsBX6Qqgvjvl
+ j0OAzM3JDGVBG1xg8mpSdclgysLiL+wfAX1kxmYuCbPHsfV8NjSbhJmVI44XexqwlEvPB1SHAI
+ FoqYSDzmymWTzH3T987wKnwFBcAAAAA==
+To: Oleksij Rempel <o.rempel@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+ Wolfram Sang <wsa@kernel.org>, 
+ Kaushal Butala <kaushalkernelmailinglist@gmail.com>, 
+ Shawn Guo <shawn.guo@freescale.com>, 
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Vincent Jardin <vjardin@free.fr>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779708249; l=982;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=uxLP8IbyUY1c4syNBTYNja87B/Fv7UleF8C+qDT8zMU=;
+ b=hkA59lEEOgeOFJ62bM+X3GOA+PH/x5di7iGQBCaVOjxVxUp+FZp9cFCnIJDDQxlkgi9lopr6U
+ iwT9zSFoOLtB2OVKP/wOMpRkBZp/8xxLcR0qu4nvFHYWOHzy3ctSyy9
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
 
+i2c-imx rejects a SMBus Block Read byte count of 0 (valid per SMBus 3.1
+6.5.7) and it returns without a NACK+STOP, leaving the target
+holding SDA so the bus is stuck until a power cycle occur.
 
-On Mon, 25 May 2026 16:12:22 +0800, Guoniu Zhou wrote:
-> From: Guoniu Zhou <guoniu.zhou@nxp.com>
-> 
-> The i.MX95 CSI pixel formatting module uses packet info, pixel and
-> non-pixel data from the CSI-2 host controller and reformat them to
-> match Pixel Link(PL) definition.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-> ---
-> Changes in v8:
-> - Use standard port reference instead of video-interfaces.yaml
-> - Add parent syscon node in example to show device integration
-> - Add required constraints for port@0 and port@1 in ports node
-> 
-> Changes in v7:
-> - Change compatible to imx95-csi-formatter as IP is i.MX95 specific per Marco's suggestion
->   Link: https://lore.kernel.org/linux-media/20260511-csi_formatter-v6-0-01028e312e2b@oss.nxp.com/T/#mcd135b3de179b3cb69daa1fd6e0e8e27c85b3332
-> ---
->  .../bindings/media/fsl,imx95-csi-formatter.yaml    | 92 ++++++++++++++++++++++
->  1 file changed, 92 insertions(+)
-> 
+The same bug is occuring with two independently introduced spots, so the
+fix is two patches with their respective Fixes: tags and backport ranges:
 
-My bot found errors running 'make dt_binding_check' on your patch:
+  1/2  atomic/polling path       Fixes: 8e8782c71595   v3.16+
+  2/2  IRQ-driven state machine  Fixes: 5f5c2d4579ca   v6.13+
 
-yamllint warnings/errors:
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+Vincent Jardin (2):
+      i2c: imx: fix locked bus on SMBus block-read of 0 (atomic)
+      i2c: imx: fix locked bus on SMBus block-read of 0 (IRQ)
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): '#address-cells', '#size-cells', 'formatter@20' do not match any of the regexes: '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): reg: [[0, 1254162432], [0, 65536]] is too long
-	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): '#clock-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): 'power-domains' is a required property
-	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.example.dtb: syscon@4ac10000 (nxp,imx95-camera-csr): 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/clock/nxp,imx95-blk-ctl.yaml
+ drivers/i2c/busses/i2c-imx.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
+---
+base-commit: 6916d5703ddf9a38f1f6c2cc793381a24ee914c6
+change-id: 20260525-for-upstream-i2c-lx2160-fix-v1-0cba0a0093e5
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.kernel.org/project/devicetree/patch/20260525-csi_formatter-v8-1-6b646231224b@oss.nxp.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Best regards,
+-- 
+Vincent Jardin <vjardin@free.fr>
 
