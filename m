@@ -1,208 +1,116 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023119.outbound.protection.outlook.com [52.101.72.119])
+Received: from smtp1-g21.free.fr (smtp1-g21.free.fr [212.27.42.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0B42036E9
-	for <imx@lists.linux.dev>; Tue, 26 May 2026 08:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.119
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779782469; cv=fail; b=MrJ7jtnaPEJJAEvFf3AsbtB3QUpS0/qqDO9XP5TQCueIPG6Br3S2VY2sB6RfwTfan7TYfW/GEDp+NDGArCuZ5CXvB8Hvmve/ZVHzF+9llPI9twBrRhlPIIEn0KKx8bzCZ6LUf9kqT0Pmvpvgyf/E8PjG3ZF6Nvf7+zAD0olLpsw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779782469; c=relaxed/simple;
-	bh=hux4eFykUNvSyz4OkfdF8zFSCrF8QnD2S2KotCLdXAM=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=TzlLbwzwbWvP6JjZEjgfOd0+fwXuGG3/H9zkPT7pMmbKwaJOcP2C3b/oOQz/nw5bN1+MEd+MSi1vpeqMsz6Bi6Km7L7dt5UfzDkpRzJ3rTmDlFSTg6w+Hn2wyiil5qT3WW9pxjCDGklAGH72ucH6xrDbFibqEkRN5O+ScUDdvHY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=uzHuNwXB; arc=fail smtp.client-ip=52.101.72.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D023451A7
+	for <imx@lists.linux.dev>; Tue, 26 May 2026 08:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779783149; cv=none; b=CPzD6KBHqYs637ZSbpwkrY45jmApYAfXhnPo+rfTmA4OKu4fdZ00o9vkSKbc1iYSdH6+Rlr/BMZQQteB3IOQiQnUV90FAbJAig5TeQnHX1b3laCfs8PzY7vFC5PGKYigMfZxYxPjTlmx7urU3FNzJFRVEXmRNA20uilOelhpCzE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779783149; c=relaxed/simple;
+	bh=+DPMC/KrZCk4rVtESWROJTmVz5LPk9WoNgb7oufpbx8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mn/0amnYwq4dwQ6m+/3Te+cyBsizXnMRXSarKZR9ziNc91LTkf66AymgcHBJkYFttkX3S+xL7H4LfGcCaRm+oLLeuhCsADT416o8+mokEqDHTY32T1Z2rOMzQYAxyTtW0apK4TMKOCYrYLlmm65l/6C+tGAoDpmCf065Z2svFpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=qFizvqVz; arc=none smtp.client-ip=212.27.42.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="uzHuNwXB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G8RYZRC+wQyDC9DPjWljcC3I8liJnO/QqWo/zmtPrYgMTSFfPpiNZ4mNaSuyw+z3NYqZM6m0g1iZcLCzSRsUtAIBQxr1MdWRxiYUyrX1SnfTehHRShP073tPl0ctU06GneK6fDcDmcUrtE53PG/SecdX4dR2BoZxHZTaYwCgYuLqikD0aWWzc4B1aDVxmEr6xYjkhw1wbRomJPiZlm3y+efcDH8UDLCsvwAjoeV3ZOaNRn5u1cCFIt3+/JGsGjHug1j4hZzoVMZX2al9LvM90VxsspEY4NpkGJULxpr/mMVxLEGxGELSq8BrkSNUFJgc2WzU3OPeZCxw/Nb7tDI2+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d+OTfXZsupcevtQM6a4TDNyenrvqf7vSSqBN6Va30CY=;
- b=gL+fnErpOZoiKqeWw7F48ZjAn/cvMYYnQF4bQvet9SeyyY5DMDG6a/dQ34zSKTUeYBj1RbFMub4fQxiZ5DfTCdRpXmaqHJJUcD954Gzd2zr5o62adLsMUNgISeaSeXo1JcgHKWNs1zvHSdvO5/VOYnxYxsARyFDt6n/Lb6m0X6qRKDrQhjj5UC/1NNizfk/2UAIYp4EW82iSa37J+jmqe92QQA49YZex7eAczYTs9Z3PQDRqaakrMn36KWrPJK5jasuhkA4UhEDI5pnI3cgqr1CRlXUwBykszAqzl+rJZXIRisjdbcVi2pS3HTZdoXXfQlvxwyFWcX+3IYMKlBACZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d+OTfXZsupcevtQM6a4TDNyenrvqf7vSSqBN6Va30CY=;
- b=uzHuNwXBV/OqMjQ8IZWpUmxutBHidvPqqV+bkaoFCK5LM7JHSdhi8MhMcwdxBvDAKtcfIHMLTz56tD0UVkioleslNOi84lnJPaX55uV5r3S3XKuOXcqqbpXq+YS3agZfzUqkl3JuAPTSDGa40Ibpsqtwm4IwLkOerqt5oV7UPIUUJT/Sht/Ue0A8gPxxqCDFNcLUutoPAOpjiuTQI8tzGu+k8R/8l3Tgzu+fNhjY4KphiJN5B//uRSLxuuTqX84n8xH9tB6spFOyVztrMt7rj8O9F8kALtd5L1rbKHcDBv+j73wFILMNp9eyICLvZnH1WI01tjiXFjCHHnOLWNqDMQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AS5PR06MB9040.eurprd06.prod.outlook.com (2603:10a6:20b:676::22)
- by DBAPR06MB6934.eurprd06.prod.outlook.com (2603:10a6:10:1a9::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Tue, 26 May
- 2026 08:00:59 +0000
-Received: from AS5PR06MB9040.eurprd06.prod.outlook.com
- ([fe80::923e:d30b:98c0:c69]) by AS5PR06MB9040.eurprd06.prod.outlook.com
- ([fe80::923e:d30b:98c0:c69%7]) with mapi id 15.21.0048.019; Tue, 26 May 2026
- 08:00:59 +0000
-From: Tapio Reijonen <tapio.reijonen@vaisala.com>
-Date: Tue, 26 May 2026 08:00:44 +0000
-Subject: [PATCH] net: fec: fix pinctrl default state restore order on
- resume
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260526-b4-fec-resume-pinctrl-order-v1-1-f2f926325424@vaisala.com>
-X-B4-Tracking: v=1; b=H4sIACtTFWoC/x3MQQqDMBAF0KvIrB2IQV30KsWFSf60A22UiYog3
- r2hy7d5FxWYotCjuchwaNElV3RtQ/E95xdYUzV550c3+JFDz4LIhrJ/wavmuNmHF0swlgQXRXw
- IIlSH1SB6/vfndN8/s1LK8m0AAAA=
-X-Change-ID: 20260526-b4-fec-resume-pinctrl-order-fde0cff2bbff
-To: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, 
- Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Nimrod Andy <B38611@freescale.com>
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Tapio Reijonen <tapio.reijonen@vaisala.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779782458; l=2348;
- i=tapio.reijonen@vaisala.com; s=20250903; h=from:subject:message-id;
- bh=hux4eFykUNvSyz4OkfdF8zFSCrF8QnD2S2KotCLdXAM=;
- b=XDFr09JsIFaXXb3+m/BWQHWhc4d8i08p1PorbdJphHVGkLVx+jBf1nozdfX+mbyoLmAUvlEZW
- /VK/QptpLRDB7B6+fpmP3xavUG54FMstFVL13iceGYzfGGhktgx1TkK
-X-Developer-Key: i=tapio.reijonen@vaisala.com; a=ed25519;
- pk=jWBz3VD84WbWgfEgIqB5iFFiyVIHZr52zVBPOm7qiGo=
-X-ClientProxiedBy: GVX0EPF0005F6E1.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::1e9) To AS5PR06MB9040.eurprd06.prod.outlook.com
- (2603:10a6:20b:676::22)
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="qFizvqVz"
+Received: from L30177.local (unknown [213.36.132.10])
+	(Authenticated sender: vjardin@free.fr)
+	by smtp1-g21.free.fr (Postfix) with ESMTPSA id 10920B005A2;
+	Tue, 26 May 2026 10:12:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1779783145;
+	bh=+DPMC/KrZCk4rVtESWROJTmVz5LPk9WoNgb7oufpbx8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qFizvqVzYPKNFYIcW3si0zGbaZtRe8WyeohMEQ6KWPMEMBq/MocoVLpqRC6Cld4sL
+	 USUACjmgBlTdomdUylNmtcmyq0tGBlB6rjcEPYTpyv/e6vZ9kXGsYSUligCr92tMfl
+	 vcEMJYOsILPJx60NnYxCCesCjQ3BHx6vb1VirelHgsiPSL6ePrfmkc830smzcjUvVu
+	 mV732C72lPZq4i22KrXVwT/bWXStPBwXqG4GN0GDbTbhMHzoYE+kMk+f7Y4SySaI61
+	 X6JSGFBHQpZPfik4TVaT1yvFurhWWGEZVkZ84EFn2CNfkdBjcLoX+GCdXYwy6e3ilQ
+	 0tHla7hwu5eLA==
+Date: Tue, 26 May 2026 10:12:05 +0200
+From: Vincent Jardin <vjardin@free.fr>
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>, Frank Li <frank.li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Wolfram Sang <wsa@kernel.org>,
+	Kaushal Butala <kaushalkernelmailinglist@gmail.com>,
+	Shawn Guo <shawn.guo@freescale.com>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2 0/2] i2c: imx: fix SMBus block-read of 0 locking the
+ bus
+Message-ID: <ahVV1X_cdhHDmRwc@L30177.local>
+References: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-0-f30ab53dd97c@free.fr>
+ <20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr>
+ <AM0PR04MB6802B906706F0CDE5BA73696E80B2@AM0PR04MB6802.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS5PR06MB9040:EE_|DBAPR06MB6934:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70dcb8fe-8013-45d8-b060-08debafcec6d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|56012099003|18002099003|38350700014|6133799003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	+Zd4n9HJPoVG8xkGpmJrmtGwKjZSHJONqRXcirbUNAXN+ROKpVw8/60WRAM4/0Gl5T4peJxSGptGW4b6W9/7wcos4EREWtR++sS2JVdXZCcs28xqPIARWH/VrFXNmoNelwtDWFHKI0cUAT8ha6lwRk8Cg/+0k4LMU3c6Aydf7p9kcCOFgMTer6CKQxkNOMp6BNy1Fr5Tcw+NOmRdDNGg3WCVFCRaaSsZhmwSGSDZHCE6WvRB9Rj2jnQ7epgHJv+oUUsVUB7AEGAE+gsWD1ZiJIbAaYY4tF+p33RS54LsDnbH8t6wXjIQcWOdQHQyCKb1EhYm+EbFGW72C1xl1O1+d4vyMRMGpSr2hQz69Z/G9UgHQXAsLbIpRecEIdOMpFEKZKbFjEFWXHFrABZ2WRkvcBu4MNH/PkWtkf4oerQufR5mo2N5fK6fFX4uU/Px/6Ielhz1fuj6L54ssYCpQ9DEXVhm4ohycFXVPz5lUq7tvHJrKr4JOZ6MsjUAsouTvUK5br0Pf4n0TU+kLMZHbTbpjCE3ZkyhZDwYs8SqXGEUHUOVk+J+wCqY0p1IwbCH+jiFEvlVmSNZ9TMB/YK6n4AG5jEgEhHqxRvFfV6b1qIW3Xkk0ATCYjDkFpMmpH4FF6LDJAgs4IPw0SPrYVsHd8cJSbqIlMpJMdkfcLdIVY+HvLgnMxAYlvdBq7TjKOYZ3azqnoU75r40ODmKrNrstKO13JgOGCI3/bS5a2Vd2kQsIiO2oiNWTyemuCPCHF4I/UOD
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS5PR06MB9040.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(56012099003)(18002099003)(38350700014)(6133799003)(11063799006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?amJRcHRzN3o5YkQ5VktGd09SYWR3ZXFlRlM1WEFORStLUmVGUlQwby84WU03?=
- =?utf-8?B?T3p1TjA1MnRXd2EwNGcwNjFqU0JNWmNEUGlOdi9LYnB1aGtXdVRGZkRBVFp3?=
- =?utf-8?B?VUV1eGM2N0VhYmhNd1BHMDlJMXgwVWlvTEU3NHIvZC9PT1haQmhFZ3VqRFQ5?=
- =?utf-8?B?V2FxcWJKck1KV2ZtdWdxTFhXbVhXNytBdktVQkNsMUFFQkRqdkgza0VFeUNM?=
- =?utf-8?B?MjNhbTY1ZzdDOFNtU3podW54TmFYZGdMOW1YVlZxUDNpNDRFcTJ2MVU5N3V6?=
- =?utf-8?B?TFlYVVR5TW9vL2JzNFUycm1tWFV3cDQzWGFmTkljb2pJak81b2ZESjk3eW5s?=
- =?utf-8?B?Zjc1cnZLd0NSZFBOcVRKdCtRMDVsL3o2ZnhBV25TOS9xTExaNGZaaWxJK20y?=
- =?utf-8?B?Mjk3S3VLYnN0aGx1TGRGbjNuankwYUlLRFlxc05mbG9Pa1VwN3prckZlYjd1?=
- =?utf-8?B?WnduWmNYbm5HUHRaL0JyQWd3VDBwbkx2VHBCOUMzaUEvdlppWVFMMlRudDR6?=
- =?utf-8?B?TlhrVDBmSHNqUHpIejlJUXYvSEZLdzJ6bHJqcTdwWGxmbU5ZU28rNXpHRXBJ?=
- =?utf-8?B?VkgxcjQvRTN1RFZHekpQOGlocnVvd2FHb2lLSmxVVGVVMlVuWkdMaTlnL0xR?=
- =?utf-8?B?eFRaS0FHZ1RzSU1KaU5PRHZKbGdSR3RLWG90cWd1MWViTWd6WERML1BPRitV?=
- =?utf-8?B?RFI4RFVVdmxsdFY2YjJQam5HZ1ArRWFFbDlHZ2hURHZzSDdjRUJDaUtSQnZO?=
- =?utf-8?B?aEU3WGwvN2pNc3lvODFHMFlCdVJidlZPKy8rYXYza3YzakxkRDltYm1XNFNs?=
- =?utf-8?B?a3hVMXB0N2l6K0Q0OU0xL3Vsc3pYNVc4NHNTcFlYcVlMMGR1d0VOVFpEOUFT?=
- =?utf-8?B?LzU5QzYzMm5RZGhuZ2Q4T3o1bkRyNklTa3ljbHBMZytuNU13WU5ubnAxdlpi?=
- =?utf-8?B?TVVKTytoREVpQXNKVHlvU1c4RjVHcmNabGJvblVUbzF1eXovb3FaQXJPM3RD?=
- =?utf-8?B?SEV6TFJGS29tMzNUU2JtRmN2ZnNIZlQwd1kvN2xnbE9ocEhWNUdFNlZOOGpR?=
- =?utf-8?B?ak9Xblg4UmpDVTQ4d0ZveGppamhib0k1d0gyWGh1d1J0Wlg2T3NIN1o2MHd5?=
- =?utf-8?B?a0trUThUcW9TZTJVcHNESXVtaVFnbDRKbHNDdThNSVZ5N1oxK2xlNDVXODRx?=
- =?utf-8?B?a21VNWZYSEpqak90Z2F3dDdNaWx3OFd1bG9NQlFKbER1VkZUOTV2TkJhQVZj?=
- =?utf-8?B?L1I1N0grU0ZFV1phQTJ6bDV6MDVtbWtudXIvdFJzWDd1eGRMbUV1elRYaHZk?=
- =?utf-8?B?dGdRdElFQ1pybHkySVl5NHc1ZWp3UCt2aUs5S3ptb1VaMEJWMjR4TjRXa0hz?=
- =?utf-8?B?enA0bVJ6eitxTW1ZTTQrT0xlYjJpTE02ODg0WitRdVZqL1dLRzVENWJoWlZX?=
- =?utf-8?B?ODdWSDlFOGM3b1ZqV2ErM3ZpYW03WXltV3dQNzczc1Iwby9jSjkycEprQ2hh?=
- =?utf-8?B?K0xsS3QrSDhzZWN6Z0dzakpVaEZleTd5bDFHcUtKSENTQjhGd0dhM3RhcDlI?=
- =?utf-8?B?REV6a3JWZ3MxVUkycXQ2a25rRSt0eHA4VEJuZ213djNYMlNwSjcxNzU3K1Ay?=
- =?utf-8?B?Z2tCRVVKK1pqUWZhOWdVQ05HQjdhUVIvWFNwYlM0aDlmTTk1bWViZWYzc0J4?=
- =?utf-8?B?Q2psR0c3dzBQclIzVWJOckdFV29ZVWZxaW05K2w3RTNOZE83eW53V0Vycm9X?=
- =?utf-8?B?K1pETEwzNmpHOXNkTG1EWE8ydDI2SWZhWGJWZzZQdlQrSVVhZkluVzJGUVpY?=
- =?utf-8?B?dUVvcEV1ZTlpampoSFh5TU1jZ0hWZTUwNkN1blEzbWRnTlJxTmIyYmpTN1k1?=
- =?utf-8?B?WFZ6NkVGUk1uQXM3ZDlLTXQ0RDdFd2VQWGpxRGMycDVVcWVDa0d3a2NmeHJ5?=
- =?utf-8?B?Y1NDSHJiSG83bVhkRmNkQ2RrY1RwNVNMTmhCQ2hNWXg3WS9KTzZOL29acWpR?=
- =?utf-8?B?SXZ4bWJlOUlXUDlGdytHZHVJZVJUYzFyTUw4ZHg0NVRUSURNeWNxaUlRZU5O?=
- =?utf-8?B?cWZJWEk2NEhHWVlDMDZyempoUk9iZHlnOFJnTUN1UGhtdXZZTkI1NWFuUkpN?=
- =?utf-8?B?d2JWb1N6QWFGS0NzTFluZ1p0WWxnOGlWdFg4Y0xKdSt3QnJzenFOUkhESnlv?=
- =?utf-8?B?VXF1RU5MWjNHb3pFUnBNVzdGd21GKzBLZUtjSnVtUDlSQ2NPRzhNajlSbUlP?=
- =?utf-8?B?MlR1bElxbWFnWlkwd00vRiswa0J5aStFbGpHa1hVdkVxbDdRUDVOY3kwMFow?=
- =?utf-8?B?VU5ScXk5bDFveVROdm1vRTFUWHh6RllRK2Z0TVZwRXZlbXRZbjFrNHZYUGlu?=
- =?utf-8?Q?WurIWswGgd0xOdN4=3D?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70dcb8fe-8013-45d8-b060-08debafcec6d
-X-MS-Exchange-CrossTenant-AuthSource: AS5PR06MB9040.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 08:00:59.5570
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MI1aHvO8POWLZ7ghJdo3C1O+mkFTNz+/GeDyAUSRtV9iewq2zzHQpkpzzBmq6SCiZ52FAol4tz42JipdeiWDlMzBSUwArYsyKkwYoz2w+Fc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR06MB6934
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM0PR04MB6802B906706F0CDE5BA73696E80B2@AM0PR04MB6802.eurprd04.prod.outlook.com>
 
-In fec_resume(), fec_enet_clk_enable() is called before
-pinctrl_pm_select_default_state() in the non-WoL path, inverting the
-ordering used in fec_suspend() which correctly switches to the sleep
-pinctrl state before disabling clocks.
+Hi Carlos,
 
-For PHYs with the PHY_RST_AFTER_CLK_EN flag (e.g. TI DP83848 or
-SMSC LAN87xx), fec_enet_clk_enable() triggers a hardware reset pulse
-via the phy-reset GPIO. With the GPIO pin still in sleep pinctrl state
-at that point, the GPIO write has no physical effect and the PHY never
-receives the required reset after clock enable, leading to unreliable
-link establishment after system resume.
+> Thanks for working on this fix, this looks good to me.
 
-Fix by restoring the default pinctrl state before enabling clocks in the
-non-WoL resume path, making resume the proper mirror of suspend.
+thanks for checking it. It took some times to isolate this issue and
+then find a fix.
 
-Fixes: de40ed31b3c5 ("net: fec: add Wake-on-LAN support")
+> SMBus block reads with a length of 0 seem quite uncommon in practice.
+> Was this triggered by a specific device behavior, or mainly found
+> during boundary / compliance testing?
 
-Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
----
- drivers/net/ethernet/freescale/fec_main.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+It is trigger by the usage of a mpq8785 on the i2c bus: when the kernel attaches
+on it using its pmsbus/hwmon framework, then the i2c bus get locked on lx2160 !
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f89aa94ce0202d5f28f37362ce70e0943aa14025..723af4c057d7aeacb1e90301d95da52b79264400 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -5594,12 +5594,12 @@ static int fec_resume(struct device *dev)
- 		if (fep->rpm_active)
- 			pm_runtime_force_resume(dev);
- 
--		ret = fec_enet_clk_enable(ndev, true);
--		if (ret) {
--			rtnl_unlock();
--			goto failed_clk;
--		}
- 		if (fep->wol_flag & FEC_WOL_FLAG_ENABLE) {
-+			ret = fec_enet_clk_enable(ndev, true);
-+			if (ret) {
-+				rtnl_unlock();
-+				goto failed_clk;
-+			}
- 			fec_enet_stop_mode(fep, false);
- 			if (fep->wake_irq) {
- 				disable_irq_wake(fep->wake_irq);
-@@ -5612,6 +5612,11 @@ static int fec_resume(struct device *dev)
- 			fep->wol_flag &= ~FEC_WOL_FLAG_SLEEP_ON;
- 		} else {
- 			pinctrl_pm_select_default_state(&fep->pdev->dev);
-+			ret = fec_enet_clk_enable(ndev, true);
-+			if (ret) {
-+				rtnl_unlock();
-+				goto failed_clk;
-+			}
- 		}
- 		fec_restart(ndev);
- 		netif_tx_lock_bh(ndev);
+> Regarding the handling of len == 0,
+> I see that the patch sets:
+> 
+>     msg->buf[0] = 0;
+>     msg->len = 2;
+> 
+> It relies on the last-byte STOP handling together with TXAK. It will help I2C-IMX generate NACK + STOP and
+> release the bus, right?
 
----
-base-commit: 79bd2dded182b1d458b18e62684b7f82ffc682e5
-change-id: 20260526-b4-fec-resume-pinctrl-order-fde0cff2bbff
+Yes, exactly. Reading I2DR for the length byte has already armed the
+next byte, so we set TXAK to NACK it and extend msg->len to 2.
+Next then i2c_imx_isr_read_continue() at msg_buf_idx == msg->len - 1,
+ie the normal last-byte path, which clears MSTA to emit STOP. So NACK + STOP,
+and THEN the bus is released. I do not see any other means to handle it.
+
+> len = 0 is a legal behavior, So it go into a successful path.
+
+Yes. count == 0 is legal (SMBus 3.1 6.5.7), so the transfer reaches
+STATE_DONE and returns success.
+
+> But len > I2C_SMBUS_BLOCK_MAX is abnormal behavior. So it go into a fail path.
+
+Correct, and it is a protocol error, so it needs to end up with a -EPROTO while
+a count of 0 is an ok case.
+
+> Do I understand it right?
+
+yes. I do not see any other means to handle it.
+
+> Also, if possible could you briefly describe how you validated this change
+> (e.g. test setup or steps, with and without the fix)?
+
+On a lx2160a board, on its i2c, bind a mpq8785, and enable the Kernel pmbus/hwmon
+framework, then the i2c bus becomes un-useable. Using a scope, we can confirm that
+the lx21260a i2c cannot recover.
 
 Best regards,
--- 
-Tapio Reijonen <tapio.reijonen@vaisala.com>
-
+  Vincent 
