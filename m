@@ -1,157 +1,103 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010054.outbound.protection.outlook.com [52.101.69.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54276388E5A
-	for <imx@lists.linux.dev>; Tue, 26 May 2026 11:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779794021; cv=fail; b=XfikNYnzOi7MNE7ZKJKSbBIEJRvoXfyvk10WsX8IYuh4CUsusod5Z3+9TfH3YZtSsNeEX7rq3xUTH+bdRRyr6mLTvGr08eHi9E3d5MHzjNLpT1VlJoiXvqvq/M18fdtScWkzz4CQhI+2v9vek1RyJZzpXJPBkU8lOENEDLqUbds=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779794021; c=relaxed/simple;
-	bh=RPD2/ylGlrNw0A9kJ9QeB/g4kBBNj0qHywrhq0WbdG8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=X38bfj2tSEqkLwboCrGIsY0BlyDFZl7RCkQIfEQXZwVAmy1PgvjF6qujt/Flcx23l97KD5Y0j1NZ8l59ZbjuSXoCZeY+EFWv+Uulir4PKlEy15pVt2SHdROaZRjUx6j4L174FfaAXzwGtnL2CcC5bU0sMC3SAFKGWLkQyEg+eQ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ep73X48C; arc=fail smtp.client-ip=52.101.69.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF3035E95E;
+	Tue, 26 May 2026 11:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779795017; cv=none; b=Tgt5Gn52YqOg1jmfFWLqGluyDoVw8AkF70SJI8U9a3IG7SE5aAx088+SeqUn8UPaBCN97C6Oo+w/LkFb8gUHQ0O458Y1fWMABRzvhlBZOlmxMkUSJUyBA5OAmsJsbnpqHfR7b1rFT00w0a274cSzcXsJQAjJ7Ap5M0JHA4NW4iM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779795017; c=relaxed/simple;
+	bh=4T0S1SJnmZ//WqYc6v6jMuu2mYXD+SpCpC1Sg7hkdWA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=oY8iwR/x0Ey5GrrntdP0IjVA2k33IYUZVnFeWDkEDUSp5TP+E/8CfHLDmFRhZxcjJDnTezJ7/VFEk5JYY1stxJjCtDYCjpkLQUT7y3NU6H2jHIZbNIz5wqp/T7SBG8vuL9zOJB+WJmLG15qxQLaS/CBabdHRoIoWWikOHGlMrs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jYBFKLTS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ep73X48C"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kUTC7eJDZxFDqeD0nNumqZVoXm59yrcll5AtqB8RIuUYdNaSuU6/cmnHrS0YWjxHQITKE+k/yfKizxEV5WIsLUwpsqAgsbtuaf96+EtpUGWFSAiSkOWEEFSYS+Gu+56RqZNWWoeK7/9HJmLfDP1r56VzABV3/gQwf592jRuv2nYf7a94aLctWv44IrL4bFrGWx8DN2GqaImK33zLR8csG7mFtq0MVC0gPFLGbUG+k6CadzrB+L8FzXTEJ5rbe3vewhoNc4EC0Y7eg02x4GG9j3wBLC2VK36hJpDJRe/toPmFFkqpmUUaogAUtkT9Jq0eLa4nbhiT6OrYRYwvnAi9Mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RPD2/ylGlrNw0A9kJ9QeB/g4kBBNj0qHywrhq0WbdG8=;
- b=DeBzrA0AsJvaE3dnwqs/6ihwCl0u2NeduwNgwcX31AmzBm4pmf+h/JCPSmAZxtDkLqLk/l10La0Br8IFiLfaFHPZvP8QEFSMXPKkKmcwB/389uuMXofmEOR4amHuR3U9cXMn7slwt9tks4EdViuDmqzmDwy4Ay85GdRUgNr7CEJ+UrRVc2Qgh8+w2pWYutQZwl6ch1U8O4K2W60aaZ37HgLKz01JGg2V0QYUqtgBuMEB6XdQLEdHWSMY9xKgff3GU6i+qfJohgQhDNYT3oBb9Jl/dIuQFilxrIovv6l1b6e/UUKJSKuG3sBZmrZAusjRnZNfhsw34/eetCSJ99dMDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RPD2/ylGlrNw0A9kJ9QeB/g4kBBNj0qHywrhq0WbdG8=;
- b=ep73X48C5cJ90/IGRYj1WDXVkTS8gmQPAlwz/+fWpP/OA0kG6nhGfGNlKDhI3NR8tlZvM2q7U479gIqAQeIZtkNvfXHxEleEMTjxRu2Tpba9ZFAMaV/r39mhW1EddO8pXNCf8nWy4EBQ+I90jivLIhx4Jk4RDXsEJ8fNmzPQJlfDpRLvpCxQ/0zvTk/9Tm4aO9G5VEegL4WjHG29PMYxNXIHRi9CHyvZwz4KQ/ql2IipyKIFepW5GKX/f7Y6g0qdkHisWbb4y/I2yD64xTu6KQZcC44It+5ScgMmfHLkqiIaLvsKerKqcfS+BpdqQHX4rlU7E/pqLZsWVC60zAZc2w==
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
- by GV1PR04MB10078.eurprd04.prod.outlook.com (2603:10a6:150:1af::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Tue, 26 May
- 2026 11:13:36 +0000
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.21.0048.019; Tue, 26 May 2026
- 11:13:36 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Tapio Reijonen <tapio.reijonen@vaisala.com>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Frank Li <frank.li@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: RE: [PATCH] net: fec: fix pinctrl default state restore order on
- resume
-Thread-Topic: [PATCH] net: fec: fix pinctrl default state restore order on
- resume
-Thread-Index: AQHc7OXNiXnM/jHRsUaYRjVIq5KJIrYgJx8Q
-Date: Tue, 26 May 2026 11:13:36 +0000
-Message-ID:
- <DBBPR04MB75005E39026EE1475CCC526C880B2@DBBPR04MB7500.eurprd04.prod.outlook.com>
-References:
- <20260526-b4-fec-resume-pinctrl-order-v1-1-f2f926325424@vaisala.com>
-In-Reply-To:
- <20260526-b4-fec-resume-pinctrl-order-v1-1-f2f926325424@vaisala.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DBBPR04MB7500:EE_|GV1PR04MB10078:EE_
-x-ms-office365-filtering-correlation-id: a07f5575-39c8-4fbb-3de1-08debb17d4e7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|366016|376014|1800799024|22082099003|56012099003|18002099003|38070700021|6133799003|11063799006;
-x-microsoft-antispam-message-info:
- neZxlk8VhiiqaBwmBrzs6tFhXNYxQOJgTlS4bu8JXY0w0ZvYHi6EAXsWF2tetpPtt5lc7vIzDbrbV/p14zdkl26Iai0AMEfIFwFjtNQECMPM6B8qwyDvuPg37G8XRAR/OGY7zLrIKHMgADeb52vGQyCllqkqAKjG8Qoshykp4S/Ex7DLdgnCGtYkflmpOurE5idp6UUNn54syt2cqEnQaKFeZSBDB++tsQfU/+eIVJdng21JMiJirwhwi/80mQbCpCjTb+FPzeXQieTHoGsbzKAq7uoIMWbMZT/BTfVCHbKBU9zX+k09j2xkDuCfusG7mU2qHClkKc+n2i5dFStOw+ROBQWpvS9YMeJNndrsGfpIIyPyNFFElAKfxBMlz7NHbYTq3A3YRmo73RLCyxDqYvCzpA0MJpTmvBDu/1bwe+1x7PseVG2tb5+h5QDlgNJh7sN1xwaFrGCXFU3JKhAjchnTADSyMcmFZlRk3Jk8N4v9eTIhbS7yiRt/YuRMSQGX+HZpG1FugnXYFmsFHH+N+KWfL3I/YbBrjHe/Jadb3K+STV/HgPvOiQ7xax43mLlrJL91/kar3V2xBx9IEOVDX/Xvfh2dhfw1tmfIStrJ8bURzhlSluUYFsGc5tNKo8iASDNLaBQvG8QT3VRXZKzWdmcMKUdLM6KqzSclnOWil/l8LbdkHViBrVxXUKjVTdfxj1Q9PtxAuSehgN8e7xsjzTd1hWzsQzoJGRgENm7mwRfVe1A7+7vPB/3A6+dGXJJM
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(1800799024)(22082099003)(56012099003)(18002099003)(38070700021)(6133799003)(11063799006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?T2QyOHBwMXlSbFF6WWhNZm1TTXZ3ZVAvVFcvUzEvYzE2Y1cycW5qaWVLUnpR?=
- =?utf-8?B?UWtJTExKSDdOWVl1RWdtSDNSbzdzWS82L2JhWVZmQWdtUzJkMlJ2V0tXb3pH?=
- =?utf-8?B?NjllRnlTU0ZkT1R3RkRwUmdaazNVMnhjZHRYR2dRSWJwL1dVSVMzcTdEVFNF?=
- =?utf-8?B?UXRaRE9MNWV2aEp5aVl6c0tDWHAzZ0VidHU3c1NyM1ZPeW5vaGRBMjQxRm9n?=
- =?utf-8?B?bVI0S0F2R2pOTm1Xb05DTW9iR3Nldlg4UzdLcUM1MmNpMzdTRWt5Tnk3Mk94?=
- =?utf-8?B?WVBrV0NiVE10ZnE1NjVtRFp0YWxiVEdTdGowZmFjWVhFQnJaWUxWUTcyLzNs?=
- =?utf-8?B?YXBYODhzVktjSmZ1QkVQNGhONmc2QmFmOFVDVEdwbjQ3bUtjZE45WTJsVlJ4?=
- =?utf-8?B?cU44SHlNbHVMUzJCT25aelNUclFGbjBXc21ZbUR5c25paXRtNW96Z1ExZTYz?=
- =?utf-8?B?ZmVXTDR1aGQ4UHREbFdpUWRRMDVJN2lYZTN3bE1DeWdBNVdGeFplZkkwc2Vv?=
- =?utf-8?B?eEcvMWNwMDR4ODB0eWUzeVI4T29tWll6UFEySWp2dEE4dVhhK2NEM0xINTgw?=
- =?utf-8?B?WEMrekNjUktpV0tua2JHSk9BNGJ0anRMUENHblRVSURSUmI3bFVxMUFSZzlV?=
- =?utf-8?B?Uk96UVR5VTNiYkcyMUdZS0NIZDJlbFZ5U2dWZzdLUnNoV0krV05DbldsTm9J?=
- =?utf-8?B?NFdRaCtzek1EZE82T1FWSWc1aFQ0dy9LeWNoSnR3TUo0N0VoeUF1V1JIMXph?=
- =?utf-8?B?SmJoME1iNUtvTEgxZml0NTBPNGlpeEN1VXZVellDVTFHdHR3TG1GSEFGQnBq?=
- =?utf-8?B?SGlNdXNKV1JOL3ZTN3ZMOE5ZSWRDb2xSekVyQkdDN0xXR2J0VjFnWFJEcndo?=
- =?utf-8?B?dHVoUDB4Zkh0Nng2dUtXTlpaTW9pTFlHMmwwTmhwVWdjQ1BhbjlxUFY2K1hs?=
- =?utf-8?B?MDR3OXdEWEFDeFpHMHVHTDl2TDdGSDYvQVdZR1BuSWtybWNzeXJqTldXUThE?=
- =?utf-8?B?R1FvRE4wcm9DOGo0ejN5YWI3UXM1YXBleUxYSStST2x4ZElEbUkrWUhhcGxW?=
- =?utf-8?B?ekRlZElXV0FoLy80UzhWTk9OeC9vZ2g2dzVZOUt2WVE2cXY4ajU1cGhxZlBL?=
- =?utf-8?B?MGE1S3pNemRPSWhqN2VOeW9yeUd2MDlEbnlXR2N5VHdVTW9ES2JrQmhYR2E3?=
- =?utf-8?B?M1Rxbzc1UTQwUXIyaTh1ZHNFcVYvK1ZkR0tNK0NmazZjNFJlNGVRT1F2MThV?=
- =?utf-8?B?M3FwWGJiRDNUa1phZVJUakR6MVM4TkZGQSt0cFdTK280cE5VZXVOMFV5NWds?=
- =?utf-8?B?VGZWV1NKYnY1VFV4b2tTQ2E1VlU5blphN1dpZlNhOGtzSHhZcUhBUXpNNld2?=
- =?utf-8?B?S1ZlUzN0bUUyMjUvZnA3VWRMeWJmNUE5a0d1blhXVnBVa3kxWllrd2Rnb08z?=
- =?utf-8?B?ZldCaWFnZ1pYc1FaR3lXaW4yNERlclpxWVF6cUs5YmxuU3o5bDIwbVp1bE9n?=
- =?utf-8?B?YThXaWNFQjlJQVdZVUppMW41Vi9oM2F3c25OdGZ4enBtYWRhUXpJMEhXbXVD?=
- =?utf-8?B?Z2ZieWN6cTB6TExVMkY0cVhSOUI2QzRxWjVxVnJEK1dyVWk1TklCd2xoV2Qw?=
- =?utf-8?B?UXlib0cwL2lFcGtCZERzYUJQeGV4NEN1QTFiT0JZQXhHSGFmY004dlhGd1FR?=
- =?utf-8?B?eWZ4ZndtOWd0VU55WmhOTk1IZWhlYkk4ZWEzc1Z3UHFoZkowYWFQZ2hSZGFG?=
- =?utf-8?B?Z1ZqSFN3eGVSc0tIU2o3azlBcTB3RkVHVm1FWEIrSDhoM3JnMGxPWjE2T3gx?=
- =?utf-8?B?R2xIUXZTT3RZbW5tc1lUWUxGRWFKRkxvOUNaa3BTaWU5dHA0Q1ZaYWFmTlZ4?=
- =?utf-8?B?N2V3RTFaKzhpQ3ZzS2dOUitycnNubVVwNkswUXViMFlBcG9INzIxTkgrend6?=
- =?utf-8?B?Z1ZvY1FkdG1qYk1TSUFKbVk5cE5MVFFOUjNFdy9RZFlZQWZrVlZYcWVjNG5m?=
- =?utf-8?B?VUoxblFwbC9zdmhmT3F5ME1FK1FlelhiTkcrTWxsZTMvY2VPNkVkdlM5Ymdj?=
- =?utf-8?B?djFUVTV2bmhTNk9ZTHBJR3Y0Q0taV2FJZHBFK3pnSjIxQUp3NEFGcmZQS1do?=
- =?utf-8?B?MkZzWUJ0bzA4ZUxPMjdEcmY4bGxXdkc0aWwvTG9kWEt2U1lOQmplTFM0VXpq?=
- =?utf-8?B?UTFRUDFldm0wREYrMWlWUk9wMTF0YitRdzV4dUY3SlZTaTRGbVp3RUszY0Rw?=
- =?utf-8?B?TWhyUUdFaDRCTnpzTTR6bm94cHUzVElVYUtVMWRIQnVSNkFNWWt1aTV2NWxP?=
- =?utf-8?Q?UHJe8J6kKQ7Mr5nOiA?=
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jYBFKLTS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFBA1F000E9;
+	Tue, 26 May 2026 11:30:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779795016;
+	bh=rtzF9hdSo6E8OEvCh9hF3LI4xnZS2o7ueMMOUYZMlgM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=jYBFKLTSE02JxRCrgm9inwgihqzg2Kr5NpNk8j7jgEDovNXYDiKpe3d7mmcuO8TjM
+	 hrm54Hf6VplXtBdozS/WBAVlBWsQWM2LQ9Z9rzS6rIXTh1bq1t7D1aWH8M5/uNE3ZI
+	 nl1mgwslpPea9Jse45Ozu2LsNvfR0m1OF5nfgjNqx2HEvM/4br3w2f2xr9H7+dMDE9
+	 xGadj3FqT3OTeLib975xEjKKT3gMkYmpq/FzFYrH7m0fovaNsKkOV7KpexBh8dg83I
+	 vnNtQKUXdbZ5SAkbhMxYJPiOBl/ssAy27dz1HayMmp9d4B//i+nAe1MHDrATiBsvyP
+	 E6jdFy/UJ4CYQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93CFD380CED3;
+	Tue, 26 May 2026 11:30:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a07f5575-39c8-4fbb-3de1-08debb17d4e7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 May 2026 11:13:36.3481
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZqF1UTjqlnaAC42Sp/qR8JfbCkcCIr7TaIe0fEK7ND+e4VihWYKWTBUsjnoRP6Yr73jBz/pgnbN13tJInRG2Tg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10078
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net-next 00/12] net: enetc: Prepare for ENETC v4 VF
+ support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177979502214.3330509.9195258100271241089.git-patchwork-notify@kernel.org>
+Date: Tue, 26 May 2026 11:30:22 +0000
+References: <20260522092438.1264020-1-wei.fang@nxp.com>
+In-Reply-To: <20260522092438.1264020-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-PiBJbiBmZWNfcmVzdW1lKCksIGZlY19lbmV0X2Nsa19lbmFibGUoKSBpcyBjYWxsZWQgYmVmb3Jl
-DQo+IHBpbmN0cmxfcG1fc2VsZWN0X2RlZmF1bHRfc3RhdGUoKSBpbiB0aGUgbm9uLVdvTCBwYXRo
-LCBpbnZlcnRpbmcgdGhlDQo+IG9yZGVyaW5nIHVzZWQgaW4gZmVjX3N1c3BlbmQoKSB3aGljaCBj
-b3JyZWN0bHkgc3dpdGNoZXMgdG8gdGhlIHNsZWVwDQo+IHBpbmN0cmwgc3RhdGUgYmVmb3JlIGRp
-c2FibGluZyBjbG9ja3MuDQo+IA0KPiBGb3IgUEhZcyB3aXRoIHRoZSBQSFlfUlNUX0FGVEVSX0NM
-S19FTiBmbGFnIChlLmcuIFRJIERQODM4NDggb3INCj4gU01TQyBMQU44N3h4KSwgZmVjX2VuZXRf
-Y2xrX2VuYWJsZSgpIHRyaWdnZXJzIGEgaGFyZHdhcmUgcmVzZXQgcHVsc2UNCj4gdmlhIHRoZSBw
-aHktcmVzZXQgR1BJTy4gV2l0aCB0aGUgR1BJTyBwaW4gc3RpbGwgaW4gc2xlZXAgcGluY3RybCBz
-dGF0ZQ0KPiBhdCB0aGF0IHBvaW50LCB0aGUgR1BJTyB3cml0ZSBoYXMgbm8gcGh5c2ljYWwgZWZm
-ZWN0IGFuZCB0aGUgUEhZIG5ldmVyDQo+IHJlY2VpdmVzIHRoZSByZXF1aXJlZCByZXNldCBhZnRl
-ciBjbG9jayBlbmFibGUsIGxlYWRpbmcgdG8gdW5yZWxpYWJsZQ0KPiBsaW5rIGVzdGFibGlzaG1l
-bnQgYWZ0ZXIgc3lzdGVtIHJlc3VtZS4NCj4gDQo+IEZpeCBieSByZXN0b3JpbmcgdGhlIGRlZmF1
-bHQgcGluY3RybCBzdGF0ZSBiZWZvcmUgZW5hYmxpbmcgY2xvY2tzIGluIHRoZQ0KPiBub24tV29M
-IHJlc3VtZSBwYXRoLCBtYWtpbmcgcmVzdW1lIHRoZSBwcm9wZXIgbWlycm9yIG9mIHN1c3BlbmQu
-DQo+IA0KPiBGaXhlczogZGU0MGVkMzFiM2M1ICgibmV0OiBmZWM6IGFkZCBXYWtlLW9uLUxBTiBz
-dXBwb3J0IikNCj4gDQpOaXQ6IGEgYmxhbmsgbGluZSBoZXJlLCBwbGVhc2UgcmVtb3ZlIGl0DQoN
-Cj4gU2lnbmVkLW9mZi1ieTogVGFwaW8gUmVpam9uZW4gPHRhcGlvLnJlaWpvbmVuQHZhaXNhbGEu
-Y29tPg0KDQo=
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri, 22 May 2026 17:24:26 +0800 you wrote:
+> This patch series refactors and extends the ENETC driver infrastructure
+> to prepare for upcoming ENETC v4 Virtual Function (VF) support. The main
+> focus is on code commonization, improved VF-PF communication, and dynamic
+> resource allocation.
+> 
+> The ENETC IP has evolved across different revisions, and the existing
+> driver architecture was primarily designed around v1 hardware. To support
+> v4 VFs efficiently, we need to share common code between PF drivers of
+> different IP versions while maintaining compatibility.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2,net-next,01/12] net: enetc: use enetc_set_si_hw_addr() for setting MAC address
+    https://git.kernel.org/netdev/net-next/c/443a573e7940
+  - [v2,net-next,02/12] net: enetc: move VF message handlers to enetc_msg.c
+    https://git.kernel.org/netdev/net-next/c/9ba01f877040
+  - [v2,net-next,03/12] net: enetc: relocate SR-IOV configuration helper for common PF support
+    https://git.kernel.org/netdev/net-next/c/bb69b9fd1c60
+  - [v2,net-next,04/12] net: enetc: integrate enetc_msg.c into enetc-pf-common driver
+    https://git.kernel.org/netdev/net-next/c/7a3c77287039
+  - [v2,net-next,05/12] net: enetc: use read_poll_timeout() for VF mailbox polling
+    https://git.kernel.org/netdev/net-next/c/55d62e801dde
+  - [v2,net-next,06/12] net: enetc: convert mailbox messages to new formats
+    https://git.kernel.org/netdev/net-next/c/3c4542b252fb
+  - [v2,net-next,07/12] net: enetc: add VF-PF messaging support for IP minor revision query
+    https://git.kernel.org/netdev/net-next/c/72037f953a34
+  - [v2,net-next,08/12] net: enetc: align v1 CBDR API with v4 for VF driver sharing
+    https://git.kernel.org/netdev/net-next/c/4f46f1accd02
+  - [v2,net-next,09/12] net: enetc: add CBDR setup/teardown hooks to enetc_si_ops for VF support
+    https://git.kernel.org/netdev/net-next/c/6bdc3144c0dc
+  - [v2,net-next,10/12] net: enetc: add generic helper to initialize SR-IOV resources
+    https://git.kernel.org/netdev/net-next/c/250069ef0df3
+  - [v2,net-next,11/12] net: enetc: use MADDR_TYPE for MAC filter array size
+    https://git.kernel.org/netdev/net-next/c/c55a33014b52
+  - [v2,net-next,12/12] net: enetc: dynamically allocate rxmsg based on VF count
+    https://git.kernel.org/netdev/net-next/c/9d7b650888ff
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
