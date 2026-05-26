@@ -1,80 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0843D4117;
-	Tue, 26 May 2026 09:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BFF33F5AB;
+	Tue, 26 May 2026 09:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779786948; cv=none; b=bxZ8X8ZeFnm5Xmh9KwaOJ4HA/7kKgdeScmm/DS7FqdKAIZynEgNoF+TbqSAZ3yS/uLYGuy/NcIAd/Qq96lr8YKbuMsjc7FrtVxelMYbHbhWDhZVuDTemsZT2788LnNsHv/q0fvyQ5J+psvkYvsMyykNDV25qnsuxCo9WXv5uNmo=
+	t=1779787132; cv=none; b=T6gOVF1zeuHQ/hVu3L2ESlWKs0FB2lkMpXZTO38HzyTNyREz3ADTIgLNbMkBoPm9furHlUl5jQ2GfYXQbS0/+/k+9uK7YaNxH7SZzpu8/Rceab4lXp3/YP3uQoAg4lg5bTCs3fMp30nsYeJ6HNwkCyGGhsoYRh7WRxgQbUr8+Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779786948; c=relaxed/simple;
-	bh=MUveCWBRKEdrtpYai39yjlDIrY+rOvITFNiwehEUWr8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mb0rfriqDM/SwJy6qM4iV3rx9hBo7kfPm5SdbvYWZtzP3Z4YoooTtoMkkneQMLsk1B8nStVKgun68Ig9Ub5bf3it2qgT/JVe+xsmAMVJEiyUza3HlhSm/o8XWxqtOCG5uNmWEAONMBwY86o/TdWYprE8+kBYr6y7mUe93FNpS5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RsnWb1K0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779787132; c=relaxed/simple;
+	bh=0ETd1Jt6YxKzgm3EOdK5RT2ztbo4n7tcmqn7nISRKYE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=p19mjgf1Spf5nnkohLvn4LgaRhTmuh6I4as4q+CTehgFcuIpT9E0mYieAbeZ5tIWpdgBFl1Bdb+VqA0kPPh+dPatQUl8+5ZT4VdBOpo3q8DnbehrrXI3YyqpzcNcZApd7GTPP9BlUaeY9PA0KPBnCJeBHfg96Nj7LxYfZwueLiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BW+vivDS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RsnWb1K0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC2C1F000E9;
-	Tue, 26 May 2026 09:15:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BW+vivDS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCB31F000E9;
+	Tue, 26 May 2026 09:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779786946;
-	bh=6E3Xn+0H1KV2KOlPaoQck3gAXVlQji3IkxvruzI4lDU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RsnWb1K0ajUHP8IwU5f6eZwKWwbz6K7rzyl+65TYWoHyYnhZsW7GRlua5Hy+Rxt1g
-	 282gOx6iSsQyMmxVUXAmlPLKq3Db7pVAJSWC7LZ8yUZDXnqTfiOh1SuF4dJEbTgKRB
-	 t/jlnuoXkz4Y7grj5n3hI4+Q5veW3udBqpwrfTESfe9Neric9tWe4nmS7rTpnFYuwj
-	 DyDiRUd0Wgd30akzJvi1OsK8DKPfIkV6YLwPyp7090SX6pq9KaW/Q/kgE+WiuMIy+c
-	 x32+zr8zha3TO8gklohdgHCkQFzo8xgGmzetgisL9CGGdcyQu78G8AV0xf4LI8/TB8
-	 SZ8lQJY3p2oZw==
-Date: Tue, 26 May 2026 11:15:43 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>, 
-	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Yazan Shhady <yazan.shhady@solid-run.com>, 
-	Jon Nettleton <jon@solid-run.com>, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v7 5/9] dt-bindings: arm: fsl: Add solidrun lx2160a twins
- board
-Message-ID: <20260526-offbeat-musical-frog-94fec7@quoll>
-References: <20260524-lx2160-pci-v7-0-09370c23b952@solid-run.com>
- <20260524-lx2160-pci-v7-5-09370c23b952@solid-run.com>
+	s=k20260515; t=1779787128;
+	bh=4fAwYv5601n3Mn8rVOFXUhflbHhd3iilupoPAXjNfrg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=BW+vivDSCXqf4FWX8WiL4PmSVf+3tI57BUi0PQqh9x8+FiXAMxoIM9tYm3DpchR9r
+	 9SK+v9AdBN7VyM05ed7i0Tac43YvXteCnANhGiQSwCoMA6oQOcZIkpbZ2Nkxbl1tLN
+	 fbAChDyQicwOYM8xzAPbr9kRUcFOVl4/3p9EafE8uikUoX/aQe17ZgtwgxjihiNhay
+	 yyTjPtvaQHP/zThlRH5InKvoX+7GZ9JLiQxE7xcnuNVkjn20aLXMK2BslOxH2hkvHu
+	 kjV4t21sQlznCHOq7uC/4R21CGBa4tL0Qc/wY6u6Y1H6WRVMQaMflkQkfz5zYR1oZq
+	 8pkqgwDvN6/iA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 2/3] media: dt-bindings: Add CSI Pixel Formatter DT
+ bindings
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guoniu Zhou" <guoniu.zhou@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org
+In-Reply-To: <20260526-csi_formatter-v9-2-ca3d8c334c39@oss.nxp.com>
+References: <20260526-csi_formatter-v9-2-ca3d8c334c39@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 09:18:47 +0000
+Message-Id: <20260526091847.CFCB31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260524-lx2160-pci-v7-5-09370c23b952@solid-run.com>
 
-On Sun, May 24, 2026 at 04:54:44PM +0200, Josua Mayer wrote:
-> The SolidRun LX2160A Twins board supports two configurations, one with
-> with a single CEX-7 module, and one with two (dual).
-> 
-> The single configuration is a specific assembly that maximises
-> connectivity for single cpu by routing some second cpu resources to the
-> first via zero-Ohm resistors.
-> 
-> The dual configuration was not yet tested and is intentionally omitted.
-> 
-> Initial review strongly suggests that the dual configuration will have
-> different bindings, because from either cpu point of view the board
-> appears different (e.g. different number of sfp, fewer i2c gpio).
-> 
-> Add binding for the single variant only.
-> 
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
-> ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
->  1 file changed, 1 insertion(+)
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Low] Unit address mismatch in the example's syscon parent node.
+- [Low] Missing 'ranges' property in the parent syscon node in the example.
+- [Low] Poor formatting in the device tree example block.
+--
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+commit 1b3ddadbdea2fb3bc19aa036199bd1e0ef56413b
+Author: Guoniu Zhou <guoniu.zhou@nxp.com>
 
-Best regards,
-Krzysztof
+media: dt-bindings: Add CSI Pixel Formatter DT bindings
 
+This commit adds the device tree binding schema for the i.MX95 CSI pixel
+formatter module. It defines the constraints and ports required to interface
+the CSI-2 host controller with the Pixel Link definition.
+
+> diff --git a/Documentation/devicetree/bindings/media/fsl,imx95-csi-format=
+ter.yaml b/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.=
+yaml
+> new file mode 100644
+> index 0000000000000..61068ea0a69a0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.yaml
+[ ... ]
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/nxp,imx95-clock.h>
+> +
+> +    syscon@4c100000 {
+> +        compatible =3D "nxp,imx95-camera-csr", "syscon";
+> +        reg =3D <0x4ac10000 0x10000>;
+
+[Severity: Low]
+This isn't a bug, but the unit address in the node name (4c100000) does not
+match the base address specified in the reg property (0x4ac10000). Should t=
+he
+node be named syscon@4ac10000 to match the reg property and avoid unit_addr=
+ess
+validation warnings?
+
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <1>;
+> +        #clock-cells =3D <1>;
+> +        clocks =3D <&scmi_clk 62>;
+> +        power-domains =3D <&scmi_devpd 3>;
+
+[Severity: Low]
+Does this syscon parent node need a ranges property?
+
+Because it specifies address and size cells and contains a memory-mapped
+child node (formatter@20), omitting the ranges property prevents correct
+address translation for the child node and typically results in dtc warning=
+s.
+
+> +
+> +        formatter@20{
+
+[Severity: Low]
+This isn't a bug, but there is a missing space before the opening brace.
+
+> +            compatible =3D "fsl,imx95-csi-formatter";
+> +            reg =3D <0x20 0x100>;
+[ ... ]
+> +                port@0 {
+> +                    reg =3D <0>;
+> +
+> +                    endpoint {
+> +                        remote-endpoint =3D <&mipi_csi_0_out>;
+> +                    };
+> +
+> +               };
+
+[Severity: Low]
+This isn't a bug, but the closing brace here is indented incorrectly compar=
+ed
+to the rest of the block.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526-csi_format=
+ter-v9-0-ca3d8c334c39@oss.nxp.com?part=3D2
