@@ -1,84 +1,142 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8803397AF2
-	for <imx@lists.linux.dev>; Tue, 26 May 2026 09:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1F93DD510;
+	Tue, 26 May 2026 10:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779788781; cv=none; b=OWOsaxxv1PNMw78k8V9StiwNKCXhrruZJ8Tmz2MW6Ku8/3E5tl0VZuyQdj5W0YvLUdscNI1PQFrKnaTljRwguJWSPFE5EZmhzGtkZJ6b5kKi+vEp+kBCmJAqOj2srqpb+A+eD/hdrx0VnUhzMnYWzgkA4G7f8xHZvx1pBpGwCTQ=
+	t=1779791266; cv=none; b=H30C96DlGwVVrhXz+XlXANXrkv4zLq4yqErdzrrTNthy/mhTXsgfGSMaoY4ynkN09m5dBFuOGL6DRHGPrpi1LXu1KsZxBV356kiCwjWk9CR2+FQM+g2yvaawgNDCatAoRPv+ZT5ZU8MlAFdZYfsMivsE2r38yoX7nR2exnXXmgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779788781; c=relaxed/simple;
-	bh=khYHto0da/rGsGN1yk7Vbe05HTgfzl5xI2TS8KPj3Tc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ctSRdvijynXtPvWW/GeYQRGobC1s/Z0PVsyCuiDts1A1KS8PF73d6dynw1lSuPsDPAA055XSnZmMlgM1uUrwRbV0ad+0OEsRLPRtg7FlTItuKfgaTrfX8/i3pNnTr34NYVwAZyai7VDmMzBm9praxzOmOQ+DGcLVG75vCzU9JIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZC4nw5Rl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779791266; c=relaxed/simple;
+	bh=ZWnnCn/HKKEnSWR1mTix60hzeHLo3tkrKV6oYyB2nLQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Tu/7LdmkpQngDnLuH1o15PWicvSE0kHL6/Eeq8P934KpIlDK5Tn+YEngvUl39qCNLYHMr898MI0HePqk00k17CjE6OTdjYhXa1uvdJDHI7k5YWV9/ibFqMGRlaSaRRFsSu4Nqk9xZN0sVWrGD2diH2SOQIVuPsmAYXJLleTPf/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyKKdCFN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZC4nw5Rl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF911F00A3C
-	for <imx@lists.linux.dev>; Tue, 26 May 2026 09:46:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyKKdCFN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9501F00A3A;
+	Tue, 26 May 2026 10:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779788779;
-	bh=khYHto0da/rGsGN1yk7Vbe05HTgfzl5xI2TS8KPj3Tc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ZC4nw5RlVagCmmwh4piDdw1J2TtzBgSQ+gE2+/aAu4gq5Ues8ljzCh5XrVTRPMPAl
-	 wQrjB+ZBvM+3odSH4XpiLeAErDAIbRLShUgJ2xSBGmAnFejCqUJJMHEbwIhMIkeAnN
-	 V6IDBUtlQZ/q+YN45k7LpxS+1jBMMrq+tPTMwqP5ZZZhOHV7sfaTIrjZ37daUqn29N
-	 FbWR2IY0/ZwxyOVioJM/6adNGD9JE5ucr8yJ4kNcWemjyQPWiBevgsATkU/FV0ZwO+
-	 YA7Q3VnJbvVFECOdTok7R3VkgeL5Hb6um2GYL5R4ozYD09TUBXC9pysNClMrx8bXqj
-	 vwL745W8zPYwA==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5aa1b2327c8so11959322e87.0
-        for <imx@lists.linux.dev>; Tue, 26 May 2026 02:46:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/9gm01+sVKAzFNTZocXJ47Y0TKE/oW/wxyVUZrlymXKLuevE4gVGrTKeWHNSwAr10IU4g=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyT67V4Cr8JNc8W7J4GI1uVjjfYfh12XXbnJMORgzLA9TMyoQKb
-	Wv31ZMjzNif1xjUh9IND6n2avR9Qt5vIjKh09NVw6UA+mGdErNQ1uGMqH0FD2ounHM6iVUtxn2w
-	xLtLiPH5ypD22vfl3IakLZxnpxntbcSA=
-X-Received: by 2002:a05:6512:a91:b0:5a9:163a:9ebc with SMTP id
- 2adb3069b0e04-5aa32328f6emr5890808e87.19.1779788778299; Tue, 26 May 2026
- 02:46:18 -0700 (PDT)
+	s=k20260515; t=1779791265;
+	bh=1BZk2y1KGNMX+ccHuEp6KWVVbr1Nr9TPnS/MltAXFTI=;
+	h=From:To:Cc:Subject:Date;
+	b=SyKKdCFN9GuMHt9XiHa/sVOfiYznVkXy51REaRbImzrnSeusFP4ZZH97TCZI3bhYy
+	 NwMHKfeb0ufokz91E2VRVvKNojYtjNC8ITkf/cnzS4JRbSxd7wOHXOJpcNn0EvAjj1
+	 e21iIdzG7x7CI9kmYC7lZbegajNZQ51RTPQRduko3ZU4/TykQb7lgfvSgvD7e6y7FS
+	 XjFBFL+ZPlW6Ohwrg3X9cTyFUK68gsu9FpyfK9LRg5JNHn7AjcpdRnLpAfKk5cBfIR
+	 pteTvV+A7+zqTXBjlwvNwaLfmH5daveHG2uIYkaa0ZB+U+ATPGHKpHSIppjn/dwzYs
+	 qmBmaC1iWrt0Q==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] [net-next] net: dsa: netc: fix enetc dependencies
+Date: Tue, 26 May 2026 12:26:37 +0200
+Message-Id: <20260526102708.2837129-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260523-pinctrl-imx-v1-1-73b7cb731351@gmail.com>
-In-Reply-To: <20260523-pinctrl-imx-v1-1-73b7cb731351@gmail.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 26 May 2026 11:46:04 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=YqfDXE9OgKX4fbk0FgK8=W0gWMVHJ1icmHkRd4pN5JQ@mail.gmail.com>
-X-Gm-Features: AVHnY4K6rfRItQ-L5UFwu1FlZNpnb2Hkdgdyqdf1qhLTp0XnK7hfhnYE8AoesZ4
-Message-ID: <CAD++jL=YqfDXE9OgKX4fbk0FgK8=W0gWMVHJ1icmHkRd4pN5JQ@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: imx1: fix device_node leak in dt_is_flat_functions()
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 23, 2026 at 12:27=E2=80=AFPM Felix Gu <ustc.gu@gmail.com> wrote=
-:
+From: Arnd Bergmann <arnd@arndb.de>
 
-> for_each_child_of_node() holds a reference on the iterator node that
-> must be released on early return. imx1_pinctrl_dt_is_flat_functions()
-> has two early return paths inside the loop that skip this cleanup.
->
-> Replace both loops with the scoped variant so that the reference is
-> automatically dropped when the iterator goes out of scope.
->
-> Fixes: 63d2059cd665 ("pinctrl: imx1: Allow parsing DT without function no=
-des")
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+The newly added netc dsa support has incorrect Kconfig dependencies,
+leading to Kconfig and link failures:
 
-So what we got here is a non-critical patch on top of something that was
-critical and was merged as fixes. (A minor memory leak is not critical
-and not -rc material.)
+WARNING: unmet direct dependencies detected for FSL_ENETC_MDIO
+  Depends on [n]: NETDEVICES [=y] && ETHERNET [=n] && NET_VENDOR_FREESCALE [=n] && PCI [=y] && PHYLIB [=y]
+  Selected by [y]:
+  - NET_DSA_NETC_SWITCH [=y] && NETDEVICES [=y] && (ARM64 || COMPILE_TEST [=y]) && NET_DSA [=y] && PCI [=y]
+WARNING: unmet direct dependencies detected for NXP_NTMP
+  Depends on [n]: NETDEVICES [=y] && ETHERNET [=n] && NET_VENDOR_FREESCALE [=n]
+  Selected by [m]:
+  - NET_DSA_NETC_SWITCH [=m] && NETDEVICES [=y] && (ARM64 || COMPILE_TEST [=y]) && NET_DSA [=m] && PCI [=y]
+ERROR: modpost: "enetc_mdio_read_c22" [drivers/net/dsa/netc/nxp-netc-switch.ko] undefined!
+ERROR: modpost: "ntmp_fdbt_delete_entry" [drivers/net/dsa/netc/nxp-netc-switch.ko] undefined!
+ERROR: modpost: "enetc_mdio_read_c45" [drivers/net/dsa/netc/nxp-netc-switch.ko] undefined!
 
-Linus (the big penguin) has been annoyed of too many noncritical
-patches going in as fixes recently so can you please resend this after
-the next merge window? (I will try to remember the patch as well.)
+Add the required 'NET_VENDOR_FREESCALE' dependency to make it possible
+to select both the PHY and NTMP library modules. Originally this was
+meant to be done through an 'IS_REACHABLE' check in the header file,
+but that did not work because the drivers/net/ethernet/freescale
+directory is not even entered in this case. IS_REACHABLE() is generally
+counterproductive because even when it works as intended, it turns
+a helpful link-time error into a silent runtime failure that is
+harder to debug. In this case, it clearly did not even do anything.
 
-Yours,
-Linus Walleij
+Fixes: 187fbae024c8 ("net: dsa: netc: introduce NXP NETC switch driver for i.MX94")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/dsa/netc/Kconfig   |  1 +
+ include/linux/fsl/enetc_mdio.h | 22 ----------------------
+ 2 files changed, 1 insertion(+), 22 deletions(-)
+
+diff --git a/drivers/net/dsa/netc/Kconfig b/drivers/net/dsa/netc/Kconfig
+index d2f78d74ac23..eaad3cb5babe 100644
+--- a/drivers/net/dsa/netc/Kconfig
++++ b/drivers/net/dsa/netc/Kconfig
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config NET_DSA_NETC_SWITCH
+ 	tristate "NXP NETC Ethernet switch support"
++	depends on NET_VENDOR_FREESCALE
+ 	depends on ARM64 || COMPILE_TEST
+ 	depends on NET_DSA && PCI
+ 	select NET_DSA_TAG_NETC
+diff --git a/include/linux/fsl/enetc_mdio.h b/include/linux/fsl/enetc_mdio.h
+index 623ccfcbf39c..7cd5be694cc4 100644
+--- a/include/linux/fsl/enetc_mdio.h
++++ b/include/linux/fsl/enetc_mdio.h
+@@ -35,8 +35,6 @@ struct enetc_mdio_priv {
+ 	int mdio_base;
+ };
+ 
+-#if IS_REACHABLE(CONFIG_FSL_ENETC_MDIO)
+-
+ int enetc_mdio_read_c22(struct mii_bus *bus, int phy_id, int regnum);
+ int enetc_mdio_write_c22(struct mii_bus *bus, int phy_id, int regnum,
+ 			 u16 value);
+@@ -45,24 +43,4 @@ int enetc_mdio_write_c45(struct mii_bus *bus, int phy_id, int devad, int regnum,
+ 			 u16 value);
+ struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs);
+ 
+-#else
+-
+-static inline int enetc_mdio_read_c22(struct mii_bus *bus, int phy_id,
+-				      int regnum)
+-{ return -EINVAL; }
+-static inline int enetc_mdio_write_c22(struct mii_bus *bus, int phy_id,
+-				       int regnum, u16 value)
+-{ return -EINVAL; }
+-static inline int enetc_mdio_read_c45(struct mii_bus *bus, int phy_id,
+-				      int devad, int regnum)
+-{ return -EINVAL; }
+-static inline int enetc_mdio_write_c45(struct mii_bus *bus, int phy_id,
+-				       int devad, int regnum, u16 value)
+-{ return -EINVAL; }
+-static inline struct enetc_hw *enetc_hw_alloc(struct device *dev,
+-					      void __iomem *port_regs)
+-{ return ERR_PTR(-EINVAL); }
+-
+-#endif
+-
+ #endif
+-- 
+2.39.5
+
