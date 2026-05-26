@@ -1,94 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6172139C9;
-	Tue, 26 May 2026 06:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFFC23D297;
+	Tue, 26 May 2026 06:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779775949; cv=none; b=ZNBRBYynJiYlg6/W+vFDvsWwRJZytsrt1CW7W2Z/lYOhTwsk+7znv6GtQFMSPn9KqJZ/RP60maworOqS9Rl+pAOBuX1NXrxWXgXoAxbGBTV8lVpcWCnzU8PvU6KP8LBvBjiuIUq9HIMPm3W69XEyKzCXJf/n1hmX+WPPcNvzOyE=
+	t=1779777072; cv=none; b=Icb6YTpgZQ0L5iguvmcldNmlELvb3vNASbmjqBt/Orj20wZUQ0cQQBfOJVb9TDLYtdfCaUDUQUGFidiqaQwf3Fog6jGp66MO7A7uLVz0QaBCRN/LEhci40GG1LH009MoemxAqcPzj0ufwbTLst7/DttGY6Jcz6Pk6LllAoz9yAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779775949; c=relaxed/simple;
-	bh=yghNJcQrkYUWWNbAKrpBz58BflQIvrggSW45MBSWtH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q32VmntnZDOgPomUb0Mvx8smp5o/4XtDAxMSwI9sQX577RRURwCcRdFhTO2a+zD7q18B+BusGsdS9RsDI0VGvsPn4KAV/ErU6jivKVjjo6baT4iQslhL/WLw+9omulWgIXJcV0RqV2GWw/+GXJOmI3tKMUIcHKsM496uWSTn8rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PaNxY70+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779777072; c=relaxed/simple;
+	bh=czlJn+mili7g92qqfj7XJ0aYUB5ocjZ09GN9NPhmgqA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=fuuTfp4veKKn+mhngz2VZs228J89CyTHGkf2Y9Keg96RhonH9q7FBh8tfEZbEMBEqixDWuDn/zA+J9SDX1k3UAIiaUVjZ1P7fHNtlzyIAIsimn/7rwY48XWzCCNYe+owwOJ5St9sepCviEQk/m24cVpYPFuYT+KHUb6BNhbmIFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQ2KCreo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PaNxY70+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D341F000E9;
-	Tue, 26 May 2026 06:12:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQ2KCreo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBEA31F000E9;
+	Tue, 26 May 2026 06:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779775948;
-	bh=C4Q6K7bbOoVpU1MwP5UtVcbQqMSK8GB1uvqgVWAyIgA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PaNxY70+YMonEMLTIazGO/O55U8XOU9hI8Sd6x+lIwRz+krY7I2MIFVP2TtWHQRk6
-	 oLs6o/MlXIoueCpSrWzl4/TP61gPF+HN/xvzZ2vYpOcuWB0Dm95zHR9huRUsF9V+Hf
-	 YnTyB9za+3uCaHbFr+R2wcRewXry6G17iicxgZkjKeAXoiSONhiO8kf+vbI4ljsIDR
-	 1fy3F+EBJAgg0t5T5mg4+PsdSDHbAEaAyRvnVetK1IwZ8UztJCg6MOoYJa1oLvRi7m
-	 9dhRl/AKdtuVr7cjGvsAMXrJhl9YyIGQK1PcdmnOV19LefKY14Nezbe0MAE8vRqjtb
-	 Xzj2xjTt805IA==
-Date: Tue, 26 May 2026 08:12:26 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
-Cc: Nipun Gupta <nipun.gupta@amd.com>, 
-	Nikhil Agarwal <nikhil.agarwal@amd.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Marc Zyngier <maz@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, Rob Herring <robh@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Prakash Gupta <prakash.gupta@oss.qualcomm.com>, Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, linux-arm-msm@vger.kernel.org, 
-	Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-Subject: Re: [PATCH v15 0/3] of: parsing of multi #{iommu,msi}-cells in maps
-Message-ID: <20260526-finicky-crafty-hare-eae27c@quoll>
-References: <20260520-parse_iommu_cells-v15-0-b5f99ad4e7e8@oss.qualcomm.com>
+	s=k20260515; t=1779777071;
+	bh=fUq2MIG1mNpSAly9CiMCcavAufefLFdU+Ypw/V2Tjlg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MQ2KCreo8pXA+nEjl/UjfTmx5h1V8KjVdxQuP3gbwkVlP91RtqlcCvVwByMs6eKHz
+	 Nln7tlB2YPrUFvIdFn4p3Fty6PrcbLIoxX91+WCNQFcPKBZbytCseLQ2oMFslsJW+U
+	 umtGbfpvDmb9fffz7pQShiRfSE/ydL7onO+huVFyjub95yijo/4Ejf6CxFAUgIEdXx
+	 eATgFrmpPn90XL250TbTSk5n7bLb1fKPZ6elEA+qhglq+FUVqE5MayQt1RlMxn1hCR
+	 26/DGSBbIM9PhZ0xHvd0eu3vqDXdOsm2vqM4tvfNbUlqS11cwbskbYZoLPpbK2NB6M
+	 sQgXzt8TmFm8g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/3] ASoC: imx-rpmsg: Support headphone jack detection
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chancel Liu" <chancel.liu@nxp.com>
+Cc: robh@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260526053815.140008-3-chancel.liu@nxp.com>
+References: <20260526053815.140008-3-chancel.liu@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 06:31:10 +0000
+Message-Id: <20260526063110.EBEA31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260520-parse_iommu_cells-v15-0-b5f99ad4e7e8@oss.qualcomm.com>
 
-On Wed, May 20, 2026 at 01:32:39PM +0530, Vijayanand Jitta wrote:
-> So far our parsing of {iommu,msi}-map properties has always blindly
-> assumed that the output specifiers will always have exactly 1 cell.
-> This typically does happen to be the case, but is not actually enforced
-> (and the PCI msi-map binding even explicitly states support for 0 or 1
-> cells) - as a result we've now ended up with dodgy DTs out in the field
-> which depend on this behaviour to map a 1-cell specifier for a 2-cell
-> provider, despite that being bogus per the bindings themselves.
-> 
-> Since there is some potential use[1] in being able to map at least
-> single input IDs to multi-cell output specifiers (and properly support
-> 0-cell outputs as well), add support for properly parsing and using the
-> target nodes' #cells values, albeit with the unfortunate complication of
-> still having to work around expectations of the old behaviour too.
-> 							-- Robin.
-> 
-> Unlike single #{}-cell, it is complex to establish a linear relation
-> between input 'id' and output specifier for multi-cell properties, thus
-> it is always expected that len never going to be > 1.
-> 
-> These changes have been tested on QEMU for the arm64 architecture.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Headphone jack is initialized after the sound card is fully regist=
+ered, causing multiple fatal issues including broken jack registration, ker=
+nel bugs, and TOCTOU races with userspace.
+- [Medium] The patch uses `simple_util_init_jack()` but fails to select its=
+ Kconfig dependency, leading to linker errors.
+--
 
-So there is no real user for that. That's unconvincing. I would assume
-that at least you have real user where you test it.
+commit 23df7e137d741b3d9989cc72e4eb7cee017f18a1
+Author: Chancel Liu <chancel.liu@nxp.com>
 
-If you want to speed up acceptance of your patches, then also I would
-prefer to see at least one more user, beside Qualcomm. IOW, show how you
-solve other people problems, not only yours.
+ASoC: imx-rpmsg: Support headphone jack detection
 
-Best regards,
-Krzysztof
+This commit adds headphone jack detection support for i.MX RPMSG audio card=
+s.
+It uses simple_util_init_jack() to register a headphone jack with GPIO-based
+insertion detection when the hp-det-gpios property is present.
 
+> diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
+> index 40e0043cfe15e..9c1cf7045381a 100644
+> --- a/sound/soc/fsl/imx-rpmsg.c
+> +++ b/sound/soc/fsl/imx-rpmsg.c
+> @@ -12,6 +12,7 @@
+>  #include <sound/control.h>
+>  #include <sound/pcm_params.h>
+>  #include <sound/soc-dapm.h>
+> +#include <sound/simple_card_utils.h>
+
+[Severity: Medium]
+Is it possible to hit a linker error here if no other driver selects the
+simple card utilities?
+
+This patch uses simple_util_init_jack(), but doesn't appear to update the
+Kconfig entry for SND_SOC_IMX_RPMSG to select SND_SIMPLE_CARD_UTILS. If
+this driver is built in a configuration where no other selected options
+pull in the simple card utilities, it might result in an undefined
+reference error.
+
+[ ... ]
+
+> @@ -282,6 +284,12 @@ static int imx_rpmsg_probe(struct platform_device *p=
+dev)
+>  		goto fail;
+>  	}
+> =20
+> +	if (of_property_present(np, "hp-det-gpios")) {
+> +		ret =3D simple_util_init_jack(&data->card, &data->hp_jack,
+> +					    1, NULL, "Headphone Jack");
+
+[Severity: High]
+Does initializing the headphone jack after devm_snd_soc_register_card() cau=
+se
+issues with probe deferral?
+
+If devm_snd_soc_register_card() defers due to a missing component, it queues
+the card onto the unbind_card_list and returns 0. The driver then proceeds =
+to
+call simple_util_init_jack().
+
+At this point, the snd_card pointer is NULL, which triggers a
+snd_BUG_ON(!card) in snd_device_new() and returns -ENXIO. This return
+value aborts the probe and breaks probe deferral completely.
+
+Additionally, if the card registers synchronously, snd_card_register() is
+called before the jack is initialized. Any ALSA devices added after
+registration remain in the SNDRV_DEV_BUILD state and are not exposed to
+userspace.
+
+This order also creates a window where userspace daemons might probe the
+sound card before the jack is created.
+
+Could this jack initialization be moved to the card's late_probe callback
+instead?
+
+> +		if (ret)
+> +			goto fail;
+> +	}
+>  fail:
+>  	pdev->dev.of_node =3D NULL;
+>  	return ret;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526053815.1400=
+08-1-chancel.liu@nxp.com?part=3D2
