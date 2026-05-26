@@ -1,57 +1,44 @@
 Received: from smtp1-g21.free.fr (smtp1-g21.free.fr [212.27.42.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D023451A7
-	for <imx@lists.linux.dev>; Tue, 26 May 2026 08:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF943451A7;
+	Tue, 26 May 2026 08:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779783149; cv=none; b=CPzD6KBHqYs637ZSbpwkrY45jmApYAfXhnPo+rfTmA4OKu4fdZ00o9vkSKbc1iYSdH6+Rlr/BMZQQteB3IOQiQnUV90FAbJAig5TeQnHX1b3laCfs8PzY7vFC5PGKYigMfZxYxPjTlmx7urU3FNzJFRVEXmRNA20uilOelhpCzE=
+	t=1779783878; cv=none; b=XbxGO4DBAXREY/CsmGcbRbcLdIJF+4S/8IbP+Jwrthr1sIwsM/MYI1d0mlU3si1pxCyDLQZCEyautP5VUyldFR/ffIQOChOuVA13uAlW4nFmk2qh1XcrpFY9uUz12b6s8MP1Avp48Vk8FJqfgfI71q2xbjyOJ7mbCLjm6l+OvN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779783149; c=relaxed/simple;
-	bh=+DPMC/KrZCk4rVtESWROJTmVz5LPk9WoNgb7oufpbx8=;
+	s=arc-20240116; t=1779783878; c=relaxed/simple;
+	bh=0UQsIdGc34pghBSBHWr8ZtkhmrdmfnSjvIGsCS9t5jc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mn/0amnYwq4dwQ6m+/3Te+cyBsizXnMRXSarKZR9ziNc91LTkf66AymgcHBJkYFttkX3S+xL7H4LfGcCaRm+oLLeuhCsADT416o8+mokEqDHTY32T1Z2rOMzQYAxyTtW0apK4TMKOCYrYLlmm65l/6C+tGAoDpmCf065Z2svFpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=qFizvqVz; arc=none smtp.client-ip=212.27.42.1
+	 Content-Type:Content-Disposition:In-Reply-To; b=IKuXyqT6sERiLrWkTEDY1yAG2iZz+UIGCH8BRh6lLHaJbQT/NcfQ+zGcxNTfnkuP5eXm+u0RJ9KUFBHs0igLfcgNUWXEtI3so70efbmx/qa3wz6Sk8lFE6hx6LUcnWCUPfusmP8O1VWFj8BLwU9mArh31P/+FQbZbtUyynS/3Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=KOrsmCvB; arc=none smtp.client-ip=212.27.42.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="qFizvqVz"
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="KOrsmCvB"
 Received: from L30177.local (unknown [213.36.132.10])
 	(Authenticated sender: vjardin@free.fr)
-	by smtp1-g21.free.fr (Postfix) with ESMTPSA id 10920B005A2;
-	Tue, 26 May 2026 10:12:06 +0200 (CEST)
+	by smtp1-g21.free.fr (Postfix) with ESMTPSA id 249CEB00592;
+	Tue, 26 May 2026 10:24:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1779783145;
-	bh=+DPMC/KrZCk4rVtESWROJTmVz5LPk9WoNgb7oufpbx8=;
+	s=smtp-20201208; t=1779783875;
+	bh=0UQsIdGc34pghBSBHWr8ZtkhmrdmfnSjvIGsCS9t5jc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qFizvqVzYPKNFYIcW3si0zGbaZtRe8WyeohMEQ6KWPMEMBq/MocoVLpqRC6Cld4sL
-	 USUACjmgBlTdomdUylNmtcmyq0tGBlB6rjcEPYTpyv/e6vZ9kXGsYSUligCr92tMfl
-	 vcEMJYOsILPJx60NnYxCCesCjQ3BHx6vb1VirelHgsiPSL6ePrfmkc830smzcjUvVu
-	 mV732C72lPZq4i22KrXVwT/bWXStPBwXqG4GN0GDbTbhMHzoYE+kMk+f7Y4SySaI61
-	 X6JSGFBHQpZPfik4TVaT1yvFurhWWGEZVkZ84EFn2CNfkdBjcLoX+GCdXYwy6e3ilQ
-	 0tHla7hwu5eLA==
-Date: Tue, 26 May 2026 10:12:05 +0200
+	b=KOrsmCvBHPR7Y8WU3dX5n5ZwDNfshg0HNy5n6wrbHz8jHl67ZQ7PeqjVT1L+J1YVX
+	 7zGRhJ3N4DvTJUGVhbFb3FXNn/GWdw+/LjdCxxFn/PuJuDoGUkLTifGfM3MDZPSgYJ
+	 gEE/x4tyG1jHdOOg0qRdATltOC+ExGoDy+RdcmyKH7M8VlITvFtzf8NDxdPIEBSauu
+	 hv1kMTSU6CbPmqPkA9nnBNWaMxUWlB+zhK6bHpEhZGtj2gCQZzb+0DBa5wFu2a+IJA
+	 T813RhJHYMXj/OoQ9lawD8wLbE4m8uO9Z+KkTC7aYncSf5uUnSDB1yLO4O+mc4Q/NU
+	 gMHh339AlcJEQ==
+Date: Tue, 26 May 2026 10:24:31 +0200
 From: Vincent Jardin <vjardin@free.fr>
-To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>, Frank Li <frank.li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Wolfram Sang <wsa@kernel.org>,
-	Kaushal Butala <kaushalkernelmailinglist@gmail.com>,
-	Shawn Guo <shawn.guo@freescale.com>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 0/2] i2c: imx: fix SMBus block-read of 0 locking the
- bus
-Message-ID: <ahVV1X_cdhHDmRwc@L30177.local>
-References: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-0-f30ab53dd97c@free.fr>
- <20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr>
- <AM0PR04MB6802B906706F0CDE5BA73696E80B2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/2] i2c: imx: fix locked bus on SMBus block-read of 0
+ (atomic)
+Message-ID: <ahVYvwI2z8C3wDJm@L30177.local>
+References: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-1-26a3cc8cd055@free.fr>
+ <20260525171809.8C73A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,57 +47,48 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AM0PR04MB6802B906706F0CDE5BA73696E80B2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+In-Reply-To: <20260525171809.8C73A1F000E9@smtp.kernel.org>
 
-Hi Carlos,
+Hi bot,
 
-> Thanks for working on this fix, this looks good to me.
+> i2c: imx: fix locked bus on SMBus block-read of 0 (atomic)
 
-thanks for checking it. It took some times to isolate this issue and
-then find a fix.
-
-> SMBus block reads with a length of 0 seem quite uncommon in practice.
-> Was this triggered by a specific device behavior, or mainly found
-> during boundary / compliance testing?
-
-It is trigger by the usage of a mpq8785 on the i2c bus: when the kernel attaches
-on it using its pmsbus/hwmon framework, then the i2c bus get locked on lx2160 !
-
-> Regarding the handling of len == 0,
-> I see that the patch sets:
+> [Severity: High]
+> This isn't a bug introduced by this patch, but does the atomic read setup
+> fail to clear the TXAK flag for SMBus block reads here?
 > 
->     msg->buf[0] = 0;
->     msg->len = 2;
+> When i2c_imx_prepare_read() is called for SMBus block reads 
+> (I2C_M_RECV_LEN), the I2C core initially sets msgs->len to 1. In 
+> i2c_imx_prepare_read(), we have:
 > 
-> It relies on the last-byte STOP handling together with TXAK. It will help I2C-IMX generate NACK + STOP and
-> release the bus, right?
+> drivers/i2c/busses/i2c-imx.c:i2c_imx_prepare_read() {
+>     ...
+>     /*
+>      * Reset the I2CR_TXAK flag initially for SMBus block read since the
+>      * length is unknown
+>      */
+>     if (msgs->len - 1)
+>         temp &= ~I2CR_TXAK;
+>     ...
+> }
+> 
+> Because msgs->len is 1, msgs->len - 1 evaluates to 0, and I2CR_TXAK is not
+> cleared. If prior reads left TXAK set, the master will immediately NACK the
+> length byte. A NACK on the length byte signals the target to abort the
+> transfer, so no subsequent data bytes are transmitted.
+> 
+> A similar issue was previously identified and fixed in the interrupt-driven
+> path by explicitly checking the I2C_M_RECV_LEN flag. Could
+> i2c_imx_prepare_read() be missing the same check?
 
-Yes, exactly. Reading I2DR for the length byte has already armed the
-next byte, so we set TXAK to NACK it and extend msg->len to 2.
-Next then i2c_imx_isr_read_continue() at msg_buf_idx == msg->len - 1,
-ie the normal last-byte path, which clears MSTA to emit STOP. So NACK + STOP,
-and THEN the bus is released. I do not see any other means to handle it.
+See,
+  https://lore.kernel.org/all/ahRmjr9cxYmkYvm5@L30177.local/
 
-> len = 0 is a legal behavior, So it go into a successful path.
+it was already explained: this serie fixes the block read of 0 locking of the
+i2c, and this v2 just add the symmetric for count > I2C_SMBUS_BLOCK_MAX case.
 
-Yes. count == 0 is legal (SMBus 3.1 6.5.7), so the transfer reaches
-STATE_DONE and returns success.
+For this topic and the analysis see the former email that replied about the same
+topic on the v1.
 
-> But len > I2C_SMBUS_BLOCK_MAX is abnormal behavior. So it go into a fail path.
-
-Correct, and it is a protocol error, so it needs to end up with a -EPROTO while
-a count of 0 is an ok case.
-
-> Do I understand it right?
-
-yes. I do not see any other means to handle it.
-
-> Also, if possible could you briefly describe how you validated this change
-> (e.g. test setup or steps, with and without the fix)?
-
-On a lx2160a board, on its i2c, bind a mpq8785, and enable the Kernel pmbus/hwmon
-framework, then the i2c bus becomes un-useable. Using a scope, we can confirm that
-the lx21260a i2c cannot recover.
-
-Best regards,
-  Vincent 
+regards,
+  Vincent
