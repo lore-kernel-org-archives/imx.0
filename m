@@ -1,100 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023119.outbound.protection.outlook.com [52.101.72.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47BC3C8C47
-	for <imx@lists.linux.dev>; Tue, 26 May 2026 07:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779780034; cv=none; b=YPiOtekvfYedKVHd0M4b9S7HHBhuMF9y2TmCPJANkTchFKZ1yoa8XjcAXj3d7y6MMS4p+7xCChUz2AGDqhR+/cf8iD8hKzIVrCvjrvc7MDv51UH9Ptm7orOWk1Tiuu5Tny5emPG+wDQe4w26u/TbsTP9FQI1tQSdf/YwRFa8axE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779780034; c=relaxed/simple;
-	bh=sencE5htr0w/lyH19zJsItYupPHGY5+wWcTGWX2X3TU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=js0e4naLmcMu+I1ENl0/A5qIXxGu1pRLytj/Eaq+3Qn4AEcd9Qzkvcc5YkgAYPJVOK63zyhrfpHtn0sOBBEJ/Gj1j40NVtvngO7tvDXpEKmrzBZiufB9j4alAGEL6PWJXFrsbJ7/nJNmFyd/my1hIoy5JTwdGox6ojKpdeT7up0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FMa3oLyF; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0B42036E9
+	for <imx@lists.linux.dev>; Tue, 26 May 2026 08:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.119
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779782469; cv=fail; b=MrJ7jtnaPEJJAEvFf3AsbtB3QUpS0/qqDO9XP5TQCueIPG6Br3S2VY2sB6RfwTfan7TYfW/GEDp+NDGArCuZ5CXvB8Hvmve/ZVHzF+9llPI9twBrRhlPIIEn0KKx8bzCZ6LUf9kqT0Pmvpvgyf/E8PjG3ZF6Nvf7+zAD0olLpsw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779782469; c=relaxed/simple;
+	bh=hux4eFykUNvSyz4OkfdF8zFSCrF8QnD2S2KotCLdXAM=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=TzlLbwzwbWvP6JjZEjgfOd0+fwXuGG3/H9zkPT7pMmbKwaJOcP2C3b/oOQz/nw5bN1+MEd+MSi1vpeqMsz6Bi6Km7L7dt5UfzDkpRzJ3rTmDlFSTg6w+Hn2wyiil5qT3WW9pxjCDGklAGH72ucH6xrDbFibqEkRN5O+ScUDdvHY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=uzHuNwXB; arc=fail smtp.client-ip=52.101.72.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FMa3oLyF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA30B1F000E9;
-	Tue, 26 May 2026 07:20:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779780033;
-	bh=9ElnAaOt9P9W2+PZN10FPEUMFRVC3kLZ7fEzAo/n4sg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FMa3oLyFxgxJ4q0A/b5TMIs4pwOgpx9mf5Or/QSNdYBFBU054BoOB6etqjIB8MjGk
-	 ZfDBtxMiQunm0SRsKRj46MtVbpw2i55xPuIp7VBajMF50VzmuVU8o5TlCEaLJnV8Ws
-	 MVI64JutPcNPyeLw6GEvorN7JeVs9GhCb8LMdH6Pq2si7boU5qzwWxE63SIZlbTymB
-	 0nfhYAlbSKTNFFcf9Vcj0QPSqwOC9TJTlYivsS2ghWQF+dS3dSACb1W5sqRJLmpuCX
-	 8EDgF/YVguTZa7MqMyJ7R0GdtUrE7NdqFB9L80bdDiazNNiazOGi6tFqps1NFuDpqJ
-	 LukhdIN+96HQA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] gpio: mxc: use BIT() macro
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260526063504.25916-2-alexander.stein@ew.tq-group.com>
-References: <20260526063504.25916-2-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 07:20:31 +0000
-Message-Id: <20260526072032.DA30B1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="uzHuNwXB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G8RYZRC+wQyDC9DPjWljcC3I8liJnO/QqWo/zmtPrYgMTSFfPpiNZ4mNaSuyw+z3NYqZM6m0g1iZcLCzSRsUtAIBQxr1MdWRxiYUyrX1SnfTehHRShP073tPl0ctU06GneK6fDcDmcUrtE53PG/SecdX4dR2BoZxHZTaYwCgYuLqikD0aWWzc4B1aDVxmEr6xYjkhw1wbRomJPiZlm3y+efcDH8UDLCsvwAjoeV3ZOaNRn5u1cCFIt3+/JGsGjHug1j4hZzoVMZX2al9LvM90VxsspEY4NpkGJULxpr/mMVxLEGxGELSq8BrkSNUFJgc2WzU3OPeZCxw/Nb7tDI2+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d+OTfXZsupcevtQM6a4TDNyenrvqf7vSSqBN6Va30CY=;
+ b=gL+fnErpOZoiKqeWw7F48ZjAn/cvMYYnQF4bQvet9SeyyY5DMDG6a/dQ34zSKTUeYBj1RbFMub4fQxiZ5DfTCdRpXmaqHJJUcD954Gzd2zr5o62adLsMUNgISeaSeXo1JcgHKWNs1zvHSdvO5/VOYnxYxsARyFDt6n/Lb6m0X6qRKDrQhjj5UC/1NNizfk/2UAIYp4EW82iSa37J+jmqe92QQA49YZex7eAczYTs9Z3PQDRqaakrMn36KWrPJK5jasuhkA4UhEDI5pnI3cgqr1CRlXUwBykszAqzl+rJZXIRisjdbcVi2pS3HTZdoXXfQlvxwyFWcX+3IYMKlBACZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
+ dkim=pass header.d=vaisala.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=d+OTfXZsupcevtQM6a4TDNyenrvqf7vSSqBN6Va30CY=;
+ b=uzHuNwXBV/OqMjQ8IZWpUmxutBHidvPqqV+bkaoFCK5LM7JHSdhi8MhMcwdxBvDAKtcfIHMLTz56tD0UVkioleslNOi84lnJPaX55uV5r3S3XKuOXcqqbpXq+YS3agZfzUqkl3JuAPTSDGa40Ibpsqtwm4IwLkOerqt5oV7UPIUUJT/Sht/Ue0A8gPxxqCDFNcLUutoPAOpjiuTQI8tzGu+k8R/8l3Tgzu+fNhjY4KphiJN5B//uRSLxuuTqX84n8xH9tB6spFOyVztrMt7rj8O9F8kALtd5L1rbKHcDBv+j73wFILMNp9eyICLvZnH1WI01tjiXFjCHHnOLWNqDMQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vaisala.com;
+Received: from AS5PR06MB9040.eurprd06.prod.outlook.com (2603:10a6:20b:676::22)
+ by DBAPR06MB6934.eurprd06.prod.outlook.com (2603:10a6:10:1a9::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Tue, 26 May
+ 2026 08:00:59 +0000
+Received: from AS5PR06MB9040.eurprd06.prod.outlook.com
+ ([fe80::923e:d30b:98c0:c69]) by AS5PR06MB9040.eurprd06.prod.outlook.com
+ ([fe80::923e:d30b:98c0:c69%7]) with mapi id 15.21.0048.019; Tue, 26 May 2026
+ 08:00:59 +0000
+From: Tapio Reijonen <tapio.reijonen@vaisala.com>
+Date: Tue, 26 May 2026 08:00:44 +0000
+Subject: [PATCH] net: fec: fix pinctrl default state restore order on
+ resume
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260526-b4-fec-resume-pinctrl-order-v1-1-f2f926325424@vaisala.com>
+X-B4-Tracking: v=1; b=H4sIACtTFWoC/x3MQQqDMBAF0KvIrB2IQV30KsWFSf60A22UiYog3
+ r2hy7d5FxWYotCjuchwaNElV3RtQ/E95xdYUzV550c3+JFDz4LIhrJ/wavmuNmHF0swlgQXRXw
+ IIlSH1SB6/vfndN8/s1LK8m0AAAA=
+X-Change-ID: 20260526-b4-fec-resume-pinctrl-order-fde0cff2bbff
+To: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, 
+ Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Nimrod Andy <B38611@freescale.com>
+Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Tapio Reijonen <tapio.reijonen@vaisala.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779782458; l=2348;
+ i=tapio.reijonen@vaisala.com; s=20250903; h=from:subject:message-id;
+ bh=hux4eFykUNvSyz4OkfdF8zFSCrF8QnD2S2KotCLdXAM=;
+ b=XDFr09JsIFaXXb3+m/BWQHWhc4d8i08p1PorbdJphHVGkLVx+jBf1nozdfX+mbyoLmAUvlEZW
+ /VK/QptpLRDB7B6+fpmP3xavUG54FMstFVL13iceGYzfGGhktgx1TkK
+X-Developer-Key: i=tapio.reijonen@vaisala.com; a=ed25519;
+ pk=jWBz3VD84WbWgfEgIqB5iFFiyVIHZr52zVBPOm7qiGo=
+X-ClientProxiedBy: GVX0EPF0005F6E1.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::1e9) To AS5PR06MB9040.eurprd06.prod.outlook.com
+ (2603:10a6:20b:676::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS5PR06MB9040:EE_|DBAPR06MB6934:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70dcb8fe-8013-45d8-b060-08debafcec6d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|56012099003|18002099003|38350700014|6133799003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	+Zd4n9HJPoVG8xkGpmJrmtGwKjZSHJONqRXcirbUNAXN+ROKpVw8/60WRAM4/0Gl5T4peJxSGptGW4b6W9/7wcos4EREWtR++sS2JVdXZCcs28xqPIARWH/VrFXNmoNelwtDWFHKI0cUAT8ha6lwRk8Cg/+0k4LMU3c6Aydf7p9kcCOFgMTer6CKQxkNOMp6BNy1Fr5Tcw+NOmRdDNGg3WCVFCRaaSsZhmwSGSDZHCE6WvRB9Rj2jnQ7epgHJv+oUUsVUB7AEGAE+gsWD1ZiJIbAaYY4tF+p33RS54LsDnbH8t6wXjIQcWOdQHQyCKb1EhYm+EbFGW72C1xl1O1+d4vyMRMGpSr2hQz69Z/G9UgHQXAsLbIpRecEIdOMpFEKZKbFjEFWXHFrABZ2WRkvcBu4MNH/PkWtkf4oerQufR5mo2N5fK6fFX4uU/Px/6Ielhz1fuj6L54ssYCpQ9DEXVhm4ohycFXVPz5lUq7tvHJrKr4JOZ6MsjUAsouTvUK5br0Pf4n0TU+kLMZHbTbpjCE3ZkyhZDwYs8SqXGEUHUOVk+J+wCqY0p1IwbCH+jiFEvlVmSNZ9TMB/YK6n4AG5jEgEhHqxRvFfV6b1qIW3Xkk0ATCYjDkFpMmpH4FF6LDJAgs4IPw0SPrYVsHd8cJSbqIlMpJMdkfcLdIVY+HvLgnMxAYlvdBq7TjKOYZ3azqnoU75r40ODmKrNrstKO13JgOGCI3/bS5a2Vd2kQsIiO2oiNWTyemuCPCHF4I/UOD
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS5PR06MB9040.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(56012099003)(18002099003)(38350700014)(6133799003)(11063799006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?amJRcHRzN3o5YkQ5VktGd09SYWR3ZXFlRlM1WEFORStLUmVGUlQwby84WU03?=
+ =?utf-8?B?T3p1TjA1MnRXd2EwNGcwNjFqU0JNWmNEUGlOdi9LYnB1aGtXdVRGZkRBVFp3?=
+ =?utf-8?B?VUV1eGM2N0VhYmhNd1BHMDlJMXgwVWlvTEU3NHIvZC9PT1haQmhFZ3VqRFQ5?=
+ =?utf-8?B?V2FxcWJKck1KV2ZtdWdxTFhXbVhXNytBdktVQkNsMUFFQkRqdkgza0VFeUNM?=
+ =?utf-8?B?MjNhbTY1ZzdDOFNtU3podW54TmFYZGdMOW1YVlZxUDNpNDRFcTJ2MVU5N3V6?=
+ =?utf-8?B?TFlYVVR5TW9vL2JzNFUycm1tWFV3cDQzWGFmTkljb2pJak81b2ZESjk3eW5s?=
+ =?utf-8?B?Zjc1cnZLd0NSZFBOcVRKdCtRMDVsL3o2ZnhBV25TOS9xTExaNGZaaWxJK20y?=
+ =?utf-8?B?Mjk3S3VLYnN0aGx1TGRGbjNuankwYUlLRFlxc05mbG9Pa1VwN3prckZlYjd1?=
+ =?utf-8?B?WnduWmNYbm5HUHRaL0JyQWd3VDBwbkx2VHBCOUMzaUEvdlppWVFMMlRudDR6?=
+ =?utf-8?B?TlhrVDBmSHNqUHpIejlJUXYvSEZLdzJ6bHJqcTdwWGxmbU5ZU28rNXpHRXBJ?=
+ =?utf-8?B?VkgxcjQvRTN1RFZHekpQOGlocnVvd2FHb2lLSmxVVGVVMlVuWkdMaTlnL0xR?=
+ =?utf-8?B?eFRaS0FHZ1RzSU1KaU5PRHZKbGdSR3RLWG90cWd1MWViTWd6WERML1BPRitV?=
+ =?utf-8?B?RFI4RFVVdmxsdFY2YjJQam5HZ1ArRWFFbDlHZ2hURHZzSDdjRUJDaUtSQnZO?=
+ =?utf-8?B?aEU3WGwvN2pNc3lvODFHMFlCdVJidlZPKy8rYXYza3YzakxkRDltYm1XNFNs?=
+ =?utf-8?B?a3hVMXB0N2l6K0Q0OU0xL3Vsc3pYNVc4NHNTcFlYcVlMMGR1d0VOVFpEOUFT?=
+ =?utf-8?B?LzU5QzYzMm5RZGhuZ2Q4T3o1bkRyNklTa3ljbHBMZytuNU13WU5ubnAxdlpi?=
+ =?utf-8?B?TVVKTytoREVpQXNKVHlvU1c4RjVHcmNabGJvblVUbzF1eXovb3FaQXJPM3RD?=
+ =?utf-8?B?SEV6TFJGS29tMzNUU2JtRmN2ZnNIZlQwd1kvN2xnbE9ocEhWNUdFNlZOOGpR?=
+ =?utf-8?B?ak9Xblg4UmpDVTQ4d0ZveGppamhib0k1d0gyWGh1d1J0Wlg2T3NIN1o2MHd5?=
+ =?utf-8?B?a0trUThUcW9TZTJVcHNESXVtaVFnbDRKbHNDdThNSVZ5N1oxK2xlNDVXODRx?=
+ =?utf-8?B?a21VNWZYSEpqak90Z2F3dDdNaWx3OFd1bG9NQlFKbER1VkZUOTV2TkJhQVZj?=
+ =?utf-8?B?L1I1N0grU0ZFV1phQTJ6bDV6MDVtbWtudXIvdFJzWDd1eGRMbUV1elRYaHZk?=
+ =?utf-8?B?dGdRdElFQ1pybHkySVl5NHc1ZWp3UCt2aUs5S3ptb1VaMEJWMjR4TjRXa0hz?=
+ =?utf-8?B?enA0bVJ6eitxTW1ZTTQrT0xlYjJpTE02ODg0WitRdVZqL1dLRzVENWJoWlZX?=
+ =?utf-8?B?ODdWSDlFOGM3b1ZqV2ErM3ZpYW03WXltV3dQNzczc1Iwby9jSjkycEprQ2hh?=
+ =?utf-8?B?K0xsS3QrSDhzZWN6Z0dzakpVaEZleTd5bDFHcUtKSENTQjhGd0dhM3RhcDlI?=
+ =?utf-8?B?REV6a3JWZ3MxVUkycXQ2a25rRSt0eHA4VEJuZ213djNYMlNwSjcxNzU3K1Ay?=
+ =?utf-8?B?Z2tCRVVKK1pqUWZhOWdVQ05HQjdhUVIvWFNwYlM0aDlmTTk1bWViZWYzc0J4?=
+ =?utf-8?B?Q2psR0c3dzBQclIzVWJOckdFV29ZVWZxaW05K2w3RTNOZE83eW53V0Vycm9X?=
+ =?utf-8?B?K1pETEwzNmpHOXNkTG1EWE8ydDI2SWZhWGJWZzZQdlQrSVVhZkluVzJGUVpY?=
+ =?utf-8?B?dUVvcEV1ZTlpampoSFh5TU1jZ0hWZTUwNkN1blEzbWRnTlJxTmIyYmpTN1k1?=
+ =?utf-8?B?WFZ6NkVGUk1uQXM3ZDlLTXQ0RDdFd2VQWGpxRGMycDVVcWVDa0d3a2NmeHJ5?=
+ =?utf-8?B?Y1NDSHJiSG83bVhkRmNkQ2RrY1RwNVNMTmhCQ2hNWXg3WS9KTzZOL29acWpR?=
+ =?utf-8?B?SXZ4bWJlOUlXUDlGdytHZHVJZVJUYzFyTUw4ZHg0NVRUSURNeWNxaUlRZU5O?=
+ =?utf-8?B?cWZJWEk2NEhHWVlDMDZyempoUk9iZHlnOFJnTUN1UGhtdXZZTkI1NWFuUkpN?=
+ =?utf-8?B?d2JWb1N6QWFGS0NzTFluZ1p0WWxnOGlWdFg4Y0xKdSt3QnJzenFOUkhESnlv?=
+ =?utf-8?B?VXF1RU5MWjNHb3pFUnBNVzdGd21GKzBLZUtjSnVtUDlSQ2NPRzhNajlSbUlP?=
+ =?utf-8?B?MlR1bElxbWFnWlkwd00vRiswa0J5aStFbGpHa1hVdkVxbDdRUDVOY3kwMFow?=
+ =?utf-8?B?VU5ScXk5bDFveVROdm1vRTFUWHh6RllRK2Z0TVZwRXZlbXRZbjFrNHZYUGlu?=
+ =?utf-8?Q?WurIWswGgd0xOdN4=3D?=
+X-OriginatorOrg: vaisala.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70dcb8fe-8013-45d8-b060-08debafcec6d
+X-MS-Exchange-CrossTenant-AuthSource: AS5PR06MB9040.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 08:00:59.5570
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MI1aHvO8POWLZ7ghJdo3C1O+mkFTNz+/GeDyAUSRtV9iewq2zzHQpkpzzBmq6SCiZ52FAol4tz42JipdeiWDlMzBSUwArYsyKkwYoz2w+Fc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR06MB6934
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+In fec_resume(), fec_enet_clk_enable() is called before
+pinctrl_pm_select_default_state() in the non-WoL path, inverting the
+ordering used in fec_suspend() which correctly switches to the sleep
+pinctrl state before disabling clocks.
 
-Pre-existing issues:
-- [High] The `port->wakeup_pads` bitmask is read and modified without holdi=
-ng any lock, leading to a potential race condition and lost updates.
---
+For PHYs with the PHY_RST_AFTER_CLK_EN flag (e.g. TI DP83848 or
+SMSC LAN87xx), fec_enet_clk_enable() triggers a hardware reset pulse
+via the phy-reset GPIO. With the GPIO pin still in sleep pinctrl state
+at that point, the GPIO write has no physical effect and the PHY never
+receives the required reset after clock enable, leading to unreliable
+link establishment after system resume.
 
-commit c28b11fd52c7d93b6cd737efcb162c68a3f3afc9
-Author: Alexander Stein <alexander.stein@ew.tq-group.com>
+Fix by restoring the default pinctrl state before enabling clocks in the
+non-WoL resume path, making resume the proper mirror of suspend.
 
-gpio: mxc: use BIT() macro
+Fixes: de40ed31b3c5 ("net: fec: add Wake-on-LAN support")
 
-This commit replaces open-coded bit shifts with the BIT() macro in
-gpio_set_wake_irq().
+Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-> index 12f11a6c96653..7e2690d92df6f 100644
-> --- a/drivers/gpio/gpio-mxc.c
-> +++ b/drivers/gpio/gpio-mxc.c
-> @@ -330,13 +330,13 @@ static int gpio_set_wake_irq(struct irq_data *d, u3=
-2 enable)
->  			ret =3D enable_irq_wake(port->irq_high);
->  		else
->  			ret =3D enable_irq_wake(port->irq);
-> -		port->wakeup_pads |=3D (1 << gpio_idx);
-> +		port->wakeup_pads |=3D BIT(gpio_idx);
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index f89aa94ce0202d5f28f37362ce70e0943aa14025..723af4c057d7aeacb1e90301d95da52b79264400 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -5594,12 +5594,12 @@ static int fec_resume(struct device *dev)
+ 		if (fep->rpm_active)
+ 			pm_runtime_force_resume(dev);
+ 
+-		ret = fec_enet_clk_enable(ndev, true);
+-		if (ret) {
+-			rtnl_unlock();
+-			goto failed_clk;
+-		}
+ 		if (fep->wol_flag & FEC_WOL_FLAG_ENABLE) {
++			ret = fec_enet_clk_enable(ndev, true);
++			if (ret) {
++				rtnl_unlock();
++				goto failed_clk;
++			}
+ 			fec_enet_stop_mode(fep, false);
+ 			if (fep->wake_irq) {
+ 				disable_irq_wake(fep->wake_irq);
+@@ -5612,6 +5612,11 @@ static int fec_resume(struct device *dev)
+ 			fep->wol_flag &= ~FEC_WOL_FLAG_SLEEP_ON;
+ 		} else {
+ 			pinctrl_pm_select_default_state(&fep->pdev->dev);
++			ret = fec_enet_clk_enable(ndev, true);
++			if (ret) {
++				rtnl_unlock();
++				goto failed_clk;
++			}
+ 		}
+ 		fec_restart(ndev);
+ 		netif_tx_lock_bh(ndev);
 
-[Severity: High]
-This isn't a bug introduced by this patch, but is it possible for concurrent
-calls to cause a lost update here?
+---
+base-commit: 79bd2dded182b1d458b18e62684b7f82ffc682e5
+change-id: 20260526-b4-fec-resume-pinctrl-order-fde0cff2bbff
 
-While irq_set_irq_wake() acquires the per-IRQ descriptor lock, it does not
-serialize concurrent accesses to different IRQs on the same GPIO port. If
-two drivers concurrently enable or disable wakeups on different pins of the
-same port, they could race on this non-atomic read-modify-write operation.
+Best regards,
+-- 
+Tapio Reijonen <tapio.reijonen@vaisala.com>
 
-Other callbacks in this driver, such as gpio_set_irq_type(), appear to
-acquire port->gen_gc.lock before modifying shared port state. Should
-gpio_set_wake_irq() be doing the same for port->wakeup_pads?
-
->  	} else {
->  		if (port->irq_high && (gpio_idx >=3D 16))
->  			ret =3D disable_irq_wake(port->irq_high);
->  		else
->  			ret =3D disable_irq_wake(port->irq);
-> -		port->wakeup_pads &=3D ~(1 << gpio_idx);
-> +		port->wakeup_pads &=3D ~BIT(gpio_idx);
->  	}
-> =20
->  	return ret;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526063504.2591=
-6-1-alexander.stein@ew.tq-group.com?part=3D2
