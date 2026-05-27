@@ -1,187 +1,120 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010037.outbound.protection.outlook.com [52.101.84.37])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9271A680E
-	for <imx@lists.linux.dev>; Wed, 27 May 2026 07:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779868073; cv=fail; b=Yns1ZRtE/ghta6Ci1mpa3XFdZcNNGEprfEDFOUkpiwiS88zCcehgavVKyO54Fam17naoKClfYyPWGWOjeftedvvM/ivDAwT1eX9CeV4bKNjLP25FgkHG0+aJlPS5kfNjkVs/5VdOc4FmpQppl8Dj71Q7LbtQ+gcCukGxhcVyDMA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779868073; c=relaxed/simple;
-	bh=jvh9VDdqWpFT6aeBtSVqVfxq8+xIIJoRb9IDTL9nPoQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nHcEKQORQStLnXWkwf07NrBT6MIScmbIhuu6hgc11wdAUIsfUHUf5o+ieu/pfzQUeOuHz37vsCugyfJcdSHqT+c3wEkYs0b2+6/HmAYMTQBLCOtlxObci1iQEiicHMFnpMitMhdJk51xYIEks9a95I6t17Q65B0fu/UEdvdmITU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=B9U5iQzU; arc=fail smtp.client-ip=52.101.84.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51723C7E07
+	for <imx@lists.linux.dev>; Wed, 27 May 2026 08:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779869502; cv=none; b=Mix+bbt6u53F2Csk7uCyjmGDRXTGCIQd3xiqDJKoYLa7X3g+j/1zlHv898eW3teTc8x/aP+lvz1+EyXLAJisRJ2i1lyu+3aocnIu1WEOQfspFjIcN/IuZ/E1Pe06VMhQU40z5QNfGmzUHIS0fuiSkaOreYqpLeX17XMFGDWLALs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779869502; c=relaxed/simple;
+	bh=W0kvwb9oYI7nmafkyR4U8Vul+N3DYx3OERr2MYEtH+w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U5Ds3bzigIDsXG0CyVVIQch5ak8ybvGdJobe1gELbEWj7a9bS5HFNSpy8pPhJPy42X1h/OdhUM+pUx8uKGE/U1D63NQ9B94dn2ttM3Aoj+lsb9O3pJ2Rdzjh4O48QLun8RopavtIPG+A4kPRySfuTv47Z9EdVtdLPEZKORfJ+j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=bRBsSZFs; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="B9U5iQzU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=deqiq8On+h1aF4NKB1kdLzN3w1FDjuSYyCtT8Fwhf4qqgDQU+XyPvqXdJT7BfdA16IOIus9gZuF4spqUAhyuPv1YRu/JVONxck5SVzGw6AlSs1aWTX7ZKkInwcR1B0FH9E7x1dYj3Yz6+ZA5qfyy/TSFlQ1Rmo2t9AqzlU7bD90/VzWr77ThhZzcIVE77HkwU8Pe/J/CuDsWE2De1KkQ0QQRvjh97Fu1qtWWO8nWjGCeHY9GW1OS94IXI3v5RhP6GFTfoAmj0uRSjtONHlvsuYjqas1KAcjeovrkc1RXZnPoyX+i/zjjk8E1m9GTh0iFkCfHxoBTazl9w+NaUo0Mow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OgEFBCypAFuiMIa9OOHUwhkPRLzVgJHjR+mBBowSV58=;
- b=SW4dES9fD+cjndvp+fwj+kmauXYybaLsSjKi+RzczXpFxyUFh2ULRovx2y37MX4QC7lsKP75shUShaE5mIm7M45Z0+wh1g2EascuRzcRYZKLhzdjZvfds6h8foI634c63FDLlimErCPZ3AkTRbFc0rrOoMxKW7+GYNqdEs5ZJs8nJzZWwEIEO5ugWnqbbuwTt25jYubbAeiJcpgUUwl8ar6ABsMy3PUVuh4O/gmE0VtOz6HmykDhKzPCjqw2fFUIQB/ODEehJKvXDaPTUZ+jsnTpIKSHLXr4Ltca/8KbVwY8fYFMe+83+IcQSQKy1y6jMdopfEpHCXCTgO8+9ofPEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OgEFBCypAFuiMIa9OOHUwhkPRLzVgJHjR+mBBowSV58=;
- b=B9U5iQzUHzfKBIeJU3dVIGh9kA9TpN6H5NngkaIvHsuAKCBm6x7HapwTr7vs5UhcF/Q6u00wASSL8RrLd6Lwlfbx9UoWbYRMgWE0NqHN0SP/MBf6BHL9ECu0W6og+pr/0WyLOJpJ336EMPsF25WCbZp0g+CBoiamWgJdTzUSgA4vpSL1Hkjz/LqcMK6PcFG1vcszpyBGLNKOYi2LFvuXS4P/+gi5v24Fkt10DW12q5bXhvJ/4RyIncgT7upTMoz9eTqJL6P2d3CdCV+VLLf5Fu9QE3miTAiXoEq9a8selAHes1oneGudMXW5V3DRo6fb6eyQcnIYxmnO0b7vDCS/Pg==
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
- by DB9PR04MB8300.eurprd04.prod.outlook.com (2603:10a6:10:243::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 07:47:47 +0000
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.21.0071.011; Wed, 27 May 2026
- 07:47:47 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Tapio Reijonen <tapio.reijonen@vaisala.com>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Frank Li <frank.li@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: RE: [PATCH v2] net: fec: fix pinctrl default state restore order on
- resume
-Thread-Topic: [PATCH v2] net: fec: fix pinctrl default state restore order on
- resume
-Thread-Index: AQHc7Y5CWXPIyB4KjECBTw15uia7NbYhchYw
-Date: Wed, 27 May 2026 07:47:47 +0000
-Message-ID:
- <DBBPR04MB75001DF6E52F4316085D551388082@DBBPR04MB7500.eurprd04.prod.outlook.com>
-References:
- <20260527-b4-fec-resume-pinctrl-order-v2-1-293096f48703@vaisala.com>
-In-Reply-To:
- <20260527-b4-fec-resume-pinctrl-order-v2-1-293096f48703@vaisala.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DBBPR04MB7500:EE_|DB9PR04MB8300:EE_
-x-ms-office365-filtering-correlation-id: 904d8a7a-e044-496b-5289-08debbc43ebe
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|38070700021|22082099003|18002099003|11063799006|56012099006;
-x-microsoft-antispam-message-info:
- U2BEEU4xSI+4UYavXThD1siyA6YuyPNBWYuYjc+kNU/1oH1MFWDCAJx4Lx2EB2mr91BBu7JX5HAfkTgVypGCzWLcbf7ARmSJ0pwjFwWMbbu2TSDgK8jb1vBtPZ0kheAieGiQhwk+bkcwgHiG/0H3IlwREOF/EBENbrmoXOOn3yk5G3Z6Mg36fOsiMQZoMlNORIAYsds6ar8PZdyv2WVjyk/se+rFAK1rTsHEVRplxAnDml0nmG0fc3EIl0j2qeJWETqYEmwMABstwODUxi0PCfXdMs6ETeSTNZ8XGIx2c0YrqTibIV8TNg4mmq8cW3jfGsVBhbVwPwJs9EHBA/f2koNUzwhJ2F20DZ//VpJwNC3TNdo02q+Flzh3RjNObptKb5M/iHh2FDlXIjODhEh+TxdZMd80HfNod912d/qHtKiC23QPi+EI4e3rtL4mebk4H3Z8CUT+dUgcJ1zxK/YBOSSZWA0hY3AoBruvus/3RrsNiCBqPDRPoEIp2QrPnrjpLJhVYXTGTN/mp7e9TRRU0CD4AQUyd4w2qDkOEfADg//+sutgWtPmbmS4Rt85IQ/UjHiuwdM5xGqq1gkgAz9yHR5R68hvTULR483w1Rf/FXD5pQ1vh30gTnW7t64nZh0uenXWIF1xu93M3V4MmYSIpe/g6ubi4Cd//9PYsV43GMeV6GdrVytDNKcV4+oMvdreNkbESX4/mHb756KJZYqL3Q==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(38070700021)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?rnZ0ZrMVtSp2OqbKmpTyCVPfr6E89K8nBxRqsnma2mU79l6aWZzfJ3ffurDn?=
- =?us-ascii?Q?MqjEqnTnQvj4qpz0JFo/iF1NCAucSRqIHmr+UbYcC2H8EY3moKFKheq0SZ19?=
- =?us-ascii?Q?rnqhmCHlSn3r+yQ3iQRlTJU1hFfGkDsMZyNhM1HZl4IcfMLnHR/fYKiq26Eu?=
- =?us-ascii?Q?SsdAZzuULuHIWDIdwvcdt2Sx7C8AxfXfv5LpvwA2zP7jXz+mdBSGx69mKXJa?=
- =?us-ascii?Q?LWaOV/vWQhOqyQCfpc3PhD4FLE1LHKt7Z1gLwe/NM5/Ew17CohcT147WYUCr?=
- =?us-ascii?Q?TT1TmJ9PGlWWmUGu0xCaDrbGh+uDi2qqh9EAD4GO1sBQZdlV0fAFvCUA1Em2?=
- =?us-ascii?Q?0+UQe/FEF2Wvf8X3gEobfbMcd4LZfOG87nRFV+kHMW0fQ9MMZ50WLt5iIU3t?=
- =?us-ascii?Q?lle4PN3t8mGsinNpjRIUnlfFpaZRUNJmGM9VVqHH+QvazwgSF3RN/GPdWeyJ?=
- =?us-ascii?Q?0RzMi4X3F6p2I1pRpuw3LQUgzLHuwfo25qqD4z+tR67YmFJVNKYQf8EdgidD?=
- =?us-ascii?Q?GF6Rx4KhNEV8l6sczYwhhPItLKjiDN8CVKTYmCfjxHt4IYWtmJ7L20sKCQPz?=
- =?us-ascii?Q?mVFKCiepWRFOkgVVv2E90Yb/ENhmgjN5hu9qZ+4NDBfgftBB/dg9MKANyK+B?=
- =?us-ascii?Q?/HE48CkcL3iyoSO2crXT+KSFQ0e4bTDaOyCKQFXWWgHDGXhf60vtXQQINVd/?=
- =?us-ascii?Q?KXYxUBK39UCu2NRzy3fJuhliaBOLigKL6VZhj5eigjvO2fgmp6/9ctijp7pf?=
- =?us-ascii?Q?3eN0S22Gw4kno64afgCxgDqzX0dfZIG6Lzfl1NwT8bgoXTB2uxKjGwuf6Atu?=
- =?us-ascii?Q?WqFeCgeYREkn1PUhWj+tSawjTTiQEeEdT+0WwNoQYG8qj/U2iB6rBk0w4KJY?=
- =?us-ascii?Q?XOuHVX9aCpHQzPqIAsjWg4uqjO5/lPZnhjre++LyEQr/e5yfEvkOJyNFAZ8Z?=
- =?us-ascii?Q?2NXl0MTt+JsGLzqqqMrLnq1gN+CYYTZcC15sUamUyvrNDDcNLvA2FGElGuzL?=
- =?us-ascii?Q?W91G4ObrMMMlLB5DswVfLXB9bqki1xRdyhzhRq5v/F96wtjKaNE3PBQNxQo2?=
- =?us-ascii?Q?GtAhLmdfuZ85IxbSpswPoQvFBMP8wADki6MeA6lg2/IBcbuWZxhQw7IQ35OD?=
- =?us-ascii?Q?uu3NyCsR/4PMKC98x56Vu0NOdb6hK0eBko3PsUve/NePAT+3xWvtDxm+G3gQ?=
- =?us-ascii?Q?k4oOMQsClO7AToRP2fl96f5SbqpOOL00Dk7w+lEObgSn2MyOf1yr08lzvuTs?=
- =?us-ascii?Q?rXgYFwewix2SXIxMgETDWMnP3zsdWrW7rOA2Wv+pmuQ0iTJWpSyqd57KGIkS?=
- =?us-ascii?Q?cMKZjElIUnRw2XYQizq1BL8wiewgJNuRCF8vGY6Eq9+o9r1SQms/tVw7I+zV?=
- =?us-ascii?Q?l7JxveQXclTNcTYt6LnNhFJFRwMfeLYTFF6GOxE+Pelo4iqw7K/X89yQTGJr?=
- =?us-ascii?Q?201FoDF8r6HeUXG1zdl5r+Kxdmz8EiwPsIPQuiGqlLf/Bv2/OcUXiK8G1jKA?=
- =?us-ascii?Q?jk4SGVYd3z53fYXRitjfnpLI+Ne71rQ4Dsa88qj4jnMmGObHqqdGMyDqmdxc?=
- =?us-ascii?Q?JXTQGy3YXBepoG1ZiUpeN3w8k1oiwVIqbpDbAQn738boNuzp4SEaP6RHcXAQ?=
- =?us-ascii?Q?2re/gtrDkziAkljfLOlPk/u2Z2tWuUcY82mXj4K5424FobjsYpAFXvm3KjD7?=
- =?us-ascii?Q?Ut1f7fMgGtcY77sOb+5Araluv5+I99xiMXc1fj0z5BDvFoSn?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="bRBsSZFs"
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4001c3292;
+	Wed, 27 May 2026 16:06:26 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: mchehab@kernel.org
+Cc: laurent.pinchart@ideasonboard.com,
+	Frank.Li@nxp.com,
+	martink@posteo.de,
+	rmfrfs@gmail.com,
+	kernel@puri.sm,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Subject: [PATCH] media: imx8mq-mipi-csi2: fix memory leak in imx8mq_mipi_csi_probe()
+Date: Wed, 27 May 2026 16:06:24 +0800
+Message-Id: <20260527080624.1717938-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 904d8a7a-e044-496b-5289-08debbc43ebe
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 May 2026 07:47:47.2997
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dHnQLQUWM69VccHS96eHMluWaTl8NubYJtjebaSHM1Cakvo2RCEdDUzXbZVMMsX3yLoFMvZy6kr2MqPKXE40uA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8300
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9e6878795a03a2kunmfa06458432849
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQh0dVh5ITEpOHkxLSE4aTFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
+	5DQ1VKS0tVS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=bRBsSZFszClz8dqsA7AGBJppPnp7fWke1w0tluA+26XTIxjYs+d8dTxAVzw+3pc6tiUY8xvlmReUh1t7yuNOCNpTVQFLLoQm+mXHwmjC9IVFK2W5sb2Ni7snC/rNg95oVgSQzedjjMoJ9p8VmxogeJQdZVlotcNMHZpdMK9VTeQ=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=u8Wo8LLSY0pPyy+dyeSotUY0OkUOTz16hb7bl4GVtIM=;
+	h=date:mime-version:subject:message-id:from;
 
-Please wait at least 24 hours before sending a revised version. Give review=
-ers
-enough time to provide feedback.
-See https://elixir.bootlin.com/linux/v7.1-rc5/source/Documentation/process/=
-maintainer-netdev.rst#L15
+If imx8mq_mipi_csi_init_icc() or imx8mq_mipi_csi_runtime_resume() fails
+after subdev initialization, the function fails to release the
+corresponding resources, leaking the subdev state and media entity.
 
-> @@ -5594,12 +5594,12 @@ static int fec_resume(struct device *dev)
->                 if (fep->rpm_active)
->                         pm_runtime_force_resume(dev);
->=20
-> -               ret =3D fec_enet_clk_enable(ndev, true);
-> -               if (ret) {
-> -                       rtnl_unlock();
-> -                       goto failed_clk;
-> -               }
->                 if (fep->wol_flag & FEC_WOL_FLAG_ENABLE) {
-> +                       ret =3D fec_enet_clk_enable(ndev, true);
-> +                       if (ret) {
-> +                               rtnl_unlock();
-> +                               goto failed_clk;
-> +                       }
->                         fec_enet_stop_mode(fep, false);
->                         if (fep->wake_irq) {
->                                 disable_irq_wake(fep->wake_irq);
-> @@ -5612,6 +5612,11 @@ static int fec_resume(struct device *dev)
->                         fep->wol_flag &=3D ~FEC_WOL_FLAG_SLEEP_ON;
->                 } else {
->=20
-> pinctrl_pm_select_default_state(&fep->pdev->dev);
-> +                       ret =3D fec_enet_clk_enable(ndev, true);
-> +                       if (ret) {
-> +                               rtnl_unlock();
-> +                               goto failed_clk;
-> +                       }
->                 }
+Fix this by introducing a dedicated subdev cleanup label and routing the
+affected error paths to it. This reordering is safe as the consolidated
+label chain preserves the correct sequence without affecting other
+execution paths.
 
-I think fec_enet_clk_enable() can be moved before fec_restart(), and there =
-is
-no need to call fec_enet_clk_enable() separately in the if...else... branch=
-es.
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1-rc5.
 
-Or move pinctrl_pm_select_default_state() before fec_enet_clk_enable(),
-as shown below:
+An x86_64 allyesconfig build showed no new warnings. As we do not
+have suitable i.MX8MQ MIPI-CSI2 hardware to test with, no runtime
+testing was able to be performed.
 
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -5644,6 +5644,7 @@ static int fec_resume(struct device *dev)
-                if (fep->rpm_active)
-                        pm_runtime_force_resume(dev);
+Fixes: cd063027c304 ("media: imx: Unstage the imx8mq-mipi-csi2 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+---
+ drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-+               pinctrl_pm_select_default_state(&fep->pdev->dev);
-                ret =3D fec_enet_clk_enable(ndev, true);
-                if (ret) {
-                        rtnl_unlock();
-
->                 fec_restart(ndev);
->                 netif_tx_lock_bh(ndev);
+diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+index 04ebed8a0493..e5a062cc0788 100644
+--- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
++++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+@@ -1016,7 +1016,7 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
+ 
+ 	ret = imx8mq_mipi_csi_init_icc(pdev);
+ 	if (ret)
+-		goto mutex;
++		goto subdev;
+ 
+ 	/* Enable runtime PM. */
+ 	pm_runtime_enable(dev);
+@@ -1036,13 +1036,14 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 	imx8mq_mipi_csi_runtime_suspend(&pdev->dev);
+ 
+-	media_entity_cleanup(&state->sd.entity);
+-	v4l2_subdev_cleanup(&state->sd);
+ 	v4l2_async_nf_unregister(&state->notifier);
+ 	v4l2_async_nf_cleanup(&state->notifier);
+ 	v4l2_async_unregister_subdev(&state->sd);
+ icc:
+ 	imx8mq_mipi_csi_release_icc(pdev);
++subdev:
++	media_entity_cleanup(&state->sd.entity);
++	v4l2_subdev_cleanup(&state->sd);
+ mutex:
+ 	mutex_destroy(&state->lock);
+ 
+-- 
+2.34.1
 
