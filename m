@@ -1,120 +1,104 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51723C7E07
-	for <imx@lists.linux.dev>; Wed, 27 May 2026 08:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA6E3D25CD;
+	Wed, 27 May 2026 08:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779869502; cv=none; b=Mix+bbt6u53F2Csk7uCyjmGDRXTGCIQd3xiqDJKoYLa7X3g+j/1zlHv898eW3teTc8x/aP+lvz1+EyXLAJisRJ2i1lyu+3aocnIu1WEOQfspFjIcN/IuZ/E1Pe06VMhQU40z5QNfGmzUHIS0fuiSkaOreYqpLeX17XMFGDWLALs=
+	t=1779870918; cv=none; b=JCCFhK0Vvm3Q6qcYG0YIcWMP/v2EbnWFK7P4BN/GD2M8e2WRxF0D90O7+KkC9/wWTSapf9fsNqdLH0kWIvMys9TgX5RqYPxt8yYbZH8P7ziVHhRGpHcT+Ar2zV7qrVMPcUBIohi1h+Fc2s1RfcJiLTLTViihscy7HePFSAx20Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779869502; c=relaxed/simple;
-	bh=W0kvwb9oYI7nmafkyR4U8Vul+N3DYx3OERr2MYEtH+w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U5Ds3bzigIDsXG0CyVVIQch5ak8ybvGdJobe1gELbEWj7a9bS5HFNSpy8pPhJPy42X1h/OdhUM+pUx8uKGE/U1D63NQ9B94dn2ttM3Aoj+lsb9O3pJ2Rdzjh4O48QLun8RopavtIPG+A4kPRySfuTv47Z9EdVtdLPEZKORfJ+j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=bRBsSZFs; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1779870918; c=relaxed/simple;
+	bh=Vx8cnE7qi8aFnqifDne0YAAqBpcVn3CaVw9INMTnLpc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OQbjAiSl+t9Stzbwwq+qtRY9YR6nZGHEHE0pSGNT8gbitROt7DX+6hCGEtgD3j9uGPz9fHarANwQZnWv8jQUVhpkOsJjwdLrZfwdtdTXkKOf+Cx9kFm3vu6uohhNBVgcFemyuNnhR2vf+rdv6saZT5fe7Ya3Wnrtd0tDQU0Jv9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dgQaaD4T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="bRBsSZFs"
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4001c3292;
-	Wed, 27 May 2026 16:06:26 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: mchehab@kernel.org
-Cc: laurent.pinchart@ideasonboard.com,
-	Frank.Li@nxp.com,
-	martink@posteo.de,
-	rmfrfs@gmail.com,
-	kernel@puri.sm,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH] media: imx8mq-mipi-csi2: fix memory leak in imx8mq_mipi_csi_probe()
-Date: Wed, 27 May 2026 16:06:24 +0800
-Message-Id: <20260527080624.1717938-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dgQaaD4T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5EC1F000E9;
+	Wed, 27 May 2026 08:35:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779870916;
+	bh=M06HIPdd2IUezENrjzGwyWPgmEB4K4h1Br8XdiToDDk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dgQaaD4TJmo17ETVT65PojO6wY0EUG/abrhQ4Xvi9TA5ZVx/NSC2gr5iSuhMsGm9q
+	 vW6tQHRnkTYGJHNeQe7A4iJNzr6rQQnA94UTMequsmN8qsPzTupHX5wbM/naO81/w6
+	 gh8uDAA2V7Luz4Y9mpjhPr5YJLOtRC0aIaOVpf5xdIZamc7av7JeEZta6SZyZymx/n
+	 MHXnkAfbEB46domYvF2B4pW3uM30q4mel4wk6UHjmFzvjEvOdM1NMIEeXP+TFB7l7Q
+	 dXWFoTEdjD+wJXFow0Pi8qqjf8MP1X2U3HJk3hAxDeiEzqJd8PwhiX1bA17ql93bFx
+	 11Z6RSE9SGHZA==
+Date: Wed, 27 May 2026 10:35:13 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Frank Li <frank.li@nxp.com>, Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev, 
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH v9 1/3] dt-bindings: clock: imx95-blk-ctl: Allow child
+ nodes
+Message-ID: <20260527-simple-nice-mole-99c909@quoll>
+References: <20260526-csi_formatter-v9-0-ca3d8c334c39@oss.nxp.com>
+ <20260526-csi_formatter-v9-1-ca3d8c334c39@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e6878795a03a2kunmfa06458432849
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQh0dVh5ITEpOHkxLSE4aTFYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
-	5DQ1VKS0tVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=bRBsSZFszClz8dqsA7AGBJppPnp7fWke1w0tluA+26XTIxjYs+d8dTxAVzw+3pc6tiUY8xvlmReUh1t7yuNOCNpTVQFLLoQm+mXHwmjC9IVFK2W5sb2Ni7snC/rNg95oVgSQzedjjMoJ9p8VmxogeJQdZVlotcNMHZpdMK9VTeQ=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=u8Wo8LLSY0pPyy+dyeSotUY0OkUOTz16hb7bl4GVtIM=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260526-csi_formatter-v9-1-ca3d8c334c39@oss.nxp.com>
 
-If imx8mq_mipi_csi_init_icc() or imx8mq_mipi_csi_runtime_resume() fails
-after subdev initialization, the function fails to release the
-corresponding resources, leaking the subdev state and media entity.
+On Tue, May 26, 2026 at 04:57:20PM +0800, Guoniu Zhou wrote:
+> Add support for child nodes in the imx95-blk-ctl binding to match
+> the driver implementation which calls devm_of_platform_populate().
 
-Fix this by introducing a dedicated subdev cleanup label and routing the
-affected error paths to it. This reordering is safe as the consolidated
-label chain preserves the correct sequence without affecting other
-execution paths.
+This is a new device, not a legacy, so you do not have exception to
+document things post factum.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc5.
+> 
+> Add #address-cells, #size-cells properties and patternProperties
+> to allow child device nodes with their own bindings.
+> 
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> ---
+> Changes in v9:
+> - New patch to address the issue of formatter acting as a child node of syscon
+> ---
+>  .../devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml          | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> index 27403b4c52d6..33ad1c15cc9c 100644
+> --- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> @@ -39,6 +39,17 @@ properties:
+>        ID in its "clocks" phandle cell. See
+>        include/dt-bindings/clock/nxp,imx95-clock.h
+>  
+> +  '#address-cells':
 
-An x86_64 allyesconfig build showed no new warnings. As we do not
-have suitable i.MX8MQ MIPI-CSI2 hardware to test with, no runtime
-testing was able to be performed.
+Use consistent quotes, either ' or "
 
-Fixes: cd063027c304 ("media: imx: Unstage the imx8mq-mipi-csi2 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
----
- drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 1
+> +
+> +patternProperties:
+> +  "^.*@[0-9a-f]+$":
+> +    type: object
+> +    description: Child nodes with their own bindings
 
-diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-index 04ebed8a0493..e5a062cc0788 100644
---- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-+++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-@@ -1016,7 +1016,7 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
- 
- 	ret = imx8mq_mipi_csi_init_icc(pdev);
- 	if (ret)
--		goto mutex;
-+		goto subdev;
- 
- 	/* Enable runtime PM. */
- 	pm_runtime_enable(dev);
-@@ -1036,13 +1036,14 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 	imx8mq_mipi_csi_runtime_suspend(&pdev->dev);
- 
--	media_entity_cleanup(&state->sd.entity);
--	v4l2_subdev_cleanup(&state->sd);
- 	v4l2_async_nf_unregister(&state->notifier);
- 	v4l2_async_nf_cleanup(&state->notifier);
- 	v4l2_async_unregister_subdev(&state->sd);
- icc:
- 	imx8mq_mipi_csi_release_icc(pdev);
-+subdev:
-+	media_entity_cleanup(&state->sd.entity);
-+	v4l2_subdev_cleanup(&state->sd);
- mutex:
- 	mutex_destroy(&state->lock);
- 
--- 
-2.34.1
+No, you need SPECIFIC children listed here.
+
+Also, description is completely redundant. You did not say anything
+useful here.
+
+Best regards,
+Krzysztof
 
