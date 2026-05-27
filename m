@@ -1,107 +1,368 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2564544CF3E
-	for <imx@lists.linux.dev>; Wed, 27 May 2026 17:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC6543E9ED
+	for <imx@lists.linux.dev>; Wed, 27 May 2026 17:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779902577; cv=none; b=sqt41NzL/QRSlTEhvmBPrmpoVSK+ERceQzqHdXOm6H62iIHHfqtDXP0Hmf5TNGUm8iT7xGXdSv4zcnSkw9M82/rhmTvZ42Tau2spZYDEctsHoqIEniIwgcq8zGI3PGKJ9Ohz6bDSHt3U7WJX2jidkB16acJjE1V6HKClumYIoSg=
+	t=1779903899; cv=none; b=APHMxu0Am9CMS9Z0VKVKmNeERWeTPlX9oaUTrMpVxWvk48l3phgHmBfZkswoxH+gnWOT7MFJA5FOunt+HMtBL1jnDZYFR30KolI/Z2dg33768KoPXT8zoGkhuNDztQ4qpxWpX+QkjGNr2b9MyG7cTa6CMH4QtyXBypsfUby8O9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779902577; c=relaxed/simple;
-	bh=2Nr2Xxt8Oy0fc9JvztohlvFYnp6ba4XuH1Xyai10AVY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MRZki2pwD9NShck5d2ykQLYY/tBE2JGtOhhZ8OOEfYl1ntrvVnzw8Ro4OtgEC6uBtwdnXmC5sZxLB+lIeW8MahEN5JSMe/y5qFgec8Ta18XI/O4ndPLz0u1QMc8hhY5HnumRKseEBECj8oxm3v0msaRkBoAlaIDcXBRccPjTB8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJm3dk/G; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779903899; c=relaxed/simple;
+	bh=jBmdo4bcjh9mnyHZBBkbap2F8RO/hTqf9vQEwCpOR8s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=acnrlD2+xzHTWEGrH7mvGQVIMGwpiHNgmMY+iz8J2RAOfQ4/2IsVj6tIskrbWYW5+OADbo7nmEFLv2pZvpsnHSvh0nJm7omwEaElJNJnDgNpaIJWwSF3cCTu748uvsj5qsRp9VgMavSMfIkuMVkTdySm2BRIqKyOA7885gpAxXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Hms77pjR; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJm3dk/G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443CE1F000E9;
-	Wed, 27 May 2026 17:22:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779902575;
-	bh=2Nr2Xxt8Oy0fc9JvztohlvFYnp6ba4XuH1Xyai10AVY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MJm3dk/GnGaS4JYJ4QvkrzD5OwmTd9ysjigFp9L2NzRDSGIsW1gvWYBxWmiRIrMMn
-	 nfXkKbkEH9fSrae4YNndLe0P0n1aiD/RElOcXKzOWTFm8u3Z3ghVyZINjjEuTuQx0S
-	 5G1dHT2b7BE4LSgo9Gs/+YtJgaa/7/Y8BRDIIt9CwSKmb/NhyAmStkm8Js+FK5NQTE
-	 mTCPCd3pg1qO7NumcD1iJipOFiEUKiLolVSOk79uakmjUNya3JAJR+4hv3znftAHSW
-	 7tI3yLR6AlW6U2/A0JPu+UO6aqN98XMHv6Qr0dGJw48j6+64f+/9HSzY4X4cwsfaND
-	 +MFm1o6zV6FCg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] i2c: imx: Switch to new reg_target/unreg_target
- callbacks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Liem <liem16213@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260527171016.67020-1-liem16213@gmail.com>
-References: <20260527171016.67020-1-liem16213@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 17:22:54 +0000
-Message-Id: <20260527172255.443CE1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Hms77pjR"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c801b30188dso5298969a12.3
+        for <imx@lists.linux.dev>; Wed, 27 May 2026 10:44:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1779903897; x=1780508697; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+IIwHB4tc8Zk/JmkEkdDm+906F5b3wX8vQAJk7Bu7kM=;
+        b=Hms77pjRtYHhw2kapf2eUcg+uJKajV8kne17IFCkUdVg2c3FC2jJGjDKzjKWbBrgdO
+         qmqNKL/QTYn3yuxSln1D3dchO1nFD6pl+CCH3hX2EIjVMVNo7X/59llZKWlRDYU4W2lq
+         oc9o7yHGbyZlc9z/GojYooyJqwiJ8bwNGDyWWq9CJkdsf7PcIx8Mzq579gRTJAZiX5H9
+         5reJdt8e2172+MMe477L4O1gDlanJhruMY7LOWwrcwRjdgxPGMQ9xiDhaoVljld54/J7
+         /O1PIVIAqQWlfU+DTHjxdLEDXS4LN8i1KrmiT0echtJ1zck6WY7M9bqaDr5LepO2esu8
+         5hXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779903897; x=1780508697;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+IIwHB4tc8Zk/JmkEkdDm+906F5b3wX8vQAJk7Bu7kM=;
+        b=pDb2cSKKcV7roRz2WIfwxVjTMspTx1nOGS+NOUFRWE6kiNejxauWVS2JCviyj5J6mX
+         z9Idab35klwaQgO4uEYwoy4VV88Xa5dxwhbgYKU1ybaQKMoIJ57cVnn6aBG2Jb0TRE/7
+         nOBbFvcYbjW8N3AWrsODqchs8Sviaw8jDC18FIXDTUFiQRlK85/TlmeKmbAvXSscLT38
+         iek6ontfScdiLStgeMskTLGmohvgZoIl+jaEIPsHoQbTwNJaUO7kRiu8ZD5JBoxLtnNX
+         bAt2jg6puDTe1n8khgN0+PRe3IC2avl18Z5MjBFN5qnEsLgwANlu/Vka/lpVlp+q6ZtK
+         hzYA==
+X-Forwarded-Encrypted: i=1; AFNElJ8hCGhpfyot2NBBFNjlUShfgV9DHxCHn7LQCKWoHrTHMI5XKFsF05wXoPrlwj0Lc/GgnLg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxK1ktvsUYuo/4JM12tX0CqlmE9kmnWi2mXviyEfbkmIsNiptX9
+	BiHgbj8PGVqfcIxDLYTgdijSEgucUSmbDCIGewl0RPT4WkZ8XwIvQu8+kxOCqMBibiA=
+X-Gm-Gg: Acq92OHVaYr3NNiuxy64W4BMq7GKTKvWhBZ3N9kL/RfjrVPtz9JBeEcGFFTKQuFE9N9
+	uUOzLBFPxMh4C9Ldv+tkwmXEv2kk/iM+/H7j8lKZKryCaMXIeX6NMOLJIZtAqPHW1eFOjZODRLL
+	QPs43cWplQ+TJIV/MaFq7qG95O1wU5fqcr+F61dp/A/vdAm7+wUQdxEnAEunhnDKZZPGqR1G3Wa
+	ZS2C1Cw3nh+6X7BMeQmHNgCZ/JWuQrpwPBVP0IPthGGZLflCLRYIwggLba6jww0/8BC8YHPgsyI
+	FC0DkVkKVoUkG5LPOH74KERZDLSrlYI8OO6qOlSKiqPXYXDnxAtdHEzbFxKFy4KwdfIxlnTP2qU
+	DsXoZ0MutAqdf3iEGai3GhSztBZgxALRhxOkPdPBzm07CukJN9uhh8vbTs1ecHhnIAxYuNPlwUr
+	K2uosV6yjM2B+B41EyGu7GUZvdi/4=
+X-Received: by 2002:a05:6a21:a06:b0:3a5:8542:61a4 with SMTP id adf61e73a8af0-3b329340e22mr25394375637.25.1779903896893;
+        Wed, 27 May 2026 10:44:56 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:9466:b49b:cd0e:2dac])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d70f17cbsm2814639b3a.45.2026.05.27.10.44.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 10:44:56 -0700 (PDT)
+Date: Wed, 27 May 2026 11:44:53 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Ben Levinsky <ben.levinsky@amd.com>
+Cc: andersson@kernel.org, linux-remoteproc@vger.kernel.org,
+	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, geert+renesas@glider.be, magnus.damm@gmail.com,
+	patrice.chotard@foss.st.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, arnaud.pouliquen@foss.st.com,
+	daniel.baluta@nxp.com, tanmay.shah@amd.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v2 5/5] remoteproc: switch drivers to optional
+ resource-table helper
+Message-ID: <ahctlW_4AKS6IHYt@p14s>
+References: <20260514162129.1504162-1-ben.levinsky@amd.com>
+ <20260514162129.1504162-6-ben.levinsky@amd.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260514162129.1504162-6-ben.levinsky@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Thu, May 14, 2026 at 09:21:29AM -0700, Ben Levinsky wrote:
+> Use the shared optional resource-table helper in the remoteproc
+> drivers that already treat a missing resource table as non-fatal:
+> xlnx_r5_remoteproc, rcar_rproc, stm32_rproc, imx_rproc, and
+> imx_dsp_rproc.
+> 
+> Keep thin local parse_fw() wrappers in each driver so the helper only
+> centralizes the return-value handling. That lets each platform retain
+> control over whether the missing-table case is logged and at what
+> severity, while other parsing failures continue to propagate to the
+> caller.
+> 
+> Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
+> ---
+>  drivers/remoteproc/imx_dsp_rproc.c      | 24 ++++++++++-----
+>  drivers/remoteproc/imx_rproc.c          | 25 ++++++++-------
+>  drivers/remoteproc/rcar_rproc.c         | 25 ++++++++-------
+>  drivers/remoteproc/stm32_rproc.c        | 23 +++++++++-----
+>  drivers/remoteproc/xlnx_r5_remoteproc.c | 41 +++++++++----------------
+>  5 files changed, 73 insertions(+), 65 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+> index 2d9f14fbef1d..2ff74f7938f6 100644
+> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> @@ -954,14 +954,6 @@ static int imx_dsp_rproc_elf_load_segments(struct rproc *rproc, const struct fir
+>  	return ret;
+>  }
+>  
+> -static int imx_dsp_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> -{
+> -	if (rproc_elf_load_rsc_table(rproc, fw))
+> -		dev_warn(&rproc->dev, "no resource table found for this firmware\n");
+> -
+> -	return 0;
+> -}
+> -
 
-Pre-existing issues:
-- [High] i2c_imx_reg_target leaves a dangling pointer on pm_runtime_resume_=
-and_get failure, leading to state inconsistency and potential UAF/NULL poin=
-ter dereference.
-- [High] Missing lock acquisition and timer cancellation in i2c_imx_unreg_t=
-arget causes data races and guaranteed NULL pointer dereference during conc=
-urrent slave transactions.
---
+Why is this getting moved after imx_dsp_rproc_load()?
 
-(Due to recitation policy restrictions, this report does not quote the orig=
-inal
-patch code inline and instead provides a free-form summary of the findings.)
 
-commit e5a765606d0417cc96ddfca98fce10ada4405f48
-Author: Liem <liem16213@gmail.com>
-i2c: imx: Switch to new reg_target/unreg_target callbacks
+>  static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
+>  {
+>  	struct imx_dsp_rproc *priv = rproc->priv;
+> @@ -990,6 +982,22 @@ static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
+>  	return 0;
+>  }
+>  
+> +static int imx_dsp_rproc_parse_fw(struct rproc *rproc,
+> +				  const struct firmware *fw)
+> +{
+> +	int ret;
+> +
+> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!rproc->table_ptr)
+> +		dev_warn(&rproc->dev,
+> +			 "no resource table found for this firmware\n");
+> +
+> +	return 0;
+> +}
+> +
 
-This commit updates the i.MX I2C driver to use the new reg_target and
-unreg_target callbacks instead of the deprecated reg_slave and unreg_slave
-names.
+I am not overly fond of having to check rproc->table_ptr for the printout.  How
+about:
 
-[Severity: High]
+#define rproc_elf_load_rsc_table_optional(rproc, fw, dev_func, fmt, ...)        \
+        ({                                                                      \
+                int ret = rproc_elf_load_rsc_table(rproc, fw);                  \
+                if (ret == -EINVAL) {                                           \
+                        dev_func(&rproc->dev, fmt, ##__VA_ARGS__);              \
+                        return 0;                                               \
+                } else {                                                        \
+                        return ret;                                             \
+                }                                                               \
+        })
 
-This isn't a bug introduced by this patch, but while reviewing the changes
-to the newly renamed i2c_imx_reg_target function, I noticed a potential
-pre-existing issue.
+in remoteproc_internal.h and something like:
 
-If pm_runtime_resume_and_get() fails, the function returns immediately
-without resetting i2c_imx->slave back to NULL. Does this leave a dangling
-pointer in the state structure?
+static int imx_dsp_rproc_parse_fw(struct rproc *rproc,
+                                  const struct firmware *fw)
+{
+        rproc_elf_load_rsc_table_optional(rproc, fw, dev_warn,
+                "no resource table found for this firmware\n");
+}
 
-If so, future slave registration attempts might permanently fail with
--EBUSY. Furthermore, since the I2C core sets client->slave_cb to NULL on
-error, if a shared interrupt fires, could i2c_imx_slave_handle() dereference
-the dangling i2c_imx->slave and invoke i2c_slave_event() with a NULL
-callback, potentially causing a panic?
+in the clients?
 
-[Severity: High]
-
-This is a pre-existing issue, but I also spotted a potential synchronization
-flaw in the newly renamed i2c_imx_unreg_target function.
-
-The function sets i2c_imx->slave =3D NULL without taking i2c_imx->slave_lock
-and without cancelling i2c_imx->slave_timer. If unregistration happens
-during an active slave transaction (for example, during a driver unbind),
-could this lead to a race condition with the timer?
-
-Specifically, unreg_target disables the module and clears i2c_imx->slave. If
-the concurrent slave_timer fires and runs i2c_imx_slave_timeout(), reading
-the disabled I2SR yields 0 (meaning the bus is no longer busy). This leads
-i2c_imx_slave_handle() to invoke i2c_imx_slave_finish_op(). Since the
-transaction was abruptly interrupted, it will then call
-i2c_imx_slave_event(). Will this pass the now-NULL i2c_imx->slave to
-i2c_slave_event(), resulting in a NULL pointer dereference?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527171016.6702=
-0-1-liem16213@gmail.com?part=3D1
+>  static const struct rproc_ops imx_dsp_rproc_ops = {
+>  	.prepare	= imx_dsp_rproc_prepare,
+>  	.unprepare	= imx_dsp_rproc_unprepare,
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 6249815b54d8..58c63f97ebf7 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -680,17 +680,6 @@ static int imx_rproc_prepare(struct rproc *rproc)
+>  	return 0;
+>  }
+>  
+> -static int imx_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> -{
+> -	int ret;
+> -
+> -	ret = rproc_elf_load_rsc_table(rproc, fw);
+> -	if (ret)
+> -		dev_info(&rproc->dev, "No resource table in elf\n");
+> -
+> -	return 0;
+> -}
+> -
+>  static void imx_rproc_kick(struct rproc *rproc, int vqid)
+>  {
+>  	struct imx_rproc *priv = rproc->priv;
+> @@ -768,6 +757,20 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
+>  	return rproc_elf_find_loaded_rsc_table(rproc, fw);
+>  }
+>  
+> +static int imx_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> +{
+> +	int ret;
+> +
+> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!rproc->table_ptr)
+> +		dev_info(&rproc->dev, "No resource table in elf\n");
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct rproc_ops imx_rproc_ops = {
+>  	.prepare	= imx_rproc_prepare,
+>  	.attach		= imx_rproc_attach,
+> diff --git a/drivers/remoteproc/rcar_rproc.c b/drivers/remoteproc/rcar_rproc.c
+> index e3121fadd292..b7a39014b6bb 100644
+> --- a/drivers/remoteproc/rcar_rproc.c
+> +++ b/drivers/remoteproc/rcar_rproc.c
+> @@ -55,17 +55,6 @@ static int rcar_rproc_prepare(struct rproc *rproc)
+>  	}
+>  }
+>  
+> -static int rcar_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> -{
+> -	int ret;
+> -
+> -	ret = rproc_elf_load_rsc_table(rproc, fw);
+> -	if (ret)
+> -		dev_info(&rproc->dev, "No resource table in elf\n");
+> -
+> -	return 0;
+> -}
+> -
+>  static int rcar_rproc_start(struct rproc *rproc)
+>  {
+>  	struct rcar_rproc *priv = rproc->priv;
+> @@ -99,6 +88,20 @@ static int rcar_rproc_stop(struct rproc *rproc)
+>  	return err;
+>  }
+>  
+> +static int rcar_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> +{
+> +	int ret;
+> +
+> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!rproc->table_ptr)
+> +		dev_info(&rproc->dev, "No resource table in elf\n");
+> +
+> +	return 0;
+> +}
+> +
+>  static struct rproc_ops rcar_rproc_ops = {
+>  	.prepare	= rcar_rproc_prepare,
+>  	.start		= rcar_rproc_start,
+> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
+> index 7ac8265b60ac..a4d42b755c74 100644
+> --- a/drivers/remoteproc/stm32_rproc.c
+> +++ b/drivers/remoteproc/stm32_rproc.c
+> @@ -232,14 +232,6 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+>  	}
+>  }
+>  
+> -static int stm32_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> -{
+> -	if (rproc_elf_load_rsc_table(rproc, fw))
+> -		dev_warn(&rproc->dev, "no resource table found for this firmware\n");
+> -
+> -	return 0;
+> -}
+> -
+>  static irqreturn_t stm32_rproc_wdg(int irq, void *data)
+>  {
+>  	struct platform_device *pdev = data;
+> @@ -623,6 +615,21 @@ stm32_rproc_get_loaded_rsc_table(struct rproc *rproc, size_t *table_sz)
+>  	return (__force struct resource_table *)ddata->rsc_va;
+>  }
+>  
+> +static int stm32_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> +{
+> +	int ret;
+> +
+> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!rproc->table_ptr)
+> +		dev_warn(&rproc->dev,
+> +			 "no resource table found for this firmware\n");
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct rproc_ops st_rproc_ops = {
+>  	.prepare	= stm32_rproc_prepare,
+>  	.start		= stm32_rproc_start,
+> diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
+> index e5d1903c9636..9b9f07d152e6 100644
+> --- a/drivers/remoteproc/xlnx_r5_remoteproc.c
+> +++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+> @@ -664,33 +664,6 @@ static int add_tcm_banks(struct rproc *rproc)
+>  	return ret;
+>  }
+>  
+> -/*
+> - * zynqmp_r5_parse_fw()
+> - * @rproc: single R5 core's corresponding rproc instance
+> - * @fw: ptr to firmware to be loaded onto r5 core
+> - *
+> - * get resource table if available
+> - *
+> - * return 0 on success, otherwise non-zero value on failure
+> - */
+> -static int zynqmp_r5_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> -{
+> -	int ret;
+> -
+> -	ret = rproc_elf_load_rsc_table(rproc, fw);
+> -	if (ret == -EINVAL) {
+> -		/*
+> -		 * resource table only required for IPC.
+> -		 * if not present, this is not necessarily an error;
+> -		 * for example, loading r5 hello world application
+> -		 * so simply inform user and keep going.
+> -		 */
+> -		dev_info(&rproc->dev, "no resource table found.\n");
+> -		ret = 0;
+> -	}
+> -	return ret;
+> -}
+> -
+>  /**
+>   * zynqmp_r5_rproc_prepare() - prepare core to boot/attach
+>   * adds carveouts for TCM bank and reserved memory regions
+> @@ -843,6 +816,20 @@ static int zynqmp_r5_detach(struct rproc *rproc)
+>  	return 0;
+>  }
+>  
+> +static int zynqmp_r5_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> +{
+> +	int ret;
+> +
+> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!rproc->table_ptr)
+> +		dev_info(&rproc->dev, "no resource table found.\n");
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct rproc_ops zynqmp_r5_rproc_ops = {
+>  	.prepare	= zynqmp_r5_rproc_prepare,
+>  	.unprepare	= zynqmp_r5_rproc_unprepare,
+> -- 
+> 2.34.1
+> 
