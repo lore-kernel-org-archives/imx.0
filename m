@@ -1,368 +1,82 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from vinatta.cz (vinatta.cz [37.205.8.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC6543E9ED
-	for <imx@lists.linux.dev>; Wed, 27 May 2026 17:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672793DEFFA
+	for <imx@lists.linux.dev>; Wed, 27 May 2026 18:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779903899; cv=none; b=APHMxu0Am9CMS9Z0VKVKmNeERWeTPlX9oaUTrMpVxWvk48l3phgHmBfZkswoxH+gnWOT7MFJA5FOunt+HMtBL1jnDZYFR30KolI/Z2dg33768KoPXT8zoGkhuNDztQ4qpxWpX+QkjGNr2b9MyG7cTa6CMH4QtyXBypsfUby8O9E=
+	t=1779907091; cv=none; b=VMd7Yl9yL2F+P9cebbBqNB6BMkQj9z3eGIri3Kzor2j4gyV5OAPjJZB4rNacd2nvozzpdk8ev6bL7PQoY5WI8IeFEWpVynENdYlhWls4rIq4QjwS7d153++N8BulVdfldxcmLaptKgQ+a6yD2ofQGV1K5FHbRPnNA8mUO1CqoCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779903899; c=relaxed/simple;
-	bh=jBmdo4bcjh9mnyHZBBkbap2F8RO/hTqf9vQEwCpOR8s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=acnrlD2+xzHTWEGrH7mvGQVIMGwpiHNgmMY+iz8J2RAOfQ4/2IsVj6tIskrbWYW5+OADbo7nmEFLv2pZvpsnHSvh0nJm7omwEaElJNJnDgNpaIJWwSF3cCTu748uvsj5qsRp9VgMavSMfIkuMVkTdySm2BRIqKyOA7885gpAxXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Hms77pjR; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1779907091; c=relaxed/simple;
+	bh=ApEPioN6Lb4OKyOa7Ff37Nv+Yg/r+wxB4CavphylJVQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:To:From:Cc:
+	 References:In-Reply-To; b=Ve9IJVypEd4DwdOG+qE/LIQBDzmzTJuSqd/+jEyGyj37J6Mv7y3imZVaejXLF5t3x4hXAFxRb+k2bKJmtrWQCPFpNpg98IrQZrm+b6TBu+WNAFIFYPdKBNRcrUj6RJgCezF88nn0dXczqctSIl+r25WlnAUYhvwyf+2C96L3Mqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=vinatta.cz; dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b=CZPrCZhI; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinatta.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Hms77pjR"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c801b30188dso5298969a12.3
-        for <imx@lists.linux.dev>; Wed, 27 May 2026 10:44:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1779903897; x=1780508697; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+IIwHB4tc8Zk/JmkEkdDm+906F5b3wX8vQAJk7Bu7kM=;
-        b=Hms77pjRtYHhw2kapf2eUcg+uJKajV8kne17IFCkUdVg2c3FC2jJGjDKzjKWbBrgdO
-         qmqNKL/QTYn3yuxSln1D3dchO1nFD6pl+CCH3hX2EIjVMVNo7X/59llZKWlRDYU4W2lq
-         oc9o7yHGbyZlc9z/GojYooyJqwiJ8bwNGDyWWq9CJkdsf7PcIx8Mzq579gRTJAZiX5H9
-         5reJdt8e2172+MMe477L4O1gDlanJhruMY7LOWwrcwRjdgxPGMQ9xiDhaoVljld54/J7
-         /O1PIVIAqQWlfU+DTHjxdLEDXS4LN8i1KrmiT0echtJ1zck6WY7M9bqaDr5LepO2esu8
-         5hXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779903897; x=1780508697;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+IIwHB4tc8Zk/JmkEkdDm+906F5b3wX8vQAJk7Bu7kM=;
-        b=pDb2cSKKcV7roRz2WIfwxVjTMspTx1nOGS+NOUFRWE6kiNejxauWVS2JCviyj5J6mX
-         z9Idab35klwaQgO4uEYwoy4VV88Xa5dxwhbgYKU1ybaQKMoIJ57cVnn6aBG2Jb0TRE/7
-         nOBbFvcYbjW8N3AWrsODqchs8Sviaw8jDC18FIXDTUFiQRlK85/TlmeKmbAvXSscLT38
-         iek6ontfScdiLStgeMskTLGmohvgZoIl+jaEIPsHoQbTwNJaUO7kRiu8ZD5JBoxLtnNX
-         bAt2jg6puDTe1n8khgN0+PRe3IC2avl18Z5MjBFN5qnEsLgwANlu/Vka/lpVlp+q6ZtK
-         hzYA==
-X-Forwarded-Encrypted: i=1; AFNElJ8hCGhpfyot2NBBFNjlUShfgV9DHxCHn7LQCKWoHrTHMI5XKFsF05wXoPrlwj0Lc/GgnLg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxK1ktvsUYuo/4JM12tX0CqlmE9kmnWi2mXviyEfbkmIsNiptX9
-	BiHgbj8PGVqfcIxDLYTgdijSEgucUSmbDCIGewl0RPT4WkZ8XwIvQu8+kxOCqMBibiA=
-X-Gm-Gg: Acq92OHVaYr3NNiuxy64W4BMq7GKTKvWhBZ3N9kL/RfjrVPtz9JBeEcGFFTKQuFE9N9
-	uUOzLBFPxMh4C9Ldv+tkwmXEv2kk/iM+/H7j8lKZKryCaMXIeX6NMOLJIZtAqPHW1eFOjZODRLL
-	QPs43cWplQ+TJIV/MaFq7qG95O1wU5fqcr+F61dp/A/vdAm7+wUQdxEnAEunhnDKZZPGqR1G3Wa
-	ZS2C1Cw3nh+6X7BMeQmHNgCZ/JWuQrpwPBVP0IPthGGZLflCLRYIwggLba6jww0/8BC8YHPgsyI
-	FC0DkVkKVoUkG5LPOH74KERZDLSrlYI8OO6qOlSKiqPXYXDnxAtdHEzbFxKFy4KwdfIxlnTP2qU
-	DsXoZ0MutAqdf3iEGai3GhSztBZgxALRhxOkPdPBzm07CukJN9uhh8vbTs1ecHhnIAxYuNPlwUr
-	K2uosV6yjM2B+B41EyGu7GUZvdi/4=
-X-Received: by 2002:a05:6a21:a06:b0:3a5:8542:61a4 with SMTP id adf61e73a8af0-3b329340e22mr25394375637.25.1779903896893;
-        Wed, 27 May 2026 10:44:56 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:9466:b49b:cd0e:2dac])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d70f17cbsm2814639b3a.45.2026.05.27.10.44.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 10:44:56 -0700 (PDT)
-Date: Wed, 27 May 2026 11:44:53 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Ben Levinsky <ben.levinsky@amd.com>
-Cc: andersson@kernel.org, linux-remoteproc@vger.kernel.org,
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, geert+renesas@glider.be, magnus.damm@gmail.com,
-	patrice.chotard@foss.st.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, arnaud.pouliquen@foss.st.com,
-	daniel.baluta@nxp.com, tanmay.shah@amd.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v2 5/5] remoteproc: switch drivers to optional
- resource-table helper
-Message-ID: <ahctlW_4AKS6IHYt@p14s>
-References: <20260514162129.1504162-1-ben.levinsky@amd.com>
- <20260514162129.1504162-6-ben.levinsky@amd.com>
+	dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b="CZPrCZhI"
+DKIM-Signature: a=rsa-sha256; bh=kpx6Uj9RIdUNjK8W3CnmyMzyh2ekBIwrGqDnhdzKB20=;
+ c=relaxed/relaxed; d=vinatta.cz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@vinatta.cz; s=default; t=1779906099; v=1; x=1780338099;
+ b=CZPrCZhIXkDoHB0cMhVJm/JiciH7dzJdwyLBNIe3/8l0Zq3QV7VFjYO1LEd+kDuYAthVAc6v
+ 9Phsze4RHJ9Wiy9dWqZUi5r11Ec++f5qsA7nGRjusmk7hxln5DUEsOKnpA2/zvZ9LMdttYtwoyk
+ obUMhAA8pyd2d3p8TJdxtRngXAsD4MSuHOA2w5iCmS3mJjwGMFQ4EIGNj12WNFNtf7i78IRXvpe
+ JEqKD5JLfzCf1QT+W+0p1tE0PQQ7dibqrscIPMku5iDYLpWuWEeYveIaDWU/huyQb4ixLw5hd7h
+ EVuNnF/o8bxGM9wtY1p5oWRroCkzvfJ9ffBm6K/KgWwcQ==
+Received: by vinatta.cz (envelope-sender <karel@vinatta.cz>) with ESMTPS id
+ 4f3f7766; Wed, 27 May 2026 20:21:39 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260514162129.1504162-6-ben.levinsky@amd.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 27 May 2026 20:21:38 +0200
+Message-Id: <DITO1XL17NWQ.31DQEIXADGBND@matfyz.cz>
+Subject: Re: [PATCH v1 2/3] regulator: Use named initializers for
+ platform_device_id arrays
+To: =?utf-8?b?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
+ <u.kleine-koenig@baylibre.com>, "Liam Girdwood" <lgirdwood@gmail.com>,
+ "Mark Brown" <broonie@kernel.org>
+From: "Karel Balej" <balejk@matfyz.cz>
+Cc: "Matti Vaittinen" <mazziesaccount@gmail.com>, "Marek Vasut"
+ <marek.vasut+renesas@gmail.com>, "Chanwoo Choi" <cw00.choi@samsung.com>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>, "Matthias Brugger"
+ <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Samuel Kayode"
+ <samkay014@gmail.com>, =?utf-8?q?Andr=C3=A9_Draszik?=
+ <andre.draszik@linaro.org>, "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+ "Andreas Kemnade" <andreas@kemnade.info>, "Kevin Hilman"
+ <khilman@baylibre.com>, "Roger Quadros" <rogerq@kernel.org>, "Tony
+ Lindgren" <tony@atomide.com>, <linux-kernel@vger.kernel.org>,
+ <linux-renesas-soc@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>,
+ <linux-mediatek@lists.infradead.org>, <imx@lists.linux.dev>,
+ <linux-arm-msm@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
+ <linux-omap@vger.kernel.org>
+References: <cover.1779878004.git.u.kleine-koenig@baylibre.com>
+ <d02f55dfd5bdd743ae5cd76f2a5af0d346226a68.1779878004.git.u.kleine-koenig@baylibre.com>
+In-Reply-To: <d02f55dfd5bdd743ae5cd76f2a5af0d346226a68.1779878004.git.u.kleine-koenig@baylibre.com>
 
-On Thu, May 14, 2026 at 09:21:29AM -0700, Ben Levinsky wrote:
-> Use the shared optional resource-table helper in the remoteproc
-> drivers that already treat a missing resource table as non-fatal:
-> xlnx_r5_remoteproc, rcar_rproc, stm32_rproc, imx_rproc, and
-> imx_dsp_rproc.
-> 
-> Keep thin local parse_fw() wrappers in each driver so the helper only
-> centralizes the return-value handling. That lets each platform retain
-> control over whether the missing-table case is logged and at what
-> severity, while other parsing failures continue to propagate to the
-> caller.
-> 
-> Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
-> ---
->  drivers/remoteproc/imx_dsp_rproc.c      | 24 ++++++++++-----
->  drivers/remoteproc/imx_rproc.c          | 25 ++++++++-------
->  drivers/remoteproc/rcar_rproc.c         | 25 ++++++++-------
->  drivers/remoteproc/stm32_rproc.c        | 23 +++++++++-----
->  drivers/remoteproc/xlnx_r5_remoteproc.c | 41 +++++++++----------------
->  5 files changed, 73 insertions(+), 65 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index 2d9f14fbef1d..2ff74f7938f6 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -954,14 +954,6 @@ static int imx_dsp_rproc_elf_load_segments(struct rproc *rproc, const struct fir
->  	return ret;
+Uwe Kleine-K=C3=B6nig (The Capable Hub), 2026-05-27T12:47:45+02:00:
+> diff --git a/drivers/regulator/88pm886-regulator.c b/drivers/regulator/88=
+pm886-regulator.c
+> index a38bd4f312b7..7328cd1cf265 100644
+> --- a/drivers/regulator/88pm886-regulator.c
+> +++ b/drivers/regulator/88pm886-regulator.c
+> @@ -373,7 +373,7 @@ static int pm886_regulator_probe(struct platform_devi=
+ce *pdev)
 >  }
->  
-> -static int imx_dsp_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> -{
-> -	if (rproc_elf_load_rsc_table(rproc, fw))
-> -		dev_warn(&rproc->dev, "no resource table found for this firmware\n");
-> -
-> -	return 0;
-> -}
-> -
+> =20
+>  static const struct platform_device_id pm886_regulator_id_table[] =3D {
+> -	{ "88pm886-regulator", },
+> +	{ .name =3D "88pm886-regulator" },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(platform, pm886_regulator_id_table);
 
-Why is this getting moved after imx_dsp_rproc_load()?
-
-
->  static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
->  {
->  	struct imx_dsp_rproc *priv = rproc->priv;
-> @@ -990,6 +982,22 @@ static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
->  	return 0;
->  }
->  
-> +static int imx_dsp_rproc_parse_fw(struct rproc *rproc,
-> +				  const struct firmware *fw)
-> +{
-> +	int ret;
-> +
-> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!rproc->table_ptr)
-> +		dev_warn(&rproc->dev,
-> +			 "no resource table found for this firmware\n");
-> +
-> +	return 0;
-> +}
-> +
-
-I am not overly fond of having to check rproc->table_ptr for the printout.  How
-about:
-
-#define rproc_elf_load_rsc_table_optional(rproc, fw, dev_func, fmt, ...)        \
-        ({                                                                      \
-                int ret = rproc_elf_load_rsc_table(rproc, fw);                  \
-                if (ret == -EINVAL) {                                           \
-                        dev_func(&rproc->dev, fmt, ##__VA_ARGS__);              \
-                        return 0;                                               \
-                } else {                                                        \
-                        return ret;                                             \
-                }                                                               \
-        })
-
-in remoteproc_internal.h and something like:
-
-static int imx_dsp_rproc_parse_fw(struct rproc *rproc,
-                                  const struct firmware *fw)
-{
-        rproc_elf_load_rsc_table_optional(rproc, fw, dev_warn,
-                "no resource table found for this firmware\n");
-}
-
-in the clients?
-
->  static const struct rproc_ops imx_dsp_rproc_ops = {
->  	.prepare	= imx_dsp_rproc_prepare,
->  	.unprepare	= imx_dsp_rproc_unprepare,
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 6249815b54d8..58c63f97ebf7 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -680,17 +680,6 @@ static int imx_rproc_prepare(struct rproc *rproc)
->  	return 0;
->  }
->  
-> -static int imx_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> -{
-> -	int ret;
-> -
-> -	ret = rproc_elf_load_rsc_table(rproc, fw);
-> -	if (ret)
-> -		dev_info(&rproc->dev, "No resource table in elf\n");
-> -
-> -	return 0;
-> -}
-> -
->  static void imx_rproc_kick(struct rproc *rproc, int vqid)
->  {
->  	struct imx_rproc *priv = rproc->priv;
-> @@ -768,6 +757,20 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
->  	return rproc_elf_find_loaded_rsc_table(rproc, fw);
->  }
->  
-> +static int imx_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> +{
-> +	int ret;
-> +
-> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!rproc->table_ptr)
-> +		dev_info(&rproc->dev, "No resource table in elf\n");
-> +
-> +	return 0;
-> +}
-> +
->  static const struct rproc_ops imx_rproc_ops = {
->  	.prepare	= imx_rproc_prepare,
->  	.attach		= imx_rproc_attach,
-> diff --git a/drivers/remoteproc/rcar_rproc.c b/drivers/remoteproc/rcar_rproc.c
-> index e3121fadd292..b7a39014b6bb 100644
-> --- a/drivers/remoteproc/rcar_rproc.c
-> +++ b/drivers/remoteproc/rcar_rproc.c
-> @@ -55,17 +55,6 @@ static int rcar_rproc_prepare(struct rproc *rproc)
->  	}
->  }
->  
-> -static int rcar_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> -{
-> -	int ret;
-> -
-> -	ret = rproc_elf_load_rsc_table(rproc, fw);
-> -	if (ret)
-> -		dev_info(&rproc->dev, "No resource table in elf\n");
-> -
-> -	return 0;
-> -}
-> -
->  static int rcar_rproc_start(struct rproc *rproc)
->  {
->  	struct rcar_rproc *priv = rproc->priv;
-> @@ -99,6 +88,20 @@ static int rcar_rproc_stop(struct rproc *rproc)
->  	return err;
->  }
->  
-> +static int rcar_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> +{
-> +	int ret;
-> +
-> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!rproc->table_ptr)
-> +		dev_info(&rproc->dev, "No resource table in elf\n");
-> +
-> +	return 0;
-> +}
-> +
->  static struct rproc_ops rcar_rproc_ops = {
->  	.prepare	= rcar_rproc_prepare,
->  	.start		= rcar_rproc_start,
-> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
-> index 7ac8265b60ac..a4d42b755c74 100644
-> --- a/drivers/remoteproc/stm32_rproc.c
-> +++ b/drivers/remoteproc/stm32_rproc.c
-> @@ -232,14 +232,6 @@ static int stm32_rproc_prepare(struct rproc *rproc)
->  	}
->  }
->  
-> -static int stm32_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> -{
-> -	if (rproc_elf_load_rsc_table(rproc, fw))
-> -		dev_warn(&rproc->dev, "no resource table found for this firmware\n");
-> -
-> -	return 0;
-> -}
-> -
->  static irqreturn_t stm32_rproc_wdg(int irq, void *data)
->  {
->  	struct platform_device *pdev = data;
-> @@ -623,6 +615,21 @@ stm32_rproc_get_loaded_rsc_table(struct rproc *rproc, size_t *table_sz)
->  	return (__force struct resource_table *)ddata->rsc_va;
->  }
->  
-> +static int stm32_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> +{
-> +	int ret;
-> +
-> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!rproc->table_ptr)
-> +		dev_warn(&rproc->dev,
-> +			 "no resource table found for this firmware\n");
-> +
-> +	return 0;
-> +}
-> +
->  static const struct rproc_ops st_rproc_ops = {
->  	.prepare	= stm32_rproc_prepare,
->  	.start		= stm32_rproc_start,
-> diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
-> index e5d1903c9636..9b9f07d152e6 100644
-> --- a/drivers/remoteproc/xlnx_r5_remoteproc.c
-> +++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
-> @@ -664,33 +664,6 @@ static int add_tcm_banks(struct rproc *rproc)
->  	return ret;
->  }
->  
-> -/*
-> - * zynqmp_r5_parse_fw()
-> - * @rproc: single R5 core's corresponding rproc instance
-> - * @fw: ptr to firmware to be loaded onto r5 core
-> - *
-> - * get resource table if available
-> - *
-> - * return 0 on success, otherwise non-zero value on failure
-> - */
-> -static int zynqmp_r5_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> -{
-> -	int ret;
-> -
-> -	ret = rproc_elf_load_rsc_table(rproc, fw);
-> -	if (ret == -EINVAL) {
-> -		/*
-> -		 * resource table only required for IPC.
-> -		 * if not present, this is not necessarily an error;
-> -		 * for example, loading r5 hello world application
-> -		 * so simply inform user and keep going.
-> -		 */
-> -		dev_info(&rproc->dev, "no resource table found.\n");
-> -		ret = 0;
-> -	}
-> -	return ret;
-> -}
-> -
->  /**
->   * zynqmp_r5_rproc_prepare() - prepare core to boot/attach
->   * adds carveouts for TCM bank and reserved memory regions
-> @@ -843,6 +816,20 @@ static int zynqmp_r5_detach(struct rproc *rproc)
->  	return 0;
->  }
->  
-> +static int zynqmp_r5_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> +{
-> +	int ret;
-> +
-> +	ret = rproc_elf_load_rsc_table_optional(rproc, fw);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!rproc->table_ptr)
-> +		dev_info(&rproc->dev, "no resource table found.\n");
-> +
-> +	return 0;
-> +}
-> +
->  static const struct rproc_ops zynqmp_r5_rproc_ops = {
->  	.prepare	= zynqmp_r5_rproc_prepare,
->  	.unprepare	= zynqmp_r5_rproc_unprepare,
-> -- 
-> 2.34.1
-> 
+Acked-by: Karel Balej <balejk@matfyz.cz> # for Marvell 88PM886
