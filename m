@@ -1,69 +1,74 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11021143.outbound.protection.outlook.com [40.107.130.143])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021092.outbound.protection.outlook.com [52.101.65.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E39337AA72
-	for <imx@lists.linux.dev>; Wed, 27 May 2026 10:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.143
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371663EEAD0
+	for <imx@lists.linux.dev>; Wed, 27 May 2026 10:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.92
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779877328; cv=fail; b=tHts2k/P/YBFT/Yj4DwvtoNlxdWcq2R3ziV/arTyXYQzlQiYPT8CFCzxqKfIQeyT2LdD0mshMaC3oO66YToyex/cHQ3UsH07AQgz4cbEmIhBF3+MFPpnda9Mxg6FT/GQ771GQalhlAskw9cjLCN66p1lUUq1KV4v+TSBuPE+h2Y=
+	t=1779877874; cv=fail; b=owvWA/zPx1KY46GJticKElHW8cbO86yWadzq37VARGWrKMYUWgVXacAUiQ4NksLaddEtxAei+0EaKn9xswhgTEh0KR9YWe7vgr/U5bS2r30v2FlFNcS61+0VkBqC956dt3jkgXB/YQmnrXKcAoj3mNPQtKeOW6HnWD0ErPFh/7Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779877328; c=relaxed/simple;
-	bh=HGHlZCgVxPsHduuohrQwmuwD3YxW3xO06R6dIvygIj0=;
+	s=arc-20240116; t=1779877874; c=relaxed/simple;
+	bh=heRwTyeph2lOTyyTgl6Ufasv3BxcD5UILIEu6sn1ev4=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jyU1UPsy9bF0Trt4PhqxpBoIODbzyjFNXq4RBIFESmHaaJgti6Nu6chr1jQZib1yNFkJYQSBPEwWdgL8zq/kpNne3d2MtB7pU0PUvrSFBBRAUP1DRunifTrTX/RqLzm5ojELdvf01Z70zPo5fk86gv54Yf1ZLR+/4v5r4wMuqzU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=g/IYIFIM; arc=fail smtp.client-ip=40.107.130.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
+	 Content-Type:MIME-Version; b=sdRHMfnmhdzE3x2wYih5clnOT7SEXBC+6vIJ1+McpXu2PxEr1ThkkWP81i15hQuOv8u6rRBxEUln20mb4mN/GBmtmtpB2x9Em3RvS5/YiF/46FRSVx40qBpBb/QTjoe24h4smOcbGfUKBZa7BEKDBrDJ1ptzixHLeGqvso7fDo4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=tIuKCk5j; arc=fail smtp.client-ip=52.101.65.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="g/IYIFIM"
+	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="tIuKCk5j"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HQnwRq7y/Hx+67qZcgrtYZZS+O1/YlXAeVUKX3WDjcHmseG7KLlYtzsO+mm1XWh02IjvhNEAB+ySz2pZFW+2RmY2SOwHuu/9wokhpX4u+/HMN9yMy9LE1D6nDyJpVFAS2sFhmQNYgIItd5DItgyq2RWp/hRFEssLPgR8RcGe3YWRg20VdZHOoGv7cVN+Y+b0rY4OqudSCasSChbgOETZD+KwWZvIO1QII70wX903oj9nJNso2CegQYdrR7+6l4kI/3tiaH70GwTwuYC4yDepwclmZMT4pv+7T9y2l2FyVKyXnPMXbZraABl2Ig7O55YKaotHoKe9daSC7Hdy1s6rVw==
+ b=h6tHQG54xL6ZwBW/zc1mEG7M+An3LJXWta+xGpSnzjyq+1+41+dvYM6U/2BtlU8uzSYxwhza2PF9ZP8IQRDmRweqxtFLyxwhjEdRFO2C5s7+4ez+FwRKiuwOKm1rPZqRqCE6swUxaPlcIW9kM9rXqZEnRAzvTLPkv0y9BDxPqDOSBLGm5bDwfqxph/QoZSt7TOLM2u4mh+5+Db2RlEJ48Xmi7rOTuurVOQjsyUD85geK8D5JGk1esyTR8J+C3AboXPKVEl9yTu8LuqFdUgwaZ2IHp79dgi29JbM73M5aq8X9AGokZut6RHgzzGYsdLh9mJrnBBsnkJhaPrvM/CET5Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PS43qXwJoM33CZPi1OsHc6s+xRDL8sYrsx1wLitIIPg=;
- b=IGiYaOss5Q58QV1qP+g8W1Ingx9dCr63eVaWP39lnw/iJ3nCY/cvUIOdI1dFpfg59WApGnE03wJn6YcnBc8QbpU2TbzjOyTxYrnAJJBILDqSlwG/m6O80O/fcPEjFKEVza3oBK5FmnJxcsF0bCO4qanLJ0id5aNboXyAvZI2Cv1xXcipxFmFhTAh5Vn4hVvPReHMY1FZKmaKC140q+PBe3EZ6zU1UTFKQ9+VOMJGb4NHYPnE1pdAvdPKDfJcCsH0sdqGjzvrFSnWDYLa30rm4tmudamxvrnDOFXhbZmjIsH4XvmX4yE9YO/UCo4QbLpmeEKaSEuFnCKba/agbS0y2Q==
+ bh=214qW9XVUv45c5SbNVET6TCf9qd0hoAYzAwNkzNm07o=;
+ b=uFjNJzB1zmguobWzKYPSTEEIMOh2jGQVRUULgn9rlYxNaYx5b2BNBa54NG5yoL8czIBDw1UHJiZvaCY8OnNOD/ecpXj8kwW4ymQ42ak20L7GVpqidKCNkgtmGiFCUPd/JBU+b7gK56jx+4qrNk/VMbn4cWv3ZUnjQVYjvsLbZGHuApEbJalxUm8q+DP01DK3kcNnbQvTRASDkhCijYI/Tid/IbMAPV1kRYrx5AkPzstyA7y6hVGivC8nNkp1i3FieLaDtubDyVgWDItuNtKsRE3E/iSbmx1+/TvapSl2wPkrIomfSb7bPssEznxJxRYadWM2hLEsiFFHKwxPIytzkg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PS43qXwJoM33CZPi1OsHc6s+xRDL8sYrsx1wLitIIPg=;
- b=g/IYIFIMyWjXV1hggVtksZUj+3NH63258ozGTYhl9xbKR0NACKH5cF4+lozEQg87dNKN691pKnaQlxDA3SmH8PTXvVqIpaSBTzsQjuP6r9nGYCxSEWBQdk8rhz1BEP3jOeMwb1czBsimWdEmHFL8Ydn/+V8CAJrXudFSE8Z+EQHgJkQ44jWxVxI2mA1yapurNaieuryJFz+bK6qpQGppQnky3c71KQZ+xb3gwrwC9Vz2Uo2kasSkvKvqLLm6dGKIC+FjM0bLslaq3POu46LIoKo9tu6vxLHvPwuVv8uy0VPHvEjg5r3bp1RHe2A4PwxiZZW0i6+aQQZ1YzD5CrCt/g==
+ bh=214qW9XVUv45c5SbNVET6TCf9qd0hoAYzAwNkzNm07o=;
+ b=tIuKCk5j1w8rAuHw+xhydI2wj7f4VWtqj1vknaCnaVe7zydQP/v+MFLhBPWBCMJPaW/TyYeaog3/DenBJaI3Diau9LCwyMW1f/WHU2QQShBKVirEk96EUfCDfp6In8EDmrkSldFVlswbAKbRQ828KoPGjudV4qCbZQpCHIZ1WippfKHdaK2J6+kQyZiZ/um2Vcy9ag5D1l7W+OVgWn6vaHYsTFfTQlUmO37r1i8TQFhoHRwDrxBU4Ri31MVBRZ7GO8A/BZxsJkuWCaZOWAo9rjCD/2TVCCeyM1khDchKhjNSKaWrXBqLAx0p1EpcWcW4mux8lpYNKYsjdCo00ypYvw==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AS5PR06MB9040.eurprd06.prod.outlook.com (2603:10a6:20b:676::22)
- by PA2PR06MB9200.eurprd06.prod.outlook.com (2603:10a6:102:406::16) with
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
+ by AM8PR10MB4130.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1ea::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 10:22:00 +0000
-Received: from AS5PR06MB9040.eurprd06.prod.outlook.com
- ([fe80::923e:d30b:98c0:c69]) by AS5PR06MB9040.eurprd06.prod.outlook.com
- ([fe80::923e:d30b:98c0:c69%7]) with mapi id 15.21.0071.011; Wed, 27 May 2026
- 10:22:00 +0000
-Message-ID: <38fc139e-3858-4037-b2de-700d7b092ce7@vaisala.com>
-Date: Wed, 27 May 2026 13:21:58 +0300
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.11; Wed, 27 May
+ 2026 10:31:04 +0000
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22%3]) with mapi id 15.21.0071.011; Wed, 27 May 2026
+ 10:31:03 +0000
+Message-ID: <b821c94d-655f-4154-b4b8-4310138bbcbf@kontron.de>
+Date: Wed, 27 May 2026 12:31:01 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] net: fec: fix pinctrl default state restore order on
- resume
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20260527-b4-fec-resume-pinctrl-order-v2-1-293096f48703@vaisala.com>
- <DBBPR04MB75001DF6E52F4316085D551388082@DBBPR04MB7500.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Tapio Reijonen <tapio.reijonen@vaisala.com>
-In-Reply-To: <DBBPR04MB75001DF6E52F4316085D551388082@DBBPR04MB7500.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-ClientProxiedBy: GV2PEPF0002398A.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::37c) To AS5PR06MB9040.eurprd06.prod.outlook.com
- (2603:10a6:20b:676::22)
+Subject: Re: [PATCH v2 1/2] drm: lcdif: Set undocumented bit to clear FIFO at
+ vsync
+To: Paul Kocialkowski <paulk@sys-base.io>, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
+ =?UTF-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>,
+ Marco Felsch <m.felsch@pengutronix.de>, Liu Ying <victor.liu@nxp.com>
+References: <20260402183351.3281123-1-paulk@sys-base.io>
+ <20260402183351.3281123-2-paulk@sys-base.io>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <20260402183351.3281123-2-paulk@sys-base.io>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0060.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cc::20) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:1fb::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,142 +76,110 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS5PR06MB9040:EE_|PA2PR06MB9200:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd0c2812-4e38-49bb-af18-08debbd9ca21
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|AM8PR10MB4130:EE_
+X-MS-Office365-Filtering-Correlation-Id: 442f48ca-95da-41f2-6a7b-08debbdb0d98
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|22082099003|18002099003|11063799006|56012099006|4143699003|4133799003;
+	BCL:0;ARA:13230040|376014|366016|7416014|1800799024|22082099003|18002099003|56012099006|11063799006|6133799003|4143699003;
 X-Microsoft-Antispam-Message-Info:
-	CPuF/6NFO+2EG/JKzh+N+jEJn4KV1Ga2MgbGM9otx16wBrPxVO6/nUtyRQ1iw0tURn6EYuC5ENI83E8vgJ5vVNiIm3mSbPSLQZNiBTsWdYls2fv5gULYhKTc2QVujz9HAIVjeTd/7+zAq5jgqGtJw64d/wcoHlrsz7BCGdwGeWzRsQo1eHavijl/hRdc2jgAYxp001D9ZiLLxhYebY0Yx3T/SnRmiMWFuezfGcWyWbeILibSEaiRv5L0pM/04YVptCX8QQ+P40Qpz7P8AMwG7eN5sZfQ1Rd+EYSIxjlrS8xFCF4rytf62k7aj/Q0PA8GTH9VQ1Gf8yUCRqW4OQ7lBmBm6kItSMc04XFDdcR09nH+A5YCLHtoyatvqQLzOKVZqLeu2NRGckZuSLD6zEp73qdrFX68Dz4uaDb3jVxbUdxGIO+qAfBcJpY2jlIZV66FaDyIpgtEYXDncInQlkOpco8sXUxVz7LgQkKFDor7BpwaNJ5C5X3hr3rvvV0Nzf/uhrSfA8wX1wcs7XeEyy9l0b/jdNLXmfNsGnR5nja6HNafUcZtKL4SEgu80EE/jsHGOy3FNGEymfCqfSv4u/WNx/5JpmBTzSlH+JgOkrTPPm68tsuOY7AkjvRfR0EPGezdwXSr4geLdW5M0LIJmhydbw==
+	9VLxAQKXGn1sycTqcilz/ZAKOqg4nFCZ5RM1dbBaBp4Kf554RelHLsPXGzf+TbbUjEhgLuESJbfBW/4BcZm3i6M1TIpRtC1V1ae7Km6TI+tCXZirsbNfn+rbZhQ5RP1Bo2uusaCoIjcXO90N4Etoli4Pzgr+gE+YuqxRpkUUdmvv7QRDcIIsV03nZ66Fuh7hQKtmyX5AIdqkJpUzfJlU1yu5JdNRQEhbrndVQxFqR6409qgK2LMsYKKHcs1D1uDt3zIhR1Q1cJCU7De5P3VUM4HfoRv4fD3nRcIbyaowHqvkw3vNMlvi9RAJUgwzVQSvGGv5vPbZt0HjxT7AY/D2x/qsIq6aKscns2z7JjUffjsuUFGcirz+u6/39pER3vRwdjSSpGIytOfTgnzmIbPCsQBICNRiPYmshU+aZMDgbpFzd8pYPlhvsq7kKoBmBpgaqvl3GRrhiky2U64xiJ6kq9+URG+YR+5J4ZK//K3eRL/d3AxfcQiHniv6GYLiBsZ8/wUQfbIjEoGKjpWPwVmKzdN0ozAf8SlFn5P+jxtjggQl+oketPN1HZfixLrsW6GEOBbiRo2hZ9Q3GA0VoJPaujnWPfZC4syWYOh63ml8Wy7FBnPiITm6g832SW4Yvg6oxYz8M7QeLdx6pNW/drzHjWy2wDq3k+qK7QFuj8Ft5f9CZKYMVSrW8qPOb3I+GM1P
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS5PR06MB9040.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003)(4133799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(22082099003)(18002099003)(56012099006)(11063799006)(6133799003)(4143699003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R1JHbzZHMTRNWmtOb2tvNmVOVk9WaSs4M2VvSUM5WkpycGF0RW9zUzZERUtI?=
- =?utf-8?B?dUplcDRiQUdwME9CM21wV1pQTjhraVRzNWpWazYrT2V4emNnVzh4UDI3c1gr?=
- =?utf-8?B?cTlBcnJocUtjSFV0OWNMRStvdnlGRm9SOVdDOG02Y1ZDYVNNMVZkTThLZVlE?=
- =?utf-8?B?SmNDamQrMUxVWmlVUEd6aS9iZE44QTlVTDlFekc4UEx3NkUyWUxDZVBrSVY5?=
- =?utf-8?B?TVJaczQ3MzMwQncwaE1kWUJDb0Yvak9CbVk4bzN0Q3gvSGZvZDFXdnZyNHRX?=
- =?utf-8?B?a2VDSHBpUWdvajdNQXBVekZSeFgxeTdIRlA4RE90dzhaQnJZS3BOYkJrc1lw?=
- =?utf-8?B?aTNmTFdWaU8rMWlVZ3dzYXVyajJXd1NseWY2UXJMWGtjWHVWQ3IxTENtbTk1?=
- =?utf-8?B?MGY5NmFqWkd4VWk2cmpSN1JTd3FhdzJWcG56dGk4S0N5OEhyRC9BaHBoMFJO?=
- =?utf-8?B?RFc0dHRGWGRLSzdwUEJmQ1VnM1ZRTE13WVp6K2YrQklkZGVxM2ZWNlA2RkFi?=
- =?utf-8?B?ZVAvOXNWTjl4Ny9HSG1MTlVoM0M4R2RtYkZXRFJId1JFblNybEhlRXBTMXZz?=
- =?utf-8?B?RWpVcTRNM210eUxiODR5bnVTOVV2TklCVDQ1U0szMzRuMDQ2N1pqNGFzaG45?=
- =?utf-8?B?VkFTR2RWbTl4Rjg0VGlXc2ZiQTZEYzRYS200QU9uYndTejB4Wm1GUFNrSWFM?=
- =?utf-8?B?dXQ5U0I2MmJzcmljbU5Tb1VTdkYzRXh6d3dvV0lxMStVV0U2elVtem5Tdk0y?=
- =?utf-8?B?Zng1aGRmOFNPODhlTXk2a2xWSzhlQkF5azJwQWZwSUFoREJmQTlTQjd6d1ZC?=
- =?utf-8?B?bHQwYStOc0xDNUxRWTd4R2tHbnpKZTYyWHNPUTc4a1lmenF0TUdTbkNUWDVD?=
- =?utf-8?B?UTFwMEZUamRVR0NVVDRzV29QN0tsWHpadWVIdTY5VmVaVnV3S3E2QnVqQXZB?=
- =?utf-8?B?aVEzeDZqNzczdVRJTVlIbnloSmZNZ0d3WjZwdDU3cG92WXJYa0JwcURiS0JN?=
- =?utf-8?B?U3dzVmxLcGx6eFAwK3hkQ09uUXN2dW1odkptRnFxY2NhTnBnR01oV1V2czVU?=
- =?utf-8?B?QitwVlQvL2VHYjl1T2UxUGMwYkR2NWhLRXJiK2tpTjV0cnZxYkwwcjhwSjFM?=
- =?utf-8?B?NWVvQXY4UWZ4QlpNQjl4bWpHNHhBckpBVER3cGhrdzBuQUVmdjZvR3JFdm9y?=
- =?utf-8?B?eTZkZXdYTURUSXdJck5BZ3RHdUxXOHIvYVRyZWRrSnNKUTFxek5vL1BaYk1q?=
- =?utf-8?B?MlNlQ1doSHI0MHVhQmppWUxKdUl1dlJqQ1RaUzlXTWFPMk55VWt2VWxwcW9s?=
- =?utf-8?B?cTJMOUhJWDIzZHBGWDdjVWE5dFZnSHNVaDBUNVZaL2R0N3RxbU1rTUVneHND?=
- =?utf-8?B?ZjBlSGlkcGlIZmJVSlg4ZDh5eDlhZjJsYVBJeFQwb2tIYWxoSVBOdmJidFM0?=
- =?utf-8?B?b1FlWkxnN1dUbTdhRXlEck1vN0xBK3M2MUIzK21UMzF3S0tVdldxWkF4czVC?=
- =?utf-8?B?M0lOREJjTVo0WFRJMTFQeGZPSTRVNWlhK1c1UHNndkZsU3kvam5jOFpsU0E5?=
- =?utf-8?B?ZmtucjhvTkszbHAveHVodHY3TXh3VlJCRnJjcEU2aHZxSzNPRkpJbVBvaDJz?=
- =?utf-8?B?SGhFbzZLTFlmdmtPWkpJTys1MEwxN1RCb1NlTVpqYlVEWkdmOGFYQVBxNXVw?=
- =?utf-8?B?VGRGK1ptUDM5TVdlbiszSXNsVndJWEhlN1QwbUNkUldFMk5sbVVuQVlpWWxy?=
- =?utf-8?B?VFlkVHduZ1dVYnduWEhacW5yNWxDck1FWlYvL3ByVm5wUEZNSlR1WEs4dGpu?=
- =?utf-8?B?RlRmcXFJME1Bbm1OOGVPYVpyNzBTYlUySGtXWGRnU2JsQVh5ZHRPY0Q1NUlD?=
- =?utf-8?B?RGx5Tk0wY2dWelpEdjQ2MDRBczVBRUgycE5WRGNQZmlKS1pjM3lpc2pRbHVV?=
- =?utf-8?B?aitwZmNoamhQRmJPdXZMcnhhM0RoMXY5TVpla2JZOTJzbDZIRlRvT3NsT3dw?=
- =?utf-8?B?NWhGYmwzTWs2azFaQ2s4cnhhTTVUUmVjVEUrdjFTQXJ2WmJpM2VjN0NJcWVG?=
- =?utf-8?B?N2IzOXlWcUpOWmttWndCeVhsM0N1ZGNOU2NQWXRSZTNpQ29obHpPKzRXMlNF?=
- =?utf-8?B?K0E1NklNRU5oUHcxYzN5Z0t4Ymw4cXBGeklPQkdTaU50Z1YxYlpJbXBJY3Qr?=
- =?utf-8?B?VThvNDRxc2FFK3M2VlJBL0U3a0RRdExRK1hVMU9naCtwWVRzcHo5ZjhOalFo?=
- =?utf-8?B?d3BldVdsVWNoTjBXK0J2Zng4bHBmSmhmVHlNWXFaNnZMRXBKU3dwbUsxZTJI?=
- =?utf-8?B?WlI0WDk0MWtQVlQzYmhoSndqbWhaK2svYWRPOWV0UjZuUkUxdDdyWXJkblly?=
- =?utf-8?Q?UJDktIWtL+wJRc38=3D?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd0c2812-4e38-49bb-af18-08debbd9ca21
-X-MS-Exchange-CrossTenant-AuthSource: AS5PR06MB9040.eurprd06.prod.outlook.com
+	=?utf-8?B?NDV4T2hBdHpWcldjNG9yS2MzWUpVMlZSenVwY01RUXBQSWIxc29tYkpHUnhN?=
+ =?utf-8?B?LzNDaGlMc0RWcGt4dm1jQ29DL01TSTFXbTUwd0htZysrMEtSczhJcFVhNlhQ?=
+ =?utf-8?B?KytEUjFQZ2lEOHFkdDEyVVJDdFJyNlN4S0VFSk4xSThBbWN2b3FYQ0JxdEhD?=
+ =?utf-8?B?SEd0eVJmTjBtRFY4SzZRKzIyYTdBQ0paUnNLazk4eExkOFNFWXhFUTFRbUgx?=
+ =?utf-8?B?VHRoUEZLd2NKcFhiUSsrV0E3amZJakJNWWNxR0FuNXUra3RwdzB1SFZqQmZx?=
+ =?utf-8?B?dTJZbGZ2cFBMdHJOMkpqMEZxY3lxOXd6WkFwWHNDSGh1S0szbUx1emhrczBD?=
+ =?utf-8?B?Si9abWdCWFc1bDFRU28yQ1d0UkdHQStraVJMSjdMZG1TQ2FFdXA0TXJ6WEVG?=
+ =?utf-8?B?MGI0L29GVUVMSHBiUDRiNVk3NDhmK3M4SXUrVzRxK2czbkRnak5zK2QrY2pG?=
+ =?utf-8?B?VWRRYlIrL0pCeEZseUJYUWZ4ajNDZ2gzRkNKeE1HcmduMVZ0czh6ZmNpQ2Q5?=
+ =?utf-8?B?dWl0MFp0T3JZY0pzOG4xWmJUTm9yb0MvamdjZkdCdm85NGVlV25kVHNkSVlQ?=
+ =?utf-8?B?N0NmY0poUEJTaDdwQk44YUdseHV5RWJQRmR5TkZXNlhjRmR2eDIyb0xKWXIy?=
+ =?utf-8?B?ZHJnTndlcEJTSkJPeWdwajl3TWRFaWJOVzBJaHZlVnFxbG1EMGRSc2RxS3Nk?=
+ =?utf-8?B?UFd6YmpqZ1VhQmYwbjdMWWRhOTd4VDlVRVRrRFlMSGp5UHNWemUyZzRqaHNn?=
+ =?utf-8?B?czlLRCtDVmsyZTRCc2V2Q0NnU2ZLN1hMTVNQenNtTGl3NDVRWjdSYnMxSWFJ?=
+ =?utf-8?B?N2lOQlpzSThKMlRFRzVQRlJlRURJeE1NRGlnL3BhVTBOZ29VZlQ1TmI4Z3kz?=
+ =?utf-8?B?N0Y2UFBtNWZtcW9pWHRzU3ptUWtWUCtaMjJiNU9ETC9ZSUQ2WlhGbVplVFNG?=
+ =?utf-8?B?VnBNSTBKVmxuRlMwNHNVeVVsYnNMTGlMOWp4NkxYM0N3ZGlnQkFTNVdRa0Vv?=
+ =?utf-8?B?eDRxU25RYjhWZHFiazFxZmJxZFNxWTQwVTR0ZlMxdUxiVzNwa0JiencyYWlu?=
+ =?utf-8?B?WDFJdXlOTndZcy9CWU9KZEt1dUFXZW8wRWxYcEs5b0Jwb3hlVUgvK3NoM2xn?=
+ =?utf-8?B?azB6YzRsMkFLMU83OFJRVDR5bms2Ukw3VUd1OEtEY2JHM0ZNTUVUdU1qU3ln?=
+ =?utf-8?B?UmJkWlp4Uk9ORE5GN1BQQkkvL1ZVMTgyM0FYRThoUXFaTys3OFdBV0Z2RFE3?=
+ =?utf-8?B?ZlFDb0phNkdpYXJSOXNxekFkMkdLeDd5a2NIN3pIeEhqS3UrdE9ucWpXLzhL?=
+ =?utf-8?B?S0t2ekJtT1RYNURBdW9XT0JFamRpMzFDRS81Q3NiT1M4RlRKUXVMTjc5SURK?=
+ =?utf-8?B?V053NEhYRkRyZHdONWNObWliRFhnTjF0ZlYwc0MvcUN0ZzdSTGVYMWxhd0ly?=
+ =?utf-8?B?NXB1bURDS2ppTkcxa2FqcWxncXFBa0FSSDlZc1AxNFp1WjRiUS9UdWtrV05p?=
+ =?utf-8?B?UWlPMXgvU05hdDYzNFRRUEdYcGdSeFBLNENiV25OYWFTQUo1N1Q5QVV6TGlP?=
+ =?utf-8?B?dVJBZndEYXBhell3S1hZTERDaXlOeU1YSHdQRW40eVhZQ1B2YktkOTNLb2xU?=
+ =?utf-8?B?LzJrWVlJZHdTL2p2Ym4yRER5dlE0OGRwMUhsYVZweUlscWw2TEE1djdhN1dU?=
+ =?utf-8?B?Q1lKYmlpNGliWnEwOE5DT3dDMU41WU5aOUxQcGxQbXQxUktpUlh0dVhpb0Fu?=
+ =?utf-8?B?eGpRNlAyMGQvU3I0S1lyeXBjeS9POUVwNmVEQkY5Mm5ndjIxODBHamVSY3V0?=
+ =?utf-8?B?bGI3SDJmSXc5c1l6WnZkQ1FZT0VzWTV5WjI0KzJTVkkyNy9EZUVJaTVOeWdv?=
+ =?utf-8?B?NjRENjRCaEQ4bjJJTlQ5bzBpWlZoeEhKdGhna2gySFBoOFZDbHZMdkduY2o4?=
+ =?utf-8?B?YWdQSlc3WW04c3FUcEJnRHNLZHg1SHU5V1RscUhGTFVmZ01yTVBWdHpGeVhC?=
+ =?utf-8?B?N21zR2VVKzJ1ZW82UElNbzRoWTkvNTRBYUxSc2pEN2k1VlNRblpWTC9HT2Ni?=
+ =?utf-8?B?Vi9GVTNLOURldXFIQVA0SzJhNCtuVzl0dDRzOFlKelhpdWpyeVFkTmYzN3g5?=
+ =?utf-8?B?cnNUV0Z4WUZNRTNkTnBONGVBellOTHdOSVFVb25FL1k0ZWZMNk55NkZhakVv?=
+ =?utf-8?B?Z2h0VFppL3NyTW9RcXZuMXNKaGNyaDRCcmxibHAycDhKVTYwcGJoMy9Xd0VX?=
+ =?utf-8?B?R0ZLVC9DUVl6M3FJWXpRUVc2aE41RjNVS3MxZnVSTENlcUI4MUQvbTZBdWt1?=
+ =?utf-8?B?Rm9EMnNZdWJpcHBKaXFjSXdjYjluWEFlM3V3Zm8rM3N4aCt6Rk1yaG53Zm1P?=
+ =?utf-8?Q?WjAOs5HQNJO9XDjk=3D?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 442f48ca-95da-41f2-6a7b-08debbdb0d98
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 10:22:00.7527
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 10:31:03.5222
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: d7ZiLIzXt1g4W49xQJTVgYuKrwDYMMzblLzx8ZA9zffpwCtASlceyII6r5dybjwnAIoUEtAfpNM2HFS8FVKnLHym0Os2tIFTa60rXRgzKM8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR06MB9200
+X-MS-Exchange-CrossTenant-UserPrincipalName: H8yuHx6s8cTCoZJbfHl7q0lXyAiNAjl4ag+tYmYUUdgaw6BPX3efRTU2zZKGwArbzfa+RVcD1RAoKYHz3Z3qJGS61kJc1x+KiqSQduIrPfQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR10MB4130
 
-Hi,
-
-On 5/27/26 10:47, Wei Fang wrote:
-> Please wait at least 24 hours before sending a revised version. Give reviewers
-> enough time to provide feedback.
-> See https://elixir.bootlin.com/linux/v7.1-rc5/source/Documentation/process/maintainer-netdev.rst#L15
+On 02.04.26 20:33, Paul Kocialkowski wrote:
+> There is an undocumented bit used in the NXP BSP to clear the FIFO
+> systematically at vsync. In normal operation, the FIFO should already
+> be empty but it doesn't hurt to add it as an extra safety measure.
 > 
->> @@ -5594,12 +5594,12 @@ static int fec_resume(struct device *dev)
->>                  if (fep->rpm_active)
->>                          pm_runtime_force_resume(dev);
->>
->> -               ret = fec_enet_clk_enable(ndev, true);
->> -               if (ret) {
->> -                       rtnl_unlock();
->> -                       goto failed_clk;
->> -               }
->>                  if (fep->wol_flag & FEC_WOL_FLAG_ENABLE) {
->> +                       ret = fec_enet_clk_enable(ndev, true);
->> +                       if (ret) {
->> +                               rtnl_unlock();
->> +                               goto failed_clk;
->> +                       }
->>                          fec_enet_stop_mode(fep, false);
->>                          if (fep->wake_irq) {
->>                                  disable_irq_wake(fep->wake_irq);
->> @@ -5612,6 +5612,11 @@ static int fec_resume(struct device *dev)
->>                          fep->wol_flag &= ~FEC_WOL_FLAG_SLEEP_ON;
->>                  } else {
->>
->> pinctrl_pm_select_default_state(&fep->pdev->dev);
->> +                       ret = fec_enet_clk_enable(ndev, true);
->> +                       if (ret) {
->> +                               rtnl_unlock();
->> +                               goto failed_clk;
->> +                       }
->>                  }
-> 
-> I think fec_enet_clk_enable() can be moved before fec_restart(), and there is
-> no need to call fec_enet_clk_enable() separately in the if...else... branches.
-> 
-> Or move pinctrl_pm_select_default_state() before fec_enet_clk_enable(),
-> as shown below:
-> 
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -5644,6 +5644,7 @@ static int fec_resume(struct device *dev)
->                  if (fep->rpm_active)
->                          pm_runtime_force_resume(dev);
-> 
-> +               pinctrl_pm_select_default_state(&fep->pdev->dev);
->                  ret = fec_enet_clk_enable(ndev, true);
->                  if (ret) {
->                          rtnl_unlock();
-> 
->>                  fec_restart(ndev);
->>                  netif_tx_lock_bh(ndev);
-> 
-Agreed, the second form is cleaner -- it keeps the fix to a one-line 
-move of pinctrl_pm_select_default_state() and drops the branch 
-duplication I had in v2.
+> Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+> Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
 
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Tested-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Calling it unconditionally is safe for the WoL path as well: 
-fec_suspend() only selects the sleep pinctrl state on the non-WoL path 
-and leaves the pins in the default state when WoL is enabled, so on a 
-WoL resume the device is already in the default state and the call is a 
-no-op.
-
-
-I'll send v3 with this shape.
-
-
-Many thanks for the review,
-Tapio Reijonen
+> ---
+>  drivers/gpu/drm/mxsfb/lcdif_kms.c  | 3 ++-
+>  drivers/gpu/drm/mxsfb/lcdif_regs.h | 1 +
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/mxsfb/lcdif_kms.c b/drivers/gpu/drm/mxsfb/lcdif_kms.c
+> index ef3250a5c54f..a00c4f6d63f4 100644
+> --- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
+> +++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
+> @@ -338,7 +338,8 @@ static void lcdif_set_mode(struct lcdif_drm_private *lcdif, u32 bus_flags)
+>  	 * Downstream set it to 256B burst size to improve the memory
+>  	 * efficiency so set it here too.
+>  	 */
+> -	ctrl = CTRLDESCL0_3_P_SIZE(2) | CTRLDESCL0_3_T_SIZE(2) |
+> +	ctrl = CTRLDESCL0_3_STATE_CLEAR_VSYNC |
+> +	       CTRLDESCL0_3_P_SIZE(2) | CTRLDESCL0_3_T_SIZE(2) |
+>  	       CTRLDESCL0_3_PITCH(lcdif->crtc.primary->state->fb->pitches[0]);
+>  	writel(ctrl, lcdif->base + LCDC_V8_CTRLDESCL0_3);
+>  }
+> diff --git a/drivers/gpu/drm/mxsfb/lcdif_regs.h b/drivers/gpu/drm/mxsfb/lcdif_regs.h
+> index c55dfb236c1d..17882c593d27 100644
+> --- a/drivers/gpu/drm/mxsfb/lcdif_regs.h
+> +++ b/drivers/gpu/drm/mxsfb/lcdif_regs.h
+> @@ -190,6 +190,7 @@
+>  #define CTRLDESCL0_1_WIDTH(n)		((n) & 0xffff)
+>  #define CTRLDESCL0_1_WIDTH_MASK		GENMASK(15, 0)
+>  
+> +#define CTRLDESCL0_3_STATE_CLEAR_VSYNC	BIT(23)
+>  #define CTRLDESCL0_3_P_SIZE(n)		(((n) << 20) & CTRLDESCL0_3_P_SIZE_MASK)
+>  #define CTRLDESCL0_3_P_SIZE_MASK	GENMASK(22, 20)
+>  #define CTRLDESCL0_3_T_SIZE(n)		(((n) << 16) & CTRLDESCL0_3_T_SIZE_MASK)
 
