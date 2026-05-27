@@ -1,156 +1,229 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11021116.outbound.protection.outlook.com [52.101.70.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB073F164F
-	for <imx@lists.linux.dev>; Wed, 27 May 2026 10:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.116
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779878155; cv=fail; b=QCFWOs/sKEQ144VHRGhS0uq4rvlAO+d437ctLvZEkMgMyyphi/JkYrWIF0BMqeUi6HUTNJLOADk0Z5ulUD85IT/XKe7Jt/e78lygrMmLYLYofjU4k2pBar6N9xfPdmg8QRFCuWmSO8GdP8UHQCJVeULAV7EaxUT3uuPqOqc4p5M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779878155; c=relaxed/simple;
-	bh=Lidzj+562+OoD3A15hIBTrcFjcJg0gO8Us9JSqppKY8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kq6h6cTA8D1EBhnx1aMjX63fTzSBjRaK8DF2wiLKX4NCWKLmxCOOZFSomRDtQgapOvkVCzuk2hjD7/53tz63us4mdiHc/v2d427K2qwsUaTqQDVWeDykFqHG9SIljF04Fhxtlw0pOWL3p49oG5LbzrdjXtEKXoNc9Y5EDlND7iM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=DGvlhWdW; arc=fail smtp.client-ip=52.101.70.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500E43F20EB
+	for <imx@lists.linux.dev>; Wed, 27 May 2026 10:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779878889; cv=none; b=WR9qlzvyS8u7TLxNoqcRUJ4dXQ1hk6lpJbBQBker/WPzP/HLh26NuJSwdYh2IRs8z71Nrg4JL0RxzLxbFn/jqE+T/YBL0toZ74tDB6qeAdelhO2QCFyrFLV2l9nS3HLYyNlI5fqwluU+85qwkzy+Kc68pMKHnhmaZ2RTVd7zons=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779878889; c=relaxed/simple;
+	bh=9Xdnbrncq7VH0BmQ/6t4XS63l5XFKqkc1TeJjnWKNtI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W8XCi4zDHoOLDqcBKFFYLQPvLD7S+q0GpZ1/w0AEt1HmIjoYl7OArnX/NDnYGunfUIOoUP+q8rpKtXlx8yGYwPAA4BUJt31REL7MlT27fQa1lTIULm/GkMORdDaTUjFm24eK37hPAnIre8fCBpbYpE69TxeU7sQoLNJa6bnpFlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=HBVEB1ra; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="DGvlhWdW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AWh1NyDlJgWpxCMkUGUrFTtxbJyXDjn9qT6xzszxFqJ66ag//UrXgFEnXWS4cEjSRng1gmZZy5S/+CuyLR6OmepuMDLTi8waJZzYflX6FmlihRg1dXAISW2vLeYygQzXUY5bVLjsKojVxwg5UrUWp1ZZzLWml1bcDnnQVPoZ1+NsR+CWRw653i+widEdOoAwmkcvX5sanreQZob66LUAkuGjr+rXgyP8m/Vl+hATe1ub7LViJVlMzk4UEzMSSAjKKKwcgfOaQTxTJAQswY7tGEg9CoqKTDRNcqFdLPe1SMt5eeleqxkTAqbV4mTyYXGWoMfsmIRLBbRZwn16P8XN9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OUQA4NtnoU4DLQIOZUnX7Yw/AmmOxMCla74NIttugpg=;
- b=KzLpG7AiANmR0YEmX9ijvSzyr88frKFuErstoFE2cfsvQyCetRq6vY58x0sAHdiciEfmd74lHxcVdwgnwcBXTj+Z6QO+IRWJEgkpcUR+Wqi2yqfOSaClUd8340hQ5Q+AldazXypEBwEvB5UvLHaOj/y9BC2a8hhm8WZz4pry9eIET5O7S1QQoYfGGFsLIEu7yuzxJ9HkOiB5jiCgCG/gDTsvBBnQVoEqKZcF8KzbKo8lwQ3xAU5BdVP/j5+i36zW7tgS6S+4ZoilJ6D0jmuIrJ1mdP3HJcgC8txne6zW4lpwJjvxse2D7rXJrbt5NZsUe76QdH9yw7ennAWX496zvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
- dkim=pass header.d=kontron.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OUQA4NtnoU4DLQIOZUnX7Yw/AmmOxMCla74NIttugpg=;
- b=DGvlhWdWFTMqpzU2n0tc7gwXgzIHYNX1oZ6tfbGspVfVPWyUEBpjV0VJJdycK0i/IzjXsrnK85uWkpOY2GNW7UXhSy/NGCq2dEgtRARTGgEgMmA5ouNshm3x8fWA5tUQP65cL6b5hn3s9aHvokVsg4R4tWEH5/Fne0ACia387o8iOtfJRA3OsdHdEvTbiOyp3m5qr4zoAGt/6QCrK9ZE5qzVyBY1Ar3fqQ1qo3S1ISS3NjWu/83gBMVEwuvCWjaOp6J+ijNYu1jlV533MS1UOXtAyDqzeTCvRnIJom9YY4B3EYGdHnsneGqWFXxVuKGVnArwe3ben0dArWhDL3ecKA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kontron.de;
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
- by AS8PR10MB7563.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:563::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 10:35:48 +0000
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22%3]) with mapi id 15.21.0071.011; Wed, 27 May 2026
- 10:35:48 +0000
-Message-ID: <01c33cda-e6ac-44a8-b1eb-8a8d7118175e@kontron.de>
-Date: Wed, 27 May 2026 12:35:46 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] drm: lcdif: FIFO underrun/solid color bug fix
-To: Paul Kocialkowski <paulk@sys-base.io>, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
- =?UTF-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>,
- Marco Felsch <m.felsch@pengutronix.de>, Liu Ying <victor.liu@nxp.com>
-References: <20260402183351.3281123-1-paulk@sys-base.io>
-Content-Language: en-US, de-DE
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
-In-Reply-To: <20260402183351.3281123-1-paulk@sys-base.io>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0048.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cc::15) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:1fb::23)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="HBVEB1ra"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490426d72f7so48975055e9.3
+        for <imx@lists.linux.dev>; Wed, 27 May 2026 03:48:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1779878883; x=1780483683; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yohZLbN4T246kBQJdIC/qXF5efV1Yafvx3na1eLrUw0=;
+        b=HBVEB1rahoogS1v9uL391JSfwrp4WADn7l0ncXckH8QCCWkMW2DIN+YapLnI2QlMQ7
+         wJ5b2uBlTkJZEHMBqtmjwoENrkTI8XKQBFdQPT847jMYvmBa3wdJ4TyEfWsAH6xRvsPu
+         sUFWooS2GoQMoxKDm42PdiQ8iJGFspJ+CNdhWdhD+WBSU922Vu3XalflNpPK0KQvyEFH
+         /munetexqt8feGaS8b25WQXs0XrUy6RqEEk6nforSIpK6TdgvSiPU7EMunporOGvnk57
+         SPYTAn0qzQvLxUvcvO0WeW+pFByRAbu0GvvL5MLeuDYSuuDcRGIAOSxMLZJf5EVsRoMZ
+         f6eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779878883; x=1780483683;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yohZLbN4T246kBQJdIC/qXF5efV1Yafvx3na1eLrUw0=;
+        b=k55Fn6Qqh3RMe8AZWVl2OYDaw38+BynuFkuarKDPLZCrg77TChyfFInAdS2m6ShShZ
+         xQo/1j3sBhIjr+t+WF+jyURDqmSDJmXRs8q1tq0lGi2rifvKjd+WTUL1CUs1NQMdzCex
+         618YXR0RlnfSYdjyG8Zl4KaNrxy4JjIBJVVULFvS4on/Oz0/f7hCy5vJWi0/ezw3hng7
+         DXF8KdZuCScVqspIej4xj5ISe1e3B8CHTED6dOXmYjamVyPP+ol7wHwDVt0Gv4Odk3gR
+         XDSmOPGK7Q31BH71VToTnNqhWjIMLZ6b3Wl5TvrEg7+MKCgAi+keIik5RyyIVNqC3GeN
+         BVXg==
+X-Forwarded-Encrypted: i=1; AFNElJ9tYEuFjbN2RT3oF/krc9H3ZPkjEXU/6X5JekhSoQ3IbYi7gQjzOHKjsDd14GGH0Bo5w14=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywm5SrMsNBRku4AkTqiEi7BKxKTdI1uij8MkjdmGdu0RHozN3Ah
+	L8sGTbhyNYj9dmIZBalAUqVVKkgVOTFQ5KPtg66NuGdZ2T31ZfNU0T3lVJIjD0giYcE=
+X-Gm-Gg: Acq92OHe6I5ohOSR5Vej/ZV7hCtHJLzkXFfHt1fkyQ3Fg3EaGd2vYKvzC0II19jUaEe
+	V9/j9uPQIyYaUGrECPOHBWjdZRGt3VnzLf4sDOhO8P5EunlmJ5Dc5gl8E4vuTiFx0LApGLtTnwU
+	m6owSQ+EWqITOMkMio1K+4CPhhtLJfSJmzHnnmqxDHy9z6W76puslf1zBmihhpAgDiRAG8CWU1L
+	Xp1/cwabt0pPM4e8/y8F+/x4AqlcurGSySnRISO6qDjOHyQsaT0QhA2rxPVyKIIOExxkRkwdZ58
+	OhN3hxZ9QhFRS8IUYzEqXGIRvWkxbJTxyx9crJvQOkmgjd0pUmLeUG0/9udJfDaLCxvafnHIyFy
+	Sc/1K5XnmDCHPrXEoLGDtwlk1al2ydELMZcFXeqrycl8CHdDp1DwXy1qz5slmEfzJm7K7Ygt3Iu
+	/RYZdkgAfM1P2eo907KYwUEAJO6z3bQ6t2gQx/XII4lZXfihl4gYOTzX4aYJfMWFPeTmTXaCNgk
+	AtruO/mTP99UnKSpRIq5uyVEw==
+X-Received: by 2002:a05:600c:1f87:b0:48a:8905:a500 with SMTP id 5b1f17b1804b1-490424ad9abmr362404855e9.12.1779878883413;
+        Wed, 27 May 2026 03:48:03 -0700 (PDT)
+Received: from localhost (p200300f65f47db041edccd9970843bb8.dip0.t-ipconnect.de. [2003:f6:5f47:db04:1edc:cd99:7084:3bb8])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4904527526dsm428217795e9.4.2026.05.27.03.48.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 03:48:02 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: Chanwoo Choi <cw00.choi@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Javier Martinez Canillas <javier@dowhile0.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	Karel Balej <balejk@matfyz.cz>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Samuel Kayode <samkay014@gmail.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-renesas-soc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Subject: [PATCH v1 0/3] regulator: Use named initializers for platform_device_id arrays
+Date: Wed, 27 May 2026 12:47:43 +0200
+Message-ID: <cover.1779878004.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|AS8PR10MB7563:EE_
-X-MS-Office365-Filtering-Correlation-Id: c135c3ce-031d-4499-a868-08debbdbb73b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	bmDjm3sVDBRd511q8QlnmRWyGLmInVd4OufVtCs6r4K8YHK4rilby4XgeV2XzZhV9EKM9rFzNzmrMu3PJEkRZyj9pXZrZYLq/SeYkVMhCQM6bDa3HKhSeD39of40dAg24+aAkJYFSDrKywB1zbbuZV3GXcZislu9zaMi4AgzECZZuDMHV4F1YzHM7hcBq9RPpb65LDIR9jWNQQyXfD2R6MvSW8bvBi+Jpzo9DG2JdZXmNP+BTfpAnj6/u9XK4IY7j+2b/pIUVr96zm8gFpASyYxuK9lJI/cISROvDtKavxd/ugC7V2V7TXP/r/gXycSaH3icRUDA9JPmUxxcnWoEJRE+Dv4Za4pOnkJHGgvZNStsWiv35kd+CZ8NeRZ/LlIU/KeGJgkDA8u1a78YXbJqpKEgzsOKWgJ+bij1JLADKypryx75XwOctvfV/zaSmvAgw9JMQ6wff2qD9Hfk0+lmaK7TE2YphjGFfr5lF3FjzNnMJPmWmC2efiPKyPsIudWYgtrvp3TjGNE9hnVjVNHuckKKuAjwyfzCrhljr9gWMTNJMB3xuYcOA8jzs7jZ4HsTyD/feiogfhHeqLzmpk3DJ03k1deeXZpzuhzBGTrfLMILVyoDgRxwYedJtnmtFu7dF2Q8i/DQzVqOg6ln6Z8fYsQIkKd/y5KQ18l2avDRc5KebN9UupME39RktfdP487U
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NGVEbTBUVE9OUEtJd1UzbSs5eUFlWUQ1bTZpbm5WczlONzhpZ1FKUlVmSS9T?=
- =?utf-8?B?b1dRQ3QzWlpiUWM5VUU2RTVsT25kRm1WOUQvdVYvTm1qamZSY3pqSnNBSERY?=
- =?utf-8?B?b2d0c2dkT1kzUEJuWG1vVnlRZG5CQ2hmVW5STDdCaGE1czkyVWd2d3FUKzJT?=
- =?utf-8?B?dkJ3VXNtZ3RUOHd5dFlaWXZjQmcrRDBNNkQ3UXB1SGhRdWs4QUEzcHp2RHNz?=
- =?utf-8?B?YVBEdFMxelZScDB3WkZzSTVzWmR5UXo5cDZya2x1Y0k3aDBHYU9maVRqTHRz?=
- =?utf-8?B?Y3NLU3MyaEVTYjJHZFkrNjF3SGV0YXE2U0xkdGpKbHdiMVFtaC96LytZNTZI?=
- =?utf-8?B?ckNIYVVvd0EwWHcyL3p3c1BRVWlvclAwZmZwRHVPZXZVdDBwVm5ZWVNmMldp?=
- =?utf-8?B?NlVEVjBBS0lqR0czeXNVWHA5ZTJyYkxSazVndmpQMkUwSmJNZSs4dG1BeG1Y?=
- =?utf-8?B?YnRBcWo5MmtSRCtYZVZiZVBvWXduL2JBeWxvbWhjVUxnaHU3TnBoZ2VvenQy?=
- =?utf-8?B?VzlLbXZzQ21YcWxYSUJZN0YrREd4WjAzWTNEcnFnVGVrci9HcUEvdmZkNmVN?=
- =?utf-8?B?YytKaVBNNXNZYm52eGxOR1R0WFdqWXBFcjBFY2VOc0UxeklwbGxsdjBhaFFa?=
- =?utf-8?B?OWF6OTlBMmxhU0szREtlNlpmNkFWeFJpNUt3MkFGVEVmQzU4eFg2TnNtbGtz?=
- =?utf-8?B?SXJKUlF2SE42Zk9jd28vazNEbU5wL2YxMGRtSnlzWTJCL0Q4My9NWS9ZTFVB?=
- =?utf-8?B?V1pRVkd1RU1ZeStmUGJROE5RanZ3SEZRYmFGV0ErR2tHaUZ1N0xPRHFneWJ2?=
- =?utf-8?B?Y29rcXF2eE03TGlpV3NoNmxISkQyRXppcUJJa2hoSmhVZldkWEh0cjZXODBr?=
- =?utf-8?B?WXlvTklMK1VZMWNRL2ZFOTVMME04MUF4ZVRtakRBZnV2alRCRmpkc1IxL0hU?=
- =?utf-8?B?MjhselZEU2FVZDZ3dVpvTHpJNlNlMm9wZDhvZmczMW52QjY4b2g4QUN1SHND?=
- =?utf-8?B?dGRnQmxMcjBRNHQ3OEN4b2JDYWdLSlRxN2UwMmNFa2NDaW54VmhDU2l0dnRs?=
- =?utf-8?B?WlY2N0FkdlFQZ1R5MDhKOFptM0d6VlN1Z3MyYlU5Wk1LRWlDc0hZYU1yQjBB?=
- =?utf-8?B?eTlTS0lIakpyZzQ5aTk4MC81Q3ZvQklVZGFXd1M3T2NsVkFhZWl3bG8wYURD?=
- =?utf-8?B?Nkk0a1hkNS95bGZyZ1pqaUdZY2M2ejV5UDlNNHhWNGNwUW5nQ250WE44TUhq?=
- =?utf-8?B?bHJFVkZVbGpJNGxpUHROblR2bEtvZ0wrRko3RTlObXIxb3VqNS94MU0xenlx?=
- =?utf-8?B?dmJTZ1ZEdkZLRnczVUtIb0VPNkp6Tk80L3ZNenJNSnlma0ZOV2xHdi9MSnRI?=
- =?utf-8?B?dmFwdmhJbWVCZnB3RTZRL2VpeUJVZVZ2eHBUTUdwMldoMCtCK3owWUE0NmxB?=
- =?utf-8?B?SWhyY1J6YVArMXR2aGNJeGpDUmg1eGY1dDg4VXdhQS81bUI5bnFxNjBDMTNJ?=
- =?utf-8?B?aGpJWEl5OFl2UGtWMGx1TmIwTC8xVzBHUmp1aW4vVnV0V2gvMVdUdVdFRGJm?=
- =?utf-8?B?dFUyU005c2RPbXVBa0FhZ0FMbGNsWWZZTjNRNUdHU1RVMjU3aU95Mi9uakpD?=
- =?utf-8?B?WEc2MkJ4YWgvNlBFWlFJbjNxU1RMSlBMRkJ1S2cwd0xIWk04UU9ZNlJ4cVlL?=
- =?utf-8?B?R25uSkNBWUZGSU5BOXdyRTJhOE9nQ2FVL2Q3TmJ5NzdTUDV1OURPQjBCL3Bl?=
- =?utf-8?B?b1IyYVdIdGozeVRndWp4VW9xS3c2dXBobldkN29PSDdLS1ZLUjZkQmtiVmRL?=
- =?utf-8?B?NEpSayt2d3pzcHpPaDhERmZQajZXOVBnMDFqOTljVjE0dlhsVDhscHpRZDFM?=
- =?utf-8?B?Qmh2VWc4NzVIeWtqSWVyM3NTVXRKbEw1TG1ScXJuNko4T0hRNGJGVlBHZFl5?=
- =?utf-8?B?cDRCMjFYZk96SmpYbFc5aWhUbVhROFhMckhZNFRXVjRQTG5ETnpGbjUzVXlO?=
- =?utf-8?B?RXhjOFNQWkVlbjJJM1JjS1h0VHhaSkdvMThFQnBGb0d5MW9ESTFobld4K3ha?=
- =?utf-8?B?bVZGU0JjTHJFT25BMWdaN0MwZ2V4WU45bVlqb1JPTzNXbU1pV0V6QWplbzJS?=
- =?utf-8?B?amRpazQ2TWg3NnVDT3dlVklTRXZLRU1lZTNQeTlkQXRyeU4zQWFJM3ZEVG00?=
- =?utf-8?B?bGFsbmRRVnVoNXhjTXh6YVNPSHhabjJxaTVsdGJWUlp1dkw3SHNtTE1jV2Ey?=
- =?utf-8?B?Z0FtY1l5d24vWXM4QjR2VHNGczlHaFBQOEpqekdEZ3VkR2NpNDJSWkt5Q1JT?=
- =?utf-8?B?TXMxRWlkQlc5dXZUMXdyczdIOEJKMGplV2p6TFdGWnFHTWYyNGtSbVlwZ09E?=
- =?utf-8?Q?SK2mUtxg2ggLywj0=3D?=
-X-OriginatorOrg: kontron.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: c135c3ce-031d-4499-a868-08debbdbb73b
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 10:35:48.0528
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sKQYDKfk5YWCeXGXMoKp+Hqlr6duySBZCGGUmv4culXw8IRzYvf29uhIFy3GPo26U5vqPhvsg6XsregR5yxb7MK6cwU8Zpjx/Cb1DPcZrWk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB7563
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5669; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=9Xdnbrncq7VH0BmQ/6t4XS63l5XFKqkc1TeJjnWKNtI=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqFsvQ+3pUGvYbTzMBf1U7HpUNs0YqKV82qCwBE o++WwMTehGJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCahbL0AAKCRCPgPtYfRL+ Tr6TB/9tVIDirqaIFIr+cLHvFRjr/N+HTQz/62BiICc2JJZjFIxmMz6KGMb9PGbAjW0SSau/dN4 zcLMGrCLoC48OmtmlVPfz+h8PG49qdmzJoQkLg4kgndLfg39qqbcPsy5OhkrlgPPzheAU6T3zrm 0WxKp6Wr3LT/anxmAVOQ5FtwjfhMonlFOEOipHYnM2hSfShJ2Bh1eE6IBZytU+c7SY+/nNNsB/D ZC0jCfekfiHdSj1sMmpvYw/JsTRuvgZI4wfY2r4DqR7oE0TrKI5jZLonpB9QKDQyLjLXmkS+xzK bbDtl9bNcjm0Hwz5BysWpXOKEc9oARJLfgXY+NBO7kgQGcRc
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On 02.04.26 20:33, Paul Kocialkowski wrote:
-> This series brings a fix for the FIFO underrun/solid color bug (in the
-> last commit) and two other changes that may help with reliability.
-> 
-> Paul Kocialkowski (2):
->   drm: lcdif: Set undocumented bit to clear FIFO at vsync
->   drm: lcdif: Wait for vblank before disabling DMA
-> 
->  drivers/gpu/drm/mxsfb/lcdif_kms.c  | 18 ++++++++++++++----
->  drivers/gpu/drm/mxsfb/lcdif_regs.h |  1 +
->  2 files changed, 15 insertions(+), 4 deletions(-)
-> 
+Hello,
 
-Can this series be applied, please?
+this series targets to use named initializers for platform_device_id
+arrays. In general these are better readable for humans and more robust
+to changes in the respective struct definition.
 
-Thanks!
+This robustness is needed as I want to do
+
+diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+index 3b0c9a251a2e..b84881f32444 100644
+--- a/include/linux/mod_devicetable.h
++++ b/include/linux/mod_devicetable.h
+@@ -610,4 +610,7 @@ struct dmi_system_id {
+ struct platform_device_id {
+ 	char name[PLATFORM_NAME_SIZE];
+-	kernel_ulong_t driver_data;
++	union {
++		kernel_ulong_t driver_data;
++		const void *driver_data_ptr;
++	};
+ };
+
+which allows dropping several casts and eases porting CHERI to mainline
+linux. A possible follow-up change is the following example:
+
+diff --git a/drivers/regulator/bd96801-regulator.c b/drivers/regulator/bd96801-regulator.c
+index 308279b31fd3..6bbad1f1ddd1 100644
+--- a/drivers/regulator/bd96801-regulator.c
++++ b/drivers/regulator/bd96801-regulator.c
+@@ -1211,7 +1211,7 @@ static int bd96801_probe(struct platform_device *pdev)
+ {
+ 	struct regulator_dev *ldo_errs_rdev_arr[BD96801_NUM_LDOS];
+ 	struct regulator_dev *all_rdevs[BD96801_NUM_REGULATORS];
+-	struct bd96801_pmic_data *pdata_template;
++	const struct bd96801_pmic_data *pdata_template;
+ 	struct bd96801_regulator_data *rdesc;
+ 	struct regulator_config config = {};
+ 	int ldo_errs_arr[BD96801_NUM_LDOS];
+@@ -1224,7 +1224,7 @@ static int bd96801_probe(struct platform_device *pdev)
+ 
+ 	parent = pdev->dev.parent;
+ 
+-	pdata_template = (struct bd96801_pmic_data *)platform_get_device_id(pdev)->driver_data;
++	pdata_template = platform_get_device_id(pdev)->driver_data_ptr;
+ 	if (!pdata_template)
+ 		return -ENODEV;
+ 
+@@ -1329,10 +1329,10 @@ static int bd96801_probe(struct platform_device *pdev)
+ }
+ 
+ static const struct platform_device_id bd96801_pmic_id[] = {
+-	{ .name = "bd96801-regulator", .driver_data = (kernel_ulong_t)&bd96801_data },
+-	{ .name = "bd96802-regulator", .driver_data = (kernel_ulong_t)&bd96802_data },
+-	{ .name = "bd96805-regulator", .driver_data = (kernel_ulong_t)&bd96805_data },
+-	{ .name = "bd96806-regulator", .driver_data = (kernel_ulong_t)&bd96806_data },
++	{ .name = "bd96801-regulator", .driver_data_ptr = &bd96801_data },
++	{ .name = "bd96802-regulator", .driver_data_ptr = &bd96802_data },
++	{ .name = "bd96805-regulator", .driver_data_ptr = &bd96805_data },
++	{ .name = "bd96806-regulator", .driver_data_ptr = &bd96806_data },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(platform, bd96801_pmic_id);
+
+which allows the compiler to notice that driver_data is supposed to
+be const and thus requires the first hunk.
+
+If you consider the last patch mostly churn, just drop it.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (The Capable Hub) (3):
+  regulator: Drop unused assignment of platform_device_id driver data
+  regulator: Use named initializers for platform_device_id arrays
+  regulator: Unify usage of space and comma in platform_device_id arrays
+
+ drivers/regulator/88pm8607.c              |  4 +---
+ drivers/regulator/88pm886-regulator.c     |  2 +-
+ drivers/regulator/bd71815-regulator.c     |  4 ++--
+ drivers/regulator/bd71828-regulator.c     |  6 +++---
+ drivers/regulator/bd718x7-regulator.c     |  6 +++---
+ drivers/regulator/bd9571mwv-regulator.c   |  4 ++--
+ drivers/regulator/bd9576-regulator.c      |  6 +++---
+ drivers/regulator/bd96801-regulator.c     | 10 +++++-----
+ drivers/regulator/hi6421-regulator.c      |  2 +-
+ drivers/regulator/hi6421v530-regulator.c  |  2 +-
+ drivers/regulator/hi6421v600-regulator.c  |  2 +-
+ drivers/regulator/hi655x-regulator.c      |  2 +-
+ drivers/regulator/lp873x-regulator.c      |  2 +-
+ drivers/regulator/lp87565-regulator.c     |  4 ++--
+ drivers/regulator/max14577-regulator.c    |  4 ++--
+ drivers/regulator/max77541-regulator.c    |  4 ++--
+ drivers/regulator/max77620-regulator.c    |  8 ++++----
+ drivers/regulator/max77686-regulator.c    |  4 ++--
+ drivers/regulator/max77693-regulator.c    |  6 +++---
+ drivers/regulator/max77802-regulator.c    |  4 ++--
+ drivers/regulator/max8997-regulator.c     |  4 ++--
+ drivers/regulator/max8998.c               |  4 ++--
+ drivers/regulator/mt6323-regulator.c      |  4 ++--
+ drivers/regulator/mt6331-regulator.c      |  4 ++--
+ drivers/regulator/mt6332-regulator.c      |  4 ++--
+ drivers/regulator/mt6357-regulator.c      |  4 ++--
+ drivers/regulator/mt6358-regulator.c      |  4 ++--
+ drivers/regulator/mt6359-regulator.c      |  4 ++--
+ drivers/regulator/mt6360-regulator.c      |  4 ++--
+ drivers/regulator/mt6370-regulator.c      |  4 ++--
+ drivers/regulator/mt6380-regulator.c      |  4 ++--
+ drivers/regulator/mt6397-regulator.c      |  4 ++--
+ drivers/regulator/pf1550-regulator.c      |  2 +-
+ drivers/regulator/qcom-pm8008-regulator.c |  2 +-
+ drivers/regulator/rt4831-regulator.c      |  4 ++--
+ drivers/regulator/rt5033-regulator.c      |  2 +-
+ drivers/regulator/rt5120-regulator.c      |  4 ++--
+ drivers/regulator/s2dos05-regulator.c     |  4 ++--
+ drivers/regulator/s2mpa01.c               |  4 ++--
+ drivers/regulator/s2mps11.c               | 18 +++++++++---------
+ drivers/regulator/s5m8767.c               |  4 ++--
+ drivers/regulator/sy7636a-regulator.c     |  2 +-
+ drivers/regulator/tps65086-regulator.c    |  2 +-
+ drivers/regulator/tps65218-regulator.c    |  2 +-
+ drivers/regulator/tps65219-regulator.c    |  6 +++---
+ drivers/regulator/tps65912-regulator.c    |  2 +-
+ 46 files changed, 95 insertions(+), 97 deletions(-)
+
+
+base-commit: e7e28506af98ce4e1059e5ec59334b335c00a246
+-- 
+2.47.3
+
