@@ -1,133 +1,107 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FA544CAD4
-	for <imx@lists.linux.dev>; Wed, 27 May 2026 17:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2564544CF3E
+	for <imx@lists.linux.dev>; Wed, 27 May 2026 17:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779901826; cv=none; b=GQr60TmyE6Qp5Y7LtJiLlw23FCQHaKGjEMqpAh+m7NnoaUSFMDABbgnRTso+hDFslUgGu0acwZm9E872422VFjWcnJqeJhb585vMdjTQSsv5GON5Llq60CmtRwt2UXaHpJTFObtu+atgZZYRzcER4V+kaoF1gZynK/sh4PIpFq4=
+	t=1779902577; cv=none; b=sqt41NzL/QRSlTEhvmBPrmpoVSK+ERceQzqHdXOm6H62iIHHfqtDXP0Hmf5TNGUm8iT7xGXdSv4zcnSkw9M82/rhmTvZ42Tau2spZYDEctsHoqIEniIwgcq8zGI3PGKJ9Ohz6bDSHt3U7WJX2jidkB16acJjE1V6HKClumYIoSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779901826; c=relaxed/simple;
-	bh=OTFZL7/TKZtiOSLDKU/FWj1OgAlmrOFX67f30aNa7r0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WVaDIayLT6LmXzuFN75SluSI3ctLdGeQbmdo9u2IjUW6fx3jbqFyP1wMAVNNI411KCVlKJDf9mIrvxK3ztWroVSdJCBbP3t1I65JXcRMRKaN/B8fPYPcF3SwL/5bUYkb7UVyDqVRNQEG7puzR6PPphz1XOua8gG54tu8OtaSTV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hZotGOPl; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779902577; c=relaxed/simple;
+	bh=2Nr2Xxt8Oy0fc9JvztohlvFYnp6ba4XuH1Xyai10AVY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=MRZki2pwD9NShck5d2ykQLYY/tBE2JGtOhhZ8OOEfYl1ntrvVnzw8Ro4OtgEC6uBtwdnXmC5sZxLB+lIeW8MahEN5JSMe/y5qFgec8Ta18XI/O4ndPLz0u1QMc8hhY5HnumRKseEBECj8oxm3v0msaRkBoAlaIDcXBRccPjTB8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJm3dk/G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hZotGOPl"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ba4a1a0325so81175125ad.0
-        for <imx@lists.linux.dev>; Wed, 27 May 2026 10:10:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779901825; x=1780506625; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dr1Vh7T1FjGx+SxxnwuCbG7AIOfy8FpD/4EKhw7fhLY=;
-        b=hZotGOPlLJ+YytXwcosn4h0nMCZB745T+JKEOr23ii9lOUXYIy36OoKdQ6qtwAI205
-         2mtE46ApljZ1vK8WwY2oAFCEFuSqszd3I28IqDWnruyPn/R8No4MVbu87V/Dw2H3JNpP
-         WFoNdDMUT2bHkWI2XDjol+Bs14Gn+qvrQD9J/dpOmn0ZRI0enjoi9vG5G3/6+w70lhdb
-         vspnJpjue4Yz3EuMQ8JBIDvjEvrFVAzht4DLTSBsOG74TWRt0Pr2K7ZX2WGQy61KtlrS
-         2tKOGZUanquu4sH90jMzsjw89QcaP3uJFgre/eG3rk5Jejj4WLPp6L/HvfQeuALOv5Eg
-         irYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779901825; x=1780506625;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dr1Vh7T1FjGx+SxxnwuCbG7AIOfy8FpD/4EKhw7fhLY=;
-        b=B4DFeeMriHozNZ9jNIpGw1m0hqkbAZ+7v94WzEKPChVSmrd9GIDt+Pd02wEAwoPvlk
-         +saACUoiQYc0MDq1dkJUsG7xQYrbdmL8WNNLgaL23IYZpki7wZ+aSx0x4UyfQEbHcTM4
-         RqZn3nNNnIJKEYLwBFf7SN7jpO26wY53AbYFg5m3Zrz+MhCr7swJuJqZoe5GE4lNbLpQ
-         TIm3prqtm3NjFJtbqOn3vl4LDqwLxz+P+ETQ9Rh+uSH75AV45hX4fNQzlVsBDXAeTxP0
-         3uJvs4sQhDLrsV0EEQlfnaT3Wi0isFvQtVRo3fYkGPXWHnAon++v+VkL0KFYDd0y9XMf
-         roeA==
-X-Forwarded-Encrypted: i=1; AFNElJ9uS2aWuB/2rEvFXdnLZElpPUFlg7x46Tk6LbaKCKAM7ikYMWKKOMN+KoC+kLT/veoAZKE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyUbl3DbOSs3UL+X8cKwoInVqDspMtS36cLBxF8r0/qKV3t/TM7
-	6NW8lv292dyBEt3oH9xNkMtNvpOBr1i5cAFTnBU3fKtFjBgB5Oq30O81
-X-Gm-Gg: Acq92OFnXBc8JFK3prVvojWAN6FHNWN8ZFETuYGEpvAfOszri4AMrhQj9VCZ+BEfQKU
-	fb9HqhBVbzn5jECPASS/1q8JZQP1Tet+KXuVLHoS3uQJCILh3j4k3GhI6SwshnSzuDM7tDVEP3V
-	rrhn57cymtWjPBpvnsxXCnBuMsF9YDAetJpuW2CgyFodUHLVljKlG9Ow7vJO2VS54G3fL6ENSj8
-	+2YI8xxUAtoN4CwtmWkhJaWgCFqNUCbiGr/i7VEKtgGS06z5z206kyuikrbbWjYFCyfPpHIiYHQ
-	YiZh1B7lIGhCGdmGZzVVu7AcDO4vl50vEjzb4nfWFQLw01PeB5T8Df/aRPzBJZOz9rOqQiDSocK
-	wn8XnBtbZ02H1Zs2oWqbhS0gTkArJx0EHCBN9C5/hFxcIzuAom+h+CDB6QFRGbwz9tB2fsaygRs
-	1Pqa48I6i5DKEI/4wBTCtwsfYuijjBzb8fMg==
-X-Received: by 2002:a17:903:3848:b0:2bd:8fc0:1198 with SMTP id d9443c01a7336-2beb0633629mr262545435ad.5.1779901824674;
-        Wed, 27 May 2026 10:10:24 -0700 (PDT)
-Received: from ubuntu2204.. ([240e:39b:ee1:f550:f34d:9da7:5be3:2198])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb5900b8bsm155788875ad.76.2026.05.27.10.10.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 10:10:24 -0700 (PDT)
-From: Liem <liem16213@gmail.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	linux-i2c@vger.kernel.org
-Cc: kernel@pengutronix.de,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Liem <liem16213@gmail.com>
-Subject: [PATCH] i2c: imx: Switch to new reg_target/unreg_target callbacks
-Date: Thu, 28 May 2026 01:10:16 +0800
-Message-Id: <20260527171016.67020-1-liem16213@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJm3dk/G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443CE1F000E9;
+	Wed, 27 May 2026 17:22:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779902575;
+	bh=2Nr2Xxt8Oy0fc9JvztohlvFYnp6ba4XuH1Xyai10AVY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MJm3dk/GnGaS4JYJ4QvkrzD5OwmTd9ysjigFp9L2NzRDSGIsW1gvWYBxWmiRIrMMn
+	 nfXkKbkEH9fSrae4YNndLe0P0n1aiD/RElOcXKzOWTFm8u3Z3ghVyZINjjEuTuQx0S
+	 5G1dHT2b7BE4LSgo9Gs/+YtJgaa/7/Y8BRDIIt9CwSKmb/NhyAmStkm8Js+FK5NQTE
+	 mTCPCd3pg1qO7NumcD1iJipOFiEUKiLolVSOk79uakmjUNya3JAJR+4hv3znftAHSW
+	 7tI3yLR6AlW6U2/A0JPu+UO6aqN98XMHv6Qr0dGJw48j6+64f+/9HSzY4X4cwsfaND
+	 +MFm1o6zV6FCg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] i2c: imx: Switch to new reg_target/unreg_target
+ callbacks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Liem <liem16213@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260527171016.67020-1-liem16213@gmail.com>
+References: <20260527171016.67020-1-liem16213@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 27 May 2026 17:22:54 +0000
+Message-Id: <20260527172255.443CE1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The reg_slave and unreg_slave members of i2c_algorithm are deprecated
-and will be removed. The i.MX I2C driver still uses the old names for
-both the struct members and the callback implementations.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Switch to the new reg_target and unreg_target members, and rename the
-corresponding callback functions from reg_slave/unreg_slave to
-reg_target/unreg_target. This aligns the driver with the ongoing
-terminology migration in the I2C subsystem and avoids future build
-issues.
+Pre-existing issues:
+- [High] i2c_imx_reg_target leaves a dangling pointer on pm_runtime_resume_=
+and_get failure, leading to state inconsistency and potential UAF/NULL poin=
+ter dereference.
+- [High] Missing lock acquisition and timer cancellation in i2c_imx_unreg_t=
+arget causes data races and guaranteed NULL pointer dereference during conc=
+urrent slave transactions.
+--
 
-Signed-off-by: Liem <liem16213@gmail.com>
----
- drivers/i2c/busses/i2c-imx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+(Due to recitation policy restrictions, this report does not quote the orig=
+inal
+patch code inline and instead provides a free-form summary of the findings.)
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index a208fefd3c3b..c9ecca3ef580 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -922,7 +922,7 @@ static void i2c_imx_slave_init(struct imx_i2c_struct *i2c_imx)
- 	i2c_imx_enable_bus_idle(i2c_imx);
- }
- 
--static int i2c_imx_reg_slave(struct i2c_client *client)
-+static int i2c_imx_reg_target(struct i2c_client *client)
- {
- 	struct imx_i2c_struct *i2c_imx = i2c_get_adapdata(client->adapter);
- 	int ret;
-@@ -945,7 +945,7 @@ static int i2c_imx_reg_slave(struct i2c_client *client)
- 	return 0;
- }
- 
--static int i2c_imx_unreg_slave(struct i2c_client *client)
-+static int i2c_imx_unreg_target(struct i2c_client *client)
- {
- 	struct imx_i2c_struct *i2c_imx = i2c_get_adapdata(client->adapter);
- 	int ret;
-@@ -1704,8 +1704,8 @@ static const struct i2c_algorithm i2c_imx_algo = {
- 	.xfer = i2c_imx_xfer,
- 	.xfer_atomic = i2c_imx_xfer_atomic,
- 	.functionality = i2c_imx_func,
--	.reg_slave = i2c_imx_reg_slave,
--	.unreg_slave = i2c_imx_unreg_slave,
-+	.reg_target = i2c_imx_reg_target,
-+	.unreg_target = i2c_imx_unreg_target,
- };
- 
- static int i2c_imx_probe(struct platform_device *pdev)
--- 
-2.34.1
+commit e5a765606d0417cc96ddfca98fce10ada4405f48
+Author: Liem <liem16213@gmail.com>
+i2c: imx: Switch to new reg_target/unreg_target callbacks
 
+This commit updates the i.MX I2C driver to use the new reg_target and
+unreg_target callbacks instead of the deprecated reg_slave and unreg_slave
+names.
+
+[Severity: High]
+
+This isn't a bug introduced by this patch, but while reviewing the changes
+to the newly renamed i2c_imx_reg_target function, I noticed a potential
+pre-existing issue.
+
+If pm_runtime_resume_and_get() fails, the function returns immediately
+without resetting i2c_imx->slave back to NULL. Does this leave a dangling
+pointer in the state structure?
+
+If so, future slave registration attempts might permanently fail with
+-EBUSY. Furthermore, since the I2C core sets client->slave_cb to NULL on
+error, if a shared interrupt fires, could i2c_imx_slave_handle() dereference
+the dangling i2c_imx->slave and invoke i2c_slave_event() with a NULL
+callback, potentially causing a panic?
+
+[Severity: High]
+
+This is a pre-existing issue, but I also spotted a potential synchronization
+flaw in the newly renamed i2c_imx_unreg_target function.
+
+The function sets i2c_imx->slave =3D NULL without taking i2c_imx->slave_lock
+and without cancelling i2c_imx->slave_timer. If unregistration happens
+during an active slave transaction (for example, during a driver unbind),
+could this lead to a race condition with the timer?
+
+Specifically, unreg_target disables the module and clears i2c_imx->slave. If
+the concurrent slave_timer fires and runs i2c_imx_slave_timeout(), reading
+the disabled I2SR yields 0 (meaning the bus is no longer busy). This leads
+i2c_imx_slave_handle() to invoke i2c_imx_slave_finish_op(). Since the
+transaction was abruptly interrupted, it will then call
+i2c_imx_slave_event(). Will this pass the now-NULL i2c_imx->slave to
+i2c_slave_event(), resulting in a NULL pointer dereference?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527171016.6702=
+0-1-liem16213@gmail.com?part=3D1
