@@ -1,46 +1,46 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011034.outbound.protection.outlook.com [52.101.65.34])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010000.outbound.protection.outlook.com [52.101.84.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D2E1C860A
-	for <imx@lists.linux.dev>; Thu, 28 May 2026 02:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768301C860A
+	for <imx@lists.linux.dev>; Thu, 28 May 2026 02:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.0
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779934109; cv=fail; b=tWvJ0UQPpCHgOTHmiDyIXSuVfhkFeuobP67yjC3pIHht+wSwwQ503pZGHqhycTKTmeKdhUl1YJzBp0tt+oFU/S9qamHM7m9DXaKoidOwsa8qoCJZWF9Po176Xf6xzkPkc4wsPJYzEcgW3K204u1L3O7PQ04KiHVm0tHEmXzjWTE=
+	t=1779934116; cv=fail; b=pNW11VbNkrtGs13Y8DLh2Ta4eS/DgkLo5HTpRXWRGRB/B3tvn6EtBp8E8FdCbmkysOf3/cKY20btjzbYoafWAcLaojOd4HrwqwiZXbg4of92NkaOyruEVjdRntRhte/ew3ZHLJMNyLE4lAOCrrqJ2dBuPPBD3HKtkP3OWHaw9tY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779934109; c=relaxed/simple;
-	bh=lGOPyx7U9I+5VAJby7UkROaL0unxDZSrX82/KeGjYRU=;
+	s=arc-20240116; t=1779934116; c=relaxed/simple;
+	bh=jVFaUoRUGxjdqFN77kVNU7n09StxsRHAYCyWcDsiqgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kMvklcjM0h+Pz05AzQRHAwpFgVcvPPuirEkJ7+oXCHOKIlFUj91j/r4H2pwIZvLUP3iKyV9rj23zk7bEv+e+EClf+FYTEd9FGe9m3fOazTDlsuPOWc7rzX/lryGbqzp3cmX4N9U6JGpP0PgCCJJLswgL/OixSWojLEOW2U24a3k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Br4x4v+P; arc=fail smtp.client-ip=52.101.65.34
+	 Content-Type:MIME-Version; b=TMXyJIbNcGIVYpai6jZlpGMkeRmRCVvT2x17ofFr1YJBciwetpQN5HSa3424XbXLCdBL7plXisXAvtlaoeBY3dviDDVh/+hW7xPzd9ANFHSNuNWSxIciEPPfjj53HF/scSdDyDER8otk+DTtuS69YmMcCRQRLgTaWqdcXnTB/4w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MHfQVk86; arc=fail smtp.client-ip=52.101.84.0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Br4x4v+P"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MHfQVk86"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V5MeVDxFRIsol0vuf1bqzLfrbAkZvqKerHrqoQekVwg4VbYfRbYP4p9gUMNFYjlA70d/jveiLS8vat5kyk41VF+OBDa2illI49yK/5jPDayHDqxm4sX7HmEnb9G8T83qII8Q1ZkDj4s2K1x0ALsGH6ZcwdVAD8BwPAdPaOvneaRIrbBRoi1jVRFjHocoT961h+UFXxv1zzUrrwzyR87sQgk5RQbAwpxC9o5YiiKuZS/C4yCA7URIKEGa9z42eQZeUclZRS2UQqM8znm1skXDWRAdM1OQeaPpRRQVNz2dykSX67Jemeu3VQz3ThpI3ttjU3cQtezFB7ZZ1qpgjrEe6g==
+ b=nhyelSBe2Nw8VwqsvLx0BPqpdfQsrwaEsvsfzNH0G5Nq130BQhZ7sRAzCwRalppaZUXAK68xGKBRZo0swdPcSHp2vN5veIbt7qaj07WuwUvqGcZNsFSsVCMdWzizKMrs3LQqH6dCaH5fdzcZ0byzcsZ6O8vpOKpNJzB0P59YMiVJMtCFh7CDXv1hAi+Zf5055UPgj9rf713b6bn6oIDNrRSbGkG1F912iUCfJTQkrBltSULqBN0hdqMoc0i26ytsDxfCvD6bVIUzSNWNn3BpQL9N+QnJRi+1k1hpkwEJ321TUYxqo4zIejb2esIiXmaXow5BbXJj2VD+rCEIIS7EXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=olseYmrUlFzXDqBp4ktqBVCPqPE1pUd9DeQ058X4Myk=;
- b=NIbGirQRdU8iUuJBZzmlYRMxTw7AfXAASlLcv7tbsRAJAiyH+ik8+/g+v029fJmO+jAlrhFn+iclbOYfpysdZb+wMB5FBcPrXa/885su9bXPt91HCF7xS8HMzpxhoWbCrCYefaWn4xxyKsA+oNJnxluhsDqqBhopA4xwDFHY99NPmRf3e9HdCK+sUJnkiw3W0Bu9loaE0gdSrNgs4r0lT84jO9hsMUL9LXqB4H8BELoy9zylU1yfLSXxVR7Q3WBGK4zMm/V/ltyT16YsHTdFxd8SapQPpwE5WGV7ZgsBTi+IQVnSCMreK1hM6Nf/vrpW3OD4zn1ivcG1/ikIN/2G2A==
+ bh=4SDq07b3tX0vuqUHK7mPjoFBpiD/RbMSMi1Nv/hScHI=;
+ b=JipLZLc9cAh7N0v64VfT+fNyumKvut+sID831+mddLkdlZGmb+jvxtxQmqaz3uOn01DRTabI/N91liznX/Y880pzBQeXhrV7AocrnzAgPi196Iu95zqkKwEWbomf5JBLjnIs0NobudJMxYmyKXbb3CKGM1BZN9EsD4cGavCTaEzAUecGDqmJoy6Rb89+9agwu3xqPtK4wocYcZaECz6S609xvG/TXz4+XWfDkdMgDz5xEpAxPfivUH3IUIZfWHQpoBFzdoHTbLmv1kor7m058ar1d7C1SfUD5F7olOq/rFJUrM0az8yx2l2CyJTXTP2u/CEdhBlIfPah0rvOAuThgA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=olseYmrUlFzXDqBp4ktqBVCPqPE1pUd9DeQ058X4Myk=;
- b=Br4x4v+PZB5yNLT1WTxgP0d1mHjWgAljXEhdYzD1BVHlqnSiExxcuVurqJLZiy9w5Jn36uNWkSaXIUIa+0kocHPkEXE+VjCrIJH8pSEvqSVAZ17ZGy+b4jvnD0Pv+bX4se7XZ0Iy6N9utTqEEPjJZ6QfZQMfkx7w7uc5ppJyhTuhFhpITGsYfrqLSyLOkV+KqUyrjTAp1pJLzCBkdTsxPkWOKChFe2HOfrCVcbe+SeaPuv8GZGTA/kdl4LDBTh9cZmJrUh5M2c0n9wfHA/R7hyUOWpwid8RnJu9lvPNNclMUFjUBMQO4CdrGaoZ2XiJS89ZubIQmhci+uweafYkwkA==
+ bh=4SDq07b3tX0vuqUHK7mPjoFBpiD/RbMSMi1Nv/hScHI=;
+ b=MHfQVk868wYhi1dghwmIu+ThTysRHDBYJLu89KdZ10w2eMkRAmVz5RunuLzKgZ+cmqNCSbn41b4v2tqroE3S7uVEKegBE08CP3QkESD2ldtUVCrxQyzssOV+sVQjU7O+Wr3gSL0RRzq5iKsFlrLgLMCTZnf/CssSpgLXubBUC4mecdXi4ys5AnLL89RJtpV/1mrgmFUR4WbJFVd79YTyv4TGmbxlCl639Ea6BO27x5JYZW4vlTJP1yfwGBwUJBVkzOWgHSDIlBAmLaSIVvo6RrM0BhF/N9Inf5VQjJHHZHBUpr4bWlotdDKHft5fPlDCJw7gocIQhMlA7kVkuc3HWA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM9PR04MB8353.eurprd04.prod.outlook.com (2603:10a6:20b:3ef::22)
  by PA1PR04MB10985.eurprd04.prod.outlook.com (2603:10a6:102:48a::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Thu, 28 May
- 2026 02:08:25 +0000
+ 2026 02:08:31 +0000
 Received: from AM9PR04MB8353.eurprd04.prod.outlook.com
  ([fe80::46ae:f774:f04c:a1bc]) by AM9PR04MB8353.eurprd04.prod.outlook.com
  ([fe80::46ae:f774:f04c:a1bc%5]) with mapi id 15.20.9870.023; Thu, 28 May 2026
- 02:08:25 +0000
+ 02:08:31 +0000
 From: Chancel Liu <chancel.liu@nxp.com>
 To: broonie@kernel.org,
 	lgirdwood@gmail.com,
@@ -61,9 +61,9 @@ Cc: shengjiu.wang@nxp.com,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/3] ASoC: imx-rpmsg: Support headphone jack detection
-Date: Thu, 28 May 2026 11:07:24 +0900
-Message-ID: <20260528020725.2265321-3-chancel.liu@nxp.com>
+Subject: [PATCH v2 3/3] ASoC: imx-rpmsg: Set driver_name for snd_soc_card
+Date: Thu, 28 May 2026 11:07:25 +0900
+Message-ID: <20260528020725.2265321-4-chancel.liu@nxp.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260528020725.2265321-1-chancel.liu@nxp.com>
 References: <20260526053815.140008-1-chancel.liu@nxp.com>
@@ -81,118 +81,81 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM9PR04MB8353:EE_|PA1PR04MB10985:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54c70165-01f2-4808-8ecf-08debc5e0096
+X-MS-Office365-Filtering-Correlation-Id: 0d8edf52-d5b2-4769-3070-08debc5e03f2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|19092799006|52116014|11063799006|18002099003|22082099003|4143699003|38350700014|56012099006;
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|19092799006|52116014|11063799006|6133799003|18002099003|22082099003|4143699003|38350700014|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	ugB1cB5f/z6nCPQZ0kyhEUMmNnR53wwba8yVzU/0fa5KuqJIbqpiHArI7rsOM2lABb5C1z+u9lnxVZF9HqBTQvaQ/2+eM4neHeuOCG6lc9VCPogS6kyMywMsNEv5JGDnw0jubgrH87J2ChGir1KIO+0IA8pzg/dbAV8WwtQ8lh5Rtgjd/ZXgk2bND8hIZCRbksZwnIVeg3Aj+8SxiXtYHqx5vtk/mYuGt7ghS7CosxC9FuXsAcisfUNeQSXvHobhA6NLToqn6dOjI5q56HnRGnIdCAT7OtERdATSo35j0C6b20JVe7H12NOKs07B2x8EtYbawkCBmO0tJau3FycY3zd+i2QtyHRjwLDqMqKn84hXUfHGcroqgne/9+Uaamkv3EgSVnkAjx3kSCUEIdrCcgN3BeZfumkIWYIt6p7HYC7wagBGzun+q1KPgm5N5CBlFjWEtLTEePB0NFs+5l+3JodEEP/rGig5+VfZGcZWCTRvl+N7Ej8T3LLuKgKdULuLF0YtliMDja7uJ6ZwPb6Zy3t+FPJkLaP0T+byCoveRhYbZr7W8tImTVDKox6maZykkPULbtH9J5P2GG4VkULYOmuMYIY0TRWuBGbWq7gom3ZQ6pDquVWGkx6S/L+XmfpW0NuIp4r10QgVCCqwu6KC3bGETcme+EzMiyWIrsKYI9bgzfhaa031N22h0gw2qutu/LrPuOpKIO4O9YRb4DLFscqXApjWKzb/l2lYAb+qmjrlG6QnT95apcXsdCA1ShGa
+	vyr6BGX9vFNo75Ia65Sy9PhLt+l4dAffWew7puIlhQWt+6P5agmmfAL74E6P9+7UfMIZdLM1EQ3AhPGFlyTKVzwVB8zkrtKwd5BXiDZtV1Qob1N1R/7haRVb8UVaR4nmW1JhNOc4a0KUpy2yaBphUhWrzkT2AR1fPMoM8ZuXw2VaEjOCLK1HrxdFUTB/UFPQ9+zplBFsn2AG4sliScjmvzaTFnEMBFMMYPlHwVSaK/uc1BeAfRuXr0hyz92j2Ro25Vt+7cZAwE0BRfOZsxnSYn8cNEC8rL4bRs4/Tl6ZerAZcND8Mash9FMsYpwDCveaVrm1L0f8mie7I4TWE4eVH3PY5JrxKbA3LCZ1TGsWPC8uVbx0LwLv1z4CDD3T/crmQBie67bUp6g/DZ1h6SIyoE45h/BMPOgurkMRfA7Y4VtIT4UBX4YH0cS8gpJHn2r5aipHkJXKGl9r+YNf5k8U8LYuQ7i5aCP4GD85zJdwO4zZ1MySeQn2LjAIq0fvMDDV8qztG+VaQZyE+1t2b13fUSknU6fbOo/2A098H/yNkjFMI1/z3ikzfNvGgQUSlU6RPwpKykN0PXfruCbwvsmOzp18Wy5llPR67o6H83Ll5DHjfftQEv0rGtnbb7OJhFnO/nrUq6HJm58v/v3YT5n6/eW4Q6cCC861nh2OUSdMvCYcgsflybQ/SwgK76Sz3ZeOVx2vCEN29Rz93nW5I24eFL1H2HjGa2w5XLEZCSYVvFEfB57wg7bB9SY1dHWZQRvR
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8353.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(19092799006)(52116014)(11063799006)(18002099003)(22082099003)(4143699003)(38350700014)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8353.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(19092799006)(52116014)(11063799006)(6133799003)(18002099003)(22082099003)(4143699003)(38350700014)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BLHmB+QgvUY9AshWEH+bm7jrEyD3Kau4Z//A0c9RM6Pb0KQt+JrhqpVgyiXu?=
- =?us-ascii?Q?38CSZMSoLTDgaf9UxMZX2KAvp4qjPBYerrTuvkEAXEukUoPHcIxkmvtqmpP7?=
- =?us-ascii?Q?lQYQGv3RcfrCmuCMfyVb3o9UX0KTgI6gPNDv5ZB0HaMf6lmjww+nmprPjnNF?=
- =?us-ascii?Q?ZZI7m/vVn0E8G0r7NrxXkAbzVs44BfMufwgSvJiKF+gDX5ju2+Ha9N+O/c9u?=
- =?us-ascii?Q?nwj9wmYApQRyTlCYzQ6Dntsef1nU6W9y4y08I7p/dGGgytoywXwr7wCDgE+B?=
- =?us-ascii?Q?9cYOcUXH1KWSpzFnfYk/XtfY9ZD6l5PVfconl008jt+pJ9cebNgi2freC229?=
- =?us-ascii?Q?QOTKeIDXe8bGCsnKz41QRkP2FqvgnWs9DdLpLWIRa/n8npbq4qU4tjnrgS+G?=
- =?us-ascii?Q?0xFr/DdUh0l18yCdplUAywmDE/ZGItKJoeWFjp1MoiVbUzYRtWU6UanYsF+s?=
- =?us-ascii?Q?AvPSGiL1mAYdF338OVSX4ILeO8B4auLDOb7Ze6NooOK+CWUTUmHCNIfRiJLr?=
- =?us-ascii?Q?WGMPsJ8bVjORonfwpew0OvK+plpO6eKrlJS0A+K79K7op6nJYxhIm5VqUWZC?=
- =?us-ascii?Q?/N2nnTWQyEQD+VKz2/XMfkdBxVlARHk0D3ou9lU67ldcQ6V469B5nfg9XqC0?=
- =?us-ascii?Q?1jq9EXu2kElX33FHKhJnqGsUuCN5sjv9HhQJmoCkrOkcqMXyarPCJKBMOeUl?=
- =?us-ascii?Q?K9U0HCzGrRHFOgANN8v7mjsnMHeECcBdVzOm1N7IYCihFW0N6a97j6+zQXaE?=
- =?us-ascii?Q?7JI68Pye0qwkeIYKRLLMFEgzFrNzlJVNVHVH6UzFTDSW1B7+vpVMqds1VXDD?=
- =?us-ascii?Q?H7H2Gm4o4LqYfnnaRNpZXKczpbcx17ui5JNCsuZ4O5Fz5CH7ViHIJFlR0Lfe?=
- =?us-ascii?Q?gU8rWIAeC917jMRzAoKihFg5k6VWr2EIIfzInKA+/8Ie97ThEmH1k672U1RQ?=
- =?us-ascii?Q?xdK9yA/iSyZFZfNDL/fZGj5y+1LFfFnjjoIDsF9Yi0GV3HgNd6KeOApQfFBv?=
- =?us-ascii?Q?1IXEPH53BNwh5nGtbDAEKSu+xX7kU3tmMwET3pCg5OsG38v0Nbcyg9butBAA?=
- =?us-ascii?Q?K3bCFJ0K8mHJApt+a9GDZWIkCDfwvTTHAPDiur4aY/M9y3nocNtKBYSIFmMo?=
- =?us-ascii?Q?6nqdJC77UbNF83WTKh7OGAUo8sMqNs3z0YuKVqn4mOkEIXbTzcXyXEPtD5iS?=
- =?us-ascii?Q?BZ7MbS3jNYmsHlJPmI6TvcVj0Q92G+Nj3kJF3SEaxMMuiSN3XlULEz8YwFqi?=
- =?us-ascii?Q?LV5ggFZgLBGU+HQEZejWmsI5ZajES/PNWC1Tcwu+/ZtIZ1t7xebNhCZOq+ZM?=
- =?us-ascii?Q?/mZ+iRH4raJjNtieVUkESDJEQ74oDSZdaDdLFRrRJBVHu8a8bsVe1lj737QZ?=
- =?us-ascii?Q?Lm1rDmrq5C91P7uxaMkuNq2kz4KuItL1nRXeLWd4964/qOXfebmTeji/WpSZ?=
- =?us-ascii?Q?+Et5BXkNS3g+eHpKMYReFA99lPzd7NJqXuYAhDyWwr9dDUmtaE33PxySax0H?=
- =?us-ascii?Q?M48BKUtlGYlqw4MPpmj0UV72F93jxAAn4Ysg3DIeFltPqlcHUeJ4f3nccOAq?=
- =?us-ascii?Q?juzkmssZ3lL3NhboJRIMjoynYpnVoFDSbmRFfJZs1VydfOrm1/l5BgaM5j8c?=
- =?us-ascii?Q?mTE5IXb/Hpx8RlV7DTKN8EzCgQGleAheAVFQBkLs57bSuo51vCUQPBYLwF+9?=
- =?us-ascii?Q?ktiLydCP0RsgLhkAHwCiVQx5XiJPVxfk5UQqklbMRZ7W9WHckA5maQPLf3a3?=
- =?us-ascii?Q?QX84IvAPWg=3D=3D?=
+	=?us-ascii?Q?R/jLYIbe+WaznGg0BWAVUzumTQ1OQtL/NSpI5hg7ItTEtEda+VCK0cPFnWqd?=
+ =?us-ascii?Q?oQMMCKhGPDDvW2x5HfS+TzJ/NcrHUFyzN+55rmaImiBFD1LAA9ePN5w1AyvN?=
+ =?us-ascii?Q?kjo4bXo8tTx7o456faM685F3dphBLFtEB4pYh8e/7phi0MlR2e9PINrCU6Bi?=
+ =?us-ascii?Q?Vzeo3YHFPWjMEin9kKJLN+4xeOfoeSUg0OXt94BNcgbSo1WOwGmu9RUPS8rZ?=
+ =?us-ascii?Q?L9xg7EyN52MbUBqr15dcano3aUTkMcnbs4V4ihFCvO0vr9fqRtwpxEX5pUmV?=
+ =?us-ascii?Q?ms4oxcrn1WGhz9j1fjhDHYL4ABwPmS1Pjc1VfdZQmgByVQ9qF3yTZ62BgWeW?=
+ =?us-ascii?Q?sZiZd880xjIiGKPgOKwSAthUjSbvv7t30mY7sLb/ZOa9EIR7shhJMbK94+Z8?=
+ =?us-ascii?Q?PPMfevsdmDIiS2XVeMGuHLPhposdTjfuflhvmHvsCjXXAw94s6e/mVngI232?=
+ =?us-ascii?Q?EN4gx3JUPwG8IBJAp/UzsMS3Wz3Ej21CmjcImSdCJrFK4YEQayDV0XhL0fau?=
+ =?us-ascii?Q?W7dtCwFapTE0YwvKD0zwWR6niXySnOosYD5U4dGYLaxdPFehQB8ntP4Laq/y?=
+ =?us-ascii?Q?uPjbziEXc/XShFEXyqIENRGSMNFmtuoWTZ01HQ0atnR3JVTVzwlfgQDxAExF?=
+ =?us-ascii?Q?NRY9GsRd2TP6cSDcgkAv45VME0F5qzkaBrnIeaoSiKGirlp80JfXkyupTCjM?=
+ =?us-ascii?Q?MnF4ingOIQvCfqeDOFlOEE4D7tj/DBSA1iZugIa+sD/oMeXBO9KXT1DzlxJT?=
+ =?us-ascii?Q?fWQmouzFueFtFUvfPDmO9BNRlfI7k6t/R/V4eG4ijW83WVSW1bqHJNhmTA0U?=
+ =?us-ascii?Q?xmLG5KOCCGr7z17/vTMI1PsXH1sdXOIipJeM4vL2plxEhhyHhmqZk+S1U7rF?=
+ =?us-ascii?Q?iw0KEjm41VIImdL1EgqpaHp5LZcIYN4VNkzPIfpDbPL+Bd6vE+OW0ililnzY?=
+ =?us-ascii?Q?JONBX6JU/zJWjVEAvgkxF+HOR2LCB1MlZXOxIN+3Xaj61F0Pu0ejpqhQaEch?=
+ =?us-ascii?Q?z7p86dP0dTtjp+kv2fXWRH91nV57DzTVGgeyg1jU5jTLMWfA3lMksXi6Dj0I?=
+ =?us-ascii?Q?wk6XWN2LQggrR/mbBUKzMmbBhEocdiy49KOO/a30ARGiD4FR4+K8c9qP+COw?=
+ =?us-ascii?Q?hC598mrx6TX3PEnUom7Bt+P+P/+nwfS/ZPGt/rKAyPTA/nRDlgPjVfb7FkWV?=
+ =?us-ascii?Q?iXIVXAfgvEpnNluBu+NjUBQr+gXIbLc3R8+HAKVXoSO+lIHVztC9gSdi55x4?=
+ =?us-ascii?Q?mxHwfgkZIbM2wHi5aZmBU1a+rSHTMy2WI4x5RwloQRVG6+WMihy4rZs/7rU4?=
+ =?us-ascii?Q?H2SURHUeofn9AQ9TFVXj1tTIZnnHKGPRyWI+T0JqYO+VgUyYKua9Y8lPcRs1?=
+ =?us-ascii?Q?cmXRm8zHDUlysrPErk+hKWyHdOrh33RoiB3X+hUjHqtbVpdK1e0yNvsx2zsY?=
+ =?us-ascii?Q?GP/Ik+xWSuU2To/wp/ipIjvm/EbBP+a5esqorvB9+7gwKWffovyiNP5W6J1N?=
+ =?us-ascii?Q?wE7gaCEybSlNt4Wcl/nkIPPwz8l1kJ1jVMdIdYmcd9ydbticNxTBM4TmImoZ?=
+ =?us-ascii?Q?F8S/7bHpdbKeV7AVWEg+Cr65sPItTdk4sEjGWpB4hSd1hQQ42cYxqypvK0fo?=
+ =?us-ascii?Q?9bRlK11jXuIGnLYTaOTWUJKfUe2pmiR01hfjaD30icgBE9KupncGb+HtS/5h?=
+ =?us-ascii?Q?MFXDJ/8OKDirQaphXYCE3pHjGg5wdAevir1lw+QnpKUagFmi6yb8DwXfoq0A?=
+ =?us-ascii?Q?wGcCGmtpPQ=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54c70165-01f2-4808-8ecf-08debc5e0096
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d8edf52-d5b2-4769-3070-08debc5e03f2
 X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8353.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2026 02:08:25.6972
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2026 02:08:31.6231
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1KAk/k6Zd3L/ypZEto6ts5e6S/MAu+In+dAcJWBW3z7kDQFhen/cjN3JBus6XHLBeftJFpt4nXy1VcowXXCwTw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: WsSFzo2Z9qIBJSrob65oTxD6p1p9kZEOpeRg4kCgN3DuVCxnwwV5DH/uZ6lNIChDhxrJ6heElsD0pYItfBsjiw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10985
 
-Add headphone jack detection support for i.MX RPMSG audio cards.
-When the "hp-det-gpios" property is present in the device tree node,
-use simple_util_init_jack() from the ASoC simple card utilities to
-register a headphone jack with GPIO-based insertion detection.
+Set driver_name to "imx-audio-rpmsg" for the i.MX RPMSG sound card.
+This allows userspace audio configuration tools (e.g., UCM) to match
+the card by driver name independently of the card name, which may vary
+across board configurations.
 
 Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 ---
- sound/soc/fsl/Kconfig     |  1 +
- sound/soc/fsl/imx-rpmsg.c | 11 +++++++++++
- 2 files changed, 12 insertions(+)
+ sound/soc/fsl/imx-rpmsg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
-index ae8774e11873..8ae59c094878 100644
---- a/sound/soc/fsl/Kconfig
-+++ b/sound/soc/fsl/Kconfig
-@@ -358,6 +358,7 @@ config SND_SOC_IMX_RPMSG
- 	depends on OF && I2C
- 	select SND_SOC_IMX_PCM_RPMSG
- 	select SND_SOC_IMX_AUDIO_RPMSG
-+	select SND_SIMPLE_CARD_UTILS
- 	help
- 	  SoC Audio support for i.MX boards with rpmsg.
- 	  There should be rpmsg devices defined in other core (M core)
 diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
-index fd4624786b62..48fe471499ba 100644
+index 48fe471499ba..5f1af258caf2 100644
 --- a/sound/soc/fsl/imx-rpmsg.c
 +++ b/sound/soc/fsl/imx-rpmsg.c
-@@ -12,6 +12,7 @@
- #include <sound/control.h>
- #include <sound/pcm_params.h>
- #include <sound/soc-dapm.h>
-+#include <sound/simple_card_utils.h>
- #include "imx-pcm-rpmsg.h"
- 
- struct imx_rpmsg {
-@@ -19,6 +20,7 @@ struct imx_rpmsg {
- 	struct snd_soc_card card;
- 	unsigned long sysclk;
- 	bool lpa;
-+	struct simple_util_jack hp_jack;
- };
- 
- static struct dev_pm_ops lpa_pm;
-@@ -86,6 +88,15 @@ static int imx_rpmsg_late_probe(struct snd_soc_card *card)
- 	struct device *dev = card->dev;
- 	int ret;
- 
-+	if (of_property_present(card->dev->of_node, "hp-det-gpios")) {
-+		ret = simple_util_init_jack(card, &data->hp_jack,
-+					    1, NULL, "Headphone Jack");
-+		if (ret) {
-+			dev_err(dev, "failed to init hp jack\n");
-+			return ret;
-+		}
-+	}
-+
- 	if (data->lpa) {
- 		struct device_node *codec_np;
- 		struct device_driver *codec_drv;
+@@ -250,6 +250,7 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
+ 	data->card.dapm_widgets = imx_rpmsg_dapm_widgets;
+ 	data->card.num_dapm_widgets = ARRAY_SIZE(imx_rpmsg_dapm_widgets);
+ 	data->card.late_probe = imx_rpmsg_late_probe;
++	data->card.driver_name = "imx-audio-rpmsg";
+ 	/*
+ 	 * Inoder to use common api to get card name and audio routing.
+ 	 * Use parent of_node for this device, revert it after finishing using
 -- 
 2.50.1
 
