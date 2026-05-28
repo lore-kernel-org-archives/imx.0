@@ -1,341 +1,177 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5523F86EE
-	for <imx@lists.linux.dev>; Thu, 28 May 2026 13:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721262D978C
+	for <imx@lists.linux.dev>; Thu, 28 May 2026 14:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779975423; cv=none; b=u/9kcc5jJPaXr4pBZEO+Ggm7jf3XQfRd50NPf67uOCy4P9ejqsgkxXZoKrnxQyQMUaq/qRcWq8pHDVvw6Y/7oEFosft0qf3qz+pOnS7TalBCeQJ6ifDcaS5KAoq/jtX0hVDj1M13xZVYr7sqr4CATEnMBSM2698upCzjdKm0xhY=
+	t=1779977457; cv=none; b=CmIqcdgWIM9FhGETnllptOzmBBKY5Zg8s5Vymu2ScWXiDenB6EXjvs7IBCE26LSCXbLeC3r+3ZwpGwy5/mwA3sUmlEZmGc42TCHmg5TBFZb/hpMQsAFTKH78S9rLWGp+1flCbZAcSTnZjNxOC0bQKcPbE4HVpBFg/M0uvK1ACW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779975423; c=relaxed/simple;
-	bh=vurN08ldMD5PGiITwUyxIe/EslL+gOu64WFiyfSA5jg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ODiBO5I4WhgHPwwp6XhQqRdBffd/IBkZrRtgo0bLhDxUTu0l6twqtkR4Ffl8W2u8gejqWi5BDWDMnJ++//r9torhonj5odX9YTw3Q7kvUN3X0jDdFGOArHWWgLHqwBaeN4BqVqwJXqxFIvevixf2WrXgfHO1d7lk3gEQLwCstTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D6nDT2RS; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779977457; c=relaxed/simple;
+	bh=4rZJVp5bncr+uawsObC7M/OUhB7Yjqizbpz8zuZmW9Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RvN8Q3VluVevoqzGnzTQJvTMZ0hvnVEKn0tnA6M5bNQuMklOSpB3P6ME5I0nq9c+GaWRyJQ9rJb5R8tkIf3op/fOulXFQ/bcYPoxI7qjOiQYlDPGKKJ2mwmsD1xlGmUMm8JKUqlnn6ubqNs4V2lGVDgL2LUGicyklRRENEQ6KTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=D78VVkFj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bXsmqhB3; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D6nDT2RS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779975421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/lfVZp7HWqHjRqZVVhy7Ez9cx3BFg0k+dK3nLg7M60A=;
-	b=D6nDT2RSiIcjllQUb/LjFaCyeQ1os3intL9y+N5nbasvR4/cmMefy33Yo1sKG20FW6dbg4
-	4KmlB5VcmrWDrpBqZlm6ezjHTa669T+jCz9pMFqUzzzBmBDcooe6MfV56yj7UnUKJgTxTm
-	hVoPo0VAy9wfVFWvnfooRbU2kZcTiLM=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-619--scVkY_XPh2kMWBXfBT3pw-1; Thu, 28 May 2026 09:36:58 -0400
-X-MC-Unique: -scVkY_XPh2kMWBXfBT3pw-1
-X-Mimecast-MFC-AGG-ID: -scVkY_XPh2kMWBXfBT3pw_1779975417
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5a3fe7e7c94so727653e87.3
-        for <imx@lists.linux.dev>; Thu, 28 May 2026 06:36:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="D78VVkFj";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bXsmqhB3"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64S8wNO1382549
+	for <imx@lists.linux.dev>; Thu, 28 May 2026 14:10:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	iJ6t2LX8Nf3WHTmQ5lnb3pmaPw0YLr8cKpgF7Dcvu5o=; b=D78VVkFjlkuEcyzV
+	lA5MQoHG+VL+o//HIRREbJTwdUOSH12gv48aMjCVORR6d88dLvsl3OvOwfBRPrNi
+	Q5FA5uGDReErbHRo9RAmcTfVU+qTbRWt3lpZt8WMKkDvHeXKSwtFaV+tGjnthuzQ
+	+1eCuA+3k49fs+lXWCknDat69t8FSVMB8OqK50nsgcK2OJWbCiRygTYVD4Pgsnxt
+	ZoSlO/awycGLZ505VX2jGI0car+hbc3UlGFUo2X8s7Dd9slO7e7HquBovDRZVSh3
+	UosDMuifqT/2UFc4Iu2mf3O08uNizPJUUeh9S6FdRISZY5cByS9PJVh9fIU9QQjF
+	5Jtv1A==
+Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com [209.85.217.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ee7yrk20x-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Thu, 28 May 2026 14:10:54 +0000 (GMT)
+Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-63302aca17aso5178529137.1
+        for <imx@lists.linux.dev>; Thu, 28 May 2026 07:10:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1779977454; x=1780582254; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iJ6t2LX8Nf3WHTmQ5lnb3pmaPw0YLr8cKpgF7Dcvu5o=;
+        b=bXsmqhB3H5ho98uQ5H+zAFCc4ZRRRPIYVCKXqH/LSRVGvOO/AGrHjBB28wGEC7h1yh
+         SI0TitA+LCfXkxdgDcKdd6eMjVMQSfhr75JQQFpoRO/C31p3bZe8/KG3gHxrgqGGFgL1
+         xir0drpcETKDbi3kOiVNjEWR8qoE2SL2wVTh4i0wlldkBkUUu+zwB8gTvxT6l4SLeu3t
+         auuY2azlXYdMZR6+/Bqpi3yNy0Og8ko1ayMlWROTwAU7S9eskZGvCCRdO3bpnAVOqQmb
+         UMd4DL3M6KXXUVxWqTW7GxmmHIbsszPrNECdh6r0/p7R985s75YWVEyldJZi2IT5q3BC
+         SPkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779975417; x=1780580217;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/lfVZp7HWqHjRqZVVhy7Ez9cx3BFg0k+dK3nLg7M60A=;
-        b=OFCyo2xFNxisPaD/NrSis/CeJev6tphDkFbzCNZXHIrtz0yYNaB3MeQJuVgqdUNRuU
-         /DO97cCDda0iEkaHcetf7VjV1ffjIyjmQPJgRkv4FiGvx64imJGAnHCCR1ll26ckJxQf
-         2I5X6BlVQSjfHGookdmDR9MpqCswqge4DOca7V3sIdVgd+8HLDSdNZQAPA9mMygIunUo
-         26oaH9CIj7UMjZzfolddbm1ozKcGmwLgib9wYwh143Moj3qrWL35Qg81FkgKdb44UZT5
-         XIcaq1fXDT7+1kWGcuA5G0ih5APjm5uvS/j3On8MRQVT9XTzST2aaNS18IrZ2BtuQRWR
-         hJYA==
-X-Forwarded-Encrypted: i=1; AFNElJ91eLfbvejg74vUeO+s+B2xQDGweOz0+Xk4LYwWocPNra6BKf3RyfQ/5ztaHwczOjn2SS8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz78QMHKFA6isFv9FGWyqAPCrLUrO+g5Ivk2lm/2kLVQf3+sdRX
-	8yqoLSJlNrVj5Tgq9cJM8EcA4an7fl2qmccH+wXGqkpRzjuGrYwzn/hWrjI7Tr+Z2u/jeC3s7rZ
-	5gmtyPur2j8mOxmg+qTyNmPo+54/seauOrKVXRmM4bWcw9/+H5JZuEhKjYHpCd4HHbNJe4swtI0
-	6nkDXKPPAqqt0qvGKO1O77cUj94vZY
-X-Gm-Gg: Acq92OFFZ8yBPo1RmRaNLGIsC+oOssMssReoZOS78mcW75I7Am1M7dfuhZt50V8kSDH
-	E43MrYppiI+ICX3fxPkFPAOed9p8K3qW5tIUtqguphzeS1UGyr8/pD/NVJucI8LRo19aZJjrRiX
-	inu78mw6T/VWuhiACi6ombDkkmLiBXxQYn/UYHstgOy5bikKeaF1OgvtUeqskkiTv9CppBal8ol
-	kq9lErqaO5eNv0J
-X-Received: by 2002:a05:651c:210b:b0:393:5904:7411 with SMTP id 38308e7fff4ca-3963aeeaf73mr5032821fa.3.1779975416767;
-        Thu, 28 May 2026 06:36:56 -0700 (PDT)
-X-Received: by 2002:a05:651c:210b:b0:393:5904:7411 with SMTP id
- 38308e7fff4ca-3963aeeaf73mr5032791fa.3.1779975416222; Thu, 28 May 2026
- 06:36:56 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779977454; x=1780582254;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iJ6t2LX8Nf3WHTmQ5lnb3pmaPw0YLr8cKpgF7Dcvu5o=;
+        b=gNIFqSTt57WRtl1GtBOZFA0WQ/JmnTnAvabvhoss3GITEQwg+D142uqSiVWbY0+I0h
+         dnrNA8j9B6za5NWws9/jWQD2aCBNZvhSXxDa5OWgJ19suGASqlwdowhuPNQoDtUuiNBW
+         FpNKQpU3fffLChORAKmq2PLnvPOYzsJLIvZlv4UWvXznfu5NnHjosjwOvlPwBdPJj7sy
+         jYuZ4V4SWenAfM5/5K+ViX2A2RhAqpVUVAZLaaACS2TdJLa/tuCy4XvyfZ88YMLeDLLc
+         0I9YaZCKZRycIkITxfVryDvokY3Tn6zDA7fLovD2RJFlnu8PdVRYHGp+nimKcVzavpVh
+         sBkA==
+X-Forwarded-Encrypted: i=1; AFNElJ+GxuRyX1T4pZYylONi71BRggGBAuSUGpeUA+hTaDlLpuF3GpfyajJuYgy0GytoUw/LRyM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyYQbuFWy254nf9TY3fsEsWg+MifAnirwjQ6RAK3HpstO6M+83I
+	V+JplscNywe+fANHgBc4sQErMl5qx93U9z5rxRHgksUMzZQcC2Y21rqeKKANjoISvUpJKwAvjOj
+	eUASdlwAa+lFgXmFcBv/JhbRWqR/J/JXv97tCMpSK/pBB93/4TQ01va0=
+X-Gm-Gg: Acq92OFXuf79WdSYQo1zLsyERxFJfSesNlD9J6j2WFhgaaT62xqp6cw2Wd9a8CR5gig
+	leP+sm9gutpwc07xp3rDhyPf04Y07CySuW/imTrxYru2hTDMkG4Bn8IrVTm2rSymxEWMTvgYbJJ
+	yc1EYkglN/3s7re4j2R8z8krDMdNmhu9jQojhYpJGQmBb3YjHxNBer5ORA/mX6hRxRmdtc6lVg8
+	4YfN+759rT14AHIIxIptFidCZ1BpHd54SDzOAaVFpu2vBqgBLiALYC2j1NpqW8ruzKcD7hHm9pN
+	uI/meWMLIR5mbKHpzj6VQ+x14EmAqoZwjF2Hx3K/u7D6ZdcP1i8gCKkYQCo5E2atKsweckMUDQa
+	UK2P7RdMUSZH7WZORiqisTdoktKADqVELeqFYwguy4G7FISYURAYNKCVDDESt45Pp2H9m47bWie
+	9uA0Gf8HIg4oRBKlmDkgA=
+X-Received: by 2002:a05:6102:2c13:b0:62f:4553:7a28 with SMTP id ada2fe7eead31-67c8dbf6c45mr12405603137.21.1779977453677;
+        Thu, 28 May 2026 07:10:53 -0700 (PDT)
+X-Received: by 2002:a05:6102:2c13:b0:62f:4553:7a28 with SMTP id ada2fe7eead31-67c8dbf6c45mr12405549137.21.1779977453082;
+        Thu, 28 May 2026 07:10:53 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:ae20:597c:99b8:d161? ([2a05:6e02:1041:c10:ae20:597c:99b8:d161])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb5b28absm14324149f8f.27.2026.05.28.07.10.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 May 2026 07:10:52 -0700 (PDT)
+Message-ID: <14c628b9-0bda-4658-8e60-7781284aaee2@oss.qualcomm.com>
+Date: Thu, 28 May 2026 16:10:51 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260528083213.1399401-1-khristineandreea.barbulescu@oss.nxp.com> <20260528083213.1399401-2-khristineandreea.barbulescu@oss.nxp.com>
-In-Reply-To: <20260528083213.1399401-2-khristineandreea.barbulescu@oss.nxp.com>
-From: Enric Balletbo i Serra <eballetb@redhat.com>
-Date: Thu, 28 May 2026 15:36:43 +0200
-X-Gm-Features: AVHnY4JWVlWlJ0EWffurf2OBWBeheI9s2tuuUOn2kqYHXaCLBerPUHpYRJVoR8U
-Message-ID: <CALE0LRs_8oT+sagUm95uXhfdf28iHO+f-Wwo0DrBp8DK_PaiJA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] arm64: dts: s32g: add PWM support for s32g2 and s32g3
-To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-Cc: Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: y3VO7At5fbeq2TiT-4O-61nFbyonliPKOohEyjnNywg_1779975417
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: s32g3: Fix SWT8 watchdog address
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+        Chester Lin <chester62515@gmail.com>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+        NXP S32 Linux Team <s32@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>, linux-arm-kernel@lists.infradead.org,
+        imx@lists.linux.dev, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260528120323.46287-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
+In-Reply-To: <20260528120323.46287-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDE0MyBTYWx0ZWRfX1CMm8do21iTw
+ Hcl3tAodeG0ffL2xQtV4EaNl7dy9ulGUu7YVQBEeGxy13zH1LWcSdyNcjUeFmvhh1xqAFVqJQft
+ XRjLlSOKc2rDDeHathyFKriNriDeviaBguuLBeDtnO57e+X+loJNbRW/oENJN1VWXoT73C45NQV
+ kFxxGJilOgpPO1zTzEQshi4HfgRO4Y1wgTt4E+JC+XQOSWjk3gXBD3ccrApxCEdf4NKgwEwcAOF
+ SQtRl32cfG1JB9/W1VipmafLqc3ik6vsgK4Tyx2rTi9SnQ1F0d4duCu++rzo2HmEO8KJ125GkAO
+ IJw1XtLc23dQLNxPkiT6hpJjO0mF7yz3M0xz6ClzbTGXgHIWnSmOgNzJJuTsDvUleIPlzDGY3pc
+ GqN4wqDdmv6k879PFeU4/W5ZTqb0VWPrYAwfdr8LC/h8FjBXqHWgXev1Tju+vbOJ/PhRlfuUwcM
+ pbI27mXOrfas2Xa4SSg==
+X-Authority-Analysis: v=2.4 cv=PLo/P/qC c=1 sm=1 tr=0 ts=6a184cee cx=c_pps
+ a=P2rfLEam3zuxRRdjJWA2cw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=RFvq1impTiYap7nS4gAA:9 a=QEXdDO2ut3YA:10
+ a=ODZdjJIeia2B_SHc_B0f:22
+X-Proofpoint-GUID: DjeEwrO5QD0Gllq0MkDv2sf9xu8WQVNd
+X-Proofpoint-ORIG-GUID: DjeEwrO5QD0Gllq0MkDv2sf9xu8WQVNd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_03,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 malwarescore=0 spamscore=0 bulkscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
+ definitions=main-2605280143
 
-Hi Khristine,
+On 5/28/26 14:03, Krzysztof Kozlowski wrote:
+> Add missing hex annotation to fix the SWT8 watchdog address in 'reg'
+> property, as reported by dtc W=1:
+> 
+>    s32g3.dtsi:863.27-869.5: Warning (simple_bus_reg): /soc@0/watchdog@40500000: simple-bus unit address format error, expected "269fb20"
+> 
+> Lack of hex '0x' meant address would be interpreted as decimal thus
+> completely different value used as this device MMIO.  If device was
+> enabled this could lead to corruption of other device address space and
+> broken boot.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 6db84f042745 ("arm64: dts: s32g3: Add the Software Timer Watchdog (SWT) nodes")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Thank you for the patch.
+Reviewed-by: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
 
-On Thu, May 28, 2026 at 10:32=E2=80=AFAM Khristine Andreea Barbulescu
-<khristineandreea.barbulescu@oss.nxp.com> wrote:
->
-> Add PWM0 and PWM1 for S32G2 and S32G3 SoCs
->
-> Issue: ALBSP-1959
+Thanks for the fix
 
-You must remove the vendor-internal issue tracker reference before
-submitting upstream.
-
-> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@=
-oss.nxp.com>
 > ---
->  arch/arm64/boot/dts/freescale/s32g2.dtsi      | 28 ++++++-
->  arch/arm64/boot/dts/freescale/s32g3.dtsi      | 30 ++++++-
->  .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 78 ++++++++++++++++++-
->  3 files changed, 133 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g2.dtsi
-> index 51d00dac12de..907cf74e61f3 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> @@ -3,7 +3,7 @@
->   * NXP S32G2 SoC family
->   *
->   * Copyright (c) 2021 SUSE LLC
-> - * Copyright 2017-2021, 2024-2025 NXP
-> + * Copyright 2017-2021, 2024-2026 NXP
-
-I see this is updated on every patch you recently submitted. While
-this trivial conflict is easy to fix, it can be annoying. I suggest
-creating a series with all the recent device-tree changes submitted
-lately to facilitate the maintainers' work.
-
-Other than the first comment I made, once that's fixed, you can add my:
-
-Reviewed-by: Enric Balletbo i Serra <eballetb@redhat.com>
-
-Thanks,
-  Enric
-
-
->   */
->
->  #include <dt-bindings/interrupt-controller/arm-gic.h>
-> @@ -554,6 +554,19 @@ i2c2: i2c@401ec000 {
->                         status =3D "disabled";
->                 };
->
-> +               pwm0: pwm@401f4000 {
-> +                       compatible =3D "nxp,s32g2-ftm-pwm";
-> +                       reg =3D <0x401f4000 0x1000>;
-> +                       #pwm-cells =3D <3>;
-> +                       clocks =3D <&clks 5>,
-> +                                <&clks 6>,
-> +                                <&clks 5>,
-> +                                <&clks 5>;
-> +                       clock-names =3D "ftm_sys", "ftm_ext",
-> +                                     "ftm_fix", "ftm_cnt_clk_en";
-> +                       status =3D "disabled";
-> +               };
-> +
->                 swt4: watchdog@40200000 {
->                         compatible =3D "nxp,s32g2-swt";
->                         reg =3D <0x40200000 0x1000>;
-> @@ -717,6 +730,19 @@ i2c4: i2c@402dc000 {
->                         status =3D "disabled";
->                 };
->
-> +               pwm1: pwm@402e4000 {
-> +                       compatible =3D "nxp,s32g2-ftm-pwm";
-> +                       reg =3D <0x402e4000 0x1000>;
-> +                       #pwm-cells =3D <3>;
-> +                       clocks =3D <&clks 7>,
-> +                                <&clks 8>,
-> +                                <&clks 7>,
-> +                                <&clks 7>;
-> +                       clock-names =3D "ftm_sys", "ftm_ext",
-> +                                     "ftm_fix", "ftm_cnt_clk_en";
-> +                       status =3D "disabled";
-> +               };
-> +
->                 usdhc0: mmc@402f0000 {
->                         compatible =3D "nxp,s32g2-usdhc";
->                         reg =3D <0x402f0000 0x1000>;
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g3.dtsi
-> index e314f3c7d61d..a4a9e21d1361 100644
+>   arch/arm64/boot/dts/freescale/s32g3.dtsi | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> index e314f3c7d61d..7e28dff53a86 100644
 > --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
 > +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->  /*
-> - * Copyright 2021-2025 NXP
-> + * Copyright 2021-2026 NXP
->   *
->   * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
->   *          Ciprian Costea <ciprianmarian.costea@nxp.com>
-> @@ -617,6 +617,20 @@ i2c2: i2c@401ec000 {
->                         status =3D "disabled";
->                 };
->
-> +               pwm0: pwm@401f4000 {
-> +                       compatible =3D "nxp,s32g3-ftm-pwm",
-> +                                    "nxp,s32g2-ftm-pwm";
-> +                       reg =3D <0x401f4000 0x1000>;
-> +                       #pwm-cells =3D <3>;
-> +                       clocks =3D <&clks 5>,
-> +                                <&clks 6>,
-> +                                <&clks 5>,
-> +                                <&clks 5>;
-> +                       clock-names =3D "ftm_sys", "ftm_ext",
-> +                                     "ftm_fix", "ftm_cnt_clk_en";
-> +                       status =3D "disabled";
-> +               };
-> +
->                 swt4: watchdog@40200000 {
->                         compatible =3D "nxp,s32g3-swt", "nxp,s32g2-swt";
->                         reg =3D <0x40200000 0x1000>;
-> @@ -792,6 +806,20 @@ i2c4: i2c@402dc000 {
->                         status =3D "disabled";
->                 };
->
-> +               pwm1: pwm@402e4000 {
-> +                       compatible =3D "nxp,s32g3-ftm-pwm",
-> +                                    "nxp,s32g2-ftm-pwm";
-> +                       reg =3D <0x402e4000 0x1000>;
-> +                       #pwm-cells =3D <3>;
-> +                       clocks =3D <&clks 7>,
-> +                                <&clks 8>,
-> +                                <&clks 7>,
-> +                                <&clks 7>;
-> +                       clock-names =3D "ftm_sys", "ftm_ext",
-> +                                     "ftm_fix", "ftm_cnt_clk_en";
-> +                       status =3D "disabled";
-> +               };
-> +
->                 usdhc0: mmc@402f0000 {
->                         compatible =3D "nxp,s32g3-usdhc",
->                                      "nxp,s32g2-usdhc";
-> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi b/arch/arm64=
-/boot/dts/freescale/s32gxxxa-evb.dtsi
-> index 803ff4531077..be7b645afa2d 100644
-> --- a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->  /*
-> - * Copyright 2024 NXP
-> + * Copyright 2024, 2026 NXP
->   *
->   * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->   *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
-> @@ -245,6 +245,70 @@ dspi5-grp4 {
->                         bias-pull-up;
->                 };
->         };
-> +
-> +       ftm0_pins: ftm0-pins {
-> +               ftm0-grp0 {
-> +                       pinmux =3D <0x2912>;
-> +               };
-> +
-> +               ftm0-grp1 {
-> +                       pinmux =3D <0x122>,
-> +                                <0xb42>;
-> +                       output-enable;
-> +                       input-enable;
-> +               };
-> +
-> +               ftm0-grp2 {
-> +                       pinmux =3D <0xb13>,
-> +                                <0xb53>;
-> +                       output-enable;
-> +                       input-enable;
-> +               };
-> +
-> +               ftm0-grp3 {
-> +                       pinmux =3D <0x2904>;
-> +               };
-> +
-> +               ftm0-grp4 {
-> +                       pinmux =3D <0x2925>;
-> +               };
-> +
-> +               ftm0-grp5 {
-> +                       pinmux =3D <0x2936>;
-> +               };
-> +       };
-> +
-> +       ftm1_pins: ftm1-pins {
-> +               ftm1-grp0 {
-> +                       pinmux =3D <0x1d3>;
-> +                       output-enable;
-> +                       input-enable;
-> +               };
-> +
-> +               ftm1-grp1 {
-> +                       pinmux =3D <0x29b4>;
-> +               };
-> +
-> +               ftm1-grp2 {
-> +                       pinmux =3D <0x29c3>;
-> +               };
-> +
-> +               ftm1-grp3 {
-> +                       pinmux =3D <0x1f4>;
-> +                       output-enable;
-> +                       input-enable;
-> +               };
-> +
-> +               ftm1-grp4 {
-> +                       pinmux =3D <0x202>;
-> +                       output-enable;
-> +                       input-enable;
-> +               };
-> +
-> +               ftm1-grp5 {
-> +                       pinmux =3D <0x29d2>;
-> +               };
-> +       };
->  };
->
->  &can0 {
-> @@ -293,6 +357,18 @@ &i2c4 {
->         status =3D "okay";
->  };
->
-> +&pwm0 {
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&ftm0_pins>;
-> +       status =3D "okay";
-> +};
-> +
-> +&pwm1 {
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&ftm1_pins>;
-> +       status =3D "okay";
-> +};
-> +
->  &spi1 {
->         pinctrl-0 =3D <&dspi1_pins>;
->         pinctrl-names =3D "default";
-> --
-> 2.34.1
->
+> @@ -862,7 +862,7 @@ gmac0mdio: mdio {
+>   
+>   		swt8: watchdog@40500000 {
+>   			compatible = "nxp,s32g3-swt", "nxp,s32g2-swt";
+> -			reg = <40500000 0x1000>;
+> +			reg = <0x40500000 0x1000>;
+>   			clocks = <&clks 0x3a>, <&clks 0x3b>, <&clks 0x3b>;
+>   			clock-names = "counter", "module", "register";
+>   			status = "disabled";
 
