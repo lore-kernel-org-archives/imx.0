@@ -1,133 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E612F549F
-	for <imx@lists.linux.dev>; Thu, 28 May 2026 20:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A900352007
+	for <imx@lists.linux.dev>; Thu, 28 May 2026 22:06:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001342; cv=none; b=YVAALexEZoV5jMkJmitkhqh5KpI5wWMgNZzQHTCQyVcPseIrSIzHK+2SofWSjBAARur2kszbciykoK12T4TJ4UE7BaoxMhukw28Ve6ZcEpleO/50ozbpMDOR2M50BUrQiSet03lh3/QGQAf0fDxdKysEiHiOmKK7JiwND2wHMzU=
+	t=1780005972; cv=none; b=oMkNFMHdvohKVLE9jMQ1cl0SXrBUiJT30u10djgMlkea8xy6FdNW650iFc0c0merIoQ0wFNzyf6O+KprYIo8Q6W3sfrLtt93P0Yn5ezSdSo3499ZTMdUGqLcwcTkF7dW2D2l7Mf2CkcpzIQckXSctX+2SFMeHechTGjtSvzodSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001342; c=relaxed/simple;
-	bh=SwWrtDcejaJEiN5aCSW1i6+YW+zZziefcP7/GaVAdow=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aiByNAPa4WGg2bIKqoEGPhoI6q8D6By4HZVAafoYf2md0wzpPsKD96XCjreAMeoBi5vIMCs+7E2TwNhVHo47b7/LWRJFF0elhdu5HXXZAfZI19AGDtewDCPUlPeq7THISdcK0+0JGaGPH+E46zAnJlJf0nsBewtj8gNoWqcx0IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=heDx+5MC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780005972; c=relaxed/simple;
+	bh=PU1U667y2KkiOIYg6ogzcCeA/B164C/gv/LWDFCZzMs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qvMcDsA25GGIHxWGbXz+Gjd5cmdVGl0h60DH5qn26OobWyD8VADlycal/q7EepmD1Brih0K0LvK+srRwc2UMJgW1oE8r2Fk3xy4sD9n2BFAeDjhQqSJlBohR5pwmHx6A5JDoxK5cTUG1uq/J+ZKObjAVeiRzRM0ExPNB14NqKTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WCPGbFdb; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="heDx+5MC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47801F00A3A;
-	Thu, 28 May 2026 20:49:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780001341;
-	bh=yqZs1UnsEEzG4SGzql7wCfHY6p3hE1wnpVySYobdLxQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=heDx+5MCUCJfvWlo0pinfvFGsHDnsZVw0H2BYyDPl1pK85YIGFV0HTC08960lYb6h
-	 Xod9ESLgLmeYqjTOPDyeGPYnyEojult2ReHExwz/WXeUgFI7s2TGuKIe2s+93mjuFt
-	 e8HexY9gsYsZtRC8x3JZNHPF3i2lsecvZ3VNhyYkGy7hNwTdH3pfT2xZfOqb7dZqkU
-	 frGBE4naqvdbuWH5LgeAGjYGfPIv4GdF411t3Z4KX1iczuTvbQWVH882pRZw7NLHvI
-	 b88idbBVQFu1ttkD/nSBI/3x4tPCMZIAtDooDwiJk1aLjK6OXcJM6Y7YG5h6LgIGzz
-	 NrD4zlcHt/Z7w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] serial: mxs-auart: fix 64-bit cast in probe
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Rosen Penev" <rosenp@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260528203011.137338-1-rosenp@gmail.com>
-References: <20260528203011.137338-1-rosenp@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 20:49:00 +0000
-Message-Id: <20260528204900.E47801F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WCPGbFdb"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-43d77f6092eso7523366f8f.2
+        for <imx@lists.linux.dev>; Thu, 28 May 2026 15:06:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780005970; x=1780610770; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9bMfuCYDuzUQw576UfmJ0asuE98Zww1G7gRNmQ1InhY=;
+        b=WCPGbFdbgxqPMOncj/lT2/tDZJWWaTbapYGuMv53JOqjmWRAaIcw2VhzXa3Zid9Gg1
+         eequOCc69lqqczFmmQWrgUhRTg80efJvIjdt7kTsKHa0U2wBJlP2BkgoKJmxCVNRQutO
+         YE4/oHZK09Hos7QkdFlQHRA0Apct3tEEo4RoHZDz65roLLdj9Ll3FeYRnlktfLkGM/4y
+         t8cKsOglxD+QrGdMfYhg4k8yJmWitxTQk6aRCnZQiPBbMZ/IYp3dGT5XZSwsf3x7UF2G
+         KIt9lXq8Uz5Q6eWLC23OZhWsur1jMRHwNdApGakVxC0mov0mswIzMdF2s2JJ3uVz6lbf
+         1rRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780005970; x=1780610770;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9bMfuCYDuzUQw576UfmJ0asuE98Zww1G7gRNmQ1InhY=;
+        b=Qaq5oTZHl/OB+our6CmP6ohXZsFLax7FsGNnEPdmE1tA3iNXqmOowZY5RqUpJWNMs1
+         esCk17M5Y1NZN4KquGdE0cOjnI7sD4HdlMZ3capkN+inZhVUnQhrmsC4uWykpIU7Idm3
+         07G8HJRBtO0UL7dhoU3wzpIV2PtBrTEjov7y6fd69Rpr5f/Z15Z4ABY6QLeCkc37H4PQ
+         iC/lDra5Q3wwkWQj8GJ4WttcxOQCHjVguHYm0lsvZU733MjJihlAQbEFt6TNhAVP53fN
+         5dX4uQAcFZz/vKgE9FRm8ST/jyrGpnt0A5ch3pLNQLv1MPaJJRHFRIpEhTrLT/nUUKzj
+         rXIw==
+X-Forwarded-Encrypted: i=1; AFNElJ97JB7NNoxJJeWKgGbK8e4pBJBesz2O064d72Ef+gL37Rk+Ndk9/EC2AGD7Eh23v2pUNxc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwjpnnWffkl+RTq25A1Firm/ZPQmCHBbwnPXzjsIPGg1Dqb+KKU
+	9EWefwskQGDyv28sliodhWeoUAJtnV16IpEfz0ha6RekW+UosAw13dIi
+X-Gm-Gg: Acq92OFt4DXQSsuch3FE/OXW2GFRZMpqIyCg+NftGjwWuAOdcmg9HbLjPfJaIXI6jYf
+	lyTEkeMmaDD5RXE4B6L8NE7i82d22tQcVO48iRhxuof+vIGUPa8//YwzI4DBr788CxDzzQywHdT
+	Rfg6En5uEL0jJXl8uNRE/qULqCpehfA6ht21NUR64/Zn7mPc32NBAilObBfOFG9awHx/ZoNL26d
+	F1a6xxP1Fb+FLo0wCTFlrSmdaCBM4QyfyaiilxWCowTTSrViIvlQAzIQ5JaRpPRin0LtB60FRzv
+	vf1ximfJOtATf3gIzkLQHW0eEPc1TVId6cW3iB/MQfeR6ApzOqvFY8dwvmcp4s2d69ePE0oFkbv
+	PLL8c+aDuha7VVMrN8ePhkLJSRaFDGPpfpw5MJJ4yfYQzRiXm/EQN8YbLnp1trff9J3IBF8YZE5
+	Hk3iZ/SPmvTZGuNW+n69yzTt3k/TB3T1R9A4Z2dKQicXGcsM6Xc135LtL7wvFjUtxnUVfdYtmAe
+	JePdSAf5XxhFZjIPzxytT+znJSFiQ7UbTsSmKwZG48UgvIq
+X-Received: by 2002:a05:600c:644:b0:485:9a50:3370 with SMTP id 5b1f17b1804b1-4909c07b4c7mr2974955e9.8.1780005969630;
+        Thu, 28 May 2026 15:06:09 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-20-233.cust.vodafonedsl.it. [93.144.20.233])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eec5eba06sm4911410f8f.22.2026.05.28.15.06.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 15:06:09 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v1 1/1] arm64: dts: imx95-var-dart-sonata: add TPM reset GPIO
+Date: Fri, 29 May 2026 00:05:50 +0200
+Message-ID: <20260528220550.34891-1-stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-Pre-existing issues:
-- [High] Platform ID Logic / Out-of-Bounds Array Access and Dangling Pointer
-- [High] Hardware Access Logic / Missing API Call causing External Abort
-- [High] Use-After-Unmap / Race Condition between devm_request_irq and ioun=
-map
---
+Add the reset GPIO for the TPM device on the Sonata carrier board and
+label the node accordingly.
 
-commit 1f0a577246ef846dca74fbf44e87059664a89db4
-Author: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
+ arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-serial: mxs-auart: fix 64-bit cast in probe
+diff --git a/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
+index 7985a42f5785..7a58ad38ffb4 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
++++ b/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
+@@ -278,6 +278,8 @@ pca6408_2: gpio@21 {
+ 	st33ktpm2xi2c: tpm@2e {
+ 		compatible = "st,st33ktpm2xi2c", "tcg,tpm-tis-i2c";
+ 		reg = <0x2e>;
++		label = "tpm";
++		reset-gpios = <&pca9534 0 GPIO_ACTIVE_HIGH>;
+ 	};
+ };
+ 
+-- 
+2.47.3
 
-of_device_get_match_data() returns a pointer. Casting it directly to
-enum truncates on 64-bit platforms. Cast to unsigned long instead.
-
-> diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auar=
-t.c
-> index 693b491f1e755..3e14c2768c48e 100644
-> --- a/drivers/tty/serial/mxs-auart.c
-> +++ b/drivers/tty/serial/mxs-auart.c
-> @@ -1598,7 +1598,7 @@ static int mxs_auart_probe(struct platform_device *=
-pdev)
->  		return -EINVAL;
->  	}
-> =20
-> -	s->devtype =3D (enum mxs_auart_type)of_device_get_match_data(&pdev->dev=
-);
-> +	s->devtype =3D (unsigned long)of_device_get_match_data(&pdev->dev);
-> =20
->  	ret =3D mxs_get_clks(s, pdev);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this function properly
-enable the clock before accessing hardware registers?
-
-For non-ASM9260 variants, the driver fetches the clock via devm_clk_get()
-in mxs_get_clks() but does not call clk_prepare_enable() for it. Later in
-probe, it reads from the registers:
-
-    version =3D mxs_read(s, REG_VERSION);
-
-Accessing registers of a peripheral whose clock is disabled can trigger a
-synchronous external abort. Is it safe to rely entirely on the bootloader
-to leave the clock enabled during probe?
-
-[Severity: High]
-This is a pre-existing issue, but does the error path properly clear the
-port from the global array?
-
-During probe, the port is registered using the DT alias ID:
-
-    auart_port[s->port.line] =3D s;
-
-However, the error path uses pdev->id:
-
-    out_free_qpio_irq:
-        mxs_auart_free_gpio_irq(s);
-        auart_port[pdev->id] =3D NULL;
-
-For devices probed via the device tree, the platform bus implicitly sets
-pdev->id to -1 (PLATFORM_DEVID_NONE). Could this cause an out-of-bounds
-write to auart_port[-1], while leaving the actual slot with a dangling
-pointer to the freed devm-allocated port?
-
-[Severity: High]
-This is a pre-existing issue, but is there a use-after-unmap race condition
-in the error path?
-
-The driver manually unmaps I/O memory but uses devm_request_irq() for the
-interrupt:
-
-    out_iounmap:
-        iounmap(s->port.membase);
-
-Because devm resources are freed only after probe returns, the explicit
-iounmap happens while the interrupt handler is still registered. If an
-interrupt fires during this window, mxs_auart_irq_handle() will attempt
-to read from the unmapped s->port.membase, potentially causing a page
-fault. Could the interrupt handling be synchronized with the unmapping?
-
->  	if (ret)
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528203011.1373=
-38-1-rosenp@gmail.com?part=3D1
