@@ -1,163 +1,154 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D71344D85;
-	Thu, 28 May 2026 07:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BB130C359;
+	Thu, 28 May 2026 07:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779952469; cv=none; b=PBH6ssZ3d+AttHnffAYVYcHUF0XfIg6eYJUcNjPJC3BFjCNCps8NqMj13bKBEK6K3imzlQHlaACWmxags7ZJn1f05tW2ZfaNB5Aji05zyjNB+yabjXXRSQA2FD2JcWBDhH2w2wLq1GpvznRw5fy5nVShBbvvDz4FE77LwE7bWHw=
+	t=1779953839; cv=none; b=YcImGcc65L/Keq99QN/Mxf65PJ83YzP8AbWDotEHDOoJn6SqEB+aPufcmDNQsZeGZf9bmKrdizuCrG9qpRnZ1PxcUlabryojtDh9HqC2GbvHb17eMqMwsR1nMkrrGrJzmdATZSnsPdiM9Kkbit14mIfqT1D7lb7to46EmXYY5Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779952469; c=relaxed/simple;
-	bh=x9EyM01FOM43mnA4zeMmNv5Itikmz+R93LlCpHlkeWU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=pc9WBgjsP1Ubb7IgpWdhtd4SihbVMcK2pMqlQkj67l97Jzo2xAAOdP9gcUJLuUuO72QCLOKiKWNrRB0aNWN2vzZLCuAEtyXVoRK6nj5DiWwBhRcFkMXVaCJKlhzPgH4ONY2Nb3LGjGGQ1Zp8o4S/DGeEyvdSkoNbh7V1QyFicsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kA4H4NBb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779953839; c=relaxed/simple;
+	bh=WAYHpQQhAiVaamKGzgBVjax2JzPvYqtGuIgdpTd1Oo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FST5a9Nh5KMTfdff/qksdUQpZ2O73KCIB6zTNCDkNyPBNGWbHlNDgwpT3q5QQUS7dmWbYqlkq+HOcxp/UQvTPEPGWF/A692jYFNdcJ7Wgu8A+uGbHdbCuE05D+vTanq/EmJU7vaXEf4et7k1gfWp0RyLokCDYH6LEn+d5WhGIUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IqZlZ0jZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kA4H4NBb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9C91F00A3A;
-	Thu, 28 May 2026 07:14:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IqZlZ0jZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720781F000E9;
+	Thu, 28 May 2026 07:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779952468;
-	bh=xKHvp74XNwJ5bs6EzdPM6zlVX4pqjdmFr3KZoKriYbY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kA4H4NBb+COq2/5SwWskSQAUtpSaKavwkDMXoyIBt+3j8A71x6K26diCI/slLSG4m
-	 DjN8+vwGgPnfcuEyoFkl6N683kduvycOv0EECy39J7t/vFSs2dcLqaCochjQpb9oj3
-	 HmkscNFOW4l/g7ZinzHh4cWukVIfQTygCShOxswNb3UBdNjtQC64zZZj52E14X9kkG
-	 89wVXetMWM5a8clf1JWIXOpgq21gMm6hJQdcFi/vEPfJZaG16wUFUCSC18syCMqohc
-	 lHeuViR9qnr1ljmMnRqmbIvmxlHF6eQs4uUs1Scldt5BU04GT1NaJ9tdSZ4TvEh6My
-	 iQpRWsnx1ZQGg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/1] arm64: dts: s32g: add PWM support for s32g2 and
- s32g3
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Khristine Andreea Barbulescu" <khristineandreea.barbulescu@oss.nxp.com>
-Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260528065228.1300779-2-khristineandreea.barbulescu@oss.nxp.com>
-References: <20260528065228.1300779-2-khristineandreea.barbulescu@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 07:14:26 +0000
-Message-Id: <20260528071427.BB9C91F00A3A@smtp.kernel.org>
+	s=k20260515; t=1779953837;
+	bh=sjMCyOJicGcnsOK1p3JsmbDECVIS3LwVFxzgQoZgP/8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IqZlZ0jZUWdyRo9TVikWIWSsxSzUCcde9CJs9ADiitZiyWPh+Myh3azKEFD7esWp3
+	 ZKOsVF6bKCuoUZSY+u+1/Bj4Lm9AG1WA5aRFhk4z3SKMTg/xjUB9lXC8pOQ7EOmSiS
+	 EYEszxyhtL0wcO/FOt1OTPDHdCwoPw0URBbak0gAsbFN3YqcOT/xLTx12Ch+kSAXLm
+	 G1k8Am2o9o/oqwVB61n00/NeSAiCN04vPqnZAO8S26D1MAjX37DQAb5ADQ7ogvEWvP
+	 h8IY3x4Ku1K5h4epJh5621y6jwHs+0GXRoLASvWi8VMek6/APjGK9gn9JcMY1htqai
+	 2Hs+lm+otW/jw==
+Date: Thu, 28 May 2026 09:37:14 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-phy@lists.infradead.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux@ew.tq-group.com, Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Ying Liu <victor.liu@nxp.com>
+Subject: Re: [PATCH v23 5/8] dt-bindings: display: bridge: Add Cadence
+ MHDP8501
+Message-ID: <20260528-watchful-nippy-toucanet-8ecf39@quoll>
+References: <20260519-dcss-hdmi-upstreaming-v23-0-5615524a9c63@oss.nxp.com>
+ <20260519-dcss-hdmi-upstreaming-v23-5-5615524a9c63@oss.nxp.com>
+ <20260526-golden-bobcat-of-aurora-fd1fef@quoll>
+ <2301c829-5203-47ea-bc26-09f9e3b459a4@kernel.org>
+ <6oub7yyy22dtrevw7oayaqkcncz6tmmddy6fb75gsn3z6yfe3r@zr5lehbaohof>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6oub7yyy22dtrevw7oayaqkcncz6tmmddy6fb75gsn3z6yfe3r@zr5lehbaohof>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Low] Pinctrl node and subnode names contain underscores (`_`) instead of=
- hyphens (`-`).
-- [Low] The overriding board-level nodes `&pwm0` and `&pwm1` are appended a=
-t the end of the file rather than being sorted alphabetically.
-- [Low] Inconsistent and misaligned indentation for multi-line properties.
---
+On Tue, May 26, 2026 at 09:44:53AM +0300, Laurentiu Palcu wrote:
+> Hi Krzysztof,
+> 
+> On Tue, May 26, 2026 at 08:10:43AM +0200, Krzysztof Kozlowski wrote:
+> > On 26/05/2026 08:08, Krzysztof Kozlowski wrote:
+> > > On Tue, May 19, 2026 at 02:42:28PM +0000, Laurentiu Palcu wrote:
+> > >> From: Sandor Yu <Sandor.yu@nxp.com>
+> > >>
+> > >> Add bindings for Cadence MHDP8501 DisplayPort/HDMI bridge.
+> > >>
+> > >> Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
+> > >> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> > >> ---
+> > >>  .../bindings/display/bridge/cdns,mhdp8501.yaml     | 136 +++++++++++++++++++++
+> > >>  1 file changed, 136 insertions(+)
+> > >>
+> > >> diff --git a/Documentation/devicetree/bindings/display/bridge/cdns,mhdp8501.yaml b/Documentation/devicetree/bindings/display/bridge/cdns,mhdp8501.yaml
+> > >> new file mode 100644
+> > >> index 0000000000000..57e7e95199777
+> > >> --- /dev/null
+> > >> +++ b/Documentation/devicetree/bindings/display/bridge/cdns,mhdp8501.yaml
+> > 
+> > Filename must match compatible.
+> > 
+> > >> @@ -0,0 +1,136 @@
+> > >> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > >> +%YAML 1.2
+> > >> +---
+> > >> +$id: http://devicetree.org/schemas/display/bridge/cdns,mhdp8501.yaml#
+> > >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > >> +
+> > >> +title: Cadence MHDP8501 DP/HDMI bridge
+> > >> +
+> > >> +maintainers:
+> > >> +  - Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> > >> +
+> > >> +description:
+> > >> +  Cadence MHDP8501 DisplayPort/HDMI interface.
+> > >> +
+> > >> +properties:
+> > >> +  compatible:
+> > >> +    enum:
+> > >> +      - fsl,imx8mq-mhdp8501-hdmi
+> > >> +      - fsl,imx8mq-mhdp8501-dp
+> > > 
+> > > We are at v23 and you will be getting the same questions till you
+> > > finally fix that commit msg.
+> > > 
+> > > Why bus/connector is part of the compatible? Device is exactly the same.
+> > > Please read writing bindings - it covers exactly this case.
+> 
+> The device is the same but, based on the FW, it can act as DP or HDMI
+> controller. For 8MQ, the FW is loaded by the ROM. I did look at the writing
+> bindings doc and I assume you're referring to this exact paragraph:
+> 
+>    - DON'T use bus suffixes to encode the type of interface device is using.
+>      The parent bus node already implies that interface.  DON'T add the type of
+>      device, if the device cannot be anything else.
+> 
+> I don't see how is this applicable in this particular case. The parent bus node
+> does not imply the interface and, as I explained previously, the device can be
+> either DP or HDMI.
 
-commit 93bb27d5fd3b95357925ced6b98931cf0038033a
-Author: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.c=
-om>
+True, not parent bus node, but in your case still other nodes could define
+that this is HDMI via graph.
 
-arm64: dts: s32g: add PWM support for s32g2 and s32g3
+The problem is that device is the same thus you cannot have different
+copmatible. If you look at your driver (although that's not ultimate
+argument, just a hint), it clearly needs compatible only to tell if
+connection is HDMI or DP. So again: device is the same with the same
+programming interface.
 
-This commit adds PWM0 and PWM1 support for the S32G2 and S32G3 SoCs.
+Therefore same compatible.
 
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g3.dtsi
-> index e314f3c7d61d0..408bf0b407346 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-[ ... ]
-> @@ -617,6 +617,20 @@ i2c2: i2c@401ec000 {
->  			status =3D "disabled";
->  		};
-> =20
-> +		pwm0: pwm@401f4000 {
-> +			compatible =3D "nxp,s32g3-ftm-pwm",
-> +					 "nxp,s32g2-ftm-pwm";
+> 
+> > 
+> > And this was BTW completely different in previous version.
+> 
+> It was indeed. However, the problem is that there's no way to detect
+> from the controller's registers if we're in DP mode or HDMI. In v22 I
+> added a DT traversal function to detect the connector type from the last
+> node but it was suggested to me that having 2 compatibles would be a
+> much cleaner solution and I agree.
 
-[Severity: Low]
-This isn't a bug, but could the indentation of the continuation string be
-aligned with spaces instead of tabs? The excessive tabs misalign the second
-string relative to the opening quote of the first value. The same formatting
-question applies to the clock-names property below, as well as the pwm1
-additions.
+Well, you cannot have two compatibles.
 
-> +			reg =3D <0x401f4000 0x1000>;
-> +			#pwm-cells =3D <3>;
-> +			clocks =3D <&clks 5>,
-> +				 <&clks 6>,
-> +				 <&clks 5>,
-> +				 <&clks 5>;
-> +			clock-names =3D "ftm_sys", "ftm_ext",
-> +					  "ftm_fix", "ftm_cnt_clk_en";
-> +			status =3D "disabled";
-> +		};
-> +
-[ ... ]
-> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi b/arch/arm64=
-/boot/dts/freescale/s32gxxxa-evb.dtsi
-> index 803ff45310771..844d2c4fabf76 100644
-> --- a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-[ ... ]
-> @@ -245,6 +245,70 @@ dspi5-grp4 {
->  			bias-pull-up;
->  		};
->  	};
-> +
-> +	ftm0_pins: ftm0_pins {
-> +		ftm0_grp0 {
-> +			pinmux =3D <0x2912>;
-> +		};
+Discover the end connector. Optionally phy argument can tell, although
+usually not that direction (the phy argument would tell the phy provider
+how to configure it, not phy consumer).
 
-[Severity: Low]
-This isn't a bug, but should these pinctrl node and subnode names use hyphe=
-ns
-instead of underscores?
+Best regards,
+Krzysztof
 
-The Device Tree specification and dts-coding-style.rst indicate that node n=
-ames
-should use hyphens (for example, ftm0-pins and ftm0-grp0) rather than
-underscores. This deviation from the existing file conventions might also
-trigger node_name_chars_strict warnings from dtc.
-
-> +
-> +		ftm0_grp1 {
-> +			pinmux =3D <0x122>,
-> +				 <0xb42>;
-> +			output-enable;
-> +			input-enable;
-> +		};
-[ ... ]
-> @@ -304,3 +368,15 @@ &spi5 {
->  	pinctrl-names =3D "default";
->  	status =3D "okay";
->  };
-> +
-> +&pwm0 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&ftm0_pins>;
-> +	status =3D "okay";
-> +};
-> +
-> +&pwm1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&ftm1_pins>;
-> +	status =3D "okay";
-> +};
-
-[Severity: Low]
-This isn't a bug, but would it be better to sort these overriding nodes
-alphabetically?
-
-The official devicetree coding style notes that overriding nodes at the boa=
-rd
-level should be sorted alphabetically. Sorting them correctly would place t=
-he
-&pwm0 and &pwm1 nodes before &spi5 instead of appending them at the end of =
-the
-file.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528065228.1300=
-779-2-khristineandreea.barbulescu@oss.nxp.com?part=3D1
