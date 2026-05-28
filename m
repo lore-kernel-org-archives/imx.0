@@ -1,212 +1,197 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011049.outbound.protection.outlook.com [40.107.130.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CA3380FFE;
-	Thu, 28 May 2026 08:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779957829; cv=fail; b=CjDIEh8WrSjUnN/+yv8JkksMfCp6KHXIbfKJ8mG25gmNCRA9AbJP9AQV7p2QHjj2pluqSucwtb4yeS1AvR3xDhW5A9x5XcqAMpuYpG05qGz3ELUM2jFRt7lAXWnxfYLeXwhP0eB/KCKLEQaNrfHt/J/4y3GvfdZsX43bZio1Z3Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779957829; c=relaxed/simple;
-	bh=C6Se/Te88fKHKcAolXK/qW1gTXkoQFC6Z4d8sVybxnk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=pLf/EmxoaKPiOMRwNhlPFo9wM0oB20Iek2Etb/5VzDXxN57101eS9KeFPSI74a1p/Vyai7VfJ8XSez0L359SV2nCb3z+LJbzGsTM2fppHzzdOnASzKn0/EJ2Pd985N3jbfzyHms8GYrJQaFN7HumEApQueTz+1vBj1SQ8DaQx5s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fyIuw0pt; arc=fail smtp.client-ip=40.107.130.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87D839E6D4
+	for <imx@lists.linux.dev>; Thu, 28 May 2026 09:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779959186; cv=none; b=Ab8EtCKm4ezAiUeFOq0VhyBA3uQ1oNrbwGkMZ00Dz98G95uPaK1k8oMi99bE9VMR3xUU8HG7Pk+nHTxgZN+5aEIeS9Q7+rt2oEJ69KdC+cwtYucquJo9YwLoZV+jJZ8EdRn3+oF6fSaba5VCCgQ7+EWzdslMdgMlgWTWyS5mdi0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779959186; c=relaxed/simple;
+	bh=pePpbntnwnsj7EYGTYln0S0Z1fUMMahUgMDQxO5w1uU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m0Ue7RDffvLNp88QQnKsXvtfGyEaffeHUi7eFVbfpc2CTqiEHaYojMlv/hlzghHKdzQBpcaxLxcoNdGWBiwu5pA949U7cP02b2WG9QCjzBtRJ+lsNpxmUOWIiPq0DJabUiuaeacmezO3ieCB4DVubPbU+UnE8xAw5DaadjOR91E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=j7tTIBEq; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fyIuw0pt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=un6vV/niqQxfaAJXgo7paMWNV4L8bu1xDFb/F70ha7QxA7I67i5LYQcWSO23YZ0uNMK/hEWd+doF1UhnDqbvhf40sc2P2p6a4ns9o8Zpts7gIPwb72TjyleT+ZC7wV0hBuz2LVfbxkXzqIVeZaoZJtfKBFxRQI20U7fze7f6eZr2vXrhych24fOW9lbeDzlis3LW9jZ8bmMsw7TdNNh8UcRTeBGhPR5kQD+W+5YB2ESEjAQLzN8rloT9SgQEgGt1qvhlHDmHq7t4irdPXDSYNdiVki30S2oDWJmKW5SEPM1EDd1g1yHsiKCBYMtpQqUnCbqIS67MMd8qcT3azlKoMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fcCx/RkagbhbTqh27BYhWMpG39iRt0hXxKHFomfwtCo=;
- b=kv9VzMmT4MuHpSDuA2lVbuNJJZA00DRTZSzfjbBzIfcQbFWIrPTmX8asCOpXG+g0F3kZUTwnJpB8y4L63RDcJIywfcWAIWUH7oLUKzpsRGQR9faG6mz7ZhVEdpxlbkBIo+6Re6FrIMA3Ri4R0ZMkMD6up85687ukwcDDpcPlYHwN2GnCxOc6DvzSKhyEOJHdV/1VF75UbEFRoKKS38H8pgYJkSyYUUj5hkKT3d9OR22UN6WfqcH8n/ZiQWD2zdJgKp3gepmnl1BNuSOqYfG6o+2LzAvBlfkENenvgyze46MMjAF9rGJS0ykMl+4Q/WsQEWo7Ooc4myKohsNQsy/z7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fcCx/RkagbhbTqh27BYhWMpG39iRt0hXxKHFomfwtCo=;
- b=fyIuw0pt5GAiIIlfSKO11ygbMvimZaK2on202Da/3IFYV543iOgHg2jqK6C5UBxCI7Okk8QntGg0QsNn7qhfF2UDp8mFEWCdsd/TaqnuycFkepCH7HiFIBlBNSkkjegtesDF6XLyrqS1nkuL183xr9CrsUhW4gFPMny1Iby5/6UrFyK/8DfYNYSM48QQbt+Q8oa15gvJ8CsfUnkO9MOwM7RmrqY0OOjt+8WwUcBN4xfpRxKVPpdN8c3/Stf5RyLGMmLqoByLPTPLOb36GNOK9V8/ZIhWI/5F0Q3HBxpp2Dz289ZxrV1wr4dWXArgcNYTHh+/VkXKsLi+WF1eUPwkhA==
-Received: from AM6PR04MB5765.eurprd04.prod.outlook.com (2603:10a6:20b:ae::26)
- by GV1PR04MB10477.eurprd04.prod.outlook.com (2603:10a6:150:1cb::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.13; Thu, 28 May
- 2026 08:43:41 +0000
-Received: from AM6PR04MB5765.eurprd04.prod.outlook.com
- ([fe80::bc76:f507:9b83:9d69]) by AM6PR04MB5765.eurprd04.prod.outlook.com
- ([fe80::bc76:f507:9b83:9d69%5]) with mapi id 15.21.0071.010; Thu, 28 May 2026
- 08:43:40 +0000
-From: Joy Zou <joy.zou@nxp.com>
-To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
-CC: "conor+dt@kernel.org" <conor+dt@kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "Frank.Li@kernel.org" <Frank.Li@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [EXT] Re: [PATCH 4/5] arm64: dts: imx91-11x11-evk: add reset
- gpios for ethernet PHYs
-Thread-Topic: [EXT] Re: [PATCH 4/5] arm64: dts: imx91-11x11-evk: add reset
- gpios for ethernet PHYs
-Thread-Index: AQHc54CZhl7hYCitdEujvP/o4XKtmLYVQHqAgA3romA=
-Date: Thu, 28 May 2026 08:43:40 +0000
-Message-ID:
- <AM6PR04MB576539A94CFC3C8E3C612A12E1092@AM6PR04MB5765.eurprd04.prod.outlook.com>
-References: <20260519-b4-imx91-qsb-opt-v1-4-9b416d2dc224@nxp.com>
- <20260519120511.C59D6C2BCB3@smtp.kernel.org>
-In-Reply-To: <20260519120511.C59D6C2BCB3@smtp.kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM6PR04MB5765:EE_|GV1PR04MB10477:EE_
-x-ms-office365-filtering-correlation-id: 7bc229ab-22ea-42a8-263a-08debc9537ff
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|366016|376014|1800799024|38070700021|11063799006|5023799004|6133799003|56012099006|4143699003|4133799003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- AOMkVC+8PUUmXgaUzlwXdZBzJJIOk8egoQawIjd3/+esdP/cgBek1b42O/aEhg4rYr1V1Ch55QB3q+Q91Kz6U2pYHxgaJZslW19sQ6SSP6cB0i/huD1v0qUDbvVWaTh4g5pWu8knBmcBkRZJ7QkWBVFq1PBJsGHX4ZbRxljXfiCUsHvRRl+5WBrgeXbNkV70WppftH9/AjWY7r/hju6L3ujR4WGHVHdXBSbdG7FP8p8VaK22x+znAlQmTJxa4Ds9I4cICeG3PflCL1pmpfQyG5I8UApS81Tbdip2elN9lcgK0oAwljZENKMoA9H5xIRL5jV/WMBz56MzfYLjwdT3O8TBDQ/KXcmVNxd/TsySYfmeNnjqwXnxqjnhUWpdaqxHPVAn2GCp41EmBrfo1BqdKBM+FJzyFhgmvCGblUAacUJyhyqT8ClPCbQJMq2E3O5U4nN7t3Q4xXK9DPJVcnNhAC7MuA+WzCWlWQmweUmGJHAQdfk/9C/xj2fuXYi8pv0zwLxJpbyeinxhpc1gT/zDve1jdMKpuQcrQz4MPL1pwuPYGmN/HNx7kMd8JNy+BTdUOu5gMlH0Bf53gVdQfyYH/o07SiPP4bO4+EpJKP2oHLtG79r2Db86xbHL0ORpoSl7HRvfhc0PDIXm4tKFmUocgkrpZKVRCISYmnOg1eEknF7a0CF1qDjAvKjPlI6tI1pA0cPHL6Wxr/wL3khSgEtONA==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5765.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(1800799024)(38070700021)(11063799006)(5023799004)(6133799003)(56012099006)(4143699003)(4133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?a6ZOd5RWMVFCovdzyfZiNFNlwSw4EqjgGZ4Hwlmb+C9IBmyLtBkNqWH5vobt?=
- =?us-ascii?Q?MfsNxHMeYdSYkXnAIBX++C7YP+E7XhiECLATm5bdnkGPuk4vNfs5oeldfUF6?=
- =?us-ascii?Q?lv2FFKWi3EA9TFxJ34ooK83M1GifooR/JDc+8A5+QctEdf/AJCNVCOZQGREU?=
- =?us-ascii?Q?9ZkSnpB8wpF58iyy+XTaudLr2R5Isz/lOaJeaZcm9aH/izXHDdf62h2MVV6q?=
- =?us-ascii?Q?t1Cq4rFaDRWusR4ZcejfTzdC9400Q3oMRZLg9ukyaYRjDGaqf1bujMnxtD+8?=
- =?us-ascii?Q?XilXduFB8adu1nQB2FxKBu5TxY2ToWbzowQRFPU/MgRTuakfYMYzUFann1LS?=
- =?us-ascii?Q?DdaBB/TcEYU4vi8witZodbGHGebyhXrxekJ0j0CpXqFVYti0b58QDDtwY7NN?=
- =?us-ascii?Q?7TYBysVdLMGxd1egxP54tzWQC+8bgz5rNq5eQLOVdzhpKatbQ0iF5W5IOdbL?=
- =?us-ascii?Q?+f2TopA3i1Q5t45XR+dYgaxb1W3gg4u30B40VjhxqWZ/Pkd+SB8wHTg4CLWl?=
- =?us-ascii?Q?R6NhF6XEUJZuye6+6suNGElRnXoarw7Ez10wxsVe725PmR08OU+eYbjd/n4/?=
- =?us-ascii?Q?MxflGMElfJQRIxCHaNtnmC6f/x5huYm/82jLYiVhVNMI2enHKYGwDIPEc61l?=
- =?us-ascii?Q?QiXWH7iY2xUpyhf8/O1uZQ/Zc7oUGQO6CIfj0NfRHQyO0geKP0vNgrOGkACr?=
- =?us-ascii?Q?Q1eubRfKH4Bn+kvTtIF93g6OHpHGhtboyfdmnWSXMlC6J+eLcSjbaFDWoKuV?=
- =?us-ascii?Q?9Yujs4+8/sDPowvmygc1AcMchgMkmEftjxV/OKKDr92Z0CHwSNEJtYAmsLry?=
- =?us-ascii?Q?+Oj0oDHh4kQzlRUOhqk1hgnSRDtKUTyipB4ipiCsJ2AHdiR2/i9LUvrVFdp/?=
- =?us-ascii?Q?swwTx4JrYbSGpQuVvT9+Quj7esiskksSj9aa4bYzQ+yZqGs5IRZvRk+VJH2D?=
- =?us-ascii?Q?cYnL9RMdjQ84tlyos8kXk9kYEpVXbG+KFCqKK6DEhGis1yWlPCdNOs6qn1/d?=
- =?us-ascii?Q?i9nroInPTdiynKgbqTGQ6oWVoMve+X29/6Z2fgFwR8s7yMZ/VGETtPy+hFtM?=
- =?us-ascii?Q?pYRg2/SRIuRoeTM8TUmzpvUXTLHit5OKf8OEGrVRz67oQjW7MLITKE1ebvoa?=
- =?us-ascii?Q?6Kh4faKc/HkAjivIcYU4+qi/LA53yIBSq7goRbI6a5CoTarpWShg+QIZP6GW?=
- =?us-ascii?Q?QLm7Va9eXkNd9fcOkFY/qyvvBYUi+dT67S9hCVAiZSIiebS4EWmW44wit9xA?=
- =?us-ascii?Q?J0zGdTsPJkya2nihavrpfoTxukaO5Y4cYHjGPHu+TZOnicOwGRVuJ0T68AJe?=
- =?us-ascii?Q?LaHNkmLpqzHAwX0gZlMxAzjdoOIghfIoEejfs6RYSkEB9HoRw6yb3dwszGgr?=
- =?us-ascii?Q?EbN0jZVQlNfXAsCUwntSetZdhXEwnxHtaF0HZc/ht6ezaedxVAXk+Oboo2Hl?=
- =?us-ascii?Q?P524voqIZI4Un4MRUoOL4FdkdTWRckGRm52SiPRlu6AGAm3VgPsyJmh1Zm0F?=
- =?us-ascii?Q?HJY0Y7MJQl0skZWUGt+wOkg8EcBJfmVthD/piwfYKQNa7K67wKlayAGl6IOe?=
- =?us-ascii?Q?8cMxopC3hwSqnYgQ8WMiV1Js1GpdDE2Ck9rzViU1/2N32DVZaHmiVJKyt9Zh?=
- =?us-ascii?Q?wUt/VTUMwARVLpwLDb2PuxLYdMbWIbGUGW3CeiYBG3uOoKm9VxWKINCpuO/C?=
- =?us-ascii?Q?PAyitLwsssqdnFdwkbDnFVjGWhWKvk50zWAt9cr1PSXd+qLE?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="j7tTIBEq"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso107321085e9.0
+        for <imx@lists.linux.dev>; Thu, 28 May 2026 02:06:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1779959182; x=1780563982; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NCpVC/B+fK7iJncp3doDyeYOwNSb+lqrnGIijdp/R+8=;
+        b=j7tTIBEq/dLQlAkUxLsuiqhjNloRS/01a0bQP3Qs8O1s9oAkwOUMZ9y6f1+F5S8ukm
+         I0Whcygf+KDV45NbJ3XMgHnXJPz/CPGMPIFmmUEyNLEsDurbBUPWwO3io/V9gW+8kY9E
+         tE7udaiXwJ86L/RdwgTRKQRu2O9MwnQBAlkzOwuzSxNDvXn4NY948HQSl6KyQkcd4M4K
+         LIju2r+W8FdPX09pU1VYpYrOgO6dupMFVVI8Xc40e1mN4DlLWTDIgp3jQ1uwO+7jiQ8C
+         QWDvWMZ8ikty+cPO6hy8R8Av1zrwW7SpVuizKNamssuJPg4za0iy7JvdFCHMjfnOJYzM
+         dcyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779959182; x=1780563982;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NCpVC/B+fK7iJncp3doDyeYOwNSb+lqrnGIijdp/R+8=;
+        b=XbRRzmtPW0x66aBw7bzIe/f2Sg/EbYaoGT9/lzWR0nadxpYAIXmg7X33D4JFNe3amJ
+         5wVQ9l30QVeIs4yY5PyZaXHbF9LbbB+ulNb2CIWIxpderVNiuy800opbs81q05vBBBkQ
+         r/6KIRBhQA/5W58lVGgtCi5HhrSad95w35AoezNdDdKi67A3Twqcv7tpPhzhUfA2ddIE
+         Nl0D8ZP3kkGbVCvD/KRGp26179ZQHFJfCOksl708D6Xxn4w+R31/SRI7Xx6s/gXW423a
+         piQWA5L6DFnTpdyLqU4cvcngFqqsdZhXJg4Y9VLw4ztfjK6FnO1ZbQyCqLEIpCzQrgE8
+         w/GQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+wv5qw2v/oNsrS/nB/E+CXsxz8ZktGNdFV5mLzoOiCc2K7kq0rjFmhZUOdgReBOuoeae8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwMAGyNVIkMG9915ywy3HJHNc2z5p2PLo/opycEkfW/lP+dqXA/
+	wgw9vvbkhnqOCPWr4Vn69fzYTej1Ql2NQQGGMRd517eeW9uqoxfubDcLJINRkgcQJ8g=
+X-Gm-Gg: Acq92OF6mvnTOd45WU7n/blylvDSLWprMitfX15fDCvXqNgw/V+skRAnSA9pJiOBz9U
+	/oMdobUQ6rWj3AVVL0OnghTu1kF9D3ybnul0r5ZkdQSFrYacvrgDBFqzadgJLhaJcYC3V6R8cMF
+	3b1upzlSpS9bP9ytae0BNhcAtiKQcyAahHS+FjDH+HN25ACJoQx/vVn7pinTTdvMU/tSbsfxmQY
+	rroZHDIScIU4Vcp/pILphPN/Cy2o7sfB+iSEV2G7gpl8AX/dTlGIxXTbYzJXdXZfwNVC/pQkPD4
+	vSJnMFGdgCvLSdMIoiZYl2IAhHnOdbC6eXjeKkUMLTY5U8wlnCTalCY2m6NKNaF++xuc2cmp6IU
+	CDdoHRqG5Gt2QsOCzpjGqq7fWeT+Bl66Y/xL3rkvGPNGH48WbeJlkvn6WgfHnLdfs92cCaJxGgZ
+	lIUYZn/4FI6ZFX2lrBGbrq+ErTsq0qT0molJQCRTqLdBb8pzveaf2/08qqUTJlhbJ0R6crPMHQm
+	4jMNO+L0sQHsN821jC8k14iAA==
+X-Received: by 2002:a05:600c:35c8:b0:490:44eb:c1e7 with SMTP id 5b1f17b1804b1-49044ebc2d5mr480016505e9.30.1779959181935;
+        Thu, 28 May 2026 02:06:21 -0700 (PDT)
+Received: from localhost (p200300f65f47db04e95e43453a0d1648.dip0.t-ipconnect.de. [2003:f6:5f47:db04:e95e:4345:3a0d:1648])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49091d57c0dsm45855525e9.0.2026.05.28.02.06.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 02:06:21 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	James Ogletree <jogletre@opensource.cirrus.com>,
+	Fred Treven <fred.treven@cirrus.com>,
+	Ben Bright <ben.bright@cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Syed Saba Kareem <Syed.SabaKareem@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Hasun Park <hasunpark@gmail.com>,
+	Li Qiang <liqiang01@kylinos.cn>,
+	Kees Cook <kees@kernel.org>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mac Chiang <mac.chiang@intel.com>,
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	patches@opensource.cirrus.com,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	=?utf-8?q?Amadeusz_S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	linux-arm-msm@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev
+Subject: [PATCH v1 0/4] ASoC: Use named initializers for platform_device_id arrays
+Date: Thu, 28 May 2026 11:05:59 +0200
+Message-ID: <cover.1779958164.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5765.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bc229ab-22ea-42a8-263a-08debc9537ff
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 May 2026 08:43:40.8669
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: J2sqtKOJqWXJfDpZB9HqmdIAWn/FsIlNTGt5FcfQiTON5dQMWaY/FwXvKgKj4utn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10477
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2760; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=pePpbntnwnsj7EYGTYln0S0Z1fUMMahUgMDQxO5w1uU=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqGAV3A/XGhyTdPC2Sbsk19+exJrBTv8hN9EsT0 GAAjGOFfiyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCahgFdwAKCRCPgPtYfRL+ Tgg8B/9D5gNT6QFkJSSGOnZq876EyBKdLt05krj7I+eM9aYvKsGkdCLHcG7QZHsH64DDJCElr0r rkkvYPqCAgT0nB7gOzo9U0qtyp69Vifs5eRYtlUzz+MYNPrOw1HZyPhMUokS9DH1Pp+kkk1fj3S pf2IkbuFyVhLCrKlKWuXJYjCf8Go8i/nKubc2wg6igcHvdnyTzxT+83dJT/P31ERPelDR9wXr3g NwuRB3IaDbFvfetwIRZGEvJ38cIqOwdZWALeex3CzgiNZyJVzlnyX0/cb63x8sz08tUXTRpK9XZ iQM3C8HjSEsS1U3+EfHXzpVCPMgXHp9ra49eC3vLgqNt/Qh1
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-> -----Original Message-----
-> From: sashiko-bot@kernel.org <sashiko-bot@kernel.org>
-> Sent: Tuesday, May 19, 2026 8:05 PM
-> To: Joy Zou <joy.zou@nxp.com>
-> Cc: conor+dt@kernel.org; devicetree@vger.kernel.org; Frank.Li@kernel.org;
-> robh@kernel.org; imx@lists.linux.dev
-> Subject: Re: [PATCH 4/5] arm64: dts: imx91-11x11-evk: add reset gpios
-> for ethernet PHYs
->=20
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s)
-> to consider:
-> - [High] Missing `compatible` string with PHY ID in ethernet-phy nodes ca=
-uses
-> silent probe failure when using reset-gpios.
-Thank you for the review. On our board design, this pin has a pull-up resis=
-tor by default,=20
-so the PHY will not be held in reset. The PHY ID can be read successfully w=
-ithout the
-explicit compatible string.
-BR
-Joy Zou
-> --
->=20
-> commit 3c4c46607dcfd2582ce8a02581310d0901a9d667
-> Author: Joy Zou <joy.zou@nxp.com>
->=20
-> arm64: dts: imx91-11x11-evk: add reset gpios for ethernet PHYs
->=20
-> This commit adds reset GPIO properties for the ethernet PHYs using an I2C
-> GPIO expander. This allows the PHYs on both the EQOS and FEC interfaces t=
-o
-> be reset during initialization.
->=20
-> > diff --git a/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-> > b/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-> > --- a/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-> [ ... ]
-> > @@ -198,6 +198,9 @@ mdio {
-> >
-> >               ethphy1: ethernet-phy@1 {
-> >                       reg =3D <1>;
-> > +                     reset-gpios =3D <&pcal6524 15 GPIO_ACTIVE_LOW>;
->=20
-> Will this cause a silent probe failure if the PHY is held in reset at boo=
-t?
->=20
-> Because there is no explicit compatible string with the PHY ID (for examp=
-le,
-> compatible =3D "ethernet-phy-idXXXX.YYYY"), the MDIO core must auto-detec=
-t
-> the PHY by reading its ID registers over the MDIO bus.
->=20
-> If the PHY is currently held in reset, the MDIO read will fail and return=
- 0xFFFF.
-> This causes get_phy_device() to return -ENODEV before the device is creat=
-ed.
->=20
-> Since the device instantiation is skipped, the reset-gpios are never requ=
-ested
-> or deasserted, and the I2C expander probe deferral mechanism is bypassed,
-> leaving the ethernet interface permanently disabled.
->=20
-> Should these PHY nodes explicitly include the PHY ID in the compatible
-> property to bypass the hardware ID read, allowing the kernel to wait for =
-the
-> I2C expander to be ready and properly deassert the reset?
->=20
-> > +                     reset-assert-us =3D <10000>;
-> > +                     reset-deassert-us =3D <80000>;
-> >                       realtek,clkout-disable;
-> >               };
-> >       };
->=20
-> --
-> Sashiko AI
-> review * https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2=
-F%2
-> Fsashiko.dev%2F%23%2Fpatchset%2F20260519-b4-imx91-qsb-opt-v1-0-
-> 9b416d2dc224%40nxp.com%3Fpart%3D4&data=3D05%7C02%7Cjoy.zou%40nxp.
-> com%7Cb1c1f9973c614b29b62c08deb59ee238%7C686ea1d3bc2b4c6fa92cd9
-> 9c5c301635%7C0%7C0%7C639147891166666445%7CUnknown%7CTWFpbGZ
-> sb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIs
-> IkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3D%2FxBInCq%2
-> Fh2mOxbC8W2GhpLPwybGbSMs3xIsF89sSYd4%3D&reserved=3D0
+Hello,
+
+this series targets to use named initializers for platform_device_id
+arrays. In general these are better readable for humans and more robust
+to changes in the respective struct definition.
+
+This robustness is needed as I want to do
+
+	diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+	--- a/include/linux/mod_devicetable.h
+	+++ b/include/linux/mod_devicetable.h
+	@@ -610,4 +610,7 @@ struct dmi_system_id {
+	 struct platform_device_id {
+		char name[PLATFORM_NAME_SIZE];
+	-	kernel_ulong_t driver_data;
+	+	union {
+	+		kernel_ulong_t driver_data;
+	+		const void *driver_data_ptr;
+	+	};
+	 };
+
+which allows dropping several casts and eases porting CHERI to mainline
+linux. When adapting e.g. sound/soc/amd/acp/acp-legacy-mach.c to that
+and make use of driver_data_ptr, the added const makes it obvious that
+acp_asoc_probe() modifies the structs linked in the id_table resulting
+in issues if more than one device is probed using the same platform id.
+sound/soc/amd/acp/acp-sof-mach.c has the same issue.
+
+If you consider the last patch mostly churn, just drop it.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (The Capable Hub) (4):
+  ASoC: codecs: mt6357: Drop unused assignment of platform_device_id
+    driver data
+  ASoC: renesas: fsi: Simplify driver_data handling
+  ASoC: Use named initializers for platform_device_id arrays
+  ASOC: Unify code style for platform_device_id arrays
+
+ sound/soc/amd/acp/acp-sdw-legacy-mach.c |  4 ++--
+ sound/soc/amd/acp/acp-sdw-sof-mach.c    |  4 ++--
+ sound/soc/amd/acp/acp-sof-mach.c        | 14 +++++++-------
+ sound/soc/codecs/adau7118-hw.c          |  2 +-
+ sound/soc/codecs/bt-sco.c               | 10 +++-------
+ sound/soc/codecs/cs40l50-codec.c        |  4 ++--
+ sound/soc/codecs/cs42l43.c              |  4 ++--
+ sound/soc/codecs/mt6357.c               |  4 ++--
+ sound/soc/codecs/wcd934x.c              |  6 ++----
+ sound/soc/fsl/imx-pcm-rpmsg.c           |  6 +++---
+ sound/soc/intel/avs/boards/da7219.c     |  6 ++----
+ sound/soc/intel/avs/boards/dmic.c       |  6 ++----
+ sound/soc/intel/avs/boards/es8336.c     |  6 ++----
+ sound/soc/intel/avs/boards/hdaudio.c    |  6 ++----
+ sound/soc/intel/avs/boards/i2s_test.c   |  6 ++----
+ sound/soc/intel/avs/boards/max98357a.c  |  6 ++----
+ sound/soc/intel/avs/boards/max98373.c   |  6 ++----
+ sound/soc/intel/avs/boards/max98927.c   |  6 ++----
+ sound/soc/intel/avs/boards/nau8825.c    |  6 ++----
+ sound/soc/intel/avs/boards/pcm3168a.c   |  6 ++----
+ sound/soc/intel/boards/sof_sdw.c        |  4 ++--
+ sound/soc/renesas/fsi.c                 |  8 +++-----
+ 22 files changed, 51 insertions(+), 79 deletions(-)
+
+
+base-commit: e7d700e14934e68f86338c5610cf2ae76798b663
+-- 
+2.47.3
+
