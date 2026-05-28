@@ -1,109 +1,133 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5013368B5
-	for <imx@lists.linux.dev>; Thu, 28 May 2026 20:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E612F549F
+	for <imx@lists.linux.dev>; Thu, 28 May 2026 20:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000237; cv=none; b=YWZMH4UCV4fx1F5PoEaX3LGIm6V5e1eAbFWUbYanSyzMfftvyofTGpl1mXvwJFI3kqhFbYQV5h0OIJcEGA6zy4jXNVqgylNb/cUZZCKCMnVsXe3zw0hB64HZ9qqaooVmNENRnZGulz9x01+JV8PxwOSw/Cn1sd9hBLf0QNWXiyw=
+	t=1780001342; cv=none; b=YVAALexEZoV5jMkJmitkhqh5KpI5wWMgNZzQHTCQyVcPseIrSIzHK+2SofWSjBAARur2kszbciykoK12T4TJ4UE7BaoxMhukw28Ve6ZcEpleO/50ozbpMDOR2M50BUrQiSet03lh3/QGQAf0fDxdKysEiHiOmKK7JiwND2wHMzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000237; c=relaxed/simple;
-	bh=REJQ7rBnQJpIiLyuuNmPWn7oGf/gdM2oe6iZ7QI5fPc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gl96T1gbSKkhai3eHqsYQVW4ARQp4D9ayeLJXpsrdAUBt1QzxQWPBqpLvDqnhEVr4gZojv7voXbMYO1dIZMRT0x+qZABXVcWmZGueZlLcbloj+DtW22MEsrFWaunP+uVmisJ2gDA4FgrJj98cg0H6Vc5+zwUDCYSM3m4mDAmLzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JIiRs0Ee; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780001342; c=relaxed/simple;
+	bh=SwWrtDcejaJEiN5aCSW1i6+YW+zZziefcP7/GaVAdow=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=aiByNAPa4WGg2bIKqoEGPhoI6q8D6By4HZVAafoYf2md0wzpPsKD96XCjreAMeoBi5vIMCs+7E2TwNhVHo47b7/LWRJFF0elhdu5HXXZAfZI19AGDtewDCPUlPeq7THISdcK0+0JGaGPH+E46zAnJlJf0nsBewtj8gNoWqcx0IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=heDx+5MC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JIiRs0Ee"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2bf02708e8fso8931725ad.2
-        for <imx@lists.linux.dev>; Thu, 28 May 2026 13:30:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780000236; x=1780605036; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yDIXwe3ooO105k5CTV06eh6doyUKsBOeZuBsSpw25Kg=;
-        b=JIiRs0Eefv+UZ4kPG3wCR2vhBtkGAJEnlPtSwdHY50W6K3k3x+3dtqKhaSgtdfbW30
-         1YE8rT+oDCMPfj6CW9Zltcp+FSURwXbKh+rpRVU6SvnycqndSg3r9/QWKw7yd4qqap+/
-         cG8z9Tn8FHOZZV29sMNqO+wBj/4NbkviKD5hxxQcju/tiOBXiu57N4J11vt0rdLN5cmc
-         ki6AzEF7BXdtstiSvhK4w1fo78Txtwjn38PFl4IbBP4K36P3FtaR/qLtEcSM+W+5RsrQ
-         Zrhcw3A7NXqeb6ZuC3uS4iEn5IWd4b6srr6liPf/EOlq8QK3UnH50crDL0/hKdy/UMqE
-         SRug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780000236; x=1780605036;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yDIXwe3ooO105k5CTV06eh6doyUKsBOeZuBsSpw25Kg=;
-        b=jiAXkGaNaC8cljpA//rkLgF5F72I0Fv31FvCI248lyvf1bzpgFqX5wGfrJ4i7WyNKg
-         Jdq7vgYk5mTWN3bDpLfS3Bc3CesAw2pL26z3Y4AH+pUMlScPAQhGJf/XydFnMnaBa6Sc
-         S8hPchVPzBAB+K20xLHnbvwQUVcDo92ttr25lBsGbLyiYVvT0yV39jYXzTL+W6fC2A1i
-         nop4m5QqpXclXNkxoXYF0b5zohdVBqkZQwnBjYtG+dfOjw0+i8a4JzYaXwtMDZnds7to
-         6aFeO6J+UQ4YdpomignMmlBl/A+9PlppbPJyG02J/hVXhU9FIRhotpZPpLpGnNGzuDSI
-         P/0A==
-X-Forwarded-Encrypted: i=1; AFNElJ8KZ3S7y72Mr+Zpjx+sIOSpVOONZhv69WDLei0eoH5GaqaPE6R22W11/bGTC7afJZB6G7M=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywfamcd9snmV5HJnQ6HO8sFHtbRQ/M5KW8cyGTmSY4NR0oioqXy
-	9zF7uLoKN0c7vTVseKEh0+CHFBBQr7wdd4FhBqCg1OuDjSqOcv2sLaUG
-X-Gm-Gg: Acq92OEo02H2faHW8N0j24NHODobXTXzuGx/WOs7FoqU7ZSO3WFuFjPnExAMlatxepw
-	ESpcEWkzX44ph6aPaVe6RavGDVCmz9ai4VoC5GWPZBiS7Dbqry9Mf6t+oa31oL+FvfHXgB8OLHr
-	8YkEe7jjSgWYMgKV8QcgUwBp+wvlturQKBhmQQ+p7rqqC8p8g68NwPRwCP/QfeEuUrfjK5FEzDy
-	zR0EMhtGG1S6T4LQB+wk8e57rcO0G6mvCcfCdGSgc2bb0hqMmemCzdy1qLzTErKrHgCPJ2JDnt1
-	hbVoBz6Zl3CJmIWWMnW6K80GQgAGar8kLn5pAKrpMhH7R8XE44cxhe+ZPmaJr2Zh05tYrYmvZ1/
-	dPKc5s6YGQT/rUh/p1Q2sCRbn4YhwG5cZ7HCO7VLEqcTiZM++9G2MlpOfeFq4h7iDwpHb5SvWTP
-	+qwdrJGUCfcovXwFrr2L9u9B0gcUjbmLZLmAvb0noZJwpRrJYy+byHN4XlrjVgdqoOuF3ABqV3q
-	52JIhx3BVWFYnHIa/x1ccJJXxVZriUAINJVqcCnFG26lQ==
-X-Received: by 2002:a17:903:2347:b0:2bc:d1ec:9f09 with SMTP id d9443c01a7336-2bf1ed5e4bamr3535035ad.40.1780000231091;
-        Thu, 28 May 2026 13:30:31 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf1e604dbesm1786475ad.25.2026.05.28.13.30.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 13:30:30 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-serial@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-kernel@vger.kernel.org (open list:TTY LAYER AND SERIAL DRIVERS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE)
-Subject: [PATCH] serial: mxs-auart: fix 64-bit cast in probe
-Date: Thu, 28 May 2026 13:30:11 -0700
-Message-ID: <20260528203011.137338-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="heDx+5MC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47801F00A3A;
+	Thu, 28 May 2026 20:49:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780001341;
+	bh=yqZs1UnsEEzG4SGzql7wCfHY6p3hE1wnpVySYobdLxQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=heDx+5MCUCJfvWlo0pinfvFGsHDnsZVw0H2BYyDPl1pK85YIGFV0HTC08960lYb6h
+	 Xod9ESLgLmeYqjTOPDyeGPYnyEojult2ReHExwz/WXeUgFI7s2TGuKIe2s+93mjuFt
+	 e8HexY9gsYsZtRC8x3JZNHPF3i2lsecvZ3VNhyYkGy7hNwTdH3pfT2xZfOqb7dZqkU
+	 frGBE4naqvdbuWH5LgeAGjYGfPIv4GdF411t3Z4KX1iczuTvbQWVH882pRZw7NLHvI
+	 b88idbBVQFu1ttkD/nSBI/3x4tPCMZIAtDooDwiJk1aLjK6OXcJM6Y7YG5h6LgIGzz
+	 NrD4zlcHt/Z7w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] serial: mxs-auart: fix 64-bit cast in probe
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Rosen Penev" <rosenp@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260528203011.137338-1-rosenp@gmail.com>
+References: <20260528203011.137338-1-rosenp@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 28 May 2026 20:49:00 +0000
+Message-Id: <20260528204900.E47801F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+
+Pre-existing issues:
+- [High] Platform ID Logic / Out-of-Bounds Array Access and Dangling Pointer
+- [High] Hardware Access Logic / Missing API Call causing External Abort
+- [High] Use-After-Unmap / Race Condition between devm_request_irq and ioun=
+map
+--
+
+commit 1f0a577246ef846dca74fbf44e87059664a89db4
+Author: Rosen Penev <rosenp@gmail.com>
+
+serial: mxs-auart: fix 64-bit cast in probe
 
 of_device_get_match_data() returns a pointer. Casting it directly to
 enum truncates on 64-bit platforms. Cast to unsigned long instead.
 
-Fixes compilation with W=1.
+> diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auar=
+t.c
+> index 693b491f1e755..3e14c2768c48e 100644
+> --- a/drivers/tty/serial/mxs-auart.c
+> +++ b/drivers/tty/serial/mxs-auart.c
+> @@ -1598,7 +1598,7 @@ static int mxs_auart_probe(struct platform_device *=
+pdev)
+>  		return -EINVAL;
+>  	}
+> =20
+> -	s->devtype =3D (enum mxs_auart_type)of_device_get_match_data(&pdev->dev=
+);
+> +	s->devtype =3D (unsigned long)of_device_get_match_data(&pdev->dev);
+> =20
+>  	ret =3D mxs_get_clks(s, pdev);
 
-Assisted-by: Opencode:Big-pickle
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/tty/serial/mxs-auart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[Severity: High]
+This isn't a bug introduced by this patch, but does this function properly
+enable the clock before accessing hardware registers?
 
-diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
-index 697318dbb146..de97c0f74e7d 100644
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -1598,7 +1598,7 @@ static int mxs_auart_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+For non-ASM9260 variants, the driver fetches the clock via devm_clk_get()
+in mxs_get_clks() but does not call clk_prepare_enable() for it. Later in
+probe, it reads from the registers:
 
--	s->devtype = (enum mxs_auart_type)of_device_get_match_data(&pdev->dev);
-+	s->devtype = (unsigned long)of_device_get_match_data(&pdev->dev);
+    version =3D mxs_read(s, REG_VERSION);
 
- 	ret = mxs_get_clks(s, pdev);
- 	if (ret)
---
-2.54.0
+Accessing registers of a peripheral whose clock is disabled can trigger a
+synchronous external abort. Is it safe to rely entirely on the bootloader
+to leave the clock enabled during probe?
 
+[Severity: High]
+This is a pre-existing issue, but does the error path properly clear the
+port from the global array?
+
+During probe, the port is registered using the DT alias ID:
+
+    auart_port[s->port.line] =3D s;
+
+However, the error path uses pdev->id:
+
+    out_free_qpio_irq:
+        mxs_auart_free_gpio_irq(s);
+        auart_port[pdev->id] =3D NULL;
+
+For devices probed via the device tree, the platform bus implicitly sets
+pdev->id to -1 (PLATFORM_DEVID_NONE). Could this cause an out-of-bounds
+write to auart_port[-1], while leaving the actual slot with a dangling
+pointer to the freed devm-allocated port?
+
+[Severity: High]
+This is a pre-existing issue, but is there a use-after-unmap race condition
+in the error path?
+
+The driver manually unmaps I/O memory but uses devm_request_irq() for the
+interrupt:
+
+    out_iounmap:
+        iounmap(s->port.membase);
+
+Because devm resources are freed only after probe returns, the explicit
+iounmap happens while the interrupt handler is still registered. If an
+interrupt fires during this window, mxs_auart_irq_handle() will attempt
+to read from the unmapped s->port.membase, potentially causing a page
+fault. Could the interrupt handling be synchronized with the unmapping?
+
+>  	if (ret)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528203011.1373=
+38-1-rosenp@gmail.com?part=3D1
