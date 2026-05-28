@@ -1,192 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EE22139C9;
-	Thu, 28 May 2026 22:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1C32139C9;
+	Thu, 28 May 2026 22:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780007125; cv=none; b=j56u/jCtcS2Rxx4Fin8+mrIomTmpbqDhrJisTEv+xQwzuKN7yCkOvJV5iO/ptu5U+gZYQ0lhwcHN7drkrHIirlwujOgSkzTvZzf26ohPaz0iK0p+Mu25av9NepUX7Xj5EmVsS9E6cWIbzJB/32cCztY7zwgMeD4OuT2/8EaDWuE=
+	t=1780007131; cv=none; b=ZdwiJ8CI5ubZPTS00cMiEjC19N2QeUw7SwNpJMK0PJj5iETnH2oxEyapmtznL7LKDbiAF3jR4AwHF0iuowyrc4fPnFpQuwW7kQTIP4S+8lJ/GAhhzVVREk2oA6mVOmxdDdg0p0gh3UQtLQ/brcRV20EqUKkqCFvBsQFoiYpFSRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780007125; c=relaxed/simple;
-	bh=5pD1xzgytOv4lRY+9SSxjmule4gFpWNYwQRPX9KkAk8=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=CEYEbYt+7Ra/WZVTbgkop0zF0x3KxcFHxNTXdLqvjksVv1yrCBBdveR8+Vaemwrf2wU6d1xbu3cLOXRfgKNU8yIk3m+4o+jGA6whArYMV2vMXweUA8lkrJO1pniUfywWGmMzpo9yJ9+ZpRLm3Nro+HmgZ5vuqKlX9jn5opDyfxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hr6xEbzn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780007131; c=relaxed/simple;
+	bh=oNPnKeeB/VGAYuNi8T6SLmTVxfbQZulXfOxQ9xwXUQ8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=b8bqH2od8uiLI+79Q6sXofdn40xCTsGNEi0YYdODmdhArFqkNCIkWIAJjQBIzZn4USZc4LFG1YGW+J4emLH1gaNt3SvAHQqkKWi6TKygA1JFjGdsybK3OBwrOPeVo6M0N6CVpw71oapIb6EdMqe8I0elh/TdoE4DtZIfPrWFJ/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+jSH3Bv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hr6xEbzn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0771F000E9;
-	Thu, 28 May 2026 22:25:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+jSH3Bv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAB01F00A3A;
+	Thu, 28 May 2026 22:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780007124;
-	bh=u+S+Yw/FvBDEuMekXmuxXKfy0MCGy9lrvQ1qucBDeyA=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=Hr6xEbzndESUoJ2wfNwLPbtLjwjy1LSVfRxO4DenF/pVNsATiZ8N/615LpS9bRajm
-	 i7+zUFSS2Eni7u8CHWGK6gnRlrfQH7m8MKlp3wr5qbnHuka1LRI98czPpq6MGKBZaS
-	 j9QJRzLrDX435uGaKN58pSbBKbG0xklta7wc2k4i1UmURZwhdM1BoH0dkN+/Rt9icR
-	 XhME9SEgzZOSjxNNeGR1wkqEypr9yIldL663jKKa4lCnYCjWwYBkfShxbpBuBUvKGQ
-	 xrOiE7WJHxYM4TQJ6FCSZxxEn+8pyKenTysg2L64K2Q/MILUwRzSJs43ugkXiIlBgK
-	 /8Vohh5YagjdA==
+	s=k20260515; t=1780007130;
+	bh=j8zQm5Lv/13WN4F9GShad56Ydifs12o4VwIYSKGEsHY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=K+jSH3BviXAc0ADmnF9riORanlwulz/ftMqaQBWp3/o/UXV/svclqCQh35sO3u9pY
+	 j8HSbCA3xg1LRSqa8xNjBJTfEqPTQ6x6gGhxZz49+Vhtn7miE6WWCmW0pwGCsH0/Uj
+	 matZyZa4eVYkO7YxAUNnfU/yYodYf4KPgn2PeWKqJ9c8Etoms0s8zJPOn7FlOAUKGr
+	 F2KvJTNVKMtvBO7uMxC7x4X6QIzEnynZuH059johnlubnfsSfGej4jROZ0K5Hbj7Ni
+	 1qGVDzMHn6AklTaKA+CZZP/dl78AqFLSrmSTeJ5bJ5p7gUwj4nhlaOI7Z1rvqoiF1s
+	 MkttWhcSXawZw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v1 1/1] arm64: dts: imx95-var-dart-sonata: add TPM reset
+ GPIO
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
+Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260528220550.34891-1-stefano.r@variscite.com>
+References: <20260528220550.34891-1-stefano.r@variscite.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 28 May 2026 22:25:29 +0000
+Message-Id: <20260528222530.3DAB01F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 7/8] arm64: dts: qcom: shikra-cqm-evk-imx577-camera:
- Add DT overlay
-From: bod@kernel.org
-To: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-Cc: Bryan O'Donoghue <bod@kernel.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>, 
- Andi Shyti <andi.shyti@kernel.org>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, linux-arm-msm@vger.kernel.org, 
- linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Suresh Vankadara <quic_svankada@quicinc.com>, 
- Vikram Sharma <vikram.sharma@oss.qualcomm.com>
-In-Reply-To: <20260526-shikra-camss-review-v1-7-645d2c8c75a7@qti.qualcomm.com>
-References: <20260526-shikra-camss-review-v1-0-645d2c8c75a7@qti.qualcomm.com>
- <20260526-shikra-camss-review-v1-7-645d2c8c75a7@qti.qualcomm.com>
-Date: Thu, 28 May 2026 23:25:16 +0100
-Message-Id: <178000711657.4557.3333046681736710601.b4-reply@b4>
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3426; i=bod@kernel.org;
- h=from:subject:message-id; bh=5pD1xzgytOv4lRY+9SSxjmule4gFpWNYwQRPX9KkAk8=;
- b=owEBbQKS/ZANAwAKASJxO7Ohjcg6AcsmYgBqGMDOag8iXwNmyvcvGG71GFVtzTBZ8GRrnrC8i
- UEmdhIWZfCJAjMEAAEKAB0WIQTmk/sqq6Nt4Rerb7QicTuzoY3IOgUCahjAzgAKCRAicTuzoY3I
- OuMdD/9r4e3j3hYm02Do01jRKhrrRPeFv7ECVA0AYGytgWknXX2fis2ruf8UwUzBTXbBnBt0nk0
- lSfZ9m6G64/tz/FSOONzGM9wh3k+uCNTd7lRUAZc9hpQmWJ+IdUPtWkEoP4NMK2RgYNL2pYfqxB
- uvmyS3aGx1qSRcmQxwbKRn1ycIOOpfhM/cUYk3lb2LDeZxypyG+fe3ZJFfJ9w1Evux9c322PuLC
- YkhS7yz9TLEO9ARrMT9/6Xw5hOjN673rV0iCed9BvZLTcxJK33wrq3tm/PbMZ7MF98P2AeAV4Tu
- N6HYPeqea9D6vOaUjCPXvrQXpN1rlAU/jTcz8qthwPQQtI1Pu2PEp3YQjSASZYn+U25n0yEbKOV
- V7m1z3yzMbTRQSzQUnJE6lBEVUU1DUJtnwjhvU/kSaquzyjwLxosIWxmrMBpxtBG6kZPa8YmOjz
- r2r+HD28+n9Pu1kt6QDpn+7B2LW28m4u3ZEJ9tuMyfIQaqz0Sfw2PpfBRXDSbH/4S8feB2XA3lm
- b0Dcu37Vo6Q7fEwENKyQzN+IqW8Y6GsUToBIU66ZTt2nLtO4VehG7GUP+uFAWG7IXp0qBcoXQFo
- b4kRFIzzvTANgfUlai+n+FchJ/mDr/LXLInNZ+GsVOUZOFdBt5I+QBYNARXyf11yr7GVL6UuS7h
- 5SmQWwQSJcEIt+g==
-X-Developer-Key: i=bod@kernel.org; a=openpgp;
- fpr=E693FB2AABA36DE117AB6FB422713BB3A18DC83A
 
-On 2026-05-26 22:42 +0530, Nihal Kumar Gupta wrote:
-> Shikra CQM and CQS are retail variants sharing the same PM4125 PMIC
-> and identical camera supply rails. The only difference between them
-> is the integrated modem on CQM, which does not affect camera hardware.
-> 
-> Add a shared overlay for optional IMX577 integration via CSIPHY1,
-> used by both CQM and CQS EVK boards.
-> 
-> Signed-off-by: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-> ---
->  arch/arm64/boot/dts/qcom/Makefile                  |  6 +++
->  .../dts/qcom/shikra-cqm-evk-imx577-camera.dtso     | 63 ++++++++++++++++++++++
->  2 files changed, 69 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> index a9e9d829fb962386b3975f345ec006504607130a..df41830e18edff82893ca24ca84d7e03065d0ef7 100644
-> --- a/arch/arm64/boot/dts/qcom/Makefile
-> +++ b/arch/arm64/boot/dts/qcom/Makefile
-> @@ -337,6 +337,12 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdx75-idp.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= shikra-cqm-evk.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= shikra-cqs-evk.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= shikra-iqs-evk.dtb
-> +
-> +shikra-cqm-evk-imx577-camera-dtbs	:= shikra-cqm-evk.dtb shikra-cqm-evk-imx577-camera.dtbo
-> +shikra-cqs-evk-imx577-camera-dtbs	:= shikra-cqs-evk.dtb shikra-cqm-evk-imx577-camera.dtbo
-> +
-> +dtb-$(CONFIG_ARCH_QCOM)	+= shikra-cqm-evk-imx577-camera.dtb
-> +dtb-$(CONFIG_ARCH_QCOM)	+= shikra-cqs-evk-imx577-camera.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm4250-oneplus-billie2.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm4450-qrd.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-fxtec-pro1x.dtb
-> diff --git a/arch/arm64/boot/dts/qcom/shikra-cqm-evk-imx577-camera.dtso b/arch/arm64/boot/dts/qcom/shikra-cqm-evk-imx577-camera.dtso
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..aedcd164810cf687efb425da79ace7ec6453e3a5
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/shikra-cqm-evk-imx577-camera.dtso
-> @@ -0,0 +1,63 @@
-> +// SPDX-License-Identifier: BSD-3-Clause
-> +/*
-> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +#include <dt-bindings/clock/qcom,shikra-gcc.h>
-> +#include <dt-bindings/gpio/gpio.h>
-> +
-> +&camss {
-> +	vdd-csiphy-1p2-supply = <&pm4125_l5>;
-> +	vdd-csiphy-1p8-supply = <&pm4125_l13>;
-> +
-> +	status = "okay";
-> +
-> +	ports {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		port@1 {
-> +			reg = <1>;
-> +
-> +			csiphy1_ep: endpoint {
-> +				data-lanes = <0 1 2 3>;
-> +				remote-endpoint = <&imx577_ep1>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&cci {
-> +	status = "okay";
-> +};
-> +
-> +&cci_i2c1 {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +
-> +	camera@1a {
-> +		compatible = "sony,imx577";
-> +		reg = <0x1a>;
-> +
-> +		reset-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
-> +		pinctrl-0 = <&mclk1_default>;
-> +		pinctrl-names = "default";
-> +
-> +		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-> +		assigned-clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-> +		assigned-clock-rates = <24000000>;
-> +
-> +		dovdd-supply = <&pm4125_l15>;
-> +
-> +		port {
-> +			imx577_ep1: endpoint {
-> +				link-frequencies = /bits/ 64 <600000000>;
-> +				data-lanes = <0 1 2 3>;
-> +				remote-endpoint = <&csiphy1_ep>;
-> +			};
-> +		};
-> +	};
-> +};
-> 
-> -- 
-> 2.34.1
-> 
-> 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Incomplete implementation for Sonata carrier board: missing TPM =
+reset GPIO for i.MX91 DTS.
+--
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+commit 0e430ef40e9b74a6759e3f9cd5622101a105206c
+Author: Stefano Radaelli <stefano.r@variscite.com>
 
----
-bod
+arm64: dts: imx95-var-dart-sonata: add TPM reset GPIO
 
+Add the reset GPIO for the TPM device on the Sonata carrier board and
+label the node accordingly.
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts b/ar=
+ch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
+> index 0f3d2e488f4a9..d2c7d83e1624a 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
+> @@ -274,6 +274,8 @@ pca6408_2: gpio@21 {
+>  	st33ktpm2xi2c: tpm@2e {
+>  		compatible =3D "st,st33ktpm2xi2c", "tcg,tpm-tis-i2c";
+>  		reg =3D <0x2e>;
+> +		label =3D "tpm";
+> +		reset-gpios =3D <&pca9534 0 GPIO_ACTIVE_HIGH>;
+
+[Severity: Medium]
+Since the commit message indicates the reset GPIO is added for the TPM devi=
+ce
+on the Sonata carrier board, is there a regression here where
+arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts is missing this
+update?
+
+The Sonata carrier board is used with both i.MX95 and i.MX91 SoMs, and
+imx91-var-dart-sonata.dts instantiates the exact same PCA9534 GPIO expander
+and ST33K TPM hardware.
+
+Should it be updated to include the reset-gpios and label properties as well
+to avoid leaving the TPM uninitialized on the i.MX91 configuration?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528220550.3489=
+1-1-stefano.r@variscite.com?part=3D1
