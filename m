@@ -1,109 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED3733067C;
-	Fri, 29 May 2026 11:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813993D8104
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 11:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780053010; cv=none; b=kiCH/uFPqqxi8O4m9Ajp7FCGwHMlSdZoT2JbHxaU0u++924oC7Xg85Guy8Al/w3cRd3S4F2ksUTIbWBIW3x1m4ljWzWl1wBPVdSs3vJ77X6RWKa1KSmdKE0pxJZdmfAySYr5MK1Uuczn+dvf3Fe9cBBUIClEtq/xpfVwZ7uhypE=
+	t=1780054801; cv=none; b=VMXfOzaoBKrqSUJRaAIj2crL58BdL7BdvcUeFcK/RdXLNrYl9WYHSD3Xyw1G+mdWHah4J/7zOi/A0znEbqX/d37qnACKLdJjebVGHoluBCcCzG/uqP7QUTRCFpuym+MGRyQQqARscRKfiYad0wMt40hiTxoQs9q6NmHX1Sv+IA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780053010; c=relaxed/simple;
-	bh=3BszXj+baSCfwrrN3L6DU9yeSg03wGDLKGUdlYrMr/o=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tZss6FljRLma/JYPsTwcaueWU3BriqZWfJSR3i/AhOMIDPD2u4OFhlk0YLvQ0vclOUy3FJJX1HdREXb9n+XLEE2+pcxk53EqW1BPR3mg+Gif5gC2WcbMn/xOEdtPF3h3Q6WPOSoAGPIvZ+4hAbD7Pp48J+CnBkAsyeVAe+frji4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyfYwUwA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780054801; c=relaxed/simple;
+	bh=BFbpEcP2gl8SzS9V6g807nEM04+krO73ZpdU1ywX/YY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=bID2xH1LKshNo83w9anE42QGX90CegJvQjFTV3rlqEt3NrBeyTJW56ePMFv5TG7CamGqQy/IRDM9xxHxu/5zboSbz4NpBS3HoO9fH8zk5877GPvLkEYXv0YfZRSIolSF8YyxYawoGGLGoCPAmTD0NlSuADeX0k1EvQfYw5BcHRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com; dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b=VZbS/zX/; arc=none smtp.client-ip=121.127.44.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyfYwUwA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B50D1F00893;
-	Fri, 29 May 2026 11:10:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780053009;
-	bh=gHwKF2TNJxXyL8XVI6BcLgm9K/40EzKEL958bBffgmM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lyfYwUwALx8RbPuzADgJQjjJkWmCTV3KQcHFdMiLvBp/TWN1IWNnEdFjQXo4S0q8G
-	 M4NcnsFo+zGoYkdRXI1j1RQ3hCpt7HYTEfpDKOp4zZ522WZCWj/SPw95KOIFTXH2VQ
-	 BZLzOq8hDcnDHgHin5nnJDTwElNDGnmh/fir1eKjdbDT6nDkcDw/bUN6LD0y/EXTjy
-	 EvT11DyYg79E6nr3QkRZNtHGvo1HBV3hjgq9U2GXzay83uJ2r/oKPFZTdHQcl3/Y4/
-	 Cv4iwG8X32205aYowWVuxYczS6I0SaeiolsHUBqTh7mHn6yMEXoCh1hF2tDRVFxDP0
-	 88kOMfnIVOmQw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/4] arm64: dts: imx93-var-som-symphony: add TPM
- support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <64adb6f0cf9efe107c761e1a69b9a63c7dd0141a.1780051874.git.stefano.r@variscite.com>
-References: <64adb6f0cf9efe107c761e1a69b9a63c7dd0141a.1780051874.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 11:10:08 +0000
-Message-Id: <20260529111008.8B50D1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b="VZbS/zX/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ubuntu.com;
+ h=In-Reply-To: References: Cc: To: From: Subject: Message-Id: Date:
+ Content-Type: Content-Transfer-Encoding: Mime-Version; q=dns/txt;
+ s=fe-953a8a3ca9; t=1780054798;
+ bh=mvGXi3GnoQLfXUwepfNKreQtoZ065df4GYADd0i3vGY=;
+ b=VZbS/zX/szNJKb7EbvE+4V4ABFIKuNOQXkc/8rtKb1tHOPreiihPJVZZ9qXU0ZZ6AIiYWyGuZ
+ F3+bMTpT736vBeTFy7MIsFaVP99cilzzv16YK9xQ3Olm7GZw7xZlI9sJDEDJj+waQQvlwPUtCqX
+ Z4lAupR9FARkcySXTZoPfhoE8+jjbURqWT0P4lyeTqr7r7teMOdqdR3il1THok4lPka6LZNHioG
+ 6a5Aw0MqecSzxs3fVSEBCAUS2ox07OVpLnKBH0rJX2wKT5X5e+y/jDifcdmoEhoNnAbVAjDSnZd
+ B3xme771VoQ0yDWGgo47kBV66MAhcNgQ38jE30/dvGvQ==
+X-Forward-Email-ID: 6a1978895c58ed9868160fa3
+X-Forward-Email-Sender: rfc822; jpeisach@ubuntu.com, smtp.forwardemail.net,
+ 121.127.44.73
+X-Forward-Email-Version: 2.8.15
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8; format=Flowed
+Date: Fri, 29 May 2026 07:29:08 -0400
+Message-Id: <DIV4J6UGUQGG.28KL8EGBZWJSJ@ubuntu.com>
+Subject: Re: [PATCH v1 4/6] power: Use named initializers for
+ platform_device_id arrays
+From: "Joshua Peisach" <jpeisach@ubuntu.com>
+To: =?utf-8?b?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
+ <u.kleine-koenig@baylibre.com>, "Sebastian Reichel" <sre@kernel.org>
+Cc: "Yixun Lan" <dlan@kernel.org>, "Andreas Kemnade" <andreas@kemnade.info>,
+ "Matti Vaittinen" <mazziesaccount@gmail.com>, "Sven Peter"
+ <sven@kernel.org>, "Janne Grunau" <j@jannau.net>, "Neal Gompa"
+ <neal@gompa.dev>, "Amit Sunil Dhamne" <amitsd@google.com>, "Samuel Kayode"
+ <samkay014@gmail.com>, <linux-pm@vger.kernel.org>,
+ <linux-riscv@lists.infradead.org>, <spacemit@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <asahi@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>
+X-Mailer: aerc 0.21.0
+References: <cover.1780048925.git.u.kleine-koenig@baylibre.com>
+ <1ceacf4f9c3f827bcad85b378aa04cdca1c04635.1780048925.git.u.kleine-koenig@baylibre.com>
+In-Reply-To: <1ceacf4f9c3f827bcad85b378aa04cdca1c04635.1780048925.git.u.kleine-koenig@baylibre.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The TPM device relies on a GPIO hog from a sibling I2C GPIO expand=
-er to be enabled, but lacks a structural device dependency, leading to a pr=
-obe race condition and potential initialization failures.
---
+On Fri May 29, 2026 at 6:18 AM EDT, Uwe Kleine-K=C3=B6nig (The Capable Hub)=
+ wrote:
+> Named initializers are better readable and more robust to changes of the
+> struct definition. This robustness is relevant for a planned change to
+> struct platform_device_id replacing .driver_data by an anonymous union.
+>
+> While touching these arrays unify spacing and usage of commas.
+>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig (The Capable Hub) <u.kleine-koenig@b=
+aylibre.com>
+> ---
+>  drivers/power/reset/spacemit-p1-reboot.c | 4 ++--
+>  drivers/power/reset/tps65086-restart.c   | 2 +-
+>  drivers/power/supply/bd71828-power.c     | 8 ++++----
+>  drivers/power/supply/macsmc-power.c      | 2 +-
+>  drivers/power/supply/max77759_charger.c  | 2 +-
+>  drivers/power/supply/max8998_charger.c   | 2 +-
+>  drivers/power/supply/pf1550-charger.c    | 2 +-
+>  drivers/power/supply/rt5033_charger.c    | 2 +-
+>  8 files changed, 12 insertions(+), 12 deletions(-)
 
-commit 2c29a43f4e74b7d0f118dc8b7401c07e3617e874
-Author: Stefano Radaelli <stefano.r@variscite.com>
+[snip]
 
-arm64: dts: imx93-var-som-symphony: add TPM support
-
-This commit adds the ST33KTPM2XI2C TPM device to the Symphony carrier
-board. It uses a GPIO hog on the PCAL6408 GPIO expander to assert the
-TPM enable line, since the binding lacks a dedicated enable GPIO property.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts b/a=
-rch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-> index c0842fb3cfa33..f541308ebf6b8 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-[ ... ]
-> @@ -208,6 +208,26 @@ &lpi2c1 {
->  	sda-gpios =3D <&gpio1 1 GPIO_ACTIVE_HIGH>;
->  	status =3D "okay";
+> diff --git a/drivers/power/supply/macsmc-power.c b/drivers/power/supply/m=
+acsmc-power.c
+> index 33ca07460f3a..ced07f71e0a8 100644
+> --- a/drivers/power/supply/macsmc-power.c
+> +++ b/drivers/power/supply/macsmc-power.c
+> @@ -834,7 +834,7 @@ static void macsmc_power_remove(struct platform_devic=
+e *pdev)
+>  }
 > =20
-> +	pcal6408: gpio@21 {
-> +		compatible =3D "nxp,pcal6408";
-> +		reg =3D <0x21>;
-> +		gpio-controller;
-> +		#gpio-cells =3D <2>;
-> +		status =3D "okay";
-> +
-> +		tpm-enable-hog {
-> +			gpio-hog;
-> +			gpios =3D <4 GPIO_ACTIVE_HIGH>;
-> +			output-high;
-> +			line-name =3D "tpm_en";
-> +		};
-> +	};
-> +
-> +	st33ktpm2xi2c: tpm@2e {
-> +		compatible =3D "st,st33ktpm2xi2c", "tcg,tpm-tis-i2c";
-> +		reg =3D <0x2e>;
-> +	};
+>  static const struct platform_device_id macsmc_power_id[] =3D {
+> -	{ "macsmc-power" },
+> +	{ .name =3D "macsmc-power" },
+>  	{ /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(platform, macsmc_power_id);
 
-[Severity: High]
-Since there is no explicit structural dependency between the TPM device and
-the GPIO expander, could this introduce a probe order race condition?
+For macsmc-power,
 
-Because fw_devlink is unaware of this relationship, if the drivers are
-loaded asynchronously and the tpm_tis_i2c driver probes before the
-gpio-pca953x driver, the enable line will remain deasserted.=20
+Reviewed-by: Joshua Peisach <jpeisach@ubuntu.com>
 
-The TPM driver's initial I2C read might receive a NACK and return a
-permanent error like -ENXIO instead of returning -EPROBE_DEFER.
-
-Does this setup inadvertently rely on undefined probe ordering to ensure
-the TPM is enabled before it is initialized?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780051874.gi=
-t.stefano.r@variscite.com?part=3D1
+(I'm not sure if one can "Review-by" a specific section of a singular
+patch, but also the other changes in the patch look fine to me, so
+consider it reviewed as well.)
