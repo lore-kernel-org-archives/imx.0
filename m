@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F470383C63
-	for <imx@lists.linux.dev>; Fri, 29 May 2026 17:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059083F1651
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 18:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780076044; cv=none; b=DgkyVPTM/vO6CUdnGZDRlz+4lTpnl1WnjY/v0YNuwMLpSa38XkoimiEJnJFvLX+SSdRstLUiIQBdtqKX3ZAHr56E932rPBJ/W12N1PBKAStU5j8HjWhLPi1uSdcpl+PjJ/Nd5BNg9Ar2EdnTN2v4qS/rG7Vddr4Ty82SrmpmkIw=
+	t=1780078411; cv=none; b=sdEC7euq/mdBA7PrZBQK1k+W3p4VOAWW+emjxwxWP5s2+I0JN8N/Id0kixDcs1KvHEyIQjkkrdbwv6x70OUbHu6KsuIxAwsVjzjEEFi4CIN8bk4UDonEg6WhyEhJr164A2tCFgbrknFUexDDbMxWCe0k5Db1zTNR9rjZKCYp0vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780076044; c=relaxed/simple;
-	bh=mCTnI2oQ8G2tIALP/ChJFue+DN4ym18NHMLvUr3EzZg=;
+	s=arc-20240116; t=1780078411; c=relaxed/simple;
+	bh=MIEYylXM1qda7zOp6hBPKA4keK3Y/ub4vHG6Tn7OuDY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VpPpNS7L1rtCpJnqbxlNoHY3YoRqPLx23iFqP0m8NKYkFSdyIhoWCebF9rP8xYy3y2afBpa3/ZcaqkzlC6fC4IaZ+EXFAJymY/rZKMn3JDaxg19e3yYAE5QJ/FWc/AwD0o9HRkO6hr4QNF3ZD3WTrxdlFslcWoo/h2xNZKcUOOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muf8gXDT; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hJDgo2RD9rjAwqacIOmGYEBbInfoi1sfFF3NH/SQZIOzV9ev4UHUxVbBf8aJdabYLXRIyx3kvIvh/V9AR5Otswg2ezKazU4MjTKqM//kmahPfqSp9ECAKpsfP714XUwYHrdm4ASiGb6qY7wH6rP5LR2Vf69QtvQWtvwX+l7+Tlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kYQG+5ph; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muf8gXDT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DE11F00893;
-	Fri, 29 May 2026 17:34:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kYQG+5ph"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274501F00893;
+	Fri, 29 May 2026 18:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780076042;
-	bh=AWHAHhwrHq65wIOAglpH6+jne9a3TQA7MmZhlYzZS9A=;
+	s=k20260515; t=1780078409;
+	bh=teYH4QBJNJY+Ym0MuKU1mf3gg+a42EcItpx+aEIp15Y=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=muf8gXDTdl9PgeP/74fzMskguTu8AU0JeAs8jpOcPCZw3eKIQDrELKvao6Q3rDMR3
-	 mDDY+r85Pl7LZAbTtCzn1xjbT3xLmnqbSGOfGhNO++HuSsph8V0qsfnUkjFMQI3oBv
-	 +Tw7n/10PG10Onhw4K7BaUNy3MaD9/Znpu9Orh6ABY/CJVqPsp/0VxdSG+EM2YzQax
-	 MTcgEfLoabbI0As4o3KzxVIhh2OrcDR+4iFqpf5tijtFo12kAnyUyXGWdOUHkAJiLG
-	 15IydiLjzH7otHkcM8ORthdEAlNCwVIxz+KpoJdTsj8QJftJSSiVgpzb5CnPA8tI9U
-	 dcV/f8BFVDpvg==
+	b=kYQG+5phdla9Cl+b/n1JkLJ9qI2IK8f/N2ssVHILPQeCXuIjH2ydDtlSVA0xZY9I8
+	 iiyvKr4DKUXMwaid879t58LSkZd83HCxZ0lNFfbYeKWs5qyxS0CShsUbXdIrOKATVx
+	 HRxhwfyY3SgrAU2ezNsUno+/zb6otzfjTP+H8qzD0SLv0vFqOhfnjBqS9s8xqynmBy
+	 118KX+KbijQOmWQcEbhigDUrKA8HzRYpC/y/dkCpo6PsQOKOzrcI1vkXE9pOlGu5e1
+	 vjZBrhMRmOGXQGsWygufRvLlRx5HxjHQ8LXLO2/L9gODuVht1VtxAMVvFa4VLxyl8R
+	 rs0wH3rUZ1xzQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/5] mailbox: imx: Move the RXDB part of the mailbox
- into the threaded handler
+Subject: Re: [PATCH 4/5] mailbox: imx: Don't force-thread the primary
+ handler
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260529-imx_mbox_rproc-v1-3-b8ffc36e11e5@linutronix.de>
-References: <20260529-imx_mbox_rproc-v1-3-b8ffc36e11e5@linutronix.de>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260529-imx_mbox_rproc-v1-4-b8ffc36e11e5@linutronix.de>
+References: <20260529-imx_mbox_rproc-v1-4-b8ffc36e11e5@linutronix.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 17:34:02 +0000
-Message-Id: <20260529173402.B8DE11F00893@smtp.kernel.org>
+Date: Fri, 29 May 2026 18:13:28 +0000
+Message-Id: <20260529181329.274501F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,53 +46,62 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Incorrect bitmask macro used when unmasking RXDB interrupts in the=
- threaded IRQ handler.
+
+Pre-existing issues:
+- [High] Mailbox controller is registered before initialization completes, =
+leading to a race condition and potential system crash on probe error paths.
 --
 
-commit 52f5529242040f4be31a0457d8d67afe5b6d8073
+commit 1073878552c10da376c68e938a69f8f471bd3ed5
 Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-mailbox: imx: Move the RXDB part of the mailbox into the threaded handler
+mailbox: imx: Don't force-thread the primary handler
 
-This commit moves the RXDB callback handling into the threaded handler for
-the i.MX mailbox driver. It unconditionally unmasks the RXDB interrupt in
-the threaded handler after processing, similar to how the standard RX
-interrupts are handled.
+The primary interrupt handler no longer invokes callbacks; it only masks
+the interrupt source and returns. This patch converts the control register
+lock to a raw_spinlock_t to allow the primary handler to run in hardirq
+context even on PREEMPT_RT, skipping one thread.
 
 > diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
 > --- a/drivers/mailbox/imx-mailbox.c
 > +++ b/drivers/mailbox/imx-mailbox.c
 [ ... ]
-> @@ -528,6 +528,12 @@ static irqreturn_t imx_mu_isr_th(int irq, void *p)
->  			imx_mu_xcr_rmw(priv, IMX_MU_RCR, IMX_MU_xCR_RIEn(priv->dcfg->type, cp=
-->idx), 0);
->  		return IRQ_HANDLED;
+> @@ -964,7 +963,7 @@ static int imx_mu_probe(struct platform_device *pdev)
+>  		goto disable_clk;
+>  	}
 > =20
-> +	case IMX_MU_TYPE_RXDB:
-> +		cp->pending =3D 0;
-> +		priv->dcfg->rxdb(priv, cp);
-> +		imx_mu_xcr_rmw(priv, IMX_MU_GIER, IMX_MU_xCR_RIEn(priv->dcfg->type, cp=
-->idx), 0);
+> -	spin_lock_init(&priv->xcr_lock);
+> +	raw_spin_lock_init(&priv->xcr_lock);
+> =20
+>  	priv->mbox.dev =3D dev;
+>  	priv->mbox.ops =3D &imx_mu_ops;
 
 [Severity: High]
-Does this code use the correct bitmask macro for unmasking the RXDB interru=
-pt?
+This is a pre-existing issue, but could the ordering in imx_mu_probe() lead
+to a race condition on probe error paths?
 
-The IMX_MU_TYPE_RXDB case appears to be using IMX_MU_xCR_RIEn (Receive
-Interrupt Enable) instead of IMX_MU_xCR_GIEn (General Purpose Interrupt
-Enable) to generate the bitmask.
+Looking at the initialization sequence, devm_mbox_controller_register() is
+called shortly after this lock initialization, but before pm_runtime_enable=
+()
+and before the probe function is guaranteed to succeed.=20
 
-On non-V2 hardware, these macros target different bit ranges (bits 24-27 for
-RIEn vs bits 28-31 for GIEn). Could this leave the RXDB interrupt permanent=
+If a consumer requests a channel immediately after registration and calls
+startup(), it gains access to the hardware. If probe() subsequently fails
+(for example, if pm_runtime_resume_and_get() fails), the error path calls
+clk_disable_unprepare() to manually turn off the hardware clock.
+
+The driver core will then trigger devres cleanup, which unregisters the
+mailbox controller and calls imx_mu_shutdown() for the active channel.
+
+Since imx_mu_shutdown() attempts to write to hardware registers to mask
+interrupts, and the clock has already been disabled by the probe error path,
+will this register access result in a fatal bus error or system hang?
+
+Should the devm_mbox_controller_register() call be moved to the very end of
+probe() to ensure consumers cannot interact with the hardware during an ear=
 ly
-masked after it fires once, and inadvertently set incorrect bits in the
-control register?
-
-> +		return IRQ_HANDLED;
-> +
->  	default:
+teardown?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529-imx_mbox_r=
-proc-v1-0-b8ffc36e11e5@linutronix.de?part=3D3
+proc-v1-0-b8ffc36e11e5@linutronix.de?part=3D4
