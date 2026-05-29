@@ -1,72 +1,92 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320D4303A37
-	for <imx@lists.linux.dev>; Fri, 29 May 2026 15:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3751B3C3442;
+	Fri, 29 May 2026 15:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780068065; cv=none; b=De+bxN1njg05AtRFZ4CEw4mJTtHMR+IYKIFy0IuM2zQ3YseQZ7pZfkW6Fo9AK4903is5sJTzWhGXUPZylP81z/Kv6A+59FPmrJ8BNC3L18o3V3Xi3ZAg8ucNE0dDTb0mGpZUUYdSZkiyL2A6RGc6BwYAOjwj0ALXm5AYz7v+ibg=
+	t=1780069552; cv=none; b=DVwrsRIxggZKzkRQFcCqcxIlLgSX3DQ9E5gUqxpEJ/CKZQh6bXtZIsvrlkOJIKupDI0kXpbIuYPe/8JNtLwisfO06RribNVRW+EkYZD1kEZhTrw2bptlj2mrt4gSKIcg8wIP/u08imEi5GoZ6JY+JQrRQILlt1IjLuQMPrqzi9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780068065; c=relaxed/simple;
-	bh=1kL+N58u039KnMdXIo0/YsoO+gTI2M1rlBm+eoC0WBc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eQmbjDFpPW8nZhrW9qPFp2rj2f4kPSZmDcuGAJT6jCR9aujQ8c7gSb2fUHGPylaVrp8dRp6YopDCejAmzlbQU+5RRw9s2NC9YnHnXwaF8V0YhGFqKJvv9Zpow/rKH2Xv/TKRDjeR9V2X3SscQ2lBvk4jhYIXnbITjV2EYxdsGyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1wSz16-0002oU-Rc; Fri, 29 May 2026 17:20:56 +0200
-Message-ID: <7ca82ce17e772bfe3b12c5c82ace96386eaff387.camel@pengutronix.de>
-Subject: Re: [PATCH v2 0/2] drm: lcdif: FIFO underrun/solid color bug fix
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Frieder Schrempf <frieder.schrempf@kontron.de>, Paul Kocialkowski	
- <paulk@sys-base.io>, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann	 <tzimmermann@suse.de>, David
- Airlie <airlied@gmail.com>, Simona Vetter	 <simona@ffwll.ch>, Frank Li
- <Frank.Li@nxp.com>, Sascha Hauer	 <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,
- Krzysztof =?UTF-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>, Marco Felsch	
- <m.felsch@pengutronix.de>, Liu Ying <victor.liu@nxp.com>
-Date: Fri, 29 May 2026 17:20:54 +0200
-In-Reply-To: <01c33cda-e6ac-44a8-b1eb-8a8d7118175e@kontron.de>
-References: <20260402183351.3281123-1-paulk@sys-base.io>
-	 <01c33cda-e6ac-44a8-b1eb-8a8d7118175e@kontron.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
+	s=arc-20240116; t=1780069552; c=relaxed/simple;
+	bh=G2KF5voAhHsXsFwlvX9pJg2SGcr3a0Ny8bMXcZEE9zk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bL79SwWm+qWpzEBU8TLwHfYBZUl+3fjX2BtRi3ENfIbg8w7vN9iw4pgcLllW4PC7S6dN3t46N1rU9FUftNRufvAdBGbXZ+XctdteZX8fOlmojBAc/PB4i/UfyYfO+09Lk59lG9eWzpUL/Tkm7wChngWva7cz+fFj1M4HAKyWVdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AbOO1yPy; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AbOO1yPy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D491F00893;
+	Fri, 29 May 2026 15:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780069550;
+	bh=eb8nb8fScTBwcXSgw+9Ix5UCDWfyVmuJGL2kWpyLZjY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AbOO1yPycW9O3NJSH2EN0ltj3+bAVSFepl38eCrMztR7HEPcDhMdHnk9RF3JMRt2Q
+	 CcptiCk7B9RnAMPrxYLsGVS7lQ2TnNjQieYhfu3EsGjBiqR8gNHkFifOZwgybVES9O
+	 WtlWUwP8cbvXqTkV3LTqBFOyeI1qQ4RSOQfqAY7txpWrWD5A4Z1FtpJkiaXzrN0sMV
+	 XWpJB4AbhiTi0bJzCFQVGn04HOuFFgMvfujIQEbRdweGWJh97JpBn0cR9Le+c8s296
+	 RKzAG/gnfEE/dKtM3ceHxIerCdOPdl1yr/sdLyRJCyfZTM4ldxmaZ5KCMGQPTTQ/DV
+	 H0Zj2qBkCT1Xg==
+Date: Fri, 29 May 2026 17:45:48 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com, 
+	Alexander Stein <alexander.stein@ew.tq-group.com>, Ying Liu <victor.liu@nxp.com>
+Subject: Re: [PATCH v23 3/8] dt-bindings: phy: Add Freescale iMX8MQ DP and
+ HDMI PHY
+Message-ID: <20260529-aquatic-industrious-lorikeet-b81aaf@quoll>
+References: <20260519-dcss-hdmi-upstreaming-v23-0-5615524a9c63@oss.nxp.com>
+ <20260519-dcss-hdmi-upstreaming-v23-3-5615524a9c63@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260519-dcss-hdmi-upstreaming-v23-3-5615524a9c63@oss.nxp.com>
 
-Am Mittwoch, dem 27.05.2026 um 12:35 +0200 schrieb Frieder Schrempf:
-> On 02.04.26 20:33, Paul Kocialkowski wrote:
-> > This series brings a fix for the FIFO underrun/solid color bug (in the
-> > last commit) and two other changes that may help with reliability.
-> >=20
-> > Paul Kocialkowski (2):
-> >   drm: lcdif: Set undocumented bit to clear FIFO at vsync
-> >   drm: lcdif: Wait for vblank before disabling DMA
-> >=20
-> >  drivers/gpu/drm/mxsfb/lcdif_kms.c  | 18 ++++++++++++++----
-> >  drivers/gpu/drm/mxsfb/lcdif_regs.h |  1 +
-> >  2 files changed, 15 insertions(+), 4 deletions(-)
-> >=20
->=20
-> Can this series be applied, please?
->=20
-Applied to drm-misc-next.
+On Tue, May 19, 2026 at 02:42:26PM +0000, Laurentiu Palcu wrote:
+> From: Sandor Yu <Sandor.yu@nxp.com>
+> 
+> Add bindings for Freescale iMX8MQ DP and HDMI PHY.
+> 
+> Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> ---
+>  .../bindings/phy/fsl,imx8mq-hdptx-phy.yaml         | 52 ++++++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-hdptx-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-hdptx-phy.yaml
+> new file mode 100644
+> index 0000000000000..b544c260aa073
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-hdptx-phy.yaml
+> @@ -0,0 +1,52 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/phy/fsl,imx8mq-hdptx-phy.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Cadence HDP-TX DP/HDMI PHY for Freescale i.MX8MQ SoC
+> +
+> +maintainers:
+> +  - Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> +
+> +description:
+> +  The Cadence HDP-TX DP/HDMI PHY is a child node of the MHDP8501 bridge,
+> +  sharing the same MMIO region as the parent bridge node.
 
-Regards,
-Lucas
+As commented in bridge bindings, I have doubts in such case it is a
+separate component.
+
+Best regards,
+Krzysztof
+
