@@ -1,211 +1,367 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023139.outbound.protection.outlook.com [52.101.83.139])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013068.outbound.protection.outlook.com [40.107.159.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3863876BB
-	for <imx@lists.linux.dev>; Fri, 29 May 2026 06:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F109E3A9D9A
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 07:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780035557; cv=fail; b=Wr8V+OdJ7b2YrVmSeg+Z8tx/Ah4eqMpCwr65NZW8Ts85aS3x73me+opeaXJ7faZtSAl+Wg/UBedxAr1m9BbJ27XJkccoAwa6pCVCbrlRF0Dx4vIhrk+YM9/ZgDu4/Kz+eLD0bAZdjCXmSIl3EX4/Wk+vyJqfSLHkRyfmWDHDHsQ=
+	t=1780038313; cv=fail; b=Je++9GwUGdtXQ6zvKH5BO6wvQ8j+V1QgnfQ+b0+4ZtSNq86RuYAxvehV8FfzP1lY8CimK9PTFrFZ9dI7dISEmLEBCOdXEGwNICZWJMGr9gwVQRUMu/HzNzlarAbQXXICom4b54UMuuIMwK+GYc6Ud5/GgA3n2fxkY5EJ76VFdys=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780035557; c=relaxed/simple;
-	bh=CTHi4DuCZRXIBM2puyZJflrq0sEVOEhPPjE48+rhTko=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=bO57y/LJ1DB/vEjM3o9wqQmyeh9ZDaoq2pwWQaMj16QD6uFZX0uCASUv+GxOCY+vFcWS5BMNc76QxwfM6s2Xm1EO0hCsiuJopi3mpWHBFgG7oZ2l1Tz2SLSUMayew+P+pb/NOV+5UitbmOMYFzyJ+fD7q8cLQIjrsWhtax+TZdo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=eeXcfsP4; arc=fail smtp.client-ip=52.101.83.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
+	s=arc-20240116; t=1780038313; c=relaxed/simple;
+	bh=lBieqFkVCMSAOFhzAeopUpiRDviUxvERii6ADP0SKFo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YsvCa5lGFDHDN+rDaoO47zK/QoyQMBSlo9IBdt8S/jpyIGifdSirCcjL2+v0uIfE73v1t060MhZu/RLMsGNZ9t0vpHGj2SghefEsv9D8K81Jli5w9w7NmZJZdP+c9+dz0ghC4bquh6rpfmK5q6mXS4ExncpohYbUmi4ZdK/5jjo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=SLM8zTRH; arc=fail smtp.client-ip=40.107.159.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="eeXcfsP4"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="SLM8zTRH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a4cmLDAy652EPHvqSv+Kc28hbKe4y2IE3pozml6qfMnoYhfqaMzyBCcKeu5Il3gCwt+ClHqvwWwsTmCGwUZ7Wz/zP4p0eKwbcslXgkubm8d1hUWgX6/yMJs+Oqxgi6/TbVrmneEYBRiigRT+gr0kmr8PSQY7BI5Czuh30dUQ6RORkzu54dfuVTCYjF74JFCMZBKx/uFGKsZLDaWenxX4OoYd/qOD0wzrllzU8X8dp/p1l71PYT954qqy0ZUXlt+CLbmcpCKn8QGSJgCgcE348n2EKosV7QmDrimCxiovEW6UtdIbb4rpq003VCT8P49Q1pYj914ua+UQj4XCwQb65w==
+ b=aUxgw2t6yPYGtgrpMStBo8+J9jxhussdlGdAEOwWg1er+hGrevnj7zVoBeDvZjHH/YGJT1EZNZKD//TiB/hhlETvKFP7C4j6VSUMeubmZYbNE2SXFtWAhj4gbX3ntbZMyd1JpEkaeQVUVQ/CqfcpSD7i6VC1NKSye8P1ENQb9jOke72u4OgFp66CNyRutCrwis6nuc3l1XS7LWROPf7NgKb3KPDNHKZ/7CEw4I2ZCLTtqfimmEzg0UUkqfh0/5Pui9BCaXAjqAZ4Op9jZ3sRXu1aoq8M9IKe7h/ePk9291dxGT6YQiNm6pFMVgQsV3UgZ4mZ8dL1TMmJzzYCaZiXnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BVoglDxQZYYOhf3tBMmYQIReAOW7LMOzMeArXqLcs34=;
- b=y/UvGSGTCzVah1jAPVsw709EFdQYIi6my5a9s+a7kHxXyht1UtXRfGnLFIjoMJig7IWdIHrfJ2GjhmQVZDEm2cjGf/ojZUm3OKncUqHkXNaXbjvkWpQSRrEEjPU/w01tE9EsyoCICGQxZcGdvdwp4Qxgx+/E83vf/6XAAf5eHxYHgmMeAMkD912XG5MulG2lbw2QOLXNPSDwrRJVME3WJyr19BHzvZvvwwWDzwu1Rt/gxz4g0lgdbq26Goh/5k2OBmz3KzflprUjk9tddajVXzxZhDz/4CV6abaWuII3olL28qvkWBiwF85PR2K/7hkAlJNphbkxob3prG+ytVp9zw==
+ bh=oZ53oHggRmUVPyZG2ja7/m7/NwLYrggp8r0ZNObz8Bo=;
+ b=aAiXXxQQUDUcgaotmaF+wtkKYL0PO/u+3TV4vAto7FtWgqpzjZpK837m5voJ57NHn3QO8orAaDUJfiFXCDiB7/a3AyJ4YY1m1ub/CL2WND+DjMbrDWofUSkQwQmKsUaAGOUXdlSa5W+8D0aBQgWxFMK8azrKbQ0zArPLpFK2881jiwpzpgGG4mc5uOhJYREMtD0hbVHNvwsYxcheEVN/vwuB/NIGx9aynCG+FIC28/47tYrihT2TR2bob9PjIfkAWKD3GSWMDSdI3MrZsfj3sPsxtKQRCkVFlMqGe9H7KLnGt1tvjAxx4bOqrwlIXif0wKiizL0wV1uGy0PPQ2WAVA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
- s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BVoglDxQZYYOhf3tBMmYQIReAOW7LMOzMeArXqLcs34=;
- b=eeXcfsP4eN9j8oPQ5O0zcGj9Kgq4owZVj/LDA1eA20bg123t2TFHhDKDcD1J3O/8zpgC8gwOL0PuNBdnNqmpS4nDhIXILw/t31kLDmArhK72vkR0fHkXDheOcPH6iyzTV5uo+V5s2Jc7kd+GRmd4mZ2iCA4m3Dk+G6LA5MWUN+U0EgCoOXQsrcHKaVWvdJ1KnQdhvWFml0tHzA2UNLFopLwYueGSrSq1xrmCgTUFIG5pN/VJB3P/G+QqETMmVc1FTnm7auSSRzs1uwZXCnSNyPi/d0ZRz8/CSWsbUHZYZcVSCemqbzY99FwN9vqaIKnVyOzlmeT0s44dHUA3wg6u2g==
+ bh=oZ53oHggRmUVPyZG2ja7/m7/NwLYrggp8r0ZNObz8Bo=;
+ b=SLM8zTRHRN+AZ3Mzjj+ait0QY2kAXlfqnrEolPh0Ptqd3gaTw3u8y5yFKy1EkJUWO/yPNuBZ6M/YZH6jOEmAe8w9uAUo9jCNadgkJuSwiX1CbbtHP+PW2fxN0CH/gPzPKryUrFjPFZpBrJJ7Qmt1bO4WWc3wSScMGjmUAyX14Q1QltNrslI9dFgHLEvLR5mbpdDPsz31FQUk3EOrSrip6Ep4y0WXynQX0oTmR5uYroa5yZyUGXZtrLd8HYQHAJqM2w7mmQ9XTXHrqP6j837OcbsdNABPzkGTFXsOXmDWjXU9tvL128+InHZ7PCRxurnfYfvqQXLcbuuSG0XSBSK4Jw==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AS5PR06MB9040.eurprd06.prod.outlook.com (2603:10a6:20b:676::22)
- by VI1PR06MB8975.eurprd06.prod.outlook.com (2603:10a6:800:1e0::14) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20)
+ by PAWPR04MB9839.eurprd04.prod.outlook.com (2603:10a6:102:38b::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Fri, 29 May
- 2026 06:19:07 +0000
-Received: from AS5PR06MB9040.eurprd06.prod.outlook.com
- ([fe80::923e:d30b:98c0:c69]) by AS5PR06MB9040.eurprd06.prod.outlook.com
- ([fe80::923e:d30b:98c0:c69%7]) with mapi id 15.21.0071.011; Fri, 29 May 2026
- 06:19:07 +0000
-From: Tapio Reijonen <tapio.reijonen@vaisala.com>
-Date: Fri, 29 May 2026 06:18:57 +0000
-Subject: [PATCH v3] net: fec: fix pinctrl default state restore order on
- resume
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260529-b4-fec-resume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com>
-X-B4-Tracking: v=1; b=H4sIANAvGWoC/43Nyw6CMBCF4VchXTumDAXEle9hXJQyI024pcVGQ
- 3h3CyvdGJf/WXxnEZ6cJS/OySIcBevtOMTIDokwrR7uBLaJLVBiIXMsoFbAZMCRf/QEkx3M7Do
- YXUMOuCFpmLGumUUUJkdsn7t+vcVurZ9H99rPQrqt/7khhRQYucIiw1yhugRtve700Yy92OSAn
- 1r5W8OoYZXJqmB1KmX2ra3r+gaTCcg4FgEAAA==
-X-Change-ID: 20260526-b4-fec-resume-pinctrl-order-fde0cff2bbff
-To: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, 
- Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Nimrod Andy <B38611@freescale.com>
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Tapio Reijonen <tapio.reijonen@vaisala.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780035546; l=2996;
- i=tapio.reijonen@vaisala.com; s=20250903; h=from:subject:message-id;
- bh=CTHi4DuCZRXIBM2puyZJflrq0sEVOEhPPjE48+rhTko=;
- b=0kQYnVXVyw7Y4c0UcKZeLhkEAXXKame1RMKcvzdmUDN4V84U7el5PniyqmoLIlpjBm1dyFs4V
- mDoYB39gaxJCzbvv5xUNcPgExtfhL33pnIadIcMf0xTdnIzQR5Tqid5
-X-Developer-Key: i=tapio.reijonen@vaisala.com; a=ed25519;
- pk=jWBz3VD84WbWgfEgIqB5iFFiyVIHZr52zVBPOm7qiGo=
-X-ClientProxiedBy: GV2PEPF00023A09.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::211) To AS5PR06MB9040.eurprd06.prod.outlook.com
- (2603:10a6:20b:676::22)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Fri, 29 May
+ 2026 07:05:07 +0000
+Received: from AM9PR04MB8179.eurprd04.prod.outlook.com
+ ([fe80::a551:cde0:6730:1d85]) by AM9PR04MB8179.eurprd04.prod.outlook.com
+ ([fe80::a551:cde0:6730:1d85%6]) with mapi id 15.21.0071.014; Fri, 29 May 2026
+ 07:05:07 +0000
+From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+To: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	NXP S32 Linux <s32@nxp.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>
+Subject: [PATCH v3 1/1] arm64: dts: s32g: add PWM support for s32g2 and s32g3
+Date: Fri, 29 May 2026 09:05:02 +0200
+Message-Id: <20260529070502.1749632-2-khristineandreea.barbulescu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260529070502.1749632-1-khristineandreea.barbulescu@oss.nxp.com>
+References: <20260529070502.1749632-1-khristineandreea.barbulescu@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM0PR02CA0128.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28c::25) To AM9PR04MB8179.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3b5::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS5PR06MB9040:EE_|VI1PR06MB8975:EE_
-X-MS-Office365-Filtering-Correlation-Id: fafe62b3-f296-446a-f39f-08debd4a30b5
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8179:EE_|PAWPR04MB9839:EE_
+X-MS-Office365-Filtering-Correlation-Id: 507b66ca-b8d2-4429-646e-08debd509d8a
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|366016|376014|1800799024|18002099003|38350700014|11063799006|56012099006|6133799003;
+ BCL:0;ARA:13230040|7416014|376014|1800799024|19092799006|366016|22082099003|3023799007|18002099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	5LWAaclo9aBzwdKMmSw/kbA7mpms5WbdgSRPK2qmccFDeSa9nIJyvbCJ+DQ6jtFUgNOuLqRg32yfpcp/SYCEx778+aBJXscmDjZrlKjN53UPu0SHpVpBn0OLhc79RW/1BCfs/w5vOCoreIDdAjqWKwWu5B6J+3HA6X99drNZU3GazlVvAeVQc+ju1BS46xgzUuJ+x3QWgKh34HTUo3S422kFfV5sVpEUF7I4JtBznprVikOym7Ck/0NMrnJDKvQdLBI1iNWvG9qEzh3cHuXfus1HS4tAB2W0Ld9MvjcHKDtNKhlcnxa9e25jHDnniXwKihREyfvfhHyKGUJ3bD8XLcWuB/b/LM+lXrPVvZxekQj3nkRXRT5IjfkgVTmW2POrrUWlMA+tb07Aub+18zkxTOLX/7diLXc+QVkyqGqtstpvVZ+SCBXUl+u2ayDoOeL4PTXh6viGc9SeZaN9Us9g1IaAgkEBqvF5TBiCQE0aO6iKT7Z2BYqwSe4st/XVcnZ8k8mhi+0TlZASlW6PPPXMm6HTsoCrDI60u36GESs2y8m46adMCdKaQsqaOKJ1u68A84fNCTXd5bUZlyudjdxD/HmsIiMY5h6hcK7WLhvubseM+BnRCe+WHmm4enZ9VLzxgNix6jCzQclZ3+KM8XghFXGrTrpKk24o61vJmyBT+FhZPcHfqQ0epIqO1zym1iPe7t4/zmu43oOn4YFkAU0Jf2k2MPwgCK0d0jg/cWuj4Y9Cli6nOtguUsXZMFHc2+fA
+ MLiv94J03n1vw1oUa7uGGtz91TNoewD99spHYHuOLGKBj54vbLQHbr18o5UzXUiTLsZ6gcIU6n9usM4AlN2lX4S1x7/eWQWCXvB8OV0Wa8IgnZ4WFsXYph/3Yh11cTXbzWp61SGi9sAWEbCdRigf87UOubbzf5XKpoJXyxzYKUuyTje3vXyne9PmjG7jAQAgTPsEnqrxb4gArIvYdRfyxNeo7fm8FocGIz9Rj+xJTAW5PVBnLUjWinp+h4hpqhkY4qapjFoWckYTlAnjq9JSC6rCjMD2JovpyDw+wnrrxbs7BKnkjnSsfvir3scIfC8mM3DB5kdPDGUUqF10kPC20NkfODbLf0mSmFZUwZBakqSIA31auS5YvvBTPSwx56prJ9F3DTVfeVxDtwmOpDVNGXgIpKQ41rL5EylMh8rHKezCDmfN570ODnqNsS3s/EtHhy5+vsA0Paf7MSrBqBS6xffklnZh2M3KQgSxJx3xbAtrA+D3pO9aJCOEGI7EeQiPIGSO1vGSBucLGcga2vrm/N52EFgOMGPa8oMrVI//kKR3diTk9p9qKCh5d4iv7uw6KRWUgpoN6A1Q3X6u5Y0h9vVSEaWzZQq0M6HtaNcYQaKFJjQ7HD14oTz8KdUXH8gE32gdLQjLfJF6ACmadoGN4IghTycXu1mJLI9Rgvryd4XlRe/Yiq7dtIksoImZYENZ
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS5PR06MB9040.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(366016)(376014)(1800799024)(18002099003)(38350700014)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8179.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(19092799006)(366016)(22082099003)(3023799007)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VlNCdkhraEQ1VUtIN2tsUWdsWWlrTzlOYjNkVmFxdjk3Q05BU3ZzeXhHRU5H?=
- =?utf-8?B?aktTMXgwaGxmM3RCS1pJV2hqWDV4LytONkpZQkhmVFNPNjBzRmQ3WkZYNzRh?=
- =?utf-8?B?dWpzeDQyY0oyejJxR1NEV2NQUkUwcHpqRUZWcmNvWWxkcm1xb0VENHNlcXNt?=
- =?utf-8?B?OUYzajhFSWZZdm5kVldJT3k4U3c5blVrenJhaHlkb1ptNVB3THA2YzgyRWFM?=
- =?utf-8?B?b1dWT285VXd0Skc3RFBwa3pMZkZvdDFuSEJzdk1JNEUrYitCWGJGbUpqTEJs?=
- =?utf-8?B?S3kwQm4wTWF3KzNXd0tJbGpxdTFKNXhTMFRhU1RKYVU5bXBqdEEyZE45eWI1?=
- =?utf-8?B?b1pZWU5iS1FsNlZuRGRSdTFjQVdmUVQ5SkpoTDNkS21FRTBVVzNaUE5NalJv?=
- =?utf-8?B?SUVKVDhxRDZ3WWFXSGdxcUlrMEJ0WXY4SlRzTnluVG83Z2M5aVQ4YjhXZ3pR?=
- =?utf-8?B?NjJzeERoalVLaiszRm1GbU91SlJzakdYNzYwOHQ3MlU5c1JVenBmdkVwRllS?=
- =?utf-8?B?UTNsUm0zWUFFVGN0VWpMQ2lwMnlUL0JDZG5zSjhFVjZEY0lyaXNkTmpPWGFV?=
- =?utf-8?B?WkMzRFpTMnVyWGNmU2VQTm1sMWx4ZFlpa0hrUDh2cWdRYkJ3bWJHbWkyMHNj?=
- =?utf-8?B?UUxQN245eGpEeDF0WCtXQzM0VmdPRmg2d0dLOW5NS05SVW9TbWdZRnBHMDE1?=
- =?utf-8?B?TS9aR052NTFEaXJPalBMNkx0NkhGWVJFT2syWEtwcDlRQ29nNjNWNkNXNXBv?=
- =?utf-8?B?dUR6dWJVUEFuN0xtZTJyMCtNV0kyZzY0anV3NmFOYXA2eTdseEgxVENCVk4v?=
- =?utf-8?B?WjdIckNDQ0o5S3laQ3hHTjRuZkFoZUhBTFdTVFBjdW5WZFg3c2JCQ0t5UDFs?=
- =?utf-8?B?VFF5MzdSNVR0NWpOL1RSMEYzQnFlWUlCQWFEWVBTQi94djZpeDF5bFQ3ZnIr?=
- =?utf-8?B?T1BYVTFhNVhIK0VOTkhnV3h2aGRUenBnUVVKSzVGRFY3OERmZ0dneXhrV0RS?=
- =?utf-8?B?QXlZQU5XNzF0Sy9RQnBqM1Y5UGxOVjhUd1NCMU12dGVrUndqc1NjbXZuT0Yz?=
- =?utf-8?B?R2o3U0I1TjQ1SWZEcUdiYTU1c1JoWjZBNHBQTEJNbVV6czRQZHF1VkNja05a?=
- =?utf-8?B?VjVLV1Z4enVUamNVYThlMzA3ZWM0RlJQWHBsZmpORmdwVEhPYjJhUFpZbWdz?=
- =?utf-8?B?S2V3K211OXBSSFVEdzNDVGdKeG5kU3JTS2cyR3ZMelpiVFdzbXIyd0VCSjlC?=
- =?utf-8?B?YTBkQ3I2Yzh1MllUZTFXNTM0VkJ3eGZJVFpBYmw4cEwwL0J5SGV1Rm1yeGRD?=
- =?utf-8?B?SVRFdkQ0cG9wQU9ldnk2S1NGWkYyK09XQmEwQ0Jzajl5ajY4clJseWwrc3Iv?=
- =?utf-8?B?bnBkOWtHTG1aZi8wQitHZFp3ZDNTdFd4VjJJVkNFL1Ird0l6UWFJM3ZHRFYy?=
- =?utf-8?B?VXMxYkE3bVRFZ0RNcWtZRFVsUVdPa2hkNHBFbkkxOXNDaTdNMGdDakFSWmNm?=
- =?utf-8?B?TGFCbnlVYWlRcTQ0NlVST2tRaXZLaWZsdFBPRHNFRDhtMjhmNDBvWTNCUG55?=
- =?utf-8?B?d2xyL290aXBseFZlRm8rOTcrNTJHcHZVS0tnMnh3d1YxU0pIdDNXN092K0RP?=
- =?utf-8?B?SzlTL0FOOXlDUE5JQTVuRnVPZWNsRDBtQmp5RmNjZGh0VCtXL1VtdUdKdTFV?=
- =?utf-8?B?dU9IRzladkJsRG9QYUdMTmxOMTFOaE9TdnRXUDNYb0JpdWRCUHo0aWF4UVJj?=
- =?utf-8?B?ajNLbWJiVU9kWnhTZTJvVi9nVm1NTlBtQi9FZGJ2a3VWRW5DaXpmWFhNTTFt?=
- =?utf-8?B?VFFadGNOWTI5WC9WUDE4YWZLY3UySHhZYmNITDhXZ2hrSGRyNUFTZ3VReC9w?=
- =?utf-8?B?ZVJYTFVEZzlxT0RNT3BwTkpLUFBQQ1dkT3hvaVA4MU1WNmVvdk9ZOGR6TDl4?=
- =?utf-8?B?bjRUeHNRdFFlYktPR2tlenJaTG5nZWx6Q3NWKzFLQTBJa3Rtb0xjVGplWGt1?=
- =?utf-8?B?ZHROa1QyOGJBazFlUkw2emE4YmhnNkY1QXhTL3BsNGVEay80aGQ4TlAvM2tl?=
- =?utf-8?B?YjFzTVlWWnRJV3hSZVRpci9QZ1dNYzBWOWc0TDhSNWxGNmlzNXVKblV6c2Jl?=
- =?utf-8?B?cnoybll6dDhZcGlRNEJJZHJQMzluRk4wNVNaQyt5MDFjTmZXNG5TY3pZYmI0?=
- =?utf-8?B?YTZZNWUzR1hOMEUyQlFzazZjL3M1NTA3cWs0T3ByWjRiQ3UwMDBWdFFTa1hT?=
- =?utf-8?B?d0J2eTlIMk80eHU0aG1POE1VOUROZ0NiZWlVUXZDZlN2T0dyQzVyNFllRmwy?=
- =?utf-8?B?N3FQbWxrM1BKNlNPbEt1dStna1hvcmZmenhpUW1MclR5cGcxQVRKZktWVFNw?=
- =?utf-8?Q?TRZw4T+Uz2ZyXxPw=3D?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fafe62b3-f296-446a-f39f-08debd4a30b5
-X-MS-Exchange-CrossTenant-AuthSource: AS5PR06MB9040.eurprd06.prod.outlook.com
+ =?utf-8?B?TGVMdENWU3l4WWdtM3pRZlF0d0hOK0RYNGoyS2NUbUl0OUZZb2pnQWlSRStn?=
+ =?utf-8?B?b0EvVFVJL0NUdzljakIxdk5TT1YwOGJzeHRuSUFHYU54UzJ0cnhHNHpDdm9L?=
+ =?utf-8?B?VGV1QnVoWWRQV0tYcjJFU0VuWkZKMDRZdUd2aldxM3EzVzNNcXVjQmFqVWpX?=
+ =?utf-8?B?SzZLdjI0bUxVcDgyTHA0eDlMYUtkNXI0a3U3NG5LUDg2b0FLMTgyd21RVTlu?=
+ =?utf-8?B?TU1pS25xanpXclV6K3NzUUFJOXJqZ1YxVHZxbVFLbGNCcTBVK05DU2d2VDhB?=
+ =?utf-8?B?a1JWS0FqUmVQMDRDNGVXUUpIMHVqVjQ3QUJSRGpyQ3ErRmRRRG92MVNSandz?=
+ =?utf-8?B?SXJ5aSsydlJaT0w5MW40NU5MaXpMeStNa2wzRVdnVGloMEFKdFpIbHpaNE9C?=
+ =?utf-8?B?NXUxOWh2WkwvbmQrVis5SmdzL1pUaDJva3lrSXJIOXpLVzhlZkRMeC9BbG4x?=
+ =?utf-8?B?UFJoVWV1MU9WaW1sVDFMVnp3NURjZ2pvbk12dkI4dThSQnBZbnFaOWhuTHZa?=
+ =?utf-8?B?OGdDM3d5Z3BRVTFPMGY3TE1NT3VPNW5QUGNjVUJaSzhpMFR4WGRJVStsOHdO?=
+ =?utf-8?B?K3hweU56Smg5aFp0aThzdFA0QklPb2YvNFRRZlY3Wmp5dlUyRkxwWWw3MHBi?=
+ =?utf-8?B?OS9TMUdSQ1h5MTIwcmVFZjMrekNoUjdRcVRGL2hjbFM3V3lkSkI1K1dxQkEv?=
+ =?utf-8?B?Q092SUpVNUdaWlV5R3VaL1BhUjlqY3VjRUJzd0pkQjBUYURPM1VWblhsQ0wr?=
+ =?utf-8?B?eFRsSzJrQjlPWjlKc3I4N1ZOQzhzZGk5aUcyZXVidGJ1dkJpc056OVRMMitI?=
+ =?utf-8?B?aWt2djUvdUhEcStaNU5EZjI5alJQaXo1KzhEUENPSmRXVmNBQ084TjFOQ21j?=
+ =?utf-8?B?d29mUS9XT3lZZ2pjaXJETDNPRExnc3J3YUZqUldWL2FJVmkzdFhYaUc0OXE4?=
+ =?utf-8?B?S1BHa1dhRTVVeC80SEduM091WExxVHlhYWdNeGNoVVIvRGI2ZWd5UDNGT252?=
+ =?utf-8?B?amlHdjUxZTVKTDZpbmZuTWR4OUVKR3pFTEgveDZhWEQrQlVnR2FhSnhSN0oz?=
+ =?utf-8?B?NDJMY0FxUG1jVzI5ZGxINDYzMERrampuVlFOTkZ3dHkzY2wwWDV2aGVEb1pv?=
+ =?utf-8?B?SUN4TEg0WFR5Y0M2ZWd2VG00TEVIY2xNM2N0c2d5c2o0clVISGpDM0RvaFdz?=
+ =?utf-8?B?c2FFMkFWcEE1MlJyNmdHSkR2VHRpTUlsWTFFQmt5OSs2NmFva1FlNXZ5U2Fa?=
+ =?utf-8?B?OVpaYlpCSld3SVFTL1hUTk16YjJuL0QrZ0ExeEJBZHpkSmFFSjJhZnhmdVQ4?=
+ =?utf-8?B?bW9JeU5CRU5VVFVSMXYwWjQ0cWl1T1NkSGo5QncvWE1JS29CN21lK0JGYVll?=
+ =?utf-8?B?RWlpdVlEaVA3VzEwaEd1aFROelpISkM2QU9VWC9lQ3FZdlgzdGxsd2laMlZ0?=
+ =?utf-8?B?YTg1bkI3eldsRllLQStIYStTMmZ5SEc0bUFid1N0am9CV1ZWVjl1UWhEd0li?=
+ =?utf-8?B?UlZESG5TcTVnMHhTU0h6eVVvYllhUytQQWtTeG85cTc3VCttbjlHTlZUWDhJ?=
+ =?utf-8?B?QTV5NURod1NPVFdxRktHeWl3MFBkcVdsOHNqMnZROWloaGU3TXNiY2Q0QTZu?=
+ =?utf-8?B?N3dITkwvWTVDUnRUUW5OTFhkWTNIQVZxWU5ycG13K3U0Nk1HUXEvSE83L3o1?=
+ =?utf-8?B?aEp3QkNxNVJaYktyVlNHUndnQXNaenFCRTV4OVRsSVNaZWNNRGJLZzEwUysr?=
+ =?utf-8?B?enZKQ1NqZDlWdmlxQmcxcG5KaUNMN1hZclY0amN3ZFNxM1RaTXpWR0psQXZC?=
+ =?utf-8?B?eEpEekZzKzFabC92Y2NtcVp5ajhUeHFqby9QYU81UkJ2SExBUWptVVRnMTZT?=
+ =?utf-8?B?RTdZdCtYbXJoQ1FtZ0xvRXV5Vi83MUp1eEo2R3IwWEd6U3ZoelBOS09Fa2pC?=
+ =?utf-8?B?c0VSYzRPeGdMRytpdlB2SlRab0dEUjBZU1p0WFczeXZGQVFYczRWVk5vY1Zq?=
+ =?utf-8?B?OFlmd1ozOEwyWWNac3ZzNzV4NkorelJBVWZ3MFJOdkdZTThnZ0FzMDk5SE5M?=
+ =?utf-8?B?cWRlY29Hc3hNdW1qRnBLVmJGYnJQNDljYmZCZjNHZW1EWTlONjFHMXI2R2lK?=
+ =?utf-8?B?Z01OMm1LRlpUb052ZFUzckg4Z2tnalJGYnpMeUkvSWFMS2c2d0RrUmtmVm96?=
+ =?utf-8?B?TStXU24vbjRIL2ZnUHprYlhqSkRrQjVrd25JOFoxSU02MWEwOGw2a3JSQkh2?=
+ =?utf-8?B?N0Zscm1CVnp1c1QxWTlMb0FJZmtkd25UWmZRbXJxYVRyWjBibzBnSkhmZzR0?=
+ =?utf-8?B?QTkrVjRxbmloZjQzY3g3ZEFjT2gzazBab1NObzBhUHZDTUZiZ1NSNnFwdmtE?=
+ =?utf-8?Q?osRXT8ZdJ87LhqIFxylh2LsD5c8ayoaumR5Gh?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 507b66ca-b8d2-4429-646e-08debd509d8a
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8179.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 06:19:07.6467
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 07:05:07.2733
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UUxXcbfMCFUR2iJWgN9Bj4bMLiprtA6x4V7b6AK9x4amle6jCLbbnKofZGFAWBiTId/lnJOX0lNxQk3J1/kbrdHqD4ZFHBw4WJj+t26zoa0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR06MB8975
+X-MS-Exchange-CrossTenant-UserPrincipalName: RE0vw0l8LnogHf1wpsx/8v3TI8Vxyx0bYfZVHIN6y3KWYQ+Cm5nZPKBUxetj5YWnWLu3TRpR2L320VtC2PgkA0F54JWTJmCGBIt+abJNfiyiJ//CYFCnvyXrmmFz6i+Y
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9839
 
-In fec_resume(), fec_enet_clk_enable() is called before
-pinctrl_pm_select_default_state() in the non-WoL path, inverting the
-ordering used in fec_suspend() which correctly switches to the sleep
-pinctrl state before disabling clocks.
+Add PWM0 and PWM1 for S32G2 and S32G3 SoCs
 
-For PHYs with the PHY_RST_AFTER_CLK_EN flag (e.g. TI DP83848 or
-SMSC LAN87xx), fec_enet_clk_enable() triggers a hardware reset pulse
-via the phy-reset GPIO. With the GPIO pin still in sleep pinctrl state
-at that point, the GPIO write has no physical effect and the PHY never
-receives the required reset after clock enable, leading to unreliable
-link establishment after system resume.
-
-Fix by restoring the default pinctrl state before enabling clocks,
-making resume the proper mirror of suspend. The call is made
-unconditionally: fec_suspend() only switches to the sleep pinctrl state
-on the non-WoL path and leaves the pins in the default state when WoL
-is enabled, so on a WoL resume the device is already in the default
-state and pinctrl_pm_select_default_state() is a no-op.
-
-Fixes: de40ed31b3c5 ("net: fec: add Wake-on-LAN support")
-Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
+Reviewed-by: Enric Balletbo i Serra <eballetb@redhat.com>
+Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
 ---
-Changes in v3:
-- Move pinctrl_pm_select_default_state() before fec_enet_clk_enable()
-  unconditionally instead of duplicating the clk-enable call in both
-  WoL branches; safe because fec_suspend() leaves the pins in the
-  default state on the WoL path (per Wei Fang's review).
-- Link to v2: https://lore.kernel.org/r/20260527-b4-fec-resume-pinctrl-order-v2-1-293096f48703@vaisala.com
+ arch/arm64/boot/dts/freescale/s32g2.dtsi      | 28 ++++++-
+ arch/arm64/boot/dts/freescale/s32g3.dtsi      | 30 ++++++-
+ .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 78 ++++++++++++++++++-
+ 3 files changed, 133 insertions(+), 3 deletions(-)
 
-Changes in v2:
-- Remove a stray blank line between the Fixes: tag and Signed-off-by:
-  in the commit message; no functional change (per Wei Fang's review).
-- Link to v1: https://lore.kernel.org/r/20260526-b4-fec-resume-pinctrl-order-v1-1-f2f926325424@vaisala.com
----
- drivers/net/ethernet/freescale/fec_main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f89aa94ce0202d5f28f37362ce70e0943aa14025..6ebde65d7f1b8728a6c5d28f75cc0b0c4d983969 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -5594,6 +5594,7 @@ static int fec_resume(struct device *dev)
- 		if (fep->rpm_active)
- 			pm_runtime_force_resume(dev);
+diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+index 51d00dac12de..9f5f18d54118 100644
+--- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+@@ -3,7 +3,7 @@
+  * NXP S32G2 SoC family
+  *
+  * Copyright (c) 2021 SUSE LLC
+- * Copyright 2017-2021, 2024-2025 NXP
++ * Copyright 2017-2021, 2024-2026 NXP
+  */
  
-+		pinctrl_pm_select_default_state(&fep->pdev->dev);
- 		ret = fec_enet_clk_enable(ndev, true);
- 		if (ret) {
- 			rtnl_unlock();
-@@ -5610,8 +5611,6 @@ static int fec_resume(struct device *dev)
- 			val &= ~(FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
- 			writel(val, fep->hwp + FEC_ECNTRL);
- 			fep->wol_flag &= ~FEC_WOL_FLAG_SLEEP_ON;
--		} else {
--			pinctrl_pm_select_default_state(&fep->pdev->dev);
- 		}
- 		fec_restart(ndev);
- 		netif_tx_lock_bh(ndev);
-
----
-base-commit: 79bd2dded182b1d458b18e62684b7f82ffc682e5
-change-id: 20260526-b4-fec-resume-pinctrl-order-fde0cff2bbff
-
-Best regards,
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
+@@ -554,6 +554,19 @@ i2c2: i2c@401ec000 {
+ 			status = "disabled";
+ 		};
+ 
++		pwm0: pwm@401f4000 {
++			compatible = "nxp,s32g2-ftm-pwm";
++			reg = <0x401f4000 0x1000>;
++			#pwm-cells = <3>;
++			clocks = <&clks 5>,
++				 <&clks 6>,
++				 <&clks 5>,
++				 <&clks 5>;
++			clock-names = "ftm_sys", "ftm_ext",
++					  "ftm_fix", "ftm_cnt_clk_en";
++			status = "disabled";
++		};
++
+ 		swt4: watchdog@40200000 {
+ 			compatible = "nxp,s32g2-swt";
+ 			reg = <0x40200000 0x1000>;
+@@ -717,6 +730,19 @@ i2c4: i2c@402dc000 {
+ 			status = "disabled";
+ 		};
+ 
++		pwm1: pwm@402e4000 {
++			compatible = "nxp,s32g2-ftm-pwm";
++			reg = <0x402e4000 0x1000>;
++			#pwm-cells = <3>;
++			clocks = <&clks 7>,
++				 <&clks 8>,
++				 <&clks 7>,
++				 <&clks 7>;
++			clock-names = "ftm_sys", "ftm_ext",
++				      "ftm_fix", "ftm_cnt_clk_en";
++			status = "disabled";
++		};
++
+ 		usdhc0: mmc@402f0000 {
+ 			compatible = "nxp,s32g2-usdhc";
+ 			reg = <0x402f0000 0x1000>;
+diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+index e314f3c7d61d..408bf0b40734 100644
+--- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+ /*
+- * Copyright 2021-2025 NXP
++ * Copyright 2021-2026 NXP
+  *
+  * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+  *          Ciprian Costea <ciprianmarian.costea@nxp.com>
+@@ -617,6 +617,20 @@ i2c2: i2c@401ec000 {
+ 			status = "disabled";
+ 		};
+ 
++		pwm0: pwm@401f4000 {
++			compatible = "nxp,s32g3-ftm-pwm",
++					 "nxp,s32g2-ftm-pwm";
++			reg = <0x401f4000 0x1000>;
++			#pwm-cells = <3>;
++			clocks = <&clks 5>,
++				 <&clks 6>,
++				 <&clks 5>,
++				 <&clks 5>;
++			clock-names = "ftm_sys", "ftm_ext",
++					  "ftm_fix", "ftm_cnt_clk_en";
++			status = "disabled";
++		};
++
+ 		swt4: watchdog@40200000 {
+ 			compatible = "nxp,s32g3-swt", "nxp,s32g2-swt";
+ 			reg = <0x40200000 0x1000>;
+@@ -792,6 +806,20 @@ i2c4: i2c@402dc000 {
+ 			status = "disabled";
+ 		};
+ 
++		pwm1: pwm@402e4000 {
++			compatible = "nxp,s32g3-ftm-pwm",
++					 "nxp,s32g2-ftm-pwm";
++			reg = <0x402e4000 0x1000>;
++			#pwm-cells = <3>;
++			clocks = <&clks 7>,
++				 <&clks 8>,
++				 <&clks 7>,
++				 <&clks 7>;
++			clock-names = "ftm_sys", "ftm_ext",
++				      "ftm_fix", "ftm_cnt_clk_en";
++			status = "disabled";
++		};
++
+ 		usdhc0: mmc@402f0000 {
+ 			compatible = "nxp,s32g3-usdhc",
+ 				     "nxp,s32g2-usdhc";
+diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
+index 803ff4531077..844d2c4fabf7 100644
+--- a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+ /*
+- * Copyright 2024 NXP
++ * Copyright 2024, 2026 NXP
+  *
+  * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+  *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
+@@ -245,6 +245,70 @@ dspi5-grp4 {
+ 			bias-pull-up;
+ 		};
+ 	};
++
++	ftm0_pins: ftm0_pins {
++		ftm0_grp0 {
++			pinmux = <0x2912>;
++		};
++
++		ftm0_grp1 {
++			pinmux = <0x122>,
++				 <0xb42>;
++			output-enable;
++			input-enable;
++		};
++
++		ftm0_grp2 {
++			pinmux = <0xb13>,
++				 <0xb53>;
++			output-enable;
++			input-enable;
++		};
++
++		ftm0_grp3 {
++			pinmux = <0x2904>;
++		};
++
++		ftm0_grp4 {
++			pinmux = <0x2925>;
++		};
++
++		ftm0_grp5 {
++			pinmux = <0x2936>;
++		};
++	};
++
++	ftm1_pins: ftm1_pins {
++		ftm1_grp0 {
++			pinmux = <0x1d3>;
++			output-enable;
++			input-enable;
++		};
++
++		ftm1_grp1 {
++			pinmux = <0x29b4>;
++		};
++
++		ftm1_grp2 {
++			pinmux = <0x29c3>;
++		};
++
++		ftm1_grp3 {
++			pinmux = <0x1f4>;
++			output-enable;
++			input-enable;
++		};
++
++		ftm1_grp4 {
++			pinmux = <0x202>;
++			output-enable;
++			input-enable;
++		};
++
++		ftm1_grp5 {
++			pinmux = <0x29d2>;
++		};
++	};
+ };
+ 
+ &can0 {
+@@ -304,3 +368,15 @@ &spi5 {
+ 	pinctrl-names = "default";
+ 	status = "okay";
+ };
++
++&pwm0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&ftm0_pins>;
++	status = "okay";
++};
++
++&pwm1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&ftm1_pins>;
++	status = "okay";
++};
 -- 
-Tapio Reijonen <tapio.reijonen@vaisala.com>
+2.34.1
 
