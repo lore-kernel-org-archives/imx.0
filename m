@@ -1,66 +1,86 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD27C3FB7E5
-	for <imx@lists.linux.dev>; Fri, 29 May 2026 14:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5708133ADA4
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 15:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780066701; cv=none; b=W+StRBoi+ydIJpRGuI8pGAs+mG2j5dMBNfxvaOw8MrODeZmlNqK3GIXjoE4MWQrxym0UnEe4GPJygLlT3iP9jcq4xUGYP8W5/L+jEzgAvSDHCXbSGqAnu4D0SyLzmEj3pbUT07CwRhOAeFI/m/nGavJ4FtpRqQl7jSCP/XW7TEY=
+	t=1780066871; cv=none; b=XGykRpIlpdzxqdJTvHa539jkzZ9JoytCt51SPW0l375Rz3a3mUAx2onF2sSxlknVZdGV41trsc+L6kjfZSJ5uzReclEzubCD6tUUeVhKTNXrsuibH/nQwC+eQQ2h7eYjVW27kBfji/QX6Y4IwL9RH9dbTqNlHDgOjTnLheAQuxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780066701; c=relaxed/simple;
-	bh=TvDNOUNE5esDjb0VJzWZLByvq8d6tWkBf2WKUMK9i1A=;
+	s=arc-20240116; t=1780066871; c=relaxed/simple;
+	bh=ekH8jL5GTEUDGVAvOS2ZIaVQwCZnxE8ZwtzE7+yiA7s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jbN6effKHoxwN4ZX/Ta6L4UBWZUpBqUCr7hxUzdJeSmaf9anaAjYtmn3loZL28EvoPU0WHViYqta1bC0EdloWgnTxSRGGHvwAglmlcl0PtEubqeLe9HWDDioNJ4hQvWpcd38fsM3RWsrzKU4l2NCa1cHaubd0t9DmxVu4gZ9dSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Vvz1HYOj; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=JpHgmv8V4RKWtC8nk3XLLGOWH2jCVy0mv5Be2uMG9DEa0RNM0si49lvNp6UAd9LjuQa2iMge/s1C97UjPaM42qajV3eMWK52gSqncqleU3VaX43mlPSbMQuLbrwxz4/jZ47vesYkPxywd6is6Wr/hZrcsCJzC23AL2lgdqmkLgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Xvtg33A3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=emfCNIOM; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Vvz1HYOj"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490388fd0dbso83639425e9.0
-        for <imx@lists.linux.dev>; Fri, 29 May 2026 07:58:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Xvtg33A3";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="emfCNIOM"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64TDLBUB3656472
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 15:01:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0DBIjTIgaaXjiGvnFuMwPeT2jOYan/1jCVFnVrf0W20=; b=Xvtg33A3ig+6aYFG
+	oL8rJMr/IQKZvLMoyLnn0zZXciu8R5PCNt+FJ4h8h7q+e19LGgNKQfYe289MgRmy
+	DFggJITACwYZqw/KacpmhoJ1jy15LK/X3G/BXim6nF8FddZA/9eJP/N/oINCoVyM
+	oeWxrLL9qpCKke5Od+xGjJDKap2oeqZ4vFCteFxZA8XayB5vCSA9LMVGUL1G+seo
+	4g3+3faCQM44ek8O7ZxNGGKSEgdz7TQRflOJpbfZD2zSGBd8c63tbps7IlwGQwNk
+	w6V5S4timf1fGU7BMDTIyA5BVwsbIX/Kuv0vREq2sT4fas/QvGdopxIBX/CnBYVF
+	FN1dIA==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eety5vt0t-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 15:01:09 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-841127f960fso5659292b3a.1
+        for <imx@lists.linux.dev>; Fri, 29 May 2026 08:01:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780066698; x=1780671498; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
+        d=oss.qualcomm.com; s=google; t=1780066868; x=1780671668; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=GU2T/pZfXae23cHrpeloETVxMMttaLJWiMdOf7oLCD8=;
-        b=Vvz1HYOj1Fgb3m/T3fkdh5uYUDuT0sPmHLKxnXIuvfgHBOA7jDcN74G3lR88gGn9E+
-         fHB6RM+AIJKpEPaMONeegKOrxjwBvdygBPaTHXkrc2aWwh+fIkOy2JK5+qFFtwNtkH89
-         R4ig3X+QQ2FCQBDZtJxRxBhRjfmHsVH84+HMDdWueRm8MpqlK1skyy8/Y/oi0/sgtKKE
-         aG16BxAAC63X6TsXEdEGT0NV/ug74LznbwOgNvQ7QFUES1VH+oGOwLA9NUfYo1rFfSkF
-         +PolwFeJzp83+xlu8AltZyNT1RIflcMVBthMJN0IKlI99JxS7LuD0Ax9O77q3b9nfY84
-         KthQ==
+        bh=0DBIjTIgaaXjiGvnFuMwPeT2jOYan/1jCVFnVrf0W20=;
+        b=emfCNIOMyqSPezCfWZ5nfp/DehO9KnxagDRNDZPdKY966MiByL+2AummtLMUaEbcxu
+         r7B0Jp9cIim7SE05rAZWYlg4dMCLPATSRksbBBhsPC4byXCh6GDBemsnMOdUJ4jdRc84
+         XuHdHFHr7z/brPFFjd6i1CUQFybSkSrVMSG++p1HKjci9jiWdUO2X6F2o0E1+5p5q27X
+         PZRo2Emr11V4RfRxZU3TmV8sahWK63bFTCm+/hQ26gdBWdHR7ppKxKovz8GRWurQSlIN
+         UcZqGDZcOu0smQQ9NtFyE6USY4BMMIIKLdHUkK3gvo0Im+4AK3+ToZAz/S1EeHEwp7AE
+         pmlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780066698; x=1780671498;
-        h=content-transfer-encoding:in-reply-to:content-language:from
+        d=1e100.net; s=20251104; t=1780066868; x=1780671668;
+        h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GU2T/pZfXae23cHrpeloETVxMMttaLJWiMdOf7oLCD8=;
-        b=qWcTXU0zpmJB4SEkV63/GD+xWR4HN/lKcLp8F1C2M8kSaQMZTNT9K9gO9nihrtU3ne
-         kaC6g7nxf7ieE4IpDi0r6uOpDvf9gOu1GGRnP1Ly7tgz70MIBeq7FOVG8iAXM/tQ/KH9
-         LgR3bqvDQEUdqzIAhT4yLeZ5wKb5v/n2qivOOKUODH9Ch6cY2GDpXk7j04P04j1Q0CZ6
-         axwRguWXj6lkzyFDlUlWLsws2NkeMf04avIhRiSKWz2GwwI+lRP8uZF66fzysbfnJIOR
-         k3n8eK8jWRpI6VVh9wqA5i5PCcm4R9rNO40QH76rWsMdO8TDXqL40KDU/OXmzj0MXFy4
-         09ew==
-X-Forwarded-Encrypted: i=1; AFNElJ/feTAitwAjgqbbyNk7gzYPZsD0E7qQxRu+JBcY/VbuKNbHRPLMMTPy9ehUelwo70AYpnY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyEKnVFEp8PuI7d2DuKiBnk8WzskmrxeD96938IYHZFUd9JjUvY
-	WKkdtHmj5z4AN50sxO1WPriyoQOwg7nznS3wNqSSaO1ltuFf44b2Pjucy6zNxERyFE0=
-X-Gm-Gg: Acq92OFRihuXByHV7Yuf6prISIZsH6Zau50ezkkfK4Y7JEipwnxSsvqr/cSzHpi07A1
-	EYuhWgeZKcJiFm3xZAkfUfzYvnDmDnB8JtVCeWlhzmU5r99JB9k/eo2NhyxXPd4A8Qon7jW7zkk
-	A0GjN14OS9LVCJMevZIo3oPuNxPFOdYNEt1Jn+KxfwOnbNORjaJy/201ueosQMSd7o0hD17fBI2
-	BuRukofDqK80aXdTC5Dabvz0et+ODheB+80TUNcYyaJitA2Kb1xd7ByeaYiTL8s8Wb8vu5hhjsz
-	Bj2UYn5wDJie9EDylz40/OzwuiJDPiZJtfkkz1pcYjDcyI8MlJ0XcmK90tgMYE/zmWE2dgvAIeU
-	oNXlBtki4CjHMG0B3zK/3yH7/2ZAxhLJiaZwraqdiXpAWw7yep0Isp6BwcoYCgQBVa5KizccSVn
-	I0vitIsePjp+Fo5E5cerpvCBmH+0i7MchLkse9aElVBsQ=
-X-Received: by 2002:a05:600c:1994:b0:490:48df:2793 with SMTP id 5b1f17b1804b1-4909c0e77d6mr57620855e9.26.1780066698120;
-        Fri, 29 May 2026 07:58:18 -0700 (PDT)
-Received: from [192.168.0.101] ([64.43.33.81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909ca6e124sm49445275e9.7.2026.05.29.07.58.16
+        bh=0DBIjTIgaaXjiGvnFuMwPeT2jOYan/1jCVFnVrf0W20=;
+        b=K7oI6WXmMTaNg/zSFTn4p2UA9ciGkuqnrf7foapasxVs3R95SJksbQO4A+R7OLoJF7
+         suphIo8REDsTvXCqeAHmssJiSPDpfb6gh1gGXCgym8O8aEEZeiTmaya3kDPkL3q1ebUo
+         OUZlRSdisR++JoyhqLbsMiuCQ6hjrD5+ZeoS95yus27LRz6YFf+3+m9JIIPPtVEUBOWt
+         XNarIn4DCVQxyWyF3fweDJrAq23DbjrpMBk1PL15/NelEvoDBdXlbqWl0IL3skbrMMVF
+         XyuM/LmqKvvF3AsHfzpUG6j1lWrYo+yfJf64zQ2BpSI5cAoB9ue+34UvoeISVaG7BEe3
+         cuUA==
+X-Forwarded-Encrypted: i=1; AFNElJ/FgTPRA29WzUiCvf8neCqWhgn9HvOZ2dVyXj3P58G4fIY0v80B0qcUg+Qhof9P6ptNItQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywm35HrDUOYddTEqKFYQ7DKJL/vOUSJ+mKJgGq5GZkmhfB2q4kN
+	Mp6mozpGKo+qMGsGE8kHFAhbDT4XmSRM0nak+oN2AiRlJUbtcnIR8V5f9heQoualMvjrRE7kGYh
+	J59ywQzLBcduYHraYy2991JXMItDx2DLbKG32rOKjyU79PMQiFEOr+uA=
+X-Gm-Gg: Acq92OHlw1ExxpUEdmaAwGE4ECZUR++ltFXTaYXBhaSA+CSiYx84jZxvX1CPZ7pTgGw
+	X5hl7qzD5ktrDBTKZ5yCL7tY2xrW/VstmADvM7RKwNSdK+UUjWuEjEW/j5xuMjtrpS90GPM3x0N
+	bJa5k8IQkRZgD5vQxwspoh6mwLwW4DshsNFSIkQOgTFPjE1UT8QryeFNCDD72Or5fsmtPUj8Byr
+	uW9gctUEI9Pqharq5RociIORphTZEevcfTRqg0SYlaHuLDoajRr/ty7jMzoRSQEy6tt4hsBvk1N
+	FqgfO92ad18CRBrfnKrnjrbUcjhKM+b8BhrdvCGC5jbhw7gMFnz7pwf2IrDMOXTMGRXKd8tzM42
+	rcageqLFNYNJhhAq3TlRRLl3bW027aiOYKUaBfq5DcdZtgnc+QQgWAEzoP4KOkjI=
+X-Received: by 2002:a05:6a00:440e:b0:82c:daa4:ce29 with SMTP id d2e1a72fcca58-84212c2fd94mr3681685b3a.47.1780066867471;
+        Fri, 29 May 2026 08:01:07 -0700 (PDT)
+X-Received: by 2002:a05:6a00:440e:b0:82c:daa4:ce29 with SMTP id d2e1a72fcca58-84212c2fd94mr3681595b3a.47.1780066866769;
+        Fri, 29 May 2026 08:01:06 -0700 (PDT)
+Received: from [10.204.67.150] ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214b6797esm2739983b3a.26.2026.05.29.08.00.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 May 2026 07:58:17 -0700 (PDT)
-Message-ID: <23d2a824-e894-4c26-8bd1-02bbb8a7c6d1@linaro.org>
-Date: Fri, 29 May 2026 15:58:16 +0100
+        Fri, 29 May 2026 08:01:06 -0700 (PDT)
+Message-ID: <21c17cac-2a1e-4b19-ab6d-ddca9132d725@oss.qualcomm.com>
+Date: Fri, 29 May 2026 20:30:57 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,51 +88,162 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] arm64: dts: qcom: shikra: Add CAMSS node
-To: Vikram Sharma <vikram.sharma@oss.qualcomm.com>, bod@kernel.org,
- Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-Cc: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+Subject: Re: [PATCH 3/8] media: qcom: camss: add support for QCM2390 camss
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
+Cc: Bryan O'Donoghue <bod@kernel.org>,
+        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
  <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
- Andi Shyti <andi.shyti@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-arm-msm@vger.kernel.org,
- linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Suresh Vankadara <quic_svankada@quicinc.com>
+        Andi Shyti <andi.shyti@kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, linux-arm-msm@vger.kernel.org,
+        linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        Suresh Vankadara <quic_svankada@quicinc.com>,
+        Prashant Shrotriya <pshrotri@qti.qualcomm.com>
 References: <20260526-shikra-camss-review-v1-0-645d2c8c75a7@qti.qualcomm.com>
- <20260526-shikra-camss-review-v1-4-645d2c8c75a7@qti.qualcomm.com>
- <178000689150.4557.11759359941436928903.b4-reply@b4>
- <df00e8d8-21ab-415f-815e-608eb7ab0967@oss.qualcomm.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+ <20260526-shikra-camss-review-v1-3-645d2c8c75a7@qti.qualcomm.com>
+ <CAFEp6-1VAW-S2d3q3uN2n1weMOoSPXtX_k_6msQ-K_5A5mZVLQ@mail.gmail.com>
 Content-Language: en-US
-In-Reply-To: <df00e8d8-21ab-415f-815e-608eb7ab0967@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Vikram Sharma <vikram.sharma@oss.qualcomm.com>
+In-Reply-To: <CAFEp6-1VAW-S2d3q3uN2n1weMOoSPXtX_k_6msQ-K_5A5mZVLQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: HJ5dyddZnXFJLJywmjMjTu1Fjz70on_y
+X-Authority-Analysis: v=2.4 cv=TeqmcxQh c=1 sm=1 tr=0 ts=6a19aa35 cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=EUspDBNiAAAA:8 a=iLf03rxdIeEfhWbO6WcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=2VI0MkxyNR6bbpdq8BZq:22
+X-Proofpoint-GUID: HJ5dyddZnXFJLJywmjMjTu1Fjz70on_y
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDE1MCBTYWx0ZWRfX0cd130buOSyD
+ lEEM/zWzpOXOclv0mlM1M4uQ4eGo5bkWoNHNxEQDN0MsmqiN2x4yxFsVDIjsT4JAifj0mWMBRgT
+ BN8i27VTFHu7SinWhzv/qD6V5cAUxa8Z2jH9gim0GHT+iC2TwaJ35U43ipec8vC2NU4BVZzX1+c
+ IqE4OtXNDgareiyfemcr5itF6vrH6+7++F0RnTN3crmeL4TgtdmurYN3XKUD8w97ht8LtOkCuex
+ rt+NMVEBa8P4iRpu6BFfZKwJUnpLv1eyoI8mSVokwExcOKV4eJEjr9PKnXnnadoFcuk3aPB0m/C
+ nlmzsNbAQixjm0xSzZNwyAmP4MtL5RBDlS/Ggxrlt+bLNkDNG0kb2bPpffZeBApPmpSoxy4W40Q
+ mzzTgAiwuqS//O6z5YQKOr5FLT2RH/nFy3KLCZ9hmJ/oYULCAJL2RArn9xp6HI6BfQTZgu89dXF
+ R4MmYI+6l6gbHHD61UQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-29_04,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 clxscore=1015 lowpriorityscore=0
+ spamscore=0 suspectscore=0 bulkscore=0 malwarescore=0 adultscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
+ definitions=main-2605290150
 
-On 29/05/2026 15:52, Vikram Sharma wrote:
-> Shikra and Agatti are not iommu compatible in terms of Stream ID. Only VFE SID is same
-> for both. Agatti is documenting iommu for VFE, CDM and OPE. OPE is not yet enabled for
-> Shikra and in my opinion it should be added as a separate yaml similar to Agatti.
-> "https://lore.kernel.org/all/20260508-camss-isp-ope-v3-9- 
-> bb1055274603@oss.qualcomm.com/"
-> 
-> Regarding cdm iommu we have excluded it as we do not use it to program registers as of now.
 
-Which will be a problem as soon as CDM is attempted to be enabled and 
-yaml changes are dropped upstream.
+On 5/28/2026 5:55 PM, Loic Poulain wrote:
+> On Tue, May 26, 2026 at 7:13 PM Nihal Kumar Gupta
+> <nihal.gupta@oss.qualcomm.com> wrote:
+>> From: Prashant Shrotriya <pshrotri@qti.qualcomm.com>
+>>
+>> Add CAMSS driver support for Shikra SoC. Add high level
+>> resource definitions for 2 CSIPHY, 2 CSID and 2 VFE instances along
+>> with the interconnect bandwidth votes for AHB, HF and SF MNOC paths.
+>>
+>> Signed-off-by: Prashant Shrotriya <pshrotri@qti.qualcomm.com>
+>> Signed-off-by: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
+>> ---
+>>  drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c |  2 ++
+>>  drivers/media/platform/qcom/camss/camss-vfe.c            |  1 +
+>>  drivers/media/platform/qcom/camss/camss.c                | 13 +++++++++++++
+>>  drivers/media/platform/qcom/camss/camss.h                |  1 +
+>>  4 files changed, 17 insertions(+)
+>>
+>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+>> index dac8d2ecf79957dc05c5524dc439791ce097c785..62208f5c4f17bd6c9a8fe5613649920e6ee1a1f2 100644
+>> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+>> @@ -1130,6 +1130,7 @@ static bool csiphy_is_gen2(u32 version)
+>>
+>>         switch (version) {
+>>         case CAMSS_2290:
+>> +       case CAMSS_2390:
+>>         case CAMSS_6150:
+>>         case CAMSS_6350:
+>>         case CAMSS_7280:
+>> @@ -1222,6 +1223,7 @@ static int csiphy_init(struct csiphy_device *csiphy)
+>>                 regs->lane_array_size = ARRAY_SIZE(lane_regs_sdm845);
+>>                 break;
+>>         case CAMSS_2290:
+>> +       case CAMSS_2390:
+>>         case CAMSS_6150:
+>>                 regs->lane_regs = &lane_regs_qcm2290[0];
+>>                 regs->lane_array_size = ARRAY_SIZE(lane_regs_qcm2290);
+>> diff --git a/drivers/media/platform/qcom/camss/camss-vfe.c b/drivers/media/platform/qcom/camss/camss-vfe.c
+>> index 319d191589884777bced456867e5a2a4211a2770..b152f8d48e003d8eeb0cf19ad57419b25cdec087 100644
+>> --- a/drivers/media/platform/qcom/camss/camss-vfe.c
+>> +++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+>> @@ -342,6 +342,7 @@ static u32 vfe_src_pad_code(struct vfe_line *line, u32 sink_code,
+>>                 break;
+>>         case CAMSS_660:
+>>         case CAMSS_2290:
+>> +       case CAMSS_2390:
+>>         case CAMSS_6150:
+>>         case CAMSS_6350:
+>>         case CAMSS_7280:
+>> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+>> index 2123f6388e3d7eafe669efd6b033e22d8eb5cf79..f67ecff53f15bd213dc7736d4e5fe880007d1ee7 100644
+>> --- a/drivers/media/platform/qcom/camss/camss.c
+>> +++ b/drivers/media/platform/qcom/camss/camss.c
+>> @@ -5565,6 +5565,18 @@ static const struct camss_resources qcm2290_resources = {
+>>         .vfe_num = ARRAY_SIZE(vfe_res_2290),
+>>  };
+>>
+>> +static const struct camss_resources qcm2390_resources = {
+>> +       .version = CAMSS_2390,
+>> +       .csiphy_res = csiphy_res_2290,
+>> +       .csid_res = csid_res_2290,
+>> +       .vfe_res = vfe_res_2290,
+>> +       .icc_res = icc_res_2290,
+>> +       .icc_path_num = ARRAY_SIZE(icc_res_2290),
+>> +       .csiphy_num = ARRAY_SIZE(csiphy_res_2290),
+>> +       .csid_num = ARRAY_SIZE(csid_res_2290),
+>> +       .vfe_num = ARRAY_SIZE(vfe_res_2290),
+> So isn't it exactly the same as 2290? wouldn't it be easier to have
+> the shikra simply fallback to qcm220 (via compatible string)?
 
-Hmm then it seems to me that five is too many for Agatti's IOMMU set.
+ACK, We will simply add fallback to 2290 in dts.
 
-I'd like a number list so that we are discussing facts instead of 
-nebulous hypotheticals.
-
-For both Agatti and Shikra.
-
----
-bod
+>> +};
+>> +
+>>  static const struct camss_resources qcs8300_resources = {
+>>         .version = CAMSS_8300,
+>>         .pd_name = "top",
+>> @@ -5752,6 +5764,7 @@ static const struct of_device_id camss_dt_match[] = {
+>>         { .compatible = "qcom,sdm660-camss", .data = &sdm660_resources },
+>>         { .compatible = "qcom,sdm670-camss", .data = &sdm670_resources },
+>>         { .compatible = "qcom,sdm845-camss", .data = &sdm845_resources },
+>> +       { .compatible = "qcom,shikra-camss", .data = &qcm2390_resources },
+>>         { .compatible = "qcom,sm6150-camss", .data = &sm6150_resources },
+>>         { .compatible = "qcom,sm6350-camss", .data = &sm6350_resources },
+>>         { .compatible = "qcom,sm8250-camss", .data = &sm8250_resources },
+>> diff --git a/drivers/media/platform/qcom/camss/camss.h b/drivers/media/platform/qcom/camss/camss.h
+>> index 93d691c8ac63b2a47dbb234856b627d8911a1851..8ba8a38113dfc15849fa333d05b2c3853f3a7714 100644
+>> --- a/drivers/media/platform/qcom/camss/camss.h
+>> +++ b/drivers/media/platform/qcom/camss/camss.h
+>> @@ -82,6 +82,7 @@ enum pm_domain {
+>>  enum camss_version {
+>>         CAMSS_660,
+>>         CAMSS_2290,
+>> +       CAMSS_2390,
+>>         CAMSS_6150,
+>>         CAMSS_6350,
+>>         CAMSS_7280,
+>>
+>> --
+>> 2.34.1
+>>
