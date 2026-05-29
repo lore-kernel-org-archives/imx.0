@@ -1,108 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E0937C0FB
-	for <imx@lists.linux.dev>; Fri, 29 May 2026 19:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFCD1AC45D;
+	Fri, 29 May 2026 22:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780081736; cv=none; b=cpWdsr+8NSZb2riUglR6qvqnryOJ1vF9G3TJbvGnG7ZfvPi76GcuWNSQae1d+uB0jPHCsP/4lfLM00I0xXZpkR889U8MxnrrOdESiRfDpgsfa4QuzWWw8vX/1D7szczB7p4gxxj8TTlWaSC9db+mk8qFfU2csskNBSINBX8r9x4=
+	t=1780095465; cv=none; b=ARQ7OYqR7DHTTlcRB3vSPO9NthqnahNQcIqt/lZt9//BDcKybtksOOex/J7SCu1ld2YlMpN7/HvgIlKTJ3l1Z3R/d/YaykVzqX3wYKFJ0BRYC2xm4+fwFyWxMaETHr7PmgqyLH1rwYIbzVL9sW9gpI4NXBZwGvsOgnq0pIYxtLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780081736; c=relaxed/simple;
-	bh=+omHxVlHyiuap8EGsMfnW4pvJmI/gptsgLuT/craBoQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aTace6KNejtwkZgEdBby6Ur+3bEXylqpGZtbNFu6phYqw212kh6jdfizTlJAIoTb2r5hZkwESWKsgKmj6eRlGN2fFSTi9af5C2/2CU2QOqVp/t+4/hhPnYfk3eNHCbM1LpSmK1RxyBdt69yBbRR5HYlpfQTQucHZ35ORu63eoCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CsJfZdXe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780095465; c=relaxed/simple;
+	bh=qHtiwpZ+hr3LQA/M8vOQeknAplJllI+oQpfScdkdaC0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l8A8Tim482YGAtWEuDqP3tNw786O6rqsfema22ylEX6P2WPF7LMnOqldnuBX67ujcLAINtVzZGqFIvUoH5CMPeu/FVo14S/4YrFu4PehQlUY0I27moJUZwKhZnBpgR5drDCwOiZBciTe9GUpBT0A7NTo3V21Ul6dB21t129Sh+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MTfZDkmd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CsJfZdXe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1680E1F00893;
-	Fri, 29 May 2026 19:08:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MTfZDkmd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774D91F00893;
+	Fri, 29 May 2026 22:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780081734;
-	bh=nNrt0HjxJbFJSm6qvm2ZrcbHApgrICvpzRk+xPduH/M=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CsJfZdXes1yFZNo9+pyftd2ml6A7LaquXFmy2b1gdL1iZQIrxtjtHKOcQa0nm1KP7
-	 zaLpiZEtmE8tfNZJUUbTG8FamhUmqEOicZCy4DLpUTVJgw4KfKYhfK08YzWbnPtvMf
-	 NY+8neC306iSCqm44s4VuJn8Hy0yciM2tBFn03wP1gjqxKBLym5OsyKyOWEXs2uByX
-	 xZ2Rd701lrg8kTgM6NkWR6xBCZyOaIP+85m7nALBrtKgQ50jU3dojbHe9m1DneEsKR
-	 TP8wm+6zmzUFzGrejR6U91ct1SnRG/xk8NLez3Z3OL4n4bPv8rdlyTO2sJ19O7/zQs
-	 JQpZwPHcfHMvA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5/5] remoteproc: imx_rproc: Invoke the callback directly
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260529-imx_mbox_rproc-v1-5-b8ffc36e11e5@linutronix.de>
-References: <20260529-imx_mbox_rproc-v1-5-b8ffc36e11e5@linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 19:08:53 +0000
-Message-Id: <20260529190854.1680E1F00893@smtp.kernel.org>
+	s=k20260515; t=1780095464;
+	bh=qHtiwpZ+hr3LQA/M8vOQeknAplJllI+oQpfScdkdaC0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=MTfZDkmdKifsvJxS5issxaPsSpVdp3atWttJuQnh042nP/CAAxDPs3AXYF5CXQZM7
+	 GXnWIfnLV4oloyJK2Y+f86OdMUOackqzoQL5ogAGfanY2/It1c65Bm7mqS3b6/uwjx
+	 kRA3bFPJ7vHRBg+VvL05VeR/pYNky/n4evRZFGH89b1yBFVvn7BFw71fJrSOyHzkPX
+	 sCaTe+eE6brH4k40UNjqzwCenhZyrO5McjZRh64s9WejW63BejWSjGvMy6TC6xTptb
+	 X6Q1LValvWGpKM5GI5N+lS+QR2MoSLeb6pn4UPvoyLelgFeYWKyEoC6eJX+icoQJat
+	 Mr6g6cZx3vWPQ==
+Message-ID: <73364628-5345-4c6d-ab18-7aee6c5b579d@kernel.org>
+Date: Fri, 29 May 2026 23:57:35 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/8] arm64: dts: qcom: shikra-cqm-evk-imx577-camera: Add
+ DT overlay
+To: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
+Cc: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+ Andi Shyti <andi.shyti@kernel.org>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-arm-msm@vger.kernel.org,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Suresh Vankadara <quic_svankada@quicinc.com>,
+ Vikram Sharma <vikram.sharma@oss.qualcomm.com>
+References: <20260526-shikra-camss-review-v1-0-645d2c8c75a7@qti.qualcomm.com>
+ <20260526-shikra-camss-review-v1-7-645d2c8c75a7@qti.qualcomm.com>
+ <178000731452.4557.8537369407478321842.b4-reply@b4>
+ <oiPZ6ZMRghpGaIEC7KqUDt7QZQT8w5gq0OMZzopCPkcqKOBXXVrP7-t6ZL4LY4ErAN_z1Z4tCdqn7xbxE5EE7w==@protonmail.internalid>
+ <bc2aecf3-fedd-4b15-8e69-33ca928831d6@oss.qualcomm.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <bod@kernel.org>
+In-Reply-To: <bc2aecf3-fedd-4b15-8e69-33ca928831d6@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On 29/05/2026 18:30, Nihal Kumar Gupta wrote:
+> Happy to rename to shikra-cqm-cqs-evk-imx577-camera if that makes the
+> shared scope clearer - open to suggestions.
 
-Pre-existing issues:
-- [High] Unprotected access to `rproc->notifyids` in `imx_rproc_rx_callback=
-` via `idr_for_each` without `rcu_read_lock()` can race with `idr_remove` d=
-uring `rproc-virtio` unbind, leading to Use-After-Free.
---
+That would sufficiently pick the nit for me.
 
-commit 54541ad2eee46e430bd395ed2d5711955d46ef22
-Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-
-remoteproc: imx_rproc: Invoke the callback directly
-
-The imx-mailbox driver moved callback invocation into the threaded IRQ
-handler, making it run in a preemptible context. This patch removes the
-workqueue and invokes the imx_rproc_notified_idr_cb() callback directly
-from the RX callback.
-
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rpro=
-c.c
-> index 0dd80e688b0ea..c97bc1c401655 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-
-[ ... ]
-
->  static void imx_rproc_rx_callback(struct mbox_client *cl, void *msg)
->  {
->  	struct rproc *rproc =3D dev_get_drvdata(cl->dev);
-> -	struct imx_rproc *priv =3D rproc->priv;
-> =20
-> -	queue_work(priv->workqueue, &priv->rproc_work);
-> +	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
-
-[Severity: High]
-This is a pre-existing issue, but does this idr_for_each() call require
-rcu_read_lock() protection?
-
-Looking at the call chain, it also performs an idr_find() in
-rproc_vq_interrupt() without rcu_read_lock():
-
-imx_rproc_rx_callback()
-  -> idr_for_each()
-     -> imx_rproc_notified_idr_cb()
-        -> rproc_vq_interrupt()
-           -> idr_find()
-
-If a user unbinds the rproc-virtio driver via sysfs concurrently,
-rproc_virtio_remove() calls rproc_free_vring() which executes idr_remove().
-
-Since idr_for_each() and idr_find() rely on RCU internally to protect radix
-tree nodes, could running this in a preemptible context without
-rcu_read_lock() race with idr_remove() and lead to a use-after-free of the
-IDR nodes or the rvring structure?
-
->  }
-> =20
->  static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block)
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529-imx_mbox_r=
-proc-v1-0-b8ffc36e11e5@linutronix.de?part=3D5
+---
+bod
