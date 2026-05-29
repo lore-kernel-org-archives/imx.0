@@ -1,156 +1,200 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012035.outbound.protection.outlook.com [52.101.43.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2DF35F162;
-	Fri, 29 May 2026 02:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780020690; cv=none; b=Sb56u3/IQo9gFZ9NwJWaC1y3aV1zT6xUmzElQV2Xsz5rV1zChfUNH4E/r8LmzQDrvhwOgY9SpxpxQeHVv6NGQpsuBSfs4CrKaaoBCHzqg9I60s9Tyaj/SlTLICzYuEZXRbezbbB/hQ9WvT6pv0EJLxNq9FchWO8YVPeGfiGUCu4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780020690; c=relaxed/simple;
-	bh=sxXAfmgBMqXaMKEaLOhGLpAx+qO1rkPgYcbAN0oKIUI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o+S7yY5n4I6wlBFVQAfZ6WvXgW2FOKWtcpKneMDo0MHzdAKWX0l24UY+SDiqy6RhHrMX/Ocvug3zbwJzmXO9zLbpnYhvi6Q0/BLjjhtc9L/ZoNSCujOpV5eEsi5q06/ucnGom3tQBgjuvDXC+85bRqPbivIExG93TNlO2Fznryc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U7iaHtSl; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A39243387
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 02:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780021016; cv=fail; b=cNUwaw35FiGOyT8PJCyMmQvcF5rTmvL3LGzEVZhkbF2FRfspR0rk9AcS7C1PXMzh+nkzQw1W4ROXZZyynBRmIh40yyxCByzjlEDId/I6fawpoL0+Wul3IETLOK5xnbMabpOWT2LQGH5ckppg4i/dCblnJDLIfWMQCabGMaD2kzk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780021016; c=relaxed/simple;
+	bh=OkeGWMgrg+lcKosEBcVwvjGtaycwJqXdD61AxGpF8K4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PAxBZPSKWrVYCwqwBPXGHD93pfllNtWrpno1AzNXubdDaO/TxA9jitp2jYAjTm32WCCtclyDBJ9at1jrvfmkWsSHaq70k4HI/pJ8NAyxg6tbkR4V/DhYYUQOSu3biREKXR68P5fWgBmEE8tVG9aregGG6ihjAO9v0aVTa1CVpdw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fuusZ4gK; arc=fail smtp.client-ip=52.101.43.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U7iaHtSl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780020688; x=1811556688;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sxXAfmgBMqXaMKEaLOhGLpAx+qO1rkPgYcbAN0oKIUI=;
-  b=U7iaHtSl48aWWJVJ+wM6gpxEqDDuD3eHZlOfLwZJqGi/hh0mADR5sVeB
-   uNeZ60NlD+woQAuW7/Es+lF/QVqLlI7RWHpycCCSd+Lz+5JYqoV1BxXmW
-   DHMbH2LlLMqg53oJFPmZDZz9bZXT5g1oiA+jftyjQqpZcwtyS9lSzxOXh
-   +S/3rXPw6o+brjCuiHchsqtS9V+47U62SNfiGZo9bm2Cs1yLrjySGB9Eq
-   qq5kXicX4tfi8egsxlNoeUvCuIyXrhxNA/DI0U/3zxsBnV7P3A9YIZZ3a
-   WxyUzwsQ5dqZ+9+pBKvFOZ/Au27PpCELcya9aLvRLZQfsLMx05JL/o61T
-   Q==;
-X-CSE-ConnectionGUID: PuQBRHQqRkG6WSPOHMPRKA==
-X-CSE-MsgGUID: /FRJQ3HTQTuHXY3mJPc+yA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="83446242"
-X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="83446242"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 19:11:27 -0700
-X-CSE-ConnectionGUID: ekacbo/uRuGAePuJ3vQxEA==
-X-CSE-MsgGUID: QDI2aWepSJCmQqeFLRL9Ig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="273038134"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 28 May 2026 19:11:25 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wSmh0-000000006gI-3jCt;
-	Fri, 29 May 2026 02:11:22 +0000
-Date: Fri, 29 May 2026 10:10:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>, linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	imx@lists.linux.dev, frank.li@nxp.com,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	sashiko-bot <sashiko-bot@kernel.org>
-Subject: Re: [PATCH -next] firmware: imx: se_ctrl: serialize command receiver
- registration
-Message-ID: <202605291047.TLJLq3sB-lkp@intel.com>
-References: <20260528091634.3331090-1-pankaj.gupta@nxp.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fuusZ4gK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ywirGU4oKPcXWDoer7ak6POKi8gpDVlbveVrPHypPgnqPzJI+pwbtjMyJRYYlky2SAVGQPUsC1aY0IYP6F12JQtyk9HRiSzS7qL9Xw80OddD/5gMOYYFReu2S4QsbwYIOZr/4zzbbzyMsfkjBQMloBt44GKFsvi/XTgBIP3oJ3lwex+CgG8yRv2i/CEppPr/S0mvsj+oY9MnpjhxyP0Q0ujhszBXdQD/tC/Mp+ypKRXCEYkCvo2DZ9JX983S5OQmm/gYjriEWxUzsI9+PO+FYwj79VVnc/YHMGNq4sipuEb/vgq58vJZnh0sLSImWd3PJ9vNd7qYlpSw8qTaDAUBZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aOyBFhSSNMbaIW+cOVRW1MwQk5POdPbeF/sApCr12aM=;
+ b=goRF5ccQI7Cxxq3bS9ZJ+N99MGZ+SjWuxydE45tWiVLW1SAD51PvM7SP7UcbVni5Y+YzZTc0EdLcbjQnDKHS6vDlXKBcQIYC2ooHocAWvXaKuRBlJWgnRobi0Y/XKIa04a9hSXDu++gySeLA8RlLxRix3X4JfLQSufz+5sEINzkq/pXXfyVxSvRAxb/9nbdfP1NQSJDala3aOZWcwqf0MScIpmKqivhWY+ZzO2/DXby1TGdct19Is8Z2D/GZBkOANvMvtDnSgRHNyYBlMVzsjvQzkwPctFC0te056icMJ/Dt/iCSDaqUq5+PuNfoMQWBl3HQVjXm0WVdlKllVUct5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aOyBFhSSNMbaIW+cOVRW1MwQk5POdPbeF/sApCr12aM=;
+ b=fuusZ4gKqNBFjATmZ674kgs7hPHEOElmb6vuW0OkGehwFbtkwjUav7OfoAyTZOLMVUrZ5Nxcd+U7yxSJuyaBZ39Dfp8etGt4PM3TDGn9tui0AgajqM0HVtbNNEA7tOKzULMCJ2jucwJ3Y7IIf0VScd0l8RGu62p+8a57RDDVuNk=
+Received: from CH2PR08CA0003.namprd08.prod.outlook.com (2603:10b6:610:5a::13)
+ by IA1PR12MB8286.namprd12.prod.outlook.com (2603:10b6:208:3f8::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Fri, 29 May
+ 2026 02:16:48 +0000
+Received: from CH3PEPF00000017.namprd21.prod.outlook.com
+ (2603:10b6:610:5a:cafe::2) by CH2PR08CA0003.outlook.office365.com
+ (2603:10b6:610:5a::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.13 via Frontend Transport; Fri, 29
+ May 2026 02:16:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CH3PEPF00000017.mail.protection.outlook.com (10.167.244.122) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.92.0 via Frontend Transport; Fri, 29 May 2026 02:16:48 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 28 May
+ 2026 21:16:48 -0500
+Received: from xsjblevinsk51.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Thu, 28 May 2026 21:16:47 -0500
+From: Ben Levinsky <ben.levinsky@amd.com>
+To: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>, <linux-remoteproc@vger.kernel.org>,
+	<ben.levinsky@amd.com>
+CC: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, "Magnus
+ Damm" <magnus.damm@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+	<alexandre.torgue@foss.st.com>, Arnaud Pouliquen
+	<arnaud.pouliquen@foss.st.com>, Daniel Baluta <daniel.baluta@nxp.com>,
+	"Tanmay Shah" <tanmay.shah@amd.com>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-renesas-soc@vger.kernel.org>,
+	<linux-stm32@st-md-mailman.stormreply.com>
+Subject: [PATCH v3 0/5] remoteproc: cleanup shared carveout and resource-table helpers
+Date: Thu, 28 May 2026 19:16:32 -0700
+Message-ID: <20260529021637.2077602-1-ben.levinsky@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260528091634.3331090-1-pankaj.gupta@nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000017:EE_|IA1PR12MB8286:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43601021-a797-416e-1074-08debd2856e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|7416014|1800799024|82310400026|18002099003|6133799003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	TAKx7kjDXKtJIKMGl74gJwpgKJRHrtdys74sqk3r578CaJuk2rPDmZt6H57L1kSE6JOwAYO5kbjm5Q/Oj65dxWf1cC2JPKPeH72leSSFtkxgn+50j93nvFpqmfLNqlO1VXIgNdlPRTXS06gP1no0WipQ23/aOxApS+Ka+lerVFc1SbIy4f+uWgudziq8JobLTEtPHegd6NCHsBnPiENs60Fh5O39vEHZb6MNFJnPCXbc99VLQWnNteK+/LkizrXH/8MGKlV3FE1QsmbpbUU+f/Ai/YMhQqNoVh2g4dVt7FFTTDH+6kb/MgXu5nPuCCSO6syRm/LiGlUFzBA2Ztst1WTuWEIdsFlfSzdrX+fazwy3056BYRO6mjKSYBYA1uy1gsF0mXKhxV7vhLQWtor+/H6zfQR1tofkPISwcUfjfIoh+lgxK3PAvpHFoPNrM6RJ+jjF+Z29AOyZe6KwWFz11n2SkiSQbWCkDBogJKPkquc3U6En3HJ3dutEDc8R7iwzYKHCCU72uMccW5FqQrNrIrNOR8sFeQSKnm0aLvqr62eCGR0Xm4qUr8W9sKgx/r50C9uKxtlk73gK7J3vfpP839PuZHRsWBFPV9rAKGP3Kuz3u6WuxVohFnHQg/G+yCF5l+yqnBna4jN3IoNSuA9I6TVimDQgTpwH4cZnWBbJNtLAwaHBrDesnfKOr9wit1rbfltcqYD5SM6YcAXeO/sCJ6YiqYdId8akUzH6gMnzmSY=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(1800799024)(82310400026)(18002099003)(6133799003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	YgpkeqJMyc6hQ8dpnH63lMlr7TKnED7DW5zkzWFTeoDD0HqlZL6ZCgyx6O11EVjuNRng8p6IMPRhl+LRL4oDW3iXTZymb+RBzxS0vl4Fww5ChVK+w4026Ez1XgloGchSsUqkaexSbtlegG87S/ro3KTEoQv+KUEVdou/3Zcd15Fsfyz8S+lUqpHlbTihPbYqC7RNDjCxTa87fjjza7fs7RffMZlae4j6CWQtjbdZ2vJZNfDCDjjis0S+R+TpsQqqOCUPVdFqvq48nlLQ1y8UGUUnumOQ75TvD6tZrXYuaVkjwBVZXuqhqT8e1NeVwAHbM3g89Zg5JIqahl4jrX8WJ0ZE+erwDqCKt+EpHXOqbAv6Dq20AWwRJNMhDhI/TY7PyeekyCI9hSYyEAYVBnyZwrphv+1Xv813vDfrVDY+D9aiLhEl0Lk/xvhkdhVpscBr
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 02:16:48.6749
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43601021-a797-416e-1074-08debd2856e1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF00000017.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8286
 
-Hi Pankaj,
+This series is a preparatory remoteproc cleanup split out from review of
+the AMD BRAM-based remoteproc series.
 
-kernel test robot noticed the following build warnings:
+During review, there was a request to move the duplicated plain
+ioremap_wc()/iounmap() carveout callbacks into common code and to
+factor the "missing resource table is OK" ELF parsing path into a
+common helper as well. There was also a request to send that cleanup as
+its own patchset first, with the AMD BRAM series respun afterwards on
+top once this cleanup is merged.
 
-[auto build test WARNING on next-20260527]
+This version keeps the same overall cleanup goals as v2, but reworks
+the optional resource-table pieces based on follow-up review:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/firmware-imx-se_ctrl-serialize-command-receiver-registration/20260528-172942
-base:   next-20260527
-patch link:    https://lore.kernel.org/r/20260528091634.3331090-1-pankaj.gupta%40nxp.com
-patch subject: [PATCH -next] firmware: imx: se_ctrl: serialize command receiver registration
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20260529/202605291047.TLJLq3sB-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605291047.TLJLq3sB-lkp@intel.com/reproduce)
+  - reshape the optional resource-table helper in patch 4 into the thin
+    parse_fw() wrapper form suggested on the thread
+  - switch the patch 5 clients over to that helper shape directly,
+    without post-helper rproc->table_ptr checks
+  - keep the driver-local parse_fw() wrappers and their existing log
+    messages and severity choices
+  - retain as much of the existing per-driver parse_fw() logic and code
+    placement as possible while moving the missing-table handling
+    through the shared helper
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605291047.TLJLq3sB-lkp@intel.com/
+This series now does that in five patches:
 
-All warnings (new ones prefixed by >>):
+  1. add common subsystem-private callbacks for the exact-match
+     wc-ioremap carveout case
+  2. switch the in-tree exact-match users over to those callbacks
+  3. mark carveouts mapped through the shared wc-ioremap helper as
+     iomem so the framework uses the proper I/O accessors
+  4. add a common helper for drivers that treat a missing ELF resource
+     table as optional while keeping per-driver logging decisions local
+  5. switch the matching in-tree drivers over to that helper while
+     keeping thin local parse_fw() wrappers
 
->> drivers/firmware/imx/se_ctrl.c:934:4: warning: label at end of compound statement is a C2x extension [-Wc2x-extensions]
-     934 |                         }
-         |                         ^
-   1 warning generated.
+For the carveout map/unmap cleanup, this series covers the exact-match
+users called out in review: xlnx_r5_remoteproc, rcar_rproc,
+st_remoteproc, stm32_rproc, imx_rproc, and imx_dsp_rproc. The zynqmp R5
+TCM mapping path is left alone because it also clears the mapped memory
+and is not an exact match.
 
+For the optional resource-table handling, this series converts
+xlnx_r5_remoteproc, rcar_rproc, stm32_rproc, imx_rproc, and
+imx_dsp_rproc. st_remoteproc is intentionally left unchanged because its
+parse_fw() callback also builds carveouts and is therefore not a direct
+match for the helper introduced here.
 
-vim +934 drivers/firmware/imx/se_ctrl.c
+Changes in v3:
+  - rework patch 4 so the optional resource-table helper matches the
+    thin-wrapper form suggested in review
+  - note that patch 4 still triggers a checkpatch --strict warning for
+    the flow-control macro form, but that implementation follows the
+    maintainer's review suggestion for the thin parse_fw() wrapper shape
+  - update patch 5 to use that helper shape directly in the client
+    parse_fw() callbacks
+  - drop the post-helper rproc->table_ptr checks from the converted
+    drivers
+  - keep the converted parse_fw() wrappers otherwise close to their
+    existing structure and placement
+  - test xlnx_r5_remoteproc on the latest tree with firmware images
+    both with and without an ELF resource table
 
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  905  
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  906  /* IOCTL entry point of a character device */
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  907  static long se_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  908  {
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  909  	struct se_if_device_ctx *dev_ctx = fp->private_data;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  910  	struct se_if_priv *priv = dev_ctx->priv;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  911  	void __user *uarg = (void __user *)arg;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  912  	long err;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  913  
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  914  	/* Prevent race during change of device context */
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  915  	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  916  		switch (cmd) {
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  917  		case SE_IOCTL_ENABLE_CMD_RCV:
-8aff20bcff52903 Pankaj Gupta 2026-05-28  918  			scoped_guard(mutex, &priv->priv_dev_ctx->fops_lock) {
-8aff20bcff52903 Pankaj Gupta 2026-05-28  919  				if (priv->cmd_receiver_clbk_hdl.dev_ctx) {
-8aff20bcff52903 Pankaj Gupta 2026-05-28  920  					err = -EBUSY;
-8aff20bcff52903 Pankaj Gupta 2026-05-28  921  					goto out_enable_cmd_rcv;
-8aff20bcff52903 Pankaj Gupta 2026-05-28  922  				}
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  923  				priv->cmd_receiver_clbk_hdl.rx_msg =
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  924  								kzalloc(MAX_NVM_MSG_LEN,
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  925  									GFP_KERNEL);
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  926  				if (!priv->cmd_receiver_clbk_hdl.rx_msg) {
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  927  					err = -ENOMEM;
-8aff20bcff52903 Pankaj Gupta 2026-05-28  928  					goto out_enable_cmd_rcv;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  929  				}
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  930  				priv->cmd_receiver_clbk_hdl.rx_msg_sz = MAX_NVM_MSG_LEN;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  931  				priv->cmd_receiver_clbk_hdl.dev_ctx = dev_ctx;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  932  				err = 0;
-8aff20bcff52903 Pankaj Gupta 2026-05-28  933  out_enable_cmd_rcv:
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22 @934  			}
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  935  			break;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  936  		case SE_IOCTL_GET_MU_INFO:
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  937  			err = se_ioctl_get_mu_info(dev_ctx, uarg);
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  938  			break;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  939  		case SE_IOCTL_SETUP_IOBUF:
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  940  			err = se_ioctl_setup_iobuf_handler(dev_ctx, uarg);
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  941  			break;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  942  		case SE_IOCTL_GET_SOC_INFO:
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  943  			err = se_ioctl_get_se_soc_info_handler(dev_ctx, uarg);
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  944  			break;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  945  		case SE_IOCTL_CMD_SEND_RCV_RSP:
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  946  			err = se_ioctl_cmd_snd_rcv_rsp_handler(dev_ctx, uarg);
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  947  			break;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  948  		default:
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  949  			err = -EINVAL;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  950  			dev_dbg(priv->dev, "%s: IOCTL %.8x not supported.",
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  951  				dev_ctx->devname, cmd);
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  952  		}
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  953  	}
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  954  
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  955  	return err;
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  956  }
-3ae9dcce8400f0a Pankaj Gupta 2026-01-22  957  
+Changes in v2:
+  - split the mem->is_iomem change out into a separate patch
+  - add a common error message on ioremap_wc() failure
+  - drop logging from the optional resource-table helper
+  - keep driver-local parse_fw() wrappers to preserve per-platform
+    missing-resource-table logging policy
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ben Levinsky (5):
+  remoteproc: add common wc-ioremap carveout callbacks
+  remoteproc: switch exact-match drivers to wc-ioremap callbacks
+  remoteproc: mark wc-ioremap carveouts as iomem
+  remoteproc: add helper for optional ELF resource tables
+  remoteproc: switch drivers to optional resource-table helper
+
+ drivers/remoteproc/imx_dsp_rproc.c       | 41 +++-----------
+ drivers/remoteproc/imx_rproc.c           | 40 ++------------
+ drivers/remoteproc/rcar_rproc.c          | 41 ++------------
+ drivers/remoteproc/remoteproc_internal.h | 38 +++++++++++++
+ drivers/remoteproc/st_remoteproc.c       | 31 +----------
+ drivers/remoteproc/stm32_rproc.c         | 39 ++-----------
+ drivers/remoteproc/xlnx_r5_remoteproc.c  | 70 +++++-------------------
+ 7 files changed, 73 insertions(+), 227 deletions(-)
+
+-- 
+2.34.1
