@@ -1,92 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3751B3C3442;
-	Fri, 29 May 2026 15:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DCD3F0A99;
+	Fri, 29 May 2026 16:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780069552; cv=none; b=DVwrsRIxggZKzkRQFcCqcxIlLgSX3DQ9E5gUqxpEJ/CKZQh6bXtZIsvrlkOJIKupDI0kXpbIuYPe/8JNtLwisfO06RribNVRW+EkYZD1kEZhTrw2bptlj2mrt4gSKIcg8wIP/u08imEi5GoZ6JY+JQrRQILlt1IjLuQMPrqzi9A=
+	t=1780070481; cv=none; b=qOkoN87qOC9DggQUtBMUb1YpkQJ8DEdFdeheCgnpOMAm1l2rnzNJNj28T5sRxwCmfroSvJJKEOFwCN8RZGblOz9uwBR/yrf63FTQ2BxA9Bpc8YyxJK8TlQMPdO3X6JJ9PjaL33ZS25c/JFFGjBi3btzq5YQxx4mJPekBWs6Irqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780069552; c=relaxed/simple;
-	bh=G2KF5voAhHsXsFwlvX9pJg2SGcr3a0Ny8bMXcZEE9zk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bL79SwWm+qWpzEBU8TLwHfYBZUl+3fjX2BtRi3ENfIbg8w7vN9iw4pgcLllW4PC7S6dN3t46N1rU9FUftNRufvAdBGbXZ+XctdteZX8fOlmojBAc/PB4i/UfyYfO+09Lk59lG9eWzpUL/Tkm7wChngWva7cz+fFj1M4HAKyWVdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AbOO1yPy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780070481; c=relaxed/simple;
+	bh=Vlvj9dptGi8Yd8FQGnQFcpe/MLXC7vtZfH62TXMBV5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Elprg5Rsu2jMgD1VzLsDNerVwKDWKzrmSSwHsm369yTiJ1y6hpR/C8hJqLv/CALQeVseFMpRSoqyH4BhxK0N21bMLR1deEC0JzQ/GCO5VLzoah+IwbOly7LVdusJtBfYzIB8vWDRmhMldrDOLvq6jD6Mqjbaad2dYOP7tFRYqnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2FQf+zoV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8UQeTzW4; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AbOO1yPy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D491F00893;
-	Fri, 29 May 2026 15:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780069550;
-	bh=eb8nb8fScTBwcXSgw+9Ix5UCDWfyVmuJGL2kWpyLZjY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AbOO1yPycW9O3NJSH2EN0ltj3+bAVSFepl38eCrMztR7HEPcDhMdHnk9RF3JMRt2Q
-	 CcptiCk7B9RnAMPrxYLsGVS7lQ2TnNjQieYhfu3EsGjBiqR8gNHkFifOZwgybVES9O
-	 WtlWUwP8cbvXqTkV3LTqBFOyeI1qQ4RSOQfqAY7txpWrWD5A4Z1FtpJkiaXzrN0sMV
-	 XWpJB4AbhiTi0bJzCFQVGn04HOuFFgMvfujIQEbRdweGWJh97JpBn0cR9Le+c8s296
-	 RKzAG/gnfEE/dKtM3ceHxIerCdOPdl1yr/sdLyRJCyfZTM4ldxmaZ5KCMGQPTTQ/DV
-	 H0Zj2qBkCT1Xg==
-Date: Fri, 29 May 2026 17:45:48 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, Ying Liu <victor.liu@nxp.com>
-Subject: Re: [PATCH v23 3/8] dt-bindings: phy: Add Freescale iMX8MQ DP and
- HDMI PHY
-Message-ID: <20260529-aquatic-industrious-lorikeet-b81aaf@quoll>
-References: <20260519-dcss-hdmi-upstreaming-v23-0-5615524a9c63@oss.nxp.com>
- <20260519-dcss-hdmi-upstreaming-v23-3-5615524a9c63@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2FQf+zoV";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8UQeTzW4"
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780070477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=T/oTAOOJ1Z4TFN7Yr5Hcs60Jolfhci9ej79a+pR3awY=;
+	b=2FQf+zoVYHyZMx55iz81hh2eO+Wn32lxoHRdPcg5lmlADigZh/T0t8QZCtaN733yXqdW32
+	5+5IoTjE91BPrOxXOf1Xo+q+XR/HX0fJrSnA/+ZiUeXqhu4C37L7LOBk/z2TRt+xg4N33L
+	TQP7R7aWHNUpghpH8odNPUVMleswH2OR6JmrG6+ZlvX05FSXc8KjHn1revDiyv/qSWWODz
+	T1rHASv3zd/3d8cNxzU9/EO5reIspIBiTxmzbUAK86395J8HaeOWAgyqQHlrgP1p76YZ47
+	xfSKIuZNqn2qymVuSgL3Cb2k48MO2MEg7NvTxWm5quNwB6hj43yVN0ZptM4Adg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780070477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=T/oTAOOJ1Z4TFN7Yr5Hcs60Jolfhci9ej79a+pR3awY=;
+	b=8UQeTzW48huPWiCb0oKS963hXt6P4PSvE33NB5++XlRKFXUgoNFz4k3u/B8uLtXYnKxwHj
+	8RtyUnWv1J8Av5CA==
+To: linux-rt-devel@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 0/5] mailbox: imx: Use threaded handler to avoid kworker in  imx's remoteproc
+Date: Fri, 29 May 2026 18:01:02 +0200
+Message-ID: <20260529-imx_mbox_rproc-v1-0-b8ffc36e11e5@linutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260519-dcss-hdmi-upstreaming-v23-3-5615524a9c63@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20260529-imx_mbox_rproc-7d512f5a6f78
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 19, 2026 at 02:42:26PM +0000, Laurentiu Palcu wrote:
-> From: Sandor Yu <Sandor.yu@nxp.com>
-> 
-> Add bindings for Freescale iMX8MQ DP and HDMI PHY.
-> 
-> Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> ---
->  .../bindings/phy/fsl,imx8mq-hdptx-phy.yaml         | 52 ++++++++++++++++++++++
->  1 file changed, 52 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-hdptx-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-hdptx-phy.yaml
-> new file mode 100644
-> index 0000000000000..b544c260aa073
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-hdptx-phy.yaml
-> @@ -0,0 +1,52 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/phy/fsl,imx8mq-hdptx-phy.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Cadence HDP-TX DP/HDMI PHY for Freescale i.MX8MQ SoC
-> +
-> +maintainers:
-> +  - Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> +
-> +description:
-> +  The Cadence HDP-TX DP/HDMI PHY is a child node of the MHDP8501 bridge,
-> +  sharing the same MMIO region as the parent bridge node.
-
-As commented in bridge bindings, I have doubts in such case it is a
-separate component.
-
-Best regards,
-Krzysztof
-
+The imx's remoteproc driver uses a kworker from its mailbox callback to=0D
+complete the request. The reason is that the imx mailbox driver invokes=0D
+the callback from its interrupt handler and the remoteproc callback (at=0D
+least the rpmsg-tty) requires a preemptible context.=0D
+=0D
+This works but is problematic in a PREEMPT_RT environment where the=0D
+latency of the invocation is important. By scheduling a kworker the=0D
+high task priority from the threaded handler is lost and the kworker=0D
+competes for CPU ressources with every SCHED_OTHER task in the system.=0D
+This can lead to long delays on a busy system with other RT threads=0D
+which are less important than the completion of this request.=0D
+=0D
+Looking over other mailbox driver, like the arm_mhu for instance, they=0D
+use a threaded interrupt handler to invoke the callback. This avoids the=0D
+kworker detour.=0D
+=0D
+The here suggested change utilises a threaded interrupt to invoke the=0D
+callback. The primary handler mask the interrupt source so that the=0D
+handler can run without getting interrupted by the interrupt again.=0D
+Doing so avoids marking the interrupt IRQF_ONESHOT so that that in a=0D
+shared-interrupt environment the other interrupt can still fire while=0D
+the first one is masked.=0D
+=0D
+This change was tested on a im93 board with rpmsg-tty driver.=0D
+=0D
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>=0D
+---=0D
+Sebastian Andrzej Siewior (5):=0D
+      mailbox: imx: Start splitting the IRQ handler in primary and threaded=
+ handler=0D
+      mailbox: imx: Move the RX part of the mailbox into the threaded handl=
+er=0D
+      mailbox: imx: Move the RXDB part of the mailbox into the threaded han=
+dler=0D
+      mailbox: imx: Don't force-thread the primary handler=0D
+      remoteproc: imx_rproc: Invoke the callback directly=0D
+=0D
+ drivers/mailbox/imx-mailbox.c  | 65 +++++++++++++++++++++++++++++++++-----=
+----=0D
+ drivers/remoteproc/imx_rproc.c | 33 +--------------------=0D
+ 2 files changed, 53 insertions(+), 45 deletions(-)=0D
+---=0D
+base-commit: 9e171fc1d7d7ab847a750c03571c87ac3c17bd84=0D
+change-id: 20260529-imx_mbox_rproc-7d512f5a6f78=0D
+=0D
+Best regards,=0D
+-- =0D
+Sebastian Andrzej Siewior <bigeasy@linutronix.de>=0D
+=0D
