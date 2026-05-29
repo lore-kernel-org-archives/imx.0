@@ -1,46 +1,46 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011044.outbound.protection.outlook.com [52.101.52.44])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012060.outbound.protection.outlook.com [40.93.195.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D563B12F585
-	for <imx@lists.linux.dev>; Fri, 29 May 2026 02:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0836F23A561
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 02:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.60
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780021025; cv=fail; b=Itq4TErA1G35KJa+CX3ic5t2K/XD770lhfqij3pdyTF1LnCCv8JTDeO8LeMct3qJO4qT7unKk7SgC9bY6dhq5/Y/YNaQxSccueKA3JV8cl0cTUN9G6CF341P6SNAXDM7johzeFu0+MxWQVokZwDLg57IwMBJrsiNlLxMQmV/li4=
+	t=1780021029; cv=fail; b=DeXAPQkDZ2Ox2q+/UqiFnsBBtqwnljtRDSOhOYb3U0ENctOLm0v006RgDSufTfKtdtu0ibcAaN3VcJESCwtdO7vV0ioitG9rO+L7xR+qAsFR65Fc7PDhobAVThojHfLZe2rqKxmeB1eKQclXkvfc8ysY7vbSSDbU31HzWjxoShE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780021025; c=relaxed/simple;
-	bh=hsDklYZpnEYlrhraSXKv00uTxCtlDp4VaL8a3CA7TI8=;
+	s=arc-20240116; t=1780021029; c=relaxed/simple;
+	bh=3BddJVi658rNH6YYFuue3Q4JtIUofy4CYbLS/R8Axf8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ba+gGAMdv0++l5xHsvpMwCqbOQtAjpBXiwv/a2r1SK42jw3hePti1qk6ysonQOkH9vIS7PLA7I7OPO0SML2u1+yCeI0NP43l8EiFtqE0R+spc64ZiH/QkOSe3AL2r9Vws9+oHz1Q9OacMUUoBpOAraF0zBw69h2Sd2OBW+GJMyA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4YrKUWHz; arc=fail smtp.client-ip=52.101.52.44
+	 MIME-Version:Content-Type; b=dOFQ/X6/NHBXtCvpOhVbsvJw/l9om8rWYfTA3o4MGTIak7THzTpJMReHAMv+Dy2IF6iHlBQ7ibXHCWgsy8F2ZePXFihvqf9Vx3HJrVrGIyObMH9u4IFG+UXYIihFYSs8ix3uDF+DGzkgksHBTQRgFTKXy4cYUr5LKVKtSrhQLa4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=D1Wfqtcl; arc=fail smtp.client-ip=40.93.195.60
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4YrKUWHz"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="D1Wfqtcl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oPa/Yt73kG2/ZKnYVS6X7cQVoPjPUIMBDAPfXj0CtoyESI9JW9WVu/TfUWvPK1btjvQmqJ9QbZAyfueyCZchzgVu0Y7tUEUA1qoI26BT2huTJKRV1+6/fSK62amAEV7r0IC4+Cyw8nisNkcfzd5ewWXbHeB0QrR493OsM0Up7KD/+La1REkPMrPUWlGaplh5l1kCwBQ45q34sRYNStL2pEnnBzZsJTzLmb4FQQxbem8Tg06+Dm2cTGQv7Y80B10BxNkWKIukFd5dMGAmjfkiutfddHWzCdvPrw880Jd1zx6KfSajAtThV7sZKW4tSOTalclnkD6lPagyQeBUQivNyQ==
+ b=XiXe9VTnZpdQOrwm7Ub9UfTululW81I+MfElcge1S/cMdVj0uwTirWIvqQaxjyOE8y8Ed415yXoQiC42IOsLwyns+WEb2fqAiYYOAC0O/mMSO45T4rrytPZmTI4YaArdjugB3DQFS1icg0oD4UbUBthYjyQzuSZqxsYOT8KM5HLEzG3Htbnf6eBa5fffhqcEaA3uAgFHT3GuH7sQ55i8Wq8nkEMmUMRiRe8qwLQ6TjQgujyWOAtHPwXnoVDbqVpYs0Rci/NqypPmBOOcWuFP/SPFjEQJ6VpVRr47p3eoiPBoJFe+Kvq7RMtLkCfcWy5hjinPKxWNmEfXWfuyrp1TVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2TLv4UTDq/8PZ81NKG6ACg0RJajFAepYr+Aph0das5I=;
- b=NDGVls9X4bPpIWEPSlwlq1AMHTj1Eqj2mPTqIbUi0o4c4JZ2qJJpw04KVwSG8qOoLrpbxPuDDy/Su0RnwwqfRSWNX6GfBQEWKncyyejgd+PlWumMBIpssnQ9SosKnx4p8T58ZzzNbqa2ZVGcwXFzYCYqVazuef04lWiSgDZ3/nDOIHHwE8iXvKgGjWFLvZN1lttD7nQHFKyzmPu04sRHzxLxHLKUB0KCt8LWd8Jmrlz3elxO/S3TSUy1HE1r1k9XZwS38KGv2PWuk6uwn/BdBnXWi2cm3pWjdbcXgDqVFiw50rvQ+fju5P2LNKjlFwcj24NihfhYLLK6oiBg0PXE0Q==
+ bh=N1Mismg1crM8CcnfL79MR42jPTSXv0lL5FbcaDD325A=;
+ b=IoFcvj7IZQxdquPkThiSy9cQcE+lbhr0XDv39vIl4iWFVBqAJFgzofLgiRqap9ZnZqi2SrRqRzb4A8MmUZnjNQ2gnCHtAzECLPhIybbGH7RVoQW/h6vJvexIERQqmzkuqd66woq4aLTCzzoxF3oPZ6dCiER8pcYFplJzgZZrnTVlrxZBTBpg7t3ctQtnSxVQpkVtCPNBhaJPuS3X5ahx5zSngoQ0ZwLTITQxJNbvMWmYxsMRYxy8OwZD7zoc7yD1tWxGh6DFUiKG3foks72dKFjqA95ajUQ2Unt/5TH3YY407ilEnt+DrJLJMTa3oomvaTGrP2xSFjbdLahCrX8yVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2TLv4UTDq/8PZ81NKG6ACg0RJajFAepYr+Aph0das5I=;
- b=4YrKUWHzJLBOGqvH7rcTBSqaHwfEFvePjLiu02fgAVvDaK/FdZ3uEQegkXyVWXVYogO06h93vAJbGqvc2aPa2824E+FjOz4+DwR7yLiLvPQtpU3ICX/GLMROVIYA0z/+3eGU6d8Ugu0JacjI85+DSrdv/lheQFkgIxZcakuVzIQ=
-Received: from DS2PEPF00004560.namprd21.prod.outlook.com
- (2603:10b6:f:fc00::50e) by DSSPR12MB999236.namprd12.prod.outlook.com
- (2603:10b6:8:374::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Fri, 29 May
- 2026 02:16:57 +0000
-Received: from CH3PEPF00000011.namprd21.prod.outlook.com
- (2603:10b6:61f:fc00::374) by DS2PEPF00004560.outlook.office365.com
- (2603:10b6:f:fc00::50e) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.5 via Frontend Transport; Fri, 29
- May 2026 02:16:57 +0000
+ bh=N1Mismg1crM8CcnfL79MR42jPTSXv0lL5FbcaDD325A=;
+ b=D1WfqtclqWe55cvuOWEQfyptxt9t3SNZsVF00DTUvm4qMKmlav2l2VUbH2GxHgO+1u3YuY+Svt9/hZWSduNXM8s5ocpZJM/4B55jE+n0QlNy6rn6uFFCG1vYDN/47zfaMf+KxdAt6KtqTylNa+Ga/q15MR7/SM+3Q3jqtPEFmgA=
+Received: from DS1PR03CA0013.namprd03.prod.outlook.com (2603:10b6:8:450::6) by
+ SA5PPF916D632A9.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.11; Fri, 29 May
+ 2026 02:17:01 +0000
+Received: from CH3PEPF00000015.namprd21.prod.outlook.com
+ (2603:10b6:8:450:cafe::64) by DS1PR03CA0013.outlook.office365.com
+ (2603:10b6:8:450::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.13 via Frontend Transport; Fri, 29
+ May 2026 02:17:01 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,16 +48,16 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- CH3PEPF00000011.mail.protection.outlook.com (10.167.244.116) with Microsoft
+ CH3PEPF00000015.mail.protection.outlook.com (10.167.244.120) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.0 via Frontend Transport; Fri, 29 May 2026 02:16:57 +0000
+ 15.21.92.0 via Frontend Transport; Fri, 29 May 2026 02:17:01 +0000
 Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 28 May
- 2026 21:16:57 -0500
+ 2026 21:17:01 -0500
 Received: from xsjblevinsk51.xilinx.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 28 May 2026 21:16:56 -0500
+ Transport; Thu, 28 May 2026 21:17:00 -0500
 From: Ben Levinsky <ben.levinsky@amd.com>
 To: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier
 	<mathieu.poirier@linaro.org>, <linux-remoteproc@vger.kernel.org>,
@@ -73,9 +73,9 @@ CC: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
 	<linux-renesas-soc@vger.kernel.org>,
 	<linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH v3 2/5] remoteproc: switch exact-match drivers to wc-ioremap callbacks
-Date: Thu, 28 May 2026 19:16:34 -0700
-Message-ID: <20260529021637.2077602-3-ben.levinsky@amd.com>
+Subject: [PATCH v3 4/5] remoteproc: add helper for optional ELF resource tables
+Date: Thu, 28 May 2026 19:16:36 -0700
+Message-ID: <20260529021637.2077602-5-ben.levinsky@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260529021637.2077602-1-ben.levinsky@amd.com>
 References: <20260529021637.2077602-1-ben.levinsky@amd.com>
@@ -89,385 +89,63 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000011:EE_|DSSPR12MB999236:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c7172c3-9af7-44e2-b1c5-08debd285c46
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000015:EE_|SA5PPF916D632A9:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb3937bf-7cc4-4b4a-2b84-08debd285e98
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|36860700016|7416014|82310400026|22082099003|18002099003|11063799006|6133799003|56012099006;
+	BCL:0;ARA:13230040|1800799024|376014|36860700016|82310400026|7416014|22082099003|18002099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	Ajs3ucBvGC8A3OUbFhLgsgJuZSUVCgElsStHzfx4W2ojEsSA1JqA1qQtJZPTWYfSuffNC5jemQDFM7qbSADUFPZc8LTISXJJTkQwNJo2BwpdOmuV8oKtdoSn1lbLTGJRaf0mfx+B70Gzc9qPpIrjQYQvhWEtQUS0mbR2toQBvdg2vqmG66P0dBcwNdrc0CSIIy5h9bT33+w2NBf+kWslhbMlHcWIGvG4UJbNY5bCQeoaNELeJ/NkyKu1rq3Cq4UI6zmffqreX7rSpI4KREOKK/8i/FS+Xk6P0yhzDaA250jWKMz/DHdddXsjMkPXxI6TI8K/W/TntjVyCoOd6s17VLLgwO1TAI68Edwf4K89Ga/guXnXn1d8vhLQYnF18l1HsAPPOCtfw7m8hagRZBwsoLHyq35xn9P5EAcnglSh1edTpdrFp9c7+dMAwEc2UTGHkVOrO+jNG5rB0rRs3QksO5eFlkoCBwvuqB98WuWI6rlEQVZiboNnvyBm/qFMmhjsJD7CEgjfxENadbfmmIL/OtsolVDDOJG7cPL2Kn/Ew8yr5RCwXc9icfH25WAcH1Tv0pviR/DyH/kRl+Rg+xfow/E/XSdyKnfa8i9Fy57GBMDfmfrydZTDwS6JMMNFhqyndtAHQ9DtPdu5HtOSYwTRRXQQgPkYl6YhRM1EpOURWowT5lWjVuXLjHIVKwnO/rOj2iC060fau9T4COpU9OuQUL2ya0Scb2GGqXy1uLYg2i4=
+	HoVIPfxwRGW4JP2ZUOwbCZDom3ZDpe20NLMCe0l1ctYePSmgZAF702yw2A8e7hETiZVp+iwE3EHduHsQ3fkj3CZpanJ3GnFcNzfpKzGGzCi4UZW7GbB/m2vBXGYzWbzD/1gHoLnJyYQj/EDLSKV0MA2p67cotRqr4L9C+qB5eYcrEZ18UGjO/NGsQXEQU524LruuUyBUEq7zYd13q1FGvuJfUJP3pOSpjGehqDYLH3cSeKRVheLukpKSN0Mxh2i1sJHPJ5U96oIciOm+H65X3BtJHjm4PvXvJ0jsIS+eIz5zPPiE6g/PKf43PEzgTvLuzXuS5WYEjx9bxF+1cBwu/KWfMcklDfRH7sZsyg3tOnQjmSqgph9fEtFY6liaD9Ru5yoqktGXnbRiLcqrHqnKcpbJX4sGEOiy5AILuazOcCNAIMSY4OIG8/+fQdKa5TSfyll6EIn8YDMNuoZn2Eui7Qy+QC2X5LCJBV6KE5SvugRbBsVxLeCtPdaKRCpvWNA2ptmY8vj28BTtapbeKMqqclozHWOVIrDkzthPLPm4yx6NcbvG4slyQNFLL/D8hpi/+X42vNDS/dmdMofk2781zAsIScOi4BKkgTe7Xh2VIcY8uTgJ6z9PZDRvk/5F+w8eCb0cejO30Pi66MGyf47cVw9a50DkkeLncWuECHVqVyoSum9QT6QVDD+i2EH+oPPi+NPMrMy68ZllK3omNpW5LrWrHGZt3+yRcM2WellOqVc=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700016)(7416014)(82310400026)(22082099003)(18002099003)(11063799006)(6133799003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700016)(82310400026)(7416014)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	wUY7Ca5cZEI3CUYcL15Y/gnrWO7BRYsyP3GYMAas//54j+qYGZuPN7vWaWKyMV5hLHAR8Uqa7ql/b0Bjo7MnXzI5cGdzno/pTq4KX3buevhpDquFCEZrNCoGk8qVD7jJqDuNPQ8nezKHcKAGGfk6Xs6R7pUIouf9Vok2mBYvOFF1CBVSwiL+BST7uzDsS/RoZ0pLzwdFdp0JbgkquKinfy+mPD2z51xHwJljon91eQapHIUUSIIiSGGy+IXn1Dg/gZahmxF6SlYzdPVr3UF3IF2jEedegja01r6B53J/KmK8RKOdGWKuCdo+YcZohFVwrg5LAjh5QsHrkyS6t4pvUcCu5bYpQota/eGtdJTC5MK0zuzjsugBvTtOf6tb/8g8xB97VWEDQfpcndh0zlnH2IdN/n0HXbhufeSzwFfeGuV3tptKGRYaKuF7BXpYaEC9
+	CTjJkvmuDUmFXLNOcyRyYxgUhsm6Z817pmwXCrT7n5xLy0iREE3nNfBT+wZTb104ZYMsQu9iuYGFfdn0wVpKRNt3basUp3W72m4s7/8ed5vfsZIQel8FTo8GP3KQ9n67hObQZe57c1sFn0cSm7vZjF8kl0Tl/wy4RpbzjU4qjZNpHJSMz7G+HRAGt8VJ/4vNz6E/thfvHUOewSkC9fPdvTidEsawW0i5xZiFFlP/IMXBVH1EajHTYlyP4FMAqM7sGmrt17D5sOA0/su1PLKdHgPqEIqaqOAz/ECyGjppXI9qHordPyZ7kzAZwmQW7HwWep8zsXxNtrJGTM2qmBl+v0R65EQZ5b2OsOPPSZutl5oXSuTH5xxiGW0u7WoLC+plKgvXTbocYw5UHG4e2wAwWy5dSZwiOvT91Gr/gcP7HT64gkiA/sacpcsjTBmUR0kO
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 02:16:57.7106
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 02:17:01.6233
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c7172c3-9af7-44e2-b1c5-08debd285c46
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb3937bf-7cc4-4b4a-2b84-08debd285e98
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000011.namprd21.prod.outlook.com
+	CH3PEPF00000015.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSSPR12MB999236
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF916D632A9
 
-Replace the exact-match carveout map and unmap callbacks in the
-existing remoteproc drivers with the common wc-ioremap helpers. This
-covers xlnx_r5_remoteproc, rcar_rproc, st_remoteproc, stm32_rproc,
-imx_rproc, and imx_dsp_rproc.
-
-Leave the zynqmp R5 TCM callbacks alone because they also clear the
-mapped memory and are therefore not exact matches for the shared
-helpers.
+Add a helper macro around rproc_elf_load_rsc_table() for thin parse_fw()
+wrappers that treat a missing ELF resource table as optional while
+keeping per-driver logging decisions local to the caller of
+rproc_elf_load_rsc_table_optional().
 
 Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be> # renesas
 ---
- drivers/remoteproc/imx_dsp_rproc.c      | 36 ++++---------------
- drivers/remoteproc/imx_rproc.c          | 32 ++---------------
- drivers/remoteproc/rcar_rproc.c         | 33 ++---------------
- drivers/remoteproc/st_remoteproc.c      | 31 ++--------------
- drivers/remoteproc/stm32_rproc.c        | 33 ++---------------
- drivers/remoteproc/xlnx_r5_remoteproc.c | 47 +++----------------------
- 6 files changed, 18 insertions(+), 194 deletions(-)
+ drivers/remoteproc/remoteproc_internal.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index 008741af9f11..2d9f14fbef1d 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -644,32 +644,6 @@ static void imx_dsp_rproc_free_mbox(struct imx_dsp_rproc *priv)
- 	mbox_free_channel(priv->rxdb_ch);
+diff --git a/drivers/remoteproc/remoteproc_internal.h b/drivers/remoteproc/remoteproc_internal.h
+index 9afda697271d..02c00475b010 100644
+--- a/drivers/remoteproc/remoteproc_internal.h
++++ b/drivers/remoteproc/remoteproc_internal.h
+@@ -149,6 +149,17 @@ static inline int rproc_mem_entry_iounmap(struct rproc *rproc,
+ 	return 0;
  }
  
--static int imx_dsp_rproc_mem_alloc(struct rproc *rproc,
--				   struct rproc_mem_entry *mem)
--{
--	struct device *dev = rproc->dev.parent;
--	void *va;
--
--	va = ioremap_wc(mem->dma, mem->len);
--	if (!va) {
--		dev_err(dev, "Unable to map memory region: %pa+%zx\n",
--			&mem->dma, mem->len);
--		return -ENOMEM;
--	}
--
--	mem->va = va;
--
--	return 0;
--}
--
--static int imx_dsp_rproc_mem_release(struct rproc *rproc,
--				     struct rproc_mem_entry *mem)
--{
--	iounmap(mem->va);
--
--	return 0;
--}
--
- /**
-  * imx_dsp_rproc_add_carveout() - request mailbox channels
-  * @priv: private data pointer
-@@ -700,8 +674,10 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
- 
- 		/* Register memory region */
- 		mem = rproc_mem_entry_init(dev, NULL, (dma_addr_t)att->sa,
--					   att->size, da, imx_dsp_rproc_mem_alloc,
--					   imx_dsp_rproc_mem_release, "dsp_mem");
-+					   att->size, da,
-+					   rproc_mem_entry_ioremap_wc,
-+					   rproc_mem_entry_iounmap,
-+					   "dsp_mem");
- 
- 		if (mem)
- 			rproc_coredump_add_segment(rproc, da, att->size);
-@@ -732,8 +708,8 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
- 		/* Register memory region */
- 		mem = rproc_mem_entry_init(dev, NULL, (dma_addr_t)res.start,
- 					   resource_size(&res), da,
--					    imx_dsp_rproc_mem_alloc,
--					    imx_dsp_rproc_mem_release,
-+					   rproc_mem_entry_ioremap_wc,
-+					   rproc_mem_entry_iounmap,
- 					   "%.*s", strchrnul(res.name, '@') - res.name, res.name);
- 		if (!mem)
- 			return -ENOMEM;
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 7f54322244ac..6249815b54d8 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -600,35 +600,6 @@ static void *imx_rproc_da_to_va(struct rproc *rproc, u64 da, size_t len, bool *i
- 	return va;
- }
- 
--static int imx_rproc_mem_alloc(struct rproc *rproc,
--			       struct rproc_mem_entry *mem)
--{
--	struct device *dev = rproc->dev.parent;
--	void *va;
--
--	dev_dbg(dev, "map memory: %p+%zx\n", &mem->dma, mem->len);
--	va = ioremap_wc(mem->dma, mem->len);
--	if (IS_ERR_OR_NULL(va)) {
--		dev_err(dev, "Unable to map memory region: %p+%zx\n",
--			&mem->dma, mem->len);
--		return -ENOMEM;
--	}
--
--	/* Update memory entry va */
--	mem->va = va;
--
--	return 0;
--}
--
--static int imx_rproc_mem_release(struct rproc *rproc,
--				 struct rproc_mem_entry *mem)
--{
--	dev_dbg(rproc->dev.parent, "unmap memory: %pa\n", &mem->dma);
--	iounmap(mem->va);
--
--	return 0;
--}
--
- static int imx_rproc_sm_lmm_prepare(struct rproc *rproc)
++#define rproc_elf_load_rsc_table_optional(rproc, fw, dev_func, fmt, ...)	\
++	({									\
++		int ret = rproc_elf_load_rsc_table(rproc, fw);			\
++		if (ret == -EINVAL) {						\
++			dev_func(&rproc->dev, fmt, ##__VA_ARGS__);		\
++			return 0;						\
++		} else {							\
++			return ret;						\
++		}								\
++	})
++
+ static inline int rproc_prepare_device(struct rproc *rproc)
  {
- 	struct imx_rproc *priv = rproc->priv;
-@@ -692,7 +663,8 @@ static int imx_rproc_prepare(struct rproc *rproc)
- 		/* Register memory region */
- 		mem = rproc_mem_entry_init(priv->dev, NULL, (dma_addr_t)res.start,
- 					   resource_size(&res), da,
--					   imx_rproc_mem_alloc, imx_rproc_mem_release,
-+					   rproc_mem_entry_ioremap_wc,
-+					   rproc_mem_entry_iounmap,
- 					   "%.*s", strchrnul(res.name, '@') - res.name,
- 					   res.name);
- 		if (!mem)
-diff --git a/drivers/remoteproc/rcar_rproc.c b/drivers/remoteproc/rcar_rproc.c
-index 3c25625f966d..e3121fadd292 100644
---- a/drivers/remoteproc/rcar_rproc.c
-+++ b/drivers/remoteproc/rcar_rproc.c
-@@ -19,35 +19,6 @@ struct rcar_rproc {
- 	struct reset_control *rst;
- };
- 
--static int rcar_rproc_mem_alloc(struct rproc *rproc,
--				 struct rproc_mem_entry *mem)
--{
--	struct device *dev = &rproc->dev;
--	void *va;
--
--	dev_dbg(dev, "map memory: %pa+%zx\n", &mem->dma, mem->len);
--	va = ioremap_wc(mem->dma, mem->len);
--	if (!va) {
--		dev_err(dev, "Unable to map memory region: %pa+%zx\n",
--			&mem->dma, mem->len);
--		return -ENOMEM;
--	}
--
--	/* Update memory entry va */
--	mem->va = va;
--
--	return 0;
--}
--
--static int rcar_rproc_mem_release(struct rproc *rproc,
--				   struct rproc_mem_entry *mem)
--{
--	dev_dbg(&rproc->dev, "unmap memory: %pa\n", &mem->dma);
--	iounmap(mem->va);
--
--	return 0;
--}
--
- static int rcar_rproc_prepare(struct rproc *rproc)
- {
- 	struct device *dev = rproc->dev.parent;
-@@ -73,8 +44,8 @@ static int rcar_rproc_prepare(struct rproc *rproc)
- 		mem = rproc_mem_entry_init(dev, NULL,
- 					   res.start,
- 					   resource_size(&res), da,
--					   rcar_rproc_mem_alloc,
--					   rcar_rproc_mem_release,
-+					   rproc_mem_entry_ioremap_wc,
-+					   rproc_mem_entry_iounmap,
- 					   res.name);
- 
- 		if (!mem)
-diff --git a/drivers/remoteproc/st_remoteproc.c b/drivers/remoteproc/st_remoteproc.c
-index a07edf7217d2..486180cdccb4 100644
---- a/drivers/remoteproc/st_remoteproc.c
-+++ b/drivers/remoteproc/st_remoteproc.c
-@@ -88,33 +88,6 @@ static void st_rproc_kick(struct rproc *rproc, int vqid)
- 		dev_err(dev, "failed to send message via mbox: %d\n", ret);
- }
- 
--static int st_rproc_mem_alloc(struct rproc *rproc,
--			      struct rproc_mem_entry *mem)
--{
--	struct device *dev = rproc->dev.parent;
--	void *va;
--
--	va = ioremap_wc(mem->dma, mem->len);
--	if (!va) {
--		dev_err(dev, "Unable to map memory region: %pa+%zx\n",
--			&mem->dma, mem->len);
--		return -ENOMEM;
--	}
--
--	/* Update memory entry va */
--	mem->va = va;
--
--	return 0;
--}
--
--static int st_rproc_mem_release(struct rproc *rproc,
--				struct rproc_mem_entry *mem)
--{
--	iounmap(mem->va);
--
--	return 0;
--}
--
- static int st_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
- {
- 	struct device *dev = rproc->dev.parent;
-@@ -138,8 +111,8 @@ static int st_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
- 			mem = rproc_mem_entry_init(dev, NULL,
- 						   (dma_addr_t)res.start,
- 						   resource_size(&res), res.start,
--						   st_rproc_mem_alloc,
--						   st_rproc_mem_release,
-+						   rproc_mem_entry_ioremap_wc,
-+						   rproc_mem_entry_iounmap,
- 						   "%.*s",
- 						   strchrnul(res.name, '@') - res.name,
- 						   res.name);
-diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
-index 632614013dc6..a6e36a11627d 100644
---- a/drivers/remoteproc/stm32_rproc.c
-+++ b/drivers/remoteproc/stm32_rproc.c
-@@ -113,35 +113,6 @@ static int stm32_rproc_pa_to_da(struct rproc *rproc, phys_addr_t pa, u64 *da)
- 	return -EINVAL;
- }
- 
--static int stm32_rproc_mem_alloc(struct rproc *rproc,
--				 struct rproc_mem_entry *mem)
--{
--	struct device *dev = rproc->dev.parent;
--	void *va;
--
--	dev_dbg(dev, "map memory: %pad+%zx\n", &mem->dma, mem->len);
--	va = (__force void *)ioremap_wc(mem->dma, mem->len);
--	if (IS_ERR_OR_NULL(va)) {
--		dev_err(dev, "Unable to map memory region: %pad+0x%zx\n",
--			&mem->dma, mem->len);
--		return -ENOMEM;
--	}
--
--	/* Update memory entry va */
--	mem->va = va;
--
--	return 0;
--}
--
--static int stm32_rproc_mem_release(struct rproc *rproc,
--				   struct rproc_mem_entry *mem)
--{
--	dev_dbg(rproc->dev.parent, "unmap memory: %pa\n", &mem->dma);
--	iounmap((__force __iomem void *)mem->va);
--
--	return 0;
--}
--
- static int stm32_rproc_of_memory_translations(struct platform_device *pdev,
- 					      struct stm32_rproc *ddata)
- {
-@@ -237,8 +208,8 @@ static int stm32_rproc_prepare(struct rproc *rproc)
- 			mem = rproc_mem_entry_init(dev, NULL,
- 						   (dma_addr_t)res.start,
- 						   resource_size(&res), da,
--						   stm32_rproc_mem_alloc,
--						   stm32_rproc_mem_release,
-+						   rproc_mem_entry_ioremap_wc,
-+						   rproc_mem_entry_iounmap,
- 						   "%.*s", strchrnul(res.name, '@') - res.name,
- 						   res.name);
- 			if (mem)
-diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
-index 45a62cb98072..e5d1903c9636 100644
---- a/drivers/remoteproc/xlnx_r5_remoteproc.c
-+++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
-@@ -447,45 +447,6 @@ static int zynqmp_r5_rproc_stop(struct rproc *rproc)
- 	return ret;
- }
- 
--/*
-- * zynqmp_r5_mem_region_map()
-- * @rproc: single R5 core's corresponding rproc instance
-- * @mem: mem descriptor to map reserved memory-regions
-- *
-- * Callback to map va for memory-region's carveout.
-- *
-- * return 0 on success, otherwise non-zero value on failure
-- */
--static int zynqmp_r5_mem_region_map(struct rproc *rproc,
--				    struct rproc_mem_entry *mem)
--{
--	void __iomem *va;
--
--	va = ioremap_wc(mem->dma, mem->len);
--	if (IS_ERR_OR_NULL(va))
--		return -ENOMEM;
--
--	mem->va = (void *)va;
--
--	return 0;
--}
--
--/*
-- * zynqmp_r5_rproc_mem_unmap
-- * @rproc: single R5 core's corresponding rproc instance
-- * @mem: mem entry to unmap
-- *
-- * Unmap memory-region carveout
-- *
-- * return: always returns 0
-- */
--static int zynqmp_r5_mem_region_unmap(struct rproc *rproc,
--				      struct rproc_mem_entry *mem)
--{
--	iounmap((void __iomem *)mem->va);
--	return 0;
--}
--
- /*
-  * add_mem_regions_carveout()
-  * @rproc: single R5 core's corresponding rproc instance
-@@ -522,8 +483,8 @@ static int add_mem_regions_carveout(struct rproc *rproc)
- 			rproc_mem = rproc_mem_entry_init(&rproc->dev, NULL,
- 							 (dma_addr_t)res.start,
- 							 resource_size(&res), res.start,
--							 zynqmp_r5_mem_region_map,
--							 zynqmp_r5_mem_region_unmap,
-+							 rproc_mem_entry_ioremap_wc,
-+							 rproc_mem_entry_iounmap,
- 							 "%.*s",
- 							 strchrnul(res.name, '@') - res.name,
- 							 res.name);
-@@ -560,8 +521,8 @@ static int add_sram_carveouts(struct rproc *rproc)
- 		rproc_mem = rproc_mem_entry_init(&rproc->dev, NULL,
- 						 dma_addr,
- 						 len, da,
--						 zynqmp_r5_mem_region_map,
--						 zynqmp_r5_mem_region_unmap,
-+						 rproc_mem_entry_ioremap_wc,
-+						 rproc_mem_entry_iounmap,
- 						 sram->sram_res.name);
- 		if (!rproc_mem) {
- 			dev_err(&rproc->dev, "failed to add sram %s da=0x%x, size=0x%lx",
+ 	if (rproc->ops->prepare)
 -- 
 2.34.1
 
