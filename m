@@ -1,169 +1,151 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FF63F1AB2;
-	Fri, 29 May 2026 16:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081D23EFFD5
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 16:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780070486; cv=none; b=QFfzba3KSaVDI/7drPKFxja0iLsjExuj5tyW5HZMDzImkUIY9L7t/8FlpnWfgeYWOSVQJfXI8Nij6SKF38m1ZkRDjTGdoFznt6k7vgevrTdWwbZM/Zz985ne1O96S4U6rnv9ev/NUV3ioWNgauH9y/rvK77EAIKTDABKzulCvN4=
+	t=1780073025; cv=none; b=BsGGQktdq0vgfAsNiVS8Jdr+lLdLQXSldwy7Zd9AchmiY0g2tNE7+HGXTfn0vD8XnLX8RS3alNygoNhC0+osDLULcmA8X4D+VnJo79Zw7HrBR5Rarquy1PT8YzH38L/CPK87tPD6gRSbeJZ1eI1UDykwCP9buOY8Up4Jrx2Lplk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780070486; c=relaxed/simple;
-	bh=rB2UKiyDcM7IWJbPPVp1cw1OH36OaEEat8ZM5+jzFDo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fp6I47hQXaN65sHC32j9YwRwkji0DdEglJb7/bajo8k6Iagl8VrrJAKCm3kjnOvFhIB8+FRbbHs2BWpiIFTvlHQQG+oYqZEJ81ULEDsAWhg1ZL449NAF6gMFHKzN2zM+w8aWxqrkU8zICEgPJ9mMNo+DGEQyIb7eAmqWK32aGzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1/s9wtGk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pNUXs75V; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1780073025; c=relaxed/simple;
+	bh=HzLvWoRGOrrI3xJO6ww1Ocsvw00ASjiwxtwXGztD0F8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=W2njU2P0oISkAqbG+txWdOQ/4DoTm5B1/Jz2QnjveXNpE7RA2IJvuQmezPViF/XReR7FpDpFiYbzuSvzieajwQf4scSbjMzweMh9Qw+urcLvh1fI0E2nR4DSuth88rXnv/CIRwSSNRupNs3nTbNsQedNyISp4muFI72QdWEviDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nCaJ7DlC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1/s9wtGk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pNUXs75V"
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1780070483;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rg4CWBKqcg/43kRp7XELQX8SwIZj03OaAVdBvFZ3LCA=;
-	b=1/s9wtGkbbP63S+WX+KFqW5cjUuKHv+3qrwe1NUAAMt8dbiEEP2rquBjL+G59foO/CENDH
-	RtrzCvjfyJEeh14LnWZBq6sp4iK7EjoQra/7+yOGD+TQkXNPIt99MLtYvBDTUgYZGsyRCr
-	EoqQMJdncjyEFfFyYMeea7CAs2Ou04uvDlf412SmBSevQn3/3QsMXKkvndMWC3+/NRriJU
-	KM1VkThzc19zdD7AN38vTuCpJCEkUKjmSRJYn+1Vjl7fk6+TQpxBmv7DUJZuM+SXnifVdT
-	bW+EhEGekoXQ7yERN/zj6DzxIoxNUK8Wzg9Um1oAIHAHm7o43XhyinMaHQnN3g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1780070483;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rg4CWBKqcg/43kRp7XELQX8SwIZj03OaAVdBvFZ3LCA=;
-	b=pNUXs75VMd5ZP3cQ3aEmB+wxuXvG8H5KjVDj6d+sXt0NqsaPRHMeOYkY90OSoQjjeDfTae
-	dDK6IzF9n1E58HCQ==
-To: linux-rt-devel@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 5/5] remoteproc: imx_rproc: Invoke the callback directly
-Date: Fri, 29 May 2026 18:01:07 +0200
-Message-ID: <20260529-imx_mbox_rproc-v1-5-b8ffc36e11e5@linutronix.de>
-In-Reply-To: <20260529-imx_mbox_rproc-v1-0-b8ffc36e11e5@linutronix.de>
-References: <20260529-imx_mbox_rproc-v1-0-b8ffc36e11e5@linutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nCaJ7DlC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3081F0089A;
+	Fri, 29 May 2026 16:43:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780073023;
+	bh=ZgyuT9mL8AlV5f7EcI4WIjIklFJCFRVPcjGtfdEKSHA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nCaJ7DlCVgnTEpMkmHf7ohwpQ3e+t1K2SvmQOeN8fxgciHvgAf72I78ycjQBDrURs
+	 kRrSOvYXHy6WFx9c/kwloqM+5EYmvQ83dYmyMM8Y9CJdJM+PT+IvN7nZ5k/FB1Z3t6
+	 JUmUzMhmJWwzymRk984u9FPES69vlHWZV6wFVAbE9OAHxMIctLeRccSIWl/uepiS0J
+	 809TZ9ml7cG4r77iypAnb8BODJJ6R6d7tydpmW8XNpnoXmErxiicFw8m13lyxsEJDa
+	 ynezZGJDDNywGxdHyEKW0QcMUKS2ACbNwpILDnnhUjvNege/Zpx1ldZYi7Y9jja3N1
+	 Z/egc7+4lUzjQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/5] mailbox: imx: Start splitting the IRQ handler in
+ primary and threaded handler
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260529-imx_mbox_rproc-v1-1-b8ffc36e11e5@linutronix.de>
+References: <20260529-imx_mbox_rproc-v1-1-b8ffc36e11e5@linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 29 May 2026 16:43:42 +0000
+Message-Id: <20260529164343.6C3081F0089A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-The imx-mailbox driver moved the callback invocation into the threaded
-IRQ handler. This means the callback is invoked in preemptible context
-and there is no need to schedule the kworker for the
-imx_rproc_notified_idr_cb() invocation.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-This was tested with the rpmsg-tty driver on imx93.
+New issues:
+- [Medium] The commit message claims the primary handler unmasks the interr=
+upt, but the code explicitly masks it.
 
-Remove the workqueue handling and invoke the imx_rproc_notified_idr_cb()
-callback directly.
+Pre-existing issues:
+- [High] Race condition in teardown leaves the hardware interrupt enabled a=
+fter the IRQ handler is unregistered, leading to an interrupt storm.
+--
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- drivers/remoteproc/imx_rproc.c | 33 +--------------------------------
- 1 file changed, 1 insertion(+), 32 deletions(-)
+commit 07a7a4d7c8c22553b2eceda7f1a65f477dbaef15
+Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 0dd80e688b0ea..c97bc1c401655 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -24,7 +24,6 @@
- #include <linux/regmap.h>
- #include <linux/remoteproc.h>
- #include <linux/scmi_imx_protocol.h>
--#include <linux/workqueue.h>
-=20
- #include "imx_rproc.h"
- #include "remoteproc_internal.h"
-@@ -115,8 +114,6 @@ struct imx_rproc {
- 	struct mbox_client		cl;
- 	struct mbox_chan		*tx_ch;
- 	struct mbox_chan		*rx_ch;
--	struct work_struct		rproc_work;
--	struct workqueue_struct		*workqueue;
- 	void __iomem			*rsc_table;
- 	struct imx_sc_ipc		*ipc_handle;
- 	struct notifier_block		rproc_nb;
-@@ -835,21 +832,11 @@ static int imx_rproc_notified_idr_cb(int id, void *pt=
-r, void *data)
- 	return 0;
- }
-=20
--static void imx_rproc_vq_work(struct work_struct *work)
--{
--	struct imx_rproc *priv =3D container_of(work, struct imx_rproc,
--					      rproc_work);
--	struct rproc *rproc =3D priv->rproc;
--
--	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
--}
--
- static void imx_rproc_rx_callback(struct mbox_client *cl, void *msg)
- {
- 	struct rproc *rproc =3D dev_get_drvdata(cl->dev);
--	struct imx_rproc *priv =3D rproc->priv;
-=20
--	queue_work(priv->workqueue, &priv->rproc_work);
-+	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
- }
-=20
- static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block)
-@@ -1214,13 +1201,6 @@ static int imx_rproc_sys_off_handler(struct sys_off_=
-data *data)
- 	return NOTIFY_DONE;
- }
-=20
--static void imx_rproc_destroy_workqueue(void *data)
--{
--	struct workqueue_struct *workqueue =3D data;
--
--	destroy_workqueue(workqueue);
--}
--
- static int imx_rproc_probe(struct platform_device *pdev)
- {
- 	struct device *dev =3D &pdev->dev;
-@@ -1249,17 +1229,6 @@ static int imx_rproc_probe(struct platform_device *p=
-dev)
- 		priv->ops =3D dcfg->ops;
-=20
- 	dev_set_drvdata(dev, rproc);
--	priv->workqueue =3D create_workqueue(dev_name(dev));
--	if (!priv->workqueue) {
--		dev_err(dev, "cannot create workqueue\n");
--		return -ENOMEM;
--	}
--
--	ret =3D devm_add_action_or_reset(dev, imx_rproc_destroy_workqueue, priv->=
-workqueue);
--	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add devm destroy workqueue act=
-ion\n");
--
--	INIT_WORK(&priv->rproc_work, imx_rproc_vq_work);
-=20
- 	ret =3D imx_rproc_xtr_mbox_init(rproc, true);
- 	if (ret)
+mailbox: imx: Start splitting the IRQ handler in primary and threaded handl=
+er
+
+This commit splits the i.MX mailbox interrupt handling into a primary
+and a threaded handler. The primary handler acknowledges the interrupt
+and wakes the threaded handler to invoke the actual callback in
+preemptible context, starting with the TX path.
+
+> Split the mailbox irq handling into a primary handler (imx_mu_isr()) and
+> a threaded handler (imx_mu_isr_th()). The primary handler unmasks the
+> interrupt so the threaded handler can run without raising the interrupt
+> again. The threaded handler can invoke the actuall callback in
+> preemtible context.
+
+[Severity: Medium]
+Is this commit message description accurate regarding unmasking?
+
+Looking at imx_mu_isr(), it calls imx_mu_xcr_rmw() passing the interrupt
+enable bit as the clr parameter:
+
+imx_mu_xcr_rmw(priv, IMX_MU_TCR, 0, IMX_MU_xCR_TIEn(priv->dcfg->type, cp->i=
+dx));
+
+Since this clears the enable bit, doesn't it actually mask the interrupt
+rather than unmask it? The code implementation seems structurally correct
+to prevent continuous firing until the threaded handler can process the
+completion, but the commit message appears reversed.
+
+> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+> index 246a9a9e39520..2809965677bd7 100644
+> --- a/drivers/mailbox/imx-mailbox.c
+> +++ b/drivers/mailbox/imx-mailbox.c
+[ ... ]
+> @@ -508,11 +509,34 @@ static void imx_mu_txdb_work(struct work_struct *t)
+>  	mbox_chan_txdone(cp->chan, 0);
+>  }
+> =20
+> +static irqreturn_t imx_mu_isr_th(int irq, void *p)
+> +{
+> +	struct mbox_chan *chan =3D p;
+> +	struct imx_mu_priv *priv =3D to_imx_mu_priv(chan->mbox);
+> +	struct imx_mu_con_priv *cp =3D chan->con_priv;
+> +
+> +	if (!cp->pending)
+> +		return IRQ_NONE;
+> +
+> +	switch (cp->type) {
+> +	case IMX_MU_TYPE_TX:
+> +		cp->pending =3D 0;
+> +		mbox_chan_txdone(chan, 0);
+
+[Severity: High]
+This is a pre-existing issue, but can this lead to an interrupt storm
+during channel teardown?
+
+When a client frees a mailbox channel, mbox_free_channel() first calls
+the driver's shutdown() callback before calling mbox_clean_and_put_channel()
+which aborts queued messages.
+
+If imx_mu_shutdown() calls free_irq(), it synchronizes with the pending
+threaded handler. The threaded handler then runs to completion while
+shutdown() is blocked, calling mbox_chan_txdone():
+
+imx_mu_isr_th()
+  mbox_chan_txdone()
+    tx_tick()
+      msg_submit()
+        imx_mu_send_data()
+
+Because the queues haven't been aborted yet, the core will immediately
+submit the next queued message, and imx_mu_send_data() will re-enable
+the hardware interrupt.
+
+After the threaded handler finishes, free_irq() completes and unregisters
+the IRQ action. Since the hardware interrupt was just re-enabled, won't
+the hardware assert the interrupt again, resulting in an unhandled
+interrupt storm that permanently disables the shared IRQ line?
+
+> +		return IRQ_HANDLED;
+> +
+> +	default:
+> +		dev_warn_ratelimited(priv->dev, "Unhandled channel type %d\n",
+> +				     cp->type);
+> +		return IRQ_NONE;
+> +	}
+> +}
 
 --=20
-2.53.0
-
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529-imx_mbox_r=
+proc-v1-0-b8ffc36e11e5@linutronix.de?part=3D1
