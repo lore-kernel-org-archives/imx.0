@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527D822423A
-	for <imx@lists.linux.dev>; Fri, 29 May 2026 02:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DBA367B75
+	for <imx@lists.linux.dev>; Fri, 29 May 2026 03:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780023067; cv=none; b=s1/oTZYYW7m92mhegfNjNhSCrTZ27382U4/8XyD2RsF+lxGSXMo9q3u/QW1O14CfnhuihNQxQCkCngFO4LZgRxNA7mr29rguG2c1AIMgbXjacF0RcNoTh7rmzBkEsfgykvUCYAg5yyHWaf34sA4dQOrr8h/TQlrg19qx6a8npsY=
+	t=1780025670; cv=none; b=la0CPZQ8t6suYzbME2/xShhZMRgFNEzFDcnjk1FQnyhdizeUCNFHijLnZrmezQSdxJK0YuUNMfng59ATpBW2029kqy4dNtM43iaqeejFMO1nRWYRl+RLdLOMvM3Yr00tuU66FC4x9Mb3MeNRG6GqO9w2BdJnQd675xOtFHR5NdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780023067; c=relaxed/simple;
-	bh=SgNRsXrDL1ms7O1U1CAbLUUt9a/w+x6GicifI95jRAM=;
+	s=arc-20240116; t=1780025670; c=relaxed/simple;
+	bh=keWsHdqzM2+ygqYiT0nPeGHTsKw/GtMswMZj2kNItrM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=sm0V8u4rZCfpQTKTW3/FbjhJh8KnDa2hy3/+Q1Cpr81TGmaZQkxOnmdSNVQQ3ofoGv2JslzosJU0g5DcvyqkCOyTMTjc8Cq21qrgssyXql1bUASsp/NrfGgT7ApBJ8r9M171CxS8y4zyU6c9yXs8IeuiHKmhxJD1GkssPJLCnOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8bjeofW; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WuRU6gQKRFl8j/dOck9cCKVvL4ooHIpHfUiaFJTtnwhsTbG65mtQ/TaK0ty29Cjez3B7fk+mTB1smr781mFJzFnvdZO+RVooQtN5a6c813P6bvnj04Ce8uqudWCvqPW6Wsq1+p/52iJ96eA4pGPdB3pAK9fru8H8sVhwFOQKsKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrDDChKX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8bjeofW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B6D1F000E9;
-	Fri, 29 May 2026 02:51:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrDDChKX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051701F000E9;
+	Fri, 29 May 2026 03:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780023065;
-	bh=UhEmoB9ciFTWWYarxm6W6SZ25RU1b7vAEVhWaJSldBA=;
+	s=k20260515; t=1780025669;
+	bh=oLgZBwcP+CRkSf9l06mMFhPfLKm+KJA/yG0ErIhwQz4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=m8bjeofWiTNedG8G/30ZsRWBMHSOeVhWX0+xspIjx1uEjcOUptMg0YMFroC8mnksN
-	 0cfcMhvUeyMIOxTR+ILp84buRbecJNVRWMNxIu4gAMusqCuVS7HzFyw4ygfvARTlAZ
-	 ewV3k4P1fl7WCXiZDxRrIOBrvHA9HIe5pxTqw3ODYyEDSPde90ZejOjAQ5w5y9ySA1
-	 vl7Oi/waWZRXy2kp9QEU90+HCCvCeUQUlqXj+9pUmpoaWhP51vAnYpOdzc92PWCjqV
-	 cLScFzaENr8ngu68QAcODCOgQ9dZeL66PVn4y1JrRoV6iRk0x/Guf7HhSdceuctAxR
-	 9TirdjKTjqYow==
+	b=BrDDChKXi2Y9BZ9lGxDVakm1poKf80QVPvNKEjYPHzwLMvpL61WtS19Ny7Cgb4C1R
+	 zjIGKeF+cSh7AloHUdkTR0rSskchI8ERnnT2gt3HHhUgfQirgO8W+JsOZn31RVxHJN
+	 jPkUpXJobCCQYnjAA1vneHNJ1l8WFrGDawatDXSNMD3JMiFcF6FZoLTldCYTyEQto9
+	 SekTp16+W9jsuWctOzmNAjZMgVIdNj52QfL1NBp/uy7JP8HTn1sWtNYLwJciAdxclL
+	 faDUHdsmH0osxy+V7UDRUKPHBChCfdcBWTFSpb+T+hTgXNQULegYGom3nWycV4xUvN
+	 kJRSqiLoB8FOw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/5] remoteproc: add common wc-ioremap carveout
- callbacks
+Subject: Re: [PATCH v3 2/5] remoteproc: switch exact-match drivers to
+ wc-ioremap callbacks
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ben Levinsky" <ben.levinsky@amd.com>
-Cc: Frank.Li@kernel.org, wsa+renesas@sang-engineering.com, imx@lists.linux.dev
-In-Reply-To: <20260529021637.2077602-2-ben.levinsky@amd.com>
-References: <20260529021637.2077602-2-ben.levinsky@amd.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com
+In-Reply-To: <20260529021637.2077602-3-ben.levinsky@amd.com>
+References: <20260529021637.2077602-3-ben.levinsky@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 02:51:04 +0000
-Message-Id: <20260529025105.B4B6D1F000E9@smtp.kernel.org>
+Date: Fri, 29 May 2026 03:34:28 +0000
+Message-Id: <20260529033429.051701F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,62 +46,65 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] The error message in `rproc_mem_entry_ioremap_wc` uses the `%pa`=
- format specifier for a `dma_addr_t` pointer instead of the correct `%pad` =
-specifier.
+- [Medium] The error logging in the `rproc_mem_entry_ioremap_wc` helper use=
+s the `%pa` format specifier for a `dma_addr_t` pointer instead of `%pad`.
 --
 
-commit 49a6ae6c09ebb61591d4b795ceaf406223e63c34
+commit 06feb3b32004ed7bd1d29e99430abd615d6b4449
 Author: Ben Levinsky <ben.levinsky@amd.com>
 
-remoteproc: add common wc-ioremap carveout callbacks
+remoteproc: switch exact-match drivers to wc-ioremap callbacks
 
-This commit adds common subsystem-private helpers to avoid open-coding
-carveout mapping callbacks in various remoteproc drivers. The change
-centralizes the ioremap_wc and iounmap operations along with their
-error logging.
+Replace the exact-match carveout map and unmap callbacks in the
+existing remoteproc drivers with the common wc-ioremap helpers. This
+covers xlnx_r5_remoteproc, rcar_rproc, st_remoteproc, stm32_rproc,
+imx_rproc, and imx_dsp_rproc.
 
-> diff --git a/drivers/remoteproc/remoteproc_internal.h b/drivers/remotepro=
-c/remoteproc_internal.h
-> --- a/drivers/remoteproc/remoteproc_internal.h
-> +++ b/drivers/remoteproc/remoteproc_internal.h
+Leave the zynqmp R5 TCM callbacks alone because they also clear the
+mapped memory and are therefore not exact matches for the shared
+helpers.
 
+> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_=
+rproc.c
+> index 632614013dc65..a6e36a11627d7 100644
+> --- a/drivers/remoteproc/stm32_rproc.c
+> +++ b/drivers/remoteproc/stm32_rproc.c
 [ ... ]
-
-> @@ -122,6 +123,31 @@ rproc_find_carveout_by_name(struct rproc *rproc, con=
-st char *name, ...);
->  void rproc_add_rvdev(struct rproc *rproc, struct rproc_vdev *rvdev);
->  void rproc_remove_rvdev(struct rproc_vdev *rvdev);
-> =20
-> +static inline int rproc_mem_entry_ioremap_wc(struct rproc *rproc,
-> +					     struct rproc_mem_entry *mem)
-> +{
-> +	void __iomem *va;
-> +
-> +	va =3D ioremap_wc(mem->dma, mem->len);
-> +	if (!va) {
-> +		dev_err(&rproc->dev, "Unable to map memory region: %pa+%zx\n",
-> +			&mem->dma, mem->len);
+> @@ -237,8 +208,8 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+>  			mem =3D rproc_mem_entry_init(dev, NULL,
+>  						   (dma_addr_t)res.start,
+>  						   resource_size(&res), da,
+> -						   stm32_rproc_mem_alloc,
+> -						   stm32_rproc_mem_release,
+> +						   rproc_mem_entry_ioremap_wc,
 
 [Severity: Medium]
-Does this format specifier match the variable type?
+Does replacing the stm32 callback with the common helper regress its error
+logging?
 
-The %pa specifier expects a phys_addr_t pointer, but &mem->dma is a
-dma_addr_t pointer. If phys_addr_t and dma_addr_t have different sizes
-(for example, 64-bit DMA and 32-bit physical addresses on a 32-bit system),
-vsprintf could read the wrong number of bytes and potentially print
-unrelated data in the error log.
+The original stm32_rproc_mem_alloc() function correctly used %pad for
+mem->dma:
 
-Should this use %pad instead to properly format the dma_addr_t pointer?
+    dev_err(dev, "Unable to map memory region: %pad+0x%zx\n",
+            &mem->dma, mem->len);
 
-> +		return -ENOMEM;
-> +	}
-> +
-> +	mem->va =3D (__force void *)va;
-> +
-> +	return 0;
-> +}
+However, the new rproc_mem_entry_ioremap_wc() helper uses %pa:
+
+    dev_err(&rproc->dev, "Unable to map memory region: %pa+%zx\n",
+            &mem->dma, mem->len);
+
+Since mem->dma is a dma_addr_t, and %pa expects a phys_addr_t *, could this
+result in reading the wrong number of bytes on platforms where
+sizeof(dma_addr_t) !=3D sizeof(phys_addr_t)?
+
+This could combine the dma and adjacent len fields, printing a garbage
+address in the log.
+
+> +						   rproc_mem_entry_iounmap,
+>  						   "%.*s", strchrnul(res.name, '@') - res.name,
+>  						   res.name);
+>  			if (mem)
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529021637.2077=
-602-1-ben.levinsky@amd.com?part=3D1
+602-1-ben.levinsky@amd.com?part=3D2
