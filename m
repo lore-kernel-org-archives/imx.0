@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A1224677F
-	for <imx@lists.linux.dev>; Sat, 30 May 2026 00:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D4B2D23A4;
+	Sat, 30 May 2026 00:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780101871; cv=none; b=Z3L4ns53Hxn6Ov7CBT/jWUjyuGKlF+tKt08jP9TRQ+j6vUt04zBYYdgGTrvyu2ZtQHcsjtBZAER/0nvtL+Kq8nKVN4OKBdzsaCH1RGuSVcshM/R95WaCT1rWfGXFmW33W1aBAHLqsHJOh/kltNT3D+bZ3KlY0ztc+9vSXAEDPbc=
+	t=1780101941; cv=none; b=Eq7009F2MudOviOYmpq2b5gRX9pQXaAnuNR7w6ttyaKQ5DpP9fdUtk0qj24Fo/dStn40sQ0VUlkk/JWAPUy8/XVUD/VF8KMjSQBO4Bd7to7//O/c1yq9ruKKpSq8PtCe5UW0vp+ahMYVR3RKHYSw7v+IEAhlal8jN+rYeZbr5fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780101871; c=relaxed/simple;
-	bh=zR1v6QuXlj3epnf4VImxGA2elYwYqjhD5DIfrYwvf00=;
+	s=arc-20240116; t=1780101941; c=relaxed/simple;
+	bh=7uhldFHFzREefcbWdP8tQpejikAvSzRiJQgAJisoXzA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=b4lBRTG5bYz6nvgJ+0NHvfMamTpJE7izV1BQFiRyQ7QtcXx3+KoUmKd2Gs0wXB82ifClhD416w4/Lyb5mtG+gop5BNulq9zxHQmzEzs/SG1t2tDhTp0MHZfh0WP8kP9oVTnwVyTGMvkS82IRers60//IIqxnFXF8+kMDLBzB6PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VU5C/VWE; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Cb8wwatTpUKxolerxV7pzTy68Sp4yzwc23JMpyBjRZGZ3jMhUTnjBFRDruLx2S5ZwN6Pu4nwL1uMYKSqqNj8+L8iu/Bog+h0wHQJzpQFom8M0+J3LFPU0MTHSLG0nYOUSqCOFdCEGob52b8KbIOP2YZVAl0sm3tBhh9ZPyLNCbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbxAYTR4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VU5C/VWE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E891F0089A;
-	Sat, 30 May 2026 00:44:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbxAYTR4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AE91F00898;
+	Sat, 30 May 2026 00:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780101870;
-	bh=e1IL43y6kDXOfxSy1PMwUrP8XaDj9guK+C+sndyMD3A=;
+	s=k20260515; t=1780101940;
+	bh=YvPCd6HJysQWh5b7lxsR3Bs1W+EfVdzbRc1N+z03ofY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VU5C/VWEFYQ97vDTUMp8saGOsk78azs+8JtKcGGEltGb9BcpWuXaB07CtrqNvlnFX
-	 t+Pl3sWxDKgOlTMGSfFbvhZMhf4foe0ysEWh+D74jfxSlxEdUnHur5nk9XYgfJw33g
-	 5SfQUmz3uha7169p/x52lhR5IJbGZWZ9e8SwpnSSVMuAw7FXAW4dcsey0griwUxZxW
-	 /uNWp1DmwgJugWcrUip0LUtSlVIoRPbqJiHa4RE7YhuRh+vGWolamY9D8GU6BGXw3k
-	 8fFWrmL5YtEYgsD44CQji1UwHyfv4VRE3v7kECYJgelmWRW/i2uN3Zyj6OwZepr5U3
-	 LuxjQsa2BiUvA==
+	b=HbxAYTR4AJYKdV1y4GV/AOqkzCbjETMn2cKgnapyweqQB9xCppXx121OznEoLAaUP
+	 8k67eLfzayHHz0FSFSBR6QVCrTF+IiS6q+L/OVfail0qPx1BEMEiq/rk7uf4nUPRYf
+	 tiVLDrf/DKE2FFr03MPZPKEo7DY256hmfXUipYzdszfxAG+YsjfSP00dxhW39aGWgL
+	 InE2uv6pN/jtNrqSZPZwxvuKtqt1W7Al6tOm64py+Fm2wEQcbDWMFOZdEfhdQ0Bhg9
+	 xDtzdRzyCFBX7o7K14w8oeSuLdurXzw3/S57SijqAhYwwm3kipb3L7r8EQtxctw9xM
+	 i0oWc9TR56bGg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 net 5/9] net: enetc: fix race condition in VF MAC
- address configuration
+Subject: Re: [PATCH 01/23] mfd: tps6586x: fix OF node refcount
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Wei Fang" <wei.fang@nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260520064421.91569-6-wei.fang@nxp.com>
-References: <20260520064421.91569-6-wei.fang@nxp.com>
+To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, conor+dt@kernel.org, robh@kernel.org
+In-Reply-To: <20260521-pdev-fwnode-ref-v1-1-88c324a1b8d2@oss.qualcomm.com>
+References: <20260521-pdev-fwnode-ref-v1-1-88c324a1b8d2@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 30 May 2026 00:44:29 +0000
-Message-Id: <20260530004430.35E891F0089A@smtp.kernel.org>
+Date: Sat, 30 May 2026 00:45:39 +0000
+Message-Id: <20260530004539.C4AE91F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,74 +47,56 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Incorrect MAC address programming on Big-Endian architectures due =
-to the use of __raw_writel and __raw_writew.
+- [High] The IRQ domain and descriptors allocated in `tps6586x_irq_init()` =
+are never freed, leading to a memory leak and potential use-after-free.
 --
 
-commit 5639b35fec15cd95ac4b3347ba872a265e9e8d97
-Author: Wei Fang <wei.fang@nxp.com>
+commit e8eb8e919be10c86b0019b03f67b4c7e8f91a6b2
+Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-net: enetc: fix race condition in VF MAC address configuration
+mfd: tps6586x: fix OF node refcount
 
-This commit introduces a per-VF mutex to serialize access to vf_state and
-hardware MAC register updates. This prevents a race condition between the
-VF message handler and administrative VF MAC configuration from the host.
+This commit fixes an OF node reference count issue for sub-devices
+created with the split platform_device_alloc() and platform_device_add()
+approach. It adds a missing of_node_get() to prevent a premature
+of_node_put() during device release.
 
-Link: https://sashiko.dev/#/patchset/20260511080805.2052495-1-wei.fang%40nx=
-p.com
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_pf.c
-> index 09c6420408923..8e11a023d516b 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> @@ -252,8 +252,12 @@ static int enetc_pf_set_vf_mac(struct net_device *nd=
-ev, int vf, u8 *mac)
->  		return -EADDRNOTAVAIL;
+> diff --git a/drivers/mfd/tps6586x.c b/drivers/mfd/tps6586x.c
+> index 8d5fe2b60bfa5..f5f8054466033 100644
+> --- a/drivers/mfd/tps6586x.c
+> +++ b/drivers/mfd/tps6586x.c
+> @@ -397,7 +397,7 @@ static int tps6586x_add_subdevs(struct tps6586x *tps6=
+586x,
 > =20
->  	vf_state =3D &pf->vf_state[vf];
-> +
-> +	mutex_lock(&vf_state->lock);
->  	vf_state->flags |=3D ENETC_VF_FLAG_PF_SET_MAC;
->  	enetc_pf_set_primary_mac_addr(&priv->si->hw, vf + 1, mac);
+>  		pdev->dev.parent =3D tps6586x->dev;
+>  		pdev->dev.platform_data =3D subdev->platform_data;
+> -		pdev->dev.of_node =3D subdev->of_node;
+> +		pdev->dev.of_node =3D of_node_get(subdev->of_node);
+> =20
+>  		ret =3D platform_device_add(pdev);
+>  		if (ret) {
 
 [Severity: High]
-This is a pre-existing issue, but does calling this function cause an
-incorrect MAC address to be programmed on big-endian architectures?
+This isn't a bug introduced by this patch, but while reviewing this file I
+noticed the IRQ domain and descriptors allocated in tps6586x_irq_init() are
+never freed.
 
-Looking at the implementation of enetc_pf_set_primary_mac_addr():
+Does this driver leak the IRQ domain and descriptors on driver unbind
+(tps6586x_i2c_remove()) or probe error paths?
 
-static void enetc_pf_set_primary_mac_addr(struct enetc_hw *hw, int si,
-                                          const u8 *addr)
-{
-        u32 upper =3D get_unaligned_le32(addr);
-        u16 lower =3D get_unaligned_le16(addr + 4);
+tps6586x_irq_init() allocates descriptors using irq_alloc_descs() and creat=
+es
+an IRQ domain via irq_domain_create_simple(). The driver lacks matching cal=
+ls
+to irq_domain_remove() and irq_free_descs(), and these allocations are not
+managed by devm_ variants.
 
-        __raw_writel(upper, hw->port + ENETC_PSIPMAR0(si));
-        __raw_writew(lower, hw->port + ENETC_PSIPMAR1(si));
-}
-
-The function parses the address using get_unaligned_le32() and
-get_unaligned_le16(), which convert little-endian bytes to native CPU
-byte order. It then writes these values using __raw_writel() and
-__raw_writew().
-
-Since the raw I/O accessors do not perform CPU-to-device endianness
-byte-swapping, the CPU-endian values are written as-is to the device.
-On big-endian architectures, would this cause the bytes to be reversed
-from the hardware's perspective and corrupt the MAC address?
-
-Could the driver use the standard writel() and writew() accessors, or
-its own enetc_port_wr() wrapper, to ensure proper CPU-to-LE conversion?
-
-> +	mutex_unlock(&vf_state->lock);
-> +
->  	return 0;
->  }
-> =20
-
-[ ... ]
+Since tps6586x is allocated via devm_kzalloc(), it is automatically freed
+when the device unbinds or probe fails. If the leaked irq_domain remains
+linked in the global irq_domain_list with its host_data pointing to the
+freed tps6586x structure, can a subsequent traversal of the IRQ domains
+(e.g., via /sys/kernel/debug/irq/domains) cause a use-after-free?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260520064421.9156=
-9-1-wei.fang@nxp.com?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521-pdev-fwnod=
+e-ref-v1-0-88c324a1b8d2@oss.qualcomm.com?part=3D1
