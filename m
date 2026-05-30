@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7AE46B5
-	for <imx@lists.linux.dev>; Sat, 30 May 2026 00:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BF51C69D
+	for <imx@lists.linux.dev>; Sat, 30 May 2026 00:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780101990; cv=none; b=FBM05XtAwyot3/o/9eSLkKQsWPcvBpX0n8csMCD4JZkTCXrLA7yYj+AR465bg6gKpm8WYYomiVY4wiQBcXaolCX8YW4qVchu+sjX26sV0hGycwGvqGLCRWA+85T3EFhPAxw7J5J0FiBItSCtmvLYF+9CJlpiIZHacBCu2mDaTxc=
+	t=1780101991; cv=none; b=tb9KJRfvUU62unOwyVo3ozBPmQ+itQAZC+vIHsP6NZhit1zIX+7yj0Byc5lIpEOjUj3ZEu/Zker/BXirBwM9p8Mhsu/x5P69asAE4E5a6VizFz2r2PoXXc7PRFruPZwkhAwjI2uOrF4Vm6PWqzEuJdcFnc+MYFj8AdPJhk/laNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780101990; c=relaxed/simple;
-	bh=VNVtg5yKytvR8AfdeN3cepfVIlC/D2+G5SCD8BeT4l8=;
+	s=arc-20240116; t=1780101991; c=relaxed/simple;
+	bh=eB4+AUq+4KAvKXsavvJWwzWnKagQfxl8UdqmLPVNUmU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ShQLD4EGJb+iX7nodyE6AZKlytwB0r71+T7JAs/SP5H6nbCvsvG7tB3Moi4shSUCtefSCjpj1zpyFGQQ8C+iOwPMf2MO1WR68Nkl9huUFbpSDfr2iRtfRQNZ+kd+ojAy9P0SkggViz6eXThsKLKUBRQ/3klFhmXXzQv6yCk9Bic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JabXlTcw; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=LzcDDJ8l3ewO0Iy+l8sntnwTelae7PJTwKnfrABt5t9Mf5kViRBv9YQq0W+dcTpnGTlZ6N69C7uh4rpMIYBGrvfQsT3pRx1E8poX5oa+t8Ob3c4lnGTOGijGovkergBdaaTVReIBOp1R/tuyYixyOC5FFaxmUSxBmhp4NKdWs9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eexcLynI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JabXlTcw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1B11F00893;
-	Sat, 30 May 2026 00:46:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eexcLynI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253131F00898;
+	Sat, 30 May 2026 00:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780101989;
-	bh=4oNMEddPtgqKWRbUyOI76UKKskgUkrljhHwvFYwdGcQ=;
+	s=k20260515; t=1780101990;
+	bh=kBunI5/rOvF9/QQ34pSRVl1uyZBLTs/K6K5709hmwxc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JabXlTcwnJnXMPmck/HFNujBNhBjDoVdZjw6pSaCMd3k5KX95e/G2LYwhcuzYo5RA
-	 ishoUOADu6mcV2MkxYS1EyOunk4AvPDgMLH4WhF9p6+aZFCJG7zUHZA9/AMsKM7h1s
-	 2Aq0HT06bnSgLmgg634dHsTgmAxMS4Mf5ljlKcvg1BwBhPYcUCEn1R86K25pcBTcQS
-	 Fw8feI3iOV9uj/D2nDkDLKL1MMe+4Qbd53KMIklhtPu/pyK4dhshTlPXjid1B/+vsf
-	 pWbi/8wlxRlHfLv6qP+H+NPGmBzpQnzzrbcgyKa6FmnFEUX7OVXBahUqpQ2Sw4MvS9
-	 RvM7fT8KYODJw==
+	b=eexcLynINSDIPtv2cNxqZRLmpUecq8QDE4+HIbdseIgBGcag7MTO3w40bQcACeSj2
+	 k2Prrwfmt0+zXyIXm7ZjfWux/cXFwKHlDA9DPE3Y+dhQxEogxTU7KYjrK3/UFLB9t8
+	 v1ylOl4+wg89zFlsyCpT7x2uE1KQyhu1TgrItrfRup9C3/wf159AmJq6ITug7yLX/I
+	 u1llbSXkTWNJiympsomM9nW09AhKwBAxL8sUXatj9TGhcr0d9CNa6/j/NuHZkn+any
+	 ua1CwJdgnwxTFauGgSWNEqqBOUxqXBsYefB6tapKdpw0VO+7FbUcl+AigJTZijxJ11
+	 llJH+F1drUMNQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net-next 01/12] net: enetc: use
- enetc_set_si_hw_addr() for setting MAC address
+Subject: Re: [PATCH v2 net-next 09/12] net: enetc: add CBDR setup/teardown
+ hooks to enetc_si_ops for VF support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wei Fang" <wei.fang@nxp.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260522092438.1264020-2-wei.fang@nxp.com>
-References: <20260522092438.1264020-2-wei.fang@nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260522092438.1264020-10-wei.fang@nxp.com>
+References: <20260522092438.1264020-10-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Sat, 30 May 2026 00:46:29 +0000
-Message-Id: <20260530004629.7C1B11F00893@smtp.kernel.org>
+Message-Id: <20260530004630.253131F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,68 +48,52 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Hardware registers for MAC address configuration are accessed usin=
-g `__raw_readl` and `__raw_writel` without endianness conversions, causing =
-incorrect MAC addresses on Big Endian systems.
+- [High] Missing PCIe posted write flush during CBDR teardown leads to pote=
+ntial DMA use-after-free/fault
 --
 
-commit 9950ab386f64a0d2f5b71b2003e9ca960d52dddd
+commit e8719566bfcc671815aca75ea6a2c0caefb79aef
 Author: Wei Fang <wei.fang@nxp.com>
-net: enetc: use enetc_set_si_hw_addr() for setting MAC address
 
-This commit replaces enetc_pf_set_primary_mac_addr() with the generic
-enetc_set_si_hw_addr() function to prepare for moving MAC address setting
-logic to the common driver for reuse.
+net: enetc: add CBDR setup/teardown hooks to enetc_si_ops for VF support
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/dri=
-vers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> index 76263b8566bb3..c30b5f71efd5e 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-[ ... ]
-> @@ -7,13 +7,13 @@
-> =20
->  #include "enetc_pf_common.h"
-> =20
-> -static void enetc_set_si_hw_addr(struct enetc_pf *pf, int si,
-> -				 const u8 *mac_addr)
-> +void enetc_set_si_hw_addr(struct enetc_pf *pf, int si, const u8 *mac_add=
-r)
->  {
->  	struct enetc_hw *hw =3D &pf->si->hw;
-> =20
->  	pf->ops->set_si_primary_mac(hw, si, mac_addr);
+This commit adds setup_cbdr and teardown_cbdr function pointers to struct
+enetc_si_ops to allow the ENETC v1 and v4 VF drivers to register their own
+command BD ring implementations. It updates the VF driver to call these
+operations through the ops structure instead of invoking the v1 functions
+directly, enabling runtime selection based on the hardware version.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/ne=
+t/ethernet/freescale/enetc/enetc_vf.c
+> index e8ad5ad5aba48..9cdb0a4d6bafb 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> @@ -288,6 +288,8 @@ static void enetc_vf_netdev_setup(struct enetc_si *si=
+, struct net_device *ndev,
+>  static const struct enetc_si_ops enetc_vsi_ops =3D {
+>  	.get_rss_table =3D enetc_get_rss_table,
+>  	.set_rss_table =3D enetc_set_rss_table,
+> +	.setup_cbdr =3D enetc_setup_cbdr,
+> +	.teardown_cbdr =3D enetc_teardown_cbdr,
 
 [Severity: High]
-This is a pre-existing issue, but does the underlying MAC address
-configuration code have an endianness bug on Big Endian systems?
+This is a pre-existing issue, but looking at the implementation of
+enetc_teardown_cbdr(), the command ring is disabled by writing 0 to the
+Mode Register. Because this write translates to an iowrite32, it is a
+posted PCIe write that can be delayed in the interconnect fabric.
 
-Hardware registers for MAC address configuration are accessed using
-__raw_readl() and __raw_writel() without endianness conversions.
+The code then frees the DMA memory immediately without reading back from
+a device register to flush the posted write, and without polling for a
+hardware busy status to clear.
 
-The code uses get_unaligned_le32() to read the first 4 bytes of the MAC
-address into a host-endian u32. For a MAC address starting with 12:34:56:78,
-on a Big Endian CPU this creates the u32 value 0x78563412.
+If a previous command timed out and the hardware is still processing it,
+or if the posted write is simply delayed, could the device continue
+accessing the descriptor ring after the memory is unmapped? This might
+result in an IOMMU fault or silent memory corruption if the IOMMU is
+disabled.
 
-It then uses __raw_writel() to write this u32 to the PCIe memory-mapped
-register. __raw_writel() performs a raw host-endian memory store without any
-byte swapping. On a Big Endian CPU, 0x78563412 is stored in memory as the
-byte sequence 0x78, 0x56, 0x34, 0x12.
-
-Since the PCIe controller interprets the MMIO space as Little Endian, it
-reads those bytes back as 0x12345678, completely reversing the MAC address
-bytes. Could this break network configuration and communication on Big Endi=
-an
-systems?
-
-The rest of the driver correctly uses iowrite32() and ioread32()
-(via enetc_wr() and enetc_rd()), which handle the host-to-LE conversion
-properly.
-
->  }
-> +EXPORT_SYMBOL_GPL(enetc_set_si_hw_addr);
-[ ... ]
+>  };
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522092438.1264=
-020-1-wei.fang@nxp.com?part=3D1
+020-1-wei.fang@nxp.com?part=3D9
