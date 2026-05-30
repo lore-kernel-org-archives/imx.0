@@ -1,72 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6DD2E7382
-	for <imx@lists.linux.dev>; Sat, 30 May 2026 06:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BC72EBBB7
+	for <imx@lists.linux.dev>; Sat, 30 May 2026 06:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780121761; cv=none; b=hBgE2l1XkD1jZCnhuLOjmUM3tlGtwJmaTX8NpYQNrPdWLa5zerM6O/cnw/7Rd6qcZLat/FTAltcfUv7f9VtFkHc3lOn0KFWmpeHews4+Cd+NFbvjS+bIThBTCojizuyQ00jz32qQAg5HdkH0sh/JHRUSl4CaMQaS+YFvJwhjGzE=
+	t=1780121958; cv=none; b=P0dL8m8d3rATvTPfe7PQjyifQKhQ5+jBKPyjuXOBhVzIdQCv8iPAQX0IFScVprJx9jL6XfPLg7LLZCR2bFy0Xfb4M3c4Mg/Zv0KFAemT1PzEACognNI3N0JvBmQA1zuoVryk/N2HrFogGSAHGB/2q/g1sUEtV8hr3m2HUi2Rdeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780121761; c=relaxed/simple;
-	bh=tZGOXPDKfSSyyI0Lgg/01BFhszUYSu117RsFdOYugys=;
+	s=arc-20240116; t=1780121958; c=relaxed/simple;
+	bh=LU8R3grZS1HgFjYs0j+8cDmH6VU9MSyPhEnylDPnVSc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rzDxxbsk4Yl2FlkUlFEoU73P2ZyTYSyNhkaofZ9yQkX1MlOPpv98Z+LPbI3Lkitf8AFTL92AS9yGzmVKZdl10O4O7bG/iN7rbdaHB2ltx6aaNzD95eP0KNcycbMG1D2y10UEJ4aALus/q6SOWtCQwK/26iCtdfALt3OXlFGNVTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6gEF4mv; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=qbDZtWl8YjCUGGpGwxXeDxVLoaHNAAma9Qdcrtm5yPINU/Qu5RzmcFHbIV8sdA8NWYY/5craBdrO/CARsd27Xx5NfqalaeOVLk4Q9o0vIUuQGUXCHNa8xLzFz1mwPJBGqisq/0xi596fXTw0ruksasyyYMaAWQ64MLUFND23x5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3basPrU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6gEF4mv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596101F00893;
-	Sat, 30 May 2026 06:15:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3basPrU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261401F00893;
+	Sat, 30 May 2026 06:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780121759;
-	bh=E176dSys63O+Uz37YB6YNqFPO/3qNH2oDBSrqE6gh28=;
+	s=k20260515; t=1780121956;
+	bh=1r46eJmJHvJpe8umtgrqO/hgJZY/a8H2KUXZFDHGoVE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j6gEF4mvBQ/xXL+LjbEqhX4V/nzy4pa1CLpH5DalFOsH/1W8OZyhqWw4uq7NKRvR9
-	 qBHk+EYHeQ1FM1zzCBs5ei0LxFQP9xVchzOfTS3POkCMEQJhXyRQGZJvf63UTQfmMG
-	 0n1QZy38FokqJQVHeFgQ8pXt86Q9Y7am+ECAw7KfkYXhXdspX0X1/NLyWaSdOKtsMt
-	 6UpN51JtiPO6LAD6tb3EisZeBBjeHAnHgYUMWshkTlLlJhKmTnJiUkO25SrsZFz3R+
-	 j7vRMH4wOh77fab3dZkYeyrtjkLPkt1F3nr514T15biVQyid0ZvG4oX+1MRVOC9jUg
-	 TAcK92ZO/y3dg==
+	b=B3basPrUM4UouOXrOnacWLjMrqNRwHIqIWCLKDvH9kI3b11UJ4JnH/wlewRAxqe8B
+	 mxaFLqMoSyynK0XmDjSckNvI1jnvECyjg0NjWJ4pvD1bveWpRlXxstV7NUil4D73bz
+	 19Hacdz4YJGCCR6yPE0V35zFYxwryPDF3eGc4XSh0wl1VzDAIkYEA0meZ+lunuHiFV
+	 8qX0g9McTXJL978C6RoNHFgvFFFQP5r17rEoCjuFIyMUITeWG2mNPI/qg9YBkZCsRK
+	 vSgkEBNMZRPqFWfow5LPNNqU8bSFUjrJbL0awAQ+FLGC1jlXrDK3D6N/i8lzADuf80
+	 oXxrXUf2H0H2w==
 From: sashiko-bot@kernel.org
 Subject: Re: [PATCH v3] net: fec: fix pinctrl default state restore order on
  resume
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tapio Reijonen" <tapio.reijonen@vaisala.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260529-b4-fec-resume-pinctrl-order-v3-1-56bb52b80ebf@vaisala.com>
-References: <20260529-b4-fec-resume-pinctrl-order-v3-1-56bb52b80ebf@vaisala.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260529-b4-fec-resume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com>
+References: <20260529-b4-fec-resume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 30 May 2026 06:15:58 +0000
-Message-Id: <20260530061559.596101F00893@smtp.kernel.org>
+Date: Sat, 30 May 2026 06:19:15 +0000
+Message-Id: <20260530061916.261401F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 6 potential issue(=
 s) to consider:
 
+New issues:
+- [Medium] The error path for `fec_enet_clk_enable()` in `fec_resume()` lac=
+ks a rollback for `pinctrl_pm_select_default_state()`, leaving pins active =
+on failure.
+
 Pre-existing issues:
-- [High] The return value of `pm_runtime_force_resume()` is ignored in `fec=
-_resume()`, potentially leading to a synchronous external abort.
-- [High] Unbalanced `regulator_disable()` in the `fec_resume()` error path =
-when Wake-on-LAN (WoL) is enabled.
-- [High] Race condition in `fec_drv_remove()` with `tx_timeout_work` leadin=
-g to a Use-After-Free.
-- [High] The error path in `fec_resume()` fails to revert the effects of `p=
-m_runtime_force_resume()`, leaking clocks and PM state.
+- [High] The return value of `pm_runtime_force_resume(dev)` is ignored in `=
+fec_resume()`, potentially leading to a kernel panic from unclocked registe=
+r access.
+- [High] Missing rollback and resource cleanup when `pm_runtime_force_suspe=
+nd(dev)` fails in `fec_suspend()`.
+- [High] Unbalanced `regulator_disable` in the `fec_resume()` error path if=
+ Wake-on-LAN is enabled.
+- [High] Incorrect teardown order of `tx_timeout_work` in `fec_drv_remove()=
+` leads to a potential Use-After-Free.
+- [High] NAPI is enabled after hardware interrupts are re-enabled in `fec_r=
+esume()`, potentially causing lost interrupts.
 --
 
-commit c65b833021159f6537105f2b80073f286520673a
+commit 7f067374b27c3332158fb55d7eb7cfaf9e7c00c3
 Author: Tapio Reijonen <tapio.reijonen@vaisala.com>
 
 net: fec: fix pinctrl default state restore order on resume
 
-This commit changes the order in fec_resume() so that the default pinctrl
-state is restored before enabling the clocks. This fixes an issue where PHYs
-were not receiving a hardware reset pulse after clock enable because the
-GPIO pin was still in sleep state.
+This commit reorders the pinctrl default state selection and clock enable
+in fec_resume(). By restoring the default pinctrl state before enabling
+clocks, it ensures that phy reset pulses have a physical effect and fixes
+unreliable link establishment after system resume.
 
 > diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
 rnet/freescale/fec_main.c
@@ -78,77 +86,95 @@ rnet/freescale/fec_main.c
 >  			pm_runtime_force_resume(dev);
 
 [Severity: High]
-This is a pre-existing issue, but the return value of
-pm_runtime_force_resume() is ignored here. If this call fails (for example,
-due to clock enablement failure), the bus clocks will remain disabled.
+This is a pre-existing issue, but does ignoring the return value of
+pm_runtime_force_resume() potentially lead to a kernel panic?
 
-When fec_restart() is subsequently called, it directly accesses memory-mapp=
-ed
-hardware registers. Can accessing these registers without the bus clocks
-enabled result in a synchronous external abort and a kernel panic?
+If fec_runtime_resume() is invoked and clk_prepare_enable() fails, an error
+is returned, but it is ignored here. The code then proceeds to call
+fec_restart(), which accesses hardware registers without the clocks enabled.
+Could this cause a synchronous external abort?
 
-> [ ... ]
+> +		pinctrl_pm_select_default_state(&fep->pdev->dev);
+>  		ret =3D fec_enet_clk_enable(ndev, true);
+>  		if (ret) {
 
-While reviewing this code, I also noticed a few other pre-existing issues
-related to the error path in fec_resume():
+[Severity: Medium]
+If clock enablement fails, the function jumps to failed_clk and returns
+without reverting the pinctrl state via pinctrl_pm_select_sleep_state().
 
-drivers/net/ethernet/freescale/fec_main.c:fec_resume() {
-    ...
-	if (fep->reg_phy && !(fep->wol_flag & FEC_WOL_FLAG_ENABLE)) {
-		ret =3D regulator_enable(fep->reg_phy);
+Does this cause a state leak where the device pins remain active
+indefinitely despite the resume failing?
+
+[Severity: High]
+This is a pre-existing issue, but is the regulator disable balanced in the
+fec_resume() error path if Wake-on-LAN is enabled?
+
+The phy regulator is only enabled if Wake-on-LAN is disabled:
+
+fec_resume() {
+    if (fep->reg_phy && !(fep->wol_flag & FEC_WOL_FLAG_ENABLE)) {
+        ret =3D regulator_enable(fep->reg_phy);
         ...
-failed_clk:
-	if (fep->reg_phy)
-		regulator_disable(fep->reg_phy);
-	return ret;
-}
+
+However, if fec_enet_clk_enable() fails, the failed_clk error path
+unconditionally calls regulator_disable(fep->reg_phy).
+
+If Wake-on-LAN was enabled, could this cause a regulator reference count
+underflow, unexpectedly powering off other devices sharing the same
+regulator?
+
+>  			rtnl_unlock();
+
+[ ... ]
+
+> @@ -5610,8 +5611,6 @@ static int fec_resume(struct device *dev)
+>  			val &=3D ~(FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+>  			writel(val, fep->hwp + FEC_ECNTRL);
+>  			fep->wol_flag &=3D ~FEC_WOL_FLAG_SLEEP_ON;
+> -		} else {
+> -			pinctrl_pm_select_default_state(&fep->pdev->dev);
+>  		}
+>  		fec_restart(ndev);
 
 [Severity: High]
-This isn't a bug introduced by this patch, but the error path appears to
-have an unbalanced regulator_disable() call when Wake-on-LAN is enabled.
+This is a pre-existing issue, but is it possible for an interrupt to be
+lost here?
 
-At the start of fec_resume(), the PHY regulator is only enabled if WoL is
-NOT enabled. If a subsequent step like fec_enet_clk_enable() fails, the
-code jumps to this failed_clk label and unconditionally disables the
-regulator.
+fec_restart() explicitly enables hardware interrupts, but napi_enable()
+is called afterwards in fec_resume(). If an interrupt fires in this window:
 
-Does this corrupt the regulator's use count and potentially power off the
-PHY unexpectedly?
+fec_enet_interrupt()
+   ...
+   napi_schedule_prep()
 
-[Severity: High]
-This is another pre-existing issue in this same error path. If
-pm_runtime_force_resume() succeeded earlier in the function, it
-transitioned the device to RPM_ACTIVE and enabled the clocks.
+Could it clear the hardware event but fail to schedule napi because
+napi_schedule_prep() returns false, stalling packet processing?
 
-If fec_enet_clk_enable() then fails, we return an error without calling
-pm_runtime_force_suspend() or otherwise reverting the runtime PM state.
+>  		netif_tx_lock_bh(ndev);
 
-Does this leave the device stuck in an inconsistent active PM state with
-leaked AHB/IPG clocks?
-
-
-I also noticed an unrelated pre-existing issue in fec_drv_remove():
-
-drivers/net/ethernet/freescale/fec_main.c:fec_drv_remove() {
-    ...
-	cancel_work_sync(&fep->tx_timeout_work);
-	fec_ptp_stop(pdev);
-	unregister_netdev(ndev);
-    ...
-}
+[ ... ]
 
 [Severity: High]
-This is a pre-existing issue, but calling cancel_work_sync() before
-unregister_netdev() seems to create a race condition.
+This is a pre-existing issue, but does fec_suspend() handle
+pm_runtime_force_suspend() failures correctly?
 
-If a transmit timeout occurs immediately after this call but before
-unregister_netdev() finishes taking the interface down, the networking
-stack's watchdog timer will call the driver's ndo_tx_timeout callback,
-which re-arms the work via schedule_work().
+If pm_runtime_force_suspend() fails, fec_suspend() unlocks rtnl_lock and
+returns the error early. This skips regulator_disable() and leaves the
+network interface permanently detached with napi and the phy stopped.
 
-When the scheduled work eventually executes, it will access the freed
-structures. Could this result in a Use-After-Free crash?
+If the system aborts suspend, does the device remain broken?
+
+[Severity: High]
+This is a pre-existing issue, but is there a potential use-after-free
+in fec_drv_remove()?
+
+cancel_work_sync(&fep->tx_timeout_work) is called before
+unregister_netdev(ndev). During unregister_netdev(), the networking core
+watchdog can still fire and schedule tx_timeout_work.
+
+Since the scheduled work item is left pending and executes after fep
+has been freed, can this lead to a use-after-free?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529-b4-fec-res=
-ume-pinctrl-order-v3-1-56bb52b80ebf@vaisala.com?part=3D1
+ume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com?part=3D1
