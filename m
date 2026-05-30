@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D4B2D23A4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A112D949C;
 	Sat, 30 May 2026 00:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780101941; cv=none; b=Eq7009F2MudOviOYmpq2b5gRX9pQXaAnuNR7w6ttyaKQ5DpP9fdUtk0qj24Fo/dStn40sQ0VUlkk/JWAPUy8/XVUD/VF8KMjSQBO4Bd7to7//O/c1yq9ruKKpSq8PtCe5UW0vp+ahMYVR3RKHYSw7v+IEAhlal8jN+rYeZbr5fM=
+	t=1780101941; cv=none; b=egXO0qOsqQD9y3c63xrz7XHb8rqyM0nVd2mpM56gAcnRJAszrFjIeeqkUCGMPMvXGqJMU+PHpcnQvAOahLJMBMKZkZ6TcHV8q9DqDBtIvwrukOLzfnSo4qB0gIsbW0nMp1P3/dpTT53heeHSnQYBZ2R7NiR2LVvGvP282HM7KYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780101941; c=relaxed/simple;
-	bh=7uhldFHFzREefcbWdP8tQpejikAvSzRiJQgAJisoXzA=;
+	bh=mDTjoYAMHPNsNKg+UJXkneJdqb4XyxRt+oryPID1FNY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Cb8wwatTpUKxolerxV7pzTy68Sp4yzwc23JMpyBjRZGZ3jMhUTnjBFRDruLx2S5ZwN6Pu4nwL1uMYKSqqNj8+L8iu/Bog+h0wHQJzpQFom8M0+J3LFPU0MTHSLG0nYOUSqCOFdCEGob52b8KbIOP2YZVAl0sm3tBhh9ZPyLNCbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbxAYTR4; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=RzDPA5H8I/NoxnGLXyFuLIg7S/viuQZbNLRMqTty8Zs/ftwq6oxWDD8w5CndoVUDveCS5z+wHQCHYWGu5Y5j8ycYDWAoEOUp3Ru4Zs3488mEoryhqqwBEsjwhkUA6NTFxgjoCq4Cnikt8b4qdeoM3XEf/nDCQBuqK4/EIuYGy6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b5wpJSQv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbxAYTR4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AE91F00898;
-	Sat, 30 May 2026 00:45:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b5wpJSQv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747721F00899;
+	Sat, 30 May 2026 00:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1780101940;
-	bh=YvPCd6HJysQWh5b7lxsR3Bs1W+EfVdzbRc1N+z03ofY=;
+	bh=if2wG8mIhL3ETWmdGxmnvfcmHyyINgszPMRptMkFy0o=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HbxAYTR4AJYKdV1y4GV/AOqkzCbjETMn2cKgnapyweqQB9xCppXx121OznEoLAaUP
-	 8k67eLfzayHHz0FSFSBR6QVCrTF+IiS6q+L/OVfail0qPx1BEMEiq/rk7uf4nUPRYf
-	 tiVLDrf/DKE2FFr03MPZPKEo7DY256hmfXUipYzdszfxAG+YsjfSP00dxhW39aGWgL
-	 InE2uv6pN/jtNrqSZPZwxvuKtqt1W7Al6tOm64py+Fm2wEQcbDWMFOZdEfhdQ0Bhg9
-	 xDtzdRzyCFBX7o7K14w8oeSuLdurXzw3/S57SijqAhYwwm3kipb3L7r8EQtxctw9xM
-	 i0oWc9TR56bGg==
+	b=b5wpJSQvDyysEBaqr8wrld97bgpz2EyPdtRs4Y5UxOzRKHMBAN5mSBA8vpGk4t5Lw
+	 PYwFlLQ8j8Mq7QkXZ02Ktd4T5lzgh26ic6/p7DCahvzPGkb5zvKIdV9Y+bE0q5IWQ+
+	 50XotPYIBMycavptDzYFxtgukJirgTckvjrYVu9ktFUGAliB6tOia49Z70OZkw1D6i
+	 oDdk8EznUsv7hLmHtpmTy7n26cfDrkK1+6bxqlgkPTBhIAAOdv0iTjs+0zUx021Ccx
+	 WXoI6NNIl/v/DpWOwxRU0QpvB+w9Rma4ghztPCWqU5pw3DwSSuhkOhvErD4j7bTd//
+	 eu2KIBfVboeUA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 01/23] mfd: tps6586x: fix OF node refcount
+Subject: Re: [PATCH 11/23] i2c: pxa-pci: use platform_device_set_of_node()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, conor+dt@kernel.org, robh@kernel.org
-In-Reply-To: <20260521-pdev-fwnode-ref-v1-1-88c324a1b8d2@oss.qualcomm.com>
-References: <20260521-pdev-fwnode-ref-v1-1-88c324a1b8d2@oss.qualcomm.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260521-pdev-fwnode-ref-v1-11-88c324a1b8d2@oss.qualcomm.com>
+References: <20260521-pdev-fwnode-ref-v1-11-88c324a1b8d2@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 30 May 2026 00:45:39 +0000
-Message-Id: <20260530004539.C4AE91F00898@smtp.kernel.org>
+Date: Sat, 30 May 2026 00:45:40 +0000
+Message-Id: <20260530004540.747721F00899@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,58 +45,66 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] The IRQ domain and descriptors allocated in `tps6586x_irq_init()` =
-are never freed, leading to a memory leak and potential use-after-free.
+- [Medium] OF node reference leak when replacing direct assignment with pla=
+tform_device_set_of_node().
 --
 
-commit e8eb8e919be10c86b0019b03f67b4c7e8f91a6b2
+commit 97e00c5939b668c9a126c1fc7447ee82d933bd92
 Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-mfd: tps6586x: fix OF node refcount
+i2c: pxa-pci: use platform_device_set_of_node()
+   =20
+Ahead of reworking the reference counting logic for platform devices,
+encapsulate the assignment of the OF node for dynamically allocated
+platform devices with the provided helper.
 
-This commit fixes an OF node reference count issue for sub-devices
-created with the split platform_device_alloc() and platform_device_add()
-approach. It adds a missing of_node_get() to prevent a premature
-of_node_put() during device release.
+> diff --git a/drivers/i2c/busses/i2c-pxa-pci.c b/drivers/i2c/busses/i2c-px=
+a-pci.c
+> index dbd542300f800..92a0647f08c69 100644
+> --- a/drivers/i2c/busses/i2c-pxa-pci.c
+> +++ b/drivers/i2c/busses/i2c-pxa-pci.c
 
-> diff --git a/drivers/mfd/tps6586x.c b/drivers/mfd/tps6586x.c
-> index 8d5fe2b60bfa5..f5f8054466033 100644
-> --- a/drivers/mfd/tps6586x.c
-> +++ b/drivers/mfd/tps6586x.c
-> @@ -397,7 +397,7 @@ static int tps6586x_add_subdevs(struct tps6586x *tps6=
-586x,
-> =20
->  		pdev->dev.parent =3D tps6586x->dev;
->  		pdev->dev.platform_data =3D subdev->platform_data;
-> -		pdev->dev.of_node =3D subdev->of_node;
-> +		pdev->dev.of_node =3D of_node_get(subdev->of_node);
-> =20
->  		ret =3D platform_device_add(pdev);
->  		if (ret) {
+[ ... ]
 
-[Severity: High]
-This isn't a bug introduced by this patch, but while reviewing this file I
-noticed the IRQ domain and descriptors allocated in tps6586x_irq_init() are
-never freed.
+> @@ -76,7 +76,8 @@ static struct platform_device *add_i2c_device(struct pc=
+i_dev *dev, int bar)
+>  		goto out;
+>  	}
+>  	pdev->dev.parent =3D &dev->dev;
+> -	pdev->dev.of_node =3D child;
+> +
+> +	platform_device_set_of_node(pdev, child);
 
-Does this driver leak the IRQ domain and descriptors on driver unbind
-(tps6586x_i2c_remove()) or probe error paths?
+[Severity: Medium]
+Does this change result in an OF node reference leak?
 
-tps6586x_irq_init() allocates descriptors using irq_alloc_descs() and creat=
-es
-an IRQ domain via irq_domain_create_simple(). The driver lacks matching cal=
-ls
-to irq_domain_remove() and irq_free_descs(), and these allocations are not
-managed by devm_ variants.
+Earlier in add_i2c_device(), the child node is acquired by breaking out of a
+for_each_child_of_node loop, which holds a reference to the node:
 
-Since tps6586x is allocated via devm_kzalloc(), it is automatically freed
-when the device unbinds or probe fails. If the leaked irq_domain remains
-linked in the global irq_domain_list with its host_data pointing to the
-freed tps6586x structure, can a subsequent traversal of the IRQ domains
-(e.g., via /sys/kernel/debug/irq/domains) cause a use-after-free?
+	for_each_child_of_node(dev->dev.of_node, child) {
+		...
+		break;
+	}
+
+Previously, assigning pdev->dev.of_node =3D child implicitly transferred th=
+is
+reference to the platform device, which would eventually be released during
+device cleanup.=20
+
+However, platform_device_set_of_node explicitly acquires an additional
+reference via of_node_get:
+
+drivers/base/platform.c:platform_device_set_of_node() {
+	...
+	pdev->dev.of_node =3D of_node_get(np);
+	...
+}
+
+Because the helper now manages its own reference, the original reference
+held by the local child variable appears to be unconsumed. Should there
+be an explicit of_node_put(child) called after platform_device_set_of_node
+to prevent a leak?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521-pdev-fwnod=
-e-ref-v1-0-88c324a1b8d2@oss.qualcomm.com?part=3D1
+e-ref-v1-0-88c324a1b8d2@oss.qualcomm.com?part=3D11
