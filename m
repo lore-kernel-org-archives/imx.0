@@ -1,78 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C0A39E9CF;
-	Sat, 30 May 2026 10:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52B0395ACB;
+	Sat, 30 May 2026 10:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780136745; cv=none; b=Fy5YhDPhGLpiQMk4nVjurKmUzyEn+a3rVsDtObiGoLM7p2n+/c/X6hBglIMubemq69P/tmzBkYi0zOtoRC32GdAD5NnIhjsHBXyRKjEqRqt6ZzakRQDabB0UvCNMe8Nd0AR7+/XAPI/U2gpYY2CCmPvL7n4Pi9sZ3ayKX6bE37Q=
+	t=1780137957; cv=none; b=aUh+Vy4KeeVwghp6sHtAFirCpkS6Ubvhrwkku2TWcxmAngCPrlrKmdaFxEExWQEgpyvGcUc123GgM3gUnYmTBIs7OiR5fTyCyMh3POc95DkoQYDqQZOkoX4nLbCle7Ry82mXxOpuGzW4kCUa//luTGEIbOvF50P6EqiYqw9mOao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780136745; c=relaxed/simple;
-	bh=3rNocUaeG/vh3hn+sDDfL+yXYgSl+tVYHm5nJDpA8qc=;
+	s=arc-20240116; t=1780137957; c=relaxed/simple;
+	bh=41mgkza2ssYfoIJMWXa24SoZZHPMX6psp/7XQSDOJ5o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qfAHeEYOlxr2OKPZ+ODiYdM+YaX+jNHv8+EizPFQ4P4tCZxzfNZ2oDUtWXU0PhkSW8IWMzzlHfdTqC5hEjcDQyGDrp32ykN7SSXon0vJqf8BoPes4ip3aQFV+NrTkAKw/UpDMGgKb8me4X5iwJx+ukJ3V+0x7uxipOCoKGXQ/L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdX7ATjL; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=ig12pXttmBZhmRgHSP5UDvndmtZ8/N/XdDYAhF597GbubZ7e/6+S7txQ+10+jesUp/9+956EQLRgu213E7lg+004Wd3n2HBevPZTyOwy007lb2D4U+hzCuD/J6G/tLDLV4EMG03qY1Qv5jti0D2OmTEV9UK0k42t54IuhiBGoUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LF9JPGAc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdX7ATjL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C141F00893;
-	Sat, 30 May 2026 10:25:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780136744;
-	bh=cFeS5ZghyqtLcvpjiqm8Lf4ksDZz0Ai1X1bJYSK/WDw=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LF9JPGAc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A011F00893;
+	Sat, 30 May 2026 10:45:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780137956;
+	bh=lgysvuYQa3VryADSMxaUOkvnpUJJME8Z4Jq9WXkJPsM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TdX7ATjL+JjHILUuCxvkBh0D90EOmmzLV8D/d4Wwvxp1EEdipUcU95CCk0lpoWa0o
-	 mdIoV/6qOldP0BT0rASI6N80Fu+bzrCstE0Y3qQRlRhAc58YZfz+6vgfc6kFvOgu5r
-	 8/39CUZ6W+KOjOHkP8FZNXMpCEJet/78yKghk6qk=
-Date: Sat, 30 May 2026 07:21:52 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-serial@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-kernel@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH] serial: mxs-auart: fix probe error paths and clock
- handling
-Message-ID: <2026053046-bonanza-bobcat-6ed1@gregkh>
-References: <20260528230616.186792-1-rosenp@gmail.com>
+	b=LF9JPGAcC6moprVYRK0U4dFljJn/TPozotuwfFii37DICafru5Y1mAAgjlhJ9e06z
+	 9SGRJEk5thzrrSB5IJNQKd6brcTQ0i/vBmArRmWoFmnG8h6IuAGYaSBDGy2KeeHqb3
+	 Sp41R1Po7GEY/ZeRbsnKV++sgd3pGQt9tUuRMhu7US3dBNO5r7CB5VyVRwJnr4Al8c
+	 MHlCGcQFBcBuwg8mWJ4NFaTiaXJr19gtPbFlA5LTJRtrez5KvxKH6r01ogiKGgWFoG
+	 FNu+9r/srmgiu5XJJG3+U9i22Hp84uOarJ1iY7Iyp6T02UirR9FKPBxgThJMe9BrRu
+	 Xszkru5qtrvfw==
+Date: Sat, 30 May 2026 12:45:54 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] dt-bindings: remoteproc: imx_rproc: document
+ optional "memory-region-names"
+Message-ID: <20260530-indefinable-oriole-of-champagne-375a1e@quoll>
+References: <20260522111849.783-1-laurentiumihalcea111@gmail.com>
+ <20260522111849.783-2-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260528230616.186792-1-rosenp@gmail.com>
+In-Reply-To: <20260522111849.783-2-laurentiumihalcea111@gmail.com>
 
-On Thu, May 28, 2026 at 04:06:16PM -0700, Rosen Penev wrote:
-> Sashiko reported three pre-existing bugs in the mxs-auart driver:
+On Fri, May 22, 2026 at 04:18:45AM -0700, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > 
-> - For non-ASM9260 variants, mxs_get_clks() obtained the clock but never
->   prepared/enabled it, leaving register accesses in probe at risk of
->   faulting if the bootloader had gated the clock.
-> - The error path and remove function used pdev->id instead of
->   s->port.line to clear the auart_port[] slot.  For DT-probed devices
->   pdev->id is -1, causing an out-of-bounds write and leaving a dangling
->   pointer in the array.
+> Document the optional "memory-region-names" property.
 
-This feels like it should be a different patch, and not burried in this
-change, right?
+Why?
 
-> - The probe error path called iounmap() while the IRQ was still
->   registered. An interrupt during that window would dereference the
->   unmapped membase.
-> 
-> All of this is a consequence of using mixed devm and non devm. Instead
-> of working around these issues, go full devm so that everything can be
-> cleaned up properly.
+Best regards,
+Krzysztof
 
-Are you sure that devm and irq code is going to work properly?  That's
-always a very tricky code path, was this tested with the hardware to
-ensure it still works on teardown correctly?
-
-thanks,
-
-greg k-h
