@@ -1,302 +1,315 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AACD38947F
-	for <imx@lists.linux.dev>; Mon,  1 Jun 2026 11:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081EE39BFE7
+	for <imx@lists.linux.dev>; Mon,  1 Jun 2026 11:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780312830; cv=none; b=XLAqL+XoZRSdj2m/f7vlNEuXKAhlhkYgiz1okN632OYPiTDhxBAKzAeJKmS7P/LI9ytmrT5flHBL5fFUObDJAQB0o2nDZkvtcavkCVnA3uoSbzNtbjzfaduDlWZnreqpW0rUYLu19QvW2iRyPPCRF8GfoLkRlM4jisfd1kk9hvI=
+	t=1780313140; cv=none; b=GaWATajIZBFRppH8n9GJIvtbPvOXOJ/bQea1DGZaWRqUevFOGboigO9ac+8GsGsRA3NbqNPyZw2CGObRAFY7mm/HFeWPvH/La/dsVoED4pCEsZywxyrfQcTtg5TXFDfYqdEsWlYsnhU0Dkx2U3AClPuJUH0QCAyir+q8FIt+fe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780312830; c=relaxed/simple;
-	bh=EyLdGsu6HchzDPHk/fFMAtANQEe1SwYJEZN/XxQKdTg=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=kmlMaJ0JfcHCbi8KijqkHzHJwJUkgktRYqv+3nJiA6TYH3oCCcPGiT1rUF3TgT4fvmWJMzprKNW9BKvfILb0VpWD2yNGkYgBno/diRLKgvUQZIE06zI1kPPu7AeCTePfh19N/qgj9HfTddU+iPabnqdereeOe1XPSQfFIdzvSsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ctwdNsWg; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1780313140; c=relaxed/simple;
+	bh=Z/mUzwUVONEPQdFABzCmTFqZkEwW6dipoWg7IJBbHXM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ua7sJphrYqx7lAamEk9xmrvM1gGPV08scbhy1+N+lICkol7euTP3S6+K9XRgqLfqRHpbB+va+3PKhtTVEOJvrpt/0xfkkhzEy3uk2cJ0QE00AgmQ4kLeN9Eny+OlnPUjR0hROr9v4Wu6TjlNIrxE3D/Hl/MGl7r08qMKMsO6Ieg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=OxfYeiyq; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=rigZAyqP; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ctwdNsWg"
-Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1DB8B9D5;
-	Mon,  1 Jun 2026 13:20:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1780312803;
-	bh=EyLdGsu6HchzDPHk/fFMAtANQEe1SwYJEZN/XxQKdTg=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=ctwdNsWgZU8o4KjBqbSuZicvapSDvNqQQqjJiD9SYIZTUpNT4ixTeyY9OmRcSXqix
-	 d/I5x3ov4E0nPfyjrDVqjf+L7Pz9yt9LAEB8VOMHqS0EqkjmrGyo4N9QaIpkRF/ojS
-	 BGGpDrBqC3KZueC1q5flOYtbS+kmobL31LCQLnlA=
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="OxfYeiyq";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="rigZAyqP"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gTWq301KQz9tln;
+	Mon,  1 Jun 2026 13:25:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1780313135;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pzRbxPFoL4BSF74Rxh+pDpMDZWqb7ImAcHBUPh7hzZY=;
+	b=OxfYeiyqTPBYM3zQQU8f4C0xuaLerngCalVW8/cVtwzDfSTpiECzroM5SF5H1cPmcR+Zks
+	WTUJZ9YfwvDao6wWSCY3bhKv290PmUFZ8OSFAyWpY2dXxAJq2U385o4YazrvOMaxo/7upF
+	CldGb/37n9Pm72rXt0z+q+h27tYrJVoM8qpcGPTK59rG32mJeB/eUH/4cNekWH9bBWevVz
+	Pw4u/PV9mjA/5SWAgcgyAKQJpYmenDlZVfNqwDpawOzz08wo1qs0VxGebuScSfEFST8dXC
+	MAPLW4lyx4zmP9shoUfiPgfvhXG3c1zgSuDD+lUfB/LdSbao0lwmOcw9fbbiCA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=rigZAyqP;
+	spf=pass (outgoing_mbo_mout: domain of lukasz.majewski@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=lukasz.majewski@mailbox.org
+From: Lukasz Majewski <lukasz.majewski@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1780313132;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pzRbxPFoL4BSF74Rxh+pDpMDZWqb7ImAcHBUPh7hzZY=;
+	b=rigZAyqPzK4j5XGlrawFePCseZXxnGEBgmJIlBUaoEBlvjJWPpxlr/v7UYtKjwnT9tEyIy
+	GmvxrqSVbE7wjhqeJ2GTKwC1SFLn3Y/ekIbtinIf0t6rhlSW1fa87lJqXORLbmeQaJVMcM
+	BBvjGssQVlhFvmOJrSN2vRR3fLpI/Gq2BVMnA8rZRPW7v0lI0lM/eo+Ycdu5gRZB5jGlyq
+	mbzKN6TTIo4DlyZwEI/xFq9tAw5PXkj8kVd9wxpLQG+A+TrmK1f18H99NnDo/UJlDetrpu
+	Hi9W+ItmdwEf06tq7luVuvbtuo1FGKSdduVrM6QMxqDhGMwyISqpK1ZLd3YpFQ==
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Rob Herring <robh@kernel.org>,
+	Lukasz Majewski <lukasz.majewski@mailbox.org>,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [net-next v24 1/7] dt-bindings: net: Add MTIP L2 switch description
+Date: Mon,  1 Jun 2026 13:24:30 +0200
+Message-ID: <20260601112437.2216043-2-lukasz.majewski@mailbox.org>
+In-Reply-To: <20260601112437.2216043-1-lukasz.majewski@mailbox.org>
+References: <20260601112437.2216043-1-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260529132334.3333294-2-robby.cai@nxp.com>
-References: <20260529132334.3333294-1-robby.cai@nxp.com> <20260529132334.3333294-2-robby.cai@nxp.com>
-Subject: Re: [PATCH v3 1/2] arm64: dts: imx8mq-evk: Enable MIPI CSI and dual OV5640 cameras
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: kernel@pengutronix.de, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Frank.Li@nxp.com, Robby Cai <robby.cai@nxp.com>, conor+dt@kernel.org, festevam@gmail.com, krzk+dt@kernel.org, mchehab@kernel.org, p.zabel@pengutronix.de, robh@kernel.org, s.hauer@pengutronix.de, sakari.ailus@linux.intel.com, sebastian.krzyszkowiak@puri.sm, slongerbeam@gmail.com
-Date: Mon, 01 Jun 2026 12:20:22 +0100
-Message-ID: <178031282290.662668.15145642423417739969@ping.linuxembedded.co.uk>
-User-Agent: alot/0.9.1
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: spkx79hm9jm9r6ry6c1tyspzft55frms
+X-MBO-RS-ID: eac31beef053595abe5
+X-Rspamd-Queue-Id: 4gTWq301KQz9tln
 
-Quoting Robby Cai (2026-05-29 14:23:33)
-> Enable the MIPI CSI-2 host controllers and CSI bridges, and add two
-> OV5640 sensors on I2C1 and I2C2, forming two media pipelines:
->=20
->   - OV5640 (I2C2) -> MIPI CSI1 -> CSI1 bridge
->   - OV5640 (I2C1) -> MIPI CSI2 -> CSI2 bridge
->=20
-> On the i.MX8MQ EVK, both sensors share a single reset GPIO line,
-> while each sensor has an independent powerdown (PWDN) GPIO.
->=20
-> Both sensors also share the same MCLK source (CLKO2), configured
-> identically as required by the hardware design.
+This patch provides description of the MTIP L2 switch available in some
+NXP's SOCs - e.g. imx287.
 
-Shouldn't these be overlays? Does *every* IMX8MQ-EVK always have 2 x
-OV5640 modules attached? And never anything else ?
+Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
---
-Regards
+---
+Changes for v2:
+- Rename the file to match exactly the compatible
+  (nxp,imx287-mtip-switch)
 
-Kieran
+Changes for v3:
+- Remove '-' from const:'nxp,imx287-mtip-switch'
+- Use '^port@[12]+$' for port patternProperties
+- Drop status = "okay";
+- Provide proper indentation for 'example' binding (replace 8
+  spaces with 4 spaces)
+- Remove smsc,disable-energy-detect; property
+- Remove interrupt-parent and interrupts properties as not required
+- Remove #address-cells and #size-cells from required properties check
+- remove description from reg:
+- Add $ref: ethernet-switch.yaml#
 
->=20
-> Signed-off-by: Robby Cai <robby.cai@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mq-evk.dts | 150 +++++++++++++++++++
->  1 file changed, 150 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts b/arch/arm64/bo=
-ot/dts/freescale/imx8mq-evk.dts
-> index d48f901487d4..7ff1a763890a 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-> @@ -6,6 +6,7 @@
-> =20
->  /dts-v1/;
-> =20
-> +#include <dt-bindings/media/video-interfaces.h>
->  #include "imx8mq.dtsi"
-> =20
->  / {
-> @@ -50,6 +51,20 @@ reg_usdhc2_vmmc: regulator-vsd-3v3 {
->                 enable-active-high;
->         };
-> =20
-> +       reg_1v5: regulator-1v5 {
-> +               compatible =3D "regulator-fixed";
-> +               regulator-name =3D "DVDD_1V5";
-> +               regulator-min-microvolt =3D <1500000>;
-> +               regulator-max-microvolt =3D <1500000>;
-> +       };
-> +
-> +       reg_2v8: regulator-2v8 {
-> +               compatible =3D "regulator-fixed";
-> +               regulator-name =3D "AVDD_2V8";
-> +               regulator-min-microvolt =3D <2800000>;
-> +               regulator-max-microvolt =3D <2800000>;
-> +       };
-> +
->         buck2_reg: regulator-buck2 {
->                 pinctrl-names =3D "default";
->                 pinctrl-0 =3D <&pinctrl_buck2>;
-> @@ -172,6 +187,14 @@ &A53_3 {
->         cpu-supply =3D <&buck2_reg>;
->  };
-> =20
-> +&csi1 {
-> +       status =3D "okay";
-> +};
-> +
-> +&csi2 {
-> +       status =3D "okay";
-> +};
-> +
->  &ddrc {
->         operating-points-v2 =3D <&ddrc_opp_table>;
->         status =3D "okay";
-> @@ -330,12 +353,103 @@ vgen6_reg: vgen6 {
->                         };
->                 };
->         };
-> +
-> +       camera@3c {
-> +               compatible =3D "ovti,ov5640";
-> +               reg =3D <0x3c>;
-> +               pinctrl-names =3D "default";
-> +               pinctrl-0 =3D <&pinctrl_camera2_pwdn>;
-> +               clocks =3D <&clk IMX8MQ_CLK_CLKO2>;
-> +               clock-names =3D "xclk";
-> +               assigned-clocks =3D <&clk IMX8MQ_CLK_CLKO2>;
-> +               assigned-clock-parents =3D <&clk IMX8MQ_SYS2_PLL_200M>;
-> +               assigned-clock-rates =3D <20000000>;
-> +               powerdown-gpios =3D <&gpio1 5 GPIO_ACTIVE_HIGH>;
-> +               reset-gpios =3D <&gpio1 6 GPIO_ACTIVE_LOW>;
-> +               DOVDD-supply =3D <&sw4_reg>;
-> +               AVDD-supply =3D <&reg_2v8>;
-> +               DVDD-supply =3D <&reg_1v5>;
-> +
-> +               port {
-> +                       camera2_ep: endpoint {
-> +                               remote-endpoint =3D <&mipi_csi2_in_ep>;
-> +                               clock-lanes =3D <0>;
-> +                               data-lanes =3D <1 2>;
-> +                       };
-> +               };
-> +       };
-> +};
-> +
-> +&i2c2 {
-> +       clock-frequency =3D <100000>;
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&pinctrl_i2c2>;
-> +       status =3D "okay";
-> +
-> +       camera@3c {
-> +               compatible =3D "ovti,ov5640";
-> +               reg =3D <0x3c>;
-> +               pinctrl-names =3D "default";
-> +               pinctrl-0 =3D <&pinctrl_camera1_pwdn>;
-> +               clocks =3D <&clk IMX8MQ_CLK_CLKO2>;
-> +               clock-names =3D "xclk";
-> +               assigned-clocks =3D <&clk IMX8MQ_CLK_CLKO2>;
-> +               assigned-clock-parents =3D <&clk IMX8MQ_SYS2_PLL_200M>;
-> +               assigned-clock-rates =3D <20000000>;
-> +               powerdown-gpios =3D <&gpio1 3 GPIO_ACTIVE_HIGH>;
-> +               reset-gpios =3D <&gpio1 6 GPIO_ACTIVE_LOW>;
-> +               DOVDD-supply =3D <&sw4_reg>;
-> +               AVDD-supply =3D <&reg_2v8>;
-> +               DVDD-supply =3D <&reg_1v5>;
-> +
-> +               port {
-> +                       camera1_ep: endpoint {
-> +                               remote-endpoint =3D <&mipi_csi1_in_ep>;
-> +                               clock-lanes =3D <0>;
-> +                               data-lanes =3D <1 2>;
-> +                       };
-> +               };
-> +       };
->  };
-> =20
->  &lcdif {
->         status =3D "okay";
->  };
-> =20
-> +&mipi_csi1 {
-> +       assigned-clock-rates =3D <266000000>, <200000000>, <66000000>;
-> +       status =3D "okay";
-> +
-> +       ports {
-> +               port@0 {
-> +                       reg =3D <0>;
-> +
-> +                       mipi_csi1_in_ep: endpoint {
-> +                               remote-endpoint =3D <&camera1_ep>;
-> +                               data-lanes =3D <1 2>;
-> +                               bus-type =3D <MEDIA_BUS_TYPE_CSI2_DPHY>;
-> +                       };
-> +               };
-> +       };
-> +};
-> +
-> +&mipi_csi2 {
-> +       assigned-clock-rates =3D <266000000>, <200000000>, <66000000>;
-> +       status =3D "okay";
-> +
-> +       ports {
-> +               port@0 {
-> +                       reg =3D <0>;
-> +
-> +                       mipi_csi2_in_ep: endpoint {
-> +                               remote-endpoint =3D <&camera2_ep>;
-> +                               data-lanes =3D <1 2>;
-> +                               bus-type =3D <MEDIA_BUS_TYPE_CSI2_DPHY>;
-> +                       };
-> +               };
-> +       };
-> +};
-> +
->  &mipi_dsi {
->         #address-cells =3D <1>;
->         #size-cells =3D <0>;
-> @@ -532,12 +646,34 @@ &wdog1 {
->  };
-> =20
->  &iomuxc {
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&pinctrl_mclk>, <&pinctrl_camera_reset>;
-> +
->         pinctrl_buck2: vddarmgrp {
->                 fsl,pins =3D <
->                         MX8MQ_IOMUXC_GPIO1_IO13_GPIO1_IO13              0=
-x19
->                 >;
->         };
-> =20
-> +       pinctrl_camera1_pwdn: camera1pwdngrp {
-> +               fsl,pins =3D <
-> +                       MX8MQ_IOMUXC_GPIO1_IO03_GPIO1_IO3               0=
-x19
-> +               >;
-> +       };
-> +
-> +       pinctrl_camera2_pwdn: camera2pwdngrp {
-> +               fsl,pins =3D <
-> +                       MX8MQ_IOMUXC_GPIO1_IO05_GPIO1_IO5               0=
-x19
-> +               >;
-> +       };
-> +
-> +       /* Shared reset line for cameras on CSI1 and CSI2. */
-> +       pinctrl_camera_reset: cameraresetgrp {
-> +               fsl,pins =3D <
-> +                       MX8MQ_IOMUXC_GPIO1_IO06_GPIO1_IO6               0=
-x19
-> +               >;
-> +       };
-> +
->         pinctrl_fec1: fec1grp {
->                 fsl,pins =3D <
->                         MX8MQ_IOMUXC_ENET_MDC_ENET1_MDC                 0=
-x3
-> @@ -565,12 +701,26 @@ MX8MQ_IOMUXC_I2C1_SDA_I2C1_SDA                    0=
-x4000007f
->                 >;
->         };
-> =20
-> +       pinctrl_i2c2: i2c2grp {
-> +               fsl,pins =3D <
-> +                       MX8MQ_IOMUXC_I2C2_SCL_I2C2_SCL                  0=
-x4000007f
-> +                       MX8MQ_IOMUXC_I2C2_SDA_I2C2_SDA                  0=
-x4000007f
-> +               >;
-> +       };
-> +
->         pinctrl_ir: irgrp {
->                 fsl,pins =3D <
->                         MX8MQ_IOMUXC_GPIO1_IO12_GPIO1_IO12              0=
-x4f
->                 >;
->         };
-> =20
-> +       /* Shared MCLK for cameras on CSI1 and CSI2. */
-> +       pinctrl_mclk: mclkgrp {
-> +               fsl,pins =3D <
-> +                       MX8MQ_IOMUXC_GPIO1_IO15_CCMSRCGPCMIX_CLKO2      0=
-x59
-> +               >;
-> +       };
-> +
->         pinctrl_mipi_dsi: mipidsigrp {
->                 fsl,pins =3D <
->                         MX8MQ_IOMUXC_ECSPI1_SCLK_GPIO5_IO6              0=
-x16
-> --=20
-> 2.50.1
->
+Changes for v4:
+- Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove already
+  referenced properties
+- Rename file to nxp,imx28-mtip-switch.yaml
+
+Changes for v5:
+- Provide proper description for 'ethernet-port' node
+
+Changes for v6:
+- Proper usage of
+  $ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
+  when specifying the 'ethernet-ports' property
+- Add description and check for interrupt-names property
+
+Changes for v7:
+- Change switch interrupt name from 'mtipl2sw' to 'enet_switch'
+
+Changes for v8:
+- None
+
+Changes for v9:
+- Add GPIO_ACTIVE_LOW to reset-gpios mdio phandle
+
+Changes for v10:
+- None
+
+Changes for v11:
+- None
+
+Changes for v12:
+- Remove 'label' from required properties
+- Move the reference to $ref: ethernet-switch.yaml#/$defs/ethernet-ports
+  the proper place (under 'allOf:')
+
+Changes for v13 - v22:
+- None
+
+Changes for v23:
+- Update e-mail address
+
+Changes for v24:
+- None
+---
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   | 150 ++++++++++++++++++
+ 1 file changed, 150 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+
+diff --git a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+new file mode 100644
+index 000000000000..f201951e73d1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+@@ -0,0 +1,150 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
++
++maintainers:
++  - Lukasz Majewski <lukma@nabladev.com>
++
++description:
++  The 2-port switch ethernet subsystem provides ethernet packet (L2)
++  communication and can be configured as an ethernet switch. It provides the
++  reduced media independent interface (RMII), the management data input
++  output (MDIO) for physical layer device (PHY) management.
++
++allOf:
++  - $ref: ethernet-switch.yaml#/$defs/ethernet-ports
++
++properties:
++  compatible:
++    const: nxp,imx28-mtip-switch
++
++  reg:
++    maxItems: 1
++
++  phy-supply:
++    description:
++      Regulator that powers Ethernet PHYs.
++
++  clocks:
++    items:
++      - description: Register accessing clock
++      - description: Bus access clock
++      - description: Output clock for external device - e.g. PHY source clock
++      - description: IEEE1588 timer clock
++
++  clock-names:
++    items:
++      - const: ipg
++      - const: ahb
++      - const: enet_out
++      - const: ptp
++
++  interrupts:
++    items:
++      - description: Switch interrupt
++      - description: ENET0 interrupt
++      - description: ENET1 interrupt
++
++  interrupt-names:
++    items:
++      - const: enet_switch
++      - const: enet0
++      - const: enet1
++
++  pinctrl-names: true
++
++  ethernet-ports:
++    type: object
++    additionalProperties: true
++
++    patternProperties:
++      '^ethernet-port@[12]$':
++        type: object
++        additionalProperties: true
++        properties:
++          reg:
++            items:
++              - enum: [1, 2]
++            description: MTIP L2 switch port number
++
++        required:
++          - reg
++          - phy-mode
++          - phy-handle
++
++  mdio:
++    type: object
++    $ref: mdio.yaml#
++    unevaluatedProperties: false
++    description:
++      Specifies the mdio bus in the switch, used as a container for phy nodes.
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - interrupts
++  - interrupt-names
++  - mdio
++  - ethernet-ports
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include<dt-bindings/interrupt-controller/irq.h>
++    #include<dt-bindings/gpio/gpio.h>
++    switch@800f0000 {
++        compatible = "nxp,imx28-mtip-switch";
++        reg = <0x800f0000 0x20000>;
++        pinctrl-names = "default";
++        pinctrl-0 = <&mac0_pins_a>, <&mac1_pins_a>;
++        phy-supply = <&reg_fec_3v3>;
++        interrupts = <100>, <101>, <102>;
++        interrupt-names = "enet_switch", "enet0", "enet1";
++        clocks = <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
++        clock-names = "ipg", "ahb", "enet_out", "ptp";
++
++        ethernet-ports {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            mtip_port1: ethernet-port@1 {
++                reg = <1>;
++                label = "lan0";
++                local-mac-address = [ 00 00 00 00 00 00 ];
++                phy-mode = "rmii";
++                phy-handle = <&ethphy0>;
++            };
++
++            mtip_port2: ethernet-port@2 {
++                reg = <2>;
++                label = "lan1";
++                local-mac-address = [ 00 00 00 00 00 00 ];
++                phy-mode = "rmii";
++                phy-handle = <&ethphy1>;
++            };
++        };
++
++        mdio_sw: mdio {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            reset-gpios = <&gpio2 13 GPIO_ACTIVE_LOW>;
++            reset-delay-us = <25000>;
++            reset-post-delay-us = <10000>;
++
++            ethphy0: ethernet-phy@0 {
++                reg = <0>;
++            };
++
++            ethphy1: ethernet-phy@1 {
++                reg = <1>;
++            };
++        };
++    };
+-- 
+2.39.5
+
