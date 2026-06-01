@@ -1,206 +1,161 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBB535E952
-	for <imx@lists.linux.dev>; Mon,  1 Jun 2026 11:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4C03A759C
+	for <imx@lists.linux.dev>; Mon,  1 Jun 2026 13:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780313562; cv=none; b=T4R8CpFrgLrpRADkHQjIAZ2FwMepF0+pEZj7sdu4tVWNgzDFswoTWUX/bsfFoYikdMRf5EP6y5/dofK282+IZjHiqIpWGGakpivXu2aaCqtzo3SNa2wsa99BSIdKeJ081nuCqpRBr/2b+ZfxU8Dy2f7OMmx4TaqQxSLv/qzlleE=
+	t=1780320646; cv=none; b=GDXxCpkfttmAOPQw/xheOMfE+2vubGp3cDcr0wo4WLtIQXwyk/92t5pzBJIsL/uP/TSNlDZSCVC501eymIScrc60dGixpsKWrZ0oPTdAgA+xG/we3jufBzqwilLBEpfbu9dQPFKL7B4OATUK2WCq8nPWQK8IcVW0dnfNIZ6wD5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780313562; c=relaxed/simple;
-	bh=jDZ35an42v1a6D8XAJeWmnrKss2NVTM1YSxd6gMMgZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H9nncY0IlyN8iydoEnlzCyOCBmm2KbRvgSM1MhcPriYsIdD1MhJRID3evS7BuATPZ1020NO5gd5IqcXWevDjb41quYgq2Zbvbuej1p+Ort1JfdQDzOC/L5fx8cI8E6uLDg6R2fOOKE+rK5Z6Sy2EPrzeQsKuC11P3YlF60Zwkbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=sVBx+ZPl; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=X8h5eiYk; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1780320646; c=relaxed/simple;
+	bh=UDmJ1k1aLBInIvFNqEcNOlLzi9eOR2sEjPHpu1oXk5o=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LkKLypV6AUwH0v4ROY//6aPcNcZX+nAvVG9jABsAPIT6qHSX497yXg+LP58HvQEv0rxgvsbYoLfWx3wcfviBLE+TMPyXMCddOW4fs+WnWDKh5XwX3VHOZ2ok4o46rzYhx/k/csv1FG6qEh6J7qI3Szo38PU5/YzxNYYfa99MA4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SMm++gvs; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TjRuC5nK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="sVBx+ZPl";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="X8h5eiYk"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gTWpk0ccdz9tfX;
-	Mon,  1 Jun 2026 13:25:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780313118;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TckpevEDXvsiLT9gSo/NXB3/PFN+b7qd8kin63AE6NM=;
-	b=sVBx+ZPlkp4VWVAm7WxruTkfk6IeJKjSLE4xpyNRT9gPixVIb4sBktRXVCVlaLo9fM4tF/
-	lJU73eHts98v2hFxI3DT6MmGNLEjVs4j0TE5PJekJhBMsjMyTrfetWkKuOirIWl9Glue94
-	VxcZW2d/csft6kxQ4/il5D3HUVQT2msOunFZ/shGDS9hCb/quyTOTbIDl8dtk6EGyiVsXn
-	am2iDlEu4HFdYsjP79ttItTt95qDKPH3CdltL771RHcTHv+A7zlnIsr037cfTf6o3uPFjf
-	Hz/PRD1ZNLH38w7DxoMJ34cklzt2a154/yXQbihvLN3utGmFKpKA/F4MJE1F+Q==
-From: Lukasz Majewski <lukasz.majewski@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780313116;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TckpevEDXvsiLT9gSo/NXB3/PFN+b7qd8kin63AE6NM=;
-	b=X8h5eiYkUEDXFT6Khl7e9LB/COTfrk5c262xb3Rv77cgS+OgNRj4SwK/A+RkuhO/yPLg3G
-	kK9wK73Ww4u+Pou+yEEHWcCxSt6uvTnDcgA/I5wCSQwOc7saEwY9PLX5/Fpuw0W9SewyCU
-	4X8n0MeEOh+uw06HzCK/PZ9dmGzVRge7dbQaxgfRztzhyHaKFabhptF9aXjG1xQYSf6KFU
-	d76u+xHhdf5ntyu2CNH56Sg3x2wIotlnubBif57Pq31OH/66VBSAvFSjulNcVnDd5tSyvN
-	fPgzoKZfEBaz8Mr4m7URv+JRxt8INwWHvVCO4uMX70ur+N+MHgD0UoggXQRg6w==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Richard Cochran <richardcochran@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Rob Herring <robh@kernel.org>,
-	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v24 0/7] net: mtip: Add support for MTIP imx287 L2 switch driver
-Date: Mon,  1 Jun 2026 13:24:29 +0200
-Message-ID: <20260601112437.2216043-1-lukasz.majewski@mailbox.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SMm++gvs";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TjRuC5nK"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6518diub4110250
+	for <imx@lists.linux.dev>; Mon, 1 Jun 2026 13:30:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Bhd58qYV5qQ5sfvU/qA2szyY/a3HbSOfNKYbjuYIxdU=; b=SMm++gvsFKSE5wBA
+	g5VS7Jqcx7dcNO2P86vhYJWGVcerVWx0P9ivsVJ/5bPFjCoumIJr0oItSxwxL+Co
+	MliHmyCSqwUR1fNrtr6SMp1xY07Xy3ydfng1lpyPXatpimcb7npllGgqe7pQ4aKt
+	7h7cwcYwO5gbtd3kLiHku4DB5teQvOdbC8bsG0kEkAYzy/TyHZwXV8Vy2Yj+u3YR
+	f3IiuxovmzbWED14m3FJkiUEiKMRcWCID7ajSWFnS/xr+zTZQ0C7ONhgPE+2Of68
+	GrGxcFcnBZDVFMsN43OPuf0LQT3/5ffZWftqpJ7hayxl40W0qA4NOM7hFPdjLvFt
+	oRJ51A==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eh6s3s47w-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Mon, 01 Jun 2026 13:30:43 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-36d98b5a68fso2795605a91.2
+        for <imx@lists.linux.dev>; Mon, 01 Jun 2026 06:30:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1780320643; x=1780925443; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Bhd58qYV5qQ5sfvU/qA2szyY/a3HbSOfNKYbjuYIxdU=;
+        b=TjRuC5nKNRXC0uUVJClexlbsC2dHbTMtxEAYmiJ52ZFOM3LoHWaOsFwsN4gkK6xz/Z
+         iHEREU9RokAq5C6Pq+3C9VFMuHs7w2+VOp61aQPqikjtX6wxCIjYkLPavFEgEJIjlCqs
+         5fah80R4kL92QYzEQpao+GcbAeBpS2c9sDpqXIqS9RBSIcHBGh4vsz3R+vGVgwmiCBkM
+         MO+IY7J7xC7dkjJQF7ImdFzMUTNDU7H/3pt/lx2zAVq9JfXH9WqVYNSZAiag0oFIfC/t
+         ThPfgW8fMjJuUACj1Ysc7lz99qwOTSI1cg8Qin09R3tP0hILE2eCRu/8bTnxHp/ORQE/
+         JMPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780320643; x=1780925443;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bhd58qYV5qQ5sfvU/qA2szyY/a3HbSOfNKYbjuYIxdU=;
+        b=VNwiWNfixrbRPI4W2M8EH5JNm8a8gf1mQboclgSAIxXyD19Xef9MWfsyf907K14Li7
+         q5QydvMDHR02U/8kdHg6njdGzUg73+77F5ii4IENvd9ZvxhtHEVugGdMdeAZmRWApNh9
+         MZFXd7qtNvWvwitnRp/rmPDUUsqY5sUarMDtyuIqFbXejvxJCOCUQQeleVl5DOgFCBM1
+         X7QYtQXU+GVBiV6+6AUnpM9tRuDqoIIuMV6rnRvm6VHi+dbbQ6M1uVq072v27SuIEwnT
+         Q1Y8gui22zAU5ODE5CgcVIzTOr02VrXt+bUujZ6GKIA3//yxwWIBp8Wt2oRr240RcP/M
+         3xzQ==
+X-Forwarded-Encrypted: i=1; AFNElJ81cyjo2TqeLH8BKtXagF0zUUrlQQP4ropoMxFVG5YLt66rxtTYE0x3jQN1rM2BOlaeHh4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy4E1Y1TLhnVfHHU/S6lEatqszFRfOgPBwcZPIFZY6ou4R5saKf
+	dsLR7mYMPf+um9U/smSa8sKJVkJmkr6oRN6IXvYmTLM56Hc1FyEvwjzR+DIJ48+TsRPbp2MC3F/
+	y1jUK9R4zb1BSOuZyzUfy0WxZV8ltr+QE4C6yVQbWTTHqNtR0jlmT1/0=
+X-Gm-Gg: Acq92OHSlWmZYH5fUre/YBIt4KtBIRzyBlQ3wHd0J6iquqMv6ANQR/DPooodzm9KqTr
+	eSiRB1piPEWDWNYz6PpaLp4jm8AWcaNdjyGVIk2dPSX5hNsLqYvRLVMh/DYLh8is340KhKsDq9q
+	opCy6RDF1TGkC/dGbSaHlSUULg+jm9q4JhT1m/lEA9K0ISNacWwl+hotycz+DLkGYfdyH11kSUL
+	i4flEPmBHpdwexqHeWxcyuTB6MYR8eYfBKsFTVM7h0xju+ZLQiflUqSQUOasd+MTJyfrF8u8W7S
+	LsKOBvJKI12OzfmX0fclQqHQhr20FyiKOE6fHHZBOy9vVNus0/+VGeAicyvsrZxMB/7/cszDPnV
+	5jjb14r3Cc7A1RDDgEMUGU4dctM5+/YRg4A2knfK7A4oiQvqpW7bkBD74Yzb7xA==
+X-Received: by 2002:a17:902:d58d:b0:2bf:2e28:db28 with SMTP id d9443c01a7336-2bf368263d0mr123080645ad.29.1780320642779;
+        Mon, 01 Jun 2026 06:30:42 -0700 (PDT)
+X-Received: by 2002:a17:902:d58d:b0:2bf:2e28:db28 with SMTP id d9443c01a7336-2bf368263d0mr123079815ad.29.1780320642277;
+        Mon, 01 Jun 2026 06:30:42 -0700 (PDT)
+Received: from [10.206.103.106] ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e6ff5sm143718315ad.7.2026.06.01.06.30.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jun 2026 06:30:41 -0700 (PDT)
+Message-ID: <c1d1a8db-9cd2-462c-ab6b-d14eb97c644c@oss.qualcomm.com>
+Date: Mon, 1 Jun 2026 19:00:33 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: k5gagsrmkhe77hpt495k77pa5tyem791
-X-MBO-RS-ID: 7653ccd1b5e3ceaed63
-
-This patch series adds support for More Than IP's L2 switch driver embedded
-in some NXP's SoCs. This one has been tested on imx287, but is also available
-in the vf610.
-
-In the past there has been performed some attempts to upstream this driver:
-
-1. The 4.19-cip based one [1]
-2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
-   with NO tag appended.
-3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
-   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
-   the driver uses already configured MAC and PHY to also configure PHY.
-
-All three approaches were not accepted as eligible for upstreaming.
-
-The driver from this series has following features:
-
-1. It is fully separated from fec_main - i.e. can be used interchangeable
-   with it. To be more specific - one can build them as modules and
-   if required switch between them when e.g. bridge offloading is required.
-
-   To be more specific:
-        - Use FEC_MAIN: When one needs support for two ETH ports with separate
-          uDMAs used for both and bridging can be realized in SW.
-
-        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
-          attached to switch and bridging shall be offloaded to HW. 
-
-2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
-   separation at boot time. Port separation is disabled when bridging is
-   required.
-
-3. Example usage:
-        Configuration:
-        ip link set lan0 up; sleep 1;
-        ip link set lan1 up; sleep 1;
-        ip link add name br0 type bridge;
-        ip link set br0 up; sleep 1;
-        ip link set lan0 master br0;
-        ip link set lan1 master br0;
-        bridge link;
-        ip addr add 192.168.2.17/24 dev br0;
-        ping -c 5 192.168.2.222
-
-        Removal:
-        ip link set br0 down;
-        ip link delete br0 type bridge;
-        ip link set dev lan1 down
-        ip link set dev lan0 down
-
-4. Limitations:
-        - Driver enables and disables switch operation with learning and ageing.
-        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
-          on purpose, as up till now we didn't had consensus about how the driver
-          shall be added to Linux.
-          However, on top of this patch set the code with SWITCHDEV support (v6.6.
-          PREEMPT_RT enabled) has been implemented in [4].
-
-5. Clang build:
-	make LLVM_SUFFIX=-19 LLVM=1 mrproper
-	cp ./arch/arm/configs/mxs_defconfig .config
-	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 menuconfig
-	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 -j8 LOADADDR=0x40008000 uImage dtbs
-
-        make LLVM_SUFFIX=-19 LLVM=1 mrproper
-        make LLVM_SUFFIX=-19 LLVM=1 allmodconfig
-        make LLVM_SUFFIX=-19 LLVM=1 W=1 drivers/net/ethernet/freescale/mtipsw/ | tee llvm_build.log
-        make LLVM_SUFFIX=-19 LLVM=1 W=1 -j8 | tee llvm_build.log
-
-6. Kernel compliance checks:
-	make coccicheck MODE=report J=4 M=drivers/net/ethernet/freescale/mtipsw/
-        make allmodconfig; ~/work/src/smatch/smatch_scripts/kchecker drivers/net/ethernet/freescale/mtipsw/
-
-7. GCC:
-        make mrproper
-        make allmodconfig
-        make W=1 drivers/net/ethernet/freescale/mtipsw/
-
-        
-        [source OE/Yocto SDK build environment]
-        CROSS_COMPILE=arm-poky-linux-gnueabi- ARCH=arm make mrproper
-        cp ./arch/arm/configs/mxs_defconfig .config
-        CROSS_COMPILE=arm-poky-linux-gnueabi- ARCH=arm make menuconfig
-        CROSS_COMPILE=arm-poky-linux-gnueabi- ARCH=arm make -j8 LOADADDR=0x40008000 uImage dtbs
-
-8. DT_SCHEMA checks:
-        source ~/.venv/bin/activate
-        source /opt/poky/3.1.31/environment-setup-armv5e-poky-linux-gnueabi
-        make dt_binding_check DT_SCHEMA_FILES=nxp,imx28-mtip-switch.yaml
-        make CHECK_DTBS=y DT_SCHEMA_FILES=nxp,imx28-mtip-switch.yaml nxp/mxs/imx28-xea.dtb
+User-Agent: Mozilla Thunderbird
+From: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
+Subject: Re: [PATCH 3/8] media: qcom: camss: add support for QCM2390 camss
+To: bod@kernel.org
+Cc: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, linux-arm-msm@vger.kernel.org,
+        linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        Suresh Vankadara <quic_svankada@quicinc.com>,
+        Vikram Sharma <vikram.sharma@oss.qualcomm.com>,
+        Prashant Shrotriya <pshrotri@qti.qualcomm.com>
+References: <20260526-shikra-camss-review-v1-0-645d2c8c75a7@qti.qualcomm.com>
+ <20260526-shikra-camss-review-v1-3-645d2c8c75a7@qti.qualcomm.com>
+ <178000641103.4557.14582699057810501776.b4-reply@b4>
+Content-Language: en-US
+In-Reply-To: <178000641103.4557.14582699057810501776.b4-reply@b4>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=AP3YypGC c=1 sm=1 tr=0 ts=6a1d8983 cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=VwQbUJbxAAAA:8 a=FPLoCuxg6rETm2Q1RYYA:9 a=QEXdDO2ut3YA:10
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAxMDEzNSBTYWx0ZWRfX2Bm1lxqHI+Gf
+ 4wBXQHK8aieT7KKGRwEDkDM+32qOBzhqk5FHMUXKdYvCO3J9OhG4u1fqw3EWeVWh9lrhAZE4vl5
+ 7ZP+4Hv6fEBK9Dgy3FOgEhXWBy08jRbN3bdkqKRvgo2ADdtind0cZuVL8UA3621nWX7MGgJ+ffb
+ qBJo5PzYEm1+yYBXnqIJ3vNohDXBuvgfNuPWeB4Ch7jHOuaLS1UY3wd9MKAWt2+Qd+6L47DKJXn
+ wu3nXlAKFae1gMX8nrtTrrANnU9B7qi5o0nNmFABh/6Ptxx60pKqBnIMoZNZOFWvwI7nmr5pbGc
+ 6ZnobtViPQqaNlyUR4gd0/mJn1Z6mqNV+InU9VCt+MmO1H003f2CFYa4bY9Z8plMLqrwb6mAyoj
+ dK72eH4Qv5OjiIeGUUsMYjIGzHyGwCSLHKA6aSnfAFHsLOoSvu3J8HqiHoIrdOWWg/c0NQP532Q
+ b1kjk0ZctddXqFbGF3g==
+X-Proofpoint-GUID: 9V27zNr6MsoOK2eOvW6sZOm4JlfVKSWb
+X-Proofpoint-ORIG-GUID: 9V27zNr6MsoOK2eOvW6sZOm4JlfVKSWb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-01_04,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 suspectscore=0 malwarescore=0 clxscore=1015
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606010135
 
 
-Links:
-[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
-[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
-[3] - https://github.com/lmajewski/linux-imx28-l2switch/commits/imx28-v5.12-L2-upstream-RFC_v1
-[4] - https://github.com/lmajewski/linux-imx28-l2switch/commits/vf610-linux-6.6.y-mtipl2sw
 
+On 29-05-2026 03:43, bod@kernel.org wrote:
+> NAK - what is the point of this identifier ? It literally just adds a new
+> define and a new string.
+> 
+> Unless there is an actual difference with 2290 which thus far we haven't
+> see, this new type is not required.
+Understood.
 
-Lukasz Majewski (7):
-  dt-bindings: net: Add MTIP L2 switch description
-  net: mtip: The L2 switch driver for imx287
-  net: mtip: Add buffers management functions to the L2 switch driver
-  net: mtip: Add net_device_ops functions to the L2 switch driver
-  net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
-  net: mtip: Extend the L2 switch driver with management operations
-  net: mtip: Extend the L2 switch driver for imx287 with bridge
-    operations
+As mentioned by Vikram, Shikra will use a new compatible string with 
+fallback to qcm2290, similar to CCI approach. 
+The CAMSS_2390 identifier and the driver changes will be dropped in v2.
 
- .../bindings/net/nxp,imx28-mtip-switch.yaml   |  150 ++
- MAINTAINERS                                   |    7 +
- drivers/net/ethernet/freescale/Kconfig        |    1 +
- drivers/net/ethernet/freescale/Makefile       |    1 +
- drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
- .../net/ethernet/freescale/mtipsw/Makefile    |    4 +
- .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 2046 +++++++++++++++++
- .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  648 ++++++
- .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  138 ++
- .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  442 ++++
- 10 files changed, 3450 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
- create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
- create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
- create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
- create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
- create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
- create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
-
--- 
-2.39.5
-
+--
+Regards,
+Nihal Kumar Gupta
