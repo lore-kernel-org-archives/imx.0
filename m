@@ -1,73 +1,63 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010065.outbound.protection.outlook.com [52.101.84.65])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013033.outbound.protection.outlook.com [52.101.72.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AFC383C8F
-	for <imx@lists.linux.dev>; Mon,  1 Jun 2026 19:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D43B363C7C;
+	Mon,  1 Jun 2026 19:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.33
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780343164; cv=fail; b=WQW1I2cxb1UrggJki991bGo3UHYkAiKZpbcujyfZKBOmmC5dIy/O/fincJxY1ZF5bx5uIedfHXq82x2zGBWvtZ4vMT+pn/o3z0geckOncxZ1MoW/Fy6rowHLOyg7JVSM5GsLRMP4+wMHKa7IdQ04rwNQXm6IRD9TonH7dV8t5cg=
+	t=1780343543; cv=fail; b=GA518/V0J9Qv2lqJHUi+Wlr/V5NjYUX4l74n/nFG1Y33MOKTSdTH7JpQP8cr7zIFwSkC7pA59TIHeIhYbGMSkdd6M0Y2UqP8LRaXUPhgSO53KjHEhxUwtrGT1dXSmAS97yiVTEoXtc+04WYWmxy+mmy1dTiARoCPxdyVgOZWDOk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780343164; c=relaxed/simple;
-	bh=j9u3rmRR/xuU39LoNU4G0EfsYV8B9RCXTaUK52SL4WA=;
+	s=arc-20240116; t=1780343543; c=relaxed/simple;
+	bh=CITRQNwmmPHYlbIdBQn+7oze+8omvt0+wXXjzFQVTKQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rzWrH2Zv7e3TK+Dfmj2ZFcaARTN8j39K77um4nH0K5C658ijQsrCG+CJAGLew8srWcoNBB+AmepQlN935IhWFHumpQa0cpuqX5rm32FRjj5D3Fla7lTjhZCDSNbMovxfZb25KQklf2smNmypOeLja3D+Bo0H70BUBkc1POViKJM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LIGvjE0G reason="signature verification failed"; arc=fail smtp.client-ip=52.101.84.65
+	 Content-Disposition:In-Reply-To:MIME-Version; b=S20Rg2/hVB56Bz4M5YzMPlTElIiUE8WKF2s2+Ph9j9k8rddG4U08/KDRwH/uuRqx5Hj0EN0ahNLmbFrqLdaXYeUKlEm8vV7WZZ34/9ygqfDyELRQiG1Z6uE+Rgf3EjZRcBxoynC64Z8l+63HqdP1m9wCej52yEwe8CvtR2bUF6M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cynF4ilY reason="signature verification failed"; arc=fail smtp.client-ip=52.101.72.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LIGvjE0G"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cynF4ilY"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=riqNzDUJX0FXRjo+gVz1zs+VsMJiAk4QgxUwkEgyuJ1CaH1kdIhIhBsfXJi2jh6ugGAflGfnnBfGG+o3U/BhzB7UsoBwJ7bRjAulUcq64htfqPmHqvtMtywMlig54lHwkAisQQzGxlQmUd7e/llb/H+A0AlOq7yjvtm6VF9bblV1KOhtiVLNNhCCbqB9B8OyBZC06lKL8wVcsYQ3zbQNGegf/okSrYdItLRxo7J8BEgI3hJ0ET86u9yVwpzPklRFpB4t89+LS0rRd0EEwlgvL6n0AJGvgVzSnjRrSa4ET5nNowgeM755Tzk0dilBhSqn9w7MsthZfXmL2CobB9iM4g==
+ b=VZbgwZg6m/uNETzaAtYTALYfujxkyxNpewguQU7d1spu/uzv6L8iFjZIEdVJTQ4otXR3qICkIDmL/p6HOjZfwvgSF2roQc7DAWSQL1EVy6LhHraQGDvIJG2mpedr+/xAMmyHIZuAlILEmwBzzNPEfT3i9KVFVCaf2GWZQ7rGyGn8VZaFjC1TELjGa0R0xg5LcpL198bVbclLEN+bQY9qTIoRhXQGyiEufnd0IVOHiruBriUQmMSne9/06U+eqr2yQultd8rpgwER4eBoULaE7J5Wd7A285uZDv5XV8DBhMK7kWBr2fqpG4FBCYKCQfTQBBbje+1b766f2YlDK0IAvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pziB3S+jxlD6fgT4p6QvOy0HcwfoyRKEj/hRx9x/MFw=;
- b=hu6KZJNNYlqVR7vZxXB+oFWDKCv5wyhv/OpnQ5DTESLg7EX1vFyrzdyJ0DuPUcC+WUmed1PORgn1ITUB3vIzBUYbWksPVq789Z+302hEv8bIedofkTN5nHXyi4drfs+H7kov6ZSnEL6tmVZjEG69CKD23TkTng+8/htD4phxWzq1SyhihM9GftWpqHVJSgUHCoHTCKbIei4eo8GiM48S7vzqTUlBSFkUnoCDg1khZ0Ga2YnQRfQ/J0WcGwcQqI3dMwt8kopNo591yqDdtTUlyAnfC4IAI0rQUNMARoVlQDxG9sb+Dm7bn8Yc8DRrDt17hyHqfJnJcD6GAwHxW2clRA==
+ bh=LY4Q3dGyx1A18J5Vwes50I7BMYV9fluM97sBJH0c5+4=;
+ b=jvrdv22ADmLcd+I5DP0848PQaXoQoje+qQ3+FlGCbrM+3hWiEwqVACbY7Xl3u0KhTiNRa7RekoWzkcPQZ+iajKhWwobWCw5oDcQZddYp4rR3hqiPWLHCbe7n+H34azJ00mlzlKZrBEDtz4r5xMKmz/cgt8tjkuu+IzrUxq/s0RrR927kHM2Ai8bwwU/6TrRrb032FBXRYsYnE63Wr5DcMPHjAz/A5DiKp7kr1ETPBTVY6AexIoViNGyOa+Of9wpbZw7rITQ3gpvinFX0UjCa160f9iWmyAHjYU+3uvLZwDdBi/XFPpRv7vrssc68MnoM+1I47iMA9zOVuHwGf73yIQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pziB3S+jxlD6fgT4p6QvOy0HcwfoyRKEj/hRx9x/MFw=;
- b=LIGvjE0G6k2UqAIeUYnUPlXcRwGiEmLqsE7AYvcc3I4G+ry9lpHCfvxAiVl54wUntm0J/PBytcfYb0b7y5J5kjTuLRTvIri9OUtOeLBSurxWa0CLEJ0hkj0MLA0jh/K1xMKJkEw/pfzSM44kVWI0aXuAf8knatRMbeLtnQLGOW7vEWEBj9ZmYvmIV55qNk5TUMLTnn7nGEl6EGNAD0woPiNzLrLJjKXj3PeXwMaSvwwsA0KGk0InPwPQ7Msd1vcdEZv8l4tlJg8QkO+Db7DwHleyMpjHV6qdI3qcuoi/p7hdFgh+ZmYRGmU7EFXGYAIcuJKkpSbZgk2wUCPArgNj6g==
+ bh=LY4Q3dGyx1A18J5Vwes50I7BMYV9fluM97sBJH0c5+4=;
+ b=cynF4ilYMKeFuL7QWPxOZVEA+778bsshZ/jokRFwVQ5of0UUunZkvji3vNJvVEx5QeCUhQj9d+D0Xc3Bv2B29S0amZ+PpAIHfW5NETV08hHF8dTIXeEqSg5ZeFG29sb1ct95h+y/YBhpkBHvFTUjvuE1RqVKgUmm8snNFJpb4HJaL/PaGNg7T/sg0B/l+7RefbEOMst8pWRYRK2hR8IpHaEiRAZyIfpDzfcFnOhRbajmuQxxfgJokY4MJVKD135+Tm3H6oT9i/bf/keVXRxD2CQqlC6JOyLDtL4vWimTIcgyG0f8u0G7n7m2huGshTp12kFQLdX84vGWg6Ty/i/qgg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by PR3PR04MB7241.eurprd04.prod.outlook.com (2603:10a6:102:92::10) with
+ by GV2PR04MB12656.eurprd04.prod.outlook.com (2603:10a6:150:36d::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
- 19:45:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Mon, 1 Jun 2026
+ 19:52:19 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0071.015; Mon, 1 Jun 2026
- 19:45:57 +0000
-Date: Mon, 1 Jun 2026 15:45:50 -0400
+ 19:52:18 +0000
+Date: Mon, 1 Jun 2026 15:52:11 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Franz Schnyder <fra.schnyder@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Franz Schnyder <franz.schnyder@toradex.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Antoine Gouby <antoine.gouby@toradex.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Subject: Re: [PATCH v4 2/3] arm64: dts: freescale: add Aquila iMX95 support
-Message-ID: <ah3hbkIEXaJnAtk2@lizhi-Precision-Tower-5810>
-References: <20260521-add-aquila-imx95-v4-0-5a7f86c824f5@toradex.com>
- <20260521-add-aquila-imx95-v4-2-5a7f86c824f5@toradex.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, conor+dt@kernel.org,
+	Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, wsa+renesas@sang-engineering.com
+Subject: Re: [PATCH v3 2/2] arm64: dts: freescale: add initial device tree
+ for TQMa8MPQS with i.MX8MP
+Message-ID: <ah3i63BKcwav8t7n@lizhi-Precision-Tower-5810>
+References: <20260522075656.841745-2-alexander.stein@ew.tq-group.com>
+ <20260522082439.011DF1F000E9@smtp.kernel.org>
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260521-add-aquila-imx95-v4-2-5a7f86c824f5@toradex.com>
-X-ClientProxiedBy: SA1P222CA0113.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c5::27) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260522082439.011DF1F000E9@smtp.kernel.org>
+X-ClientProxiedBy: PH5P222CA0001.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:510:34b::12) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -76,124 +66,128 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PR3PR04MB7241:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3807f2c7-e506-44b2-f39b-08dec016669f
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GV2PR04MB12656:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8dc4f454-14df-490b-0ab5-08dec01749cf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|52116014|7416014|1800799024|19092799006|366016|38350700014|18002099003|22082099003|56012099006|4143699003|11063799006;
+	BCL:0;ARA:13230040|376014|52116014|19092799006|366016|1800799024|56012099006|4143699003|11063799006|6133799003|38350700014|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
- kgSTK8bqoZ7fQfYzbqn8nLvMjkYwKWpjXbVF7sn9ah2alYvFr573Pbw2EJNOqRIPbBTe2FdDQ3hO4q8FWVH/JGJDN5+v9tYMTQMZuBKyoJcKFMHJqcQ3tGGK/l8fkYgysUcylHVrz18KRtmJKrdMXmaVAyb24A2zUAYpzv31Og5eYJLBoT6Ncj6c0PTHdvGFksxg0NOJsAmDACB0XSSPCuec/zat7g1vwVgvzXAeMET/68F2Q0erXbtiBp+/uLi53wYp0LaaU+kELQXBbmqC44ArtflOzNxZkPQnTjnofG+BcrVvN+oKo/BoiCzO34EfC5tjSEugmatpyQw0gdQeXRonyhd3SLB6HB0CncjKlnhUIhfOKIVSZGbUdmb23T09n5kLDwXP6VT2Dnzu0vZuZ70kkySr84qZ7w//flkRrM1oPtdALQE/ckQHc3z91AXs3QwH54mJmlHmbZ9n8HTvvjz/rqSQTOqw9Dw0Gf7Nnj0PHwFc332KBO887RkjVBv4p1+4TZtSI1s7e92uY9npxPSB+Q/iRGeVIVoJguJE19CHIYG48sdLBuTbfztfFnNAZDQJfa2aFBg23DkXznVlszhMmz8Nzddn9+/nRufoRWtt2bmT7p/bH7uOw/vnJl5yiwZ5EqkdMikJgWRhhTfe0tfPWwFuA/CrwqswhzFZ3CXtuxVZv2RBr1DJJNijXeLQ3oR+GodqgZxSxfy8d/Tdo3avH6mu8Q/R7wr65/7WqMnM5O+NnMnNyHtizLX6Kh1y
+	a0bGB2H+ZrjwYIiUkvuS1brObqEDScz+HuNxkvkwZurtMRZr6fcxl7SUp1BiX/Pl5OffDjMZV1ByFQlc3eyEkwCq5oh1FY+120BHwIk3od0O02uO9NPjEsTGJLJ3EsIeEPeyl7oceg5U2H+ZZ49PQucbdm1mZtkIt+iEn4rmeSR5AWiHj0u50Uz7VTLieokNUU2fSAmwZzE/WAkl+tlxVo2NkGwa+WGIUjz0KzRpAnje6lQ6AdTU6ULhrhLW4OFQoqH6NkHnCGzJVz+aHiHG2tK9gS9Xef70h3VrelzVb6ETrAGWLIaRjVfH346+y+CjWMjpdiijVR2mYBAgKfqwQ8wTHycXVSbIzM59wATZB4t/78mo1jULYrzpAah6JtICseWo7uFB9J1rcF5SwhoBQ4IwGj6HUW04TriNtFMAPt4PZVgassjGig1C3Xrx4iQ1FICGqGOPk0uwD21+cUBrAqv2MHO0yEFx1nLr1FRlLneauFGcv5SMSjVE0i5tXn80E1ciKnFBWAjZF4quTRf4fKgViYd8mw+K7faheIIRliiylAzPx+1j3W7/Wd1UnsFGH7qRh4/aH3h29iygJNqH1BATsOi5E7al0sUo1nIMDWFiRSrdpAEe3T02btEfSwo7/+4RMpyDKLXP2CFjXIPFOBKbDfyFmGRvsv5i9K1/hR0T4GQD7TuiWqgqAjSzDvIg
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(1800799024)(19092799006)(366016)(38350700014)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(19092799006)(366016)(1800799024)(56012099006)(4143699003)(11063799006)(6133799003)(38350700014)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?iso-8859-1?Q?Tsrpt9yiVUkeaEVQvPqXCA7vIUGMRaQvRzlmY3NuX9SfKdXGJMOBBYZNiO?=
- =?iso-8859-1?Q?5wurn/MLPKAdXYzKWbAXbGpzWLAsq7ebf481ZdzgqPRrhIOsE+CbT9XSnb?=
- =?iso-8859-1?Q?WWGK4CkdM2zeLgVtlsl3tPqxp2yVq0fcSRgW77DJlEPVPviUhGvlvnOXz5?=
- =?iso-8859-1?Q?ZmMR/LAprhksqovnHo5roP6P1LTDgXyJ2HwkUEi5CvIT//p5PTy5gJJCel?=
- =?iso-8859-1?Q?445IThivieBcWyxTzmsUL0n5DicjAXfIY0UgE+rHsopxVfqkvVfFKnIyvf?=
- =?iso-8859-1?Q?VGq/RnGqYNbqxzsnurMEi0dxVxHn4HK26abS653CLnB3Td1Mxpo+Sj1z2D?=
- =?iso-8859-1?Q?7tTtRfRJ9afO2MJJwtxQYNZb4pu9BWmmgzi7C2VWxmT8YvotaOEjQ1T22Z?=
- =?iso-8859-1?Q?1VVRE55iCgzGucPRt2Ktm+ttYeWvY5eC75GenkWrL/J64DoY/Gx5BfcWp7?=
- =?iso-8859-1?Q?E4viuCcnHoVYfJVC+Z5UqV0Kj9CzzQG33j8UHzjnOI3oR1Byhhv5gH2v+6?=
- =?iso-8859-1?Q?xSmDsdtqwMskNNaHgoLvGl68RP4vs+efglMLqDcqFpS9HlCxZeFUzcpsA0?=
- =?iso-8859-1?Q?WABQU3Jq7xU9ubdG0Nnpm+qpQwLE4V2gV2cRS8Qt2mDj+1JC5N3lvTnJ0i?=
- =?iso-8859-1?Q?X4BN50b7U6jOdgySuCc/FkJnVqIt6/zaSnP2S8xejVfH327/27ccegoN37?=
- =?iso-8859-1?Q?H1Z/6UDCvSv4fJJSXl8gu4eIHogWujn/nXHCtxKDNYfM58sCPiTNH3eZ4T?=
- =?iso-8859-1?Q?A6b28E1aDZSnXdi3JtZIS1JM+t/VSV9JhU8PgmBOdI9QDMdPnKZ+dehb9m?=
- =?iso-8859-1?Q?kvlh82Tqnxp6pdVJk7tnFbvqUklbV/Wa7ZMp5OIZGBu5E7xWBLilbm7/PE?=
- =?iso-8859-1?Q?TgG6KgIq+C4LemObwfxJBg/5qjPzCtgFGdCFbjhRwG38KwVyTNY0kKgcmY?=
- =?iso-8859-1?Q?dNDN+3TqLeTst1HBHtZAxPOEwaNv1THUsFqPO/LbItHYjKX4NGiVghCFmp?=
- =?iso-8859-1?Q?5jiCqcXLrMrnBJvvQv6qqNkemj6/ZkINooDD/YJBLRn35JQ5VFPKIw3n6P?=
- =?iso-8859-1?Q?bS791pUhdIahz4XEystRRbYWfwGuIa5+M/j3CONHMRnSHUoO2qB/XZcCd3?=
- =?iso-8859-1?Q?8syV+KO2iSfFLfjSDHHtFiBZCgCCCDaVsdf6Fco5RgopfCVffxtTRJHpUR?=
- =?iso-8859-1?Q?x8xAnsByBhB0UJEDCI9UHKzOcAy0C6SYeePBIeFqQub4i0vNqv3hV+vM3o?=
- =?iso-8859-1?Q?zomEsenN5Wz74FvvB/uYNHUvaGx39qH1eVVJqkCXRAaEA6lBxbCGK0V7HN?=
- =?iso-8859-1?Q?980weym3Wkk8JuwWznvAc/9yo0N8JcwP/tU5dkO3zR/34KNDUXXnJScSEK?=
- =?iso-8859-1?Q?MNewFEUwucPMkHZ1ibNSPHlQ90G/7PXkRitor+wze8he6voyuVKy842XvF?=
- =?iso-8859-1?Q?8L/BXC8hDYFTkDcmtyRwoKIXw9T/grU2w1ER3gzyZ8j/bgchNyO/ILx3oq?=
- =?iso-8859-1?Q?ZpoiesPKq/oCpAFYiFiUCXIDwhipA9Kl5ZlVyDeJvWpNi14OYFIVAd1Obi?=
- =?iso-8859-1?Q?1DSLKaW7F9Os4aClcZomH1Phx9fQkHy4i56sU0Gh+CYMXqvIsujZoeJvVe?=
- =?iso-8859-1?Q?gID0u0+05KclEa9912IDDfqPFT2QGzYT9d/09X9FM4panrTN/qTch1AITp?=
- =?iso-8859-1?Q?rFvH0F4wvhAaHtnTD5wUKhculkOM4DbziSICSS7yliBWXfYXAESV3fKhVQ?=
- =?iso-8859-1?Q?WSWxagHogCv5owyTomyLlNsV0+r6efVeRBMd7qYOY5hkVEGtRr8VRCTv2Y?=
- =?iso-8859-1?Q?JpBZrNxAyg=3D=3D?=
+	=?iso-8859-1?Q?qwSkROfAodPn1IY8PCOgaA69eWDotXCDoOijlq2FCvpQmYjf754ffBvpC8?=
+ =?iso-8859-1?Q?jsS55uXwY/2UWq8Wa/P1ZBMXGWlhHvP2hatbIy8dUyqQjMagBaWkY4Wy+d?=
+ =?iso-8859-1?Q?i/y8CgrGPdjcxFdhHw5vwS+nW119pysSnLk5Ru7UA3H+y62OMAqetaRGs5?=
+ =?iso-8859-1?Q?FEzbpa5qbsrAPBfJBFXOLQg1P50aT3ttBzFjXQoGyKWA8Ip/IdlB5zro2h?=
+ =?iso-8859-1?Q?kd3tm0bav9F7lyr+tPtbK6lHo6aA0txtNTxILhbdpobpzSvFVT7n5wWx1D?=
+ =?iso-8859-1?Q?MQq8hpszfTGVBusQ5jQRpmVa2PLh1oDSNNx/zS02Tr0M/ImbO51dHBUNT9?=
+ =?iso-8859-1?Q?QqDhRqDE33qjE+OfsI90oYwY+K0Up2C8vceyttBwEwNWv2v4soA/YgAnCf?=
+ =?iso-8859-1?Q?wKihaJ2BnbBe4rTB2YkJxSSbpxa8ipdgaIzx0nPTkbIg7SQpcea7mNDH5d?=
+ =?iso-8859-1?Q?r/AX4k3MlqiKvb/tWSRbuZu4O1EE3LKuF8fOGERWDfDOUzlYv9SJnC7v9p?=
+ =?iso-8859-1?Q?O5hqsIioJ2Wf1LUq3f5Hr00kIWXGBBv/g5Rg//pzuTA2ttYKpZP2YmpS7Q?=
+ =?iso-8859-1?Q?jzTlD9Kuq/Xs1QT18st9dS0/5W1VVkWJ6UXX4hCJuu66a9Bcns3Tmc4DHx?=
+ =?iso-8859-1?Q?NInsSfmA59wt3kF0Ew57qxvMbxHXiD1WxKDSz1lqN4WUhZOo3bzG7d9D6R?=
+ =?iso-8859-1?Q?ehppQ2bYXDv2kVuMMfVjV1w8fZJHYsDGD5Vjw5t7SJUNdr+ATJpZg4pxPL?=
+ =?iso-8859-1?Q?qWvfBVMLR4VZBIJOe36fmOa8stOR7JNUMeyjIftGCRaSTIXwbWhjbiGz15?=
+ =?iso-8859-1?Q?/K0hTBHu39CVVA+Npkh8tQvGtpHqipeolgVpvCwfiOxdNMpudXrjHiRdJs?=
+ =?iso-8859-1?Q?HUYmZR6mrWyUPok2qM1hV6ziL7h4EzULIE7dkGEdrDBhQnzeKe7mO/q4Iu?=
+ =?iso-8859-1?Q?OXhzGtWNXv2YgNgPMhrXepHlAFGivKNNk/JCj27DgdIx2RsGZz99CcZyEW?=
+ =?iso-8859-1?Q?qyGgXUnAwpNo46yV896ToTxMsYPsIQDB5A6YSIySo6D5I2XemsEbhxB92x?=
+ =?iso-8859-1?Q?Sjoq5chd+HoGtGMb3b8VZrK9eZUx8eE58kP6NPhzxRlrfTO7lm/a+qrY7f?=
+ =?iso-8859-1?Q?imeMl0wg7fn2RR4W19bkLBEKu3goR8LGEjx6BcnqC5A+3zoLEQWk38nyVB?=
+ =?iso-8859-1?Q?UHguZvQZf7MGOANCddxGv373olkCBpysHteg8dy5bPyL4lDXNnHc2lVcSf?=
+ =?iso-8859-1?Q?tag4IafbGqJjsXVwhLeYO3PPAm6noz2b8zhIBlCpWefFtbcyuNqurMhb1e?=
+ =?iso-8859-1?Q?Aljk/GtgovztxcYwxutANiUqbwwQAfSxhR4iBV6HmmWRI/Ee46/t3ERECC?=
+ =?iso-8859-1?Q?S5X5B5ry65UYGYwnWLGZaoDA8SKccg3tz085eEgQxgCUx1DXuy1/G9Fqke?=
+ =?iso-8859-1?Q?wHmMYuX4yiRj7ihgGkxMHcAT+RdmHl61x52IPiT5cyQ0Yg7254+UhqstDJ?=
+ =?iso-8859-1?Q?6MPtgxlQke0qx0twfscV2citlaadQD07Mu6PPFPkHeoFjQhOHShg0RYLNM?=
+ =?iso-8859-1?Q?ei5JWWQ8DB3rTj9nDrOw8RlcB53jDl3vT7WQ0WGCq78FD9qWPZpx3cI3Fj?=
+ =?iso-8859-1?Q?WW+HTdGudkDzz0Ox0Sl4ZcJ1LshGGRDrpqLOTEt6XnJCCDHhec9XZE5vUJ?=
+ =?iso-8859-1?Q?3r2rSLDnW3ANpUX2072ZbqJXNGu2Ov5lGWqk/4v2VPKkfnbz+ZD79gmtAC?=
+ =?iso-8859-1?Q?PpQ+1+TLAMaUAy+DNF+xsIJExBG1ugkJuCY0o6LFZPK9iD?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3807f2c7-e506-44b2-f39b-08dec016669f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8dc4f454-14df-490b-0ab5-08dec01749cf
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 19:45:57.8390
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 19:52:18.9397
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YC0d5mINFeoCuoVSzTs+yEq6ycRYXQIMZEqzn6JXFzI3Mw2al2Uiv/nCqOUTi8zw7Rxgt7eN3Ri8DnIeJCYeUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7241
+X-MS-Exchange-CrossTenant-UserPrincipalName: EhjZuH7aIL+uJ6tBw2ijRit/sPLv7RMEQKB5dFa8E3xYgEqdqNeNu3j+OnGyHuVDGxhNiOPv72OhYIclWfTYOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12656
 
-On Thu, May 21, 2026 at 07:11:05PM +0200, Franz Schnyder wrote:
-> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+On Fri, May 22, 2026 at 08:24:38AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [High] Off-by-4 error in `gpio4` line names array assigns GPIO names to actively driven Ethernet pins
+> - [Medium] Redundant `gpio-hog` nodes for pins concurrently used as interrupts by drivers
+> - [Medium] Missing `status = "okay";` for `pwm2` and `pwm3` will cause backlight overlays to fail
+> --
 >
-> Add support for the Toradex Aquila iMX95 and its development carrier
-> board.
+> commit 33a28c1f4850f44b57edd7bcc9794f6b7f5401a7
+> Author: Paul Gerber <paul.gerber@tq-group.com>
 >
-> The module consists of an NXP i.MX95 family SoC, up to 16GB LPDDR5 RAM,
-> up to 128GB of storage, a USB 3.2 OTG and USB 2.0 Host, a Gigabit
-> Ethernet PHY, a 10 Gigabit Ethernet interface, an I2C EEPROM and
-> Temperature Sensor, an RX8130 RTC, one Quad lane CSI interface, one Quad
-> lane DSI or CSI interface, one LVDS interface (one or two channels), and
-> some optional addons: DisplayPort (through a DSI-DP bridge), TPM 2.0,
-> and a WiFi/BT module.
+> arm64: dts: freescale: add initial device tree for TQMa8MPQS with i.MX8MP
 >
-> Link: https://www.toradex.com/computer-on-modules/aquila-arm-family/nxp-imx95
-> Link: https://www.toradex.com/products/carrier-board/aquila-development-board-kit
-> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> Co-developed-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> Co-developed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Co-developed-by: Antoine Gouby <antoine.gouby@toradex.com>
-> Signed-off-by: Antoine Gouby <antoine.gouby@toradex.com>
-> Co-developed-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> Co-developed-by: Franz Schnyder <franz.schnyder@toradex.com>
-> Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
-> ---
+> This adds support for TQMa8MPQS module on MB-SMARC-2 board.
+>
 ...
-> +
-> +	carrier_eeprom: eeprom@57 {
-> +		compatible = "st,24c02", "atmel,24c02";
+>
+> > +&gpio4 {
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_gpio4>, <&pinctrl_sdp>, <&pinctrl_espi_rst>;
+> > +
+> > +	gpio-line-names = "RTC_INT#", "GPIO8", "", "",
+> > +			  "GPIO9", "ESPI_RST#", "", "",
+> > +			  "", "", "", "",
+> > +			  "", "", "GBE0_SDP_DIR", "",
+> > +			  "GPIO7", "", "", "",
+> > +			  "", "", "", "",
+> > +			  "", "GPIO0", "GPIO1", "",
+> > +			  "GPIO2", "GPIO6", "", "";
+>
+> [Severity: High]
+> Are GBE0_SDP_DIR and GPIO7 placed at the correct indices in this array?
+>
+> They are currently at indices 14 and 16, which correspond to GPIO4_IO14 and
+> GPIO4_IO16. However, these are actively driven Ethernet lines (ENET1_RGMII_TD2
+> and ENET1_RGMII_TX_CTL) as multiplexed in pinctrl_fec.
+>
+> Could this be an off-by-4 error, and should they instead be at indices 18 and
+> 20, which are explicitly multiplexed as GPIOs? If exposed to userspace as
+> GPIOs, could manipulating these active Ethernet TX lines cause hardware
+> conflicts or disrupt network connectivity?
 
-st,24c02 is not documented.
+Is AI said true?
 
-> +		reg = <0x57>;
-> +		pagesize = <16>;
-> +	};
-> +};
-...
-> +
-> +	/* Aquila GPIO_05 */
-> +	pinctrl_gpio_5: gpio5grp {
-> +		fsl,pins = <IMX95_PAD_ENET2_TD1__GPIO4_IO_BIT18	0x31e>; /* Aquila C21 */
-> +	};
-> +
-> +	/* Aquila GPIO_06 */
-> +	pinctrl_gpio_6: gpio6grp {
-> +		fsl,pins = <IMX95_PAD_ENET2_TD2__GPIO4_IO_BIT17	0x31e>; /* Aquila C22 */
-> +	};
-> +
-> +	/* Aquila GPIO_07 */
-> +	pinctrl_gpio_7: gpio7grp {
-> +		fsl,pins = <IMX95_PAD_ENET2_RXC__GPIO4_IO_BIT23	0x31e>; /* Aquila C23 */
-> +	};
-> +
-> +	/* Aquila GPIO_08 */
-> +	pinctrl_gpio_8: gpio8grp {
-> +		fsl,pins = <IMX95_PAD_PDM_BIT_STREAM1__AONMIX_TOP_GPIO1_IO_BIT10	0x31e>; /* Aquila C24 */
-> +	};
+>
+> [ ... ]
+>
+> > +&pwm2 {
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_pwm2>;
+> > +};
+> > +
+> > +&pwm3 {
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_pwm3>;
+> > +};
+>
+> [Severity: Medium]
+> Since the backlight_lvds0 and backlight_lvds1 nodes on the baseboard rely on
+> &pwm3 and &pwm2, should these controllers have status = "okay"; added here?
 
-Please fix checkpatch worning, it exceed 100 char.
+Make sense, in dtsi, pwm2 pwm3's status is disabled.
 
 Frank
 
+>
+> If left disabled (as they are in the SoC dtsi), won't any overlays that enable
+> the panels silently fail when the backlight driver cannot acquire the disabled
+> PWM channels?
+>
+> --
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260522075656.841745-1-alexander.stein@ew.tq-group.com?part=2
