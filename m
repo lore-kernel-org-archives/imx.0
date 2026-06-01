@@ -1,56 +1,50 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554F43A48E6
-	for <imx@lists.linux.dev>; Mon,  1 Jun 2026 11:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBB535E952
+	for <imx@lists.linux.dev>; Mon,  1 Jun 2026 11:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780313188; cv=none; b=ZTHkKxsoAS5yRyM3w2Y8vsHwjoFFDbgRq3jpT4Yy29fvP7anY2pRK7Me04yVYllKPaNQuRuMkVZOZtzfXgAOfobeI4pmTni3H+IjudDL2HmZKQFmBRNbis1CvwYJ3E3fSjrcUrfzdNVlRuHft+WZDJDAIofTF9BW8k/VjezyVWM=
+	t=1780313562; cv=none; b=T4R8CpFrgLrpRADkHQjIAZ2FwMepF0+pEZj7sdu4tVWNgzDFswoTWUX/bsfFoYikdMRf5EP6y5/dofK282+IZjHiqIpWGGakpivXu2aaCqtzo3SNa2wsa99BSIdKeJ081nuCqpRBr/2b+ZfxU8Dy2f7OMmx4TaqQxSLv/qzlleE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780313188; c=relaxed/simple;
-	bh=39Eherp63PgbSVpCLJUmry6m5KK5nLYtdbWKClfaF9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGnXvSRmNCLZBXT/CV0Lmy+zoetFocyenmpPDLwxLwr8gjAFfdwe4DZ3KLhPBvJuCVUxlVbMc9JKqFtuC887HEMU4+US4WG8B9PNLlJeKiUH/93yWbLBsJ4R0ZcVMHrbtQ8Cm8Zuazve7Opf1GGZznjPc1zopPk/CA3JoLoqxww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=dXE4OhwR; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=SDUqFKvH; arc=none smtp.client-ip=80.241.56.152
+	s=arc-20240116; t=1780313562; c=relaxed/simple;
+	bh=jDZ35an42v1a6D8XAJeWmnrKss2NVTM1YSxd6gMMgZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H9nncY0IlyN8iydoEnlzCyOCBmm2KbRvgSM1MhcPriYsIdD1MhJRID3evS7BuATPZ1020NO5gd5IqcXWevDjb41quYgq2Zbvbuej1p+Ort1JfdQDzOC/L5fx8cI8E6uLDg6R2fOOKE+rK5Z6Sy2EPrzeQsKuC11P3YlF60Zwkbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=sVBx+ZPl; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=X8h5eiYk; arc=none smtp.client-ip=80.241.56.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="dXE4OhwR";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="SDUqFKvH"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="sVBx+ZPl";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="X8h5eiYk"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4gTWqv5C23z9v3b;
-	Mon,  1 Jun 2026 13:26:19 +0200 (CEST)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gTWpk0ccdz9tfX;
+	Mon,  1 Jun 2026 13:25:18 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780313179;
+	t=1780313118;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8KBU725g9ztpudyjGyBfTRldvXjIEvfRn0HBjEM1CLg=;
-	b=dXE4OhwRF5ElEyhAxEIXuUlfq2Qkg+pa6K698Ca53y/kF3YZv0lZvdfJhPUZMBmCHqCHNT
-	PRPVnXvtXOfynnHJmWrTOZV1Er0ktBgGmgG9j583NqzZxg7h93hg3CXJGFTuNxNbEVOiCQ
-	tgFCRLsORexNG1yxx/kSaGal46FkXeS761uC4abCwlqpxyRiaWcW4nz2VtjWbueXnpADxo
-	jC2en9BCme52qd/oWQFuzyL4UDu2nClKZ727nYmJwospAwSgWddPHKyVyie3BIqmU94sA8
-	7pxmqODC1RIuJ7RXFrpgvZGl8s4FJH1DToC/ym7+WU7qivcr/RXx1Qh+C68Clg==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=SDUqFKvH;
-	spf=pass (outgoing_mbo_mout: domain of lukasz.majewski@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=lukasz.majewski@mailbox.org
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TckpevEDXvsiLT9gSo/NXB3/PFN+b7qd8kin63AE6NM=;
+	b=sVBx+ZPlkp4VWVAm7WxruTkfk6IeJKjSLE4xpyNRT9gPixVIb4sBktRXVCVlaLo9fM4tF/
+	lJU73eHts98v2hFxI3DT6MmGNLEjVs4j0TE5PJekJhBMsjMyTrfetWkKuOirIWl9Glue94
+	VxcZW2d/csft6kxQ4/il5D3HUVQT2msOunFZ/shGDS9hCb/quyTOTbIDl8dtk6EGyiVsXn
+	am2iDlEu4HFdYsjP79ttItTt95qDKPH3CdltL771RHcTHv+A7zlnIsr037cfTf6o3uPFjf
+	Hz/PRD1ZNLH38w7DxoMJ34cklzt2a154/yXQbihvLN3utGmFKpKA/F4MJE1F+Q==
 From: Lukasz Majewski <lukasz.majewski@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780313178;
+	t=1780313116;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8KBU725g9ztpudyjGyBfTRldvXjIEvfRn0HBjEM1CLg=;
-	b=SDUqFKvHw0kslBFhgYQa8SZ+vjrhc/iGSQSRllp/A9iym7vfdv7SvrVhJmCyTAC34fv+UK
-	vscZElYdRLagO8qTmTRFluaRH4p6e3M/86ZdOdMtOUO+Kh0blNrvOC/2eckUEcXwg0OEjl
-	lZUo9ZBiZtaW4K3nQLncK7n4aY9Sg4PO5MNhDS9stJCNGM4zKoZ3ZLSsE9An+KWnpUNWJ/
-	ZALbPiLVc9iHPOJEoy7PE1uq/LfQqvild5IL+rZrccgbMTVr8SQo2eaRyWyG1CzoUz7Hav
-	MjC2P+iqATLOHw5J0PpTdkG3KIWZQK4FiBxZ6iGD3actID2aYbomI0UZOFMdOw==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TckpevEDXvsiLT9gSo/NXB3/PFN+b7qd8kin63AE6NM=;
+	b=X8h5eiYkUEDXFT6Khl7e9LB/COTfrk5c262xb3Rv77cgS+OgNRj4SwK/A+RkuhO/yPLg3G
+	kK9wK73Ww4u+Pou+yEEHWcCxSt6uvTnDcgA/I5wCSQwOc7saEwY9PLX5/Fpuw0W9SewyCU
+	4X8n0MeEOh+uw06HzCK/PZ9dmGzVRge7dbQaxgfRztzhyHaKFabhptF9aXjG1xQYSf6KFU
+	d76u+xHhdf5ntyu2CNH56Sg3x2wIotlnubBif57Pq31OH/66VBSAvFSjulNcVnDd5tSyvN
+	fPgzoKZfEBaz8Mr4m7URv+JRxt8INwWHvVCO4uMX70ur+N+MHgD0UoggXQRg6w==
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
 	Eric Dumazet <edumazet@google.com>,
@@ -66,11 +60,9 @@ Cc: Richard Cochran <richardcochran@gmail.com>,
 	linux-arm-kernel@lists.infradead.org,
 	Rob Herring <robh@kernel.org>,
 	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v24 7/7] net: mtip: Extend the L2 switch driver for imx287 with bridge operations
-Date: Mon,  1 Jun 2026 13:24:36 +0200
-Message-ID: <20260601112437.2216043-8-lukasz.majewski@mailbox.org>
-In-Reply-To: <20260601112437.2216043-1-lukasz.majewski@mailbox.org>
-References: <20260601112437.2216043-1-lukasz.majewski@mailbox.org>
+Subject: [net-next v24 0/7] net: mtip: Add support for MTIP imx287 L2 switch driver
+Date: Mon,  1 Jun 2026 13:24:29 +0200
+Message-ID: <20260601112437.2216043-1-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,257 +70,137 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: uxkcoysem9xins8psb7fymnuwj19pdmr
-X-MBO-RS-ID: 1fa7b8d72bab8a673ed
-X-Rspamd-Queue-Id: 4gTWqv5C23z9v3b
+X-MBO-RS-META: k5gagsrmkhe77hpt495k77pa5tyem791
+X-MBO-RS-ID: 7653ccd1b5e3ceaed63
 
-After this change the MTIP L2 switch can be configured as offloading
-device for packet switching when bridge on its interfaces is created.
+This patch series adds support for More Than IP's L2 switch driver embedded
+in some NXP's SoCs. This one has been tested on imx287, but is also available
+in the vf610.
 
-Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
----
+In the past there has been performed some attempts to upstream this driver:
 
-Changes for v13:
-- New patch - created by excluding some code from large (i.e. v12 and
-  earlier) MTIP driver
+1. The 4.19-cip based one [1]
+2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
+   with NO tag appended.
+3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
+   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
+   the driver uses already configured MAC and PHY to also configure PHY.
 
-Changes for v14 - v15:
-- None
+All three approaches were not accepted as eligible for upstreaming.
 
-Changes for v16:
-- Enable MTIP ports to support bridge offloading
+The driver from this series has following features:
 
-Changes for v17 - v20:
-- None
+1. It is fully separated from fec_main - i.e. can be used interchangeable
+   with it. To be more specific - one can build them as modules and
+   if required switch between them when e.g. bridge offloading is required.
 
-Changes for v21:
-- Avoid double call of notifier_from_errno() on -EOPNOTSUPP
-- Rollback changes to driver state when switchdev_bridge_port_offload()
-  fails
+   To be more specific:
+        - Use FEC_MAIN: When one needs support for two ETH ports with separate
+          uDMAs used for both and bridging can be realized in SW.
 
-Changes for v22:
-- Reorder setting of br_members and master_dev to successful call of
-  switchdev_bridge_port_offload()
+        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
+          attached to switch and bridging shall be offloaded to HW. 
 
-Changes for v23:
-- Update copyright notice
-- Clear the br_offload flag and enable switch port separation
+2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
+   separation at boot time. Port separation is disabled when bridging is
+   required.
 
-Changes for v24:
-- None
----
- .../net/ethernet/freescale/mtipsw/Makefile    |   2 +-
- .../net/ethernet/freescale/mtipsw/mtipl2sw.c  |   9 +-
- .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |   2 +
- .../ethernet/freescale/mtipsw/mtipl2sw_br.c   | 138 ++++++++++++++++++
- 4 files changed, 149 insertions(+), 2 deletions(-)
+3. Example usage:
+        Configuration:
+        ip link set lan0 up; sleep 1;
+        ip link set lan1 up; sleep 1;
+        ip link add name br0 type bridge;
+        ip link set br0 up; sleep 1;
+        ip link set lan0 master br0;
+        ip link set lan1 master br0;
+        bridge link;
+        ip addr add 192.168.2.17/24 dev br0;
+        ping -c 5 192.168.2.222
+
+        Removal:
+        ip link set br0 down;
+        ip link delete br0 type bridge;
+        ip link set dev lan1 down
+        ip link set dev lan0 down
+
+4. Limitations:
+        - Driver enables and disables switch operation with learning and ageing.
+        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
+          on purpose, as up till now we didn't had consensus about how the driver
+          shall be added to Linux.
+          However, on top of this patch set the code with SWITCHDEV support (v6.6.
+          PREEMPT_RT enabled) has been implemented in [4].
+
+5. Clang build:
+	make LLVM_SUFFIX=-19 LLVM=1 mrproper
+	cp ./arch/arm/configs/mxs_defconfig .config
+	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 menuconfig
+	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 -j8 LOADADDR=0x40008000 uImage dtbs
+
+        make LLVM_SUFFIX=-19 LLVM=1 mrproper
+        make LLVM_SUFFIX=-19 LLVM=1 allmodconfig
+        make LLVM_SUFFIX=-19 LLVM=1 W=1 drivers/net/ethernet/freescale/mtipsw/ | tee llvm_build.log
+        make LLVM_SUFFIX=-19 LLVM=1 W=1 -j8 | tee llvm_build.log
+
+6. Kernel compliance checks:
+	make coccicheck MODE=report J=4 M=drivers/net/ethernet/freescale/mtipsw/
+        make allmodconfig; ~/work/src/smatch/smatch_scripts/kchecker drivers/net/ethernet/freescale/mtipsw/
+
+7. GCC:
+        make mrproper
+        make allmodconfig
+        make W=1 drivers/net/ethernet/freescale/mtipsw/
+
+        
+        [source OE/Yocto SDK build environment]
+        CROSS_COMPILE=arm-poky-linux-gnueabi- ARCH=arm make mrproper
+        cp ./arch/arm/configs/mxs_defconfig .config
+        CROSS_COMPILE=arm-poky-linux-gnueabi- ARCH=arm make menuconfig
+        CROSS_COMPILE=arm-poky-linux-gnueabi- ARCH=arm make -j8 LOADADDR=0x40008000 uImage dtbs
+
+8. DT_SCHEMA checks:
+        source ~/.venv/bin/activate
+        source /opt/poky/3.1.31/environment-setup-armv5e-poky-linux-gnueabi
+        make dt_binding_check DT_SCHEMA_FILES=nxp,imx28-mtip-switch.yaml
+        make CHECK_DTBS=y DT_SCHEMA_FILES=nxp,imx28-mtip-switch.yaml nxp/mxs/imx28-xea.dtb
+
+
+Links:
+[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
+[3] - https://github.com/lmajewski/linux-imx28-l2switch/commits/imx28-v5.12-L2-upstream-RFC_v1
+[4] - https://github.com/lmajewski/linux-imx28-l2switch/commits/vf610-linux-6.6.y-mtipl2sw
+
+
+Lukasz Majewski (7):
+  dt-bindings: net: Add MTIP L2 switch description
+  net: mtip: The L2 switch driver for imx287
+  net: mtip: Add buffers management functions to the L2 switch driver
+  net: mtip: Add net_device_ops functions to the L2 switch driver
+  net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
+  net: mtip: Extend the L2 switch driver with management operations
+  net: mtip: Extend the L2 switch driver for imx287 with bridge
+    operations
+
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   |  150 ++
+ MAINTAINERS                                   |    7 +
+ drivers/net/ethernet/freescale/Kconfig        |    1 +
+ drivers/net/ethernet/freescale/Makefile       |    1 +
+ drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+ .../net/ethernet/freescale/mtipsw/Makefile    |    4 +
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 2046 +++++++++++++++++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  648 ++++++
+ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  138 ++
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  442 ++++
+ 10 files changed, 3450 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
  create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
 
-diff --git a/drivers/net/ethernet/freescale/mtipsw/Makefile b/drivers/net/ethernet/freescale/mtipsw/Makefile
-index a99aaf6ddfb2..81e2b0e03e6c 100644
---- a/drivers/net/ethernet/freescale/mtipsw/Makefile
-+++ b/drivers/net/ethernet/freescale/mtipsw/Makefile
-@@ -1,4 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- obj-$(CONFIG_FEC_MTIP_L2SW) += nxp-mtipl2sw.o
--nxp-mtipl2sw-objs := mtipl2sw.o mtipl2sw_mgnt.o
-+nxp-mtipl2sw-objs := mtipl2sw.o mtipl2sw_mgnt.o mtipl2sw_br.o
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-index 76e503e128dd..0a12d115b78b 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-@@ -1961,11 +1961,15 @@ static int mtip_sw_probe(struct platform_device *pdev)
- 
- 	mtip_clear_atable(fep);
- 
-+	ret = mtip_register_notifiers(fep);
-+	if (ret)
-+		goto of_free_references;
-+
- 	ret = mtip_switch_dma_init(fep);
- 	if (ret) {
- 		dev_err(&pdev->dev, "%s: ethernet switch init fail (%d)!\n",
- 			__func__, ret);
--		goto of_free_references;
-+		goto unregister_notifiers;
- 	}
- 
- 	ret = mtip_mii_init(fep, pdev);
-@@ -1997,6 +2001,8 @@ static int mtip_sw_probe(struct platform_device *pdev)
- 			  fep->bd_dma);
- 	fep->rx_bd_base = NULL;
- 	fep->tx_bd_base = NULL;
-+ unregister_notifiers:
-+	mtip_unregister_notifiers(fep);
-  of_free_references:
- 	mtip_parse_of_cleanup(fep);
- 
-@@ -2009,6 +2015,7 @@ static void mtip_sw_remove(struct platform_device *pdev)
- 
- 	timer_delete_sync(&fep->timer_mgnt);
- 
-+	mtip_unregister_notifiers(fep);
- 	mtip_ndev_cleanup(fep);
- 
- 	mtip_parse_of_cleanup(fep);
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-index 72784df6c127..49d8454f7cd1 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-@@ -640,6 +640,8 @@ int mtip_port_learning_config(struct switch_enet_private *fep, int port,
- int mtip_port_blocking_config(struct switch_enet_private *fep, int port,
- 			      bool enable);
- bool mtip_is_switch_netdev_port(const struct net_device *ndev);
-+int mtip_register_notifiers(struct switch_enet_private *fep);
-+void mtip_unregister_notifiers(struct switch_enet_private *fep);
- int mtip_port_enable_config(struct switch_enet_private *fep, int port,
- 			    bool tx_en, bool rx_en);
- void mtip_clear_atable(struct switch_enet_private *fep);
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-new file mode 100644
-index 000000000000..c9d9151b0e81
---- /dev/null
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-@@ -0,0 +1,138 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ *  L2 switch Controller driver for MTIP block - bridge network interface
-+ *
-+ *  Copyright (C) 2026 NABLADEV Software Engineering GmbH
-+ *  Lukasz Majewski <lukma@nabladev.com>
-+ */
-+
-+#include <linux/etherdevice.h>
-+#include <linux/netdevice.h>
-+#include <linux/platform_device.h>
-+#include <net/switchdev.h>
-+
-+#include "mtipl2sw.h"
-+
-+static int mtip_ndev_port_link(struct net_device *ndev,
-+			       struct net_device *br_ndev,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(ndev), *other_priv;
-+	struct switch_enet_private *fep = priv->fep;
-+	struct net_device *other_ndev;
-+	int err;
-+
-+	/* Check if one port of MTIP switch is already bridged */
-+	if (fep->br_members && !fep->br_offload) {
-+		/* Get the second bridge ndev */
-+		other_ndev = fep->ndev[fep->br_members - 1];
-+		other_priv = netdev_priv(other_ndev);
-+		if (other_priv->master_dev != br_ndev) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "L2 offloading only possible for the same bridge!");
-+			return -EOPNOTSUPP;
-+		}
-+
-+		fep->br_offload = 1;
-+		mtip_switch_dis_port_separation(fep);
-+		mtip_clear_atable(fep);
-+	}
-+
-+	err = switchdev_bridge_port_offload(ndev, ndev, NULL, NULL, NULL,
-+					    false, extack);
-+	if (err) {
-+		dev_err(&ndev->dev, "can't offload bridge port %s [err: %d]\n",
-+			ndev->name, err);
-+
-+		if (fep->br_members && fep->br_offload) {
-+			fep->br_offload = 0;
-+			mtip_switch_en_port_separation(fep);
-+		}
-+
-+		return err;
-+	}
-+
-+	if (!priv->master_dev)
-+		priv->master_dev = br_ndev;
-+
-+	fep->br_members |= BIT(priv->portnum - 1);
-+
-+	dev_dbg(&ndev->dev,
-+		"%s: ndev: %s br: %s fep: %p members: 0x%x offload: %d\n",
-+		__func__, ndev->name,  br_ndev->name, fep, fep->br_members,
-+		fep->br_offload);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static void mtip_netdevice_port_unlink(struct net_device *ndev)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(ndev);
-+	struct switch_enet_private *fep = priv->fep;
-+
-+	dev_dbg(&ndev->dev, "%s: ndev: %s members: 0x%x\n", __func__,
-+		ndev->name, fep->br_members);
-+
-+	switchdev_bridge_port_unoffload(ndev, NULL, NULL, NULL);
-+
-+	fep->br_members &= ~BIT(priv->portnum - 1);
-+	priv->master_dev = NULL;
-+
-+	if (fep->br_members && fep->br_offload) {
-+		fep->br_offload = 0;
-+		mtip_switch_en_port_separation(fep);
-+		mtip_clear_atable(fep);
-+	}
-+}
-+
-+/* netdev notifier */
-+static int mtip_netdevice_event(struct notifier_block *unused,
-+				unsigned long event, void *ptr)
-+{
-+	struct net_device *ndev = netdev_notifier_info_to_dev(ptr);
-+	struct netdev_notifier_changeupper_info *info = ptr;
-+	struct netlink_ext_ack *extack;
-+	int ret = NOTIFY_DONE;
-+
-+	if (!mtip_is_switch_netdev_port(ndev))
-+		return NOTIFY_DONE;
-+
-+	extack = netdev_notifier_info_to_extack(&info->info);
-+
-+	switch (event) {
-+	case NETDEV_CHANGEUPPER:
-+		if (!netif_is_bridge_master(info->upper_dev))
-+			break;
-+
-+		if (info->linking)
-+			ret = mtip_ndev_port_link(ndev, info->upper_dev,
-+						  extack);
-+		else
-+			mtip_netdevice_port_unlink(ndev);
-+
-+		break;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+
-+	return notifier_from_errno(ret);
-+}
-+
-+static struct notifier_block mtip_netdevice_nb __read_mostly = {
-+	.notifier_call = mtip_netdevice_event,
-+};
-+
-+int mtip_register_notifiers(struct switch_enet_private *fep)
-+{
-+	int ret = register_netdevice_notifier(&mtip_netdevice_nb);
-+
-+	if (ret)
-+		dev_err(&fep->pdev->dev, "can't register netdevice notifier\n");
-+
-+	return ret;
-+}
-+
-+void mtip_unregister_notifiers(struct switch_enet_private *fep)
-+{
-+	unregister_netdevice_notifier(&mtip_netdevice_nb);
-+}
 -- 
 2.39.5
 
