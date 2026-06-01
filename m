@@ -1,299 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF22372064
-	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 11:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D463D3D06;
+	Tue,  2 Jun 2026 12:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780399986; cv=none; b=ZDEe2L+fAwHIMklBY/HO+87O23X6H2TTRXRr6vf4NBO2Kz3Fz/bnBfv0paX8rlzO6JSI2BAOlcTjHf4UtWF1/XvNeAhDqfpuNzSWMpcU1oJfs9HLS2OWtmTaQlQ4l+SGJfLFljP/bkEJCIP9/5DQ0gjXxV6ZSb27UErOaV1s4iM=
+	t=1780402067; cv=none; b=hp7Hpl51/ClbsRD8ga7KIvMNIi6SZgd8M+0vBQ+TJ33f6EHb2ZDgVOYqP/ef7iYG9qQUD/rwej+RUm/2dlIj2yfH3zYwkd/7yGFFciT2bDuBsrT9Z4HVeSizPwuLOX1NChwkHWnsVN82HgKBeTYUCOx1LOvsGS6Do9EUh9AdE+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780399986; c=relaxed/simple;
-	bh=WfP7BNNNsVOsy+d14ofdZPRWCaGJ0/awbO8fdD1Xc94=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hWeeGLUACamN5Iuqc225GORqUUtxmlgzBNQ+Z9OBSIPfDYD9+hZjbvSJjIkq2DCngPNaTjfdhi4YubT91j+Cui8ykjAJR4mLQDhkGDK+x6UEtrx/zLw+8vKjs+4WDUulFPoM8NjBW3eHmV/LkHK5XA8Vo2CEUw8cnVpER2kYfAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRiw1mqW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780402067; c=relaxed/simple;
+	bh=znm/xYFPPzIp+vZhak+uytiArf36c+YjCXqqixihkXo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TMlCPTuRtWQ1B8GQpcebCV8086N7ER7O66dp9MnziHnC8vAVxc+uTtdPj65ILPHUq0XY+AQe8DXbepwrFYycOvp7YCaHBEHh/uz6gEmbL/aBJaAaJXReLe3uEzzQABuXre9+uBcoNXs5x+xGP3F9KRG0LqYhgBMMfz6/lwcocQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DQHx7N8j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRiw1mqW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D781F0089B;
-	Tue,  2 Jun 2026 11:32:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DQHx7N8j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8291F0089B;
+	Tue,  2 Jun 2026 12:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780399978;
-	bh=19eR01632u1ZUV1tZhQ7+4rc8nYfqeczyPfzcR45JPc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gRiw1mqWkEfLnChMvuN+cbTXlyxSZ+lGFPJ/Cbgld7i9L/9/1i46U5dOPGw3HDS8y
-	 9eI98d3aED4t40ufnzq363FJB5jhnZLTGzOALU865J7M3gQ4r/OpQpl+0Ao6D+rGHf
-	 SzJwpi1a7vZ4ymbC2kqN+27NVzGHw7n8DMptMt+gT6tXjcd2WEQ/nyBuCSki+/5lCt
-	 yW+p6vo2H/wkwOjXphl90L6vqpF4ahN4hi94vlzpi0Sn0jzTHD2LSTO1nALiNmzCnJ
-	 FQ9UKcvxiHyYP3Mr1lLNXR8qRECufsojpdUUGyNYZyoE1PKgwUljpwKwOKdkRuduIK
-	 oZ1IU/eFToFAQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [net-next v24 5/7] net: mtip: Add mtip_switch_{rx|tx} functions
- to the L2 switch driver
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Lukasz Majewski" <lukasz.majewski@mailbox.org>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260601112437.2216043-6-lukasz.majewski@mailbox.org>
-References: <20260601112437.2216043-6-lukasz.majewski@mailbox.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 11:32:56 +0000
-Message-Id: <20260602113256.E0D781F0089B@smtp.kernel.org>
+	s=k20260515; t=1780402065;
+	bh=DHPDiqn8LSPaxr2rasAHtKAcGxdyURFmrBAgPFEOvQQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=DQHx7N8jb/ECUwPpqoMELX73Ct6BFdnEm2iZ/HisdYy0dUb2VbdGECWXi7MuCYy8x
+	 vUoFowLeF1alpi7LhQ3LbqbSV2enwyrObEoXY1pe34tG6+KkaPpPaQ4+7dM7bGXKTq
+	 KmWYO/vDy/KH5Tm9D1UOC90Vb5wn2u0vEk6Wzq2wMloEIEYP/5ZaBT9hj/iyXpr5M7
+	 EAMldCkNejJo0C9A/c2hfTiw7bsSNhec3cT2/wL2Ltie9vzBHH31CrwLRmXNJMXObT
+	 DPQIE2QPmTtWHSvxgjF0ibLyThRNp2tRkQr4nHG4JlLYUG6f9IG2qJNk2Do4xhQAw6
+	 95/wtQr0EAszA==
+From: Mark Brown <broonie@kernel.org>
+To: Frank.Li@nxp.com, xiaoning.wang@nxp.com, 
+ "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Carlos Song <carlos.song@nxp.com>
+In-Reply-To: <20260525062357.3191349-1-carlos.song@oss.nxp.com>
+References: <20260525062357.3191349-1-carlos.song@oss.nxp.com>
+Subject: Re: [PATCH v3 0/2] spi: fsl-lpspi: fix DMA termination issues
+Message-Id: <178032289378.44654.7682097134134835987.b4-ty@b4>
+Date: Mon, 01 Jun 2026 15:08:13 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1568; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=znm/xYFPPzIp+vZhak+uytiArf36c+YjCXqqixihkXo=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqHsePYfkXsOt+wvX7GJE3qdNFCCqZGMOQ1s3rN
+ ijPAs7swa6JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCah7HjwAKCRAk1otyXVSH
+ 0FqUB/4pBVNlL95oXPptIbbXIwmRvSSRqvvqXXk+SDlzSqhMker0XfkpQ5nY2aIbb2OMe2g06QJ
+ tnNpkOYmdEFNV+ms4KXeI+QATv2qE3OBmkOzRv/fKdC9ShBRJgpp/Jx29IUK4K/pSlZBP1GYDfI
+ lnJj99ARO8BGmimOYxgjMDRD1OHhgCjzYF+yJiR81ONLNCcUn1isp+MZxS7fs2hn6TuscudH3kW
+ PkC2uPX/5+UjzsOMEK7lRKl8vljb4bfeOmqVWepcTU0SsXmq1gM3anY2KuTpCoHHLEncddTXDtf
+ srSWInLSLrZJfJ8hDC2GRcYtASKb8du3BNNC4JqNjsE7lxsu
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Thank you for your contribution! Sashiko AI review found 9 potential issue(=
-s) to consider:
-- [Critical] Flawed error handling for multi-descriptor packets causes frag=
-mented packet injection.
-- [High] NULL pointer dereference in mtip_switch_tx() when queues are stopp=
-ed and ring is empty.
-- [High] Missing dma_sync_single_for_device() on RX error path causes data =
-corruption for subsequent packets.
-- [High] `swap_buffer()` corrupts the tail of packets whose length is not a=
- multiple of 4 bytes.
-- [High] Missing dma_rmb() after reading RX descriptor ownership allows spe=
-culative execution to read stale data.
-- [High] The TX completion path unmaps DMA buffers using a hardcoded frame =
-size instead of the original mapped length.
-- [Medium] The Ethernet FCS is incorrectly included in the SKB payload, bre=
-aking bridging applications.
-- [Low] Unreachable code: The TX completion check for `BD_ENET_TX_READY` is=
- mathematically impossible.
-- [Low] Received SKBs are built with zero headroom, leading to inefficient =
-processing.
---
+On Mon, 25 May 2026 14:23:55 +0800, Carlos Song (OSS) wrote:
+> spi: fsl-lpspi: fix DMA termination issues
+> 
+> From: Carlos Song <carlos.song@nxp.com>
+> 
+> This series fixes two issues in the fsl-lpspi DMA transfer error paths.
+> 
+> Patch 1 replaces the deprecated dmaengine_terminate_all() with
+> dmaengine_terminate_sync() across all error paths in
+> fsl_lpspi_dma_transfer().
+> 
+> [...]
 
-commit be1b7f747ef200958ab836f16e9cf7ce2caf1583
-Author: Lukasz Majewski <lukasz.majewski@mailbox.org>
+Applied to
 
-net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
-   =20
-This patch provides mtip_switch_tx and mtip_switch_rx functions
-code for MTIP L2 switch.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
-> diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/n=
-et/ethernet/freescale/mtipsw/mtipl2sw.c
-> index 7dfeda230e3fb..212207861e13e 100644
-> --- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-> +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-[ ... ]
-> @@ -836,11 +873,233 @@ static irqreturn_t mtip_interrupt(int irq, void *p=
-tr_fep)
-> =20
->  static void mtip_switch_tx(struct switch_enet_private *fep)
->  {
-> +	struct net_device *dev;
-> +	unsigned short status;
-> +	struct sk_buff *skb;
-> +	struct cbd_t *bdp;
-> +	int index;
-> +
-> +	spin_lock_bh(&fep->hw_lock);
-> +	bdp =3D fep->dirty_tx;
-> +
-> +	while (((status =3D bdp->cbd_sc) & BD_ENET_TX_READY) =3D=3D 0) {
-> +		if (bdp =3D=3D fep->cur_tx &&
-> +		    !mtip_netif_queues_stopped(fep))
-> +			break;
+Thanks!
 
-[Severity: High]
-What happens if the queues are stopped and the ring is empty?
+[1/2] spi: fsl-lpspi: replace dmaengine_terminate_all() with dmaengine_terminate_sync()
+      https://git.kernel.org/broonie/spi/c/e703ce47691b
+[2/2] spi: fsl-lpspi: terminate the RX channel on TX prepare failure path
+      https://git.kernel.org/broonie/spi/c/01980b5da56e
 
-If the ring is empty (bdp =3D=3D fep->cur_tx) but the queues are stopped
-(e.g. link down), this break condition evaluates to false. Would this
-cause the loop to process an empty, unsubmitted descriptor, leading to a
-NULL pointer dereference when accessing fep->tx_skbuff[index] and
-skb->dev below?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> +
-> +		index =3D bdp - fep->tx_bd_base;
-> +		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
-> +				 MTIP_SWITCH_TX_FRSIZE, DMA_TO_DEVICE);
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-[Severity: High]
-Does this unmap call violate the DMA API by using a hardcoded length?
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-The DMA API mandates that the unmap size must exactly match the length
-passed to dma_map_single(). Since outgoing network packets have variable
-lengths, could using the hardcoded MTIP_SWITCH_TX_FRSIZE maximum size
-cause DMA API warnings, IOMMU faults, or memory corruption?
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> +		bdp->cbd_bufaddr =3D 0;
-> +		skb =3D fep->tx_skbuff[index];
-> +		dev =3D skb->dev;
-> +		/* Check for errors */
-> +		if (status & (BD_ENET_TX_HB | BD_ENET_TX_LC |
-> +				   BD_ENET_TX_RL | BD_ENET_TX_UN |
-> +				   BD_ENET_TX_CSL)) {
-[ ... ]
-> +		} else {
-> +			dev->stats.tx_packets++;
-> +		}
-> +
-> +		if (status & BD_ENET_TX_READY)
-> +			dev_err_ratelimited(&fep->pdev->dev,
-> +					    "xmit interrupt and TX_READY.\n");
+Thanks,
+Mark
 
-[Severity: Low]
-Is it mathematically possible to reach this condition?
-
-The while loop entry condition guarantees that BD_ENET_TX_READY is zero:
-while (((status =3D bdp->cbd_sc) & BD_ENET_TX_READY) =3D=3D 0)
-
-Could this check be unreachable dead code, indicating a potential logic
-flaw in the state handling?
-
-[ ... ]
-> +static int mtip_switch_rx(struct net_device *dev, int budget)
->  {
-> -	return -ENOMEM;
-> +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> +	u8 *data, rx_port =3D MTIP_PORT_FORWARDING_INIT;
-> +	struct switch_enet_private *fep =3D priv->fep;
-> +	unsigned short status, pkt_len;
-> +	struct net_device *pndev;
-> +	struct ethhdr *eth_hdr;
-> +	int pkt_received =3D 0;
-> +	struct sk_buff *skb;
-> +	struct cbd_t *bdp;
-> +	struct page *page;
-> +	int index;
-> +
-> +	/* First, grab all of the stats for the incoming packet.
-> +	 * These get messed up if we get called due to a busy condition.
-> +	 */
-> +	bdp =3D fep->cur_rx;
-> +
-> +	while (!((status =3D bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
-
-[Severity: High]
-Is a read memory barrier needed here?
-
-The loop reads the descriptor status to verify that the hardware has
-yielded ownership. Without a dma_rmb() executed after this check, could
-the CPU speculatively reorder subsequent reads of bdp->cbd_datlen and
-the packet payload to occur before the ownership status change is
-globally visible, leading to stale data being processed?
-
-> +		if (pkt_received >=3D budget)
-> +			break;
-> +
-> +		pkt_received++;
-> +
-> +		writel(MCF_ESW_IMR_RXF, fep->hwp + ESW_ISR);
-> +		if (!fep->usage_count)
-> +			goto rx_processing_done;
-> +
-> +		status ^=3D BD_ENET_RX_LAST;
-> +		/* Check for errors. */
-> +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH | BD_ENET_RX_NO |
-> +			      BD_ENET_RX_CR | BD_ENET_RX_OV | BD_ENET_RX_LAST |
-> +			      BD_ENET_RX_CL)) {
-
-[Severity: Critical]
-Does this logic safely handle multi-descriptor packets?
-
-The XOR logic (status ^=3D BD_ENET_RX_LAST) treats any descriptor without
-the last-fragment bit as an error. The error handling path then yields the
-descriptor back to the hardware but does not drain the remaining descriptors
-of the packet.
-
-When the final descriptor of the fragmented packet is received, it will
-pass the error check, and the driver might incorrectly parse the middle or
-end of the fragmented packet as a brand new Ethernet frame.
-
-[ ... ]
-> +		/* Get correct RX page */
-> +		index =3D bdp - fep->rx_bd_base;
-> +		page =3D fep->page[index];
-> +		/* Process the incoming frame */
-> +		pkt_len =3D bdp->cbd_datlen;
-> +
-> +		dma_sync_single_for_cpu(&fep->pdev->dev, bdp->cbd_bufaddr,
-> +					pkt_len, DMA_FROM_DEVICE);
-> +		net_prefetch(page_address(page));
-> +		data =3D page_address(page);
-> +
-> +		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
-> +			swap_buffer(data, pkt_len);
-
-[Severity: High]
-Does swap_buffer() safely handle packet lengths that are not a multiple of =
-4?
-
-Looking at the implementation:
-
-static void swap_buffer(void *bufaddr, int len)
-{
-        unsigned int *buf =3D bufaddr;
-        int i;
-
-        for (i =3D 0; i < len; i +=3D 4, buf++)
-                swab32s(buf);
-}
-
-It appears the loop condition iterates strictly by 4. If the packet length
-is not an exact multiple of 4 bytes, could the final iteration overshoot
-the valid packet data, pulling uninitialized garbage bytes into the tail
-of the packet?
-
-> +
-> +		eth_hdr =3D (struct ethhdr *)data;
-> +		mtip_atable_get_entry_port_number(fep, eth_hdr->h_source,
-> +						  &rx_port);
-[ ... ]
-> +		if (mtip_update_cbd(fep, bdp, index)) {
-> +			pndev->stats.rx_dropped++;
-> +			goto rx_processing_done;
-> +		}
-
-[Severity: High]
-If this allocation fails, does the driver return a dirty buffer back to the
-hardware?
-
-When swap_buffer() modifies the buffer in-place, the CPU cache is dirtied.
-If we take this error path, the buffer is yielded back to the hardware
-(via rx_processing_done) without calling dma_sync_single_for_device() to
-transfer ownership. Could the dirty CPU cache lines later be asynchronously
-evicted to RAM, overwriting new packet data being DMA'd by the hardware?
-
-> +
-> +		/* The packet length includes FCS, but we don't want to
-> +		 * include that when passing upstream as it messes up
-> +		 * bridging applications.
-> +		 */
-> +		skb =3D build_skb(page_address(page), PAGE_SIZE);
-
-[Severity: Low]
-Does this allocation leave zero headroom for the SKB?
-
-Incoming packets are DMA'd to offset 0 of the allocated page. By building
-the SKB directly at page_address(page), the SKB is created with
-skb->head =3D=3D skb->data. While the networking core will safely reallocate
-headers if necessary, failing to reserve standard headroom (like NET_SKB_PA=
-D)
-can cause unnecessary performance degradation.
-
-> +		if (unlikely(!skb)) {
-> +			page_pool_recycle_direct(fep->page_pool, page);
-> +			pndev->stats.rx_dropped++;
-> +
-> +			netdev_err_once(pndev, "build_skb failed!\n");
-> +			goto rx_processing_done;
-> +		}
-> +
-> +		skb_put(skb, pkt_len);      /* Make room */
-
-[Severity: Medium]
-Does this skb_put() call incorrectly include the FCS in the SKB payload?
-
-The comment immediately above states the intention to exclude the FCS
-because it messes up bridging applications. However, this calls
-skb_put() using the full pkt_len without subtracting ETH_FCS_LEN (4 bytes).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601112437.2216=
-043-1-lukasz.majewski@mailbox.org?part=3D5
