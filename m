@@ -1,43 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9505A26D4CA;
-	Mon,  1 Jun 2026 22:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB47231F99C;
+	Mon,  1 Jun 2026 23:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780353386; cv=none; b=JmFPbNFn728JFXL6uJIIBZrd7InJMrXBqm8G/9l2aTivOaNac8AjtUL7Fa+GSXrKbBdz4pPh2gHVb4hV0qLn/smpsgnNMtomz/MA25BoCz6cOze/Hw3uq52v47rEEqHmHwNueQRQpmVGmxZbtBVkuggxhzhP6N6PkAfUwyaevKY=
+	t=1780355596; cv=none; b=GQE3L6gPDrF6aeoxguqt38EnuTHMukhMdKtTFbARK3L5OFu1gtJc1tkjX+qPwM5nP8xJ9M6n4h6YNjCAjeKcxNjN7p8ni96xfyiTd040y0E/ySVX/JUT1sk9YykDg0IwigrluAY52neCto49cql8/XG2PaNTxbh1djItotlM/qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780353386; c=relaxed/simple;
-	bh=+Ngmrq8Y97eR+c3I68klHbM5p54ZZk52OZGeeAQeivE=;
+	s=arc-20240116; t=1780355596; c=relaxed/simple;
+	bh=AA7yMsMs1sp95/rAmQFYi61U9As/7rivHHSQmnuZWtg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XbTz+16Kb/GRG2RwyAp4T+sHV9sPuBUFdGXEV1ctJHsKLqU+9vbfcRATgVS6iQproVsgRwJ2oFn8cvHDvC6JiX91+OQYGMfc5zapbiZUfRf3CtZqs/cTtK2dfQfDuGfK9iPMmMmSmavKfP0h2Sd27y6wUkd9onAKLPTXCrUVyMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AIFho7F6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=DDAS5WWCdA9KWaA4xdGr5or/O++rTegVIlehhmNSV4wuYTIhRn+zdMMWNzh3zY8qisadGlQq+PEBXxifQQF2MxLPzo/RsIB1kQyPra4lr0hrSAox8AajK959v+sFb1/AqHMAGLfLNmB+sunPo8adN2zMdd8UGiAQXk1l91u4cXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CeXj1njD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AIFho7F6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D141F00893;
-	Mon,  1 Jun 2026 22:36:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CeXj1njD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FE71F00893;
+	Mon,  1 Jun 2026 23:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780353385;
-	bh=1gUUWqqYxTcbJn/JdPydY4F1vBSRqbIyTLimI9ChU/M=;
+	s=k20260515; t=1780355595;
+	bh=uaxZFaXKrmIFYBt6dWwzrs7nCg1sSc/qtCvI5zGQOIk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AIFho7F6GmqCNrFJTVhUB5DEiwmGpVic3UL4bVqjqrDX1x+DE4xTRwkocrq555Q1T
-	 DQJoy7nqNScmc53Qs3zBMTdXDPLCssf8Ihc0wTsUfwipIbnUn6RSBszqRrOd74kkCj
-	 HOE/20asH58Npd94d0xlIdYHvzeugFRAVoAsoPOlT2ZFUP3AYOXdskeySLeXBKRgCD
-	 eiMm31CH5kqkzu+RSELUv2RG4qgz6+s0SrmaO1bs4rq6H/cavIH5bhDcu/a5EU2HON
-	 XwWN7t0oTOD+svGT7dtG8KygkEQ/gwkDhu9eA5tsbcY2JyEc+TBtNfHRJjFxLbxr6I
-	 eijmc3QsNKMeQ==
-Date: Mon, 1 Jun 2026 17:36:24 -0500
+	b=CeXj1njDTZ9QYc9JvUDDE+waayylRN3SNsTJPudXFsXdbc/Jti6T0wDI0VunUE302
+	 3N/iKGYu2roQtMTfTOrB4y/WJQJ70LBObOJ2uDsZUeZxN3SHD4xLMMCL+7V8+qmeKC
+	 vYMIrjQTEmW5K1kaO9u7LIbpL00Bkn8hPH9agh56sc+tBLmp/tp199JHYQx51nvtz0
+	 KzATeZA7dTXygwASJbTODS0a6H3Y36iIHNaSByWV0n/Gm/VCl+kjLJbBcMrzWdJgCa
+	 Lm9D3W2mg+Xe5cbi9mVpzslKIvhdXAI2jRrBc5kRN9EF5E+dpMDfO2ebpmil7clTUN
+	 xouYJrYkj7V4Q==
+Date: Mon, 1 Jun 2026 18:13:14 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank.Li@oss.nxp.com
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-sound@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Liam Girdwood <lgirdwood@gmail.com>
-Subject: Re: [PATCH v4 1/1] ASoC: dt-bindings: Convert eukrea-tlv320.txt to
- yaml
-Message-ID: <178035338386.115154.4712502706094039935.robh@kernel.org>
-References: <20260515145205.1696584-1-Frank.Li@oss.nxp.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Purism Kernel Team <kernel@puri.sm>, linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Robby Cai <robby.cai@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>
+Subject: Re: [PATCH v2] media: dt-bindings: nxp,imx8mq-mipi-csi2: Fix example
+ endpoint label typo
+Message-ID: <178035559437.165333.7105933627406631706.robh@kernel.org>
+References: <20260519113824.91533-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,30 +53,31 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260515145205.1696584-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20260519113824.91533-1-laurent.pinchart@ideasonboard.com>
 
 
-On Fri, 15 May 2026 10:52:03 -0400, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
+On Tue, 19 May 2026 13:38:23 +0200, Laurent Pinchart wrote:
+> From: Robby Cai <robby.cai@nxp.com>
 > 
-> Convert eukrea-tlv320.txt to yaml format.
+> The example in imx8mq-mipi-csi2.yaml uses imx8mm_mipi_csi_{in,out}
+> endpoint labels, which is confusing for an i.MX8MQ binding. The labels
+> could be removed as they are not functionally required in the example,
+> but they have a documentation purpose that brings value to the reader.
+> Rename them mipi_csi_{in,out} to avoid the confusion.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Robby Cai <robby.cai@nxp.com>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 > ---
-> Change in v4
-> - add minimum and maximum for fsl,mux-int-port and fsl,mux-out-port.
-> change in v3
-> - add fsl,mux-int-port and fsl,mux-out-port to required
-> change in v2
-> - Add comments about "The AUDMUX port numbering should start at 1"
->   v1: https://lore.kernel.org/linux-devicetree/CAEnQRZACes8EptdEgg0i0vzdcxgUJwZAfQHU0DEhMnXtA-g01Q@mail.gmail.com/
+> Changes since v1:
+> 
+> - Drop imx8mpq_ prefix from label name
+> - Update commit message
+> - Drop Fixes: tag
 > ---
->  .../bindings/sound/eukrea,asoc-tlv320.yaml    | 61 +++++++++++++++++++
->  .../bindings/sound/eukrea-tlv320.txt          | 26 --------
->  2 files changed, 61 insertions(+), 26 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
->  delete mode 100644 Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
+>  .../devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml       | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
