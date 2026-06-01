@@ -1,197 +1,75 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5579A351C2E;
-	Mon,  1 Jun 2026 22:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9505A26D4CA;
+	Mon,  1 Jun 2026 22:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780352983; cv=none; b=Esb4eLF5UWKKsUN9kqAJlfBNhtbbJ3uvZg5IF1DuLxIwSIriySLueBKZH9EtYK0GBR1exsA2BxgMyYPVVBSjC4+B5UgYlAbIPecTfF55d/tByDOCQZf18yVnwFQ5BGT3mSMwyZYMU7c1SMLauemiwnvX0zsZf29sRHp+aKMMfok=
+	t=1780353386; cv=none; b=JmFPbNFn728JFXL6uJIIBZrd7InJMrXBqm8G/9l2aTivOaNac8AjtUL7Fa+GSXrKbBdz4pPh2gHVb4hV0qLn/smpsgnNMtomz/MA25BoCz6cOze/Hw3uq52v47rEEqHmHwNueQRQpmVGmxZbtBVkuggxhzhP6N6PkAfUwyaevKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780352983; c=relaxed/simple;
-	bh=yQSKoIPe7PxM7K6zT+4etAGAbRv7/vmfKgQXrL6dr8g=;
+	s=arc-20240116; t=1780353386; c=relaxed/simple;
+	bh=+Ngmrq8Y97eR+c3I68klHbM5p54ZZk52OZGeeAQeivE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pqJjdRJ56yCZJaRtzPn0EltB5nRrA9BVWOquU/6AXi98rvv+MjYaZoRrrcwMPNei/g+CNWYCjsaDbrzeF/oq7MAc+hJ61FKNJEqctRhcANiRlRsJ3yR3cX4jqeGmYcw4LnH666Q6hm/zzsCzY6UNkOOeR+SS8Ql+2kebpMoPT9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SaJTlJhK; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=XbTz+16Kb/GRG2RwyAp4T+sHV9sPuBUFdGXEV1ctJHsKLqU+9vbfcRATgVS6iQproVsgRwJ2oFn8cvHDvC6JiX91+OQYGMfc5zapbiZUfRf3CtZqs/cTtK2dfQfDuGfK9iPMmMmSmavKfP0h2Sd27y6wUkd9onAKLPTXCrUVyMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AIFho7F6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SaJTlJhK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40D51F00893;
-	Mon,  1 Jun 2026 22:29:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AIFho7F6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D141F00893;
+	Mon,  1 Jun 2026 22:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780352982;
-	bh=/HbVmBTAdh9kW2ThMT64QyOB1B4v8smPiZkMMv2zMV4=;
+	s=k20260515; t=1780353385;
+	bh=1gUUWqqYxTcbJn/JdPydY4F1vBSRqbIyTLimI9ChU/M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SaJTlJhK4GvqFkgTBNDp05nUL2BcF06+muHqRcAFraDY7DFcvF8V+em6dKteyDyMx
-	 D0mPJtMB6tKI5OyuOCY1Hpsyd7cqU4umFKDDvZBeeOaLtQWCfoLDKwGuOlFpx8uvAa
-	 JN8HUn0m6m80f8Y03Zwzqu44Jaznb6C+ia7azbw2QWAg7YWl/29hPW0CHDkJe1vqwr
-	 IHHcl6Rhdzm4kan7/oVBVS2gu/z/9uamfzlKJYFFeKjnoi9r9lZS2zZ2aRpk5cv1kL
-	 pF4v4JLsLRIqITS+bXntFsy33kqv2/rcg/VWgno7u9lI+b51wtx0smrHivLXeSNBS7
-	 HKb1bPhJwjU0g==
-Date: Mon, 1 Jun 2026 17:29:41 -0500
-From: Rob Herring <robh@kernel.org>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, laurentiu.palcu@oss.nxp.com,
-	victor.liu@nxp.com, dri-devel@lists.freedesktop.org,
+	b=AIFho7F6GmqCNrFJTVhUB5DEiwmGpVic3UL4bVqjqrDX1x+DE4xTRwkocrq555Q1T
+	 DQJoy7nqNScmc53Qs3zBMTdXDPLCssf8Ihc0wTsUfwipIbnUn6RSBszqRrOd74kkCj
+	 HOE/20asH58Npd94d0xlIdYHvzeugFRAVoAsoPOlT2ZFUP3AYOXdskeySLeXBKRgCD
+	 eiMm31CH5kqkzu+RSELUv2RG4qgz6+s0SrmaO1bs4rq6H/cavIH5bhDcu/a5EU2HON
+	 XwWN7t0oTOD+svGT7dtG8KygkEQ/gwkDhu9eA5tsbcY2JyEc+TBtNfHRJjFxLbxr6I
+	 eijmc3QsNKMeQ==
+Date: Mon, 1 Jun 2026 17:36:24 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-sound@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>, imx@lists.linux.dev,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/4] Revert "dt-bindings: display: bridge: ldb: Fill in
- reg property"
-Message-ID: <20260601222941.GA101404-robh@kernel.org>
-References: <20260504-v7-1-topic-ldb-fixes-v1-0-0125d937ff7f@pengutronix.de>
- <20260504-v7-1-topic-ldb-fixes-v1-2-0125d937ff7f@pengutronix.de>
- <20260505141538.GA2547282-robh@kernel.org>
- <2bl2mwpk57xgkuye2gydliymjkzikiovnb7ovnb73olwtfkjwn@byn3732grvnh>
- <CAL_JsqLYS1sgU680KNR60+OvtNwEVKWovht7K2APO3sqeJe6Nw@mail.gmail.com>
- <zbbez4lpme7szgnsd7fqufbuhmvcftw4sqrmwwwzyxu64i2ppb@fh2fgdkc6tat>
- <CAL_JsqJWyRPh_hmJW8p7+VvtcqpS0a_azjMO-PyQgkqQUfLAGA@mail.gmail.com>
- <uyh5s6g7bvuufnhfjrmungp5dbyllxfrgfzaxno22knpxxojmj@qqvh75ezblpp>
+	Liam Girdwood <lgirdwood@gmail.com>
+Subject: Re: [PATCH v4 1/1] ASoC: dt-bindings: Convert eukrea-tlv320.txt to
+ yaml
+Message-ID: <178035338386.115154.4712502706094039935.robh@kernel.org>
+References: <20260515145205.1696584-1-Frank.Li@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <uyh5s6g7bvuufnhfjrmungp5dbyllxfrgfzaxno22knpxxojmj@qqvh75ezblpp>
-
-On Wed, May 13, 2026 at 12:26:40PM +0200, Marco Felsch wrote:
-> On 26-05-07, Rob Herring wrote:
-> > On Thu, May 7, 2026 at 6:55 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
-> 
-> ...
-> 
-> > > > But nowhere have you said the LDB registers are mixed with other
-> > > > functions. If they aren't, then there is absolutely nothing to change
-> > > > in the binding. If they are, then yes, we shouldn't have 'reg'.
-> > >
-> > > No they aren't mixed with other functions (for now).
-> > 
-> > For now? Is the h/w going to change or is the binding *still* incomplete.
-> 
-> Sorry for the confusion. By for now I mean that NXP tend to reuse IPs
-> but with minor changes. So no, the binding is not incomplete with our
-> current HW knowledge.
-
-If such changes occur, then we can deal with it at that time.
+In-Reply-To: <20260515145205.1696584-1-Frank.Li@oss.nxp.com>
 
 
-> > > Can you please
-> > > confirm that mixing 'reg' based sub-device nodes with non 'reg' based
-> > > sub-device nodes  is allowed? E.g. if the below example is allowed?
-> > >
-> > >         system-controller@4ac10000 {
-> > >                 compatible = "fsl,imx93-media-blk-ctrl", "syscon";
-> > >                 reg = <0x4ac10000 0x10000>;
-> > >                 #address-cells = <1>;
-> > >                 #size-cells = <1>;
-> > >
-> > >                 ...
-> > >
-> > >                 bridge@5c {
-> > >                         compatible = "fsl,imx8mp-ldb";
-> > >                         reg = <0x5c 0x4>, <0x128 0x4>;
-> > >                         reg-names = "ldb", "lvds";
-> > >
-> > >                         ...
-> > >                 };
-> > >
-> > >                 dpi-bridge {
-> > >                         compatible = "nxp,imx93-pdfc";
-> > >
-> > >                         ...
-> > 
-> > Depends what is in "...". If only a compatible, then no. If there are
-> > actual resources defined, then yes.
+On Fri, 15 May 2026 10:52:03 -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
 > 
-> Please see the below full example, is this allowed?
+> Convert eukrea-tlv320.txt to yaml format.
 > 
-> system-controller@4ac10000 {
-> 	compatible = "fsl,imx93-media-blk-ctrl", "syscon";
-> 	reg = <0x4ac10000 0x10000>;
-> 	#address-cells = <1>;
-> 	#size-cells = <1>;
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change in v4
+> - add minimum and maximum for fsl,mux-int-port and fsl,mux-out-port.
+> change in v3
+> - add fsl,mux-int-port and fsl,mux-out-port to required
+> change in v2
+> - Add comments about "The AUDMUX port numbering should start at 1"
+>   v1: https://lore.kernel.org/linux-devicetree/CAEnQRZACes8EptdEgg0i0vzdcxgUJwZAfQHU0DEhMnXtA-g01Q@mail.gmail.com/
+> ---
+>  .../bindings/sound/eukrea,asoc-tlv320.yaml    | 61 +++++++++++++++++++
+>  .../bindings/sound/eukrea-tlv320.txt          | 26 --------
+>  2 files changed, 61 insertions(+), 26 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
 > 
-> 	...
-> 
-> 	bridge@5c {
-> 		compatible = "fsl,imx8mp-ldb";
-> 		reg = <0x5c 0x4>, <0x128 0x4>;
-> 		reg-names = "ldb", "lvds";
-> 		clocks = <&clk IMX8MP_CLK_MEDIA_LDB_ROOT>;
-> 		clock-names = "ldb";
-> 		assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>;
-> 		assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>;
-> 		status = "disabled";
-> 
-> 		ports {
-> 			#address-cells = <1>;
-> 			#size-cells = <0>;
-> 
-> 			port@0 {
-> 				reg = <0>;
-> 
-> 				ldb_from_lcdif2: endpoint {
-> 					remote-endpoint = <&lcdif2_to_ldb>;
-> 				};
-> 			};
-> 
-> 			port@1 {
-> 				reg = <1>;
-> 
-> 				ldb_lvds_ch0: endpoint {
-> 				};
-> 			};
-> 
-> 			port@2 {
-> 				reg = <2>;
-> 
-> 				ldb_lvds_ch1: endpoint {
-> 				};
-> 			};
-> 		};
-> 	};
-> 
-> 	dpi-bridge {
-> 		compatible = "nxp,imx93-pdfc";
-> 		status = "disabled";
-> 
-> 		ports {
-> 			#address-cells = <1>;
-> 			#size-cells = <0>;
-> 
-> 			port@0 {
-> 				reg = <0>;
-> 
-> 				dpi_from_lcdif: endpoint {
-> 					remote-endpoint = <&lcdif_to_dpi>;
-> 				};
-> 			};
-> 
-> 			port@1 {
-> 				reg = <1>;
-> 
-> 				dpi_to_panel: endpoint {
-> 				};
-> 			};
-> 		};
-> 	};
-> };
 
-Yes, this seems fine.
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-Rob
