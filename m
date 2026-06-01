@@ -1,82 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B0E8C1F;
-	Mon,  1 Jun 2026 02:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDD68C1F;
+	Mon,  1 Jun 2026 02:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780280164; cv=none; b=ZC/DXeXCCr/srGdysVZzO+y+BoqaRagwFG/omEjNbfk9TYCkcgJnlYHokFTM7W6JbHAzoLJ8o/FIwFQghznnrXS0oLEB/av8iYYMNr4M4C3fXFEG+Rol+enE0AYGol8rOnTzDXfzc4z557Kksu+bZvdgim0As+tU4bjcKxTenTU=
+	t=1780280369; cv=none; b=K5xEOng+Se8OsSpEy/Tvt1l96lz+5HwUlsWJC6CmUOw8fRlEwpvyQK9DeXgyf9esUJCdhynOc3Z+sEEeLqvuvuX3EbGA7dnb1Ojp6pVorATz3Xe8BXdS5htnEfF3u8Ve9lYTKRIfOZBKbXuMBxgC7eFnO+mbueZKxISNVQ7bBFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780280164; c=relaxed/simple;
-	bh=A5vFJf9F57RdKxzETRxU//Pof2JOoHIwfKE7a/DnqRo=;
+	s=arc-20240116; t=1780280369; c=relaxed/simple;
+	bh=gy2qVtpBDZPRTtVE9t64uF2iZ2P/HZqHamSEDYjxkpI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E6pfGCiAGhj6NBUVAkAmcdfN/oXuYDtSnJqjA3Q/AU5or2U8Sb5dF31dmF96FzkWCKk2Qit0H2nebco/Ex1tbTtSAK1BGD9W1fKd7DSXGFoyuTbiHUg0z9/P0V9F+YoObZcWXpOWv7fZSJw6SSM6jH4PifTcQsNTveG6IhHsQDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgzRNauK; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=e2f7Jt2qL+C163Mn3ngpj82JiAPHLMs01itHI3I9pQdeg3vik5TYVqn0wNYzcZFgQwY2GsONuYKnYlOuuEuNJDd1nlByMRZ2XlyWM5r3+XEL3Hjzc+jjzgyciOprGd23HoAUl9L1nuQ9WYZoH9o8zooFlzegA06W7KuFS8FQK0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/JgH3uJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgzRNauK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050941F00893;
-	Mon,  1 Jun 2026 02:16:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/JgH3uJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B9D1F00893;
+	Mon,  1 Jun 2026 02:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780280163;
-	bh=yP/TRVjC/7Q9E9T3KmokV8Ki6NrjRZ4h0baPgK9eilk=;
+	s=k20260515; t=1780280368;
+	bh=G9yThJ9a/KxJE4BiHKGLw6zyO+alv6QEHk8XlwvlU44=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BgzRNauKAd9kY/bAeTwLzMQaFgF1dSIweh7ys5pMWuiIQerJZF9XxyxTWVlhwq+5X
-	 NQKUlO5n3hsLxbATQw0YgNf5/8niuKa6uzklYKLdKb16N62sda1KSST4CbLPb7J6UL
-	 gA2UT0cXHWb+ogTQYjy8iCl+P+zflSSsXAvp9Ru1/hZyEjlAUB/pGJLXYSfWEVf1x4
-	 Pt5Oj14jlGp931fYhNtvBLeCroyfwewEUxXYb8m2RTuhKhndXbURP6MM3NvZFm0fM1
-	 3QfVYRtdzPK/S6eJdIWAqY2b2qbYKA2Ueyo9CFfmDhQ40o+bw9S39Io3+O/jpsjEAu
-	 FgCThEsTkxI8w==
-Date: Sun, 31 May 2026 21:16:02 -0500
+	b=S/JgH3uJn/tTEWKW2YGWvJ6PwSk2Q0C58E2YPCNdds++QWo94xSbeAam3TaOn+6LR
+	 obJ/DBlAfn/Ixu+RhhatavgPDKeoAQlfYf59UUNI4QevGVRLrdGRJ7F0+agWy35AO0
+	 uN/l3ewNTyOKDFEUIB8EKO50BiZ5yocyxeQ5iqy9CC8V5/UcREqmvTo266U3mobx9O
+	 HWrIkB1JM2UndkM4GbOp/AqN2HzjDR+oTD3iWw0W3E7VYxZGQFE3Orarb2XwgMUquD
+	 jJsTERGbBs+HIDWbhGZ2uqDegMpJy7oo7peJ8Hnxpkx6gYlOO8rUkorCkONjGpc2+A
+	 F+U4IKLeFQqSw==
+Date: Sun, 31 May 2026 21:19:27 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev, Simona Vetter <simona@ffwll.ch>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Frank Li <Frank.Li@nxp.com>, David Airlie <airlied@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org,
+Cc: Brian Chiang <chiang.brian@inventec.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH v2 1/1] dt-bindings: display: imx: Add television encoder
- (TVE) for imx53
-Message-ID: <178028016047.3956673.12104802707727267478.robh@kernel.org>
-References: <20260521193734.1496372-1-Frank.Li@oss.nxp.com>
+	Cosmo Chou <chou.cosmo@gmail.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	imx@lists.linux.dev, Dixit Parmar <dixitparmar19@gmail.com>,
+	linux-kernel@vger.kernel.org, Wensheng Wang <wenswang@yeah.net>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Eddie James <eajames@linux.ibm.com>,
+	Antoni Pokusinski <apokusinski01@gmail.com>,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] dt-bindings: trivial-devices: add fsl,mc1323
+Message-ID: <178028036733.3960577.5236610133789930332.robh@kernel.org>
+References: <20260522203810.832631-1-Frank.Li@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260521193734.1496372-1-Frank.Li@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260522203810.832631-1-Frank.Li@oss.nxp.com>
 
 
-On Thu, 21 May 2026 15:37:32 -0400, Frank.Li@oss.nxp.com wrote:
+On Fri, 22 May 2026 16:38:08 -0400, Frank.Li@oss.nxp.com wrote:
 > From: Frank Li <Frank.Li@nxp.com>
 > 
-> Add television encoder (TVE) for legacy i.MX53 (over 15 years) to fix below
-> DTB_CHECK warnings:
->   arch/arm/boot/dts/nxp/imx/imx53-ard.dtb: /soc/bus@60000000/tve@63ff0000: failed to match any schema with compatible: ['fsl,imx53-tve']
+> Add freescale 2.4 GHz IEEE® 802.15.4/ZigBee mc1323 to fix the below
+> CHECK_DTBS warnings.
+>   arch/arm/boot/dts/nxp/imx/imx53-smd.dtb: /soc/bus@50000000/spba-bus@50000000/spi@50010000/mc1323@0: failed to match any schema with compatible: ['fsl,mc1323']
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Since the i.MX53 platform is more than 20 years old, it is difficult to
+> find detailed information about how the MC1323 was used on the i.MX53 SMD
+> board, as the functionality depended on firmware.
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Change in v2
-> - add Krzysztof Kozlowski's review tag
-> - move fsl,tve-mode to required list
-> 
-> About cleanup 300 lines warnings for i.MX ARM platformi
+> chagne in v3
+> - fix warning message
+> change in v2
+> - add descript about reason in commit message
 > ---
->  .../bindings/display/imx/fsl,imx53-tve.yaml   | 104 ++++++++++++++++++
->  1 file changed, 104 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.yaml
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 
 Applied, thanks!
