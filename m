@@ -1,176 +1,109 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011040.outbound.protection.outlook.com [52.101.65.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284453DEFE7
-	for <imx@lists.linux.dev>; Mon,  1 Jun 2026 15:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780327190; cv=fail; b=tsa9HCshFgqhxSNdnGEH8UdL5CU6MiPNSH0x2npGbxgv3GeorVn0E3TCF8aTkIWcIh+DVaKxpv8kw5OPhrZyhQvEID43GoMIt7712oMVEwswBhJek62OoEFDU+Uh5QfWSJHCXcwIx7oBrAfFgpxtPnmdy0NoAvlnN7FuyfM/5Dw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780327190; c=relaxed/simple;
-	bh=Op5px9PyfxUiVENmGC7XzsH03BPl4zvDfQt/pVzjRlg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=srbfi9bXQdHV49UWAB+lmP/yWbYsJeB7rqrqP3yzjvPDyb6cAhStsyU46X/JqE4oU8avJUfhyl8UgHMGCX/fZru7mGT8ctdMo+ESImnxAMUHI89UMBGH5gv7yqvBO0l7Z8G2CChsCeGBfDrZwpXEPa9nYKy5mvP8lOGtFY1Hbkw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=HxAKJdyz; arc=fail smtp.client-ip=52.101.65.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2AD3DB992
+	for <imx@lists.linux.dev>; Mon,  1 Jun 2026 15:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780327213; cv=none; b=rOziOtp5zxNBJcd38DLHTVdpgRrZtiZhtbabwfg8LIgxCOgkFftY2Auwyh6+kam7WqAncQXXo8XGdWak+ZKsojFtiWlhSa5mkET+R+LvH8rfr+J9jaJ/3RR4VsXMX+8HYwRxU2fv2hOViyhYAwuo/9iuZqA50Y8n8XaFqOmxOho=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780327213; c=relaxed/simple;
+	bh=z2vzzUU9AdhfZh4TpPBi0E2NHAyN0OiZYk7GbkDEDFk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MeEY2lFq/sluNqbEx2MwIMc/xk0OovJEWMEocztdmfecBMWUZM6ydbMbhBz9OpnfoXQXbZYGkmxzJaDJD1ROPwoRgnAAh+OOUFUFRDRnwiBSFs7KFkHtjmm6jOoJMkKDxsuZP7twwc49Ym1Q8WtZl6af6iELtSPAkhWFfMocJ2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ceLi48Wo; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="HxAKJdyz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=slmq4KWm08YWgJN480mX7sci09mHnXcSWuj+x78d9NN4t/oVPzzD2DBLVt74Ii4Oo/jqbVknNcVcvgmhNKdKpG+h5i8a3Ib9u+SHzj73uBJVTz3xWostMfE5hiSghm8kCandls4SEnJI1bEk2FQhOwYhYKNDQbbAlhAliu1CwfspsAjPVeXBD1jTw+zzhFJzhp8wzbNBJn8xWcCkewaHLRPjdON3jmZeWtGLBmDqhKF2WM+f3uYMs+exmrsGa4hRDumH7GMtR7aQfMKmGIj0vlr901yz4q5gmJWP6J+2CwN7ctNXIww5iqQyVRvY1A5wBjPj1gRhRxAyo2McyoPdKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1etm8en4GWdbh/YzCETPYWp+z2nzzuuJBZwYek7Hn2U=;
- b=ej1R5+TOtB3FhJ+e6xkUUquRCYiVapndalwroSqgtBkuPWmfjg7Rh+T2fx/tR9gz4a53tNh9MtCBAC/IWiyj7xXRz9RBUhawPyrb4wq4DyyJE1Ue0/sJ9uA6YfT4NwpoxfwMhse573+Db25RwNLhCzrakm5HRCYtFFVWHzjcisamoMjMGbOtPPQfEJ0SupPbCPQOWxwoNLJfhEIa4fcoOmdKq7hcb6cqY6zA1EX3FJZnx6F2X7KugRyxr1g8iBkrHwFek1wv5A5URvm37ajdB/KzE8kLJf1P3d70CYa6iFpA/HADfvDKSX2uihkd2iWAAYZEj4UCFR5sDy7wfVgLaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1etm8en4GWdbh/YzCETPYWp+z2nzzuuJBZwYek7Hn2U=;
- b=HxAKJdyzqbxB00kHcitEbZqXEESZz5MxObmWafQprNSUNJD6vhLF567WnG0Q4xvKT3KYC0uWNUj3f8qy1YDn+8BqbeGL2pE4fTOrTcUIdCaXJmQkJ97iKHWchtvzAwg5pZ2IeMySFK3dRwwdGJN7xUceHRimHUw+2tCsQFo4IImPs0PlscsvqKRFH5Ztdn9G+gB/rmVcjbMxubfoLF2Mw6DI86HNE+xxopplqh2W+ax56wWMqf1Rofk50nLI1qZw8hLmPpSWccty4MJhaspZ8WhABGxhtScY342HE3hFrWugDTveo3PaQjuQvt3gPd4nWxLvfs8ayxCi28jPzgxcsQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM0PR04MB12143.eurprd04.prod.outlook.com (2603:10a6:20b:744::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
- 15:19:38 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0071.014; Mon, 1 Jun 2026
- 15:19:38 +0000
-From: Frank.Li@oss.nxp.com
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	bhelgaas@google.com,
-	hongxing.zhu@nxp.com,
-	l.stach@pengutronix.de,
-	Sherry Sun <sherry.sun@nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH V14 00/12] pci-imx6: Add support for parsing the reset property in new Root Port binding
-Date: Mon,  1 Jun 2026 11:19:30 -0400
-Message-ID: <178032715479.3978899.9154220521965066495.b4-ty@b4>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260422093549.407022-1-sherry.sun@nxp.com>
-References: <20260422093549.407022-1-sherry.sun@nxp.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PH5P220CA0011.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:34a::11) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ceLi48Wo"
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-43d16405b54so235912fac.3
+        for <imx@lists.linux.dev>; Mon, 01 Jun 2026 08:20:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780327207; x=1780932007; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EXR0o/ax1hkvEGDJ8bUniOsmAfk5/s8y29rVFNL4VdY=;
+        b=ceLi48Wo4RR7Ltkeeua7gXYm2ZFYKLMix9DfK8cBNyjM/54i5yx2VEavNf8m0cphf2
+         YQ6L8urshGXBQaiuwyW7ruxggnXioymAHXuiH85iZHYblWQ2Tzb6lzdHUeqYx/VYST+z
+         gwWLpv0xjTQjmJSMPIGU/LqDmk4aVaTGoYgze+x3O+vsaXyEu1hz5DA64h7mxjdZUlTN
+         BOFC554QBVVIch4owgac2+BjY036BxMUYX/AsNfxhMZaBQ94GKXg8exliREprYSKp2uh
+         L6I/2x+VEQEbPNEkMNRN14e1mFS0DoB9XHMMsBeDZw5k2R+U+LXozJ1VYSMazeoxU0cS
+         gjMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780327207; x=1780932007;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EXR0o/ax1hkvEGDJ8bUniOsmAfk5/s8y29rVFNL4VdY=;
+        b=sduPW8UZD5Vggn3R9TEuF+qABRrhfc99849hd62JEegvpQCD+95HfP/So4WHHrWkp+
+         mY2ATC3iZzk7oEMyFut+Z6t673M/PDwYUwIQNexEi5HMKbK7maTk0hZGVTBlAhBFqr+/
+         nJjNLvQIJ6ZJegsoYiegqwawCP1J4vjy16d24FyknS2uCI4LnMk7q5jK3SgGBu/x+3+l
+         lV3ymamu4GS0sYRnQcCgFRxvkSj/fiFKQjwooUHDWwddWvGDCkVwVQjnpPGGUaIVSLgP
+         vdKVgak+YdBsABl+D/kXDFHeIs3gkMYYTUJE4bpYpJ8u634tRClB0mKygV6A2EyS65SU
+         1itA==
+X-Forwarded-Encrypted: i=1; AFNElJ8luJCTx74PdYH8+tgXnMuZrqc0yGVGJWDXeZxk6UHAR8Fx5fEzARQMVihLX/+Am+60smQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzf0ZxyUPBtZIVAC6JZvN3JNBXC+CHhS1XpNiUE8GlXQFDPkxwg
+	RDLMp4sIxJn1QNrelNrZA0ZcUGrXblfdMAi83ZWPfL+mI05rTb+E3kcU
+X-Gm-Gg: Acq92OE+te07GBvkEvqFBkdnga9nezmEtibdyAJbRiiJO8p4T7JzbducJapk9xd6ovw
+	KZ4XUdLaSEy56BD8b8F82ndsdvK/+MC2zCALdDAteoQJ8xknIlY5n3YjyIXxI8coe+Qa0pAwfoW
+	tpk0uCXhCgnk9AT0fbycxYCfb48O6e+fcPyfpj1fGDRPHwGB+Q5KBZ4J2uzhm7S2qI8AKfYRy6W
+	91ZIHAWYLSz1u+GepE9cpScLAPl+KFsq1EiJ6gHmGkgLiqRHDELSlkjybzHpSazqiqGwtg8yYuh
+	YAj8AWeLH0A94GEO19en/OS70XZg5jv7XIVGH5Z+D9aW9JIMbNjSUw0oRAoyXPMluko3lozAu/C
+	CZs0Px2ePPtHk+CEf0kzS45CJPKpaRLodES6r1VxApFT0muZty0mkKzDBrJSKDBgMVdO5+wgxMp
+	ovscwG6WhjEbejPVmfpXR+IJ4r/Sjo3fmXe9UE0YUAuxGn2PCbzu4b
+X-Received: by 2002:a05:6820:c82:b0:694:8fb2:2c35 with SMTP id 006d021491bc7-69e104765bcmr6510105eaf.2.1780327206868;
+        Mon, 01 Jun 2026 08:20:06 -0700 (PDT)
+Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6f:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69e06587eecsm6357598eaf.0.2026.06.01.08.20.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 08:20:06 -0700 (PDT)
+Date: Mon, 1 Jun 2026 08:20:02 -0700
+From: Richard Cochran <richardcochran@gmail.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Wen Gu <guwen@linux.alibaba.com>, Jakub Kicinski <kuba@kernel.org>,
+	tglx@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	jstultz@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+	daniel.lezcano@kernel.org, sboyd@kernel.org,
+	vladimir.oltean@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
+	jonathan.lemon@gmail.com, vadim.fedorenko@linux.dev,
+	yangbo.lu@nxp.com, svens@linux.ibm.com, nick.shi@broadcom.com,
+	ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com, linux-fpga@vger.kernel.org,
+	imx@lists.linux.dev, linux-s390@vger.kernel.org,
+	dust.li@linux.alibaba.com, xuanzhuo@linux.alibaba.com,
+	mani@kernel.org, imran.shaik@oss.qualcomm.com,
+	taniya.das@oss.qualcomm.com
+Subject: Re: [PATCH v2 2/2] MAINTAINERS: update PTP maintainer entries after
+ directory split
+Message-ID: <ah2jIt2DqI1ZZJx8@hoboy.vegasvil.org>
+References: <20260407104802.34429-1-guwen@linux.alibaba.com>
+ <20260407104802.34429-3-guwen@linux.alibaba.com>
+ <20260412084704.743482ad@kernel.org>
+ <4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
+ <20260412095301.4fe1fe65@kernel.org>
+ <ebf19246-91af-4887-b2aa-d9007921f7b2@linux.alibaba.com>
+ <1088b07d760491deb461d6d01abca631e8f8d86c.camel@infradead.org>
+ <ahzQZg_v4bxFfGdj@hoboy.vegasvil.org>
+ <3908843460c4864eef79cced40d897f793c7ae2a.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM0PR04MB12143:EE_
-X-MS-Office365-Filtering-Correlation-Id: 580f0118-f93c-43d8-d9be-08debff13250
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|7416014|376014|1800799024|921020|18002099003|22082099003|56012099006|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	Ex/htieCqU5PIj+Q8kHicnzGOmdDKAOE0ojMQgheDT//y18tRjxueQgFP11fJ3AEZAkTmthabkrdKUnVnWTPvITRIlYTrYiCkuuSUqT5Vbuq7aNG6uC6E9AfVa6R7ZzI0SqYref2fEhaOiPGD0cq7Sh8Dzp8HweCCMYFvy0qbm/fssLWhbrGS6ti4OSFiXL+BFwD3a1nHHlWBZp2QW3zPVigyK7TsrpyuAkBVa/NVirUdkZbqTSnkbs3XgWkngS/YjyNKTh1iN3sukMiwIV/QuSwD73xxkZhS9BUEAjlrpU7atB3nc3EZtCYvbRiIsj5cZkJD3r/CC7wgGyIogQiXC9wCrkENdTUiR300P/YTIzE5pQQ1wnCO+0ZfhI+hdm1joMR7nDdIeBnbSJ/AWm4X5yg/jzgP9CZ7roMMnoFwNGRPpBlOkQ2W9QbGKNYPfQ80fEz55knkk1oCqWXA67scgF6vxoG2OriAL5U5etqttriP6d+ONMFwYrNnvl8G9h2y3UiSkoCoCypXIAKa+NMr8dYXB5MMUOsFTCPzTy/gOIJpJFjvc95WXcrBmnAxLhHLlp1gIR9YO2bD4TWQu8Y3s+jajfD11lCunSetxgqn5gO8zkxEpsKSCCTWVrTSHUz/0q5s/T8v9E8WbpXPenN8+OkZnhrn+c/gdi0BnbPQe8BIRGYhtEEf57c+5JlRwBeFnB7s4ceOVSJ8b7m4L0xbc+yzb1SzqJWZnuY0Qd1ulU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(1800799024)(921020)(18002099003)(22082099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cWRJUmhZcXFkZ2NVQ0lkSUtyMmpGZjJxNnJJZ2JSQjViOXpGUlVvdHJaMUp1?=
- =?utf-8?B?ZTNOMy8zcCtEWDBjR0dqK2NOL09oeEFPYVpQZlhOOGZYbHB4UDVVYzUrME81?=
- =?utf-8?B?blMvMUkwUkFIV3AvZ3ZxV21LeTM3V1VxQThTWWFVRnRCcjVUREdlNFhMbWtO?=
- =?utf-8?B?eG5GcW82VlVBd3RnclIxV01lR3V3cUc4MkRZa3ROSm9abXkzTmxrWDVLM0Ry?=
- =?utf-8?B?YUY4WkhYQW4rZDhxclhuS2Z6a1NFZ2VpWllzYmtheUNjQTc3dnBFWWRaRmMv?=
- =?utf-8?B?ZG5JazA5UVNtWnk3UnhRT1NKWkNlUGl3TzlnS2ZZN0JSdlNnbHk4SWNLT1Zp?=
- =?utf-8?B?RlJVNWNDeXpmTXk4L1hjZ04wWkR1YnRUeDFrL1JjTndMb3JqTHc0VjBha1Rt?=
- =?utf-8?B?RnNTWE1YZTJwb1NQRmVrSWhIcTBwanc2MHNGV2xKOVVXZlpYN05RY0F5bkVt?=
- =?utf-8?B?VlVmUUdtN0R1S2dyaFhMQm4rS3hEd2ZkbFJrWGR3ZUJzMEswdkRpK0VMYTVK?=
- =?utf-8?B?MDVZVVZFVWZRYUFhUFRiNGxDQ2hLMnVoNzJpa0JPRGc3WHo0WmlPaCs2UlA1?=
- =?utf-8?B?K0Y1M3hYd2JoZlZ0SitPVFFLSUVLbXFPN0s2UzIwOXlWNkRmZ3kwOXpMZFZM?=
- =?utf-8?B?cmtweWtmcXJmMmNCMUVnNXZOcXdDZS9LWk0rWHFOWGViWEsrTXJOOUFOUGlB?=
- =?utf-8?B?cVMvK3JmZVdIaENKa1dpM0lIUW4ySTl1dC9NQ05BSExkcTBSMVFlQzZxekFa?=
- =?utf-8?B?djZCYXdWNTFvSzNsNjdBZmV3TUJnZVNkc2NyK1RHLzluSjQvV29ZVm5DOXdn?=
- =?utf-8?B?SXA1djdBYlBsSDEwS014NFNSZHliRUFFaDE3VSt2aG5TWUdFNzV3d0djVUZC?=
- =?utf-8?B?aHdTdFBnVEVCeXJiTjFILytMNnlJZS92QThWZGhYS1k5VnJFUnpXK1BpS1Rn?=
- =?utf-8?B?R1NscEFYZE9zT3FJYUZNVEFRM2ZYd0lNdUhFY3pRYkVnL3FzNk1BVU5NclMx?=
- =?utf-8?B?MktRUExVQWRQejNWTG83OVpqVk8rL3lVYlArRjFScDdHOFdxbUVKNnhVWmpw?=
- =?utf-8?B?NjZDcS9hL082WHk3MUVIN3JvSVhKMEQyRHFBQ3BtYm5LSE9lZ1RSRVNXMnU0?=
- =?utf-8?B?bUltcnlObE5EK3JZTzM1ZDBSWms3NVZqTFJhNldIUVlhWC91aFZuZUFlS1lX?=
- =?utf-8?B?bkNwL3FXakZGeHpUK0IrSXVWMWc5WmVHNGRsOWNnUmdnMDQ1VWVLRUkzamQ5?=
- =?utf-8?B?UjdJZUNFQW55Z3VUOWFXSUtibEVGNXM5LzJvVjA1SnZhZUNqaDJjZ3VRZmRY?=
- =?utf-8?B?aDBzZGQ1dWtSYU5ubGREMWFQbXNQeUs0S29pdlRDYWVMeFRXWjVHYzVZYWFy?=
- =?utf-8?B?QVlZcVdXbERtSGFvVmhtVENkaUx4ODNlMUdNZURLVFhPMjAyWnZGOWFDUEIw?=
- =?utf-8?B?UmxyRVdBY0pGY3BTNTAzMGUxamV2SDlXTUMxWURZdHhLczNwa013RXFlMDVZ?=
- =?utf-8?B?MUxsSThKcDlWQW5DRkl2aXg2WEdRNHVlTVdnMjJ5aUkxTU9pcGVuY3cyOVlI?=
- =?utf-8?B?MStSNE1YSzRVaWhQeHpXV3lUUGNUZ0pGVDZlTzh6Uy90M2JwVm5heURBYUtt?=
- =?utf-8?B?TXNrakQ3THJIK3Z6alNiSzNjc1ZIUGxxNThDby9YWUVFYWo5UHlNWkVpSW1u?=
- =?utf-8?B?VlV6ektudS96dld4Qk9uY1ZjNzdZR2NYWGpTOFJwSUNRNWoyZS9uRyszT0ln?=
- =?utf-8?B?UGFQRFltcGJBK3k1VVRxdytIVjMwVDF2UVdKN3BCMnlrL09xR0J0eEo0cWdq?=
- =?utf-8?B?Mmk3QVpoOVE3S1BWZGgrYUdVYUxtaGpaL3ZCVTNFbFZ4VWNraWxVZXlVcEtE?=
- =?utf-8?B?c0xCbW11bTRneWRnaGg3VmN4OGlENkdsUXRtWkNhUHRlOVUvbG5EVW5qRjhq?=
- =?utf-8?B?M3gwSEt6RGQ4L0UyVzJjdWFGNEtsS3VQSmpzVlluU2RXZG1kNDRBdDhDeFp2?=
- =?utf-8?B?Z3BpUUpUVEVHazBqYXBYYmJsYkxZUzVlaFVhdjFNTWdtOGJwSVdVYmxKdk9W?=
- =?utf-8?B?K01kczlGT2x1NWhyQUYrekFJbTNBRjNXQ2dZWEpiRTNDd2pNMlNSZ2IwaXZI?=
- =?utf-8?B?UkZaVlhpVkVhclBQcnBzKzlUdXkrd2FjQXVETTBHUnR4cmFlZ0NKbUdZVE5r?=
- =?utf-8?B?VE1XakFsOTY1NlpKR3hCSG9ZTzArY2ppM3RGM0t2d09LRjRqOEZJSWNvbmpQ?=
- =?utf-8?B?ZjJaRTZHK01uUVFSUW54NWxiWmdJdm0zNXVPVG1vNjBDT0JTd0pHT3RESC8w?=
- =?utf-8?B?bUdtR0M4N2pEU2dxbkNnRk5tRUdYQzdNUDdZRytnRGhHZ1J4SG13WTg0dlhI?=
- =?utf-8?Q?GCkNmmHsno6lYv86LcACqi5O1DGBJiAT5U2RH?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 580f0118-f93c-43d8-d9be-08debff13250
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 15:19:38.7391
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bErgjCcsUvNwMOldNCsCD1PbYjLBW1dxf1xvRAUJtbfTf9ECx9789MAPrgu2pePDqlfziT/nb73MNEENFqiJnr3nAmDK0LY//y4zDl4dHDQNlyVhCq/sV++OURB7GmA9
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12143
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3908843460c4864eef79cced40d897f793c7ae2a.camel@infradead.org>
 
-From: Frank Li <Frank.Li@nxp.com>
+On Mon, Jun 01, 2026 at 08:03:26AM +0100, David Woodhouse wrote:
+> If we move all the plain non-network PHC drivers (which, as noted, is
+> basically *all* of them) into a drivers/ subdirectory, then perhaps we
 
+Sorry, just catching up here, so the idea is to have
 
-On Wed, 22 Apr 2026 17:35:37 +0800, Sherry Sun wrote:
-> This patch set adds support for parsing the reset property in new Root Port
-> binding in pci-imx6 driver, similar to the implementation in the qcom pcie
-> driver[1].
-> 
-> Also introduce generic helper functions to parse Root Port device tree
-> nodes and extract common properties like reset GPIOs. This allows multiple
-> PCI host controller drivers to share the same parsing logic.
-> 
-> [...]
+ linux/drivers/ptp/drivers  ?
 
-Applied, thanks!
-
-[08/12] arm64: dts: imx8mm: Add Root Port node and PERST property
-        commit: 99a2249e2ac51680eb6c314e7c50dada030614fc
-[09/12] arm64: dts: imx8mp: Add Root Port node and PERST property
-        commit: 34f8f8aa932cb7f7e625dfb0fc32a944f8f1cef3
-[10/12] arm64: dts: imx8mq: Add Root Port node and PERST property
-        commit: c1c74c6df0c4dfbdf10de14ef22d559682eee542
-[11/12] arm64: dts: imx8dxl/qm/qxp: Add Root Port node and PERST property
-        commit: f0920daf45f7f619a34cd433b85d33b67fa1dd6f
-[12/12] arm64: dts: imx95: Add Root Port node and PERST property
-        commit: 83c22f27115f1800d447ebc1401f9af08075fda8
-
-Best regards,
--- 
-Frank Li <Frank.Li@nxp.com>
+Thanks,
+Richard
