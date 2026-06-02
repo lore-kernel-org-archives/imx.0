@@ -1,222 +1,158 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011039.outbound.protection.outlook.com [52.101.65.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A927A3C1F31
-	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 08:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.39
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780387527; cv=fail; b=dkyIY1iItsKNt80SlgJHUUg5YUTJwTnGWt2F9rGHg4nOIZJn0PopsIZ1ZvnsBrNdYrbkD423RcZec5QFDdD3ZgzumokRCojFxueLpczDTr5oJ3Ilk/XgtrOc5L30dVrvAmEGFyOOnCdzXy/cwCZNf93L7GlwpUGXBB+DMBalicc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780387527; c=relaxed/simple;
-	bh=QOiAdFWBGTJRnDq5s0goR+QKz8Gqev2vtn6bYoNMnzk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Rz1xbI6fgnvHXgSALqw9G+oBNSo0WbaOwbCKoLwxZHpCeEs+RfQoDCrnKPFEb9r++n9KqN1uyvQrMMESnWXlIzWlZW+yBWibM+HbgcnXaQVjGasJgJ5zFaUOByH5eq5HfDIjqaTPsQfFrjj9t5wTQp6q/biXP6eXTrVsjdtuJ+g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jU+2ua4m; arc=fail smtp.client-ip=52.101.65.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D84233D51A;
+	Tue,  2 Jun 2026 08:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780387612; cv=none; b=fB412oHNu3oBSLLtn/QGIcSqgQ5Lx+PclOEFODFQAd8/LkknJMWkiR8540OdIxIJPtSHXa+BZYuMff+G5+VxGD5FqoCSQKo++0Kuy+il0SJ8GGXRzsXoOz6rQ0wE9RyMXH7CHaN9qNVaci6XODsmFc1BZAjOBfDFMs31yN10xTc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780387612; c=relaxed/simple;
+	bh=SA3/YKlab2TVUKqjNO+G2x5l+v2KK5/dVdR8g1uIGZM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=KjoCOhf/JtKTLwNk6E6pwKccQZzzsFcwhEEm1A8i/KfMrY6LI4JjycrpOaJa9xdU7vx84wCEckeZ9wQH7ZXrB95IKs37GVMKDyHg2RMOQJvENH+Zfu9G9fLw+91tQ/9vpI/HlnPH5dgDWsF89Rv+YSi6CPw8vC5vLLAjRkPVsyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=flu+JdQb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jU+2ua4m"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GH7S5UdX5o28weQCtb05d8ScRLFDkl+N8jfyCCfLqcU2xbuvGyzFj0tmWqls5rbt1WRoMzLZZlErD3xAWGMebJB46sQHbH5UgnemQavpqew1PgsI0T2qTX0vkKhpN90fiZkDkVD7YfiblVUUOXXM2J5AYv0vJae53XzjcyOoiukSmTBPKkdCYREInQl3cwdnZRqDD6ybA6FBnkKQZ3UH/kMpa3I3LH3xy66f0ZTPqMPBuKmbCzvp8CI1ETMHeIqZcYG1Xx/xArLqL3nLIhwu4x/b6IJpb9naPwkU6XQYjNdodFTs3HVg9xyV+4qTbsW5ECTnyT3/6UI3NqJQb8wffA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5310TDftYQ6ldwH416jWwpewjp+kWllnfD9IpKfQnmU=;
- b=VbIDq+kLhqCP0A+Qw8Y0ga1ITfg4EBpVXHrYnNzTbNhSGcyy3OgYcAtFyJBqXn1a1EX1+v0YGf/+v4zoUj0Mcg++f+gJCL47UMypkHyXYr1goQArQi/7FOxle4DXpqW0zrLKKCADP1xfDPAi8A0wB+DUXFpEzr7U+F4GNQXueklfDIpwmjepAhqbSVartJKAWooDAMo5EkQ9NcKol5GPi8BMl9wGDhIPsIsGEfVsCiriMqHgVpyb5ytJDnWDFEL92UPBElSqDP7YakW43HdYC+zOJha+5qqBxnrma6lbq2LpX/iWcJH4dviezSbHq+bNgqGnrJV5dMpOCgLX5iDJgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5310TDftYQ6ldwH416jWwpewjp+kWllnfD9IpKfQnmU=;
- b=jU+2ua4mwvQUticxB67tw6dKrfDS0DdzXqu6jDubAZdScVjUj8pIYPugSpfyQkfe/rkDcF6AOHSbyC2yHji+aNq4yRTIVFJN+4GZQIPX+MxhtknR/Mz6MKBwfthhJysS39dL0oE/Eu/sre8YqLmdXndK6Jh1UAwIjWjA/8pZ8QoP2nsCxG+NhOe+tjKdRP3yI9Mpn94y4smy6CS6/4om40oDROTmx+vrXOwdLvGccUfB4v+kHaFVUiX15yH1R10IYtzIBlYz2f7auhQu6rcMdddfChVPokOO/XcwcLT16PCYT2rhGCKXXr8/fvSE1Ap3qsTY3HU7FTCSobS+XMKi1Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20)
- by PA1PR04MB10503.eurprd04.prod.outlook.com (2603:10a6:102:446::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Tue, 2 Jun 2026
- 08:05:19 +0000
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85]) by AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85%6]) with mapi id 15.21.0092.006; Tue, 2 Jun 2026
- 08:05:19 +0000
-Message-ID: <48494e7b-4cba-4372-9090-f40240d820c4@oss.nxp.com>
-Date: Tue, 2 Jun 2026 11:05:02 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 6/7] pinctrl: s32cc: implement GPIO functionality
-To: Linus Walleij <linusw@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chester Lin <chester62515@gmail.com>,
- Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
- Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
- Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Srinivas Kandagatla <srini@kernel.org>, Alberto Ruiz <aruizrui@redhat.com>,
- Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org,
- Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- NXP S32 Linux Team <s32@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Vincent Guittot <vincent.guittot@linaro.org>
-References: <20260504131148.3622697-1-khristineandreea.barbulescu@oss.nxp.com>
- <20260504131148.3622697-7-khristineandreea.barbulescu@oss.nxp.com>
- <CAD++jLnk4q7L_cFzz+1gKkAqwhv=TW1_XSepuii7b_PHF7EPqQ@mail.gmail.com>
- <704e9e7b-0f45-4ed3-a686-9e20056eab2a@oss.nxp.com>
- <CAD++jLk-7UqjCsM4jCdRmBMMaNNXe8Gi_E00fJ_MRMsEGQcMZQ@mail.gmail.com>
-Content-Language: en-US
-From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-In-Reply-To: <CAD++jLk-7UqjCsM4jCdRmBMMaNNXe8Gi_E00fJ_MRMsEGQcMZQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P191CA0006.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d5::17) To AM9PR04MB8179.eurprd04.prod.outlook.com
- (2603:10a6:20b:3b5::20)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="flu+JdQb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC861F00893;
+	Tue,  2 Jun 2026 08:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780387610;
+	bh=B+QTt9O0bWTfpiutZRk92oLuXwC7p/addxsH7yIaxBA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=flu+JdQbRAlqXvaahphORXLBZ9mJYP/UqV7o09tL50QE6EgL49J7ZLc1goWcuI8hR
+	 82gtosU99AH+fdPFqGbk7oxuKm+Qn2+vBocvcoPfrHb4M5iuXqwCpaeQ3uD5EQuqtg
+	 UFR+zlF6LDQpOwyeKjQeXcUCLxObKtnW2HJSjh8hK0xAZJKHIRnjsXXyrM8dabSN/3
+	 PYLXBwIHOFXXyRlVGTAfzyqmJm240ph/NxHEFgf4u/N+6Dwtn7qxK5+G63oLD0uDaG
+	 zB6CldykVm6Kl9a9VeTyDEy884gYD/rXafNUyk0TxQ1WlLgxW4zmH/XuTGErGzGGlK
+	 SAdZchAOAvVpA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v10 1/6] pinctrl: s32cc: add/fix some comments
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Khristine Andreea Barbulescu" <khristineandreea.barbulescu@oss.nxp.com>
+Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org
+In-Reply-To: <20260602080132.3256239-2-khristineandreea.barbulescu@oss.nxp.com>
+References: <20260602080132.3256239-2-khristineandreea.barbulescu@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 02 Jun 2026 08:06:50 +0000
+Message-Id: <20260602080650.8EC861F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8179:EE_|PA1PR04MB10503:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74025573-6915-4b09-cc14-08dec07db066
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|7416014|376014|366016|19092799006|56012099006|4143699003|3023799007|11063799006|22082099003|6133799003|18002099003;
-X-Microsoft-Antispam-Message-Info:
- p6Re8mWBEZV1GJJzwxiiMxKBaIgPK6uAR5rfQQsD7wLCK0qlYAVI4TuuKK1cPOm2rkrXTDagbpDyVK5/sIxb88zsNYMFaVvzAiJk5mDIqJeOy0SlIT+jE3e4edRtu3ABEuKA3YLVe/LwMXNNZaBqt7XS4fcpnzHwT4YrJ9qZFbnk+te0CZCda/I1h6qr1itqJEeouTkt6diVMeZ3cDHiSrCnMjuLYvRhRHSS8/tPEVBb9ZPup9Bi0+cZ/ZJyXB/Q2s+51JqBzTiKwyKNqKo1wkMpF9K0Tlon0kDF1HEwqBLAKZsiJf0rMsHOGzejuGgPPhql93rSNhe6isc/WnrQ+I8qiLm107zW1lzr87gwOmc5sP2W2oOm2mxRI2W2lcba+c0rvhTAHTcSXccwoIODJ3IWIM8RaUqT2m3CRnwMJDVvYnLHWyqdyQtGhKzUtUSm5vlu3gqW2shFuUiVZKfrVXQ3n1qTACegU3TkxnSO7vhMwK13S4Vl1ES+/5mTcBOv4PxURkVxWaPyrpO+3XFfV7XVDCG3MXKy26JeewC5klhUM1o6KoPTWSuzCVWAKq4CZxiQuBL0+FX2+Cl6S0P58Lt2LeoonSrVYanQlYyAezh72zHwCRpeiJZ+v6mrA1NwXD2reykeDZWnUAsG27ZVHQsVfp611wu1Tvg1iNuHu+WRDpTSspD5M7ZfoR4Nyvd0
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8179.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(19092799006)(56012099006)(4143699003)(3023799007)(11063799006)(22082099003)(6133799003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?bHhzdTFOR0xPVTZoeFJ6V09saG1ueEpyd2VjTURiZWVUSGN4cG5DWHRON1V4?=
- =?utf-8?B?bm1xcmRQNU9XNmFKTWVCUW8yZDJmTFdTT2lJMFNYdUpxOXVhcUxRNTdiUHFN?=
- =?utf-8?B?eWRsMVhuTkVIMC9kc0c3VitEUVlzUTlKbzlHeldBNG5pZUEzM1lveTJZck45?=
- =?utf-8?B?NVVuUzluTWVQQXlsdGhSL2ROdS9ZWDVkYVlOSSsxOUxBOGtoNG0zWnpzYits?=
- =?utf-8?B?Z1pSRkxaY25rNFA1WnhXYmxMOWdWUG93aU50WlVQWTZpWDdrdzR1TUhRRGtR?=
- =?utf-8?B?cmNyQVkzQXZiT0ZtaUErNWk4QnZKYzdNWHNnWGkwdkFadFcxZWJ2SXFkRXo1?=
- =?utf-8?B?SjdIUVF1VWhHMEdaMllkUStORG10ai9PRVgrY1paWGtFMlJBTHlhWFJKc2NL?=
- =?utf-8?B?VXBoT2VCU1AySGV3WFB0Um5lVGp2TW42MDVjSmlmSC9rNjI3Z3kxQnNMOEZj?=
- =?utf-8?B?SnkvODcrMitCMGNZYm15bURmWE1WSUdMS2ZWSzNmbjNrY3hZa3pvZnBxUEpM?=
- =?utf-8?B?RkowV05jWmMzY2R5QXpDenRjczRhVW50cEVIcXNoaXRYTFFZeU9LSFVtMzI2?=
- =?utf-8?B?eEY5aG1UaElUdURVZFAydnlQanU5SVBKZXRnc3FFNjF6TWFyakovbGlGM3hN?=
- =?utf-8?B?VmYyRk5DT0EweGUyRGQ0OHV4cFNseC9pTElZemZQV3BQeGVxZTY3OGNwVG05?=
- =?utf-8?B?cmFqRlVnS1FvOStqRmlCZG91S1dhYSttaWhBNklvakZMNmo1b2RGU3dyOGhQ?=
- =?utf-8?B?Q3BzZktCWENVUXdFeS96cnB2blI5MHJLUXEwUVUvZXNlbDhZdk5oSTBLSnkv?=
- =?utf-8?B?eDRzNGFEdllzN250RGozRXdXd2pmcDZCRitISnBqQ05LaVRYRW1TNm9HK2ND?=
- =?utf-8?B?QmVybTZBUmNkUWhWclptVitrdlZ2Z2RSczYyRjU5Zk0wbEs1TGZZWG9ha0JX?=
- =?utf-8?B?Vm5GUmNOSDBGNzZaaGdkR2pjTG1WOC9ubGxzRHg5ZDlzOExyNlowaHJEakFj?=
- =?utf-8?B?YUpFbzQzZ0U3d3VnbGhGNWJURkFRV1FFaHc2cm5nMmtheE1vL0ZQQTZUQXp4?=
- =?utf-8?B?OVZrdXNDbDJ5dEVLUkJZY2hDeTlpMEVwUExlQjJLV08zQkpHbEZPKzV4Nkla?=
- =?utf-8?B?SWNQbWw0eXNCTFFnOFd5VGp6aExLSnZISlcxek40dTdSQ1BsWFpFbmR6THZR?=
- =?utf-8?B?eDExYW5pQmVmY1hLUmlYeE0wSUwwYTUzajhKNWx3YUxCWVljREJld2F6Q3hP?=
- =?utf-8?B?STl6bEVKL3hvWWZyelNvbk9wS1VjaGVycW5WOGdSR1p6dVVWVytsbUhCNVE3?=
- =?utf-8?B?eTBLUjNvL0tkdEduQzNpVmtRZy9JTXF0Q2RqaTBEYXNXMzJlbHVrSXBRVG0r?=
- =?utf-8?B?V1ljeFNwT1Y5YTFGSjJ5cWQ1UFhvbmk1OGZPM3VIQ3BpeUpMU0s3clVUMmxP?=
- =?utf-8?B?OTBUT1V1VGd3UEhDNTZ5ajB5V0UwVEJ1djlDN2JFc29odGF4dzZYN2FoY01L?=
- =?utf-8?B?bmJWNGNBTGlPdkJpNlNIQnVUWVkwYkhFeXlhUlhPNHh4R08razhqejgvRGNz?=
- =?utf-8?B?YUkxbjUzT25BRTd4bmx6cEtWYVJsUWFDUjcvVXBNcDBZeFZIZHpOZnVrOFVX?=
- =?utf-8?B?Kzh4elIvMHZobUx3bTZLTERrRThZUDNSei8wc3F6eERHQnZQcllxaFliL0pw?=
- =?utf-8?B?ZEhLUWlyZEJHNnFrdkJQOFAwRlJmNDF6cmxaQUp0eHBMK2NJRU5EQnI3SVZQ?=
- =?utf-8?B?RDIyc3p2ZlZpMHd4NmhrVlp4K1hLN2hIWHpRSjZ0YzRNdFhqMmlWdWNETmND?=
- =?utf-8?B?VVNEVS9RNFp4aFlXS3JueVpOMVlCaWhhbytmYTVXVEpYTjNDZmZUYzNad1hF?=
- =?utf-8?B?aWQ3enRjaFlLcE1STlZoUGtkd2FjZ0x3a2ZZREpGaW8ySE5kalBWc3Y4REww?=
- =?utf-8?B?a1o2Nno5M0dBbk5JNUFRVUdRU25ha05ydWh5T1YvZ3piSkRVY3VtcjI2Y2cv?=
- =?utf-8?B?VGhuTU1IUzJnUzlHN25RY3pER2ZuZjJvSXFxRXdYeGZTOWpqeERwdnBpM0or?=
- =?utf-8?B?c2NHdmExUUhKV0k5d2plSmdOaFR6Sk5uTEZQMzdWWk5ZMFVydnBleElNa3ZJ?=
- =?utf-8?B?aW92VjB5WDFmUE5MekhVbnNZUi9pdTdkZFFpR0ZQWHBwZ0pVYWw5anRGZVFM?=
- =?utf-8?B?dE84cGdUMzdIUUg4ZmQwT2tTQm9Db1BlQ09rVHRHVFFucUM1YVhvOTJPTm92?=
- =?utf-8?B?WXFTMzFaNDRLYXlQRkkvdDVVcUhKMFA4MkY0T0ltWFRLNVRnaXIzaTFGSFpq?=
- =?utf-8?B?MmoxSEh2bTFCbHVjMmd4eXdyRktBSFkzWmJZZC9aNUVrV3ozT2t0d3FSVnVD?=
- =?utf-8?Q?HwZgWKqDhHQIdeYLyGYERxPr7DCqdWMk805wh?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74025573-6915-4b09-cc14-08dec07db066
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8179.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 08:05:19.8067
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tNNv74zzhsrmR9mDNOPpIYG0NSBPjreHF6IAeIh8C/xGsEmw+GoS6cSza+B2piD1t79hePCGR2oCM7tDZuq5P2xG9y42Z91nOs0vVDIoa9aeHtwSM2Jyn8TQ32QQymUz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10503
 
-On 5/11/2026 11:48 AM, Linus Walleij wrote:
-> On Fri, May 8, 2026 at 11:07 AM Khristine Andreea Barbulescu
-> <khristineandreea.barbulescu@oss.nxp.com> wrote:
-> 
->> I don't think the current driver is a good fit for
->> a full gpio-regmap conversion. Direction and GPIO mux are
->> handled through MSCR/pinctrl state (IBE/OBE/SSS), and the GPIO
->> logic spans multiple register regions across two SIUL2 instances.
-> 
-> I don't see the problem with that?
-> 
->> A conversion would require stronger separation between
->> GPIO and pinctrl, leaving mux restoration entirely
->> to the pinctrl subsystem.
-> 
-> Why is that so? Sorry I don't get the problem here.
-> 
-> The pinmux operations have these callbacks:
-> 
-> static const struct pinmux_ops s32_pmx_ops = {
-> (...)
->         .gpio_request_enable = s32_pmx_gpio_request_enable,
->         .gpio_disable_free = s32_pmx_gpio_disable_free,
->         .gpio_set_direction = s32_pmx_gpio_set_direction,
-> };
-> 
-> So to me it looks like the pinctrl subsystem is *already*
-> handling all the muxing of GPIO lines in these
-> callbacks?
-> 
->> Would it be reasonable to keep the current approach for now
->> and revisit gpio-regmap later if needed?
-> 
-> I'd prefer that you look into it now while you already
-> have all the information at hand and fresh in your mind.
-> 
-> You can forward my comments to your project lead
-> / JIRA instance and say it's Linus' fault you have to spend
-> more time on this right now.
-> 
-> Yours,
-> Linus Walleij
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Low] Typo in the newly added documentation for `struct s32_pinctrl_conte=
+xt`.
+- [Low] Invalid kernel-doc comment block syntax.
+- [Low] Inconsistent error message capitalization.
+--
 
-Hi Linus,
+commit a7822dc8d9c7d5010c39b80aee179b5ec0735e03
+Author: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.c=
+om>
 
-The new version (v10) has been updated to use gpio-regmap, with a virtual
-regmap bridge dispatching GPIO accesses to the underlying SIUL2 register
-blocks.
- 
-I am not fully convinced this is the cleanest model, though.
-SIUL2 does not expose GPIO as one regular register space: direction is in
-MSCR, input values are read from PGPDI, and output values are written through
-PGPDO. These are backed by separate regmaps in the driver, while gpio-regmap
-expects a single regmap.
- 
-So the current path becomes:
-  gpio-regmap -> virtual regmap -> MSCR/PGPDI/PGPDO regmap
- 
-The version was updated this way so we can review the approach on top of the
-current code. If this is still the preferred direction, it can be polished
-further. Otherwise, I think direct gpio_chip callbacks using the existing regmap
-helpers might be a simpler fit for this hardware.
- 
-What do you think would be the preferred direction for the next revision?
+pinctrl: s32cc: add/fix some comments
 
-Best regards,
-Khristine
+Add/fix some comments and print statements.
+
+> diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pi=
+nctrl-s32cc.c
+> index fe7cd641fddd0..4f88c24e62a21 100644
+> --- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
+> +++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+> @@ -60,6 +60,12 @@ static u32 get_pin_func(u32 pinmux)
+>  	return pinmux & GENMASK(3, 0);
+>  }
+> =20
+> +/*
+
+[Severity: Low]
+This isn't a bug, but should this start with /** instead of /*?
+
+The newly added comment for struct s32_pinctrl_mem_region follows the
+kernel-doc format, but because it begins with /* rather than /**, the
+kernel-doc scripts will likely ignore it.
+
+> + * struct s32_pinctrl_mem_region - memory region for a set of SIUL2 regi=
+sters
+> + * @map: regmap used for this range
+> + * @pin_range: the pins controlled by these registers
+> + * @name: name of the current range
+> + */
+>  struct s32_pinctrl_mem_region {
+
+[ ... ]
+
+> @@ -67,7 +73,7 @@ struct s32_pinctrl_mem_region {
+>  };
+> =20
+>  /*
+> - * Holds pin configuration for GPIO's.
+> + * struct gpio_pin_config - holds pin configuration for GPIO's
+
+[Severity: Low]
+This isn't a bug, but this comment also follows the kernel-doc format
+without starting with /**. Should it be updated to /** so it can be picked =
+up
+by the documentation tools?
+
+>   * @pin_id: Pin ID for this GPIO
+>   * @config: Pin settings
+>   * @list: Linked list entry for each gpio pin
+
+[ ... ]
+
+> @@ -79,20 +85,22 @@ struct gpio_pin_config {
+>  };
+> =20
+>  /*
+> - * Pad config save/restore for power suspend/resume.
+> + * struct s32_pinctrl_context - pad config save/restore for suspend/resu=
+me
+> + * @pads: saved values for the pards
+
+[Severity: Low]
+This isn't a bug, but there's a typo here (pards instead of pads).
+
+Additionally, this comment block also lacks the /** prefix required for
+kernel-doc.
+
+>   */
+>  struct s32_pinctrl_context {
+>  	unsigned int *pads;
+>  };
+> =20
+>  /*
+> + * struct s32_pinctrl - private driver data
+>   * @dev: a pointer back to containing device
+
+[Severity: Low]
+This isn't a bug, but this comment block is also missing the /** prefix.
+
+>   * @pctl: a pointer to the pinctrl device structure
+>   * @regions: reserved memory regions with start/end pin
+
+[ ... ]
+
+> @@ -974,7 +982,7 @@ int s32_pinctrl_probe(struct platform_device *pdev,
+>  					    ipctl);
+>  	if (IS_ERR(ipctl->pctl))
+>  		return dev_err_probe(&pdev->dev, PTR_ERR(ipctl->pctl),
+> -				     "could not register s32 pinctrl driver\n");
+> +				     "Could not register s32 pinctrl driver\n");
+
+[Severity: Low]
+This isn't a bug, but does changing "could" to "Could" break consistency
+with the rest of this file?
+
+Other error messages in s32_pinctrl_probe() start with lowercase letters
+(e.g., "wrong pinctrl info", "fail to probe dt properties"). Should this be
+kept lowercase to match the rest of the file and standard kernel practice?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602080132.3256=
+239-1-khristineandreea.barbulescu@oss.nxp.com?part=3D1
