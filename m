@@ -1,136 +1,180 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9686E3E1D17
-	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 14:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6FE3E95B2
+	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 14:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780409023; cv=none; b=dcmF3iMYaMN5hAtM6R4oXlsOcqCKXnWBbtbfVA4FxJ3ubqK5epQqSrfgV/BRHTSqKjwkDVlwXfIAhMvFZ0UY4DsI0lhbAOS8ZPPViq5TMLnAlEDcjfVMby5KuFAP1yi6du6LQ0UwmEwXYGVjHqxWZTfXQC79RS1+UR5HRtzEeWc=
+	t=1780409569; cv=none; b=qAa+AQcX4p7P0Sr6OzNHXlVl+LXvkv9ZFIAqLsEJn0P4z3VX+ZRZP+evaMmah7TUPga/DghyZ3YuiATR8mPApBzJwhenQwcIdSUaL1vGXOzoUt264Pzx5LlgbBT7kkLXXyRcjkIwNEkuj+9k7YVqaYVJ7i4vBOTLjPJrygQ1Ozo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780409023; c=relaxed/simple;
-	bh=SJsTKp3UIReLNT2wF9nK0KalhCTuK35UU2f9TUqsEH8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FyDHLG07ILzciciCjehEA4u4m77Jsm6L1OqH5UEZQJUHc+GTe8+YJg/qTnhpc9W72Y/OhASAIs/q70cDBQsOQmE+zKUNGO9wo+2LlOZ1TACRxjwte1vJfM6hbVdVuxmO1DB43FzqmhqpCRC8D9xPwirYf1g4KFIfKJzCKFPdIo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=njI9CGiB; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1780409569; c=relaxed/simple;
+	bh=kpmGkkU11ecTwdVdTxlaGp+lNBsMTsb/Nj9af5UXA/A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ard7kBbdJ68mtNHI8i6XHM+OQtXdJua4vGxCGcnxVmTW0Wupqm40szYUF00mZmVimOJaqndAJbBSzsQdKHjw4sSKitCKhtT31njnOmGgHqsVh9K0b75CISU4416WIj5D52e+fGTopQ/751JSo1EiHMVgQd+TwH4Pn3MBMDAc6Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ia5CTYke; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="njI9CGiB"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1780409018; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Nvf37ttJYqmi2dkqkEls2w7tX2JxLi4QoRnmtPx2/ZE=;
-	b=njI9CGiBRnqdG8SdJQAjnW+nUutM/49n3scvxMMnGU3XifRPo92wD2OvG4NCeyGXO0jE/xfqgFjwfk2rmAn5KWm2ljIF5qNRrne8n7MqydZWp4meXGXSgRBvhnVvgBfhM2YKiHy2Rt91z4dG1DVgjJBT5FgzaPl8gi70YGLe660=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0X44kgbj_1780409015;
-Received: from 30.221.129.226(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X44kgbj_1780409015 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 02 Jun 2026 22:03:36 +0800
-Message-ID: <335ae01a-20aa-439e-996c-d35ffd8d476a@linux.alibaba.com>
-Date: Tue, 2 Jun 2026 22:03:34 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ia5CTYke"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-36bba9a1089so2609531a91.3
+        for <imx@lists.linux.dev>; Tue, 02 Jun 2026 07:12:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780409567; x=1781014367; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7XCowtVnjKXnbcRNuimTNpT8EiRYTBtdlRiIVINQJ3g=;
+        b=ia5CTYkeIRgaAYWU2Tk2DDKAFZGcg13xVD+pC9l2vlveV3hAnPm2NEUgykw8VTkpZ8
+         RZ8utyZjd6ewavQ/YrL7dk2xMgD+TzlK89mLgr/3sm463LlgtczRdDB8lcafaSaOKauX
+         mCl0AsgA4xbJvUK7nYeQUQsECt47ZTiQrV/dHBgv4sn9NQpa2ZescnLkNycAt2nr0p/L
+         95TF17LlrVowCwXX2XX27cWDmgC3xj0QToaOAH0H9a73ILVVSGHdDFWFvtX7ppWfDn85
+         m2W+KU58x9jFYIrdcsbTMNbFT+R19MtUoG2H7rAGOhZb9dpvX/fq8GW01UT0ubIsxTYp
+         VoZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780409567; x=1781014367;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7XCowtVnjKXnbcRNuimTNpT8EiRYTBtdlRiIVINQJ3g=;
+        b=HM3bUqR5leBk1pKpJQrSizXMuf7ykw+z/wQC0Bzq9/QiDRubb7rWvq1rTNh2xsSA/K
+         R3OoN+YUZFQClZIX5KYzqYk0EKfX8Oo0i5NG5dBh9gFzp/JMjsTUXLgHyAR1F49kd8MV
+         pcjDqGCnqwf/fY4NWH2Z9UmGlcQVSnnkKMD+exAZZ4mUTDBb72GLz0SFe0n4G98dtjj3
+         hE8EY+JeG8OjokClsWC+DBwumM8X6Q+Nc+p1RVhuIdN+CcUU1mnGwQ+08WcQjk3uvfZQ
+         sWcfmUYeZyUgouJwmh3/7yIetmnX/a2SDo0bTmrHF0lxk2k9ua40F6o7hEPuK04/jSaY
+         4hKA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Rh+V3I52Qo8js+kmfhY0cBxoN2q4cGbg3lN6Rz8NOX2Wn+WeNOZQUML6WOsuLLQYYqwU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywo8/K5NOtoWD0xUbTa2Z9krIHXEPW723Z6/BCzMMGMZfx1FkBS
+	IT+yv6mvmnInu74dzmRHpS7P0Qqy7DZwfSudrVB0GEFnUJTm3ITKUlEn
+X-Gm-Gg: Acq92OHuCiiSZAMOV2ft4oF+4mR7uFZAUrMEtutAiVdQaXd7jwJdVGb1nRpBeHC0QJz
+	U2XYImS7ck6Zivj53TqluMRKB2GF2VeDq8D/tDkzXaYuAKR1CCOJjBhpemzpnusAd/By7UZz6kt
+	+uT0rsNXh5uu8J0E83u1x1Jx+BSNWamLCyq3b9HUDyGk9K618fwWHzoSzbIB/BEgRiANGcrZcU/
+	nHXISJI3ssf/gNS5/LvLv86YY+57cVj0yh6lRqzACQhHlTfiwFkHbjl7x8G7vCeKMWhKDlMyyaF
+	lfpoDDSI+BAKpO056QsSCkaLiO+faKL+T//VviIBE6xCqwuC7y8V+t0cuoHAruI3QWux5/mdhT4
+	jDVxM5/p8oue17h1uk6EbWwClVfeBhbaN6SJ1f2NVzmDj65EH1l1HUSpy6sAsIH9J8GuqcYMZkJ
+	E2ERdfqvl5yX8EFAFB8qE5V3u9CAI2IkHyICsulYBsNSZJtqvotIxZHYFINbO1Hsm+7C+ftD0ul
+	+SC5jnfIKkODR/23NHj5RectD6h
+X-Received: by 2002:a17:90b:3442:b0:36c:e254:4d5 with SMTP id 98e67ed59e1d1-36ce25410d6mr9832117a91.4.1780409567301;
+        Tue, 02 Jun 2026 07:12:47 -0700 (PDT)
+Received: from junjungu-PC.localdomain ([223.166.246.30])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36dd90415besm3601775a91.0.2026.06.02.07.12.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 07:12:46 -0700 (PDT)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Tue, 02 Jun 2026 22:12:41 +0800
+Subject: [PATCH] phy: fsl-imx8mq-usb: fix typec switch leak on probe error
+ path
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] MAINTAINERS: update PTP maintainer entries after
- directory split
-To: David Woodhouse <dwmw2@infradead.org>,
- Richard Cochran <richardcochran@gmail.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: tglx@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, jstultz@google.com, anna-maria@linutronix.de,
- frederic@kernel.org, daniel.lezcano@kernel.org, sboyd@kernel.org,
- vladimir.oltean@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
- jonathan.lemon@gmail.com, vadim.fedorenko@linux.dev, yangbo.lu@nxp.com,
- svens@linux.ibm.com, nick.shi@broadcom.com, ajay.kaher@broadcom.com,
- alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- linux-fpga@vger.kernel.org, imx@lists.linux.dev, linux-s390@vger.kernel.org,
- dust.li@linux.alibaba.com, xuanzhuo@linux.alibaba.com, mani@kernel.org,
- imran.shaik@oss.qualcomm.com, taniya.das@oss.qualcomm.com
-References: <20260412084704.743482ad@kernel.org>
- <4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
- <20260412095301.4fe1fe65@kernel.org>
- <ebf19246-91af-4887-b2aa-d9007921f7b2@linux.alibaba.com>
- <1088b07d760491deb461d6d01abca631e8f8d86c.camel@infradead.org>
- <ahzQZg_v4bxFfGdj@hoboy.vegasvil.org>
- <3908843460c4864eef79cced40d897f793c7ae2a.camel@infradead.org>
- <ah2jIt2DqI1ZZJx8@hoboy.vegasvil.org>
- <0e023f951c102fe2ee7070e490c579783b2817d5.camel@infradead.org>
- <20260601185226.7f43fa75@kernel.org> <ah5aGMIxA418sxoj@hoboy.vegasvil.org>
- <0b3f00bbfa6bcc3badb4d1bb7845326e2dbaa1d4.camel@infradead.org>
-From: Wen Gu <guwen@linux.alibaba.com>
-In-Reply-To: <0b3f00bbfa6bcc3badb4d1bb7845326e2dbaa1d4.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260602-imx8mq-typec-v1-1-3debe9bc77d9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANjkHmoC/yXMTQ5AMBBA4avIrDWZdtHgKmJBTRmJvxapiLsrl
+ t/ivQs8OSYPRXKBo4M9z1OETBMwfT11JLiNBoVKo0YleAzZuIrtXMgIhbW2spU5ooWYLI4sh29
+ XVr/93gxktvcB9/0A33aWg3AAAAA=
+X-Change-ID: 20260602-imx8mq-typec-20a6f1d1900f
+To: Vinod Koul <vkoul@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Xu Yang <xu.yang_2@nxp.com>, 
+ Jun Li <jun.li@nxp.com>
+Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780409563; l=2735;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=kpmGkkU11ecTwdVdTxlaGp+lNBsMTsb/Nj9af5UXA/A=;
+ b=4YSIt8pCDNOFocdXGuAudSQFQldGYnUBr8V6MOtFtbIGLD00AcsWNSa6+B/Ptk3ul3742sf1P
+ htOMmlEyovCCgKwh7yZxmffvwspM7qwRIj/dbKpNJgLdmX5jcRHNlr2
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
+If probe fails after imx95_usb_phy_get_tca() succeeds, the typec
+switch leaks because the only cleanup path was in .remove, which
+never runs on probe failure.
 
+Use devm_add_action_or_reset() so the switch is cleaned up on both
+probe failure and driver removal.  The .remove callback and
+imx95_usb_phy_put_tca() are no longer needed.
 
-On 2026/6/2 16:04, David Woodhouse wrote:
-> On Mon, 2026-06-01 at 21:20 -0700, Richard Cochran wrote:
->>
->> Still, I don't understand why these new (non-network related ) device
->> drivers can't be implemented in their own class using
->> posix_clock_register()
->> etc.
->>
->> Any of the useful bits (like sysfs interfaces) can be refactored out
->> of ptp_clock.c and shared as a common layer.
-> 
-> The key is that userspace wants to get snapshots of the reference clock
-> either precisely synchronized with the system clock where possible, or
-> sandwiched as closely together as possible with ABA readings of the
-> system, reference, system clock.
-> 
-> Those *are* the PTP_SYS_OFFSET* ioctls, which tools like chrony already
-> support with 'refclock PHC /dev/ptp…'.
-> 
-> I'm not sure how factoring those out into separate POSIX AUX clocks
-> would help? I think they do want to present as /dev/ptp*.
-> 
+Fixes: b58f0f86fd61 ("phy: fsl-imx8mq-usb: add tca function driver for imx95")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
-I agree. Both [1] and [2] independently support the same point:
-chrony's PHC refclock relies on ptp-specific ioctls (in sys_linux.c [3]),
-not just clock_gettime(), so the ioctl interface needs to stay.
-A posix_clock-based class wouldn't provide that.
+diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+index b05d80e849a1..8af5a4f85698 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -173,8 +173,10 @@ static struct typec_switch_dev *tca_blk_get_typec_switch(struct platform_device
+ 	return sw;
+ }
+ 
+-static void tca_blk_put_typec_switch(struct typec_switch_dev *sw)
++static void tca_blk_put_typec_switch(void *data)
+ {
++	struct typec_switch_dev *sw = data;
++
+ 	typec_switch_unregister(sw);
+ }
+ 
+@@ -248,6 +250,7 @@ static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
+ 	struct device *dev = &pdev->dev;
+ 	struct resource *res;
+ 	struct tca_blk *tca;
++	int ret;
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+ 	if (!res)
+@@ -266,17 +269,11 @@ static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
+ 	tca->orientation = TYPEC_ORIENTATION_NORMAL;
+ 	tca->sw = tca_blk_get_typec_switch(pdev, imx_phy);
+ 
+-	return tca;
+-}
+-
+-static void imx95_usb_phy_put_tca(struct imx8mq_usb_phy *imx_phy)
+-{
+-	struct tca_blk *tca = imx_phy->tca;
+-
+-	if (!tca)
+-		return;
++	ret = devm_add_action_or_reset(&pdev->dev, tca_blk_put_typec_switch, tca->sw);
++	if (ret)
++		return ERR_PTR(ret);
+ 
+-	tca_blk_put_typec_switch(tca->sw);
++	return tca;
+ }
+ 
+ static u32 phy_tx_vref_tune_from_property(u32 percent)
+@@ -739,16 +736,8 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+ 	return PTR_ERR_OR_ZERO(phy_provider);
+ }
+ 
+-static void imx8mq_usb_phy_remove(struct platform_device *pdev)
+-{
+-	struct imx8mq_usb_phy *imx_phy = platform_get_drvdata(pdev);
+-
+-	imx95_usb_phy_put_tca(imx_phy);
+-}
+-
+ static struct platform_driver imx8mq_usb_phy_driver = {
+ 	.probe	= imx8mq_usb_phy_probe,
+-	.remove = imx8mq_usb_phy_remove,
+ 	.driver = {
+ 		.name	= "imx8mq-usb-phy",
+ 		.of_match_table	= imx8mq_usb_phy_of_match,
 
-[1] https://lore.kernel.org/netdev/2a4c9a00-45f5-4f6a-90c4-492ea1d50b79@linux.alibaba.com/
-[2] https://lore.kernel.org/all/vmwwnl3zv26lmmuqp2vqltg2fudalpc5jrw7k6ifg6l5cwlk3j@i7jm62zcsl67/
-[3] https://gitlab.com/chrony/chrony/-/blob/master/sys_linux.c
+---
+base-commit: 08484c504b55a98bd100527fbe10a3caf55ff3ff
+change-id: 20260602-imx8mq-typec-20a6f1d1900f
 
-> There is some extra stuff we want to do for "Precision RTCs" or
-> whatever we're going to call them. They might actually have a known TAI
-> offset, they might convey leap second indications, we might want to set
-> the kernel's CLOCK_REALTIME from them at boot. And in the case of
-> VMClock, I'm working on being able to clamp the kernel's timekeeping to
-> it directly².
-> 
-> So maybe what we want is linux/drivers/phc, to host those read-only
-> devices which know real time. They can provide a simplified
-> implementation; maybe *only* a function like vmclock_get_crosststamp(),
-> which is just called in various different permutations by the various
-> different PTP methods.
-> 
-> The core linux/drivers/phc code would then handle the interface to the
-> kernel's core timekeeping *and* wrap them to register a PTP device that
-> existing userspace can understand. And deal with the kvmclock/TSC
-> awfulness where needed.
-> 
-> How does that sound?
-> 
-
-I think a dedicated phc core would make the classification of read-only
-clocks clearer, reducing ambiguity around where they belong. I assume
-direct timekeeping integration would be optional, drivers providing
-only a snapshot-based crosststamp would use /dev/ptpX alone, while the
-timekeeping path would require additional capability (as vmclock provides)?
-
-> 
-> ² https://lore.kernel.org/all/20260520135207.37826-9-dwmw2@infradead.org/
-> 
-> 
-> 
-> 
-> 
+Best regards,
+--  
+Felix Gu <ustc.gu@gmail.com>
 
