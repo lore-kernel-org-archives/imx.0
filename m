@@ -1,160 +1,151 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012059.outbound.protection.outlook.com [52.101.66.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AC93E63B6
-	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 13:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780405424; cv=fail; b=fMlfT8Glkg/1+tIpAkilETPxJf4smfgGdSkC0T7FDG6FMPTNPQBzloENtk4tfqnM+wywhiZA2NnQkrwg6oXgLcqZrm1Md//LRBJ/faC98Yode9oIKuCDcrzie/f/zS/vK8WpoEiOlPZmXG/gjNtoF++RS4KLaAO054ADOYt39Ro=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780405424; c=relaxed/simple;
-	bh=WNFDfk7IM4HeP4yJWYiAuuv35Zgu+UGfAxKeJKO3FuE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TIZjoFvnYkvOWYk4t/HiNLn4dU9gPJhv7v4fSxnhtxmttuFX0zKqYfcH7VD3cgGZu/s5UTXkv/Er10zWagcDMfyc7zOMDoYFJk3+WY4atkPxkFhU0KYDdf4o+EKIE2SqfPJvFT/KO5uiiH30fk0/iG3dkH8TprNgDHnZqvCMlEE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=NI8wEIUD; arc=fail smtp.client-ip=52.101.66.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C403E008F
+	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 13:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780406080; cv=none; b=XhzPBkZfE9F9+MlBVwerTFHcvBsA9Uz9zlW56oRIwnRiEBrtEyokdkcx0gOjva+kdZIDwSCX3VSmckNLs8FjOgIYSl41JsMf2/9s8ohENwuCqBs61neExGw/CJogZmKmwW0GQOFsJT0DrxziAFNuvYNfWz1vc2BG+bu+zaYkyJE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780406080; c=relaxed/simple;
+	bh=2P56B+ZQr3CMN8Q55LeqttmN2FV6MnYrkE4+rKOUiPI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VZe8k3pGTT04p8G+I3JBd7HVxXPWAaCRydGckoSIlIHjV6DTMw+hVLtxvqrYwQrcRWVeV9wPVOWrvJXzxx7itAmLtVuK0qj4yDYRwUcEJQylmaxYtWodkspDbfQ119d16cZaaGUj40GcxzlinPNieeFLWIInN0PlX/kjuy+7li4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DizIB/xk; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="NI8wEIUD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JIcuGOG9xL5lZtXURPaGH1tSNXDtY6EeMUOu2I11cuDi3cmYk+W1KGxqIoIDV6UOw2fMF9mnsXQeLXWgaOD6YTCgkt0ReqHF7/jr9kJ3at5kTJfy9xRpwFWxdwG3hxk68krZGTZ7zLZW9Z9iBzXIETrzCROyOayQr+3QgqRzuS0CmVvbmnHAPwKMJdPq11lMmeyVH8D2wdj25sBY6ERPzi7k2yaPgIfa/GV4iA8TadVb0HSwTdGTLtgT8dklsNJ/SHuJs2xOYwNw/S2IeaULP4C0mrbNu99IR/pQ0RXSHlCc0yUfR5KYIRXX6bHi7CXva9t2pDGcHf5p5rfiobJN8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vwWwQR9P8Ympgw+kQz4842HILDOyHmzShXCwxSRrcg8=;
- b=lwyoP/0OmTEsf1fNgE7Ak7juVsrJ0qhhvJMm3gNYniPTUIgulIVRFBwt3gTMw6RDuBcdiQWSVRxZMMkB8NE8Txd14InHBSRFAA5e1qszm4inmw38DeqwNrr1W8Y2bCPAJ3n2HMrAAXXNr0ej0DNC/7p8ImCPt/qlIw21ep2+ovwx25mzqzcvNrr8JvISjem+/IchhgtVsQky1Agd6pKXUwxC8DW+AWvLb4mVzS8bH+p7e5dIvByf3pxa7d/xUNr0rHfIYPlxQOINmkAVThb6MfC7vUnhKPbkl1fGYcKt3ksYQfkLUxKklci9tshwI4nwawlTg5SUH0dJ8EiXuhNbIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 164.130.1.59) smtp.rcpttodomain=kernel.org smtp.mailfrom=foss.st.com;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vwWwQR9P8Ympgw+kQz4842HILDOyHmzShXCwxSRrcg8=;
- b=NI8wEIUDnGlHzXkJQy6i4GOwTPSqDsgr/hPgDJwRLWDQWg2tIzFrJWM1BJoZNvl/JV8FqpUuHAFQ1YjGwnWcVL3pUzMx3RmCU8Wnk00LeGq557H6+WPUQ2DTsqggApftkUHrODF/vAQiHKU5OkWuPk5vV38TbHaWzuP+uY/5ymfiZskr0ormpZ5denr5eSOn5221m3BUrV5C59ag/TU9KHQ2WA0JOco+iYc27lINyO7+hjkdNDt/sOuolj0CrfLjWXT/vqrKcpJSF709gSLncFausnDehHkPE+vis6nTY9Lp710a3iBdkzDRlmUieXJaN4uoL5ZkCK4C477bFr5lNA==
-Received: from DB7PR05CA0027.eurprd05.prod.outlook.com (2603:10a6:10:36::40)
- by VI1PR10MB3184.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:803:12f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Tue, 2 Jun 2026
- 13:03:36 +0000
-Received: from DU2PEPF0001E9C0.eurprd03.prod.outlook.com
- (2603:10a6:10:36:cafe::e) by DB7PR05CA0027.outlook.office365.com
- (2603:10a6:10:36::40) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.16 via Frontend Transport; Tue, 2
- Jun 2026 13:03:36 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
- smtp.mailfrom=foss.st.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=foss.st.com;
-Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
- designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
- client-ip=164.130.1.59; helo=smtpO365.st.com;
-Received: from smtpO365.st.com (164.130.1.59) by
- DU2PEPF0001E9C0.mail.protection.outlook.com (10.167.8.69) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Tue, 2 Jun 2026 13:03:35 +0000
-Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpo365.st.com
- (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 2 Jun
- 2026 15:07:44 +0200
-Received: from gnbcxd0016.gnb.st.com (10.130.77.119) by STKDAG1NODE2.st.com
- (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 2 Jun
- 2026 15:03:33 +0200
-Date: Tue, 2 Jun 2026 15:03:20 +0200
-From: Alain Volmat <alain.volmat@foss.st.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-CC: Liu Ying <victor.liu@nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
-	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
-	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li
-	<Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob
- Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, Konrad
- Dybcio <konradybcio@kernel.org>, Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	"Dmitry Baryshkov" <lumag@kernel.org>, Abhinav Kumar
-	<abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>, Marijn
- Suijten <marijn.suijten@somainline.org>, Vinod Koul <vkoul@kernel.org>, Nas
- Chung <nas.chung@chipsnmedia.com>, Jackson Lee <jackson.lee@chipsnmedia.com>,
-	"Mauro Carvalho Chehab" <mchehab@kernel.org>, Mirela Rabulea
-	<mirela.rabulea@nxp.com>, Detlev Casanova <detlev.casanova@collabora.com>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>, Heiko Stuebner
-	<heiko@sntech.de>, Hugues Fruchet <hugues.fruchet@foss.st.com>, "Maxime
- Coquelin" <mcoquelin.stm32@gmail.com>, Alexandre Torgue
-	<alexandre.torgue@foss.st.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, MD Danish Anwar
-	<danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>, Parvathi Pudi
-	<parvathi@couthit.com>, Mohan Reddy Putluru <pmohan@couthit.com>, "Bjorn
- Andersson" <andersson@kernel.org>, Mathieu Poirier
-	<mathieu.poirier@linaro.org>, Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Michal Simek
-	<michal.simek@amd.com>, Mark Brown <broonie@kernel.org>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Linus Walleij <linusw@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>, "Andrew
- F. Davis" <afd@ti.com>, Hussain Khaja <basharath@couthit.com>, Suman Anna
-	<s-anna@ti.com>, Ben Levinsky <ben.levinsky@amd.com>, Tanmay Shah
-	<tanmay.shah@amd.com>, Erwan Leray <erwan.leray@foss.st.com>, Fabrice Gasnier
-	<fabrice.gasnier@foss.st.com>, Roger Quadros <rogerq@ti.com>,
-	<dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
-	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-	<freedreno@lists.freedesktop.org>, <dmaengine@vger.kernel.org>,
-	<linux-media@vger.kernel.org>, <linux-rockchip@lists.infradead.org>,
-	<linux-stm32@st-md-mailman.stormreply.com>, <netdev@vger.kernel.org>,
-	<linux-remoteproc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
-	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] dt-bindings: Consolidate "sram" property definition
-Message-ID: <ah7UmMC9fbWuyopl@gnbcxd0016.gnb.st.com>
-References: <20260511165942.2774868-1-robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DizIB/xk"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c132ac5ec2so3625355ad.1
+        for <imx@lists.linux.dev>; Tue, 02 Jun 2026 06:14:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780406078; x=1781010878; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=m1KVnd1R5IOEaVntsRV6w5ohh6MM9xtfcSuVzw7+bPI=;
+        b=DizIB/xknXePRvzl7DGhZMHMRHNyHX2Z9KvVhRQ762/mUG15czpTiZvNgIMS0yL8tP
+         3KIE9zkZRzT7jqAUrgvrksjajhmfC/jj0t8KKtB9f8BBGxIICNGkqasjvGSOUDBurT9s
+         nbQ6dny4YOvR2OqQ0avPNWSxejNFIEYrOBS7UH2S7Wt0ib8JE1XYAJajjafcN8fa1vsG
+         PEOE79LC6rzw02yLB7n+jzpMJq5ff4w4fU7kGV1RjxJMxMcgRKYb0Op+TJZRf/zDLubA
+         aKyQDLQYdR7OFy2J3RwdONpYmiFk8a0M+IloHBCJTGB5ez0HxzZTXA9r3oMMrLvpbNLO
+         UVEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780406078; x=1781010878;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m1KVnd1R5IOEaVntsRV6w5ohh6MM9xtfcSuVzw7+bPI=;
+        b=R3TFkYHHTzV7vLMkVGAacPojygOMwJv8KKk9awLwqf5e8yG0iDRXr/QpH6dnZEIqsS
+         lYEH3hoPRsyf7ih0SOYLqTGGBX0DCfdJi+NYjprmq9+ZW8rgNJYg+tBjqNCQc9SG3yaS
+         kk/5BI6rUkjL88FpHZ2D95sn5uZqOw0EYzCq2euMJpMDlI6dvXuT/oYL0vaNi+m8MnhG
+         AjVgiVov7mlgW4ydLX/zDMYRGjYZs5OCSsaaLJVhBGgJ7b+dPV6GAZeVy/6CVYFLE8/H
+         VchBgl8B28W3WFJFhiBNlSrjF2Q+o1bKaL/7cUxe8A4J5h/AEblPal3MfxF1zfaVKZc/
+         Ujhg==
+X-Forwarded-Encrypted: i=1; AFNElJ8hufpWtWGKLfjvqWeNu277Ed1+IDRE986k3UwL47ReliAGDSBN2KglnrqQ8lc2h07Q3KE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxaujWwsfnH3KBobtCFh5mz0SBdyovsh38OVxZPq0jRFYueTCtE
+	oQ+5NM+hvRecPVtZL3j5ivBgcrg67B3OhgbalWXaUvRJR4kZ5dhshbo2
+X-Gm-Gg: Acq92OH3D2s0+RHGvF8iBYtVqSJ2fuzZrWTuK+cKx/gKFdbRJNgmR9qJSA0wzLo5wlj
+	mtgDLAyuezK9ZbV+wtpdUhWOFO9hnVwYwaHqvqqnTk5QfTS4ZsEgGJRw6EovdjDh9l36jJvf+H1
+	8f44FaMz05U799XVj1OHCi5027Up8Sl03kgD2G1dp5X5HctiKmH5v8R9DpbO5nggkkg3ohsWFw0
+	Oeoc0At097vLlg87AgjYSzPRlY+v4G81iJwdipzk3maNzj9Kwaa/nMDsV0D9LvcBYNvTxyCB+JY
+	c32X4CmSgvvxIcUyhFcoXzGkHZH1Cq7x45CGPTlmIUV023BZ53hkgfK381kgMMB+2yDHOJJ/ZSQ
+	pXef7v+/XHpp2ZPnz6vIWP2wvEX/WvI/xXpiI+YMuAgFeEUYgXQUkPjIPRxdwFahWu+zOu8qnhp
+	69dW+xw45I6BrBqNe1NK/5WIaE9v9Xn/xrzne6mRf8rdzhFZmnmjrH3iK0Gp6S4aEZV20HdOQJl
+	IUB0ycVqc0d6h5gDggyq4vsH2YxEbGfcUzbosw=
+X-Received: by 2002:a17:903:1a0c:b0:2c0:f807:56b6 with SMTP id d9443c01a7336-2c0f80758b4mr76638985ad.4.1780406078215;
+        Tue, 02 Jun 2026 06:14:38 -0700 (PDT)
+Received: from junjungu-PC.localdomain ([223.166.246.30])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e7024sm136568705ad.6.2026.06.02.06.14.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 06:14:37 -0700 (PDT)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Tue, 02 Jun 2026 21:14:33 +0800
+Subject: [PATCH] phy: fsl-imx8mq-usb: fix vbus regulator leak on error
+ paths
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260511165942.2774868-1-robh@kernel.org>
-X-Disclaimer: ce message est personnel / this message is private
-X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE2.st.com
- (10.75.128.133)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PEPF0001E9C0:EE_|VI1PR10MB3184:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41804fca-f1aa-4c97-6843-08dec0a75b71
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|7416014|22082099003|18002099003|3023799007|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	nBtSLCyV1zNaj4AYS9TljJxgu9LjuqDypvz6s5q1mmtaP3SSLxCZQEWwIxiLS+VAVYAuA7oDf7K6+m40o/xOcVrotpYE/XqihZn3zsWUweEhW7kSyL3bEKN/7Y97ZY3DngopwbPo3TmdNeggBqYoDcZH+6rwDRKAMGhtmXoXidU/Q/psey30ZPXNRfuLe79Vwm5HNIdcmkulv9ymbhMEYodX8fMDNeCqzsi1lv+ekv0eBBRJ8ZzqsHGRCblhFnHO2voSiJCE+UQBFF8QDZYGMl8pVRO6Op9dZpr3mh/FWSXy1atXlI561urKBhAZEudJgsL1JocV44jQC+WzgojHZF2kh1h54yHxNJJTo90ct800Hmv5cRnEAJGdgvKUNnUMoCFPG2SxEnxQ/8YtrESRvrQalllwW4hmLuHIV6/MGFF5DGlcqPIJ2zT9vfT1M6xVyWvgZu5G6e9W5JpRns0oU8z9hx0TtYQa7FVdlfgYEGBIazv7YVFu91/eodjxRlJdrwMyO8uKkXNvqvBdgF9l2S5fZoek0ekxeULffTEBEYvVCt7AOyS9V2w9771i+gHQEJjoHn00LaVMkkGeaQY3W/aOEQCAB23In41sol9GPCJsw6oCce43TyO82Hhxq81xMeakW1CvhEVyDzKUGfo/t+RxPZflg8io4Jgs6ku3KaRZkGhOMFtqkXss3wtALDhqb4FoEPEVm1qsACJ/HnWniCNXJaf3Q8IeIqu4OJA54Yk=
-X-Forefront-Antispam-Report:
-	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(7416014)(22082099003)(18002099003)(3023799007)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	aBmJ6MlgTmzNChnBehDqv9+4//tdizL6JKnMkyfjk9H+924t2l28f906bO2GWyks5L9F1PgGV4iLcesLKLL52YfzYULyiGhkgtdagr2OpLLMD3s3hTq1UXnNF1iyxFGmqherFoLIF8dWYUpD23kPWEHFY8bP1iXQVK1Nwx5UoaUuXaGb6/vNFMmp8Wym3c/Lvc5zhWgoXrFvcpLFgeH0/kpOtWEGmzbjQStWW0Isg1VqBJqlcZtRn8/8R0vZfUcT4lTpYUyZdT/FJFUnDkpbOr3oAfTbWC9097HNmAsr098j/dLKnVWY667H4QS/F1JqXOIIHyds4oI9YvtJoSyAqw3l7+893pU5Wd14tvmPY13WZr23xdEa9BZeEGaQhxaULqhZeklPswj9/zo74DOw3Q8TIu7OXH1r+PBsVTcLbaBdHLyCkdRjPSTk4Tp8zyIZ
-X-OriginatorOrg: foss.st.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 13:03:35.8611
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41804fca-f1aa-4c97-6843-08dec0a75b71
-X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU2PEPF0001E9C0.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB3184
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260602-imx9mq-v1-1-e58b912923d2@gmail.com>
+X-B4-Tracking: v=1; b=H4sIADjXHmoC/yXM0QpAMBTG8VfRubY6m6zmVeSCOTjKsCEl7264/
+ NX/+y4I5JkCFMkFng4OPLsImSZgh9r1JLiNBoVKo0YleDrNtIoMpTYqM01uEGK8eOr4/I7K6nf
+ Ym5Hs9q7hvh+Sh+HCagAAAA==
+X-Change-ID: 20260602-imx9mq-30169239b590
+To: Vinod Koul <vkoul@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Xu Yang <xu.yang_2@nxp.com>
+Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780406073; l=1702;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=2P56B+ZQr3CMN8Q55LeqttmN2FV6MnYrkE4+rKOUiPI=;
+ b=g2pyz/lE7GuPW7EbYIxceMDMUv9+CWTXEQIMXX8ydyaRLCAB+gzEIohDQmvjmmkIS1HKFwuY2
+ a5WVBm2mQgXA0UAuruhmAeMLBxclchAkYoPqxRyWet4Ts00kbW5mkVa
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-On Mon, May 11, 2026 at 11:59:36AM -0500, Rob Herring (Arm) wrote:
-> The "sram" property has become a de facto standard property, so create a
-> common schema for it and drop all the duplicated definitions.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->
->  .../bindings/media/st,stm32-dcmi.yaml         |  6 ++---
+In imx8mq_phy_power_on(), if clk_prepare_enable() fails after
+regulator_enable() has succeeded, the vbus regulator is left
+enabled. The same issue exists for the alt_clk error path.
 
-Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Fix both by converting to the standard goto-based cleanup
+pattern, ensuring the regulator is disabled when any
+subsequent step fails.
+
+Fixes: 3b64ea4768e7 ("phy: fsl-imx8mq-usb: support alternate reference clock")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+index b05d80e849a1..e45e4f16057e 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -627,13 +627,11 @@ static int imx8mq_phy_power_on(struct phy *phy)
+ 
+ 	ret = clk_prepare_enable(imx_phy->clk);
+ 	if (ret)
+-		return ret;
++		goto disable_vbus;
+ 
+ 	ret = clk_prepare_enable(imx_phy->alt_clk);
+-	if (ret) {
+-		clk_disable_unprepare(imx_phy->clk);
+-		return ret;
+-	}
++	if (ret)
++		goto disable_clk;
+ 
+ 	/* Disable rx term override */
+ 	value = readl(imx_phy->base + PHY_CTRL6);
+@@ -641,6 +639,13 @@ static int imx8mq_phy_power_on(struct phy *phy)
+ 	writel(value, imx_phy->base + PHY_CTRL6);
+ 
+ 	return 0;
++
++disable_clk:
++	clk_disable_unprepare(imx_phy->clk);
++disable_vbus:
++	regulator_disable(imx_phy->vbus);
++
++	return ret;
+ }
+ 
+ static int imx8mq_phy_power_off(struct phy *phy)
+
+---
+base-commit: 08484c504b55a98bd100527fbe10a3caf55ff3ff
+change-id: 20260602-imx9mq-30169239b590
+
+Best regards,
+--  
+Felix Gu <ustc.gu@gmail.com>
+
