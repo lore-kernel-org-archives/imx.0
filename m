@@ -1,339 +1,299 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945A83DA7E0
-	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 11:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF22372064
+	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 11:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780399986; cv=none; b=GWQg/wphx5sXV3jQQ9/ljEAfd8S6XGtNKRh+1uZ0BjWCyMGWE0SRjcXNJdYMO3k7iXVxoiQQFAB3AS1h3pmWHdfRjUM5FZjxHzzn0MZFD1CUKg2Hzx4mJOoIi/mFYreCz+OuPbAvORaihaGIS3SK/HzmOUCsgIyGxxGSq/evX/A=
+	t=1780399986; cv=none; b=ZDEe2L+fAwHIMklBY/HO+87O23X6H2TTRXRr6vf4NBO2Kz3Fz/bnBfv0paX8rlzO6JSI2BAOlcTjHf4UtWF1/XvNeAhDqfpuNzSWMpcU1oJfs9HLS2OWtmTaQlQ4l+SGJfLFljP/bkEJCIP9/5DQ0gjXxV6ZSb27UErOaV1s4iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780399986; c=relaxed/simple;
-	bh=k2co1jEjZ5XdrntDO662Rc6PblQq3uaZQkIG8+Gnwg4=;
+	bh=WfP7BNNNsVOsy+d14ofdZPRWCaGJ0/awbO8fdD1Xc94=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Oh15/ohVYmPxt4mvWqmXFMjKxvHG+Dpfo8fSOnzmNiTgsQ7GlE29I+vxlsQ3kn9KsthspvPsKINCTHanmbUwOUv8BubuND4fnEs6ENIduSfENr44XHSnVX/bNvlVMy3UHQ+pxZYnj5CEEbMQL8t+GWTSxY5mLku11baal9BQ01U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXo7Hms3; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hWeeGLUACamN5Iuqc225GORqUUtxmlgzBNQ+Z9OBSIPfDYD9+hZjbvSJjIkq2DCngPNaTjfdhi4YubT91j+Cui8ykjAJR4mLQDhkGDK+x6UEtrx/zLw+8vKjs+4WDUulFPoM8NjBW3eHmV/LkHK5XA8Vo2CEUw8cnVpER2kYfAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRiw1mqW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXo7Hms3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E5B1F00898;
-	Tue,  2 Jun 2026 11:32:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRiw1mqW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D781F0089B;
+	Tue,  2 Jun 2026 11:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780399979;
-	bh=gRMEqR+ZPFne0gll0ApgRZQIL6wA6g2Y97tccXmWn5Y=;
+	s=k20260515; t=1780399978;
+	bh=19eR01632u1ZUV1tZhQ7+4rc8nYfqeczyPfzcR45JPc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MXo7Hms3q3MoUY21whCc6U4+Corvvn0nsWomzEctE0i5ZhhAK7FxhAPhcFptz7ybF
-	 c2RSh4oS9LRX0QuFjpZqK1XZRcplGkkjSgO+xJVmhQmtY26GlGoW3r6ZtSp1rMN/iX
-	 ASALAvNsNkh6TQpJCizGEJVk1hhVvsV13n5P0/nfjDgK05MWoFKOgl+cdftmat29B8
-	 LJDphkAiMrmO3heap8OY6bRQsF44vVcYBfL7F/IeFUTK6vqvVrvzNjg1l1LLJMOdFA
-	 1XU17zdStz5Pv6EGzAyUmftpT42EksENckoUg+5r9wBHmIKHmkYTXF+l5mufveBvUV
-	 BP/XjtQ9kNI5A==
+	b=gRiw1mqWkEfLnChMvuN+cbTXlyxSZ+lGFPJ/Cbgld7i9L/9/1i46U5dOPGw3HDS8y
+	 9eI98d3aED4t40ufnzq363FJB5jhnZLTGzOALU865J7M3gQ4r/OpQpl+0Ao6D+rGHf
+	 SzJwpi1a7vZ4ymbC2kqN+27NVzGHw7n8DMptMt+gT6tXjcd2WEQ/nyBuCSki+/5lCt
+	 yW+p6vo2H/wkwOjXphl90L6vqpF4ahN4hi94vlzpi0Sn0jzTHD2LSTO1nALiNmzCnJ
+	 FQ9UKcvxiHyYP3Mr1lLNXR8qRECufsojpdUUGyNYZyoE1PKgwUljpwKwOKdkRuduIK
+	 oZ1IU/eFToFAQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [net-next v24 6/7] net: mtip: Extend the L2 switch driver with
- management operations
+Subject: Re: [net-next v24 5/7] net: mtip: Add mtip_switch_{rx|tx} functions
+ to the L2 switch driver
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Lukasz Majewski" <lukasz.majewski@mailbox.org>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260601112437.2216043-7-lukasz.majewski@mailbox.org>
-References: <20260601112437.2216043-7-lukasz.majewski@mailbox.org>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260601112437.2216043-6-lukasz.majewski@mailbox.org>
+References: <20260601112437.2216043-6-lukasz.majewski@mailbox.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 11:32:58 +0000
-Message-Id: <20260602113258.F1E5B1F00898@smtp.kernel.org>
+Date: Tue, 02 Jun 2026 11:32:56 +0000
+Message-Id: <20260602113256.E0D781F0089B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 11 potential issue=
-(s) to consider:
-
-New issues:
-- [High] Global steering register race with shared DMA transmission ring ca=
-uses packets to be sent to the wrong port.
-- [High] Bitwise OR operations on hardware registers without clearing field=
- masks cause invalid modes.
-- [High] Disabling multicast reception on the CPU management port breaks IP=
-v6 and essential protocols.
-- [High] Off-by-one error in VLAN domain verification check allows out-of-b=
-ounds register writes.
-- [High] VLAN input processing helper unconditionally overwrites the `ESW_V=
-RES` register, clobbering other ports' memberships.
-- [High] Unsynchronized Read-Modify-Write (RMW) on shared hardware register=
-s in management functions.
-- [Medium] Per-port learning configuration incorrectly toggles a global int=
-errupt mask and conflicts with NAPI polling.
-
-Pre-existing issues:
-- [High] Use-After-Free of SKB after transferring ownership to DMA hardware.
-- [High] Double free and UAF of transmit SKBs due to lockless freeing in `m=
-tip_switch_restart`.
-- [High] Concurrent PHY adjustments trigger unsynchronized global switch re=
-sets.
-- [High] Out-of-bounds DMA Mapping of `skb->data`.
+Thank you for your contribution! Sashiko AI review found 9 potential issue(=
+s) to consider:
+- [Critical] Flawed error handling for multi-descriptor packets causes frag=
+mented packet injection.
+- [High] NULL pointer dereference in mtip_switch_tx() when queues are stopp=
+ed and ring is empty.
+- [High] Missing dma_sync_single_for_device() on RX error path causes data =
+corruption for subsequent packets.
+- [High] `swap_buffer()` corrupts the tail of packets whose length is not a=
+ multiple of 4 bytes.
+- [High] Missing dma_rmb() after reading RX descriptor ownership allows spe=
+culative execution to read stale data.
+- [High] The TX completion path unmaps DMA buffers using a hardcoded frame =
+size instead of the original mapped length.
+- [Medium] The Ethernet FCS is incorrectly included in the SKB payload, bre=
+aking bridging applications.
+- [Low] Unreachable code: The TX completion check for `BD_ENET_TX_READY` is=
+ mathematically impossible.
+- [Low] Received SKBs are built with zero headroom, leading to inefficient =
+processing.
 --
 
-commit 18b1fc23ec60b0ca391ad794f056d1c911c2b51b
+commit be1b7f747ef200958ab836f16e9cf7ce2caf1583
 Author: Lukasz Majewski <lukasz.majewski@mailbox.org>
 
-net: mtip: Extend the L2 switch driver with management operations
+net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
    =20
-This patch provides function necessary for managing the L2 switch.
+This patch provides mtip_switch_tx and mtip_switch_rx functions
+code for MTIP L2 switch.
 
 > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/n=
 et/ethernet/freescale/mtipsw/mtipl2sw.c
+> index 7dfeda230e3fb..212207861e13e 100644
 > --- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
 > +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-> @@ -505,8 +505,35 @@ static void mtip_config_switch(struct switch_enet_pr=
-ivate *fep)
+[ ... ]
+> @@ -836,11 +873,233 @@ static irqreturn_t mtip_interrupt(int irq, void *p=
+tr_fep)
 > =20
->  	writel(0, fep->hwp + ESW_BKLR);
-
-[ ... ]
-
-> +	mtip_port_broadcast_config(fep, 2, 1);
+>  static void mtip_switch_tx(struct switch_enet_private *fep)
+>  {
+> +	struct net_device *dev;
+> +	unsigned short status;
+> +	struct sk_buff *skb;
+> +	struct cbd_t *bdp;
+> +	int index;
 > +
-> +	/* Disable multicast receive on port 0 (MGNT) */
-> +	mtip_port_multicast_config(fep, 0, 0);
-
-[Severity: High]
-Does disabling multicast receive on port 0 break IPv6 communication?
-
-The Linux network stack strictly requires multicast reception to function,
-particularly for IPv6 (Neighbor Discovery, Router Advertisements, MLD) and
-IPv4 protocols like mDNS. Dropping all multicast traffic in hardware for the
-CPU management port might disrupt these protocols.
-
-> +	mtip_port_multicast_config(fep, 1, 1);
-> +	mtip_port_multicast_config(fep, 2, 1);
+> +	spin_lock_bh(&fep->hw_lock);
+> +	bdp =3D fep->dirty_tx;
 > +
-> +	/* Setup VLANs to provide port separation */
-> +	if (!fep->br_offload)
-> +		mtip_switch_en_port_separation(fep);
->  }
-
-[ ... ]
-
-> @@ -592,6 +619,10 @@ static netdev_tx_t mtip_start_xmit_port(struct sk_bu=
-ff *skb,
-> =20
->  	skb_tx_timestamp(skb);
+> +	while (((status =3D bdp->cbd_sc) & BD_ENET_TX_READY) =3D=3D 0) {
+> +		if (bdp =3D=3D fep->cur_tx &&
+> +		    !mtip_netif_queues_stopped(fep))
+> +			break;
 
 [Severity: High]
-This is a pre-existing issue, but does accessing the skb fields here cause a
-use-after-free?
+What happens if the queues are stopped and the ring is empty?
 
-Ownership of the SKB is transferred to the hardware by setting
-bdp->cbd_sc =3D status just above this. The hardware can immediately transm=
-it
-the packet and issue a completion interrupt which frees the SKB before
-skb_tx_timestamp() or skb->len are evaluated.
+If the ring is empty (bdp =3D=3D fep->cur_tx) but the queues are stopped
+(e.g. link down), this break condition evaluates to false. Would this
+cause the loop to process an empty, unsubmitted descriptor, leading to a
+NULL pointer dereference when accessing fep->tx_skbuff[index] and
+skb->dev below?
 
-> +	/* For port separation - force sending via specified port */
-> +	if (!fep->br_offload && port !=3D 0)
-> +		mtip_forced_forward(fep, port, 1);
-
-[Severity: High]
-Is there a race condition here with the shared DMA transmission ring?
-
-The driver steers individual packets to a specific port by updating the glo=
-bal
-hardware register ESW_P0FFEN via mtip_forced_forward() immediately before
-triggering the DMA transmission. Since the hardware processes the DMA ring
-asynchronously, modifying this global register dynamically might forcefully
-redirect previously enqueued but not-yet-transmitted packets to the new por=
-t.
-
-Also, since forced forwarding is never disabled (a call with enable=3D0 is
-missing), will all subsequent bridge or broadcast traffic originating from =
-the
-CPU be misrouted to the last specified port?
-
->  	dev->stats.tx_bytes +=3D skb->len;
-
-> diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c b/driv=
-ers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
-> --- /dev/null
-> +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
-> @@ -0,0 +1,442 @@
-
-[ ... ]
-
-> +int mtip_vlan_input_process(struct switch_enet_private *fep,
-> +			    int port, int mode, unsigned short port_vlanid,
-> +			    int vlan_verify_en, int vlan_domain_num,
-> +			    int vlan_domain_port)
-> +{
-
-[ ... ]
-
-> +	if (vlan_verify_en =3D=3D 1 &&
-> +	    (vlan_domain_num < 0 || vlan_domain_num > 32)) {
-
-[Severity: High]
-Does this bounds check permit the index to be exactly 32?
-
-Since the VLAN resolution table consists of 32 entries (indexed 0 to 31),
-calculating the offset for index 32 might overwrite the adjacent ESW_DISCN
-register and cause memory corruption.
-
-> +		dev_err(&fep->pdev->dev, "%s: Domain out of range\n", __func__);
-> +		return -EINVAL;
-> +	}
 > +
-> +	writel(FIELD_PREP(MCF_ESW_PID_VLANID_MASK, port_vlanid),
-> +	       fep->hwp + ESW_PID(port));
-> +	if (port =3D=3D 0) {
-> +		if (vlan_verify_en =3D=3D 1)
-> +			writel(FIELD_PREP(MCF_ESW_VRES_VLANID_MASK,
-> +					  port_vlanid) | MCF_ESW_VRES_P0,
-> +			       fep->hwp + ESW_VRES(vlan_domain_num));
+> +		index =3D bdp - fep->tx_bd_base;
+> +		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
+> +				 MTIP_SWITCH_TX_FRSIZE, DMA_TO_DEVICE);
 
 [Severity: High]
-Does writing directly to ESW_VRES(vlan_domain_num) using an absolute writel=
-()
-clobber other ports' memberships?
+Does this unmap call violate the DMA API by using a hardcoded length?
 
-Because ESW_VRES is a bitmap representing all ports in the domain, this mig=
-ht
-destroy the membership of any other port previously assigned to that same
-VLAN domain.
+The DMA API mandates that the unmap size must exactly match the length
+passed to dma_map_single(). Since outgoing network packets have variable
+lengths, could using the hardcoded MTIP_SWITCH_TX_FRSIZE maximum size
+cause DMA API warnings, IOMMU faults, or memory corruption?
 
-> +		writel(readl(fep->hwp + ESW_VIMEN) | MCF_ESW_VIMEN_EN0,
-> +		       fep->hwp + ESW_VIMEN);
-> +		writel(readl(fep->hwp + ESW_VIMSEL) |
-> +		       FIELD_PREP(MCF_ESW_VIMSEL_IM0_MASK, mode),
-> +		       fep->hwp + ESW_VIMSEL);
+> +		bdp->cbd_bufaddr =3D 0;
+> +		skb =3D fep->tx_skbuff[index];
+> +		dev =3D skb->dev;
+> +		/* Check for errors */
+> +		if (status & (BD_ENET_TX_HB | BD_ENET_TX_LC |
+> +				   BD_ENET_TX_RL | BD_ENET_TX_UN |
+> +				   BD_ENET_TX_CSL)) {
+[ ... ]
+> +		} else {
+> +			dev->stats.tx_packets++;
+> +		}
+> +
+> +		if (status & BD_ENET_TX_READY)
+> +			dev_err_ratelimited(&fep->pdev->dev,
+> +					    "xmit interrupt and TX_READY.\n");
+
+[Severity: Low]
+Is it mathematically possible to reach this condition?
+
+The while loop entry condition guarantees that BD_ENET_TX_READY is zero:
+while (((status =3D bdp->cbd_sc) & BD_ENET_TX_READY) =3D=3D 0)
+
+Could this check be unreachable dead code, indicating a potential logic
+flaw in the state handling?
+
+[ ... ]
+> +static int mtip_switch_rx(struct net_device *dev, int budget)
+>  {
+> -	return -ENOMEM;
+> +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> +	u8 *data, rx_port =3D MTIP_PORT_FORWARDING_INIT;
+> +	struct switch_enet_private *fep =3D priv->fep;
+> +	unsigned short status, pkt_len;
+> +	struct net_device *pndev;
+> +	struct ethhdr *eth_hdr;
+> +	int pkt_received =3D 0;
+> +	struct sk_buff *skb;
+> +	struct cbd_t *bdp;
+> +	struct page *page;
+> +	int index;
+> +
+> +	/* First, grab all of the stats for the incoming packet.
+> +	 * These get messed up if we get called due to a busy condition.
+> +	 */
+> +	bdp =3D fep->cur_rx;
+> +
+> +	while (!((status =3D bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
 
 [Severity: High]
-Does this read-modify-write pattern clear the previous bits in the target
-mask before the new mode is applied?
+Is a read memory barrier needed here?
 
-If the register previously held a mode with conflicting bits, the logical OR
-will combine them (e.g., updating mode 3 to mode 1 leaves the register at 3=
-),
-placing the hardware in an invalid configuration state.
+The loop reads the descriptor status to verify that the hardware has
+yielded ownership. Without a dma_rmb() executed after this check, could
+the CPU speculatively reorder subsequent reads of bdp->cbd_datlen and
+the packet payload to occur before the ownership status change is
+globally visible, leading to stale data being processed?
+
+> +		if (pkt_received >=3D budget)
+> +			break;
+> +
+> +		pkt_received++;
+> +
+> +		writel(MCF_ESW_IMR_RXF, fep->hwp + ESW_ISR);
+> +		if (!fep->usage_count)
+> +			goto rx_processing_done;
+> +
+> +		status ^=3D BD_ENET_RX_LAST;
+> +		/* Check for errors. */
+> +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH | BD_ENET_RX_NO |
+> +			      BD_ENET_RX_CR | BD_ENET_RX_OV | BD_ENET_RX_LAST |
+> +			      BD_ENET_RX_CL)) {
+
+[Severity: Critical]
+Does this logic safely handle multi-descriptor packets?
+
+The XOR logic (status ^=3D BD_ENET_RX_LAST) treats any descriptor without
+the last-fragment bit as an error. The error handling path then yields the
+descriptor back to the hardware but does not drain the remaining descriptors
+of the packet.
+
+When the final descriptor of the fragmented packet is received, it will
+pass the error check, and the driver might incorrectly parse the middle or
+end of the fragmented packet as a brand new Ethernet frame.
 
 [ ... ]
-
-> +int mtip_vlan_output_process(struct switch_enet_private *fep, int port,
-> +			     int mode)
-> +{
-
-[ ... ]
-
-> +	if (port =3D=3D 0) {
-> +		writel(readl(fep->hwp + ESW_VOMSEL) |
-> +		       FIELD_PREP(MCF_ESW_VOMSEL_OM0_MASK, mode),
-> +		       fep->hwp + ESW_VOMSEL);
+> +		/* Get correct RX page */
+> +		index =3D bdp - fep->rx_bd_base;
+> +		page =3D fep->page[index];
+> +		/* Process the incoming frame */
+> +		pkt_len =3D bdp->cbd_datlen;
+> +
+> +		dma_sync_single_for_cpu(&fep->pdev->dev, bdp->cbd_bufaddr,
+> +					pkt_len, DMA_FROM_DEVICE);
+> +		net_prefetch(page_address(page));
+> +		data =3D page_address(page);
+> +
+> +		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> +			swap_buffer(data, pkt_len);
 
 [Severity: High]
-Does this read-modify-write pattern clear the previous bits in the target
-mask before the new mode is applied?
+Does swap_buffer() safely handle packet lengths that are not a multiple of =
+4?
 
-If the register previously held a mode with conflicting bits, the logical OR
-will combine them, placing the hardware in an invalid configuration state.
+Looking at the implementation:
 
+static void swap_buffer(void *bufaddr, int len)
+{
+        unsigned int *buf =3D bufaddr;
+        int i;
+
+        for (i =3D 0; i < len; i +=3D 4, buf++)
+                swab32s(buf);
+}
+
+It appears the loop condition iterates strictly by 4. If the packet length
+is not an exact multiple of 4 bytes, could the final iteration overshoot
+the valid packet data, pulling uninitialized garbage bytes into the tail
+of the packet?
+
+> +
+> +		eth_hdr =3D (struct ethhdr *)data;
+> +		mtip_atable_get_entry_port_number(fep, eth_hdr->h_source,
+> +						  &rx_port);
 [ ... ]
-
-> +int mtip_port_enable_config(struct switch_enet_private *fep, int port,
-> +			    bool tx_en, bool rx_en)
-> +{
-> +	u32 reg =3D 0;
-
-[ ... ]
-
-> +	reg =3D readl(fep->hwp + ESW_PER);
+> +		if (mtip_update_cbd(fep, bdp, index)) {
+> +			pndev->stats.rx_dropped++;
+> +			goto rx_processing_done;
+> +		}
 
 [Severity: High]
-Are these read-modify-write operations on shared global hardware registers
-synchronized?
+If this allocation fails, does the driver return a dirty buffer back to the
+hardware?
 
-Since these functions do not acquire fep->hw_lock to serialize access,
-concurrent calls from ethtool, sysfs, or NAPI might overlap, tearing the
-state and corrupting the hardware registers.
+When swap_buffer() modifies the buffer in-place, the CPU cache is dirtied.
+If we take this error path, the buffer is yielded back to the hardware
+(via rx_processing_done) without calling dma_sync_single_for_device() to
+transfer ownership. Could the dirty CPU cache lines later be asynchronously
+evicted to RAM, overwriting new packet data being DMA'd by the hardware?
 
-[ ... ]
+> +
+> +		/* The packet length includes FCS, but we don't want to
+> +		 * include that when passing upstream as it messes up
+> +		 * bridging applications.
+> +		 */
+> +		skb =3D build_skb(page_address(page), PAGE_SIZE);
 
-> +int mtip_port_learning_config(struct switch_enet_private *fep, int port,
-> +			      bool disable, bool irq_adj)
-> +{
-> +	u32 reg =3D 0;
+[Severity: Low]
+Does this allocation leave zero headroom for the SKB?
 
-[ ... ]
+Incoming packets are DMA'd to offset 0 of the allocated page. By building
+the SKB directly at page_address(page), the SKB is created with
+skb->head =3D=3D skb->data. While the networking core will safely reallocate
+headers if necessary, failing to reserve standard headroom (like NET_SKB_PA=
+D)
+can cause unnecessary performance degradation.
 
-> +	reg =3D readl(fep->hwp + ESW_BKLR);
-> +	if (disable) {
-> +		if (irq_adj)
-> +			writel(readl(fep->hwp + ESW_IMR) & ~MCF_ESW_IMR_LRN,
-> +			       fep->hwp + ESW_IMR);
+> +		if (unlikely(!skb)) {
+> +			page_pool_recycle_direct(fep->page_pool, page);
+> +			pndev->stats.rx_dropped++;
+> +
+> +			netdev_err_once(pndev, "build_skb failed!\n");
+> +			goto rx_processing_done;
+> +		}
+> +
+> +		skb_put(skb, pkt_len);      /* Make room */
 
 [Severity: Medium]
-Does disabling learning on a single port clear MCF_ESW_IMR_LRN in the global
-ESW_IMR register?
+Does this skb_put() call incorrectly include the FCS in the SKB payload?
 
-This might suppress learning interrupts for all other ports. Also, the
-pre-existing NAPI poll routine mtip_rx_napi() unconditionally overwrites
-ESW_IMR with hardcoded values, meaning this configuration might be
-immediately discarded upon the next packet reception.
-
-
-Additional pre-existing issues found in the codebase:
-
-[Severity: High]
-This is a pre-existing issue, but does lockless freeing of SKBs cause a
-double free and use-after-free here?
-
-drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c:mtip_switch_restart() {
-...
-    for (i =3D 0; i <=3D TX_RING_MOD_MASK; i++) {
-        if (fep->tx_skbuff[i]) {
-            dev_kfree_skb_any(fep->tx_skbuff[i]);
-            fep->tx_skbuff[i] =3D NULL;
-        }
-    }
-...
-}
-
-The phylib state machine triggers mtip_adjust_link() from process context,
-which unconditionally calls mtip_switch_restart() and locklessly frees all
-tx_skbuff entries. If the NAPI softirq mtip_switch_tx() is concurrently
-processing TX completions, both threads can simultaneously retrieve and free
-the same SKB pointers.
-
-
-[Severity: High]
-This is a pre-existing issue, but do concurrent PHY adjustments trigger
-unsynchronized global switch resets?
-
-drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c:mtip_adjust_link() {
-...
-}
-
-The phylib core triggers mtip_adjust_link() for each port's PHY
-independently. Because mtip_adjust_link() invokes mtip_switch_restart()
-without holding a global lock spanning all ports, simultaneous link state
-changes on multiple ports will trigger concurrent MCF_ESW_MODE_SW_RST resets
-and overlapping re-initialization of the shared hardware rings.
-
-
-[Severity: High]
-This is a pre-existing issue, but does this mapping read out-of-bounds?
-
-drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c:mtip_start_xmit_port() {
-...
-    bdp->cbd_bufaddr =3D dma_map_single(&fep->pdev->dev, bufaddr,
-                                      MTIP_SWITCH_TX_FRSIZE,
-                                      DMA_TO_DEVICE);
-...
-}
-
-When preparing a transmission descriptor without a bounce buffer,
-dma_map_single() is called with a fixed length of MTIP_SWITCH_TX_FRSIZE
-instead of the packet's actual length skb->len. Since networking packets are
-generally much smaller than the maximum frame size, this causes the DMA
-mapping to read well beyond the end of the allocated SKB buffer, potentially
-triggering IOMMU faults.
+The comment immediately above states the intention to exclude the FCS
+because it messes up bridging applications. However, this calls
+skb_put() using the full pkt_len without subtracting ETH_FCS_LEN (4 bytes).
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601112437.2216=
-043-1-lukasz.majewski@mailbox.org?part=3D6
+043-1-lukasz.majewski@mailbox.org?part=3D5
