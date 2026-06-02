@@ -1,271 +1,340 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013049.outbound.protection.outlook.com [40.107.159.49])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7683C2786
-	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 08:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780387332; cv=fail; b=uBNk3Ke45V7YtxPqXCAVMMC02Ce6WADLyrVAboEpHkFlKdeZbNicvbcTTeCOu4eZtzyX7vioPmsna9+nU6KYxVrISIpnNhh1E1BGh5LwER37LH+TgpEmREIdyMW2CfLfgUKakfay4f4Oa3pMgE/egQU68hQr+Y0sOYWwCJeWx3s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780387332; c=relaxed/simple;
-	bh=S7swCwZ7lOG+VHwMik343otu/2rnMABiENrAp+ZteTE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dAVVTauo0Vva1z3CaEBB6Ae/WgkBDFAJ8AjGYXcFexLQKfeHTduBVzWquTcWAASqmlq6C20Qpk9Cc7dBlIdoWsmpYJJdB763z/MhC4oKU7wRdknMi2FN2yJCWT04f/cxXBcFmz5FgNSf04FWZQ5q1c+ruf5guTBmrF0DUFxpPus=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=NoXidZcF; arc=fail smtp.client-ip=40.107.159.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD5E3C0A1B;
+	Tue,  2 Jun 2026 08:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780387487; cv=none; b=kkZ2vIvfDkki6dDbpQCVnuc4lcd7Sg0Ps1H4KFpBg4PrT1ZMwRqRX1q4NWQglPKoDqfCrkTisKF8x3C5LsPWX3u81iYuqbWKKlFIIsW0OjXstYMJB73U8sSFtPemQVfkC2ww6kAmJEfCSUdiliPxZAFcMNBmkwQFvx5UUvAR5ls=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780387487; c=relaxed/simple;
+	bh=f4u9eepWT9EhiP3VPEm3hQVTwZ2X4AC4lmvrh96dahY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QWiGWwEZ8rrYg+UyZIRysxwzBu0DNQcnkLkcjuhGkJ44ADHcXItMhl/WT7WtyVcwYAbsvdjFMFZSkQpzrYJkncSsHpkiX8o2WQ6s7Q7iu52qf6HcRRCVR6kpO7gpE84GW+EQ72RTEJU41xydS/eiTiiDLLx4ukyhrrCVd3VKoUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=oTehBGre; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="NoXidZcF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F4Fv0sMkuD/wsDTJP0PTb5oeNGC3qs3E8yEDCWn2hEu2lqVhD3NW7f7syZOdwwOmgCjC2nLO1BSEIsAyDYXezn8wPXFHrlCIMRZhp/ir6iouvqX23cDc9W+GbLlDeSN/Y9c4gsswLatnS5AoM2DJIG3Yrrax1TCM3r55/TDyZiRHvsUxNNp6RI4aq3LGM4ZWuZ+1stfvGCga4Lr5/Yzw0gSc/wflc3Z7D4pi2Z+SbvnC989a8dATkeG9M52APG5sV4VKOEDc6d2RVXOYTDQGo/jqLNWOMwLzDcJ0ATLXYySPQUK90xzave8TeIpqEQqKdEwvP1Uu5alSiXkYauuEzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7K2qfy7hoslASI73wn79MiDWsqT0yM1g3SvwyMobcv4=;
- b=V1ZZaaf247erL/b9tdW/tw8H0Rwkz7rUFWgUrgJFiKy/Mn+W1dwxjNQTqU4N5X2DU/pnoR4p+Mcco8G80BQO9TP45k9xtrgUkxyHMEgCmDemdUlegArffknyZnWo1B7NG/ZsEqoS6d4ewYARFMn4iu6Ptn93gG8lDRfUpy/PCE32m/WIvx06jy0MR1iD3yodntBEqMmTC4YzQQ+azbBrnJJ+tKlhtqF86k0D11BifmdAhOYZD0xnaWo7fnOg+JiL3Hu78aazn512eVgsoeXnSDLMVL65Wxqw13FUWtgPSe1SrdOzdu1hBF4dMpnHHqPQBtzYg2LkdD248+thihGG1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7K2qfy7hoslASI73wn79MiDWsqT0yM1g3SvwyMobcv4=;
- b=NoXidZcFVA1BOJQBS+1MmP8iYfFB5iotRT9QP8JDiov0QAACsU2mejTgv3nNynHqrgOterHkjNm5Y8dbZrTXZ3iSSVnOb9tvMV7C/umh/nmn2UWXDYEd+iCdptuaE4Wx+hWpZfP82bGUcBz7UHxIbZSZ/oTh7GNRIGui6daLT/wT6PO3bWj6NU2wu/nvw0KZv4hi87F+9xZ9Nz01M07pAFjLfzCjWYbFjf4Z0V7uhtpGqw+v3as5ZBkYqKoClsPnaCguESGfCBbwDfZ0OAcRNvPlYS7haMU1fVDRgwPJbh3hgEbOYafXjgvx4lw7yGs75zGzCI3OUqXRoIRw4tXHWA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20)
- by AM7PR04MB7189.eurprd04.prod.outlook.com (2603:10a6:20b:116::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.13; Tue, 2 Jun 2026
- 08:02:01 +0000
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85]) by AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85%6]) with mapi id 15.21.0092.006; Tue, 2 Jun 2026
- 08:02:01 +0000
-From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-To: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Lee Jones <lee@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>
-Cc: Alberto Ruiz <aruizrui@redhat.com>,
-	Christophe Lizzi <clizzi@redhat.com>,
-	devicetree@vger.kernel.org,
-	Enric Balletbo <eballetb@redhat.com>,
-	Eric Chanudet <echanude@redhat.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v10 6/6] arm64: dts: s32g: describe GPIO and EIRQ resources in SIUL2 pinctrl node
-Date: Tue,  2 Jun 2026 10:01:32 +0200
-Message-Id: <20260602080132.3256239-7-khristineandreea.barbulescu@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260602080132.3256239-1-khristineandreea.barbulescu@oss.nxp.com>
-References: <20260602080132.3256239-1-khristineandreea.barbulescu@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0081.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cd::14) To AM9PR04MB8179.eurprd04.prod.outlook.com
- (2603:10a6:20b:3b5::20)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="oTehBGre"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=f4u9eepWT9EhiP3VPEm3hQVTwZ2X4AC4lmvrh96dahY=; b=oTehBGreEofBqSsOK74pBu8aZZ
+	Zt2Lq86bNImr0qcS+eg1kN2zXBRfcQVAJ4ksZtpgkYRAmYnk06/qNQjzBGFhHcgkH2yTyH8HpRHB+
+	sLV6WsyZjkdrmKp7PaoBqWt4yuLi+tN+MaRL9WYhDk8xOcK7kahHJUZM8FX5ZCmCUirvfTm5hKdrY
+	zZwojafRxk0ZsLN927/mu8UyU9dch1xSYvZbnTjmfCWNQHxwXnucJz6Mr9pWo+k7KEhpPxjDGH45W
+	+1yK0skFCXEsa/ofHlpVTFeG4EjFBQQylSF6fYFLZ61Rbn4Ciyk1rICWE0eAI3BsXO9Md4lAjpiRA
+	ZIYtlvBA==;
+Received: from [2001:8b0:10b:5:5b40:b57d:669c:36f4] (helo=2001-08b0-010b-0005-5b40-b57d-669c-36f4.ip6.reverse-dns.uk)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wUK6t-00000001ZaP-2w49;
+	Tue, 02 Jun 2026 08:04:28 +0000
+Message-ID: <0b3f00bbfa6bcc3badb4d1bb7845326e2dbaa1d4.camel@infradead.org>
+Subject: Re: [PATCH v2 2/2] MAINTAINERS: update PTP maintainer entries after
+ directory split
+From: David Woodhouse <dwmw2@infradead.org>
+To: Richard Cochran <richardcochran@gmail.com>, Jakub Kicinski
+ <kuba@kernel.org>
+Cc: Wen Gu <guwen@linux.alibaba.com>, tglx@kernel.org,
+ andrew+netdev@lunn.ch,  davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com,  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ jstultz@google.com,  anna-maria@linutronix.de, frederic@kernel.org,
+ daniel.lezcano@kernel.org,  sboyd@kernel.org, vladimir.oltean@nxp.com,
+ wei.fang@nxp.com, xiaoning.wang@nxp.com,  jonathan.lemon@gmail.com,
+ vadim.fedorenko@linux.dev, yangbo.lu@nxp.com,  svens@linux.ibm.com,
+ nick.shi@broadcom.com, ajay.kaher@broadcom.com, 
+ alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
+ linux-fpga@vger.kernel.org, imx@lists.linux.dev,
+ linux-s390@vger.kernel.org,  dust.li@linux.alibaba.com,
+ xuanzhuo@linux.alibaba.com, mani@kernel.org,  imran.shaik@oss.qualcomm.com,
+ taniya.das@oss.qualcomm.com
+Date: Tue, 02 Jun 2026 09:04:27 +0100
+In-Reply-To: <ah5aGMIxA418sxoj@hoboy.vegasvil.org>
+References: <20260412084704.743482ad@kernel.org>
+	 <4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
+	 <20260412095301.4fe1fe65@kernel.org>
+	 <ebf19246-91af-4887-b2aa-d9007921f7b2@linux.alibaba.com>
+	 <1088b07d760491deb461d6d01abca631e8f8d86c.camel@infradead.org>
+	 <ahzQZg_v4bxFfGdj@hoboy.vegasvil.org>
+	 <3908843460c4864eef79cced40d897f793c7ae2a.camel@infradead.org>
+	 <ah2jIt2DqI1ZZJx8@hoboy.vegasvil.org>
+	 <0e023f951c102fe2ee7070e490c579783b2817d5.camel@infradead.org>
+	 <20260601185226.7f43fa75@kernel.org> <ah5aGMIxA418sxoj@hoboy.vegasvil.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-RP0sFoYLKy91Bkl5IsXb"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8179:EE_|AM7PR04MB7189:EE_
-X-MS-Office365-Filtering-Correlation-Id: f429ebf6-bdd6-4396-519f-08dec07d39fc
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|19092799006|921020|56012099006|3023799007|11063799006|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
- n4zPvGMEnoIaZob8QL2nzOFILZWAXEba7i1Sd7wRfKOaTguNhdWnsOFi82y7Q31FPx1ze9PlvFWireqHb+ysHEaxOgvnzNv8yIJB0aHvd4kkgKR+4U2JKr/2lkCdf7GlRzR0ff2Sya6La7XZpXWCqseX8V72YToTpGPjK1qB/dNKQmquaK/XDSjBM9woYFFIPK3zS1embEJanF0Bw9t2dNON+qpBXsJQuOer/4zoNMPKn3uiDBVWM7qO2sXlB5y8y0xdCPfqsvnlqNDfN9N7XRgGgXuh/C22MdhGcO/3b+kaQ8T4Zl0LjiNc2CsgGE9EXKTi3xPzai89c5b+ljnhlJcCN/wUNXLxYdN+notmvolB47o57m7OqxEW8DVbmyOfJ1KVmi2nbFB5uUhUA6+eYYaqA9f5AzBD1SNtR4dY+3dDEPVWCR/fwlXQEM8zrZj/tPJnh7fAmC8hQByqSRM1zS3q/f+q5afSWR5JquLP+pT3IiTVk0jh9l9SnYmbYv8nP6QFjSoH3AtI4kuxMjmiwq3EHYjd+TW70NaDQmRDHDEqSJqueEELi+BqM4LojjtkotdxLHmk7fgQPLAlw/sclS6u1litCQ1L9mFIN1lv3k29Llql/LtN2W/vFYc7mNFwrWwzhTCg8Xp7hE9c7qRI+XALOtH5L+bzz4IUOepJFZJJk7Ysr+Hsx2ODxOQXrdlGfyhSd2LfqirAShDr7Zuu4iwaQY0LRf/q90oX6DPn8bE=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8179.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(19092799006)(921020)(56012099006)(3023799007)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?d1dDSkh1dWtTTmFnM3NUcVpuWTBBcGR3U2VnV3lPL1RNcHNXb2l0TTU2S3Z1?=
- =?utf-8?B?Uy8wSnFaK040ZzF5RmlPeUtxQUtLYjZFTDFyVFRNQU1Cclg0djVoelhyUVBE?=
- =?utf-8?B?bzBvZXhPNitRRG85KzlVRk5NYjlOMWdycDhjUnVzeVNTK29PT3B3cktRaGE0?=
- =?utf-8?B?dk1aemhWMmdreFJxckdsNEtUc3I0ZS9ERHY3bnpTWUkzMXBkY1VEQVFkZW9V?=
- =?utf-8?B?YnhhRmUwalhTNHFXZnAvWlpGM2ptLzErMWNZa2VNUmlaRmhQT1ltbURyd3Zs?=
- =?utf-8?B?eDlPY1drcmxJZ2hCNkxCWG5TcHByZzMrUHVPdkwrNTU3bWV4cGRhUmRsNFlZ?=
- =?utf-8?B?N0E0TGZSVnlaVTRGdjV2V2pFSmErL3Z1TFFEam1HZVdhK3A4NFNTY2s2Nm9H?=
- =?utf-8?B?UUoxbkIrUmRSUE9iQTlDc093NUxReEJnN2xXY0NKbWFLSnpJUFdBcGx4MmVR?=
- =?utf-8?B?NEhOd2ZJN2xQNnhVZk0vcWlkS3MzSDFnb1RYTmVzcDE5M3dGamIwbVlsUGV1?=
- =?utf-8?B?VGZIYVBDQSt1cUhKbzJVSU5UcFhGeTNuNG9IRkpNZUZTUnk1UUR4akpMK0Zu?=
- =?utf-8?B?K29nbHVZTUhYaHRMUjE2WHFmZTlHa1kxSFZDZCtwejAwYW13UHNoOUFLcGhJ?=
- =?utf-8?B?NkZUT1pBV3NSbWZpRzRCY1F0VzBqTWJ6bCtYRXJjb3AzelB3alpQVXZCMEpt?=
- =?utf-8?B?dFErV3ozeVZtaWljMkFVMGswQ25sY2t4cklaSEx6azV2LytaSHFsUVMzOFFk?=
- =?utf-8?B?bFlHd240N01Fb05UdVVONkpjaEpCcXRVZE0xRHNYVXF2OStXSXZtNUJNUXI1?=
- =?utf-8?B?VE1CbThNNnZzODVwenRNck1OMnkxRFkrK2tUSUdKMGVHVjZmb2V5aHlsOC9V?=
- =?utf-8?B?RCtDMkZqZ0hsamJaTmdNcG9BeGdaTzYxWmdrWXA5NmNHZTJCU1B0VUVuMG9J?=
- =?utf-8?B?U2JOTzNiUkgzSVdXY0taU0E0aHlaWnlwdUdFRlRmeTZpWjVUK1ZGRWlyRHZG?=
- =?utf-8?B?dmN2RHAwbHM0SzBKRDdSdHpNODR2QXBZNjJaOHNLTHZTNHN2TXVJZkszUjRZ?=
- =?utf-8?B?NlQyRFUwUmdWbjV1QkZxN0xCRFR3cHlsdGtPV2pvZFlydCsyRnpEa2xxS3dn?=
- =?utf-8?B?T0k5TS94UXlDdXZZYjJtb3JCOGVjSXNqdzQwcWdJUG44bVBvT3JlazZib3ZR?=
- =?utf-8?B?a0F2MDg5NVBMTVVtckZYVDZpNmdTRWd1c0RVRGwwVnRnQkp0Y2VuSkxwRHpa?=
- =?utf-8?B?RVgwN010dTBqMzY2L0IzRHRYWVY0M3c4RnQ0L3JMV0g5RWxNTllHd1UrSVFx?=
- =?utf-8?B?UWY3UkhTUGlhYWV6YzBidVArNXBHOERyU1FHZ0R5Z0dEeG82amFZdUxaYWpX?=
- =?utf-8?B?VWh4Z2FsSGRYTTArTmtkTjltMmt6eU0rRzgrU0FQRmpJMFlsOHArNFhYN3Qr?=
- =?utf-8?B?MGcvTkZUeXBDdXVJU2toa1M4TXpiZXJrRXpEWnRGbHBiSDJiYlcwTFkrOVZR?=
- =?utf-8?B?anN5QlhDbmkwdXNSUFRPREE4Y3dLbllWbUJsMklvc1BuQ0QwTHB4OFVCQTF5?=
- =?utf-8?B?dVBxcWtORjRmZGhYdGY3SmlNUjBWcFhXN0FkQTB5ZWJVZ09EYitUNitCWEpX?=
- =?utf-8?B?MzlXRzFqTklZZUxjVzNLbmFqcTZtN0JQOEFoN0NmWmtHU3FDNFFyOW9LVi84?=
- =?utf-8?B?bzNPOFZldHVXZDlFSE1aZDg3UkNrZy9UR3REdnJRU2owQ0o4V1VNRkZZTTcw?=
- =?utf-8?B?T2VjdXBCTjJ1bWtPZkRJa0hmbDhyMkxwZ2NmZEJSSlNqWFdwejNxbFBCKzhj?=
- =?utf-8?B?NGZzYUEvNUJYM1ZYM0JrRmtWblJROVlrYUIzNEJnWGR1TklpNmxzNm9LOW5T?=
- =?utf-8?B?K2RnS1dmTkN0bjhZQ1lhY2ZLZlNHR3dUZjBPK1JWU0xzSXRDTDFaR1NkcCtQ?=
- =?utf-8?B?UmVSelluV05YellCYjhxM3hDM3IxdnNEekMvNzNCanVWVVg4eTFLaGx1TmpT?=
- =?utf-8?B?N3BnWFhhUmR1M2VjKzRqV1F6Z1J0dFBleXdxakZraFVTRnc3MWFxSnBiVXcy?=
- =?utf-8?B?WDlmRDdKbW84eXkrTWh4ZnE5WlNiSGVZVEJzMGM5SFVtSUdGVzNRMnU3Yldx?=
- =?utf-8?B?RGkwNVpjYWYxVC9YWnhpbzNUQWpHcFNYb2VGQ3lmeCtxbVZEYUgzdG1ZSHVp?=
- =?utf-8?B?dTRUbk9iN1BQN2xQbWNvYUNWc3UvSm1NQUx2QXRSVFZZb0lQUGxVdGhTbUtI?=
- =?utf-8?B?RDliajZKdkpiYVNvVDNwSVNhd3VBeGlLcFp4NTJ6c2VzMHpYenBDUHdvQ3do?=
- =?utf-8?B?eDdlSmErb0YyT2M0TUVwNEVXb3o5ZTF5azF6QkVkVXZRUnhTVy90NzY4Zkd0?=
- =?utf-8?Q?JN4kObfijT9lEL4nho7DP0CVIxTOqebIn4Ayu?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f429ebf6-bdd6-4396-519f-08dec07d39fc
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8179.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 08:02:01.3090
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: V3iAzb5l9lDs3glBLiOuHtt0GXP/O/Tf2eUYahwIw9wu8ZcBnHd2wBcPvE5tv+y+HX/2c31xbz4dnyrLDIbui7ypJCCslwolRJL4qks4CYnOll64n22PGl0M1orbyb5j
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7189
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Update the SIUL2 pinctrl node to describe the additional register
-ranges and DT properties used by the updated SIUL2 driver.
 
-Besides the MSCR and IMCR ranges used for pinmux and pin
-configuration, the SIUL2 block also provides PGPDO and
-PGPDI registers for GPIO output and input operations,
-as well as an EIRQ register window for external interrupt configuration.
+--=-RP0sFoYLKy91Bkl5IsXb
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The driver supports both legacy pinctrl-only DTs and
-extended DTs with GPIO and IRQ.
+On Mon, 2026-06-01 at 21:20 -0700, Richard Cochran wrote:
+>=20
+> Sorry for replying to David here via Jakub's message.=C2=A0 Somehow my
+> brilliant Gmail doesn't have David's reply...
 
-Reflect these resources in the SIUL2 pinctrl node by adding:
-  - the PGPDO and PGPDI register ranges
-  - the EIRQ register range
-  - gpio-controller, #gpio-cells and gpio-ranges
-  - interrupt-controller, #interrupt-cells and interrupts
+Yeah, Gmail. Here's a nickel, kid... :)
 
-Keep the hardware description aligned with the updated SIUL2
-driver, where pinctrl, GPIO data access and the EIRQ register
-block are described under the same device node.
+> On Mon, Jun 01, 2026 at 06:52:26PM -0700, Jakub Kicinski wrote:
+> > On Mon, 01 Jun 2026 17:53:49 +0100 David Woodhouse wrote:
+> > > On Mon, 2026-06-01 at 08:20 -0700, Richard Cochran wrote:
+> > > > Sorry, just catching up here, so the idea is to have
+> > > >=20
+> > > > =C2=A0linux/drivers/ptp/drivers=C2=A0 ?=C2=A0=20
+> > >=20
+> > > That is my current suggestion.
+>=20
+> drivers/../drivers seems a bit silly to me
 
-Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
----
- arch/arm64/boot/dts/freescale/s32g2.dtsi | 23 +++++++++++++++++++++--
- arch/arm64/boot/dts/freescale/s32g3.dtsi | 23 +++++++++++++++++++++--
- 2 files changed, 42 insertions(+), 4 deletions(-)
+It wouldn't be the first, but yeah =E2=80=94 more conventional would be to =
+have
+the core elsewhere and the drivers under linux/drivers/.=20
 
-diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-index 51d00dac12de..f21c8d19bcfe 100644
---- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-@@ -3,7 +3,7 @@
-  * NXP S32G2 SoC family
-  *
-  * Copyright (c) 2021 SUSE LLC
-- * Copyright 2017-2021, 2024-2025 NXP
-+ * Copyright 2017-2021, 2024-2026 NXP
-  */
- 
- #include <dt-bindings/interrupt-controller/arm-gic.h>
-@@ -135,7 +135,26 @@ pinctrl: pinctrl@4009c240 {
- 				/* IMCR119-IMCR397 registers on siul2_1 */
- 			      <0x44010c1c 0x45c>,
- 				/* IMCR430-IMCR495 registers on siul2_1 */
--			      <0x440110f8 0x108>;
-+			      <0x440110f8 0x108>,
-+				/* PGPDO registers on siul2_0 */
-+			      <0x4009d700 0x10>,
-+				/* PGPDI registers on siul2_0 */
-+			      <0x4009d740 0x10>,
-+				/* PGPDO registers on siul2_1 */
-+			      <0x44011700 0x18>,
-+				/* PGPDI registers on siul2_1 */
-+			      <0x44011740 0x18>,
-+				/* EIRQ window: DISR0..IFEER0 */
-+			      <0x44010010 0x34>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&pinctrl 0 0 102>,
-+					<&pinctrl 112 112 79>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+			interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
- 
- 			jtag_pins: jtag-pins {
- 				jtag-grp0 {
-diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-index e314f3c7d61d..f5825881fd69 100644
---- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
- /*
-- * Copyright 2021-2025 NXP
-+ * Copyright 2021-2026 NXP
-  *
-  * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-  *          Ciprian Costea <ciprianmarian.costea@nxp.com>
-@@ -193,7 +193,26 @@ pinctrl: pinctrl@4009c240 {
- 				/* IMCR119-IMCR397 registers on siul2_1 */
- 			      <0x44010c1c 0x45c>,
- 				/* IMCR430-IMCR495 registers on siul2_1 */
--			      <0x440110f8 0x108>;
-+			      <0x440110f8 0x108>,
-+				/* PGPDO registers on siul2_0 */
-+			      <0x4009d700 0x10>,
-+				/* PGPDI registers on siul2_0 */
-+			      <0x4009d740 0x10>,
-+				/* PGPDO registers on siul2_1 */
-+			      <0x44011700 0x18>,
-+				/* PGPDI registers on siul2_1 */
-+			      <0x44011740 0x18>,
-+				/* EIRQ window: DISR0..IFEER0 */
-+			      <0x44010010 0x34>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&pinctrl 0 0 102>,
-+					<&pinctrl 112 112 79>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+			interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
- 
- 			jtag_pins: jtag-pins {
- 				jtag-grp0 {
--- 
-2.34.1
+That maybe involves moving the PTP core to kernel/time/ptp[/*] while
+leaving the drivers where they are?
 
+But first we have to know the problem we're trying to solve, and Jakub
+has just revised my understanding of what he was originally asking for.
+
+> > > It stems from Jakub's response in
+> > > https://lore.kernel.org/all/20250815113814.5e135318@kernel.org/=C2=A0=
+that "I
+> > > really wish someone stepped up and created a separate subsystem for a=
+ll
+> > > these cloud / vm clocks. They have nothing to do with PTP."
+> > >=20
+> > > There was some further bikeshedding in
+> > > https://lore.kernel.org/netdev/0afe19db-9c7f-4228-9fc2-f7b34c4bc227@l=
+inux.alibaba.com/
+>=20
+> The idea of categorizing core, NIC-related, vm, and stand alone clock
+> devices makes some sense to me.
+>=20
+> > > around how to split 'emulated' from other hardware drivers, but I don=
+'t
+> > > much like that taxonomy. Some of these "virtual" clocks could just as
+> > > easily exist in hardware with PTM too.
+>=20
+> So the whole in-kernel API in ptp_clock_kernel.h with ptp_clock_info,
+> etc, was poorly named (by me) back around Linux 3.0.=C2=A0 After all, the
+> abbreviation, "PTP", stands for a network protocol.=C2=A0 At the time, Al=
+an
+> Cox pointed that out and complained, but somehow the code got merged
+> anyhow.
+>=20
+> The term PHC is a better one, since PTP Hardware Clock means clock
+> device whose purpose is to support network time keeping together with
+> a NIC.
+>=20
+> > > My observation is that with the sole exception of ptp_inet.c, *all* o=
+f
+> > > the actual PHC drivers that live in drivers/ptp instead of drivers/ne=
+t
+> > > are "pure clock" drivers,
+>=20
+> No, that is not quite right.=C2=A0 The clockmatrix, idt82p33, ines, and
+> qoriq drivers wouldn't be very useful without an attached NIC.
+
+Ah, OK. Moderately confused because ines is the only one where I see
+any evidence of hwtstamp support, and the rest just seem to provide a
+PHC, but I'll take your word for it.
+
+> > > so perhaps we split those all out into
+> > > drivers/ptp/drivers/ and exclude them from the netdev maintenance?
+>=20
+> Originally the idea was that the rate of patches would be low enough
+> that netdev would be the place to post and review them, and that no
+> separate tree or mailing list were needed.=20
+
+I think that assumption about the rate of patches should still be true.
+If I end up owning a tree for the 'virt' drivers, I'd mostly be
+answering "no, use VMClock instead". There's a reason I found a home
+for that as a vendor-agnostic specification=C2=B9 and built the QEMU and
+guest kernel support before even pushing it out at $DAYJOB.
+
+=C2=B9 https://uapi-group.org/specifications/specs/vmclock/
+
+> Even though the "PTP" naming was an unfortunate choice way back when,
+> still I'm not a big fan of moving stuff around "just because".
+>=20
+> But moving forward, I would suggest starting a new area for pure
+> hardware clock devices.=C2=A0=20
+
+I think that ties relatively well to Jakub's "does it purport to know
+real time better than the host" criterion?
+
+Although... ENA *both* purports to know real time better than the host
+*and* does packet timestamping, and it looks like GVE is attempting to
+do the same?
+
+> =C2=A0=C2=A0 "Clock Devices" ?
+> =C2=A0=C2=A0 linux/drivers/cd
+>=20
+> Too short!
+>=20
+> =C2=A0=C2=A0 "Time Keeping Devices" ?
+> =C2=A0=C2=A0 linux/drivers/tkd
+>=20
+> Confuses core time keeping!
+
+That isn't necessarily a bad thing... (qv)
+
+> =C2=A0=C2=A0 "Advanced Clock Devices" ?
+> =C2=A0=C2=A0 linux/drivers/acd
+>=20
+> Let's come up with a fitting name.
+>=20
+> Still, I don't understand why these new (non-network related ) device
+> drivers can't be implemented in their own class using
+> posix_clock_register()
+> etc.
+>=20
+> Any of the useful bits (like sysfs interfaces) can be refactored out
+> of ptp_clock.c and shared as a common layer.
+
+The key is that userspace wants to get snapshots of the reference clock
+either precisely synchronized with the system clock where possible, or
+sandwiched as closely together as possible with ABA readings of the
+system, reference, system clock.
+
+Those *are* the PTP_SYS_OFFSET* ioctls, which tools like chrony already
+support with 'refclock PHC /dev/ptp=E2=80=A6'.
+
+I'm not sure how factoring those out into separate POSIX AUX clocks
+would help? I think they do want to present as /dev/ptp*.
+
+There is some extra stuff we want to do for "Precision RTCs" or
+whatever we're going to call them. They might actually have a known TAI
+offset, they might convey leap second indications, we might want to set
+the kernel's CLOCK_REALTIME from them at boot. And in the case of
+VMClock, I'm working on being able to clamp the kernel's timekeeping to
+it directly=C2=B2.
+
+So maybe what we want is linux/drivers/phc, to host those read-only
+devices which know real time. They can provide a simplified
+implementation; maybe *only* a function like vmclock_get_crosststamp(),
+which is just called in various different permutations by the various
+different PTP methods.
+
+The core linux/drivers/phc code would then handle the interface to the
+kernel's core timekeeping *and* wrap them to register a PTP device that
+existing userspace can understand. And deal with the kvmclock/TSC
+awfulness where needed.
+
+How does that sound?=20
+
+
+=C2=B2 https://lore.kernel.org/all/20260520135207.37826-9-dwmw2@infradead.o=
+rg/
+
+
+
+
+
+
+--=-RP0sFoYLKy91Bkl5IsXb
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwMjA4MDQy
+N1owLwYJKoZIhvcNAQkEMSIEIIGcKIP2EPstYmZEUerRVfVfjJLflCgkwLcbjoG2nZCKMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIArByzGoa3JuPd
+rSLvIUVRy+Iu1AI3hFh/pZm5GW7hstctYsHMnVPBgy/L1X5g/Edz1/ylEMrftxsfTi8ctXwR5YoN
+BsAdVa+4imGrX+700zm/iLtUXqFPSxJ5H/RbKmioqqf3poQLHJIjHlzW9S6wZRaQOLjOctQwUC+8
+umC4SdZ5YyoM6NiFEtEtui5GemWcflX1ALtSE5Mtk2qCP1DOuFBOsciSjj8TU7ItjnHAmyInzsUk
+VdiFKdix0a9DbKR6bMyOFelC2Yh7TNlY4jgb1EWTMvEQTRl3vmMq0nv0JU+idUPrOtxq3GYouNGt
+OwngMK4h+Jg5alOEHCOiYXWsTbv5c+vZHxdENMttm/tWKGyfRtRtWKHSmBYtVUymkTm1jd84o12a
+uC2U5AEYyQcO6AvwitBt/KO30xi5ZJUzBbNOjz60nKO8hqaxqnVW1I28bmg737hIb1ItxiomgfDI
+NERZbsZEBBL5dIyAF1WK35KSVwhG8lcmMJX88PSE8+ajFQGZnWI7NVyn0LO8nSFtGBjA0JGxUnzC
+4l51keV8bgXIRF8xq4pFJ35zo6gp58BDbhqDCg18RpHx/3jDphJqSwUkSWYb42H8O9nzHJYJfBN2
+/guiO/bKQA8H7jjYVYyg2EbFTB7905J7i+mGZ/iurGTuPKQqBtZ1cNR58uw0QRQAAAAAAAA=
+
+
+--=-RP0sFoYLKy91Bkl5IsXb--
