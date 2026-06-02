@@ -1,92 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C943E3D3D06;
-	Tue,  2 Jun 2026 12:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4291338737E;
+	Tue,  2 Jun 2026 12:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780402071; cv=none; b=saORwpUq/oiE1WEOYaas54Mbd9Ip6Gr+EczL5givvjNH2L/gcC88//S+EVOoOfskGf4zUJvfIwuZh+KT/hZkrTap0mihF/08RufUmliMdIu6sLVmb3uS1G9bvGkFybOqjw5ILiR2/I/c67YdNhu7VCy9gXxw5oRKCX/cwJgJMd4=
+	t=1780402270; cv=none; b=R1JrTh8acwdWEIWM8Ap9BCc2DZ0/mti/kGFKCRBpV3xpQKoo9auNtHKd32wq0KrvjzTQ9sM7xuKT6WEroJa+cRdCNGGfyxmNlz18sJy5IwM8uQtYGJ31RsDii0tDlrHpiW6EWct8G+5KhW9wBGSbMUqxsKkkBMT1KABCv3C0rwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780402071; c=relaxed/simple;
-	bh=yxQQ9gaWWDoS8ysnsM1La01w5SvAJPAnAKtiYQjwhXA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ePkrxTOUJtkD4KZoZTyG9uyuf8nR0BUClWOsGBAT91MsTP9vUe60U8co8yYAvUlNg5V9RQgCu5JbkCaOqbZ1qkvj3vGGdjavshoI6/5ZayxLdG53uY4qyHRfIcn9VervpQYr+LWqpUJfXPo0buymm95+VnCCICZ4wrwxqChOnvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XU670/ye; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780402270; c=relaxed/simple;
+	bh=8YnBNZ5lo0jJ/8ZzDTRH3eTyQTuv4V7o7qhEGF+7xNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FnBv2eW23dBK54qO/fSKGKqkWG2dSQQjPYHXS98Uk2n7oFarZDD9Kij4MoK6Z+LNJE7pEd1R8FU23AiHLUHW22VlBdj2W69BrbzqrrMVQ+Nw8AsKQTXRYA/1u6+ULabQ9xfK2ZH5rgRd60tK+UqNh6A0RVayQ6f1gcAwIWIUhSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UU9lMTk1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZZz9NigC; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XU670/ye"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B8A1F00893;
-	Tue,  2 Jun 2026 12:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780402070;
-	bh=AjocX/StcatzA+7lRhbJocmTLZYm3zu6CJOUvlYp57c=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=XU670/yewUMzeHj1IfYY/Nb6Ee1nuk67I6Kp6MR5lHyAxYXSqQCIZ9pkICxaVigzy
-	 lAw/kwonX77zDqUXN1gcuILviEGr+9GLl7tpca035Gv+AbQbvpfq6/pCw+q0M9Fvx3
-	 gpEnNdOEF1Boqht4U1mL6HcI0Jfbd+6y/j/4queDTCcbntmI4L3vGJbIk0iCC2cNla
-	 KMUv1XUUCDaOTwUXxTuFV9c8R2j1WKE4+PyaWEyMgPBe9yYov6mvfyxybQWDU0+HDn
-	 WZKMkon+sUWrgwDZJAlyaDGl+Efk63PYhm2H3pVk56YtCo3k6XLRu8E/O93VGswhPM
-	 yakOYslCiUvNA==
-From: Mark Brown <broonie@kernel.org>
-To: Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
- festevam@gmail.com, carlos.song@nxp.com, 
- "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260525062928.3191821-1-carlos.song@oss.nxp.com>
-References: <20260525062928.3191821-1-carlos.song@oss.nxp.com>
-Subject: Re: [PATCH v2] spi: imx: replace dmaengine_terminate_all() with
- dmaengine_terminate_sync()
-Message-Id: <178032292667.44654.11142076412680419763.b4-ty@b4>
-Date: Mon, 01 Jun 2026 15:08:46 +0100
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UU9lMTk1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZZz9NigC"
+Date: Tue, 2 Jun 2026 14:11:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780402267;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cyUX5nSI1JO53ZcwcF1oCIU9U+h6EIF90UE97RnD5UA=;
+	b=UU9lMTk1hfzECeGpiB/Sl3GMzU02+/5/R88b9bz2fBzW6BphMmbcAx+Edblnn4jVMrzN8N
+	rf/YK88EMRF8XaJhKn52zMtWQrfTZPxyGYXtznfeUxNRCKjfotHzfBlasWfKv6+D/Lg0oo
+	4/FzXGbk62iorZWSsbwCbp1NmXScDG76O6ucJ96VxPsUZ7SVM8or4hqxUimTdBTxF32bRW
+	9Awy8ia36Hhknz0ygYuORezoRlnVUL/oUAK/fHZIo8jtXF7csHWk2VQ9G3uYJr+ZLNCs4t
+	LhsVaXj/u69LzHGKcvzZKt+rE2wnVTGl+mdV6P1awK1g6WOgbJlWbmXNsmleYA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780402267;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cyUX5nSI1JO53ZcwcF1oCIU9U+h6EIF90UE97RnD5UA=;
+	b=ZZz9NigCq/ZCxxFRKuZX0FURoZBs1O4awKgldlzDOweN9aeLbwOoqYJqszKeo1bg204eX2
+	AChFCu/C9wLXdWAQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH 5/5] remoteproc: imx_rproc: Invoke the callback directly
+Message-ID: <20260602121105.e6hqhBJz@linutronix.de>
+References: <20260529-imx_mbox_rproc-v1-5-b8ffc36e11e5@linutronix.de>
+ <20260529190854.1680E1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1169; i=broonie@kernel.org;
- h=from:subject:message-id; bh=yxQQ9gaWWDoS8ysnsM1La01w5SvAJPAnAKtiYQjwhXA=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqHseTLt8mhqABkDo/qpwSXNB94dDjhnTdFjVXA
- I214VRm64qJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCah7HkwAKCRAk1otyXVSH
- 0JasB/kBexDdlFvqw5k+wXp4BPUn2L1tMWX+QCjBx+aHKPBWg1XEE1Hw9ZAjSBMc4BzwUknrzJi
- wJ27ApFrkntai7kX4DzB6PIWyUFmw0kSylVQakjz6g2a1SDCEePAbOxlD+K38SmJo8ptKj3CSAt
- v8QliTLMLCRrdTK/KHKQYOM3uOmqEeJMdx2Aj5+R7bt0SkOZ+D5a702nDQceQLHxkzTBwb4WbZf
- 0/wlM2mHzTF1cfYQiWgjsfMRcTJEYbgNmxrddkaAHntu4C1I/hwD4s3SmJXjLY9XAKiU+mXHViM
- o6sa7dHNQOWQgEfpwANm39juHkpiklqyXOlshLwK8XqfWNRE
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260529190854.1680E1F00893@smtp.kernel.org>
 
-On Mon, 25 May 2026 14:29:28 +0800, Carlos Song (OSS) wrote:
-> spi: imx: replace dmaengine_terminate_all() with dmaengine_terminate_sync()
+On 2026-05-29 19:08:53 [+0000], sashiko-bot@kernel.org wrote:
+> >  static void imx_rproc_rx_callback(struct mbox_client *cl, void *msg)
+> >  {
+> >  	struct rproc *rproc = dev_get_drvdata(cl->dev);
+> > -	struct imx_rproc *priv = rproc->priv;
+> >  
+> > -	queue_work(priv->workqueue, &priv->rproc_work);
+> > +	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
+> 
+> [Severity: High]
+> This is a pre-existing issue, but does this idr_for_each() call require
+> rcu_read_lock() protection?
+> 
+> Looking at the call chain, it also performs an idr_find() in
+> rproc_vq_interrupt() without rcu_read_lock():
+> 
+> imx_rproc_rx_callback()
+>   -> idr_for_each()
+>      -> imx_rproc_notified_idr_cb()
+>         -> rproc_vq_interrupt()
+>            -> idr_find()
+> 
+> If a user unbinds the rproc-virtio driver via sysfs concurrently,
+> rproc_virtio_remove() calls rproc_free_vring() which executes idr_remove().
+> 
+> Since idr_for_each() and idr_find() rely on RCU internally to protect radix
+> tree nodes, could running this in a preemptible context without
+> rcu_read_lock() race with idr_remove() and lead to a use-after-free of the
+> IDR nodes or the rvring structure?
 
-Applied to
+If I see this right there is no RCU involved. First the interrupt gets
+removed (via free_irq()) which ensures that it is no longer active and
+then the channel is removed.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
-
-Thanks!
-
-[1/1] spi: imx: replace dmaengine_terminate_all() with dmaengine_terminate_sync()
-      https://git.kernel.org/broonie/spi/c/4503b2fe761c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Sebastian
