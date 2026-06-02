@@ -1,304 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013015.outbound.protection.outlook.com [40.107.162.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A555B36309B;
-	Tue,  2 Jun 2026 16:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780417739; cv=none; b=Cw9A0ocBD8C6dKuW6E77Ke3a2gsVCDfb0NIq8xnvyCP9smtx8hK9Dlel7Z9r4GzReqgCn0Fn/59L61czdEOZuZxDwSZf+SPZHvkOKDSBQBk1U/evjYGF3nebXjwYXidKH7RWPD94gl4QJ5v5zo3uoPclVhi7z2B6ocrYKh+NeZs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780417739; c=relaxed/simple;
-	bh=dWBVNkaWH+cn7KtJoq3Qn1frM9TTm76BpGSXA/NleEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lGLrQU7l/NhH1ij24e/gUDaCBUZbgJiz8tQak9W7ro/lrXYtMVitCjHS9M71QrRy1CqyIKIjtYBFKa0XHxvglQ5ov8OqCQ99cTv3YE2wSDXU9+0R6net0N3kJ1vB/F9V6hTpRXGn5+DSusa/BoydwK7c06reCH/WBnFgEl9flSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDHlwG0b; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C2736F917
+	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 16:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780418156; cv=fail; b=bKQ2Pey/q043QK8p0uk7GquIC5L+VWo+i4qGMaiEg5w0dit7KY8lzZkd5KpyayMNgetSY2t6bf3ev+WdyCMeEC0HhR1bLP50OJLX8NDRuwkpPwLdZVKChHTaGPM5RpFOWkE5pkOckuP/DH8oo6NP/A5HWsCdTr0RK0DcedcNIFc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780418156; c=relaxed/simple;
+	bh=mQQC/oKiJHsXq9/RbDAcUukceXgpPvueSlCTh7Qr1BI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UkSr9nmnQYDqA3peolEIDwj8CdLn5LkONYtOgO3S3eLQnrysEF97WM/vWk0xDsP4Lj7gBq+2KQBlZ5Dkb4bPHAghKQ64r455wABRcEhYmfmZ+Y3k26GL2GesUNgvJVGrji8QQYl1xdQSTAuKJE2sPPyZYWkdW9YJ7ZPSiKkPLbM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AhOWQcFT; arc=fail smtp.client-ip=40.107.162.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDHlwG0b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A461F00893;
-	Tue,  2 Jun 2026 16:28:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780417738;
-	bh=fX3mxaloZXVdfONlQnBRTNrtTT6d9pOvEBlD8qfbPpk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iDHlwG0bzuh0CFILnENYRBJ3yxmdq0tICesnt1nNqQcdEFTN2Zc2JBchLvWI2WGKo
-	 m1EwYKqPw9GrWCg9PhftjYBVq45dMyHN/nk9ZOMtY7URwMiB5O3wWSWKgPHj/H2ov/
-	 izi+mBVaQgqh1uCAjurlLHnlodWdhUXd2HZtadgTzVqDsd0lH9XcOU1GOKM038fcHy
-	 5KIHFrh4HTQ/BI7bmQcs4DAGLke2MxdrqGALzbEWEB00p2aMJ5bXVNRFCLXImO1TXw
-	 Yxpvzqul5pR0R200cUcUjohjuSQZ0vK1za646xfMp+KiWe38EDRz7uSWptdYUWKPxM
-	 YzbbnPTU5Eozw==
-Date: Tue, 2 Jun 2026 17:28:50 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AhOWQcFT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CzfJTxbsNynww352zrqT0a6LR1IUx2pagAt0pQHifmThZLpYlhhFAmTbY+2Ihxc1Y3svKifg2VIoOcWpyUwvMed157EWwECn1WWOwvDf5Bh84XS6pwnCf+vXRIxzYQu639+HzYCXNKAV/ZisIhKA4VawOjNYd15pj5oxoUmUgARFVRSHU0OC65idYy2fIBgsyWEtOXwb4owLNex06DqNxwcoTrak+xI62l2/Pw+SIUyzv0emJefUlHl3RmW/eYrqoAtkcbMH3GOSEjPxgdo5Fdf5TXo8A8JuEakYRf4fLg4ySGLjLSfD+icDMLpGEoZ8q2Wcg4BXQPgBFVZEr4lF8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ViHr+o0osjYxS33ALpfUFUnnedtqEfgkKog70waTT3U=;
+ b=KTv9PBW5K7239FE5+l+7Zhlhb9j3Cgi4s+y8k5tGP8VBr5WtGABWw1DKc+kqRBIcBDcw1KMyr5Gtsti3gE8LTrk9bgKs69kqw22wBidOn9yMJ9fjXnqjHjnurr6ymuU/3BgXQTLnS1KOb3veQrD2OLVCf2A86P2YILOlUbXnkH6le7Kj1Drpn3zYbRSvloKzagl4FiPGkN8kkCxlR9X+Mzj/erh+D8AWvTHghGrU6Hqtvk9mx4rEbweub+OoyI6WUXOc8bDdbQ+dHSS6veHMrMaBR6QXs33mN/gOAy/Es+3w0guwDGk2/ojASocViCvuqLXyBojIEE747/QZ35VVXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ViHr+o0osjYxS33ALpfUFUnnedtqEfgkKog70waTT3U=;
+ b=AhOWQcFTmqyIOe5vA/Kf57ymzz10xvKdCHQejm7X+fCZt3Ww4vbitmJEoUTUEdla99fRa7eKgEsIqrnirPIvIREeeyLU4jQLLRccoMFGNQ8rOj5+zw/6GmpXi4WQVsBHrh9JBrRiP8Tmiz6oeJCSXljxVfRcyl25lnBQSSZKYUYi6dBzIe/orbuFWSeyuB6B1x4biQeTvd4EMqld9+q7TrFLL7DrGPO8lPcBGaBSXI6yoyQo/tkItq23PD+k5CD8NMyLxHxFAKAyyozGPo9aU2D5cBnnLiwxMmWT+AvfaFcmO+GabCy4RxpCUsOwqbijI//Zn3NweNAisLVpngjRSg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GV1PR04MB10154.eurprd04.prod.outlook.com (2603:10a6:150:1ac::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Tue, 2 Jun 2026
+ 16:35:49 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0092.006; Tue, 2 Jun 2026
+ 16:35:49 +0000
+From: Frank.Li@oss.nxp.com
+To: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org,
-	Enric Balletbo <eballetb@redhat.com>,
-	Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
+	Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: Re: [PATCH v10 4/6] dt-bindings: pinctrl: s32g2-siul2: describe GPIO
- and EIRQ resources
-Message-ID: <20260602-casualty-overstuff-b46f9c7d7d12@spud>
-References: <20260602080132.3256239-1-khristineandreea.barbulescu@oss.nxp.com>
- <20260602080132.3256239-5-khristineandreea.barbulescu@oss.nxp.com>
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	NXP S32 Linux <s32@nxp.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>
+Subject: Re: [PATCH v4 0/1] add PWM DTS support for S32G2/S32G3 SoCs
+Date: Tue,  2 Jun 2026 12:35:40 -0400
+Message-ID: <178041812850.3294201.1500478837852378765.b4-ty@b4>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260602102351.3477106-1-khristineandreea.barbulescu@oss.nxp.com>
+References: <20260602102351.3477106-1-khristineandreea.barbulescu@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA9PR03CA0019.namprd03.prod.outlook.com
+ (2603:10b6:806:20::24) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Lx2mHOuNnTOuI0LO"
-Content-Disposition: inline
-In-Reply-To: <20260602080132.3256239-5-khristineandreea.barbulescu@oss.nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB10154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f1bbb6f-1117-4515-969d-08dec0c5007f
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|18002099003|22082099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+ kUen7WbSarlxhE+rqmhXVmHUf9emgCmw6dhfnYvwdE1re8Utqv+qqdXC8zYYHrpzj0LeOI0QvbDfLG+J7/YsIa9PM/1w/iNG0cy9XFh84d6LgJo0+gOON0yGAFcrCenrvbtNt5WOikKnXfMZtWylXqN93mlr4GcL9kl0NPtccERjSeUHDetwGWwo1F4dIfB67xAZH8b8l5oJPav+sDNN9m6R4iyNNKK1Hme+v1YLn9QjgpKR4uL6NfbwjkRZJSmKbN2emUCwQEeW18x7frjDAlUnJv0o+293tMZEo04oZ6jpu8xu8w7GE30o7FBFXcT7ju8MbZohgOukDqgWRSQTaRVb7XRbNtsyeJf1A//1Oo+Z8CGp6J6VRb3df58QOlWaI8U8kKJTq7Nlg/mFbSDvRkdS7ppADKBrcmVTnAYtuQjjppRCLwbWUpjA0q0qebIE5nGi7J2lYu+NXLvxDsEU/IWSVgS3ZNgQGYSHOs4a7z2d1wg0uCA9RpnhgQfoYHDyLQ4XCMEYwp/vAIXdWHahNAxYhqEGk3BZeObRsBb39/Ljkpkc2n4kb2Tno+aMk+GrM8ZBeRFqEXuYZtnAhDzewhkdZbx8xJdw7iCPAHXn1VS+uQRNqXQ1pRyyifhTRElY85S0U3zGdThAiu4gGh7Eqa9J8UQACJF7j2t0uqcKzqDhRqAL1qq+MMmIp4v6W0x3
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?dzE4WkZMaysvbFkzZWJxcXFIUGFvUWNEWmRpMlR4T3VtTXl0M1ZGVVdrbDNO?=
+ =?utf-8?B?Y0VpVDlDSGdFQjMxMVh1WENWSVE3cEJrTkdOby9sdFEyQ3BqYlF2SkVxcmVm?=
+ =?utf-8?B?Q0Y1ZzdGMlBsd211dXBmcVJIZnJNR3hodnhpeGVFOHE3dXF4d1dUeVkvMVZC?=
+ =?utf-8?B?REloUGY3c01mOExlNmc2RHVvaXBYSHYyaFY4Z3k2cm5uNC9SeWpYWXg5cUJa?=
+ =?utf-8?B?YjNtUmFqUkJZRE1NOTRsWGxmdHFkZlRTQnhrM1dNYjBOQlBLNElRejJMYzdP?=
+ =?utf-8?B?NGgzQnJqdi9Qek5vYm9aeFUvbUpDTEZ2dlFlVWpVMlVKdk44azc4c2M2eHIz?=
+ =?utf-8?B?VldXL3lUZTgxcWNhT3pkNmxkZEMza3kzOW01VmdmRFhobkRONDYvMFJra0VX?=
+ =?utf-8?B?VDBWeEdZM0RDNmNYb3I3WjhyTTB2WWk5UzFwRXpIUVVZOUJjSHByVFg4NjZm?=
+ =?utf-8?B?WUVQTFNIaDlsTUc4QzlPcTdxaWZtNXVQRW1iY2QxODJFSi9XemEwVGIzUTNK?=
+ =?utf-8?B?dU04M2JzVHBrN24wbW1BWmlFRi9Ya0VJakl4SEpLMmpJTmgzV0xQOTNJV0x3?=
+ =?utf-8?B?SW9iWjNyWjZnSmNjTlN4S1JxYWZzM2ZJdnZGVStGWE9uWnJEVXhzY0FkbkVP?=
+ =?utf-8?B?NkZJVEsvbkpWTlBDdEhLeWhWYVBVRHdnT3N4RVkzcDNxZ2xTc294VGxBNkxa?=
+ =?utf-8?B?ZnR1dDdVRnlFcXpDRkJZWGUvTjAxY2JmVU5wVVhwSXdGZjJsV0tNbFZhaE9v?=
+ =?utf-8?B?Q1VkQ2w1czFlVEhsOU1DcHI4NnZMdG0vWEFZVG5JdFJFVVdHVkJ1b2tzcEc3?=
+ =?utf-8?B?UFNVSjZXL3VWb3RvaXFPTUFRYnR2NnFKNVhrbUUvQU5CSGVEWkE5U29OQ1BM?=
+ =?utf-8?B?WWptUnV3VnBSemluTEhZb2JFeWlCVi93cDBoaTJSV2FoTEUwQkRiM092OWh2?=
+ =?utf-8?B?NTYxbUcrdHA4YlZOaWZ5aVdNaTVQK29DdVRJY20xU0cvVGp4L29xSnI5aVFX?=
+ =?utf-8?B?ZjN3b0w2bE0yWllmTjBtazhGeW5JVmhFZTNMcjdyV29mWkZHQlhsKzdxeTho?=
+ =?utf-8?B?KzF6ZlhLa0pvZytCbUFkK0czUnlBNWJ6MUlPUXg0cVAvclA5UDVnUStyWWlV?=
+ =?utf-8?B?eXo5SloyQkd6SkNiN21RNlNOMjdvWStsNUlnNkVXdHZGL2JScWRGY0pJUEU0?=
+ =?utf-8?B?WVM5alVmMWNhY2ZIT3FESlZXS24yaWJTcFJidC9ReDI1NzNRU3dWOEFTLzht?=
+ =?utf-8?B?WVhlL1pmU01WTVFMWnBPN0NZeUNXcUtqWWdRQWFkT3dTRDFGS3MxSkIzZUV6?=
+ =?utf-8?B?OEt3ZWkyenhtMUluaTdBSGZ2OFprL3Ftc085Y3pLZVVPOERjQms1K1lzclRs?=
+ =?utf-8?B?ZTBOSlhKRzRMeWNwK3NIN0dxbWhEKzZRN0JYaThQZjNBS0JXb3krTCtBSnhU?=
+ =?utf-8?B?VWNZTFl4N1JXSmZ6ZXNyWGhKSTdoUVMyYWFlSFNTS2c1eTVkeUtLZWlMVmpT?=
+ =?utf-8?B?NHhDVlBwL0laSU5pOVNrenNMVlg4SnA1YmFHak0vYzZJVzRwQmUyTUFBOGYz?=
+ =?utf-8?B?bTU3bVZZd0hJTnFxZm5BVjhWcVh5dURqelVIeDZTQTZKRzVST2taN0N6R0lr?=
+ =?utf-8?B?bHlmRHMrekYvSkdrdHVEdWluMktVd3dNZEEzdDllbHJ0WDZvcmdtcFdma1Vh?=
+ =?utf-8?B?S3VBWm1OQko2TlUxYXVSVWVKT05kSFVldysxRnVueXZxMVhCSE8wNmx3R2dF?=
+ =?utf-8?B?VEhYeXBzbHJZRHROSWloR1htRjM2RG0xQnl6YUVrUVZaakR6Y3BITE1lWnoy?=
+ =?utf-8?B?d2RDQ1NwZWJ6K3d6TnhDcEVDKy9raVphbVI1TkV1QVU4ZlRmNlpjaGRxUW1y?=
+ =?utf-8?B?dEkwTlVtRm1CWGt5NEYxaUVuVG9GdUgwOHRSQ3dBb1laTUJoVlJ6NFhtRzlv?=
+ =?utf-8?B?dEJFdVpRNWRCRytCRGk5VzJ1eTkzazZ0bkFoaGpDelVja2ZNK2d4VlVZV0hG?=
+ =?utf-8?B?bU1VZWduRUxodnRDNERacW9xZ3ZZMHFBWWR5OVdaUWZ5bzM5YmZqTUN5MTBm?=
+ =?utf-8?B?L3N1blRGR3VXM0FWN1IyU0RLZ1VqZ2RnQjg5VzFqZ3dzLzhseXpESk9seDdY?=
+ =?utf-8?B?RTRiQzl6SXlyYnpIMjRIMWVZb0hLcWNzZSswQm9la0JWSDB4R0IrWlRUSkNT?=
+ =?utf-8?B?VTNQOXVGd2VXaVR5bEdMeHBWRlNjbW5sd3k5R1NUZ2pqOEd4K3daaktEeXBU?=
+ =?utf-8?B?ZlhMam1panZidWhBYkRzSk14R2djdkd1cmNubHVuK0U5UVFjaUladlVVaXhB?=
+ =?utf-8?B?Qms3TGx4NkNCby9hNDZ6TEZOdC9xRkxXNGVRNnZReEdhTTBFVytjMStNKzlG?=
+ =?utf-8?Q?zWcXpgI9vidrOK5n29JPr6/VKLG8uI0Vs62hK?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f1bbb6f-1117-4515-969d-08dec0c5007f
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 16:35:48.6427
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: f+L7hnf8OqpkN6wpqHY8SefYXe+aQ+vPYpnYV8RHGCYAEg19jrU06Y2dvE3Mlgrq11Pf/e6pYoOIwsRSha1oqBbl4iL0Tga6IqVKaGSblW6weEsBgeHo+kolWNWgwRoq
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10154
+
+From: Frank Li <Frank.Li@nxp.com>
 
 
---Lx2mHOuNnTOuI0LO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 02 Jun 2026 12:23:50 +0200, Khristine Andreea Barbulescu wrote:
+> This patchset aims to add one change to the S32G2/S32G3 dtsi support:
+> - Add PWM dts support for S32G SoC based boards
+> 
+> v4 -> v3:
+> - fix indentantions again
+> 
+> v3 -> v2:
+> - remove vendor internal issue tracker
+> 
+> [...]
 
-On Tue, Jun 02, 2026 at 10:01:30AM +0200, Khristine Andreea Barbulescu wrot=
-e:
-> Extend the S32G2 SIUL2 pinctrl binding to describe the GPIO data and
-> external interrupt resources present in the same SIUL2 hardware block.
->=20
-> Besides the MSCR and IMCR registers used for pin multiplexing and pad
-> configuration, SIUL2 also contains PGPDO and PGPDI registers
-> for GPIO data and EIRQ registers for external interrupt control.
->=20
-> Add GPIO controller properties because the SIUL2 block also provides
-> GPIO functionality, and gpio-ranges are needed to describe the
-> mapping between GPIO lines and pin controller pins.
->=20
-> Document the interrupt controller properties. The SIUL2 block
-> contains EIRQ hardware as part of the same register space. IRQ support
-> itself will be added in a follow-up patch series.
->=20
-> Update the example accordingly to show the complete SIUL2 register
-> layout, including the GPIO data and EIRQ register windows.
->=20
-> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@=
-oss.nxp.com>
-> ---
->  .../pinctrl/nxp,s32g2-siul2-pinctrl.yaml      | 83 +++++++++++++++++--
->  1 file changed, 78 insertions(+), 5 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pi=
-nctrl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinc=
-trl.yaml
-> index a24286e4def6..e4cc1a3a795c 100644
-> --- a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.y=
-aml
-> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.y=
-aml
-> @@ -1,5 +1,5 @@
->  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> -# Copyright 2022 NXP
-> +# Copyright 2022, 2026 NXP
->  %YAML 1.2
->  ---
->  $id: http://devicetree.org/schemas/pinctrl/nxp,s32g2-siul2-pinctrl.yaml#
-> @@ -17,8 +17,10 @@ description: |
->      SIUL2_0 @ 0x4009c000
->      SIUL2_1 @ 0x44010000
-> =20
-> -  Every SIUL2 region has multiple register types, and here only MSCR and
-> -  IMCR registers need to be revealed for kernel to configure pinmux.
-> +  Every SIUL2 region has multiple register types. MSCR and IMCR registers
-> +  need to be revealed for kernel to configure pinmux. PGPDO and PGPDI
-> +  registers are used for GPIO output/input operations. EIRQ registers
-> +  are used for external interrupt configuration.
-> =20
->    Please note that some register indexes are reserved in S32G2, such as
->    MSCR102-MSCR111, MSCR123-MSCR143, IMCR84-IMCR118 and IMCR398-IMCR429.
-> @@ -29,14 +31,22 @@ properties:
->        - nxp,s32g2-siul2-pinctrl
-> =20
->    reg:
-> +    minItems: 6
->      description: |
-> -      A list of MSCR/IMCR register regions to be reserved.
-> +      A list of MSCR/IMCR/PGPDO/PGPDI/EIRQ register regions to be reserv=
-ed.
->        - MSCR (Multiplexed Signal Configuration Register)
->          An MSCR register can configure the associated pin as either a GP=
-IO pin
->          or a function output pin depends on the selected signal source.
->        - IMCR (Input Multiplexed Signal Configuration Register)
->          An IMCR register can configure the associated pin as function in=
-put
->          pin depends on the selected signal source.
-> +      - PGPDO (Parallel GPIO Pad Data Out Register)
-> +        A PGPDO register is used to set the output value of a GPIO pin.
-> +      - PGPDI (Parallel GPIO Pad Data In Register)
-> +        A PGPDI register is used to read the input value of a GPIO pin.
-> +      - EIRQ (External Interrupt Request)
-> +        EIRQ registers are used to configure and manage external interru=
-pts.
-> +
->      items:
->        - description: MSCR registers group 0 in SIUL2_0
->        - description: MSCR registers group 1 in SIUL2_1
-> @@ -44,6 +54,28 @@ properties:
->        - description: IMCR registers group 0 in SIUL2_0
->        - description: IMCR registers group 1 in SIUL2_1
->        - description: IMCR registers group 2 in SIUL2_1
-> +      - description: PGPDO registers in SIUL2_0
-> +      - description: PGPDI registers in SIUL2_0
-> +      - description: PGPDO registers in SIUL2_1
-> +      - description: PGPDI registers in SIUL2_1
-> +      - description: EIRQ registers in SIUL2_1
-> +
-> +  gpio-controller: true
-> +
-> +  "#gpio-cells":
-> +    const: 2
-> +
-> +  gpio-ranges:
-> +    minItems: 1
-> +    maxItems: 4
-> +
-> +  interrupt-controller: true
-> +
-> +  "#interrupt-cells":
-> +    const: 2
-> +
-> +  interrupts:
-> +    maxItems: 1
-> =20
->  patternProperties:
->    '-pins$':
-> @@ -86,10 +118,32 @@ required:
->    - compatible
->    - reg
-> =20
-> +oneOf:
-> +  - description: Legacy pinctrl-only node
-> +    properties:
-> +      reg:
-> +        minItems: 6
+Applied, thanks!
 
-drop minItems here, since it matches the outer minItems.
+[1/1] arm64: dts: s32g: add PWM support for s32g2 and s32g3
+      commit: de1ad533cc630389c47bdd0b45c3b55aaf428c30
 
-> +        maxItems: 6
-
-You're missing having
-properties:
-   gpio-controller: false
-etc here, the condition you have doesn't prevent having them without the
-reg properties to support them. E.g. with a diff like this applied:
-diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinc=
-trl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctr=
-l.yaml
-index e4cc1a3a795c..f0fc6a771f32 100644
---- a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
-@@ -158,17 +158,7 @@ examples:
-               /* IMCR119-IMCR397 registers on siul2_1 */
-               <0x44010c1c 0x45c>,
-               /* IMCR430-IMCR495 registers on siul2_1 */
--              <0x440110f8 0x108>,
--              /* PGPDO registers on siul2_0 */
--              <0x4009d700 0x10>,
--              /* PGPDI registers on siul2_0 */
--              <0x4009d740 0x10>,
--              /* PGPDO registers on siul2_1 */
--              <0x44011700 0x18>,
--              /* PGPDI registers on siul2_1 */
--              <0x44011740 0x18>,
--              /* EIRQ registers on siul2_1 */
--              <0x44010010 0x34>;
-+              <0x440110f8 0x108>;
-
-> +
-> +  - description: Pinctrl node with GPIO and external interrupt support
-> +    required:
-> +      - gpio-controller
-> +      - "#gpio-cells"
-> +      - gpio-ranges
-> +      - interrupt-controller
-> +      - "#interrupt-cells"
-> +      - interrupts
-> +    properties:
-> +      reg:
-> +        minItems: 11
-> +        maxItems: 11
-
-And the same here for maxItems.
-
-Cheers,
-Conor.
-
-> +
->  additionalProperties: false
-> =20
->  examples:
->    - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
->      pinctrl@4009c240 {
->          compatible =3D "nxp,s32g2-siul2-pinctrl";
-> =20
-> @@ -104,7 +158,26 @@ examples:
->                /* IMCR119-IMCR397 registers on siul2_1 */
->                <0x44010c1c 0x45c>,
->                /* IMCR430-IMCR495 registers on siul2_1 */
-> -              <0x440110f8 0x108>;
-> +              <0x440110f8 0x108>,
-> +              /* PGPDO registers on siul2_0 */
-> +              <0x4009d700 0x10>,
-> +              /* PGPDI registers on siul2_0 */
-> +              <0x4009d740 0x10>,
-> +              /* PGPDO registers on siul2_1 */
-> +              <0x44011700 0x18>,
-> +              /* PGPDI registers on siul2_1 */
-> +              <0x44011740 0x18>,
-> +              /* EIRQ registers on siul2_1 */
-> +              <0x44010010 0x34>;
-> +
-> +        gpio-controller;
-> +        #gpio-cells =3D <2>;
-> +        gpio-ranges =3D <&pinctrl 0 0 102>,
-> +                      <&pinctrl 112 112 79>;
-> +
-> +        interrupt-controller;
-> +        #interrupt-cells =3D <2>;
-> +        interrupts =3D <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
-> =20
->          llce-can0-pins {
->              llce-can0-grp0 {
-> --=20
-> 2.34.1
->=20
---
-pw-bot: changes-requested
-
---Lx2mHOuNnTOuI0LO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCah8EwgAKCRB4tDGHoIJi
-0rDoAQDdONXb61PReEftXDCleOh95uWQWsiptxxVevCmx/K4vwEAgTlvIEH7BXpy
-jTnkORdiRCEP/mgQ7e3y9iz6VwD/Dwg=
-=2hLs
------END PGP SIGNATURE-----
-
---Lx2mHOuNnTOuI0LO--
+Best regards,
+-- 
+Frank Li <Frank.Li@nxp.com>
