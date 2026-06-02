@@ -1,158 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D84233D51A;
-	Tue,  2 Jun 2026 08:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B942E2C029D;
+	Tue,  2 Jun 2026 08:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780387612; cv=none; b=fB412oHNu3oBSLLtn/QGIcSqgQ5Lx+PclOEFODFQAd8/LkknJMWkiR8540OdIxIJPtSHXa+BZYuMff+G5+VxGD5FqoCSQKo++0Kuy+il0SJ8GGXRzsXoOz6rQ0wE9RyMXH7CHaN9qNVaci6XODsmFc1BZAjOBfDFMs31yN10xTc=
+	t=1780388496; cv=none; b=gz2ylEESfYU8lQv2iz88KuxysRvTJTf5YpWo/OI3nsYPs6BiAWPpzreSnKMDYdMT7GaZMwjRrsdZFvsmzbV03CQihRzlBV5Ox0/jCXwCIi7/48nBrkzevZMuWgM6o7PLXlKpIaidqzAjuIbtFrMYZK1RTZwm5OZQufGFLa2Ea3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780387612; c=relaxed/simple;
-	bh=SA3/YKlab2TVUKqjNO+G2x5l+v2KK5/dVdR8g1uIGZM=;
+	s=arc-20240116; t=1780388496; c=relaxed/simple;
+	bh=c/2cZtD9sP8z3cs75tkWfygYjcrazGNL/FvaGM4hCaw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KjoCOhf/JtKTLwNk6E6pwKccQZzzsFcwhEEm1A8i/KfMrY6LI4JjycrpOaJa9xdU7vx84wCEckeZ9wQH7ZXrB95IKs37GVMKDyHg2RMOQJvENH+Zfu9G9fLw+91tQ/9vpI/HlnPH5dgDWsF89Rv+YSi6CPw8vC5vLLAjRkPVsyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=flu+JdQb; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=TikKHi6ran8k4lBdJ9f7tJGVouSa6aJduBnX8k8kF0wlzLaYRld/sccZXeLy19IKx2dhCAcK+pgjllzRTszn1+xa8+XsYtWAyGKSlofTTbPiSzFCxvLTwk17NODXyj0l45629voW//h3Bb2Iktfzu6JcV2PMGBy1K9unJad6Da0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPg1Qixm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="flu+JdQb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC861F00893;
-	Tue,  2 Jun 2026 08:06:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPg1Qixm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0709B1F00893;
+	Tue,  2 Jun 2026 08:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780387610;
-	bh=B+QTt9O0bWTfpiutZRk92oLuXwC7p/addxsH7yIaxBA=;
+	s=k20260515; t=1780388495;
+	bh=PtBNk0g8mRGl4pTTJm0gNHPYAvl9kFi7i5BTDgauKoA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=flu+JdQbRAlqXvaahphORXLBZ9mJYP/UqV7o09tL50QE6EgL49J7ZLc1goWcuI8hR
-	 82gtosU99AH+fdPFqGbk7oxuKm+Qn2+vBocvcoPfrHb4M5iuXqwCpaeQ3uD5EQuqtg
-	 UFR+zlF6LDQpOwyeKjQeXcUCLxObKtnW2HJSjh8hK0xAZJKHIRnjsXXyrM8dabSN/3
-	 PYLXBwIHOFXXyRlVGTAfzyqmJm240ph/NxHEFgf4u/N+6Dwtn7qxK5+G63oLD0uDaG
-	 zB6CldykVm6Kl9a9VeTyDEy884gYD/rXafNUyk0TxQ1WlLgxW4zmH/XuTGErGzGGlK
-	 SAdZchAOAvVpA==
+	b=VPg1QixmnDHJZRhjJyfttTRk7X7FZD+Cieh/oKEmGZntBCMP/tvnDwbS6mWHe5AFE
+	 ojGLreC9dTpU4LnHnErtmpTyTK/2LxE6WKBZaOCnrVRpZfgBEP+VqZ41wkFL9fD1nA
+	 EvkqbrPjx35tfTNFkLENeupEQ6eFac0kkj9GTHx3V8QPSAdcDPFkHpdoWcyCAa8Dt8
+	 bdEUIGj2/xyOJ/zk8dgNRWPUIbNI1QpAH9HGoJQe8BJhmun3iYEBdoVKDR+jhweaq/
+	 MNMEf+2p6l7FwXuzW8/wns+7/0MPpEyrMpucgvCRtlVMTYNYD047KQp8/7YFZsQimx
+	 +QZ90Uk2SEiLQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v10 1/6] pinctrl: s32cc: add/fix some comments
+Subject: Re: [PATCH v10 4/6] dt-bindings: pinctrl: s32g2-siul2: describe
+ GPIO and EIRQ resources
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Khristine Andreea Barbulescu" <khristineandreea.barbulescu@oss.nxp.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org
-In-Reply-To: <20260602080132.3256239-2-khristineandreea.barbulescu@oss.nxp.com>
-References: <20260602080132.3256239-2-khristineandreea.barbulescu@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, robh@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260602080132.3256239-5-khristineandreea.barbulescu@oss.nxp.com>
+References: <20260602080132.3256239-5-khristineandreea.barbulescu@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 08:06:50 +0000
-Message-Id: <20260602080650.8EC861F00893@smtp.kernel.org>
+Date: Tue, 02 Jun 2026 08:21:34 +0000
+Message-Id: <20260602082135.0709B1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Low] Typo in the newly added documentation for `struct s32_pinctrl_conte=
-xt`.
-- [Low] Invalid kernel-doc comment block syntax.
-- [Low] Inconsistent error message capitalization.
+- [Medium] The legacy fallback branch in the `oneOf` block fails to explici=
+tly forbid newly added capability properties (`gpio-controller`, `interrupt=
+-controller`), creating a schema validation loophole.
+- [Low] The device tree example will fail `dt_binding_check` compilation du=
+e to an unresolved phandle reference to the undeclared label `&pinctrl`.
 --
 
-commit a7822dc8d9c7d5010c39b80aee179b5ec0735e03
+commit 055c2d417b67cea0bcdcafe1444e526610028d07
 Author: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.c=
 om>
 
-pinctrl: s32cc: add/fix some comments
+dt-bindings: pinctrl: s32g2-siul2: describe GPIO and EIRQ resources
 
-Add/fix some comments and print statements.
+This commit extends the S32G2 SIUL2 pinctrl binding to describe GPIO data
+and external interrupt resources. It adds GPIO and interrupt controller
+properties and expands the reg property ranges. It also provides a oneOf
+construct to support legacy and new node layouts.
 
-> diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pi=
-nctrl-s32cc.c
-> index fe7cd641fddd0..4f88c24e62a21 100644
-> --- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
-> +++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-> @@ -60,6 +60,12 @@ static u32 get_pin_func(u32 pinmux)
->  	return pinmux & GENMASK(3, 0);
->  }
+> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pi=
+nctrl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinc=
+trl.yaml
+> index a24286e4def62..e4cc1a3a795c8 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.y=
+aml
+> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.y=
+aml
+[ ... ]
+> @@ -86,10 +118,32 @@ required:
+>    - compatible
+>    - reg
 > =20
-> +/*
+> +oneOf:
+> +  - description: Legacy pinctrl-only node
+> +    properties:
+> +      reg:
+> +        minItems: 6
+> +        maxItems: 6
+
+[Severity: Medium]
+Since gpio-controller and interrupt-controller are allowed at the top level,
+does this legacy branch need to explicitly forbid them?
+
+Without setting gpio-controller: false and interrupt-controller: false here,
+could a node matching this legacy branch declare these capabilities without
+providing the 11 reg items and gpio-ranges required to actually use them,
+thereby bypassing schema validation?
+
+> +
+> +  - description: Pinctrl node with GPIO and external interrupt support
+> +    required:
+> +      - gpio-controller
+> +      - "#gpio-cells"
+> +      - gpio-ranges
+> +      - interrupt-controller
+> +      - "#interrupt-cells"
+> +      - interrupts
+> +    properties:
+> +      reg:
+> +        minItems: 11
+> +        maxItems: 11
+> +
+>  additionalProperties: false
+> =20
+>  examples:
+>    - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+>      pinctrl@4009c240 {
+>          compatible =3D "nxp,s32g2-siul2-pinctrl";
 
 [Severity: Low]
-This isn't a bug, but should this start with /** instead of /*?
+Does this node need a pinctrl: label?
 
-The newly added comment for struct s32_pinctrl_mem_region follows the
-kernel-doc format, but because it begins with /* rather than /**, the
-kernel-doc scripts will likely ignore it.
-
-> + * struct s32_pinctrl_mem_region - memory region for a set of SIUL2 regi=
-sters
-> + * @map: regmap used for this range
-> + * @pin_range: the pins controlled by these registers
-> + * @name: name of the current range
-> + */
->  struct s32_pinctrl_mem_region {
+The gpio-ranges property added below attempts to reference &pinctrl, which
+will cause dt_binding_check to fail with a 'reference to non-existent node
+or label' error.
 
 [ ... ]
-
-> @@ -67,7 +73,7 @@ struct s32_pinctrl_mem_region {
->  };
-> =20
->  /*
-> - * Holds pin configuration for GPIO's.
-> + * struct gpio_pin_config - holds pin configuration for GPIO's
-
-[Severity: Low]
-This isn't a bug, but this comment also follows the kernel-doc format
-without starting with /**. Should it be updated to /** so it can be picked =
-up
-by the documentation tools?
-
->   * @pin_id: Pin ID for this GPIO
->   * @config: Pin settings
->   * @list: Linked list entry for each gpio pin
-
-[ ... ]
-
-> @@ -79,20 +85,22 @@ struct gpio_pin_config {
->  };
-> =20
->  /*
-> - * Pad config save/restore for power suspend/resume.
-> + * struct s32_pinctrl_context - pad config save/restore for suspend/resu=
-me
-> + * @pads: saved values for the pards
-
-[Severity: Low]
-This isn't a bug, but there's a typo here (pards instead of pads).
-
-Additionally, this comment block also lacks the /** prefix required for
-kernel-doc.
-
->   */
->  struct s32_pinctrl_context {
->  	unsigned int *pads;
->  };
-> =20
->  /*
-> + * struct s32_pinctrl - private driver data
->   * @dev: a pointer back to containing device
-
-[Severity: Low]
-This isn't a bug, but this comment block is also missing the /** prefix.
-
->   * @pctl: a pointer to the pinctrl device structure
->   * @regions: reserved memory regions with start/end pin
-
-[ ... ]
-
-> @@ -974,7 +982,7 @@ int s32_pinctrl_probe(struct platform_device *pdev,
->  					    ipctl);
->  	if (IS_ERR(ipctl->pctl))
->  		return dev_err_probe(&pdev->dev, PTR_ERR(ipctl->pctl),
-> -				     "could not register s32 pinctrl driver\n");
-> +				     "Could not register s32 pinctrl driver\n");
-
-[Severity: Low]
-This isn't a bug, but does changing "could" to "Could" break consistency
-with the rest of this file?
-
-Other error messages in s32_pinctrl_probe() start with lowercase letters
-(e.g., "wrong pinctrl info", "fail to probe dt properties"). Should this be
-kept lowercase to match the rest of the file and standard kernel practice?
+>                /* IMCR119-IMCR397 registers on siul2_1 */
+>                <0x44010c1c 0x45c>,
+>                /* IMCR430-IMCR495 registers on siul2_1 */
+> -              <0x440110f8 0x108>;
+> +              <0x440110f8 0x108>,
+> +              /* PGPDO registers on siul2_0 */
+> +              <0x4009d700 0x10>,
+> +              /* PGPDI registers on siul2_0 */
+> +              <0x4009d740 0x10>,
+> +              /* PGPDO registers on siul2_1 */
+> +              <0x44011700 0x18>,
+> +              /* PGPDI registers on siul2_1 */
+> +              <0x44011740 0x18>,
+> +              /* EIRQ registers on siul2_1 */
+> +              <0x44010010 0x34>;
+> +
+> +        gpio-controller;
+> +        #gpio-cells =3D <2>;
+> +        gpio-ranges =3D <&pinctrl 0 0 102>,
+> +                      <&pinctrl 112 112 79>;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602080132.3256=
-239-1-khristineandreea.barbulescu@oss.nxp.com?part=3D1
+239-1-khristineandreea.barbulescu@oss.nxp.com?part=3D4
