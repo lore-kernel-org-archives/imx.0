@@ -1,98 +1,107 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B058F36BCF2;
-	Tue,  2 Jun 2026 09:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862E22045AD;
+	Tue,  2 Jun 2026 10:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780392824; cv=none; b=h7Qf+ogx+r193i/3uBh9cu6fvH6DgkV4f+MtJDUM9CZ/elu2UboNMNM4D4Dpl2RNJdACbTvHUyHFTEdtuqeGndAz/Zl9uPfl6y/7/AYK5OXbvrWvWeKrIBKfvnQ+0V1kUHjqYlbrwuv+jBF+9jvFIDcfOLzpa6VPxFfDdpbO4ek=
+	t=1780394601; cv=none; b=oEaNHLR4Mo0oKiT4qu3jGJ3ALaIL02DC3pDboSzcIhYSo8gDFg1xCWqbnRDirg8H0/MUQLZkBZlJUOinxlQkjI2HDRVyD4t1ZyDk65UDkqMJQ///3YPDmQlnT2BYDQqiCMIc7JE/hgF5F+XhJk4VD5bFDjrC0cGH2hIMpsNZMS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780392824; c=relaxed/simple;
-	bh=7RqS4ISGXx337rqqvPNoI5WHXN20jmjPh3AlPaGp16w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n7qHZch95Ecs3nZBVj+dqCu+U498egfjys30YpzGkIDOcjHmSPXTbvJ0E74ujhZJSM6AtYCE9BkhfclzZ6OVssjGBIkUrKeVZ1smenxM195R0IZrXzSt3ggNlUSzDd2/UMe5hexajPXGPw7X63aT47er5eEUFcpkSD9VrnJhL7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=O/35tX7G; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1780394601; c=relaxed/simple;
+	bh=C49gOaDLx8qL1fc75KeCn2RosHYtM/2f0MAI4wSvy+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AU3jCN3I7v1BteWtU1/rPFI6zZe432zoH4uXmCAu4PD2u+PiISc1hDHKookO3FtVsRFaMWGqy6F8ET8asJWbKBFr6Kxgr1kt4UawONfwzIOdfu6eSBk6IZp132Tr/3Gujo3y+HVx0GL/Kblkb9FkGDNdCvNZRybe8oNhU9CWZVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CeykM05P; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hSRbNGA7; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="O/35tX7G"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=ll7wsI/Em/Jn1sDgGc7GNu+RMvSzQcPU87sVEyRKPIs=; b=O/35tX7GuXF/+1DjOrDR+8DuZd
-	clwUabfnWXg7PoWht4TLnZzlrTF6Bo6WFicrWHs4ue+yPICeMGPb6r48LMcMd93Jmuq7fkOXy+kh4
-	ny66V1r6q2ck9SUosZ2A8WEbJnhH37IzGxEd6dtvkwyDeYF3iPCeVnZW4RyQGxQMEdfg+QF2jJlOK
-	C/BEpGLVcARGzYyim+id3eNSgxnxk8HSrTzgKiVCkBYdgScpCdVRwcofrBtiWS9d2WvqUZgIwx0v1
-	AnA37WpgzJAZUcGZY9ateRit5Bh30caPp2hqJhPgYOOkBSztLMKUW9wJdPQBLks9vstEpe6fV7/7v
-	C948ogZw==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wULV8-0000ZI-2W;
-	Tue, 02 Jun 2026 11:33:34 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wULV7-000HOK-1r;
-	Tue, 02 Jun 2026 11:33:34 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/1] arm64: dts: tqma8mpql-mba8mpxl: configure sai clock in audio codec as well
-Date: Tue,  2 Jun 2026 11:33:30 +0200
-Message-ID: <20260602093331.1698756-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CeykM05P";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hSRbNGA7"
+Date: Tue, 2 Jun 2026 12:03:17 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780394598;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C49gOaDLx8qL1fc75KeCn2RosHYtM/2f0MAI4wSvy+o=;
+	b=CeykM05PWq5PZLfRqlN07J4jqK2kVix2r9mY4l8Kg1H8VnHXY7xerUw+7fuERmsGY7Jn3U
+	pW5kKfp54ZOXVPELvyoyzeLPFv2h8P8BsEB6TKhiYoXF0wariKlilHSrNydaiY3Hp8mxLd
+	IQbBEirxf3eCq2Q1zReru3I1f/33rR4RjbxYBQiCscioqvlxeNYyJwZICP5h7MosxrnVGL
+	dwi1Y20BQbKcl79hl8zF+UG+bpxF2FOuc9+kFMmdr/QejvBDsbUDT8CgzCpDNHgvLnoupD
+	F6n1N9hIo4kpfqn3kftkGUc4oBy94Q+CGI9WmuI4Xneb+yhFyaQczEGvKMTP7A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780394598;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C49gOaDLx8qL1fc75KeCn2RosHYtM/2f0MAI4wSvy+o=;
+	b=hSRbNGA7ec1bXnYmZJtOzjNlPLh1JXNpD5wmt0GftbSiMXz4E1tDi+wna9QS4GRuIxSKTU
+	ZI2yR2sCTNhmhrAg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH 4/5] mailbox: imx: Don't force-thread the primary handler
+Message-ID: <20260602100317.vdPNIK8s@linutronix.de>
+References: <20260529-imx_mbox_rproc-v1-4-b8ffc36e11e5@linutronix.de>
+ <20260529181329.274501F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28019/Tue Jun  2 08:33:27 2026)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260529181329.274501F00893@smtp.kernel.org>
 
-With deferrable card binding the sound card driver tries to
-get the mclk configuration before it is setup in sai3 node.
-Fix this by setting the sai clock config for the audio codec as well.
+On 2026-05-29 18:13:28 [+0000], sashiko-bot@kernel.org wrote:
+> [Severity: High]
+> This is a pre-existing issue, but could the ordering in imx_mu_probe() le=
+ad
+> to a race condition on probe error paths?
+>=20
+> Looking at the initialization sequence, devm_mbox_controller_register() is
+> called shortly after this lock initialization, but before pm_runtime_enab=
+le()
+> and before the probe function is guaranteed to succeed.=20
+>=20
+> If a consumer requests a channel immediately after registration and calls
+> startup(), it gains access to the hardware. If probe() subsequently fails
+> (for example, if pm_runtime_resume_and_get() fails), the error path calls
+> clk_disable_unprepare() to manually turn off the hardware clock.
+>=20
+> The driver core will then trigger devres cleanup, which unregisters the
+> mailbox controller and calls imx_mu_shutdown() for the active channel.
+>=20
+> Since imx_mu_shutdown() attempts to write to hardware registers to mask
+> interrupts, and the clock has already been disabled by the probe error pa=
+th,
+> will this register access result in a fatal bus error or system hang?
+>=20
+> Should the devm_mbox_controller_register() call be moved to the very end =
+of
+> probe() to ensure consumers cannot interact with the hardware during an e=
+arly
+> teardown?
 
-Fixes: d8f9d8126582 ("arm64: dts: imx8mp: Add analog audio output on i.MX8MP TQMa8MPxL/MBa8MPxL")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Changes in v2:
-* Set the clock source in the audio codec instead
+Puh. devm_mbox_controller_register() itself is harmless, there needs to
+be a probe in parallel that grabs that channel before device
+registration is complete. of_platform_populate() could lead to probes
+and channel grabs which is okay since it happens before that
+pm_runtime*().
+If this fails then, then we would invoke shutdown with disabled runtime
+PM. Usually one would unfold it manually in the right order.
 
- arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts | 3 +++
- 1 file changed, 3 insertions(+)
+Looking at it, not sure where there is an enable followed by resume and
+put. It should be enough to just enable. But maybe a test for resume
+isn't that bad=E2=80=A6
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-index 890d1e525a489..6b0f944095e7c 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-@@ -609,6 +609,9 @@ tlv320aic3x04: audio-codec@18 {
- 		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
- 		iov-supply = <&reg_vcc_1v8>;
- 		ldoin-supply = <&reg_vcc_3v3>;
-+		assigned-clocks = <&clk IMX8MP_CLK_SAI3>;
-+		assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
-+		assigned-clock-rates = <12288000>;
- 	};
- 
- 	se97_1c: temperature-sensor@1c {
--- 
-2.43.0
+Anyway. Switching to devm_pm_runtime_enable() should simplify things a
+bit. And delaying of_platform_populate() should do the other bit. And
+while at it, using devm_of_platform_populate() should fix rmmod +
+modprobe.
 
+Sebastian
