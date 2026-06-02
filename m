@@ -1,340 +1,222 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011039.outbound.protection.outlook.com [52.101.65.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD5E3C0A1B;
-	Tue,  2 Jun 2026 08:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780387487; cv=none; b=kkZ2vIvfDkki6dDbpQCVnuc4lcd7Sg0Ps1H4KFpBg4PrT1ZMwRqRX1q4NWQglPKoDqfCrkTisKF8x3C5LsPWX3u81iYuqbWKKlFIIsW0OjXstYMJB73U8sSFtPemQVfkC2ww6kAmJEfCSUdiliPxZAFcMNBmkwQFvx5UUvAR5ls=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780387487; c=relaxed/simple;
-	bh=f4u9eepWT9EhiP3VPEm3hQVTwZ2X4AC4lmvrh96dahY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QWiGWwEZ8rrYg+UyZIRysxwzBu0DNQcnkLkcjuhGkJ44ADHcXItMhl/WT7WtyVcwYAbsvdjFMFZSkQpzrYJkncSsHpkiX8o2WQ6s7Q7iu52qf6HcRRCVR6kpO7gpE84GW+EQ72RTEJU41xydS/eiTiiDLLx4ukyhrrCVd3VKoUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=oTehBGre; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A927A3C1F31
+	for <imx@lists.linux.dev>; Tue,  2 Jun 2026 08:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780387527; cv=fail; b=dkyIY1iItsKNt80SlgJHUUg5YUTJwTnGWt2F9rGHg4nOIZJn0PopsIZ1ZvnsBrNdYrbkD423RcZec5QFDdD3ZgzumokRCojFxueLpczDTr5oJ3Ilk/XgtrOc5L30dVrvAmEGFyOOnCdzXy/cwCZNf93L7GlwpUGXBB+DMBalicc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780387527; c=relaxed/simple;
+	bh=QOiAdFWBGTJRnDq5s0goR+QKz8Gqev2vtn6bYoNMnzk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Rz1xbI6fgnvHXgSALqw9G+oBNSo0WbaOwbCKoLwxZHpCeEs+RfQoDCrnKPFEb9r++n9KqN1uyvQrMMESnWXlIzWlZW+yBWibM+HbgcnXaQVjGasJgJ5zFaUOByH5eq5HfDIjqaTPsQfFrjj9t5wTQp6q/biXP6eXTrVsjdtuJ+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jU+2ua4m; arc=fail smtp.client-ip=52.101.65.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="oTehBGre"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=f4u9eepWT9EhiP3VPEm3hQVTwZ2X4AC4lmvrh96dahY=; b=oTehBGreEofBqSsOK74pBu8aZZ
-	Zt2Lq86bNImr0qcS+eg1kN2zXBRfcQVAJ4ksZtpgkYRAmYnk06/qNQjzBGFhHcgkH2yTyH8HpRHB+
-	sLV6WsyZjkdrmKp7PaoBqWt4yuLi+tN+MaRL9WYhDk8xOcK7kahHJUZM8FX5ZCmCUirvfTm5hKdrY
-	zZwojafRxk0ZsLN927/mu8UyU9dch1xSYvZbnTjmfCWNQHxwXnucJz6Mr9pWo+k7KEhpPxjDGH45W
-	+1yK0skFCXEsa/ofHlpVTFeG4EjFBQQylSF6fYFLZ61Rbn4Ciyk1rICWE0eAI3BsXO9Md4lAjpiRA
-	ZIYtlvBA==;
-Received: from [2001:8b0:10b:5:5b40:b57d:669c:36f4] (helo=2001-08b0-010b-0005-5b40-b57d-669c-36f4.ip6.reverse-dns.uk)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wUK6t-00000001ZaP-2w49;
-	Tue, 02 Jun 2026 08:04:28 +0000
-Message-ID: <0b3f00bbfa6bcc3badb4d1bb7845326e2dbaa1d4.camel@infradead.org>
-Subject: Re: [PATCH v2 2/2] MAINTAINERS: update PTP maintainer entries after
- directory split
-From: David Woodhouse <dwmw2@infradead.org>
-To: Richard Cochran <richardcochran@gmail.com>, Jakub Kicinski
- <kuba@kernel.org>
-Cc: Wen Gu <guwen@linux.alibaba.com>, tglx@kernel.org,
- andrew+netdev@lunn.ch,  davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com,  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- jstultz@google.com,  anna-maria@linutronix.de, frederic@kernel.org,
- daniel.lezcano@kernel.org,  sboyd@kernel.org, vladimir.oltean@nxp.com,
- wei.fang@nxp.com, xiaoning.wang@nxp.com,  jonathan.lemon@gmail.com,
- vadim.fedorenko@linux.dev, yangbo.lu@nxp.com,  svens@linux.ibm.com,
- nick.shi@broadcom.com, ajay.kaher@broadcom.com, 
- alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
- linux-fpga@vger.kernel.org, imx@lists.linux.dev,
- linux-s390@vger.kernel.org,  dust.li@linux.alibaba.com,
- xuanzhuo@linux.alibaba.com, mani@kernel.org,  imran.shaik@oss.qualcomm.com,
- taniya.das@oss.qualcomm.com
-Date: Tue, 02 Jun 2026 09:04:27 +0100
-In-Reply-To: <ah5aGMIxA418sxoj@hoboy.vegasvil.org>
-References: <20260412084704.743482ad@kernel.org>
-	 <4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
-	 <20260412095301.4fe1fe65@kernel.org>
-	 <ebf19246-91af-4887-b2aa-d9007921f7b2@linux.alibaba.com>
-	 <1088b07d760491deb461d6d01abca631e8f8d86c.camel@infradead.org>
-	 <ahzQZg_v4bxFfGdj@hoboy.vegasvil.org>
-	 <3908843460c4864eef79cced40d897f793c7ae2a.camel@infradead.org>
-	 <ah2jIt2DqI1ZZJx8@hoboy.vegasvil.org>
-	 <0e023f951c102fe2ee7070e490c579783b2817d5.camel@infradead.org>
-	 <20260601185226.7f43fa75@kernel.org> <ah5aGMIxA418sxoj@hoboy.vegasvil.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-RP0sFoYLKy91Bkl5IsXb"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jU+2ua4m"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GH7S5UdX5o28weQCtb05d8ScRLFDkl+N8jfyCCfLqcU2xbuvGyzFj0tmWqls5rbt1WRoMzLZZlErD3xAWGMebJB46sQHbH5UgnemQavpqew1PgsI0T2qTX0vkKhpN90fiZkDkVD7YfiblVUUOXXM2J5AYv0vJae53XzjcyOoiukSmTBPKkdCYREInQl3cwdnZRqDD6ybA6FBnkKQZ3UH/kMpa3I3LH3xy66f0ZTPqMPBuKmbCzvp8CI1ETMHeIqZcYG1Xx/xArLqL3nLIhwu4x/b6IJpb9naPwkU6XQYjNdodFTs3HVg9xyV+4qTbsW5ECTnyT3/6UI3NqJQb8wffA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5310TDftYQ6ldwH416jWwpewjp+kWllnfD9IpKfQnmU=;
+ b=VbIDq+kLhqCP0A+Qw8Y0ga1ITfg4EBpVXHrYnNzTbNhSGcyy3OgYcAtFyJBqXn1a1EX1+v0YGf/+v4zoUj0Mcg++f+gJCL47UMypkHyXYr1goQArQi/7FOxle4DXpqW0zrLKKCADP1xfDPAi8A0wB+DUXFpEzr7U+F4GNQXueklfDIpwmjepAhqbSVartJKAWooDAMo5EkQ9NcKol5GPi8BMl9wGDhIPsIsGEfVsCiriMqHgVpyb5ytJDnWDFEL92UPBElSqDP7YakW43HdYC+zOJha+5qqBxnrma6lbq2LpX/iWcJH4dviezSbHq+bNgqGnrJV5dMpOCgLX5iDJgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5310TDftYQ6ldwH416jWwpewjp+kWllnfD9IpKfQnmU=;
+ b=jU+2ua4mwvQUticxB67tw6dKrfDS0DdzXqu6jDubAZdScVjUj8pIYPugSpfyQkfe/rkDcF6AOHSbyC2yHji+aNq4yRTIVFJN+4GZQIPX+MxhtknR/Mz6MKBwfthhJysS39dL0oE/Eu/sre8YqLmdXndK6Jh1UAwIjWjA/8pZ8QoP2nsCxG+NhOe+tjKdRP3yI9Mpn94y4smy6CS6/4om40oDROTmx+vrXOwdLvGccUfB4v+kHaFVUiX15yH1R10IYtzIBlYz2f7auhQu6rcMdddfChVPokOO/XcwcLT16PCYT2rhGCKXXr8/fvSE1Ap3qsTY3HU7FTCSobS+XMKi1Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20)
+ by PA1PR04MB10503.eurprd04.prod.outlook.com (2603:10a6:102:446::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Tue, 2 Jun 2026
+ 08:05:19 +0000
+Received: from AM9PR04MB8179.eurprd04.prod.outlook.com
+ ([fe80::a551:cde0:6730:1d85]) by AM9PR04MB8179.eurprd04.prod.outlook.com
+ ([fe80::a551:cde0:6730:1d85%6]) with mapi id 15.21.0092.006; Tue, 2 Jun 2026
+ 08:05:19 +0000
+Message-ID: <48494e7b-4cba-4372-9090-f40240d820c4@oss.nxp.com>
+Date: Tue, 2 Jun 2026 11:05:02 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 6/7] pinctrl: s32cc: implement GPIO functionality
+To: Linus Walleij <linusw@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chester Lin <chester62515@gmail.com>,
+ Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Srinivas Kandagatla <srini@kernel.org>, Alberto Ruiz <aruizrui@redhat.com>,
+ Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org,
+ Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ NXP S32 Linux Team <s32@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Vincent Guittot <vincent.guittot@linaro.org>
+References: <20260504131148.3622697-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260504131148.3622697-7-khristineandreea.barbulescu@oss.nxp.com>
+ <CAD++jLnk4q7L_cFzz+1gKkAqwhv=TW1_XSepuii7b_PHF7EPqQ@mail.gmail.com>
+ <704e9e7b-0f45-4ed3-a686-9e20056eab2a@oss.nxp.com>
+ <CAD++jLk-7UqjCsM4jCdRmBMMaNNXe8Gi_E00fJ_MRMsEGQcMZQ@mail.gmail.com>
+Content-Language: en-US
+From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <CAD++jLk-7UqjCsM4jCdRmBMMaNNXe8Gi_E00fJ_MRMsEGQcMZQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4P191CA0006.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d5::17) To AM9PR04MB8179.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3b5::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8179:EE_|PA1PR04MB10503:EE_
+X-MS-Office365-Filtering-Correlation-Id: 74025573-6915-4b09-cc14-08dec07db066
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|19092799006|56012099006|4143699003|3023799007|11063799006|22082099003|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+ p6Re8mWBEZV1GJJzwxiiMxKBaIgPK6uAR5rfQQsD7wLCK0qlYAVI4TuuKK1cPOm2rkrXTDagbpDyVK5/sIxb88zsNYMFaVvzAiJk5mDIqJeOy0SlIT+jE3e4edRtu3ABEuKA3YLVe/LwMXNNZaBqt7XS4fcpnzHwT4YrJ9qZFbnk+te0CZCda/I1h6qr1itqJEeouTkt6diVMeZ3cDHiSrCnMjuLYvRhRHSS8/tPEVBb9ZPup9Bi0+cZ/ZJyXB/Q2s+51JqBzTiKwyKNqKo1wkMpF9K0Tlon0kDF1HEwqBLAKZsiJf0rMsHOGzejuGgPPhql93rSNhe6isc/WnrQ+I8qiLm107zW1lzr87gwOmc5sP2W2oOm2mxRI2W2lcba+c0rvhTAHTcSXccwoIODJ3IWIM8RaUqT2m3CRnwMJDVvYnLHWyqdyQtGhKzUtUSm5vlu3gqW2shFuUiVZKfrVXQ3n1qTACegU3TkxnSO7vhMwK13S4Vl1ES+/5mTcBOv4PxURkVxWaPyrpO+3XFfV7XVDCG3MXKy26JeewC5klhUM1o6KoPTWSuzCVWAKq4CZxiQuBL0+FX2+Cl6S0P58Lt2LeoonSrVYanQlYyAezh72zHwCRpeiJZ+v6mrA1NwXD2reykeDZWnUAsG27ZVHQsVfp611wu1Tvg1iNuHu+WRDpTSspD5M7ZfoR4Nyvd0
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8179.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(19092799006)(56012099006)(4143699003)(3023799007)(11063799006)(22082099003)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?bHhzdTFOR0xPVTZoeFJ6V09saG1ueEpyd2VjTURiZWVUSGN4cG5DWHRON1V4?=
+ =?utf-8?B?bm1xcmRQNU9XNmFKTWVCUW8yZDJmTFdTT2lJMFNYdUpxOXVhcUxRNTdiUHFN?=
+ =?utf-8?B?eWRsMVhuTkVIMC9kc0c3VitEUVlzUTlKbzlHeldBNG5pZUEzM1lveTJZck45?=
+ =?utf-8?B?NVVuUzluTWVQQXlsdGhSL2ROdS9ZWDVkYVlOSSsxOUxBOGtoNG0zWnpzYits?=
+ =?utf-8?B?Z1pSRkxaY25rNFA1WnhXYmxMOWdWUG93aU50WlVQWTZpWDdrdzR1TUhRRGtR?=
+ =?utf-8?B?cmNyQVkzQXZiT0ZtaUErNWk4QnZKYzdNWHNnWGkwdkFadFcxZWJ2SXFkRXo1?=
+ =?utf-8?B?SjdIUVF1VWhHMEdaMllkUStORG10ai9PRVgrY1paWGtFMlJBTHlhWFJKc2NL?=
+ =?utf-8?B?VXBoT2VCU1AySGV3WFB0Um5lVGp2TW42MDVjSmlmSC9rNjI3Z3kxQnNMOEZj?=
+ =?utf-8?B?SnkvODcrMitCMGNZYm15bURmWE1WSUdMS2ZWSzNmbjNrY3hZa3pvZnBxUEpM?=
+ =?utf-8?B?RkowV05jWmMzY2R5QXpDenRjczRhVW50cEVIcXNoaXRYTFFZeU9LSFVtMzI2?=
+ =?utf-8?B?eEY5aG1UaElUdURVZFAydnlQanU5SVBKZXRnc3FFNjF6TWFyakovbGlGM3hN?=
+ =?utf-8?B?VmYyRk5DT0EweGUyRGQ0OHV4cFNseC9pTElZemZQV3BQeGVxZTY3OGNwVG05?=
+ =?utf-8?B?cmFqRlVnS1FvOStqRmlCZG91S1dhYSttaWhBNklvakZMNmo1b2RGU3dyOGhQ?=
+ =?utf-8?B?Q3BzZktCWENVUXdFeS96cnB2blI5MHJLUXEwUVUvZXNlbDhZdk5oSTBLSnkv?=
+ =?utf-8?B?eDRzNGFEdllzN250RGozRXdXd2pmcDZCRitISnBqQ05LaVRYRW1TNm9HK2ND?=
+ =?utf-8?B?QmVybTZBUmNkUWhWclptVitrdlZ2Z2RSczYyRjU5Zk0wbEs1TGZZWG9ha0JX?=
+ =?utf-8?B?Vm5GUmNOSDBGNzZaaGdkR2pjTG1WOC9ubGxzRHg5ZDlzOExyNlowaHJEakFj?=
+ =?utf-8?B?YUpFbzQzZ0U3d3VnbGhGNWJURkFRV1FFaHc2cm5nMmtheE1vL0ZQQTZUQXp4?=
+ =?utf-8?B?OVZrdXNDbDJ5dEVLUkJZY2hDeTlpMEVwUExlQjJLV08zQkpHbEZPKzV4Nkla?=
+ =?utf-8?B?SWNQbWw0eXNCTFFnOFd5VGp6aExLSnZISlcxek40dTdSQ1BsWFpFbmR6THZR?=
+ =?utf-8?B?eDExYW5pQmVmY1hLUmlYeE0wSUwwYTUzajhKNWx3YUxCWVljREJld2F6Q3hP?=
+ =?utf-8?B?STl6bEVKL3hvWWZyelNvbk9wS1VjaGVycW5WOGdSR1p6dVVWVytsbUhCNVE3?=
+ =?utf-8?B?eTBLUjNvL0tkdEduQzNpVmtRZy9JTXF0Q2RqaTBEYXNXMzJlbHVrSXBRVG0r?=
+ =?utf-8?B?V1ljeFNwT1Y5YTFGSjJ5cWQ1UFhvbmk1OGZPM3VIQ3BpeUpMU0s3clVUMmxP?=
+ =?utf-8?B?OTBUT1V1VGd3UEhDNTZ5ajB5V0UwVEJ1djlDN2JFc29odGF4dzZYN2FoY01L?=
+ =?utf-8?B?bmJWNGNBTGlPdkJpNlNIQnVUWVkwYkhFeXlhUlhPNHh4R08razhqejgvRGNz?=
+ =?utf-8?B?YUkxbjUzT25BRTd4bmx6cEtWYVJsUWFDUjcvVXBNcDBZeFZIZHpOZnVrOFVX?=
+ =?utf-8?B?Kzh4elIvMHZobUx3bTZLTERrRThZUDNSei8wc3F6eERHQnZQcllxaFliL0pw?=
+ =?utf-8?B?ZEhLUWlyZEJHNnFrdkJQOFAwRlJmNDF6cmxaQUp0eHBMK2NJRU5EQnI3SVZQ?=
+ =?utf-8?B?RDIyc3p2ZlZpMHd4NmhrVlp4K1hLN2hIWHpRSjZ0YzRNdFhqMmlWdWNETmND?=
+ =?utf-8?B?VVNEVS9RNFp4aFlXS3JueVpOMVlCaWhhbytmYTVXVEpYTjNDZmZUYzNad1hF?=
+ =?utf-8?B?aWQ3enRjaFlLcE1STlZoUGtkd2FjZ0x3a2ZZREpGaW8ySE5kalBWc3Y4REww?=
+ =?utf-8?B?a1o2Nno5M0dBbk5JNUFRVUdRU25ha05ydWh5T1YvZ3piSkRVY3VtcjI2Y2cv?=
+ =?utf-8?B?VGhuTU1IUzJnUzlHN25RY3pER2ZuZjJvSXFxRXdYeGZTOWpqeERwdnBpM0or?=
+ =?utf-8?B?c2NHdmExUUhKV0k5d2plSmdOaFR6Sk5uTEZQMzdWWk5ZMFVydnBleElNa3ZJ?=
+ =?utf-8?B?aW92VjB5WDFmUE5MekhVbnNZUi9pdTdkZFFpR0ZQWHBwZ0pVYWw5anRGZVFM?=
+ =?utf-8?B?dE84cGdUMzdIUUg4ZmQwT2tTQm9Db1BlQ09rVHRHVFFucUM1YVhvOTJPTm92?=
+ =?utf-8?B?WXFTMzFaNDRLYXlQRkkvdDVVcUhKMFA4MkY0T0ltWFRLNVRnaXIzaTFGSFpq?=
+ =?utf-8?B?MmoxSEh2bTFCbHVjMmd4eXdyRktBSFkzWmJZZC9aNUVrV3ozT2t0d3FSVnVD?=
+ =?utf-8?Q?HwZgWKqDhHQIdeYLyGYERxPr7DCqdWMk805wh?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74025573-6915-4b09-cc14-08dec07db066
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8179.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 08:05:19.8067
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tNNv74zzhsrmR9mDNOPpIYG0NSBPjreHF6IAeIh8C/xGsEmw+GoS6cSza+B2piD1t79hePCGR2oCM7tDZuq5P2xG9y42Z91nOs0vVDIoa9aeHtwSM2Jyn8TQ32QQymUz
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10503
 
+On 5/11/2026 11:48 AM, Linus Walleij wrote:
+> On Fri, May 8, 2026 at 11:07 AM Khristine Andreea Barbulescu
+> <khristineandreea.barbulescu@oss.nxp.com> wrote:
+> 
+>> I don't think the current driver is a good fit for
+>> a full gpio-regmap conversion. Direction and GPIO mux are
+>> handled through MSCR/pinctrl state (IBE/OBE/SSS), and the GPIO
+>> logic spans multiple register regions across two SIUL2 instances.
+> 
+> I don't see the problem with that?
+> 
+>> A conversion would require stronger separation between
+>> GPIO and pinctrl, leaving mux restoration entirely
+>> to the pinctrl subsystem.
+> 
+> Why is that so? Sorry I don't get the problem here.
+> 
+> The pinmux operations have these callbacks:
+> 
+> static const struct pinmux_ops s32_pmx_ops = {
+> (...)
+>         .gpio_request_enable = s32_pmx_gpio_request_enable,
+>         .gpio_disable_free = s32_pmx_gpio_disable_free,
+>         .gpio_set_direction = s32_pmx_gpio_set_direction,
+> };
+> 
+> So to me it looks like the pinctrl subsystem is *already*
+> handling all the muxing of GPIO lines in these
+> callbacks?
+> 
+>> Would it be reasonable to keep the current approach for now
+>> and revisit gpio-regmap later if needed?
+> 
+> I'd prefer that you look into it now while you already
+> have all the information at hand and fresh in your mind.
+> 
+> You can forward my comments to your project lead
+> / JIRA instance and say it's Linus' fault you have to spend
+> more time on this right now.
+> 
+> Yours,
+> Linus Walleij
 
---=-RP0sFoYLKy91Bkl5IsXb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Linus,
 
-On Mon, 2026-06-01 at 21:20 -0700, Richard Cochran wrote:
->=20
-> Sorry for replying to David here via Jakub's message.=C2=A0 Somehow my
-> brilliant Gmail doesn't have David's reply...
+The new version (v10) has been updated to use gpio-regmap, with a virtual
+regmap bridge dispatching GPIO accesses to the underlying SIUL2 register
+blocks.
+ 
+I am not fully convinced this is the cleanest model, though.
+SIUL2 does not expose GPIO as one regular register space: direction is in
+MSCR, input values are read from PGPDI, and output values are written through
+PGPDO. These are backed by separate regmaps in the driver, while gpio-regmap
+expects a single regmap.
+ 
+So the current path becomes:
+  gpio-regmap -> virtual regmap -> MSCR/PGPDI/PGPDO regmap
+ 
+The version was updated this way so we can review the approach on top of the
+current code. If this is still the preferred direction, it can be polished
+further. Otherwise, I think direct gpio_chip callbacks using the existing regmap
+helpers might be a simpler fit for this hardware.
+ 
+What do you think would be the preferred direction for the next revision?
 
-Yeah, Gmail. Here's a nickel, kid... :)
-
-> On Mon, Jun 01, 2026 at 06:52:26PM -0700, Jakub Kicinski wrote:
-> > On Mon, 01 Jun 2026 17:53:49 +0100 David Woodhouse wrote:
-> > > On Mon, 2026-06-01 at 08:20 -0700, Richard Cochran wrote:
-> > > > Sorry, just catching up here, so the idea is to have
-> > > >=20
-> > > > =C2=A0linux/drivers/ptp/drivers=C2=A0 ?=C2=A0=20
-> > >=20
-> > > That is my current suggestion.
->=20
-> drivers/../drivers seems a bit silly to me
-
-It wouldn't be the first, but yeah =E2=80=94 more conventional would be to =
-have
-the core elsewhere and the drivers under linux/drivers/.=20
-
-That maybe involves moving the PTP core to kernel/time/ptp[/*] while
-leaving the drivers where they are?
-
-But first we have to know the problem we're trying to solve, and Jakub
-has just revised my understanding of what he was originally asking for.
-
-> > > It stems from Jakub's response in
-> > > https://lore.kernel.org/all/20250815113814.5e135318@kernel.org/=C2=A0=
-that "I
-> > > really wish someone stepped up and created a separate subsystem for a=
-ll
-> > > these cloud / vm clocks. They have nothing to do with PTP."
-> > >=20
-> > > There was some further bikeshedding in
-> > > https://lore.kernel.org/netdev/0afe19db-9c7f-4228-9fc2-f7b34c4bc227@l=
-inux.alibaba.com/
->=20
-> The idea of categorizing core, NIC-related, vm, and stand alone clock
-> devices makes some sense to me.
->=20
-> > > around how to split 'emulated' from other hardware drivers, but I don=
-'t
-> > > much like that taxonomy. Some of these "virtual" clocks could just as
-> > > easily exist in hardware with PTM too.
->=20
-> So the whole in-kernel API in ptp_clock_kernel.h with ptp_clock_info,
-> etc, was poorly named (by me) back around Linux 3.0.=C2=A0 After all, the
-> abbreviation, "PTP", stands for a network protocol.=C2=A0 At the time, Al=
-an
-> Cox pointed that out and complained, but somehow the code got merged
-> anyhow.
->=20
-> The term PHC is a better one, since PTP Hardware Clock means clock
-> device whose purpose is to support network time keeping together with
-> a NIC.
->=20
-> > > My observation is that with the sole exception of ptp_inet.c, *all* o=
-f
-> > > the actual PHC drivers that live in drivers/ptp instead of drivers/ne=
-t
-> > > are "pure clock" drivers,
->=20
-> No, that is not quite right.=C2=A0 The clockmatrix, idt82p33, ines, and
-> qoriq drivers wouldn't be very useful without an attached NIC.
-
-Ah, OK. Moderately confused because ines is the only one where I see
-any evidence of hwtstamp support, and the rest just seem to provide a
-PHC, but I'll take your word for it.
-
-> > > so perhaps we split those all out into
-> > > drivers/ptp/drivers/ and exclude them from the netdev maintenance?
->=20
-> Originally the idea was that the rate of patches would be low enough
-> that netdev would be the place to post and review them, and that no
-> separate tree or mailing list were needed.=20
-
-I think that assumption about the rate of patches should still be true.
-If I end up owning a tree for the 'virt' drivers, I'd mostly be
-answering "no, use VMClock instead". There's a reason I found a home
-for that as a vendor-agnostic specification=C2=B9 and built the QEMU and
-guest kernel support before even pushing it out at $DAYJOB.
-
-=C2=B9 https://uapi-group.org/specifications/specs/vmclock/
-
-> Even though the "PTP" naming was an unfortunate choice way back when,
-> still I'm not a big fan of moving stuff around "just because".
->=20
-> But moving forward, I would suggest starting a new area for pure
-> hardware clock devices.=C2=A0=20
-
-I think that ties relatively well to Jakub's "does it purport to know
-real time better than the host" criterion?
-
-Although... ENA *both* purports to know real time better than the host
-*and* does packet timestamping, and it looks like GVE is attempting to
-do the same?
-
-> =C2=A0=C2=A0 "Clock Devices" ?
-> =C2=A0=C2=A0 linux/drivers/cd
->=20
-> Too short!
->=20
-> =C2=A0=C2=A0 "Time Keeping Devices" ?
-> =C2=A0=C2=A0 linux/drivers/tkd
->=20
-> Confuses core time keeping!
-
-That isn't necessarily a bad thing... (qv)
-
-> =C2=A0=C2=A0 "Advanced Clock Devices" ?
-> =C2=A0=C2=A0 linux/drivers/acd
->=20
-> Let's come up with a fitting name.
->=20
-> Still, I don't understand why these new (non-network related ) device
-> drivers can't be implemented in their own class using
-> posix_clock_register()
-> etc.
->=20
-> Any of the useful bits (like sysfs interfaces) can be refactored out
-> of ptp_clock.c and shared as a common layer.
-
-The key is that userspace wants to get snapshots of the reference clock
-either precisely synchronized with the system clock where possible, or
-sandwiched as closely together as possible with ABA readings of the
-system, reference, system clock.
-
-Those *are* the PTP_SYS_OFFSET* ioctls, which tools like chrony already
-support with 'refclock PHC /dev/ptp=E2=80=A6'.
-
-I'm not sure how factoring those out into separate POSIX AUX clocks
-would help? I think they do want to present as /dev/ptp*.
-
-There is some extra stuff we want to do for "Precision RTCs" or
-whatever we're going to call them. They might actually have a known TAI
-offset, they might convey leap second indications, we might want to set
-the kernel's CLOCK_REALTIME from them at boot. And in the case of
-VMClock, I'm working on being able to clamp the kernel's timekeeping to
-it directly=C2=B2.
-
-So maybe what we want is linux/drivers/phc, to host those read-only
-devices which know real time. They can provide a simplified
-implementation; maybe *only* a function like vmclock_get_crosststamp(),
-which is just called in various different permutations by the various
-different PTP methods.
-
-The core linux/drivers/phc code would then handle the interface to the
-kernel's core timekeeping *and* wrap them to register a PTP device that
-existing userspace can understand. And deal with the kvmclock/TSC
-awfulness where needed.
-
-How does that sound?=20
-
-
-=C2=B2 https://lore.kernel.org/all/20260520135207.37826-9-dwmw2@infradead.o=
-rg/
-
-
-
-
-
-
---=-RP0sFoYLKy91Bkl5IsXb
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwMjA4MDQy
-N1owLwYJKoZIhvcNAQkEMSIEIIGcKIP2EPstYmZEUerRVfVfjJLflCgkwLcbjoG2nZCKMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIArByzGoa3JuPd
-rSLvIUVRy+Iu1AI3hFh/pZm5GW7hstctYsHMnVPBgy/L1X5g/Edz1/ylEMrftxsfTi8ctXwR5YoN
-BsAdVa+4imGrX+700zm/iLtUXqFPSxJ5H/RbKmioqqf3poQLHJIjHlzW9S6wZRaQOLjOctQwUC+8
-umC4SdZ5YyoM6NiFEtEtui5GemWcflX1ALtSE5Mtk2qCP1DOuFBOsciSjj8TU7ItjnHAmyInzsUk
-VdiFKdix0a9DbKR6bMyOFelC2Yh7TNlY4jgb1EWTMvEQTRl3vmMq0nv0JU+idUPrOtxq3GYouNGt
-OwngMK4h+Jg5alOEHCOiYXWsTbv5c+vZHxdENMttm/tWKGyfRtRtWKHSmBYtVUymkTm1jd84o12a
-uC2U5AEYyQcO6AvwitBt/KO30xi5ZJUzBbNOjz60nKO8hqaxqnVW1I28bmg737hIb1ItxiomgfDI
-NERZbsZEBBL5dIyAF1WK35KSVwhG8lcmMJX88PSE8+ajFQGZnWI7NVyn0LO8nSFtGBjA0JGxUnzC
-4l51keV8bgXIRF8xq4pFJ35zo6gp58BDbhqDCg18RpHx/3jDphJqSwUkSWYb42H8O9nzHJYJfBN2
-/guiO/bKQA8H7jjYVYyg2EbFTB7905J7i+mGZ/iurGTuPKQqBtZ1cNR58uw0QRQAAAAAAAA=
-
-
---=-RP0sFoYLKy91Bkl5IsXb--
+Best regards,
+Khristine
