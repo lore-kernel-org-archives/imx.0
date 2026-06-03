@@ -1,173 +1,153 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A814028DC;
-	Wed,  3 Jun 2026 07:27:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7601240963B;
+	Wed,  3 Jun 2026 07:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780471664; cv=none; b=FNA/6ZosImKSzmpU+kDz9A0nKdd01M85zE9BmIkqNgu/6ce3E0XgOMOk88mNApg+yXgyMj14YWUZpUPj2tEDhR6oGYiMTdsGo5Q/vVCkO5R6byakODoaNAnsG4yU2gDBkLGXFGFuYhfLXVJPb3G6te7rTfLDy93OClvq8ZVvrHU=
+	t=1780471753; cv=none; b=DLsB7BUv28MRjPHrbAAg+ItyzZTSJCQOedEqrlswPQCqhDeMzb1N7argT2862HJ7L2hYp+6QuKQarNAy4KkwXcImyOxFbs65Lt+IuSc/ot4eT1NsRQdwpdQYst8Ag+oQz0K2i2eW2KlSotZlkwgdhHOYPvgXLTI8Sa7oTqOlAII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780471664; c=relaxed/simple;
-	bh=degubvwbp4XhVRmmwxuQ4QA2I0c53w+k2ABIBxpCgNo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VUeoMhH0UAgc8ha8FBD/0lv1eiqkp0n+mibyO9F6kRhCbtbWIvsmVDJQ0M/8ALF+gRVmQxkhcnCx1ZTyjWWMliuJdf53FCsURKmgtIzBs1XPJeg+SaMhOyJBpVGkalCkCyBStFiv5Xk0Z/QaYfwlOu5cqRKBG7UfYxX8CpBfEgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Vo0z9t6A; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1780471753; c=relaxed/simple;
+	bh=LWiz2BU+RNYs3LAziMHIFL+WHdk9N5rbQMYNmXHDMVA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=IpNCoCuhQvg2KqPJythYNlWq0wb1ps5o6KymFNlFb0Va6jbJ+Lm34KAnjN39oR/puHB/O39k5gEiy6o0o5vEANrkANTneE4SODht5AX8Z3gOF8MtYSakKcSE/6TOYXQAZ4+9U9/xiF1pxFdSX/U8AxzHjTCk/JZTPtN1uYOC83c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8/QLjWv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Vo0z9t6A"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=xPhkAqNarpr7frrVANy2tD5r7lHkqN54dU3a/6+NLlU=; b=Vo0z9t6AEd7h6QggsM6/1b9U98
-	YF+dVrW5MfZGFkoy9ROGvplgjmCkB3guCA4tvo5h5s/72G1HFqvbA2VrSbW7LUzdnvAuyisJB1xyT
-	OEQRXgkAh8hu8YwAv9eugiQHvCSCbWtRTQQuOGlLHPnndDXJCeEb1UCMs4Q9wRzm6nFcm6a9aEWU1
-	ggWY1FRKNrKtvdWHpWQUM+n+c0LOK7jpm0P/jMemUBFZUxjYMT/kHkGC6xuZWdXFCvc3s3XAO86KI
-	W9oLBL9Mog3yMqUMe4HXfamtj+tMcFxE0VtOjuxihoK+NFAx+uU+YvL3HHbnWufo3Ke9OAQ4keK9p
-	kNQtfA1Q==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wUg0q-0007eF-1V;
-	Wed, 03 Jun 2026 09:27:40 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wUg0p-000DWb-1Q;
-	Wed, 03 Jun 2026 09:27:40 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: sashiko-reviews@lists.linux.dev, Frank Li <Frank.li@nxp.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- wsa+renesas@sang-engineering.com
-Subject:
- Re: [PATCH v3 2/2] arm64: dts: freescale: add initial device tree for
- TQMa8MPQS with i.MX8MP
-Date: Wed, 03 Jun 2026 09:27:39 +0200
-Message-ID: <3356319.irdbgypaU6@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <ah3i63BKcwav8t7n@lizhi-Precision-Tower-5810>
-References:
- <20260522075656.841745-2-alexander.stein@ew.tq-group.com>
- <20260522082439.011DF1F000E9@smtp.kernel.org>
- <ah3i63BKcwav8t7n@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8/QLjWv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9EF1F00893;
+	Wed,  3 Jun 2026 07:29:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780471750;
+	bh=WJ89UtOGtVsAGMkbaiUhf2lg9r4mGw2Q0ayuN1SACjE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=R8/QLjWvg17WN76YxMt5WUOtSJwboY6pszbUq7Q+d25m9Bqwontdel/dOjB7Pw+0C
+	 pSUAV4HjGpZgHdOTUKpH6sA9cfPv6joNCoZqWwd6hM81jumeKmJ4+CO4vEPxvQCzMt
+	 exYzB1zY3QhXiDQEX3yUsa0/jrlaQUVDKeSCj3Yn0YwzE/Q5ifw6w8Hzi8eFuOzpQF
+	 qdMTfXP9CBfuL6AHdX7IpC9wcwYGOUtf+3t4wbQTUIaMM/FeryimdX4jxhjDq1AWdj
+	 w954kJZWYO91GRL9+Gm+Xapt+Jclo/7Brt6GB3vIHRw6k5ZA3Bu4uwXqu4G76vJDUt
+	 OxqO7gaCQCUmA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RESEND v4 1/8] can: flexcan: use dedicated IRQ handlers
+ for multi-IRQ platforms
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
+Cc: conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260603071342.641874-2-ciprianmarian.costea@oss.nxp.com>
+References: <20260603071342.641874-2-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 03 Jun 2026 07:29:08 +0000
+Message-Id: <20260603072909.0C9EF1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28019/Tue Jun  2 08:33:27 2026)
 
-Hi Frank,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Am Montag, 1. Juni 2026, 21:52:11 CEST schrieb Frank Li:
-> On Fri, May 22, 2026 at 08:24:38AM +0000, sashiko-bot@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 3 potential is=
-sue(s) to consider:
-> > - [High] Off-by-4 error in `gpio4` line names array assigns GPIO names =
-to actively driven Ethernet pins
-> > - [Medium] Redundant `gpio-hog` nodes for pins concurrently used as int=
-errupts by drivers
-> > - [Medium] Missing `status =3D "okay";` for `pwm2` and `pwm3` will caus=
-e backlight overlays to fail
-> > --
-> >
-> > commit 33a28c1f4850f44b57edd7bcc9794f6b7f5401a7
-> > Author: Paul Gerber <paul.gerber@tq-group.com>
-> >
-> > arm64: dts: freescale: add initial device tree for TQMa8MPQS with i.MX8=
-MP
-> >
-> > This adds support for TQMa8MPQS module on MB-SMARC-2 board.
-> >
-> ...
-> >
-> > > +&gpio4 {
-> > > +	pinctrl-names =3D "default";
-> > > +	pinctrl-0 =3D <&pinctrl_gpio4>, <&pinctrl_sdp>, <&pinctrl_espi_rst>;
-> > > +
-> > > +	gpio-line-names =3D "RTC_INT#", "GPIO8", "", "",
-> > > +			  "GPIO9", "ESPI_RST#", "", "",
-> > > +			  "", "", "", "",
-> > > +			  "", "", "GBE0_SDP_DIR", "",
-> > > +			  "GPIO7", "", "", "",
-> > > +			  "", "", "", "",
-> > > +			  "", "GPIO0", "GPIO1", "",
-> > > +			  "GPIO2", "GPIO6", "", "";
-> >
-> > [Severity: High]
-> > Are GBE0_SDP_DIR and GPIO7 placed at the correct indices in this array?
-> >
-> > They are currently at indices 14 and 16, which correspond to GPIO4_IO14=
- and
-> > GPIO4_IO16. However, these are actively driven Ethernet lines (ENET1_RG=
-MII_TD2
-> > and ENET1_RGMII_TX_CTL) as multiplexed in pinctrl_fec.
-> >
-> > Could this be an off-by-4 error, and should they instead be at indices =
-18 and
-> > 20, which are explicitly multiplexed as GPIOs? If exposed to userspace =
-as
-> > GPIOs, could manipulating these active Ethernet TX lines cause hardware
-> > conflicts or disrupt network connectivity?
->=20
-> Is AI said true?
+New issues:
+- [High] The split IRQ handlers break the `FLEXCAN_QUIRK_BROKEN_PERR_STATE`=
+ workaround on multi-IRQ platforms, causing silent error state transitions =
+to go undetected.
 
-It's actually true. This is an off-by-4 error. Fixed in next version.
+Pre-existing issues:
+- [Critical] Concurrent execution of split IRQ handlers on multi-IRQ platfo=
+rms causes unsynchronized lockless list corruption in `skb_irq_queue`.
+--
 
-> >
-> > [ ... ]
-> >
-> > > +&pwm2 {
-> > > +	pinctrl-names =3D "default";
-> > > +	pinctrl-0 =3D <&pinctrl_pwm2>;
-> > > +};
-> > > +
-> > > +&pwm3 {
-> > > +	pinctrl-names =3D "default";
-> > > +	pinctrl-0 =3D <&pinctrl_pwm3>;
-> > > +};
-> >
-> > [Severity: Medium]
-> > Since the backlight_lvds0 and backlight_lvds1 nodes on the baseboard re=
-ly on
-> > &pwm3 and &pwm2, should these controllers have status =3D "okay"; added=
- here?
->=20
-> Make sense, in dtsi, pwm2 pwm3's status is disabled.
+commit 1073dfa63bf3a027c9286d2f8ca8d2cf503134a2
+Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-They are disabled on purpose, the same as for the backlights. Both the
-backlight and pwm are supposed to be enabled in display overlay. I don't
-see a problem here. I'll add the overlays in the next version as well, so
-it's visible.
+can: flexcan: use dedicated IRQ handlers for multi-IRQ platforms
+   =20
+On platforms with multiple IRQ lines (S32G2, MCF5441X), all lines are
+registered to the same flexcan_irq() handler. Since these are distinct IRQ
+numbers, they can be dispatched concurrently on different CPUs. Both
+instances then read the same iflag and ESR registers unconditionally,
+leading to duplicate frame processing.
 
-Best regards,
-Alexander
+> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/fle=
+xcan/flexcan-core.c
+> index f5d22c61503fa..f73ff442d5304 100644
+> --- a/drivers/net/can/flexcan/flexcan-core.c
+> +++ b/drivers/net/can/flexcan/flexcan-core.c
 
-> >
-> > If left disabled (as they are in the SoC dtsi), won't any overlays that=
- enable
-> > the panels silently fail when the backlight driver cannot acquire the d=
-isabled
-> > PWM channels?
-> >
-> > --
-> > Sashiko AI review =B7 https://sashiko.dev/#/patchset/20260522075656.841=
-745-1-alexander.stein@ew.tq-group.com?part=3D2
->=20
+[ ... ]
 
+> +/* Mailbox IRQ handler for multi-IRQ platforms */
+> +static irqreturn_t flexcan_irq_mb(int irq, void *dev_id)
+> +{
+> +	struct net_device *dev =3D dev_id;
+> +	struct flexcan_priv *priv =3D netdev_priv(dev);
+> +	irqreturn_t handled;
+> +
+> +	handled =3D flexcan_do_mb(dev);
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+[Severity: High]
+Does this change break the FLEXCAN_QUIRK_BROKEN_PERR_STATE workaround on
+multi-IRQ platforms?
 
+Before this patch, the single monolithic flexcan_irq() mitigated the hardwa=
+re
+erratum by unconditionally polling the error state via flexcan_do_state() on
+every interrupt. By leveraging frequent mailbox TX/RX events, it could dete=
+ct
+silent state transitions.
 
+With dedicated handlers, flexcan_irq_mb() now exclusively processes mailbox
+events and skips calling flexcan_do_state(). Since the hardware bug prevents
+the boff interrupt from firing during state transitions, will the device now
+silently enter Error Passive or Bus Off without the software noticing?
+
+> +
+> +	if (handled)
+> +		can_rx_offload_irq_finish(&priv->offload);
+> +
+> +	return handled;
+> +}
+> +
+> +/* Bus error IRQ handler for multi-IRQ platforms */
+> +static irqreturn_t flexcan_irq_berr(int irq, void *dev_id)
+> +{
+> +	struct net_device *dev =3D dev_id;
+> +	struct flexcan_priv *priv =3D netdev_priv(dev);
+> +	irqreturn_t handled;
+> +
+> +	handled =3D flexcan_do_berr(dev);
+
+[Severity: Critical]
+This is a pre-existing issue, but does concurrent execution of these split =
+IRQ
+handlers on multi-IRQ platforms cause unsynchronized lockless list corrupti=
+on?
+
+On platforms with multiple IRQ lines, the distinct hardware interrupts (such
+as MB and BERR) can be dispatched concurrently on different CPUs. The handl=
+ers
+flexcan_irq_mb() and flexcan_irq_berr() concurrently invoke can_rx_offload
+functions. For example, flexcan_irq_berr() eventually calls
+can_rx_offload_queue_timestamp() via flexcan_irq_bus_err().
+
+These offload functions call __skb_queue_add_sort(&offload->skb_irq_queue, =
+...),
+which performs unsynchronized doubly-linked list pointer manipulation. Since
+there are no locks protecting skb_irq_queue, concurrent enqueues from
+different CPUs can corrupt the list pointers, resulting in use-after-free
+or kernel panics.
+
+While this patch explicitly tries to fix duplicate processing caused by
+concurrency, the concurrent pushes to the lockless skb_irq_queue seem to
+remain unhandled.
+
+> +
+> +	if (handled)
+> +		can_rx_offload_irq_finish(&priv->offload);
+> +
+> +	return handled;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603071342.6418=
+74-1-ciprianmarian.costea@oss.nxp.com?part=3D1
