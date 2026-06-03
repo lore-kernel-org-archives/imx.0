@@ -1,50 +1,63 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CECD3C768B;
-	Wed,  3 Jun 2026 15:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B32B3D648F;
+	Wed,  3 Jun 2026 15:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780500078; cv=none; b=QztUicJCH8vFG02ZpyflMLzB6EXQqD6Hf3xSxI2zP6gO2yYLOm6O8VJ0o7+lKQNHq0xURYRoz3ANu+doM92gAaoUaj5br+AT+Acv2z1SxVejfDqkYjo5rf+Y2ah47IWpOuxkQee83W/VucMLCoDtASzVCzor1oXrchIv4VqZMrE=
+	t=1780500369; cv=none; b=E+wMF1fHsL8hHATake1tqIIprivp0HJO/xinMQVr5aK8hzFrY1JcEeAL0eZgW2ezQRAJBTnaQziJpzV93XZcibyagzDBXdk1yTInmCUfYsSXyEl9PgSDU7u7EO6UqQt1jvKyfABfpAqlQomscydZTBPmFLo5vtnuBZoeIt9J3Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780500078; c=relaxed/simple;
-	bh=bmT/80mB3n6dRXXEkMJn5soC27h/7oK51kADck7rKbY=;
+	s=arc-20240116; t=1780500369; c=relaxed/simple;
+	bh=NXUW6xNUxRnjK/Ovcogrbn0IE4OIscTvKrmz8hg3zoA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a8u5xoxiRAzRDJRmqAaRcfdxipGY9Pkgz4RDOsQMrVjqqxEEin4Ajho1W6p9IPhzzwWBAfLUgdDSAK1kSiNmkb5sXErtKX6wUWzW6sm2elI0jLzo1//ipgCdupAe8nYCUvXcoijLN8HCRQJQtxN9K9DBXib9b7X9bgRIHuaoNxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ro4/Ri1x; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nxeXKjfQ; arc=none smtp.client-ip=193.142.43.55
+	 Content-Type:Content-Disposition:In-Reply-To; b=USPVm3uYVHb51Lv0uZwB1sZBrOTxD/Bd1JhZ114GZsoAbGSTGrAqyJATP6KDNcI4qdafCBdLx7at5Jrbt7HYwDrLGkYQpqzWO7Et1wakM4/WdaEUMtaBG32BBKnWQOqo1C60ioS/lknoTCz8e+QCEvlKwdj+AHpGnuouzfClefc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PD0cQEme; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+ft5H0B0; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ro4/Ri1x";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nxeXKjfQ"
-Date: Wed, 3 Jun 2026 17:21:14 +0200
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PD0cQEme";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+ft5H0B0"
+Date: Wed, 3 Jun 2026 17:26:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1780500075;
+	s=2020; t=1780500365;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=H1c4t5AfhRBRzmjLLfCYBrud3oeB03kFXvXYDkpCL2A=;
-	b=ro4/Ri1xYJXQuthV1ytTU/sxip1vwK0EO9TclJBL9Gb72vBYlSdBIO6/rifyvKY9OV9yTn
-	LYMVyOtLrfEThVb7E5LHaOjETW0ROZCXu4HaCLxrcmu/kv6lc2KQ8y4R7zn7GiXakq+FY5
-	io3q76NYRRV8HgPpyPXM9u43xSEY6pw9mrvmnZ0ue7ZfrtJ8+yt1adwQ3knMTU0PdN0WFw
-	e0SpW3l03OMvuyK0U8/SeTAGg968Lk8ngZ12kV48/JxOgJ3PVJDCLAoQJG2kVuDizRex2S
-	7vfDP2UcblgYwxBzciyUXRTiKREcACjUZmiEhEwTv/LMJtAaIKcg2La+e7ebCw==
+	bh=YUbArMhatRkOlmiQUjI9Tf31kJ/6pDUsEK5wihs/FxQ=;
+	b=PD0cQEmeE7cRnI4TGMBwLATUn0Wpc2HlOAAmRmkvN9v2jSSEU+ONmtinEWC55tNXZi2RKC
+	NNUl/goguJx55G9f0HaHcCsmrvodbkPJ3KlfjiUJyBdXFEUbMsp6e7Cr0vlJ14VjeGME3r
+	E7iLpSd84Y7Onx97sgYEHY94tEuNvxGPCuXIH895uvZL+JiiKvF8NvAswZ3C7Hqvczwsmh
+	OiQa0FgfQcM8CUf+9p53KDY5bBNz/y9wUg99ayTaMUFzqrAv4sTih0G2dwCfnA/zyaoNKT
+	qqUGdGIC7zHEnz9vGEs5gM7PGIOkllN5P47ZMPydsBDu+dFspYbwzF2SSl9Xag==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1780500075;
+	s=2020e; t=1780500365;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=H1c4t5AfhRBRzmjLLfCYBrud3oeB03kFXvXYDkpCL2A=;
-	b=nxeXKjfQZ936GPbeZD5D94/pYlIybwU+jAZnA8tPZ11DqTNV3iWRaVCypjI7Ov5bq8dCAN
-	PVLsd3b9N+iXfEAQ==
+	bh=YUbArMhatRkOlmiQUjI9Tf31kJ/6pDUsEK5wihs/FxQ=;
+	b=+ft5H0B0zB+qvZsgCto8fK+SXf9/FfUhkyg47hx5xXf3vywr0IhNxkux96Y3KdwbQ5kv0e
+	7MqVVWsALoFikbCg==
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 9/9] remoteproc: imx_rproc: Invoke the callback
- directly
-Message-ID: <20260603152114.yyI9ULYp@linutronix.de>
-References: <20260603-imx_mbox_rproc-v2-9-a0059dc3b69a@linutronix.de>
- <20260603144558.E433F1F0089C@smtp.kernel.org>
+To: Daniel Baluta <daniel.baluta@oss.nxp.com>
+Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	Bjorn Andersson <andersson@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v2 6/9] mailbox: imx: Move the RX part of the mailbox
+ into the threaded handler
+Message-ID: <20260603152604.lBbXa3sE@linutronix.de>
+References: <20260603-imx_mbox_rproc-v2-0-a0059dc3b69a@linutronix.de>
+ <20260603-imx_mbox_rproc-v2-6-a0059dc3b69a@linutronix.de>
+ <c81d12a8-7544-493f-a947-8f70ad9d409d@oss.nxp.com>
+ <20260603132034.NxZoA4pH@linutronix.de>
+ <944c6eaa-05f2-437a-88e7-1573b64468c5@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,17 +66,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260603144558.E433F1F0089C@smtp.kernel.org>
+In-Reply-To: <944c6eaa-05f2-437a-88e7-1573b64468c5@oss.nxp.com>
 
-On 2026-06-03 14:45:58 [+0000], sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+On 2026-06-03 16:45:16 [+0300], Daniel Baluta wrote:
+> I would prefer to add the explanation for this in at least one commit
+> message to be there in git log.
 > 
-> Pre-existing issues:
-> - [High] Missing RCU read lock around `idr_for_each()` executing in a preemptible context, leading to potential use-after-free.
+> Cover letter is not kept in git history.
 
-No. The channel is removed once the interrupt handler is gone.
+You could merge is part of the series. But I could of course add the
+rational behind this to the patch where I start adding the threaded
+handler and move the TX bits.
 
-> - [High] Error paths in mailbox initialization leave `ERR_PTR` or dangling pointers in the channel pointers, leading to a kernel panic during cleanup.
-This, yes, sorry.
+I just finished of with sashiko. Do you have other human input?
+Otherwise I would fix the one thing I did wrong, propagate the one error
+sashiko mentioned. I'm not sure what to do about the long time outs it
+complains about, I would keep them for now. That timeout check based on
+jiffies is also odd.
 
 Sebastian
