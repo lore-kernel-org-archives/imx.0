@@ -1,147 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012055.outbound.protection.outlook.com [52.101.66.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A673382EC
-	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 03:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780457494; cv=none; b=LFWA0ZO1QnR05ImdAOoLiMPxpxPqVtda3YO9bdMAPa5r15OivyqJtP/z2eCJwuyHSvhkPtEbSjoe89F8SU6r6+8ttxTzDiLwFUAKhmjbcVsORofwWAbGirVDvG2hmgUBpuyecvtiA/ukmCMS9RpcVnRiD6v8TDlGveciUsA6dPQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780457494; c=relaxed/simple;
-	bh=4kPoks/r3FLQFpAWz4ypYi85mSbzV9oWgKHKq2hbswU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=o8qd++boJZI9k/bbs38R0bIxh5/hcjdLNWwdmoCcTYo0avIEWEjuX7uEjHhwvJ5W9P/+8bsJ0pd6TX0OO/wMQ5xAvN48owp873320T1jKK7OBg3hA2zOk4GjbO5rXzJbndZOkNchyanfCY6WcS+HSOzbWbC49+DgMeXO2nP13iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K6d6mlgn; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D71371D1E
+	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 05:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780464863; cv=fail; b=M8myrxqwq70dX9YuP9yi8V6SWKXRgqGsVCmH2xyHwctXefTZogmnXU3MURiN7J3S+59nzvZjdVzfMfOgIEufKVg10bm+2Ndmxn1lFifQEt2jAMyjGjvSJ/e4sbmL3LRG0fRAcG1Zd3K0YHT0D2+mO5i/j5iZw3u3GXAlglHf/es=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780464863; c=relaxed/simple;
+	bh=LxWvs2ZDP9+Y1cZaL4e8N88ZPhWjGXB1bYSf4IBmMbI=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=t1VwytdRjzECi3KU1xlF3xV939nYvRCq3vAk6FoETXP26mYvSBzi/I9pU3bjfHyWecfMos6tjGrOnLhFNei0UFn/0WIkYGO2W32dlfT9bi/UMNduau11JLLfkEexZUd3ItOGu3GJyxSN15gg33rA+LnOszmSD35vg19Ebttp890=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Jj7AXLPp; arc=fail smtp.client-ip=52.101.66.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K6d6mlgn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667071F00893;
-	Wed,  3 Jun 2026 03:31:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780457493;
-	bh=K+Igl68/8Yh9e9suKOFq4jaAcdMgISMF0XvqUbW/+x8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=K6d6mlgn8lGcLx1bDjXJLkcTzaftTmVyqro0ftySMQDGoapxWT4Jcjef8ARlOg6fa
-	 aXj3EZ0PKTEDZhGnn4mq8zgv4RWdtqsreniJ8q5s1BaLKQlJo/poaprntD6nKROmFj
-	 bECD52jK+31qDWvV2B7N+6RRVT+uqyylyP0iC+5R0rhxkna4EsXi8uKt5nuLfrONYl
-	 zDpS/phLEzaa3LDMjKSUHZfvdAz9MytpkhdzAb3nitZiAjak3ADNFHpRC8EBckI3kg
-	 kA7UVsOtlurtfdA4AvIxEKT0eCN6sOWjgiayngdCF3AB6/jFdTC6PAIDGXz5eav69f
-	 /kp1/5u7QBIuw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/3] serial: mxs-auart: fix IRQ registration ordering
- and manage console clock
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Rosen Penev" <rosenp@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260603025857.287148-4-rosenp@gmail.com>
-References: <20260603025857.287148-4-rosenp@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 03:31:31 +0000
-Message-Id: <20260603033132.667071F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Jj7AXLPp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VTqi6N3pMuidDFfjEFWYWnLa6yLAeTWF/5qrNyt/88QZr4FefTh40vFgi8dH9uOGt/KFGMrx4BRkeU/b5gXaFnjqRPheMz/h2onnSGgzQ2RwaIjDYrk305jPkRLB2SrChO+1hFb0zv2m2wnZIVhraDgd9H4Hkv1xlfEQoR23gWrf2PxFTNcsr1YrGILlmwwuEFnpwvY1MgmrutG3X9Kjye4Xpi2ezDwJwM7X1eEI6JMHxSL+cvTQiA8FugBG4dIlPj559dMO7gauzoeBL2hIC1m4eybVjsrYRWWzRSR9JPQ+my+KyFahYbqyMpo2wZUaSMZn++SOWus+AQIcfqzu7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zXcRDt0+BRrzloyW/TfQQg6sB41JhWRlezZf/6kAUnE=;
+ b=lSaEJ869sKGxiDg24yZK56iZDesAkmnXhxuWot3JBFIeLP9hYW0/vUT2fzM8ilk//DAeRObwWGrhbz8EYh/9npM1KbvC3XwXqXeEM3It8/5EniyuUQMC589kLUyZl06V9sKucUpPSyd4QLoVE0dWZdydebVXpCE9qGjMeEnoqdDahNi+fiCncta7Ix+hqc5oQRK88TTA2/x/pqJBVv49+lybMH/9pcdALGj06G5PEqiaM/XfVcaC32CwPZCssLW7RY/0/Aprb1y6tIvhi000z4KjXsBEXvds+4ipVTGi6Z/rs1nipE+HGS8/JFTtnhGjqstZRL7cS7S1+DDqlaxTWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zXcRDt0+BRrzloyW/TfQQg6sB41JhWRlezZf/6kAUnE=;
+ b=Jj7AXLPpIXbHAHpXwcehRlV6QJGOKTHh1eSESOeBFpi3qmO/ugsYKGrfdRP4yBRNTKkl57VEZG7odJtr37Xk6r/0Pczyzsn3uqdrYAREs0sAc0oOiTxcSr9omXO1QQG7zCkPpwsClzgS3rVPbylpSURVSW9SovAnSEhJUczkEEl29mZfythWMUt4LCdCgj16gJdZfB788R6MsJ+MTfvQU7lQPpwnsGPLTV5KiL+aVAIcsh5mCya2crLb5STAnEvqKWkSCxksHhrkr3pzlnu++zkFGbfQxuJ2U9uil5GuPyWXUhcYgdHXTIPQwbkhtLMUyzT0H2Y+hO3uNzgBmJoKQQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
+ by AS8PR04MB8150.eurprd04.prod.outlook.com (2603:10a6:20b:3f0::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
+ 05:34:15 +0000
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0071.015; Wed, 3 Jun 2026
+ 05:34:15 +0000
+From: Xu Yang <xu.yang_2@oss.nxp.com>
+Subject: [PATCH v3 0/5] phy: fsl-imx8mq-usb: few improvements
+Date: Wed, 03 Jun 2026 13:37:13 +0800
+Message-Id: <20260603-imx8mp-usb-phy-improvement-v3-0-7afb8f89abc6@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIq9H2oC/x3MQQ5AMBAAwK/Inm3SLKnGV8QBXeyh1bQIEX/XO
+ M5lHkgchRO0xQORT0my+YyqLGBaB78wis0GUqSVVoTiLuMCHmnEsN6ZIW4nO/Y71tSQrZSxRhP
+ kIESe5frzrn/fDyDmC9VsAAAA
+X-Change-ID: 20260602-imx8mp-usb-phy-improvement-4272d308d862
+To: Vinod Koul <vkoul@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Jun Li <jun.li@nxp.com>
+Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Felix Gu <ustc.gu@gmail.com>, stable@vger.kernel.org, 
+ Xu Yang <xu.yang_2@nxp.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780465041; l=1407;
+ i=xu.yang_2@nxp.com; s=20250815; h=from:subject:message-id;
+ bh=LxWvs2ZDP9+Y1cZaL4e8N88ZPhWjGXB1bYSf4IBmMbI=;
+ b=9JC93FCNNwsURamMYZKL4hEcXa7tC9CFWyk1cEBashF/KrceHZN7rLbEqT9YOLD/ioBXKDkHh
+ OkFyNTslivID0bAst4puW16jHe67KtS+XurVJyIH4qZgWJnMoKXUL/t
+X-Developer-Key: i=xu.yang_2@nxp.com; a=ed25519;
+ pk=5c2HwftfKxFlMJboUe40+xawMtfnp5F8iEiv5CiKS+4=
+X-ClientProxiedBy: SI2P153CA0019.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::10) To PAXPR04MB9422.eurprd04.prod.outlook.com
+ (2603:10a6:102:2b4::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|AS8PR04MB8150:EE_
+X-MS-Office365-Filtering-Correlation-Id: a5a6e2ba-6c21-4f7f-ae6c-08dec131bfbf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|376014|7416014|366016|18002099003|56012099006|11063799006|5023799004;
+X-Microsoft-Antispam-Message-Info:
+	kAmzCVs+1Ip2VyBJn9WWyrgLqVkr5999bc5u9Y2PwLadnpEANuP9FbaVv0HU1B0zJkgbP/cYoRszSPPA/THYZt0tKMD3u+SCaxMDNsGwmwl+R6HtyWmZNO7dS7iw6vdcyWs4F3xOmUT0sjTRR8uFPRFTz0i/MBXcEGLGpUvEa8cYSdz0O49FramtgF3kc3jpSufDa11lFjDlv/FF0BOkCv6HJPlqqVKP30fXsQgw0HlCphMzK663oNO+gPVsXxUuNYfIbLktVOj3VauhYI+fRHRz80woXv9BUoiR3S2QKTyn+yE22ZbFv5GUDVkpvG7CHsnniLkD+aPWy+zzPzYCwgq+jM36WZGfVqoX3fwLqGt+uJGYwPn3aX+MBsDkz6aoEO0TtTphmmp66zeP14rimmQpw+xFCpwNswbXTAWemTQ/uqqP6j6jW/86jQP5QwnhO5rA/v2wN+R+lo7APMvNLqDjvMAlTDNxjcEeBi+KAm44gzRxWBRrqdoPyvxwDQWfjPnBMjROngp8fVJv3j3LeAxXrqvgrD1VAPRQ1QTyfCUEr4rzoMIzBp0onteNnAk4QuOwd/lGki02VqQ8HnJZfo2QLZhP20Oh+jhyDPDxnHIFEozy591yIY87nfnRMvvVgD92cyu0Iyn0gIqwRRkRV2auKJxkpF0znTLR/IBM+H2sW60FWNkKjh108BKjXQZI
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(7416014)(366016)(18002099003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bWduZFpvQlJLTEttaHNKRGhZa2xIUXlVSzVrbVgrVjNEL0VrdmY4VWJUbnJi?=
+ =?utf-8?B?UTFPQzZOZ0pFMjU0RTBNdGR0cHFXL3F0S1EzSHZzejRBckYzZjZOZWRXWXFz?=
+ =?utf-8?B?OXo1Nzc4YnJIUHlvZVpKbTllU0g2N09TQ2pkT20rVDA5UlpVUnJHenFKV0tK?=
+ =?utf-8?B?QzVkTjY4aFNhQmk5MVM1Z3RnQzVvK3dYQVZZR1ZnUWdyRTJDd0QwRHZoSE9I?=
+ =?utf-8?B?WXFwK2UzdXMxb3VseE43NUd5MHJ4N2ZRUmNGMkZ5MUpxVEU2QlU0RnFudUxy?=
+ =?utf-8?B?NlBEeGpNbTBRUHRBY0ltUkUxR1BPZkFFc2s1MTM1TFAwUWpYQWVna2g2T3JM?=
+ =?utf-8?B?WU9xRnAvWWJkU0RmaXlTK3d4dkFscFYwTE9jZTdPcVFaRWNCdE50ekQvbUkw?=
+ =?utf-8?B?NXY1WmJvbEtSNFpRbHdReVlMRW91YTdyc2JxTXNveGt6Vm81cFdTOUdKaEhO?=
+ =?utf-8?B?SEpiOUxUanUvR1dUODY2OEU1U3B6Y3IwbUdoOERHb0VzWU5XTlJvbmZpdDRs?=
+ =?utf-8?B?NEwvUUZ1S2N4VWludmo3OFlZcFZhbDN6U1FiMWlDSGYwd1JCdGxZVHJReW84?=
+ =?utf-8?B?S000V05xdkF3MTFHNCs3cDVRZ0JBcFhrSXVKaGt1dmhiNm8wN0xFcG9lYm5P?=
+ =?utf-8?B?a0J1U2U0NVZYWW1jMGxIYS9mNUUwSGY4UjhlUnRUVlBsVEUxWE1GSUFNNW9n?=
+ =?utf-8?B?Z3VpalhPbzlCUGYwSFV1RkJGMnFBdmYrR3ZPUWlzeldLNllaNzBPZHRkVkkv?=
+ =?utf-8?B?OU1HUXkrQ3VhUTd5RHNMRWNwOW53Y2J0VmdqMXB3ZlNCSFQvakNUU2loSThP?=
+ =?utf-8?B?RGVhMXgrUXJzbUVqWHVLVEhUZy9LS2VnUGFPejhaZVlXTkl6SldKVlo4TnR2?=
+ =?utf-8?B?MWZZUERrTHN2ejYrZG0xNjkvWlFieUpuY08vQUwwTTdQZGt5OXNEalhOUlNL?=
+ =?utf-8?B?eTN3b2ZmQ2tOUTc3YU0yQlQvQnE2cDNKY3BsN0sxSFR3eGE1dnNCT0RKOFV0?=
+ =?utf-8?B?OG9lTFZkOEZoUldOWEQrT3FtZkcyT3BKRUttbmFSQmZiZ1o2WWRwSXF6dWFK?=
+ =?utf-8?B?UXRmNklJTGNjU3pQQm5SdkNLTTA3ajFUNVJwMkpGaXZscjZIc1R1RmV4Znc2?=
+ =?utf-8?B?bEo2UHorb2toNmY4YTZhUmtSQ3Y1STFYVjlzOUJLMTh5L0NBNTdvV1hDZGd3?=
+ =?utf-8?B?cGZCUlpaeldHZitXMFI4RTI2bUJZUEVPeU1vbjdsdmZOMHp0akUwVVBiWlhZ?=
+ =?utf-8?B?c3pNK0czbFhNSU4xd2JKUXQ3ZktkWEhRdExNdUNUOElxOVNYRDZIN3ZYaVho?=
+ =?utf-8?B?VmVmVklhaXgwcU1SVUlESkY5aVNMME1QT0E4bG9aS1hTWE1oNlVKdDc4bEJV?=
+ =?utf-8?B?RFJpOTZOVFhpUFlQQk95dVB4bHlEZ0M0Vk5WbUQwZnNUUjl6VXI0WWpKR2Q4?=
+ =?utf-8?B?K2lwd25JMGlab01jM0dFbkNPVTYwbExOWGw0QlB0RVZudGFjVS9NQjR5WTE1?=
+ =?utf-8?B?YTlLZDhZL0dMQ2hDemwzWFhjREs1dlFTM0hQWm9Ta2lYdmVxRFVTVFBxSTJK?=
+ =?utf-8?B?cTBsdE92eFJFcGJFWTMvS3BrVU4zOS9PdWFES2twRExWTVNJdE1oWlhrUzdz?=
+ =?utf-8?B?enBlUHh1TTJmWC9XWHJmTlJucUZsTjdqcThMayt2RXByNnFKaFh3enpDVXZo?=
+ =?utf-8?B?TGxSTWpnZndCZ2x5azRjUGFLUjVBZTBIcVBQRUFZeW5UamhXTVQwS0tVbmsr?=
+ =?utf-8?B?ejZpMXd0eTFJbkx3STFXZG9YdnZiMVBwWmdodTBsZzB0NG9TYkZJUXhKL215?=
+ =?utf-8?B?VlhsVUUvNlZWRHpBMjRhajVYOVZBZzFTYzd2OXlqRnpxM0RwQmdpbS91VGdE?=
+ =?utf-8?B?U0tmUWsya0V4QWh1T0xTQlJkcEZidzZsZVBaK0JOZUJJU1AyUFozTTEwNFNs?=
+ =?utf-8?B?elI4bE5QMm1FNHNuaUhLc0wzNkhFZWlXVE1zMnlaeEdsNXpaK0dYcjhBUHZ5?=
+ =?utf-8?B?RmlQUUdsdlY3L1ExbzYrMi9RVXlLdmYrWkl0YmJXRGtHSm5sOTloTlh4MkFi?=
+ =?utf-8?B?d0NXZytscTNUSW5KYWxVb2cvRGc3RDJGSVh2VWIzeTN1UjJGdDRJV1J1bmsy?=
+ =?utf-8?B?T24rSzRiY0s3ZjVrNE5QdzdYQ0ZvMHMvenRXbjVsVnRWTTl1RDdMMFJrdGtX?=
+ =?utf-8?B?RGJneHZmc3M4MTYrRUNwKzlmZ3VpbWppWEZEckpGdSs2aFJsSTRGa29uTlBP?=
+ =?utf-8?B?eGUzdHcyMG02ZFgxaHJyWFZKSjJhS3JjS0FVUlZwdk5XcFNpWjh6eUg2b3Z6?=
+ =?utf-8?B?VkYrZXlVR3djV2s4QlNXTEErN1R2RTYwb1YvR2hmQ29MY2NjY25jeFFscFdj?=
+ =?utf-8?Q?DLevklNMA6oZIidtXyUy00J3DO4QeS44gAIaO?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5a6e2ba-6c21-4f7f-ae6c-08dec131bfbf
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 05:34:15.1145
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yarG2S4AazaLqBLKgsp3Ej3W4psPEiuowUXpeJ6iYrgcQVrwuX5VDOsyuPCdtEk8JVRht8fReMBk2QJkGubaOQB/tKQiOMkPQcwgpmD8zr8xpDPkSJfFhti8CPiCwvYC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8150
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Disabling the module clock at the end of `probe()` for non-console=
- ports causes a kernel panic when the serial core queries the port status (=
-e.g., via `/proc/tty/driver/serial`). The driver does not implement a `.pm`=
- callback or use `pm_runtime`. Consequently, `uart_change_pm()` acts as a n=
-o-op, and `uport->ops->get_mctrl()` performs an unclocked MMIO read of `REG=
-_STAT`.
-- [High] A spurious interrupt arriving while the port is closed will cause =
-a kernel panic due to the clock being disabled. The main IRQ is requested w=
-ithout `IRQF_NO_AUTOEN` (or similar mechanisms to mask it at the irqchip). =
-If triggered, the ISR unconditionally accesses unclocked MMIO registers.
---
+This patchset is a continuous of v2, it mainly resolves some concerns
+reported by sashiko-bot.
 
-commit 2e7068bb1afe0ba0b9820a896f0d2535ea3517c9
-Author: Rosen Penev <rosenp@gmail.com>
+Patch #1 fix Type-C switch resource leak if probe() fails.
+Patch #3 add runtime PM support to avoid register access issue if the
+      USB controller enters into runtime suspended state, in this state
+      accessing USB PHY register may lack some resources. This will also
+      avoid regulator leak if power_on() fails.
+Patch #4 add debug control register regmap
+Patch #5 correct i.MX8MP USB runtime wakeup issue after introduce runtime
+      PM support.
 
-serial: mxs-auart: fix IRQ registration ordering and manage console clock
+Link to v2:
+ - https://lore.kernel.org/linux-phy/20260512101046.1498096-1-xu.yang_2@nxp.com/
+ - https://lore.kernel.org/linux-phy/20260512101212.1498223-1-xu.yang_2@nxp.com/
 
-This commit moves the main UART IRQ registration after uart_add_one_port() =
-to
-ensure port states are initialized before the handler runs, and masks
-interrupts to prevent spurious IRQs. It also disables the module clock for
-non-console ports after probe, assuming startup will re-enable it on port
-open.
+---
+Felix Gu (1):
+      phy: fsl-imx8mq-usb: fix typec switch leak on probe error path
 
-> diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auar=
-t.c
-> index 60a683a497405..35ba2ae740976 100644
-> --- a/drivers/tty/serial/mxs-auart.c
-> +++ b/drivers/tty/serial/mxs-auart.c
-[ ... ]
-> @@ -1627,9 +1623,28 @@ static int mxs_auart_probe(struct platform_device =
-*pdev)
-[ ... ]
-> +	/*
-> +	 * Request the main IRQ after uart_add_one_port so that
-> +	 * s->port.state and s->port.lock are initialized before
-> +	 * the handler can run in response to a bootloader-left
-> +	 * interrupt.
-> +	 */
-> +	ret =3D devm_request_irq(&pdev->dev, irq, mxs_auart_irq_handle, 0,
-> +			       dev_name(&pdev->dev), s);
+Xu Yang (4):
+      phy: fsl-imx8mq-usb: set usb phy to be wakeup capable
+      phy: fsl-imx8mq-usb: add runtime PM support
+      phy: fsl-imx8mq-usb: add control register regmap
+      phy: fsl-imx8mq-usb: keep PHY power domain runtime always-on for i.MX8MP
 
-[Severity: High]
-Does this leave us vulnerable to a crash if a spurious interrupt arrives
-while the port is closed?
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 125 ++++++++++++++++++++---------
+ 1 file changed, 88 insertions(+), 37 deletions(-)
+---
+base-commit: 08484c504b55a98bd100527fbe10a3caf55ff3ff
+change-id: 20260602-imx8mp-usb-phy-improvement-4272d308d862
 
-The main IRQ is requested without IRQF_NO_AUTOEN (or similar mechanisms), so
-it remains unmasked at the interrupt controller. If an interrupt fires after
-the clock is disabled below, mxs_auart_irq_handle() will perform an
-unconditional unclocked MMIO read:
+Best regards,
+--  
+Xu Yang <xu.yang_2@nxp.com>
 
-drivers/tty/serial/mxs-auart.c:mxs_auart_irq_handle() {
-	...
-	stat =3D mxs_read(s, REG_STAT);
-	...
-}
-
-[ ... ]
-> @@ -1641,10 +1656,16 @@ static int mxs_auart_probe(struct platform_device=
- *pdev)
->  			 (version >> 16) & 0xff, version & 0xffff);
->  	}
-> =20
-> -	return 0;
-> +	/*
-> +	 * Disable clock - startup will re-enable when the port is opened.
-> +	 * For the console port the clock must stay prepared so that
-> +	 * auart_console_write() can safely call clk_enable() from
-> +	 * atomic context.
-> +	 */
-> +	if (!uart_console(&s->port))
-> +		clk_disable_unprepare(s->clk);
-
-[Severity: High]
-Will this cause a crash when the serial core queries the port status (e.g.,
-when reading /proc/tty/driver/serial)?
-
-The serial core invokes uart_line_info(), which calls uport->ops->get_mctrl=
-()
-on the port. Because this driver lacks a .pm callback and doesn't use
-pm_runtime, the serial core's uart_change_pm() acts as a no-op and the clock
-will remain disabled.
-
-This results in mxs_auart_get_mctrl() executing an unclocked MMIO read:
-
-drivers/tty/serial/mxs-auart.c:mxs_auart_get_mctrl() {
-	...
-	u32 stat =3D mxs_read(s, REG_STAT);
-	...
-}
-
-> =20
-> -out_free_qpio_irq:
-> -	auart_port[s->port.line] =3D NULL;
-> +	return 0;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603025857.2871=
-48-1-rosenp@gmail.com?part=3D3
