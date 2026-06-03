@@ -1,176 +1,142 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB1547884F;
-	Wed,  3 Jun 2026 12:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2589E47A0B6;
+	Wed,  3 Jun 2026 12:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780488751; cv=none; b=IGhL9USf4BaD9wJTCLWh50og97E5IdLnOjoIhS8NTy6uZoXcdV4zvSVPfopYnlDlFWSchq+Zoa/ZNPO9Nrwxv3lPhRsCjVIoPbmGIvw5vr12a1bE8cTHbmowXUTMvIdAQF0LS9ONobaqZEQZk5+CG4+dWSk8xI4Rn02k30GZbVc=
+	t=1780488832; cv=none; b=DxQzlY9Enzu2RJbUibLKxF5+EJdt+cDGf8ufLedfQGwYeZNieRbsvV/xoJVgap3JKEbFVXvevdo/eDt5UPEAL4BNJGx5sS7Yj2XazxQYG7Fp4WaevFCEEFl6NZUQypkXKSGgaA7AUZiUUKa8w/BQRy13HG5OTX/mlvNOlk4vRAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780488751; c=relaxed/simple;
-	bh=d3EykXjPdTOzofqzcPyCOaTQ0ATiB33JeyMELyx3OOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fZSLXiLP5VCE1TuBKvtSbDFNk2QKzyAAixmx4s2dVko77z/njNpyLxZ08yByhFyKtyK0aIttg0NM2Tm0+OIfNJIvg+XcdQ/D/9S0+Wwa4VlG9EeMGViThLGHu0Db1WDyBL4KjySzIjVH0k1A/hsIZQ1dQldZ4L4vp+HCm7DJrOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WqS1SiX8; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780488832; c=relaxed/simple;
+	bh=g6SJ1Mf9OfM3frbGGn2BFZd4iZ6PWOEr6iiohNogedQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=IurG37fqfyaYFziBz6E808ogW3LzHGpwNnXbAZfjYCLJbjcImZMJPjr8wCtAJOdDyLrQUetl9Ciu9Fx7IwGJ4IjxPVBHMvQ7jzGwB/hGwgcU4Em46iX1qdda56uoCMW3LQtI3Ox9bpF2AIciKyfXBGoms+/SJONltdbuYJfIcjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Of9U9Ow/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WqS1SiX8"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 205D24E400BF;
-	Wed,  3 Jun 2026 12:12:28 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DFA0C6073E;
-	Wed,  3 Jun 2026 12:12:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 48FB510888413;
-	Wed,  3 Jun 2026 14:11:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780488742; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=48ypl4N/Z9PEOrZi5s882vnkw+L0W6ufixnULaCX8wY=;
-	b=WqS1SiX8JxgfCWjKbfGrN6L6Q3QYEVKtX9eatJz9iVzPqdb59EF2wfORgl6E1oiCCYOL6h
-	61ETQH6hQR3Buc4PxFXV8xJT2J5xNuIRWeEXwCZRhaxs5XLVqNUthCgehn5gJAgDWr5D+V
-	EDn8WSCnJ0fr/3eDUJx++tiwrZ5WSI35nVYVUdYn3doe/iUdJ7p9DoQU59Ef1MvT6hoBjc
-	7jEjYscg5qvEtTKsFwWeeKNcZMVVM6zgOvZnXTK6b1ZDBo1eLL0VN631t+RjK9av9NXAVA
-	YYmM055EJj11NnypQXGQ/iJgKGei6RU0g5MfNttmfc+5/XNEQ2JJEvOyMVoU4Q==
-Date: Wed, 3 Jun 2026 14:11:47 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: "Alvin =?UTF-8?B?xaBpcHJhZ2E=?=" <alsi@bang-olufsen.dk>, "J.M.B.
- Downing" <jonathan.downing@nautel.com>, "Martin =?UTF-8?B?UG92acWhZXI=?="
- <povik+lin@cutebit.org>, "Nuno =?UTF-8?B?U8Oh?=" <nuno.sa@analog.com>, "Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= (The Capable Hub)"
- <u.kleine-koenig@baylibre.com>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Arnaud Pouliquen
- <arnaud.pouliquen@foss.st.com>, Baojun Xu <baojun.xu@ti.com>, Bartosz
- Golaszewski <brgl@kernel.org>, Ben Bright <ben.bright@cirrus.com>, Benson
- Leung <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, Binbin
- Zhou <zhoubinbin@loongson.cn>, Bram Vlerick
- <bram.vlerick@openpixelsystems.org>, Charles Keepax
- <ckeepax@opensource.cirrus.com>, Chen-Yu Tsai <wens@kernel.org>, Cheng-Yi
- Chiang <cychiang@chromium.org>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Daniel Mack
- <daniel@zonque.org>, Dario Binacchi <dario.binacchi@amarulasolutions.com>,
- David Rhodes <david.rhodes@cirrus.com>, Fabio Estevam <festevam@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Frank Li
- <Frank.Li@nxp.com>, Fred Treven <fred.treven@cirrus.com>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Guenter Roeck
- <groeck@chromium.org>, Guoqing Jiang <guoqing.jiang@canonical.com>, Haojian
- Zhuang <haojian.zhuang@gmail.com>, HariKrishna Sagala
- <hariconscious@gmail.com>, Heiko Stuebner <heiko@sntech.de>, Hsieh Hung-En
- <hungen3108@gmail.com>, James Ogletree <jogletre@opensource.cirrus.com>,
- Jarkko Nikula <jarkko.nikula@bitmer.com>, Jaroslav Kysela <perex@perex.cz>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Jerome Brunet
- <jbrunet@baylibre.com>, Jihed Chaibi <jihed.chaibi.dev@gmail.com>, Jonathan
- Hunter <jonathanh@nvidia.com>, Kevin Cernekee <cernekee@chromium.org>,
- Kevin Hilman <khilman@baylibre.com>, Kevin Lu <kevin-lu@ti.com>, Kirill
- Marinushkin <k.marinushkin@gmail.com>, Kiseok Jo
- <kiseok.jo@irondevice.com>, Krzysztof Kozlowski <krzk@kernel.org>, Kunihiko
- Hayashi <hayashi.kunihiko@socionext.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>, Luca Ceresoli
- <luca.ceresoli@bootlin.com>, M R Swami Reddy <mr.swami.reddy@ti.com>, Mark
- Brown <broonie@kernel.org>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, Max
- Filippov <jcmvbkbc@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Nicolas Ferre
- <nicolas.ferre@microchip.com>, Nicolas Frattaroli
- <frattaroli.nicolas@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Oder
- Chiou <oder_chiou@realtek.com>, Olivier Moysan
- <olivier.moysan@foss.st.com>, Paul Cercueil <paul@crapouillou.net>, Peter
- Rosin <peda@lysator.liu.se>, Piotr Wojtaszczyk
- <piotr.wojtaszczyk@timesys.com>, Qianfeng Rong <rongqianfeng@vivo.com>, Ray
- Jui <rjui@broadcom.com>, Richard Fitzgerald <rf@opensource.cirrus.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>, Samuel Holland
- <samuel@sholland.org>, Sascha Hauer <s.hauer@pengutronix.de>, Scott Branden
- <sbranden@broadcom.com>, Sen Wang <sen@ti.com>, Sharique Mohammad
- <sharq0406@gmail.com>, Shenghao Ding <shenghao-ding@ti.com>, Shengjiu Wang
- <shengjiu.wang@gmail.com>, Steven Eckhoff
- <steven.eckhoff.opensource@gmail.com>, Support Opensource
- <support.opensource@diasemi.com>, Sylwester Nawrocki
- <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, Thierry Reding
- <thierry.reding@kernel.org>, Tim Bird <tim.bird@sony.com>, Troy Mitchell
- <troy.mitchell@linux.spacemit.com>, Tzung-Bi Shih <tzungbi@kernel.org>,
- Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, Vijendar Mukunda
- <Vijendar.Mukunda@amd.com>, Vishwas A Deshpande
- <vishwas.a.deshpande@ti.com>, Vladimir Zapolskiy <vz@mleia.com>, Xiubo Li
- <Xiubo.Lee@gmail.com>, Yixun Lan <dlan@kernel.org>, Zhang Yi
- <zhangyi@everest-semi.com>, chrome-platform@lists.linux.dev,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-sound@vger.kernel.org,
- spacemit@lists.linux.dev
-Subject: Re: [PATCH 03/83] ASoC: codecs: idt821034: don't use array if
- single pattarn
-Message-ID: <20260603141147.61943cf0@bootlin.com>
-In-Reply-To: <87y0h7hqxo.wl-kuninori.morimoto.gx@renesas.com>
-References: <8733zfj5jj.wl-kuninori.morimoto.gx@renesas.com>
-	<87y0h7hqxo.wl-kuninori.morimoto.gx@renesas.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Of9U9Ow/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7956B1F00893;
+	Wed,  3 Jun 2026 12:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780488830;
+	bh=LZsBl6rZ0GKZDKBKqKsNq/XCzKBIN0c4jpA2+usFrT8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Of9U9Ow/5dmRs71dC6rKR+/Cw1TusjJbPWdNZ85h2tb9AVCznUQ39eurlP4yqh1d3
+	 VG4hgjbWERN++CIVBGYy4dvWo/kyrR3cWP8XIjypGee2/0E07UgPKV7hvCIA4CoKYr
+	 IQmzvO/h9BO89dJOXptQ0DlKhTVb58+9pinaRXb1AzrYlRSKJnXgMzOizIL92On9rT
+	 8m02La3X6Nf1Bq/Nqs2KAhASFCodYOGr/CEUlVLVKdZuoeMf2XaAiLKHmBj0TZFz7w
+	 Diel564XycxUqrdIa3zxOlJxEi9XklH0C0OApICLrvngA6B2vvOW5ObIG9m1p2TxYx
+	 6G1SWI75U4GHg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v1 07/12] arm64: dts: imx8mp-var-som-symphony: add HDMI
+ support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
+Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <35c4e4182d90db29f447d0ea96794d7230a75fac.1780487415.git.stefano.r@variscite.com>
+References: <35c4e4182d90db29f447d0ea96794d7230a75fac.1780487415.git.stefano.r@variscite.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 03 Jun 2026 12:13:49 +0000
+Message-Id: <20260603121350.7956B1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Kuninori,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The `lcdif3` display controller is not enabled, breaking the HDMI =
+video pipeline because it is the sole video source for the HDMI interface o=
+n the i.MX8MP.
+- [High] The `hdmi_tx` node lacks pin multiplexing configuration for the DD=
+C and HPD pins, which breaks EDID reading and Hot Plug Detect.
+--
 
-On Tue, 26 May 2026 01:58:59 +0000
-Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
+commit aea2bfe7fe7a358c3badcef46d4148e23cb37818
+Author: Stefano Radaelli <stefano.r@variscite.com>
 
-> Because it is confusable during debugging ASoC FW update, tidyup
-> auto format style not to use array if single pattern case.
-> 
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> ---
->  sound/soc/codecs/idt821034.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
-> 
-> diff --git a/sound/soc/codecs/idt821034.c b/sound/soc/codecs/idt821034.c
-> index 39bafefa6a186..084090ccef77a 100644
-> --- a/sound/soc/codecs/idt821034.c
-> +++ b/sound/soc/codecs/idt821034.c
-> @@ -860,18 +860,17 @@ static int idt821034_dai_startup(struct snd_pcm_substream *substream,
->  	return 0;
->  }
->  
-> -static const u64 idt821034_dai_formats[] = {
-> +static const u64 idt821034_dai_formats =
->  	SND_SOC_POSSIBLE_DAIFMT_DSP_A	|
-> -	SND_SOC_POSSIBLE_DAIFMT_DSP_B,
-> -};
-> +	SND_SOC_POSSIBLE_DAIFMT_DSP_B;
->  
->  static const struct snd_soc_dai_ops idt821034_dai_ops = {
->  	.startup      = idt821034_dai_startup,
->  	.hw_params    = idt821034_dai_hw_params,
->  	.set_tdm_slot = idt821034_dai_set_tdm_slot,
->  	.set_fmt      = idt821034_dai_set_fmt,
-> -	.auto_selectable_formats     = idt821034_dai_formats,
-> -	.num_auto_selectable_formats = ARRAY_SIZE(idt821034_dai_formats),
-> +	.auto_selectable_formats     = &idt821034_dai_formats,
-> +	.num_auto_selectable_formats = 1,
+arm64: dts: imx8mp-var-som-symphony: add HDMI support
+
+Enable HDMI output on Symphony iMX8MP Carrier Board along with audio
+support.
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts b/=
+arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
+> index fe16996494141..6878b89c4db8e 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
+
+[ ... ]
+
+> @@ -74,6 +86,41 @@ reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
+>  		states =3D <3300000 0x0 1800000 0x1>;
+>  		vin-supply =3D <&ldo5>;
+>  	};
+> +
+> +	sound-hdmi {
+> +		compatible =3D "fsl,imx-audio-hdmi";
+> +		model =3D "audio-hdmi";
+> +		audio-cpu =3D <&aud2htx>;
+> +		hdmi-out;
+> +	};
+> +};
+> +
+> +&aud2htx {
+> +	status =3D "okay";
+> +};
+> +
+> +&hdmi_pai {
+> +	status =3D "okay";
+> +};
+> +
+> +&hdmi_pvi {
+> +	status =3D "okay";
+> +};
+> +
+
+[Severity: High]
+Does the lcdif3 display controller also need to be enabled here?
+
+On the i.MX8MP architecture, the HDMI transmitter receives its video stream
+from the Parallel Video Interface (hdmi_pvi), which is driven exclusively by
+the lcdif3 display controller.
+
+Since lcdif3 is disabled in the base imx8mp.dtsi, omitting its enablement
+means the DRM framework will lack a CRTC for the HDMI pipeline, causing vid=
+eo
+output initialization to fail.
+
+> +&hdmi_tx {
+> +	status =3D "okay";
+> +
+
+[Severity: High]
+Does this node need explicit pin multiplexing configuration for the DDC and
+HPD pins?
+
+Without pinctrl-names and pinctrl-0 properties here, the configuration reli=
+es
+on the bootloader. If the kernel does not configure the internal pull-ups f=
+or
+the I2C DDC bus and route the pins correctly, Hot Plug Detect and EDID reads
+will fail, preventing the driver from detecting display capabilities.
+
+> +	ports {
+> +		port@1 {
+> +			hdmi_tx_out: endpoint {
+> +				remote-endpoint =3D <&hdmi_in>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&hdmi_tx_phy {
+> +	status =3D "okay";
 >  };
->  
->  static struct snd_soc_dai_driver idt821034_dai_driver = {
+> =20
+>  &i2c3 {
 
-Same typo in the commit title as in patch 2:
-s/pattarn/pattern/
-
-Or even
-s/pattarn/item/
-
-With that fixed,
-
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-
-Best regards,
-Hervé
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780487415.gi=
+t.stefano.r@variscite.com?part=3D7
