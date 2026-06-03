@@ -1,116 +1,293 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03D739BFFC;
-	Wed,  3 Jun 2026 07:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA0F2C08BC;
+	Wed,  3 Jun 2026 07:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780470296; cv=none; b=d43BQnhN46s4evczW467XSAEVaF33UUQ0L1Mhc1EpWBjkNmSeXGYic4rKds+o/7uy72CE+fgmmL7/MO8w31i8ajP7On3AeyB0COQvQo97CgPjyn/ghznjXzRqA5ysNogeruNJenAOdKADgNOwQkXropVq7MNHY13UkEifGHQGvA=
+	t=1780470335; cv=none; b=gJirvYo0Vm3Q/gZ+4D3CcCs0ZKoB+PrzjnIDNsvGNkcj2N0Ialy36Svwf+brysZ/6juoeVPFxOycOPkawMH6MhfDoxu1PG8VhnXJoKWaBvA07+HyRVFIzbQPL/HL0qcsE+/KwKOmsowEDpUfrGELuYgkKiIk10tjLXeyl94JN2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780470296; c=relaxed/simple;
-	bh=bTVy3FAIZsqQF1unUBLrL1Tiy1sS6gTQkrGyju0A2UI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZxBNl6hS+vLFQ+GSqi2OTRxTtqegJUVIo6N34LG+wHa+xrwOF/Uj/6joNOwBMliBQQYG6BwTbcdu1oQQVS6ckO0B9QDees1EseYgbuDOSIeY+Ux5jVqa2f3mYrdfbmuDn+jByin8yrZcnbdvydVqmr/4ETmN6MMLcvkGVQhYZ+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7GUF5l8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780470335; c=relaxed/simple;
+	bh=obhaxkDBbofL2T3y02WGHzlUpfinhZPfwomPxGaN1FQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=K9zqILxPlbmQjyDsT12YNeZwk8VjodL5zKX+CH58KtlyKGcm8p7AJkNClAg0zDNFOfQoFQ+wiTGgeSLIBBuKhXpfPe/QGz+ITWF4r+JSTNp3ygcE62tDqS85sJFAGV/9WubHzMdTCLt/tGlJ/7w2/LudO2HuChJeyW+qwFZLdfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPasc9NF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7GUF5l8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AB01F00893;
-	Wed,  3 Jun 2026 07:04:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPasc9NF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641461F00893;
+	Wed,  3 Jun 2026 07:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780470295;
-	bh=Z6/ckCFcgr4XWtYBVVRtL+Ct7dfjpf8dESf8wUMG9iA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=k7GUF5l8oVabuD+5BF+MS3uw4cnRpVWa0H9A8XsabOvcehxVWo/UOmOl7lbVnx/xR
-	 vXTAqLIG03CbQJJvJ2Xudfmx2KTlfBE6II/bziCPeyHDEx3ItGbaKDCU2iNhpmhj8X
-	 nhyCi7ALSVu5THk832x+1HOlZHA+bDbNQ4LNIEUb8XQkl3nuN04yr2yrsLI87QXKVC
-	 b6+r/7zveWoKebATm7JJZqLTqcgpWRZF7yf74WcjFe56NfWlWrc+8wotLW9P9EGYl1
-	 47PVl5HfiM1W4WxxR6r5SnR11WQglvtEUpxZ3E79C6zLpJpLfkUsgNLUK9ux1E7oqt
-	 lQCmLonveBqVw==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Chanwoo Choi <cw00.choi@samsung.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Javier Martinez Canillas <javier@dowhile0.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- Karel Balej <balejk@matfyz.cz>, Matti Vaittinen <mazziesaccount@gmail.com>, 
- Marek Vasut <marek.vasut+renesas@gmail.com>, 
- Samuel Kayode <samkay014@gmail.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- linux-renesas-soc@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org
-In-Reply-To: <cover.1779878004.git.u.kleine-koenig@baylibre.com>
-References: <cover.1779878004.git.u.kleine-koenig@baylibre.com>
-Subject: Re: [PATCH v1 0/3] regulator: Use named initializers for
- platform_device_id arrays
-Message-Id: <178041297263.93058.3488426549945445903.b4-ty@b4>
-Date: Tue, 02 Jun 2026 16:09:32 +0100
+	s=k20260515; t=1780470333;
+	bh=1KSrGaZqDQ3Mx4+dmtoKcc8eUVkR3wqHBa3kGRLwpZU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=JPasc9NFlnGw3KzoaiNRW9/m/7zcCXDe+xo36qT6yyoqnSVgQELmvw2zDc9R+IINL
+	 LJ5ORgr4sbFZ8sQSo6v+UK/vPzBt2HG3vrbr4CMd7Fj9wQYAgXQar/1S8gxQE/aM/a
+	 7xJuKgIic+5xqxNrOHlAwd0vXAuqu4A/hyhuQKvk6yxO93NegGC7AVQI8LfdcJQcFX
+	 1P+84QPcS71aDTeFN/AtpmZpB/neKZRljmeX06/HHkyVkp16ttF3E7Ps/3ZwuFIc4x
+	 ZwRjn3gZn1jZe4ptANtPQ6/gZlIo/4imlVrRJmxQVZTN5/z0ORUbTOo5MzxGvr9JTj
+	 0c76M5DHbaHqA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 3/3] PCI: imx6: Add root port reset to support link
+ recovery
+Reply-To: sashiko-reviews@lists.linux.dev
+To: hongxing.zhu@oss.nxp.com
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260603062510.3767610-4-hongxing.zhu@oss.nxp.com>
+References: <20260603062510.3767610-4-hongxing.zhu@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 03 Jun 2026 07:05:32 +0000
+Message-Id: <20260603070533.641461F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1683; i=broonie@kernel.org;
- h=from:subject:message-id; bh=bTVy3FAIZsqQF1unUBLrL1Tiy1sS6gTQkrGyju0A2UI=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqH9IR+5XenVVA9mLHD2HeO7sMNeqC+VxerFOpf
- IwsWOpOWzOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCah/SEQAKCRAk1otyXVSH
- 0IP9CACDwCfsHAyOc8wD19LkmpqTPvPL3MCjfuetPTU/gdAUVVKU3hJDg0mrEFSFtECISuQKNp+
- IDZhuxqSzlFO9vZYfTxelGP2i+YDA5qKrvSVWhUh/o2ocvKdqAkCTAbqKDoAO+zPRKhLq8LdQA4
- 3vAQ7MaG3XwQh+DPYWKKOf3XpJSfpAewhEfaGYKG8ZCqwCZJM8KNvEUXW4sjxWfxA0b5+BEiNj8
- VtqKQ41+jd8pBtR8CP3onpyOFmb1T4iAKTxhxbub7qPgS9U4TjBvYRFo5RlcuC6CP8ulHLffsFV
- uaG1JcYy7gUAXHRu8KISbRgIZxYDYJgHHdl9F7pN7BIG+fMS
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 27 May 2026 12:47:43 +0200, Uwe Kleine-König (The Capable Hub) wrote:
-> regulator: Use named initializers for platform_device_id arrays
-> 
-> Hello,
-> 
-> this series targets to use named initializers for platform_device_id
-> arrays. In general these are better readable for humans and more robust
-> to changes in the respective struct definition.
-> 
-> [...]
+Thank you for your contribution! Sashiko AI review found 9 potential issue(=
+s) to consider:
+- [High] Read-modify-write operations on mixed RW/W1C register silently dro=
+p interrupts.
+- [High] Shared interrupt handler checks status but fails to verify if the =
+interrupt is enabled.
+- [High] Ignored return value of `dw_pcie_wait_for_link()` hides downstream=
+ link recovery failures.
+- [High] Lockless traversal of PCI bus devices in an asynchronous IRQ threa=
+d exposes the kernel to Use-After-Free and list corruption.
+- [High] Link down interrupt is not disabled during system shutdown, causin=
+g an AXI bus fault and system hang.
+- [High] Failed root port reset leaves the controller unclocked while still=
+ active, causing a crash on subsequent PM suspend.
+- [High] Unprotected hardware indirect register access during root port res=
+et.
+- [Medium] Ignored negative error codes from `platform_get_irq_byname_optio=
+nal()` break probe deferral.
+- [Low] Build failure due to undefined functions and struct members.
+--
 
-Applied to
+commit 5bee25b25210b0bc28349bc8474d10204a25cd72
+Author: Richard Zhu <hongxing.zhu@nxp.com>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.2
+PCI: imx6: Add root port reset to support link recovery
 
-Thanks!
+The PCIe link can go down due to various unexpected circumstances. Add
+root port reset support to enable link recovery for the i.MX PCIe
+controller when the optional "intr" interrupt is present.
 
-[1/3] regulator: Drop unused assignment of platform_device_id driver data
-      https://git.kernel.org/broonie/regulator/c/4079e9d91b40
-[2/3] regulator: Use named initializers for platform_device_id arrays
-      https://git.kernel.org/broonie/regulator/c/d35028340d75
-[3/3] regulator: Unify usage of space and comma in platform_device_id arrays
-      https://git.kernel.org/broonie/regulator/c/0eb17367814a
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
+er/dwc/pci-imx6.c
+> index 773ab65b2afac..aa5c90be23df8 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+[ ... ]
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> @@ -1394,6 +1401,13 @@ static int imx_pcie_host_init(struct dw_pcie_rp *p=
+p)
+> =20
+>  	imx_setup_phy_mpll(imx_pcie);
+> =20
+> +	/*
+> +	 * Callback invoked by PCI core when link down is detected and
+> +	 * recovery is needed.
+> +	 */
+> +	if (pp->bridge)
+> +		pp->bridge->reset_root_port =3D imx_pcie_reset_root_port;
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+[Severity: Low]
+Does the reset_root_port member actually exist in struct pci_host_bridge?=20
+This appears to cause a build failure since the struct member is undefined.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+[ ... ]
 
-Thanks,
-Mark
+> @@ -1661,6 +1675,9 @@ static int imx_pcie_suspend_noirq(struct device *de=
+v)
+>  	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
+>  		return 0;
+> =20
+> +	if (imx_pcie->lnk_intr > 0)
+> +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
+> +				  IMX95_LINK_DOWN_INT_EN);
 
+[Severity: High]
+Since IMX95_LINK_INT_CTRL_STS mixes an RW enable bit and a write-1-to-clear=
+=20
+status bit, will using regmap_clear_bits perform a read-modify-write cycle=
+=20
+that inadvertently clears pending status bits if they are latched during th=
+e=20
+read?
+
+[ ... ]
+
+> +static irqreturn_t imx_pcie_lnk_irq_isr(int irq, void *priv)
+> +{
+> +	struct imx_pcie *imx_pcie =3D priv;
+> +	struct dw_pcie *pci =3D imx_pcie->pci;
+> +	struct device *dev =3D pci->dev;
+> +	u32 val;
+> +
+> +	regmap_read(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS, &val);
+> +	if (val & IMX95_LINK_DOWN_INT_STS) {
+
+[Severity: High]
+Is it possible for this shared interrupt handler to be invoked while the=20
+interrupt is disabled, see the latched status bit, and erroneously return=20
+IRQ_WAKE_THREAD?=20
+
+If a PME interrupt fires while the link down interrupt is intentionally=20
+disabled, the ISR will still claim it. Would it be safer to check if=20
+IMX95_LINK_DOWN_INT_EN is also set before proceeding?
+
+> +		dev_dbg(dev, "PCIe link down detected, initiating recovery\n");
+> +		/* Clear link down interrupt status by writing 1b'1 to it */
+> +		regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
+> +				IMX95_LINK_DOWN_INT_STS);
+
+[Severity: High]
+Similar to the regmap_clear_bits call above, could using regmap_set_bits he=
+re=20
+perform a read-modify-write cycle that inadvertently clears other pending=20
+write-1-to-clear bits in the same register?
+
+> +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
+> +				  IMX95_LINK_DOWN_INT_EN);
+> +
+> +		return IRQ_WAKE_THREAD;
+> +	}
+> +
+> +	return IRQ_NONE;
+> +}
+> +
+> +static irqreturn_t imx_pcie_lnk_irq_thread(int irq, void *priv)
+> +{
+> +	struct imx_pcie *imx_pcie =3D priv;
+> +	struct dw_pcie *pci =3D imx_pcie->pci;
+> +	struct dw_pcie_rp *pp =3D &pci->pp;
+> +	struct pci_dev *port;
+> +
+> +	for_each_pci_bridge(port, pp->bridge->bus)
+
+[Severity: High]
+Is it safe to iterate the bus list locklessly in this IRQ thread?=20
+Could concurrent modifications to the PCI bus list cause a use-after-free=20
+since the pci_bus_sem is not held?
+
+> +		if (pci_pcie_type(port) =3D=3D PCI_EXP_TYPE_ROOT_PORT)
+> +			pci_host_handle_link_down(port);
+
+[Severity: Low]
+Does the pci_host_handle_link_down function exist in the tree? This appears=
+=20
+to be an undefined function call which will cause a build failure.
+
+> +
+> +	regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
+> +			IMX95_LINK_DOWN_INT_EN);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int imx_pcie_reset_root_port(struct pci_host_bridge *bridge,
+> +				    struct pci_dev *pdev)
+> +{
+> +	struct pci_bus *bus =3D bridge->bus;
+> +	struct dw_pcie_rp *pp =3D bus->sysdata;
+> +	struct dw_pcie *pci =3D to_dw_pcie_from_pp(pp);
+> +	struct imx_pcie *imx_pcie =3D to_imx_pcie(pci);
+> +	int ret;
+> +
+> +	imx_pcie_msi_save_restore(imx_pcie, true);
+> +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT))
+> +		imx_pcie_lut_save(imx_pcie);
+
+[Severity: High]
+The i.MX95 PCIe hardware uses an indirect access mechanism for LUTs. Since=
+=20
+this reset executes asynchronously in a threaded IRQ, should imx_pcie->lock=
+=20
+be acquired before calling imx_pcie_lut_save to prevent concurrent=20
+operations from clobbering the shared indirect address indices?
+
+> +	imx_pcie_stop_link(pci);
+> +	imx_pcie_host_exit(pp);
+> +
+> +	ret =3D imx_pcie_host_init(pp);
+> +	if (ret) {
+> +		dev_err(pci->dev, "Failed to re-init PCIe\n");
+> +		return ret;
+> +	}
+> +	ret =3D dw_pcie_setup_rc(pp);
+> +	if (ret)
+> +		goto err_host_deinit;
+> +
+> +	imx_pcie_start_link(pci);
+> +	dw_pcie_wait_for_link(pci);
+
+[Severity: High]
+Should the return value of dw_pcie_wait_for_link be checked here?=20
+By ignoring it, the function might falsely report success to the PCI core=20
+even if downstream link recovery fails, which could lead to unsupported=20
+request aborts when accessing downstream devices.
+
+> +
+> +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT))
+> +		imx_pcie_lut_restore(imx_pcie);
+> +	imx_pcie_msi_save_restore(imx_pcie, false);
+> +
+> +	dev_dbg(pci->dev, "Root port reset completed\n");
+> +	return 0;
+> +
+> +err_host_deinit:
+> +	imx_pcie_host_exit(pp);
+
+[Severity: High]
+If the re-initialization fails and imx_pcie_host_exit disables the clocks,=
+=20
+the device still remains bound. If the system later initiates a suspend,=20
+will imx_pcie_suspend_noirq execute unconditionally and trigger a fatal=20
+external abort by attempting to read from the unclocked DBI registers?
+
+> +
+> +	return ret;
+> +}
+> +
+
+[ ... ]
+
+> @@ -1919,9 +2018,33 @@ static int imx_pcie_probe(struct platform_device *=
+pdev)
+>  			val |=3D PCI_MSI_FLAGS_ENABLE;
+>  			dw_pcie_writew_dbi(pci, offset + PCI_MSI_FLAGS, val);
+>  		}
+> +
+> +		/* Get link event irq if it is present */
+> +		imx_pcie->lnk_intr =3D platform_get_irq_byname_optional(pdev, "intr");
+> +		if (imx_pcie->lnk_intr > 0) {
+
+[Severity: Medium]
+If the interrupt controller is not yet ready, the platform irq function=20
+returns -EPROBE_DEFER. Does checking strictly for > 0 cause the driver to=20
+silently ignore this error code and fail to defer the probe, permanently=20
+disabling the link recovery functionality?
+
+[ ... ]
+
+> +err_host_deinit:
+> +	dw_pcie_host_deinit(&pci->pp);
+> +
+> +	return ret;
+>  }
+> =20
+>  static void imx_pcie_shutdown(struct platform_device *pdev)
+
+[Severity: High]
+The patch enables the link down interrupt during probe, but looking at=20
+imx_pcie_shutdown(), it does not disable it before asserting core reset.=20
+Does asserting the core reset drop the link and trigger the interrupt?=20
+If so, this could wake the threaded handler to access DBI registers while=20
+the core is in reset, causing a synchronous external abort.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603062510.3767=
+610-1-hongxing.zhu@oss.nxp.com?part=3D3
