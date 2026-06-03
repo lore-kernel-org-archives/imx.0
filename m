@@ -1,64 +1,64 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B5C3D47D0
-	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 22:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B4D4B8DF3
+	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 22:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780527254; cv=none; b=fHPyKQQp/xze83Ek5TE5+qLy0yTldN5dfMvd8gdA3di9a0LpyiVfEexWy77HwjpPoryoIBT4qL7VRH0VJsnFSsbOzfzIKsGqrQec0usyf8IK9yZ9VcdfQ057uI/gq3htF2ioITWSs5lAja0y69BN2XWavz4ub9X4ft8t2+xjF/A=
+	t=1780527254; cv=none; b=uezBGnncEASVfvSH+E/9WY+SSM2T9N1N2qIYPcEFbgDoNYDwXdKjbhvACYloHJ7Q/BT3hPYAIjDDAfLcLL0kKpuQVlEg9qrzuFVRT1yvpoRLOPjCmwQOy3j+OKmpjNfAxIwxj+7oLJmUQomAHlWLdmKWwyDa5hxkAJFJosiIEeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780527254; c=relaxed/simple;
-	bh=nYAVBK9yWXmZ8FEbBC2MUhh4ZhIgYxBfZRpmyskldx8=;
+	bh=qCfLsJoiwZN1FHIn/QReiEfRsi64SrW+21HyyLc6Y10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EEIo9Y/ciRs0rvEPAaUHLl3KT01QCfgiM5lANIH4igqUl9GYD6s2c+17Bjn6BDNvBhwmssmwNLb3hvXcuPq8euGYovhZAPDe0yodSAga3uFbOKty8jojAUzs/2vuu0upOT/ocKqyWxCVWkzN/hFHz7rYspdqdt3vupq1UrY97Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fA/bjxkQ; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version; b=e1WpKs3wqx5Wu4JHVp9183XXXHC2VTajE6STMxxsKDx0G34BM1IXI2VQtv77ugb20ka0Obr1rQkMT5BzZNaIQvWVhF1Lrl8Pck1zVcCcoAYOXXUbYmlTozIWu9oo7Ec2NkTp5YEcWr0uZE4vONi+G5uGrm8pJ8DmaR6axrEOqvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b0dl97TQ; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fA/bjxkQ"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-490b211ee6aso604185e9.3
-        for <imx@lists.linux.dev>; Wed, 03 Jun 2026 15:54:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0dl97TQ"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4908b92904fso900245e9.0
+        for <imx@lists.linux.dev>; Wed, 03 Jun 2026 15:54:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780527251; x=1781132051; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1780527252; x=1781132052; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bLH9imkqpbpmJAh8J9v3XS6EMAgKWrtcFsXCB/DHgBQ=;
-        b=fA/bjxkQOqPF7BNz0sKFu8Q364EUUh60gEOzKIBxOxp1CnLq6Y1GpE3/7mzqS1KrrH
-         lXjQ+UVN2jExx2MuUkzBIsTC031ZY5lmflwvNUqGOD2pkWT7nJPLc2z4aDwv4+0cosMO
-         RdPvzIj9bhOHczoajwK0iflZ40DrrnEPTS1CJY80LaDLzbiV4Pk2oPyhXWg6Qwpw0Ieg
-         Pnl4WpmONa++7ZPUj10G1gNijnZQNsdYfe7PKIyIeC7ryARCgBCrzyohHotywqLDQqOY
-         F8of83va4vJOr2Fw0rJSpfGoYdXH7L1sY3kZaAyUTGq9iwa1z+fTS3B2mmldU/M8DuJz
-         yhNQ==
+        bh=u3C+gaBKcvAuAu/9BkeM+uxTwGBBZ0/WtClg4XV9O2Y=;
+        b=b0dl97TQ+lltiEX9yEJLOXLXPqoXit0+GvQ3wju18DulBMNm0mdKA9I3gTSJRDbRP/
+         61YadN6ghOCjyTRIEvTtGAKQYTkVfGlCrrwgQut4POntHJ9a+33Yh/OF4B0H7ftJxkol
+         p5A2pkr9+1AHvoAanhBZ7Ins2xY/QOzyJsyNdKQYI3Ikeli9Ph66oBZSgeq62ytxocwe
+         +BeW0DNedmnzemIkLYtc28v6Y9Z1McsztsPt73ewg7NA1lMnx7G8D38cnWlQCWuB2gpV
+         N4kimYfxELmEmJTwxJL+SXqqSQxgumnc3W7AuY36oPQJ1dgzhNMJ5Iopd9n2SZEbbkjV
+         nUxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780527251; x=1781132051;
+        d=1e100.net; s=20251104; t=1780527252; x=1781132052;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bLH9imkqpbpmJAh8J9v3XS6EMAgKWrtcFsXCB/DHgBQ=;
-        b=GYfhEZkBIC/4Hgyr4Fr0JsGXMA67KQapKZI0WqKsGFv6xWzGPHf6dTuddlx4Rk/ccs
-         5QEYt7xVf3EyY5FO/J6m0jdp3c9D4qLb47Ndk08RXZyfvczRPB0nCwDxPj3OCCUyzXkN
-         jYkjLgE01zf7S/L2RjopJ9ULvx0tMfYtQXG22Y2D61wUDpfr+4OqZe3aRMQyMwYyklq9
-         ytKzVem4RvQB9n+EfLvw71EauGYt45o9cf8UjYuUZPw1kpcpY5VhIiPNN68F3B3IrkPT
-         3EX/JrcTryJ873IEjMpwXQYo2uZoQl/FSy57o4dFqyiK8Y/VhaIXi0+jMJLWvbi0w5dt
-         Mm+g==
-X-Forwarded-Encrypted: i=1; AFNElJ/jyePzz21ZL/91ABSEY/I3gXOUPJF25jjog2idaJbiHVdOAeYeL5YMHgW0lOP3lzdcDy8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw1gPgxFA5LxLY/d4dzCAenpeATHdXYg5bSDCmZRl2bKuSZbKPE
-	YSbrNauqHdPTxT/WVQCFge5NrgzRs+5W4YkIW73OwQqFFoLOtHEU+F5Q
-X-Gm-Gg: Acq92OHXqIqesoSBpaYF8Z3DsJuSotw/p8GIwcQMU104noYCCHAma9Zzg+OoCNPiWcb
-	L4fY8AwvzZe+I13nVBfZgEniLdgGOS6pc+STj7lV9MQp4z2prCtCpoFUEH68ZVyNHGZZauH2VIB
-	DzJC7wycbUFVGyJk2yXTjLGBtyQXZyiq8FZAwa7IW+oAU3qUJBBJv8JMhkbyNPVSShUKscPB7ZF
-	BgNwnRat8t/JUU2hyaiUJqepypR/5Z6K3TPZCTIupMAPdqmsNA+RTr93mkfQ/ItV3pNtutmnQ0/
-	NP3xdfdEHTm1Lsd9RVdNlLbfHl5nRHykBY2p5z9pmHh1JGZjma2LeWYHIw0nU2YIwc4TizNodMO
-	nNaqDv9YXZh4y8bs6lsIOky3kFFeP5ZyiGY8Rcxhr6e3vdOvkuJdIBGg3FHP/gFyE0TTd1nd8jP
-	ZTzSPp5ENd/FvNH5qBgYCMpX5riw6VfsruaZqSqsJkuKtu2axNlObc6tzhaRXgfiHhrepqu4wfm
-	olbYMmzKfVxqx3NU7Okd/J+qsmemzmBDXAXUfQSv/ojsgA=
-X-Received: by 2002:a05:600c:46ce:b0:490:abef:dae6 with SMTP id 5b1f17b1804b1-490b5eb0aeemr79808335e9.19.1780527250987;
-        Wed, 03 Jun 2026 15:54:10 -0700 (PDT)
+        bh=u3C+gaBKcvAuAu/9BkeM+uxTwGBBZ0/WtClg4XV9O2Y=;
+        b=Jqd/s/RLbeWIE12xQ9LGK1de+6Dm2sleUp6DD6duF/ZX4Fsawh5UdgOEJD09YAw7sQ
+         iJc7DZUSC6+fWQq8iXx+1j6Q2X0On7w4ThPBs+i8Acxk0ouGylFDkcFMLz6AIIy6p/Ai
+         IuWsLLcHNglLM850kd1/5Jko1Hl+QNVehcXQvkgJPy2XyMueSeFGnHlf2kwZeysZU1yj
+         skleYQVQxDS/PTFSqO6e7UxZPBTw+W3LFKNor7xMv8naK5fDPr6R4/t4hq4p2pUl5UcL
+         KsMHx+NI98ZJYUqufSicWVTqk3tapDv4vRITV/tr6KseDXijqfe1a02UNxtDCJLSYxtI
+         BMjg==
+X-Forwarded-Encrypted: i=1; AFNElJ/vdli3LAYU9F+58tJmAO8bAh8lVaTM8DVX57Z7akXiwJKQNhc3wq//L7EH/5iZjX3aVsI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YztHpjYZ2ReqOAWRaUZNUkr2Ku2QO5og8D0i6YckzMdt+3RDrsb
+	Rg/tCu6JE0HUUnbHRY1pD7d4RyqTXnbvf1S44OCSVMh0wQK4OuFRueQg
+X-Gm-Gg: Acq92OGkUwOtOWUuOu7po5okAFmalPHy9cDUaEKpF8mPzdRziUDlTSkHt55OLmzLo5k
+	XlRxRdBaoJTLqe2A8eutC8pYMMxjA/fTpWPSIG3FjApPBuXANGZRx16Sf1TtB2JFBMPwPOf6s6W
+	PUW40ofltMmF3WKyTBx3XNnVq3xZ2QgpgRSmdQcactvHizD6pbjejS2kKJ3o1HzWs6IWU8D3nnH
+	Wn8J+oDlOsPFmHQZcKg7ZoPY3Fv2PO22ZjVBAMGlKlRew4Qnc+5dc/2ymt8E0+KRxAYFfaUtJJD
+	9hEXUusNmB5KoNe+6g/Qw+rs6yh45lAmZrZUtV92qQv1HdzvQWoz/3kx14pv66p5efNx0WvhsP3
+	LkpDgSMog5oJkYJGsBsmG8b/qSt+9UxyRlygK0PiPEnYUycwubzmNfcCn28XKPgoeGQCSSww2r1
+	jkoCHVdU4GnPsFYbYzhDqtuvhHNEe/wHkrHLlFSYJZKCcIy9VvoANdpx+eSS/EpiuLOoDFPB7GS
+	cJM9E65n2dVVUffQJ6GSNyona/mQNakXYG646TRBDUF7qQ=
+X-Received: by 2002:a05:600c:8216:b0:490:9588:bdb6 with SMTP id 5b1f17b1804b1-490b610a410mr82034325e9.33.1780527251928;
+        Wed, 03 Jun 2026 15:54:11 -0700 (PDT)
 Received: from Lord-Beerus.station (net-93-144-65-244.cust.dsl.teletu.it. [93.144.65.244])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3c183asm26366385e9.6.2026.06.03.15.54.09
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3c183asm26366385e9.6.2026.06.03.15.54.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 15:54:10 -0700 (PDT)
+        Wed, 03 Jun 2026 15:54:11 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: linux-kernel@vger.kernel.org,
@@ -74,9 +74,9 @@ Cc: pierluigi.p@variscite.com,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v1 1/2] arm64: dts: imx8mm-var-som-symphony: add wakeup sources
-Date: Thu,  4 Jun 2026 00:53:59 +0200
-Message-ID: <a34f166c6376ac9e0f1721ec2cf6d1477b6646f6.1780527068.git.stefano.r@variscite.com>
+Subject: [PATCH v1 2/2] arm64: dts: imx8mm-var-som-symphony: keep RGB_SEL low
+Date: Thu,  4 Jun 2026 00:54:00 +0200
+Message-ID: <55fb7ba8f5249a0be5296a0b3523ce20a668a89e.1780527068.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1780527068.git.stefano.r@variscite.com>
 References: <cover.1780527068.git.stefano.r@variscite.com>
@@ -90,48 +90,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-Mark the Symphony carrier board GPIO keys and capacitive touchscreen as
-wakeup sources.
+Keep the RGB_SEL line driven low on the Symphony carrier board.
+
+This avoids leaving the line floating and ensures the board remains in
+the expected display configuration.
 
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
-index 857325ef4461..090752014ee2 100644
+index 090752014ee2..fd0a1862ce90 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
 +++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
-@@ -55,18 +55,21 @@ key-back {
- 			label = "Back";
- 			gpios = <&pca9534 1 GPIO_ACTIVE_LOW>;
- 			linux,code = <KEY_BACK>;
-+			wakeup-source;
- 		};
- 
- 		key-home {
- 			label = "Home";
- 			gpios = <&pca9534 2 GPIO_ACTIVE_LOW>;
- 			linux,code = <KEY_HOME>;
-+			wakeup-source;
- 		};
- 
- 		key-menu {
- 			label = "Menu";
- 			gpios = <&pca9534 3 GPIO_ACTIVE_LOW>;
- 			linux,code = <KEY_MENU>;
-+			wakeup-source;
- 		};
+@@ -168,6 +168,14 @@ pca6408: gpio@21 {
+ 		reg = <0x21>;
+ 		gpio-controller;
+ 		#gpio-cells = <2>;
++
++		/* RGB_SEL */
++		lvds-brg-enable-hog {
++			gpio-hog;
++			gpios = <7 GPIO_ACTIVE_HIGH>;
++			output-low;
++			line-name = "rgb_sel";
++		};
  	};
  
-@@ -187,6 +190,7 @@ ft5x06_ts: touchscreen@38 {
- 		touchscreen-size-y = <480>;
- 		touchscreen-inverted-x;
- 		touchscreen-inverted-y;
-+		wakeup-source;
- 	};
- 
- 	rtc@68 {
+ 	st33ktpm2xi2c: tpm@2e {
 -- 
 2.47.3
 
