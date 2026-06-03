@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B26310651;
-	Wed,  3 Jun 2026 13:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD60D2F7F00
+	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 13:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780492989; cv=none; b=JIPWoiZ5OtRHgCG/O7mxs9JI+in29lFoc+tZMign2V9udb4H30jC8gfg/cTz9YiKAG9S1g/qv5vLSsnmoZSdRn8PT880iUAW1HUPncbyCZjAp0n7Kump63a8nygISOF5t61JG+aqF0QAx6/jOOfRiZaIirVOelcwY52TrMdTJjA=
+	t=1780493277; cv=none; b=VmQUr9vZRmOfFyjgMTQDRvM2DBMcYdzskxtO9KzmTLp/fcrkJOk30mLyspic5MdmGVrPX9MiU2t7NUCTs8y70GJrV5qesMQiObTWNxwfjXJbnyErc6+d1AVlnR43UlqR5nEeev1K0tRk3+wJOopYXjukbtQewBTWBKbeX80fwAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780492989; c=relaxed/simple;
-	bh=+yF+tHbRfxzgu5n+5xF1YEHJp/6nbh+4/qITnXQIvd8=;
+	s=arc-20240116; t=1780493277; c=relaxed/simple;
+	bh=g6PbEJa+9f5mbxBXQ+WEvgW4EHJaIJiO70dRmTkxr50=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=S+kIfx4Ug20d2oLSjnixWrf3wt18YSwHtPoW1JojMlP1LpHlZSqdS6YKicDe5ImfApAQDkW7TCc5wbIaHVYBehA18pcg7vSxOgQdhsqU1mzeH30nSGEfu1zNrhgctEZEsVN6z19L1v+LhihLMhfpDHLzuySeTHepp2vf7tWo3/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iD0jlQ0c; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hmbziYGKUkBKFeGu87O8i7fHdP8RxYqTNDHgEFSoXDva05nhV/x0HtB/kdkfqkvGZw31nPc2HocAFyr8G8/7lFsft1tUYUhNYEfhGjeYXLduWYZw8+WixHA6RqFE6ZDzFaOQ+t1/q25dGA+GXOyhrYWWWnHYuQeKWXA/vCKICzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoITiB8m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iD0jlQ0c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF7C1F00893;
-	Wed,  3 Jun 2026 13:23:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoITiB8m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F4A1F00893;
+	Wed,  3 Jun 2026 13:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780492988;
-	bh=vEiDIIK40s/ysumqK6J++thBI87bU8a9yEVddcam5c4=;
+	s=k20260515; t=1780493276;
+	bh=jy6A0bNCSPZwUB5DSvdTdgfnhY/TTGwdLBxTgukOLSU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iD0jlQ0cAQ7BVrAP/zrtHYk2DWJtyvMigquUvZcxahKtH5s2JdM/3I9uRVdVEmFsX
-	 65CwbksyHHzqoA1LdUU/8PZEzY5JnImlJ3r0qBGCAGHkHCg7+Ibb6hOrnR4jttZHOA
-	 NzNn2iI2h6g0VYcsZjHl9INZFJ7OX1oNNB2hj/LUVYqmUuC53zEjajVS4g07/evOqI
-	 MJfo9hTftgk2QhQLdjm6I5XJIzkU6znmV4tCej64WvccFGVWekUG9RBLA83Ro1rJZ6
-	 CCMaQKfMa35AzyOWakWicDNGS9V6ZnNPRzfACFDPq+AezH/C+0vBok0knCtHVWW1Am
-	 bYEdcczvIRh1A==
+	b=PoITiB8maK4aISDKrUBbBbehGiw+T0Yla8JQhCy5SV1aWJy3uKNa4muObhRz6WApj
+	 aCRqh05kD8+RI7kGzAUpYuvI5U6P68ZclDzUUENnBrTbwIwPbPyg685btvQHBVYRdn
+	 098hRxuors/PFoY/Li8SEbyI5hNhj193IjLtipu+6DQYA3Mx5KNKuO9CqjchIAtKup
+	 ClffnG+g4QCznSgrOSEDiHkuML/ZVgR1Aiy9OFHlIpIsNJLmO/uFkGZ+pRCUtoIuaR
+	 GPuENaKgkjntNmaYOuitQY62vyZ0/6K2I+zw/CyyZ9P3xJYJx+SC4Q1vjMMNlfz4Ke
+	 ULKHwOjF9h7gg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 06/12] arm64: dts: imx8mp-var-som-symphony: enable
- PCIe
+Subject: Re: [PATCH v2 2/9] mailbox: imx: Use devm_pm_runtime_enable()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <9a937fa5f65dd23515d4e32f8a9cdbe5a674c9a7.1780492180.git.stefano.r@variscite.com>
-References: <9a937fa5f65dd23515d4e32f8a9cdbe5a674c9a7.1780492180.git.stefano.r@variscite.com>
+To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260603-imx_mbox_rproc-v2-2-a0059dc3b69a@linutronix.de>
+References: <20260603-imx_mbox_rproc-v2-2-a0059dc3b69a@linutronix.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 13:23:06 +0000
-Message-Id: <20260603132307.AAF7C1F00893@smtp.kernel.org>
+Date: Wed, 03 Jun 2026 13:27:55 +0000
+Message-Id: <20260603132756.69F4A1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,57 +45,57 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Missing PERST# reset signal configuration for the PCIe slot.
+- [High] Double clk_disable_unprepare() on the devm_mbox_controller_registe=
+r() error path.
 --
 
-commit 2705091bb2c968ad6e44f8cd4b794c2f5e63b41c
-Author: Stefano Radaelli <stefano.r@variscite.com>
+commit 6af621bbda5cc8cf36298bb4f6590f6101b7c4a5
+Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-arm64: dts: imx8mp-var-som-symphony: enable PCIe
-   =20
-This commit adds the PCIe reference clock and enables the PCIe controller
-and PHY nodes on the i.MX8MP Symphony carrier board.
+mailbox: imx: Use devm_pm_runtime_enable()
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts b/=
-arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-> index 9500c9bf0f421..a928dc2d9adce 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
+This commit mitigates early usage of the device before probe completes
+by delaying the pm_runtime_enable() into the removal path. It also moves
+devm_mbox_controller_register() to occur after the pm-runtime handling.
 
+> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+> --- a/drivers/mailbox/imx-mailbox.c
+> +++ b/drivers/mailbox/imx-mailbox.c
 [ ... ]
-
-> @@ -146,6 +152,17 @@ rtc@68 {
->  	};
->  };
+> @@ -965,28 +965,28 @@ static int imx_mu_probe(struct platform_device *pde=
+v)
+[ ... ]
+>  	ret =3D pm_runtime_put_sync(dev);
+>  	if (ret < 0)
+> -		goto disable_runtime_pm;
+> +		goto disable_clk;
 > =20
-> +&pcie {
-> +	status =3D "okay";
-> +};
+>  	clk_disable_unprepare(priv->clk);
+> =20
+> +	ret =3D devm_mbox_controller_register(dev, &priv->mbox);
+> +	if (ret)
+> +		goto disable_clk;
 
 [Severity: High]
-Will this configuration successfully enumerate PCIe endpoints on the Sympho=
-ny
-carrier board without the reset-gpios property?
+Does this error path cause a double clock disable?
 
-The Symphony baseboard typically routes the PCIe slot's PERST# signal to pin
-1 of the pcal6408 I2C GPIO expander (as seen on the shared imx8mm symphony
-board layout). Without configuring reset-gpios =3D <&pcal6408 1 GPIO_ACTIVE=
-_LOW>;
-here, the host driver in drivers/pci/controller/dwc/pci-imx6.c might not be
-able to fetch and de-assert the reset signal.
-
-Could this leave connected PCIe endpoint devices held in hardware reset?
+If devm_mbox_controller_register() fails here, the code jumps to the
+disable_clk label. However, clk_disable_unprepare(priv->clk) has already
+been called just above this registration attempt. This means the error path
+will disable the clock a second time, which could cause a reference count
+underflow and potentially disable shared clocks.
 
 > +
-> +&pcie_phy {
-> +	clocks =3D <&pcie0_refclk>;
-> +	clock-names =3D "ref";
-> +	fsl,refclk-pad-mode =3D <IMX8_PCIE_REFCLK_PAD_INPUT>;
-> +	status =3D "okay";
-> +};
-
-[ ... ]
+> +	of_platform_populate(dev->of_node, NULL, NULL, dev);
+> +
+>  	return 0;
+> =20
+> -disable_runtime_pm:
+> -	pm_runtime_disable(dev);
+>  disable_clk:
+>  	clk_disable_unprepare(priv->clk);
+>  	return ret;
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780492180.gi=
-t.stefano.r@variscite.com?part=3D6
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603-imx_mbox_r=
+proc-v2-0-a0059dc3b69a@linutronix.de?part=3D2
