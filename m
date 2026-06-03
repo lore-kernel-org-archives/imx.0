@@ -1,140 +1,201 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E9348C418
-	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 14:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76735481FD2
+	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 14:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780497465; cv=none; b=ZE8QudNzTnSI68oxHWbRYYs9Mz1HbtzNoFbZsGq3HB9s7iNaQCA4NF2v1Y3MBq3XFuY3co6QvXieRV2t6Featcs6PmC6chTk0XzilBpLJuxYJmMpBT40x2WdHOJ+BNtY2QEIXOKyhMZQqbRkn17yUFEALWSX+Rf5f56bZrvXDuM=
+	t=1780497961; cv=none; b=hBtLcZ1ZgRFTwUZGOwdBn8fFDnL2K7O/25pBj0ymXENJQlmQAh1ystbyml8NNJosFiP8zvshnPz8MIWtRTjXqu0O3kq51jLTuj/WXgEQATmWc2wDR0lCdqdEiAqLXkJULJJt1mkoMuXC/AByt+uEB6sqQ4bAXYLophSKkWqiuvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780497465; c=relaxed/simple;
-	bh=tapJulvq9sZNzCtmbZgAjkSubCFsjmsf/ax+SbMxIuk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqBFvCj385YEBr63sns2dEBCZXHe3ZD1T3OSiHI5oqNR8Cbk0H/Kz8v/ehkkT0AgpFJJ3hwWTlQWYalBv9Q0IY9+s50sxxgp/yXSYFKG09a9gCH7ZUhxzbKcBWPY2JSi1I8cJpl9uQpKKgssPfoco+vbE9B3iu2spl1WcsKd/lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qzljMVsG; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780497961; c=relaxed/simple;
+	bh=aenZWCOW1E5WQoxgEm0OKJPAbZiDeDOLU+cPMI6yyD4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=sJ85T9DUVIEbWpJSffhoAyS/o38XaGIhZKsyjI88cTc4Qn0BN7oejwdKSwOykyoxV43NusKrap1UFBCwPq+aqexpKWXz5UPzTTkIhfckQmIbdYxCP6ucwvkC74lR0TFGpt1FtbXtKWiuxJ8D0fnacLpMQKyz5E+Lzm98ggrI8QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avAPKiV2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qzljMVsG"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4903f7a90d1so117566135e9.2
-        for <imx@lists.linux.dev>; Wed, 03 Jun 2026 07:37:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780497462; x=1781102262; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2r42H6aMK4b6UNRgIksoOLm8aN27wEuwsly03FlTjcQ=;
-        b=qzljMVsGw+H2nQtaix+OUmn1fccka4TeCSYV9ODUO3qfBjgAEaGESm5iRXRyx5tLRn
-         2qnY6rI+MwA5jzcMEU00v77aZVT9L7H6J/8espUcO5bAe9+GUDEDR9IairB5JLV0yVds
-         9SvdUBs77gTqRI9g7qSTBjMP6FRyt4tUZkLy31jkGDrb6aQU6v2u2DoiwyeWFo6zViFl
-         WB8Kkr7gzoohrcPxoCe85SDqjhf80Dy4w7UTFYfl1PDYi9vwM1VMyZKvVeRa1qDTZPye
-         7sglnw0LRbrmLxdG5CxQodkREx2p/2vsElfvaI9Mc4iPWKcum6OuyKK327tesvAtHSaI
-         Rkow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780497462; x=1781102262;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2r42H6aMK4b6UNRgIksoOLm8aN27wEuwsly03FlTjcQ=;
-        b=d2ciFBh1GbojTMsykyiZK57CA6cdVZdNCBJIvKBzRGJ4gAOfi+l/0h666RBLKBp1O/
-         TjSUVCKR2Nnmh6EsC+Q3o6Gdf56ZK2Yuw0cKjtU7VQbppYSS1h1Zdy24dNjQuES1tOGE
-         rJCO6cgWTVr3AyZR2Q3iKdFfe6k1vEDCr+wbEHJMWOBwSiiech3n6JDeZhr+5WZ23AkJ
-         tSjfuBbm+/D6Ea6+KtfOQUrQ0PFcFY/XczE9wILY6tKEF4pq7tb5eQRl989W8UoIl5W+
-         udS47BEp7lCSJ4LzGPhOiL2kLhVbR9L5EIqKq8jfkYgZK0M4fywDhLBBl92klslzSjf3
-         JPgw==
-X-Forwarded-Encrypted: i=1; AFNElJ/gTf0Cuww5s7uFwc9PvviuOpC6b/7qJboWRNLxmigCcolLTiy10o/g0qAZI+E1ShIArgE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzjl0c+/9bGZbVnYnlC4eJd+c7M/CfIKWUGvebOB5t1KD7BJo4D
-	DEirNlxvHLDQ2Mt6AL5nnV0K3dXe7wTYzXuvUpze4o4A/ge5iM/r9aHC
-X-Gm-Gg: Acq92OF/4oRcpOR3M0mjfvJDqc+giwSskC1le07sqtPCpR2Xbq3IRF8D5v3wcvhWixR
-	KCCzH0iVenof7souGMZ8qJbIyS0JPEZ7PS0X0T/E9z1YN6P4rW4UO0FuuGcVNlzSqtxlUFqst6o
-	7xNTt1822wt3gKC/Uxy7R5L+Y7QakB8+QBHeo73oKybHzu2KyjJQ8TR2OJNg9OFMJK6CK7Z6mId
-	ofm7MMRq1Jqc1/77fRREy2JrXZh+LX8h1jtJvVErE8SkTEXrPikF4DP4pAbEzGcrC4XV6HU13I0
-	DZ79WzmL8ea+Hqv3+GDz9TJQFfjhLj//pK+in+HcOhKZIIAmgDyOS9VrF6QXjXUZmzmWr6g4F8k
-	l9YUW1uvBNxOfegJKqvhC3cVNrOeVULJAck9+xKnaRXLc2JHAYzDJ1eHOoJDERezZF6ABfrKWWc
-	otHXZ3E8BI1J/pH1y+daItppyIYsAli96iAR0KhRQ/UgonyVNz7ONlFBjk9vJatmXDqFcOgntxF
-	2l/8qd4RJbSvGpq9Sy44UE+sH/9gkz5SMS5VytnyhBc8aFW
-X-Received: by 2002:a05:600c:c163:b0:490:b5d0:598e with SMTP id 5b1f17b1804b1-490b5fe9575mr65008075e9.21.1780497461900;
-        Wed, 03 Jun 2026 07:37:41 -0700 (PDT)
-Received: from Lord-Beerus.station (net-93-144-65-244.cust.vodafonedsl.it. [93.144.65.244])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b6150bfcsm120267855e9.3.2026.06.03.07.37.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 07:37:41 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v3 14/14] arm64: dts: freescale: imx8mp-var-som: add I2C1 bus recovery GPIOs
-Date: Wed,  3 Jun 2026 16:37:21 +0200
-Message-ID: <aa740b2d684362627b46d35912c979c01f8c2c36.1780497188.git.stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1780497188.git.stefano.r@variscite.com>
-References: <cover.1780497188.git.stefano.r@variscite.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avAPKiV2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E433F1F0089C;
+	Wed,  3 Jun 2026 14:45:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780497959;
+	bh=6P1zOEJ1iw+A8YvHlLav7KNrvAfjS4QWPQNPgxmdXto=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=avAPKiV2V1jovJ8LdItbF2SQ4cMmpbpz7HkGEDE9V3e01iaWG/ZWzudFUQhf0qPMc
+	 r9yZWv1nGapmZgs2D2T3F55KC4qJkso1rnfDYvdzEqjynYzp0rkOYTbnxy4JPa1BGZ
+	 iQGOG/Vb6fL/clq9AKD4Y6CJzz1M0TNnMBO/JPbR5A7TnPoPrmfsZBhUyoyogxu2fv
+	 as1mrXnzmxHkvUCJZv0mOFCP8ghSULl9YRSGd25MDJ6QGJFunpikdMeLHjRlXq4jW8
+	 xQ7bpUwgUjZaByce1WkqPBfcJtf8F+/p0GJ1JZSl3zYSONMKLHJBm+DYc80zQtIF3x
+	 zRU2eZ9BGOGkg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 9/9] remoteproc: imx_rproc: Invoke the callback
+ directly
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260603-imx_mbox_rproc-v2-9-a0059dc3b69a@linutronix.de>
+References: <20260603-imx_mbox_rproc-v2-9-a0059dc3b69a@linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 03 Jun 2026 14:45:58 +0000
+Message-Id: <20260603144558.E433F1F0089C@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Add the GPIO pinctrl state and GPIO descriptors required for I2C1 bus
-recovery on the VAR-SOM-MX8M-PLUS.
+Pre-existing issues:
+- [High] Missing RCU read lock around `idr_for_each()` executing in a preem=
+ptible context, leading to potential use-after-free.
+- [High] Error paths in mailbox initialization leave `ERR_PTR` or dangling =
+pointers in the channel pointers, leading to a kernel panic during cleanup.
+--
 
-This allows the I2C controller to recover the bus if SDA or SCL are held
-low by a device.
+commit 4d44a5db67113dd38271bbfd5c93e988c06b7cf5
+Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
-v2->v3:
- - 
+remoteproc: imx_rproc: Invoke the callback directly
 
- arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+The imx-mailbox driver moved the callback invocation into the threaded
+IRQ handler. This means the callback is invoked in preemptible context
+and there is no need to schedule the kworker for the
+imx_rproc_notified_idr_cb() invocation.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-index 49467b48d0b0..61786eee0e82 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-@@ -180,8 +180,11 @@ led@1 {
- 
- &i2c1 {
- 	clock-frequency = <400000>;
--	pinctrl-names = "default";
-+	pinctrl-names = "default", "gpio";
- 	pinctrl-0 = <&pinctrl_i2c1>;
-+	pinctrl-1 = <&pinctrl_i2c1_gpio>;
-+	scl-gpios = <&gpio2 6 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio2 7 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	status = "okay";
- 
- 	pmic@25 {
-@@ -415,6 +418,13 @@ MX8MP_IOMUXC_SD1_DATA5__I2C1_SDA				0x400001c2
- 		>;
- 	};
- 
-+	pinctrl_i2c1_gpio: i2c1gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06				0x1c2
-+			MX8MP_IOMUXC_SD1_DATA5__GPIO2_IO07				0x1c2
-+		>;
-+	};
-+
- 	pinctrl_pmic: pmicgrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SPDIF_RX__GPIO5_IO04				0x1c0
--- 
-2.47.3
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rpro=
+c.c
+> index 0dd80e688b0ea..c97bc1c401655 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
 
+[ ... ]
+
+> @@ -835,21 +832,11 @@ static int imx_rproc_notified_idr_cb(int id, void *=
+ptr, void *data)
+>  	return 0;
+>  }
+> =20
+> -static void imx_rproc_vq_work(struct work_struct *work)
+> -{
+> -	struct imx_rproc *priv =3D container_of(work, struct imx_rproc,
+> -					      rproc_work);
+> -	struct rproc *rproc =3D priv->rproc;
+> -
+> -	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
+> -}
+> -
+>  static void imx_rproc_rx_callback(struct mbox_client *cl, void *msg)
+>  {
+>  	struct rproc *rproc =3D dev_get_drvdata(cl->dev);
+> -	struct imx_rproc *priv =3D rproc->priv;
+> =20
+> -	queue_work(priv->workqueue, &priv->rproc_work);
+> +	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
+
+[Severity: High]
+This is a pre-existing issue, but does this idr_for_each() loop require RCU
+read protection in drivers/remoteproc/imx_rproc.c?
+
+Since imx_rproc_rx_callback() now runs in a preemptible threaded IRQ handler
+(and previously ran in a preemptible kworker), it executes without holding =
+an
+RCU read lock.
+
+If a concurrent unbind of the rproc-virtio driver removes an IDR entry via:
+
+rproc_virtio_remove()
+  rproc_free_vring()
+    idr_remove()
+
+The radix tree nodes could be scheduled for delayed RCU freeing. If the
+threaded IRQ handler is preempted during the idr_for_each() iteration and t=
+he
+RCU grace period expires, could the iteration traverse freed memory upon
+resuming and cause a use-after-free crash?
+
+>  }
+
+[ ... ]
+
+> @@ -1249,17 +1229,6 @@ static int imx_rproc_probe(struct platform_device =
+*pdev)
+>  		priv->ops =3D dcfg->ops;
+> =20
+>  	dev_set_drvdata(dev, rproc);
+> -	priv->workqueue =3D create_workqueue(dev_name(dev));
+> -	if (!priv->workqueue) {
+> -		dev_err(dev, "cannot create workqueue\n");
+> -		return -ENOMEM;
+> -	}
+> -
+> -	ret =3D devm_add_action_or_reset(dev, imx_rproc_destroy_workqueue, priv=
+->workqueue);
+> -	if (ret)
+> -		return dev_err_probe(dev, ret, "Failed to add devm destroy workqueue a=
+ction\n");
+> -
+> -	INIT_WORK(&priv->rproc_work, imx_rproc_vq_work);
+> =20
+>  	ret =3D imx_rproc_xtr_mbox_init(rproc, true);
+>  	if (ret)
+
+[Severity: High]
+This is a pre-existing issue, but can the mailbox initialization error path=
+s in
+imx_rproc_xtr_mbox_init() lead to a use-after-free or panic during cleanup?
+
+If mbox_request_channel_byname() fails for the "tx" channel, it returns an
+error but assigns an ERR_PTR to priv->tx_ch:
+
+drivers/remoteproc/imx_rproc.c:imx_rproc_xtr_mbox_init() {
+    ...
+	priv->tx_ch =3D mbox_request_channel_byname(cl, "tx");
+	if (IS_ERR(priv->tx_ch))
+		return dev_err_probe(cl->dev, PTR_ERR(priv->tx_ch),
+				     "failed to request tx mailbox channel\n");
+    ...
+}
+
+If the "rx" channel fails, it leaves the ERR_PTR in priv->rx_ch and calls
+mbox_free_channel(priv->tx_ch) but does not reset priv->tx_ch to NULL,
+leaving it dangling:
+
+drivers/remoteproc/imx_rproc.c:imx_rproc_xtr_mbox_init() {
+    ...
+	priv->rx_ch =3D mbox_request_channel_byname(cl, "rx");
+	if (IS_ERR(priv->rx_ch)) {
+		mbox_free_channel(priv->tx_ch);
+		return dev_err_probe(cl->dev, PTR_ERR(priv->rx_ch),
+				     "failed to request rx mailbox channel\n");
+	}
+    ...
+}
+
+When the device is later unbound, the devm cleanup action imx_rproc_free_mb=
+ox()
+runs. It checks if the pointers are true, which they will be for an ERR_PTR
+or dangling pointer:
+
+drivers/remoteproc/imx_rproc.c:imx_rproc_free_mbox() {
+    ...
+	if (priv->tx_ch) {
+		mbox_free_channel(priv->tx_ch);
+		priv->tx_ch =3D NULL;
+	}
+
+	if (priv->rx_ch) {
+		mbox_free_channel(priv->rx_ch);
+		priv->rx_ch =3D NULL;
+	}
+    ...
+}
+
+Since mbox_free_channel() does not check IS_ERR(), will it attempt to
+dereference these invalid pointers and cause a kernel panic or a double-fre=
+e?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603-imx_mbox_r=
+proc-v2-0-a0059dc3b69a@linutronix.de?part=3D9
