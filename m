@@ -1,204 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B9D2772D
-	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 14:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1226434E75A
+	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 14:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780497070; cv=none; b=C/87wDdkrLwUmuMTpG9dtxHXZzb7O5gIEp8JmK8aAeazLhbd02vmxxcIHgr3NlLI18TF4WIunBncDL5fydfmGPodpyJ1ajwLHSxW+8T70q5VHDUfHmhjRON4woUbdWBcODpC8LtkomcWipPlU1Dc4A0aUjeLrWzmwakiYphNqRw=
+	t=1780497448; cv=none; b=syyB7iEYRh3jEnVTuMX9Gyf8Z3IAGXSNyqjcBDfHOsojznRLkYnJ1zo7lumaNA8pJGLOU2E8tYJsc2Eckc4rBbDnYpA8D+MQPATi6MEcoP+koyDO0oTy6553iKqAvgR3RsxDenJ6qQ75I5NoQb8cp5spcgjgdOe3hRgz/DeIdXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780497070; c=relaxed/simple;
-	bh=pPvdA86tedYqC00FVfCtyKkchHNXCUabtG+MXoF8m6I=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aCsReFAb4ch3/ZQnbDqI03hHJ18RvLR5LBY7fgwNtS1hm4JZrXD+TjuuazsDPZ5mSQBJpU90ClfxQMtmp7CNPGjhpJJRyYpGS53FR2pXUuR+bElhcHEuNMnhMlSilE31OgMsDDJwvwriRvHXYt1r/AJmaLD54XENUJaqqvNu14o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlxsoDy7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780497448; c=relaxed/simple;
+	bh=qfh3435JgKkQxsJ7o+S2GAaDXfNus9x1IXuHe/oW5HE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KeIl8pbpOkxkamVNo50y5/CaUdgA3ttEJ/maOSdb5/zPceF4nEQ127345D9NXOImjTtVN7ooX1RIoi6sA+aJ9EqbqTUnFUOyf+Q+ogAg8cUkYOvLKq+5/Tf4l9S+8REizixrFiYCAt58gAK2trk5UwMtgKdQPswHWwWdnE8tQhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qbCWlo65; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlxsoDy7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A6F1F00893;
-	Wed,  3 Jun 2026 14:31:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780497069;
-	bh=75D9CWsoar8uzGFEm1VKW5IVg/+Ojy3ZeN56fR62HbM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FlxsoDy7BHwuGhxvGds+qciReKWrv03sK2FAp6TjfKjDOswLmTaJsWxB/LB6g0PYe
-	 SjqJz2jiPLW2DgJl15i4qPIBTPIhx1G0pGFBtTPJb63ravu6OxSGzs7pbXAAu6AT17
-	 QgKT/aK8XgdvC9UQODcAGrNBBL7Ys0tGhoU95+YhYhzQU7XPLlIMTu27WDLpzgnJnK
-	 rXlWcXBJFQRlNARyZ8tu/KzltybO41XzAJD3kEBUkIW4jQVOJEfjLRdRz9hhzbdsa8
-	 +5y5I6pJ5fBsZlUbUJUfHnK1qX7NXqslnj/390lrCp9sJmL2946MuY5gVb0OalKf0N
-	 5YNzYrYexoq/w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 8/9] mailbox: imx: Don't force-thread the primary
- handler
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260603-imx_mbox_rproc-v2-8-a0059dc3b69a@linutronix.de>
-References: <20260603-imx_mbox_rproc-v2-8-a0059dc3b69a@linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 14:31:08 +0000
-Message-Id: <20260603143109.19A6F1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qbCWlo65"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4903f7a90d1so117562145e9.2
+        for <imx@lists.linux.dev>; Wed, 03 Jun 2026 07:37:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780497445; x=1781102245; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hJAlGRz75xEq17uv2UlpRAl3s1Z0RM73GiaeFljbD9I=;
+        b=qbCWlo65o7r9W6Y1kws3n90YXMXRuEyrJbU0/PNeMEHkeL8p2Lt37JS2JWFS9v+v82
+         7NOR2R571Z0c3U0b6gRYikFBUJayqH22eqOZ3TqFUFCZO1eqSz7sJFhMqEoF8BkS4kFU
+         9lv2Z5+tWqKgQ5nWa5MxMARiE8GRJUpnl4JHdCYjNmKVrH0Jn+h/UrmdrRdPnprkpY/t
+         cSg3Dg4KYQWJMP8u6CMCFHYg/t46X1HCxoy/KCb7ZEG/XNoXHG8iT5ItnQeqy+b3oKo5
+         Rd2yRtKmn66qe5czBimTayU7eqly/xAvQNOks8gjpOC+2crHocnqPHIXf9zMXoc3vxEW
+         NRKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780497445; x=1781102245;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hJAlGRz75xEq17uv2UlpRAl3s1Z0RM73GiaeFljbD9I=;
+        b=KLxJI4c/KNqhf6AQrRXcGh58afILomXGjnUKQvX9boFkFnpDjzHZ+DVJIGmfn12ZJy
+         JzA6X0tEWgJamky/E6nFtps9yl9iVhLG8X5rM53csw6Frhc6j0GlXMnk3xVi5vSNghln
+         mmZHjvu8EG58zkLKY0cuRQNFxPSfAMfEEKF0MO+58wAcIZfnZKT8uK4r9AItcjELM8Aw
+         EN0HAJ4NIQTZXNf+LiLaLGTCqWc7Fsv8MFls/WliOg1vAg72fgdX2Ex01CDh9E2Xy/cm
+         Bwy0OYh+mZeoVGS0rW7mMOoMNUQAxdlh5038Jpy1Ryqx9V1jiGrAEFUQBapeONP/kpXD
+         20Og==
+X-Forwarded-Encrypted: i=1; AFNElJ+dENbcoOxZkou89N1PDIjuZwh15NFd1KjVnYPKBoRF1bseWxAy2rYi2UFHWzdQR0rSrfw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YybW8UzTnyb989iU4Pe4KZJaNYSrVeBPeUa4ubQF8zdHIpHf5WI
+	PsmGrBbZiXF4rFV6PCjmR+NC8nsuqssKOC39uHCmtUlvVJibSmLv9je9
+X-Gm-Gg: Acq92OGcPho9SYopkvQziDi0JELpAh/hQ/Jqgib4oCjCx1BJ4zuvo87OxT7W+i9EoKm
+	6XF6TiRb6jc/2+iFEdBihPuv3nmxKWNjZw7aYOIKgMl4ibZk31KE7UsebWA0zJen1JZ48piTkVB
+	VRUWU8IBPcyY9jrVNkadVXnzNtfPoeYITEMqheI1YyjBZoOZPW4IIuzqr173KEg4W8m6HLs6Pr8
+	NyCpCYww6/Nfx99ATibAF+Fd2cqpw9xBfYuUu776T3vq+ZgatSB8SshOyHs4lCFsmz3Hp/hC03T
+	dlwfFUntQtQM0bektIKUDP2sR1IQHU5PZ0bA86jz/svTMsTd1q0+4caGfnV/qWZ5xZaAe52aEC9
+	U1WHrdoD2+4X4vpAr4wcAy+GYBCDRLZ2/udPJ6CGKGDUfQvRmJm1suMixHuuKMys/vLJpLCvoa9
+	7L4upNPHbkAbBwhqsvUNU1Fl64LMRl0ualz+zis7MOo9fcCpWfbQQLpVC4gye09DzZpYQzaxNkL
+	pWTsa0Cr2syomjR4iJXY9HMOXOPJHxXttN9376nqJS/Oimd
+X-Received: by 2002:a05:600c:3107:b0:490:bad8:329c with SMTP id 5b1f17b1804b1-490bad833b6mr28402275e9.12.1780497445402;
+        Wed, 03 Jun 2026 07:37:25 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-244.cust.vodafonedsl.it. [93.144.65.244])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b6150bfcsm120267855e9.3.2026.06.03.07.37.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 07:37:25 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v3 00/14] arm64: dts: imx8mp-var-som-symphony: align DTS with hardware revision
+Date: Wed,  3 Jun 2026 16:37:07 +0200
+Message-ID: <cover.1780497188.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+This series updates the i.MX8MP VAR-SOM and Symphony device trees to
+better align them with the current hardware configuration.
 
-New issues:
-- [Medium] Double disable of priv->clk on devm_mbox_controller_register() f=
-ailure.
+It adds the missing board peripherals and completes the related pinctrl,
+GPIO and bus configuration.
 
-Pre-existing issues:
-- [High] Unchecked return value of pm_runtime_get_sync() leads to kernel pa=
-nic.
-- [High] Silent transmission failure due to ignored timeout error in imx_mu=
-_generic_tx().
-- [High] Polling jiffies and using time APIs with local interrupts disabled=
- leads to hard lockups.
---
+v2->v3:
+ - Add FlexCAN2 controller support
+ - Add FEC controller and MaxLinear MXL86110 PHY support
+ - Describe PCIe PERST# reset GPIO
 
-commit 91fcad059338175baa26f9a301cda6d0b62ba3ee
-Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+v1->v2:
+ - Add missing HDMI pinctrl configuration
+ - Enable LCDIF3 for the HDMI display pipeline
+ - Adjust PCIe controller configuration
+ - Update PTN5150 interrupt trigger type
 
-mailbox: imx: Don't force-thread the primary handler
+Stefano Radaelli (14):
+  arm64: dts: imx8mp-var-som-symphony: add input keys
+  arm64: dts: imx8mp-var-som-symphony: enable USB support
+  arm64: dts: imx8mp-var-som-symphony: add TPM support
+  arm64: dts: imx8mp-var-som-symphony: add external RTC
+  arm64: dts: imx8mp-var-som-symphony: enable header UARTs
+  arm64: dts: imx8mp-var-som-symphony: enable PCIe
+  arm64: dts: imx8mp-var-som-symphony: add HDMI support
+  arm64: dts: imx8mp-var-som-symphony: add capacitive touchscreen
+  arm64: dts: imx8mp-var-som-symphony: enable ECSPI2
+  arm64: dts: imx8mp-var-som-symphony: keep RGB_SEL low
+  arm64: dts: imx8mp-var-som-symphony: enable PWM1
+  arm64: dts: imx8mp-var-som-symphony: enable CAN
+  arm64: dts: imx8mp-var-som-symphony: add second Ethernet port
+  arm64: dts: freescale: imx8mp-var-som: add I2C1 bus recovery GPIOs
 
-This commit avoids force-threading the primary interrupt handler in the
-IMX mailbox driver. It converts the xcr_lock to a raw_spinlock_t so the
-primary handler can safely run in hardirq context, and marks the interrupt
-with IRQF_NO_THREAD.
+ .../dts/freescale/imx8mp-var-som-symphony.dts | 394 +++++++++++++++++-
+ .../boot/dts/freescale/imx8mp-var-som.dtsi    |  12 +-
+ 2 files changed, 404 insertions(+), 2 deletions(-)
 
-> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
-> index f0a14449652f1..f3de47908e00f 100644
-> --- a/drivers/mailbox/imx-mailbox.c
-> +++ b/drivers/mailbox/imx-mailbox.c
 
-[ ... ]
+base-commit: b3c1d1631f097619f8091f0293e027c4301285d6
+-- 
+2.47.3
 
-> @@ -649,7 +644,7 @@ static int imx_mu_startup(struct mbox_chan *chan)
->  {
->  	struct imx_mu_priv *priv =3D to_imx_mu_priv(chan->mbox);
->  	struct imx_mu_con_priv *cp =3D chan->con_priv;
-> -	unsigned long irq_flag =3D 0;
-> +	unsigned long irq_flag =3D IRQF_NO_THREAD;
->  	int ret;
-> =20
->  	pm_runtime_get_sync(priv->dev);
-
-[Severity: High]
-This is a pre-existing issue, but does this missing check for the return
-value of pm_runtime_get_sync() risk a kernel panic?
-
-If the device fails to resume (e.g., due to a clock enablement failure),
-it remains in a suspended/unpowered state.
-
-The function immediately proceeds to configure the device and access its
-I/O registers. Accessing unpowered hardware registers can cause system
-crashes, such as synchronous external aborts or bus hangs, on ARM platforms.
-
-[ ... ]
-
-While reviewing the driver, I noticed a few other potential regressions out=
-side
-the diff hunks above:
-
-[Severity: High]
-This is a pre-existing issue, but can the timeout loop in imx_mu_generic_tx=
-()
-lead to silent transmission failures?
-
-When processing IMX_MU_TYPE_TXDB_V2, the code loops up to 10 times waiting
-for the readl_poll_timeout() condition:
-
-drivers/mailbox/imx-mailbox.c:imx_mu_generic_tx() {
-    ...
-    while (ret && (count < 10)) {
-        ret =3D readl_poll_timeout(priv->base + priv->dcfg->xCR[IMX_MU_GCR]=
-, val,
-                                 !(val & IMX_MU_xCR_GIRn(priv->dcfg->type, =
-cp->idx)),
-                                 0, 10000);
-        if (ret) {
-            dev_warn_ratelimited(...);
-        }
-    }
-    break;
-    ...
-}
-
-If all 10 attempts time out, ret is left as -ETIMEDOUT and the while loop
-exits. The code then breaks from the switch block and unconditionally hits
-return 0 at the end of the function instead of returning ret.
-
-Falsely returning success causes the mailbox framework to drop the message,
-leading to silent data loss. Should this return the error code instead?
-
-[Severity: Medium]
-Is there a double disable of priv->clk if devm_mbox_controller_register()
-fails?
-
-In imx_mu_probe(), the clock is manually disabled via clk_disable_unprepare=
-()
-after successfully syncing the PM runtime state:
-
-drivers/mailbox/imx-mailbox.c:imx_mu_probe() {
-    ...
-    clk_disable_unprepare(priv->clk);
-
-    ret =3D devm_mbox_controller_register(dev, &priv->mbox);
-    if (ret)
-        goto disable_clk;
-    ...
-disable_clk:
-    clk_disable_unprepare(priv->clk);
-    return ret;
-}
-
-If devm_mbox_controller_register() fails, the code branches to disable_clk,
-which executes clk_disable_unprepare(priv->clk) a second time. This double
-disable unbalances the clock reference count and triggers a kernel warning.
-
-[Severity: High]
-This is a pre-existing issue, but does the use of time APIs and polling
-with local interrupts disabled lead to hard lockups?
-
-Mailbox transmission (priv->dcfg->tx) is invoked via mbox_send_message()
-with the channel lock (spin_lock_irqsave) held, meaning local interrupts
-are disabled.
-
-Inside imx_mu_tx_waiting_write(), the code polls a hardware register while
-checking time_is_after_jiffies64():
-
-drivers/mailbox/imx-mailbox.c:imx_mu_tx_waiting_write() {
-    ...
-    do {
-        status =3D imx_mu_read(priv, priv->dcfg->xSR[IMX_MU_TSR]);
-        can_write =3D status & IMX_MU_xSR_TEn(priv->dcfg->type, idx % 4);
-    } while (!can_write && time_is_after_jiffies64(timeout_time));
-    ...
-}
-
-Because interrupts are disabled, jiffies will not advance on UP systems,
-causing an infinite loop (deadlock).
-
-Additionally, imx_mu_specific_tx() uses readl_poll_timeout() with a
-5-second timeout in this atomic context:
-
-drivers/mailbox/imx-mailbox.c:imx_mu_specific_tx() {
-    ...
-    ret =3D readl_poll_timeout(priv->base + priv->dcfg->xSR[IMX_MU_TSR],
-                             xsr,
-                             xsr & IMX_MU_xSR_TEn(priv->dcfg->type, i % num=
-_tr),
-                             0, 5 * USEC_PER_SEC);
-    ...
-}
-
-Spinning for up to 5 seconds with IRQs disabled violates core kernel
-locking rules and can trigger NMI watchdogs and RCU stalls.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603-imx_mbox_r=
-proc-v2-0-a0059dc3b69a@linutronix.de?part=3D8
