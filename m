@@ -1,68 +1,135 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0E347CC7A
-	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 12:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDDC480327;
+	Wed,  3 Jun 2026 13:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780491389; cv=none; b=FqzvhMNS5g0EpRh16rDHh10iQnYJF/z7/whXmbJuygjH7McxW61DaKZ0pU/K0Uq/jRMl+fymHlwu76ZhPmdMvUmTVtRPEVOkA/VhxSUKKBbpzUs4H2BADoNOTjTpvd9Fi5cI41PNlgBwS/S+5ugoPWspljv+ZkDrzikZQiNhhg4=
+	t=1780491922; cv=none; b=Q2DcSP4R0/sAkEDYzCpdnSOocs0aJEkKGmyMxe9w/a7OQVnKU6BxnIU0ewMkoBqfSOKUEAmgDwBbdvBccNE8k6nWNCNmNNzx69JYgTCKNvyJ4e4LmuxWa+w00nGMUu67+t4dfhu0PWaYwJTXQhbO41P6LZHvoGGi9jnChFSegxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780491389; c=relaxed/simple;
-	bh=5eICtKTX1Lsd8ZW3IAyCOt9Nd6pWBSZe7GuTo+b+QRc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UIrs1bO/PKUe/QRBVwxdznLrSqPSVpk6ezYj5QjLwnrEYjUuwIp3CppIM6feWOY0P4ebZkjOHHchokX1H0U1tbrY5Pz4oKSRbxM/5uRYYWPuVHZdYb3Eb2gRLaX0By2aXoInbfehJcM/vi+cDKpOh55OszKoqFFc5aEb7beYG88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=bU5bXcdC; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1780491922; c=relaxed/simple;
+	bh=9781m2SRvcy8SOxRyiapvUmNbJ+u0Wv9g7arYOLMgHQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=js6LJ5x9wHuuw0kO2gTh9RCWjc7GQvEAbaF/pOKpYTlVzlWxh2O9pV8lUY+I6RIlrcCs58g5fOFaTC2NAp37A+8t+bBY56A05DMLY2bIZOVCDG7ahwxW9w0bCmzmVdhU+IG5i4laXm38p+caiw/xlNJI5uPnEadtvIwHJZybso0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bLhZV4+3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BpOQHe6v; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="bU5bXcdC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=7CiM
-	Oa3agqihmKRHXpPIpiWtmp44g79fjyf44bbtVoA=; b=bU5bXcdCSZ4FVqWOMRNz
-	EKD0qXNsTBisX7AcCRTxhteZs2Sgtx7297djqTHv13MeeS5oaE1WvtD3EC+wI016
-	Q/hJ8MreIrrkCW9pz1icwFde7Rk/wpRVALKlFNpVDOPb52V/Gir831vpVM489J9F
-	kmtSKtaZqEP7oBpo4mdu4UU3OUtxyN53B//l1bQMiX4SAYXE5wA2O49H0btheZY5
-	gT3jWF6Ct6JxLuL1YCKZH/hdPxhOw1SUfgC1lgvLtFBGCb/I9JYbGYL34Y3D4GUd
-	jZ188yQRmnygZhA/OwWnYqeycrdv65rboJjABpv5XWp+tp8TTe029Hq7cJHPytdk
-	Sg==
-Received: (qmail 3282402 invoked from network); 3 Jun 2026 14:56:22 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Jun 2026 14:56:22 +0200
-X-UD-Smtp-Session: l3s3148p1@ojBb9FhTHLgujnsK
-Date: Wed, 3 Jun 2026 14:56:21 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bLhZV4+3";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BpOQHe6v"
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780491919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=smnfHwXHRkzzEhvhUiFBh6IWlVN4loP6QRpo40MdtYc=;
+	b=bLhZV4+3rA+M0tfAjH7IrUXHcPwutz6J7D+nezxX/fvNCqdClJab2N0xH/0sWk5pv8GrUL
+	vX1DE5lsM3MKOjG7lTFUAmaX9jEB2dsNIRh6T+j9fk+xciJCM/qRIJLqCF8MJ99WMR/cAr
+	0TdGSyCa3KpJ3lLNAsSxiEUNKdKZImSf7Y4O21sWrOMO1MKUrMXA+Lbgv/uPinCZ3uMezD
+	qjkSJCLuYCzIud3kJaVwKFVrmeJwxKJYskJTP/PxF2WAq01Mj1kKhk7pekuR295WkxS8Hy
+	gjX+zZzF0hOyGqi0WS4pQQuGXwmIrW9NStKKTfaRqAING47nYm5a2REe7Ju1FA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780491919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=smnfHwXHRkzzEhvhUiFBh6IWlVN4loP6QRpo40MdtYc=;
+	b=BpOQHe6vRJ0U5f1cJNCncBj0jhdla7xnn9+jXYzroPsWQ06vioMEQ0jIU9JPz8q0IkVdGT
+	M/s8xbavRtIh4dAw==
+To: linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Paul Gerber <paul.gerber@tq-group.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com,
-	linux-renesas-soc@vger.kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v4 1/4] dt-bindings: arm: fsl: add TQMa8MPxS board
-Message-ID: <aiAkdZ5XuYC-wpCL@ninjato>
-References: <20260603093621.2504490-1-alexander.stein@ew.tq-group.com>
+	Frank Li <Frank.Li@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH v2 0/9] mailbox: imx: Use threaded handler to avoid kworker in imx's remoteproc
+Date: Wed,  3 Jun 2026 15:05:03 +0200
+Message-ID: <20260603-imx_mbox_rproc-v2-0-a0059dc3b69a@linutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260603093621.2504490-1-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20260529-imx_mbox_rproc-7d512f5a6f78
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alexander,
+The imx's remoteproc driver uses a kworker from its mailbox callback to
+complete the request. The reason is that the imx mailbox driver invokes
+the callback from its interrupt handler and the remoteproc callback (at
+least the rpmsg-tty) requires a preemptible context.
 
-how do you generate the CC list? I wonder because linux-renesas-soc is
-added while only files in the freescale directory are touched? Any idea?
+This works but is problematic in a PREEMPT_RT environment where the
+latency of the invocation is important. By scheduling a kworker the
+high task priority from the threaded handler is lost and the kworker
+competes for CPU ressources with every SCHED_OTHER task in the system.
+This can lead to long delays on a busy system with other RT threads
+which are less important than the completion of this request.
 
-Happy hacking,
+Looking over other mailbox driver, like the arm_mhu for instance, they
+use a threaded interrupt handler to invoke the callback. This avoids the
+kworker detour.
 
-   Wolfram
+The here suggested change utilises a threaded interrupt to invoke the
+callback. The primary handler mask the interrupt source so that the
+handler can run without getting interrupted by the interrupt again.
+Doing so avoids marking the interrupt IRQF_ONESHOT so that in a
+shared-interrupt environment the other interrupt can still fire while
+the first is masked.
+
+The first four patches are result of the sashiko review. Does not look
+critical.
+
+This change was tested on a im93 board with rpmsg-tty driver.
+
+v1=E2=80=A6v2: https://lore.kernel.org/r/20260529-imx_mbox_rproc-v1-0-b8ffc=
+36e11e5@linutronix.de
+  - Using correct register to enable RXDB event.
+  - Update commit description for the "threaded interrupt", "unmasks the
+    interrupt" =3D> "masks the interrupt event".
+  - Add a shutdown field so that the interrupt does not unmask the
+    interrupt if it has been already disabled because the channel is
+    about to be shutdown.  A possible race mentioned by sashiko.
+  - Use devm_pm_runtime_enable(). This should avoid a possible race
+    sashiko mentioned.
+  - Use devm_of_platform_populate().
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+Sebastian Andrzej Siewior (9):
+      mailbox: imx: Add a channel shutdown field
+      mailbox: imx: Use devm_pm_runtime_enable()
+      mailbox: imx: use devm_of_platform_populate()
+      mailbox: imx: Use channel index instead of zero in imx_mu_specific_rx=
+()
+      mailbox: imx: Start splitting the IRQ handler in primary and threaded=
+ handler
+      mailbox: imx: Move the RX part of the mailbox into the threaded handl=
+er
+      mailbox: imx: Move the RXDB part of the mailbox into the threaded han=
+dler
+      mailbox: imx: Don't force-thread the primary handler
+      remoteproc: imx_rproc: Invoke the callback directly
+
+ drivers/mailbox/imx-mailbox.c  | 133 ++++++++++++++++++++++++++++++-------=
+----
+ drivers/remoteproc/imx_rproc.c |  33 +---------
+ 2 files changed, 100 insertions(+), 66 deletions(-)
+---
+base-commit: 3bc831df9ee16fceee851872315161377ca1417d
+change-id: 20260529-imx_mbox_rproc-7d512f5a6f78
+
+Best regards,
+--=20
+Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+
