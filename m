@@ -1,137 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549032D1911;
-	Wed,  3 Jun 2026 08:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2E1409109
+	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 08:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780473726; cv=none; b=HS2xkvwaXtlmpePaqUyk/egVwxttALmr1fFxHP1SeXTRmPzu9a4cWkIUNlTmVGi4AJ7AKF5qNIIJcq0L8zc6nqwwLgTCr+qFeume1LKZnH4E9ZnhgDNiESW7tBpY7fa4z/eExYbffWED5455KtbP5jxOSRcZqhbToXBAaDUOasM=
+	t=1780474243; cv=none; b=cWlLwz9ERmba/rK6anm3HTFhad9eHq40gtiUfYbhM5LVir31IUZS9xwkcEwi/2+XtgG+SxCFVQA2hTRftWYkpt44iO8MoSmsG5aTBNxCqWjN+smcMHxEQdJ0CMP2QFgxP2uEfTc2Wb2smru+bi6+P/A6jnDgNWQ1s12GPf+MYO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780473726; c=relaxed/simple;
-	bh=NOZFpu3nLdRcLnC7S4Qp+4saKzUpXtWHo716rz9R6nk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=gWT8F5x4+vR1aTcRAM+vwBR+a/EIwnruQRMzt5EA+dpdpHA0BGlw5NgusN2UkZFckXzS0PIjymwJW9BKas4fY+JVJ7PkyrzyGi84YQRmFtR4ObRs7tQz+Hm6WDLQuMX2X5QZFWKyVxeGxiGtR2USOslE8HtBqjnGQrvcgIHWPOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UxNeeFaF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780474243; c=relaxed/simple;
+	bh=L9urVhS33Do6zCalZdU3eSAmMtEgi2x00tmzzJLChU0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aa5gQiQaRz6y1B6a1Q4BKJNWwqnsY8VlRgBYBCRJJgo5vgooUif9lFWsiRor8hYMdJDKdFFetiOrD1YrQj6Zd/TJyFn+Ssj7YiuCWYkEJFTOj9mE5CDmobeEk/jpcNrk2ziHcGkaNDpln1fx37KiBpnveyzg7afCg12ErecAeeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IPWVwnqK; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UxNeeFaF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2481F00893;
-	Wed,  3 Jun 2026 08:02:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780473725;
-	bh=1SgAuiHTq+gaVC0enPP1oUiuz66/OMy2UaQ5VvbiniU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UxNeeFaF2eaMUS2SmTjWtaJBK5eVH6iwJ0BoIzWeN2lsS5CPH2e/cJVV05K17h/JD
-	 95iD8AS7Ycm5CzIRjR9QQ3jXN3YWTMcIK38YxgELlmVZlm+YrE0o70eSzgS5V9SwHt
-	 oy9PW+ZrfiV03xHntTY71dSZIECGpWAphJRW5+x/HV+AcYmR4XuxD7zvVe0LXK5Pe8
-	 SR5bgrTSWAiibbQ/uzs3jgYnK3QKbFG+K4pogV0TOSXHh1z9WDE/TrFtaV5t7lbMV1
-	 fPVq+Bh9pC6kCY5vN4mWCpEoGz7llGBEet8qPizVtWgHwQanPP6mLEGBcWMoLNxU99
-	 pCoawcWbKbaVQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v4 4/8] dt-bindings: can: fsl,flexcan: add NXP
- S32N79 SoC support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
-Cc: conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260603071342.641874-5-ciprianmarian.costea@oss.nxp.com>
-References: <20260603071342.641874-5-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 08:02:04 +0000
-Message-Id: <20260603080204.9E2481F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IPWVwnqK"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-45ef189aa1cso4391180f8f.0
+        for <imx@lists.linux.dev>; Wed, 03 Jun 2026 01:10:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780474240; x=1781079040; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PzoJAMfBbn1uwW6pXQumFkyZkDU4AXI6hlryg4nLphU=;
+        b=IPWVwnqKOBnYgQQM911VdsKDbgUpGaeqeX0K46A3BreGnSsbNrNi1fO51xQBBRc0Hm
+         Ipndd1cBuk4t9MyU2sTDa7zHUVLic+5KsS3+XQ5vXavP565k2t0npgKQcRvtghVC+VCV
+         zeCukh4vCSHJ/E0IQudOow3MlzlApRq28XN6ixyDasz39c2kthH79INDkf8lnJ6nKNsb
+         MXlhqpSGEuLgaCjZM07ANpwXBQJJgCIq8ukofJkJxZFo35LW7cGyMnO91D9TefUGzK8o
+         cm6MWijFes9yLW3gtG/3j2ZRwyVBLM8E3ZL9iskVyTfeAm/xrd5fuv8n36DWYVoroTE7
+         4dHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780474240; x=1781079040;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PzoJAMfBbn1uwW6pXQumFkyZkDU4AXI6hlryg4nLphU=;
+        b=jiKs5/3WSGcbmLJO5OCU9Tf0gLOBHLELqk+++UEGmEry22JH1lXd/QbxgAPW5+LCJr
+         Y2aJKw79F+bFAwHuOKuIfWE3jo3W5y6SKMsX3JTcuVS4XttATtiB3Mjb/M+rSMsJOmuC
+         Y03/T3rD7pZqjsEcJmMgWqrvIo60Wkfxelnx8v6YLI8NpS5uPEqogJPPa2Pf+cBzMLvF
+         LT1MdjYCzvKqSf/1ze/P+xGEKMSmIflTa/zA4QOKMrWRlEkweaHi2pVMrpGbVBgdTDUx
+         +ZaKZTRghxI0fsJlE+6rmBU5Sw/b5RWRmm10bhiaZGMWDOzbhmviHzj57SB/QAmgMLcY
+         1cVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8lbMV4EBUNRnglD9CIMfLgInt066EFCeWx4e1mP6SG/Rr9chuIw+boVVUqmhhcRdabRV0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyC9qAIEfjixOmrZyN8P2bdiN762AgcR2CiV3BZy1BwwgwGWrCC
+	25TOB84I3bFHQzYZVYPRhvooqLq00675Fnl1zQ7iMIXOvVSj7YEcYOLt
+X-Gm-Gg: Acq92OFF35+wY6chbp0//8jbeEZBx2rVFtz/oQdNNhV5tdD6ZfsohLNAZ85L/6XQTsL
+	rx31go3BxMQFFv/mgVWKW2Kpoxzl0RCLddG1GQh9y9s0kBh/usLzuUDfgWDm1qSY2UrEdQeMPjp
+	/AELoP10mjqLCmQEF/jLDAOC3GiuH7lgMdwmibZLeCtKClZnbapPT8P0sH5MBwtWhfONJ2z+xQU
+	DaP5XUUt56zGbjHlnk1oSJ98Z5YFsZd9OF+k/ofiOuvBZha+F9PKx5D9SACqrCagX/3hcBtEoxf
+	3F1vyzY+CDYzZJkAvcvVcMWqFC+0gtkEuENTJtHiAGX9xdHdEj1PEq6RugI7INz75C1MqjWWPWB
+	SlVjE0+FoypUtLT1VBZW+GnaOPOzlR4LpT5lo2PZPNYLbG0lNaEXuU4xeTji21YA3Wxe0GTs+bb
+	37riqgS0IlM8/PRtvjskVIwJhMkfUJG5ogmvck7bSfJZR0wSlGr5Q1dOUyQmrRLELglSwRn/8OT
+	uYnCv6X9RWyn020EDGzy0CfFns1fgxNAha2dj8PUR5t7XcVOJ+rbVs=
+X-Received: by 2002:a5d:457b:0:b0:441:1e8e:d8fd with SMTP id ffacd0b85a97d-4602184d442mr1812471f8f.29.1780474240292;
+        Wed, 03 Jun 2026 01:10:40 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-244.cust.vodafonedsl.it. [93.144.65.244])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f368e9fsm5638407f8f.37.2026.06.03.01.10.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 01:10:39 -0700 (PDT)
+Date: Wed, 3 Jun 2026 10:10:38 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH v2 1/4] arm64: dts: imx93-var-som-symphony: add TPM
+ support
+Message-ID: <ah_hfhpujDwcGk9W@Lord-Beerus.station>
+References: <cover.1780051874.git.stefano.r@variscite.com>
+ <64adb6f0cf9efe107c761e1a69b9a63c7dd0141a.1780051874.git.stefano.r@variscite.com>
+ <ah3wMi6QW6DUPrS4@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ah3wMi6QW6DUPrS4@lizhi-Precision-Tower-5810>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Mon, Jun 01, 2026 at 04:48:50PM -0400, Frank Li wrote:
+> On Fri, May 29, 2026 at 12:52:44PM +0200, Stefano Radaelli wrote:
+> > From: Stefano Radaelli <stefano.r@variscite.com>
+> >
+> > Add the ST33KTPM2XI2C TPM device on the Symphony carrier board.
+> >
+> > The TPM enable line is a board-level signal driven through the PCAL6408
+> > GPIO expander. Keep it asserted with a GPIO hog so the TPM is enabled on
+> > this board.
+> >
+> > The TPM binding does not provide a dedicated enable GPIO or supply
+> > property, so this cannot currently be expressed as a direct TPM
+> > dependency.
+> 
+> there are reset/reset-gpio, can you use it?
+> 
+> Frank
+> >
 
-Pre-existing issues:
-- [High] Concurrent execution of separate IRQ handlers silently corrupts th=
-e lockless skb_irq_queue in the RX offload core.
---
+Hi Frank,
 
-commit 1b40c6c47df0cbe3a237b4923882ceb85a965615
-Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+you are right, reset-gpios property will do the job.
 
-dt-bindings: can: fsl,flexcan: add NXP S32N79 SoC support
+I'll send V2 soon,
 
-Add NXP S32N79 SoC compatible string and interrupt properties.
-On S32N79, FlexCAN IP is integrated with two interrupt lines:
-one for the mailbox interrupts (0-127) and one for signaling
-bus errors and device state changes.
-
-> diff --git a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml b=
-/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-> index f81d56f7c12a5..d098a44c2b9c2 100644
-> --- a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-> +++ b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-
-[ ... ]
-
-> @@ -173,11 +174,38 @@ allOf:
->              - const: mb-1
->        required:
->          - interrupt-names
-> -    else:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: nxp,s32n79-flexcan
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          items:
-> +            - description: Message Buffer interrupt for mailboxes 0-127
-> +            - description: Bus Error and Device state change interrupt
-
-[Severity: High]
-This is a pre-existing issue, but can the concurrent execution of these sep=
-arate
-IRQ handlers silently corrupt the lockless skb_irq_queue in the RX offload =
-core?
-
-Since multi-IRQ platforms (like the newly added S32N79) map different FlexC=
-AN
-events to distinct hardware IRQ lines, the interrupt handlers can be dispat=
-ched
-concurrently on different CPUs.
-
-For example, CPU1 could be executing flexcan_irq_mb() while CPU2 is executi=
-ng
-flexcan_irq_boff():
-
-CPU1:
-drivers/net/can/flexcan/flexcan-core.c:flexcan_irq_mb() {
-    ...
-    handled =3D flexcan_do_mb(dev, mb_irq);
-    ...
-}
-
-CPU2:
-drivers/net/can/flexcan/flexcan-core.c:flexcan_irq_boff() {
-    ...
-    handled =3D flexcan_do_state(dev);
-    ...
-}
-
-Both of these paths eventually call into the RX offload core to enqueue
-packets:
-
-drivers/net/can/dev/rx-offload.c:can_rx_offload_queue_timestamp() {
-    ...
-    __skb_queue_add_sort(&offload->skb_irq_queue, skb, can_rx_offload_compa=
-re);
-    ...
-}
-
-Because __skb_queue_add_sort() and __skb_queue_tail() are lockless queue
-operations, won't concurrent insertions from multiple CPUs corrupt the
-doubly-linked list pointers and lead to a kernel panic on subsequent access=
-es?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603071342.6418=
-74-1-ciprianmarian.costea@oss.nxp.com?part=3D4
+Thank you,
+Stefano
