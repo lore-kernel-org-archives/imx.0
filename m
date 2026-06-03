@@ -1,74 +1,217 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011037.outbound.protection.outlook.com [52.101.65.37])
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011036.outbound.protection.outlook.com [52.101.125.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD28348BD2B
-	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 21:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CB44418E4;
+	Wed,  3 Jun 2026 22:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.36
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780520983; cv=fail; b=J45LvkMTQP23S+wZ5rgP5XQndVMH3l/EXwHkEtwru4FMLgSUCEQ6J4YtXlxrbq0iOhBrAm4KSY6s90NZrfucuf4h5pcnMISGkyOZ4n9KVx6bFxEcOfp2m42k4GuHTSFxGzdgjgdzsD8751Gm0Oia44pWv70uJueV1eFbS/0QvgY=
+	t=1780525815; cv=fail; b=dibdk13u4kkRddF67xo8gcaIlzz/5KdeMokzfXOfKpP8dteIQYJIJ+gGI3O35b68Q/3gbPDkXyfP7p24VAN2+UWnDdDsjR5tn+fV8mBM/lU0VAyQzN6wGQidzisk96tX/ROhvgUylyJbhBykmZhYTKeTqN2Gu5ipfbSFme1O7kE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780520983; c=relaxed/simple;
-	bh=UygMzDndGp/pbHJ7x255/ChWtC3MDi+6I3TIUFNHtGs=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ASkkVUqmtSIbj41UMD0rtKai4cixyCV1fpTbAeY7S1FSyo9GaM2nP9LKbgC7FBhCpEw07KLNubTZcCGJFnWOUtQKazVU1bB6h2VRKKVg4NPqzzumuTPdkriHNnLpnKS8TTNMpZxixhGekG4JENamLgSfMzZfaq1JLJ2mmJauXb8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=SugxWgbd; arc=fail smtp.client-ip=52.101.65.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1780525815; c=relaxed/simple;
+	bh=WTS5ddFEdnOSo9/IV5+3mQLL8kJAv06vfsAF0SDG5gs=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=ECzf5FEymJWLDJ4RvCMf/HpBcApuZ74NycOrcT+OjssviSJb1bxBF9zJbShJ2cOVPvujITJDOW4+eJyCr7dVAfwVgPZD4kBiixnm4gcf8uUpct3iWT1HUxSKIr9ji+Sbz91kg2G9gnzoVCgR+jhJqQLriqOBXbXUL2XfaOTax5Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=ULF/oiWs; arc=fail smtp.client-ip=52.101.125.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="SugxWgbd"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="ULF/oiWs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r3SemDrjqp9iWHyIUJLT5pErtHHRHl6Im+NIUDk9yAAjgguoY6YPoSyIezwHzkvwEECq3OYcG3HkT6VQhz9kBKiHmL0xUHqSHB4vyhMsL9s2RS7oEsB0KwG0ShPXKRDNVnlQn3DfzkWVO4FKzwQU2rm9RBRAx5FBDH8gs/KmlucsdwvZn2f3rChCe7LCn4zDRFUOAVTmMNmoI+R+9U50+iOJTzmfmInRiSjltfAqdSeiEAS3Voyv4SZBzbWdFkc16KQH9gFZha/iN/m14FYgEBtk1Iv5y+yhqFERL0rT7npmBmDDKYwzNg58i2DZSSDp/+FZ06VTLvrypztXP9Z5qw==
+ b=LiDlgTOjquM/2FE5w5nqTPrFknXxRQZP/CGzYppoHfAaqwgYMbOmu3M8v9wE1vxp+RvIyJ/EtYz1GyL4XKb4DRCZgnII91tczhuEndI2P0WEBgOOtGvXTVe4E/IRu6afZ1nB/IXc3OdcsoyBUalSAvZVs05YkhBs4YalBTkgl7/+Nc13KXP8V8FYculSePWX4fFitda4ACghvbbrSIMac+Rift6XingS9pXBYLO03duoKDb6t9//3ZkbFrC5Nr+Ys5Udhz0uDWaoxPGd8La8jmfHH+CTy0FhnKxffCJ8TuTv00LCOinNbLCWnQEuS0fnVXvLY2i/32S33Pd2Phjvqw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qTHG+1YanwOe3GBHTQGXgVtvXSLS2uEFZy5djXv87zY=;
- b=hXSY/p7yOuLHlAqLRigkqrRgd9DRWt0C1vPbyqP9uvylH9AlMwqLf7H91bbnrl97fyTNj14TTHgGdklFsYoA//c9jln/nE6guqoVAMz6E3CH69WBmXbA6WcgxOtedXjLfhs0qTQinyM8SrQdUTjekc78AemZZanjhppzYuV2UnGDUNTh7cyooW1Z9Gh/M2ue1UrjklR5Hchiply4oZgUXouz2k4B5dbBDqDEpJ4rMnunsy0OMOpGJaKmkN/cvnRV0A+mXNl4uQCuij2jAd0GpzePZfj8870dCdct72ns1E/odHRdE8XipDcMiC892/1I2BEo2TvMxldw0fcgbFi33Q==
+ bh=qbXB38SUTgltPz28Qrbj5oXXKCfe23ekoxc3LjZrCj4=;
+ b=Uk5ZvW2XjrhF55mroyq9r1J1MXZTRDnVmt25JPun6SVbPHEYuwjv88KO7KKpl2Jwl5VtK2ye4POVjCE3N6usuAFFN1Bj8+G0eklBRrFQWdOCF1evYoqc8+xj/m479ApBx/2fMKLQaYiBAv95GfvNQl/hKXHILo3GEMetWxC6Ta8Ke//elW0NTgk9FMgbiPbie/AkRnciQKd8H0685AVCBMc+TE8pdpFMcnidh3jDcTemNXBsB5t1gvDmt+pbKm8/tXlH6YYkV+QXOB2fN6TT7Zm+JSUbhYkKKNrPjWCjI+I//bxDxzdX7d1yomx0cPJb8SPUpP7itGRW5yiPjeeNig==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qTHG+1YanwOe3GBHTQGXgVtvXSLS2uEFZy5djXv87zY=;
- b=SugxWgbdRN8I+2RQACZWM5OVffiJN7xPie3NSChbcmV2BNHZ7LKsLuEP8AbHATtzInC6RSbtzdCeRb4wrYo+8BjJ61xVJCCQmBB1rU28ayvyeu/DNFO55DE7TfIF0QRmmVFmgjzgPECW87V21WKaIgFaUXF7TZRDY5UThlheBl235blKM6gs5v0PDRRFP004qZYKZE12gclT4iUXaX0TYa18bH2Xcvy1tqVoc4ena/8u67x0eNGPKtp6q+tCeb5wOEAJaAwQ3+FUqtnNgtxcyQJxX6o8jP4niCjPJah7CJlTIGhqsSyIytKaoNWRDVMut2cAC6mQab/ujYUVgIk1PA==
+ bh=qbXB38SUTgltPz28Qrbj5oXXKCfe23ekoxc3LjZrCj4=;
+ b=ULF/oiWs23LHbBNk+vejikbK1FT5bQkDAWfG4U8i/7Z+VlzWKWx55Ko/bNbZtsuGZwDZUw4FqRWehWPb98eAhsdF5oeTBECaBpMGkl+EqZqReIig2ErCwptcVO6Bx6g7CGjTgMgD6zN3Jr7P4oauU5V7KTPAC601ibJ1aGB+3Yc=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV1PR04MB9071.eurprd04.prod.outlook.com (2603:10a6:150:22::11) with
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TY3PR01MB11797.jpnprd01.prod.outlook.com (2603:1096:400:373::8)
+ by OSAPR01MB7280.jpnprd01.prod.outlook.com (2603:1096:604:142::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 21:09:37 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 21:09:36 +0000
-From: Frank.Li@oss.nxp.com
-To: Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list),
-	linux-doc@vger.kernel.org (open list:DOCUMENTATION)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml format
-Date: Wed,  3 Jun 2026 17:09:24 -0400
-Message-ID: <20260603210929.3099363-1-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SA0PR11CA0034.namprd11.prod.outlook.com
- (2603:10b6:806:d0::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ 22:30:10 +0000
+Received: from TY3PR01MB11797.jpnprd01.prod.outlook.com
+ ([fe80::1868:c915:c230:a383]) by TY3PR01MB11797.jpnprd01.prod.outlook.com
+ ([fe80::1868:c915:c230:a383%5]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
+ 22:30:10 +0000
+Message-ID: <87se7345qm.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: "Alvin =?UTF-8?B?xaBpcHJhZ2E=?=" <alsi@bang-olufsen.dk>,
+	"J.M.B.\
+ Downing" <jonathan.downing@nautel.com>,
+	"Martin =?UTF-8?B?UG92acWhZXI=?="
+ <povik+lin@cutebit.org>,
+	"Nuno =?UTF-8?B?U8Oh?=" <nuno.sa@analog.com>,
+	"Uwe\
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= (The Capable Hub)"
+ <u.kleine-koenig@baylibre.com>,
+	Alexandre Belloni
+ <alexandre.belloni@bootlin.com>,
+	Alexandre Torgue
+ <alexandre.torgue@foss.st.com>,
+	AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>,
+	Arnaud Pouliquen
+ <arnaud.pouliquen@foss.st.com>,
+	Baojun Xu <baojun.xu@ti.com>,
+	Bartosz
+ Golaszewski <brgl@kernel.org>,
+	Ben Bright <ben.bright@cirrus.com>,
+	Benson
+ Leung <bleung@chromium.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Binbin
+ Zhou <zhoubinbin@loongson.cn>,
+	Bram Vlerick
+ <bram.vlerick@openpixelsystems.org>,
+	Charles Keepax
+ <ckeepax@opensource.cirrus.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Cheng-Yi
+ Chiang <cychiang@chromium.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Daniel Mack
+ <daniel@zonque.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Frank Li
+ <Frank.Li@nxp.com>,
+	Fred Treven <fred.treven@cirrus.com>,
+	Geert
+ Uytterhoeven <geert+renesas@glider.be>,
+	Guenter Roeck
+ <groeck@chromium.org>,
+	Guoqing Jiang <guoqing.jiang@canonical.com>,
+	Haojian
+ Zhuang <haojian.zhuang@gmail.com>,
+	HariKrishna Sagala
+ <hariconscious@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Hsieh Hung-En
+ <hungen3108@gmail.com>,
+	James Ogletree <jogletre@opensource.cirrus.com>,
+	Jarkko Nikula <jarkko.nikula@bitmer.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jerome Brunet
+ <jbrunet@baylibre.com>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Jonathan
+ Hunter <jonathanh@nvidia.com>,
+	Kevin Cernekee <cernekee@chromium.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Kevin Lu <kevin-lu@ti.com>,
+	Kirill
+ Marinushkin <k.marinushkin@gmail.com>,
+	Kiseok Jo
+ <kiseok.jo@irondevice.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Kunihiko
+ Hayashi <hayashi.kunihiko@socionext.com>,
+	Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Lars-Peter Clausen
+ <lars@metafoo.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Luca Ceresoli
+ <luca.ceresoli@bootlin.com>,
+	M R Swami Reddy <mr.swami.reddy@ti.com>,
+	Mark
+ Brown <broonie@kernel.org>,
+	Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>,
+	Masami Hiramatsu
+ <mhiramat@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Max
+ Filippov <jcmvbkbc@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Nicolas Ferre
+ <nicolas.ferre@microchip.com>,
+	Nicolas Frattaroli
+ <frattaroli.nicolas@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Oder
+ Chiou <oder_chiou@realtek.com>,
+	Olivier Moysan
+ <olivier.moysan@foss.st.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Peter
+ Rosin <peda@lysator.liu.se>,
+	Piotr Wojtaszczyk
+ <piotr.wojtaszczyk@timesys.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Ray
+ Jui <rjui@broadcom.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Samuel Holland
+ <samuel@sholland.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Scott Branden
+ <sbranden@broadcom.com>,
+	Sen Wang <sen@ti.com>,
+	Sharique Mohammad
+ <sharq0406@gmail.com>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Shengjiu Wang
+ <shengjiu.wang@gmail.com>,
+	Steven Eckhoff
+ <steven.eckhoff.opensource@gmail.com>,
+	Support Opensource
+ <support.opensource@diasemi.com>,
+	Sylwester Nawrocki
+ <s.nawrocki@samsung.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Thierry Reding
+ <thierry.reding@kernel.org>,
+	Tim Bird <tim.bird@sony.com>,
+	Troy Mitchell
+ <troy.mitchell@linux.spacemit.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	Vijendar Mukunda
+ <Vijendar.Mukunda@amd.com>,
+	Vishwas A Deshpande
+ <vishwas.a.deshpande@ti.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Xiubo Li
+ <Xiubo.Lee@gmail.com>,
+	Yixun Lan <dlan@kernel.org>,
+	Zhang Yi
+ <zhangyi@everest-semi.com>,
+	chrome-platform@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-sound@vger.kernel.org,
+	spacemit@lists.linux.dev
+Subject: Re: [PATCH 02/83] ASoC: codecs: framer-codec: don't use array if single pattarn
+In-Reply-To: <20260603140939.091f126f@bootlin.com>
+References: <8733zfj5jj.wl-kuninori.morimoto.gx@renesas.com>
+	<87zf1nhqxx.wl-kuninori.morimoto.gx@renesas.com>
+	<20260603140939.091f126f@bootlin.com>
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Wed, 3 Jun 2026 22:30:09 +0000
+X-ClientProxiedBy: TY4PR01CA0115.jpnprd01.prod.outlook.com
+ (2603:1096:405:379::17) To TY3PR01MB11797.jpnprd01.prod.outlook.com
+ (2603:1096:400:373::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,331 +219,78 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB9071:EE_
-X-MS-Office365-Filtering-Correlation-Id: b2f23c23-f60b-4b9e-766f-08dec1b46ade
+X-MS-TrafficTypeDiagnostic: TY3PR01MB11797:EE_|OSAPR01MB7280:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12607daf-5c35-4ee7-4d86-08dec1bfabd8
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|19092799006|1800799024|366016|56012099006|11063799006|6133799003|18002099003|3023799007|921020;
+	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|4143699003|11063799006|56012099006|38350700014|22082099003|18002099003|41080700001;
 X-Microsoft-Antispam-Message-Info:
-	NB7ezXZ84U19yyyU8Rw+cdJFbSyWNE2Z6ABMKQqQ+F/GrzwMd3WRmi0LLVh3ETlvBJFoMcClY35A5qFVyG3LWXKJQHNphPmW5P+HOAjQSY2ciCbZfAnL8plSeHhxTf4Yk8JttZcrA9sH+vQ63yKZ7v3McyxwRCOENxpGq64ovUJnLfT2N9yw3xR/1/U2dVQyJ4Eu0jyTJ566+jBWqBcW1fMMtghY2njEXFBeoSWHP86w1yvh6MajotOpAGq2k8DG19O9bCC00D8qbYzkwJe4KORLKP+4pf6vWnSVOrsrKnBfnJAv/aNHM8jZ+AcHgUkEIwtfDR1/4Iyk6no0X8dhrpqIoCj8LzMWl92PxqRgw1gBeqByRSiB6+Sb3MTnv57uQztPgjCpFaW9PIUZ3P9MsFClRQlpmLp0nYhm15hALObFm03WTCXmsPMPeDJ36yYsMD3Yqo2KhRM/CAXgp6vMpFEsbgvK4ReceVR7TqIgsd2T1sP1kO+wc5eBJyiuD0Nx/eS99bIhlJ/Dmj9y1LwrtmQp3nO6c/PaUoWpAlSL+8X/fbunu1a10iqou0QV7k5wofd6YnJrr82yseCi0fnhcm6gvGJKIkIvL3/NVIobjgEenjXXENSfOf3Fpo2hrcjdQoSb1aKknIXlAN4PNELYlxbb/GLFG1F4KLks8JPYu3kXTe/3A9wVnKsaAFB3X+zp
+	TzHfVoj7TpgdvJ0HaGWwBMagVB+iozqFbkXG3tqI/A+k0Q2rZwkMIB5Xx3ck6auLWKhc7o6+wZ4bwSxnZ9ogH8It4qEBWtw1aIsCJd11CygAQ1F4yyZtNvDSoIIp/lIJC85yb94H4WAHP87hQmsft9/ZyUOn3u/CUHqDhFepHbaIPsFIb71BPNQJk6n3dUf49wwd18j/MdGNOBeG3yJaspINvLZL1noqZINg8S/AQF66DylY/EzUUU6WtLvxbhfMDQFrznaVBzSrubhuIXUejOSR+c/RiKsDaMADknHbfX8sEqhCY233XPCJzjOD9CdgdkYMdVF6qd1DDRfSpj7Xp7eAliJrUvjQ/pz6evXYjVra64yWF9m9XZ1+TbBFnAsTRXg/DbGpN7JsR+8mfK6CF2bccqF8N7qBst00qqedEkfIQ1U8hK3lJJItYdngZMgQTYsREmzb4lQzLDoSqgNrwRc3SCyed1/YcNEtOnSyIlHKk8jXB9nHhKph5kqYOX62GmzM2lnh2humnTqNrV8Me8AJg7DL48c3WTJnupZdYNHrs0q5J21E6JYzQH5ECf7zt0RE6FBXRLn6c1axLC4DFTEMsCc6qEh0NGBWcMhwF32fZSOdZjVzcuVOmv4QlGmJXGjwUrTnCYHijp7U3rBpcGiAKjewtJQEieXKxU5wUwRU8ci7adSQI2R/1W3Qwx9z7u5upyIbtWXK1p56WD+7WayH0vfH6e8OkUyTrBR6oqpwrW5uuMy1KVIg/4z89G5fGC2T/5vZdSWTCG3Q78Uy/w==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(1800799024)(366016)(56012099006)(11063799006)(6133799003)(18002099003)(3023799007)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11797.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(4143699003)(11063799006)(56012099006)(38350700014)(22082099003)(18002099003)(41080700001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kOB0XCkwHDsWv6zyVWPZ+ZoMDhsh0LksPfGTshB4tOO+pFRImKicmlTuVes3?=
- =?us-ascii?Q?KHt76C6j4I8KSrxgX+yqrkilv+kSXxrES3Lql4YiN+BkAAG2Dka89F21YEtj?=
- =?us-ascii?Q?37GE2xRWibHeYOUMA7zdY/BjUwPG0TcxtyVe1N+FkDe9oyW+kHOB/mzXfsaL?=
- =?us-ascii?Q?fWJMoON/IUTHvoixwhs9XdnrCTr/Mt4LzGS/RP5RzvuYJEjK00ty0XtuZLbl?=
- =?us-ascii?Q?upnXhreZ2qdFLPRJEl66ej2aN7ORolKDZ1bKgKWF7OPgili2cd3NJrdJMQtS?=
- =?us-ascii?Q?6vI/FEjIQnQ6E323oWxznsmJV5lk7lOO5n1nADfOuToKwwyDbiBPLiqbcj5d?=
- =?us-ascii?Q?p7cEsz56SiNdk6K2g4jSJRAWk0XONc0Hz0qUGonhJo8KtjG2pG+sJe37ps/x?=
- =?us-ascii?Q?V+3ObXmtT2dGgQ25Ubz4KDIOF5/vyCVjmnX+sKtSoqJHMzFCAZHzUBZ7hKgq?=
- =?us-ascii?Q?3l2Tn2TaVz4m7GAKzo2RJcSCY3i8WG3J/BYWlx+B2Cvv8/NQ/lc5rGSY4F/Z?=
- =?us-ascii?Q?uXa7xNT/FrRSFb3lqwoeQA6E/Dtb+ptCfX3TVhLO4ToFiqcOoBx5/67sHh7X?=
- =?us-ascii?Q?C1VmLDWR8p6wqsjKVzGUDjo/0KwaIX3vYbmQ2KqY4slMwGppTRAOYbVfQhHI?=
- =?us-ascii?Q?+DA1BUSP2aqC8fmlFj+gu8gDBwxys7Sq5FicMkkNHefdhZQnyVN5hlhSvMzi?=
- =?us-ascii?Q?YcVqL0WarqFNixGhB1wkwNlNTlFeHmuSFXgQdgjjYqZ+3yOwat0oVUv2IFfj?=
- =?us-ascii?Q?FK/lbatJ6PstZLRnIv0LiPIppBYel6iJK72u5ThPF8ovZjDIBeDsOlBVqnQE?=
- =?us-ascii?Q?JZxyya+foPqAbgcL+3aBQ4qDNTtaWw3zg43ajifN/CbKxYLrrO7N22D3AV3N?=
- =?us-ascii?Q?ArFkqpYL25QbUUDHAkGjWgSiI5KtNhCQpruC5mlGCCYKXG5CRQPb9nW2r3yj?=
- =?us-ascii?Q?m0a7U6/uuvnDeUQX/mOoQA+fDqWb0ZkTk2WFYd/cBFSjG+QSPz2SZD+u4Ddo?=
- =?us-ascii?Q?heCnQbaWs6lMs6mXc1eY/K+nbvlx22ExuHlQjWnKyUo9+flSZ1ooH2Ly0yAh?=
- =?us-ascii?Q?OneZbF3HUOFZQVuF6EPaVhJbKSAonIhmFhbgL74d9s1fFa22xo/4QNOkcmQX?=
- =?us-ascii?Q?EZtLzDxx7R/+J1qPqyWTbUFmeK4dFOsVvthZNIZbs5I8LmW8ExcoLC6hf3Ra?=
- =?us-ascii?Q?47t3bH442gJvF/ItTVy/T1xvInrDaR8W5X+ynh6ew5hqSIAiRs95TBGT8JUU?=
- =?us-ascii?Q?eEZi7sXgev7u7KN+WcoBtPznzffXSBqfL80CMQVIKqVeQiC41JBXHiLMXd2k?=
- =?us-ascii?Q?zFKDi6SaoGn5oJ+8ejrV4agqkQ450OO0qK0iqsolx16FJkYduOLF2amZcupv?=
- =?us-ascii?Q?+6f+nIyPhrW2e1xm41vB2J6deIxXd5m6HK1/bUB/Gb9mHOaUC65WFJtVAKC3?=
- =?us-ascii?Q?wuowg1U0IdE3gvr9Ffnbl9aBkJvuglCKZsa5+DPdHEKI7fUJuQgkoDc+nxZm?=
- =?us-ascii?Q?a/VFR4SqyJ18eJlXqhzd+9CYNN235Suql3L6TilCso0S/mMeGaltfmAm9WKc?=
- =?us-ascii?Q?R2JBC5aTkYxFTX8pEWNMN2S1NHrBLwZrMa5sYdRD6Q5nEB3jz7JJOKmBnjO4?=
- =?us-ascii?Q?OUmS5IJbm0h/Fu8mBEawgI8JvFZLnVsDXnaXWwj8Y33G+we/7G4EFDkuDjmd?=
- =?us-ascii?Q?+kfm76XrJkVhyaMYzqlBdJuqQoPdfAZrqSeooWVjV+yzEZ8oQFtr78GeryGv?=
- =?us-ascii?Q?77apua7F2336lohL/U7wPLEuiFoSaaVQDIfx5JtDHTbm/jMcU81O?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b2f23c23-f60b-4b9e-766f-08dec1b46ade
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+	=?us-ascii?Q?lijGfEg2qt0pQmb+mOI2PAFjEPX5cvZTcz81IkTfz7udR+nM8t7IJasJJUvA?=
+ =?us-ascii?Q?BkFvJ2fR+7rRjtqcfD9WtFILE68AkGFRGZgLf+1/SGECmnVxZTGtHkc6n0m5?=
+ =?us-ascii?Q?z0ZmomtME2rKjn6+MJD9N1bX8ZQ9Lhg9LlSzvEIgIogY1EY+b97qbuWHWwzu?=
+ =?us-ascii?Q?S+UNO0yTdFJuHat548RBYCSdywiq+Z/aiBuj/gixLL5aT9Solk26WkaJ/bbJ?=
+ =?us-ascii?Q?BRByFu8MTY0oYso1I89HeeJ853ISSyvLqom7RqMbchmyPsggg4AHeP/2oWcw?=
+ =?us-ascii?Q?D1tK2woenELOe9S4eZ9XvzhydxAXzlNL+Rzz3pU+o+7hw/SSOQibgCq9n87p?=
+ =?us-ascii?Q?vWUm+czOwilM92gdCGaHmfngiAxHQd/dhheYlSTWMIXI02ijWSlIdMUORkdS?=
+ =?us-ascii?Q?udpFHyuEIi0ewq5VVw1l36NqBWxtG+Z0xLIWIx0RnujNhxGbNXWTN1GKsKfS?=
+ =?us-ascii?Q?7XSE5aTWUrfyJXvrKPKTbjgVKymunDlyBj7OpewOFWqREFbCj0C72+mQhowz?=
+ =?us-ascii?Q?TxPXra3+QqOtEu/zl1AvgtUsn8pSYyGsbYNwegoxsrQD9YJVaUSr3IBRgmjw?=
+ =?us-ascii?Q?j339RbHAgPrcu/nAR4xIxBQA2sO1rWWLmZ4EpFbk+ez2Q9o8zf+2nmbW5Ns5?=
+ =?us-ascii?Q?9cEnW9dpfldeBEzGc9JuDspkKKrrijTOSplwLQ8RZFmkYzQwehu9tniQD1fB?=
+ =?us-ascii?Q?oPyFA1Av8VrlDRZlhcUvyOSJ/4BbSED1f46A1jDRWU6rFVpdf2Kbth6RF9/q?=
+ =?us-ascii?Q?3WfjMI4zS19/1BQ8GOEsS9eNRRrgYp61eMrbbYS3KH7uu6qQ3uoWlYrECcCA?=
+ =?us-ascii?Q?Q/Pmp+hY9uWiP+nw2MJ93u/CE3MoqRww5y0rRajWvu1cWKwFsGQzUIfTtJaI?=
+ =?us-ascii?Q?+lAtn+RdnSEN9yJ+SygTCHCAJJGKAJeHtvQsco0xD7CqYsRgq+lgFYgHl/MC?=
+ =?us-ascii?Q?XhtHQOOwosIbVUeqVBLqW7WY4dhQzkfnD3oKDnWS8UNSU7P6NE7csts1roqm?=
+ =?us-ascii?Q?cwfCaguCX9ky4q5Vmq1nvNR49bPEfeO14KCv08n0/TGWf3SgNVQm+jvIrO72?=
+ =?us-ascii?Q?l0ry2ZVaIJhpJtkwS6Mz4dCchmJq80SlX1x6k9dwK8/ojdWJmNMXofvuLUDC?=
+ =?us-ascii?Q?aydCDmVSal2VKz4C3hWRuUnGuGEIbqj0lpnSr3UyFou9GNxpg76Ghv1gH2wG?=
+ =?us-ascii?Q?Cq31PW8EfXdtNBNvh8NB8A4fk1gzCEzu7/HxlqdYG4eT/mDCA59Yvi6z7aHq?=
+ =?us-ascii?Q?9VvX53yqqG1rwPmdot49PgNfjS8KIdh8h8Y8fMmQ99WvWfVoa0BE791bvRip?=
+ =?us-ascii?Q?iFJaBEa+yYEn5uCnfV0uXVDNrd/FnYaqBEBiGjtxdlV6NRTGvvH3lhISs4cD?=
+ =?us-ascii?Q?pkCYlUo1S6rmoBUNu0GUZdWMfVemPowbfDSp6Ek777P6jfkyLWKtGtP9El0p?=
+ =?us-ascii?Q?9Ghr+8TeF4ys/ILqWWMYXAnyMkRKaa2R+HzDia5nyC603B4UnX+9qkBcGfqS?=
+ =?us-ascii?Q?KJCfdec5Bt1Eb44J33SLn7MJ8cYUqoSK7n9vCOnznTI7bqdM3VkPFoVwQRwj?=
+ =?us-ascii?Q?b/fF7s4jePi+DBbVhWEgeJvi1XzngYhHJqpwFNUrpGp3IaC0g43/7p8064ZW?=
+ =?us-ascii?Q?f4i7tmukWnPoQnaGAg/RfmYYuuJzXINCh6wMSsWz221+nQwNIX1JeervuiKF?=
+ =?us-ascii?Q?q6SqRaPYePYZhToevnWWbbFBruSKi1cGVMvNACGEgRdLxUXPnmVvjVHdKyBx?=
+ =?us-ascii?Q?5euAeZDvxxCg2LmKfL4PNJ+TJ2Qrl4I=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12607daf-5c35-4ee7-4d86-08dec1bfabd8
+X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11797.jpnprd01.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 21:09:36.7526
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 22:30:10.0343
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Qdd5YFMjwxHd7Ew4rb/KpkOgMWWtAUmel8wQYlOxDdiougYxoLkgQxichdM+B3C5RR4bsD+3gN6ep9A8rGqhffaoSw9ba7pAwru1nVz2OXWsBORH0oQAMlhogr/jzrhk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9071
+X-MS-Exchange-CrossTenant-UserPrincipalName: EyC61S6I4F1H/JUrqLmYIDVpFK/SlSm13DNt6xUltouV4dvhcRjKpd8NRDA+hLX49R6tOu3NrKhHMj8PEAtVUobxHahqkGQLa4wogB/tn+T5ZY2VVwdW9b3Hw9vVFBbs
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSAPR01MB7280
 
-From: Frank Li <Frank.Li@nxp.com>
 
-Convert lan9303.txt to yaml format to fix below CHECK_DTBS warnings:
-arch/arm/boot/dts/nxp/imx/imx53-kp-hsc.dtb: /soc/bus@50000000/i2c@53fec000/switch@a: failed to match any schema with compatible: ['smsc,lan9303-i2c']
+Hi Herve
 
-Additional changes:
-  - rename switch-phy to switch in example.
+> > Because it is confusable during debugging ASoC FW update, tidyup
+> > auto format style not to use array if single pattern case.
+> > 
+> > Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> > ---
+(snip)
+> Just a typo in the commit title:
+> s/pattarn/pattern/
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Oops, thank you for pointing it.
+Will fix in v2
+
+Thank you for your help !!
+
+Best regards
 ---
-change in v2:
-- fix typo Additional in commit message
-- add rob's reviewed-by tags
-- fix doc ref problem
----
- .../devicetree/bindings/net/dsa/lan9303.txt   | 100 --------------
- .../bindings/net/dsa/smsc,lan9303.yaml        | 123 ++++++++++++++++++
- Documentation/networking/dsa/lan9303.rst      |   2 +-
- 3 files changed, 124 insertions(+), 101 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/net/dsa/lan9303.txt
- create mode 100644 Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
-
-diff --git a/Documentation/devicetree/bindings/net/dsa/lan9303.txt b/Documentation/devicetree/bindings/net/dsa/lan9303.txt
-deleted file mode 100644
-index 46a732087f5ca..0000000000000
---- a/Documentation/devicetree/bindings/net/dsa/lan9303.txt
-+++ /dev/null
-@@ -1,100 +0,0 @@
--SMSC/MicroChip LAN9303 three port ethernet switch
---------------------------------------------------
--
--Required properties:
--
--- compatible: should be
--  - "smsc,lan9303-i2c" for I2C managed mode
--    or
--  - "smsc,lan9303-mdio" for mdio managed mode
--
--Optional properties:
--
--- reset-gpios: GPIO to be used to reset the whole device
--- reset-duration: reset duration in milliseconds, defaults to 200 ms
--
--Subnodes:
--
--The integrated switch subnode should be specified according to the binding
--described in dsa/dsa.txt. The CPU port of this switch is always port 0.
--
--Note: always use 'reg = <0/1/2>;' for the three DSA ports, even if the device is
--configured to use 1/2/3 instead. This hardware configuration will be
--auto-detected and mapped accordingly.
--
--Example:
--
--I2C managed mode:
--
--	master: masterdevice@X {
--
--		fixed-link { /* RMII fixed link to LAN9303 */
--			speed = <100>;
--			full-duplex;
--		};
--	};
--
--	switch: switch@a {
--		compatible = "smsc,lan9303-i2c";
--		reg = <0xa>;
--		reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
--		reset-duration = <200>;
--
--		ports {
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			port@0 { /* RMII fixed link to master */
--				reg = <0>;
--				ethernet = <&master>;
--			};
--
--			port@1 { /* external port 1 */
--				reg = <1>;
--				label = "lan1";
--			};
--
--			port@2 { /* external port 2 */
--				reg = <2>;
--				label = "lan2";
--			};
--		};
--	};
--
--MDIO managed mode:
--
--	master: masterdevice@X {
--		phy-handle = <&switch>;
--
--		mdio {
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			switch: switch-phy@0 {
--				compatible = "smsc,lan9303-mdio";
--				reg = <0>;
--				reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
--				reset-duration = <100>;
--
--				ports {
--					#address-cells = <1>;
--					#size-cells = <0>;
--
--					port@0 {
--						reg = <0>;
--						ethernet = <&master>;
--					};
--
--					port@1 { /* external port 1 */
--						reg = <1>;
--						label = "lan1";
--					};
--
--					port@2 { /* external port 2 */
--						reg = <2>;
--						label = "lan2";
--					};
--				};
--			};
--		};
--	};
-diff --git a/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml b/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
-new file mode 100644
-index 0000000000000..42f8473538a07
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
-@@ -0,0 +1,123 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/dsa/smsc,lan9303.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SMSC/MicroChip LAN9303 three port ethernet switch
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description:
-+  The LAN9303 is a three port ethernet switch with integrated PHYs for the
-+  two external ports. The third port is an RMII/MII interface to a host
-+  processor. The device can be managed via I2C or MDIO.
-+
-+  Note - always use 'reg = <0/1/2>;' for the three DSA ports, even if the
-+  device is configured to use 1/2/3 instead. This hardware configuration
-+  will be auto-detected and mapped accordingly.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - smsc,lan9303-i2c
-+      - smsc,lan9303-mdio
-+
-+  reg:
-+    maxItems: 1
-+
-+  reset-gpios:
-+    description:
-+      GPIO to be used to reset the whole device
-+    maxItems: 1
-+
-+  reset-duration:
-+    description:
-+      Reset duration in milliseconds
-+    default: 200
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+required:
-+  - compatible
-+  - reg
-+
-+unevaluatedProperties: false
-+
-+allOf:
-+  - $ref: dsa.yaml#
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    /* I2C managed mode */
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        switch@a {
-+            compatible = "smsc,lan9303-i2c";
-+            reg = <0xa>;
-+            reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
-+            reset-duration = <200>;
-+
-+            ports {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                port@0 {
-+                    reg = <0>;
-+                    label = "cpu";
-+                    ethernet = <&master>;
-+                };
-+
-+                port@1 {
-+                    reg = <1>;
-+                    label = "lan1";
-+                };
-+
-+                port@2 {
-+                    reg = <2>;
-+                    label = "lan2";
-+                };
-+            };
-+        };
-+    };
-+
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    /* MDIO managed mode */
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        switch@0 {
-+            compatible = "smsc,lan9303-mdio";
-+            reg = <0>;
-+            reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
-+            reset-duration = <100>;
-+
-+            ports {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                port@0 {
-+                    reg = <0>;
-+                    label = "cpu";
-+                    ethernet = <&master>;
-+                };
-+
-+                port@1 {
-+                    reg = <1>;
-+                    label = "lan1";
-+                };
-+
-+                port@2 {
-+                    reg = <2>;
-+                    label = "lan2";
-+                };
-+            };
-+        };
-+    };
-diff --git a/Documentation/networking/dsa/lan9303.rst b/Documentation/networking/dsa/lan9303.rst
-index ab81b4e0139e3..776572be265e1 100644
---- a/Documentation/networking/dsa/lan9303.rst
-+++ b/Documentation/networking/dsa/lan9303.rst
-@@ -12,7 +12,7 @@ Driver details
- 
- The driver is implemented as a DSA driver, see ``Documentation/networking/dsa/dsa.rst``.
- 
--See ``Documentation/devicetree/bindings/net/dsa/lan9303.txt`` for device tree
-+See ``Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml`` for device tree
- binding.
- 
- The LAN9303 can be managed both via MDIO and I2C, both supported by this driver.
--- 
-2.43.0
-
+Kuninori Morimoto
