@@ -1,170 +1,101 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30310481252;
-	Wed,  3 Jun 2026 13:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754C1481A8F
+	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 13:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780491927; cv=none; b=ruV2BJvQD9dribBNbu+mllLLS8RKpXE6BwhR6yXaa6Uaa1n+jmV8RjyXKzOiazYou/flcDZosvEL8Q+3fHvtHpv5pc24CROTNxLBzG3KL2oON/3IJzG+GOcfggVMH6WtWPFxKkrBod6vR934u5wNAfez7OTp5vYyph3TsiwDLns=
+	t=1780491978; cv=none; b=nxef8Tn8jmXa+139QuuiIrUnoRLIFbEn1bq8+KZGoYL4ZyNrSgiE7R8ewOBu3/5ghoT2BUZOiO4li9RItXzEx/rTbnbgcBrIeo134q0IbmMw2M+7EvFJsLiJ+HZ7Jm16XVocJ3SVPY7ea3s5g1mMR4mG6aRWjymEBzHsTr3rCtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780491927; c=relaxed/simple;
-	bh=rB2UKiyDcM7IWJbPPVp1cw1OH36OaEEat8ZM5+jzFDo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tXxbMWsi6Ql8DetyXvGyKhSQ4Ef0V6+gH8d+DroNM02Qsinexj/NTKVclBDPecbRkprBUgiDOS48j0XoGchKpxX06ykE0TdnCqq1KAHa3Ib20E+tz6Cet81MR3shyM7ZyjZ0wusLyZ27WH++QjpqyfTCECAzNFgusfFRvmeg/LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VIphKkJH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FdaI/vTP; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VIphKkJH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FdaI/vTP"
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1780491922;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rg4CWBKqcg/43kRp7XELQX8SwIZj03OaAVdBvFZ3LCA=;
-	b=VIphKkJHQCRIH+HaolCSm0qkoMV/vpBsMu8KbZcQuJBE9ua8VZe3rFQe7TmdHQDqEkZSSH
-	CTTs9UBef/qc/hRIoT6vM+IR+fvOtHX1TNS6W0qeFNHWm658l4+VXvy+MuaVH52OBYdGad
-	9c38/jUq+6DmHfRhQcrMfaGdp3dboeQ9DP7xgj7JsIf4CbvBW4d+fTimte/2SIoj2m2uQT
-	YJH78KEElIFg9wbgu2bcHoEXm6Vp1OLcJXi11qeS1fWK8PIHahdNPOIvDY1PNU/TaKXCVK
-	5h+Ou0sFPjakAEi7AX8vc8yyQowYrMkQWnwYTXxULdm0ZAWjI40juG/UAhx8dw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1780491922;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rg4CWBKqcg/43kRp7XELQX8SwIZj03OaAVdBvFZ3LCA=;
-	b=FdaI/vTPqi+vjz8LzpQeIj7r/QhPZwNHZFdSc8cIISer7KnLruWkdgESv2k6qaH28nQJ0A
-	o12XgVpfQZFZPvDw==
-To: linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH v2 9/9] remoteproc: imx_rproc: Invoke the callback directly
-Date: Wed,  3 Jun 2026 15:05:12 +0200
-Message-ID: <20260603-imx_mbox_rproc-v2-9-a0059dc3b69a@linutronix.de>
-In-Reply-To: <20260603-imx_mbox_rproc-v2-0-a0059dc3b69a@linutronix.de>
-References: <20260603-imx_mbox_rproc-v2-0-a0059dc3b69a@linutronix.de>
+	s=arc-20240116; t=1780491978; c=relaxed/simple;
+	bh=Plptqs8+MeS/L6HmTwPUTp1dXY/x5J9010knqhq+i/U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TjMBvj8wR9S9U3kjgp4WhN5fp7huM4vyRBVfHaADP8xGeX8P82+juVZgUANn8eVThTzkj3kJxwOeIPoA6aSfng3C5NK7ftkmwBDnffAske07mFh44ngk0mY0H3Dl1812B5rqyT4KQsUEBKpkkKY8A+RLMOwkDFd9zX7AiFfYmUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bec423a5265so714285466b.1
+        for <imx@lists.linux.dev>; Wed, 03 Jun 2026 06:06:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780491976; x=1781096776;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+vDFPb86PvQvyL1RfDQoX7OYCgpH5JEVJJIcrin/l7k=;
+        b=LpnnfysSyCSb4LwSJJdtbNtlBXxtFtrL/BLyfH0vvkNoOzccTK2OdNHxAZb14uA/Rq
+         5WXvu7hfVVfGW6dUlu6hWwl1f0ydGjBPBs4WmEnetA3r2gOqa5DN/tWUaxE1axCs2xXA
+         +8EmfTPXB/OgMykSBzrydT5NKdwLfzX5N1/t0juKGDCrltcvAXWJr/+iK4/XlFqhYJqi
+         371jIiw9Sy0+JnCnGKclRAFjafCgKG8JVEQoRymCTegNpsbRAbqrLy0J8TL5xtUoku5S
+         4f+Yszcwwov/GqTpw25voQi7wymtuC9z0sTADRKumCRGOl+wmGqHHnKAhJxY5CB9ovFc
+         VK8g==
+X-Forwarded-Encrypted: i=1; AFNElJ9Q8jH4j3WWoe59+2xbCWAVkx/3vwSl5BYHjbx/kg1NGHrp/2MTXEJprLQsHVyuk0PM3J8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzBtrvs2398awr5wLKzsM3dlcuNRA3QurFJQFq76W96h/MQ0Lb9
+	hZlbd4lr7rLnRwR6LVpHuZRQyT6ZCJJaX/BYn/oSS+/s51UJ0ZKV+tofgE5Zg9Jk9XA=
+X-Gm-Gg: Acq92OEQucuo0IwL9HzKiV6IVN7PjJZon9TkoGuVHP7eEzjsT8yuvvWc/hLirECJ+aN
+	CPgeSleIFVCN2XwFSwLgICey3zQxJqEtiKLVWmYJ1/SgLUvgz3Z4TgVKxNIsSXf6hMe3/WxvTfI
+	5W0qYfmRX1EjznHZnC4Djzxougc8yxlGFXm3Qq4vyGliYfnulkUbCKkvqoZu1oAMy+HPJScQkt/
+	A2MXLTleE5FvhgFj1igxS1sWk59i5A/Pczt7tsjiCJxub4If5sBfGsxsIJS6Q255FdNHPgXETKW
+	6ST3zQwP1B6n0R5iBN4EiWZCruqPCMW3vJ/UuHdQuGCjfT8kMhWnXnhTBCL+jYlYiVEEI4jnI+9
+	H5GcNJ470ZSmHFgzymrra9XMyiME0L80Ohy2ifCAJyubP4KXZwWTO4M9vtubOokZi1mAk4L/LB9
+	IDRb8xBRTfi1eXAoWArhr3AfyiswuSAPdEF5aDbmNnMsPy6bN/kKZexwu9hc8eKr5z4l/nCew=
+X-Received: by 2002:a17:907:9626:b0:be8:c839:3c4f with SMTP id a640c23a62f3a-bf0aa105068mr188254266b.23.1780491975679;
+        Wed, 03 Jun 2026 06:06:15 -0700 (PDT)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf0553040a7sm151688466b.50.2026.06.03.06.05.59
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 06:06:00 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68ced97b6eeso5223413a12.0
+        for <imx@lists.linux.dev>; Wed, 03 Jun 2026 06:05:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/5A8F1Hy6nJ2yKhVxZ9XM997Sa4ZP4PE+Fb1CN26aPV6CdJCnGn5zbySMEwm/WQK27Sws=@lists.linux.dev
+X-Received: by 2002:a05:6402:e08:b0:686:9c15:3121 with SMTP id
+ 4fb4d7f45d1cf-68e713e3184mr1563082a12.12.1780491958656; Wed, 03 Jun 2026
+ 06:05:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20260603093621.2504490-1-alexander.stein@ew.tq-group.com> <aiAkdZ5XuYC-wpCL@ninjato>
+In-Reply-To: <aiAkdZ5XuYC-wpCL@ninjato>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 3 Jun 2026 15:05:42 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXG200TTrZGp1YJGt7T2u9vUy9ipoRaOWw_jTaa8Ui81A@mail.gmail.com>
+X-Gm-Features: AVHnY4Jn5WJuuexJ9K698In0uzIER4UcBvwdWNgk9D9nn5i9fKP95_v3uD6TZnc
+Message-ID: <CAMuHMdXG200TTrZGp1YJGt7T2u9vUy9ipoRaOWw_jTaa8Ui81A@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] dt-bindings: arm: fsl: add TQMa8MPxS board
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Magnus Damm <magnus.damm@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Paul Gerber <paul.gerber@tq-group.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com, 
+	linux-renesas-soc@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
 
-The imx-mailbox driver moved the callback invocation into the threaded
-IRQ handler. This means the callback is invoked in preemptible context
-and there is no need to schedule the kworker for the
-imx_rproc_notified_idr_cb() invocation.
+Hi Wolfram,
 
-This was tested with the rpmsg-tty driver on imx93.
+On Wed, 3 Jun 2026 at 14:56, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+> how do you generate the CC list? I wonder because linux-renesas-soc is
+> added while only files in the freescale directory are touched? Any idea?
 
-Remove the workqueue handling and invoke the imx_rproc_notified_idr_cb()
-callback directly.
+DTS:
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- drivers/remoteproc/imx_rproc.c | 33 +--------------------------------
- 1 file changed, 1 insertion(+), 32 deletions(-)
++       pcieclk: clock-generator@6a {
++               compatible = "renesas,9fgv0241";
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 0dd80e688b0ea..c97bc1c401655 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -24,7 +24,6 @@
- #include <linux/regmap.h>
- #include <linux/remoteproc.h>
- #include <linux/scmi_imx_protocol.h>
--#include <linux/workqueue.h>
-=20
- #include "imx_rproc.h"
- #include "remoteproc_internal.h"
-@@ -115,8 +114,6 @@ struct imx_rproc {
- 	struct mbox_client		cl;
- 	struct mbox_chan		*tx_ch;
- 	struct mbox_chan		*rx_ch;
--	struct work_struct		rproc_work;
--	struct workqueue_struct		*workqueue;
- 	void __iomem			*rsc_table;
- 	struct imx_sc_ipc		*ipc_handle;
- 	struct notifier_block		rproc_nb;
-@@ -835,21 +832,11 @@ static int imx_rproc_notified_idr_cb(int id, void *pt=
-r, void *data)
- 	return 0;
- }
-=20
--static void imx_rproc_vq_work(struct work_struct *work)
--{
--	struct imx_rproc *priv =3D container_of(work, struct imx_rproc,
--					      rproc_work);
--	struct rproc *rproc =3D priv->rproc;
--
--	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
--}
--
- static void imx_rproc_rx_callback(struct mbox_client *cl, void *msg)
- {
- 	struct rproc *rproc =3D dev_get_drvdata(cl->dev);
--	struct imx_rproc *priv =3D rproc->priv;
-=20
--	queue_work(priv->workqueue, &priv->rproc_work);
-+	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
- }
-=20
- static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block)
-@@ -1214,13 +1201,6 @@ static int imx_rproc_sys_off_handler(struct sys_off_=
-data *data)
- 	return NOTIFY_DONE;
- }
-=20
--static void imx_rproc_destroy_workqueue(void *data)
--{
--	struct workqueue_struct *workqueue =3D data;
--
--	destroy_workqueue(workqueue);
--}
--
- static int imx_rproc_probe(struct platform_device *pdev)
- {
- 	struct device *dev =3D &pdev->dev;
-@@ -1249,17 +1229,6 @@ static int imx_rproc_probe(struct platform_device *p=
-dev)
- 		priv->ops =3D dcfg->ops;
-=20
- 	dev_set_drvdata(dev, rproc);
--	priv->workqueue =3D create_workqueue(dev_name(dev));
--	if (!priv->workqueue) {
--		dev_err(dev, "cannot create workqueue\n");
--		return -ENOMEM;
--	}
--
--	ret =3D devm_add_action_or_reset(dev, imx_rproc_destroy_workqueue, priv->=
-workqueue);
--	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add devm destroy workqueue act=
-ion\n");
--
--	INIT_WORK(&priv->rproc_work, imx_rproc_vq_work);
-=20
- 	ret =3D imx_rproc_xtr_mbox_init(rproc, true);
- 	if (ret)
+Gr{oetje,eeting}s,
 
---=20
-2.53.0
+                        Geert
 
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
