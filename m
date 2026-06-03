@@ -1,103 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25327441027;
-	Wed,  3 Jun 2026 12:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D443016EB
+	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 12:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780488900; cv=none; b=WxkLfzcHWW/9YfWWWklMSq99+k7CIFq78q0iginvQrETJmaHFcueA7bSIzKsDMsD1Rac3VA0sa+R96ymODW9TD05YqzX+hfas8zi89aRheCb1saxCGBcV1O7xWa/ZEJ2Sp1e4BCMkITzZ/D6saS5RK3f33VIryXAXZC98DR1ruI=
+	t=1780489129; cv=none; b=JZL6EYq9mG1ksH3zXGb/VPMgkyRqL/STjZSzD/ZIa0b5BWxQ1+vkbFuceY0JB4NhjnBK5dF6dRLw2qZvOk0/JzOBoSVFiLxnbLXl1hhhg0dZLGdLMAZSyjrOciEKjepQB2rZqUiR8S/lmW4/7ijNeHf5HOdVeNq/ah8zay7xgvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780488900; c=relaxed/simple;
-	bh=n3WHuPIJIqTuO6OMA9qGdB15mAD3+GZrEj/DtYTsoWo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ullKlcX3WMoHrZqiN7OjNzQ5izaYxoyELFWZL76S2xqEvjhNIDJ5lL53RVMF0v+9rhZClyH4iQkH9FEsQ59EjJPUhfCNj/Zbol91o+MWlAs4vKR7OkFA0q55RvojmbYFp8mzfZB4Vb/42lM9QxEtKa6w4B7ZNSwRkiLvkGEa5Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QKKyy2ze; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780489129; c=relaxed/simple;
+	bh=cVsIIY8CxED8IOMY5ucOvvvxSDQam/aTs0S98YZ83H4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MsXL09HW1hu3uKjM0VaxEJQh932QeuuJrGk+9mm8K3GAQgHU7S/nT2DTARbubgEfvjiGFsIfQuhnp/UDkeowTUV6dL7qqDor8DMj1TM1xRgNljRTFgiGVwIXBQXKPzVYuRWd+j568QHyJgoxX0gdvoKRJ7tpiU/AQZuazXejLmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oDjwgWv0; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QKKyy2ze"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625971F00893;
-	Wed,  3 Jun 2026 12:14:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780488898;
-	bh=LuyId85rJ+3fBkpHwHQduuY29G06nIEj0Wd962KPG1E=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QKKyy2ze7eZiJEiTdyQEGTkE0A4e+3XLUoGXa7T6bvCSgTzJ9OlsuFawc0TE2ScgT
-	 AbkclbNr9vPeDUwRTbFbbetshy5mUrAvBIAbWoo+ZM/9J5R9Zl1TDrUVPhOZf7Jcys
-	 MGtwLUlHVNlXGcb+LeJjaV6XdQ8h9VxLZ6/Ve+exHLyKav6t+0TRA0XUIm0bp7olA+
-	 0iK6Av4h10Duvc3tyCEPG45LA9AYtlmr80U3d2UEuKbrqVLzIR+YYERq/vUsOqcwBu
-	 /OhkTphi0M84cRaj8C3wAKjbLHOUZ1bJ9+vEfxMF9O2kXTBlodZiatU5q4BSdA+CRF
-	 zrgAZmWvyqGKg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 06/12] arm64: dts: imx8mp-var-som-symphony: enable
- PCIe
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org
-In-Reply-To: <8b56416fbc765373643dfb0300c3661564e68ba4.1780487415.git.stefano.r@variscite.com>
-References: <8b56416fbc765373643dfb0300c3661564e68ba4.1780487415.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 12:14:57 +0000
-Message-Id: <20260603121458.625971F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oDjwgWv0"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D90E04E40108;
+	Wed,  3 Jun 2026 12:18:45 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8A67C6073E;
+	Wed,  3 Jun 2026 12:18:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA06610888413;
+	Wed,  3 Jun 2026 14:17:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780489120; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=zFi/fGH5JDn5JO2RB9yxgU6c2Ow81xQ2uZUvm6i/E1g=;
+	b=oDjwgWv0v2GgyX3pUULcD12EPMMUfgyJz9dBcXuV+rHROoWzoTs8xUfKvHan7sDmS4CabP
+	L+IrQHrvnK0vVMlJcr6wVI29ruHN0LlRTpSAbksHJDQU4x6/AUscYD365MmPH4Ai9RHUD3
+	INZ8kgugtku7ob0NW+Ab7SNI9LVONJhSV2/Jk11qsbj+crVHJ9NJj1exILul60PuVPHkKS
+	HfTz8P9kfZEod84fwQjR8JESyd/TGvwRHW/nVKN9n20yx7yviIrbsYx2VG2qWDRMnUj3ZS
+	NEQxmhhJHdJjDyxCCsVL18Z9rUUNa16rIZrNpUha+f5Agkx9HJ0YQZpZ489vRg==
+Date: Wed, 3 Jun 2026 14:17:57 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: "Alvin =?UTF-8?B?xaBpcHJhZ2E=?=" <alsi@bang-olufsen.dk>, "J.M.B.
+ Downing" <jonathan.downing@nautel.com>, "Martin =?UTF-8?B?UG92acWhZXI=?="
+ <povik+lin@cutebit.org>, "Nuno =?UTF-8?B?U8Oh?=" <nuno.sa@analog.com>, "Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= (The Capable Hub)"
+ <u.kleine-koenig@baylibre.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Arnaud Pouliquen
+ <arnaud.pouliquen@foss.st.com>, Baojun Xu <baojun.xu@ti.com>, Bartosz
+ Golaszewski <brgl@kernel.org>, Ben Bright <ben.bright@cirrus.com>, Benson
+ Leung <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, Binbin
+ Zhou <zhoubinbin@loongson.cn>, Bram Vlerick
+ <bram.vlerick@openpixelsystems.org>, Charles Keepax
+ <ckeepax@opensource.cirrus.com>, Chen-Yu Tsai <wens@kernel.org>, Cheng-Yi
+ Chiang <cychiang@chromium.org>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Daniel Mack
+ <daniel@zonque.org>, Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ David Rhodes <david.rhodes@cirrus.com>, Fabio Estevam <festevam@gmail.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Frank Li
+ <Frank.Li@nxp.com>, Fred Treven <fred.treven@cirrus.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Guenter Roeck
+ <groeck@chromium.org>, Guoqing Jiang <guoqing.jiang@canonical.com>, Haojian
+ Zhuang <haojian.zhuang@gmail.com>, HariKrishna Sagala
+ <hariconscious@gmail.com>, Heiko Stuebner <heiko@sntech.de>, Hsieh Hung-En
+ <hungen3108@gmail.com>, James Ogletree <jogletre@opensource.cirrus.com>,
+ Jarkko Nikula <jarkko.nikula@bitmer.com>, Jaroslav Kysela <perex@perex.cz>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jerome Brunet
+ <jbrunet@baylibre.com>, Jihed Chaibi <jihed.chaibi.dev@gmail.com>, Jonathan
+ Hunter <jonathanh@nvidia.com>, Kevin Cernekee <cernekee@chromium.org>,
+ Kevin Hilman <khilman@baylibre.com>, Kevin Lu <kevin-lu@ti.com>, Kirill
+ Marinushkin <k.marinushkin@gmail.com>, Kiseok Jo
+ <kiseok.jo@irondevice.com>, Krzysztof Kozlowski <krzk@kernel.org>, Kunihiko
+ Hayashi <hayashi.kunihiko@socionext.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>, Luca Ceresoli
+ <luca.ceresoli@bootlin.com>, M R Swami Reddy <mr.swami.reddy@ti.com>, Mark
+ Brown <broonie@kernel.org>, Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, Max
+ Filippov <jcmvbkbc@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Nicolas Frattaroli
+ <frattaroli.nicolas@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Oder
+ Chiou <oder_chiou@realtek.com>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, Paul Cercueil <paul@crapouillou.net>, Peter
+ Rosin <peda@lysator.liu.se>, Piotr Wojtaszczyk
+ <piotr.wojtaszczyk@timesys.com>, Qianfeng Rong <rongqianfeng@vivo.com>, Ray
+ Jui <rjui@broadcom.com>, Richard Fitzgerald <rf@opensource.cirrus.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Samuel Holland
+ <samuel@sholland.org>, Sascha Hauer <s.hauer@pengutronix.de>, Scott Branden
+ <sbranden@broadcom.com>, Sen Wang <sen@ti.com>, Sharique Mohammad
+ <sharq0406@gmail.com>, Shenghao Ding <shenghao-ding@ti.com>, Shengjiu Wang
+ <shengjiu.wang@gmail.com>, Steven Eckhoff
+ <steven.eckhoff.opensource@gmail.com>, Support Opensource
+ <support.opensource@diasemi.com>, Sylwester Nawrocki
+ <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, Thierry Reding
+ <thierry.reding@kernel.org>, Tim Bird <tim.bird@sony.com>, Troy Mitchell
+ <troy.mitchell@linux.spacemit.com>, Tzung-Bi Shih <tzungbi@kernel.org>,
+ Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, Vijendar Mukunda
+ <Vijendar.Mukunda@amd.com>, Vishwas A Deshpande
+ <vishwas.a.deshpande@ti.com>, Vladimir Zapolskiy <vz@mleia.com>, Xiubo Li
+ <Xiubo.Lee@gmail.com>, Yixun Lan <dlan@kernel.org>, Zhang Yi
+ <zhangyi@everest-semi.com>, chrome-platform@lists.linux.dev,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-sound@vger.kernel.org,
+ spacemit@lists.linux.dev
+Subject: Re: [PATCH 04/83] ASoC: codecs: peb2466: don't use array if single
+ pattarn
+Message-ID: <20260603141757.451cad7b@bootlin.com>
+In-Reply-To: <87wlwrhqxf.wl-kuninori.morimoto.gx@renesas.com>
+References: <8733zfj5jj.wl-kuninori.morimoto.gx@renesas.com>
+	<87wlwrhqxf.wl-kuninori.morimoto.gx@renesas.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Timeout and PCIe initialization failure during system resume due t=
-o I2C-based PCIe reset GPIO in NOIRQ phase.
---
+Hi Kuninori,
 
-commit 1813e394a2d156f58d0fa0b95aed827b4d4e4bc4
-Author: Stefano Radaelli <stefano.r@variscite.com>
+On Tue, 26 May 2026 01:59:08 +0000
+Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
 
-arm64: dts: imx8mp-var-som-symphony: enable PCIe
+> Because it is confusable during debugging ASoC FW update, tidyup
+> auto format style not to use array if single pattern case.
+> 
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> ---
+>  sound/soc/codecs/peb2466.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+> 
 
-Add the PCIe reference clock and enable the PCIe controller and PHY on
-the Symphony carrier board.
+Same typo in the commit title as in patch 2:
+s/pattarn/pattern/
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts b/=
-arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-[ ... ]
-> @@ -146,6 +152,18 @@ rtc@68 {
->  	};
->  };
-> =20
-> +&pcie {
-> +	reset-gpio =3D <&pcal6408 1 GPIO_ACTIVE_LOW>;
+Or even
+s/pattarn/item/
 
-[Severity: High]
-Does this configuration cause a timeout and PCIe initialization failure dur=
-ing
-system resume?
+With that fixed,
 
-The PCIe controller specifies an I2C-based GPIO expander (pcal6408) for its
-reset-gpio. During system resume, the i.MX PCIe driver executes its hardware
-initialization in the noirq phase (imx_pcie_resume_noirq() ->
-dw_pcie_resume_noirq() -> imx_pcie_host_init()), which asserts and deasserts
-the reset GPIO using gpiod_set_value_cansleep().
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
 
-During the dpm_resume_noirq phase, local CPU interrupts are enabled but dev=
-ice
-interrupts remain masked at the interrupt controller (because
-resume_device_irqs() is called after noirq callbacks). As a result, the I2C
-controller cannot receive device interrupts.
-
-Furthermore, i2c_in_atomic_xfer_mode() evaluates to false because system_st=
-ate
-is SYSTEM_RUNNING and local IRQs are enabled, meaning the I2C core will not
-fall back to atomic polling mode. The I2C transaction required to toggle the
-GPIO will therefore wait for an interrupt that is masked, resulting in a
-prolonged timeout and a failed transfer. This causes the PCIe resume to fail
-and significantly delays the overall system resume process.
-
-> +	status =3D "okay";
-> +};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780487415.gi=
-t.stefano.r@variscite.com?part=3D6
+Best regards,
+Hervé
