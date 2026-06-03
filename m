@@ -1,296 +1,137 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011036.outbound.protection.outlook.com [52.101.125.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CB44418E4;
-	Wed,  3 Jun 2026 22:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780525815; cv=fail; b=dibdk13u4kkRddF67xo8gcaIlzz/5KdeMokzfXOfKpP8dteIQYJIJ+gGI3O35b68Q/3gbPDkXyfP7p24VAN2+UWnDdDsjR5tn+fV8mBM/lU0VAyQzN6wGQidzisk96tX/ROhvgUylyJbhBykmZhYTKeTqN2Gu5ipfbSFme1O7kE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780525815; c=relaxed/simple;
-	bh=WTS5ddFEdnOSo9/IV5+3mQLL8kJAv06vfsAF0SDG5gs=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=ECzf5FEymJWLDJ4RvCMf/HpBcApuZ74NycOrcT+OjssviSJb1bxBF9zJbShJ2cOVPvujITJDOW4+eJyCr7dVAfwVgPZD4kBiixnm4gcf8uUpct3iWT1HUxSKIr9ji+Sbz91kg2G9gnzoVCgR+jhJqQLriqOBXbXUL2XfaOTax5Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=ULF/oiWs; arc=fail smtp.client-ip=52.101.125.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B5C3D47D0
+	for <imx@lists.linux.dev>; Wed,  3 Jun 2026 22:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780527254; cv=none; b=fHPyKQQp/xze83Ek5TE5+qLy0yTldN5dfMvd8gdA3di9a0LpyiVfEexWy77HwjpPoryoIBT4qL7VRH0VJsnFSsbOzfzIKsGqrQec0usyf8IK9yZ9VcdfQ057uI/gq3htF2ioITWSs5lAja0y69BN2XWavz4ub9X4ft8t2+xjF/A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780527254; c=relaxed/simple;
+	bh=nYAVBK9yWXmZ8FEbBC2MUhh4ZhIgYxBfZRpmyskldx8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EEIo9Y/ciRs0rvEPAaUHLl3KT01QCfgiM5lANIH4igqUl9GYD6s2c+17Bjn6BDNvBhwmssmwNLb3hvXcuPq8euGYovhZAPDe0yodSAga3uFbOKty8jojAUzs/2vuu0upOT/ocKqyWxCVWkzN/hFHz7rYspdqdt3vupq1UrY97Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fA/bjxkQ; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="ULF/oiWs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LiDlgTOjquM/2FE5w5nqTPrFknXxRQZP/CGzYppoHfAaqwgYMbOmu3M8v9wE1vxp+RvIyJ/EtYz1GyL4XKb4DRCZgnII91tczhuEndI2P0WEBgOOtGvXTVe4E/IRu6afZ1nB/IXc3OdcsoyBUalSAvZVs05YkhBs4YalBTkgl7/+Nc13KXP8V8FYculSePWX4fFitda4ACghvbbrSIMac+Rift6XingS9pXBYLO03duoKDb6t9//3ZkbFrC5Nr+Ys5Udhz0uDWaoxPGd8La8jmfHH+CTy0FhnKxffCJ8TuTv00LCOinNbLCWnQEuS0fnVXvLY2i/32S33Pd2Phjvqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qbXB38SUTgltPz28Qrbj5oXXKCfe23ekoxc3LjZrCj4=;
- b=Uk5ZvW2XjrhF55mroyq9r1J1MXZTRDnVmt25JPun6SVbPHEYuwjv88KO7KKpl2Jwl5VtK2ye4POVjCE3N6usuAFFN1Bj8+G0eklBRrFQWdOCF1evYoqc8+xj/m479ApBx/2fMKLQaYiBAv95GfvNQl/hKXHILo3GEMetWxC6Ta8Ke//elW0NTgk9FMgbiPbie/AkRnciQKd8H0685AVCBMc+TE8pdpFMcnidh3jDcTemNXBsB5t1gvDmt+pbKm8/tXlH6YYkV+QXOB2fN6TT7Zm+JSUbhYkKKNrPjWCjI+I//bxDxzdX7d1yomx0cPJb8SPUpP7itGRW5yiPjeeNig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qbXB38SUTgltPz28Qrbj5oXXKCfe23ekoxc3LjZrCj4=;
- b=ULF/oiWs23LHbBNk+vejikbK1FT5bQkDAWfG4U8i/7Z+VlzWKWx55Ko/bNbZtsuGZwDZUw4FqRWehWPb98eAhsdF5oeTBECaBpMGkl+EqZqReIig2ErCwptcVO6Bx6g7CGjTgMgD6zN3Jr7P4oauU5V7KTPAC601ibJ1aGB+3Yc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from TY3PR01MB11797.jpnprd01.prod.outlook.com (2603:1096:400:373::8)
- by OSAPR01MB7280.jpnprd01.prod.outlook.com (2603:1096:604:142::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 22:30:10 +0000
-Received: from TY3PR01MB11797.jpnprd01.prod.outlook.com
- ([fe80::1868:c915:c230:a383]) by TY3PR01MB11797.jpnprd01.prod.outlook.com
- ([fe80::1868:c915:c230:a383%5]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 22:30:10 +0000
-Message-ID: <87se7345qm.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: "Alvin =?UTF-8?B?xaBpcHJhZ2E=?=" <alsi@bang-olufsen.dk>,
-	"J.M.B.\
- Downing" <jonathan.downing@nautel.com>,
-	"Martin =?UTF-8?B?UG92acWhZXI=?="
- <povik+lin@cutebit.org>,
-	"Nuno =?UTF-8?B?U8Oh?=" <nuno.sa@analog.com>,
-	"Uwe\
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= (The Capable Hub)"
- <u.kleine-koenig@baylibre.com>,
-	Alexandre Belloni
- <alexandre.belloni@bootlin.com>,
-	Alexandre Torgue
- <alexandre.torgue@foss.st.com>,
-	AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>,
-	Arnaud Pouliquen
- <arnaud.pouliquen@foss.st.com>,
-	Baojun Xu <baojun.xu@ti.com>,
-	Bartosz
- Golaszewski <brgl@kernel.org>,
-	Ben Bright <ben.bright@cirrus.com>,
-	Benson
- Leung <bleung@chromium.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Binbin
- Zhou <zhoubinbin@loongson.cn>,
-	Bram Vlerick
- <bram.vlerick@openpixelsystems.org>,
-	Charles Keepax
- <ckeepax@opensource.cirrus.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Cheng-Yi
- Chiang <cychiang@chromium.org>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Daniel Mack
- <daniel@zonque.org>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Frank Li
- <Frank.Li@nxp.com>,
-	Fred Treven <fred.treven@cirrus.com>,
-	Geert
- Uytterhoeven <geert+renesas@glider.be>,
-	Guenter Roeck
- <groeck@chromium.org>,
-	Guoqing Jiang <guoqing.jiang@canonical.com>,
-	Haojian
- Zhuang <haojian.zhuang@gmail.com>,
-	HariKrishna Sagala
- <hariconscious@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Hsieh Hung-En
- <hungen3108@gmail.com>,
-	James Ogletree <jogletre@opensource.cirrus.com>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jerome Brunet
- <jbrunet@baylibre.com>,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Jonathan
- Hunter <jonathanh@nvidia.com>,
-	Kevin Cernekee <cernekee@chromium.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Kevin Lu <kevin-lu@ti.com>,
-	Kirill
- Marinushkin <k.marinushkin@gmail.com>,
-	Kiseok Jo
- <kiseok.jo@irondevice.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Kunihiko
- Hayashi <hayashi.kunihiko@socionext.com>,
-	Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Lars-Peter Clausen
- <lars@metafoo.de>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Luca Ceresoli
- <luca.ceresoli@bootlin.com>,
-	M R Swami Reddy <mr.swami.reddy@ti.com>,
-	Mark
- Brown <broonie@kernel.org>,
-	Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>,
-	Masami Hiramatsu
- <mhiramat@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Max
- Filippov <jcmvbkbc@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Nicolas Ferre
- <nicolas.ferre@microchip.com>,
-	Nicolas Frattaroli
- <frattaroli.nicolas@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Oder
- Chiou <oder_chiou@realtek.com>,
-	Olivier Moysan
- <olivier.moysan@foss.st.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Peter
- Rosin <peda@lysator.liu.se>,
-	Piotr Wojtaszczyk
- <piotr.wojtaszczyk@timesys.com>,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Ray
- Jui <rjui@broadcom.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Samuel Holland
- <samuel@sholland.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Scott Branden
- <sbranden@broadcom.com>,
-	Sen Wang <sen@ti.com>,
-	Sharique Mohammad
- <sharq0406@gmail.com>,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Shengjiu Wang
- <shengjiu.wang@gmail.com>,
-	Steven Eckhoff
- <steven.eckhoff.opensource@gmail.com>,
-	Support Opensource
- <support.opensource@diasemi.com>,
-	Sylwester Nawrocki
- <s.nawrocki@samsung.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Thierry Reding
- <thierry.reding@kernel.org>,
-	Tim Bird <tim.bird@sony.com>,
-	Troy Mitchell
- <troy.mitchell@linux.spacemit.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Vijendar Mukunda
- <Vijendar.Mukunda@amd.com>,
-	Vishwas A Deshpande
- <vishwas.a.deshpande@ti.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Xiubo Li
- <Xiubo.Lee@gmail.com>,
-	Yixun Lan <dlan@kernel.org>,
-	Zhang Yi
- <zhangyi@everest-semi.com>,
-	chrome-platform@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fA/bjxkQ"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-490b211ee6aso604185e9.3
+        for <imx@lists.linux.dev>; Wed, 03 Jun 2026 15:54:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780527251; x=1781132051; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bLH9imkqpbpmJAh8J9v3XS6EMAgKWrtcFsXCB/DHgBQ=;
+        b=fA/bjxkQOqPF7BNz0sKFu8Q364EUUh60gEOzKIBxOxp1CnLq6Y1GpE3/7mzqS1KrrH
+         lXjQ+UVN2jExx2MuUkzBIsTC031ZY5lmflwvNUqGOD2pkWT7nJPLc2z4aDwv4+0cosMO
+         RdPvzIj9bhOHczoajwK0iflZ40DrrnEPTS1CJY80LaDLzbiV4Pk2oPyhXWg6Qwpw0Ieg
+         Pnl4WpmONa++7ZPUj10G1gNijnZQNsdYfe7PKIyIeC7ryARCgBCrzyohHotywqLDQqOY
+         F8of83va4vJOr2Fw0rJSpfGoYdXH7L1sY3kZaAyUTGq9iwa1z+fTS3B2mmldU/M8DuJz
+         yhNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780527251; x=1781132051;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bLH9imkqpbpmJAh8J9v3XS6EMAgKWrtcFsXCB/DHgBQ=;
+        b=GYfhEZkBIC/4Hgyr4Fr0JsGXMA67KQapKZI0WqKsGFv6xWzGPHf6dTuddlx4Rk/ccs
+         5QEYt7xVf3EyY5FO/J6m0jdp3c9D4qLb47Ndk08RXZyfvczRPB0nCwDxPj3OCCUyzXkN
+         jYkjLgE01zf7S/L2RjopJ9ULvx0tMfYtQXG22Y2D61wUDpfr+4OqZe3aRMQyMwYyklq9
+         ytKzVem4RvQB9n+EfLvw71EauGYt45o9cf8UjYuUZPw1kpcpY5VhIiPNN68F3B3IrkPT
+         3EX/JrcTryJ873IEjMpwXQYo2uZoQl/FSy57o4dFqyiK8Y/VhaIXi0+jMJLWvbi0w5dt
+         Mm+g==
+X-Forwarded-Encrypted: i=1; AFNElJ/jyePzz21ZL/91ABSEY/I3gXOUPJF25jjog2idaJbiHVdOAeYeL5YMHgW0lOP3lzdcDy8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw1gPgxFA5LxLY/d4dzCAenpeATHdXYg5bSDCmZRl2bKuSZbKPE
+	YSbrNauqHdPTxT/WVQCFge5NrgzRs+5W4YkIW73OwQqFFoLOtHEU+F5Q
+X-Gm-Gg: Acq92OHXqIqesoSBpaYF8Z3DsJuSotw/p8GIwcQMU104noYCCHAma9Zzg+OoCNPiWcb
+	L4fY8AwvzZe+I13nVBfZgEniLdgGOS6pc+STj7lV9MQp4z2prCtCpoFUEH68ZVyNHGZZauH2VIB
+	DzJC7wycbUFVGyJk2yXTjLGBtyQXZyiq8FZAwa7IW+oAU3qUJBBJv8JMhkbyNPVSShUKscPB7ZF
+	BgNwnRat8t/JUU2hyaiUJqepypR/5Z6K3TPZCTIupMAPdqmsNA+RTr93mkfQ/ItV3pNtutmnQ0/
+	NP3xdfdEHTm1Lsd9RVdNlLbfHl5nRHykBY2p5z9pmHh1JGZjma2LeWYHIw0nU2YIwc4TizNodMO
+	nNaqDv9YXZh4y8bs6lsIOky3kFFeP5ZyiGY8Rcxhr6e3vdOvkuJdIBGg3FHP/gFyE0TTd1nd8jP
+	ZTzSPp5ENd/FvNH5qBgYCMpX5riw6VfsruaZqSqsJkuKtu2axNlObc6tzhaRXgfiHhrepqu4wfm
+	olbYMmzKfVxqx3NU7Okd/J+qsmemzmBDXAXUfQSv/ojsgA=
+X-Received: by 2002:a05:600c:46ce:b0:490:abef:dae6 with SMTP id 5b1f17b1804b1-490b5eb0aeemr79808335e9.19.1780527250987;
+        Wed, 03 Jun 2026 15:54:10 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-244.cust.dsl.teletu.it. [93.144.65.244])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3c183asm26366385e9.6.2026.06.03.15.54.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 15:54:10 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-sound@vger.kernel.org,
-	spacemit@lists.linux.dev
-Subject: Re: [PATCH 02/83] ASoC: codecs: framer-codec: don't use array if single pattarn
-In-Reply-To: <20260603140939.091f126f@bootlin.com>
-References: <8733zfj5jj.wl-kuninori.morimoto.gx@renesas.com>
-	<87zf1nhqxx.wl-kuninori.morimoto.gx@renesas.com>
-	<20260603140939.091f126f@bootlin.com>
-User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
-Content-Type: text/plain; charset=US-ASCII
-Date: Wed, 3 Jun 2026 22:30:09 +0000
-X-ClientProxiedBy: TY4PR01CA0115.jpnprd01.prod.outlook.com
- (2603:1096:405:379::17) To TY3PR01MB11797.jpnprd01.prod.outlook.com
- (2603:1096:400:373::8)
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v1 1/2] arm64: dts: imx8mm-var-som-symphony: add wakeup sources
+Date: Thu,  4 Jun 2026 00:53:59 +0200
+Message-ID: <a34f166c6376ac9e0f1721ec2cf6d1477b6646f6.1780527068.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1780527068.git.stefano.r@variscite.com>
+References: <cover.1780527068.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY3PR01MB11797:EE_|OSAPR01MB7280:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12607daf-5c35-4ee7-4d86-08dec1bfabd8
-X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|4143699003|11063799006|56012099006|38350700014|22082099003|18002099003|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	TzHfVoj7TpgdvJ0HaGWwBMagVB+iozqFbkXG3tqI/A+k0Q2rZwkMIB5Xx3ck6auLWKhc7o6+wZ4bwSxnZ9ogH8It4qEBWtw1aIsCJd11CygAQ1F4yyZtNvDSoIIp/lIJC85yb94H4WAHP87hQmsft9/ZyUOn3u/CUHqDhFepHbaIPsFIb71BPNQJk6n3dUf49wwd18j/MdGNOBeG3yJaspINvLZL1noqZINg8S/AQF66DylY/EzUUU6WtLvxbhfMDQFrznaVBzSrubhuIXUejOSR+c/RiKsDaMADknHbfX8sEqhCY233XPCJzjOD9CdgdkYMdVF6qd1DDRfSpj7Xp7eAliJrUvjQ/pz6evXYjVra64yWF9m9XZ1+TbBFnAsTRXg/DbGpN7JsR+8mfK6CF2bccqF8N7qBst00qqedEkfIQ1U8hK3lJJItYdngZMgQTYsREmzb4lQzLDoSqgNrwRc3SCyed1/YcNEtOnSyIlHKk8jXB9nHhKph5kqYOX62GmzM2lnh2humnTqNrV8Me8AJg7DL48c3WTJnupZdYNHrs0q5J21E6JYzQH5ECf7zt0RE6FBXRLn6c1axLC4DFTEMsCc6qEh0NGBWcMhwF32fZSOdZjVzcuVOmv4QlGmJXGjwUrTnCYHijp7U3rBpcGiAKjewtJQEieXKxU5wUwRU8ci7adSQI2R/1W3Qwx9z7u5upyIbtWXK1p56WD+7WayH0vfH6e8OkUyTrBR6oqpwrW5uuMy1KVIg/4z89G5fGC2T/5vZdSWTCG3Q78Uy/w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11797.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(4143699003)(11063799006)(56012099006)(38350700014)(22082099003)(18002099003)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lijGfEg2qt0pQmb+mOI2PAFjEPX5cvZTcz81IkTfz7udR+nM8t7IJasJJUvA?=
- =?us-ascii?Q?BkFvJ2fR+7rRjtqcfD9WtFILE68AkGFRGZgLf+1/SGECmnVxZTGtHkc6n0m5?=
- =?us-ascii?Q?z0ZmomtME2rKjn6+MJD9N1bX8ZQ9Lhg9LlSzvEIgIogY1EY+b97qbuWHWwzu?=
- =?us-ascii?Q?S+UNO0yTdFJuHat548RBYCSdywiq+Z/aiBuj/gixLL5aT9Solk26WkaJ/bbJ?=
- =?us-ascii?Q?BRByFu8MTY0oYso1I89HeeJ853ISSyvLqom7RqMbchmyPsggg4AHeP/2oWcw?=
- =?us-ascii?Q?D1tK2woenELOe9S4eZ9XvzhydxAXzlNL+Rzz3pU+o+7hw/SSOQibgCq9n87p?=
- =?us-ascii?Q?vWUm+czOwilM92gdCGaHmfngiAxHQd/dhheYlSTWMIXI02ijWSlIdMUORkdS?=
- =?us-ascii?Q?udpFHyuEIi0ewq5VVw1l36NqBWxtG+Z0xLIWIx0RnujNhxGbNXWTN1GKsKfS?=
- =?us-ascii?Q?7XSE5aTWUrfyJXvrKPKTbjgVKymunDlyBj7OpewOFWqREFbCj0C72+mQhowz?=
- =?us-ascii?Q?TxPXra3+QqOtEu/zl1AvgtUsn8pSYyGsbYNwegoxsrQD9YJVaUSr3IBRgmjw?=
- =?us-ascii?Q?j339RbHAgPrcu/nAR4xIxBQA2sO1rWWLmZ4EpFbk+ez2Q9o8zf+2nmbW5Ns5?=
- =?us-ascii?Q?9cEnW9dpfldeBEzGc9JuDspkKKrrijTOSplwLQ8RZFmkYzQwehu9tniQD1fB?=
- =?us-ascii?Q?oPyFA1Av8VrlDRZlhcUvyOSJ/4BbSED1f46A1jDRWU6rFVpdf2Kbth6RF9/q?=
- =?us-ascii?Q?3WfjMI4zS19/1BQ8GOEsS9eNRRrgYp61eMrbbYS3KH7uu6qQ3uoWlYrECcCA?=
- =?us-ascii?Q?Q/Pmp+hY9uWiP+nw2MJ93u/CE3MoqRww5y0rRajWvu1cWKwFsGQzUIfTtJaI?=
- =?us-ascii?Q?+lAtn+RdnSEN9yJ+SygTCHCAJJGKAJeHtvQsco0xD7CqYsRgq+lgFYgHl/MC?=
- =?us-ascii?Q?XhtHQOOwosIbVUeqVBLqW7WY4dhQzkfnD3oKDnWS8UNSU7P6NE7csts1roqm?=
- =?us-ascii?Q?cwfCaguCX9ky4q5Vmq1nvNR49bPEfeO14KCv08n0/TGWf3SgNVQm+jvIrO72?=
- =?us-ascii?Q?l0ry2ZVaIJhpJtkwS6Mz4dCchmJq80SlX1x6k9dwK8/ojdWJmNMXofvuLUDC?=
- =?us-ascii?Q?aydCDmVSal2VKz4C3hWRuUnGuGEIbqj0lpnSr3UyFou9GNxpg76Ghv1gH2wG?=
- =?us-ascii?Q?Cq31PW8EfXdtNBNvh8NB8A4fk1gzCEzu7/HxlqdYG4eT/mDCA59Yvi6z7aHq?=
- =?us-ascii?Q?9VvX53yqqG1rwPmdot49PgNfjS8KIdh8h8Y8fMmQ99WvWfVoa0BE791bvRip?=
- =?us-ascii?Q?iFJaBEa+yYEn5uCnfV0uXVDNrd/FnYaqBEBiGjtxdlV6NRTGvvH3lhISs4cD?=
- =?us-ascii?Q?pkCYlUo1S6rmoBUNu0GUZdWMfVemPowbfDSp6Ek777P6jfkyLWKtGtP9El0p?=
- =?us-ascii?Q?9Ghr+8TeF4ys/ILqWWMYXAnyMkRKaa2R+HzDia5nyC603B4UnX+9qkBcGfqS?=
- =?us-ascii?Q?KJCfdec5Bt1Eb44J33SLn7MJ8cYUqoSK7n9vCOnznTI7bqdM3VkPFoVwQRwj?=
- =?us-ascii?Q?b/fF7s4jePi+DBbVhWEgeJvi1XzngYhHJqpwFNUrpGp3IaC0g43/7p8064ZW?=
- =?us-ascii?Q?f4i7tmukWnPoQnaGAg/RfmYYuuJzXINCh6wMSsWz221+nQwNIX1JeervuiKF?=
- =?us-ascii?Q?q6SqRaPYePYZhToevnWWbbFBruSKi1cGVMvNACGEgRdLxUXPnmVvjVHdKyBx?=
- =?us-ascii?Q?5euAeZDvxxCg2LmKfL4PNJ+TJ2Qrl4I=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12607daf-5c35-4ee7-4d86-08dec1bfabd8
-X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11797.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 22:30:10.0343
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EyC61S6I4F1H/JUrqLmYIDVpFK/SlSm13DNt6xUltouV4dvhcRjKpd8NRDA+hLX49R6tOu3NrKhHMj8PEAtVUobxHahqkGQLa4wogB/tn+T5ZY2VVwdW9b3Hw9vVFBbs
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSAPR01MB7280
+Content-Transfer-Encoding: 8bit
 
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-Hi Herve
+Mark the Symphony carrier board GPIO keys and capacitive touchscreen as
+wakeup sources.
 
-> > Because it is confusable during debugging ASoC FW update, tidyup
-> > auto format style not to use array if single pattern case.
-> > 
-> > Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> > ---
-(snip)
-> Just a typo in the commit title:
-> s/pattarn/pattern/
-
-Oops, thank you for pointing it.
-Will fix in v2
-
-Thank you for your help !!
-
-Best regards
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
-Kuninori Morimoto
+ arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
+index 857325ef4461..090752014ee2 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
+@@ -55,18 +55,21 @@ key-back {
+ 			label = "Back";
+ 			gpios = <&pca9534 1 GPIO_ACTIVE_LOW>;
+ 			linux,code = <KEY_BACK>;
++			wakeup-source;
+ 		};
+ 
+ 		key-home {
+ 			label = "Home";
+ 			gpios = <&pca9534 2 GPIO_ACTIVE_LOW>;
+ 			linux,code = <KEY_HOME>;
++			wakeup-source;
+ 		};
+ 
+ 		key-menu {
+ 			label = "Menu";
+ 			gpios = <&pca9534 3 GPIO_ACTIVE_LOW>;
+ 			linux,code = <KEY_MENU>;
++			wakeup-source;
+ 		};
+ 	};
+ 
+@@ -187,6 +190,7 @@ ft5x06_ts: touchscreen@38 {
+ 		touchscreen-size-y = <480>;
+ 		touchscreen-inverted-x;
+ 		touchscreen-inverted-y;
++		wakeup-source;
+ 	};
+ 
+ 	rtc@68 {
+-- 
+2.47.3
+
