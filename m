@@ -1,99 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD25396D2E;
-	Wed,  3 Jun 2026 15:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CECD3C768B;
+	Wed,  3 Jun 2026 15:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780500026; cv=none; b=NTvlLMjwge1zluMwrhbzQDKzfh+DrRdoy5yB+NWKydAdZFRDq1rA8HljNSsSfWE238qARr25+ksuUVKDpC2394GXD8eL3AtQih9lFmCp/29t7oAa7A9fQShKqsNMVVDdfOVDHI9XBrU87xa3PWk8FoScdzYAlZjIuafXBOsa3R4=
+	t=1780500078; cv=none; b=QztUicJCH8vFG02ZpyflMLzB6EXQqD6Hf3xSxI2zP6gO2yYLOm6O8VJ0o7+lKQNHq0xURYRoz3ANu+doM92gAaoUaj5br+AT+Acv2z1SxVejfDqkYjo5rf+Y2ah47IWpOuxkQee83W/VucMLCoDtASzVCzor1oXrchIv4VqZMrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780500026; c=relaxed/simple;
-	bh=T94aojp7Y1magEVlWMSVQW54PGqV3z7MrayC13iNTXE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PJfsIOzFt/rVlqhaQhQaxGOxhNa2JUn5L9QwZCg3UMXzwHeetViAXwB38dgDXjmOIrprNOlTWT4A4J90Ac3Av7UCnm0KqmZtsUYxEtwcaJg/prC5JmugTZEDhre11gc5MmRdp7c00Vbs+Vf4JDRNZx0hogLm8Vu3rlM+WJcMDsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWqMOU14; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780500078; c=relaxed/simple;
+	bh=bmT/80mB3n6dRXXEkMJn5soC27h/7oK51kADck7rKbY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a8u5xoxiRAzRDJRmqAaRcfdxipGY9Pkgz4RDOsQMrVjqqxEEin4Ajho1W6p9IPhzzwWBAfLUgdDSAK1kSiNmkb5sXErtKX6wUWzW6sm2elI0jLzo1//ipgCdupAe8nYCUvXcoijLN8HCRQJQtxN9K9DBXib9b7X9bgRIHuaoNxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ro4/Ri1x; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nxeXKjfQ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWqMOU14"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED4F1F00893;
-	Wed,  3 Jun 2026 15:20:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780500024;
-	bh=d9IEQjYBPa0mRjM+hhCeDTonCZfy0dp3TeDAxyQL43k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gWqMOU142LNUQ0+t8nhkK6fGVltmUlUCGnICo0rSn4MSd4IgfdhcQPq+paUgZ79mu
-	 lxEL3Feot4oYCAQ9c4gN9luyhtrsyK3k/azVYNpEwVU0yUNcXn9+W+bk+IMZs1Hu++
-	 hRxw2lOwCLKGezWfqp69eMdO11O0/aIwMysmBOpNkQTcR1cMn1rKQOz2ihQlSgAY3w
-	 RyMxqrEz5VmBi1CRfUTr2UHyXmwQaS5jJ/nILiQw3kGTgQuy3tZto6NQJIIa8plD5r
-	 V3sx4xyRr+hytXAWlPRc3vXUL5PWddYm5TLDTtBEgkWNlop/fpeZ5Ius3l1Nh028Pq
-	 bytIpFR3am6Qg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 07/14] arm64: dts: imx8mp-var-som-symphony: add HDMI
- support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <24154af5fc04cf4b355dbebc33566f83d85b222e.1780497188.git.stefano.r@variscite.com>
-References: <24154af5fc04cf4b355dbebc33566f83d85b222e.1780497188.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 15:20:23 +0000
-Message-Id: <20260603152024.5ED4F1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ro4/Ri1x";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nxeXKjfQ"
+Date: Wed, 3 Jun 2026 17:21:14 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780500075;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H1c4t5AfhRBRzmjLLfCYBrud3oeB03kFXvXYDkpCL2A=;
+	b=ro4/Ri1xYJXQuthV1ytTU/sxip1vwK0EO9TclJBL9Gb72vBYlSdBIO6/rifyvKY9OV9yTn
+	LYMVyOtLrfEThVb7E5LHaOjETW0ROZCXu4HaCLxrcmu/kv6lc2KQ8y4R7zn7GiXakq+FY5
+	io3q76NYRRV8HgPpyPXM9u43xSEY6pw9mrvmnZ0ue7ZfrtJ8+yt1adwQ3knMTU0PdN0WFw
+	e0SpW3l03OMvuyK0U8/SeTAGg968Lk8ngZ12kV48/JxOgJ3PVJDCLAoQJG2kVuDizRex2S
+	7vfDP2UcblgYwxBzciyUXRTiKREcACjUZmiEhEwTv/LMJtAaIKcg2La+e7ebCw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780500075;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H1c4t5AfhRBRzmjLLfCYBrud3oeB03kFXvXYDkpCL2A=;
+	b=nxeXKjfQZ936GPbeZD5D94/pYlIybwU+jAZnA8tPZ11DqTNV3iWRaVCypjI7Ov5bq8dCAN
+	PVLsd3b9N+iXfEAQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 9/9] remoteproc: imx_rproc: Invoke the callback
+ directly
+Message-ID: <20260603152114.yyI9ULYp@linutronix.de>
+References: <20260603-imx_mbox_rproc-v2-9-a0059dc3b69a@linutronix.de>
+ <20260603144558.E433F1F0089C@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260603144558.E433F1F0089C@smtp.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The HDMI Hot Plug Detect (HPD) pin configuration is missing from=
- the pinctrl group, breaking HDMI display detection.
---
+On 2026-06-03 14:45:58 [+0000], sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> 
+> Pre-existing issues:
+> - [High] Missing RCU read lock around `idr_for_each()` executing in a preemptible context, leading to potential use-after-free.
 
-commit f9812a899ecb88eea9dc09a1da7735f389e9686c
-Author: Stefano Radaelli <stefano.r@variscite.com>
+No. The channel is removed once the interrupt handler is gone.
 
-arm64: dts: imx8mp-var-som-symphony: add HDMI support
+> - [High] Error paths in mailbox initialization leave `ERR_PTR` or dangling pointers in the channel pointers, leading to a kernel panic during cleanup.
+This, yes, sorry.
 
-Enable the HDMI display pipeline and HDMI audio support on the Symphony
-carrier board.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts b/=
-arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-> index db0ae706f6487..f7eebf265fab2 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-
-[ ... ]
-
-> @@ -253,6 +306,14 @@ &usdhc2 {
->  };
-> =20
->  &iomuxc {
-> +	pinctrl_hdmi: hdmigrp {
-> +		fsl,pins =3D <
-> +			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL			0x1c2
-> +			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA			0x1c2
-> +			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC				0x10
-
-[Severity: Medium]
-Will this configuration allow the driver to reliably detect monitor hotplug
-events?
-
-It appears the Hot Plug Detect (HPD) pin configuration (such as
-MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD) is missing from this pinctrl group,
-and there is no hpd-gpios property specified for the HDMI node. Without a
-configured HPD pin, the display driver may fail to detect when a monitor is
-connected, potentially leaving the display undetected or blank.
-
-> +		>;
-> +	};
-> +
->  	pinctrl_i2c3: i2c3grp {
->  		fsl,pins =3D <
->  			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL                                 0x400=
-001c2
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780497188.gi=
-t.stefano.r@variscite.com?part=3D7
+Sebastian
