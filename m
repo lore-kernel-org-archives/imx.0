@@ -1,115 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291AA3932DE;
-	Thu,  4 Jun 2026 09:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD1635E1B5
+	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 12:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780564038; cv=none; b=iA4pU+aI2EPgiWN0gZLh8L0qYXPN9kiiQnF9JXAe1/IkaNhNjBUrcg/7IGaJr1KZHoerDU32tp8QNLY1hyn8EvqbxmWrCD3khDQ2HLuYGo3oWtu2Ohxlsx8+TOTUXLSmcjFchqPc7qL8JEVFI0crSODYVodOri6NosoDNWclNAQ=
+	t=1780576351; cv=none; b=ohCWbjpKp8ELKYQUEjDIPBKbBVS9sylxYO142OYWRB00wlT+qQYRI1z7L2wAY8hM3T9vE125b4fLylIAMIUZ8pr4MJox19bQVvcJIkUvQYwAVVR0bFtR/ADi5084yemQHJg4NIvc5Xs3Eg0jm3M+zB0PsDWNlnkYyOHYVbE36W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780564038; c=relaxed/simple;
-	bh=4Dx8xQtIfAIcySZNUoWXOt6atbzKmOkatsT/ShKvXW4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=R61fOy2mNxcCxKRG8yvuj+b9SywRF+fu40hvIgRiqO7QA6Xgq7ZVzLgUBvWfuJKo4PeYg3pvvBFbKQX96Sa/28dxGkvc+RcEHSW+0AbWCf9BR2mrDGFcTNMtnNq9Fzu8SPIrgQMzpXYCzmRzMnkluJq0ykq0hrdtQnvzk2ZBhC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxZnfaun; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780576351; c=relaxed/simple;
+	bh=LnrtZB0iEg1z1vGOmrpOOK3Cssie/DMPDNqDCPjTdS8=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MYFYmfUKvqGWncE47aNu5ecLyh8KvlaMrVFUr8zcN8eMa9TrdZ/cmf3m94TAAlWvAcGRNz5Kx066tHgRZSG5PhCPs7xVbv4YTHDbtY7kTqNG+oM52+4IvSzdjlPIxJGv/jB/Aq8wkts85gJwLRXtLJoMPgVEIns2YxwoyqS1OmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cqf3MXV4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxZnfaun"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838A11F00893;
-	Thu,  4 Jun 2026 09:07:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cqf3MXV4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2967C1F008A3
+	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 12:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780564036;
-	bh=SC5b14PD4rYt3pOOvOPzUWaxWhKrTB9E/EzGrureIHU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bxZnfauntMQGs8BcsHqRHpDmF44E55aht20coQ6m8wjww/a9nIAKlqGu3Ws+XHfzI
-	 DS9bqEyohBP+aHgJQazWk2B9akdhUDGyCIqiJSEVUPbIhZa7SfLMT0qb0EuNTB4L51
-	 hMmxwR24HAzvMIXHDifquj3yKTYR3szZNYsH5gAXgtLHFmF/YkhsN7MtwxslzPyn8i
-	 RzB2zG1SbnbbHugmPGJXDfcJ89d8HZ2lZI12OSplfTPax7q94dREGw6uVD4IF/H5Ji
-	 uoS7wxI2yt3SdTb0sBRz1W6YG05psJi5ewf9jWPEU0rgnywjf45Ngdj2TlGj8iq5V0
-	 nX+qJlCooXMow==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/4] Input: snvs_pwrkey - report press event in
- interrupt handler
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joy Zou" <joy.zou@nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, linux-input@vger.kernel.org, dmitry.torokhov@gmail.com
-In-Reply-To: <20260604-pwrkey-cleanup-v2-4-59fa0ddf0d7c@nxp.com>
-References: <20260604-pwrkey-cleanup-v2-4-59fa0ddf0d7c@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 09:07:16 +0000
-Message-Id: <20260604090716.838A11F00893@smtp.kernel.org>
+	s=k20260515; t=1780576350;
+	bh=LnrtZB0iEg1z1vGOmrpOOK3Cssie/DMPDNqDCPjTdS8=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=Cqf3MXV4TD52LTrKp0CEYIe9g985jGUSnNRQCoaqoWqlQrEUsixL6taFahNCfDLy3
+	 +Z6as+OOsL9nqoix/FyXeZFm2nSqFAgKe0UdZ200LCLfCzZOsL9e5aeERkfHQuCGQt
+	 lbsQ7bKitUjPcn+bHj0GDLNxKoY1a2sN6xy3To0Q9KFC5vgDE0UO/KlEqKmvCmGo2q
+	 tQFH3C8Z7JCY1CQ0ki8z08Rb6/Be/+yEVtXg1G5zNpIwheU8ILhcBZYHgFoWppCuwE
+	 gB2HgfLQ286akIY4m3Bo3GCPaJEmZyP191eGzCBLL04xi+/lRCrQ3eZvv7giv/r8Wv
+	 S0m1gGv5CNe1w==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39677aed4d3so5551161fa.2
+        for <imx@lists.linux.dev>; Thu, 04 Jun 2026 05:32:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/fdZxkxjQ0OkKf8C7Y1cFYlbgYRN+cKf1vmW5Ev3ik3p9tFy3V3RMdUJeb5wlLdjT6oH0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyc1pnoU4OxZ6BMi5EQLc+JS4+2ftFPdtID8zFgHciQ6ZrXCQeI
+	fB6S8V9kBWarfuvDFuNuZN6CfwIMTkeXzX3I5jH/WLzIGTO9bW33Z0mtEwuyu3sGZY0VGKFphTC
+	a+/WuO+utxIOwMM2q3DXZ4HZ1LmsxhEEmkx0Xu287Ig==
+X-Received: by 2002:a2e:bc24:0:b0:396:9cbb:673e with SMTP id
+ 38308e7fff4ca-396af48a101mr25033101fa.24.1780576348691; Thu, 04 Jun 2026
+ 05:32:28 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 4 Jun 2026 05:32:27 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 4 Jun 2026 05:32:27 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <ah9OIVyrHEhcMHzN@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+ <20260521-pdev-fwnode-ref-v1-7-88c324a1b8d2@oss.qualcomm.com> <ah9OIVyrHEhcMHzN@ashevche-desk.local>
+Date: Thu, 4 Jun 2026 05:32:27 -0700
+X-Gmail-Original-Message-ID: <CAMRc=McLN9Ovoqo3om-3uC=q+=rcKCoiWMctC=yvwiaHacU0PQ@mail.gmail.com>
+X-Gm-Features: AVHnY4LlXi8ln45MTUjJfpd_YWjp19dT0a-H21-M7Hc7IKBiGWRxgS3l-OaDEEQ
+Message-ID: <CAMRc=McLN9Ovoqo3om-3uC=q+=rcKCoiWMctC=yvwiaHacU0PQ@mail.gmail.com>
+Subject: Re: [PATCH 07/23] driver core: platform: provide platform_device_set_fwnode()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Lee Jones <lee@kernel.org>, Mark Brown <broonie@opensource.wolfsonmicro.com>, 
+	Thierry Reding <thierry.reding@avionic-design.de>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Srinivas Kandagatla <srini@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>, 
+	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Maximilian Luz <luzmaximilian@gmail.com>, 
+	Hans de Goede <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
+	driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
+	linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Data race between hardirq and timer softirq leads to desynchronize=
-d key state
---
+On Tue, 2 Jun 2026 23:41:53 +0200, Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> said:
+> On Thu, May 21, 2026 at 10:36:30AM +0200, Bartosz Golaszewski wrote:
+>> Provide a helper function encapsulating the logic of assigning firmware
+>> nodes to platform devices created with platform_device_alloc(). Make the
+>> kerneldoc state that this is the proper interface for assigning firmware
+>> nodes to dynamically allocated platform devices. This will allow us to
+>> switch to counting the references of the device's firmware nodes in the
+>> future, not only the OF nodes.
+>
+> But why different for of_node and fwnode to begin with?!
+>
 
-commit 9a729213fc1cfc21c866a352fad1a978bfa80359
-Author: Joy Zou <joy.zou@nxp.com>
+I'm not following. What are you suggesting?
 
-Input: snvs_pwrkey - report press event in interrupt handler
-
-This commit modifies the snvs_pwrkey driver to directly report key press
-events from the interrupt handler during system suspend. This bypasses the
-debounce timer to prevent event loss during the no_irq resume phase.
-
-> diff --git a/drivers/input/keyboard/snvs_pwrkey.c b/drivers/input/keyboar=
-d/snvs_pwrkey.c
-> index 4a1d048984826..f212a6b26185d 100644
-> --- a/drivers/input/keyboard/snvs_pwrkey.c
-> +++ b/drivers/input/keyboard/snvs_pwrkey.c
-[ ... ]
-> @@ -92,6 +93,15 @@ static irqreturn_t imx_snvs_pwrkey_interrupt(int irq, =
-void *dev_id)
->  			input_sync(input);
->  			pm_relax(input->dev.parent);
->  		} else {
-> +			/*
-> +			 * Report key press events directly in interrupt handler to prevent e=
-vent
-> +			 * loss during system suspend.
-> +			 */
-> +			if (pdata->suspended) {
-> +				pdata->keystate =3D 1;
-> +				input_report_key(input, pdata->keycode, 1);
-> +				input_sync(input);
-> +			}
-
-[Severity: High]
-Does this introduce a data race with the timer callback
-imx_imx_snvs_check_for_events()?
-
-The new hardirq logic writes to pdata->keystate locklessly here, but
-imx_imx_snvs_check_for_events() also reads and writes it locklessly in
-softirq context.
-
-Could this sequence occur:
-
-1. The timer callback reads state =3D 0 (key released) and evaluates
-   (state ^ pdata->keystate) as true.
-2. The timer sets pdata->keystate =3D 0.
-3. Before the timer calls input_event(), a key press triggers the hardirq
-   on the same CPU (preemption) or another CPU.
-4. The hardirq sees pdata->suspended =3D=3D true, sets pdata->keystate =3D =
-1,
-   and reports a key press (1).
-5. The timer resumes and reports the release (0) to the input core.
-
-This would leave pdata->keystate as 1, while the input subsystem's last
-reported state is 0. On the next physical key press, the timer would read
-state =3D 1, evaluate 1 ^ 1 as 0, and ignore the event. This might cause the
-power key to become logically stuck until physically released again.
-
->  			mod_timer(&pdata->check_timer,
->  			          jiffies + msecs_to_jiffies(DEBOUNCE_TIME));
->  		}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604-pwrkey-cle=
-anup-v2-0-59fa0ddf0d7c@nxp.com?part=3D4
+Bartosz
