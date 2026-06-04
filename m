@@ -1,144 +1,335 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11020083.outbound.protection.outlook.com [52.101.229.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8593B8D5C;
-	Thu,  4 Jun 2026 07:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780556676; cv=none; b=N6pWaarqImvkDAYijWFEvUjjMHOiS1P06EFO080SyFcMuKPVtDxXsxnaW2Jb0Gz6hzT1XOG1B0girLc8AjI14CiiLOlYA3kUR6wuHpkvUZTtLafiQDqAeV0M17r/Dy+64QhyQpLVGdguRu/5V3lq5L8Zk4rcS6JvTw5hfCVEQ5E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780556676; c=relaxed/simple;
-	bh=3fgO5dnrp9LB1+MHoe9XOOTePiLJCgKLYq+bBkg1ucA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HCkh+zw/dBFNRFz6lhxmZcpuaeBOkDJZr8EUCDuuyzKHt97m83Y72XA5rOR5gQ+OvwZUG1wF7MxNu0CsXHedKqqiA/OTxqg+EyS9kWQQhTgayKn5rJZHK4ydRPsaAleWvA4k+62sy0GTmdgk2A8jmyaiBojOZ8SHqzN9CpCsq9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndLvesyU; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463663DDDBA
+	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 07:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.83
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780556893; cv=fail; b=q8odWoz+sTG9a0WgTRuq0uTtbNH0w9vIh3iezHl8pREamXV/D58D136G2LvQ9HlwDH/PUDPxO3FklVUxDpIjYCz3HOqClCPpbRldReQvuFqoYOCADX/hgyER7aOGLUKKhYerp9e6TQSiAjvvqUt08k13e0QI554UYnEJbv39umM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780556893; c=relaxed/simple;
+	bh=CP/nwzFWQoieuZgJG5Qjr3O+ajkI9E+mYjwVOiZjghU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WfilRKma+wtK4UziXGfGTaCYAebhDHwSsS0JvnsxOK05OCok2AN2GKBzNdaXksd6YD4UJl9taWuJLEoXbKM3NoYgTtdXrhrg33ISYI52GsxRyep9TFnsI4v46cGp1HiHX+M1zgnlSG0EDvWUwcDS3YP9QlG7ZR5DX/6aLGKeauA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=e8Q0ID73; arc=fail smtp.client-ip=52.101.229.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndLvesyU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DB71F00893;
-	Thu,  4 Jun 2026 07:04:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780556675;
-	bh=SGSAtrhnslDwLhjmSZf82EKvbKPDF1oWb87dIHZQ6zA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ndLvesyU1VGSPA0wdJM/+zAvNurEKe1eCo6Mx2/sP0GTujYyT6hG7v2odZ8xyaWHq
-	 f95k/HO4gaGqfJKl8osTdrD+rhgDcl+JJ+h5s59DPhj6EaqkOhCUUWzaF78KOXwguC
-	 gacofQ18FjhHmhtRU1zTOX+ObEuU/0nwaXLePRsZfB62b1j2N4sDIq9VLwLcQ7+rD8
-	 0Kut2qdGJHybe/HoWOGrKWBt1fiViWoZY99FMc0kxOeohNpY2LSTrsHAKZQbOW/wkh
-	 S75nhIDSxzHuAwoWvuIqv4JGCryAKV7/Axyj31XqkWDCDkDwtNoHAFvPoGV/Nk4Jc8
-	 Yots4VaQJ9eAg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/4] Input: snvs_pwrkey - make use of dev_err_probe()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joy Zou" <joy.zou@nxp.com>
-Cc: linux-input@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, dmitry.torokhov@gmail.com
-In-Reply-To: <20260604-pwrkey-cleanup-v2-1-59fa0ddf0d7c@nxp.com>
-References: <20260604-pwrkey-cleanup-v2-1-59fa0ddf0d7c@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 07:04:34 +0000
-Message-Id: <20260604070434.E8DB71F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="e8Q0ID73"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T06+UUxBJLsR0PrD7VNXSl9En9uCno54II9C0Ot+Yh5VvPJLpsmKw7L073qI1OiF8deFiBPKWTKh9NHA6NWYIseu+6+XkC4m4kr64+XbYM0TtG1POBhO7Js1Cb5KNqfard/1whDGG/7X9kHrMO/NklJ6i6ORNFlWcYcl66Co9KON7LXJ0AteajeX4OTkHI0ixkXAl4SBV/YD/hYJTPfs1CgM3YtKu10BfBgpL16aSSY2pYNypJDmF/LsRjaAF2uRx+QUtvD1XhzdZYufb/1oj3+4OojcVkmh93S9hub4Z5meew+8TcuOerEdkY3+Uom9A17V4j637mxKuDnR3ypyRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oawep1qEMRLGK52fxqx6xeuSnJW6LjD7wtH4/njGwSs=;
+ b=i4vI+k7tW4l9wm9Hg/DMaSPZn4Q6uBz4xHfi9rb5h81EauU63Q5ww6+bPUS1yP5aOXYgxJ0G4Pt6FfKan+kWJiwCv5/dpo1mRcGvZwF0n4mesqABx8Ph34SsunvRfBYgoOuLtY516XEbMXQzx1oS6847tWE5CQ6pnoTn2bJx8ohFk5r7C0HBUWGiQdNi607ngNC7k+o1tYVLo+3YBZ03JaGtypxbC5BE6nzoQXO6aXU8S2fGux481rprKRFrQZ0qLZMTFVdisLcDEwIXDe5yZkAM10xSJjn9jMN2goB3xFjz/Y7FB6BmbB7e5BODbMzLKLk7MHaA/iywE6cI8bYliQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oawep1qEMRLGK52fxqx6xeuSnJW6LjD7wtH4/njGwSs=;
+ b=e8Q0ID73fOmcPsdOp1Ig1hmHb/TVMdpBXJ6Dwoeo3QzGXB7QStyvB1ZTCtOPBUxuE9YnY68Lzx3jeQu17prfv1S1Ieb1aY2UAueMHP9v/NM4+sa6Crzk5MtvriexBNuC0Z9cBOZmAPR2x6xm9KFTi8s+TZu3JBAW0wM+GaWjom8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TY4P286MB7778.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:34a::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
+ 07:08:08 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
+ 07:08:08 +0000
+Date: Thu, 4 Jun 2026 16:08:06 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Christoph Hellwig <hch@lst.de>, Niklas Cassel <cassel@kernel.org>, dmaengine@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, Damien Le Moal <dlemoal@kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH RFT 0/5] dmaengine: dw-edma: support dynamtic add link
+ entry during dma engine running
+Message-ID: <24a5wo2ncgf7d43mxbv6pacvqkzmiuo4bvuyygfeyoq4lbdt25@kqw4cx7xzrfu>
+References: <20260109-edma_dymatic-v1-0-9a98c9c98536@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260109-edma_dymatic-v1-0-9a98c9c98536@nxp.com>
+X-ClientProxiedBy: TYCP286CA0209.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:385::12) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TY4P286MB7778:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42387908-1c79-4b4a-e0e1-08dec20807bf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|10070799003|376014|366016|1800799024|22082099003|6133799003|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	IQqN66UnYwstyou0I3r9gJDilyFa5J3aioCLooQ+y8P5ne0dA2j/0pwnUnP0FMy+hY36kCBwb/5291vrgjWevq1WQqXlXVWPLyNKj8KSg7RR5vPyFhPspif/7G2axbDAqnEng/m3kOYnHkH2Jk9SYMGg2bn1OqzepR6TW4QhRk0yR68yPpN8ysyl7wJJGlhS7Iu19IQOqO+GY3OxOsOeqWod04xP65OAPvBbuOtjiETJ2ZjYVlmLrvPY4+UPIwdpFiRkwQDle1IaJqKWQCQYLukRUO9U12eWnHuA5IrGVEzghOz5ZsnUemQespGZi2u0FpUbYBAsfKJwdwwurU0QeiZulYDDlulrjlheF+WXNtxDi9vzd/iraYmnunrtgK/X5lHBN5cPXtzsbowUbgLg6xXjnbuIXb9KSjdixSLAGo06cU0hTyMhroAl04ntgizdsOB3q4cWW/JLso3vgAbYkKQpdsyMq1+Wyj4/uOTb0nFXPsrah1JLkM50uNet+3tjE0JtoepEw3EBSdLwWqaJmkIWo+4ZMSOSg+gHnl4aV9Fjtg/7jxLudiyNTKnYlwkzkbX9f+KktCiOGRKldWh2dAuhghuNd/57cFS4vxVZq3eAOqqiCyOt9MDft2K4RnlGacOdeabEbqbQSF9SihAUBUpxg3gTMEQJbYlU6V85z08wNcMIUOIMUXIPop7iv+8cOc8xfKeMfLAcN/aY3Hk0ow==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(10070799003)(376014)(366016)(1800799024)(22082099003)(6133799003)(18002099003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+O2/7qBhpPIA25v+FSZc6k4KjxjbXQi39PbtE7gGjBR68e2BPcZwF0FWuLHS?=
+ =?us-ascii?Q?szUGQv+R0yeqsjBIKZHzbr4rwuGqojHdZD5q4qd7OvNq8B6TleAlZis070a6?=
+ =?us-ascii?Q?RknUHcTD45PpjP3242p5kZwVCuUEWu9xbtsBnwIyROtXIigPk2DYapHf2wiB?=
+ =?us-ascii?Q?+m0Ykq5gS9WYStDw1ynZsXPZdXXlyhz/n9XjORug9Hq/OTRmI9xwikFMZa4q?=
+ =?us-ascii?Q?NAKocxaPObBT0ixh/nK9DVMGpj9MPeabfMIs/dy9ByLKA5FXoavKyk+kxbBi?=
+ =?us-ascii?Q?5Ft+MBEewnNKNLZv8SADtktEGQo5xyLYkmvPe5UaoJyHKQWgLdDoQzkhOYXp?=
+ =?us-ascii?Q?3t1P0KH83yRQ8bObw6m4hjaRK/7aIA1cENZa0uYcgXGk6zfEA3LiDemqQyjP?=
+ =?us-ascii?Q?aRWZta4og1Hv6Mya3LxQhNxKnWCmAjRhRwGnAU+1/CdE3GpJVGHFi0uPwjla?=
+ =?us-ascii?Q?TXG4BbpDkLNkYVX2pyIpAlByBgdoDDrLx++DEK3zsogOthQtFGUPkCddUTX+?=
+ =?us-ascii?Q?O4bxLspUlMvz+lDFPShYKo4UVCCmVjZd+0uq0Z6ZUByMfOpGt8AOHTIt01XN?=
+ =?us-ascii?Q?K2nZ3L7iQpUXThwhY7fap4P40qCaZDRHN94MLOIeEpszELqZUG5ADpVn498h?=
+ =?us-ascii?Q?TXCJDzlvn/QP2e5CO6BGvvROr1MKeUBZ4tpWzuOm0a4AnyBjfeo+p40h+QZu?=
+ =?us-ascii?Q?OOVUJ9WiCU0aIFMsTdnyCcy+vpZM9jK0ypZM4n34KxBqPH6jIVlzTYWFeOa7?=
+ =?us-ascii?Q?RXQjY4DUPgOR84K5JZW+Q697ZixCiGmsUk02fuMn0RMlrm4OtcBXC0qDrKdq?=
+ =?us-ascii?Q?S+oaogyExPVTdZJHTCNe9lCyFiZFPhQbSvrZ3nauDqMvCJ4C9/v1cdAIyIGJ?=
+ =?us-ascii?Q?GD+cUm6kzGQ46W84nj1kBbzSUrj3vgOgKvci0kpppgr7TEKJPBPQ58ll/kuo?=
+ =?us-ascii?Q?YsE1DBSmYhhiPpMazlSCFyFCmy6B0CBg4cP+rWpgLo+UiJP4JVyv0kWZoNpF?=
+ =?us-ascii?Q?cZoRy09IIcnEt6xZq7ZTcDwohIntOJ7/4Yfw1QnTEHcSYGlAMEYkDeXbgz5/?=
+ =?us-ascii?Q?cevE6HzeNTHgyPd20Cj55Trfbb5c+bSeO65BX7xnkozfDsClQDy2eaB+knse?=
+ =?us-ascii?Q?O0xDXYpzFAdenZNOT4dpRwCUzS15+JAwlbN4VvuNu755+W02mQpPkdoUvrUm?=
+ =?us-ascii?Q?WZ/WDg/SqjwJq4BNjssESFSlqB3bTh6zeXLTURkshtXKs6zqajPj8XJdiwWd?=
+ =?us-ascii?Q?VtKPhVRh9E2rkwUoSmff+Sgtwp2LblJJPljsJJwWJ8GPI6pXh9zLdHbkyo3s?=
+ =?us-ascii?Q?dlNkvLopMVa9ahCo3k7q4bdwt/BvUion5NWdAK8OPUBh6wCygLKqyXLd0EEs?=
+ =?us-ascii?Q?+IPK3AtpSrOPP2QtIvp518lEDLOPmMpsAsNuWFkEGV88l8oJaVnut8P/4cy0?=
+ =?us-ascii?Q?7Pbo24AKSJLKfv9YhUhAxok0nMbxywMHh1zz4fNZxI4gWDMOEnUaQb8e4D+q?=
+ =?us-ascii?Q?uxweid4oGN4PJNb3HEa61L80nvhb03T0+uBZmgST7IGgfJZVfV7Dou4Saj9c?=
+ =?us-ascii?Q?k0csQ2nMm3peYCQTEq+Rr57BV/1BzQfJgALLqS/NUuxfh6PjefW/kwptPl9z?=
+ =?us-ascii?Q?Ljwp0uP0rHsSuc3mNKCJ8S8H5A9w1ROdtupG/kQLajDtgWh2UhwOWujsjKGq?=
+ =?us-ascii?Q?W3Mpxo7TIWW4t/JWz1TvzUmceJ7B++DEsGlhCCDcCLz51sHy8DhxFhJSD8Z8?=
+ =?us-ascii?Q?AEJnij+VecVqwU052w8LpNciOjY1ps562X3Ar6W2S0NfejMaHofq?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42387908-1c79-4b4a-e0e1-08dec20807bf
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 07:08:07.9908
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oVW3Wbgif9qUInS2E2GDLLmZmyQV5YOHrY06qgMISC5GictcvEJBNrDAFZO8nGuGBiTXtGMaP7OKlbnJJo5CRw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4P286MB7778
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Fri, Jan 09, 2026 at 03:13:24PM -0500, Frank Li wrote:
+> Patch depend on
+> https://lore.kernel.org/imx/20260109-edma_ll-v2-0-5c0b27b2c664@nxp.com/T/#t
+> 
+> Only test eDMA, have not tested HDMA.
 
-Pre-existing issues:
-- [High] Incorrect pairing of pm_wakeup_event(dev, 0) and pm_relax(dev) fai=
-ls to keep the system awake.
-- [Medium] Missing cleanup for dev_pm_set_wake_irq() causes resource leak a=
-nd -EEXIST on rebind.
---
+Hi Frank,
 
-commit c91200344c06e4226bdcadd16b77ac3688786f5d
-Author: Joy Zou <joy.zou@nxp.com>
+I expect this series may be revisited in the near future, since the first
+dependency series reached v7 and looks close to landing.
 
-Input: snvs_pwrkey - make use of dev_err_probe()
+With the latest versions of the two dependencies:
+  - [PATCH v7 0/9] dmaengine: Add new API to combine configuration and descriptor preparation
+    https://lore.kernel.org/dmaengine/20260521-dma_prep_config-v7-0-1f73f4899883@nxp.com/
+  - [PATCH v2 00/11] dmaengine: dw-edma: flatten desc structions and simple code
+    https://lore.kernel.org/dmaengine/20260109-edma_ll-v2-0-5c0b27b2c664@nxp.com/
 
-This patch updates the imx_snvs_pwrkey_probe function to use dev_err_probe()
-on its error paths. This provides more concise error logging and helps
-identify issues more easily during probe.
+I tested this RFT series with the HDMA engine on a SpacemiT K3.
+The test results are below, using the same format as your results:
 
-> diff --git a/drivers/input/keyboard/snvs_pwrkey.c b/drivers/input/keyboar=
-d/snvs_pwrkey.c
-> index 954055aaf6e29..748196fcce75b 100644
-> --- a/drivers/input/keyboard/snvs_pwrkey.c
-> +++ b/drivers/input/keyboard/snvs_pwrkey.c
+  Baseline, before applying the three series (v7 + v2 + this RFT)
 
-[ ... ]
+    Rnd read ,     4KB, QD=1 , 1 job :  IOPS=8567, BW=33.5MiB/s (35.1MB/s)
+    Rnd read ,     4KB, QD=32, 1 job :  IOPS=55.5k, BW=217MiB/s (227MB/s)
+    Rnd read ,     4KB, QD=32, 4 jobs:  IOPS=83.0k, BW=324MiB/s (340MB/s)
+    Rnd read ,   128KB, QD=1 , 1 job :  IOPS=3817, BW=477MiB/s (500MB/s)
+    Rnd read ,   128KB, QD=32, 1 job :  IOPS=10.8k, BW=1346MiB/s (1411MB/s)
+    Rnd read ,   128KB, QD=32, 4 jobs:  IOPS=11.2k, BW=1403MiB/s (1471MB/s)
+    Rnd read ,   512KB, QD=1 , 1 job :  IOPS=1515, BW=758MiB/s (794MB/s)
+    Rnd read ,   512KB, QD=32, 1 job :  IOPS=2795, BW=1399MiB/s (1467MB/s)
+    Rnd read ,   512KB, QD=32, 4 jobs:  IOPS=2795, BW=1404MiB/s (1472MB/s)
+    Rnd write,     4KB, QD=1 , 1 job :  IOPS=9035, BW=35.3MiB/s (37.0MB/s)
+    Rnd write,     4KB, QD=32, 1 job :  IOPS=38.3k, BW=149MiB/s (157MB/s)
+    Rnd write,     4KB, QD=32, 4 jobs:  IOPS=41.8k, BW=163MiB/s (171MB/s)
+    Rnd write,   128KB, QD=1 , 1 job :  IOPS=3969, BW=496MiB/s (520MB/s)
+    Rnd write,   128KB, QD=32, 1 job :  IOPS=8260, BW=1033MiB/s (1083MB/s)
+    Rnd write,   128KB, QD=32, 4 jobs:  IOPS=8295, BW=1038MiB/s (1089MB/s)
+    Seq read ,   128KB, QD=1 , 1 job :  IOPS=4609, BW=576MiB/s (604MB/s)
+    Seq read ,   128KB, QD=32, 1 job :  IOPS=10.8k, BW=1345MiB/s (1410MB/s)
+    Seq read ,   512KB, QD=1 , 1 job :  IOPS=1524, BW=762MiB/s (799MB/s)
+    Seq read ,   512KB, QD=32, 1 job :  IOPS=2799, BW=1401MiB/s (1469MB/s)
+    Seq read ,     1MB, QD=32, 1 job :  IOPS=1401, BW=1404MiB/s (1472MB/s)
+    Seq write,   128KB, QD=1 , 1 job :  IOPS=3722, BW=465MiB/s (488MB/s)
+    Seq write,   128KB, QD=32, 1 job :  IOPS=8246, BW=1031MiB/s (1081MB/s)
+    Seq write,   512KB, QD=1 , 1 job :  IOPS=1283, BW=642MiB/s (673MB/s)
+    Seq write,   512KB, QD=32, 1 job :  IOPS=2072, BW=1038MiB/s (1088MB/s)
+    Seq write,     1MB, QD=32, 1 job :  IOPS=1037, BW=1040MiB/s (1091MB/s)
+    Rnd rdwr , 4K..1MB, QD=8 , 4 jobs:  IOPS=1540, BW=768MiB/s (805MB/s)
+     IOPS=1549, BW=768MiB/s (805MB/s)
 
-> @@ -209,16 +203,12 @@ static int imx_snvs_pwrkey_probe(struct platform_de=
-vice *pdev)
->  	error =3D devm_request_irq(&pdev->dev, pdata->irq,
->  			       imx_snvs_pwrkey_interrupt,
->  			       0, pdev->name, pdev);
-> -	if (error) {
-> -		dev_err(&pdev->dev, "interrupt not available.\n");
-> -		return error;
-> -	}
-> +	if (error)
-> +		return dev_err_probe(&pdev->dev, error, "interrupt not available.\n");
-> =20
->  	error =3D input_register_device(input);
-> -	if (error < 0) {
-> -		dev_err(&pdev->dev, "failed to register input device\n");
-> -		return error;
-> -	}
-> +	if (error < 0)
-> +		return dev_err_probe(&pdev->dev, error, "failed to register input devi=
-ce\n");
-> =20
->  	device_init_wakeup(&pdev->dev, pdata->wakeup);
->  	error =3D dev_pm_set_wake_irq(&pdev->dev, pdata->irq);
+  After your three series (v7 + v2 + this)
 
-[Severity: Medium]
-This is a pre-existing issue, but since dev_pm_set_wake_irq() is called here
-without a corresponding cleanup mechanism, does this cause a resource leak?
+    Rnd read ,     4KB, QD=1 , 1 job :  IOPS=7216, BW=28.2MiB/s (29.6MB/s)
+    Rnd read ,     4KB, QD=32, 1 job :  IOPS=61.1k, BW=239MiB/s (250MB/s)
+    Rnd read ,     4KB, QD=32, 4 jobs:  IOPS=75.3k, BW=294MiB/s (309MB/s)
+    Rnd read ,   128KB, QD=1 , 1 job :  IOPS=4711, BW=589MiB/s (618MB/s)
+    Rnd read ,   128KB, QD=32, 1 job :  IOPS=10.8k, BW=1354MiB/s (1420MB/s)
+    Rnd read ,   128KB, QD=32, 4 jobs:  IOPS=11.2k, BW=1403MiB/s (1471MB/s)
+    Rnd read ,   512KB, QD=1 , 1 job :  IOPS=1497, BW=749MiB/s (785MB/s)
+    Rnd read ,   512KB, QD=32, 1 job :  IOPS=2802, BW=1403MiB/s (1471MB/s)
+    Rnd read ,   512KB, QD=32, 4 jobs:  IOPS=2798, BW=1405MiB/s (1474MB/s)
+    Rnd write,     4KB, QD=1 , 1 job :  IOPS=7411, BW=29.0MiB/s (30.4MB/s)
+    Rnd write,     4KB, QD=32, 1 job :  IOPS=39.3k, BW=153MiB/s (161MB/s)
+    Rnd write,     4KB, QD=32, 4 jobs:  IOPS=42.9k, BW=167MiB/s (176MB/s)
+    Rnd write,   128KB, QD=1 , 1 job :  IOPS=3736, BW=467MiB/s (490MB/s)
+    Rnd write,   128KB, QD=32, 1 job :  IOPS=8302, BW=1038MiB/s (1089MB/s)
+    Rnd write,   128KB, QD=32, 4 jobs:  IOPS=8314, BW=1041MiB/s (1091MB/s)
+    Seq read ,   128KB, QD=1 , 1 job :  IOPS=4092, BW=512MiB/s (536MB/s)
+    Seq read ,   128KB, QD=32, 1 job :  IOPS=10.8k, BW=1354MiB/s (1420MB/s)
+    Seq read ,   512KB, QD=1 , 1 job :  IOPS=1474, BW=737MiB/s (773MB/s)
+    Seq read ,   512KB, QD=32, 1 job :  IOPS=2794, BW=1399MiB/s (1467MB/s)
+    Seq read ,     1MB, QD=32, 1 job :  IOPS=1401, BW=1404MiB/s (1472MB/s)
+    Seq write,   128KB, QD=1 , 1 job :  IOPS=4135, BW=517MiB/s (542MB/s)
+    Seq write,   128KB, QD=32, 1 job :  IOPS=8307, BW=1039MiB/s (1089MB/s)
+    Seq write,   512KB, QD=1 , 1 job :  IOPS=1259, BW=630MiB/s (660MB/s)
+    Seq write,   512KB, QD=32, 1 job :  IOPS=2073, BW=1038MiB/s (1089MB/s)
+    Seq write,     1MB, QD=32, 1 job :  IOPS=1034, BW=1038MiB/s (1088MB/s)
+    Rnd rdwr , 4K..1MB, QD=8 , 4 jobs:  IOPS=1531, BW=763MiB/s (801MB/s)
+     IOPS=1540, BW=765MiB/s (802MB/s)
 
-When the driver is unbound via sysfs, the allocated wake_irq structure is
-leaked and the device remains marked with a wakeirq because there is no
-.remove callback or devm action to call dev_pm_clear_wake_irq().
+On this HDMA setup, I did not observe a clear performance difference from
+applying the three series alone. Still, I like the overall direction.
 
-Will a subsequent rebind cause dev_pm_set_wake_irq() to fail with -EEXIST
-because dev->power.wakeirq is still populated?
 
-This is also a pre-existing issue, but I noticed something else regarding t=
-he
-wake event handling.
+P.S.
+Separately, as a follow-up experiment, I also prototyped an extra series on top
+of your three series that allows us to make use of HDMA watermark interrupts.
+With that series, in particular for the high queue-depth cases, the results
+improved noticeably on this platform. I haven't posted that series yet though.
 
-drivers/input/keyboard/snvs_pwrkey.c:imx_snvs_pwrkey_interrupt() {
-    ...
-	pm_wakeup_event(input->dev.parent, 0);
-    ...
-}
+  After your three series (v7 + v2 + this) + use of HDMA watermark interrupts
 
-And later in the driver:
+    Rnd read ,     4KB, QD=1 , 1 job :  IOPS=8016, BW=31.3MiB/s (32.8MB/s)
+    Rnd read ,     4KB, QD=32, 1 job :  IOPS=63.4k, BW=248MiB/s (260MB/s)
+    Rnd read ,     4KB, QD=32, 4 jobs:  IOPS=92.7k, BW=362MiB/s (380MB/s)
+    Rnd read ,   128KB, QD=1 , 1 job :  IOPS=3530, BW=441MiB/s (463MB/s)
+    Rnd read ,   128KB, QD=32, 1 job :  IOPS=12.0k, BW=1500MiB/s (1573MB/s)
+    Rnd read ,   128KB, QD=32, 4 jobs:  IOPS=12.4k, BW=1555MiB/s (1631MB/s)
+    Rnd read ,   512KB, QD=1 , 1 job :  IOPS=1541, BW=771MiB/s (808MB/s)
+    Rnd read ,   512KB, QD=32, 1 job :  IOPS=3116, BW=1560MiB/s (1636MB/s)
+    Rnd read ,   512KB, QD=32, 4 jobs:  IOPS=3099, BW=1556MiB/s (1632MB/s)
+    Rnd write,     4KB, QD=1 , 1 job :  IOPS=8748, BW=34.2MiB/s (35.8MB/s)
+    Rnd write,     4KB, QD=32, 1 job :  IOPS=57.6k, BW=225MiB/s (236MB/s)
+    Rnd write,     4KB, QD=32, 4 jobs:  IOPS=80.3k, BW=314MiB/s (329MB/s)
+    Rnd write,   128KB, QD=1 , 1 job :  IOPS=3878, BW=485MiB/s (508MB/s)
+    Rnd write,   128KB, QD=32, 1 job :  IOPS=9798, BW=1225MiB/s (1285MB/s)
+    Rnd write,   128KB, QD=32, 4 jobs:  IOPS=9970, BW=1248MiB/s (1308MB/s)
+    Seq read ,   128KB, QD=1 , 1 job :  IOPS=4516, BW=565MiB/s (592MB/s)
+    Seq read ,   128KB, QD=32, 1 job :  IOPS=12.0k, BW=1497MiB/s (1570MB/s)
+    Seq read ,   512KB, QD=1 , 1 job :  IOPS=1571, BW=786MiB/s (824MB/s)
+    Seq read ,   512KB, QD=32, 1 job :  IOPS=3073, BW=1538MiB/s (1613MB/s)
+    Seq read ,     1MB, QD=32, 1 job :  IOPS=1573, BW=1576MiB/s (1653MB/s)
+    Seq write,   128KB, QD=1 , 1 job :  IOPS=3977, BW=497MiB/s (521MB/s)
+    Seq write,   128KB, QD=32, 1 job :  IOPS=9806, BW=1226MiB/s (1286MB/s)
+    Seq write,   512KB, QD=1 , 1 job :  IOPS=1404, BW=702MiB/s (736MB/s)
+    Seq write,   512KB, QD=32, 1 job :  IOPS=2496, BW=1250MiB/s (1310MB/s)
+    Seq write,     1MB, QD=32, 1 job :  IOPS=1252, BW=1256MiB/s (1317MB/s)
+    Rnd rdwr , 4K..1MB, QD=8 , 4 jobs:  IOPS=1682, BW=836MiB/s (877MB/s)
+     IOPS=1688, BW=838MiB/s (879MB/s)
 
-drivers/input/keyboard/snvs_pwrkey.c:imx_imx_snvs_check_for_events() {
-    ...
-		pm_relax(pdata->input->dev.parent);
-    ...
-}
+Best regards,
+Koichiro
 
-[Severity: High]
-Does this incorrect pairing of pm_wakeup_event(dev, 0) and pm_relax(dev) fa=
-il
-to keep the system awake?
-
-Passing a 0 ms timeout to pm_wakeup_event() activates and immediately
-deactivates the wakeup source. Because the wakeup source is already inactiv=
-e,
-the later call to pm_relax() acts as a no-op.
-
-Does this mean the system is free to enter auto-sleep immediately after the
-interrupt and before the timer executes, potentially delaying or dropping t=
-he
-power key event delivery? Would it be better to use pm_stay_awake() here
-instead?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604-pwrkey-cle=
-anup-v2-0-59fa0ddf0d7c@nxp.com?part=3D1
+> Corn case have not tested, such as pause/resume transfer.
+> 
+> Before
+> 
+>   Rnd read,    4KB,  QD=1, 1 job :  IOPS=6780, BW=26.5MiB/s (27.8MB/s)
+>   Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+>   Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+>   Rnd read,  128KB,  QD=1, 1 job :  IOPS=1188, BW=149MiB/s (156MB/s)
+>   Rnd read,  128KB, QD=32, 1 job :  IOPS=1440, BW=180MiB/s (189MB/s)
+>   Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1282, BW=160MiB/s (168MB/s)
+>   Rnd read,  512KB,  QD=1, 1 job :  IOPS=254, BW=127MiB/s (134MB/s)
+>   Rnd read,  512KB, QD=32, 1 job :  IOPS=354, BW=177MiB/s (186MB/s)
+>   Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+>   Rnd write,   4KB,  QD=1, 1 job :  IOPS=6282, BW=24.5MiB/s (25.7MB/s)
+>   Rnd write,   4KB, QD=32, 1 job :  IOPS=24.9k, BW=97.5MiB/s (102MB/s)
+>   Rnd write,   4KB, QD=32, 4 jobs:  IOPS=27.4k, BW=107MiB/s (112MB/s)
+>   Rnd write, 128KB,  QD=1, 1 job :  IOPS=1098, BW=137MiB/s (144MB/s)
+>   Rnd write, 128KB, QD=32, 1 job :  IOPS=1195, BW=149MiB/s (157MB/s)
+>   Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1120, BW=140MiB/s (147MB/s)
+>   Seq read,  128KB,  QD=1, 1 job :  IOPS=936, BW=117MiB/s (123MB/s)
+>   Seq read,  128KB, QD=32, 1 job :  IOPS=1218, BW=152MiB/s (160MB/s)
+>   Seq read,  512KB,  QD=1, 1 job :  IOPS=301, BW=151MiB/s (158MB/s)
+>   Seq read,  512KB, QD=32, 1 job :  IOPS=360, BW=180MiB/s (189MB/s)
+>   Seq read,    1MB, QD=32, 1 job :  IOPS=193, BW=194MiB/s (203MB/s)
+>   Seq write, 128KB,  QD=1, 1 job :  IOPS=796, BW=99.5MiB/s (104MB/s)
+>   Seq write, 128KB, QD=32, 1 job :  IOPS=1019, BW=127MiB/s (134MB/s)
+>   Seq write, 512KB,  QD=1, 1 job :  IOPS=213, BW=107MiB/s (112MB/s)
+>   Seq write, 512KB, QD=32, 1 job :  IOPS=273, BW=137MiB/s (143MB/s)
+>   Seq write,   1MB, QD=32, 1 job :  IOPS=168, BW=168MiB/s (177MB/s)
+>   Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=255, BW=128MiB/s (134MB/s)
+>    IOPS=266, BW=135MiB/s (141MB/s)
+> 
+> After
+> 
+>   Rnd read,    4KB,  QD=1, 1 job :  IOPS=6148, BW=24.0MiB/s (25.2MB/s)
+>   Rnd read,    4KB, QD=32, 1 job :  IOPS=29.4k, BW=115MiB/s (121MB/s)
+>   Rnd read,    4KB, QD=32, 4 jobs:  IOPS=38.8k, BW=151MiB/s (159MB/s)
+>   Rnd read,  128KB,  QD=1, 1 job :  IOPS=859, BW=107MiB/s (113MB/s)
+>   Rnd read,  128KB, QD=32, 1 job :  IOPS=1504, BW=188MiB/s (197MB/s)
+>   Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1531, BW=191MiB/s (201MB/s)
+>   Rnd read,  512KB,  QD=1, 1 job :  IOPS=238, BW=119MiB/s (125MB/s)
+>   Rnd read,  512KB, QD=32, 1 job :  IOPS=390, BW=195MiB/s (205MB/s)
+>   Rnd read,  512KB, QD=32, 4 jobs:  IOPS=404, BW=202MiB/s (212MB/s)
+>   Rnd write,   4KB,  QD=1, 1 job :  IOPS=5801, BW=22.7MiB/s (23.8MB/s)
+>   Rnd write,   4KB, QD=32, 1 job :  IOPS=24.7k, BW=96.6MiB/s (101MB/s)
+>   Rnd write,   4KB, QD=32, 4 jobs:  IOPS=32.7k, BW=128MiB/s (134MB/s)
+>   Rnd write, 128KB,  QD=1, 1 job :  IOPS=744, BW=93.1MiB/s (97.6MB/s)
+>   Rnd write, 128KB, QD=32, 1 job :  IOPS=1278, BW=160MiB/s (168MB/s)
+>   Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1278, BW=160MiB/s (168MB/s)
+>   Seq read,  128KB,  QD=1, 1 job :  IOPS=853, BW=107MiB/s (112MB/s)
+>   Seq read,  128KB, QD=32, 1 job :  IOPS=1511, BW=189MiB/s (198MB/s)
+>   Seq read,  512KB,  QD=1, 1 job :  IOPS=240, BW=120MiB/s (126MB/s)
+>   Seq read,  512KB, QD=32, 1 job :  IOPS=386, BW=193MiB/s (203MB/s)
+>   Seq read,    1MB, QD=32, 1 job :  IOPS=200, BW=201MiB/s (211MB/s)
+>   Seq write, 128KB,  QD=1, 1 job :  IOPS=749, BW=93.7MiB/s (98.3MB/s)
+>   Seq write, 128KB, QD=32, 1 job :  IOPS=1266, BW=158MiB/s (166MB/s)
+>   Seq write, 512KB,  QD=1, 1 job :  IOPS=198, BW=99.0MiB/s (104MB/s)
+>   Seq write, 512KB, QD=32, 1 job :  IOPS=352, BW=176MiB/s (185MB/s)
+>   Seq write,   1MB, QD=32, 1 job :  IOPS=184, BW=184MiB/s (193MB/s)
+>   Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=287, BW=145MiB/s (152MB/s)
+>  IOPS=299, BW=149MiB/s (156MB/s)
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Frank Li (5):
+>       dmaengine: dw-edma: Add dw_edma_core_ll_cur_idx() to get completed link entry pos
+>       dmaengine: dw-edma: Move dw_hdma_set_callback_result() up
+>       dmaengine: dw-edma: Make DMA link list work as a circular buffer
+>       dmaengine: dw-edma: Dynamitc append new request during dmaengine running
+>       dmaengine: dw-edma: Add trace support
+> 
+>  drivers/dma/dw-edma/Makefile          |   3 +
+>  drivers/dma/dw-edma/dw-edma-core.c    | 215 ++++++++++++++++++++++++----------
+>  drivers/dma/dw-edma/dw-edma-core.h    |  42 ++++++-
+>  drivers/dma/dw-edma/dw-edma-trace.c   |   4 +
+>  drivers/dma/dw-edma/dw-edma-trace.h   | 150 ++++++++++++++++++++++++
+>  drivers/dma/dw-edma/dw-edma-v0-core.c |  39 +++++-
+>  drivers/dma/dw-edma/dw-hdma-v0-core.c |  17 +++
+>  7 files changed, 409 insertions(+), 61 deletions(-)
+> ---
+> base-commit: 020f6d8442f35105660a29d0d236d3f8650c8142
+> change-id: 20251212-edma_dymatic-a57843ff0dfe
+> 
+> Best regards,
+> --
+> Frank Li <Frank.Li@nxp.com>
+> 
