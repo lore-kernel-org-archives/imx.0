@@ -1,181 +1,153 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011042.outbound.protection.outlook.com [52.101.65.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AC3374739
-	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 14:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780583955; cv=none; b=gi9zXZUnMke3V/T1NxJCQICPiUdCb7fKDeU3Yh8yzwNl0aoNHyrk8rtMXXNwGF64jVJ7tjqoUszMkJh3kFzFRqOL5wBCAZenbgvJgZpI1SPyWt0sURvDkO1OVxVQh6ZKBewh2y3FobWY6xn1qvYUikhM+F49Wk5MQkokJVTsvTI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780583955; c=relaxed/simple;
-	bh=k21HcNtRfGOfdGEdLFtlrPAUJg8uMPRTOaO8fu5/tX0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jymURsB/RZSkDeqkTpUaiBLdf6GNtR19UtKDywAyoB6s6hrGMpwMVaFTp3yY00qVRm2a6qGVC/Ajg54QpC3Ia9WJdRg1Y49qM2ZjeF6WOXenUyunaojsIK7FXKM8OAriok09nOb/c7gs6pKdGU7SdbPNVlSw2/pZymE35Sd4ggE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sY2GUhiw; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E075F48166E
+	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 16:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780591537; cv=fail; b=DOPmqCkBv8z60XagnhkhJcBmFAlV3zkFGD+vFN+6fqn75EOldJgnZ0QpYe7u4DipmwWsehwlwxUwvbp9ImkK/Gleolq5qKW0MlkMXXpuFPFWFAjfcyxg1bjx+a9cyuJNFfLJiQvY8LfAmkih/d3Ar+lLI9/KDouAHP3XPLbuCeQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780591537; c=relaxed/simple;
+	bh=bQ0bcgsmXv3QNgD/iz1Be6MSAyk0CSUc78O3tTNBPIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=b/doaAG5l6eWGfPtNdKsTDbhKUG8FnuoLa/Vwn5srOcTqrEgoLTPhAa479BjJkfH3uUilXI1zvO06eGDAkfzhJ+RsbZAl2TwmIoultRgfiI/khjGcnkADeN6w3q8iRJukj2Y91mI27gRQVqeq9ZU6SEpPGDz9+mXAl+BRwJQmAI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=V2T+pvxd; arc=fail smtp.client-ip=52.101.65.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sY2GUhiw"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-36dd65b95f2so546309a91.0
-        for <imx@lists.linux.dev>; Thu, 04 Jun 2026 07:39:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780583953; x=1781188753; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DOMV3x2yG7P0NW9CHIRVjoVTM78K6MUr+RoZlGHPHew=;
-        b=sY2GUhiwtY3fTT+MavJ8ImQElVZ6d7X+ArYtp0V2ImYJDzo01UqDE9s6GiSxqq6xk8
-         xgio+0VWfk8grAgPx/WQWmSJx4y9MlJ+izLkrpWW179eblIOsuXbvUQzF3cjgW7cON/5
-         12cKJmjw2LWanFzDGpfnsLKVr/tE+fGCzyBA/AK+TM4ay21GWbmo3AiJmWIf7E/eiM5F
-         V7qbTY26VHO8QG2iZAoM/YlA8yvlhq447UUsexiJMugNnoGz7rrebQbdCsCArgPlxESq
-         WGvtBZ6mweh7Q1ixrDw+LtiyfGfAiCRPfHerb/NFm/u65WMbqB0wh0BV75XwAEj2/zmj
-         bVKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780583953; x=1781188753;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DOMV3x2yG7P0NW9CHIRVjoVTM78K6MUr+RoZlGHPHew=;
-        b=KavUX5l1T01em9jogi6ZiIKpIXjv+aAUIp1ldARO85CiagOyDKtNnnQJc1BgEHQV9O
-         E60ORsfhXrRDLj2X5qHrRyKrkdeeLwGj7XLBNi0+btTFLFuZw0Fee/QjiLqa3CmPFwp9
-         gIgstdP1YWhRtCxz/hrA+ZwTUTIp+krc/Sb+pKAlB4LOr+kpW6AnASgcEmKOb0TxwZ+g
-         g3LMloFRNP/3fPBECg4gJdxMbRBsOXuulFP58DvLQa0Zir/e2ptwFFDdZdWnmCYE/58P
-         XHy8EAcFFtQyqfhf1/3nBHhONJEI6SaXjKkWc6Lh/ItrS4a+ouRBz6VWzwY49RuXfqqN
-         Y15A==
-X-Forwarded-Encrypted: i=1; AFNElJ+bxwxYVllpcOinPzfHzuhEGYH0B2cXty2m0gWstNc1r7fGlYsRoOrgAGWQcbGC3RGOJQI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw1QMomdrn0ng4bza4ebUIDDL+DBj2umxbyQpCkI4xlhswhOuje
-	blkwqcWK/bZ+k48u/YBuBRGYVmqo3oVpMf8IHAimgLR+bqj7FSPbhU74
-X-Gm-Gg: Acq92OH7ApWXGZDjOFLkWSZtvo4h/HewIe49XgD9wKEaunE5FjXjF7RaAzBX9iSDjuO
-	rJCiyYeyz89yODngAlcyhf5mymk83ghkjktq65HPNBxVwZ6eSgw8wY6D/w34lAjGQdRG9a+RIFR
-	rNxog3YeIco77WFVSbQFaLvLzawNY6Dm6eZFMQL6p/vx7Qkqj67qjJwZ/xPgWBEiwPODM0HChL4
-	rMRUuRuwMmIAGS/eSGMs7kXwBV74UZBoouEquIlLqUywAkhrt02asE4myyVvfaNHzrHTgNHCKSM
-	5950CK/GyO2kNQDAp6jv5XMMQcRlyyL/PxOr28/b1ah1tzO95uKVwFdbNVPO9wBfb7PQteyDx7z
-	9YIPksHYE5PYmaegZpmmHq72ZQ9bgW5girTK+F1gEaqMIfFAtpY5T398mFhWPS5Ue7M2w2ktw8I
-	kSKlH74v/086oQbH7TvCnNWOLmej35OBK1f+O6oLxOMfde1RyFPcgaP3FzLnAIExfPe/kLAvcbd
-	k4AsapAda9+dh+ThQUkgi9+wkwNu7cUrNVEZcI=
-X-Received: by 2002:a17:90b:58d0:b0:36b:769c:c037 with SMTP id 98e67ed59e1d1-36f76d559d7mr2969085a91.5.1780583953117;
-        Thu, 04 Jun 2026 07:39:13 -0700 (PDT)
-Received: from junjungu-PC.localdomain ([223.166.246.30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6bf830b2sm3118696a91.4.2026.06.04.07.39.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 07:39:12 -0700 (PDT)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Thu, 04 Jun 2026 22:39:07 +0800
-Subject: [PATCH] phy: freescale: imx8qm-lvds-phy: Fix missing
- pm_runtime_disable() on probe error path
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="V2T+pvxd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DHGHIidnhyqYO+v8tVMiKUn2NG2COFE2M8rDSgVXXVyIZlBf8ZfEAFMkPq2Z6Rt2IxMRWi+AQMy9TMyLBpP28beD1QbsqNFOvAcUiXB62Fem1Kr7Atk9KV/E6YVUGwT3l/RsacJcnCdMiNOYuifYrWJTfsxQK3hOqk8gTVPAZYIjJcxHl7CvV2W9/Lmw+sWzzmNQM4vhts+Xm6lGmDGa3rsy6xGkm0JNfFiBHaURUa05hBIhRV4h1EQRWYlptimYzEbk7H3XHeD7M78jUCUQLb83dyNkGXvfgASCa405K/g2V+HRvWpT1udnfCnGSQJjyRetss3aoTOhsLHoB0B9FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E6nceupwm6moVEiGodccVLoUJ9ioEXZr7OGItloGoC4=;
+ b=lNbAso32nDyekqze2E80pkLeay7dECSd+EtaMZz6jwwgpECtlZc7QNBbSmhzdq1RcykYnQPJlpvzsOLRLR/f8GasNR4zOFkPVf8xxNzlf+wYj14KY1pBPRQZOxuVPXIySzRzFgTT8rOKRuo/Xj5+dp4BrcjJBGxdGsX9I9uIcGZbPYBkDnm/AmmNgzz3HKrYCXK4N5onWulQi8d2Xi8ZGZ83xN2V93LWWBOeO3q8ZZsQh+bJCeKBHMKVxKcvK92PU8+MCkxaBatG4xVfEcLchen6OvHl/mNAD4bgHj5QUgrtlB94y3cyLXb4ByfgZWWnNcE/R8JtBqJDArkqr2tZAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E6nceupwm6moVEiGodccVLoUJ9ioEXZr7OGItloGoC4=;
+ b=V2T+pvxd5ySWpgHeRpiHT1HNt0eaOoBxr0duaLgYfg1wqogei4INWd+uyrrrmRaftb+JyFtTnEsPDFrLkdFiUAlg2ykLp6lFQKoAE0gc4x+Nk6RX0rwsh/iNz0U8oFEbsC9eBYTOxjQSJwYbwHkdUuB+ZiNUUard2qdQ441zLF1sPZghGIfkJ+5T4K/VIzrbShVzOVKLhjgo9c2dqJv0Oc7OULD9k5mrfosfly2NU/bH+oh1/fDKeo2kQnx0wCJNEgQchxXuz+koihZNMnD1pHfOFtnMyhAwFAw/yx/2+Y4TIoq+6AJ5JFm9+UIs2rgLC6mPf0UUhKLDAuIV73pz8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by PA2PR04MB10347.eurprd04.prod.outlook.com (2603:10a6:102:424::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
+ 16:45:32 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
+ 16:45:32 +0000
+From: Frank.Li@oss.nxp.com
+To: soc@kernel.org,
+	arm@kernel.org
+Cc: Frank.Li@nxp.com,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] i.MX SoC driver updates for v7.2
+Date: Thu,  4 Jun 2026 12:45:24 -0400
+Message-ID: <20260604164526.1612520-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SA1P222CA0055.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:2c1::7) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-lvds-v1-1-b8e1ff1bdee7@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAqOIWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDMwMT3ZyylGLdFDPz5CQzQ8uUNENzJaDSgqLUtMwKsDHRsRB+cWlSVmp
- yCUivUm0tALOMGkpoAAAA
-X-Change-ID: 20260604-lvds-d67cb619df17
-To: Vinod Koul <vkoul@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Liu Ying <victor.liu@nxp.com>
-Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780583949; l=2666;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=k21HcNtRfGOfdGEdLFtlrPAUJg8uMPRTOaO8fu5/tX0=;
- b=jhHig4d+JEEW8lyIX24qIbqNx+rDwN/vC6NWkW86ZaeYwEzeYggjta+nO9Lfo878+ax0rH+ol
- 7jOKNHUbE0iDMCul78SSZxFsmrifomdo6iadGIx5pvJmozsEMf3g6HN
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PA2PR04MB10347:EE_
+X-MS-Office365-Filtering-Correlation-Id: f9f88455-9ccb-4382-40c8-08dec258b138
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|19092799006|366016|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	jhvEOSmZJVDs/ZSccIje9eDvuuwATtQGFB48HX6W9r3NwoHMYve0fhHKgwojBWj7MwSyS1kzJUHmreUebCeOM6gfolf4lWFnyPGM72Th0K8OHaQhOCMqIQ4c9laYhfioejOuA0/4OqR4bT6jAa7ZaIJ9zO2UAHeiuMfUKtlIiw9blWTHxC9JeD5EPadbmPM/LNUeB/k0CtIWxB3CTNujV96aTOwwpX7t7NFz0uXJNA/02zS98nkfSIWopEXVGCwvq7TiRIg0WKqr2EasK+HgPZ4+3suvtz6+7mbwOAP6uD/WWyWJbHRbuR6bFu+G0MfaSdeiwinWLLdifICFHvea0sHd3KQurZAbeeL6j4nuhTUGzdzRrIKBWTYVB5e66H64JB6FjhVJzr79hqyvc/Ln0nxAeI2bNh/eaDz9kfMLF2V+ONbMUzJWBRm78OIMrD1BsVmAAf3e2en1e9DKW4uGMlgn0nVAyh/pOzp/mpri+ZKwPR6W9Gx8UISJ4Jm30VNOC7COxTtJCl6/JGQeZ3XB8pf7+hI3twmyNE9yCuXo5gGZMsO7HPaa1lGjlVrN23E4DVxRvt3wIbv3So30PMQ8Bf2y4yL6FcRTZhhnMYHZZKfDNKWMbTocSSweUsgH/uhIeo+bLDr4FQ+xU8RUimWW5Mocv2egsohTQQifmK8rmd1S5VWXoDPCh7IYEzNaLani
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(19092799006)(366016)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Xa6QyddlRnYmGpi/GusMjxPGHcxXya2Ow3btEmlPsTBWUPMSgJUkUgIN6IsF?=
+ =?us-ascii?Q?V/mm/JpRwIyO9SbtuDMNMZTVVCPjUCfexru/twMwOJHJadwCLqU6cbIs6KJy?=
+ =?us-ascii?Q?+1OQxuukYT+5Ncgyeq93avkTXBGdqQOCOf+aHww55Pp0GC/D/n4TW1FHyZzN?=
+ =?us-ascii?Q?XUTUt89ibwj8FHD8Ngg4fwa2pjzlZ9HoXgBMpDapW8VMKhT3CMiN78uxOaCy?=
+ =?us-ascii?Q?Tx8M4oJ69YWuAkV9sBSn4ULtj8954fkjY11s7VFjp6EFIYjPepNOfbs5vFTG?=
+ =?us-ascii?Q?vYdF/oKqZRxTjxIeJRa5/ekQzs1fq4nDvj/HH6JGXSj6ssB3Jt8gVl644D/d?=
+ =?us-ascii?Q?sGmxLD2xTVhBW8Shy7oeEc7Rbl5EmToi46OA3wW/zapNGKOJcEbyNT1PEl9s?=
+ =?us-ascii?Q?n1Fl7gjTHflUh99DX8GKxS+tt3CATYUntbUffPKXLiy0zYgbX4n5XltMCJXg?=
+ =?us-ascii?Q?AkTNbfURRTT2qkrk7zfM8Nj2jFzN2cbYqxpZWiAGzJUAg4he18FyssSQsBfl?=
+ =?us-ascii?Q?BphnGzQA16IS0AhXfo+Fij55gs+Rl/H5I1SGBJJGgsmtodCyBb3qg9pBesuL?=
+ =?us-ascii?Q?i5Qlz72CtfjgfaDujLyllLUdZUWCHA/0yvxwGSxu/pq9LDZGrwwXTGNUOzCC?=
+ =?us-ascii?Q?7ivY27rGSwWJPSC6xYW9YLyGbtNc+PRvCKRSPbxEW8c+048mXBQfDIAkKNLt?=
+ =?us-ascii?Q?YW2mK1Oy/FJgGVS2DNKfZhI+WScKv5wG23V7ILrw77qdenRTZJjxC7vr1ttr?=
+ =?us-ascii?Q?IQR5DpKXYrvrHp5YetKAYSv7coo0hgbzDHUlh1zMmX/g4efgKgP39BXAYf9M?=
+ =?us-ascii?Q?lacJuaMnG8RbbfYHd9dohxPp9Bb10okbtv+YaIuV1iKtVmcwe/eMUUdZzeKv?=
+ =?us-ascii?Q?j+Y8/bZ51w+J/7TFi3DEM2FuexNCYx7mfUXUK+Sz/mrplVJL1OZsq6T2wrsp?=
+ =?us-ascii?Q?RC2AbLiolyz+2zxOlcwVwxXW2dnnH6l/qW3YSK+vWNu0YroTRQbyRSHr9pab?=
+ =?us-ascii?Q?s4eI4f4Uy9zq0wuGWFnDROAoeX/rxMEGO0l2TteM2TKKKAIU7nmpR/MKLVvg?=
+ =?us-ascii?Q?KeM3qJheGgalFszsTSH2S0TPRzWhZBzgCMyIPqVHqYzWqUldLUEuePD9HsKe?=
+ =?us-ascii?Q?DoXzxUnHZWnduxQEDhmNVSR0XA+HVHuzBBIqnLOv83xRvANYYYZIuBMUcJWv?=
+ =?us-ascii?Q?FKS6vvtr3GVo3lzkxvVBzzqquKFtELY4oLjpYx3yRDZqrShJP4HNjnltKOy3?=
+ =?us-ascii?Q?mQW/119U1edfmiYClSHejJzTTxG9FY4npAcxRYJD3KGZmEDKVHlrlK/TvlS9?=
+ =?us-ascii?Q?wsW5YqdP0Jf/0ymysHVBM9So4JzGZSEs2QEBbRoDsA86w6gtUY61CVxfPuho?=
+ =?us-ascii?Q?TM25tfsozd7ak/vSP3YTdrvOc4s31VXAgx7gBFHIGncubpEXtklFxXB+VPVP?=
+ =?us-ascii?Q?9DnEeKzBn7nv61bY8YN0Z8zHm+kIir93BANvMkasqsNiWgyyq81Y30thcWrZ?=
+ =?us-ascii?Q?0/3UPbSo2YN7hc449cWkmFpeQnKtTr29Wx3lKxE4hX2wu17Qi9e7kmYLzTbh?=
+ =?us-ascii?Q?pHDOLeCf3ApDLmbkUGzO4j3ZYU6IzZm8kLH6WGD7o7usJs+cpjMiAssQT9GC?=
+ =?us-ascii?Q?+mK72UidtqgiSwOB/j2uUk5QkUwUd7UpzAItTt07tD9kjsMAW2ciMaUfqBhv?=
+ =?us-ascii?Q?5w7ZsC0gQOGXPiX/i0WRoLEyS+h1krXb+JaoibrYcXeY2QVKvhrYJZy3TL8G?=
+ =?us-ascii?Q?wgKDF240Uqayy1DVAWoa64AZNTiLQzs=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9f88455-9ccb-4382-40c8-08dec258b138
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 16:45:32.2244
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bd4va49TF2CbcCR4nxI4bEc0kvPFcBXGz0ohIEWzhn3TsLIjfu+btCV5sYYLjOpuRBSZtTfd+ld1xfhncd5M5Pkeez07EL5kqZLfTb+mVjRhxcwvdJ86dUZDlYJKHT1X
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10347
 
-If mixel_lvds_phy_reset() fails in probe after pm_runtime_enable(),
-the function returns directly without calling pm_runtime_disable(),
-leaving runtime PM permanently enabled for the device.
+From: Frank.Li@nxp.com
 
-Fix this by using devm_pm_runtime_enable() so that cleanup is
-automatic on any probe failure or driver unbind. This also allows
-removing the manual err label and the .remove callback.
+The following changes since commit 254f49634ee16a731174d2ae34bc50bd5f45e731:
 
-Fixes: 06ff622d61d2 ("phy: freescale: Add i.MX8qm Mixel LVDS PHY support")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c | 24 +++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+  Linux 7.1-rc1 (2026-04-26 14:19:00 -0700)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c b/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
-index ece357443521..c662f91e598c 100644
---- a/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
-@@ -345,7 +345,9 @@ static int mixel_lvds_phy_probe(struct platform_device *pdev)
- 
- 	dev_set_drvdata(dev, priv);
- 
--	pm_runtime_enable(dev);
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return ret;
- 
- 	ret = mixel_lvds_phy_reset(dev);
- 	if (ret) {
-@@ -355,17 +357,15 @@ static int mixel_lvds_phy_probe(struct platform_device *pdev)
- 
- 	for (i = 0; i < PHY_NUM; i++) {
- 		lvds_phy = devm_kzalloc(dev, sizeof(*lvds_phy), GFP_KERNEL);
--		if (!lvds_phy) {
--			ret = -ENOMEM;
--			goto err;
--		}
-+		if (!lvds_phy)
-+			return -ENOMEM;
- 
- 		phy = devm_phy_create(dev, NULL, &mixel_lvds_phy_ops);
- 		if (IS_ERR(phy)) {
- 			ret = PTR_ERR(phy);
- 			dev_err(dev, "failed to create PHY for channel%d: %d\n",
- 				i, ret);
--			goto err;
-+			return ret;
- 		}
- 
- 		lvds_phy->phy = phy;
-@@ -379,19 +379,10 @@ static int mixel_lvds_phy_probe(struct platform_device *pdev)
- 	if (IS_ERR(phy_provider)) {
- 		ret = PTR_ERR(phy_provider);
- 		dev_err(dev, "failed to register PHY provider: %d\n", ret);
--		goto err;
-+		return ret;
- 	}
- 
- 	return 0;
--err:
--	pm_runtime_disable(dev);
--
--	return ret;
--}
--
--static void mixel_lvds_phy_remove(struct platform_device *pdev)
--{
--	pm_runtime_disable(&pdev->dev);
- }
- 
- static int __maybe_unused mixel_lvds_phy_runtime_suspend(struct device *dev)
-@@ -432,7 +423,6 @@ MODULE_DEVICE_TABLE(of, mixel_lvds_phy_of_match);
- 
- static struct platform_driver mixel_lvds_phy_driver = {
- 	.probe = mixel_lvds_phy_probe,
--	.remove = mixel_lvds_phy_remove,
- 	.driver = {
- 		.pm = &mixel_lvds_phy_pm_ops,
- 		.name = "mixel-lvds-phy",
+are available in the Git repository at:
 
----
-base-commit: a225caacc36546a09586e3ece36c0313146e7da9
-change-id: 20260604-lvds-d67cb619df17
+  git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-soc-updates-for-v7.2
 
-Best regards,
---  
-Felix Gu <ustc.gu@gmail.com>
+for you to fetch changes up to ccb4b54b8ecf1ebafef96d538cd6c5c8455bb390:
 
+  ARM: imx31: Fix IIM mapping leak in revision check (2026-06-01 15:58:13 -0400)
+
+----------------------------------------------------------------
+i.MX Soc Changes for v7.2
+
+- Fix IIM mapping leak in imx31 revision check
+- Fix CCM node reference leak in imx3
+- Make scmi_imx_misc_ctrl_nb variable static in firmware driver
+
+----------------------------------------------------------------
+Krzysztof Kozlowski (1):
+      firmware: imx: sm-misc: Make scmi_imx_misc_ctrl_nb variable static
+
+Yuho Choi (2):
+      ARM: imx3: Fix CCM node reference leak
+      ARM: imx31: Fix IIM mapping leak in revision check
+
+ arch/arm/mach-imx/cpu-imx31.c  | 9 +++++++--
+ arch/arm/mach-imx/mm-imx3.c    | 2 ++
+ drivers/firmware/imx/sm-misc.c | 2 +-
+ 3 files changed, 10 insertions(+), 3 deletions(-)
