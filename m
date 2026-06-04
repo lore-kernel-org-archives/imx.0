@@ -1,62 +1,65 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011014.outbound.protection.outlook.com [52.101.70.14])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011038.outbound.protection.outlook.com [52.101.70.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6890A3B19B3
-	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 18:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDB83A4F36
+	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 19:34:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.38
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780599541; cv=fail; b=WRFcNQtghd9dwAbHTcoRT1vmjzi7N5xISmLjqzrqXtznClPz9mBeJP/+cT1KGVwCA7kOh+8vp8nKHgnHsHYys46bn82ceJQPWwzcScIWWV8jDSLyH4x9lKhPEzyj9KbP1E6yWzAoFuvVMeN3xfPwECVEMrqlDap4som4zX410ZQ=
+	t=1780601691; cv=fail; b=sJnm/5LsBibX9t/8lhegK3CfJ1q/oShuRRSTK76MAsEID10yt8q96e1GYLrqfEcouytwX8/wBn64dzb/PO4Ge8Scan29x3TQCTNSh1LcLcx6DSQj326Zu8KijL6zpN0B7yLJJsRyv103mI3+jf6BLDvHt67TzeiyJXxpqtztmAw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780599541; c=relaxed/simple;
-	bh=+n3Y+1vmDx42K+MOo3VSTKUicF08pUqiObUqo0Z6qtQ=;
+	s=arc-20240116; t=1780601691; c=relaxed/simple;
+	bh=P5mxH2ks2xYg2+EFEZSZfE9wY358dpvCUzt0649EEDQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=U3FYfaoUUb6gyUAA/oYMTnQvhqEhdmmgtWS+yQf9eDZaqG2P9CSvhZWzanahMX7bbaJFIRV7AuzD765LrpxCEsAP3peRac8zTAQaAiGptQK33RR5MhYxlgHykxAkDQaeyCN5dIHkXHrFKn0pp8aiAYvKgipKYt7lSvIHZft9KHc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BG4Qajke; arc=fail smtp.client-ip=52.101.70.14
+	 Content-Disposition:In-Reply-To:MIME-Version; b=OmHO/h/Ru1u84uqP85mkfZ/ELjNUmftu1bDR4qkjgsAVfCSPXvwMY9+W94ihyeDkr8sj6IHQl0H6a7QXpKbXSM1JnZgFKCKyFV2zj7kgFG5LwAXO46fVSSVGxbIQq9gOuf6LrY0jJsONLlAzIhvP2CQnR2PXLSvAB4cm4sAvlDw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TV8Ntqu+; arc=fail smtp.client-ip=52.101.70.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BG4Qajke"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TV8Ntqu+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zF5B3t/aCP5/jBJvgbgwzcda2Q2vwlRQuEovdLs28mpahygltItJpVcDdbS4T5qChvMpfIAGIaJMYlR4l/NHUc/RKbumzIawBsYNJD6xfiHJxRAw/YR1E9p86Jmo/hiTlKPHwowqVOpXbzraNrkUloB35DxuY/XioPTtmxwTy+TFksWPzW3ThJhxV8TvKj1G7vK+f6J574RvNXPcwtkpBNJA3Je4rQfDr7j/0ZUcRwfhbpuVPDA0PwTAtintDHXMEC+fs9wZPOZkVILbquXPh6kGmyxsjdy2p+URKcZd2o8+9NHCXqGZGEK3ERbE9XLwInEkmexJJEFA8eTzBJmxcg==
+ b=SzeHSkb+ZOxgjnjMtVXB+Fg16qGOxkVWkgEWCLPvhtB4W7tcvT1lpegEvxbnBQr10rxZu53rKSkd06u0TyVFuYgdIjCw/0iG8HJZARydMFjUUdz219nHPB7cvX15AMdvzYr5G01Wcyx14Wqvg8XpX/VvNNkv2yKXDoAQBPSuZGR4fwYv44x1wAIXUlHPC4ErKhMP1WHJwudFhNN+T2mH1G38EMXBk2y+EQ6NBxb65SuupSdkoJCLLhmxoNwrMFua9Izz26XT3z1QlNPE/i3D6AOIdOW8zLlkOxtjytTJsCSf7P2mbXqhuJ2dIqRAHxG0gKjkGSu9m2euzh4RWSX/tg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5nxZhuI9m92X4En/xmLCtLYVI9uyTWIrt+4EBcLlmNE=;
- b=bZ8BpLOeZo7Yt0YIZQzoFqNb+MPzUDJbcIKCVumnHslHE9b8iNmre9aAO+Ma/bJT6ldM7zpAOs2th+8oLa0eQmmYAxRpGjt7pD9Hy9hDajtFm0vzj1i15gwp7tLXDopGRO+W3XgEvvy+JI1GBRrrS9tG2vqXyRBBj+qdtl8jVo/tAR6O6j7ezQD+nSACdrQJ05ww+zlFpmKUDEdyedq3WwDvPXQM0CJ2QOMhlAMSNIioM2+lrDKuvHGptZSd+Sa/0qPJ8sSpJnnl70Dp5r1bIJdCjKqMvamkD2waXQBxON08trTAzKGJExW+iGZFVY3VLYa0YnTrJr8ss5LIOHFvrA==
+ bh=D5XL0U6Si5emrgYD13kymNIHryijHlyLnmIY/dEdw9U=;
+ b=t2QmVg5mQekSUWg1m++eJEgzYjxdJqqA0kUsGtuVT5B1wzbOjP8epKvuM3YD/DKY4IVxZpIKKqEmo6lUoWhS3GI0eG29fmBnpKEDUCHv+iOAqmwGVArvrat+xzjdwxT7AkKCiEMHl0F4Fe4l0pgwxmKAq5PcXfByABkhg/a6A+/pTpdFmFH28y0pOx3xu19mqm158U5BjIoS4dfI+GdqWSJk5Lf7WNI20dAR0SLffDRg5Wniq3nylxmlkZVVxNpBQs8QsWdPlpIZf9K64lY0LsfJw5lewy1trZC0X7ABSak0uini4peHfFU2OOffruWOcpQ8iyDpN+wEK31rJJMj5Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5nxZhuI9m92X4En/xmLCtLYVI9uyTWIrt+4EBcLlmNE=;
- b=BG4QajkeybHXSpK8FYcuCWxyoyBzVqKYAXt9CuyfEoxjNDnK0Te5WXxBsB35uNgpAti99qTyYSW6ZkRL1MgokNKA01yngJ2zuvrjGc3pMFH2KqKaMwxNI7tGHz1kcASmCJv11rLTPMiJv9GXF6oKkGDHI6lEM9imW4K/MVjvAwqqMT7VAkDHUwDdHUtpp5HCDRn3VAeFM2Aw+/uxhANIUV8IViSLH9SWX5iU+Sg1VD+lWGt+bAvadfiVFL6bCzcYxI8/qPwBPCrIF6amM96iBkryplO6lq0V7+5FEikLL07J3U/qoq1b8CLYE71oz8A4/2jcxo3Gq9KsEBwvg3crgQ==
+ bh=D5XL0U6Si5emrgYD13kymNIHryijHlyLnmIY/dEdw9U=;
+ b=TV8Ntqu+GuoEocFQZELTs5rdUNMCA5lAXaD/BYJPJBpIiFgufOG4HbUwpkyR0gfHB1t6ltMxh2B1NR/V+nX+zN20sw+g79Fa0ryP1HL4mMJ348rxoKG/EWY2MTs6WSwaKisys8WuXoqebaBwk+pfHLADpNmQzDWWo2yN7rlarlnJ0k3YeACBnEZDGNnkCHv+ZApLfeie9v4UPNP1zDQUpqh3qM6BUQ2uFmwZkc4dKuiHmfJN1JM8IqOqQ2PPeEf729KDiXWNjnLKqxsDCS3UWe11zOG2uksq8r1KbQz+/gPOqDwSIIuJ1XTJ6SFO6w2STZoC7fkKXBjhbRC2rxBajw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by VI0PR04MB12055.eurprd04.prod.outlook.com (2603:10a6:800:325::11) with
+ by PA6PR04MB11870.eurprd04.prod.outlook.com (2603:10a6:102:518::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 18:58:56 +0000
+ 19:34:47 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
- 18:58:56 +0000
-Date: Thu, 4 Jun 2026 14:58:48 -0400
+ 19:34:47 +0000
+Date: Thu, 4 Jun 2026 15:34:38 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-Cc: aisheng.dong@nxp.com, andi.shyti@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Carlos Song <carlos.song@nxp.com>
-Subject: Re: [PATCH v3] i2c: imx-lpi2c: reset controller in probe stage
-Message-ID: <aiHK6I2SIze726kM@lizhi-Precision-Tower-5810>
-References: <20260521103530.2988866-1-carlos.song@oss.nxp.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: l.stach@pengutronix.de, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] PCI: imx6: Assert ref_clk_en after reference
+ clock stabilizes on i.MX95
+Message-ID: <aiHTTvInYK0uj_G9@lizhi-Precision-Tower-5810>
+References: <20260518072715.3166514-1-hongxing.zhu@nxp.com>
+ <20260518072715.3166514-3-hongxing.zhu@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260521103530.2988866-1-carlos.song@oss.nxp.com>
-X-ClientProxiedBy: PH7PR17CA0039.namprd17.prod.outlook.com
- (2603:10b6:510:323::18) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260518072715.3166514-3-hongxing.zhu@nxp.com>
+X-ClientProxiedBy: PH7P223CA0008.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:510:338::6) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -65,208 +68,136 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI0PR04MB12055:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8f35da67-719f-4726-1587-08dec26b5413
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PA6PR04MB11870:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72fa82f4-f5f3-4c05-5a18-08dec2705607
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|1800799024|19092799006|366016|38350700014|6133799003|56012099006|11063799006|22082099003|18002099003|5023799004;
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|376014|7416014|3023799007|22082099003|56012099006|18002099003|11063799006|4143699003|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	VRjMb0pIBe2Fs2+r5VjD+sqIWzXyvZuxzAXu1Gvz1t3tbncydnRYBMT+aPNMiTAIoGWA0oVEtIG6j036P42IXlw/u6FCUhkBXeEBztcPymLMtYLXxUozo/1aUzeU9ZNVVGAgflm98iGn/+s0DuJpw/twJKTuN9mmuzELlSAh7G4mv/hZ08gMxf7RUgRDU7SbURmZlwMls73w2lm511/eMcsEuWCygCn1xPdodc+l5upwBSATrfE2bQ84ttVtPBJhtn0y4F6u4uGr9201C1d/YfrWigmlJ9fMxh8Erpqsk47njoS2znaFB0dmYtkw+9b7KrUW6iJsvTWWazAc0KVxKAAi6Q0puj+zDcswhviAwtrMHUr6Q+dOzyvCmYWWkBFWoKCnWvKLZRxsFhT0Qu+Jp8JrpicR6lbDUCtE2gRTzVQqCMjPA+pL8ouxbSZT+DFxs7eBrkRFzkRpuIKj4J80F8eJevU3E39el1d/hUkkU/r2NRj5B0SnaarMQRYamMrBxVUx4Pmqi0HkfpbNHrvoOCkgVZTNxIm2WaiCekf/xl8AhXamEMLNxXrgSCoN90iVHSKLs7jcIXrbgDlvkqsWBqApw5upungUyFvGCT++yy3330DNqeK2So+Z+w5ufy/O7OH+c4t1BU2Fdp8RF8sicgw6XnioJWtkOCA7xQy9RXIjmwoN2S6uAGhupMTUDE/1nI9y+ORTjfdEsZF7LsA5uHZWkRAJgQc/pDkayZYjWy63mvGoryR4dyKzrGYl8TBb
+	qvCxhfZbNYuex1dldaoL0q5mSlMfLDfwsOTG/fWIpT81v5GiGw7wVrRA4Bh6PprHdbhJRaSYJzroYLbIUITC/mejJW0Q0ZXg3FhTeXmlcTpjZk2tr4nOiPdkjMllAbRXYkAnZGP2TAiRYG3h9nM6ULAtkpqdhSUw8RvkfEl00/KgMmXVmRQ8SBt2Jfrq+/D6ZLdD5m6BPHALBvK61HyOBweONgBU44CMEAB1ZntbNLEJv8f5ZxSNyZHz+sOmYpuTzc2mcWE15wKuNYrbubthlI1u4AAzdKij11ntVgkZKosyvTGrQWdgLvYMqX4lix1fedy1PUGUHyTLimZF7RqsCX69y7ba/g0xuT8InXTytHe0zOlUS7EDV4+7zFhJDUfsehS1JjdF/8k6MkrNd5NGAQx0+NGpyRekkceRdNoizqmhO6flzlXlVCkL0qOSG557xr0PR8PPanDV15PUD2Y1f7NcrcXbzJqW361VRUSszQTFCrhVBoKHChAmC9fSz3xYQ/SPu1MxJ6pt6A0uzm9ITWaNl6AecCDne6Kso/ZJrjZy7dSaYlcDBATMXromo4JkHpY0Lx3pWbRSmyxRB9++PNaMcVmvGRFkSnvF+sTIeRSAg+pkNJ9rVC0eT12hjgSVFogyYYuWBMEnDhmnV4sedEySjGCfqJ4k1hs8U5FDCavCWdAAqb6eLlzwBtbDCyv6C1yEQE2oEYMSC6uMf+a9L5sI31Kc8MDEZQqVhmVjzFI7ULBRFNdW80yambshk3K8
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(19092799006)(366016)(38350700014)(6133799003)(56012099006)(11063799006)(22082099003)(18002099003)(5023799004);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(376014)(7416014)(3023799007)(22082099003)(56012099006)(18002099003)(11063799006)(4143699003)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CUhuCNbRcXfvFEKpOfy+VOZJq670KmBQ7KbfGpCKzraXW6dFACc35IVLFthR?=
- =?us-ascii?Q?9a4c9c89gGKW1dKSMIo86G/db0H3oWkAZ/YXF35xS3WoO86AenNhMDDUu8C9?=
- =?us-ascii?Q?TEVLdXfm3Fwd7QpxNb7VA9sgi50Bb8avkGtQ/SQzThr3k/gjQh0ZF3yKAs6L?=
- =?us-ascii?Q?1UeH168OQKUOthxD1xIG9hzDWke8AzaNBYllNYEmNJpD9hzdUedM2tCo/A/1?=
- =?us-ascii?Q?QI+G9w57t6WYUTfyHGdM/bxFmwB+f50j3v3zcvL7K6bHuTZkxQHsbqUL6JFg?=
- =?us-ascii?Q?+wlyr89pfE41GEmBqoe/3Asg2Rqyt9vvzxdzWk3qRvnsIiP+stLKj00FHeLn?=
- =?us-ascii?Q?4T6Mu4EZPIoW7vyLfvI/LK9mXzwlfMrJXJ5+mq7q+QC9J9mTitM9rGhaEC0y?=
- =?us-ascii?Q?isy8hqfPVzwMK+jQ1RDxUX0hZI74x6dQrjD+WnTVlg/AhV8KIk4EZv3lRG/Q?=
- =?us-ascii?Q?1/IFppCGcMoCGl1ExuDaOZ7DRSWySS7XLCw2L/SBvYp8MYUJM0gju2Dfwj5z?=
- =?us-ascii?Q?LDmTzVf3bVRPHVEZj+3TF1GdErZblMW/0MOfoBXDfDwN8mBFjyrmaZYqfTPj?=
- =?us-ascii?Q?MEn9La6Or395qBPm1c472EfrerjAog1FkWvupsbaMz/IhNF6+1RT7uajfjDa?=
- =?us-ascii?Q?AJlxDi6rt0s+NdOB7CuK7avCRNULmef4mcCF1OzOSnL9deW/AbXYs7Z9Ul5G?=
- =?us-ascii?Q?qrh1w+iV6PvudNRga5TS8jy/ukyJdL0Bp01xY50orTU1+HUNKErB3e0dmvGV?=
- =?us-ascii?Q?kEU2SGeb3wbwnkcFw6LqD98ytDfthVCSFR8qEGEmn2cuyH1LvwfkDhKJbt0X?=
- =?us-ascii?Q?XoCxPj24/oN5r9nc9AWsi8oXHdM16NEOq0KKB1nIstjDPZDsJlvQlWSK2ssd?=
- =?us-ascii?Q?kYZthXKyC7/1E0RfR/hkhoE5KOOCYj2McpcG6bEnhWc689Z8nA3y/RwIzqo6?=
- =?us-ascii?Q?L0WD0aCXO5vGrvgOSI6ZGZ9kZWapYXFbF2A5XzYc4y3rpBuluzOasuG0iRLH?=
- =?us-ascii?Q?NlrFUahb9FOoVnb0Qd7g4fZo5hYE2HuLDE0MRZZAP8dWO0TTRv00Qb0SvhOd?=
- =?us-ascii?Q?5hdvZhhgRgTJ36+gz2Gd8KqptYVz80VUKnl4FEMVq7Yen5d3S2lHLtTgwHBx?=
- =?us-ascii?Q?IIiNItpMxoY3HON8wFVW6TvAedu0VAIStdlaiMgZ/9DS4UUnZjp4QcTG/Hqn?=
- =?us-ascii?Q?vZJ2Vd6U5tpox4ZxfLG1X8A7v2jVMZZOsrzfJrh0WjYHwDNGIqYxA455Pxh0?=
- =?us-ascii?Q?5o90K5GE2rbuZ/YORLMxLJP3KCFwAdqQgaDC8yoBvquuFqs32sqX/DBBwbZS?=
- =?us-ascii?Q?Fz/zj+NfZnPWlGZJhhMm8LJOtVqzhvO3D7jlGW6Ee43Khdj53qvrk9fM+3V8?=
- =?us-ascii?Q?plnMFkxf5+U4z6iT+LsSWeWtrnwtBT/0mh73uWhPHtouTQAxJQJQyU0SRE6X?=
- =?us-ascii?Q?7yaSo29+AsDjALfW1uHOysajDJtZTc4v2KGNf+SC64x+HFUA5rOdBqoKNwIw?=
- =?us-ascii?Q?bZCN2dlcvXzoGHyX5n3NXLeodedLCMV8c2jiupYum1p3DUVbypyAF2znV2vE?=
- =?us-ascii?Q?Vr/myfjzd6JXsxF/dCpppcAzb66N4xNI/KVNbWnhGHSyRN36qalPhPBPKDCY?=
- =?us-ascii?Q?B17gNxvHQ2O5oTq+jdKhAeJT8UemofUbIAIuhZ7tv+yl/biololc7JBGi4HC?=
- =?us-ascii?Q?0yvCP6WfePrRv0a4tIk9QU7HyhAfvElHgi9SV0/0EVRYWHXSEkqNwNb1s/vD?=
- =?us-ascii?Q?pFreCTAf4w=3D=3D?=
+	=?us-ascii?Q?Paujby2OD8pA8vRzpi/6c68KvateV0injJSTUzSfAkRA2TGlYxlV8brQjxah?=
+ =?us-ascii?Q?QQOAvnwyqm/XCYz+Sr+rAgghfMMRFsB2uwMN+JE3J5QYH8fztpOz8qvWKurQ?=
+ =?us-ascii?Q?Z4XvHWr2iR/ZGEjmV26nnRjsm1ulw8rZ2dC7UZI5jkGFAEMMzEBweaj/g6mE?=
+ =?us-ascii?Q?GYnIDllLUrkS9NMfFm04ZtEQrs4IsJY2MKrynK1r/YWJOQK/0NZwv7FF8nW3?=
+ =?us-ascii?Q?Zk0CLBkpVkIvy67sU34ppS6U54kFl0vAfktmd5wqGpnhGTDjlNhJgsF6gUyJ?=
+ =?us-ascii?Q?hJ/CCZYJENccxuw+ZO5zysXzdD2SsxNCJDMhOdpfpiCVzUOwd5jBEkGvye9A?=
+ =?us-ascii?Q?J7jwNbF+nCeIkbf+wYAadL8u3Am2qABLIYxm9+fKccCG13pSctGKo8PSCBvE?=
+ =?us-ascii?Q?Z7yfj5p7EMLy3e+wiuqPST3OoqkYB8rdmqQXjjCIig29jAwBo3ZKHXUDV/al?=
+ =?us-ascii?Q?C1vp+q6Tb8039cliVWX//RjVq18DdM5EyNOo7lFJwDzYSA2FGDTpe/idNDz4?=
+ =?us-ascii?Q?9roKQUkSBCZfRFQgJ/WwCDErn5YUNp99ds80qAyRozRVqeSsh/onK5QrnWC5?=
+ =?us-ascii?Q?n7YC17pAXAu4FwOHhzDaIzYEBDIG+05ghKTo9YyPn5e9oXErZ9cT7d4SlpP8?=
+ =?us-ascii?Q?0PfBqZ8tGvIl0VCyJTAe8RUWZ4eQrKia3Z6DoicVLHztTJmkuF8w90x0pYqd?=
+ =?us-ascii?Q?yNKwLuT92rbojomnUw0HEMYY1+FuQNegJcKsKyck/q8q7R5QGt0kA9XErGMR?=
+ =?us-ascii?Q?VLvc8tYqhV46DLlZyDidddHrViPydD+JQxUk3yYlrd8xKLmtdfI4lYOx1+4A?=
+ =?us-ascii?Q?mYFs96n3s+lz8RfU9m+efVvulkq5ydBCf5/nkUCzvr1PXElHh7BdTiQaRbBG?=
+ =?us-ascii?Q?UAOjXi1w5IiTC620TtH3lTWgphD3JSoPg+feicggAjoqxvKzwFLuQddZitcG?=
+ =?us-ascii?Q?n5X8DSP0PgWrd0fsQq+UDspoaR+QCOq4WiQ6wamduktZsx9dL1eb53zypM15?=
+ =?us-ascii?Q?oG6a73A2+yKxdd6yRn4+5xKKgf8O8zNx3DQ5XQM/RUqLPe46iNmU9924SvTV?=
+ =?us-ascii?Q?dNorWCjnWT1X9CAzMUBD6xp3zdPoKchwCCajOOvLKbLDFLGPYPAbqBlFIs7a?=
+ =?us-ascii?Q?FWtz1+oaRkrq68tyRzjopw0MJ1OFSc85sWp9ZBDK4seJ2XiGcOrqg4eI/bFl?=
+ =?us-ascii?Q?8gf9NgaH44Uca18xr3zgwZX+VnAcODtC29TwBp0KA14ql+xVfllc+jDHJhMN?=
+ =?us-ascii?Q?K/ZhseZKxHrFznPgj9pZgRNLz0bRvkE0Ph696WHzaGe15PFrMrOEKjEks9wl?=
+ =?us-ascii?Q?rklULa0sngT4s2KE6+21HnblSupBSWVutW2mWMVIcUWKphhzdh+cgcU7pQVT?=
+ =?us-ascii?Q?KkXEOaGUYIXVEVBrlFC/Pg415UEcsUpCR296Ud3Hic1xr8PVG1zFGC0DuI2y?=
+ =?us-ascii?Q?aV8WOaIdX7Skaq8x0atguXjQn07LEG1CdrrhggpSPkqvOLaXbjJDDsdYMcwJ?=
+ =?us-ascii?Q?sYq9KRFhpCDcaoaOwOWbg4nGAEUAJ3uco8Nn8TxFdjtvzNJLV53A6R0go7Iv?=
+ =?us-ascii?Q?SblhRHOkx8Wu5SUQNMTVd3P9hCOiyzk+WkCZ0paFu79o3xFafBf+PbDItWZq?=
+ =?us-ascii?Q?opVRYNoM2t0hThkr6UDNqLEfrw9dBWMJnP74Ot9aDpmNqwzC7ek9Pc56bVKK?=
+ =?us-ascii?Q?YLjBfxzdhZ6VHc+0mNcCRXgtPttSMSsqkK6VSfhUrTmPYbSibyq7m8VHnjH7?=
+ =?us-ascii?Q?L2zHmPm7RA=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f35da67-719f-4726-1587-08dec26b5413
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72fa82f4-f5f3-4c05-5a18-08dec2705607
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 18:58:56.4738
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 19:34:47.0717
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EMj6ETAAbkKkvw/GGljmok4hLEVg+pYiQkcnB4IWAqqvoyj4Jck+EpGfFMbIKRIJPiXkYNt/X/XUZb2mh//g7Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB12055
+X-MS-Exchange-CrossTenant-UserPrincipalName: HRnUAXF3F7NCM8J2oNDcCJUKcd/h1vHXJQ+jqtEFZtSFlZQO0wvr4Aa/cFDtM0OrkvzMXvY/s6WSvIWGXYVWvQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR04MB11870
 
-On Thu, May 21, 2026 at 06:35:30PM +0800, Carlos Song (OSS) wrote:
-> From: Carlos Song <carlos.song@nxp.com>
+On Mon, May 18, 2026 at 03:27:15PM +0800, Richard Zhu wrote:
+> According to the PHY Databook Common Block Signals section, the
+> ref_clk_en signal must remain de-asserted until the reference clock is
+> running at the appropriate frequency. Once the clock is stable,
+> ref_clk_en can be asserted. For lower power states where the reference
+> clock to the PHY is disabled, ref_clk_en should also be de-asserted.
 >
-> Reset I2C controller in probe stage to avoid unexpected LPI2C controller
-> state left from previous stages and hang system boot.
+> Move the ref_clk_en bit manipulation into imx95_pcie_enable_ref_clk()
+> to ensure the reference clock stabilizes before ref_clk_en is asserted
+> and before the PHY reset is de-asserted. This aligns with the timing
+> requirements specified in the PHY documentation.
 >
-> Per the LPI2C reference manual, section 7.1.4 "Controller Control (MCR)"
-> and 7.1.20 Target Control (SCR), the RST bit (bit 1) description states:
->
->   "The reset takes effect immediately and remains asserted until negated
->   by software. There is no minimum delay required before clearing the
->   software reset."
->
-> Therefore, it is safe to write 0 to MCR and SCR immediately after
-> asserting the RST bit without any additional delay.
->
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Fixes: d8574ce57d76 ("PCI: imx6: Add external reference clock input mode support")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > ---
-> Change for v3:
->   - Reset the Target logic via LPI2C_SCR.
->   - Replacing pm_runtime_put_sync() with pm_runtime_disable() +
->     pm_runtime_set_suspended() + pm_runtime_put_noidle() to avoid
->     triggering the suspend callback, and explicitly calling
->     clk_bulk_disable_unprepare() for clock cleanup.
->   - Add new error path free_irq and clk_disable to cover more
->     complete error recovery.
->   - Remake commit log adding SCR RST section.
-> Change for v2:
->   - Jump to rpm_disable instread of returning directly if the IRQ request
->     fails
-> ---
->  drivers/i2c/busses/i2c-imx-lpi2c.c | 52 +++++++++++++++++++++---------
->  1 file changed, 37 insertions(+), 15 deletions(-)
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+>  drivers/pci/controller/dwc/pci-imx6.c | 28 +++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
 >
-> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-> index e6c24a9d934d..4929f85ab485 100644
-> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-> @@ -1510,11 +1510,6 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
->  	if (ret)
->  		lpi2c_imx->bitrate = I2C_MAX_STANDARD_MODE_FREQ;
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 66e760015c92..c4b079c93648 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -270,8 +270,6 @@ static int imx95_pcie_init_pre_reset(struct imx_pcie *imx_pcie)
 >
-> -	ret = devm_request_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx_isr, IRQF_NO_SUSPEND,
-> -			       pdev->name, lpi2c_imx);
-> -	if (ret)
-> -		return dev_err_probe(&pdev->dev, ret, "can't claim irq %d\n", lpi2c_imx->irq);
+>  static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
+>  {
+> -	bool ext = imx_pcie->enable_ext_refclk;
 > -
->  	i2c_set_adapdata(&lpi2c_imx->adapter, lpi2c_imx);
->  	platform_set_drvdata(pdev, lpi2c_imx);
+>  	/*
+>  	 * ERR051624: The Controller Without Vaux Cannot Exit L23 Ready
+>  	 * Through Beacon or PERST# De-assertion
+> @@ -290,10 +288,6 @@ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
+>  			IMX95_PCIE_PHY_CR_PARA_SEL,
+>  			IMX95_PCIE_PHY_CR_PARA_SEL);
 >
-> @@ -1527,14 +1522,18 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
->  	 * each transfer
->  	 */
->  	ret = devm_clk_rate_exclusive_get(&pdev->dev, lpi2c_imx->clks[0].clk);
-> -	if (ret)
-> -		return dev_err_probe(&pdev->dev, ret,
-> -				     "can't lock I2C peripheral clock rate\n");
-> +	if (ret) {
-> +		dev_err_probe(&pdev->dev, ret,
-> +			      "can't lock I2C peripheral clock rate\n");
-> +		goto clk_disable;
-> +	}
->
->  	lpi2c_imx->rate_per = clk_get_rate(lpi2c_imx->clks[0].clk);
-> -	if (!lpi2c_imx->rate_per)
-> -		return dev_err_probe(&pdev->dev, -EINVAL,
-> -				     "can't get I2C peripheral clock rate\n");
-> +	if (!lpi2c_imx->rate_per) {
-> +		ret = dev_err_probe(&pdev->dev, -EINVAL,
-> +				    "can't get I2C peripheral clock rate\n");
-> +		goto clk_disable;
-> +	}
->
->  	if (lpi2c_imx->hwdata->need_prepare_unprepare_clk)
->  		pm_runtime_set_autosuspend_delay(&pdev->dev, I2C_PM_LONG_TIMEOUT_MS);
-> @@ -1546,27 +1545,43 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
->  	pm_runtime_set_active(&pdev->dev);
->  	pm_runtime_enable(&pdev->dev);
->
-> +	/*
-> +	 * Reset all internal controller logic and registers to avoid effects of previous status
-> +	 * Reset both Master and Target logic to prevent interrupt storms
-> +	 */
-> +	writel(MCR_RST, lpi2c_imx->base + LPI2C_MCR);
-> +	writel(SCR_RST, lpi2c_imx->base + LPI2C_SCR);
-> +	writel(0, lpi2c_imx->base + LPI2C_MCR);
-> +	writel(0, lpi2c_imx->base + LPI2C_SCR);
-> +
-
-This patch should only include this part. other adjust should be new patch
-
->  	temp = readl(lpi2c_imx->base + LPI2C_PARAM);
->  	lpi2c_imx->txfifosize = 1 << (temp & 0x0f);
->  	lpi2c_imx->rxfifosize = 1 << ((temp >> 8) & 0x0f);
->
-> +	ret = devm_request_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx_isr, IRQF_NO_SUSPEND,
-> +			       pdev->name, lpi2c_imx);
-> +	if (ret) {
-> +		dev_err_probe(&pdev->dev, ret, "can't claim irq %d\n", lpi2c_imx->irq);
-> +		goto rpm_disable;
-> +	}
-> +
->  	/* Init optional bus recovery function */
->  	ret = lpi2c_imx_init_recovery_info(lpi2c_imx, pdev);
->  	/* Give it another chance if pinctrl used is not ready yet */
->  	if (ret == -EPROBE_DEFER)
-> -		goto rpm_disable;
-> +		goto free_irq;
->
->  	/* Init DMA */
->  	ret = lpi2c_dma_init(&pdev->dev, phy_addr);
->  	if (ret) {
->  		if (ret == -EPROBE_DEFER)
-> -			goto rpm_disable;
-> +			goto free_irq;
->  		dev_info(&pdev->dev, "use pio mode\n");
->  	}
->
->  	ret = i2c_add_adapter(&lpi2c_imx->adapter);
->  	if (ret)
-> -		goto rpm_disable;
-> +		goto free_irq;
->
->  	pm_runtime_put_autosuspend(&pdev->dev);
->
-> @@ -1574,10 +1589,17 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
->
+> -	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_0,
+> -			   IMX95_PCIE_REF_CLKEN,
+> -			   ext ? 0 : IMX95_PCIE_REF_CLKEN);
+> -
 >  	return 0;
->
-> +free_irq:
-> +	devm_free_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx);
-> +
-
-if use devm_(), need devm_free_irq() here.
-
-Frank
->  rpm_disable:
->  	pm_runtime_dont_use_autosuspend(&pdev->dev);
-> -	pm_runtime_put_sync(&pdev->dev);
->  	pm_runtime_disable(&pdev->dev);
-> +	pm_runtime_set_suspended(&pdev->dev);
-> +	pm_runtime_put_noidle(&pdev->dev);
-> +
-> +clk_disable:
-> +	clk_bulk_disable_unprepare(lpi2c_imx->num_clks, lpi2c_imx->clks);
->
->  	return ret;
 >  }
+>
+> @@ -742,7 +736,29 @@ static void imx95_pcie_clkreq_override(struct imx_pcie *imx_pcie, bool enable)
+>
+>  static int imx95_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+>  {
+> +	bool ext = imx_pcie->enable_ext_refclk;
+> +
+>  	imx95_pcie_clkreq_override(imx_pcie, enable);
+> +	/*
+> +	 * The ref_clk_en signal must remain de-asserted until the
+> +	 * reference clock is running at appropriate frequency, at which
+> +	 * point this bit can be asserted. For lower power states where
+> +	 * the reference clock to the PHY is disabled, it may also be
+> +	 * de-asserted.
+> +	 * +------------------- -+--------+----------------+
+> +	 * | External clock mode | Enable | PCIE_REF_CLKEN |
+> +	 * +---------------------+--------+----------------+
+> +	 * | TRUE                | X      | 1b'0           |
+> +	 * +---------------------+--------+----------------+
+> +	 * | FALSE               | TRUE   | 1b'1           |
+> +	 * +---------------------+--------+----------------+
+> +	 * | FALSE               | FALSE  | 1b'0           |
+> +	 * +---------------------+--------+----------------+
+> +	 */
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_0,
+> +			   IMX95_PCIE_REF_CLKEN,
+> +			   ext || !enable ? 0 : IMX95_PCIE_REF_CLKEN);
+> +
+>  	return 0;
+>  }
+>
 > --
-> 2.43.0
+> 2.37.1
 >
