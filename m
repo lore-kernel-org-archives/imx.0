@@ -1,152 +1,87 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AD83BBFD8
-	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 22:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13DF1ACED5;
+	Thu,  4 Jun 2026 23:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780610995; cv=none; b=nBACb4+tAA9fs/QaQimoxuFuQzTeialEBQsoCmu352Z2RcTIEkF829t8pWLbqO2pwiJnbtZzYWp7UvrgxZX03OzFetreftO12bMz1SfTN9v1W5i6iaZxyl2d1dj3OzGdub0jnOte0HXP6pRWVN8OYQh7F62I5uLIB2aQ57Q59HY=
+	t=1780617112; cv=none; b=MQOcjBY182Joh6vSdEl2q2J2KFSfpuLBBgR4tIFpiwjmAThOnoCYtBjdjbq+Dr5KNVdEKMeY9PawtRDWzZ8RKlelejqnRJSLmTomIWmF07yJgYWMIGEGT3x/9paiBiYHUK1w8Kl1YZ+pRTteaLvtq7CciVQhmJU4n/op3xNi0kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780610995; c=relaxed/simple;
-	bh=HnZvMnPeYvHbbi52e5Ekr16XEYQBZeZYO77xkwkyH4k=;
+	s=arc-20240116; t=1780617112; c=relaxed/simple;
+	bh=Qsbe+Zr03M6GgtVi4XR4r7M6OAh7koJDCDJUXBghNFY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z7ht/GNCbNO2yyjXlvrcjkWcJuxSOVDsmtWKXOZEMuqF9cg+GwOQEcV+xmwkjhOVX7p3ldiVV7i2fFTVXA9T3SxDOXmBUoTEp71Sj5E01jxPWO/+64zdkOzuWu+U3DJOqr6qrM3/ns0zPOG4ZAqy0+Qcm8LqOwCYtH/5/LZth8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jlgdexGO; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ld2gVpYWTswbNciZ4Vj0f+5LWHaVDiPt5yw+AvB2o2IelZvjyZxMYCm0MksSuRlCPrTAr0odeFOFKboxb72Jt4Yauf31Rq2zXyT5d//KWkAs4THMHrtjQbjJXdXRbgVVJzolSylEhNl2fSLPNJ38f6Wo7jI8bGfMtqxZSHhsOi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKcw/Idx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jlgdexGO"
-Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 67CD5524;
-	Fri,  5 Jun 2026 00:09:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1780610959;
-	bh=HnZvMnPeYvHbbi52e5Ekr16XEYQBZeZYO77xkwkyH4k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jlgdexGOIVdviyGyizSzkwowO21Z5t14pPEHwsn8obPLZdX9TkFTgZIgYsk2X0SDA
-	 m4KtAhhfWrQkw9bx1u5ukeiTUD47KNBa1dal6DwcKlTG0AnELHm9DJtp+dE+2wgHU9
-	 f4Lg7TOW+gI8bTD/HuTjmRBvhAZEYotY/g4Cni0c=
-Date: Fri, 5 Jun 2026 01:09:42 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Mirela Rabulea <mirela.rabulea@nxp.com>
-Cc: sakari.ailus@linux.intel.com, mchehab@kernel.org, Frank.Li@nxp.com,
-	laurentiu.palcu@nxp.com, robert.chiras@nxp.com, guoniu.zhou@nxp.com,
-	robby.cai@nxp.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2] media: v4l2-fwnode: Fix subdev owner overwritten in
- v4l2_async_register_subdev_sensor()
-Message-ID: <20260604220942.GA3112137@killaraus.ideasonboard.com>
-References: <20260522143120.690330-1-mirela.rabulea@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKcw/Idx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4175F1F00893;
+	Thu,  4 Jun 2026 23:51:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780617111;
+	bh=qh7GaHudWqFS4OaIxaBj0xspMhNwznx2VYShs8Ojxj0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jKcw/IdxZ03ISnE0pAxKMesbvA2zH37ofT1ZM6iLvTf8bkoWUUHHP7DKIvnR++TXM
+	 Sf/wygPpPp5JQO1CJSW1ZQaN6+Pv3ZCFh5pYEcCejg/80HHXVHtqZ36q4p0FYJWVvk
+	 uVCsNmN/MfBHpIYpTx/TRT9f0uQ9tCK7jkJNiyBu5hRdCIuL+1XgLZGfizTG4R9PHg
+	 9HPvfyNATXVxxjTv8Ex0EVM1wPYQKGO7hWZsyb+6gcqoT7SlSB30uBN1rZq2p3zYTz
+	 +QjuVQm/o5LXS9vCa6l2pSEEjJiVgs4nBu8n1ALFSUX0BbHDFAxRy6BKcGRNGYOB3J
+	 ku1q3xR/wKM4w==
+Date: Fri, 5 Jun 2026 01:51:47 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Lee Jones <lee@kernel.org>, 
+	Mark Brown <broonie@opensource.wolfsonmicro.com>, Thierry Reding <thierry.reding@avionic-design.de>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Srinivas Kandagatla <srini@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Peter Chen <peter.chen@kernel.org>, Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Maximilian Luz <luzmaximilian@gmail.com>, 
+	Hans de Goede <hansg@kernel.org>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
+	brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, driver-core@lists.linux.dev, 
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 11/23] i2c: pxa-pci: use platform_device_set_of_node()
+Message-ID: <aiIOrXwc4pNk8ihI@zenone.zhora.eu>
+References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+ <20260521-pdev-fwnode-ref-v1-11-88c324a1b8d2@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260522143120.690330-1-mirela.rabulea@nxp.com>
+In-Reply-To: <20260521-pdev-fwnode-ref-v1-11-88c324a1b8d2@oss.qualcomm.com>
 
-Hi Mirela,
+Hi Bartosz,
 
-Thank you for the patch.
+On Thu, May 21, 2026 at 10:36:34AM +0200, Bartosz Golaszewski wrote:
+> Ahead of reworking the reference counting logic for platform devices,
+> encapsulate the assignment of the OF node for dynamically allocated
+> platform devices with the provided helper.
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-On Fri, May 22, 2026 at 05:31:20PM +0300, Mirela Rabulea wrote:
-> The v4l2 helper v4l2_async_register_subdev_sensor() calls
-> v4l2_async_register_subdev(), which is a macro that expands to
-> __v4l2_async_register_subdev(sd,THIS_MODULE). Since the macro is expanded
-> inside v4l2-fwnode.c, THIS_MODULE resolves to the v4l2-fwnode module
-> rather than the sensor driver module that originally set sd->owner. When
-> v4l2-fwnode is built-in, THIS_MODULE evaluates to NULL, which then
-> overwrites the sensor driver's owner with NULL.
-> 
-> This causes the problem that the sensor module's reference count is never
-> incremented during async registration, so the module can be removed while
-> the subdevice is still in use by a notifier (e.g., a CSI-2 receiver
-> bridge driver).
-> 
-> Fix this by renaming v4l2_async_register_subdev_sensor() to
-> __v4l2_async_register_subdev_sensor() with an added explicit module
-> argument and introducing a wrapper macro:
->     #define v4l2_async_register_subdev_sensor(sd) \
->         __v4l2_async_register_subdev_sensor(sd, THIS_MODULE)
-> 
-> This ensures the sensor driver module is properly referenced even when
-> the sensor driver does not init the owner field before calling
-> v4l2_async_register_subdev_sensor() and prevents premature module removal.
-> 
-> Fixes: aef69d54755d ("media: v4l: fwnode: Add a convenience function for registering sensors")
-> Suggested-by: Frank Li <Frank.Li@nxp.com>
-> Link: https://lore.kernel.org/linux-media/20240315073125.275501-2-sakari.ailus@linux.intel.com/
-> Signed-off-by: Mirela Rabulea <mirela.rabulea@nxp.com>
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-
-> ---
-> 
-> Changes in v2:
-> 	Do not rely on sd->owner set by v4l2_i2c_subdev_init(), introduce v4l2_async_register_subdev_sensor wrapper macro	
-> 	Added Suggested-by: Frank Li <Frank.Li@nxp.com>
-> 	Added Link: to Sakari's similar commit for v4l2_async_register_subdev macro
-> 
-> The v1 patch is also valid, as from what I see, all sensor drivers that use
-> v4l2_async_register_subdev_sensor also use v4l2_i2c_subdev_init(), which
-> sets sd->owner
-> 
-> 
->  drivers/media/v4l2-core/v4l2-fwnode.c | 6 +++---
->  include/media/v4l2-async.h            | 4 +++-
->  2 files changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
-> index 77f3298821b5..62a3a452f788 100644
-> --- a/drivers/media/v4l2-core/v4l2-fwnode.c
-> +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-> @@ -1256,7 +1256,7 @@ v4l2_async_nf_parse_fwnode_sensor(struct device *dev,
->  	return 0;
->  }
->  
-> -int v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd)
-> +int __v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd, struct module *module)
->  {
->  	struct v4l2_async_notifier *notifier;
->  	int ret;
-> @@ -1282,7 +1282,7 @@ int v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd)
->  	if (ret < 0)
->  		goto out_cleanup;
->  
-> -	ret = v4l2_async_register_subdev(sd);
-> +	ret = __v4l2_async_register_subdev(sd, module);
->  	if (ret < 0)
->  		goto out_unregister;
->  
-> @@ -1300,7 +1300,7 @@ int v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd)
->  
->  	return ret;
->  }
-> -EXPORT_SYMBOL_GPL(v4l2_async_register_subdev_sensor);
-> +EXPORT_SYMBOL_GPL(__v4l2_async_register_subdev_sensor);
->  
->  MODULE_DESCRIPTION("V4L2 fwnode binding parsing library");
->  MODULE_LICENSE("GPL");
-> diff --git a/include/media/v4l2-async.h b/include/media/v4l2-async.h
-> index f26c323e9c96..54a2d9620ed5 100644
-> --- a/include/media/v4l2-async.h
-> +++ b/include/media/v4l2-async.h
-> @@ -333,8 +333,10 @@ int __v4l2_async_register_subdev(struct v4l2_subdev *sd, struct module *module);
->   * An error is returned if the module is no longer loaded on any attempts
->   * to register it.
->   */
-> +#define v4l2_async_register_subdev_sensor(sd) \
-> +	__v4l2_async_register_subdev_sensor(sd, THIS_MODULE)
->  int __must_check
-> -v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd);
-> +__v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd, struct module *module);
->  
->  /**
->   * v4l2_async_unregister_subdev - unregisters a sub-device to the asynchronous
-
--- 
-Regards,
-
-Laurent Pinchart
+Thanks,
+Andi
