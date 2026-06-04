@@ -1,46 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD1635E1B5
-	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 12:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F523A5E92
+	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 12:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780576351; cv=none; b=ohCWbjpKp8ELKYQUEjDIPBKbBVS9sylxYO142OYWRB00wlT+qQYRI1z7L2wAY8hM3T9vE125b4fLylIAMIUZ8pr4MJox19bQVvcJIkUvQYwAVVR0bFtR/ADi5084yemQHJg4NIvc5Xs3Eg0jm3M+zB0PsDWNlnkYyOHYVbE36W4=
+	t=1780576414; cv=none; b=Yh7L34GOfhNCVPfGgoFqa48fDEe70kCy73sva7DydOzrzqcPS2Fp9DFZokqBhCrwwY912i5TfbCDT3v91wyWIb2IrG5tWOfb1bSJzApPWtnnuyw/JdFIjPOwiqE0IZj1TYxKpclvxysua0gnO16XHU1VEg757kmc2JFTMlztMHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780576351; c=relaxed/simple;
-	bh=LnrtZB0iEg1z1vGOmrpOOK3Cssie/DMPDNqDCPjTdS8=;
+	s=arc-20240116; t=1780576414; c=relaxed/simple;
+	bh=5kiOPwwtw5er+j3pQh3lrbhA4I9B2m+C9oKB0UBWW9E=;
 	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MYFYmfUKvqGWncE47aNu5ecLyh8KvlaMrVFUr8zcN8eMa9TrdZ/cmf3m94TAAlWvAcGRNz5Kx066tHgRZSG5PhCPs7xVbv4YTHDbtY7kTqNG+oM52+4IvSzdjlPIxJGv/jB/Aq8wkts85gJwLRXtLJoMPgVEIns2YxwoyqS1OmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cqf3MXV4; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=lw/ceUdETiRnRgj312/SZN6FJc/1x+6q5ASgMpJNkNoiGzwVWlUmFfLIUhBJnbRj3LweLBKzkYyGUrEf3PDg/3K1isVFcNQE2MCtmIVKZM8PiryCq3AWurGp1136i1Wd0cqFvyR2jlm8KNKttQC8G7YC0/uWuDOEgad0/dmXP3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fP9rNTi5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cqf3MXV4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2967C1F008A3
-	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 12:32:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fP9rNTi5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B3F1F0089B
+	for <imx@lists.linux.dev>; Thu,  4 Jun 2026 12:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780576350;
-	bh=LnrtZB0iEg1z1vGOmrpOOK3Cssie/DMPDNqDCPjTdS8=;
+	s=k20260515; t=1780576413;
+	bh=5kiOPwwtw5er+j3pQh3lrbhA4I9B2m+C9oKB0UBWW9E=;
 	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=Cqf3MXV4TD52LTrKp0CEYIe9g985jGUSnNRQCoaqoWqlQrEUsixL6taFahNCfDLy3
-	 +Z6as+OOsL9nqoix/FyXeZFm2nSqFAgKe0UdZ200LCLfCzZOsL9e5aeERkfHQuCGQt
-	 lbsQ7bKitUjPcn+bHj0GDLNxKoY1a2sN6xy3To0Q9KFC5vgDE0UO/KlEqKmvCmGo2q
-	 tQFH3C8Z7JCY1CQ0ki8z08Rb6/Be/+yEVtXg1G5zNpIwheU8ILhcBZYHgFoWppCuwE
-	 gB2HgfLQ286akIY4m3Bo3GCPaJEmZyP191eGzCBLL04xi+/lRCrQ3eZvv7giv/r8Wv
-	 S0m1gGv5CNe1w==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39677aed4d3so5551161fa.2
-        for <imx@lists.linux.dev>; Thu, 04 Jun 2026 05:32:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/fdZxkxjQ0OkKf8C7Y1cFYlbgYRN+cKf1vmW5Ev3ik3p9tFy3V3RMdUJeb5wlLdjT6oH0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyc1pnoU4OxZ6BMi5EQLc+JS4+2ftFPdtID8zFgHciQ6ZrXCQeI
-	fB6S8V9kBWarfuvDFuNuZN6CfwIMTkeXzX3I5jH/WLzIGTO9bW33Z0mtEwuyu3sGZY0VGKFphTC
-	a+/WuO+utxIOwMM2q3DXZ4HZ1LmsxhEEmkx0Xu287Ig==
-X-Received: by 2002:a2e:bc24:0:b0:396:9cbb:673e with SMTP id
- 38308e7fff4ca-396af48a101mr25033101fa.24.1780576348691; Thu, 04 Jun 2026
- 05:32:28 -0700 (PDT)
+	b=fP9rNTi5MtE7GCGm/x/LyhMZobzDw2BPjzDPFH8vu6A2Ihc1x0gZCGx/8KHtKr+NQ
+	 9VU8hrkHxq4QD3yOaMQhJxyg5QmB193Bl0ZPkoFOqK9aG4fqijPuyGUaShi+2Kcg6Q
+	 WNJyWoBtHQTw/ffnZhT2lBeH4E+j/daht+qed1ocXq5IaM7LCqk8LdZ6oiRSFoFWGH
+	 qVMkffhSF4xNFZpT0RuH0BP/QIMVy9iVKoOdwGpjFzetMPvPPN/kFu3cFOoETaSWHA
+	 xRtqHx+25lqBcSS+qwunrA10HLhbGycr55T5kf3P4VR83pcARAwuSQhBeLmDEXT+H3
+	 auAKRLtqmlw3w==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-396775c2720so5609311fa.2
+        for <imx@lists.linux.dev>; Thu, 04 Jun 2026 05:33:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ80sxy/AuWkpq8Wg83TCaP1rYjFh64FcRw+bE9uqQ2BhxWF8ivTNRq+Dmh6sB6bjfMgo38=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwskoVthcUxYZE0UgWh1q+HGiheMQhONIo/eNA9gJCsPE3Wl08Q
+	Wh6Evo3XW40sL7YQBuPIPVgD/VD/niXzClm5iWkWWIl0ItRKzUz65N8layo3iN3c4Q9t3byUjS8
+	iWjqNmz+sqfXt/L5xfSHgBkHdIZ51yFgxk41J9IacjA==
+X-Received: by 2002:a05:6512:2256:b0:5aa:6bd0:b1e3 with SMTP id
+ 2adb3069b0e04-5aa7c038408mr3094935e87.8.1780576412192; Thu, 04 Jun 2026
+ 05:33:32 -0700 (PDT)
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 4 Jun 2026 05:32:27 -0700
+ HTTPREST; Thu, 4 Jun 2026 05:33:30 -0700
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 4 Jun 2026 05:32:27 -0700
+ HTTPREST; Thu, 4 Jun 2026 05:33:29 -0700
 From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <ah9OIVyrHEhcMHzN@ashevche-desk.local>
+In-Reply-To: <ah9O15bMlAYgSlHx@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,12 +48,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-7-88c324a1b8d2@oss.qualcomm.com> <ah9OIVyrHEhcMHzN@ashevche-desk.local>
-Date: Thu, 4 Jun 2026 05:32:27 -0700
-X-Gmail-Original-Message-ID: <CAMRc=McLN9Ovoqo3om-3uC=q+=rcKCoiWMctC=yvwiaHacU0PQ@mail.gmail.com>
-X-Gm-Features: AVHnY4LlXi8ln45MTUjJfpd_YWjp19dT0a-H21-M7Hc7IKBiGWRxgS3l-OaDEEQ
-Message-ID: <CAMRc=McLN9Ovoqo3om-3uC=q+=rcKCoiWMctC=yvwiaHacU0PQ@mail.gmail.com>
-Subject: Re: [PATCH 07/23] driver core: platform: provide platform_device_set_fwnode()
+ <20260521-pdev-fwnode-ref-v1-8-88c324a1b8d2@oss.qualcomm.com> <ah9O15bMlAYgSlHx@ashevche-desk.local>
+Date: Thu, 4 Jun 2026 05:33:29 -0700
+X-Gmail-Original-Message-ID: <CAMRc=MeFxtwwXvOD7FLmbhjpraDKa2O7KdwMaUXM-mNj7Ob2ow@mail.gmail.com>
+X-Gm-Features: AVHnY4L20t8vC6nB7rdbE5RCKEyJuG_U-L0VQ-6S9fbqED8WJ64Vn6Fpm8JRl-0
+Message-ID: <CAMRc=MeFxtwwXvOD7FLmbhjpraDKa2O7KdwMaUXM-mNj7Ob2ow@mail.gmail.com>
+Subject: Re: [PATCH 08/23] driver core: platform: provide platform_device_set_of_node_from_dev()
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Lee Jones <lee@kernel.org>, Mark Brown <broonie@opensource.wolfsonmicro.com>, 
 	Thierry Reding <thierry.reding@avionic-design.de>, 
@@ -90,19 +90,20 @@ Cc: Lee Jones <lee@kernel.org>, Mark Brown <broonie@opensource.wolfsonmicro.com>
 	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 2 Jun 2026 23:41:53 +0200, Andy Shevchenko
+On Tue, 2 Jun 2026 23:44:55 +0200, Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> said:
-> On Thu, May 21, 2026 at 10:36:30AM +0200, Bartosz Golaszewski wrote:
->> Provide a helper function encapsulating the logic of assigning firmware
->> nodes to platform devices created with platform_device_alloc(). Make the
->> kerneldoc state that this is the proper interface for assigning firmware
->> nodes to dynamically allocated platform devices. This will allow us to
->> switch to counting the references of the device's firmware nodes in the
->> future, not only the OF nodes.
+> On Thu, May 21, 2026 at 10:36:31AM +0200, Bartosz Golaszewski wrote:
+>> Provide a platform-specific variant of device_set_of_node_from_dev(). In
+>> addition to bumping the reference count of the OF node being assigned,
+>> it also assigns the fwnode of the platform device.
 >
-> But why different for of_node and fwnode to begin with?!
+> Can we rather investigate the way how to make that of node reuse thingy
+> (which is used solely by pin control) differently and then drop this confusing
+> device_set_of_node_from_dev() call altogether?
 >
 
-I'm not following. What are you suggesting?
+Possibly but I can't do everything in a single series. Let's take it one step
+at a time. The goal of this is to make software node handling for platform
+devices more correct.
 
-Bartosz
+Bart
