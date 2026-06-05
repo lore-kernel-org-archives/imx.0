@@ -1,107 +1,42 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DC5413231;
-	Fri,  5 Jun 2026 07:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309A12EEE95
+	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 08:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780644728; cv=none; b=ApTmAAsJQZeMZUYYYAxrcVUu3afBmB+xB9Leq8lQKggoFeeR5fkdT4+in+20UlE6jnoDj7zG/leucrwQ4S9yeHNp2xgOKuFyA8TULlBGCUNlKxhcDJpJzIwSOw85rLyF2NhVeSl2Cznyn++uRA2QfDPveEZ3eXYBMCimhzDyLhE=
+	t=1780649961; cv=none; b=rH5dRqcojBpSbKb0LhlpN81ypVMt783BAe9mtAmvJizI21qM5i1SncLGzUtnfdV92Ty/qkclAYPWpIjuk2nV5nLyRS9jixXd18SwuUBUrzngOagfG2G8ojATNQi+dnzjYDaJQ+kpFuFCR7UZNTVvBmSNnmVZUn49YqsTQtgrcMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780644728; c=relaxed/simple;
-	bh=c30wbulhkBn1BOKZ95h66WcDcHsR2Lig8B6kzzR9otg=;
+	s=arc-20240116; t=1780649961; c=relaxed/simple;
+	bh=LMUn8d9dUrhCqw3CZhZMtT5jf2FP/joi4N83ANL1h8o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HlRM+IeYSCMvfG/BZgboPZuuSMDydBImO5nRRmQvrqvLapimmToLjtTXt7FhUz/pjkhrs636K+FXwREBcKHvjt/FRmn4fYKMMdw12zAE1PgjgqEyh/6OFQsfpOA1Z54N+Vfv8cGcq3TzlrW4gtNtS4BSoPJHN5XXULKg3LJH95Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SGZhrs/N; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SGZhrs/N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780644727; x=1812180727;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=c30wbulhkBn1BOKZ95h66WcDcHsR2Lig8B6kzzR9otg=;
-  b=SGZhrs/NfcpcCcqV3uRHFGGg+wyRaQlgJsWM3upHHww90ue67+lQDMBd
-   ZsmRSSOc33GM4VM9AsyTuBhhnV7MAH7xc2dqXbElIG8TGOdRNQTaFds3r
-   n+6NamFDPmklFUc3GIiDadql2qpWu4ARQrWn1130ZLqyZHtZG+i/R4Xef
-   1avlRLuGqciRhbLkSCHepAJEPKle+epn4jqQlzep4z1niyBIoi+UNi68s
-   FGLgThZnY/fmZyDtFDvW4/Il453EtwvdQTQ3YLizReE4S120cS0sKLXQH
-   EHI0KTusI7l2arMH0SA25vxbYJUAno6dDkYRfQjR27rUumN5sbB0Vczyb
-   g==;
-X-CSE-ConnectionGUID: 1CrMF9lYTc2lZ8dyEVTmjA==
-X-CSE-MsgGUID: DQJoEI/NQXKnxwjhi5u4UQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="69011987"
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="69011987"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 00:32:05 -0700
-X-CSE-ConnectionGUID: dgmCPLzkTKmMjNLLI2/dBg==
-X-CSE-MsgGUID: q1Bd7HPvQi+WKekTT+SBKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="249704712"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.178])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 00:31:50 -0700
-Date: Fri, 5 Jun 2026 10:31:48 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Peter Chen (CIX)" <peter.chen@kernel.org>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=ugebhHsQIInb7vyaZVdlnWQ5V/Bg+QFTS/qS7CUdsSXr3oAy8qLATVYqzjakbL/MvkEHIH3wx4mqsxaWQe5UifLRDPj2rk2pCcVUtunpj5edvJnnc72Ut/vdGKhUG5TU0eUrOLv14wXIEr2wvq3ri3s11gwVr+yotZBHrkzJH+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A162A1A1A7F;
+	Fri,  5 Jun 2026 10:59:12 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6B2421A1A01;
+	Fri,  5 Jun 2026 10:59:12 +0200 (CEST)
+Received: from lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com [10.52.9.99])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 0EBBC1800071;
+	Fri,  5 Jun 2026 16:59:09 +0800 (+08)
+Date: Fri, 5 Jun 2026 17:59:08 +0900
+From: Joseph Guo <qijian.guo@nxp.com>
+To: Francesco Valla <francesco@valla.it>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
+	Daniel Baluta <daniel.baluta@nxp.com>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH 20/23] usb: chipidea: use
- platform_device_set_of_node_from_dev()
-Message-ID: <aiJ7ZB-J-TyJEwBb@ashevche-desk.local>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-20-88c324a1b8d2@oss.qualcomm.com>
- <ah9P6Xt9SyKgc2oJ@ashevche-desk.local>
- <CAMRc=MdhjZhGL9tEx9WEjn2f95d=ObNM0AtBNpcevm6aHgpj+Q@mail.gmail.com>
- <aiJz6Ys4gE998ULp@nchen-desktop>
+	linux-kernel@vger.kernel.org, steven.yang@nxp.com
+Subject: Re: [PATCH] arm64: dts: imx93-11x11-frdm: enable additional devices
+Message-ID: <aiKP3EgdrCbqtUH0@lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com>
+References: <20260115-imx93_devices-v1-1-b2c840cafa2e@valla.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -110,46 +45,286 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aiJz6Ys4gE998ULp@nchen-desktop>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20260115-imx93_devices-v1-1-b2c840cafa2e@valla.it>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Fri, Jun 05, 2026 at 02:59:53PM +0800, Peter Chen (CIX) wrote:
-> On 26-06-04 08:34:16, Bartosz Golaszewski wrote:
-> > On Tue, 2 Jun 2026 23:49:29 +0200, Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> said:
-> > > On Thu, May 21, 2026 at 10:36:43AM +0200, Bartosz Golaszewski wrote:
-
-...
-
-> > >>  	pdev->dev.parent = dev;
-> > >> -	device_set_of_node_from_dev(&pdev->dev, dev);
-> > >> +	platform_device_set_of_node_from_dev(pdev, dev);
-> > >
-> > > Why do they even do that? Do they have a USB connected pin control?
-> > 
-> > I don't know. I can't test it so I don't want to break it. If they don't need
-> > it, the person who can test it, can remove it later.
+On Thu, Jan 15, 2026 at 06:11:34PM +0100, Francesco Valla wrote:
+> Enable additional devices on the i.MX93 FRDM board:
 > 
-> It was introduced by below commits:
+>   - CAN port and associated transceiver
+>   - Bluetooth portion of the IW612 chipset
+>   - WiFi SDIO port
+>   - user buttons
 > 
-> commit 0f153a1b8193ce768be4df0400aeb2c8f2a3b3da
-> Author: Rob Herring <robh@kernel.org>
-> Date:   Wed Dec 15 16:56:46 2021 -0600
+> The WiFi portion of the on-board IW612 chipset is still not supported
+> upstream, but since SDIO is a discoverable bus it will be probed once it
+> is.
 > 
->     usb: chipidea: Set the DT node on the child device
+> Signed-off-by: Francesco Valla <francesco@valla.it>
+> ---
+> Applies on top of [0].
 > 
->     The ChipIdea glue drivers just copy the glue resources to the "ci_hdrc"
->     child device. Instead, set the child device's DT node pointer to the
->     parent device's node so that platform_get_irq() can find the IRQ
->     resources in the DT. This removes the need for statically populating the
->     IRQ resources from the DT which has been deprecated for some time.
+> WiFi was tested using the nxpwifi driver proposed in [1].
+> 
+> [0] https://lore.kernel.org/all/20260113075002.561453-1-daniel.baluta@nxp.com/
+> [1] https://lore.kernel.org/all/20251205065545.3325032-1-jeff.chen_1@nxp.com/
+> 
+> Reagrds,
+> Francesco
+> ---
+>  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 152 +++++++++++++++++++++
+>  1 file changed, 152 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+> index 5bb6ae0d154a655283295b6902fc29bf6f744d5c..bd14ba28690c081817111aaabef12fb56a7c56a4 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+> @@ -9,6 +9,7 @@ / {
+>  	model = "NXP i.MX93 11X11 FRDM board";
+>  
+>  	aliases {
+> +		can0 = &flexcan2;
+>  		ethernet0 = &fec;
+>  		ethernet1 = &eqos;
+>  		i2c0 = &lpi2c1;
+> @@ -18,12 +19,40 @@ aliases {
+>  		mmc1 = &usdhc2; /* uSD */
+>  		rtc0 = &pcf2131;
+>  		serial0 = &lpuart1;
+> +		serial4 = &lpuart5;
+>  	};
+>  
+>  	chosen {
+>  		stdout-path = &lpuart1;
+>  	};
+>  
+> +	flexcan2_phy: can-phy {
+> +		compatible = "nxp,tja1051";
+> +		#phy-cells = <0>;
+> +		max-bitrate = <5000000>;
+> +		silent-gpios = <&pcal6524 23 GPIO_ACTIVE_HIGH>;
+> +	};
+> +
+> +	gpio-keys {
+> +		compatible = "gpio-keys";
+> +
+> +		button-k2 {
+> +			label = "Button K2";
+> +			linux,code = <BTN_1>;
+> +			gpios = <&pcal6524 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+> +			interrupt-parent = <&pcal6524>;
+> +			interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+> +		};
+> +
+> +		button-k3 {
+> +			label = "Button K3";
+> +			linux,code = <BTN_2>;
+> +			gpios = <&pcal6524 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+> +			interrupt-parent = <&pcal6524>;
+> +			interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
+> +		};
+> +	};
+> +
+>  	reg_usdhc2_vmmc: regulator-usdhc2 {
+>  		compatible = "regulator-fixed";
+>  		off-on-delay-us = <12000>;
+> @@ -37,6 +66,16 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+>  		enable-active-high;
+>  	};
+>  
+> +	reg_usdhc3_vmmc: regulator-usdhc3 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "VPCIe_3V3";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		startup-delay-us = <20000>;
+> +		gpio = <&pcal6524 13 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+>  	reserved-memory {
+>  		ranges;
+>  		#address-cells = <2>;
+> @@ -88,6 +127,11 @@ sound-mqs {
+>  		audio-cpu = <&sai1>;
+>  		audio-codec = <&mqs1>;
+>  	};
+> +
+> +	usdhc3_pwrseq: mmc-pwrseq {
+> +		compatible = "mmc-pwrseq-simple";
+> +		reset-gpios = <&pcal6524 12 GPIO_ACTIVE_LOW>;
+> +	};
+>  };
+>  
+>  &adc1 {
+> @@ -157,11 +201,27 @@ ethphy2: ethernet-phy@2 {
+>  	};
+>  };
+>  
+> +&flexcan2 {
+> +	phys = <&flexcan2_phy>;
+> +	pinctrl-0 = <&pinctrl_flexcan2>;
+> +	pinctrl-1 = <&pinctrl_flexcan2_sleep>;
+> +	pinctrl-names = "default", "sleep";
+> +	status = "okay";
+> +};
+> +
+>  &lpi2c1 {
+>  	clock-frequency = <400000>;
+>  	pinctrl-0 = <&pinctrl_lpi2c1>;
+>  	pinctrl-names = "default";
+>  	status = "okay";
+> +
+> +	pcal6408: gpio@20 {
+> +		compatible = "nxp,pcal6408";
+> +		reg = <0x20>;
+> +		#gpio-cells = <2>;
+> +		gpio-controller;
+> +		reset-gpios = <&pcal6524 20 GPIO_ACTIVE_LOW>;
+> +	};
+>  };
+>  
+>  &lpi2c2 {
+> @@ -322,6 +382,21 @@ &lpuart1 { /* console */
+>  	status = "okay";
+>  };
+>  
+> +&lpuart5 {
+> +	pinctrl-0 = <&pinctrl_uart5>;
+> +	pinctrl-names = "default";
+> +	status = "okay";
+> +
+> +	uart-has-rtscts;
+> +
+> +	bluetooth {
+> +		compatible = "nxp,88w8987-bt";
+> +		device-wakeup-gpios = <&pcal6408 3 GPIO_ACTIVE_HIGH>;
+> +		reset-gpios = <&pcal6524 19 GPIO_ACTIVE_LOW>;
+> +		vcc-supply = <&reg_usdhc3_vmmc>;
+> +	};
+> +};
+Hi Francesco,
 
-This doesn't explain why the node marked as reused. device_set_node() fits
-the above description. Rob?
+Do you ever tried bluetooth feature? The bluetooth failed to scan with 'device-wakeup-gpios' property.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+Joseph
 
-
+> +
+>  &mqs1 {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_mqs1>;
+> @@ -394,6 +469,20 @@ &usdhc2 {
+>  	status = "okay";
+>  };
+>  
+> +&usdhc3 {
+> +	bus-width = <4>;
+> +	keep-power-in-suspend;
+> +	mmc-pwrseq = <&usdhc3_pwrseq>;
+> +	non-removable;
+> +	pinctrl-0 = <&pinctrl_usdhc3>;
+> +	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+> +	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
+> +	pinctrl-3 = <&pinctrl_usdhc3_sleep>;
+> +	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
+> +	vmmc-supply = <&reg_usdhc3_vmmc>;
+> +	status = "okay";
+> +};
+> +
+>  &wdog3 {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_wdog>;
+> @@ -486,6 +575,13 @@ MX93_PAD_GPIO_IO27__CAN2_RX			0x139e
+>  		>;
+>  	};
+>  
+> +	pinctrl_flexcan2_sleep: flexcan2sleepgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_GPIO_IO25__GPIO2_IO25			0x31e
+> +			MX93_PAD_GPIO_IO27__GPIO2_IO27			0x31e
+> +		>;
+> +	};
+> +
+>  	pinctrl_lpi2c1: lpi2c1grp {
+>  		fsl,pins = <
+>  			MX93_PAD_I2C1_SCL__LPI2C1_SCL			0x40000b9e
+> @@ -533,6 +629,15 @@ MX93_PAD_UART1_TXD__LPUART1_TX			0x31e
+>  		>;
+>  	};
+>  
+> +	pinctrl_uart5: uart5grp {
+> +		fsl,pins = <
+> +			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX		0x31e
+> +			MX93_PAD_DAP_TDI__LPUART5_RX			0x31e
+> +			MX93_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B		0x31e
+> +			MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B		0x31e
+> +		>;
+> +	};
+> +
+>  	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+>  	pinctrl_usdhc1: usdhc1grp {
+>  		fsl,pins = <
+> @@ -647,6 +752,53 @@ MX93_PAD_SD2_VSELECT__GPIO3_IO19	0x51e
+>  		>;
+>  	};
+>  
+> +		/* need to config the SION for data and cmd pad, refer to ERR052021 */
+> +	pinctrl_usdhc3: usdhc3grp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x1582
+> +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x40001382
+> +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x40001382
+> +			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x40001382
+> +			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x40001382
+> +			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x40001382
+> +		>;
+> +	};
+> +
+> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+> +	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x158e
+> +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x4000138e
+> +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x4000138e
+> +			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x4000138e
+> +			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x4000138e
+> +			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x4000138e
+> +		>;
+> +	};
+> +
+> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+> +	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x15fe
+> +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x400013fe
+> +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x400013fe
+> +			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x400013fe
+> +			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x400013fe
+> +			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x400013fe
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc3_sleep: usdhc3grpsleepgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD3_CLK__GPIO3_IO20		0x31e
+> +			MX93_PAD_SD3_CMD__GPIO3_IO21		0x31e
+> +			MX93_PAD_SD3_DATA0__GPIO3_IO22		0x31e
+> +			MX93_PAD_SD3_DATA1__GPIO3_IO23		0x31e
+> +			MX93_PAD_SD3_DATA2__GPIO3_IO24		0x31e
+> +			MX93_PAD_SD3_DATA3__GPIO3_IO25		0x31e
+> +		>;
+> +	};
+> +
+>  	pinctrl_wdog: wdoggrp {
+>  		fsl,pins = <
+>  			MX93_PAD_WDOG_ANY__WDOG1_WDOG_ANY	0x31e
+> 
+> ---
+> base-commit: 8ce368ca61310f425012fea4549d2b6ad0c5c54c
+> change-id: 20260114-imx93_devices-a98e116463b3
+> 
+> Best regards,
+> -- 
+> Francesco Valla <francesco@valla.it>
+> 
