@@ -1,130 +1,142 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574742472B6
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 11:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3064D8D9B
+	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 11:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780658617; cv=none; b=BrsOhA00LkunmtTq9yfCTplF+BZ6HuTlcCKz6sv0VNPqb+VHssYeU1XOcshwKxrEbIkd2aMo3M8FGaPiOfqCpdWwxDRHulOKww1ZN9UT8Q9zZF8N/gmGkR8STMovGtdy46x25/kJuOWvskQauPuMu6/9RDaKhbRKvSlGzNKOdoY=
+	t=1780658946; cv=none; b=Ydnw44KRgYLyVKZXh2Uz/dP2TjQE8VBxhYA9y9/fbjox28F5TSQs6iiCk2Kun7zSQmwbmy9kvSOnIi4134o5Bmc5mj7g+Tr5eJQ14J9lJsT4hxeSvhnv6gEO7DogOQPgfB5Y/oEN85j4TcRSYNdIYtzrpBYfJPCkH7fIRBSPLvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780658617; c=relaxed/simple;
-	bh=P8S0OCKHV5oomZYdS72kmH3uSqLg+3/T1qhqVz5gEGE=;
+	s=arc-20240116; t=1780658946; c=relaxed/simple;
+	bh=LIlzqYj/0hi5yClnSDj2iZDsSeLFJhijGRJWCkXpdsU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JFOIxD0SPU2Kih16o1Nm/8cMG7rxN+PpMIzuFGJeYtwgAeIoIRCCz9F5BDbA0fmlw/0GgMbf0iNCJlgh+A/My04wD+Qb7LpoI3UGn12SQV3UY9XNSF4alcs9/kl0tdmAtWVpKXo187ZFAEKh4EeDUXqDu3VRoJAR0fuPM7QmESw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4GDFGnN; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ukG2d8kP6TGjLHPoToxUpAcsbiyacEqoFrYO4fml2uQoC+u3khGvLsJwicP26XfilVKuuM4MHUU/ggDaolc4i0zu5gbpdwEjx2jFf2dgBQOSSJ492koo2DyfUHq3eh24ZIk2I2vaU8i7nbS6EtB2oH79raeJVZXg8jLHrIzaLAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpqJhmtD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4GDFGnN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC2B1F00893;
-	Fri,  5 Jun 2026 11:23:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpqJhmtD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A81D1F00893;
+	Fri,  5 Jun 2026 11:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780658616;
-	bh=JN0rCQwtzUe8DzjX4ue1FESIXUvp/T+r9WwX3Jltj0A=;
+	s=k20260515; t=1780658944;
+	bh=nwJoYl4z9YwzrOTrGFnPw42XCXLrtKfU+4nGyfFmFoY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=H4GDFGnN6CNWbwKXkcMrCRxWuGsgMTQKVBshKlx8zQSyi2B8pPXup6lnjpWEjNRwt
-	 mmf6RztCsUk3YJQdXqKSl/CIf896Cx4kGYE7xDNet79Zu6DAQn5BKgY3qN3px4gUt2
-	 CUcqgSBDXJHLkq82rSZYQDy+Fj48CemIQe0kBfxs7XmEc8mlIdcOzvN4CyVpjmjYV8
-	 F6uAIyQxlrvILtXBa6yIjbwUffLEKelUsW/ljGiWa9nkIOUcB4YFp2KSOT9UCpROZg
-	 77w/Fup9t94oMd9X4pv/GVEeJnEQZxIVCM9/qkeOyMFiPPk6pf70wwPeAXKEE5nHOA
-	 hWp393Vf2rxYA==
+	b=fpqJhmtDZkdpI9pAcGwwhL0HCYZcwewZm0w6wA2ZFbXHuo0Dlwue1Ya6FQ5m949zg
+	 19otdqn4HJMawAlmpFARrHutaa7Q03qzHEXliBNPgbuVf0Nm43O3K6I+rjU/tG5D0h
+	 PjfCp2dT0V2X0+N2LJiCzheKCxe/sTxnODYqDuqKR6SNaDkI24qz41Ig15KQMHE4RT
+	 7Loxd/KtsOYhiJ2kmGafhJb888PtIlUBllCxaKPzm5W1IYVx1dTniqBZ+jvNgUXPRj
+	 iXkpjUDta/GUvHC0NWD4oiO+eC2eU1tKI2ygMh+sS+r/l+yMv51JteodsDYLKmYIdW
+	 Cx2k8XAY2UmTQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 3/5] phy: fsl-imx8mq-usb: add runtime PM support
+Subject: Re: [PATCH v4 4/5] phy: fsl-imx8mq-usb: add control register regmap
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Xu Yang" <xu.yang_2@oss.nxp.com>
-Cc: Frank.Li@kernel.org, olteanv@gmail.com, vkoul@kernel.org, imx@lists.linux.dev, linux-phy@lists.infradead.org, neil.armstrong@linaro.org
-In-Reply-To: <20260605-imx8mp-usb-phy-improvement-v4-3-b2ddf2f3862c@nxp.com>
-References: <20260605-imx8mp-usb-phy-improvement-v4-3-b2ddf2f3862c@nxp.com>
+Cc: olteanv@gmail.com, linux-phy@lists.infradead.org, vkoul@kernel.org, Frank.Li@kernel.org, neil.armstrong@linaro.org, imx@lists.linux.dev
+In-Reply-To: <20260605-imx8mp-usb-phy-improvement-v4-4-b2ddf2f3862c@nxp.com>
+References: <20260605-imx8mp-usb-phy-improvement-v4-4-b2ddf2f3862c@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 11:23:35 +0000
-Message-Id: <20260605112335.8FC2B1F00893@smtp.kernel.org>
+Date: Fri, 05 Jun 2026 11:29:03 +0000
+Message-Id: <20260605112904.6A81D1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Mixing `devm_clk_get_enabled()` with manual `clk_disable_unprepare=
-()` in runtime PM callbacks causes a clock enable count underflow during dr=
-iver unbind.
+
+New issues:
+- [Medium] Writes to the CR debugfs control registers are silently discarde=
+d without error if the PHY is runtime suspended.
+
+Pre-existing issues:
+- [High] Clock reference count underflow on driver unbind due to devm_clk_g=
+et_enabled() and Runtime PM.
 --
 
-commit 974b1a50a22e38e08aa5fd0139ae39d578c8f39c
+commit 3bce0d41a4e2282036c6fa41e62f47cfe0788d65
 Author: Xu Yang <xu.yang_2@nxp.com>
 
-phy: fsl-imx8mq-usb: add runtime PM support
-
-Add runtime PM to ensure the PHY is properly powered and clocked during
-register access, preventing potential system hangs.
+phy: fsl-imx8mq-usb: add control register regmap
+   =20
+The CR port is a simple 16-bit data/address parallel port that is
+accessed through 32-bit MMIO registers for on-chip access to the
+control registers inside the USB 3.0 femtoPHY. Add control register
+regmap and export these registers by debugfs to help PHY's diagnostic.
 
 > diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/fre=
 escale/phy-fsl-imx8mq-usb.c
-> index 591ddf3460618..27aa696f5dd40 100644
+> index 27aa696f5dd40..e24f46d7924b6 100644
 > --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
 > +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+[ ... ]
+> @@ -667,6 +671,14 @@ static const struct of_device_id imx8mq_usb_phy_of_m=
+atch[] =3D {
+>  };
+>  MODULE_DEVICE_TABLE(of, imx8mq_usb_phy_of_match);
+> =20
+> +static const struct regmap_config imx_cr_regmap_config =3D {
+> +	.name =3D "cr",
+> +	.reg_bits =3D 32,
+> +	.val_bits =3D 32,
+> +	.reg_stride =3D 4,
+> +	.max_register =3D 0x7,
+> +};
+
+[Severity: Medium]
+Does this regmap configuration need a .cache_type?
+
+Without one, it defaults to REGCACHE_NONE. Later in the patch,
+imx8mq_usb_phy_runtime_suspend() puts the regmap into cache-only mode.
+With REGCACHE_NONE, any debugfs writes while suspended will return success,
+but the data is silently discarded because there is no cache backing it.
 
 [ ... ]
-
-> @@ -693,13 +681,13 @@ static int imx8mq_usb_phy_probe(struct platform_dev=
-ice *pdev)
+> @@ -731,6 +750,9 @@ static int imx8mq_usb_phy_runtime_suspend(struct devi=
+ce *dev)
+>  {
+>  	struct imx8mq_usb_phy *imx_phy =3D dev_get_drvdata(dev);
 > =20
->  	platform_set_drvdata(pdev, imx_phy);
-> =20
-> -	imx_phy->clk =3D devm_clk_get(dev, "phy");
-> +	imx_phy->clk =3D devm_clk_get_enabled(dev, "phy");
->  	if (IS_ERR(imx_phy->clk)) {
->  		dev_err(dev, "failed to get imx8mq usb phy clock\n");
->  		return PTR_ERR(imx_phy->clk);
->  	}
-> =20
-> -	imx_phy->alt_clk =3D devm_clk_get_optional(dev, "alt");
-> +	imx_phy->alt_clk =3D devm_clk_get_optional_enabled(dev, "alt");
->  	if (IS_ERR(imx_phy->alt_clk))
->  		return dev_err_probe(dev, PTR_ERR(imx_phy->alt_clk),
->  				    "Failed to get alt clk\n");
-
-[ ... ]
-
-> @@ -735,11 +727,43 @@ static int imx8mq_usb_phy_probe(struct platform_dev=
-ice *pdev)
->  	return PTR_ERR_OR_ZERO(phy_provider);
->  }
-> =20
-> +static int imx8mq_usb_phy_runtime_suspend(struct device *dev)
-> +{
-> +	struct imx8mq_usb_phy *imx_phy =3D dev_get_drvdata(dev);
+> +	if (imx_phy->cr_regmap)
+> +		regcache_cache_only(imx_phy->cr_regmap, true);
 > +
-> +	clk_disable_unprepare(imx_phy->alt_clk);
-> +	clk_disable_unprepare(imx_phy->clk);
+>  	clk_disable_unprepare(imx_phy->alt_clk);
+>  	clk_disable_unprepare(imx_phy->clk);
 
 [Severity: High]
-Does this mix of devm_clk_get_enabled() and manual clk_disable_unprepare()
-cause a clock enable count underflow during driver unbind?
+This is a pre-existing issue, but can this lead to a clock enable_count
+underflow on driver unbind?
 
-During imx8mq_usb_phy_probe(), devm_clk_get_enabled() registers devres acti=
-ons
-that will unconditionally call clk_disable_unprepare() upon driver removal.
+The driver acquires the clock using devm_clk_get_enabled() in
+imx8mq_usb_phy_probe(), meaning devm manages the enable state. However, it
+manually disables the clock here during runtime suspend.
 
-When the driver is unbound, the driver core calls pm_runtime_put_sync() bef=
-ore
-triggering devres cleanup. This suspends the device, invoking
-imx8mq_usb_phy_runtime_suspend() which drops the clock enable counts to 0.
+If the driver is unbound while the device is in the runtime suspended state,
+the devm cleanup function will call clk_disable_unprepare() a second time on
+the already disabled clock, since there is no .remove callback to resume the
+device first.
 
-Subsequently, device_unbind_cleanup() executes the devres actions, calling
-clk_disable_unprepare() again on the already-disabled clocks. In the clock
-framework, checking an enable_count of 0 results in a kernel warning.
+> @@ -752,6 +774,9 @@ static int imx8mq_usb_phy_runtime_resume(struct devic=
+e *dev)
+>  		return ret;
+>  	}
+> =20
+> +	if (imx_phy->cr_regmap)
+> +		regcache_cache_only(imx_phy->cr_regmap, false);
 
-To avoid this, the driver could either handle clock initialization manually
-without devm_*_enabled variants, or implement a .remove callback that
-explicitly wakes the device via pm_runtime_get_sync() and disables runtime =
-PM
-to prevent devres from executing on a suspended device.
+[Severity: Medium]
+Should there be a regcache_sync() call here after disabling cache-only mode?
+
+If a valid cache type is added to imx_cr_regmap_config, the cache will need
+to be synchronized here to flush any pending diagnostic writes to the hardw=
+are
+that occurred while the device was suspended.
 
 > +
-> +	return 0;
-> +}
+>  	return 0;
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605-imx8mp-usb=
--phy-improvement-v4-0-b2ddf2f3862c@nxp.com?part=3D3
+-phy-improvement-v4-0-b2ddf2f3862c@nxp.com?part=3D4
