@@ -1,66 +1,69 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010034.outbound.protection.outlook.com [52.101.69.34])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012020.outbound.protection.outlook.com [52.101.66.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFA312C534
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 07:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233C5477981
+	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 07:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.20
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780643058; cv=fail; b=NrkPlAGDfi24o261e3A0uYKKibhuai9Rf09fDbN3zNng8qQ6hAGVrLaFnFsT2NCiZ2l6vMFIlUuWyMfHEmWDx4yUJe4bjVTW9wpqCypoClCpnG+awds2VD6q8zJNuYvME1CiNgSx9l7p8zgoPfS9bAkMvgCya50s0e90JJgi+7U=
+	t=1780644180; cv=fail; b=bu5D/RM0AYsGvVkZmwdrRUg2rMwjYpZpiRwEhOALhd5X4nqWFEZ88qy91rcT1mdNiSvd7fqm9w7xCjzDgz9xpnv4URrOlfP+XxXz/H15Gkt2dQYlvKWiYWhQaNuOvijbnFCD411ZofcadfGDgtYRD7WZMdoxcNp/aVNEb8yKNDI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780643058; c=relaxed/simple;
-	bh=gUaCOiBxxkKfZqj9GERLQT2v3BmjC3/hEUknO6FhKqo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jaMQ4PgITNR6mQjxKpPdakT7/JjHyGRFE75fqI7wBMfvnpG7vTbzC98gfSnMzZgbJotBaPelUv7ibTHYzgnjyWxdKP2dPVkkISW9GVD+MQVMInhJcAHQvBjtXXvoGMWT4zlyC5sPMJU3wqTFu3kw32inhsPoirYZMw2lEjOXYkw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=rN7aXsW6; arc=fail smtp.client-ip=52.101.69.34
+	s=arc-20240116; t=1780644180; c=relaxed/simple;
+	bh=F/Q3/VnF80p8yo65apXsKiH3n0V9mMz9yqnFU8o7bQg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Sek6JHoKP6kc0nhS0KhJGYMuJkt8iqjN1NHt3gbcTD2ZZjJRJCVUykI1Iamn2hSslxDUH2oZIcJjacjHhurry8Sv1ZebInyEjqJGxbKrvTodX197ha+123Mpf7hia1Y4hjCP9F5dQ9Kcy5KfvL23XEWJv7Jf1RKFh7Bsak28mpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=SzewL/Jd; arc=fail smtp.client-ip=52.101.66.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="rN7aXsW6"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="SzewL/Jd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RxCZ269VBGvDMEi8SzM2ke0ojFmw96BpkGf09BxVqPw5M23wM1T834fIvHn+BIARUYExdpdMpMHHQIpu5wCRfT+b8H+JQ5PnX06TgOlQug9N3naxi05va+pMzaIKUZck6ZMjmsatyN9vw2Y0EiE0/IfPWgBwTk0sqne4g2nM54IThbrZdoVtooJqTCNznJa9XbXAIa9ZULKEQCqhZJtqkb535vUYpEqL0CCqVF0yF/NhIavsCr0zjR9O1ahHwwwVLDwCjuIt5mGCvJo3+IKqzyBmsWc/ZiroCBn7+2EPQXr+WrflmbkclmTlIfN1sYrV3ZnQ3OwYTIb0HaH/4uoOAw==
+ b=pVDcZx+Jsh3T2JHsjkQf4WNEMbQhUYGCMeR3LgiQjx8MeukHr/T6pqLXTvFoVZNDVO/RZ0nBRb8ZfNFzZ+aVsJRoZg1zOeIGyX3Ps4R0pLBO87hfZZTsP80+KIkzuPyZHiJqFy2sWBXNy7oYGG5wxVynLMTn2/LHUAE8XuS9nAmvci/+striaASoCaq5dLnR4rRkuGBCq/Jgeji52yDTNUnTMggKX9b6zlr0+TFZ3uj7nN4AbcHNzufmJ58g1TDM6Q0dWRTjS1AF7DddJn+B0tTI4mNhN73AQtDjSSykMu9LvTBfvCwGSjo7YLc96Ruwep3JIKMbOrXoYl0cdnNx2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GJYV6WH+4TSIGlwoM0llogfoMYy3dpMtBr2Zcx6CpeI=;
- b=w3dsuYaVK5jA3vhtJnSojY+lCPvkTmeDNc4Eg+M75avzLKkb+4ds6lxw5S3v1kGd0PRxyOF6euAH/VMB6X4U/EmhuSvptUn6ES+yUFExhmQmg0S+x/MHEoMQ92MKT1no3vc16kqOCeP/Qzlm2lG0LYR5+iQpSY3xC+5q2XB06QVlmYjaMUov5t7Iji+R0hnaIpQVyNsHy7XrtCyweBTyUk4PL1/EbVM6V8nDWzrqt9NlHrLt3LTDb3+BsDuiGWOoCN6N55fRfqc5wPsG9YyooiDlAlLWUrTjfBTwfy0S/OfudmbZTqsFgvhPtp6NEOFKomaG9HcQEnuzWSTrzPmD0g==
+ bh=bR/gbiC5/r/WYrcT7mCaMMk6E8099fDtDY1mwNC4wcs=;
+ b=KBAfT+lYWWPj5x4pyG7vE6ywol/qI65NMklzlsKeRBJmUgNesXC2GjpB7OQyXPW6XKepy5gS9joqALz1LsdFwJtn79cqAXKF93TX5e2bEzBgDpoT0LTltSPhj4sFL6cdjedx8rySjxYkLa6FoJHHQn9QqOLXXZDlygLdVPMeRabaIlj0aMKtQRD34xmxLzRX0uVMT3aTTFE29rLRP5SFlDrrZqoKPL9bYCqEidPHMIV4imM8W1HZ3CPkxHIAodRkiOQ4ARXURFYQJNqpaaTMUMA7lYuWgLAhdxYlckeLK58p0us8nxRfptN+uWWQQB9FPsxXbw9kYLSrElBseWMMFQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GJYV6WH+4TSIGlwoM0llogfoMYy3dpMtBr2Zcx6CpeI=;
- b=rN7aXsW6Zh72XLug4IHqSfuuw0CnkuwwZxFPrBne4piNPQax0/V2VQZUBSso8eOgInL5R4kkKfPESIAkyhdOw/X2klMeKo18Mcu2QiAWzRTfBLmK6VP3axBpqFRmsqrrbUGxgrjiAw2SQbP52YKUhPu2HhK/4xYWYAGhy1CVhmuxlhWXA/bQuw8MWRcATSbM0a0dDn9TAXZHncpor0hN2dE0hZLr8Q8AN22KJBDX8h/wHZzPsupLZf6IW+OO+UIZUyxLfq9N4HSCmkFr/pkIS5HDRSWebDH74TwNc2BoS9OuPgnLZcV2+cKIW353dkUhJD/vVBibm5G7lCqyecPayA==
+ bh=bR/gbiC5/r/WYrcT7mCaMMk6E8099fDtDY1mwNC4wcs=;
+ b=SzewL/JdYC4mCfcmkTqjcsRlggnpdwHjsYwvU74tz3P09DaldpU20uVXFMpM6JfmV5DrIsMwcVyUVy92kdf3kwa1XPsteAaGAbT82uYOYIdA0BqUS6bLFHhgyo2peiwTop0gJ4bFrpl+QivA+PR/oGkdPQCqN1H4kerk1xUOBasgXstzI44f1FP8yRYtjyjbHLJOxe0fX33vCpHy9Apr+bFmiJ5xEbcQ1dBHIFZ6h8Deqhd206YoHM4hCSEyALHgsjmrWa41Hxe9VtplFdcafu0ulyO4c7cDxHmiD1ScroK+C/bEwkNP6A19v5ceD1EPo+QVZBAhAkXLyOegZhWOhA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
- (2603:10a6:102:51c::22) by AS8PR04MB7576.eurprd04.prod.outlook.com
- (2603:10a6:20b:29b::8) with Microsoft SMTP Server (version=TLS1_2,
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by PAWPR04MB9815.eurprd04.prod.outlook.com (2603:10a6:102:381::19) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
- 07:04:14 +0000
-Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
- ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
- ([fe80::a4b:fa4e:7fe7:e6a2%5]) with mapi id 15.21.0092.006; Fri, 5 Jun 2026
- 07:04:14 +0000
-Date: Fri, 5 Jun 2026 14:59:13 +0800
-From: Bough Chen <haibo.chen@oss.nxp.com>
-To: Joy Zou <joy.zou@nxp.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>,
-	imx@lists.linux.dev, linux-input@vger.kernel.org,
+ 07:22:56 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
+ 07:22:56 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	wei.fang@nxp.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] Input: snvs_pwrkey - report press event in
- interrupt handler
-Message-ID: <20260605065913.grovxx53yzvi6yxj@nxp.com>
-References: <20260604-pwrkey-cleanup-v2-0-59fa0ddf0d7c@nxp.com>
- <20260604-pwrkey-cleanup-v2-4-59fa0ddf0d7c@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260604-pwrkey-cleanup-v2-4-59fa0ddf0d7c@nxp.com>
-X-ClientProxiedBy: MA5PR01CA0133.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1d5::18) To PA6PR04MB11909.eurprd04.prod.outlook.com
- (2603:10a6:102:51c::22)
+Subject: [PATCH net-next 00/15] net: enetc: SR-IOV improvements and ENETC v4 VF support
+Date: Fri,  5 Jun 2026 14:55:35 +0800
+Message-Id: <20260605065550.3038579-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI3PR02CA0013.apcprd02.prod.outlook.com
+ (2603:1096:4:295::10) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,181 +71,127 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|AS8PR04MB7576:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6c2bff39-997c-4a55-f3a0-08dec2d0a6a1
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|PAWPR04MB9815:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c55dc81-3b5c-4b3f-5f08-08dec2d3434f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|366016|1800799024|4143699003|11063799006|56012099006|6133799003|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|921020|18002099003|6133799003|11063799006|5023799004|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	JnZTuSapACtz2LeEojS12qa5BJHaOihM6IUKlaEFydoLajpvJW+oGbixnmzZw5fGkA5K/QBPSNdjpbc1/tGWG45Ftv84m0pyqAXSB42Le1Jkg91wfmsqvgBml6HlAxXl1rsbvcr2ZWOBoTODwajHTx1KiQ6wgoU7itoBBd5/ifkkagG0zersBhf3TMSJD/pEvyjxg0IhkoLTrtw2NfhIdAymzSb9sQBXmdN3qsYPRRfKLKC4iimg9zGEZQmlSBBDVur7V0WaN7T8eP9xQbU2v3pf2rO9UoOwH8IcD9sHKYNls4/bnxIrxHzcanVwIn6E0kJ4bkpeZ+TbrJ4WeLC074aHzlKzrGmfWhlcbgpXcF1bDt5jO5SbijuFm65fklG14GO7mNKEl9o0LOmn1+1JNl8nq2x2q4Z0kYgq8NAPtcxTurCgF9pGlSi2FKDCVpW8zEgMLpAxoSto/uQXaHwe7p6d29hUUbjs5yRUIeCOKBlZi7ogrfWNZZngef2L6TiwFbXyRDkuQItAvmx+WNrV0g9gwbIKu4sSHEVDR5cjJfOh4rFgNLyKtf0erOE0NAgJlpHuPJE/rYc+PwaVfkIrN1jLWzUaT9SV1dTkxlEmJjDByTpS/5qUMNWvviitjtPI7XNv8Wxl96p0YP73Y7sB9ATD5Z30XN1aVgpeMglbfCefd5n+8XngX9Lqb0PYZF48
+	ciqwE8nayr8EeddTCv7L6E3KrmJx1PMCn8MujoICo3jNQFmTNY3lrpS7FLva93zmA87B6qbgkcnQZgE63VPt+7lNjk1zjcGmt25y/3QCK28c3QkDInk7gpPgQI2r1cOIqmbPxiOao5wkVUQJDK9tO91tuf4VG9BwKSTSIaO8XdlcgsepkYcU736M/+ok0yJO+5HG0rlv+am7n6aBSoTMIDILnIU8Bdl2yDIR/L8CKol660p22jdMz0HR175JuYsiSybXDDMpoLWAkEoikCVJsvEK9D3ppewNWxV9hQwe8Y3s4sUnDQPQjsxPutO6+uY0rFDfHFHYl7Wl2XvWDgQiQ0rXcH/tArp/OgGmPh9PIDMSIPLjbGZa3OGskzvXULGr6wJitA5878ysc9EbZWyoePsXD0pCX67aEPLw1SpO1FOuEHAidv4fwLAKS4FfkpysbvYm1eF3E+RGjtxbUNn0fZvtq3WJg64XXWmiFCjZwgDQWHB5P+TJM6mdS6caouA2uUzvYcGuK2rbX7ZTNkSOjr37PTk2m91gF/bZG01du9AVAN1khuP7u6RJALqm1MD9ZsQxLp+DUDnPa0iRtCn+XO598q1k3VgVc6fhsmdkOIFIgGz0SgQ0Xp1SuojInl8vhJlKh/taj9GLaesEixN4WFE+z/ElhajDMYZ3ifrWOuysAq5uDrllUbz6rD9nC4fObOM+3hPvz9CUnF2MFMyIiXXXdyp5u+ISlJyaK70P6ww=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(1800799024)(4143699003)(11063799006)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(921020)(18002099003)(6133799003)(11063799006)(5023799004)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WQ/BsUNFiShn40zmiUU5xSEua2GcObMh1LzhxDCYZhc3F5An7lG/hh8Ey44m?=
- =?us-ascii?Q?D4RWxp7kRePfNAQtBjoUtYOX59uZF8wPudbVthdmuW48MFa2ZjR7NWe34agz?=
- =?us-ascii?Q?CLs1mp4LFvEFc8GPFZMMBhJ7ADM0SMLYOWAsOpXTsjH5s5ZtZvjt9WHEqFCt?=
- =?us-ascii?Q?71bRwMzlZXFmdTHqxeTw7TOjLNzebiCgD1fV0E87FE1JQzt/lnWhb6VBXQt2?=
- =?us-ascii?Q?MFQw0/MEydfnHlqZV/dUfwQ0C1UaOzoP8V9mx/qXYv6yHpi4NjBfoI1Smb1I?=
- =?us-ascii?Q?44eioypdLk+gLR+Ejk6vQHjtd83dcm5nQTpjQt4nI2BLlAOiz9V2LSoRR6PR?=
- =?us-ascii?Q?N8LJtBVXH1f+0StJJaRh2FhQ3+9T96x8EUfIWzTiISO6xirAWWtbybGVvzvL?=
- =?us-ascii?Q?QynlewYcKm+QBKVpsKOBb6EXYx3kO/YNQlHSQl38E/vOdyOq8WbXmvHHqjNi?=
- =?us-ascii?Q?PWfyYKRjRcWT6q1qE2IcPYdh636Dxg29g1uQV/Bj/ShCuPuugJXRG67kSZeY?=
- =?us-ascii?Q?jzkJyHa6fY4cd6tF91X6bqgHoDUkqV0cH8PpGgvXzMkrgDqpaD4S5i9dGK7F?=
- =?us-ascii?Q?F8W23A+ijwWa2rjfK98uAUtlZZGkcyxDDN3ae+iuCSXGoVahmSMf/qYmGhPg?=
- =?us-ascii?Q?xsWlMd2LhhwKlaTck8CxlnS4jPw9Ob++R3RbG6SKhLhEPLauBhZBDNXvGhCe?=
- =?us-ascii?Q?Nw4kwb7AuT7xRY3BKpptRKQtgXdddEUEtBTT2RU0Kuj+KUiccJyj14FAhP+y?=
- =?us-ascii?Q?eRyaCQXW2enccjTaKNBW4wyQuvIBZ7jzyFSKDP79jGgiHPsMoZYS5s6c4g4Z?=
- =?us-ascii?Q?r2afvoBqhR02zuoMNfgBOrDSLsiMTGd62pX4dQ7o82olth+M1yXLRpn/VP0G?=
- =?us-ascii?Q?9tPLZkFmTODGL+ZTgKNoRrSwWvyaAIIWAAOunZ17t4e1Ghg1Pan51zQ1029b?=
- =?us-ascii?Q?BxME5YsNlF/1jzNgXUKsMTQ337PcSzYCbbbvH4GHNXRbLZUHaJlgxXYEDJJX?=
- =?us-ascii?Q?OaakzO6hBjvm6qBXoKtl0H4K9lmyfCMNJgqKvSZqjsH4sZ0tZD0dfvr2Aw/x?=
- =?us-ascii?Q?fIIyhqy/zVn4OPhIWL6IdjCGc5JCPZX+SlQtKW28pUsQjk35MSJRs2dy5hED?=
- =?us-ascii?Q?LjZc0WWC7E+w7BLabZ0IPdMJ3LGsX4zJ0YeniRH8wZeVxVKRF8dT+wYHOUet?=
- =?us-ascii?Q?s21mmVr5lhAOmtaV/XU18WEMWmhHESmycM0MG7ey43TjNvrzOWw6y0lRn6Hv?=
- =?us-ascii?Q?kysxudWN/aofYLV/n586plQD8TAy0dgUjQHGUL+tdv5rl0qH7cd+I7dUZ1p8?=
- =?us-ascii?Q?Na2KvjZarJrfcPFjb50AqKr8lCSTcctKqfw7KTgSf9y9KeUQBeNA+WeAy7/8?=
- =?us-ascii?Q?O7tJQn9rKlEVZGk+nB+mYU2MtvppMGuDp7GAYBHF1PmoXVaoVZszS/bmGuiH?=
- =?us-ascii?Q?t/vIkCUdPtoaBKaDCcbCYwNvlUR1sHRVSscIaJ7rsm4H1oO168g0QLYHPZqK?=
- =?us-ascii?Q?MDcvEFXCzDbsPNeEQzf1UNq94TO7HPashbkA66daguy4BhqsGf2/bm5F6huD?=
- =?us-ascii?Q?Phxb+BKJ6GIFPVgX4M95Gq2UYoD/MEKmm1DRyHBzsdmBKV9+1TNAorc0iQcF?=
- =?us-ascii?Q?aaLXhsPK79vmCUzmimKzrlOys5DpTc0vTKVlQYLhSyGOdmtYQbXLZM98TA9j?=
- =?us-ascii?Q?URAV0EmqsfqVBIa32HyaX1+ByRjgaPs2I7v8IRAFWsHOFSk1hnNSbyyx5pxg?=
- =?us-ascii?Q?jRcsvXk+2shrOziMk17FIxCiKwOh+AXr/QvzXjdmJPJXkCt/4wl+?=
+	=?us-ascii?Q?IItCcmPuCZ/2O9vNyBc+ODqiEpkK7yD8mBCOGy+P6Gn1SKFy8Uhy9b3S1+tN?=
+ =?us-ascii?Q?n0eH/ESfBZ92ouLXEREJgrEebRS5AvARg/F6g3eol0HpXFwKieyK7HCuAk3L?=
+ =?us-ascii?Q?ymVfbdDXALdJGS6Fr/bh3zNZmsPpUpLZOi4n/N+UIYety95n3BnDL060mbhi?=
+ =?us-ascii?Q?SzyTgM5OIUEfQMIEfQxtS++dfyhb7rlh7NHuCuVNkyLz+5nI4mrazttOIuKE?=
+ =?us-ascii?Q?n08aB4t6/lId/aR2kAQTY9gvqz+i5pH4UOjfYwSV/GvvXKDkr0bC9iaAwTFf?=
+ =?us-ascii?Q?FJUQzdQusCLVC50039ltOAfREveYdGMork1u8fgWoCs6w3kb56wYITXOB4vY?=
+ =?us-ascii?Q?0n+jOwom25DYHw8fBFg8WFlKNZbURllSbsmShx4MmoSfoPW3kINueLjQ9pA3?=
+ =?us-ascii?Q?NuWFcY3KDf47RcExDB8CPW2OgEsSwQ9VkGdVriRkEP2OEgPP32fTXnnPvbKY?=
+ =?us-ascii?Q?Xa2h4Kh/nu/Zx0JUhtRO6cfoIMbGvj7hG8LCL0vuo0/r66R2oLlrq3rKH4tg?=
+ =?us-ascii?Q?FTVBkT18l+hMkNUH3fo1P1Pvk50+GMPLJBPIOzt/jwPKwzVeWXtHLp0Xa7Ts?=
+ =?us-ascii?Q?1lVeGexyIVpzwjomrCQOUlqc1jdmgMKoqcGLYpM9xXadvQYx04xK1ywC2uyQ?=
+ =?us-ascii?Q?kvL/CA6fLG6dZR05MyO8Xp8GS6HCiBUKxIdkoWTPsNNC5RqPw5he4eVu+ERS?=
+ =?us-ascii?Q?6z+nl+5JriFQcrQ4FrYgoAH1KKaH8U/UsvAM5sMPXReqfzFlG3LK7BHfmKev?=
+ =?us-ascii?Q?CibnBiyB0vSs81Xchv6yGgaq2xJd5ANAYO31PhONevbAeZf1BWtJ2xSop2tz?=
+ =?us-ascii?Q?WcNgRWJrOC1AEJ4oHBYMEbeZHNWD4saOdOdEyTLE7wU4yqbrxQQI6J2Qsf7e?=
+ =?us-ascii?Q?KNGmeSuQPglFk50qNXxYrUMu23LCa5FqjLBcPafOQoUeaQNUG5+nqy1Ctiro?=
+ =?us-ascii?Q?349UwGW/3l+eSOxmZNnCrvyrOmqVTnLeRqU+H7fawOJ6kmQGuhPtxYi3Cfcs?=
+ =?us-ascii?Q?Si2+U1BwUDDQdxbQF7u59n/gdI3RQLRqXYRo0cZ0gw6kaa+EXesZUP1XaJQ4?=
+ =?us-ascii?Q?dzOFYmHBNws8Mz72kDF9ja1QsuqRLy2Imx6nAw8UqXpg0hqOb4GzAgnHVuYS?=
+ =?us-ascii?Q?SHJ3maKNwq/l1fOlAIUfYNdwcCQ/TvjFNNG5CIQDuaDs0x3q0t5lD9S0EH+A?=
+ =?us-ascii?Q?FlmDElvpGEGTWWp4s84QHBrxdji/WN1wuX8rGcfmV0OrbSM8mkcb+I1N5usO?=
+ =?us-ascii?Q?9a1zl/hrja+QrGM6XCL5Gamy3kWPZsUJE3IWa9n0QgkI5561IYT6aU/dJdlg?=
+ =?us-ascii?Q?To+6jpPjABdnMYFWmabDp7Og2twHhIbponCCIHNijM5tbfENNOKdalzD0JPf?=
+ =?us-ascii?Q?3I1urlX8lViWJ2NecFGiMEtyoX1Divj8uf+R6iIcT1gmjW4/hQ8vmbqfom/0?=
+ =?us-ascii?Q?rd9lZ8OGVL7b/RzBpPE6ASBBwR3gLpz4WBQZbciwvD3q9Bsw2LQ4y9cF/fho?=
+ =?us-ascii?Q?TPx0nWWWh2qe0//BUUKV++azAfjrlzF/ZL/R5swtZGWlbteg7bOB7nFk+XEj?=
+ =?us-ascii?Q?jlBDm84890AZUN3XawbfkXMXJHmYmjPIsrv8uD5teaWUStLBZ1DuyGndpMR/?=
+ =?us-ascii?Q?F87DelPb27voxEfocArxLnYZ/M4LEIhnjCtGF3ggDEoKYzO70J2KQgDqXlMR?=
+ =?us-ascii?Q?3jPs6IspNPQtgiqt3DWDbO3veYfODgKdPoXO4LGJ1ihibds+mt/x1H55ewqW?=
+ =?us-ascii?Q?1FtdrvpXiWBLqz/Buwyt48ZPackxbKwrLNCnDoAhdcJGpjkeUyhQ?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c2bff39-997c-4a55-f3a0-08dec2d0a6a1
-X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c55dc81-3b5c-4b3f-5f08-08dec2d3434f
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 07:04:14.0996
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 07:22:55.9277
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /UW5oAe9wygN4oIijKqHyrkqdtzFBqYQNBgwGoqum2Dkw6Maj8rDTPVcxfoNMn+yj/6E2MSsrYOnIL09r8fJvvrz3FOdSUf8JJAaBlZJlre7ru2jls7WEucr/UQxSodD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7576
+X-MS-Exchange-CrossTenant-UserPrincipalName: T4uOvpWAt2bhKuZCo7O/2GQ4BK2IgHLoVTl1rC6AOz9TXfiBGQ+J89flxRqqRWbY/34BCJE7zfBk5DFibm32TE/ncvmimQNLiRxrTQ//QtJ62Me5PUgKnF1J5L7sYSLV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9815
 
-On Thu, Jun 04, 2026 at 02:56:24PM +0800, Joy Zou wrote:
-> The driver implements debounce protection using a timer-based mechanism:
-> when a key interrupt occurs, a timer is scheduled to verify the key state
-> after DEBOUNCE_TIME before reporting the event. This works well during
-> normal operation.
-> 
-> However, key press events can be lost during system resume on platforms
-> like i.MX8MQ-EVK because:
-> 1. During the no_irq resume phase, PCIe driver restoration can take up to
-> 200ms with IRQs disabled.
-> 2. The power key interrupt remains pending during the no_irq phase.
-> 3. If the key is released before IRQs are re-enabled, the timer eventually
-> runs but sees the key as released and skips reporting the event.
-> 
-> Report key press events directly in interrupt handler to prevent event
-> loss during system suspend. This is safe because:
-> 
-> 1. Only one event is reported per suspend cycle.
-> 2. Normal operation retains the existing timer-based debounce mechanism.
-> 
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> ---
-> Changes for v2:
-> 1. Add a boolean variable suspended and PM callback functions to replace
->    the use of the is_suspended field per AI review comments.
-> 2. Move event report handle to else branch in suspended state, since the
->    pdata->minor_rev == 0 branch has no debounce detection per AI review
->    comments.
-> 3. Modify the commit message.
-> ---
->  drivers/input/keyboard/snvs_pwrkey.c | 35 +++++++++++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
-> 
-> diff --git a/drivers/input/keyboard/snvs_pwrkey.c b/drivers/input/keyboard/snvs_pwrkey.c
-> index 4a1d04898482669894e9978014b62e4e9774b4e4..f212a6b26185d13e1af62728e7b2add5010adc5a 100644
-> --- a/drivers/input/keyboard/snvs_pwrkey.c
-> +++ b/drivers/input/keyboard/snvs_pwrkey.c
-> @@ -39,6 +39,7 @@ struct pwrkey_drv_data {
->  	int keycode;
->  	int keystate;  /* 1:pressed */
->  	int wakeup;
-> +	bool suspended; /* Track suspend state */
->  	struct timer_list check_timer;
->  	struct input_dev *input;
->  	u8 minor_rev;
-> @@ -92,6 +93,15 @@ static irqreturn_t imx_snvs_pwrkey_interrupt(int irq, void *dev_id)
->  			input_sync(input);
->  			pm_relax(input->dev.parent);
->  		} else {
-> +			/*
-> +			 * Report key press events directly in interrupt handler to prevent event
-> +			 * loss during system suspend.
-> +			 */
-> +			if (pdata->suspended) {
+From: Wei Fang <wei.fang@nxp.com>
 
-Here, pdata->suspended should not be safe for SMP system, maybe to use atomic_read() to make the code more stronger.
+This series enhances SR-IOV support for ENETC v1 and adds VF support
+for ENETC v4. For ENETC v1, the trusted VF management and per-VF
+configuration query via ndo_get_vf_config() are added. For ENETC v4,
+preliminary VF support is introduced for i.MX94 and i.MX95 platforms.
 
-> +				pdata->keystate = 1;
-> +				input_report_key(input, pdata->keycode, 1);
-> +				input_sync(input);
-> +			}
->  			mod_timer(&pdata->check_timer,
->  			          jiffies + msecs_to_jiffies(DEBOUNCE_TIME));
+On the PF side, the series introduces trust level management and MAC
+address assignment for VFs, and implements ndo_get_vf_config() so that
+userspace tools such as 'ip link show' can query the current per-VF
+configuration. The PSI-to-VSI messaging infrastructure is extended to
+handle link status and link speed queries from VFs, enabling DPDK-owned
+VFs to obtain accurate link information from the PF.
 
-Here already report the key when pdata->suspend == true, seems do not need to trigger the timer again.
-Is it more reasonable to change like this?
-if (atomic_read(&pdata->suspended)) {
-	...
-} else {
-	mode_timer()
-}
+On the VF side, MAC address filtering is implemented via the VSI-to-PSI
+mailbox, supporting both unicast/multicast hash filters and promiscuous
+mode control. Since the ndo_set_rx_mode callback is invoked with BH
+disabled and is incompatible with the mailbox polling path,
+ndo_set_rx_mode_async is used instead. Link status notifications are also
+supported: the VF registers with the PF and receives PSI-to-VSI messages
+on every PF link transition, keeping the VF carrier state in sync without
+polling.
 
->  		}
-> @@ -219,6 +229,30 @@ static int imx_snvs_pwrkey_probe(struct platform_device *pdev)
->  	return 0;
->  }
->  
-> +static int __maybe_unused imx_snvs_pwrkey_suspend(struct device *dev)
-> +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct pwrkey_drv_data *pdata = platform_get_drvdata(pdev);
-> +
-> +	pdata->suspended = true;
-> +
+VF Function Level Reset is handled explicitly to restore the PF-managed
+MAC promiscuous policy after each reset, since the hardware default after
+FLR enables promiscuous mode regardless of the policy set by the PF
+driver.
 
-atomic_set(&pdata->suspended, 1) 
+Several preparatory refactors are included to share infrastructure
+between the PF and VF drivers, such as moving msg_task and mac_filter
+from struct enetc_pf into the common struct enetc_si.
 
-> +	return 0;
-> +}
-> +
-> +static int __maybe_unused imx_snvs_pwrkey_resume(struct device *dev)
-> +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct pwrkey_drv_data *pdata = platform_get_drvdata(pdev);
-> +
-> +	pdata->suspended = false;
-> +
+Claudiu Manoil (1):
+  net: enetc: add trusted VF support
 
-atomic_set(&pdata->suspended, 0);
+Wei Fang (14):
+  net: enetc: move msg_task and msg_int_name to struct enetc_si
+  net: enetc: add link status message support to PF driver
+  net: enetc: add link speed message support to PF driver
+  net: enetc: use enetc_set_si_hw_addr() to set VF MAC address
+  net: enetc: relocate enetc_pf_set_vf_mac() for common PF support
+  net: enetc: add .ndo_set_vf_mac() to the enetc v4 driver
+  net: enetc: move mac_filter from struct enetc_pf to struct enetc_si
+  net: enetc: add MAC address filtering support for VFs of ENETC v4
+  net: enetc: simplify and rename PSIIER enable/disable helpers
+  net: enetc: restore VF MAC promiscuous mode after FLR for ENETC v4
+  net: enetc: add VF support for i.MX94 and i.MX95
+  net: enetc: implement ndo_set_rx_mode_async for ENETC v4 VF
+  net: enetc: add PSI-to-VSI link status notification support for VF
+  net: enetc: add ndo_get_vf_config() support
 
-Regards
-Haibo Chen
-> +	return 0;
-> +}
-> +
-> +static SIMPLE_DEV_PM_OPS(imx_snvs_pwrkey_pm_ops,
-> +			 imx_snvs_pwrkey_suspend,
-> +			 imx_snvs_pwrkey_resume);
-> +
->  static const struct of_device_id imx_snvs_pwrkey_ids[] = {
->  	{ .compatible = "fsl,sec-v4.0-pwrkey" },
->  	{ /* sentinel */ }
-> @@ -229,6 +263,7 @@ static struct platform_driver imx_snvs_pwrkey_driver = {
->  	.driver = {
->  		.name = "snvs_pwrkey",
->  		.of_match_table = imx_snvs_pwrkey_ids,
-> +		.pm   = &imx_snvs_pwrkey_pm_ops,
->  	},
->  	.probe = imx_snvs_pwrkey_probe,
->  };
-> 
-> -- 
-> 2.50.1
-> 
+ drivers/net/ethernet/freescale/enetc/Kconfig  |   1 +
+ drivers/net/ethernet/freescale/enetc/enetc.c  |  26 +
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  10 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |   1 +
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  |  81 +++-
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |   6 +
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |  25 +
+ .../ethernet/freescale/enetc/enetc_mailbox.h  |  86 ++++
+ .../net/ethernet/freescale/enetc/enetc_msg.c  | 459 ++++++++++++++++--
+ .../net/ethernet/freescale/enetc/enetc_pf.c   |  60 +--
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |  21 +-
+ .../freescale/enetc/enetc_pf_common.c         |  98 ++++
+ .../freescale/enetc/enetc_pf_common.h         |  13 +
+ .../net/ethernet/freescale/enetc/enetc_vf.c   | 325 ++++++++++++-
+ 14 files changed, 1119 insertions(+), 93 deletions(-)
+
+-- 
+2.34.1
+
