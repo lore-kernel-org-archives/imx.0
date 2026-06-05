@@ -1,87 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013061.outbound.protection.outlook.com [40.107.159.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13DF1ACED5;
-	Thu,  4 Jun 2026 23:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780617112; cv=none; b=MQOcjBY182Joh6vSdEl2q2J2KFSfpuLBBgR4tIFpiwjmAThOnoCYtBjdjbq+Dr5KNVdEKMeY9PawtRDWzZ8RKlelejqnRJSLmTomIWmF07yJgYWMIGEGT3x/9paiBiYHUK1w8Kl1YZ+pRTteaLvtq7CciVQhmJU4n/op3xNi0kk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780617112; c=relaxed/simple;
-	bh=Qsbe+Zr03M6GgtVi4XR4r7M6OAh7koJDCDJUXBghNFY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ld2gVpYWTswbNciZ4Vj0f+5LWHaVDiPt5yw+AvB2o2IelZvjyZxMYCm0MksSuRlCPrTAr0odeFOFKboxb72Jt4Yauf31Rq2zXyT5d//KWkAs4THMHrtjQbjJXdXRbgVVJzolSylEhNl2fSLPNJ38f6Wo7jI8bGfMtqxZSHhsOi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKcw/Idx; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FD41DB356
+	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 01:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780623913; cv=fail; b=XzCypZUmm4wK8wy82pGvoIqgwfULJdoYnExtcdpiuOoedPgdEsqz2oz0nCDMhbIlESh6qqz0IhuQwha0XTnM8PS7kLAkVU2I0WDv9oSgrcKlKqSd9TPcZAi7UiWU/fwYfrOFUu5pUMi5sdOsf3tFpd9hotNgCEybBw0AmOQqzuI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780623913; c=relaxed/simple;
+	bh=IDL+cWDV63YBwU5KaOk6DOsS1jFEpxRjF5ZPF/i6PIQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=GyINuP3YgBKvqxRhQ9JEG8JNxfRfAOtdbsoe0SI6JGMmXLM5cBG7+WnBLWqh+cCJTBDfZaqOGcW1f5OE+/g1Shw1xoMXJeNE9Cl4AZx4n2JRpesA3xOs/+3UWeYDYVEHKJvu1+0gUeqVKQ+PcGjbot46ubdDvWwlxWOoMe+7IYg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=wqTLDkZA; arc=fail smtp.client-ip=40.107.159.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKcw/Idx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4175F1F00893;
-	Thu,  4 Jun 2026 23:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780617111;
-	bh=qh7GaHudWqFS4OaIxaBj0xspMhNwznx2VYShs8Ojxj0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jKcw/IdxZ03ISnE0pAxKMesbvA2zH37ofT1ZM6iLvTf8bkoWUUHHP7DKIvnR++TXM
-	 Sf/wygPpPp5JQO1CJSW1ZQaN6+Pv3ZCFh5pYEcCejg/80HHXVHtqZ36q4p0FYJWVvk
-	 uVCsNmN/MfBHpIYpTx/TRT9f0uQ9tCK7jkJNiyBu5hRdCIuL+1XgLZGfizTG4R9PHg
-	 9HPvfyNATXVxxjTv8Ex0EVM1wPYQKGO7hWZsyb+6gcqoT7SlSB30uBN1rZq2p3zYTz
-	 +QjuVQm/o5LXS9vCa6l2pSEEjJiVgs4nBu8n1ALFSUX0BbHDFAxRy6BKcGRNGYOB3J
-	 ku1q3xR/wKM4w==
-Date: Fri, 5 Jun 2026 01:51:47 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Lee Jones <lee@kernel.org>, 
-	Mark Brown <broonie@opensource.wolfsonmicro.com>, Thierry Reding <thierry.reding@avionic-design.de>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Srinivas Kandagatla <srini@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Peter Chen <peter.chen@kernel.org>, Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Maximilian Luz <luzmaximilian@gmail.com>, 
-	Hans de Goede <hansg@kernel.org>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
-	brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, driver-core@lists.linux.dev, 
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 11/23] i2c: pxa-pci: use platform_device_set_of_node()
-Message-ID: <aiIOrXwc4pNk8ihI@zenone.zhora.eu>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-11-88c324a1b8d2@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="wqTLDkZA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bY5IjOr0BEarNaevhRG+KlslNoZTAStlu9B+qFihKMZ8QR1BAR0q3hGjCZd+Mz3/yVbSPgaDwtIyopePzx7cyAWBlWCltKpEzfDsy9+t0mOqQpFII/UbxsrnBIl5uss/zHumZf+XiUrhZoj6XqsUl7VHG6Dp8s6NO2bLSdFP+tUhXXV+u8UgTQJnumITk2+PzDdCowN7BKme3gOnkDC3ciu5IDD/Dg+Ra9yxA0J3yJrXaxNS0DSINJTrebWqDkBij9BJl3oli0/4aZibbUCsKixL93QYyYIuvKBTJnV/aGVOrxue/3IppqM4settnodApG91Akm3nnO+mKzP08dRSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vjh3FJIXv11HrKppu2k5mOLZc7mdKjqkSEgR7F98W5E=;
+ b=Ee5QwUCq0rDr3QYHzwLB9SCbrwKNk0za2xQ1dvlVC2naYetgG+KegzcIPizNQkzGlmEXIdtQGJizdJLtgrGxu+isBjj/fdYCwaAumMqM688cngokywgAwSiLvVsaIoGzcZjQgQ0TWps9MsRuOnIrsVUj3MbU/A3IFe0Gj+k+JcxNljNeFIpHAQxALksB6X+9DXPX4O6upkVgIf5m/nu+7hWa2k3wcl5NtLoU0eRJ+rI+t2sRhSZw9TBWBiyA24R0jI6W1YPUyotgAE1COQTKvN3uFcKDdRX+aLkkERdbiPcRw3d/6QM3PpqLlCK83jNSe7B7sUKfQWMVKljkhSrGhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vjh3FJIXv11HrKppu2k5mOLZc7mdKjqkSEgR7F98W5E=;
+ b=wqTLDkZA6dThXN/9mLHbnD0zXm5WgB7E2LO1EkznW/EJUcWShq0zAArjXm26uA5HIaaEeNnk5bNeQDRaUqt7q4kj2z65OkgXrE5GgFq0IdKsbnMW+t0Hq/0Pj/1KVx/Y/dFlPOp4hzj6Lggj+AQ1THZOYdLoLTu86xalaPSo1k56a5/pN48cQMTLAv8ODeijNL/vQ1E6GnVSiqAuE27/uZ7qGe7arEldJnK6ZyB3rXcBCs1kzwXaPgevxNYmmF/Z4HcJVKIne+7zXziXNreLOYjqFUXxXOGdiIu/UdzvGcDK6grmLphlhmDel/i68J8NlUHlOI1xGbsRmAd3YzzEyA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by PAXPR04MB9375.eurprd04.prod.outlook.com (2603:10a6:102:2b3::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
+ 01:45:02 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
+ 01:45:02 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	chleroy@kernel.org,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	linux@armlinux.org.uk
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3 net-next 0/9] net: dsa: netc: add bridge mode support
+Date: Fri,  5 Jun 2026 09:47:59 +0800
+Message-Id: <20260605014808.686024-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0018.APCP153.PROD.OUTLOOK.COM (2603:1096:4:140::9)
+ To VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521-pdev-fwnode-ref-v1-11-88c324a1b8d2@oss.qualcomm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|PAXPR04MB9375:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e948293-491b-45ef-b4f5-08dec2a40f45
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|7416014|1800799024|376014|366016|921020|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	whZWchuY7Q2NzGbOJdTxPnZt/nQR7KlAP4OggVw7mXuuOHfQd5hVBWn9gqcPbViR0dselO4ZsghhxVU6qaNPVlvj2zF016sC8OcWSSS34VVHGVOWP7mW5NvB72mXEqfON3I1TpegmR8vliiOfToGJjGcHkpEoMTUUu2GRKPNf1Wi3kpUhRqb0aupAvcReqoKhsqCs5wWVjWH05tBzHqigRBVQYl/I/qGZW3xHJEzpAfwFS9dohJZN5yLb/9j5oxWzsDWoEADCUZB25Y4AJmezP9/Jfd2o3WjHJ3OyTxYm40H02iFC8wLqd52rbOpdejaOI3UlxrLieAIvRTC1p1pnQBfRSlBECIPqRZRqm2gzhpDAm22TJf6dqwxcOoKIUsUYRN0sDh+twHJraIX/kQ4cuOeekdF3XEpI7fZ9KCS6c/92TXfqLTuM2aQTib8AYYn0JY/PK/P6mX1n+tn2bUUzizaU8uDRD+Wp4UJ8RwO69LxH6L8BwtBlW5gLeuCgsAsK/bPfnDBmAJG/q7RFU/Do+i2+AiH9J25FIzWBJFxAwLoppuceBSIAszz2y8vkL84FlVFa+HE99zM2tVIwXAE4oQzR/hq0SwGNXd3X5KviO6bd6VAeUmr4BYPUe5TLiGSwaCKJapW2Yu5n57BYeBOS/787e8RWQp1IMLAKaXR9oSvwW80kSgKIzuwHOEmHKJLLQMU8Ia0S3jOmywJJSugw8TI1KyYEjYXB/05lDtPew+GyWV2c2Df+fDLCMFM4Y5U
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(1800799024)(376014)(366016)(921020)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Mg9pzVUeWsMMmZNtzCrDEPAClpePai60XrmWnqVjJgqmA3W5yi53Pg3IZX1Z?=
+ =?us-ascii?Q?urVszIQDuDS3U7oKaRlBVFYGe/kSz/JI4oTXsWa3rxkZV2/Tw9C39I4oyAHO?=
+ =?us-ascii?Q?EfEFeCXRAF3Oj1eSgpmKX5YCAeXLvUO0KQm/V0BLMufy1eDQDHPCai58KSVv?=
+ =?us-ascii?Q?63zyqTzx5SDfyFiUdtIiM+ygPV9wvwWkc4znxs4FDf0apYtkFzAdRRdrDO0/?=
+ =?us-ascii?Q?vXBGjqYX8uYYSF5PZLyGZzerGClDYLgJ4UJx5Jux/cEVfCBrEmOvXUZI9kGi?=
+ =?us-ascii?Q?XVgWzZFr3V+MwVdSv/zp2vHnRxM3CQukaexuwZ9damBNyEPU8Ev7iSh9+Ri3?=
+ =?us-ascii?Q?f4mxkZmy8Ip5lQt5xuhpGOBylWT//KzFvADThMWLmM4DbiUI7NrWJc9YZZCW?=
+ =?us-ascii?Q?nZzs4OQp/h0f22Y3FdFd7d8KsG4NxySh/GHSo8Bhvkw3KEfLfeJVIIVEDxdU?=
+ =?us-ascii?Q?deQ2MNMX/PDLqxRR94mqHZZf14fBbS2FqewUPgwLPHRLfqs5RNYcuzCZ0ag7?=
+ =?us-ascii?Q?PU6HZy1buYPGOcDsL7SY8ewGKDIrDxvHcYQzj5UmZKv1bQU/f9rbWs97NkDa?=
+ =?us-ascii?Q?zgFW7q/j6tCIiyrBUw0kNuyI0zuyd4bFDGVr8K6DPLiROFgaPLBr60be/3pc?=
+ =?us-ascii?Q?ntaNoNLTxFD1P58Grp3++oQqHdkJBnOT/LdXoO0B3x/kFFjFkCMVxEJEmmgX?=
+ =?us-ascii?Q?kFkxUaSDjgdWEhg6oqdmIE7G39MeHc6Ey4l/cY72t6krkSk0NY6YOhD7VOkf?=
+ =?us-ascii?Q?Ww2UZAC/ZFqpjnHt4okRm9P7VJuU6p2tjJe6ZcSl1YOZq9PcQjrXMFuj1igh?=
+ =?us-ascii?Q?7nLvKyqOu4P6K9emiN/rZ6hy34qIghln+p/6Cz+7SovW9cv4P5BV0x50l1qh?=
+ =?us-ascii?Q?zWuTB/UGKrzSbCDEFpyfTDaaTcJ60ME6jMeIyIpYWxq/3pv7ClodiuNMgJP6?=
+ =?us-ascii?Q?z3t0iLsVh2sSrqyhMSxjflgQ2akOqsWCfv03B7ktL4L/AUyN0YJbw3Tlawjs?=
+ =?us-ascii?Q?HO+O9CQAI1EERtVJDFUeuicv5A9fWHiOSx9nEvuTTFY5FFOT6TMlzkPuDQnK?=
+ =?us-ascii?Q?ztaLupDTWgFD++0JwJm+O0FEBLdep+vD3s56dQQD6KNtORXjDKu2R9RUYdqW?=
+ =?us-ascii?Q?0MRZrRS6o3lRIuw5KitsRg0EZeS/4evIHUI5d7pFPg11MhZtHUCtMDc119Aq?=
+ =?us-ascii?Q?ANrkPrk5IxwcJzVGz7lhSPIlIzrzODCidpg/lkS9JHt3CGa3YDABNmshdfUN?=
+ =?us-ascii?Q?cwzpULCO8WhorVanYRrzGU+yzMpEAZ2Cma00y6NxS4Nx3dfDOIJqlPsjOLt+?=
+ =?us-ascii?Q?kuDlR2wthFKpAUbJodPvvxenkUsQ69haNHnkqX5yHxkslKH6LZbyz9xl8iV3?=
+ =?us-ascii?Q?37Wc7RIqT3HRgOUBTsZ/GoN8CPcellUz+3667xsxFGzBwufdMnt8hPBOhvuc?=
+ =?us-ascii?Q?UeIw/YKxX2sZXXj7zhuoZ2ZFLhgl8R0qc38AOlxgCeTZRRrb2RIdZmS7JttN?=
+ =?us-ascii?Q?+H33Mc87LtOSqgmbToWJs/eF8TvOWLeRPanBedugUGkiw+KdMEBqSUg3jLcG?=
+ =?us-ascii?Q?hVsG8rPe6gTA3XxE4poiXWzk8B8GNNo+UEfV9b05f3tMruvy0MdATrsvIpzC?=
+ =?us-ascii?Q?DzSKEyXl4r0fhy+dqnAdz++e7a1DyNetQS24VbR/BNvbmy5feckhyBAjB8dg?=
+ =?us-ascii?Q?d2voAKbCroJ5N3OrxvYE6peFZCz+RP3zqcVYGaKeRiKZuvVv688qN2u0h8qA?=
+ =?us-ascii?Q?VmPkL8T8pvofyOV219MIoRBMjh2/ix+uykC7Q89mr2zGpGeAR1KC?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e948293-491b-45ef-b4f5-08dec2a40f45
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 01:45:02.4591
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9UMQcxJSqn6GQ1mboo2msRptnyW8VQhryLoLSjLBp1dEtF4dW1fGWNOwBHhmiV4F+cBhI2ptr/QTSUS1Eev1z+WjYQd6N7wGvRi8m1sNL7Tl6zI4wYNnaWA/0nnvDg9N
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9375
 
-Hi Bartosz,
+From: Wei Fang <wei.fang@nxp.com>
 
-On Thu, May 21, 2026 at 10:36:34AM +0200, Bartosz Golaszewski wrote:
-> Ahead of reworking the reference counting logic for platform devices,
-> encapsulate the assignment of the OF node for dynamically allocated
-> platform devices with the provided helper.
-> 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+This series adds bridge mode support to the NETC DSA switch driver,
+covering both VLAN-aware and VLAN-unaware operation.
 
-Acked-by: Andi Shyti <andi.shyti@kernel.org>
+The NETC switch manages forwarding through a set of hardware tables
+accessed via NTMP: the FDB table (FDBT), VLAN filter table (VFT), egress
+treatment table (ETT), and egress count table (ECT).  The series extends
+the NTMP layer with the operations required for bridging, then builds the
+DSA bridge callbacks on top.
 
-Thanks,
-Andi
+Since all switch ports share the VFT, so only one VLAN-aware bridge is
+supported.
+
+FDB aging is managed in software.  A periodic delayed work sweeps the
+table using the hardware activity element mechanism, with a default aging
+time of 300 seconds matching the IEEE 802.1Q standard.  Per-port entries
+are also flushed immediately on bridge leave and link-down events.
+
+---
+v3:
+1. Update the kernel doc of ntmp_fdbt_update_activity_element()
+2. Remove struct ect_stse_data from ntmp.h
+3. Refactor netc_vlan_unaware_pvid()
+4. Refine netc_port_remove_host_flood()
+5. Add bridge.num check in netc_port_bridge_join() and add an error path
+6. Remove the parameter ett_eid from netc_init_ett_cfge()
+7. Move the implementation of .port_fast_age() from patch 9 to patch 8
+8. Refine netc_port_update_vlan_egress_rule(), reset ECT entries after
+   updating ETT entries
+9. Update commit messages of patch 8 and 9, and improve some comments
+v2 link: https://lore.kernel.org/imx/20260602072313.3162120-1-wei.fang@oss.nxp.com/
+v1 link: https://lore.kernel.org/imx/20260527100217.794987-1-wei.fang@oss.nxp.com/
+---
+
+Wei Fang (9):
+  net: enetc: add interfaces to manage dynamic FDB entries
+  net: enetc: add "Update" and "Delete" operations to VLAN filter table
+  net: enetc: add interfaces to manage egress treatment table
+  net: enetc: add "Update" operation to the egress count table
+  net: dsa: netc: initialize the group bitmap of ETT and ECT
+  net: enetc: add helpers to set/clear table bitmap
+  net: dsa: netc: add VLAN filter table and egress treatment management
+  net: dsa: netc: add bridge mode support
+  net: dsa: netc: implement dynamic FDB entry ageing
+
+ drivers/net/dsa/netc/netc_main.c              | 940 +++++++++++++++++-
+ drivers/net/dsa/netc/netc_switch.h            |  33 +
+ drivers/net/dsa/netc/netc_switch_hw.h         |   6 +
+ drivers/net/ethernet/freescale/enetc/ntmp.c   | 440 +++++++-
+ .../ethernet/freescale/enetc/ntmp_private.h   |  18 +-
+ include/linux/fsl/ntmp.h                      |  55 +
+ 6 files changed, 1470 insertions(+), 22 deletions(-)
+
+-- 
+2.34.1
+
