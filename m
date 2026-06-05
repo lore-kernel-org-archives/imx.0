@@ -1,148 +1,372 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011007.outbound.protection.outlook.com [40.107.130.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CCF3B19C4
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 03:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780630979; cv=fail; b=EzuQThe0SDgwv7PqHZ7CLEXYO198JkgY2UD4W1QQt8gp7gQeSlc1vrIt8vzE6Dn3uYWpG1Xow0Er3Nedm3jINKlWdBh60hpMR7kqB6eWGV2IYvqsMJVcs7Po3g5IvN7m4/eKLYP1n6zs8r8C6JvBPZ4vtngl2Lj5VyZBN/cNZC8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780630979; c=relaxed/simple;
-	bh=q2SB+26mvMatKQ1Sv6zuAdLJf2mphag5GT7yztwkGcw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=C0Ht747i7m3OKxbB9IT7vRNIbDA6qYOfIIeEzW5d5lBd9Jm6jFixXtE6gLh/5B3F8F8A45E4WtCPIuDSEr1RWrHTkiAvkqoVrkPJ+kA3KOz6wAf2ddbdyYw/jJme65tOB0b92empga2fFlRhJywci37mr3Jf+DcS78ud9uhcFsM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PCwsFAW0; arc=fail smtp.client-ip=40.107.130.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E84F403EBE
+	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 06:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780640785; cv=none; b=b68hrs3lVwodVLz5ibTNXmCN21FRI8uMgiI3f2TU9bbKVX6SvRjwKwmI6vDRRSEO+RbqXBfoOUTiacPUQfAEUVH0Pn2yOJY89f/5POqu+B2kjX5TPkcKIrJqFiNm/vz5m0pG0S3eQhen2MT5hKrnqhfWbc5FE6j8It2gO8sn5LM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780640785; c=relaxed/simple;
+	bh=38RGnRd1NueJdGc+q/2t2brBx7jhkq43ny3lgu2xz6s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r1RFjG/KQdG07aV2IwiBX9YrxF0AQPI+uAqWyLeHu+rbQLNJN2Wq6YYySOkb5QhOq35D069+tXNfgK14fuPhPa1rmkxRPkk7R83YAg5+JYtPwKxVfH4m1r9Mfy4waux0+3hevo6Afp1sWuRuu3BAsXgam95PvwC5j5X+bpfWpQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=M/ktB3sD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=D+iPx4bI; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aDw1UW+A; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vDZD0R3r; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PCwsFAW0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s7TyS0hSZIXo2ISM8suMuJvw6YzseaJDdEk2U8qddGdMhU9zG1LdJYvr4yekTF79UcZbYw029nv/ZkPySnBI34fQ+mab/ZlUvTrcmQTd0GepcHiRgdt6PKSPTZXTwqtA2MHWtoXaxSqNMhccyMIlJ/Yjx9rAZyDDV2XzrMC/VzyWWbVuivAMFF9U1gKjL6Z02rEsjXajmFFMGz6Ovtj37CQ613+K4DbpZnyQnGo4G215UQb/9qW1RnmRw/3Wb+/8M4MDM084jItJR05aXwi+l/tGapdugHhZRcsLHS0mbWvUXOKOtalMh85WbPvgQrIBP9QOvntgiwVArCvWKOlIZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=waS3W5jjM6PENBtP2m2XRbQsLXPLIjfp10mdmvF50Bg=;
- b=BU3LgSFm6ltgDakEx0nrMb5o48+oQ3A0fNwfJrUrQZ+oiv2WD8WQyq/XRKbjmrizQtHs/Uhqty5MZLEk3y/fvCVXh4HeixYPKiL8LMILWcZn9dAjEjFE05GdcnSRHEjv3HyqiZuAfZYBRDCbK9BQsk2CWfnl8VKTbrf73sCzuyClPV66y4eWAvN9ojb/kvRum6/p4PTDXE+cAsGk5qpUfWr7ce0WsT6yfcphY1F8EpjLXzpVDDy12Ld46prIhgzAGElUkxYUEEodtiZNUl5iwgCI8kXqzTo7eP08sACjIR0KeK5aXlhDo1yPDN0uVtmwA+FD/N04/fRWcJvL6cmhWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=waS3W5jjM6PENBtP2m2XRbQsLXPLIjfp10mdmvF50Bg=;
- b=PCwsFAW0+8pAe43Cx4IzsE4f/2mBMAI9pCxBNGo/qxELfKP7fCUHAcGYrIBHE6xRaszRPfwYJTS5sU8gC11WE9WzJ5sPTAV12JuzMwRaPQQAPuicsd2IhzRzesC47vrv/sqkIdqLrRY8oGqjF2TJr85ks7GwAVJMY2XFio7XFO92npLAEmeWrd5GmnjUEY+ifz4FwONRF6xOQ9BJI1GN85A/eQsb0zXqoM0qz8/Dg6mv6uoZ41+CixLIH30Fs5+02SAacjV5oGx13XafgFcwDAqWRSNYrdsD0WLqoQ1eARUx84IbKS3quF5epHtA+wLAU60pm3Ur/h87mwnXKBRrWA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
- by GVXPR04MB10755.eurprd04.prod.outlook.com (2603:10a6:150:220::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Fri, 5 Jun 2026
- 03:42:54 +0000
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0092.006; Fri, 5 Jun 2026
- 03:42:54 +0000
-Date: Fri, 5 Jun 2026 11:44:25 +0800
-From: Liu Ying <victor.liu@nxp.com>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-phy@lists.infradead.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] phy: freescale: imx8qm-lvds-phy: Fix missing
- pm_runtime_disable() on probe error path
-Message-ID: <aiJGGVXC4IZgmbSo@raspi>
-References: <20260604-lvds-v1-1-b8e1ff1bdee7@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260604-lvds-v1-1-b8e1ff1bdee7@gmail.com>
-X-ClientProxiedBy: MA5PR01CA0123.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1a7::13) To AS1PR04MB9287.eurprd04.prod.outlook.com
- (2603:10a6:20b:4dd::8)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="M/ktB3sD";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="D+iPx4bI";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aDw1UW+A";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vDZD0R3r"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1FFF6758EB;
+	Fri,  5 Jun 2026 06:26:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780640782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HDeTQz58PcqGgdo96oHM1bAJcR1truedFGkSCcBXtWU=;
+	b=M/ktB3sDGmweoVLgNXTldix/Xe30DbDNLuF62jskgLSpIFP7B4UDIS4DEc9GWvlaocwIkh
+	MzYsboaSx1lq9NL9w3sbKI15lcCvSzUUgy7ZrTTgOWI5JEeGHQVF+Ws2+Lxwav5KmNURWj
+	H7HdUv9yY3M5Yo7/TUsecdXNj6mQIjI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780640782;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HDeTQz58PcqGgdo96oHM1bAJcR1truedFGkSCcBXtWU=;
+	b=D+iPx4bIg0cPuvx5LRbbICTL22xfS2wQ++R9gmSJNJXGkWLeJOe6PCy7H2nCTjiItAfI+1
+	cns0pwNXGHlJ7fBQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=aDw1UW+A;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vDZD0R3r
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780640781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HDeTQz58PcqGgdo96oHM1bAJcR1truedFGkSCcBXtWU=;
+	b=aDw1UW+A6yqS0t9biGU1kM/uDWClp4JVjfCpCKKYRPoi7hW5ZUoHfFiOFzrKmoJNc0yU2M
+	uuYUkV1jhYjR/HyaqMqsUUErX8NJH9lMYGWAImrkVnWSpH3rCgRPaSTi+JaduzU9ke3yFG
+	pPaTRpMgw/hnrLvIzrceR6N8QmELCxc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780640781;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HDeTQz58PcqGgdo96oHM1bAJcR1truedFGkSCcBXtWU=;
+	b=vDZD0R3ry92z2A2yziaUK6wGo4KqKPNJ0t6eVE3IfNyctjPaz+BMIL6O1fwV+VQF5YMMcs
+	Mw015zl7yJbuC7AA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AD5B6779A8;
+	Fri,  5 Jun 2026 06:26:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KbQCKQpsImrNcwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 05 Jun 2026 06:26:18 +0000
+Message-ID: <dce03a80-3d6b-4792-9868-d6052fa3ea77@suse.de>
+Date: Fri, 5 Jun 2026 08:26:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|GVXPR04MB10755:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8bcf6760-fe81-4313-c11e-08dec2b486a5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|7416014|366016|376014|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	dd39grSb5htmlwxmGHUvNKNyS0nOCfT+1oT+NF66jwKwYOIEH8N0fkfqQE7FtSwzZJ1nl0CJ2EcPOuqTzPYuocMZ7dDnO8M2pxABpTDa3NFjf7/tqcNYiRDcCDgQ/tcENCQyZGg2byOFw3gHugrzE8d1EbBHleoObN+WEm1NJKwxzWIzGeEtqOAR8+kMK+CMZ0aAOhSgEJ9unnr2rk2ZDJScaJFW+J0CFGTVyMYrkEev4Yea+FY2xBlpY9wk5ghK95hAlc+8qgirCsmtVN8HaZUJWd8MxFua7KqRc3qjArfJkruy73mp6QFtp5QcqfsG1L7IiSj2To97aaxLbzcC4yRlVf5WB28BVCMZAJt49f5vBjIU8/RzYUdda0c3mBYiIsbhlBHTkD69NJnCeLh4m/25nVgxDytXb8/JJ2666WiWyuKUM13sACUpZqcKG0+Z6xP8pWtuB+qnA+bWS4ccLjBrRIsjhCBqBEPFLiTBFY0YX8+rWG2EYJkGEgj9YxiHvWMypEp9sSWiUGTLTXCRne/evY8/C9nBoBBVU1/EnPj7HSOm5uY9ynT1Dmxo06ep3hstXynp2IStUWdcp2c1+AixE5jE7S8/8zUnu00MV4TnXIQG4dk8s6HPjlWlisx+m6WsTovrYhu4/sSKAtiqqEMzUfb61PVqfGJDv+T9YGSKKr1RXe3iG7Ca2+Trvh2s
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(7416014)(366016)(376014)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wT5tgtZyHd/zFuWkafx6qBa6fIGNRvGC6AkwUKrFFtx5U6NuPstBEleJPk0t?=
- =?us-ascii?Q?ho48BsDzW3qZA9PLqNMWFcraZcThtxEgOBWDZuJe2FT8EjrGl3Tje1dnB8Ex?=
- =?us-ascii?Q?iC6sumZirDgllgYdfvTF+9ie133hGd8wusQ+Ij61/uXj1huSlCt7iW2JB+S7?=
- =?us-ascii?Q?q5I2CGX329R3BLTZd0UnO7lVhkuzNW+nmdM4zPqvd32l1k/UXbfN4l1gs0Ax?=
- =?us-ascii?Q?BCoQXwTEJQa9VQfg8h2tua2BIY7Y3oOKfeNmvQKwTtGCjKZEP7OdEFmpK0/v?=
- =?us-ascii?Q?2uf5LgPp2+NYaX5f60soLJWFuHZWsr6LB1zgryNkmpcv9VU5HA1w0nbTrSTO?=
- =?us-ascii?Q?Ghx8uje2Z3yntnY93RFzRFmlqZeXPuRf+HjVNNYkWAGD08QjnZhpdbc35ARb?=
- =?us-ascii?Q?v4tSMkqq/XTh7SmapOK9aSSoHkaaYHCuWGg8ev6iotOOcmfEqIwpl9ebk3ZD?=
- =?us-ascii?Q?bI1abWOdgwXDrd6v+2LpcGXM9sbWULNr8i8BljIJqRsq8PzcGK9hYlxy27Ve?=
- =?us-ascii?Q?z+klnlN85COYPYzoNF+S4EKWoQ/9BVf8TMUcgCGK5ieWy/y4NaWXHJxkdW91?=
- =?us-ascii?Q?L65DPqWMMk7GRwKPPc30oLpDaB/n9fuu9W8at1IaB2IyFIaGmH7JwYkiKzpo?=
- =?us-ascii?Q?/I6XOTrpsJZYfNO2gD4R5E1xdgaIHx81UwBo7CmXhiwdaczsPkK0Fwd54lyb?=
- =?us-ascii?Q?xGpERMwA+T8YKwfB4ujmxR3XOByvO2xDmlx3u7nGSbl9zy6A6qdnWftSVMc4?=
- =?us-ascii?Q?vEq8hFrvNTP8vYKWX5xheRZOPW9MYYm17AD54WK+i+G46p2c8Ez7ToH4kbO3?=
- =?us-ascii?Q?ovOwdbH4iMgWtSI+Ss9pgY2izq7h0E2pbEMv+QV5M7VA2xb046Uwk+hOGrDw?=
- =?us-ascii?Q?xKNPtJAezaMtQ/a3d1ctUpX2wfrYQhR7wQ4UyfV980/TGz0vjuSsw3uKxBa+?=
- =?us-ascii?Q?i6nOvngCKfIefBbL8+rRUsmc9/LhQyiKqkB1zTqDTox/LgCnAgvvv5modDeY?=
- =?us-ascii?Q?EWd/KKsymqMDXrWvCXZ8LKYd/M3tKbhxx31MkdJJCiHaUMCix9CBABVfab3x?=
- =?us-ascii?Q?Xqsqfu/9lb5+xBMcmiRJvL/N1SetFI2Jn2Neo4j4StbYziogYB0SHw9O3Hx/?=
- =?us-ascii?Q?IQf3AC5jBmFhLg68sLMuY1jM9nQbf42EGGpEARENmKdAv/4Jdep1uH9HbZhx?=
- =?us-ascii?Q?D3bcMjXqjDZu4T/pgU5DdpqQYUelhilo1wM5eKdejVR1UfVnns0mEitByTqN?=
- =?us-ascii?Q?o7zmL+DBJunPu242wPGfnQ2XHF1ieKfqUh+oEJ58ResD2/czY4yRv6o6isXt?=
- =?us-ascii?Q?c5qKckRnnIYfJG7bx6pJGkIXZovfPVr1ni7tkuFwHALJdb0mQfsRVXzX3fJC?=
- =?us-ascii?Q?+fSaTIptV8JpgRUXsTq5WHHusW61RRCmPOo41xw9KdWKIc0UqJhNiSlCQ57P?=
- =?us-ascii?Q?fBkiLJN6kLgNdY9b/6inDcLedV8GDRtBcQ0EYuUfeSUHDE2Ciav2nPWd6XXL?=
- =?us-ascii?Q?lm/c+ORxq3pPf6ZLJWiufH+FulbURnPOp16FnZ0gvPoRPntlk+47GKtZO46h?=
- =?us-ascii?Q?ew97fE8PnuoXLQBpinpx4J/6BUP0OU1JrxXVPWttcSS52lyWjRQ2VI7CSp0A?=
- =?us-ascii?Q?qNXz+/Kp176jMXMIcMjZ++Ehpp0YNB8N95J5/vMph4rUYDzmfRID52Apdk9A?=
- =?us-ascii?Q?pt5jorWX0+aSMclFGUm07orYmMHIMeAskNcdfhN0DqMqFy9oBiQ1AWkWntvO?=
- =?us-ascii?Q?ZRUG3I5D/w=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8bcf6760-fe81-4313-c11e-08dec2b486a5
-X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 03:42:54.5412
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vMmBwiE8twdtdpo/yxh6g6SG7O9gov0n5SIZ5cTzSsAfSlHfWn/WtoJmIW4VWuTz+WqkohD1z3SL2gFdPddGPw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10755
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/76] drm/bridge: Convert all reset users to create_state
+To: Maxime Ripard <mripard@kernel.org>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Dmitry Baryshkov <lumag@kernel.org>, dri-devel@lists.freedesktop.org,
+ Jagan Teki <jagan@amarulasolutions.com>, Liu Ying <victor.liu@nxp.com>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Andy Yan <andy.yan@rock-chips.com>,
+ Phong LE <ple@baylibre.com>, Douglas Anderson <dianders@chromium.org>,
+ Inki Dae <inki.dae@samsung.com>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Paul Cercueil <paul@crapouillou.net>, linux-mips@vger.kernel.org,
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ linux-amlogic@lists.infradead.org,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ linux-renesas-soc@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
+ Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
+ <heiko@sntech.de>, linux-rockchip@lists.infradead.org,
+ Yannick Fertre <yannick.fertre@foss.st.com>,
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+ Philippe Cornu <philippe.cornu@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ linux-stm32@st-md-mailman.stormreply.com, Jyri Sarha <jyri.sarha@iki.fi>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+ Icenowy Zheng <zhengxingda@iscas.ac.cn>, Michal Simek <michal.simek@amd.com>
+References: <20260530-drm-no-more-bridge-reset-v1-0-875d828d31bc@kernel.org>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260530-drm-no-more-bridge-reset-v1-0-875d828d31bc@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-0.996];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[kernel.org,intel.com,linaro.org,ideasonboard.com,kwiboo.se,gmail.com,bootlin.com,linux.intel.com,ffwll.ch];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,lists.freedesktop.org,amarulasolutions.com,nxp.com,pengutronix.de,gmail.com,lists.linux.dev,lists.infradead.org,rock-chips.com,baylibre.com,chromium.org,samsung.com,crapouillou.net,vger.kernel.org,collabora.com,googlemail.com,ideasonboard.com,glider.be,bp.renesas.com,sntech.de,foss.st.com,st-md-mailman.stormreply.com,iki.fi,raspberrypi.com,igalia.com,iscas.ac.cn,amd.com];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	R_RATELIMIT(0.00)[to_ip_from(RLqtaqd5djycn6zz3dm1kuwfni)];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[61];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 1FFF6758EB
+X-Spam-Score: -3.01
 
-On Thu, Jun 04, 2026 at 10:39:07PM +0800, Felix Gu wrote:
-> If mixel_lvds_phy_reset() fails in probe after pm_runtime_enable(),
-> the function returns directly without calling pm_runtime_disable(),
-> leaving runtime PM permanently enabled for the device.
-> 
-> Fix this by using devm_pm_runtime_enable() so that cleanup is
-> automatic on any probe failure or driver unbind. This also allows
-> removing the manual err label and the .remove callback.
-> 
-> Fixes: 06ff622d61d2 ("phy: freescale: Add i.MX8qm Mixel LVDS PHY support")
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Hi
+
+Am 30.05.26 um 15:59 schrieb Maxime Ripard:
+[...]
+>        drm/bridge: adv7511: Switch to atomic_create_state
+>        drm/bridge: analogix_dp: Switch to atomic_create_state
+>        drm/bridge: anx7625: Switch to atomic_create_state
+>        drm/bridge: chipone-icn6211: Switch to atomic_create_state
+>        drm/bridge: display-connector: Switch to atomic_create_state
+>        drm/bridge: fsl-ldb: Switch to atomic_create_state
+>        drm/bridge: imx8mp-hdmi-pvi: Switch to atomic_create_state
+>        drm/bridge: imx8qm-ldb: Switch to atomic_create_state
+>        drm/bridge: imx8qxp-ldb: Switch to atomic_create_state
+>        drm/bridge: imx8qxp-pixel-combiner: Switch to atomic_create_state
+>        drm/bridge: imx8qxp-pixel-link: Switch to atomic_create_state
+>        drm/bridge: imx8qxp-pxl2dpi: Switch to atomic_create_state
+>        drm/bridge: inno-hdmi: Switch to atomic_create_state
+>        drm/bridge: ite-it6263: Switch to atomic_create_state
+>        drm/bridge: ite-it6505: Switch to atomic_create_state
+>        drm/bridge: ite-it66121: Switch to atomic_create_state
+>        drm/bridge: lontium-lt9211: Switch to atomic_create_state
+>        drm/bridge: lontium-lt9611: Switch to atomic_create_state
+>        drm/bridge: lvds-codec: Switch to atomic_create_state
+>        drm/bridge: nwl-dsi: Switch to atomic_create_state
+>        drm/bridge: panel: Switch to atomic_create_state
+>        drm/bridge: parade-ps8640: Switch to atomic_create_state
+>        drm/bridge: samsung-dsim: Switch to atomic_create_state
+>        drm/bridge: sii902x: Switch to atomic_create_state
+>        drm/bridge: ssd2825: Switch to atomic_create_state
+>        drm/bridge: dw-dp: Switch to atomic_create_state
+>        drm/bridge: dw-hdmi-qp: Switch to atomic_create_state
+>        drm/bridge: dw-hdmi: Switch to atomic_create_state
+>        drm/bridge: dw-mipi-dsi: Switch to atomic_create_state
+>        drm/bridge: dw-mipi-dsi2: Switch to atomic_create_state
+>        drm/bridge: tc358762: Switch to atomic_create_state
+>        drm/bridge: tc358767: Switch to atomic_create_state
+>        drm/bridge: tc358768: Switch to atomic_create_state
+>        drm/bridge: tc358775: Switch to atomic_create_state
+>        drm/bridge: ti-dlpc3433: Switch to atomic_create_state
+>        drm/bridge: ti-sn65dsi83: Switch to atomic_create_state
+>        drm/bridge: ti-sn65dsi86: Switch to atomic_create_state
+>        drm/bridge: ti-tdp158: Switch to atomic_create_state
+>        drm/bridge: ti-tfp410: Switch to atomic_create_state
+>        drm/imx: parallel-display: Switch to atomic_create_state
+>        drm/ingenic: Switch to atomic_create_state
+>        drm/mediatek: dp: Switch to atomic_create_state
+>        drm/mediatek: dpi: Switch to atomic_create_state
+>        drm/mediatek: dsi: Switch to atomic_create_state
+>        drm/mediatek: hdmi: Switch to atomic_create_state
+>        drm/mediatek: hdmi_v2: Switch to atomic_create_state
+>        drm/meson: encoder_cvbs: Switch to atomic_create_state
+>        drm/meson: encoder_dsi: Switch to atomic_create_state
+>        drm/meson: encoder_hdmi: Switch to atomic_create_state
+>        drm/msm: dp: Switch to atomic_create_state
+>        drm/msm: hdmi: Switch to atomic_create_state
+>        drm/omap: hdmi4: Switch to atomic_create_state
+>        drm/omap: hdmi5: Switch to atomic_create_state
+>        drm/renesas: rcar-du: lvds: Switch to atomic_create_state
+>        drm/renesas: rcar-du: mipi_dsi: Switch to atomic_create_state
+>        drm/renesas: rz-du: mipi_dsi: Switch to atomic_create_state
+>        drm/rockchip: cdn-dp: Switch to atomic_create_state
+>        drm/rockchip: rk3066_hdmi: Switch to atomic_create_state
+>        drm/rockchip: lvds: Switch to atomic_create_state
+>        drm/stm: lvds: Switch to atomic_create_state
+>        drm/tests: bridge: Switch to atomic_create_state
+>        drm/tidss: encoder: Switch to atomic_create_state
+>        drm/tidss: oldi: Switch to atomic_create_state
+>        drm/vc4: dsi: Switch to atomic_create_state
+>        drm/verisilicon: Switch to atomic_create_state
+>        drm/xlnx: zynqmp_dp: Switch to atomic_create_state
+
+You can also add my
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+to all these one-liners in the drivers.
+
+Best regards
+Thomas
+
+
+>        drm/atomic-state-helper: Remove drm_atomic_helper_bridge_reset()
+>        drm/bridge: cdns-dsi: Use __drm_atomic_helper_bridge_state_init()
+>        drm/bridge: cdns-dsi: Switch to atomic_create_state
+>        drm/bridge: cdns-mhdp8546: Switch to atomic_create_state
+>        drm/bridge: Remove atomic_reset support
+>
+>   drivers/gpu/drm/bridge/adv7511/adv7511_drv.c       |  2 +-
+>   drivers/gpu/drm/bridge/analogix/analogix_dp_core.c |  2 +-
+>   drivers/gpu/drm/bridge/analogix/anx7625.c          |  2 +-
+>   drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c     |  9 +++---
+>   .../gpu/drm/bridge/cadence/cdns-mhdp8546-core.c    |  8 +++---
+>   drivers/gpu/drm/bridge/chipone-icn6211.c           |  2 +-
+>   drivers/gpu/drm/bridge/display-connector.c         |  2 +-
+>   drivers/gpu/drm/bridge/fsl-ldb.c                   |  2 +-
+>   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c       |  2 +-
+>   drivers/gpu/drm/bridge/imx/imx8qm-ldb.c            |  2 +-
+>   drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c           |  2 +-
+>   .../gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c    |  2 +-
+>   drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c    |  2 +-
+>   drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c       |  2 +-
+>   drivers/gpu/drm/bridge/inno-hdmi.c                 |  2 +-
+>   drivers/gpu/drm/bridge/ite-it6263.c                |  2 +-
+>   drivers/gpu/drm/bridge/ite-it6505.c                |  2 +-
+>   drivers/gpu/drm/bridge/ite-it66121.c               |  2 +-
+>   drivers/gpu/drm/bridge/lontium-lt9211.c            |  2 +-
+>   drivers/gpu/drm/bridge/lontium-lt9611.c            |  2 +-
+>   drivers/gpu/drm/bridge/lvds-codec.c                |  2 +-
+>   drivers/gpu/drm/bridge/nwl-dsi.c                   |  2 +-
+>   drivers/gpu/drm/bridge/panel.c                     |  2 +-
+>   drivers/gpu/drm/bridge/parade-ps8640.c             |  2 +-
+>   drivers/gpu/drm/bridge/samsung-dsim.c              |  2 +-
+>   drivers/gpu/drm/bridge/sii902x.c                   |  2 +-
+>   drivers/gpu/drm/bridge/ssd2825.c                   |  2 +-
+>   drivers/gpu/drm/bridge/synopsys/dw-dp.c            |  2 +-
+>   drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c       |  2 +-
+>   drivers/gpu/drm/bridge/synopsys/dw-hdmi.c          |  2 +-
+>   drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c      |  2 +-
+>   drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c     |  2 +-
+>   drivers/gpu/drm/bridge/tc358762.c                  |  2 +-
+>   drivers/gpu/drm/bridge/tc358767.c                  |  4 +--
+>   drivers/gpu/drm/bridge/tc358768.c                  |  2 +-
+>   drivers/gpu/drm/bridge/tc358775.c                  |  2 +-
+>   drivers/gpu/drm/bridge/ti-dlpc3433.c               |  2 +-
+>   drivers/gpu/drm/bridge/ti-sn65dsi83.c              |  2 +-
+>   drivers/gpu/drm/bridge/ti-sn65dsi86.c              |  2 +-
+>   drivers/gpu/drm/bridge/ti-tdp158.c                 |  2 +-
+>   drivers/gpu/drm/bridge/ti-tfp410.c                 |  2 +-
+>   drivers/gpu/drm/drm_atomic_state_helper.c          | 33 ++++++++++++----------
+>   drivers/gpu/drm/drm_bridge.c                       |  4 +--
+>   drivers/gpu/drm/imx/ipuv3/parallel-display.c       |  2 +-
+>   drivers/gpu/drm/ingenic/ingenic-drm-drv.c          |  2 +-
+>   drivers/gpu/drm/mediatek/mtk_dp.c                  |  2 +-
+>   drivers/gpu/drm/mediatek/mtk_dpi.c                 |  2 +-
+>   drivers/gpu/drm/mediatek/mtk_dsi.c                 |  2 +-
+>   drivers/gpu/drm/mediatek/mtk_hdmi.c                |  2 +-
+>   drivers/gpu/drm/mediatek/mtk_hdmi_v2.c             |  2 +-
+>   drivers/gpu/drm/meson/meson_encoder_cvbs.c         |  2 +-
+>   drivers/gpu/drm/meson/meson_encoder_dsi.c          |  2 +-
+>   drivers/gpu/drm/meson/meson_encoder_hdmi.c         |  2 +-
+>   drivers/gpu/drm/msm/dp/dp_drm.c                    |  4 +--
+>   drivers/gpu/drm/msm/hdmi/hdmi_bridge.c             |  2 +-
+>   drivers/gpu/drm/omapdrm/dss/hdmi4.c                |  2 +-
+>   drivers/gpu/drm/omapdrm/dss/hdmi5.c                |  2 +-
+>   drivers/gpu/drm/renesas/rcar-du/rcar_lvds.c        |  2 +-
+>   drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c    |  2 +-
+>   drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c     |  2 +-
+>   drivers/gpu/drm/rockchip/cdn-dp-core.c             |  2 +-
+>   drivers/gpu/drm/rockchip/rk3066_hdmi.c             |  2 +-
+>   drivers/gpu/drm/rockchip/rockchip_lvds.c           |  2 +-
+>   drivers/gpu/drm/stm/lvds.c                         |  2 +-
+>   drivers/gpu/drm/tests/drm_bridge_test.c            |  2 +-
+>   drivers/gpu/drm/tidss/tidss_encoder.c              |  2 +-
+>   drivers/gpu/drm/tidss/tidss_oldi.c                 |  2 +-
+>   drivers/gpu/drm/vc4/vc4_dsi.c                      |  2 +-
+>   drivers/gpu/drm/verisilicon/vs_bridge.c            |  4 +--
+>   drivers/gpu/drm/xlnx/zynqmp_dp.c                   |  2 +-
+>   include/drm/drm_atomic_state_helper.h              |  6 ++--
+>   include/drm/drm_bridge.h                           | 33 ++++++++--------------
+>   72 files changed, 111 insertions(+), 120 deletions(-)
 > ---
->  drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c | 24 +++++++-----------------
->  1 file changed, 7 insertions(+), 17 deletions(-)
-
-It would be good if the patch subject prefix can be changed to
-"phy: freescale: phy-fsl-imx8qm-lvds-phy:".
-
-With that done:
-Acked-by: Liu Ying <victor.liu@nxp.com>
+> base-commit: 21fcb222f0d1e1c9f5b04c09e9fb3408e13a0264
+> change-id: 20260530-drm-no-more-bridge-reset-ca20d5e22740
+>
+> Best regards,
 
 -- 
-Regards,
-Liu Ying
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
