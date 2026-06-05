@@ -1,328 +1,357 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013061.outbound.protection.outlook.com [40.107.159.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCA430D3E3
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 01:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780623988; cv=fail; b=jBtLGFB6UBhz/ejSGFTirPiEgKryPTYEGeABBaoEX02G9K8OXv+li7VzrO4ta0+MaEDo7gOsz05ErfMTqOKAXqXZPDWPMuuTZMoXgnLIOmGwHKDT9S29uz/Yg4QwD5MbVnn2A1svTUOMTy0RbOHPtQlybHSpdbUREmvIZOY/628=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780623988; c=relaxed/simple;
-	bh=O0ngp+j/58fXxBWmrxuC/9FJuarRmAquztzWNyhXvlE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DeOZ9CP3JvTBThTXcfxJ8Y+u17uD8u6Gz7FHgmXp50cI7ID7vBzLd2psXTU2gNgMr7YbHfuRnOJ7aGxly69IZpGcideXV+DFQq7qtR560zr+3lKTgbWk0dnPSQ7uG3bnQ0900/3cBUewxGeBPl4i/Xbm1ikhZboSH94JCVx5PAk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mDFpb+o5; arc=fail smtp.client-ip=40.107.159.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258243B7767;
+	Fri,  5 Jun 2026 02:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780625939; cv=none; b=e6gQZ36etCfJyUg3s3WRqM1L8/LWZmf4wT09NC6uO8Mv1UEbdBQDeH9SLk0UewBtU8hJoHznVZOhKRMhSNRkB8gDuRUeST1kA4WNGyc1MukBNGPYDoAU7E7aS74WJaUVpV6CFcMPszKCnBgl8RhZVfI7rYYYyQZrUD/QWSG7li4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780625939; c=relaxed/simple;
+	bh=BdOOgWUzMVVsGjU9jkwhgYUWGg5mF0GzMhYn7AIKQmM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DQGtxN0CMx5SumjnKY68t5VIFhzfBPnOPIJI97Zgv/2czUTYorbMqq3Fv7hQYJnQitia2R2RzkmmAckUDDjAvbEaa3WlD73BYzIyRTn5Mt3ploEqnzYWGVpVAScxfLitzLF5MgBAHLENrbp5edzzjXLrkhBCw08k852+ibKFb8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDH7CrjP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mDFpb+o5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JZ2I+BvhjYE5hIwwp6VHAQaOiarttojGBW0hZrcbBYxhcV/O7qwwtZaILZpINezI80NoD0QRG8XYRLz+55Bs9JAnBsLIKOhaXHh7uFRUIpEyqEvX4/6x0ohM0NY9UotUIr5grj4UQbliUlHdjeLa6tvT67KOZQlN9KYqcIJ6iqLqiGPaDV7DPUl1iMxEYHsOo50oW2HxXBXlxk9SNhotfKfcK9yr3SpAJ0OQ8ULDMCLK1zfQlQc4QqiwOiIwKTiYEM+w5DlUf/nt3VROgncjEWi5qCEBkihyaYMsfdFo3uJjJOXcdKCvw3AR8aOHMW86hncVG0Ftq0TzOn744mGgVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SadSiZlve6Pfa/DYVsrF8AKVPCeNHW1KS4sT5uw2xQI=;
- b=Y3ur5XbXiSqX1EIgJ6+89MwolPwdxaVh0kBsdK6ZcFekBxXZRSGjnviolgw0iNiOyq3wI5wA8OIzcwCmUP0Zxj2TC1sTmLCmtsz/JKgsGfPfeNz2wHgBopkVaEG1kJijc6htCCRKOI++iIhvZidSAW72e/G/u7e5+jc+ExXLD222yKA1K+XaLsnTREZOh2inbJAXTdEoumDf5jDPSsGjYhFn3kkyd3RCqp36NCnj2rzYNsIRFIKwlWN2EL5UqgztJKD1X6whFw26fEmU7JoJuil2bUXY/Hh8Ejyw05ScenldRXy6DjktSCv1JuwYYqpsRinDcVyiSf9OPCdasCN/og==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SadSiZlve6Pfa/DYVsrF8AKVPCeNHW1KS4sT5uw2xQI=;
- b=mDFpb+o56cULAIEMAiQuANeYzQoTmOeeTH/oqvfMZukYfkqXvfEjY15yO9UHdmDY19bEc1YxK8m1KDakf1CvKOaIVakAYs/3QI0OFxcHp+l+jQaKc3V/1UvDx6+jGJbjo7du/WMu5o1gJiSAf2YXilTZogRS+qAT8l0e8P1r92mKtZtBd03SDlBy6ysPMiw+v5a+dzSBnVBHBmPdGe4rb8oJNVEyxdWxLFx9KR8EMrF0jWa95qqXhLq5EVrLIbTxtiy/6+WRIyXf7qhC3UqTSm1JtO+EFPjRaeL7Iki2IxM/svBciv6/3fuuqgnUs+77CjumGykXxCbf1knWlejUfw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by PAXPR04MB9375.eurprd04.prod.outlook.com (2603:10a6:102:2b3::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
- 01:45:55 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
- 01:45:55 +0000
-From: wei.fang@oss.nxp.com
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDH7CrjP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF451F00893;
+	Fri,  5 Jun 2026 02:18:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780625933;
+	bh=zrkc0GhW/oOLTIoJH9JhkWhKT+HfutzlNHyT1CCjAik=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LDH7CrjPBywNb5+Ib4MCEv1AFUn00S8nOW+ftRhXJJhioCBG5hqazwHg9IOKuYSRD
+	 /A0FMMNNR6RfVSVMzDROQgX1w8jYZVKhoNivSRAFXeaSR7qYUR/qVWXKtZWQXYvLiq
+	 6o2Fs8ND+iEg0xeYrCHaOE8Wb5dtijvMPq4V6TaXRVwYHgrTwDjbKVoY24lQpeedyH
+	 9Q2n/puXqSZv27B2JgobYSZXokPBtcSDcFlGbXSUO7eMTxVmPm+1oz+UT7Tmytr6qw
+	 tr815FEcG8SL1+fDUhPunnodaP4qz7knWTNXkeSkKstoRU74sdZXXVGUfzvkStWdQD
+	 7PpvB5GX59R4g==
+From: Jakub Kicinski <kuba@kernel.org>
+To: lukasz.majewski@mailbox.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	chleroy@kernel.org,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	linux@armlinux.org.uk
-Cc: wei.fang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
+	richardcochran@gmail.com,
+	lgirdwood@gmail.com,
+	nathan@kernel.org,
 	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 net-next 9/9] net: dsa: netc: implement dynamic FDB entry ageing
-Date: Fri,  5 Jun 2026 09:48:08 +0800
-Message-Id: <20260605014808.686024-10-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260605014808.686024-1-wei.fang@oss.nxp.com>
-References: <20260605014808.686024-1-wei.fang@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2P153CA0003.APCP153.PROD.OUTLOOK.COM (2603:1096::13) To
- VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+	netdev@vger.kernel.org,
+	krzk+dt@kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	robh@kernel.org
+Subject: Re: [net-next v24 2/7] net: mtip: The L2 switch driver for imx287
+Date: Thu,  4 Jun 2026 19:18:50 -0700
+Message-ID: <20260605021851.3594517-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260601112437.2216043-3-lukasz.majewski@mailbox.org>
+References: <20260601112437.2216043-3-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|PAXPR04MB9375:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a0f395f-3035-4555-fba9-08dec2a42efd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|1800799024|376014|366016|921020|3023799007|22082099003|18002099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	24jboa+j62lgm1eT9ctIUBWv5HM2Z0Jhd7WM7Wm08QYBt9xbHokLuXYiEf6XYQ0e+Io7vm+g6MSIN8L6YquG2FbB4RR3SvseG7XAbJ14CGDX4w/PDqYHkwjqNr7cZaxGyRBmemjIuEMGYlfVdfKxBeHqJ45E0+1aQ3erWCiG73L7yQcLtwLUC7T+wEYKalnyxMYhaFCa+Tt0okP+ANi2dmrbPn57GbJzhe00WIpmIUqdG4003TUDkv/mY1vGpy0Hghz/JpFFPGlDATC9hEitgT7CmDQkkUK+cI6ifMKJhjWbIifUFFqj3ghuAfTu6RBeX0k3/n9QWUDJW03Yg5ldthweePj07EPnFBtxk+ESrWu3+huzEBwWJzoEkk3fzLN1uFePCmXTprygz4EGF5u+UkZ4fw7uzNqtaCFkYg/NkBvFPNshPUDPPwDbRQI9VTHZlZbQ9Jmfh6O49RvrphfQRGOQ9o1rhEjiRi+Iwkma4JSWThyWcu/1fSoHRTQCmFKXDARrT991k2RwBMXTeE+pY45nNee/ApSFKKYWQnw0s+KgM6wz3EHNSdAWy+a8ICFEIEVJ3SDd6aIh/e/k/F7XTGvQDL/ungonSXfEzERt1WC1GgsXSqh58uW/8BZRVBVi+7Hgq0bjTwxYSYHoKdQrIC4sfVHshkkprOQPD796n4U2tAOrSyesqZrFg8mo3m8yGoPk43YstoJizLg5ep3t0md1BalDKi/RESjfrw3JM7I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(1800799024)(376014)(366016)(921020)(3023799007)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OwtE061b69JhjMdw4jzhX6o/EgeHVfkFbmwqbRUQk1DrD9P+z5KM4mGNbckh?=
- =?us-ascii?Q?n9A2DqRRhuA7Oncxap1jci57lWCW4Zk/w8+xYdBcmwqhbRpcA3FVmIDlsVbg?=
- =?us-ascii?Q?Rom66MoxVaUE6Xi9WOzqGlkoFojE6aUxmfdyORPaKGIrOINLi67Kk06Ypyxx?=
- =?us-ascii?Q?decNCBi0VzUO7hl4rwH9kwH2YDOKAtiY2N1WrMOELNbgphNwFeAemAqtgyoR?=
- =?us-ascii?Q?VS6qVhaa38uVOeGj5wRVUwWAP7tsR3/ApioRX2Ou1ApzKmm9PfRVOKzr7VEi?=
- =?us-ascii?Q?mr5jb9fAfUQ3TME/sUYdtxYimKhP6HuQZJP2jRcSIGCS1QpNsBRWw/Aj5cL3?=
- =?us-ascii?Q?A6c7K9yf46LwmhNtJIpQuByQEKqkbS6xBRgYp3UThGICgIKN/bwImcM1W1hL?=
- =?us-ascii?Q?p1/MONsaDjwPyq6EpYpcgYwvkGxDqz0UpgtcOWpI048q0p7hzRMGGLDN20Ht?=
- =?us-ascii?Q?RJkg5G7LnGf5xuHexQOGMg97AgurSM2ukXek19Y/Na64GsbWDiq1vTESK9U3?=
- =?us-ascii?Q?vAWSPkdRa2z4yk+LuDTDiCIii3f9mPwuudAKvrolzHqXQ7WqBIvoZnXDF7wP?=
- =?us-ascii?Q?nCyJtcTReTLYRGyo5e952WpsuGUBFHtIOUvbMF4RJnaY+nIZA9ZWjGaduVcj?=
- =?us-ascii?Q?eJI58g8gYOnIBoYdetFUCoGLtZoQ6XGg6A5VeSghx5fx6wKf9HidyFqTjarW?=
- =?us-ascii?Q?rtwKeVtMG6GDrDPiyLb0xZAdG0dV4cMUeJDqxOF/IKAGH3RPwxqUjxzRwrZx?=
- =?us-ascii?Q?cEbS8XuJZ4zMvob/84P4BEaT1T9Y6794B9MpV+SJ5073JOod/Om+5riOLJJg?=
- =?us-ascii?Q?I4EzTm3n6av0Gwd4phO+IuXfL5uVc2B3DNcTb5qqR/3Ltp8poFJMUhYqRM1G?=
- =?us-ascii?Q?CcmU/Tc/O6/Kc2YgScNVH/5cps3hNiNR36ooh6Y+LY1YXL1/qNVfGkzI/ESl?=
- =?us-ascii?Q?PkM0goRgEWN/17RpckUEq+/JCi7eVMgpu80Uxp2/i+9K7MP49yQfKs0F61QF?=
- =?us-ascii?Q?e8XdlmQRzL4hqN9zW8wP11fd8zFHhqmE9WrCpYeitoB/S2U+wL6Teoy//Tfq?=
- =?us-ascii?Q?wdadWaAVIDpkKgJTYi85/Kmajupc5FZSUl2zV/k3mYKAmrcICwBkhKJZFUEJ?=
- =?us-ascii?Q?Xe4k5KNq4poId9d01bCxh0JTAXJk0ECWYH9KToV2arwgGl7rW20PweuZt7kY?=
- =?us-ascii?Q?1uVeNTBPUgyYxyDKGjEc7JCdnuqlGj7P8X110X3it8ZWkiA4c+vA2DFWS5E4?=
- =?us-ascii?Q?qBnyVjF7qhP8zVQgrXejzN6q4/uDAozz0roZf8bkiEWCrgjl6uANjmx+EAun?=
- =?us-ascii?Q?kXXmliOVxsfKujK62oPMBpVrwWS0I4dQ73bFdCl0TRSk294p1B8fbTTy1wV/?=
- =?us-ascii?Q?oCnRECAEgoL+hwuueFzGjldqor1mVnnPTjKEv4G1zxRUqGhbKCuv+mpT4ppx?=
- =?us-ascii?Q?t1HPllBsmHUIcUGYHltx81n+ggxxbt/jKbE4SdxnoKVZ3ZbgSFHn6MvZ6tTD?=
- =?us-ascii?Q?TQgHviQv5AXsv414bTUiVfLNNyHGr0yCveOLUrjqiHvfQijwBnJDHtAJh/mU?=
- =?us-ascii?Q?70loh3uT2Rk7aLgRx419sNRCsHOvYURt4p+YxQ6iorQL6fNaxavebHTUSRyl?=
- =?us-ascii?Q?4RggRH+btjGT07pCx6w4pN0xYORIqUr8dlowWx+6+H4hdiCuNyQDztdhANZl?=
- =?us-ascii?Q?1vyR3g1BrVVV0/cxlXizTYIKpsfmkXh1vk06WzUjkEaaY74czygpdiakwS2s?=
- =?us-ascii?Q?uGXSaqQyIljymWY/TAP+AFVqlxNyqTYt8QJbC8bKfw0oO3RhfR0k?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a0f395f-3035-4555-fba9-08dec2a42efd
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 01:45:55.3692
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MyZCP5N/pJJFnt2gyGakmVYSP/ZyfjWpbPg4vlHtfiMIE2mCdFbgSdb2SDrKbha9+rpIO1Zuzgs9nr46x1+8b6TO/M2WAHWoElGMSH9AkadqHEqvXjWoylb8oA040VIY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9375
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Wei Fang <wei.fang@nxp.com>
-
-The NETC switch does not age out dynamic FDB entries automatically.
-Without software management, stale entries persist after topology
-changes and cause incorrect forwarding.
-
-Add a delayed work that periodically removes entries that have not been
-refreshed within the specified cycles. The effective ageing time is:
-
-  ageing_time = fdbt_ageing_delay * 100
-
-Default values are 3s interval and 100 cycles (300s total), matching
-the IEEE 802.1Q default ageing time. The work starts when the first
-port joins a bridge (tracked via br_cnt) and is cancelled when the
-last port leaves. All FDB operations are serialized under fdbt_lock.
-
-Implement .set_ageing_time() to allow the bridge layer to reconfigure
-ageing parameters on demand.
-
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
- drivers/net/dsa/netc/netc_main.c   | 67 ++++++++++++++++++++++++++++++
- drivers/net/dsa/netc/netc_switch.h |  7 ++++
- 2 files changed, 74 insertions(+)
+net: mtip: The L2 switch driver for imx287
 
-diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
-index b61152c16e7b..a8e036a7046c 100644
---- a/drivers/net/dsa/netc/netc_main.c
-+++ b/drivers/net/dsa/netc/netc_main.c
-@@ -447,6 +447,25 @@ static void netc_free_ntmp_user(struct netc_switch *priv)
- 	netc_free_ntmp_bitmaps(priv);
- }
- 
-+static void netc_clean_fdbt_ageing_entries(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = to_delayed_work(work);
-+	struct netc_switch *priv;
-+
-+	priv = container_of(dwork, struct netc_switch, fdbt_ageing_work);
-+
-+	/* Update the activity element in FDB table */
-+	mutex_lock(&priv->fdbt_lock);
-+	ntmp_fdbt_update_activity_element(&priv->ntmp);
-+	/* Delete the ageing entries after the activity element is updated */
-+	ntmp_fdbt_delete_ageing_entries(&priv->ntmp, NETC_FDBT_AGEING_THRESH);
-+	mutex_unlock(&priv->fdbt_lock);
-+
-+	if (atomic_read(&priv->br_cnt))
-+		schedule_delayed_work(&priv->fdbt_ageing_work,
-+				      READ_ONCE(priv->fdbt_ageing_delay));
-+}
-+
- static void netc_switch_dos_default_config(struct netc_switch *priv)
- {
- 	struct netc_switch_regs *regs = &priv->regs;
-@@ -872,6 +891,10 @@ static int netc_setup(struct dsa_switch *ds)
- 
- 	INIT_HLIST_HEAD(&priv->fdb_list);
- 	mutex_init(&priv->fdbt_lock);
-+	priv->fdbt_ageing_delay = NETC_FDBT_AGEING_DELAY;
-+	atomic_set(&priv->br_cnt, 0);
-+	INIT_DELAYED_WORK(&priv->fdbt_ageing_work,
-+			  netc_clean_fdbt_ageing_entries);
- 	INIT_HLIST_HEAD(&priv->vlan_list);
- 	mutex_init(&priv->vft_lock);
- 
-@@ -936,6 +959,7 @@ static void netc_teardown(struct dsa_switch *ds)
- {
- 	struct netc_switch *priv = ds->priv;
- 
-+	disable_delayed_work_sync(&priv->fdbt_ageing_work);
- 	netc_destroy_all_lists(priv);
- 	netc_free_host_flood_rules(priv);
- 	netc_free_ntmp_user(priv);
-@@ -1961,6 +1985,7 @@ static int netc_port_bridge_join(struct dsa_switch *ds, int port,
- 				 struct netlink_ext_ack *extack)
- {
- 	struct netc_port *np = NETC_PORT(ds, port);
-+	struct netc_switch *priv = ds->priv;
- 	u16 vlan_unaware_pvid;
- 	int err;
- 
-@@ -1988,6 +2013,10 @@ static int netc_port_bridge_join(struct dsa_switch *ds, int port,
- out:
- 	netc_port_remove_host_flood(np, np->host_flood);
- 
-+	if (atomic_inc_return(&priv->br_cnt) == 1)
-+		schedule_delayed_work(&priv->fdbt_ageing_work,
-+				      READ_ONCE(priv->fdbt_ageing_delay));
-+
- 	return 0;
- 
- disable_mlo:
-@@ -2014,6 +2043,7 @@ static void netc_port_bridge_leave(struct dsa_switch *ds, int port,
- {
- 	struct netc_port *np = NETC_PORT(ds, port);
- 	struct net_device *ndev = np->dp->user;
-+	struct netc_switch *priv = ds->priv;
- 	u16 vlan_unaware_pvid;
- 	bool mc, uc;
- 
-@@ -2021,6 +2051,9 @@ static void netc_port_bridge_leave(struct dsa_switch *ds, int port,
- 	netc_port_set_pvid(np, NETC_STANDALONE_PVID);
- 	np->pvid = NETC_STANDALONE_PVID;
- 
-+	if (atomic_dec_and_test(&priv->br_cnt))
-+		cancel_delayed_work_sync(&priv->fdbt_ageing_work);
-+
- 	netc_port_remove_dynamic_entries(np);
- 	uc = ndev->flags & IFF_PROMISC;
- 	mc = ndev->flags & (IFF_PROMISC | IFF_ALLMULTI);
-@@ -2041,6 +2074,37 @@ static void netc_port_bridge_leave(struct dsa_switch *ds, int port,
- 	netc_port_del_vlan_entry(np, vlan_unaware_pvid);
- }
- 
-+static int netc_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
-+{
-+	struct netc_switch *priv = ds->priv;
-+	unsigned long delay_jiffies;
-+
-+	/* The dynamic FDB entry is deleted when its activity counter reaches
-+	 * NETC_FDBT_AGEING_THRESH (100). Each delayed_work tick increments
-+	 * the counter by 1 if the entry is inactive.
-+	 *
-+	 * Therefore:
-+	 *   msecs (ms)    = NETC_FDBT_AGEING_THRESH * delay_ms (ms)
-+	 *   delay_ms      = msecs / NETC_FDBT_AGEING_THRESH
-+	 *   delay_jiffies = (delay_ms / 1000) * HZ
-+	 *                 = (msecs * HZ) / (1000 * NETC_FDBT_AGEING_THRESH)
-+	 *
-+	 * Use DIV_ROUND_CLOSEST_ULL to perform a single nearest-jiffy
-+	 * rounding, avoiding the two-step rounding error of the intermediate
-+	 * delay_ms approach.
-+	 *   Maximum error = +/-0.5 jiffy * 100 = +/-50000/HZ ms.
-+	 */
-+	delay_jiffies = DIV_ROUND_CLOSEST_ULL((u64)msecs * HZ,
-+					      1000 * NETC_FDBT_AGEING_THRESH);
-+	WRITE_ONCE(priv->fdbt_ageing_delay, delay_jiffies);
-+
-+	if (atomic_read(&priv->br_cnt))
-+		mod_delayed_work(system_percpu_wq, &priv->fdbt_ageing_work,
-+				 READ_ONCE(priv->fdbt_ageing_delay));
-+
-+	return 0;
-+}
-+
- static void netc_port_fast_age(struct dsa_switch *ds, int port)
- {
- 	struct netc_port *np = NETC_PORT(ds, port);
-@@ -2332,6 +2396,7 @@ static const struct dsa_switch_ops netc_switch_ops = {
- 	.port_vlan_del			= netc_port_vlan_del,
- 	.port_bridge_join		= netc_port_bridge_join,
- 	.port_bridge_leave		= netc_port_bridge_leave,
-+	.set_ageing_time		= netc_set_ageing_time,
- 	.port_fast_age			= netc_port_fast_age,
- 	.get_pause_stats		= netc_port_get_pause_stats,
- 	.get_rmon_stats			= netc_port_get_rmon_stats,
-@@ -2381,6 +2446,8 @@ static int netc_switch_probe(struct pci_dev *pdev,
- 	ds->phylink_mac_ops = &netc_phylink_mac_ops;
- 	ds->fdb_isolation = true;
- 	ds->max_num_bridges = priv->info->num_ports - 1;
-+	ds->ageing_time_min = 1000;
-+	ds->ageing_time_max = U32_MAX;
- 	ds->priv = priv;
- 	priv->ds = ds;
- 
-diff --git a/drivers/net/dsa/netc/netc_switch.h b/drivers/net/dsa/netc/netc_switch.h
-index 982c8d3a3fbf..305f2a92e2f9 100644
---- a/drivers/net/dsa/netc/netc_switch.h
-+++ b/drivers/net/dsa/netc/netc_switch.h
-@@ -50,6 +50,9 @@
- /* PAUSE refresh threshold: send refresh when timer reaches this value */
- #define NETC_PAUSE_THRESH		0x7FFF
- 
-+#define NETC_FDBT_AGEING_DELAY		(3 * HZ)
-+#define NETC_FDBT_AGEING_THRESH		100
-+
- struct netc_switch;
- 
- struct netc_switch_info {
-@@ -124,6 +127,10 @@ struct netc_switch {
- 	struct ntmp_user ntmp;
- 	struct hlist_head fdb_list;
- 	struct mutex fdbt_lock; /* FDB table lock */
-+	struct delayed_work fdbt_ageing_work;
-+	/* (fdbt_ageing_delay * NETC_FDBT_AGEING_THRESH) is ageing time */
-+	unsigned long fdbt_ageing_delay;
-+	atomic_t br_cnt;
- 	struct hlist_head vlan_list;
- 	struct mutex vft_lock; /* VLAN filter table lock */
- 
+This patch adds a new driver for the MoreThanIP L2 switch embedded in
+the i.MX287 SoC.  The two-port switch sits between uDMA[01] and the
+MAC-NET[01] blocks and can be used as an alternative to the existing
+FEC driver.
+
+A few questions inline below.
+
+> diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> new file mode 100644
+> index 000000000000..1d1005a42306
+> --- /dev/null
+> +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+
+[ ... ]
+
+> +static void mtip_switch_restart(struct net_device *dev, int duplex0,
+> +				int duplex1)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	int i;
+> +
+> +	 /* Perform a reset. We should wait for this. */
+> +	writel(MCF_ESW_MODE_SW_RST, fep->hwp + ESW_MODE);
+
+[High]
+Should this routine hold a lock?  fep->hw_lock is declared and
+initialised in mtip_sw_probe() with the comment "/* Lock for HW
+configuration */" but neither mtip_switch_restart() nor mtip_adjust_link()
+acquire it.
+
+The two ports each get their own phy_device via of_phy_connect(), and
+phylib serialises adjust_link callbacks per phy_device, not across them.
+If both ports' state machines fire mtip_adjust_link() at the same time,
+both CPUs end up inside mtip_switch_restart() in parallel, racing on
+ESW_MODE_SW_RST, ESW_BMPC, ESW_ISR, ESW_RDSR/ESW_TDSR, fep->cur_tx /
+cur_rx / dirty_tx, and fep->full_duplex[].
+
+> +	/* Reset SKB transmit buffers */
+> +	for (i = 0; i <= TX_RING_MOD_MASK; i++) {
+> +		if (fep->tx_skbuff[i]) {
+> +			dev_kfree_skb_any(fep->tx_skbuff[i]);
+> +			fep->tx_skbuff[i] = NULL;
+> +		}
+> +	}
+
+[High]
+Can two concurrent invocations of this loop double-free a tx_skbuff[i]
+entry?  Both CPUs read the same non-NULL pointer, both call
+dev_kfree_skb_any() on it, and only then race on the NULL store.
+
+> +
+> +	fep->full_duplex[0] = duplex0;
+> +	fep->full_duplex[1] = duplex1;
+> +
+> +	mtip_configure_enet_mii(fep, 1);
+> +	mtip_configure_enet_mii(fep, 2);
+> +
+> +	/* And last, enable the transmit and receive processing */
+> +	writel(MCF_ESW_RDAR_R_DES_ACTIVE, fep->hwp + ESW_RDAR);
+> +
+> +	/* Enable interrupts we wish to service */
+> +	writel(0xFFFFFFFF, fep->hwp + ESW_ISR);
+> +	writel(MCF_ESW_IMR_TXF | MCF_ESW_IMR_RXF,
+> +	       fep->hwp + ESW_IMR);
+> +
+> +	mtip_config_switch(fep);
+> +}
+> +
+> +static irqreturn_t mtip_interrupt(int irq, void *ptr_fep)
+> +{
+> +	struct switch_enet_private *fep = ptr_fep;
+> +	irqreturn_t ret = IRQ_NONE;
+> +	u32 int_events, int_imask;
+> +
+> +	/* Get the interrupt events that caused us to be here */
+> +	int_events = readl(fep->hwp + ESW_ISR);
+> +	writel(int_events, fep->hwp + ESW_ISR);
+> +
+> +	if (int_events & (MCF_ESW_ISR_RXF | MCF_ESW_ISR_TXF)) {
+> +		ret = IRQ_HANDLED;
+> +		/* Disable the RX interrupt */
+> +		if (napi_schedule_prep(&fep->napi)) {
+> +			int_imask = readl(fep->hwp + ESW_IMR);
+> +			int_imask &= ~MCF_ESW_IMR_RXF;
+> +			writel(int_imask, fep->hwp + ESW_IMR);
+> +			__napi_schedule(&fep->napi);
+> +		}
+> +	}
+> +
+> +	return ret;
+> +}
+
+[Medium]
+Should this also clear MCF_ESW_IMR_TXF here?  The condition above
+schedules NAPI on either RXF or TXF, and the NAPI poll re-enables both
+bits together:
+
+	writel(MCF_ESW_IMR_RXF | MCF_ESW_IMR_TXF,
+	       fep->hwp + ESW_IMR);
+
+With only RXF masked here, every TX completion while NAPI is running
+re-asserts the IRQ line; mtip_interrupt() runs again, napi_schedule_prep()
+returns false because NAPI is already scheduled, and the handler returns
+IRQ_HANDLED having done nothing useful.  Once mtip_switch_tx() is filled
+in by the later patch in the series, would this turn into a sustained
+IRQ storm on TX-busy workloads?
+
+[ ... ]
+
+> +static int mtip_mii_init(struct switch_enet_private *fep,
+> +			 struct platform_device *pdev)
+> +{
+> +	struct device_node *node;
+> +	int err = -ENXIO;
+> +
+> +	/* Clear MMFR to avoid to generate MII event by writing MSCR.
+> +	 * MII event generation condition:
+> +	 * - writing MSCR:
+> +	 *      - mmfr[31:0]_not_zero & mscr[7:0]_is_zero &
+> +	 *        mscr_reg_data_in[7:0] != 0
+> +	 * - writing MMFR:
+> +	 *      - mscr[7:0]_not_zero
+> +	 */
+> +	writel(0, fep->hwp + MCF_FEC_MII_DATA);
+> +	/* Clear any pending transaction complete indication */
+> +	writel(MCF_ENET_MII, fep->enet_addr + MCF_FEC_EIR);
+
+[Medium]
+Is the base address for the MMFR clear correct here?
+
+fep->hwp is the switch base (fep->enet_addr + ENET_SWI_PHYS_ADDR_OFFSET,
+i.e. enet_addr + 0x8000), while MCF_FEC_MII_DATA (0x040) is an offset
+within the MAC register space.  At offset 0x040 from fep->hwp the header
+defines:
+
+	#define ESW_MCR             (0x040)
+
+So this writel() goes to the switch's Mirror Configuration Register
+rather than to MMFR.  The very next line correctly uses fep->enet_addr +
+MCF_FEC_EIR for the EIR clear, and mtip_mdio_read()/mtip_mdio_write()
+also use fep->enet_addr + MCF_FEC_MII_DATA for the actual MDIO accesses.
+Should this writel() also use fep->enet_addr?
+
+[ ... ]
+
+> +static int mtip_open(struct net_device *dev)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	int ret, port_idx = priv->portnum - 1;
+> +
+> +	if (fep->usage_count == 0) {
+> +		ret = clk_enable(fep->clk_ipg);
+
+[ ... ]
+
+> +	ret = mtip_mii_probe(dev);
+> +	if (ret)
+> +		goto mtip_mii_probe_err;
+> +
+> +	phy_start(fep->phy_dev[port_idx]);
+> +
+> +	if (fep->usage_count == 0) {
+> +		napi_enable(&fep->napi);
+> +		mtip_switch_restart(dev, 1, 1);
+> +
+> +		netif_start_queue(dev);
+> +	}
+
+[High]
+Can phy_start() race with the mtip_switch_restart() call below it?
+Once phy_start() returns, the phylib state machine workqueue may invoke
+mtip_adjust_link() on another CPU, which calls mtip_switch_restart() on
+link-up.  That can run concurrently with the mtip_switch_restart(dev,
+1, 1) here, and both paths walk fep->tx_skbuff[] freeing entries and
+reprogram switch HW registers without synchronisation.
+
+Would it be safer to start the PHY only after the switch HW has been
+configured (and to take a lock around mtip_switch_restart())?
+
+[ ... ]
+
+> +static int mtip_parse_of(struct switch_enet_private *fep,
+> +			 struct device_node *np)
+> +{
+> +	struct device_node *p;
+> +	unsigned int port_num;
+> +	int ret = 0;
+> +
+> +	p = of_get_child_by_name(np, "ethernet-ports");
+> +
+> +	for_each_available_child_of_node_scoped(p, port) {
+> +		if (of_property_read_u32(port, "reg", &port_num))
+> +			continue;
+
+[Medium]
+If of_get_child_by_name() returns NULL (no "ethernet-ports" node), the
+for_each_available_child_of_node_scoped() loop is skipped entirely, ret
+stays 0, and mtip_parse_of() returns success with no ports parsed.
+Similarly, if every child fails the "reg" read above, the continue keeps
+ret at 0.
+
+After such a "success" return, mtip_ndev_init() calls
+alloc_netdev(sizeof(struct mtip_ndev_priv), fep->ndev_name[i],
+NET_NAME_USER, ether_setup) with fep->ndev_name[i] still NULL.
+alloc_netdev_mqs() then calls strscpy_pad() on a NULL name and oopses.
+
+Should missing "ethernet-ports", missing "reg", or having no parsed
+ports be treated as errors here?
+
+[ ... ]
+
+> +		fep->phy_np[port_num - 1] = of_parse_phandle(port,
+> +							     "phy-handle", 0);
+> +		if (!fep->phy_np[port_num - 1]) {
+> +			dev_err(&fep->pdev->dev,
+> +				"%s: PHY handle not defined!\n", __func__);
+> +			ret = -ENODEV;
+> +			goto of_get_err;
+> +		}
+> +	}
+> +
+> + of_get_err:
+> +	mtip_parse_of_cleanup(fep);
+> +	of_node_put(p);
+> +
+> +	return ret;
+> +}
+
+[High]
+Does the success path fall through into of_get_err: unconditionally?
+
+There is no return ret; (or success label) before the of_get_err label,
+so on a successful parse mtip_parse_of_cleanup(fep) runs and calls
+of_node_put() on every fep->phy_np[i] just acquired by
+of_parse_phandle().  mtip_parse_of_cleanup() also does not NULL the
+slots:
+
+	static void mtip_parse_of_cleanup(struct switch_enet_private *fep)
+	{
+		int i;
+
+		for (i = 0; i < SWITCH_EPORT_NUMBER; i++)
+			if (fep->phy_np[i])
+				of_node_put(fep->phy_np[i]);
+	}
+
+After probe, mtip_open()->mtip_mii_probe() then passes the same
+fep->phy_np[i] pointers to of_phy_connect() — does this dereference an
+OF node the driver no longer holds a reference on?
+
+The error and remove paths (the of_free_references label, the explicit
+cleanup after devm_request_irq() failure, and mtip_sw_remove() ->
+mtip_parse_of_cleanup()) call mtip_parse_of_cleanup() again on the same
+non-NULL pointers, which would underflow the OF refcount on each.
+
+Should there be a return ret; before of_get_err: and a NULL-out of the
+slot in mtip_parse_of_cleanup() after each of_node_put()?
+
+[ ... ]
+
+> +static int mtip_sw_probe(struct platform_device *pdev)
+> +{
+[ ... ]
+> +	ret = devm_request_irq(&pdev->dev, fep->irq, mtip_interrupt, 0,
+> +			       dev_name(&pdev->dev), fep);
+> +	if (ret) {
+> +		mtip_parse_of_cleanup(fep);
+> +		return dev_err_probe(&pdev->dev, ret, "Could not alloc IRQ\n");
+> +	}
+
+[Medium]
+Can a stale IRQ here dereference an uninitialised napi struct?
+
+netif_napi_add(dev, &fep->napi, mtip_rx_napi) is only called from
+mtip_open(), so between this devm_request_irq() and the first ndo_open
+fep->napi is zero-initialised (no poll, no dev, no state).  Probe also
+doesn't write 0 to ESW_IMR before requesting the IRQ — it relies on the
+register's reset value.
+
+If the bootloader or a warm reset left the switch with IMR set and
+events pending in ESW_ISR, mtip_interrupt() can fire immediately on
+enable, see RXF/TXF, call napi_schedule_prep(&fep->napi) (which sets
+NAPIF_STATE_SCHED unconditionally and returns true), and queue the
+zero-initialised napi struct.  net_rx_action() would then call
+n->poll == NULL.
+
+Would it help to either mask all interrupts (writel(0, fep->hwp +
+ESW_IMR)) before request_irq, or defer request_irq until after
+netif_napi_add()?
 -- 
-2.34.1
-
+pw-bot: cr
