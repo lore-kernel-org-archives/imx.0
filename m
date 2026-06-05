@@ -1,155 +1,141 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE3B381AE4
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 12:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780663292; cv=pass; b=kpmruavvyjQGBncwn5UHY/PdIzBrYDo5vk2py2PQcp9uwTKVK05Z9d86zgUskLByI0yerAKkMZ3XLGWaPp+aTonHGbQKG94DCKj5db+R9As1PbQ5Zazihym49x14TXh1hBGEW8PHGUx4bO79x6uTANKqecl+ym6VlXaQ+C6WacE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780663292; c=relaxed/simple;
-	bh=XNHtznNb9YuK+Ys5xRmERxuX6qwUALEMw5FejOZwa8M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T2fkKHPPe9lFaJ/zCFxsEVu/5zju2uapAqZe56rH5lmCP7RuSO/7tI/Qb/dap0r1W7C/s3ZOXIyGf0F/MVfj2nfE16+BGaVhYEZqcFZ709o2Hq1Bc2JUGZ553m6Q+d/dvAtNgimkvrmF20T0NJaw+0koKJRbbyDlrXASvCVopfg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=JVh2DN+r; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=hWWMhmjp; arc=pass smtp.client-ip=185.56.87.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9491F3D646C;
+	Fri,  5 Jun 2026 14:53:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780671203; cv=none; b=ZGHcLIqKjZloftrs1PgD9Q4CgGHIgVyoaPL6AZClJ3KmW5XsAAAj2UYy914llQasQ6DCEZ1IigbXW8V4MCgkkoh7qKVh5PfC9p4cvhx6XSzhATLgI6R2exIzbDEetbdB/ugebOqLIg/7cfVc2lEZsEL73SKJ+/vL6jx0XjnzRtU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780671203; c=relaxed/simple;
+	bh=S9VN2IMCqnREp7EhcUK1NJoNhMFd+IfW7xD2w5Raim8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H/0gA9H4jB9w95nEwJKMbuj7sDHRsnQFGe4cVgLfBCDMofNxptZmLWr4aVyrDJdyXprvv2dnVZeXYV41Ut7BjCh/Pos8XI6br6ZSpA0hf/fZunerxkYPUg7EslUVW9rsb7K/HF6R2+CWLBd1k+XNp+gLXJ8JyQzHNPbrO/AqnzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E5F52p0+; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="JVh2DN+r";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="hWWMhmjp"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-dcpc.prod.antispam.mailspamprotection.com; s=arckey; t=1780663290;
-	 b=nTCakouG3WkslA68OHKOqEbLjktq2/WS3XS5lE7TxpzHeKGzytkmC2yLwx29gYpHC4G50i1Qtm
-	  TPR0cr8xLCEh/CEiN9d9xGthF9OmHs1ZBxBfLL0ZuiUT4Aq/2XsrYUp92er/TAPCRjQxD8IqlQ
-	  11fz/er0tVHdB70u7EpB1DpKmct2blEwb5uYLBquUEAuuxuvsG/AQYC/BQAbmXqTzxnCwDLTWd
-	  IaBwv/AsKyaiApBwO9XDliyhfumIsd+7ekeOOJFpyj/ZpffyuGaWebfV6kd6jCCpSFchBmghsX
-	  QYT+xSVNMR9jvYUIg3597Rm5yaYlCku9hPfs2sTy6SKvOQ==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-dcpc.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-dcpc.prod.antispam.mailspamprotection.com; s=arckey; t=1780663290;
-	bh=XNHtznNb9YuK+Ys5xRmERxuX6qwUALEMw5FejOZwa8M=;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	  Message-ID:Date:Subject:Cc:To:From:DKIM-Signature:DKIM-Signature;
-	b=vs/+lEaVsglnodVaZOaQGIZySO4Q89pwGMDER1+laQjS/+C9jEu5G3A5ej81oExaAkVUw0qGbs
-	  /QkHkLf3jnrcfeK2idJPEG09C4kRrK9pAQIxDr9WzIZjkU/hLUbOg5ULeHFEsXxwN+ywNtPZzD
-	  4eukW0wOcZP1rRhftAvpiItl/S8I2/20abbBlnc5iEKeH+7GHU+vjsUA7YlctsXnT6yx/IPQXL
-	  TjrHxJLjafRIU/lKwdQTB/hYD7es9afbJqJpzuZv9/6gTcgJ7sCri2hlbwmdY9WEWw6L01K9dm
-	  ObnEmSJs2HowkBVtox4HztT5LSeXIAW9NOucfkW+ALQvsg==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Reply-To:List-Unsubscribe;
-	bh=F927iQO2yHy5r4ReVfNbFmhFmycUVmgAeB7fBG6rev8=; b=JVh2DN+rznFjKn3RtwbFZxvhIy
-	hFWj/WcJHlN9l6Z5MecICkhNZZKY+DYlVtLkZcVBpj4gcRzbB6vDlAsQ2fHh06rVHBz/eFE+87M94
-	RabvzgmGIsC0ov2BjUgzg5g8JMkGlK20tHaeGe+8r6FC15H5scfKJGqyuCnBAM9KPl0A=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-dcpc.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <francesco@valla.it>)
-	id 1wVSqt-0000000ANRJ-2aVZ
-	for imx@lists.linux.dev;
-	Fri, 05 Jun 2026 11:36:41 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Date:Subject:Cc:To:From:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=F927iQO2yHy5r4ReVfNbFmhFmycUVmgAeB7fBG6rev8=; b=hWWMhmjpCi3qq3Fr1kFkjljgGg
-	Vj11SCwNaX7NdXLQ3qtQU0cIeMp5zUEHjseLafSbXct8roL3XC0mULS233X6ryPzSD3EvxZNa3D6Z
-	4wc4QhGzrtSUV1P56thuHX00CZKOx2WPSbw7LmpqnTIcF/4mX+jvQKGyYGzMmdtsRT5o=;
-Received: from [95.248.69.182] (port=62513 helo=bywater.localnet)
-	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.3)
-	(envelope-from <francesco@valla.it>)
-	id 1wVSqb-00000000Bzf-1M8X;
-	Fri, 05 Jun 2026 11:36:21 +0000
-From: Francesco Valla <francesco@valla.it>
-To: Joseph Guo <qijian.guo@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- steven.yang@nxp.com
-Subject: Re: [PATCH] arm64: dts: imx93-11x11-frdm: enable additional devices
-Date: Fri, 05 Jun 2026 13:36:20 +0200
-Message-ID: <_j4Ik3AsS5yfKb4Y7cSB1w@valla.it>
-In-Reply-To: <aiKP3EgdrCbqtUH0@lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com>
-References:
- <20260115-imx93_devices-v1-1-b2c840cafa2e@valla.it>
- <aiKP3EgdrCbqtUH0@lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E5F52p0+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780671202; x=1812207202;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=S9VN2IMCqnREp7EhcUK1NJoNhMFd+IfW7xD2w5Raim8=;
+  b=E5F52p0+ucmhd7pnaA1s0YvFP4r6jZmWEp5YTLs+J7hRopPN46ZWTp6H
+   eHOY7MjTeP5zXmBYBzh2Hs2jG0NCni8socwy7PRp4G3WDh095P/Cpyean
+   PsWhgtvm4PAdwh+hCFGclmXUDu+WyyYha+XGCrLvvXeeuI8b2Gm7+PrDB
+   kmO7Rt1zJ4bGXvUInLnCCvkn0LL2mjvT4y4/+d6meCOdDvjVL0Xw0HH6f
+   SVqUnTuEx7ZbpdlzlVAyVNvs7sC9tV4aGXPpKS9snHz4e3mgEvWsEnM0I
+   kC5lKzzwQJvUu/7pCtvNyu7tj1roKlFj3vW8tWehU+9yMw9lteHCR6I4/
+   w==;
+X-CSE-ConnectionGUID: I8mqj+jwQiWoKm4LgJVE7A==
+X-CSE-MsgGUID: W1C4MERWSJuPtNLdtyuPcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="81565330"
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
+   d="scan'208";a="81565330"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 07:53:21 -0700
+X-CSE-ConnectionGUID: p3R1KLajSt+9nt2FGUPoiA==
+X-CSE-MsgGUID: dy03ihVLR16TJHMTwX8Gig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
+   d="scan'208";a="282943735"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.178])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 07:53:07 -0700
+Date: Fri, 5 Jun 2026 17:53:04 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Lee Jones <lee@kernel.org>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Thierry Reding <thierry.reding@avionic-design.de>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Peter Chen <peter.chen@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
+	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 08/23] driver core: platform: provide
+ platform_device_set_of_node_from_dev()
+Message-ID: <aiLi0KZskrCyEYO5@ashevche-desk.local>
+References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+ <20260521-pdev-fwnode-ref-v1-8-88c324a1b8d2@oss.qualcomm.com>
+ <ah9O15bMlAYgSlHx@ashevche-desk.local>
+ <aiK-EXwp_xhcbty9@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: 15078af4f7761f4a32842e50a5dc8850
-X-AntiAbuse: ID - 15078af4f7761f4a32842e50a5dc8850
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1wVSqt-0000000ANRJ-2aVZ-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-dcpc.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiK-EXwp_xhcbty9@hovoldconsulting.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Joseph,
+On Fri, Jun 05, 2026 at 02:16:17PM +0200, Johan Hovold wrote:
+> On Wed, Jun 03, 2026 at 12:44:55AM +0300, Andy Shevchenko wrote:
+> > On Thu, May 21, 2026 at 10:36:31AM +0200, Bartosz Golaszewski wrote:
+> > > Provide a platform-specific variant of device_set_of_node_from_dev(). In
+> > > addition to bumping the reference count of the OF node being assigned,
+> > > it also assigns the fwnode of the platform device.
+> > 
+> > Can we rather investigate the way how to make that of node reuse thingy
+> > (which is used solely by pin control) differently and then drop this confusing
+> > device_set_of_node_from_dev() call altogether?
+> 
+> No, that call is needed. See commit 4e75e1d7dac9 ("driver core: add
+> helper to reuse a device-tree node") for details.
 
-On venerd=C3=AC 5 giugno 2026 10:59:08 Ora legale dell=E2=80=99Europa centr=
-ale Joseph Guo=20
-wrote:
-> On Thu, Jan 15, 2026 at 06:11:34PM +0100, Francesco Valla wrote:
-> > Enable additional devices on the i.MX93 FRDM board:
-> >   - CAN port and associated transceiver
-> >   - Bluetooth portion of the IW612 chipset
-> >   - WiFi SDIO port
-> >   - user buttons
-> >=20
-> > The WiFi portion of the on-board IW612 chipset is still not supported
-> > upstream, but since SDIO is a discoverable bus it will be probed once it
-> > is.
-> >=20
-> > Signed-off-by: Francesco Valla <francesco@valla.it>
-> > ---
-[...]
+Bart fixes the problem with the platform driver. At the result this will be
+the only device_set_node() + 'reused = true'.  As for 'reused' flag, the need
+is only for pinmux/pin control stuff. The question here is if there is a better
+way to make that 'reused' be done automatically without need of setting some
+flag explicitly.
 
->=20
-> Hi Francesco,
->=20
-> Do you ever tried bluetooth feature? The bluetooth failed to scan with
-> 'device-wakeup-gpios' property.
->=20
-> Regards,
-> Joseph
->
-
-Yes, Bluetooth was tested using bluetoothctl, I just briefly re-tested it
-with latest master branch (7.1.0-rc6).
-
-Can you clarify what you mean with "The bluetooth failed to scan
-with 'device-wakeup-gpios' property."?
-
-Thank you
-
-Regards,
-
-=46rancesco
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
