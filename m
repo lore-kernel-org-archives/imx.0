@@ -1,330 +1,278 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309A12EEE95
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 08:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800D83E4C81;
+	Fri,  5 Jun 2026 09:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780649961; cv=none; b=rH5dRqcojBpSbKb0LhlpN81ypVMt783BAe9mtAmvJizI21qM5i1SncLGzUtnfdV92Ty/qkclAYPWpIjuk2nV5nLyRS9jixXd18SwuUBUrzngOagfG2G8ojATNQi+dnzjYDaJQ+kpFuFCR7UZNTVvBmSNnmVZUn49YqsTQtgrcMY=
+	t=1780650726; cv=none; b=rDbNo1nQuXfI3NuSLzKAMY2rObRJvRJUYFTmbnGninF7gtK0pgpyzi7pTB/+OzweoNoFibMl8I16MtaB7k5XIftDip4qLNUHyrwFSDYLxxqF37E0eJ8wS3AURv9x4U7OLeTNYDrU38j1L63naCjuaxq+1ehXVwxJqx5LRl3Ej9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780649961; c=relaxed/simple;
-	bh=LMUn8d9dUrhCqw3CZhZMtT5jf2FP/joi4N83ANL1h8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ugebhHsQIInb7vyaZVdlnWQ5V/Bg+QFTS/qS7CUdsSXr3oAy8qLATVYqzjakbL/MvkEHIH3wx4mqsxaWQe5UifLRDPj2rk2pCcVUtunpj5edvJnnc72Ut/vdGKhUG5TU0eUrOLv14wXIEr2wvq3ri3s11gwVr+yotZBHrkzJH+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A162A1A1A7F;
-	Fri,  5 Jun 2026 10:59:12 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6B2421A1A01;
-	Fri,  5 Jun 2026 10:59:12 +0200 (CEST)
-Received: from lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com [10.52.9.99])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 0EBBC1800071;
-	Fri,  5 Jun 2026 16:59:09 +0800 (+08)
-Date: Fri, 5 Jun 2026 17:59:08 +0900
-From: Joseph Guo <qijian.guo@nxp.com>
-To: Francesco Valla <francesco@valla.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, steven.yang@nxp.com
-Subject: Re: [PATCH] arm64: dts: imx93-11x11-frdm: enable additional devices
-Message-ID: <aiKP3EgdrCbqtUH0@lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com>
-References: <20260115-imx93_devices-v1-1-b2c840cafa2e@valla.it>
+	s=arc-20240116; t=1780650726; c=relaxed/simple;
+	bh=ICmwNN4eLL76tCGS2Kn+RRGQbYpXXRePeKL9PXeDkdI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KiBU2Oo/3DAmI+s0Er7+ShdxrF5dgcZ6jHp1AQys5xDruT8KaU10y51K9C5Gs8J/4c7YeXgM+yme/biddTpoKaYYLXCPGlbbVShG6oXCy4z0eJ5vzJOtqgaJ2GcQNqPr+5tFXhhmrJ5DMlQ+EsFzPpJmYcVUxA0CvnFChMxKQIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4jjUShM; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4jjUShM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CA11F00893;
+	Fri,  5 Jun 2026 09:11:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780650725;
+	bh=d7e/64Lm4FJCHnz40nUrkUeXHtudnHaWROVmMiFI1MM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=b4jjUShMkrkAmKNxKHC+rOncDO9lTBGvhVgQKmVj7x8ATGjGdsoqadL19HOJzjcxR
+	 abVTB3dLsl7EZQ2p2CPYahFdM4sgLY65GgoMHPZuL7sb7PSbwBdnznsIqcbMKnMOjt
+	 XTHTs1ZE4p3L6MxoST7yq0c+wxGMdPmtJwK2TMfXoZIljRBthAQ2h7zEsml9KWCxdL
+	 dAdzswtSkYkPB7Psqhpere9y5gLq0e8V2bg3fS7jUTi6jVBsAsuPxhlt5P48hVgeez
+	 rbz/xNkuNK7+DyNURO2sbUzqDd9qW8Gmmk+yn9qr9o/aSVbwXaRdOnaOWse3qXTmgc
+	 K3bZT7ZX4PBGg==
+Message-ID: <8387afa5-f2d9-4006-a1c9-d2122ea6245d@kernel.org>
+Date: Fri, 5 Jun 2026 11:11:55 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115-imx93_devices-v1-1-b2c840cafa2e@valla.it>
-X-Virus-Scanned: ClamAV using ClamSMTP
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] dt-bindings: connector: Add fsl,io-connector binding
+To: Frank Li <Frank.li@nxp.com>
+Cc: "Chancel Liu (OSS)" <chancel.liu@oss.nxp.com>,
+ Chancel Liu <chancel.liu@nxp.com>, "robh@kernel.org" <robh@kernel.org>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "mturquette@baylibre.com" <mturquette@baylibre.com>,
+ "sboyd@kernel.org" <sboyd@kernel.org>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
+References: <AM9PR04MB8353FE81D06852D45514E460E3032@AM9PR04MB8353.eurprd04.prod.outlook.com>
+ <d2b13e51-1684-4acb-a5ed-294c8aa95906@kernel.org>
+ <AM9PR04MB83538C4A07A6835FF8A74793E3002@AM9PR04MB8353.eurprd04.prod.outlook.com>
+ <20260519-macho-degu-from-nibiru-960af2@quoll>
+ <AM9PR04MB8353B563519EBC1AD6C5BFE1E3012@AM9PR04MB8353.eurprd04.prod.outlook.com>
+ <e23a610f-e1ad-4536-80fb-8b5707e77f39@kernel.org>
+ <ag3GMdmxw60B15Oe@lizhi-Precision-Tower-5810>
+ <74eb56fb-546d-4b2c-9bbc-01a40937f5d3@kernel.org>
+ <AM9PR04MB835333895276201A81251210E30A2@AM9PR04MB8353.eurprd04.prod.outlook.com>
+ <8046287e-87a2-4d18-ad3d-248620a752a9@kernel.org>
+ <ah9WzQmwPrP4yWTC@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <ah9WzQmwPrP4yWTC@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 15, 2026 at 06:11:34PM +0100, Francesco Valla wrote:
-> Enable additional devices on the i.MX93 FRDM board:
+On 03/06/2026 00:18, Frank Li wrote:
+> On Mon, May 25, 2026 at 02:28:32PM +0200, Krzysztof Kozlowski wrote:
+>> On 25/05/2026 08:26, Chancel Liu (OSS) wrote:
+>>>>>>>>>>>>> +description:
+>>>>>>>>>>>>> +  The NXP I/O connector represents a physically present I/O
+>>>>>>>>>>>>> +connector on the
+>>>>>>>>>>>>> +  base board. It acts as a nexus that exposes a constrained
+>>>>>>>>>>>>> +set
+>>>>>>>> of
+>>>>>>>>>>>>> +I/O
+>>>>>>>>>>>>> +  resources, such as GPIOs, clocks, PWMs and interrupts,
+>>>>>>>>>>>>> +through fixed
+>>>>>>>>>>>>> +  electrical wiring. All actual hardware providers reside on
+>>>>>>>>>>>>> +the
+>>>>>>>> base
+>>>>>>>>>> board.
+>>>>>>>>>>>>> +  The connector node only defines index-based mappings to
+>>>>>>>>>>>>> + those
+>>>>>>>>>>>> providers.
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +properties:
+>>>>>>>>>>>>> +  compatible:
+>>>>>>>>>>>>> +    const: fsl,io-connector
+>>>>>>>>>>>>
+>>>>>>>>>>>> Everything is IO. Everything is connector, so your compatible
+>>>>>>>>>>>> does not match requirements from writing bindings.
+>>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> Yes, this compatible is too generic. I will rename the
+>>>>>>>>>>> compatible to fsl,aud-io-connector.
+>>>>>>>>>>
+>>>>>>>>>> aud is not much better. Which boards have it? What's the pinout?
+>>>>>>>> What's
+>>>>>>>>>> standard? Is it described anywhere? If so, provide reference to
+>>>>>>>> spec/docs.
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> This is not an industry standard electrical interface. This
+>>>>>>>>> connector
+>>>>>>>>
+>>>>>>>> Then if you do not have standard, then you have board specific
+>>>>>>>> layouts thus you need board-specific compatibles. You can use
+>>>>>>>> fallbacks. Generic fallback could work, but both io-connector and
+>>>>>>>> aud-io-connector are just too generic. Every connector is
+>>>>>>>> "connector" and "io", thus absolutely anything can be
+>>>>>>>> "io-connector". "aud" improves it only a bit, thus honestly I would
+>>>> go with board specific fallback as well.
+>>>>>>>>
+>>>>>>>
+>>>>>>> How about board specific + common fallback compatible like this:
+>>>>>>>   compatible:
+>>>>>>>     items:
+>>>>>>>       - enum:
+>>>>>>>           - fsl,imx95-19x19-evk-aud-io-connector
+>>>>>>>           - fsl,imx952-evk-aud-io-connector
+>>>>>>>       - const: fsl,imx-aud-io-connector Since the daughter board is
+>>>>>>> named “IMX-AUD-IO” in publicly available
+>>>>>>
+>>>>>> I don't think it is named like that.
+>>>>>>
+>>>>>> git grep -i imx-aud-io
+>>>>>>
+>>>>>>> documentation, common compatible clearly indicates that this
+>>>>>>> connector is intended for that.
+>>>>>>>
+>>>>>>> Also, I want to talk about the topic of generic connector. It's a
+>>>>>>> common design that daughter board is connected to base board through
+>>>>>>> a connector. This connector more often acts as a nexus that exposes
+>>>>>>> a constrained subset of GPIO, clock, PWM and interrupt resources to
+>>>>>>> the daughter board. Can we document this kind of connector as a
+>>>>>>> generic binding?
+>>>>>>
+>>>>>> So this binding is the connector between carrier and some addon? Then
+>>>>>> you don't get a compatible for that at all, because it is not
+>>>>>> necessary, not useful and NEVER used. Do you see socket LGA "connector"
+>>>> bindings? No.
+>>>>>
+>>>>> Not exactly. Any connector connects a carrier board with an add-on
+>>>> board.
+>>>>> The key point here is that this connector type is reused across
+>>>>> different boards, even though it is not an industry-standard
+>>>>> connector. Both the signal definitions and the mechanical layout are
+>>>> defined.
+>>>>>
+>>>>> The same add-on boards can therefore be reused across different base
+>>>>> boards that use this type of connector.
+>>>>>
+>>>>> There are also GPIO mappings involved. For example, pin 1 on the
+>>>>> connector may represent reset-gpios, but it could be connected to
+>>>>> GPIO0 on board A and GPIO1 on board B.
+>>>>>
+>>>>> Without a connector definition layer, this would create an N × M
+>>>>> combination problem. The Nexus node discussion already covered this
+>>>> topic:
+>>>>> https://osseu2025.sched.com/event/25Vrw
+>>>>>
+>>>>> An LGA socket is a CPU socket, where the signals are completely
+>>>>> transparent to software, so it is not a good comparison. A PCIe M.2
+>>>>> Key-M/E connector would be a more appropriate comparison.
+>>>>>
+>>>>
+>>>> So the terminology of daughter and carrier boards was confusing. If this
+>>>> is a hat, mezzanine or other addon, it's fine.
+>>>>
+>>>
+>>> The IMX-AUD-IO is an add-on board that attaches to the base board. To
+>>> make it clearer, I will replace "daughter board" with "add-on board"
+>>> throughout descriptions.
+>>>
+>>>> I still insist on board specific compatibles - fallback and specific.
+>>>>
+>>>
+>>> The base board has a slot component that is mechanically compatible
+>>> with a PCIe x8 connector. However, it carries no PCIe signals and the
+>>> pins are repurposed to carry fixed board-level audio I/O related
+>>> signals.
+>>>
+>>> I think we can name a compatible reflects a standard mechanical form
+>>> factor.
+>>> For the compatibles (specific + fallback) I propose:
+>>> - enum:
+>>>     - fsl,imx95-19x19-evk-aud-io-pcie-x8-slot
+>>>     - fsl,imx952-evk-aud-io-pcie-x8-slot
+>>> - const: fsl,aud-io-pcie-x8-slot
+>>
+>> Does not solve my request, so I won't ack it. Maybe you will get ack
+>> from other DT maintainer then.
 > 
->   - CAN port and associated transceiver
->   - Bluetooth portion of the IW612 chipset
->   - WiFi SDIO port
->   - user buttons
+> Krzysztof:
+> 	Thank you for your support. This type header/slot is difficult to
+> name it.
 > 
-> The WiFi portion of the on-board IW612 chipset is still not supported
-> upstream, but since SDIO is a discoverable bus it will be probed once it
-> is.
+> After read again previous comments
 > 
-> Signed-off-by: Francesco Valla <francesco@valla.it>
-> ---
-> Applies on top of [0].
+> "Then if you do not have standard, then you have board specific layouts
+> thus you need board-specific compatibles. You can use fallbacks. Generic
+> fallback could work, but both io-connector and aud-io-connector are just
+> too generic. Every connector is "connector" and "io", thus absolutely
+> anything can be "io-connector". "aud" improves it only a bit, thus
+> honestly I would go with board specific fallback as well."
 > 
-> WiFi was tested using the nxpwifi driver proposed in [1].
-> 
-> [0] https://lore.kernel.org/all/20260113075002.561453-1-daniel.baluta@nxp.com/
-> [1] https://lore.kernel.org/all/20251205065545.3325032-1-jeff.chen_1@nxp.com/
-> 
-> Reagrds,
-> Francesco
-> ---
->  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 152 +++++++++++++++++++++
->  1 file changed, 152 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> index 5bb6ae0d154a655283295b6902fc29bf6f744d5c..bd14ba28690c081817111aaabef12fb56a7c56a4 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> @@ -9,6 +9,7 @@ / {
->  	model = "NXP i.MX93 11X11 FRDM board";
->  
->  	aliases {
-> +		can0 = &flexcan2;
->  		ethernet0 = &fec;
->  		ethernet1 = &eqos;
->  		i2c0 = &lpi2c1;
-> @@ -18,12 +19,40 @@ aliases {
->  		mmc1 = &usdhc2; /* uSD */
->  		rtc0 = &pcf2131;
->  		serial0 = &lpuart1;
-> +		serial4 = &lpuart5;
->  	};
->  
->  	chosen {
->  		stdout-path = &lpuart1;
->  	};
->  
-> +	flexcan2_phy: can-phy {
-> +		compatible = "nxp,tja1051";
-> +		#phy-cells = <0>;
-> +		max-bitrate = <5000000>;
-> +		silent-gpios = <&pcal6524 23 GPIO_ACTIVE_HIGH>;
-> +	};
-> +
-> +	gpio-keys {
-> +		compatible = "gpio-keys";
-> +
-> +		button-k2 {
-> +			label = "Button K2";
-> +			linux,code = <BTN_1>;
-> +			gpios = <&pcal6524 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-> +			interrupt-parent = <&pcal6524>;
-> +			interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
-> +		};
-> +
-> +		button-k3 {
-> +			label = "Button K3";
-> +			linux,code = <BTN_2>;
-> +			gpios = <&pcal6524 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-> +			interrupt-parent = <&pcal6524>;
-> +			interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
-> +		};
-> +	};
-> +
->  	reg_usdhc2_vmmc: regulator-usdhc2 {
->  		compatible = "regulator-fixed";
->  		off-on-delay-us = <12000>;
-> @@ -37,6 +66,16 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
->  		enable-active-high;
->  	};
->  
-> +	reg_usdhc3_vmmc: regulator-usdhc3 {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "VPCIe_3V3";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		startup-delay-us = <20000>;
-> +		gpio = <&pcal6524 13 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +	};
-> +
->  	reserved-memory {
->  		ranges;
->  		#address-cells = <2>;
-> @@ -88,6 +127,11 @@ sound-mqs {
->  		audio-cpu = <&sai1>;
->  		audio-codec = <&mqs1>;
->  	};
-> +
-> +	usdhc3_pwrseq: mmc-pwrseq {
-> +		compatible = "mmc-pwrseq-simple";
-> +		reset-gpios = <&pcal6524 12 GPIO_ACTIVE_LOW>;
-> +	};
->  };
->  
->  &adc1 {
-> @@ -157,11 +201,27 @@ ethphy2: ethernet-phy@2 {
->  	};
->  };
->  
-> +&flexcan2 {
-> +	phys = <&flexcan2_phy>;
-> +	pinctrl-0 = <&pinctrl_flexcan2>;
-> +	pinctrl-1 = <&pinctrl_flexcan2_sleep>;
-> +	pinctrl-names = "default", "sleep";
-> +	status = "okay";
-> +};
-> +
->  &lpi2c1 {
->  	clock-frequency = <400000>;
->  	pinctrl-0 = <&pinctrl_lpi2c1>;
->  	pinctrl-names = "default";
->  	status = "okay";
-> +
-> +	pcal6408: gpio@20 {
-> +		compatible = "nxp,pcal6408";
-> +		reg = <0x20>;
-> +		#gpio-cells = <2>;
-> +		gpio-controller;
-> +		reset-gpios = <&pcal6524 20 GPIO_ACTIVE_LOW>;
-> +	};
->  };
->  
->  &lpi2c2 {
-> @@ -322,6 +382,21 @@ &lpuart1 { /* console */
->  	status = "okay";
->  };
->  
-> +&lpuart5 {
-> +	pinctrl-0 = <&pinctrl_uart5>;
-> +	pinctrl-names = "default";
-> +	status = "okay";
-> +
-> +	uart-has-rtscts;
-> +
-> +	bluetooth {
-> +		compatible = "nxp,88w8987-bt";
-> +		device-wakeup-gpios = <&pcal6408 3 GPIO_ACTIVE_HIGH>;
-> +		reset-gpios = <&pcal6524 19 GPIO_ACTIVE_LOW>;
-> +		vcc-supply = <&reg_usdhc3_vmmc>;
-> +	};
-> +};
-Hi Francesco,
+> Do you means
+> oneOf
+>   - items:
+>       - enum:
+>           - fsl,imx943-evk-aud-io-pcie-x8-slot
+>           - fsl,imx952-evk-aud-io-pcie-x8-slot
+>       - const: fsl,imx95-19x19-evk-aud-io-pcie-x8-slot
+>  - const: fsl,imx95-19x19-evk-aud-io-pcie-x8-slot
 
-Do you ever tried bluetooth feature? The bluetooth failed to scan with 'device-wakeup-gpios' property.
+Yes, could be a bit shorter like fsl,imx95-19x19-evk-aud-io-slot or even
+without slot because prefixing it with board compatible makes it very
+specific.
 
-Regards,
-Joseph
+> 
+> Frank
+> 
+>>
+>> Best regards,
+>> Krzysztof
 
-> +
->  &mqs1 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_mqs1>;
-> @@ -394,6 +469,20 @@ &usdhc2 {
->  	status = "okay";
->  };
->  
-> +&usdhc3 {
-> +	bus-width = <4>;
-> +	keep-power-in-suspend;
-> +	mmc-pwrseq = <&usdhc3_pwrseq>;
-> +	non-removable;
-> +	pinctrl-0 = <&pinctrl_usdhc3>;
-> +	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-> +	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-> +	pinctrl-3 = <&pinctrl_usdhc3_sleep>;
-> +	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
-> +	vmmc-supply = <&reg_usdhc3_vmmc>;
-> +	status = "okay";
-> +};
-> +
->  &wdog3 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_wdog>;
-> @@ -486,6 +575,13 @@ MX93_PAD_GPIO_IO27__CAN2_RX			0x139e
->  		>;
->  	};
->  
-> +	pinctrl_flexcan2_sleep: flexcan2sleepgrp {
-> +		fsl,pins = <
-> +			MX93_PAD_GPIO_IO25__GPIO2_IO25			0x31e
-> +			MX93_PAD_GPIO_IO27__GPIO2_IO27			0x31e
-> +		>;
-> +	};
-> +
->  	pinctrl_lpi2c1: lpi2c1grp {
->  		fsl,pins = <
->  			MX93_PAD_I2C1_SCL__LPI2C1_SCL			0x40000b9e
-> @@ -533,6 +629,15 @@ MX93_PAD_UART1_TXD__LPUART1_TX			0x31e
->  		>;
->  	};
->  
-> +	pinctrl_uart5: uart5grp {
-> +		fsl,pins = <
-> +			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX		0x31e
-> +			MX93_PAD_DAP_TDI__LPUART5_RX			0x31e
-> +			MX93_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B		0x31e
-> +			MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B		0x31e
-> +		>;
-> +	};
-> +
->  	/* need to config the SION for data and cmd pad, refer to ERR052021 */
->  	pinctrl_usdhc1: usdhc1grp {
->  		fsl,pins = <
-> @@ -647,6 +752,53 @@ MX93_PAD_SD2_VSELECT__GPIO3_IO19	0x51e
->  		>;
->  	};
->  
-> +		/* need to config the SION for data and cmd pad, refer to ERR052021 */
-> +	pinctrl_usdhc3: usdhc3grp {
-> +		fsl,pins = <
-> +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x1582
-> +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x40001382
-> +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x40001382
-> +			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x40001382
-> +			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x40001382
-> +			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x40001382
-> +		>;
-> +	};
-> +
-> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
-> +	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
-> +		fsl,pins = <
-> +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x158e
-> +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x4000138e
-> +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x4000138e
-> +			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x4000138e
-> +			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x4000138e
-> +			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x4000138e
-> +		>;
-> +	};
-> +
-> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
-> +	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
-> +		fsl,pins = <
-> +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x15fe
-> +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x400013fe
-> +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x400013fe
-> +			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x400013fe
-> +			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x400013fe
-> +			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x400013fe
-> +		>;
-> +	};
-> +
-> +	pinctrl_usdhc3_sleep: usdhc3grpsleepgrp {
-> +		fsl,pins = <
-> +			MX93_PAD_SD3_CLK__GPIO3_IO20		0x31e
-> +			MX93_PAD_SD3_CMD__GPIO3_IO21		0x31e
-> +			MX93_PAD_SD3_DATA0__GPIO3_IO22		0x31e
-> +			MX93_PAD_SD3_DATA1__GPIO3_IO23		0x31e
-> +			MX93_PAD_SD3_DATA2__GPIO3_IO24		0x31e
-> +			MX93_PAD_SD3_DATA3__GPIO3_IO25		0x31e
-> +		>;
-> +	};
-> +
->  	pinctrl_wdog: wdoggrp {
->  		fsl,pins = <
->  			MX93_PAD_WDOG_ANY__WDOG1_WDOG_ANY	0x31e
-> 
-> ---
-> base-commit: 8ce368ca61310f425012fea4549d2b6ad0c5c54c
-> change-id: 20260114-imx93_devices-a98e116463b3
-> 
-> Best regards,
-> -- 
-> Francesco Valla <francesco@valla.it>
-> 
+
+Best regards,
+Krzysztof
