@@ -1,65 +1,71 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011048.outbound.protection.outlook.com [40.107.130.48])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013070.outbound.protection.outlook.com [40.107.159.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C376405C45
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 15:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF613E00B9
+	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 15:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780671921; cv=fail; b=bG3yR739YzwGzJKuW0Xtc+07GYvWbqmuaO7DpEreEUooy80J2V6F0ZWLtjnvmRKyS4z21+uNu0BgDqwJ3I6V2UhS65Q4ctenqykGJTQwt7R7fEcfoukfj5J/fEpMA/9/qWBTtzvAG2NPooCym8AsGUQ2f9vslKCDPTpM61jwAto=
+	t=1780672282; cv=fail; b=tbkxRS/om9fm3cWvZoxuMOMeR9mpELvNllLGwBWdZPVx+nkM99owffEndVysZZx8GDr2QegFhKtiYoPWphYiziaJjR4lVQkA8cbhE2+C87csCh+GN3sTPPn47kayFsrvnvQjDWnq//CMr69SpGeyTqY8DgDHq2tKhqsjrHf2pvQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780671921; c=relaxed/simple;
-	bh=19iCV4JkqCGFVssobatJmFsymfju5XmT4IRnd5bvcG8=;
+	s=arc-20240116; t=1780672282; c=relaxed/simple;
+	bh=NQgmCjPfuaC0zziKMS85oZB7r9lHIOApBVlDrvC5nI4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Krkzk8vzG3RMbMUspJImjodzmOeXXwcBdrSRw4fKAD/xBMV8VAGa1LLjlGKvrs6Zls1L28kCwTli8ZkyoOCEIosI+OsXHZeV+U+98Z+jNW8i2f+VCuP5acl3foHinR6oa1IsO0aXE+dlCRleSiUJYgzBOKfd6Z0qZu4XVSxJcAU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FKeoyrpQ; arc=fail smtp.client-ip=40.107.130.48
+	 Content-Disposition:In-Reply-To:MIME-Version; b=M98yDdTjynY1JCLXogMc/rkL6CSgomdUw4RdYgk43W//er3jTTrDdbqOXhzNkj/wQ7EVqDEqnPESLdoHWe7LiGkBejdT6O0bD4WzvGd1uSkIGoQ7bjVDo9UTkvg/fSa2LXgjt2xzr+CAFVRYIljBwg/zpYzCifJNj7avo72ly3g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=buEq5/mx; arc=fail smtp.client-ip=40.107.159.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FKeoyrpQ"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="buEq5/mx"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SfwAQ1EBqpC2PnAeKBXyxnoHJPMh9k+7VyiuU0+eqjbp8ps9gGH3tjbAmAKJyGmvHVtGVHMup/dsRAz17Zm2qyHsifkicnAc73ByXRp2Dve+L6sioXgSWLh/mGoXe+mS/gjEKJaIgthL0vBOG7bZmv8sfjtqKYdIiHiw5q7wP9Y8eeal7RaGbMLYc9KDRvr2u61Jgrlm4tOvUdmcsW3qMeksXVya0FxN0OqSMviROCe5g0N+4+6u2u3b1cD45Cb3goCEx130wptJJOG5epZQAd5d+IfX05c+FdUzbsFxD3m18jWC0OijUHPLcUNeF9LBd0aCdwi4TrY78kezbEhfSw==
+ b=blp1Gs0jWYKfVtUQupEOB8BRsYBnx4Ggjh2itVDetQZWCDgiLosu2gKJ0jG6m9Ow8pFnKZ6WRQDvNtq5dM+0sGgQgnHbeQo2OAnWcipAz/R51HAwCSshaxU0cE64/bF3IK1an2wbCHVCkoS3HRM6Kkf7GNW6kcCZ7uisMf2lERsQu1ZMwn6twxaex5K8ItLga2l09lAIiCNQWqMt+R2CbxgLyPLUoP58KEE5IWwkRt0/VtTBWeD8mGe8eBmJBY22P6Kmm/ZQ4e0GGsMEHCaEKP5D7dzAM8ad4dS4X2Z8lYuPmqtpeyuQR3usk8iMh9fq6VZm8sIGl0xIDHpWibbqgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z6Jdk6CW/KZUwKTDFuE8sHFpXNZKsEa91DBlO5ovNHc=;
- b=lC+ER88lklV2kTCIl2qRePZUx+P+2Q3UryiteFbvOVqFZJxWXz/3EEyw1V4ssWJhY5GWTpF0NFVjnltwp7yhw7WOitZd1pKWY9GL9tpuPvvVsCdPw/tT+nsLSx3SQvBMZFvHl9SD9HqVaEfE+j5PkpRDr9JEM5DdPMsecsS8l0iV9yMtuB8Pma5zsTgQMtQ3EFwCamrn35x+NSANOzAKxl/nKIddVZq74Lkxit+5zNvTv3XcBPd7Ov1UsvNVNE7Lm/cIVrJQbOU3NbQYpENkCQyAxxoDyFezkP5m877KpSaX3nh1tqsoSdibUehbXouHzSpVjI7j3L6BHsb3HewCgQ==
+ bh=jPu6v0jidQ+YHC9vqZFDvDFzh38B+LENFFijc7M7G+0=;
+ b=GmoXGCkTcf/Qm3PgKbepbXQVj50VwVJ3yrphG1VO1goh3uXHZhCCYkrTZEXohfXxBbNpj3dLt2DAQCfnH//A3dv0Q8Y1ClfCJNY2tMX4p+8agR3HucBQG733kVCcepKTYSwov8a1xSoCtCfKScGcyBnlP6aIwRGArg2ZS3MSo3AMfTcNX418UsxPoNtqYDic7+LpnCDs6iY8ey5EVTDUU/Z3aBZaD26Wr0aupDKEmRFcycuviaejW0Zi1CGEM8nbGGJdi8sK2b4locttJaBN4DzX4yDyCQn09NTAJrM4zK4SPIRqvWt16pCGE+vy0DUdQoqP7+9OMlrMZw0qibwSLg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z6Jdk6CW/KZUwKTDFuE8sHFpXNZKsEa91DBlO5ovNHc=;
- b=FKeoyrpQNKNSyrxfSZsqQ7EYTntY5jMlHUFxiwr7RfHElM0obutvZfkDK7msi/7sRSQXisQCnNATP1e2DTKwTvJD9TU0+OiVBJSGOORYC+00y6t6xB4vtmu9G2iEivrDOh0mK3HLpe7AgqlT7wGFmKoE2FG3mPVqDJe6cCDGXCShn6zoKKzuUxPBbBVvdVshoG5QzBUNmD771t4pvujTCjbnXYAkbEn0JmxwHV+WGUaMlkLWbRXZ9Nsaddg1m/+gp8eS1thsbhlhjWaljkeRNu/TKQdzZz1Y/oGLHq9a0/hYGsrygNEXIae8aGOi72o8BBFZDJtSoZQS+RmLQnRF8w==
+ bh=jPu6v0jidQ+YHC9vqZFDvDFzh38B+LENFFijc7M7G+0=;
+ b=buEq5/mxYeotyHP/c0uM4d2njPfgY+k/j1eONtcczzkBx5jebzOFvhR+MGMQbthtJucod3yi+m3WGcIlm9xmtpYLn1zxdbfD5ObGN66AgXf8QD6vTLRHDxcDbCskIphiBvxNNi+oBCyQqeg+CVLVXPXWazYD6Fa9F5t0/d0XRRrpU1c4FvgafYXWWN4d85aOu6Tv8EkREHUQfjuO32oqdkwXfNj9BYtF1MNOjXkqlaLW95akVtlfosIRSi42RRjri5dWFMrhDTkhdVa9nes00vscFy/zi2pjb5i8p+Ph1gH8knUQ8sfSr3uTLakLsnBP8ja29MnM+AkcKyNurK+pLQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by PA1PR04MB10604.eurprd04.prod.outlook.com (2603:10a6:102:48e::19) with
+ by GVXPR04MB10636.eurprd04.prod.outlook.com (2603:10a6:150:223::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
- 15:05:14 +0000
+ 15:11:12 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
- 15:05:14 +0000
-Date: Fri, 5 Jun 2026 11:04:34 -0400
+ 15:11:12 +0000
+Date: Fri, 5 Jun 2026 11:11:05 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Liu Ying <victor.liu@nxp.com>,
-	linux-phy@lists.infradead.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] phy: freescale: phy-fsl-imx8qm-lvds-phy: Fix missing
- pm_runtime_disable() on probe error path
-Message-ID: <aiLlguagrKeFhRkV@lizhi-Precision-Tower-5810>
-References: <20260605-lvds-v2-1-3ce7539d1104@gmail.com>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@oss.nxp.com>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: remoteproc: imx_rproc: document
+ optional "memory-region-names"
+Message-ID: <aiLnCVdJO5KTr3Mk@lizhi-Precision-Tower-5810>
+References: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
+ <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260605-lvds-v2-1-3ce7539d1104@gmail.com>
-X-ClientProxiedBy: PH8P221CA0019.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:2d8::8) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
+X-ClientProxiedBy: SA1PR05CA0006.namprd05.prod.outlook.com
+ (2603:10b6:806:2d2::10) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -68,166 +74,110 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PA1PR04MB10604:EE_
-X-MS-Office365-Filtering-Correlation-Id: 899a793b-3799-45c9-c2f1-08dec313d87f
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GVXPR04MB10636:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f4c3853-7c62-402a-90e6-08dec314ae3a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|7416014|52116014|38350700014|22082099003|18002099003|11063799006|56012099006;
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|7416014|52116014|38350700014|5023799004|3023799007|11063799006|4143699003|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	DqdEjsDavQW826oy+5k0wcO8hwCIgIEPNhr/hVKvIOWh1UXRRA2f1NL3NS2/mnco72IUJja1AaReimqBAkay1zrB7qrnYjwuglPQJvdkflLY35JygwkU9CS2GNZZvEtu2E3ZvHmncqH0dE+S79OLavzjUNfjJGJ7uQlh9OTUIJtzEL+2qEe9l78bQkxIH6TpNrPslkcd2T2YJkAkjL4XGeDw8KJCJ4zbWisBxpmjvIqB1fyu6vCBlv+i3snJ+1A/QSwsuPnP9fDB4KPi0oOiJoc6QH5iWZslCtogyDZ1mrTLrqlVFudFvri1D4kMXTaHR8dO++3fpYJz8NRr5Ulyze/a0mPuU7vu57VnASYI4ubx8S8iHDxdPODki7ugK+55HjfyEcVkS+DlLq4y2FhIKr7wXndldfvAA0hR8foNrGTWMgfUHvIvJezFOtjfzhTUpM5gLTj4sznEOeu3EUIh3KMFYlZl9eIS7Fk06axRRZZLYJUN7fV5dmHrQWyu2XyhZ8XkSwR3Y/VwGSyi/lx8bsUJbVvv3bMs4GS8CBaRtKwfHZpDhss4I+6gC4S9VzJ92wHMtayLapMOjrMa+pFSv04YAtcwZAmaLHZqYjiODr4XdY3YXcLzT+ZSaM6kswGxWR+nHeQG86DTaIsIRxlg8/W2wXhFBu+iy/gwkdDQLuIrpjYi5M0xWYtfvreGiSLkaF9f0N1RvDAwygDoo+r8CA==
+	lGH3tOCn5vyGhmvMMw0eht6LQ2CfK7HtaRhgWxjOE7q4HY7IB7maPx12lpogmp/6H0gm3D6bxDunD/gq9YdU6A8YBU7ur9Z7gltGobx5cJ9Tn9/h22/Qx3gY8NN3APXSiKXPJELEYj8vtO1gZwxf43thqOFH+UoktV06xXK4s2I+RhtvL0xyf/IvtsKDCYQwEotpHNfIENOvPX6i27ZmGfvGFH4MUmXF/FhwVeJfTrbds+lPrs7iXjUDuV8ZvsYt8d9BEafNbcW/9vxrwwUG2T/faxYKsmp8/kJRM1mdh7y2ZInpLAdq6nQRy99KR2z4ZXfwzaXRePIlMLRTFEKuSc4j2tG26W/Fzevc/B6XRM3DOnBaLZmEiqSQfdPXOTQCCnuiGUPmgDU8jNDTHAuQDbOcXgI1hB0UQ/DVNM0jpxHmMRx5i+8IgociwcweGKrYre3TbPJ9lKACoNAjLUV1DjDtDN0FQ8laPRQRcIBENoo0MnybnAdG+l0lx6RmX0m85WyDLFTrlP//Ky+cm4OUX3sViMZ/t1kPPYVT1pmYA2eq7BICRpx7opQxpEzdU3Bt60SrGVaslEP4AdSJm2MKtFlBsfpjDyzHRtfmLtuib9okN0+vpsxoBjawo1LvB9Cg9Nk+zVq0Llsqf28vIE+I70CmyO9hn58ebOHHrfVcA/b0amT5Xx0hOaus6v1k5hRharp09F7sC3SDGyqE6V6ArqlcmBPbOlbtWexdD1Zn+PtVr5pcOGadVdsYkFxmH77C
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(7416014)(52116014)(38350700014)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(7416014)(52116014)(38350700014)(5023799004)(3023799007)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6+lF3RyMECziajSjwVa4iURcR7E8rA/OReVB7H0bgs8nfd7rWXKNFk3JG9+K?=
- =?us-ascii?Q?2ZC5IcWYZZnSK0PU1QmbZg6ZmxO6x9lK2Mpicu4RwLwPc3Tg4ioHMMVp5Ywx?=
- =?us-ascii?Q?1hUUWxBLSNma4NLfuSBSsEX2yrSY3Fg2Xr98owLSiFg13Mq6hEjUuvwwR7u+?=
- =?us-ascii?Q?h3y9y+83HoSK96xBmfPIufrxn+4LdyWkUfjfZgTDxR7RopCBj1pm/Z9qTWhT?=
- =?us-ascii?Q?T/X9266MuBTDZYaZEPZUI3mKIsjebMy2x9dsZgSW1N7Y0HaJNAAdOnaGjs1d?=
- =?us-ascii?Q?vnPcHo+3dsY/L0cilN8HeE6mqqoyCVB4vFaWSQmeZRb28uaPOOvcq/BMiApM?=
- =?us-ascii?Q?fAGwNIQi8yKGMzMkV+qxNlLwDjha+FwO9COBTow23mEEQlsyGktSp1yIy3Ro?=
- =?us-ascii?Q?VKJpL0s/03CLLReajqYQ6Ho6I4xblEsra4JcNixz0smwOtPKwch1sywEa72i?=
- =?us-ascii?Q?JT3SgjRCD76m6QBZWezSmCobSRHs+o2X3YBVeDyEs8UVDmisJ8Rxbm99hpgz?=
- =?us-ascii?Q?tG7GqttNfvIOzNJUECF47deLgjNDBbdtqfAcHmuyTocoqHcyqRZ5NzuKAmjx?=
- =?us-ascii?Q?EVZpPf8HQ3nhjkzerMYSOzjHIv2A/1vRyPHdh+Jnmu+JpXB2Q88oKxhC10G3?=
- =?us-ascii?Q?NA4iU+nO7OMbOgeUtWC2mLuCSvngOs1QBlhmEBqE7J851bPUVTAmJ3f8iy7W?=
- =?us-ascii?Q?W/s1AOGFnPfTjOWUjYuELNAjar0soJXt/LJ1/0TIwjMD2vboko9FrjcXnqfE?=
- =?us-ascii?Q?0MSP4UMDbO7AEsJnHjC1SJoJKKfFmj1mXk99x7WI/CPrZkMQZN0+y60nfmql?=
- =?us-ascii?Q?nHX/lhs4FPQvVHHL9ce2WIPNC3joJBP/xuxgoJHQ+eKXTHr5S4b5imGw+3Jz?=
- =?us-ascii?Q?J6OMQybpTy+dImrxtF4OD/jPtIamr/h3IdoTAmip/bxV2T63GWRed18e0MPb?=
- =?us-ascii?Q?yDPg59uYOjpj0kOLCVSar5QkAnW6bY9WlGCO7wRn3UakhPlOvYrXFur4cCHj?=
- =?us-ascii?Q?P5ELsgpZVbbTS53yYqw4LD6Agw9s56WA0qJuOQzcNfR2VjBUSj0cUdB8eOHp?=
- =?us-ascii?Q?ilE7N5tRDBt2jSUEujWc/H9w7EgefYwtQteq52k2XHuGNzHq86oQbhYjb4Em?=
- =?us-ascii?Q?QeDOesquXgATXq0oc+EKwk0LV5n45UbCFIJMwBEu5zg5F1QwYOsFI7xtv0Mv?=
- =?us-ascii?Q?ogmEpXpz+AJYwnLcNIMO06VXef8udXIGu7I+y1umhB+hbFMU+oGriL6zuNlO?=
- =?us-ascii?Q?IBUM3UT13+OLS+G+BGjSBW7su94VDks49WOsJ6tgP7FMgJGPcUohptKZjVAd?=
- =?us-ascii?Q?P7R9ZGgvzSk6vPNRmT+C68KceU3ITuvv7Dqx9fWd9StCYFXz5CAcSha8AgfE?=
- =?us-ascii?Q?abDc0dbF2gTYrHuy2rLjhNO4DwKeZ6t0y+VyWuN/LBHppZf/DZ+UpoqhGWvL?=
- =?us-ascii?Q?wgpzKzm2msdyy7C+LF4zzHttScdv7kR/Omkz6LFlIjahuslxWdVd7uj/T+sF?=
- =?us-ascii?Q?2UxFqTNeUsz0NEEPgreOQW2wEKzt3d0DXNUuBuyLsoQ+9L3rN8uV3x5S8Gz4?=
- =?us-ascii?Q?henQlZS9zUHtbjORX7jV12LGXX3ejoxNb867OffJ3pz/c34/csIMPeexRfzI?=
- =?us-ascii?Q?RQ74rL3UjD+iXWwWyFwGd6KwhLsLg2/LbYnbNvu8LHiW1nQ7/RCNInr07+dm?=
- =?us-ascii?Q?MbCcd7tqwXXNTFy1jHeDtfp2YLr4mIDXwEPTGnX9QnF7Nyfw?=
+	=?us-ascii?Q?h5XznRvcSH0lVhp/j32kw7AtTyxHZ3N+Ow+x52QjGIN/tbV4Gd0V6GtNz1an?=
+ =?us-ascii?Q?42B7ozdbJXgzpKGol6Kp9KHN6zID+oA4qWXSlEfp3Wl26pQuDAbQoZYl51by?=
+ =?us-ascii?Q?jUfB8POI1Lyxdd6R3dRR7+HkZAKqc2293+xKdhbZORGqOy8uEUcoUtg1LoNj?=
+ =?us-ascii?Q?cbkXSQoYUq38reBJlJgg7XB45kWq2qY/DvxWJG8a+pMuYUkDSxq39zTCrlBO?=
+ =?us-ascii?Q?nhQc0exozTQjt7QEXTPGsJLCJhpZ/tRG6T0LYtTAJFQLPNCLlTlPjIzt0Je2?=
+ =?us-ascii?Q?+mnjBBGTv8/SLAU4c4Ky2rPblHH4ElO2PKXEfDNICs7YF4LwodkBa6X2EM3n?=
+ =?us-ascii?Q?QxjnOKjbTwW0BwEKFQYvzopGiOTRTvmZdgRgM1SnjSuhqXyiQ1grQAruP7vG?=
+ =?us-ascii?Q?sdeNUkrYxCzLNzKiCjjR1MJEdMK3hRgr+IX6KZKhR+X+XxXVIHUr0UXqi9RF?=
+ =?us-ascii?Q?ptXj5efp5U+GmiHVgt5q8/1cZbkEeq4lAL//7KrQfUpF32S5kE3Q5yM8Jek6?=
+ =?us-ascii?Q?fP7vjQ66LG7wd0on0iK9PyW0AR5HlqkO9fqEON6+nz8NP3tfqkPS4ZX6hXQU?=
+ =?us-ascii?Q?gkUxR1J+/v75t4taOvGbg3owpXJOwWcM1VaHb5e3qcMRYpHJescBzmGCUFiR?=
+ =?us-ascii?Q?Z2SmQ+GeEFPa6ytuKP9bjuafLVIWLzl9k2FQePI1bgYMMlhauo29maHnMJqe?=
+ =?us-ascii?Q?hnLi8+/08QmQCohzhzhBaE+9t8ikd273wwsgEDK3Q3w+Nual1YHAua0U0nd9?=
+ =?us-ascii?Q?YxmGh0nInHYeBSk5CHvbivDIiCIF5bqPQbrWUCLrB2bPTkx5pfqU3lJmaxCn?=
+ =?us-ascii?Q?GHoON5be2VA5IW4guya9UmIJvgp1XPIJlRTKGFdVp9ko3qf/N3BSkapZdjcg?=
+ =?us-ascii?Q?D7qoflJLBTU8w/MGUnC8i5E8nHPP829QjrNRWSUvEuFOFoIhVjV08/zLaCbl?=
+ =?us-ascii?Q?DwBGvZVLlKiqrNqmWKVU8KDVwko7ttdWFWO9my3x+9LrT1sfYt12ak8/tyXc?=
+ =?us-ascii?Q?XPtI5OHPxbHLj9EVcDKkrf3f+GFheFsyTP7ioPDPUEGHLstzOPlZGfKoc2+a?=
+ =?us-ascii?Q?INK74QGv1MnmQdJnrYEX+/T7nlG+3Q4poAiufxvjZiy7cc7OARtxUcfZMYuv?=
+ =?us-ascii?Q?mv3RpJ9LqlErSVJ0qOhK7GJcS/M0M2fP8wBIQy69cl0tzYQjX2bHzDCU5TkK?=
+ =?us-ascii?Q?RB0syGNvEVaVC7jhwbvTddAkcE5ZjS8jbcbJgaINZ4A9ODU6jHowFEE+82IS?=
+ =?us-ascii?Q?mJtVNpvy/WxBznBx5N9sXmj0jb/Fby6UzprrKjQtcn+6Nxo7bZHVEV91IQZZ?=
+ =?us-ascii?Q?/deEDg16YD8IiClPkMgnwM6Lbh5YGBr3dr3AzIY6hYRpyw3Gwwp1FEPG5Lkh?=
+ =?us-ascii?Q?6RgrAeSCZHFurgREtvLEbVHllnIK8wfaBiplD0A1QQcY1b/GLj+iOMGtkeXK?=
+ =?us-ascii?Q?J8RxhOm242O7Gwa3mDs/SFiwINWx1aIQZqf0+epKW9IYonRmau43dTRey+EN?=
+ =?us-ascii?Q?Vvwj+SZWH21VC30U9AzrgUrw098+SKGbTb1MeuTQ/zRPHF5BbeU7aY10SeNI?=
+ =?us-ascii?Q?khjO76mK210ukLxa8Dk//s2JIXu5o+fxvUTeEc2HJYlWYkmGF2ZRCl+WKTtm?=
+ =?us-ascii?Q?w82rmIisi5hp6Mn726CZMQE2bVuAdrYe9SWnr3TCjCZcDJ2EsQYZvmfeMwD/?=
+ =?us-ascii?Q?iv7ofuKLHpX8TbR22tNGuW6Qm5kL73/qK6reBK/jxjq/o26y?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 899a793b-3799-45c9-c2f1-08dec313d87f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f4c3853-7c62-402a-90e6-08dec314ae3a
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 15:05:13.9445
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 15:11:12.5848
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X02zbrFgXCn0mcTBoCYnKYiMwPE+4y3/+Aqr2hKSWmhoNaH9Dun/K3zd0YnkM47syyQdd1okeYVWC0l1KzomUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10604
+X-MS-Exchange-CrossTenant-UserPrincipalName: WhzoclQP/0zBSEo8NxhFd+29gnOSfqTw5+FGThbLfZi1OfkmkJwle+9xoCcdC7vWorqf3SkWUy1x+x5TThdIUg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10636
 
-On Fri, Jun 05, 2026 at 07:57:20PM +0800, Felix Gu wrote:
-> If mixel_lvds_phy_reset() fails in probe after pm_runtime_enable(),
-> the function returns directly without calling pm_runtime_disable(),
-> leaving runtime PM permanently enabled for the device.
+On Fri, Jun 05, 2026 at 04:36:18AM -0700, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >
-> Fix this by using devm_pm_runtime_enable() so that cleanup is
-> automatic on any probe failure or driver unbind. This also allows
-> removing the manual err label and the .remove callback.
+> The names of the carveout regions are derived using the names of the
+> reserved memory devicetree nodes, which are referenced using the
+> "memory-region" property. This adds a restriction on the names of said
+> devicetree nodes, often bearing specific names such as: "vdevbuffer",
+> "vdev0vring0", "rsc-table", etc... This goes against the devicetree
+> specification's recommendation, which states that the devicetree node
+> names should be generic.
+
+Addition notes for dt reviever:
+
+binding check can't restrict memory node naming because no specific
+compatible string for it. So there are hidden ABI by node name here.
+use memory-region-name can eliminate such hidden ABI.
+
 >
-> Fixes: 06ff622d61d2 ("phy: freescale: Add i.MX8qm Mixel LVDS PHY support")
-> Acked-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+> Fix this by documenting an additional, optional property:
+> "memory-region-names". This way, the carveout names can use the values
+> passed via "memory-region-names", while keeping the devicetree node
+> names of the reserved memory regions generic.
+>
+> There are no restrictions imposed on the values of the strings passed via
+> the new property since the software allows any name to be used, with some
+> names (e.g. "vdev%dbuffer", "vdev%dvring%d", "rsc-table") bearing a
+> special meaning.
+>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > ---
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> Changes in v2:
-> - Change the patch's subject prefix requested by Liu Ying.
-> - Add Liu Ying's Acked-by.
-> - Link to v1: https://patch.msgid.link/20260604-lvds-v1-1-b8e1ff1bdee7@gmail.com
+>  .../devicetree/bindings/remoteproc/fsl,imx-rproc.yaml         | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
-> To: Vinod Koul <vkoul@kernel.org>
-> To: Neil Armstrong <neil.armstrong@linaro.org>
-> To: Frank Li <Frank.Li@nxp.com>
-> To: Sascha Hauer <s.hauer@pengutronix.de>
-> To: Pengutronix Kernel Team <kernel@pengutronix.de>
-> To: Fabio Estevam <festevam@gmail.com>
-> To: Liu Ying <victor.liu@nxp.com>
-> Cc: linux-phy@lists.infradead.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c | 24 +++++++-----------------
->  1 file changed, 7 insertions(+), 17 deletions(-)
+> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> index c18f71b64889..8e3e6676a95e 100644
+> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> @@ -62,6 +62,10 @@ properties:
+>      minItems: 1
+>      maxItems: 32
 >
-> diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c b/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
-> index ece357443521..c662f91e598c 100644
-> --- a/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
-> +++ b/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
-> @@ -345,7 +345,9 @@ static int mixel_lvds_phy_probe(struct platform_device *pdev)
->
->  	dev_set_drvdata(dev, priv);
->
-> -	pm_runtime_enable(dev);
-> +	ret = devm_pm_runtime_enable(dev);
-> +	if (ret)
-> +		return ret;
->
->  	ret = mixel_lvds_phy_reset(dev);
->  	if (ret) {
-> @@ -355,17 +357,15 @@ static int mixel_lvds_phy_probe(struct platform_device *pdev)
->
->  	for (i = 0; i < PHY_NUM; i++) {
->  		lvds_phy = devm_kzalloc(dev, sizeof(*lvds_phy), GFP_KERNEL);
-> -		if (!lvds_phy) {
-> -			ret = -ENOMEM;
-> -			goto err;
-> -		}
-> +		if (!lvds_phy)
-> +			return -ENOMEM;
->
->  		phy = devm_phy_create(dev, NULL, &mixel_lvds_phy_ops);
->  		if (IS_ERR(phy)) {
->  			ret = PTR_ERR(phy);
->  			dev_err(dev, "failed to create PHY for channel%d: %d\n",
->  				i, ret);
-> -			goto err;
-> +			return ret;
->  		}
->
->  		lvds_phy->phy = phy;
-> @@ -379,19 +379,10 @@ static int mixel_lvds_phy_probe(struct platform_device *pdev)
->  	if (IS_ERR(phy_provider)) {
->  		ret = PTR_ERR(phy_provider);
->  		dev_err(dev, "failed to register PHY provider: %d\n", ret);
-> -		goto err;
-> +		return ret;
->  	}
->
->  	return 0;
-> -err:
-> -	pm_runtime_disable(dev);
-> -
-> -	return ret;
-> -}
-> -
-> -static void mixel_lvds_phy_remove(struct platform_device *pdev)
-> -{
-> -	pm_runtime_disable(&pdev->dev);
->  }
->
->  static int __maybe_unused mixel_lvds_phy_runtime_suspend(struct device *dev)
-> @@ -432,7 +423,6 @@ MODULE_DEVICE_TABLE(of, mixel_lvds_phy_of_match);
->
->  static struct platform_driver mixel_lvds_phy_driver = {
->  	.probe = mixel_lvds_phy_probe,
-> -	.remove = mixel_lvds_phy_remove,
->  	.driver = {
->  		.pm = &mixel_lvds_phy_pm_ops,
->  		.name = "mixel-lvds-phy",
->
-> ---
-> base-commit: a225caacc36546a09586e3ece36c0313146e7da9
-> change-id: 20260604-lvds-d67cb619df17
->
-> Best regards,
+> +  memory-region-names:
+> +    minItems: 1
+> +    maxItems: 32
+> +
+>    power-domains:
+>      minItems: 2
+>      maxItems: 8
 > --
-> Felix Gu <ustc.gu@gmail.com>
+> 2.43.0
 >
