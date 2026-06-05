@@ -1,372 +1,131 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E84F403EBE
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 06:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F9340DFDE;
+	Fri,  5 Jun 2026 06:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780640785; cv=none; b=b68hrs3lVwodVLz5ibTNXmCN21FRI8uMgiI3f2TU9bbKVX6SvRjwKwmI6vDRRSEO+RbqXBfoOUTiacPUQfAEUVH0Pn2yOJY89f/5POqu+B2kjX5TPkcKIrJqFiNm/vz5m0pG0S3eQhen2MT5hKrnqhfWbc5FE6j8It2gO8sn5LM=
+	t=1780642672; cv=none; b=tRRPcPNQqJbXjJQj742ntQ0ToGjCbxAsnHhLGiUlyHgJo2f94a/iWgeAtN7wuwjmNcDvvBknMLBl4LYc/3K6iXIOcyxFBCck3V6+IkS5ZjqTCQrdce6KV0wTH8BPNwSY9nrTHnlGwz2vAaKycvwjuQQMr2FHvNb4fH/jmNbm+JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780640785; c=relaxed/simple;
-	bh=38RGnRd1NueJdGc+q/2t2brBx7jhkq43ny3lgu2xz6s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r1RFjG/KQdG07aV2IwiBX9YrxF0AQPI+uAqWyLeHu+rbQLNJN2Wq6YYySOkb5QhOq35D069+tXNfgK14fuPhPa1rmkxRPkk7R83YAg5+JYtPwKxVfH4m1r9Mfy4waux0+3hevo6Afp1sWuRuu3BAsXgam95PvwC5j5X+bpfWpQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=M/ktB3sD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=D+iPx4bI; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aDw1UW+A; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vDZD0R3r; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1780642672; c=relaxed/simple;
+	bh=p/UIC6/yL1nmfLnIqBKoS62nOG01SSOlPDa3wZmpjWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WDBepeXvHv6xJhWJIRB1GiKaB85ln0xUD8PMUdEihJeaOtin93c6VoHbjRLsg4EogEf8ePL+j0W+Hd/TgsTzFU9p+lD8NCUepUt/Sa5/ucVvC6Wv4TW6Nl86G1O42JH4XSYusd/S2613pfhGM/fckHBEBm0xDeaM/VWnE1B4LJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZ60LSkV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="M/ktB3sD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="D+iPx4bI";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aDw1UW+A";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vDZD0R3r"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1FFF6758EB;
-	Fri,  5 Jun 2026 06:26:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780640782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HDeTQz58PcqGgdo96oHM1bAJcR1truedFGkSCcBXtWU=;
-	b=M/ktB3sDGmweoVLgNXTldix/Xe30DbDNLuF62jskgLSpIFP7B4UDIS4DEc9GWvlaocwIkh
-	MzYsboaSx1lq9NL9w3sbKI15lcCvSzUUgy7ZrTTgOWI5JEeGHQVF+Ws2+Lxwav5KmNURWj
-	H7HdUv9yY3M5Yo7/TUsecdXNj6mQIjI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780640782;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HDeTQz58PcqGgdo96oHM1bAJcR1truedFGkSCcBXtWU=;
-	b=D+iPx4bIg0cPuvx5LRbbICTL22xfS2wQ++R9gmSJNJXGkWLeJOe6PCy7H2nCTjiItAfI+1
-	cns0pwNXGHlJ7fBQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=aDw1UW+A;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vDZD0R3r
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780640781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HDeTQz58PcqGgdo96oHM1bAJcR1truedFGkSCcBXtWU=;
-	b=aDw1UW+A6yqS0t9biGU1kM/uDWClp4JVjfCpCKKYRPoi7hW5ZUoHfFiOFzrKmoJNc0yU2M
-	uuYUkV1jhYjR/HyaqMqsUUErX8NJH9lMYGWAImrkVnWSpH3rCgRPaSTi+JaduzU9ke3yFG
-	pPaTRpMgw/hnrLvIzrceR6N8QmELCxc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780640781;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HDeTQz58PcqGgdo96oHM1bAJcR1truedFGkSCcBXtWU=;
-	b=vDZD0R3ry92z2A2yziaUK6wGo4KqKPNJ0t6eVE3IfNyctjPaz+BMIL6O1fwV+VQF5YMMcs
-	Mw015zl7yJbuC7AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AD5B6779A8;
-	Fri,  5 Jun 2026 06:26:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KbQCKQpsImrNcwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 05 Jun 2026 06:26:18 +0000
-Message-ID: <dce03a80-3d6b-4792-9868-d6052fa3ea77@suse.de>
-Date: Fri, 5 Jun 2026 08:26:17 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZ60LSkV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9111F00893;
+	Fri,  5 Jun 2026 06:57:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780642671;
+	bh=BJCqjGZjxCRgfxUH2j/CppVrqM78Z0uQcR61FLvFq08=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hZ60LSkVDV8X+4SLpgVyE09RWCnA2kxYN3wc50iNP0KU1YmCADiZqHDz5UD/xC3PL
+	 zmmx5OU2VeEkVn4dssnmg1iC2vCjT1FTHe5IUPRgCs1R4dOVaKgCVXeK00grRbf0Jb
+	 JlnsJZkD8TFQNRFgShMoIRkVPUQbPRhdXmqdd/np2n2e8RQKRIrnIw4u0L2j7V/4YH
+	 RdPWfwWrgxiwoHLP2d+wWS7ttIUiMqDS8EPPtT9w4/rY7Eu8DPXo+0qdCAru7e6ihV
+	 U119rcBv1FSw+NPtZb1v92zS2tdDraiE2NeoTcuJUK/eE4EbMvWaY1c0OTVTtYkgcc
+	 vXTlMfvMqdYXQ==
+Date: Fri, 5 Jun 2026 14:57:39 +0800
+From: "Peter Chen (CIX)" <peter.chen@kernel.org>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Lee Jones <lee@kernel.org>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Thierry Reding <thierry.reding@avionic-design.de>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
+	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 20/23] usb: chipidea: use
+ platform_device_set_of_node_from_dev()
+Message-ID: <aiJzY52n2rQ84ppZ@nchen-desktop>
+References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+ <20260521-pdev-fwnode-ref-v1-20-88c324a1b8d2@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/76] drm/bridge: Convert all reset users to create_state
-To: Maxime Ripard <mripard@kernel.org>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: Dmitry Baryshkov <lumag@kernel.org>, dri-devel@lists.freedesktop.org,
- Jagan Teki <jagan@amarulasolutions.com>, Liu Ying <victor.liu@nxp.com>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Andy Yan <andy.yan@rock-chips.com>,
- Phong LE <ple@baylibre.com>, Douglas Anderson <dianders@chromium.org>,
- Inki Dae <inki.dae@samsung.com>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Cercueil <paul@crapouillou.net>, linux-mips@vger.kernel.org,
- Chun-Kuang Hu <chunkuang.hu@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- linux-amlogic@lists.infradead.org,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- linux-renesas-soc@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
- Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
- <heiko@sntech.de>, linux-rockchip@lists.infradead.org,
- Yannick Fertre <yannick.fertre@foss.st.com>,
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
- Philippe Cornu <philippe.cornu@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- linux-stm32@st-md-mailman.stormreply.com, Jyri Sarha <jyri.sarha@iki.fi>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
- Icenowy Zheng <zhengxingda@iscas.ac.cn>, Michal Simek <michal.simek@amd.com>
-References: <20260530-drm-no-more-bridge-reset-v1-0-875d828d31bc@kernel.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260530-drm-no-more-bridge-reset-v1-0-875d828d31bc@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-0.996];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[kernel.org,intel.com,linaro.org,ideasonboard.com,kwiboo.se,gmail.com,bootlin.com,linux.intel.com,ffwll.ch];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,lists.freedesktop.org,amarulasolutions.com,nxp.com,pengutronix.de,gmail.com,lists.linux.dev,lists.infradead.org,rock-chips.com,baylibre.com,chromium.org,samsung.com,crapouillou.net,vger.kernel.org,collabora.com,googlemail.com,ideasonboard.com,glider.be,bp.renesas.com,sntech.de,foss.st.com,st-md-mailman.stormreply.com,iki.fi,raspberrypi.com,igalia.com,iscas.ac.cn,amd.com];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	R_RATELIMIT(0.00)[to_ip_from(RLqtaqd5djycn6zz3dm1kuwfni)];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[61];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 1FFF6758EB
-X-Spam-Score: -3.01
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260521-pdev-fwnode-ref-v1-20-88c324a1b8d2@oss.qualcomm.com>
 
-Hi
+On 26-05-21 10:36:43, Bartosz Golaszewski wrote:
+> Ahead of reworking the reference counting logic for platform devices,
+> encapsulate the assignment of the OF node from another device for
+> dynamically allocated platform devices with the provided helper.
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-Am 30.05.26 um 15:59 schrieb Maxime Ripard:
-[...]
->        drm/bridge: adv7511: Switch to atomic_create_state
->        drm/bridge: analogix_dp: Switch to atomic_create_state
->        drm/bridge: anx7625: Switch to atomic_create_state
->        drm/bridge: chipone-icn6211: Switch to atomic_create_state
->        drm/bridge: display-connector: Switch to atomic_create_state
->        drm/bridge: fsl-ldb: Switch to atomic_create_state
->        drm/bridge: imx8mp-hdmi-pvi: Switch to atomic_create_state
->        drm/bridge: imx8qm-ldb: Switch to atomic_create_state
->        drm/bridge: imx8qxp-ldb: Switch to atomic_create_state
->        drm/bridge: imx8qxp-pixel-combiner: Switch to atomic_create_state
->        drm/bridge: imx8qxp-pixel-link: Switch to atomic_create_state
->        drm/bridge: imx8qxp-pxl2dpi: Switch to atomic_create_state
->        drm/bridge: inno-hdmi: Switch to atomic_create_state
->        drm/bridge: ite-it6263: Switch to atomic_create_state
->        drm/bridge: ite-it6505: Switch to atomic_create_state
->        drm/bridge: ite-it66121: Switch to atomic_create_state
->        drm/bridge: lontium-lt9211: Switch to atomic_create_state
->        drm/bridge: lontium-lt9611: Switch to atomic_create_state
->        drm/bridge: lvds-codec: Switch to atomic_create_state
->        drm/bridge: nwl-dsi: Switch to atomic_create_state
->        drm/bridge: panel: Switch to atomic_create_state
->        drm/bridge: parade-ps8640: Switch to atomic_create_state
->        drm/bridge: samsung-dsim: Switch to atomic_create_state
->        drm/bridge: sii902x: Switch to atomic_create_state
->        drm/bridge: ssd2825: Switch to atomic_create_state
->        drm/bridge: dw-dp: Switch to atomic_create_state
->        drm/bridge: dw-hdmi-qp: Switch to atomic_create_state
->        drm/bridge: dw-hdmi: Switch to atomic_create_state
->        drm/bridge: dw-mipi-dsi: Switch to atomic_create_state
->        drm/bridge: dw-mipi-dsi2: Switch to atomic_create_state
->        drm/bridge: tc358762: Switch to atomic_create_state
->        drm/bridge: tc358767: Switch to atomic_create_state
->        drm/bridge: tc358768: Switch to atomic_create_state
->        drm/bridge: tc358775: Switch to atomic_create_state
->        drm/bridge: ti-dlpc3433: Switch to atomic_create_state
->        drm/bridge: ti-sn65dsi83: Switch to atomic_create_state
->        drm/bridge: ti-sn65dsi86: Switch to atomic_create_state
->        drm/bridge: ti-tdp158: Switch to atomic_create_state
->        drm/bridge: ti-tfp410: Switch to atomic_create_state
->        drm/imx: parallel-display: Switch to atomic_create_state
->        drm/ingenic: Switch to atomic_create_state
->        drm/mediatek: dp: Switch to atomic_create_state
->        drm/mediatek: dpi: Switch to atomic_create_state
->        drm/mediatek: dsi: Switch to atomic_create_state
->        drm/mediatek: hdmi: Switch to atomic_create_state
->        drm/mediatek: hdmi_v2: Switch to atomic_create_state
->        drm/meson: encoder_cvbs: Switch to atomic_create_state
->        drm/meson: encoder_dsi: Switch to atomic_create_state
->        drm/meson: encoder_hdmi: Switch to atomic_create_state
->        drm/msm: dp: Switch to atomic_create_state
->        drm/msm: hdmi: Switch to atomic_create_state
->        drm/omap: hdmi4: Switch to atomic_create_state
->        drm/omap: hdmi5: Switch to atomic_create_state
->        drm/renesas: rcar-du: lvds: Switch to atomic_create_state
->        drm/renesas: rcar-du: mipi_dsi: Switch to atomic_create_state
->        drm/renesas: rz-du: mipi_dsi: Switch to atomic_create_state
->        drm/rockchip: cdn-dp: Switch to atomic_create_state
->        drm/rockchip: rk3066_hdmi: Switch to atomic_create_state
->        drm/rockchip: lvds: Switch to atomic_create_state
->        drm/stm: lvds: Switch to atomic_create_state
->        drm/tests: bridge: Switch to atomic_create_state
->        drm/tidss: encoder: Switch to atomic_create_state
->        drm/tidss: oldi: Switch to atomic_create_state
->        drm/vc4: dsi: Switch to atomic_create_state
->        drm/verisilicon: Switch to atomic_create_state
->        drm/xlnx: zynqmp_dp: Switch to atomic_create_state
+Acked-by: Peter Chen <peter.chen@kernel.org>
 
-You can also add my
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-to all these one-liners in the drivers.
-
-Best regards
-Thomas
-
-
->        drm/atomic-state-helper: Remove drm_atomic_helper_bridge_reset()
->        drm/bridge: cdns-dsi: Use __drm_atomic_helper_bridge_state_init()
->        drm/bridge: cdns-dsi: Switch to atomic_create_state
->        drm/bridge: cdns-mhdp8546: Switch to atomic_create_state
->        drm/bridge: Remove atomic_reset support
->
->   drivers/gpu/drm/bridge/adv7511/adv7511_drv.c       |  2 +-
->   drivers/gpu/drm/bridge/analogix/analogix_dp_core.c |  2 +-
->   drivers/gpu/drm/bridge/analogix/anx7625.c          |  2 +-
->   drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c     |  9 +++---
->   .../gpu/drm/bridge/cadence/cdns-mhdp8546-core.c    |  8 +++---
->   drivers/gpu/drm/bridge/chipone-icn6211.c           |  2 +-
->   drivers/gpu/drm/bridge/display-connector.c         |  2 +-
->   drivers/gpu/drm/bridge/fsl-ldb.c                   |  2 +-
->   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c       |  2 +-
->   drivers/gpu/drm/bridge/imx/imx8qm-ldb.c            |  2 +-
->   drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c           |  2 +-
->   .../gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c    |  2 +-
->   drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c    |  2 +-
->   drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c       |  2 +-
->   drivers/gpu/drm/bridge/inno-hdmi.c                 |  2 +-
->   drivers/gpu/drm/bridge/ite-it6263.c                |  2 +-
->   drivers/gpu/drm/bridge/ite-it6505.c                |  2 +-
->   drivers/gpu/drm/bridge/ite-it66121.c               |  2 +-
->   drivers/gpu/drm/bridge/lontium-lt9211.c            |  2 +-
->   drivers/gpu/drm/bridge/lontium-lt9611.c            |  2 +-
->   drivers/gpu/drm/bridge/lvds-codec.c                |  2 +-
->   drivers/gpu/drm/bridge/nwl-dsi.c                   |  2 +-
->   drivers/gpu/drm/bridge/panel.c                     |  2 +-
->   drivers/gpu/drm/bridge/parade-ps8640.c             |  2 +-
->   drivers/gpu/drm/bridge/samsung-dsim.c              |  2 +-
->   drivers/gpu/drm/bridge/sii902x.c                   |  2 +-
->   drivers/gpu/drm/bridge/ssd2825.c                   |  2 +-
->   drivers/gpu/drm/bridge/synopsys/dw-dp.c            |  2 +-
->   drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c       |  2 +-
->   drivers/gpu/drm/bridge/synopsys/dw-hdmi.c          |  2 +-
->   drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c      |  2 +-
->   drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c     |  2 +-
->   drivers/gpu/drm/bridge/tc358762.c                  |  2 +-
->   drivers/gpu/drm/bridge/tc358767.c                  |  4 +--
->   drivers/gpu/drm/bridge/tc358768.c                  |  2 +-
->   drivers/gpu/drm/bridge/tc358775.c                  |  2 +-
->   drivers/gpu/drm/bridge/ti-dlpc3433.c               |  2 +-
->   drivers/gpu/drm/bridge/ti-sn65dsi83.c              |  2 +-
->   drivers/gpu/drm/bridge/ti-sn65dsi86.c              |  2 +-
->   drivers/gpu/drm/bridge/ti-tdp158.c                 |  2 +-
->   drivers/gpu/drm/bridge/ti-tfp410.c                 |  2 +-
->   drivers/gpu/drm/drm_atomic_state_helper.c          | 33 ++++++++++++----------
->   drivers/gpu/drm/drm_bridge.c                       |  4 +--
->   drivers/gpu/drm/imx/ipuv3/parallel-display.c       |  2 +-
->   drivers/gpu/drm/ingenic/ingenic-drm-drv.c          |  2 +-
->   drivers/gpu/drm/mediatek/mtk_dp.c                  |  2 +-
->   drivers/gpu/drm/mediatek/mtk_dpi.c                 |  2 +-
->   drivers/gpu/drm/mediatek/mtk_dsi.c                 |  2 +-
->   drivers/gpu/drm/mediatek/mtk_hdmi.c                |  2 +-
->   drivers/gpu/drm/mediatek/mtk_hdmi_v2.c             |  2 +-
->   drivers/gpu/drm/meson/meson_encoder_cvbs.c         |  2 +-
->   drivers/gpu/drm/meson/meson_encoder_dsi.c          |  2 +-
->   drivers/gpu/drm/meson/meson_encoder_hdmi.c         |  2 +-
->   drivers/gpu/drm/msm/dp/dp_drm.c                    |  4 +--
->   drivers/gpu/drm/msm/hdmi/hdmi_bridge.c             |  2 +-
->   drivers/gpu/drm/omapdrm/dss/hdmi4.c                |  2 +-
->   drivers/gpu/drm/omapdrm/dss/hdmi5.c                |  2 +-
->   drivers/gpu/drm/renesas/rcar-du/rcar_lvds.c        |  2 +-
->   drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c    |  2 +-
->   drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c     |  2 +-
->   drivers/gpu/drm/rockchip/cdn-dp-core.c             |  2 +-
->   drivers/gpu/drm/rockchip/rk3066_hdmi.c             |  2 +-
->   drivers/gpu/drm/rockchip/rockchip_lvds.c           |  2 +-
->   drivers/gpu/drm/stm/lvds.c                         |  2 +-
->   drivers/gpu/drm/tests/drm_bridge_test.c            |  2 +-
->   drivers/gpu/drm/tidss/tidss_encoder.c              |  2 +-
->   drivers/gpu/drm/tidss/tidss_oldi.c                 |  2 +-
->   drivers/gpu/drm/vc4/vc4_dsi.c                      |  2 +-
->   drivers/gpu/drm/verisilicon/vs_bridge.c            |  4 +--
->   drivers/gpu/drm/xlnx/zynqmp_dp.c                   |  2 +-
->   include/drm/drm_atomic_state_helper.h              |  6 ++--
->   include/drm/drm_bridge.h                           | 33 ++++++++--------------
->   72 files changed, 111 insertions(+), 120 deletions(-)
+Peter
 > ---
-> base-commit: 21fcb222f0d1e1c9f5b04c09e9fb3408e13a0264
-> change-id: 20260530-drm-no-more-bridge-reset-ca20d5e22740
->
-> Best regards,
+>  drivers/usb/chipidea/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
+> index 7cfabb04a4fb80c6db56ccb430d290dbac61b716..5dd415f42fe0dd026e8a1cc162357e42ba8ceaec 100644
+> --- a/drivers/usb/chipidea/core.c
+> +++ b/drivers/usb/chipidea/core.c
+> @@ -888,7 +888,7 @@ struct platform_device *ci_hdrc_add_device(struct device *dev,
+>  	}
+>  
+>  	pdev->dev.parent = dev;
+> -	device_set_of_node_from_dev(&pdev->dev, dev);
+> +	platform_device_set_of_node_from_dev(pdev, dev);
+>  
+>  	ret = platform_device_add_resources(pdev, res, nres);
+>  	if (ret)
+> 
+> -- 
+> 2.47.3
+> 
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
 
-
+Best regards,
+Peter
