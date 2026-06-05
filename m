@@ -1,142 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6EA42EEC4;
-	Fri,  5 Jun 2026 07:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB1944CAEA;
+	Fri,  5 Jun 2026 07:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780642817; cv=none; b=RoE34PfVM0qak9wgXNL8q8hyxaySKJ0ZKFZ+yv2TrNzJpzvz482DOSqeFWdIC9TdrRB6FPsZSi5LZ2aU59faDK8F2HLc3EBcBPqpzLao0DxHU8bfLiZ5Qcm6NHYB8Ij3l/sGl2uwQIFRWY2cR4CGm0AP2Murd1T6XCGdqNTAw+s=
+	t=1780642860; cv=none; b=nn5JiZhmcy7L1/j3b8v2KkOzmKTA77bXwLON+3lFT5ioS+B07WnyMDC9M6kemSrY4BdVcQ7AfMfBxnl3u1vspOm4HK7RqU5Rd8w6MUwVxRDDnh4izT5AXL6iEyZd5YFDoUisF5gLZcpc0+AMQiBqPOfedHw8d37xsbCFAIfU7Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780642817; c=relaxed/simple;
-	bh=DdINVUBttw6klrnTn+6VWBp4sfhuGwvaqZSXK6B9SXw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qsaTldnqQNAiY7PbHIEI8P9KORqrMiu6M/YG/x1J7nkIoHb1LblzXC/Ixyma9fSaC2H0C7L+eU6TYzxF2pv5419XUFTpN/DGb6U+6PVG/GjKv3s7aGQzZ6B7IPSD/dZGvQVLxRJtf2ctHtf1nVJfxe77zoehbhyIBIOrM3Qlbg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YsZyfuH0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780642860; c=relaxed/simple;
+	bh=xdyh2vxrj3LiGIwHOvIqIAR/3ybTlOR3E9FR7Dqfpa4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZfBdb+1EYn9TxFzpXLM5eEuVhwwTeEo0H2jYLkp5OMYUF+hBF4pjqrY/LvdukWB95z/DWggi5/KL9a4qFiznGK7lN2NoawG6yNjwoCehfdFaS4jwLrlj8LwBh/srFpWPOPoMP15/1meC4MqQg+if/TZtHxd1/Pmewz0ZT6hdwHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=opKaYSNS; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YsZyfuH0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3B51F00893;
-	Fri,  5 Jun 2026 06:59:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780642807;
-	bh=mLaeht+14OltYjlKRnSLpPtYOk2E9Ea1Lx7tk/hcws8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YsZyfuH0DNQ7mv7u3TjtJz2xyIwZsrK8oVaqlPhk64DT+j0rV42P72G1+i/iwKkjR
-	 NRcuOWYnbQoyKyo3l2FM69tbt1G6e/HuNgC0tjlGYq95rMPDSYtqVOPYzvnqYUPxmO
-	 AWjPhYcJZ6wydfSYXF/XBNDK3f5d8IIgdI55O1W1HwIefukk8kexEUl8N5fsDeXx2z
-	 4BExZj5mf+2VTADoOZFYWQlBUHvbteLd4O8xGa6QVu9YQUtYookUrNQ3mqvO9CAt4H
-	 08LnpIh0I2Rne5hZA1mQuw5b6DWAlajftwY4jPb1w8G4b6cEGfnkYFO9vhRvcAILg8
-	 LyUNuKdCiw8wA==
-Date: Fri, 5 Jun 2026 14:59:53 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH 20/23] usb: chipidea: use
- platform_device_set_of_node_from_dev()
-Message-ID: <aiJz6Ys4gE998ULp@nchen-desktop>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-20-88c324a1b8d2@oss.qualcomm.com>
- <ah9P6Xt9SyKgc2oJ@ashevche-desk.local>
- <CAMRc=MdhjZhGL9tEx9WEjn2f95d=ObNM0AtBNpcevm6aHgpj+Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="opKaYSNS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=vaoF5rZkwsU+N1JWPgwtDAZ59NZOwBQt/1XnFYImb6Q=; b=opKaYSNSDV66q6c4olA58Aja0M
+	352HXJt0qTeMAoH2dyyssSWpen8FoUZrlh9SE5exgUGI+3uFQjZcO/p9iAB0bml1xRy4+8bEXzJyM
+	1qVnSkIVuU3FbyYShV0Kbs+f1oGkBMI853AfcDnzSo33BesuOIgvhVN9tqssJotGAY1+wRvUikFFI
+	yDVg464vJYUFNkir612OCVQD6z/XsWt5hlkWAkqu4LT24yap493Tg49qPy/OJCWsKzjCGrwZZApda
+	+ypRME3PAEE+2iBGMRmTUIOcaNrA2zIPl4ReXlx8p+1jm9ZUyuPZVaaflgO5sjxszZ9z0LIvKyoMS
+	BEDCVTzw==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wVOXv-000Fje-08;
+	Fri, 05 Jun 2026 09:00:51 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wVOXu-000PmQ-2F;
+	Fri, 05 Jun 2026 09:00:46 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: sashiko-reviews@lists.linux.dev, Frank Li <Frank.li@nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev,
+ wsa+renesas@sang-engineering.com, devicetree@vger.kernel.org,
+ conor+dt@kernel.org, robh@kernel.org
+Subject:
+ Re: [PATCH v4 2/4] arm64: dts: freescale: add initial device tree for
+ TQMa8MPQS with i.MX8MP
+Date: Fri, 05 Jun 2026 09:00:45 +0200
+Message-ID: <4788246.iIbC2pHGDl@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <aiBnWwW2x1TOsGcy@lizhi-Precision-Tower-5810>
+References:
+ <20260603093621.2504490-2-alexander.stein@ew.tq-group.com>
+ <20260603100559.6E7E21F00893@smtp.kernel.org>
+ <aiBnWwW2x1TOsGcy@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MdhjZhGL9tEx9WEjn2f95d=ObNM0AtBNpcevm6aHgpj+Q@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (Could not determine AV Version)
 
-On 26-06-04 08:34:16, Bartosz Golaszewski wrote:
-> On Tue, 2 Jun 2026 23:49:29 +0200, Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> said:
-> > On Thu, May 21, 2026 at 10:36:43AM +0200, Bartosz Golaszewski wrote:
-> >> Ahead of reworking the reference counting logic for platform devices,
-> >> encapsulate the assignment of the OF node from another device for
-> >> dynamically allocated platform devices with the provided helper.
+Am Mittwoch, 3. Juni 2026, 19:41:47 CEST schrieb Frank Li:
+> On Wed, Jun 03, 2026 at 10:05:59AM +0000, sashiko-bot@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 2 potential is=
+sue(s) to consider:
+> > - [High] Incorrect `reset-gpios` polarity on `dp_bridge` will permanent=
+ly disable the device.
+> > - [Medium] Missing `interrupts` property for the DisplayPort bridge des=
+pite hardware routing.
+> > --
 > >
-> > ...
+> > commit ec4a92e3f2baae5d65ed787df020c8a40c851231
+> > Author: Paul Gerber <paul.gerber@tq-group.com>
 > >
-> >>  	pdev->dev.parent = dev;
-> >> -	device_set_of_node_from_dev(&pdev->dev, dev);
-> >> +	platform_device_set_of_node_from_dev(pdev, dev);
+> > arm64: dts: freescale: add initial device tree for TQMa8MPQS with i.MX8=
+MP
 > >
-> > Why do they even do that? Do they have a USB connected pin control?
+> > This adds support for TQMa8MPQS module on MB-SMARC-2 board.
 > >
-> 
-> I don't know. I can't test it so I don't want to break it. If they don't need
-> it, the person who can test it, can remove it later.
-> 
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi b/ar=
+ch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
+> > > new file mode 100644
+> > > --- /dev/null
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
+> >
+> > [ ... ]
+> >
+> > > +&i2c3 {
+> > > +	clock-frequency =3D <384000>;
+> > > +	pinctrl-names =3D "default", "gpio";
+> > > +	pinctrl-0 =3D <&pinctrl_i2c3>;
+> > > +	pinctrl-1 =3D <&pinctrl_i2c3_gpio>;
+> > > +	scl-gpios =3D <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> > > +	sda-gpios =3D <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> > > +	status =3D "okay";
+> > > +
+> > > +	dp_bridge: dp-bridge@f {
+> > > +		compatible =3D "toshiba,tc9595", "toshiba,tc358767";
+> > > +		reg =3D <0xf>;
+> > > +		pinctrl-names =3D "default";
+> > > +		pinctrl-0 =3D <&pinctrl_tc9595>;
+> > > +		clock-names =3D "ref";
+> > > +		clocks =3D <&clk_dp>;
+> >
+> > [Severity: Medium]
+> > Is this node missing the interrupt properties for the Hot Plug Detect s=
+ignal?
+> >
+> > The pinctrl node pinctrl_tc9595 configures GPIO5_IO21 (DP_HPD_INT), but
+> > without the interrupt-parent and interrupts properties here, the tc3587=
+67
+> > driver won't be able to request the hardware IRQ.
+> >
+> > Will this cause the driver to silently fall back to 10-second software
+> > polling for HPD and link training events instead of using the hardware
+> > interrupt?
+> >
+> > > +		reset-gpios =3D <&expander0 4 GPIO_ACTIVE_HIGH>;
+> >
+> > [Severity: High]
+> > Will this reset-gpios polarity leave the device permanently held in res=
+et?
+> >
+> > The tc358767 driver initializes the reset GPIO to logical 0, pulses it =
+to
+> > logical 1 to assert, and returns it to logical 0 to deassert. Since this
+> > is specified as GPIO_ACTIVE_HIGH, the final logical 0 maps to a physical
+> > LOW signal.
+> >
+> > If this pin controls the bridge's Enable or active-low Reset, won't hol=
+ding
+> > it physically LOW leave the bridge permanently disabled? Does this need=
+ to be
+> > GPIO_ACTIVE_LOW so the driver's logical 0 maps to a physical HIGH inste=
+ad?
+>=20
+> Does AI said correctly?
 
-It was introduced by below commits:
+Currently in next there is only one position where the reset-gpio is touche=
+d in
+tc358767:
 
-commit 0f153a1b8193ce768be4df0400aeb2c8f2a3b3da
-Author: Rob Herring <robh@kernel.org>
-Date:   Wed Dec 15 16:56:46 2021 -0600
+/* Reset GPIO is optional */
+tc->reset_gpio =3D devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+if (IS_ERR(tc->reset_gpio))
+	return PTR_ERR(tc->reset_gpio);
 
-    usb: chipidea: Set the DT node on the child device
+if (tc->reset_gpio) {
+	gpiod_set_value_cansleep(tc->reset_gpio, 1);
+	usleep_range(5000, 10000);
+}
 
-    The ChipIdea glue drivers just copy the glue resources to the "ci_hdrc"
-    child device. Instead, set the child device's DT node pointer to the
-    parent device's node so that platform_get_irq() can find the IRQ
-    resources in the DT. This removes the need for statically populating the
-    IRQ resources from the DT which has been deprecated for some time.
+So yes, the reset GPIO is set to logical 0 and to 1 afterwards. The RESX in=
+put
+(reset) is indeed active-low. So AFAICS the driver is assuming
+GPIO_ACTIVE_HIGH anyway.
+Nevertheless right now the bridge is not functioning at all without
+additional patches [1].
 
-    Acked-by: Peter Chen <peter.chen@kernel.org>
-    Signed-off-by: Rob Herring <robh@kernel.org>
-    Link: https://lore.kernel.org/r/20211215225646.1997946-1-robh@kernel.org
-    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-
--- 
+Without the polarity cleared/fixed in tc358767, there is not much benefit
+in addressing the polarity in DT.
 
 Best regards,
-Peter
+Alexander
+
+[1] https://lore.kernel.org/all/20240625122824.148163-1-marex@denx.de/
+
+> Frank
+>=20
+> >
+> > > +		toshiba,hpd-pin =3D <0>;
+> > > +		status =3D "disabled";
+> > > +
+> > > +		ports {
+> >
+> > [ ... ]
+> >
+> > --
+> > Sashiko AI review =B7 https://sashiko.dev/#/patchset/20260603093621.250=
+4490-1-alexander.stein@ew.tq-group.com?part=3D2
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
