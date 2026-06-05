@@ -1,61 +1,63 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C874C8FFD
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 11:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64684D8D94
+	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 11:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780659477; cv=none; b=A2eraNE/YXS/OT8/DcgaA70OLUz7PDRrQ0gIOE89W6NXdfWw0YKQXsJ3qJY3RfBUQaDUOP9E0T0xakNN71qdfLOBgwO445lLpAUZyTZFCPTXcnat1bRheeMuFLHlUNTTMNxd7PsPVNItQSFoofdNnaTCX95SG8SHsaAYDhnPgc8=
+	t=1780659482; cv=none; b=P4D2J2a6l7Ps+bfoBku2eQexChqDQKkMVkIljHZ8JfG/6vUaS7tHbTZmxxOlOEDKAHkME8jLAaFHta+7VO6+sZibmuFscsUDqkvZRgxtGTcKQzqZFNWni18FPVL3jJBJ+9yq6aRw0n67brkb8CW0lB4KPzR3qqGiA/fPMJtLQYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780659477; c=relaxed/simple;
-	bh=ud1+XTOztQEAwav4x9KhbkFv14fOVw5zbe6eOpJ7gUs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jJtFBtgOmQ03UGmPsh1eHJYyQXGdISBkee+qDV5jRAKhutblmJMHbxfY4bsfxN723E0zNGOjA7Lj5itN1Hgm4LPC06QuXMSVBpE6oMT387csNYr9hlNOWiSPDkjePQrINkWAK2eebu2kIe4lcdDzqn3NnlYW+OAC0Qjahwbd0wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fkh3ZN01; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1780659482; c=relaxed/simple;
+	bh=vsvztABr3U6ZwEr0klxubYysThxRTUKFsfzctGVfq8Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E2jNfOJLoboucnfVfha/izXJ5qOYOyHrR2wruw6IQji8bwmvmTjLbxANuzFK9oPr8uqX4ThrT7UY3qzLIBKnVIP6Fgif32q6DEwijNV3Q4A8UwPLO2qBcmvWg4GH5GgMMjpPbfVuXJuG+IKeYskm4cTGtakeIz7pwf2PD8JhKaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yxc08zEs; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fkh3ZN01"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-45fd464d51fso1037203f8f.3
-        for <imx@lists.linux.dev>; Fri, 05 Jun 2026 04:37:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yxc08zEs"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45eedc94d37so957407f8f.3
+        for <imx@lists.linux.dev>; Fri, 05 Jun 2026 04:38:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780659475; x=1781264275; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=W3r95IPdKLEoIca50s981PYU1XFf+JhCBe7GdZYnQ8c=;
-        b=fkh3ZN01Jaa6iUDjtmV4EAVxb0HtWMLplxldNJpgiJ/uwYEPdb+j6m7390VI0/Oxqz
-         yO96ZwBYu0TFTgd8D+3WoqBHhlWF5TWCETXhhywjKIh5AgoCG1/9bkR67as4N97uaRkg
-         g8PuwidCR8C/nD2bHYr2+Nx9s/NPAdQkmG1gBjzn0GkTPL4fhoKvqqX5gvJbXIb8hvG6
-         25H7Q/C7vaIsyq8VkdD1spjTV1QFkzmhulRsOIwMfFrtkjkE+Bc5cw3eCSThMzobXemi
-         VjDO5k05JJwh1BtEuMpv+T+BatEvkhqzX7ASFcqBlkAD4hU+PO3iozdE7ZyP3yI0hDEl
-         imPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780659475; x=1781264275;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780659479; x=1781264279; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=W3r95IPdKLEoIca50s981PYU1XFf+JhCBe7GdZYnQ8c=;
-        b=d17ZoQYJ9NIWMfSPJqvWwH9t6GztwVE9My3kl+a0zCBppPrmneRHS3OnY5FQGMX1Ig
-         Rh0DSHjFlCBlvd7Sew0dT4w0lBWOzL93f9f4gIFVB8xWXRsJ8qhNN7EzjzeVujDyT3GT
-         wojH7lpwvUxT17d6XYQODHOPh6nWSQQ4qcikm32gNocjo6gfr70IruFNypgiZGBetyha
-         /cln6TBuviZs/emmCn/HhdgjXD0xewxPLipL0wW0HJau6s+5yiCnC/I+fKJrVvjFhG++
-         c6FF/cgm1rA9XiUprnu6xPxnOap2FfR0FUsbRBBFFwtJkNPLuI2FJ8HqziZcXI2o6O8z
-         Dq/g==
-X-Forwarded-Encrypted: i=1; AFNElJ+4vMahBa5x0PqfWFlx6l+9Lizk6dw0J3+JmLEXdrH4+9PmArWELC+jZeM0sMl5vJ1LmXw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwbfT3jqNumhu252LBiZIqKfmZ4nMQ8adDJMZHQ45OGDw0J+9bV
-	0kEpPOoD/wHuuMEcW51WpoegNwmhi46Q6NEKuSGdJQl6LUg0tqNXm9Kr
-X-Gm-Gg: Acq92OGU383gVmdD73A8yqFW1HkamGzNRKRt76Qp9cen7GEfc5diJ/RJcer+YIKoHhy
-	I3WGodymdQy3pdTV06sF4J4eE2EQX3KVIOipKrHmOjYZkMiLHyEi6hmU/tGSPM8rO6RhfUPEmn+
-	eVt9Bldu3Gs7yeuVz+PoaZd9unIWfKx4CT1Le32DihOO5x9bCYCeMPpM04gT8ucpHB5wRnt6cNs
-	jup0WT1m52UYZVFh68q/iZ65ei7Si2V+VHN8IlsxiEHbuHSRE04gk4k0lDTHohaOrbqPD0jcfBl
-	zrzKFW+by2K3/kz9jkaB7g4ar7fUf7pPtSQjLl3bgJOZGD8mZEOm/H6RpkRPuO6rRKMO0y2jo/C
-	X0DsxkAkffFwl7fduW+KXTupJkpIoqu3gmhGYd05M/t1a0Ct/Zixu1/0QViFux9SN+OcZUggCbw
-	tuzztY3ecYuunucPwYHm88JKQDaHMTmLQhjutay9cJ/IEFaXsueMcwBxfU7lfW
-X-Received: by 2002:a05:6000:bce:b0:45f:f142:d56e with SMTP id ffacd0b85a97d-460302e4674mr4256841f8f.13.1780659474765;
-        Fri, 05 Jun 2026 04:37:54 -0700 (PDT)
+        bh=wZJNSEfz3QG6ZL5qFVwPBISzyfCqVigytPuqEa8Po8M=;
+        b=Yxc08zEsgax2zpIY3+1CgTTqyO5+XG3VpxLxB3p1VNDa+Noab9QCvc7wJJUff94WzD
+         EvZne/p/1+BO4U6lgG287dMyQ1XfTCroJ5kHUc6MLu2V+eA3L4jUu3Nc0WjyBTcuVCdE
+         B/QzqCfBu4wWryiWDTrTjgouy37IaRWz7actcT+hD1b/47tIhv2whiKe4oZMQGttUf/p
+         3wpS4pT1CRbLO0yoJaRmtXrOjxZKc2FrbfhZq9/hTN0ymFIPMR4WMz2AvqHW0SJmKWEM
+         LPY8UC1NV3vBs8qDEOavsFEdY5A0hb7hdKhlEBYhKNjO0KohXY430e1bGvAlDoQxh4xd
+         aStw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780659479; x=1781264279;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wZJNSEfz3QG6ZL5qFVwPBISzyfCqVigytPuqEa8Po8M=;
+        b=YmUE3h9yVljrWEQX3pKmd38fgV8E8on71lM0vHu11s1jvxjUAiO/QJrWgJubpsQwmf
+         DS06rCMVbtvDqL4JbGvAE+MFCagPnlf+5bOSkDD8oaK4Ij8L2wGFZ2ujiUKwVpLb9YY0
+         lv0cpuh27MDjx1FJtFh3zbfdCuTmhpZCBnROr/bnT6sA2hfl3b8WAiJo/fqADRK8s3xc
+         Y/1FsXSJWgY2BqhmCeAjqAR8AxcNFsgk2CQrGiaW2BG2wcZrZWAacWhmbSxpllJIjrNc
+         bFHuP5nBWhAaGxTCLbWLAX5CNZnlQWw7Mt1ovQX4XO3PyrKRfrcbz+U5j9laJBH4zxTh
+         /2Yg==
+X-Forwarded-Encrypted: i=1; AFNElJ955EU8g7AazeQIJoj91JhlvsrTza/7eBiSBQCIxWqh2u/ylXl6tr1XJKcONXZpbjw20aU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw92v8GHxkP2A/1cpPVewltHjxzQWdPqteJotedrzdLouY/Layj
+	UzH/+niIoxaJ3aanB58feeVbf3UxSGmqXSgopfhfk6OxHXiwa/5fI8xK
+X-Gm-Gg: Acq92OGMCUTcpFGWz7qAf8zIBFHmpk4Zx0WCDuQ0qGyvBgc6WFz+2TnnS8VjNYvTCo0
+	2pQFfeYvyi+8vHOvvUkm5Nbyi2R8ZdYNfZUDaQGAthg+fomh2+Kwlw+truWFtGig38vkOFd9dMC
+	y/TEagUQ3NPam3i1rOg0OSqBbZQcQBowA8A35yaEnR7MbPR9gN01O7FufJtd7nkJCwu+5f4+Ckm
+	VOYsoWEX+q3u3WXlNLZTcc+0kt84XDBwNMjQmv2695hTgRWmBxHmhi/xYY2xOv9lA4Kuia+ywcA
+	MflpxUokB1pNnKE51Glxfg0Pbv5esO4r1CFvvHPnuSspC4MHHZ1wM8VohIMEn2e9QGTM9UuJL7b
+	8OvatVINDlKokdDCTaqbg7SJYAMxmyPxoCQOKlEdWFfaHMJ8cERL9jRq8YZ67Xp1drusogmPECV
+	Ch1Lv14knny87loVbR54rKdZcR9ptICSKlJJfXIHQfxF2CZlKuilB61PuTfh4l7MYWUozW498=
+X-Received: by 2002:adf:ed0f:0:b0:454:a12c:6cdb with SMTP id ffacd0b85a97d-460304eb55emr3605857f8f.2.1780659478953;
+        Fri, 05 Jun 2026 04:37:58 -0700 (PDT)
 Received: from SMW024614.wbi.nxp.com ([128.77.115.158])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46028a6dcbdsm15262439f8f.7.2026.06.05.04.37.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46028a6dcbdsm15262439f8f.7.2026.06.05.04.37.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 04:37:54 -0700 (PDT)
+        Fri, 05 Jun 2026 04:37:58 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Bjorn Andersson <andersson@kernel.org>,
 	Mathieu Poirier <mathieu.poirier@linaro.org>,
@@ -72,10 +74,12 @@ Cc: linux-remoteproc@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/4] Add RPROC support for the MX95-15x15-FRDM board
-Date: Fri,  5 Jun 2026 04:36:17 -0700
-Message-ID: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v2 1/4] dt-bindings: remoteproc: imx_rproc: document optional "memory-region-names"
+Date: Fri,  5 Jun 2026 04:36:18 -0700
+Message-ID: <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
+References: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -86,55 +90,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Hi folks,
+The names of the carveout regions are derived using the names of the
+reserved memory devicetree nodes, which are referenced using the
+"memory-region" property. This adds a restriction on the names of said
+devicetree nodes, often bearing specific names such as: "vdevbuffer",
+"vdev0vring0", "rsc-table", etc... This goes against the devicetree
+specification's recommendation, which states that the devicetree node
+names should be generic.
 
-As you can see from the title, this series attempts to introduce/enable
-RPROC support for the MX95-15x15-FRDM board.
+Fix this by documenting an additional, optional property:
+"memory-region-names". This way, the carveout names can use the values
+passed via "memory-region-names", while keeping the devicetree node
+names of the reserved memory regions generic.
 
-For a while now, the imx_rproc driver has been using the reserved memory
-DT nodes as the carveout names, which would force DT writers to go against
-the DT specification's recommendation and use non-generic names (e.g.
-"vdev0vring0", "vdev0vring1", etc...). This series also tries to fix this
-issue by introducing the "memory-region-names" property and using it in
-the imx_rproc driver to figure out the carveout names. The driver will
-still allow the old way of doing things (i.e. no "memory-region-names"
-property) but a warning will now be printed since this should be
-discouraged.
+There are no restrictions imposed on the values of the strings passed via
+the new property since the software allows any name to be used, with some
+names (e.g. "vdev%dbuffer", "vdev%dvring%d", "rsc-table") bearing a
+special meaning.
 
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
+ .../devicetree/bindings/remoteproc/fsl,imx-rproc.yaml         | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Changes in v2:
-
-* change commit message of binding patch to describe why it's needed
-* drop restrictions on the string names passed via "memory-region-names"
-* drop patch moving the CM7 node to the SoC DTSI. CM7 node is now added
-in the RPMSG DT overlay
-* rewrite commit message of patch removing some of the RMEM regions from
-the bord DTS - previous version was a stale version from first iterations
-of this series
-* change "micfil" node status from "disabled" to "reserved"
-* add check against rmem phandle count and string count mismatch
-* include "of_reserved_mem.h" in "imx_rproc.h" to avoid having to rely on
-the consumers including it
-
----
-
-Laurentiu Mihalcea (4):
-  dt-bindings: remoteproc: imx_rproc: document optional
-    "memory-region-names"
-  remoteproc: imx_rpoc: fix carveout name parsing
-  arm64: dts: freescale: imx95-15x15-frdm: remove some rmem regions
-  arm64: dts: freescale: add DT overlay for MX95-15x15-FRDM RPMSG usage
-
- .../bindings/remoteproc/fsl,imx-rproc.yaml    |  4 ++
- arch/arm64/boot/dts/freescale/Makefile        |  3 +
- .../dts/freescale/imx95-15x15-frdm-rpmsg.dtso | 67 +++++++++++++++++++
- .../boot/dts/freescale/imx95-15x15-frdm.dts   | 21 ------
- drivers/remoteproc/imx_rproc.c                | 13 +++-
- drivers/remoteproc/imx_rproc.h                | 21 ++++++
- 6 files changed, 106 insertions(+), 23 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
-
+diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+index c18f71b64889..8e3e6676a95e 100644
+--- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
++++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+@@ -62,6 +62,10 @@ properties:
+     minItems: 1
+     maxItems: 32
+ 
++  memory-region-names:
++    minItems: 1
++    maxItems: 32
++
+   power-domains:
+     minItems: 2
+     maxItems: 8
 -- 
 2.43.0
 
