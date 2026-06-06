@@ -1,156 +1,128 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCC93EBF02
-	for <imx@lists.linux.dev>; Fri,  5 Jun 2026 18:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3637199385
+	for <imx@lists.linux.dev>; Sat,  6 Jun 2026 01:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780685053; cv=none; b=FnUtpspx/q2+6Jae6mDOfd3rw9IO5FOYIsSU+EwMi38ilULlCVY6WSyRhCyU1fapzvoPaPXDERuhsa9wDkBe8kbEELlgXYwesbHYLG/w2+BYVxXjIxhyHRY34YXukDI0QujIA9SalkNsU5cYR21t+AS7ZdcsjY8As9iiPdioZyc=
+	t=1780710387; cv=none; b=m7bS1bhZdMqo/j2QirdKVv2hY0W8BHePtiwpZ1ruW9lEuwtE8dBLQz7H8lwajWwM6gnGzwSYixCuyevg+8pKaGcZByvtr3nu/VoU4Fdf+ihuMvRQQWsusNK1G0J1GZaj2JBErQtHyQhUrN73Ypb2O27jC7l0fgJzjqb0D2obbvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780685053; c=relaxed/simple;
-	bh=VkS+9PTi0bQprMQXirOvrqsFrc81uGcDDom9cGbtCYc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FJ1QvrZO3y7jvlN3QvFYtp6XRIV3JzGJqNVB0a8kvGfreVAxXd9w8aROPIQEozBZqnHcHe5NbIoA22VLow+nFjrW11N469FoWgmRy/3tWYJZWhmd6FUzxQnGqVv5ITNsG/b6sOmc5C8M1dy2CHg5370uTSCuOs2vWvLhmyhD1pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gc4GYF29; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780710387; c=relaxed/simple;
+	bh=+ALvsYQ8V33Cdss6z5a98EoH/Dz+epQ11Dde/jkPvFo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Uf2+JlEmBfnPti0XyX/HK2BrvHaI8Hzd6gwQgRBz+H9wRf8+1VDEPfyeRMHeFt1qL9Tfp+vtCITa7/dcG3/9vGVWt53/sRzvMhmEmHqVDG6u0j6v8uF1orM96667n9hTqcBbyiuc6Z0mRX37U84ZQM97mggUXjHWCqG7+5Yj38M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LUaaBf04; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gc4GYF29"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 7ED05C5847B;
-	Fri,  5 Jun 2026 18:44:08 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8F4885FED1;
-	Fri,  5 Jun 2026 18:44:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2A962106A25E4;
-	Fri,  5 Jun 2026 20:44:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780685046; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references:autocrypt;
-	bh=VkS+9PTi0bQprMQXirOvrqsFrc81uGcDDom9cGbtCYc=;
-	b=gc4GYF29BRUao23NMlI0LlyMYh33Db14Qxyye3dpp+chRGxjIbo8V04fYY5mSH2fVXC+NM
-	jKWN3o57sxbYH0CImLh5FtHdZLSCcyr/2Jlb3AQHa91atGW73LU9UG7DjjEYAzxP5h+P4t
-	hpPgF7AWeTOwfg9LlVtmHA+pqbUFa2WeyHlzLNef0fvmJXji4tZ6tFwF45MCzn1MeaVnOl
-	rU2+0D9fScncvf3GlIK++n0wR/ZBU0emOSPmd/Sya7gz6X5EyI4kSduDdnj5x5LuI8LJFJ
-	NS3PS/O8/GU5kG9q5KRIMxEDn9vQdgiH/ZUaL2HnmrC2KRzHnzO5+qpz237oCA==
-Message-ID: <4c56014675089901aba5cf648f0e79caa66852c8.camel@bootlin.com>
-Subject: Re: [PATCH v5 5/5] watchdog: aaeon: Add watchdog driver for
- SRG-IMX8P MCU
-From: Thomas Perrot <thomas.perrot@bootlin.com>
-To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Linus Walleij	 <linusw@kernel.org>, Bartosz
- Golaszewski <brgl@kernel.org>, Shawn Guo	 <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- =?ISO-8859-1?Q?J=E9r=E9mie?= Dautheribes <jeremie.dautheribes@bootlin.com>,
- Wim Van Sebroeck <wim@linux-watchdog.org>, Lee Jones	 <lee@kernel.org>
-Cc: "thomas.perrot@bootlin.com" <thomas.perrot@bootlin.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>
-Date: Fri, 05 Jun 2026 20:42:50 +0200
-In-Reply-To: <bcc88b28-fa45-4a75-8a09-98d25a9377c9@roeck-us.net>
-References: <20260408-dev-b4-aaeon-mcu-driver-v5-0-ad98bd481668@bootlin.com>
-			 <20260408-dev-b4-aaeon-mcu-driver-v5-5-ad98bd481668@bootlin.com>
-			 <bcc88b28-fa45-4a75-8a09-98d25a9377c9@roeck-us.net>
-Autocrypt: addr=thomas.perrot@bootlin.com; prefer-encrypt=mutual;
- keydata=mQGNBF+/ZOUBDAC2DghCjZvmgYcve02OG7dGZ7Iy58uEwne3LB7w7nRwdAxKw7ZaiVqwY
- O+yNGVi+GVx7oA6Wn4pv46z+QDRLQiq6OseuXhkSGCg7U/yBCUq12B/GRGO1Qt2Qi1mJJT1s+1qZ5
- Gxv6Nypz9qKVn94GM2bR1hXBga0t87vBpebThOHmX5d/0dqIcVxRCM7onNb0dDyRoVgLS5rBhQzrL
- CMrJaCy39xZUy0J1SOlH4Mgk6EhJIPYY4wlzikGX6urg+Tc9EjGd78ry0e0p5U5qgjFR5QGJDy1Gn
- U3CfwbT9sowdCASDbQDUoltlv2iWJCLa0xl97KVchCa0pr7HKbFA3J5SLKqFYUBCkFL+5WudYlz2n
- XxiUgyviMQxyK+ij66kEi6/2zFDAecd43pHV7790ptqZBC3Jc67Emj7Vo3ShX6RXPPxxbeCTOF2uk
- I45aJ9XcVFH/MFE96NjXj8uahnIsiTPyuCUoJu8tj7TSQyue874qJqVQvqlFyt2aZYJZ8ruq8AEQE
- AAbQpVGhvbWFzIFBlcnJvdCA8dGhvbWFzLnBlcnJvdEBib290bGluLmNvbT6JAc4EEwEIADgCGwMF
- CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSHQHfGpqMKIwOoEiGfwAsFcf4K7QUCX79mdwAKCRCfw
- AsFcf4K7fhbC/wP0kSl6id2E/K3+UdXk6CLMVRbCFLCREzQs5WFpQ6l/I0WGOamhrOgegdszheiVF
- orlUP8d37XSpFAqydhKGaN78V5Dps0Wmwm4lIlS4MtQXJtSLUHXDJLIZLW0pw8tiPLKsd1o/yDkXE
- dnpsjJTRG6SdDSHnyOB2/gh4p+yTaLytFdARk/r4/P26+L+FiH0fFl+RnBt19LPklfKgeDc7GwIif
- ja+nIWpp3W23DAUuI6xduEut25Q89yu7Ci8CliLfAiLy9bIGjBQWU2Y+1/j/7KuPj6VbBsZWLTZY0
- hUmpJSTnWAqc9SMsNxo7NSQuddgviz5e2tqucaRqxP02FGzNa8U4NAKdWaXrlHG5Dglj9XH0DK+SH
- +c96qqFewYD8VPQ6XAGxQcXbrtJmiMor1R2DfziispLRvJcfYs8xqabbCtoS3ouXB9XRi8hn7A2kh
- ME1ryS+Oh63JshXHnw6bmjCpVd/p+fGLIGU6A47pJOpviKR4jEO84pl2ejtDZ3Tc=
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-D+anXI9Ca6rCMw2yVrbP"
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUaaBf04"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266211F00893;
+	Sat,  6 Jun 2026 01:46:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780710386;
+	bh=YrNz5Vxx40fqruA8Rr6EG742jvEzDy6YmsJP2+WEW+A=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=LUaaBf047PsR9SSOrty05nMF1H9IXw6V6ufrz364BfUMKcTATPMt19Lhcm8/A8p2/
+	 Wp7OX42Eq18aaCDmMjVn0Mx4cXDsCBoxqsGIPLp+Vlf4zZBjT66q83wBqDazUB2llW
+	 jOlcoSATikWxs5aAc/XDTl1kjYIlg95aVgjacCH1LbBf8RjZpGDt3rL0n+IgGvAN49
+	 IJzft2KKU3uhYIHEeXVyxFnlUdD/iNoLn8dWHhvLTJ8JzCRCOJTWr1owQ9gIXvx3l8
+	 KcAqRsAF7yoHlVtOHPv2lmhsXVLBlHEDBnhlHlvQ0+w0uuUvDkgoKHEuCShWWtyHyL
+	 e65pvq6kgI/9A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 net-next 7/9] net: dsa: netc: add VLAN filter table
+ and egress treatment management
+Reply-To: sashiko-reviews@lists.linux.dev
+To: wei.fang@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260605014808.686024-8-wei.fang@oss.nxp.com>
+References: <20260605014808.686024-8-wei.fang@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 06 Jun 2026 01:46:25 +0000
+Message-Id: <20260606014626.266211F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Updating a port's VLAN egress rule silently detaches its egress =
+hardware counter, disabling frame statistics for that VLAN.
+--
 
---=-D+anXI9Ca6rCMw2yVrbP
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+commit 4056013f517b3e78e014631a8d3dc63d5fcc0d56
+Author: Wei Fang <wei.fang@nxp.com>
 
-Hello Guenter,
+net: dsa: netc: add VLAN filter table and egress treatment management
 
-On Fri, 2026-04-10 at 08:49 -0700, Guenter Roeck wrote:
-> On 4/8/26 10:21, Thomas Perrot (Schneider Electric) wrote:
-> > Add watchdog driver for the Aaeon SRG-IMX8P embedded controller.
-> > This driver provides system monitoring and recovery capabilities
-> > through the MCU's watchdog timer.
-> >=20
-> > The watchdog supports start, stop, and ping operations with a
-> > maximum
-> > hardware heartbeat of 25 seconds and a default timeout of 240
-> > seconds.
-> >=20
-> > snip
-> >=20
->=20
-> Odd, unusual, unnecessary, I would argue that most people would
-> consider a fixed
-> timeout of 240s as anything but reasonable, and as the comment says
-> arbitrary.
-> Since I am sure that I pointed this out before, you still insist, and
-> I am
-> tired of arguing: Your funeral, so
->=20
+This commit implements the DSA .port_vlan_add and .port_vlan_del operations
+to enable VLAN-aware bridge offloading on the NETC switch. It maintains
+VLAN membership in the VLAN Filter Table (VFT) and handles egress tagging
+through the Egress Treatment Table (ETT). Egress counters are updated
+when egress rules change.
 
-I apologize for not addressing this in previous iterations.
+> diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc=
+_main.c
+> --- a/drivers/net/dsa/netc/netc_main.c
+> +++ b/drivers/net/dsa/netc/netc_main.c
 
-This will be addressed in v6 to make the software timeout configurable.
-The 240s value remains as the default fallback.
+[ ... ]
 
-Kind regards,
-Thomas
+> @@ -1025,6 +1054,384 @@ static void netc_switch_get_ip_revision(struct ne=
+tc_switch *priv)
+[ ... ]
+> +static int netc_port_update_vlan_egress_rule(struct netc_port *np,
+> +					     struct netc_vlan_entry *entry)
+> +{
+> +	bool untagged =3D !!(entry->untagged_port_bitmap & BIT(np->dp->index));
+> +	u32 num_ports =3D netc_num_available_ports(np->switch_priv);
+> +	u32 ett_eid =3D le32_to_cpu(entry->cfge.et_eid);
+> +	struct netc_switch *priv =3D np->switch_priv;
+> +	u32 ect_eid =3D NTMP_NULL_ENTRY_ID;
+> +	int err;
+> +
+> +	if (ett_eid =3D=3D NTMP_NULL_ENTRY_ID)
+> +		return 0;
+> +
+> +	ett_eid +=3D np->ett_offset;
+> +	err =3D netc_update_ett_entry(priv, untagged, ett_eid, ect_eid);
 
-> Acked-by: Guenter Roeck <linux@roeck-us.net>
->=20
-> Guenter
->=20
-> >=20
-> >=20
+[Severity: Medium]
+Does this silently detach the egress hardware counter when a port's VLAN
+egress rule is dynamically updated?
+
+It appears ect_eid is initialized to NTMP_NULL_ENTRY_ID and passed directly
+into netc_update_ett_entry() before the correct value is calculated.
+
+Because ect_eid is NULL during this call, it looks like netc_init_ett_cfge()
+will clear the ETT_ECA_INC flag and drop the ec_eid mapping for the Egress
+Treatment Table (ETT) entry.=20
+
+> +	if (err) {
+> +		dev_err(priv->dev,
+> +			"Failed to update VLAN %u egress rule on port %d\n",
+> +			entry->vid, np->dp->index);
+> +		return err;
+> +	}
+> +
+> +	if (entry->ect_gid !=3D NTMP_NULL_ENTRY_ID) {
+> +		/* Each ETT entry maps to an ECT entry if ect_gid is not NULL
+> +		 * entry ID. The offset of the ECT entry corresponding to the
+> +		 * port in the group is equal to ett_offset.
+> +		 */
+> +		ect_eid =3D entry->ect_gid * num_ports + np->ett_offset;
+
+The actual ect_eid isn't calculated until here, at which point the ETT entry
+has already been updated without the counter reference, which would stop
+hardware frame counting for this VLAN. Could the calculation of ect_eid be
+moved before the netc_update_ett_entry() call?
+
+> +		ntmp_ect_update_entry(&priv->ntmp, ect_eid);
+> +	}
+> +
+> +	return 0;
+> +}
 
 --=20
-Thomas Perrot, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
---=-D+anXI9Ca6rCMw2yVrbP
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCAAdFiEEh0B3xqajCiMDqBIhn8ALBXH+Cu0FAmojGKoACgkQn8ALBXH+
-Cu1ZQQwApYSqbfzLii5Qn294byLHYxr56RVOi+0rrMZsZzcmBNOHG6H+JE6QGpRb
-/UJIX7OVQ/ACKJIEL/QKR3SvF2DLvY97BCX2wBslodNzcRyVuHvTMEppM/bmQVpL
-5LFpUdHxXDVoT6dUmwqPCGOH+HGx0OX1L8EBo0UbEcNin7gyYspy5cI4V+0lsK7Y
-64HdBFpCtJmsu0OfWl+W0RLhZpxEPSFB8NbUJg5V0TqAzZZi3p+uBsLWqX944ocT
-la5kreLGE/fKZQ6ctWCN5+nT0neZ3lJe7LofrUYjJx8GapWavmD+cSPscqf537Sw
-oxdfMxcmlmWUEFOPLo1MlUrASdoss8zNuNfEGt0MitxTbZizPqS/wxteZib1gb6O
-x6Klhpl0Q+CCfP0ZIhSbVWMD9GY+ggelFfDEmn9HoDoH/Hz4Xbw1h3k4YWYp8d4f
-0YUf1QZC51lDB3J2DXJLVDCAzuSxDW3Sw+8eJ2gcBtcRD53nk75t11uZOCNafXnL
-Q3BgaQyl
-=ns9k
------END PGP SIGNATURE-----
-
---=-D+anXI9Ca6rCMw2yVrbP--
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605014808.6860=
+24-1-wei.fang@oss.nxp.com?part=3D7
