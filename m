@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED22422F388
-	for <imx@lists.linux.dev>; Sat,  6 Jun 2026 07:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969313064B2
+	for <imx@lists.linux.dev>; Sat,  6 Jun 2026 07:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780730682; cv=none; b=JnDM1Fyldb/cIDjLPfWqutPnzRpdQ0GZiKWONi7YWLPcr1x/fN0hO88OaZoL+dYdIiYTimOiXwLggSyIjkq7ziNlul/pimXOSSLLCb39w7UekgcM4UJNbmX7+D37fg5H5q4tTuUc80K/V27vXL7L5l23VejHfMdcOas4PnD1yh8=
+	t=1780730682; cv=none; b=iUVBlt2Go7C1HnlUiXWMYTA7sHxw+muS0+a88xSML4NrD88T02eDgVvF8GeBVR+TvcgwRDu+I4zaBtP3qBmYa0X4d6d3wGXT3KzUw9QKW4XmYWLHYty82Dgh2F88Vaqukl1SZ8v+MoboHJy11VR+HrGIrYnqFe9NuVRSQBASMZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780730682; c=relaxed/simple;
-	bh=5nCMUV7jTqFeJMkocEmLa7QZe4uaHhGIHtq1qsIPSA8=;
+	bh=Sz6nsRkmRTeAjj/tVUXh/HgceLr1i8o5uzdaw4EVZZI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JucG5J0rpQ93ev1KICGx6pmNrcnXqTSTIF4sPnkdr123IimhdxXO8a2TqBvJrwc+5J5dEkvtlHhAXlxfEgAgh3UuNMrIhE7wzRRsg6Ha3T9WECmbfYbk4iUbK68/4Wqg9f/Y+uYGWX6GNysI34Puyx5i5cPlyJZQOiPJ8NUQ0dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVlzZW6N; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=SKqTH/MDx89ygSBTaNcDzlo8rcTfQITajCqDCCp6spE3YaOQayoyaT9UmOB7SXdZ8PlIk2dfycWD2plSi0+rHSCMtG59vo1Qgz8Qa6SZbgB5EmAW6b8zZNoIKPkl6bzd+CIHFb5qAmQwE+/Bx2NPq/belWbwWPl0wVcFQJHoJfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRpciJw8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVlzZW6N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3851F00893;
-	Sat,  6 Jun 2026 07:24:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRpciJw8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB8D1F00898;
+	Sat,  6 Jun 2026 07:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780730680;
-	bh=uCqzdEPguHChtmUbNEgWcXpsEGjdXn/Q5tKJR0C4eVA=;
+	s=k20260515; t=1780730681;
+	bh=T+35h2gNipkg43fHBcKpO7vbYgE5rQa4yaD57atis8E=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jVlzZW6Np64YjKKwwURIjsOz+WSAgVuONtEmOc51tDPjbrU8o0FrsHjE7U1eslTyJ
-	 TM0V3e/yJ4T0zJuS1NIaiEtkDRUG/DLybGovMWdbR5loOfP9r6buA192xYbxgRns1z
-	 ITiOXlrdtLfBtDkahZ1By+vDYFjv1nDJYp9UlTh4QqEwzR5K9bP+p6tF+ilkuCPkWn
-	 UDQpI4f7cxKxuOs7HcdM/kGpZIoSjh5GDpbN6qJKGjXYex5sUIBUQeWGIbiGmHt3pu
-	 AlshssD+P+an1pCTrbxsU0D6bWPc+9tJICIy4wL6so8cXqG5ExOraBA2kdmFy3yrx1
-	 PpLnEPxgA6rAw==
+	b=fRpciJw8iHeUHhma8oa/AcurID04uxch/OiH2V9otNjTG7oEtCeIutHjJn3998lv1
+	 gtny4hOAKBIDnHbfnQs979lkwn7fyhEdhNr7HnowXe8Xy8msfG6bHf3fhRGrt+Zf8z
+	 G+XBTtigPIKEavBcYH//AWtf/EC+hR+ta2uX+3TI6+84qAoEa4TxwMJfvS3ZTxXSuk
+	 0mc5BWpJ1sGH4rrx25qoNj8XGRBi/KsWciHwJQ/YyPBbrnEt63jGWSlR3gQOPdblnF
+	 o8dGR3Kgyz2c5qY1pcZqVlZMFJQV4f/sWui1AZ4aBmwdoLQCvX13RqoJQHAxhb5Rw5
+	 RHl3xhAFnbzPg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next 08/15] net: enetc: move mac_filter from struct
- enetc_pf to struct enetc_si
+Subject: Re: [PATCH net-next 09/15] net: enetc: add MAC address filtering
+ support for VFs of ENETC v4
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260605065550.3038579-9-wei.fang@oss.nxp.com>
-References: <20260605065550.3038579-9-wei.fang@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260605065550.3038579-10-wei.fang@oss.nxp.com>
+References: <20260605065550.3038579-10-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Sat, 06 Jun 2026 07:24:40 +0000
-Message-Id: <20260606072440.9E3851F00893@smtp.kernel.org>
+Message-Id: <20260606072441.4BB8D1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,108 +46,82 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] On 32-bit platforms, the 64-bit MAC hash table is truncated to 32 =
-bits when programming the hardware, causing MAC addresses that hash to the =
-upper 32 bits of the table to be silently dropped.
+- [High] A Time-Of-Check to Time-Of-Use (TOCTOU) race condition in `enetc_m=
+sg_handle_rxmsg` allows a malicious VF to trigger a heap out-of-bounds read=
+ in `enetc_msg_set_vf_mac_hash_filter` by changing the message length betwe=
+en allocation and use.
 --
 
-commit 3178ee41440e498f50696b0d334e000fdca4eaa7
+commit 46d6bb311e4a8bcc15dcd4d622db8e4c46a5ec75
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: move mac_filter from struct enetc_pf to struct enetc_si
-   =20
-The mac_filter array currently resides in struct enetc_pf and is used to
-track unicast and multicast MAC address filters for the PF. Since struct
-enetc_si is the common structure shared between the PF and VF drivers,
-move mac_filter into struct enetc_si to prepare for MAC filter support
-in the VF driver.
+net: enetc: add MAC address filtering support for VFs of ENETC v4
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc4_pf.c
-> index 4cff2f1237f18..f6920ded9f7ef 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> @@ -225,11 +225,12 @@ static void enetc4_pf_set_mac_hash_filter(struct en=
-etc_pf *pf, int type)
->  	struct net_device *ndev =3D pf->si->ndev;
->  	struct enetc_mac_filter *mac_filter;
->  	struct enetc_hw *hw =3D &pf->si->hw;
-> +	struct enetc_si *si =3D pf->si;
->  	struct netdev_hw_addr *ha;
-> =20
->  	netif_addr_lock_bh(ndev);
->  	if (type & ENETC_MAC_FILTER_TYPE_UC) {
-> -		mac_filter =3D &pf->mac_filter[UC];
-> +		mac_filter =3D &si->mac_filter[UC];
+Adds VSI-to-PSI mailbox message support to allow VFs to request MAC filter
+configuration from the PF on ENETC v4. Introduces two new command IDs to
+program the MAC hash filter table and configure promiscuous mode.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but on 32-bit platforms, does
-dereferencing mac_hash_table truncate the 64-bit filter down to 32 bits?
-
-The mac_hash_table is declared as DECLARE_BITMAP(mac_hash_table, 64),
-which evaluates to an array of two unsigned long elements on 32-bit systems.
-When configuring the hardware later in this function:
-
-enetc4_pf_set_mac_hash_filter() {
-        ...
-        enetc4_pf_set_si_uc_hash_filter(hw, 0, *mac_filter->mac_hash_table);
-}
-
-Dereferencing mac_hash_table directly like this only passes the first
-unsigned long. Since enetc4_pf_set_si_uc_hash_filter() takes a u64
-parameter, the 32-bit value will be zero-extended, effectively losing the
-upper 32 bits of the MAC hash.
-
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc_msg.c
+> index 49c1ca14735c9..7dcb1dcdec84d 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
 [ ... ]
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_pf.c
-> index 38fcc7b5fc6da..209a3503609f5 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> @@ -111,10 +111,9 @@ static void enetc_set_mac_ht_flt(struct enetc_si *si=
-, int si_idx, int type,
->  	}
->  }
-> =20
-> -static void enetc_sync_mac_filters(struct enetc_pf *pf)
-> +static void enetc_sync_mac_filters(struct enetc_si *si)
->  {
-> -	struct enetc_mac_filter *f =3D pf->mac_filter;
-> -	struct enetc_si *si =3D pf->si;
-> +	struct enetc_mac_filter *f =3D si->mac_filter;
->  	int i, pos;
+> @@ -101,6 +101,115 @@ static u16 enetc_msg_set_vf_primary_mac_addr(struct=
+ enetc_pf *pf, int vf_id,
+[ ... ]
+> +static u16 enetc_msg_set_vf_mac_hash_filter(struct enetc_pf *pf, int vf_=
+id,
+> +					    void *vf_msg)
+> +{
+[ ... ]
+> +	} else if (type =3D=3D ENETC_MAC_FILTER_TYPE_ALL) {
+> +		if (!msg->hdr.len) {
+> +			pf_msg =3D FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
+> +					    ENETC_MSG_CLASS_ID_INVALID_MSG_LEN);
+> +			goto vf_state_unlock;
+> +		}
+> +
+> +		pf->ops->set_si_mac_hash_filter(hw, si_id, UC, hash_tbl);
+> +		hash_tbl =3D (u64)msg->hash_tbl[3] << 32 | msg->hash_tbl[2];
 
 [Severity: High]
-This is a pre-existing issue, but does enetc_sync_mac_filters() also trunca=
-te
-the hash table on 32-bit architectures?
+Can a malicious VF trigger a heap out-of-bounds read here?
 
-enetc_sync_mac_filters() {
-        ...
-        enetc_set_mac_ht_flt(si, 0, i, *f->mac_hash_table);
-}
+Looking at enetc_msg_handle_rxmsg(), which handles the message allocation, =
+it
+reads msg_hdr->len from DMA memory to calculate the size:
 
-Like in enetc4_pf_set_mac_hash_filter(), passing *f->mac_hash_table only
-provides the first 32 bits on 32-bit platforms. Furthermore,
-enetc_set_mac_ht_flt() accepts an unsigned long for the hash:
+    u32 msg_size =3D ENETC_MSG_SIZE(msg_hdr->len);
+    ...
+    msg =3D kzalloc_objs(*msg, msg_size);
+    ...
+    memcpy(msg, msg_swbd->vaddr, msg_size);
 
-static void enetc_set_mac_ht_flt(struct enetc_si *si, int si_idx, int type,
-                                 unsigned long hash)
-{
-        ...
-        enetc_port_wr(&si->hw, ENETC_PSIUMHFR1(si_idx),
-                      upper_32_bits(hash));
-}
+If the VF modifies the length in DMA memory to a non-zero value between the
+msg_size calculation and the memcpy, the copied msg->hdr.len will differ fr=
+om
+the size actually allocated.
 
-Since hash is an unsigned long, upper_32_bits(hash) will always evaluate to=
- 0
-on 32-bit platforms. Is there a risk that any unicast or multicast MAC
-addresses that hash to bits 32-63 will be silently dropped by the hardware
-filter?
+If the buffer was allocated as 32 bytes (because the initial length was 0),
+this check for !msg->hdr.len will pass, and the subsequent read of
+msg->hash_tbl[3] (at offset 32) will read out of bounds.
+
+If this object is placed at the end of a slab page next to an unmapped page,
+could this cause a panic, leading to a guest-to-host denial of service?
+Additionally, would the leaked kernel heap data be programmed into the MAC =
+hash
+filter, potentially creating an information leak?
+
+> +		pf->ops->set_si_mac_hash_filter(hw, si_id, MC, hash_tbl);
+> +	}
+> +
+> +vf_state_unlock:
+> +	mutex_unlock(&vf_state->lock);
+> +
+> +	return pf_msg;
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605065550.3038=
-579-1-wei.fang@oss.nxp.com?part=3D8
+579-1-wei.fang@oss.nxp.com?part=3D9
