@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA8D4071EC;
-	Mon,  8 Jun 2026 12:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92B726ED3C;
+	Mon,  8 Jun 2026 12:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780920630; cv=none; b=neku/biwJpe5i5QSRcnhOaEyaJQI0Ha8/5dzp8Kb6Q0AsQv+JQsrOnZcNkb1P6LqrGdXAIJclU8TgXAcTTEgwrvMK8Moj6T7Dz/Q+b1TkrrggB6YjA7shuULfDuJpjI6Oziq99UBLXI7zqGz9JxiD85S9CY2nwrNhRIVeXEKJTU=
+	t=1780920818; cv=none; b=G1DiXUSUELyIJDIkYsz0MGCVVo/WBSjJEMWh23r9yIRc/DaJsjMbdJAUkgaYBQQv9hNAogzthh8frfpsdrG5sKs84zZ07TUaTpid+JqMlGzzVfcl9zkUf6AA3xziRGyhesbqtFI9yGFlZIQuFUbX4A+zd/JqwYHaoMOhJXmXSyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780920630; c=relaxed/simple;
-	bh=VFp487VRanSVFsdFQrQk+Ygs0ciqFGosKKBRmUpOQcY=;
+	s=arc-20240116; t=1780920818; c=relaxed/simple;
+	bh=dVFWP3GNrTJaexAUIBVYQBFb3h/KTDbLem6EUXiGJ/4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=irpLnILOqwoFpVkld2fzj3gctP7Nro3qfXgKkUWAXLsGksxNHZ1vyvdk5by7ULRqocWpptLOP6mo45P9APWfTbUTzDAD8fk4r9+LNIzVzTJsD8+e1QDi335AEX2rXeeMJ4SDlv94j6sOX7cOtAYlHKtrVM0RzXE8T93ZW+pRy5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HeUvyhAB; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=AhaEJ0GU31iWiI0Ch40vn2h8Fr+aIJmPjcEECQ2+4NA0QpACxiZC/qX32h2YDQ6UBG5NGwHcx/VyHyFULe1hMPrQyMYRQ8vqfVEFGIbYtNfbH6/lZig2bF8j7FHZgq1W10cAc4iso/Zhsob24JKJnBirtSgwAdqbxs/IPpBXdZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZ+J9veU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HeUvyhAB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B48C1F00893;
-	Mon,  8 Jun 2026 12:10:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZ+J9veU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A4A1F00893;
+	Mon,  8 Jun 2026 12:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780920628;
-	bh=fbutwAgH34nQ+5CPzr8/espMkFdKyYE8DERk9Y5kQoE=;
+	s=k20260515; t=1780920817;
+	bh=dVFWP3GNrTJaexAUIBVYQBFb3h/KTDbLem6EUXiGJ/4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HeUvyhABLJR5DrF1Q7F+yAuP9T3dy3vUloNx6jrsOC743UEMJI1BEA50B968JnF/8
-	 zYldE28Z+IoGijHFx0NThpy0vpxd1fppOpcncMTRPQ57U9nHLVzeYxpAdYOzhWUHQc
-	 OcRJmDkT9TP9X2zWVF8fMd94k9JCyLX/HkYg5YlmRyXToPEwTe1rg+WCoA69BP+nA6
-	 4I9v0EKU47tmOlDm3v4kulzrQUcFl1e1S1VoOAnrEtcU+9CawpKAfcQiUs7ZzdLBa/
-	 7j8EsfnrR9WwKVbh/Jsh1FhV98qYMRL8tu5T0W1okWPoEI+SkMthTqS/vqs6sgXpOG
-	 b41REepoFRiDA==
-Date: Mon, 8 Jun 2026 14:10:26 +0200
+	b=RZ+J9veUqF8Fl2PsWnsthwntmy4yB8Vgu3V+te2uXVpDhIeXYFAtVU1PM3ocG7fHA
+	 tB2T99LU0ZAhbuLnDhuoAqSdBf4My3v6Z+Hea8zwKPb3DS4MpgesiRoT2mrCHVReEi
+	 5z/WUcWqMGSgjt6VJIIeUEEfcwpluaNtZT63Ab14e5kLP8XFVFbOAN/x7AFd+nxER7
+	 RM4XF1Ipm5zb8TTwUNuPJanI7QrsGH0ML6R+O4t3BzZRypaFhm6hzH/p+KizKpSYMo
+	 InjNR6OGSqSpipJcrNOVBqIHpQdvwqY/66tXRR0lP5G7DkkfWS/0O6JAGNHjXY30NT
+	 nUF0cOxOVkZpw==
+Date: Mon, 8 Jun 2026 14:13:35 +0200
 From: Maxime Ripard <mripard@kernel.org>
 To: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -42,10 +42,11 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
 	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 23/37] drm/encoder: add drm_encoder_cleanup_from()
-Message-ID: <20260608-mighty-woodlouse-of-reading-162bca@houat>
+Subject: Re: [PATCH 26/37] drm: event-notifier: add mechanism to notify about
+ hotplug events
+Message-ID: <20260608-maize-rooster-of-youth-c0bbde@houat>
 References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-23-45e2bdb3dfb4@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-26-45e2bdb3dfb4@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,125 +54,54 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="mlq6rotmaedggjnf"
+	protocol="application/pgp-signature"; boundary="5ps7hsgvymsq744t"
 Content-Disposition: inline
-In-Reply-To: <20260519-drm-bridge-hotplug-v1-23-45e2bdb3dfb4@bootlin.com>
+In-Reply-To: <20260519-drm-bridge-hotplug-v1-26-45e2bdb3dfb4@bootlin.com>
 
 
---mlq6rotmaedggjnf
+--5ps7hsgvymsq744t
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 23/37] drm/encoder: add drm_encoder_cleanup_from()
+Subject: Re: [PATCH 26/37] drm: event-notifier: add mechanism to notify about
+ hotplug events
 MIME-Version: 1.0
 
-On Tue, May 19, 2026 at 12:37:40PM +0200, Luca Ceresoli wrote:
-> Supporting hardware whose final part of the DRM pipeline can be physically
-> removed requires the ability to detach all bridges from a given point to
-> the end of the pipeline.
+On Tue, May 19, 2026 at 12:37:43PM +0200, Luca Ceresoli wrote:
+> In preparation for supporting DRM bridge hotplug, add an event notifier to
+> allow interested parties to be notified about events they need to react t=
+o.
 >=20
-> Introduce a variant of drm_encoder_cleanup() for this.
+> For the initial implementation of bridge hotplug, two events are needed:
+> bridge detach (happening in drm_bridge.c) and MIPI device attach to MIPI
+> host (happening in drm_mipi_dsi.c).
 >=20
-> Take care to not try detaching non-attached bridges. This is needed becau=
-se
-> when two or more bridges are removed not in the backwards order,
-> drm_encoder_cleanup_from() is called more than once for bridges closer to
-> the panel.
+> For this reason implement the event notifier in a new common file that
+> event producers can easily use to send events.
 >=20
 > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
->=20
-> ---
->=20
-> Note: in theory drm_encoder_cleanup() is now a superset of
-> drm_encoder_cleanup_from() and may be simplified to just call
-> drm_encoder_cleanup_from() and then do the extra actions. However the
-> common code is subtly different in terms of locking and checks, so this
-> would complicate the code in this patch and has thus been kept separate f=
-or
-> the time being to make reviewing sompler. Reimplementing
-> drm_encoder_cleanup() by using drm_encoder_cleanup_from() cvacn be done
-> later on.
->=20
-> A much simpler and now obsolete version of this patch (missing locking and
-> checks) previously appeared in
-> https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-13-9d6f2c9c30=
-58@bootlin.com/
-> ---
->  drivers/gpu/drm/drm_encoder.c | 38 ++++++++++++++++++++++++++++++++++++++
->  include/drm/drm_encoder.h     |  1 +
->  2 files changed, 39 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/drm_encoder.c b/drivers/gpu/drm/drm_encoder.c
-> index 0d5dbed06db4..40ece477b302 100644
-> --- a/drivers/gpu/drm/drm_encoder.c
-> +++ b/drivers/gpu/drm/drm_encoder.c
-> @@ -179,6 +179,44 @@ int drm_encoder_init(struct drm_device *dev,
->  }
->  EXPORT_SYMBOL(drm_encoder_init);
-> =20
-> +/**
-> + * drm_encoder_cleanup_from - remove a given bridge and all the following
-> + * @encoder: encoder whole list of bridges shall be pruned
-> + * @bridge: first bridge to remove
-> + *
-> + * Removes from an encoder all the bridges starting with a given bridge
-> + * and until the end of the chain.
-> + *
-> + * Does nothing if the bridge is not attached to an encoder chain.
-> + *
-> + * This should not be used in "normal" DRM pipelines. It is only useful =
-for
-> + * devices whose final part of the DRM chain can be physically removed a=
-nd
-> + * later reconnected (possibly with different hardware).
-> + */
-> +void drm_encoder_cleanup_from(struct drm_encoder *encoder, struct drm_br=
-idge *bridge)
-> +{
-> +	struct drm_bridge *next;
-> +	LIST_HEAD(tmplist);
-> +
-> +	/*
-> +	 * We need the bridge_chain_mutex to modify the chain, but
-> +	 * drm_bridge_detach() will call DRM_MODESET_LOCK_ALL_BEGIN() (in
-> +	 * drm_modeset_lock_fini()), resulting in a possible ABBA circular
-> +	 * deadlock. Avoid it by first moving all the bridges to a
-> +	 * temporary list holding the lock, and then calling
-> +	 * drm_bridge_detach() without the lock.
-> +	 */
-> +	mutex_lock(&encoder->bridge_chain_mutex);
-> +	if (!list_empty(&bridge->chain_node))
-> +		list_for_each_entry_safe_from(bridge, next, &encoder->bridge_chain, ch=
-ain_node)
-> +			list_move_tail(&bridge->chain_node, &tmplist);
-> +	mutex_unlock(&encoder->bridge_chain_mutex);
-> +
-> +	while (!list_empty(&tmplist))
-> +		drm_bridge_detach(list_first_entry(&tmplist, struct drm_bridge, chain_=
-node));
-> +}
-> +EXPORT_SYMBOL(drm_encoder_cleanup_from);
-> +
 
-The name is super confusing, because it doesn't clean up anything.
-drm_encoder_cleanup is called that way because it cleans up the encoder.
-This function doesn't.
+So, you claim in the commit message that it's about a hotplug event, but
+the only events are the bridge being attached and detached, so not a
+hotplug event?
 
-Unlike what's being documented, it doesn't remove any bridge either. It
-just detaches bridge, so let's just call it that way?
+And why a bridge would want to be notified that itself (or another?)
+bridge is being attached or detached?
+
+You need documentation, and a more descriptive commit message.
 
 Maxime
 
---mlq6rotmaedggjnf
+--5ps7hsgvymsq744t
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaiaxMQAKCRAnX84Zoj2+
-dovlAYDHSeYV8vLX5Yg55j6rhisjuD4V7tgfgvUuaKvLMajioZJJKBD7Xw54Rr2o
-7LYJvRcBgILYvnRYdQyxSDhd/hJZ+6M81Ar4FO2sxsAOmKhx6+PU3JsOjpXlIXT1
-3LiK7BxQ2g==
-=Jtaz
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaiax7gAKCRAnX84Zoj2+
+dqQyAYCvmUaxgNxWxUbIYzxFnnkM5+8MEGlG1BqE/IKDGDWRhZcO0lC7Qi+M/RST
+yEaCp/EBf2kfK8jL8dIt4xniVD4PeoFbfO6bwkG7Y26AHxLNSH5XJzzXNAee83dc
+h/QaFuJNjg==
+=arxN
 -----END PGP SIGNATURE-----
 
---mlq6rotmaedggjnf--
+--5ps7hsgvymsq744t--
