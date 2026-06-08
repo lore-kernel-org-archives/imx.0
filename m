@@ -1,119 +1,197 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33C536C58F
-	for <imx@lists.linux.dev>; Mon,  8 Jun 2026 11:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780919444; cv=pass; b=QrDX9lDcEvp4cP/fSMJ3jw96rIqMnC0laEOdEyVJkNmNPLVD4wtBYwpg04qS3sdbIUsFUd8+5j6cNax+4HIHNUdvPePv/oU0tlsW0lIF42WohTvxiedVkpueHbkZlSERLnKeKwo8o+54tBYjXmX/y4cA2YKgs7DZ1m3AHhX2S+Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780919444; c=relaxed/simple;
-	bh=fE6xsCIR/eKT/bChDxYtjPABUURv/bY7qgn7TlNBOzI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VQ+CDaKZ7H44yrfM06bT3zjq2Y4WOriRSrJMkLPJduC6Y1sQ217+EZM8B1Gfsmj8slLc0X7ftYPUa9Oj80NoKP8OMMSfIT02anInIQYPHWcAn134rkiwareLSBtE5dug/G3xvhch/ibdoPa+UDLVJqsu2p6A3SIo0JByyxeI0A4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N6m90hYv; arc=pass smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B3036D50D;
+	Mon,  8 Jun 2026 11:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780919615; cv=none; b=fS9PRoIOzZubs0F2hki5DKv8nGk2FqXeWwOZUauuhsfBR9I13EtHpBAz3cL0XCp7dpyvMS7m8n2PFdcndHfHue2qOAbM3bLcZT9jXLSqs7yui24T8S3mLfnDNj+VHZyVw4v3FjEjxHen1CKuk7xFeJlletZLfYB2ovbms1YcM4I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780919615; c=relaxed/simple;
+	bh=jHG+AouR/VzGK2Hkh9amYXxN5fxLgsAwkBnimHVHPOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IuJbkTSacbZcWmQ/ZAhbnJ2sla99F2WgL7nTir4qQY4BKCS7YrWO4qoFrI7WqjhWwkt5KtOu4b8qLW7wfYXmFO42QCb1LUAo9qvCnGq/Q44kEG1kg2Iqn6jmxbSn3ZRA/6fwmPNkKey6HhX9h/ScpQhE+WIOo8izu3E2kHdNp9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHz2im2J; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N6m90hYv"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5aa68d65d24so4564885e87.1
-        for <imx@lists.linux.dev>; Mon, 08 Jun 2026 04:50:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780919441; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YL8qY9v0GibG+esEsFPDrxxAj2fpPCPWpnnI6ZmF3u8Fnv9ydi1O9ljnbShVMGaSmB
-         ZYFotQt+N5SxasosYAD+c6d6eeJj7ynsVQwYlv+vKT0JBeUU1Mi3fnmO0jnVRVoF9hnp
-         U94AptFFkLWGWjRn2s85po+W1I5YYek1iKDoGw+Vrd5ko4Le3EFjzApiX80VSii+IxOl
-         Ye6vEB58m1BQtc7EkpGDugCqwIendJlmOsRC0+HCTqgjcFX2A8Z3thxfHCS3uuF9z/pX
-         IYNvjhoRLEUh2rQbBT8+h7ps4v/7zNH3nOtv/dbCWJeNEbyump0+2CulIn8WBwkq5EtO
-         MW5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CSww2uqXCMxSPrJjJ5xgdwSthvGPZPtrHQN2YqMCSVY=;
-        fh=lHTP9FchkSPoijZN+UvJJlV3dorK0wffDsV+LRsV/UE=;
-        b=jeIOr7KpaYDL55YHQowGWoCVCnRuiX4ni8++X9bnKfjCFgyYHD+wJ6A5QdlgFiLNFa
-         FHCE1qM/KbxLSBKbA36Dpr/GK3/222K3FopmWfolH0O44uLsy/tJLBs03yg1zJynEJZL
-         FddoMFPbtcmlzOmBa5UuiqOlZoUGC4iWsnZ5Nmy6SeaxNTiK/R5rE84xx6QKwnjJnVMv
-         5rI6y8uTdWGIi63p0m/0FOE1mBsH/ynEkRqbKBieT1J2dsx23ETo+/j7STE4SzrdBHOg
-         b74jJE06xl7EA50STKg+VwhiXQsnShrTF240hksMaeMVuMW3eVhD0w9qjksqH041OsiV
-         Qm0w==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780919441; x=1781524241; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CSww2uqXCMxSPrJjJ5xgdwSthvGPZPtrHQN2YqMCSVY=;
-        b=N6m90hYvqBzVUQDku8zcoRBPecA/aNhI4jjVmc2kN009uGkS5JUEfemxchasI3gl0y
-         az/qdGi28oQqG+FEUx9Z3I/+N8kRNGTx4t64UMcGH2k/zpDcWXuR7KS0nqoB6AzKCdu5
-         l9s9BEm+wAGrY64qM4PbBIgbo1x+7NGhlYkocDThUIYkAIMKuTXhbsyiV0PQ1e+0Zbwu
-         i9iWhPbDgB3iNvNH0OoLDBNmCIeMoAz6OPSGy8HZPi5JLMJuv1S0Gk2VJGZw2B3CfMkX
-         MYAcAEWGq0/RAzzoTSFmCKUnsJxF2n/3SInO35GxmeFtZdbyTijNvJaKAtmKgtKFo9wD
-         qWwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780919441; x=1781524241;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CSww2uqXCMxSPrJjJ5xgdwSthvGPZPtrHQN2YqMCSVY=;
-        b=F1z8326BPOpZF1PSr06vAlRju7TdwtlNvUi93FvPkfkfTwZ4SGClI+iU2Ekv8HKavf
-         Hx0ooRIFCj4lfAE0thaR6+EfXD3gEcAO0P/9dEYuFSShD/ZlZaZiAheAvaPrqX34elok
-         nO6Drm0irC0P3faV6AmRMLLYf/WpCqJ9TxSWPYdUzDDcLZHF4ZiarlZ4lQydVpOftGFV
-         TOy5+lN4tQMdpcEcEfsUnT8V9peAeWPoVTGefrTqrgS603fCA9ovFmiV2ulUGaoWqDlJ
-         TowerntCDgDeYdG3bi8Mmd99E+xbWdeBZXaKyLc2qjkx3rktZ//D9Gs4iVDDAeiORanD
-         bNHA==
-X-Forwarded-Encrypted: i=1; AFNElJ+fgksACIz9QP5QtrlXNm9Y2u/RA+xMOMQIXzqPW3CLv9dPY4wc1jC9Ucw7azxWo+2z9y0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzvxdPyWdlrLZsFEizJ7vF+vExDJDv3o7xBHE+yJb63pVtWr2Zb
-	UmMppDD8kw2xNZnrCDcLJvxLr9I1BX5qv+gnH8D3+WUhAYV/bMlkGtgGk8BWWhbzCgg2XvkQYZa
-	MAvyoTTBGp2uIWREBN1jrJ8BSIGox0cA=
-X-Gm-Gg: Acq92OH4yUcByi/mU3icP185CeZwBQ3PnrXO/1NDPPl9gw0ECeXx+RKnyfgSlAKF71V
-	DjkjklV5teVlbZAjZnwKLz6wtCu86M7vMAf5Y2WN2V9GP697gDYSGh+ddaq2sKNJDrmaVycCyi5
-	CQdsKeJKRe7V/JBumTzfTPU5PqQRcS28bXOX74wUK81ZFjuf4H6w8cOlvFEw2RsbSry0pvT9Dc1
-	3X2qKtoAwnTdwbiUoTTp4L3v3TtQ2J6qet0L3eEDrdhATuAJ2v7us666vXm5U9SRJ3yTmR+4r8f
-	HE3xwr5g7k4T635bEXq+ticLiqjHpO1ol8YL4H1xkOhwwr3+dDG9J7Re/9UYETySvQ3aRBkA0n2
-	cOj9t
-X-Received: by 2002:a05:6512:3f07:b0:5aa:8823:e30d with SMTP id
- 2adb3069b0e04-5aa8823e38cmr3920328e87.47.1780919440875; Mon, 08 Jun 2026
- 04:50:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHz2im2J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4C91F00893;
+	Mon,  8 Jun 2026 11:53:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780919613;
+	bh=Aj7bQVlWFQNv8VwKQ8kn/+8ZTcRdK8ocAc+qPNt4aJ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HHz2im2JGoSCgcPtSn+FZfxSldsc1iMYQKTmB9mqRCMGgfXsgCcHvaCPXkqM80kQQ
+	 jk03kNKmU0L5hVvxNiJid4x2/4PEzKahsLNsChcw52HYwFq+S4UFq+vlzOQiIRZQZd
+	 yZiTn0lVGQoXUw1kg7vZ0jPiz84pZ2bXYvqu4HUzK2shYCyFU8hmCY5iJyEcauARU5
+	 1m4Kz0BY61rID2zqtnA5Ks8vwquYaq3HbaKhsQWnnZFmOxmXXwVTQasyLnw2KfC7wZ
+	 tTwqrRXUWzf27RtD5MrSX88s+ku1OBd9lyhHCN7GK8j9hdYQKfFtZFwDxfKJE98y9y
+	 UAGOVco1YfFtQ==
+Date: Mon, 8 Jun 2026 13:53:31 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
+	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
+	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 18/37] drm/bridge: samsung-dsim: remove the panel_bridge
+ on host_detach
+Message-ID: <20260608-nano-kangaroo-of-piety-b5ab3d@houat>
+References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-18-45e2bdb3dfb4@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1780912893.git.stefano.r@variscite.com> <302638ba16d4684c5b0bf8660a42615dad67f3eb.1780912893.git.stefano.r@variscite.com>
-In-Reply-To: <302638ba16d4684c5b0bf8660a42615dad67f3eb.1780912893.git.stefano.r@variscite.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 8 Jun 2026 08:50:27 -0300
-X-Gm-Features: AVVi8CcopUIUnSsBVn_oDWGn46ZYi_6hmaOIDxy2o6en86FExNrPt-umbKSjcr8
-Message-ID: <CAOMZO5Azt+FX4z=CXHmwQTNqruKp7y0Ki2EtmDyavkuqT767QA@mail.gmail.com>
-Subject: Re: [PATCH v4 13/14] arm64: dts: imx8mp-var-som-symphony: add second
- Ethernet port
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	pierluigi.p@variscite.com, Stefano Radaelli <stefano.r@variscite.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="dxwy3zhqjuxn6deo"
+Content-Disposition: inline
+In-Reply-To: <20260519-drm-bridge-hotplug-v1-18-45e2bdb3dfb4@bootlin.com>
+
+
+--dxwy3zhqjuxn6deo
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 18/37] drm/bridge: samsung-dsim: remove the panel_bridge
+ on host_detach
+MIME-Version: 1.0
 
-On Mon, Jun 8, 2026 at 7:09=E2=80=AFAM Stefano Radaelli
-<stefano.radaelli21@gmail.com> wrote:
+On Tue, May 19, 2026 at 12:37:35PM +0200, Luca Ceresoli wrote:
+> In preparation for DRM bridge hot-plugging, we need to handle the dynamic
+> lifetime of the following bridge in case the samsung-dsim is always prese=
+nt
+> and the following bridge (next_bridge) is hot-unplugged.
+>=20
+> Based on the 'if (!IS_ERR(panel))' check in samsung_dsim_host_attach(), t=
+he
+> next_bridge could be A) a panel bridge created by this driver via
+> devm_drm_panel_bridge_add() or B) a pre-existing bridge obtained via
+> of_drm_find_and_get_bridge().
+>=20
+> For case B) we need to put that reference when the next_bridge is removed,
+> which is already handled by calling drm_bridge_clear_and_put() in
+> samsung_dsim_host_detach() and in the samsung_dsim_host_attach() error
+> management code.
+>=20
+> In case A) we additionally have to remove the panel bridge. Currently it =
+is
+> created by devm_drm_panel_bridge_add(), which adds two devm actions with
+> the refcounted panel bridge:
+>=20
+>  - drm_bridge_put_void() via devm_drm_bridge_alloc() on panel->dev
+>  - devm_drm_panel_bridge_release() via devm_drm_panel_bridge_add_typed()
+>    on the consumer device (samsung-dsim)
+>=20
+> The first action is OK: being tied to panel->dev it will happen when the
+> panel is unplugged.
+>=20
+> The second action is bound to the consumer device, so the devm semantics =
+is
+> not useful here when introducing hotplug. Indeed we need to drop the
+> next_bridge in samsung_dsim_host_detach() anyway, before the driver .remo=
+ve
+> function, in order to support {add, {attach, detach} x N, remove} hotplug
+> event sequences.
+>=20
+> Thus move to the non-devm drm_panel_bridge_add() along with the matching
+> drm_panel_bridge_remove(), so the lifetime of the panel-bridge is tied to
+> the host_attach/host_detach cycle and not the whole samsung-dsim device
+> lifetime.
+>=20
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>=20
+> ---
+>=20
+> In a previous discussion with Maxime he mentioned a plan to make every
+> drm_panel always have a wrapping bridge. With that done, all the code
+> handling the panel and adding the panel_bridge would become useless here
+> (and in many other places) and could be entirely removed. This patch is a
+> temporary solution until that happens. The best pointer I could find to
+> that discussion is [0], but there might be more recent material I could n=
+ot
+> find at the moment.
+>=20
+> [0] https://lore.kernel.org/lkml/20250218-faithful-white-magpie-da9ac9@ho=
+uat/
+> ---
+>  drivers/gpu/drm/bridge/samsung-dsim.c | 17 ++++++++++++++---
+>  include/drm/bridge/samsung-dsim.h     |  2 ++
+>  2 files changed, 16 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/brid=
+ge/samsung-dsim.c
+> index 5b799619e07e..2af287221e22 100644
+> --- a/drivers/gpu/drm/bridge/samsung-dsim.c
+> +++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+> @@ -1951,14 +1951,16 @@ static int samsung_dsim_host_attach(struct mipi_d=
+si_host *host,
+>  	if (!remote)
+>  		return -ENODEV;
+> =20
+> +	dsi->panel_bridge_added =3D false;
+>  	panel =3D of_drm_find_panel(remote);
+>  	if (!IS_ERR(panel)) {
+> -		next_bridge =3D devm_drm_panel_bridge_add(dev, panel);
+> +		next_bridge =3D drm_panel_bridge_add(panel);
+>  		if (IS_ERR(next_bridge)) {
+>  			ret =3D PTR_ERR(next_bridge);
+>  			next_bridge =3D NULL; // Inhibit the cleanup action on an ERR_PTR
+>  		} else {
+>  			drm_bridge_get(next_bridge);
+> +			dsi->panel_bridge_added =3D true;
+>  		}
+>  	} else {
+>  		next_bridge =3D of_drm_find_and_get_bridge(remote);
+> @@ -1989,7 +1991,7 @@ static int samsung_dsim_host_attach(struct mipi_dsi=
+_host *host,
+>  	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO)) {
+>  		ret =3D samsung_dsim_register_te_irq(dsi, &device->dev);
+>  		if (ret)
+> -			goto err_remove_bridge;
+> +			goto err_remove_panel_bridge;
+>  	}
+> =20
+>  	// The next bridge can be used by host_ops->attach
+> @@ -2011,8 +2013,12 @@ static int samsung_dsim_host_attach(struct mipi_ds=
+i_host *host,
+>  	drm_bridge_clear_and_put(&dsi->bridge.next_bridge);
+>  	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO))
+>  		samsung_dsim_unregister_te_irq(dsi);
+> -err_remove_bridge:
+> +err_remove_panel_bridge:
+>  	drm_bridge_remove(&dsi->bridge);
+> +	if (dsi->panel_bridge_added) {
+> +		drm_panel_bridge_remove(next_bridge);
+> +		dsi->panel_bridge_added =3D false;
+> +	}
 
-> +       reg_fec_phy: regulator-fec-phy {
-> +               compatible =3D "regulator-fixed";
-> +               regulator-name =3D "fec-phy";
-> +               regulator-min-microvolt =3D <1800000>;
-> +               regulator-max-microvolt =3D <1800000>;
-> +               regulator-enable-ramp-delay =3D <20000>;
-> +               gpio =3D <&pca9534 7 GPIO_ACTIVE_HIGH>;
-> +               enable-active-high;
-> +               regulator-always-on;
+This is a pretty big abstraction leak. We don't want to have that in
+everything driver. The removal path should be the same for both cases,
+and it's not something the driver should take care of.
 
-There is no need to mark it as regulator-always-on, as reg_fec_phy has
-a consumer.
+Maxime
 
-Please check globally.
+--dxwy3zhqjuxn6deo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaiatOwAKCRAnX84Zoj2+
+dlskAYCkDRVrRaOT9QEf6bN7blo5ubgn6P4DjTZC5WS9t6AOTUw/jfbxUc5X8PkB
+I7DGQ6gBgI242/+Oks43pPtigXgReHroGkM1vbQpEWoat9coaP3xXJHoSJ5vkNsg
+CefYSt/vug==
+=UKF1
+-----END PGP SIGNATURE-----
+
+--dxwy3zhqjuxn6deo--
