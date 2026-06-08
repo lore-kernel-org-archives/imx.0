@@ -1,157 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43273B3BF0;
-	Mon,  8 Jun 2026 14:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9A13BBFBF
+	for <imx@lists.linux.dev>; Mon,  8 Jun 2026 14:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929611; cv=none; b=Grua3sGWo+4ogBucJMgJ3thtCF7I7BGHuWISo4JpAvGW3ufgkhcFEE6GOrVmkxJzE7+ojxRo29sdtc7SsvF1uB6xfEcypbx855cjbta45Is3y4tPaAbNW5ImWiMLD2IC9bYKdDvpuTCP5yb+5JIQt25EtH33VjcKVT8pWlTxPq0=
+	t=1780929687; cv=none; b=NMbkCpSAOgr20y4Nny63dV7w1ngC5LRbzWDqiUVWm3J8qCn8UJHh79QCZebgI5ql4aADm8iOwWTqVVtt/6DKd1q0qxolDkbh9je26Vl/Cerk0aALjjzVp4dyuM3VK8WPpbR18+5SUnVgqj7LHmIJQsFSQ7K9jjQLj0NmqkBlDFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780929611; c=relaxed/simple;
-	bh=pc5KgDDfBUpeSS+ethb+diBYBB7fvh0257nUv2wQ7Uk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hX1+bz8lmWGEFZk30TJlAiEkLP2rVUaFM3bEzZJK8UnrB4WTRxJIQ1WVU+p8XQsfEmQ39RXgHFs32h4qpnrAKbINreo3Q0kZCOT86aJX3javjgd1l6L54sYsUelLhu4vXxEILrgtmDaBPiJ4z7VUxum1mlcSnuhHeyvuRudG4xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSnltNVf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780929687; c=relaxed/simple;
+	bh=+wicVs5ToWL4a54zQqI268Tg5wVEbVHmDLNWn0zdgz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tNQMZni9416+CkKbUuKXfUFBKE0DLHMw9A5oSnV/pyBpQgTkkUgX5xSmntxsa2jvTvR+zCXcBRmqZWWnwza3Fne1TXhkdFFIHbBA1IFfM48IPR1afE69/N8ZmGltWAJVJu9pr7XbISisl5EYx3edJMONQLIgH6EirMk78SCemTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YyNLvGj4; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSnltNVf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406801F00893;
-	Mon,  8 Jun 2026 14:40:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780929610;
-	bh=xxJFOLNTcjcr4KYGxInqQFoOAc8L/4p2jjmZkVRdyw0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eSnltNVfb+eUappQKZYkcyV88hNhVJbVHUdch6lhRz0KJacyDvNYJCJHWpo7/M7cd
-	 u1KCin/M+MZdn1QT+5hX7f4s/CEWcUGn7w4UB5zC4oM1m99g6uivUTCPo7HL5gMrqY
-	 LdK2cd2mdOLdcBMTmdNDWMt0ez+Jh6veoeCHh9Lpppd3eTrpNdpJVnc0qON3SsbHgS
-	 2OgtAORa/2oQ1ojbVeEpDQd5jpcgMBb+m88GGi7QCqI79eTFUMRheIeHMyahE4j78L
-	 YyrzSfCAP0XaE9cMN9dNap+xX0ZrZFnKlp4+Q4JpVHoPFIemp6ancDqftFiQs2CNng
-	 RIPBSvSy8QhmA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/4] arm64: dts: freescale: add initial device tree
- for TQMa8MPQS with i.MX8MP
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
-Cc: devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, Frank.Li@kernel.org
-In-Reply-To: <20260608142144.564871-2-alexander.stein@ew.tq-group.com>
-References: <20260608142144.564871-2-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 14:40:09 +0000
-Message-Id: <20260608144010.406801F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YyNLvGj4"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-45f3cf907ceso2074112f8f.2
+        for <imx@lists.linux.dev>; Mon, 08 Jun 2026 07:41:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780929684; x=1781534484; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=S9bZC8rw7YmoIyog8z2SdVy+ERoBgDn2wG881TA87OA=;
+        b=YyNLvGj4MCBFxU13i6iNacP0goNzjnrU3izzEaXpkkmEdh7UjX6N4wUbM4YP/sJ26u
+         sqv3V3r+1gk08WMCgCpi6pWQ+6uoIcZymI63fsFR2jNuAjeSpFRVvHHl0oN2tBnNBnI+
+         65VOpXKemggBa/V4cC0eXt5bMrq4sa5UjKRj+vPGkZGLW3LlxmzBJiEWDZOuvVsHfnae
+         7W34LzCkfCsNSXzuA8RLOEh90/HV7V2CrleIvj7Gkxta5cSB9bGOacvdu37svzJBofZf
+         8s14i0UoTz4x7wZ3XewKDQgaMKt5FErkidDNp+XSe0qtrYjz8qbVVADaa49P/T4xfrI+
+         KzlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780929684; x=1781534484;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S9bZC8rw7YmoIyog8z2SdVy+ERoBgDn2wG881TA87OA=;
+        b=bg40f54WyYIY1N7FZ96kbIpYUAgVzqlLpdtLWrUxCyNyOaFOJOgbAJal88AL58GcvU
+         2H73761V18PPDp3WVhsoSnu5YJ53qbqqHovhSL7d9iqeA+CZXZgAqsDB5mW/9uAI9BMy
+         H/k04rKJwwdZ9zm2WMti4j/CDUZtS4pytr9lLlNwqHqJB8SVjk3LN5aLp8JT6wQo9Wp/
+         jFnBcE3zc+n96pRhmuqVY/ISDx7vl3LtPous8FSFcBqTAVP2qHxILgEms8reUl2YbnpJ
+         sZ4F49TfFYUcjxRc0CS8bFQjdZFQeRRs7xWEAP10DOr5FZk6MkNHHNOW1ahS+J+8JENE
+         wwjg==
+X-Forwarded-Encrypted: i=1; AFNElJ8/a1yzPDB1KihX5L8RlfEQvOtBa3wHb1lsIj2M6RauQFHRr7/F5dMDpanUJ41nWWU/hXA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwxTC6Ji8sQ86wsokIAbaUAOaqzrvD9J6NWKLFKbdy8knPLu0Yw
+	BynVnr2yVxEokUit/Dwgm5OAq4rRKvoq1svjA1GUQ4QDtmlBb7LAoyRg
+X-Gm-Gg: Acq92OHc6GkaN+5QWs9S8rl2cnGZ/6408l9ulRuxuwgse2BCe9ou0r/MIBs2Drb58ym
+	0AqTg3u30+ALF3NMoUFYOWcX+tMKMCCyndw/GLpuZms5Xb7nX3+1VDrzWMW2M9eCH1iUfNkbPxO
+	1wM3oS7QP1v5FvxVbsQCClRSLqMctmyl8TnhlBGsbtHZXf/M3ALVsrOgoR5htFJWh3+BoUQDMn7
+	aIe3y3l7emLJ/VjXhtnwEl8d7PuVvyZOtQwp4lwCDsWs7U9Pb7svDPkQcC5NCKBmmXBrjxNDfNw
+	FBgy0PZqs7eegK+rPMtIKT57hCaGLXjjMbX94FCAc3Ik+uxjgssy6lcp3sr9WYRavxObM6qOfq/
+	C6iO4M/7qfTmn8z1d5O5CMMAFM8QtqwUTcMoJloBhs33/yEJ2gaXNbk9yLbj5NVNHHQ+ds3NoD6
+	jOUfrKdTmisjXCNKWmv52XB+4iNInmSGUHreGt2CewVur70coHYl66YB6FFXHjEmWKJtMRLzASI
+	D9s4LOPBkh4kPCr+nkdaihVE9rI0jvLedI8c3+GHgLjk6u/ZoXfC9v7CI4=
+X-Received: by 2002:a5d:480a:0:b0:45e:f5b6:7bf9 with SMTP id ffacd0b85a97d-46030627a04mr16756707f8f.31.1780929683675;
+        Mon, 08 Jun 2026 07:41:23 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-244.cust.vodafonedsl.it. [93.144.65.244])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcad5sm58222519f8f.5.2026.06.08.07.41.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 07:41:23 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v5 00/14] arm64: dts: imx8mp-var-som-symphony: align DTS with hardware revision
+Date: Mon,  8 Jun 2026 16:41:01 +0200
+Message-ID: <cover.1780929317.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] Incorrect GPIO polarity for the DisplayPort bridge `reset-gpios`.
-- [Medium] Missing `interrupts` property for the DisplayPort bridge, preven=
-ting hardware Hot-Plug Detect (HPD) interrupts.
-- [Medium] Missing high-speed capability flags on SD/eMMC nodes, causing fa=
-llback to legacy speeds.
---
+This series updates the i.MX8MP VAR-SOM and Symphony device trees to
+better align them with the current hardware configuration.
 
-commit fb67de7a11b79a2d50aaec8dc9df977e8f195879
-Author: Paul Gerber <paul.gerber@tq-group.com>
+It adds the missing board peripherals and completes the related pinctrl,
+GPIO and bus configuration.
 
-arm64: dts: freescale: add initial device tree for TQMa8MPQS with i.MX8MP
+v4->v5:
+ - Add the SION (Software Input On) bit for the I2C recovery pins
+ - Remove regulator-always-on and duplicated vddio node
 
-This adds support for the TQMa8MPQS module on the MB-SMARC-2 board.
+v3->v4:
+ - Fixed USB irq edge type
+ - Add HDMI HPD support
+ - Add pcie reset-gpios instead of deprecated one
+ - Fixed eth regulator
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi b/arch/a=
-rm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
-> new file mode 100644
-> index 0000000000000..9cff5bf9162a4
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
-[ ... ]
-> +&i2c3 {
-> +	clock-frequency =3D <384000>;
-> +	pinctrl-names =3D "default", "gpio";
-> +	pinctrl-0 =3D <&pinctrl_i2c3>;
-> +	pinctrl-1 =3D <&pinctrl_i2c3_gpio>;
-> +	scl-gpios =3D <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	sda-gpios =3D <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	status =3D "okay";
-> +
-> +	dp_bridge: dp-bridge@f {
-> +		compatible =3D "toshiba,tc9595", "toshiba,tc358767";
+v2->v3:
+ - Add FlexCAN2 controller support
+ - Add FEC controller and MaxLinear MXL86110 PHY support
+ - Describe PCIe PERST# reset GPIO
 
-[Severity: Medium]
-Since the DP_HPD_INT signal is routed to GPIO5_IO21 (as defined in the
-dp-hpd-int-hog node), should this node include the interrupts and
-interrupt-parent properties?
+v1->v2:
+ - Add missing HDMI pinctrl configuration
+ - Enable LCDIF3 for the HDMI display pipeline
+ - Adjust PCIe controller configuration
+ - Update PTN5150 interrupt trigger type
 
-Without them, the driver will not register an IRQ handler for Hot-Plug
-Detect events and will fall back to 10-second DRM polling.
+Stefano Radaelli (14):
+  arm64: dts: imx8mp-var-som-symphony: add input keys
+  arm64: dts: imx8mp-var-som-symphony: enable USB support
+  arm64: dts: imx8mp-var-som-symphony: add TPM support
+  arm64: dts: imx8mp-var-som-symphony: add external RTC
+  arm64: dts: imx8mp-var-som-symphony: enable header UARTs
+  arm64: dts: imx8mp-var-som-symphony: enable PCIe
+  arm64: dts: imx8mp-var-som-symphony: add HDMI support
+  arm64: dts: imx8mp-var-som-symphony: add capacitive touchscreen
+  arm64: dts: imx8mp-var-som-symphony: enable ECSPI2
+  arm64: dts: imx8mp-var-som-symphony: keep RGB_SEL low
+  arm64: dts: imx8mp-var-som-symphony: enable PWM1
+  arm64: dts: imx8mp-var-som-symphony: enable CAN
+  arm64: dts: imx8mp-var-som-symphony: add second Ethernet port
+  arm64: dts: freescale: imx8mp-var-som: add I2C1 bus recovery GPIOs
 
-> +		reg =3D <0xf>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_tc9595>;
-> +		clock-names =3D "ref";
-> +		clocks =3D <&clk_dp>;
-> +		reset-gpios =3D <&expander0 4 GPIO_ACTIVE_HIGH>;
+ .../dts/freescale/imx8mp-var-som-symphony.dts | 389 +++++++++++++++++-
+ .../boot/dts/freescale/imx8mp-var-som.dtsi    |  12 +-
+ 2 files changed, 399 insertions(+), 2 deletions(-)
 
-[Severity: High]
-Does this leave the DP bridge permanently disabled?
 
-The tc358767 driver initializes the reset GPIO with GPIOD_OUT_LOW
-(logical 0), and returns it to logical 0 during normal operation after
-pulsing it. Since the target hardware pin is an active-high enable
-(DP_BRIDGE_EN), it must be physically HIGH during operation.
+base-commit: b3c1d1631f097619f8091f0293e027c4301285d6
+-- 
+2.47.3
 
-With GPIO_ACTIVE_HIGH, the driver's logical 0 translates to a physical LOW.
-Should this use GPIO_ACTIVE_LOW instead to map the deasserted reset state
-to a physical HIGH?
-
-> +		toshiba,hpd-pin =3D <0>;
-> +		status =3D "disabled";
-
-[ ... ]
-
-> +&usdhc2 {
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 =3D <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-> +	bus-width =3D <4>;
-> +	vqmmc-supply =3D <&reg_usdhc2_vqmmc>;
-
-[Severity: Medium]
-Will this node fall back to legacy 50MHz speeds despite having 200MHz
-pinctrl states?
-
-The MMC subsystem requires explicit capability properties (like
-sd-uhs-sdr104) to negotiate higher speeds. Without them, the state_100mhz
-and state_200mhz definitions will not be used.
-
-> +	/* NOTE: CD / WP and VMMC support depends on mainboard */
-> +};
-> +
-> +&usdhc3 {
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 =3D <&pinctrl_usdhc3>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
-> +	bus-width =3D <8>;
-> +	non-removable;
-> +	no-sdio;
-> +	no-sd;
-> +	vmmc-supply =3D <&buck4>;
-> +	vqmmc-supply =3D <&buck5>;
-
-[Severity: Medium]
-Similar to usdhc2, is this missing eMMC high-speed capability flags like
-mmc-hs200-1_8v, mmc-hs400-1_8v, or mmc-hs400-enhanced-strobe?
-
-Without these flags, the interface will operate at legacy speeds instead
-of utilizing the 100MHz or 200MHz hardware capabilities.
-
-> +	status =3D "okay";
-> +};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608142144.5648=
-71-1-alexander.stein@ew.tq-group.com?part=3D2
