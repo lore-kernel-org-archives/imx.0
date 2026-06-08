@@ -1,99 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5A231715D;
-	Mon,  8 Jun 2026 14:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C143C457F
+	for <imx@lists.linux.dev>; Mon,  8 Jun 2026 14:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929388; cv=none; b=ZqcTw2X5kJNcfQY1Wdtn4ZX5UJQEo0RVz5LN/HGWkS3Yw9W5WZ8w0/JOouEQubSG1Q4YoKGJO4Tc4tHp3ahGQxuVW/6K8hfuCURG0geVWI7GTWSjdNIeEQoRJk8qedS2zDUNQe5cZ2xTjWNgaCEkh5QnTnq6GRw6ecqn7UMoKAA=
+	t=1780929424; cv=none; b=A643yTHUeLrE6Ra4r3nKzeUfBu0zIiEIkFBn8LPhfvvzQEnQcZ9Pyir0MwAZgsH28cQ1GFVL8O2p2zgmWG62bpDa6ldAeuA+doIa0mrKx7yx2JPiOCSFQ4ZjROUT31CUihiqBqWWdVy8hazzau8wzzxouPR1DB5u6QMvK5j9/aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780929388; c=relaxed/simple;
-	bh=eeloH2CPAV0NGS1ONf8jlDPaQK3iunh9sKplrksWNVg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=glHUY50fmorjKO6IlFSakmUUUgAX+lg3Yln02vwBBuhxzzssqP2Pc+YfK7KGY1UuA6493GMxK8ilajehx0nvqqyqQMnJkm/WceE12VeMw+4QUzmrbwWZUStveD9KxkCnXafLJznBTJR5L+WMKu28lR3hlQEnwkRqr+z90RD7bZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETZD8WIa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780929424; c=relaxed/simple;
+	bh=NEPayvVmX3q7Wj0iTg7FEvUzK//M1H9vGJB08M5p7Hc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=YCQ3l1LKFlQyDxTW7s54ABMCEW2EMyo3uzqpfefrlw+ubvIqbfeCSnx44J78EIn4pAX1OMkF14Saa7bYk9ydytHR9yjdsvZbpChGzZeRD69PFmwkXLCD925GTuhe80zvv7aCqiD7HqZ0lkIDe2P3EmoU4wXJP/qxFe+FDeQd2V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EBqKxcsS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETZD8WIa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077311F00898;
-	Mon,  8 Jun 2026 14:36:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EBqKxcsS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186691F00893;
+	Mon,  8 Jun 2026 14:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780929387;
-	bh=1TjF/SUcLOgcwYn9BAuzNJxc6B9SXYpl+8q8TVUxM2Y=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ETZD8WIaHmLTqeOG+dBPlNKZeKw0lk3/Z5K4jD4aFkoTXswHeYLVs0ul0J+PCnwiX
-	 LGeIRHDaCqo4O/1anFb12wt9+hhJCjNWqEha0VbRhYHexKiQMHCzZ/LOMSAoeYgvnM
-	 nhDnna0jYsvjrTrcvTlA0MTrJRFN7Ju+m4/ujniFExtGjtjKzrOjshn4WvfnRuFwDH
-	 5+u7zmBzJTD6vMre+0f7LOMsuFd1bIChUwEpJjKWfOETtNAZrsAGU/E2i7PDmzV3aD
-	 /r+Vm6npsL6gtkyzat74vzP40T+/WM35f+5sMA/FbD2A7oDpCHdysjCXHC/I7DPUae
-	 GUDIa8j8rx5jw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/4] arm64: dts: freescale: add LVDS overlays for
- TQMa8MPxS
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, robh@kernel.org
-In-Reply-To: <20260608142144.564871-3-alexander.stein@ew.tq-group.com>
-References: <20260608142144.564871-3-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 14:36:26 +0000
-Message-Id: <20260608143627.077311F00898@smtp.kernel.org>
+	s=k20260515; t=1780929423;
+	bh=gWFWjJHgZiy/GLN2e6ewnZP2ttGIyfRahDWZJrnWXfY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=EBqKxcsSlkaprRmAbhUyDpltht1p7+kiEXNT/mT7clPqtO40oODZgiMH7cKlhvtsz
+	 uJtCJ1n+oMaPTG4Ys9yUlNjEYzFnt49qgbibw8K6hq4kLrpVWqKB3CancY7f/5HTfD
+	 2Pnt+eM3IOpa7z5PuMxbA8EzMiZAhLs6wj+yLkQDtvJIR3rMGl2loScY6os0eMBUSK
+	 DozuV8CGM95iArTqKUweKRlQ4uDAp5zgj9XkqYRERGJkmBRtjG34LegOQBpv1W/Cl+
+	 /oNWrmKamP6UmSDs1CLY9w4NRNu42JyoUsUUHKAuMJXWIVKAYR1nVN3nxWp1ysMjuD
+	 e9uRlnUeH6iWA==
+From: Maxime Ripard <mripard@kernel.org>
+Date: Mon, 08 Jun 2026 16:35:56 +0200
+Subject: [PATCH v2 14/78] drm/bridge: imx8mp-hdmi-pvi: Switch to
+ atomic_create_state
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260608-drm-no-more-bridge-reset-v2-14-0a91018bf886@kernel.org>
+References: <20260608-drm-no-more-bridge-reset-v2-0-0a91018bf886@kernel.org>
+In-Reply-To: <20260608-drm-no-more-bridge-reset-v2-0-0a91018bf886@kernel.org>
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: Dmitry Baryshkov <lumag@kernel.org>, dri-devel@lists.freedesktop.org, 
+ Maxime Ripard <mripard@kernel.org>, Liu Ying <victor.liu@nxp.com>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1699; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=NEPayvVmX3q7Wj0iTg7FEvUzK//M1H9vGJB08M5p7Hc=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlql70vly32//oqaccaw6hv02dnzrTSPeEqVd9ul3qLn
+ 7H191+BjqksDMKcDLJiiixPZMJOL29fXOVgv/IHzBxWJpAhDFycAjARxSWMDStWJTCWTClskpke
+ mG794XnBtae7ri65ebj5trvlKo9eNlW3JeIuu09qXFx//Mvf2avL1zPWhwdE3mMMrlqmybAu82/
+ oiff3NLr+/bQPeyZ7LuemoG/OQtX+JsVu0xmNGrZHK806A9cAAA==
+X-Developer-Key: i=mripard@kernel.org; a=openpgp;
+ fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The standalone LVDS device tree overlays (.dtbo) are missing fro=
-m the `dtb-$(CONFIG_ARCH_MXC)` target list, preventing them from being inst=
-alled during `make dtbs_install`.
---
+The drm_bridge_funcs.atomic_reset callback and its
+drm_atomic_helper_bridge_reset() helper are deprecated.
 
-commit 94b1840d6358cc9ef625151682b73d4e243336ca
-Author: Paul Gerber <paul.gerber@tq-group.com>
+Switch to the atomic_create_state callback and its
+drm_atomic_helper_bridge_create_state() counterpart.
 
-arm64: dts: freescale: add LVDS overlays for TQMa8MPxS
-   =20
-This adds device tree overlays for the Tianma tm070jvhg33 LVDS display
-for TQMa8MPxS boards. It configures both LVDS channels with explicit
-display timings to achieve a 519.75 MHz LDB clock.
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+---
+To: Liu Ying <victor.liu@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+---
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts=
-/freescale/Makefile
-> index 7a1d8586ce7c8..f0779a5d3b737 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-[ ... ]
-> @@ -379,6 +379,11 @@ dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-tqma8mpql-mba8mp-=
-ras314-imx219.dtbo
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvh=
-g33.dtb
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvh=
-g33-imx219.dtb
-> =20
-> +imx8mp-tqma8mpqs-mb-smarc-2-lvds0-tm070jvhg33-dtbs +=3D imx8mp-tqma8mpqs=
--mb-smarc-2.dtb imx8mp-tqma8mpqs-mb-smarc-2-lvds0-tm070jvhg33.dtbo
-> +imx8mp-tqma8mpqs-mb-smarc-2-lvds1-tm070jvhg33-dtbs +=3D imx8mp-tqma8mpqs=
--mb-smarc-2.dtb imx8mp-tqma8mpqs-mb-smarc-2-lvds1-tm070jvhg33.dtbo
-> +dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-tqma8mpqs-mb-smarc-2-lvds0-tm070jvhg3=
-3.dtb
-> +dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-tqma8mpqs-mb-smarc-2-lvds1-tm070jvhg3=
-3.dtb
-> +
+diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c
+index 7d5fda7173e5..a31d4fc76f35 100644
+--- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c
++++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c
+@@ -129,11 +129,11 @@ static const struct drm_bridge_funcs imx_hdmi_pvi_bridge_funcs = {
+ 	.atomic_enable	= imx8mp_hdmi_pvi_bridge_enable,
+ 	.atomic_disable	= imx8mp_hdmi_pvi_bridge_disable,
+ 	.atomic_get_input_bus_fmts = imx8mp_hdmi_pvi_bridge_get_input_bus_fmts,
+ 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
+ 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
+-	.atomic_reset = drm_atomic_helper_bridge_reset,
++	.atomic_create_state = drm_atomic_helper_bridge_create_state,
+ };
+ 
+ static int imx8mp_hdmi_pvi_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *remote;
 
-[Severity: Medium]
-Should the standalone .dtbo files also be explicitly added to
-dtb-$(CONFIG_ARCH_MXC)?
+-- 
+2.54.0
 
-If the standalone overlays are omitted from the target list, they will not
-be installed during make dtbs_install.
-
-While the combined .dtb is installed, missing the .dtbo files might prevent
-applying the overlays dynamically via the bootloader. Other overlays in this
-file appear to explicitly add the .dtbo to the build targets.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608142144.5648=
-71-1-alexander.stein@ew.tq-group.com?part=3D3
