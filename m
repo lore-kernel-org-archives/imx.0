@@ -1,109 +1,157 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B973B3BF0
-	for <imx@lists.linux.dev>; Mon,  8 Jun 2026 14:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43273B3BF0;
+	Mon,  8 Jun 2026 14:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929514; cv=none; b=YpIIGEi0t7axsTUR/XGJ0x7Of/Th0gTBuUen+0ixqihEWWfeoZYepMpanCc4qsbNmWN5XP7Ezew9+SH35iJLVx7Gp43LmR4vXI7A696s1Db+uy0uxuFGJmdx0QXak5cSlT/FCqLNFKh1dJ9HbHUfLqNTJcPFaILifMKGs9my/T0=
+	t=1780929611; cv=none; b=Grua3sGWo+4ogBucJMgJ3thtCF7I7BGHuWISo4JpAvGW3ufgkhcFEE6GOrVmkxJzE7+ojxRo29sdtc7SsvF1uB6xfEcypbx855cjbta45Is3y4tPaAbNW5ImWiMLD2IC9bYKdDvpuTCP5yb+5JIQt25EtH33VjcKVT8pWlTxPq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780929514; c=relaxed/simple;
-	bh=MfA+vFaXbqTAVMVSt1LE9XSkKBD3WIqzlMHPHCFR7F8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=B44xbNyMVPH/2zPwq7U0/UDDelhkZBt4AQxY13ktSR78iY+Y7t2rZJUlctKDQf9Sk1VIK9e2+o/RBLn5mhNmZTWSRHsFcxDEog6683i0ca5Pa63/wKLhmxltA2trTfbDdLjPxdlibe+75lc1c9Cv0A2S81bouaoS/NWR98jX4ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+kPONuZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780929611; c=relaxed/simple;
+	bh=pc5KgDDfBUpeSS+ethb+diBYBB7fvh0257nUv2wQ7Uk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=hX1+bz8lmWGEFZk30TJlAiEkLP2rVUaFM3bEzZJK8UnrB4WTRxJIQ1WVU+p8XQsfEmQ39RXgHFs32h4qpnrAKbINreo3Q0kZCOT86aJX3javjgd1l6L54sYsUelLhu4vXxEILrgtmDaBPiJ4z7VUxum1mlcSnuhHeyvuRudG4xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSnltNVf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+kPONuZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BE61F00893;
-	Mon,  8 Jun 2026 14:38:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSnltNVf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406801F00893;
+	Mon,  8 Jun 2026 14:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780929512;
-	bh=ejYuLC3YgIldB7/W/QtuK8IPfcFDE7A7qlLMr+VD/dw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Y+kPONuZDqDFAqfBCCrApTtboEvw/5kKGLNNurHwbf7GjiTwzZ7sj0O/f5SJtGPav
-	 ZDXJoT29Ko1MCCfLJuwFAQI7y4UZNhZy5X2ZjfrPZojT2xp2ccCGZLi60OAH4V3vo/
-	 xZ+lnwXwtUw8MTZhbguSzU8K01YAZfazsO0JCZz3G+hm+Gni31Y7EYhUlxEC2quNb/
-	 Ox+nNx7Ra5vrAJqFGl5Wh8/rvuKbeNdW8aQvpPpZsSLn2s311vkrQaEXkSKTBHy+7u
-	 tWKqPTDgiMMqh78W+tD9F8uHuDIAY7nqCyqcn+CBuBh/R/YAd8z0U4zb9aBWf49/2g
-	 f/3suo4k9RBtQ==
-From: Maxime Ripard <mripard@kernel.org>
-Date: Mon, 08 Jun 2026 16:36:29 +0200
-Subject: [PATCH v2 47/78] drm/imx: parallel-display: Switch to
- atomic_create_state
+	s=k20260515; t=1780929610;
+	bh=xxJFOLNTcjcr4KYGxInqQFoOAc8L/4p2jjmZkVRdyw0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eSnltNVfb+eUappQKZYkcyV88hNhVJbVHUdch6lhRz0KJacyDvNYJCJHWpo7/M7cd
+	 u1KCin/M+MZdn1QT+5hX7f4s/CEWcUGn7w4UB5zC4oM1m99g6uivUTCPo7HL5gMrqY
+	 LdK2cd2mdOLdcBMTmdNDWMt0ez+Jh6veoeCHh9Lpppd3eTrpNdpJVnc0qON3SsbHgS
+	 2OgtAORa/2oQ1ojbVeEpDQd5jpcgMBb+m88GGi7QCqI79eTFUMRheIeHMyahE4j78L
+	 YyrzSfCAP0XaE9cMN9dNap+xX0ZrZFnKlp4+Q4JpVHoPFIemp6ancDqftFiQs2CNng
+	 RIPBSvSy8QhmA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 2/4] arm64: dts: freescale: add initial device tree
+ for TQMa8MPQS with i.MX8MP
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
+Cc: devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, Frank.Li@kernel.org
+In-Reply-To: <20260608142144.564871-2-alexander.stein@ew.tq-group.com>
+References: <20260608142144.564871-2-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 08 Jun 2026 14:40:09 +0000
+Message-Id: <20260608144010.406801F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260608-drm-no-more-bridge-reset-v2-47-0a91018bf886@kernel.org>
-References: <20260608-drm-no-more-bridge-reset-v2-0-0a91018bf886@kernel.org>
-In-Reply-To: <20260608-drm-no-more-bridge-reset-v2-0-0a91018bf886@kernel.org>
-To: Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>
-Cc: Dmitry Baryshkov <lumag@kernel.org>, dri-devel@lists.freedesktop.org, 
- Maxime Ripard <mripard@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1730; i=mripard@kernel.org;
- h=from:subject:message-id; bh=MfA+vFaXbqTAVMVSt1LE9XSkKBD3WIqzlMHPHCFR7F8=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlqlyNbu7Pbj73ZzXh9e+6+kuT7R9bt75bfzXbA+5uTM
- PcOf837HVNZGIQ5GWTFFFmeyISdXt6+uMrBfuUPmDmsTCBDGLg4BWAityUZ68x+29a4l5c9d1ju
- c9r/6veF/Z/Wb1tqW7Gt+pCLlnXtihXLnf+nWByy/ug+07mn0v7PZMaGbc8XZiyqCXqxfn6bVd/
- 0ny7JX17/k55+UPv07aLFRzzVY17/No1Kuv7norrBpE6VyKP+AA==
-X-Developer-Key: i=mripard@kernel.org; a=openpgp;
- fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-The drm_bridge_funcs.atomic_reset callback and its
-drm_atomic_helper_bridge_reset() helper are deprecated.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] Incorrect GPIO polarity for the DisplayPort bridge `reset-gpios`.
+- [Medium] Missing `interrupts` property for the DisplayPort bridge, preven=
+ting hardware Hot-Plug Detect (HPD) interrupts.
+- [Medium] Missing high-speed capability flags on SD/eMMC nodes, causing fa=
+llback to legacy speeds.
+--
 
-Switch to the atomic_create_state callback and its
-drm_atomic_helper_bridge_create_state() counterpart.
+commit fb67de7a11b79a2d50aaec8dc9df977e8f195879
+Author: Paul Gerber <paul.gerber@tq-group.com>
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
----
-To: Philipp Zabel <p.zabel@pengutronix.de>
-To: Frank Li <Frank.Li@nxp.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
----
- drivers/gpu/drm/imx/ipuv3/parallel-display.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+arm64: dts: freescale: add initial device tree for TQMa8MPQS with i.MX8MP
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-index 0f06db95f00f..eb75827394f8 100644
---- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-+++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-@@ -178,11 +178,11 @@ static int imx_pd_bridge_attach(struct drm_bridge *bridge,
- 	return drm_bridge_attach(encoder, imxpd->next_bridge, bridge, flags);
- }
- 
- static const struct drm_bridge_funcs imx_pd_bridge_funcs = {
- 	.attach = imx_pd_bridge_attach,
--	.atomic_reset = drm_atomic_helper_bridge_reset,
-+	.atomic_create_state = drm_atomic_helper_bridge_create_state,
- 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
- 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
- 	.atomic_check = imx_pd_bridge_atomic_check,
- 	.atomic_get_input_bus_fmts = imx_pd_bridge_atomic_get_input_bus_fmts,
- 	.atomic_get_output_bus_fmts = imx_pd_bridge_atomic_get_output_bus_fmts,
+This adds support for the TQMa8MPQS module on the MB-SMARC-2 board.
 
--- 
-2.54.0
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi b/arch/a=
+rm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
+> new file mode 100644
+> index 0000000000000..9cff5bf9162a4
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
+[ ... ]
+> +&i2c3 {
+> +	clock-frequency =3D <384000>;
+> +	pinctrl-names =3D "default", "gpio";
+> +	pinctrl-0 =3D <&pinctrl_i2c3>;
+> +	pinctrl-1 =3D <&pinctrl_i2c3_gpio>;
+> +	scl-gpios =3D <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> +	sda-gpios =3D <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> +	status =3D "okay";
+> +
+> +	dp_bridge: dp-bridge@f {
+> +		compatible =3D "toshiba,tc9595", "toshiba,tc358767";
 
+[Severity: Medium]
+Since the DP_HPD_INT signal is routed to GPIO5_IO21 (as defined in the
+dp-hpd-int-hog node), should this node include the interrupts and
+interrupt-parent properties?
+
+Without them, the driver will not register an IRQ handler for Hot-Plug
+Detect events and will fall back to 10-second DRM polling.
+
+> +		reg =3D <0xf>;
+> +		pinctrl-names =3D "default";
+> +		pinctrl-0 =3D <&pinctrl_tc9595>;
+> +		clock-names =3D "ref";
+> +		clocks =3D <&clk_dp>;
+> +		reset-gpios =3D <&expander0 4 GPIO_ACTIVE_HIGH>;
+
+[Severity: High]
+Does this leave the DP bridge permanently disabled?
+
+The tc358767 driver initializes the reset GPIO with GPIOD_OUT_LOW
+(logical 0), and returns it to logical 0 during normal operation after
+pulsing it. Since the target hardware pin is an active-high enable
+(DP_BRIDGE_EN), it must be physically HIGH during operation.
+
+With GPIO_ACTIVE_HIGH, the driver's logical 0 translates to a physical LOW.
+Should this use GPIO_ACTIVE_LOW instead to map the deasserted reset state
+to a physical HIGH?
+
+> +		toshiba,hpd-pin =3D <0>;
+> +		status =3D "disabled";
+
+[ ... ]
+
+> +&usdhc2 {
+> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 =3D <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+> +	pinctrl-1 =3D <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+> +	pinctrl-2 =3D <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+> +	bus-width =3D <4>;
+> +	vqmmc-supply =3D <&reg_usdhc2_vqmmc>;
+
+[Severity: Medium]
+Will this node fall back to legacy 50MHz speeds despite having 200MHz
+pinctrl states?
+
+The MMC subsystem requires explicit capability properties (like
+sd-uhs-sdr104) to negotiate higher speeds. Without them, the state_100mhz
+and state_200mhz definitions will not be used.
+
+> +	/* NOTE: CD / WP and VMMC support depends on mainboard */
+> +};
+> +
+> +&usdhc3 {
+> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 =3D <&pinctrl_usdhc3>;
+> +	pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
+> +	pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
+> +	bus-width =3D <8>;
+> +	non-removable;
+> +	no-sdio;
+> +	no-sd;
+> +	vmmc-supply =3D <&buck4>;
+> +	vqmmc-supply =3D <&buck5>;
+
+[Severity: Medium]
+Similar to usdhc2, is this missing eMMC high-speed capability flags like
+mmc-hs200-1_8v, mmc-hs400-1_8v, or mmc-hs400-enhanced-strobe?
+
+Without these flags, the interface will operate at legacy speeds instead
+of utilizing the 100MHz or 200MHz hardware capabilities.
+
+> +	status =3D "okay";
+> +};
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608142144.5648=
+71-1-alexander.stein@ew.tq-group.com?part=3D2
