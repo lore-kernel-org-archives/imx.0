@@ -1,134 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013045.outbound.protection.outlook.com [40.107.159.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D89235E1C5;
-	Mon,  8 Jun 2026 07:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780902187; cv=none; b=JHsmTzwMvt3HA1MonoQjbz4f46vJZQ0JF5oYfcA5uf1hdTk57oz3E29m7ggZTdzkXiICt1rC3MOWdncRnyA/YFif0fqW1pZNfN5ZescKdpI0/8RsNjxV/QuvevMwLhGHmNWdzr8chKOV3WS/RNfnK5Xk3u+0Tq2/fSBOeNptVKY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780902187; c=relaxed/simple;
-	bh=/EV8js+2v8OzyEkyzphqS7BgoRmZaabHmg7vtIFY5t8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rKEv80/br3FXob8jYeqyjObK6o3gMLBqtwurQeIJKK7qKryUPrIGtaHfVzjyrD23NZdE+sAR32v3QU94mIsGF9EhqKS1hsoYBgF3XYDh0AFcd7DZbMGz89rvtf5ukTLoLvuelrJZkYOs3Ycb0WlaBA6Z/3RMRCusZaut1UCHhug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ds8FYyBn; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542C23955C6
+	for <imx@lists.linux.dev>; Mon,  8 Jun 2026 07:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780904818; cv=fail; b=E+ZHcpDiKrnumHvCNR/viLIvy1hWcv7mKOO2+15pVC8CYidm4MXoD9Bkof14wnf7nh0ECr03JfR38f/7yDMmYAew0zgaiawgvr6MvPo/S8bLHgla443YSaPOdyNKedtlR5KBIQjkw4G18IlXcorGbuHFYpJZy5DkBX7RJVr+ycU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780904818; c=relaxed/simple;
+	bh=09vdCzq02AZ94iza9mepgriIagQ7rFpXR6QyJuoO0VA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HsrataYHvm9jweuEvpaDxVv9a3QVLAkJPH5l/VP6aH6FjfDdCcq8zSOdt8nEtCjOK5K3x0UzVgqR3P8H0dOwBZtT6z190TzRJJ54seqBzBI85mbJmEpeQW8MzyLUZbBF1MYuATf+hiljRvimG2sSo9iMM/CAmr8kpB6SHY57kII=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lKewfL7J; arc=fail smtp.client-ip=40.107.159.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ds8FYyBn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980A31F0089A;
-	Mon,  8 Jun 2026 07:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780902185;
-	bh=10dFrUC/6z32jGP8zynGCsubM/uQN+Pn4UzSAjajejM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ds8FYyBnv2B771u4jaYArIjXJx5UpC1WUxFyjTQDVhtf+l1qYyu5NwqVY+oOzuc6C
-	 YgqUxqU4gV2VnsPffdjORqDHElM1kd63ltUYUyVdF4TYaUEWtF2JD2pU6poVM1ArWL
-	 lMUinVJ6futH/7sdnAjzkFIuaCbufZx8fG+uk80ePL2EOH8cH49KxCDKv1sJ8txsUy
-	 Qpsb63Y/49p0ZHrtiY6ZwtKegiVpiUrgHwkrzV4CAq0F0zJwJnRUTZXAStb/+L2/kr
-	 FA/3lev2TYsrVndJqyIIwBECwbTBWrmYCkIgZRjk+HnLbC8Mzg1CGk5xkLhbQhHDnH
-	 KQOX+wjtpEfGA==
-Received: from johan by xi.lan with local (Exim 4.99.3)
-	(envelope-from <johan@kernel.org>)
-	id 1wWU0k-00000000LzQ-1V0O;
-	Mon, 08 Jun 2026 09:03:02 +0200
-Date: Mon, 8 Jun 2026 09:03:02 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Peter Chen <peter.chen@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lKewfL7J"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kTNyqqWkkM4Pi1iY9w+/PtxeR1E+arx2rkMCcJHeFybMiKs8GeWKmghmCVPCsmW+SsfItn9dgQ85w24TqixdPeLvy0ekomuKIe7Vu2lTeJRunptayJP0SaIQhnCViQOwSzTTYOiQ4ShHaX/WKVRv42jsjQBHnxsILEaJ4DPia61sSAkj0Uqq4O0SJXtGawv9Oo7y9UJ1NTs8GHpBliBshdusDfuF1vZ+DSRiQHUTHDYEjBPeiFzUBTJv5CQqY0t433GkY5Lsbt2+0w2iyhe1zZqBk6SmY9NFOsB5r4BWtILKlfnMH1v3M1h84qrqmvpn9TbgE7dzYpjF3EJkb5mycA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RQ6mPfcbdWHiwGZuUcE7ajMn3ERZw0VSdcFVG5P3GN4=;
+ b=ugCdvOp4A7cOU9bM90othCZw86Z3QTHhwwP7Z/fSDxKMtuoEArUCzVnpkN2qQyFQy7cgxSFMAJ0pzRD+pvvaiVKxq/RJ2D2FlOK+6AftaUMjis4YxCZJOzKpqve1Vd+W5hDxwFx3JICFUOEsc7+DzLZHhd2Wc1wztRd6v+IoU4c62kWncgPgNPaLyM2WmxdEFTMXP3DcB/HPy7j3/3hLzR5DjKxu5YUyPuI+7vpSuYsBT81LxYzEkprTxyFbYqWrRxbmkRbfPWnEuYgQzswLGKCsO99KmbeHYYXLL0KmXLbHPOo+cvRMmy5OzZ7/NizTCn9R1PPt1uhDyl2rHg8gtQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RQ6mPfcbdWHiwGZuUcE7ajMn3ERZw0VSdcFVG5P3GN4=;
+ b=lKewfL7JsFAotBH/UwkDXlgPE4E3xQixUtBs1mbgRLBuYYqgmDpRZJl0FKRYX1xcEIqbQ5wsYn5aicn8vClymuQNmvOo+4ArLvaqygsKaa0EGDvCAyi8J6ohCUORtW+IxKsvHvouTDVsk43ydqdVxLN0LKBfaxxfFGgLcjpwTfaFeiwmfuRAd6OXPVnXBXV/cI1pE7wCdlq8KZYgqMIyl9Hi12vglAvcjZ2lB/WSIp9GWCaHL6ByDvV7Ia4t7AB/9Ki91N9lVgTeDELJI03aTJSLpC6az8dhuETW1vFSJqaopV+8KGHheC2lkbnxS3GTZC/xKkLbZ5hlkWVRjB6J5Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ by AS1PR04MB9699.eurprd04.prod.outlook.com (2603:10a6:20b:482::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Mon, 8 Jun 2026
+ 07:46:53 +0000
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
+ 07:46:52 +0000
+Date: Mon, 8 Jun 2026 15:48:22 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Piyush Patle <piyushpatle228@gmail.com>
+Cc: Marek Vasut <marek.vasut@mailbox.org>, dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 08/23] driver core: platform: provide
- platform_device_set_of_node_from_dev()
-Message-ID: <aiZpJkQBXg2pcczy@hovoldconsulting.com>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-8-88c324a1b8d2@oss.qualcomm.com>
- <ah9O15bMlAYgSlHx@ashevche-desk.local>
- <aiK-EXwp_xhcbty9@hovoldconsulting.com>
- <aiLi0KZskrCyEYO5@ashevche-desk.local>
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH 00/39] Add i.MX95 DPU/DSI/LVDS support
+Message-ID: <aiZzxhljfyYQ68Gl@raspi>
+References: <20251011170213.128907-1-marek.vasut@mailbox.org>
+ <20260605121112.27866-1-piyushpatle228@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260605121112.27866-1-piyushpatle228@gmail.com>
+X-ClientProxiedBy: SG2PR01CA0181.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:189::13) To AS1PR04MB9287.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiLi0KZskrCyEYO5@ashevche-desk.local>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|AS1PR04MB9699:EE_
+X-MS-Office365-Filtering-Correlation-Id: efcb25bf-12b8-4189-39d1-08dec5321b0f
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|376014|11063799006|4143699003|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+ dh302ZyQYqZ+8OePzC5016l2fCij5YGDwr2M/eQmGKxPy1vPOSI7M+y/ZSg9pIe9I5OKGInk21XT8le092Rhj9t2DAS3rSNfEHN3mmz+3DwgcBL4jROB7YdF5iEvw+rC6de7hdXzdW3nz4uqDRcCSrl3lnIvq3Kd8g9uIsq/j8Mr/Sg/oxqVg6kkcmN6bLQDJOX+4Ha+lxownnSiNp8ZxtshFvEVJJ/ScU1WHzcD+ASICwNNKbH3FMhJb9xqtUtlDQHAZ7mqW/ukks92fyZdSaZvP9h5AEJXYk5ZSrnrQajhukpfDpwGMzS4qnUN+v4kFSYXslS24TOpyhJFCVh/lQqPOUc94s4AHM1k6SKRaLa47YtRm9YG6Gswptku+1YJQRNa0siRoxp3+5iCWU5B//CksBLGqVBYL5A5FZ6ojjWYInBnIZyxoH7hxziBRG66fh9/fvREebN5NMKOblJa9OjVCtfKVzbXCMdt+u6MSEo5aAKlJ7TSV2dJXK5ykvxfeBJNM5zsigfUPd+EQdUXkqjqarYu4ZdsgslLbLA0AMKyixYNzAmsXmMwlqWSTX9Ee3THAdASHwPeodOzVk4CF0OykRhLUr6jhoC8GDANQ/kcOS1y3PlxTTgmHNC9qAaOdBc82PX7hn8TgzLQDImWhQlJFnIxXSW9TIXdc/b/G51GdN6K6NfqxzjNJLCmEULezfLfXKfYAhbgEZLW/H2OgA==
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(376014)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?hKxmMz0FmPNgN6rzAoQ1BR2IXVvc6o4xxwAkJcH22aLU5b0FnCm/Z+qUvQUi?=
+ =?us-ascii?Q?wgo6QoTtEoFfs7K/z9MB2idsOMfoFyvnZFueiq7aKnZicCsfn++PS55T7hh8?=
+ =?us-ascii?Q?dsr4I5TXcHN+D41CnZ9vIsmxZ7pojIlDEoM5bRELdEbrRCqCcOpQgPhEH150?=
+ =?us-ascii?Q?yMVPse/wjRKTzW85y4HQt3I4zJnwHypOX4foZRkdxXA6nDHilx3p4URQnL3/?=
+ =?us-ascii?Q?QlKaN+9eDDv55qyW1NhZ0MXvQHOhXVkca6upruZahjDHLinCcRiGLixv6MJG?=
+ =?us-ascii?Q?+zVDKc8gLInqSd5VHD2OiR+cvhOnh1opaYxpaggasXul1jaoxYZZ0zf4CT8d?=
+ =?us-ascii?Q?WBSJ/StPoaJ+XPyP+4ML5KlF1AVQ66REYoMyJzFsujO7hAB4Nu1w8MWtONq0?=
+ =?us-ascii?Q?iddXlOQKBsPYtkVmpQrx1OessJzDeGIzPiL6U11qlEDgU0Du8Io/vdvWT4sm?=
+ =?us-ascii?Q?2TSo/EnPBAtDZXyRptxGjiSPG0+K8y8FWLmNzF7AWMjMJWV5daHEpccMW+0v?=
+ =?us-ascii?Q?XcPBLX0VXsfmByXAs4J5daEJOweXyJ1y7+ltI+pwT3iAOwudnguYRdz2+TiY?=
+ =?us-ascii?Q?H7epwfwebRc5CAR8XDCEt93LDNR5A6ByQVS3LBPWKca3yzW++tA7ZLsAODST?=
+ =?us-ascii?Q?HLvFoVrNdr18mBxbtflpb7F33/g/pbhZvXguqPEd6Gp/dgqfNn/47TuNv/Kx?=
+ =?us-ascii?Q?l+TwAF6R0+YtkYKP2lEFP2WhZiivcQFSp9KVu901YYvrRloxcyKuft+6D6CF?=
+ =?us-ascii?Q?iNm/7V80x/3p7NVw7ScPKTfkHw0HhAu44E3ocDI6gWWwzIkTxBb7aGm7wsoO?=
+ =?us-ascii?Q?1+fY5m29n+Nn31FK0DQGP4cP1FY4j4riIpEIzikAaKd+Rt6+kYO8cfmDEyLq?=
+ =?us-ascii?Q?y/aHS5+cTTgX0DsUkpAPjuc1nmqru3V4ot20bmLxPMSBNyudg77i7i/gODc+?=
+ =?us-ascii?Q?9T2FYRhQWk5zrQp4aA99pCyy6uYENfJm/wHSNUtMrn8S0JuixGnwa9lhQFB4?=
+ =?us-ascii?Q?bJF3yTAYxo6ey1CBkc5ScMcV425Isi6WLCODczW6WScDFQ4CqkCLbQaJg7DY?=
+ =?us-ascii?Q?MuFJkGG2JgnD/doevZUkZQsQ65Sg1/8xKL+cGdpHjgM+l+meq+ox7ttxeSoD?=
+ =?us-ascii?Q?WfQe3bBPEc81oh8q93Ef38hx7JLMO4EaWr4GPPywfvN7GEwOSM2c5GxfTZqg?=
+ =?us-ascii?Q?7O5fm9kIgPkE+z6dfzRa3QzACW6PfT/xhfqKCvtQK5ftGWwXWYwsxkzZ4ijy?=
+ =?us-ascii?Q?vygCt+yXbvAcJ8YeW5IttEZfqRFYQ4qosvEFL8o/ORIzHVvyjuHxSGMz3dh4?=
+ =?us-ascii?Q?eu/0U0cw1kL8qb6XjJiLltR501bsIYSf/9lTlw3e6bTMlBqd2ciqp5LIvYEe?=
+ =?us-ascii?Q?QXUV8UVH8J2d3fWkFRl7ET0agIxgbo0dO9wA/lyhjTxj+v8Kah37zxj5WjsU?=
+ =?us-ascii?Q?KywDVL9RNOUF8xJh8EighCIRza8kYPb0qG8qpl8ZEc6jA6OZiDtWe67/2kLx?=
+ =?us-ascii?Q?Nzekbde8EIcT6KjEJbXgFdfls+NKf6GljagKGtiMDq0HnDmoIJo5FLiK+0ct?=
+ =?us-ascii?Q?0jP8a3wxivErj3szEl80rmS1adlfJLfZKZlEH6Nt8/tFpNP0MGshd3MAxDa+?=
+ =?us-ascii?Q?n/JSBhxM7JRYdSLO/SLOMvWNYnTI2Fj0YfJb2NelVROKvWYUTw0drgiruVhI?=
+ =?us-ascii?Q?IreikOsI+WC7BQjZCYj63sVqqAe71b8nodfRdFCALGpuGQqYx0FlSE2BQYS2?=
+ =?us-ascii?Q?rQilABCkMg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: efcb25bf-12b8-4189-39d1-08dec5321b0f
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 07:46:52.8241
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jmdnFYWF/dgbqvJyt3khy4OQwqCnfxhnwF3OQkghHv2jueTw6IYzXhl91Oc1OAZaP2LcQ3q+TRlcaQVMKjbi7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9699
 
-On Fri, Jun 05, 2026 at 05:53:04PM +0300, Andy Shevchenko wrote:
-> On Fri, Jun 05, 2026 at 02:16:17PM +0200, Johan Hovold wrote:
-> > On Wed, Jun 03, 2026 at 12:44:55AM +0300, Andy Shevchenko wrote:
-> > > On Thu, May 21, 2026 at 10:36:31AM +0200, Bartosz Golaszewski wrote:
-> > > > Provide a platform-specific variant of device_set_of_node_from_dev(). In
-> > > > addition to bumping the reference count of the OF node being assigned,
-> > > > it also assigns the fwnode of the platform device.
-> > > 
-> > > Can we rather investigate the way how to make that of node reuse thingy
-> > > (which is used solely by pin control) differently and then drop this confusing
-> > > device_set_of_node_from_dev() call altogether?
-> > 
-> > No, that call is needed. See commit 4e75e1d7dac9 ("driver core: add
-> > helper to reuse a device-tree node") for details.
+On Fri, Jun 05, 2026 at 05:41:05PM +0530, Piyush Patle wrote:
+> Hi Marek, Liu Ying,
+
+Hi,
+
 > 
-> Bart fixes the problem with the platform driver. At the result this will be
-> the only device_set_node() + 'reused = true'.  As for 'reused' flag, the need
-> is only for pinmux/pin control stuff.
+> I brought this series up on the i.MX95 15x15 FRDM (IT6263 LVDS-to-HDMI on
+> LVDS ch1). It mostly works, but I ran into a few issues around DI routing,
+> LVDS format handling, and DC enable sequencing which needed rework before
+> HDMI would come up reliably on the board.
+> 
+> I don't see a v2 of the series and things seem to have been quiet since
+> November. Are you planning to post an updated version?
 
-And any other resource which may (eventually) be claimed by driver core
-or bus code.
+My plan was to enable prefetch engine support[1] for i.MX8QXP display
+controller and add device tree for a whole i.MX8QXP LVDS display pipeline,
+before adding i.MX95 display controller support.
 
-> The question here is if there is a better
-> way to make that 'reused' be done automatically without need of setting some
-> flag explicitly.
+Unfortunately, it seems that Marek is not a big fan of [1] and I'm busy
+with downstream development so the plan doesn't move forward well.  I still
+think [1] makes sense(maybe I need to rebase it on latest drm-misc-next),
+so I'd like to see review comments on [1] and hopefully people think that
+the overall idea of [1] is ok.
 
-That's not really relevant to the series at hand.
+> 
+> I've accumulated a fair amount of rework while getting this running on the
+> FRDM. If you're not planning a v2, I can clean things up and send one based
+> on the current series.
 
-If this is something we want to merge then you need to continue setting
-the flag in order not to cause regressions.
+I still think that i.MX95 display controller driver should be in a separate
+driver, rather than sharing the same driver with i.MX8QXP display controller
+like this patch series does, because the two display controllers are quite
+different as I mentioned in comments on this patch series and in discussion
+in [1].  Also, the common part between the two display controllers should
+be extracted to a common helper library as I mentioned there too.
 
-Johan
+> 
+> Thanks,
+> Piyush
+
+[1] lore.kernel.org/all/20251027-imx8-dc-prefetch-v5-0-4ecb6c6d4941@nxp.com/
+
+-- 
+Regards,
+Liu Ying
