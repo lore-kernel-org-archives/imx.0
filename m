@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E855D3382CB;
-	Mon,  8 Jun 2026 11:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DC336C9D0;
+	Mon,  8 Jun 2026 11:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780918918; cv=none; b=pOG5w5yEx/2TgYQHjDrcUV07FDdRz6kuzfiFyE36I91d6oRs3Q2x1F0wpXUbJxLqp4Jsj5koW2wqruH4347WoOa9ZutqJgEvss+eNmOpYbrsOr8jccSzBLndMlfi6u+falx1BuWgvNfeqT3D2JMPy0+N5Mn0ERUf0JxyHlHqVzc=
+	t=1780919199; cv=none; b=gl9fQCjezmiJEZMaMPIKyFw7Huy2WHXzRuUa8aXLxa27E0r0v+HkDRWhYS2NbNX0lHKKvnndx6y5yc0N2FZ+fTLh0qUwlqR8B5+p1pkimt6/qzrf3Rg6YMugV4RA63OBxcSxLsMYAVZY5ePISCx5w7wIkXKn/s086UwkdkixD1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780918918; c=relaxed/simple;
-	bh=qMB7tWfV0C03DccxxFO+6RhLHPxbPH51bsQ2TVLSInY=;
+	s=arc-20240116; t=1780919199; c=relaxed/simple;
+	bh=RjYuQPXZZ3CI9ckIR7MENySoBAq6eWhaatzRgbNqQOo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kNMCrXS7VTTYR+pyA+q+Kmj9A6zCI3XJSZj6fsiSNvFUgTQB6yOrre2jUCSmyVnR5MAcB20gOtrh8YKhHsnMJdgsfkWqUYcV6Z880PrPi7heJ2bwUCITGghjGADn4rzQqrvu88m5Cr3ipokIoV1Nsp9Dpwyt8hnqQTwagmME/YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X4WIAWnI; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=fAbykn22gL0GDZRdiLKtYOvAFDktZ2LxNdC0KQZDFtjgeFN+Y7HN1C3377wB9RSKPZtUCYaKNAAJaMPky7IE/yUJznIi2ZEOGfvJvcm2OrmU6V9THRcjZ++CQfdMngfzyVBrrmOadGoPqU4/34usA2Z4EtH2J8qc6hT4hGwVCCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONBWUW40; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X4WIAWnI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1131E1F00893;
-	Mon,  8 Jun 2026 11:41:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONBWUW40"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8721F00893;
+	Mon,  8 Jun 2026 11:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780918917;
-	bh=qMB7tWfV0C03DccxxFO+6RhLHPxbPH51bsQ2TVLSInY=;
+	s=k20260515; t=1780919198;
+	bh=3YexfljBk8pDJLqWgaXTmVbxli8lauBy575LrntRJoU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X4WIAWnINCLKLyP5AFDRs7lj8iJxd2A5fuRlmE+r9q+6lYDGidYpPpbaAmSxa1S1W
-	 KSq0anONPawIBT9vC5ZpvOE4iQ2r3rTw2mDNz97HFDXc9NSjF1Ja5zcE5VJ+X7LGrL
-	 ECwGHVFYazggIaxx/s2mAi6z0Zei9oLEnpMdelvvRuEnNROsBaJGQQikNrQwzor7um
-	 iyOjBEC8Nq/a1hkMLR3CqVc3CcPO967TAEZdf5g0J6tFd5PHiVXelGkNt44fv3361e
-	 rHU/6SkNIyfBLj5W8gNREYXNFy7XPLzz2QJglKhoJk4RNswW6e5SUWqWANl9otfgJw
-	 8PcJKGAq5o+Yg==
-Date: Mon, 8 Jun 2026 13:41:55 +0200
+	b=ONBWUW40Y5seSsPy9q5535x6baYwCnP1TPwi8HH8WEUynsXkJRghQY5BSDfWX8WGI
+	 uSAvfQ+/Otoh4+3kSkVpUPHmeyEASP5pii3Z3i9bsf0tsxmAo6RAJMhBIB9jYxNWKD
+	 QMZ7KSzR8r4BWITUE+DHn8IIY+A5BgWRkSETp/AUdsJT3qsLeYV6o7TXHKWemBTrb/
+	 4Thajh7cN7hb+SvS7HKuUQ4gq0kmu35sLB/oaH96LdQEOidve8hyMclG7cQu5FhRVz
+	 fia4BpSzdwju33pwbqfDhyyy2znt83HT6at1UWeMKbd8fYXOYmAyWYMxbQxYWILeqw
+	 pij0H8I8mrXjw==
+Date: Mon, 8 Jun 2026 13:46:36 +0200
 From: Maxime Ripard <mripard@kernel.org>
 To: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -42,11 +42,11 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
 	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 06/37] drm/display: bridge-connector: use a
- drm_bridge_connector internally, not a drm_connector
-Message-ID: <20260608-little-lyrebird-of-competition-c25f7d@houat>
+Subject: Re: [PATCH 15/37] drm/display: bridge-connector: allocate the
+ connector dynamically
+Message-ID: <20260608-rustling-infrared-turkey-e09af8@houat>
 References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-6-45e2bdb3dfb4@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-15-45e2bdb3dfb4@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,59 +54,61 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="fhyd5lz3ke6h65oh"
+	protocol="application/pgp-signature"; boundary="zkswocsay233wqed"
 Content-Disposition: inline
-In-Reply-To: <20260519-drm-bridge-hotplug-v1-6-45e2bdb3dfb4@bootlin.com>
+In-Reply-To: <20260519-drm-bridge-hotplug-v1-15-45e2bdb3dfb4@bootlin.com>
 
 
---fhyd5lz3ke6h65oh
+--zkswocsay233wqed
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 06/37] drm/display: bridge-connector: use a
- drm_bridge_connector internally, not a drm_connector
+Subject: Re: [PATCH 15/37] drm/display: bridge-connector: allocate the
+ connector dynamically
 MIME-Version: 1.0
 
-On Tue, May 19, 2026 at 12:37:23PM +0200, Luca Ceresoli wrote:
-> Currently drm_bridge_connector_init() always returns the added connector =
-or
-> errors out. When adding bridge hotplug the bridge-connector can be
-> successfully initialized without creating a connector, which can be added
-> later when the pipeline will be complete.
+On Tue, May 19, 2026 at 12:37:32PM +0200, Luca Ceresoli wrote:
+> Currently the drm_bridge_connector has an embedded drm_connector, so their
+> allocation lifetimes are tied to each other. This is insufficient to
+> support DRM bridge hotplugging, which requires the connector to be added
+> and removed dynamically at runtime multiple times based on hotplug/unplug
+> events while the drm_bridge_connector is persistent.
 >=20
-> For this the internal function drm_bridge_connector_add_connector() must =
-be
-> able to return a valid drm_bridge_connector even without any drm_connecto=
-r.
+> Moreover the drm_connector is exposed to user space and thus an ongoing
+> operation (e.g. an ioctl) might last for an arbitrarily long time even
+> after the hardware gets removed. This means a new connector might have to
+> be added when the previous one is still referenced by user space.
 >=20
-> In preparation to support bridge hotplug, change its return value to be t=
-he
-> same drm_bridge_connector pointer it gets as input, or a PTR_ERR.
+> In preparation to handle hotplug, allocate the drm-connector dynamically,
+> to allow:
 >=20
-> No functional changes, just changing an internal API.
+>  * creating and destroying a connector multiple times during a single
+>    drm_bridge_connector lifetime
+>  * creating a new connector even though the previous one is still in use
+>    and thus still refcounted and not yet freed
 >=20
-> Note the return value could now become an int (0 or negative error) becau=
-se
-> returning the same value received as input does not carry any added
-> value. However this would be change a lot of lines, so leave such change =
-as
-> a future cleanup.
+> This commit does not introduce the actions in the two bullets (it will
+> happen in a later commit), it only moves to dynamic APIs for connector
+> allocation and init.
+>=20
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-You just created that function and changed "a lot of lines" already, so
-I'm not sure that argument holds.
+I think this patch should be split in half, with the switch to using
+destroy first, and then the actual move to the dynamically allocated
+connector API.
 
 Maxime
 
---fhyd5lz3ke6h65oh
+--zkswocsay233wqed
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaiaqggAKCRAnX84Zoj2+
-dvlgAYD3UUr7c3goHHKtCxi2SQ81QH+lj0pgDu+t6mBYW/c8gJWsZHGcSUJhcB1b
-D2OjIy4BgIyG6BehTdRWyVru5aHe/B51ZTvcYO++iqcsuVtE+c/aWp298FwVdKli
-eZ1e6k1t7A==
-=er1l
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaiarmwAKCRAnX84Zoj2+
+dg4NAYCKBku1y1njVJbmc1N2fGvFbJXDz9zum9YGh3536/rvMj6YBYGDm1TRHrvz
+kN0ddaUBfi2bAxpdRbhtOPcxlSyNG0d1CeAj8UGCNRBJC/7nUkheXU2p7eAEzNjJ
+k3MlFuBocQ==
+=ZnkV
 -----END PGP SIGNATURE-----
 
---fhyd5lz3ke6h65oh--
+--zkswocsay233wqed--
