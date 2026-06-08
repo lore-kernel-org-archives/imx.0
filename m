@@ -1,211 +1,105 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C38C3EEAC0
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 08:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEE433C195;
+	Tue,  9 Jun 2026 08:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780994247; cv=none; b=XbxhRnPvHHXlZmVNiJ4VWpaKnDI/euxQbzqt7pddkFb5qArMEyllYtmEZ8OUFuWYtwDUCn1G0KEbSWwN7x0z6U+B3GQJf7A1Eog0w7aKJiueawEgt8rV7jbSHptqd2DBsmS9PWq2Bh1BxmEVWEQ3ZzcolvmZWnEVDKq8G3OHAOw=
+	t=1780994437; cv=none; b=Xy9fCTtu4EdlpztCrQrAjDZoxyYNXHoWGc0SHZxgKyAgIWd4VcTJivoIHz/npcX1439LcQE64y8NW0AX3C12vi228zWyWyHREWoR/XRqlbDxBFEjmGvjBPsu0QnNFd+l/Xxwy2CaAdwwuRVvFp7G2qO93AULg4cutES6Snpe8F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780994247; c=relaxed/simple;
-	bh=l7Exmz9p/uIitXB5p6TW0/WOEv3+e2EoOmnpCMBj2wc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ItAZuLS4qhPU9CieszacxZRER1QI2+wedwk8IuvazJDUfhhbzNJb9127Z5vk4mRFxfqLPWnlX2DdCiaM4ZQuIpRwAscs7COyHfBuxf7a462GheVg+LJ7lkcutQLecwDC4r4yHjSg/EJezDmVviPRe6rtaBrwP+xFDdsl2piiwz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=RPiYH9VX; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1780994437; c=relaxed/simple;
+	bh=XSjoHKs8MCMIjerSDcjBJdrB/+DJHhLIab/p1Ghmjxg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=D78vzRlbIvPufwAGxHrjVLk0RSxDSOxbKYdfSjg0I9YwMCqFdxRui5Rx9nqNF5HYIZIiBPNCQ6LJvqYslMwnEk2PRGkIJsZikPWo3L90PC9d/w8bNpvJuylppBNHGnXjfQgRnphOF6zAdQ8PycxG21Ufre4n77I8C0EcPPFnqsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLN3Tz0C; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="RPiYH9VX"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gZMj80rBzz9tXD;
-	Tue,  9 Jun 2026 10:37:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780994236;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NeflN5T28HahSSS6B50cN92fDni13v9ufrgZcj6h5yI=;
-	b=RPiYH9VXQKDM42/5vsxxIwbqpWCXmAWSGRa5js/gMS3D6qSjYnJ1RphKo0vO7Iyifj32qI
-	f9m7KUqHr7kFocN4TPV49/mA+WI9nN2Mtr4WBW0TMkSb6Z18jJGf/nxBGKNaCUY/0kVCpa
-	bC1OeNR1BAHN2zrmQrj98yrglCDOcYKzP+qAFY0uqzVBearFclMNMAZ1AvpLovt0NPtLVp
-	zyKCLX2SB5jeL/SnhwsPXJPuegPBoLNUPm83mK+ZpaLTDQvHfF6cercjXYM4DxL0un+A+k
-	QADS4O4H13SfmIZq/wryfYCVRtHQnsecuO20gRXkGSPSUxQ8CdtOXDIO/1AEAQ==
-Date: Tue, 9 Jun 2026 10:37:04 +0200
-From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, richardcochran@gmail.com, lgirdwood@gmail.com,
- nathan@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- krzk+dt@kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, robh@kernel.org, Andrew Lunn 
- <andrew@lunn.ch>
-Subject: Re: [net-next v24 3/7] net: mtip: Add buffers management functions
- to the L2 switch driver
-Message-ID: <20260609103704.443c0b57@wsk>
-In-Reply-To: <20260605021853.3594553-1-kuba@kernel.org>
-References: <20260601112437.2216043-4-lukasz.majewski@mailbox.org>
-	<20260605021853.3594553-1-kuba@kernel.org>
-Organization: mailbox.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLN3Tz0C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01CD1F00893;
+	Tue,  9 Jun 2026 08:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780994436;
+	bh=ogyh4wObZizXAya8DYDVQH81cbqfbWCBqwPAMYcZIC4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=gLN3Tz0CeLBoINPbLoMDEUIeCS40M/eztQaoXb2xOXXCuWH/8ntgJohyObvQ49N/Q
+	 1vu3Qb/12zKwAVIoVIaEfG0NxUHdmW5xIwt6AYmcYQqhb/7ZS8P7VZlvkzuHG+81WE
+	 zBsafO+3vZ4CFTAr/PkIfa3TnPo1G736JHlBBX2/FTwVZDKeB9VpMyyUvfwl58YDPy
+	 p4derCnh8YJvfxsZaBUuaOqjHlp7BGDxE+Cbo+0O9Bo/cxQe23lKWqRQ9PpBk8KF1p
+	 Q/HbK8FCDH/RjSQSV+WqD9F2nxhyv6gZkuPeP/bbJb5Uamr+iW8Qluy335nZegcijS
+	 4FljBATGIB1Gg==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, Chancel Liu <chancel.liu@nxp.com>
+Cc: shengjiu.wang@nxp.com, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, 
+ festevam@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ Frank.Li@nxp.com, s.hauer@pengutronix.de, linux-sound@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+In-Reply-To: <20260528020725.2265321-1-chancel.liu@nxp.com>
+References: <20260528020725.2265321-1-chancel.liu@nxp.com>
+Subject: Re: [PATCH v2 0/3] ASoC: imx-rpmsg: Add headphone jack detection
+ and driver_name support
+Message-Id: <178094123266.20828.2548677822968710520.b4-ty@b4>
+Date: Mon, 08 Jun 2026 18:53:52 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-MBO-RS-ID: 44354306cdec518454b
-X-MBO-RS-META: bmemnt9kx546q4uk8kkttrrnxxn5ua5h
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1653; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=XSjoHKs8MCMIjerSDcjBJdrB/+DJHhLIab/p1Ghmjxg=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqJ9Fxq985rl6kfTLCWLnzgyx0mjqIxkqYD996p
+ GmnbAq+9+WJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaifRcQAKCRAk1otyXVSH
+ 0Pz7B/9FpjAQLHNUdUnnW0vYfUAIj7d1B+K/0BzPsIUnYoaLa/9/3mAYK+III9/dbbmJ5lIeciG
+ BCywHAC0/i96S9Ocrz8FYBu6NXNozRr9GVGV2UrbqjjhaNKq/LI2fXnpYhPWj0jsPPWMX8/PPrr
+ /c2nrMWRmZMhm2BrgvQI5FOyFqjMhAMl87ZfhHzxvvS5POknlQQw4Cb79LrELy2L4iuMgC+9PiX
+ Jk121hJBNFh9wF4ozz83VsyVui5ZSg28uV+snrfVPV9/vm6E2w5RQMEp2zn2r8vAnllRum0htVE
+ O2hed+mhbUu87ZlXDJavMdPzvvCturASxUp9R2Jsb2CnhHkr
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hi Jakub,
+On Thu, 28 May 2026 11:07:22 +0900, Chancel Liu wrote:
+> ASoC: imx-rpmsg: Add headphone jack detection and driver_name support
+> 
+> This series adds two features to the i.MX RPMSG ASoC card:
+> 1. Headphone jack detection via GPIO: Introduce the "hp-det-gpios"
+>    device tree property and use simple_util_init_jack() to
+>    register a headphone jack with GPIO-based insertion detection.
+> 
+> [...]
 
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: mtip: Add buffers management functions to the L2 switch driver
->=20
-> This patch fills in mtip_alloc_buffers() and mtip_free_buffers() for
-> the MTIP L2 switch driver, replacing the previously empty stubs with
-> real page_pool setup/teardown and tx_bounce buffer allocation/free.
->=20
-> > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c index
-> > 1d1005a42306..5b5229ee411d 100644 ---
-> > a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c +++
-> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c @@ -892,11
-> > +892,101 @@ static void mtip_get_drvinfo(struct net_device *dev,=20
-> >  static void mtip_free_buffers(struct net_device *dev)
-> >  {
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	int i;
-> > +
-> > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
-> > +		if (!fep->page[i])
-> > +			continue;
-> > +
-> > +		page_pool_put_full_page(fep->page_pool,
-> > +					fep->page[i], false);
-> > +		fep->page[i] =3D NULL;
-> > +	}
-> > +
-> > +	page_pool_destroy(fep->page_pool);
-> > +	fep->page_pool =3D NULL;
-> > +
-> > +	for (i =3D 0; i < TX_RING_SIZE; i++) {
-> > +		kfree(fep->tx_bounce[i]);
-> > +		fep->tx_bounce[i] =3D NULL;
-> > +	}
-> > +} =20
->=20
-> [High]
-> Now that mtip_free_buffers() is no longer an empty stub, can the
-> mtip_open() error path tear down buffers that another active port is
-> still using?
->=20
-> Looking at mtip_open():
->=20
-> 	if (fep->usage_count =3D=3D 0) {
-> 		...
-> 		ret =3D mtip_alloc_buffers(dev);
-> 		if (ret)
-> 			goto mtip_alloc_buffers_err;
-> 	}
-> 	...
-> 	ret =3D mtip_mii_probe(dev);
-> 	if (ret)
-> 		goto mtip_mii_probe_err;
-> 	...
->  mtip_mii_probe_err:
-> 	mtip_free_buffers(dev);
->  mtip_alloc_buffers_err:
-> 	if (fep->usage_count =3D=3D 0) {
-> 		netif_napi_del(&fep->napi);
-> 		clk_disable(fep->clk_ipg);
-> 	}
-> 	return ret;
->=20
-> mtip_alloc_buffers() only runs when fep->usage_count =3D=3D 0, so the
-> page_pool, fep->page[] and fep->tx_bounce[] are shared across switch
-> ports and only allocated on first open. mtip_close() reflects this and
-> only calls mtip_free_buffers() when fep->usage_count =3D=3D 1.
->=20
-> When a second port is opened (fep->usage_count > 0) and
-> mtip_mii_probe() fails, the mtip_mii_probe_err label still calls
-> mtip_free_buffers() unconditionally, which destroys the page_pool and
-> frees the tx_bounce buffers that the first, still-active port is
-> using.
->=20
-> Should the mtip_mii_probe_err teardown also be guarded by
-> fep->usage_count =3D=3D 0 (or the labels reordered) so buffers are only
-> freed for the last user, similar to mtip_close()?
->=20
-> After this change the previously harmless call becomes a real
-> teardown, so the surviving port's NAPI path (mtip_switch_rx() and the
-> later mtip_update_cbd() refill) would dereference a freed
-> fep->page_pool and NULL fep->page[] / fep->tx_bounce[] entries
-> whenever the second port's PHY probe fails while the first port is up.
->=20
-> > =20
-> > +static int mtip_create_page_pool(struct switch_enet_private *fep,
-> > int size) +{ =20
-> [ ... ]
-> > +}
-> > =20
-> >  static int mtip_alloc_buffers(struct net_device *dev)
-> >  { =20
-> [ ... ]
-> >  	return 0;
-> > +
-> > + err:
-> > +	mtip_free_buffers(dev);
-> > +	return -ENOMEM;
-> >  }
-> > =20
+Applied to
 
-Thank you for sending the AI review.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.2
 
-Please find my comments:
+Thanks!
 
-- I've gone through them and yes, there are a few issues found.
-  However, those are IMHO not critical ones.
+[1/3] ASoC: dt-bindings: fsl,rpmsg: Add hp-det-gpios property
+      https://git.kernel.org/broonie/sound/c/1558039bea60
+[2/3] ASoC: imx-rpmsg: Support headphone jack detection
+      https://git.kernel.org/broonie/sound/c/ec74d4f934a6
+[3/3] ASoC: imx-rpmsg: Set driver_name for snd_soc_card
+      https://git.kernel.org/broonie/sound/c/af0d8aa7fcd5
 
-- Some issues are not valid at all - like concern what happens when the
-  switch is run on multi processor chip - both imx287 and vf610 are
-  single core chips.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-- It seems like the AI review is "progressing" - i.e. there were no
-  issues found with v23 for this particular patch. I do guess that the
-  new Orc Mode from [1] has found it.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-- I do guess that different AI agent would generate different review
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-- The aforementioned issues could be addressed with a fix patches -
-  dragging along (and preparing for upstream) patch set with ~3400
-  LOC (which is rejected by non-deterministic AI review) takes too much
-  resources now.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
+Thanks,
+Mark
 
-To sum up:
-----------
-
-The MTIP driver for v6.6 kernel (YPRR Scarthgap) with and without
-PREEMPT_RT for vf610 and imx287 as well as the v24 for net-next can be
-found at [2].
-
-
-Links:
-
-[1] - https://netdev-ai.bots.linux.dev/ai-local.html
-[2] - https://github.com/lmajewski/linux-imx28-l2switch/branches
-
-
-
---=20
-Best regards,
-
-=C5=81ukasz Majewski
