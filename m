@@ -1,98 +1,124 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E40F224D6;
-	Mon,  8 Jun 2026 20:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D267C3B27DF
+	for <imx@lists.linux.dev>; Mon,  8 Jun 2026 22:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780951581; cv=none; b=BS+g97PyjufEq4QVLpeQXGTFupDRn2r2iMmcvs5WPu13dPJGUjNFB9Nf80fIJWQMHMkGrUQGBSYDk3s8JsCCrhmao9uSV8oMA+pHILc5rA7dmGHHTo/LAu75+IusnjsrwZQ2HUSviYxvCDOacp9Ats1Yz4fg9hi+e0UjcCqFCSg=
+	t=1780958038; cv=none; b=Kkl4XcbPe5ZEkr6l2Eg1YlD4LwrNn+6Z5ZZs55+ZeBnquhxDGZfoHEFrdEx0KF9ipFLUnqdELO+guO7x3ft7nrnXYFYQttejp7buZjxcDIlv8nxJSsfuIP1bJy6WEtE5QQY8vTI3iwlJBV7JexWxgIlRgLCq+phsJpE8T0Or5lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780951581; c=relaxed/simple;
-	bh=0QPCDQzTCPZNBhl21/y+K5HBQJmbRX+dtKa9HQj9X9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pxw+0nVo9pEZ2jj+zmdOtk90pyc5SUWkifo9KaD3u8BvYpNkeEEmeWGLqt+EOWZKrFuyK7xFxGExUiPmJ2K+Ob+PAcVpxK4RT65fvThtajKOMsAGmd8VYvKTpoA5CA3F9vtNoftujRc8U+wExcFg0DTuuXSlq7t5ksZNZ6UwPfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TxjZYV02; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780958038; c=relaxed/simple;
+	bh=/4PY/H59YoQ50ZoEtalWmFIRhOc6tOgOmFK2WHTrmE0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kwbwuEreikXwx/XZSH/M9gCNeoRg0HRJUy/P5NO3ZJ6MiU1JT3c+zgh5LxowBUitgDhOwczGh6VHlItkk0J6TunMo/aYS/f+9dAU17tzNmEkzS8au2hokSa9rtxSqjxDN4dgBRwIZvlMAthDNrlUFZmqMqNjmpXt8UOWlM4lTas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=afTSL/Vp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TxjZYV02"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947151F00893;
-	Mon,  8 Jun 2026 20:46:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="afTSL/Vp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5881F008A3
+	for <imx@lists.linux.dev>; Mon,  8 Jun 2026 22:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780951580;
-	bh=p2BLSVr+4kvNFJjBTGY4+qp78B1yuQ5e8zYjH+i9H6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TxjZYV02X/cedFJMm0LwdABiIWZfT70z2K8k8ZfEWYH9M+w8XlnGbSJoVN1XNH1wu
-	 CYE8p2Zv7777w3ZYhrrD4ux3Y38j7tDNX4WPXGMYbnrplTURSM+EqivbOZRXtTK0X2
-	 efwcYS2XFiHIHCaCJ4+8GUEbGtp2CaGyiW0xeNfkz/ppkzBlpCQnaDgdrai4q6VM4k
-	 9A7FrAGVM72Jj1aoUYwlSRXy/vnyRvlKbQx6flxPuuA+jLWNEDcgAxpJW0Z1xe9owU
-	 MLPccBWhxkBaFmW9rHQaigvlgrUFHTtTV7K5XbNp5XmlDhzUxWAmEeNohzjQmRNSsj
-	 VmqD7PYlMgPbQ==
-Date: Mon, 8 Jun 2026 22:46:16 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-Cc: Bryan O'Donoghue <bod@kernel.org>, 
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, Loic Poulain <loic.poulain@oss.qualcomm.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	Suresh Vankadara <quic_svankada@quicinc.com>, Vikram Sharma <vikram.sharma@oss.qualcomm.com>
-Subject: Re: [PATCH v2 1/7] dt-bindings: media: qcom: Add Shikra CAMSS
- compatible
-Message-ID: <20260608-reliable-vivid-stork-f4ea6c@quoll>
-References: <20260608-shikra-camss-review-v2-0-ca1936bf1219@oss.qualcomm.com>
- <20260608-shikra-camss-review-v2-1-ca1936bf1219@oss.qualcomm.com>
+	s=k20260515; t=1780958036;
+	bh=+sd0YG4NJYnrqOJ3l4vioxCsQYopEHLM78GABTPI8G8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=afTSL/VpAcfmg9KaNA3tK3UABJm13fvJBePwt4nmkI0QyMy30zXxTA0x7jJmUH3f8
+	 +pQe29lMWvHYzNQngRJwSzI0fh+E+cPFMzssEbunZzfrI96M5HP2lIBUWrhj/Sqtnb
+	 aOD8qxeMwg4fY8QMVxHhEo/AkE+fVf2zRmIoULsGYwWBLg00waXPYtS9AurVlohqHd
+	 5GxYeQZ/FD3w5vrTcypUYywqEYu2dsrYb3GaWqWK/InabY7BrbccMQtwC7skt+VQMF
+	 LKGp40LcihtkIcGSfKTb0ekiecObpuGrMogBrBR5xwDsTprsMNVmWL//dHFrwoz7Wo
+	 7/GyPXXe6pBEQ==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aa5f11deb2so5306932e87.3
+        for <imx@lists.linux.dev>; Mon, 08 Jun 2026 15:33:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9+1SSPze04PlfLkCZgVGAymVJrU6TdITq6mXlqOTy7jizU8/701iPY96CGlWDvEjIdT8M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzLDmZPpIug2iddwOO/IrW6H3P1rC4TBH+HSdthcrDssW7MztO6
+	PZ8B79sisIBcmtG2UaErGY7vLgawYMjRmEWmyjb2AxL/+YGHkMKdrnTljltIqxOQlGCwRmtWj3Y
+	Dj1nZk+//0wsLjcNRtry/tvzCJEzIpCU=
+X-Received: by 2002:ac2:4e01:0:b0:5aa:6115:e4b6 with SMTP id
+ 2adb3069b0e04-5aa87bb76e1mr4983094e87.21.1780958035220; Mon, 08 Jun 2026
+ 15:33:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260608-shikra-camss-review-v2-1-ca1936bf1219@oss.qualcomm.com>
+References: <20260504131148.3622697-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260504131148.3622697-7-khristineandreea.barbulescu@oss.nxp.com>
+ <CAD++jLnk4q7L_cFzz+1gKkAqwhv=TW1_XSepuii7b_PHF7EPqQ@mail.gmail.com>
+ <704e9e7b-0f45-4ed3-a686-9e20056eab2a@oss.nxp.com> <CAD++jLk-7UqjCsM4jCdRmBMMaNNXe8Gi_E00fJ_MRMsEGQcMZQ@mail.gmail.com>
+ <48494e7b-4cba-4372-9090-f40240d820c4@oss.nxp.com>
+In-Reply-To: <48494e7b-4cba-4372-9090-f40240d820c4@oss.nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 9 Jun 2026 00:33:43 +0200
+X-Gmail-Original-Message-ID: <CAD++jLme25qcWpzVa44VwTmnAf+Rt7suF8DgUs5tGyM_UyNbyw@mail.gmail.com>
+X-Gm-Features: AVVi8CcCR-63_uafKf1goL660j2RzMYR76efORAe2ZPvWCw_f0wQxO2Fdy03EZE
+Message-ID: <CAD++jLme25qcWpzVa44VwTmnAf+Rt7suF8DgUs5tGyM_UyNbyw@mail.gmail.com>
+Subject: Re: [PATCH v9 6/7] pinctrl: s32cc: implement GPIO functionality
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, Larisa Grigore <larisa.grigore@nxp.com>, 
+	Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Srinivas Kandagatla <srini@kernel.org>, Alberto Ruiz <aruizrui@redhat.com>, 
+	Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org, 
+	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Vincent Guittot <vincent.guittot@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 08, 2026 at 07:36:38PM +0530, Nihal Kumar Gupta wrote:
-> Shikra contains the same Camera Subsystem IP as QCM2290. Document the
-> platform-specific compatible string, using qcom,qcm2290-camss as
-> fallback.
-> 
-> Unlike QCM2290, Shikra omits the CDM and OPE blocks, requiring only a
-> single IOMMU context bank instead of four.
-> 
-> Signed-off-by: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-> ---
->  .../devicetree/bindings/media/qcom,qcm2290-camss.yaml    | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml b/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml
-> index 391d0f6f67ef5fdfea31dd3683477561516b1556..4f39eefb4898ebc22117407f26cfb4f41deb111b 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml
-> @@ -14,8 +14,11 @@ description:
->  
->  properties:
->    compatible:
-> -    const: qcom,qcm2290-camss
-> -
+Hi Khristine,
 
-Do not remove blank lines.
+On Tue, Jun 2, 2026 at 10:05=E2=80=AFAM Khristine Andreea Barbulescu
+<khristineandreea.barbulescu@oss.nxp.com> wrote:
 
-> +    oneOf:
-> +      - items:
-> +          - const: qcom,shikra-camss
-> +          - const: qcom,qcm2290-camss
-> +      - const: qcom,qcm2290-camss
->    reg:
+> The new version (v10) has been updated to use gpio-regmap, with a virtual
+> regmap bridge dispatching GPIO accesses to the underlying SIUL2 register
+> blocks.
+>
+> I am not fully convinced this is the cleanest model, though.
+> SIUL2 does not expose GPIO as one regular register space: direction is in
+> MSCR, input values are read from PGPDI, and output values are written thr=
+ough
+> PGPDO. These are backed by separate regmaps in the driver, while gpio-reg=
+map
+> expects a single regmap.
 
-With this fixed:
+OK I did miss that detail earlier, I definitely thought it was using a sing=
+le
+regmap.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> So the current path becomes:
+>   gpio-regmap -> virtual regmap -> MSCR/PGPDI/PGPDO regmap
+>
+> The version was updated this way so we can review the approach on top of =
+the
+> current code. If this is still the preferred direction, it can be polishe=
+d
+> further. Otherwise, I think direct gpio_chip callbacks using the existing=
+ regmap
+> helpers might be a simpler fit for this hardware.
+>
+> What do you think would be the preferred direction for the next revision?
 
-Best regards,
-Krzysztof
+I'm pretty much happy with either version.
 
+I see your point as to why you don't want to use gpio-regmap.
+
+I also think the virtual regmap thing looks pretty OK, it's complex
+but the driver is complex anyway.
+
+What could make the gpio-regmap approach is that it will probably
+get extended with get/set_multiple() at some point and then you
+will get that improvement for free.
+
+But I think you are the best person to choose what to use here,
+if you don't think the virtual regmap looks good, then trust your
+intuition and go back to the old design.
+
+Yours,
+Linus Walleij
