@@ -1,142 +1,211 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010020.outbound.protection.outlook.com [52.101.84.20])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3993DEFFC
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 08:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780993858; cv=fail; b=QBA6w90nSIeLi+52GgOg0eeKmoO7MmXDz2amqgUG3y66nIBHSBVWOhl7YdhovjwS8twxyaX8kM2PMgqVQ9jNIUFLPZT1VQXskSDs9R/+/Evnng1u9d2zccu8RpwT4kLDasa2jIku508ZCp/DzSCx7xNWAuHpq7ohUMWhv44ZWSs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780993858; c=relaxed/simple;
-	bh=Tl0XmvzIj3bNnoWXTOY6fB59I5waJnCfYynvTD7u4q4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=L94BdIlczFeavsquTX8gJESfqaq0h3ix/H6Xr+6zDjgVpmLrBz557crlFoVPFWrZr9+HB3q2YvniEosX+nZ9hyFH3zJydn8ZNsw+Y3gg2WsNJs/Irdi4sOQSTgvI5ZCsJnQbyyAk6a7mbTPKDYCIx/ppm1fJrbeMFfXNPKURKnk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=yEczv0Gz; arc=fail smtp.client-ip=52.101.84.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C38C3EEAC0
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 08:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780994247; cv=none; b=XbxhRnPvHHXlZmVNiJ4VWpaKnDI/euxQbzqt7pddkFb5qArMEyllYtmEZ8OUFuWYtwDUCn1G0KEbSWwN7x0z6U+B3GQJf7A1Eog0w7aKJiueawEgt8rV7jbSHptqd2DBsmS9PWq2Bh1BxmEVWEQ3ZzcolvmZWnEVDKq8G3OHAOw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780994247; c=relaxed/simple;
+	bh=l7Exmz9p/uIitXB5p6TW0/WOEv3+e2EoOmnpCMBj2wc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ItAZuLS4qhPU9CieszacxZRER1QI2+wedwk8IuvazJDUfhhbzNJb9127Z5vk4mRFxfqLPWnlX2DdCiaM4ZQuIpRwAscs7COyHfBuxf7a462GheVg+LJ7lkcutQLecwDC4r4yHjSg/EJezDmVviPRe6rtaBrwP+xFDdsl2piiwz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=RPiYH9VX; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="yEczv0Gz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ApF7Gwz4evKEyeUAqXukz4oYdp31nuzE8Po3qN4W+toGNaM7J7OQOGsfXkHJeSkr936zPJe5D+ufk+H9wZnb54AZC9Nl6V6r957GlZkoY7HnrQyNkg2POgJtQ91MvCZXSloYJ99FmbxrApgWD2MmxCzI5yEIWcUApb+0qmUP8gOS23FqeSfTzTgOmkioFgODSCgFR1WbNYiyR6Fl5i42CX/L+gx39afQzFmDHwZxDY/h7I6YmAGhOQ/92WKd5AHrlZp7j90uOj4OY0ORMxyPNognZHmSYjDMvRsLz6gyHj1DVm9I9dWuQ4mnu5hcQIlM+YtbzEEorWwbA/xY6rQSPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3R0ahbIHG3t80occ2STzev2g5gbwSy/D+BGWspE8/4E=;
- b=UGzV6fTmxa2Oeen2fzyGL6fZ+BqQt3U62gFtYvg2JziQh1W27vz+NaQN3D39SORDqPOZP4pm5VC/6F3m3rCUzbPcberFX7NvlkEFwJSgTQnv0A5infT4L/vfwdGYvBXsykqN+ghKAU4Xjf4uAcD9DnBHDF5O+5SgaenHizxecnozpSAfUthGa4NwcdPOsscrvYt7WFZPCM00VS8p0Pqe6e8slmjvbzdVrJxVT7v99zaQ9w4oXP99Du7BC4hM3Z9K8B+h93fWOhYLqgVvXbqn3g8UgnDQj4fyU+6QDbEkho9oWs7zCBhEAYPILRwhyEPmuNhMXjyl15hXJHRkShoBFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3R0ahbIHG3t80occ2STzev2g5gbwSy/D+BGWspE8/4E=;
- b=yEczv0GzXjEsjwP7nDKXSzT9BtTGeMcjujQyQ0SUnPIZC+2EgfGXWLhH1j/Tc/6n2c7pSXA7D9yxkPuI3WRNiFO98atdaaifYlpHHVn5qPf8GO/ZsFqJ39Y6P3QfqzuMf+WnylFBd4vDuAcVlVysW2/EKUmhn2WB0eTVU2QxsItKLdxNwCMhSIApwyIwFUW5sBUZwWuFjrz8hn4FMED2qOwUz9PaguhPWh2LceLfvhCXSxuaHoNMm9fFfe1XSSdOxxM1I8k7afOJ6S/MHLC0sKGPzP9rf2lS8YRh8UEAxm/KPhRh3IaS+ZSPK8PiYf9/LKlWC8xoAbKr6m3RVvYUKA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MRWPR04MB12330.eurprd04.prod.outlook.com (2603:10a6:501:7f::23)
- by VI2PR04MB10668.eurprd04.prod.outlook.com (2603:10a6:800:26d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Tue, 9 Jun 2026
- 08:30:52 +0000
-Received: from MRWPR04MB12330.eurprd04.prod.outlook.com
- ([fe80::ca22:f8c8:6aca:7889]) by MRWPR04MB12330.eurprd04.prod.outlook.com
- ([fe80::ca22:f8c8:6aca:7889%6]) with mapi id 15.21.0092.010; Tue, 9 Jun 2026
- 08:30:52 +0000
-Date: Tue, 9 Jun 2026 16:33:54 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Jacky Bai <ping.bai@nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3] clk: imx: Add audio PLL debugfs for K-divider control
-Message-ID: <aifP4qpH/oJhGd+I@shlinux89>
-References: <20260604-imx8m_pll_debugfs-v3-1-4e331ebc85d7@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260604-imx8m_pll_debugfs-v3-1-4e331ebc85d7@nxp.com>
-X-ClientProxiedBy: MA5P287CA0261.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1f1::17) To MRWPR04MB12330.eurprd04.prod.outlook.com
- (2603:10a6:501:7f::23)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="RPiYH9VX"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gZMj80rBzz9tXD;
+	Tue,  9 Jun 2026 10:37:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1780994236;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NeflN5T28HahSSS6B50cN92fDni13v9ufrgZcj6h5yI=;
+	b=RPiYH9VXQKDM42/5vsxxIwbqpWCXmAWSGRa5js/gMS3D6qSjYnJ1RphKo0vO7Iyifj32qI
+	f9m7KUqHr7kFocN4TPV49/mA+WI9nN2Mtr4WBW0TMkSb6Z18jJGf/nxBGKNaCUY/0kVCpa
+	bC1OeNR1BAHN2zrmQrj98yrglCDOcYKzP+qAFY0uqzVBearFclMNMAZ1AvpLovt0NPtLVp
+	zyKCLX2SB5jeL/SnhwsPXJPuegPBoLNUPm83mK+ZpaLTDQvHfF6cercjXYM4DxL0un+A+k
+	QADS4O4H13SfmIZq/wryfYCVRtHQnsecuO20gRXkGSPSUxQ8CdtOXDIO/1AEAQ==
+Date: Tue, 9 Jun 2026 10:37:04 +0200
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, richardcochran@gmail.com, lgirdwood@gmail.com,
+ nathan@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ krzk+dt@kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, robh@kernel.org, Andrew Lunn 
+ <andrew@lunn.ch>
+Subject: Re: [net-next v24 3/7] net: mtip: Add buffers management functions
+ to the L2 switch driver
+Message-ID: <20260609103704.443c0b57@wsk>
+In-Reply-To: <20260605021853.3594553-1-kuba@kernel.org>
+References: <20260601112437.2216043-4-lukasz.majewski@mailbox.org>
+	<20260605021853.3594553-1-kuba@kernel.org>
+Organization: mailbox.org
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MRWPR04MB12330:EE_|VI2PR04MB10668:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1241fcb4-db6b-43bf-c301-08dec6016aa3
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|7416014|52116014|376014|1800799024|38350700014|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	NpW8QeLsQ3bhavpJ3ioDGe2uKeKV91sv2PXt07DlhJP3wlz6xGuzuEfTNf2I0otWiZWmekrHpNIX7YPtd6p+LioW2Wkg7eO3aprb7yarlWRgU3Mdhr7a+ER6oHMGb6SShDHtoz7cM3wHXiJXB08+bFUgaGauzf+TO0waE2/E5X0oum4Xd7xLF0upoSaDtUsyYQUfTij/kO040vmEyQfau/mB2IgSyHAP88AfwnRDTadUeMp70O4HQxc4C8PRLf8Z4FZB3+7knv2PZgmXnleDBor0jYV1Z53FEPRmvcUAC+N3/U5HppkqDCJKaGk3DykhTBQXFx7MbOgI7nZJ/syeJo8ehhFoK/HaBOFOMFaLdv/3AsH0Qgan+wvFYLaX9Nsy11lOV+O7gg5gYtvnhTnQ5/OjuCGKj4A/kwcnl7lQrGg9cowJYY5cidyfdbcZM2x5c4yTSy5fZu4Af8uZiMWbw0MwTVt7Sp3OJBE9v/B/+Iic0v0XSJ0riqswxZONosli5iUAlFMeMx4WENclIKv+9QebfIwjsieUZGzezFtFkJSxic4wGZsfommkaSlfBdEZAhIAGKq1QTTWyBV2LHyMyn07jcVKqNp44RhUZNtJD0RmYupDWvbm2H6PZ6m0fFpLHDYGcZGf5hutH/tspy2YoFKQDyqEFmbhaEioMJlsBLrcQXPh6WCxQL+P6fP7Lbb344uHqC26iJKuj0CrWYQVULuP3oYft8E36kU8EcvUP1ucWBvav4y672tyIiQ2xNAV
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRWPR04MB12330.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(52116014)(376014)(1800799024)(38350700014)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GtBmJVhIyw0OkzJN/9wROqwqwNn+5HfzemAkBiUuFVJcwjmAXktu0S3CxOke?=
- =?us-ascii?Q?FGv+Xwd36e6yY1cTpc2j2Jy69g4i+qX6QQkkeCBbAy67fO4VqyFvmYfp/qsA?=
- =?us-ascii?Q?/ncqO0+EFU36EFecy8ZpUEu0lM1onnLWF5u2VPkBaF8/cyZV0EcFVFJdtiE0?=
- =?us-ascii?Q?YKWc57wiXUzz8bNglvVtw4kRtK1byRakm5YTyCPCs8je+wo2eH2nduC/gLHR?=
- =?us-ascii?Q?1K9udKrKx2toBmB2bM3WVIRlED1B0dO0Xt1ZyGsjF50fuoKxk3UJfvCdxFAQ?=
- =?us-ascii?Q?Kcn326JlDkAtw2BxMMICul9H4JpeSjQWxrCda5JyR5KTQnj/gid3D52n36SS?=
- =?us-ascii?Q?ljJkcu4VKMz0x5VyV8/Mvk6DaokLNbZ/SRlXfWHm6+yaVetD1psGKpn5Kpx5?=
- =?us-ascii?Q?liNhPgmtlCI1I+WOutrX6Icjx9JiQAjffFndfPvKa92ed6jo30sqUgBgXbg+?=
- =?us-ascii?Q?o3DS2tRy7GLlofqwVWIqA9lTbyT3aU9osewCpS3hUvbDquv2ajXH2u1kQl3b?=
- =?us-ascii?Q?TsgjcMyQFvE9KEhL/gfri6PTlF6OHjd68Hrad/FOgrqkozN6w8CWxAVw7Q0m?=
- =?us-ascii?Q?gm1q9ldYzAHyTcmqbMs8lA7ohUGoNwrWRq3HiTq5Q4hINdz7/Uy8gli4BbOg?=
- =?us-ascii?Q?xI9Nq0c9XCHdLukCCcHQzskeDy4+SJ9OzM+5kaRoNGBoskNvV4V1pSr+27QT?=
- =?us-ascii?Q?JdtrL/DHqdJ4J4fZsCU3p4qJYHYDRrWYiSI/CFkFUB/s4qVja14xjH3DW2D5?=
- =?us-ascii?Q?VoMbK5BBIUioEZ/ViBBFGzbZcZr45py3kErIomXD2UIyud+GyNEPvFecWOGW?=
- =?us-ascii?Q?a1xj/rU6Xdm2sTXU+xAHtgEaLf9uKLSIWO3UGvVyXgo5wwWfwrj1rWBFZ/Nn?=
- =?us-ascii?Q?yUU0TOtSHo213xqbVvfllBiLN8TMwDbzHSEuqOo7HQps7fLzVmGpZBcaQ/fZ?=
- =?us-ascii?Q?KMf6y1zsgu0aWntYWX55fJc8cE3eN5oy5OB5FL5JO/BpvytzWeMF9TAD8uG5?=
- =?us-ascii?Q?esZvGCklQKT/1bE8WaBKJZ0EO8+/KMmX0WuY+VgdmP+MDdLQ2QNTnN9xP4ra?=
- =?us-ascii?Q?TPujPN9e8zJLbX++Dys0Xl/aRGa9IMKuYkwxgoix2vpubpOfKqivTatwy8IN?=
- =?us-ascii?Q?i3dOLSbxrCWMmJsH2lwajjcZhZTK+fMkGDDcMb8Amvhdc1i9dRp5oX1l1t3G?=
- =?us-ascii?Q?ybJVygyoRlq1r+HLw0BVAp70uq92odd99lYrUCg0AliWPaLGnauLwKICr9RP?=
- =?us-ascii?Q?ATBqDRJ8dtlxxpmPj9+y7GJe03jVFvB1iRUGFHjRAdhRw3Uv4LrDMJFxWlgG?=
- =?us-ascii?Q?h6RgfHcnCi+WxVrqH2v2JrJBeq0g32Aq4+s2kB9w7w53MDBapjGnCWmpzyrv?=
- =?us-ascii?Q?7UHM3ZpHGJdk0rGyxdqEmK3ObvwwO3eBTfi7g4xwH1GvopXM9279/TRMZ3+A?=
- =?us-ascii?Q?gLhoiGL44Lqo6h46MEUVvMXsgWkFdrrGu/xBxiKhRhlBDJKYkR94qreQW886?=
- =?us-ascii?Q?j/07WI/sx4RlDWpkChMF8fSTlT4ZsYzawb3ozF3th2RAz5m4wmz4+t1EQQUg?=
- =?us-ascii?Q?bWB+DBojjuapbl6D+8XOUg/TRWM26RKnHxC0/q8jp976QZ+Ba78hmULAVd06?=
- =?us-ascii?Q?E3Xd1tG2QEvd1PZhQC79d0/uAmtlnxDUM7NUAAcENLgGwGAYcEPy6yZLfrq8?=
- =?us-ascii?Q?/QwLwNVyFVA7JTOKwyLAp0t3EocKzgMqrGzS9H/w1j6xXdpWesYfFCqxY/ur?=
- =?us-ascii?Q?1kcOQdRXXQ=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1241fcb4-db6b-43bf-c301-08dec6016aa3
-X-MS-Exchange-CrossTenant-AuthSource: MRWPR04MB12330.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 08:30:52.0773
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6xmHSDeLsHfAGl+BzAAR1VAvagvtU4YXwLbIi4em9YOX3f4iNAVTe0wYRHru/4lDdJtdNk5nxkYNk3OTLfegNw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10668
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-ID: 44354306cdec518454b
+X-MBO-RS-META: bmemnt9kx546q4uk8kkttrrnxxn5ua5h
 
-On Thu, Jun 04, 2026 at 09:48:01PM +0800, Jacky Bai wrote:
->Add debugfs support for runtime tuning of the audio PLL K divider,
->which enables fine-grained frequency adjustments for audio PLL.
->This is used for:
->  - Audio clock calibration and testing
->  - Debugging audio synchronization issues
->
->Two debug interfaces are exported to userspace:
->  - delta_k: It is used to adjust the K divider in PLL based on small
->    steps
->  - pll_parameter: It is used for get PLL's current M-divider,
->    P-divider, S-divider & K-divider setting in PLL register
->
->Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Hi Jakub,
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> net: mtip: Add buffers management functions to the L2 switch driver
+>=20
+> This patch fills in mtip_alloc_buffers() and mtip_free_buffers() for
+> the MTIP L2 switch driver, replacing the previously empty stubs with
+> real page_pool setup/teardown and tx_bounce buffer allocation/free.
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c index
+> > 1d1005a42306..5b5229ee411d 100644 ---
+> > a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c +++
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c @@ -892,11
+> > +892,101 @@ static void mtip_get_drvinfo(struct net_device *dev,=20
+> >  static void mtip_free_buffers(struct net_device *dev)
+> >  {
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	int i;
+> > +
+> > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
+> > +		if (!fep->page[i])
+> > +			continue;
+> > +
+> > +		page_pool_put_full_page(fep->page_pool,
+> > +					fep->page[i], false);
+> > +		fep->page[i] =3D NULL;
+> > +	}
+> > +
+> > +	page_pool_destroy(fep->page_pool);
+> > +	fep->page_pool =3D NULL;
+> > +
+> > +	for (i =3D 0; i < TX_RING_SIZE; i++) {
+> > +		kfree(fep->tx_bounce[i]);
+> > +		fep->tx_bounce[i] =3D NULL;
+> > +	}
+> > +} =20
+>=20
+> [High]
+> Now that mtip_free_buffers() is no longer an empty stub, can the
+> mtip_open() error path tear down buffers that another active port is
+> still using?
+>=20
+> Looking at mtip_open():
+>=20
+> 	if (fep->usage_count =3D=3D 0) {
+> 		...
+> 		ret =3D mtip_alloc_buffers(dev);
+> 		if (ret)
+> 			goto mtip_alloc_buffers_err;
+> 	}
+> 	...
+> 	ret =3D mtip_mii_probe(dev);
+> 	if (ret)
+> 		goto mtip_mii_probe_err;
+> 	...
+>  mtip_mii_probe_err:
+> 	mtip_free_buffers(dev);
+>  mtip_alloc_buffers_err:
+> 	if (fep->usage_count =3D=3D 0) {
+> 		netif_napi_del(&fep->napi);
+> 		clk_disable(fep->clk_ipg);
+> 	}
+> 	return ret;
+>=20
+> mtip_alloc_buffers() only runs when fep->usage_count =3D=3D 0, so the
+> page_pool, fep->page[] and fep->tx_bounce[] are shared across switch
+> ports and only allocated on first open. mtip_close() reflects this and
+> only calls mtip_free_buffers() when fep->usage_count =3D=3D 1.
+>=20
+> When a second port is opened (fep->usage_count > 0) and
+> mtip_mii_probe() fails, the mtip_mii_probe_err label still calls
+> mtip_free_buffers() unconditionally, which destroys the page_pool and
+> frees the tx_bounce buffers that the first, still-active port is
+> using.
+>=20
+> Should the mtip_mii_probe_err teardown also be guarded by
+> fep->usage_count =3D=3D 0 (or the labels reordered) so buffers are only
+> freed for the last user, similar to mtip_close()?
+>=20
+> After this change the previously harmless call becomes a real
+> teardown, so the surviving port's NAPI path (mtip_switch_rx() and the
+> later mtip_update_cbd() refill) would dereference a freed
+> fep->page_pool and NULL fep->page[] / fep->tx_bounce[] entries
+> whenever the second port's PHY probe fails while the first port is up.
+>=20
+> > =20
+> > +static int mtip_create_page_pool(struct switch_enet_private *fep,
+> > int size) +{ =20
+> [ ... ]
+> > +}
+> > =20
+> >  static int mtip_alloc_buffers(struct net_device *dev)
+> >  { =20
+> [ ... ]
+> >  	return 0;
+> > +
+> > + err:
+> > +	mtip_free_buffers(dev);
+> > +	return -ENOMEM;
+> >  }
+> > =20
+
+Thank you for sending the AI review.
+
+Please find my comments:
+
+- I've gone through them and yes, there are a few issues found.
+  However, those are IMHO not critical ones.
+
+- Some issues are not valid at all - like concern what happens when the
+  switch is run on multi processor chip - both imx287 and vf610 are
+  single core chips.
+
+- It seems like the AI review is "progressing" - i.e. there were no
+  issues found with v23 for this particular patch. I do guess that the
+  new Orc Mode from [1] has found it.
+
+- I do guess that different AI agent would generate different review
+
+- The aforementioned issues could be addressed with a fix patches -
+  dragging along (and preparing for upstream) patch set with ~3400
+  LOC (which is rejected by non-deterministic AI review) takes too much
+  resources now.
+
+
+To sum up:
+----------
+
+The MTIP driver for v6.6 kernel (YPRR Scarthgap) with and without
+PREEMPT_RT for vf610 and imx287 as well as the v24 for net-next can be
+found at [2].
+
+
+Links:
+
+[1] - https://netdev-ai.bots.linux.dev/ai-local.html
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/branches
+
+
+
+--=20
+Best regards,
+
+=C5=81ukasz Majewski
