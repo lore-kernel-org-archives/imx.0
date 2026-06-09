@@ -1,192 +1,134 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FAF3DB996
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 08:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B715B3EAC9B
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 08:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780995441; cv=none; b=IK4Hm1jpOrWjVuYPcar5SMxDuRFz2klH3VOkA6yraQLsSCK10YPCcNdDteLeOQORZLBpW4TVnxqUTK3KNyye415DtP3ENuKLsQ6blK/lJ0xKY5dRFRjcm+ZudjWGw88nZJe/sl6LeaG7S3xqssPrtpZDZ/3PyLvNl67fk0fAYPI=
+	t=1780995469; cv=none; b=YEF0iz4Mu2Nv1DMMijMheygR0NQWlX/RVI/9uXskm2J3mdrIa3PCc0uglYKFjO01AtlM37M9Fh2v/lKpdMry6uOuqWqwopZIastNELDetiB6lE07KZWFPzh4z8HvQqDYfTrnrwrT1ncfcwfm5JS8yaGlrLoy7MR3b3yKiDm6suM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780995441; c=relaxed/simple;
-	bh=zZCsXnjVimwX+u/Cp9VUCXkd7AOaMc73JPe7POemOaU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=erIIuQFIhCtMPQheMMk6gxxKe3C4m0vnRYd9XNkrdfvD7XOcNq7TbVnDPR0avXyEtpJCbva7oJiKNVS1jIqxX+z5o+9sVOQEsMGDN1sz+WAzA+ubBxIAMqE4/z9kE29TYuJVKWHMixHtuwuWUo58LPFAjdTHlBcByNFyQ/IthOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iGzfCUVa; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1780995469; c=relaxed/simple;
+	bh=snYz/D/hcVPZCP1uH4dkxVp3T3bXMnNXrhtHWe1Be3M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kg1rAbDXuJclIZnJorKxjgzWjLdy3EgrhLOXpIY+mEI4mCQsxqqvFEo6My5wDOufEPI6UtqKPAau1cSr2JK3JDZbPgubnwTvHWBw25VQc4XHccRmLxIkV2k9RYNkY4ucN0LMDI0vyPEsdXSNF6qDTeVd44uG6lgBQck5C2Lv1Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cJtbMDtr; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iGzfCUVa"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68bfcf11050so9607951a12.0
-        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 01:57:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cJtbMDtr"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490aaeabdb4so33002505e9.1
+        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 01:57:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780995437; x=1781600237; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FPwdVwz7ctVs0k+br7o6SIlRqfvmba+MdXedF8Oh3cc=;
-        b=iGzfCUVao+2M2P8urlLuwwl2PPBybv7JzY77OMCON0f1hoWE+8JTI4xePpD7Ov/Txf
-         K194WzqW/PweWssa2rxvEcC+bajg7/iMeit5v6EhuVAhGexmyATaN24XTjNZNNyV1INv
-         evwRqoW5wDJ+r22rjM6hwzy2R25WHRInV7UTFUoW6N7GcmwtfBSlaXImkupJpuqIFSff
-         60rfPSZlzHOe0Gu52GQA7JKXlhkrlqE5mIIgyYe8L85XBz1WNqV1l7jW4+9BkwjErFNl
-         Q4mHHy4bWGFZ3ltKDDRQctHnJmXdmFKNnmL2vbTbgXKJGrFfTefoBwZru64PfnhXMhqV
-         zL4w==
+        d=gmail.com; s=20251104; t=1780995466; x=1781600266; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5J1tSAGT3QEqdiMDMCGFat+rOeDsCvBwWF1wlYWcmPM=;
+        b=cJtbMDtrHbBfd1d+b16l6sWG9aacMQY1ougg5+NPP6erMIHSzyDRMzLr/0W8kBqQ4F
+         b442Y+EsBQdgqI+BpFSI4sV87Mi2ZfOJSst8YTuwVKYJ6aJeDY62UODIl/xQiknkQhGe
+         lIzjycJW1+G+nCCZqY0Y2BKzPEpaWFMxMjov7OFOdAD3y7TcIt2tHBfz2nMdBMY7q0cN
+         lzWbyZ2h67hIhqFtBbYpqYLIz3Pne7itTdq6oEcy14nPzrlryjqdzUbUfu+RbHid4/BC
+         WJDXJ5w+l02VfHsKIRJKx+gD+gQYunSOTKOSYyIDJqsP48IGcPu7RMIpktE+wOQGsBZs
+         bcSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780995437; x=1781600237;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FPwdVwz7ctVs0k+br7o6SIlRqfvmba+MdXedF8Oh3cc=;
-        b=ELupKTHlTHfzfyRVD3w5HQnlCjUmM4vWIqPcBGR8tC8b9jTCJpBuMsJ2b0YZ9d3b08
-         d1CZE9C1NqqheTqouUbVbKbpan+aJ/HHJN2k786xOHwdDMg51rCCqZUOo/si5rubedcv
-         ZBv/yrCUWptO/E0yuLT8h6i3gYTg1XgtRVi8LXCrguNLHo+d4te1/2o89oHOMlzueXru
-         ckDuKP4uCOZ1Hhn6pUCUzZTroDU6LCTap9/1nQSvD3J6i6Gx/9I3596euFkKqJxaC7Yx
-         wDJozUT9Q1HkiXEJvh5PVbhd1Bkc964pohbioCPn+BbTPmaJ1O2onDKG9WrLxO4iCYCy
-         /a/w==
-X-Forwarded-Encrypted: i=1; AFNElJ90L/sIMoQa9Q/5QjdVNU7otgvi95meoHEspb+k7uiqguziGmW4oFwjJjT+Zthd03/hcB4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCJLHh08kUajJVy3fkNkl4PfAUnEOym64Ge6dN1l/hIJ9KAJy3
-	XS5YWOvKXtrXQJYJYxUCDZNFKwoDLoeujXdsha1kKNDJ3MIPqdJ1ucReGTFoKwXtPMw=
-X-Gm-Gg: Acq92OEkVO7GfYhTE7K6PHTp/yNdJjp4A7xJ5LPSCmNR7wf2iztqgDq3brF0BgW0Awh
-	HguyO+jVhp/pVP53pudGvpZzBTwKydF2Zc2N1OJVyXjkmdl2bZUuL70O+8Mp3K7imqjd6mrCGU4
-	CTbFlN/Csu92epKHK5j4QpNYt01HkTLCxq3uk30r/9f95HE7wgvdysT4oc18pUXYI2XxUpfkgyJ
-	HtXucfpPRfKCyR6MYGSlexUu37IyQUdnzGoXsCjgcdw00yZsh11scvrlT9iLFqQe4FdR2jQn3JE
-	XSI72KKM0uBKw5fxCxIFADvqvyzNlGbzEfyl84NlwckPxYdYkJhXMx6VnB4o+xmCwaMQun57BL9
-	ECBP1PAzshe+1y1uatfquUHU1fFdmspfF8efAW2Scn31HeoTKsVZAxJBiYIU9dwqYKNfvj6hlZQ
-	ucP0eL7ybXUSWVmJmw7f1F1HKFIWhGgQkPbywm3MC10Fxn
-X-Received: by 2002:a05:6402:4303:b0:688:1d5:44c5 with SMTP id 4fb4d7f45d1cf-692381fb3c7mr835032a12.2.1780995437379;
-        Tue, 09 Jun 2026 01:57:17 -0700 (PDT)
-Received: from [192.168.0.167] ([109.77.72.26])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68e65b55d81sm8343493a12.27.2026.06.09.01.57.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jun 2026 01:57:16 -0700 (PDT)
-Message-ID: <c3b9dca7-7297-424c-9ab7-3ea29e9cf914@linaro.org>
-Date: Tue, 9 Jun 2026 09:57:12 +0100
+        d=1e100.net; s=20251104; t=1780995466; x=1781600266;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5J1tSAGT3QEqdiMDMCGFat+rOeDsCvBwWF1wlYWcmPM=;
+        b=gQ4BLX892g6P40i9v2puMlTZtZawPOFKF0wM5dfoaa7WUQ7Wf9HJCOqdY2CLlHaQ3M
+         GlMnK2xqCxxmI/gk4acv6waK+TNSPOjzelJ/8qVIpEb4DgGgQfQz6ABntcv+8CKj/A6U
+         hxR4hojPSydWaQi0icxYLG7Q5J/5VUEKmJOGcneXTKArfDWnP9j6VweV5be/BBRP6BiP
+         9SgEoiUp8g3V6F04y88iXdu4jxtrTwVlbzBrWJJ/cr0O/LcSTwlHWAD/jsizs8vd6K6N
+         xyoFRbLknzNTMOO5l2Q+rb779H5g3xUNeBjghCCnxaNDBaJt+2vP23xpssMFzeXc0k+O
+         +u9A==
+X-Forwarded-Encrypted: i=1; AFNElJ8pIxk5Kqga/O+5Ulz8rYm6+tzJaxYXDuLLmD9+zxtVzHslXzy2vc7SGn6qh7MUQ0m0TcY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwYw/00H+X7/55K6Vw8RfSUBAaJg1sRUnX37apxqJsryvEf/OBT
+	27aj8RFkr6z+hV2hKvS67ANgdZpO5AUrGVqx+t4b5zqxuguzG6bUyKWB
+X-Gm-Gg: Acq92OEu6XxXxracyRpmYx6sGeEgsNim1M2xtgr2dRDWrw2vC6wnlzxTy+mGkUIqi/B
+	hxr1U4anr8jXlgwvPRb6RxoQ64/Z82kByQ9ygFp1D/ez5nhStriFHjjPbu3WWGJu4pneh2mTH45
+	72W0/5UR/n3aFGa01d4BGo0xZ11mG1qTkF4YjVNSiHQP2Lccaahrx0VSABvS7Ac9GJluX4jZQm+
+	VvUSf+yvxGrQ2o+PogNtut9aFoYcU3UvTukM3g2ozEmy74zH9Mabr1WmutnF11bRTzUrbsoQJIR
+	VcpOZTS0T3LsYghIUihcAPZsLExHhUZnTaYVz6WjmzJewS+qZ6T9BUpbILmCD9mC+7gQ8BGPdx3
+	ji+kxBbKreFXFfTIMjKiqOE8OddJuNlJRJNUPNKr3s6l5CFNOiuta2mbxXQHHapi1eGy8Q+R7Os
+	VXsWNHwB02YjDK2jVU4+5qrgXZbkaofOCoVSSrVinHyg3BBOca/pCphjPfwzmcTeUtT2vE/yXn+
+	l0R2p2vxLv9MWRDHgz9MZznc0xQsZdrEleQjk8HlqhJbig=
+X-Received: by 2002:a05:600c:1d27:b0:490:add9:7f88 with SMTP id 5b1f17b1804b1-490c25dd709mr334881915e9.21.1780995465435;
+        Tue, 09 Jun 2026 01:57:45 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-244.cust.dsl.teletu.it. [93.144.65.244])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d5d2b4sm305234475e9.2.2026.06.09.01.57.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 01:57:44 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH v3 0/3] Add support for Variscite DART-MX8M-PLUS and Sonata board
+Date: Tue,  9 Jun 2026 10:57:37 +0200
+Message-ID: <cover.1780995368.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/7] Add CAMSS and IMX577 sensor support for Shikra EVK
-To: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>,
- Bryan O'Donoghue <bod@kernel.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
- Andi Shyti <andi.shyti@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-i2c@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- Suresh Vankadara <quic_svankada@quicinc.com>,
- Vikram Sharma <vikram.sharma@oss.qualcomm.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-References: <20260608-shikra-camss-review-v2-0-ca1936bf1219@oss.qualcomm.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20260608-shikra-camss-review-v2-0-ca1936bf1219@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 08/06/2026 15:06, Nihal Kumar Gupta wrote:
-> Shikra EVK is based on the Qualcomm Shikra SoC.
-> It lacks a camera sensor in its default configuration.
-> This series adds CAMSS driver support, CCI definitions and enables
-> the 22-pin IMX577 sensor via CSIPHY1 through device tree overlays.
-> 
-> We have tested IMX577 Sensor on CCI1 with following commands:
-> - media-ctl --reset
-> - media-ctl -d /dev/media0 -V '"imx577 1-001a":0[fmt:SRGGB10/4056x3040 field:none]'
-> - media-ctl -d /dev/media0 -V '"msm_csiphy1":0[fmt:SRGGB10/4056x3040]'
-> - media-ctl -d /dev/media0 -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
-> - media-ctl -d /dev/media0 -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
-> - media-ctl -d /dev/media0 -l '"msm_csiphy1":1->"msm_csid0":0[1]'
-> - media-ctl -d /dev/media0 -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
-> - yavta -B capture-mplane -c -I -n 5 -f SRGGB10P -s 4056x3040 -F /dev/video0
-> 
-> Used following tools for the sanity check of these changes.
-> - make -j32 W=1
-> - checkpatch.pl
-> - make DT_CHECKER_FLAGS=-m W=1 DT_SCHEMA_FILES=i2c/qcom,i2c-cci.yaml dt_binding_check
-> - make DT_CHECKER_FLAGS=-m DT_SCHEMA_FILES=media/qcom,qcm2290-camss.yaml dt_binding_check W=1
-> - make CHECK_DTBS=y W=1 qcom/qrb2210-rb1-vision-mezzanine.dtb
-> - make CHECK_DTBS=1 W=1 qcom/shikra-cqm-cqs-evk-imx577-camera.dtb
-> - make CHECK_DTBS=1 W=1 qcom/shikra-iqs-evk-imx577-camera.dtb
-> - make CHECK_DTBS=y W=1 dtbs
-> 
-> This patch series depends on patch series:
-> https://lore.kernel.org/all/20260527-shikra-dt-v4-0-b5ca1fa0b392@oss.qualcomm.com/
-> https://lore.kernel.org/all/20260608-shikra-gcc-rpmcc-clks-v5-0-94cefe092ee3@oss.qualcomm.com/
-> 
-> Signed-off-by: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-> ---
-> Changes in v2:
-> - Drop qcm2390_resources struct and CAMSS_2390 enum; use qcom,qcm2290-camss
->    as fallback compatible string since Shikra CAMSS is register-compatible
->    with QCM2290 (Loic, Bryan)
-> - Use oneOf in iommus to describe all valid SID combinations: VFE-only
->    (Shikra) and VFE+CDM+OPE read+OPE write (QCM2290/Agatti); add
->    per-entry descriptions naming each SID (Krzysztof, Bryan)
-> - Rename shikra-cqm-evk-imx577-camera overlay to
->    shikra-cqm-cqs-evk-imx577-camera, shared by both CQM and CQS EVK
->    boards which use the same PM4125 PMIC and camera supply rails (Bryan)
-> - Add reset-gpios pinctrl state for IMX577 sensor (gpio33, cam1-reset-default-state)
-> - Add comment in overlay DTS explaining absent regulators are powered
->    by the daughter board (Bryan)
-> - Collect Reviewed-by tags
-> - Add reset-gpios pinctrl state for IMX577 sensor.
-> - Link to v1: https://lore.kernel.org/r/20260526-shikra-camss-review-v1-0-645d2c8c75a7@qti.qualcomm.com
-> 
-> ---
-> Nihal Kumar Gupta (7):
->        dt-bindings: media: qcom: Add Shikra CAMSS compatible
->        dt-bindings: i2c: qcom-cci: Document Shikra compatible
->        arm64: dts: qcom: shikra: Add CAMSS node
->        arm64: dts: qcom: shikra: Add CCI definitions
->        arm64: dts: qcom: shikra: Add pin configuration for mclks
->        arm64: dts: qcom: shikra-cqm-cqs-evk-imx577-camera: Add DT overlay
->        arm64: dts: qcom: shikra-iqs-evk-imx577-camera: Add DT overlay
-> 
->   .../devicetree/bindings/i2c/qcom,i2c-cci.yaml      |   2 +
->   .../bindings/media/qcom,qcm2290-camss.yaml         |  16 +-
->   arch/arm64/boot/dts/qcom/Makefile                  |   8 +
->   .../dts/qcom/shikra-cqm-cqs-evk-imx577-camera.dtso |  70 ++++++++
->   arch/arm64/boot/dts/qcom/shikra-cqm-evk.dts        |   9 +
->   arch/arm64/boot/dts/qcom/shikra-cqs-evk.dts        |   9 +
->   .../dts/qcom/shikra-iqs-evk-imx577-camera.dtso     |  70 ++++++++
->   arch/arm64/boot/dts/qcom/shikra-iqs-evk.dts        |   9 +
->   arch/arm64/boot/dts/qcom/shikra.dtsi               | 197 +++++++++++++++++++++
->   9 files changed, 387 insertions(+), 3 deletions(-)
-> ---
-> base-commit: 6e845bcb78c95af935094040bd4edc3c2b6dd784
-> change-id: 20260526-shikra-camss-review-cf6f66ac566b
-> prerequisite-change-id: 20260511-shikra-dt-d75d97454646:v4
-> prerequisite-patch-id: 3a689e8dda5fd2755b689d94d095806b3f2e6eed
-> prerequisite-patch-id: 2acc300a68ed8c5364fb5f2f7d28fc0d56ab07bf
-> prerequisite-patch-id: 2357cac636e019eaf14d6a493a1c72bca56fe405
-> prerequisite-patch-id: 2885f299e711582da312ca9d13983d296a3dd5dc
-> prerequisite-patch-id: 91af5f3c01e766a53ce8de69aa21847a2d6bbbf8
-> prerequisite-change-id: 20260429-shikra-gcc-rpmcc-clks-2094edfff3b0:v5
-> prerequisite-patch-id: 59bb0a7828e41f546f734f127d81da83c0adcda9
-> prerequisite-patch-id: 197da6bcb15cadc47869dba88c8020987b25c335
-> prerequisite-patch-id: 8ec9c1eb03f052ae232ed54117abed38672c23f6
-> prerequisite-patch-id: 350db4f4bcdfc0fad9ed57cd5b1723f85ad44f5d
-> 
-> Best regards,
+This patch series adds support for the Variscite DART-MX8M-PLUS
+system on module and the Sonata carrier board.
 
-I really think you did a good job taking v1 feedback BTW, good work.
+The series includes:
+- SOM device tree with on-module peripherals
+- Sonata carrier board device tree with board-specific features
+
+The implementation follows the standard SOM + carrier board pattern
+where the SOM dtsi contains only peripherals mounted on the module,
+while carrier-specific interfaces are enabled in the board dts.
+
+v2->v3:
+ - Fixed wrong som eth phy address
+
+v1->v2:
+ - Fixed wrong sai peripheral reference
+ - Fixed wrong eqos pinctrl gpio
+ - Fixed model name
+ - Added new usdhc2 regulator pinctrl
+ - Adjusted irq edges
+
+Stefano Radaelli (3):
+  dt-bindings: arm: fsl: add Variscite DART-MX8M PLUS Boards
+  arm64: dts: freescale: Add support for Variscite DART-MX8M-PLUS
+  arm64: dts: imx8mp-var-dart: Add support for Variscite Sonata board
+
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx8mp-var-dart-sonata.dts  | 723 ++++++++++++++++++
+ .../boot/dts/freescale/imx8mp-var-dart.dtsi   | 476 ++++++++++++
+ 4 files changed, 1206 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-sonata.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
 
 
-For the series.
+base-commit: be580423d3f84b84a2f549df91e66bc4f54eda02
+-- 
+2.47.3
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-
----
-bod
