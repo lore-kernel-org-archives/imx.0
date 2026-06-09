@@ -1,187 +1,244 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013062.outbound.protection.outlook.com [40.107.159.62])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4F34D8CE
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 06:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780988000; cv=fail; b=ekbD/nr9PKQ8Du06lE1i+MwY2xdaqCug0Uyv5Gy+jX5eLaHNsh/IuELL6qvNQNSxMOI8h3CKeyp2ETQYwFzSkGAE4gLE+F5oaGQmIEfN5+DPYYzdQPhC01+KCPmMuZSgfPAQ3yuonxyhgi6usFUJnyVDUgyCAKvTGV3ypCaYIyA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780988000; c=relaxed/simple;
-	bh=NjtmSPpyPk+AH0f4dtwfXTDH2EkA7wb8IKcDcMA1yDg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=P8etLpVnOG9e2+XFKvzTe1UqyvBSJAYanhikRFc0l4b3HSoSc/DvkmXHl/2HauZyhcu9x4StC3SmoJFvD/B+0UaVz3Aa46PuGngUiElFjm7IwLcOWQX8dM4xbC1szA1b90/L1uPeJBvIbuqCnV6DdKmkVCfRJxrSyjSsHExZy1o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Lo7bWlXH; arc=fail smtp.client-ip=40.107.159.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C613A9D9D
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 06:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780988297; cv=none; b=OyI4ASzhlAR7mu3Fj57bjakjXGOA5AAHjyC2M1/aaVTx2+LZwUiIzWp3VhcIElyZ1wdXsGKPAtXHMJ5RCJ0mqZAYlgt0mf2lXzLJNG2VitxEcPpgyyLMevCuQBtRidFg7DEwTvsPCBxNpG7Zuf6ULFBBTI66FKA9eiW4sDTLupY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780988297; c=relaxed/simple;
+	bh=Hy0uHrFDbNyqmmdwOUXr/24wyPe0P/xAj/kC/mDIJlg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EPp2bEw4jGm/cIdnRk/4LBlIrX0TBYiGC+WHYrcIo/LbTEOGoGoZtxnhV56x0791anJkUefr8iehp3YXGlab/KvsAJNTxhEgOIGpkZkjpW3B0qMcA+2MUMCN3+9eaijKCXp2Dj3opXn8RVhBL652H+jQsS6EO27RuvUXIbOcguQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KgWTIDmf; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Lo7bWlXH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CaSSYuxEH+bq/MAmZ9qIdrPt5Tq/5ZsWCsWK/6txY8S0QMF44A2pSTBaOVNrUSIXT4TrD9DL9dLhpGI3ab+BBsV25DBzg4jwCxsxyQiSz3TyAXJ1nWZsNZqqLjuSK1VJdNbsqk+jnqhG7QwOrZwc/y+DMwLcqtQY5E4PVPAafTbjNfjuozhh1GSjnXPCHdgENFLbVLlnUJkVeDpb0oWCNsdhjT9ZoS4yfuGJ4OdmtlHiYcER9+zmEZkiaCpyNPY+UI89kN688lIkh41YXZHwLp0aNBIXoeraYECg+00+cD/D5OxY2SNWWFCw6zT8dVxlON82s1hUQsxg8FNCiHpKXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WVS5oXvPoqcJTdXItjAbnJSwIXpKlGJRZbCUoHrt99Q=;
- b=XhM54CjP5M2pB5tUJEMltCMwv+50u5wEn3sPwIYaC/d+OAvjpTkl9bqIy2XSDG9tyNFs8gEfDnPuWIFojs9HEHORnVNOdWj0+t8zEfXuFGZWDR07Fi8ZPB5JSqLKy3h50o6MC4nW7DE3BmHPyh81jk2nfDQeipgipoaK1aku3+tRrUphwVuE0vxRwKX5PliDIuiRvpXG657uX0ItaDcNpXwIR++JxO9yPYVdh89JjkJXnwiQ7z7sjryTqh7ofAeJi0qIGWKquez502HQxFFWWcwMrR19trEuFaJgUjLGOiR1jIuoNQ2RI5GwwQ4Fmadkw0B/TRxy5RLb7kmfyiRhPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WVS5oXvPoqcJTdXItjAbnJSwIXpKlGJRZbCUoHrt99Q=;
- b=Lo7bWlXHnQszqxf2774Z3r15yQNfRtmyE3Qj7LEocKQxZPb2w0re2MqgpDvmrM6pre8Y3PB1iwsBGeAeBSkJ33YKMHUdwLxFh4HacSvMlQdQ20DQFtUhJ1Y+abJNZgrhXDdL0gmN8MgiKBF3nZM07gS/++3lf2qJipTNAP4yPA7jvGcCFYk8dV6t90hANTyZt7j3jIYHLFTvW+ndyLfvUX+YXSHjUqF3pz99GTwFVXfnvftCbmH9fRvtaTwzFHfHOZwS4/MFvX9D9Mtrb/xsO9iS275k8pAot/sEPObFL2ByRNJF7UPj+se1lH1VAzEK/VmEF3+iHfktYFaIx6rpEA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
- by GVXPR04MB9952.eurprd04.prod.outlook.com (2603:10a6:150:117::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Tue, 9 Jun 2026
- 06:53:14 +0000
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
- 06:53:14 +0000
-Date: Tue, 9 Jun 2026 14:54:42 +0800
-From: Liu Ying <victor.liu@nxp.com>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	dri-devel@lists.freedesktop.org, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 19/78] drm/bridge: imx8qxp-pxl2dpi: Switch to
- atomic_create_state
-Message-ID: <aie4sgD6AKSwY7V3@raspi>
-References: <20260608-drm-no-more-bridge-reset-v2-0-0a91018bf886@kernel.org>
- <20260608-drm-no-more-bridge-reset-v2-19-0a91018bf886@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260608-drm-no-more-bridge-reset-v2-19-0a91018bf886@kernel.org>
-X-ClientProxiedBy: MA5PR01CA0207.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b0::6) To AS1PR04MB9287.eurprd04.prod.outlook.com
- (2603:10a6:20b:4dd::8)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KgWTIDmf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780988294;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CErMmgwjtyGkijbinQXt+E+wyTwr3hFPBwtSrU4ri/Q=;
+	b=KgWTIDmfu9FbEQMcuJ3hB2gwK0Tvx54wlRg+apYepPzGuT6d7U3+S0ybY4WAYgLhzYa9yX
+	EPM6m3bMA7GVH3YDTIbAPA8xatXn3BcadHsEAJCM2d3hJdQTsdbDNWx/2YiZxNSzjmzwH/
+	6a9WjeO3cNGn0mEI4Gx602X7AxYH7LM=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-199-w01ZrQC7NJezLdxdUhmnow-1; Tue, 09 Jun 2026 02:58:13 -0400
+X-MC-Unique: w01ZrQC7NJezLdxdUhmnow-1
+X-Mimecast-MFC-AGG-ID: w01ZrQC7NJezLdxdUhmnow_1780988292
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-39659dea96eso3283951fa.0
+        for <imx@lists.linux.dev>; Mon, 08 Jun 2026 23:58:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780988292; x=1781593092;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CErMmgwjtyGkijbinQXt+E+wyTwr3hFPBwtSrU4ri/Q=;
+        b=olBp6DiyVcCHeuJKuGQlm6Wp/a6UyCFB42YkSnRs+Wtdl6t4DqYPL4fI415H2SkxCo
+         AyYJL5TsqKxddI3cEWr1rio7vJrC504q9pE0pAA6TEn6DfF4N0Il5QzBFQvujp+CD1q7
+         1bQuzYAHqhfc1So7cxJziGJcVhXcdDv2q1uop6WMRqZA8ksAgqmQWKFnAeWwxIWaShWq
+         jOrY/xFIvx+Y9cr3X0BwmfVjIbpOQHvHyGmiKpn5Jcav/8jYYvtXgkW9VJpaZsw2NZkK
+         3WK1S/kcOX20dHJhiqW2wgboWHiGeDusBDcsZTUiGbQ972R3h2yL7DT6JTCTFLgYyKd1
+         DWRA==
+X-Forwarded-Encrypted: i=1; AFNElJ9gxb/n3ooAiZ7pG1qqOHz/Dv2mTnxlT+yEYF3CJxvQUIoC/F7t2cxXd3v01rULLnbDylo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yys/ilIAhzhlHOBS3M/82H5Yj814WlFU/nA+MLoh4F5JMg/ghX1
+	G/5N3QrnzGbL/yPbLuV5px7EpN8uoB2pN6AG1Cbpz/V5eYobD49lAI+88i8cH4A+fZG6BsGBGSb
+	v0Zo6FtLkr9gPI/oyHK7nYmyJvpc52HMt9giHOxcHMv1uP8qM+E+Jt62f7yFZRXrGfB8pH9ChZ+
+	E+1jq9FZ+UuqvHqD4EyDHocZ2/CFiT
+X-Gm-Gg: Acq92OGswBPZHlYiSpguRDIfFXH5RNko2AjEYqnJB6lqvMQww8IU4In2xpL66t1RqKS
+	8lTwel9dOFN8aAuJy6kdfbrrkBrZw9C5FWPusywlwZKOCdZ2zo7YIKahoCfTWOx4p72FZcBK3U5
+	gnJh9cMecbF5xY8CpSFr2LPSYfMbxao395tmlkpCpQXHHozliw6rlnOXX8QveZhESSP9HeTANfu
+	Bp9CsKzN+Et24MD
+X-Received: by 2002:a05:651c:b22:b0:396:7280:1e5e with SMTP id 38308e7fff4ca-396d05b0e5amr22977561fa.0.1780988291632;
+        Mon, 08 Jun 2026 23:58:11 -0700 (PDT)
+X-Received: by 2002:a05:651c:b22:b0:396:7280:1e5e with SMTP id
+ 38308e7fff4ca-396d05b0e5amr22977501fa.0.1780988291073; Mon, 08 Jun 2026
+ 23:58:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|GVXPR04MB9952:EE_
-X-MS-Office365-Filtering-Correlation-Id: b725d4a4-f2be-45e6-a2e6-08dec5f3c70d
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|376014|7416014|1800799024|366016|56012099006|4143699003|11063799006|3023799007|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
- 2IvMrSE2cRuMHWcackV3BAHcuj2yxz1xhwHfL3KZRFpbPH1hBgGw8jp4n1n7zjCgIMviWj5K4teTu6Uz9J9RctjtJlFkRYO3PHydStmREx4m3nkc1GOk847Nr7WlR4VfUHeOmvO1W4tvNKQWrfzJcJteHNPxTGEKia2s9t0h0TaCXHpCJGJSo/TDmM2c0tqHV7AFlc4wathOXwoglyrlV5HlbkBCQ+8Qk/B9y6MI2HtUAiyqvQy+RimcXuAkBvioqO9chBM2kRH2Y3PnWpJ3jokB+6Iwy0Ap/LOAJSZOV/H4LJVmiGOCVA+bhbsZ1ZPsUCotIadIA10hjMTdZ2CUMy4EOxCpqnxC528ukXCi/ALK22AAjLHb/y153cVXAnNpIB6bgR+VqjCeDXVgUFF4K6Q2rUWEBIVxbdQS5HTvcUrLgpmhvo5CBTuEL81Qimm1o7LyCTQ7TelHziGt6tROAw801hzy/sF5UeJYB9yLO3SH5Pb18swYZOFfz3wZm4xoyzIpyU1iXbLSSzngYiS03VlC2gfbKh0mNxN0uWRCjvSduUCjy/0FlRn/zJKuv1VSdjP+W9m5aU3Fl1Q0a+2gnamiupeKKy9cCaJBu+aH9WARt6VbHIPGIaA+T4NjA8q6Paw5CJBv7PIDtP2tBnxWCc8AFytaSBQ8g0OxByLkkPlXHHevg63x9MwzqrtUQQKM
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(1800799024)(366016)(56012099006)(4143699003)(11063799006)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?8fFvPbM/EYwaOKwrrvRMpn6aJ+MxXEFR2OMpeHEM93m9AfI+PpQuui/3gP2j?=
- =?us-ascii?Q?37+zYtMx1tR43XIohCwkMeTAQI3nEbjov5VzNYgaWLat3gI2Fe2+0+F8nqtj?=
- =?us-ascii?Q?Oh901BWlVnet1coxTBwVNm/XP1y47Q5YuhyjadZjV6oaSegJXJ9N42oQfdZF?=
- =?us-ascii?Q?B/kEnjjHPwh2nyhxT6wEnQMnjrSRHlnx2XCWqMpRGLJvMVQxR3OJOnwSrolE?=
- =?us-ascii?Q?QvtEamszb1lqwn41KQ8gPafR4ld+zKJn8CDnSjYF/guLKXip4YdFLZor9Exm?=
- =?us-ascii?Q?xPEdMmijvnrX8L5mItq3QGQR+C/YuGwSUR8UklQw8JgxOKu2i3ec5W0Txr3W?=
- =?us-ascii?Q?sVDQ5W4wX1zUDtC7x1a75Sz7gI8AMFI02PIMu5dLLScUXVhN9BLv5mMTMJdH?=
- =?us-ascii?Q?GsIg6TsvvIwd3hmVGhmGIc6IrimX2dhCpr0oZDaCj9VnMrsxtdGnn7Flmsrq?=
- =?us-ascii?Q?SkRICFqvIKyaALg/Hf09FtN1AxO0XOGB7D/HKZIFKl8XT9j0OO7lCRYnIBvI?=
- =?us-ascii?Q?5yppIuumPBa7TagCKza876WtqxmS6NYpMyHfcSPRfJ5eV49U3F+6BIyREiUu?=
- =?us-ascii?Q?jKlZKe1RpEoFNrTVhVrsZ73tfGGYAaJta3ffXbR4gf2u7WQ5s8kRBAilAZh9?=
- =?us-ascii?Q?LFsOfrcu7ihtO1jkp9Ht6f7cMo/w/q+RM5IbymGSECvVdKN74x7NZ1Ueve02?=
- =?us-ascii?Q?6JldZaEHaFkZnsdKUZWzb9zGxYw3vBZi6UTqSdKlYOSmyJutl5ivrgFjW8FD?=
- =?us-ascii?Q?AAc75R6o2nTBYbjixkvaAB+gmKdIOCMXA17H02HiE01rckEhIbW6meGsR9B9?=
- =?us-ascii?Q?Y7iDlV9XD5WKL3XNkNzHnjTR8lZXKMrCnJxXUcdQKHh9vkMDve/ELQWcy5Hw?=
- =?us-ascii?Q?Mw22lZWGO7mkBtIqGMn5Ck7hOy9/C4heFhLN1Z3c16rLRP9y2Q5m0kikjEhs?=
- =?us-ascii?Q?6Qzj1z9VrOD9ZnLe02aSy1ll357War9VF/w1KBsfSEIjdgxTgEJclWek7Khn?=
- =?us-ascii?Q?gL/tZx8jgr+I7KPLsYK4RxjPBzoBGHbN/t5EH9o7SocfNbUYpz1UXdF3VNnv?=
- =?us-ascii?Q?Ib9Qyq3dSREEyNGIvsAoaihcG6u8LqdELcNSQh07aNW2R0StMzUMqnkHcTfd?=
- =?us-ascii?Q?5Jj9Bw7EdZoerCdjNo+xzO27OPoEBA7GY3gDYLM75It2lxKyEXfePmWMlYTm?=
- =?us-ascii?Q?QQe11XQWYYJCU4QFtYzUuoUAFCyF8DFdQbML7/HmQHu1S1jZg6tVDv5hhnJI?=
- =?us-ascii?Q?jzOblqGwxbWGia955O3PJWmSO8T6vspbrA0q0ohFd4Vvg++rg3wYwV5NeETK?=
- =?us-ascii?Q?aZetTwfuH85dkpfIl2l9Um8cCypgekSgdkxvCXtVvMd4tseO/uN7BvA/IF/o?=
- =?us-ascii?Q?qr43QAQZt3XCZ5KRxmF1joudMYAh6J7fy+64we8Jx5CjYLhWSYPzE8umSzmD?=
- =?us-ascii?Q?ltti6TpQLMNY8RhLa7GOhNFl3g5otGIZL3e9/Vv3TnW6ADfxB81GR8SX0wXR?=
- =?us-ascii?Q?Y5xchu8sOLj68QOu17GFFZoV0Sb6CimYLmK2eackit60mN5A2/gBCOdX8kFk?=
- =?us-ascii?Q?0RU/H67/8l8mwD7lp2GJfkKE5dXxBbhFcPflxurI711Tgoxb2t7TjETmu+iE?=
- =?us-ascii?Q?3oKFnvF3XfjL9d8JJzUUsKAdUpCD7D6V4S3AFR6XjnsdYn5zG/oTHzTOVo8p?=
- =?us-ascii?Q?1gXYTveiwCsA0WTTjd7/HFljoP76pYci0RjYhDDc+e5nHh1Ak3KXVBwc98Sb?=
- =?us-ascii?Q?wdXwvgA4lw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b725d4a4-f2be-45e6-a2e6-08dec5f3c70d
-X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 06:53:14.2246
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A9rEu5q9wtgjYCJEL1vVA+udHDZV2dUm097xBHTmd80YE5MpIbaXFVDj08j/K2+RWQcuFvzlaoohf/QxqP+Bnw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9952
+References: <20260514-fix-nxp-timer-v3-1-a3e68fdb505e@redhat.com>
+In-Reply-To: <20260514-fix-nxp-timer-v3-1-a3e68fdb505e@redhat.com>
+From: Enric Balletbo i Serra <eballetb@redhat.com>
+Date: Tue, 9 Jun 2026 08:57:59 +0200
+X-Gm-Features: AVVi8CcxoAX6rnYlSTy8BOa9cf_aoNVALY7D0WD4kPNY6cpfFhuFnoxfIF3bvHw
+Message-ID: <CALE0LRtJemHQj7o8iV1GaWJLVfTse6fp-TFvodC=AeWov6s39w@mail.gmail.com>
+Subject: Re: [PATCH v3] clocksource: move NXP timer selection to drivers/clocksource
+To: Enric Balletbo i Serra <eballetbo@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: QoyGI0dbTe3fEQDojQDyF7KMeFz9jjKxcvJFP_eyjjI_1780988292
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 08, 2026 at 04:36:01PM +0200, Maxime Ripard wrote:
-> The drm_bridge_funcs.atomic_reset callback and its
-> drm_atomic_helper_bridge_reset() helper are deprecated.
-> 
-> Switch to the atomic_create_state callback and its
-> drm_atomic_helper_bridge_create_state() counterpart.
-> 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Hi all,
+
+On Thu, May 14, 2026 at 1:14=E2=80=AFPM Enric Balletbo i Serra
+<eballetbo@kernel.org> wrote:
+>
+> From: Enric Balletbo i Serra <eballetb@redhat.com>
+>
+> The Kconfig logic for selecting the scheduler clocksource on
+> NXP Vybrid (VF610) uses a `choice` block restricted to 32-bit ARM. This
+> prevents 64-bit architectures, such as the NXP S32 family, from enabling
+> the NXP Periodic Interrupt Timer (PIT) driver (CONFIG_NXP_PIT_TIMER).
+>
+> Relocate the NXP clocksource selection from arch/arm/mach-imx/Kconfig to
+> drivers/clocksource/Kconfig. This allows the configuration to be shared
+> across different architectures.
+>
+> Update the selection to include support for ARCH_S32 and add a "None"
+> option restricted to ARCH_S32, since Vybrid lacks the ARM Architected
+> Timer. The Vybrid Global Timer option is restricted to ARCH_MULTI_V7
+> SOC_VF610 platforms to prevent it from being visible on Cortex-M4 builds,
+> which lack the ARM Global Timer hardware.
+>
+> Fixes: bee33f22d7c3 ("clocksource/drivers/nxp-pit: Add NXP Automotive s32=
+g2 / s32g3 support")
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Enric Balletbo i Serra <eballetb@redhat.com>
+
+Now that Frank [1] has created a merge request for Linux 7.1-rc1 and
+the request includes
+
+      arm64: dts: s32g: add PIT support for s32g2 and s32g3
+
+If this patch is ok, would it make sense to pick that patch?
+Otherwise, we won't be able to select the PIT timer for aarch64 only
+builds.
+
+Thanks.,
+  Enric
+
+[1] From: Frank.Li@nxp.com
+
+The following changes since commit 254f49634ee16a731174d2ae34bc50bd5f45e731=
+:
+
+  Linux 7.1-rc1 (2026-04-26 14:19:00 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
+tags/imx-dt64-7.2
+
+for you to fetch changes up to c10cfc952215644956284a42fa7b7860dfbcb5f5:
+
+
+
 > ---
-> To: Liu Ying <victor.liu@nxp.com>
-> To: Frank Li <Frank.Li@nxp.com>
-> To: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
+> Changes in v3:
+> - Restrict VF_TIMER_NONE to ARCH_S32 to prevent selecting it on Vybrid
+>   platforms which lack the ARM Architected Timer
+> - Link to v2: https://lore.kernel.org/r/20260513-fix-nxp-timer-v2-1-533b9=
+9c57b67@redhat.com
+>
+> Changes in v2:
+> - Fix VF_USE_ARM_GLOBAL_TIMER dependency: use ARCH_MULTI_V7 instead of
+>   ARM to prevent the option from being visible on Cortex-M4 builds
+>   (Sashiko AI review)
+> - Link to v1: https://lore.kernel.org/r/20260302-fix-nxp-timer-v1-1-af4bc=
+62d4ffa@redhat.com
 > ---
->  drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-> index 87305d3e0c39..2fc9831f7e61 100644
-> --- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-> +++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-> @@ -208,11 +208,11 @@ imx8qxp_pxl2dpi_bridge_atomic_get_output_bus_fmts(struct drm_bridge *bridge,
->  }
->  
->  static const struct drm_bridge_funcs imx8qxp_pxl2dpi_bridge_funcs = {
->  	.atomic_duplicate_state	= drm_atomic_helper_bridge_duplicate_state,
->  	.atomic_destroy_state	= drm_atomic_helper_bridge_destroy_state,
-> -	.atomic_reset		= drm_atomic_helper_bridge_reset,
-> +	.atomic_create_state		= drm_atomic_helper_bridge_create_state,
+>  arch/arm/mach-imx/Kconfig   | 21 ---------------------
+>  drivers/clocksource/Kconfig | 31 +++++++++++++++++++++++++++++++
+>  2 files changed, 31 insertions(+), 21 deletions(-)
+>
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index 6ea1bd55acf8..a361840d7a04 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -227,27 +227,6 @@ config SOC_VF610
+>         help
+>           This enables support for Freescale Vybrid VF610 processor.
+>
+> -choice
+> -       prompt "Clocksource for scheduler clock"
+> -       depends on SOC_VF610
+> -       default VF_USE_ARM_GLOBAL_TIMER
+> -
+> -       config VF_USE_ARM_GLOBAL_TIMER
+> -               bool "Use ARM Global Timer"
+> -               depends on ARCH_MULTI_V7
+> -               select ARM_GLOBAL_TIMER
+> -               select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
+> -               help
+> -                 Use the ARM Global Timer as clocksource
+> -
+> -       config VF_USE_PIT_TIMER
+> -               bool "Use PIT timer"
+> -               select NXP_PIT_TIMER
+> -               help
+> -                 Use SoC Periodic Interrupt Timer (PIT) as clocksource
+> -
+> -endchoice
+> -
+>  endif
+>
+>  endif
+> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+> index d1a33a231a44..d9c76dd443f8 100644
+> --- a/drivers/clocksource/Kconfig
+> +++ b/drivers/clocksource/Kconfig
+> @@ -793,4 +793,35 @@ config RTK_SYSTIMER
+>           this option only when building for a Realtek platform or for co=
+mpilation
+>           testing.
+>
+> +choice
+> +       prompt "NXP clocksource for scheduler clock"
+> +       depends on SOC_VF610 || ARCH_S32
+> +       # Default to Global Timer for Vybrid (32-bit)
+> +       default VF_USE_ARM_GLOBAL_TIMER if SOC_VF610
+> +       # Default to None for S32 (64-bit)
+> +       default VF_TIMER_NONE if ARCH_S32
+> +
+> +       config VF_USE_ARM_GLOBAL_TIMER
+> +               bool "Use NXP Vybrid Global Timer"
+> +               depends on ARCH_MULTI_V7 && SOC_VF610
+> +               select ARM_GLOBAL_TIMER
+> +               select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
+> +               help
+> +                 Use the NXP Vybrid Global Timer as clocksource.
+> +
+> +       config VF_USE_PIT_TIMER
+> +               bool "Use NXP PIT timer"
+> +               select NXP_PIT_TIMER
+> +               help
+> +                 Use NXP Periodic Interrupt Timer (PIT) as clocksource.
+> +
+> +       config VF_TIMER_NONE
+> +               bool "None (Use standard Arch Timer)"
+> +               depends on ARCH_S32
+> +               help
+> +                 Do not use any specific NXP timer driver. Use the stand=
+ard
+> +                 ARM Architected Timer instead.
+> +
+> +endchoice
+> +
+>  endmenu
+>
+> ---
+> base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
+> change-id: 20260302-fix-nxp-timer-9cb1fbd7afcd
+>
+> Best regards,
+> --
+> Enric Balletbo i Serra <eballetb@redhat.com>
+>
 
-Nit: drop a tab after .atomic_create_state to align '=' characters vertically.
-
-Reviewed-by: Liu Ying <victor.liu@nxp.com>
-
->  	.attach			= imx8qxp_pxl2dpi_bridge_attach,
->  	.destroy		= imx8qxp_pxl2dpi_bridge_destroy,
->  	.atomic_check		= imx8qxp_pxl2dpi_bridge_atomic_check,
->  	.mode_set		= imx8qxp_pxl2dpi_bridge_mode_set,
->  	.atomic_disable		= imx8qxp_pxl2dpi_bridge_atomic_disable,
-> 
-> -- 
-> 2.54.0
-> 
-
--- 
-Regards,
-Liu Ying
