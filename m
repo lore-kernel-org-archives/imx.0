@@ -1,77 +1,71 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011009.outbound.protection.outlook.com [52.101.70.9])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013053.outbound.protection.outlook.com [40.107.159.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D74B368D5A
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 03:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B503F382377
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 03:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780975677; cv=fail; b=tCbBlx6JkGIWF+/JEEZUcy4DZ2Q18ob+GmPACXPRUBswYSstuLv13Az34uGIxRYzHqATde4pxV/HxdtefFhMxlDGlkl9FJQUceE6FlVBZYGkOONKtpUMqwSmdCe8dNTDDCYh2eyfcaf0E/e+5j62AkEI+Li7ULM9BtMnNOgFFO8=
+	t=1780976192; cv=fail; b=jIRaZXZOEH2mS4FWAgvfJSMwkvCmiFLa6M11SOS3VaoHJg6Tz2A6X8mjvgtDu+AlTG4KlHcxxrG4Hwat6dc6ia/3qy+Szou6zUkmtUp5kP1BOOh5ztAwAkgl9sFFyu//P5PM1yvPC1gvqTLAobmeJcTxaimWtJJ7hMYlLE6AK9g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780975677; c=relaxed/simple;
-	bh=xuFsT6LAPiaF2Qu0/a2u2XCOZGd3gnTY4jHR/03YdXQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qytGkgObnl/ifBiHTfyVTGXDsSihbLQThTRO/7s1rFgeV1h1vcJcYrpmJ899ggrYQMxPk9R9auuYWWRJrkuHedB1cggeIJQxhEhFo+dLdqoCOp0SqJx+1n7QqdVcthFxuv7ZF+5eJEOhszgW7RTahHK9BPV6CuER+59S1fWVdVc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=MBUOKbbe; arc=fail smtp.client-ip=52.101.70.9
+	s=arc-20240116; t=1780976192; c=relaxed/simple;
+	bh=WBHe2/FD+iKsNqb5w2nnMZ3dOExKHnWQ5LEhO3mSXFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kEg0QbiM9zhlp47PkMY7eXWwnm9zDW/IquWM516tPw9miicenlNeSo10fFf+EYYK1t0nk7AW1qh9M8f83Fy6cYb9wKVdUiPC4rhs7R8x27SwWjHQKJsYRzlZgP1cnIl+3uxR12wgFnpRJ/VNfu6JnzHWDagjS4UgXUCvvnzvIP8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=pMXw3OjB; arc=fail smtp.client-ip=40.107.159.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="MBUOKbbe"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="pMXw3OjB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZdWOSE9ZWm0afZA0CZQkb7IonI4KDLgeybx/oDNsfS065l8c54oNkBSAE51FQTa/HKonl5fVsr400VcqXpXOJHzWgFu5echvN3Zc9YiPSmxcXhv1w2cwuMotvD0yurkNI+w3iafmAVHYjqt8HXeYRwPHbwhWxw8Vi2f7So4MfekIAeaX5osMgFfR4p66aq+lYYA8v8YqOSssSp3vRb2ZvcPrJclrwJNJ1JXZ9hNsXoy4mkzT81OQ/rjM5FkeTIwbB/i62k2/zYEs2MRRnEVG0+dY4ru6ADf4HX++wLEn/ylacq1+M+6CmnpNN378gu9x9+H1MrtbZShXA2nJGL9/tg==
+ b=vjAqf3AU4AMyd3S4tPMCrTemWWsmR+Gfap1geP7M3C+T/XJUGYikNomxlXTapwENhKXleyHhJcvPkAuHJbODjDb08Kr14TXvExpFwwQwYJ5aczlgtUkjFhYC24GW0mgI8US8jJxIPcswjy0YoUw5JfamxVQpfqTSVQ9O1rqUqeCp4kkzBTOznpo4trJS11DwqFfJJ9avWXPFBwHJqNmmaS13q39Zin+FV1cb1h+6haS7yYIVLOhIuIJ8BQYCvBLRXUi4NAA9hEsKanjDIDc7EJPTIHZZn/ZPab9A4xxlYsFeyu4MteM4IyNMFfA+EF/cvVtfqroZ66YivYHe1WCyBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c3wZ2J0bG5FHp8ZaFE9Fot88k5dKTeGOujpGuBDm9Yc=;
- b=CKByrtvHc8ElCEzxd848FbGH8nthSOT/Jyt4cRQj+vex4G/dJKa80FIS5bPpIiqQedz9W02C12p80i5+tJUor03dw86m9FTRsbmj47n4UAYV9N+jyhI5NiTMi5RCzusUBz1F9JwVr7F1rqXD8TPaWUb8SaP7scrAhWAmMWQRlSNqdjR+lweW5VLuWXFdP3zLB90ANGVTPAPga5LUi4g2f+Eyx3x0Nx40AEdLdeFS9zm/K1gCl49Ln0jEZ06rJrZIlyVPy/2dNv9ZmMvOQm3nHbdva3zuDuZGrkkvM81xCeCJSzOHAJck3z1D486MKqCzIAUIFNl8yVphMphQ2SPVBg==
+ bh=sIFqq7XmjYhG70Z4AGLyKCakI/qet9fqxCInuG1D3ko=;
+ b=xx+BNEk2XXGMsKdRoaQ9cHJuUzl74idJlb2UNpk3+QI7KkNIDqk7uJMmSYs5YAr9bXmTQMuMcGtequDPTFEcKSZiJIvS0t4Lj9tWqjdANEVSUvDXTt+naPRJ4Xzol+n6aT/R2nm+XTGzWOy73U9jshic6ymv8lP7DZqJhLVCZfYmT4YIBOrKro2eLIlfoq4YkdulbmZSQ2TyTH+TSwm5qyNMuQOzBzkF90ERi4f1AzwhFL1BEGKcCgjfaO4ZH4vySBJTfADv791b5qwZuov3I4/Vfvw/MGwSzTfj/Ap917DTj4LXW6YrfaQ/oryGeQtGLKOgMCoUyI2aIumOLQ3fVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c3wZ2J0bG5FHp8ZaFE9Fot88k5dKTeGOujpGuBDm9Yc=;
- b=MBUOKbbeRosAI67hoid3T910PlX2nOtk87pEDIJh4jMDXCmrYd8is+E3CsHkVTIxLPIqCORYMwISiqVM34eg7cXuS7wHNaw203Pc9TzcRyyCxQUww9wF32HVrDsZ/AyvNXRFMHYo85K4IpxdPLcbSb3o/bZIbfJUQlFLuPlWROjA3ACaUFH0nA1YnRibuuP/It2xnBb4hVJhnmHg3rhybSnozv47ntI71bLdys7k9YnZy6SVpV9XfNqGaDzU3fB3iCSM9ZguzUNQ5rJRvksUoGJtN0pmF1o84G0VErmWXbPlEsR2kK6AyQBySYWnrvbKMjNDbx4HiwDEFY0WbLx4uQ==
+ bh=sIFqq7XmjYhG70Z4AGLyKCakI/qet9fqxCInuG1D3ko=;
+ b=pMXw3OjBt9U8NzuU2iOBIYvFtRZicM8ISq0rpEkJdEL8ytexQEMv1NpdtN924jxaaHOo7VWUDUKrjKF1a2jz3mI5cdfUz1gf8xGw5ix2nm+wK10QplR6rYQp3HwHCvL5oIsTKq39otcaOUn1dpEAd9+3p73HjRRhJA4mkuY/8zZoHLgVLtOXTyIQQycE72JmcUncQQqGB7zchw+DDtS+/5Rs0/IPT1xgBh3sHnp/ajGyZ9QhlYul0htygf6rCImqFH+L4wibJOb+tdwJcxhOE02fqOxWFGLDQ6A7N/x4knC/7RFQ9L29WJ65Ux+S1Tfz8np9ruBslO6d5J93QHRI7Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by AS8PR04MB8946.eurprd04.prod.outlook.com (2603:10a6:20b:42d::18) with
+Received: from VI2PR04MB11276.eurprd04.prod.outlook.com (2603:10a6:800:296::7)
+ by VI0PR04MB10543.eurprd04.prod.outlook.com (2603:10a6:800:25a::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Tue, 9 Jun
- 2026 03:27:52 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
- 03:27:51 +0000
-From: wei.fang@oss.nxp.com
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	chleroy@kernel.org,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	linux@armlinux.org.uk
-Cc: wei.fang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Tue, 9 Jun 2026
+ 03:36:23 +0000
+Received: from VI2PR04MB11276.eurprd04.prod.outlook.com
+ ([fe80::60d7:a8e5:eb88:9be]) by VI2PR04MB11276.eurprd04.prod.outlook.com
+ ([fe80::60d7:a8e5:eb88:9be%5]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
+ 03:36:23 +0000
+From: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
+To: mani@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	brgl@kernel.org,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	Frank.Li@nxp.com,
+	hongxing.zhu@nxp.com
+Cc: imx@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 net-next 9/9] net: dsa: netc: implement dynamic FDB entry ageing
-Date: Tue,  9 Jun 2026 11:29:55 +0800
-Message-Id: <20260609032955.2066089-10-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260609032955.2066089-1-wei.fang@oss.nxp.com>
-References: <20260609032955.2066089-1-wei.fang@oss.nxp.com>
+	linux-pm@vger.kernel.org,
+	sherry.sun@nxp.com
+Subject: [PATCH 0/2] power: sequencing: pcie-m2: Add 3.3Vaux supply support
+Date: Tue,  9 Jun 2026 11:38:37 +0800
+Message-ID: <20260609033840.2006078-1-sherry.sun@oss.nxp.com>
+X-Mailer: git-send-email 2.50.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0033.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::14) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+X-ClientProxiedBy: MA5PR01CA0057.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b8::11) To VI2PR04MB11276.eurprd04.prod.outlook.com
+ (2603:10a6:800:296::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,251 +73,89 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|AS8PR04MB8946:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3f3efa0-3504-4634-f376-08dec5d7166c
+X-MS-TrafficTypeDiagnostic: VI2PR04MB11276:EE_|VI0PR04MB10543:EE_
+X-MS-Office365-Filtering-Correlation-Id: 998b5561-94b6-4077-3e6a-08dec5d8471d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|19092799006|7416014|1800799024|3023799007|22082099003|18002099003|921020|11063799006|56012099006;
+	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|19092799006|18002099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	ocFaiceIkUOeXFCugFWnn2Omry9Ba5YvJj4Q5+YisR7qZc1K4pyZaCikTGk3Vm/udXpJd7u2Fc23OTbk0mOB8WD+49FgZz+xJy5CzPJL2DrrovaeSLRN7ALSFzK9g+zHcrRXMxZPZMWRtKC3Eyv3bnhMbpZ8rc4OhXH15EN1p90rj+xtkWsCQFZwUSkHQmedY5NJNpy11eePmtwuzssoFrwxvq4aBP0O20+6ggxXBg77KZc+DyyfMy4U0Z6XsWzAcVL7tuHu9kCSOqD+40DKhFRTWAgGxspOdIlIp7vjTirHz8kjJtelblHMUPYWiYwAn0NsgsUl2F4roxBOujTPAyOi20AnmqeV48lO/KKr8WnOg80I4Z6ZADsEaNcfiHtpYk3Yz7oabLi8Dp7rBTkF8ipTQtpam5ki3dH0ZoG4fE6KGnvacMTLciB/KjXAVwUyfgQC1tChbvvc9aJdYGSRjrEhxzZZsSUmS5BTCoa8fqpfIPdrsL29CPLwYQvSMegq5pdxI4SWp7irvXCt67A7qfwB3JahRqY0TMfAF8pqxd+EzNLj5gj72mHMlkmH93orB5XOmGyFw58iPNQA0YJyre42OwteXe2pBpPvkG37wbPlhnmqMbIWLE8c+fxQ2sal4djVrQCZH9XQ3VwaROlLbITq5aQM9XhdojtCa52fzQDOTYYd4H8+R2L+MyaeEJQ7Ni/2nI8cW0BegdX7FhHtiwO84k0orPpq5grIn0Qzt/I=
+	3sfQtQCDlDkDqRPnw1YJPyhxd3z3a9zi/0gvVJJbDL8+Cm+sbaSl3zTyhNpYJzE275rExV3nrjHFxy9fDhaXaZatIMW6c3AwpxqlUIV8cgyu3g6Ew0Oz6xKmSaTr5d5FInojpPEvWXpCVsWWpkUZ0zaAJBE0WPMOA0+QRU/NE3Os1Qxy3OrhToogaIC2xSScC5QMhoPMJvvhi9rf+pkKEMEO8lDaVjRNHjcX9tmrjhjMx9Pf7xzprtSt+ifY6XDdF+1eXiRzdc69j9zsXeA0nk1J7yFTt8YAoZ9GPu7uhjLFcreq7VkV3BxRjBPW+cARJ9X54e6FoIn3kmxHWe4VXy+OLYO6gNJOsfd9Hdj52O0DBPnsd6SOosBrG5JKiT5+C+2wEO0AJRYxD7gvG+vIwQaRtgrnm3hV8nmr8jx1gZFThWxVzkhlXOaKUAC2Y7K+DC2cXL84S3d5faWXe07LJN0NLDrRwKsMMfHzxXJtCzAqTOYnuCUdyLewsmdYrIKUlyOqX+oLi4N4PLaA8a/2IBrsoQfFHLDkiMnXLVEaI4roOPi8yBTL3MiIRKVzpxl/JI9lbifc9q02q6Jnzm+DzwZ7h6aCHuXIpYWuvHieYeaFsBOYb5t8yYJsdLRZMEO/oWktRbL+Vb/Mhx46zqCwwQG4zdcX5+DO26nmNRVf+Fm2hrv2IuicBH5cn4NTPgL0
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(7416014)(1800799024)(3023799007)(22082099003)(18002099003)(921020)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11276.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(19092799006)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yMuBkH3cq+Q9+7dKmN2oyiWy8iwXsOIsvHkQdDOzeKqRJ4c2CiHEgveR5nZX?=
- =?us-ascii?Q?ZcVe9+Ssl0e8gVuwpsOw8VfdGAUfvKWCeuSOpjSCptEqLHxm1JFIPMRNvwIt?=
- =?us-ascii?Q?hCsIxtWOmKEdDiSQ1SHK23z/Ocb9CgUE2BFmBti3HwPL3rTLDNFm9xrYG/62?=
- =?us-ascii?Q?Ko3pQkXfZIqn7f8x5j8FBJ1ops6n3/QSWLDaYU4PpoT5nwkWxOJOizfQL3Ou?=
- =?us-ascii?Q?a33CL3uXmSAu/9xnTquDt9UWpiVXHU1uvgMbK7GrcY/LIWB6Tw3ro5Iw9vf9?=
- =?us-ascii?Q?ilOIpG1T+YolwaHACWkkWbaD3GRmx0K8MqEmP1iBvhtkt48SykNnjvHWQqZ/?=
- =?us-ascii?Q?Gp9k8ZBWOCXHPUOkMMveNYIv/9ayCcZ2Em/2pv7uqde3YDv5VTWSNiAHY1w2?=
- =?us-ascii?Q?YiQRjllaKhbQxuQc6czbm2uvgvRzkL77SMhtk7TVPpw4WPFtJ9yzgZbHg18M?=
- =?us-ascii?Q?CiNHe95VMIrtO+tkjjLQQWvApkdirgz7XRN7V+EFDIqpEJzfLvUKjf/rEaiv?=
- =?us-ascii?Q?eD5XiIHLfaGiXJvmHmczz32CvCYYisrR34g3xhhMzc7njxzX7Mit7oENiB5b?=
- =?us-ascii?Q?/HRZEue9Q7DIXiMRmXUZqDF4LpyMGseHsNZaQRW1oZleOP2EechO+IEeuY+I?=
- =?us-ascii?Q?FmIXrx5etPwnALKgLsrPW4Y9rzpmZrHVwccg38671XiIXPYPMMFK50v7PRiP?=
- =?us-ascii?Q?tI1fyecCgcE3x0YTGeuCUSHinoXOzkFjkw7EGqiJIImFkD7SZASRtAIgS6jM?=
- =?us-ascii?Q?OFnJ/Aazb3NSFScmT3geNkPkd3eRXtrCuZXloXuMHb/MyPOR7OZwjBoB5Ew1?=
- =?us-ascii?Q?ookG6rIwkySIEzJ3Zgl3DPLlbTMaGi9YYp/SZ6CnJ8JQE18NsUoOJntWK9cn?=
- =?us-ascii?Q?i7qe3Qwlx83lPWAIJZaE0DX8c9wDlJ9DZgckGSL9Ze3nzDZ/PnrBKyLnGNLP?=
- =?us-ascii?Q?d9wNM3886np5yqSbiVjDivognZpdFE6xkAOqnj4RZ1pfs8U9ctyxb7LJOsWR?=
- =?us-ascii?Q?BdvvJJjECCdO84Glt0HffsI1iNrZB/ahGaCFKMWqTPB6kaLkoQH3R+Mrkq9U?=
- =?us-ascii?Q?6/ahVPWMJ401WIk8UP2750do7DOb0pdtNbrYU/mzzs8P9Ig07xOUvgcOfbPB?=
- =?us-ascii?Q?D/6sXUFTRUhR2fDj32FaFpqyy8lbqOEDZsskjmnoupAWJoaszRU2HK6HwOIF?=
- =?us-ascii?Q?XRvlUaHVJx5M0QWa58XRB1NLgsruun0bpe5nFi17BS3I50juKQm2uyZ3j+/5?=
- =?us-ascii?Q?LRQlJLBrqWYQAGNG/S3ozpocXrvqbiEM07fsFtyhGPiFfOGR/Ug7M6Rj/33A?=
- =?us-ascii?Q?VzSyHj1TqxOkeya9raJs8ciTawZJDqVNc2EsGXm6818SK9Qpk4XYqSz8xy9L?=
- =?us-ascii?Q?H22jIq+P8pOJ9d211vc+V4jdhtDWD9bOHpEcVS03u0RY8UXUGRF+G9rx+W8h?=
- =?us-ascii?Q?4kZAmtQWrjjAJK/NYrccbOnVBT/wrGutk8mpYwlekeNjoGIf70QDhDWVj8bj?=
- =?us-ascii?Q?nvl5WCfN4mUgPZEqRyCBjtPJA4dybsXPoMvtBiya7j6hw5TigzxxpplxomSJ?=
- =?us-ascii?Q?YjyP5zTRY4P8JxY2hQDXrNlwnoODB4AyDc29x9iLzyKmJYwRWLnYeaQgiRti?=
- =?us-ascii?Q?R/MrGmyNWgnYThSzO8EA5s9juSx6p1nFaqXpBJ61ZUnLZqePwHFFFWwNI8xk?=
- =?us-ascii?Q?Uq6uGfjxJFWVtFZ7AoIbXo1mMO8ZU7cgKzESOiX4GAyc+kOIClAHsdfmcfb9?=
- =?us-ascii?Q?j7np/tVch9ee7tIWaqjoelNyS3alprVSve91dLjpscVZmssmvShi?=
+	=?us-ascii?Q?d225JsLGQvewn34WZocnVd23bYyB2YBQn3WwriZJttHWwylOBzLbTCFJwYV8?=
+ =?us-ascii?Q?+30wPt5tDFmhoxFtMsFI6PrEozpNnwOwjXWZipVtVywLfgz4YHWOPnlfN9pP?=
+ =?us-ascii?Q?oE61rsyn4bKc2ZCR4W6fammL3p/BQMD97K9TFB9DjfG/KVpQ0/P9993ZijX+?=
+ =?us-ascii?Q?OLXA8+nTviODHRG8HQY+IMsBNI65VRtbkwDxes2/4cq77fLQd4AVQPzi5KSl?=
+ =?us-ascii?Q?caOw29zSrWgusQRiSoYrFSz9XzGfSze3oqd8BIXszO5qw4wvZeXRk9XvEdNk?=
+ =?us-ascii?Q?fm46sCiYoEwD9eYi1hgaALcrhnPNvb1tsR73R/PG4txnc2Oj7XzmyRpHKBll?=
+ =?us-ascii?Q?Uehf6kaNEbZyeO2MXTdVHAncNlLfuj+P4xeEIZyfQ2o3vBZqRBwUdpuwfo0t?=
+ =?us-ascii?Q?QlCzmFySzz9y1panDIf/8EfhlxPDOMQ/3ts+QzToIah92hvvEI+/hZoeHbNV?=
+ =?us-ascii?Q?qN/D8I5HYw/t5F5sX2VeTAPVb7n03CzqVgpVMX8+HDbdSwD0CxEWea8NJI7v?=
+ =?us-ascii?Q?DE8WGzIjJlPYYP4FU+z+I7wuGpLfdzPiyW5mUwt+i1fGQNFAdrrpfs3oeeHX?=
+ =?us-ascii?Q?z9IAA4VeFqlH6Y30EobgRJvidwFykqkYTrqGvp0ru9+SBsh7Ce99qy0rWtTr?=
+ =?us-ascii?Q?/f2t9gimH5NQ/ngnrflIF3ZrAsRQUCZDFwz8pXkzrWmeeAx6FB0HEZcXdahr?=
+ =?us-ascii?Q?bEbSbB9sAxYXrJB09Z4K2KgLDxa/vMLGAbB5MFUXw864qJ3fEFYsfL71alDU?=
+ =?us-ascii?Q?0rSTq8W7rI6NT6hJKHDPsQlLlZHMKjGHy7T9v2UGCV31zJDN2IWNe+vMDzdD?=
+ =?us-ascii?Q?12xqFQKMivs5TT6SJkB2csVWHLi8KLv7XPmxaCFye1HIzji93q8P79lDdiia?=
+ =?us-ascii?Q?asqLRYbjoQ1TMR5pemKMDNbDtJJ+ZBQx7hQdp2i+8ukveDPEBevviUxNX2+4?=
+ =?us-ascii?Q?RlIA543+bGzwDXTqrygfOGTi1sinEraNvQe8wwUdjeWPsxP3vA7TsRgPa1V5?=
+ =?us-ascii?Q?Gmbwi5AFdY53cnmYR5gkeO8K9exHDCLJ1ziPeHRBS9TnZKPCWbdx6WzmiX2v?=
+ =?us-ascii?Q?hzZsTOQbs+cJ/CslFLeGQe5SNlwd1xoBIPnUwktIUxJcMxel5bwx+PD9ICHp?=
+ =?us-ascii?Q?OzFw7BfwyqNsmGB9MXXuuUcFo0yqUVkLgmtVDT4aTZ1j6S3qH0u84J14CW7f?=
+ =?us-ascii?Q?YJnjGR5n8sktY3GLRUQ8r/T3HYUjZK0WMnK5gTB2Xq0hXjfhuPRrXl5B83D9?=
+ =?us-ascii?Q?uSwu/RXUbKKYYzxByVk1Nzpa7UnqmNpbTvlrESxcXQqRTsxcyyHfnBcUI6az?=
+ =?us-ascii?Q?DnWEcqMVf1o9BTyc84x2m17d/dv3DnJFcOUBaLQHcceT6osWyz543QVj1rsD?=
+ =?us-ascii?Q?scHUcvL/22EACszLF8FRf+oG107q2dCJzD76waWXLAc/gQ94MANFPkVgJNWi?=
+ =?us-ascii?Q?DejfBXeRQ3O4iz2eyKgJ/MjERINcu07N7pUfWuWhXXDJB37oAGqZzVpJ23XS?=
+ =?us-ascii?Q?kvoOJBGGIakbJW17f7Tsk9a1aB7Ozj2BRaCwXRwdDWXDlA31YjdYOzSwbeqE?=
+ =?us-ascii?Q?1bc4F+s8MVGRzuxfpKKN1dXhJ6huzMEbKH/+0R0k7O9iC/Y7i/aZwXzrXeFq?=
+ =?us-ascii?Q?OOMRbT+ERsRXyPT3qMvEVZv7a8GG7yp08vLaH0YSmB88HrWP9gYoewGiYGfS?=
+ =?us-ascii?Q?B8aQcIpjg6s7zu4yI7cHPsPf+GeTMeGAyJkvjUKVPbH11wPNZLdUvthaZuVL?=
+ =?us-ascii?Q?oudh3Is9so0mNi9FzxQ7OPljqwnBOeVNRMzHTgnVekOXHL8BqsL0?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3f3efa0-3504-4634-f376-08dec5d7166c
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 998b5561-94b6-4077-3e6a-08dec5d8471d
+X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11276.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 03:27:51.9150
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 03:36:23.3813
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0mVLnAEyHT3H5F9jtRZ+lI0ioJwLq5ZXBKKnbu8MHUf6J1P2T3c+1Il3oAQfnYcrnQ0y9yDOYKAH7DE3chqos4J1ovhSZtxrzFOFEUzJEq9Rt9+QgPFOKhLs7jVq6QbH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8946
+X-MS-Exchange-CrossTenant-UserPrincipalName: X8PMijtk4hryBHFGli1qAx9NpSoLUufPxjY3UdfILfGL5l/gZqEMHPT+A2oiW+w0hmgEQgPm7Waw0nRVPFigweHTygOxuVIfRpw34PS24brEUemJhq/0rhCQOEZo34ja
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10543
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-The NETC switch does not age out dynamic FDB entries automatically.
-Without software management, stale entries persist after topology
-changes and cause incorrect forwarding.
+3.3Vaux supply has different power lifecycle requirements compared to other
+supplies like vpcie3v3. It must remain enabled during system suspend to
+support PCIe L2 link state and wake-up mechanisms. This is a requirement
+for devices that need to maintain PCIe link presence and support remote
+wakeup while the system is suspended.
 
-Add a delayed work that periodically removes entries that have not been
-refreshed within the specified cycles. The effective ageing time is:
+This patchset adds support for the 3.3Vaux supply by:
 
-  ageing_time = fdbt_ageing_delay * 100
+  1. Extending the PCIe M.2 E-key connector DT binding to include the
+     optional vpcie3v3aux-supply property.
 
-Default values are 3s interval and 100 cycles (300s total), matching
-the IEEE 802.1Q default ageing time. The work starts when the first
-port joins a bridge (tracked via br_cnt) and is cancelled when the
-last port leaves. All FDB operations are serialized under fdbt_lock.
+  2. Updating the PCIe M.2 power sequencing driver to handle vpcie3v3aux
+     separately from other supplies, keeping it enabled across system
+     suspend/resume cycles when present.
 
-Implement .set_ageing_time() to allow the bridge layer to reconfigure
-ageing parameters on demand.
+This has been tested on i.MX95 & i.MX943 EVK board with a NXP Wi-Fi/BT M.2
+AW693 module that requires 3.3Vaux to remain active during suspend for
+wake-up support.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/dsa/netc/netc_main.c   | 67 ++++++++++++++++++++++++++++++
- drivers/net/dsa/netc/netc_switch.h |  7 ++++
- 2 files changed, 74 insertions(+)
+Sherry Sun (2):
+  dt-bindings: connector: pcie-m2-e: Add 3.3Vaux supply support
+  power: sequencing: pcie-m2: Add 3.3Vaux supply support
 
-diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
-index 299a9e76b9aa..c6082c6f8fd9 100644
---- a/drivers/net/dsa/netc/netc_main.c
-+++ b/drivers/net/dsa/netc/netc_main.c
-@@ -447,6 +447,25 @@ static void netc_free_ntmp_user(struct netc_switch *priv)
- 	netc_free_ntmp_bitmaps(priv);
- }
- 
-+static void netc_clean_fdbt_ageing_entries(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = to_delayed_work(work);
-+	struct netc_switch *priv;
-+
-+	priv = container_of(dwork, struct netc_switch, fdbt_ageing_work);
-+
-+	/* Update the activity element in FDB table */
-+	mutex_lock(&priv->fdbt_lock);
-+	ntmp_fdbt_update_activity_element(&priv->ntmp);
-+	/* Delete the ageing entries after the activity element is updated */
-+	ntmp_fdbt_delete_ageing_entries(&priv->ntmp, NETC_FDBT_AGEING_THRESH);
-+	mutex_unlock(&priv->fdbt_lock);
-+
-+	if (atomic_read(&priv->br_cnt))
-+		schedule_delayed_work(&priv->fdbt_ageing_work,
-+				      READ_ONCE(priv->fdbt_ageing_delay));
-+}
-+
- static void netc_switch_dos_default_config(struct netc_switch *priv)
- {
- 	struct netc_switch_regs *regs = &priv->regs;
-@@ -872,6 +891,10 @@ static int netc_setup(struct dsa_switch *ds)
- 
- 	INIT_HLIST_HEAD(&priv->fdb_list);
- 	mutex_init(&priv->fdbt_lock);
-+	priv->fdbt_ageing_delay = NETC_FDBT_AGEING_DELAY;
-+	atomic_set(&priv->br_cnt, 0);
-+	INIT_DELAYED_WORK(&priv->fdbt_ageing_work,
-+			  netc_clean_fdbt_ageing_entries);
- 	INIT_HLIST_HEAD(&priv->vlan_list);
- 	mutex_init(&priv->vft_lock);
- 
-@@ -936,6 +959,7 @@ static void netc_teardown(struct dsa_switch *ds)
- {
- 	struct netc_switch *priv = ds->priv;
- 
-+	disable_delayed_work_sync(&priv->fdbt_ageing_work);
- 	netc_destroy_all_lists(priv);
- 	netc_free_host_flood_rules(priv);
- 	netc_free_ntmp_user(priv);
-@@ -1970,6 +1994,7 @@ static int netc_port_bridge_join(struct dsa_switch *ds, int port,
- 				 struct netlink_ext_ack *extack)
- {
- 	struct netc_port *np = NETC_PORT(ds, port);
-+	struct netc_switch *priv = ds->priv;
- 	u16 vlan_unaware_pvid;
- 	int err;
- 
-@@ -1997,6 +2022,10 @@ static int netc_port_bridge_join(struct dsa_switch *ds, int port,
- out:
- 	netc_port_remove_host_flood(np, np->host_flood);
- 
-+	if (atomic_inc_return(&priv->br_cnt) == 1)
-+		schedule_delayed_work(&priv->fdbt_ageing_work,
-+				      READ_ONCE(priv->fdbt_ageing_delay));
-+
- 	return 0;
- 
- disable_mlo:
-@@ -2023,6 +2052,7 @@ static void netc_port_bridge_leave(struct dsa_switch *ds, int port,
- {
- 	struct netc_port *np = NETC_PORT(ds, port);
- 	struct net_device *ndev = np->dp->user;
-+	struct netc_switch *priv = ds->priv;
- 	u16 vlan_unaware_pvid;
- 	bool mc, uc;
- 
-@@ -2030,6 +2060,9 @@ static void netc_port_bridge_leave(struct dsa_switch *ds, int port,
- 	netc_port_set_pvid(np, NETC_STANDALONE_PVID);
- 	np->pvid = NETC_STANDALONE_PVID;
- 
-+	if (atomic_dec_and_test(&priv->br_cnt))
-+		cancel_delayed_work_sync(&priv->fdbt_ageing_work);
-+
- 	netc_port_remove_dynamic_entries(np);
- 	uc = ndev->flags & IFF_PROMISC;
- 	mc = ndev->flags & (IFF_PROMISC | IFF_ALLMULTI);
-@@ -2066,6 +2099,37 @@ static void netc_port_bridge_leave(struct dsa_switch *ds, int port,
- 	netc_port_del_vlan_entry(np, vlan_unaware_pvid);
- }
- 
-+static int netc_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
-+{
-+	struct netc_switch *priv = ds->priv;
-+	unsigned long delay_jiffies;
-+
-+	/* The dynamic FDB entry is deleted when its activity counter reaches
-+	 * NETC_FDBT_AGEING_THRESH (100). Each delayed_work tick increments
-+	 * the counter by 1 if the entry is inactive.
-+	 *
-+	 * Therefore:
-+	 *   msecs (ms)    = NETC_FDBT_AGEING_THRESH * delay_ms (ms)
-+	 *   delay_ms      = msecs / NETC_FDBT_AGEING_THRESH
-+	 *   delay_jiffies = (delay_ms / 1000) * HZ
-+	 *                 = (msecs * HZ) / (1000 * NETC_FDBT_AGEING_THRESH)
-+	 *
-+	 * Use DIV_ROUND_CLOSEST_ULL to perform a single nearest-jiffy
-+	 * rounding, avoiding the two-step rounding error of the intermediate
-+	 * delay_ms approach.
-+	 *   Maximum error = +/-0.5 jiffy * 100 = +/-50000/HZ ms.
-+	 */
-+	delay_jiffies = DIV_ROUND_CLOSEST_ULL((u64)msecs * HZ,
-+					      1000 * NETC_FDBT_AGEING_THRESH);
-+	WRITE_ONCE(priv->fdbt_ageing_delay, delay_jiffies);
-+
-+	if (atomic_read(&priv->br_cnt))
-+		mod_delayed_work(system_percpu_wq, &priv->fdbt_ageing_work,
-+				 READ_ONCE(priv->fdbt_ageing_delay));
-+
-+	return 0;
-+}
-+
- static void netc_port_fast_age(struct dsa_switch *ds, int port)
- {
- 	struct netc_port *np = NETC_PORT(ds, port);
-@@ -2357,6 +2421,7 @@ static const struct dsa_switch_ops netc_switch_ops = {
- 	.port_vlan_del			= netc_port_vlan_del,
- 	.port_bridge_join		= netc_port_bridge_join,
- 	.port_bridge_leave		= netc_port_bridge_leave,
-+	.set_ageing_time		= netc_set_ageing_time,
- 	.port_fast_age			= netc_port_fast_age,
- 	.get_pause_stats		= netc_port_get_pause_stats,
- 	.get_rmon_stats			= netc_port_get_rmon_stats,
-@@ -2406,6 +2471,8 @@ static int netc_switch_probe(struct pci_dev *pdev,
- 	ds->phylink_mac_ops = &netc_phylink_mac_ops;
- 	ds->fdb_isolation = true;
- 	ds->max_num_bridges = priv->info->num_ports - 1;
-+	ds->ageing_time_min = 1000;
-+	ds->ageing_time_max = U32_MAX;
- 	ds->priv = priv;
- 	priv->ds = ds;
- 
-diff --git a/drivers/net/dsa/netc/netc_switch.h b/drivers/net/dsa/netc/netc_switch.h
-index 982c8d3a3fbf..305f2a92e2f9 100644
---- a/drivers/net/dsa/netc/netc_switch.h
-+++ b/drivers/net/dsa/netc/netc_switch.h
-@@ -50,6 +50,9 @@
- /* PAUSE refresh threshold: send refresh when timer reaches this value */
- #define NETC_PAUSE_THRESH		0x7FFF
- 
-+#define NETC_FDBT_AGEING_DELAY		(3 * HZ)
-+#define NETC_FDBT_AGEING_THRESH		100
-+
- struct netc_switch;
- 
- struct netc_switch_info {
-@@ -124,6 +127,10 @@ struct netc_switch {
- 	struct ntmp_user ntmp;
- 	struct hlist_head fdb_list;
- 	struct mutex fdbt_lock; /* FDB table lock */
-+	struct delayed_work fdbt_ageing_work;
-+	/* (fdbt_ageing_delay * NETC_FDBT_AGEING_THRESH) is ageing time */
-+	unsigned long fdbt_ageing_delay;
-+	atomic_t br_cnt;
- 	struct hlist_head vlan_list;
- 	struct mutex vft_lock; /* VLAN filter table lock */
- 
+ .../connector/pcie-m2-e-connector.yaml        |  3 ++
+ drivers/power/sequencing/pwrseq-pcie-m2.c     | 42 ++++++++++++++++++-
+ 2 files changed, 44 insertions(+), 1 deletion(-)
+
 -- 
-2.34.1
+2.50.1
 
