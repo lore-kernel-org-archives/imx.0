@@ -1,64 +1,64 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098263DFC7F
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 22:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E253B5E01
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 22:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781044660; cv=none; b=NddVSj0APVNYjfVbdCdJfmFnS5cGGGWtaiMJWQAxWOKqzDUqNjAfQzOLSjZlcV2rhvVfYYbUtmNFAlA9v9E5jXjviCysoOhdJTZRd4I2QlaTkz8qAkVmwTWAe2vOqQmjgb+/8KonouiVNtKWHMzS/spCFaocg0qwqV2U7yWJv4o=
+	t=1781044661; cv=none; b=W3mDTa/x0kjmwuJRfI2KrVcfJJXFCCGLhQ4tjjf/m0cQdHBo3kb6rJIb68t9P+aiOWWHcuJmaLd0lNe57YVKS4NRhM3VBbfKb+YuY1UjGEkS2khqV2d8xAjU5rKjDPji0yi0qWH3JXj9Rg+VBUe84FjKs9lqxMyZa9sUmJk4Txs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781044660; c=relaxed/simple;
-	bh=jfKLiudhSeJ7Ij3548KPuavVXJyFeUm4cbLCLp5+oPI=;
+	s=arc-20240116; t=1781044661; c=relaxed/simple;
+	bh=KHFBKElH1lggN2sZB5oI+hYuA6tBhm4+ZNyZCHF4qaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gunS0zZRLVH+8svryA6nb74xaBAforjt/Hgwba4iik5xyOxw7rrZ/jJwAB0Zrom14IvebUfqlChBiizrgo+PGUxXsM1oN7ZP16WansGsI/gr4FdblHxNkyc9Li8FtFUYiOv2b2Nx3+/A/MPKbbqhmj1GpYkrAd6n/DOptwK2+fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qLKnPC0s; arc=none smtp.client-ip=209.85.214.175
+	 MIME-Version; b=gaoWmtAQjhwK5yN5MU7fmnHWxqGpFirW6wqK/afLwM8V1DpScaAkQG0QXtfUqyVCMC/rhdENoXUucvwn+keJNL3gtnNxiABgkaLNyXtCW9JBYlVJTwSdkD5qdb+9sXZT6Xqv1Z753wH/y/V45iQfUPNYllpoA/8K1laT6LDnbSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZtWZBgtr; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qLKnPC0s"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2bf1cda2b17so45311285ad.1
-        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 15:37:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZtWZBgtr"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2bf18c30bb2so44092795ad.0
+        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 15:37:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781044657; x=1781649457; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1781044660; x=1781649460; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=m7DIsV2yYkeuv0vuZTHMuiTm55rfBmU9E0/9cM1N8Eo=;
-        b=qLKnPC0s+I3rAlRcwZRO5GjDinvxmdS3x4OoHfjCPN2XK0W1DJs8+9gnUZVkvcjqO1
-         pwEDCPMmureKhv7PhgYcf8I4T1jH7CtqbP3qiGCSXOKsHTbV4QbnoKFMIb0DG1ITcbEh
-         UK9GOdpNhdfIRca6ajQ1IceuSAXnuPHwPVevzPwPKbm29Yqef45G5QZeFJoGfcTaAJVD
-         Lb7BQYPGKFkGFpkySVUL9yCRK6QgdM+dbSPFgrVV5MZZH2mSE3RB9Ab6TyvkOL4K8gyz
-         fDWnPd8uFcPW+bWVwBCuBrxnokIVQZrytNxdZt/rRzuYe3r/QUj4vRPxYhactlfICPj/
-         4wiw==
+        bh=Enn6naQw+wLmV0GhfZ0seolUzIj1ObU+9VW8J0DyP44=;
+        b=ZtWZBgtrVEsyxUNRZn9UxLDWN4CeND12lRBqeUEF2htfVgzCCUYDcfwWVl9UJXF4Xk
+         kfAYsZJ0qHAJl/qLn2MwB7OYIVSyNV6AxHQAvzISbwlC2NxwnLXajBL1jApExaXDi2xX
+         zTscUguPlaF7Wf5QopCqU0KBTuh6ED+p1NwRrqFdFosqx5J8tpxudWAIvSqAnUfRT4NA
+         cUHJTGYl0eV9MUjb9ADn8nRGTxWIx+tVM7/ZmX1i3ky9AFFlBwrPVpXbbOIHUTsPYENI
+         n7l63fcEBPIu/ANSzwv3/Zuqj0JyQhQIudPojIowChyZ4iaqBocVc6RMw1QAVpMR2Tjn
+         JMNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781044657; x=1781649457;
+        d=1e100.net; s=20251104; t=1781044660; x=1781649460;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=m7DIsV2yYkeuv0vuZTHMuiTm55rfBmU9E0/9cM1N8Eo=;
-        b=axBFshtFQjCnV2pLjvwzBSLsnEWqHSFlR2+m2gviEPRZyvRynqMUZGbp9aIJHjR2u4
-         SVTAS0Wc5TxYbZ4bYssq6zjK9W2rqritbyaEp0LPZi9Hfdnt6aWdIJ8gayFW9doMPCkV
-         hZFrBOakq30SmxWcyPnwsogmAW6wsYbju9/xnDJmyEzlMLyLSoU/wbuzZMYutUKUcSaP
-         sSvDhfIZRgsVDmP0zwLUuATZfY/hCmgKK8EBeYjTh7NYwrUG4z0q6b0vse2FPy2SCUR+
-         O6AZZ+TDjwpMaL0edcrGoKUy5GBwT6yXz0qYcy2wprQbsGHBH8W6pKATaFxpIwLxpkB2
-         dddw==
-X-Forwarded-Encrypted: i=1; AFNElJ+v7peO3Mlyi5SToSz8ZC4x1WQte1Ldf1BZntGnWPXIHP4cMuaNR18sW1Z7e18QVR3c+/A=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy9Fm/UTn4E8G4XjI4ogBQCGmvRkF37pQ1DD+2DFqEftGAympc1
-	uziiS3R8mdlE0eMnCYCSEoPJEDoPbmGk0jzR3n2qOY9QtgW6Gp1qRHCg
-X-Gm-Gg: Acq92OGRDiNF87zt1nnO0pby7XkgRznSt3hGzxfxcU4T98e+IAzZD1dz1rHGbRCfNEM
-	wJuATd/RNSUuVTxlKHyMVsh6sNlugHAulYf6xZOUFS1IFL5MAdk+FXUWKqajtpFWRTbclqkT7A0
-	BWaTw4Ebx9MjJjMzn5ZNuZFPZoDQTgjYKPQFQBbzxa6Ut350ms75r9Np9gE88kBcEOptJTv0Ik8
-	bmwm2jAowCTqXRZ9qVt2OL+x20A+O96GfWlE9uN5kSEQql2KgfKqZtiIgMS1qoD+C83uheEbTcz
-	/9gfVodeekVqJoKLOE/E5UnINgdsVHU41fTfEFtNHNJ7b+H8vf6w5q7Y9ZLBAn7a8TJBN16NX1X
-	MkY67ST//rywgtjfREEIhIJhEGzlQuQRrwZBGow3IgSAhFzdXLcC3evIGOQClWZUUdsETKXinau
-	dPMV/0jiP4UoSKfLNA8AV5azszl0RPub/OYPwAOtRQUcoV0mTl+I8g+vFkycIueoUrDuj7K5P5H
-	p+xexbEWC4a/J7uMEB92UJDVjL8m0wU0BV8SFa+qKVhDQ==
-X-Received: by 2002:a17:903:990:b0:2bf:1845:baf5 with SMTP id d9443c01a7336-2c1ec918402mr185643335ad.12.1781044657308;
-        Tue, 09 Jun 2026 15:37:37 -0700 (PDT)
+        bh=Enn6naQw+wLmV0GhfZ0seolUzIj1ObU+9VW8J0DyP44=;
+        b=AWbxiJyjOcpxWDzeUB7kxXJxDB77PySyev2ylYh0z6kBGKAvn1udRrVf+VF2Kn8UFP
+         R+U5XgTH+VjT5p+OeMEJ+7K1QqyVrG+d/P+f2fwcjszv+cxWmsVMAoLgB1Sd8J47q3BS
+         /gHyUVcZb2Kg2V6vCTrqdEKZMF9fzVa8SwYl00QrcESukufFGMgOhIsx09+oisHAv357
+         lGGQpKTqAdIQWADzBIe0hpgs0dSN+5ITiDxQUv7Ki44rNTwLpz+mNp9vMQwEu4VINRcY
+         KRJPrt/PlDvCzK4bjXxyTGh9o6186mqTJ4fsgvZteaaTj2v/ESLmAcSWsDl2UXFbD3n7
+         wNBg==
+X-Forwarded-Encrypted: i=1; AFNElJ9rHH/54Ya1tdHeJ3smidohVICYptPa50Jx7MUonm79Fh1CZ5pW2fQ4oa727HXSbmaiKyg=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw7sfZeC17GoPZ4jLAysuqRXvOgD0XWN3vKOWrHAOX5gIXR6dOV
+	Sgzu69YWXWQ8lbeHcG2IGJ01GV5VYHaRm5CbD0B2RQfUZbjTPGiGHPW3
+X-Gm-Gg: Acq92OG48AURroxTX5a9nnww6+/CzuAJp1SoJSFRqbnW/ZU8Hji/GlT640t3F0v4e0r
+	2UUIKhpfS2wTCg3PU/7Iej/nbDHzlbEs8OVRk1Norg4JBDCStLcJAcqC6xe2Sie8bDhLo+WEST0
+	iyulFvx0RYoXZwYe2HM+Z+md3IrQmF8oZk8w8gtGsoRgusUfWXuCTwshjFY/y4H175mvxldF5ol
+	rpQAzj424uzdDK3k7HpZzSbh5k6GxYW+IpesGmguUq89OlOpGPW7Yaa8F/44rQg7Klx6JJYJmmK
+	qA/a39rHO0GtNsfvi7t19l4uoF7XJO0o2sBskZXakOqA2ICB6kifc3Lugh0kAKL21c/drVEQBMB
+	oAZxFk+Euy89r56hXv9WtglMY3udXJGPy/lv6YQDu68y54r8Vt2EYNDxKLJL2fPKN1E58PgCNFR
+	L7nnnDNLXTxfkU3px5EUfJk+BVx6iREPTzX5Ix+lQ0v8m6qERF9Mujfb0hrJL1aIKZcDsZBcZPS
+	uuFVsB7ET5i8nuHzFpdQ0sEFd8ankMnhVuNTsDAztF9dQ==
+X-Received: by 2002:a17:903:1aef:b0:2c2:7e17:39f6 with SMTP id d9443c01a7336-2c27e173ecfmr119389525ad.36.1781044659986;
+        Tue, 09 Jun 2026 15:37:39 -0700 (PDT)
 Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f6d37esm293750655ad.9.2026.06.09.15.37.36
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f6d37esm293750655ad.9.2026.06.09.15.37.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 15:37:36 -0700 (PDT)
+        Tue, 09 Jun 2026 15:37:39 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: linux-serial@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -70,9 +70,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-kernel@vger.kernel.org (open list:TTY LAYER AND SERIAL DRIVERS),
 	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
 	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE)
-Subject: [PATCHv2 2/4] serial: mxs-auart: rework clock handling in mxs_get_clks and probe
-Date: Tue,  9 Jun 2026 15:37:15 -0700
-Message-ID: <20260609223717.41670-3-rosenp@gmail.com>
+Subject: [PATCHv2 4/4] serial: mxs-auart: fix IRQ registration ordering and manage console clock
+Date: Tue,  9 Jun 2026 15:37:17 -0700
+Message-ID: <20260609223717.41670-5-rosenp@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260609223717.41670-1-rosenp@gmail.com>
 References: <20260609223717.41670-1-rosenp@gmail.com>
@@ -84,112 +84,131 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use devm_clk_get_enabled for the AHB clock so its enable/disable
-lifetime is managed by the driver model. Move the mod clock
-(clk) prepare_enable out of mxs_get_clks and into probe so that
-clk_set_rate is called while the clock is still disabled, avoiding
-CLK_SET_RATE_GATE failures. Clean up the error labels accordingly.
+Move the main UART IRQ registration after uart_add_one_port so that
+s->port.state and s->port.lock are initialized before the interrupt
+handler can run. Mask all UART interrupts before adding the port to
+prevent spurious IRQs left by the bootloader.
+
+After probe succeeds, disable the module clock for non-console ports
+since startup will re-enable it on port open. For console ports, keep
+the clock prepared so auart_console_write() can safely call
+clk_enable() from atomic context.
+
+Guard the IRQ handler and get_mctrl with clk_enable/clk_disable since
+GPIO IRQs and serial-core status queries can fire while the clock is
+disabled for non-console ports.
+
+In remove, disable the clock for console ports to balance the enable
+done in probe, preventing a clock leak on unbind.
 
 Assisted-by: opencode:big-pickle
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- drivers/tty/serial/mxs-auart.c | 47 ++++++++++++----------------------
- 1 file changed, 17 insertions(+), 30 deletions(-)
+ drivers/tty/serial/mxs-auart.c | 49 +++++++++++++++++++++++++++-------
+ 1 file changed, 39 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
-index de97c0f74e7d..aa59a48bfad7 100644
+index 4499e3206e85..e2b656638ab3 100644
 --- a/drivers/tty/serial/mxs-auart.c
 +++ b/drivers/tty/serial/mxs-auart.c
-@@ -1470,34 +1470,22 @@ static int mxs_get_clks(struct mxs_auart_port *s,
- 		return PTR_ERR(s->clk);
- 	}
+@@ -738,9 +738,13 @@ static u32 mxs_auart_modem_status(struct mxs_auart_port *s, u32 mctrl)
+ static u32 mxs_auart_get_mctrl(struct uart_port *u)
+ {
+ 	struct mxs_auart_port *s = to_auart_port(u);
+-	u32 stat = mxs_read(s, REG_STAT);
++	u32 stat;
+ 	u32 mctrl = 0;
  
--	s->clk_ahb = devm_clk_get(s->dev, "ahb");
-+	s->clk_ahb = devm_clk_get_enabled(s->dev, "ahb");
- 	if (IS_ERR(s->clk_ahb)) {
- 		dev_err(s->dev, "Failed to get \"ahb\" clk\n");
- 		return PTR_ERR(s->clk_ahb);
- 	}
- 
--	err = clk_prepare_enable(s->clk_ahb);
--	if (err) {
--		dev_err(s->dev, "Failed to enable ahb_clk!\n");
--		return err;
--	}
--
-+	/*
-+	 * Set mod clock rate while it is still disabled so
-+	 * CLK_SET_RATE_GATE does not cause clk_set_rate to fail.
-+	 * The mod clock will be enabled in mxs_auart_startup()
-+	 * and in probe after mxs_get_clks returns.
-+	 */
- 	err = clk_set_rate(s->clk, clk_get_rate(s->clk_ahb));
--	if (err) {
-+	if (err)
- 		dev_err(s->dev, "Failed to set rate!\n");
--		goto disable_clk_ahb;
--	}
- 
--	err = clk_prepare_enable(s->clk);
--	if (err) {
--		dev_err(s->dev, "Failed to enable clk!\n");
--		goto disable_clk_ahb;
--	}
--
--	return 0;
--
--disable_clk_ahb:
--	clk_disable_unprepare(s->clk_ahb);
- 	return err;
- }
- 
-@@ -1604,17 +1592,21 @@ static int mxs_auart_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	ret = clk_prepare_enable(s->clk);
-+	if (ret)
-+		return ret;
++	clk_enable(s->clk);
++	stat = mxs_read(s, REG_STAT);
++	clk_disable(s->clk);
 +
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!r) {
- 		ret = -ENXIO;
--		goto out_disable_clks;
-+		goto out_disable_clk;
+ 	if (stat & AUART_STAT_CTS)
+ 		mctrl |= TIOCM_CTS;
+ 
+@@ -1079,6 +1083,7 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
+ 	struct mxs_auart_port *s = context;
+ 	u32 mctrl_temp = s->mctrl_prev;
+ 
++	clk_enable(s->clk);
+ 	uart_port_lock(&s->port);
+ 
+ 	stat = mxs_read(s, REG_STAT);
+@@ -1118,6 +1123,7 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
  	}
  
- 	s->port.mapbase = r->start;
- 	s->port.membase = ioremap(r->start, resource_size(r));
- 	if (!s->port.membase) {
- 		ret = -ENOMEM;
--		goto out_disable_clks;
-+		goto out_disable_clk;
- 	}
- 	s->port.ops = &mxs_auart_ops;
- 	s->port.iotype = UPIO_MEM;
-@@ -1681,11 +1673,8 @@ static int mxs_auart_probe(struct platform_device *pdev)
- out_iounmap:
- 	iounmap(s->port.membase);
+ 	uart_port_unlock(&s->port);
++	clk_disable(s->clk);
  
--out_disable_clks:
--	if (is_asm9260_auart(s)) {
--		clk_disable_unprepare(s->clk);
--		clk_disable_unprepare(s->clk_ahb);
--	}
-+out_disable_clk:
-+	clk_disable_unprepare(s->clk);
- 	return ret;
+ 	return IRQ_HANDLED;
  }
+@@ -1603,10 +1609,6 @@ static int mxs_auart_probe(struct platform_device *pdev)
+ 	}
  
-@@ -1697,10 +1686,8 @@ static void mxs_auart_remove(struct platform_device *pdev)
- 	auart_port[pdev->id] = NULL;
- 	mxs_auart_free_gpio_irq(s);
- 	iounmap(s->port.membase);
--	if (is_asm9260_auart(s)) {
-+	if (is_asm9260_auart(s))
- 		clk_disable_unprepare(s->clk);
--		clk_disable_unprepare(s->clk_ahb);
--	}
+ 	s->port.irq = irq;
+-	ret = devm_request_irq(&pdev->dev, irq, mxs_auart_irq_handle, 0,
+-			       dev_name(&pdev->dev), s);
+-	if (ret)
+-		goto out_disable_clk;
+ 
+ 	platform_set_drvdata(pdev, s);
+ 
+@@ -1627,9 +1629,28 @@ static int mxs_auart_probe(struct platform_device *pdev)
+ 
+ 	mxs_auart_reset_deassert(s);
+ 
++	/* Mask all UART interrupts to prevent spurious IRQs from bootloader */
++	mxs_write(0, s, REG_INTR);
++
+ 	ret = uart_add_one_port(&auart_driver, &s->port);
+-	if (ret)
+-		goto out_free_qpio_irq;
++	if (ret) {
++		auart_port[s->port.line] = NULL;
++		goto out_disable_clk;
++	}
++
++	/*
++	 * Request the main IRQ after uart_add_one_port so that
++	 * s->port.state and s->port.lock are initialized before
++	 * the handler can run in response to a bootloader-left
++	 * interrupt.
++	 */
++	ret = devm_request_irq(&pdev->dev, irq, mxs_auart_irq_handle, 0,
++			       dev_name(&pdev->dev), s);
++	if (ret) {
++		uart_remove_one_port(&auart_driver, &s->port);
++		auart_port[s->port.line] = NULL;
++		goto out_disable_clk;
++	}
+ 
+ 	/* ASM9260 don't have version reg */
+ 	if (is_asm9260_auart(s)) {
+@@ -1641,10 +1662,16 @@ static int mxs_auart_probe(struct platform_device *pdev)
+ 			 (version >> 16) & 0xff, version & 0xffff);
+ 	}
+ 
+-	return 0;
++	/*
++	 * Disable clock -- startup will re-enable when the port is opened.
++	 * For the console port the clock must stay prepared so that
++	 * auart_console_write() can safely call clk_enable() from
++	 * atomic context.
++	 */
++	if (!uart_console(&s->port))
++		clk_disable_unprepare(s->clk);
+ 
+-out_free_qpio_irq:
+-	auart_port[s->port.line] = NULL;
++	return 0;
+ 
+ out_disable_clk:
+ 	clk_disable_unprepare(s->clk);
+@@ -1657,6 +1684,8 @@ static void mxs_auart_remove(struct platform_device *pdev)
+ 
+ 	uart_remove_one_port(&auart_driver, &s->port);
+ 	auart_port[s->port.line] = NULL;
++	if (uart_console(&s->port))
++		clk_disable_unprepare(s->clk);
  }
  
  static struct platform_driver mxs_auart_driver = {
