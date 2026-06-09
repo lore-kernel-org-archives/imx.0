@@ -1,244 +1,255 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010017.outbound.protection.outlook.com [52.101.84.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C613A9D9D
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 06:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780988297; cv=none; b=OyI4ASzhlAR7mu3Fj57bjakjXGOA5AAHjyC2M1/aaVTx2+LZwUiIzWp3VhcIElyZ1wdXsGKPAtXHMJ5RCJ0mqZAYlgt0mf2lXzLJNG2VitxEcPpgyyLMevCuQBtRidFg7DEwTvsPCBxNpG7Zuf6ULFBBTI66FKA9eiW4sDTLupY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780988297; c=relaxed/simple;
-	bh=Hy0uHrFDbNyqmmdwOUXr/24wyPe0P/xAj/kC/mDIJlg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EPp2bEw4jGm/cIdnRk/4LBlIrX0TBYiGC+WHYrcIo/LbTEOGoGoZtxnhV56x0791anJkUefr8iehp3YXGlab/KvsAJNTxhEgOIGpkZkjpW3B0qMcA+2MUMCN3+9eaijKCXp2Dj3opXn8RVhBL652H+jQsS6EO27RuvUXIbOcguQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KgWTIDmf; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FA037F8DC
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 07:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780989556; cv=fail; b=W9L1PRUAs/EDerdiDGbS3B1IFwfb2mbyT/cOb1g8cImK3lnrVslkD+IcFwQAbeY4g1FrlrmZJ932WTqOBvnXMQZRawbaABhd7IbCLJh+WxwQd5Y9dGGN8qTHZb0xK9KHNI8BeIvCzwyOhzG/x30YR4oZ+gAxSFZIzkUhl/CjJJE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780989556; c=relaxed/simple;
+	bh=689QpCSAtBjFRUQLsuFt/k2FN/DykKln3GreVuQ1e/4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bhgq+DLLdgNwfNVu77jjNCLZpzGgSIYGtYbXQzpj7NI2FTIb3LZ1cTmEZAso0YCXvuxvWKZfE76XYzD25Xmuka/NCRZKeDFJcW8SQl/ZdzG2u48w1XngyIUID/2YTQzzkyu2S39ltr/IO/bwJXinkV90UrTq1si1Z1fBZ66gQ1A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XY+WNBRn; arc=fail smtp.client-ip=52.101.84.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KgWTIDmf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780988294;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CErMmgwjtyGkijbinQXt+E+wyTwr3hFPBwtSrU4ri/Q=;
-	b=KgWTIDmfu9FbEQMcuJ3hB2gwK0Tvx54wlRg+apYepPzGuT6d7U3+S0ybY4WAYgLhzYa9yX
-	EPM6m3bMA7GVH3YDTIbAPA8xatXn3BcadHsEAJCM2d3hJdQTsdbDNWx/2YiZxNSzjmzwH/
-	6a9WjeO3cNGn0mEI4Gx602X7AxYH7LM=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-w01ZrQC7NJezLdxdUhmnow-1; Tue, 09 Jun 2026 02:58:13 -0400
-X-MC-Unique: w01ZrQC7NJezLdxdUhmnow-1
-X-Mimecast-MFC-AGG-ID: w01ZrQC7NJezLdxdUhmnow_1780988292
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-39659dea96eso3283951fa.0
-        for <imx@lists.linux.dev>; Mon, 08 Jun 2026 23:58:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780988292; x=1781593092;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CErMmgwjtyGkijbinQXt+E+wyTwr3hFPBwtSrU4ri/Q=;
-        b=olBp6DiyVcCHeuJKuGQlm6Wp/a6UyCFB42YkSnRs+Wtdl6t4DqYPL4fI415H2SkxCo
-         AyYJL5TsqKxddI3cEWr1rio7vJrC504q9pE0pAA6TEn6DfF4N0Il5QzBFQvujp+CD1q7
-         1bQuzYAHqhfc1So7cxJziGJcVhXcdDv2q1uop6WMRqZA8ksAgqmQWKFnAeWwxIWaShWq
-         jOrY/xFIvx+Y9cr3X0BwmfVjIbpOQHvHyGmiKpn5Jcav/8jYYvtXgkW9VJpaZsw2NZkK
-         3WK1S/kcOX20dHJhiqW2wgboWHiGeDusBDcsZTUiGbQ972R3h2yL7DT6JTCTFLgYyKd1
-         DWRA==
-X-Forwarded-Encrypted: i=1; AFNElJ9gxb/n3ooAiZ7pG1qqOHz/Dv2mTnxlT+yEYF3CJxvQUIoC/F7t2cxXd3v01rULLnbDylo=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yys/ilIAhzhlHOBS3M/82H5Yj814WlFU/nA+MLoh4F5JMg/ghX1
-	G/5N3QrnzGbL/yPbLuV5px7EpN8uoB2pN6AG1Cbpz/V5eYobD49lAI+88i8cH4A+fZG6BsGBGSb
-	v0Zo6FtLkr9gPI/oyHK7nYmyJvpc52HMt9giHOxcHMv1uP8qM+E+Jt62f7yFZRXrGfB8pH9ChZ+
-	E+1jq9FZ+UuqvHqD4EyDHocZ2/CFiT
-X-Gm-Gg: Acq92OGswBPZHlYiSpguRDIfFXH5RNko2AjEYqnJB6lqvMQww8IU4In2xpL66t1RqKS
-	8lTwel9dOFN8aAuJy6kdfbrrkBrZw9C5FWPusywlwZKOCdZ2zo7YIKahoCfTWOx4p72FZcBK3U5
-	gnJh9cMecbF5xY8CpSFr2LPSYfMbxao395tmlkpCpQXHHozliw6rlnOXX8QveZhESSP9HeTANfu
-	Bp9CsKzN+Et24MD
-X-Received: by 2002:a05:651c:b22:b0:396:7280:1e5e with SMTP id 38308e7fff4ca-396d05b0e5amr22977561fa.0.1780988291632;
-        Mon, 08 Jun 2026 23:58:11 -0700 (PDT)
-X-Received: by 2002:a05:651c:b22:b0:396:7280:1e5e with SMTP id
- 38308e7fff4ca-396d05b0e5amr22977501fa.0.1780988291073; Mon, 08 Jun 2026
- 23:58:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XY+WNBRn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cWW+ksse/3I3DXm2r3wMjNdc5+hz+kH/xo3qrsEfDWXxZI6WgxOCisdtSn3M5lFZoXR7xbWSQ6P+7VjsoIym8et4BYXdZUt8fsdw22dg+4VDfg7QCq0cwRcH4t8eVBqTsEHEv3gii4UgAXVAKwijfzJpixNsHJZSKPE8iRGEaITzGinIWlQ9Pr333/EinFMcozna8OP+GAdUge4tb2PMrhmdyXwX4nLwK+oKkQe+IBOlMLLzD72pbCTC4uL+sMpAzXh7qnIxUZMOj2d0SDPhvdZ4NRaf9U0HLCoXJtWcGluWd6oVJVlFyOHLMa9E9bmrCHHb9gLY7W9KQ+jrL9CVUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dHLU9Wv7U2nV/lzMd0Ob4wJkLcW0JbeSeI5RPzv4S/8=;
+ b=F0BNQ2WZWIJwulGzCRQKuvWeUj3+E0B/j2WsO+enkVJh52W4isw7N+hZw/z/wiwV6i3/55VrVJYBpoEY55qGYibQ9sKe0R0i/UNFYa+Iy+SmXpuOsPV2zMCJcxNotwyxhzgdIiB6OgSjCw6VYGFFYYD8DF1fdQfl7pINYlYMeH/SD1UQgOwm+Br8QiEO6AfxM3qMoiLpKqvz23AtaF2lLXFV8TNInvcY6mAyUyYvTffrorIfHqvMd115Mw4YW/q8VxJsBfiZGebpySOTFrWt+5PQBsGyMlLNv/OOiKsEZYpZbambN3wboaLThSJk9J6oXzRfTLbxWDUkHfaifkRNiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dHLU9Wv7U2nV/lzMd0Ob4wJkLcW0JbeSeI5RPzv4S/8=;
+ b=XY+WNBRn+rfjhZb5aVUr0rS6J+J0o4C7yIMizOhkEOvCvgmYzf+OIuuQWAfJKUCCOpT0a84Iab7XYaWx8mZ2qiGtqlrVrZjNbiEALsEe0NMgXFCZkLGpqTdk6bDhIE50Domc9/FAqv8pw4S1bglRMr9n/zI6ZYmKrUk1QAG7XcW8eIjJ/C/xnmswJPY46VCFGL6qsOeZXuRTTHAUG7ibVULztDn+G+b3QvMcYfvJ3974xqqVaqX1iAB9FKrGdnkG9vlFE6Zz7Us57GN9gcLHkB1STaqW4IwvzEF4kH2hvatour+8JiTokbGi5fspGO4BR3/MkpgtqHaOiWAKyVAQ4w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5858.eurprd04.prod.outlook.com (2603:10a6:208:132::23)
+ by VI1PR04MB6895.eurprd04.prod.outlook.com (2603:10a6:803:13b::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Tue, 9 Jun 2026
+ 07:19:05 +0000
+Received: from AM0PR04MB5858.eurprd04.prod.outlook.com
+ ([fe80::bdf4:c9d1:4e3f:68c6]) by AM0PR04MB5858.eurprd04.prod.outlook.com
+ ([fe80::bdf4:c9d1:4e3f:68c6%4]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
+ 07:19:04 +0000
+Message-ID: <971e5c8c-dafa-404d-ac6c-8e52a42b2986@oss.nxp.com>
+Date: Tue, 9 Jun 2026 10:19:01 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v4 0/8] can: flexcan: Add NXP S32N79 SoC support
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, linux-can@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
+ Alberto Ruiz <aruizrui@redhat.com>, Eric Chanudet <echanude@redhat.com>
+References: <20260603071342.641874-1-ciprianmarian.costea@oss.nxp.com>
+ <20260603093941.ysev5do557hy2rui@nxp.com>
+ <CALE0LRuqZhm03QbYg-ZOJcKe0XqCLqVZ8j-4o07QuBF-OqX9BA@mail.gmail.com>
+Content-Language: en-US
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <CALE0LRuqZhm03QbYg-ZOJcKe0XqCLqVZ8j-4o07QuBF-OqX9BA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0050.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cc::11) To AM0PR04MB5858.eurprd04.prod.outlook.com
+ (2603:10a6:208:132::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260514-fix-nxp-timer-v3-1-a3e68fdb505e@redhat.com>
-In-Reply-To: <20260514-fix-nxp-timer-v3-1-a3e68fdb505e@redhat.com>
-From: Enric Balletbo i Serra <eballetb@redhat.com>
-Date: Tue, 9 Jun 2026 08:57:59 +0200
-X-Gm-Features: AVVi8CcxoAX6rnYlSTy8BOa9cf_aoNVALY7D0WD4kPNY6cpfFhuFnoxfIF3bvHw
-Message-ID: <CALE0LRtJemHQj7o8iV1GaWJLVfTse6fp-TFvodC=AeWov6s39w@mail.gmail.com>
-Subject: Re: [PATCH v3] clocksource: move NXP timer selection to drivers/clocksource
-To: Enric Balletbo i Serra <eballetbo@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QoyGI0dbTe3fEQDojQDyF7KMeFz9jjKxcvJFP_eyjjI_1780988292
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5858:EE_|VI1PR04MB6895:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7e8932a-f7b9-4da9-41ce-08dec5f76343
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|19092799006|1800799024|7416014|376014|366016|6133799003|22082099003|18002099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+ BMmmMRuOc8kbea7C9r3kzpcQDr7D4r7h712vv4DlrU6Q2Y5PW/3W7EeJgKzeK6QY2v7jWh8qgbazTJoOex6z3fX3G3D5xhe5tcHQmjRidZ9Um6dlQsR5LuwtsRkY0AP0o4Jv4dJu33GzfW+5s2jR0myvvVodWwyKKGccwY/6HpSOoUaxtNzIPMIAbopG1iR61xGX6OTPIYIvl+qVp+4K0CqXMmM60jF5eyjM/AYIYGuWFvuEHfI09jkefjUXDOrrBAYrNdpdO9RCwxyb7p23sQhczMvubM4HYa0vik9nvoY5fDKtPvgFSvyVpE3OWi1gW/25f4kIeue//6kJ8fIubvmtnYMqL2lfSEsRwpHvjWw18o31IVEB9NnXRtD40fIjGIk6fd8/RrvWcjLeGlL/kXs7d45Euc/8rSV7oqA6FidZ5iG4DL7fIqZjtxO6kRFMHIwzf+G0fDgWWQXcHFS8DlKmX5bibHwcvDUyofd2HE0PXPubHH9+aaqSWCetM3Iofm1WwWjeZMC1sihMfYGW8vSjiiMObDBpyVd6n6KdNu8bizvs5Mu04nDK8btDPLAWjYyMBM2QQtkrAevV6fdsnjn+9c+AQkyFSX1cjbvte622IYIXJSBETBJZ1YggVicCYNoWlE5eMtgvau5sMgnDZZ58ciRKFWYopRDWHPuoLzqf65mT4SUXRO3zx+CH7MSl
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(7416014)(376014)(366016)(6133799003)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?eWtyL0h4eEt1ZUZ1QTRaZ2pkOUZ1M1lYaGdiczV5aFQ4VVF0T2R6VEsxdGFr?=
+ =?utf-8?B?OUU5RWJrTDB5d2llT2NnbGxKR0xZOC9kdldTTmVBc2duSVJpaU5HQWFIVndo?=
+ =?utf-8?B?bUh4c3EySGZFcnRUdFVwV3FpSHVNOXdhVVE3UFhyVzdHS2J0djFwbEVuZVVY?=
+ =?utf-8?B?QSs4WkVXYVBIZExyeWZ6MUFWUW9Sb0hrbGRZSGJYZE5qb08rNHJrbHVJMFFo?=
+ =?utf-8?B?YTk0NWdlOTVqNzlMUTB1RVpnRWZnSU1kYTNDOVEvc0xTVzVXdC9nTHNLUnBl?=
+ =?utf-8?B?dlNaRWYvMTY5azdDOUtvSUNCdUJBZWpOclRrVWpvU01Eb05nelkwWXlkT0t4?=
+ =?utf-8?B?b2xqN3dXWkt3akFuMnNIT2YzVWhmMVdCcSsxKzVPajMzbEI4a1YyR0VxdG03?=
+ =?utf-8?B?M2FSVWNGVWRheGxSMFVTVzZJTS9rRElUNEh2dVRucHczSS9yRDdCWSsrN1h5?=
+ =?utf-8?B?MldCNHdEelR3K05rUVhyTVVXZUxiZG11YitpaXZmZzhaK0pJekJwV1RwaGdE?=
+ =?utf-8?B?N1pXQ3BJVWhFR0paZU1Gc0dJdTUwSHBpaFRxNktmSXdrdXN2aTViaUdpZWpE?=
+ =?utf-8?B?OWgzVld0elpsb2Vjdks4dk81TnRSZUpFQksvSTlRd2VvUEYvQnp6UWdqbVFS?=
+ =?utf-8?B?c25CeUg1N1lNMVpweWZEWHB3ZThiRUlFSldYeGhJeVFUVjdHNzBnVDNrMSs0?=
+ =?utf-8?B?bTNzTzZvQWRzUTBEdVVVMUVUMERtVkVTTWNObXFOYTQ4czJBSHNUMUFJcmxO?=
+ =?utf-8?B?NytQaE1pazdUQnJKbklCRVFsVUx6ZUtlMWY0aXV1d1B4RExvem40MFRXN1d2?=
+ =?utf-8?B?TjRzdmtENFZ5ejArZzltaWF5YUFMd1piUjFocEVIWSs1anZ1eEpqS2tDNkZp?=
+ =?utf-8?B?UXYrZ0FpL1p4ekxVc3dKQlZpR3VHWDJ6Y0xiR2ZzYWgya3BIcmpMVVdGWjVy?=
+ =?utf-8?B?YTlUaGtwdFphdEFDbGpxMGRNZ3daSUIyTUpiQUxoaTlsM0p5UE0xcERWM0VD?=
+ =?utf-8?B?K2Z5aWM2MjRObDhPblBSUkdPb1BndkdZVGg1Y3QrakNEWHNMSDh2Q1VTR0NK?=
+ =?utf-8?B?MklsWFNMOGJpWFhuZnpLTWFXQjUrVGVPWUF4YUZiSWxNcVl6SGE2Q1h6NWt6?=
+ =?utf-8?B?RC9WL3duc2d0RnJxckpTOWxxbm9zYXh5SWlNMWNtQ0N0bnIvVVlhL25WKzBz?=
+ =?utf-8?B?anZwN1I1YWFtVWxkZ3VWeXpmNG54TkwzQmNQWnp2WlZqTTQ4aFZLSE1aRk96?=
+ =?utf-8?B?cTNpYm12NTBmODQrWmlHWkc4ZFZiNEE3cnhIV1ZYZUExQUVZcjlEUjhwNWZX?=
+ =?utf-8?B?OVIrQS9iSW1tYnZ0cFIxT21TcHZlWE9yMnBTU01yeVJua2Q0eUpRMU9sbXR6?=
+ =?utf-8?B?Y3RBdnF6Szh2a0tTZVRFU0hBUVNCSU03L1I1ODFCcUJ0QURoVlVNY28zMWxu?=
+ =?utf-8?B?M1lyTmIvdWNyd2R5dWpWcktHRTVHNk1sMGUxYjRBTS9nUk91YlRxU1dNa3U1?=
+ =?utf-8?B?NVdISGFyU1dKMkJJUFFBQlpJakg3U2FlWHNTQTlUdHI1aFJ4OE5wNTZnc1NZ?=
+ =?utf-8?B?WithZlhRdlNSdUpETnlyc3FpN0hwQ0FHUllmaWJUODB3WXRJTmw4dHFrWHVT?=
+ =?utf-8?B?eDdxWkxISm1sZ2RxTmw2a3k2V1k1WlBCM1d0NnUzS0tTZm90NjFWbi95QUVu?=
+ =?utf-8?B?MzFuSks2WnBrcHVGNG5ZK2pBTmNKS21SYzFTWm9nbXBuSlpWY2JHVTVOUFFZ?=
+ =?utf-8?B?TTluZ3pnenQrcGFmcFhZQmRxMVpqbGFLMmx2ZVJjSG1ZdGFjYkY1RW5hOHFv?=
+ =?utf-8?B?TmJoNWJHZnJhUldwRnNSTnlNSnZiay9JV1JnUE5XZDJJMHRwZ0ExZDZlaXU4?=
+ =?utf-8?B?Mm1sM3RNa1dBZVZFWFlmTVhUcks4M0hmR2QzUzZCUU5wbDlPVmMrZ3p0TkY4?=
+ =?utf-8?B?UmtpZ1R5UGJ6MUpnYjJUUEF3Z2tiblZGVTJjOFdpZk1hMExscDhkelh0Z0pD?=
+ =?utf-8?B?NlM4TW94VmJRSFB0bFZVVlROdmdIOGZDbm5oYmd6cWJldVF3MmRHeVB2MXNQ?=
+ =?utf-8?B?aGtlVHc0TjdmUksybEE2Mk1LaW8vN3ZDRXdocHdMSUYxTGJzYzN1L0xtbGZw?=
+ =?utf-8?B?bUhVYk04b25URG9sWUxERXlIbmNucllIeTVNRTI1ejZLTyt4YzdLcVZYbG9K?=
+ =?utf-8?B?V0VxM0w2eTJiT2kyMjQ2TUc3SnhFaUR6UFRDaEx5UGdYVHRBaW4xSXRZME5y?=
+ =?utf-8?B?eFRNWDJkeng5MjdVbFdoNzlGbkF3bmhsNVBRY3dvWitIMVBRZUIybjFyci9X?=
+ =?utf-8?B?eEpPRWdvMWZGQUlVOGc0QUlPUFlaSVc0VE43cmdCM1VzWkNGaDU0a2w4U3VU?=
+ =?utf-8?Q?3uVVelOs8I8N/I7I=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7e8932a-f7b9-4da9-41ce-08dec5f76343
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5858.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 07:19:04.8022
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: do0LAzTpXKQXmTVqJua5xwfwGhmssUbTJegHHzC/sqOn6NoiqCueu4/oadpQp9n1C1Tn2JOvsA+tE/teC6EA4QgT11MdV7tdpxDbDoJ7QEs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6895
 
-Hi all,
+On 6/3/2026 1:28 PM, Enric Balletbo i Serra wrote:
+> Hi Ciprian,
+> 
+> Sorry in advance for the noise, for some strange reason I didn't get
+> or find the cover until now, so I added my tested patch in 1. Doing it
+> now properly.
+> 
+> On Wed, Jun 3, 2026 at 11:44 AM Bough Chen <haibo.chen@oss.nxp.com> wrote:
 
-On Thu, May 14, 2026 at 1:14=E2=80=AFPM Enric Balletbo i Serra
-<eballetbo@kernel.org> wrote:
->
-> From: Enric Balletbo i Serra <eballetb@redhat.com>
->
-> The Kconfig logic for selecting the scheduler clocksource on
-> NXP Vybrid (VF610) uses a `choice` block restricted to 32-bit ARM. This
-> prevents 64-bit architectures, such as the NXP S32 family, from enabling
-> the NXP Periodic Interrupt Timer (PIT) driver (CONFIG_NXP_PIT_TIMER).
->
-> Relocate the NXP clocksource selection from arch/arm/mach-imx/Kconfig to
-> drivers/clocksource/Kconfig. This allows the configuration to be shared
-> across different architectures.
->
-> Update the selection to include support for ARCH_S32 and add a "None"
-> option restricted to ARCH_S32, since Vybrid lacks the ARM Architected
-> Timer. The Vybrid Global Timer option is restricted to ARCH_MULTI_V7
-> SOC_VF610 platforms to prevent it from being visible on Cortex-M4 builds,
-> which lack the ARM Global Timer hardware.
->
-> Fixes: bee33f22d7c3 ("clocksource/drivers/nxp-pit: Add NXP Automotive s32=
-g2 / s32g3 support")
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Enric Balletbo i Serra <eballetb@redhat.com>
+Hello Marc and Vincent,
 
-Now that Frank [1] has created a merge request for Linux 7.1-rc1 and
-the request includes
+Sorry for bothering. Do you expect any more changes to this V4 patchset ?
 
-      arm64: dts: s32g: add PIT support for s32g2 and s32g3
+Best Regards,
+Ciprian
 
-If this patch is ok, would it make sense to pick that patch?
-Otherwise, we won't be able to select the PIT timer for aarch64 only
-builds.
-
-Thanks.,
-  Enric
-
-[1] From: Frank.Li@nxp.com
-
-The following changes since commit 254f49634ee16a731174d2ae34bc50bd5f45e731=
-:
-
-  Linux 7.1-rc1 (2026-04-26 14:19:00 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
-tags/imx-dt64-7.2
-
-for you to fetch changes up to c10cfc952215644956284a42fa7b7860dfbcb5f5:
-
-
-
-> ---
-> Changes in v3:
-> - Restrict VF_TIMER_NONE to ARCH_S32 to prevent selecting it on Vybrid
->   platforms which lack the ARM Architected Timer
-> - Link to v2: https://lore.kernel.org/r/20260513-fix-nxp-timer-v2-1-533b9=
-9c57b67@redhat.com
->
-> Changes in v2:
-> - Fix VF_USE_ARM_GLOBAL_TIMER dependency: use ARCH_MULTI_V7 instead of
->   ARM to prevent the option from being visible on Cortex-M4 builds
->   (Sashiko AI review)
-> - Link to v1: https://lore.kernel.org/r/20260302-fix-nxp-timer-v1-1-af4bc=
-62d4ffa@redhat.com
-> ---
->  arch/arm/mach-imx/Kconfig   | 21 ---------------------
->  drivers/clocksource/Kconfig | 31 +++++++++++++++++++++++++++++++
->  2 files changed, 31 insertions(+), 21 deletions(-)
->
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 6ea1bd55acf8..a361840d7a04 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -227,27 +227,6 @@ config SOC_VF610
->         help
->           This enables support for Freescale Vybrid VF610 processor.
->
-> -choice
-> -       prompt "Clocksource for scheduler clock"
-> -       depends on SOC_VF610
-> -       default VF_USE_ARM_GLOBAL_TIMER
-> -
-> -       config VF_USE_ARM_GLOBAL_TIMER
-> -               bool "Use ARM Global Timer"
-> -               depends on ARCH_MULTI_V7
-> -               select ARM_GLOBAL_TIMER
-> -               select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
-> -               help
-> -                 Use the ARM Global Timer as clocksource
-> -
-> -       config VF_USE_PIT_TIMER
-> -               bool "Use PIT timer"
-> -               select NXP_PIT_TIMER
-> -               help
-> -                 Use SoC Periodic Interrupt Timer (PIT) as clocksource
-> -
-> -endchoice
-> -
->  endif
->
->  endif
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index d1a33a231a44..d9c76dd443f8 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -793,4 +793,35 @@ config RTK_SYSTIMER
->           this option only when building for a Realtek platform or for co=
-mpilation
->           testing.
->
-> +choice
-> +       prompt "NXP clocksource for scheduler clock"
-> +       depends on SOC_VF610 || ARCH_S32
-> +       # Default to Global Timer for Vybrid (32-bit)
-> +       default VF_USE_ARM_GLOBAL_TIMER if SOC_VF610
-> +       # Default to None for S32 (64-bit)
-> +       default VF_TIMER_NONE if ARCH_S32
-> +
-> +       config VF_USE_ARM_GLOBAL_TIMER
-> +               bool "Use NXP Vybrid Global Timer"
-> +               depends on ARCH_MULTI_V7 && SOC_VF610
-> +               select ARM_GLOBAL_TIMER
-> +               select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
-> +               help
-> +                 Use the NXP Vybrid Global Timer as clocksource.
-> +
-> +       config VF_USE_PIT_TIMER
-> +               bool "Use NXP PIT timer"
-> +               select NXP_PIT_TIMER
-> +               help
-> +                 Use NXP Periodic Interrupt Timer (PIT) as clocksource.
-> +
-> +       config VF_TIMER_NONE
-> +               bool "None (Use standard Arch Timer)"
-> +               depends on ARCH_S32
-> +               help
-> +                 Do not use any specific NXP timer driver. Use the stand=
-ard
-> +                 ARM Architected Timer instead.
-> +
-> +endchoice
-> +
->  endmenu
->
-> ---
-> base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-> change-id: 20260302-fix-nxp-timer-9cb1fbd7afcd
->
-> Best regards,
-> --
-> Enric Balletbo i Serra <eballetb@redhat.com>
->
+>>
+>> On Wed, Jun 03, 2026 at 09:13:34AM +0200, Ciprian Costea wrote:
+>>> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>>>
+>>> This patch series adds FlexCAN support for the NXP S32N79 SoC.
+>>>
+>>> The S32N79 is an automotive-grade processor from NXP with multiple
+>>> FlexCAN instances. The FlexCAN IP integration on S32N79 differs from
+>>> other SoCs in the interrupt routing - it uses two separate interrupt
+>>> lines:
+>>>    - one interrupt for mailboxes 0-127
+>>>    - one interrupt for bus error detection and device state changes
+>>>
+>>> The CAN controllers are connected through an irqsteer interrupt
+>>> controller in the RCU (Resource Control Unit) domain.
+>>>
+>>> This series:
+>>>    1. Splits flexcan_irq() into dedicated handlers for multi-IRQ platforms
+>>>    2. Adds dt-bindings documentation for S32N79 FlexCAN
+>>>    3. Introduces FLEXCAN_QUIRK_IRQ_BERR to handle the two-interrupt
+>>>       configuration
+>>>    4. Adds S32N79 device data and compatible string to the driver
+>>>    5. Adds FlexCAN device tree nodes for S32N79 SoC
+>>>    6. Enables FlexCAN devices on the S32N79-RDB board
+>>>
+>>> Tested on S32N79-RDB board with CAN and CAN FD communication.
+>>
+>> Tested on imx95-19x19-evk board with CAN and CAN FD communication. No issue found.
+>> This means this patch set do not impact the original platforms.
+>>
+>> For this patch set, feel free to add tag:
+>> Reviewed-and-tested-by: Haibo Chen <haibo.chen@nxp.com>
+>>
+>> Regards
+>> Haibo Chen
+> 
+> Tested-by: Enric Balletbo i Serra <eballetb@.redhat.com>
+> 
+> Tested on the NXP S32G399A-RDB3 with loopback and high-rate traffic.
+> No regressions observed:
+>    CAN frames transmit and receive correctly, with no duplicates.
+>    Frame reception showed no errors during stress testing.
+> 
+> Regards,
+>    Enric Balletbo
+> 
+>>>
+>>> This is a resend of v4 with no changes.
+>>>
+>>> v4 -> v3
+>>> - flexcan_chip_interrupts_enable(): disable/enable all IRQ lines
+>>>    (not just dev->irq) during IMASK register writes
+>>> - Split rx/tx masks per mailbox IRQ line (struct flexcan_mb_irq) so
+>>>    each handler on S32G2 only processes its own MB range
+>>> - Added received Acked-by tag on DT bindings patch
+>>>
+>>> v3 -> v2
+>>> - Split flexcan_irq() into dedicated handlers (flexcan_irq_mb,
+>>>    flexcan_irq_boff, flexcan_irq_berr) to fix duplicate event
+>>>    processing when multiple IRQ lines run concurrently (new patch).
+>>> - Added flexcan_irq_esr() handler composing state + berr for S32N79
+>>> - Ordered quirks used by s32n devtype data by value.
+>>>
+>>> v2 -> v1
+>>> - Renamed FLEXCAN_QUIRK_NR_IRQ_2 to FLEXCAN_QUIRK_IRQ_BERR to better
+>>> describe the actual hardware feature
+>>> - Appended new quirk at the end
+>>> - Switched from platform_get_irq to platform_get_irq_byname usage
+>>> - Updated interrupt description in dt-bindings
+>>>
+>>> Ciprian Marian Costea (8):
+>>>    can: flexcan: use dedicated IRQ handlers for multi-IRQ platforms
+>>>    can: flexcan: disable all IRQ lines in
+>>>      flexcan_chip_interrupts_enable()
+>>>    can: flexcan: split rx/tx masks per mailbox IRQ line
+>>>    dt-bindings: can: fsl,flexcan: add NXP S32N79 SoC support
+>>>    can: flexcan: add FLEXCAN_QUIRK_IRQ_BERR quirk
+>>>    can: flexcan: add NXP S32N79 SoC support
+>>>    arm64: dts: s32n79: add FlexCAN nodes
+>>>    arm64: dts: s32n79: enable FlexCAN devices
+>>>
+>>>   .../bindings/net/can/fsl,flexcan.yaml         |  30 ++-
+>>>   arch/arm64/boot/dts/freescale/s32n79-rdb.dts  |  12 +
+>>>   arch/arm64/boot/dts/freescale/s32n79.dtsi     |  50 ++++
+>>>   drivers/net/can/flexcan/flexcan-core.c        | 249 +++++++++++++++---
+>>>   drivers/net/can/flexcan/flexcan.h             |  12 +-
+>>>   5 files changed, 316 insertions(+), 37 deletions(-)
+>>>
+>>> --
+>>> 2.43.0
+>>>
+>>
+> 
 
