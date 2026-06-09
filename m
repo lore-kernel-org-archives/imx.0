@@ -1,132 +1,101 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095703B42F5
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 18:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B2B3749FC;
+	Tue,  9 Jun 2026 19:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781030163; cv=none; b=IT/j+U1699oUkFO5Q0xy+txNwve6Wpp5pJfCAQ9CVLUxnmV/jzJzLyT6Fc05Jxkjneo+SAwb4bAs7dzd4p1cvpLyCDs6llEk2zPNLk4rSxd7Wc/dCVzK0zHndsVRlV3IfJe+wYSWOtmskm+cg7TRfqNzisRxq7WVkpVu5fT6jEo=
+	t=1781033724; cv=none; b=Z6h7/m2RLiS7VtCQBiBkkQ86CEDhnIOiZCScmHjxR71g5JO9q2PPVjoHvDKcZfs5Lkszi/l2WwBWYtqa7R9VQmnrLpJ6YC9j5PVkEs7qyR6E/reDa5NwmbucGg5z1QNxZKyicasxN5wxmjfS7BArM2l24UeZTErywuprh/15HEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781030163; c=relaxed/simple;
-	bh=ALGF0JYkp71o2WwvO7Wrabyf9hljxN/QJSQrdrlgPfI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gOUv7i+IvJtiM0EtXoNnVHGhHQUXkwU75/TGyrTd9rkQmCdFxALXBsAPxywt8GGNaVYl8cVACdgrwDBWmgDMVdbaIpRWvy88GaLgHZcLui/NPoCkVlK08kLsMweXMZ59HGkFmHlJCA7Gy2anyV38LzXFmSY602/2Ql2oZsGXvtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A5nbxjIT; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781033724; c=relaxed/simple;
+	bh=nRFmzcUaiHWslIfHZ8lZBNxlTfe/5tE9TQXUEp8ZrBU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l/jMwaDhDifH2pvFZmDNqAKK7cq87EnGz8M0/TV9BRcclWRiBfkjpDvgvfxTN3mbPT82jG3ErGW/vLT+mYo3gnxPBLLOoMBgYwJ89iWxf2lOCM6c4KkwRTdW72Qk27VDPK0JgS7NdVbAyHnPckoDF/3UIxYcGm8sdVH4vdhrzP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gd9LpgA1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A5nbxjIT"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-490b7866869so65945945e9.2
-        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 11:36:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781030160; x=1781634960; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+HgmsivMcka0FxO5n28WPRUyS7SBIOMsz34g/tl81a4=;
-        b=A5nbxjITK/O3580V8oXEx6PhwQGEEgeKNllxIKkHplhimcQNsihEXZrDaG1fwaKM+g
-         DLKl/WjyHSBPaczB8p0eQGbGgYUDdjBJX0QBJw+LN0wpXHHVZtdsRyQso60DHzMaRkc8
-         auCdw0CH5Kp9UdIBJ9jD25JD2MIZnICjjK1ViVa0ZGQrFCXnfdpM9GQudt584HD3cDMl
-         elX/1kvE35uTURbbZ28szwXWFs0H+I3pumCjBpy3j45o9h2BhI2fQCuL6wmYK/NWV4mM
-         5rcuPyqMjwagEnd+TDJf0HW0J2E5TugZ4P3kfr01Te43lnZiOduqzZOq3kDs3WZLs+k+
-         wJGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781030160; x=1781634960;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+HgmsivMcka0FxO5n28WPRUyS7SBIOMsz34g/tl81a4=;
-        b=K5H5MP7FQDBd1KjYuLQfg6gnP3wTUfwmyOnkONkhjeFTPeG4qBrLB28P8c481rdpIv
-         sg3zVeckTQkEyhujRTePOcZLm/Fh/yU0fGEuZbb5khpgPTn8P3kWZTgAqqGDbAVCVFDO
-         wJIt0lj5IkDrekqMx4vKUGFV6Nin1Gey3EyzQTD3dCVncIYR1pIpdgKwr+o/zTV2BJhU
-         zpWsyWhR7NuLCwfk6y+UpQ0vh+o7g6B2Iz3IXKocs9jJSE6/lqTZD8JIiMG7cyXCFSJx
-         wHBa2nHrq/wqWTf8fE0Yjse/SpHJkC9E2A01MLeY558VwvCEzdl7Xhod0sm1v/NgFPfP
-         NG9w==
-X-Forwarded-Encrypted: i=1; AFNElJ/l9tRh7LiJoWcA1fEWhpZ9Ik1wkeh+0e+lS3vShsznTdBWoK3gSbpL35UTe5uhBy/59Ik=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzfLZzOU45BVNlEaiVpiLW7qn9fj/b4nWAHl21wZKQIBbmNGzWm
-	K9iQMyMfZxPF8hiQ50gz0GU0dBpf4tNi3QTPCtwB17+vz/G2C/XGITVu
-X-Gm-Gg: Acq92OHm1oedh+JiGYyiW2ZLy7Dcj8T7reo/yfdHDBPO1/tz62TtFjNA0wSL3gDO9ye
-	KkFUbI8PeA0DMzG30v87biqQW8fVaC9NPq53mDpcNzK/cThcWUxlRMA8h+Op9uc89z1lClEEkML
-	TXudiKRnkOGzR8CPqjc+sb81hexWU7PMQVmhoofE4xpc5QuyOrfQOtjC/aFzeVoInKf0PuY4KrJ
-	tzq+tfiCxTRiofe0pAgLdCxqn8ASJwXp/7B4cJUEsd66wrgVsk5Id7xIkPqUbWhccTPZk0GEL2j
-	/xMxuXcP0JCZv3e4OHGF/1Tcc+4lHNxVTLoekE7dRK9m5VGowCII4IrqOeEAS62XsVQ8G+2ejbq
-	H8IXZ7P3Do1VnJOVAxEI2W900VDE6fvrOaP4/4+v76cZRQbiqK31f5C9sEq+bj+U8InndMkiwe6
-	tRCuFJrM3x1fPCD7PO5hKZoA5vtpC5npW8KDCmtqqergLA/oHpRCJ4vI+K4hO1uXfz/HBDNfAMA
-	T6QTSDfR6RZJFllpPgFuugQQnIcZU+lcq40uSB0WNW3egiasVECnmE=
-X-Received: by 2002:a05:600c:6389:b0:490:33b3:4be0 with SMTP id 5b1f17b1804b1-490c26233abmr364661655e9.20.1781030160046;
-        Tue, 09 Jun 2026 11:36:00 -0700 (PDT)
-Received: from Lord-Beerus.station (net-93-144-65-244.cust.vodafonedsl.it. [93.144.65.244])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3cbfe4sm512912365e9.7.2026.06.09.11.35.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 11:35:59 -0700 (PDT)
-Date: Tue, 9 Jun 2026 20:35:56 +0200
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v5 1/3] dt-bindings: arm: fsl: add Variscite DART-MX8M
- PLUS Boards
-Message-ID: <aihdDCS7LDcUELLt@Lord-Beerus.station>
-References: <cover.1780998600.git.stefano.r@variscite.com>
- <c65129896fc6ce80044ee1d89e12dcdff34945be.1780998600.git.stefano.r@variscite.com>
- <20260609-clumsy-material-b74a9b6bc7b7@spud>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gd9LpgA1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E43171F00893;
+	Tue,  9 Jun 2026 19:35:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781033722;
+	bh=zlJ1izUT3b9sB+0io6mLoy0ZthPU0QciI8/lQC0mX9k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Gd9LpgA160cfB/pEN+PDzhkZ7LFCleunnU1M3IKf0IBlUIXaY9QDopSebbZwf7Qag
+	 zmI6cLLBqG85XVBYEbj7bjBLOMVvrqsLXzqWMj61mrO1T1VsR8piS+6wF0FnWWPVhF
+	 TDx/+A6liba/InHQbSj4owgez1kYEOio+3iYbeOnFQfQz4uyp30QI0I2IJf7txJ1OD
+	 oDe61jjzYrLbpC7JlmU+jsvoS0KqTN32C7spSsDS7CDiYjnnHO8FpYuvheF3CHDeG4
+	 CE5LRVhcsNTfVnjbCmIaGxlomAlGWu/7bN1PtYx30agk21czw/andOX84PRjlDvvUI
+	 Mtd64NkMtPrfA==
+Message-ID: <e2dc8425-fdcd-4a3d-9d00-1416395aea82@kernel.org>
+Date: Tue, 9 Jun 2026 21:35:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260609-clumsy-material-b74a9b6bc7b7@spud>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/8] can: flexcan: use dedicated IRQ handlers for
+ multi-IRQ platforms
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
+ Marc Kleine-Budde <mkl@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-can@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, NXP S32 Linux Team <s32@nxp.com>,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>,
+ Haibo Chen <haibo.chen@nxp.com>
+References: <20260609142954.1807421-1-ciprianmarian.costea@oss.nxp.com>
+ <20260609142954.1807421-2-ciprianmarian.costea@oss.nxp.com>
+From: Vincent Mailhol <mailhol@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=mailhol@kernel.org; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
+ fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
+ F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
+ 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
+ YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
+ dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
+ zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <20260609142954.1807421-2-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Conor,
-
-On Tue, Jun 09, 2026 at 05:15:43PM +0100, Conor Dooley wrote:
-> On Tue, Jun 09, 2026 at 11:51:18AM +0200, Stefano Radaelli wrote:
-> > From: Stefano Radaelli <stefano.r@variscite.com>
-> > 
-> > Add DT compatible strings for Variscite DART-MX8MP SoM and Variscite
-> > development carrier Board.
-> > 
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+On 09/06/2026 at 16:29, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 > 
-> My mailbox looking like
-> | 169 ND  Jun 09 Stefano Radaell ( 27K) ┌─>[PATCH v5 3/3] arm64: dts: imx8mp-var-dart: Add support for Variscite Sonata board
-> | 170 ND  Jun 09 sashiko-bot@ker (7.2K) │ ┌─>
-> is a pretty clear indication that you're iterating too quickly.
-> Try to slow down and leave people time to respond before sending new
-> versions, not just respin for every automated response you get.
+> On platforms with multiple IRQ lines (S32G2, MCF5441X), all lines are
+> registered to the same flexcan_irq() handler. Since these are distinct IRQ
+> numbers, they can be dispatched concurrently on different CPUs. Both
+> instances then read the same iflag and ESR registers unconditionally,
+> leading to duplicate frame processing.
 > 
+> Fix this by splitting the monolithic handler into focused parts:
+> - flexcan_do_mb(): processes mailbox events
+> - flexcan_do_state(): processes device state change events
+> - flexcan_do_berr(): processes bus error events
+> 
+> Introduce dedicated IRQ handlers for multi-IRQ platforms:
+> - flexcan_irq_mb(): mailbox-only, used for mb-0, mb-1 IRQ lines
+> - flexcan_irq_boff(): state-change-only, used for boff/state IRQ line
+> - flexcan_irq_berr(): bus-error-only, used for berr IRQ line
+> 
+> The combined flexcan_irq() handler is preserved for single-IRQ
+> platforms with no functional change.
+> 
+> Fixes: d9cead75b1c6 ("can: flexcan: add mcf5441x support")
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> Reviewed-and-tested-by: Haibo Chen <haibo.chen@nxp.com>
+> Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
 
-Sorry about that. I was making small fixes and re-sending the series
-immediately, without realizing that this could create unnecessary noise
-in the review process.
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
 
-I'll make sure to leave enough time between revisions from now on,
-so reviewers have a chance to look at the current version before I send
-an updated one.
 
-Thanks for the feedback, and sorry for the inconvenience.
+Yours sincerely,
+Vincent Mailhol
 
-Best Regards,
-Stefano
