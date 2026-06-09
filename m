@@ -1,89 +1,78 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD607383C66
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 07:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F6E3EDACB;
+	Tue,  9 Jun 2026 08:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780991285; cv=none; b=f1nBHCNf34HlR2qxLHW5B783VtaXH5j2PyEcDb2qHvsrQxLfS4bG2Ph/zcatNaameiKtV+FHIYWvxq5Mi9h8GWRR2rZORSXVhIGoIVKHFFkJP2x0Cs/Slgz4n08diUWAIpLAgrvOXiqRS65MUhPu6LiFFKuND2bSc0kATZV13jo=
+	t=1780992973; cv=none; b=UPRSmxTQLFBmlj2pGqW6ieymlsoRoW0CKz7a+e7vJg0DYEk8b9fK+HNBmqxYdiERNTVYC0ohQRkqSneVusRqGGSUSjJmgHzHMYkP/IMdI/K23uoV42z4dauERL/twR/Eyge793UrAs89olbY7oT1c9bPxrfthg7b7O4R2h0apCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780991285; c=relaxed/simple;
-	bh=zF4YvrG+EB8JDL3R6ViMoPNp6HVm/PdHGw9XeWtWNP0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ewum8zLt+yHba1nPHnv4QV8Lnh4O4mWmHmEviv0dfMs88ETmKeODmiWO//UKgl4stGvmLIMl+ZFXrN/j2eY3bmeMsTadUWezUldgi2E9iolEx0BpmJi0Gc8HLvWGMoQt6bxNVXAVrgVDF1X5R5A7GQQNkFXtaQh0iPf/cvA3Xik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xXMrahGT; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780992973; c=relaxed/simple;
+	bh=qmLAknJDi9ljkQLvRZ4VV6nTEnsTGPu0rWLa0vqgDJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=op6suroC8QJiGWjutGjoR3bSq2zEAh+vxHf3fFefvefOdc3wPGs+FqssOC3AV3iXQBUIZAJ//u7s02fqj9pVjdyn9Ufun53hinJLKi0B/MSdaVlUzG6QT7viyKzQP/BCKxA/gE7TegRs7NzL6Nu3qz7801yGe0RJzCodjLWn658=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dOGtJdAF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xXMrahGT"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3739B1A37F3;
-	Tue,  9 Jun 2026 07:48:02 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 04C3D5FFC1;
-	Tue,  9 Jun 2026 07:48:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E3FA106A2A94;
-	Tue,  9 Jun 2026 09:47:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780991280; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=zF4YvrG+EB8JDL3R6ViMoPNp6HVm/PdHGw9XeWtWNP0=;
-	b=xXMrahGTUeXtXkGJ1zr5F+G2D852jhc0/A03F6lBVcfVrqhzqKmoQEv40R2zqW46cZb6d6
-	hjDKHl0Ur5/kPTFE/PJ/7TEAjbBgzB6uQhLLJIkJYFDjjTSoEOx9QwzRYfA118qcc/odXr
-	Hz/1d4uUwhmoOmPoq/n2fCNgxMgvxOg4lZKcSBkP3v6OqjqmkI66vOm0TiK0yPR/5+ohAD
-	2Cf5wZnQShXjtrfW5ZZQIXYEN2Wj3ewmIrG+S4x/muNFYbtWCjIstkGSpo+yflrDbrMyEs
-	KBFw/VyPOjX/cHVPSscxfEfQ2IftJzHJEmcwawDGO+k0XjHEt/hZ44sXn9MRdA==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dOGtJdAF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B8F1F00893;
+	Tue,  9 Jun 2026 08:16:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780992971;
+	bh=Pwx2gnjzoEu6wS23A8/5F0BeRt4mUzsviwvSFFA+naA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dOGtJdAFu05vzTyBNYkhG2GJPMKtw828JD36nf94w2GGCiM54FlLj92vY85ZhQWzP
+	 IBGz6JOH74vtZ5Uuso2BrhmwZMZBhG0qbsFR7kdOII1mkcOL0OHzckvaCzqUsfx3MU
+	 1K0MugCOw9vD3D41NUdcQzPB3LU2qxGV0VQh4dxHfVyEXl7+Qu+em9GBxjDK840RTl
+	 Qk60eJI2nutYACIIyKpPbTI9yZVdz48EjF+KASGrJej24cnDZixytf2UFE5K9DSiMy
+	 77OAeX0T+sg7/7+3Hh5LX+9Z2/wQSCQF0zjq+up8njry9PhtLfx1eXqs6widOSyHM2
+	 znZiNvsg7kVyg==
+Date: Tue, 9 Jun 2026 10:16:08 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+Cc: aisheng.dong@nxp.com, Frank.Li@nxp.com, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, carlos.song@nxp.com, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: imx-lpi2c: fix resource leaks switching to
+ devm_dma_request_chan()
+Message-ID: <aifLtWlPdLr7EEnj@zenone.zhora.eu>
+References: <20260520093323.2882070-1-carlos.song@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 09 Jun 2026 09:47:51 +0200
-Message-Id: <DJ4CPR3MZ41U.2HKE3R0WUGSOY@bootlin.com>
-Subject: Re: [PATCH 00/37] drm bridge hotplug
-Cc: "Hui Pu" <Hui.Pu@gehealthcare.com>, "Ian Ray"
- <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Inki Dae"
- <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
- Szyprowski" <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>,
- "Stefan Agner" <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.21.0
-References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <DIXTUCXAU68V.1T7X89LMEUF2F@bootlin.com>
-In-Reply-To: <DIXTUCXAU68V.1T7X89LMEUF2F@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520093323.2882070-1-carlos.song@oss.nxp.com>
 
-Hello,
+Hi Carlos,
 
-On Mon Jun 1, 2026 at 5:44 PM CEST, Luca Ceresoli wrote:
-> Hello,
->
-> I presented this series last Friday during the Display Next Hackfest
-> 2026. Here's a summary of the discussion.
+On Wed, May 20, 2026 at 05:33:23PM +0800, Carlos Song (OSS) wrote:
+> From: Carlos Song <carlos.song@nxp.com>
+> 
+> The LPI2C driver requests DMA channels using dma_request_chan(), but
+> never releases them in lpi2c_imx_remove(), resulting in DMA channel
+> leaks every time the driver is unloaded.
+> 
+> Additionally, when lpi2c_dma_init() successfully requests the TX DMA
+> channel but fails to request the RX DMA channel, the probe falls back
+> to PIO mode and completes successfully. Since probe succeeds, the devres
+> framework will not trigger any cleanup, leaving the TX DMA channel and
+> the memory allocated for the dma structure held for the lifetime of the
+> device even though DMA is never used.
+> 
+> Switch to devm_dma_request_chan() to let the device core manage DMA
+> channel lifetime automatically. Wrap all allocations within a devres
+> group so that devres_release_group() can release all partially acquired
+> resources when DMA init fails and probe continues in PIO mode.
+> 
+> Fixes: a09c8b3f9047 ("i2c: imx-lpi2c: add eDMA mode support for LPI2C")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
 
-For the records, the presentation slides are available at
-https://bootlin.com/pub/conferences/2026/display-next-hackfest/ceresoli-drm=
--bridge-hotplug.pdf
+merged to i2c/i2c-host-fixes.
 
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Thanks,
+Andi
