@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850E43F0AA2
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 10:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207543EF673;
+	Tue,  9 Jun 2026 10:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780999480; cv=none; b=d91CKRp8sRtm7LPkDGcYMSfnczD6U8SYc3k5SGgglnM4TEaT0SKY5XyD7dvJ0PHr+vEve6JrmowJDanEXQhEQ0VlV9ysopc5sAJxo/DNA1iZoQ6DKy1DcxJznQGI/Ku3cHYapbM0mh6lUr1U3T0lgO/8uUEPiqOac3m0gi0FqvI=
+	t=1780999654; cv=none; b=qCwUZ7nde3x76zZzL9EwI5EhZoy877Vv6MOLQetrbbNWWEiJLyiUMaOwmsJ1/iaUdTJp4KkzPH9amcFFw2CVlU4nXOhdpv8iXCpVtag2juLp49NEzg3aedtZiZ1MMu5PAQ1muCPaz/lm7Y6lAmS3e+eU/lAuiTX4155PYTsmheI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780999480; c=relaxed/simple;
-	bh=Q9E7LE6mFtNOdsWyrgvvNeWiVVUyj/+VMcbH4yBOIdc=;
+	s=arc-20240116; t=1780999654; c=relaxed/simple;
+	bh=0DIRkSoy+syJgbtCPUn33L/mpJx9UvWLTKBOPe9fq74=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=L+4a/H8JdlglrBzBJ8AlSiISiLyqAY2IH1c6DAAPvXZ05s/52pCQtB2BjVObauFXyY8H9EH/4JoKqhkC7MAw93B5T5rsJyrETcotvioK27AGpOTg5C7wIX5duKAIUYU22+cEq3Dc35fo2cpx+HCAKVCZLcN6zASrEoBh4Zo10d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6skmC4b; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ESLpB4fCNR3YhZVgGrvW+ncMelH3un9CeJysM+I34oe7B/ZxxkvEj1o1wh5EbYpPaGTRpGA2HJ0O+MMo5BX+OfkqM5/ymtXTzfE5NI5fswlrkF3Rv+tv/3PlU2rKIGMLibyuKprU7cpK7Tb5eOhrPaJCzMhmdL2RXvoVsHklhGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JtTfYwAv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6skmC4b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D581F00893;
-	Tue,  9 Jun 2026 10:04:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JtTfYwAv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FF21F00893;
+	Tue,  9 Jun 2026 10:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780999475;
-	bh=0iRRf6/eEvAoVykrdMGU3bmStJe/DZ4yVBFYN5QNOt8=;
+	s=k20260515; t=1780999650;
+	bh=aYD8Vz8PfaKUCWPtV3ih0yTGN7+fpQJMomuZA4VTKRI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=J6skmC4bb8vCxhggDh7PcxhrEub2YK2nwE2TqCwgA+8kxbK5XMJYSHMS9fX7RIFWl
-	 DA5BasjRqE0Gnvkc0GsXJK0IuvxdDHEqTYyUToGx6YhziVX8UTsSqqmLEKa2c1cVnR
-	 NC7LwvZcGSYFzMu3k0RB0+oNhIViJfeD0Lo3IEZNoYUHv74M+ZQ2T1dUqK5uwwxFml
-	 8NXN9XfCyrenDZYHAm5i9Sxfd8XHSqNPV5rsvUcmrHjkBewLeTdG5w1aMmCGbNM7l9
-	 /Rgjvyf/VUaZWhiL5TgTmCjqm2Q9UlF0Fv4vkTjdjyV8rs69sJjNaBToSllcAHj01w
-	 FmAPMu7iIHRfA==
+	b=JtTfYwAvht1dmKmdBFIR8TL6k5eQx0OBBir2OfsSZdKcTtFE8yAhWTXRp0mq3Fv2e
+	 VfICX3ch6l8FlxxN133+YwvYn2ycD6TCRw/CR8yDvHIh0+c3nn+YRBPWSa+BiMvQMq
+	 jFEOTz7gu/Btt2M1JQSELwt1RPFqUpPR6oE7RW7teyhwyuaiUHXfBhBtawoVrvTSP5
+	 ajucTnZGK84s78gLC9qJ84sMXGm3SBGhqC0LRzpYq3BgEwCpIFSi0WV4xr72zzdrmZ
+	 AM85hSvzh/FXKB9cbFSf3MW5pbIdY2poP+24vVWfXV8BQDP3QhFm0FlS8xChw0bWXR
+	 3tWaBy1dmA2Wg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] i2c: imx-lpi2c: reset controller in probe stage
+Subject: Re: [PATCH v5 2/3] arm64: dts: freescale: Add support for Variscite
+ DART-MX8M-PLUS
 Reply-To: sashiko-reviews@lists.linux.dev
-To: carlos.song@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260609095119.924029-3-carlos.song@oss.nxp.com>
-References: <20260609095119.924029-3-carlos.song@oss.nxp.com>
+To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
+In-Reply-To: <85af11e85dbb7cf5097d7c0ee567272ff6e87ec5.1780998600.git.stefano.r@variscite.com>
+References: <85af11e85dbb7cf5097d7c0ee567272ff6e87ec5.1780998600.git.stefano.r@variscite.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 09 Jun 2026 10:04:34 +0000
-Message-Id: <20260609100435.25D581F00893@smtp.kernel.org>
+Date: Tue, 09 Jun 2026 10:07:29 +0000
+Message-Id: <20260609100729.C9FF21F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,102 +46,92 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] DMA channels requested via `dma_request_chan()` are never released=
-, leading to a permanent resource leak upon driver unbind or probe failure.
-- [High] Device removal cancels pending async suspend without disabling har=
-dware clocks, leaving clocks permanently enabled.
+- [Medium] The eqos pinctrl group claims GPIO2_IO20 but no driver or regula=
+tor uses it, potentially breaking Ethernet or SD2.
+- [Medium] Bluetooth control GPIOs are muxed but not assigned to the blueto=
+oth node, leaving the chip in an uncontrolled state.
 --
 
-commit a0b11faf7796dce688312611f6dc5e0060ca2cbb
-Author: Carlos Song <carlos.song@nxp.com>
+commit 7c8394d85e349e14bbf3796b542f8e133683dff3
+Author: Stefano Radaelli <stefano.r@variscite.com>
 
-i2c: imx-lpi2c: reset controller in probe stage
+arm64: dts: freescale: Add support for Variscite DART-MX8M-PLUS
 
-Reset I2C controller in probe stage to avoid unexpected LPI2C controller
-state left from previous stages and hang system boot.
+Add device tree support for the Variscite DART-MX8MP system on module.
+This SOM is designed to be used with various carrier boards.
 
-> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-=
-imx-lpi2c.c
-> index 540dc6cb664eb..ccc7384323e03 100644
-> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+Link: https://variscite.com/system-on-module-som/i-mx-8/i-mx-8m-plus/dart-m=
+x8m-plus/
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi b/arch/ar=
+m64/boot/dts/freescale/imx8mp-var-dart.dtsi
+> new file mode 100644
+> index 0000000000000..a647a2e0ab94b
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
+
 [ ... ]
-> @@ -1547,19 +1558,19 @@ static int lpi2c_imx_probe(struct platform_device=
- *pdev)
->  	ret =3D lpi2c_imx_init_recovery_info(lpi2c_imx, pdev);
->  	/* Give it another chance if pinctrl used is not ready yet */
->  	if (ret =3D=3D -EPROBE_DEFER)
-> -		goto rpm_disable;
-> +		goto free_irq;
-> =20
->  	/* Init DMA */
->  	ret =3D lpi2c_dma_init(&pdev->dev, phy_addr);
->  	if (ret) {
->  		if (ret =3D=3D -EPROBE_DEFER)
-> -			goto rpm_disable;
-> +			goto free_irq;
->  		dev_info(&pdev->dev, "use pio mode\n");
->  	}
-> =20
->  	ret =3D i2c_add_adapter(&lpi2c_imx->adapter);
->  	if (ret)
-> -		goto rpm_disable;
-> +		goto free_irq;
 
-[Severity: High]
-This is a pre-existing issue, but does this error path permanently leak
-the DMA channels?
+> +/* BT module */
+> +&uart4 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_uart4>, <&pinctrl_bt>;
+> +	assigned-clocks =3D <&clk IMX8MP_CLK_UART4>;
+> +	assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL1_80M>;
+> +	uart-has-rtscts;
+> +	status =3D "okay";
+> +
+> +	bluetooth_iw61x: bluetooth {
+> +		compatible =3D "nxp,88w8987-bt";
+> +	};
 
-If i2c_add_adapter() fails, we jump to the free_irq label, but nothing
-releases the TX and RX channels allocated via dma_request_chan() in
-lpi2c_dma_init().
+[Severity: Medium]
+The pinctrl_bt group configures GPIO2_IO06 and GPIO2_IO09 as GPIOs and atta=
+ches
+them to uart4, but this bluetooth_iw61x node does not map these pins to any
+properties like device-wakeup-gpios or reset-gpios.
 
-It looks like lpi2c_imx_remove() also entirely omits dma_release_channel()
-cleanup during driver unbind:
+Will the kernel driver fail to toggle these pins, leaving the chip in an
+uncontrolled state? Is it relying on bootloader defaults or userspace sysfs
+toggling for these pins?
 
-static void lpi2c_imx_remove(struct platform_device *pdev)
-{
-        struct lpi2c_imx_struct *lpi2c_imx =3D platform_get_drvdata(pdev);
+> +};
 
-        i2c_del_adapter(&lpi2c_imx->adapter);
+[ ... ]
 
-        pm_runtime_disable(&pdev->dev);
-        pm_runtime_dont_use_autosuspend(&pdev->dev);
-}
+> +	pinctrl_eqos: eqosgrp {
+> +		fsl,pins =3D <
+> +			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x2
+> +			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO				0x2
+> +			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0			0x90
+> +			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1			0x90
+> +			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2			0x90
+> +			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3			0x90
+> +			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x90
+> +			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL			0x90
+> +			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0			0x16
+> +			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1			0x16
+> +			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2			0x16
+> +			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3			0x16
+> +			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL			0x16
+> +			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x16
+> +			MX8MP_IOMUXC_SD2_WP__GPIO2_IO20					0x10
 
-Will this eventually exhaust the system's DMA channels after repeated probe
-failures or driver unbinds?
+[Severity: Medium]
+The pinctrl_eqos node configures MX8MP_IOMUXC_SD2_WP__GPIO2_IO20 as a GPIO,=
+ but
+there is no corresponding regulator or driver property that requests this G=
+PIO.
 
-> =20
->  	pm_runtime_put_autosuspend(&pdev->dev);
+Could this unnecessarily block GPIO2_IO20 and cause a pin conflict for any
+carrier board that attempts to use it (for example, for usdhc2 write protec=
+t)?
+Was this possibly a copy-paste error from imx8mp-var-som.dtsi?
 
-[Severity: High]
-This is also a pre-existing issue, but does lpi2c_imx_remove() leave
-hardware clocks permanently enabled if the device is active when unbound?
-
-When lpi2c_imx_remove() calls pm_runtime_disable(), it synchronously cancels
-any pending asynchronous idle/suspend requests (like the autosuspend timer
-started here at the end of probe), but leaves the device in its current
-power state.
-
-If the device is in RPM_ACTIVE during unbind, the clocks remain enabled. Is
-a manual check or a call to pm_runtime_put_sync() needed before disabling
-PM runtime to avoid a silent resource leak?
-
-> =20
-> @@ -1567,6 +1578,8 @@ static int lpi2c_imx_probe(struct platform_device *=
-pdev)
-> =20
->  	return 0;
-> =20
-> +free_irq:
-> +	devm_free_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx);
->  rpm_disable:
->  	pm_runtime_dont_use_autosuspend(&pdev->dev);
->  	pm_runtime_disable(&pdev->dev);
+> +			MX8MP_IOMUXC_SD1_STROBE__GPIO2_IO11				0x150
+> +		>;
+> +	};
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609095119.9240=
-29-1-carlos.song@oss.nxp.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780998600.gi=
+t.stefano.r@variscite.com?part=3D2
