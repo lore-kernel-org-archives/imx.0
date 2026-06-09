@@ -1,137 +1,156 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207543EF673;
-	Tue,  9 Jun 2026 10:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2266390212
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 10:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780999654; cv=none; b=qCwUZ7nde3x76zZzL9EwI5EhZoy877Vv6MOLQetrbbNWWEiJLyiUMaOwmsJ1/iaUdTJp4KkzPH9amcFFw2CVlU4nXOhdpv8iXCpVtag2juLp49NEzg3aedtZiZ1MMu5PAQ1muCPaz/lm7Y6lAmS3e+eU/lAuiTX4155PYTsmheI=
+	t=1780999679; cv=none; b=jJ5t5dP0WbfO/ZcuBdNSwu2v5a5z+x+CGxMxHU3rPDrvmQDDwn4ng3A/QLD9+udrq3jVsgxbAz2f3rs7xrCcis5DV+NKUkKfq/23XgTpJu5haIQ18ygRCwlTVX+RiN1NnEolDDaVKzHIfDMq8XDWawrbSX5e3oumfEJfc2XXfBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780999654; c=relaxed/simple;
-	bh=0DIRkSoy+syJgbtCPUn33L/mpJx9UvWLTKBOPe9fq74=;
+	s=arc-20240116; t=1780999679; c=relaxed/simple;
+	bh=tr879JES90ns9VbIUgk3U1m6wXuz4MWLSqPCUfijc4w=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ESLpB4fCNR3YhZVgGrvW+ncMelH3un9CeJysM+I34oe7B/ZxxkvEj1o1wh5EbYpPaGTRpGA2HJ0O+MMo5BX+OfkqM5/ymtXTzfE5NI5fswlrkF3Rv+tv/3PlU2rKIGMLibyuKprU7cpK7Tb5eOhrPaJCzMhmdL2RXvoVsHklhGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JtTfYwAv; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=m7rHSR1EGtQcqYQ38blVQNFPocFEj1aDItay10RN76ItFr1fQFcYgdG1x6gMqbKbZaSEGNGwl2jUc+nKL1Kkq0z9QYkYNBItVrZGB6WPaOTi5ACFUJ4MJIv6GhKmuv9tjDARMv7EUX2LKwXoa2gfOmYcy1qdHraHBM3U/rm/lOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4VH03Og; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JtTfYwAv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FF21F00893;
-	Tue,  9 Jun 2026 10:07:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4VH03Og"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B441F00893;
+	Tue,  9 Jun 2026 10:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780999650;
-	bh=aYD8Vz8PfaKUCWPtV3ih0yTGN7+fpQJMomuZA4VTKRI=;
+	s=k20260515; t=1780999677;
+	bh=jszxHNj6Bv1+voQhFJXAh7TmDv+0RmTK9vEp5qTGtwU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JtTfYwAvht1dmKmdBFIR8TL6k5eQx0OBBir2OfsSZdKcTtFE8yAhWTXRp0mq3Fv2e
-	 VfICX3ch6l8FlxxN133+YwvYn2ycD6TCRw/CR8yDvHIh0+c3nn+YRBPWSa+BiMvQMq
-	 jFEOTz7gu/Btt2M1JQSELwt1RPFqUpPR6oE7RW7teyhwyuaiUHXfBhBtawoVrvTSP5
-	 ajucTnZGK84s78gLC9qJ84sMXGm3SBGhqC0LRzpYq3BgEwCpIFSi0WV4xr72zzdrmZ
-	 AM85hSvzh/FXKB9cbFSf3MW5pbIdY2poP+24vVWfXV8BQDP3QhFm0FlS8xChw0bWXR
-	 3tWaBy1dmA2Wg==
+	b=W4VH03Ogi49LjGK82fAzT7nhhOnN8BSwIXMCYIgDKAMjWdcUgmw4tjxiCYCoRvBqO
+	 yQBOT46AGlK21Bb9Xi9CWzeZKoXXn+3BwBLep+tmt2c+GAHgjL8EZRnvEhNQoSbVBB
+	 zL5s1sizF/6hCQ+s/0Dxg/fKNN0sJ1XIWW6AjEogDPnf/LaZUUi0K7nZGJRD7G2Px0
+	 EMhXMJ6ewfQliLYhs2Ssdd3/pntakrt2oEApk9fPRRSrBdiSAIsVf3nEGLPqsKqRF4
+	 vcZIL92jBZAEJuOc+4BSpowHS+qArgdngFg8Il+PRhV/LAV5bEQ+4/57l86RCsahNT
+	 m+RlWU4ItQqNw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/3] arm64: dts: freescale: Add support for Variscite
- DART-MX8M-PLUS
+Subject: Re: [PATCH v4 1/2] i2c: imx-lpi2c: properly unwind resources on
+ probe failure
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <85af11e85dbb7cf5097d7c0ee567272ff6e87ec5.1780998600.git.stefano.r@variscite.com>
-References: <85af11e85dbb7cf5097d7c0ee567272ff6e87ec5.1780998600.git.stefano.r@variscite.com>
+To: carlos.song@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260609095119.924029-2-carlos.song@oss.nxp.com>
+References: <20260609095119.924029-2-carlos.song@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 09 Jun 2026 10:07:29 +0000
-Message-Id: <20260609100729.C9FF21F00893@smtp.kernel.org>
+Date: Tue, 09 Jun 2026 10:07:56 +0000
+Message-Id: <20260609100757.24B441F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [Medium] The eqos pinctrl group claims GPIO2_IO20 but no driver or regula=
-tor uses it, potentially breaking Ethernet or SD2.
-- [Medium] Bluetooth control GPIOs are muxed but not assigned to the blueto=
-oth node, leaving the chip in an uncontrolled state.
+
+Pre-existing issues:
+- [High] DMA channels allocated during probe are never released on probe fa=
+ilure or device removal.
+- [High] The driver requests its IRQ before enabling peripheral clocks and =
+initializing waitqueues, creating a race condition that can crash the syste=
+m.
+- [High] Clock prepare and enable counts are permanently leaked on driver u=
+nload.
+- [High] The interrupt handler accesses hardware registers without verifyin=
+g the device's PM runtime state.
+- [High] The atomic transfer callback `lpi2c_imx_xfer_atomic` calls a sleep=
+ing Runtime PM function, violating atomic context constraints.
 --
 
-commit 7c8394d85e349e14bbf3796b542f8e133683dff3
-Author: Stefano Radaelli <stefano.r@variscite.com>
+commit cddc2104d2bff09cb4b19ffca23e425ce9b667ce
+Author: Carlos Song <carlos.song@nxp.com>
 
-arm64: dts: freescale: Add support for Variscite DART-MX8M-PLUS
+i2c: imx-lpi2c: properly unwind resources on probe failure
 
-Add device tree support for the Variscite DART-MX8MP system on module.
-This SOM is designed to be used with various carrier boards.
+When probe fails after clk_bulk_prepare_enable() succeeds but before
+runtime PM is initialized, the enabled clocks are never disabled.
+Additionally, calling pm_runtime_put_sync() in the error path can
+trigger the runtime suspend callback, which may attempt to disable
+clocks that have not been fully set up, leading to potential issues
+during error unwinding.
 
-Link: https://variscite.com/system-on-module-som/i-mx-8/i-mx-8m-plus/dart-m=
-x8m-plus/
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi b/arch/ar=
-m64/boot/dts/freescale/imx8mp-var-dart.dtsi
-> new file mode 100644
-> index 0000000000000..a647a2e0ab94b
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
-
+> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-=
+imx-lpi2c.c
+> index a01c236964819..540dc6cb664eb 100644
+> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
+> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
 [ ... ]
+> @@ -1565,8 +1569,13 @@ static int lpi2c_imx_probe(struct platform_device =
+*pdev)
+> =20
+>  rpm_disable:
+>  	pm_runtime_dont_use_autosuspend(&pdev->dev);
+> -	pm_runtime_put_sync(&pdev->dev);
+>  	pm_runtime_disable(&pdev->dev);
+> +	pm_runtime_set_suspended(&pdev->dev);
+> +	pm_runtime_put_noidle(&pdev->dev);
+> +clk_disable:
+> +	clk_bulk_disable_unprepare(lpi2c_imx->num_clks, lpi2c_imx->clks);
+> +free_irq:
+> +	devm_free_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx);
 
-> +/* BT module */
-> +&uart4 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart4>, <&pinctrl_bt>;
-> +	assigned-clocks =3D <&clk IMX8MP_CLK_UART4>;
-> +	assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL1_80M>;
-> +	uart-has-rtscts;
-> +	status =3D "okay";
-> +
-> +	bluetooth_iw61x: bluetooth {
-> +		compatible =3D "nxp,88w8987-bt";
-> +	};
+[Severity: High]
+This is a pre-existing issue, but does explicitly placing clk_disable before
+free_irq expose a window where an interrupt can arrive and cause a fault
+during cleanup?
 
-[Severity: Medium]
-The pinctrl_bt group configures GPIO2_IO06 and GPIO2_IO09 as GPIOs and atta=
-ches
-them to uart4, but this bluetooth_iw61x node does not map these pins to any
-properties like device-wakeup-gpios or reset-gpios.
+If a pending interrupt fires after clocks are disabled but before the inter=
+rupt
+is freed, lpi2c_imx_isr() in drivers/i2c/busses/i2c-imx-lpi2c.c will execute
+and attempt to read hardware registers while clocks are disabled.
 
-Will the kernel driver fail to toggle these pins, leaving the chip in an
-uncontrolled state? Is it relying on bootloader defaults or userspace sysfs
-toggling for these pins?
+[Severity: High]
+This isn't a regression introduced by this patch, but are dma channels leak=
+ed
+if probe fails after lpi2c_dma_init() succeeds?
 
-> +};
+The driver requests channels using dma_request_chan() in lpi2c_dma_init().
+If a later probe step fails (such as i2c_add_adapter()), the error unwinding
+path skips releasing the channels.
 
-[ ... ]
+Additionally, lpi2c_imx_remove() in drivers/i2c/busses/i2c-imx-lpi2c.c appe=
+ars
+to lack cleanup, which could permanently leak two channels every time the
+driver unbinds.
 
-> +	pinctrl_eqos: eqosgrp {
-> +		fsl,pins =3D <
-> +			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x2
-> +			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO				0x2
-> +			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0			0x90
-> +			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1			0x90
-> +			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2			0x90
-> +			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3			0x90
-> +			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x90
-> +			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL			0x90
-> +			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0			0x16
-> +			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1			0x16
-> +			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2			0x16
-> +			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3			0x16
-> +			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL			0x16
-> +			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x16
-> +			MX8MP_IOMUXC_SD2_WP__GPIO2_IO20					0x10
+[Severity: High]
+This is a pre-existing issue, but are clock prepare and enable counts retai=
+ned
+on driver unload?
 
-[Severity: Medium]
-The pinctrl_eqos node configures MX8MP_IOMUXC_SD2_WP__GPIO2_IO20 as a GPIO,=
- but
-there is no corresponding regulator or driver property that requests this G=
-PIO.
+Because lpi2c_imx_remove() in drivers/i2c/busses/i2c-imx-lpi2c.c only calls
+pm_runtime_disable() without explicit clock unprepare or disable operations,
+the actual clock counts might never be decremented. Devres will drop the cl=
+ock
+handles, but the clocks could remain enabled preventing deep sleep states.
 
-Could this unnecessarily block GPIO2_IO20 and cause a pin conflict for any
-carrier board that attempts to use it (for example, for usdhc2 write protec=
-t)?
-Was this possibly a copy-paste error from imx8mp-var-som.dtsi?
+[Severity: High]
+This is a pre-existing issue, but could the interrupt handler access hardwa=
+re
+registers while the device is in a suspended state?
 
-> +			MX8MP_IOMUXC_SD1_STROBE__GPIO2_IO11				0x150
-> +		>;
-> +	};
+According to subsystem guidelines, interrupt handlers must use
+pm_runtime_get_if_active() before accessing registers. Because the interrupt
+is not explicitly disabled at the controller during runtime suspend, a spur=
+ious
+or delayed interrupt might fire in lpi2c_imx_isr() while clocks are gated.
+
+[Severity: High]
+This isn't a regression introduced by this patch, but is it possible for the
+atomic transfer callback to sleep?
+
+lpi2c_imx_xfer_atomic() in drivers/i2c/busses/i2c-imx-lpi2c.c delegates to
+lpi2c_imx_xfer_common(), which then calls lpi2c_imx_master_enable(). This p=
+ath
+executes pm_runtime_resume_and_get(). If the device is suspended, the power
+management runtime core will attempt to acquire a mutex and sleep in an ato=
+mic
+context where interrupts are disabled.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780998600.gi=
-t.stefano.r@variscite.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609095119.9240=
+29-1-carlos.song@oss.nxp.com?part=3D1
