@@ -1,155 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F104927467F;
-	Tue,  9 Jun 2026 14:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC71E34A78F
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 14:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781016442; cv=none; b=jReNQfy/QVakdxW/XRzClGZUWPr9l1Ulm2MMkQruRnkubfC7a7h1v6zwAeZ2yLtWGfWIfNwdzLMP8k0vdMU4tYtG9+Qy7SLkNL6a08AVuev/B/ZSL2TXr3zs7bai36iEUhU6RZ/LNJiAnwbqJbOt2LwNc8PKo5D7YDpaEZymK28=
+	t=1781016538; cv=none; b=notH31Fa/hLpZXHd0jyWq974lPLKBYE/BiebK7/0/xrr7c1AvT58MbzriSmUUSShHSZUnwFcQEEtm8H9f4aocS0dYCA5Ezb20REkyVjElm4wGFJP6EOWqT+/GTej5z3zHYfmYPB7ryw3Dq1AT/LkW3vzj8LRcpouNXCQ5qmTZjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781016442; c=relaxed/simple;
-	bh=t1vpnAbSGLp820XpKVohutFbqnCjXOM6fCkXXfUgU5M=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=UD6fIQUlxZweHjXWqUqokFxHtmPS9ub0uoaF5BkeAuvPBx7SziTvHdECFxEaOvm++YZhHAEojWA7OLrlqBu+wKfiyC5+EFPccWS7hXYLCYKDgMNUFOLP8JGwTYRVsNy0ZfYdz81SL8L5Zf8Su46XaJZfBLdC3E+5SIEDrF9jYM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G2+UKtds; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781016538; c=relaxed/simple;
+	bh=qLlRgnDvVIOGIOwv8hJ8MxfIWNVhS2goiG/w1fmsMUw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E3Tvd/95rMgPU3dTw0hJwnQ8LZkivo0yoflCBr3FMC4FhNwMXjmZ5Lu7z3khH/UiRhZ01G0SQRxbcZjHpuK8qpJ7uOzwZ3YHy86HMxXAl/hEKDe9ktQOiHzW9QpxnW83dd6zkDSqt7zBKASuBt10B6NOO6RcG5/arXvh7yvVLDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jRS6pG6z; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G2+UKtds"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A2A1F00893;
-	Tue,  9 Jun 2026 14:47:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781016439;
-	bh=f2ElMdd3tG0ARH5AemkW3ZjBi3gTUARKJouTd4J8JJg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=G2+UKtdsI6LTxIPdmiZT/Dh3tw+ekvHpsJcFIbXo89lnk8ygQfDzvSWsGO8o4Hxne
-	 XJhYTPgeSWduG5BuuI4ZPxdoEIgTvSnscUd52T4nxWf+UA0rGksQjbFRjnTkA4Y7RG
-	 aZpMFfCqeJ+Tod3Xq6NlLLhcvFhACNlMmSpmv3RiRo52zk04dQEXIGcc2Ku1BUE5Hc
-	 tGWoMgbwgTjTNOTtk26JqAECPAlJ5xY5br9VSMghnDlnOqJSd4wb2GQ8UNuqzxR7Ga
-	 HXsDhKWy1EVI4xKH5yRe/Fd049LPyMkvNP1wSIQIQSTwXz5dBBibzFoc7sxWUzlaq/
-	 TpHJU6Vw+FzBQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 1/8] can: flexcan: use dedicated IRQ handlers for
- multi-IRQ platforms
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
-Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260609142954.1807421-2-ciprianmarian.costea@oss.nxp.com>
-References: <20260609142954.1807421-2-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 09 Jun 2026 14:47:18 +0000
-Message-Id: <20260609144719.12A2A1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jRS6pG6z"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c8588f8fef3so2116478a12.0
+        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 07:48:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781016536; x=1781621336; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ssQbrVnKF7op2GL5R9NuBDcc9CEDLMmM16A9tAh/aJY=;
+        b=jRS6pG6zmrsHxZOwstzye2lzey7qVaHrVXfylFxSmDQ9dkitFRmThGZDTLG/Kr7Z+C
+         rvNMqqtA7864IU1orNrbsVv2R1IGtMXE4SHRA1Xt4ylQ+YVFDLJBtmwaiix0yFD0+Jdc
+         oI1eiZuSvOvQzp8mFZB7XxjDD2pqnSezd5OVOy3ijWnkqNVlhHPlBLAefYT4nOGX8Eem
+         ltVK5sCoq9X1J5S7kKyQUA4xBmRzd077OukxCYczYFXoI+j3aWdq5Ru/UcJFKywK6kvT
+         BD+vtLvq879EuY3gLbAZLTmTqCIazvuFwZnnwqUm9pir7EJ5ooKl7OQeGYHou3etg0xk
+         OvMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781016536; x=1781621336;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ssQbrVnKF7op2GL5R9NuBDcc9CEDLMmM16A9tAh/aJY=;
+        b=DzPNEn/CR71KsiZRT70dD8JGKa9i/+aUmwxNFRJb3dOMFYHdi9VuXC8XCoeI6PHbet
+         2z4Bauwbbxmpu6CMURsTHqTCcrpJCvySkDkLbWekE2Ayfb2tQDw5PbIEsMKAU+AKt+4J
+         6S+z+EM55pbxM4Ckq+AykjLPYY9PCR0mLf0xbVWE/E0oQtNAx90FMsMtbu/gPFbAOZxR
+         YiEFWNUGq1+dj4fpzOVepi/z2vBGIcKevY7Yi0Dl7SdOZeUXLD+6XC43hynTCHvffk5X
+         z5ZA+fv8VOPZIt0UtqCrOeVL8UK2Gcu/TdIoZPCHpWNGPBFuSgxUDWXAeB4/TKqrSyTO
+         /5ng==
+X-Forwarded-Encrypted: i=1; AFNElJ+1czNkoEz70sLpUcXvAvaaO3vOfJN0yQrpCyCblRjCxW2prWK4hEjL7RdsjciUdlyJA00=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgHWs2IC0B1Oe3Mn7Axx15sekPClDAbALCVHWaR2lP05ceUUdL
+	ca0UgKHClw2Chnkvhb4CE6IfpIJf7mPeakqzfYw8UilHnZ5fsXyjBN/q
+X-Gm-Gg: Acq92OEDIVA+s+UFUBQI6KZJIK4gbc93YM9BiDNfeZgNfMb7X89Vjq5IZNxgFB0YhTu
+	g0f5qVN4CMlZhLTHDFdAw52vp01TrhNe4mnsfbjm+zhR2IveLBRY0ekySBiffKs6BsWqRa4XIto
+	hdBYONPwTrbtNiAbIIzWx6GQSj4BO7Q0jn+HwrzN/9qOVmI1dAjmE5LM2zPQY0+tEe/00d2OcH6
+	Y3SRtj9M438RwZ0dRGGmbCGaLXqMt/hakOONP/4rcSgFatYNXNWamP5eOz7GHT8TpjmL+phDiwI
+	nrgWHNU8/zBkxUrqwDILIuBVHpTEEbDsYWQs+OiTqseAWz6YMt/HXalfFbL/O4BduGAcX7oX2ln
+	0TcYXTX6fMzBAXGksw3rtDo1NxT7TzaKpe8B6XDB6wfI2OQXc6OTzZPGWUuatOft2C+OMrC0sgO
+	2odDAjsQcMvVOeIoisJY4z9k08vCIJ/k+wpMNSdq3n9NUcbVCiMdRVuFWguknXIWoXrofJGHN9D
+	yLMVGwE/Mef+7vVBFH556HpZlSm
+X-Received: by 2002:a05:6a00:b92:b0:842:5ad6:2d3 with SMTP id d2e1a72fcca58-842b0fbbe6emr22139626b3a.38.1781016536024;
+        Tue, 09 Jun 2026 07:48:56 -0700 (PDT)
+Received: from junjungu-PC.localdomain ([223.166.246.74])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-842820e8e6asm21143237b3a.0.2026.06.09.07.48.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 07:48:55 -0700 (PDT)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Tue, 09 Jun 2026 22:48:50 +0800
+Subject: [PATCH] phy: freescale: phy-fsl-imx8qm-lvds-phy: Use synchronous
+ PM runtime put in reset
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260609-lvds-phy-v1-1-6ad790c6d0ea@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANEnKGoC/yXM0QpAMBTG8VfRubaaqTVeRS7YDo6EdhAt7264/
+ NX/+wIwekKGMgng8SCmZY7I0gTs0Mw9CnLRoKTSUstCTIdjsQ6X0LkyuSkaZbsMYr567Oj8rqr
+ 6N+/tiHZ793DfD4YB1ZZsAAAA
+X-Change-ID: 20260609-lvds-phy-6328389a2cf1
+To: Vinod Koul <vkoul@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Liu Ying <victor.liu@nxp.com>
+Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ sashiko <sashiko-bot@kernel.org>, Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781016533; l=1367;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=qLlRgnDvVIOGIOwv8hJ8MxfIWNVhS2goiG/w1fmsMUw=;
+ b=IqL5DMF0Ti3kRukr5DGbKVt8A7KSEHSGptH6E67EIOU4j0g9Yu1SDjO7QRbcHOnrcXqMeHBzU
+ PQpAdcIsTQLCXQP6Uhk/S0u3Lyo+gHKLtuX1gKBcIq7tpfUcFXUei0V
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+The mixel_lvds_phy_reset() function pairs pm_runtime_resume_and_get()
+with pm_runtime_put(). The asynchronous variant queues a work item
+to handle the idle check and potential suspend, which can be cancelled
+by a subsequent pm_runtime_disable() call if probe fails after the reset.
 
-New issues:
-- [High] Splitting the IRQ handlers breaks `FLEXCAN_QUIRK_BROKEN_PERR_STATE=
-` polling and strands state change SKBs.
+Switch to pm_runtime_put_sync() to run the idle check and suspend
+synchronously.
 
-Pre-existing issues:
-- [Critical] Concurrent execution of split IRQ handlers corrupts the lockle=
-ss CAN `rx_offload` queue.
---
+Fixes: 06ff622d61d2 ("phy: freescale: Add i.MX8qm Mixel LVDS PHY support")
+Reported-by: sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260605-lvds-v2-1-3ce7539d1104%40gmail.com
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-commit bffb52105dbcdcc01b5331e294239af017d43aeb
-Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c b/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
+index ece357443521..e2a1645000ae 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
++++ b/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
+@@ -286,7 +286,7 @@ static int mixel_lvds_phy_reset(struct device *dev)
+ 
+ 	regmap_write(priv->regmap, PHY_CTRL, CTRL_RESET_VAL);
+ 
+-	pm_runtime_put(dev);
++	pm_runtime_put_sync(dev);
+ 
+ 	return 0;
+ }
 
-can: flexcan: use dedicated IRQ handlers for multi-IRQ platforms
+---
+base-commit: a87737435cfa134f9cdcc696ba3080759d04cf72
+change-id: 20260609-lvds-phy-6328389a2cf1
 
-This patch splits the monolithic flexcan IRQ handler into focused parts
-and introduces dedicated IRQ handlers for multi-IRQ platforms to prevent
-duplicate frame processing.
+Best regards,
+--  
+Felix Gu <ustc.gu@gmail.com>
 
-> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/fle=
-xcan/flexcan-core.c
-> index f5d22c61503fa..f73ff442d5304 100644
-> --- a/drivers/net/can/flexcan/flexcan-core.c
-> +++ b/drivers/net/can/flexcan/flexcan-core.c
-> @@ -1188,6 +1218,65 @@ static irqreturn_t flexcan_irq(int irq, void *dev_=
-id)
-[ ... ]
-> +/* Mailbox IRQ handler for multi-IRQ platforms */
-> +static irqreturn_t flexcan_irq_mb(int irq, void *dev_id)
-> +{
-> +	struct net_device *dev =3D dev_id;
-> +	struct flexcan_priv *priv =3D netdev_priv(dev);
-> +	irqreturn_t handled;
-> +
-> +	handled =3D flexcan_do_mb(dev);
-
-[Severity: High]
-By splitting the handler, does this break the FLEXCAN_QUIRK_BROKEN_PERR_STA=
-TE
-polling mechanism? Before this patch, the monolithic flexcan_irq() naturally
-polled flexcan_do_state() during mailbox interrupts. Now that flexcan_irq_m=
-b()
-bypasses flexcan_do_state(), it seems state transitions might no longer be
-polled during active CAN traffic.
-
-> +
-> +	if (handled)
-> +		can_rx_offload_irq_finish(&priv->offload);
-> +
-> +	return handled;
-> +}
-> +
-> +/* Bus error IRQ handler for multi-IRQ platforms */
-> +static irqreturn_t flexcan_irq_berr(int irq, void *dev_id)
-> +{
-> +	struct net_device *dev =3D dev_id;
-> +	struct flexcan_priv *priv =3D netdev_priv(dev);
-> +	irqreturn_t handled;
-> +
-> +	handled =3D flexcan_do_berr(dev);
-
-[Severity: Critical]
-This is a pre-existing issue, but does assigning dedicated handlers to
-different IRQ lines lead to concurrent modifications of the lockless
-rx_offload queue?
-
-Since flexcan_irq_mb() and flexcan_irq_berr() can run concurrently on
-different CPUs, flexcan_do_mb() and flexcan_do_berr() might concurrently
-call can_rx_offload_queue_timestamp().
-
-That function uses __skb_queue_add_sort(), which is a lockless primitive
-that assumes strictly serialized execution. Could this lead to doubly-linked
-list corruption and kernel panics, further exacerbated by concurrent unlock=
-ed
-splices in can_rx_offload_irq_finish()?
-
-> +
-> +	if (handled)
-> +		can_rx_offload_irq_finish(&priv->offload);
-> +
-> +	return handled;
-> +}
-> +
-> +/* Device state change IRQ handler for multi-IRQ platforms */
-> +static irqreturn_t flexcan_irq_boff(int irq, void *dev_id)
-> +{
-> +	struct net_device *dev =3D dev_id;
-> +	struct flexcan_priv *priv =3D netdev_priv(dev);
-> +	irqreturn_t handled;
-> +
-> +	handled =3D flexcan_do_state(dev);
-> +
-> +	if (handled)
-> +		can_rx_offload_irq_finish(&priv->offload);
-
-[Severity: High]
-If flexcan_do_state() queues an SKB but returns IRQ_NONE (e.g., if no ESR
-bits are set), will this skip the can_rx_offload_irq_finish() call and
-strand the state change SKB in the lockless queue?
-
-> +
-> +	return handled;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609142954.1807=
-421-1-ciprianmarian.costea@oss.nxp.com?part=3D1
