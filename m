@@ -1,156 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2266390212
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 10:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F823D34B3
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 10:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780999679; cv=none; b=jJ5t5dP0WbfO/ZcuBdNSwu2v5a5z+x+CGxMxHU3rPDrvmQDDwn4ng3A/QLD9+udrq3jVsgxbAz2f3rs7xrCcis5DV+NKUkKfq/23XgTpJu5haIQ18ygRCwlTVX+RiN1NnEolDDaVKzHIfDMq8XDWawrbSX5e3oumfEJfc2XXfBg=
+	t=1780999854; cv=none; b=i1Yt/3qh/ZUQuYYS8COOv7gJCNccMAgqgRX1xnyAwWovziyEfWz0LlwLd1NTH+lfXDL17k0IEtKS92loftkXBUiM3HKToviEO6JeSKMcOUB6V2or3Pp1iQ9/Avm68WAW3kJ3vL6Bke5rUi9pIrgmW6KAf1PtiOuh90bH1lgLz+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780999679; c=relaxed/simple;
-	bh=tr879JES90ns9VbIUgk3U1m6wXuz4MWLSqPCUfijc4w=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m7rHSR1EGtQcqYQ38blVQNFPocFEj1aDItay10RN76ItFr1fQFcYgdG1x6gMqbKbZaSEGNGwl2jUc+nKL1Kkq0z9QYkYNBItVrZGB6WPaOTi5ACFUJ4MJIv6GhKmuv9tjDARMv7EUX2LKwXoa2gfOmYcy1qdHraHBM3U/rm/lOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4VH03Og; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780999854; c=relaxed/simple;
+	bh=CkRz/o0fiewYdn3u7dC6jJbEfZT0Gs4w8ZPCD/ywv8A=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=Bd6vfkOhit00rxkI2ip/HwfCxuo2kM+UTKWb+lYDNjxHhhi2ok4WSwxa29nXiqpjwpzn/KizRfWgp8EHVhkig4muwnOCxfwX3YpvTpSOkIbWT8SO/anKBZDl4RQQh9ssuDO6eewpPh4i1O6nJ2sMS/wtrBV+m0x+oD6OE87g5Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DX9lWzMv; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4VH03Og"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B441F00893;
-	Tue,  9 Jun 2026 10:07:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780999677;
-	bh=jszxHNj6Bv1+voQhFJXAh7TmDv+0RmTK9vEp5qTGtwU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=W4VH03Ogi49LjGK82fAzT7nhhOnN8BSwIXMCYIgDKAMjWdcUgmw4tjxiCYCoRvBqO
-	 yQBOT46AGlK21Bb9Xi9CWzeZKoXXn+3BwBLep+tmt2c+GAHgjL8EZRnvEhNQoSbVBB
-	 zL5s1sizF/6hCQ+s/0Dxg/fKNN0sJ1XIWW6AjEogDPnf/LaZUUi0K7nZGJRD7G2Px0
-	 EMhXMJ6ewfQliLYhs2Ssdd3/pntakrt2oEApk9fPRRSrBdiSAIsVf3nEGLPqsKqRF4
-	 vcZIL92jBZAEJuOc+4BSpowHS+qArgdngFg8Il+PRhV/LAV5bEQ+4/57l86RCsahNT
-	 m+RlWU4ItQqNw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/2] i2c: imx-lpi2c: properly unwind resources on
- probe failure
-Reply-To: sashiko-reviews@lists.linux.dev
-To: carlos.song@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260609095119.924029-2-carlos.song@oss.nxp.com>
-References: <20260609095119.924029-2-carlos.song@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 09 Jun 2026 10:07:56 +0000
-Message-Id: <20260609100757.24B441F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DX9lWzMv"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 572EB4E415AE;
+	Tue,  9 Jun 2026 10:10:51 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 101935FFC1;
+	Tue,  9 Jun 2026 10:10:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0C1C3106A2B16;
+	Tue,  9 Jun 2026 12:10:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780999849; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=2wKmJGWh+F/mw2sMZdDF/3ANgln0RLhLSsGBS838lO4=;
+	b=DX9lWzMvivOBeg+GA03lKvb3KNdMdhFWLKfjXhllejwmqUQ7C9eS9CPE8QdPl85nuh0Pue
+	MgMHk8tX/g/lr+tI2K0EuziD0qUqlG+5AmZ+QH20iwZ1Fh9JhI8NqQ9VD+YEND61FFA1F1
+	1Mt7n9zYGUK9+/yVbkFaN4PaiNcXxhlGv4kOx1Y9xTZ3eMtE7GhZrvpAJzshsRnx6Jg+og
+	n+xVtN9FJYhc1J0E2IbclZzXKCdP3XN6ZA8MAlKhk89H8jqQJjE31Xlb8aPoPpi8lbkSKd
+	R4UhXvPSwRqH0pID4b3q3nj8BSAwvv6e5plzY8znNj9xjnLUx7Ao35jlDQOGKw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 09 Jun 2026 12:10:39 +0200
+Message-Id: <DJ4FR339GCKY.21P0315EZLRJU@bootlin.com>
+To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 23/37] drm/encoder: add drm_encoder_cleanup_from()
+Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Inki Dae"
+ <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>,
+ "Stefan Agner" <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
+ <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+X-Mailer: aerc 0.21.0
+References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-23-45e2bdb3dfb4@bootlin.com>
+ <20260608-mighty-woodlouse-of-reading-162bca@houat>
+In-Reply-To: <20260608-mighty-woodlouse-of-reading-162bca@houat>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
+On Mon Jun 8, 2026 at 2:10 PM CEST, Maxime Ripard wrote:
+> On Tue, May 19, 2026 at 12:37:40PM +0200, Luca Ceresoli wrote:
+>> Supporting hardware whose final part of the DRM pipeline can be physical=
+ly
+>> removed requires the ability to detach all bridges from a given point to
+>> the end of the pipeline.
+>>
+>> Introduce a variant of drm_encoder_cleanup() for this.
+>>
+>> Take care to not try detaching non-attached bridges. This is needed beca=
+use
+>> when two or more bridges are removed not in the backwards order,
+>> drm_encoder_cleanup_from() is called more than once for bridges closer t=
+o
+>> the panel.
+>>
+>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>>
+>> ---
+>>
+>> Note: in theory drm_encoder_cleanup() is now a superset of
+>> drm_encoder_cleanup_from() and may be simplified to just call
+>> drm_encoder_cleanup_from() and then do the extra actions. However the
+>> common code is subtly different in terms of locking and checks, so this
+>> would complicate the code in this patch and has thus been kept separate =
+for
+>> the time being to make reviewing sompler. Reimplementing
+>> drm_encoder_cleanup() by using drm_encoder_cleanup_from() cvacn be done
+>> later on.
+>>
+>> A much simpler and now obsolete version of this patch (missing locking a=
+nd
+>> checks) previously appeared in
+>> https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-13-9d6f2c9c3=
+058@bootlin.com/
+>> ---
+>>  drivers/gpu/drm/drm_encoder.c | 38 ++++++++++++++++++++++++++++++++++++=
+++
+>>  include/drm/drm_encoder.h     |  1 +
+>>  2 files changed, 39 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/drm_encoder.c b/drivers/gpu/drm/drm_encoder=
+.c
+>> index 0d5dbed06db4..40ece477b302 100644
+>> --- a/drivers/gpu/drm/drm_encoder.c
+>> +++ b/drivers/gpu/drm/drm_encoder.c
+>> @@ -179,6 +179,44 @@ int drm_encoder_init(struct drm_device *dev,
+>>  }
+>>  EXPORT_SYMBOL(drm_encoder_init);
+>>
+>> +/**
+>> + * drm_encoder_cleanup_from - remove a given bridge and all the followi=
+ng
+>> + * @encoder: encoder whole list of bridges shall be pruned
+>> + * @bridge: first bridge to remove
+>> + *
+>> + * Removes from an encoder all the bridges starting with a given bridge
+>> + * and until the end of the chain.
+>> + *
+>> + * Does nothing if the bridge is not attached to an encoder chain.
+>> + *
+>> + * This should not be used in "normal" DRM pipelines. It is only useful=
+ for
+>> + * devices whose final part of the DRM chain can be physically removed =
+and
+>> + * later reconnected (possibly with different hardware).
+>> + */
+>> +void drm_encoder_cleanup_from(struct drm_encoder *encoder, struct drm_b=
+ridge *bridge)
+>> +{
+>> +	struct drm_bridge *next;
+>> +	LIST_HEAD(tmplist);
+>> +
+>> +	/*
+>> +	 * We need the bridge_chain_mutex to modify the chain, but
+>> +	 * drm_bridge_detach() will call DRM_MODESET_LOCK_ALL_BEGIN() (in
+>> +	 * drm_modeset_lock_fini()), resulting in a possible ABBA circular
+>> +	 * deadlock. Avoid it by first moving all the bridges to a
+>> +	 * temporary list holding the lock, and then calling
+>> +	 * drm_bridge_detach() without the lock.
+>> +	 */
+>> +	mutex_lock(&encoder->bridge_chain_mutex);
+>> +	if (!list_empty(&bridge->chain_node))
+>> +		list_for_each_entry_safe_from(bridge, next, &encoder->bridge_chain, c=
+hain_node)
+>> +			list_move_tail(&bridge->chain_node, &tmplist);
+>> +	mutex_unlock(&encoder->bridge_chain_mutex);
+>> +
+>> +	while (!list_empty(&tmplist))
+>> +		drm_bridge_detach(list_first_entry(&tmplist, struct drm_bridge, chain=
+_node));
+>> +}
+>> +EXPORT_SYMBOL(drm_encoder_cleanup_from);
+>> +
+>
+> The name is super confusing, because it doesn't clean up anything.
+> drm_encoder_cleanup is called that way because it cleans up the encoder.
+> This function doesn't.
+>
+> Unlike what's being documented, it doesn't remove any bridge either. It
+> just detaches bridge, so let's just call it that way?
 
-Pre-existing issues:
-- [High] DMA channels allocated during probe are never released on probe fa=
-ilure or device removal.
-- [High] The driver requests its IRQ before enabling peripheral clocks and =
-initializing waitqueues, creating a race condition that can crash the syste=
-m.
-- [High] Clock prepare and enable counts are permanently leaked on driver u=
-nload.
-- [High] The interrupt handler accesses hardware registers without verifyin=
-g the device's PM runtime state.
-- [High] The atomic transfer callback `lpi2c_imx_xfer_atomic` calls a sleep=
-ing Runtime PM function, violating atomic context constraints.
+Good point.
+
+What about:
+
+ * rename to drm_bridge_detach_from()
+ * drop the @encoder argument (get if from bridge->encoder)
+ * maybe even move to drm_bridge.c?
+
+Luca
+
 --
-
-commit cddc2104d2bff09cb4b19ffca23e425ce9b667ce
-Author: Carlos Song <carlos.song@nxp.com>
-
-i2c: imx-lpi2c: properly unwind resources on probe failure
-
-When probe fails after clk_bulk_prepare_enable() succeeds but before
-runtime PM is initialized, the enabled clocks are never disabled.
-Additionally, calling pm_runtime_put_sync() in the error path can
-trigger the runtime suspend callback, which may attempt to disable
-clocks that have not been fully set up, leading to potential issues
-during error unwinding.
-
-> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-=
-imx-lpi2c.c
-> index a01c236964819..540dc6cb664eb 100644
-> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-[ ... ]
-> @@ -1565,8 +1569,13 @@ static int lpi2c_imx_probe(struct platform_device =
-*pdev)
-> =20
->  rpm_disable:
->  	pm_runtime_dont_use_autosuspend(&pdev->dev);
-> -	pm_runtime_put_sync(&pdev->dev);
->  	pm_runtime_disable(&pdev->dev);
-> +	pm_runtime_set_suspended(&pdev->dev);
-> +	pm_runtime_put_noidle(&pdev->dev);
-> +clk_disable:
-> +	clk_bulk_disable_unprepare(lpi2c_imx->num_clks, lpi2c_imx->clks);
-> +free_irq:
-> +	devm_free_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx);
-
-[Severity: High]
-This is a pre-existing issue, but does explicitly placing clk_disable before
-free_irq expose a window where an interrupt can arrive and cause a fault
-during cleanup?
-
-If a pending interrupt fires after clocks are disabled but before the inter=
-rupt
-is freed, lpi2c_imx_isr() in drivers/i2c/busses/i2c-imx-lpi2c.c will execute
-and attempt to read hardware registers while clocks are disabled.
-
-[Severity: High]
-This isn't a regression introduced by this patch, but are dma channels leak=
-ed
-if probe fails after lpi2c_dma_init() succeeds?
-
-The driver requests channels using dma_request_chan() in lpi2c_dma_init().
-If a later probe step fails (such as i2c_add_adapter()), the error unwinding
-path skips releasing the channels.
-
-Additionally, lpi2c_imx_remove() in drivers/i2c/busses/i2c-imx-lpi2c.c appe=
-ars
-to lack cleanup, which could permanently leak two channels every time the
-driver unbinds.
-
-[Severity: High]
-This is a pre-existing issue, but are clock prepare and enable counts retai=
-ned
-on driver unload?
-
-Because lpi2c_imx_remove() in drivers/i2c/busses/i2c-imx-lpi2c.c only calls
-pm_runtime_disable() without explicit clock unprepare or disable operations,
-the actual clock counts might never be decremented. Devres will drop the cl=
-ock
-handles, but the clocks could remain enabled preventing deep sleep states.
-
-[Severity: High]
-This is a pre-existing issue, but could the interrupt handler access hardwa=
-re
-registers while the device is in a suspended state?
-
-According to subsystem guidelines, interrupt handlers must use
-pm_runtime_get_if_active() before accessing registers. Because the interrupt
-is not explicitly disabled at the controller during runtime suspend, a spur=
-ious
-or delayed interrupt might fire in lpi2c_imx_isr() while clocks are gated.
-
-[Severity: High]
-This isn't a regression introduced by this patch, but is it possible for the
-atomic transfer callback to sleep?
-
-lpi2c_imx_xfer_atomic() in drivers/i2c/busses/i2c-imx-lpi2c.c delegates to
-lpi2c_imx_xfer_common(), which then calls lpi2c_imx_master_enable(). This p=
-ath
-executes pm_runtime_resume_and_get(). If the device is suspended, the power
-management runtime core will attempt to acquire a mutex and sleep in an ato=
-mic
-context where interrupts are disabled.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609095119.9240=
-29-1-carlos.song@oss.nxp.com?part=3D1
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
