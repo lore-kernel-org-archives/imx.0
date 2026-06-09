@@ -1,179 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582861E9B3D;
-	Tue,  9 Jun 2026 16:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778AD40149F
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 16:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781021751; cv=none; b=ZVAg+93DSAhD2lIuRimbn0ASnSynaF2HS1PRC1NPnjIKGNH1Q7MwwP+/HfQHqcNtRS0rxzgJ14YN5x8V9Hm9jBMAoDDhVCmG+1ytA1Kj15/mnHXgmfoETnJ5c5DILahYfwDWvZDlSjuMNiUoGe7OkCa6fsK0fxGvMQPG5KMiu7A=
+	t=1781023211; cv=none; b=bJVl9DEvVK/ceaq4yoUewViTKwOhGQFYTmFY322EnaaMXH6YqojNdT3camOxBaJFI3zNA95QdZ45r7WPLXEZyyP9Q4vmMJYq00vX9nMmADF5nsbURa/h3tDJRNHclSdQAZlldC4iYPYWOck0rEVKI+itKek+dOfvhM+MdkFjNio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781021751; c=relaxed/simple;
-	bh=hhgqi0grX3TTsphSXbcsKIlFuo19A/cwSuNOB9LQ6nU=;
+	s=arc-20240116; t=1781023211; c=relaxed/simple;
+	bh=ZUYptASb2XkWgHKrB/ApK11KzwBJaSgOZ/Ih46iDuLc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YDKVfGodHZdUopDJcBboKASy3/UxuPTQ7yVEJTW6g2VAOBv8D0Qo6Kt6CCGyXEwE/wEhCiiWdjeufyzB5vPlytbJLvkIogpG2G19MuEUJSO63zoVODX3F+a2Ffml8f0cfhzNfYy7DoXyWBuDsHkJ5F4vjFnzsRSHV7aMln3Kqac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldVcXqpM; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Swm0RANIWucFlwmM7PJ0CaklT+ovpo7Fhzg3+ekv8wUHds7lTWl/PGiSs17dV0HaVjfp+AdU6I3iMJmoRhjdd1bLBdzXJHfqYgWjIQ0BgyzFNco9ac+q9QB6sTyxLix7flysGNFxMKiq/9p7BHLgJqR3/BvblzwG1PflJkzftXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lbO3smzu; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldVcXqpM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC841F00893;
-	Tue,  9 Jun 2026 16:15:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781021750;
-	bh=tvjjhZx2KbfbA3aG4zyyErvYRIPzEB2KAnDRxFD1IPc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ldVcXqpMfPnx7MbGkzjiKmG5isZtE6wHrZdwubDdIb/oUu3NPCUxvsgp5o992C4hc
-	 rwo0VTTx2ZEzMoUMaq8d91m8YgK8MrYVadGjb0/1Z2wnaVqI2emGX4LErES8j5cg0+
-	 8A7/LYour6QsZl9m9Endsdh9sMQObr8vDQ1H3Fa9MtiHEjkxB3qGMTjXEVVxPNsk6g
-	 /DbmAfHTfGzukSlxze2GHTAemwupHp7OiupCGs3nGZTWKWbVUfOjUbNlW+RpOAZJXD
-	 GkCh6tye7pA9DY0zyfEeEBC6GRqi7dEmzwDX09dgwJa3ecOtZmfeYwh9fm7vt+4MFY
-	 mXwYCTynEsBvA==
-Date: Tue, 9 Jun 2026 17:15:43 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lbO3smzu"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c0b944f6edso59566885ad.2
+        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 09:40:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1781023210; x=1781628010; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=F5HJL58J1eZJZ2b60pokq8zoselIZjiEHemGuH3SCnY=;
+        b=lbO3smzuHRAKFHhTIuahHi89i/NXoyMTdZpYfqoqWGf7aPvrf4U1bR9Rj4KY+vsJZ5
+         JGGGxwqQenqarQq4O2tE/suiNDH0PsxXD7nAGZcp3OuIhpxbEL6ihjFJc/utbFgNCcNw
+         cnlq7Yx3xXj9xaknH5mE2+4XBe2qjKprdWUfk3rCUz1n4Q3DmNEXY4LhsZnIm7OI5JtL
+         ZMKXZi/3fgpJCRKjy+VitylP/e+8pulqw2o7ihzlpyUHiqsUebljkOuwtXuJGLVRXifJ
+         ekeeegeWymGiiV+RXAHqwvxxTOe/SeN1wDVx8QkI5lVFcEudIEwHAeYmbt7QZAgA+WYj
+         q4XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781023210; x=1781628010;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F5HJL58J1eZJZ2b60pokq8zoselIZjiEHemGuH3SCnY=;
+        b=dZxoUliY77OxdtG43PaBgUhuKvuOcTvY+HmK7MpqtMBCTPbKWaB9EB1WTJFnw6vCdh
+         rqxJIVk+pg/4Vkfp+HqFWiMbeJv/vSrU3B8of7pdLUW0IubOf+s+lffRY0w+GxC5284E
+         UGvvF8ziwUVOyVKeUYVzwPuEZmkSGan5RtovxrCfEqXsMqafa6tS5nZ6SAeXjdxPAnSd
+         vkxPtkdDSVUtN58fWthhPkPPHf94GvAcdMxh4t3wdqz6TfR5Cu+FE5jsXme2+qnnCzmk
+         fyhB7g27QfthbFB0UHJZbtgxxWZB482FbGu5xyeSiPLbFIXEXRoc+bG4EDhIONfMMtWa
+         i4KA==
+X-Forwarded-Encrypted: i=1; AFNElJ/mxqD0VGvuAdXqbNb9S/ekEpz8cgCeTQK1Egz8OYVO7rwKT81eJjJw74DyWVl0pnNtcxY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YySYaZHAMBAOveZkYXw1Axt1iSw/l0E+wLFEog2gGW3PLW3sV5E
+	OwyRrW1Kl+Wa+jq8EJCnKygt88qW/qPSlcWWnubPCT0gm5mJAUvq+3c/Vkt924orKYswsqwhe/2
+	aZXm6
+X-Gm-Gg: Acq92OE6Stmz1lQsZd+c03QOSU7WRJ5G7gmTu3l9nJ68gV8z4Tqbb/EAZQZepFJP9VB
+	7qL6T1LEtaRJi+VUwxBwbjnb4qkf3asnDZKK1+ZpRWdgh8ETL6QUCt6GMZsLMfLaLHAS+jbWR5B
+	9RjFAH9j1wqZpwAEFOs+7MV8NzMtsHD3SxeVaDgyyeZAbEAb/EMwrK41s/fSKUwIcp0lJLjz2op
+	oDfiTthUbNrnxVqAlnfgRGml7UJy8ClnKTeyR2dLB3yHw7bRk+23S8v3RET4zhmUnTgUCZ2Bij6
+	hHDtnwaS1YTHNa7KhnRNlek+d23Anwlk6klaL3geXSNiaso5Da0HOruxo48AafoWo1ML3Tzioef
+	R4FwOSezsUYlLjm/pkmT5zaPJjq3oAdxXVIMcXVT5rAAwwSFA+P54P1+MbcF2OHelSnZgcE9q2Y
+	XYvukQOqlU/MXuPH8lwAzbf+i6Uv92tqbdCC4k
+X-Received: by 2002:a17:903:2450:b0:2c0:3400:5c42 with SMTP id d9443c01a7336-2c1e820bffemr225857055ad.26.1781023209568;
+        Tue, 09 Jun 2026 09:40:09 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:7f00:843c:9d87:e9dc])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16609e0a2sm225550575ad.46.2026.06.09.09.40.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 09:40:08 -0700 (PDT)
+Date: Tue, 9 Jun 2026 10:40:06 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v5 1/3] dt-bindings: arm: fsl: add Variscite DART-MX8M
- PLUS Boards
-Message-ID: <20260609-clumsy-material-b74a9b6bc7b7@spud>
-References: <cover.1780998600.git.stefano.r@variscite.com>
- <c65129896fc6ce80044ee1d89e12dcdff34945be.1780998600.git.stefano.r@variscite.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@oss.nxp.com>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: remoteproc: imx_rproc: document
+ optional "memory-region-names"
+Message-ID: <aihB5rVLsVqzg6cb@p14s>
+References: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
+ <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IzjPPGoaiFY9Un2l"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c65129896fc6ce80044ee1d89e12dcdff34945be.1780998600.git.stefano.r@variscite.com>
+In-Reply-To: <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
 
+On Fri, Jun 05, 2026 at 04:36:18AM -0700, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> 
+> The names of the carveout regions are derived using the names of the
+> reserved memory devicetree nodes, which are referenced using the
+> "memory-region" property. This adds a restriction on the names of said
+> devicetree nodes, often bearing specific names such as: "vdevbuffer",
+> "vdev0vring0", "rsc-table", etc... This goes against the devicetree
+> specification's recommendation, which states that the devicetree node
+> names should be generic.
 
---IzjPPGoaiFY9Un2l
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I don't see what is so restrictive in using the node name of the reserved-memory
+regions.  Function of_reserved_mem_region_to_resource() is already doing all the
+parsing, packaging everything in a neat and easy to use "struct resource".  What
+will you gain with this new "memory-region-names" that can't be done with the
+current solution?
 
-On Tue, Jun 09, 2026 at 11:51:18AM +0200, Stefano Radaelli wrote:
-> From: Stefano Radaelli <stefano.r@variscite.com>
->=20
-> Add DT compatible strings for Variscite DART-MX8MP SoM and Variscite
-> development carrier Board.
->=20
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
-
-My mailbox looking like
-| 169 ND  Jun 09 Stefano Radaell ( 27K) =E2=94=8C=E2=94=80>[PATCH v5 3/3] a=
-rm64: dts: imx8mp-var-dart: Add support for Variscite Sonata board
-| 170 ND  Jun 09 sashiko-bot@ker (7.2K) =E2=94=82 =E2=94=8C=E2=94=80>
-| 171 ND  Jun 09 Stefano Radaell ( 24K) =E2=94=9C=E2=94=80>[PATCH v5 2/3] a=
-rm64: dts: freescale: Add support for Variscite DART-MX8M-PLUS
-| 172  D  Jun 09 Stefano Radaell (  43) =E2=94=9C=E2=94=80>[PATCH v5 1/3] d=
-t-bindings: arm: fsl: add Variscite DART-MX8M PLUS Boards
-| 173 ND  Jun 09 Stefano Radaell ( 10K) [PATCH v5 0/3] Add support for Vari=
-scite DART-MX8M-PLUS and Sonata board
-| 174 ND  Jun 09 sashiko-bot@ker (7.1K)   =E2=94=8C=E2=94=80>
-| 175 ND  Jun 09 Hongliang Wang  (7.8K) =E2=94=8C=E2=94=80>[PATCH v1 2/3] L=
-oongArch: dts: i2c: Add clocks and clock-frequency properties to 2K1000
-| 176 ND  Jun 09 Hongliang Wang  (8.9K) =E2=94=9C=E2=94=80>[PATCH v1 1/3] L=
-oongArch: dts: i2c: Add clocks and clock-frequency properties to 2K0500
-| 177 ND  Jun 09 Hongliang Wang  (7.7K) =E2=94=9C=E2=94=80>[PATCH v1 3/3] L=
-oongArch: dts: i2c: Add clocks and clock-frequency properties to 2K2000
-| 178 ND  Jun 09 Hongliang Wang  (7.0K) [PATCH v1 0/3] LoongArch: dts: i2c:=
- Add clocks and clock-frequency properties
-| 179 ND  Jun 09 Stefano Radaell ( 27K) =E2=94=8C=E2=94=80>[PATCH v4 3/3] a=
-rm64: dts: imx8mp-var-dart: Add support for Variscite Sonata board
-| 180 ND  Jun 09 sashiko-bot@ker (7.7K) =E2=94=82 =E2=94=8C=E2=94=80>
-| 181 ND  Jun 09 Stefano Radaell ( 24K) =E2=94=9C=E2=94=80>[PATCH v4 2/3] a=
-rm64: dts: freescale: Add support for Variscite DART-MX8M-PLUS
-| 182  D  Jun 09 Stefano Radaell (  40) =E2=94=9C=E2=94=80>[PATCH v4 1/3] d=
-t-bindings: arm: fsl: add Variscite DART-MX8M PLUS Boards
-| 183 ND  Jun 09 Stefano Radaell ( 10K) [PATCH v4 0/3] Add support for Vari=
-scite DART-MX8M-PLUS and Sonata board
-| 184  D  Jun 09 Paolo Abeni     (  19) Re: [PATCH v2 1/1] dt-bindings: net=
-: dsa: Convert lan9303.txt to yaml format
-| 185 N   Jun 09 Stefano Radaell ( 27K) =E2=94=8C=E2=94=80>[PATCH v3 3/3] a=
-rm64: dts: imx8mp-var-dart: Add support for Variscite Sonata board
-| 186 N   Jun 09 sashiko-bot@ker (7.1K) =E2=94=82 =E2=94=8C=E2=94=80>
-| 187 N   Jun 09 Stefano Radaell ( 24K) =E2=94=9C=E2=94=80>[PATCH v3 2/3] a=
-rm64: dts: freescale: Add support for Variscite DART-MX8M-PLUS
-| 188     Jun 09 Stefano Radaell (  36) =E2=94=9C=E2=94=80>[PATCH v3 1/3] d=
-t-bindings: arm: fsl: add Variscite DART-MX8M PLUS Boards
-| 189 N   Jun 09 Stefano Radaell ( 10K) [PATCH v3 0/3] Add support for Vari=
-scite DART-MX8M-PLUS and Sonata board
-is a pretty clear indication that you're iterating too quickly.
-Try to slow down and leave people time to respond before sending new
-versions, not just respin for every automated response you get.
-
-Cheers,
-Conor.
-
+> 
+> Fix this by documenting an additional, optional property:
+> "memory-region-names". This way, the carveout names can use the values
+> passed via "memory-region-names", while keeping the devicetree node
+> names of the reserved memory regions generic.
+> 
+> There are no restrictions imposed on the values of the strings passed via
+> the new property since the software allows any name to be used, with some
+> names (e.g. "vdev%dbuffer", "vdev%dvring%d", "rsc-table") bearing a
+> special meaning.
+> 
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > ---
-> v4->v5:
->  -=20
->=20
-> v3->v4:
->  -=20
->=20
-> v2->v3:
->  -=20
->=20
-> v1->v2:
->  -=20
->=20
->  Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
-on/devicetree/bindings/arm/fsl.yaml
-> index 86876311ec59..11629b9eafc5 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -1310,6 +1310,12 @@ properties:
->            - const: tq,imx8mp-tqma8mpql            # TQ-Systems GmbH i.MX=
-8MP TQMa8MPQL SOM
->            - const: fsl,imx8mp
-> =20
-> +      - description: Variscite DART-MX8M Plus based boards
-> +        items:
-> +          - const: variscite,var-dart-mx8mp-sonata # Variscite DART-MX8M=
-P on Sonata Development Board
-> +          - const: variscite,var-dart-mx8mp # Variscite DART-MX8MP SOM
-> +          - const: fsl,imx8mp
+>  .../devicetree/bindings/remoteproc/fsl,imx-rproc.yaml         | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> index c18f71b64889..8e3e6676a95e 100644
+> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> @@ -62,6 +62,10 @@ properties:
+>      minItems: 1
+>      maxItems: 32
+>  
+> +  memory-region-names:
+> +    minItems: 1
+> +    maxItems: 32
 > +
->        - description: Variscite VAR-SOM-MX8M Plus based boards
->          items:
->            - const: variscite,var-som-mx8mp-symphony
-> --=20
-> 2.47.3
->=20
-
---IzjPPGoaiFY9Un2l
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaig8LwAKCRB4tDGHoIJi
-0m4zAQCmUxD/ny43hOfglQERHwtFde8j02NcX+qT47L4RKlj1gEAkvLqrFrJ2iQs
-E8lVAVxb3YBc4akFxdaHWXuYhtsKpgw=
-=vM9U
------END PGP SIGNATURE-----
-
---IzjPPGoaiFY9Un2l--
+>    power-domains:
+>      minItems: 2
+>      maxItems: 8
+> -- 
+> 2.43.0
+> 
