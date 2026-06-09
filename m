@@ -1,302 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E838539EF23;
-	Tue,  9 Jun 2026 09:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18213793BE
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 09:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780997106; cv=none; b=JRbrW/1c0DhXReW/rN+uFNQKi8lRhTDJInU9VCj7wIk168/4/zpj/GZygYd7A5N1AR7+VMx1Rs732gGCY2IgJ4ZAmz8oCH8TuOhdmT/ZX4dT7jdim4jfxps+woInQwksi+YLpaeP6Ia2CZYxo8RyOKsDIZVm3AlZPDhMmEAI9eM=
+	t=1780997468; cv=none; b=Y/MeAhaw3jJfPw7sjshdV1nZ6PxMCsJvLY8R/edqXRsjm6CuzkaRpsMV3lXOVvyHQ53GBXrUgdfevLE5M9e4LHrMoO2rh1+KWPkFajT/YfU5howDM7+IO+8QAUB3J0o+zFlp/gLSSsuxaOeT1peKhGS+l20zVguIDlKeSnh45sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780997106; c=relaxed/simple;
-	bh=fXmlF23Kc0Gz0DyIkV/VB7zl1qoh5iydFacWVlpna0k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LHyIGPUTqe2cZA3ObARUKAfH8Yiv6J+wz3FsvoxbQvxy3fdJ+EubWBTEXuHinTiup9uLpQJJjPbSXrsjf77QPyrNQUWMZDeDlt5FsBr9ObljFJM/wBWS3mGTRKBQIz6AEgS7LYoAdXc5ghnZt8G3fmrG2XRIuvOm6q1OCxFYk4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EQcaFDcv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780997468; c=relaxed/simple;
+	bh=4mRBPNmR1OtFkGxuqAKs88NJp8h9p2yjslNUV+/qzLE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=qk6UdkC859Ua2J+z5WC7Ir7sNIRLFvFskp2siiFkXeQm/XCQ0LrbBLxjO0enCo22Q7zDpXUR2T+awfqSJrEfpWOeJ5ZA1zs2dexg3vqozbFFLePIU9n0b2h5pzYs+XZVBpf3kRa04+rD8JBdH57gMdnshlqwpY/AEMuI7Gu8G1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xyprXdNF; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EQcaFDcv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FAE1F00893;
-	Tue,  9 Jun 2026 09:24:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780997104;
-	bh=yJ60kBjWAJGClfdgON5i50ME0WuDweXsexe8c1DjGOY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EQcaFDcvAfJBZLt1sk2F4oVpqklrDooFDyAR9r8krEc6Cttbx38JBoke99EX5oJib
-	 AZChEhROze4PqPSzWKRsvXXAlewpzJKxknovpGTuHmLf5gdLOFY8DPC8fDWl/5YHok
-	 snctg/OfXjCKJlOojBpxLCDUqgMH3ZDO0Wj2O24IBet5+2whuRhwxurtAc2KtHXh2D
-	 aBYFPGOrZclVsXVPHB7Gdd9ExuPALR0f50hXDqP4KAlGdtM7RZeD7dVGRugpj+dpvr
-	 xmZc9YGlnF02UkKwPcX2YqSFLw9WC15mYNHfdLeaF0BN6oE/W0cwbJx7z68ttx4juG
-	 cBKWior0bcVLQ==
-Message-ID: <c50194dd-3a3c-4193-9296-1e35c6732351@kernel.org>
-Date: Tue, 9 Jun 2026 11:24:57 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xyprXdNF"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 625AEC4FED7;
+	Tue,  9 Jun 2026 09:31:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F1C835FFC1;
+	Tue,  9 Jun 2026 09:31:04 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2156B106A2ACA;
+	Tue,  9 Jun 2026 11:30:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780997463; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4mRBPNmR1OtFkGxuqAKs88NJp8h9p2yjslNUV+/qzLE=;
+	b=xyprXdNFrB0MTFjyuj1yRt4FGoAYSUSksWS7Jm3cTcx0eI+zTv4/9QMmFUmHzFSeN7BfpA
+	Oh2kQLxV4VhmWk8y0DUWCH6baH+UYkAyrIvn7YYbgM11mEVLLTWGlkdYw2/41Z7j/QjVmU
+	SdeN2Sbpk8SLYhLbvz72roOjWsMh9PyH7lh+3HQ+ebMbgYEoxnx7m1Ac+ixwcNRrnqJOLK
+	JyDVQ7iKg7ADJ1oL9A4wmAH/xPTrNp0Q1+gt9TINL4PDuyQFT0Xt35wOXZ6EIvzo2NK5ul
+	6fM2APzJlzP/fZJYdVvX1U3vPjjxj6qK2qjA84MEZy71oY+zccv+Z83Ln3pMQQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v4 3/8] can: flexcan: split rx/tx masks per mailbox
- IRQ line
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
- Marc Kleine-Budde <mkl@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-can@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, NXP S32 Linux Team <s32@nxp.com>,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>
-References: <20260603071342.641874-1-ciprianmarian.costea@oss.nxp.com>
- <20260603071342.641874-4-ciprianmarian.costea@oss.nxp.com>
-From: Vincent Mailhol <mailhol@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=mailhol@kernel.org; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
- fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
- F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
- 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
- YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
- dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
- zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <20260603071342.641874-4-ciprianmarian.costea@oss.nxp.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 09 Jun 2026 11:30:52 +0200
+Message-Id: <DJ4EWMIX84PN.3VTENLJT2FWDH@bootlin.com>
+Subject: Re: [PATCH 26/37] drm: event-notifier: add mechanism to notify
+ about hotplug events
+Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Inki Dae"
+ <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>,
+ "Stefan Agner" <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
+ <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.21.0
+References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-26-45e2bdb3dfb4@bootlin.com>
+ <20260608-maize-rooster-of-youth-c0bbde@houat>
+In-Reply-To: <20260608-maize-rooster-of-youth-c0bbde@houat>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 03/06/2026 at 09:13, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> 
-> On S32G2, which has two mailbox IRQ lines (mb-0 for MBs 0-7, mb-1
-> for MBs 8-127), both handlers currently process the full rx_mask/tx_mask
-> range,
-> 
-> Introduce struct flexcan_mb_irq to hold per-IRQ-line rx and tx masks.
-> 
-> In flexcan_irq_mb(), the irq argument selects the correct mask set: the
-> primary MB IRQ uses mb_irq[0] and the secondary uses mb_irq[1].
-> 
-> For single-IRQ platforms, mb_irq[0] holds the full combined masks with no
-> functional change.
-> 
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> ---
->  drivers/net/can/flexcan/flexcan-core.c | 61 +++++++++++++++++++-------
->  drivers/net/can/flexcan/flexcan.h      | 10 ++++-
->  2 files changed, 52 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-> index 7dde2e623def..32e4d4da00a1 100644
-> --- a/drivers/net/can/flexcan/flexcan-core.c
-> +++ b/drivers/net/can/flexcan/flexcan-core.c
-> @@ -957,14 +957,16 @@ static inline void flexcan_write64(struct flexcan_priv *priv, u64 val, void __io
->  		priv->write(lower_32_bits(val), addr);
->  }
->  
-> -static inline u64 flexcan_read_reg_iflag_rx(struct flexcan_priv *priv)
-> +static inline u64 flexcan_read_reg_iflag_rx(struct flexcan_priv *priv,
-> +					    u64 rx_mask)
->  {
-> -	return flexcan_read64_mask(priv, &priv->regs->iflag1, priv->rx_mask);
-> +	return flexcan_read64_mask(priv, &priv->regs->iflag1, rx_mask);
->  }
->  
-> -static inline u64 flexcan_read_reg_iflag_tx(struct flexcan_priv *priv)
-> +static inline u64 flexcan_read_reg_iflag_tx(struct flexcan_priv *priv,
-> +					    u64 tx_mask)
->  {
-> -	return flexcan_read64_mask(priv, &priv->regs->iflag1, priv->tx_mask);
-> +	return flexcan_read64_mask(priv, &priv->regs->iflag1, tx_mask);
->  }
->  
->  static inline struct flexcan_priv *rx_offload_to_priv(struct can_rx_offload *offload)
-> @@ -1071,7 +1073,8 @@ static struct sk_buff *flexcan_mailbox_read(struct can_rx_offload *offload,
->  }
->  
->  /* Process mailbox (RX + TX) events */
-> -static irqreturn_t flexcan_do_mb(struct net_device *dev)
-> +static irqreturn_t flexcan_do_mb(struct net_device *dev,
-> +				 const struct flexcan_mb_irq *mb_irq)
->  {
->  	struct net_device_stats *stats = &dev->stats;
->  	struct flexcan_priv *priv = netdev_priv(dev);
-> @@ -1084,7 +1087,8 @@ static irqreturn_t flexcan_do_mb(struct net_device *dev)
->  		u64 reg_iflag_rx;
->  		int ret;
->  
-> -		while ((reg_iflag_rx = flexcan_read_reg_iflag_rx(priv))) {
-> +		while ((reg_iflag_rx = flexcan_read_reg_iflag_rx(priv,
-> +								 mb_irq->rx_mask))) {
->  			handled = IRQ_HANDLED;
->  			ret = can_rx_offload_irq_offload_timestamp(&priv->offload,
->  								   reg_iflag_rx);
-> @@ -1110,10 +1114,10 @@ static irqreturn_t flexcan_do_mb(struct net_device *dev)
->  		}
->  	}
->  
-> -	reg_iflag_tx = flexcan_read_reg_iflag_tx(priv);
-> +	reg_iflag_tx = flexcan_read_reg_iflag_tx(priv, mb_irq->tx_mask);
->  
->  	/* transmission complete interrupt */
-> -	if (reg_iflag_tx & priv->tx_mask) {
-> +	if (reg_iflag_tx & mb_irq->tx_mask) {
->  		u32 reg_ctrl = priv->read(&priv->tx_mb->can_ctrl);
->  
->  		handled = IRQ_HANDLED;
-> @@ -1125,7 +1129,7 @@ static irqreturn_t flexcan_do_mb(struct net_device *dev)
->  		/* after sending a RTR frame MB is in RX mode */
->  		priv->write(FLEXCAN_MB_CODE_TX_INACTIVE,
->  			    &priv->tx_mb->can_ctrl);
-> -		flexcan_write64(priv, priv->tx_mask, &regs->iflag1);
-> +		flexcan_write64(priv, mb_irq->tx_mask, &regs->iflag1);
->  		netif_wake_queue(dev);
->  	}
->  
-> @@ -1228,7 +1232,7 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
->  	struct flexcan_priv *priv = netdev_priv(dev);
->  	irqreturn_t handled;
->  
-> -	handled = flexcan_do_mb(dev);
-> +	handled = flexcan_do_mb(dev, &priv->mb_irq[0]);
->  	handled |= flexcan_do_state(dev);
->  	handled |= flexcan_do_berr(dev);
->  
-> @@ -1243,9 +1247,15 @@ static irqreturn_t flexcan_irq_mb(int irq, void *dev_id)
->  {
->  	struct net_device *dev = dev_id;
->  	struct flexcan_priv *priv = netdev_priv(dev);
-> +	const struct flexcan_mb_irq *mb_irq;
->  	irqreturn_t handled;
-> +	int idx;
->  
-> -	handled = flexcan_do_mb(dev);
-> +	idx = (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ &&
-> +	       irq == priv->irq_secondary_mb) ? 1 : 0;
-> +	mb_irq = &priv->mb_irq[idx];
-> +
-> +	handled = flexcan_do_mb(dev, mb_irq);
->  
->  	if (handled)
->  		can_rx_offload_irq_finish(&priv->offload);
-> @@ -1473,6 +1483,7 @@ static void flexcan_ram_init(struct net_device *dev)
->  static int flexcan_rx_offload_setup(struct net_device *dev)
->  {
->  	struct flexcan_priv *priv = netdev_priv(dev);
-> +	u64 rx_mask, tx_mask;
->  	int err;
->  
->  	if (priv->can.ctrlmode & CAN_CTRLMODE_FD)
-> @@ -1494,20 +1505,35 @@ static int flexcan_rx_offload_setup(struct net_device *dev)
->  			flexcan_get_mb(priv, FLEXCAN_TX_MB_RESERVED_RX_FIFO);
->  	priv->tx_mb_idx = priv->mb_count - 1;
->  	priv->tx_mb = flexcan_get_mb(priv, priv->tx_mb_idx);
-> -	priv->tx_mask = FLEXCAN_IFLAG_MB(priv->tx_mb_idx);
-> -
->  	priv->offload.mailbox_read = flexcan_mailbox_read;
->  
->  	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_USE_RX_MAILBOX) {
->  		priv->offload.mb_first = FLEXCAN_RX_MB_RX_MAILBOX_FIRST;
->  		priv->offload.mb_last = priv->mb_count - 2;
->  
-> -		priv->rx_mask = GENMASK_ULL(priv->offload.mb_last,
-> -					    priv->offload.mb_first);
-> +		rx_mask = GENMASK_ULL(priv->offload.mb_last,
-> +				      priv->offload.mb_first);
-> +		tx_mask = FLEXCAN_IFLAG_MB(priv->tx_mb_idx);
-> +
-> +		if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
-> +			/* S32G2 has two MB IRQ lines with the split at MB 8:
-> +			 * mb-0 IRQ handles MBs 0-7,
-> +			 * mb-1 IRQ handles MBs 8-127.
-                                                  ^^^
-Your comment says 8-127 but the code uses GENMASK_ULL(63, 8). Is this
-intentional?
+On Mon Jun 8, 2026 at 2:13 PM CEST, Maxime Ripard wrote:
+> On Tue, May 19, 2026 at 12:37:43PM +0200, Luca Ceresoli wrote:
+>> In preparation for supporting DRM bridge hotplug, add an event notifier =
+to
+>> allow interested parties to be notified about events they need to react =
+to.
+>>
+>> For the initial implementation of bridge hotplug, two events are needed:
+>> bridge detach (happening in drm_bridge.c) and MIPI device attach to MIPI
+>> host (happening in drm_mipi_dsi.c).
+>>
+>> For this reason implement the event notifier in a new common file that
+>> event producers can easily use to send events.
+>>
+>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>
+> So, you claim in the commit message that it's about a hotplug event, but
+> the only events are the bridge being attached and detached, so not a
+> hotplug event?
+>
+> And why a bridge would want to be notified that itself (or another?)
+> bridge is being attached or detached?
+>
+> You need documentation, and a more descriptive commit message.
 
-> +			 */
-> +			priv->mb_irq[0].rx_mask = rx_mask & GENMASK_ULL(7, 0);
-> +			priv->mb_irq[0].tx_mask = tx_mask & GENMASK_ULL(7, 0);
-> +			priv->mb_irq[1].rx_mask = rx_mask & GENMASK_ULL(63, 8);
-> +			priv->mb_irq[1].tx_mask = tx_mask & GENMASK_ULL(63, 8);
-> +		} else {
-> +			priv->mb_irq[0].rx_mask = rx_mask;
-> +			priv->mb_irq[0].tx_mask = tx_mask;
-> +		}
-> +
+Yes.
 
-The introduction of the struct flexcan_mb_irq seems a bit overkill.
-Can't you just define two new masks and keep the existing struct
-flexcan_stop_mode untouched:
+But before that I need a decision about the scope we want to give to this
+notifier. It is a very generic module, with basically no dependencies, so
+people will try to add more unrelated events and we'd need to set a
+boundary.
 
-	#define FLEXCAN_SECONDARY_MB_IRQ_MB0_MASK GENMASK_U64(7, 0)
-	#define FLEXCAN_SECONDARY_MB_IRQ_MB1_MASK GENMASK_U64(63, 8)
+Options:
 
-and when you need to access the MB, just select the correct mask. For
-example, flexcan_irq_mb() becomes something like this:
+ * Should it be for hotplug-related events only?
+ * Should it be for any DRM event that needs notifications?
+ * Something else?
 
-	u64 mb_mask;
+I'm happy to write that in the docs and commit message once it's agreed, so
+any comments would be welcome right now.
 
-	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ
-	    && irq == priv->irq_secondary_mb)
-		mb_mask = FLEXCAN_SECONDARY_MB_IRQ_MB0_MASK;
-	else
-		mb_mask = FLEXCAN_SECONDARY_MB_IRQ_MB1_MASK;
+Luca
 
-	handled = flexcan_do_mb(dev, mb_mask);
-
->  		err = can_rx_offload_add_timestamp(dev, &priv->offload);
->  	} else {
-> -		priv->rx_mask = FLEXCAN_IFLAG_RX_FIFO_OVERFLOW |
-> +		priv->mb_irq[0].rx_mask = FLEXCAN_IFLAG_RX_FIFO_OVERFLOW |
->  			FLEXCAN_IFLAG_RX_FIFO_AVAILABLE;
-> +		priv->mb_irq[0].tx_mask = FLEXCAN_IFLAG_MB(priv->tx_mb_idx);
->  		err = can_rx_offload_add_fifo(dev, &priv->offload,
->  					      FLEXCAN_NAPI_WEIGHT);
->  	}
-> @@ -1531,7 +1557,8 @@ static void flexcan_chip_interrupts_enable(const struct net_device *dev)
->  		disable_irq(priv->irq_secondary_mb);
->  
->  	priv->write(priv->reg_ctrl_default, &regs->ctrl);
-> -	reg_imask = priv->rx_mask | priv->tx_mask;
-> +	reg_imask = priv->mb_irq[0].rx_mask | priv->mb_irq[0].tx_mask |
-> +		    priv->mb_irq[1].rx_mask | priv->mb_irq[1].tx_mask;
->  	priv->write(upper_32_bits(reg_imask), &regs->imask2);
->  	priv->write(lower_32_bits(reg_imask), &regs->imask1);
->  	enable_irq(dev->irq);
-> diff --git a/drivers/net/can/flexcan/flexcan.h b/drivers/net/can/flexcan/flexcan.h
-> index 16692a2502eb..22aa097ec3c0 100644
-> --- a/drivers/net/can/flexcan/flexcan.h
-> +++ b/drivers/net/can/flexcan/flexcan.h
-> @@ -75,10 +75,17 @@
->   */
->  #define FLEXCAN_QUIRK_SECONDARY_MB_IRQ	BIT(18)
->  
-> +#define FLEXCAN_NR_MB_IRQS	2
-> +
->  struct flexcan_devtype_data {
->  	u32 quirks;		/* quirks needed for different IP cores */
->  };
->  
-> +struct flexcan_mb_irq {
-> +	u64 rx_mask;
-> +	u64 tx_mask;
-> +};
-> +
->  struct flexcan_stop_mode {
->  	struct regmap *gpr;
->  	u8 req_gpr;
-> @@ -99,8 +106,7 @@ struct flexcan_priv {
->  	u8 clk_src;	/* clock source of CAN Protocol Engine */
->  	u8 scu_idx;
->  
-> -	u64 rx_mask;
-> -	u64 tx_mask;
-> +	struct flexcan_mb_irq mb_irq[FLEXCAN_NR_MB_IRQS];
->  	u32 reg_ctrl_default;
->  
->  	struct clk *clk_ipg;
-
-
-Yours sincerely,
-Vincent Mailhol
-
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
