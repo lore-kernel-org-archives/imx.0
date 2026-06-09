@@ -1,124 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D267C3B27DF
-	for <imx@lists.linux.dev>; Mon,  8 Jun 2026 22:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA561DF980
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 00:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780958038; cv=none; b=Kkl4XcbPe5ZEkr6l2Eg1YlD4LwrNn+6Z5ZZs55+ZeBnquhxDGZfoHEFrdEx0KF9ipFLUnqdELO+guO7x3ft7nrnXYFYQttejp7buZjxcDIlv8nxJSsfuIP1bJy6WEtE5QQY8vTI3iwlJBV7JexWxgIlRgLCq+phsJpE8T0Or5lQ=
+	t=1780965926; cv=none; b=DtIfrSyQiuEKbFQCxyJ00aLnhoUWydPKEmW367Ec3fnAT6394S5PwkNRopuRLmpHiSFvIQK0Ncy0qFu9Z+RWczUVBGgPa5Wz9gMgW2+uL0CHwba9LQ/XMtA7OfFS4HqMUG1HrDU5kY09rF3Y+Yjz95suRExKIYeQ7Ll7gEHS4Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780958038; c=relaxed/simple;
-	bh=/4PY/H59YoQ50ZoEtalWmFIRhOc6tOgOmFK2WHTrmE0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kwbwuEreikXwx/XZSH/M9gCNeoRg0HRJUy/P5NO3ZJ6MiU1JT3c+zgh5LxowBUitgDhOwczGh6VHlItkk0J6TunMo/aYS/f+9dAU17tzNmEkzS8au2hokSa9rtxSqjxDN4dgBRwIZvlMAthDNrlUFZmqMqNjmpXt8UOWlM4lTas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=afTSL/Vp; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="afTSL/Vp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5881F008A3
-	for <imx@lists.linux.dev>; Mon,  8 Jun 2026 22:33:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780958036;
-	bh=+sd0YG4NJYnrqOJ3l4vioxCsQYopEHLM78GABTPI8G8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=afTSL/VpAcfmg9KaNA3tK3UABJm13fvJBePwt4nmkI0QyMy30zXxTA0x7jJmUH3f8
-	 +pQe29lMWvHYzNQngRJwSzI0fh+E+cPFMzssEbunZzfrI96M5HP2lIBUWrhj/Sqtnb
-	 aOD8qxeMwg4fY8QMVxHhEo/AkE+fVf2zRmIoULsGYwWBLg00waXPYtS9AurVlohqHd
-	 5GxYeQZ/FD3w5vrTcypUYywqEYu2dsrYb3GaWqWK/InabY7BrbccMQtwC7skt+VQMF
-	 LKGp40LcihtkIcGSfKTb0ekiecObpuGrMogBrBR5xwDsTprsMNVmWL//dHFrwoz7Wo
-	 7/GyPXXe6pBEQ==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aa5f11deb2so5306932e87.3
-        for <imx@lists.linux.dev>; Mon, 08 Jun 2026 15:33:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9+1SSPze04PlfLkCZgVGAymVJrU6TdITq6mXlqOTy7jizU8/701iPY96CGlWDvEjIdT8M=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzLDmZPpIug2iddwOO/IrW6H3P1rC4TBH+HSdthcrDssW7MztO6
-	PZ8B79sisIBcmtG2UaErGY7vLgawYMjRmEWmyjb2AxL/+YGHkMKdrnTljltIqxOQlGCwRmtWj3Y
-	Dj1nZk+//0wsLjcNRtry/tvzCJEzIpCU=
-X-Received: by 2002:ac2:4e01:0:b0:5aa:6115:e4b6 with SMTP id
- 2adb3069b0e04-5aa87bb76e1mr4983094e87.21.1780958035220; Mon, 08 Jun 2026
- 15:33:55 -0700 (PDT)
+	s=arc-20240116; t=1780965926; c=relaxed/simple;
+	bh=hlFYaUTSjRGQCbRPUTISZOpkboaNYc4KC6YoFUSLQVw=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=YrEm/R1+G9vNDL2K0dTUZP/88+wSqNtXWqtD2zaTLuANx6raof7PDP8Qj86Zej5rBK+9ZIvWOpQr++XMLNEd2o6qhoWXM789PsnyevQz1Na3v6wSb2srEodLc/9lXnbHzEeLR8Od/prs2xeIwA+tNE4Ui14w3QGjIQxZLU99gIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 7ce009e2639c11f1aa26b74ffac11d73-20260609
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:97fa0a8e-3812-415a-a1ab-3f3d187c49aa,IP:0,U
+	RL:0,TC:0,Content:0,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:e7bac3a,CLOUDID:96b90a1ac25208bf092af7dcb6fe5b72,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
+	DM:2,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
+	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 7ce009e2639c11f1aa26b74ffac11d73-20260609
+X-User: lijun01@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <lijun01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 268352082; Tue, 09 Jun 2026 08:45:18 +0800
+From: Li Jun <lijun01@kylinos.cn>
+To: lijun01@kylinos.cn,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	peng.fan@nxp.com,
+	shawnguo@kernel.org,
+	krzysztof.kozlowski@oss.qualcomm.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] firmware: imx: sm-misc: Add NULL check for kmalloc in syslog_show
+Date: Tue,  9 Jun 2026 08:45:04 +0800
+Message-Id: <20260609004504.3402281-1-lijun01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260504131148.3622697-1-khristineandreea.barbulescu@oss.nxp.com>
- <20260504131148.3622697-7-khristineandreea.barbulescu@oss.nxp.com>
- <CAD++jLnk4q7L_cFzz+1gKkAqwhv=TW1_XSepuii7b_PHF7EPqQ@mail.gmail.com>
- <704e9e7b-0f45-4ed3-a686-9e20056eab2a@oss.nxp.com> <CAD++jLk-7UqjCsM4jCdRmBMMaNNXe8Gi_E00fJ_MRMsEGQcMZQ@mail.gmail.com>
- <48494e7b-4cba-4372-9090-f40240d820c4@oss.nxp.com>
-In-Reply-To: <48494e7b-4cba-4372-9090-f40240d820c4@oss.nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 9 Jun 2026 00:33:43 +0200
-X-Gmail-Original-Message-ID: <CAD++jLme25qcWpzVa44VwTmnAf+Rt7suF8DgUs5tGyM_UyNbyw@mail.gmail.com>
-X-Gm-Features: AVVi8CcCR-63_uafKf1goL660j2RzMYR76efORAe2ZPvWCw_f0wQxO2Fdy03EZE
-Message-ID: <CAD++jLme25qcWpzVa44VwTmnAf+Rt7suF8DgUs5tGyM_UyNbyw@mail.gmail.com>
-Subject: Re: [PATCH v9 6/7] pinctrl: s32cc: implement GPIO functionality
-To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, Larisa Grigore <larisa.grigore@nxp.com>, 
-	Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Srinivas Kandagatla <srini@kernel.org>, Alberto Ruiz <aruizrui@redhat.com>, 
-	Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org, 
-	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Vincent Guittot <vincent.guittot@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Khristine,
+Add a proper NULL check for the kmalloc() return value in syslog_show().
+If memory allocation fails, syslog would be NULL and passing it to
+misc_syslog() could lead to a NULL pointer dereference.
 
-On Tue, Jun 2, 2026 at 10:05=E2=80=AFAM Khristine Andreea Barbulescu
-<khristineandreea.barbulescu@oss.nxp.com> wrote:
+Signed-off-by: Li Jun <lijun01@kylinos.cn>
+---
+ drivers/firmware/imx/sm-misc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> The new version (v10) has been updated to use gpio-regmap, with a virtual
-> regmap bridge dispatching GPIO accesses to the underlying SIUL2 register
-> blocks.
->
-> I am not fully convinced this is the cleanest model, though.
-> SIUL2 does not expose GPIO as one regular register space: direction is in
-> MSCR, input values are read from PGPDI, and output values are written thr=
-ough
-> PGPDO. These are backed by separate regmaps in the driver, while gpio-reg=
-map
-> expects a single regmap.
+diff --git a/drivers/firmware/imx/sm-misc.c b/drivers/firmware/imx/sm-misc.c
+index ac9af824c2d4..fb8d7bdb5b08 100644
+--- a/drivers/firmware/imx/sm-misc.c
++++ b/drivers/firmware/imx/sm-misc.c
+@@ -79,6 +79,9 @@ static int syslog_show(struct seq_file *file, void *priv)
+ 	u16 size = SZ_4K / 4;
+ 	int ret;
+ 
++	if (!syslog)
++		return -ENOMEM;
++
+ 	if (!ph)
+ 		return -ENODEV;
+ 
+-- 
+2.25.1
 
-OK I did miss that detail earlier, I definitely thought it was using a sing=
-le
-regmap.
-
-> So the current path becomes:
->   gpio-regmap -> virtual regmap -> MSCR/PGPDI/PGPDO regmap
->
-> The version was updated this way so we can review the approach on top of =
-the
-> current code. If this is still the preferred direction, it can be polishe=
-d
-> further. Otherwise, I think direct gpio_chip callbacks using the existing=
- regmap
-> helpers might be a simpler fit for this hardware.
->
-> What do you think would be the preferred direction for the next revision?
-
-I'm pretty much happy with either version.
-
-I see your point as to why you don't want to use gpio-regmap.
-
-I also think the virtual regmap thing looks pretty OK, it's complex
-but the driver is complex anyway.
-
-What could make the gpio-regmap approach is that it will probably
-get extended with get/set_multiple() at some point and then you
-will get that improvement for free.
-
-But I think you are the best person to choose what to use here,
-if you don't think the virtual regmap looks good, then trust your
-intuition and go back to the old design.
-
-Yours,
-Linus Walleij
