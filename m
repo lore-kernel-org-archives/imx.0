@@ -1,230 +1,173 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.1])
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C2136897E
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 20:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781037600; cv=pass; b=gtqSz+w599cSofg6ocgOEhkUHT/+IH4pmyStTx+1HvIEeDPDZUe66DoPLiMVVk/Ig6ozR39/jlLvyp4Cy8AZdLwxjJT+DeWbHaiKwXdfxX7v+BUmsSI3ff18DKsn5XNRpVKSkXJ8lV3zHTiN5DhaD2fNBsOoph+wv8m55/uitVo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781037600; c=relaxed/simple;
-	bh=SQ4EKhSiwdW2m9zPBFJmKKyZiDpxnfusfBXNXXgOVM8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LwDef/RCpAF+qIgcjuztilTeQzkQOzDlMPL0b/0WFVwlLeZc2GC1ov8Z9fBnoWx8j5Ldv9Xmro+vBCqdC+F16/WQaLSlt4mp0WoUObWPS7o4fWFb60QIJWQuYUPAEY8dKTC7PbHkJ9UwVA8Twf/CZqiJWiUU/QLE0Y8j1ydvhb8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=QhF1JVdr; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=mGxgiW0H; arc=pass smtp.client-ip=185.56.87.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347CA40E8D6;
+	Tue,  9 Jun 2026 21:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781040842; cv=none; b=mk7bBuYy3QlUp14XKIE/6lSf4qPJxnaNNdg8wJxA6GKRu1zdrDvqru7Wh/t+H6RAd9a11aIhM4HUI9KBt0FlWyMmgfudQSXRRtOUROieXEmrFO2f1xo1I97Kh3Wv+WEBDC4rnz/kltOTiw0xer7frl09ZEJfcJo3x9VoX1iYAQ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781040842; c=relaxed/simple;
+	bh=68f3tEJ4RvsPNK6vYyLuZQDHo+BqeYSp+TyfgcMrYgo=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=kISJUNqhZ6brYtAAFzlyH6Azad9ltm8DN7nb8rWhaz33+kuBlgop4vzz9IkcIOPLgMDGOJdBvYr3bV4N65MMidSi+8ikeQJm1OaPyN2yts59J3WJ1woJvozPD0z+S+Zs2uPYf6QpbtKKgvtkfwZvN5szsHsHvK8wDJZ88iOQgFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Pd1Ib3FO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R6V7P8dW; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="QhF1JVdr";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="mGxgiW0H"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-ngbh.prod.antispam.mailspamprotection.com; s=arckey; t=1781037597;
-	 b=ko8rrK+c8APFWK7PvYW+ReboOWIp19L5vCVVa1LROR70K/GRxvuIzcH5ga8BFyJWiRJFsyHiZ3
-	  kEnoKnp2JmutzONSDugjfdQVzuZpR1TqYgnax4Qr6tQJAeWgHE1lJKjkWza+shSJKEhxiQK5d0
-	  tY/l33Nzpw1cidv9x0hkv4MSFbnT/n5wFtrqbuLccs6+xtMN1oQddnki9rSAmdOiPxFkZzxRZv
-	  6oEMt7cjo/mYpCnZg0qCX+tY3SKhFZl3ofBpBTPFsOSpXOOSjkKwnrWspFtDYmaKATeC4zgvlX
-	  rI9AIu5R2J/4QGBtvfO/P6PWQ0ON6sT8/gih0mTcPM8rqA==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-ngbh.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-ngbh.prod.antispam.mailspamprotection.com; s=arckey; t=1781037597;
-	bh=SQ4EKhSiwdW2m9zPBFJmKKyZiDpxnfusfBXNXXgOVM8=;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	  Message-ID:Date:Subject:Cc:To:From:DKIM-Signature:DKIM-Signature;
-	b=q6+l7Tyq3A45FReuYCrpVEg7nAfesQQPHjRRipx/jpBoUnRlUKd0aDohIXFYXlNEVHBzcv8Idw
-	  QvARC7+F3i1Y+uq39eme7CfIb/X7aLSPPSzQcfPv4J1gUXK0yJ/OonweEfQMWf3Kzv78pdHwkP
-	  ZPQJQtV/7rl6bupYEGGOI9xCUbRQZZ1lrMjvA+U7tM5kuIkWpkeNKBBsz9Rns3xnR6kXMkUpBx
-	  XFFhPSLyQ3eYZiEbXn6zf4+lQoYI3NOrYigVeoSrmHoh7mi+Zv40K3UoSWIPxBbZEtpxo1Fx6u
-	  nkKbdWb6jUsyGY+7lH54ZllrEL+jfK452Y2y0FlUT/hLsg==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Reply-To:List-Unsubscribe;
-	bh=/CB3uqN+m7C8S/hlT2WiZWa5WYAgtzsD/nbEWBLMncI=; b=QhF1JVdrRyXau7LFiiFigjcub+
-	JVOAYz7+29m2rMiGmNF50Bu9PF/OCu8v0mhvAhhNDIkilFiqNLL401ecoLDjzpijq5ChQxFhpaq2p
-	ABFyX3IV+/6IeKKdhvmDzWTp4v7Ep7cJZLg00+zHZbu6HUt012GhHajP9XEOuULszTb4=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-ngbh.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <francesco@valla.it>)
-	id 1wX3Ei-00000008GAh-0PPj
-	for imx@lists.linux.dev;
-	Tue, 09 Jun 2026 20:39:49 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Date:Subject:Cc:To:From:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=/CB3uqN+m7C8S/hlT2WiZWa5WYAgtzsD/nbEWBLMncI=; b=mGxgiW0HLd56ARsb448DjEhxTl
-	YY/dJOylCz3UmiQSzcTqix8Dnx1fm27hErHNngSJ3m5WjS74Ppog2uePEzTAh7zmr0FGpdnh/2pWd
-	2368AnWdWTCS0X+1efQ0XAHr/zxQB+hrpHQbRW9TuA2Mu93IIDSdQmYS+P1vSD0I0qSE=;
-Received: from [95.248.69.182] (port=60980 helo=bywater.localnet)
-	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.3)
-	(envelope-from <francesco@valla.it>)
-	id 1wX3EN-00000000JTf-485z;
-	Tue, 09 Jun 2026 20:39:28 +0000
-From: Francesco Valla <francesco@valla.it>
-To: Joseph Guo <qijian.guo@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- steven.yang@nxp.com
-Subject:
- Re: [EXT] Re: [PATCH] arm64: dts: imx93-11x11-frdm: enable additional devices
-Date: Tue, 09 Jun 2026 22:39:27 +0200
-Message-ID: <qRn4DwQ2Twuq6ao1_CO5YA@valla.it>
-In-Reply-To: <db95fec5-d8ac-4d52-ad2a-75e5593f99ef@nxp.com>
-References:
- <20260115-imx93_devices-v1-1-b2c840cafa2e@valla.it>
- <_j4Ik3AsS5yfKb4Y7cSB1w@valla.it>
- <db95fec5-d8ac-4d52-ad2a-75e5593f99ef@nxp.com>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Pd1Ib3FO";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R6V7P8dW"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 0EE957A0102;
+	Tue,  9 Jun 2026 17:33:57 -0400 (EDT)
+Received: from phl-imap-05 ([10.202.2.95])
+  by phl-compute-04.internal (MEProxy); Tue, 09 Jun 2026 17:33:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1781040837;
+	 x=1781127237; bh=+sRCkdrKVdlyQZ8syYN2rh2xkRUTq5nCFIqvDcDinYE=; b=
+	Pd1Ib3FO4PiSmnrAeS9uQ29yauC6iHznAf7BzCmh7WCVrHlzjk4NGCydqpIgvTYN
+	MwK9poHmf7i8un5BiodsFYKgtM41yeGPjm5bbxjtCtfECdUdtbxEn2wYrVx/XdKK
+	HVy8JdYNauWp0rD1vC6uHTy/J67flJ56ZSeCln0qOfD6sd3wYcpExMGx7DXCJCZh
+	aa/euOaK6CJ0GNVEauJu6pM9SIzZgCeLfobyplIB+m6KjMcBzZfNqYya0p5l3fN+
+	URgwK9g9vuSAHu/p0Gljti6faudxO/uOuInsPD2KyRNn29apTRKer53ZH09Lh3wd
+	2bnsa/ouw5dJDYp1t9bh3Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781040837; x=
+	1781127237; bh=+sRCkdrKVdlyQZ8syYN2rh2xkRUTq5nCFIqvDcDinYE=; b=R
+	6V7P8dWVy4GCkvfMHYyrywk5IxBqJ7vKXmGRHbjwrm/9qrJReikja0NzXaZKWW/Q
+	AaJ/N/RHfou9hCLmn3fTjQaKdBpDGUw61kP6rIN7+7rxGr1q9ZDAIfw6S3KP08o9
+	xjdanfNcvokZ6vGZIlcAOtYbytWh0pRe0vVicrfjCcUzG58nA49a+JLHGTSV1OtU
+	DHJ4Y2t9esOoXBa0hDp9rT/c6mgecr7GAf7TfzVfbozx9DH/T8rkkyR/qFvD2VkJ
+	Zw2TpapU9pijGkJDzngWOZSrY0pZLFuVHKkvmemX5i/zwH2vSXLPIlOg/DvSOzyE
+	jR7xDDzb2ZTY/TB8MFhmQ==
+X-ME-Sender: <xms:xYYoasF5f6yrdL3l26okGCQnoEV8LwHJ3PX_nltg41vC-LF-ARD_vw>
+    <xme:xYYoagIRJXHU17ikNyouazka3T8iBasji88Gfk_3rr0T3W89sXUONRwuGJ-y7mOj4
+    dciJ7tRW9jGZGgaKdiqWZiSlW7X8LnumMyLccCk13hYY1VOo9ioKZM>
+X-ME-Proxy-Cause: dmFkZTFWzSg71zkyjntcC2C9AKF5dP6OKh4y9HMUPW4f3E8wrowKdqoNyvD8um0m/bREkn
+    BNWaoGUUofvXeJTf/+ZngisWfcSwHlFTr9rOSL4Wa7i1COKhx8RvniqHB9GGKOjYg6fZ8d
+    dk26+cfKTH8OZe6+6NjqH2BSKK0nIwrZAwqYU2GUnjC9w4Z/W9QR5i1ELE22tJUL4NTp23
+    iG2QyNqwSvcFEpoftIbd+v72TBgGBSckXfrYtbqv10sOknEBNkM97hpiSWUIakpS2tmRYM
+    ZY2DVwf0hPXRY+nIuyfHw10xa1l5HU69x8plAJmEyiGOPi8F4kgu+nYGBNhb2TQiGgjMal
+    LnUrSISkMxbjiRzqhf52phK3PNrv0mXw1zjRE2hYNjNoXcqbHLRKVKb8pGf3yf3yczZaUO
+    GcO4AD9Vh6D3Q4D13GYuMV+c9QoVOI8RxqZog6t+aHRdZamP2ArAqdN//kps577rBJh1VY
+    5hTbuLI3UnvTV1otozyMRUrmVoXoz3qnkp1wO8eCDuvJKdBtpS0tF5W6JJozrcFoM15rdj
+    PoFQNWSgl9ZmxKeZ3pXVePLSMBfN0Bb/QQnOla0N1r2xQHZStsn3JLsilurs9noMYCWkqs
+    QUCqq3jP5h0iRtUjZyfBsLJ/X19ijY7RATwqU1IvcbvKTx3ANcf2psWz2kVg
+X-ME-Proxy: <xmx:xYYoaghHz8ho0W3Y-fGYYUJ_1PBZBlGjeicVgnV-4ZtNuFy3buLOFw>
+    <xmx:xYYoat8j_zLTGxvJ42mmjxBBcDZwi7V_KS49RtvocPV4gVs3NAUVKQ>
+    <xmx:xYYoasXP8OU_5P3nq2nHUeYYOK0h-HIPV1DCe0dI2hTL7NwKiGdKkA>
+    <xmx:xYYoahArcbN5Smper6RHEi4gYus6u79pMDxYS1Ff3orFDRm846900A>
+    <xmx:xYYoapSbn4UzF6Ful1hhyhPfca9sM_O78Gv7c8IEaXBGT0SRJ1TyrZvc>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 4FDA11820086; Tue,  9 Jun 2026 17:33:57 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: 77f24b8dcaa993a95263856856382abf
-X-AntiAbuse: ID - 77f24b8dcaa993a95263856856382abf
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1wX3Ei-00000008GAh-0PPj-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-ngbh.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+X-ThreadId: AdNNzaliM6k3
+Date: Tue, 09 Jun 2026 23:31:44 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Frank Li" <frank.li@oss.nxp.com>, "Josua Mayer" <josua@solid-run.com>,
+ "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
+Cc: "Conor Dooley" <conor+dt@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Frank Li" <Frank.Li@kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>
+Message-Id: <753fca23-c3eb-45e3-aeac-b7b248fa723a@app.fastmail.com>
+In-Reply-To: <48248207-7b4f-43c9-85e9-64e8440fab10@oss.nxp.com>
+References: <20260524-lx2160-pci-v7-1-09370c23b952@solid-run.com>
+ <20260524151347.BD92A1F000E9@smtp.kernel.org>
+ <3528dc91-1ffc-42f9-94ea-a27c6c1d6a50@solid-run.com>
+ <9e6326f6-dad1-4169-a63c-e62ee5b341f2@app.fastmail.com>
+ <023aa47c-6fbc-486f-b5c7-5145ddf8e8fe@oss.nxp.com>
+ <72087d5c-c6f9-4452-b4bd-a9f086700e62@app.fastmail.com>
+ <48248207-7b4f-43c9-85e9-64e8440fab10@oss.nxp.com>
+Subject: Re: [PATCH v7 1/9] arm64: dts: lx2160a-rev2: extend 32-bit, and add 64-bit pci
+ regions
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Hi Joseph,
+On Tue, Jun 9, 2026, at 22:34, Frank Li wrote:
+> On 6/9/2026 2:36 PM, Arnd Bergmann wrote:
+>> On Tue, Jun 9, 2026, at 20:01, Frank Li wrote:
+>>> On 6/9/2026 12:24 PM, Arnd Bergmann wrote:
+>>>> [You don't often get email from arnd@arndb.de. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>>>>>>> -   ranges = <0x81000000 0x0 0x00000000 0x80 0x00010000 0x0 0x00010000
+>>>>>>> -             0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>;
+>>>>>>> +   ranges = <0x81000000 0x00 0x00000000 0x80 0x00010000 0x00 0x00010000>, /* 16-Bit IO Window */
+>>>>>>> +            <0x82000000 0x00 0x40000000 0x80 0x40000000 0x00 0xc0000000>, /* 32-Bit - non-prefetchable */
+>>>>>>> +            <0xC3000000 0x84 0x00000000 0x84 0x00000000 0x04 0x00000000>; /* 64-Bit - prefetchable - 16GB */
+>>>>>>
+>>>>>> If a PCIe device requests a large 32-bit BAR, the kernel might allocate it
+>>>>>> within this 0x40000000-0xffffffff range. This causes the Root Port's
+>>>>>> downstream bridge Memory Limit register to be programmed to a value >=
+>>>>>> 0x80000000.
+>>>>>>
+>>>>
+>>>> I noticed the same thing while reading through the pull request
+>>>> for 7.2, and I think the bot message is correct here. The SMMU
+>>>> does not help here because addresses on the same bus are routed
+>>>> inside of the PCIe host bridge rather than directed to the host
+>>>> side. If the non-prefetchable ranges ever get assigned to an
+>>>> address 0x80000000, this definitely breaks.
+>>>
+>>> The address and size is 64bit,
+>>>        0x80_40000000..0x80_FFFFFFFF for 32bit non-non-prefetchable
+>>>           0x84_00000000..0x87_FFFFFFFF for 64bit prefetchable memory
+>>>
+>>> AI Bot wrong think it is 32bit address and size.
+>> 
+>> No, this is about the bus address, not the CPU address, and this
+>> is given as '0x82000000 0x00 0x40000000' above. non-prefetchable
+>> addresses on PCI are by definition 32-bit, so the middle cell
+>> is zero.
+>> 
+>> On the CPU side, this is mapped to physical '0x80 0x40000000',
+>> which does not overlap with CPUs view of RAM, but the
+>> bus view of 0x40000000-0xffffffff does overlap with the
+>> DMA address for the lower 2GB of RAM at 0x80000000-0xffffffff.
+>
+> This is pci TLP bus address, which will not appear in internal fabric at
+> all.  That is PCI TLP address, which is totally separated addr space and 
+> can be any address.
+>
+>
+>         in SOC                                  |  PCB boards rx/tx
+> ==================================================================
+> CPU address                 PCI controller     |   PCI bus
+> 80_40000000..0x80_FFFFFFFF    ATU              |    0x4000_0000
+>
+> writel(80_40000000), PCIe controller will convert to 0x4000_0000 and
+> sendout TLP package memw addr 0x4000_0000, which already go out SoC. EP 
+> device like wifi, will decode 0x4000_0000 to do related work.
+>
+> In side SoC, no one can see tlp:0x4000_0000, which only visual by PCI EP
+> devices, which means only connect EP device decode this address.
+>
+> Additional information:
+> In bound address space (from EP to RC) is not controlled by ranges, but
+> dma-ranges.
 
-On luned=C3=AC 8 giugno 2026 07:14:24 Ora legale dell=E2=80=99Europa centra=
-le Joseph Guo=20
-wrote:
-> On 6/5/2026 7:36 PM, Francesco Valla wrote:
-> > Caution: This is an external email. Please take care when clicking links
-> > or opening attachments. When in doubt, report the message using the
-> > 'Report this email' button
-> >=20
-> >=20
-> > Hi Joseph,
-> >=20
-> > On venerd=C3=AC 5 giugno 2026 10:59:08 Ora legale dell=E2=80=99Europa c=
-entrale Joseph
-> > Guo>=20
-> > wrote:
-> >> On Thu, Jan 15, 2026 at 06:11:34PM +0100, Francesco Valla wrote:
-> >>> Enable additional devices on the i.MX93 FRDM board:
-> >>>   - CAN port and associated transceiver
-> >>>   - Bluetooth portion of the IW612 chipset
-> >>>   - WiFi SDIO port
-> >>>   - user buttons
-> >>>=20
-> >>> The WiFi portion of the on-board IW612 chipset is still not supported
-> >>> upstream, but since SDIO is a discoverable bus it will be probed once=
- it
-> >>> is.
-> >>>=20
-> >>> Signed-off-by: Francesco Valla <francesco@valla.it>
-> >>> ---
-> >=20
-> > [...]
-> >=20
-> >> Hi Francesco,
-> >>=20
-> >> Do you ever tried bluetooth feature? The bluetooth failed to scan with
-> >> 'device-wakeup-gpios' property.
-> >>=20
-> >> Regards,
-> >> Joseph
-> >=20
-> > Yes, Bluetooth was tested using bluetoothctl, I just briefly re-tested =
-it
-> > with latest master branch (7.1.0-rc6).
-> >=20
-> > Can you clarify what you mean with "The bluetooth failed to scan
-> > with 'device-wakeup-gpios' property."?
->=20
-> Hi Francesco,
->=20
-> If 'device-wakeup-gpios' property is set. The bluetoothctl can work, but
-> errors will show up if try to scan the bluetooth devices.
->=20
-> [bluetoothctl]> scan on
-> SetDiscoveryFilter success
-> Failed to start discovery: org.bluez.Error.InProgress
-> hci0 class of device changed: 0x000000
-> hci0 new_settings: bondable ssp br/edr le secure-conn cis-central
-> cis-peripheral iso-broadcaster sync-receiver ll-privacy past-sender
-> past-receiver [CHG] Controller 20:BA:36:5C:B0:D8 Class: 0x00000000 (0)
-> [CHG] Controller 20:BA:36:5C:B0:D8 Powered: no
-> [CHG] Controller 20:BA:36:5C:B0:D8 Discovering: no
-> [CHG] Controller 20:BA:36:5C:B0:D8 PowerState: on
-> [bluetoothctl]> discoverable on
-> Failed to set discoverable on: org.bluez.Error.Failed
->=20
-> After remove the 'device-wakeup-gpios' node. The bluetooth can work
-> normally.
+The scenario I'm describing is a device initiated TLP that is directed
+at memory in the first 4GiB of addresses, e.g. 0x8000_0000.  If any
+PCIe function on the same host bridge has a non-prefetchable BAR
+assigned to 0x8000_0000, the transfer should normally hit this
+BAR as a P2P transfer, unless ACS forces the transfer out towards
+the IOMMU.
 
-This is not my experience:
+If ACS is guaranteed to always be enabled on this machine, it's
+probably fine, as that would route (intentional) P2P transfers through 
+the IOMMU, which can remap the destination BAR to an available
+bus address.
 
-[bluetoothctl]> scan on
-SetDiscoveryFilter success
-hci0 type 7 discovering on
-Discovery started
-[CHG] Controller B8:F4:4F:AA:9D:1C Discovering: yes
-[NEW] Device C4:DE:E2:52:B9:96 BWT Perla BLue 16L 0025-003A
-
-[bluetoothctl]> discoverable on
-hci0 new_settings: powered connectable bondable ssp br/edr le secure-conn c=
-is-
-central cis-peripheral iso-broadcaster sync-receiver ll-privacy past-sender=
-=20
-past-receiver=20
-[CHG] Controller B8:F4:4F:AA:9D:1C Connectable: yes
-hci0 new_settings: powered connectable discoverable bondable ssp br/edr le=
-=20
-secure-conn cis-central cis-peripheral iso-broadcaster sync-receiver ll-
-privacy past-sender past-receiver=20
-Changing discoverable on succeeded
-[CHG] Controller B8:F4:4F:AA:9D:1C Discoverable: yes
-
-
-I also enabled the driver debug prints (through #define DEBUG) and can conf=
-irm
-that the GPIO is being driven:
-
-root@imx93-11x11-frdm:~# dmesg|grep h2c
-[   13.524321] hci0: Set Wakeup Method response: status=3D0, h2c_wakeupmode=
-=3D4
-[   15.586748] hci0: Set h2c_ps_gpio: high
-[   28.459963] hci0: Set h2c_ps_gpio: low
-[   32.034623] hci0: Set h2c_ps_gpio: high
-
-Maybe we have a different board revision? Do you know if there is a way I c=
-an
-read mine?
-
-
-Regards,
-=46rancesco
-
-
-
-
+    Arnd
