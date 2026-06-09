@@ -1,165 +1,302 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5663F23A3;
-	Tue,  9 Jun 2026 09:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E838539EF23;
+	Tue,  9 Jun 2026 09:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780996833; cv=none; b=YUxFi8axhaMKfeXXuOE1pbqtuiztoIkDhjWGxzX5bxVz3lYu/KAhGjm2h8VENij4C+akyxBfpQgdLpk0hflmX4RAAekQ7aOfhNeqJgGdoMHNjedT+/63UUWf7epLsL9NKxpWqshulENfZaIkRIfk+Dm5hj7+JgEGME2P1Q3PWqw=
+	t=1780997106; cv=none; b=JRbrW/1c0DhXReW/rN+uFNQKi8lRhTDJInU9VCj7wIk168/4/zpj/GZygYd7A5N1AR7+VMx1Rs732gGCY2IgJ4ZAmz8oCH8TuOhdmT/ZX4dT7jdim4jfxps+woInQwksi+YLpaeP6Ia2CZYxo8RyOKsDIZVm3AlZPDhMmEAI9eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780996833; c=relaxed/simple;
-	bh=EGpuywrMFvIJ/NR0ZmZWeiuZJWlFPn5br6T5L7tYaZs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=YEjsfDhDlmknNkMrqMPzJlFPE7PEgs6Gnt3WLvJ0pOTNydL1Spf1fO52+sQ60Vlq+dZkQZi5Blt47BxMcfQ7/Sr1N5mVfagEmhPJR9LH1TLMgTPURRann1RUWQueXU5olIHMZxZ5NxExYANn0WlprPc2wwoyZiVpog3IMApO/xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFjRBxJh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780997106; c=relaxed/simple;
+	bh=fXmlF23Kc0Gz0DyIkV/VB7zl1qoh5iydFacWVlpna0k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LHyIGPUTqe2cZA3ObARUKAfH8Yiv6J+wz3FsvoxbQvxy3fdJ+EubWBTEXuHinTiup9uLpQJJjPbSXrsjf77QPyrNQUWMZDeDlt5FsBr9ObljFJM/wBWS3mGTRKBQIz6AEgS7LYoAdXc5ghnZt8G3fmrG2XRIuvOm6q1OCxFYk4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EQcaFDcv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFjRBxJh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF951F00893;
-	Tue,  9 Jun 2026 09:20:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EQcaFDcv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FAE1F00893;
+	Tue,  9 Jun 2026 09:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780996832;
-	bh=GIAqmmytw0m86Q/bglfEZcFtWa9k3dE+R/Vo+FizQiQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TFjRBxJhSBdSzEGHAAPIZpbARSljmHbYfQNz3xyiEL6b5t7qq6rzQLMSdpgbtGaat
-	 jmRk4M6Gvw6s1IlbibVYVTEiRbox62j6QhWJT8qumQytjdB+kXOsAAJ3PuwLQa41Kk
-	 eNWxZsZmMyAn0PfwZK3bSxFzYn0Ik0WY6T1gnkrkWavchzuXEFtI0zhTIyiSa8LjeJ
-	 U0h+ZGrQw5HtqzwXGPxLgwzpC7D+WU5f3ndoKnV1BGzoDEeAGVN6eeueK0ImppLyvf
-	 hyb2CvcJE7Xzq/7/FZ3vX5tUpCsgju+JuaYPmdcTGc0qp0d+6U5BrHj8339gblZfte
-	 sNVu2NIBias4g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/3] arm64: dts: freescale: Add support for Variscite
- DART-MX8M-PLUS
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <85af11e85dbb7cf5097d7c0ee567272ff6e87ec5.1780995737.git.stefano.r@variscite.com>
-References: <85af11e85dbb7cf5097d7c0ee567272ff6e87ec5.1780995737.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 09 Jun 2026 09:20:30 +0000
-Message-Id: <20260609092031.2BF951F00893@smtp.kernel.org>
+	s=k20260515; t=1780997104;
+	bh=yJ60kBjWAJGClfdgON5i50ME0WuDweXsexe8c1DjGOY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=EQcaFDcvAfJBZLt1sk2F4oVpqklrDooFDyAR9r8krEc6Cttbx38JBoke99EX5oJib
+	 AZChEhROze4PqPSzWKRsvXXAlewpzJKxknovpGTuHmLf5gdLOFY8DPC8fDWl/5YHok
+	 snctg/OfXjCKJlOojBpxLCDUqgMH3ZDO0Wj2O24IBet5+2whuRhwxurtAc2KtHXh2D
+	 aBYFPGOrZclVsXVPHB7Gdd9ExuPALR0f50hXDqP4KAlGdtM7RZeD7dVGRugpj+dpvr
+	 xmZc9YGlnF02UkKwPcX2YqSFLw9WC15mYNHfdLeaF0BN6oE/W0cwbJx7z68ttx4juG
+	 cBKWior0bcVLQ==
+Message-ID: <c50194dd-3a3c-4193-9296-1e35c6732351@kernel.org>
+Date: Tue, 9 Jun 2026 11:24:57 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v4 3/8] can: flexcan: split rx/tx masks per mailbox
+ IRQ line
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
+ Marc Kleine-Budde <mkl@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-can@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, NXP S32 Linux Team <s32@nxp.com>,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>
+References: <20260603071342.641874-1-ciprianmarian.costea@oss.nxp.com>
+ <20260603071342.641874-4-ciprianmarian.costea@oss.nxp.com>
+From: Vincent Mailhol <mailhol@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=mailhol@kernel.org; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
+ fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
+ F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
+ 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
+ YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
+ dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
+ zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <20260603071342.641874-4-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] The SAI3 audio clock is assigned a non-standard frequency of 11536=
-000 Hz, which is highly likely a typographical error for 11289600 Hz.
-- [Medium] Bluetooth wakeup and enable GPIOs (GPIO2_IO06, GPIO2_IO09) are c=
-onfigured in pinctrl but never bound to the bluetooth driver, which breaks =
-hardware sleep/wake signaling.
-- [Low] The MX8MP_IOMUXC_SD2_WP__GPIO2_IO20 pin is configured in `pinctrl_e=
-qos` but is never consumed by the Ethernet PHY or any regulator node, poten=
-tially leaving the Ethernet PHY unpowered or unnecessarily reserving a pin.
---
-
-commit e84f7acfef4ae4e4d84c5c3a27b481c085785d37
-Author: Stefano Radaelli <stefano.r@variscite.com>
-
-arm64: dts: freescale: Add support for Variscite DART-MX8M-PLUS
-
-Add device tree support for the Variscite DART-MX8MP system on module.
-This SOM is designed to be used with various carrier boards. Only
-SOM-specific peripherals are enabled by default.
-
-Link: https://variscite.com/system-on-module-som/i-mx-8/i-mx-8m-plus/dart-m=
-x8m-plus/
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi b/arch/ar=
-m64/boot/dts/freescale/imx8mp-var-dart.dtsi
-> new file mode 100644
-> index 0000000000000..a647a2e0ab94b
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
-
-[ ... ]
-
-> +&sai3 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_sai3>;
-> +	assigned-clocks =3D <&clk IMX8MP_CLK_SAI3>;
-> +	assigned-clock-parents =3D <&clk IMX8MP_AUDIO_PLL1_OUT>;
-> +	assigned-clock-rates =3D <11536000>;
-
-[Severity: High]
-Does this assigned clock rate contain a typo?
-
-A frequency of 11536000 Hz does not map to any standard audio sample
-rate (e.g., 11289600 Hz is standard for 44.1kHz * 256fs).
-
-Could this cause the ALSA framework to operate the codec at an incorrect,
-non-standard drift frequency, resulting in subtle pitch shifts or failing
-to configure the audio PLL cleanly?
-
-> +	clocks =3D <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_IPG>,
-> +		<&clk IMX8MP_CLK_DUMMY>,
-
-[ ... ]
-
-> +/* BT module */
-> +&uart4 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart4>, <&pinctrl_bt>;
-> +	assigned-clocks =3D <&clk IMX8MP_CLK_UART4>;
-> +	assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL1_80M>;
-> +	uart-has-rtscts;
-> +	status =3D "okay";
+On 03/06/2026 at 09:13, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> 
+> On S32G2, which has two mailbox IRQ lines (mb-0 for MBs 0-7, mb-1
+> for MBs 8-127), both handlers currently process the full rx_mask/tx_mask
+> range,
+> 
+> Introduce struct flexcan_mb_irq to hold per-IRQ-line rx and tx masks.
+> 
+> In flexcan_irq_mb(), the irq argument selects the correct mask set: the
+> primary MB IRQ uses mb_irq[0] and the secondary uses mb_irq[1].
+> 
+> For single-IRQ platforms, mb_irq[0] holds the full combined masks with no
+> functional change.
+> 
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> ---
+>  drivers/net/can/flexcan/flexcan-core.c | 61 +++++++++++++++++++-------
+>  drivers/net/can/flexcan/flexcan.h      | 10 ++++-
+>  2 files changed, 52 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+> index 7dde2e623def..32e4d4da00a1 100644
+> --- a/drivers/net/can/flexcan/flexcan-core.c
+> +++ b/drivers/net/can/flexcan/flexcan-core.c
+> @@ -957,14 +957,16 @@ static inline void flexcan_write64(struct flexcan_priv *priv, u64 val, void __io
+>  		priv->write(lower_32_bits(val), addr);
+>  }
+>  
+> -static inline u64 flexcan_read_reg_iflag_rx(struct flexcan_priv *priv)
+> +static inline u64 flexcan_read_reg_iflag_rx(struct flexcan_priv *priv,
+> +					    u64 rx_mask)
+>  {
+> -	return flexcan_read64_mask(priv, &priv->regs->iflag1, priv->rx_mask);
+> +	return flexcan_read64_mask(priv, &priv->regs->iflag1, rx_mask);
+>  }
+>  
+> -static inline u64 flexcan_read_reg_iflag_tx(struct flexcan_priv *priv)
+> +static inline u64 flexcan_read_reg_iflag_tx(struct flexcan_priv *priv,
+> +					    u64 tx_mask)
+>  {
+> -	return flexcan_read64_mask(priv, &priv->regs->iflag1, priv->tx_mask);
+> +	return flexcan_read64_mask(priv, &priv->regs->iflag1, tx_mask);
+>  }
+>  
+>  static inline struct flexcan_priv *rx_offload_to_priv(struct can_rx_offload *offload)
+> @@ -1071,7 +1073,8 @@ static struct sk_buff *flexcan_mailbox_read(struct can_rx_offload *offload,
+>  }
+>  
+>  /* Process mailbox (RX + TX) events */
+> -static irqreturn_t flexcan_do_mb(struct net_device *dev)
+> +static irqreturn_t flexcan_do_mb(struct net_device *dev,
+> +				 const struct flexcan_mb_irq *mb_irq)
+>  {
+>  	struct net_device_stats *stats = &dev->stats;
+>  	struct flexcan_priv *priv = netdev_priv(dev);
+> @@ -1084,7 +1087,8 @@ static irqreturn_t flexcan_do_mb(struct net_device *dev)
+>  		u64 reg_iflag_rx;
+>  		int ret;
+>  
+> -		while ((reg_iflag_rx = flexcan_read_reg_iflag_rx(priv))) {
+> +		while ((reg_iflag_rx = flexcan_read_reg_iflag_rx(priv,
+> +								 mb_irq->rx_mask))) {
+>  			handled = IRQ_HANDLED;
+>  			ret = can_rx_offload_irq_offload_timestamp(&priv->offload,
+>  								   reg_iflag_rx);
+> @@ -1110,10 +1114,10 @@ static irqreturn_t flexcan_do_mb(struct net_device *dev)
+>  		}
+>  	}
+>  
+> -	reg_iflag_tx = flexcan_read_reg_iflag_tx(priv);
+> +	reg_iflag_tx = flexcan_read_reg_iflag_tx(priv, mb_irq->tx_mask);
+>  
+>  	/* transmission complete interrupt */
+> -	if (reg_iflag_tx & priv->tx_mask) {
+> +	if (reg_iflag_tx & mb_irq->tx_mask) {
+>  		u32 reg_ctrl = priv->read(&priv->tx_mb->can_ctrl);
+>  
+>  		handled = IRQ_HANDLED;
+> @@ -1125,7 +1129,7 @@ static irqreturn_t flexcan_do_mb(struct net_device *dev)
+>  		/* after sending a RTR frame MB is in RX mode */
+>  		priv->write(FLEXCAN_MB_CODE_TX_INACTIVE,
+>  			    &priv->tx_mb->can_ctrl);
+> -		flexcan_write64(priv, priv->tx_mask, &regs->iflag1);
+> +		flexcan_write64(priv, mb_irq->tx_mask, &regs->iflag1);
+>  		netif_wake_queue(dev);
+>  	}
+>  
+> @@ -1228,7 +1232,7 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
+>  	struct flexcan_priv *priv = netdev_priv(dev);
+>  	irqreturn_t handled;
+>  
+> -	handled = flexcan_do_mb(dev);
+> +	handled = flexcan_do_mb(dev, &priv->mb_irq[0]);
+>  	handled |= flexcan_do_state(dev);
+>  	handled |= flexcan_do_berr(dev);
+>  
+> @@ -1243,9 +1247,15 @@ static irqreturn_t flexcan_irq_mb(int irq, void *dev_id)
+>  {
+>  	struct net_device *dev = dev_id;
+>  	struct flexcan_priv *priv = netdev_priv(dev);
+> +	const struct flexcan_mb_irq *mb_irq;
+>  	irqreturn_t handled;
+> +	int idx;
+>  
+> -	handled = flexcan_do_mb(dev);
+> +	idx = (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ &&
+> +	       irq == priv->irq_secondary_mb) ? 1 : 0;
+> +	mb_irq = &priv->mb_irq[idx];
 > +
-> +	bluetooth_iw61x: bluetooth {
-> +		compatible =3D "nxp,88w8987-bt";
-> +	};
+> +	handled = flexcan_do_mb(dev, mb_irq);
+>  
+>  	if (handled)
+>  		can_rx_offload_irq_finish(&priv->offload);
+> @@ -1473,6 +1483,7 @@ static void flexcan_ram_init(struct net_device *dev)
+>  static int flexcan_rx_offload_setup(struct net_device *dev)
+>  {
+>  	struct flexcan_priv *priv = netdev_priv(dev);
+> +	u64 rx_mask, tx_mask;
+>  	int err;
+>  
+>  	if (priv->can.ctrlmode & CAN_CTRLMODE_FD)
+> @@ -1494,20 +1505,35 @@ static int flexcan_rx_offload_setup(struct net_device *dev)
+>  			flexcan_get_mb(priv, FLEXCAN_TX_MB_RESERVED_RX_FIFO);
+>  	priv->tx_mb_idx = priv->mb_count - 1;
+>  	priv->tx_mb = flexcan_get_mb(priv, priv->tx_mb_idx);
+> -	priv->tx_mask = FLEXCAN_IFLAG_MB(priv->tx_mb_idx);
+> -
+>  	priv->offload.mailbox_read = flexcan_mailbox_read;
+>  
+>  	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_USE_RX_MAILBOX) {
+>  		priv->offload.mb_first = FLEXCAN_RX_MB_RX_MAILBOX_FIRST;
+>  		priv->offload.mb_last = priv->mb_count - 2;
+>  
+> -		priv->rx_mask = GENMASK_ULL(priv->offload.mb_last,
+> -					    priv->offload.mb_first);
+> +		rx_mask = GENMASK_ULL(priv->offload.mb_last,
+> +				      priv->offload.mb_first);
+> +		tx_mask = FLEXCAN_IFLAG_MB(priv->tx_mb_idx);
+> +
+> +		if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
+> +			/* S32G2 has two MB IRQ lines with the split at MB 8:
+> +			 * mb-0 IRQ handles MBs 0-7,
+> +			 * mb-1 IRQ handles MBs 8-127.
+                                                  ^^^
+Your comment says 8-127 but the code uses GENMASK_ULL(63, 8). Is this
+intentional?
 
-[Severity: Medium]
-Should this node include the GPIO bindings required to utilize the pins
-configured in pinctrl_bt?
+> +			 */
+> +			priv->mb_irq[0].rx_mask = rx_mask & GENMASK_ULL(7, 0);
+> +			priv->mb_irq[0].tx_mask = tx_mask & GENMASK_ULL(7, 0);
+> +			priv->mb_irq[1].rx_mask = rx_mask & GENMASK_ULL(63, 8);
+> +			priv->mb_irq[1].tx_mask = tx_mask & GENMASK_ULL(63, 8);
+> +		} else {
+> +			priv->mb_irq[0].rx_mask = rx_mask;
+> +			priv->mb_irq[0].tx_mask = tx_mask;
+> +		}
+> +
 
-The pinctrl_bt group configures GPIO2_IO06 and GPIO2_IO09, but this bluetoo=
-th
-node never references these pins via device-wakeup-gpios or reset-gpios.
+The introduction of the struct flexcan_mb_irq seems a bit overkill.
+Can't you just define two new masks and keep the existing struct
+flexcan_stop_mode untouched:
 
-Without the kernel driving or monitoring these lines, do we risk optimal
-low-power state transitions failing and the system relying entirely on
-implicit hardware pull-ups?
+	#define FLEXCAN_SECONDARY_MB_IRQ_MB0_MASK GENMASK_U64(7, 0)
+	#define FLEXCAN_SECONDARY_MB_IRQ_MB1_MASK GENMASK_U64(63, 8)
 
+and when you need to access the MB, just select the correct mask. For
+example, flexcan_irq_mb() becomes something like this:
+
+	u64 mb_mask;
+
+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ
+	    && irq == priv->irq_secondary_mb)
+		mb_mask = FLEXCAN_SECONDARY_MB_IRQ_MB0_MASK;
+	else
+		mb_mask = FLEXCAN_SECONDARY_MB_IRQ_MB1_MASK;
+
+	handled = flexcan_do_mb(dev, mb_mask);
+
+>  		err = can_rx_offload_add_timestamp(dev, &priv->offload);
+>  	} else {
+> -		priv->rx_mask = FLEXCAN_IFLAG_RX_FIFO_OVERFLOW |
+> +		priv->mb_irq[0].rx_mask = FLEXCAN_IFLAG_RX_FIFO_OVERFLOW |
+>  			FLEXCAN_IFLAG_RX_FIFO_AVAILABLE;
+> +		priv->mb_irq[0].tx_mask = FLEXCAN_IFLAG_MB(priv->tx_mb_idx);
+>  		err = can_rx_offload_add_fifo(dev, &priv->offload,
+>  					      FLEXCAN_NAPI_WEIGHT);
+>  	}
+> @@ -1531,7 +1557,8 @@ static void flexcan_chip_interrupts_enable(const struct net_device *dev)
+>  		disable_irq(priv->irq_secondary_mb);
+>  
+>  	priv->write(priv->reg_ctrl_default, &regs->ctrl);
+> -	reg_imask = priv->rx_mask | priv->tx_mask;
+> +	reg_imask = priv->mb_irq[0].rx_mask | priv->mb_irq[0].tx_mask |
+> +		    priv->mb_irq[1].rx_mask | priv->mb_irq[1].tx_mask;
+>  	priv->write(upper_32_bits(reg_imask), &regs->imask2);
+>  	priv->write(lower_32_bits(reg_imask), &regs->imask1);
+>  	enable_irq(dev->irq);
+> diff --git a/drivers/net/can/flexcan/flexcan.h b/drivers/net/can/flexcan/flexcan.h
+> index 16692a2502eb..22aa097ec3c0 100644
+> --- a/drivers/net/can/flexcan/flexcan.h
+> +++ b/drivers/net/can/flexcan/flexcan.h
+> @@ -75,10 +75,17 @@
+>   */
+>  #define FLEXCAN_QUIRK_SECONDARY_MB_IRQ	BIT(18)
+>  
+> +#define FLEXCAN_NR_MB_IRQS	2
+> +
+>  struct flexcan_devtype_data {
+>  	u32 quirks;		/* quirks needed for different IP cores */
+>  };
+>  
+> +struct flexcan_mb_irq {
+> +	u64 rx_mask;
+> +	u64 tx_mask;
 > +};
+> +
+>  struct flexcan_stop_mode {
+>  	struct regmap *gpr;
+>  	u8 req_gpr;
+> @@ -99,8 +106,7 @@ struct flexcan_priv {
+>  	u8 clk_src;	/* clock source of CAN Protocol Engine */
+>  	u8 scu_idx;
+>  
+> -	u64 rx_mask;
+> -	u64 tx_mask;
+> +	struct flexcan_mb_irq mb_irq[FLEXCAN_NR_MB_IRQS];
+>  	u32 reg_ctrl_default;
+>  
+>  	struct clk *clk_ipg;
 
-[ ... ]
 
-> +&iomuxc {
-> +	pinctrl_bt: btgrp {
+Yours sincerely,
+Vincent Mailhol
 
-[ ... ]
-
-> +	pinctrl_eqos: eqosgrp {
-> +		fsl,pins =3D <
-> +			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x2
-> +			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO				0x2
-> +			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0			0x90
-
-[ ... ]
-
-> +			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x16
-> +			MX8MP_IOMUXC_SD2_WP__GPIO2_IO20					0x10
-
-[Severity: Low]
-Is the GPIO2_IO20 pin correctly reserved here?
-
-This GPIO is configured in pinctrl_eqos but is never consumed by the Ethern=
-et
-PHY or any regulator node.
-
-If it is genuinely unused on this module, should it be removed from the pin=
-ctrl
-to prevent incorrectly reserving a pin that should be left available for the
-carrier board?
-
-> +			MX8MP_IOMUXC_SD1_STROBE__GPIO2_IO11				0x150
-> +		>;
-> +	};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780995737.gi=
-t.stefano.r@variscite.com?part=3D2
