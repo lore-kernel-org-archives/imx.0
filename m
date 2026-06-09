@@ -1,119 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A23E3F075B
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 08:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BC438AC88
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 09:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780995583; cv=none; b=K21jm/WGYqqkYF/AcudTyB75aNbd+OHPoLJCmmd0DD5LPpeMZ9esUD6v7QwH6rxkML31EKXVdgsd28U4+RmyrEpkHqtzG6QoFZo3Vvlry/T3ZDMhyyO1BOa4T7Lsb+ljM12QSwEpKgI3vqxGO0NjlPX+HQbSWXX4I2TUBsZavGQ=
+	t=1780995886; cv=none; b=nQ3V1o4lRFLKWdBil37txlLrFjsAHS8s47XQsD3Pp8q04B92jEmizr+q1Sd0I02hhLUOWNi/KHaLheWjbWvtwvhCbLdtr9uYRGV/z5Xz8m4RObxpREcldMTuDg1US0OJCUCWwIrt9BLgsoHcd0jbmD5w0fspW6Qekf8DNRxKcDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780995583; c=relaxed/simple;
-	bh=f5S+i3RVl0cUqmWNDjtmc/b/yyrLqBrgrSpRPlEOqsM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uociqh44KNU6SNwEK6qYie73YjMmivtvyFatwm4jo0x9VcwN3R0B63kSz1GWv9ZS1LwTuM/BWLkWM75sp//L1eJJPYv19g6RiDXyENXi7PaZuwd++yplX3HwYJcFOTxZIoMVPaihfg5MenFAGfuaGShfMAFoHad3+T12RdheDH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FoU2a38l; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780995886; c=relaxed/simple;
+	bh=zCQXimV53Ogl4RxIQLRoYFinY1tzwaZ3CpUI8WssViA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OPDYHgnIhE1ivJHCq1ys7s0EdbEiG1Xan/RyXh/+vW2LAmSaYn1YGQXQ+ckAm2zVnvKstWHesoMMenWUWI7yKhZvPx63oSoD6FdbeEyoO0e4Kyafjt/eXy9DCYGjGsxfaCAZ1VsD/Nm7sDsm8BCsWOPS6K3WOQ8tp2BY+yOmqqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FOtOoCSk; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FoU2a38l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780995581;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CPgszwVt4cFE4ELVefG0ZpctOAG18a7ufhv6a2Zqquk=;
-	b=FoU2a38lJcL+uRzIBCzKpXpDGFmXs3dYTyND3fT/HHsakKyRDulzVKDseFNOAZmw7fQ/sM
-	25tjuQkN6/ZJagigM/3ZqIWsPSVX9gq468b7evnSkv+RK8ywAgYNELjH0HtHWzsvgSd/QF
-	QmIdbyNMQ1wPHr5FgHb+CR1IJG8SHcI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-286-EZSaEZ-zOt6pj6FnbkZySg-1; Tue, 09 Jun 2026 04:59:37 -0400
-X-MC-Unique: EZSaEZ-zOt6pj6FnbkZySg-1
-X-Mimecast-MFC-AGG-ID: EZSaEZ-zOt6pj6FnbkZySg_1780995576
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490b5d2e394so38186765e9.3
-        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 01:59:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FOtOoCSk"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-45efa80e0afso4049736f8f.2
+        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 02:04:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780995883; x=1781600683; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cF7A4g2is+YIBTmHtbyYR50VO6KbJDHH8KlYg9QTGTo=;
+        b=FOtOoCSk5xx16kx5VhQgYfYIqWc3mhL5tFaaWd7OU1rHSGyulw4O82bb+sEVAZQCyC
+         8Rzgru68e5z2qLoYJ7NaT8D+89RHcfzFhYzlcswqSQ7GnrU5a39mGeNER3028ngCrJUg
+         j9MBnyvoeGnL0qRfYFjombv64FcV3j0nBX5ZsuNVlUmgXVbgyH1AGzkQc3kzPufi6fT9
+         V0b5kKtAqPbSEWWO5xJlywE8QG0g/dstnTMmtFEyASjhYDwu0jpz9s7x7TzJjgynG04y
+         dAEhIm2x3tiwzTXamd/T0ie06+Oc5AqrW+EHI6GJlqn/15hl9xyDgGC4I/3w9sdtm/HX
+         XTeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780995576; x=1781600376;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CPgszwVt4cFE4ELVefG0ZpctOAG18a7ufhv6a2Zqquk=;
-        b=kOsy7odpaax84fDyvlLHSZc/aa2haNVqUFkB/V3ksTLUoVZAAaqjCWGELEpSxf+/uc
-         8xIepIKhRJ/mA8SxS0zThXHMa7cVbUtA7ZyNM1JsneXrUvnXvHjDEstcqDGEd8QrSVOK
-         ZPlXh24mN9w2JqolVwxupPIrcYai3ofFsm+SQzMHXS1SFoQ/cAyBPiZBtfN3Nx5Q02Su
-         D7YXX+PMR/VF9pzXAT0It5+uZyKP8RNWTPB8s3FDCx1aCtPHxfUcO3dbsm60MPBKxVAd
-         tEYIjN2VUL/L+q5fIfUvg2V9n63rVsy5eoMrDjJZCtLDpWx+j4WCyAihhsLeCWC2bLe8
-         DTGw==
-X-Gm-Message-State: AOJu0Yy7wLd+0nUdvxSnamYbnFr3B1KvV/H7sPiwV35dewULzELJDyKs
-	kIu/uiPY40/08MWLIOHohPKsBuDi3y4VoBH91d7+/y3XsJesmrRFaXoum+n8M8pbZIHE4q6hZ17
-	mrC0QChjoA1RMjW+QLLPS6gCXhh0AplsWzPV7a3tUFpIsypsFB54Tng==
-X-Gm-Gg: Acq92OEKsNVy3DfLl3xnAEW+PbK3hHV5CasKOaMpUyvQ4vnjRdBCLwFW0Xoui/pf0B+
-	hoXXzuEHYngnHk/xMrGdYGTH/CIUNAq/vhKriDcWkY74gHsrrxHlr6L2YwKUH6FvC0oMs7Bv1Iw
-	++sfK2tFyQ3xny394tbHZIFZbpKtgn5kMTiUXmroeoAyak2VdQw5m995qhgMbOdup8t9bERXgRX
-	hFPmlmbVWRHXxlPr0/TTQoQ38YNWAOopsD/ib/mU5lmDtuCm9g9rNFjokKPxNxXBYZA96fUnu4F
-	J3kiFpNSEcAbqRvpQfiIYkOj4N27Ag1n1cpUHcvnj1jWAlZt3GhwiY2SYGgsQ7uNQDe7jDA4Q02
-	6WudWJZgFHTmMkTqkqhe+aUrq2erFrdO1Qo9z6aTOrArctQZJiWUnxK+n1sovff6Pcw==
-X-Received: by 2002:a05:600c:4ec7:b0:490:b8ee:d6a5 with SMTP id 5b1f17b1804b1-490c2589927mr315117495e9.6.1780995575666;
-        Tue, 09 Jun 2026 01:59:35 -0700 (PDT)
-X-Received: by 2002:a05:600c:4ec7:b0:490:b8ee:d6a5 with SMTP id 5b1f17b1804b1-490c2589927mr315116965e9.6.1780995575267;
-        Tue, 09 Jun 2026 01:59:35 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.93.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3d6c65sm455288105e9.12.2026.06.09.01.59.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jun 2026 01:59:34 -0700 (PDT)
-Message-ID: <4e2fb478-1d37-47b7-9bb9-3553d5ca2fee@redhat.com>
-Date: Tue, 9 Jun 2026 10:59:32 +0200
+        d=1e100.net; s=20251104; t=1780995883; x=1781600683;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cF7A4g2is+YIBTmHtbyYR50VO6KbJDHH8KlYg9QTGTo=;
+        b=FhsLWJSytm/vwjaYxfOZlEn8rebIEre7H/dWanzy0eStmjXFAo1+GXGr0oVXpSMF3e
+         1cSzdOV/YSAcfjrcxTq2HtVGp164ysdWRE0OSyOc/RtMYlU5f4yM4iFfg3MHoN//hSzp
+         2ZGG9j8R04vXeeyQ1SmW3m5m4QMBJixR9lyUranfAuIHojq33IPx8JilsE7Lb76bChlE
+         COfNjbhd81imLayhml883uGtK6X5kyo2CwhhWN2YP8gPvzvdGeXCCBEyNlgHrvGyOMtf
+         USEyLUK82DktJvtGkJ1WRpW1yaESUEs2ZQ+NJ3k7teWH6bz2jYS8fBwnoXNnS9ncrgD0
+         Wu9g==
+X-Forwarded-Encrypted: i=1; AFNElJ+3k95SgeX0Zl/XPFYdR8nS2DBhGKEOllyey2dVkSbhL8zFLorQJm/YnkVG+08bSrOkk1w=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy5GIK+Qj+J9IcdiAWEF3s/IM0loMumhjvTeIyQiktIaSJv8foP
+	a2BSj3dKeyUMRAEtFZUs27CQrgS2XEwOZnGiOafdY1lAMFX9XZTXoG4t
+X-Gm-Gg: Acq92OH/3bGoODbPayxZdT+itTo/ZIyn2necjdHxV4yhoHUuI4gcwd70GGbPSySUCDs
+	j6bPzJutcPVs6tbv/0eWfVQDXSc4Iz5fekISbcPVdvAWn6Ccd4vcmHoVOVPXpOw5vD9RQ7c2XVQ
+	q4Uznw37N1eB4GSB0y6HPmD07iCY4qK0hKJz4WdnfSkY1G+xa1esBdp6ImRCGNjc1+Tdsg6ePWQ
+	0rSzQeyFhLnXYyMWCSnGcMHVwFfT+zqDHNr86NKrhap923W8CblAcr5c5FbLt5RFDW0kcPwfjIk
+	NpTMcFh14pGWEpQ0dgWH8knZFgUK+KefQJsF2UyF+bdxfzcS9TtsJLSks1wOv3ctN7fhsC6ycGD
+	3JPY95S7YMP+dlEkp/CuDwTyuS/tPiALebY98kvgpm0BaYGHV91OLOCQk0FRbdvs9fkaThDuc0L
+	wfAilSqKvXV0mEvWtmD/JA0Ca9g4Fk/IUYW35z7iZOszts+xixl5X7uOtLkJhjHRB7inDNTg4Vy
+	JJOc9BQRUgPK/UTQEh465yNTgKv0wWVnJRXBEAXscrtgNKE
+X-Received: by 2002:a05:6000:54f:b0:45e:b21e:f840 with SMTP id ffacd0b85a97d-460304ec0e8mr24408982f8f.8.1780995883449;
+        Tue, 09 Jun 2026 02:04:43 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-244.cust.vodafonedsl.it. [93.144.65.244])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f344762sm64910543f8f.23.2026.06.09.02.04.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 02:04:43 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v4 1/3] dt-bindings: arm: fsl: add Variscite DART-MX8M PLUS Boards
+Date: Tue,  9 Jun 2026 11:04:36 +0200
+Message-ID: <c65129896fc6ce80044ee1d89e12dcdff34945be.1780995737.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1780995737.git.stefano.r@variscite.com>
+References: <cover.1780995737.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml
- format
-To: Frank.Li@oss.nxp.com, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Frank Li <Frank.Li@nxp.com>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20260603210929.3099363-1-Frank.Li@oss.nxp.com>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260603210929.3099363-1-Frank.Li@oss.nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6MV67PW9nrFgPRYxSJzhvPCqisAtiR-wREeGjqeJQMg_1780995576
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/3/26 11:09 PM, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Convert lan9303.txt to yaml format to fix below CHECK_DTBS warnings:
-> arch/arm/boot/dts/nxp/imx/imx53-kp-hsc.dtb: /soc/bus@50000000/i2c@53fec000/switch@a: failed to match any schema with compatible: ['smsc,lan9303-i2c']
-> 
-> Additional changes:
->   - rename switch-phy to switch in example.
-> 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-Does not apply to net-next cleanly anymore. Please rebase and resend.
-While at it, please additionally add the target tree in the subj prefix.
+Add DT compatible strings for Variscite DART-MX8MP SoM and Variscite
+development carrier Board.
 
-Thanks,
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
+v3->v4:
+ - 
 
-Paolo
+v2->v3:
+ - 
+
+v1->v2:
+ - 
+
+ Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 86876311ec59..11629b9eafc5 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1310,6 +1310,12 @@ properties:
+           - const: tq,imx8mp-tqma8mpql            # TQ-Systems GmbH i.MX8MP TQMa8MPQL SOM
+           - const: fsl,imx8mp
+ 
++      - description: Variscite DART-MX8M Plus based boards
++        items:
++          - const: variscite,var-dart-mx8mp-sonata # Variscite DART-MX8MP on Sonata Development Board
++          - const: variscite,var-dart-mx8mp # Variscite DART-MX8MP SOM
++          - const: fsl,imx8mp
++
+       - description: Variscite VAR-SOM-MX8M Plus based boards
+         items:
+           - const: variscite,var-som-mx8mp-symphony
+-- 
+2.47.3
 
