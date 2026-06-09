@@ -1,141 +1,173 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BECB35E931;
-	Tue,  9 Jun 2026 17:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781025864; cv=none; b=nVeGTwocN4wFB27x6gaUWioL/Qjb2eaMi2eA7t5S2wJ5zEzkhohcOiwQ+RamS5tHmE4WAqD7kIWDF7nhs1stt7SeAQ47vsCWibJ5SD3yf1EuCpgKRhOJac757EWJRW8FQaJTayjFa+UHGlZtS4h7tG1rm7uRklilh7pItmFuYOM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781025864; c=relaxed/simple;
-	bh=kRGHtIIbXaW6G5FcEhsfnfAHMwheKr2lKX3/O6neinE=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=VoKBCkPbgPvMt2i4pZcKZZxUTqTeZfkfkepjW9rICAZ9WUbhCse3fjWsXHupDKF/i1HlDbvUk91XOshRE26hi0jc2ZlJkOr+fjSycyS/NMYzlmnmZ6ozBNi5ZsATwAmMNjKxRECWrN/RnUl5mE4UGfp+QX1YVHE+GeLTNYA3ANo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=NbWB6qhK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CK7Duo0Y; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64C5481664
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 17:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781026398; cv=pass; b=fZM1MwTufAhDQVfhqSbAcVOwu9pwwTiGIVOPBLOBNI613wUZWc+g59zrW5xOG6ryfwQ6L5cFHgN50qQ7RPFllrxBkdhLv75eL55ZxrkmTEX1VxDYykBW1G3dLBOZMmh3rBGdTsnqh7bO/alWqAS0xSUP/2WwEop8aSmiSMH5enk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781026398; c=relaxed/simple;
+	bh=jxQWVxKxN1OM9wmfJgsxdUMXh7ls1hDMi7sURvf3ApQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Cxo5QGJzu936myLaxWF17W9T5eS1j8/HnXt6bWtchI4g7kEw8OCtSZZwJMId+zvq3la5m5EgjkEK1WAQVIbGkVg44eeIJ9oG24EOcNmTy577r+9YeyfVvcJj3Mmg6qk+/RVuzi85GUX0mhRLrJj8egNd8BGV40jtcNOtoRHYZFU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=okrd7AAe; arc=pass smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="NbWB6qhK";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CK7Duo0Y"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 716397A013A;
-	Tue,  9 Jun 2026 13:24:22 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-04.internal (MEProxy); Tue, 09 Jun 2026 13:24:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781025862;
-	 x=1781112262; bh=RO7+Oyis/nP8Powp7AVcbTGDY2whvYZik0jR7od+ohI=; b=
-	NbWB6qhK/h7hjuUcdHtei7VOakiS4XhRGmMy1QVW61IeBbFfUY7qpFcseo5zZxzW
-	OUQpiV+X8p5Ru1OCUpf0IbOBw+cz4FHuy98doKoBDENKFoonjsmEyZWuM8SG6AZG
-	aaeVZgCunPI5ZsTRtRuzrJ4vG8VV3WbmfesmMA4Z6jhmYJlHGmbBYyMJZq2jGp5x
-	1sSjVhkUVbh4WP23PRQ17eHbB2CBLdqABue2v3ZmDtjOuN8q/icBV9MGQaKUv/rn
-	Umk2RVobDQ2YB7rHUzvy1vnjYS/WjnICGQ7M6m9aTV8jmo+Uqly4mE1AVWvc+08n
-	JsbBSqAyMmtZYtCk+YZ0TQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781025862; x=
-	1781112262; bh=RO7+Oyis/nP8Powp7AVcbTGDY2whvYZik0jR7od+ohI=; b=C
-	K7Duo0YlGpnX4P6XQ0I0M+EpYJuVtwnxWfJUnOlDGiQzoE+Yk9P9AGFAKtpw8nQj
-	kz/NC6kjU38ZY6H7saN2/0InUyCw0lDpMfkn80Yl7pRmsj4BxLloQ0KWRiXLuGvp
-	sPF1yaN+foStkYVY1hd7Rxu6JycgHvV98kusZ4ecFjOreSaqEEG1oWX6Jf+H+dg6
-	0FsoYvHz4Jd+roAzU1ehj+9FIP6bvJJDFaHI5eOOpUtcuI10vO34b6YYNXrzyTb8
-	NqOMIUJFeyofYjhOTxRgpgx4zE/9sJ4aNcsvjxTsfsqgzWSstarfklxSbYt1xO5k
-	7MS3gBwIhwvXNlCmboe0Q==
-X-ME-Sender: <xms:RUwoasaPxt-pZeLlsgEx1sivjVc6N5eGavawkSwLVonu88J4YlxouQ>
-    <xme:RUwoaiPvzcaEojNe7FDEicoSTqzO1HB60DHJ9fYc-ftjOHGESI8W719BtO8G3TPtc
-    Eazs4sRlj1fviZOxbRTp2Lg9vE_teeHSe3HTUuvbi-ljicAlXNt9vK0>
-X-ME-Proxy-Cause: dmFkZTE791gYLoRdg1ZFtnJY3TTQ0X27Kk6WYEWXtb3FVj/dE33pBDxRAOhn6SDw7mEVwS
-    ejbi091g+lx2fLmx6LlX4GQdYjUfhVCAG+i0q5gCrB5UwjlNu+8OlKkfn+B+tZiKTKK8x8
-    RQTt08hhFIg+cEdOBWAkOi9k55469QXIa+fa/hzt0ww8doGPq80bnZ5GOk9ahEmqpyfcI2
-    0KA9Wx4a4t3vTkPGfhbl1mB77hwmjKkbh3m3nQ2IhT9Tj0cy6DZYs0jjY+u/zSSpAaoFQI
-    A47kMoL/LRrEPqU9KNGvCW1/f9D6qf3G2bbcFyNeyFqYxg7nD+Hvo6lXIXTxXS6mx9FzIO
-    X2XALBE6WOnPRqlZ20PqheW35Pmh9QwcFeV0ML1pDslJP86DJfIxrtsPZ369hwY7ilhh4b
-    BJORiLooCWtxffOhy0NwBEHEruP1cLK7BRfISyvA+YMmnAHu0bPZxKbWOQYOimOgHH3Jpu
-    XAya5zwXA86EGxUPLKlU9fIjOuyHl9GehBlhFmqRX3cFIN7YBCYDelgUe9KBA6NqgV7KMI
-    uSL/W8MbHXJNzgC92O0kuJQ/j9IEKX/Op0qNqjkFWCEg2qIj4vio5RstQwcyVLMd2wf41v
-    X4JXiUMEG9WZJ6L4gMfgIQJGQS91IsjXazRgstNCyC5TPbzGrUzvcTD9grmA
-X-ME-Proxy: <xmx:RUwoatc1jG3rIXZ16YOhEQ3unI5JrJ9pCnfRRXpvC9kXD07Xxt6VBA>
-    <xmx:RUwoaqQRrz_DNJ07yeStrWPjrs12bYbsumzhi2xyycVr5cvBhEmjIQ>
-    <xmx:RUwoasuYIHZL3CtDnJMlHcobEkVVybxpfOJFPjscqdReuHmX4O0RyQ>
-    <xmx:RUwoajeONO929q5L1dVU6_vsQa_4wDe8oWLkN3z9WtJXNBOQgJr4qQ>
-    <xmx:RkwoamTG9W4YtXsE7aAB-XCgO9OSnU0NgxGLefuBpPcEHzCv5Jgwchfg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id D383F1820082; Tue,  9 Jun 2026 13:24:21 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="okrd7AAe"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-68d234218bcso11306680a12.2
+        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 10:33:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781026394; cv=none;
+        d=google.com; s=arc-20240605;
+        b=J8D7yfKzkv6+5erHJThk7KQoFRiWXwOA+W/7QBFidH/6W71vR0rETffhcL3ColBdb2
+         nmfKVvb/yb6ElZOme2cuzLFopMWcYShjsr/EQT1n+qxn65pEaNpcYnO9L9ZC36G7jZaO
+         zAwKYaqP5MA+5Vu6bj19efsCqfy6zFwkWt/4Sw1i7zm6Cd2aUt0NlObVfzR1Oq+gPByr
+         AaDbos1EfhSVHe1SmAAacm1hXrDcHFCMSxBI06L1xXxSyTc/KHvsx9gQZgGKUFa5vUXo
+         Tzl9jZMXS2WQYlex1av/d83Evgtdn/Ur6gEKjdqjFd+Dcn5k29N5tFrHxCEKbOe3v4/U
+         YCjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=qk5OSgpm2QKOum3ErlbYh3UpTiSxTWavV2qBzb8WH/o=;
+        fh=mQ5WpKTHDTE+HfRz2XdnZgukkslviD/fPZWn231GRH8=;
+        b=gpNaKPb78Mr5AM2GWc59H69CC9I6kBYbfl+A2CdUTFGrcO9WIWUPeAABmGesSm/RAd
+         wxp+++V6mAaaahd2gUV28j7q571KqyGr8ommLC6pVl65m7niQ4lva5qx2sWQQRLrC1Tq
+         u311RJ0VQdEIbjr3y+lQRw4zJAxjWQUZg0ASYKfxjeYHqX9uzJJbkEWhxun4KCTQCvd9
+         v11FM9cstbCVcWLkJpHRQcqJ3XmvxkJ54rTFJNLwFVul6Kpc8AwkIkJZLE4uSlp7Fi28
+         GccuA5iOwbMuONp03s+E8kMwMknE1YVCJQ8zQiXZCLK7KLukWgUy9nXQueoE7N/KHrcX
+         z9TA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1781026394; x=1781631194; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qk5OSgpm2QKOum3ErlbYh3UpTiSxTWavV2qBzb8WH/o=;
+        b=okrd7AAeHvMiCVo7ZTIXNv6IynO6MdVAQENkVq88EWwUFqI2csc+sp89TXQ5/c8kKC
+         JiePzvaEhTxecXGMb6RT5k4e+JsWBQ8JmKIplM2PNfpE9IhjnTU2hnVGpx/HuQOyR2at
+         XyksYQ8C8GpPS1gThComq2ejPLyrhpof/Nt1ZgS2+0OweczeHfRYxfQN+g9plc3aELmw
+         Er3iCowBsk5zN25e1HGb+mHrQYc4Xt7xs6B4p7ZBZg/RCEBdgzdhBXTDn+M6w8W2IiGe
+         /TOJ/rPXjac3fxbjdvveW9EIB2FRpKh29Q8PEHPxGFYkM/TLbi3ww4V3FYR6kQ0/Lj+3
+         hx4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781026394; x=1781631194;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qk5OSgpm2QKOum3ErlbYh3UpTiSxTWavV2qBzb8WH/o=;
+        b=p+P77szqkygDwt4rYa0ryuF9OM6X6bg1/02JYs4cqKs/0lr3DxRDr36a3hmDOyXQov
+         bWPznrdKw8SFcLxFTtUXOcFzWnsO7xcdN4YDDamQ8F86GKKWtlKdZU1AUAXgoJ14y6cF
+         MDacZ4PPzoiZDD2puEGZ+mDdVm0IXiVgQocWw37fBRUNz6XjVwr9+orWndYBsVpJeedX
+         dOlQBKMFSpZ3W5I5oz0UohVpVqKSxv3tJ6mHTWfi+b60zJ9RmlzNsveMKp5AP/Qb5+d4
+         a04I/rww53F4qMTpUOIqgnGBHit4IoYj5TNrInslH2dhfJArCUt0/aS1DfH0MFt88y0f
+         RTrA==
+X-Forwarded-Encrypted: i=1; AFNElJ/t2ouQu9Rpcm/qnfDm95ZFMLxhvTzdb3ODeY28C9auCLQ/+ZjV0dMWa2MWmhV6Qh4dWQg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwpKyi6688GRgxTBZ/P2Y70zIyWKRFM3MbTd9uKmd18be+4B7z1
+	r4o6ZUqrS+xG/Ge7dSCExi4ktE+wtbVMvejSOj/GJAJirIhydekAc3tqgsVOkw0l6km7MvTkXsz
+	Ktu2LOCrxzZHwjRwE2pXc2zPJR16G5tIaI5Wbh8N0Fw==
+X-Gm-Gg: Acq92OGJGMfG+icyRJ5nD6lwvCp+Li2me6zArhzkScW6IiTDWhUjLNXaLi9zCppMkDd
+	l8QAdzMp6bZM4tqzomolCLzsqns9Lf+G/hG75MZpxlJ34zUqvdJ5MgCpwm6GIrK0rIKgYOyW6Rt
+	/IPc5DP7tgqzdiIXqXO0UUXJeyAIFmDjkN3jIXAhmouH4TO6BGpcjIa8VpVAzBdjnTf/Bf1/VuI
+	XvAjiDviVBZguhofmpOy8Khomyo4Bl9ONMmhL17dmoyvKsWmOxlOS7zWvIs3n1qh5UILe15bs86
+	sv1VVc5Fl850PN6kpk0rdKTHNN47rx80sHsB9VTFb/MeDTnZzaTq
+X-Received: by 2002:a05:6402:2686:b0:68c:3994:45f2 with SMTP id
+ 4fb4d7f45d1cf-68fa503fde8mr10046906a12.19.1781026394348; Tue, 09 Jun 2026
+ 10:33:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AdNNzaliM6k3
-Date: Tue, 09 Jun 2026 19:24:01 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Josua Mayer" <josua@solid-run.com>,
- "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
-Cc: "Conor Dooley" <conor+dt@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Frank Li" <Frank.Li@kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>
-Message-Id: <9e6326f6-dad1-4169-a63c-e62ee5b341f2@app.fastmail.com>
-In-Reply-To: <3528dc91-1ffc-42f9-94ea-a27c6c1d6a50@solid-run.com>
-References: <20260524-lx2160-pci-v7-1-09370c23b952@solid-run.com>
- <20260524151347.BD92A1F000E9@smtp.kernel.org>
- <3528dc91-1ffc-42f9-94ea-a27c6c1d6a50@solid-run.com>
-Subject: Re: [PATCH v7 1/9] arm64: dts: lx2160a-rev2: extend 32-bit, and add 64-bit pci
- regions
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
+ <20260605113621.1479-2-laurentiumihalcea111@gmail.com> <aihB5rVLsVqzg6cb@p14s>
+ <aihIIwt_9T7yYxP3@SMW015318>
+In-Reply-To: <aihIIwt_9T7yYxP3@SMW015318>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Tue, 9 Jun 2026 11:33:03 -0600
+X-Gm-Features: AVVi8CfajwXrk0zh9dxoFsW97FohDkxe-xDUhgkWnVGwuNvfV4UW4Y-xjQ1W9M4
+Message-ID: <CANLsYkxw6rbWNom8rNfKurKAXKpihqV1LTd51D5YXG4oFP6-wg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] dt-bindings: remoteproc: imx_rproc: document
+ optional "memory-region-names"
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>, 
+	Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@oss.nxp.com>, 
+	Francesco Dolcini <francesco@dolcini.it>, linux-remoteproc@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, May 24, 2026, at 19:12, Josua Mayer wrote:
-> Am 24.05.26 um 17:13 schrieb sashiko-bot@kernel.org:
+On Tue, 9 Jun 2026 at 11:06, Frank Li <Frank.li@oss.nxp.com> wrote:
+>
+> On Tue, Jun 09, 2026 at 10:40:06AM -0600, Mathieu Poirier wrote:
+> > [You don't often get email from mathieu.poirier@linaro.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> >
+> > On Fri, Jun 05, 2026 at 04:36:18AM -0700, Laurentiu Mihalcea wrote:
+> > > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> > >
+> > > The names of the carveout regions are derived using the names of the
+> > > reserved memory devicetree nodes, which are referenced using the
+> > > "memory-region" property. This adds a restriction on the names of said
+> > > devicetree nodes, often bearing specific names such as: "vdevbuffer",
+> > > "vdev0vring0", "rsc-table", etc... This goes against the devicetree
+> > > specification's recommendation, which states that the devicetree node
+> > > names should be generic.
+> >
+> > I don't see what is so restrictive in using the node name of the reserved-memory
+> > regions.  Function of_reserved_mem_region_to_resource() is already doing all the
+> > parsing, packaging everything in a neat and easy to use "struct resource".  What
+> > will you gain with this new "memory-region-names" that can't be done with the
+> > current solution?
+>
+> DT Binding check can't find such wrong if node name is not what expected.
+> Binding can't restrict memory's node name because there ware not specific
+> compatible string for it.
+>
 
->>> -	ranges = <0x81000000 0x0 0x00000000 0x80 0x00010000 0x0 0x00010000
->>> -		  0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>;
->>> +	ranges = <0x81000000 0x00 0x00000000 0x80 0x00010000 0x00 0x00010000>, /* 16-Bit IO Window */
->>> +		 <0x82000000 0x00 0x40000000 0x80 0x40000000 0x00 0xc0000000>, /* 32-Bit - non-prefetchable */
->>> +		 <0xC3000000 0x84 0x00000000 0x84 0x00000000 0x04 0x00000000>; /* 64-Bit - prefetchable - 16GB */
->> [Severity: High]
->> Does expanding the 32-bit PCI outbound window to 3GB (0xc0000000) cause it to
->> overlap with inbound system memory?
->>
->> System memory starts at physical address 0x80000000. Since there isn't a
->> dma-ranges property mapping inbound DMA to a different bus address, system
->> memory uses a 1:1 mapping, meaning inbound DMA targets 0x80000000 and above.
->>
->> If a PCIe device requests a large 32-bit BAR, the kernel might allocate it
->> within this 0x40000000-0xffffffff range. This causes the Root Port's
->> downstream bridge Memory Limit register to be programmed to a value >=
->> 0x80000000.
->>
->> A Root Port won't forward upstream memory transactions if the address falls
->> within its programmed downstream window, as it assumes it is peer-to-peer
->> traffic.
->>
->> Could this intercept endpoint DMA targeting system memory in the overlapped
->> range and cause system hangs?
-> This configuration was tested with NVMe and GPUs,
-> the SMMU should ensure isolation pci bus addresses do not overlap with
-> physical ram base address.
+But what "wrong" could that be, and what kind of restriction are you
+hoping to enforce?  What specific problem are you hoping to solve?
 
-I noticed the same thing while reading through the pull request
-for 7.2, and I think the bot message is correct here. The SMMU
-does not help here because addresses on the same bus are routed
-inside of the PCIe host bridge rather than directed to the host
-side. If the non-prefetchable ranges ever get assigned to an
-address 0x80000000, this definitely breaks.
+I'll wait to see what the DT people think about this - I personally
+don't see the value in it.
 
-You will not hit this in most tests, because large MMIO windows
-are likely to be 64-bit capable and will end up in the
-prefetchable range and addresses are usually assigned from
-the lowest address. You can try to force the bug by starting the
-non-prefetchable window just below the start of RAM for testing,
-which will assign some of the devices to the RAM area.
-
-        Arnd
+> Frank
+>
+> >
+> > >
+> > > Fix this by documenting an additional, optional property:
+> > > "memory-region-names". This way, the carveout names can use the values
+> > > passed via "memory-region-names", while keeping the devicetree node
+> > > names of the reserved memory regions generic.
+> > >
+> > > There are no restrictions imposed on the values of the strings passed via
+> > > the new property since the software allows any name to be used, with some
+> > > names (e.g. "vdev%dbuffer", "vdev%dvring%d", "rsc-table") bearing a
+> > > special meaning.
+> > >
+> > > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> > > ---
+> > >  .../devicetree/bindings/remoteproc/fsl,imx-rproc.yaml         | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> > > index c18f71b64889..8e3e6676a95e 100644
+> > > --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> > > +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> > > @@ -62,6 +62,10 @@ properties:
+> > >      minItems: 1
+> > >      maxItems: 32
+> > >
+> > > +  memory-region-names:
+> > > +    minItems: 1
+> > > +    maxItems: 32
+> > > +
+> > >    power-domains:
+> > >      minItems: 2
+> > >      maxItems: 8
+> > > --
+> > > 2.43.0
+> > >
+> >
