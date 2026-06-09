@@ -1,223 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010043.outbound.protection.outlook.com [52.101.69.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B9826F28D
-	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 00:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780966780; cv=none; b=uL4J9k4WA0YfeCnTzRj1HTyXXZZJrwSFaXr0YK6ZuN1YbnbKOFrKUuQFgAyTxI3qF8EoNe4ko4RFhNrOSOdimYbgVZ+VJu/tTqsHuggelR5MGFCfM8Ju2rE2X5d57SjhGfIWBKl0Pr0cRj3Nt7vksZIadXvQNTF0xIOF3NcJgcY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780966780; c=relaxed/simple;
-	bh=anx4AAoWZVZzFtrE18EjwxwnUHLIEkCjX8iuPc+DcJM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=gfoCp6ruTfu4/mCEgp8oBQghu5hdpGRDJ2lXkm3cYZnaz/ZQ0KMMoKVo66IztOuuKOKDt44AgPkv9X6V5Ajmaq2oDu7oNk+F4RCsa82K/i46ttP83ubFTovlD3nSOG/S8pCaDFiIf6x3XBv0Er4m6WsPBO5/MHa0nr+xagGSJM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kiRd0c+P; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE2736495B
+	for <imx@lists.linux.dev>; Tue,  9 Jun 2026 03:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780975616; cv=fail; b=iVjWS8mU4YFy6e1C7fyuLZcwWD5inHkdMajpD5uMevoCjA6kbkbo9DxXp65x9f6rublszUldejmH43AsQcXRstxAoJ8IfqgRK5gePmZ6tbMb1aPVDpqoQehpCDm0HrFkXQPLP4e+GgiikGPiF5n818Vpp/JAylT25ZlX0dXaeoY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780975616; c=relaxed/simple;
+	bh=s/7KQT+ll0owEDsLB1eMkaXfhdELOMvy/LFWK/A+nSA=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=eZkbsMPJ5VjitSmQxKh3Pf/7kQ5EqwMM+vrZj+lh+rmMaESE99CRuvStND9JEB0rR6kFCo1f2Xqu2haIks7zUJR7s75EKPDXqJ8Av5ZYlgdOhOtmNPkgDRK8pz815zCW6kgAlncbZxScv6LxWSXKSQZ37Lu33exN30hdBaoMFQ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=u38V00pY; arc=fail smtp.client-ip=52.101.69.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kiRd0c+P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1551F00893;
-	Tue,  9 Jun 2026 00:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780966777;
-	bh=qO0hRS/4nxlLza1xbbQ6KVHpklDwTYEspI7jUVPZE8I=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kiRd0c+PW6Ft8IHslmAZ3fVoH084wQAzQ6EUgCAOqbumZWhbg7eUUKmCqUt4wbw9C
-	 DZTj8ocwe86OQQRGxDN7zMem+g6Ijn7oXK+584TLs56RVF1kytl2F5M2OsbJPXQixf
-	 cu14Ep7hKb8/cxULwT/Zx3Z0qBfYD7TYh0VelW3QPPrsUU6eZcbNOklB8ohMwp3t1E
-	 Ecv9vpEQpYyO+SkpY7yuCM2X5sMU6+VRbat5zm6b9NpaDDGJoI7BjwNwQZ876WDDod
-	 xYI/ISx/Xe+/gLch+YDeVKtNu2QOoJ39T/ggHYnnJe70Zg6OTZyInR4GbBX8jPV5PC
-	 /aX3ZNDfgp7vw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] firmware: imx: sm-misc: Add NULL check for kmalloc in
- syslog_show
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Li Jun" <lijun01@kylinos.cn>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260609004504.3402281-1-lijun01@kylinos.cn>
-References: <20260609004504.3402281-1-lijun01@kylinos.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 09 Jun 2026 00:59:36 +0000
-Message-Id: <20260609005937.3F1551F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="u38V00pY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l3tdxf/uwbwoUvQf+HgNB8opF4OKqtJKW+OJjaXZ7s5+MJeLa1X9woeQDmkxekO1rK7T6F1ra5706eMrOUOLnYHs3BpZTdcW4NvVvTddPnnbhd5dl8zpj+DUTkd1jGluh3BLdgqMvEANCTPvHfXB6EzYF3J/iUDa6zh1dNRlzHFYuN1klATy1Bx7erOxhbL53hMGYQl3yIJauOmmhNEv7koyA93uHpq0SKGsiallh4HqKISpJw04FiJE3GOVYfH/3DZkDyAGIRfQbqvo45k5AWbstGUkRun09bG+wAWLm7BOcAU37/Bjmx5uarCV47XGUrDQmkGxxnuQ0vI//q6WmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u7+1Ifb/yk/Q+Vv2B+gcY3f4zNLrT1QBQ8JWHf+4xiE=;
+ b=WCNrBgLKT310v3HMxqHJ0vq5JfttI0eJtBcVZj35UOANYFZ0J67TcLaSAeRhpXvKO0YKPlkPwkG05tH+1ZHhmrnxIV8+Jcqg9X1jtAAIq+sE/tzfkgP3e4ZhVef6hED1qF9OOTdAJ44tdrlGLliiwmZwzDfMVjSnNI6p+MuoyPMPeQqZlGZ1tpZO9ahzF68OFwzpZxv+Oas0sKi4QJeyLNJzup2XygYKX0hWHw7twpJ0PPt6O82mUlkbldzduL6Wk5Qz/IDCq/78nvvGtUjIsMNfOkXGQn2oAdDKL/arKoJAPpK72Krf+8bxLA5p5z8cw7rCMEhuF+k71oCNbF7bTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u7+1Ifb/yk/Q+Vv2B+gcY3f4zNLrT1QBQ8JWHf+4xiE=;
+ b=u38V00pYS49GbWFuzsKoWWM//ZGF1VyrTJU0+7q5h6Fhp59gs3Hhp6fV8K9tmRMEh0eFW98rtSMgsPNMtKuUDVlA4vrwosZIQg3s6lrYpGmm5/dt8Jd2lAK+QiG7SDMXADopkJnckAhf7YgBah06sEmvmBbshzcUM1zbTRKv50fEDoIHYu4OoWWwu4TKdOnoO26QLgjzjZqSG3yZxp5+MsbeV56OqdBVu2xENUEd0H1YNTZO265X1WahFaUP6Ab4muWQRHKKdJ/VVATCAJzSQPCtSNlxOTibpBYx/9SGX4rA8jT0Qpo7+5EEClsXZu2SFuGMf9xMtU//aoRcy9alkw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by AS8PR04MB8946.eurprd04.prod.outlook.com (2603:10a6:20b:42d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Tue, 9 Jun
+ 2026 03:26:51 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
+ 03:26:51 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	chleroy@kernel.org,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	linux@armlinux.org.uk
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 net-next 0/9] net: dsa: netc: add bridge mode support
+Date: Tue,  9 Jun 2026 11:29:46 +0800
+Message-Id: <20260609032955.2066089-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5PR01CA0101.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d1::6) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|AS8PR04MB8946:EE_
+X-MS-Office365-Filtering-Correlation-Id: c85ae239-1e7c-46d0-bdd3-08dec5d6f227
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|19092799006|7416014|1800799024|18002099003|921020|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	cPSGW+GmgV/LwHUWHjXbtJCJLYN0o2AipS0l6oWG6Wvj8FQDSJNz8yfBZmewKy6OuncoxBgDyeQX4Gu94Imy9uBB1VRouHNOPks6wPlyzz1d1gu6leoRl3JpnSofYlysz7s8gAqVdGiePqFuhCgWEAe+fR1AfJ5XibdUQPXCufg4XIsCSUHYRLnIXKma/OdQqSySuURlYW+G1Xp4hgPYF64zofOyffctm4oh0xH2SFkEi76R18dUfiki4Gukz2ptQXnBQp1b6gz9NmfXd7K+zgL7xnpFsOsZwMLwP0AnYe4s/XcmqNufuv3fDbameidEFWh/DUt4NwrEZn8PkSnKX371DYRAjul/4szJLVmxKtbhDx2ex2nOm2IdSDVwaXJ5WgaOed9P2LY47hNUOS8Er9HmU3R6XpmBgb2jj3ZFvBWuGYsakMy7m43JdSU4xUSXFNKojtZK+pEBWb2t6vf2dV77a3GkA9lxlkV2erDTwEgZAgzjjciI4FoTLOb1TGh+EiDbY7+mZ2DhO8BYdFrq/xNOG5q8nh5JPSAAKpiiAZTR4Wfb2/XGjeF6oDqvmGUGzozQi6Hyv37cvacTn8zZHGxBWyH7g/Fgof3P4jf7cjaCuH5sZaZs+R6onmDgJnujawF0THpjt5HHGaz34Kw/T3TXTlbr24uj0iNhX79AGjHJLZz+UlbwQ+qIeUA9XSXH5cSla92JyzOQt/NtRdDoHZKTcGaMOiC+UNN1HMFlV77XIO0VzF5eIugX5T7TI37H
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(7416014)(1800799024)(18002099003)(921020)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mX/iOq48/3ze75JoSV07tJKlPpM3k62qGncDuLo6dfQS9hpmBc0rdgAolDoq?=
+ =?us-ascii?Q?VRD2Oml+GAWwXkJ7Dl7H9Ig5mpm++drtj8rtwtidU93d6PiFWc/ZHLHxWHjj?=
+ =?us-ascii?Q?OvEIPB4nNNwVvhOM2+VFTJZgWN8yA6m0ENSazo4Ko0Oh1t2/+vfTnMLGs04D?=
+ =?us-ascii?Q?V55+4uykb76ENoe8Ru3oo09RjyAUzVE0FtXC+yctJVZIhobXHlO0LvEr5gwd?=
+ =?us-ascii?Q?TFT6Z/H55phQMb7nT67KIYh6KtDnI5Itju6XXz2WWRiDc9k0HO6pMbQ23i4y?=
+ =?us-ascii?Q?iGqfOJKxtAWYkaydU+yE0MUufonJ/xuEdhLO80XiBYYGj7KS3gLa9atMY7Ez?=
+ =?us-ascii?Q?LRI8vSD+l/pkMZvSQnSaicVgSzcqCsl6O4HCQJqBE+r7w/hXn5F2GUkJE77L?=
+ =?us-ascii?Q?eUPiJADTYxXwSdvM9VSrgnR1xrUNUKQj7kYCd+REwbztNOMWlL/M+jOmsEhZ?=
+ =?us-ascii?Q?zVgogZpjSl2Ueg0ZQlwbdlqHejiW3y8v6CNZmSKGRnRfd2Bdf1pXMqOQv5q1?=
+ =?us-ascii?Q?1WYr8rB1jZZHHDBtGRgc2iaHYbQGfAt1PTr7BhEs3xPGmIGwqz1EEirjVePZ?=
+ =?us-ascii?Q?UitxLe4XCsjDJkK6LxlAUJCS/TnB99nhSuOEUwR9QNh8Y/QSEHpngvtLL+ng?=
+ =?us-ascii?Q?Yyb6tbsom61ckFyF9k6DK55hkA1TWx3VDQVBsng8/WsdQhkNH3g4+kBSD+bW?=
+ =?us-ascii?Q?bQPbqpSkhfkdGww8Z2p3DZmR1ugEJFuq4FctWw6Py+22yecBELIBLfdHUbvA?=
+ =?us-ascii?Q?qN/ip/N7uhNANbp0N+rgk4FayFphKG8vFp60kou7AgyJvFrNpMXWbzR+xIZY?=
+ =?us-ascii?Q?8i55c3RfH7wxFs8+PxBQVV4zBI0Ou7ohzFYwjIPXF185D1AxI8OYYIWqyJjv?=
+ =?us-ascii?Q?KNxWEb8QM4TC+2dYqD9fx/qq0Q9YZiCRLIHTsvZVUM2JTYl7yAe/Ojx/idan?=
+ =?us-ascii?Q?/JFOZ3xUJlVdp+CZ4GISpHCFgMTuf/qfP+/VtI/NtNLE2T7zDvVmannwqbr5?=
+ =?us-ascii?Q?W9T1gv8SPthwJvFw5/siu0zLdHYcpN6HeBdtwaRx705zWbM9QmJ7nL5kbK7u?=
+ =?us-ascii?Q?q+Iq6wlSH+iNOpQoOi9cUSWuRbUILqhIGsePt0vGQzxoHFZwaJPWxNwD2OdB?=
+ =?us-ascii?Q?vs2qsPVQ8fmoOjyzbf0SAEnremMo9vl0tAxLXlisbgPgkpLDs++r4B5Lhlg2?=
+ =?us-ascii?Q?zmmewRrkExVOKLLYX3p3RldWx5jEI/3gvTXQ2pzwEm0BzsDm7AI9In3aEHDi?=
+ =?us-ascii?Q?Z112nL5e2KclTUG6i/e1tijdo5wGAGAFBkwxwZupGEWD3AKpPAEwckAKT8Bk?=
+ =?us-ascii?Q?kQR7j6HrTaF1cmVb7tXsqKl9MfHbDCMdS0k3SXjfJrLdgpSjkqB1Vu0BwkFO?=
+ =?us-ascii?Q?srDkLF8Xz+ABRsh2p/sj8iO4n4vR4b3isfDPcHBdOZGz7l/8zGZ/uCWqtZTT?=
+ =?us-ascii?Q?R6s8dPa+GxzHogvgrTmwvH7BShWGc+vxQdNGN31qBbN4YaneCw+9XuD3bPyB?=
+ =?us-ascii?Q?1iR8O9dzCEhTVTcwJhY8A15lGuaolA9fX3QAMwU/PNgd/IhnodQMIeGmzsV7?=
+ =?us-ascii?Q?1fkiF72di36ZHU4lJNh36nWFOeLjj6iSY1e56aL6g9xBSrBonumWtlVdSw/r?=
+ =?us-ascii?Q?KiCXQIZ1gIHY9n8j+cdZwEPYLc/MaOBcPV3X9UZSjQ0BzfFZE1SIpKpUEXxM?=
+ =?us-ascii?Q?dlc6PNM3vTxpDttGZYyy5rNmyY08VyeBm37g114L9lElt0QZjgzBjSUri+F/?=
+ =?us-ascii?Q?xuDlxj5h9YyWzlzbv0yQUhiBJ2D029aDtWUPgJk9Qvtz3acw8Yoq?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c85ae239-1e7c-46d0-bdd3-08dec5d6f227
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 03:26:51.4734
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rT4OxKCHZDYl0LH6oklTG5F9JVt3uMWD3Z+aHUUVbOibwBsOvnNn2CMRvtl0z9uzuzrYLR0awBU73h4TmsJWmLJd2wQ0O8yv45F7ZqPScOG5mDWmdFpxmkmVtWv84P92
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8946
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
+From: Wei Fang <wei.fang@nxp.com>
 
-Pre-existing issues:
-- [High] Iterator state mismanagement causes out-of-bounds read, kernel mem=
-ory leak, and output truncation in syslog_show.
-- [High] Global state mismanagement leads to a Use-After-Free vulnerability=
- and permanently broken probing.
-- [High] Reusing a single `notifier_block` instance across multiple notific=
-ation chains corrupts the linked lists.
-- [High] Unvalidated SCMI firmware reset reason causes an array out-of-boun=
-ds read.
-- [High] Lack of validation of `st->num_returned` against the SCMI RX buffe=
-r length allows an out-of-bounds read of the incoming SCMI message.
-- [High] An integer underflow in `scmi_imx_misc_ctrl_get` allows a short fi=
-rmware response to bypass bounds checking and leak stale RX buffer data.
---
+This series adds bridge mode support to the NETC DSA switch driver,
+covering both VLAN-aware and VLAN-unaware operation.
 
-commit 2dfb0ee488971a3d76d835d309316ae287807482
-Author: Li Jun <lijun01@kylinos.cn>
+The NETC switch manages forwarding through a set of hardware tables
+accessed via NTMP: the FDB table (FDBT), VLAN filter table (VFT), egress
+treatment table (ETT), and egress count table (ECT). The series extends
+the NTMP layer with the operations required for bridging, then builds the
+DSA bridge callbacks on top.
 
-firmware: imx: sm-misc: Add NULL check for kmalloc in syslog_show
+Since all switch ports share the VFT, so only one VLAN-aware bridge is
+supported.
 
-Add a proper NULL check for the kmalloc() return value in syslog_show().
-If memory allocation fails, syslog would be NULL and passing it to
-misc_syslog() could lead to a NULL pointer dereference.
+FDB aging is managed in software. A periodic delayed work sweeps the
+table using the hardware activity element mechanism, with a default aging
+time of 300 seconds matching the IEEE 802.1Q standard. Per-port entries
+are also flushed immediately on bridge leave and link-down events.
 
-> diff --git a/drivers/firmware/imx/sm-misc.c b/drivers/firmware/imx/sm-mis=
-c.c
-> index ac9af824c2d40..fb8d7bdb5b084 100644
-> --- a/drivers/firmware/imx/sm-misc.c
-> +++ b/drivers/firmware/imx/sm-misc.c
-> @@ -79,6 +79,9 @@ static int syslog_show(struct seq_file *file, void *pri=
-v)
->  	u16 size =3D SZ_4K / 4;
->  	int ret;
-> =20
-> +	if (!syslog)
-> +		return -ENOMEM;
-> +
->  	if (!ph)
->  		return -ENODEV;
-> =20
+---
+v4:
+1. Set ect_eid before calling netc_update_ett_entry() in
+   netc_port_update_vlan_egress_rule()
+2. Improve netc_vlan_unaware_pvid(), use "struct dsa_bridge *bridge" as
+   its parameter
+3. Add comments in netc_port_vlan_filtering() and
+   netc_port_bridge_leave()
+4. Add vid check in netc_port_vlan_del()
+v3 link: https://lore.kernel.org/imx/20260605014808.686024-1-wei.fang@oss.nxp.com/
+v2 link: https://lore.kernel.org/imx/20260602072313.3162120-1-wei.fang@oss.nxp.com/
+v1 link: https://lore.kernel.org/imx/20260527100217.794987-1-wei.fang@oss.nxp.com/
+---
 
-[Severity: High]
-This is a pre-existing issue, but does the size parameter get blindly
-overwritten by the firmware response?
+Wei Fang (9):
+  net: enetc: add interfaces to manage dynamic FDB entries
+  net: enetc: add "Update" and "Delete" operations to VLAN filter table
+  net: enetc: add interfaces to manage egress treatment table
+  net: enetc: add "Update" operation to the egress count table
+  net: dsa: netc: initialize the group bitmap of ETT and ECT
+  net: enetc: add helpers to set/clear table bitmap
+  net: dsa: netc: add VLAN filter table and egress treatment management
+  net: dsa: netc: add bridge mode support
+  net: dsa: netc: implement dynamic FDB entry ageing
 
-Looking at iter_misc_syslog_update_state():
+ drivers/net/dsa/netc/netc_main.c              | 965 +++++++++++++++++-
+ drivers/net/dsa/netc/netc_switch.h            |  33 +
+ drivers/net/dsa/netc/netc_switch_hw.h         |   6 +
+ drivers/net/ethernet/freescale/enetc/ntmp.c   | 440 +++++++-
+ .../ethernet/freescale/enetc/ntmp_private.h   |  18 +-
+ include/linux/fsl/ntmp.h                      |  55 +
+ 6 files changed, 1495 insertions(+), 22 deletions(-)
 
-iter_misc_syslog_update_state()
-    *p->size =3D st->num_returned + st->num_remaining;
+-- 
+2.34.1
 
-If the firmware returns an arbitrarily large num_remaining, it overwrites
-the caller's size without bounds checking. Then, further down in
-syslog_show(), this overwritten size is used for the hex dump:
-
-syslog_show()
-    seq_hex_dump(file, " ", DUMP_PREFIX_NONE, 16, sizeof(u32), syslog,
-                 size * 4, false);
-
-Since the buffer is strictly limited to 4KB via kmalloc(SZ_4K), could a
-malicious or buggy firmware response set size up to 8190, causing an
-out-of-bounds read of up to 12KB of uninitialized kernel heap memory and
-leaking it to userspace?=20
-
-In the case of a multi-part response, will the output also be silently
-truncated because size is replaced with the size of the last chunk
-instead of being accumulated?
-
-[Severity: High]
-This is a pre-existing issue, but does storing the dynamically managed
-protocol handle into global variables without a cleanup action lead to a
-use-after-free?
-
-In scmi_imx_misc_ctrl_probe():
-
-scmi_imx_misc_ctrl_probe()
-    imx_misc_ctrl_ops =3D handle->devm_protocol_get(sdev,
-                                        SCMI_PROTOCOL_IMX_MISC, &ph);
-
-If the probe subsequently fails or the device is later unbound, devres
-automatically releases the protocol handle, but the global pointers
-imx_misc_ctrl_ops and ph are never cleared.
-
-Could exported APIs like scmi_imx_misc_ctrl_get() then blindly dereference
-the dangling ph pointer after the handle has been released?
-
-scmi_imx_misc_ctrl_get()
-    if (!ph)
-        return -EPROBE_DEFER;
-
-    return imx_misc_ctrl_ops->misc_ctrl_get(ph, id, num, val);
-
-Furthermore, will the driver permanently fail to probe on subsequent
-attempts because of a lingering if (imx_misc_ctrl_ops) check?
-
-[Severity: High]
-This is a pre-existing issue, but does reusing a single static
-notifier_block across multiple notification chains corrupt the linked lists?
-
-In scmi_imx_misc_ctrl_probe():
-
-scmi_imx_misc_ctrl_probe()
-    ret =3D handle->notify_ops->devm_event_notifier_register(sdev,
-                                     SCMI_PROTOCOL_IMX_MISC,
-                                     SCMI_EVENT_IMX_MISC_CONTROL,
-                                     &src_id,
-                                     &scmi_imx_misc_ctrl_nb);
-
-This registers the exact same static scmi_imx_misc_ctrl_nb instance inside
-a loop for different src_id values. Since SCMI maintains separate notifier
-chains for different sources, does registering the same notifier_block into
-multiple linked lists overwrite its internal next pointer?
-
-Could traversing the corrupted list when an event fires cause kernel
-panics or infinite loops?
-
-[Severity: High]
-This is a pre-existing issue, but does an unvalidated firmware value cause
-an array out-of-bounds read here?
-
-In scmi_imx_misc_get_reason():
-
-scmi_imx_misc_get_reason()
-    dev_info(&sdev->dev, "%s Boot reason: %s, origin: %d, errid: %d\n",
-             system ? "SYS" : "LM", rst[boot.reason], ...
-
-The boot.reason value obtained from firmware is an 8-bit value (0-255),
-but the rst array only contains 32 elements.
-
-If a firmware response returns a reason code of 32 or higher, will this
-trigger an out-of-bounds array read and dereference invalid memory as a
-string pointer?
-
-[Severity: High]
-This is a pre-existing issue, but does a lack of validation of
-st->num_returned allow an out-of-bounds read of the SCMI RX buffer?
-
-In iter_misc_syslog_process_response():
-
-iter_misc_syslog_process_response()
-    p->array[st->desc_index + st->loop_idx] =3D
-            le32_to_cpu(r->syslog[st->loop_idx]);
-
-The SCMI core iterator framework does not validate that
-num_returned * sizeof(u32) fits within the dynamically received transport
-buffer size (t->rx.len).
-
-Because st->num_returned is extracted from the firmware response and
-trusted unconditionally, does this blindly read past the actual SCMI
-response payload and leak adjacent transport memory?
-
-[Severity: High]
-This is a pre-existing issue, but is the payload bounds check vulnerable
-to an integer underflow?
-
-In scmi_imx_misc_ctrl_get():
-
-scmi_imx_misc_ctrl_get()
-    if (*num >=3D max_num ||
-        *num * sizeof(__le32) > t->rx.len - sizeof(__le32)) {
-            ph->xops->xfer_put(ph, t);
-            return -EINVAL;
-    }
-
-If the received firmware response is shorter than the size of the header
-(i.e., t->rx.len < 4), the subtraction on the unsigned size type will
-underflow to a massive positive value.
-
-Could this allow a short firmware response to bypass the bounds check
-and leak stale transport memory to the caller from the out-of-bounds
-out->val array?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609004504.3402=
-281-1-lijun01@kylinos.cn?part=3D1
