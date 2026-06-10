@@ -1,251 +1,91 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013034.outbound.protection.outlook.com [52.101.72.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384CE3A6EE6
-	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 09:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781083522; cv=fail; b=FXduqrU7Owzs6EZyG2mAvcvBNB0587uMe0sCQfOrkgILZ2qlKof52FOgV3AkTFcCxGljaWewGbH2wu04uG8Q+X23dB3TqTdfJ12nwPBrZOhs2/Dfg1/aTWKAUxdCpBSNfwm+GSGsMqhGIFz7ulaUZwUWvQfhvG8WaxnBUwC9BH4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781083522; c=relaxed/simple;
-	bh=x1U1hlJAd3fkmLjup7eCUwQ+roe9o4nd6bINwFQLJEk=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=YbDx3mGgdPcACMouVSJ1K4Lf/UELGrl0pRwALqjMeFUrOgOSEeFOhsoGuv8I/P2uJ0IandMxKVL3kjFedt6sWbAwA2358jaVECRx+8ET1jamqtV6Q2w0SDWtLjdxNqrZKC6d1WyulgMTsysKgajoWsnNKQzfO2LGR0Z7w9Z4LSg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ICPllFzU; arc=fail smtp.client-ip=52.101.72.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3175633438F;
+	Wed, 10 Jun 2026 09:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781083729; cv=none; b=uOoh5u7fdmiZv4cVJwvz/egQldzZUw8qXb2zOxC1ixWQbuoqUAPnK+X8XxMQ2WyPo4BTL5ce3EYYqK0sOcHMjVVAhZrH5eB60ipZH4kVCpLNVWm50jArAHoWFjw5aXQYt65QIDmGFfYL06FO0QnXRiwrw8yJKrk2cW6wlpOGg3U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781083729; c=relaxed/simple;
+	bh=lwH4ZfrUxirKaBBeG24NcNOxwXVFZDIxg2Ure2KWCW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=npcPJciEROc/mPJLjiyljEqTHKEc399KAUHxTUwiKzmjEXQLnwk6i/FcYvgewVS5wBJF5kwSfKvCY4BXv5ga+/48cBy8CicnohyfTasJXiESQgrbCE3+4Q+Iu79zl03Og8sKhc8a4K06VbmGS/SmJu19oqXBArx1o32LFmJIofY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VChNE68i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ICPllFzU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qZN7jhwWxbdCHCqGfDwM9tDlv9YWvOpCygLLjQhAt5Dx7ZLWgPX4qD/YywdqfTdcfptQWvoP5NfGRwrw26kyrD3BMicUykZtYu8FOew77dqhaz7KYf1r6SAoBy3J17ne/HRjA2uvnWzoiUWVtN+YbZrRjNCbPhX5YYsNH5ZF+J4j+CnyrfHL3SB+iq3oEF8Us1JJeT7HzUmQSwUG0b/F5AfM+I+yCYWGKKsdC42X8eJIGiOZsSaz4figaMeAA4vqF7UMzo7SFkC2hMGFcBfVEg5k+sRH8+FRNYJfEzyb4Hem4hS29qWlMfKbLJDHneOAPROETZzyuglW4ibPBBJkUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vDVdOjmj4OcZNqpvZdf/XcWH79s7bJ6ZKXDzR3SWYiQ=;
- b=RtBwtZSofdDBHNvhEXFpiBFGJQcyBNV0f67YNdB24xNGb3rmMdbNOspdwppgZWCSdG47Ft+tzUG5JPrlIEZbAczBrfzoqUXsXJrxjOsrfmAufqijq6jXS3p+AMNpw3rpVNds7OpNpcwdnWsKqvWCCYm+BTbfW/r1DtPnRI/q5Y6LifCDu+emNVDh+xeA4Zhe1OL0+9iaPcXioN1+QM2WIeoEgE2fa/7Qs3RwoCdDM4aqUjzBvGNCYqc0i0wJunHKG3HGX7jIobZraqaFVW3VCHSmsvJLWB+YIXlRX3a9SIikvT1RjqzoIo6cb2jEa3g6l0jI4191MqaVMuDAUDeYpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vDVdOjmj4OcZNqpvZdf/XcWH79s7bJ6ZKXDzR3SWYiQ=;
- b=ICPllFzUrQv3dd0BEGV2j8Hyg1mf9YBBDKG0fwagw8iDI/YXsGpNcz43lReaQLE8rtLtBB2OIhHkeUCBWhockICnYs96Gjygx6xwPQ0K8f8Hhyr0Hh6Z430Tk8CPE29CuvrFszzI9iUui4ifXM6MvnAyuWvu8Ar2zPibyDaH5vZx9YvX3rdkK+sfRCGkq02/hGUB4tWyVQuWm6v+Kr/D6qvbIxoFzdCoe7IGFIECZuNLoy58s1XvaGaJupH2Onh70Zk17/9Jl7ja3z0SNOH3Ju1nrvuPpO2a+iVuSuSjp7eoFJ/Nyk6EhrY33tbnkqcj+dguONGAztMejtysXR98cg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
- by AM9PR04MB8860.eurprd04.prod.outlook.com (2603:10a6:20b:40b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Wed, 10 Jun
- 2026 09:25:13 +0000
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0113.011; Wed, 10 Jun 2026
- 09:25:13 +0000
-From: Liu Ying <victor.liu@nxp.com>
-Date: Wed, 10 Jun 2026 17:26:23 +0800
-Subject: [PATCH v3 3/3] arm64: dts: imx93-11x11-evk: Add DY1212W-4856 LVDS
- panel
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260610-imx93-ldb-v3-3-c9b65d742753@nxp.com>
-References: <20260610-imx93-ldb-v3-0-c9b65d742753@nxp.com>
-In-Reply-To: <20260610-imx93-ldb-v3-0-c9b65d742753@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Marco Felsch <m.felsch@pengutronix.de>, Liu Ying <victor.liu@nxp.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: SI3PR03CA0007.apcprd03.prod.outlook.com
- (2603:1096:4:297::18) To AS1PR04MB9287.eurprd04.prod.outlook.com
- (2603:10a6:20b:4dd::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VChNE68i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A021F00893;
+	Wed, 10 Jun 2026 09:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781083727;
+	bh=WZrxmTMENGKmsKf33gp0XWxjNcKEiwhVqt+tFHKcI4k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VChNE68i9UsIZCwss5eZHoy6gOmeWDyM9xS3xoD1tjxYwUDJqrKNnpGXdaUBk0seE
+	 e1lOqYhqSpNQ4o98X5yLxpx5p5Jm1g4cbjYRTp4cbQFUbQrp7p73JuMS5M+4NDDRWS
+	 uRMZ8zEQwDav0mfJyXZAVvyTbE3yGenVnEELKjMGw7ZIP1BZrmCgia0ZyFHv5wg8ZM
+	 b017KBl7lGo6j2Dso6W4yDo1sRGwEdSdZBgz7j3f13p7ed5HXnNuPzeiqMbHh9zycE
+	 blMAk3VrfcpG6O1jMj7QxxpqI9MGlqmWU5piTi8G6UTgekS4FZ25EpY+kwOSA8BvZS
+	 i+1YwZSLNX0wA==
+Date: Wed, 10 Jun 2026 11:28:40 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
+	"sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, 
+	"manivannan.sadhasivam@oss.qualcomm.com" <manivannan.sadhasivam@oss.qualcomm.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"robh@kernel.org" <robh@kernel.org>, "Frank.Li@kernel.org" <Frank.Li@kernel.org>, 
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH 1/2] dt-bindings: connector: pcie-m2-e: Add 3.3Vaux
+ supply support
+Message-ID: <mvxoynvocxcalxcwogbiovg5yurjczxqfu2fqkji33bunmlplz@zxqjsdjts65j>
+References: <20260609033840.2006078-2-sherry.sun@oss.nxp.com>
+ <20260609034408.BC69D1F00893@smtp.kernel.org>
+ <20260609-unique-magnificent-eel-eb623f@quoll>
+ <VI0PR04MB121140EFB8E614326D799503A921A2@VI0PR04MB12114.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|AM9PR04MB8860:EE_
-X-MS-Office365-Filtering-Correlation-Id: cce822e8-b72f-412c-9f40-08dec6d22d2f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|19092799006|376014|366016|1800799024|22082099003|11063799006|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	jzrLlyr20BYW0ZlUNlXL98LKBqt5LnnyzmNL+T1MGI8rbQIVmncSeKlTEVU/NvdePYaBLToyzgFFeBcM5MkzUfECY95C3q88uAhJ6RLbRWvoahKyIuj+xFNw2kkZHNz57mtvdy3mK78RAt3N57YW6dM9OEXV4dxGaNzg37ULpcUk1cpI5gigbewl9pTQJOYX9t3Hdtr8J2CFkF+w7tFRLJjCJIJmHorbt4TNLAyZ1EqyNnamCnJ9Ac2705qSUalnnDjwdjbgX+UUqPLcj2+v5fFRHV+9iuxLfauuLW+0/46MouWQ5EyGhS0TYk6w/Y2zDLaSpKBfQmHzwq6PXxki7zEhJ8u8aeHy+MhtSYA0ctr7KAnQDORs6Y04bzaUWwqcA4b4iOpFJ0MB/hxOQsWndlkc8ee8ixa6Z6j/tMaoiMNfAwOKkjKXyz52NXAmbfkOOWT0gaRSXvny7HXnwxMgNUKU5noL1r7NpnqU9QNsAvoFz3Im8KnFt6SMDOHZVAAvHiCrR1DviQq5X3bM4MDJrPkbZ3GatI3+OhU70EQUZGJDaiZO7CsP+G7fC8d170RXYFtqrNbdU6Zd6c+YGQcYBigC6MfEULncN5JOVFQCan/Dho6n0BR9SQPzyYTxvtGrsY6pnWaP8hJDZ882NjuAUBIVunNaKgdd2nyNBbwvMNZrBY+xRyyLFZ4EX6utYAAt3xMF1FddFEdANBLrF+3p8Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(19092799006)(376014)(366016)(1800799024)(22082099003)(11063799006)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S0lxb3I5UnFLZG5CamxRUUZ4SFNlanJJYlRoUGRGTisrSEIzY3dEejIwT2JR?=
- =?utf-8?B?c0szQVNXZTIweFdjUm10R1dlLzlUSlZKTnFqR28xYUZUaDgxYVBGTHFCeXhs?=
- =?utf-8?B?dHlQSXhRYmlNMlFtdTdrd2ZkSlR1Qlc5WlJEeVBlR05TL0xNVFFVMHEyNHMz?=
- =?utf-8?B?bEw3bW9wRGd5TVgvbzBHRmFkYXhiZ040aUYxOXF1cEdRbWZqTEF6MXpEZzI0?=
- =?utf-8?B?M3c2ODBHd21TNVh3RHQyVnpxbVRHbW5HbVBUcFliU2tQTXc1dXA2WjhyNWg2?=
- =?utf-8?B?YTZsemNoV28xdmtBWHdPNG5zZm0zWVNPWDdvRTR4ZU9ReDZtTFpRdjM0TTVH?=
- =?utf-8?B?TjArSjFuaTIzRTJlT29Ialk1YytWN1pQWXlZNGFUTUpWdnFYaGhwT3h6bVJq?=
- =?utf-8?B?MTVaZmJ3SXE0SSsxcER3KzdiMXkyblBySWZVOCtWU2F5cjB0bW9mV25vWWpU?=
- =?utf-8?B?UzF3ZHdxdlo4eXBkRWU0T3RXUlZFWVRmL1lSeDMyeU1kUDZCRVhCY3Z5RFQz?=
- =?utf-8?B?czZRbFVOYzBwcUw2cWo0UGJkZzdVTFRjdVUvZmtQdUFLZVV6dXFjTG5VZVpV?=
- =?utf-8?B?TlZLcmVGamNiVVlVak9rd3dNdVpkUzgwUWpETy9IZFhlYXFpTno2Zno1RXA1?=
- =?utf-8?B?S2l3K1pEVXY1MmhjTTh6b3JsbTU2RzlQUU1qdE8vZk1xaTlpZjNtOGFSWXhH?=
- =?utf-8?B?RmdMQXFiaGcvQ1JjVkxiaWd3VzR1em5zeU9nN2lXN0FNNW1nSlpMa0RBQmRN?=
- =?utf-8?B?WTNRaUp4NVRheUQrR0hmUHhkQ1BpamVicWUxVmhmMG5CelhZWFdxaHVmUHE1?=
- =?utf-8?B?QzZ5WnNieE0yWGNJbm5LK2MrOWhmS0Q1RUJMUFNWdDJDZGFJZUdWU1BRR1dD?=
- =?utf-8?B?cCtHbGJLTUJyaDVWa2hSdTZHcW5yNnlEMlU3ZVc4MXFteVp6SDNMNDd5K05G?=
- =?utf-8?B?RVJjSHNta0VwMjFRWndZSzUyeEg3cFBtR2duR2tIVTV2aW5PMllkdldIbkxa?=
- =?utf-8?B?SSs0MHJGbFRpY0E1aDhKWGNWUEtIUUJUSk40b3lta0Q1dFJxK2ZXQmYxR0RG?=
- =?utf-8?B?WlZrT3lDT0FjWjUreVRiNzc5WU8yUzh1dWViYklzZkdLNVpXL0RNSlFENmc0?=
- =?utf-8?B?UjJGb0xwL2k5bElvZTRmOVVCQk1DVkZSR1hwMGl6UDM3SGp6R01acHAxNmZV?=
- =?utf-8?B?bFFpdXlxN0dQS2x0V1JuUFh5RHBCaEk1T0FndjR3TGgxUjBNUDBQZFJpZ0o4?=
- =?utf-8?B?R2cxTjFEeGpHNHo5cTE5K2dwZkQreFpCTzN4MFdoVnFEWUVDOWFLTW1vWW1a?=
- =?utf-8?B?RUpLeVpvM0drRjY0cDZtMEZkbmg4bGhXZzJucksxcE1ocm4wUWtqa1VWRnZy?=
- =?utf-8?B?ZjdwQmFtY09OajZPZjYxQzVnWEhYMXVEcHBTM3RNamkxQWpmb0dNTGpGS09Y?=
- =?utf-8?B?RGRLaHpmcU9Ta1hoVTFHT3Zwc2pkWkltSDJmQTY4elhTWkpXb3hIMlFHN2RC?=
- =?utf-8?B?RzB5cXBkWWxNOWM0c2o0TzI0VEJsQ2dhMWxMRDhQKzBrdk5tVTlHa1pZRmZp?=
- =?utf-8?B?NzBrbGlkdjZnUXNCNi9CWUJidGZ5WU9LV2dqWHBKQVg2VDdQWVBqSDhHa1lZ?=
- =?utf-8?B?T0VwRGM2b3VSUkdqdXJxVHVEYmZoZktyWHUzQVRDTGcxdjNrdnlvQ1NDVU82?=
- =?utf-8?B?ZzlKTkRRMlBZL1RLYWY2dW9iZnEwem9JMTVNWlIzM09BaDV5eTljbys5Rmk1?=
- =?utf-8?B?dFdja2RMSjdDcGtvTWs2VUozM2FQdG8rL1cwWjVnNFJGa1loM3IyN3I4S2Vv?=
- =?utf-8?B?bkV5MDNvNytjSXpNRXZwcVlmTWZ6dmhpYi95bmQ3d0IyY1gyS2tiWFRtZ0hi?=
- =?utf-8?B?MFAzbW1pa050aW9pMUhlZTFiMDNWMzlsRnhlTzVlbUlIc1l0MlZ0VGlqSlFS?=
- =?utf-8?B?ZGNpTk9pYnNNU05janhXWU13dm52Y3E5TVdkTGE3Z1kzNW1sNWZ6WS84cnhW?=
- =?utf-8?B?czd1MjlpQllEbExOUlBtSkpmbGgxeC9hWVVlMUhDNUFDYk9YSFkxTUM5Qk1W?=
- =?utf-8?B?YVFSL2RTOVZaenJETXFOclVMeTgzeFhYaEVIMlFad2lITjNRZ2FxUy9nTHp4?=
- =?utf-8?B?MW1mTng0Y0JpMmFBWWdsWHEvY1RIMERyTThEVXVRWFFhTUEvUVdNckxxRFd3?=
- =?utf-8?B?QzRGb2FaaE1vTlZvMUVFN1l2QXFqdlZCMW5CeHdXZjYzZzcvbmdSQWlYR1VW?=
- =?utf-8?B?aE9IOHNwaHNhNU1sK1k1NGxaR0QyWGhtUStYZTlUTlMra0I3Tnp0bXdJRnNs?=
- =?utf-8?B?OEw0NHVtcVByVDdOcTZjcDc4TWM4d2dLRXY1Z2dMQ3hPNEgvQ3Axdz09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cce822e8-b72f-412c-9f40-08dec6d22d2f
-X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 09:25:13.8453
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C/t+4qNXHeE+yLtVmfeX4NOzYc9ykSB/VwSdANle+uDwXuDkcTFC1jjgg5ozWEwb3kwc+qMolOValyiF5GjsXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8860
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <VI0PR04MB121140EFB8E614326D799503A921A2@VI0PR04MB12114.eurprd04.prod.outlook.com>
 
-DY1212W-4856 [1] is a 12.1" (WXGA) TFT LCD panel with LVDS interface.
-The panel's 40-pin connector allows it to be directly connected to
-i.MX93 11x11 EVK board.
+On Wed, Jun 10, 2026 at 08:40:54AM +0000, Sherry Sun wrote:
+> > On Tue, Jun 09, 2026 at 03:44:08AM +0000, sashiko-bot@kernel.org wrote:
+> > > Thank you for your contribution! Sashiko AI review found 1 potential
+> > issue(s) to consider:
+> > > - [Medium] The `vpcie3v3aux-supply` property describes a non-existent
+> > hardware feature on the M.2 Key E connector to work around a software
+> > policy.
+> > 
+> > Feels valid. Describe which pin on M2 connector are you representing.
+> > 
+> 
+> Refer to PCI Express M.2 Specification r5.1 sec3.1.1 Power Sources and
+> Grounds.
+> 
+> PCI Express M.2 Socket 1 utilizes a 3.3 V power source. The voltage
+> source, 3.3 V, is expected to be available during the system’s
+> stand-by/suspend state to support wake event processing on the
+> communications card.
+> 
+> But the current vpcie3v3-supply may be gated off during system suspend.
+> So I  tried to add vpcie3v3aux-supply to let this 3.3 V power source
+> always on for PCIe M.2 Key E connector. That means vpcie3v3aux-supply
+> and vpcie3v3-supply actually refer to the same 3.3 V power source.
+> 
+> @Mani, do you think this is reasonable? Or do you have any other better
+> solutions? Thanks!
+> 
 
-Link: https://www.nxp.com/design/design-center/development-boards-and-designs/dy1212w-4856-tft-lcd-panel-with-lvds-interface:DY1212W-4856 [1]
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
----
- arch/arm64/boot/dts/freescale/Makefile             |  4 ++
- .../freescale/imx93-11x11-evk-dy1212w-4856.dtso    | 81 ++++++++++++++++++++++
- 2 files changed, 85 insertions(+)
+There is no Vaux defined in the M.2 spec. So you cannot define that supply in
+the binding. You can define the custom Vaux supply as a fixed regulator in DT
+and mark it always on so that it is keeps supplying 3.3v to the card.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 8ddaab127ab9..dbe27d757c86 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -588,6 +588,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb-ontat-kd50g21-40nt-a1.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb-tianma-tm050rdh03.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
-+
-+imx93-11x11-evk-dy1212w-4856-dtbs += imx93-11x11-evk.dtb imx93-11x11-evk-dy1212w-4856.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk-dy1212w-4856.dtb
-+
- dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm.dtb
- 
- imx93-11x11-frdm-pixpaper-dtbs += imx93-11x11-frdm.dtb imx93-11x11-frdm-pixpaper.dtbo
-diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-dy1212w-4856.dtso b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-dy1212w-4856.dtso
-new file mode 100644
-index 000000000000..35f7c5699e3a
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-dy1212w-4856.dtso
-@@ -0,0 +1,81 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2026 NXP
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/clock/imx93-clock.h>
-+
-+&{/} {
-+	panel-lvds {
-+		compatible = "boe,ev121wxm-n10-1850";
-+		backlight = <&backlight_lvds>;
-+		power-supply = <&buck4>;
-+
-+		panel-timing {
-+			/*
-+			 * Set clock frequency to 71142858Hz to accommodate
-+			 * IMX93_CLK_VIDEO_PLL rate at 498000000Hz in a rate
-+			 * table.
-+			 */
-+			clock-frequency = <71142858>;
-+			hactive = <1280>;
-+			vactive = <800>;
-+			hfront-porch = <48>;
-+			hback-porch = <80>;
-+			hsync-len = <32>;
-+			vfront-porch = <3>;
-+			vback-porch = <14>;
-+			vsync-len = <6>;
-+		};
-+
-+		port {
-+			panel_lvds_in: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch0>;
-+			};
-+		};
-+	};
-+};
-+
-+&backlight_lvds {
-+	status = "okay";
-+};
-+
-+&lcdif {
-+	status = "okay";
-+};
-+
-+&lvds_bridge {
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@1 {
-+			reg = <1>;
-+
-+			ldb_lvds_ch0: endpoint {
-+				remote-endpoint = <&panel_lvds_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&media_blk_ctrl {
-+	assigned-clocks = <&clk IMX93_CLK_MEDIA_AXI>,
-+			  <&clk IMX93_CLK_MEDIA_APB>,
-+			  <&clk IMX93_CLK_MEDIA_DISP_PIX>,
-+			  <&clk IMX93_CLK_VIDEO_PLL>;
-+	assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1>,
-+				 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
-+				 <&clk IMX93_CLK_VIDEO_PLL>;
-+	/*
-+	 * Set IMX93_CLK_MEDIA_DISP_PIX rate to 71142858Hz to accommodate
-+	 * IMX93_CLK_VIDEO_PLL rate at 498000000Hz in a rate table.
-+	 */
-+	assigned-clock-rates = <400000000>, <133333333>, <71142858>, <498000000>;
-+	status = "okay";
-+};
+- Mani
 
 -- 
-2.43.0
-
+மணிவண்ணன் சதாசிவம்
