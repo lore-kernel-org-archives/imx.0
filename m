@@ -1,139 +1,405 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011071.outbound.protection.outlook.com [40.107.130.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562943093C1
-	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 03:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781062082; cv=none; b=gkHpL3dHECAWd1hX/XtHTl9B9CsrP4XHXJcBNM4/Kqc+PR0WAtV4XtuAEo+ZknsblzQfzi41w6IYZKsWrXZdRJ7sBCWTAuk9dALTGB2KzsBDdnakDCHQj72Sh4wK3xJco7aDOndEqqQpzKqH4sNGUn/Fod+HUzKd53PVIxb0FJg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781062082; c=relaxed/simple;
-	bh=9oOJQcOE7PbQgwc4C5Ew5V8ljGXEj1WmkXNkNsiPe4E=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Lpx3ei/53xEvhdUGRLJZt0DDmH1t4RZQEwDX8QUdQ1tcIcIuZldR+agcCdGcII4mZ240128Fd3zl2CiQmnAs91wCzuuETwH0UHDNm1dDXQRjsobdkHyTDewOsMcuSGJej1Ir0sewF2ktPnDLVxcA8jvehGAbkF62+Q5uFM33FX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MF8ihmJD; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDFC2874E1;
+	Wed, 10 Jun 2026 03:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781062591; cv=fail; b=a2KoE+tcjWyTRGDAbcACjvIMkhbT8jbNFTqdc0VpDpNGQGReRlSMuhKHK+OD4bakRc7Eg57Cx9Z7QJSk1wjRlCnyqcSURPlT3ZSgq3oNqcVkgLUYFgneAySBevdIAcgSIdSwqAl5XOapfLM6zd/tlZ0SloIYWFbitIZOCG+kDnI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781062591; c=relaxed/simple;
+	bh=6kuer/qRhv3rDXwTrqfxz7zrvkd4CltFyujFIoeEFvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=CsviE+H/yyOrKHf1rebNEuln1D5c5eTVesckaj/7qIY5t/8XntV5LRxWn0EeGOg5MV2pFLZHlnq/s16NxZCYPKSxTMe+j8HmEGlgVvs9Lj0Wp+t2jf8lmJWG9kKTJ64bhl45D0BjRbcAD1tHZfiDuD9jySDRWaspXeHPyZl5OVc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Bujoo6My; arc=fail smtp.client-ip=40.107.130.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MF8ihmJD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C8C1F00893;
-	Wed, 10 Jun 2026 03:28:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781062081;
-	bh=EtRQWrCE03iFU52KHe8J11N9ehm8KcRpDaJtLpI+IUA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MF8ihmJDG64efsWRZ3MOqBo8BMqudeguI7sY98AB98dDlq1oqG8W30nZkKp85rMx2
-	 xD4bUnkyr+LFolXINIxQCnyCNglfwQMBhzXnwZ3IoBc2QOFKGy9HK6IHDIrgTxYhoV
-	 gkp01U2Zwb8ATccnq3uBnS3QAEEGBr9AeMM7JBCgyzG7eZqdrk5iwteOdqZauzcRZe
-	 kMW7JzjviD+mnfHkvHXRZUM+wH7yQent1Ub2cetrVA6ISK7qFyqVjZ9sDTvYZEoL+a
-	 OHiIiNAJEeh5jz4ewUofywP73SZnwTE4sj60go5A5NzRO5HFo1ha9mN5cQ7tbv1RZZ
-	 Pr8JQ7MUZwNHA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 net-next 8/9] net: dsa: netc: add bridge mode support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: wei.fang@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260609032955.2066089-9-wei.fang@oss.nxp.com>
-References: <20260609032955.2066089-9-wei.fang@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Bujoo6My"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HvdQ7FPhl9KUP01VadPMHEznDiDILK2JZkUIwt870Vk7ATGQVVljOrfDI658O4v1aE6eADVYPBsQzCzh72fh030INwuZN+jWOW8q3KvPv/sQu6OghbFlHrDUczUUoRL+OQYfm4ACqoge+Yl2qriYOKUb9b1NpRmOnv9iXpupKv1p2+GNrZgGoTyNLD6zkYvPlxbHfYCFdeXzhD2JvxHtPycNV4mdECWj3EiSKDO4olwy+usrBLZc7yoBmCGUSghe29Vh2fSsbYJKpV1Wps1qwLtSyeooNrL1M0EtuqNicV47yvzFVb6NU0s0UCAhkgwSoHeNhJuh7fegftYWDSUEjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5zVc54VzC9mF2ZPj15sdR9vikk09O5LaE/qvnyjLHqw=;
+ b=EfJuAJcOafETWNc1oeOuxrLITbYCXrkmH0M0H6lDbIT40S2n/45T07pxqFc8R/eSaC+U3uADmL52jUt/3ArFKNijzlBibyreAaFjbMzq3TqPw9PDE1KsMbBclBnx2K/jP8cWutjyPGFtLzZdLTRLUgTaC7sgiaxwHyEF5F7TecT1diJYQO1cHmlUbozVHgoWLXYNMo9ml0sXRDahd8DEBTH0DxBscaUXkVtrGodYyAzxM/M+/lS2bltTmzZOE6HDmKYetQq3ITesYJCVn7cL202Yw6WaMNcN5Qn2MvFTJIH3HCNuolNfCZnAYgl0ECVnNzUsLNSxBF0qgpxXBrEUQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5zVc54VzC9mF2ZPj15sdR9vikk09O5LaE/qvnyjLHqw=;
+ b=Bujoo6My8GKPUwCn2cl6rPlSKhR2g2mweeYSDXEVYHqqXY5FQ5t9PYGA7k+r1fx2OXdQqhESgGsTq6HQ+GK9Jit+KaasNDMi5KmPhMeuGblB9hJy7wC6nTUB3kF5zuBPQfOvsroLjcsKYK8lcIhoxs5mq/mB1bJ4MmUZKZQiFAORtbyIXODfPI4codQfWeiiJadAvQ8SAFwliPkZpxh3/foc997N9uE4p2/3cXZtYQ34RncysQXJGxnXY51UXHd5Q9bxqijoWhsF2KoXLjwIYEVAWCW5skd17bDCdFHLWIkLiTGPtEviEjeTM2mOyjzEOuLcwZAb4cWynKN3hwQHKA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8PR04MB8563.eurprd04.prod.outlook.com (2603:10a6:20b:422::14)
+ by DU4PR04MB11725.eurprd04.prod.outlook.com (2603:10a6:10:626::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.11; Wed, 10 Jun
+ 2026 03:36:26 +0000
+Received: from AS8PR04MB8563.eurprd04.prod.outlook.com
+ ([fe80::3f00:4490:e559:74a4]) by AS8PR04MB8563.eurprd04.prod.outlook.com
+ ([fe80::3f00:4490:e559:74a4%4]) with mapi id 15.21.0113.011; Wed, 10 Jun 2026
+ 03:36:26 +0000
+Date: Wed, 10 Jun 2026 12:36:15 +0900
+From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
+To: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Cc: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, 
+	"hverkuil@kernel.org" <hverkuil@kernel.org>, "mchehab@kernel.org" <mchehab@kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "Frank.Li@kernel.org" <Frank.Li@kernel.org>, 
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, Eagle Zhou <eagle.zhou@nxp.com>, 
+	Elliot Chen <elliot.chen@nxp.com>, Frank Li <frank.li@nxp.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH RFC 1/2] media: docs: Clarify
+ V4L2_FMT_FLAG_DYN_RESOLUTION usage
+Message-ID: <aijayrdr_rrz2x4B@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
+References: <20260608-flag-dyn-resolution-v1-1-44dc65516148@oss.nxp.com>
+ <20260608040616.1A3EE1F00893@smtp.kernel.org>
+ <AM9PR04MB857068E0FE59DD8ECB27A9AAE71C2@AM9PR04MB8570.eurprd04.prod.outlook.com>
+ <e689df21c92861e35b6d11e391bea3404321484d.camel@collabora.com>
+ <aijOPSFPEDsVlYFY@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 03:28:00 +0000
-Message-Id: <20260610032801.07C8C1F00893@smtp.kernel.org>
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aijOPSFPEDsVlYFY@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
+X-ClientProxiedBy: MA0P287CA0005.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:d9::17) To AS8PR04MB8563.eurprd04.prod.outlook.com
+ (2603:10a6:20b:422::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8563:EE_|DU4PR04MB11725:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4679f453-33eb-449b-2a64-08dec6a1726b
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|19092799006|366016|1800799024|376014|4143699003|5023799004|11063799006|56012099006|3023799007|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	VRBeiz1ntAuCb6iP6FaaN5heNYYYypCgmY13ZE/puUoMgnHCQtTJg4a7ruov/WE80R6VN2CqRC9iPLeutksRd4m+AsPp5VWzkw5uaC3lABruXRZ32ExMiDQJsAUDnslqID8cnAS4SReVHmRqgbSt+DgVnE2Hl3+lWU4jYZ7tuUQ8MJE5kn04HDD+hXQzqC9FulXkCf5aYnxtOdYfaxOlanxhUilOXk1mqoPXyI+XQS4jN7ESniA5+5UuhsRvVgS2TUI/5kazJm4MI/OEStYYZhvyx50gmgVQ8U4LtniMi52UnpnkkMNrBSPGcieTh/iW1jU0olu1ms4WX61mTq4nMrOR08oCM+0lv9wCr1NacM7WLcQiUETKgADbPO8XGVADWc8m0559MPcEbUKTOXMhF7dLDlMF5ZlmHMx7/q+FFgx43LwQE/D274ZwneXFP0WKWERlnaf6b3SxtK+WxlO+ST8iiOAh7dWUCL4THLsUg3RCFPfwqT9/Z1VqgI6DV4zkDcpuiemPTdxYjKMPX0yIW5EnpBkZ8SmrQFoe4nl+jOb+yOB3ZlZHYCXW+2Bxdv8SzYUKXbVFNuZtO3cHKKjgCxvZcgFeQxQf7JTkFDFCGfR8xkkRLDYEyXhf0sVg0+dcyOEE41yS6REn9er+ssjTSw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8563.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(366016)(1800799024)(376014)(4143699003)(5023799004)(11063799006)(56012099006)(3023799007)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WHh0VHdPcUpjQlVTRlpEMzhQWGZWV2hlWEwrdVY2VXRLclVlQXh4NEgrNXBK?=
+ =?utf-8?B?cHRUdGdqRWRzR3FMK21pR3ljWkl5MFJBaVUxai9Wc1lxRURPZnAwc1Z0L3lX?=
+ =?utf-8?B?NXoxSHl4WnJhTjltWXZMbkpCbUdkdkd3UDE0Z3lzQmdtVmpqV0g4ZHBoeGVE?=
+ =?utf-8?B?a0c3eVFrUGJWYkxLQmExb3pDcFV4QTBNL1pXS3ladUxHbFcwenhZY3QyOFFs?=
+ =?utf-8?B?c2FnQjNaUDJPdUdZVmJnR01MVzQ2TlNZcEJYVllWZUZFZVhyYmN6aW1HVDhG?=
+ =?utf-8?B?WVFZeC80aUtxS3hyQzd2YXBFMGtZbGRoSnlnV1JYbGR6SSs3QXQxUzFUSjR1?=
+ =?utf-8?B?T29rWFErSzZQWEdzQitiUEoxSWpNR3kvK0E4U1BEUm1HeHJzbUVJRVlrUHF6?=
+ =?utf-8?B?NmFVOUtLOXdDM0txY3dwS3FkWFNrbW1CZE9aWGVaUVJCOHN5MHVLeHV1LzJO?=
+ =?utf-8?B?aHpKUC9obExpTmtGRklVdDZ0aFJmSkU1TjF1amd3d2NzemtnSkJoVm5yZDJl?=
+ =?utf-8?B?R0hvK2pNMEI1dXpvM3YrdGtwS1JyV2twSkVWRi9wR2RpMWFySXdKVzJmeDQ5?=
+ =?utf-8?B?bkdLNTVPdnV6RHpYeWhueXRWb3YrRW56ckJjYlFZQ2Ntd3VvMkNwcURpNTc3?=
+ =?utf-8?B?UTJad1pOR1pXd2kxVGgyWlhJV0ZBY25nYUhLSWFxVEMyblBwZCtadjdrL1Nx?=
+ =?utf-8?B?STFobHZjSnhQTktSWG5YUXZGWGRFZ2xEQzNCM3NJSFpCZTRKU3R6SzVSUnBC?=
+ =?utf-8?B?eU83anlhSjhXbnNvOGNUMTFwK1lEbDdtTU1od3pjYTFSTXRrTnc2Uklzb0Q1?=
+ =?utf-8?B?K3ptdW01UW52dkxFa1ozVzRsdTBGWklLNkN0M05OYzZzN0lXbk1Hc2tXZHdq?=
+ =?utf-8?B?M2xFWjRKR3VJQXd3MEI5Sm9mQzVuU0o5QjljazhNZktMN1JUR1VncWpjeVBF?=
+ =?utf-8?B?UkkySCtzYmJsbTdnTEkwbGxvVUQwWlBreGpaNEg3M0Nnd0dQN09zNXk5QnFP?=
+ =?utf-8?B?NDlReVViaFljRVBUempUZFdMcWViUnpTRnJpbTg0MWlZV2UxMTdwMk1rcFR3?=
+ =?utf-8?B?c0lCQWRiWGZIN2N2a2ZvbmYyL3g3UnZid3ovRm16eFIreisyRzRSQytKOVFh?=
+ =?utf-8?B?Q3doNmdqT2FqcVZiTzVMelQ5M2J6R1Q0TnczYmh4SEZYVzRaSFhEZFd0d29T?=
+ =?utf-8?B?aUxVY2libDFRTXpRU3lzZHBiL0NQRnJsUGNIZGxmS1BnNEJqcVdYd05RbmpW?=
+ =?utf-8?B?T0Rac1lpUFhXRHRwNVNGUmwydjVvSTluNk5vSmZOVEN5bmt5azd1ZmthUlpB?=
+ =?utf-8?B?cytYODRiZW4wS2hVdGFvaEtiNHY3a2dEb3g5OGZLLzhnckJFNDI0cThUN3VC?=
+ =?utf-8?B?SjdSN1ZNMEJnNkEvRzNKU1JYL3lSODVEK0JvTkFYMVdrZ2phcThFdVo3RWJE?=
+ =?utf-8?B?bmNTZTZUSWxQcVQ3b1hFYUdNUGQ1ZG50NjdwanMzMHpoT2V6MFNBY0tSek1S?=
+ =?utf-8?B?L1dHdk9UMllHWnpiZHQybUw4QVN4RWFpcXl3VDM5QVlIY25mSlNVMTNjT1Za?=
+ =?utf-8?B?anZaQmVQM3JYSWljRTZ5VHZuajZMejR1T0lpSXorQ0tNQlcwVGdMQUxGVjFq?=
+ =?utf-8?B?VUxCYW4wbE9qWjNkMWlOeFZ6TzBEUUU2dlJGcjBYNnJYQWVhN3NUbWd0Y3lj?=
+ =?utf-8?B?UzZnM2R4M3NiT0hocHg2TTZmcy9RRkNBdXkxcmtwVVhGVndDVG5SQ3N0aTNq?=
+ =?utf-8?B?bGo0cFVsY090eXJqTUVhNGkzKzJKOXU3aWIva2wxRm9YeVFxYzhCcTVvYzVz?=
+ =?utf-8?B?ZlNtS05iaXpnaWZVM2ZlQ21tODFIVDFtazJNZHRvTjBGaXFsVGFrY3N3QnBm?=
+ =?utf-8?B?NlFBNWtoa05acHFhWXNORFZxQjJhU1c5Vm1sWDJtQ01wTTlvRGovbjZwWkhV?=
+ =?utf-8?B?WmZuVWhoOFZ0THhiTGQvVS9PNkRuNkRzU09OUU9yTk5FcGF3ZDZLT2tkK3Nm?=
+ =?utf-8?B?enNKc3NwTDFIcGpyZmZoMHZWQi9hdUw3MHcyQmZkd2xXaWhPdFRFMTFvSC91?=
+ =?utf-8?B?U0g4TGxzUzFRMjJ0ZDl3dm5LOFFTdU1sU01wUjN0TUpWWmxxdjV4ZmRIaHpr?=
+ =?utf-8?B?aUlNaTVFQlV0bDhJaXA5bU5Hei9NY1cwR0lmUUZNRmN1d2JOWFhhT0FZVExj?=
+ =?utf-8?B?TkVKbWFtalRPM1ZBNjJ0UjIwVDBkNnVFdUdCQ2swWVBrU2xUWHRzVWs3ZTU0?=
+ =?utf-8?B?ZGR2dVh0aUpEUWxHL21KSDhySnZiak02U1RBVE5GcVZMbHc3SkM4dEtxUHJV?=
+ =?utf-8?B?amkyN25BM1QvbFdrNTU0enlXaHZXalR6WDVHQ0dDQVFqbUd4MVJnUT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4679f453-33eb-449b-2a64-08dec6a1726b
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8563.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 03:36:25.9459
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4GH/uzyBj4SnautqpcIKon2PHkf0n9sj/hwFhF52I5+zzOhg5zqNCXEZ3AekpiJxrSQGQpJ2duHdmMW8NtcX6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11725
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Static FDB entries with VID 0 on a VLAN-aware bridge are incorrect=
-ly mapped to the bridge's internal VLAN-unaware PVID, breaking forwarding f=
-or unspecified VLANs.
---
+On Wed, Jun 10, 2026 at 11:49:06AM +0900, Ming Qian(OSS) wrote:
+> On Tue, Jun 09, 2026 at 02:00:02PM -0400, Nicolas Dufresne wrote:
+> 
+> Hi Nicolas,
 
-commit 2c77a1dbe137ce8f6001205692208e4092133f9f
-Author: Wei Fang <wei.fang@nxp.com>
+> > Hi Ming,
+> > 
+> > Le lundi 08 juin 2026 à 06:26 +0000, Ming Qian (OSS) a écrit :
+> > > 
+> > > 
+> > > > -----Original Message-----
+> > > > From: sashiko-bot@kernel.org <sashiko-bot@kernel.org>
+> > > > Sent: Monday, June 8, 2026 12:06 PM
+> > > > To: Ming Qian (OSS) <ming.qian@oss.nxp.com>
+> > > > Cc: imx@lists.linux.dev; Frank.Li@kernel.org; linux-media@vger.kernel.org
+> > > > Subject: Re: [PATCH RFC 1/2] media: docs: Clarify
+> > > > V4L2_FMT_FLAG_DYN_RESOLUTION usage
+> > > > 
+> > > > Thank you for your contribution! Sashiko AI review found 1 potential
+> > > > issue(s)
+> > > > to consider:
+> > > > - [High] The added documentation conflates
+> > > > `V4L2_FMT_FLAG_DYN_RESOLUTION` (which designates mid-stream dynamic
+> > > > resolution switching capability) with the mandatory initial
+> > > > `V4L2_EVENT_SOURCE_CHANGE` event. By stating "Clients can use this flag to
+> > > > determine whether the decoder will signal the initial resolution", it
+> > > > explicitly
+> > > > legitimizes a flawed userspace heuristic that violates the V4L2 stateful
+> > > > decoder
+> > > > specification. The specification mandates that for coded formats containing
+> > > > resolution info, the decoder MUST parse the stream and emit an initial
+> > > > `V4L2_EVENT_SOURCE_CHANGE` event (Initialization Step 4). Compliant drivers
+> > > > (e.g., `coda`) correctly emit this initial event but do NOT set
+> > > > `V4L2_FMT_FLAG_DYN_RESOLUTION` because they lack mid-stream switching
+> > > > capabilities. If userspace follows this documented advice, it will
+> > > > erroneously
+> > > > skip waiting for the initial event on these drivers, breaking Capture Setup
+> > > > and
+> > > > stream decoding.
+> > > > --
+> > > > 
+> > > > commit ec9c0583334c246f7813132b55724e42622e8edd
+> > > > Author: Ming Qian <ming.qian@oss.nxp.com>
+> > > > 
+> > > > media: docs: Clarify V4L2_FMT_FLAG_DYN_RESOLUTION usage
+> > > > 
+> > > > This commit updates the V4L2 stateful decoder documentation to clarify the
+> > > > usage of the V4L2_FMT_FLAG_DYN_RESOLUTION flag. It adds a note stating
+> > > > that decoders setting this flag will always emit an initial source change
+> > > > event.
+> > > > The documentation suggests clients can use this flag to decide whether to
+> > > > wait
+> > > > for the initial resolution signal.
+> > > > 
+> > > > > diff --git a/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> > > > > b/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> > > > > --- a/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> > > > > +++ b/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> > > > > @@ -361,6 +361,14 @@ Initialization
+> > > > [ ... ]
+> > > > > +    .. note::
+> > > > > +
+> > > > > +       Decoders that set the ``V4L2_FMT_FLAG_DYN_RESOLUTION`` flag for
+> > > > the
+> > > > > +       coded format will always emit an initial
+> > > > ``V4L2_EVENT_SOURCE_CHANGE``
+> > > > > +       event with ``V4L2_EVENT_SRC_CH_RESOLUTION`` during this phase.
+> > > > Clients
+> > > > > +       can use this flag to determine whether the decoder will signal the
+> > > > > +       initial resolution before producing decoded frames.
+> > > > 
+> > > > [Severity: High]
+> > > > Does this guidance conflate the V4L2_FMT_FLAG_DYN_RESOLUTION flag,
+> > > > which designates mid-stream dynamic resolution switching, with the
+> > > > mandatory initial V4L2_EVENT_SOURCE_CHANGE event?
+> > > > 
+> > > > The V4L2 Stateful Decoder API requires an initial
+> > > > V4L2_EVENT_SOURCE_CHANGE event during the Initialization phase for stream
+> > > > parsing, irrespective of dynamic resolution support.
+> > > > 
+> > > > Compliant drivers like coda correctly emit this initial event but do not set
+> > > > V4L2_FMT_FLAG_DYN_RESOLUTION because they lack mid-stream switching
+> > > > capabilities.
+> > > > 
+> > > > If userspace follows this documented advice, wouldn't it erroneously skip
+> > > > waiting for the initial event on these drivers, potentially breaking capture
+> > > > setup
+> > > > and stream decoding?
+> > > > 
+> > > > --
+> > > > Sashiko AI review · https://sashiko.dev/#/patchset/20260608-flag-dyn-
+> > > > resolution-v1-0-44dc65516148@oss.nxp.com?part=1
+> > > 
+> > > Hi,
+> > > 
+> > > Thanks for the review.
+> > > 
+> > > You are right that the V4L2 stateful decoder specification states the initial
+> > > V4L2_EVENT_SOURCE_CHANGE is mandatory for coded formats that contain
+> > > resolution information in the stream (Initialization Step 4).
+> > 
+> > Be aware that Sashiko is an AI bot, llm words things with extreme conviction,
+> > and it this case forget about backward compatibility from pre-spec.
+> > 
+> > > 
+> > > However, in practice, GStreamer's v4l2 stateful decoder implementation uses
+> > > V4L2_FMT_FLAG_DYN_RESOLUTION to determine whether to subscribe and wait for
+> > > the initial source change event. The reasoning from the GStreamer side, as
+> > > Nicolas explained [1]:
+> > > 
+> > >   
+> > > "
+> > > https://docs.kernel.org/userspace-api/media/v4l/dev-decoder.html#dynamic-resolu
+> > > tion-change
+> > >     Says:
+> > >         Not all decoders can detect resolution changes. Those that do set the
+> > >         V4L2_FMT_FLAG_DYN_RESOLUTION flag.
+> > > 
+> > >     So normally that wording should prevent requiring an initial SRC_CH,
+> > >     or emitting later SRC_CH. Your driver don't have this flag, then your
+> > >     driver can't emit this event. But a measure we should take into
+> > >     GStreamer would be to not register (or mark) this event."
+> > > 
+> > > @Nicolas, could you elaborate on why GStreamer needs
+> > > V4L2_FMT_FLAG_DYN_RESOLUTION to handle the initial source change event?
+> > > Is this something that should be fixed on the GStreamer side (i.e., always
+> > > wait for the initial event), or is the current heuristic intentional due to
+> > > legacy drivers that don't emit the event?
+> > 
+> > The coda source_change notification is completely fake. It does not dependent on
+> > the bitstream content. So the event is left there, since its kind of part of the
+> > ABI, but it does not behave like other implementation, or pre-spec drivers.
+> > 
+> > So what we do in GStreamer, is that for legacy driver (no
+> > V4L2_FMT_FLAG_DYN_RESOLUTION), we pre-allocate both queues, based on our guessed
+> > dimensions. If it happens that the conformance windows is small enough, it often
+> > works. DRC will only work if the display dimension changes.
+> > 
+> > For any modern driver, that implement V4L2_FMT_FLAG_DYN_RESOLUTION, we strictly
+> > wait for the event, and on DRC, even if the display resolution changes, we let
+> > the driver tell us when to actually reconfigure. The legacy method was kept to
+> > not break coda and older driver, the new method is a lot more reliable, and
+> > avoid allocating twice the capture queue (wrong guess).
+> > 
+> > The userspace implementation is also a bit more flexible, as normally the legacy
+> > way should kind of work for any drivers, and we still subscribe it seems. But
+> > the implication is just strange and shouldn't be needed in drivers with
+> > V4L2_FMT_FLAG_DYN_RESOLUTION support.
+> > 
+> > Nicolas
+> > 
+> > 
+> 
+> Thanks for the detailed explanation of GStreamer's approach.
+> 
+> I have a couple of follow-up questions:
+> 
+> 1. Regarding coda's source change being "completely fake":
+> 
+>    Looking at the coda driver code, its seq_init_work does parse the
+>    bitstream via hardware (SEQ_INIT command), and the source change event
+>    is only emitted after ctx->initialized is set — which requires the
+>    hardware to successfully parse the stream headers. After the event,
+>    userspace can call G_SELECTION to retrieve the actual display crop
+>    rectangle parsed from the bitstream.
+> 
+>    The limitation is that coda requires userspace to set a sufficiently
+>    large resolution via S_FMT(OUTPUT) beforehand (since it validates
+>    stream dimensions fit within the pre-configured buffer size rather
+>    than updating G_FMT with parsed dimensions). But the event itself
+>    does depend on bitstream content and carries useful information
+>    (visible resolution via selection API).
+> 
+>    So it seems coda could work with the standard init flow — the source
+>    change event is real, just the information delivery is partial (crop
+>    via G_SELECTION rather than full coded resolution via G_FMT). Would
+>    you agree, or is there another reason GStreamer treats it as legacy?
+> 
+> 2. Regarding s5p-mfc:
+> 
+>    Interestingly, s5p-mfc sets V4L2_FMT_FLAG_DYN_RESOLUTION but does
+>    NOT emit an initial source change event. After SEQ_DONE, it simply
+>    transitions to MFCINST_HEAD_PARSED state and wakes up waiters —
+>    userspace discovers the resolution by calling G_FMT(CAPTURE) which
+>    internally blocks until header parsing completes.
+> 
+>    The source change event is only emitted during mid-stream resolution
+>    changes (RES_CHANGE_FLUSH path). How does GStreamer handle this case?
+>    Does it timeout waiting for the initial event and fall back, or does
+>    it use some other mechanism?
+> 
+> Overall, I agree that using V4L2_FMT_FLAG_DYN_RESOLUTION to unify the
+> behavior (both initial source change and mid-stream DRC) is the right
+> direction. But the current state has some inconsistencies:
+> 
+>   - coda: emits initial source change, but does NOT set DYN_RESOLUTION
+>   - s5p-mfc: sets DYN_RESOLUTION, but does NOT emit initial source change
+> 
+> If we want to document that "DYN_RESOLUTION implies initial source change
+> event will be emitted", s5p-mfc would need to be fixed to comply. Does
+> that seem reasonable, or should we take a different approach?
 
-net: dsa: netc: add bridge mode support
+Hi,
 
-This commit wires up the port_bridge_join, port_bridge_leave, and
-port_vlan_filtering DSA callbacks to support both VLAN-unaware and
-VLAN-aware bridge modes. It introduces a dedicated internal PVID for
-VLAN-unaware bridges and manages dynamic FDB entry flushing.
+I'd like to follow up with a correction regarding the s5p-mfc driver.
 
-> diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc=
-_main.c
-> index fcca22da08d87..299a9e76b9aa9 100644
-> --- a/drivers/net/dsa/netc/netc_main.c
-> +++ b/drivers/net/dsa/netc/netc_main.c
-[ ... ]
-> @@ -1510,17 +1554,50 @@ static int netc_port_max_mtu(struct dsa_switch *d=
-s, int port)
-[ ... ]
->  static int netc_port_fdb_add(struct dsa_switch *ds, int port,
->  			     const unsigned char *addr, u16 vid,
->  			     struct dsa_db db)
->  {
-> +	struct net_device *br_ndev =3D netc_classify_db(db);
->  	struct netc_port *np =3D NETC_PORT(ds, port);
-> =20
-> -	/* Currently, only support standalone port mode, so only
-> -	 * NETC_STANDALONE_PVID (=3D 0) is supported here.
-> -	 */
-> -	if (vid !=3D NETC_STANDALONE_PVID)
-> -		return -EOPNOTSUPP;
-> +	if (IS_ERR(br_ndev))
-> +		return PTR_ERR(br_ndev);
-> +
-> +	if (!vid)
-> +		vid =3D netc_vlan_unaware_pvid(br_ndev ? &db.bridge : NULL);
+I apologize for the confusion in my earlier analysis. The s5p-mfc driver
+does define V4L2_FMT_FLAG_DYN_RESOLUTION in its internal formats[]
+table. However, the vidioc_enum_fmt() implementation never copies these
+flags to userspace:
 
-[Severity: High]
-Will this unconditionally map VID 0 entries to the bridge's internal
-VLAN-unaware PVID, even if the bridge has VLAN filtering enabled?
+  f->pixelformat = formats[i].fourcc;
+  return 0;  /* f->flags is never set! */
 
-When an FDB entry is added without a specific VLAN (VID 0) - such as local
-port MAC addresses automatically added by the bridge core - it appears this
-code translates it to the unaware PVID (e.g., 4095). However, if the bridge
-is VLAN-aware, the port's ingress traffic uses the user-configured PVID or
-explicitly tagged VLANs, not the unaware PVID.
+This is a bug - from userspace's perspective, VIDIOC_ENUM_FMT always
+returns flags = 0, which is why GStreamer treats s5p-mfc via the legacy
+path.
 
-Since this patch also removes the host flood rule when a port joins a bridg=
-e,
-traffic destined to the local machine would miss the FDB lookup and be trea=
-ted
-as unknown unicast. Could this result in local traffic being leaked to other
-ports via flooding, or dropped entirely if unknown unicast flooding is
-disabled?
+Looking at the driver's actual behavior:
 
-> =20
->  	return netc_port_set_fdb_entry(np, addr, vid);
->  }
-> @@ -1529,10 +1606,14 @@ static int netc_port_fdb_del(struct dsa_switch *d=
-s, int port,
->  			     const unsigned char *addr, u16 vid,
->  			     struct dsa_db db)
->  {
-> +	struct net_device *br_ndev =3D netc_classify_db(db);
->  	struct netc_port *np =3D NETC_PORT(ds, port);
-> =20
-> -	if (vid !=3D NETC_STANDALONE_PVID)
-> -		return -EOPNOTSUPP;
-> +	if (IS_ERR(br_ndev))
-> +		return PTR_ERR(br_ndev);
-> +
-> +	if (!vid)
-> +		vid =3D netc_vlan_unaware_pvid(br_ndev ? &db.bridge : NULL);
+- Initial resolution: After header parsing, the driver wakes up the
+  waiting context but does not send V4L2_EVENT_SOURCE_CHANGE. Userspace
+  discovers the resolution by calling G_FMT after STREAMON.
 
-[Severity: High]
-Does the same unconditional translation happen here during FDB entry deleti=
-on,
-potentially preventing VID 0 entries from being removed from the hardware if
-the bridge is VLAN-aware?
+- Mid-stream resolution change: The driver does send
+  V4L2_EVENT_SOURCE_CHANGE with V4L2_EVENT_SRC_CH_RESOLUTION.
 
-> =20
->  	return netc_port_del_fdb_entry(np, addr, vid);
->  }
+So if V4L2_FMT_FLAG_DYN_RESOLUTION is defined to cover both initial and
+mid-stream resolution changes:
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609032955.2066=
-089-1-wei.fang@oss.nxp.com?part=3D8
+- It should not set the flag - because it doesn't fire the event for
+  initial resolution.
+- It should set the flag - because it supports mid-stream DRC via the
+  event.
+
+Neither setting nor clearing the flag accurately describes the driver's
+current behavior.
+
+The more natural fix would be to add V4L2_EVENT_SOURCE_CHANGE for the
+initial resolution case as well, then properly report
+V4L2_FMT_FLAG_DYN_RESOLUTION through VIDIOC_ENUM_FMT. If all existing
+drivers that support mid-stream DRC can similarly be updated to fire the
+event for initial resolution, then perhaps the spec change to split the
+flag isn't strictly necessary - drivers just need to be fixed to comply
+with the current definition.
+
+I'd appreciate hearing others' thoughts on whether this unified approach
+is practical across all existing drivers.
+
+Best regards,
+Ming
+
+> 
+> Regards,
+> Ming
+> 
+> > 
+> > > 
+> > > [1] https://gitlab.freedesktop.org/gstreamer/gstreamer/-/work_items/5126
+> > > 
+> > > Best regards,
+> > > Ming
+> 
+> 
+> 
