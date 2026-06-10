@@ -1,121 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C414F30B51D
-	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 05:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F242F5A13
+	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 05:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781068438; cv=none; b=MN4Ak5aoHOy+ZdBw6K4xK6FZdy3AJwBBXNsFFge8ExgMDU58lth2TwEuTqH9zZOnXZb+e9CeTunGwA0jBcdiUgN/3dZzVClaH7hTuyQ/nMlSHb6e/ogutDCnQnA+qT/HOsIzR3AeztNHqY4tL2rYXZisgwR7eOuI6tUjmi11xHs=
+	t=1781068565; cv=none; b=W4BvvlaknmbLaa9x8ON6/F0kBjWVGnEXN5AEeWEx70KlShNYBHTgVtTUeUhkSRXCDKTflW2TwAP8kK6Nuh9I8WJFwkxuWtDR7adppQOdUvdQpHBqB5GoSVxY9uDU+fmp/f4n0NsvJdHoySdSvt0cUt3K781mgXwAqSocptBeK60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781068438; c=relaxed/simple;
-	bh=cxlAxJCtSyqYT8vBKQXzQj+dVs07KZx5yrCCIuis7Wc=;
+	s=arc-20240116; t=1781068565; c=relaxed/simple;
+	bh=1gcaaSiPFs5CQo8rk6460/LkcQXL9sDOunDe/gtPPjE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=f/dgq2vkqjW28aW05LhMaQcRMUEL8qEewBcJP7WqP9uvfUAxF/UVqsEOnSLjNAg4Egp7fPdnA9JW89suUAEq3BVXBAFXx1/4o+zlzGFDNYdukMTz9IIzrXGSR0RAZTTaQrWEvmRvZ3MTQavp1vDU30cgKZxOQ9tzCebCQ32cr9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1k4biCj; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=iUjVap4vhpSRe9lGyUAbc5CHvzGPjRnVn4Fuy4YiVrnplZfR8tV/VJb+OVgUKUPRwaZc2M/g+kiNWl2MqLZPY40+ac48fdTaX0fyN1pYqNE2CipCraRBUO50+i4Ra52qx+apxhFrnOR9FSC6eZrokAlE9LSO9HKzy+yqN1Sydio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJkANW8Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1k4biCj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6221F00893;
-	Wed, 10 Jun 2026 05:13:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJkANW8Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B001F00893;
+	Wed, 10 Jun 2026 05:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781068437;
-	bh=C0evjX14jKflUtbiLJAIqHD0iuctjLCStSzkBBedmjk=;
+	s=k20260515; t=1781068564;
+	bh=LkE5maH9UnSkyMdYanGQOfS2LI3I8vq1JtxQylNQ2DU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=b1k4biCjGOnFX0kNiTarlH3qBNjasPX/szL/8tbeEVCF2usA56zafTwregKpuJUg5
-	 LJl4JloqBaK+WCaRtUZTTqgD3Y7x9zOj/qBRoYDrOTuyYYeROfE2LTsTi7qAUjgcYo
-	 kJ5O3OLWiAqj+N4LL9gzg7sfuRPetirQPu69mTEXyzBaEeHmNqDRywCBu7vzt7Ft7D
-	 65Xf7HRcZ92hAvu4Ejs+9gARNYPZbHfWmEt32/szQzqNMIZJadYJ3HJQR35Yb80EeR
-	 4Cqncfb5pS26JkSqqqnaOhzckPIfEQtBIeo/tFg60vxIZgWszfiB7GzwX18M2ENVZj
-	 VSOT7JDS/oSeg==
+	b=HJkANW8QBncm/DjKVgJ7fvt82FJIBrPYQE5wNiSbaQ8ckdN9IzXEfC0T12P3ebLTZ
+	 F73AeOdt+80zW/YzsJs3B+3rpOjEybk2bCplnEO2F19Jx8X4GzqUgr4+OKMfJFvXIC
+	 iG1jv5myCUiOS6FiX2bqndeI4OLXWbcuK9Zb4uJ+CghPD+O/gmYQLElDxpIUV+E9Wq
+	 4flnV17lUO9nUz+MlZ3UIFTr7GcWhvgo1+MeYNLL6qkGjExbA3g7rfVvM3Vc48cdak
+	 +XHioU9s04cqaqLDVjrCdr80lEGH2iFwmXlH4tMXOro14c03C/P/0Nzop45vwxmVgQ
+	 vBpJvsat4PhSQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] ARM: imx: fix device_node refcount leaks in
- imx7_src_init()
+Subject: Re: [PATCH 1/2] ARM: imx: fix device_node refcount leak in
+ imx_src_init()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Weigang He" <geoffreyhe2@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260610050625.2229221-3-geoffreyhe2@gmail.com>
-References: <20260610050625.2229221-3-geoffreyhe2@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260610050625.2229221-2-geoffreyhe2@gmail.com>
+References: <20260610050625.2229221-2-geoffreyhe2@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 05:13:56 +0000
-Message-Id: <20260610051357.1E6221F00893@smtp.kernel.org>
+Date: Wed, 10 Jun 2026 05:16:03 +0000
+Message-Id: <20260610051604.43B001F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Missing error handling for failed device tree mappings in imx7_src=
-_init() leaves global pointers NULL, which are unconditionally dereferenced=
- later during SMP bring-up.
-- [High] Missing return after WARN_ON(!src_base) in imx_src_init() leads to=
- a null pointer dereference if of_iomap() fails.
+- [High] This problem wasn't introduced by this patch, but the `imx_src_pro=
+be()` platform driver blindly registers the reset controller without verify=
+ing if the global `src_base` pointer was successfully initialized.
 --
 
-commit 0e3cdec3032f0f9a0628861c081a3260cfa7ce52
+commit 3a8b3e9f6b1a902d26351b0e93daa81ca748d342
 Author: Weigang He <geoffreyhe2@gmail.com>
 
-ARM: imx: fix device_node refcount leaks in imx7_src_init()
+ARM: imx: fix device_node refcount leak in imx_src_init()
 
-This commit fixes device_node refcount leaks in imx7_src_init(). It releases
-the references acquired by of_find_compatible_node() immediately after
-mapping the base addresses.
+imx_src_init() obtains a device_node reference via
+of_find_compatible_node() matching "fsl,imx51-src" and uses it only to
+call of_iomap(). It never releases that reference: on the success path
+the function returns at the end without of_node_put(np), leaking one
+device_node refcount on every boot of an i.MX5/6 platform.
 
 > diff --git a/arch/arm/mach-imx/src.c b/arch/arm/mach-imx/src.c
-> index f28bfb653a88f..c3c80b4c3d53b 100644
+> index 59a8e8cc44693..f28bfb653a88f 100644
 > --- a/arch/arm/mach-imx/src.c
 > +++ b/arch/arm/mach-imx/src.c
-> @@ -196,6 +196,7 @@ void __init imx7_src_init(void)
+> @@ -171,6 +171,7 @@ void __init imx_src_init(void)
+>  	if (!np)
 >  		return;
-> =20
 >  	src_base =3D of_iomap(np, 0);
 > +	of_node_put(np);
->  	if (!src_base)
->  		return;
+>  	WARN_ON(!src_base);
 
 [Severity: High]
-This is a pre-existing issue, but returning early here leaves the global
-static pointers src_base and gpc_base uninitialized (NULL).=20
+This isn't a bug introduced by this patch, but the imx_src_probe() platform
+driver blindly registers the reset controller without verifying if the glob=
+al
+src_base pointer was successfully initialized.
 
-Later, when the SMP subsystem brings up secondary CPUs, imx_boot_secondary()
-calls imx_enable_cpu() and imx_set_cpu_jump(), which unconditionally
-dereference these NULL pointers:
+On platforms like i.MX50, the early boot initialization function
+imx_src_init() is never called, leaving src_base statically uninitialized
+(NULL).
 
-arch/arm/mach-imx/src.c:imx_enable_cpu() {
+Despite src_base being NULL, the i.MX50 device tree contains the
+"fsl,imx51-src" compatible string, which causes imx_src_probe() to execute
+and register the reset controller:
+
+arch/arm/mach-imx/src.c:imx_src_probe() {
     ...
-    val =3D readl_relaxed(src_base + SRC_A7RCR1);
-    ...
+	rcdev->ops =3D &imx_src_ops;
+	rcdev->dev =3D &pdev->dev;
+	rcdev->of_node =3D pdev->dev.of_node;
+	rcdev->nr_resets =3D ARRAY_SIZE(sw_reset_bits);
+
+	return devm_reset_controller_register(&pdev->dev, rcdev);
 }
 
-Will this cause a kernel panic during SMP bring-up if these mappings fail?
+Any subsequent consumer request for a reset via the API will trigger a
+structurally guaranteed kernel panic on a NULL pointer dereference because
+imx_src_reset_module() unconditionally dereferences src_base.
 
-[ ... ]
-
-[Severity: High]
-This is also a pre-existing issue in the same file, but does imx_src_init()
-missing a return after WARN_ON(!src_base) lead to a null pointer dereferenc=
-e?
-
-arch/arm/mach-imx/src.c:imx_src_init() {
-    ...
-    WARN_ON(!src_base);
-
-    /*
-     * force warm reset sources to generate cold reset
-     * for a more reliable restart
-     */
-    spin_lock(&scr_lock);
-    val =3D readl_relaxed(src_base + SRC_SCR);
-    ...
-}
-
-If of_iomap() fails and returns NULL, execution continues and triggers an
-immediate NULL pointer dereference. Should this function return after the
-warning?
+Should the probe function verify if (!src_base) before registering the
+controller to avoid exposing a fatally broken API?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610050625.2229=
-221-1-geoffreyhe2@gmail.com?part=3D2
+221-1-geoffreyhe2@gmail.com?part=3D1
