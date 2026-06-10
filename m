@@ -1,181 +1,64 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010061.outbound.protection.outlook.com [52.101.84.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68683546E2
-	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 19:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781119111; cv=fail; b=ajZnZE99ZcbDgkcxwkGOMRTQqrv+ukaIGfREOCKLpS9sTy0J1ANmDoh/vxtE9J+V86cYfoQzb+zRX5QBQ7MRvqOfE6N2cFzH89ZLaip3+vM2knzqLduRD9o4/0nYGdGeq7EkEDr3HvcV/uHGZJSjkjxGL3+BGwQs5XwJ9nd89Cw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781119111; c=relaxed/simple;
-	bh=VwWSoSXVAHTDoJYa72YvoY93lCyn+EIFQK0ODyAprEY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FHGQngwfQNHHIn7lSD4kIkbC6BkQSOsEIbjIThaGILDlXb1IbPs/MgQm7qbBnvv3r9XBjdWkv+Udt3AT25K+UMrrKFMwrLdAeby5ezsde9YKpGWjpaP1C2LK69TjIBvRrV1VSjTHJtL0GNek3EZENkBLo6oicN7F/us0uxK8MMg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=LxnCgWTH; arc=fail smtp.client-ip=52.101.84.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FAC34AB14;
+	Wed, 10 Jun 2026 21:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781127470; cv=none; b=XmMsYAZpcmXOUnPb5vz1vlk6r7422mQY7catmg1gzd5POA/r+BELVPlacqUtvXh8CFLZxsnKyufj6CaZIIlodpajZbj7WQUzRqM5NDPXHHbKftmAUuSX2rNGyR0/H6KEF//FqpA6kjkwD4eXCm0mLYALK3o0i04DyIBJhe8ppK8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781127470; c=relaxed/simple;
+	bh=D3eladpRX2T9aUosswCxBwXm5G5RvwItS/rendtIFcM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lMBJjfZM+9GaCgTkBKOjBcXEYh8nkstXYO30CmblqT1ZY31Q4GQwPocKJWrQ3F90aWK2HZz9TYQZ5mUzsMPoOnRZhf8BB0RQzOCXRzYKjW6f10kWf4zOJ0g28sNKMkmL3RLVxgvEosIVxPxhMPsAubuP6Fvv+0eP893drnEIJt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Om5A2xhl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="LxnCgWTH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K/BpiG297ETHHo3mPdIMCIrGKzzIHhJo/bB/n1U7662LR4iP7VzvISRASrgBc/+fU/VRXEfh2d6IpWlFsMRnu/LkxZ6+zINRDAPj94iYIRmYX2e6HNSnJ+7j0cTbv0gWUym0B2hAKrxWv/SBdi/YJIJr7te0uhCQCH+rUxvIk7+IrN8ohylVlw2qOLxdOin9Y8jMuUCe+k7S0xYtvG+n6syJ+jcnooQYl4ySHN9yECD5fhhT7QyKrvWDgOFyxv2FmimbpxyAsq0vH3SEb6sc9qPxyWnMkVhRsWwAmP7hfsVozX5CinBHjR3oNlloS+mqnumTnhNwea1A+duix1jjiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oMbxuiCmNvxRmLzwONoSlo/5ti0pOUPbE50y3TtQVAU=;
- b=ncQnmpi2REokEUj/Z6hNlcIUpd7icJhr3eWhAXgmPlK3TfMuwdzHnqEywYknhuoq59HY8zGuB07zt5T0rwryB1O7tW8OBtrrYIGKKUdbR2V9jfYwG6AUWlRbnYN941L6F79G41hqvxPBn2NPQ3K1J5xtfpO6wROukBXfwhaaWq5Rhcl9DKFgniFzDc9aVjt8mnfbe1ZpJKY4mmYq37oYSr9qow9QvoEU/hpGzSk+E73yUQ6Gbju1hlYVaprKn8vg/TIDAtQ3P5taTcDL71irMYgKbSnRaSiD4y7QPjGeutNae+/5/LuS2rEZQpySjo7BUnB+gjH96Aq0o++de42cgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oMbxuiCmNvxRmLzwONoSlo/5ti0pOUPbE50y3TtQVAU=;
- b=LxnCgWTHxMrsNvAvYT2qBYtoqoBzDWsyxHYFNrgVkmaZS1dKhukFpvJC2XA1tN3PGYQwCs+JVsy6GzVHyWsohyt9Kw6zX6OVhz8ELl6eI+riNFNFIiV+XPTPKHxkmUNPIkjUmluBy1jHn3fPtmCkVHvp8suhMRATT2WrFpXKOTB+VlssM/gHZ11OrG3JfQm/wwTALonRGccr6MxKYKzjmucqMlcOybSrw2HRqMPDiSM5+9cMu79yWGYIiGGgJEruG3FkyrbhGTO3Oi3lRlzL4SozMkyKRI2PJJEM/CkrWxuk8TF+EA4qd8M5337vAIQKVRgITTGoF3qQXNhq2ZS3gA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS4PR04MB9689.eurprd04.prod.outlook.com (2603:10a6:20b:4fc::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.11; Wed, 10 Jun
- 2026 19:18:24 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
- 19:18:24 +0000
-From: Frank.Li@oss.nxp.com
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	shawnguo@kernel.org,
-	laurent.pinchart+renesas@ideasonboard.com,
-	antonin.godard@bootlin.com,
-	Hugo Villeneuve <hugo@hugovil.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: Re: (subset) [PATCH v2 00/15] var-som-6ul: improve support for variants
-Date: Wed, 10 Jun 2026 15:18:16 -0400
-Message-ID: <178111898079.1109057.8610962818602994576.b4-ty@b4>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260305180651.1827087-1-hugo@hugovil.com>
-References: <20260305180651.1827087-1-hugo@hugovil.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SN6PR2101CA0013.namprd21.prod.outlook.com
- (2603:10b6:805:106::23) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Om5A2xhl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492EE1F00893;
+	Wed, 10 Jun 2026 21:37:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781127469;
+	bh=nGt91+dMFFcqLfhyCWmDaNG3xcM0Hx0F3rWqydEivn4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Om5A2xhl5KwVp7mPn4hdvC5BfS1Z1hCnc2M3RhRXShuh+nrBcISslrhzOMPjZaheT
+	 ID1Wj0ln+ZYyUZTrl2XwAUjgn8dQ753KtuRZt6eSTtB/FtOqwp8nm0fZ7OYNEF5a6t
+	 R/2xLwDU3aETqJzhCoBwa8JlgvO9C8mXaSlUY3zLe6Z9YRNqWcTQ0KCEfS8uqQPxxD
+	 3jewCyTQJoWlsiVXJuUdUiceVWri2BK97aJ6MtLLV/5rDzBKsA2dTYMOw/RRNaTs6k
+	 Z3vAtR/HNhuxx6xKqKY35t8typHgL9T//E7f8QUcE53+kjqRBnT38d+mrGNmlD0u1i
+	 QYiC1309FD/9A==
+Date: Wed, 10 Jun 2026 23:37:44 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-i2c@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCHv2] i2c: mxs: add missing kernel-doc for struct
+ mxs_i2c_dev members
+Message-ID: <ainZEIfM6-cJxzO6@zenone.zhora.eu>
+References: <20260603031135.289302-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS4PR04MB9689:EE_
-X-MS-Office365-Filtering-Correlation-Id: 44c614a0-6a16-4ad6-8436-08dec7250a9f
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|19092799006|921020|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
- V4c+WiRXM7zbCWu89K3Jv0JjFEcAyy98sB05DVPjOlKlP9UniB4hBwhVSYnXUo7lVFnsV0XJmXW32UKRzAO3JTX0rHDuNBurBgbpN2MSbdQaYGdFWBAhGtP4IsV8vx1LnH+PJrdaDNGeaXxTB6Y+DnNjVkF4MGAC3dcleysLJyAKthx/HecYwlsDJR+JwBhublWSrVupm0CJdStIx1/kZ3TTpsBJauFWCvfDAn71oduFTzgayRUg986r0BrsZYVjvNB4f+CNNen/ENhl+TzAJHMepUcoty0bkVrf0oTh0ZIFyGeXR7I2sw+GekA5TRnUMqjkJfA4NMjs75gm5xRThsQU+ReYpmXWnbmVuI8oi013MB/To5dJ6kF7VKofwGslWBeDq14dotrVuNagqlDQ27UpJ+MnOJLyIsxNoP+YsONxqjM2IIQr1Q4ZOzA++fOUNUCe3Nl4orGum7Ttg00tGJlqwD/MqEJcuTLoyKcobmzGLiz+tBwePYn09HRIgwe95FL6XG/r2Kxibss7w9XpvncE91fTzWaZDdfWkrcz73f6AIqk5CWZDZqTkzbRoiCIdFq56LM4IoF8ULYogDK3fxGG6XnBiu7WMpp9PPIHOLCIhQafH2z6IhjAghbIBc5apYwzavJGUMOedbTrPeAEQOPsiAeyz7owTS1OSFhbmTHcu7f5XABfF5OpRwyNW9hh0osP+nssXBW1oYYMtxVzvt/c+5kgBimgjcIjWv3vbfQ=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(19092799006)(921020)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?U2d6QUxwOGNiTlpHUWlZdlArTEJlYlhIUkE2d3Z2SWZmNk90bjVBdGhTSUVa?=
- =?utf-8?B?dDFtYWdHcVdVZEIvSndKeUFLZ2JOVnBNY05kWnViT1M1RENtalBRdElZalhj?=
- =?utf-8?B?ZE5JZTVucDZ0MDllRlR0SzhZZmVWN2lSazdCQm1WVlhFTThXbzhoaTFWNWth?=
- =?utf-8?B?RTF1Sm41VFpXMW9xdmZzZGc2RzF4ekp5Y3Y3RGIyazBXbkdLbFV3Z3psZlZn?=
- =?utf-8?B?bjZ0M3NpZkRpdmhHREJKYVliZzVSNVZKaC9KZk1iTEdmUnZ5dmt4VStYLzRq?=
- =?utf-8?B?MFNCZUloa3crd2FSRlFsakdMWUJvbVNncTFYMXRqLzNNY2MySy9HK1RqZzNw?=
- =?utf-8?B?WE1zdEVPaEtPcmVyb1h3UEluRVI0UFZyY2JKZmFoa0w2YVVIcjJ2L0hPQ1V5?=
- =?utf-8?B?S0pQYnJuQTBBaGdacXpXbWpIVGtLTjA2RjdyeVdxbjl1U202bEFFeG9kWE9U?=
- =?utf-8?B?WGQzNy9PSGRtS2hxOU9peEpxRExjR0dCYzNIUXdTRExJNUs3MFZtM1d4MmFF?=
- =?utf-8?B?ZjhkeE52UWkwSjkxY2x3WURkTjJEYWVDUG1ZZUkyeXZWWUZCSzArSngxVjFK?=
- =?utf-8?B?Zk9hb2N3dGlaWFMvNDA1clp1ak91bXZoYXUzYTR4ckNqN1RGRlBzMU5hUjhl?=
- =?utf-8?B?MWpzYysrTUkxTHVvWGFXbER2RldCcm1wd1pxU0RzUExEdWJ2Vlh6MlNsREtz?=
- =?utf-8?B?ZW9zdW5FL2pLYzBwSWluajNMUXcwOGNMbVhkeC83bHhEM2VHSnFCblVXM2sz?=
- =?utf-8?B?ZVppYVdXaWxNTGhRVnJReTFYMGpmeTh2WExIMldxZ216ZU9XZG5kRWtXZjlv?=
- =?utf-8?B?M2wweEhRVmhQcFZGNi9LMUtocCtuajB6cHRkekkzd1l5dHdEY2xyZ0FzYWlq?=
- =?utf-8?B?K3AwaHB1a1RjUWhtbGJyNElvVW4vZjNRUFV6YzdQTUhGNkFlSFYreE9xVWt2?=
- =?utf-8?B?T1UvMWdNOG14ZHpDMWplMU16VDVCWFFxWkQ5RVE3bFFxSFd5dzNzeldkY0Zq?=
- =?utf-8?B?dXdNRHBiSkRvNlVqcEtjaDhCbXNOcFFQMGdNb1dMTTIxclY0bHgxWWlsZ2dt?=
- =?utf-8?B?ckEwWVdrbEUzQ3ZYYWVDQTJ1ZG9GYVMzR0ViYVBDNzZaUE53UC9lTUJBS0dm?=
- =?utf-8?B?ME1DVFZsR3dRSDhQbXpxdG9HRmtTY0wyWnE2czkrUUNHRmRYSHhFMzQ4NFI1?=
- =?utf-8?B?WXJtQjBDclRRbE45TDUrb3JlQ3l1UmhuV1EzR1RpTWplVzBYclN1Mnhmd0V3?=
- =?utf-8?B?aDVJYk9wYjlMQUg2YTFvc3FEVlY2dmtVeWlsYkhkdGk1b0VqN0h1akhrTCs1?=
- =?utf-8?B?RTdCaEliOW5XQnY1Tzd3YkR2U3hrSm5yemp6M1FYZ2RqcWVIdHB5VEUrbDQy?=
- =?utf-8?B?REczOHRtTDZ4OWFaOUk0QkRVSk9SeGdCNXBqZWFxaStwQ3BXKzZGZUdjZlFk?=
- =?utf-8?B?U1pSMW8yTGZNVVQ4OFV1MHBLQnUzdVVtaitjakZ1aC9YejBpdjRaTFlYYmwy?=
- =?utf-8?B?MDIvcnVnOUVIc2NXMFo2THo4QlBrYytBaTVUb0xEMjdUb2k3a2ZEd2h3eGNC?=
- =?utf-8?B?czZORTZpbXBHSEtSRlRiZy82dG1BWnlFamhGalBEU2VwT0dOS3ZXV3VCRHBa?=
- =?utf-8?B?dFY4YlI0Mk9OSGhKYUZ1QTVYbGhBSlRTcGMrQmk5MndFV3FBeGtmdWpTNjZL?=
- =?utf-8?B?REY3dXJjUHF4c1NlL1F2K0NpVlJHaENRV3dMQjVCZHoyQnVBaWxDODZQZmhV?=
- =?utf-8?B?NU40RVY5R1Q3ZTNTYlNIWUZtRVY3V0M1d3pObC80eGhEUWd6M000TFVRRVVS?=
- =?utf-8?B?Ymh2UkJpaTlKUkJMMFNKMlUxOTRzTlh0NWYrQzVuSnFZRUw5YnJzUnkycmpv?=
- =?utf-8?B?dDZCZ2h1dkVPTUJpeWZaRUQvMm42UkU5ZjF4dmc4SFFsWnpnYURPcmZiVGpw?=
- =?utf-8?B?ckFMVVBsQmR5ZldOUGFGdnpOclFnVEN3czMxR0xPNnZSa2JiQjFjNHo3UDAr?=
- =?utf-8?B?d1ZHVVZ4aXR3MUdCSzVUMHhsdUZEUUY1Q0UyNi8xYVFEZ1NPeVBGeHE2NG00?=
- =?utf-8?B?bUxibkwwSDVhT3VsSGg5WGNyc1NFbWw4Sml0M0Y4cmRGbjM2VVBNMlIvcFY1?=
- =?utf-8?B?NEtIUFNOeExFMmROUElibm9BZ3crcWdxaTdtNE51ekQ0clZjbm9xT1laU3hF?=
- =?utf-8?B?ajlPS3F1YlZWcHNOVFZNMXpNOU8rbUlrbmlvbXZmRVVXRjEwTUtocDZBTWQx?=
- =?utf-8?B?YXowOUFKM0NoZnJVTW5NQ2JIME02b09mSzVsZEdhTVJTUWZDK253ekxQbGYr?=
- =?utf-8?B?cmZUWUpjU0pkWTBiZWpOcENvUktqVUlWZjNxUGQ0Ym1JNnp1U2FwN1NlRUhQ?=
- =?utf-8?Q?RE/mu2avRGgUV2YEH0qHzzBhTfTMfborH/JJK?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 44c614a0-6a16-4ad6-8436-08dec7250a9f
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 19:18:24.1349
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ooOWxj/yGEdzHPhhplBymIIJD2+EG7TSi66lQPpruKU7ce5TjwlVjnUVIXm+jCqVIFWB8lEy8NRzkvdf24pmx9VzR5/v20Oeap0nBQnqJPsPEqM35OFV+U3QBAQUarvk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9689
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260603031135.289302-1-rosenp@gmail.com>
 
-From: Frank Li <Frank.Li@nxp.com>
+Hi Rosen,
 
+On Tue, Jun 02, 2026 at 08:11:35PM -0700, Rosen Penev wrote:
+> Add kernel-doc documentation for the struct members that were previously
+> undocumented. This fixes warnings when building with W=1 and ensures
+> the struct is fully documented per kernel-doc conventions.
+> 
+> Assisted-by: opencode:big-pickle
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
 
-On Thu, 05 Mar 2026 13:06:15 -0500, Hugo Villeneuve wrote:
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
->
-> Hello,
-> this patch series improves support for Variscite VAR-SOM-6UL based boards.
->
-> The first two patches fix DT/dmesg warnings.
->
-> [...]
+merged to i2c/i2c-host.
 
-Applied, thanks!
-
-[14/15] dt-bindings: display/lvds-codec: add ti,sn65lvds93
-        commit: bd584193a91ef2e190a2cf19f9320387fda1a21d
-
-Other dts part already picked by me. This binding have not picked by
-subsystem mainatiner by twice ping. I picked it to avoid CHECK_DTB warnings.
-
-
-Best regards,
---
-Frank Li <Frank.Li@nxp.com>
+Thanks,
+Andi
