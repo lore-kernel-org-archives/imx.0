@@ -1,99 +1,108 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E2A3EE1EE
-	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 10:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278683B4E8A;
+	Wed, 10 Jun 2026 10:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781086971; cv=none; b=CzACyevAKcT3emZXDaQniYK9ja0yapqn6pBdRZrDM90auaiusYzQ0v8UVlNujgUe55GqyHGlF1QYfYWvBRoaGfjRwfVX/zrfm76xGw4Mxoey75EX1D4w15b6L88kVAkrOfp/rF+WQ/qKoG7OYlt9EW6bxqcH+RjmrFSpVzZ+VGA=
+	t=1781087265; cv=none; b=kQRTYDqRh1IRnek6AZR7lHyF5EMzHLzo60lv2xUQ9q0D31+OtxIVmufMzZXObw98cvjiBuJymvDr6b1P1SY9zvpt6Z0E7lmfR6vPJneYDLHJbsm1rdRvJXlFMoLnLnWlI8mM87GmN4dX4wS/UykBzaTfoRF9dnoC3YYWeGYyoqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781086971; c=relaxed/simple;
-	bh=V3GPjC4xDWSVt2U5uFb+5QSWnJTT5bcQBuFIafHxkCc=;
+	s=arc-20240116; t=1781087265; c=relaxed/simple;
+	bh=gqSUj7BP8+cxE/tJWPUQ9h5a/jPgRCqt4stgniSIf98=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sa5ag8Qsgj1oduZsfEoG6H0wV7mM7AXwyrnG4dogDD5QgvYLgJxwJAFyA9yIoWT8+YtuZWjgAmAMpICWVTPHJYA3QZdTkcuBR9vXEx+1b3FjqfCSi9p/MsWJStgJkjvky/T4EK0mYFPj7gb6vBuJfE7T7YkhEyEbYu7XlievjSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=pC8mYV7X; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=QzWf7sk2AYDSuBUVtvh+IJ4X3nhi+J8oxKLKfhmQo62TuY1V5QaJZ9XLyITehEMAytVAYYLk8Mqsc/BF1J5jmaLruwOzmtd9CdSrrNen8NtuCbHJYWWYpS90iWEeJTKAdgk4iRyH6czYmWzwMXRsPBjctwL9M6gfV0cjBECVRr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oGu3zhh2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="pC8mYV7X"
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 9D78522715;
-	Wed, 10 Jun 2026 12:22:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1781086964;
-	bh=L6bxtzQsXU5V2ZLqW/tYugnU81O7/hqnwZwvA1uMdL8=;
-	h=Received:From:To:Subject;
-	b=pC8mYV7Xz1TRYqsof6BGWIwTZf7J6GAzFKMNJBiXoNGclnIzszxJMfPsQ4lVyEWlp
-	 id8MqVeYdb09FIworIJ+W+/Aqa8ttaP4qtih5Tu15BX3wTxoLrlh3qhQYMpID2lfaW
-	 3bU8F0kg2Wetv3NlsovGSYAVGOfxlksDwSvweQ8K1EORX5undFEnvo5HA43fcZA2WD
-	 g1zIwMfeW57yfstKt99jOXwQ5/j9SItqXODr80EFXHiSLekrerHOwYY2W51DPQHpPF
-	 /touJX3xeB6F20k2DaDBufw4DkU8LQHwXj2BsdBXZ0KFXanZRKBy703fDUwSrFrFym
-	 aLbhV50d4xpqA==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id 540DA7FD97; Wed, 10 Jun 2026 12:22:44 +0200 (CEST)
-Date: Wed, 10 Jun 2026 12:22:44 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@oss.nxp.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: remoteproc: imx_rproc: document
- optional "memory-region-names"
-Message-ID: <aik69L0xCW13TCZE@gaggiata.pivistrello.it>
-References: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
- <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
- <20260610-adventurous-granite-marmoset-e0eaa8@quoll>
- <2fc48536-5af9-419e-b4df-746b678cb6ab@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oGu3zhh2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7B71F00893;
+	Wed, 10 Jun 2026 10:27:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781087263;
+	bh=1JDn7CbxH4NkFQTX1xElzM+90pkVv3Q0ucAERFYyNNw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oGu3zhh2OG3sW8byiL4NJ6CQlf9ldAiGwdIcV924G4xpkRt3RwAbsxkuLh7dbwXjO
+	 pBYpbn4rov/isiedEoYakwt/4vHmoj964vLfod9I6M/bic0ewaKckXmS4272RylyZk
+	 Vb1KlUxXLLFYTwSimZ+0TyAK/L2vrxTt0mH+OQPBkpCbl+vGoxJtEHAbiTaIjZM4qY
+	 p2eKDLOTAELQnxC88iPxjB7DXkoPSw4QYQ/y42Axo4u+jGmcVX3QJo940Lai4ihZTw
+	 SGsq/DUdDCYm5WqP6C+8Oa3uJjjiXer8tAdHf6IQ4omjf1lNUnnMDFlesSnRbEN1tE
+	 pOBI8IuAHjVmg==
+Date: Wed, 10 Jun 2026 12:27:36 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
+	"sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, 
+	"manivannan.sadhasivam@oss.qualcomm.com" <manivannan.sadhasivam@oss.qualcomm.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"robh@kernel.org" <robh@kernel.org>, "Frank.Li@kernel.org" <Frank.Li@kernel.org>, 
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH 1/2] dt-bindings: connector: pcie-m2-e: Add 3.3Vaux
+ supply support
+Message-ID: <ihrmgh6etb2n5zqjbrykfjjms4a6zgpzwjgrd3rvy24jufbss7@f4nfxrp7jksy>
+References: <20260609033840.2006078-2-sherry.sun@oss.nxp.com>
+ <20260609034408.BC69D1F00893@smtp.kernel.org>
+ <20260609-unique-magnificent-eel-eb623f@quoll>
+ <VI0PR04MB121140EFB8E614326D799503A921A2@VI0PR04MB12114.eurprd04.prod.outlook.com>
+ <mvxoynvocxcalxcwogbiovg5yurjczxqfu2fqkji33bunmlplz@zxqjsdjts65j>
+ <VI0PR04MB12114DBDD65F25FB615EA8967921A2@VI0PR04MB12114.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2fc48536-5af9-419e-b4df-746b678cb6ab@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <VI0PR04MB12114DBDD65F25FB615EA8967921A2@VI0PR04MB12114.eurprd04.prod.outlook.com>
 
-On Wed, Jun 10, 2026 at 02:10:37AM -0700, Laurentiu Mihalcea wrote:
-> 
-> 
-> On 6/10/2026 12:37 AM, Krzysztof Kozlowski wrote:
-> > On Fri, Jun 05, 2026 at 04:36:18AM -0700, Laurentiu Mihalcea wrote:
-> >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> >>
-> >> The names of the carveout regions are derived using the names of the
-> >> reserved memory devicetree nodes, which are referenced using the
-> >> "memory-region" property. This adds a restriction on the names of said
-> >> devicetree nodes, often bearing specific names such as: "vdevbuffer",
-> >> "vdev0vring0", "rsc-table", etc... This goes against the devicetree
-> >> specification's recommendation, which states that the devicetree node
-> >> names should be generic.
+On Wed, Jun 10, 2026 at 10:13:00AM +0000, Sherry Sun wrote:
+> > On Wed, Jun 10, 2026 at 08:40:54AM +0000, Sherry Sun wrote:
+> > > > On Tue, Jun 09, 2026 at 03:44:08AM +0000, sashiko-bot@kernel.org wrote:
+> > > > > Thank you for your contribution! Sashiko AI review found 1
+> > > > > potential
+> > > > issue(s) to consider:
+> > > > > - [Medium] The `vpcie3v3aux-supply` property describes a
+> > > > > non-existent
+> > > > hardware feature on the M.2 Key E connector to work around a
+> > > > software policy.
+> > > >
+> > > > Feels valid. Describe which pin on M2 connector are you representing.
+> > > >
+> > >
+> > > Refer to PCI Express M.2 Specification r5.1 sec3.1.1 Power Sources and
+> > > Grounds.
+> > >
+> > > PCI Express M.2 Socket 1 utilizes a 3.3 V power source. The voltage
+> > > source, 3.3 V, is expected to be available during the system’s
+> > > stand-by/suspend state to support wake event processing on the
+> > > communications card.
+> > >
+> > > But the current vpcie3v3-supply may be gated off during system suspend.
+> > > So I  tried to add vpcie3v3aux-supply to let this 3.3 V power source
+> > > always on for PCIe M.2 Key E connector. That means vpcie3v3aux-supply
+> > > and vpcie3v3-supply actually refer to the same 3.3 V power source.
+> > >
+> > > @Mani, do you think this is reasonable? Or do you have any other
+> > > better solutions? Thanks!
+> > >
 > > 
-> > No, it does not. Names like rsc-table feels exactly like DT spec is
-> > asking - for a name matching purpose. Are you sure you read the spec?
+> > There is no Vaux defined in the M.2 spec. So you cannot define that supply in
+> > the binding. You can define the custom Vaux supply as a fixed regulator in DT
+> > and mark it always on so that it is keeps supplying 3.3v to the card.
+> > 
 > 
-> Quoting from the spec:
+> Hi Mani, thanks for the suggestion, but adding an always on regulator may
+> cause board power waste, current solution ensures the 3.3v regulator is
+> only enabled when M.2 connector needs to work .
 > 
-> "The name of a node should be somewhat generic, reflecting the function of the
-> device and not its precise programming model"
-> 
-> and looking at the examples provided in "2.2.2 Generic Names Recommendation",
-> wouldn't "memory" be a more appropriate choice for the DT node name instead of
-> "rsc-table" since it's more generic, while still matching the purpose
-> of the device? Or perhaps I'm interpreting this the wrong way?
 
-Please see
-https://lore.kernel.org/all/CAL_JsqKRW-=er+DCTob0HmQv9OyVt7yiej-Yht6UR-mcW=LHUg@mail.gmail.com/
+What do you mean by 'need to work'? For getting the M.2 card to work, you
+already have 3.3v supply. If you want the board to be always ON, then you need
+to supply 3.3Vaux, which should be always ON too.
 
-Francesco
+But who is turning off vpcie3v3-supply? M.2 connector driver or the platform?
 
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
