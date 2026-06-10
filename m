@@ -1,50 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E210A372663;
-	Wed, 10 Jun 2026 06:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A742DCC1F;
+	Wed, 10 Jun 2026 07:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781073441; cv=none; b=I1j1kV9mhrUGOjSCCiVjz1310AVASjWOFhBeCwBKJQ4CrTkU10GzCjkOsT0zpLRG/jWHYgW+OSHAR3C9sfVvSuz772Q0nASICHA5BetjnTx9S7TfCkHW49y1XROMGvdQpo3Uao8tOBd+SCtWn2ckNBu3qF3jkj4u9kSB4h1rH3Q=
+	t=1781077083; cv=none; b=sGakyOalGn6ktk1jS1UnAbIYunIgii74SNFtrHOuUafHRCXccA4lu91wMYa+mymL1i29wb21ze3OHEcGURGeKxh1zA+MjtF6u5NdQ+RdBHEXieaXWXH826HyM91NOP2Q145oXXO9SlPBMB9gXg5I+cVi4ScC+QrTeCB5jdchIAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781073441; c=relaxed/simple;
-	bh=y36luLyiZgtidk6T4HAJPmApUtNgxc9AfIJ6R+zzYvk=;
+	s=arc-20240116; t=1781077083; c=relaxed/simple;
+	bh=K2VDpKCIFs1838nBciT+Skwxqwab6E906/rTCAvSPXk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dNtn1mcJWDtSQqofcq/757oDXq3uXAiJWaRpxYiIvFtTfkxjDv88VC01B1nFYBXJxCkkoMF/gu+JerHm9us1YZ75FiHsAMbpRxMnWxkISla/ggOKNHNI7w/kPSlBwCBfqi5ZYMNWzPGOAPE1Ddfk0kQHz5F4uxKwgUnZ0WFZHjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QAYVMr3V; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=EZ2dzQNKlNMnZktWzd4B4f4wUnussN3htwptOxoXE3eZExBKtL5g5eh/jOyqRFrw18W20XDZ+7kz8rf67tXIM245+vj2g4B2PMjhktx0VkkrhohOO8wEELJbDp+pQeoTMP3f0hAeVn7nhR5lipubcBVw5RvS8ey6ywmEfrPgyr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLfu2WYV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAYVMr3V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521781F00893;
-	Wed, 10 Jun 2026 06:37:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLfu2WYV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F07E1F00898;
+	Wed, 10 Jun 2026 07:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781073440;
-	bh=i0peh9BPV0yzb2/7tAvDBxb+1fXYB7Zsg7ey2Fi9LQY=;
+	s=k20260515; t=1781077082;
+	bh=P7CRDgQRCgbswaPyjvGXosFvqSn1cQaZz3l28dfD8pA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QAYVMr3VL8i2R9MeuoZCwTDDw/WAweSOBhiktrpWJhL+hTPub+f2EIUM4Yv/U1+kL
-	 dH14bFzLv0AZQc/ccBmiiqSs7Qf6QC5+ex30l4EaWXrhWBlRCmp6HYRgAUE4JaFuSz
-	 KIGnTwNyPOtu4FwyPVeX0AVPu4q22k/Qzz3cRBFtzdznfuOysKgdbTfhw8kf297+R3
-	 MvRB88EUQbQmKjLcGMZyr08CfxtxRP+grSU77RDkEvUulRhOcoFTJJxDEQzfhIvgH0
-	 YSjrNDUrzvUtUXH2RGaGrwXJmA/NRwJEx0GRISOLETlqcLzcSNsJUa1H01VXxUqzvG
-	 goTUKOfj3pH0g==
-Date: Wed, 10 Jun 2026 08:37:16 +0200
+	b=aLfu2WYV9r7arf9MLaBIu2ytvYUSx9dTUD0tgLBGlvbQFBSLSkMkr+9GF41qVul09
+	 7s2nk+Kiaf8Dm8YOGAWSOw2ttxjDChRHf1DtTPjZZPvVUOrLWseonB8S96DH+Et7Dj
+	 3b2P9FZcn5p+YBliCxcwujDZ+zFO0UNigzY62VglAYWOkWZfzoo1jqJd4QNrhL7Kyh
+	 c8RnsDAtYB1xfIjKdo+s56AqsgXJVwWgcOcnQo2DAHdGCAQjlg0HXlbISMWaD6CfDZ
+	 sVfadXSbyBBUXt34cnjfIJYaAfK99SlRv863wfBOHvYbCURqP3vNFhpBuPRWpo45u+
+	 iTz3pxu3dkziw==
+Date: Wed, 10 Jun 2026 09:37:58 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, 
-	Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-can@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>, 
-	Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>, 
-	Eric Chanudet <echanude@redhat.com>, Andra-Teodora Ilie <andra.ilie@nxp.com>, 
-	Larisa Grigore <larisa.grigore@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
-	Haibo Chen <haibo.chen@nxp.com>
-Subject: Re: [PATCH v5 4/8] dt-bindings: can: fsl,flexcan: add NXP S32N79 SoC
- support
-Message-ID: <20260610-crouching-wild-mushroom-c8bf6a@quoll>
-References: <20260609142954.1807421-1-ciprianmarian.costea@oss.nxp.com>
- <20260609142954.1807421-5-ciprianmarian.costea@oss.nxp.com>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Daniel Baluta <daniel.baluta@oss.nxp.com>, Francesco Dolcini <francesco@dolcini.it>, 
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: remoteproc: imx_rproc: document
+ optional "memory-region-names"
+Message-ID: <20260610-adventurous-granite-marmoset-e0eaa8@quoll>
+References: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
+ <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,31 +49,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260609142954.1807421-5-ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
 
-On Tue, Jun 09, 2026 at 04:29:50PM +0200, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+On Fri, Jun 05, 2026 at 04:36:18AM -0700, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > 
-> Add NXP S32N79 SoC compatible string and interrupt properties.
+> The names of the carveout regions are derived using the names of the
+> reserved memory devicetree nodes, which are referenced using the
+> "memory-region" property. This adds a restriction on the names of said
+> devicetree nodes, often bearing specific names such as: "vdevbuffer",
+> "vdev0vring0", "rsc-table", etc... This goes against the devicetree
+> specification's recommendation, which states that the devicetree node
+> names should be generic.
+
+No, it does not. Names like rsc-table feels exactly like DT spec is
+asking - for a name matching purpose. Are you sure you read the spec?
+
 > 
-> On S32N79, FlexCAN IP is integrated with two interrupt lines:
-> one for the mailbox interrupts (0-127) and one for signaling
-> bus errors and device state changes.
-> 
-> Co-developed-by: Andra-Teodora Ilie <andra.ilie@nxp.com>
-> Signed-off-by: Andra-Teodora Ilie <andra.ilie@nxp.com>
-> Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Reviewed-and-tested-by: Haibo Chen <haibo.chen@nxp.com>
+> Fix this by documenting an additional, optional property:
+> "memory-region-names". This way, the carveout names can use the values
+> passed via "memory-region-names", while keeping the devicetree node
+> names of the reserved memory regions generic.
 
-You cannot test a binding (in a meaning what "testing" means). Building
-code is not testing.
-
-> Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
-
-Not possible.
+I don't see how anything here is fixed. memory-region-names has nothing
+to do with node names.
 
 Best regards,
 Krzysztof
