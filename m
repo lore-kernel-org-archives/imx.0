@@ -1,111 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F242F5A13
-	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 05:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC10022AE48
+	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 05:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781068565; cv=none; b=W4BvvlaknmbLaa9x8ON6/F0kBjWVGnEXN5AEeWEx70KlShNYBHTgVtTUeUhkSRXCDKTflW2TwAP8kK6Nuh9I8WJFwkxuWtDR7adppQOdUvdQpHBqB5GoSVxY9uDU+fmp/f4n0NsvJdHoySdSvt0cUt3K781mgXwAqSocptBeK60=
+	t=1781069486; cv=none; b=KZiVMER8/+K/4sNVhRqA1U5V4uwhAkW+l37auh81K6QxRkW2+Vv/BRs6sPxx74ONdQMbaNKGO3fkoRtBs6ZAKwTseqgYW6M04qyGXD8TiIP5pJQmxytANX0GhOIEUSC6SW//CrN8XpntZODH4fwf2w83q1VHXCiAUS38txxI6NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781068565; c=relaxed/simple;
-	bh=1gcaaSiPFs5CQo8rk6460/LkcQXL9sDOunDe/gtPPjE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iUjVap4vhpSRe9lGyUAbc5CHvzGPjRnVn4Fuy4YiVrnplZfR8tV/VJb+OVgUKUPRwaZc2M/g+kiNWl2MqLZPY40+ac48fdTaX0fyN1pYqNE2CipCraRBUO50+i4Ra52qx+apxhFrnOR9FSC6eZrokAlE9LSO9HKzy+yqN1Sydio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJkANW8Q; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781069486; c=relaxed/simple;
+	bh=xncJOWmuYUFhSJpC2ndwx4Ilw8Yx+jekAMRqVnwcHuU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KuEhiloaQ9w1wcem/P18JGRjzU3RrxHinelwRf6fcWCEp0Ei79rgvUK89DddBG2c3v4azvwZ5HnwHUqwmatP4ROKQspBgZObiNekOfA+Dk9du20Mdpnf5VWIWphMp/RyQ+tRK7rDuhMd3GbO3OhltPxS69RoO8oZ8BVsJqNpQ34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Assiw3hb; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJkANW8Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B001F00893;
-	Wed, 10 Jun 2026 05:16:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781068564;
-	bh=LkE5maH9UnSkyMdYanGQOfS2LI3I8vq1JtxQylNQ2DU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HJkANW8QBncm/DjKVgJ7fvt82FJIBrPYQE5wNiSbaQ8ckdN9IzXEfC0T12P3ebLTZ
-	 F73AeOdt+80zW/YzsJs3B+3rpOjEybk2bCplnEO2F19Jx8X4GzqUgr4+OKMfJFvXIC
-	 iG1jv5myCUiOS6FiX2bqndeI4OLXWbcuK9Zb4uJ+CghPD+O/gmYQLElDxpIUV+E9Wq
-	 4flnV17lUO9nUz+MlZ3UIFTr7GcWhvgo1+MeYNLL6qkGjExbA3g7rfVvM3Vc48cdak
-	 +XHioU9s04cqaqLDVjrCdr80lEGH2iFwmXlH4tMXOro14c03C/P/0Nzop45vwxmVgQ
-	 vBpJvsat4PhSQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] ARM: imx: fix device_node refcount leak in
- imx_src_init()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Weigang He" <geoffreyhe2@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260610050625.2229221-2-geoffreyhe2@gmail.com>
-References: <20260610050625.2229221-2-geoffreyhe2@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 05:16:03 +0000
-Message-Id: <20260610051604.43B001F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Assiw3hb"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2c0c2d792c8so42512085ad.1
+        for <imx@lists.linux.dev>; Tue, 09 Jun 2026 22:31:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781069485; x=1781674285; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yQdOheEUqRpM4ZgP7ld+n/Ny0a30r9dAAihdKcjT1Qk=;
+        b=Assiw3hbZFM4M7Recz3iFBkK4t5E2rUsIsET9gytEsPoOxy5WfnPwjBkJkw1tHFG/c
+         5STGWL4AjLEC3L/gvJVEn5X0irqwlrcqbbp0trs+VMyeJ4UdBzPiOc4exZzob99l9ZjS
+         +XqqXjtmlRAv6fOC0cYZBMkj5gAPOMfA4pnnMJyBNRZpA0UEF99Z5b17DHXDQ2pfpi8r
+         sL3quoWbumzt5JwEGmh3XQbcVSr1lWy1QuJSbCPB8Y11V9JB4V27VC++U91Z3LAWZxUh
+         YveRFDhjyXHfuzzW4pvGt1fiWgfRLczzDGsauJ9QbjIr9AZl5E3ukMmkAVlI/cgJk2R4
+         5bOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781069485; x=1781674285;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yQdOheEUqRpM4ZgP7ld+n/Ny0a30r9dAAihdKcjT1Qk=;
+        b=kWoYYccPGTm3KZl0yzBhHq4U7N91YcY/a2Wwssnz3sqBAsy/k+F3aBZXkKgYP5NG1p
+         Dh0acbmCNgWAldMSug+yAMcpJh8s7Ihaf+iCenG6ti7gulOjMPfNV9wy6hMn15DuKR9l
+         mzF+2gkzsGxR8jejzXKzOuRi7AnbSBdAPGZylsi3WdpzzxhW/Ic4Rpr0i1rGa+xq/wVc
+         nBT1kCXfCAC4afAnC7s67nv4SAA2TWD4Fc+M0d807fEQihW7Cpu9wUOM45beoavza2bm
+         QQ678wbM8Wr1ZvNC6S2ywSe0ris+tZprB5pMM3aNbUzUZGevDNiqyvNmwvGyDvP5RZTq
+         rMsg==
+X-Forwarded-Encrypted: i=1; AFNElJ/cXDNNpAnIAA9Lb9ys5KrtjiVjLQ4UAJP5hlmV6NLZIjK75VMdsIjjE7jqEQwYppHNvp8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxSUUwEJgUtzXZymi5VZf7HvrKM/HrwqjVBe1gUfwvDKwgzuZWH
+	dPvGy3ePlgqEPqtt3vjRnP+3w0JLtn2Fj4i60PIM5pyO5qCjHDlesqnu
+X-Gm-Gg: Acq92OFEO5Ut0cE4BkaCM80cPvIp8tcbm0YnWwiIAuK5hVGbYI+ZWhjUUwYBoZ2PHty
+	TN/8G440fGkZP0zLGVcPOhvDaN49+9a8p14wtYYP16rY0creezjOfXWjXpnaXbWW8S6zTiw8Bzb
+	ldAXWotlvrnoXYevI26S8hbe93MzK48ubG58UdAXLslU74vt2n5S49T5MnrYF1PLb60kWeNYjGs
+	bMIRz40iD4mOwRa84WgAsEJblzeq9FvDt1Vvhvfcn9TU39WmtawFigISJqqX4ZpulfM6TD1aAiu
+	0NElsYEfAhPZcBHsHLmBaOunS1bcR0W0ZoiEwYPDW74X+tsSjGTHmGelGZ+TYOZEmc0rKHFuClk
+	Ox2jPo4vHMkz4fzLSi/9zsU1riRyOwjlJvaYbUaXvaWMyosicDL3Sr45F1lBB83mX+I+ZgHT1Ep
+	YpXMt6pgxEprB8rX4zANMa7mRa09go04MG7gMHk9bB2X31n87GjDuqtWCmzshFtrr4iaP3jmbcX
+	/e7nfJEc4kIMuKyQX/2TgesluIx7fwrAh9Cw7H93wyvqLcY4yIxRw==
+X-Received: by 2002:a17:903:13ce:b0:2c0:c0fa:1659 with SMTP id d9443c01a7336-2c1e8207360mr303183845ad.33.1781069484906;
+        Tue, 09 Jun 2026 22:31:24 -0700 (PDT)
+Received: from localhost.localdomain (n49-176-80-106.mas22.nsw.optusnet.com.au. [49.176.80.106])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c24edc8acasm107916975ad.45.2026.06.09.22.31.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 22:31:24 -0700 (PDT)
+From: Weigang He <geoffreyhe2@gmail.com>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Martin Kaiser <martin@kaiser.cx>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Weigang He <geoffreyhe2@gmail.com>
+Subject: [PATCH] ARM: imx: avic: fix device_node refcount leaks in mxc_init_irq()
+Date: Wed, 10 Jun 2026 15:31:15 +1000
+Message-ID: <20260610053115.2263570-1-geoffreyhe2@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+mxc_init_irq() obtains two device_node references via
+of_find_compatible_node() and never releases either one:
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the `imx_src_pro=
-be()` platform driver blindly registers the reset controller without verify=
-ing if the global `src_base` pointer was successfully initialized.
---
+  - The "fsl,imx25-ccm" node (looked up to map the CCM low-power
+    interrupt mask registers on i.MX25) is stored in np, used by
+    of_iomap(), and then the same np variable is overwritten by the
+    second of_find_compatible_node() call without an of_node_put().
+    On i.MX25 this leaks the node reference on every boot.
 
-commit 3a8b3e9f6b1a902d26351b0e93daa81ca748d342
-Author: Weigang He <geoffreyhe2@gmail.com>
+  - The "fsl,avic" node is passed via of_fwnode_handle(np) to
+    irq_domain_create_legacy(), which takes its own reference on the
+    fwnode through fwnode_handle_get(), so the caller's reference is
+    not transferred. np is then leaked at function return.
 
-ARM: imx: fix device_node refcount leak in imx_src_init()
+Both lookups predate the switch to irq_domain_create_*(); the missing
+puts have been there since the code was introduced.
 
-imx_src_init() obtains a device_node reference via
-of_find_compatible_node() matching "fsl,imx51-src" and uses it only to
-call of_iomap(). It never releases that reference: on the success path
-the function returns at the end without of_node_put(np), leaking one
-device_node refcount on every boot of an i.MX5/6 platform.
+Drop each reference once the value derived from it is no longer needed:
+after of_iomap() has mapped the CCM registers, and after
+irq_domain_create_legacy() has taken its own fwnode reference.
+of_node_put() is NULL-safe, so platforms without these nodes are
+unaffected.
 
-> diff --git a/arch/arm/mach-imx/src.c b/arch/arm/mach-imx/src.c
-> index 59a8e8cc44693..f28bfb653a88f 100644
-> --- a/arch/arm/mach-imx/src.c
-> +++ b/arch/arm/mach-imx/src.c
-> @@ -171,6 +171,7 @@ void __init imx_src_init(void)
->  	if (!np)
->  		return;
->  	src_base =3D of_iomap(np, 0);
-> +	of_node_put(np);
->  	WARN_ON(!src_base);
+Found by static analysis tool CodeQL.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but the imx_src_probe() platform
-driver blindly registers the reset controller without verifying if the glob=
-al
-src_base pointer was successfully initialized.
+Fixes: 544496ab5cbd ("ARM: imx: move irq_domain_add_legacy call into avic driver")
+Fixes: 9b454d16e57d ("ARM: imx: avic: set low-power interrupt mask for imx25")
+Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
+---
+ arch/arm/mach-imx/avic.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-On platforms like i.MX50, the early boot initialization function
-imx_src_init() is never called, leaving src_base statically uninitialized
-(NULL).
+diff --git a/arch/arm/mach-imx/avic.c b/arch/arm/mach-imx/avic.c
+index 3067c06b4b8eb..6873a50bbe2c0 100644
+--- a/arch/arm/mach-imx/avic.c
++++ b/arch/arm/mach-imx/avic.c
+@@ -173,6 +173,7 @@ static void __init mxc_init_irq(void __iomem *irqbase)
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx25-ccm");
+ 	mx25_ccm_base = of_iomap(np, 0);
++	of_node_put(np);
+ 
+ 	if (mx25_ccm_base) {
+ 		/*
+@@ -203,6 +204,7 @@ static void __init mxc_init_irq(void __iomem *irqbase)
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,avic");
+ 	domain = irq_domain_create_legacy(of_fwnode_handle(np), AVIC_NUM_IRQS, irq_base, 0,
+ 					  &irq_domain_simple_ops, NULL);
++	of_node_put(np);
+ 	WARN_ON(!domain);
+ 
+ 	for (i = 0; i < AVIC_NUM_IRQS / 32; i++, irq_base += 32)
 
-Despite src_base being NULL, the i.MX50 device tree contains the
-"fsl,imx51-src" compatible string, which causes imx_src_probe() to execute
-and register the reset controller:
+base-commit: 0f61b1860cc3f52aef9036d7235ed1f017632193
+-- 
+2.43.0
 
-arch/arm/mach-imx/src.c:imx_src_probe() {
-    ...
-	rcdev->ops =3D &imx_src_ops;
-	rcdev->dev =3D &pdev->dev;
-	rcdev->of_node =3D pdev->dev.of_node;
-	rcdev->nr_resets =3D ARRAY_SIZE(sw_reset_bits);
-
-	return devm_reset_controller_register(&pdev->dev, rcdev);
-}
-
-Any subsequent consumer request for a reset via the API will trigger a
-structurally guaranteed kernel panic on a NULL pointer dereference because
-imx_src_reset_module() unconditionally dereferences src_base.
-
-Should the probe function verify if (!src_base) before registering the
-controller to avoid exposing a fatally broken API?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610050625.2229=
-221-1-geoffreyhe2@gmail.com?part=3D1
