@@ -1,77 +1,73 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011037.outbound.protection.outlook.com [52.101.70.37])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013069.outbound.protection.outlook.com [52.101.83.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BA03BA222
-	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 14:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018CA42669E
+	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 15:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781101759; cv=fail; b=tGg8FRwOfyOqjwF7ygi8vJadtfz8vk2FlbsXsmhx13zEDKDa9VU3Ak3N5T5Zaa+yX+bIkTuzZqjPUEPBM/++4oML/5K5VqX+qcaChBaLp1dnDTvK/F2MnmAyyz5BkkbkHbZ8B0UaEkwOQXLuUVc5jI3yNZt2UnirARubPMI/Pt0=
+	t=1781103951; cv=fail; b=CXU83FbNTQXWW1l+MHCbZjD2YH1gjKHZwEg9fw6v00/qQ5+bZwbrlmFOhNyFQ+rvECNrJ7NRt33AnbT03KacBsrsuhU/qKCUcXZhGdmpsn480xaN5spz745f/dIEBpwguicbNVgJVGlgW8F+rqiTZq5ZWnDs4mSZ4xiJFbjagcc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781101759; c=relaxed/simple;
-	bh=Cq0Bwxlb13KS8oXBRa341tnDGJp2VwgWlZFaa/qg/0o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HgoSF88OkcAiJdicGIfmroTCZG2iFGA0U0sAW6QMIUQ41PYZ6JNx7rdbs2IEnjKVtmw2q9Pc2713+4yvP34DXGt51AO80I3C4+iemI5MxtYal9wvigHLAN2q1CfADld6i7AGMdJyF0YC1j2VpTBTYf4/gBqtSsEySCK7lYe5Tbg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bGgXCQ/Z; arc=fail smtp.client-ip=52.101.70.37
+	s=arc-20240116; t=1781103951; c=relaxed/simple;
+	bh=z2aN2kRKYKdzr2FWF4KcKVeCb9tSruR6iQy4QKK6VEc=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=L2Zakwmq44Idbhh08sNL22iTySp/jQwcbGRe2+uZlMz09I+SMCsrJ5fibL/P2ynLWbcv6OUk9XaMN1+FvGhwpku9ShGeT2ncId7uWTKVWWByTBYJQUoy7T1PPv/NHUt6YNdM0R+kU2tLbhNShJdLVCYB4j+TxNx5FvGMxHhDq44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=WEqV66bX; arc=fail smtp.client-ip=52.101.83.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bGgXCQ/Z"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="WEqV66bX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TEq+m+hbzC6UXVEGWAhsOd9+j3B4H0pV68lR5A+tVJmxuTI3ScD4YrxaNVujUE0HBQIG6eRKg4zygDiw20FvOtHAWHDW63d3WIyALmC87X3gGJDiD3oKIruixyHC9k8Jx4iBbl/lg2qDXxjvg3fa4Uyu5mJBU1MscMvkkHw2MiFiz68eAqw5D5wEfdjx7AJUNNy0Ub/7RVp9LfVtxQqxaVc6/QbQbndkfH2VNwPxZKXBhkolzll0bSvYTefhTmpb0SZ074SuKcpr820S0qEMkpuwv5nF1u4/Zzjd+7DmHIcJH+iR2SoB5wg7SmfrNlbDVOZR7FavNIsSgEKlFX1x9A==
+ b=PBdrHquxR+xh5U4sVYMXVHJWTG+Taf4KzlDnT41PYQUpunywJG6jEGXUDJz+NjgAeYHS3XpPwjpR4e0P6IgHEjEGDXPTDGxB67Ay1M2FJnzP5aTcJWAHj7tlgfeFWtinA0+nlY3G5BdMbtev1WRFCNeNaMR/nQ75jLepzbcVsd4P0+Apci7cPaZlBzGfLV+mskZIJM2+UUAsO74yPE51Zf76f79EyiCjGYNwqQdef+QZCNhK+T1VjozHJsJGyaHMGlyrG2bmKJttqbNJmhrC3DXg+m3CnVXAGqpXvntEXGisWBDo5EWIRzpc6LusPIWBFYes7s98EyKVHz/+g7Oy9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=31C6sRFZWwuc7BOXs5GwmqgDJ6wjYceVyR7N+wjZ9M0=;
- b=W8ufyZlG1aZnHvIhVYtVuwT12xlYEi3laSAJ1rsYjDY8dd7vseTH4YeyfomtBkpAaRZ6Zzv/22p13tqev40HYn8Ko7W9cn2BAiJmP3ZHBCS4Yx+/w/xzIM/Nkrj7K5WiJimF1o2pVWbNRYMzbNnRcfRjHLnYDxTBYkfSAjGjDjV2s42eVRiOV+0vbpiw4esM6XGVnZw6JEFJ5XhQmdrvcQBd9dqwDrkNMMXCNK7S4uEzzHOd0wuXh5zUvR9NpFCM18R0lFx/Qi+hSSNunCqXPR2aGCnUj6njh7Ht6iP3WOCTDS3RPNRQsbIoYF/npmFwEtsTQ15SjHcBhgbHSuPGNg==
+ bh=yvB1JoeapBL2HFP3cyAjR7epTFjPVBPbgr7I6Wx9xwk=;
+ b=w1MMfyP01+rtmQE+QGrmNm20NuEOBXu0UsIaPmKTBZ7FSPWBgh3HtSUXxVRyFb7o6h868xBmI+6UPCbTV6TkOTA0J1uGUccU2qqkEyOtqZWo0FiVuL86O59LXpt1qelYD9TwUfhRVTDZrizMii5xLTiTf74l7f/f7CZN170QtCwLkTwFfvKD2tagh+BoKKuCr4NUhV3umP9AXoscgiKVpIYBUJ10K7mm4B5zPBLMxWonmqB9d/Gz6GxAxfDGgO+bj/B44ehb4XoXm6d4/dgBJtDzRRO0WAeV/QGyyQm5GZmXdFykzDnkSBzJoior5LMOXGO7tSEAUitrTGftmWRYxA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=31C6sRFZWwuc7BOXs5GwmqgDJ6wjYceVyR7N+wjZ9M0=;
- b=bGgXCQ/ZmayCQrQZtiNXP6gE48ApL8ffc4MDCfo09/ptQsH4USLAkvrTp+gA16NTE6d9LF6pEXIALFT68t31RqXBld57Fz7QdWuKU4Bb4PGa5bf6ZEkVHRIFNvp9NZbRYKJb/qIYiyRAw4G0Cu2czYqxm77Gin7MzB6PpAaLFxlXDTl4K+Jcpah59i/lu7wT/iCHf+9brB+qx+Z7WVff6DGFrg/umszNmefa6PDDj00uSVH0PoyvBGf0YkC21K96yDwihSufhL0F1xvS5k4woB6VFDwDKjEEsO2h4pRe3cN7G5AXqbUGHJ6leuzb0wN3MsQTWg96bjyoWUQCSyEPBQ==
+ bh=yvB1JoeapBL2HFP3cyAjR7epTFjPVBPbgr7I6Wx9xwk=;
+ b=WEqV66bXSGAXqsNz8qyx/BhDG8W1f1xe10TWxX0tyjnFtEhapk8wYotTEeDVKA/dHV7L1sBzZjwnm0PNKwz+JbrQcXFixDHQeUYy7DAHtM6TpQ06hi3XhdEtT4Z+60xoCchK5tX+DNB1S9lIm8HxtKmyS3CDjofoelBR1V10jwbMG1yJLpyF+xgwi2aV2wEnVS8hL98+HQdxiI2wNidfnEgJlj9uXS7o6Sg9qjmGFc59KrKYKSvdVnSkNVOAScJdsJDDU89M7qNGYYlqwjfuGEP5REwJaDBKEIST5G93TxC8g+uFNNy6aunFLbVbF37HS2j9SDnKbg1f/icNKAnU9Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22) with
+ by PAXPR04MB9423.eurprd04.prod.outlook.com (2603:10a6:102:2b3::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Wed, 10 Jun
- 2026 14:29:14 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.11; Wed, 10 Jun
+ 2026 15:05:44 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
- 14:29:13 +0000
-Date: Wed, 10 Jun 2026 09:29:04 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+ 15:05:44 +0000
+From: Frank.Li@oss.nxp.com
+To: Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@oss.nxp.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: remoteproc: imx_rproc: document
- optional "memory-region-names"
-Message-ID: <ail0sH1UhnQBPRkr@SMW015318>
-References: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
- <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
- <aihB5rVLsVqzg6cb@p14s>
- <aihIIwt_9T7yYxP3@SMW015318>
- <CANLsYkxw6rbWNom8rNfKurKAXKpihqV1LTd51D5YXG4oFP6-wg@mail.gmail.com>
- <20260610-accomplished-antique-mink-cf0ead@quoll>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610-accomplished-antique-mink-cf0ead@quoll>
-X-ClientProxiedBy: SN7P220CA0012.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:806:123::17) To GV2PR04MB11799.eurprd04.prod.outlook.com
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list),
+	linux-doc@vger.kernel.org (open list:DOCUMENTATION)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v3 net-next 1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml format
+Date: Wed, 10 Jun 2026 11:05:30 -0400
+Message-ID: <20260610150533.515914-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH3PEPF000040B0.namprd05.prod.outlook.com
+ (2603:10b6:518:1::5c) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -80,125 +76,333 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS4PR04MB9621:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48a23904-0674-46c6-a18a-08dec6fca4dd
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB9423:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7b90cde9-fd0f-4a0d-5831-08dec701bec2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|23010399003|376014|5023799004|56012099006|11063799006|4143699003|18002099003|22082099003;
+	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|23010399003|19092799006|6133799003|18002099003|921020|3023799007|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	Y8XZrOxZu4iUql5QEqWFJXn5I6KHRHcqCJVOnFJGqbTVTBdB/SalDdyf8XLKhzSlaVM8LkfwQ0unvFRJR2geZhDkXY3+gES0KJAt+AssmSRNjR8CJq0uGPGsZ8xPrzlStyhosDGhgaHarF80z8/ZclDG5TIf5AIUxN+2lV2PxzrjDLGgs1w5hr0E2nHlVXABeo1hzVuU8TSEVlg03c+b3xPXHfZA08Pdhzdczq22ZLbo1anvBhI6bzHKHTsuzTP14IUq1mzR2MffE5YEk+lrVq1WZnHsbEmeXgRPuBbRmWv9Y5YU6kKRsNHEXSTfaM5Xpvtc+TSQojgby3VNcpF3kpky25UQH0c/xFlrUF0O/+3zjvoZM2UDEoreGwmPZJTvXcjfpB7Qvr2JZXxruNIFtQE/4DNC1ZIVGKFxUy0p6+GPsyUNsq3NS/hbIh/DRGQxTQAOPjDwRha66wG0roVSH3O1QAFOfO+pgA30OZ2vk8l/wmZaP9uaxMVNeH8w4GicE71jz9OHnlL5pGp0i+LahMyDu6GdeLxs7hGABVfXtoPkDTABLxqHqanMsE/fI+BrSO75q1aIcXuyS1/N3EnC23xPLhf86nPOd3VpFM3+OAjbMkElqptmjucpvJp/FEc8RSv+P+FZdSvYBnZfPcGZeV2ZBRZo3xg1hkiN94hOXRkGvbOERVtRePoXQIV/2iwc
+	8YCacFG2UMGhOfV48n11/G1SAw7tibLH3wmboA3kCZnV7rcmiFlHad5BvTCpllAknB1FP5tffHRhuDLy7otRQZGN5JPbZTCGmqydGM6Q5bZjIPWtw6YCliX2nKjlHuIWa+7UhkS1pNvmp3vIsZiPaTe4QIKnOLEDfqykXPUFp0IOIv6v3WDRmGMSAc4TYD8kD5mONufdaUSITXpKUIlpBkPU0iqpW+ilgWEEEkXgyi7gy7A/NwRQWXsbF5HGXdD3WmIfiHSmOhpJEoOHM0onh/tlX0TEGLWfxr2IcKisCA1ITJ6RHtwAcyWhIUt3WXoU5giGorpEzf2WOnzX2KtI1nDASg4yvGW+9oPRxvW3QkHCHH0GiJHB0h3Y1PR8YgjEqnVsrzyViA7aqPX58RgVm8yPHGyz28VzwKKIum9gq2PmgEpG6lMZKrGvEHh6ATsTUMnGfHGAWfOT45J2DdlXPFC/L8k6wlcBY+jIyuH99ejCiaSfSE/JxX3gn15s56FXj5dyWlsPjtN90CNNyHGgc9jMAwBGfay44c/OZxCLOXDGXMiZcpIxy/3eph+rZoxUUEUgVRL8J1FROXtO7fRsajy9D6ybHgOFXWOENdJDPTSX0yQiBDx7+OQu6O+TpTEDPHwH0b9iw/z2n+I7xJXiQtNylU5hVOl5nlr5yO0PQDzuInfLOvwzluSWTPiXXicp
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(23010399003)(376014)(5023799004)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(23010399003)(19092799006)(6133799003)(18002099003)(921020)(3023799007)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?21q7yQ07OFdhNWc9NrYFgCThPHBkoU6KL2TtntnPY8Yg7aGeoM+br3vKVYec?=
- =?us-ascii?Q?+nmG7QRM+cgJASiSPgPeqrMk0VpDDOBZy/d8wNT6EO98A0b5nXbuZ42x7s5R?=
- =?us-ascii?Q?+qSHo1ByB/mQDpw+pF8PiRzqFOJ9/oX67b85ibKvtqXatTMeX3F0djaFVSVz?=
- =?us-ascii?Q?NsftHpEXREpS0HWkftrzequ+pcglBq0GdeGXy23DQqUXzogY4cvwBidmCLe9?=
- =?us-ascii?Q?8NDSg6dOpoUbvu9TzK64DdLfHgCLHjUyMY5bA1XuO/xJcHlTZ1Tj6RE2zqLk?=
- =?us-ascii?Q?Y8Ca3pV7QbHmOY4ZlDFVyUOsnGwj0iXKhnk1P6ECS51zOmpveuqvPtbqd8/x?=
- =?us-ascii?Q?QD5E9RwZh/II+yQUBTcZT+Q8PcV5D4Vd1ix7+NOQQEljGy9Gqv0/F3EPRJUk?=
- =?us-ascii?Q?P0mS0qLymViz3UDT6nOBjrbxCfvdDeADxO+6Omocq0yv03ouf45KW8oGl9qx?=
- =?us-ascii?Q?IG77JKym0nz3fXXSG1IeSx8cumgv3xtA0E+ksy5z0pGT5p+dNCl08FoEhv9n?=
- =?us-ascii?Q?owOu6+kK6zqOWDKrtvprmN7b3RposCvIPGLf4cj3EbEXRLA2vrIzjL/YSy2A?=
- =?us-ascii?Q?CFrBvKWRm8ix1MqAROExs82ZtxDeptaFLp9q33wYSEH28WCMd/w9WZNhnIP5?=
- =?us-ascii?Q?iDnCQzxtHOdNJ8xV7SdHtTMYvxpDG1eQfPVrXkUxp7RnYT1VNVmW/1hk2Ac7?=
- =?us-ascii?Q?AtlNdIEY3W3eh4HgbPuk8I4yRzEEJmUnCWKyuegFS+oz09UqzA/HKg+kkvak?=
- =?us-ascii?Q?Tm4isWUS7xBWPsEI/xNIJ2fsrH87NTYusUiACzwZZi6jFpc2rvlg6feSVEtD?=
- =?us-ascii?Q?0kmPSYPbNCo130kLXgdCY2tMrwnK1UQ/XihttI46AF4a7RYThjZtOGOfAUOu?=
- =?us-ascii?Q?9X/Lvv6h05y4oGV3vTYtZCNGZYF2mmej8YpvXiIjiouw06O0aq8FnhxGP4zI?=
- =?us-ascii?Q?mp0ShEeqx6JAf5qUbbfb04aKgTOZ3jCWRUVSuCVKq8VswPF82v9uN25vqoN/?=
- =?us-ascii?Q?0mWkGxSMsmbA1YvZ6n4DB7Zji37087qea2S21q26TlLdQcMnqAe+CLBaE7Oe?=
- =?us-ascii?Q?75EB12ZMGjOKGWGjvFBL8G7I9yGdC9ydJ18lZtZgjMix1iIZqq22BY9e3EBS?=
- =?us-ascii?Q?8qyDcF0PDCpK7JohDKQlQIoGvTKdnlvZu0mKQFy9JRVKKwPfa/UlLdjFNKjn?=
- =?us-ascii?Q?o9pY9CzflDsif1ujnpGtzzMbtgRKZ+RPlTdrIzw6iAupsKh2G2Ntunkw6R8N?=
- =?us-ascii?Q?H5Dpm9E3KNT+TVNeidxuH7gPvU4Pg1ytZzu0PWVmQsN04BXEym84yQ94ctNR?=
- =?us-ascii?Q?TKO1I0end5CqvJFbDT/p4WEasMzc8r5AAcg8mg33nVw3ErtoO4yTlWyKsIrk?=
- =?us-ascii?Q?nnXrebpcXxla6PYOCQMPjYdqzia64UIzrr4tmpFI1ZMj52JRUM4uLhqFx7qB?=
- =?us-ascii?Q?83jRd8P5KJSS5PAtLHw3tZueIdJS6kgUvz5XnzdcENAPn3tb4E98bidQTKZd?=
- =?us-ascii?Q?EKVef/XDIU0FhOBOLwpFZm/GC2S7c+htzNf7vg+g9LBPPSX2gTqGMhY26lrx?=
- =?us-ascii?Q?MYL8jJqSOeN8mSwTQDXFoRpU8lZCQ7ZwJXnjgQroa/Mtrlm6IikYZ37q7X8L?=
- =?us-ascii?Q?ndYKnwmRbS1Xx+ixIu5Ae/MazChNu1aTAY9KlhFz+qFAf03aRhtvJDVY9ViM?=
- =?us-ascii?Q?QXBrMQHy3zkpnSEmNllO3o3iZW326PDgiAnat6kbI+RjVmBVWDBW3m8Df2xj?=
- =?us-ascii?Q?gpB7TzvAUr1+GAvuM/Nm01xljfL1S/RtjPgqzBNLcb6aZjXwpGfp?=
+	=?us-ascii?Q?ofZwtwIGilW4GGj+BLZ8ZZtznt3Ddc37w2Mu1DrVrib+Uc9blUO0ajv7jHOt?=
+ =?us-ascii?Q?csfRgi8d9M+aUT+zg2Qw+IGt3ZfBcNeplKnlXhGEJttxrUPFxQMWrBjOABg4?=
+ =?us-ascii?Q?10TTKahGyTxbsuvsTxZ2lVmS4T809NmtDPut4ikLMPB76E6bB+zLIpLsbH2t?=
+ =?us-ascii?Q?hsb1XcemvzZq8zh2UTVKC5m4SbAgVQfgH8BvmpeTXbONMG/Xatf3npMONeSB?=
+ =?us-ascii?Q?PnEXfj5e+7SiouOp8QKzEAeZnclaR0J+/ThgYCX3fhZpPsToL49bOlhuBYmi?=
+ =?us-ascii?Q?vCmECoiWDVSsEJTZZMliUCFi2U0NJjCZv+ATqCIfL+2CTZKVi/0SkGbamdxt?=
+ =?us-ascii?Q?FgAvkwYkVB0A/oL0rUnhI6RHtn8Zh7Ui3QbjPb1GJvxhibtSCIRi2kdo/PtI?=
+ =?us-ascii?Q?Mz4bBeEcsoEhsmHQaJ3PaFOLbeVGgrZeSN57Qu4uVByRB0EKbVcpgWZ6sPfG?=
+ =?us-ascii?Q?k6+X1UyKVJ5j0zZ0FS1YCmtHAPZ+KY7wnZQKz0NsbD/YDpc16hN+Q3XjlzZM?=
+ =?us-ascii?Q?ldN4Rr8X3q74zXDgvX6o4nTMJpA6oxkXfLQwbe7MPJPZmyXcqri4gzJe20m/?=
+ =?us-ascii?Q?IGz3OKAXTfBHnf8tPytn1HzLMKMkIbk8T1JqHPAmy9XkG8ep/Ckd6V2aIL7m?=
+ =?us-ascii?Q?jU3NA0HaGmJkbv3t0LWHspiBGNtU+/t8NW2a0nVJ685M5stcMOtoFUvnBJ78?=
+ =?us-ascii?Q?KaFHx6Sdo8zvDn+dvtrG7/bseXBZc5Wh36fv8wP/Bu0EoW27WDYKODpP6ZT1?=
+ =?us-ascii?Q?YOyR1jpfpHa3eZkkyYPm/7vm52yrHDXI2iF4MFx7Q0n7R0zK+9liNxHmufkw?=
+ =?us-ascii?Q?h2y12OzoqRoRfx6O/4qNOqxTl/a0r8cJXNop+X3fsCIv0JMmpRfxSHdQVuJK?=
+ =?us-ascii?Q?taN8yZTrVn3A0SPHLW7IOslt60Svkusn40xqDrPf5Dn9oN+6vzh7cK4vxCZi?=
+ =?us-ascii?Q?Tw0AYALuy6oBVcLhPtPiuThyt6TbTsqCAjviUGvFXDU1TMau1qntgm/5769i?=
+ =?us-ascii?Q?haeZo7Iq3BAlex9qbfQccwi0aQ13MGFvHPRjeuH/zgv3fmV66+JTepZbwl/U?=
+ =?us-ascii?Q?rzRpp5DTll//sbltprgzOEij3gJ3gLN3+Rgnp6eyjqprotvF+Kud3vmDpae8?=
+ =?us-ascii?Q?iojL6wO0Lxxlhqbzi8+BO3CNIv+V5WN6Ix7wtcPBVosAcu7xLgpfjj4tfTaS?=
+ =?us-ascii?Q?EVYn9D/NaaVZ2CW4j1GRoXl1dLA6UjdePwsFi4GgHJF/AGBv7f8IcW5h476w?=
+ =?us-ascii?Q?nFBrDOCNN33EUF+mr2axD+sOVlktDfuy2idPmKSaF7KXSjPljo892UTJzSVj?=
+ =?us-ascii?Q?AqjRSv2SQuq9/A0InwalHhcJXZDqqh6lIsVHW2fzYoxbT3HdJhw7JTFaA4rl?=
+ =?us-ascii?Q?iHP1q1DwlEiGpvqr5pTObNMZGsPLEsutHW9AZmbx+oFP8hBBvly1BFCVOl3G?=
+ =?us-ascii?Q?olhucz+ym2+29Cbhy9Nj70k4TF9PAqDlfCwqCgCNWAb7mSWdwxLxQzQLxI18?=
+ =?us-ascii?Q?lcGeoxgkLi3gxz+52LJCDd38N84rB/lXA3ust+7fy0saSYCRyoocttjSfE6T?=
+ =?us-ascii?Q?doW4EBmeczVu+tWYmYBr4GqIf1GAWewMlZpfOF3/g/AOvVjfGeR3sUldp8nI?=
+ =?us-ascii?Q?sDxSYeZyNmk9TXsZfHFiUOrWXT1s6y2BMRgO2aMi+KQS2I5/kJs18mfjn5Br?=
+ =?us-ascii?Q?5CglweB4XAKntzG+C6P5gQ0FPTZBnSKwIqI9p6q0/VDuwkJsZSpCZMdCAILZ?=
+ =?us-ascii?Q?lCrn242bcqJTvGjEn9rWw4Qa8gcKA2ciBxXalZq4o+r4qrf+7GmD?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48a23904-0674-46c6-a18a-08dec6fca4dd
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b90cde9-fd0f-4a0d-5831-08dec701bec2
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 14:29:13.6936
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 15:05:44.4750
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cTMCyuUB5bG6JU4QVv+XuHw0WRuIg2UCZxusqTVyIO34Jnrmz2tuW7M/UmnxgsmLpQaWbbXg7ZZMNkoHXQzacS0ySb+Ood4wmyKkEdmP1mNV/7N83OCt7JcZ7v8vSACW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9621
+X-MS-Exchange-CrossTenant-UserPrincipalName: j0VACQnZtFDJUsWk0MWKoDS0AKHSZpxdSA4q3QTCzguc5fAozy3riTaZkNo7mK65S4ojZDhXMRn8+pdY7xVfgW33zcdYa968iH5lKXCsNe8G4l4vZw6/LfaeA2edB13G
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9423
 
-On Wed, Jun 10, 2026 at 09:39:25AM +0200, Krzysztof Kozlowski wrote:
-> On Tue, Jun 09, 2026 at 11:33:03AM -0600, Mathieu Poirier wrote:
-> > On Tue, 9 Jun 2026 at 11:06, Frank Li <Frank.li@oss.nxp.com> wrote:
-> > >
-> > > On Tue, Jun 09, 2026 at 10:40:06AM -0600, Mathieu Poirier wrote:
-> > > > [You don't often get email from mathieu.poirier@linaro.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> > > >
-> > > > On Fri, Jun 05, 2026 at 04:36:18AM -0700, Laurentiu Mihalcea wrote:
-> > > > > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > > > >
-> > > > > The names of the carveout regions are derived using the names of the
-> > > > > reserved memory devicetree nodes, which are referenced using the
-> > > > > "memory-region" property. This adds a restriction on the names of said
-> > > > > devicetree nodes, often bearing specific names such as: "vdevbuffer",
-> > > > > "vdev0vring0", "rsc-table", etc... This goes against the devicetree
-> > > > > specification's recommendation, which states that the devicetree node
-> > > > > names should be generic.
-> > > >
-> > > > I don't see what is so restrictive in using the node name of the reserved-memory
-> > > > regions.  Function of_reserved_mem_region_to_resource() is already doing all the
-> > > > parsing, packaging everything in a neat and easy to use "struct resource".  What
-> > > > will you gain with this new "memory-region-names" that can't be done with the
-> > > > current solution?
-> > >
-> > > DT Binding check can't find such wrong if node name is not what expected.
-> > > Binding can't restrict memory's node name because there ware not specific
-> > > compatible string for it.
-> > >
-> >
-> > But what "wrong" could that be, and what kind of restriction are you
-> > hoping to enforce?  What specific problem are you hoping to solve?
-> >
-> > I'll wait to see what the DT people think about this - I personally
-> > don't see the value in it.
->
-> I see no point in this commit, but maybe because the commit msg is just
-> misleading. It mixes node names with names for phandles which are two
-> separate things.
+From: Frank Li <Frank.Li@nxp.com>
 
-For example:
+Convert lan9303.txt to yaml format to fix below CHECK_DTBS warnings:
+arch/arm/boot/dts/nxp/imx/imx53-kp-hsc.dtb: /soc/bus@50000000/i2c@53fec000/switch@a: failed to match any schema with compatible: ['smsc,lan9303-i2c']
 
-rsc_table: rsc-table@90000000
-{	ret  = <0x90000000>;
-	no-map;
-}
+Additional changes:
+  - rename switch-phy to switch in example.
 
-m4 {
-	...
-	memory-region = <&rsc_table>;
-}
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+change in v3
+- rebase to net-next
+change in v2:
+- fix typo Additional in commit message
+- add rob's reviewed-by tags
+- fix doc ref problem
+---
+ .../devicetree/bindings/net/dsa/lan9303.txt   | 100 --------------
+ .../bindings/net/dsa/smsc,lan9303.yaml        | 123 ++++++++++++++++++
+ Documentation/networking/dsa/lan9303.rst      |   2 +-
+ 3 files changed, 124 insertions(+), 101 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/net/dsa/lan9303.txt
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
 
-If you change node name "rsc-table" to "memory", driver will failure
-because it parse node name "rsc-table", which phandle point to. but no
-binding to restrict node name to "rsc-table". So rsc-table became hidden
-ABI.
+diff --git a/Documentation/devicetree/bindings/net/dsa/lan9303.txt b/Documentation/devicetree/bindings/net/dsa/lan9303.txt
+deleted file mode 100644
+index 0337c2ccfa9a7..0000000000000
+--- a/Documentation/devicetree/bindings/net/dsa/lan9303.txt
++++ /dev/null
+@@ -1,100 +0,0 @@
+-SMSC/MicroChip LAN9303 three port ethernet switch
+--------------------------------------------------
+-
+-Required properties:
+-
+-- compatible: should be
+-  - "smsc,lan9303-i2c" for I2C managed mode
+-    or
+-  - "smsc,lan9303-mdio" for mdio managed mode
+-
+-Optional properties:
+-
+-- reset-gpios: GPIO to be used to reset the whole device
+-- reset-duration: reset duration in milliseconds, defaults to 200 ms
+-
+-Subnodes:
+-
+-The integrated switch subnode should be specified according to the binding
+-described in dsa/dsa.yaml. The CPU port of this switch is always port 0.
+-
+-Note: always use 'reg = <0/1/2>;' for the three DSA ports, even if the device is
+-configured to use 1/2/3 instead. This hardware configuration will be
+-auto-detected and mapped accordingly.
+-
+-Example:
+-
+-I2C managed mode:
+-
+-	master: masterdevice@X {
+-
+-		fixed-link { /* RMII fixed link to LAN9303 */
+-			speed = <100>;
+-			full-duplex;
+-		};
+-	};
+-
+-	switch: switch@a {
+-		compatible = "smsc,lan9303-i2c";
+-		reg = <0xa>;
+-		reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
+-		reset-duration = <200>;
+-
+-		ports {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			port@0 { /* RMII fixed link to master */
+-				reg = <0>;
+-				ethernet = <&master>;
+-			};
+-
+-			port@1 { /* external port 1 */
+-				reg = <1>;
+-				label = "lan1";
+-			};
+-
+-			port@2 { /* external port 2 */
+-				reg = <2>;
+-				label = "lan2";
+-			};
+-		};
+-	};
+-
+-MDIO managed mode:
+-
+-	master: masterdevice@X {
+-		phy-handle = <&switch>;
+-
+-		mdio {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			switch: switch-phy@0 {
+-				compatible = "smsc,lan9303-mdio";
+-				reg = <0>;
+-				reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
+-				reset-duration = <100>;
+-
+-				ports {
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					port@0 {
+-						reg = <0>;
+-						ethernet = <&master>;
+-					};
+-
+-					port@1 { /* external port 1 */
+-						reg = <1>;
+-						label = "lan1";
+-					};
+-
+-					port@2 { /* external port 2 */
+-						reg = <2>;
+-						label = "lan2";
+-					};
+-				};
+-			};
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml b/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
+new file mode 100644
+index 0000000000000..42f8473538a07
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
+@@ -0,0 +1,123 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/dsa/smsc,lan9303.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: SMSC/MicroChip LAN9303 three port ethernet switch
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description:
++  The LAN9303 is a three port ethernet switch with integrated PHYs for the
++  two external ports. The third port is an RMII/MII interface to a host
++  processor. The device can be managed via I2C or MDIO.
++
++  Note - always use 'reg = <0/1/2>;' for the three DSA ports, even if the
++  device is configured to use 1/2/3 instead. This hardware configuration
++  will be auto-detected and mapped accordingly.
++
++properties:
++  compatible:
++    enum:
++      - smsc,lan9303-i2c
++      - smsc,lan9303-mdio
++
++  reg:
++    maxItems: 1
++
++  reset-gpios:
++    description:
++      GPIO to be used to reset the whole device
++    maxItems: 1
++
++  reset-duration:
++    description:
++      Reset duration in milliseconds
++    default: 200
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
++
++allOf:
++  - $ref: dsa.yaml#
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    /* I2C managed mode */
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        switch@a {
++            compatible = "smsc,lan9303-i2c";
++            reg = <0xa>;
++            reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
++            reset-duration = <200>;
++
++            ports {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                port@0 {
++                    reg = <0>;
++                    label = "cpu";
++                    ethernet = <&master>;
++                };
++
++                port@1 {
++                    reg = <1>;
++                    label = "lan1";
++                };
++
++                port@2 {
++                    reg = <2>;
++                    label = "lan2";
++                };
++            };
++        };
++    };
++
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    /* MDIO managed mode */
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        switch@0 {
++            compatible = "smsc,lan9303-mdio";
++            reg = <0>;
++            reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
++            reset-duration = <100>;
++
++            ports {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                port@0 {
++                    reg = <0>;
++                    label = "cpu";
++                    ethernet = <&master>;
++                };
++
++                port@1 {
++                    reg = <1>;
++                    label = "lan1";
++                };
++
++                port@2 {
++                    reg = <2>;
++                    label = "lan2";
++                };
++            };
++        };
++    };
+diff --git a/Documentation/networking/dsa/lan9303.rst b/Documentation/networking/dsa/lan9303.rst
+index ab81b4e0139e3..776572be265e1 100644
+--- a/Documentation/networking/dsa/lan9303.rst
++++ b/Documentation/networking/dsa/lan9303.rst
+@@ -12,7 +12,7 @@ Driver details
 
-if use memory-region-names, we can restrict memory-region-name to
-"rsc-table" earsily.
+ The driver is implemented as a DSA driver, see ``Documentation/networking/dsa/dsa.rst``.
 
-Frank
+-See ``Documentation/devicetree/bindings/net/dsa/lan9303.txt`` for device tree
++See ``Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml`` for device tree
+ binding.
 
->
-> Plus this change actually makes nothing - no names are restricted to any
-> meaningful values!
->
-> Best regards,
-> Krzysztof
->
+ The LAN9303 can be managed both via MDIO and I2C, both supported by this driver.
+--
+2.43.0
+
