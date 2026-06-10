@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD27A30675C
-	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 03:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562943093C1
+	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 03:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781062081; cv=none; b=HfI5M9Q35idOfoy9wccO2JOMTcOv774PKkJ3a8o0gc9ICRGWb1srP07qbmSTDqx2VZGlOfvkht4KUsLgR3lgz47/VeMOjzcTe3+cR9MX5mEy8Tl91PMh9XxEntsvn19CWvJaCWQ4twDxPwLxoXvXZel/8a56IM8N2S3NlQVp3o0=
+	t=1781062082; cv=none; b=gkHpL3dHECAWd1hX/XtHTl9B9CsrP4XHXJcBNM4/Kqc+PR0WAtV4XtuAEo+ZknsblzQfzi41w6IYZKsWrXZdRJ7sBCWTAuk9dALTGB2KzsBDdnakDCHQj72Sh4wK3xJco7aDOndEqqQpzKqH4sNGUn/Fod+HUzKd53PVIxb0FJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781062081; c=relaxed/simple;
-	bh=6znvkpM2gDi3AGwMFVLYwYr024uEzdI2T4nzv7iGbZE=;
+	s=arc-20240116; t=1781062082; c=relaxed/simple;
+	bh=9oOJQcOE7PbQgwc4C5Ew5V8ljGXEj1WmkXNkNsiPe4E=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PXJ/aABdGaXhvoLPwKbZtMSwNHu40z/8zyl06Sghb6Sm6m0vDu4XXC5MlmF/DUx0yjteAoTqu2eHMjv3JC19kg6dzuYdI+xY9IYpKbzEz/dqRSjD5Z7SbSmV2lExNqu9ig7E0cfLpDExBnrV6+huHzZNU3V08CJgL7AjqEyL/Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KyZUXZpI; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Lpx3ei/53xEvhdUGRLJZt0DDmH1t4RZQEwDX8QUdQ1tcIcIuZldR+agcCdGcII4mZ240128Fd3zl2CiQmnAs91wCzuuETwH0UHDNm1dDXQRjsobdkHyTDewOsMcuSGJej1Ir0sewF2ktPnDLVxcA8jvehGAbkF62+Q5uFM33FX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MF8ihmJD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KyZUXZpI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508131F00899;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MF8ihmJD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C8C1F00893;
 	Wed, 10 Jun 2026 03:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781062080;
-	bh=OkOQUYuyoAAngZ967d8Ju5Tu95pPbP5DeaJAjZRXWOk=;
+	s=k20260515; t=1781062081;
+	bh=EtRQWrCE03iFU52KHe8J11N9ehm8KcRpDaJtLpI+IUA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KyZUXZpI4HRtkc0jce2DZMisLLYqIsdxIiKaO+p37FKHUFoL8M8ORd5mwsuxh94MG
-	 BTqPD1PX2mQWBAyLuWPvXxJm5fqsZEKHMa6nLHMvQ9sijIWpxO1BlNxJm+XG4bmCEh
-	 99MeDGWDwF68asNl8djqgX7txn9P446msV2MZFA0NkaAjGJNLCVw1KhBi6lDF2huhv
-	 aBitKy7DZmeSwQLp/kJjtxLzzWFveSfv9JeoMUgRCHL66N1BZMwRPiKtleyzqYVq5E
-	 MZ2GVjML7WKeYA9tytlBMoYvMYDAyRnbE9S8g4Qa4nxcmE7/o9tKO539SpDBCvPqkt
-	 pa74/uKw4nTXg==
+	b=MF8ihmJDG64efsWRZ3MOqBo8BMqudeguI7sY98AB98dDlq1oqG8W30nZkKp85rMx2
+	 xD4bUnkyr+LFolXINIxQCnyCNglfwQMBhzXnwZ3IoBc2QOFKGy9HK6IHDIrgTxYhoV
+	 gkp01U2Zwb8ATccnq3uBnS3QAEEGBr9AeMM7JBCgyzG7eZqdrk5iwteOdqZauzcRZe
+	 kMW7JzjviD+mnfHkvHXRZUM+wH7yQent1Ub2cetrVA6ISK7qFyqVjZ9sDTvYZEoL+a
+	 OHiIiNAJEeh5jz4ewUofywP73SZnwTE4sj60go5A5NzRO5HFo1ha9mN5cQ7tbv1RZZ
+	 Pr8JQ7MUZwNHA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 net-next 7/9] net: dsa: netc: add VLAN filter table
- and egress treatment management
+Subject: Re: [PATCH v4 net-next 8/9] net: dsa: netc: add bridge mode support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260609032955.2066089-8-wei.fang@oss.nxp.com>
-References: <20260609032955.2066089-8-wei.fang@oss.nxp.com>
+In-Reply-To: <20260609032955.2066089-9-wei.fang@oss.nxp.com>
+References: <20260609032955.2066089-9-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 03:27:59 +0000
-Message-Id: <20260610032800.508131F00899@smtp.kernel.org>
+Date: Wed, 10 Jun 2026 03:28:00 +0000
+Message-Id: <20260610032801.07C8C1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,77 +45,95 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] netc_port_update_vlan_egress_rule() incorrectly checks ett_eid ins=
-tead of ect_eid before issuing an Egress Counter Table update, causing a ha=
-rdware fault when ECT entries are exhausted.
+- [High] Static FDB entries with VID 0 on a VLAN-aware bridge are incorrect=
+ly mapped to the bridge's internal VLAN-unaware PVID, breaking forwarding f=
+or unspecified VLANs.
 --
 
-commit daf8e6338d85480e82a01b715bb6d429fae4862d
+commit 2c77a1dbe137ce8f6001205692208e4092133f9f
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: dsa: netc: add VLAN filter table and egress treatment management
+net: dsa: netc: add bridge mode support
 
-Implement the DSA .port_vlan_add and .port_vlan_del operations to enable
-VLAN-aware bridge offloading on the NETC switch.
+This commit wires up the port_bridge_join, port_bridge_leave, and
+port_vlan_filtering DSA callbacks to support both VLAN-unaware and
+VLAN-aware bridge modes. It introduces a dedicated internal PVID for
+VLAN-unaware bridges and manages dynamic FDB entry flushing.
 
 > diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc=
 _main.c
+> index fcca22da08d87..299a9e76b9aa9 100644
 > --- a/drivers/net/dsa/netc/netc_main.c
 > +++ b/drivers/net/dsa/netc/netc_main.c
-
 [ ... ]
-
-> @@ -1025,6 +1054,385 @@ static void netc_switch_get_ip_revision(struct ne=
-tc_switch *priv)
-> +static int netc_port_update_vlan_egress_rule(struct netc_port *np,
-> +					     struct netc_vlan_entry *entry)
-> +{
-> +	bool untagged =3D !!(entry->untagged_port_bitmap & BIT(np->dp->index));
-> +	u32 num_ports =3D netc_num_available_ports(np->switch_priv);
-> +	u32 ett_eid =3D le32_to_cpu(entry->cfge.et_eid);
-> +	struct netc_switch *priv =3D np->switch_priv;
-> +	u32 ect_eid =3D NTMP_NULL_ENTRY_ID;
-> +	int err;
-
+> @@ -1510,17 +1554,50 @@ static int netc_port_max_mtu(struct dsa_switch *d=
+s, int port)
 [ ... ]
-
-> +	if (entry->ect_gid !=3D NTMP_NULL_ENTRY_ID)
-> +		/* Each ETT entry maps to an ECT entry if ect_gid is not NULL
-> +		 * entry ID. The offset of the ECT entry corresponding to the
-> +		 * port in the group is equal to ett_offset.
-> +		 */
-> +		ect_eid =3D entry->ect_gid * num_ports + np->ett_offset;
+>  static int netc_port_fdb_add(struct dsa_switch *ds, int port,
+>  			     const unsigned char *addr, u16 vid,
+>  			     struct dsa_db db)
+>  {
+> +	struct net_device *br_ndev =3D netc_classify_db(db);
+>  	struct netc_port *np =3D NETC_PORT(ds, port);
+> =20
+> -	/* Currently, only support standalone port mode, so only
+> -	 * NETC_STANDALONE_PVID (=3D 0) is supported here.
+> -	 */
+> -	if (vid !=3D NETC_STANDALONE_PVID)
+> -		return -EOPNOTSUPP;
+> +	if (IS_ERR(br_ndev))
+> +		return PTR_ERR(br_ndev);
 > +
-> +	ett_eid +=3D np->ett_offset;
-> +	err =3D netc_update_ett_entry(priv, untagged, ett_eid, ect_eid);
-> +	if (err) {
-> +		dev_err(priv->dev,
-> +			"Failed to update VLAN %u egress rule on port %d\n",
-> +			entry->vid, np->dp->index);
-> +		return err;
-> +	}
-> +
-> +	if (ett_eid !=3D NTMP_NULL_ENTRY_ID)
-> +		ntmp_ect_update_entry(&priv->ntmp, ect_eid);
+> +	if (!vid)
+> +		vid =3D netc_vlan_unaware_pvid(br_ndev ? &db.bridge : NULL);
 
 [Severity: High]
-Should this check ect_eid instead of ett_eid before updating the counter
-entry?
+Will this unconditionally map VID 0 entries to the bridge's internal
+VLAN-unaware PVID, even if the bridge has VLAN filtering enabled?
 
-When Egress Counter Table (ECT) entries are exhausted, entry->ect_gid will
-be NTMP_NULL_ENTRY_ID and ect_eid will keep its default value of
-NTMP_NULL_ENTRY_ID. Because ett_eid was previously incremented by
-np->ett_offset, it is guaranteed to be non-null here even if ECT entries
-were exhausted.
+When an FDB entry is added without a specific VLAN (VID 0) - such as local
+port MAC addresses automatically added by the bridge core - it appears this
+code translates it to the unaware PVID (e.g., 4095). However, if the bridge
+is VLAN-aware, the port's ingress traffic uses the user-configured PVID or
+explicitly tagged VLANs, not the unaware PVID.
 
-As a result, ntmp_ect_update_entry() could be executed with
-ect_eid =3D NTMP_NULL_ENTRY_ID, which would submit an out-of-bounds index
-update to the switch hardware and cause a command bus error.
+Since this patch also removes the host flood rule when a port joins a bridg=
+e,
+traffic destined to the local machine would miss the FDB lookup and be trea=
+ted
+as unknown unicast. Could this result in local traffic being leaked to other
+ports via flooding, or dropped entirely if unknown unicast flooding is
+disabled?
 
+> =20
+>  	return netc_port_set_fdb_entry(np, addr, vid);
+>  }
+> @@ -1529,10 +1606,14 @@ static int netc_port_fdb_del(struct dsa_switch *d=
+s, int port,
+>  			     const unsigned char *addr, u16 vid,
+>  			     struct dsa_db db)
+>  {
+> +	struct net_device *br_ndev =3D netc_classify_db(db);
+>  	struct netc_port *np =3D NETC_PORT(ds, port);
+> =20
+> -	if (vid !=3D NETC_STANDALONE_PVID)
+> -		return -EOPNOTSUPP;
+> +	if (IS_ERR(br_ndev))
+> +		return PTR_ERR(br_ndev);
 > +
-> +	return 0;
-> +}
+> +	if (!vid)
+> +		vid =3D netc_vlan_unaware_pvid(br_ndev ? &db.bridge : NULL);
+
+[Severity: High]
+Does the same unconditional translation happen here during FDB entry deleti=
+on,
+potentially preventing VID 0 entries from being removed from the hardware if
+the bridge is VLAN-aware?
+
+> =20
+>  	return netc_port_del_fdb_entry(np, addr, vid);
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609032955.2066=
-089-1-wei.fang@oss.nxp.com?part=3D7
+089-1-wei.fang@oss.nxp.com?part=3D8
