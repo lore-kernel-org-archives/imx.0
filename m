@@ -1,176 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011037.outbound.protection.outlook.com [52.101.70.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3B833D4F8;
-	Wed, 10 Jun 2026 14:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781101647; cv=none; b=RwQi6yCWkNw118Ja3SoFuRFLkZ8TEZxODXN2749Smecs9IX98ovApA618FvNg92pkcRCOpvW89I4gWOYSfyAexAuQYRJOWXqF451ssMvgosWUmSOwsh6i4i5XKwldCnsXdtPmiWx2gT7pPIkzny9fdhXJXGzyMuK3XRz807U1zI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781101647; c=relaxed/simple;
-	bh=5kuBP7fMBbqE/iet64062XGawrA4JhbZ5hy8hly7DuY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m2NI1GN2fOCH3Af0Rx0f4ID+/hmcMczD+Hu9FxJpWTMf0DU5fTmrfuh4v2IMEFVHy2JziWbr/kRig6HxxftVbjxij9gWiWL7FxhVP/51GWA4GbhtF5vU8VJQiI5cMpYOmtyYFLwjS8aZEqlk3G8qC7Pen/w9HAb8jFwQQMK7D5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KEZNJm/H; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BA03BA222
+	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 14:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781101759; cv=fail; b=tGg8FRwOfyOqjwF7ygi8vJadtfz8vk2FlbsXsmhx13zEDKDa9VU3Ak3N5T5Zaa+yX+bIkTuzZqjPUEPBM/++4oML/5K5VqX+qcaChBaLp1dnDTvK/F2MnmAyyz5BkkbkHbZ8B0UaEkwOQXLuUVc5jI3yNZt2UnirARubPMI/Pt0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781101759; c=relaxed/simple;
+	bh=Cq0Bwxlb13KS8oXBRa341tnDGJp2VwgWlZFaa/qg/0o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HgoSF88OkcAiJdicGIfmroTCZG2iFGA0U0sAW6QMIUQ41PYZ6JNx7rdbs2IEnjKVtmw2q9Pc2713+4yvP34DXGt51AO80I3C4+iemI5MxtYal9wvigHLAN2q1CfADld6i7AGMdJyF0YC1j2VpTBTYf4/gBqtSsEySCK7lYe5Tbg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bGgXCQ/Z; arc=fail smtp.client-ip=52.101.70.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KEZNJm/H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031C31F0089A;
-	Wed, 10 Jun 2026 14:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781101645;
-	bh=I4K33T+MFgkZ1eCFBa4fDJZ3fDYXQ+2gTF11A6ENEgI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KEZNJm/HUC25JcxV99QcToXilHwCL6tW3GoQls/NYnc4Vy/AKb8FxwmTMkQinVa+D
-	 038LXHRj5EYLngzavVNqSn5hJcHGtQwCsrnG3xeD/gQSvvFmr42w9SSF1SUHB2Z9pj
-	 2mddxrkQijJePnvDmV19ZPIGLN194nxakx85oTu0PSno9caVwtFlRwprdMGrL6tcFI
-	 RgEZiI8J7EX2sQhcmxxbXjxZgeCEqfQXpDQtBBtVRfWP15tYzOELCybNN3i2msVszI
-	 aXYi28eQjlXiKRJvPi6rwfsfTHbBSKlFkb5Il6oIr0r7ZYKxhvWilvUfZHzX5wnKNq
-	 gYVkFJn8xUlnw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCHv2 4/4] m68k: coldfire: fix non-standard readX()/writeX()
- functions
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Greg Ungerer" <gerg@linux-m68k.org>
-Cc: "Oliver Hartkopp" <socketcan@hartkopp.net>, "Vincent Mailhol" <mailhol@kernel.org>, linux-can@vger.kernel.org, Frank.Li@kernel.org, "Oleksij
- Rempel" <o.rempel@pengutronix.de>, "Marc Kleine-Budde" <mkl@pengutronix.de>, imx@lists.linux.dev
-In-Reply-To: <20260609142139.1563360-6-gerg@linux-m68k.org>
-References: <20260609142139.1563360-6-gerg@linux-m68k.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 14:27:24 +0000
-Message-Id: <20260610142725.031C31F0089A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bGgXCQ/Z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TEq+m+hbzC6UXVEGWAhsOd9+j3B4H0pV68lR5A+tVJmxuTI3ScD4YrxaNVujUE0HBQIG6eRKg4zygDiw20FvOtHAWHDW63d3WIyALmC87X3gGJDiD3oKIruixyHC9k8Jx4iBbl/lg2qDXxjvg3fa4Uyu5mJBU1MscMvkkHw2MiFiz68eAqw5D5wEfdjx7AJUNNy0Ub/7RVp9LfVtxQqxaVc6/QbQbndkfH2VNwPxZKXBhkolzll0bSvYTefhTmpb0SZ074SuKcpr820S0qEMkpuwv5nF1u4/Zzjd+7DmHIcJH+iR2SoB5wg7SmfrNlbDVOZR7FavNIsSgEKlFX1x9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=31C6sRFZWwuc7BOXs5GwmqgDJ6wjYceVyR7N+wjZ9M0=;
+ b=W8ufyZlG1aZnHvIhVYtVuwT12xlYEi3laSAJ1rsYjDY8dd7vseTH4YeyfomtBkpAaRZ6Zzv/22p13tqev40HYn8Ko7W9cn2BAiJmP3ZHBCS4Yx+/w/xzIM/Nkrj7K5WiJimF1o2pVWbNRYMzbNnRcfRjHLnYDxTBYkfSAjGjDjV2s42eVRiOV+0vbpiw4esM6XGVnZw6JEFJ5XhQmdrvcQBd9dqwDrkNMMXCNK7S4uEzzHOd0wuXh5zUvR9NpFCM18R0lFx/Qi+hSSNunCqXPR2aGCnUj6njh7Ht6iP3WOCTDS3RPNRQsbIoYF/npmFwEtsTQ15SjHcBhgbHSuPGNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=31C6sRFZWwuc7BOXs5GwmqgDJ6wjYceVyR7N+wjZ9M0=;
+ b=bGgXCQ/ZmayCQrQZtiNXP6gE48ApL8ffc4MDCfo09/ptQsH4USLAkvrTp+gA16NTE6d9LF6pEXIALFT68t31RqXBld57Fz7QdWuKU4Bb4PGa5bf6ZEkVHRIFNvp9NZbRYKJb/qIYiyRAw4G0Cu2czYqxm77Gin7MzB6PpAaLFxlXDTl4K+Jcpah59i/lu7wT/iCHf+9brB+qx+Z7WVff6DGFrg/umszNmefa6PDDj00uSVH0PoyvBGf0YkC21K96yDwihSufhL0F1xvS5k4woB6VFDwDKjEEsO2h4pRe3cN7G5AXqbUGHJ6leuzb0wN3MsQTWg96bjyoWUQCSyEPBQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Wed, 10 Jun
+ 2026 14:29:14 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
+ 14:29:13 +0000
+Date: Wed, 10 Jun 2026 09:29:04 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@oss.nxp.com>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: remoteproc: imx_rproc: document
+ optional "memory-region-names"
+Message-ID: <ail0sH1UhnQBPRkr@SMW015318>
+References: <20260605113621.1479-1-laurentiumihalcea111@gmail.com>
+ <20260605113621.1479-2-laurentiumihalcea111@gmail.com>
+ <aihB5rVLsVqzg6cb@p14s>
+ <aihIIwt_9T7yYxP3@SMW015318>
+ <CANLsYkxw6rbWNom8rNfKurKAXKpihqV1LTd51D5YXG4oFP6-wg@mail.gmail.com>
+ <20260610-accomplished-antique-mink-cf0ead@quoll>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610-accomplished-antique-mink-cf0ead@quoll>
+X-ClientProxiedBy: SN7P220CA0012.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:806:123::17) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS4PR04MB9621:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48a23904-0674-46c6-a18a-08dec6fca4dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|23010399003|376014|5023799004|56012099006|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	Y8XZrOxZu4iUql5QEqWFJXn5I6KHRHcqCJVOnFJGqbTVTBdB/SalDdyf8XLKhzSlaVM8LkfwQ0unvFRJR2geZhDkXY3+gES0KJAt+AssmSRNjR8CJq0uGPGsZ8xPrzlStyhosDGhgaHarF80z8/ZclDG5TIf5AIUxN+2lV2PxzrjDLGgs1w5hr0E2nHlVXABeo1hzVuU8TSEVlg03c+b3xPXHfZA08Pdhzdczq22ZLbo1anvBhI6bzHKHTsuzTP14IUq1mzR2MffE5YEk+lrVq1WZnHsbEmeXgRPuBbRmWv9Y5YU6kKRsNHEXSTfaM5Xpvtc+TSQojgby3VNcpF3kpky25UQH0c/xFlrUF0O/+3zjvoZM2UDEoreGwmPZJTvXcjfpB7Qvr2JZXxruNIFtQE/4DNC1ZIVGKFxUy0p6+GPsyUNsq3NS/hbIh/DRGQxTQAOPjDwRha66wG0roVSH3O1QAFOfO+pgA30OZ2vk8l/wmZaP9uaxMVNeH8w4GicE71jz9OHnlL5pGp0i+LahMyDu6GdeLxs7hGABVfXtoPkDTABLxqHqanMsE/fI+BrSO75q1aIcXuyS1/N3EnC23xPLhf86nPOd3VpFM3+OAjbMkElqptmjucpvJp/FEc8RSv+P+FZdSvYBnZfPcGZeV2ZBRZo3xg1hkiN94hOXRkGvbOERVtRePoXQIV/2iwc
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(23010399003)(376014)(5023799004)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?21q7yQ07OFdhNWc9NrYFgCThPHBkoU6KL2TtntnPY8Yg7aGeoM+br3vKVYec?=
+ =?us-ascii?Q?+nmG7QRM+cgJASiSPgPeqrMk0VpDDOBZy/d8wNT6EO98A0b5nXbuZ42x7s5R?=
+ =?us-ascii?Q?+qSHo1ByB/mQDpw+pF8PiRzqFOJ9/oX67b85ibKvtqXatTMeX3F0djaFVSVz?=
+ =?us-ascii?Q?NsftHpEXREpS0HWkftrzequ+pcglBq0GdeGXy23DQqUXzogY4cvwBidmCLe9?=
+ =?us-ascii?Q?8NDSg6dOpoUbvu9TzK64DdLfHgCLHjUyMY5bA1XuO/xJcHlTZ1Tj6RE2zqLk?=
+ =?us-ascii?Q?Y8Ca3pV7QbHmOY4ZlDFVyUOsnGwj0iXKhnk1P6ECS51zOmpveuqvPtbqd8/x?=
+ =?us-ascii?Q?QD5E9RwZh/II+yQUBTcZT+Q8PcV5D4Vd1ix7+NOQQEljGy9Gqv0/F3EPRJUk?=
+ =?us-ascii?Q?P0mS0qLymViz3UDT6nOBjrbxCfvdDeADxO+6Omocq0yv03ouf45KW8oGl9qx?=
+ =?us-ascii?Q?IG77JKym0nz3fXXSG1IeSx8cumgv3xtA0E+ksy5z0pGT5p+dNCl08FoEhv9n?=
+ =?us-ascii?Q?owOu6+kK6zqOWDKrtvprmN7b3RposCvIPGLf4cj3EbEXRLA2vrIzjL/YSy2A?=
+ =?us-ascii?Q?CFrBvKWRm8ix1MqAROExs82ZtxDeptaFLp9q33wYSEH28WCMd/w9WZNhnIP5?=
+ =?us-ascii?Q?iDnCQzxtHOdNJ8xV7SdHtTMYvxpDG1eQfPVrXkUxp7RnYT1VNVmW/1hk2Ac7?=
+ =?us-ascii?Q?AtlNdIEY3W3eh4HgbPuk8I4yRzEEJmUnCWKyuegFS+oz09UqzA/HKg+kkvak?=
+ =?us-ascii?Q?Tm4isWUS7xBWPsEI/xNIJ2fsrH87NTYusUiACzwZZi6jFpc2rvlg6feSVEtD?=
+ =?us-ascii?Q?0kmPSYPbNCo130kLXgdCY2tMrwnK1UQ/XihttI46AF4a7RYThjZtOGOfAUOu?=
+ =?us-ascii?Q?9X/Lvv6h05y4oGV3vTYtZCNGZYF2mmej8YpvXiIjiouw06O0aq8FnhxGP4zI?=
+ =?us-ascii?Q?mp0ShEeqx6JAf5qUbbfb04aKgTOZ3jCWRUVSuCVKq8VswPF82v9uN25vqoN/?=
+ =?us-ascii?Q?0mWkGxSMsmbA1YvZ6n4DB7Zji37087qea2S21q26TlLdQcMnqAe+CLBaE7Oe?=
+ =?us-ascii?Q?75EB12ZMGjOKGWGjvFBL8G7I9yGdC9ydJ18lZtZgjMix1iIZqq22BY9e3EBS?=
+ =?us-ascii?Q?8qyDcF0PDCpK7JohDKQlQIoGvTKdnlvZu0mKQFy9JRVKKwPfa/UlLdjFNKjn?=
+ =?us-ascii?Q?o9pY9CzflDsif1ujnpGtzzMbtgRKZ+RPlTdrIzw6iAupsKh2G2Ntunkw6R8N?=
+ =?us-ascii?Q?H5Dpm9E3KNT+TVNeidxuH7gPvU4Pg1ytZzu0PWVmQsN04BXEym84yQ94ctNR?=
+ =?us-ascii?Q?TKO1I0end5CqvJFbDT/p4WEasMzc8r5AAcg8mg33nVw3ErtoO4yTlWyKsIrk?=
+ =?us-ascii?Q?nnXrebpcXxla6PYOCQMPjYdqzia64UIzrr4tmpFI1ZMj52JRUM4uLhqFx7qB?=
+ =?us-ascii?Q?83jRd8P5KJSS5PAtLHw3tZueIdJS6kgUvz5XnzdcENAPn3tb4E98bidQTKZd?=
+ =?us-ascii?Q?EKVef/XDIU0FhOBOLwpFZm/GC2S7c+htzNf7vg+g9LBPPSX2gTqGMhY26lrx?=
+ =?us-ascii?Q?MYL8jJqSOeN8mSwTQDXFoRpU8lZCQ7ZwJXnjgQroa/Mtrlm6IikYZ37q7X8L?=
+ =?us-ascii?Q?ndYKnwmRbS1Xx+ixIu5Ae/MazChNu1aTAY9KlhFz+qFAf03aRhtvJDVY9ViM?=
+ =?us-ascii?Q?QXBrMQHy3zkpnSEmNllO3o3iZW326PDgiAnat6kbI+RjVmBVWDBW3m8Df2xj?=
+ =?us-ascii?Q?gpB7TzvAUr1+GAvuM/Nm01xljfL1S/RtjPgqzBNLcb6aZjXwpGfp?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48a23904-0674-46c6-a18a-08dec6fca4dd
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 14:29:13.6936
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cTMCyuUB5bG6JU4QVv+XuHw0WRuIg2UCZxusqTVyIO34Jnrmz2tuW7M/UmnxgsmLpQaWbbXg7ZZMNkoHXQzacS0ySb+Ood4wmyKkEdmP1mNV/7N83OCt7JcZ7v8vSACW
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9621
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Wed, Jun 10, 2026 at 09:39:25AM +0200, Krzysztof Kozlowski wrote:
+> On Tue, Jun 09, 2026 at 11:33:03AM -0600, Mathieu Poirier wrote:
+> > On Tue, 9 Jun 2026 at 11:06, Frank Li <Frank.li@oss.nxp.com> wrote:
+> > >
+> > > On Tue, Jun 09, 2026 at 10:40:06AM -0600, Mathieu Poirier wrote:
+> > > > [You don't often get email from mathieu.poirier@linaro.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> > > >
+> > > > On Fri, Jun 05, 2026 at 04:36:18AM -0700, Laurentiu Mihalcea wrote:
+> > > > > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> > > > >
+> > > > > The names of the carveout regions are derived using the names of the
+> > > > > reserved memory devicetree nodes, which are referenced using the
+> > > > > "memory-region" property. This adds a restriction on the names of said
+> > > > > devicetree nodes, often bearing specific names such as: "vdevbuffer",
+> > > > > "vdev0vring0", "rsc-table", etc... This goes against the devicetree
+> > > > > specification's recommendation, which states that the devicetree node
+> > > > > names should be generic.
+> > > >
+> > > > I don't see what is so restrictive in using the node name of the reserved-memory
+> > > > regions.  Function of_reserved_mem_region_to_resource() is already doing all the
+> > > > parsing, packaging everything in a neat and easy to use "struct resource".  What
+> > > > will you gain with this new "memory-region-names" that can't be done with the
+> > > > current solution?
+> > >
+> > > DT Binding check can't find such wrong if node name is not what expected.
+> > > Binding can't restrict memory's node name because there ware not specific
+> > > compatible string for it.
+> > >
+> >
+> > But what "wrong" could that be, and what kind of restriction are you
+> > hoping to enforce?  What specific problem are you hoping to solve?
+> >
+> > I'll wait to see what the DT people think about this - I personally
+> > don't see the value in it.
+>
+> I see no point in this commit, but maybe because the commit msg is just
+> misleading. It mixes node names with names for phandles which are two
+> separate things.
 
-New issues:
-- [High] The transition to asm-generic readX()/writeX() changes the endiann=
-ess of ColdFire internal IO accesses, breaking unpatched ColdFire drivers.
+For example:
 
-Pre-existing issues:
-- [High] Undefined behavior when shifting 1 by 32 or more using `BIT(ch)` i=
-n `mcf_edma_tx_handler`.
-- [High] The error interrupt handler incorrectly skips handling high channe=
-ls and returns `IRQ_NONE` after servicing low channels.
---
+rsc_table: rsc-table@90000000
+{	ret  = <0x90000000>;
+	no-map;
+}
 
-commit 25193db3eba89f780b6dc534f2f72e16f3429571
-Author: Greg Ungerer <gerg@linux-m68k.org>
+m4 {
+	...
+	memory-region = <&rsc_table>;
+}
 
-m68k: coldfire: fix non-standard readX()/writeX() functions
+If you change node name "rsc-table" to "memory", driver will failure
+because it parse node name "rsc-table", which phandle point to. but no
+binding to restrict node name to "rsc-table". So rsc-table became hidden
+ABI.
 
-Remove the local ColdFire definitions of readb()/readw()/readl() and
-writeb()/writew()/writel() and use the asm-generic versions of them.
+if use memory-region-names, we can restrict memory-region-name to
+"rsc-table" earsily.
 
-> diff --git a/arch/m68k/include/asm/io_no.h b/arch/m68k/include/asm/io_no.h
-> index 4f0f34b06e37c..2f12f4ed0da54 100644
-> --- a/arch/m68k/include/asm/io_no.h
-> +++ b/arch/m68k/include/asm/io_no.h
+Frank
 
-[ ... ]
-
-> -#define writel writel
-> -static inline void writel(u32 value, volatile void __iomem *addr)
-> -{
-> -	if (cf_internalio(addr))
-> -		__raw_writel(value, addr);
-> -	else
-> -		__raw_writel(swab32(value), addr);
-> -}
-
-[Severity: High]
-Does replacing the local readX()/writeX() with the asm-generic versions
-change the endianness of unpatched ColdFire drivers?
-
-The old ColdFire implementation detected internal IO memory using
-cf_internalio() and bypassed byte-swapping to provide native big-endian
-access. The asm-generic accessors always assume little-endian devices and
-perform byte-swapping.
-
-Will unpatched drivers relying on readX()/writeX() for internal IO
-(such as spi-coldfire-qspi.c, sdhci-esdhc-mcf.c, or fec_main.c) now read
-and write byte-swapped values and malfunction?
-
-[ ... ]
-
-> diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-> index 9e1c6400c77be..4ed0ce644e37e 100644
-> --- a/drivers/dma/mcf-edma-main.c
-> +++ b/drivers/dma/mcf-edma-main.c
-> @@ -21,9 +21,9 @@ static irqreturn_t mcf_edma_tx_handler(int irq, void *d=
-ev_id)
->  	unsigned int ch;
->  	u64 intmap;
-> =20
-> -	intmap =3D ioread32(regs->inth);
-> +	intmap =3D ioread32be(regs->inth);
->  	intmap <<=3D 32;
-> -	intmap |=3D ioread32(regs->intl);
-> +	intmap |=3D ioread32be(regs->intl);
->  	if (!intmap)
->  		return IRQ_NONE;
-
-[Severity: High]
-This is a pre-existing issue, but does this shift invoke undefined behavior
-for higher channels?
-
-Looking at the loop immediately following this in mcf_edma_tx_handler():
-
-	for (ch =3D 0; ch < mcf_edma->n_chans; ch++) {
-		if (intmap & BIT(ch)) {
-			...
-
-On a 32-bit architecture like m68k, BIT(ch) expands to a 32-bit unsigned
-long. Since ch can be up to 64, shifting by 32 or more would be undefined,
-potentially causing channels 32-63 to be improperly processed or missing
-their interrupts entirely.
-
-Should this use BIT_ULL(ch) when testing against the 64-bit intmap?
-
-[ ... ]
-
-> @@ -43,7 +43,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *=
-dev_id)
->  	struct edma_regs *regs =3D &mcf_edma->regs;
->  	unsigned int err, ch;
-> =20
-> -	err =3D ioread32(regs->errl);
-> +	err =3D ioread32be(regs->errl);
->  	if (!err)
->  		return IRQ_NONE;
-
-[Severity: High]
-This is a pre-existing issue, but does this early return incorrectly skip
-handling high channels?
-
-If regs->errl is zero, it returns IRQ_NONE immediately, ignoring any errors
-in regs->errh. This could leave errors in higher channels uncleared.
-
-[ ... ]
-
-> @@ -55,7 +55,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *=
-dev_id)
->  		}
->  	}
-> =20
-> -	err =3D ioread32(regs->errh);
-> +	err =3D ioread32be(regs->errh);
->  	if (!err)
->  		return IRQ_NONE;
-
-[Severity: High]
-This is a pre-existing issue, but does this return the wrong IRQ status if
-low channel errors were already handled?
-
-If errl was non-zero (so some errors were handled) but errh is zero,
-returning IRQ_NONE here instead of IRQ_HANDLED might incorrectly signal
-to the IRQ subsystem that the interrupt wasn't handled at all.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609142139.1563=
-360-6-gerg@linux-m68k.org?part=3D1
+>
+> Plus this change actually makes nothing - no names are restricted to any
+> meaningful values!
+>
+> Best regards,
+> Krzysztof
+>
