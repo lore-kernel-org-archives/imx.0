@@ -1,119 +1,427 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62373F926B;
-	Wed, 10 Jun 2026 11:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99408408002;
+	Wed, 10 Jun 2026 13:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781089771; cv=none; b=GizttOoI3/x07lREOgcwFJxtQoYXqBrlUcbroGPAMpMkMyF5hFBtoeNZqzyTW9Uwda5xnjmeTDseNd7a0+n/Vm51FTsU/0Gs3SGDcHLzbe1Kkj/eSw/zJ4vKmSpDKv4xp9xUD2isX4ZtDIXkGV8FKfn+7Ck0zhahN8mS12f74FI=
+	t=1781097625; cv=none; b=H5XsSyCrFlWBNnP1vABiLaEAPJ/l7TTRItLdK/1JNnrWTwm2hbGXcU+g8GrTP0qFrG5VamqTJLZUyTPlhbL5NytFfPG2JSkvBYZcwXl4pe1z73B1vwQ85t6Pavh1ruo5beAJ0kL5ZllOMmkem478zAiMzyCTy6+XaiXcAm5YIt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781089771; c=relaxed/simple;
-	bh=mw99y74tTiT+Yv7ARtfFvLrX/Ph+tYkk1fxLoJ5G0P8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=ioJb5Z4hH5nGCt8wr84+HZCj0Gsqqwh0vxSlx9lq6+Rv2SOV+odb/cftVy0NhvLcGc5XjVOJ2jwKKRqeAXpZafKVf2J71TwivYEk90qgp4SRNg7Uzdd21+HJRZ7ZZ6DfFIPCN9fytmmwtT4av27o1CMp7EhOSPuWDgn0pl6gPKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=QWHYOVHk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ahxuvUqe; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1781097625; c=relaxed/simple;
+	bh=rtNAAlhtypLV7NtxFca9OU2GViA+FbcIEm3U1Hqnr6o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=u2Ss4gqMSl1KySi739UNclHXGfgE+yvM/Tevetl8Ms8IKpKiG6KwBs9qVxIhD4uSqPvQAL0RFFoNje7Vf0WiGaGx1ku8hwm+a5QDPaYPKS7KMoD1U/lap36XfuvgBP3BuuEDItFP2PLJu51cRzTAermtiAStjKXC8I+6CJmTMwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=E1WdhyrN; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="QWHYOVHk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ahxuvUqe"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 020B07A013A;
-	Wed, 10 Jun 2026 07:09:24 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-04.internal (MEProxy); Wed, 10 Jun 2026 07:09:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781089764;
-	 x=1781176164; bh=V+gvRaZjGPl4C6oecnTGKPnx3zPKeQQ92TgKB4vAoi8=; b=
-	QWHYOVHkoX9nsCdcvxIHsT29dynYif0i7kSUf3YKBh4mP0AimU66iJ4qGZDtkedq
-	MU+vXaOHMl9fNfmxeVb9T8rWfA25CjgFwYpfrO6d5UK33mBVJRB6ZHRoPa8u3EBz
-	M4Kl9OwWFr1e6TKSUHU3//qOKvXQgeDnwSMaArRLHKNtcvd2KgguYeNlZ6fych54
-	LxtOPbex1Z3IQiWPECmzyFyFiQyliHqpq1BMjvcWYBG38TDaKQpOdUvI7KO+MSuZ
-	Xhifzr4N7mx7Qo7QwqxfeFjtrpJdJwMatCGSt/9ikDstYd7nb8tG5HMKbsW4VZ7s
-	w28Ib5Z3PfTl+pVBXIMM5g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781089764; x=
-	1781176164; bh=V+gvRaZjGPl4C6oecnTGKPnx3zPKeQQ92TgKB4vAoi8=; b=a
-	hxuvUqe0wyaOLp3hcPFMEenC+nHPvTZT3VGhXSYmtxG/nIPC53E9r65Y5NnB8jn+
-	yViflYdwaRX4adezxjJMQwQ4iuRIAxaauTvshBmk44eKrymF6qaFTTBb9M9ettEB
-	yoSWK1BQT+zrW9K4DXQ5xooE+iEYJzOgeq1umq2NG4t7Z5Xg1cofmy5V0rUcFqhc
-	PqOJI1PCnEsUbda9QMuSAU7KDtp7iC3oDbi4eUddbkmmDVR55ORp/XJcnRsyeWeB
-	iCN4PIThztovxzumjeE0jxH8ybwOIrz9tsdk0IRBrUfrGV+fX3fcxK0I3otr4s8R
-	Vc1YEPjHyDwUwG3mCd0Rg==
-X-ME-Sender: <xms:5EUparwfu2wb_AfHnwAmR67-Z_Joyy-qRGRpPtRjpFaHy8VsOHTJWQ>
-    <xme:5EUpauE-Do-xFH9QDgkjR4fjCsKB9QuuCSBXc714SO2KEphGgo3QT8sarDtA2iupJ
-    gmg6uhukL81A-zwI3S6PRAlNby6tEgUaPfwA7pVZZgkAg8MAZxwWBw>
-X-ME-Proxy-Cause: dmFkZTERsvZj9LHqlkxNtYF3dmGxkHADfxwPXY+fsKBUII4XRvequ9shdUxzWId4G9Vpfv
-    vmDOrRyUkgPYWshTqX8lO5zULYIl95x/qLSSJbxORvSmu8NZxttnjaZKM/P7xwXwwr633K
-    uSX8xlobDWDEw2psTkZ1TwI2smnzzc4y86II9ayYHztsk/TK+TXRS2lmpFV2G6tbyDVEeK
-    w5v1saa0YUOiKmcQS13tNp9VSa3eeKcWsfPMsecCGPOPz1L36lXEX/SJ+sNhqhggWzJLnj
-    axHVPP/zXmUrePQCTI72rNfD8hcmFk3J3N65H0iTd9+J5yaQqOPW+tqZrB8uZZ/bhLQ+ja
-    h+EOpyYLIpmVnjb3WvBAw4kRXQSXIaoJcwaNaNhTWsHkHpAxBWcAbzS1LOSD1YSLOWWXbC
-    uW38dyH3j6Zv5lKC2VQ5jPBVP3PXqKcyd3z20ABCHjs0ZxzEZtp1PVXShmXUJk3eaaeYlp
-    k5YaELEi3JcIoIcNvZsW1Kqg92QXvyiKKusnPcPqxySPy9BsljuYeStrax8K4SqhIJ7et6
-    NALBtDUauNVprDZTkceuoOHcA3gPbLe7hpp4qlyX0DZoxaxP9jEfhlaa2xkwKQeAIopbEL
-    xcf5pvX6c0IpFD+McZ5UcyGM3jwbFZIqM+jom4mUNvbU7IWuAIiyp4LsGkWw
-X-ME-Proxy: <xmx:5EUpapvUqauAX_CzpbQsoPMOucbnFpULggVPIhrICHcu4RtieNomAA>
-    <xmx:5EUpanZ9wyK_JkERDQMdkMt4sBYG7m49nxeLvFApuTCm8BtYrZl0xg>
-    <xmx:5EUpahCfPO6OeZLnJKLiQqbL96xCMbIxlrpmRzHrXn8-wIuld_hkPg>
-    <xmx:5EUpav_PGXs7MB8E2OBtHb0STQan685-bU9edGamQFO8x7zNYsy2Iw>
-    <xmx:5EUparuYz0TE2t3VoB_IbQovdzoza3JmCtkJQCaDbPwW55zsP1P-so3Y>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 858B81820082; Wed, 10 Jun 2026 07:09:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="E1WdhyrN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1781097615;
+	bh=rtNAAlhtypLV7NtxFca9OU2GViA+FbcIEm3U1Hqnr6o=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=E1WdhyrNxGo+A6il718YJ1uav0/PXgvvGf1ry4iRD5rcChufxC29u7f01hhP6p0Gd
+	 X9J4VEpKD6f6B2zI0a05HG/T6PWmsqj5crt/6Ge0liC00Mv+CRY6wCmpTKzLRwg7de
+	 oCUI5tSv0wKHSANhhSP11yj9kFkvixmDE4ci7aLAMf2jCslm8avSdw6ZWOYBz4DKsv
+	 iu7MvLm3J7dQqWVFOoPh+4/ju8BAE5d0vnemsLSSi8jEArqjY8Y4R2mI5qu+ud6FoC
+	 uOKn5Dj4Oyh2HBZtMX0V9e0w+uyurFZSvbZxFQzEsX4PFqRdRG5uZunyDHdBZy1P+V
+	 U6Nr6DDMF6KBw==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 610D817E0246;
+	Wed, 10 Jun 2026 15:20:14 +0200 (CEST)
+Message-ID: <6d3acf626e0018c4175c413c3eeb9b8b12c3c8be.camel@collabora.com>
+Subject: Re: [PATCH RFC 1/2] media: docs: Clarify
+ V4L2_FMT_FLAG_DYN_RESOLUTION usage
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, Marek Szyprowski
+	 <m.szyprowski@samsung.com>, Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, 
+ "hverkuil@kernel.org"	 <hverkuil@kernel.org>, "mchehab@kernel.org"
+ <mchehab@kernel.org>,  "imx@lists.linux.dev"	 <imx@lists.linux.dev>,
+ "Frank.Li@kernel.org" <Frank.Li@kernel.org>,  "linux-media@vger.kernel.org"
+	 <linux-media@vger.kernel.org>, Eagle Zhou <eagle.zhou@nxp.com>, Elliot
+ Chen	 <elliot.chen@nxp.com>, Frank Li <frank.li@nxp.com>, 
+ "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>
+Date: Wed, 10 Jun 2026 09:20:12 -0400
+In-Reply-To: <aijOPSFPEDsVlYFY@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
+References: <20260608-flag-dyn-resolution-v1-1-44dc65516148@oss.nxp.com>
+	 <20260608040616.1A3EE1F00893@smtp.kernel.org>
+	 <AM9PR04MB857068E0FE59DD8ECB27A9AAE71C2@AM9PR04MB8570.eurprd04.prod.outlook.com>
+	 <e689df21c92861e35b6d11e391bea3404321484d.camel@collabora.com>
+	 <aijOPSFPEDsVlYFY@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-RwNoGtVUCUgb+aOBDcyu"
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AdNNzaliM6k3
-Date: Wed, 10 Jun 2026 13:09:04 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Josua Mayer" <josua@solid-run.com>, "Frank Li" <frank.li@oss.nxp.com>,
- "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
-Cc: "Conor Dooley" <conor+dt@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Frank Li" <Frank.Li@kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>
-Message-Id: <e9410cd9-5c5a-4251-ae37-236e86cc7f7f@app.fastmail.com>
-In-Reply-To: <d8373e08-bbd0-4a6c-849b-628c49fc2ec4@solid-run.com>
-References: <20260524-lx2160-pci-v7-1-09370c23b952@solid-run.com>
- <20260524151347.BD92A1F000E9@smtp.kernel.org>
- <3528dc91-1ffc-42f9-94ea-a27c6c1d6a50@solid-run.com>
- <9e6326f6-dad1-4169-a63c-e62ee5b341f2@app.fastmail.com>
- <023aa47c-6fbc-486f-b5c7-5145ddf8e8fe@oss.nxp.com>
- <72087d5c-c6f9-4452-b4bd-a9f086700e62@app.fastmail.com>
- <48248207-7b4f-43c9-85e9-64e8440fab10@oss.nxp.com>
- <753fca23-c3eb-45e3-aeac-b7b248fa723a@app.fastmail.com>
- <177431ea-c4ba-4424-b17e-9d2e2884d466@oss.nxp.com>
- <4f7cc399-785f-4967-adec-714ccc69ada8@app.fastmail.com>
- <d8373e08-bbd0-4a6c-849b-628c49fc2ec4@solid-run.com>
-Subject: Re: [PATCH v7 1/9] arm64: dts: lx2160a-rev2: extend 32-bit, and add 64-bit pci
- regions
-Content-Type: text/plain
+
+
+--=-RwNoGtVUCUgb+aOBDcyu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Le mercredi 10 juin 2026 =C3=A0 11:49 +0900, Ming Qian(OSS) a =C3=A9crit=C2=
+=A0:
+> On Tue, Jun 09, 2026 at 02:00:02PM -0400, Nicolas Dufresne wrote:
+>=20
+> Hi Nicolas,
+> > Hi Ming,
+> >=20
+> > Le lundi 08 juin 2026 =C3=A0 06:26 +0000, Ming Qian (OSS) a =C3=A9crit=
+=C2=A0:
+> > >=20
+> > >=20
+> > > > -----Original Message-----
+> > > > From: sashiko-bot@kernel.org=C2=A0<sashiko-bot@kernel.org>
+> > > > Sent: Monday, June 8, 2026 12:06 PM
+> > > > To: Ming Qian (OSS) <ming.qian@oss.nxp.com>
+> > > > Cc: imx@lists.linux.dev; Frank.Li@kernel.org; linux-media@vger.kern=
+el.org
+> > > > Subject: Re: [PATCH RFC 1/2] media: docs: Clarify
+> > > > V4L2_FMT_FLAG_DYN_RESOLUTION usage
+> > > >=20
+> > > > Thank you for your contribution! Sashiko AI review found 1 potentia=
+l
+> > > > issue(s)
+> > > > to consider:
+> > > > - [High] The added documentation conflates
+> > > > `V4L2_FMT_FLAG_DYN_RESOLUTION` (which designates mid-stream dynamic
+> > > > resolution switching capability) with the mandatory initial
+> > > > `V4L2_EVENT_SOURCE_CHANGE` event. By stating "Clients can use this =
+flag to
+> > > > determine whether the decoder will signal the initial resolution", =
+it
+> > > > explicitly
+> > > > legitimizes a flawed userspace heuristic that violates the V4L2 sta=
+teful
+> > > > decoder
+> > > > specification. The specification mandates that for coded formats co=
+ntaining
+> > > > resolution info, the decoder MUST parse the stream and emit an init=
+ial
+> > > > `V4L2_EVENT_SOURCE_CHANGE` event (Initialization Step 4). Compliant=
+ drivers
+> > > > (e.g., `coda`) correctly emit this initial event but do NOT set
+> > > > `V4L2_FMT_FLAG_DYN_RESOLUTION` because they lack mid-stream switchi=
+ng
+> > > > capabilities. If userspace follows this documented advice, it will
+> > > > erroneously
+> > > > skip waiting for the initial event on these drivers, breaking Captu=
+re Setup
+> > > > and
+> > > > stream decoding.
+> > > > --
+> > > >=20
+> > > > commit ec9c0583334c246f7813132b55724e42622e8edd
+> > > > Author: Ming Qian <ming.qian@oss.nxp.com>
+> > > >=20
+> > > > media: docs: Clarify V4L2_FMT_FLAG_DYN_RESOLUTION usage
+> > > >=20
+> > > > This commit updates the V4L2 stateful decoder documentation to clar=
+ify the
+> > > > usage of the V4L2_FMT_FLAG_DYN_RESOLUTION flag. It adds a note stat=
+ing
+> > > > that decoders setting this flag will always emit an initial source =
+change
+> > > > event.
+> > > > The documentation suggests clients can use this flag to decide whet=
+her to
+> > > > wait
+> > > > for the initial resolution signal.
+> > > >=20
+> > > > > diff --git a/Documentation/userspace-api/media/v4l/dev-decoder.rs=
+t
+> > > > > b/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> > > > > --- a/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> > > > > +++ b/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> > > > > @@ -361,6 +361,14 @@ Initialization
+> > > > [ ... ]
+> > > > > +=C2=A0=C2=A0=C2=A0 .. note::
+> > > > > +
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Decoders that set the ``V4L=
+2_FMT_FLAG_DYN_RESOLUTION`` flag for
+> > > > the
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 coded format will always em=
+it an initial
+> > > > ``V4L2_EVENT_SOURCE_CHANGE``
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 event with ``V4L2_EVENT_SRC=
+_CH_RESOLUTION`` during this phase.
+> > > > Clients
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 can use this flag to determ=
+ine whether the decoder will signal the
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 initial resolution before p=
+roducing decoded frames.
+> > > >=20
+> > > > [Severity: High]
+> > > > Does this guidance conflate the V4L2_FMT_FLAG_DYN_RESOLUTION flag,
+> > > > which designates mid-stream dynamic resolution switching, with the
+> > > > mandatory initial V4L2_EVENT_SOURCE_CHANGE event?
+> > > >=20
+> > > > The V4L2 Stateful Decoder API requires an initial
+> > > > V4L2_EVENT_SOURCE_CHANGE event during the Initialization phase for =
+stream
+> > > > parsing, irrespective of dynamic resolution support.
+> > > >=20
+> > > > Compliant drivers like coda correctly emit this initial event but d=
+o not set
+> > > > V4L2_FMT_FLAG_DYN_RESOLUTION because they lack mid-stream switching
+> > > > capabilities.
+> > > >=20
+> > > > If userspace follows this documented advice, wouldn't it erroneousl=
+y skip
+> > > > waiting for the initial event on these drivers, potentially breakin=
+g capture
+> > > > setup
+> > > > and stream decoding?
+> > > >=20
+> > > > --
+> > > > Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608-fl=
+ag-dyn-
+> > > > resolution-v1-0-44dc65516148@oss.nxp.com?part=3D1
+> > >=20
+> > > Hi,
+> > >=20
+> > > Thanks for the review.
+> > >=20
+> > > You are right that the V4L2 stateful decoder specification states the=
+ initial
+> > > V4L2_EVENT_SOURCE_CHANGE is mandatory for coded formats that contain
+> > > resolution information in the stream (Initialization Step 4).
+> >=20
+> > Be aware that Sashiko is an AI bot, llm words things with extreme convi=
+ction,
+> > and it this case forget about backward compatibility from pre-spec.
+> >=20
+> > >=20
+> > > However, in practice, GStreamer's v4l2 stateful decoder implementatio=
+n uses
+> > > V4L2_FMT_FLAG_DYN_RESOLUTION to determine whether to subscribe and wa=
+it for
+> > > the initial source change event. The reasoning from the GStreamer sid=
+e, as
+> > > Nicolas explained [1]:
+> > >=20
+> > > =C2=A0=20
+> > > "
+> > > https://docs.kernel.org/userspace-api/media/v4l/dev-decoder.html#dyna=
+mic-resolu
+> > > tion-change
+> > > =C2=A0=C2=A0=C2=A0 Says:
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Not all decoders can detec=
+t resolution changes. Those that do set the
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_FMT_FLAG_DYN_RESOLUTI=
+ON flag.
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0 So normally that wording should prevent requiring =
+an initial SRC_CH,
+> > > =C2=A0=C2=A0=C2=A0 or emitting later SRC_CH. Your driver don't have t=
+his flag, then your
+> > > =C2=A0=C2=A0=C2=A0 driver can't emit this event. But a measure we sho=
+uld take into
+> > > =C2=A0=C2=A0=C2=A0 GStreamer would be to not register (or mark) this =
+event."
+> > >=20
+> > > @Nicolas, could you elaborate on why GStreamer needs
+> > > V4L2_FMT_FLAG_DYN_RESOLUTION to handle the initial source change even=
+t?
+> > > Is this something that should be fixed on the GStreamer side (i.e., a=
+lways
+> > > wait for the initial event), or is the current heuristic intentional =
+due to
+> > > legacy drivers that don't emit the event?
+> >=20
+> > The coda source_change notification is completely fake. It does not dep=
+endent on
+> > the bitstream content. So the event is left there, since its kind of pa=
+rt of the
+> > ABI, but it does not behave like other implementation, or pre-spec driv=
+ers.
+> >=20
+> > So what we do in GStreamer, is that for legacy driver (no
+> > V4L2_FMT_FLAG_DYN_RESOLUTION), we pre-allocate both queues, based on ou=
+r guessed
+> > dimensions. If it happens that the conformance windows is small enough,=
+ it often
+> > works. DRC will only work if the display dimension changes.
+> >=20
+> > For any modern driver, that implement V4L2_FMT_FLAG_DYN_RESOLUTION, we =
+strictly
+> > wait for the event, and on DRC, even if the display resolution changes,=
+ we let
+> > the driver tell us when to actually reconfigure. The legacy method was =
+kept to
+> > not break coda and older driver, the new method is a lot more reliable,=
+ and
+> > avoid allocating twice the capture queue (wrong guess).
+> >=20
+> > The userspace implementation is also a bit more flexible, as normally t=
+he legacy
+> > way should kind of work for any drivers, and we still subscribe it seem=
+s. But
+> > the implication is just strange and shouldn't be needed in drivers with
+> > V4L2_FMT_FLAG_DYN_RESOLUTION support.
+> >=20
+> > Nicolas
+> >=20
+> >=20
+>=20
+> Thanks for the detailed explanation of GStreamer's approach.
+>=20
+> I have a couple of follow-up questions:
+>=20
+> 1. Regarding coda's source change being "completely fake":
+>=20
+> =C2=A0=C2=A0 Looking at the coda driver code, its seq_init_work does pars=
+e the
+> =C2=A0=C2=A0 bitstream via hardware (SEQ_INIT command), and the source ch=
+ange event
+> =C2=A0=C2=A0 is only emitted after ctx->initialized is set =E2=80=94 whic=
+h requires the
+> =C2=A0=C2=A0 hardware to successfully parse the stream headers. After the=
+ event,
+> =C2=A0=C2=A0 userspace can call G_SELECTION to retrieve the actual displa=
+y crop
+> =C2=A0=C2=A0 rectangle parsed from the bitstream.
+>=20
+> =C2=A0=C2=A0 The limitation is that coda requires userspace to set a suff=
+iciently
+> =C2=A0=C2=A0 large resolution via S_FMT(OUTPUT) beforehand (since it vali=
+dates
+> =C2=A0=C2=A0 stream dimensions fit within the pre-configured buffer size =
+rather
+> =C2=A0=C2=A0 than updating G_FMT with parsed dimensions). But the event i=
+tself
+> =C2=A0=C2=A0 does depend on bitstream content and carries useful informat=
+ion
+> =C2=A0=C2=A0 (visible resolution via selection API).
+>=20
+> =C2=A0=C2=A0 So it seems coda could work with the standard init flow =E2=
+=80=94 the source
+> =C2=A0=C2=A0 change event is real, just the information delivery is parti=
+al (crop
+> =C2=A0=C2=A0 via G_SELECTION rather than full coded resolution via G_FMT)=
+. Would
+> =C2=A0=C2=A0 you agree, or is there another reason GStreamer treats it as=
+ legacy?
+
+Its possible I miss-understood the code indeed.
+
+>=20
+> 2. Regarding s5p-mfc:
+>=20
+> =C2=A0=C2=A0 Interestingly, s5p-mfc sets V4L2_FMT_FLAG_DYN_RESOLUTION but=
+ does
+> =C2=A0=C2=A0 NOT emit an initial source change event. After SEQ_DONE, it =
+simply
+> =C2=A0=C2=A0 transitions to MFCINST_HEAD_PARSED state and wakes up waiter=
+s =E2=80=94
+> =C2=A0=C2=A0 userspace discovers the resolution by calling G_FMT(CAPTURE)=
+ which
+> =C2=A0=C2=A0 internally blocks until header parsing completes.
+>=20
+> =C2=A0=C2=A0 The source change event is only emitted during mid-stream re=
+solution
+> =C2=A0=C2=A0 changes (RES_CHANGE_FLUSH path). How does GStreamer handle t=
+his case?
+> =C2=A0=C2=A0 Does it timeout waiting for the initial event and fall back,=
+ or does
+> =C2=A0=C2=A0 it use some other mechanism?
+
+That one I have no idea, that MFC driver gets highly hacked up on Android, =
+and
+Samsung is pretty much gone from the general purpose SBC or IoT world. Last=
+ time
+I worked with MFC, they did not have that flags set (it didn't exist yet), =
+and
+the blocking G_FMT was the thing that pretty much everyone disliked, and wh=
+y we
+made a spec for newly introduce decoder.
+
+I'd assume that GStreamer cannot operate on mainline MFC. It would be nice =
+to
+fix, but I don't myself have the bandwidth. Is there anyone left at Samsung=
+ that
+cares about it ? Adding the two maintainers. Though clearly, its non spec
+compliant to flag V4L2_FMT_FLAG_DYN_RESOLUTION without emitting the initial
+event.
+
+>=20
+> Overall, I agree that using V4L2_FMT_FLAG_DYN_RESOLUTION to unify the
+> behavior (both initial source change and mid-stream DRC) is the right
+> direction. But the current state has some inconsistencies:
+>=20
+> =C2=A0 - coda: emits initial source change, but does NOT set DYN_RESOLUTI=
+ON
+> =C2=A0 - s5p-mfc: sets DYN_RESOLUTION, but does NOT emit initial source c=
+hange
+>=20
+> If we want to document that "DYN_RESOLUTION implies initial source change
+> event will be emitted", s5p-mfc would need to be fixed to comply. Does
+> that seem reasonable, or should we take a different approach?
+
+I think though that we don't have to have that documented, since
+V4L2_FMT_FLAG_DYN_RESOLUTION comes after the V4L2 stateful spec, and so, if=
+ you
+include that flag you also have to comply to the spec. Maybe I'm a bit wish=
+ful,
+but the reality is that this is more about unmaintained territory.
+
+For CODA, its very very old, and the legacy way of guessing the allocation =
+is
+what works best there. Though, I'd be happy to help fix and test this one, =
+I do
+have this hardware, and surprisingly, imx6 which host this IP is still in u=
+se
+today.
+
+Nicolas
+
+>=20
+> Regards,
+> Ming
+>=20
+> >=20
+> > >=20
+> > > [1] https://gitlab.freedesktop.org/gstreamer/gstreamer/-/work_items/5=
+126
+> > >=20
+> > > Best regards,
+> > > Ming
+>=20
+
+--=-RwNoGtVUCUgb+aOBDcyu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 10, 2026, at 12:36, Josua Mayer wrote:
-> Am 10.06.26 um 09:43 schrieb Arnd Bergmann:
->> On Wed, Jun 10, 2026, at 00:13, Frank Li wrote:
->>
->> If everything goes well otherwise, this PR should still make
->> it in time, but it would be nice to avoid such minute
->> excitement in the future.
->
-> Thank you for discussing this issue in detail!
->
-> If you need me to send a fixup, kindly let me know.
+-----BEGIN PGP SIGNATURE-----
 
-I think that would be best, yes. Then Frank can apply
-the patch on top and send the updated pull request.
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCailkjAAKCRDZQZRRKWBy
+9M8hAQCk9VYvunvG/LPVCfamhohzZ+Nr7kS0XQl/eA0IWoMIiAD/To621F1YThiA
+tcyTUzAoznVXi5pHiexsLAGhacivGgs=
+=i4uu
+-----END PGP SIGNATURE-----
 
-      Arnd
+--=-RwNoGtVUCUgb+aOBDcyu--
