@@ -1,427 +1,359 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010024.outbound.protection.outlook.com [52.101.69.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99408408002;
-	Wed, 10 Jun 2026 13:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781097625; cv=none; b=H5XsSyCrFlWBNnP1vABiLaEAPJ/l7TTRItLdK/1JNnrWTwm2hbGXcU+g8GrTP0qFrG5VamqTJLZUyTPlhbL5NytFfPG2JSkvBYZcwXl4pe1z73B1vwQ85t6Pavh1ruo5beAJ0kL5ZllOMmkem478zAiMzyCTy6+XaiXcAm5YIt8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781097625; c=relaxed/simple;
-	bh=rtNAAlhtypLV7NtxFca9OU2GViA+FbcIEm3U1Hqnr6o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=u2Ss4gqMSl1KySi739UNclHXGfgE+yvM/Tevetl8Ms8IKpKiG6KwBs9qVxIhD4uSqPvQAL0RFFoNje7Vf0WiGaGx1ku8hwm+a5QDPaYPKS7KMoD1U/lap36XfuvgBP3BuuEDItFP2PLJu51cRzTAermtiAStjKXC8I+6CJmTMwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=E1WdhyrN; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51D940912B
+	for <imx@lists.linux.dev>; Wed, 10 Jun 2026 13:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781097686; cv=fail; b=cO9sXE9deS+MRx8gFaBB6Ay8NU0zzUTOI5HjmOeXWQDa6XVAuc0MOFm/NlXoc5N3JgGw7H3Gp9VN2ROQDHg6AsFuHtcpmqsZVcjVcTw1K9QfF/YaawHye1dgi7ZASaVKPE/l6Ojyxi1RdiucFS3ORZtLxVg74DWsvuFU0lHINUU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781097686; c=relaxed/simple;
+	bh=Be1c7A3ylaaKNCQjOm/S+9mUmIJdhUG51T/955iEQG8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=RySkKGuyT5+8Nwzt3WxigXMsAMJOMmUQ9k8OJeaTD52qskAly+Xg1XaqXgcz1Qnxgo/mOZq+5BNQ8tFIDAk4yUmqDtD4pARlKEuZWZT4zn2qVire1vkOzedGDJdOgii5Z0pb4p78MRfNJFcb+puc+JIrgmwK+urIHQL7BgK5/dI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dig01HTy; arc=fail smtp.client-ip=52.101.69.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="E1WdhyrN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1781097615;
-	bh=rtNAAlhtypLV7NtxFca9OU2GViA+FbcIEm3U1Hqnr6o=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=E1WdhyrNxGo+A6il718YJ1uav0/PXgvvGf1ry4iRD5rcChufxC29u7f01hhP6p0Gd
-	 X9J4VEpKD6f6B2zI0a05HG/T6PWmsqj5crt/6Ge0liC00Mv+CRY6wCmpTKzLRwg7de
-	 oCUI5tSv0wKHSANhhSP11yj9kFkvixmDE4ci7aLAMf2jCslm8avSdw6ZWOYBz4DKsv
-	 iu7MvLm3J7dQqWVFOoPh+4/ju8BAE5d0vnemsLSSi8jEArqjY8Y4R2mI5qu+ud6FoC
-	 uOKn5Dj4Oyh2HBZtMX0V9e0w+uyurFZSvbZxFQzEsX4PFqRdRG5uZunyDHdBZy1P+V
-	 U6Nr6DDMF6KBw==
-Received: from [100.64.0.214] (unknown [100.64.0.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 610D817E0246;
-	Wed, 10 Jun 2026 15:20:14 +0200 (CEST)
-Message-ID: <6d3acf626e0018c4175c413c3eeb9b8b12c3c8be.camel@collabora.com>
-Subject: Re: [PATCH RFC 1/2] media: docs: Clarify
- V4L2_FMT_FLAG_DYN_RESOLUTION usage
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, Marek Szyprowski
-	 <m.szyprowski@samsung.com>, Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, 
- "hverkuil@kernel.org"	 <hverkuil@kernel.org>, "mchehab@kernel.org"
- <mchehab@kernel.org>,  "imx@lists.linux.dev"	 <imx@lists.linux.dev>,
- "Frank.Li@kernel.org" <Frank.Li@kernel.org>,  "linux-media@vger.kernel.org"
-	 <linux-media@vger.kernel.org>, Eagle Zhou <eagle.zhou@nxp.com>, Elliot
- Chen	 <elliot.chen@nxp.com>, Frank Li <frank.li@nxp.com>, 
- "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>
-Date: Wed, 10 Jun 2026 09:20:12 -0400
-In-Reply-To: <aijOPSFPEDsVlYFY@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
-References: <20260608-flag-dyn-resolution-v1-1-44dc65516148@oss.nxp.com>
-	 <20260608040616.1A3EE1F00893@smtp.kernel.org>
-	 <AM9PR04MB857068E0FE59DD8ECB27A9AAE71C2@AM9PR04MB8570.eurprd04.prod.outlook.com>
-	 <e689df21c92861e35b6d11e391bea3404321484d.camel@collabora.com>
-	 <aijOPSFPEDsVlYFY@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Organization: Collabora Canada
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-RwNoGtVUCUgb+aOBDcyu"
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dig01HTy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bO46S3pnFHSE1fbhxFaYlhxU+un0oG065XBG5F5um0CP5rQ4vs95SeC4ubgc4GgnoE5CIb7gPMwjkFApAk7RaKsTZV42b+AAGuoH9ztT21pwCiIO6xaXrtQFrp50qY0evQgNJIN1MLEgDEh1fxY0Udta4ewj4FkdcGbc/8fsTLqMpYHkihfqiiClJFZBX/Dv9F3ymXo90OENJHNpN7MogX2uceMsFXYCzCaToAiymnyPfFWDPrG0yamM/U1b9H5dPVw6hVCP17DNA/Ova2p1Or8sx7nwia+jAPhoUDsdD1f4zrI0+LVQGdN58ikfnuuuBq5Iv70t84BZ2MTzH7iHZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=drt5aU1vv5EZi/WvJghB2txl0pHsyFWDzdivobp2RP4=;
+ b=Y4Km71P398gl+i0cM5H/hnibPnmXEIIJD46zNz4zP3kGr2kbgyEZsjjPIDma1FvzEApBapGIvulaEK9Z5nlo4YoM4GEvfSmsbcEvnCjEd+cLCDLFie1LNZSwhiNPzlYO4Tv0CrnemAr2mAqRFspLjniNlNnLA3k/N0Z2m0+GcUbmrOCdosSWlYcT5VCuKbN80G2eRXVw8xlmtJ3i6KFdc4IV1hxqO5gqnlLNREin+yzoCE+wj7xb7Hfw2G+A6oaAEBezwhdRv+UX9N1d2W9I7uB/C2kU+73Ww4weYvwiFCOYMuVdb3F5Kn6bAqVgtVF7ETlfUR6Q0zhiMmSSThSjWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=drt5aU1vv5EZi/WvJghB2txl0pHsyFWDzdivobp2RP4=;
+ b=dig01HTyWuUG3si7j1JAnI0QyGT6HxmE0iLDQopcfV6W4mwPggvUKQKSO1hbE33eVewQtlldxdSati7lXOVJnQ4Iogysq7BxdR9hXG3hjNWkG1tzcu2Wvztyie/rq2pqj6xJ++jp2/fF8Tt/AFBI8OJWJFdOhuX/n6H0KmRdue//CFF+RrqrHAgy4t1mDJx7ItNmXp/YlM5XRae8JlvpJ/eZcw7tFQNzrOm9173JXxLS28VYtI93TB/d67S3p6tNwRzi+Ai9XVD1eiivJ+EpXCynm6UTxhcOp5J/X2cZeZXNEiz1KKbTtnlNZNRaCla+y87Wn0nmu3q5RC7/XoyZEg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20)
+ by PAXPR04MB9121.eurprd04.prod.outlook.com (2603:10a6:102:22b::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Wed, 10 Jun
+ 2026 13:21:18 +0000
+Received: from AM9PR04MB8179.eurprd04.prod.outlook.com
+ ([fe80::a551:cde0:6730:1d85]) by AM9PR04MB8179.eurprd04.prod.outlook.com
+ ([fe80::a551:cde0:6730:1d85%6]) with mapi id 15.21.0113.011; Wed, 10 Jun 2026
+ 13:21:18 +0000
+From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+To: Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	Lee Jones <lee@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Srinivas Kandagatla <srini@kernel.org>
+Cc: Alberto Ruiz <aruizrui@redhat.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	devicetree@vger.kernel.org,
+	Enric Balletbo <eballetb@redhat.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: [PATCH v11 0/6] gpio: siul2-s32g2: add initial GPIO driver
+Date: Wed, 10 Jun 2026 15:21:10 +0200
+Message-Id: <20260610132116.1998140-1-khristineandreea.barbulescu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4P190CA0041.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d1::15) To AM9PR04MB8179.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3b5::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8179:EE_|PAXPR04MB9121:EE_
+X-MS-Office365-Filtering-Correlation-Id: 860f4ac0-0630-45f7-504b-08dec6f327aa
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|23010399003|366016|1800799024|19092799006|7416014|376014|921020|56012099006|3023799007|11063799006|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+ mMn/PXVuvFPgTiGO/Jjmfp9eL9gx2PFqnZrmjRw7hiQtlSnC/qxHzNxb+wWwE2CQIynSviqyzDpa2kpVXhzj79JJnOdciGadNsmpg5Ux7YJHIPHp78ETKthuAYawS4yZWcn0/k6GbvSkgke9TYYep1JnJjRn/3Cos+JkHidFCkhvJzkrwra0i6KuHELdbQNk15Azt/SDJbz67eqpR+1oAUbF8r1HOXg9HYnXSCLllj7ap/RuuIp2qqp4p1/XoZ554CkutODdKcK3iIcIeOae7X57dJIG0whCrTrIHOvjB6y6if5vITcnYRd+S83PuepODyKOt6dzLQ7U0Z6LnJ3aIo6t/BnzxcQEAGx2s0hJNxh0XAKWMJKOt7B/Y/66Nl/gZhzKbaFfed6mdWXtSpPkAwsX4cwO/aEqEVRhAYfFv09Q5eZeHr3U+PHqQG6cwtkgKYKuW0WeYyq8CQ+1/oWKSaA+A6IKg9rHCIU367aVtJcgPhb/ZEVaTphiP/eKEVTbVBLQrUdLevxJY/ETJPXGBHbEE5897IfAcOuTGvFc3bXI+aQTRpC7TRY755oZj/hWtEGfmIh4bkF4uu2o4LCHkPx0cxjCE+Ixqfp9Mpq8MPfxJiBFPe4acqqrN+ypX7gRtT+8YB0O/WHcRDhFsacOFJz2gxsrljCOQuIyP/e3+92L2cH8Zhwfrstn/Ny2b4sEqXlwi8uN41RjgM334XN+5Jbrt0eeg56gQ3FLqZBSJJo=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8179.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(19092799006)(7416014)(376014)(921020)(56012099006)(3023799007)(11063799006)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?WU44b0ZiY0lpdlRVTmpyMHBPQ3ppNjBUdEpDQTREM1NDTzdmc2hKWkJXeGJa?=
+ =?utf-8?B?YTJPdmxYZDFHSDhaL0RJL0pJWUpxMk5uV0djMWhkVk5FS3lFYng5QUpjRXNM?=
+ =?utf-8?B?eDJ2Y0s0VWs0QW5DWml3a0Q0QjYvV2M0bVhCZktVSHBydlU4QjFKWFl4bU5j?=
+ =?utf-8?B?MDJ1ckVpTmM5NlYvbEFiMDFoTlUyUkNXSm1PNWZOd0pWUXVWNTQvRHJoNUhm?=
+ =?utf-8?B?VU5kd3hGQ0hSdUtvMTdnWFZvZUR0SjFHZ0Fsb3RsSlJpeFdzbHhCT1F2TTE3?=
+ =?utf-8?B?QWhTVHR4RnVCZ2RNZzNvR2lNcVdxdnhaQkMvV0FqZ05qOTdmcnZXaWhmbzJy?=
+ =?utf-8?B?M05IOXd2K1N5RXNhZGVUK1NMN2NIaVU0MWgvRWR1dFozODRDZDlwRnZBTExC?=
+ =?utf-8?B?ZnFjai9GbW8ralYzUWUzc1JoVERseE8vaXJNdStweExwdXJMeUF3c1hRUHBy?=
+ =?utf-8?B?R09QTWhVbVZKQTJ3TmVtdS9QcU0yY1ZDajA2ZER2RVJFUVpKODd1REpqL0Vk?=
+ =?utf-8?B?UHkzZEpoeWhKRks0RDdhQkorbERvQmZ2YXRDbE5wQzdPcWJwN0UvMUZ2a3Fy?=
+ =?utf-8?B?eU0rV2t4WndUVFBXRUFwTGtqOTdRVHA2MUZ6bDUwVEh1Q1c2RGsvWEZOREIw?=
+ =?utf-8?B?Z0ZLbUtKWGRJdExadzdBVS85UVo5eXBuRzlqNFNLV1Y0ZXJFNVc5TU0yczVj?=
+ =?utf-8?B?SGo5UVdXZGpZeDI4TEtlM2MxSUNHVWdWNGhRRm82dkVxbllRR0xNa1NONGN2?=
+ =?utf-8?B?MnJIMzVKMlllbDlGa3kvVEhseGFVeVhGc3J1MnhteUUvYmpHQ3BsVTI5V3Qy?=
+ =?utf-8?B?a2QzYTVLNG4rOTVmREtuaGFvVkcvcWR5SlR2MVZrSkYvYTB3dTlIT2NQck1t?=
+ =?utf-8?B?LytHbUorMVlIWnMrOWZyOGpjWGF4akVKUDBjR3hpQWgrUmpCOG5pd2RMbDJK?=
+ =?utf-8?B?SENKdmJBSDFBcEdEYlF5QlBFbTBvVldhN1VsMTRVSmlzaktDUXM1dWdyaEVv?=
+ =?utf-8?B?TlA3Y0Ixa2MwN08yQlcwN0NhZXlEUCt2UFhSMjVieGRRRzBOWjRqN2pHem5x?=
+ =?utf-8?B?elRwR3orbURFRjJCYndUODZBSU1LUWp3UVg5VDlEOU82SWc2VUdybUdlc1Bw?=
+ =?utf-8?B?dmhwclMxQmhhTEczVUpiSW00Sy9VNzVLbVVWOFNxakZmck1oaE1aSitHKzJi?=
+ =?utf-8?B?ejNjdnUyT2JwWGo1N056cnhuV2pndFFRVDd6ZFp1MjR4Wm9kWEJvS2RIYlA5?=
+ =?utf-8?B?RnhtKzlpcExPNHl1bElYcnJ0MEptaVBrTHZXWXRoV1dKeEZlK2huWmdYblUr?=
+ =?utf-8?B?dm9VRkppbDYzYTEvTHhmd3l2eWdTeEpGWHo4eU5kR0htSVFkRVhRNnh0M3k0?=
+ =?utf-8?B?YlRhU1NMV3Y0L1llQ1BDUEVySEFDdEhwQXBnU2JoejJYV2M1WlZEY09jNC9M?=
+ =?utf-8?B?WmFVVmk0aHlzV3JkZVBidzZaNFVKNXJLY2lNeUxicHVvY0w0dFgyZldlVSt0?=
+ =?utf-8?B?RHdkeXVHbCt4Sm41ckw1ZXcvTEtRU0xRYUh6MExEMmFPTzliYkRXYnFYQW5l?=
+ =?utf-8?B?UkkrNzJlOFAxek8xY1FJUUQvTEdmSHd6UTlacWJ4Yjg4VEhQaUQxWkQyejBj?=
+ =?utf-8?B?SGUrc2lVaWY3OFEwaVhtTldXYjRicVlCR05sbHVucDN6Q1RkcUNvT0NtSXVo?=
+ =?utf-8?B?YStjTkdQWUt1Qy93TjNHS3B4dzZGVVh6aGRiM2VUdFl0YVlZUno1VHhza3Va?=
+ =?utf-8?B?Qzl6bjg1NGI1ZWxaUjZLV2lOQm1ZYWNnZ2JLMmVFNy9QQXRXVXRndXliS0kz?=
+ =?utf-8?B?Tmd5U29PZmJ3YlZ1SDFnYkJZWDZBN2JUa3hGTmE1RzUyTmhmbzRWSzVZR3Zn?=
+ =?utf-8?B?UW0vemFEdEZvdHl1aUIydm9ySUFoZWhvZFF6UDBZQkJnOUZwYlhySXErS2xP?=
+ =?utf-8?B?Zjg1djZYUiswNGQ4MGxqaXhhbFBiVXBKVU9DN0RWNjVqVU1CNGdyMVgxSCtq?=
+ =?utf-8?B?OW1mYS94b1cwTWRNVzN2L28ycGpOOTNQMDdFblRMa2hSektHZXd0S2swZnR6?=
+ =?utf-8?B?bmdYWkc2a0Nhdm9kV1E1Qk13eEhMelFBc3M1R1Y4YTB4TVJ1dk92dTh1WTdK?=
+ =?utf-8?B?ODlualpvaXhNRGpCMUt4aUJScGNuREZ6QTBPY3BidG82YUhjYkZ5SHZxYlJQ?=
+ =?utf-8?B?R0w1R0Ziby9BQ01ROFMwRzN6ZTkvam5XMkRXdVFYVVZ6NDRJYkZFTVFqTW9v?=
+ =?utf-8?B?U0kyMWZuVy82bnNWNzV0Uml1VHV4NVBYUjZIRHBXWGVNOER2Ri9rRmxjWExQ?=
+ =?utf-8?B?aHFQL2EyNGlJbExMVDVMV3VETjF3ZE9CTjRkVnhWRkErMHlEU0Vkdm5zbCtH?=
+ =?utf-8?Q?J42R5r6/7o9YmpR/F0UEvOCx+/AdDZREnSKYs?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 860f4ac0-0630-45f7-504b-08dec6f327aa
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8179.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 13:21:17.9794
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 035BmBm3mNGCjqLMlnibY/c4KMTRW3idJD6+eeRlZ5rBoizxt3LHiIDBGy1jjOTTxAF7FjYpBq9cz44mRMEt1fjhvvpyDIpSKGr8eCdb8Meaye311hGvY0iVufmpfcJw
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9121
 
+This patch series adds support for basic GPIO
+operations using gpio-regmap.
 
---=-RwNoGtVUCUgb+aOBDcyu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+There are two SIUL2 hardware modules: SIUL2_0 and SIUL2_1.
+However, this driver exports both as a single GPIO driver.
+This is because the interrupt registers are located only
+in SIUL2_1, even for GPIOs that are part of SIUL2_0.
 
-Le mercredi 10 juin 2026 =C3=A0 11:49 +0900, Ming Qian(OSS) a =C3=A9crit=C2=
-=A0:
-> On Tue, Jun 09, 2026 at 02:00:02PM -0400, Nicolas Dufresne wrote:
->=20
-> Hi Nicolas,
-> > Hi Ming,
-> >=20
-> > Le lundi 08 juin 2026 =C3=A0 06:26 +0000, Ming Qian (OSS) a =C3=A9crit=
-=C2=A0:
-> > >=20
-> > >=20
-> > > > -----Original Message-----
-> > > > From: sashiko-bot@kernel.org=C2=A0<sashiko-bot@kernel.org>
-> > > > Sent: Monday, June 8, 2026 12:06 PM
-> > > > To: Ming Qian (OSS) <ming.qian@oss.nxp.com>
-> > > > Cc: imx@lists.linux.dev; Frank.Li@kernel.org; linux-media@vger.kern=
-el.org
-> > > > Subject: Re: [PATCH RFC 1/2] media: docs: Clarify
-> > > > V4L2_FMT_FLAG_DYN_RESOLUTION usage
-> > > >=20
-> > > > Thank you for your contribution! Sashiko AI review found 1 potentia=
-l
-> > > > issue(s)
-> > > > to consider:
-> > > > - [High] The added documentation conflates
-> > > > `V4L2_FMT_FLAG_DYN_RESOLUTION` (which designates mid-stream dynamic
-> > > > resolution switching capability) with the mandatory initial
-> > > > `V4L2_EVENT_SOURCE_CHANGE` event. By stating "Clients can use this =
-flag to
-> > > > determine whether the decoder will signal the initial resolution", =
-it
-> > > > explicitly
-> > > > legitimizes a flawed userspace heuristic that violates the V4L2 sta=
-teful
-> > > > decoder
-> > > > specification. The specification mandates that for coded formats co=
-ntaining
-> > > > resolution info, the decoder MUST parse the stream and emit an init=
-ial
-> > > > `V4L2_EVENT_SOURCE_CHANGE` event (Initialization Step 4). Compliant=
- drivers
-> > > > (e.g., `coda`) correctly emit this initial event but do NOT set
-> > > > `V4L2_FMT_FLAG_DYN_RESOLUTION` because they lack mid-stream switchi=
-ng
-> > > > capabilities. If userspace follows this documented advice, it will
-> > > > erroneously
-> > > > skip waiting for the initial event on these drivers, breaking Captu=
-re Setup
-> > > > and
-> > > > stream decoding.
-> > > > --
-> > > >=20
-> > > > commit ec9c0583334c246f7813132b55724e42622e8edd
-> > > > Author: Ming Qian <ming.qian@oss.nxp.com>
-> > > >=20
-> > > > media: docs: Clarify V4L2_FMT_FLAG_DYN_RESOLUTION usage
-> > > >=20
-> > > > This commit updates the V4L2 stateful decoder documentation to clar=
-ify the
-> > > > usage of the V4L2_FMT_FLAG_DYN_RESOLUTION flag. It adds a note stat=
-ing
-> > > > that decoders setting this flag will always emit an initial source =
-change
-> > > > event.
-> > > > The documentation suggests clients can use this flag to decide whet=
-her to
-> > > > wait
-> > > > for the initial resolution signal.
-> > > >=20
-> > > > > diff --git a/Documentation/userspace-api/media/v4l/dev-decoder.rs=
-t
-> > > > > b/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> > > > > --- a/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> > > > > +++ b/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> > > > > @@ -361,6 +361,14 @@ Initialization
-> > > > [ ... ]
-> > > > > +=C2=A0=C2=A0=C2=A0 .. note::
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Decoders that set the ``V4L=
-2_FMT_FLAG_DYN_RESOLUTION`` flag for
-> > > > the
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 coded format will always em=
-it an initial
-> > > > ``V4L2_EVENT_SOURCE_CHANGE``
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 event with ``V4L2_EVENT_SRC=
-_CH_RESOLUTION`` during this phase.
-> > > > Clients
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 can use this flag to determ=
-ine whether the decoder will signal the
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 initial resolution before p=
-roducing decoded frames.
-> > > >=20
-> > > > [Severity: High]
-> > > > Does this guidance conflate the V4L2_FMT_FLAG_DYN_RESOLUTION flag,
-> > > > which designates mid-stream dynamic resolution switching, with the
-> > > > mandatory initial V4L2_EVENT_SOURCE_CHANGE event?
-> > > >=20
-> > > > The V4L2 Stateful Decoder API requires an initial
-> > > > V4L2_EVENT_SOURCE_CHANGE event during the Initialization phase for =
-stream
-> > > > parsing, irrespective of dynamic resolution support.
-> > > >=20
-> > > > Compliant drivers like coda correctly emit this initial event but d=
-o not set
-> > > > V4L2_FMT_FLAG_DYN_RESOLUTION because they lack mid-stream switching
-> > > > capabilities.
-> > > >=20
-> > > > If userspace follows this documented advice, wouldn't it erroneousl=
-y skip
-> > > > waiting for the initial event on these drivers, potentially breakin=
-g capture
-> > > > setup
-> > > > and stream decoding?
-> > > >=20
-> > > > --
-> > > > Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608-fl=
-ag-dyn-
-> > > > resolution-v1-0-44dc65516148@oss.nxp.com?part=3D1
-> > >=20
-> > > Hi,
-> > >=20
-> > > Thanks for the review.
-> > >=20
-> > > You are right that the V4L2 stateful decoder specification states the=
- initial
-> > > V4L2_EVENT_SOURCE_CHANGE is mandatory for coded formats that contain
-> > > resolution information in the stream (Initialization Step 4).
-> >=20
-> > Be aware that Sashiko is an AI bot, llm words things with extreme convi=
-ction,
-> > and it this case forget about backward compatibility from pre-spec.
-> >=20
-> > >=20
-> > > However, in practice, GStreamer's v4l2 stateful decoder implementatio=
-n uses
-> > > V4L2_FMT_FLAG_DYN_RESOLUTION to determine whether to subscribe and wa=
-it for
-> > > the initial source change event. The reasoning from the GStreamer sid=
-e, as
-> > > Nicolas explained [1]:
-> > >=20
-> > > =C2=A0=20
-> > > "
-> > > https://docs.kernel.org/userspace-api/media/v4l/dev-decoder.html#dyna=
-mic-resolu
-> > > tion-change
-> > > =C2=A0=C2=A0=C2=A0 Says:
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Not all decoders can detec=
-t resolution changes. Those that do set the
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_FMT_FLAG_DYN_RESOLUTI=
-ON flag.
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0 So normally that wording should prevent requiring =
-an initial SRC_CH,
-> > > =C2=A0=C2=A0=C2=A0 or emitting later SRC_CH. Your driver don't have t=
-his flag, then your
-> > > =C2=A0=C2=A0=C2=A0 driver can't emit this event. But a measure we sho=
-uld take into
-> > > =C2=A0=C2=A0=C2=A0 GStreamer would be to not register (or mark) this =
-event."
-> > >=20
-> > > @Nicolas, could you elaborate on why GStreamer needs
-> > > V4L2_FMT_FLAG_DYN_RESOLUTION to handle the initial source change even=
-t?
-> > > Is this something that should be fixed on the GStreamer side (i.e., a=
-lways
-> > > wait for the initial event), or is the current heuristic intentional =
-due to
-> > > legacy drivers that don't emit the event?
-> >=20
-> > The coda source_change notification is completely fake. It does not dep=
-endent on
-> > the bitstream content. So the event is left there, since its kind of pa=
-rt of the
-> > ABI, but it does not behave like other implementation, or pre-spec driv=
-ers.
-> >=20
-> > So what we do in GStreamer, is that for legacy driver (no
-> > V4L2_FMT_FLAG_DYN_RESOLUTION), we pre-allocate both queues, based on ou=
-r guessed
-> > dimensions. If it happens that the conformance windows is small enough,=
- it often
-> > works. DRC will only work if the display dimension changes.
-> >=20
-> > For any modern driver, that implement V4L2_FMT_FLAG_DYN_RESOLUTION, we =
-strictly
-> > wait for the event, and on DRC, even if the display resolution changes,=
- we let
-> > the driver tell us when to actually reconfigure. The legacy method was =
-kept to
-> > not break coda and older driver, the new method is a lot more reliable,=
- and
-> > avoid allocating twice the capture queue (wrong guess).
-> >=20
-> > The userspace implementation is also a bit more flexible, as normally t=
-he legacy
-> > way should kind of work for any drivers, and we still subscribe it seem=
-s. But
-> > the implication is just strange and shouldn't be needed in drivers with
-> > V4L2_FMT_FLAG_DYN_RESOLUTION support.
-> >=20
-> > Nicolas
-> >=20
-> >=20
->=20
-> Thanks for the detailed explanation of GStreamer's approach.
->=20
-> I have a couple of follow-up questions:
->=20
-> 1. Regarding coda's source change being "completely fake":
->=20
-> =C2=A0=C2=A0 Looking at the coda driver code, its seq_init_work does pars=
-e the
-> =C2=A0=C2=A0 bitstream via hardware (SEQ_INIT command), and the source ch=
-ange event
-> =C2=A0=C2=A0 is only emitted after ctx->initialized is set =E2=80=94 whic=
-h requires the
-> =C2=A0=C2=A0 hardware to successfully parse the stream headers. After the=
- event,
-> =C2=A0=C2=A0 userspace can call G_SELECTION to retrieve the actual displa=
-y crop
-> =C2=A0=C2=A0 rectangle parsed from the bitstream.
->=20
-> =C2=A0=C2=A0 The limitation is that coda requires userspace to set a suff=
-iciently
-> =C2=A0=C2=A0 large resolution via S_FMT(OUTPUT) beforehand (since it vali=
-dates
-> =C2=A0=C2=A0 stream dimensions fit within the pre-configured buffer size =
-rather
-> =C2=A0=C2=A0 than updating G_FMT with parsed dimensions). But the event i=
-tself
-> =C2=A0=C2=A0 does depend on bitstream content and carries useful informat=
-ion
-> =C2=A0=C2=A0 (visible resolution via selection API).
->=20
-> =C2=A0=C2=A0 So it seems coda could work with the standard init flow =E2=
-=80=94 the source
-> =C2=A0=C2=A0 change event is real, just the information delivery is parti=
-al (crop
-> =C2=A0=C2=A0 via G_SELECTION rather than full coded resolution via G_FMT)=
-. Would
-> =C2=A0=C2=A0 you agree, or is there another reason GStreamer treats it as=
- legacy?
+There are two gaps in the GPIO ranges:
+- 102-111(inclusive) are invalid
+- 123-143(inclusive) are invalid
 
-Its possible I miss-understood the code indeed.
+Writing and reading GPIO values is done via the PGPDO/PGPDI
+registers(Parallel GPIO Pad Data Output/Input) which are
+16 bit registers, each bit corresponding to a GPIO.
 
->=20
-> 2. Regarding s5p-mfc:
->=20
-> =C2=A0=C2=A0 Interestingly, s5p-mfc sets V4L2_FMT_FLAG_DYN_RESOLUTION but=
- does
-> =C2=A0=C2=A0 NOT emit an initial source change event. After SEQ_DONE, it =
-simply
-> =C2=A0=C2=A0 transitions to MFCINST_HEAD_PARSED state and wakes up waiter=
-s =E2=80=94
-> =C2=A0=C2=A0 userspace discovers the resolution by calling G_FMT(CAPTURE)=
- which
-> =C2=A0=C2=A0 internally blocks until header parsing completes.
->=20
-> =C2=A0=C2=A0 The source change event is only emitted during mid-stream re=
-solution
-> =C2=A0=C2=A0 changes (RES_CHANGE_FLUSH path). How does GStreamer handle t=
-his case?
-> =C2=A0=C2=A0 Does it timeout waiting for the initial event and fall back,=
- or does
-> =C2=A0=C2=A0 it use some other mechanism?
+Note that the PGPDO order is similar to a big-endian grouping
+of two registers:
+PGPDO1, PGPDO0, PGPDO3, PGPDO2, PGPDO5, PGPDO4, gap, PGPDO6.
 
-That one I have no idea, that MFC driver gets highly hacked up on Android, =
-and
-Samsung is pretty much gone from the general purpose SBC or IoT world. Last=
- time
-I worked with MFC, they did not have that flags set (it didn't exist yet), =
-and
-the blocking G_FMT was the thing that pretty much everyone disliked, and wh=
-y we
-made a spec for newly introduce decoder.
+v11 -> v10:
+- add GPIOLIB as explicit Kconfig dependency
+- mark regmap config as fast_io to avoid mutex overhead
+- propagate regmap errors in debug show callback and
+  suspend/resume paths instead of silently discarding them
+- introduce a per-range sparse flag to handle SIUL2 instances
+  with a non-linear PGPD layout
+- dt-bindings: drop redundant minItems from legacy oneOf branch,
+  add gpio-controller: false and related properties to prevent
+  GPIO/IRQ properties without the required reg entries and
+  drop maxItems from the GPIO+IRQ branch
 
-I'd assume that GStreamer cannot operate on mainline MFC. It would be nice =
-to
-fix, but I don't myself have the bandwidth. Is there anyone left at Samsung=
- that
-cares about it ? Adding the two maintainers. Though clearly, its non spec
-compliant to flag V4L2_FMT_FLAG_DYN_RESOLUTION without emitting the initial
-event.
+v10 -> v9:
+- implement GPIO via gpio-regmap backed by a regmap for
+PGPDO/PGPDI register translation
+- remove the successful probe message from the driver
+- switch back to a single compatible string for both the
+legacy and extended binding layout
+- update binding: GPIO/IRQ properties required only
+when extended reg layout is used
+- remove unnecessary return value checks for MMIO
+regmap operations
+- replace kernel-doc style comments with regular comments
+- solve relevant sashiko.dev findings
+- rework GPIO request handling to preserve pinctrl ownership
+- use __free(kfree) and no_free_ptr() in GPIO request path cleanup
 
->=20
-> Overall, I agree that using V4L2_FMT_FLAG_DYN_RESOLUTION to unify the
-> behavior (both initial source change and mid-stream DRC) is the right
-> direction. But the current state has some inconsistencies:
->=20
-> =C2=A0 - coda: emits initial source change, but does NOT set DYN_RESOLUTI=
-ON
-> =C2=A0 - s5p-mfc: sets DYN_RESOLUTION, but does NOT emit initial source c=
-hange
->=20
-> If we want to document that "DYN_RESOLUTION implies initial source change
-> event will be emitted", s5p-mfc would need to be fixed to comply. Does
-> that seem reasonable, or should we take a different approach?
+v9 -> v8
+- remove the SIUL2 syscon child nodes from the
+device tree and DT bindings
+- remove syscon child handling from the MFD
+and pinctrl drivers
+- remove the MFD driver and use a single monolithic
+pinctrl/gpio/irqchip driver
+- add a new compatible for the pinctrl+gpio binding
+while keeping the previous compatible for the legacy
+pinctrl-only binding
+- update bindings to include the PGPDO/PGPDI and
+IRQ register regions in the DT node for the
+pinctrl/gpio/irq binding
+- add IRQ-related entries in the bindings to
+document the intended hierarchy; IRQ support
+itself will be added in a future patch series
+- update DT nodes to match the new hierarchy and
+compatible scheme
+- fix dtb warnings
+- reorder commits: bug fixes, API changes, DT bindings,
+driver implementation, DTS changes
+- split commits further to separate minor
+style-only adjustments
 
-I think though that we don't have to have that documented, since
-V4L2_FMT_FLAG_DYN_RESOLUTION comes after the V4L2 stateful spec, and so, if=
- you
-include that flag you also have to comply to the spec. Maybe I'm a bit wish=
-ful,
-but the reality is that this is more about unmaintained territory.
+v8 -> v7
+- remove all ': true' lines from properties in dt bindings
+- remove NVMEM MFD cell from SIUL2 in dtsi
+- remove NVMEM driver and configs
+- expose SoC information via syscon cells SIUL2_0
+and SIUL2_1 in MFD driver
+- add SIUL2_0 and SIUL2_1 syscon nodes in dtsi
+- add patternProperties for "^siul2_[0-1]$" for syscon nodes
+- update example to include syscon cells with proper format
+- remove `reg` property from pinctrl node in dt binding
+- update Kconfig help text to reflect new syscon structure
+instead of NVMEM for SoC information
+- squash deprecated SIUL2 pinctrl binding with new MFD binding
+- dropped "nxp,s32g3-siul2" from MFD driver match table
+- fixed commit messages
+- fixed dtb warnings
 
-For CODA, its very very old, and the legacy way of guessing the allocation =
-is
-what works best there. Though, I'd be happy to help fix and test this one, =
-I do
-have this hardware, and surprisingly, imx6 which host this IP is still in u=
-se
-today.
+v7 -> v6
+- fixed MAINTAINERS wrong file path
+- add unevaluatedProperties, change siul2 node name, remove
+  jtag_pins label in the device tree schema
+- change compatible definition in schema
+- change node name in dtsi
+- mentioned binding deprecation in commit messages
+- split mfd cell conversion commit in two: one for the
+  previous refactoring, one for the mfd cell conversion
+- removed Acked-by: Linus Walleij from commit:
+  "pinctrl: s32: convert the driver into an mfd cell"
+  because of changes to that commit
+- deprecate the nxp,s32g2-siul2-pinctrl binding
+- add NVMEM MFD cell for SIUL2
+- made the GPIO driver not export invalid pins
+  (there are some gaps 102-111, 123-143)
+- removed the need for gpio-reserved-ranges
+- force initialized pinctrl_desc->num_custom_params to 0
 
-Nicolas
+v6 -> v5
+- removed description for reg in the dt-bindings and added
+  maxItems
+- dropped label for example in the dt-bindings
+- simplified the example in the dt-bindings
+- changed dt-bindings filename to nxp,s32g2-siul2.yaml
+- changed title in the dt-bindings
+- dropped minItmes from gpio-ranges/gpio-reserved-ranges
+  and added maxItems to gpio-reserved-ranges
+- added required block for -grp[0-9]$ nodes
+- switch to using "" as quotes
+- kernel test robot: fixed frame sizes, added description
+  for reg_name, fixed typo in gpio_configs_lock, removed
+  uninitialized ret variable usage
+- ordered includes in nxp-siul2.c, switched to dev-err-probe
+  added a mention that other commits will add nvmem functionality
+  to the mfd driver
+- switched spin_lock_irqsave to scoped_guard statement
+- switched dev_err to dev_err_probe in pinctrl-s32cc in places
+  reached during the probing part
 
->=20
-> Regards,
-> Ming
->=20
-> >=20
-> > >=20
-> > > [1] https://gitlab.freedesktop.org/gstreamer/gstreamer/-/work_items/5=
-126
-> > >=20
-> > > Best regards,
-> > > Ming
->=20
+v5 -> v4
+- fixed di_div error
+- fixed dt-bindings error
+- added Co-developed-by tags
+- added new MFD driver nxp-siul2.c
+- made the old pinctrl driver an MFD cell
+- added the GPIO driver in the existing SIUL2 pinctrl one
+- Switch from "devm_pinctrl_register" to
+  "devm_pinctrl_register_and_init"
 
---=-RwNoGtVUCUgb+aOBDcyu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+v4 -> v3
+- removed useless parentheses
+- added S32G3 fallback compatible
+- fixed comment alignment
+- fixed dt-bindings license
+- fixed modpost: "__udivdi3"
+- moved MAINTAINERS entry to have the new GPIO driver
+  together with other files related to S32G
 
------BEGIN PGP SIGNATURE-----
+v3 -> v2
+- fix dt-bindings schema id
+- add maxItems to gpio-ranges
+- removed gpio label from dt-bindings example
+- added changelog for the MAINTAINERS commit and
+  added separate entry for the SIUL2 GPIO driver
+- added guard(raw_spinlock_irqsave) in
+  'siul2_gpio_set_direction'
+- updated the description for
+  'devm_platform_get_and_ioremap_resource_byname'
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCailkjAAKCRDZQZRRKWBy
-9M8hAQCk9VYvunvG/LPVCfamhohzZ+Nr7kS0XQl/eA0IWoMIiAD/To621F1YThiA
-tcyTUzAoznVXi5pHiexsLAGhacivGgs=
-=i4uu
------END PGP SIGNATURE-----
+v2 -> v1
+dt-bindings:
+- changed filename to match compatible
+- fixed commit messages
+- removed dt-bindings unnecessary properties descriptions
+- added minItems for the interrupts property
+driver:
+- added depends on ARCH_S32 || COMPILE_TEST to Kconfig
+- added select REGMAP_MMIO to Kconfig
+- remove unnecessary include
+- add of_node_put after `siul2_get_gpio_pinspec`
+- removed inline from function definitions
+- removed match data and moved the previous platdata
+  definition to the top of the file to be visible
+- replace bitmap_set/clear with __clear_bit/set_bit
+  and devm_bitmap_zalloc with devm_kzalloc
+- switched to gpiochip_generic_request/free/config
+- fixed dev_err format for size_t reported by
+  kernel test robot
+- add platform_get_and_ioremap_resource_byname wrapper
 
---=-RwNoGtVUCUgb+aOBDcyu--
+Andrei Stefanescu (2):
+  pinctrl: s32cc: change to "devm_pinctrl_register_and_init"
+  pinctrl: s32cc: implement GPIO functionality
+
+Khristine Andreea Barbulescu (4):
+  pinctrl: s32cc: add/fix some comments
+  pinctrl: s32cc: remove inline specifiers
+  dt-bindings: pinctrl: s32g2-siul2: describe GPIO and EIRQ resources
+  arm64: dts: s32g: describe GPIO and EIRQ resources in SIUL2 pinctrl
+    node
+
+ .../pinctrl/nxp,s32g2-siul2-pinctrl.yaml      |  90 ++-
+ arch/arm64/boot/dts/freescale/s32g2.dtsi      |  23 +-
+ arch/arm64/boot/dts/freescale/s32g3.dtsi      |  23 +-
+ drivers/pinctrl/nxp/Kconfig                   |   3 +-
+ drivers/pinctrl/nxp/pinctrl-s32.h             |  35 +-
+ drivers/pinctrl/nxp/pinctrl-s32cc.c           | 756 ++++++++++++++++--
+ drivers/pinctrl/nxp/pinctrl-s32g2.c           |  47 +-
+ 7 files changed, 877 insertions(+), 100 deletions(-)
+
+-- 
+2.34.1
+
