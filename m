@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE88B3C0617
-	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 10:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F053CAA49
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 10:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781174222; cv=none; b=R59e6jYmcNrxi+W1Tjx+z/0XIQ5xi4h/MsXUHjgVLnjWvPywjTHLU0jNcPSH3J1/Ohm4jTCfEuA8poAtbfgRvAgO4KVjC5OBiaF4ccTY8VVqkhUD38NdN/1TABvy9WtDSOKwZmNXpAQF7xNmu08HRiMd6Nq2DOKW02tzZo3gvZU=
+	t=1781174224; cv=none; b=uIRoQT7s1QfVLdDS8tetY6v9OZ+Q2f0ei8Qk7+rqsvvBtgQm6QZgW7ZqCiuLylingcHiwIicNCXfebPOnm1yroN+USbN/9XOdwcGilJI74SoRP9hydAV6/wl+M/N6hMAQ7HOXVbX21iMhJpIpNRhHBY5jbqVY6SJ+ZQ9rWWR2SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781174222; c=relaxed/simple;
-	bh=7SgndWqdGP/U7Z6gN9eb6TJmIF02elA2ImksNPz7r8s=;
+	s=arc-20240116; t=1781174224; c=relaxed/simple;
+	bh=BiRv+T5pSZeRSO5fzygp4unkeryBvQsmOOxrh2Ra3zU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rbB5+zdRZzJEJPbPGvozPDlgaP33Edf9o2sY4atE8aJEFARddEIU4oorGLSFIeEYv/aUQdTKdjEm54b9yLmZbpWFCJOn+5mhpIRx4vZqDf1Vv5c+2ZrwnNYTql0H3BBaFB2gH7lszyCU0PdUp/o+Yz5Z51lmT0dpRkRWh76FhBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F38zdgyh; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=PbxsphXuDAio/sRRrzxV9EZxbMEGSyLyLrcbM/2Xgv2vpP3il4D9dT5J1yDtQHIRqWzJGD6Q9npF3XAqH5vwy2Kr8q3eypqm21r0vmpeMCsl/AnwuuZRBeYNjPPdGp7JdVugs+9z1QXxufdMxp8C8Js5sss8YxdC0gIl0WmbRR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZn1FQfi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F38zdgyh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9DB1F00893;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZn1FQfi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFC41F00898;
 	Thu, 11 Jun 2026 10:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781174221;
-	bh=OKU4jnnErB8yIW5zFPrTRwqvHAtTNrUncf0LNogpbZY=;
+	s=k20260515; t=1781174222;
+	bh=FZTRJGCf42X6AQnf0HV2wBU4AdcmU0M+oG2yPOzAT/8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F38zdgyhAevipVbeuQVjP7Wa9h0TWRBwkpz0Q+ZEXEQh+6k8OZg+FVP3K5kRs6RoT
-	 c84U5dcS+trBQCMlm19BBUJNJ9i64AzRjq6Dryrq6nhjEPTGN2tdKGMtZDawLkuQAF
-	 SzeZs6MjNJ02jfa04wWZM2SaMYJe+vCoPGKyWwhyd4BMwg4gyte5zkA+zobFXtThuj
-	 R7lF+3L7aUNIX5v2RsOlYyTaVgEepH18Vic/OfG+EeQBy0zfDMCXvIHB7zvh64Qevy
-	 +5XMPshJgfA9NOeEYGSyYazb/sNgbn6kO/N7IJgh9iQEyt8HqDUje1rwefuAXhVy/z
-	 6oy3HI2BKXOwA==
+	b=bZn1FQfikxERvGHaqR88uw6Embd0zHD73YdOo3m9wdCzVTf26RGEBl7/OPDBOjyJb
+	 guCWfjFV28okjMHlIYMOLDlY/tTcSvXwkD1EKU5PaoLqdeisBeCYdVW4ajOUnBJ9nt
+	 x6Hw3rDCGEPZ+qw8/fyJaa0eObZnowXKhSp6ozU24mJmpTxKmIE/6pdCB4mEO4DXzo
+	 WVZmnlUXIAKEtUatiuhezMzDuS2HN0znVigJ6He/DEeoQDVJXzsK7ZxuGYpGa3pWgc
+	 Xj+YrSABGtpS3OF9zxKfaz8ui368H8ISdoQxJzMvpmsRI72nvmXfREHeI+weGzTu/h
+	 txV1MyUUwBcbA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH -next] firmware: imx: se_ctrl: roll back iobuf
- reservation on setup failure
+Subject: Re: [PATCH -next] firmware: imx: se_ctrl: detect round_up()
+ overflow in iobuf setup
 Reply-To: sashiko-reviews@lists.linux.dev
 To: pankaj.gupta@oss.nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260611154232.3184266-1-pankaj.gupta@oss.nxp.com>
-References: <20260611154232.3184266-1-pankaj.gupta@oss.nxp.com>
+In-Reply-To: <20260611154148.3182727-1-pankaj.gupta@oss.nxp.com>
+References: <20260611154148.3182727-1-pankaj.gupta@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 10:37:00 +0000
-Message-Id: <20260611103701.2A9DB1F00893@smtp.kernel.org>
+Date: Thu, 11 Jun 2026 10:37:01 +0000
+Message-Id: <20260611103701.CEFC41F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,164 +48,156 @@ Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [Critical] Integer overflow in `round_up()` calculation bypasses bounds c=
-hecks on 32-bit architectures
-- [Critical] Use-after-free (UAF) due to implicit mutex_unlock on freed mem=
-ory in se_if_fops_close()
-- [High] Permanent resource leak if a signal is pending during se_if_fops_c=
-lose()
-- [High] List corruption due to improper locking of priv->dev_ctx_list
-- [High] Unbounded user-controlled allocation size triggers kernel warning
+- [High] Returning -EBUSY from the file release handler on signal interrupt=
+ion causes permanent memory and resource leaks.
+- [High] Concurrent modification of shared linked list `priv->dev_ctx_list`=
+ under a per-instance lock leads to list corruption.
+- [High] Use-After-Free of `dev_ctx->fops_lock` in `se_if_fops_close` upon =
+scope exit.
+- [High] Infinite kernel loop in `ele_msg_rcv` when interrupted by a pendin=
+g signal.
+- [High] Unprivileged `read()` operations corrupt the global command receiv=
+er state.
 --
 
-commit 4eb035f3a88362d9a0713a5420bbd761a12dcf45
+commit 274dde5deb429b8b8fa60b9158c528c3a6c4f3bc
 Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-firmware: imx: se_ctrl: roll back iobuf reservation on setup failure
+firmware: imx: se_ctrl: detect round_up() overflow in iobuf setup
 
-This commit fixes a resource leak in the iobuf setup handler where shared
-memory reservations were permanently consumed upon failures in user data
-copying or descriptor linking. It rolls back the shared memory position
-and unlinks the descriptor appropriately.
-
-Link: https://sashiko.dev/#/patchset/20260528091532.3331051-1-pankaj.gupta@=
-nxp.com?part=3D1
+se_ioctl_setup_iobuf_handler() aligns io.length with round_up(..., 8)
+before checking the available shared memory space. On 32-bit builds,
+round_up() can overflow for large io.length values and wrap aligned_len
+to a smaller value, which can bypass the bounds check while later
+memset() still uses the original unbounded io.length.
 
 > diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
 l.c
-> index 8fab3b7767b7a..f3ac3487e56b1 100644
+> index 8fab3b7767b7a..5b23485fe42c8 100644
 > --- a/drivers/firmware/imx/se_ctrl.c
 > +++ b/drivers/firmware/imx/se_ctrl.c
+
 [ ... ]
-> @@ -641,7 +641,8 @@ static int se_ioctl_setup_iobuf_handler(struct se_if_=
-device_ctx *dev_ctx,
->  {
->  	struct se_shared_mem *shared_mem =3D NULL;
->  	struct se_ioctl_setup_iobuf io =3D {0};
-> -	size_t aligned_len;
-> +	struct se_buf_desc *b_desc =3D NULL;
-> +	size_t aligned_len =3D 0;
 
-[Severity: Critical]
-This isn't a bug introduced by this patch, but in se_ioctl_setup_iobuf_hand=
-ler()
-is there a risk of integer overflow when calculating the aligned length?
+[Severity: High]
+This is a pre-existing issue, but in se_if_fops_close(), could returning
+-EBUSY on signal interruption cause memory and resource leaks?
 
-drivers/firmware/imx/se_ctrl.c:se_ioctl_setup_iobuf_handler() {
+drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
     ...
-    aligned_len =3D round_up((size_t)io.length, 8);
+	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
     ...
-}
 
-On 32-bit architectures, size_t is 32-bit. Passing a value near the maximum
-32-bit integer (e.g., 0xfffffff9) causes the round_up calculation to overfl=
-ow
-to 0. Consequently, aligned_len becomes 0, and the bounds check:
+If the process closing the file has a pending signal, mutex_lock_interrupti=
+ble
+fails and returns -EINTR, causing scoped_cond_guard to immediately return
+-EBUSY.=20
 
-    if (shared_mem->size < shared_mem->pos ||
-        aligned_len > (shared_mem->size - shared_mem->pos)) {
+The VFS layer ignores error returns from release handlers and will not retr=
+y.
+This drops the file structure but permanently bypasses the cleanup block,
+permanently leaking the dev_ctx memory and its associated shared DMA buffer=
+s.=20
+
+Additionally, if the leaked context was the designated command receiver,
+priv->cmd_receiver_clbk_hdl.dev_ctx remains pointing to it forever,
+preventing any other process from acquiring the command receiver role.
+
+
+[Severity: High]
+This isn't a bug introduced by this patch, but could this concurrent list
+modification lead to corruption?
+
+drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
+    ...
+	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
         ...
-    }
-
-incorrectly passes. The code then executes:
-
-    memset(shared_mem->ptr + pos, 0, io.length);
-
-unconditionally writing almost 4GB of zeroes and user data into kernel memo=
-ry.
-Can this lead to severe memory corruption triggered by any unprivileged user
-with access to the device node?
-
-
-Additional pre-existing issues found in this file:
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but in se_if_fops_close() could
-there be a use-after-free due to the implicit mutex unlock?
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-    ...
-    scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+		list_del(&dev_ctx->link);
         ...
-        kfree(dev_ctx);
-    }
-    ...
-}
 
-Inside this scope, the dev_ctx object is freed via kfree(dev_ctx). When the
-scope ends, the guard's implicit destructor invokes
-mutex_unlock(&dev_ctx->fops_lock). Since the structure containing the mutex
-has already been freed, does this execute a lock operation on freed memory?
+These shared structure modifications are protected solely by dev_ctx->fops_=
+lock,
+which is a per-file-descriptor lock local to the current dev_ctx instance.=
+=20
+
+If multiple processes close their file descriptors concurrently, each acqui=
+res
+its own distinct fops_lock and they concurrently execute list_del on the
+shared priv->dev_ctx_list.
 
 
 [Severity: High]
-This isn't a bug introduced by this patch, but in se_if_fops_close() is the=
-re
-a permanent resource leak if a signal is pending?
+This is a pre-existing issue, but does this scoped_cond_guard usage
+trigger a use-after-free?
 
 drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
     ...
-    scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+        ...
+		kfree(dev_ctx);
+	}
     ...
-}
 
-Because se_if_fops_close() is the release file operation, it attempts to
-acquire its lock using scoped_cond_guard which can fail if a signal is
-pending. If the calling process has a pending signal, the lock acquisition
-immediately fails and returns -EBUSY.
+Because dev_ctx is freed inside the guarded block, when the block ends,
+the implicitly generated scope destructor executes
+mutex_unlock(&dev_ctx->fops_lock).
 
-Since the virtual file system ignores the return value of release() and
-unconditionally destroys the file descriptor, is the cleanup code permanent=
-ly
-skipped, leaving dev_ctx orphaned but still linked in the global
-priv->dev_ctx_list?
+This dereferences a freed pointer and writes into freed memory to update
+the mutex state.
 
 
 [Severity: High]
-This isn't a bug introduced by this patch, but is there a risk of list
-corruption due to improper locking of priv->dev_ctx_list?
+This isn't a bug introduced by this patch, but can an unprivileged read()
+corrupt the global command receiver state?
 
-drivers/firmware/imx/se_ctrl.c:init_device_context() {
+drivers/firmware/imx/se_ctrl.c:se_if_fops_read() {
     ...
-    list_add_tail(&dev_ctx->link, &priv->dev_ctx_list);
-    ...
-}
+	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+		if (dev_ctx !=3D priv->cmd_receiver_clbk_hdl.dev_ctx) {
+			err =3D -EINVAL;
+			goto exit;
+		}
+        ...
+exit:
+		priv->cmd_receiver_clbk_hdl.rx_msg_sz =3D 0;
+        ...
 
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-    ...
-    list_del(&dev_ctx->link);
-    ...
-}
+If a process that is not the designated command receiver calls read(), it
+gets -EINVAL and jumps to exit, unconditionally clearing the rx_msg_sz field
+of the legitimate command receiver.
 
-In init_device_context(), the list and priv->active_devctx_count are modifi=
-ed
-without any locks. However, in se_if_fops_close(), the code modifies them
-while holding only the per-file dev_ctx->fops_lock.
-
-If multiple processes open or close different file descriptors concurrently,
-can they execute list modifications without mutual exclusion against each
-other, potentially causing list corruption?
+Could a malicious reader zero out the size concurrently while the legitimate
+receiver is fetching a response, causing it to read a corrupted size of 0?
 
 
 [Severity: High]
-This isn't a bug introduced by this patch, but in
-se_ioctl_cmd_snd_rcv_rsp_handler() is it safe to use an unvalidated user
-size for kzalloc?
+This is a pre-existing issue, but can ele_msg_rcv() get stuck in an
+infinite loop?
 
-drivers/firmware/imx/se_ctrl.c:se_ioctl_cmd_snd_rcv_rsp_handler() {
+drivers/firmware/imx/ele_common.c:ele_msg_rcv() {
     ...
-    struct se_api_msg *rx_msg __free(kfree) =3D
-        kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
+	do {
+        ...
+		ret =3D wait_for_completion_interruptible_timeout(&se_clbk_hdl->done, tim=
+eout_ms);
+		if (ret =3D=3D -ERESTARTSYS) {
+			if (dev_ctx->priv->waiting_rsp_clbk_hdl.dev_ctx) {
+				dev_ctx->priv->waiting_rsp_clbk_hdl.signal_rcvd =3D true;
+				continue;
+			}
+            ...
+		}
+        ...
+	} while (ret < 0);
     ...
-}
 
-The cmd_snd_rcv_rsp_info.rx_buf_sz is copied directly from user space witho=
-ut
-an upper bound check. If a user provides a negative value or a very large
-size exceeding the maximum allocation size, will passing it to kzalloc trig=
-ger
-a page allocation failure warning in the slab allocator?
+If wait_for_completion_interruptible_timeout() returns -ERESTARTSYS due to
+a pending signal, the code sets signal_rcvd and executes continue.
+
+Since the signal remains pending on the kernel thread, the next call to
+wait_for_completion_interruptible_timeout() will instantly return
+-ERESTARTSYS again, creating an infinite tight loop.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611154232.3184=
-266-1-pankaj.gupta@oss.nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611154148.3182=
+727-1-pankaj.gupta@oss.nxp.com?part=3D1
