@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDED3C4B91
-	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 09:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A783C4175
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 09:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781171255; cv=none; b=sneN82fmoGykR+Z4hySnPvi7/EYxb52x/ZRdRoRkbkBEQr0kuoiDkubm4snpX0QYkM2bx27gBSJ4sqQWpP9l8gFe602H1xNIlQ7pCXRRN39bHmoefU3XlBddsUybzlTeii3soDRYWWyfvAhgca/2n5eJHNkgNV/biJYvuL81WRU=
+	t=1781171256; cv=none; b=cLiALNFiaTG4x+opd+UQaW3U31mHEe8vylzShza4TWC4fKxb9xf9nnLohMhDoTT+Xu262ixVvXOtbSqKjRUNYWYn4mnmtp5w3V+1UEqHUwR/1pUC27E6HpDLTo2AltE348oSBY7pD5H0E/RPoXOPsIsTuv9hr4Ta51v6ZOF5Qm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781171255; c=relaxed/simple;
-	bh=VF53OBCymZ44p778YjTdazY0FbqknEb+B5ufrwkgca0=;
+	s=arc-20240116; t=1781171256; c=relaxed/simple;
+	bh=K9bZsMl1LrPKZCqH/p4lHcJuOg3aR1aZ2NVR0PEgjq0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dABjo8Uh8Nao2bn8RLqGSIWd09DdH9cqI/PBavWRy7bolp6pea/8z/u4xgNv9/IJMc/Yn7kpvWrDun6IXPLa0k46BR2VnmEChj6BxTlpPxaB4LTtYQvKD1ijXra2xfm/LU1afe+iEBLXbufBOBNmky1gWcBg6g2CTL7TMxJmg5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H2genpEo; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=uK4F3D53xVl5/wqLN0opyX7EmodZhYF/4bsXD87Ezg04n5xEoq0Zzdb6oqrhMU4Y25f0KWKnQimP/cXojA9Im420bYth+v6ISTevTd5w62q2pE6lHy5KM3A2UtGoM34M3ND0q8cCN3GTBZLxQoCy42yaLrTcrOG1BaFH34nPPVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evSTCgiV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H2genpEo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903971F00893;
-	Thu, 11 Jun 2026 09:47:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evSTCgiV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EBE1F00898;
+	Thu, 11 Jun 2026 09:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781171253;
-	bh=Gj2DuqFL/4NzRX2bTiaPxPLSKMQHLnbVCqzcU/rzAxM=;
+	s=k20260515; t=1781171255;
+	bh=DSIECKepmN3gGsdDByg4CPb1BWobaCFbDg3BpDesYpw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=H2genpEo+8AJMPhSO/OOGam5+vFsy55aYQnBqOC64L90CSVYtPphr+0KtQOXP9N90
-	 3RD7MvNDlNYZnHijN/rh77+3N+CWnRjyJkZhgOciD2i+UzXkSM0BhyI2t7hR9o6hzX
-	 3iDHXIzcg+CYLe1MLKZefla/i7O/kp6daEKhbIcnh73xvYuPGsfFSq+DTDGf/FOEif
-	 r92WOQS7ffA7Dj+MWhN4P/gSc0vSmonIQVRQvl6O40KAv3aJYch+z2cQN/8CNFqA51
-	 g+r83zIIJkl3CgijBNVRrzhB77J7TtHe/W0L7fe1Nl7f7be/tKu0pFIoowQSfWqXZg
-	 EKFxN5Kbk/5wA==
+	b=evSTCgiVXyDB5qpqz+vC/3SbaY+SToieuqXUHWfOa/8pYkJeWI7iUUnvyzhP+9Iog
+	 E9iVlv3oKYEwijEynMynF4jUrozWqUNjRS7Z6y5wJOV6ikI4UFayEcbhlQhMgGc8Ui
+	 l7DuMzFoOQ2zsaSJBw70crtZIJykEG123d1sJ7fypQlGd+4/6Z8a2rxVb9R3A8VNWs
+	 bawTxQaU6eXtIMjBa3aRYKwa8Crpk1LV7sPufgqt8agW4ZjyLTf0UKgJTEvkfm1pi7
+	 vqyW7qM59AzNVgUM96Lby0sTHGW+bKvMFteFdY/IsFMzHCzrg1Ii9Vbs3CkJeu23ps
+	 0SOkLWqSUt0/w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net-next 08/15] net: enetc: move mac_filter from
- struct enetc_pf to struct enetc_si
+Subject: Re: [PATCH v2 net-next 04/15] net: enetc: add link speed message
+ support to PF driver
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260610091844.3423693-9-wei.fang@oss.nxp.com>
-References: <20260610091844.3423693-9-wei.fang@oss.nxp.com>
+In-Reply-To: <20260610091844.3423693-5-wei.fang@oss.nxp.com>
+References: <20260610091844.3423693-5-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Thu, 11 Jun 2026 09:47:33 +0000
-Message-Id: <20260611094733.903971F00893@smtp.kernel.org>
+Message-Id: <20260611094734.43EBE1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,75 +48,80 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Silent 32-bit truncation of 64-bit MAC hash table bitmap
+- [High] Pre-existing out-of-bounds heap read in VF mailbox handlers due to=
+ unvalidated message length.
 --
 
-commit d6f9f9bacee81eb61d86d4e3d383dcddb4c66cbb
+commit 6b55ba2c40a6c04cf0db8ebb97921067e4376ee1
 Author: Wei Fang <wei.fang@nxp.com>
+net: enetc: add link speed message support to PF driver
 
-net: enetc: move mac_filter from struct enetc_pf to struct enetc_si
+This commit adds link speed message support for DPDK-owned VFs. The PF
+driver replies with the current link speed when it receives a get link
+speed message from a VF, improving link state visibility for the VF.
 
-The mac_filter array currently resides in struct enetc_pf and is used to
-track unicast and multicast MAC address filters for the PF. Since struct
-enetc_si is the common structure shared between the PF and VF drivers,
-move mac_filter into struct enetc_si to prepare for MAC filter support
-in the VF driver.
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc4_pf.c
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> @@ -225,11 +225,12 @@ static void enetc4_pf_set_mac_hash_filter(struct en=
-etc_pf *pf, int type)
->  	struct net_device *ndev =3D pf->si->ndev;
->  	struct enetc_mac_filter *mac_filter;
->  	struct enetc_hw *hw =3D &pf->si->hw;
-> +	struct enetc_si *si =3D pf->si;
->  	struct netdev_hw_addr *ha;
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc_msg.c
+> index eac71f90d80bd..b24903b23a616 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+[ ... ]
+> @@ -274,6 +277,84 @@ static u16 enetc_msg_handle_link_status(struct enetc=
+_pf *pf, int vf_id,
+>  	}
+>  }
 > =20
->  	netif_addr_lock_bh(ndev);
->  	if (type & ENETC_MAC_FILTER_TYPE_UC) {
-> -		mac_filter =3D &pf->mac_filter[UC];
-> +		mac_filter =3D &si->mac_filter[UC];
->  		enetc_reset_mac_addr_filter(mac_filter);
->  		netdev_for_each_uc_addr(ha, ndev)
->  			enetc_add_mac_addr_ht_filter(mac_filter, ha->addr);
+> +static u16 enetc_msg_get_link_speed(struct enetc_pf *pf, int vf_id)
+> +{
+[ ... ]
+> +}
+> +
+> +static u16 enetc_msg_handle_link_speed(struct enetc_pf *pf, int vf_id,
+> +				       void *vf_msg)
+> +{
+> +	struct enetc_msg_header *msg_hdr =3D vf_msg;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but is it safe to dereference
-the mac_hash_table bitmap directly?
+This isn't a bug introduced by this patch, but could unvalidated message
+lengths lead to out-of-bounds heap reads in mailbox handlers?
 
-The mac_hash_table is declared as a 64-bit bitmap. On 32-bit architectures,
-an unsigned long is 32 bits, making the bitmap an array of two unsigned
-longs.
+In existing handlers, the PF driver calculates the allocation size based on
+msg_hdr->len (e.g., msg_size =3D 16 + len) and allocates a buffer. If a tru=
+sted
+VF sends a message with an artificially small length like 0, only 16 bytes
+are allocated.
 
-When the code dereferences this bitmap in enetc4_pf_set_mac_hash_filter():
+However, handlers cast this buffer to larger structures and read fields
+outside the bounds:
 
-    enetc4_pf_set_si_uc_hash_filter(hw, 0, *mac_filter->mac_hash_table);
+enetc_msg_set_vf_primary_mac_addr() {
+    ...
+    char *addr =3D msg->mac[0].addr;
+    ...
+    if (!is_valid_ether_addr(addr)) {
+    ...
+        enetc_set_si_hw_addr(pf, vf_id + 1, addr);
+    ...
+}
 
-It reads only the first unsigned long, capturing just the lower 32 bits.
-When this is implicitly promoted to u64 for enetc4_pf_set_si_uc_hash_filter=
-(),
-the upper 32 bits will always be zero.
+Since msg->mac[0].addr starts at offset 20, reading it from a 16-byte
+buffer causes an out-of-bounds heap read, which could leak sensitive kernel
+memory into the device MAC address registers or crash the host kernel. Shou=
+ld
+message lengths be validated against the expected structure size before
+processing the messages?
 
-This same truncation also happens in enetc4_pf_set_uc_exact_filter() and
-in enetc_sync_mac_filters() when it passes *f->mac_hash_table to
-enetc_set_mac_ht_flt().
-
-Furthermore, the enetc_set_mac_ht_flt() function itself takes an unsigned
-long:
-
-    static void enetc_set_mac_ht_flt(struct enetc_si *si, int si_idx, int t=
-ype,
-                                     unsigned long hash)
-
-Because hash is truncated to 32 bits on 32-bit systems, upper_32_bits(hash)
-will always evaluate to 0, leaving the upper MAC hash hardware registers
-unprogrammed.
-
-Could this lead to incorrect multicast and unicast MAC filtering on 32-bit
-systems?
+> +
+> +	switch (msg_hdr->cmd_id) {
+> +	case ENETC_MSG_GET_CURRENT_LINK_SPEED:
+> +		return enetc_msg_get_link_speed(pf, vf_id);
+> +	case ENETC_MSG_REGISTER_SPEED_CHANGE_NOTIFIER:
+> +	case ENETC_MSG_UNREGISTER_SPEED_CHANGE_NOTIFIER:
+> +	default:
+> +		return ENETC_PF_MSG_NOTSUPP;
+> +	}
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610091844.3423=
-693-1-wei.fang@oss.nxp.com?part=3D8
+693-1-wei.fang@oss.nxp.com?part=3D4
