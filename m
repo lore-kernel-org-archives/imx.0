@@ -1,165 +1,211 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011010.outbound.protection.outlook.com [52.101.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3663CE0B7
-	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 10:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781174008; cv=fail; b=tZuUEpbgDo7gGPTnRPCWmiVDTAK9qYQjdIAP+/QOY0XLo1T5A0zVpLGz63X+eq5LT9oVrB1vFGh6Ujug9u93tXb0mCZCLl0HL/RLoLQ5W+XZzaOiAGwSdkZLf6UCdPKtAFwqyT73gRGl8bOXTJ/pcK6faxbQHzi5U+CBpWvcDhs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781174008; c=relaxed/simple;
-	bh=MoRdI2Sux7I6KJPtO+JpJoxJlYZP7rlBqjD53Oc6+yY=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=P7wSf9L7QfaeGHnxCnINvY+EbA/GOdHoHaGyiHZsDmDs/ABYVV+jCw1ACpLOsi2wws1daiF8DsLsEDjhqmThZy+BDaz7stnARJ1uydUFI9uH/bJ2zPlkEvqdwgdw8ICcIgEHb391PmlVGyhEE0mkAUtpBlb1mBsZFa/KLELvtG4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=KJzeh2Ww; arc=fail smtp.client-ip=52.101.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE88B3C0617
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 10:37:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781174222; cv=none; b=R59e6jYmcNrxi+W1Tjx+z/0XIQ5xi4h/MsXUHjgVLnjWvPywjTHLU0jNcPSH3J1/Ohm4jTCfEuA8poAtbfgRvAgO4KVjC5OBiaF4ccTY8VVqkhUD38NdN/1TABvy9WtDSOKwZmNXpAQF7xNmu08HRiMd6Nq2DOKW02tzZo3gvZU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781174222; c=relaxed/simple;
+	bh=7SgndWqdGP/U7Z6gN9eb6TJmIF02elA2ImksNPz7r8s=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=rbB5+zdRZzJEJPbPGvozPDlgaP33Edf9o2sY4atE8aJEFARddEIU4oorGLSFIeEYv/aUQdTKdjEm54b9yLmZbpWFCJOn+5mhpIRx4vZqDf1Vv5c+2ZrwnNYTql0H3BBaFB2gH7lszyCU0PdUp/o+Yz5Z51lmT0dpRkRWh76FhBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F38zdgyh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="KJzeh2Ww"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cIbwbAe8ZxFRQJ2IwN8H1vr7+qqNJUQMY3NMaCAqavGrZfivJy3Qhm9OqU2LzZBwQ+Qpkyr/i/IRHAS78zwe4kAHiC09I7OPZAFDS83FkLqLgnIdgM2gFsP+sb17atORTu1vB2LDbzPTsA0I4DZ9Gqgg2Lc/rFt3cqns+5BV5lwrQC9v5WD1G9WQDy5m74uNuq8/1C3F7MjspUPPNKlfU9QJcOeKnfPLxQTht44hVvMtD/lYz4lUuUaanyazTKUpfQSK42sP8fn7k5NJy8j6UMs3G28VKbfYBMa5G9TPrKlqvyMedXZJdj0m0nFtkWeAfFow7BENHTWE2FUDyS5hvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KVFGLJ5fkJJ9yFgnOxfyGGLXdO8UBH7yalhs5We6Nfo=;
- b=xTkUCysVxisT5zMvV51kYu0zhlOyFVxPvjPB0/SO6hcGLwv4yWilDUJQC+6Nqypnv8HzQ5R1NWFQZJkOP8gGJlsMBDFltwoRcredjAq+MKHzD0u4mK18CV7k1CN7mKYHOr9DxDtXT9iOG8eeBjwT/JsDL36QgAoeppmqw7vWF6IA/CqpKJTWxPd/awmIpztcZDKUOXtuuG1+097OR99DG/vHGmIg4Ya9ZJk7iwoqR3c5MkONajlVQlIsEu+QcVgBDGug9ugSKqgwLs8nZe6MMPCaLvikcDUdCQttS+hY1nYtb2lprIAMpxq/ukkp6eIFG7yEHgiIF8JMuXSMXj2fpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KVFGLJ5fkJJ9yFgnOxfyGGLXdO8UBH7yalhs5We6Nfo=;
- b=KJzeh2WwYvmhjuoUs4/6jqvVuvBlZmJWeCq44Ma5ogPUBNHSmRrW0lYRgA3MoPgd9S115iVrVxg3e534rLo48pnY5Jn2tM4upWY8dQB63BY148V9bdLA5nmOw1F/Jan7VC000LOKE6bUlmijFs7Cj87BPkbgVnZJpQsnB5XltBOfJ42kCWCG5sCHBN33LZTk/vvvPDiEvuFDw9rvHFFCosk1N5zcewFh6XbzglGW1T89p8EposjOoQlnxBlWwuUN/043flTWwiVWH5PtOV1NN3kiNVjJhDyBqekc9V6ei+0Fsohs2HR2TdG+Zz/hUQK/WuLWzER79n/QIpcxycH6FQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM9PR04MB8469.eurprd04.prod.outlook.com (2603:10a6:20b:414::15)
- by GV2PR04MB12558.eurprd04.prod.outlook.com (2603:10a6:150:368::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
- 2026 10:33:20 +0000
-Received: from AM9PR04MB8469.eurprd04.prod.outlook.com
- ([fe80::1f31:d3d0:6150:b49c]) by AM9PR04MB8469.eurprd04.prod.outlook.com
- ([fe80::1f31:d3d0:6150:b49c%4]) with mapi id 15.21.0113.013; Thu, 11 Jun 2026
- 10:33:20 +0000
-From: pankaj.gupta@oss.nxp.com
-To: linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	frank.li@nxp.com
-Cc: Pankaj Gupta <pankaj.gupta@nxp.com>,
-	sashiko-bot <sashiko-bot@kernel.org>
-Subject: [PATCH -next] firmware: imx: se_ctrl: preserve ioctl error across cleanup
-Date: Thu, 11 Jun 2026 21:23:17 +0530
-Message-ID: <20260611155317.3205994-1-pankaj.gupta@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2P153CA0001.APCP153.PROD.OUTLOOK.COM (2603:1096:4:140::7)
- To AM9PR04MB8469.eurprd04.prod.outlook.com (2603:10a6:20b:414::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F38zdgyh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9DB1F00893;
+	Thu, 11 Jun 2026 10:37:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781174221;
+	bh=OKU4jnnErB8yIW5zFPrTRwqvHAtTNrUncf0LNogpbZY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=F38zdgyhAevipVbeuQVjP7Wa9h0TWRBwkpz0Q+ZEXEQh+6k8OZg+FVP3K5kRs6RoT
+	 c84U5dcS+trBQCMlm19BBUJNJ9i64AzRjq6Dryrq6nhjEPTGN2tdKGMtZDawLkuQAF
+	 SzeZs6MjNJ02jfa04wWZM2SaMYJe+vCoPGKyWwhyd4BMwg4gyte5zkA+zobFXtThuj
+	 R7lF+3L7aUNIX5v2RsOlYyTaVgEepH18Vic/OfG+EeQBy0zfDMCXvIHB7zvh64Qevy
+	 +5XMPshJgfA9NOeEYGSyYazb/sNgbn6kO/N7IJgh9iQEyt8HqDUje1rwefuAXhVy/z
+	 6oy3HI2BKXOwA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH -next] firmware: imx: se_ctrl: roll back iobuf
+ reservation on setup failure
+Reply-To: sashiko-reviews@lists.linux.dev
+To: pankaj.gupta@oss.nxp.com
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260611154232.3184266-1-pankaj.gupta@oss.nxp.com>
+References: <20260611154232.3184266-1-pankaj.gupta@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 11 Jun 2026 10:37:00 +0000
+Message-Id: <20260611103701.2A9DB1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8469:EE_|GV2PR04MB12558:EE_
-X-MS-Office365-Filtering-Correlation-Id: 146deb47-a1a8-41b6-e666-08dec7a4db2e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|19092799006|23010399003|18002099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	SYlL9k004jR1KPqB+qTkhDv2Lbl6c3K4Y2NPZ6zRYYoQfm8vsgVESKDwPu5uhDon2IacMNpEL8MrwnIQi/ES+6HNRrt8CJdOhrgL5HJeWjHJf7x+Xdn2W3Y2PvfZhT2p5gV07hmnfD6Z6yurFqZVt03snrd4G2yVp5lEXUdHytdC/bRSririENCQwjdz5jJX9BXQlb/VzbVASrV33rJlhKuBOaY57BdqSTNxOMMTqPlSsP4weGcsIBYw3/8MoDwxWLao+pBnDZ2g/CrjPz/8RPnYn40pJrf7dZRyGL2eeGTPT/zmWOq7ZvKO8tSPFTN0rynjMVN+Dqa/zr9VuRVAMLLnTJCdZp19usuJyc6+bxsXgiZW3ZGQ1z5OfDW+Zbj2kQF570dX/Fygygvd4sBSqiKkH3jUUGa6Cu4CpUOWaonwF8FHuso7YCOxvm9VQa5H1NYnOd2wqybMfCyoGTHKL7+YBCVZUjmUpDWx0WwJHWuAah9D/3wKcbJkjaEdqWbJ2NCanZaJoc7dlgmXDdY84WBf7WsrLqoeNCAil+Pw8HpP062uM1ffZyCwD+HrmuevAOAlF9gp3Eg8cIZZjqSOdP4pwdyA/8+oztcr+vJQ3LLLTy2zpzOfSKi3DopSYWfMO2zDl1+gDq2EWg0uYOef6w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8469.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(19092799006)(23010399003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Q5UWC70KQ7VXH3lmRpKZfqG+5At+PxnHVoPO0gGvoTwCE6Q5Qr6asXGcQ0NP?=
- =?us-ascii?Q?nE9Xxe8MNUtL0pZCnLbThqHGo97xjBlyFSxtQC/F2Q7VsOY+6mkOrEpngqCq?=
- =?us-ascii?Q?0G8sDg2qk0DE3g2IzPNgJ8wedFIcEF6GmLLA+ReME422w94e7hb7FO0HPEwJ?=
- =?us-ascii?Q?EG3D8/6Cu9kBacCNGtUIt2gxdHRHklHogXjiGLQ8T64B+VqhN3hDjySRW3VM?=
- =?us-ascii?Q?gzXUbC/BxMUY5gmePrSq0cQWukzFP7mSOwR8DHF8Zw4UJGH0Of846f/KV6kD?=
- =?us-ascii?Q?VU5E/wbKAxNF4vQSYD42EkcLcmvQbc5sS2KaX5TGymALTV94mbh6P+GCZXvX?=
- =?us-ascii?Q?35w1g1ZiykmVCUeCx+39zvM8n0vzif8m8eIMfL5TpisGpguukTDWcsWSLHtl?=
- =?us-ascii?Q?t7YOMD8SGWW5JAB80/RCfNusBONsm76flYl4EmUbdLN+oHarIe2/CGdKNXb9?=
- =?us-ascii?Q?rsN4C6k/t2EQFZztqNO0ZK3HXvRqnosSF6zwK62ksgXq18au8YZlAWDQ+n73?=
- =?us-ascii?Q?2yztRjkU1XoAR4r0EjoiU/liOdr8ZD6uxPsIRv+aOeGAWyZrZRyFk4Q15KkP?=
- =?us-ascii?Q?mXcacOga8VLCM3pK5GZoOGWPAlI2vEZKJNuLOJPnHxA+bs3fcIEq9ky6WeGw?=
- =?us-ascii?Q?ROxBU7GfAChJz5RXIKCPlisVvi/TQEh0Qhk2HDXFkZzvYiOVTiWPN+Y3p7AI?=
- =?us-ascii?Q?7SeKZDnav+eeIxjhO941BHUvjrUYBjpU3x24HyoMGCKlB9NcqqQR42ek65D7?=
- =?us-ascii?Q?zX//zvXCd/ysasYomIVE+7/+D/u7QobTsdPi+Vwsue9GkR2AtnJniwP3iFDd?=
- =?us-ascii?Q?qngh0oPsMI1y5y79sAiqqSyU3aowWwdgn4tQ6vhEmPvYDxEuc0CRJR3yeVZ8?=
- =?us-ascii?Q?Sc1DmC4YrP1Rm9p4xqtERfZvBcJdfc4iGvzgJ/qQ77MjqgtfB0bCjc8CEzE+?=
- =?us-ascii?Q?P13dtWSzlmgaQcODjENPyN2shbu5eNl0lHeBWknVQEAa0SCHWhkirA4jT20u?=
- =?us-ascii?Q?MRoExl7LY7wqgoA0XCfXZKshN8A43K3dea6g/bgNNM8qWANv44NyJMawEVo7?=
- =?us-ascii?Q?nTCq71DGCqZI5OGVlLZN3bobJa0W8XOEEZlKretpOPYkJqVV8af5HkM/IR68?=
- =?us-ascii?Q?zrVmJbJ0s0TAZAqpybWIcHPcmWxRbtl+dFXhkts8qViLzvxTswxsvSdTZN20?=
- =?us-ascii?Q?u94W2hkgjXDtM3pPFykj/9CWTSaoHEgjmr5sOM15stHxffnTepQMz0hPcEBq?=
- =?us-ascii?Q?HlhZQUz3Wf99reY1csI6dW0nZj13w1Os4E+MpgvlFm/zHd0U9jxhsQxUjt80?=
- =?us-ascii?Q?IemY3luAiQuy8rnEuRNpo2j2G+jXcjd1vSOifP0cysfLw1VTovXsxWRSBD9W?=
- =?us-ascii?Q?fhmFO6O7DsfzDTSOy3599p7tfcAxGCi84VJ7LarFBdNbxvtmm5qFREp7VpE0?=
- =?us-ascii?Q?Q+sA1FwU0TvQUkfoEQFWtzsNaOT/YAKErJyFpOvz9SdS1fL+fivXlzLWiOwS?=
- =?us-ascii?Q?VJA+F9yc9OERKFQ5CsJ+qhlDqAVMNPGykESO1WPfVIsdH6ZWD3U+f3Hablid?=
- =?us-ascii?Q?A5PR/ADx62bOUeMmK+RBHyTJOKTuVGkOaBw6zlXLX0u8dv5+R9VWiH3MGr0X?=
- =?us-ascii?Q?nlkgSy13aLxhsX7+rWKr5aWBU7aMMl3lK86watUb0a5toxeWIRVTbgDkBKFj?=
- =?us-ascii?Q?2S4aHDo36rR84S1JAx4ZV1mFhYO33l9n0qKhr8OQ3qLajB/X64lJu92melcU?=
- =?us-ascii?Q?wY1R1qi6lBn8Ju4kPu4jWAHqGIFHKmK7uf9+lFc1QkLtYUQ2oMi4?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 146deb47-a1a8-41b6-e666-08dec7a4db2e
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8469.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 10:33:20.0399
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RlwHCddqewzpmM6WGBWHsi1db2MHMzAhOaRcu90qaKh4zTDXlFULr3pUBFGulFGB5ANIrRwRG9wQj6uDgCoEjN1L3/fwqkH5iB9TZfYVKb7a6MgPxD0WMxK6+1zHMssS
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12558
 
-From: Pankaj Gupta <pankaj.gupta@nxp.com>
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
 
-se_ioctl_cmd_snd_rcv_rsp_handler() can set err to -EFAULT when copying
-the response payload to userspace fails, but then immediately overwrites
-that error with the return value of se_ioctl_cmd_snd_rcv_cleanup().
+Pre-existing issues:
+- [Critical] Integer overflow in `round_up()` calculation bypasses bounds c=
+hecks on 32-bit architectures
+- [Critical] Use-after-free (UAF) due to implicit mutex_unlock on freed mem=
+ory in se_if_fops_close()
+- [High] Permanent resource leak if a signal is pending during se_if_fops_c=
+lose()
+- [High] List corruption due to improper locking of priv->dev_ctx_list
+- [High] Unbounded user-controlled allocation size triggers kernel warning
+--
 
-If cleanup succeeds, the function returns 0 and falsely reports success
-to userspace even though the response copy failed.
+commit 4eb035f3a88362d9a0713a5420bbd761a12dcf45
+Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-Preserve the original operation error and only use the cleanup return
-value when no earlier error was set.
+firmware: imx: se_ctrl: roll back iobuf reservation on setup failure
 
-Fixes: b87b30bbdfb2 ("firmware: drivers: imx: adds miscdev")
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260528091446.3331006-1-pankaj.gupta@nxp.com?part=1
-Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
----
- drivers/firmware/imx/se_ctrl.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+This commit fixes a resource leak in the iobuf setup handler where shared
+memory reservations were permanently consumed upon failures in user data
+copying or descriptor linking. It rolls back the shared memory position
+and unlinks the descriptor appropriately.
 
-diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctrl.c
-index c9e270288c3b..f44bffd58ef0 100644
---- a/drivers/firmware/imx/se_ctrl.c
-+++ b/drivers/firmware/imx/se_ctrl.c
-@@ -513,6 +513,7 @@ static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev_ctx,
- 	struct se_ioctl_cmd_snd_rcv_rsp_info cmd_snd_rcv_rsp_info = {0};
- 	struct se_if_priv *priv = dev_ctx->priv;
- 	int err = 0;
-+	int cleanup_err = 0;
- 
- 	if (copy_from_user(&cmd_snd_rcv_rsp_info, uarg,
- 			   sizeof(cmd_snd_rcv_rsp_info))) {
-@@ -603,7 +604,10 @@ static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev_ctx,
- 		err = -EFAULT;
- 	}
- 
--	err = se_ioctl_cmd_snd_rcv_cleanup(dev_ctx, uarg, &cmd_snd_rcv_rsp_info);
-+	cleanup_err = se_ioctl_cmd_snd_rcv_cleanup(dev_ctx, uarg, &cmd_snd_rcv_rsp_info);
-+
-+	if (!err)
-+		err = cleanup_err;
- 
- 	return err;
- }
--- 
-2.43.0
+Link: https://sashiko.dev/#/patchset/20260528091532.3331051-1-pankaj.gupta@=
+nxp.com?part=3D1
 
+> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
+l.c
+> index 8fab3b7767b7a..f3ac3487e56b1 100644
+> --- a/drivers/firmware/imx/se_ctrl.c
+> +++ b/drivers/firmware/imx/se_ctrl.c
+[ ... ]
+> @@ -641,7 +641,8 @@ static int se_ioctl_setup_iobuf_handler(struct se_if_=
+device_ctx *dev_ctx,
+>  {
+>  	struct se_shared_mem *shared_mem =3D NULL;
+>  	struct se_ioctl_setup_iobuf io =3D {0};
+> -	size_t aligned_len;
+> +	struct se_buf_desc *b_desc =3D NULL;
+> +	size_t aligned_len =3D 0;
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but in se_ioctl_setup_iobuf_hand=
+ler()
+is there a risk of integer overflow when calculating the aligned length?
+
+drivers/firmware/imx/se_ctrl.c:se_ioctl_setup_iobuf_handler() {
+    ...
+    aligned_len =3D round_up((size_t)io.length, 8);
+    ...
+}
+
+On 32-bit architectures, size_t is 32-bit. Passing a value near the maximum
+32-bit integer (e.g., 0xfffffff9) causes the round_up calculation to overfl=
+ow
+to 0. Consequently, aligned_len becomes 0, and the bounds check:
+
+    if (shared_mem->size < shared_mem->pos ||
+        aligned_len > (shared_mem->size - shared_mem->pos)) {
+        ...
+    }
+
+incorrectly passes. The code then executes:
+
+    memset(shared_mem->ptr + pos, 0, io.length);
+
+unconditionally writing almost 4GB of zeroes and user data into kernel memo=
+ry.
+Can this lead to severe memory corruption triggered by any unprivileged user
+with access to the device node?
+
+
+Additional pre-existing issues found in this file:
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but in se_if_fops_close() could
+there be a use-after-free due to the implicit mutex unlock?
+
+drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
+    ...
+    scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+        ...
+        kfree(dev_ctx);
+    }
+    ...
+}
+
+Inside this scope, the dev_ctx object is freed via kfree(dev_ctx). When the
+scope ends, the guard's implicit destructor invokes
+mutex_unlock(&dev_ctx->fops_lock). Since the structure containing the mutex
+has already been freed, does this execute a lock operation on freed memory?
+
+
+[Severity: High]
+This isn't a bug introduced by this patch, but in se_if_fops_close() is the=
+re
+a permanent resource leak if a signal is pending?
+
+drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
+    ...
+    scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+    ...
+}
+
+Because se_if_fops_close() is the release file operation, it attempts to
+acquire its lock using scoped_cond_guard which can fail if a signal is
+pending. If the calling process has a pending signal, the lock acquisition
+immediately fails and returns -EBUSY.
+
+Since the virtual file system ignores the return value of release() and
+unconditionally destroys the file descriptor, is the cleanup code permanent=
+ly
+skipped, leaving dev_ctx orphaned but still linked in the global
+priv->dev_ctx_list?
+
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a risk of list
+corruption due to improper locking of priv->dev_ctx_list?
+
+drivers/firmware/imx/se_ctrl.c:init_device_context() {
+    ...
+    list_add_tail(&dev_ctx->link, &priv->dev_ctx_list);
+    ...
+}
+
+drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
+    ...
+    list_del(&dev_ctx->link);
+    ...
+}
+
+In init_device_context(), the list and priv->active_devctx_count are modifi=
+ed
+without any locks. However, in se_if_fops_close(), the code modifies them
+while holding only the per-file dev_ctx->fops_lock.
+
+If multiple processes open or close different file descriptors concurrently,
+can they execute list modifications without mutual exclusion against each
+other, potentially causing list corruption?
+
+
+[Severity: High]
+This isn't a bug introduced by this patch, but in
+se_ioctl_cmd_snd_rcv_rsp_handler() is it safe to use an unvalidated user
+size for kzalloc?
+
+drivers/firmware/imx/se_ctrl.c:se_ioctl_cmd_snd_rcv_rsp_handler() {
+    ...
+    struct se_api_msg *rx_msg __free(kfree) =3D
+        kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
+    ...
+}
+
+The cmd_snd_rcv_rsp_info.rx_buf_sz is copied directly from user space witho=
+ut
+an upper bound check. If a user provides a negative value or a very large
+size exceeding the maximum allocation size, will passing it to kzalloc trig=
+ger
+a page allocation failure warning in the slab allocator?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611154232.3184=
+266-1-pankaj.gupta@oss.nxp.com?part=3D1
