@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A783C4175
-	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 09:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82FA3C416A
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 09:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781171256; cv=none; b=cLiALNFiaTG4x+opd+UQaW3U31mHEe8vylzShza4TWC4fKxb9xf9nnLohMhDoTT+Xu262ixVvXOtbSqKjRUNYWYn4mnmtp5w3V+1UEqHUwR/1pUC27E6HpDLTo2AltE348oSBY7pD5H0E/RPoXOPsIsTuv9hr4Ta51v6ZOF5Qm4=
+	t=1781171258; cv=none; b=ed64+UoWMMIjYUaEfIwu8GGr7+N/kpxkPbWS81UZNlH1+cfg1XZ/6m6XZHvw3b4te5rdswqym41eq9VZQJnWkM6nX78fIA39ejq2RMuv7jra5CP8W0++jAEP2mqP1lZmW0bnUeAKdYkLosLxXYtxeo7aBkaLFIdewgmlxk+ONo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781171256; c=relaxed/simple;
-	bh=K9bZsMl1LrPKZCqH/p4lHcJuOg3aR1aZ2NVR0PEgjq0=;
+	s=arc-20240116; t=1781171258; c=relaxed/simple;
+	bh=eJb17ENCe+ABveHK5Org8W3FvP/3M3PabRLFk0+Kjrg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uK4F3D53xVl5/wqLN0opyX7EmodZhYF/4bsXD87Ezg04n5xEoq0Zzdb6oqrhMU4Y25f0KWKnQimP/cXojA9Im420bYth+v6ISTevTd5w62q2pE6lHy5KM3A2UtGoM34M3ND0q8cCN3GTBZLxQoCy42yaLrTcrOG1BaFH34nPPVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evSTCgiV; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=D00kJGJQ1cFf79KO4ttEUN9RTiuqEjVDEkZS8k/YT5wlY2ktj8RoImAMUGSyrzIM7555B+fk8YhVRNLKJ1A+pprDAia9VpmLCZQ+pf9fpvUlSR0BJ5P559qjjmqnOnEO16wf4McPiscr4IDl6zDBFTyqTUiXgoaydcPtKe7GzPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gwx+E/Y5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evSTCgiV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EBE1F00898;
-	Thu, 11 Jun 2026 09:47:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gwx+E/Y5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47BA1F00893;
+	Thu, 11 Jun 2026 09:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781171255;
-	bh=DSIECKepmN3gGsdDByg4CPb1BWobaCFbDg3BpDesYpw=;
+	s=k20260515; t=1781171257;
+	bh=6FvaCK8UPiXZhdYTP/N/3vL7NQ/U2wiK+8tqJbETg6M=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=evSTCgiVXyDB5qpqz+vC/3SbaY+SToieuqXUHWfOa/8pYkJeWI7iUUnvyzhP+9Iog
-	 E9iVlv3oKYEwijEynMynF4jUrozWqUNjRS7Z6y5wJOV6ikI4UFayEcbhlQhMgGc8Ui
-	 l7DuMzFoOQ2zsaSJBw70crtZIJykEG123d1sJ7fypQlGd+4/6Z8a2rxVb9R3A8VNWs
-	 bawTxQaU6eXtIMjBa3aRYKwa8Crpk1LV7sPufgqt8agW4ZjyLTf0UKgJTEvkfm1pi7
-	 vqyW7qM59AzNVgUM96Lby0sTHGW+bKvMFteFdY/IsFMzHCzrg1Ii9Vbs3CkJeu23ps
-	 0SOkLWqSUt0/w==
+	b=Gwx+E/Y5GBatYmcnkXNSBYk8apATioyzRBSyQt6jJaLFmMeYPwMtSlQ9l6w/Wr3DN
+	 /jGVe34jyrbwt/+Z12vK0HgPnd6sriSdoGEKWuUnjZ/57E/XYejfPKhwQZjAbf+TWW
+	 e0ypAE0Ll47s6j4WX90BK33N0NWx47G50UsNRXWaIFjBgzPjy9Pm73xsVARmHv1j9F
+	 PBW8Q2Xz9rVYN6LYvx445ZRgbkuTOUOs+Wg2vtbf7fIhz7kyLdv7zb3s13NSfQLkgj
+	 e4bVxy27h0IPUTBptpWf1l2QOwMffsZC4sbIofIYKdJxZRQbcT00WUDIbKi5X3qhmt
+	 eoSy2PhLM+Ftg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net-next 04/15] net: enetc: add link speed message
- support to PF driver
+Subject: Re: [PATCH v2 net-next 07/15] net: enetc: add .ndo_set_vf_mac() to
+ the enetc v4 driver
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260610091844.3423693-5-wei.fang@oss.nxp.com>
-References: <20260610091844.3423693-5-wei.fang@oss.nxp.com>
+In-Reply-To: <20260610091844.3423693-8-wei.fang@oss.nxp.com>
+References: <20260610091844.3423693-8-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 09:47:33 +0000
-Message-Id: <20260611094734.43EBE1F00898@smtp.kernel.org>
+Date: Thu, 11 Jun 2026 09:47:35 +0000
+Message-Id: <20260611094736.D47BA1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,80 +48,75 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Pre-existing out-of-bounds heap read in VF mailbox handlers due to=
- unvalidated message length.
+- [High] The v4 driver's MAC address programming functions (`enetc4_pf_set_=
+si_primary_mac` and `enetc4_pf_get_si_primary_mac`) use `__raw_writel` and =
+`__raw_readl` coupled with LE-unaligned helpers, which silently breaks the =
+MAC address configuration on Big Endian architectures.
 --
 
-commit 6b55ba2c40a6c04cf0db8ebb97921067e4376ee1
+commit fb7fbde8e308b4c501381b6a15d58e74e9aff89a
 Author: Wei Fang <wei.fang@nxp.com>
-net: enetc: add link speed message support to PF driver
 
-This commit adds link speed message support for DPDK-owned VFs. The PF
-driver replies with the current link speed when it receives a get link
-speed message from a VF, improving link state visibility for the VF.
+net: enetc: add .ndo_set_vf_mac() to the enetc v4 driver
+   =20
+Add .ndo_set_vf_mac() to the enetc v4 driver to configure the MAC
+addresses of VFs.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc_msg.c
-> index eac71f90d80bd..b24903b23a616 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-[ ... ]
-> @@ -274,6 +277,84 @@ static u16 enetc_msg_handle_link_status(struct enetc=
-_pf *pf, int vf_id,
->  	}
->  }
-> =20
-> +static u16 enetc_msg_get_link_speed(struct enetc_pf *pf, int vf_id)
-> +{
-[ ... ]
-> +}
-> +
-> +static u16 enetc_msg_handle_link_speed(struct enetc_pf *pf, int vf_id,
-> +				       void *vf_msg)
-> +{
-> +	struct enetc_msg_header *msg_hdr =3D vf_msg;
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc4_pf.c
+> index 4b69c19b23194..d310506a6fd4b 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> @@ -575,6 +575,7 @@ static const struct net_device_ops enetc4_ndev_ops =
+=3D {
+>  	.ndo_hwtstamp_get	=3D enetc_hwtstamp_get,
+>  	.ndo_hwtstamp_set	=3D enetc_hwtstamp_set,
+>  	.ndo_set_vf_trust	=3D enetc_pf_set_vf_trust,
+> +	.ndo_set_vf_mac		=3D enetc_pf_set_vf_mac,
 
 [Severity: High]
-This isn't a bug introduced by this patch, but could unvalidated message
-lengths lead to out-of-bounds heap reads in mailbox handlers?
+This is a pre-existing issue, but I'd like to ask about the endianness hand=
+ling
+in the underlying v4 hardware accessors used for MAC configuration.
 
-In existing handlers, the PF driver calculates the allocation size based on
-msg_hdr->len (e.g., msg_size =3D 16 + len) and allocates a buffer. If a tru=
-sted
-VF sends a message with an artificially small length like 0, only 16 bytes
-are allocated.
+Looking at enetc4_pf_set_si_primary_mac() and enetc4_pf_get_si_primary_mac()
+in drivers/net/ethernet/freescale/enetc/enetc4_pf.c, they use __raw_writel()
+and __raw_readl():
 
-However, handlers cast this buffer to larger structures and read fields
-outside the bounds:
-
-enetc_msg_set_vf_primary_mac_addr() {
+    __raw_writel(lower, hw->port + ENETC4_PSIPMAR1(si));
     ...
-    char *addr =3D msg->mac[0].addr;
-    ...
-    if (!is_valid_ether_addr(addr)) {
-    ...
-        enetc_set_si_hw_addr(pf, vf_id + 1, addr);
-    ...
-}
+    lower =3D __raw_readl(hw->port + ENETC4_PSIPMAR1(si));
 
-Since msg->mac[0].addr starts at offset 20, reading it from a 16-byte
-buffer causes an out-of-bounds heap read, which could leak sensitive kernel
-memory into the device MAC address registers or crash the host kernel. Shou=
-ld
-message lengths be validated against the expected structure size before
-processing the messages?
+Does this silently break MAC address configuration on Big Endian architectu=
+res?
 
-> +
-> +	switch (msg_hdr->cmd_id) {
-> +	case ENETC_MSG_GET_CURRENT_LINK_SPEED:
-> +		return enetc_msg_get_link_speed(pf, vf_id);
-> +	case ENETC_MSG_REGISTER_SPEED_CHANGE_NOTIFIER:
-> +	case ENETC_MSG_UNREGISTER_SPEED_CHANGE_NOTIFIER:
-> +	default:
-> +		return ENETC_PF_MSG_NOTSUPP;
-> +	}
-> +}
+get_unaligned_le32() reads the first 4 bytes of the MAC address and returns
+them as a host-endian 32-bit integer. __raw_writel() then writes this value
+directly to memory without byte swapping. On a Big Endian system, this caus=
+es
+the bytes to be written in reverse order to the little-endian PCIe device.
+
+For the remaining 16 bits, get_unaligned_le16() returns a host-endian 16-bit
+value which is passed into __raw_writel(). The value is zero-extended to
+32 bits. On a Big Endian system, writing this directly via __raw_writel()
+places the non-zero MAC bytes at offset +2 and +3 instead of offset +0 and =
++1,
+effectively programming 00:00 into the device's MAC address.
+
+The read function enetc4_pf_get_si_primary_mac() is also broken on Big Endi=
+an:
+__raw_readl() places the MAC bytes into the upper 16 bits of the 32-bit ret=
+urn
+value. When assigned to a u16 variable, the value is truncated and the MAC
+address is discarded, resulting in 00:00.
+
+Should the driver use standard writel() / readl() or the driver's
+enetc_port_wr() to ensure correct host-to-little-endian conversion?
+
+>  };
+> =20
+>  static struct phylink_pcs *
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610091844.3423=
-693-1-wei.fang@oss.nxp.com?part=3D4
+693-1-wei.fang@oss.nxp.com?part=3D7
