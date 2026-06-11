@@ -1,278 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550903624C3
-	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 10:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861F3298CA3
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 11:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781174838; cv=none; b=pIlugHdRqCME7oQbrYg/jJojnqAdIOIkGu/PRR3Y0IwfV18mvhGSnKLvzXVQd34hWLB3Xz/J763GfksFK1I/D8tMNMwjl0ynttlK2tWWe+xgdq1MagiCgpXSaczaK/FJC9U5fjSpL9ra4aJkfUO0rmPYcQBuKuMe0iH2uj089CA=
+	t=1781175967; cv=none; b=osKMsDlz5+4unXzbZTbDZPUeszWCbl3jlsdXY4h7vVgx7KTWw9V+yhx3rlCiv4+AoGt1mfirSpjSqoLY3wUjxDQl+BfbcwoSRJ+rss5aoztRfRlgkLip05DqG5egNcQEkf9mXpMYVWHQTRD9PWBGWUinhhhd89zMutu68PcPfkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781174838; c=relaxed/simple;
-	bh=8Ih50Rh//0EkeORA1cW2xYEm1NsA3U2ZOVfSIskavg8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tfuCEjUs4sggVevZSGsn+vMmQFBLJ1kJblDItKzuh6XdTbnbGRGnJT5yJt0f/gsXgwwV61AfUNX+6SnVTLIBS0hzDVAPkNOnphCOq3DnUxV0s4v2hGjDWo2oFQljL69LZLwjlKNm/haXKQoPwICcmoh8RMw7MJWSFvMSu15hY4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKY8XYDZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781175967; c=relaxed/simple;
+	bh=GHpkckXUoEFdar/SCuYs43YCPZSDC+k7gKcr2KHVi9s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CRWgkqrkTLgo/1tH5dnC9O4LgsrVFnbikHQb6J9oimInFdDV4Kd4QVRfY+jG1WkUmWls1CYW2+gJ9DQYqUy475TOVGta0B9ambfddAw+GsNvTpeE0wKn2EJgPHuDrnZE284hN8r1OnFD6uQE7zPxnIPI1gqlp9SpRsXhki3sejY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=VRKtSCk6; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKY8XYDZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92211F00898;
-	Thu, 11 Jun 2026 10:47:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781174837;
-	bh=M/pTEiAl84gziv2EMHLB3rOyrfwBviBden2org3juLQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DKY8XYDZpMYo9mogSl5NpzkCd8Jvl3xABd05iNA5ZONesNSZdFkbTMhyJOOdQBDxa
-	 Pt05XSZo//74quunBSnMUSdz/0CRT9wd9RoJePE7dlTHJpV6yQmb9UyqVVvS9jltnU
-	 057aObynsG7yKYhqM7Lz31nmF1o94cuPzow+JhTqh+gD764vaVHKKgBzbk2GaCDDkq
-	 YqK7M662s5T34gGz5ehrdlkDHQosOz1czaJpHpnCBaBshjGhIgl4g2C2bsd3ntlvG5
-	 YmZF77V749kRVfFm0wExdPOBQL6HxNAn6NhtjdD7zCPlZs/BVZ9LVyo2EOfBkvNkz1
-	 JlpnPW1WUQzFA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH -next] firmware: imx: se_ctrl: preserve ioctl error
- across cleanup
-Reply-To: sashiko-reviews@lists.linux.dev
-To: pankaj.gupta@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260611155317.3205994-1-pankaj.gupta@oss.nxp.com>
-References: <20260611155317.3205994-1-pankaj.gupta@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 10:47:16 +0000
-Message-Id: <20260611104716.C92211F00898@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="VRKtSCk6"
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65B8w8ED3839579;
+	Thu, 11 Jun 2026 11:05:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=ce5IvPFnAqcEf6ab8GHoKaB5RLDO7
+	4q2dOCP/D1pjwk=; b=VRKtSCk6C12WSiuZbgGWmCNAwX+4IK1267djygrBTz/xa
+	3lGHxM27qh5Yw927mPN7M+nYyl7ouzudHgV0nB76hZUTs91IoChXkgvkgCPy6JGp
+	rS1A+j0yrblcWTa/HJWKKbvRydpwLa0w8OtsQ/OFAkQ9skJWUwG7yfOm6wejgjNM
+	MCdhNo8Zz2MSPfl1VtZebNfZzhZRI3TSF7CRH21AefFeVbHFWCvTLKO5TcM0Ij9r
+	HqJ1RlSEdeRx/FORHhp7usn5l3dXGjYRWWM++g8/B0jLMFy5W7BAwOCg2Pf97wj2
+	cnjPbtKmLp3N4SXPFQAQLczClHC10R3Mt8rc9ewbg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4eqe6us1ep-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Jun 2026 11:05:56 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 65BB37dc014786;
+	Thu, 11 Jun 2026 11:05:55 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4eqjtvjm09-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Jun 2026 11:05:55 +0000 (GMT)
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 65BB5sFn025703;
+	Thu, 11 Jun 2026 11:05:55 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4eqjtvjkyr-1;
+	Thu, 11 Jun 2026 11:05:54 +0000 (GMT)
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Pankaj Gupta <pankaj.gupta@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org, error27@gmail.com, sashiko-bot@kernel.org
+Subject: [PATCH] firmware: imx: Fix device context UAF in close
+Date: Thu, 11 Jun 2026 04:05:22 -0700
+Message-ID: <20260611110534.573543-1-harshit.m.mogalapalli@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-11_02,2026-06-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ spamscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2606040000 definitions=main-2606110111
+X-Proofpoint-GUID: WO9dpoTKbTX7adXHMUuvAeu75OZnJVTW
+X-Proofpoint-ORIG-GUID: WO9dpoTKbTX7adXHMUuvAeu75OZnJVTW
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDExMSBTYWx0ZWRfX71uLciI0Cpsf
+ 8fTJbjGGPKIWQDDysOF2RBmxda/erywcpf/Y42KWgwk3I8zNN3dnWBU93CobeDubeil39Slcxvu
+ v3KtQD/azA3RiuhxvZhLVjIynq0YO6H2SGhBju0xpmGfTh8NiNWR
+X-Authority-Analysis: v=2.4 cv=edINubEH c=1 sm=1 tr=0 ts=6a2a9694 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=3I1J8UUJPc9JN9BFgKH3:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=z1jSPYMi4rPRFrry188A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDExMSBTYWx0ZWRfX+xSexBPtlxnL
+ 7L7StVmJ7+bf1SkQOvDdy7U0f2vvtIWOmxgrL+Gkp8fDH3/5LNztbEgvlMOt0FnSfpsI6s23L/Y
+ xri1HeGPjgFED5IVHkreGvFmmDbPUFipRykxWb2g9QEw6ZhQCWpXwCwRYS3VBRSKe3ja0J5htaJ
+ x9W47UtpUt4WhGPrTwxItLUTtPr7uJX0cbQLT/Fv/QK0EJ2Nw6obr8i2l8d6RISwdb5jC3kTIpJ
+ UhC+CyKLs3st7oiT6XDJe25RJ3REcLRrU0FPMhjZjYJuDCKKbUt0jiIOJtgvF+netJYd2dRugbm
+ JE6tY7RSHnGAP/4VRD6VgY/vwj9JoBsMZFsgWxCUCivL600ipE9D2xa4UFGAfs/2DLddNNxUk6U
+ YsFl5Db9cybngJOtWP/myqX7aBRGtx5jV+t/hRS4pMYvXOg7jObX2547NS5tiBU7gIMxH5QlBMi
+ vVOB8FZ/+UdXOAhJwqQ==
 
-Thank you for your contribution! Sashiko AI review found 8 potential issue(=
-s) to consider:
+se_if_fops_close() frees dev_ctx while still inside a
+scoped_cond_guard() that holds dev_ctx->fops_lock. During the cleanup
+phase it would do a mutex_unlock(dev_ctx->fops_lock) leading to UAF.
 
-Pre-existing issues:
-- [Critical] Userspace can trigger a kernel out-of-bounds read and memory d=
-isclosure by bypassing the response size limitation via the ELE_DEBUG_DUMP_=
-REQ exception.
-- [Critical] Dangling pointers left in the global callback handle on early =
-error returns or timeouts lead to UAF and NULL pointer dereferences in the =
-RX interrupt callback.
-- [Critical] Freeing `dev_ctx` inside a scoped guard causes a Use-After-Fre=
-e when the mutex is automatically unlocked.
-- [High] Unbounded user-controlled `rx_buf_sz` passed to `kzalloc` allows u=
-nprivileged users to trigger kernel warnings (`WARN_ON_ONCE`) or cause memo=
-ry exhaustion.
-- [High] Linked list corruption due to mismatched locking when adding/remov=
-ing `dev_ctx` from `priv->dev_ctx_list`.
-- [High] Returning `-EBUSY` from `se_if_fops_close` on a pending signal lea=
-ks `dev_ctx` and shared memory permanently.
-- [High] Mismatch between devres lifecycle and VFS file lifecycle leads to =
-UAF on device unbind.
-- [High] The mailbox receive callback `se_if_rx_callback()` accesses and mo=
-difies shared state without holding any locks.
---
+Fix it by freeing dev_ctx only after leaving the guarded scope.
 
-commit 481977819a4238dcf5e49fe0ecc0cd7d83d4f0c7
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
+Fixes: 2768fdfd5585 ("firmware: drivers: imx: adds miscdev")
+Reported-by: sashiko-bot@kernel.org
+Closes: https://lore.kernel.org/all/20260528094337.9C1D41F00A3A@smtp.kernel.org/
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+---
+Only compile tested.
 
-firmware: imx: se_ctrl: preserve ioctl error across cleanup
+ drivers/firmware/imx/se_ctrl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-se_ioctl_cmd_snd_rcv_rsp_handler() overwrites the operation error with the
-cleanup error. This patch preserves the original error and only uses the
-cleanup return value when no earlier error was set.
+diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctrl.c
+index 8fab3b7767b7..fc3bbd1788bd 100644
+--- a/drivers/firmware/imx/se_ctrl.c
++++ b/drivers/firmware/imx/se_ctrl.c
+@@ -887,9 +887,10 @@ static int se_if_fops_close(struct inode *nd, struct file *fp)
+ 		list_del(&dev_ctx->link);
+ 
+ 		kfree(dev_ctx->devname);
+-		kfree(dev_ctx);
+ 	}
+ 
++	kfree(dev_ctx);
++
+ 	return 0;
+ }
+ 
+-- 
+2.50.1
 
-Closes: https://sashiko.dev/#/patchset/20260528091446.3331006-1-pankaj.gupt=
-a@nxp.com?part=3D1
-
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> index 8fab3b7767b7a..03ac54c1a2c55 100644
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-> @@ -510,6 +510,7 @@ static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se=
-_if_device_ctx *dev_ctx,
->  	struct se_ioctl_cmd_snd_rcv_rsp_info cmd_snd_rcv_rsp_info =3D {0};
->  	struct se_if_priv *priv =3D dev_ctx->priv;
->  	int err =3D 0;
-> +	int cleanup_err =3D 0;
-> =20
->  	if (copy_from_user(&cmd_snd_rcv_rsp_info, uarg,
->  			   sizeof(cmd_snd_rcv_rsp_info))) {
-
-[ ... ]
-
-> @@ -594,7 +595,10 @@ static int se_ioctl_cmd_snd_rcv_rsp_handler(struct s=
-e_if_device_ctx *dev_ctx,
->  		err =3D -EFAULT;
->  	}
-> =20
-> -	err =3D se_ioctl_cmd_snd_rcv_cleanup(dev_ctx, uarg, &cmd_snd_rcv_rsp_in=
-fo);
-> +	cleanup_err =3D se_ioctl_cmd_snd_rcv_cleanup(dev_ctx, uarg, &cmd_snd_rc=
-v_rsp_info);
-> +
-> +	if (!err)
-> +		err =3D cleanup_err;
-> =20
->  	return err;
->  }
-
-[Severity: High]
-This is a pre-existing issue, but could passing the unbounded
-cmd_snd_rcv_rsp_info.rx_buf_sz directly to kzalloc() allow unprivileged
-users to trigger kernel warnings or memory exhaustion?
-
-drivers/firmware/imx/se_ctrl.c:se_ioctl_cmd_snd_rcv_rsp_handler() {
-    ...
-	struct se_api_msg *rx_msg __free(kfree) =3D
-		kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
-    ...
-}
-
-Because rx_buf_sz is user-provided and unbounded, a negative value becomes a
-massive size_t, which guarantees an allocation failure and triggers a
-WARN_ON_ONCE in the slab allocator. Can this trivially crash the system if
-panic_on_warn is set?
-
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but can this sequence lead to a
-use-after-free and NULL pointer dereference?
-
-If ele_msg_send() fails in ele_msg_send_rcv(), it returns early without
-clearing priv->waiting_rsp_clbk_hdl.dev_ctx and rx_msg. If ele_msg_rcv()
-times out, it clears dev_ctx to NULL but leaves rx_msg dangling:
-
-drivers/firmware/imx/ele_common.c:ele_msg_send_rcv() {
-    ...
-	err =3D ele_msg_send(dev_ctx, tx_msg, tx_msg_sz);
-	if (err < 0)
-		return err;
-    ...
-}
-
-Because rx_msg is allocated with __free(kfree), it is freed when the ioctl
-returns. Later, if an unexpected firmware response arrives, does
-se_if_rx_callback() unconditionally dereference the dangling or NULL dev_ctx
-and use memcpy() into the freed rx_msg buffer?
-
-drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
-    ...
-		dev_dbg(dev, "Selecting resp waiter:%s for mesg header:0x%x.",
-			se_clbk_hdl->dev_ctx->devname, *(u32 *)header);
-    ...
-}
-
-
-[Severity: Critical]
-This is a pre-existing issue, but might this code read out-of-bounds from t=
-he
-msg buffer?
-
-drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
-    ...
-	memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
-    ...
-}
-
-When a response is received, se_if_rx_callback() skips limiting the
-callback's rx_msg_sz if check_hdr_exception_for_sz() returns true. Because
-the SE_IOCTL_CMD_SEND_RCV_RSP ioctl allows userspace to specify an
-arbitrarily large rx_buf_sz, rx_msg_sz remains un-shrunk. Does this cause
-the memcpy() to read out-of-bounds from the msg buffer, leaking memory to
-userspace in se_ioctl_cmd_snd_rcv_rsp_handler()?
-
-
-[Severity: High]
-This isn't a bug introduced by this patch, but would the mismatch in locking
-between se_if_fops_open() and se_if_fops_close() cause linked list corrupti=
-on?
-
-se_if_fops_open() adds the device context to priv->dev_ctx_list while holdi=
-ng
-the parent misc_dev_ctx->fops_lock:
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_open() {
-    ...
-	scoped_cond_guard(mutex_intr, return -EBUSY, &misc_dev_ctx->fops_lock) {
-    ...
-}
-
-Conversely, se_if_fops_close() removes the context while holding the
-instance-local dev_ctx->fops_lock:
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-    ...
-	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-    ...
-}
-
-Could concurrent opens and closes race to modify priv->dev_ctx_list and
-corrupt the linked list?
-
-
-[Severity: High]
-This is a pre-existing issue, but will returning -EBUSY from
-se_if_fops_close() on a pending signal leak dev_ctx permanently?
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-    ...
-	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-    ...
-}
-
-The kernel VFS layer ignores the return value of a release callback and
-always destroys the file structure. If the process is killed or has a pendi=
-ng
-signal, mutex_lock_interruptible() fails and the function returns early.
-Does this bypass cleanup of dev_ctx and leak it?
-
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but is it possible that freeing
-dev_ctx inside a scoped guard causes a use-after-free when the mutex is
-automatically unlocked?
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-    ...
-		kfree(dev_ctx);
-	}
-    ...
-}
-
-Because dev_ctx is explicitly freed inside the guarded block, does the
-scope's automatic cleanup handler dereference freed memory when it attempts
-to call mutex_unlock(&dev_ctx->fops_lock)?
-
-
-[Severity: High]
-This is a pre-existing issue, but could the mismatch between the devres
-lifecycle and VFS file lifecycle lead to a use-after-free on device unbind?
-
-drivers/firmware/imx/se_ctrl.c:se_if_probe() {
-    ...
-	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-    ...
-}
-
-If the driver is unbound via sysfs, devres unregisters the miscdevice and
-frees priv. Since misc_deregister() does not force closure of open file
-descriptors, could subsequent userspace actions on open file descriptors
-dereference the freed dev_ctx->priv?
-
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the mailbox receive
-callback access and modify shared state without holding any locks?
-
-drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
-    ...
-		se_clbk_hdl =3D &priv->waiting_rsp_clbk_hdl;
-    ...
-}
-
-Process context in ele_msg_send_rcv() uses priv->se_if_cmd_lock to serialize
-setup of the waiting_rsp_clbk_hdl state. If a late hardware response arrives
-while another thread is setting up a new command, will se_if_rx_callback()
-race with it and corrupt the state?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611155317.3205=
-994-1-pankaj.gupta@oss.nxp.com?part=3D1
