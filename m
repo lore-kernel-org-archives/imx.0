@@ -1,63 +1,74 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011028.outbound.protection.outlook.com [52.101.70.28])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013011.outbound.protection.outlook.com [52.101.83.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39689FC0A;
-	Thu, 11 Jun 2026 01:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CCC259CB9
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 02:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781143188; cv=fail; b=fuU0tWDAKvRPlK4ePkbtXtVBOzXE1Og86uGQ+rXN8PC6IJWhUxg9BljljResyDh8/yqccMo5bIk7Hx+zMVXVhcXrfkobnusnk38K5OTBEAINtD2eP5vraLP2n3bf/yuET7prQmJzQAPalXDFBqb3DIIuRmAifOs4oQ3YyR63uts=
+	t=1781143918; cv=fail; b=bLcKo49St7onRvJT7dEbhfeSAgvPzxho34qneMZuGzDmAbXJEc6Pm4cCIa7Qq2MMm/jafaH/QKgQL/7UYeL07lGmKdwcuI9B+g9+oxNO8qFfYhWs1kCwEC64xIHWVQ92ziL/Uk/P60XtcJaAWRzuNcPAzhyjGTbjwMLPhhFdN2A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781143188; c=relaxed/simple;
-	bh=Cgeqj7R0TlINMnetuHuZt9Q9DLKoH30pHAX9XxWUAqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nY79qZqz7ErFhR10aebeawnMYQ+xHjz43u7zRD9Ke+GPpQbm6R7KlELPBv049Ckl5+182pfDv1a3b9BpP7Hp5qKb3WCtugOmPH1Cj9loeV+I+A8AAhEcAFjE+3vHCNVkHA4+FTIcvilSbgLveiqELRnfFN8EoXznPJdb2I8nb5Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gxwKPPY3 reason="signature verification failed"; arc=fail smtp.client-ip=52.101.70.28
+	s=arc-20240116; t=1781143918; c=relaxed/simple;
+	bh=Op4nMsTXkFtV5vUk0XqDIYJpeV0SuDhLjOPu9KJpnDs=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=hrk1oEzksrhdIr6rEVUH/pANOspmlHAB3lKtDBCUeToSGoGmBJH426czPfBfv6+uw3QbMVONSZT2pu5b7Y6cScwytGmge6sWk5WZVls1Uv+hkiuGNMobD2wDH4PSJQ15hxcBR9W6JFOHjmjb/rrkTLTEI6/6jDVLLEMq0m5S8CM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=rEi6Um/i; arc=fail smtp.client-ip=52.101.83.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gxwKPPY3"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="rEi6Um/i"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YH5km1dB+xFkiBUCNI7G9rCz+EfC5C4cgkWyEdPUx/mgTgPHn0FHFrs4OkYx1GDmfomLY873AgOQoE2wG7W3vi57R9aKpezVcY5mjC+AFnuoPpXkTjKHT00wGXeCxnTrShHr3lfOjCVMR64/a5KyKwdFGY62EsVQTcFxLrq0vInK08FD67OqUtYRRHhW5EkkEZ/KsryLOvWgh/REAK4llYAcJEdu5Gf4FDxAvYh01OuDODcLMLr5KVTEePvq5E19bRDCd+Pob0tIb9vY0IJRdtrhbj9FzoLyuHPG3TBYYArFl0ORkA2FcdfsHVEpzOgSPcE7zTVjQkMKs0yQ5pWfAw==
+ b=lRzqhMdXTlNdg/jf9Y6o7RKsqudxHeCleZU3tKLuMZpyhtmFBdNgX2FvGA/PiSya7nBJF/z50u6uXRMtw9mH4mKeQuS+LvJduh9kK9dvMHudgfI/uuK4g8AqgY2Bc9wfAFgBtZ2zahcLjsxbplNLfxceu5kxVUMhCOCex2Cimb40kb71ZTQWGHl/JNtpsXD3T7rQyQa+sf5oJxmTnEyoAzhhO1KYyBiXqnME8bLZODDjo6f2KlSkNHO3aWCNGWnK0+Tdm4uMOw2DrB7g8KG/gaPrm92njuE7djuQMpMuMSLCA+L7wqHlTj41gqPTngQjXraaHrJJSr2sql8N4gR92w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bAAuw89rmQmJBHKl1Jnb7NvpIlADat+ZnV7vtLittmA=;
- b=tmXflTQJ0rIQXUCBhQI3iNwzdzfqtoCkx5O+ai7Et5v8kE2XDbFulE1zbwl6updTw8BC6MVoFhyuXPEOjTVJfHFL+Ig9EbmPA73JrZUIJP2VzDqwmBTDXe5l+YZ4wu53fJY9KOFdsviCbuP/K3QEqRaKUrg+xvOLpxPKqaxGN6zgKUsi/Nr9h5rLZw0mOQJ5xMsTfzTX8i2F6Iw4+jtQ55GBSYPjrT1AU42/WKTBNeLa9vEpfp3gI7BvRyNiy+ahiXxd0I5kFbd7xn3iW+2NFWnRtQMhWWrk4CZoOCK4Lavd3rIH6icV59QkqNqsPZHvUOh08wVjb1LzxA314LI/Yg==
+ bh=t59YXBABqSKBTMbqxRZxz5wbLxg/l87Z+6hLvH9B5NA=;
+ b=LDUlFg2HJEpKbTC+SPIUlKoHQR70Wehs3ronqkVB6/2mz+XIiMGAgD3BvQwW/yKzIo8qvKfghbdNzzfBteA981ywhd2Dq3d+62N4ZRvZvIcjihc/hBGXh9T8DmvJ3ue0yfz/aW8qSPhX+LBKsPtAVdXzxkHhGnVz+Aw84l/Rhs5bu19v5b/EgZ1JY/RZQvjHaeodA0FpvckZbWJCBBd2fCATed6if3NlMiTFYv5mG6VpLQ3QoPFA3X9YNBnGIX3nsxpGEHNwpy8Yg3Qe8Vrqo3hKLY5EkKxROiNEtAIcc264/PsVjLEMzEav/OV+r7ciFu368UoRwtgcEJ1rf9XEAA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bAAuw89rmQmJBHKl1Jnb7NvpIlADat+ZnV7vtLittmA=;
- b=gxwKPPY3kPPJtKSLgCu3/h/2fw3Go2NWxtqrlqGsjiJZZqv9wxVedkQ4FGxh05zVv1ia3/3rHjz0in0VqNpBUdpQf+c/0phIvIiOwveN7QTnHOxOK2Vw95q41PutJhzYKuvHlDZ0g3G51/yLBge5NtalyLEJoeWy0QAeo398tqcj3Fz/epHdcLoPKuzFuku0frqF10anqKyV2SvdcbrvsX/9M3NsTKtPQJTIpAnaZHdTbDMoXZEhh7NJ/C1VVp2GXelEcBWEhHMB81UWR7DOC6y1uiIxURNiIJiI9BmF90dbgVyMCkQCv3jia7sEDpCBnbXuuPeCy3pkffyObrsVDA==
+ bh=t59YXBABqSKBTMbqxRZxz5wbLxg/l87Z+6hLvH9B5NA=;
+ b=rEi6Um/iZQIhqtB0Giq5SRmgv0mZgd4sKBg0+uOILDj1o8MQO7b/8hSLIDjIoXIeWBxZpEMCvupFP0WRmU37SagNaa/w1tGIBh/KyxWtS1Y3DB91PNHjQpaDzwTrIAnFBAtWhcZzIv8nvqnm54gthJ++x77LhJVmPXScNceLuSzEOQXPRRqAQFZaNkQ8Xm16GMiGdZvk4L5Yxjij31tvASwfxbP0ogHU7PvQCAsJLE0nbeLNOMtqy9ZmnRw5yxsik+VcSovlLm/fRGyClvzDW7ZNmTd6dvrKRGxJH+jTC8G014RZey7NwQwuGSDUsM49+CYfmfmrCXBjy+V6akBBsg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
- by GVXPR04MB10135.eurprd04.prod.outlook.com (2603:10a6:150:1c0::19) with
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by GV1PR04MB10824.eurprd04.prod.outlook.com (2603:10a6:150:20c::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Thu, 11 Jun
- 2026 01:59:44 +0000
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9%4]) with mapi id 15.21.0113.013; Thu, 11 Jun 2026
- 01:59:44 +0000
-Date: Thu, 11 Jun 2026 10:02:55 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v4 2/2] pmdomain: imx: Fix i.MX8MP VC8000E power up
- sequence
-Message-ID: <aioXT8gTULg1Fulo@shlinux89>
-References: <20260610-b4-imx8mp-vc8000e-pm-v4-1-v4-2-ea58ce929c84@nxp.com>
- <20260610133429.B58471F00899@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ 2026 02:11:52 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0113.011; Thu, 11 Jun 2026
+ 02:11:52 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	chleroy@kernel.org,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	linux@armlinux.org.uk
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v5 net-next 0/9] net: dsa: netc: add bridge mode support
+Date: Thu, 11 Jun 2026 10:14:49 +0800
+Message-Id: <20260611021458.2629145-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260610133429.B58471F00899@smtp.kernel.org>
-X-ClientProxiedBy: SI1PR02CA0045.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::16) To AM8PR04MB7874.eurprd04.prod.outlook.com
- (2603:10a6:20b:24d::9)
+Content-Type: text/plain
+X-ClientProxiedBy: MA5PR01CA0031.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:178::16) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -65,172 +76,109 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|GVXPR04MB10135:EE_
-X-MS-Office365-Filtering-Correlation-Id: a50fd81c-8401-45ab-2adb-08dec75d1b85
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|GV1PR04MB10824:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59879543-159c-4188-3429-08dec75ecd0b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|19092799006|366016|1800799024|56012099006|11063799006|4143699003|22082099003|18002099003;
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|7416014|19092799006|18002099003|921020|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	+iubQ7LnxjA4KU2UMjRYgVcuEbgwFlZlQssnvwIE5EGdDp35rRJlZl5G/RB7xJmQ+oWeHlq8E0vCXFcB3hMT2NVy2R5q1vIbjL5KISGpzf6e3AegCxkplNtMsXSp9x4/0Ch7qQ2DKLSkZdAIjr5efe+TmALsI6dMG8W5uoNsWOM/YaufWuhlMJGnrnMebWIrPn+WZlDKE4mwOyROFKezfJb+fNh6Jwslt2F903reosWbvHmN5GXteBADCAYjcdOhFB7NWoG8LfCIjo0nUjCGw8TInXHnWTVxnqQ5Dzm34LNyH2Q2UoYT4G2lEuoNrgPba5YjbfaycgpAWnS1YkpCHHWbaTTDThFERzB86lIQiG5yhqAvvuth+wExvFUg8EGHWHUIjnA415AzB0tlDC3z9NhKgItkWGCF3eCbruiajC7NvSs6yU5qAoEm/T/OdM4R8KEXuMldX6d4oM672G6QRJBOAjxc4v/BZdV1uykMSV5FrLi5Vdc8f6ibQIhUZ38BCeEFEwDbgbTc/0Sz/uxMB7QnS9/rnQf+oakYG4/41QYp06IAV+LzhE2I/bFy++areZA1uKKogHyE0UNzQIzZkntTz4qUcgdr0IuI1e06EwQucK5sBaSEnHwSqZbQzAxAWyivVT4ibf5cTEBP9v6aUA==
+	uLBOj7OiDCCxq3EZbFLDg23aSiq0c6q3Voy5MxqS34BKHXHWWNx5h4FUzzvRiXBmU14tMzD5j/nGKWBpJf8NY9vDk0JPXMwPXMuWss4VFFX9JhpSlOvaH7uv5664VlUScpWPMFR6ZhfqzxHSRn4IVm3dHVA1a/2dFKATbs1nodiY6DlZiB7zKJCv7S1GTb3thEqxwuABq/7QlSWDCPWgBKCur5nsqanJdP5YCapqZzNh18Emn0lHLmMT3RxD6ohmuTIcKDUXXKdx3/75bZzsMIjUZM3PKeZldUlaCpz0Ccz5pOj44oZNNPkfLvN0ouVWeijBF+WUkbyQmwSPBpAiJBHFe91xkvHZ32fI+QaKC0nhU8uXWeqjrYXznyLoGbSGR8RSa1STaFjUUiJEc6JvAlWMUZiObYB6P+cZ2YOukYQpqUguGlxXDBhjEh7u89QH+m2Ppk35aK3Cg0uKendlsad1mad6YwgApntuFhzT873nHsqvqsSLcffvAlDACAAJyzqBRbiwng9ibL2T2n/7dB8yjWP9iOngeS5DjnI1EXCYTAOhXobgZarbfdfXoikswiFj/KVhlNZ1Q124UXcNcPzWBpwKiJAOPQ1o2Wddmg+cj2eFWJhTwj6/+bM1Chtb1U3v6LIFCJpDZNY4rcjDCtAZyaakMe6V+zRJft1UCjoB8f3JFkeGW1L1iGWTnfuFH8PqopBBtL90/urmVPq8OsSEQ+EiGwESnVqNDS66hhPN1qa+54Xjnq00n2xwA1kQ
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(19092799006)(366016)(1800799024)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(7416014)(19092799006)(18002099003)(921020)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?+jrVotSip27gNBxlYPn7d3ijNqnxOLrZd4a57W6Wwuwh29r2KrxdYwSPpQ?=
- =?iso-8859-1?Q?LM+/kpHbfnWUzj6id0cbjaJgdVutaJJgPLe2qSxrB38hglXQMr/d3mqXbI?=
- =?iso-8859-1?Q?ZvuFGEBIYZYvBORGHxsrvApSnkqqhOwBObob5NAhiddT9XRHl3TlhhdpKa?=
- =?iso-8859-1?Q?APdSBdnM5e8YaiDUZ1X9NujY+hpfb7eZ8T9oy5qfQmEZbuBKPooBfO5ahk?=
- =?iso-8859-1?Q?DHfBSpszIPvh4pMJOblwokm787/fYF5miHc3UXCPhPbNKj7z7H0kmCs26K?=
- =?iso-8859-1?Q?GPeD9FOsNv3eEdAHsd/t5bdNTiohJA9TI3MYmPTI7rupg6svPrBf2O5uX/?=
- =?iso-8859-1?Q?lnXMxDZ4nSkHhwTK7KC8MtB/n0BqJeXlGqna3Ki25J7RVnLXl41rEH9X77?=
- =?iso-8859-1?Q?snGH0pMbrRIo/91Lk275JnDcHT/xXyDFT7ZmuQE+QzpbZrVhToSNg9s1+g?=
- =?iso-8859-1?Q?ecKKMITeRIeThSk9PRPPYq7VVm6c48MDWsTeK8X8JOpsYCQL4AbHjtTa7c?=
- =?iso-8859-1?Q?7Ov9rWG5zomXlj9vfmcRnKJcX4P5/JUtE7se9bIeIUectNFc67whsK0jod?=
- =?iso-8859-1?Q?+BqTUYmhjRcOZRTP5Y+ZU62dPrBs48NnUaNbUDZ2EWQXaP56ed8aWbLILy?=
- =?iso-8859-1?Q?1qTVLSnyXwAa01em25NSyNU0BQhEdttWwx0kgv8OcHZ4Z/tWA5H688oR+o?=
- =?iso-8859-1?Q?K+HfQZwe3Aot6QoRNZsQd5JvP/p8bHC0w2+WGr2WtWX+bL8e9tWOPI8qsl?=
- =?iso-8859-1?Q?a/9Q4wEQKz6J9togsYFzbQPIsC8vanKmtJeSdpyeOY2gD6ASck1gImwLP2?=
- =?iso-8859-1?Q?uiVtbGCLTE7IfYOYKBBwjO/o3NiX210UYwX3XgEwYr939/n3rL68MLsWwe?=
- =?iso-8859-1?Q?VI29pH36j06FC01eXto0RG40Y0glww/UQXNqoiXbNjPwwO/5bDojMGeNwA?=
- =?iso-8859-1?Q?8RjSNfOCkFUHMfzNpHs8BnaUCvwnWygQqTcuG7epKVbyww4AGAdqDtTUJm?=
- =?iso-8859-1?Q?uzdB+lN7BOUtVHMIldCAYVR8d6MEtBknrOYDRxG6u98v6DSi3E54WrZLEr?=
- =?iso-8859-1?Q?DdDxNQb9kSJpP7SATZVFf/Y2sLF5RTwEMX7hxlg59rMuQUce3HxO0Nte06?=
- =?iso-8859-1?Q?GPTIMWxwtHdyTFLr1tBINydFbI3SGHYUBUQ2x3WgmnMJo3ZgD9KeJIQTiZ?=
- =?iso-8859-1?Q?uBGwtUcDRWmhDV/xt20YajPVb8Sj3pOHlpXdFGA4KkrDydi/CPo9WpyMOo?=
- =?iso-8859-1?Q?OHulw7qfZc4rH/uzKyJNwcSQmSoamZpVzuAyxFeoNNiK/UuUXEFbv+4XpA?=
- =?iso-8859-1?Q?vxdTZS04yEHb9cWOi6M28PJNfFp+zFQiaO/YUuBMiTyYzy8yCNKoITCu/a?=
- =?iso-8859-1?Q?wcIlLNQuhXncG3O724FmkpRfdT546MYExGt0/3niKjCN0/2P0vNdfmJsrT?=
- =?iso-8859-1?Q?ONlbYGbAsIx7htOJpNs/6t5FHnYg7iPFlUPqua9wP2ZIIEycclso7of7ZW?=
- =?iso-8859-1?Q?tHN/dHI5o2GcUHDAVEqJutKmaE6jHrFzXFJ034vEaPTOtQP52IRCBRBgQT?=
- =?iso-8859-1?Q?W58PuRD80SRexE7DWb5y37VvWDBTKi2QMTZWmSQ90LiZLEVE7mWkhUxQl1?=
- =?iso-8859-1?Q?HWG4y4zTISbUOMt7SbI7eXP0eF3Zk0s+5QT/s24/pmFUjrn+0EgShPBn8e?=
- =?iso-8859-1?Q?InrchOWduYUueOeBfudGFOO5kO2HJc4LtmlX16uiUWw6d7IdBjiYuzHCH3?=
- =?iso-8859-1?Q?6EFwdvf2gQKbQP8k3tch2PYvYOAQeJDTFQTtOplHpOKxc0FGlk/tCOTvYu?=
- =?iso-8859-1?Q?/jP8ItUNBA0FZ9Q/pUDmS6YJgVFAd8Y8dANM9Q4FcSHxILFkqWNx?=
+	=?us-ascii?Q?Qg8uStTqe6lxItYQRDBmWoLotNsqd5dSQrsBmx6XQ3bsqytBdNIYxfRxlIWx?=
+ =?us-ascii?Q?/cIOAncIKx4YOVBWL8/uHyp1sIv7zw4UNZBhqs54eJ2QZ061p2GHBKTF2PmT?=
+ =?us-ascii?Q?9VzIxpAkwy42rS80Rb4jhrshW/zO5Y6S0oB3vy19sqdmjknqV1RZ7yvHEBH1?=
+ =?us-ascii?Q?nqTskSNyuWh83YRhOU4SGfz2DoabmiazAy8GTgaeJ4s0bzOb63b7RXol30v3?=
+ =?us-ascii?Q?vaQ4CdTR8TLtTtXLjfaV5glK4XW8dubVyQA1TjB2X+PYmzygVgR9Xdpt58MO?=
+ =?us-ascii?Q?bGAB3MD29nULkQ3mhnws8w3p996Foj7+PEHG61rK1vJRRM/G6L5A3IO5KZdo?=
+ =?us-ascii?Q?GtglDdDcbpHb+SE9jbOA7KgnzFbaI7TF5r7ncDGuIA2JuZ8pjYUemJ3E48K0?=
+ =?us-ascii?Q?frOnI2EmLRl0O0eSppaN9mFrBZ6AZM3KJ6BwmBNyEST9DAaz0pE1Ky/fW0uy?=
+ =?us-ascii?Q?A8Lg9CCwnF/6E6A/KYamsWqPPk1i0U+IpccphQGzpVcon0Lyu5+mwAeTlPjx?=
+ =?us-ascii?Q?quSkzlMJsOzgjbk3mM3lni3thHoIzC707uZdgZ3XnEPOLpktvqqGY+YncvBG?=
+ =?us-ascii?Q?VHcsDEMvIDdk3kM64biSeR8ypfSSHPdVm5k8TJrdnGSRqFNqInDBPy6UmqlD?=
+ =?us-ascii?Q?qC/C81uTMQ5E7XKw/P9yXt8ChafkNvAgy3cHADLMtGsWpxtMZl3iLn5vh1sX?=
+ =?us-ascii?Q?Emg8/wFTImmkX2Wt4JfJLUd51Yb/E3+Td15g8/1FAmv3xBPPIbFdLrCFBjXg?=
+ =?us-ascii?Q?2/JFFnOI/ZqvZE0qN6r48k59C78lcOEmW+oEfV1zBbvl6BF5UIcIUq5Xog3t?=
+ =?us-ascii?Q?NyxfvuQskQrxOu8L1ng/xIYtyZ+7Qef74s0rAsq4YrLULROww1K4zdn3p726?=
+ =?us-ascii?Q?ZQ34kI0wVv3fBQ7OYb6b2D+AfI5D9lz4RrGHbwTujTTTRsPMUORbG48IN/qQ?=
+ =?us-ascii?Q?M8Qq5uubhAzY0oQTnpDQBmH7ChreFivf8hmhYUpoGwRSCKLzJII27z13v5AB?=
+ =?us-ascii?Q?oEx3wU06xnpoB2PXz8j3wfbDE3S9AuKj1WGaj3ia3km+ZuN21SzoX9rRdhLK?=
+ =?us-ascii?Q?vg+cYfWMyqx0j2BmOts8dMW/qOHsg4QZJaCVS1mmNb7kJa0nr9g+Dc++APYH?=
+ =?us-ascii?Q?DvfG4tgoYjKdrOXPgXPRPDxcKJUUAjjH8as+VtAThvcG0xu68gQnJjwG47l6?=
+ =?us-ascii?Q?HJhd1sg9I9WvHHZ+bBLbGl2l+TF2Uno/39J3aVdYPcB42YOF5zdA99ZAV9ET?=
+ =?us-ascii?Q?H5vQA4nIDXw4IllKjzqWtrumT6kHxsgTrnescdIg1iC/qGe++YeVMEf+1po+?=
+ =?us-ascii?Q?na9RwnI+WD4t6693pM8EvmOvphVAQBhUIpmXvXygufYMBt4dBrWeH/+eXNEc?=
+ =?us-ascii?Q?IIESjQ01FQvpuhOg67zFqtqNT5axzWoNVq7gw/6GuZhQaWGZnHj+RIDQIMlU?=
+ =?us-ascii?Q?Htlasbr4z1jhe7cc5Uvn9DIG9WMUVaD+es3F30OgXefgimJOsnUrIFHwBnU4?=
+ =?us-ascii?Q?dnxvwgikpwl/bzUa+KvuUJYDjFjM+PuBZgIRnF2DX9Q8hlBWNP141dRvwS02?=
+ =?us-ascii?Q?CGYHkqtFPGhAjEbr3qMtwQpxBa0hyKfIfElKuP7ua1bziN1XzZtmiqzWb9Xt?=
+ =?us-ascii?Q?nrJtQQywtuIPoKpOlbAMvECtZfEsnI4HI+T8uGWlaarMa386AxYdmhYYqE/5?=
+ =?us-ascii?Q?feVj+gV6aasYDdSbsprl6qL+EYrDdRgeMKlIiH3VoAlCBRnFVDvbNqkZFHIU?=
+ =?us-ascii?Q?iaDW8XjhiZiPnxZKixm2ot6dCEc66ZGrg/9Mx72qRExEX/36nmea?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a50fd81c-8401-45ab-2adb-08dec75d1b85
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59879543-159c-4188-3429-08dec75ecd0b
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 01:59:44.2168
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 02:11:52.2246
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1I3Ii6y++YOD4wUxfQ0EiIdfO42czF8EJq+BPQCkt9K1N9S0vILej7QAc0+K62gBb3OgEmqM3yHNrgKsXwG27kYG9UgD/QoHNWIdcgk8pekJYxt15uZmSfxQlwmXRBtN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10135
+X-MS-Exchange-CrossTenant-UserPrincipalName: Lf1LOva8qyJywprDfZqdCEc/Ve+jkKwc+8Fs+TLFBN5Eb3oT77xdyI9dueSPdunsNQrprc4OZHYFpaJu5RvzKPAfVK9ul3GZvfF2Dr22ibMyuWC7bj9gSZ1aXv5sVclI
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10824
 
-On Wed, Jun 10, 2026 at 01:34:28PM +0000, sashiko-bot@kernel.org wrote:
->Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
->
->Pre-existing issues:
->- [Critical] A registered PM domain power notifier is not removed if `devm_of_platform_populate()` fails during probe, leading to a Use-After-Free.
->- [High] Missing `pm_runtime_put_noidle()` for `domain->power_dev` when `pm_runtime_get_sync()` fails in `imx8m_blk_ctrl_power_on()`.
->--
->
->commit 66b12e5f806bfaa002428850f133acef50ed1a55
->Author: Peng Fan <peng.fan@nxp.com>
->
->pmdomain: imx: Fix i.MX8MP VC8000E power up sequence
->
->This patch addresses an errata for the i.MX8MP VPU_NOC power down handshake,
->which may hang during power cycles due to timing issues between the VC8000E
->reset and AXI clock. It introduces a boolean flag to apply a workaround that
->clears the clock before powering up the GPC and enables it afterward.
->
->> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
->> index e13a47eeed75d..99d100e1d923f 100644
->> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
->> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
->
->[ ... ]
->
->> @@ -108,7 +117,11 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
->>  		dev_err(bc->dev, "failed to enable clocks\n");
->>  		goto bus_put;
->>  	}
->> -	regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
->> +
->> +	if (data->is_errata_err050531)
->> +		regmap_clear_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
->> +	else
->> +		regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
->>  
->>  	/* power up upstream GPC domain */
->>  	ret = pm_runtime_get_sync(domain->power_dev);
->> @@ -117,6 +130,9 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
->>  		goto clk_disable;
->
->[Severity: High]
->This is a pre-existing issue, but does this error path leak the runtime PM
->reference?
+From: Wei Fang <wei.fang@nxp.com>
 
-Pre-existing issue, I could use a new patch to cover this.
+This series adds bridge mode support to the NETC DSA switch driver,
+covering both VLAN-aware and VLAN-unaware operation.
 
-This patch is only for VC8000E errata fix.
+The NETC switch manages forwarding through a set of hardware tables
+accessed via NTMP: the FDB table (FDBT), VLAN filter table (VFT), egress
+treatment table (ETT), and egress count table (ECT). The series extends
+the NTMP layer with the operations required for bridging, then builds the
+DSA bridge callbacks on top.
 
->
->When pm_runtime_get_sync(domain->power_dev) fails, it returns a negative
->error code but the usage counter remains incremented.
->
->The error path jumps to the clk_disable label:
->
->clk_disable:
->	clk_bulk_disable_unprepare(data->num_clks, domain->clks);
->bus_put:
->	pm_runtime_put(bc->bus_power_dev);
->
->	return ret;
->
->Should there be a call to pm_runtime_put_noidle(domain->power_dev) here to
->balance the counter and prevent the device from remaining permanently active?
->
->>  	}
->>  
->> +	if (data->is_errata_err050531)
->> +		regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
->> +
->
->[ ... ]
->
->[Severity: Critical]
->This is a pre-existing issue, but is there a use-after-free risk in the
->imx8m_blk_ctrl_probe() error path?
+Since all switch ports share the VFT, so only one VLAN-aware bridge is
+supported.
 
-Ditto.
+FDB aging is managed in software. A periodic delayed work sweeps the
+table using the hardware activity element mechanism, with a default aging
+time of 300 seconds matching the IEEE 802.1Q standard. Per-port entries
+are also flushed immediately on bridge leave and link-down events.
 
-Thanks,
-Peng.
+---
+v5:
+1. Use __set_bit()/__clear_bit() instead of set_bit()/clear_bit() in
+   ntmp_lookup_free_eid()/ntmp_clear_eid_bitmap()
+2. Correct the ect_eid check in netc_delete_vlan_egress_rule()
+v4 link: https://lore.kernel.org/imx/20260609032955.2066089-1-wei.fang@oss.nxp.com/
+v3 link: https://lore.kernel.org/imx/20260605014808.686024-1-wei.fang@oss.nxp.com/
+v2 link: https://lore.kernel.org/imx/20260602072313.3162120-1-wei.fang@oss.nxp.com/
+v1 link: https://lore.kernel.org/imx/20260527100217.794987-1-wei.fang@oss.nxp.com/
+---
 
->
->If devm_of_platform_populate() fails, the code branches to the
->cleanup_provider label:
->
->	ret = devm_of_platform_populate(dev);
->	if (ret)
->		goto cleanup_provider;
->
->The cleanup path explicitly detaches bc->bus_power_dev but never unregisters
->the power_nb notifier from it:
->
->cleanup_provider:
->	of_genpd_del_provider(dev->of_node);
->cleanup_pds:
->	for (i--; i >= 0; i--) {
->		pm_genpd_remove(&bc->domains[i].genpd);
->		dev_pm_domain_detach(bc->domains[i].power_dev, true);
->	}
->
->	dev_pm_domain_detach(bc->bus_power_dev, true);
->
->	return ret;
->
->Since bc is devm-allocated, the memory containing bc->power_nb will be freed
->when probe fails. When the PM domain later changes state, the core will
->iterate over the notifier chain and dereference the freed memory.
->
->Should dev_pm_genpd_remove_notifier() be called before returning to prevent
->the freed notifier block from remaining in the generic PM domain's list?
->
->-- 
->Sashiko AI review · https://sashiko.dev/#/patchset/20260610-b4-imx8mp-vc8000e-pm-v4-1-v4-0-ea58ce929c84@nxp.com?part=2
+Wei Fang (9):
+  net: enetc: add interfaces to manage dynamic FDB entries
+  net: enetc: add "Update" and "Delete" operations to VLAN filter table
+  net: enetc: add interfaces to manage egress treatment table
+  net: enetc: add "Update" operation to the egress count table
+  net: dsa: netc: initialize the group bitmap of ETT and ECT
+  net: enetc: add helpers to set/clear table bitmap
+  net: dsa: netc: add VLAN filter table and egress treatment management
+  net: dsa: netc: add bridge mode support
+  net: dsa: netc: implement dynamic FDB entry ageing
+
+ drivers/net/dsa/netc/netc_main.c              | 965 +++++++++++++++++-
+ drivers/net/dsa/netc/netc_switch.h            |  33 +
+ drivers/net/dsa/netc/netc_switch_hw.h         |   6 +
+ drivers/net/ethernet/freescale/enetc/ntmp.c   | 440 +++++++-
+ .../ethernet/freescale/enetc/ntmp_private.h   |  18 +-
+ include/linux/fsl/ntmp.h                      |  55 +
+ 6 files changed, 1495 insertions(+), 22 deletions(-)
+
+-- 
+2.34.1
+
