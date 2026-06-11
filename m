@@ -1,117 +1,128 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0406533122A
-	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 03:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B88215075
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 03:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781149165; cv=none; b=eXjJKNCeNHIHPu7EsvNvhweW4zh1fvZOz1ava2eihqK/6ZHVDsRfc0fTjJMcvoedH/7fdXTKZ1YM9ZX454mKW/g7cRALaBBtvmd6czmNXXlAHqongKAY+OW18xFz8B0PAyNhVaQSQ04RLMAJK6uuRCWuyDgVIJKrxv+F3Hj8hNw=
+	t=1781149765; cv=none; b=HTCXFNIcXjthKiL1AARBnKAPp2t8Zpz5zbHGls58rlswmmpifp4dGHvFuPcfZEvYLQxgRZTjC82P7U2pndp0ZQYWtK8OORGwB8CyM4CaCGjFuEemoLvCqVAbKtzB4S7vZdBcbNKiuIlklKNohjno/LWJsGmX2XP5Esf2GG8fcZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781149165; c=relaxed/simple;
-	bh=cmMm1p6O9Mp3axJclA4sAP6G4alWEw5/lSU36Eie7X4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+X5lt7zb6I7ZQD8Z1J2xFBVjrF8oSUuEj3nnClXtzly6pRr/C3IUPjtDgPIqCRcM220619dY5uxl+EhOx8nafjiRr4U4IqCOqGuv0fspAXm9OYbdDuR5FyEP0sT9oaflmdATC6XhChLb/26C0fRdeAUQ9CE6NerVWty+iOdjo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XLbM5JIC; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781149765; c=relaxed/simple;
+	bh=gViqOGOYpJl/Yaw0pxU9u+9cBm7WDT9bD++ksCQ2j/M=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=d6UtIGKSW4xpuGcqkTWULRLgLQYlQN1lfDr7dJvMh5SsZ8NsYXc3Kf9GDsPCd+LFjgw//HQ4x749DEkvh/RYLrg1MEgnx1c/gFwS5lyitiNpT6v7uuggQ8WeF+f3XlXNkFmxaMkHyezlczvBVl71vtIGLxJI2EsiAflpaxE803g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J39Gp/iI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XLbM5JIC"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84237c55ef9so3602568b3a.0
-        for <imx@lists.linux.dev>; Wed, 10 Jun 2026 20:39:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781149160; x=1781753960; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w+4cm9QbNYmcZl/MXjwCiNY3TdxompycqRGjEnRpi0s=;
-        b=XLbM5JICTVz7SvyaMDN3l0SyTcCka6O9DDLRJWc6PGDGNjZ3sjOflz3jVEK0ZKHuXA
-         k7uAZR9+WWFjmGDdB6WCwgTIhD6NsRmCh11KMHjUT5E33TAQzVZN8W/MgNz/kScsgqjN
-         pxJ125J13i4VvvY/xNKiG4gxpkR0/MxtEZPkD+d4YOTPYe4BKcQEq3Tm5iZO2CjY1xd0
-         lPxk6Gw0UCrxNmiHCHGY4FhtMjvDUb0xcVc2QVT5WCRhkpB9LgW7jXjtqInClvdLpGuj
-         cb6eozcrk13VnMSKmgDrE+Pilrx+iAkQDxadQiaye7yrggHFI/KCzNEdxKE3xRtyJi3/
-         RJ3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781149160; x=1781753960;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=w+4cm9QbNYmcZl/MXjwCiNY3TdxompycqRGjEnRpi0s=;
-        b=esYi7s18XNjy+1VNqBNjp/aFsxYVBu1+S5gzNe2rCqBKmk5H2Ct3jy4b3EgxVXC9Z7
-         Lrm3u9P2HF6QkAI2Riu64f2mGDQ5jJdugLpqyaDpma+w8tZtg7Gvp/3ucSID8Y/x0DEv
-         ynDTtfLbF84But5vJ0ZNTl29pVG2SZWzxmBO1alBKDAdaL4PIvCycMPm/WhE68ZNi51g
-         Pnm+z5lFSVvsiqLD7fE53P9NYwdDzOCgBhaOB0Q3BZJGVkQ8KrZON3Yj4uPq4m9HP2ni
-         Mfslg8L+KR51RC3/mJSGgwQfbiuQ5TTcwjCY9pvi/VSLzamjLkhIdrEXAYgY3N72l2XF
-         uNUw==
-X-Forwarded-Encrypted: i=1; AFNElJ/OvZ44WNdRf28LM+QZzJZ6kihxC5e75QhZK/hw1A8pE9I5G6px1jT1wHnfuAZU3uoP6hI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzYpl5sxSCcQshR4N6kjkXoPYS5eylm8+QPWpVnsna+75X3lE2c
-	CVULqc+alnY44eWGidN6ZmEBu3OGSpYfGqOreLDpX/7vMnvQotAeAyfl
-X-Gm-Gg: Acq92OH7uvwwiSIpF8J0nJZ6HBXk551KVaeZEQ2/dz6kJTwvE4xQt/BCgc0l6CkYHjF
-	/Q3GKTwZ1sefcEEpSwV9e3zpEj2U5MhZcz4atPpdCMMZLe3B9cbEkYn8lQlBORJEMyV+GlQrld0
-	NhIYjFW+UUv8Ke1s9uzxlf2cq7KMY/5dHSQFIQnmNqiHsufLOVgYo39HU6IyI7qEKTWl1n70LKN
-	HomXBiteD1JoEj2fUGLkCjeE5/LToHDr7h1ztB9lpbE4DfE498wnHCbMe8JYGUl87AvfUlwnXjM
-	h7KjRaJXnQbuT5gxG0uMswUL2/0vCpVAz885odczBm2CHOldq+3uHl7v5ZP8gEU1jlAOwBaUKd1
-	Aur1yfqUHlokxDYReHblFrydFOYRCExHidfJJCjRLwJtbCn0lRs4X8V5Oc0/NZdp4nDP9j9Tkjs
-	MDA4sU+g8sS82aKPXYmVdWSGdyI6Fb+nuu7ybs4evmHH9McJAJdBn3CZeuB2/jxDtPA/MQPcJ/R
-	+f8KepI3LH80rWnIq+ChkIDHZK3hb5qZF00/NHUil3Ovg==
-X-Received: by 2002:a05:6a00:194a:b0:842:5ea5:5ff8 with SMTP id d2e1a72fcca58-84336bc62c8mr967189b3a.42.1781149160353;
-        Wed, 10 Jun 2026 20:39:20 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84337bb47eesm334548b3a.13.2026.06.10.20.39.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 20:39:19 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-serial@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-kernel@vger.kernel.org (open list:TTY LAYER AND SERIAL DRIVERS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE)
-Subject: [PATCHv3 5/6] serial: mxs-auart: clamp RX DMA count to buffer size
-Date: Wed, 10 Jun 2026 20:38:55 -0700
-Message-ID: <20260611033856.6476-6-rosenp@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260611033856.6476-1-rosenp@gmail.com>
-References: <20260611033856.6476-1-rosenp@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J39Gp/iI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20F01F00893;
+	Thu, 11 Jun 2026 03:49:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781149764;
+	bh=U8bNjso6GYuW65fvijXNcgR2MwOOOtwcaxRr2Igqbs4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=J39Gp/iIhDGz5BaR+jPgnOhGqsdvlAlP3v7YoTw0G8PPJWcCU4a1Jp3/bNxbLHsfW
+	 c8gPceveEfwBYKcW/jh8A1bBKJ0mzwvTVysBShfT+Su1oyTW9r/eHKBHg7WosFI+DF
+	 /StNaIumbprjkLuDVQ4dXjMTHo4MjNeWuguNibsnlDzm688sSEbHOS71FoXLBUT5jx
+	 eIvXYdHPcmIOknIln3mBKtzwFlXaUA7yHOybZDn44VPogUahL7jbp/V+B0dfY2lcRq
+	 8pLLldAlyoPrsG/DG1uePLyKPR7UjpwoShbaO7gaGF1xLz6YtiCL/T3zGyoL1x+trF
+	 oy1j/KB8FiDZA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCHv3 2/6] serial: mxs-auart: rework clock handling in
+ mxs_get_clks and probe
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Rosen Penev" <rosenp@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260611033856.6476-3-rosenp@gmail.com>
+References: <20260611033856.6476-3-rosenp@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 11 Jun 2026 03:49:23 +0000
+Message-Id: <20260611034923.C20F01F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-In dma_rx_callback(), the RX count from the hardware status register
-(AUART_STAT_RXCOUNT_MASK = 0xffff) is passed directly to
-tty_insert_flip_string() without any bounds check. Since rx_dma_buf
-is allocated with UART_XMIT_SIZE (4096 bytes), a hardware fault or
-compromised peripheral reporting a count larger than 4096 would cause
-an out-of-bounds read, potentially leaking kernel memory.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Clamp the count to UART_XMIT_SIZE before use.
+New issues:
+- [Medium] Unconditional clock enablement in probe introduces a reference l=
+eak and power management regression for non-ASM9260 devices on driver remov=
+al.
 
-Assisted-by: opencode:big-pickle
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/tty/serial/mxs-auart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Pre-existing issues:
+- [Critical] Out-of-bounds array write or incorrect array cleanup due to a =
+mismatch between `s->port.line` and `pdev->id`.
+- [High] Potential kernel panic due to a Use-After-Unmap condition in the i=
+nterrupt handler during device removal or probe failure.
+--
 
-diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
-index e2b656638ab3..fe48a372d022 100644
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -823,7 +823,7 @@ static void dma_rx_callback(void *arg)
- 	stat &= ~(AUART_STAT_OERR | AUART_STAT_BERR |
- 			AUART_STAT_PERR | AUART_STAT_FERR);
- 
--	count = stat & AUART_STAT_RXCOUNT_MASK;
-+	count = min_t(u32, stat & AUART_STAT_RXCOUNT_MASK, UART_XMIT_SIZE);
- 	tty_insert_flip_string(port, s->rx_dma_buf, count);
- 
- 	mxs_write(stat, s, REG_STAT);
--- 
-2.54.0
+commit 7ff1436c03e590a8440db3420eec3a2408bf70ee
+Author: Rosen Penev <rosenp@gmail.com>
 
+serial: mxs-auart: rework clock handling in mxs_get_clks and probe
+
+This commit updates the driver to use devm_clk_get_enabled for the AHB
+clock so its enable/disable lifetime is managed by the driver model. It
+also moves the mod clock prepare_enable out of mxs_get_clks and into
+probe to avoid CLK_SET_RATE_GATE failures.
+
+> diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auar=
+t.c
+> --- a/drivers/tty/serial/mxs-auart.c
+> +++ b/drivers/tty/serial/mxs-auart.c
+
+[ ... ]
+
+> @@ -1697,10 +1686,8 @@ static void mxs_auart_remove(struct platform_devic=
+e *pdev)
+>  	struct mxs_auart_port *s =3D platform_get_drvdata(pdev);
+> =20
+>  	uart_remove_one_port(&auart_driver, &s->port);
+>  	auart_port[pdev->id] =3D NULL;
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but does this clear the wrong
+array entry?
+
+In mxs_auart_probe(), the entry is set using the alias ID:
+    auart_port[s->port.line] =3D s;
+
+If pdev->id is -1 for device tree instantiated platform devices, wouldn't
+this cause an out of bounds memory write into the BSS segment?
+
+>  	mxs_auart_free_gpio_irq(s);
+>  	iounmap(s->port.membase);
+
+[Severity: High]
+This is a pre-existing issue, but can this cause a use-after-unmap during
+device removal?
+
+Since the interrupt was requested using devm_request_irq() in probe, the
+devres core will keep it active until after mxs_auart_remove() fully return=
+s.
+
+If an interrupt fires during this window, wouldn't mxs_auart_irq_handle()
+attempt to read from the hardware registers using the explicitly unmapped
+membase?
+
+> -	if (is_asm9260_auart(s)) {
+> +	if (is_asm9260_auart(s))
+>  		clk_disable_unprepare(s->clk);
+> -		clk_disable_unprepare(s->clk_ahb);
+> -	}
+>  }
+
+[Severity: Medium]
+Since s->clk is now unconditionally prepared and enabled for all device
+variants during mxs_auart_probe(), shouldn't it be unconditionally disabled
+here?
+
+Guarding it behind is_asm9260_auart() seems like it will permanently leak
+the clock enable reference for non-ASM9260 devices on module unload.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611033856.6476=
+-3-rosenp@gmail.com?part=3D1
