@@ -1,334 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010009.outbound.protection.outlook.com [52.101.84.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B9B26F46F
-	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 11:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781177028; cv=none; b=LjWJOamYS/Ruwy2aKtY0oEeExOqP+8DENSFFrWm2ILpqfycJM31+Xh4y95VFYz/OzPUli8TkWIU3saxmHp8Ja1VMmjG5RmwNi7WbnwhDMKBjujq4OnDyyIBgsswX/SYBE59fV7a1Mi9KJtcYmKBXwCbk5nMR5OSCscYhHAudUHM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781177028; c=relaxed/simple;
-	bh=fmtnxrI4r4gFSE7eY25zFcQjMPWgpFp8QWA0HQy3rhs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fE2vEc2XQpdoNbtLjXInXTW6f4P1eyM7s2SyQ1U3sir5fND7zF2wG8MqbNdhS5GB17laRK8dBtGWRTjavJ9Db56SDyUZVgGYY36sh/9Jh+3DOmNnQ8cVeA4uh4bCSSDrEG0S/aiM9BaZXon/1GOjuAThpWawFEFqzXCkeegHPO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z4gUuqns; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0743CB2D4
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 11:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781179059; cv=fail; b=ndbFpYlAJmKkAYRQ+rAswdyZg7y10sdLncaetFARHyEi/g5FszJsLfsXiyDehWy+zEabzvjh+G6+SJtVi05ScG4iZkkxoomJJrFLi+U4meCMbYMAt97y3yqt/2cxemEimV0wkxsMkFyFGKLB3MhKbGzJ7djpr1vEGuBCLvMLwqM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781179059; c=relaxed/simple;
+	bh=/9sEL9k0iQ3zrr7LBfyXQKqHcNAvcAni7XJgoD6RA8Q=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XPzJVvorlLo5sRDS1a+4FzI/DC+en7GOmf4zRYbk1XK3boyivSxXH/il7wHIMl8Qwbs+QM+cpZQUcdKhOSyYALS6IiOAOGOYIccLcZI5H5BIKjV1PnCx+oeeOM9a60Ss3wFuTbdMMNT9T/X8AcyKgmGy8C3EH4YNW9U/5EwDQCc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dI8sBQUe; arc=fail smtp.client-ip=52.101.84.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z4gUuqns"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A4C1F00893;
-	Thu, 11 Jun 2026 11:23:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781177026;
-	bh=RofivW1pTrBHZrj4HJfeIlPafW2kSudJJRJh4f5VxrQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Z4gUuqnsbxK+p5lHh99t5oX5azSIqoiGfNgOb19csBUQjpzuz7G5d7uT75jZsHtZL
-	 1bj0UUbnbOhMJUS9rcV3XzIrdtpKsjq1cE5/4ybZTmuPlpFnUUHyRyqecea3OMhOys
-	 JaSnYMgXs7gljhXNLuGLk9AbahqYWfF54BbJdFKJCZ4HlASYvPVM5/H3TymhZPxvV1
-	 F9S2PvbHxEOPmSaYPBNI87U2Zk1Xw36rv6PTxFCj8HQV1scljqALuMF0Jfav+IqZ14
-	 D+iNMgewKCBjOrrbQFNE2vMQCt1uEJsauVhN5YW2lbNu/dPZhxX4O8eGTU+6aRQVYo
-	 ih61LkZ790o9g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] firmware: imx: Fix device context UAF in close
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Harshit Mogalapalli" <harshit.m.mogalapalli@oracle.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260611110534.573543-1-harshit.m.mogalapalli@oracle.com>
-References: <20260611110534.573543-1-harshit.m.mogalapalli@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 11:23:45 +0000
-Message-Id: <20260611112346.55A4C1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dI8sBQUe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xUT7UsUCVWq02jc1wJO+JGyXQVH67uxQED45ZVa9w1c/AWYjxUPsf7oseh0WtEDPHvw93DFohYCu712IREJMwn4r2iM4zoNrCB7imO5VCplBkFIXNZZjpaQWXFXZIZh3Nvs06XwwWeSLT67AXX/ulreJk9EXSdLR0l73BQ75NigcB7S0teQc7+mNwJGN7i4gk3ItY5i2yhItG6LuPLWT1SNQVs+7FwiDw0NbnZvYnv7YlozzCnve51dJxf9MQqEZZ0PuqHt4qwlWZW8Q3Jq3/cZdupol8oLgFxBMojn5m3h9Hddyu3san3Bw2Od3NWCsBMdSmGbWGabQck80yvJAZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZN8FoiLXBrUDEa6chVjhg7WM3Jrz9nCWdWW432XYCJA=;
+ b=usNwEAmsvAv/qda5XO/uN6sCD21gLODSYWxtO2I/7PnEf+6jPVxIz5rP1roLB0FiTxlAAIHs3oydyf8SoGDprPsW3ZDiIbb33IwZW907Dy1iBtes3OtjNL25AaL5BM3/T1di0oV0EHMkHgCDWCS7jYpPeN9r5dwqta3I/ruLgSH3AKZ8TcC1YWGM8i4cuVLb70pVisw8UVEuQPm0elXCUb5HO1wleUrlU+togR1y1Cd852wUhWiL+Lj4QPh8yJB5wnu/ods3/zxveHIVD6bjwTTm/ixzaDsUhF6he4zSNdDwK3+CvGVJJycvqozwIq/kTl+sp/BoYxs+qvjbfYdzxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZN8FoiLXBrUDEa6chVjhg7WM3Jrz9nCWdWW432XYCJA=;
+ b=dI8sBQUenJFGuEp8ZxgGd7CmlFPmoCpG8D23vMBunSoVu7Sc1hDgjSrN/E2Y40L07YRbEX8RVVruf1GfTEAFAMWKvAA+5Hu/FQS87DOlrJzkJOl6ZsnpGXpWmt7PQiK/zjIrw6wLYB3+xEwCMuD2EdOZijA1SfFNfeOn0fLE+t2MgZ71YnvaBAj5zWf6715at4oMqBarsZFutoIRHLRvXAcelsDYHu81JZNNbT+o4EMP8vWn7V75XWOFLMi1Bo31hz0XnKlp6ZgLKx6mWX7qh7cGJxlbYENkqTpCK/oayqXdXVrxhFHxiZpp4MRlmb22rgmDcnkhQtZ/bd/+IAqzXQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5858.eurprd04.prod.outlook.com (2603:10a6:208:132::23)
+ by PA4PR04MB8047.eurprd04.prod.outlook.com (2603:10a6:102:cf::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Thu, 11 Jun
+ 2026 11:57:33 +0000
+Received: from AM0PR04MB5858.eurprd04.prod.outlook.com
+ ([fe80::bdf4:c9d1:4e3f:68c6]) by AM0PR04MB5858.eurprd04.prod.outlook.com
+ ([fe80::bdf4:c9d1:4e3f:68c6%4]) with mapi id 15.21.0092.011; Thu, 11 Jun 2026
+ 11:57:33 +0000
+Message-ID: <f3db6b3d-88ab-46b6-8c33-8cacbcbe0d46@oss.nxp.com>
+Date: Thu, 11 Jun 2026 14:57:29 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/8] dt-bindings: can: fsl,flexcan: add NXP S32N79 SoC
+ support
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, linux-can@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
+ Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>,
+ Eric Chanudet <echanude@redhat.com>, Andra-Teodora Ilie
+ <andra.ilie@nxp.com>, Larisa Grigore <larisa.grigore@nxp.com>,
+ Conor Dooley <conor.dooley@microchip.com>, Haibo Chen <haibo.chen@nxp.com>
+References: <20260609142954.1807421-1-ciprianmarian.costea@oss.nxp.com>
+ <20260609142954.1807421-5-ciprianmarian.costea@oss.nxp.com>
+ <20260610-crouching-wild-mushroom-c8bf6a@quoll>
+Content-Language: en-US
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <20260610-crouching-wild-mushroom-c8bf6a@quoll>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0054.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:93::8) To AM0PR04MB5858.eurprd04.prod.outlook.com
+ (2603:10a6:208:132::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5858:EE_|PA4PR04MB8047:EE_
+X-MS-Office365-Filtering-Correlation-Id: 752cc8dc-79b8-4f4b-9146-08dec7b09f41
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|1800799024|23010399003|19092799006|7416014|376014|56012099006|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+ LBlVs6NlbNnSbGIlesK8Z1Ld42sWuL5bX7O8UHM3RfU7lNoUygyYY69DercUD7e0Z/985Tpu/LRcn+XE7VSLHOmR/CTka4ecMmoyCziw3DdZM77WbxSRXAriJu1JyJtwGazmBQnTxZyCRIEFdSaK20w/jruqxPKtR+Tb7lmtBoTn6QYR/4TUGRQ5zSY5o2m1goCmU6qHPylmLfi3KoVdlxINuP8edref3mxDktZ6SrpRpslHJZlke+NUvN8s4wsurRcw4WeiadEEktiNGw2xuFUx0cOVSnoWx5YC7Lv3PgAIA3KLnuO/1QkeGdgEqMzUmhPqjZH1wyZNf9cFi83Sst7LwJZWdQeQhQUL4tjIQ4m+Y2il4jC/a8tmUU3vjc+DrYrREUjYbjCkI5JDYR902S9X4Z9mBGyW4r+zjfzHENldj/dCgbpW2z5pBggOZ7KZZwEM2GQ2hwBlg+zfbTALkvaglemWovm+YlkpOqmle1sU0RYHB1tDXbiXnUV+yC6M6++Ibhao9+zq9SPfPgMsfKBcZkGAk3SX+yHID6S/ik0xmuJZ+D9qoKWNkAvDAlxF26eTU0HVBQM8HmzLdMCj0b7lIVTCLGm0PzV4waeVl2nQWTJBV6SkaH1WObLERxrIfV3mbBApOwE5cQFtNIaKE3IAAguiyWDKD1HP0Xycev3FYWF4OIVPUANuqAXm1x9x
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(19092799006)(7416014)(376014)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?L0FnUDN2NDNXZ3BkRmhNWklHSTI2RVRzRTdqZkwwR2RETzRqMUxSS1plQ3ds?=
+ =?utf-8?B?OFJRZERka0NYbnpZQ0VBMlR0ODJwdmdGbTJOUGRtWTQ1cEY4SkVPcURwdFdU?=
+ =?utf-8?B?STRucnhaaS96TFFoOERON0k5bFA5cHJYSG1CN2FuT3d0S0V0QkNod1RLOVBV?=
+ =?utf-8?B?UDN3aS9ZVUp2UmVqa2tFUzV5cVYxbkNxaG8xMkNJYmZXcC9XbDRFcitCRFZH?=
+ =?utf-8?B?S0pvL2lDWVFtYk94V1VPVUJXNUJSTGgvZXRSRmIwZFdSaE1YRlU2UXZhSW9J?=
+ =?utf-8?B?Zi9FS3ZJUUh1WThxTXg1bUgwVlhqR2t3UWNjWG80dXN0MlFjSEl5VzhlUDdK?=
+ =?utf-8?B?UkZ0MmxTNFY3Z2FHeS96SHNBMDVGYzFkMUNCaklaTWZLV3F0c21yRkRtRVZw?=
+ =?utf-8?B?aVVRZUg0ZVovenpNZ04vU1ZGd0dvY2xjYkM1SzlOL3gvcWc5ZXlDMGloZ0VH?=
+ =?utf-8?B?WHc1UEtBd05USlpxaGNrbHRFNElrMmQ0Z0tucDBER1ZzT3R5QWZmNGV2ZVVx?=
+ =?utf-8?B?ZlNxdHNISkw1RithZkRrUDg2OXB1WWxLWnE1REg3TWIrSGRpcmI1cTk1Ris0?=
+ =?utf-8?B?R2Y1SjBjS1RCZVR3aFpmdHRZczRjTXBOR1luWkRiS0dWT0hkZEE5ZXhYUDlI?=
+ =?utf-8?B?dGNwRzNZNGtLc1o1TnRpZHpMOXhnSEtOZUQ4SFFscEs4YWJLRGhJNmxEUy85?=
+ =?utf-8?B?bHpTcmVLYUVBN2lsSW5zaVUxd0xTQ3FrdGp0TWJkaUt4NmpqcmtZM3F5a0dB?=
+ =?utf-8?B?aXVrWWtxVkNBREx5Wmh2UkJkSkhHdmVIZVRidzM4Y3ErQTRWQXhEWG5HWmZi?=
+ =?utf-8?B?bStSSzlqTHRTdkoxNGR4cmhSSE4zdU9KNkxpUHVnVVMvZ3liSzZhZzJnSkxV?=
+ =?utf-8?B?YjJvWG1TTWNSZFo1WUliZC9zOXJweDhhQkZ2STY2SlZKdDdMa3hJeTlSTjVW?=
+ =?utf-8?B?SVFaMjNZL2xXcGdtYTNGeFFkYzUvTUloRFMzcTJMN1JlV3lhVitVRzRLaU9Y?=
+ =?utf-8?B?WmVWR3FaSEZETVV4dVFpNlo0OXp0RmpWaUVJNXlGSkIxdnM4OFpQcWVxbHlO?=
+ =?utf-8?B?S2hCMUFLWDA0bjV6d24rMHdhVm43RjltYjBqMGZIeGlDK1BDNmRxangzNmZw?=
+ =?utf-8?B?NEdtRGR4M3NGQ0dXcGxBcVZBRHR2R2ZaNkZzcFdDSUdRRnJoRjl5b0wzWlZi?=
+ =?utf-8?B?c2JwR2ZvVHVsM2NOUWJWMUFSNjM0ZFJuRTdVNGdIWFBkL2VwVHFXQm1HdWNJ?=
+ =?utf-8?B?Q0FSbzlLVWR3RHRISzB1YWN2ZzV4SUlHSmxFYjNFZTR6MUlid1g0NTRGRzZB?=
+ =?utf-8?B?RlI4eThhMnpOOFFPaGhXRWRoai9TaTZ0MkNYSVA0WnZ3VjBiWVFCOGhzQW9N?=
+ =?utf-8?B?OG9xRGNrRWQyQkhrcWxSblNqeDBXSGVtcmkvbG4wblVkcGkvKzlubUF0SHRu?=
+ =?utf-8?B?OWkyc3h3Q3B1K0JrMlB0VzNpamNqWnVBTjN4T2tvQ3FXVXdGc1pNM1owM3hE?=
+ =?utf-8?B?SE5SVjFnalpKR1B3bWh2STlWNG90RlByVHJZZTdaVzdkZk1hVm1EdUtEY0tX?=
+ =?utf-8?B?bFRqZzB4YUN2UkwrS2lISkxhS3V5SmpGTFM0TEUvNWlFK1QxbGdidkJmbFM5?=
+ =?utf-8?B?QURSUTJVeGtTMHVOUnJUSnRMTjlpdVJEcWsyNWQrNUttaUhkVnR4S3NNWE90?=
+ =?utf-8?B?SFN0M1AxOTZUdm1PWE1WR3dJcFBYZUFuU09hclJPckhVQ1hWb0x1UHJhaC9T?=
+ =?utf-8?B?N29BNkw0MkIrbngzbnROQXNhWUlxVUJBcExlT293L05YQVdMekNiSUJCNzJm?=
+ =?utf-8?B?VXR6YjVaZUNjWnNDRHk3RlFjUkRFNDFoRWVCN3FXNmRmRzFuaS9WUkdoVmJZ?=
+ =?utf-8?B?OXZHRXp1K2phQmRWODdNU2g4NXZIZnBQU1N4UlRRQ3ZkZFZLeHNPQS9xK3Vi?=
+ =?utf-8?B?TFBYYXhBb2lDam1SNXN2N2pmNDhqNTJseWUxTzNTY2dUVHk0aGw2NWJ4VC9R?=
+ =?utf-8?B?d2k5V3g4SDhwTnhuVmpvV2RoUUJlbkNGZEZUYjNnK24rZ2RpVlQ0ZlpRTVVs?=
+ =?utf-8?B?VitXckVjeWJNNnZPRjl3eFhDWnBXelR6RnZ4aUVaUW5VcHM2b1hNU0svNThI?=
+ =?utf-8?B?OGczUnhESE5oLytUbUhOVSt3WXVMK3BtVmhxTTdQYVIwRHJQVmVUdVBaY2VH?=
+ =?utf-8?B?aFpoSXFRNGN2NlNhMllWWFJpQTdaanNBQnZ6bzZlZDJkUDZMV00vK2xRMlhJ?=
+ =?utf-8?B?L3BET2hQd3U1M0F6bzFoN1BVY3dNWjBSZ3BiS2RHN2R6SFNES2dGeGxGam1D?=
+ =?utf-8?B?bEtFYXdJZTUvcXNwREErQ2JHa09MR1VibC9OQm1ZL0YyUDJFY0QyR3J4dGow?=
+ =?utf-8?Q?8LFNEZoEXaKA65lM=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 752cc8dc-79b8-4f4b-9146-08dec7b09f41
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5858.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 11:57:33.5416
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3D+v3ERSP29IL8raxw4wh5CefGHefyg69lY0LSZHKAiZ+sUyz5qWKfeAFk02RO2eyKKcXXNRrT50mgjGhbdlenwIPX5Q19r84GcPP7SbziQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB8047
 
-Thank you for your contribution! Sashiko AI review found 10 potential issue=
-(s) to consider:
+On 6/10/2026 9:37 AM, Krzysztof Kozlowski wrote:
+> On Tue, Jun 09, 2026 at 04:29:50PM +0200, Ciprian Costea wrote:
+>> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>>
+>> Add NXP S32N79 SoC compatible string and interrupt properties.
+>>
+>> On S32N79, FlexCAN IP is integrated with two interrupt lines:
+>> one for the mailbox interrupts (0-127) and one for signaling
+>> bus errors and device state changes.
+>>
+>> Co-developed-by: Andra-Teodora Ilie <andra.ilie@nxp.com>
+>> Signed-off-by: Andra-Teodora Ilie <andra.ilie@nxp.com>
+>> Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
+>> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+>> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+>> Reviewed-and-tested-by: Haibo Chen <haibo.chen@nxp.com>
+> 
+> You cannot test a binding (in a meaning what "testing" means). Building
+> code is not testing.
+> 
+>> Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
+> 
+> Not possible.
+> 
+> Best regards,
+> Krzysztof
+> 
 
-Pre-existing issues:
-- [Critical] Blind dereference of `se_clbk_hdl->dev_ctx->devname` in the ma=
-ilbox rx callback triggers a kernel panic.
-- [Critical] Heap buffer overflow in `se_if_rx_callback` due to a negated s=
-ize clamping check.
-- [Critical] Integer overflow in `round_up()` allows massive out-of-bounds =
-write in `se_ioctl_setup_iobuf_handler`.
-- [Critical] Timeout in `ele_msg_send_rcv()` leaves `rx_msg` dangling, lead=
-ing to a Use-After-Free write and NULL pointer dereference.
-- [High] Using scoped_cond_guard(mutex_intr) in the `.release` file operati=
-on permanently leaks resources if interrupted.
-- [High] Concurrent manipulation of the doubly-linked list `priv->dev_ctx_l=
-ist` without proper mutual exclusion.
-- [High] Data race on the globally shared `priv->cmd_receiver_clbk_hdl` str=
-ucture during `SE_IOCTL_ENABLE_CMD_RCV`.
-- [High] Lack of synchronization between `se_if_fops_close()` and `se_if_rx=
-_callback()` leads to a Use-After-Free.
-- [High] The driver exposes the device to userspace before `probe` finishes=
-, leading to a Use-After-Free if `probe` fails.
-- [High] Bypassed bounds check for exception commands in `se_if_rx_callback=
-()` leads to an out-of-bounds read.
---
+Hello Krzysztof,
 
-commit 74f109ec7fcb05ec697969052fac5982c162908a
-Author: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Yes, my bad. It makes total sense.
 
-firmware: imx: Fix device context UAF in close
+I presume I shouldn't send a new version just for this 'Tested-by' 
+removal - right ?
 
-se_if_fops_close() frees dev_ctx while still inside a
-scoped_cond_guard() that holds dev_ctx->fops_lock. During the cleanup
-phase it would do a mutex_unlock(dev_ctx->fops_lock) leading to UAF.
-
-Link: https://lore.kernel.org/all/20260528094337.9C1D41F00A3A@smtp.kernel.o=
-rg/
-
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> index 8fab3b7767b7a..fc3bbd1788bda 100644
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-> @@ -887,9 +887,10 @@ static int se_if_fops_close(struct inode *nd, struct=
- file *fp)
->  		list_del(&dev_ctx->link);
-> =20
->  		kfree(dev_ctx->devname);
-> -		kfree(dev_ctx);
->  	}
-> =20
-> +	kfree(dev_ctx);
-> +
->  	return 0;
->  }
-
-[Severity: High]
-This isn't a bug introduced by this patch, but using scoped_cond_guard() in
-the .release file operation permanently leaks resources if interrupted.
-
-se_if_fops_close() is the .release file operation. VFS calls this exactly
-once when the final file reference is dropped, and ignores its return value.
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-...
-        scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-...
-}
-
-By using return -EBUSY, if the lock acquisition fails due to a pending
-signal, does the function immediately return, bypassing cleanup logic and
-permanently leaking the dev_ctx allocation and devname?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but concurrent manipulation of
-the doubly-linked list priv->dev_ctx_list occurs without proper mutual
-exclusion.
-
-In se_if_fops_open(), init_device_context() is called which adds the new
-instance to priv->dev_ctx_list and increments priv->active_devctx_count
-under the global misc_dev_ctx->fops_lock.
-
-Here in se_if_fops_close(), the instance is removed from the list and
-the counter decremented under the local dev_ctx->fops_lock:
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-...
-        scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-...
-                priv->active_devctx_count--;
-                list_del(&dev_ctx->link);
-...
-}
-
-Because close() uses a lock specific to the file instance being closed,
-can concurrent close() operations on different file descriptors, or
-concurrent open() and close() operations, race on the shared list and
-counter, causing list corruption?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but there is a lack of
-synchronization between se_if_fops_close() and se_if_rx_callback().
-
-se_if_fops_close() clears priv->cmd_receiver_clbk_hdl.dev_ctx and
-frees rx_msg while holding only the per-file dev_ctx->fops_lock:
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-...
-                if (priv->cmd_receiver_clbk_hdl.dev_ctx =3D=3D dev_ctx) {
-                        priv->cmd_receiver_clbk_hdl.dev_ctx =3D NULL;
-                        kfree(priv->cmd_receiver_clbk_hdl.rx_msg);
-...
-}
-
-se_if_rx_callback() runs asynchronously in the mailbox hardware callback
-context without taking any locks:
-
-drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
-...
-        memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
-...
-}
-
-If the callback reads se_clbk_hdl->dev_ctx concurrently just before the
-close operation frees it, could it dereference the freed dev_ctx and
-execute a Use-After-Free memcpy() into the freed rx_msg memory?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but there is a data race on the
-globally shared priv->cmd_receiver_clbk_hdl structure.
-
-When handling SE_IOCTL_ENABLE_CMD_RCV, the driver initializes the shared
-global structure:
-
-drivers/firmware/imx/se_ctrl.c:se_ioctl() {
-...
-        scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-                switch (cmd) {
-                case SE_IOCTL_ENABLE_CMD_RCV:
-                        if (!priv->cmd_receiver_clbk_hdl.dev_ctx) {
-...
-}
-
-Since this is protected only by the per-instance dev_ctx->fops_lock, if
-two processes open the device independently and concurrently issue this
-IOCTL, will they both observe !priv->cmd_receiver_clbk_hdl.dev_ctx as
-true? Could they concurrently allocate memory for rx_msg and assign their
-dev_ctx to the global state, corrupting it and leaking memory?
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but an integer overflow in
-round_up() allows a massive out-of-bounds write in
-se_ioctl_setup_iobuf_handler().
-
-A user-provided 32-bit io.length is passed to round_up():
-
-drivers/firmware/imx/se_ctrl.c:se_ioctl_setup_iobuf_handler() {
-...
-        aligned_len =3D round_up((size_t)io.length, 8);
-...
-        if (aligned_len > (shared_mem->size - shared_mem->pos)) {
-...
-        }
-...
-        memset(shared_mem->ptr + pos, 0, io.length);
-...
-}
-
-On 32-bit architectures, if io.length is near UINT32_MAX (e.g., 0xFFFFFFF9),
-will the round_up() overflow to 0, causing the space check to evaluate
-0 > positive_value and be bypassed entirely? Would memset() then attempt
-to write nearly 4GB of zeroes to the kernel heap?
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but a blind dereference of
-se_clbk_hdl->dev_ctx->devname in the mailbox rx callback can trigger a
-kernel panic.
-
-In se_if_rx_callback(), if a command message arrives, it assigns
-se_clbk_hdl =3D &priv->cmd_receiver_clbk_hdl and immediately dereferences
-se_clbk_hdl->dev_ctx->devname:
-
-drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
-...
-                dev_dbg(dev, "Selecting cmd receiver:%s for mesg header:0x%=
-x.",
-                        se_clbk_hdl->dev_ctx->devname,  *(u32 *)header);
-...
-}
-
-If the firmware sends an unsolicited command before any process has
-registered to receive it via IOCTL, se_clbk_hdl->dev_ctx is NULL. Is there
-a risk of a fully hardware-triggerable NULL pointer dereference?
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but there appears to be a heap
-buffer overflow in se_if_rx_callback() due to a negated size clamping check.
-
-If an incoming message size exceeds MAX_NVM_MSG_LEN, the code attempts to
-clamp it:
-
-drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
-...
-                if (rx_msg_sz > MAX_NVM_MSG_LEN) {
-...
-                        se_clbk_hdl->rx_msg_sz =3D MAX_NVM_MSG_LEN;
-                }
-                se_clbk_hdl->rx_msg_sz =3D rx_msg_sz;
-...
-}
-
-Since it unconditionally overwrites the clamped limit with the original
-oversized length immediately after the if block, would the subsequent
-memcpy() copy the out-of-bounds firmware payload into the 256-byte rx_msg
-buffer?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but a bypassed bounds check for
-exception commands in se_if_rx_callback() leads to an out-of-bounds read.
-
-If a response matches an exception rule, the bounds check is skipped:
-
-drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
-...
-                if (rx_msg_sz !=3D se_clbk_hdl->rx_msg_sz &&
-                    !check_hdr_exception_for_sz(priv, header)) {
-...
-                        se_clbk_hdl->rx_msg_sz =3D min(rx_msg_sz, se_clbk_h=
-dl->rx_msg_sz);
-                }
-...
-}
-
-This leaves se_clbk_hdl->rx_msg_sz at its original user-controlled value
-provided in the IOCTL request. Might the subsequent memcpy() use this
-unchecked user size to copy data from the smaller hardware message buffer,
-disclosing adjacent kernel memory?
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but a timeout in
-ele_msg_send_rcv() leaves rx_msg dangling, leading to a Use-After-Free
-write and NULL pointer dereference.
-
-If ele_msg_send_rcv() is interrupted by a signal or times out, it clears
-priv->waiting_rsp_clbk_hdl.dev_ctx but leaves rx_msg populated:
-
-drivers/firmware/imx/ele_common.c:ele_msg_send_rcv() {
-...
-        if (err < 0) {
-...
-                priv->waiting_rsp_clbk_hdl.dev_ctx =3D NULL;
-...
-}
-
-When the function returns, rx_msg is automatically freed by the __free(kfre=
-e)
-attribute in the caller.
-
-If the hardware eventually sends the delayed response, se_if_rx_callback()
-processes it. Would it then dereference the NULL dev_ctx for a log message,
-and execute memcpy() into the dangling rx_msg pointer?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the driver exposes the device
-to userspace before probe() finishes, leading to a Use-After-Free if probe()
-fails.
-
-In se_if_probe(), misc_register() is called via init_misc_device_context(),
-which exposes the device to userspace:
-
-drivers/firmware/imx/se_ctrl.c:se_if_probe() {
-...
-        ret =3D init_misc_device_context(priv, 0, &priv->priv_dev_ctx, &se_=
-if_fops);
-...
-}
-
-If a subsequent step in probe() fails, the devm framework automatically
-cleans up resources, including freeing the priv structure.
-
-Since misc_deregister() prevents new opens but does not revoke already
-opened file descriptors, if userspace opened the device during the race
-window, the file descriptor persists. Upon closing the file descriptor
-later, will se_if_fops_close() blindly dereference dev_ctx->priv,
-resulting in a Use-After-Free?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611110534.5735=
-43-1-harshit.m.mogalapalli@oracle.com?part=3D1
+Best Regards,
+Ciprian
