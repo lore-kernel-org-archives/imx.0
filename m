@@ -1,210 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C978B215075
-	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 03:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F98306746
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 03:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781149781; cv=none; b=e4ndQYOQ8gskF0z9Hrb2h+N50BEzYjDrMK1ne8vcTf8h/oxknqp781QTVkQV+8pezLvFIk5oLbCXCkqAXM0SbVg6PfyldEF05hIbqt8DahF2Pobckwm5hMEzZFOOYYylbnNXtuT2t3QlMJUiMtsGdqV1njU8xXEJIhyFgl6OKjo=
+	t=1781149802; cv=none; b=aUoQzVoXEVstETZa7U1WVwt622n5flySE5RNBEyDOLUzTGdsUCd+m2u+NCJZn0uZ7CGOpE4682MHL3zSwd0N4rZEEqDlJrTStRLwnSCDW1YwP7mBxtu+MKrP5pRWggSIYbmMuR4bf5qVEuXNwtNHeZlKVA2VjxcW2mCzuQ6zZ5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781149781; c=relaxed/simple;
-	bh=4ZwBCAoEfg/JaVHSN22rQqyduthmvWLdRUc+4d5fGXs=;
+	s=arc-20240116; t=1781149802; c=relaxed/simple;
+	bh=c6KWylcHvUOHPWCNXPGtFoKPwQNEHgZzwX2J+7rVP3s=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RabnB74qqHwO//vj/mvxD6p0fy3JMtsFTivw+tSI7AnJ8JUmZ4Uzvy1Bs05yi/mqpnosQJ6gcw4FMkU0Fgt0Dao9LMEmdcx0jsNdXz8ATN60qivEkaJcmx/BYPZrIMZO41O4C0B3FfJBd7D6Vq1B9scAMMpwGFnRg6ru+ILgBM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bgAhymLL; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=dsndmTn64qXJQtzwHB6qOc3ssq4yOQXzgfulzzx0obGOEqi0/lBAgkGn6KcaiIJBZlVSF08Q83MeuOCeoFPWaNh85k6p+3C8C8vXFKAyZ9aLnwd25ah1pcqJn2j3rE2n8XHEuEVLA/uSup7TiZ/hIQk1RKarfSVeBHCMD718ui0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N6d62ebx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bgAhymLL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2C71F00893;
-	Thu, 11 Jun 2026 03:49:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N6d62ebx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB561F00893;
+	Thu, 11 Jun 2026 03:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781149780;
-	bh=TqB7UH4cGoUzJ8ktWCe32tp7zB9XHh7bWv5xBjX26g8=;
+	s=k20260515; t=1781149801;
+	bh=ypFKEl9mgF4FT61siwnH+h8fAsqghQN4EuPGSwJadXw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bgAhymLLEr8tpLv4HLhe+BnpJypulJvkFUmDvOr8pReSm4G4htJi+8MtgB7QMZt2b
-	 TM/o8xecE1dpCMn0V+slq2dLF2dbYTbP5KnSg15RRlvAWl7YKsN1qjrCpJGt0C6tfJ
-	 AqhCU+OKhJWYZfdyYo5k6dmY+udL+Dx+5AJQaTnF956DnR3rZrx+GX2uZhNWXMJR2i
-	 Ld+RokxcB6f7OXmpqAnDECeS9DgCpywrIa0dw01XcZBWDC/4zfLohhHnWp3oiz99CQ
-	 if5yyp4DbX74hXmeUCxHCu7KoNIksw/uYfyzutBQQgtxaWe0lUFUrozz3HLe/GOboU
-	 EWKP0V4VuIA6Q==
+	b=N6d62ebxkauNWKXeqXvZ4zENnuTeR3JMyI60ds7sVSnRlxGi5BK4AoP5WdcAM0rH9
+	 LtMdCBUMRfwnofJZGtGKuwZYKCR3cvVWFI4ozUpzhzbv1OwFj1s/AdVtxRKOaKIUsi
+	 wIRWuT3jH2h85ZP413BHCmTz0pJgXw/fMu544cA+uT0IBkpP2P/Pizz8KHfk1eC4KU
+	 J5Q6zXkeeZONSqlsSKZvLRq1g/4Lf/pfb8jNAsUTAG0gcoopNfZcchSBp1XdwOaj5X
+	 /WQxozTDWNWVdHl0ZCaLUj3nltYJ1HZIMmuwO1Q4+vQSgJ/UxrbFRM/ey73lKEOKai
+	 XLeN9hSPuZWUw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCHv3 5/6] serial: mxs-auart: clamp RX DMA count to buffer
- size
+Subject: Re: [PATCHv3 1/6] serial: mxs-auart: fix cast type for
+ of_device_get_match_data
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Rosen Penev" <rosenp@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260611033856.6476-6-rosenp@gmail.com>
-References: <20260611033856.6476-6-rosenp@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260611033856.6476-2-rosenp@gmail.com>
+References: <20260611033856.6476-2-rosenp@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 03:49:39 +0000
-Message-Id: <20260611034940.3C2C71F00893@smtp.kernel.org>
+Date: Thu, 11 Jun 2026 03:50:00 +0000
+Message-Id: <20260611035001.0EB561F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Out-of-bounds array write to the global `auart_port` array during =
-error handling and removal due to `pdev->id` being `-1`.
-- [High] The driver frees DMA buffers and releases channels without first t=
-erminating active DMA transfers, leading to potential memory corruption or =
-use-after-free in asynchronous callbacks.
-- [High] If `mxs_auart_dma_tx()` fails, the error is ignored, leaving `MXS_=
-AUART_DMA_TX_SYNC` set forever and locking up TX. Additionally, popped FIFO=
- data is permanently lost.
-- [Medium] Attempting to free an unallocated GPIO IRQ on error rollback tri=
-ggers a kernel warning.
-- [Medium] DMA mappings are leaked in `mxs_auart_dma_prep_rx()` and `mxs_au=
-art_dma_tx()` if the DMA engine descriptor preparation fails, and `dma_map_=
-sg()` return values are unchecked.
+- [High] Out-of-bounds array access on probe error and driver remove paths.
+- [High] NULL pointer dereference and uninitialized spinlock access due to =
+early IRQ request.
 --
 
-commit 5c41f469d68450e9f6b63b5ed62412e5d03637ef
+commit f0caca84ea6688e77479d143060974cd96b52b46
 Author: Rosen Penev <rosenp@gmail.com>
 
-serial: mxs-auart: clamp RX DMA count to buffer size
+serial: mxs-auart: fix cast type for of_device_get_match_data
 
-In dma_rx_callback(), the rx count from the hardware status register
-is passed directly to tty_insert_flip_string() without any bounds check.
-Since rx_dma_buf is allocated with the transmit size, a hardware fault or
-compromised peripheral reporting a large count would cause an out-of-bounds
-read. This clamps the count before use to prevent leaking kernel memory.
+of_device_get_match_data returns const void*. Cast to unsigned long to
+avoid implicit integer truncation warnings. All the data parameters are
+correct anyway.
 
 > diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auar=
 t.c
-> index 693b491f1e755..7e5348e5d63f4 100644
 > --- a/drivers/tty/serial/mxs-auart.c
 > +++ b/drivers/tty/serial/mxs-auart.c
-> @@ -819,7 +819,7 @@ static void dma_rx_callback(void *arg)
->  	stat &=3D ~(AUART_STAT_OERR | AUART_STAT_BERR |
->  			AUART_STAT_PERR | AUART_STAT_FERR);
+> @@ -1598,7 +1598,7 @@ static int mxs_auart_probe(struct platform_device *=
+pdev)
+>  		return -EINVAL;
+>  	}
 > =20
-> -	count =3D stat & AUART_STAT_RXCOUNT_MASK;
-> +	count =3D min_t(u32, stat & AUART_STAT_RXCOUNT_MASK, UART_XMIT_SIZE);
->  	tty_insert_flip_string(port, s->rx_dma_buf, count);
+> -	s->devtype =3D (enum mxs_auart_type)of_device_get_match_data(&pdev->dev=
+);
+> +	s->devtype =3D (unsigned long)of_device_get_match_data(&pdev->dev);
+> =20
+>  	ret =3D mxs_get_clks(s, pdev);
+>  	if (ret)
 
 [Severity: High]
-This is a pre-existing issue, but does this callback risk a use-after-free
-if a dma transfer is in progress during shutdown?
+This is a pre-existing issue, but I noticed a potential out-of-bounds array
+access on the probe error and driver remove paths in mxs_auart_probe().
 
-When the uart is shut down, mxs_auart_dma_exit_channel() frees the buffers:
+For Device Tree-probed devices, pdev->id is typically set to -1. The logical
+port number is correctly retrieved via of_alias_get_id() and stored in
+s->port.line, and the driver instance is registered in the array using:
 
-mxs_auart_dma_exit_channel() {
-    ...
-    kfree(s->tx_dma_buf);
-    kfree(s->rx_dma_buf);
-    ...
-}
-
-It appears this happens without calling dmaengine_terminate_sync() or
-dmaengine_terminate_all(). Could a hardware dma controller continue writing
-to the freed memory, or a pending tasklet invoke dma_rx_callback() and
-dereference s->rx_dma_buf after it is freed?
-
-> =20
->  	mxs_write(stat, s, REG_STAT);
-
-[Severity: High]
-This is a pre-existing issue, but can the global auart_port array be
-corrupted during error handling or removal?
-
-When instantiated via device tree, pdev->id is implicitly -1. In
-mxs_auart_probe(), the port is safely registered using its device tree
-alias id:
-
-mxs_auart_probe() {
-    ...
     auart_port[s->port.line] =3D s;
-    ...
-}
 
-However, the cleanup path and mxs_auart_remove() attempt to clear the
-array entry using pdev->id:
+However, on the probe error path, the driver uses pdev->id to clear the arr=
+ay:
 
-mxs_auart_probe() {
-    ...
 out_free_qpio_irq:
+    mxs_auart_free_gpio_irq(s);
     auart_port[pdev->id] =3D NULL;
-}
 
-Could this result in an out-of-bounds write to the array at index -1,
-corrupting adjacent memory?
-
-[Severity: Medium]
-This is a pre-existing issue, but does the rollback loop in
-mxs_auart_request_gpio_irq() attempt to free an unallocated irq?
-
-When request_irq() fails, the loop increments before exiting:
-
-mxs_auart_request_gpio_irq() {
-    ...
-    for (i =3D 0; !err && i < UART_GPIO_MAX; i++) {
-        ...
-        err =3D request_irq(irq[i], ...);
-    }
-    ...
-}
-
-The subsequent cleanup loop then decrements:
-
-    while (err && (i-- > 0))
-        if (irq[i] >=3D 0)
-            free_irq(irq[i], s);
-
-If request_irq() fails for index N, the for loop leaves i at N + 1. The
-cleanup loop's first iteration operates on i =3D N, calling free_irq() on t=
-he
-interrupt that just failed to request. Does this trigger a warning for
-trying to free an already-free irq?
-
-[Severity: Medium]
-This is a pre-existing issue, but do mxs_auart_dma_prep_rx() and
-mxs_auart_dma_tx() leak dma mappings on failure?
-
-In both functions, dma_map_sg() is called without checking its return value.
-If dmaengine_prep_slave_sg() subsequently fails, the functions return
-early:
-
-mxs_auart_dma_prep_rx() {
-    ...
-    dma_map_sg(...);
-    desc =3D dmaengine_prep_slave_sg(...);
-    if (!desc) {
-        dev_err(s->dev, "step 2 error\n");
-        return -1;
-    }
-    ...
-}
-
-Should these failure paths call dma_unmap_sg() to prevent leaking mapping
-entries and address space?
+Would this write NULL to auart_port[-1], silently corrupting adjacent memory
+located before the auart_port array?
 
 [Severity: High]
-This is a pre-existing issue, but does ignoring the return value of
-mxs_auart_dma_tx() risk permanently locking up transmit?
+This is also a pre-existing issue, but does this function register the IRQ
+handler too early?
 
-In mxs_auart_tx_chars(), data is popped from the fifo before calling
-mxs_auart_dma_tx():
+In mxs_auart_probe(), devm_request_irq() is called before the hardware is
+fully reset and before uart_add_one_port() registers the port:
 
-mxs_auart_tx_chars() {
-    ...
-    i =3D kfifo_out(&port->state->xmit.fifo, ...);
-    if (i) {
-        mxs_auart_dma_tx(s, i);
-    } else {
-    ...
-}
+    ret =3D devm_request_irq(&pdev->dev, irq, mxs_auart_irq_handle, 0,
+                           dev_name(&pdev->dev), s);
 
-If mxs_auart_dma_tx() fails and returns an error, mxs_auart_tx_chars()
-ignores the return value and leaves the transmit sync flag set.
-Will subsequent calls to mxs_auart_tx_chars() return immediately,
-locking up the transmit path? Is the data popped from the fifo also
-permanently lost?
+If the bootloader leaves the UART hardware with interrupts enabled and
+pending, could the interrupt handler fire immediately upon registration?
+
+If it fires early, the handler attempts to lock s->port.lock, which is
+uninitialized at this stage, and then calls mxs_auart_rx_chars() which push=
+es
+to the buffer:
+
+    tty_flip_buffer_push(&s->port.state->port);
+
+Since s->port.state is only allocated later during uart_add_one_port(),
+would this result in a NULL pointer dereference?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611033856.6476=
--6-rosenp@gmail.com?part=3D1
+-2-rosenp@gmail.com?part=3D1
