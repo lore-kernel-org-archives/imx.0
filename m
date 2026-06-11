@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718603C4B6A
-	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 09:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B1F3C4B79
+	for <imx@lists.linux.dev>; Thu, 11 Jun 2026 09:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781171262; cv=none; b=mhHriXEJKKqCMkBUb9wmNymKEUXsw1cPd0ZLZusAW6+lQ+Vi3G86h9DLumIMHXz5ikdKDAsp6+I6uPNR94MYfdIIbnn1dKOkD/65x5hU0cEfFdxXMTSQMEJY9OVHyslR+JTFvvz9S//R8MqNOGKPsk+GmL6s2OXzH/GnKyGzMqM=
+	t=1781171263; cv=none; b=kVWlnIDyPx195rJ71zGULEZqZm9937EYQzwPDTdU69wiV/yIVusRcTMfakrI3cmUkY8bXifiWrlzWnZu/+P/QQ2M602Odl5szMA4TUHAOu4csj80jKUEh+OnKZMKdnGlEnxvUDqklT/Pqgwbu6K4vK1t2CvQ6aj9i6LuQbKlrOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781171262; c=relaxed/simple;
-	bh=ZLsiaC4LdKugu7rkqCocpvMfg7owXfip97XGMlQzWHw=;
+	s=arc-20240116; t=1781171263; c=relaxed/simple;
+	bh=3DbCDJqqrTV0ycKC1cR1Ndp7XMqn0z4lwGQZOLPT5E0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ui+rTsdXx179xDWdezF2FLRB1jtWl/f730rvekYCBcDfIMNI++FJgYauAlEmDKrASBtwHjJz+RacT1Q1B3+0wivpd3i9m+ZKkWeeWYzWVNSODJczGF+heGHP6xfPdvOWgEbTHBiqi0hpaU9csEsL6aOsNlQ2GdxdYN+XnCYXxeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FqwA+Pda; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JLk1X2av4ZnJDKqfk3sevPbPpkyvWxxEHAuO/Ch6gjGzIYqVA0g3rLPDmSl3D/gRbHZOAVGhGJaEzD2vzzOYxWmWD6RYJeaOUSgOPO2uB79LSiwwTIc2SsKrm8D2j9U0iBnWXtro3LWC2SRG+169AKRJxdTTnGpu/3W55De2IXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VXzDB67+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FqwA+Pda"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD94F1F00898;
-	Thu, 11 Jun 2026 09:47:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VXzDB67+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA56B1F00893;
+	Thu, 11 Jun 2026 09:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781171261;
-	bh=sqU1R6VXVNPGo9XBmlxg//TY3Bjp+Fxu0v4e8LlpJlE=;
+	s=k20260515; t=1781171262;
+	bh=27DJm384uNBHWAbswURRMfKn+RFtEV/AUIe+I4a5ITU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FqwA+PdaXUsm31GgFLqzTZIMHRckzI18fCKQWfKJ5QNfIbXjNO2+NiXe31P8VXHFZ
-	 xxFjIgDj1ilZ55u4ZzY0m00nxi3HPTQ0klfYh0gHCRFgL3TLupeK3rLqT6M4t1VAU6
-	 xiw/PV/iGI2nD12bvAP6Vvovz/uwAdphd+5A1OAFCXR3ibhQJiNYNRoiaBIHfIm9k3
-	 BaKUgut4Eethy2AkUEts70xWyV4MN94tiLsbxjJpGpJz7s8YbbMCpbX9TyUdK8N/i3
-	 KKXqCdtnY0BEqQBSLx/xdDhc2WVllqlHM2uzvfSUpQW/6OwijegMVfLD4SbmQfdjlw
-	 QatHn9MSWMNFw==
+	b=VXzDB67+xa0INS4PavHgc5zWho/BT3mYylr883ilT8mY8hjObDiOBLwu0kxMKFXUs
+	 cHVUYfyt8CYp2oWsLpkcyx6DzUKGduXb4Y7CEbhCZiety3aWOCuqWaeiqjG1Cn+CxP
+	 LaN5+/eHNd7jeXWSDkPEufSpAYXYUgoPC8S2fFgSBsl9g9kvtlmRrqq5pXTwndSS+A
+	 EUsbSejkYtfaofR/5CCRT97bI80t81klOwA9awAph+y6kz43DE8f2kN4MxBSy/f71w
+	 ER493Wo0Dhjw8BaixJEmAySq9yxzjt4jGrygKxzvYS0R8GTZKFJXeSy/BVcnrsaM3v
+	 Q9zVy3Z9z+chQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net-next 11/15] net: enetc: restore VF MAC
- promiscuous mode after FLR for ENETC v4
+Subject: Re: [PATCH v2 net-next 13/15] net: enetc: implement
+ ndo_set_rx_mode_async for ENETC v4 VF
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260610091844.3423693-12-wei.fang@oss.nxp.com>
-References: <20260610091844.3423693-12-wei.fang@oss.nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260610091844.3423693-14-wei.fang@oss.nxp.com>
+References: <20260610091844.3423693-14-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 09:47:39 +0000
-Message-Id: <20260611094740.CD94F1F00898@smtp.kernel.org>
+Date: Thu, 11 Jun 2026 09:47:41 +0000
+Message-Id: <20260611094741.EA56B1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,89 +46,128 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Untrusted VFs retain expansive multicast hash filters when trust i=
-s revoked.
-- [Low] Comment logic inversion regarding PF-set flags in `enetc_msg_psi_fr=
-ee`.
+- [High] Function signature mismatch for ndo_set_rx_mode_async causing CFI =
+panics and silently dropping errors
+- [Medium] Endianness logic bug in MAC hash filter conversion
 --
 
-commit 39a4c53c34896221262cf925fccff9665bc34780
+commit 7154dd069b56705c2fb84b8fb83bdfde897299bf
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: restore VF MAC promiscuous mode after FLR for ENETC v4
+net: enetc: implement ndo_set_rx_mode_async for ENETC v4 VF
 
-This commit addresses a security vulnerability on ENETC v4 where a VF FLR
-resets the MAC promiscuous mode to enabled. The patch tracks the PF-managed
-promiscuous state, updates it on VF requests and trust revocation, and adds
-an FLR handler to restore the tracked state after an FLR.
+This commit implements ndo_set_rx_mode_async for the ENETC VF driver, allow=
+ing
+MAC filter changes to be communicated to the PF over a VSI mailbox interfac=
+e.
+It manages promiscuous modes and Bloom filter hash tables for unicast and
+multicast traffic.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc_msg.c
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/ne=
+t/ethernet/freescale/enetc/enetc_vf.c
+> index 4bc48a5f6869c..dc9a0f74a2e34 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
 [ ... ]
-> @@ -725,8 +765,21 @@ static void enetc_msg_psi_free(struct enetc_pf *pf)
->  	/* PSIIER interrupts may be re-enabled by workqueue */
->  	enetc_disable_psiier_interrupts(pf);
-> =20
-> -	for (i =3D 0; i < pf->num_vfs; i++)
-> +	for (i =3D 0; i < pf->num_vfs; i++) {
-> +		struct enetc_vf_state *vf_state =3D &pf->vf_state[i];
+> +static int enetc_vf_set_mac_hash_filter(struct enetc_ndev_priv *priv,
+> +					struct netdev_hw_addr_list *uc,
+> +					struct netdev_hw_addr_list *mc)
+> +{
+[ ... ]
+> +	if (mac_filter_type & ENETC_MAC_FILTER_TYPE_UC) {
+> +		mac_filter =3D &si->mac_filter[UC];
+> +		enetc_reset_mac_addr_filter(mac_filter);
+> +		netdev_hw_addr_list_for_each(ha, uc)
+> +			enetc_add_mac_addr_ht_filter(mac_filter, ha->addr);
 > +
->  		enetc_msg_free_mbx(si, i);
-> +
-> +		/* VF may set these flags by mailbox messages, so need to
-> +		 * clear these flags when enetc_msg_psi_free() is called.
-> +		 * Flags set by PF are cleared, because these flags are
-> +		 * unrelated to whether SR-IOV is enabled or disabled.
-> +		 */
-
-[Severity: Low]
-This isn't a bug, but should the comment say "Flags set by PF are NOT
-cleared"?
-
-The bitwise AND operation below exclusively clears the promiscuous flags
-set by the VF while preserving flags set by the PF, such as
-ENETC_VF_FLAG_TRUSTED.
-
-> +		mutex_lock(&vf_state->lock);
-> +		vf_state->flags &=3D ~(ENETC_VF_FLAG_UC_PROMISC |
-> +				     ENETC_VF_FLAG_MC_PROMISC);
-> +		mutex_unlock(&vf_state->lock);
+> +		memcpy(&hash_val, mac_filter->mac_hash_table,
+> +		       sizeof(hash_val));
+> +		msg->hash_tbl[i++] =3D hash_val & GENMASK(31, 0);
+> +		msg->hash_tbl[i++] =3D hash_val >> 32;
 > +	}
->  }
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/dri=
-vers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-[ ... ]
-> @@ -480,7 +480,9 @@ int enetc_pf_set_vf_trust(struct net_device *ndev, in=
-t vf, bool setting)
->  	if (setting) {
->  		vf_state->flags |=3D ENETC_VF_FLAG_TRUSTED;
->  	} else {
-> -		vf_state->flags &=3D ~ENETC_VF_FLAG_TRUSTED;
-> +		vf_state->flags &=3D ~(ENETC_VF_FLAG_TRUSTED |
-> +				     ENETC_VF_FLAG_UC_PROMISC |
-> +				     ENETC_VF_FLAG_MC_PROMISC);
-> =20
->  		/* Clear unicast hash filter and disable MAC promiscuous modes
->  		 * if the VF is untrusted.
->  		 */
+[Severity: Medium]
+Will this memcpy() correctly handle bitmaps on 32-bit big-endian
+architectures?
+
+A DECLARE_BITMAP is an array of 32-bit words, where word 0 (bits 0-31) is
+stored at lower addresses and word 1 (bits 32-63) is at higher addresses.
+
+When memcpy() copies these 8 bytes into a u64 variable on a big-endian
+system, word 0 becomes the most significant 32 bits and word 1 becomes the
+least significant 32 bits. The subsequent bitwise operations
+(hash_val & GENMASK(31, 0) and hash_val >> 32) then extract the halves in
+reverse order compared to 64-bit or little-endian systems, which silently
+swaps the hardware filter configuration.
+
+Should this use bitmap_to_arr32() instead to safely convert the bitmap to
+a u32 array across all architectures?
+
+> +
+> +	if (mac_filter_type & ENETC_MAC_FILTER_TYPE_MC) {
+> +		mac_filter =3D &si->mac_filter[MC];
+> +		enetc_reset_mac_addr_filter(mac_filter);
+> +		netdev_hw_addr_list_for_each(ha, mc)
+> +			enetc_add_mac_addr_ht_filter(mac_filter, ha->addr);
+> +
+> +		memcpy(&hash_val, mac_filter->mac_hash_table,
+> +		       sizeof(hash_val));
+> +		msg->hash_tbl[i++] =3D hash_val & GENMASK(31, 0);
+> +		msg->hash_tbl[i++] =3D hash_val >> 32;
+> +	}
+> +
+> +	enetc_msg_fill_common_hdr(&msg_swbd, ENETC_MSG_CLASS_ID_MAC_FILTER,
+> +				  ENETC_MSG_SET_MAC_HASH_TABLE, 0, 0);
+> +
+> +	return enetc_msg_vsi_send(si, &msg_swbd);
+> +}
+> +
+> +static void enetc_vf_set_rx_mode(struct net_device *ndev,
+> +				 struct netdev_hw_addr_list *uc,
+> +				 struct netdev_hw_addr_list *mc)
+> +{
 
 [Severity: High]
-Does this leave untrusted VFs with an expansive multicast hash filter when
-trust is revoked?
+Does this function signature cause a Control Flow Integrity (CFI) panic?
 
-When a VF is trusted, it can set a broad 64-bit multicast hash filter,
-while untrusted VFs are restricted to 8 bits. When an administrator revokes
-trust, the PF clears the unicast hash filter and disables MAC promiscuous
-modes, but it doesn't appear to clear the multicast hash filter here.
+The ndo_set_rx_mode_async callback expects a function returning an int,
+but enetc_vf_set_rx_mode() is defined with a void return type. This
+mismatch will trigger a CFI kernel panic on architectures with CFI enabled.
 
-Could a previously trusted VF retain its expansive multicast hash filter
-after trust is revoked, bypassing the security policy?
+Additionally, because it returns void, the caller __dev_set_rx_mode_async()
+will read uninitialized garbage from the return register. If that garbage is
+non-zero, could it cause continuous polling retries in the network stack?
+
+[ ... ]
+> +	if (ndev->flags & IFF_PROMISC) {
+> +		enetc_vf_set_mac_promisc(priv, ENETC_MAC_FILTER_TYPE_ALL, true);
+> +	} else if (ndev->flags & IFF_ALLMULTI) {
+> +		enetc_vf_set_mac_promisc(priv, ENETC_MAC_FILTER_TYPE_MC, true);
+> +		enetc_vf_set_mac_promisc(priv, ENETC_MAC_FILTER_TYPE_UC, false);
+> +	} else {
+> +		enetc_vf_set_mac_promisc(priv, ENETC_MAC_FILTER_TYPE_ALL, false);
+> +	}
+> +
+> +	enetc_vf_set_mac_hash_filter(priv, uc, mc);
+> +}
+
+[Severity: High]
+Are the error codes from these mailbox commands inadvertently being dropped?
+
+Because this function is defined as void and doesn't return the results of
+enetc_vf_set_mac_promisc() or enetc_vf_set_mac_hash_filter(), any hardware
+configuration errors are discarded instead of propagated to the network
+stack, which breaks the framework's retry mechanism.
+
+[ ... ]
+> @@ -225,6 +341,7 @@ static const struct net_device_ops enetc_ndev_ops =3D=
+ {
+>  	.ndo_setup_tc		=3D enetc_vf_setup_tc,
+>  	.ndo_hwtstamp_get	=3D enetc_hwtstamp_get,
+>  	.ndo_hwtstamp_set	=3D enetc_hwtstamp_set,
+> +	.ndo_set_rx_mode_async	=3D enetc_vf_set_rx_mode,
+>  };
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610091844.3423=
-693-1-wei.fang@oss.nxp.com?part=3D11
+693-1-wei.fang@oss.nxp.com?part=3D13
