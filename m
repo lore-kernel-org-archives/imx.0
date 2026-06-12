@@ -1,63 +1,63 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316DA3EA96F
-	for <imx@lists.linux.dev>; Fri, 12 Jun 2026 13:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAB83EDE43
+	for <imx@lists.linux.dev>; Fri, 12 Jun 2026 13:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781270847; cv=none; b=tyZJivZMl5g0wNjHi4pIL9L6/tFgQFGz0s9/q9YhTJN7EyBByx9yLkgEzpJjduOjuLy1S8X57qZpYzE9TL+rrU8v1ufazzCsWfA2V6shqV+z6ceNc4SSGX+bsL3S5cEga4H6CIl/l9acNx38OYGrXWkuyVhFMMM979gkEN/36/w=
+	t=1781270852; cv=none; b=FRdbo0DBF0Fmj5uVIJQ5K3NSErpHgnACK5u/SOM4n7MBX/9Nh5uL5SKv3p3kMl/znEl56zXkPVzBv0jvObB6oR1EvtynM84/NveTP3tV48S8pVMY4rDiTvGGQ/XXoVrmYroYMhVUbVJyMmRE45N49ApBkB1G8cSnjkwVA7ryKIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781270847; c=relaxed/simple;
-	bh=AZ44qVbwhbS1ciYLL9/k/0g6G9OnLSH1+z05vvyIPcc=;
+	s=arc-20240116; t=1781270852; c=relaxed/simple;
+	bh=8cF3HebG5op+ITs1XJRWMhmy9A1xc6/hcMM+4iQxiIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4967MepEjlQoo4OnW84Xu0HsKP2Z7sog+EDIVjyRslOYkRgaMrYYbyklzYWqGUOVFWCPy1laA75Opx1diA4APLGkqqqLi+TNfdfYVN77m9Tqz/7ELmwOvlQwF8IzfZNJp803K7mUTxvwvGEmHCirrNxxXP+wC4qkh+5iWrC5xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CLqqE51A; arc=none smtp.client-ip=74.125.82.169
+	 MIME-Version; b=o+gsYMKzQ4qm8m95K1nWQNV0Yf2bZ3430nlk7VIyTP84plpd4LopjuRIo9h2E7psAaJMan+6Q8bLYL1l4GjBahPSgsp0WgvoHQoi3p6B8BRUZCjWYyCq5OrLwBP+xyIwjvSkOm30OxqyKFfm21zPtrUjxf1A1dBHTfUg8KvlFUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AR8JBB5j; arc=none smtp.client-ip=74.125.82.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CLqqE51A"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-30759632453so2066213eec.1
-        for <imx@lists.linux.dev>; Fri, 12 Jun 2026 06:27:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AR8JBB5j"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-304df7ff4c2so1249777eec.0
+        for <imx@lists.linux.dev>; Fri, 12 Jun 2026 06:27:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781270845; x=1781875645; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1781270851; x=1781875651; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jOhKduHvhhi1//fmQnUUQw/ZgnpHeWjfQ6tgKhPwSdc=;
-        b=CLqqE51AU1A8TExdroSP+O4s4dQXkV+yY0Cn3fPPYSk2e52Od7xpriGGLvgnVCmd2P
-         Ah9PF2fAo6EFe1ZCR/xlkWH53vRIT41e6bMN53o/0WM3HmP9wMQ4FUru9rWqXqxtEbkx
-         xDeUQSsH7Ay5wwGnzPCIXs3K49WrsmhrLYel7Rnyk/rMAOaR0pVl+bMBMhdxm2UeYBHF
-         0Hky3+iGIBiy0QemKKAwM3tJPlOeMRsRdweqWE8L+0D+LWnrrE3dn5D+OQkXf/wZO8At
-         fVWmsf5v6xSiqpiFXIALVBIUC8KVa6wdPte7QV241mCKU3rk5eCfrkVJSXzG6XtBN4tU
-         0OLg==
+        bh=wpnchv9pa/fMvI5rIt88B4RF1cetJyaCH3vcYXn44rs=;
+        b=AR8JBB5jaDWDWSoB7QkCiRylGgw6ZAZFdbMtWDCfLpLxOAN1Q12er1vefr4qeFBQte
+         zFeU9Z6eGBJ3um2DRpNQPpzFbYdkStjs5h2boKAOSOskVDkcWRcJEJuPmIKyAREEedDM
+         xfl1U42fk2ynJKHYqXRN4qfYmJpe8VqEpBeWGTcu7iBWeo1whO2EPsBqBHlEPKMkIrwS
+         xccvXDBNQKIw5TQOVzkHqeJNNq2JUvjGECL900ahEYv0Oz7LalS74jv4WNzL4mzXuHgT
+         1GOopxCOtX5JVGIpqlxEYOp76M/Wgu2xjL7yo4R72I/5KzpVRR2ej4D3BsMKsyiCiKb5
+         2hZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781270845; x=1781875645;
+        d=1e100.net; s=20251104; t=1781270851; x=1781875651;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jOhKduHvhhi1//fmQnUUQw/ZgnpHeWjfQ6tgKhPwSdc=;
-        b=MQ2TyO2XcG3F/nFZr4hHNeh3ntzwWxN2tX0XQpJ6j2SO+fYzQ4S8DAJOdiO7U9IUtA
-         uhOdg6rQEtlKX/VnjN/pVWMLxYCRZxjK0d8bWofVyQM6yjm5g7vN0BEo7WGeQI9QWMjY
-         aOLcvvPY/CyTnTiI+4ePmFYfxjoo4C3j6a1RZwjOPo8lczVywh4b5XTg7Kynm0Shb9hi
-         CkyjhvrwHBRys9aSIVgik2tEzNgRY8hk29dCtcYUEKsEq0Qeyg51B6d8SEFtciwyC7C6
-         y0z7YDWiPGZsia6kVZxx1fQJO7rdrZIqOfX+rJyfJYBRLB9KW6Pg/7eN3QFPqSpr2Wt5
-         pvzg==
-X-Forwarded-Encrypted: i=1; AFNElJ+aRY+SjpnKkYGWh4BBoWKUWpZfKfLiXZqf2YtEhkxcfjGiYqMaOFBt9gBEwfYCFY+rea8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwyDwe4HJ2HmffSTBDB6frxxmQ7YM5U0JJo/kpIFNOg+ZKY4SEH
-	O3VwvsvOI+/ZCEfQd80306oaVvkc4rA3pR6n/6j+bhOt+T4THMqX5Vlr
-X-Gm-Gg: Acq92OEBPwdWlgLqXA9ng4csnh7nmcUq/GDBxvW3vpqvIy9oa9wG5IJzHTGWwFXq/ZF
-	EleRdQvcphMbpUJlPLZYJ0zJpT8M0LDGaS8hITY34wBCosnTXDRTNptW+7pbt8Xn2Gb7njE5gQm
-	KCiN40H6u8Okyp2YoA3hick7/IV9s0EMwz2v0PIod89Pv4zQnRT79TayrBGWKeoE/hD1AeW8KLp
-	UmpjoT2h8If4uQHXcBapF4T8MT6UZieAdYm4pp8eOgSAJ3TBiBqDgNQnxek3T8squGQemSgT4yO
-	lszrFtjoVxqLuYNs8LxV7utw2Q+OmI4nwGYfLNdTyLm6mKsQHrlB9IEkmM1LhCj/SbAqxMPd6Nh
-	XY/5IG+WY+7JbJwsVHeWFuo6SrAwvcUlDsNSgWgunjHc5RllGqtMPem3oGd5jnfbamqLZJl96cw
-	VVd7NLMePju5IADVL3M9SPgpfw4hY0DIOaz+Nnnu5M6mlTLOQBRNMUFqOjeQTN7xvJaRDg
-X-Received: by 2002:a05:7300:2148:b0:2f5:5dd3:1fcf with SMTP id 5a478bee46e88-3081ff97b78mr1839542eec.10.1781270845378;
-        Fri, 12 Jun 2026 06:27:25 -0700 (PDT)
+        bh=wpnchv9pa/fMvI5rIt88B4RF1cetJyaCH3vcYXn44rs=;
+        b=azJeutB1CjDy2j7dVc86szo6Xu9Dgwb457/nVCKJPFfEUPOJfNh6VKIWYm6jY0QHKf
+         iHwIIfEZRviAo8Y0BGPuO8/g+t/w6Y0ivDoPblHGmJF/zd7xDaI0auPDmMoCaQIRA7IP
+         aR17Ws3ZpvQGDNpUxkvlYCj4bOxs8+yZgZzIAZYRpLTRIp2v2Y+0C5Jycw5KuDNLy6Eq
+         hDk85mhvholCwIgi5AFnLFcTe5Bvoo8XaSHUhiObIT8g9/tP2i1KNIYl12/oeT58WWOg
+         V8WcEUiXnGj9DzAXZGq2SjYt3Tjq4invl0c+Ecsz99BKuMG7BCtH/t8CvqHD+TQ0ojf7
+         7gwA==
+X-Forwarded-Encrypted: i=1; AFNElJ/nxARUCenSll1NHSiRhSCVqNLTPiVj7GvlXbLCFbsy1mgtzA+weBKjvi+8HwhfOQcpFjo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx7WrgeWqycJwh2WGVX3lzCBitH4xu3jTd+YpqSl/QhCHmzWMj+
+	rcGJhWGjHrHGM8ZIUosli+BYI330io7m/qVYx/Qwk5xwi/pt523a5wgl
+X-Gm-Gg: Acq92OFXQ59YFHV3GTnsKwGvrcTQQZbO97QvCuLUeIJqMP6WGNaAjLuUKIV1e6G2uyh
+	pDynwhRai2vWi/rU78KVUFUO6MZ6alDr18hzdpuW5+8d+vcp/UZmpenF8+Oklba01BhsznJGSnc
+	/D7x8FIr3CM49aPfQmcqp5eFxqQfBkwAX6t8+cKloO3wrXmD0iYVd7/Q1L85tdV5mA58Disysp6
+	vItfXuR5WyLgpSHAYYdZLQH2p/Kkur+d3Lau1Y7/YiLA3wpW1hFMCftptPG7Ft8MFTT2qsLmDFU
+	5gebG/ufdhQbQY+JlYWLxU/5c0hNw96lPXKPCFtg8YrigyFZIwIK3meVkfCPv3VE6qSzTeaIb9m
+	yrNIFhc6SYphUwk6Aoy5vlrKmLC598bwu/SZvChwQKzN3Teli39Tgm5IKvGIv3hE4utVHTk9uMm
+	F99IVYquXkr9Pa4Q1nLQvdLQog+yLcjUfkzojiIf3amRK7p9Koe/nnCOHuAA==
+X-Received: by 2002:a05:7301:9f09:b0:304:70d0:4f03 with SMTP id 5a478bee46e88-30820c2d782mr1373677eec.6.1781270850611;
+        Fri, 12 Jun 2026 06:27:30 -0700 (PDT)
 Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e91f8b5sm3302343eec.19.2026.06.12.06.27.21
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e91f8b5sm3302343eec.19.2026.06.12.06.27.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 06:27:25 -0700 (PDT)
+        Fri, 12 Jun 2026 06:27:30 -0700 (PDT)
 From: phucduc.bui@gmail.com
 To: Mark Brown <broonie@kernel.org>
 Cc: Liam Girdwood <lgirdwood@gmail.com>,
@@ -76,9 +76,9 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>,
 	imx@lists.linux.dev,
 	linuxppc-dev@lists.ozlabs.org,
 	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH 05/11] ASoC: fsl_spdif: Use guard() for spin locks
-Date: Fri, 12 Jun 2026 20:26:33 +0700
-Message-ID: <20260612132639.78086-6-phucduc.bui@gmail.com>
+Subject: [PATCH 06/11] ASoC: fsl_ssi: Use guard() for mutex locks
+Date: Fri, 12 Jun 2026 20:26:34 +0700
+Message-ID: <20260612132639.78086-7-phucduc.bui@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260612132639.78086-1-phucduc.bui@gmail.com>
 References: <20260612132639.78086-1-phucduc.bui@gmail.com>
@@ -92,56 +92,68 @@ Content-Transfer-Encoding: 8bit
 
 From: bui duc phuc <phucduc.bui@gmail.com>
 
-Clean up the code using guard() for spin locks.
+Clean up the code using guard() for mutex locks.
 Merely code refactoring, and no behavior change.
 
 Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 ---
- sound/soc/fsl/fsl_spdif.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ sound/soc/fsl/fsl_ssi.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index 1b9be85b34c2..ad1206ed9882 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -853,17 +853,15 @@ static int fsl_spdif_subcode_get(struct snd_kcontrol *kcontrol,
- 	struct snd_soc_dai *cpu_dai = snd_kcontrol_chip(kcontrol);
- 	struct fsl_spdif_priv *spdif_priv = snd_soc_dai_get_drvdata(cpu_dai);
- 	struct spdif_mixer_control *ctrl = &spdif_priv->fsl_spdif_control;
--	unsigned long flags;
- 	int ret = -EAGAIN;
+diff --git a/sound/soc/fsl/fsl_ssi.c b/sound/soc/fsl/fsl_ssi.c
+index b2e1da1781ae..dc022976c982 100644
+--- a/sound/soc/fsl/fsl_ssi.c
++++ b/sound/soc/fsl/fsl_ssi.c
+@@ -1218,13 +1218,13 @@ static void fsl_ssi_ac97_write(struct snd_ac97 *ac97, unsigned short reg,
+ 	if (reg > 0x7f)
+ 		return;
  
--	spin_lock_irqsave(&ctrl->ctl_lock, flags);
-+	guard(spinlock_irqsave)(&ctrl->ctl_lock);
- 	if (ctrl->ready_buf) {
- 		int idx = (ctrl->ready_buf - 1) * SPDIF_UBITS_SIZE;
- 		memcpy(&ucontrol->value.iec958.subcode[0],
- 				&ctrl->subcode[idx], SPDIF_UBITS_SIZE);
- 		ret = 0;
+-	mutex_lock(&fsl_ac97_data->ac97_reg_lock);
++	guard(mutex)(&fsl_ac97_data->ac97_reg_lock);
+ 
+ 	ret = clk_prepare_enable(fsl_ac97_data->clk);
+ 	if (ret) {
+ 		pr_err("ac97 write clk_prepare_enable failed: %d\n",
+ 			ret);
+-		goto ret_unlock;
++		return;
  	}
--	spin_unlock_irqrestore(&ctrl->ctl_lock, flags);
  
- 	return ret;
+ 	lreg = reg <<  12;
+@@ -1238,9 +1238,6 @@ static void fsl_ssi_ac97_write(struct snd_ac97 *ac97, unsigned short reg,
+ 	udelay(100);
+ 
+ 	clk_disable_unprepare(fsl_ac97_data->clk);
+-
+-ret_unlock:
+-	mutex_unlock(&fsl_ac97_data->ac97_reg_lock);
  }
-@@ -885,17 +883,15 @@ static int fsl_spdif_qget(struct snd_kcontrol *kcontrol,
- 	struct snd_soc_dai *cpu_dai = snd_kcontrol_chip(kcontrol);
- 	struct fsl_spdif_priv *spdif_priv = snd_soc_dai_get_drvdata(cpu_dai);
- 	struct spdif_mixer_control *ctrl = &spdif_priv->fsl_spdif_control;
--	unsigned long flags;
- 	int ret = -EAGAIN;
  
--	spin_lock_irqsave(&ctrl->ctl_lock, flags);
-+	guard(spinlock_irqsave)(&ctrl->ctl_lock);
- 	if (ctrl->ready_buf) {
- 		int idx = (ctrl->ready_buf - 1) * SPDIF_QSUB_SIZE;
- 		memcpy(&ucontrol->value.bytes.data[0],
- 				&ctrl->qsub[idx], SPDIF_QSUB_SIZE);
- 		ret = 0;
+ static unsigned short fsl_ssi_ac97_read(struct snd_ac97 *ac97,
+@@ -1252,12 +1249,12 @@ static unsigned short fsl_ssi_ac97_read(struct snd_ac97 *ac97,
+ 	unsigned int lreg;
+ 	int ret;
+ 
+-	mutex_lock(&fsl_ac97_data->ac97_reg_lock);
++	guard(mutex)(&fsl_ac97_data->ac97_reg_lock);
+ 
+ 	ret = clk_prepare_enable(fsl_ac97_data->clk);
+ 	if (ret) {
+ 		pr_err("ac97 read clk_prepare_enable failed: %d\n", ret);
+-		goto ret_unlock;
++		return val;
  	}
--	spin_unlock_irqrestore(&ctrl->ctl_lock, flags);
  
- 	return ret;
+ 	lreg = (reg & 0x7f) <<  12;
+@@ -1272,8 +1269,6 @@ static unsigned short fsl_ssi_ac97_read(struct snd_ac97 *ac97,
+ 
+ 	clk_disable_unprepare(fsl_ac97_data->clk);
+ 
+-ret_unlock:
+-	mutex_unlock(&fsl_ac97_data->ac97_reg_lock);
+ 	return val;
  }
+ 
 -- 
 2.43.0
 
