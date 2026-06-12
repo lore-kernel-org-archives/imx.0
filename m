@@ -1,48 +1,48 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013013.outbound.protection.outlook.com [40.107.159.13])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010018.outbound.protection.outlook.com [52.101.84.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969C325B0B2
-	for <imx@lists.linux.dev>; Fri, 12 Jun 2026 18:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D013A453B
+	for <imx@lists.linux.dev>; Fri, 12 Jun 2026 19:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.18
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781289086; cv=fail; b=Goy7GCZgY0vMTu+uZTLC67yutwlbwHiYkZefqtLNQd7fBNLwSYOLCuU9YM5+roHZkAvjRNHxD7kFCNK9Ih263Enno1F1CqqzAs9ziqdF1FFlaM0hmFOEUJ7p6fA8Jt+CcgKUTJ9hSvyHp2dAItcnJfAlOz1FQsyckzhbh9W61II=
+	t=1781292324; cv=fail; b=fhv63FazwLrU5HwioTxmJUX9UhrWrRdNf+Qt0FCtnP1h0jTkUfZqjvhA6nHv2gNhImGvjPRhc5wilaNwWldakEPKWnCH2nq9A5foaXUL8258uwaPyLE0/gudhmQnQkROUj8B0BGToK4o3wc060xJk6JIe80pCeOkx5qrepIzSys=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781289086; c=relaxed/simple;
-	bh=s8CJDzNEyxOlRh+EEzYbVdD8Ei8CKvmPoCCIjpBtj0o=;
+	s=arc-20240116; t=1781292324; c=relaxed/simple;
+	bh=wLjW3Q+JCY79bv7hcWjwIhkLM6ydObwjGjJTeFqrU2Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=um7XMKsANo+qWKcwBhJS7kPHCw9ItfJQq2BtF+gNTU1abz8GluNIesWUg88hcO++AfwyI5olT9mwNZgtQlX+14BfqGoFaakRP/52ydoHJM9g481w7XLHqR7VVYKljkh2kDC6EtGAm8+GSfa9YbtzEV0C5jXt3m8m1pUm8e+Mai4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=E/UerWlY; arc=fail smtp.client-ip=40.107.159.13
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kcHP4FTfxk/MnBOHM2O8BvDlFlBLlX9gvKp5VOx/ifdsYDt+oIjG9wsUZBTL095L1Rk5U3hKSQ5i52qauCobNQHNmpbk23mJ73a0jR1PRRVClhaolHH2FIM14DcuuewMhn7+9rNaY+2RbMLIpMMkPnOkWrvNOSL/8yB/WPwBwtg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Lq8R89VB; arc=fail smtp.client-ip=52.101.84.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="E/UerWlY"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Lq8R89VB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qkr5LAvL4ccXYmSvH0O4Ldh5OOGeK1vP1HVctLPap58ljwZfZdbiKwj67Gu7OL/vBXuGmzCoZ0kXHXTpiPSpZzkIIfLz5wFjUmzdPsRWzzQH0j1Hidg22Qbknn8DvtWuxFTUILSHVdGEOCzp49d0xLtAFA0EmGGXzTlRbQIo90sYYxTbDOBviuWmwoMVjOTwLHJB2Tji+we9WT7AIJ4w/DCxYRR4BJfSlEKbExW2uE6IpxW45fkmLdFWBj1mQALwtH3AexJ1E7PomLI41NYm6i+fFcp4TjwJU6zNnVsPruXtPaubyw/hTJnzKpxviRtx92CWGfHqlnxqHMHvM3WgIA==
+ b=qI/y3ydl6VS7WMFwcz9l1o4YL74/QVnwa5RQeRQVjjy2L3/r5twA6+ta5m+Oxyq7dhZ9Sf9tWgXicquU5xo0NdgX1GxQl/nxfogTutvOu+N7TgCNSyf7+Pm7MvJ3wD+Jfk5LW+FyfYy3/q7O82JCtkEOK74qVEXOoXGsR3P05fLefQywcdXGWHI1nxz+T+JqxmAyI+JlQcr4cFIi4rqoNaga1DT4Z6NBrVt76W44Yu+Gnj51JyH1bVy+XMK4vtkl2y2SPPrYJkKMrS2fjMcYnA2cC1bx6bUlaZF/RJBO2GIN1Zf4sA6kb/KonaQ8Hm+FGHqVtIJU5g8qoU7o/Q5ITw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZN3m0bj521lhsvcvMV5aqGDDp4jeWliz/e6Idb9ypG0=;
- b=ch5LVGDYjUREjkObVhh4SFJ6j1EHlQ2cfY4rwlm8sUnIeDwOd51ShL5VAjdqYRDvFmo0dst/uBapeF+emxw5lEFD5nykwrkR28l8CV7wMF2ciJFG+j3lcYd6pzI14dWb1ZJe/Y+LnG+e5UrhYnPjg5ZCGrkZd+k1vus5cbXIlV4hjeU57wOR4L6jlMk57rNdiTEgzTd9OCkIsIuTZ93NLOiyGJmuA6NgY13QRzEUd2xcKMRg6uazXLVHjYt7K9oC7GzKyHzJvH9th0ptLGuk5/1GrQz4UtYuxpNCIN2yd+dKYFgDgQejcVodwAJqqWyVd3eJFIPa8M9WRSh9XqyZQg==
+ bh=i6tLCx/t085+MmwTOhdNqA6qmBHD7UqscZC/VZlCQXM=;
+ b=lRYGr06gbM0GEC7BQxed74ULsHlPLMEVxvNZZBjQGCyuMLRdgM47mIoP8BvbROCuxgkvc4bqolJGagdUPsRn7Fo0kxA3fwjJ/TgDnhOTgQuA576ntTJjFWdfAKWwH2EVFhddioBr31KAqc8KEOkiHTumoS8ZgTbjH0GVhfm0daZ4n7SHIP+s0sCEwH4kkhoE3MdGySnDWVoHKB6Ww/yrOvPu5wMqa8RgSN9XpVyw8vK0RZsrv/TkG9KRURC6F/A9ZeTTiB2GxnVVb000IaqM27SzmRZWYxj16U+ifjQnlMcLn/+w0/vozMmTbpwwlxh76J0ZModK+gziauju5v2NPQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZN3m0bj521lhsvcvMV5aqGDDp4jeWliz/e6Idb9ypG0=;
- b=E/UerWlYhZzBjPuXOLDamXVzq2ON4NPgnVpzy584UT8ZOCvmPnsoTOtOdH8EdJrjT6BXkzgZGz/FkkHcy61BW1OR0MpmTsZX3cyJ9llW/LXwetavFOz6dyAT/S2mAhxipd8bynx4NcK5oNQ5f0SPtjzJrsi2wHT99sbFLdYgPxieEXbbP4PJ4Ii3MMI3xvHKNXMzEEID6Ly6lLIp1dhgxwuXgQozQ0ovjtaJils67SCE3ONiUH+1XwxdzPKYcn8bPj4mOjvQr/AblQGGahEBVOOY0xw3HBpfvrprNyFT6c3bqaFCeW3VonvrKoVWOwPIkMfKxSCKl3y9lvTV7+poqQ==
+ bh=i6tLCx/t085+MmwTOhdNqA6qmBHD7UqscZC/VZlCQXM=;
+ b=Lq8R89VB5PjP4+/6IwesGexngWro5pyC9GqGM4/ZL83kxURXmCxQfMawIQDN4RVRFRSETraCSdv98tIl3yRQOyh78GYEkmDE2bVBbPiTgDdEi0vUevTvd40NSyZwqixUGYCyT04N/e3Z1m7DhiVwTw3LPcE3dgbVQqdXvtX5pX8untN2xffFfs49LuB0PJURpmQ5cGKRoJ7XBKZnrY7LVEK8X0UGU2F+C2TpAVeCtRmlvKo5RbTaU59ej7PNCTPrX+8bBwOv82W/8BArBiHRj4BWyAZmHff5KArdtRQhQDlimDJ2N1I8+fXRlNIANRWQr4g043Ce4b6FgX1dl4o4fA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DU0PR04MB9346.eurprd04.prod.outlook.com (2603:10a6:10:356::18) with
+ by GV4PR04MB11849.eurprd04.prod.outlook.com (2603:10a6:150:2de::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.18; Fri, 12 Jun
- 2026 18:31:20 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Fri, 12 Jun
+ 2026 19:25:16 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0113.013; Fri, 12 Jun 2026
- 18:31:20 +0000
-Date: Fri, 12 Jun 2026 13:31:07 -0500
+ 19:25:16 +0000
+Date: Fri, 12 Jun 2026 14:25:04 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
 To: Antoine Bouyer <antoine.bouyer@nxp.com>
 Cc: julien.vuillaumier@nxp.com, alexi.birlinger@nxp.com,
@@ -55,16 +55,16 @@ Cc: julien.vuillaumier@nxp.com, alexi.birlinger@nxp.com,
 	imx@lists.linux.dev, ai.luthra@ideasonboard.com,
 	paul.elder@ideasonboard.com, geert@linux-m68k.org,
 	sakari.ailus@linux.intel.com, hverkuil+cisco@kernel.org
-Subject: Re: [PATCH v3 4/8] media: uapi: Add NXP NEOISP user interface header
- file
-Message-ID: <aixQa13BHIWbT-q1@SMW015318>
+Subject: Re: [PATCH v3 6/8] media: platform: Add NXP Neoisp Image Signal
+ Processor
+Message-ID: <aixdEPsghlc2S7Zl@SMW015318>
 References: <20260612132039.2089051-1-antoine.bouyer@nxp.com>
- <20260612132039.2089051-5-antoine.bouyer@nxp.com>
+ <20260612132039.2089051-7-antoine.bouyer@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260612132039.2089051-5-antoine.bouyer@nxp.com>
-X-ClientProxiedBy: SA1PR04CA0011.namprd04.prod.outlook.com
- (2603:10b6:806:2ce::18) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260612132039.2089051-7-antoine.bouyer@nxp.com>
+X-ClientProxiedBy: SA9PR13CA0058.namprd13.prod.outlook.com
+ (2603:10b6:806:22::33) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,165 +73,453 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DU0PR04MB9346:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b765861-2ed3-4bd3-ad8c-08dec8b0cc37
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV4PR04MB11849:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5996b679-bc49-423e-3e2e-08dec8b8552e
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|19092799006|56012099006|4143699003|3023799007|11063799006|18002099003|22082099003;
+ BCL:0;ARA:13230040|19092799006|1800799024|366016|23010399003|376014|7416014|18002099003|22082099003|6133799003|11063799006|56012099006|4143699003|3023799007;
 X-Microsoft-Antispam-Message-Info:
- EyHvLGqWK4gbyiLxuiijhHXPgbmc6ykQaxL6iFxGsQGp6TXjRH1iuWXNSI8+eYqBzf8fuV6kWIbkKqTQ0SmmSTU38fWgXjjMh/05MYGPXJ1EmvFxrcog4X7aHpp3DrGQDD3cKdVUXIm/+5gyGLlsDFswXKGNXtKCC6uFC/GTj0U4lxTZrURuQqCgUAJ+z6a8JIhRmnE9vyjB3Y0YHN2e4DIPfIbJeRar4n7PjlSPcojJ/+yWufdqYy8URU5aHGHbOa+LmN2MryjWMJGSHknLJ8uV/DAB8dVEeqQsbXCzgCM7SVfoHl1XVxKg4LKB6KFtxMXIhLucSI5z6ahn6M4g34K8mfjLDm5lMfxSOI7ruRQA4FzJUh0J7zzCBsdeJpoGYdPVbKjx0e/Pnj4m5gqYgGnZPm8tfw7zLuLG9Ch5ZG+3qkDUyqXpCpRaybrk8dKGDSt8ONGVgVCuTOizetdGx/YdSkw/DmmS95kBr3y07528ss4RdQVYK+oaDr21Pp2ziHLX2LcR74P/x+MHGeMcsCGufKim4vJxyGT1KFiAJ3CPTE6J7YK8JyFDB96BckK22WPxo6cdi8/xzrBCtTuZ0tXYinFK7QsSt5BldbMaJAU2fU69Q0YTfAlbwdaBYwgkXNEM87pFtgd3PB2Z2AHdr4enUL8C8y8sKyYMGi6ZavpFGKjt6MJkrnv1zzAarTuz
+ HgVy9ssnxdYsHtipqKhm+0Iit3uZkYP1VYnVyBanGFfdN0FUQeZxwbv4Tam4FnxuNgkvUl07ioqSKFZTSJyN31eccFoqh9vwvJ30jP+bl3CJtNgNmYQ6mm4/JAPcEtKlCRfEz2g36J/OAQjK8Qhwp3OJ/6+mgCw0yuWHlGfREMdnIA38kHAfR3SvwCbnwEHCyffMFNkAisgXkv5CK+6cy0WxN2EOcHrIoxO/olGJnT+WshL73Uic8Y8eNNNhmau6hQiBoJZshfehUNwDngT2YR9qTGlIv9rH7HEZ8EHahl5TOefQWiOc3xO/l2dUAYS6K6lnst/DXrdYAGy/6WBaT0IY9ifCOZShb4iQzd/drdFBT9fohyVGg/jXRk5T/1jEGi25lUNNHH+IcyDnFlo9lrLJTytR/O5mFsIF9lZguqHRHwKl9ZFgLJZWp+RCByfmu5RqPViJ+AOjjPJ7EazTxwMfVxDhHwaRbs28PDAQ49qXqVvwlKCf3DDQY/SnQnLrzZF0JpRsu3zwzgi23/yyoVsToI6X2Bt66NnqWNQeRdpBfkK4ZNXsww5Gq0RmI/OEori71kplHofFlHJtkqJ4q/Rp/KQXyRtv+sqQw6NY5uA0tcTsjeD8kH3CMlC6o2BYaPeb/j4NPXKlZ/qj5JC/2D/A3imN28beiVEWViawiLdE+gn723S7GtDvOM22bCM4
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(19092799006)(56012099006)(4143699003)(3023799007)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(22082099003)(6133799003)(11063799006)(56012099006)(4143699003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?KUTweLZkjxL5Y+MbzMcggTFzD58elg0SAbfHJcWGmKCjq4QcgAO8IteTaP8y?=
- =?us-ascii?Q?tYJYPHXTzVuPcRS2iq/rO4vfYtSoJKpOLl7SIHhiZWpjsZab7xEjqtnQyQ+V?=
- =?us-ascii?Q?5Y84UqKv5+1DqRUjfhNldOLZJr+V9MSNshJXnyKgepgt1A1a0imIE0GGifRJ?=
- =?us-ascii?Q?9fHjK4dOhY+mz1v1vvi3U4lZDtOayRECQz46f7BdMsuEZHjq05IduXDRcfUa?=
- =?us-ascii?Q?Pv40qFk/TtyUx+nIpDEJkuX0ehDugbT06F2/DZEy9kWNUNXDv8bO5ssqeLyd?=
- =?us-ascii?Q?234K+oUPK8yX1MPJnWi71OSnN6Zp3RiQ0BcsPs/0NGqY0YUgMsZdt3XFM/km?=
- =?us-ascii?Q?AVzxOeiYmbg+WiLL/YYhVXaEfWxzpwurIGVMpsJirwnfnrcHJgS95ou+WtM4?=
- =?us-ascii?Q?QGxuGIG8howh2rnIMWyjjXzCFr+AiymqOnPAieKRCAOTpvY56lCOWEbUlJ50?=
- =?us-ascii?Q?yNDJbG+KMZ7pywx7wQWebXApZkSwi2pIcHrd+YSWSjOiSpuYtP+GsfzEtvHO?=
- =?us-ascii?Q?0pBpnAmA3WDb4cPKnEW+gNltS3Z/JlUf7HN8Smn6N+XU2LGtQyLxmnkNDequ?=
- =?us-ascii?Q?P8koDO4brr9MjI3YUHjHVpks1PTvzw+5YexDJy7uZjYXWDK3PCG+3fdzIeAH?=
- =?us-ascii?Q?zMySig0x4S1o2zwk5hdxYT6B4Z8eROJcHJ8lALteXv64uZ9Qa6Bb06js6b8T?=
- =?us-ascii?Q?UUt0uwiHjGF3i3oiVc+QllVLppQk9JEi1pb5slHwpEeq+2ThZoaM13Q4UN1l?=
- =?us-ascii?Q?0mqXRSl5ASjX+RcyR3bX/sA4h3GZcJ6YxSB0F/SvMZWLmLXSqvw3nBhSVQ5D?=
- =?us-ascii?Q?T2iZUvpGVKo34EmALNpTjff0DpJqdgRa4LRneo0xdnmVyGXgKmwZDPuS24IH?=
- =?us-ascii?Q?bp9+DUZVr5ytowCZVIvGMicPtvz1PNqTdP3NyIZRYqdQNcK90lzt80KffEne?=
- =?us-ascii?Q?VjLRnYSTSU0D4G9njZ82UKSA/80TkWVpFoeHlJyARZ7e6zJa2Aw+01rCC5T8?=
- =?us-ascii?Q?d1+i6xoJVqk0iklseZusko1wFgKWIAcN3yYzYzStdTy0d/SaKvHBJLLJwMNG?=
- =?us-ascii?Q?6uc6+Hz82QgNDVVVrdjQLvsoUhHGnv4Sdw9CHW6zhA742T002JEFC5/QH4E+?=
- =?us-ascii?Q?QZjoc/OS/qv10djDBqrB1ovG+5DPjeErtf6+/hLpBlH70zDqjSZfERAgr9dB?=
- =?us-ascii?Q?CIDZMs9YDVSQYnJ4htH7Q/8cMEQbhr4lITnkemAEuq/kITUCV67l1v4ZLLun?=
- =?us-ascii?Q?1frLSu6fdC7qdV6cFbp/1CEcZoA70oSp1BOWi9Za70ZR+pIyS/MkqHgXEHJF?=
- =?us-ascii?Q?p7sgfBmrHPfRQBWeqv5NyTMBhzh8okKqcV+Ey+T8NoAvP3BhPxSGXnR2rt38?=
- =?us-ascii?Q?JLh9geh2+Tr3+KixHQIlkgZJ0S37qCm0H2mi6+COV4sMSzA1ZIM6AfbnWEJU?=
- =?us-ascii?Q?JGKYhlipIekPFuIobR5Te8ihxf3DFhxkr+O5LjPviesCRKC0FRRimxK5NxkX?=
- =?us-ascii?Q?llAFBNQFE3SgjwnmIMfNQHu7pyHQRUdp5sMc8EYn0mJGOq8y3lfsfA/1vHnG?=
- =?us-ascii?Q?nGLKO2KRWL6ieRCQE6nhcuKTGnswyD+kvsX/cOBuh155PXLvXn17nOR+1T32?=
- =?us-ascii?Q?p8fJh2XbE/kHmY00NsuuhsttvPlmXifHXFBqjAJdqybBOSdY88a0W80UjrvN?=
- =?us-ascii?Q?dFfyKJRXbMyYXzs/H5eHJnV3jyS2p+WXB33Q3NDMcbae52zGf++hKR97wsPE?=
- =?us-ascii?Q?pJlCDUpBn48HgKo9ne54idKyvfIbgdLoaT1o/i70kn5RnCLoskV0?=
+ =?us-ascii?Q?VE05UL3hSNc2xzCHSnrxI4JTGh4Meqc4MlLcT2lYa85YyDaNT0nV/Rl09KI5?=
+ =?us-ascii?Q?6CLbelubXgAbWIxHGgSF9XCEtK4UVMJWARqdyShPjYtmH2DYlbJV0GuvjhsA?=
+ =?us-ascii?Q?U13CS8bUPwwWAY3fg2o4z51izIgALzj/rjBg3iiFE8chFPF/fNEHe5g3zxca?=
+ =?us-ascii?Q?PWxYh0lWfkvX9CsG4FiUD4pU8NykSviGBGD2zSOidM0Dtd/QT9qVdDH+f6Pq?=
+ =?us-ascii?Q?l1r5A/ppR7u+/UPAIYQdjC8k3vEOhWSGWLqMgXW8YQxvkyWXT+6rV+7W7SH2?=
+ =?us-ascii?Q?EUF53LpS9zK5mksVVMVFSFtsnpy8DmsvBsTspctMORMI7qRBVxVh8HYKqSBG?=
+ =?us-ascii?Q?wWVhlg/aT0/MXBP8zOl/7uSef2jcmrE5PKPkCGgXVz58++IY3m4BXXlPbjLu?=
+ =?us-ascii?Q?4uaRC+FttXuc0MHUuc/WiKCCdft/CGaNgOXOsSmvj0tX6vlFSUv6TyHNAw/x?=
+ =?us-ascii?Q?ExyMKNufTg8zF5XngOI3s7OcgZwDbOwaOorKrZvCgQJqGT/lv2StyBy1GZMX?=
+ =?us-ascii?Q?JrkH+Yo5QP7HCKIfJFXAc3b+OC1O4elnkfCij+HJmwfamxskwYJ5JF7mm7y9?=
+ =?us-ascii?Q?wYdHyGKcJe7ezZv2N2Ep6L2k2M1WfwmpqgpJi3e2WN+7PsHqKB4d++lqg4R3?=
+ =?us-ascii?Q?HDnyfOofcZCtyu2n6ecoExF/XeNl2MVtAc8R+0IklxHkQ4syMJb/CqxMbLn5?=
+ =?us-ascii?Q?VOKvqyPm/CAj/xp+aogaA265lNcbMnDNxWY4yf239uZ51s+J+NpPn+jb2uEf?=
+ =?us-ascii?Q?xCRnDK31VDjRgTU2EFk707YWNh1s8LxDyyyVCGrsesfZO+8gdgaa3u6H8Zk8?=
+ =?us-ascii?Q?00xIk8HYnv0B7CF+BOc0sQdUeEYjVbYwgEO3NOgzcLk2s/k1EpnAjrenbk7T?=
+ =?us-ascii?Q?qC5DgJxSPjOZbkActClh0gmdwQ63qaPv/JgsGCy++kzYmexQNbCuHdabzaeF?=
+ =?us-ascii?Q?9y6ibbfs2DS8GMtDkFK3qWWt6UHVr6aH8DJTmX62u5PXdD61gY7I41MVjdrp?=
+ =?us-ascii?Q?VXAKwIAkkwtBvd+lpH3eHMRsUfCQJZATvgNoFrD+zurtQqekoD4CneTs6uZD?=
+ =?us-ascii?Q?pJKGMCtXaVZSOVyspH1OZFwcwDbnC577eQfBQMpsAOUmUX4iiEGvE3l81RGv?=
+ =?us-ascii?Q?ff3gHHbkAytiHeDiJ63Uaamulk32kVmno7Z1cZeUZ+a1rJ79RnmRnIDRzm33?=
+ =?us-ascii?Q?Tr/T4oWtlJLQJOPs8OX8iRjNmMqbtFJ66jKV1pfaU47SLRCkz9lWb9VDvJX0?=
+ =?us-ascii?Q?C9mrniGwfIrvr+b3juZNEwSOXsrFMzXTc71N70T03sXxA1TfNfuoUVx4ev9V?=
+ =?us-ascii?Q?yWhhFCx54eVt/dPFcqZSLo3KqQsvs74ibeks7iT2jliaceYom7/t+1I83c9d?=
+ =?us-ascii?Q?1d40M1/tsDpVoZoa+IMUDBSgrItxzOL/5FHwjGdA1rFp7tD+HOoGeU2ylr09?=
+ =?us-ascii?Q?D634rHFAIo+S9sMcIsHZUky/fE9AI06gzZXSsA6uSnUJUTAMCsxb1lIFZK/l?=
+ =?us-ascii?Q?L2ChS3mB8kstBggM7YF1i75WwuTB8QPqLM9wG2Ai519L1QW+2BSoc/KIt//e?=
+ =?us-ascii?Q?b5PXMomHEfJBK1YHLOaaSfx/Se11SVBAgVl8RSKOv+n5oVy/kjLzM8+IklkH?=
+ =?us-ascii?Q?hJwfTT7enPU/xntBVmR6ZwR68qRyToLzMq/yEagkiUXX/UOmt4Bq2+XoxwCA?=
+ =?us-ascii?Q?EqlfXVZ/YBTMMjHwLadGaWHDbe/no7XwHgxSqfTPXY7odsP7sboCOWKTg2tt?=
+ =?us-ascii?Q?Yv3LKYMzedBUfS5Dz5g1kMGPq3MWtuzDzS7GpgIz3rcuWLBgQOqO?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b765861-2ed3-4bd3-ad8c-08dec8b0cc37
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5996b679-bc49-423e-3e2e-08dec8b8552e
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2026 18:31:20.4383
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2026 19:25:16.4740
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Qi4rPG8cr7Yun/0dMyGpS308RH5Ta7Xq/aa+ljItYrZC8Mo10mzjePX40GhxxIp47Lm1817zvkCDbnZ9p87SYNYMuPozkDjrOvw+xHY/B0qDPr6e/2KRLUSFVjZ39B1A
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9346
+X-MS-Exchange-CrossTenant-UserPrincipalName: qOIpxb/IiKfbU/CmDXBI4C7qkFdTwdjiSNGiCfrQ/BUXo7ZyXwT0yE9saBfKaVvoIQ18QP/hqq1eTCcYJyiQRMAbx0xdb+ACKjWuBjUhlLMsym79lCO5ipNxOAIDtgh4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11849
 
-On Fri, Jun 12, 2026 at 03:20:35PM +0200, Antoine Bouyer wrote:
+On Fri, Jun 12, 2026 at 03:20:37PM +0200, Antoine Bouyer wrote:
+> First NXP neoisp driver version with the following contents:
 >
-> Add user space api header file for meta data structures definitions.
+> This driver was initially inspired from raspberrypi pisp_be driver. It
+> reuses same approach for ISP job scheduling.
 >
-> This header describes `parameters` buffer for the ISP blocks control by
-> userspace, and `statistics` buffer for userspace and IPA handling.
+> The Neoisp driver supports:
+> * 8, 10, 12, 14 and 16-bits RAW Bayer images input.
+> * Monochrome sensors input.
+> * RGB/YUV, IR and Greyscale output formats.
 >
-> Both buffers use the newly introduced generic `v4l2_isp_buffer`
-> definition, which behaves the same as the generic `v4l2_isp_params_buffer`
-> already used by other ISP devices (rkisp1, mali-c55).
+> The neoisp features are:
+> * Provides single context to limit amount of v4l2 devices.
+> * Supports M2M operations.
+> * Support SDR and HDR modes.
+> * Supports generic v4l2-isp framework for extensible Parameters and
+> Statistics buffers.
+> * Provides a `core_media_register` API to register neoisp's media entities
+> into another media graph.
+> * A module parameter to run in standalone mode with its own media device.
 >
+> Co-developed-by: Alexi Birlinger <alexi.birlinger@nxp.com>
+> Signed-off-by: Alexi Birlinger <alexi.birlinger@nxp.com>
 > Signed-off-by: Antoine Bouyer <antoine.bouyer@nxp.com>
 > ---
 ...
-> + */
-> +struct neoisp_hdr_decompress0_cfg_s {
-> +       __u16 knee_point1;
-> +       __u16 knee_point2;
-> +       __u16 knee_point3;
-> +       __u16 knee_point4;
+>
+> +MEDIA DRIVERS FOR NXP NEOISP
+> +M:	Antoine Bouyer <antoine.bouyer@nxp.com>
+> +S:	Maintained
+> +F:	Documentation/admin-guide/media/nxp-neoisp*
+> +F:	Documentation/devicetree/bindings/media/nxp,imx95-neoisp.yaml
+> +F:  Documentation/userspace-api/media/v4l/metafmt-nxp-neoisp.rst
 
-Not sure why don't use __u16 knee_point[4] to make code clear and short?
+Use tab.
 
-> +       __u16 knee_offset0;
-> +       __u16 knee_offset1;
-> +       __u16 knee_offset2;
-> +       __u16 knee_offset3;
-> +       __u16 knee_offset4;
+> +F:	drivers/media/platform/nxp/neoisp/*
+> +F:	include/uapi/linux/media/nxp/nxp_neoisp.h
+> +
 ...
+> +#define NEOISP_MIN_H			64U
+> +#define NEOISP_MAX_W			4096U
+> +#define NEOISP_MAX_H			4096U
+> +#define NEOISP_MAX_BPP			4U
+> +#define NEOISP_ALIGN_W			3
+> +#define NEOISP_ALIGN_H			3
+> +#define NEOISP_DEF_W			640U
+> +#define NEOISP_DEF_H			480U
+
+look like needn't "U" for these const.
+
+> +
+> +#define NEOISP_SUSPEND_TIMEOUT_MS	500
+> +
+...
+> +
+> +/*
+> + * Extract offset and size in bytes from memory region map
 > + */
-> +struct neoisp_ir_compress_cfg_s {
-> +       __u8 ctrl_obpp;
+> +static inline void get_offsize(enum isp_block_map_e map, u32 *offset, u32 *size)
 
-do we need pad some data to align next __u32
+Needn't inline. check others, compiler will auto do it and also find unused
+function if no inline.
 
-> +       __u32 knee_point1_kneepoint;
-> +       __u32 knee_point2_kneepoint;
-> +       __u32 knee_point3_kneepoint;
-> +       __u32 knee_point4_kneepoint;
-> +       __u32 knee_offset0_offset;
-> +       __u32 knee_offset1_offset;
-> +       __u32 knee_offset2_offset;
-> +       __u32 knee_offset3_offset;
-> +       __u32 knee_offset4_offset;
-> +       __u16 knee_ratio01_ratio0;
-> +       __u16 knee_ratio01_ratio1;
-> +       __u16 knee_ratio23_ratio2;
-> +       __u16 knee_ratio23_ratio3;
-> +       __u16 knee_ratio4_ratio4;
-> +       __u16 knee_npoint0_kneepoint;
-> +       __u16 knee_npoint1_kneepoint;
-> +       __u16 knee_npoint2_kneepoint;
-> +       __u16 knee_npoint3_kneepoint;
-> +       __u16 knee_npoint4_kneepoint;
+> +{
+> +	*offset = ISP_GET_OFF(map);
+> +	*size = ISP_GET_SZ(map);
+> +}
+> +
+...
+> +
+> +static const struct v4l2_frmsize_stepwise neoisp_frmsize_stepwise = {
+> +	.min_width = NEOISP_MIN_W,
+> +	.min_height = NEOISP_MIN_H,
+> +	.max_width = NEOISP_MAX_W,
+> +	.max_height = NEOISP_MAX_H,
+> +	.step_width = 1UL << NEOISP_ALIGN_W,
+> +	.step_height = 1UL << NEOISP_ALIGN_H,
+> +};
+
+why put this into neoisp_fmt.h? if two c file include it, these data will
+be duplicated
+
+...
+> +		bit = NEO_PIPE_CONF_SOFT_RESET_HARD_RESET;
+> +
+> +	neoisp_wr(neoispd, NEO_PIPE_CONF_SOFT_RESET, bit);
+> +
+> +	/* Wait for auto-clear */
+> +	do {
+> +		usleep_range(1, 2);
+> +		val = neoisp_rd(neoispd, NEO_PIPE_CONF_SOFT_RESET);
+> +		count--;
+> +	} while ((val & bit) && count);
+
+Use read_poll_timeout()
+
+> +
+> +	if (val & bit)
+> +		dev_warn(neoispd->dev, "%s reset incomplete\n",
+> +			 is_hw ? "hw" : "sw");
+> +}
+...
+> +		/*
+> +		 * Take a copy of streaming_map: nodes activated after this
+> +		 * point are ignored when preparing this job
+> +		 */
+> +		streaming_map = neoispd->streaming_map;
+> +	}
+> +
+> +	job = kzalloc(sizeof(*job), GFP_KERNEL);
+
+use kzalloc_obj()
+
+> +	if (!job)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < NEOISP_NODES_COUNT; i++) {
+...
+> +static irqreturn_t neoisp_irq_handler(int irq, void *dev_id)
+> +{
+> +	struct neoisp_dev_s *neoispd = (struct neoisp_dev_s *)dev_id;
+> +	struct neoisp_buffer_s **buf = neoispd->queued_job.buf;
+> +	u64 ts = ktime_get_ns();
+> +	u32 irq_status = 0;
+> +	u32 irq_clear = 0;
+> +	bool done = false;
+> +	int i;
+> +
+> +	irq_status = neoisp_rd(neoispd, NEO_PIPE_CONF_INT_STAT0);
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_S_FS1) {
+> +		dev_dbg(neoispd->dev, "Neo IRQ FS1 !\n");
+> +		irq_clear |= NEO_PIPE_CONF_INT_STAT0_S_FS1;
+> +		done = false;
+> +	}
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_S_FS2) {
+> +		dev_dbg(neoispd->dev, "Neo IRQ FS2 !\n");
+> +		irq_clear |= NEO_PIPE_CONF_INT_STAT0_S_FS2;
+> +		done = false;
+> +	}
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_S_FD1) {
+> +		dev_dbg(neoispd->dev, "Neo IRQ FD1 !\n");
+> +		irq_clear |= NEO_PIPE_CONF_INT_STAT0_S_FD1;
+> +		done = false;
+> +	}
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_S_STATD) {
+> +		dev_dbg(neoispd->dev, "Neo IRQ STATD !\n");
+> +		irq_clear |= NEO_PIPE_CONF_INT_STAT0_S_STATD;
+> +		done = false;
+> +	}
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_S_DRCD) {
+> +		dev_dbg(neoispd->dev, "Neo IRQ DRCD !\n");
+> +		neoisp_ctx_get_stats(neoispd, buf[NEOISP_STATS_NODE]);
+> +		irq_clear |= NEO_PIPE_CONF_INT_STAT0_S_DRCD;
+> +		done = false;
+> +	}
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_S_BUS_ERR) {
+> +		irq_clear |= NEO_PIPE_CONF_INT_STAT0_S_BUS_ERR;
+> +		dev_err(neoispd->dev, "Neo IRQ BUS ERR!\n");
+> +		done = true;
+> +	}
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_S_TRIG_ERR) {
+> +		dev_err(neoispd->dev, "Neo IRQ TRIG ERR !\n");
+> +		irq_clear |= NEO_PIPE_CONF_INT_STAT0_S_TRIG_ERR;
+> +		done = true;
+> +	}
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_S_CSI_TERR) {
+> +		dev_err(neoispd->dev, "Neo IRQ TRIG CSI Trigger ERR !\n");
+> +		irq_clear |= NEO_PIPE_CONF_INT_STAT0_S_CSI_TERR;
+> +		done = true;
+> +	}
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_S_FD2) {
+> +		dev_dbg(neoispd->dev, "Neo IRQ FD2 !\n");
+> +		irq_clear |= NEO_PIPE_CONF_INT_STAT0_S_FD2;
+> +		done = true;
+> +	}
+> +
+> +	if (irq_status & NEO_PIPE_CONF_INT_STAT0_BUSY)
+> +		dev_err(neoispd->dev, "Neo is busy !\n");
+> +
+> +	neoisp_wr(neoispd, NEO_PIPE_CONF_INT_STAT0, irq_clear);
+
+Did you share irq with other device?
+
+you can use directly
+	neoisp_wr(neoispd, NEO_PIPE_CONF_INT_STAT0, irq_status);
+
+and if there are unexpected irq happen, which is not in your check list,
+it will cause irq storm.
+
+	so need more if block
+
+	just
+
+	if (irq_status & (NEO_PIPE_CONF_INT_STAT0_S_BUS_ER | irq_status & NEO_PIPE_CONF_INT_STAT0_S_BUS_ER ...)
+		done = true;
+
+default done is falue.
+
+> +
+> +	if (done) {
+> +		for (i = 0; i < NEOISP_NODES_COUNT; i++) {
+> +			if (!buf[i])
+> +				continue;
+> +
+> +			buf[i]->vb.sequence = neoispd->frame_sequence;
+> +			buf[i]->vb.vb2_buf.timestamp = ts;
+> +			vb2_buffer_done(&buf[i]->vb.vb2_buf, VB2_BUF_STATE_DONE);
+> +
+> +			/* To prevent double buffer handling in case of spurius interrupt */
+> +			buf[i] = NULL;
+> +		}
+> +		/* Update frame_sequence */
+> +		neoispd->frame_sequence++;
+> +		/* Check if there's more to do before going to sleep */
+> +		neoisp_schedule(neoispd, true);
+> +	}
+> +
+> +	return IRQ_HANDLED;
+> +}
+...
+> +static int neoisp_init_node(struct neoisp_dev_s *neoispd, u32 id)
+> +{
+> +	bool output = node_desc_is_output(&node_desc[id]);
+> +	struct neoisp_node_s *node = &neoispd->node[id];
+> +	struct media_entity *entity = &node->vfd.entity;
+> +	struct media_pad *mpad;
+> +	struct video_device *vdev = &node->vfd;
+> +	struct vb2_queue *q = &node->queue;
+> +	int ret;
+
+please try keep revise christmas tree order for nice look.
+
+> +
+> +	node->id = id;
+> +	node->neoisp = neoispd;
+> +	node->buf_type = node_desc[id].buf_type;
+> +
+...
+> +{
+> +	struct v4l2_device *v4l2_dev = &neoispd->v4l2_dev;
+> +	u32 num_registered = 0;
+> +	int ret;
+> +
+> +	mutex_init(&neoispd->queue_lock);
+
+suppose this function call from probe, so you can use devm_mutex_init()
+
+> +
+> +	/* Register v4l2_device and media_device */
+> +	v4l2_dev->mdev = mdev;
+> +	strscpy(v4l2_dev->name, NEOISP_NAME, sizeof(v4l2_dev->name));
+...
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to request irq: %d\n", ret);
+> +		goto err_irq;
+> +	}
+> +
+> +	pm_runtime_set_autosuspend_delay(dev, NEOISP_SUSPEND_TIMEOUT_MS);
+> +	pm_runtime_use_autosuspend(dev);
+> +	pm_runtime_enable(dev);
+
+devm_pm_runtime_enable();
+
+> +	ret = pm_runtime_resume_and_get(dev);
+
+you can use below code now, needn't goto branch
+
+	PM_RUNTIME_ACQUIRE_AUTOSUSPEND(dev, pm);
+	if (PM_RUNTIME_ACQUIRE_ERR(&pm))
+		return -ENXIO;
+
+
+> +	if (ret < 0) {
+> +		dev_err(dev, "Unable to resume the device: %d\n", ret);
+> +		goto err_pm_runtime_disable;
+> +	}
+> +
+> +	ret = neoisp_init_devices(neoispd);
+> +	if (ret)
+> +		goto err_pm_runtime_suspend;
+> +
+> +	spin_lock_init(&neoispd->hw_lock);
+> +	neoisp_init_hw(neoispd);
+> +	neoisp_set_default_context(neoispd);
+> +
+> +	pm_runtime_mark_last_busy(dev);
+
+Needn't call this now
+
+> +	pm_runtime_put_autosuspend(dev);
+> +
+> +	return 0;
+> +
+> +err_pm_runtime_suspend:
+> +	pm_runtime_put(dev);
+> +err_pm_runtime_disable:
+> +	pm_runtime_dont_use_autosuspend(dev);
+> +	pm_runtime_disable(dev);
+> +err_irq:
+> +	dev_err(dev, "probe: error %d\n", ret);
+> +	return ret;
+> +}
+> +
+> +static void neoisp_remove(struct platform_device *pdev)
+> +{
+> +	struct neoisp_dev_s *neoispd = platform_get_drvdata(pdev);
+> +
+> +	neoisp_destroy_devices(neoispd);
+> +
+> +	if (standalone_mdev)
+> +		media_device_cleanup(&neoispd->mdev);
+> +
+> +	pm_runtime_dont_use_autosuspend(neoispd->dev);
+> +	pm_runtime_disable(neoispd->dev);
+> +}
+> +
+> +static int __maybe_unused neoisp_runtime_suspend(struct device *dev)
+
+Needn't __maybe now
+
+> +{
+> +	struct neoisp_dev_s *neoispd = dev_get_drvdata(dev);
+> +
+> +	clk_bulk_disable_unprepare(neoispd->num_clks, neoispd->clks);
+> +
+> +	return 0;
+> +}
+> +
+...
+> +
+> +static const struct dev_pm_ops neoisp_pm = {
+> +	SET_SYSTEM_SLEEP_PM_OPS(neoisp_pm_suspend, neoisp_pm_resume)
+> +	SET_RUNTIME_PM_OPS(neoisp_runtime_suspend, neoisp_runtime_resume, NULL)
+
+Use new macro
+RUNTIME_PM_OPS
+
 > +};
 > +
 ...
-> +struct neoisp_bnr_cfg_s {
-> +       __u8 ctrl_debug;
-> +       __u8 ctrl_obpp;
-> +       __u8 ctrl_nhood;
-> +       __u8 ypeak_peak_outsel;
-> +       __u8 ypeak_peak_sel;
-> +       __u16 ypeak_peak_low;
-> +       __u16 ypeak_peak_high;
-> +       __u32 yedge_th0_edge_th0;
-> +       __u16 yedge_scale_scale;
-> +       __u8 yedge_scale_shift;
-> +       __u32 yedges_th0_edge_th0;
-> +       __u16 yedges_scale_scale;
-> +       __u8 yedges_scale_shift;
-> +       __u32 yedgea_th0_edge_th0;
-> +       __u16 yedgea_scale_scale;
-> +       __u8 yedgea_scale_shift;
-> +       __u32 yluma_x_th0_th;
-> +       __u16 yluma_y_th_luma_y_th0;
-> +       __u16 yluma_y_th_luma_y_th1;
-> +       __u16 yluma_scale_scale;
-> +       __u8 yluma_scale_shift;
-> +       __u16 yalpha_gain_gain;
-> +       __u16 yalpha_gain_offset;
-> +       __u8 cpeak_peak_outsel;
-> +       __u8 cpeak_peak_sel;
-> +       __u16 cpeak_peak_low;
-> +       __u16 cpeak_peak_high;
-> +       __u32 cedge_th0_edge_th0;
-> +       __u16 cedge_scale_scale;
-> +       __u8 cedge_scale_shift;
-> +       __u32 cedges_th0_edge_th0;
-> +       __u16 cedges_scale_scale;
-> +       __u8 cedges_scale_shift;
-> +       __u32 cedgea_th0_edge_th0;
-> +       __u16 cedgea_scale_scale;
-> +       __u8 cedgea_scale_shift;
-> +       __u32 cluma_x_th0_th;
-> +       __u16 cluma_y_th_luma_y_th0;
-> +       __u16 cluma_y_th_luma_y_th1;
-> +       __u16 cluma_scale_scale;
-> +       __u8 cluma_scale_shift;
-> +       __u16 calpha_gain_gain;
-> +       __u16 calpha_gain_offset;
-> +       __u16 stretch_gain;
+> +
+> +static struct platform_driver neoisp_driver = {
+> +	.probe  = neoisp_probe,
+> +	.remove = neoisp_remove,
+> +	.driver = {
+> +		.name = NEOISP_NAME,
+> +		.pm = &neoisp_pm,
+
+pm_ptr(&neoisp_pm)
+
+> +		.of_match_table = neoisp_dt_ids,
+> +	},
 > +};
+> +
+> +module_platform_driver(neoisp_driver);
+> +
+> +MODULE_DESCRIPTION("NXP NEOISP Hardware");
+> +MODULE_AUTHOR("Antoine Bouyer <antoine.bouyer@nxp.com>");
+> +MODULE_LICENSE("GPL");
+> diff --git a/drivers/media/platform/nxp/neoisp/neoisp_nodes.h b/drivers/media/platform/nxp/neoisp/neoisp_nodes.h
+> new file mode 100644
+> index 000000000000..54986fe13b33
+> --- /dev/null
+> +++ b/drivers/media/platform/nxp/neoisp/neoisp_nodes.h
+> @@ -0,0 +1,54 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +/*
+> + * NEOISP nodes description
+> + *
+> + * Copyright 2023-2026 NXP
+> + */
+> +
+> +#ifndef __NXP_NEOISP_NODES_H
+> +#define __NXP_NEOISP_NODES_H
+> +
+> +#include <linux/videodev2.h>
+> +
+> +#include "neoisp.h"
+> +
+> +static const struct neoisp_node_desc_s node_desc[NEOISP_NODES_COUNT] = {
 
-Does have data alginment problem if use difference compiler? User APP
-may difference compiler and compiler options.
+These const data should not appear in header files.
 
+Frank
+>
