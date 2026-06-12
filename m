@@ -1,141 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B226E392C2E
-	for <imx@lists.linux.dev>; Fri, 12 Jun 2026 13:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895A739280D
+	for <imx@lists.linux.dev>; Fri, 12 Jun 2026 13:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781271402; cv=none; b=GEf7cE1XtlLQ2D+AecZTerWOUi6m01YEDveCLZsfFc+goagjPS3aOObLRxTDIrwIVx5LQvYoU8wj/iHX3VVWaIsVuUnd8y4zb4Hq2Gv+9yR1LagKDTc7CZesTSIwg1E4GC+7sAB1RFmViN+eNVPuhvavwoCcBB3vYFn4nS3/ygo=
+	t=1781271444; cv=none; b=EjxZsMeN6hVoGFbwITfBJ4wkvJivYEn9U1AgrVholGMq40xlGKaCmMk95HBM9ksvK+436DQR5tyXpDkuGFl1h7acYR3eykufm+p8mb0t71OtiqovjiMKDHLClA0w/LzjQkZwQXesjcSmrvgnoiKmjzjN6piVOTSEpJCGwpgQhuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781271402; c=relaxed/simple;
-	bh=4HBg5dr15fVtPYxHq2uaDfqh5Ea0seGuPhKWvKA7weM=;
+	s=arc-20240116; t=1781271444; c=relaxed/simple;
+	bh=zXFvQ0E5XXvfYjLLaHN9nooLsOx11sH8GUySoHzSKwg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NYa3Qf0nFRqc3mptlxhsm4d1Mxhh+B0TE8P9w2fPUCv+GrhrPA7bOShdvPxGuUGScA54mBEEtgqe0NgmlAH7RFWSNvt8uxABJWe3KdXLpZ8G+Q0qZYHYnKXoy67JoCU6eDo61CA4DECJB3qy3/9aZJx1gm+VznoalV2z45gOHC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=osEiKdwl; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=tkut4u7RfCGivBb0wQDMTjuO0K87dhYEPxhmoIbs7kRa5mfEBKadU36jnBawtzEvBiLUWHaKNArR4IiPOAzKPVIBVjwsAeRGFgBP7Z/lNalxBvnqW0JfPYLtLL7gF0T/z+U8TN02FyyTMdoi6csPDlV/fVAZo+7wk2YnN/ISUZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h//ToKaZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="osEiKdwl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2746F1F000E9;
-	Fri, 12 Jun 2026 13:36:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h//ToKaZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCDB1F000E9;
+	Fri, 12 Jun 2026 13:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781271401;
-	bh=203fSnnnizZK7Rp24i9jciIs2oXAuXgVjhTdTzOAPTE=;
+	s=k20260515; t=1781271443;
+	bh=UJaO+qzNu0R63COj84ZnHNEbJ4DN4GjXSuw0GGoPWdg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=osEiKdwl8PHVnpZzBZIWGKyeuCyUlpSxvDyGwmPA1YqNW0/NQEQKYaSRhuq3Nu41O
-	 2kfIKo9+eQDZuHUuVWDSRBjZ/YTB9g++7ZYNCZWz+4IzsGRPWHnVrHS1NUUo60k9WH
-	 PJ4TpgMSpndll8QGHtTE4vxNKUBhejHrGr5erKpVwMc7Wnd60J1tCWNP0e7iqgnxLI
-	 CCveBJ9U25xRRXrM5jxWamPwvrkFLHjrIuWuq5QUur9+Q/nes0IHXfu8HGGoCcTqB/
-	 IGIG1hnJiHq3MOaV6jl4lCdkhBqGPhCQueBVOmp/Ve0r4TNAezMF4yxLSweTZEzeo1
-	 cfPMeOzMygitw==
+	b=h//ToKaZTPo4XZlOGhxFOZuQ7jrs14vDji+KWphUYCaa3kn2ah65XnyZAsZEQbWlj
+	 h5HoeHWdTGHKpeFnKt4wjC9wP1X93/SgwIZly3lNz6HlO2a9n8xSAVt3sFw7dgS5r+
+	 VDicjzWIHxuY8tJYAnvIFgEqC52PxcQsI6yfyXz1vxv+/fLoygfbjozmEOEPHGOI5j
+	 Qeoveg1U2A0HasJ4eK51TE4HZiVvEiCwXMeaGWR+QTydtEBY4HWKZZdye9zAgY7wTb
+	 yzsFnGGDvxLKxSc0MQ+pmY47XA0M64zrdPCL1Br4gI4+WRPVR8WOv24fPRDaQT01J8
+	 7UCnmPhA9Dh+w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 03/11] ASoC: fsl_easrc: Use guard() for spin locks
+Subject: Re: [PATCH 07/11] ASoC: fsl_xcvr: Use guard() for spin locks
 Reply-To: sashiko-reviews@lists.linux.dev
 To: phucduc.bui@gmail.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260612132639.78086-4-phucduc.bui@gmail.com>
-References: <20260612132639.78086-4-phucduc.bui@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260612132639.78086-8-phucduc.bui@gmail.com>
+References: <20260612132639.78086-8-phucduc.bui@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 12 Jun 2026 13:36:40 +0000
-Message-Id: <20260612133641.2746F1F000E9@smtp.kernel.org>
+Date: Fri, 12 Jun 2026 13:37:22 +0000
+Message-Id: <20260612133723.4BCDB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
-New issues:
-- [High] The success path of `fsl_easrc_runtime_resume` falls through to th=
-e error cleanup label, incorrectly disabling the device clock on success.
-- [Medium] Mixing goto-based error handling with scope-based cleanup helper=
-s (`scoped_guard`) in the same function violates subsystem rules.
-
 Pre-existing issues:
-- [High] The `firmware_loaded` flag is prematurely set to 1 before firmware=
- loading succeeds, leading to a NULL pointer dereference on subsequent resu=
-mes if loading fails.
+- [High] The work struct `xcvr->work_rst` can be re-scheduled by the IRQ ha=
+ndler after it is cancelled in `fsl_xcvr_remove()`, leading to a Use-After-=
+Free.
 --
 
-commit 4528b201cb9e89015d267dc100f8b7c044c41e30
+commit cd76e5a17f7950836eed0759c4053e72e241e545
 Author: bui duc phuc <phucduc.bui@gmail.com>
 
-ASoC: fsl_easrc: Use guard() for spin locks
+ASoC: fsl_xcvr: Use guard() for spin locks
+   =20
+Clean up the code using guard() for spin locks. Merely code refactoring,
+and no behavior change.
 
-Clean up the code using guard() for spin locks.
-Merely code refactoring, and no behavior change.
-
-> diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-> index 114a6c0b6b730..edfd943197a00 100644
-> --- a/sound/soc/fsl/fsl_easrc.c
-> +++ b/sound/soc/fsl/fsl_easrc.c
-[ ... ]
-> @@ -2323,13 +2312,11 @@ static int fsl_easrc_runtime_resume(struct device=
- *dev)
->  	regcache_mark_dirty(easrc->regmap);
->  	regcache_sync(easrc->regmap);
-> =20
-> -	spin_lock_irqsave(&easrc->lock, lock_flags);
-> -	if (easrc_priv->firmware_loaded) {
-> -		spin_unlock_irqrestore(&easrc->lock, lock_flags);
-> -		goto skip_load;
-> +	scoped_guard(spinlock_irqsave, &easrc->lock) {
-> +		if (easrc_priv->firmware_loaded)
-> +			return 0;
-> +		easrc_priv->firmware_loaded =3D 1;
-
-[Severity: High]
-This is a pre-existing issue, but does setting firmware_loaded to 1 here ca=
-use
-a NULL pointer dereference on subsequent resumes if fsl_easrc_get_firmware()
-fails?
-
-If the firmware load fails, it returns an error but leaves firmware_loaded
-set to 1.
-
-On the next resume attempt, this function will see firmware_loaded is 1, re=
-turn
-success immediately, and bypass initialization. This causes
-fsl_easrc_prefilter_config() to dereference a NULL
-easrc_priv->firmware_hdr->prefil_scen pointer.
-
->  	}
-> -	easrc_priv->firmware_loaded =3D 1;
-> -	spin_unlock_irqrestore(&easrc->lock, lock_flags);
-> =20
->  	ret =3D fsl_easrc_get_firmware(easrc);
->  	if (ret) {
->  		dev_err(dev, "failed to get firmware\n");
->  		goto disable_mem_clk;
-
-[Severity: Medium]
-Does mixing goto-based error handling with scope-based cleanup helpers like
-scoped_guard() in the same function violate the cleanup subsystem rules?
-
-The expectation in include/linux/cleanup.h is that functions convert all
-resources to scope-based cleanup or none of them.
+> diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+> index 6677d3bf36ec2..41d100500534f 100644
+> --- a/sound/soc/fsl/fsl_xcvr.c
+> +++ b/sound/soc/fsl/fsl_xcvr.c
 
 [ ... ]
-> @@ -2377,9 +2364,6 @@ static int fsl_easrc_runtime_resume(struct device *=
-dev)
->  			goto disable_mem_clk;
->  	}
-> =20
-> -skip_load:
-> -	return 0;
-> -
->  disable_mem_clk:
->  	clk_disable_unprepare(easrc->mem_clk);
->  	return ret;
+
+> @@ -1448,11 +1445,10 @@ static void reset_rx_work(struct work_struct *wor=
+k)
 
 [Severity: High]
-Since the return 0 on the success path was removed, does the success path in
-fsl_easrc_runtime_resume() now fall through into the disable_mem_clk label?
+This is a pre-existing issue, but could this work struct be rescheduled by =
+an
+interrupt after it has been cancelled during removal, leading to a
+use-after-free?
 
-It appears this will incorrectly disable the device clock when the firmware
-initialization successfully completes.
+In fsl_xcvr_remove(), the driver calls cancel_work_sync(&xcvr->work_rst),
+but hardware interrupts are not explicitly disabled before devres cleans
+up. Because irq0_isr() was registered with devm_request_irq(), the interrupt
+handler remains active after fsl_xcvr_remove() returns.
+
+If an interrupt fires in this window, irq0_isr() can call:
+
+    if (isr & (FSL_XCVR_IRQ_PREAMBLE_MISMATCH |
+               ...)) {
+        schedule_work(&xcvr->work_rst);
+    }
+
+This queues reset_rx_work() on a device structure (xcvr) that devres will s=
+oon
+free, resulting in a use-after-free when the work queue executes.
+
+>  {
+>  	struct fsl_xcvr *xcvr =3D container_of(work, struct fsl_xcvr, work_rst);
+>  	struct device *dev =3D &xcvr->pdev->dev;
+> -	unsigned long lock_flags;
+>  	u32 ext_ctrl;
+> =20
+>  	dev_dbg(dev, "reset rx path\n");
+> -	spin_lock_irqsave(&xcvr->lock, lock_flags);
+> +	guard(spinlock_irqsave)(&xcvr->lock);
+>  	regmap_read(xcvr->regmap, FSL_XCVR_EXT_CTRL, &ext_ctrl);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612132639.7808=
-6-1-phucduc.bui@gmail.com?part=3D3
+6-1-phucduc.bui@gmail.com?part=3D7
