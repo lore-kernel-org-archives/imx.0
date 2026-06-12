@@ -1,156 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57A138AC65
-	for <imx@lists.linux.dev>; Fri, 12 Jun 2026 13:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64751E2606
+	for <imx@lists.linux.dev>; Fri, 12 Jun 2026 13:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781271523; cv=none; b=k85Nl/X2hEtQNgRl0bWh3aA8rKyccA523i9GpjO5N+G7KmJkGPzkeJJyz3wppePYHZqQBOoyblxRXE9K8eIPtIT4e1XM6p5H5JCzH1CH7lvTLkjksdc6ZnN803bW4IPjEmSU0XE+Ej6OdbppgO5wUbLbxUH2TbKsJR7mUDYrl3I=
+	t=1781271538; cv=none; b=XfCdsKxg0e8YgSJG/PmnMI3RXH3qZrNXJVcHikadyfMI2mifw0750Z60jwCP9peP6JYcy4mttlx+kktTYwDPMVeK42AEAJAOyXB88zfh6zkZx8I75GLbRcVXisKpc6edIdR2QoBJObAkIZ8yLVbrI2SPvwWeMNOQuOBcbAn/scE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781271523; c=relaxed/simple;
-	bh=/pwq/vUMjV+N34PlwzqF2rlrnSaXF0xmuufya8KrXRs=;
+	s=arc-20240116; t=1781271538; c=relaxed/simple;
+	bh=6S4mCJf/T7NvUUY58Rj/2sghSYp3R+6G/DOX/ZytByU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=EdDOP4E7h3WCE5YencBJsB8/x2byxbqyFbMGVKp+bABBwr2A3E4BSzSZOqR2d0jmwSKrfTWVBJ6Z9cML6xpCnyuOOXHS91AG0sBPWUQD3gB+PYcCTTX2orItvmpvhsuPg9cWMwUO9el5iphINDJlhpsENP32KMngZ5sa2wkejds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VsCWGS9u; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=B0j72V5xv6Mk+u5PLadzFqnKgribip0W8WPzTgxyb/fkVxJdmIlyM8JEPIaR/op/GeEY29srhQ+asChrbsHh2um69cIoJ9wWbt3tSpBmGmZCBFryMskvv0fXaElA5bjUpljesxBdJ+5hrJaSHGlj9cjTd5p7zVuiJI49l0fWwYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6gVAsr6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VsCWGS9u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB4A1F000E9;
-	Fri, 12 Jun 2026 13:38:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6gVAsr6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AB91F000E9;
+	Fri, 12 Jun 2026 13:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781271521;
-	bh=TuG7wEZDi9HQjIqZ//KJrBkmZm7OzD/uIbLtLtj5bsg=;
+	s=k20260515; t=1781271537;
+	bh=LiiyVGfl9h8+L7E/HTYOqfzUB5CP81+Acj25Rk0BfAc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VsCWGS9uh9VfYEFq4NoqRPaySLYiMsM6+wRaLgsFCf4Eb/ZfdGmLUf82gHa1aZ/cj
-	 dFXQk23fTa4M4xigvjKcJ9dyaH6KjJyDjPztOmxtQTGdYDUmxw0swR2+EtGsZTIZh/
-	 9MCi9GucieW9TggCZmznkecJ7gnar3eiUQECapIYibsOEctvqk29LiHE66QMU9PVyM
-	 9q1KbhpzPMzKs0WlyEqR7S5+0lXOaCF4zVrSIRaiZLBLk6mee+qiHLrnwjBWxOzebe
-	 2iGeXu9tObCSfW7JAZFOHgefDzrXzzz6WffO7ZBR+wPSmgclsPbi0O44H3piC0LT6j
-	 LS5HMUB0nuPsg==
+	b=R6gVAsr6QkUsTYJ7JmBjG7GiVmWVQglYjQUzw1Lt5j9fiEOWb/RRca+MzynjwIBQy
+	 8H2uatLbKSOzufzpJJKYDQA+0juAJeBCUWg+xN9jbMho1geN2gxlHQHS/NWxcFtqXK
+	 hGD6L30RjD14Z2JpN2Oyy3w4b2YdxEdB53YD6Dp5JX31vs1EQy27LlJlTUz5fYB9Y+
+	 CAV2RZ9dRTcuPYvtZp11GPvO67cH0BYkfQ9fcxuFXdiTowu80xEjPyXSbtSo3plAj8
+	 KTfEas5DSKI3FNTb9Q+JiNCf/m7kS0vqVSNDZet2FDym/O1U/IeGX/r6yQ+WUhycKK
+	 kbwR6q2rGdg4Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 05/11] ASoC: fsl_spdif: Use guard() for spin locks
+Subject: Re: [PATCH 01/11] ASoC: fsl_asrc: Use guard() for spin locks
 Reply-To: sashiko-reviews@lists.linux.dev
 To: phucduc.bui@gmail.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260612132639.78086-6-phucduc.bui@gmail.com>
-References: <20260612132639.78086-6-phucduc.bui@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260612132639.78086-2-phucduc.bui@gmail.com>
+References: <20260612132639.78086-2-phucduc.bui@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 12 Jun 2026 13:38:40 +0000
-Message-Id: <20260612133841.3FB4A1F000E9@smtp.kernel.org>
+Date: Fri, 12 Jun 2026 13:38:56 +0000
+Message-Id: <20260612133857.60AB91F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] The Q-subcode interrupt handler incorrectly writes its data into t=
-he `subcode` (U-subcode) array, leaving `qsub` empty and corrupting U-subco=
-de data.
-- [High] The `ctl_lock` spinlock does not protect against concurrent modifi=
-cation by the interrupt handler on SMP systems, leading to a critical data =
-race and severe out-of-bounds read.
+- [High] Unvalidated cleanup in fsl_asrc_release_pair() unconditionally rel=
+eases a pair without an ownership check, causing hardware state corruption =
+and channel count tracking errors if fsl_asrc_request_pair() fails.
 --
 
-commit 9c302e33fc7af448093d631b3d2663e0de990905
+commit f44cdf6b851bca6e946cdc01dc94cd1b9c6b9570
 Author: bui duc phuc <phucduc.bui@gmail.com>
 
-ASoC: fsl_spdif: Use guard() for spin locks
+ASoC: fsl_asrc: Use guard() for spin locks
 
-Clean up the code using guard() for spin locks.
-Merely code refactoring, and no behavior change.
+Clean up the code using guard() for spin locks. Merely code refactoring,=20
+and no behavior change.
 
-> diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-> index 1b9be85b34c24..ad1206ed98828 100644
-> --- a/sound/soc/fsl/fsl_spdif.c
-> +++ b/sound/soc/fsl/fsl_spdif.c
-> @@ -853,17 +853,15 @@ static int fsl_spdif_subcode_get(struct snd_kcontro=
-l *kcontrol,
->  	struct snd_soc_dai *cpu_dai =3D snd_kcontrol_chip(kcontrol);
->  	struct fsl_spdif_priv *spdif_priv =3D snd_soc_dai_get_drvdata(cpu_dai);
->  	struct spdif_mixer_control *ctrl =3D &spdif_priv->fsl_spdif_control;
-> -	unsigned long flags;
->  	int ret =3D -EAGAIN;
-> =20
-> -	spin_lock_irqsave(&ctrl->ctl_lock, flags);
-> +	guard(spinlock_irqsave)(&ctrl->ctl_lock);
->  	if (ctrl->ready_buf) {
->  		int idx =3D (ctrl->ready_buf - 1) * SPDIF_UBITS_SIZE;
->  		memcpy(&ucontrol->value.iec958.subcode[0],
->  				&ctrl->subcode[idx], SPDIF_UBITS_SIZE);
->  		ret =3D 0;
->  	}
-
-[Severity: High]
-This is a pre-existing issue, but does ctl_lock actually protect against
-concurrent modification by the interrupt handler on SMP systems?
-
-The ctl_lock is acquired here by readers in fsl_spdif_subcode_get() and
-fsl_spdif_qget(). While this disables local interrupts, the interrupt
-handler (spdif_isr and helpers like spdif_irq_uq_err) can execute
-concurrently on another CPU in an SMP system because it does not acquire
-ctl_lock.
-
-If the ISR clears ctrl->ready_buf to 0 between the if (ctrl->ready_buf)
-check and the calculation of idx, the compiler re-evaluation of
-ready_buf could cause idx to evaluate to -96. This would trigger an
-out-of-bounds read in memcpy, leaking arbitrary kernel heap memory to
-userspace:
-
-sound/soc/fsl/fsl_spdif.c:spdif_irq_uq_err() {
-    ...
-	/* Drop this U/Q buffer */
-	ctrl->ready_buf =3D 0;
-	ctrl->upos =3D 0;
-	ctrl->qpos =3D 0;
-    ...
-}
+> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+> index 5fda9b647c704..0b28bcfa47fed 100644
+> --- a/sound/soc/fsl/fsl_asrc.c
+> +++ b/sound/soc/fsl/fsl_asrc.c
 
 [ ... ]
 
-> @@ -885,17 +883,15 @@ static int fsl_spdif_qget(struct snd_kcontrol *kcon=
-trol,
->  	struct snd_soc_dai *cpu_dai =3D snd_kcontrol_chip(kcontrol);
->  	struct fsl_spdif_priv *spdif_priv =3D snd_soc_dai_get_drvdata(cpu_dai);
->  	struct spdif_mixer_control *ctrl =3D &spdif_priv->fsl_spdif_control;
-> -	unsigned long flags;
->  	int ret =3D -EAGAIN;
-> =20
-> -	spin_lock_irqsave(&ctrl->ctl_lock, flags);
-> +	guard(spinlock_irqsave)(&ctrl->ctl_lock);
->  	if (ctrl->ready_buf) {
->  		int idx =3D (ctrl->ready_buf - 1) * SPDIF_QSUB_SIZE;
->  		memcpy(&ucontrol->value.bytes.data[0],
->  				&ctrl->qsub[idx], SPDIF_QSUB_SIZE);
+> @@ -265,19 +262,16 @@ static void fsl_asrc_release_pair(struct fsl_asrc_p=
+air *pair)
+>  {
+>  	struct fsl_asrc *asrc =3D pair->asrc;
+>  	enum asrc_pair_index index =3D pair->index;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but does the Q-subcode array
-actually contain valid data here?
+This is a pre-existing issue, but does fsl_asrc_release_pair() unconditiona=
+lly=20
+trust the pair's index without verifying ownership?
 
-Looking at the Q-subcode interrupt handler spdif_irq_uqrx_full(), it
-unconditionally writes its data into the subcode (U-subcode) array, even
-when processing a Q-subcode interrupt:
+If fsl_asrc_request_pair() fails (for example, due to insufficient channels=
+),=20
+it returns an error but leaves pair->index and pair->channels unmodified.=20
 
-sound/soc/fsl/fsl_spdif.c:spdif_irq_uqrx_full() {
+The ALSA core handles this configuration failure by invoking the hw_free=20
+callback on the error path:
+
+sound/soc/fsl/fsl_asrc.c:fsl_asrc_dai_hw_free() {
     ...
-	ctrl->subcode[*pos++] =3D val >> 16;
-	ctrl->subcode[*pos++] =3D val >> 8;
-	ctrl->subcode[*pos++] =3D val;
+	if (pair)
+		fsl_asrc_release_pair(pair);
     ...
 }
 
-Because qpos increments up to 24 independently of upos, this overwrites
-the first 24 bytes of the U-channel buffer (ctrl->subcode) and leaves
-qsub empty. As a result, fsl_spdif_qget() will return uninitialized or
-zeroed memory from ctrl->qsub, and the U-subcode data returned to
-userspace is corrupted.
+Since ownership isn't verified here, fsl_asrc_release_pair() blindly uses t=
+he=20
+stale pair->index, forcefully disables the hardware register for that pair,=
+ and=20
+adds the stale pair->channels back to asrc->channel_avail.
 
->  		ret =3D 0;
->  	}
+Could this abruptly destroy the active audio session of another process tha=
+t=20
+owns the pair, and artificially inflate the available channel count?
+
+> -	unsigned long lock_flags;
+> =20
+>  	/* Make sure the pair is disabled */
+>  	regmap_update_bits(asrc->regmap, REG_ASRCTR,
+>  			   ASRCTR_ASRCEi_MASK(index), 0);
+> =20
+> -	spin_lock_irqsave(&asrc->lock, lock_flags);
+> +	guard(spinlock_irqsave)(&asrc->lock);
+> =20
+>  	asrc->channel_avail +=3D pair->channels;
+>  	asrc->pair[index] =3D NULL;
+>  	pair->error =3D 0;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612132639.7808=
-6-1-phucduc.bui@gmail.com?part=3D5
+6-1-phucduc.bui@gmail.com?part=3D1
