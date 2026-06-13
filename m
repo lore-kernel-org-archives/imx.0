@@ -1,136 +1,82 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEC43ACF17
-	for <imx@lists.linux.dev>; Sat, 13 Jun 2026 09:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AD63A48ED;
+	Sat, 13 Jun 2026 22:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781342556; cv=none; b=j3wiyVY5Xvh++qEkh1L3RylV0Hrb9Jwf8WV1b/vzr22j7hlEUrN1gjOI6zVnjoOoSIqVIMJ2npLjE8HvpIQ2hne4lZAL9cdrgxHqk8SMbHxz+d10EQjdH5OE87Fa4Txy8Ocp9woEMeVp0W69IirpfP7iFdu63pmmVZQ1DNKBpEg=
+	t=1781388619; cv=none; b=afHfPCZ/ZZ+eMaEtsarQhOEJiTy+R+H3uLuiVzbCEY0FTDhbhK47c1SP5kZBfsakWGlzmZlrp41Url2dZrwTGb56UNojDZo8HMOERvQEeRXSKopkro1qbS2TBVOndhE4dWb3L6xPpboeYn6yhlXbb7zBJ8OwAMswOAU//gb9zY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781342556; c=relaxed/simple;
-	bh=helDrwuxiWtrf/iPIy4Y9R/hkLMVrwdS0rRl6C7Dn4Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PSOfm+wSkNOZgo9tj0VXxgTutq0tZklBKIjqIuPae4HMjdoF54yq+jeUQFZj6g6oWtI61a7ktc/c8kbHr7ltXrQU5TDkagMVkGP9s6cdY/Xzf2f5w4bjOA1vofN3eOP3/7mio8JV4b3FXPmcKcKT3FlP51XE6q1foByrqcDuQmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZUdzcura; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781388619; c=relaxed/simple;
+	bh=E85k4s2TtfZJ8uSMubSORRlHeaWBtvuUkDF9LZe/R8U=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=kwB2xFtJs8/ICsVzFk4vUSUyy7DSGRDUai798n3nF7bBXl0qWsqWh5C71wOjqHsxwPXtHx2NsNf3WsaIxBWrYrGPh5CtcrMRj5Lgf/RlLt8Nt3xTh5vm8+WgdeFdsS0dzoSOHljrSSKhPXKI2w/nwegcIIJKqwx9Iw+Dh5J/3m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5SQahEE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZUdzcura"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781342553;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dkSlrlMGjyQ/p88XPP6jRxfxndrJ9//6XRAvhwfy0VE=;
-	b=ZUdzcuraVxN0tR4QJtHjX3fl/wRfhoqGYfDmhNfhjFRx2gXExTPMNgBprtslbgAJzh+/c4
-	TOLfjmt5WBXgzFcjW54M/l23ro2DGJ5ZFlDZPKdKCesMClOCg3vFJSX+E/6jpnKEAF5gA/
-	/VXzmmq3ib9yNhFnjChapll3X2dr9xQ=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-13-GgvXaoawP1CuAwuEPfa9xw-1; Sat, 13 Jun 2026 05:22:30 -0400
-X-MC-Unique: GgvXaoawP1CuAwuEPfa9xw-1
-X-Mimecast-MFC-AGG-ID: GgvXaoawP1CuAwuEPfa9xw_1781342550
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-915757be497so259279885a.2
-        for <imx@lists.linux.dev>; Sat, 13 Jun 2026 02:22:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781342550; x=1781947350;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dkSlrlMGjyQ/p88XPP6jRxfxndrJ9//6XRAvhwfy0VE=;
-        b=EGUqp5VOIp47mN5mwUjrNZ/q2dqP5hcgR2NNlCIp5iS4YJDjGrQicyWiMlVHi+WxB2
-         EnSZsaaP+LK76GCVFOkkAn3WDIPOAzizWGeMT5xYYDDOYmF80LPLnLrmk+lkOw5vFHoW
-         DR5cD3C2NpeF7cS+r+ZaM6a5oEayGnokCiwd0sGKHQUgT7pYf3xgHCgZMGTtjWs8hYeJ
-         BMlPTT6ZYhYcbmpgbiBVL00tEb2C78YF8hFoA0kb3vvDpzL6rKw1tqWyXdbJ0NmKYTmq
-         PUy4h7ctUWo0VmryED+g60doYSRyv5dHYNoLEV9VKV0SzT5Jgikwe8dArA5JHBQGZPN2
-         LU1g==
-X-Forwarded-Encrypted: i=1; AFNElJ/gg8dFNTfTVDqSW3lIC5QCWCV8NkAg9q9Oaxn6YEewi/ZehtxtchZDHpTzwNQzYQ4gi6A=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz+Y5OLd17hNCea8yPGhQ3PSDnhwwOswcFE9kXh+uMtS8CHc8fS
-	HOUiHqBj4LFkzTjWLYKZs0fWmBXavS8aQ6x6YC4P74WR9qKWsTzYtwC2wA0RX0SsIKJ44PrmcwA
-	o3TMO6kTF9KVlelgiuIPzNIlMc/JqKfE7uCG3/HHXRQ/wLmVHkC5Ojw==
-X-Gm-Gg: Acq92OG+N2Y9ub+7C4kXJpTuAOHQQT4p1h8onGGCnLHfR1yJB7F9B46Eqk3uL0Bjmne
-	VZc4RKR0Eg5Pusr000NUV0VVpI2GI5sMrcPgzOrlqtfrmH0vCTwHV7pW5kbw22ZZPigKgEBPX+8
-	KK/kuq6edsFTfnVo4twVu9+DTxiK8HyxT9KMBN7bxbBHC8+kQqTh3cbRHlMhJC3C2T2SWV3+uaA
-	9MZ2TzDaMCLYD060o/k0BxEfN9en6s5++tDoPLempbL9oLg7DElKz1ABpFxllUDPBdRTIImzGpk
-	UZ7bKyf1+YQwYqR7wYMdGq1VM28hKP6kHhFgLfY7wNVFvrT1AFIL5Y/TZJtmTuQKcMRhfW6WBfc
-	E+nNg0RCYNL509ydlwPez5+CXQnJozI++cPuR4f8NiH7iDGYJ4ncyn0s=
-X-Received: by 2002:a05:620a:4708:b0:915:cf88:1e41 with SMTP id af79cd13be357-9161bf6c4bfmr926953185a.45.1781342549621;
-        Sat, 13 Jun 2026 02:22:29 -0700 (PDT)
-X-Received: by 2002:a05:620a:4708:b0:915:cf88:1e41 with SMTP id af79cd13be357-9161bf6c4bfmr926950585a.45.1781342549179;
-        Sat, 13 Jun 2026 02:22:29 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.25.72])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f3c324sm454992285a.21.2026.06.13.02.22.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Jun 2026 02:22:28 -0700 (PDT)
-Message-ID: <fe40891c-3fd1-417c-835e-6f1046db7844@redhat.com>
-Date: Sat, 13 Jun 2026 11:22:24 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5SQahEE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCE81F000E9;
+	Sat, 13 Jun 2026 22:10:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781388618;
+	bh=LM9Ad9DH5AVeOwfb75LlD+HrRg8ZLl14zucjpK7Ngh4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=V5SQahEE7SpaRFg33BrGsZmK4ZhW7Vqp9SgPj+QXANrnwZThuEBIrtv45/2GeaGaN
+	 KpqhYzFq38oQrrdRMuvCcFQcTWjHWGmBg8V+0kkWyCgeV/5/MAhuzLNioyUMqwVU5B
+	 7+j+SwXbxTCkVlAoVOrwQeJL+tOwOzN7q3Dbgt3H021rR9SOZX4Ql40peKewV7YWWy
+	 t5arrjS5YxcIaFWTIVMOXJc7ttQn9F7Y3CcFSwl2U9h5zTqgu6hsEHPPRm7X10lX+V
+	 nWComYdNpHWCPRQQeVU/j/xobqsRmE4GQXj+Y3lEqDQGa6ywNnCm+tiy+sTfYRILNs
+	 DKNp2/490w2xQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A463A54A32;
+	Sat, 13 Jun 2026 22:10:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 0/4] m68k: coldfire: fix non-standard readX()/writeX()
- functions
-To: Greg Ungerer <gerg@linux-m68k.org>, linux-m68k@lists.linux-m68k.org
-Cc: linux-kernel@vger.kernel.org, arnd@kernel.org, wei.fang@nxp.com,
- frank.li@nxp.com, shenwei.wang@nxp.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, nico@fluxnic.net, adureghello@baylibre.com,
- ulfh@kernel.org, linux-mmc@vger.kernel.org, linux-can@vger.kernel.org,
- linux-spi@vger.kernel.org, olteanv@gmail.com
-References: <20260609142139.1563360-1-gerg@linux-m68k.org>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260609142139.1563360-1-gerg@linux-m68k.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: z1Xmibfv9x0_CH00iUtq8XR5snO7mTLq9GXGIMUehiA_1781342550
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net-next 1/1] dt-bindings: net: dsa: Convert
+ lan9303.txt to
+ yaml format
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178138861438.1607522.16348781028982190801.git-patchwork-notify@kernel.org>
+Date: Sat, 13 Jun 2026 22:10:14 +0000
+References: <20260610150533.515914-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20260610150533.515914-1-Frank.Li@oss.nxp.com>
+To: Frank Li <Frank.Li@oss.nxp.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, Frank.Li@nxp.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, imx@lists.linux.dev
 
-On 6/9/26 4:12 PM, Greg Ungerer wrote:
-> This odd collection of patches is aimed at fixing the non-standard ColdFire
-> set of readX()/writeX() IO access functions. Instead switching to using the
-> asm-generic definitions in include/asm-generic/io.h. The difficulty comes
-> in trying not to break any drivers with this change.
-> 
-> The implementation of the readX()/writeX() family of IO access functions
-> is non-standard on ColdFire platforms. They either return big-endian (that
-> is native endian) data, or on platforms with PCI bus support check the
-> supplied address and return either big or little endian data based on that
-> check. This is non-standard, they are expected to always return
-> little-endian byte ordered data. Unfortunately this behavior also means
-> that ioreadX()/iowroteX() and their big-endian counter parts
-> ioreadXbe()/iowriteXbe() are currently broken because they are implemented
-> using the readX()/writeX() functions.
-> 
-> Patches 1, 2 and 3 in this series are specific driver changes that can be
-> made independently of the final ColdFire readX()/writeX() change.
-> 
-> Patch 4 is the actual switch to ColdFire building using asm-generic
-> readX()/writeX(), but also contains three driver fixes that are not easily
-> handled independently.
-> 
-> Note that I don't have access to all supported hardware needed to fully
-> test all these changes. I have tested what I have, a bunch of the standard
-> Freescale ColdFire eval boards, and inspected generated code for differences.
-> 
-> Note also that patch 3 relies on changes that are currently only in
-> linux-next, and are scheduled to hit mainline during the next v7.2
-> merge window. Those changes are also available in an immutable git tree
-> at git://git.kernel.org/pub/scm/linux/kernel/git/gerg/m68knommu.git
-> cf-internal-io branch.
+Hello:
 
-I understand that with this series you are targeting the m68K tree, am I
-correct?
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-A possibly better option would be, after that the pre-req patches land
-into Linus's tree, to share an immutable branch for this series, so that
-both m68k and net-next could pull it.
+On Wed, 10 Jun 2026 11:05:30 -0400 you wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Convert lan9303.txt to yaml format to fix below CHECK_DTBS warnings:
+> arch/arm/boot/dts/nxp/imx/imx53-kp-hsc.dtb: /soc/bus@50000000/i2c@53fec000/switch@a: failed to match any schema with compatible: ['smsc,lan9303-i2c']
+> 
+> Additional changes:
+>   - rename switch-phy to switch in example.
+> 
+> [...]
 
-/P
+Here is the summary with links:
+  - [v3,net-next,1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml format
+    https://git.kernel.org/netdev/net-next/c/b693b51e0829
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
