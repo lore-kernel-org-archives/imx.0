@@ -1,86 +1,72 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FA01F5821
-	for <imx@lists.linux.dev>; Sat, 13 Jun 2026 04:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEC43ACF17
+	for <imx@lists.linux.dev>; Sat, 13 Jun 2026 09:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781326021; cv=none; b=HJgA1DwcnzwfiXW6MWEUT2ilKR5NWZ9OtCT30jcrbn/drKbnZy54FWIq18iYqxZbnAMUMh4D+EOh5B2zp3gLnVXSPqmQuVkfpgThTw8gwiwXNB2Pxy+iie80Iy9Z6JcL3lknk7gtziUv1WiqzXtR8X/t2a8FyOLFbCD/oXr2Mko=
+	t=1781342556; cv=none; b=j3wiyVY5Xvh++qEkh1L3RylV0Hrb9Jwf8WV1b/vzr22j7hlEUrN1gjOI6zVnjoOoSIqVIMJ2npLjE8HvpIQ2hne4lZAL9cdrgxHqk8SMbHxz+d10EQjdH5OE87Fa4Txy8Ocp9woEMeVp0W69IirpfP7iFdu63pmmVZQ1DNKBpEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781326021; c=relaxed/simple;
-	bh=Va3NT1tqZbe5IMgKWr3GK0oOwzn3cWko4YKcItDxgYU=;
+	s=arc-20240116; t=1781342556; c=relaxed/simple;
+	bh=helDrwuxiWtrf/iPIy4Y9R/hkLMVrwdS0rRl6C7Dn4Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IlAVXOL/woy+GGDIcbKRGEGuJDS7qUCncQaxUUzMrZXYmdOdxC8QlNT1MswM+V4k/sSeO7N7kqkOG2zzStoXQLaNMHGRbjwNgtRvu4uiZ+boFL7ahV3KysD8wxD0rH1vGOQaUfUsSWTC9eXNpnFCst4PvY8Mwrm6eOE2ro1+f3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FbdGHNk0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=M4y4chPK; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=PSOfm+wSkNOZgo9tj0VXxgTutq0tZklBKIjqIuPae4HMjdoF54yq+jeUQFZj6g6oWtI61a7ktc/c8kbHr7ltXrQU5TDkagMVkGP9s6cdY/Xzf2f5w4bjOA1vofN3eOP3/7mio8JV4b3FXPmcKcKT3FlP51XE6q1foByrqcDuQmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZUdzcura; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FbdGHNk0";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="M4y4chPK"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65D3cvSb4031120
-	for <imx@lists.linux.dev>; Sat, 13 Jun 2026 04:46:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WltrxbE+VrzBAeQAuOOkNg0JVKgr8R9KzViSn7S/z0g=; b=FbdGHNk0J3dmTF7E
-	VbQOfepA/30dcFFN0K2Pz+a7TZTVL22LrVnCHKwb5WTNq6hXW+woyk+osv4XI4+i
-	nf/o2NnppS+JkMLl1xOrxMjvVHirBcdYkmMu9YI7Len5y2pRp2v19aHRZlR6Ph5f
-	gkyfvYO7LzTNC23um3t0QNvDuDuJIr3qYRSP7HgkkjlMmt+628mNI71JcF3HEpye
-	dUEu5ltfJnQVrSU4oC3RAgda7qx20KjVjQ0J6zKbZ2k8puErNnYYn9n3fA+SuHNj
-	YT7FLed7i+PdajDeJ4/Q+9lp+rb/mzEqwWx1RxjgG9p5/X9mDhwYgDxt0lL+Ddce
-	5mjpRw==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eryffg46p-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sat, 13 Jun 2026 04:46:59 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2beff6b6e74so21829555ad.1
-        for <imx@lists.linux.dev>; Fri, 12 Jun 2026 21:46:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781326019; x=1781930819; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WltrxbE+VrzBAeQAuOOkNg0JVKgr8R9KzViSn7S/z0g=;
-        b=M4y4chPKbWWoADG8gxhBvRzel2PrX71VDddU9ifRZB4XO29l79iHkdQA5VeuA6N4JK
-         Pg3LNARD/pK95HEK4/FJKQXUeATZ46Qc01WM8DCqTfQtjo6xEN1YeUj6bQWGKwcPMBSv
-         Jml7FpRekHUQRUr1c8zbBmC1aGODjSQZHzM2GHmNdRypgOeWpfL6vsxcjru9AoLbo4dI
-         pvzpYBePoZ7YMPU7GG+JKmZETX6f6LNFOMyLjXz21FV/VLaa1qd5zMU3UAml3TLjE6Il
-         4hZqzQnpkeXRtKpE6FPpV+HrKAhzrogCwINUy/GK4xu6i1bP2uwRT5uH0BW/To1Jm4iZ
-         FDUA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZUdzcura"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781342553;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dkSlrlMGjyQ/p88XPP6jRxfxndrJ9//6XRAvhwfy0VE=;
+	b=ZUdzcuraVxN0tR4QJtHjX3fl/wRfhoqGYfDmhNfhjFRx2gXExTPMNgBprtslbgAJzh+/c4
+	TOLfjmt5WBXgzFcjW54M/l23ro2DGJ5ZFlDZPKdKCesMClOCg3vFJSX+E/6jpnKEAF5gA/
+	/VXzmmq3ib9yNhFnjChapll3X2dr9xQ=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-13-GgvXaoawP1CuAwuEPfa9xw-1; Sat, 13 Jun 2026 05:22:30 -0400
+X-MC-Unique: GgvXaoawP1CuAwuEPfa9xw-1
+X-Mimecast-MFC-AGG-ID: GgvXaoawP1CuAwuEPfa9xw_1781342550
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-915757be497so259279885a.2
+        for <imx@lists.linux.dev>; Sat, 13 Jun 2026 02:22:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781326019; x=1781930819;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=1e100.net; s=20251104; t=1781342550; x=1781947350;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WltrxbE+VrzBAeQAuOOkNg0JVKgr8R9KzViSn7S/z0g=;
-        b=TRSkCGM3ZSHX6s+awcf9ibFdOlqu6zIPcx2FBOl5r3Plo58yWbwm+QSqjDJ7wJ00pS
-         hux2wejnYN1R5miCAnvy5AgQqwUb0H588AhcW7J9gQ6VA8MzWsD2luhVb5IK6JgMhhRS
-         v93k19YHyrXbogxtFyWFmcDQrL3BgaF3T00/mhTdcs3tjR9aHFp/oxAevlEJDNHJbyVT
-         lF3bSEF8flUOnmhwxf3dmYkKg56hF5c2Sc6iT/PW7JP+ZbgQBcdlitkKHefCamleRqR5
-         RkJEUf+emQ+HytYs87YSUL8i5auIpHlf9m0gTmY2J+ZulgeCGP9eSyCHNiAIBwPyANMq
-         p7IQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/KN6p8sN2Pkx/64icnRQpiZhxBHGpQRtcrpWtgyxUNx++14cJdVgBcenNN8f8a2KqZ3FQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw6u1SdQxRfF43tPXO2PUYHXawJIZ/855uIRIezu2XpLx4JwIre
-	1RfKKvHhsw1SXYRfdAYFtPGmx/SbTJVvNbE4+IGiGJyxQs0BhvW4LQCITYrt1RxmemR1jIyebXr
-	sMFy1Wi7/qGugTqaY7AVLuKKEMOxqGF8u1TOk21hcePthtA2AU+l7Azc=
-X-Gm-Gg: Acq92OG127ptKGNJeogwOvj+3XFzLCkHdp3o+xHRlkOige6o01n0in7gXrU82i5DAhV
-	VS6R71kKJ1sO4spteKo2vXRStfwpfRVs8dZVbTf5RqAYCNcPlrhYAZmbZ8Gh2YhtC+b1YZM6HsA
-	SVNnjF2xTdYxWUhN55z1Ko8X+jE06xcaG66tQqzhLxa6i7d596AjXDLOijHOW0uV5Mpn6uGfvz9
-	gBp6P0q0gvbs6PJ65FQJUTh+eu6TJiO88BwhvFDcTUqEfjCyNMgXlDCWSuV6h3BO92dXv19LO/t
-	4tDfMm4QOsrWzsbOcbfp6UBA3GN04D5OhKxtCuZ1IiZrWtkGsZV+91l7FsTRaJc3tS8JThzn/QZ
-	krPh+WYA4HPw9HQtz02l38JwSgwtCTSSzivPyhnqyJQAIRDyYsEA=
-X-Received: by 2002:a17:903:3d0e:b0:2c2:bd0d:3cfa with SMTP id d9443c01a7336-2c4110b38d6mr61050725ad.11.1781326018943;
-        Fri, 12 Jun 2026 21:46:58 -0700 (PDT)
-X-Received: by 2002:a17:903:3d0e:b0:2c2:bd0d:3cfa with SMTP id d9443c01a7336-2c4110b38d6mr61050515ad.11.1781326018461;
-        Fri, 12 Jun 2026 21:46:58 -0700 (PDT)
-Received: from [192.168.1.11] ([103.211.19.106])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c432c8becesm37162965ad.56.2026.06.12.21.46.50
+        bh=dkSlrlMGjyQ/p88XPP6jRxfxndrJ9//6XRAvhwfy0VE=;
+        b=EGUqp5VOIp47mN5mwUjrNZ/q2dqP5hcgR2NNlCIp5iS4YJDjGrQicyWiMlVHi+WxB2
+         EnSZsaaP+LK76GCVFOkkAn3WDIPOAzizWGeMT5xYYDDOYmF80LPLnLrmk+lkOw5vFHoW
+         DR5cD3C2NpeF7cS+r+ZaM6a5oEayGnokCiwd0sGKHQUgT7pYf3xgHCgZMGTtjWs8hYeJ
+         BMlPTT6ZYhYcbmpgbiBVL00tEb2C78YF8hFoA0kb3vvDpzL6rKw1tqWyXdbJ0NmKYTmq
+         PUy4h7ctUWo0VmryED+g60doYSRyv5dHYNoLEV9VKV0SzT5Jgikwe8dArA5JHBQGZPN2
+         LU1g==
+X-Forwarded-Encrypted: i=1; AFNElJ/gg8dFNTfTVDqSW3lIC5QCWCV8NkAg9q9Oaxn6YEewi/ZehtxtchZDHpTzwNQzYQ4gi6A=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz+Y5OLd17hNCea8yPGhQ3PSDnhwwOswcFE9kXh+uMtS8CHc8fS
+	HOUiHqBj4LFkzTjWLYKZs0fWmBXavS8aQ6x6YC4P74WR9qKWsTzYtwC2wA0RX0SsIKJ44PrmcwA
+	o3TMO6kTF9KVlelgiuIPzNIlMc/JqKfE7uCG3/HHXRQ/wLmVHkC5Ojw==
+X-Gm-Gg: Acq92OG+N2Y9ub+7C4kXJpTuAOHQQT4p1h8onGGCnLHfR1yJB7F9B46Eqk3uL0Bjmne
+	VZc4RKR0Eg5Pusr000NUV0VVpI2GI5sMrcPgzOrlqtfrmH0vCTwHV7pW5kbw22ZZPigKgEBPX+8
+	KK/kuq6edsFTfnVo4twVu9+DTxiK8HyxT9KMBN7bxbBHC8+kQqTh3cbRHlMhJC3C2T2SWV3+uaA
+	9MZ2TzDaMCLYD060o/k0BxEfN9en6s5++tDoPLempbL9oLg7DElKz1ABpFxllUDPBdRTIImzGpk
+	UZ7bKyf1+YQwYqR7wYMdGq1VM28hKP6kHhFgLfY7wNVFvrT1AFIL5Y/TZJtmTuQKcMRhfW6WBfc
+	E+nNg0RCYNL509ydlwPez5+CXQnJozI++cPuR4f8NiH7iDGYJ4ncyn0s=
+X-Received: by 2002:a05:620a:4708:b0:915:cf88:1e41 with SMTP id af79cd13be357-9161bf6c4bfmr926953185a.45.1781342549621;
+        Sat, 13 Jun 2026 02:22:29 -0700 (PDT)
+X-Received: by 2002:a05:620a:4708:b0:915:cf88:1e41 with SMTP id af79cd13be357-9161bf6c4bfmr926950585a.45.1781342549179;
+        Sat, 13 Jun 2026 02:22:29 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.25.72])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f3c324sm454992285a.21.2026.06.13.02.22.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jun 2026 21:46:58 -0700 (PDT)
-Message-ID: <83594a83-64ea-4c52-b0b7-fd0070f03f04@oss.qualcomm.com>
-Date: Sat, 13 Jun 2026 10:16:49 +0530
+        Sat, 13 Jun 2026 02:22:28 -0700 (PDT)
+Message-ID: <fe40891c-3fd1-417c-835e-6f1046db7844@redhat.com>
+Date: Sat, 13 Jun 2026 11:22:24 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -88,105 +74,63 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] arm64: dts: qcom:
- shikra-cqm-cqs-evk-imx577-camera: Add DT overlay
-To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-        Bryan O'Donoghue <bod@kernel.org>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        Suresh Vankadara <quic_svankada@quicinc.com>,
-        Vikram Sharma <vikram.sharma@oss.qualcomm.com>
-References: <20260608-shikra-camss-review-v2-0-ca1936bf1219@oss.qualcomm.com>
- <20260608-shikra-camss-review-v2-6-ca1936bf1219@oss.qualcomm.com>
- <b10ecb42-0d4f-4037-b786-cc52bcd1bdd6@linaro.org>
+Subject: Re: [PATCHv2 0/4] m68k: coldfire: fix non-standard readX()/writeX()
+ functions
+To: Greg Ungerer <gerg@linux-m68k.org>, linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org, arnd@kernel.org, wei.fang@nxp.com,
+ frank.li@nxp.com, shenwei.wang@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, nico@fluxnic.net, adureghello@baylibre.com,
+ ulfh@kernel.org, linux-mmc@vger.kernel.org, linux-can@vger.kernel.org,
+ linux-spi@vger.kernel.org, olteanv@gmail.com
+References: <20260609142139.1563360-1-gerg@linux-m68k.org>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260609142139.1563360-1-gerg@linux-m68k.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: z1Xmibfv9x0_CH00iUtq8XR5snO7mTLq9GXGIMUehiA_1781342550
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-In-Reply-To: <b10ecb42-0d4f-4037-b786-cc52bcd1bdd6@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=HuxG3UTS c=1 sm=1 tr=0 ts=6a2ce0c3 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=RuEr1PiGI7RNW/QBahnYvg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=iljdq1zszXl5pgKHGr8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-ORIG-GUID: J3K-zyFh6iGUQukCT3LjFJSKel1MAa8L
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDA0MyBTYWx0ZWRfX5FJ9MPwdOmPA
- NBa2/ueJLloDfPNd6QiD6lkZ8WukwPhPv0NK+NYMJ/grv22KvPHrrcfzJ2ENLtu4Owb00BQWHJK
- GvzDkV3tKpQiNMnikq7aX54yaP2CUs0=
-X-Proofpoint-GUID: J3K-zyFh6iGUQukCT3LjFJSKel1MAa8L
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDA0MyBTYWx0ZWRfX37e1EpAC7AMF
- dOtGUyYxBctjtBqdlakP6GA7PPaSwSSBC6Fy1EKOmR8MQaXTdw2GEJ6PYPsZlOCqj8TQF2wVB+o
- iULQxWGwEgTvClmQk9WehibuvRI+1902dZ2CmCN8+kmLZBb1CDQ4O6+fa1CtTfuwmoxwSBItJzA
- TRkHehsXUN4gV583+B6jRhoL5XZLo6a92AyDEmTTMcEVzpxUsVkVlRX6nxRJCpXRe7It+ysdcLN
- 38Gxwqa/soIdEoWq+MiXjD1mx5FQ1AEqJKzZdvq7aOyWn3o0MWT6+/4UFTak49pcM1z/Q6s5iOk
- Hu52TxkR03wZowH/ydPnJI8bz8IPBgNHtMMRRYYb/Oi7YIqEjbnyo4Ha54cYd8gVwfoi69w3xBq
- eEE6RUeNhXekjEUY36oPZ5xYQ2BNQZcWARYqwvG7pnO0QcIZ3c2gMHJ9Hr+M1FBbZvlaaJaR8/G
- 8QWN+e+V+9E4sLjTZkg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-13_01,2026-06-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 phishscore=0 clxscore=1015 spamscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
- definitions=main-2606130043
+Content-Transfer-Encoding: 7bit
 
-
-
-On 12-06-2026 13:40, Vladimir Zapolskiy wrote:
->> +            imx577_ep1: endpoint {
->> +                link-frequencies = /bits/ 64 <600000000>;
->> +                data-lanes = <0 1 2 3>;
+On 6/9/26 4:12 PM, Greg Ungerer wrote:
+> This odd collection of patches is aimed at fixing the non-standard ColdFire
+> set of readX()/writeX() IO access functions. Instead switching to using the
+> asm-generic definitions in include/asm-generic/io.h. The difficulty comes
+> in trying not to break any drivers with this change.
 > 
-> The numeration of data-lanes shall be started from 1, this has to be fixed.
+> The implementation of the readX()/writeX() family of IO access functions
+> is non-standard on ColdFire platforms. They either return big-endian (that
+> is native endian) data, or on platforms with PCI bus support check the
+> supplied address and return either big or little endian data based on that
+> check. This is non-standard, they are expected to always return
+> little-endian byte ordered data. Unfortunately this behavior also means
+> that ioreadX()/iowroteX() and their big-endian counter parts
+> ioreadXbe()/iowriteXbe() are currently broken because they are implemented
+> using the readX()/writeX() functions.
 > 
-Thanks for pointing it.
-
-Will fix in v3. On MIPI D-PHY, lane 0 is the clock lane, so data lanes
-must start from 1 as per video-interfaces.yaml binding spec.
->> +                remote-endpoint = <&csiphy1_ep>;
->> +            };
->> +        };
->> +    }; 
->> +&tlmm {
->> +    cam1_reset_default: cam1-reset-default-state {
->> +        pins = "gpio33";
->> +        function = "gpio";
->> +        drive-strength = <2>;
->> +        bias-disable;
->> +    };
->> +};
+> Patches 1, 2 and 3 in this series are specific driver changes that can be
+> made independently of the final ColdFire readX()/writeX() change.
 > 
-> Since it's a mezzanine specific pinctl assignment, it shall go to the
-> correspondent .dtso file.
+> Patch 4 is the actual switch to ColdFire building using asm-generic
+> readX()/writeX(), but also contains three driver fixes that are not easily
+> handled independently.
 > 
-> It's a concidence that one .dtso file is good enough for describing the
-> mezzanine for two diffferent boards, but let's exploit it by keeping one
-> dt overlay file as it is now.
+> Note that I don't have access to all supported hardware needed to fully
+> test all these changes. I have tested what I have, a bunch of the standard
+> Freescale ColdFire eval boards, and inspected generated code for differences.
+> 
+> Note also that patch 3 relies on changes that are currently only in
+> linux-next, and are scheduled to hit mainline during the next v7.2
+> merge window. Those changes are also available in an immutable git tree
+> at git://git.kernel.org/pub/scm/linux/kernel/git/gerg/m68knommu.git
+> cf-internal-io branch.
 
-Agreed, will move it to the .dtso in v3.
+I understand that with this series you are targeting the m68K tree, am I
+correct?
 
-This also eliminates the identical cam1_reset_default block duplicated across 
-CQM and CQS board files.
+A possibly better option would be, after that the pre-req patches land
+into Linus's tree, to share an immutable branch for this series, so that
+both m68k and net-next could pull it.
 
-Will incorporate this for the IQS dtso file.
---
-Regards,
-Nihal Kumar Gupta
+/P
+
