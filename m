@@ -1,48 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB48C379EDA;
-	Mon, 15 Jun 2026 18:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C991399368;
+	Mon, 15 Jun 2026 18:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781549233; cv=none; b=h5hDfgFyqGS0Ncl1r+AfSccBXhNu2GYfVAeT2LhdQ0KSASAnn51Hq3O5kIt7PeTTtVj/U298nhi7eABnUY27aFcL2148l+o4wKeCSkHNB/bxAAYAgk1OSNbpBqfGWVgqYfjzLQ8sdmCjesZ14xKuJ/Pukv3s9DLuWwvehII0vAg=
+	t=1781549374; cv=none; b=ucuI7aP4V3TUOHNfAWfA4mWJmx4Wtu+5BQJvHJ3y/0LozHZhMwtRQHXI0exkGvIPF7nHHXMvK4Nhodg8hz0P7TxXnOsoSA0MZpUnZaOps3BiLmssqSqTwiR0+Vu00Uwpban2GMi96Wi7+eKCU0BrwktQvxsTYnJ6I5opM04oIZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781549233; c=relaxed/simple;
-	bh=ROtw0QMHSahF9zUUvC5LxY1nP1UG0Ao/sC5Iyqrkk6Q=;
+	s=arc-20240116; t=1781549374; c=relaxed/simple;
+	bh=XkeWSh+TrjayHJpdwnvpla+DnXMb1VFCr+9OQ2rdagg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qdeHhz9sivZAON7sxwVxueqVc7bgLOYoXTQla+x/v/7hVBBXXD9gj2zKdSdNhDDmZVu7nEnAysVfPG5I1YlrWJoBBdy8ENYoTcBV71Ay9+1c7YSMPB5ZdYSebKCczGUI+y2Zhzbx8b0n64X13DeY1aMxg+Ne1oZtW2OZ0tD9ALA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FL/6g1Ai; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=eKuJX5YFLvsVWVFhItl9guQuNSsrDUwvp/IyXLZOTUcYhSP777x1Um5XWx5JVumlKuV1t6ToZiaJPv9Wx9Au15RbFOPFpQMWui0y2OsPs8aThEe9NEPSbhSslnU03s2YJrobuoKZMuSUITj0yfay/jXJakmNCabT0OLY0TY+hEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l513tM/b; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FL/6g1Ai"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666D81F000E9;
-	Mon, 15 Jun 2026 18:47:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l513tM/b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8918C1F000E9;
+	Mon, 15 Jun 2026 18:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781549232;
-	bh=1AM+L8li4N3UsWbF8Nm5adODubUGTBS+175vEjYCnXE=;
+	s=k20260515; t=1781549372;
+	bh=f2otcKXkniiTUp+5VDPJ4fsoaaEOLI8QZLmJsjDf69Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FL/6g1Ai/tXtYu5rLh3fQ0vYbex/F+xaWdn7kleMFD8x1fJsZCfJXPwh9v/N0evJ4
-	 N14re250of6XIrGotXvXqCVhxq+qurdOQOMP5MQEgizZLjyTCh0JJxvql+8zaRcZ01
-	 1KC0xpN5p+bqjOvvBDnurQ4oMw6Z4NzfJqiU5xAK2i2vDmEMYb1RvtqHLeAG+Q9O+t
-	 6z4Qugo0Zy+xKm+LZHoAo8AChsy67FAPtzhnP9XZauHyAovX2cYceOg/wBkK4YKPmb
-	 Kds/oyL0n/vVCXwq9W8Wnm1NtSiuv0s3N4MGPtb0SQD2Rz+HAP0xk5sVvBSF2ELnN2
-	 pYKA122hpHGvg==
-Date: Mon, 15 Jun 2026 13:47:09 -0500
+	b=l513tM/bCEM2Tf1QvNXpkj3A38IB27Wahc8y6yfI20PkKouMUKFPAKku0Oe5l8PBJ
+	 3Zw4u8r4LYVoEiGoecclxDStWyNSo+B+MREw1zJyd+2iWBsUmKkLweN9srUDqIxaBP
+	 pvpQeoNgdggDFzee/qClUCPY9ZvT4ZlZD9o6IRsofqhWE3WpV24KQ1jIKdkI5ZdEWh
+	 sjRcrQKgcUHKJSeIUfb/vUZN7sBS3HRXaQBuNpcmfdIZFGHRT/OgYU04pD+3UZMgyL
+	 DMjmR3IQqlBRuZM3FLqOIk8SdrSNV2N46wXH3F7BBybdQ81WlMPhBE46mLEM+Ffk7T
+	 TFmps+X/rBlwQ==
+Date: Mon, 15 Jun 2026 13:49:29 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, imx@lists.linux.dev,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	Marco Felsch <m.felsch@pengutronix.de>,
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Linus Walleij <linusw@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Eric Chanudet <echanude@redhat.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-kernel@vger.kernel.org, Alberto Ruiz <aruizrui@redhat.com>,
+	Matthias Brugger <mbrugger@suse.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Fabio Estevam <festevam@gmail.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 1/3] dt-bindings: soc: imx: fsl,imx93-media-blk-ctrl:
- Allow LVDS Display Bridge child node
-Message-ID: <178154922879.1630652.11500293336634076421.robh@kernel.org>
-References: <20260610-imx93-ldb-v3-0-c9b65d742753@nxp.com>
- <20260610-imx93-ldb-v3-1-c9b65d742753@nxp.com>
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Chester Lin <chester62515@gmail.com>, imx@lists.linux.dev,
+	Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org,
+	Enric Balletbo <eballetb@redhat.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, devicetree@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: Re: [PATCH v11 4/6] dt-bindings: pinctrl: s32g2-siul2: describe GPIO
+ and EIRQ resources
+Message-ID: <178154936898.1633409.13595893947195422422.robh@kernel.org>
+References: <20260610132116.1998140-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260610132116.1998140-5-khristineandreea.barbulescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,24 +66,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260610-imx93-ldb-v3-1-c9b65d742753@nxp.com>
+In-Reply-To: <20260610132116.1998140-5-khristineandreea.barbulescu@oss.nxp.com>
 
 
-On Wed, 10 Jun 2026 17:26:21 +0800, Liu Ying wrote:
-> i.MX93 SoC mediamix blk-ctrl contains one LDB_CTRL register and one LVDS
-> register which control video output through a LVDS interface.  Allow the
-> LVDS Display Bridge(LDB) child node and add the child node to example.
+On Wed, 10 Jun 2026 15:21:14 +0200, Khristine Andreea Barbulescu wrote:
+> Extend the S32G2 SIUL2 pinctrl binding to describe the GPIO data and
+> external interrupt resources present in the same SIUL2 hardware block.
 > 
-> i.MX93 LDB child node(bridge@20) is an addressable node, while i.MX93
-> Parallel Display Format Configuration(PDFC) child node(dpi-bridge) is a
-> non-addressable node.  Mixing the addressable and non-addressable child
-> nodes is allowed according to discussion [1].
+> Besides the MSCR and IMCR registers used for pin multiplexing and pad
+> configuration, SIUL2 also contains PGPDO and PGPDI registers
+> for GPIO data and EIRQ registers for external interrupt control.
 > 
-> Link: https://lore.kernel.org/all/n6akxiayi3g6gxcqhreb4iaohmeokoalnqup6h5r2fwdt4zijt@u2wyps55ayqm/ [1]
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> Add GPIO controller properties because the SIUL2 block also provides
+> GPIO functionality, and gpio-ranges are needed to describe the
+> mapping between GPIO lines and pin controller pins.
+> 
+> Document the interrupt controller properties. The SIUL2 block
+> contains EIRQ hardware as part of the same register space. IRQ support
+> itself will be added in a follow-up patch series.
+> 
+> Update the example accordingly to show the complete SIUL2 register
+> layout, including the GPIO data and EIRQ register windows.
+> 
+> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
 > ---
->  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 39 ++++++++++++++++++++++
->  1 file changed, 39 insertions(+)
+>  .../pinctrl/nxp,s32g2-siul2-pinctrl.yaml      | 90 +++++++++++++++++--
+>  1 file changed, 84 insertions(+), 6 deletions(-)
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
