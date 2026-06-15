@@ -1,75 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FDA3321A1;
-	Mon, 15 Jun 2026 21:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8A73168EB;
+	Mon, 15 Jun 2026 21:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781557476; cv=none; b=O+vQaUPO1otljnAM0fZnrAjZ3ipqIP1llj/wUOgfPJBR241oNKfTYSWnpRnNX/HrXBFy/RRVSKu003SktbY4NkyElyWdvmsGmN2+/1OCR0R51y7GLb0JzuNlAcpRj4RPIjZOb5nvLbcA49kZ9UAWBNPiH0+Vdyy9X2wu9mHqNMo=
+	t=1781560224; cv=none; b=nMmwfqbpKWfldoaqbpo4kX91mjlftzGdob0m6vLUebADrB5ODagmz09UGgZM19UvAp78+IkBuPaX2HBmhzn63Qa/jL3JeHkJXBvNHvNsnTRnhuP27Rmxw1/21yu3UrI3szm12qhzF8PaudTSNZFE/+DdmKu7uAteE/dG85Dmlnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781557476; c=relaxed/simple;
-	bh=2WymXcmDnbTlWuMxRn4kNi1soTb/3DvX56AzCNTNZjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gckuib1xZgrxku6gtQfzPqcQH6Q5HxsMxDe2rQb4jrzAaHZIcLLLDZ6tXbwFmX1BhiwQDMvnC9re0sJr08/nxG9irvVSRwQPiPjG+yN6jdWNgAUsUoNio7Xj5GU6lIdprY+TrWDdGsviAXLd7G5l2awRTiUCvnmZRs8Vy+0fRho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2snKoPo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781560224; c=relaxed/simple;
+	bh=nbBHTERh0KFAK1aKiV1GLYZku94l+EpzH+fw+6xwXaY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FQZFhyd01mVd/mv0iPpBVg/Rtzsk9Q8gM3KfX9a1ix5uMSgkWh3PtRfb8c5vcITbO2jk4eNAtJxAlgN9AUMZg/VgitkXKcXJJpl55hdGxvteLfjwpRGG/PjGh04JNsZpu2gN+9biNfKn7OgR5jpQS2lHQs/J98CeiZeFQg9dWPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPlgPyPn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2snKoPo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728481F000E9;
-	Mon, 15 Jun 2026 21:04:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPlgPyPn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170051F000E9;
+	Mon, 15 Jun 2026 21:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781557475;
-	bh=4b0Lv74/nBILk2gIMYWUm6i3SoTaSg4GpRxXNoby7dE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=f2snKoPoB7CwlS7KzqRFdoObM/38la6po2Kp5PWfB8qUzXHJ7XEvm+T0D7AOk8ofj
-	 zItneTSHyEJIJzLhdCGE9qPCSyykot/o54R3ctVUIme7V9qXDtxjb0XsTBpY/5fnIb
-	 9OkOeybaXMpaG+mfcB/ob6KHmJZu9QLZNl0Utc/DALIZZSerMOK85bUpv7VdpklzwF
-	 SAaEUCvo0iba0yAhcjRHytmxWNsqFl7o6RV055yko/bwBKbD3w6bmOFXFCIUjiOHhD
-	 qZlnmHo1y2SXxmlAl91AoR9BMuwC4ypUNB1kXUoLsxiJ0Qx7F8gpM3bBOrXal05L2J
-	 Ow0qzPJQT6s5w==
-Date: Mon, 15 Jun 2026 16:04:32 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: Conor Dooley <conor+dt@kernel.org>, Simona Vetter <simona@ffwll.ch>,
-	Fabio Estevam <festevam@gmail.com>,
-	David Airlie <airlied@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	linux-arm-kernel@lists.infradead.org,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-clk@vger.kernel.org,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Ying Liu <victor.liu@nxp.com>
-Subject: Re: [PATCH v9 4/9] dt-bindings: display: imx: Add i.MX94 DCIF
-Message-ID: <178155747196.1679059.5104272619144115714.robh@kernel.org>
-References: <20260612-dcif-upstreaming-v9-0-8d0ff89aa3c5@oss.nxp.com>
- <20260612-dcif-upstreaming-v9-4-8d0ff89aa3c5@oss.nxp.com>
+	s=k20260515; t=1781560223;
+	bh=B/XcSAGeoGp/BP+1XhwRml/MI2qj10vi9ZYd7jCnORI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=FPlgPyPnuMeIfmdNU0MP3k6aXAwqDVGYRcBE+vdzcnANEahuHxJHj2EkNlS3P1irG
+	 bA8kdm03jzL0CAYujQzr05f7I7SgYDmlEH7AdJf7+j1+P17KJGHbFrrKRJX2ci7urj
+	 YvTxUdTk3Mz5yKlyDsq1tygwgKni+g9/IcHtySqn/EY1SQq7ephrBf5+WEu+BsbXC2
+	 /61fn0E1dvpYIf1ilHh1HAK/H1u/RBp7e5FfRPATCcPXShx/cKIPK8b6Eu4qZg5sO3
+	 uTraskHJ8ayVvuPud8Rfc890OZKeOsgL+Ky+qeM7fuLqQBpT7XTRGm/JxsmD1QPJNq
+	 kM5RnuPl7b74g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568803839A06;
+	Mon, 15 Jun 2026 21:50:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612-dcif-upstreaming-v9-4-8d0ff89aa3c5@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v5 net-next 0/9] net: dsa: netc: add bridge mode support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178156021814.308382.3109768586287971042.git-patchwork-notify@kernel.org>
+Date: Mon, 15 Jun 2026 21:50:18 +0000
+References: <20260611021458.2629145-1-wei.fang@oss.nxp.com>
+In-Reply-To: <20260611021458.2629145-1-wei.fang@oss.nxp.com>
+To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, chleroy@kernel.org, andrew@lunn.ch,
+ olteanv@gmail.com, linux@armlinux.org.uk, wei.fang@nxp.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 
+Hello:
 
-On Fri, 12 Jun 2026 14:58:35 +0300, Laurentiu Palcu wrote:
-> DCIF is the i.MX94 Display Controller Interface which is used to
-> drive a TFT LCD panel or connects to a display interface depending
-> on the chip configuration.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 11 Jun 2026 10:14:49 +0800 you wrote:
+> From: Wei Fang <wei.fang@nxp.com>
 > 
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> ---
->  .../bindings/display/imx/nxp,imx94-dcif.yaml       | 90 ++++++++++++++++++++++
->  1 file changed, 90 insertions(+)
+> This series adds bridge mode support to the NETC DSA switch driver,
+> covering both VLAN-aware and VLAN-unaware operation.
 > 
+> The NETC switch manages forwarding through a set of hardware tables
+> accessed via NTMP: the FDB table (FDBT), VLAN filter table (VFT), egress
+> treatment table (ETT), and egress count table (ECT). The series extends
+> the NTMP layer with the operations required for bridging, then builds the
+> DSA bridge callbacks on top.
+> 
+> [...]
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Here is the summary with links:
+  - [v5,net-next,1/9] net: enetc: add interfaces to manage dynamic FDB entries
+    https://git.kernel.org/netdev/net-next/c/ca394837dfdd
+  - [v5,net-next,2/9] net: enetc: add "Update" and "Delete" operations to VLAN filter table
+    https://git.kernel.org/netdev/net-next/c/c52b6702a948
+  - [v5,net-next,3/9] net: enetc: add interfaces to manage egress treatment table
+    https://git.kernel.org/netdev/net-next/c/3cc291a35939
+  - [v5,net-next,4/9] net: enetc: add "Update" operation to the egress count table
+    https://git.kernel.org/netdev/net-next/c/d51f238a154a
+  - [v5,net-next,5/9] net: dsa: netc: initialize the group bitmap of ETT and ECT
+    https://git.kernel.org/netdev/net-next/c/1a58ae73dd74
+  - [v5,net-next,6/9] net: enetc: add helpers to set/clear table bitmap
+    https://git.kernel.org/netdev/net-next/c/8469b17310d1
+  - [v5,net-next,7/9] net: dsa: netc: add VLAN filter table and egress treatment management
+    https://git.kernel.org/netdev/net-next/c/84b4a3b30abd
+  - [v5,net-next,8/9] net: dsa: netc: add bridge mode support
+    https://git.kernel.org/netdev/net-next/c/751aa5a5d593
+  - [v5,net-next,9/9] net: dsa: netc: implement dynamic FDB entry ageing
+    https://git.kernel.org/netdev/net-next/c/05b5ee610fbb
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
