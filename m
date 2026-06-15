@@ -1,157 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A297A15A864
-	for <imx@lists.linux.dev>; Mon, 15 Jun 2026 09:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72D43E451D
+	for <imx@lists.linux.dev>; Mon, 15 Jun 2026 11:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781517545; cv=none; b=Evsx/hJUXQ1xeJaRq14uvwYFV8Rkfn8TCgQ3y6KOOj391MiUOLVXi2/r8TblA3FQXxPKuRgZ00hqMBT6+RZxWmPpRxCZ8zvvff6gPx4ZnEHMCdHjhaqsn439vWf7APKoCXcTlT+9yrsy/O97O0xTTgju3cCcO9fQ8vhkbhKhPvA=
+	t=1781522757; cv=none; b=sdONbyhCzG8fRK/Se+14zx9r7uQ2tLCtSX27P7jVvjEAyFxcXUUbWKMVytze9uqKyaBtZImD0iyCOhJf93gQu/4tP9+P9mRXhoPzia/ULe4+2ew6eeyEQ/m96i0DDazQxCs3LPdKP/jxlvEp0ZWmmKmx6cFlodvgUdpUdjTbxfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781517545; c=relaxed/simple;
-	bh=Lp3bI1ZiAFl3fgsj4MvXtIASEPhRTHUqn2Nm2zi3KFQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=N1GjctDjrSlBnnPaPEZOdJiOZegSkD2qyy3gStpeqQURGSU4bRToMXvUMjeHqb1gJgRhrMkVXAaSfzS/Ag1eOZKGA/nHuniX8I3FS97JW7v+r2VIActQQ4uf7bDNnpFM8/Vo9sZ1tnKFiN0d9L4Gpp1W3o4DsfnCOzQAjcRLIMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDDP+thf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781522757; c=relaxed/simple;
+	bh=aCiCrCVJCK0CqSjL+oVJoYwplS/qJ1qccA1+xU+pz80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YqA8Dn+9Y87XvTU1BG15p6jNHcJzKmD60LvjrSyoBvfYxO9x62VFI2pxR6dcDe9tiiZI3DDZxywdXDro9RO91M2NPCy35FdRbt+tRIMwZLg0ogvu8yp+/zwyKAzoQe19bWgycpGZowFhHrNOrngMTgWhzdnzgt4RczoS7DFsz3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=PeemKhZV; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDDP+thf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F2D1F000E9;
-	Mon, 15 Jun 2026 09:59:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781517544;
-	bh=2nRGjkFgbZUMfziv87FmadzMBQTe+0CDOxSXFGgxwL0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bDDP+thf9c/B5ur/21TmM/X1YcVqL8xYDEOB+UOk/t9tXwDEmhPThpvQvKaGq0Tuk
-	 HX5eO1Ui3KBh0wJAWNfL9vi5S6gpIOEaFjNEPwsmgjAwhvbXH0air0FIhrSS5G1uwM
-	 B523Pv77Ka0rSAfFUP3BDaM/vWuwrNq68Wdgh8YoFJCbzCqwoUFM+leY43Fvdjashx
-	 5Sym6T8RmfN/lHVIGhAv3AcjdhqWQF4KSQ1CIIzQLrSK7oLL3hWOmbnxPtSxR6I800
-	 31d2bh4Yfga2joQWPOt2KoNNgW5ccm1l5lo2eQefW/QUChZ72ovafFrn7Fcg+f+uCI
-	 8dQyxaNFK1AKg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 09/11] ASoC: fsl_rpmsg: Use guard() for mutex & spin
- locks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: phucduc.bui@gmail.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260615093824.115751-10-phucduc.bui@gmail.com>
-References: <20260615093824.115751-10-phucduc.bui@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 15 Jun 2026 09:59:03 +0000
-Message-Id: <20260615095904.00F2D1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="PeemKhZV"
+Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id F25701FA61;
+	Mon, 15 Jun 2026 13:25:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1781522753;
+	bh=9kKGvPf2rc3hM5ewk0p/1qE43DFbrtoz5U3rTNNnFvA=; h=From:To:Subject;
+	b=PeemKhZVmT1F8yIxLlUuJAU4lWFxfPtbLr/IaaUJsTBvSIl7BvaLMcUfNkWfwhPS4
+	 THWKQZVkEz1vc1HJqsw5BjqDdowsF/ycQyaSTh9KeF8BQ+G89hc4gQQA5x3uBbtyuE
+	 E0pfPpl69Kw4wvN1uXt73iUk+Tgl5dUcvn34trjO0HjdNJFutLSXmXRxdZPBR1Q764
+	 LpofrFVPAAVqC6nrP/N2GgJIWN+YmNjPqT4xaeOdIGoNetOZQtsml3UBQBKabR2F71
+	 7T4EfMZnBiZ476g0WvvRr2FFLx1qQIEY6W6gRyfp5zndXVVbzzCKB0o8KbKoU+s9HL
+	 E9ttnE3ob4lkA==
+Date: Mon, 15 Jun 2026 13:25:49 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Antoine Bouyer <antoine.bouyer@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, julien.vuillaumier@nxp.com,
+	alexi.birlinger@nxp.com, daniel.baluta@nxp.com, peng.fan@nxp.com,
+	frank.li@nxp.com, jacopo.mondi@ideasonboard.com,
+	laurent.pinchart@ideasonboard.com, mchehab@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	michael.riesch@collabora.com, anthony.mcgivern@arm.com,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	ai.luthra@ideasonboard.com, paul.elder@ideasonboard.com,
+	geert@linux-m68k.org, sakari.ailus@linux.intel.com,
+	hverkuil+cisco@kernel.org
+Subject: Re: [PATCH v3 8/8] arm64: dts: freescale: imx95: Add NXP neoisp
+ device tree node
+Message-ID: <20260615112549.GA137559@francesco-nb>
+References: <20260612132039.2089051-1-antoine.bouyer@nxp.com>
+ <20260612132039.2089051-9-antoine.bouyer@nxp.com>
+ <20260614090517.GA7434@francesco-nb>
+ <761f284a-1660-41d5-9625-9b25bf18aca5@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <761f284a-1660-41d5-9625-9b25bf18aca5@nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Mon, Jun 15, 2026 at 11:56:15AM +0200, Antoine Bouyer wrote:
+> On 6/14/26 11:05 AM, Francesco Dolcini wrote:
+> > On Fri, Jun 12, 2026 at 03:20:39PM +0200, Antoine Bouyer wrote:
+> > > Add neoisp device tree node to imx95.dtsi and enable it by default in
+> > > 19x19 evk board.
+> > > 
+> > > Signed-off-by: Antoine Bouyer <antoine.bouyer@nxp.com>
+> > 
+> > ...
+> > 
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > index d6c549c16047..5543a6cb1250 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > @@ -1867,6 +1867,17 @@ pmu@49252000 {
+> > >                        };
+> > >                };
+> > > 
+> > > +             neoisp0: isp@4ae00000 {
+> > > +                     compatible = "nxp,imx95-neoisp";
+> > > +                     reg = <0x0 0x4ae00000 0x0 0x8000>,
+> > > +                           <0x0 0x4afe0000 0x0 0x10000>;
+> > > +                     interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
+> > > +                     clocks = <&scmi_clk IMX95_CLK_CAMCM0>;
+> > > +                     clock-names = "camcm0";
+> > > +                     power-domains = <&scmi_devpd IMX95_PD_CAMERA>;
+> > > +                     status = "disabled";
+> > > +             };
+> > 
+> > Why the node is disabled?  If the node is wholly described in
+> > imx95.dtsi, it should be enabled.
+> 
+> Actually, all nodes are disabled in the SoC dtsi, and enabled on the board
+> dts file, even if fully described on the dtsi. So I used same approach for
+> neoisp.
 
-Pre-existing issues:
-- [High] Non-synchronous timer cancellation (`timer_delete()`) and improper=
- teardown order allow race conditions and use-after-free.
-- [High] Unvalidated remote processor command index allows out-of-bounds ar=
-ray write.
-- [High] Workqueue destroyed before ALSA component unregistration leads to =
-Use-After-Free.
---
+This is not correct. Please check what we do for the GPU/VPU[1] and NPU [2],
+for example. Is there a reason to do it differently for the ISP?
 
-commit fb7a6469268cda085459a69bd6a9d37338ef0a42
-Author: bui duc phuc <phucduc.bui@gmail.com>
+Francesco
 
-ASoC: fsl_rpmsg: Use guard() for mutex & spin locks
-   =20
-Clean up the code using guard() for mutex & spin locks.
-Merely code refactoring, and no behavior change.
-
-> diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
-> index 031e5272215d4..7210393dfa5d9 100644
-> --- a/sound/soc/fsl/imx-pcm-rpmsg.c
-> +++ b/sound/soc/fsl/imx-pcm-rpmsg.c
-
-[ ... ]
-
-> @@ -71,7 +67,6 @@ static int imx_rpmsg_pcm_send_message(struct rpmsg_msg =
-*msg,
->  	if (!ret) {
->  		dev_err(&rpdev->dev, "rpmsg_send cmd %d timeout!\n",
->  			msg->s_msg.header.cmd);
-> -		mutex_unlock(&info->msg_lock);
->  		return -ETIMEDOUT;
->  	}
-
-[Severity: High]
-This is a pre-existing issue, but can this out-of-bounds write occur here?
-
-Looking at the code just below this in imx_rpmsg_pcm_send_message():
-
-	memcpy(&msg->r_msg, &info->r_msg, sizeof(struct rpmsg_r_msg));
-	memcpy(&info->msg[msg->r_msg.header.cmd].r_msg,
-	       &msg->r_msg, sizeof(struct rpmsg_r_msg));
-
-The msg->r_msg.header.cmd field comes from the remote processor and is used
-directly as an array index for info->msg. Since cmd is an 8-bit unsigned
-integer, and the array bounds are likely smaller, a compromised remote
-processor could send a command ID up to 255.
-
-Does this allow an out-of-bounds write that corrupts adjacent heap
-structures like the workqueue pointer?
-
-[ ... ]
-
-> @@ -681,10 +672,10 @@ static void imx_rpmsg_pcm_work(struct work_struct *=
-work)
->  		info->send_message(&work_of_rpmsg->msg, info);
-> =20
->  	/* update read index */
-> -	spin_lock_irqsave(&info->wq_lock, flags);
-> -	info->work_read_index++;
-> -	info->work_read_index %=3D WORK_MAX_NUM;
-> -	spin_unlock_irqrestore(&info->wq_lock, flags);
-> +	scoped_guard(spinlock_irqsave, &info->wq_lock) {
-> +		info->work_read_index++;
-> +		info->work_read_index %=3D WORK_MAX_NUM;
-> +	}
->  }
-
-[Severity: High]
-This is a pre-existing issue, but does using timer_delete() instead of
-timer_delete_sync() or timer_shutdown_sync() allow the timer callback
-to execute after teardown?
-
-In imx_rpmsg_pcm_close() and imx_rpmsg_terminate_all():
-
-	timer_delete(&info->stream_timer[substream->stream].timer);
-
-This non-synchronous deletion means the timer callback might continue
-executing concurrently. In imx_rpmsg_pcm_close(), timer_delete() is called
-after flush_workqueue(), so a late timer callback could queue new work
-after the stream is supposedly closed.
-
-Additionally, imx_rpmsg_pcm_remove() does not appear to stop timers
-before devres frees the info structure, potentially leading to a
-use-after-free if a timer is still pending.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the current cleanup
-order in imx_rpmsg_pcm_remove() cause a use-after-free?
-
-The driver registers the component using devm_snd_soc_register_component()
-in imx_rpmsg_pcm_probe(), which relies on devres for cleanup. However, the
-workqueue is explicitly destroyed in imx_rpmsg_pcm_remove():
-
-static void imx_rpmsg_pcm_remove(struct platform_device *pdev)
-{
-	...
-	if (info->rpmsg_wq)
-		destroy_workqueue(info->rpmsg_wq);
-}
-
-Since devres runs after the remove callback returns, the component
-remains active while the workqueue is already destroyed. If a stream
-is closed during this window, imx_rpmsg_pcm_close() will call
-flush_workqueue(info->rpmsg_wq) on the destroyed workqueue.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615093824.1157=
-51-1-phucduc.bui@gmail.com?part=3D9
+[1] arch/arm64/boot/dts/freescale/imx8mm.dtsi
+[2] arch/arm64/boot/dts/freescale/imx93.dtsi
