@@ -1,114 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013052.outbound.protection.outlook.com [52.101.72.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D61023395F
-	for <imx@lists.linux.dev>; Mon, 15 Jun 2026 09:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781517167; cv=none; b=nnzy1bJvWcFthYD1Qcy+zpJj09skxqxMHp5VxH92F8abwKP8HdhwboD0Snz5W/balHJ3ORVnZyrL7r5eIfZySExRpSjHAUJOGZiJvc/m9EcFNuaCnG+L8I9CTNfMhr4WmHClJqwlgf5Qrb/Hj4A0FPSXKbBp9/lmLBaIlkaa9JM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781517167; c=relaxed/simple;
-	bh=joYSptAvmn/1TQmnyLwhy/KAAwsVotEFQBzVGbC5oJM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=prQFFo2oSzGZAyeRD5DREf/Z5sCzokIB7cCERQqinVcUINGOIUdWMupKsDbln4Qe/xCOJbZBeu/1Fb9d1lyRSSvHrPXauP7bVHUT7mmFB3ZG6HNXDzn56mlQoSs6DMjsKhQBarCAE1QUSYtKSsfV1137EgoqPO4aP7zzk9BYGSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7srtGg3; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BDB2F7F0F
+	for <imx@lists.linux.dev>; Mon, 15 Jun 2026 09:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781517383; cv=fail; b=WPykYakPJbWHprp2EGnTWcMys2WrvdMh1/UnCAVMRZxbyPb81TKPhlIbhbFaMMU5YDooJgIE179lXollySOWBPCSFoUbX2c0T0qNA2RN2QnwxG+H+P+MS/nyBlUXr2Oy0pRwOzUYnpnz+1TSNVh2GGtw1l31lC41CyA1oQv9dj4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781517383; c=relaxed/simple;
+	bh=zv5s/onEKoImi9JRWWi8VH2kX7YwMxaqm1T7viDMuDo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=uaafJP5J8h4TyVg99k+Sl1kzPwYfgDQTym65YA3VfzGTS7hfPW1S4GzkzvKrEn8OmonbNJPdt8RidJbavkkJR0PJ8usnE8M3+KrcLFSKzrTIVlB9egliT1/OJUTbz7Gxi+z6zYTEpv3KD518xtzGcH+sMCk89usXCuGqgqFCeA4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HN7Pe2iq; arc=fail smtp.client-ip=52.101.72.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7srtGg3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9301F000E9;
-	Mon, 15 Jun 2026 09:52:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781517166;
-	bh=kOVUAz3axjo4C56tmySxKBbIJx+7lkr8V5n8wtfq0yA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O7srtGg3ks2OThcDT6NcNqXXLFioWb6XGFCnnZrBFKLTe7vfmpibr5/qZ1gNtQpKO
-	 4rqdWJtRV6lBi+8SAs+fYXFU/KAJqUpILDJPmxcwUpkmGosyQTycO4hF5eCt+75STk
-	 mQVVvbIgMz4E8uIHrClwKXsvYwRUH5EpTJWYE315fnRRn4GHvmZ6LcVPNBC18ng18I
-	 vcJRHsy817RmXxbabq4XuNFLn1v/SInLXSKO+AaHXvWy6FY8fA1rADAP3oXwTRZQdp
-	 kN0HQyij11J6mE7iThOi94RHrkGvPtkJy50OV2ffE6ZYmboiZ7dU3GJ04g4FphA8jL
-	 bpThpa1TYcp7g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 04/11] ASoC: fsl_esai: Use guard() for spin locks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: phucduc.bui@gmail.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260615093824.115751-5-phucduc.bui@gmail.com>
-References: <20260615093824.115751-5-phucduc.bui@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 15 Jun 2026 09:52:45 +0000
-Message-Id: <20260615095246.3B9301F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HN7Pe2iq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Qzvx2ueA8OGl10t7aIeJxmgG+YhTWvq1XVdBJt1l07HTqgzMuxcZfAylLkHJynljcBoge4nsMJDdpk8YJfHHHqwD3XBMowjBTI+iXYMmyd7F/V3+UXRruRF+4FvTLjG8FcI+vSxxbuy+0yT7NBFU+yA5ENI/YBG1UiPpLkpS4k3Ruk+Bje2ca0Z8wQqLnQTvdw1YD1i3aKGhCe5CA29nU33BFJQwOkqj8zqFHEQItkDgDWfRIzMEgqpY3BqhI4A2zBRncHhSFhfLPNkSNssxCEiFNiodvqPcZ1wInnH58ycFVv8vj8v0FzM150xgof5ooonCPDBy8l0cGBYs+gOFqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1mrmpIlZ5WJQ+KjMQIcqKCRdcc+iMtv/YlujJ3Y7vCQ=;
+ b=yqqSK9GQnhs/uBHltDGYFd4jTSNpAl2+T0LdnITkupojeKkvLiqHtpBe9vW0hCZT+PlpYlRh0JJZq1DW3ch1m3Ip14K7u92wqxxghmPEW3tuwh41P9MdFmCf7s5pc7+UDLKWBi0LwrqKFJazIbW5259lFzFGfMRKpRM5Oky7GFxubazgVCE5AhcE9NIN9w+jFIOXigtfkjUYOVXV7Nr7JJCTw1CschkgCsp0XwRpnixNE3PgOyc8RJiI302pRYuwc/BTkWgioS4k4xuoH8TPJ0ZyE/JVVXCJp57XIbr+7Swy0qgEMyC0fJ+Mgc/NWKJbd1/54j6DH8gjt4zb2YWM9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1mrmpIlZ5WJQ+KjMQIcqKCRdcc+iMtv/YlujJ3Y7vCQ=;
+ b=HN7Pe2iqVYF1pa/WsJ11Ev9BEwBXpFOCIETdup7jaDvLQetmSpQdIEbfOeZAARS4aBAuaHp8ykR8WTZC7opif/fv20hXXYU+ChEVdC554mCiYh7jP6Cp5GxUrHzF7gm40DZDOhQ2XZtitfhafWce5QNjfoOOFkEecRkdFmfEMHquvC7y7zXLEvdkuKAGM41MxYU8Sx9o/YKmpzAmts8O8YI1IPILeXMi1wJ75rsw1OMGLgnHAVBiMqp7bL914cZsMdVfSCG9nH6SAq+zkq8ZhMkUPjxjOPIEe85Brgl8mawofEgxaVp6cQWuS/01pIU+sueE11z3eORyrReveAecCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
+ (2603:10a6:102:516::16) by AM0PR04MB12098.eurprd04.prod.outlook.com
+ (2603:10a6:20b:743::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
+ 2026 09:56:17 +0000
+Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
+ ([fe80::d3f0:3c24:f717:4989]) by PA6PR04MB11910.eurprd04.prod.outlook.com
+ ([fe80::d3f0:3c24:f717:4989%4]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
+ 09:56:17 +0000
+Message-ID: <761f284a-1660-41d5-9625-9b25bf18aca5@nxp.com>
+Date: Mon, 15 Jun 2026 11:56:15 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 8/8] arm64: dts: freescale: imx95: Add NXP neoisp
+ device tree node
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: julien.vuillaumier@nxp.com, alexi.birlinger@nxp.com,
+ daniel.baluta@nxp.com, peng.fan@nxp.com, frank.li@nxp.com,
+ jacopo.mondi@ideasonboard.com, laurent.pinchart@ideasonboard.com,
+ mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, michael.riesch@collabora.com, anthony.mcgivern@arm.com,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev, ai.luthra@ideasonboard.com,
+ paul.elder@ideasonboard.com, geert@linux-m68k.org,
+ sakari.ailus@linux.intel.com, hverkuil+cisco@kernel.org
+References: <20260612132039.2089051-1-antoine.bouyer@nxp.com>
+ <20260612132039.2089051-9-antoine.bouyer@nxp.com>
+ <20260614090517.GA7434@francesco-nb>
+Content-Language: en-US
+From: Antoine Bouyer <antoine.bouyer@nxp.com>
+In-Reply-To: <20260614090517.GA7434@francesco-nb>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0144.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b8::20) To PA6PR04MB11910.eurprd04.prod.outlook.com
+ (2603:10a6:102:516::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA6PR04MB11910:EE_|AM0PR04MB12098:EE_
+X-MS-Office365-Filtering-Correlation-Id: c72e49df-ee1f-44c4-decd-08decac457fa
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|23010399003|376014|366016|1800799024|19092799006|56012099006|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+ 1UvPK+NFfAWPbHIZWhb3z9blYoLjxrP7sGBUtXeatGumU28KQkOLJWxlCCwhSjeJCFmSXTCKYLh4vzVHoa9AUt4FBX2O9wkhjZL3npKJV7t8noVmhwOTMXsGA5YbnEo9/E9fGOzn41/70D0F+beLVVFDaiCsDvm5wJjmAVwk4ad3ZZ/tF91S8ZnWtz621+JsXXDusubpqobuhmPNVSuKLw6+uWkEtwiv3ueDXmzJGDFE5qnx3HmKXLDXugA+Vicm6yqwzq/tOTFd32XqnsAR+grc1G8lMZudVz0wlx/AZ1ozqR4UbOFcMWJgbWYaAOPxloN3XahYFso7oD151NiOesgK3+JOsfJww2ML6V0mUklGKl9E4Saeeo+bibxjV2+3XRiOClwscwhkiySDnxMl+u7ozRaMqdlVOiT/rI9BdbM701VGG+5uSN8JmR590ewY58rIIQCBHo+fGX/MGPztJ7WdT4x5k83hpVVITjQPTvsk6bR6XT68u4sDKzSgc1DnsFCFof4RE7+Q0+C4kkb9MH4cnhl0rbpNyZ+ZF36Dz4S3DcrYuty+thzhEqENWQZGTxdBzWdQ/rjiFKcPtBbfHr5M+eKimC7P8uBzCl9xX4wb/q3JRi+/dtA7OuYoxMNmYULbCqswCOPqF4sTMTH8fBaX/fXNxIAuXXWjX8rqprQL7PfAiI9AqfyUWB/UJRKX
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11910.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(366016)(1800799024)(19092799006)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?WjFRbWp2WE9nWEtwZ2hZenhvSUx6VEdtdFp4Zk1rR2Vmek55SU1nY1VWN0V0?=
+ =?utf-8?B?cmFjOFI3OFFFcXZLYi9yVTZuUXQzbkRlSmFRZGdDemhZd0V0S3UvVERaK3Rl?=
+ =?utf-8?B?dW9CUXZVVk9XS0J1Q3VDaUNLblVHVVIwTS9qQ1hFa3hpUlcxK2lQQmtZUzlh?=
+ =?utf-8?B?cDczYUwvZHluczYyNks0aDRnTmorNFNiUkFGUkhqNFgxQUlmSkVIdEFFMW1W?=
+ =?utf-8?B?dW80L3N0bXhoYVd1VkRBempiL2pJcWtldzlCaUxGSEZGN0dKZUJKMzVpK2t1?=
+ =?utf-8?B?bU5uNy9iVkVGUnFvcnZvM25mTnp5dEh4eUZZWFF1ZGRtYUcxQkI2YTRyc3lX?=
+ =?utf-8?B?TXZzc0YyUDIzdklOT3dFOXUvSFNWZTVsQ2xpOWxaYVNCODc5by9JazRkbG5Z?=
+ =?utf-8?B?dmhMRHQ3UDZDSzlFaG1kekhlSGVvZkRCdElJTzlDa0h5RzJacEF0aERwYThY?=
+ =?utf-8?B?azhxVHk5RXlyVnpJbFFibS8vek52MUlaTE5iU05kb0xUYzN1NmxWbDQycHd0?=
+ =?utf-8?B?ZDhIeVpoeTBKeXJtdEsyS2JqamNqdGJMMy9lOForVG9mZE8wY2ptTjhuZ1NK?=
+ =?utf-8?B?QUtDMHNoWnhSNVd6aTEyUWp5MGdrNDk4bXNjWmFEWEdiRXZkRUliMURBTENJ?=
+ =?utf-8?B?VVg4N0JkU2pYTUpmU2ZKVmp1ZW9EYXRoUmRCQlVRZ0dPdjhOQkFWaVVGSHp1?=
+ =?utf-8?B?L1B1Z0R3anRMT0szMnZhY0I1WlozWWprdlEwYU44aElNZHdJaXJJVjBsemFG?=
+ =?utf-8?B?Y0xUQksxRk5zZ2Y2UFBCNXN6RHN1ZEROa09icnhySEJGZGk1MzZLUUJwenFx?=
+ =?utf-8?B?Mzl1RUpRUzlwUDdvRGJrdG0rZGNCSzhSRTMrTFRXYnVNazJDbmJFcERmdE9G?=
+ =?utf-8?B?bVRFN2JEUFZ6TjZ4T050c1J4OXIrVkVoRnkyckJqc3E0eUxEL3ZLQ281UVJ1?=
+ =?utf-8?B?ai8xMFBRMWxxQVNheDlmRXlUWFZWUVlBcjVia20xU2VzVndZSSt0Z1loMFgy?=
+ =?utf-8?B?UldwbzdpR3dPU1MyMlUyNU1lN3B5YW15ei9pdkRsRFcrMThJdFc1ZVB2VXJr?=
+ =?utf-8?B?RS9JTEVyL05OaExlckJsZEJkMXdOWmlYaVY5Z1JFeXVoU09XSHFxajZwQmNt?=
+ =?utf-8?B?UkZrZUxiZTI3ZGhwNXNENmk3SmtaUzI2OXErZkllTU1RUHZ4YXlvd243bEtH?=
+ =?utf-8?B?SDdaQldya09SWEEzTTRXZFMxT3REQVl5MmI2S3owcUpLK0dCWkRPWmFFb3BH?=
+ =?utf-8?B?bkUrNHJIa1dlV3hON0xXRVpTeHFGWUlHcFB1Q052WTk1TlRPUkt0QXAwb3dz?=
+ =?utf-8?B?TmpDSEQrU0J6Q3pnMElwbTRzVXZVZGRRMjRSQjZQbVRDYnY1ekY0VE9jVVc1?=
+ =?utf-8?B?YWRxbGxqRmY5MVczbEdsR09XN3FqVGhURXJ5SGlldlVVWFhEWWcyMUFGem5S?=
+ =?utf-8?B?RHMwOTl0VjMxSVF3Z3dmTUlrQ0QxWDdza0szQlMvVkovQk1KaGpBVU43bGJT?=
+ =?utf-8?B?b0pBOXVMS1ZFeW9HNEdta3lYNnM5WVdYS2NpQVpQRVRxeXRZVS9pbEhGQ0dH?=
+ =?utf-8?B?U3Z1aUJDSW1DMExLeEl6UjByRklvVlZlZVRpV1dEckQrWkpwSnBBajNpdEp3?=
+ =?utf-8?B?RGcrdkk2cTZjUnZKRW83TlVyTGZhNlUwSTVzbnV0bGRhUHBUZHJMbXowZHFW?=
+ =?utf-8?B?Y2Z0OGYwaUtUelBnajVUVG00VkNIaVd3NHNjK0U1dkVFdWZQVHJwNUZnYmZr?=
+ =?utf-8?B?Y1ZidWFXZWt5NG5DV2FGR2tEMUhlOXZ2a2lyZFNvRlRXK1hueW95cGkvbk5z?=
+ =?utf-8?B?VkxmTXNZemVBaGJJSUZsb3ZvNjRMV1crQ2txTW1OV3JHeXBRVDlvdzF5ZE5l?=
+ =?utf-8?B?RFlxOFd4VnR1dEZQcWl3dGRZUXI1eE5Pdm5BRmt3NzkxckNyakRZRXpRckl3?=
+ =?utf-8?B?emRPdkJnUkxWc25LZ241Z04yODFyUEdKU2dpbVBodjFrTGJqMisrMEtoQmRO?=
+ =?utf-8?B?SFk1d3MxTXZkRENpa3lRclB6cFgxUGtBZndTQzF5SGtYbXRtTllpMnppMysr?=
+ =?utf-8?B?U3FZSmx6SGNyTEZQZk5vQjZyYzFPdWpRblFzZlZTbHdZYm5leXJHL0o3Zlp5?=
+ =?utf-8?B?TWprNXdYekF2NDRzNk1jWjFsRGJrM3EwYm5QVTB2Zit4T0hCWExZd1lhU0hz?=
+ =?utf-8?B?ZGsrVy8wcys5UzlDbXhBeUZKeXBMUnNRcUp2MjNIOTA0eHZjR05XSUlQSDlB?=
+ =?utf-8?B?MjBBeVc0T28raFN0ZS9xUS9IRFhIc0pkanl4bTFsaWlFVXJ2SGdvL25JcGFm?=
+ =?utf-8?B?VEhhQ2tMTnYvNUVlY0MyOXFCRHZCRzc0OEVocVlKK3EyV3VmQlZuQT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c72e49df-ee1f-44c4-decd-08decac457fa
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11910.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 09:56:17.3401
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hwUhQb9uEJBiHr4WL5Mjs4rMEwOxDj33xsRfIUQhBDnAxXa5se70sZI9Wm+pD7EUNMVUmaqjTYmQ7mvGTNoEZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12098
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Mixing goto-based error handling with scope-based cleanup in fsl=
-_easrc_runtime_resume
---
+On 6/14/26 11:05 AM, Francesco Dolcini wrote:
+> 
+> 
+> Hello Antoine,
+> thanks for your patch.
+> 
+> On Fri, Jun 12, 2026 at 03:20:39PM +0200, Antoine Bouyer wrote:
+>> Add neoisp device tree node to imx95.dtsi and enable it by default in
+>> 19x19 evk board.
+>>
+>> Signed-off-by: Antoine Bouyer <antoine.bouyer@nxp.com>
+> 
+> ...
+> 
+>> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+>> index d6c549c16047..5543a6cb1250 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+>> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+>> @@ -1867,6 +1867,17 @@ pmu@49252000 {
+>>                        };
+>>                };
+>>
+>> +             neoisp0: isp@4ae00000 {
+>> +                     compatible = "nxp,imx95-neoisp";
+>> +                     reg = <0x0 0x4ae00000 0x0 0x8000>,
+>> +                           <0x0 0x4afe0000 0x0 0x10000>;
+>> +                     interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
+>> +                     clocks = <&scmi_clk IMX95_CLK_CAMCM0>;
+>> +                     clock-names = "camcm0";
+>> +                     power-domains = <&scmi_devpd IMX95_PD_CAMERA>;
+>> +                     status = "disabled";
+>> +             };
+> 
+> Why the node is disabled?  If the node is wholly described in
+> imx95.dtsi, it should be enabled.
 
-commit d28002047081c21222edc1134f1efc00e25fe426
-Author: bui duc phuc <phucduc.bui@gmail.com>
+Hi Francesco
 
-ASoC: fsl_easrc: Use guard() for spin locks
-   =20
-Clean up the code using guard() for spin locks.
-Merely code refactoring, and no behavior change.
+Thanks for your review.
 
-> diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-> index 114a6c0b6b730..edfd943197a00 100644
-> --- a/sound/soc/fsl/fsl_easrc.c
-> +++ b/sound/soc/fsl/fsl_easrc.c
+Actually, all nodes are disabled in the SoC dtsi, and enabled on the 
+board dts file, even if fully described on the dtsi. So I used same 
+approach for neoisp.
 
-[ ... ]
+BR
+Antoine
 
-> @@ -2323,13 +2312,11 @@ static int fsl_easrc_runtime_resume(struct device=
- *dev)
->  	regcache_mark_dirty(easrc->regmap);
->  	regcache_sync(easrc->regmap);
-> =20
-> -	spin_lock_irqsave(&easrc->lock, lock_flags);
-> -	if (easrc_priv->firmware_loaded) {
-> -		spin_unlock_irqrestore(&easrc->lock, lock_flags);
-> -		goto skip_load;
-> +	scoped_guard(spinlock_irqsave, &easrc->lock) {
-> +		if (easrc_priv->firmware_loaded)
-> +			return 0;
-> +		easrc_priv->firmware_loaded =3D 1;
->  	}
-> -	easrc_priv->firmware_loaded =3D 1;
-> -	spin_unlock_irqrestore(&easrc->lock, lock_flags);
-> =20
->  	ret =3D fsl_easrc_get_firmware(easrc);
->  	if (ret) {
-> @@ -2377,9 +2364,6 @@ static int fsl_easrc_runtime_resume(struct device *=
-dev)
->  			goto disable_mem_clk;
->  	}
+> 
+> Francesco
+> 
 
-[Severity: Medium]
-Is it safe to mix scoped_guard() with the goto disable_mem_clk error path in
-this function?
-
-The subsystem guidelines for cleanup helpers (derived from
-include/linux/cleanup.h) indicate that usage of goto and scope-based cleanup
-should not be mixed in the same function.
-
-Should fsl_easrc_runtime_resume() be converted to use scope-based cleanup f=
-or
-all resources, or should it avoid using scoped_guard() here to prevent
-ownership confusion?
-
-> =20
-> -skip_load:
-> -	return 0;
-> -
->  disable_mem_clk:
->  	clk_disable_unprepare(easrc->mem_clk);
->  	return ret;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615093824.1157=
-51-1-phucduc.bui@gmail.com?part=3D4
