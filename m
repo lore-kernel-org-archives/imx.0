@@ -1,146 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BDA3B6343;
-	Tue, 16 Jun 2026 12:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780303B6343;
+	Tue, 16 Jun 2026 12:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781611571; cv=none; b=geHW3a68OJ8rnT1VfnmKoY5G3cqr32xUKnYKjGr1aP9AkGGeRmCfvwV4YmXMSLSFL0yWjoU8vDJ+0B3Tk95SqT+RlTobpHJp8XqsP3Kr9XfhlXmVmyKmQGIYEalOcZjijsVGuc6bBaHiW5BHunzHwuI1HUNJtxbRDSXA+bDtVRA=
+	t=1781611589; cv=none; b=XiBv3WqV5qHMXh7mb6uVOQHHlAWY155VkjFYHRDinTnoO83H6dythxuMsSPWCdpFH1V+AM0L+qdveEVEY5aqfJGsjomJtSoImpivQWZGI3NPrSD3LlBNswEntZNKxPcz+ZMlJ/ae1FwcWB5hZxEzpFAqmyVoHXot9bzO9FCqGn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781611571; c=relaxed/simple;
-	bh=SiD3E3NQVJJfRKATfQlXSt1E12UhJ696gRV95o9Xg4c=;
+	s=arc-20240116; t=1781611589; c=relaxed/simple;
+	bh=PujpRlZMoCWN5ZOuyOAZRelXQ0pddD1lnXJ1N1gE1/E=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rcanT7zx7604OrlrM6fF9uW58TBuoEaxjMiYgygIywn8wmHaN89yJ/6v336DbWPjzUm2ICxMY4Z3FK4n+UTaNC0jKnbPUnPRMJDT5mr7GX/gol8X5GyZqHTH6wGv5hzNtxDnM691hxnNO8tAxUtkyKpt5wSd1pHtltjnaiBpZ9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B0z0GL9k; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=bzLJkrMk3KXPtNUAnDQwXyc8fe/pBqdXqSoXBcRdeWR5RhzxrTUiPTiRwy/80K+ByIOiBTLQLQdDWNRsihprai2jhS46H2OiCeHW58Rc0X6t4XVsj9cltfLes8wQgTUIe+XlEq4gyTlkVui1K4eK6pjp9UxYtpMdDSfja+rz5lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIbbflt6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B0z0GL9k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C3B1F000E9;
-	Tue, 16 Jun 2026 12:06:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIbbflt6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBF51F000E9;
+	Tue, 16 Jun 2026 12:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781611570;
-	bh=BHMokT7vQ2T/NKHus/5Qa8x60rAP/cYJnE4zfdMtqJg=;
+	s=k20260515; t=1781611588;
+	bh=5uhrnBQ7jbUDqK0gjEuD/BGwmbz7RtkXEIRslpv/dxU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B0z0GL9kbw/aQYIy1hjk70sq3G/71YpKaJrjOg1EFjEb7yYnvQIz/Qn/U3kI1DKtl
-	 9azttA4mFkVgef2BnhIv1mIediVtUosK/E1n5Ctrlxq//qviFuHhbhl+yiqPBF2fU3
-	 fFgpCwrV7VUAk7KGm1pSmDwYGTmjdKMyFoZjOf9HP7dOC4YfzCnqnH6OtZCN3lwmV3
-	 a/TUQPpebUM9R30N3vqonTgNwfwwnw6JN9G3SQcEyuBMMEk1JtEKXvIEpAPZdhySfr
-	 8VG52GeSAm8ys8S+mPjCFzNJu/mMZl+fWwbOqlxe8upzLlbIqCV9Ryd9yfBJaOM5By
-	 d6B/1cBAymhow==
+	b=XIbbflt6udyOUwz4E9c+vXHf4p7N70hzeoLVPJoZpxC82Qk8w7ilPBjZA6ZV63jxX
+	 z25kwYXqcq6p8ttd5myxM4AABEqVoX7JdaGBncUVUUGBqacL0Ou5juNA9JgceQ6DIW
+	 fQBsl995N0tgXqOi0imrVjfXsQQyxz8KLLdgox0psxhGpESjEcK48/PDSgJYUhHLVJ
+	 Ljp5vuBGKstsQCMTVqzqkFvqPOrgV1usgDS+FBgpKPFEZHEj9qiaNcWEmkmxHuK2px
+	 RLtRdL9q6ugmGEbQ4EtaMQhBVDxiViZjecvUTHDMyI2UXdNGmp++3DrluQVUw2+Ta+
+	 wSEEkSMS9WHzg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/9] firmware: imx: ele: Add API functions for OCOTP
- fuse access
+Subject: Re: [PATCH 7/9] nvmem: imx-ocotp-ele: Remove the FUSE_ELE type
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Frieder Schrempf" <frieder@fris.de>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-3-cb7f3698c3e6@kontron.de>
-References: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-3-cb7f3698c3e6@kontron.de>
+Cc: robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-7-cb7f3698c3e6@kontron.de>
+References: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-7-cb7f3698c3e6@kontron.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 16 Jun 2026 12:06:09 +0000
-Message-Id: <20260616120609.E7C3B1F000E9@smtp.kernel.org>
+Date: Tue, 16 Jun 2026 12:06:26 +0000
+Message-Id: <20260616120627.8DBF51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] A timeout or interrupt during `ele_msg_send_rcv()` leaves a dangli=
-ng pointer in the asynchronous mailbox callback state (`priv->waiting_rsp_c=
-lbk_hdl`), leading to a NULL pointer dereference and a Use-After-Free heap =
-corruption upon a late firmware response.
+- [Critical] ele_msg_send_rcv() fails to clear waiting_rsp_clbk_hdl.rx_msg =
+on error/timeout paths, leading to heap corruption and NULL pointer derefer=
+ence by the mailbox callback.
+- [High] Missing kfree() on the error path in imx_ocotp_reg_read() causes a=
+ memory leak of the dynamically allocated read buffer.
+- [High] Missing device link between the OCOTP driver and the Secure Enclav=
+e (SE) device creates a Use-After-Free risk for priv->se_data.
 --
 
-commit d740730d233516ecbc0d56af8b1a5f692696bbf0
+commit 59602650186437e4e8ff55bf4112fcec530ec2ab
 Author: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-firmware: imx: ele: Add API functions for OCOTP fuse access
+nvmem: imx-ocotp-ele: Remove the FUSE_ELE type
 
-This commit adds the ele_read_fuse() and ele_write_fuse() functions to the
-ELE S400 API to provide read and write access to OCOTP fuse registers. These
-are exposed via imx_se_read_fuse() and imx_se_write_fuse() for use by drive=
-rs
-such as the OCOTP S400 NVMEM driver.
+There is no use in tracking the fuses that are only accessible via
+ELE API and the current lists are incomplete. If the ELE API is
+available it will be used as primary access method anyway, otherwise
+the fuses not listed as accessible through the FSB can be considered
+invalid.
 
-> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
-le_base_msg.c
-> index ec718d322abcd..281d223aa1447 100644
-> --- a/drivers/firmware/imx/ele_base_msg.c
-> +++ b/drivers/firmware/imx/ele_base_msg.c
+> diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+> index 92cc061b9b347..3d6fad149ed5d 100644
+> --- a/drivers/nvmem/imx-ocotp-ele.c
+> +++ b/drivers/nvmem/imx-ocotp-ele.c
 [ ... ]
-> @@ -303,3 +304,124 @@ int ele_debug_dump(struct se_if_priv *priv)
+> @@ -111,7 +110,7 @@ static int imx_ocotp_reg_read(void *context, unsigned=
+ int offset, void *val, siz
+>  		}
 > =20
->  	return ret;
->  }
-> +
-> +static int ele_read_fuse(struct se_if_priv *priv, uint16_t fuse_id, u32 =
-*value)
-> +{
-> +	struct se_api_msg *tx_msg __free(kfree) =3D NULL;
-> +	struct se_api_msg *rx_msg __free(kfree) =3D NULL;
-> +	int rx_msg_sz =3D ELE_READ_FUSE_RSP_MSG_SZ;
-> +	int ret =3D 0;
-[ ... ]
-> +	tx_msg->data[0] =3D fuse_id;
-> +
-> +	ret =3D ele_msg_send_rcv(priv->priv_dev_ctx, tx_msg,
-> +			       ELE_READ_FUSE_REQ_MSG_SZ, rx_msg, rx_msg_sz);
-> +	if (ret < 0)
-> +		return ret;
+>  		type =3D imx_ocotp_fuse_type(context, i);
+> -		if (type =3D=3D FUSE_INVALID || type =3D=3D FUSE_ELE) {
+> +		if (type =3D=3D FUSE_INVALID) {
 
 [Severity: High]
-This is a pre-existing issue, but will a late firmware response cause a
-use-after-free here if ele_msg_send_rcv() times out or is interrupted?
+This isn't a bug introduced by this patch, but looking at the earlier
+part of imx_ocotp_reg_read() where the SE device is checked:
 
-If ele_msg_send_rcv() returns an error, it clears the dev_ctx but leaves the
-dangling rx_msg pointer in the shared callback handle:
+	if (priv->se_data) {
+		ret =3D imx_se_read_fuse(priv->se_data, i, buf++);
+		if (ret) {
+			mutex_unlock(&priv->lock);
+			return ret;
+		}
 
-drivers/firmware/imx/ele_common.c:ele_msg_send_rcv() {
-    ...
-    if (priv->waiting_rsp_clbk_hdl.signal_rcvd) {
-        err =3D -EINTR;
-        priv->waiting_rsp_clbk_hdl.signal_rcvd =3D false;
-    }
-    priv->waiting_rsp_clbk_hdl.dev_ctx =3D NULL;
-   =20
-    return err;
-}
+Does this error path leak the dynamically allocated read buffer 'p'?
 
-Because rx_msg is managed with __free(kfree), it is immediately freed when
-ele_read_fuse() returns on this error path.
+The function returns immediately without calling kfree(p). This could
+allow repeated failing reads, such as from nvmem sysfs, to cause memory
+exhaustion.
 
-If a late response arrives afterwards, se_if_rx_callback() will process it.
-It first causes a NULL pointer dereference if dynamic debug is enabled:
+[ ... ]
 
-drivers/firmware/imx/ele_common.c:se_if_rx_callback() {
-    ...
-    dev_dbg(dev, "Selecting resp waiter:%s ...",
-            se_clbk_hdl->dev_ctx->devname);
+[Severity: High]
+This is a pre-existing issue, but looking at imx_ele_ocotp_probe() in
+drivers/nvmem/imx-ocotp-ele.c:
 
-Then it unconditionally copies the response into the freed rx_msg buffer:
+	priv->se_data =3D platform_get_drvdata(priv->se_dev);
+	if (!priv->se_data)
+		return dev_err_probe(&pdev->dev, -EPROBE_DEFER,
+				     "SE device not ready\n");
 
-    ...
-    memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
-}
+Is there a use-after-free risk here due to the missing device link?
 
-Does waiting_rsp_clbk_hdl need to be fully cleared (including setting rx_msg
-and rx_msg_sz to zero) on error paths in ele_msg_send_rcv() to prevent this
-memory corruption?
+The driver caches the SE device's driver data locally as priv->se_data
+without establishing a device link (e.g., using device_link_add()).
 
-> +
-> +	ret =3D se_val_rsp_hdr_n_status(priv, rx_msg, ELE_READ_FUSE_REQ,
-> +				      rx_msg_sz, true);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*value =3D rx_msg->data[1];
-> +
-> +	return 0;
-> +}
+If the Secure Enclave driver unbinds independently, its private data is
+freed. Because this driver remains active, could it pass the dangling
+priv->se_data pointer to imx_se_read_fuse() during a subsequent read
+or write?
+
+[Severity: Critical]
+This is a pre-existing issue, but looking at ele_msg_send_rcv() in
+drivers/firmware/imx/ele_common.c:
+
+	err =3D ele_msg_send(dev_ctx, tx_msg, tx_msg_sz);
+	if (err < 0)
+		return err;
+
+Could this error path leave a dangling pointer in the global state?
+
+The function returns without clearing priv->waiting_rsp_clbk_hdl.rx_msg
+or dev_ctx.
+
+If a spurious response arrives later, se_if_rx_callback() copies data
+into the freed rx_msg via memcpy(), which could cause heap corruption:
+
+	dev_dbg(dev, "Selecting resp waiter:%s for mesg header:0x%x.",
+		se_clbk_hdl->dev_ctx->devname, *(u32 *)header);
+	...
+	memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
+
+Additionally, if the message times out, dev_ctx is set to NULL but
+rx_msg is not.
+
+Would a delayed response crash in se_if_rx_callback() by dereferencing
+se_clbk_hdl->dev_ctx->devname without checking if dev_ctx is NULL?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616-upstreamin=
-g-next-20260609-imx-ocotp-ele-v1-0-cb7f3698c3e6@kontron.de?part=3D3
+g-next-20260609-imx-ocotp-ele-v1-0-cb7f3698c3e6@kontron.de?part=3D7
