@@ -1,150 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780303B6343;
-	Tue, 16 Jun 2026 12:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4724943C055
+	for <imx@lists.linux.dev>; Tue, 16 Jun 2026 12:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781611589; cv=none; b=XiBv3WqV5qHMXh7mb6uVOQHHlAWY155VkjFYHRDinTnoO83H6dythxuMsSPWCdpFH1V+AM0L+qdveEVEY5aqfJGsjomJtSoImpivQWZGI3NPrSD3LlBNswEntZNKxPcz+ZMlJ/ae1FwcWB5hZxEzpFAqmyVoHXot9bzO9FCqGn8=
+	t=1781612102; cv=none; b=hg6Y7x7II04niEw3fSG+2v0N72aLlvh8d+8Cm0IUc4t7RAAABXu3BnApeWHgRQtcVpa7bZVi+dNyRrrQXJZXXSC1pHH1eSpKIURs5dRjcuXrdNQXgoIXw64d0E6tgtM0copQfnNcwekpQsk4oFP8jgfiyX7nbO3YefZHODi/lco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781611589; c=relaxed/simple;
-	bh=PujpRlZMoCWN5ZOuyOAZRelXQ0pddD1lnXJ1N1gE1/E=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bzLJkrMk3KXPtNUAnDQwXyc8fe/pBqdXqSoXBcRdeWR5RhzxrTUiPTiRwy/80K+ByIOiBTLQLQdDWNRsihprai2jhS46H2OiCeHW58Rc0X6t4XVsj9cltfLes8wQgTUIe+XlEq4gyTlkVui1K4eK6pjp9UxYtpMdDSfja+rz5lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIbbflt6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781612102; c=relaxed/simple;
+	bh=6S8wuEyltAzT8/X/ySOKtLmdWupADMGiotqEpc6gdtc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=udDzLh3qPJeaWE7ZfJ2Peb+0nVOP+3tEVpcn5jZTDEMbimhayU9haFShFSBlvZOZBYdAW7l+RyPuL9fckTobXZ8YJp6hQ0u4rHyTpH9aVjkOt8RmQ+DGFb2YeGnBqZ2HKEtJZ+qIpQ3PAQfUBzi8EuLLoKMPm2inrqfNWX4AUzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qJFyjXNd; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIbbflt6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBF51F000E9;
-	Tue, 16 Jun 2026 12:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781611588;
-	bh=5uhrnBQ7jbUDqK0gjEuD/BGwmbz7RtkXEIRslpv/dxU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XIbbflt6udyOUwz4E9c+vXHf4p7N70hzeoLVPJoZpxC82Qk8w7ilPBjZA6ZV63jxX
-	 z25kwYXqcq6p8ttd5myxM4AABEqVoX7JdaGBncUVUUGBqacL0Ou5juNA9JgceQ6DIW
-	 fQBsl995N0tgXqOi0imrVjfXsQQyxz8KLLdgox0psxhGpESjEcK48/PDSgJYUhHLVJ
-	 Ljp5vuBGKstsQCMTVqzqkFvqPOrgV1usgDS+FBgpKPFEZHEj9qiaNcWEmkmxHuK2px
-	 RLtRdL9q6ugmGEbQ4EtaMQhBVDxiViZjecvUTHDMyI2UXdNGmp++3DrluQVUw2+Ta+
-	 wSEEkSMS9WHzg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 7/9] nvmem: imx-ocotp-ele: Remove the FUSE_ELE type
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Frieder Schrempf" <frieder@fris.de>
-Cc: robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-7-cb7f3698c3e6@kontron.de>
-References: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-7-cb7f3698c3e6@kontron.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 16 Jun 2026 12:06:26 +0000
-Message-Id: <20260616120627.8DBF51F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qJFyjXNd"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c855599a77aso2210148a12.0
+        for <imx@lists.linux.dev>; Tue, 16 Jun 2026 05:15:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781612100; x=1782216900; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=50SE8l3bKCw1R5C7MBcazdi1YXMeu+dYN+l8lo26Bi0=;
+        b=qJFyjXNdUJfC6DXvIpF1BKZrIotylyiNX3hZDQVFjAOCGXVAWVENDG09NAHeIA/cBy
+         hWlifs3Fhq5YDukxsMmY7UaFqrkPaNBSCXTk6QFaJb0hCem80lgOMnJtem5NNhgxjWmB
+         JzeXrSZ1ThYkEVePMqCIZzZP0T+DejrqdB9zoD8uDED9bX1O2EDzVs56OOOne5269yr+
+         Ds52z1lB0HCtGO0Z4vXKwd+G39CeuT2Zw+lNBdY8oVfZmfg+X4g5sW+8JCqYcoLpOAHT
+         bTU8jd/7ZAEHy+eUC9hSFISyPn8DOhpze5uRAV8TyjyBMEEzooVfHZWH3pHiFQxqXXUF
+         QVHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781612101; x=1782216901;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=50SE8l3bKCw1R5C7MBcazdi1YXMeu+dYN+l8lo26Bi0=;
+        b=Txq0L0W+oC19wOq4zBB5efj8AWswW6jc2nPzfOOPoCH76XEIKBOQinuNko2Bb7Tel1
+         MnYh/KBRWJRcsok3dJWhW38StxCF33eNgaqT3iZcKvpLeRNIWb2V5LOBpDWN0FE+kJSG
+         Jo2WdBzm+pYPcZCt2eG4hAm2/2vL08E/ITjrNrflM59/sCVrUAb3SMNMP3KaRCakaxYb
+         2OteJmerBukhXkMhyeCHBvg1y9ZrnWe+6/PbawBCiVyyCVWr0WTvZTI+LkIZHFg/QA15
+         Gbs+esT5VcrhHB2CCnkyHzmqWgfeO4akXb9buG3PDShl5vxejAncLFIMQXb+Ia89Gwfk
+         quHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ953htHVpDHAALoD0c26g6iaFH69DOpuEzS245CmVLtwLbdczD86NiCa9AMJTBD/OYQ3jo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwJ1KbA/LBPOc0+QER/z3Fsot7Yez+Cf6sXi0/QgTRs0Han6fpz
+	ux+bCDoUQm8i9unuQZG299Nf0qwC/6dctajJBwgZ9W9MvZjM9G7/y7Jbrr4ltiJl
+X-Gm-Gg: Acq92OFAQrct9dtsYH6JpJMana2zw9IwLQVdMG7ZyQykpszv4PJ8bb+QbTqqMUK+rkG
+	xMM9HQ4VPuIfuVbpo16oQV1OeQKDmtLmTdNJI7gTesjB62RoqsyceH06EBrZ4q8AhEP78fUQWQ/
+	GDZWwJS5LqmCD1mY7TyJK4nSsVxRp6dYjH/3ZG9u1NP5KXF2LTCPk3Pgkd0oK3+94goa5AFkBBj
+	Io6ujd/lD8CoTrmklIojjehYezjwN/Nag3aen+OLUqX+dTyTrNYLdQwFofFlL9gGI5XXJIqHHHq
+	YLakVXGKS1B1qLyWqVl/XHvoo6ZQOR9dwuGVx2tCLEsGqFR+je9ARoCcmNhssFIrAt3k+g2CDeG
+	Egq7fvto6iEQ408bLYX8/v1/7hoEZUALqb58sTGnaBGbquNHGP3P6y2ry3ikoAmzBIvm7Ybk6i1
+	Vdf5xx5z2bJRvdpSWYAsFRgq9t7gmRJslmQ7DYOILbVoYC5HUxRqE778qhxmvIx4PuW8rjaD1/P
+	IUSI9qh+qpeFCTXHQ==
+X-Received: by 2002:a17:902:ce03:b0:2c6:a99a:52a9 with SMTP id d9443c01a7336-2c6a99a5426mr9079815ad.7.1781612100226;
+        Tue, 16 Jun 2026 05:15:00 -0700 (PDT)
+Received: from junjungu-PC.localdomain ([223.166.246.74])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f2e586bsm135118355ad.12.2026.06.16.05.14.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 05:14:59 -0700 (PDT)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Tue, 16 Jun 2026 20:14:49 +0800
+Subject: [PATCH RESEND] pinctrl: imx1: fix device_node leak in
+ dt_is_flat_functions()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260616-pinctrl-imx-v1-1-777c14cd2858@gmail.com>
+To: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+ Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+Cc: linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781612096; l=1643;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=6S8wuEyltAzT8/X/ySOKtLmdWupADMGiotqEpc6gdtc=;
+ b=Zku0M2FJaEoEwwEmrCy//KeKEm/UNXg9nSoC03e69VuLUmDz9Ml+HSmsuuOUOgc4xg7mHQJS5
+ d/LUhvYU2XUCGf2+Y9u4oXQNobiZ7p+MVx3pW+HgMzZyL+314bfXKqO
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+for_each_child_of_node() holds a reference on the iterator node that
+must be released on early return. imx1_pinctrl_dt_is_flat_functions()
+has two early return paths inside the loop that skip this cleanup.
 
-Pre-existing issues:
-- [Critical] ele_msg_send_rcv() fails to clear waiting_rsp_clbk_hdl.rx_msg =
-on error/timeout paths, leading to heap corruption and NULL pointer derefer=
-ence by the mailbox callback.
-- [High] Missing kfree() on the error path in imx_ocotp_reg_read() causes a=
- memory leak of the dynamically allocated read buffer.
-- [High] Missing device link between the OCOTP driver and the Secure Enclav=
-e (SE) device creates a Use-After-Free risk for priv->se_data.
+Replace both loops with the scoped variant so that the reference is
+automatically dropped when the iterator goes out of scope.
+
+Fixes: 63d2059cd665 ("pinctrl: imx1: Allow parsing DT without function nodes")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/pinctrl/freescale/pinctrl-imx1-core.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/pinctrl/freescale/pinctrl-imx1-core.c b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
+index b7bd4ef9c0db..4a6bdaefa42f 100644
+--- a/drivers/pinctrl/freescale/pinctrl-imx1-core.c
++++ b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
+@@ -547,14 +547,11 @@ static int imx1_pinctrl_parse_functions(struct device_node *np,
+  */
+ static bool imx1_pinctrl_dt_is_flat_functions(struct device_node *np)
+ {
+-	struct device_node *function_np;
+-	struct device_node *pinctrl_np;
+-
+-	for_each_child_of_node(np, function_np) {
++	for_each_child_of_node_scoped(np, function_np) {
+ 		if (of_property_present(function_np, "fsl,pins"))
+ 			return true;
+ 
+-		for_each_child_of_node(function_np, pinctrl_np) {
++		for_each_child_of_node_scoped(function_np, pinctrl_np) {
+ 			if (of_property_present(pinctrl_np, "fsl,pins"))
+ 				return false;
+ 		}
+
+---
+base-commit: c1ecb239fa3456529a32255359fc78b69eb9d847
+change-id: 20260523-pinctrl-imx-b198f8391abf
+
+Best regards,
 --
+Felix Gu <ustc.gu@gmail.com>
+-- 
+Felix Gu <ustc.gu@gmail.com>
 
-commit 59602650186437e4e8ff55bf4112fcec530ec2ab
-Author: Frieder Schrempf <frieder.schrempf@kontron.de>
-
-nvmem: imx-ocotp-ele: Remove the FUSE_ELE type
-
-There is no use in tracking the fuses that are only accessible via
-ELE API and the current lists are incomplete. If the ELE API is
-available it will be used as primary access method anyway, otherwise
-the fuses not listed as accessible through the FSB can be considered
-invalid.
-
-> diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-> index 92cc061b9b347..3d6fad149ed5d 100644
-> --- a/drivers/nvmem/imx-ocotp-ele.c
-> +++ b/drivers/nvmem/imx-ocotp-ele.c
-[ ... ]
-> @@ -111,7 +110,7 @@ static int imx_ocotp_reg_read(void *context, unsigned=
- int offset, void *val, siz
->  		}
-> =20
->  		type =3D imx_ocotp_fuse_type(context, i);
-> -		if (type =3D=3D FUSE_INVALID || type =3D=3D FUSE_ELE) {
-> +		if (type =3D=3D FUSE_INVALID) {
-
-[Severity: High]
-This isn't a bug introduced by this patch, but looking at the earlier
-part of imx_ocotp_reg_read() where the SE device is checked:
-
-	if (priv->se_data) {
-		ret =3D imx_se_read_fuse(priv->se_data, i, buf++);
-		if (ret) {
-			mutex_unlock(&priv->lock);
-			return ret;
-		}
-
-Does this error path leak the dynamically allocated read buffer 'p'?
-
-The function returns immediately without calling kfree(p). This could
-allow repeated failing reads, such as from nvmem sysfs, to cause memory
-exhaustion.
-
-[ ... ]
-
-[Severity: High]
-This is a pre-existing issue, but looking at imx_ele_ocotp_probe() in
-drivers/nvmem/imx-ocotp-ele.c:
-
-	priv->se_data =3D platform_get_drvdata(priv->se_dev);
-	if (!priv->se_data)
-		return dev_err_probe(&pdev->dev, -EPROBE_DEFER,
-				     "SE device not ready\n");
-
-Is there a use-after-free risk here due to the missing device link?
-
-The driver caches the SE device's driver data locally as priv->se_data
-without establishing a device link (e.g., using device_link_add()).
-
-If the Secure Enclave driver unbinds independently, its private data is
-freed. Because this driver remains active, could it pass the dangling
-priv->se_data pointer to imx_se_read_fuse() during a subsequent read
-or write?
-
-[Severity: Critical]
-This is a pre-existing issue, but looking at ele_msg_send_rcv() in
-drivers/firmware/imx/ele_common.c:
-
-	err =3D ele_msg_send(dev_ctx, tx_msg, tx_msg_sz);
-	if (err < 0)
-		return err;
-
-Could this error path leave a dangling pointer in the global state?
-
-The function returns without clearing priv->waiting_rsp_clbk_hdl.rx_msg
-or dev_ctx.
-
-If a spurious response arrives later, se_if_rx_callback() copies data
-into the freed rx_msg via memcpy(), which could cause heap corruption:
-
-	dev_dbg(dev, "Selecting resp waiter:%s for mesg header:0x%x.",
-		se_clbk_hdl->dev_ctx->devname, *(u32 *)header);
-	...
-	memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
-
-Additionally, if the message times out, dev_ctx is set to NULL but
-rx_msg is not.
-
-Would a delayed response crash in se_if_rx_callback() by dereferencing
-se_clbk_hdl->dev_ctx->devname without checking if dev_ctx is NULL?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616-upstreamin=
-g-next-20260609-imx-ocotp-ele-v1-0-cb7f3698c3e6@kontron.de?part=3D7
