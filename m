@@ -1,128 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7817F4266A8
-	for <imx@lists.linux.dev>; Tue, 16 Jun 2026 09:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7943655E4
+	for <imx@lists.linux.dev>; Tue, 16 Jun 2026 10:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781603509; cv=none; b=pDk0kEluaY396GFo/XDmkDUkJGaV2/ZP++1aQqZA9QFQP97IfBRwIRLFGA7z3aGQVat50hvNvND2QEDzrcfcls8UULU9V1xQ1phEp01FuiRzrqyBHzgLD2a4Ctv5+TeOOu3o5dwvcAfpW71HtQkohMypycVXKjHG2EHDrEuW8WY=
+	t=1781604313; cv=none; b=FWe3eNOHKEHugeKJGaH6/0iu7MDJRm0EocEq9chKRDqs0m8JkWTHc6iA8y9KZnzFZklpm3WhlG7fLfooR6FFwNGoK7R1qxm7K3shcsRcjYH1x/GJZjfKz1bgUriF2ENUi80Bfpr+v2cD8SUwMfJbspsnuyXcjCP9fxDOIYENtG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781603509; c=relaxed/simple;
-	bh=rKN6Dquf9JjEmoiOojbev5G9ca2XqPvpxKtiKVWHsuA=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mXxAA77qE3bMH96EpMUcwRL8EuKwoznx3m3UfiXubM85jFVZ+0dTyKeeGsTGJsQZl9LdWuwxqKXzvhUkFsQbXCQwRn4F73C+uadQ8wLaIesY3VwrG6Si8P3vpvEpIvMsdbQb6sKuf60fE7F7dMAu39lVMvTsyyc2Mka3t1ungcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F88UFqux; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F88UFqux"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A0A1F00A3D
-	for <imx@lists.linux.dev>; Tue, 16 Jun 2026 09:51:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781603507;
-	bh=rKN6Dquf9JjEmoiOojbev5G9ca2XqPvpxKtiKVWHsuA=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=F88UFquxP6GLTDnZndksxQH93yb7LMcZiAKfOmWMrZWnPbMsihpEeRj3B3ypIx14N
-	 epvt/Fduq7ggo+VV9WejL+g7Sr8uUgpEwhUghrJOHV2dDu2cJpMGZAwcafnTN6Kwbp
-	 a15VxT0oN1UFkqIjBTBPuz+ANyeGrSPc9cwc/Ba8wgMItVhAx1/RhWdSYi9MNN5EZL
-	 /pngyeY6RoI0nwh7Z3R16ElAujbM26xlreosWrdgb2Uz0O09Yj8qqnp6vFlSetlLKF
-	 BXjILI+uuZq84yMv33tltQiFi5KpHo5Cw4g55Nz/0ylLV1OUjYGEAN3Ht6BNupLR3T
-	 h4rEOtybtCu8w==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-39697a4e16cso39820151fa.3
-        for <imx@lists.linux.dev>; Tue, 16 Jun 2026 02:51:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/aDN+5TgYJxsYAcLV3yibhNhv+a/yimwkZz4p13vm2zlRDAUI9AHyJCuuCqCG5pGiSqs4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzspaGRop1xiFEG39Q1e66g/voH29apRvoQqT1zXPy9m0by49B4
-	xOqkrcXyibhsvJmAip3mP7nOr4zQTsWYRJjoy7K9DICu+LeFSZLQOGhyr+zuL39xHFbkxgHelQa
-	QUAdNhLE/Vf+O4GJeDIo5cnV1uOOMBU27AHxa5+qCLw==
-X-Received: by 2002:ac2:5597:0:b0:5aa:6aac:3f7f with SMTP id
- 2adb3069b0e04-5ad4277bed7mr670959e87.22.1781603505619; Tue, 16 Jun 2026
- 02:51:45 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 05:51:44 -0400
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 05:51:43 -0400
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <ajEcDq0S067wMFaK@black.igk.intel.com>
+	s=arc-20240116; t=1781604313; c=relaxed/simple;
+	bh=UVhRp34cnTDIAcyWSUUBEj4IIyCy1kD5bHYSH2h/iiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qabs9dBrqv0eWnkuos85O8ToHM37yTQEWnGuPSQEqS+kxxnPNW+bu7djeyJyVy2ZD1vO//gSAJFGa7QVtpLMMLdTRKWy+QfKl1MzQVJ9nmRL4HH/iaU+TTvylBM9FvSnK3KV0bazU1zZmLEUb5cmhAzTDhCEnEDkTLBWoW4mp/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wZQfH-0003jK-3A; Tue, 16 Jun 2026 12:05:03 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wZQfG-0030uu-2j;
+	Tue, 16 Jun 2026 12:05:02 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wZQfG-00000008itz-32QJ;
+	Tue, 16 Jun 2026 12:05:02 +0200
+Date: Tue, 16 Jun 2026 12:05:02 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] arm64: dts: imx93-11x11-evk: Add DY1212W-4856
+ LVDS panel
+Message-ID: <nj7yarck53nfnmsa3fafw7iqh6cqwfsm4qmfeig3w5pr3pvof6@cblp4m4aqu2l>
+References: <20260610-imx93-ldb-v3-0-c9b65d742753@nxp.com>
+ <20260610-imx93-ldb-v3-3-c9b65d742753@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-7-88c324a1b8d2@oss.qualcomm.com>
- <ah9OIVyrHEhcMHzN@ashevche-desk.local> <CAMRc=McLN9Ovoqo3om-3uC=q+=rcKCoiWMctC=yvwiaHacU0PQ@mail.gmail.com>
- <ajEcDq0S067wMFaK@black.igk.intel.com>
-Date: Tue, 16 Jun 2026 05:51:43 -0400
-X-Gmail-Original-Message-ID: <CAMRc=MfY3k4a9KdPE-4pmMUEH4KADYaO8ZY+Md9sMzgFr0-s9A@mail.gmail.com>
-X-Gm-Features: AVVi8Ccfi9fNZx5anc5Hh9w27iqbKs4Mv-ef0kQk9lnbNaF9SR74KH4RoJVGW8U
-Message-ID: <CAMRc=MfY3k4a9KdPE-4pmMUEH4KADYaO8ZY+Md9sMzgFr0-s9A@mail.gmail.com>
-Subject: Re: [PATCH 07/23] driver core: platform: provide platform_device_set_fwnode()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Lee Jones <lee@kernel.org>, Mark Brown <broonie@opensource.wolfsonmicro.com>, 
-	Thierry Reding <thierry.reding@avionic-design.de>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Srinivas Kandagatla <srini@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>, 
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Maximilian Luz <luzmaximilian@gmail.com>, 
-	Hans de Goede <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-sound@vger.kernel.org, driver-core@lists.linux.dev, 
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-i2c@vger.kernel.org, iommu@lists.linux.dev, linux-pm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Bartosz Golaszewski <brgl@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610-imx93-ldb-v3-3-c9b65d742753@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, 16 Jun 2026 11:49:02 +0200, Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> said:
-> On Thu, Jun 04, 2026 at 05:32:27AM -0700, Bartosz Golaszewski wrote:
->> On Tue, 2 Jun 2026 23:41:53 +0200, Andy Shevchenko
->> <andriy.shevchenko@linux.intel.com> said:
->> > On Thu, May 21, 2026 at 10:36:30AM +0200, Bartosz Golaszewski wrote:
->> >> Provide a helper function encapsulating the logic of assigning firmware
->> >> nodes to platform devices created with platform_device_alloc(). Make the
->> >> kerneldoc state that this is the proper interface for assigning firmware
->> >> nodes to dynamically allocated platform devices. This will allow us to
->> >> switch to counting the references of the device's firmware nodes in the
->> >> future, not only the OF nodes.
->> >
->> > But why different for of_node and fwnode to begin with?!
->>
->> I'm not following. What are you suggesting?
->
-> After re-reading of this thread, I think I'm suggesting the same what you have
-> in plans to do in the future as you put it as "This will allow us to switch to
-> counting the references of the device's firmware nodes in the future, not only
-> the OF nodes."
->
-> // Offtopic
-> I haven't heard from you for more than a month on this:
-> https://lore.kernel.org/r/af18zdP5HF3_P9Vo@black.igk.intel.com
-> Anything should I do? Please, answer to that thread.
->
+On 26-06-10, Liu Ying wrote:
+> DY1212W-4856 [1] is a 12.1" (WXGA) TFT LCD panel with LVDS interface.
+> The panel's 40-pin connector allows it to be directly connected to
+> i.MX93 11x11 EVK board.
+> 
+> Link: https://www.nxp.com/design/design-center/development-boards-and-designs/dy1212w-4856-tft-lcd-panel-with-lvds-interface:DY1212W-4856 [1]
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile             |  4 ++
+>  .../freescale/imx93-11x11-evk-dy1212w-4856.dtso    | 81 ++++++++++++++++++++++
+>  2 files changed, 85 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 8ddaab127ab9..dbe27d757c86 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -588,6 +588,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb-ontat-kd50g21-40nt-a1.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb-tianma-tm050rdh03.dtb
+>  
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
+> +
+> +imx93-11x11-evk-dy1212w-4856-dtbs += imx93-11x11-evk.dtb imx93-11x11-evk-dy1212w-4856.dtbo
+> +dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk-dy1212w-4856.dtb
+> +
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm.dtb
+>  
+>  imx93-11x11-frdm-pixpaper-dtbs += imx93-11x11-frdm.dtb imx93-11x11-frdm-pixpaper.dtbo
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-dy1212w-4856.dtso b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-dy1212w-4856.dtso
+> new file mode 100644
+> index 000000000000..35f7c5699e3a
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-dy1212w-4856.dtso
+> @@ -0,0 +1,81 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2026 NXP
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/clock/imx93-clock.h>
+> +
+> +&{/} {
+> +	panel-lvds {
+> +		compatible = "boe,ev121wxm-n10-1850";
+> +		backlight = <&backlight_lvds>;
+> +		power-supply = <&buck4>;
+> +
+> +		panel-timing {
+> +			/*
+> +			 * Set clock frequency to 71142858Hz to accommodate
+> +			 * IMX93_CLK_VIDEO_PLL rate at 498000000Hz in a rate
+> +			 * table.
+> +			 */
+> +			clock-frequency = <71142858>;
+> +			hactive = <1280>;
+> +			vactive = <800>;
+> +			hfront-porch = <48>;
+> +			hback-porch = <80>;
+> +			hsync-len = <32>;
+> +			vfront-porch = <3>;
+> +			vback-porch = <14>;
+> +			vsync-len = <6>;
+> +		};
+> +
+> +		port {
+> +			panel_lvds_in: endpoint {
+> +				remote-endpoint = <&ldb_lvds_ch0>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&backlight_lvds {
+> +	status = "okay";
+> +};
+> +
+> +&lcdif {
+> +	status = "okay";
+> +};
+> +
+> +&lvds_bridge {
+> +	status = "okay";
+> +
+> +	ports {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		port@1 {
+> +			reg = <1>;
+> +
+> +			ldb_lvds_ch0: endpoint {
+> +				remote-endpoint = <&panel_lvds_in>;
+> +			};
+> +		};
+> +	};
 
-Eek, sorry, must have flown under the radar.
+You could just make use of the ldb_lvds_ch0 phandle you added previously
+and drop the complete override.
 
-I'll pull it now, I will do a second PR for this merge window anyway.
+Regards,
+  Marco
 
-Bart
+> +};
+> +
+> +&media_blk_ctrl {
+> +	assigned-clocks = <&clk IMX93_CLK_MEDIA_AXI>,
+> +			  <&clk IMX93_CLK_MEDIA_APB>,
+> +			  <&clk IMX93_CLK_MEDIA_DISP_PIX>,
+> +			  <&clk IMX93_CLK_VIDEO_PLL>;
+> +	assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1>,
+> +				 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
+> +				 <&clk IMX93_CLK_VIDEO_PLL>;
+> +	/*
+> +	 * Set IMX93_CLK_MEDIA_DISP_PIX rate to 71142858Hz to accommodate
+> +	 * IMX93_CLK_VIDEO_PLL rate at 498000000Hz in a rate table.
+> +	 */
+> +	assigned-clock-rates = <400000000>, <133333333>, <71142858>, <498000000>;
+> +	status = "okay";
+> +};
+> 
+> -- 
+> 2.43.0
+> 
+> 
+
+-- 
+#gernperDu 
+#CallMeByMyFirstName
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
