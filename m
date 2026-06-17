@@ -1,80 +1,76 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011071.outbound.protection.outlook.com [52.101.70.71])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010016.outbound.protection.outlook.com [52.101.84.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59793914FA
-	for <imx@lists.linux.dev>; Wed, 17 Jun 2026 19:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3322A38C43A
+	for <imx@lists.linux.dev>; Wed, 17 Jun 2026 19:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781725881; cv=fail; b=IrkjgXgygSEqONesrGOYs1N5+5/07iKKGlzPZDGPL0jdMWtiREaoLw9L/OeEC95a3ZqquqRskMvgBJebjuCSsS4Tw5yaNwHnkzG33K+8pPJuY7ejifFQZ5uC9ZY+03eDiOn4KY1agx85IA6XMwIbxr3x+mYO5yEalVLqiLnml58=
+	t=1781726222; cv=fail; b=qa4YClmdKZsdsN6j9NWjdW4MUslDIZN8FY5MdnZ4iQ7saPSQwsYfcZr4o1vMkq8/lfUTrLdTyHGcRP279jkRtQK89CfoCp6YUs/LFCBYiJ2U+qgVenmQ43+R4QhBcdX6irH6wYAK5VCcdE7RQii5DY5BK4+a5Saa2ueVUyl9zNo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781725881; c=relaxed/simple;
-	bh=G3yhgzITGjQL1U3q6wJlybO+4Gck8hZOXnGiN+lVUbc=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=g7Z+BYhtpfgDJksCHTUW3GhwX3SP3HeNnbvDGBoLPiuBb1AsB9asRV1iz4YRxTXgL36+oCLceqQKSIRZ6CXt02tT16ttMR3Rz/jyyi0T6V0/7ji4HtRfr5y3ZFZgrvT02bmI5VtOpNU/sFaTPVD8E4T+q8Wvwnjx5asS9TlvOHQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=LtXOaAZw; arc=fail smtp.client-ip=52.101.70.71
+	s=arc-20240116; t=1781726222; c=relaxed/simple;
+	bh=vM72dJDOtkcMNFALhsFLaA9GLdZXV/yLTsxHZoIkcqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=N2gcRo/X20REK6iI+2ErArRU1hwC0qjFkRW8Db6o/5qjVZkg+GPKfrQU/ug1L38orDg0iQw0k1To8IA/JCoS56HRjxH3FWQOKaQeuL46YVV5PaKkCQYbJxXT6/3uZtAZtDZ36Uah/+/lwijieHbuyxzfMdFoCJEEId/f9qtKO9c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=wjh5LY3E; arc=fail smtp.client-ip=52.101.84.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="LtXOaAZw"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="wjh5LY3E"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JP7kuoLTliupAxECyz64AVe06Gq3EQ/E/xsW2nCCWHtHk1b9BSo2xa8jtCxzshfjANXzzyAdYzt4HLCdh3Fy+5XoTj3+p/EK38v28r87NoERt7RkxyDkccqF/bN/IcCd1yABvD+eCZjsNNHDBexFsX4Y6gTCfsiqG0SQRWNqaumLYnjptYO2D15vp4uvJGAXgfmclApOCjKS79vJ6Hb/50/pl5dEWckfTlwmVCQJGI2U6SVEYl0z0hS6ZDQLfJnRcrtDfVwYOrT5l7hZURcdUOTxRFmIM2ALJCnkXQ6U1KnT8zAx9a0Qcsv/An4fL4YhBZ9P4qLABpaK0uLHPZoA/w==
+ b=J+OXHzpUPTKPPetFcFZqVLJgRO4lQqKDEumqLX5xV3CB7F1OFV0Bvc+pWrNRnx+tW51ruut1eNOM1B7kUSXorLq8GJvvdYv7T17f+aBiwADluCi67k4XEYY86CxzEfS2u6BNoEEKC+/nxKpx7gA9aC3StT+898HInppPHQ23wRBgESWbjpyRYszgVPQSU7YqJv3xvsF8YpS6+/CC5m/ceB0GSDrndGDRQ9PLlISYtRSEvqgxRBXF55iukpORFsGtgMzTLFVlHMa4J/WqpB+TVmdhEL0yC3jGzYZFPuvMmEXTMVZ5B56GWSdybJ2Lhbq3NxhfBRanxLLlXr6WJi4wCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pn8S8kSlxWBZYe6I9dUisZDypIMnFOpvLaM8pSVZR+Y=;
- b=unja/LNLDHvYu1bjYCbCeJ1rcjo/zLAVq0rffkNSxKLz6YdV1hdhUfkdOUSOqvvOinVz7vk5nB0kndDPmG/bGcp+A5hbQ0dhwxI+incpXi3kBYKF+bioClobCs8Z1Pk0SRniRQ+ro9jKgWQNmnR9WrtCKiMX93xRP4KyWXat6mmb4NexiqXetCGbpiqqNiE4dZ8IsdpwMPF5e7kz8hkPSSylHp+pe1f5hDFkJDYVzYDfomGKgrV3/vFi9dkH0nhjMG2n2dBmiVjrvv9kXeZFzYd0SdOMflPpa70VcfNOJFxfslHxQmUYKqHInpXWFipDMBC3BlzwH5Fg/txKIcjKHA==
+ bh=8zMPaFxUIa+Ulr7iCRADwkvHh8mYXM9cSFm317YnSqw=;
+ b=LDCz7YQL9/qqMoWd7Uz/vqKLRU0eynJOGakdDwHEm+NP+5cV9Dd06wtTN6dpboaWS4aPCnW5/WHzJAsjQRiTizgvJtiKMn4v7ARokGFyrGLMHzsjdDQ+n4I65d9ZNAhEVl1CESTLl1Cy3S0DRMyDzgBtATxPBLCMSt7x75SFosPxaSbbvFxhbX2CZnRQa4xY51XdbT8JVXxAHxUaKOnJDaA7tNQnqaEiUEYHcl1utQn3LB2GLRH9m4lz1517j+9fCXPc1yfPQrynJzIwwMbEZo20Z2woXGQBgLOvCI9EGeRN36pn6cQvNDST7ZFDZiAAs8kHCvCdk5/O4tvVskuBGg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pn8S8kSlxWBZYe6I9dUisZDypIMnFOpvLaM8pSVZR+Y=;
- b=LtXOaAZwVKayjK2RpD9aq8ZXo27Rei99P3kAtSKS0fLIXyrswfzE5sd0spW9AHHZRDxHtu/AAcf0Kr+C/tyoq3x+1/tmyMriC9UVabS/8/0zLYUvYpu+bw2zQJmVTKRkvhmVoDbHcFCev1h9dj9Tol/ewP7Cm68uq3cGDrL+r/EUEQPYAsDfyqqo5tZ/hWlfNpyF24a9+sAIOgc814TyTDJa8HbEoRBtnGAxuU6NtYDxiSzjMZJZRF3hHJOsULEFLUHSCa9bTh6QG8eOxltZuBIgcb3RF9A56WVa1JK1hhLIsXdxbEHgoLMvSVNkJiKF6ioaHI4c2tQh6Jtbbl/W2A==
+ bh=8zMPaFxUIa+Ulr7iCRADwkvHh8mYXM9cSFm317YnSqw=;
+ b=wjh5LY3E3O0JVIlJRhh/bEoYfIxUoErmDr9v5AEjyt42nlAH+R9YG4OPiqYzHazJpFYJPFGyP/olm5XafhlzfPnY+T/nxLe+uWtyIz1i1760Z9U97S/Dq83/nUI/2o2p4O+8QqDOA7BTBk7v4rpSpgjwWx0MuwNWg02mIEPxpDyv6Crow3cxKkrXyfitiXHfD+I2eQ5EyVoo6786oQYtlo30QNeyvPVLsK/o3u5pOIRckan/iqd73N7+Vyvv2iMqfLr4qVdZX3RyENIdyiJ4+FsczL4EVpRiQDddW46ffeLbvCf29c5ZGmIHFZyKnqCvYB5lzBlCxOSSwdBeRMXJzA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM9PR04MB8227.eurprd04.prod.outlook.com (2603:10a6:20b:3b4::7) with
+ by GVXPR04MB10184.eurprd04.prod.outlook.com (2603:10a6:150:1bf::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
- 2026 19:50:57 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.13; Wed, 17 Jun
+ 2026 19:56:51 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0113.015; Wed, 17 Jun 2026
- 19:50:57 +0000
-From: Frank.Li@oss.nxp.com
-Date: Wed, 17 Jun 2026 15:50:18 -0400
-Subject: [PATCH v5 8/8] arm64: dts: imx8qxp-mek: add parallel ov5640 camera
- support
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260617-imx8qxp_pcam-v5-8-7fa6c8e7fba7@nxp.com>
-References: <20260617-imx8qxp_pcam-v5-0-7fa6c8e7fba7@nxp.com>
-In-Reply-To: <20260617-imx8qxp_pcam-v5-0-7fa6c8e7fba7@nxp.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Michael Riesch <michael.riesch@collabora.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Frank Li <Frank.Li@nxp.com>, 
- Martin Kepplinger-Novakovic <martink@posteo.de>, 
- Rui Miguel Silva <rmfrfs@gmail.com>, Purism Kernel Team <kernel@puri.sm>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781725817; l=3773;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=V6G3zqx+tgMOsXyT5WGWuzLbZFf0v8KlmXNNbO3GwxU=;
- b=iAKVJZjdxa/dCM8Y5DXkF0Z7k4VsB7RRvsAI6To2zE7eRtJZXw5bc30tcWSUOhyG7bScmtgfW
- GBJS9MoFQQMCsjJsA8KneJHXOdSlhr1hisrwh8CMlue8/ZFwCYGoNWg
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SN6PR2101CA0006.namprd21.prod.outlook.com
- (2603:10b6:805:106::16) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ 19:56:51 +0000
+Date: Wed, 17 Jun 2026 14:56:40 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Pankaj Gupta <pankaj.gupta@nxp.com>,
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Frieder Schrempf <frieder@fris.de>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/9] firmware: imx: ele: Add API functions for OCOTP fuse
+ access
+Message-ID: <ajL7-OqjYuQHyZOI@SMW015318>
+References: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-0-cb7f3698c3e6@kontron.de>
+ <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-3-cb7f3698c3e6@kontron.de>
+ <ajFtkysqxuLV8GgF@SMW015318>
+ <cea74ed4-1003-419e-8da3-1c62b1ace726@kontron.de>
+ <ajGsiglUUbDTIxTh@SMW015318>
+ <9c1d34ec-0b96-471e-8b60-6b4c852878bf@kontron.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9c1d34ec-0b96-471e-8b60-6b4c852878bf@kontron.de>
+X-ClientProxiedBy: PH7PR13CA0023.namprd13.prod.outlook.com
+ (2603:10b6:510:174::23) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -83,198 +79,143 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB8227:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0de49cbf-a0f8-4d7f-5dc0-08decca9bf8a
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GVXPR04MB10184:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1e5ad74-4b69-4d6a-86ce-08deccaa92fb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|19092799006|23010399003|1800799024|18002099003|22082099003|11063799006|56012099006|921020;
+	BCL:0;ARA:13230040|19092799006|1800799024|366016|23010399003|7416014|376014|3023799007|22082099003|18002099003|56012099006|11063799006|6133799003|4143699003;
 X-Microsoft-Antispam-Message-Info:
- JAf2POVFG1GJBQHabffTDLyCRLqv/4WqnzrsWcNyxtIs1Re6YpkCogVptVJKBZQ/HT3aY6B03iRcNqRJi9muxmsmoYiIffmuf8QrRWJYPiCBFa0Pp27esUvz9VVjkyTcyus2QjZSdM8cpqi/Arbg3TNY6QIyRxxYBbbIsH5fUHVwsewMnvoqZMoFdLHxwIGyh7a30Cxsf9xTHt8DX3IT1Qer84iZCx/WHzSN3JGFZOXtdPEkpxqXaD8++TYmfnVxCIB4/N2fMPvYX04Z7ms+c4Bp6ONRfiwW6h7pEPAo/dRCF2uwsT+DhyAux/6/fAIp/191wnzzZJ8E49rvDVn4HDh0Xc+9B1a2YpixzLvxYQMnM0eNT4fK4DhaCRJgTtumCOWa8AKqj1CdEzC953vk4cbl7QGhj6pB6vP5srLwvyHFUQNLedLJN2CHudiWUb/5DiYJpN2uDpux39yrYUbYzhYylx0vw9Ngiu4cv84ucNrw12+e/wG/FUtdFEXVH3zhbR78nZBLituO4YgWRYpKp/G3QsSW3t+Gp5MakY/AkpkOwZOtmi7wBzu/bRqKfXPotYbS03t+QlzgFJrznJ/0Mj+YgnPArLTFdEKarrlCNhOuPvECPVX7SbuOkmLE53g0ZtfZITZbu2iDlCYAFR7puqG8i7l5dqScvQIF5vQV+U/4AySZQ9tITIP1eeW9mpe0x1bN6ljzMnmalypDGmwV/Z3Yb0Lp5bjFfThiOOmZpI8=
+	CkSR/ufW0qxWyB9fVEraIoz9axW9+MXbGqdlCoux0Ihfq3n2UE/Vjm3RwSRHEJFnqYFZLDYhSd4YFMzLQF/ISR+gUN2JSKL1rPrYmmwKv0TGBhrOIpZ9PGIev5giTOVGx30FSFptSSwNFpJzvbDgGKz3Fk/y2AQR90paGshq4pL729cOMqgL9pPJfsWtLFviX9FyIZs+NmA+o3b3q+UaJMEMFEeXeiyj/tERrzbL15IHB81imikBs1fHCyXcnx1mx6k770wVn1DiNJV6+71SPZkMa2KnAY1JGTws41Em0ozXZf+8d4Fy82eKDRG/nGiAsFvvavrNw/xjv2nrCOV8aBceNPjZk2bAplTS20NelmKBa1HCggE0ie5gZn1bkKXt5WHVbRyiowd+f8NLO7STCw5/Yqe7fw+y4cpoZ9C7jvFa62h+1aN/Qp96+XDoelsf6mHDPQDVEQrTrqGN9mGu64lpph5iRelVfLg3QgTBJUqnOa4kqGaHS/8KVQ/cqUPDUWk1Kzul2gOu2zHVI/e1IIDwQTWyhbp2KO8nrns36QPUOzK/96CEu61Kx/pvv+vX9YK62GSmOhpB9Prr55j03R5t2/UT1KZyI6o+1bMJWKqz3YUM9D4rQXDuy1+Oj7rXkX06AmKyXwQ2wSZA2MN+s3ICN6L1J+BndyhszeAKm2fEkNGENXwYSr4psZY0mAnp
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(19092799006)(23010399003)(1800799024)(18002099003)(22082099003)(11063799006)(56012099006)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(23010399003)(7416014)(376014)(3023799007)(22082099003)(18002099003)(56012099006)(11063799006)(6133799003)(4143699003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?NStMTDZBVjN6VHlJbnAyVlZ0eWpSY2RwSmo0aHhKc2U1MGt0UmNWbklxdFBO?=
- =?utf-8?B?V09WTHFXWVhCblIxRUxBL01OSWxoQUtKQ08rZnhPWTBQN2tMbTg4TDcvcS9C?=
- =?utf-8?B?RU5ETnNENDdMR2VtY0s5dG9qaVFEVnZmbTYwM2FrK3pJRHQxQU5sQ1A1ZW5P?=
- =?utf-8?B?QkZiS2w0cFE1UnhFL1RYUk5pYTRUbDRCRmVkOXdJQjltZ0xueVQ3aVFoTTV2?=
- =?utf-8?B?K2dwN1VHdXpRa3ZnT2dQVnh3NE4vNjhuOVF5SGhnVVNxdHRMWG1qL3BqTXZT?=
- =?utf-8?B?RDB3U3gvSHNCb2d0SCtkNUk1N0JtSVlWTHlacEVrZXlNSkVob2ZWQmFpd1o1?=
- =?utf-8?B?U1VpQSt0UXBPbFRIYTJ3L3hjY045TEhFd2V5WTFpZkR0aWhhSHhXZ0NoQyto?=
- =?utf-8?B?L1NQbHVDemdTVVlUVDdublNFVTZnUE40dTJzSzVaZlJhdzVHc0dHTDRHTWl3?=
- =?utf-8?B?YVVWV3F2eG1pa0tQdTZmQlBuNFpxeVVIdlkzRzViVUYyRkJBaUpVTXZDbmE5?=
- =?utf-8?B?M0tvQkJVQ2p2U0tESUdnTUZMdjYvaXJrdW1zdFJFcFAzSGJ6UHF1cVYzb1pw?=
- =?utf-8?B?ZFFQYkJIeUE1Q3UvTmtHeGtHQjBJbmhPTXduejE1WFNaU01YT2ZBVThueHkv?=
- =?utf-8?B?ZFpESzV0TGUxOWxmbWYxTWhmSHBUUzQ3SitlSVpFRHMrYk1TWndXbDRhMStQ?=
- =?utf-8?B?ZlFMdE54WWwrSmpBSU52MjJRRnVZTzRTNmJ4WkpHSVQwR3NCbHlBNjZMcTZW?=
- =?utf-8?B?UVNCNkQ5V0tuSW5kV2kxb3FaNGZTZ3lqY3J4SXlabDhjWGRWSG4zUkh4R3E0?=
- =?utf-8?B?WTh3U3hxWmFMS2tKZFl6WGxPcGx5andsRVJRckZGNlk4MlYyQXNSMldDdTVS?=
- =?utf-8?B?YnBoZVd6NGFZRkYxSGo1NXdON2xUL2xSaklNVlZ4a2lZb1BlUmIvaWpkcnh2?=
- =?utf-8?B?V3dkQ0gwWklZWERyZit1ZGgwRURKd1Zhd2pOQXNmL0g2NVNzWkhJb3p4TGlG?=
- =?utf-8?B?WVFoNWhGL0czaGRRbWE1RHUzaEVza2NMZXVGM2NlU1hmcFlHRnlkQ1dOYVk3?=
- =?utf-8?B?NEhCeVJKMk0yRG83NHJEV1NtWlZXYjY1Sys1WXVwK2ZNV2p0SHk5MW5LUGMx?=
- =?utf-8?B?eXczN1JLK0pDNFVwZUwwNkxMcElZemphWUcvdkd5TndIN0UxM2hTK3N5Z2Ur?=
- =?utf-8?B?Q2dZVzBpNytUZDJUQktrTHVLWWMwWHRjYkg1TkdObWFxVVFTNDVMY0VZOVR0?=
- =?utf-8?B?SEtIakRnZC8xTjI4R1NlSzVPR0ZGMFpKOUNESGhYUmp2MDN6V2ZMdy9WaHlW?=
- =?utf-8?B?ZWhQMnE2dll4UUJyOEt3Z1JuUUtsaE9PdGorVlVkUTFCaDJ1RGpuV1FpTzZV?=
- =?utf-8?B?bEMzN1dnUnpkVTQvRkNXVjNYZlo0T0VvVDR3T2RwdWF4ODhwWWR2NmhUanIx?=
- =?utf-8?B?dmd2MElTYzVCNm1JWEMvYUpzblkxRjhtT1FWTGwzOFgzNWo4SU14Q2o2UG9q?=
- =?utf-8?B?VVNHQnYrbXpiRlVwRmhBMFU5OFJIem1IdnEvKzdiblpYVUFiajV5aHRUdnM1?=
- =?utf-8?B?WStWcjM2b3ZJd1ZGaHVsK2NBUHNVa0FLaDNUYlg3OHU4NUVNelBLQzhBYmd5?=
- =?utf-8?B?MWU1ZHEvZHluQU1kRkVhbGZXeGZ2VC8xSG9SQWhzRHowVUY5SGxkaG5jQUpi?=
- =?utf-8?B?d2dTRFVBL3ducUlxZlpURDM2czFhV3J2azZkYUZnRjU1QU9XaUxjOG9CUitt?=
- =?utf-8?B?MnhNbkIzYlcrcWo2UExxbEsraUNoVlo0NTZRMk0vdjVzUHcxY3pBY1VNQ2xP?=
- =?utf-8?B?UENIQW5UOWJKRzQ5aVJpSzIvMFhnNUMzNVFwTjkzZGFCd3NvRDVzWllsY3Vs?=
- =?utf-8?B?cGwxK1kzU2phT05qRjhkenRTd3FDa3MyMDVLcWswZmhEK3lzSG9jYUNzU3g4?=
- =?utf-8?B?NEpFc0pScTA4UlJzNk1ja1FYcEtHRzBVVDluM2hHc3pEcDVQVmMxazltN2RR?=
- =?utf-8?B?aEdMLzVwa1lCb2xST3hxcmU2NEpTQzV6bXpwZ05KUi9panFGZUpGZGk4WGp4?=
- =?utf-8?B?cjRvaDhwNXlQRnVSdTEwMFBtWFlEbmR6S3p4a0VnbkwvUWJqZEoyYTVFcjk4?=
- =?utf-8?B?bHB3Tlhuc3FKM0dYcmZxR1hNQ0EyaHlaUXVYaEtNQmFtTHNpc0Y5SGtVNno1?=
- =?utf-8?B?VFZoS215cGx3STg4ZTU5R1RabVpzaWRVakxlTDRPdWErd1poZkdwTStWem5M?=
- =?utf-8?B?TXh4Tjd2MTB6S0RncnozeklpVTlNVUVuMFRCdGlMNGZiS0hPcTRiWjBiSitY?=
- =?utf-8?B?MGQ2VUxpQWJZOU15UGVWTml6bzhVeFVQdVc4R1lNWHlOVmd4K0tLT2IrbkRK?=
- =?utf-8?Q?xhsP1dyFBmzDfl6/0f24Tm+bNoefVKJp20QIN?=
+	=?us-ascii?Q?RUX016vakycGjJ5N3EeLtIpsjeoO7dLnJwroG4z73qGERov5klmEHpuSnOO1?=
+ =?us-ascii?Q?nlKthspOAL404/24bpbeI0G2WaBsmWNNA7LNc/YU1hs8fbYxKX47Inbbi91E?=
+ =?us-ascii?Q?Zj5YII5S2Io/IB4Vo++hbK/TxWTFewRzhLszpZ7Ns7eLeMoV+3ERK7c7ix3A?=
+ =?us-ascii?Q?iajsKGZB9oZhF68KFD41+v2MYd5Df7+7rtAmVpkmB9jSZGvNuf7jAD9Zczoo?=
+ =?us-ascii?Q?RFsgGW8sB4qpypLfK3z+v2nG2Iz+UaxKPOmyj0pqW3C/MaTmSe2RVrnw2b5c?=
+ =?us-ascii?Q?pYeAeEibZl0zXJoBpED3vPXBCe7Lu1jSgjfMzrk9T4bm5f9inIrF/YVNvhB+?=
+ =?us-ascii?Q?5rEjDqGxzZFMI6+v22TBScVcU/Ihbt/Y7diUEZQf0Ro+9P/e8MMCgpyF+LCv?=
+ =?us-ascii?Q?LGpFBVWiMScPipISG4tJHtwcYXG0Kykvbnn/pCyJkxU1tKekWrnj0++DHGhe?=
+ =?us-ascii?Q?k64/5pKgr834TTTrKUIkmq5sV25Ji43/Ewao06zNPiaMFuOjHnjaLAlu9U7X?=
+ =?us-ascii?Q?vtKUk+bTBQLhybFYY1M43oQh9Zfby24fYfonFGcAfbvol0JxMePWq6NXFbFP?=
+ =?us-ascii?Q?xu60r8VkWNsPlYT3uq+kht1yn9gzqdSRfgYkd4xFLx+/5Vx5hncfO3LorkrJ?=
+ =?us-ascii?Q?qJhXi1c+116sspmITS1VOqX6Y25xt/d6y+/K0tzo4QnMLseEBOFI6aRSe+iz?=
+ =?us-ascii?Q?2mhH3IuN56ZRpo5r6Dtiw3eHiIiEDo/YjHoscz+4QBbEznQXjz/Ijb7LVMts?=
+ =?us-ascii?Q?KN+KlSiuZvDaFKiK2S/60EiUkP4E+b3+9TfaERPH46e2mVMHgCdYOAhUFkN8?=
+ =?us-ascii?Q?yb1kAW6Ck4JzYWTVHuDxarhrO6PZdM6ad/Isb3NfG2Sfsso/H+QaepZFF7+L?=
+ =?us-ascii?Q?p8SXI1IpN9a+pRqnhvXisaWVWYv8OmeS/CXiDt85NJ1dm/IhMfTqmeNxmLfM?=
+ =?us-ascii?Q?skAwYp0/rpPXpOA2LsLGA5jcNukDPw5pUKZ+G84nt6p4xxNIe+7UEwHRo+xg?=
+ =?us-ascii?Q?wNoCFZiWBjwci5uh++535l7/la5RmdXDayqBvyj9FMv6szPfomX0cyKT3bD3?=
+ =?us-ascii?Q?5vFmg/kFBPnFrI1SnqvA9pCaA3njYt0Xi2qj4vGvehkMLXyO1DdNly5RxHpV?=
+ =?us-ascii?Q?S+5cAOs55riOLJuK3MqRQvmyVr5v8ydsreCPaRosWAt3b9FT0X60EZkyySEs?=
+ =?us-ascii?Q?pATumG70zBGnSRTTBl7gC6dTLK7/eYAjEpV6SaSzNv3HWL2sS//mCQtzYwrQ?=
+ =?us-ascii?Q?cBFMqzqbvPgR00ssQ3/281VLwlpBWbE+E9fSDHxRANrbMlDyAQ9yQzrJ5MRe?=
+ =?us-ascii?Q?PNo+okVMlZXEsZkt8N5219mJxhqYylAn/IAmOEnPqAeEb6alcYKL1KxILfKW?=
+ =?us-ascii?Q?9kxSYUdfxBwC298bZEXeGVOxfwDQR6s93BB/J6yBr/H6gYxFaqTWBsG7qfeL?=
+ =?us-ascii?Q?npBje3izUX/PMkRJMR6isb5EVAhiOYiR2U0B73BtHxCH3wi3AtKFwGryKK7c?=
+ =?us-ascii?Q?92nE+B7xsdxuBUTFZlU8b1iblmcS4zeXor3Tz808RKzhhaAPoMPcWnn3e/wz?=
+ =?us-ascii?Q?AvQN5tspfy0lDlOhZC0PW8MRFf/m7+kEgohBg/jk4k9YjX9mRfDbG4/AP92R?=
+ =?us-ascii?Q?/LUCJCh6f/fGrwj9IEBhtWoyTew2vDYSb7W9HuNcdimzz0CUZyPO20S9trY4?=
+ =?us-ascii?Q?Vrheh2lJT8kD/80wUP10+lpjZlXtmoyGKQo7LfPF39HhfD7kWGPSUPGKetZu?=
+ =?us-ascii?Q?uxqS92VnIL6pRVEFRVwW2GEJyJEqaJOwDguOb4w0+l44CnDWnTbH?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0de49cbf-a0f8-4d7f-5dc0-08decca9bf8a
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1e5ad74-4b69-4d6a-86ce-08deccaa92fb
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 19:50:57.0070
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 19:56:51.8593
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JL8O/LavdpF2taDjtU49jin41US/zMU6hwGhK8Pan/pTIq2FXeCfz260dU76OV2zTEotL3rkw2KgVs1bgbZ72NvqeKWMDcLd8xt47qc00pP5wblgRCJsCyOPzXfyxMWi
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8227
+X-MS-Exchange-CrossTenant-UserPrincipalName: w+n/atxK3GbO9VclvDlqx6oLLXTodUIw8EMVXRuAu+hG2XfIoHrb4ZfyrXlzRkItAnzGQWJ1zahooBRBXGpUN0G2DLANEdVAA6YjgEiPMeaxIiHJeKaPsYw5Qnu17cRm
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10184
 
-From: Frank Li <Frank.Li@nxp.com>
+On Wed, Jun 17, 2026 at 08:54:35AM +0200, Frieder Schrempf wrote:
+> On 16.06.26 22:05, Frank Li wrote:
+> > On Tue, Jun 16, 2026 at 07:59:54PM +0200, Frieder Schrempf wrote:
+> >> On 16.06.26 17:36, Frank Li wrote:
+> >>> On Tue, Jun 16, 2026 at 01:52:18PM +0200, Frieder Schrempf wrote:
+> >>>> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+> >>>>
+> >>>> The ELE S400 API provides read and write access to the OCOTP fuse
+> >>>> registers. This adds the necessary API functions imx_se_read_fuse()
+> >>>> and imx_se_write_fuse() to be used by other drivers such as the
+> >>>> OCOTP S400 NVMEM driver.
+> >>>>
+> >>>> This is ported from the downstream vendor kernel.
+> >>>>
+> >>>> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+> >>>> ---
+> >>>>  drivers/firmware/imx/ele_base_msg.c | 122 ++++++++++++++++++++++++++++++++++++
+> >>>>  drivers/firmware/imx/ele_base_msg.h |   6 ++
+> >>>>  include/linux/firmware/imx/se_api.h |   3 +
+> >>>>  3 files changed, 131 insertions(+)
+> >>>>
+> >>> ...
+> >>>> +++ b/include/linux/firmware/imx/se_api.h
+> >>>> @@ -11,4 +11,7 @@
+> >>>>  #define SOC_ID_OF_IMX8ULP		0x084d
+> >>>>  #define SOC_ID_OF_IMX93			0x9300
+> >>>>
+> >>>> +int imx_se_read_fuse(void *se_if_data, uint16_t fuse_id, u32 *value);
+> >>>> +int imx_se_write_fuse(void *se_if_data, uint16_t fuse_id, u32 value);
+> >>>> +
+> >>>
+> >>> This API should implement in fuse drivers. Other consume should use standard
+> >>> fuse API to get value. If put here, it may bypass fuse driver.
+> >>
+> >> The reason this is here, is the downstream implementation in linux-imx
+> >> and the current code organization.
+> >
+> > Downstream may not good enough, sometime, it is quick solution.
+>
+> Ok, but the code structure and API design has been upstreamed like this
+> and the refactoring could have been done before, if downstream is known
+> to not be well organized.
+>
+> >
+> >> I thought there is some good reason
+> >> to have shared functions and it looks like Pankaj structured it like
+> >> this so all API functions live in ele_base_msg.c and the internal
+> >> structs and defines in ele_base_msg.h and se_ctrl.h are not exposed to
+> >> other drivers.
+> >>
+> >> If I would move this into imx-ocotp-ele.c, then I would also need to
+> >> change how the code is organized and make the internal se_api functions
+> >> exposed to other drivers. I don't know if that is really a good idea.
+> >>
+> >> I get your point but it looks like this contradicts the intention of
+> >> having a clean API in the firmware driver.
+> >
+> > You can refer imx-ocotp-scu.c, structure should be similar, only difference
+> > is that lower transfer APIs.
+> Ok, this would mean that I expose the generic SE functions and structs
+> required for fuse handling. In practice, I would remove
+> imx_se_read_fuse() and imx_se_write_fuse() from se_api.h and instead add
+> the following:
+>
+> struct se_msg_hdr { ... };
+> struct se_api_msg { ... };
+> struct se_if_priv;
+> se_fill_cmd_msg_hdr( ... );
+> se_msg_send_rcv( ... );
+> se_val_rsp_hdr_n_status( ... );
+>
+> Then I would export the functions in ele_common.c and put the fuse
+> read/write functions in the NVMEM driver.
+>
+> Is that what you want me to do?
 
-Add parallel ov5640 nodes in imx8qxp-mek and create overlay file to enable
-it because it can work at two mode: MIPI CSI and parallel mode.
+Yes, Idealy, it should be children device under ele, ELE like a bus, which
+previous lower level data transfer, ocotp should be base on top then it.
+like spi/i2c, which provide low level data transfer.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-changes in v4
-- add hsync-active = <1>
+Frank
 
-changes in v3
-- replace csi with cpi.
-- use imx8qxp-mek-ov5640-cpi.dtso since csi use imx8qxp-mek-ov5640-csi.dtso
-
-change in v2
-- move ov5640 part to overlay file
-- rename to imx8qxp-mek-ov5640-parallel.dtso
-- remove data-lanes
----
- arch/arm64/boot/dts/freescale/Makefile             |  3 +
- .../boot/dts/freescale/imx8qxp-mek-ov5640-cpi.dtso | 83 ++++++++++++++++++++++
- 2 files changed, 86 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 001ca3a12c0ae..3b9e9844f11ef 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -554,6 +554,9 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek-pcie-ep.dtb
- imx8qxp-mek-ov5640-csi-dtbs := imx8qxp-mek.dtb imx8qxp-mek-ov5640-csi.dtbo
- dtb-${CONFIG_ARCH_MXC} += imx8qxp-mek-ov5640-csi.dtb
- 
-+imx8qxp-mek-ov5640-cpi-dtbs := imx8qxp-mek.dtb imx8qxp-mek-ov5640-cpi.dtbo
-+dtb-${CONFIG_ARCH_MXC} += imx8qxp-mek-ov5640-cpi.dtb
-+
- dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqps-mb-smarc-2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8ulp-9x9-evk.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-mek-ov5640-cpi.dtso b/arch/arm64/boot/dts/freescale/imx8qxp-mek-ov5640-cpi.dtso
-new file mode 100644
-index 0000000000000..9fbdd798f17d6
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8qxp-mek-ov5640-cpi.dtso
-@@ -0,0 +1,83 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2025 NXP
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/clock/imx8-lpcg.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/media/video-interfaces.h>
-+#include <dt-bindings/pinctrl/pads-imx8qxp.h>
-+
-+&cm40_i2c {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	ov5640_pi: camera@3c {
-+		compatible = "ovti,ov5640";
-+		reg = <0x3c>;
-+		clocks = <&pi0_misc_lpcg IMX_LPCG_CLK_0>;
-+		clock-names = "xclk";
-+		assigned-clocks = <&pi0_misc_lpcg IMX_LPCG_CLK_0>;
-+		assigned-clock-rates = <24000000>;
-+		AVDD-supply = <&reg_2v8>;
-+		DOVDD-supply = <&reg_1v8>;
-+		DVDD-supply = <&reg_1v5>;
-+		pinctrl-0 = <&pinctrl_parallel_cpi>;
-+		pinctrl-names = "default";
-+		powerdown-gpios = <&lsio_gpio3 2 GPIO_ACTIVE_HIGH>;
-+		reset-gpios = <&lsio_gpio3 3 GPIO_ACTIVE_LOW>;
-+
-+		port {
-+			ov5640_pi_ep: endpoint {
-+				bus-type = <MEDIA_BUS_TYPE_PARALLEL>;
-+				bus-width = <8>;
-+				hsync-active = <1>;
-+				pclk-sample = <1>;
-+				remote-endpoint = <&parallel_cpi_in>;
-+				vsync-active = <0>;
-+			};
-+		};
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_parallel_cpi: parallelcpigrp {
-+		fsl,pins = <
-+			IMX8QXP_CSI_D00_CI_PI_D02		0xc0000041
-+			IMX8QXP_CSI_D01_CI_PI_D03		0xc0000041
-+			IMX8QXP_CSI_D02_CI_PI_D04		0xc0000041
-+			IMX8QXP_CSI_D03_CI_PI_D05		0xc0000041
-+			IMX8QXP_CSI_D04_CI_PI_D06		0xc0000041
-+			IMX8QXP_CSI_D05_CI_PI_D07		0xc0000041
-+			IMX8QXP_CSI_D06_CI_PI_D08		0xc0000041
-+			IMX8QXP_CSI_D07_CI_PI_D09		0xc0000041
-+
-+			IMX8QXP_CSI_MCLK_CI_PI_MCLK		0xc0000041
-+			IMX8QXP_CSI_PCLK_CI_PI_PCLK		0xc0000041
-+			IMX8QXP_CSI_HSYNC_CI_PI_HSYNC		0xc0000041
-+			IMX8QXP_CSI_VSYNC_CI_PI_VSYNC		0xc0000041
-+			IMX8QXP_CSI_EN_LSIO_GPIO3_IO02		0xc0000041
-+			IMX8QXP_CSI_RESET_LSIO_GPIO3_IO03	0xc0000041
-+		>;
-+	};
-+};
-+
-+&isi {
-+	status = "okay";
-+};
-+
-+&parallel_cpi {
-+	status = "okay";
-+
-+	ports {
-+		port@0 {
-+			parallel_cpi_in: endpoint {
-+				hsync-active = <1>;
-+				remote-endpoint = <&ov5640_pi_ep>;
-+			};
-+		};
-+	};
-+};
-
--- 
-2.43.0
-
+>
+> Pankaj (and maybe Peng), do you have any comments on this?
+>
+> Thanks!
