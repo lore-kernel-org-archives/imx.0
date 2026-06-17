@@ -1,123 +1,129 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E49348463
-	for <imx@lists.linux.dev>; Wed, 17 Jun 2026 22:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EFB17B50A;
+	Wed, 17 Jun 2026 23:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781735789; cv=none; b=ThkFUjIVR/KGSddSd4bWU2mAod6q7aU6zN7Fjlpq3zH23Flzc2JQ5riWQY3F4msHcOzrtouI0zDAbj3Vv0x6ZBA/rtnGXIyp1OfJ8/Ma72DtEXvH3n05nDQFqkO5/br27aXlso07XURSv5aOpvMVoTnlS+hcEIwJNIu10lsmxV0=
+	t=1781739952; cv=none; b=GKUgrDSDo+MCEDxSu4CpsuLX2LKAARJaaseTv74RVRlq7Tn4DGyGk3WwZwvNpE/K/EO4lf8J9TT2CWDrEwQ1nbz7Y5jXZdAtB58zarebAxOjOWycyzVZchKMIaDU9xMKl8OEFvLXwxac8M2eJWbo5j9EhdK/f00Wgbsk+ttoPik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781735789; c=relaxed/simple;
-	bh=xqYjUeV6vUJ0e8uDgzC+drVzHWfpAA3DVqnkox41OuM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aLcWhDuyHYlNDs7MuMagrTjwnFkrmvIVPmm1eFj18v/CuXhNGjD3UY9owt9FHJ/CD2ioRjKkbOnmQ3B3n944i33+yPX44r589FSm6gS39WHIjvz4VoqUvsq2c9Oq3MksugxWIAtJFr7A+gRzOCnilyGzNTGIuQBFq9Y8iQFbYpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nnqayye9; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1781739952; c=relaxed/simple;
+	bh=5Qx5hN9sAp8jOmPEdGqxV4O1CCwZEn4/z9LmZfd5t40=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Ib06+BS/CRBf2umrVlfY7ALYvMS6g63eiDTg2zh75ezwmvE9RywWQr9X4f3qc/lNIDQ+cgaaMll3guiGrxJ4mWMzFz+ZEb1HcG408sQAAiaX/dRkwp3Od4TGhmcQJTFpZn72hCHS0laE5wHly5N6TAUYirgm+4REkbm7j+gw6Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5w/iEVV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nnqayye9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781735787; x=1813271787;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xqYjUeV6vUJ0e8uDgzC+drVzHWfpAA3DVqnkox41OuM=;
-  b=Nnqayye9+5x6dQLGvh3B1ahMlc+/pdjiLMuA8BJqI9aR5QRuOp4QNDyv
-   o0WIzuHgx0GXcBi48Hks5kaBzx2gZrqIuF4CFeEBnO1V4sGfSPLC3VBhq
-   ekSYFFSuNWpawQT+74Ox3A/vsrRbVcTMQ1fUD+I/uJVT6nOQfb3Q4xvdI
-   YDs41Bhxbn1B14O4nGRdCQFkqGVXcNDx81e9O0jI+7+ZzC/CEod68QXqz
-   vyj6jUTCNbuvq+GAgBrq7T6d+2m3elOrRl9AZWzQu2vsSR2MWiEagU2BP
-   xGPV0bv7JQgf3M8WfB7yaqZAki4FizqccKj9PrTj9wg1sO+/Rls9/vo0z
-   g==;
-X-CSE-ConnectionGUID: nkUK8yAbS3SM3Q8Sl24oRA==
-X-CSE-MsgGUID: TUktbjT8SbiMN/eYObtqqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="86399433"
-X-IronPort-AV: E=Sophos;i="6.24,210,1774335600"; 
-   d="scan'208";a="86399433"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 15:36:27 -0700
-X-CSE-ConnectionGUID: SPtzNDigSgO4NknRt6PRGw==
-X-CSE-MsgGUID: wzISkg4lQyqkIxcyu5zSnA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,210,1774335600"; 
-   d="scan'208";a="248250158"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.232])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 15:36:22 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 0BB2811FAA5;
-	Thu, 18 Jun 2026 01:36:20 +0300 (EEST)
-Date: Thu, 18 Jun 2026 01:36:20 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5w/iEVV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141331F000E9;
+	Wed, 17 Jun 2026 23:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781739951;
+	bh=/j9zRqWGlcBB7LyPprFcA5clVLtWwI2aQNG6+JV2aqo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=h5w/iEVVDuU3pC8YnjxZMPz2wXV7bK93GuWALiL2t49T7dOqqp4+9Awfb99CkgJO3
+	 o9U1k6Lu7PKYLCznwaWa27PsCyXG27HxdAtkdVCVL8mE1A07muCpDxc/l7RKzc1Ewx
+	 qY67PL9M1DoDmMwNgeJzkY4u+ElISGCt7k7aj6SG9dZsY6bcCS0oTKGGLi4JhqnbB5
+	 lcRdyTCEAuZYmdl1MKeAKFl7osGpnajvoWjnMmXFSzPosWVs+x3qqVMOr7ZdKaBXDW
+	 /BMUCXf6HgOwDyxW0F0mI5TtPh4++tDEdxVrmmlBPvHkd2ylbbuq8B6EeD4zEn53uD
+	 vYYqom5jXs/rg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 7/8] arm64: dts: imx8: add camera parallel interface
+ (CPI) node
+Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Martin Kepplinger-Novakovic <martink@posteo.de>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Purism Kernel Team <kernel@puri.sm>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 2/8] media: v4l2-fwnode: Add common helper library for
- 1-to-1 subdev registration
-Message-ID: <ajMhZP5YHuQdhc5M@kekkonen.localdomain>
+Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260617-imx8qxp_pcam-v5-7-7fa6c8e7fba7@nxp.com>
 References: <20260617-imx8qxp_pcam-v5-0-7fa6c8e7fba7@nxp.com>
- <20260617-imx8qxp_pcam-v5-2-7fa6c8e7fba7@nxp.com>
+ <20260617-imx8qxp_pcam-v5-7-7fa6c8e7fba7@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 17 Jun 2026 23:45:50 +0000
+Message-Id: <20260617234551.141331F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617-imx8qxp_pcam-v5-2-7fa6c8e7fba7@nxp.com>
 
-Hi Frank,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] The devicetree routes the parallel CPI to `port@4`, contradictin=
+g the `fsl,imx8qxp-isi` binding which explicitly documents `port@6`.
+- [Low] Devicetree validation failure (dtbs_check) due to missing `ports` p=
+roperty in `parallel_cpi` base node for imx8qm.
+--
 
-Thanks for the patch.
+commit 0f41e0622cccbe3c369609c51df0eb689a3de5d4
+Author: Frank Li <Frank.Li@nxp.com>
 
-On Wed, Jun 17, 2026 at 03:50:12PM -0400, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Many V4L2 subdev drivers implement the same registration and media pad
-> setup logic for simple pipelines consisting of a single sink pad and a
-> single source pad. As a result, the same boilerplate code is duplicated
-> across multiple drivers.
-> 
-> Introduce a common helper library for 1-to-1 subdevs to encapsulate the
-> registration, media entity initialization, and cleanup paths. Drivers
-> can embed a struct v4l2_subdev_1to1 instance and use the provided helper
-> APIs instead of open-coding the setup sequence.
+arm64: dts: imx8: add camera parallel interface (CPI) node
 
-I appreciate your efforts in trying to reduce the amount of code drivers
-need simply to get things done but I think there are a few issues with the
-approach taken in this patch:
+Add the camera parallel interface (CPI) base node to imx8-ss-img.dtsi and
+extend it with routing in imx8qxp-ss-img.dtsi.
 
-- The new helpers aren't generic enough, but require two pads; one sink,
-  one source. You could provide special helpers for just this case, but
-  right now it looks like that if there's something you need that the
-  helper assumes you don't, you can't use the helper at all. In other
-  words, more modularity would be nice.
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi b/arch/arm64/=
+boot/dts/freescale/imx8-ss-img.dtsi
+> index a72b2f1c4a1b2..b504f99f6acdb 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
+[ ... ]
+> @@ -222,6 +222,19 @@ irqsteer_parallel: irqsteer@58260000 {
+>  		status =3D "disabled";
+>  	};
+> =20
+> +	parallel_cpi: cpi@58261000 {
+> +		compatible =3D "fsl,imx8qxp-pcif";
+> +		reg =3D <0x58261000 0x1000>;
+> +		clocks =3D <&pi0_pxl_lpcg IMX_LPCG_CLK_0>,
+> +			 <&pi0_ipg_lpcg IMX_LPCG_CLK_4>;
+> +		clock-names =3D "pixel", "ipg";
+> +		assigned-clocks =3D <&clk IMX_SC_R_PI_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-parents =3D <&clk IMX_SC_R_PI_0_PLL IMX_SC_PM_CLK_PLL>;
+> +		assigned-clock-rates =3D <160000000>;
+> +		power-domains =3D <&pd IMX_SC_R_PI_0>;
+> +		status =3D "disabled";
+> +	};
 
-- The new helper should work with the existing types and not add new types
-  (struct v4l2_subdev_1to1).
+[Severity: Low]
+Will this cause dtbs_check failures for other platforms that include this
+file?
 
-- There should be a way to provide default V4L2 fwnode endpoint
-  configuration as well as to validate the obtained configuration.
+Since this base node definition lacks a ports property, validating platforms
+like imx8qm that include this file without appending ports might trigger a
+dt-schema warning. The dt-schema tool unconditionally validates disabled
+nodes, and fsl,imx93-pcif.yaml requires the ports property.
 
-I don't have a good proposal to address the above but at least one way I
-can think of making error handling easier would be to use devm_() for
-teardown in more places we to today. That certainly does have its own
-issues though.
+[ ... ]
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8qxp-ss-img.dtsi
+> index 232cf25dadfcd..5aae15540d6cb 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi
+[ ... ]
+> @@ -62,6 +62,14 @@ isi_in_2: endpoint {
+>  				remote-endpoint =3D <&mipi_csi0_out>;
+>  			};
+>  		};
+> +
+> +		port@4 {
+> +			reg =3D <4>;
+> +
+> +			isi_in_4: endpoint {
+> +				remote-endpoint =3D <&parallel_cpi_out>;
+> +			};
+> +		};
 
--- 
-Kind regards,
+[Severity: Medium]
+Does connecting this to port 4 conflict with the documented binding?
 
-Sakari Ailus
+Documentation/devicetree/bindings/media/fsl,imx8qxp-isi.yaml explicitly
+documents port 6 as the CSI-2 Parallel RX. While port 4 is technically
+correct for the imx8-isi crossbar driver (which only supports 5 ports),
+this setup directly contradicts the documented schema.
+
+Should the binding be updated or the devicetree corrected to maintain
+consistency?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260617-imx8qxp_pc=
+am-v5-0-7fa6c8e7fba7@nxp.com?part=3D7
