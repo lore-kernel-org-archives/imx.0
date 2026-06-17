@@ -1,72 +1,86 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020099.outbound.protection.outlook.com [52.101.84.99])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013052.outbound.protection.outlook.com [40.107.162.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BBF3EB810
-	for <imx@lists.linux.dev>; Wed, 17 Jun 2026 11:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E992F12A1
+	for <imx@lists.linux.dev>; Wed, 17 Jun 2026 19:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781696201; cv=fail; b=RmzjckouslHHp+TTk5aTl0RkeyTXHRM+r/wQeg63LakI3h3WBe84Bdb8o94C2HXeuisA4mnnGLPPUt34JJ8GIZwZ9y+UVwDlz4CQWBwiZUyAd8xF+h6p6vhaOurSKRZmCARn/NrCRc53gLf8oSD1xDKB8bLypHQzrymegwOUD7Q=
+	t=1781725828; cv=fail; b=HMZluxSrCXfo6s3piEuMNGyH59Sk94cDlqm6Y1eoaEnck6DsvtcWMmgHtm9SJfn/1JkptyIc4tTTbeVRu0MhhQigfUpg3+WV4RdsPzQzaoeVsXRiPp0mBuOuVHQHRrHdoNuBCWkv4gLwx3VC3UyrTvrbD3bl/IB4zQqIHxVRcM8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781696201; c=relaxed/simple;
-	bh=RNU+7yhvNbAWgw5/1IufsOA0RB/yPmV8xoWErmcrSfk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ug0pqh0Edo5aHsUG2IFDlyy3lRyEwIqtA0oI+3BpGKm8Y05XBN7eZr5vop/VQPuy5dxNtDiHUHIxYN3hP1TFKyJomCLQKy0oWmVpUZqKKZdYp8QZ0GSY7CdSxT/iZxnpwq2Zcl+oRbfUiQIuFl9iYEx4E0o/Y69dJhGIFG0zGlY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=EOn7zPf4; arc=fail smtp.client-ip=52.101.84.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
+	s=arc-20240116; t=1781725828; c=relaxed/simple;
+	bh=Xbx1oB+qfCuVik5UaeBf9UbNQfcEUdfddpHYOh4aD/o=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=JzmBq0iBGC2K/bsM1om2c2paDjeiqD7q8q4nZY0nCeXU6o4d2x9p4ozZWzy2CRf8QZKyBV2A5xFosZ3BYSExXmZmKIyexLCWSnPZL7upuUyLgzsIxWND2IAivauuJxh+olSjeTB4zu4F9DkqI7gOsVMp/ZztHup3p6DTQv637MI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=cxtAs4Ez; arc=fail smtp.client-ip=40.107.162.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="EOn7zPf4"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="cxtAs4Ez"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PQGr3QLbU0E2kPHzzb5L4SDrqbpihDbQnAEBR8eFQKHtVmdBWiWT/7F31xk+TOlcP0S3aRGxEHBDxlV3/KQglN90WLQLeZqQAKViO2FzczenBOEvFBdgDHd37odKhWEvnFNhwKpUoJjUrZPdgjhzW0J8B2D4o/NX3wcV1aBIR7jvcx1iuK+wzAJNc7m+ZhEUAPt90GPsm8Lpve+mZGEuwhG5U9FcJjYJoxoD83Xh+tJ8DbvCEB41jrRM4uWReBbFRjOT95ViAKtTp/Z7qiYK3ipAqcgJwgrzJporJ6unhMvpc6TwcobC19C9YbInF0qcJuhVfW7E3HR5keLfkqv5nQ==
+ b=ozLf3UMrVa+78gNf61+KJdJkOlw6snvV9GgqGbzYflQ4v7sPOf2tuHAXc1b8xe32dzJC/xbu1X8pZ4+xM9cno8H7OD17ISfe/TI18ANo7y10a653BfRT+Zt2E6yAKlyEP2fk+Td5Zqc6hgJDlk2H0DjwZ1F+Byy+lXxg7emP/L/krbsOVRYo4Rza94marQ3JMMrz6U2RsiugO0IvE8maCLJltZSeHGb3JmMKOUZqO4qX8CTurtLIDePyS+aS1jz7zO5uMd1rJWkN1rQQDA6NuBUiXQdA8AuIVAj6LWfHQfsmcJK/QFXaNzvnOHLLfRQDx2HQNqxP3PszDJcWeZmLSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CGiAW1AK7Hfc62TVSH27JkLQxeVPiq04b88L8T8a15w=;
- b=YxmVUhfUjo9KGNcTqp3RTdBqLUQtM6RQrvdfIB37nnmBqVXmFxEaOsrtNFMHoR8qK/lfijBGdzzIrrSKE50k8SvBeHeC2dUNfgThNSX7W8wc9Ky+PvEyEdVI61yHJnwjeQeGnj99fxVEguFICpWEfjeIVlOf7kHSmmaNebsZbAaInr+csV+f5S7sk07ob/DZS3ZFjP855VtEn3znV5fCdSmMdo/3knpqc66qko+Cn4f9BnU1fk19QWnrkCeh2sUAQzIxyZEWp5n7KOEYssBrUjsQjHbL7bjJo97WNuxCyRJeFA+O+98bAHoTIH+7LRuqYeaxWrEKZJ4LH1Q4GYmtxw==
+ bh=evDPMBCUU3drjBS43cnz5S5W8AJ7WPADGoxyy5XRafM=;
+ b=MktmwnJ2F4IMe9uJqQ+s+1NVr0G6+cr75At2W11J2Cy5vwjTPp1ZliMwnk3miZu8xIUSTg9Q2t2sT11mrYl6aC4S62mTU/NrU9yrwtvHdO4AJY8R6kDXq61lhc9xyUlQKOKEKKaFd+GQboElC32GbpW/Bd58eqDIucaIWDyibuDR22rKh/nhX/n2ddQF8uiiCpJkobAfY1gqSEJRzwtUTFJ4HCMKOBg3RInD2VncDg7RFh2cs2/K9oF7/dIysv/Ti5G4X4hlScArdyFkl0pyF5QJrVjMii6IgjOuL4uId0OoBnTWoMOKYGHXFLXdp0wS8x4FQ3Xg+tl2cw+N+rqirg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
- dkim=pass header.d=kontron.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
- s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CGiAW1AK7Hfc62TVSH27JkLQxeVPiq04b88L8T8a15w=;
- b=EOn7zPf4XOYnj18kCZz51b/ZQlHoqYB8HVX9597T/JTXKUDsPO1KM8mFU8aC0j6SsGjd543xPPJpJ27jsmaT0ZVF5gnMi3yIeNvwblgqWrzBqBzhpx9HRx1yjqGyd65bRcweGZRosnp+CDHQYodx3052CtbG9InfQHVAUEi2xFCz4woJEEK9E3TcLX1eK3wDCTCsi5/qZjZYrsI3rJJkOzLTD24FwNHI6QLvYlGmfrbufwEzg9FjRJlUVqjJbaNQ/6d5nA9NF0hq9RqTGKQdy/Lyr69L+Tpple951HhjaJ8E0qXPGFdqPmyCasyFKIftI5x84TSWlAZmqnjLVdy0ow==
+ bh=evDPMBCUU3drjBS43cnz5S5W8AJ7WPADGoxyy5XRafM=;
+ b=cxtAs4EzoiDnAeHQR4UvrKeGGlB9Uqq5ugpTZOzn77v5m/CDPzAFF5PGyZ717QyLaO13x7CZAaoA7BDxi8oe1GmkZymmOKfUdQqfzYS7pN0CzWn48eXRskNBazc2OEU2/aQjnBAdWJTeASv5LGPZJKWVr5ERoVCDCnWMy8opHX5+hzlIKiIz3SbLIhSJPh+VEZJepkzM2yW8vxbyTkRcfziwLj35kCk4SEcEV3hsE0gENNlDCGt5xXJTzmbMCxaNEPF+0fZvCK+A9jipMZU4kX5ml8Ytxd8nfuZOhTFloeDVqaZiSU1thqF6vnKQp3Xh54wOcOF0NAPN+gbFHlZECw==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kontron.de;
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
- by DBAPR10MB4106.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:1ca::20) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AM9PR04MB8227.eurprd04.prod.outlook.com (2603:10a6:20b:3b4::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
- 2026 11:36:32 +0000
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22%3]) with mapi id 15.21.0113.015; Wed, 17 Jun 2026
- 11:36:32 +0000
-Message-ID: <085262ba-32e5-4011-8df3-5a677575b2db@kontron.de>
-Date: Wed, 17 Jun 2026 13:36:30 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] dt-bindings: nvmem: imx-ocotp: Add support for
- secure-enclave
-To: Krzysztof Kozlowski <krzk@kernel.org>, Frieder Schrempf <frieder@fris.de>
-Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-0-cb7f3698c3e6@kontron.de>
- <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-1-cb7f3698c3e6@kontron.de>
- <20260617-prodigious-private-inchworm-beae1e@quoll>
-Content-Language: en-US, de-DE
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
-In-Reply-To: <20260617-prodigious-private-inchworm-beae1e@quoll>
-Content-Type: text/plain; charset=UTF-8
+ 2026 19:50:23 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0113.015; Wed, 17 Jun 2026
+ 19:50:22 +0000
+From: Frank.Li@oss.nxp.com
+Subject: [PATCH v5 0/8] media: add new API simple 1to1 subdev register and
+ add imx parallel camera support
+Date: Wed, 17 Jun 2026 15:50:10 -0400
+Message-Id: <20260617-imx8qxp_pcam-v5-0-7fa6c8e7fba7@nxp.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0263.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e8::10) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:1fb::23)
+X-B4-Tracking: v=1; b=H4sIAHL6MmoC/13MywrCMBCF4VeRrI0kM0mduvI9RKQmE82iF1spl
+ dJ3N4qgZnkOfP8sBu4jD2K3mkXPYxxi26Rh1yvhrlVzYRl92gIUWFVAIWM90W3qTp2raunJakB
+ Cgw5FIl3PIU7v3OGY9jUO97Z/vOujfr2fEKr/0KilkuycR/JlCUrvm6nbuLYWr8wIX7pVmFFIV
+ BOdmWxQRcgo/lLKKCbqyCKyUdbn1PxQKDNqEjU+uMqwh0DbL12W5QkbbPnSVwEAAA==
+X-Change-ID: 20250626-imx8qxp_pcam-d851238343c3
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Michael Riesch <michael.riesch@collabora.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Frank Li <Frank.Li@nxp.com>, 
+ Martin Kepplinger-Novakovic <martink@posteo.de>, 
+ Rui Miguel Silva <rmfrfs@gmail.com>, Purism Kernel Team <kernel@puri.sm>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, Alice Yuan <alice.yuan@nxp.com>, 
+ Robert Chiras <robert.chiras@nxp.com>, 
+ Zhipeng Wang <zhipeng.wang_1@nxp.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781725817; l=5589;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=Xbx1oB+qfCuVik5UaeBf9UbNQfcEUdfddpHYOh4aD/o=;
+ b=heixdVJmZkGwvXzK5cpd5VUxF3KXKEkKgDmoWSkQx/WMb6T+MX55BO/Mb1RdU2W76LMNFc3wY
+ jVmBGDJmIX4DCnoSOvT+kPPP4bKEctwym42WlM8DS7DepwXGAwtH+4h
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SN7PR18CA0022.namprd18.prod.outlook.com
+ (2603:10b6:806:f3::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,139 +88,205 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|DBAPR10MB4106:EE_
-X-MS-Office365-Filtering-Correlation-Id: dce69ab9-cfbb-46aa-736f-08decc64ae30
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB8227:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3ce73566-37a9-43ce-8e76-08decca9aaf9
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|11063799006|56012099006|22082099003|18002099003|3023799007|4143699003;
+ BCL:0;ARA:13230040|376014|7416014|366016|19092799006|23010399003|1800799024|18002099003|3023799007|11063799006|56012099006|921020|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	2TCiXdZlghebiyiUKpuqFqU/GFrXAuxiBlF3DBgdeH2VeTjQVzQBi3GziyKtYBZB2eIMaDS6JX26aBzp3nFzQi22e0+8jyeFySrsUm2YJW51f5925x/ZUebzOPvtl/DAOTS3yCTEMiN5JymsZ/iGz6B7rVxgFpyORAqwoPtT1Gy6KlKI/S7CqPZAnk/GI3VzheksjpQDg88l8GEo9FrZhVhfZXwbPspzGLngVMc/A7ffLXKX8WQEY+VWcYibAXGbPoMnehMZf5KdVjXCGEjLtpiVmu57N/cQ+yDISIyEQ/YucxRmXzDOwfS+3FDoxe14ET13paYaxnUdNZFDOTrSYte1h7z7bcYsDhDagnRy65cMWJhU0iIkTX7imSyzfCcyS1w2LqSKoRQVKt50fbxE9qx25HBQeQzSFVPEB8mTfzxDa2AjADPjI/EiK5PGdNhtUHYlEtIfv/g7Q4jie6Zl+C4JF+KvFJPqqFJKXKKdBi3SUqqHwzSRFxlUdhrrTSDpv7z3HeSZV5NWYw+ECG+RBlw+KPpsTXbGs7SwG652zjx3necGDtK2l3LF6cESiYIj04GzCueBqk1SVHQaIanJq+ixL8G+tEHfVNCsiMgi+KdqduokJE30Ndtx3Wn1wAJxLuDd5utbgxM2Jz6irDvL76/39YUpJSxN2cdUOdMTAw/76sFnabG5m4PNQ4Ldg/Rc
+ hfzI3ntP+C23M/Iz4Bx5muAhQw9V5IUoMne3TzRAUUUm4o1EyHHbmuGGBZXqmUdF50F2RbEXZOlyrHqQukA+QxIxAe8eZZuhM8LoRm8FJwb/MDPkLjzVtrZYiN8s67rzvcg3Ik5qF7vvoT9xapr8DtSWMlufT1VhlPJf+bZno7K/gaZ4BMJ5Nr5LZEC6TsiE4evl5eUENhqCtI5+EW7vcywawg9YxtSkPWrVCaznPAKAYyNTIX8T7By599qQSDVIxKCXnfRcOfHZzGDtbQGwgOja0XxzGen6trdZs2qoxWb6YoDlx6EH7ZN7844kG889NcNS+G+VDx3RBcpM2J53vb7WPXIQBi9vW9QMrxLoH4BkrBk+brnb2D/ezogCpid19eRdS7pQs5exPn3iLhuaAqsyvTcoF5IXSk2VnJLRBVk/aNSR1pecQNgPNGK2LYtIiwSXEWEsqPuBfVE0ln0EbIjf3kuuhkPFCWE86ASJExQXvborZ+ofYxgN9Q4lu/N/854g/1E1jU9upgnPLHTXzE3M6mHu1ric7CD9D4V5w05SV6SBu/Wg9hs2o0It3gdxCo6jjqYMVmNGmjr74iFWstWEuB2j0Ic3zwgjBkO9LgZk44trSqPFPYTzQ8XZEAMfQqRfEjVqntVpcwqol0ofWYUJD9G9yPSTDc8i1IMWOjll5LxgjJ3Rgf53CEwcdmhkidvSyz1hY7EDJzduDeZPYLBgyc6N9T8hMv0C6BJcn59ZfMNnR75ey/SSnNotJb2w
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(11063799006)(56012099006)(22082099003)(18002099003)(3023799007)(4143699003);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(19092799006)(23010399003)(1800799024)(18002099003)(3023799007)(11063799006)(56012099006)(921020)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SkcxRlpKSE5uM25seGplOHZYelc3Um9UZFV2ZERqSDVpWDllTkYzTVh1WTFl?=
- =?utf-8?B?M0JoRHp2MnJYUWdTeGpRQmd5aXlJRlR1a25rQzF1L2VjVmZZdjdrTXBBVERB?=
- =?utf-8?B?UnVrYWNCMkdQTjJVb2dEWFhyeWZBbXIxclF0MFppbXpzeCtKTmhPZTQ5cUts?=
- =?utf-8?B?aFNqR1FaM1B1VWlPT0FNZ215OWlveFU5WU1NbFRlZDcwT2hpY09KM3NFQ2pW?=
- =?utf-8?B?alZsam9GbFdzU0lkMDczK0YxT3lqTmpleFdyck13YXNFNTd3NHhYWFoybURq?=
- =?utf-8?B?YmZOWlVMRTJWbU43UFJzYjRMR0xXZVFtYnkxVWhQYld2V3YrdEduaytFZ0tE?=
- =?utf-8?B?bWF2S3hLVUpLTEVIbHVvcGFQd3BpODI5WHNyeVlXUHgwVVVSWjlBWHhuRWxl?=
- =?utf-8?B?Q1hzTmdnTmU3OU4wTFJsQ0VHeFMxQ1JRSjg2NzBnbFNwRkFHOXlGTUdCcGF5?=
- =?utf-8?B?Q0M0M0FlZS9iaWhKUXNhVVJHS2xMNjZGNmtoK1BIZWRaZzZCaE1JcU5aS2dC?=
- =?utf-8?B?K3BFbVZVTFBVWE8xMVBRSEl2ZzVlNDRZL0d6dENYZS91Wjh0a3hQNW1HWUZ4?=
- =?utf-8?B?WW5aOVZPbSsxdVQzeDZ6U1lKVmY2aXQwUzB3YWF4Sm5maGg4TFhmVWlGVzJI?=
- =?utf-8?B?ck9jMmlvaVBtUGJXRm1GeHFBQjdWdmRVaVFrOC96NWwvenUwQUpyNVlZTmt0?=
- =?utf-8?B?bVZxL1VtVUdIR1l6VmhIZG94WXJERk9CQTNYa2dSY0duMDRvbGRmZXVBUWZy?=
- =?utf-8?B?MFVPeWJlN1MyRzhHTkVvUlB6R09aU3J5ejFwWFdNUEcwL3dmOWhWN2IzeDQv?=
- =?utf-8?B?eFU5MkxJSkxhL21UblJJa0xTZmFBUXVRSkdFblpudkYxbzFlMVd2bkRHOGlx?=
- =?utf-8?B?NUM4bldFUHZZSUhFYVJSc0xmazd3ZThCdkJZdlB4bzdJZHRLMFZicy9sNk5Z?=
- =?utf-8?B?ZmhGSjBUY2w5NjVQNVZuTkpKS09zRGdhRFV3VzltWFZzYjZPQUMyVnRoU3FW?=
- =?utf-8?B?enBOenVOUlMwYlhDaEZ6NStFZk96WjYwS2dBVkhMTHBzUTllVnNJS1A4QWVN?=
- =?utf-8?B?SVpFNUVTUGZJZi8xWHlpNjlCYWhHRGNXU21tY3Z3aHN6a3ZNZlF1ZSszc3JV?=
- =?utf-8?B?KytBMnN6aURGRmI5bTNQZ0dyMkdjR0pVTEZmMmlZYTcydGpDNlNvekN0ZUZR?=
- =?utf-8?B?NkR2U1ZXeE9PTGFkRUdCZDBlVU1FN1FqY2RoQmNJdVZHdG42SHExaHYyeHor?=
- =?utf-8?B?Y0RXRkN3VllDTWFicFRienlPVGJwUGFQbkoydGJCTG5jMkIvM0p6UDRmVVVG?=
- =?utf-8?B?ZlBnYW5PeVN2enk2eEpTQ3JOTVRibHoxYWJMWW5GWGhJYWxHQkE4YzB2WlpU?=
- =?utf-8?B?S0dWNkNaTkY1bk5kM3BjeDQ1S212bDh2ZENKdXV5ZDM0QTVXeGF0aDBtZTc0?=
- =?utf-8?B?aTN2aUt5ZmxTNHN2OHkzV3BtK2pINUVPRG5IWmZMcUlBUVdITVJ4V1JDL1F1?=
- =?utf-8?B?YU9TV3ZOWWdkWFdvcml2K1VZQktvTzhBVnFjUFIwcGp2aHIwc2FTUkhnTEhv?=
- =?utf-8?B?QXg5ZGRRVjJBYmxweVZYUWpIODhPZ0JqNk1QR1hhOVowemM2dFVsRmJjZG83?=
- =?utf-8?B?WDlWUTAwWHBXaW4rTGhMQURtSHpoVFViWjNENlJlWlptdlFCUTRxUXkvWnN4?=
- =?utf-8?B?bzVZRWdkMlpJLzMvQmlJQTlMMjBHY1BtdWs2MGRxUDBnMTdTcHNackJlL3o0?=
- =?utf-8?B?WG5MZGJFUWJsMUo0alk3eFdJMzJ6NjBaeTYrVDY2ZWFsTFJyaVZHdGhkSW9R?=
- =?utf-8?B?ekk1ZTRXSFRJTlZjalZ5VzFMMEJjMWNXbFpUZTNrZnBjUUZ6SnhWb0duWFh3?=
- =?utf-8?B?OTZpdlFuWFY4V1ZjckNiMGV1d1orM0IxTlVaaW00ZjByTllPN284REczNXJD?=
- =?utf-8?B?MnpRNno0ckVNbmVzY1MvdzdWaHE1K1NpMTV5dEtyM1NuNlhyZGFxc0ZiSXhX?=
- =?utf-8?B?RkIrTFg4N3lXZzZVZFA5WFpNMjVPMG9nS3UxakwzVWRRa21pb2ZCbjRQa2tW?=
- =?utf-8?B?aVZ3RnVWcjBWRUMxeDAxSm84eXVnRDd3VzhlRjdWZldEaHAxY0ZkZjRNQmtO?=
- =?utf-8?B?MUJUdjA1ZmV6SWJ1a09wU3FsQU53ZEdJOENienNlZG9wOTFBOXpiY2EwRTFw?=
- =?utf-8?B?d1hGOHZ5MHB1SzF3L0dNNHZ6cHBsOTZrSXdzbVljcWJRTTBHaWNLNkQvV1NB?=
- =?utf-8?B?QXpzMlg3bE4rUHY4REl4b0lENGlkeS84eTc3OW1HWUpZc1ZqZFpSdWxxa3dO?=
- =?utf-8?B?YlZBcFcwWlFqd3VadlV5eDlWNjJweUk0c0NNNlQ4ZSs4c3Q1d0k2M3ZHU0NF?=
- =?utf-8?Q?mkyTnHPvVXYfWJJU=3D?=
-X-OriginatorOrg: kontron.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: dce69ab9-cfbb-46aa-736f-08decc64ae30
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ =?utf-8?B?aGdiWHhSRGw0ankwVWpVNUdzVXdWN3dzalJDbmpBSFhodlZkc09ITGhMdWtk?=
+ =?utf-8?B?aTFacEVEOXFaSnZqUStTL1JBZHVqNUxTNEU2MlNXRUVSb09sY2NtRlMvVFox?=
+ =?utf-8?B?eDdlUktqS0RpUXV4T0RzbUo0RFIrV3NvaU5zY3R4bGJmMldSM0ZuN3VMMlU3?=
+ =?utf-8?B?YzVROG9oOURWTjlpRXVhYmZTK3ZVemt0MktHUnlub3MyQ1c4Q3hwZmNiS0dF?=
+ =?utf-8?B?QUJYZWQrbUlZTk1wT1AvUkRYRTFBY3NXUWMxaDMvWUNGczQyUlk5OUp1NmI3?=
+ =?utf-8?B?b0UxazN4aXVxOWxZQmF1TGZKbFpJWHE2c0R4djNGbVVibEtQVnNOZUR3VkFm?=
+ =?utf-8?B?KzBnTXJwN2pGRCtENndYRmVScVNsaXc4SEMzVjZRcjlySUdMNDhCRnNMazBK?=
+ =?utf-8?B?RFg4MXZ3eTZmOHRIZFE5a2F2T09ydzR0dFg3RWVPV21ZOWxTZ2hZNXpicXJL?=
+ =?utf-8?B?aTRPcVpGSUN6MjRGUmZ2T3Nid3BPNjQ0Mkkva1dIL2orYnBmTTZmL21yQktq?=
+ =?utf-8?B?NU1Ibi9OVHhVdjM0VTMxbzNqUzArUWJrSWFQUzgzbWcvdW4rRFFXV29FVEc5?=
+ =?utf-8?B?N250NlhzVnJkdHNobHJ0dXJ2akRXVEI3Y1BGajNoSU9lTWE2WUUzTEVwNHRS?=
+ =?utf-8?B?Ull0VlozTVEzV0lQU00wbXVvZHUramF0V2FJTTVnRVk3TGlYYkFlQnRGN1VF?=
+ =?utf-8?B?SWVIbVlRNHJUSTBSdmpxZlhreEEzcC9MVTMrcGRnN2FpbzhCcDZnbUk4R3k1?=
+ =?utf-8?B?Z3J1VHB5cWdiU2cySXZDRGVIRldoMnVXcEtWclFQVVFHSnV0UGNPVzBtTVNr?=
+ =?utf-8?B?OGZENWRteTZISUNUWHlCZ3I1U0dRMEhFRTlLZmVvZkhMN1lsdmpLeTBpVXN4?=
+ =?utf-8?B?YmxYR1JGOXZiZkZVckJocGh6MHM4c2JISHhHdldvU2p4K2dGcjgrMFk2N1pI?=
+ =?utf-8?B?T0xqdmo4OG9iVWhPLy8xemljZnp6QTE4TjhON094elBBZ2dMWjZ6MnBwMW1O?=
+ =?utf-8?B?bUVtRVBmMUdRWXFFdWdzWUtjQTlkTXFZTkxyMitLbzVrcXpFcEc0NlhjR3kz?=
+ =?utf-8?B?Z1dDSEFUL3RIbjl0Q1FyUi9HN2Y2UVEwRzhRbHoyNzltK3BjMmk2M0U3ZlJk?=
+ =?utf-8?B?Uk9BcWxpZGcxR1hick5XaVh6NXdyYlVqcHQxdDFoc2ZWRUhXcHczUFVhN1BP?=
+ =?utf-8?B?RWV3K1dtODdkM2JJQXlqUEVmcUFXV1YzWlhoT0lBV3p0Q0hydFVrRkthNmNZ?=
+ =?utf-8?B?UE9vUS9BbEVHQ0luakR6MmFSNHQwMm9Vdzc4RWpoeXFUdjFvUHNDT3BNaVhY?=
+ =?utf-8?B?d3ppWnh1QmJ6bFFoanhsTzF3a2xkVUw3R21TbUdkLzg2LzB5Uk5WS0N0VUNW?=
+ =?utf-8?B?ZDk1QUxSaXlDQnptZ20xK1BvaTFIdWIzWkk1d0h0VEFVbE1PSFU5amQ2N3RN?=
+ =?utf-8?B?RWlJUFdVeFRXY3UxWTVaUDdtVE5nWVpYNmdTQ2ZqV3FQUVI0MWROVGZWN3NL?=
+ =?utf-8?B?eFhGRWF3SStKRWg5WEx3eE9YcC90Y2doaTBsVUJ2Z3lnZ1N0MkhBbmtMcnRZ?=
+ =?utf-8?B?NnNwTWZkVUVpL1Z4Wk1rUFJrTUUrOFRKRXpaR1FrTDlXZHVqYzB0a3IrWmhL?=
+ =?utf-8?B?RkZaTXlsQmdIcW0xUWJPL2xiWU5ic0toZkVOZ0x3TGs4R1RWUEZzVTNGSUVy?=
+ =?utf-8?B?T2dyWHRyNjVSSUdwMlFJMndNb1BRTXg0T0R5MmV1ZjhpWE5qMHphdDVITFdx?=
+ =?utf-8?B?ZVdzeXRjdFQ2NVkyS3hhZFY4eStKMkdnc2hOeEExUncwWTJIOCtXcWU4Y3VJ?=
+ =?utf-8?B?TTlFVDFWSnE4QitXZzA5UlVBSCtpMGlsNGdsc0lEcnM5aFpuSHZEenlHb2sv?=
+ =?utf-8?B?enFUTXRHQ3p6cW1kRzdjeUVVN1c2WDR1ZXRWUDNwTGN2U01Qc1RLeXRCQXpq?=
+ =?utf-8?B?d2NxUDZKeVg4WER4c1lWUEVVbC9hUnZEYW5JOEJaUGJTaXVrUmxSNU1UR3Ri?=
+ =?utf-8?B?NENKZTJoSE9aSVEwemR3VGYzbFhUU0J2VDBza2RHS1NwRUlRRGdDM0YyYU5B?=
+ =?utf-8?B?YnZFdXRKekVWcnRzanF2MjVFWnFWbW1BdmZtTVgrRG5BR0lLNHptRjVyV25v?=
+ =?utf-8?B?cytqR3g4eU1iT0VBRjBHaXFqNXk1SDJIbTFrZXowVGtwRy9jQ1BiTHZHUFFK?=
+ =?utf-8?B?UTV6N1N6THpaTS8zbk0vYnEvUDVqYVV1S0RxZjIwMWRSZUNxczh5MFBSTll0?=
+ =?utf-8?B?S1FJaS9SSjE3Q1NuTHRQd1A5M0Z2N3p6S0sybUJESVYzSTZXeFRSZXJEUlFx?=
+ =?utf-8?B?OGJiMkhkYXp3VnlwUysrd2hBOXdtM3RTbWltQWNqZnJud2JvMHl2OHg1ZFJZ?=
+ =?utf-8?Q?nQ9XYzdOH9zqgjMmYZRiZP3cuOb65KRl0aK5S?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ce73566-37a9-43ce-8e76-08decca9aaf9
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 11:36:32.5775
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 19:50:22.5595
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FYouQNKPfa4z58kRCDfxDSTIJ4QF7iWgozl4YzsMNKS5b490P6W7TsZMsjNoWkNAB5wNV26VeTQJwtDl9eQy5ZMEpar/bIQ0tEVUPchva+E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR10MB4106
+X-MS-Exchange-CrossTenant-UserPrincipalName: ARQixUAmRN1SfgI89w+HHA9hT1C2dqHdHLBHPZT/tQLpgmm+4ABJsiEJFdn4d/gRLonDAWv6sl9JxDuIo8stDmiTn5BleXeLKxxjYq7l2PVc8D71+cvDDfkjZg1jF7k8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8227
 
-On 17.06.26 12:49, Krzysztof Kozlowski wrote:
-> On Tue, Jun 16, 2026 at 01:52:16PM +0200, Frieder Schrempf wrote:
->> From: Frieder Schrempf <frieder.schrempf@kontron.de>
->>
->> Some SoCs like the i.MX9 family allow full access to the fuses only
->> through the secure enclave firmware API. Add a property to reference
->> the secure enclave node and let the driver use the API.
->>
->> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
->> ---
->>  Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml | 4 ++++
->>  1 file changed, 4 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml b/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
->> index a8076d0e2737..14a6429f4a4c 100644
->> --- a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
->> +++ b/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
->> @@ -53,6 +53,10 @@ properties:
->>    reg:
->>      maxItems: 1
->>  
->> +  secure-enclave:
->> +    $ref: /schemas/types.yaml#/definitions/phandle
->> +    description: A phandle to the secure enclave node
-> 
-> Two things here:
-> 1. Here you describe what for is that phandle, how it is used by the
-> hardware. Currently the description repeats the property name and type,
-> so not much useful.
+This patches base on previous' thread "media: imx8qxp: add parallel camera
+support".
 
-Ok, agree.
+Add new API media_async_register_subdev_1to1() to simple 1to1 subdev
+register.
 
-> 
-> 2. If you access OTP via firmware, then this is completely different
-> interface than MMIO, thus:
-> A. reg is not appropriate
-> B. Device is very different thus it has different compatible and I even
-> claim should be in different binding. Devices having completely
-> different SW interface should not be in the same binding, at least
-> usually.
-> 
-> If any of above is not accurate, then your commit msg should answer why
-> and give some background.
+Many V4L2 subdev drivers implement the same registration and media pad
+setup logic for simple pipelines consisting of a single sink pad and a
+single source pad. As a result, the same boilerplate code is duplicated
+across multiple drivers.
 
-Thanks for the feedback!
+Introduce a common helper library for 1-to-1 subdevs to encapsulate the
+registration, media entity initialization, and cleanup paths. Drivers
+can embed a struct v4l2_subdev_1to1 instance and use the provided helper
+APIs instead of open-coding the setup sequence.
 
-The driver currently uses the limited MMIO (FSB) interface to access the
-OTPs. The intention is to support the firmware interface alongside the
-MMIO interface so the driver can pick the interface that is available
-(firmware might not be loaded) and fallback to MMIO.
+This reduces code duplication and simplifies the implementation of
+simple bridge and converter drivers.
 
-Following your argument would mean a driver deciding by itself which
-interface to use at runtime is not something we want to have in general,
-right?
+    In 1TO1 subdev driver:
 
-In turn this would mean we need two drivers, or at least two
-compatibles/bindings for something that is effectively the same hardware.
+    struct your_device {
+            v4l2_subdev_1to1 sd_1to1; // instead of v4l2_subdev sd;
+            ...
+    }
+    ...
+    your_device_probe()
+    {
+            v4l2_subdev_init(&sd_1to1->sd, &dw_mipi_csi2rx_ops);
+            ...
+            return media_async_register_subdev_1to1(sd_1to1);
+    }
 
-Actually, my first RFC approach [1] was to create a separate driver. But
-in the end it seemed very weird to have two drivers and two DT nodes for
-the same hardware block. Also I have no idea what happens if both
-interfaces are used at the same time.
+    ...
+    your_device_remove()
+    {
+            media_async_subdev_1to1_cleanup();
+    }
 
-The other idea from back then was to replace the MMIO (FSB) interface
-with ELE, but this would mean that we rely on the proprietary ELE
-firmware to be available for simple things like reading a MAC address,
-which is not desirable either, I guess.
+This API help reduce over line duplcated code in synopsys/dw-mipi-csi2rx.c.
+And use this API at imx8's parallel CPI driver, which over 90% code now
+hardware related.
 
-In which direction should I move on with this?
+And also benefit on going pix format patch
+https://lore.kernel.org/imx/20260525-csi_formatter-v8-0-6b646231224b@oss.nxp.com/
 
-[1]
-https://patchwork.kernel.org/project/linux-arm-kernel/patch/20250416142715.1042363-1-frieder@fris.de/
+It will also reduce missed media_entity_cleanup() problem at some error path
+https://lore.kernel.org/linux-media/20260614202835.11977-15-birenpandya@gmail.com/
+
+Previous do partial simpilfy at
+https://lore.kernel.org/imx/aaisdJSsFE5-PLx1@lizhi-Precision-Tower-5810/
+
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Michael Riesch <michael.riesch@collabora.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+To: Martin Kepplinger-Novakovic <martink@posteo.de>
+To: Rui Miguel Silva <rmfrfs@gmail.com>
+To: Purism Kernel Team <kernel@puri.sm>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: linux-media@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: devicetree@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v5:
+- Add media_async_register_subdev_1to1() to simple code.
+- Link to v4: https://lore.kernel.org/r/20250729-imx8qxp_pcam-v4-0-4dfca4ed2f87@nxp.com
+
+Changes in v4:
+- remove imx93 driver support since have not camera sensor module to do test now.
+  Add it later
+- Add new patch
+  media: v4l2-common: Add helper function v4l_get_required_align_by_bpp()
+- See each patche's change log for detail.
+- Link to v3: https://lore.kernel.org/r/20250708-imx8qxp_pcam-v3-0-c8533e405df1@nxp.com
+
+Changes in v3:
+- replace CSI with CPI.
+- detail change see each patch's change logs
+- Link to v2: https://lore.kernel.org/r/20250703-imx8qxp_pcam-v2-0-188be85f06f1@nxp.com
+
+Changes in v2:
+- remove patch media: nxp: isi: add support for UYVY8_2X8 and YUYV8_2X8 bus codes
+  because pcif controller convert 2x8 to 1x16 to match isi's input
+- rename comaptible string to fsl,imx8qxp-pcif
+- See each patches's change log for detail
+- Link to v1: https://lore.kernel.org/r/20250630-imx8qxp_pcam-v1-0-eccd38d99201@nxp.com
+
+---
+Alice Yuan (2):
+      dt-bindings: media: add i.MX parallel CPI support
+      media: nxp: add V4L2 subdev driver for camera parallel interface (CPI)
+
+Frank Li (6):
+      media: v4l2-fwnode: Extract common helper __v4l2_async_register_subdev_fwnode()
+      media: v4l2-fwnode: Add common helper library for 1-to-1 subdev registration
+      media: synopsys: Use v4l2_subdev_get_frame_desc_passthrough()
+      media: synopsys: Use V4L2 1-to-1 subdev helpers
+      arm64: dts: imx8: add camera parallel interface (CPI) node
+      arm64: dts: imx8qxp-mek: add parallel ov5640 camera support
+
+ .../devicetree/bindings/media/fsl,imx93-pcif.yaml  | 126 +++++
+ MAINTAINERS                                        |   2 +
+ arch/arm64/boot/dts/freescale/Makefile             |   3 +
+ arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi     |  13 +
+ .../boot/dts/freescale/imx8qxp-mek-ov5640-cpi.dtso |  83 +++
+ arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi  |  27 +
+ drivers/media/platform/nxp/Kconfig                 |  12 +
+ drivers/media/platform/nxp/Makefile                |   1 +
+ drivers/media/platform/nxp/imx-parallel-cpi.c      | 614 +++++++++++++++++++++
+ drivers/media/platform/synopsys/Kconfig            |   1 +
+ drivers/media/platform/synopsys/dw-mipi-csi2rx.c   | 194 +------
+ drivers/media/v4l2-core/Kconfig                    |   3 +
+ drivers/media/v4l2-core/Makefile                   |   1 +
+ drivers/media/v4l2-core/v4l2-1to1.c                | 117 ++++
+ drivers/media/v4l2-core/v4l2-fwnode.c              |  17 +-
+ include/media/v4l2-async.h                         |   6 +
+ include/media/v4l2-device-1to1.h                   |  72 +++
+ 17 files changed, 1123 insertions(+), 169 deletions(-)
+---
+base-commit: 7193e493653c9c91b4be159cd919924ec6ad2392
+change-id: 20250626-imx8qxp_pcam-d851238343c3
+
+Best regards,
+--  
+Frank Li <Frank.Li@nxp.com>
+
