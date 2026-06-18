@@ -1,76 +1,78 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011004.outbound.protection.outlook.com [52.101.70.4])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022085.outbound.protection.outlook.com [52.101.66.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2ED40D59E
-	for <imx@lists.linux.dev>; Thu, 18 Jun 2026 04:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CF52F39B5
+	for <imx@lists.linux.dev>; Thu, 18 Jun 2026 05:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.85
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781756050; cv=fail; b=Uh/HZL/lVqT0kZK6DWfgABPSsDlIIO7n6hf4ohKEAbDVmc7TShGtp3kPXuHfql3CiEVKD+9wAr/6tyOoVKyQbAeXXXLREWbbhe8kuG75YUre8HDW4O2g3f/HeSzgSlOpeIsJrfTVjFhUEwhx8hSZ1gzvwG/EocNlJk9IPJAFCn8=
+	t=1781761945; cv=fail; b=BcYeNxS7yTg+GiW+mC/+5FcDk9LRWoyxTkZc8+dPRZODdxoAXVG+XiEI8pQeJ7RjSRVdXYjubzMyqvQMYFax2aZjQu4dr021yapmX3/0rrDvs10opIBK7E4sPBVwE/EefniPBlLpEAWCtP20Zy1HHwJlWI0OKMN7L65/JQ0XRlI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781756050; c=relaxed/simple;
-	bh=1P+q3NgjPlXzGTf04EJAewsSZI/pB2tbjcuGWFoFQ/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tyT39S5XG+40h75LTqGNuZR6fHABS7C5N/vE7x8L9x5KUqMwvthsGh6uoryTXJP1t92uBPlfJVB3NkhSWxfBd297OTalVslm/2/2SfiGBfFJ9VtlJqRu1eyU1y4ZVW1Q+AM37SE0X6oe+rj0CT7s6mknZPrTSB+eSI9SR63p/nA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=v+zRBKj8; arc=fail smtp.client-ip=52.101.70.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1781761945; c=relaxed/simple;
+	bh=lehm46luom0r5k8HWWuKaCLiI2uotS4n8KQoGB7PUAs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=EAQYfTArpKSkS+ZaoGkc65taHFVppX8raC8ZoVRmJsMLQRFdU0kVSNMi11P3mk7nk9cY9K+ugb4+u5qCXv/6Y2nJNCcgynw5xWCzcErHjxZ7s8bbc1j/x6yhvgT/gqCSSAkeL1FzntOIdcQT7wQMcC/1rEvUvMBUcShIBXhaLKQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=oqYhEW8Q; arc=fail smtp.client-ip=52.101.66.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="v+zRBKj8"
+	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="oqYhEW8Q"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HEHAbIPU10aRPLy9BVtoRK/PnPze1lEZdhFizCSc0JXgRWqyd13nGwI+/5U2kv/x250N0gaJeiORLTGekGZY1PEALQdgSff8vK7iJAW4xjj1sFPsh30tXpuOQEZgPhLrLAh8CBBmpLN72jYeENh2Xolppn5d6Nowjh6PYwgVag0sw028A/yNLe1iAWxjXq3EWIDgyucs7X6zeljAk1JnkSifzTYMYJ12bX8A1ofj/A3MhDgQxgMFRck4struCgm6CJzb7rqPTedlN2288JtIsHdNR9qGnSJzNv7fP4E2shGFIw9uCySz6DLJzw+6O6/34E/E5dDw8z6aWFMKW6sg0g==
+ b=GcYvolMq0JVORvh4TqNvgwwEUOxzQi5ZuAEgK70iEpQCKU9/fMUP1Toy1fiwz7dz7RhktuoPETNQj/b9iMx1AHGNs/+MdCBC1Bm3/wzN1HEjoQ6uyGzDUG/P3/KxfrCPQHNrXwy9Bk/vACHfhnGfbQhz6VTw+u9crkuFgBJ5dNdH6rT3piitRe2lT6nViUL/y536oMjUqFFD5eV5mmTnQoIm1CLa7tFNA2ufkZbO+/kSMGSqFmN/q3J6WOKEY9Uc5nZqn2L/RiwRBqREbQ6kLSCs6st25oZf2ACD5S1fS0JzD2r7aTBXzJ+OvVsuaZSvPr5JSn6HsOwd84DYzCSWHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wezUr9dv/jGZg/MlJ4u/nej36Qs5f8IjrTOcxjW5FUc=;
- b=l0DtFQrPIXn9BVUnuecXT3KMI1KLca07P1HpBSzavcfrJSImHcGdHZ4Q8Yorlt53JyBAQd9XJq5z9f9HMXrTuykf2egeKxmXTDnG202sPPyKLc9SncNSNYd4EnOUdmCTYxwsnhPnq/MI/s6TVOxU/Ad6GQmyfXA86ExcGWY/vtJKUmP44XAAFrgvLt9HsIcfuradFQq3DjWkIcYRa8QjfVc+cfatMd3UqryqZJ5V1gh/1AN2CSUJJm6x96csLWVZVZED/RfDCKMp/gH1WNlyZfKk0Ua+vpxQckYfBWADxPa5ukvkxapEG1ImPqJozneVLMFYVVOKwYsFSY1Y8LpBGA==
+ bh=zjczLWXE833rbbPpNh30t1ymlBhuFluiJCou0f/nxFo=;
+ b=ie+VDuuNZHy4IYz5xUXcd4fsA5r2JFpAUDoKqYOhpuBlzWwEr8lHGd5rRScLa/meiU1i0ieBthrC4xxP5s+YBjBTddXuvj2DoHdaxT7yOcgQAF2n52/qdFnO7y4NIEQWWiiu91bpifmSP52ppfyYHUUrpsp7W0cfMH9RXSKInxW6Qw1HlAemfGzviR69TARiO1MuPyWD5Ywxp56zac7ivG9c+fizd4lBCuTQfI8ru8+2nNgcvCxMpWL5BzVNuWrOsRALsLMrKVNCEGJXQYx2/QaCpOyx7k75FNk4cFLpx8VoK1acquUTyx71VInUi1t3RFjYlFR4JtPqfO0T0F1woQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wezUr9dv/jGZg/MlJ4u/nej36Qs5f8IjrTOcxjW5FUc=;
- b=v+zRBKj83CqKg/2txWzQ+NkZ2IDowKWcGxEJO0nbhSwRjw3ouedUuovX6fgkie1/Y8pEExGqy7UKb9zJMq5jhf9qrg2M9NiSdU/K7FcAiMJFamHBfnpE8TmjyLE5rO19UZ1UZIoDPOK6ei7ltdfhdREWuAZ3zDjmblNuGh5LOENqPJlRvFhNT2MKnSunF1fgaBTGOSXkzDMtQuKrwfk69YlpFqAcrLiNR50/0WjoQMklDrFtJo2ztc9gX+YqiqL7KJcfmo1RHamsE4maOGVuWwx43UQyAqTMcT6iZhiF18jJHfhguwFumpLvuSiV6ecAhyKvvbf/tucOidG9h6DlFA==
+ bh=zjczLWXE833rbbPpNh30t1ymlBhuFluiJCou0f/nxFo=;
+ b=oqYhEW8Qy4aH9j7XVfDGgEmNGfn0/J2g0Ra1K8BskkgUUU/lmNHGLHZioeHJzlNUGDtNIiniOibp13HvS/7K0FFC/q2P5ijtuct3CUGkRMTqxIjNcQH5DZ/ZLoEH+n9mlajiKzbw5mK6zSoM4XV0vlvH3mGf9eSYrOIEQk+YONaK7/HdepcnXNH2e5cUq1JnhNbFI0VgVJzgix0XEQqUG0UnDiUv82qSrvuCUVhoTFjRVADCSixmaqknveph6XwPEYrtBNFeRy0gXSmEqxd6sj8M90OaRZYxvaYMMqLjS7udReYA9+pZaUjQLBvSVUWIJN4oZUtjdT2Cm+uE79as8A==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PR3PR04MB7435.eurprd04.prod.outlook.com (2603:10a6:102:88::19) with
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
+ by VI0PR10MB9303.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:2b4::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.16; Thu, 18 Jun
- 2026 04:14:06 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0113.015; Thu, 18 Jun 2026
- 04:14:06 +0000
-Date: Wed, 17 Jun 2026 23:13:55 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Martin Kepplinger-Novakovic <martink@posteo.de>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Purism Kernel Team <kernel@puri.sm>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 2/8] media: v4l2-fwnode: Add common helper library for
- 1-to-1 subdev registration
-Message-ID: <ajNwgq96WRrykE5I@SMW015318>
-References: <20260617-imx8qxp_pcam-v5-0-7fa6c8e7fba7@nxp.com>
- <20260617-imx8qxp_pcam-v5-2-7fa6c8e7fba7@nxp.com>
- <ajMhZP5YHuQdhc5M@kekkonen.localdomain>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajMhZP5YHuQdhc5M@kekkonen.localdomain>
-X-ClientProxiedBy: SA1P222CA0144.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c2::22) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.13; Thu, 18 Jun
+ 2026 05:52:17 +0000
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22%3]) with mapi id 15.21.0139.009; Thu, 18 Jun 2026
+ 05:52:17 +0000
+Message-ID: <4f4cc156-7534-4f11-8a45-e4caf083c865@kontron.de>
+Date: Thu, 18 Jun 2026 07:52:16 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/9] firmware: imx: ele: Add API functions for OCOTP fuse
+ access
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Pankaj Gupta <pankaj.gupta@nxp.com>, "Peng Fan (OSS)"
+ <peng.fan@oss.nxp.com>, Frieder Schrempf <frieder@fris.de>,
+ Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-0-cb7f3698c3e6@kontron.de>
+ <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-3-cb7f3698c3e6@kontron.de>
+ <ajFtkysqxuLV8GgF@SMW015318>
+ <cea74ed4-1003-419e-8da3-1c62b1ace726@kontron.de>
+ <ajGsiglUUbDTIxTh@SMW015318>
+ <9c1d34ec-0b96-471e-8b60-6b4c852878bf@kontron.de>
+ <ajL7-OqjYuQHyZOI@SMW015318>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <ajL7-OqjYuQHyZOI@SMW015318>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0077.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cd::17) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:1fb::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,145 +80,157 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PR3PR04MB7435:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12a03b69-7b57-43fa-4643-08deccf00989
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|VI0PR10MB9303:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9128ae76-dcd5-47ea-9803-08deccfdc121
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|19092799006|4143699003|56012099006|11063799006|5023799004|22082099003|18002099003|3023799007|6133799003;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|56012099006|11063799006|6133799003|18002099003|22082099003|3023799007|4143699003;
 X-Microsoft-Antispam-Message-Info:
- yya9bMOEkLu4OlSpxa76uMDurOBMJnMyjaotunKcoYYi/N8v8plN1gB+RtJ77Tcxd5OfhPRj3qiQQ4iCxm6FffZcrmf2cXyLjSlZ6ctpHuRzp+DtphjVow6oCaEjRVBKjuwENxql3stvf90XbHI6g5IRkH89BgwcqYUZKSIvkRES1wokGoHFhgn56vidHwBbugCeHpYgH3ty9YvwoDLLAo1tu1qzHUlhFvgfmAjLVdV33q2v9aGs6DdRm76RgLYdHbflWfxKYGatHCvGtoVXhBnzNtoFYTavmqbZug1SxUQJax6qVDAkjrRa+lB28NXTMqMEu745bxZTFTZ2mE0YP6RKQwQdyCaEjScKwkN8KqeuPbvOwIfkuSgHMpZ6v39RRe+yLcL0xaoFEUxy5R+u8h4Fnv21XreBIv9uLLH5Sum73f6Ty4PMWWkMR8QDCprps3v/l0x+89jh0nUwjgf6kUWLW1ICsjSzGYiCRgGXrSAyYMN9Djzg00I18JRXLttIOVQIjcnELh8PdnCH+FgeGjuZTvnifH+OvcMqW2n2cmRbYkeGcafbkM33gyBEwAW644Qei5V29j9LwG8W5DbloHW8l5fmW/3jU8XDxJoUNLv/NQGtwu+W+jNpTrrzxH4S3UJ3CRG3J7rUIYisaelw35f976biGWhPOidebzF8jWWRWY1PD2BiUyr+Y+6ltnMR
+	bvChkqqu/65BrPSwR7PfDAfyePEWFJPc89d05JOndsTiyDkt5jDtsRsUoB8NjFknuHi0xwU/Pg3zfcXkdcoT4mITdTNAqAxvpVkznu6hh5gnoiiFDyQZWZyqw1SF4r2NBWtLscjS5cKMQWJG6zgoJPXOapG+0J5Mp/qDTRcMmrHq8vz9VmGnefWgP6EYtn3gBaX/l7/foEb8Dz8qNt+zhYlHrWprdtDUFB8+UzTx8m8yvifmDoa7IkAc4ZhiD6Cgez+4kT5ajOjrtne1wi4XeKRcRmTJbZLpuCWhjjhRMFz9UIEckL6v9KKcGtrGnqY/ZAHVxX1DdiJc3/7KonQuM3/lRJHlgLfV+RG7LyvXBEp5CZhE5lgqvWVk55BTVJklaeX3G0iFDBd5SgkNBkcuB8H2pWmS2NmaAKsXzezlZEfzDT7z6dp4e5zy4TZghJICazhjL2O+p23HDFp8fTxL8JozUXCLsfndlLsi+kJy6ZOKWXNdB0F+J5HwUBqWZOugA6n7A2hOdDOzj0SpzNmpZHFqqA9D6q+fWmPOeZHxOL9Ak2FF9P2Xew+yzMaKlMefIeqnppK6DTV9EO3pEgCTK8Ikmz6At3QuMk8GHOF1cVT1uQ7PH5jKjf0SvVDbBtrB7HXWV/DRXTuywWY27pMyn7I4rUnjUQK4/vHiG7O/rlCQKj1CKHeIv5yBpV/CxqMj
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(19092799006)(4143699003)(56012099006)(11063799006)(5023799004)(22082099003)(18002099003)(3023799007)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003)(3023799007)(4143699003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?lPfDHPSCWweGMBypMiUns3efhKrziEN+6NcjSDceJdzvVLN+p3QcIbAQKfHK?=
- =?us-ascii?Q?trPUUSrTBgqcoB4C1o+kIgew8pMqDasyi5LQhhNUjEu0m5iSG+uz5zyy4aDO?=
- =?us-ascii?Q?ZPrsIWOJhU1Pq0d5KJuBn4V5Xi3D5xoZfDhlWzqZCnrnsJ5xmnDjxq6agS7Y?=
- =?us-ascii?Q?P33FfoUhSBgJaItJFPUMlKOz58vC4KCSXgCuiHXsJe2H/4TP0Fiv2uvill1P?=
- =?us-ascii?Q?t8YOr+kdiKZFU9m0Fq+i5T/PlIW4UOKcJrS3LHyVOPrtOOeigPcB6OMsA7Sy?=
- =?us-ascii?Q?s+FxbjmNqvy5JEMyHoCD09oCgwWbPzKEjLOlW2vH4HCELXPu1QpUBrZ9y4mz?=
- =?us-ascii?Q?d9mcfzGNEWLGdRrYVKBKsbhV5Z4lw52gtAI5UTG0w1E9bXKtvLVomYN6JPvh?=
- =?us-ascii?Q?KGJZPINhYGLl6perOV3x6gO0kI69zsWbPmxs8EJE4E7863Nab8Tg/jcZMqUx?=
- =?us-ascii?Q?TD8FmQa1slouxyk4dyOn/LcymO5yVZyo59j9yP0DUJlTdvu0SmCkTX7psfx4?=
- =?us-ascii?Q?/bMPMMqz5ync4E6IQMBnHY2NR+QrhB7OXtlr80lmHlVUIXNqVAqzOaccyOTY?=
- =?us-ascii?Q?eXUCKmMkv7UfOwY8uvAYgvtJBdjPrYBQL6u1KzXlSpC1MN7odN/VZZxoFmCL?=
- =?us-ascii?Q?ZW4EYdUC+BkVeAc+N7/QezvpS0hnIpbvl3C7AoHPgmmrqYqEC4qltm3hTdcP?=
- =?us-ascii?Q?vCqoYECIzBnSKWR4OKSgDVzM6JY6KMnoisGZCbtRtmL/nsEoPokHitCZv5Xh?=
- =?us-ascii?Q?e2LXRJND10yqsbQ0Yfeb4VhkWxn22HYjtcE4mHGpsx09ALu7EN4czNUAAP8N?=
- =?us-ascii?Q?wsxdqyjXGwAGvhYjXiJud72QjHN9PiIs5MBQ0PWU7dzIvlQBMiyCn4QQAOcx?=
- =?us-ascii?Q?mpt+q5UFuXnGqfaXg9xadNl+ZQdxdst3K+cp2oAczgXR0Y1/XxUUKglMnFSA?=
- =?us-ascii?Q?19JcOJNNfAK7i4TMYrnfonoUk1PseQtdYbmpLKSD6jMP5Q9rqLTDDSREaB37?=
- =?us-ascii?Q?7pG3RJOMkYM5hsE3q6Bx0N9SYlo3M9Pbh8jXaQ8R6JuVuUYh7cZ0CXc7yv30?=
- =?us-ascii?Q?MZqjX4Bch5iFOarHKlc26d2f4LiHTLm/dJxqXzjxf1xL4XAw27QIyKRk5bbL?=
- =?us-ascii?Q?L+SvRRzfUEVf+5cqrcXNSHdXMxIUiTicCr7ZxygjWNs7C7DSn3tF0EO9a0jb?=
- =?us-ascii?Q?SYHWUimWM6ZMhmoP4mwOg5nlfLGoVbEQ1nLbc5SazbXt8p+2Vvjvf9mSZXCv?=
- =?us-ascii?Q?J1HY5rGcwPmv9iExwz6+fq7OfQ1Kcgl5YVVZkP2UfepjRDfuxW2dmuESFVkm?=
- =?us-ascii?Q?/KibrCPtJ2GBH+Xp+oPxp9huwIKN5jsoyfmJvj7Kd4DlQ7B/j4lhOGMgu2Vf?=
- =?us-ascii?Q?7dA3zPVIpBnowncDVvieKk7O56XTXNQ07Cxzk8xzHTLlJusGusHhKxxtsF86?=
- =?us-ascii?Q?SoCe8X15FYhHkflZk9DTxBtowdoRMHS922g1Kt4RqTVzEAU5wQi5IQD005Fk?=
- =?us-ascii?Q?340Ac7nJs5q+HgL5SqYuWLJ2j3m29iMqE0dHL3kutttxQiAgW8o2cx4nIG2h?=
- =?us-ascii?Q?c4B1vkuY33hZxAsZPE+w03JheY4KyA/pXNM0C/wgrvSS8GENp0IDD3+XhCgW?=
- =?us-ascii?Q?UmLCWKocYl1UdZ64yd0xrLBTC+BpPkgPGefxA5wMYJIdLkHuRCOqDEldUHZ2?=
- =?us-ascii?Q?hHVanLCddyWEC7sELjuAr58v1/LbT19ZI6F1ErsRm1ihxQ/oKkOkGmH7x+ck?=
- =?us-ascii?Q?6GMAmTt4G8WxeQ+0c1hOTKHaS+2tA2R1ZLNy1Z1SDzsAMgVn4Au7?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12a03b69-7b57-43fa-4643-08deccf00989
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+	=?utf-8?B?dFhJbmZ3SG5mZm5Fc3lxR1dKbk1Jbm1tMVZycGhTb0pKaUpRaU9MeERVVGxE?=
+ =?utf-8?B?WmZkSzBDK3l1aUFrNlBVRlczSTNMa0ZsUEVhUjZoWXZXSFNrSXlPODRyNURH?=
+ =?utf-8?B?cjMrcnI3NDFDckh3KzdPaExoYUFoMkttTXYyR2FRZmlnZGZvS1U3Q0Z3Q3Zi?=
+ =?utf-8?B?YlVSRWR6ajNIT1dwYlVpS29UbDdRQWd1SE1URHRXR0RNWGlmMWMvNWNKaGtD?=
+ =?utf-8?B?RDRpWSsrZHltZUhmcGVXZ01xY2FwNU5nS0UxMFpZZ2t2UkdIMEg5V1lxT3Bo?=
+ =?utf-8?B?QTVoVUorNVJuWHB0UGUvUS9UT0QrUGxwMG5yWHBySUtoNTdtZVZnR0RUSGdD?=
+ =?utf-8?B?d1BtRzFVMUYxcTUrS0lhdjBybjJaTjRKanlPa2FtWUZVVWtvSURQUGVRejVM?=
+ =?utf-8?B?bFBUV2JUR3haMDJTN0xicm0rSzRtTEhIcFBJaitXRUVwYzBFekdrdjBWNm5Z?=
+ =?utf-8?B?SGFISWNLbTFobXBXMHNpTExJTUlzQkRlcDlWR2RQUysrMEhkdFprOHJSaGtn?=
+ =?utf-8?B?bXlsMGxXeWxyTW9NcDVCVEZvdWN2Ym1PMk1idjhqZ3lxd1lEc3JCeGtkNnNJ?=
+ =?utf-8?B?QnVkQ0lhWjhWNlhDQ1lLT3JsTitVdXhwUnVCeGNYVnZLblIyYVRNcGlXV2Ez?=
+ =?utf-8?B?WFVQQ3lnMFNPOVVNVzlIc0s0NVNGYXpybnZEY0RiQWhkRldvbkJVSmV2QjJW?=
+ =?utf-8?B?RytsYWVMTkhFdCtpMXBMbkN6dU83NU1zRmMxc2puSmN6NWFtNVBvN1FCa3Zn?=
+ =?utf-8?B?bmtrZWpMd3ZhTG5GMUdMM1poOFlxMXdZZ0JEOE0rbHlpWkJYVUFsUkc1OHo1?=
+ =?utf-8?B?MStNK2JzaXNUbzUvdmhYaEFWcTZnS3ltQ0JzdXhnV05KWEdBbnR6YVpGSHQw?=
+ =?utf-8?B?RnRtdDIyRnJwTm5xNVY3UHVTQzZkL0duYlBKd3dzM29Fc214OFdpZG9iaGdK?=
+ =?utf-8?B?bWNpRmpkdW9NWXVOc0l3UmZTZ0gxWE1PTHN6SWNSd3pTUmY2Z2VUclFSTjZJ?=
+ =?utf-8?B?SWoxTkFpTWFERFljVGswWmg1SXVIb1pQRXZEMy9seUM2Rms2RVVmYlJWc0J1?=
+ =?utf-8?B?NlRuZWtQLzN6VnNVMXhNRGQ0eVl5Q2tTd01IUUVNb1cyQ3FqRm1TSFQwZ1FT?=
+ =?utf-8?B?cFlMTFBOMFh4WFBpVHMxZXNmSVJmRVI1YVZGRSsrL1hOSnpocGhUWU8wdEc5?=
+ =?utf-8?B?a3VkYmpadERXY2h1TjdSZXB4YXliTXlRbTFpa1p5Z3BHZ2JNbHdZOTZOWXRQ?=
+ =?utf-8?B?NlF6eFhmbDZ4TlFsaEFTRmlwU2l5SHFma2hsM3llYzBBdlRidHA0V2hvZHlC?=
+ =?utf-8?B?OThCQytDWXlpb05ReFQ4cmgvcWVER1IrZ2E4TTVoYjF1aENuc1BGWko0a2Nm?=
+ =?utf-8?B?MWRUWjlnMVpTZXRwb0NDcHppa1AvVHBPTWg3TXloTkh3NjN3NEowNGpla3hJ?=
+ =?utf-8?B?ZVlHcUZJOGQrRENGOFJYMFM5cDJxV3J4RnRwOU9jOWxDcDk4TzVLaDlQK0R1?=
+ =?utf-8?B?UDZjbXpLYjJGSU5NdERZeHArZjMydm1hNlFpSDgrOU5vcDVDNHFqdzYvTDZJ?=
+ =?utf-8?B?dHJ2cVZLSWE0bUk5Ri9ab2ltUkd6N0ZyM3krTGVFTklKdHdrMmwzby8vYUJN?=
+ =?utf-8?B?Q3Rhc1l5ZlZnRGxKWCtXN2VkMDVQR2pERWxDUlR1d0lGaWFOZG1CUG9sMzVU?=
+ =?utf-8?B?VFdoZFRQdzNMZWs0eUNaeEtFQS9zNFMvdnRlUDJ1K3NJZ01IdkxvM3NZUlQx?=
+ =?utf-8?B?TUlWZXlrdnpXQWtQTlVrMFh6OWoyZzNLc3pubUFUc2ZLcnZ2NVo3WXdEblpu?=
+ =?utf-8?B?d3VYZDhLaHlIM0ZJZVA5S3pOc3NaZnRUaExQVlZVNkVuN1pZdUpjTm5vQjB0?=
+ =?utf-8?B?SlR4OGJYK3Y1YXpRMEhWbnBnbWMvOURsTmhCYUdDSzVibVFqVzJMeWRvQXZj?=
+ =?utf-8?B?OVFSU2VlT2hMUnQ1TENkeXFxZ2tpODU5dGI4ayt2WWh2S3RzSUZWaHZzYzRM?=
+ =?utf-8?B?Z00xRXNYVTJtMmJ3K3ZKQUhFN3JlWWhKVlFnaWZ5ZjlTZW96ODh4bDlRdmlZ?=
+ =?utf-8?B?a0pZblZ2ZHpiMkM1SnBLMSs1aVNneXlMNzNSQk1tanNPVWQ2cjFVSDZJSVZ0?=
+ =?utf-8?B?SWh1K1RDMDJhMS8wZ2puT0pjM3NQTThsWlBFLzJNL3ZwcHp2N0lOYlpUSHVN?=
+ =?utf-8?B?K2RZNDVHUlh4M3g3VUhHVWliRWl6ZUo2cEpnODA4SzdtcFRqbENzd3JhRzdU?=
+ =?utf-8?B?bVRka0VPcUQzMFE3aTJvSTZsS3FEb09yNDBFYlBwQ3pGQWUrK0FoM3djbys4?=
+ =?utf-8?B?UFlnRjl4Rk45bXBiTW44dFY1bXFpZngybWRpR3d4aEErR09ka0xucjZRUTFZ?=
+ =?utf-8?Q?oziPQD0jSGzqTa8I=3D?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9128ae76-dcd5-47ea-9803-08deccfdc121
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 04:14:06.0754
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 05:52:17.3508
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ujYMiebnuqbg1npopW1pLoRStX+ZcpiBKPUkIezC9EEYo2VRgl2xb1yNUCVoPISHFxfJq0lvDWQD2Y5ewkL9IinM48oJ9JDCvBr5NrByVUwHExYrwP92wxNk5nb7BPhA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7435
+X-MS-Exchange-CrossTenant-UserPrincipalName: LliGq/DQTQpOq2uJqGWG5MQrCj+qi8+AIQ2eMINpWv5o0ISxrllMncq2+cSv/4c4mnhy9DO2wJLTif+fd4r1cuQvqVyVWp3DF2OXOSyyD/I=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR10MB9303
 
-On Thu, Jun 18, 2026 at 01:36:20AM +0300, Sakari Ailus wrote:
-> Hi Frank,
->
-> Thanks for the patch.
+On 17.06.26 21:56, Frank Li wrote:
+> On Wed, Jun 17, 2026 at 08:54:35AM +0200, Frieder Schrempf wrote:
+>> On 16.06.26 22:05, Frank Li wrote:
+>>> On Tue, Jun 16, 2026 at 07:59:54PM +0200, Frieder Schrempf wrote:
+>>>> On 16.06.26 17:36, Frank Li wrote:
+>>>>> On Tue, Jun 16, 2026 at 01:52:18PM +0200, Frieder Schrempf wrote:
+>>>>>> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+>>>>>>
+>>>>>> The ELE S400 API provides read and write access to the OCOTP fuse
+>>>>>> registers. This adds the necessary API functions imx_se_read_fuse()
+>>>>>> and imx_se_write_fuse() to be used by other drivers such as the
+>>>>>> OCOTP S400 NVMEM driver.
+>>>>>>
+>>>>>> This is ported from the downstream vendor kernel.
+>>>>>>
+>>>>>> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+>>>>>> ---
+>>>>>>  drivers/firmware/imx/ele_base_msg.c | 122 ++++++++++++++++++++++++++++++++++++
+>>>>>>  drivers/firmware/imx/ele_base_msg.h |   6 ++
+>>>>>>  include/linux/firmware/imx/se_api.h |   3 +
+>>>>>>  3 files changed, 131 insertions(+)
+>>>>>>
+>>>>> ...
+>>>>>> +++ b/include/linux/firmware/imx/se_api.h
+>>>>>> @@ -11,4 +11,7 @@
+>>>>>>  #define SOC_ID_OF_IMX8ULP		0x084d
+>>>>>>  #define SOC_ID_OF_IMX93			0x9300
+>>>>>>
+>>>>>> +int imx_se_read_fuse(void *se_if_data, uint16_t fuse_id, u32 *value);
+>>>>>> +int imx_se_write_fuse(void *se_if_data, uint16_t fuse_id, u32 value);
+>>>>>> +
+>>>>>
+>>>>> This API should implement in fuse drivers. Other consume should use standard
+>>>>> fuse API to get value. If put here, it may bypass fuse driver.
+>>>>
+>>>> The reason this is here, is the downstream implementation in linux-imx
+>>>> and the current code organization.
+>>>
+>>> Downstream may not good enough, sometime, it is quick solution.
+>>
+>> Ok, but the code structure and API design has been upstreamed like this
+>> and the refactoring could have been done before, if downstream is known
+>> to not be well organized.
+>>
+>>>
+>>>> I thought there is some good reason
+>>>> to have shared functions and it looks like Pankaj structured it like
+>>>> this so all API functions live in ele_base_msg.c and the internal
+>>>> structs and defines in ele_base_msg.h and se_ctrl.h are not exposed to
+>>>> other drivers.
+>>>>
+>>>> If I would move this into imx-ocotp-ele.c, then I would also need to
+>>>> change how the code is organized and make the internal se_api functions
+>>>> exposed to other drivers. I don't know if that is really a good idea.
+>>>>
+>>>> I get your point but it looks like this contradicts the intention of
+>>>> having a clean API in the firmware driver.
+>>>
+>>> You can refer imx-ocotp-scu.c, structure should be similar, only difference
+>>> is that lower transfer APIs.
+>> Ok, this would mean that I expose the generic SE functions and structs
+>> required for fuse handling. In practice, I would remove
+>> imx_se_read_fuse() and imx_se_write_fuse() from se_api.h and instead add
+>> the following:
+>>
+>> struct se_msg_hdr { ... };
+>> struct se_api_msg { ... };
+>> struct se_if_priv;
+>> se_fill_cmd_msg_hdr( ... );
+>> se_msg_send_rcv( ... );
+>> se_val_rsp_hdr_n_status( ... );
+>>
+>> Then I would export the functions in ele_common.c and put the fuse
+>> read/write functions in the NVMEM driver.
+>>
+>> Is that what you want me to do?
+> 
+> Yes, Idealy, it should be children device under ele, ELE like a bus, which
+> previous lower level data transfer, ocotp should be base on top then it.
+> like spi/i2c, which provide low level data transfer.
 
-Thanks for you quick reply.
+Ok, please also see the discussion with Krzysztof on the bindings patch.
+The problem is that this driver uses both, MMIO and firmware interface.
+Therefore putting a child node in the ELE device node is probably not
+correct, either!?
 
->
-> On Wed, Jun 17, 2026 at 03:50:12PM -0400, Frank.Li@oss.nxp.com wrote:
-> > From: Frank Li <Frank.Li@nxp.com>
-> >
-> > Many V4L2 subdev drivers implement the same registration and media pad
-> > setup logic for simple pipelines consisting of a single sink pad and a
-> > single source pad. As a result, the same boilerplate code is duplicated
-> > across multiple drivers.
-> >
-> > Introduce a common helper library for 1-to-1 subdevs to encapsulate the
-> > registration, media entity initialization, and cleanup paths. Drivers
-> > can embed a struct v4l2_subdev_1to1 instance and use the provided helper
-> > APIs instead of open-coding the setup sequence.
->
-> I appreciate your efforts in trying to reduce the amount of code drivers
-> need simply to get things done but I think there are a few issues with the
-> approach taken in this patch:
->
-> - The new helpers aren't generic enough, but require two pads; one sink,
->   one source.
-
-It can cover many case already, there are many bridge type subdev. after
-glace of all code, many CSI2RX is type device. It should one kind important
-type/case, like sensors.
-
-And I plan do 1 TO N replicator driver, which duplicate 1 sink pad to N
-source pad (with/without register config), plus exist video-mux driver,
-
-It think It can cover more than 80% cases.
-
-> You could provide special helpers for just this case, but
->   right now it looks like that if there's something you need that the
->   helper assumes you don't, you can't use the helper at all. In other
->   words, more modularity would be nice.
-
-We can add it later if need, which easy to replace 1to1 API, like I did
-for sensor one.
-
->
-> - The new helper should work with the existing types and not add new types
->   (struct v4l2_subdev_1to1).
-
-May be save vep data into v4l2_subdev to avoid parse it every time. and
-enhence media_entity_pads_init() to avoid refer caller data.
-
->
-> - There should be a way to provide default V4L2 fwnode endpoint
->   configuration as well as to validate the obtained configuration.
-
-Do you means remote_bustype_cap_mask information get from a callback?
-
->
-> I don't have a good proposal to address the above but at least one way I
-> can think of making error handling easier would be to use devm_() for
-> teardown in more places we to today. That certainly does have its own
-> issues though.
-
-I tried it before, media and v4l2's clean up is not revised order of init.
-Sorry, I can't find original thread. I remember laurnet pinchart said there
-are order problem.
-
-1  v4l2_subdev_init()
-2. v4l2_async_subdev_nf_init()
-3. v4l2_async_nf_register()
-4. media_entity_pads_init()
-5  v4l2_async_register_subdev()
-
-
-v4l2_async_unregister_subdev(sd);
-v4l2_subdev_cleanup(sd);        // Not sure if it save to move to last step
-media_entity_cleanup(&sd->entity);
-v4l2_async_nf_unregister(&csi2->notifier);
-v4l2_async_nf_cleanup(&csi2->notifier);
-
-Frank
->
-> --
-> Kind regards,
->
-> Sakari Ailus
+In general I think it's a good idea as the fuses actually live inside
+the ELE block so this would properly describe the hardware, but again
+this would create a hard dependency on the closed source ELE firmware
+which I don't like that much.
