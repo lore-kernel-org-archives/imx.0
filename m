@@ -1,87 +1,121 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374513E9580
-	for <imx@lists.linux.dev>; Thu, 18 Jun 2026 10:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57B83DEAC3;
+	Thu, 18 Jun 2026 11:20:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781778306; cv=none; b=ZJno3vTW2nljCPZzsq56lj6fMzT0eG3Rkxu+QmkclhEJnjKu2/WB3Yl9weLuJ07HssKF0Hw3fUCnJH7H9VDzOeJNDf7mwi1u80WvaM8lvbjZBOubXRaBgjkffG7+YupFYTwKLLAiUH4PiRlOmkfe8rx7OG5F0peH1+rwl1U4QdU=
+	t=1781781653; cv=none; b=EaerhyCE2qL0WmrZtdHQvfR10LGfxG8UEN4NAfzk0yzdZhkNIfiKLWKT+KilnJIUd39I2yO3AAQr30i1STiYMSQSz/ElzBNHyWRgZ7q4LN+v5x4Ss3/QYJF1Zqg0RT6HfDXop/d3pemzUmXWxxYryXVJh6fJgdOTH64Tfme60Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781778306; c=relaxed/simple;
-	bh=WwSMfiQMCeU4lUUB9fPK6vGImyG1aOQJtSY6EGHF59Y=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XsQj8dB8IB6fG6Qbrdr+8moVXhEYvfGRv1vfpI6t57U2eWIWao7gRp/h+qewYUjs6vIqSBQeoqvz/SLOF1oRB6/trQOZBIITVJwBbElWLZ/xf/VdUCVEdzgKsHVEisJoJJ/IXXwZJA8ekQMrIMNsDA+2/96iHAH4MvEoI7HHpWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 18529200275;
-	Thu, 18 Jun 2026 12:24:58 +0200 (CEST)
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1wa9vd-003QBv-3C;
-	Thu, 18 Jun 2026 12:24:58 +0200
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1wa9vd-000000006dq-3gVl;
-	Thu, 18 Jun 2026 12:24:57 +0200
-Message-ID: <922d581718c90c9ca603a35ece7c44da7c425e0a.camel@pengutronix.de>
-Subject: Re: [PATCH v2 1/1] reset: imx7: Correct polarity of MIPI CSI resets
- on i.MX8MQ
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Robby Cai <robby.cai@nxp.com>
-Cc: Frank.Li@nxp.com, s.hauer@pengutronix.de, festevam@gmail.com, 
-	krzk+dt@kernel.org, andrew.smirnov@gmail.com, kernel@pengutronix.de, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, aisheng.dong@nxp.com, guoniu.zhou@nxp.com
-Date: Thu, 18 Jun 2026 12:24:57 +0200
-In-Reply-To: <20260417092809.GA582835@shlinux88>
-References: <20260417080851.489303-1-robby.cai@nxp.com>
-	 <2605c4332e8a3e8950b0b15fc5377423cfed4a1f.camel@pengutronix.de>
-	 <20260417092809.GA582835@shlinux88>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	s=arc-20240116; t=1781781653; c=relaxed/simple;
+	bh=on2p7v01JMLQEd/mSi9ZWJJJ8bOMuh6PkCqEPxyESE4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lREkbLk8W7yUu5A6h+4wCK8wsg7Hzq11vr8bnm6+XreMvg8EpHDjuWy6HNliyjRa/FB6f7UA77A0B1liL8KOrXXa1mnbqe3DCZwS6uKDB3tsInMMmDfJr7hAD8ZkhdflA2TEbJIJbx6Eqprn4iMwqr1ryfvKmji7ERdau1mUK3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDJjZJYJ; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDJjZJYJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7D51F000E9;
+	Thu, 18 Jun 2026 11:20:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781781650;
+	bh=on2p7v01JMLQEd/mSi9ZWJJJ8bOMuh6PkCqEPxyESE4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lDJjZJYJ44Uudg+UUCLEZ5y/sv+9qsCPzXEK/SlWqYFGHdqWrKYDhJ4GlvtafSPeG
+	 BkI9mR7gXaoUCd4fEyAkAOCIb6hs7ZVVEZxps+vtBfvMuGWrZ+g8P46pmqYV9yzIX7
+	 lDScLN3sjh5PcMVWfKktO2MLuQTjps9HxV3GWvOMA69qTMUNK+3zZ6+0hv4oo/XNzL
+	 DYxycW66o0SD0Q/+o9gPry+0FHF0e5kJQCNDSyN1ihKq5/tmrs+qsvdpnHSogWO5sP
+	 2rL8P9jMCTf9/vdXIynUS0O3GRdllKsChiOnpuT+MC4LBV5F17k1ryXsmIVt8EmV58
+	 ERuEDJonnxdFw==
+Date: Thu, 18 Jun 2026 13:20:47 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Dmitry Baryshkov <lumag@kernel.org>, dri-devel@lists.freedesktop.org, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+	Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	Andy Yan <andy.yan@rock-chips.com>, Phong LE <ple@baylibre.com>, 
+	Douglas Anderson <dianders@chromium.org>, Inki Dae <inki.dae@samsung.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Paul Cercueil <paul@crapouillou.net>, linux-mips@vger.kernel.org, 
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-amlogic@lists.infradead.org, 
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Magnus Damm <magnus.damm@gmail.com>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+	linux-renesas-soc@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Sandy Huang <hjc@rock-chips.com>, 
+	linux-rockchip@lists.infradead.org, Yannick Fertre <yannick.fertre@foss.st.com>, 
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Philippe Cornu <philippe.cornu@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	linux-stm32@st-md-mailman.stormreply.com, Jyri Sarha <jyri.sarha@iki.fi>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+	=?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
+	Icenowy Zheng <zhengxingda@iscas.ac.cn>, Michal Simek <michal.simek@amd.com>
+Subject: Re: [PATCH v2 00/78] drm/bridge: Convert all reset users to
+ create_state
+Message-ID: <20260618-terrestrial-abiding-tamarin-01befc@houat>
+References: <20260608-drm-no-more-bridge-reset-v2-0-0a91018bf886@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="ozjpmz32viqzzrdv"
+Content-Disposition: inline
+In-Reply-To: <20260608-drm-no-more-bridge-reset-v2-0-0a91018bf886@kernel.org>
 
-On Fr, 2026-04-17 at 17:28 +0800, Robby Cai wrote:
-> On Fri, Apr 17, 2026 at 10:47:48AM +0200, Philipp Zabel wrote:
-> > On Fr, 2026-04-17 at 16:08 +0800, Robby Cai wrote:
-> > > On i.MX8MQ, the MIPI CSI reset lines are active-low and not self-clea=
-ring.
-> > > Writing '0' asserts reset and it remains asserted until explicitly
-> > > deasserted by software.
-> > >=20
-> > > This driver previously treated the MIPI CSI reset signals as active-h=
-igh,
-> > > which led to incorrect reset assert/deassert sequencing. This issue w=
-as
-> > > exposed by commit 6d79bb8fd2aa ("media: imx8mq-mipi-csi2: Explicitly
-> > > release reset").
-> >=20
-> > If this patch is backported without 6d79bb8fd2aa, or the other way
-> > around, will that break MIPI CSI-2 on older kernels? That would warrant
-> > a Cc: stable tag.
-> >=20
+
+--ozjpmz32viqzzrdv
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 00/78] drm/bridge: Convert all reset users to
+ create_state
+MIME-Version: 1.0
+
+Hi,
+
+On Mon, Jun 08, 2026 at 04:35:42PM +0200, Maxime Ripard wrote:
+> Hi,=20
 >=20
-> Yes, will break.
-> These two patches should be backported as a pair to ensure correct behavi=
-or.
+> All the bridges use reset to create a blank state only and don't use it
+> to reset the hardware at all. This is what the new atomic_create_state
+> is exactly supposed to be doing, so we can convert all existing bridge
+> users to it, and remove the reset hook and helpers.
+>=20
+> Let me know what you think,
+> Maxime=20
+>=20
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+FTR, Thomas on IRC yesterday[1] added
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-Can you please resend with
+Unless another review shows up, I intend to merge this tomorrow
 
-Cc: <stable@vger.kernel.org> # 6d79bb8fd2aa: media: imx8mq-mipi-csi2: Expli=
-citly release reset
+Maxime
 
-regards
-Philipp
+1: https://oftc.catirclogs.org/dri-devel/2026-06-17#35422999;
+
+--ozjpmz32viqzzrdv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCajPUigAKCRAnX84Zoj2+
+dk0JAX0RbkGWPGoPi2IhEx+Ot7RE2mv5pF2NW5NdvgyvbZjvKNkWJ3WWtN4N+yZb
+Ll4R1c0BgNqzNQmnFhM4Nh5uf+0aPC7FMvJmkSeQcUNUGNIKHOukmjyX3PgrtUcT
+RE+nxMSDvw==
+=eAVV
+-----END PGP SIGNATURE-----
+
+--ozjpmz32viqzzrdv--
