@@ -1,252 +1,160 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010066.outbound.protection.outlook.com [52.101.84.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE64346FDA
-	for <imx@lists.linux.dev>; Fri, 19 Jun 2026 06:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44141322A2E
+	for <imx@lists.linux.dev>; Fri, 19 Jun 2026 06:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781849454; cv=pass; b=tN9O6RrjlwlRIcr2k/pWMem4YyGN+DCLRHD6W2hQwLVRv9xhnNabKXMld3iE4jtdOYZfKhphvzY0Pq/JMs0hfNIM4Z9GA/9oB1nIgIrHf9ABWh2HIv3/JzgrIs2E/nfA09zZn+tzq7/d1aw7o4xbOv7Yai/xotye3LR/oDO4vP4=
+	t=1781851014; cv=fail; b=qUNqP06bp8VyUmcDIKa0awOQAdNDPY1zYNs3Jg7Q/dN79Zs1WDFDSCewDLUJBXnv4J+PPUvM7Nb8PZVd9pcCOptTVHzcFI+8sWjabG6LFuN4QPB7WoLpw6qh/1RSLVJcMQ5RYFAd7PyMMfkPwsd1aQepbGvCDD28m/VySbWF1qM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781849454; c=relaxed/simple;
-	bh=dk2S5WBPELrkoYZjdzCA40IFW7G6nPxmUcJbi0UDXs0=;
-	h=From:References:MIME-Version:In-Reply-To:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j9SvgTvzHrtbOV3QUp+hirl77seXCbml/6pjqSFgemz2QUADyTMNYxUcj9zLG99tSeCrtrXsyG4BRBp8YAp0+H05rf0JPwFzlHvSwaVX8RT/zb9IphCwuoxtqNje1/tk99KeEAdHEeh0ab3TIIzG9PjEPD1/3a4KQ/K7gdfMOqQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=HGrMI4Do; arc=pass smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1781851014; c=relaxed/simple;
+	bh=gw69ak4yEmQt2s/VBj45oLpW7yPazw50aQecTxqY66o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=oq+8jsUaQl7PEnd/XFb+T9LzO1KDWlHyYGsPR30xPPuCDIL1iMpN6aEnH+goS8TSpEeR0/hvQfmdL0v84luGYoxlkVoiEdDjrOre4d7Qk27egFAHySM3wEwIBbxES4URhe2lHm93h7QQeizLzNBA8F5kX+MzWKzxVe60X3PrxiI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=YpsKVH96; arc=fail smtp.client-ip=52.101.84.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="HGrMI4Do"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c07a6520cafso185839566b.0
-        for <imx@lists.linux.dev>; Thu, 18 Jun 2026 23:10:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781849449; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RrMGg2tQr8TdoQqzpDma2L4sKaNdsmlXyMQ6wqgdwIwdnldJhlZsSS0EG8k/qFVFNW
-         cvduC14bqOwbGrjyup8oq6HAnxD6JI7GvPozvS+DRaHXrXjv7PRHC0NvKqDNSxT+5G7g
-         e7n0NHk7cP8IojBxIdHJ3KEnvKjI+addONAqTvVKSol0IZZsqgX5USpTI3FE0OdLhG0J
-         /PIJA61Ozv20boJZFD0XRMh8xzzttkzllOSYoGxeqsPHUZ8dLckMZS0wpkzN+bIhIXyy
-         XoPMiW4PmBziVO/toB9BMX7e4fOuwmpO4wlMaFTMjSDcsRSq0F0XzPlM4Sxjx/RXygbI
-         lIyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
-         :from:dkim-signature;
-        bh=v9MezgOvVYdDVhHOvhxfflYG59sVc/14+1QAhEmgyMo=;
-        fh=dnJDq5anIilNlYLG8WHX9GG0obJxy3URAJOzeqBsA2M=;
-        b=FKXYUV4kx1H6c2mRF1uwlR5hEMTsM8Rbgit1EjJIUR38hscf3e17NK/mcxfqfTn1qo
-         OEpeo9MaLqEwkiJQWDkuk3jLNS37uKfvqvN39LVKGGxNrhbo1M3umio6zqi6yvYhoGD1
-         nz3X9KkT3cGGLKIPA4h60g0GElUFe81/UcWk+rEPailncJkXdohpt0vtb12Ho/2HoEBb
-         Twvk+FAjPgF//DoO9LEfaBUriFjI0Dl0mWA4O7DBqrES8oI2/Cqs+pJyelPU382a+1CZ
-         SiIILvx/1akNqMO1Llc/U/cerOwo/fTDuvTBooPsRiKSEm1BlCLw5NQGzI/N62a4qhDR
-         6nmw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1781849449; x=1782454249; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v9MezgOvVYdDVhHOvhxfflYG59sVc/14+1QAhEmgyMo=;
-        b=HGrMI4DoyiLTGeOCdYhJ+dGP3ffeozLPKwkaXgnRBhoQBjZ5fED0/Td5BQkPIb9VSO
-         rYscp9vdMpms4+6xNJ1VdAAfjWtRGI21tpb4Qze8UdPjGtRQ0o1R4Ph6psiy9x9ZaBVx
-         cVkehePfgdYnVqBpV2AwsT989SXmMcpxrqDtavR1t/XVJf8/X6/Rnnzhu7WRuIX8MgIU
-         fdLGVdo0l4DXY1O4t5+4W/OKhlIJvVCSq6sYIdqTI/HXfncIQ1sqA32158gmmcxBBffB
-         Ek/PSC6MFL9zRchIY1Xhphe95C+xtNSKM32S6PtDTWV1nyTnwCp0wHG9aDYdaEVjftZK
-         9itQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781849449; x=1782454249;
-        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v9MezgOvVYdDVhHOvhxfflYG59sVc/14+1QAhEmgyMo=;
-        b=kEMgMqYMiLUf4GjvVa25XfLiSLn/mxJnL/tMpBodFJX8Dh+WA84HMc7xz1jnTp/j/6
-         aRrZcRHdSC/AI/gD/alcxkhEili/0HoNp8lvdimrU9/JULK76SOtT5ZYMpYyn45x8FEW
-         68JaTNwY9lwx5rWReDdOFgRXMm+s+ViTtv93yhPJVsvS6EsceCgRJS5E74fyNVYZ4JFR
-         TIa1ZW8WKmatUjMsNnBTWpW9TtH9YoeaAvRkvndifE8yuYaXwktbDQF/tswj1Ks26PjT
-         DaVO+H8dGIQkBfbEteVr2i7RX3mQzM+ZZEIM60pY28HghlxONcFHAJPNqBsQV0/Sn08a
-         8ZlA==
-X-Forwarded-Encrypted: i=1; AFNElJ/QB64cRaZhaLsQ7kj2mvuXuZ8XftkPnPqFdvOudC96rMZb34n/OoTLk+r1APrOqrN/V8s=@lists.linux.dev
-X-Gm-Message-State: AOJu0YydakRmRl2UZcKWu5XL4F0vAuYjOnqk/s3AlVK6ec8MZ6JS7ORD
-	ChgHjP/m1qWl79t+W7QuDWm3Bx2Sj7EGozzKYBWQrNBX9CrnAAt7Uw+tkgNH+9ex91d9mOEE+Vb
-	4+cX9Qrg1Veky5oLLq8TrxKIiptIAX75cKx6DJp3ozF/QGiQVGZGb
-X-Gm-Gg: AfdE7clR5YHHGxpt/t2hiaHjSDSbGOiJw27xZ9FtdMvNioPgpg6mIB3iT1FEhpjSIBQ
-	fqop3KX5NWGJaMo+vitKBNsH0yh0x6CCWLU9JlPUZP39yFBpDZvIJEoNHsVFY15NSFGr9Jh06uA
-	DZ1W1ssMUZMZES6COrIFUbYTBQd93yR9l4fHmZS5NXmCMI3D2TbQB7ztMa5tnCIiXxA9NG+H5TB
-	K6xTL7Jtd3dbo78/oAH5yspP5LgVfiG1G3TNHyjnuHgqtZ+o+6srAIH0YDbxPbDsi6XmxPovdeu
-	iqeKys5m73klc3DhJaxjxnu/Jg==
-X-Received: by 2002:a17:907:3e98:b0:bf1:a59e:653f with SMTP id
- a640c23a62f3a-c097c9c486cmr103959766b.28.1781849449146; Thu, 18 Jun 2026
- 23:10:49 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 18 Jun 2026 23:10:48 -0700
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 18 Jun 2026 23:10:48 -0700
-From: Angelo Dureghello <adureghello@baylibre.com>
-References: <20260609142139.1563360-6-gerg@linux-m68k.org> <20260610142725.031C31F0089A@smtp.kernel.org>
- <937086f1-5158-41e9-9194-b6d1feaee17f@linux-m68k.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="YpsKVH96"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CwO5tNfg8Fo3TwWA0jYg3THVy5qNTAlgB6XatOSMtI7OkMty2Mx37L8KhXG/MN/jhaWUtCX9Qqv/yiHVOyW0rjaHSb/yR9YknktiheLOIAy5O95Nmmevb+XLk5WvUrTv6TzDbNPUDiOlVSv9EwINVyb/YXuYhH/SF32QSLRrYP7lSgTMe+2nCz5KtvEGZ5vYj3jDgeLutcro8fjH5h3xQHpooAjFfZRnlYr8NPPU+TDCHC4O4b8dls+KrNoG7Sk9J8Hl2g7VqNxGmimx0W5Zb1bj6dKRDDAwnocWoHDB4nzy/ogjLNqF8GfWuIjdKisSx4OqscZngmRdFV5XcPlv+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Sl6jTIeHNS/6XZrqqOWL+U18ZJmM7ug70i6zVchYq4k=;
+ b=eMaA5fNFNQ1w/MlCFXYFnXZE+ClLIuggeW9ufQIr5V2sj7evOxSJ/XIV5B5RGS+p0cWvr5F8uaHd+7LA+YT+KCjWlZTufIIb3gXSy8uO7QOAD+EGoBKn7V8gDpcaYyAHexglvgAaelIB7FuXr6e9G180Cjh+KQGHmv4vrHZiDAm7kymfYNck4e/TzzA14eE4xFSk4bGikV5RPEko0M5hh9wZzTKY/T/5zvIUGqijV/igfzoMp1u2C/M2Ier548u8RUPUQvazsWTeQ8C5tFPfiNnuJJ5VmvK4YB2OaEsoXs71WlOrDYQCt0lfVwqKIcUWV7gNSufLZRbmqrbfa0HtHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Sl6jTIeHNS/6XZrqqOWL+U18ZJmM7ug70i6zVchYq4k=;
+ b=YpsKVH960BFZgpwAKQeQuji0WlqyOzAs5rHWspK805xhgrykHsOvxzL288Oomc/cF+ILQmzYc509h8Tq+Bsd/IYKB3QjQFb62qI+bPWaEKCxDh2gq6WoqdzFxNkkzgoxRi/JhwJ4kOjSTSRStzB5KwkasYCnq9z5HVZkbi6+AcFun9lef1kOwk9Fu32pGdQtSqJaJIemv5/bSqh8/g6mObiq0aAcMEnMYQUSix3jh/SNt1N7gyCjCHWkaM7MLfKtQzcmJDKlJuvWg7mSh5dOAWZEz2JC8bwWSLoRHcTSnIq5HfUxa/tmbp1NKM7FN77sEX4+gIXh85capOD7Ou5DKg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VI1PR04MB9738.eurprd04.prod.outlook.com (2603:10a6:800:1dc::10)
+ by DB9PR04MB8429.eurprd04.prod.outlook.com (2603:10a6:10:242::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Fri, 19 Jun
+ 2026 06:36:47 +0000
+Received: from VI1PR04MB9738.eurprd04.prod.outlook.com
+ ([fe80::33e2:39d5:e3f4:580c]) by VI1PR04MB9738.eurprd04.prod.outlook.com
+ ([fe80::33e2:39d5:e3f4:580c%6]) with mapi id 15.21.0139.011; Fri, 19 Jun 2026
+ 06:36:46 +0000
+Date: Fri, 19 Jun 2026 14:39:59 +0800
+From: Robby Cai <Robby.cai@oss.nxp.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Robby Cai <robby.cai@nxp.com>, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+	festevam@gmail.com, krzk+dt@kernel.org, andrew.smirnov@gmail.com,
+	kernel@pengutronix.de, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	aisheng.dong@nxp.com, guoniu.zhou@nxp.com
+Subject: Re: [PATCH v2 1/1] reset: imx7: Correct polarity of MIPI CSI resets
+ on i.MX8MQ
+Message-ID: <ajTkP9Ta1HTW41MR@shlinux89>
+References: <20260417080851.489303-1-robby.cai@nxp.com>
+ <2605c4332e8a3e8950b0b15fc5377423cfed4a1f.camel@pengutronix.de>
+ <20260417092809.GA582835@shlinux88>
+ <922d581718c90c9ca603a35ece7c44da7c425e0a.camel@pengutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <922d581718c90c9ca603a35ece7c44da7c425e0a.camel@pengutronix.de>
+X-ClientProxiedBy: SI3PR03CA0005.apcprd03.prod.outlook.com
+ (2603:1096:4:297::10) To VI1PR04MB9738.eurprd04.prod.outlook.com
+ (2603:10a6:800:1dc::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <937086f1-5158-41e9-9194-b6d1feaee17f@linux-m68k.org>
-Date: Thu, 18 Jun 2026 23:10:48 -0700
-X-Gm-Features: AVVi8CeRdz8EjQv7N6iu4inU7GEg0JeeUbGrB_UMI7cQpI9RGlKWq-bZNMislQ0
-Message-ID: <CALSJ-wAO-HpN+9E4cNrfQ0ELF6akddMv7DBXE2W2tKxRWvEZtQ@mail.gmail.com>
-Subject: Re: [PATCHv2 4/4] m68k: coldfire: fix non-standard readX()/writeX() functions
-To: Greg Ungerer <gerg@linux-m68k.org>
-Cc: sashiko-reviews@lists.linux.dev, Oliver Hartkopp <socketcan@hartkopp.net>, 
-	Vincent Mailhol <mailhol@kernel.org>, linux-can@vger.kernel.org, Frank.Li@kernel.org, 
-	Oleksij Rempel <o.rempel@pengutronix.de>, Marc Kleine-Budde <mkl@pengutronix.de>, imx@lists.linux.dev, 
-	Angelo Dureghello <adureghello@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR04MB9738:EE_|DB9PR04MB8429:EE_
+X-MS-Office365-Filtering-Correlation-Id: 34bae273-2d5b-4f92-a839-08decdcd22a5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|19092799006|11063799006|4143699003|56012099006|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	m+sDdYwAaKiEiW8QoQbORTnNnAvlQgd2i1ntRb8RBc5v2qSuWgfg2008WF9MzaQAuTBxHW2kGkkk1KYfSfnuHw1Ad0utG3dW350OGWBaHpXCRZUx07uuDsNjy6VJsL2HWEqUzEpQ+JcEhpcbDpRus9Ly4UbEavLbZo79tV1wt1e+byr5dUK+TdNC5Ip1j4GteVcRl+qwvBwlkqgJftMSGMJsf90oLdz5SNgeKcYK/RbEDIwY1TtDjuUeoAyF3KT5OAX7c5tQ7gChzQ1xdb1meSK0wIndQPkxZ+QOM0mAOAWdfxCJ3ba3uX1t+x24Q2YyqhjkS59Pq6NwIZfa5jqQ1qBmE+hed7q9kWSK/f1cZRzZpTUIQS2RHYMdcjIKeYoPzI29sdLJksDkom1FX0ye6FYiHddXsj0H/2h7VE3UqXGC24+azOg5qHjSYJPrrxdhOa/7hjWo7/MPOAEq1A9MIOWTs8pdRcyPR1ieIztGHcsASazNvPvbFMJ9Uy8lnc06DlB2nCWRyEpXyMfYXjoDvNtqBF5VQYe/xkd1BnZWizvttM4wWbpBACb4eu7mbn2KrQZC++KPOogGZsRl414OjGOpN9VZMpU9HHUbhcBbwl0dyznwPAceiDqA2LcakKo8OIUHICmbYVV0OcGEksrnFFfMz+IoVxwg/0D5LQ4TWkY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB9738.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(19092799006)(11063799006)(4143699003)(56012099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?DvJQlp282EcZ4XesYrmDemQNC9V/H77fK9wDfqhpuYUOyRjEA9MK/YjsLLAU?=
+ =?us-ascii?Q?oGrS46ax/s54YXBIuJZc1B5w4ODYE3RrtCs3Gw8Mdratesr27b8UwRmeEUuY?=
+ =?us-ascii?Q?oRkxHLDU6kUyQravAygTftXmt38qUCxQ82BV7KZ44khR6iSdzEwYY03vZqwB?=
+ =?us-ascii?Q?ikB9WcjHoIPspV8XYv1wrOeOn4su7FDGgg4vz6NaD+v4XSKPJgl82VcO/9tb?=
+ =?us-ascii?Q?D8jWyxV1OwSOkZPyHgFfgrVOIilcO9Z1u9EFAM/X+Nr2VJfwlbuu2QmhqbdN?=
+ =?us-ascii?Q?nPnUvI/QGMqnPvfh+hUNOpu7hOawDyCHS9zTyrrMOWDgNgCytRLNxi5cfURz?=
+ =?us-ascii?Q?Y+dSuJrUo5SEDas3BShtL+iEsxB2M/7cNHgL99XQkCjwgT+P+Zgo/Rp5aFIM?=
+ =?us-ascii?Q?o1XTuo/7IWC234lIddPw9ZS9CBaHvNjvKY94E8r6WFtT12qZWHVFh4e2pt5D?=
+ =?us-ascii?Q?1wQBSP19A1TDWj0yr1vUGhwPWQw04YtNXcyHUxtQrHBXDdVRzG/neXw9R0t7?=
+ =?us-ascii?Q?tkKuRM/T7RAXxQj9plCsoO1OMYt0S9LMBlA5rxl7zRl9lUv5ZDX6oYWR/D4n?=
+ =?us-ascii?Q?qq65FtuHbPBLQopoazVc4uRaN5sMt4vwEflqOBEiRS4aUodgtJiPC+RKhPR8?=
+ =?us-ascii?Q?HNuJ84SHvbLElzz1TAOQiMZnH1sSVGR8ROGRHSVstOlAFqSVcDQFPiuSvrO2?=
+ =?us-ascii?Q?MVZFp+BNx/CWRB84gOXHRdnzT3M5p8PQ40Fig766iKbSxxyTMXD/7PcwDLyh?=
+ =?us-ascii?Q?S8ePgaIGHw03jjPQNJmkZyD2LR6VL2Bw6HdyD7EPBt6fz6RhSE2TcApdS9lI?=
+ =?us-ascii?Q?dp5Cz8BuMZJbTCw1++DZ6CQgmMM/Yx4ojGk2KkgZkPyxMAiSBp9ICHLJ+GjX?=
+ =?us-ascii?Q?+RM4wtx6jf4eDg5WlNppwr35hGxH7bKuyHyLE35YLm7NE/TdHxBcVlq7eN42?=
+ =?us-ascii?Q?n9JymL4URPtIcCa/GG898MIaDqEvsnNDF9TS5JChAQ3D/PE8sSGIj7cWykfh?=
+ =?us-ascii?Q?fvRn4b4v5fI8XXCpVYTuSu6QcoFpPIl3AVnPMINsG7c2g/CQPsStyoXGsyp2?=
+ =?us-ascii?Q?CJz3ph6+zkwo022Ry72nI3LnHUfX1txOuj315eRyp5XCmMwc+zTnYjXbX57Q?=
+ =?us-ascii?Q?Pk2xdhcsQMajL7oiGht4pvyAqLkxX6nijCFQ2unX8i4p3XSY1ONLRWMjcVAI?=
+ =?us-ascii?Q?ViyiYCgqen19pwOXcNUtsySetbyiLPcVvRfPLlqfP2LseF1yl6Z6Tv0eXCET?=
+ =?us-ascii?Q?lpCTPW1UtCHvV9UDtGe3ia/C2EjJkw88nDCGUyRUQ/Q+o1m+J/s3c+kyCmAc?=
+ =?us-ascii?Q?bjPKIqXiPxyur8LA6b26p7pbNAOskKjB1hiZAYvqhdRR2bA4Z9tjvCzKiqwt?=
+ =?us-ascii?Q?njH78hnOpjBeDbigkqIzNtyznl720ES9PpSJE6thFiY8mPVSY48WSh0gtspe?=
+ =?us-ascii?Q?nGJxg/W+gzK8Xw4iWl2/iU0GGGfARmYI/MG65XnDywEvzSM7oYwNx0eUgseT?=
+ =?us-ascii?Q?vScI31nNy37ubmlmzhlooL+ChfXKgsuQ32rRskvch6sH0e4cLVrXAaxGZzLk?=
+ =?us-ascii?Q?5zAXb+lWRhX9M3OIFQQwl4G/FCZA+xGYqhoiPu7Lir/eT2vU21asrPEBupD2?=
+ =?us-ascii?Q?GjjU7Pz0L2qjL+DmZqc05Ry+7uSoVuQE5i16QXC2aYWk3TKeLC31Udgcjwuz?=
+ =?us-ascii?Q?0QEhc0Hz8HVBBiU9JfEpxlq/fdUIZsyCr780AtzGSUW+Jbh+Patn637qMqOt?=
+ =?us-ascii?Q?fitwfGslfp+fxpmawoC1oVsIwKJVzH+bWfDbcwq8TPYbup2XOFU8?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34bae273-2d5b-4f92-a839-08decdcd22a5
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB9738.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2026 06:36:46.8238
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Di3/KUG30T962yZjorcxgcyPe/6PI7Dv0yjN4oCiuogwRHjmbQzjayy/WmSaek3R8Ymv2IUblbf+8SGFYFSmfRkuDxI3vnbO+WOfL+U1XwMN6OSZma7XUlntaFBc7wUo
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8429
 
-Hi,
-On Thu, Jun 11, 2026 at 11:35:02PM +1000, Greg Ungerer wrote:
-> Hi Sashiko-bot,
->
-> On 11/6/26 00:27, sashiko-bot@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> >
-> > New issues:
-> > - [High] The transition to asm-generic readX()/writeX() changes the endianness of ColdFire internal IO accesses, breaking unpatched ColdFire drivers.
-> >
-> > Pre-existing issues:
-> > - [High] Undefined behavior when shifting 1 by 32 or more using `BIT(ch)` in `mcf_edma_tx_handler`.
-> > - [High] The error interrupt handler incorrectly skips handling high channels and returns `IRQ_NONE` after servicing low channels.
-> > --
-> >
-> > commit 25193db3eba89f780b6dc534f2f72e16f3429571
-> > Author: Greg Ungerer <gerg@linux-m68k.org>
-> >
-> > m68k: coldfire: fix non-standard readX()/writeX() functions
-> >
-> > Remove the local ColdFire definitions of readb()/readw()/readl() and
-> > writeb()/writew()/writel() and use the asm-generic versions of them.
-> >
-> > > diff --git a/arch/m68k/include/asm/io_no.h b/arch/m68k/include/asm/io_no.h
-> > > index 4f0f34b06e37c..2f12f4ed0da54 100644
-> > > --- a/arch/m68k/include/asm/io_no.h
-> > > +++ b/arch/m68k/include/asm/io_no.h
-> >
-> > [ ... ]
-> >
-> > > -#define writel writel
-> > > -static inline void writel(u32 value, volatile void __iomem *addr)
-> > > -{
-> > > -	if (cf_internalio(addr))
-> > > -		__raw_writel(value, addr);
-> > > -	else
-> > > -		__raw_writel(swab32(value), addr);
-> > > -}
-> >
-> > [Severity: High]
-> > Does replacing the local readX()/writeX() with the asm-generic versions
-> > change the endianness of unpatched ColdFire drivers?
-> >
-> > The old ColdFire implementation detected internal IO memory using
-> > cf_internalio() and bypassed byte-swapping to provide native big-endian
-> > access. The asm-generic accessors always assume little-endian devices and
-> > perform byte-swapping.
-> >
-> > Will unpatched drivers relying on readX()/writeX() for internal IO
-> > (such as spi-coldfire-qspi.c, sdhci-esdhc-mcf.c, or fec_main.c) now read
-> > and write byte-swapped values and malfunction?
->
-> This is of course a real problem, and much effort has been expended to
-> find and fix affected drivers. Specifically here:
->
->     patch 1 in this series fixes fec_main.c
->     patch 3 in this series fixes sdhci-esdhc-mcf.c
->     patch 4 (this patch) fixes spi-coldfire-qspi.c with the endian change to spi-fsl-dspi.c
->
-> Not mentioned here, but patch 2 in this series fixes the smc91x driver.
->
-> It is not believed at this time that any other drivers are affected.
->
->
-> > [ ... ]
-> >
-> > > diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-> > > index 9e1c6400c77be..4ed0ce644e37e 100644
-> > > --- a/drivers/dma/mcf-edma-main.c
-> > > +++ b/drivers/dma/mcf-edma-main.c
-> > > @@ -21,9 +21,9 @@ static irqreturn_t mcf_edma_tx_handler(int irq, void *dev_id)
-> > >   	unsigned int ch;
-> > >   	u64 intmap;
-> > > -	intmap = ioread32(regs->inth);
-> > > +	intmap = ioread32be(regs->inth);
-> > >   	intmap <<= 32;
-> > > -	intmap |= ioread32(regs->intl);
-> > > +	intmap |= ioread32be(regs->intl);
-> > >   	if (!intmap)
-> > >   		return IRQ_NONE;
-> >
-> > [Severity: High]
-> > This is a pre-existing issue, but does this shift invoke undefined behavior
-> > for higher channels?
-> >
-> > Looking at the loop immediately following this in mcf_edma_tx_handler():
-> >
-> > 	for (ch = 0; ch < mcf_edma->n_chans; ch++) {
-> > 		if (intmap & BIT(ch)) {
-> > 			...
-> >
-> > On a 32-bit architecture like m68k, BIT(ch) expands to a 32-bit unsigned
-> > long. Since ch can be up to 64, shifting by 32 or more would be undefined,
-> > potentially causing channels 32-63 to be improperly processed or missing
-> > their interrupts entirely.
-> >
-> > Should this use BIT_ULL(ch) when testing against the 64-bit intmap?
-> >
-> > [ ... ]
-> >
-> > > @@ -43,7 +43,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
-> > >   	struct edma_regs *regs = &mcf_edma->regs;
-> > >   	unsigned int err, ch;
-> > > -	err = ioread32(regs->errl);
-> > > +	err = ioread32be(regs->errl);
-> > >   	if (!err)
-> > >   		return IRQ_NONE;
-> >
-> > [Severity: High]
-> > This is a pre-existing issue, but does this early return incorrectly skip
-> > handling high channels?
-> >
-> > If regs->errl is zero, it returns IRQ_NONE immediately, ignoring any errors
-> > in regs->errh. This could leave errors in higher channels uncleared.
-> >
-> > [ ... ]
-> >
-> > > @@ -55,7 +55,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
-> > >   		}
-> > >   	}
-> > > -	err = ioread32(regs->errh);
-> > > +	err = ioread32be(regs->errh);
-> > >   	if (!err)
-> > >   		return IRQ_NONE;
-> >
-> > [Severity: High]
-> > This is a pre-existing issue, but does this return the wrong IRQ status if
-> > low channel errors were already handled?
-> >
-> > If errl was non-zero (so some errors were handled) but errh is zero,
-> > returning IRQ_NONE here instead of IRQ_HANDLED might incorrectly signal
-> > to the IRQ subsystem that the interrupt wasn't handled at all.
->
-> At casual inspection these may well be real problems. I will have to defer
-> to the driver author and current maintainers for them to fix. The changes
-> to fix ColdFire readl()/writel() have no effect on these, and are really
-> outside of the scope of this series.
->
-> Thanks for the review!
->
+On Thu, Jun 18, 2026 at 12:24:57PM +0200, Philipp Zabel wrote:
+> On Fr, 2026-04-17 at 17:28 +0800, Robby Cai wrote:
+> > On Fri, Apr 17, 2026 at 10:47:48AM +0200, Philipp Zabel wrote:
+> > > On Fr, 2026-04-17 at 16:08 +0800, Robby Cai wrote:
+> > > > On i.MX8MQ, the MIPI CSI reset lines are active-low and not self-clearing.
+> > > > Writing '0' asserts reset and it remains asserted until explicitly
+> > > > deasserted by software.
+> > > > 
+> > > > This driver previously treated the MIPI CSI reset signals as active-high,
+> > > > which led to incorrect reset assert/deassert sequencing. This issue was
+> > > > exposed by commit 6d79bb8fd2aa ("media: imx8mq-mipi-csi2: Explicitly
+> > > > release reset").
+> > > 
+> > > If this patch is backported without 6d79bb8fd2aa, or the other way
+> > > around, will that break MIPI CSI-2 on older kernels? That would warrant
+> > > a Cc: stable tag.
+> > > 
+> > 
+> > Yes, will break.
+> > These two patches should be backported as a pair to ensure correct behavior.
+> 
+> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+> 
+> Can you please resend with
+> 
+> Cc: <stable@vger.kernel.org> # 6d79bb8fd2aa: media: imx8mq-mipi-csi2: Explicitly release reset
 
-will fix this. Thanks.
+Sure, will do. Thanks.
 
-> Regards
-> Greg
->
->
->
 Regards,
-angelo
->
+Robby
+> 
+> regards
+> Philipp
