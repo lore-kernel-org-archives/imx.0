@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D36A371D10;
-	Fri, 19 Jun 2026 10:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500B937189A;
+	Fri, 19 Jun 2026 10:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781864168; cv=none; b=Zqyx0QQHqXw+2rXll5SYSLlPWVtF2yEn2PYGy0JvHS09QJSutjcz5izq9sy7/5o16nOzHxgJVSfWver2ZppjoMhIxSwJiShrfIyH//SPg4GZ3SjUvoBqreczAZlVZ/T6z0xR/9ipJMUbFERIPaTTB//ygpJOGV53/58d+fKG4LQ=
+	t=1781864192; cv=none; b=ZraxPkpkie2RvmAb5oPcjVH6raNyxpb2BmkO3JX7zFHpLWnFwjXtqIj8YObeYPXpJZgs5plQu2tw3PpM5CZSPo5Fl/8Yn2oDnBoXPS77HEGNHzAJxQjAQtYrgIsob3ck1eKWHevuAAMuuvS5lNpQB44fwFcSRED4l+lDBmA0zeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781864168; c=relaxed/simple;
-	bh=4u5eWcXUr8klnjD2kI151oO5aH+6uQxQpnxnW8xaxpc=;
+	s=arc-20240116; t=1781864192; c=relaxed/simple;
+	bh=X+cBU7Sh2zfHj0A4Kx+gUFN8SXH8Q+m7AttIi8T6IVo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=P3vWjdpMGmCeXSpvBTNJmlH5FisW54J2BiQm2qY+SyuT8oUHtXu2hZNPEUljDMtmpRMzB3kKbOhNDbdR9i2lLkeHgRG94PveQjA0Kmy8lIwl1j/Bt56ThSVCBv6Zge5gWS4exQhaouhGMVee3Gl0K9N/YiYW/WFimVe4Va8sv6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSUnBQJx; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=OEwFrLJnp7Zx4efFnA7DpMPo4M0U75p42N/4FDPmYfwHkwv1C7acL+hXoxeNn0iFcMjnukfxIoInaHnXmajTUwMc9Cm68uu4NA7ZWOkbnygtNLhZIk92T6tA0EggumcaYr9Uf+OVc1NMSM5PyAXaY5KOFRiqYkrC/RSZZKio/14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmaU3EDF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSUnBQJx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BC81F000E9;
-	Fri, 19 Jun 2026 10:16:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmaU3EDF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A6C1F000E9;
+	Fri, 19 Jun 2026 10:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781864164;
-	bh=y7TtmI5QGk3KSn27n86DgAP2chB0E5IgJY7kvxKmGPU=;
+	s=k20260515; t=1781864190;
+	bh=AXhMXnBpV1PcHrrbnnVg6HiUPRNNnXPEIicioDDy2BE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PSUnBQJxSFP5sVueqqObJ8Eli+bRqMvhdXIOwi1yuEqgSpwk/t12KXGItgc5RcylP
-	 heluM27jNj11SVusn9cWiljTmlL4+eIrHGCuP15QBR/upExxoZM6tV4JtfRMtLXl5o
-	 XTmElfcxZMmt15rijaLi/2P35YTqvaFEs7krppAPHmbvCSn2vlM/a19+4PSoBAdQ1V
-	 /WmPLpG1uzsg6v+NWuQB9balaXbC2qGW4MsIyzMbW7xEhUo39GLgXsvsTQ3Ki/K2Vo
-	 XKsahifM9FRH04rXl6dYQJZGoWLihh1B/XDj3q1CQgsXpRpr2sst9fBjL/bmI8FuGB
-	 E1xyzjl0Kgy+A==
+	b=JmaU3EDFB83HNW5jzyEEP2TTX/k4jckDvm/+44oEts1tfRWJZXZrx5g4a2uDkVEYG
+	 LTooxfY+HoY/XKq3gxEQgh9R+JakCEQ8BHHfQ3AjZpkKJaXv/Lczw4kFmMM8jdfRL6
+	 VjVivHE2vCRKKqI1BhoIG5CucmS+xNkl6YGwmOfSifhL4+rlu0imStnWkQ6wV7gz4i
+	 JEWr1E39R/4Wnsmp9cUE5KauJ0ptDOnBqvkJT8u7EmO7CUiooNN0WMjbe+CBLxbVi+
+	 87pf2TqvRL3AQu0V5Rw49slqo4R1MJ7i7cQoNCxUqZSdCvE0qzz6DaOqW3rrnv03p7
+	 TiQy604Qu7pSQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/2] arm64: dts: imx8mq-evk: Add OV5640 camera
- support via overlays
+Subject: Re: [PATCH v4 2/2] media: i2c: ov5640: Add reset controller support
+ with GPIO fallback
 Reply-To: sashiko-reviews@lists.linux.dev
 To: robby.cai@oss.nxp.com
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260619100532.3779934-2-robby.cai@oss.nxp.com>
+Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260619100532.3779934-3-robby.cai@oss.nxp.com>
 References: <20260619100532.3779934-1-robby.cai@oss.nxp.com>
- <20260619100532.3779934-2-robby.cai@oss.nxp.com>
+ <20260619100532.3779934-3-robby.cai@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 19 Jun 2026 10:16:03 +0000
-Message-Id: <20260619101603.C0BC81F000E9@smtp.kernel.org>
+Date: Fri, 19 Jun 2026 10:16:29 +0000
+Message-Id: <20260619101629.E5A6C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,138 +47,134 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Dual camera setup fails due to shared reset GPIO exclusivity causi=
-ng `-EBUSY` and unexpected hardware resets.
-- [Medium] Overlay-specific pinmux configurations and unconditional hogs po=
-llute the base device tree.
+- [High] Misuse of the shared reset controller API violates hardware power-=
+up sequencing, risking sensor damage via latch-up, and causes a power manag=
+ement resource leak.
+- [Medium] Unbalanced shared reset control deassert_count triggers a kernel=
+ WARN_ON on the `ov5640_reset_deassert()` error path.
 --
 
-commit d401c57ae9a7ef9c71733905b73812d521acf9a9
+commit 08ff61c49c74c476ab99932a1e24e30024577ace
 Author: Robby Cai <robby.cai@nxp.com>
 
-arm64: dts: imx8mq-evk: Add OV5640 camera support via overlays
+media: i2c: ov5640: Add reset controller support with GPIO fallback
 
-This patch adds device tree overlays for single and dual OV5640 camera
-setups on the i.MX8MQ EVK board. It configures media pipelines for CSI1
-and CSI2, noting that both sensors share a common reset GPIO and MCLK
-source.
+Add support for the reset controller framework by acquiring the reset
+line using devm_reset_control_get_optional_shared_deasserted(). This
+allows the driver to handle reset lines provided by a reset controller,
+including shared ones, while avoiding unbalanced deassert counts.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-evk-ov5640-csi1.dtso b/=
-arch/arm64/boot/dts/freescale/imx8mq-evk-ov5640-csi1.dtso
-> new file mode 100644
-> index 0000000000000..1e9931802cdc4
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq-evk-ov5640-csi1.dtso
+> diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
+> index 85ecc23b35877..5e6db8aacb118 100644
+> --- a/drivers/media/i2c/ov5640.c
+> +++ b/drivers/media/i2c/ov5640.c
 
 [ ... ]
 
-> +	camera@3c {
-> +		compatible =3D "ovti,ov5640";
-> +		reg =3D <0x3c>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_camera1_pwdn>;
-> +		clocks =3D <&clk IMX8MQ_CLK_CLKO2>;
-> +		clock-names =3D "xclk";
-> +		assigned-clocks =3D <&clk IMX8MQ_CLK_CLKO2>;
-> +		assigned-clock-parents =3D <&clk IMX8MQ_SYS2_PLL_200M>;
-> +		assigned-clock-rates =3D <20000000>;
-> +		powerdown-gpios =3D <&gpio1 3 GPIO_ACTIVE_HIGH>;
-> +		reset-gpios =3D <&gpio1 6 GPIO_ACTIVE_LOW>;
+> @@ -2431,6 +2433,48 @@ static int ov5640_restore_mode(struct ov5640_dev *=
+sensor)
+>  	return ov5640_set_framefmt(sensor, &sensor->fmt);
+>  }
+> =20
+> +static int ov5640_get_reset(struct device *dev, struct ov5640_dev *senso=
+r)
+> +{
+> +	/* use deasserted version to avoid unbalanced deassert counts */
+> +	sensor->reset =3D
+> +	    devm_reset_control_get_optional_shared_deasserted(dev, NULL);
 
 [Severity: High]
-Is it safe to assign this reset GPIO (&gpio1 6) when it is also assigned
-identically in the CSI2 overlay?
+Does acquiring the reset control in the deasserted state risk hardware
+damage and cause a power management leak?
 
-Since the GPIO framework enforces exclusive access, won't the second camera
-to probe fail with -EBUSY?
+Because this API call deasserts the reset line during probe, it pulls the
+reset IO line HIGH before VDD regulators are enabled in
+ov5640_set_power_on(). Applying voltage to the reset pin while VDD is off
+can cause a destructive latch-up condition.
 
-Additionally, when ov5640_powerup_sequence() toggles this shared reset line
-during power-on, couldn't this silently hard-reset the other active camera
-and break its stream?
+Additionally, because devm_reset_control_get_optional_shared_deasserted()
+acquires a base deassert vote, and the driver never explicitly asserts the
+reset line during ov5640_set_power_off() on runtime PM suspend, does this
+permanently prevent the reset controller and parent power domains from
+suspending?
 
-> +		DOVDD-supply =3D <&sw4_reg>;
-> +		AVDD-supply =3D <&reg_2v8>;
-> +		DVDD-supply =3D <&reg_1v5>;
+Also, the inline comment below claims GPIOD_OUT_HIGH ensures a deasserted
+state for an ACTIVE_LOW reset, but GPIOD_OUT_HIGH sets the logical value
+to 1, which drives an ACTIVE_LOW line physically LOW (asserted).
 
-[ ... ]
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-evk-ov5640-csi2.dtso b/=
-arch/arm64/boot/dts/freescale/imx8mq-evk-ov5640-csi2.dtso
-> new file mode 100644
-> index 0000000000000..fd247b3b59825
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq-evk-ov5640-csi2.dtso
-
-[ ... ]
-
-> +	camera@3c {
-> +		compatible =3D "ovti,ov5640";
-> +		reg =3D <0x3c>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_camera2_pwdn>;
-> +		clocks =3D <&clk IMX8MQ_CLK_CLKO2>;
-> +		clock-names =3D "xclk";
-> +		assigned-clocks =3D <&clk IMX8MQ_CLK_CLKO2>;
-> +		assigned-clock-parents =3D <&clk IMX8MQ_SYS2_PLL_200M>;
-> +		assigned-clock-rates =3D <20000000>;
-> +		powerdown-gpios =3D <&gpio1 5 GPIO_ACTIVE_HIGH>;
-> +		reset-gpios =3D <&gpio1 6 GPIO_ACTIVE_LOW>;
-
-[Severity: High]
-This assigns the exact same reset GPIO (&gpio1 6) as the CSI1 overlay,
-which can cause probe contention and hardware state corruption as described
-above.
-
-> +		DOVDD-supply =3D <&sw4_reg>;
-> +		AVDD-supply =3D <&reg_2v8>;
-> +		DVDD-supply =3D <&reg_1v5>;
-
-[ ... ]
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts b/arch/arm64/bo=
-ot/dts/freescale/imx8mq-evk.dts
-> index d48f901487d49..1260bb1d9069b 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-
-[ ... ]
-
-> @@ -532,12 +546,34 @@ &wdog1 {
->  };
-> =20
->  &iomuxc {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_mclk>, <&pinctrl_camera_reset>;
-
-[Severity: Medium]
-Does unconditionally hogging these camera-specific pins in the base device
-tree unnecessarily consume GPIOs when the optional camera overlays are not
-applied?
-
->  	pinctrl_buck2: vddarmgrp {
->  		fsl,pins =3D <
->  			MX8MQ_IOMUXC_GPIO1_IO13_GPIO1_IO13		0x19
->  		>;
->  	};
-> =20
-> +	pinctrl_camera1_pwdn: camera1pwdngrp {
-
-[Severity: Medium]
-Could defining these overlay-specific pin groups in the base device tree,
-rather than isolating them within their respective overlays, break the
-modularity of the device tree overlays?
-
-> +		fsl,pins =3D <
-> +			MX8MQ_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x19
-> +		>;
-> +	};
+> +	if (IS_ERR(sensor->reset))
+> +		return dev_err_probe(dev, PTR_ERR(sensor->reset),
+> +				     "Failed to get reset\n");
+> +	else if (sensor->reset)
+> +		return 0;
 > +
-> +	pinctrl_camera2_pwdn: camera2pwdngrp {
-> +		fsl,pins =3D <
-> +			MX8MQ_IOMUXC_GPIO1_IO05_GPIO1_IO5		0x19
-> +		>;
-> +	};
+> +	/*
+> +	 * fallback to legacy reset-gpios
+> +	 * GPIOD_OUT_HIGH ensures deasserted state for ACTIVE_LOW reset
+> +	 */
+> +	sensor->reset_gpio =3D devm_gpiod_get_optional(dev, "reset",
+> +						     GPIOD_OUT_HIGH);
+
+[ ... ]
+
+> -static void ov5640_powerup_sequence(struct ov5640_dev *sensor)
+> +static int ov5640_powerup_sequence(struct ov5640_dev *sensor)
+>  {
+> +	int ret;
+> +
+>  	if (sensor->pwdn_gpio) {
+> -		gpiod_set_value_cansleep(sensor->reset_gpio, 1);
+> +		ret =3D ov5640_reset_assert(sensor);
+
+[Severity: High]
+If the reset line is shared with an active device, will this actually
+assert the reset line?=20
+
+For shared reset controls, reset_control_assert() merely drops the local
+vote. If another device is keeping the line deasserted, the physical pin
+will remain HIGH.
+
+Since the driver proceeds to power-cycle the OV5640's VDD regulators below:
+
+> +		if (ret) {
+> +			dev_err(&sensor->i2c_client->dev,
+> +				"Failed to assert reset: %d\n", ret);
+> +			return ret;
+> +		}
+> =20
+>  		/* camera power cycle */
+>  		ov5640_power(sensor, false);
+
+Doesn't power-cycling the sensor while the shared reset pin is driven HIGH
+violate hardware sequencing and risk latch-up?
+
+>  		usleep_range(5000, 10000);	/* t2 */
+>  		ov5640_power(sensor, true);
+>  		usleep_range(1000, 2000);	/* t3 */
+> =20
+> -		gpiod_set_value_cansleep(sensor->reset_gpio, 0);
+> +		ret =3D ov5640_reset_deassert(sensor);
+> +		if (ret) {
+> +			dev_err(&sensor->i2c_client->dev,
+> +				"Failed to deassert reset: %d\n", ret);
+> +			ov5640_power(sensor, false);
+> +			return ret;
+> +		}
+
+[Severity: Medium]
+If ov5640_reset_deassert() fails here, does this cause a WARN_ON in the
+reset core during cleanup?
+
+The devm_reset_control_get_optional_shared_deasserted() call during probe
+initializes the deassert_count to 1. The ov5640_reset_assert() call above
+drops it to 0.
+
+If this function returns an error without reclaiming the vote, the count
+remains at 0. When probe subsequently fails, the devm framework will call
+reset_control_assert() to balance the initial acquisition. Since the count
+is already 0, this will underflow the counter and trigger a kernel warning
+in drivers/reset/core.c.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260619100532.3779=
-934-1-robby.cai@oss.nxp.com?part=3D1
+934-1-robby.cai@oss.nxp.com?part=3D2
