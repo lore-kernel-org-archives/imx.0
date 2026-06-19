@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481A639934D;
-	Fri, 19 Jun 2026 15:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4BB3BBFAE;
+	Fri, 19 Jun 2026 15:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781884543; cv=none; b=VbSaG0zn5xvmVyn+BLc6u7e274MWTLZyQoB6ylD/pbWwhXx0KtGFaXKieHKYvlR0rBQ169mnWd5PqbGOqwb+LPO+H3lySyU4s2eMWrJPcnu8XceeSQawsy1GzvX2hR91GkPIMi2vV2mzzWEDr74GgQQfPQD/BKDCJrrIf5vNvgM=
+	t=1781884715; cv=none; b=oywpGTXYPPsf0Bd5qnP0iZIc5VvIopqfVZKZUQpQ6v/vg9G2VH3pDQpKL6bghsmFrv2+/BLF4sYafaQHxEenLcC4ypdKCDACOSO4yhJrlP4x9KAK5UN5ixRd/G1B05sPLSfO7CiLDD8XDxlsI5QN23CzRm2yF/FZsnPdq9wj/UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781884543; c=relaxed/simple;
-	bh=09XM//ko9qQ68FvkFCIO8wFb0cfDiuDZqvWapQH/FtM=;
+	s=arc-20240116; t=1781884715; c=relaxed/simple;
+	bh=neaoHP0DdzOqg8VJKaHlvLcHwAw0V6DR2kt11BgxxxM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=o+WZNVffjoKNWSwskbbC26LO1tqygQXTXO0tnMCSw3+KjJuCfOt0kvVmqUUXgeIxBjE0s3YmCSUwZOYHMZ7BuT97cYjg+o2eAF3DapmNn16y8sJsSiY/IKdjWwle0Y3jIR0zP6ZvfkYiNM1aJCmapfKGcxGSJu9uvph3yK9XyRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PhEk4g+7; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Ye6vGOcegpMqTuEp9hUFzzPAiD4PFyeE6sBz5MKkbpjBM9G1sFdt3Dil//ZBu0n4VHGJkBDqSGougAar+DSHu0cil0vYpIdVxmEbfOG9adPkjuID+h8qBYssK1656N1nQK3FjWEfgaueQl+PfBC29hLFjZrqfawTPqX3w3/pMkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ij5DgqOk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhEk4g+7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F1C1F000E9;
-	Fri, 19 Jun 2026 15:55:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ij5DgqOk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1391F000E9;
+	Fri, 19 Jun 2026 15:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781884534;
-	bh=tL3OYg4ciX8Aad37XNIL/yV8/LwaHktx7C07vrZfFzw=;
+	s=k20260515; t=1781884710;
+	bh=0wAOnGC8oGBID3hwEqJxyDArdffKa48tt1T3wslR4eA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PhEk4g+7DuFlKoHOYbyAyTMoQukl9wQ/5/7hCL/Ep3FqLibYBYaCEgnaGikA5iYwX
-	 zCn1rIoqwR5aU/0EgSx9r9OqL8BEQrTxYj0K15YrOXtBa9ifW0uLZ/TzoM1HfLZ2TN
-	 hbe7cHD3YKpZ3wt7i31JFuI8Q54cwPsQA+dRgWN/bkP/wOuX3VtYiv+1D0aZTCWqAB
-	 YM6BxDlhM7E8Gz6EHsoq1DMkJP3QBFxd5OqKz4Brh8TxL04aLkFU8DmCt49cfdJqz9
-	 Vzw+EZ56V1B4MDt/NwimMwN3O7OoOgnHbQN5StZbI26JIXnC8HQr6/Je8ErIJvUphB
-	 OOT07Cz9iyp2Q==
+	b=ij5DgqOk9Xx+QdQD1pg64MuGySRc/ivghz0Ft6TaMG53RCw4kyufs9vDK6NvySK+r
+	 ccdZJzmpwSixMu2dlrP45HfmJ2veyX9krHe0wIuOAKJBapp1BtxyPiTnOFMChMuDhe
+	 4PGaS7eqEHz1ljmuJewmKTSm1NViHcX2prfDXwIYgxz4D0OQgs35A66J6mK6fdZD2Z
+	 TEnsX2TnQEZJtfzPruF39iDCVYmYVWVNdlK9JT5ZJ7cQ0CWLgcgNEUblPiIjws9/qD
+	 Paa8n+8/mvheKJOgOozCjO/Tokv8wEBVNJKwt6vqjSjpesNPLoOMNqtuWC/tOv6/z+
+	 JFIvzub2HjNHw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 06/11] ARM: imxrt_defconfig: Remove NOMMU platform
- support
+Subject: Re: [PATCH 10/11] clk: nxp: lpc: Remove NOMMU platform support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260619-dts_cleanup_arm_mcore-v1-6-0101795a2662@nxp.com>
+Cc: robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260619-dts_cleanup_arm_mcore-v1-10-0101795a2662@nxp.com>
 References: <20260619-dts_cleanup_arm_mcore-v1-0-0101795a2662@nxp.com>
- <20260619-dts_cleanup_arm_mcore-v1-6-0101795a2662@nxp.com>
+ <20260619-dts_cleanup_arm_mcore-v1-10-0101795a2662@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 19 Jun 2026 15:55:33 +0000
-Message-Id: <20260619155534.34F1C1F000E9@smtp.kernel.org>
+Date: Fri, 19 Jun 2026 15:58:28 +0000
+Message-Id: <20260619155829.BE1391F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,64 +46,73 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] Leftover references, platform-specific structures, compatible st=
-rings, and early console declarations for the removed i.MXRT and VF610M4 pl=
-atforms remain in multiple drivers and DT bindings.
-- [Low] Deleted clock dt-binding header is still included in the `imxrt1050=
--clock.yaml` dt-binding YAML example, breaking `dt_binding_check`.
+- [High] Mischaracterized platform deletion: LPC32xx is an MMU-enabled plat=
+form, not NOMMU.
+- [Low] Incomplete architecture removal leaves orphaned peripheral drivers =
+as dead code.
 --
 
-commit 3968f192513e74f4358aed03401b5e2ab20e266b
+commit 6253e432d16195a0666c33f89bdf6509acf7cdf3
 Author: Frank Li <Frank.Li@nxp.com>
 
-ARM: imxrt_defconfig: Remove NOMMU platform support
+clk: nxp: lpc: Remove NOMMU platform support
 
-Commercial users and hardware vendors migrated to Zephyr or other RTOS
-solutions years ago, leaving the NOMMU platform support effectively
-unused and unmaintained.
+This commit removes the NXP LPC clock drivers to reduce maintenance burden,
+stating that the NOMMU platform support is obsolete, unused, and
+unmaintained as users have migrated to other RTOS solutions.
 
-> Remove the obsolete support to reduce maintenance burden and simplify the
-> i.MX platform code.
+> clk: nxp: lpc: Remove NOMMU platform support
+>=20
+> Commercial users and hardware vendors migrated to Zephyr or other RTOS
+> solutions years ago, leaving the NOMMU platform support effectively
+> unused and unmaintained.
 
-[Severity: Medium]
-Since this series removes the NOMMU platform support for i.MXRT and VF610M4,
-should the remaining platform-specific structures and references also be
-cleaned up?
+[ ... ]
 
-There are leftover configurations such as usdhc_imxrt1050_data in
-drivers/mmc/host/sdhci-esdhc-imx.c:
+> diff --git a/drivers/clk/nxp/Makefile b/drivers/clk/nxp/Makefile
+> deleted file mode 100644
+> index 2cf6317d28531..0000000000000
+> --- a/drivers/clk/nxp/Makefile
+> +++ /dev/null
+> @@ -1,5 +0,0 @@
+> -# SPDX-License-Identifier: GPL-2.0-only
+> -obj-$(CONFIG_ARCH_LPC18XX)	+=3D clk-lpc18xx-cgu.o
+> -obj-$(CONFIG_ARCH_LPC18XX)	+=3D clk-lpc18xx-ccu.o
+> -obj-$(CONFIG_ARCH_LPC18XX)	+=3D clk-lpc18xx-creg.o
+> -obj-$(CONFIG_ARCH_LPC32XX)	+=3D clk-lpc32xx.o
 
-    static struct esdhc_soc_data usdhc_imxrt1050_data =3D {
+[Severity: High]
+Is this justification accurate for all removed platforms? The commit message
+states this is removing NOMMU platform support, but the LPC32xx platform
+uses an ARM926EJ-S core. This core features a full Memory Management Unit
+(MMU) and runs standard virtual-memory Linux.
 
-imxrt1050_data in drivers/tty/serial/fsl_lpuart.c:
+Was LPC32xx swept up by mistake because it resided in the same directory as
+the NOMMU LPC18xx platform, or is the commit message mischaracterizing an
+MMU platform deletion?
 
-    static const struct lpuart_soc_data imxrt1050_data =3D {
+[ ... ]
 
-early console declarations in drivers/tty/serial/fsl_lpuart.c:
-
-    OF_EARLYCON_DECLARE(lpuart32, "fsl,imxrt1050-lpuart", lpuart32_imx_earl=
-y_console_setup);
-
-and the fsl,vf610m4 compatibility string in arch/arm/mach-imx/mach-vf610.c:
-
-    "fsl,vf610m4",
-
-Because the core architecture files and Kconfigs are removed, these remnants
-become unreachable orphaned dead code.
-
+> diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+> index cc108a75a9008..23b14a934635d 100644
+> --- a/drivers/clk/Makefile
+> +++ b/drivers/clk/Makefile
+> @@ -136,7 +136,6 @@ obj-y					+=3D mstar/
+>  obj-y					+=3D mvebu/
+>  obj-$(CONFIG_ARCH_MXS)			+=3D mxs/
+>  obj-$(CONFIG_ARCH_MA35)			+=3D nuvoton/
+> -obj-$(CONFIG_COMMON_CLK_NXP)		+=3D nxp/
 
 [Severity: Low]
-Does this series also need to update the dt-binding examples?
+Does this incomplete architecture removal leave orphaned peripheral drivers
+as dead code elsewhere in the tree?
 
-The deleted include/dt-bindings/clock/imxrt1050-clock.h header is still
-included in the Documentation/devicetree/bindings/clock/imxrt1050-clock.yaml
-example block:
-
-    #include <dt-bindings/clock/imxrt1050-clock.h>
-
-When the dt_binding_check target attempts to preprocess this YAML example,
-the C preprocessor fails with a "No such file or directory" error.
+Because the ARCH_LPC18XX and ARCH_LPC32XX Kconfig symbols have been deleted,
+their associated peripheral drivers (e.g., in drivers/gpio, drivers/pwm,
+drivers/net, drivers/iio) can now only be built when COMPILE_TEST is
+enabled and will never be executed. Could these peripheral drivers be
+removed atomically alongside the platform deletion?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260619-dts_cleanu=
-p_arm_mcore-v1-0-0101795a2662@nxp.com?part=3D6
+p_arm_mcore-v1-0-0101795a2662@nxp.com?part=3D10
