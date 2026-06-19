@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EA73233ED
-	for <imx@lists.linux.dev>; Fri, 19 Jun 2026 12:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160983815F9
+	for <imx@lists.linux.dev>; Fri, 19 Jun 2026 12:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781871937; cv=none; b=WnP3QryyBns9cy/110/2zJ3uVGPm2oCMmdFxZBpGF7ZwzeNsF2Xnu02nhp5yoRAwY7gO3qIsI/ZNeGc9hT0uVwM1LSkfosMhXEC/TuLPQBVsMCKcZMpZtW/usB/P9/g1iQj9mlmsUEoES0o+gGKBnu5oxPAiYo0cHkyhgYEcIN0=
+	t=1781871940; cv=none; b=j487xdN/gUJ0Co2Op3BlMPQ9mUkhdo5USCoz7wWD9jziPlLOwsYQmtFSV0eEkHh/wM41S8MJtidxp16S3345u7fGXo6lveWiyoGoqAspmKu0x95lQCv+2Ow80JUBS3NYCJCdtvGwOSgyQScYHXwkelnSlLRumSx6Ts8uqPBCgqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781871937; c=relaxed/simple;
-	bh=lNh5oV/n8/EUzkNfMs5+aHUSFUX8P2sI5jHfvY6aCT4=;
+	s=arc-20240116; t=1781871940; c=relaxed/simple;
+	bh=vVVp8GsFRRm3nFu++DWX1HhXskP6Cx0EuWCKzLtmKBI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Q1Lw2y2JK3CKP3djvclwvI2cadivCEEweDkg2SEzbXkfOuZ0+8S8KkoDJtfnNThXd5bgxl2UkyvBsNGkrQ7S2tUZb4bPSNUkYKS4MRjrVTCLHc0B75PoqWM9Vryf5DQw5qI2cLTk3e/k8rrn4COIHnwMA2GXdORf3i7HAaGQ1k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIc/SSd4; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=qHHBWNkI57PD6bq+RZtLVi2XsmXPORE9qvY6J0D3bChCfBxgtT0CZDbiXeCI2l5zqAZ1mxanohUK5paigL/bQhXdEK6RmRSgpgv3KCHKoNBgrzeh1DnD6XwBXBsmtE+VpWlDndK/ssy7Kkxq31KSjoYJQgkoFcScJVJ1XbUaKGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWAq/pjo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIc/SSd4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D011F000E9;
-	Fri, 19 Jun 2026 12:25:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWAq/pjo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF7B1F000E9;
+	Fri, 19 Jun 2026 12:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781871936;
-	bh=ykcLps+Shu0CrNHX9F1utrPYhUTEb1kFSaYzGD/riok=;
+	s=k20260515; t=1781871938;
+	bh=DXQOdX7XBEkUxBf47iwF7kiEHlst61A3B18dKmOcFSo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=bIc/SSd493x31+XrYNvQqaOiokRDpni/al0WTynbN/bZq8+ixD+loex4EX7doYcGl
-	 s5jlFbrBREY6Ghc16ZKiofoLbwGSJ7JyPEGfI9qeuX2apoABvYgtM5d4Ql/T6A7+Ds
-	 TQoD0EWLqEMZv//JOacYFcXoQVMqI4FzPu6h+ze4cUf7adbaU7d018luPKq9ISoRWN
-	 W7VSgvqPSR3Q5vEzfUi1w7SuJs9iUw30SfSmBYSvLVB0aRWBdwCvTIbiN16GWxnv/V
-	 bsekKrY8gxOWW0ijQyNUBWLAP8KrANrgpXD3hsvDKr/2cj+BqFTXNwj3aOgBIlj0c1
-	 oxiA/rjf6EjDQ==
+	b=eWAq/pjoQjk8ExHrC7w0y+gamZZ1eEMEXz8nU3C1yc66Mg1n8JG4tfFhIQT00JitJ
+	 Jlv8VJFcXyb9w8cB/3vlZwYChlt9uwvPqnjY2Bc1evnVE3ENzvOMb+IZnpDqh6/bYC
+	 8bfbtjxEyDeJ7PEVerxzimD6PA4wHJD55TNUB8UfhFg0VDDUOPGu6rsPI/GPrwAMQp
+	 z8o3PwyMniRKSb0Pje4UPLFvBYsmyk3ne3ZhpeL9Ig4hTeXFh3l0Iz2FIFsl8qZTEP
+	 QGIdwtYJ0kB+alCIJSdoz3LUvcpU7fG73+cJ7zjUie+i3OJgI7ksCG5KFx9fAkgysr
+	 GdZRhpqeyEbSQ==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Fri, 19 Jun 2026 14:24:23 +0200
-Subject: [PATCH v3 18/78] drm/bridge: imx8qxp-pixel-link: Switch to
+Date: Fri, 19 Jun 2026 14:24:24 +0200
+Subject: [PATCH v3 19/78] drm/bridge: imx8qxp-pxl2dpi: Switch to
  atomic_create_state
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260619-drm-no-more-bridge-reset-v3-18-ff399263111b@kernel.org>
+Message-Id: <20260619-drm-no-more-bridge-reset-v3-19-ff399263111b@kernel.org>
 References: <20260619-drm-no-more-bridge-reset-v3-0-ff399263111b@kernel.org>
 In-Reply-To: <20260619-drm-no-more-bridge-reset-v3-0-ff399263111b@kernel.org>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -56,12 +56,12 @@ Cc: Dmitry Baryshkov <lumag@kernel.org>, dri-devel@lists.freedesktop.org,
  Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1770; i=mripard@kernel.org;
- h=from:subject:message-id; bh=lNh5oV/n8/EUzkNfMs5+aHUSFUX8P2sI5jHfvY6aCT4=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFmmJh9vM3EdOaH9OSXsRIaoIKPMf4VDkxc5+bHp2ty23
- vJ0XfCajqksDMKcDLJiiixPZMJOL29fXOVgv/IHzBxWJpAhDFycAjAR7/mM9VU7eM8t/iGrq7n7
- ZcQJ/uPdIpenzN3rk7HVwUGBS3bKwpwb72f+77MIXttZUj1pX/UBGcb6zEWZ5RrTbdS+M05/GMX
- S53V0jViB0VzBqCWJxnIpzwtXdB6Rc1sgw7EgmHFN9QGHq1sA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1750; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=vVVp8GsFRRm3nFu++DWX1HhXskP6Cx0EuWCKzLtmKBI=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFmmJp9uPcyeFVzH/fjTwqNPzsqWGW+cYxZ2tseZtb0/7
+ FnPhPDwjqksDMKcDLJiiixPZMJOL29fXOVgv/IHzBxWJpAhDFycAjCRICHGhkPrarketanKr+1d
+ JzqxVJGjbtaFzvapyenCa29MLe7/qzd/7a1LvUsiilp/mO0Rs/hjwtjQ62X5+HBv8Zk75kk2ill
+ /Ck1Cdx2N3rPHf5XZOo+Ofa5vjL7NPiCjo+MzP8/gZ8nsjYIA
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
@@ -84,26 +84,26 @@ Cc: dri-devel@lists.freedesktop.org
 Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 ---
- drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c | 2 +-
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-index ee6b6dbbe952..56ce6aa76181 100644
---- a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-@@ -227,11 +227,11 @@ imx8qxp_pixel_link_bridge_atomic_get_output_bus_fmts(struct drm_bridge *bridge,
+diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
+index 87305d3e0c39..dce1a5b36024 100644
+--- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
++++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
+@@ -208,11 +208,11 @@ imx8qxp_pxl2dpi_bridge_atomic_get_output_bus_fmts(struct drm_bridge *bridge,
  }
  
- static const struct drm_bridge_funcs imx8qxp_pixel_link_bridge_funcs = {
+ static const struct drm_bridge_funcs imx8qxp_pxl2dpi_bridge_funcs = {
  	.atomic_duplicate_state	= drm_atomic_helper_bridge_duplicate_state,
  	.atomic_destroy_state	= drm_atomic_helper_bridge_destroy_state,
 -	.atomic_reset		= drm_atomic_helper_bridge_reset,
 +	.atomic_create_state	= drm_atomic_helper_bridge_create_state,
- 	.attach			= imx8qxp_pixel_link_bridge_attach,
- 	.mode_set		= imx8qxp_pixel_link_bridge_mode_set,
- 	.atomic_enable		= imx8qxp_pixel_link_bridge_atomic_enable,
- 	.atomic_disable		= imx8qxp_pixel_link_bridge_atomic_disable,
- 	.atomic_get_input_bus_fmts =
+ 	.attach			= imx8qxp_pxl2dpi_bridge_attach,
+ 	.destroy		= imx8qxp_pxl2dpi_bridge_destroy,
+ 	.atomic_check		= imx8qxp_pxl2dpi_bridge_atomic_check,
+ 	.mode_set		= imx8qxp_pxl2dpi_bridge_mode_set,
+ 	.atomic_disable		= imx8qxp_pxl2dpi_bridge_atomic_disable,
 
 -- 
 2.54.0
