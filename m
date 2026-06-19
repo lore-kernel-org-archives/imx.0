@@ -1,99 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EDC3B7B91;
-	Fri, 19 Jun 2026 15:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC623C0604;
+	Fri, 19 Jun 2026 15:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781884407; cv=none; b=A9/NC41/CJH3AZdNgWiUfX+Abdjgw458izG25+Dv06nwae3BckU4lqGzUIGtM0kS7Ajsx7oBeLEDtL5zaft5DpG0EGDzvnqbkej3UGME30CQ4+qLIKZvv65dM4tdayM/yWskaOVr7hMJ0rhpcka/+M+tFHhHoEEQyFR6KS2YamA=
+	t=1781884504; cv=none; b=QoNweBktuNKlZ2nufUn06aJYHak6egWRQxWRm2C0UFXY0WaLZN1cAd2WUni2KMFG49Fg5NvSgFusViah+Xzp5k3SSWhkuLghwl9hx0j2ja2xNnzNv5lPfSvSEekIz2FZUSwtMeQOV+6hvqR4XWap+luFXe89+r8K8U8Y16l6V30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781884407; c=relaxed/simple;
-	bh=Zj0RmC3oEHi+GRckBhaKlSuyW7YMCOd7Na9XTmipi6U=;
+	s=arc-20240116; t=1781884504; c=relaxed/simple;
+	bh=huUerb6I/QkQIhnE2ec1WQNIMv2NXCxKNoK0fgHZjt8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oEDXYSVcLvGENatSqUNNWhA9hfEc/gl2bl+0b4kTi/Yx0LH+PQrRR0NKdZV55Po0Q1nqGq5SxOQbpbReKc7VOVSZMs9ZSLF6TdJMaBXWFuZ0xtsQmQc3nsPPemCsBzIKCH5Yk2P/typq+M7HlUPMh+MwtMNWjpwIdAAZWOQF5FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F4mL0eRA; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=SRtm7VwQBzSPZNmw/0/sM6yeS/HEMMUHs9HYVWpAQgTigX34MWabMnJAceeEy4pIhzrVoXZOg7cmKKFO4kUnS65wN5Niyr/b4kwbpgyLG8R8GbmFmKmbXT1uCWMTOed7HBmyYRPUbNnEMMGgOqpeOWo2GUSr3rVdyvq0qsGKgIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej66XSQS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F4mL0eRA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406721F000E9;
-	Fri, 19 Jun 2026 15:53:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ej66XSQS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C384E1F000E9;
+	Fri, 19 Jun 2026 15:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781884402;
-	bh=Zj0RmC3oEHi+GRckBhaKlSuyW7YMCOd7Na9XTmipi6U=;
+	s=k20260515; t=1781884498;
+	bh=BbI+XwrrZIJlt/Uxkuoh7BkxzmUJVluDoJa2CzOmK4Y=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F4mL0eRAEZVA+K/ksTQdqCpcWVeM0etV1B+nBqTV0+vyeN+/39yDUGICigBHzMbiB
-	 nEW4wYMRzVbO+uLCkHn15WpsSw2mt2j/c9exX1Q88QVpmxYzBnQSjMSb1waiNHFq90
-	 DUIkoKTq+6UltjRvePYFFFGqJ01vODgME/t8k585ryrL9jSwyWNyNfC5UlYN8APKGY
-	 kJJMaRq67W07QAROfMINOhfELz7saBoOaQB6L9OT8xMYbZQQ6E35cqzRjayvtyCNUq
-	 eaGVJm4owzCMsXAKHVXf5Ap/GvX5I94ahHnUiECf7P/puRPkr/3pgreWBwamqD2hZ1
-	 elITjzhb40T/w==
+	b=ej66XSQSyiZEeatGbQFw2IdvKziQ2SGqkmcaXsQn4NWN0lGqxx3b9YEwCMZYzuCoo
+	 WcYdfARXiWTrQMYGcjUj0l3+yjGseqAh9G28XdO92/K+uXT8wZlXFQSa53fMVLipN0
+	 Tjq5oVqiUnPLZdCsUf/R6tW3CgYvcRD9vTxllO2FLDwpsJvua8CI9BZzXucW/4G+tT
+	 XUNoNLhizEgbzKgTFja9KSoPU6x+4LvK9ghRnO09WyzbDf+s5ZC32wEz+sUqv/DQc+
+	 VdFM8Ql855LqU9/dLBrhsYByD9MlnPG0gf0imvH3Hthf/kOLhRRlL92sDqgpx0Y2iL
+	 9sJ1GL26K1y1A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 09/11] ARM: configs: lpc*: Remove NOMMU platform support
+Subject: Re: [PATCH 04/11] clk: imx: imxrt1050: Remove NOMMU platform
+ support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260619-dts_cleanup_arm_mcore-v1-9-0101795a2662@nxp.com>
+Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260619-dts_cleanup_arm_mcore-v1-4-0101795a2662@nxp.com>
 References: <20260619-dts_cleanup_arm_mcore-v1-0-0101795a2662@nxp.com>
- <20260619-dts_cleanup_arm_mcore-v1-9-0101795a2662@nxp.com>
+ <20260619-dts_cleanup_arm_mcore-v1-4-0101795a2662@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 19 Jun 2026 15:53:21 +0000
-Message-Id: <20260619155322.406721F000E9@smtp.kernel.org>
+Date: Fri, 19 Jun 2026 15:54:57 +0000
+Message-Id: <20260619155457.C384E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] The commit message incorrectly categorizes LPC32xx as a NOMMU plat=
-form, using this false premise to justify deleting its defconfig and suppor=
-t.
+- [Low] Deleting the `include/dt-bindings/clock/imxrt1050-clock.h` header b=
+reaks `make dt_binding_check` because the header is still included in the Y=
+AML binding example.
+- [Low] Incomplete cleanup: Defconfig for the removed vf610m4 platform was =
+left behind.
 --
 
-commit dd95b6d6b05d88a43de62ac58a8d3da5f10168ac
+commit 19efb4118fc745b70a599c1f992b0e4fad42b13c
 Author: Frank Li <Frank.Li@nxp.com>
 
-ARM: configs: lpc*: Remove NOMMU platform support
+clk: imx: imxrt1050: Remove NOMMU platform support
 
-This commit removes the lpc18xx and lpc32xx default configurations,
-justifying the removal by stating that commercial users of these NOMMU
-platforms have migrated to RTOS solutions.
+This commit removes the IMXRT1050 CCM clock driver and its device tree
+binding header. This is part of dropping unused NOMMU platform support
+from the kernel.
 
-> Commercial users and hardware vendors migrated to Zephyr or other RTOS
-> solutions years ago, leaving the NOMMU platform support effectively
-> unused and unmaintained.
-
-[ ... ]
-
-> diff --git a/arch/arm/configs/lpc32xx_defconfig b/arch/arm/configs/lpc32x=
-x_defconfig
+> diff --git a/include/dt-bindings/clock/imxrt1050-clock.h b/include/dt-bin=
+dings/clock/imxrt1050-clock.h
 > deleted file mode 100644
-> index b9e2e603cd95e..0000000000000
-> --- a/arch/arm/configs/lpc32xx_defconfig
+> index 93bef0832d16d..0000000000000
+> --- a/include/dt-bindings/clock/imxrt1050-clock.h
 > +++ /dev/null
-> @@ -1,192 +0,0 @@
-> -CONFIG_SYSVIPC=3Dy
+> @@ -1,72 +0,0 @@
+> -/* SPDX-License-Identifier: (GPL-2.0+ OR MIT) */
+> -/*
+> - * Copyright(C) 2019
+> - * Author(s): Giulio Benetti <giulio.benetti@benettiengineering.com>
+> - */
+> -
+> -#ifndef __DT_BINDINGS_CLOCK_IMXRT1050_H
+> -#define __DT_BINDINGS_CLOCK_IMXRT1050_H
+
+[Severity: Low]
+Does deleting this header break make dt_binding_check?
+
+The Documentation/devicetree/bindings/clock/imxrt1050-clock.yaml file
+still includes this header in its examples section:
+
+Documentation/devicetree/bindings/clock/imxrt1050-clock.yaml:examples()
+    examples:
+      - |
+        #include <dt-bindings/clock/imxrt1050-clock.h>
+
+If the YAML file is not removed or updated, make dt_binding_check will fail
+with a missing file error when extracting and building the example.
+
 [ ... ]
-> -CONFIG_EXPERT=3Dy
-> -# CONFIG_ARCH_MULTI_V7 is not set
-> -CONFIG_ARCH_LPC32XX=3Dy
 
-[Severity: High]
-Is the commit message description accurate for LPC32xx?
+[Severity: Low]
+Does this series miss cleaning up the vf610m4_defconfig file?
 
-While LPC18xx is a NOMMU platform, LPC32xx is based on the ARM926EJ-S
-processor which features a Memory Management Unit (MMU) and runs standard
-Linux rather than an RTOS.
-
-Unlike lpc18xx_defconfig which explicitly unsets CONFIG_MMU, this
-configuration leaves CONFIG_MMU enabled by default and relies on standard
-Linux features like CONFIG_SYSVIPC.
-
-Could removing an MMU-capable platform under the assumption that it is a
-deprecated NOMMU target bypass the proper evaluation process for standard
-Linux platforms?
+Since the patch series removes NOMMU platform support, including the
+vf610m4 device tree files, should arch/arm/configs/vf610m4_defconfig
+also be removed? It configures the kernel for the vf610m4 NOMMU platform
+and appears to be left behind as an unused configuration.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260619-dts_cleanu=
-p_arm_mcore-v1-0-0101795a2662@nxp.com?part=3D9
+p_arm_mcore-v1-0-0101795a2662@nxp.com?part=3D4
