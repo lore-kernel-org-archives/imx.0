@@ -1,163 +1,101 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from hall.aurel32.net (hall.aurel32.net [195.154.119.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0E5280A56
-	for <imx@lists.linux.dev>; Fri, 19 Jun 2026 19:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C2B1A6839;
+	Sat, 20 Jun 2026 06:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.154.119.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781896733; cv=none; b=uje9YXtC96rZ/7j5j3ZFlIkrL8pHot+CDTxNWS48JfrrBrzjoKCOY9PjbvR+6bwK0BlWLvV1mT18rAfWRq/15EtA33Zfdlra4OYip6hdfveTbp0MN43L1Q8jr/KDXpHg8xb6C/kat158JNB7XhnimLYqwjVyVolUcqsWGbIFexg=
+	t=1781936617; cv=none; b=kzau/BgJfD9ic0XKIeTUD4YyacRJjm0o9JPtkRFpLAUwUeezycg7mbqcgXAoCkRHlTkU6JXTs/xwS7pesFuW778o3IKxpSV69oraRgaOOPGS9XyFpPMN709rDB/TtP+HkayPDZgRGp0IUOXVshPxl7bK7zm4zzU7lI4prRtIk88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781896733; c=relaxed/simple;
-	bh=hN0ePi8N+Z7F/p9FDSPQHQnzENbJwFsntwUrrMsv3WE=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=bK/KqVq1De/+clPp4JgBjEAouwT3x14fKAJerY3uVJWxAyIDt5jHAsaN5rMd1odY1gFYi3QAJsAt8EabYEc99tywC/ZZLqKyf7WdAf0OstmHBBYDwF0LfSEK7gvLI1eMDtRVogqYd70oac3iZra8ldKKNj7Nqn4MA0caLNBDCmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=MGWyBY0b; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aAUb1mLn; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1781936617; c=relaxed/simple;
+	bh=5bu9I08ZUuF5kSQjy516cYVA9gaiA2UeYrGJq3GvJls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jKgnNjDAa1Zadumy2IlLuMs+qVv5PT1pvdMdjImwCjxaHUUB7dYYdPcarvRxmdYxsI3/GJZxTS3Y5XHUT/jU92sQ77FwFo9SgLWYIvYFfu4fGxgZvv/ivYDwzBxhb1YehIVkjhsp5k+sfarFBJjqELMj2P+4cA7Xbhe7AG4nrKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net; spf=pass smtp.mailfrom=aurel32.net; dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b=YjMF5tHq; arc=none smtp.client-ip=195.154.119.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aurel32.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="MGWyBY0b";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aAUb1mLn"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 802641D000D2;
-	Fri, 19 Jun 2026 15:18:50 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-04.internal (MEProxy); Fri, 19 Jun 2026 15:18:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781896730;
-	 x=1781983130; bh=WMmaYqcpj5qFPBbHXMKSxFB7Wq+hKotmwq9lR4Zk+sg=; b=
-	MGWyBY0b2Vpa5SbeOoCaHd7LeP1XXkLZl2I0hco03NvQpBHKRGMqk9uaJu29E4ES
-	ZSptCouPNO3K1BbIITyL7tl81AVtIHMJOHBQbuCPgecXCKmv/yEnV/CS6HQ2PpCB
-	N3uXtZIgil16ogc+o/IpOKRjbWSuYXdxWecPR3BYMv+2s+fqQk6qveFmqFJvw2rD
-	EG6YLk2RCgOEcsVRV/MYGWmxzY2TnX439brV300W6EV3Udrc7fYgwAZcFnD4p4dX
-	k7ufO75RVLll3ql5jo9bfVm0BTgLYx7iCwFl4RJzdmegIOldoA+bpe4HUK7ljS2w
-	VSOUseCetYaNb6CdlnHn+Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781896730; x=
-	1781983130; bh=WMmaYqcpj5qFPBbHXMKSxFB7Wq+hKotmwq9lR4Zk+sg=; b=a
-	AUb1mLnG3NRW+BTlcQ6gE7agaiElxEsjlSsOEFQv7TmStYThsonUub+Y9wmhq/UX
-	w5FQXavNfgOPLGScgIedj0P4L7cHMmK5U7dj7nZeHAF2Vch9ATME9FaUqt1rLzoG
-	BzpenwWYNt0HhJ7ClUQ5lS/QCD+6IViNV1GshFNAG/UFMRbcqTeygT2/PzEMxH35
-	75S5ahevfnRo+ANx4csygvKhYQcWly2+gJ9Q4gHTcNO8QpzQKs3QxhR7IoCDzV1u
-	TpwULVn0KQ+/bVlv11QAWjP1y9QKLFX74/Y9sqzzre5F6lnSdLj9mA7LNxedYlRV
-	RVy5Cr6YxHy9vEo8HIxKA==
-X-ME-Sender: <xms:GJY1ail0oQF4zqflss_nqWzFvweWbFuhrTHF-nZRwd7hhkaJBbkE-w>
-    <xme:GJY1akofdj9rdg4BYOVAoYiljcFLCywCTd-7p4hyKIyunbHUzvS-btKZVKRFAHNfM
-    Kdt1xksGs3OwM9ML3pflo65LyLAggQHqXFFT6QONswTfHcI_Ah9kJc>
-X-ME-Proxy-Cause: dmFkZTFxwm0eoO/ubQ6vEXwkN7gu9uih52cTPfdC2KKT/YbaCqdV74DUlwbxDlQ1eX/AJb
-    LKb64YTQgPoISp+PTWQdWzNil+OmtwAWnWyYjnoOczuy+3cPAlZux6RZHQSXuI/Lp4KgjK
-    vUGwLuxoK1IU5E412htHREbsHNYpd18q6ckMVLTC0jYuOf7BdKrn8fqXTW2QSUhnN0FoHN
-    vFues5Pfb92i6pWuaydZ/Uo/4AQp6Rq/0sAI5c02HEfElIpkJL80Of7lf9BTo3h4exQOxC
-    UjmlHkR5kc48/ma9mjCkyCStVFntqnJK+EKBJLZ5D0y9EiaAnIyl1w7s9xoryHn6uTXFhQ
-    TxDoRPTd4rLyrL1T2oMFZ5b4W4Iefc6tzVZtsT2VU/wqmt5WZin87Ho7gR+ktYrDsYAgmF
-    9/i9UaRN3uKxf3V4HhnlKsoOHyGA7QUii5kQGXVjcLwErJHdHDTgD6+4gTHPX9C9V9PCcv
-    Flr8I0ITlQWAMeH55hIqIfjDzHlE5pyLPDsZpmlKny3BojEHwDhdgt/iLyT7JnflRTGFlF
-    4Ee10aS1Viq8noR1nzW+Cs9T2IPvdmaRoeD0idLVGnvgIVi8JclG8MRxJ9ClSZdQtekUnq
-    W4lE2Q7q1ZSPjwDdxAzVyt/Tzo7IO5huzk//IKNJgVyUQyLK7ftY1V2pw8hg
-X-ME-Proxy: <xmx:GJY1apQVZQn0fUcUg_pMom8vHeGZJkSGXDUKzHwMPbGLRnxlHdz0bg>
-    <xmx:GJY1ascKauvynt-2QyEb_BVfCFip285HKqf535gjQf5J_sdu57LFwQ>
-    <xmx:GJY1auKhqgL-MEwStOIXYdL9FMrRYQXXXUSRus05CsUPS2CJIzZ37Q>
-    <xmx:GJY1apEXcbi2cM1z-xp4ZZYMsbvr2qayLkPROzh-xwsRcf1Cznogkg>
-    <xmx:GpY1auf-tP02Dc0COI_6I8-4aasP8pZuMJc-VIkKF2q0n_Vmi11zrxjR>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id CD722182007E; Fri, 19 Jun 2026 15:18:48 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b="YjMF5tHq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
+	; s=202004.hall; h=In-Reply-To:Content-Type:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:From:Reply-To:
+	Subject:Content-ID:Content-Description:X-Debbugs-Cc;
+	bh=JSpFgV9vze6NzxWv7sBTl3aOrJeNhaz31em0Ltb/XOg=; b=YjMF5tHqf+RJPNkEaHwlaLfufu
+	nx9EM/X128U1AlQFofuBYY6QszUHNmjmlL8S2dgpir2vOWISmPkBy0xmam93Zo/csenHD2kcM1qsC
+	wkM+nqxzdA4CiPWa64gEeJoznUhVW4UXF6WuhT9utJa44L9WH+cdxge/uTQvzi6+bEa246QpqjOwU
+	kpAT/gzwfCSRh37Tx8D+5J2lH7d8lMYLpA8F3IqcVJcvHmuCCNU/boSbmsLpFAQssKOi/WgYulvHw
+	SE1Zeg7WNtwmPKctvyjIgJEliXOZ6L2GGaMZ1yvpyjAlQIdsctk5DNoqMhxq6YiH0GCeBiINeZSbE
+	yxCFTMtA==;
+Received: from authenticated user
+	by hall.aurel32.net with esmtpsa  (TLS1.3)  tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1wap75-000000006gB-1STs;
+	Sat, 20 Jun 2026 08:23:31 +0200
+Date: Sat, 20 Jun 2026 08:23:30 +0200
+From: Aurelien Jarno <aurelien@aurel32.net>
+To: Zhengyu He <hezhy472013@gmail.com>
+Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	Wei Fu <wefu@redhat.com>, Cody Kang <cody.kang.hk@outlook.com>
+Subject: Re: [PATCH v2 2/2] riscv: dts: spacemit: add QSPI support for K3
+ Pico-ITX
+Message-ID: <ajYx4oI7SpNs5aT5@aurel32.net>
+Mail-Followup-To: Zhengyu He <hezhy472013@gmail.com>,
+	Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	Wei Fu <wefu@redhat.com>, Cody Kang <cody.kang.hk@outlook.com>
+References: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-0-52bce26e5fd8@gmail.com>
+ <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-2-52bce26e5fd8@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: A7dmd8TY8zEF
-Date: Fri, 19 Jun 2026 21:17:58 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Vladimir Zapolskiy" <vz@kernel.org>, "Frank Li" <Frank.Li@oss.nxp.com>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Stefan Agner" <stefan@agner.ch>, "Fabio Estevam" <festevam@gmail.com>,
- "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Russell King" <linux@armlinux.org.uk>,
- "Abel Vesa" <abelvesa@kernel.org>, "Peng Fan" <peng.fan@nxp.com>,
- "Michael Turquette" <mturquette@baylibre.com>,
- "Stephen Boyd" <sboyd@kernel.org>, "Brian Masney" <bmasney@redhat.com>,
- "Aisheng Dong" <aisheng.dong@nxp.com>, "Jacky Bai" <ping.bai@nxp.com>,
- "NXP S32 Linux Team" <s32@nxp.com>, "Linus Walleij" <linusw@kernel.org>,
- "Piotr Wojtaszczyk" <piotr.wojtaszczyk@timesys.com>,
- "Kees Cook" <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-clk@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- linux-hardening@vger.kernel.org, "Frank Li" <Frank.Li@nxp.com>
-Message-Id: <06498d0e-662a-4c09-b1b0-2a70b6168acb@app.fastmail.com>
-In-Reply-To: <7d946861-c3cb-4512-9d5f-9f4cb9b7ee8a@kernel.org>
-References: <20260619-dts_cleanup_arm_mcore-v1-0-0101795a2662@nxp.com>
- <7d946861-c3cb-4512-9d5f-9f4cb9b7ee8a@kernel.org>
-Subject: Re: [PATCH 00/11] ARM: NXP: Drop NOMMU platform support
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-2-52bce26e5fd8@gmail.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
 
-On Fri, Jun 19, 2026, at 18:07, Vladimir Zapolskiy wrote:
-> On 6/19/26 18:40, Frank.Li@oss.nxp.com wrote:
->> Commercial users and hardware vendors migrated to Zephyr or other RTOS
->> solutions years ago, leaving the NOMMU platform support effectively
->> unused and unmaintained.
->> 
->> Remove the obsolete support to reduce maintenance burden and simplify the
->> Freescale/nxp platform code.
->> 
->> Some driver code still be kept and may clean up later since it is possible
->> reused by other SoC.
+On 2026-05-21 22:44, Zhengyu He wrote:
+> Add K3 QSPI controller node into k3.dtsi, and add related pinmux
+> configuration.
+> 
+> Enable QSPI on Pico-ITX board, and describe the NOR flash which wires
+> to it.
+> 
+> Signed-off-by: Cody Kang <cody.kang.hk@outlook.com>
+> Signed-off-by: Zhengyu He <hezhy472013@gmail.com>
+> ---
+> Changes in v2:
+> - Add "spacemit,k1-qspi" fallback to the K3 QSPI compatible.
+> - Reordered Signed-off-by trailers.
+> ---
+>  arch/riscv/boot/dts/spacemit/k3-pico-itx.dts | 58 ++++++++++++++++++++++++++++
+>  arch/riscv/boot/dts/spacemit/k3-pinctrl.dtsi | 21 ++++++++++
+>  arch/riscv/boot/dts/spacemit/k3.dtsi         | 17 ++++++++
+>  3 files changed, 96 insertions(+)
 
-Thanks a lot for going through these already!
- 
->> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->
-> This change is a bit too early to happen, I prefer to get it orchestrated
-> by Arnd. So, as for today I NAK the change for its NXP LPC part.
+Thanks for the patchset.
 
-I am planning to post a series of deprecation notices for platforms
-that I would like to remove for one reason or another. Since it's only
-one more merge before the next (S)LTS kernel, my idea was to post
-the series once v7.2-rc1 is out, merge it into 7.3-LTS and remove
-the deprecated code early next year once the LTS release is announced.
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
 
-I have rebased uploaded my current draft to
-https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git/log/?h=rfc-arm-deprecation-7.2
-
-None of those are finalized of course, and we can do any part
-of it earlier or later (or not at all) if there is a good reason.
-
-If you to remove the vf610m4/imx7d-cm4/lpc43xx/lpc18xx portions
-earlier, that is definitely fine with me. For imxrt1050, there a
-slightly higher chance that this is still used, so I would
-prefer to wait for the LTS kernel on that one.
-
->> Frank Li (11):
->>        ARM: dts: vf610m4: Remove NOMMU platform support
->>        ARM: dts: imxrt1050: Remove NOMMU platform support
->>        ARM: imx: Remove NOMMU platform support
->>        clk: imx: imxrt1050: Remove NOMMU platform support
->>        pinctrl: freescale: IMXRT: Remove NOMMU platform support
->>        ARM: imxrt_defconfig: Remove NOMMU platform support
->>        ARM: dts: lpc: Remove NOMMU platform support
->>        ARM: mach-lpc: Remove NOMMU platform support
->>        ARM: configs: lpc*: Remove NOMMU platform support
->>        clk: nxp: lpc: Remove NOMMU platform support
->>        pinctrl: nxp: lpc: Remove NOMMU platform support
-
->
-> NXP LPC32xx is ARMv5 and it has MMU, hence it's plainly out of scope of
-> the proposed "dropping NOMMU platform support".
-
-Agreed. There are a few more platforms with MMU that I would like
-to drop because they were never converted to devicetree support,
-but there is nothing wrong with lpc32xx. 
-
-      Arnd
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                     http://aurel32.net
