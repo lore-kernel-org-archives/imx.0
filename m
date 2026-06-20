@@ -1,118 +1,160 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181F434574B
-	for <imx@lists.linux.dev>; Sat, 20 Jun 2026 08:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B93226D05
+	for <imx@lists.linux.dev>; Sat, 20 Jun 2026 08:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781945669; cv=none; b=E3TO4olEGq6/YL0HAhhzBfCzBayXG7tzZZd0yQwD/cJoZVKQMlCirs+YKn/L44USC/bp/OG741xmalaM2545qV3BRnHgF2Nn7DZ5yil1ofMJl8NqZIjZbjrr1IIGIfRMWK/6Ic18SXaMn4TT6MHNgPi+j2hFltA8HGmI4BjvlBA=
+	t=1781945880; cv=none; b=stgFxPW/6xCIjien7ZkLr7kQq2OFM0XXoG8zDq9Mn65lARRYSNI16Y8pxRYQjweUQq7oNX7QkkPrRcEc7dUde4dhps5LrTSLxkoeWq4t0ELsMWo9shgn7OlowJuldLcBWiP+wZ4ceOaD+SNGXMG28EIzqXSJ2RIUOf4VSyuDnvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781945669; c=relaxed/simple;
-	bh=XybK5l1rmoZuBB45s+5PMGPFyRmAv8pmyB60cua/7pM=;
+	s=arc-20240116; t=1781945880; c=relaxed/simple;
+	bh=5vPbQ3IzQzpYfa6CDvvbNK38fWlfOq7Maxwhnqbq3hI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TZ7kJNQnefuNTUmE+O7hrVDPAdq/Bdn6mWKnGySfzoxUrmdXJoAZw16R8NDONSuZWY2MrkYnBigjlSZ7zwQQ30j0027k9m0lva1WfxBvpUadesRhPH2T3kfNE9O4TRMyacU5G9MwvZDCkRBwlHkCWcVENU4jIxWDNTC56+bbuv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnCRVL8L; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=FcQT2PwgXon77aWecsISI9p7wk2xqSTnSgiTO0Ks42SPBEmxPyHoMYzjvRPbWs4wTuI6nB6OV314g/lunkKATxQzWiRZpRC1ZNbq6b212ssyJd89TlZ5ueX4HpV17SvdShZk6co1dSOOlA7fcnmvtntBSm2HSzSwsLBtiPoeVi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F8/srhQR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnCRVL8L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7D61F000E9;
-	Sat, 20 Jun 2026 08:54:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F8/srhQR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEA21F00A3A;
+	Sat, 20 Jun 2026 08:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781945657;
-	bh=yH9nLgS6cn+nxetO0yp16kxYfGuKiK6C+Kf+rCvqREQ=;
+	s=k20260515; t=1781945879;
+	bh=7OcgZ3HE+xOnBXBRWZ3KU73k/PeMcOX9gUqt46ftBEU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SnCRVL8L4eJ7bpI27HemDkX+cbbK71/Idsvl77IQOoqOrV0rT3IBjQtkyFEHhvxlJ
-	 w/sX76DKZeBQ5c8Orj911knNmSVxE6eMrBCM/IRriUl25X31h0kUqa2VObj77viyBS
-	 JnL8/OKzoRgvHQ37nf+vpa6ilvb1zvA5m/kqRgW7uUBX1Xb+p3diABelzamgwuVoJs
-	 fDrVTfNJhNpy5syiUoe5cdvxJewAp/y/ryrxyXe/UPIMK7eFGKNjQufMsHwyL+eYL2
-	 BI6yLs9BCEpF7552mxFfB87mPoF/ehWnfB1+BzOZz+MMPTE/DhjmfEQye1ytlJ0vnw
-	 CxPLhsxTVWjag==
+	b=F8/srhQRPdvTmBmdGK8tkkcrf5KTikFTVsEHv59b55LtvbTlYyNa5ch55T6nMfUAH
+	 khiaKekw44KlrNqOEKWdHymFIo6jTrdJnxQexL+xLKKgqHyPI+ysbOEREXOyhueYl8
+	 +KlfQdh5BdWeqrbBdfm7K8a/MYe+buO9zcybg3loc7bNaMF5JBX2BsQw80d6GIXpiy
+	 fU20lv7ZjHlFbGOGXBZe0l8VPNTu7HgJWJAeMoM+373c97zXGtUc+8uF67BRD+DeDK
+	 q5Iv3wGPUaIIw12CjYeBYl7CPgt+OOshimQe/Xt8Ukl+SkuluFCj3SK0l4HX6I7THf
+	 8TVVwU1SX8Y8Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] spi: bcmbca-hsspi: return error from failed
- controller suspend
+Subject: Re: [PATCH 1/4] spi: atcspi200: return error from failed controller
+ suspend
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jiawen Liu" <1298662399@qq.com>
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <tencent_54F5634545908FBA724E758054BF03953808@qq.com>
+In-Reply-To: <tencent_306FA547FD68D10EE4B2AE9C132060F12F06@qq.com>
 References: <20260620083931.1120616-1-1298662399@qq.com>
- <tencent_54F5634545908FBA724E758054BF03953808@qq.com>
+ <tencent_306FA547FD68D10EE4B2AE9C132060F12F06@qq.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 20 Jun 2026 08:54:17 +0000
-Message-Id: <20260620085417.AC7D61F000E9@smtp.kernel.org>
+Date: Sat, 20 Jun 2026 08:57:58 +0000
+Message-Id: <20260620085759.3DEA21F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] Propagating the error from `spi_controller_suspend()` leaves the S=
-PI controller permanently wedged in a suspended state.
+
+Pre-existing issues:
+- [High] Using dmaengine_terminate_all() on timeout leads to memory corrupt=
+ion and completion race conditions.
+- [High] Driver ignores -EPROBE_DEFER from DMA channel request, permanently=
+ disabling DMA.
+- [High] Missing hardware reset after a transfer timeout leaves the SPI con=
+troller in a stuck state.
 --
 
-commit 4a5c38a8fabc327922f122498eb97084160abb1e
+commit 68634bef983da7c31a412c03f17d17fa06e49838
 Author: Jiawen Liu <1298662399@qq.com>
 
-spi: bcmbca-hsspi: return error from failed controller suspend
+spi: atcspi200: return error from failed controller suspend
 
-This commit updates bcmbca_hsspi_suspend to check the return value of
-spi_controller_suspend. If stopping the queue fails, it propagates the error
-back to the PM core to prevent disabling the clocks while transfers are act=
-ive.
+spi_controller_suspend() can fail when the SPI core cannot stop the
+controller. atcspi_suspend() ignored that error and disabled the
+controller clock anyway. Return the error before disabling the clock.
 
-> diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hssp=
-i.c
-> index 09c1472ae4fa1..af88ce04948b7 100644
-> --- a/drivers/spi/spi-bcmbca-hsspi.c
-> +++ b/drivers/spi/spi-bcmbca-hsspi.c
-> @@ -568,8 +568,12 @@ static int bcmbca_hsspi_suspend(struct device *dev)
+> diff --git a/drivers/spi/spi-atcspi200.c b/drivers/spi/spi-atcspi200.c
+> index 6d4b6aeb3f5b1..e0fd101a62bc8 100644
+> --- a/drivers/spi/spi-atcspi200.c
+> +++ b/drivers/spi/spi-atcspi200.c
+> @@ -599,8 +599,11 @@ static int atcspi_suspend(struct device *dev)
 >  {
 >  	struct spi_controller *host =3D dev_get_drvdata(dev);
->  	struct bcmbca_hsspi *bs =3D spi_controller_get_devdata(host);
+>  	struct atcspi_dev *spi =3D spi_controller_get_devdata(host);
 > +	int ret;
-> +
+> =20
+> -	spi_controller_suspend(host);
 > +	ret =3D spi_controller_suspend(host);
 > +	if (ret)
 > +		return ret;
+> =20
+>  	clk_disable_unprepare(spi->clk);
+> =20
+
+While reviewing this patch, I noticed a few pre-existing issues in this fil=
+e.
 
 [Severity: High]
-Does returning the error directly here leave the SPI controller permanently
-stuck in a suspended state?
+This is a pre-existing issue, but I noticed atcspi_dma_trans() uses the
+asynchronous dmaengine_terminate_all() on timeout, followed immediately by
+unmapping the buffers:
 
-Looking at how spi_controller_suspend() handles errors, it unconditionally
-marks the controller as suspended before returning:
-
-drivers/spi/spi.c:spi_controller_suspend() {
-	if (ctlr->queued) {
-		ret =3D spi_stop_queue(ctlr);
-		if (ret)
-			dev_err(&ctlr->dev, "queue stop failed\n");
+drivers/spi/spi-atcspi200.c:atcspi_dma_trans() {
+    ...
+		dmaengine_terminate_all(dma_ch);
 	}
 
-	__spi_mark_suspended(ctlr);
-	return ret;
+exit_unmap:
+	spi_controller_dma_unmap_mem_op_data(spi->host, op, &sgt);
+    ...
 }
 
-If bcmbca_hsspi_suspend() returns this error to the PM core, the system
-suspend is aborted. Because the device's suspend failed, the PM core consid=
-ers
-the device to be active and will not invoke its resume callback during the
-PM abort recovery phase.
+Does this risk memory corruption? Because dmaengine_terminate_all() doesn't
+guarantee the DMA engine has stopped accessing memory, unmapping it here
+could cause IOMMU faults.=20
 
-Since spi_controller_resume() is never called, the controller remains
-flagged as suspended, meaning all future SPI transfers will fail with
--ESHUTDOWN until a subsequent successful suspend/resume cycle.
+Additionally, if atcspi_dma_callback() fires after the unmap, could it
+prematurely complete spi->dma_completion for the next transfer? Should this
+use dmaengine_terminate_sync() instead?
 
-Should we explicitly call spi_controller_resume(host) to unwind the
-internal suspend state before returning the error?
+[Severity: High]
+This isn't a bug introduced by this patch, but it looks like atcspi_probe()
+might defeat the probe deferral mechanism for the DMA controller:
 
-> =20
-> -	spi_controller_suspend(host);
->  	clk_disable_unprepare(bs->pll_clk);
->  	clk_disable_unprepare(bs->clk);
->
+drivers/spi/spi-atcspi200.c:atcspi_probe() {
+    ...
+		ret =3D atcspi_configure_dma(spi);
+		if (ret)
+			dev_info(spi->dev,
+				 "Failed to init DMA, fallback to PIO mode\n");
+    ...
+}
+
+Since atcspi_configure_dma() uses devm_dma_request_chan(), what happens if
+it returns -EPROBE_DEFER when the DMA controller hasn't probed yet?=20
+
+By catching the error and silently dropping it to fall back to PIO mode, wi=
+ll
+the device be permanently stuck in PIO instead of waiting for the DMA
+controller to become available?
+
+[Severity: High]
+This is another pre-existing issue, but missing a hardware reset after a
+transfer timeout in atcspi_exec_mem_op() seems problematic:
+
+drivers/spi/spi-atcspi200.c:atcspi_exec_mem_op() {
+    ...
+		if (ret) {
+			dev_info(spi->dev, "SPI transmission failed\n");
+			goto exec_mem_exit;
+		}
+    ...
+}
+
+When jumping to exec_mem_exit on an error (like -ETIMEDOUT from
+atcspi_dma_trans()), we skip waiting for the ATCSPI_ACTIVE bit to clear.=20
+
+Does this leave the SPI controller's internal state machine stuck waiting f=
+or
+the timed-out transfer? If a new transfer is initiated while the controller
+is still active, could writing to the ATCSPI_CMD register lock up the
+hardware or corrupt the new transaction? Should a hardware reset be perform=
+ed
+on this error path?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260620083931.1120=
-616-1-1298662399@qq.com?part=3D2
+616-1-1298662399@qq.com?part=3D1
