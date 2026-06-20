@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B93226D05
-	for <imx@lists.linux.dev>; Sat, 20 Jun 2026 08:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB10346A0B
+	for <imx@lists.linux.dev>; Sat, 20 Jun 2026 08:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781945880; cv=none; b=stgFxPW/6xCIjien7ZkLr7kQq2OFM0XXoG8zDq9Mn65lARRYSNI16Y8pxRYQjweUQq7oNX7QkkPrRcEc7dUde4dhps5LrTSLxkoeWq4t0ELsMWo9shgn7OlowJuldLcBWiP+wZ4ceOaD+SNGXMG28EIzqXSJ2RIUOf4VSyuDnvM=
+	t=1781945881; cv=none; b=O7N/QvSyuvpSnBRQpMgfTiZCE8dTmEL21KtGVwG4uVMXisDb+QL4VdhknpRsg0AeJWkaR+5kWj8yPE/+K26QBolxsWqM7hpOtge2itk0wUdxKvef0Bxt6ype8O0Q2alHBqfG/O084JUaHx69JM5jJlmLwYw3o0JIKPBhLdZDTK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781945880; c=relaxed/simple;
-	bh=5vPbQ3IzQzpYfa6CDvvbNK38fWlfOq7Maxwhnqbq3hI=;
+	s=arc-20240116; t=1781945881; c=relaxed/simple;
+	bh=/JPdDvnquPn9Ns4asP7094qYTHj9fD3WpVO6j0seVDA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FcQT2PwgXon77aWecsISI9p7wk2xqSTnSgiTO0Ks42SPBEmxPyHoMYzjvRPbWs4wTuI6nB6OV314g/lunkKATxQzWiRZpRC1ZNbq6b212ssyJd89TlZ5ueX4HpV17SvdShZk6co1dSOOlA7fcnmvtntBSm2HSzSwsLBtiPoeVi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F8/srhQR; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=jSAItJ8XalmlsVri+T5Zy35byMEI04hxIv/RdK6PkdGYbmiYgyiLNwx+n2FE78VmTHfv5DwypcqAecDJ3KFoYBcEi2OJc504ms5scf7e76Kr6Ey4JmjU9ZfsrV8cFj9AAQPpXIdlEfEDWF+151hO9c4xjd+O+ae4zuGKeYb8j+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vx6PV/Fd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F8/srhQR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEA21F00A3A;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vx6PV/Fd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C133F1F000E9;
 	Sat, 20 Jun 2026 08:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1781945879;
-	bh=7OcgZ3HE+xOnBXBRWZ3KU73k/PeMcOX9gUqt46ftBEU=;
+	bh=LBLB/Zdocb2XFh+wNclpEynPi3cMbZtLNNfpPh6oT2Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F8/srhQRPdvTmBmdGK8tkkcrf5KTikFTVsEHv59b55LtvbTlYyNa5ch55T6nMfUAH
-	 khiaKekw44KlrNqOEKWdHymFIo6jTrdJnxQexL+xLKKgqHyPI+ysbOEREXOyhueYl8
-	 +KlfQdh5BdWeqrbBdfm7K8a/MYe+buO9zcybg3loc7bNaMF5JBX2BsQw80d6GIXpiy
-	 fU20lv7ZjHlFbGOGXBZe0l8VPNTu7HgJWJAeMoM+373c97zXGtUc+8uF67BRD+DeDK
-	 q5Iv3wGPUaIIw12CjYeBYl7CPgt+OOshimQe/Xt8Ukl+SkuluFCj3SK0l4HX6I7THf
-	 8TVVwU1SX8Y8Q==
+	b=Vx6PV/Fd67rupqZM5i+8gFslG1+SSFnTdJqq2lnumdlkbq2w5nrzW1G7c2wXQ+J7t
+	 dDhJxiM49d+/9qA98RLdfkutrLcTbb7yOqMp+6/c/GaZCUrLJ2y28qiVtF/4CN18nD
+	 M5gNhINlcUXxjHn+AVPYX1b12w+0j0dlJMGTkX3pACnWBHG4kUZqWFvR1OA1JfWe4j
+	 JU2OOObFlJNeeB84SBVIWGbwxTyPrg97+22/NRLSVHOLTd95X7x45cjZ1mmfrycG2U
+	 gEQf1PBU/P5MSb0VnwVuIgHG+G0i6arsDqk2fvGJBzEMOzVuMxToyr1CB2ItjiMxso
+	 MaNWuLOVdT9GQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/4] spi: atcspi200: return error from failed controller
- suspend
+Subject: Re: [PATCH 4/4] spi: nxp-fspi: disable runtime PM on probe failures
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jiawen Liu" <1298662399@qq.com>
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <tencent_306FA547FD68D10EE4B2AE9C132060F12F06@qq.com>
+In-Reply-To: <tencent_8FC0B8DFAF4AE67AEBA20548045D53A77707@qq.com>
 References: <20260620083931.1120616-1-1298662399@qq.com>
- <tencent_306FA547FD68D10EE4B2AE9C132060F12F06@qq.com>
+ <tencent_8FC0B8DFAF4AE67AEBA20548045D53A77707@qq.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 20 Jun 2026 08:57:58 +0000
-Message-Id: <20260620085759.3DEA21F00A3A@smtp.kernel.org>
+Date: Sat, 20 Jun 2026 08:57:59 +0000
+Message-Id: <20260620085759.C133F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,113 +47,107 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
 
+New issues:
+- [Medium] Probe error paths leave the hardware powered on and clocks leake=
+d because the newly added cleanup path cancels the autosuspend timer withou=
+t suspending the device.
+
 Pre-existing issues:
-- [High] Using dmaengine_terminate_all() on timeout leads to memory corrupt=
-ion and completion race conditions.
-- [High] Driver ignores -EPROBE_DEFER from DMA channel request, permanently=
- disabling DMA.
-- [High] Missing hardware reset after a transfer timeout leaves the SPI con=
-troller in a stuck state.
+- [High] Unchecked pm_runtime_get_sync() failure in nxp_fspi_cleanup() can =
+cause a synchronous external abort (bus fault).
+- [High] The ignored return value of nxp_fspi_default_setup() corrupts the =
+clock enable count and causes a kernel panic.
 --
 
-commit 68634bef983da7c31a412c03f17d17fa06e49838
+commit f84d61f342ed9ba0fef9a6eeb2fb3c7129154065
 Author: Jiawen Liu <1298662399@qq.com>
 
-spi: atcspi200: return error from failed controller suspend
+spi: nxp-fspi: disable runtime PM on probe failures
 
-spi_controller_suspend() can fail when the SPI core cannot stop the
-controller. atcspi_suspend() ignored that error and disabled the
-controller clock anyway. Return the error before disabling the clock.
+nxp_fspi_probe() enables runtime PM and autosuspend before several operatio=
+ns
+that can fail. Some failure paths returned directly before the devm cleanup
+action was installed, leaving runtime PM enabled. Route those failures thro=
+ugh
+a common runtime PM cleanup path. Use pm_runtime_resume_and_get() for the
+initial clock enable.
 
-> diff --git a/drivers/spi/spi-atcspi200.c b/drivers/spi/spi-atcspi200.c
-> index 6d4b6aeb3f5b1..e0fd101a62bc8 100644
-> --- a/drivers/spi/spi-atcspi200.c
-> +++ b/drivers/spi/spi-atcspi200.c
-> @@ -599,8 +599,11 @@ static int atcspi_suspend(struct device *dev)
->  {
->  	struct spi_controller *host =3D dev_get_drvdata(dev);
->  	struct atcspi_dev *spi =3D spi_controller_get_devdata(host);
-> +	int ret;
-> =20
-> -	spi_controller_suspend(host);
-> +	ret =3D spi_controller_suspend(host);
-> +	if (ret)
-> +		return ret;
-> =20
->  	clk_disable_unprepare(spi->clk);
-> =20
-
-While reviewing this patch, I noticed a few pre-existing issues in this fil=
-e.
+> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+> index 1e36ae084dd86..d94a2a7b98d44 100644
+> --- a/drivers/spi/spi-nxp-fspi.c
+> +++ b/drivers/spi/spi-nxp-fspi.c
+[ ... ]
+> @@ -1362,18 +1364,24 @@ static int nxp_fspi_probe(struct platform_device =
+*pdev)
+>  	nxp_fspi_default_setup(f);
 
 [Severity: High]
-This is a pre-existing issue, but I noticed atcspi_dma_trans() uses the
-asynchronous dmaengine_terminate_all() on timeout, followed immediately by
-unmapping the buffers:
+This is a pre-existing issue, but does nxp_fspi_probe() need to check the
+return value of nxp_fspi_default_setup()?
 
-drivers/spi/spi-atcspi200.c:atcspi_dma_trans() {
-    ...
-		dmaengine_terminate_all(dma_ch);
-	}
+If nxp_fspi_default_setup() fails, it leaves the clocks disabled. Since this
+return value is ignored, the driver proceeds to register the SPI controller.
 
-exit_unmap:
-	spi_controller_dma_unmap_mem_op_data(spi->host, op, &sgt);
-    ...
-}
+When the device autosuspends, nxp_fspi_runtime_suspend() will disable the
+already-disabled clock, which drives the clock enable count negative.
 
-Does this risk memory corruption? Because dmaengine_terminate_all() doesn't
-guarantee the DMA engine has stopped accessing memory, unmapping it here
-could cause IOMMU faults.=20
+A subsequent access to the SPI bus will increment the count back to 0 in
+nxp_fspi_runtime_resume(), leaving the clock physically OFF.
 
-Additionally, if atcspi_dma_callback() fires after the unmap, could it
-prematurely complete spi->dma_completion for the next transfer? Should this
-use dmaengine_terminate_sync() instead?
+Would this lead to reading/writing unclocked MMIO registers and trigger a
+synchronous external abort?
+
+> =20
+>  	ret =3D pm_runtime_put_sync(dev);
+[ ... ]
+> @@ -1389,6 +1397,11 @@ static int nxp_fspi_probe(struct platform_device *=
+pdev)
+>  		return ret;
+> =20
+>  	return devm_spi_register_controller(&pdev->dev, ctlr);
+> +
+> +err_disable_pm:
+> +	pm_runtime_dont_use_autosuspend(dev);
+> +	pm_runtime_disable(dev);
+
+[Severity: Medium]
+When execution jumps here due to a failure (e.g., in devm_request_irq()),
+the device is still in the RPM_ACTIVE state because pm_runtime_put_sync()
+only scheduled an autosuspend timer.
+
+Will calling pm_runtime_disable() cancel the pending autosuspend timer
+and freeze the device in RPM_ACTIVE?
+
+Since the devm cleanup action (nxp_fspi_cleanup) has not been registered ye=
+t,
+does this leave the hardware powered on and permanently leak the clocks?
+
+> +	return ret;
+>  }
 
 [Severity: High]
-This isn't a bug introduced by this patch, but it looks like atcspi_probe()
-might defeat the probe deferral mechanism for the DMA controller:
+This is a pre-existing issue, but there appears to be another unchecked
+clock enablement in nxp_fspi_cleanup():
 
-drivers/spi/spi-atcspi200.c:atcspi_probe() {
-    ...
-		ret =3D atcspi_configure_dma(spi);
-		if (ret)
-			dev_info(spi->dev,
-				 "Failed to init DMA, fallback to PIO mode\n");
-    ...
+drivers/spi/spi-nxp-fspi.c:nxp_fspi_cleanup() {
+	...
+	/* enable clock first since there is register access */
+	pm_runtime_get_sync(f->dev);
+
+	/* disable the hardware */
+	fspi_writel(f, FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+	...
 }
 
-Since atcspi_configure_dma() uses devm_dma_request_chan(), what happens if
-it returns -EPROBE_DEFER when the DMA controller hasn't probed yet?=20
+If pm_runtime_get_sync() fails to enable the clocks, the hardware remains
+unclocked.
 
-By catching the error and silently dropping it to fall back to PIO mode, wi=
-ll
-the device be permanently stuck in PIO instead of waiting for the DMA
-controller to become available?
+Since the return value is ignored, the code unconditionally proceeds to
+execute fspi_writel().
 
-[Severity: High]
-This is another pre-existing issue, but missing a hardware reset after a
-transfer timeout in atcspi_exec_mem_op() seems problematic:
-
-drivers/spi/spi-atcspi200.c:atcspi_exec_mem_op() {
-    ...
-		if (ret) {
-			dev_info(spi->dev, "SPI transmission failed\n");
-			goto exec_mem_exit;
-		}
-    ...
-}
-
-When jumping to exec_mem_exit on an error (like -ETIMEDOUT from
-atcspi_dma_trans()), we skip waiting for the ATCSPI_ACTIVE bit to clear.=20
-
-Does this leave the SPI controller's internal state machine stuck waiting f=
-or
-the timed-out transfer? If a new transfer is initiated while the controller
-is still active, could writing to the ATCSPI_CMD register lock up the
-hardware or corrupt the new transaction? Should a hardware reset be perform=
-ed
-on this error path?
+Can accessing unclocked MMIO registers trigger a synchronous external
+abort and crash the system during teardown or module unload?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260620083931.1120=
-616-1-1298662399@qq.com?part=3D1
+616-1-1298662399@qq.com?part=3D4
