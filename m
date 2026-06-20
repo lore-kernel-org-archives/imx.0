@@ -1,101 +1,99 @@
-Received: from hall.aurel32.net (hall.aurel32.net [195.154.119.183])
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C2B1A6839;
-	Sat, 20 Jun 2026 06:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.154.119.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426B01A7264
+	for <imx@lists.linux.dev>; Sat, 20 Jun 2026 08:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781936617; cv=none; b=kzau/BgJfD9ic0XKIeTUD4YyacRJjm0o9JPtkRFpLAUwUeezycg7mbqcgXAoCkRHlTkU6JXTs/xwS7pesFuW778o3IKxpSV69oraRgaOOPGS9XyFpPMN709rDB/TtP+HkayPDZgRGp0IUOXVshPxl7bK7zm4zzU7lI4prRtIk88=
+	t=1781944799; cv=none; b=TkgOMgbdtxRTLrfZvtvA6/WurVjVa0DfLbq8+zukhynkQ2Q1fr8G5kTzmm6chmEaQFD9E/LoOhYfTiCiIGjI0Zc3e//mm9p8tpBBPqQqL1lE41Fv/XDsOINO+7bgatq0Z9aQHIC6paJ4OjAfznGb75D7TNr/pKxSfInKvOWEHvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781936617; c=relaxed/simple;
-	bh=5bu9I08ZUuF5kSQjy516cYVA9gaiA2UeYrGJq3GvJls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jKgnNjDAa1Zadumy2IlLuMs+qVv5PT1pvdMdjImwCjxaHUUB7dYYdPcarvRxmdYxsI3/GJZxTS3Y5XHUT/jU92sQ77FwFo9SgLWYIvYFfu4fGxgZvv/ivYDwzBxhb1YehIVkjhsp5k+sfarFBJjqELMj2P+4cA7Xbhe7AG4nrKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net; spf=pass smtp.mailfrom=aurel32.net; dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b=YjMF5tHq; arc=none smtp.client-ip=195.154.119.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aurel32.net
+	s=arc-20240116; t=1781944799; c=relaxed/simple;
+	bh=1U9pYI0wSSG6JAEWKnYQlEWp99ffWxGo1xOGv0W4NII=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=P0Z9oWFJmHRGm4XSMLwjh/+4xoHCF1h1d8jghkdN339whjZ6j+PmngZ/3w0OcgQaUs9Oa2TbchcyBqmRR2UQ9fHEjTDtL+ReVPF+CjZeCQTawzgto1yuKbzH4YR+3T2tX4qpJiLXB8bblMSDfePA6FvsmYOYeeXOlKf7xOcxR1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ho0pY7wf; arc=none smtp.client-ip=162.62.57.252
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b="YjMF5tHq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
-	; s=202004.hall; h=In-Reply-To:Content-Type:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:From:Reply-To:
-	Subject:Content-ID:Content-Description:X-Debbugs-Cc;
-	bh=JSpFgV9vze6NzxWv7sBTl3aOrJeNhaz31em0Ltb/XOg=; b=YjMF5tHqf+RJPNkEaHwlaLfufu
-	nx9EM/X128U1AlQFofuBYY6QszUHNmjmlL8S2dgpir2vOWISmPkBy0xmam93Zo/csenHD2kcM1qsC
-	wkM+nqxzdA4CiPWa64gEeJoznUhVW4UXF6WuhT9utJa44L9WH+cdxge/uTQvzi6+bEa246QpqjOwU
-	kpAT/gzwfCSRh37Tx8D+5J2lH7d8lMYLpA8F3IqcVJcvHmuCCNU/boSbmsLpFAQssKOi/WgYulvHw
-	SE1Zeg7WNtwmPKctvyjIgJEliXOZ6L2GGaMZ1yvpyjAlQIdsctk5DNoqMhxq6YiH0GCeBiINeZSbE
-	yxCFTMtA==;
-Received: from authenticated user
-	by hall.aurel32.net with esmtpsa  (TLS1.3)  tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1wap75-000000006gB-1STs;
-	Sat, 20 Jun 2026 08:23:31 +0200
-Date: Sat, 20 Jun 2026 08:23:30 +0200
-From: Aurelien Jarno <aurelien@aurel32.net>
-To: Zhengyu He <hezhy472013@gmail.com>
-Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
-	Wei Fu <wefu@redhat.com>, Cody Kang <cody.kang.hk@outlook.com>
-Subject: Re: [PATCH v2 2/2] riscv: dts: spacemit: add QSPI support for K3
- Pico-ITX
-Message-ID: <ajYx4oI7SpNs5aT5@aurel32.net>
-Mail-Followup-To: Zhengyu He <hezhy472013@gmail.com>,
-	Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
-	Wei Fu <wefu@redhat.com>, Cody Kang <cody.kang.hk@outlook.com>
-References: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-0-52bce26e5fd8@gmail.com>
- <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-2-52bce26e5fd8@gmail.com>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ho0pY7wf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1781944787; bh=DSpD8SrbGJSSt47g+ep/HUhaAmDAdDice/9Pn7cUpNg=;
+	h=From:To:Cc:Subject:Date;
+	b=ho0pY7wfIKWGeqcNMeywAT+vn/gSMP/QmAFDlP9bPm/I/veydmhElZDZvnClns8zV
+	 H5iOpLt0/TqkZDIbsuQ6Gby7Rh3eO5ODxKgxLVeDaAwyGut9weQ2LQoUi6AVQJsCaP
+	 5gBjVtAFcZ8MN/y6aOzegmwUGqjx/uCRbTU6f9qY=
+Received: from ws006419.mbzu.ae ([5.195.0.150])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id 9E3A1AF0; Sat, 20 Jun 2026 16:39:35 +0800
+X-QQ-mid: xmsmtpt1781944775ti7z7fdcv
+Message-ID: <tencent_5169A5493D56510D24B06E86D31960E0AF06@qq.com>
+X-QQ-XMAILINFO: OVFdYp27KdlJxg2POt1M8rOE/F0jF6WoYwRM2fNOQEiTuWLToIkRC+gTp4Mr3W
+	 jJxouHgRpdMgSNyIPYbfq4fvQmMpqM9GMdRB6R9p61aIW0MVRlfvPPmk9zHMfgh8/RLcH37CXZe+
+	 ygT0BrECpmuVpiBaFacYbGUocBgeCpL8PxRlcdq2VD27/cdjMy5itlJRlPfhxf36TaTTAK6e6rPf
+	 Bj5urCQYj22UwVA6bfMd1m3NPlbRdns5b5yaEyhmjMqsmQBJWJtUcJCSumo2wuRkiDHE68HvPDmU
+	 Bd5quvZeWihBUhxuxahdVdknkVZW0cwprd83LYmQu7FoI9vCy1AbafCNTwnQRzcYLZoY824fCDbr
+	 P7/oeQqnjlXEQhPO5k5v3+cdLltQ4TeWnkCyqI+vG+NQAgetfulk2rUbmKc4XBRzq72VzwEKeiKh
+	 b2+gRWpgWWd44yuGTh3zeQrYy5kK5ycBtTDceOcdUipwqlXhRxPbh5E1BlINE0tBJQJ5+qNPyeH/
+	 GclEnQhBl7kCg/3ExGJPvNIy54RZFFOQWKQy+UJqQbjCEC9/cCJ7dA1+LY13VjtaPwQxS2DKn77R
+	 AOvox2u8iWqezI5fOmyXMrV+5X7v/p1fFECKHRPnvH4suML4yzf5C102uzbt2z9E1k+VZyo3nhkf
+	 O8H8RJVABEmVIohrGsCJ2P/ugLRwmALeV0QnoGBs5wupUanB8xk/0BQSj1E6qx+t1wEz1JszTLyd
+	 iarubmxWSNqxXnvJ2n5hkDCRSot6OzVjMr1XDZIaqdpruP6SC5JpFVzDu0+UgvDsOz5sbL2svaSa
+	 RsbDJRQYp1Nw2axWB9j80+/keDcaewzuNyOWF9U3TDKPX9aQInM9vQZm7A5pd2SDXBDOuXuQ4kIn
+	 RIo7yFhEWBRKrb+gH5fh772fFsMi5MwA2w6YhbDPHsO8Xsx885LemIxxaJswkBYwXnmEwiD1x6xS
+	 7t1UtTpBKxllTvFQcYgGzW3VXPuHpjE9M8897EKypvaFujwkKSbUvbXzbX9pJp4cd8Rn7eMnoxTi
+	 bEGOWA0TKn47V5DMY6a/76XJDq4+5OFlNcCG95dg==
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: Jiawen Liu <1298662399@qq.com>
+To: broonie@kernel.org
+Cc: cl634@andestech.com,
+	william.zhang@broadcom.com,
+	kursad.oney@broadcom.com,
+	jonas.gorski@gmail.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	anand.gore@broadcom.com,
+	f.fainelli@gmail.com,
+	rafal@milecki.pl,
+	olteanv@gmail.com,
+	han.xu@nxp.com,
+	haibo.chen@nxp.com,
+	yogeshgaur.83@gmail.com,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	Jiawen Liu <1298662399@qq.com>
+Subject: [PATCH 0/4] spi: fix PM error handling in several drivers
+Date: Sat, 20 Jun 2026 12:39:27 +0400
+X-OQ-MSGID: <20260620083931.1120616-1-1298662399@qq.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-2-52bce26e5fd8@gmail.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
+Content-Transfer-Encoding: 8bit
 
-On 2026-05-21 22:44, Zhengyu He wrote:
-> Add K3 QSPI controller node into k3.dtsi, and add related pinmux
-> configuration.
-> 
-> Enable QSPI on Pico-ITX board, and describe the NOR flash which wires
-> to it.
-> 
-> Signed-off-by: Cody Kang <cody.kang.hk@outlook.com>
-> Signed-off-by: Zhengyu He <hezhy472013@gmail.com>
-> ---
-> Changes in v2:
-> - Add "spacemit,k1-qspi" fallback to the K3 QSPI compatible.
-> - Reordered Signed-off-by trailers.
-> ---
->  arch/riscv/boot/dts/spacemit/k3-pico-itx.dts | 58 ++++++++++++++++++++++++++++
->  arch/riscv/boot/dts/spacemit/k3-pinctrl.dtsi | 21 ++++++++++
->  arch/riscv/boot/dts/spacemit/k3.dtsi         | 17 ++++++++
->  3 files changed, 96 insertions(+)
+This series fixes several SPI PM error paths where drivers continued
+tearing down or reported success after a controller suspend or runtime PM
+operation failed.
 
-Thanks for the patchset.
+The patches are independent and only touch the local error paths in each
+driver.
 
-Tested-by: Aurelien Jarno <aurelien@aurel32.net>
-Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+Jiawen Liu (4):
+  spi: atcspi200: return error from failed controller suspend
+  spi: bcmbca-hsspi: return error from failed controller suspend
+  spi: fsl-dspi: clean up after failed suspend and resume
+  spi: nxp-fspi: disable runtime PM on probe failures
 
+ drivers/spi/spi-atcspi200.c    |  5 ++++-
+ drivers/spi/spi-bcmbca-hsspi.c |  6 +++++-
+ drivers/spi/spi-fsl-dspi.c     | 21 ++++++++++++++++++---
+ drivers/spi/spi-nxp-fspi.c     | 31 ++++++++++++++++++++++---------
+ 4 files changed, 49 insertions(+), 14 deletions(-)
+
+
+base-commit: 9e7e6633458362db72427b48effad8d759131c35
 -- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                     http://aurel32.net
+2.34.1
+
