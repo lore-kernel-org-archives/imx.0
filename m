@@ -1,111 +1,145 @@
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0A61E885A
-	for <imx@lists.linux.dev>; Sat, 20 Jun 2026 08:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0D62B9B7
+	for <imx@lists.linux.dev>; Sat, 20 Jun 2026 08:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781944880; cv=none; b=VY1uRMDBdH/+h5k9RiIS1P0zchaZ1Jb8FbHu/SVhRiRYb7lVT4H0Kojcr5YmYQCNlUa/qdUF3GChuE5E7icJbVaROna9X98KgmFdTbrpanuEbdRpARgXV0lTrXw0Psk/uvvj0Js6F7ro5Lh7VsTT9UFjlAPBNp7zxL+NQD6nZyc=
+	t=1781945598; cv=none; b=Jpx3AeMSEPKdCDq/DPXLkcyXsTQecSusxCIdboFf5s/1kRJsnLMfu286p9VOSi/xkcv1CqM2hwZFwcAiUmj7LUz4nzz2lm9jtfeSpxM18M1TmuAYWAZ+hMithDutbKw6wb92XxqVhKYgy6sHT++hUSi1M6fRvYheUQrvqmPFQlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781944880; c=relaxed/simple;
-	bh=VnFkOyDtqkw80Ar8YKo3b40bRfwXEv4jYWE0QQHIE+g=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=i4yQO+eamdw/naF9JCp2oMVbb1SGun/zZqlgd+X4pVcSd9aMzARMC34PZJwyGCEQLWbq/FNl9uiUfGJlstUpy698XsQ1876xec4nCvXJJvF+5nv296TWUBU6sqWMLxR/qH+WioE2Tk51eD2j0ucJhpTB9tSpDDokzV28PPuieeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=pNous2Wy; arc=none smtp.client-ip=162.62.57.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1781945598; c=relaxed/simple;
+	bh=jzujov5KVFrioxSDVTLOhcy5+Uk218TA8Stde0UfoXc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=W8qMCCc28xM5+xZsiRTybH4LyKqCtxbtkp2xxQlLKClkYv4CJxnI6BHvo4Qz0p5jtCkj0WAu240OikddwcJt1TMVYqol8lyCiGPibUN5OCmfNWpxzNPkKCxze4N/NhkuSz1ZsDWJZ1FnkNQSd2iIcQA68W6LasLLOnYU0qaINVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ON0EMthK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="pNous2Wy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1781944868; bh=D03O6ATATGrr3scsFYQ1Lrg2abyiiRBzhuWJ6hFuinM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pNous2Wy5YQzdkJzXsrmTzWMdPklQLAYYyq5u84n/M4+6Q+gBn64yLF45UGMiNJnO
-	 AbOD2oBNeACZUkfvGCoBVFXGLXk4bHkUFU+iIA/lodzI1cXOgmvGqPTcc5rCRt8X5g
-	 l33kZAiWbT69fg470LjnODDhTJlFEgtFRhZoJmD8=
-Received: from ws006419.mbzu.ae ([5.195.0.150])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id 9E3A1AF0; Sat, 20 Jun 2026 16:39:35 +0800
-X-QQ-mid: xmsmtpt1781944785tosn3rekl
-Message-ID: <tencent_306FA547FD68D10EE4B2AE9C132060F12F06@qq.com>
-X-QQ-XMAILINFO: NXDkzr13SnKZvhEbCsrtLcb2CGzyO42zywHjolfeRYCQG1N5xSOFYyKmLxXViE
-	 v6GA40KEV5EIZOQiqirml0yl9V7jJok19BPNpZhsHKzUWbZtTbFe1UtFl9G1clbOJDnN+Ee1797O
-	 LF4m5pjt1em/uP9PGcOiZ76YbLJfKHZLC91vIdD2pPJlNiyl+5Munih3GruclPJGAlvPldNivcE7
-	 9HbjLL6D2n0sCaMgulo9JvbTdHYsTcs9uxx5ia4OHFffwlp4qOLXY4ZFrQ0eQjmviXkyouEpCF++
-	 vEPtqh0H9ABlksa3SKUkCS58N5tGqeLOObJFM5cp+r/S3fKhs5m63aofa7maYmv+8V7TL0L8TO3P
-	 EfU53JWDNacJqT7ib73P7zoDyig9p2/XE3ssvYYYz3uBE/FV3qDyFl2MxpOIOMBiq4I74ZkGnD4Q
-	 vd2J99di6wseSiNiYdlNLPQlC8FICltWRycpeThqk6/me6dXZOho/FU2JCxt9shySpkoF+G3K8Kc
-	 xwRTU6KVm98BJX6iXleassTfDM+B+rLpqIRql3d7Z3geJp7AMvB8kj72+44B4GrrA1ABAxOOuLSa
-	 HVGbgLXM1xbwm/TU8eeauCvOdc+17jC3TwwZ2/N3FB2hB7ZAQXqKt3Jp48t7ESuWGmpeoqGBIYR2
-	 VC9+KbKhlFQZ6sSJFjWZeCGxaCQmSyulL9DztchGIZM+cX+YYsGdcuUpHXX5I5xq5P+Bt6/+4cfM
-	 GainmLbceOasnX9Zn9Zzy6x0AnGaAyZsrvOYb8f8ql5f2SeKOGvCKK9m5p4i4Km5kA55MKTAT8hn
-	 x4hrVMsZgvPvRimOk6IcTenoh2rnSPKnYypPgik+VhEvjDYqqMIYtbLWQx9rtVizhgmxgMBeufpb
-	 Gaz2IUd3HRkZTIkmnK0P98rcR3vIaB4K/Khbjay9Wx5cd9m7lYdCoqca//qn/cXe+/9wywtflYg9
-	 CAmmX/cy/Gv/+PWuvogn+vKhlzXAmhXI14Goe8alWwJu6u/lvY0O7eu/lnl9XrsyTjC86Up5bL6O
-	 w8u0j5L7Vhk6N0pfEmvFm12HHDkQcEu2e0Rltu1mzpJWaCgjTQw4iTEC2Lz9YgFv1sFzXzvd+cNR
-	 hk4DnKvXW9HKtUjYvJk63b6Lc5FXSqhUB5xE1VgALYE1hGi4O/ThEfeHqH11O5vroMOT1f91HQ8k
-	 lamQXI4TBaCOfKGw==
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-From: Jiawen Liu <1298662399@qq.com>
-To: broonie@kernel.org
-Cc: cl634@andestech.com,
-	william.zhang@broadcom.com,
-	kursad.oney@broadcom.com,
-	jonas.gorski@gmail.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	anand.gore@broadcom.com,
-	f.fainelli@gmail.com,
-	rafal@milecki.pl,
-	olteanv@gmail.com,
-	han.xu@nxp.com,
-	haibo.chen@nxp.com,
-	yogeshgaur.83@gmail.com,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	Jiawen Liu <1298662399@qq.com>
-Subject: [PATCH 1/4] spi: atcspi200: return error from failed controller suspend
-Date: Sat, 20 Jun 2026 12:39:28 +0400
-X-OQ-MSGID: <20260620083931.1120616-2-1298662399@qq.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260620083931.1120616-1-1298662399@qq.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ON0EMthK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6B21F000E9;
+	Sat, 20 Jun 2026 08:53:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781945597;
+	bh=E9GNJC1coCFy6JVh2gDOFTUcmNTdeO6Yyuk3VgduJdY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ON0EMthKdbOuN2MlyAsa/9y0u0XeK9qJ2Kf/I6sUfXxqYHmO9XKBNr1k/+laL9J7o
+	 aZlsCDYbZ1h2iXgBpBh/SDVRktxtv5z+zy/Q6TkvDYZT+Y8wEiM/br2hd5tXgi+Nnw
+	 Ah9DnGSKRSNepJyE95Q50mhRSsvDiWVKwMR9p15Bfiw+1YmWqlYZu+0EgnhcUULI/O
+	 1LwnCJmloVRmTTRwvqbk6Me3sicL6sth8BxnbbL2Y1cmAxmuOhQpJ8HC1D2PrhvbRH
+	 5NbzYYD4sWhzbsCvo7HBHvwdMj+3PiTQVzE+5iq9mCQM7ZiHj2Qa0e6RZmMEUF5ACD
+	 eBJ5rjJr3GmJg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/4] spi: fsl-dspi: clean up after failed suspend and
+ resume
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jiawen Liu" <1298662399@qq.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <tencent_427FA55E3D59112524886E9C931CA0F92F06@qq.com>
 References: <20260620083931.1120616-1-1298662399@qq.com>
+ <tencent_427FA55E3D59112524886E9C931CA0F92F06@qq.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 20 Jun 2026 08:53:16 +0000
+Message-Id: <20260620085316.DF6B21F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-spi_controller_suspend() can fail when the SPI core cannot stop the
-controller. atcspi_suspend() ignored that error and disabled the
-controller clock anyway.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Return the error before disabling the clock.
+Pre-existing issues:
+- [High] Deadlock and guaranteed 5-second suspend timeout due to incorrect =
+lifecycle ordering in dspi_suspend().
+- [High] Race condition and potential deadlock in dspi_resume() due to resu=
+ming the SPI queue before hardware initialization.
+--
 
-Signed-off-by: Jiawen Liu <1298662399@qq.com>
----
- drivers/spi/spi-atcspi200.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+commit 98c391bd91fadd1b60a50d12e8e2491310c7b7ea
+Author: Jiawen Liu <1298662399@qq.com>
 
-diff --git a/drivers/spi/spi-atcspi200.c b/drivers/spi/spi-atcspi200.c
-index 6d4b6aeb3f5b..e0fd101a62bc 100644
---- a/drivers/spi/spi-atcspi200.c
-+++ b/drivers/spi/spi-atcspi200.c
-@@ -599,8 +599,11 @@ static int atcspi_suspend(struct device *dev)
- {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct atcspi_dev *spi = spi_controller_get_devdata(host);
-+	int ret;
- 
--	spi_controller_suspend(host);
-+	ret = spi_controller_suspend(host);
-+	if (ret)
-+		return ret;
- 
- 	clk_disable_unprepare(spi->clk);
- 
--- 
-2.34.1
+spi: fsl-dspi: clean up after failed suspend and resume
 
+This patch updates the suspend and resume routines to better handle failure=
+s.
+It ensures the IRQ is re-enabled if spi_controller_suspend() fails, and
+properly unwinds clock preparation if controller resume or hardware
+initialization fails.
+
+> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> index 019d05cdefe69..c2d283876ef80 100644
+> --- a/drivers/spi/spi-fsl-dspi.c
+> +++ b/drivers/spi/spi-fsl-dspi.c
+> @@ -1464,10 +1464,18 @@ static int dspi_init(struct fsl_dspi *dspi)
+>  static int dspi_suspend(struct device *dev)
+>  {
+>  	struct fsl_dspi *dspi =3D dev_get_drvdata(dev);
+> +	int ret;
+> =20
+>  	if (dspi->irq)
+>  		disable_irq(dspi->irq);
+> -	spi_controller_suspend(dspi->ctlr);
+> +
+> +	ret =3D spi_controller_suspend(dspi->ctlr);
+
+[Severity: High]
+This is a pre-existing issue, but does disabling the IRQ before suspending
+the controller cause active transfers to hang?
+
+Looking at dspi_suspend(), disable_irq() is called before
+spi_controller_suspend(). When spi_controller_suspend() stops the queue, it
+waits up to 5 seconds for the active transfer to finish.
+
+However, if the active transfer requires the hardware interrupt handler to
+complete, it will never finish because the IRQ is already disabled. This
+seems like it would guarantee a 5-second timeout, causing
+spi_controller_suspend() to return -EBUSY and abort the suspend.
+
+Should the controller be suspended before the IRQ is disabled?
+
+> +	if (ret) {
+> +		if (dspi->irq)
+> +			enable_irq(dspi->irq);
+> +		return ret;
+> +	}
+> +
+>  	clk_disable_unprepare(dspi->clk);
+
+[ ... ]
+
+> @@ -1485,12 +1493,15 @@ static int dspi_resume(struct device *dev)
+>  	ret =3D clk_prepare_enable(dspi->clk);
+>  	if (ret)
+>  		return ret;
+> -	spi_controller_resume(dspi->ctlr);
+> +
+> +	ret =3D spi_controller_resume(dspi->ctlr);
+> +	if (ret)
+> +		goto disable_clk;
+> =20
+>  	ret =3D dspi_init(dspi);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does calling
+spi_controller_resume() before dspi_init() and enable_irq() create a race
+window?
+
+spi_controller_resume() unblocks the message pump, allowing the worker
+thread to immediately dispatch pending transfers. If a transfer starts
+before dspi_init() initializes the hardware state, it might interact with
+uninitialized registers.
+
+Additionally, dspi_init() clears the status registers:
+
+	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
+
+If a racing transfer sets completion flags in the hardware right as
+dspi_init() clears them, the interrupt could be permanently lost. The
+worker thread would then deadlock waiting for the xfer_done completion
+event.
+
+Should the hardware and IRQs be fully restored before resuming the queue?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260620083931.1120=
+616-1-1298662399@qq.com?part=3D3
