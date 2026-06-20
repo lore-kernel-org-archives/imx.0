@@ -1,47 +1,48 @@
-Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426B01A7264
-	for <imx@lists.linux.dev>; Sat, 20 Jun 2026 08:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F01A7264
+	for <imx@lists.linux.dev>; Sat, 20 Jun 2026 08:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781944799; cv=none; b=TkgOMgbdtxRTLrfZvtvA6/WurVjVa0DfLbq8+zukhynkQ2Q1fr8G5kTzmm6chmEaQFD9E/LoOhYfTiCiIGjI0Zc3e//mm9p8tpBBPqQqL1lE41Fv/XDsOINO+7bgatq0Z9aQHIC6paJ4OjAfznGb75D7TNr/pKxSfInKvOWEHvI=
+	t=1781944816; cv=none; b=U+bpZX/OooU5wjv2hlrLLT3yFcG/sDE8abui0lxg19seojzSw2ByVC00S+ecIV5tTT0k7mN7F605QFjjh/xFcmAGxksnj96pPW5RzLDiqLKb7fkmONL3Eqt0SqBIzj3nqG9R1d2zJGiQQvaLwoirlsB4RoKXCMr4qqdx5SY9Bno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781944799; c=relaxed/simple;
-	bh=1U9pYI0wSSG6JAEWKnYQlEWp99ffWxGo1xOGv0W4NII=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=P0Z9oWFJmHRGm4XSMLwjh/+4xoHCF1h1d8jghkdN339whjZ6j+PmngZ/3w0OcgQaUs9Oa2TbchcyBqmRR2UQ9fHEjTDtL+ReVPF+CjZeCQTawzgto1yuKbzH4YR+3T2tX4qpJiLXB8bblMSDfePA6FvsmYOYeeXOlKf7xOcxR1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ho0pY7wf; arc=none smtp.client-ip=162.62.57.252
+	s=arc-20240116; t=1781944816; c=relaxed/simple;
+	bh=3S9eSWWek2bN3TaSaS1j0UMKZVdctpXL4+b++lVw/tE=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=CbKbmAcJ+LRWfeEnwggxr5vQS0OTLH+dI+L4BrxcqtvfW0bFGneTTaf1D0FbthMMSpR6sTyN4mAJCptG/zegrILiZfKn3h+VBzVqfrDuxRrnObzriY6l5ERQ1HyIaRfsfuQkbzapOXEdCjl5QFUvl82I+ccarU2L+vWIz2+qvow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=gGiyrxXI; arc=none smtp.client-ip=43.163.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ho0pY7wf"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="gGiyrxXI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1781944787; bh=DSpD8SrbGJSSt47g+ep/HUhaAmDAdDice/9Pn7cUpNg=;
-	h=From:To:Cc:Subject:Date;
-	b=ho0pY7wfIKWGeqcNMeywAT+vn/gSMP/QmAFDlP9bPm/I/veydmhElZDZvnClns8zV
-	 H5iOpLt0/TqkZDIbsuQ6Gby7Rh3eO5ODxKgxLVeDaAwyGut9weQ2LQoUi6AVQJsCaP
-	 5gBjVtAFcZ8MN/y6aOzegmwUGqjx/uCRbTU6f9qY=
+	t=1781944812; bh=aalBlmXxlpfF8ZNaaynm63K6Lji5zIPqViiYBR5+bL0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gGiyrxXIT+s2IMcVx86IgDAzJsXw0WnX41WI2SeGJgEQoQTb9FLx3FUKo21yrLhfp
+	 hWprCg3/ZFKBvvqdhI1lkbGXN5xq1yoM6y+6gJlyAoWa9Silk7NJmHpcpcx421Xwzd
+	 ZAOgoU4lCBxrR3OFfFOYW/wWGZqc6+VI6s1G0M8A=
 Received: from ws006419.mbzu.ae ([5.195.0.150])
 	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
 	id 9E3A1AF0; Sat, 20 Jun 2026 16:39:35 +0800
-X-QQ-mid: xmsmtpt1781944775ti7z7fdcv
-Message-ID: <tencent_5169A5493D56510D24B06E86D31960E0AF06@qq.com>
-X-QQ-XMAILINFO: OVFdYp27KdlJxg2POt1M8rOE/F0jF6WoYwRM2fNOQEiTuWLToIkRC+gTp4Mr3W
-	 jJxouHgRpdMgSNyIPYbfq4fvQmMpqM9GMdRB6R9p61aIW0MVRlfvPPmk9zHMfgh8/RLcH37CXZe+
-	 ygT0BrECpmuVpiBaFacYbGUocBgeCpL8PxRlcdq2VD27/cdjMy5itlJRlPfhxf36TaTTAK6e6rPf
-	 Bj5urCQYj22UwVA6bfMd1m3NPlbRdns5b5yaEyhmjMqsmQBJWJtUcJCSumo2wuRkiDHE68HvPDmU
-	 Bd5quvZeWihBUhxuxahdVdknkVZW0cwprd83LYmQu7FoI9vCy1AbafCNTwnQRzcYLZoY824fCDbr
-	 P7/oeQqnjlXEQhPO5k5v3+cdLltQ4TeWnkCyqI+vG+NQAgetfulk2rUbmKc4XBRzq72VzwEKeiKh
-	 b2+gRWpgWWd44yuGTh3zeQrYy5kK5ycBtTDceOcdUipwqlXhRxPbh5E1BlINE0tBJQJ5+qNPyeH/
-	 GclEnQhBl7kCg/3ExGJPvNIy54RZFFOQWKQy+UJqQbjCEC9/cCJ7dA1+LY13VjtaPwQxS2DKn77R
-	 AOvox2u8iWqezI5fOmyXMrV+5X7v/p1fFECKHRPnvH4suML4yzf5C102uzbt2z9E1k+VZyo3nhkf
-	 O8H8RJVABEmVIohrGsCJ2P/ugLRwmALeV0QnoGBs5wupUanB8xk/0BQSj1E6qx+t1wEz1JszTLyd
-	 iarubmxWSNqxXnvJ2n5hkDCRSot6OzVjMr1XDZIaqdpruP6SC5JpFVzDu0+UgvDsOz5sbL2svaSa
-	 RsbDJRQYp1Nw2axWB9j80+/keDcaewzuNyOWF9U3TDKPX9aQInM9vQZm7A5pd2SDXBDOuXuQ4kIn
-	 RIo7yFhEWBRKrb+gH5fh772fFsMi5MwA2w6YhbDPHsO8Xsx885LemIxxaJswkBYwXnmEwiD1x6xS
-	 7t1UtTpBKxllTvFQcYgGzW3VXPuHpjE9M8897EKypvaFujwkKSbUvbXzbX9pJp4cd8Rn7eMnoxTi
-	 bEGOWA0TKn47V5DMY6a/76XJDq4+5OFlNcCG95dg==
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-mid: xmsmtpt1781944804tazv0x18o
+Message-ID: <tencent_427FA55E3D59112524886E9C931CA0F92F06@qq.com>
+X-QQ-XMAILINFO: NGZp1yYNf7Y+vq0/mw4YvO55qP+MzgFZgfbzkqsN9MOWxgOmn/DB5XCGijUNZO
+	 Ax3Ia3/x5dorb9rrfPO8zlAGUaDC/m/JncnkCJ5oSMhM6asF3tg18SgPStu4aB2BQu5+XqJah84K
+	 n/bEhLeHES3z91wo6nnSUelbQgkLYoesINif34SBjzNw9k5zcxG9xiZJVIyuCTYVNd1rSk2Tw0QR
+	 AZVCtOity74HoX8/R80H9y0o1t1HuAuT4RDd7lmuulU7IKoAWECloSBm8nN6NP/QGjE0HKVkYJEX
+	 iewdeSxBqTF2WyhyI56VHi5aevCuXZ1du94DfdFLvXQGEpBzApDj9Dz7hkPHiSNsehu1VI+0Lmco
+	 SMnz0M9Pp0XnrMHWpiAZgzKH2/80RmYRh76GKwoTLuGIyXyasCCDVm5X3nl7Pyt7h5xbBNxCoxd2
+	 B++pvhLiyZyrPqmSymNWbpmnx0/V+CgJWFY8Cv2wKI75SBQrUcMur56AYV/KTBC/v/yxUlrpVgPJ
+	 IPW/VybvwFzAx+RX9aQSEHGecv+VxCNChBlAk8t+3Z05uMbNiA2GPKOTwC8TsmmNsnhWtl3kTM8i
+	 2wwlMoqSzDdeuj25vVbfFH7axzPXY+vVJLlkc5uxlfJ3U8OGBDwmQM0cThpeK0ZgdAp1Vo4IqwY8
+	 ftFxh3HxIJ12KS4MFHWZFn9pf7dZs/HVjxKvEjpcBv5u9docFmgr/vCFCEYxKbQn22ZXgpOu0ydt
+	 zBIcAMjY6/FN5ZcDxILLFLw4qeELo/tbVnWFC8KWZbIWcCanuT97lFENntUHwxTvZlUh8mBM/ujT
+	 XiZnygoFllJS4ozZl2MASlstZk0V1ONGmYkTgJ/pTkZyFsg9QvTE5ZGL7CzoObstQ2qHm56nYoHm
+	 zBocyTvuHoHeiGQ9Zeo6OtH31EsXD9IN1fuf9A+slFvF2N45WHc5UQN6o5z7gb1h3k2eC4MYYmsL
+	 nNvY8ga3HIkhxTbQXxgTxRXrcXiJhaqEkIfa7ylsFGKi08CyMrv52OJv/jzCVFLx53OCaR/OS+Jv
+	 nrVfvP8cVbC+Up1TxQk2pILggO408xhlizKlDCj1oxmruSJZvF96dbJls0ZXLzG71OCU4ICg==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
 From: Jiawen Liu <1298662399@qq.com>
 To: broonie@kernel.org
 Cc: cl634@andestech.com,
@@ -61,10 +62,12 @@ Cc: cl634@andestech.com,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev,
 	Jiawen Liu <1298662399@qq.com>
-Subject: [PATCH 0/4] spi: fix PM error handling in several drivers
-Date: Sat, 20 Jun 2026 12:39:27 +0400
-X-OQ-MSGID: <20260620083931.1120616-1-1298662399@qq.com>
+Subject: [PATCH 3/4] spi: fsl-dspi: clean up after failed suspend and resume
+Date: Sat, 20 Jun 2026 12:39:30 +0400
+X-OQ-MSGID: <20260620083931.1120616-4-1298662399@qq.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260620083931.1120616-1-1298662399@qq.com>
+References: <20260620083931.1120616-1-1298662399@qq.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,27 +76,71 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes several SPI PM error paths where drivers continued
-tearing down or reported success after a controller suspend or runtime PM
-operation failed.
+dspi_suspend() disabled the IRQ before spi_controller_suspend(),
+but ignored a suspend failure and kept tearing the device down.
+Restore the IRQ and return the error if suspend fails.
 
-The patches are independent and only touch the local error paths in each
-driver.
+dspi_resume() also left the clock prepared if controller resume or
+hardware init failed. Route those failures through clock cleanup.
 
-Jiawen Liu (4):
-  spi: atcspi200: return error from failed controller suspend
-  spi: bcmbca-hsspi: return error from failed controller suspend
-  spi: fsl-dspi: clean up after failed suspend and resume
-  spi: nxp-fspi: disable runtime PM on probe failures
+Signed-off-by: Jiawen Liu <1298662399@qq.com>
+---
+ drivers/spi/spi-fsl-dspi.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
- drivers/spi/spi-atcspi200.c    |  5 ++++-
- drivers/spi/spi-bcmbca-hsspi.c |  6 +++++-
- drivers/spi/spi-fsl-dspi.c     | 21 ++++++++++++++++++---
- drivers/spi/spi-nxp-fspi.c     | 31 ++++++++++++++++++++++---------
- 4 files changed, 49 insertions(+), 14 deletions(-)
-
-
-base-commit: 9e7e6633458362db72427b48effad8d759131c35
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 019d05cdefe6..c2d283876ef8 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1464,10 +1464,18 @@ static int dspi_init(struct fsl_dspi *dspi)
+ static int dspi_suspend(struct device *dev)
+ {
+ 	struct fsl_dspi *dspi = dev_get_drvdata(dev);
++	int ret;
+ 
+ 	if (dspi->irq)
+ 		disable_irq(dspi->irq);
+-	spi_controller_suspend(dspi->ctlr);
++
++	ret = spi_controller_suspend(dspi->ctlr);
++	if (ret) {
++		if (dspi->irq)
++			enable_irq(dspi->irq);
++		return ret;
++	}
++
+ 	clk_disable_unprepare(dspi->clk);
+ 
+ 	pinctrl_pm_select_sleep_state(dev);
+@@ -1485,12 +1493,15 @@ static int dspi_resume(struct device *dev)
+ 	ret = clk_prepare_enable(dspi->clk);
+ 	if (ret)
+ 		return ret;
+-	spi_controller_resume(dspi->ctlr);
++
++	ret = spi_controller_resume(dspi->ctlr);
++	if (ret)
++		goto disable_clk;
+ 
+ 	ret = dspi_init(dspi);
+ 	if (ret) {
+ 		dev_err(dev, "failed to initialize dspi during resume\n");
+-		return ret;
++		goto disable_clk;
+ 	}
+ 
+ 	dspi_set_mtf(dspi);
+@@ -1499,6 +1510,10 @@ static int dspi_resume(struct device *dev)
+ 		enable_irq(dspi->irq);
+ 
+ 	return 0;
++
++disable_clk:
++	clk_disable_unprepare(dspi->clk);
++	return ret;
+ }
+ #endif /* CONFIG_PM_SLEEP */
+ 
 -- 
 2.34.1
 
