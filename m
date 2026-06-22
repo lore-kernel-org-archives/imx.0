@@ -1,264 +1,160 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011017.outbound.protection.outlook.com [52.101.65.17])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6152E395AFC
-	for <imx@lists.linux.dev>; Mon, 22 Jun 2026 08:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782118722; cv=fail; b=jweR24go97+PfEeQkeldmMirR9VEZTx3jINd06qEwqKlL3BGbQh8wmtkLLhU6F9yP1gXQPQFyaxo/IOogtT2vYwG3Qj0nGEPLH4Cz5GiaRdxm/y1+bPF4sBq4/Ymx6Nzbq7I20twxKv3UDBfr8UbknhOoRmTi9fE7qNoxqqbloQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782118722; c=relaxed/simple;
-	bh=zZnsBlQORplLuHLwMEovSvr79Y9QwHnSe4tKen3JyZU=;
-	h=Content-Type:Subject:From:To:Cc:In-Reply-To:References:Date:
-	 Message-Id:MIME-Version; b=T07ToisTK04FnUYE/psCFcOX0wKQoRci9zmgJHt+xemyFuT++tJ8s2l0ZTsNRj/3Glmke5qGhlxhi8ZvPLBR1zKqIBbtMg4Pp+QsMrTbNOTPfPLDXiljVIaSvecuVb2kIeEM+jSy0qx0AsCM805zbSD39lRaBMMboAJ/IFqgXbA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=igS0ptEh; arc=fail smtp.client-ip=52.101.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="igS0ptEh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FDuCy6PLzobyYH1bnnqN6L4xhFsi8F8qERo2uYshEliMHVMztrrtOfDmt9bUf2K0GQlS3+/Blaz/H0hDPe4A5DSrZn/fjmWkdrgR84nFZBJk8KU/i3Xs9RuB+MM90XDmbtbut45HX6cRpx98k++f4UB5VaA1QtMeLADTCNjIFHX2tKiAlgHGSOOXVl6/UTDwLMg0MQ2MyNeqH75xwkS1FMhbX3HYDBA9egXRf2yXUCUM60nJWq60GY+nQmY8RtnBRJX+l44GhH94WkdiHJEv0TS933HA08dsSh68ciCPaCeY2bzvN55JNGgW+FIced4WMCaN1rGJwUOJdcMNF1DKZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zrjP+6rUs/7WNlUngpuXPLnG8t+Rbzmg4B1A++kqJiQ=;
- b=MQe4pwmwbeYI5c2ux/ucyt9IfYIOEgaWRSXCpRhaRBmMxR+duPQFmzrFipbPAbtpKdlIM/q8jU+K+36Kuma9xKhWKRenYQjMAAALjv6ZEOnp12DEdQJF7xmWLeopjGj3D0gYg4y/e5FtCh7JmWu6GHaLaE1r6HpaWigfW3moKC3soqV03Frhcjssr1P+wbzpCgFg8VSwgTbgas3O9hDrS3iAGPAMxG8Hh0X1UVZuvRB9r/DszuPiuIpwQ0hMqgg7xEkyuN2/k5+skvwyPFxrOb8q6dzj9AKgBpp2TE+Xrdx1RrPrS8hHQI1a22FdvyCof62rcQpUIOdXaqw/Fx1D6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zrjP+6rUs/7WNlUngpuXPLnG8t+Rbzmg4B1A++kqJiQ=;
- b=igS0ptEhV3Zv/AQfKQUQLlFfLFE704/DL/FQ6itCjNvp+pfwDDwEE+OfQiFfBJROnhoY8OBANQD184cCWSItXzgQPdJdybIJBJ6ASo3DoFmFufD0CdSNj3nDIEmjxqTuYSpW7CpDKhNNl11pR6zFAgW8/+1R2mNJZQqhbNNM5Ys+vJ+MgChBqc/fqTH5V09SIeTz6pYHeKVIOJchGRoIfzYHxbEmZGUkS7ed74osYe+pvE/Jb6D3ez4aCK0glbqgAJwDr4cmaxN2d575AzunsHzmzPjXt2V2NM5kQo0FkM1yj9KmKa4r/n63i6hOHdVvfhcw3YSmUumZEdBxcdzwoQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV1PR04MB11513.eurprd04.prod.outlook.com (2603:10a6:150:284::9)
- by PA2PR04MB10088.eurprd04.prod.outlook.com (2603:10a6:102:40e::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.19; Mon, 22 Jun
- 2026 08:58:37 +0000
-Received: from GV1PR04MB11513.eurprd04.prod.outlook.com
- ([fe80::29e0:98a1:4577:2cc7]) by GV1PR04MB11513.eurprd04.prod.outlook.com
- ([fe80::29e0:98a1:4577:2cc7%3]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
- 08:58:37 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5 8/8] arm64: dts: imx8qxp-mek: add parallel ov5640
- camera support
-From: guoniu.zhou@oss.nxp.com
-To: Frank.Li@oss.nxp.com
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Michael Riesch <michael.riesch@collabora.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Frank Li <Frank.Li@nxp.com>, 
- Martin Kepplinger-Novakovic <martink@posteo.de>, 
- Rui Miguel Silva <rmfrfs@gmail.com>, Purism Kernel Team <kernel@puri.sm>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20260617-imx8qxp_pcam-v5-8-7fa6c8e7fba7@nxp.com>
-References: <20260617-imx8qxp_pcam-v5-0-7fa6c8e7fba7@nxp.com>
- <20260617-imx8qxp_pcam-v5-8-7fa6c8e7fba7@nxp.com>
-Date: Mon, 22 Jun 2026 17:01:14 +0800
-Message-Id: <178211887405.4030874.10964807720406733748.b4-review@b4>
-X-Mailer: b4 0.15-dev-0e760
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782118896; l=3599;
- i=guoniu.zhou@oss.nxp.com; s=20250815; h=from:subject:message-id;
- bh=zZnsBlQORplLuHLwMEovSvr79Y9QwHnSe4tKen3JyZU=;
- b=mKwyTBf3GZg19H5ozDqUYeMZxIIA1HFHHA6pDVubdUmfX3cr6MZBBwAYv2moZ5l9pDVFfjmU4
- 0xiT0QVE6eiDfXKLpB/L6gidWLbA2DGV8n4sut9AzP8OV9Miw5m0mCJ
-X-Developer-Key: i=guoniu.zhou@oss.nxp.com; a=ed25519;
- pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
-X-ClientProxiedBy: SI3PR01CA0001.apcprd01.prod.exchangelabs.com
- (2603:1096:4:296::17) To GV1PR04MB11513.eurprd04.prod.outlook.com
- (2603:10a6:150:284::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B211368D5C
+	for <imx@lists.linux.dev>; Mon, 22 Jun 2026 09:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782119147; cv=none; b=tdgvuVLWCbKi8mc0TylA3Up29+ML3NesI9TAJECjrtLfn43E4fRfW6YUeHYJcD1BSEulCBzwWxS4RBJxu2W0o8QQokC5AXMk9evjSXlB136lyTx+bxv9mB5uJc8Vsf6RZKw7EM9hIcIlFQztPttJ6IhQmbKTj9XCpRj4ZVW6GjI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782119147; c=relaxed/simple;
+	bh=CRvHUMaPERdvIZaqTgWAAfdNC4myYpz/V1coR8bSrtg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UtzrLq1v65uLEBekRivmm3T3hJRKEticMiGLiFz9uj79jHhaNY6Svv0Tgm2yY5mv+1Npo+xHwF/yZfd9iEwNxJYG1Ucun4mdCjoi9EAkUWyErNkdwwENFcZ8n1wnTTWJpolAycn1qdETz12/SwBa6ZqGM3zy9/wkGnFBmoXpQ+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 64BAA200669;
+	Mon, 22 Jun 2026 11:05:34 +0200 (CEST)
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1wbab0-0043kt-13;
+	Mon, 22 Jun 2026 11:05:34 +0200
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1wbab0-000000008iF-0wHT;
+	Mon, 22 Jun 2026 11:05:34 +0200
+Message-ID: <7ee62b699c5cabb00cd7706ea42573da81c5bc84.camel@pengutronix.de>
+Subject: Re: [PATCH v4 2/2] media: i2c: ov5640: Add reset controller support
+ with GPIO fallback
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Frank Li <Frank.li@oss.nxp.com>, robby.cai@oss.nxp.com
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ Frank.Li@nxp.com, 	s.hauer@pengutronix.de, festevam@gmail.com,
+ sebastian.krzyszkowiak@puri.sm, 	slongerbeam@gmail.com,
+ sakari.ailus@linux.intel.com, mchehab@kernel.org, 
+	kieran.bingham@ideasonboard.com, kernel@pengutronix.de, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Mon, 22 Jun 2026 11:05:34 +0200
+In-Reply-To: <ajVPzoWVBi1vsqRQ@SMW015318>
+References: <20260619100532.3779934-1-robby.cai@oss.nxp.com>
+	 <20260619100532.3779934-3-robby.cai@oss.nxp.com>
+	 <ajVPzoWVBi1vsqRQ@SMW015318>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV1PR04MB11513:EE_|PA2PR04MB10088:EE_
-X-MS-Office365-Filtering-Correlation-Id: 016e4230-8f92-4cf7-ebc7-08ded03c7244
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|19092799006|18002099003|22082099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
- d24BFKteNUVK1EXdtyUWuno7x8zHtryspmWCYk8anveVpgsaC6ucOMdbiFt7k8f12OK407QRNkpx4sRtGVZvxt0kKg3lGH8nz2YlCNcN3llxG8W+JDMaFTYaIPbMd7YorFXlCa1s/gTztTuEZItLooNKI+xQYcwIom1etBN+juKjt4FOuIFlSESVOBTuYs7U6r/0fO8BCqRedWOWTS3Saxxqbv+GX/jHTe3wXCWbW9K53BKq8k10su0a/UV32RRNOQJpmUjohDmjxFgN5eFyW2cKGFxx8qkYwiU4itVliTYb2cE3LJz2iZfTgPjo9I7EyCyh6vOMCU1faojTX2H92VZlSnT4D6O4Had5yDcREKs0GfVFXTypMbOmeO4CODa1bjEVHePWUXk0uyQy3dTauTScqpJOYCQ4Lyqgb8Upgyb7FbXUloQ7/ZLGDpE63fw8zEkVxY8JVYwMZInao81PyTSFEqURL74ORQ6/QRc9HVIwooxOt+xoy38mWrTod5e6moc5mXum/VDAnfLWIsATWUL8yD6m9bZIL2kROWTLuxT27bv9+IOhCH47p1wkOfQRQ8JOAQq7mJ/NQ93ULLb+QTtvcVcz+Wuxi+OU/uCoZYRIl1zSWXZrndkxUU6vjXjOPLOR+ux18I3TTfjV/uK6sK6DeKs1IzVWe7AeEU4jueg=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB11513.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(19092799006)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?dDVDVS8zcnpOMU5aVllDQ0xidWIza2YvWmFVK1lZY21hUDIzdzR2TGFWaGRG?=
- =?utf-8?B?OGpmUVVlU3BydHVrakVWemhUREN3VGIyWGNSbXA0KzJJd2RQQjFkZXFhT1Nn?=
- =?utf-8?B?WTVoaXN6UHlBN1FZU01wQk9FdE5CMUQvSXpSQ3B4b1pqOUFKUW9XR1QrcHQ5?=
- =?utf-8?B?Q0I1dEVNVDFDYyszUitzZnB0SVg5SFZqS0xRWmIzNnJSRVJKVXlhVFJEZERq?=
- =?utf-8?B?RHVQaXQ5cmk4VSsrUEt4ajZueUtaeHdlNjBrZUlyeXNzaWE0VXpFbHFBSVdU?=
- =?utf-8?B?cXZSMEE5Sk1SMDhxOFk1RWdwRFZxRnZCNGI2U2RsYU9RM0owVzRkWCtydnQ1?=
- =?utf-8?B?U3JHdytjM2tTakpkaC95VnBUN05Ca2ljeVRYNnlTZnF6REljMmlGdGVCRS9w?=
- =?utf-8?B?cXFINWdMMDNVRG9EUHdrQW9lZC9EZEdvR2FZVk0xc2Z0Q0pBbVZGV0M3L0ht?=
- =?utf-8?B?S0daTHErMGY0QjB4WWhsbmQ0Uit3dHFyYUtFSjdNY3JxaTRobDdjTUJVNXAz?=
- =?utf-8?B?Q3E5YzZPR1ZjRFExRzNIcGNiaGx1dEk3bFVoK0xqbkNibHlIZHIyT3dJTXlP?=
- =?utf-8?B?SmxiQWQ4a0tGZnU1Q1BrODg1N2Z3T1kwVk1EdmZJMHVuRVVZeGswQ1RZdDlF?=
- =?utf-8?B?T3FkOHVReFBoaTdqV3lVQkM4RHErZ1RqUkNONi9LdU5jZEY4VUhzY1pGcWVO?=
- =?utf-8?B?RUl0Nm4zUEYzZzg1ZzR1WisrZTVyaDNGRnNFOFA0NlVIYUdNcTRLSzlsZWVN?=
- =?utf-8?B?OHJtQlA2VS93Y3lGb1RFZGlLL1NvVnlSZ21ycS8wRTRNU0Q5cFRUZmNUbVNL?=
- =?utf-8?B?bzZsdFVEOENiVDB3Mi9qU1ZPeTVpNXhUOVNMZnBvZzZPdE1WTER3d3IyNm81?=
- =?utf-8?B?aUh1amhzTUxuN0VrVlVIcWMyQTlHYzlLakxEWC9LbWNiMXgrK0ZvcERPbmlB?=
- =?utf-8?B?TGYzOTJ1d0Q0QSsvcUhWTkFjNDIvcURLN3hOMEVoMlVETGo4b3Axa1ZoclZ1?=
- =?utf-8?B?eXFVamIrU3J2RDVJdG9KWWRLMHM3ckI4bFJNVHh1TEx1Tk9wVVJlYTNTY3hC?=
- =?utf-8?B?NXMxZ29rYXA0WFVzMEFkSnA1NXpFRGpOc2kvTldKeld5a3JZYlBPdVFpbWR3?=
- =?utf-8?B?d2VMYkhDY0tRdW82WXhJckNCZExpbHBXdG9qbjJmWU4vUGNKVXBwdmFaUzAz?=
- =?utf-8?B?YzcyY0Z6bzJVR1NBdFFMOHVnckRLVytyRlZvN0g5MUk0Z0hFVGs3VXhueXZ4?=
- =?utf-8?B?bzJla0dUZFQyNlpyTzFxWnREdUFYVFZpdWIybTY4WUFLSVpBZXl5eHV0N2JX?=
- =?utf-8?B?VUhIWUNSVFF4QVl0QVQyNTVpa0cvcG5KZmI3aUlQWXdpY0cwRkNFbFhYWUlm?=
- =?utf-8?B?UWZydDBuK2NOWW5hU2VOOXd3cXFuKzlUek5YbERuNmNtaWR3OEJjSzJXcEgv?=
- =?utf-8?B?ejdPZkE2YmpudnJFRlMrMW4rUUpGeEtZL3pGNUhoclp1WVdiR2p2VEIvMWdJ?=
- =?utf-8?B?dnQ2RXoyMHg2TUJ2Y2VSSHFFRWZEK2p6MUM1RENFUkU4blB6Ny9yR2l4clRy?=
- =?utf-8?B?Mjk0Y3JPVDJSdkNXZlZmdXRyL053RWRJOTJJN0ZmbEVuVFdWZ0NFb3h3ZnJG?=
- =?utf-8?B?WkdHU2N4dEtqMUJNU0gvYzB3U2ZLbWg5TnZ6SG9zNDQzODduaWJ3emMwbUUz?=
- =?utf-8?B?NjVUeTNnVXlhQnRkR0syRkJxYnozejFLc2FFeDB0VnBwd1pPR2c3ejMwN1gz?=
- =?utf-8?B?MlhuT3poQnFtcGpkSkc4dUNiMkNBZW5SN21GblZWTm5BdWQ1VjZjbCtIV2Vl?=
- =?utf-8?B?OWJvcHQ3dnBVa3BwcFE3bXF6MExrdkhUTVNVTHBxUjRhWTlvazdTMlh2enQ0?=
- =?utf-8?B?bmhMS0JKMHFjUTNLL0djQ3R2dXVDRnZweVYza1R3ZDV3aXdMaUVZV0xSS0k3?=
- =?utf-8?B?VWFzTFljUTRMeXlieDk3RXdOeXd3R2tpbkdsSng5cGV0SzYzYWtKYkxBcWhj?=
- =?utf-8?B?SVVvMFFaaEpSR0NDR3oyczZkUlVDazI3dUZEMVhiTUtzTk5PMThSS0dQVU85?=
- =?utf-8?B?Vk14S3FKbTNMR3EyU3hFOGZJOWxpVjk5Z0pMU3hhc2lyVEpuTFNtN0xZbFY5?=
- =?utf-8?B?Sk9JTjYvL1h5Tk1UQ0lQTWhOV0t0Rk1KU244SUU0eitxS3d0aCtabzFCVUlo?=
- =?utf-8?B?V0ZqMU9TeHE1M0Zkd202VGN3RFJmT3hDa2VMNlBETGhFVXNBb2NEWGdCYU5Y?=
- =?utf-8?B?VXdSOEtKVlAwQ3pQdDVuS0hWQkkrZGc2bEc3U1lrMHJjUms4V3hUMUtJUlpJ?=
- =?utf-8?B?QVh3TjIyTFRYVkx6bndHTEVVWHpaSkQ0L3ZyMThBd1ZrZ2NZU001Y1cvUGFi?=
- =?utf-8?Q?3rnq5lxsYB0NXXPoICHmQJSDuFXNFglzWZAxj?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 016e4230-8f92-4cf7-ebc7-08ded03c7244
-X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB11513.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 08:58:36.9444
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bAECfGDxZL2R/KV4rdY0Kvg3xv58vO6b32EsX/oWP1YzmYEb97DS2/FV3d9tZuVbf6jdVEfEmJn91c8yD2WS/cwBqv/Q5nvCtHVLfvMMH+W+QtDnLiLRcBlOGYy9Pska
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10088
 
-> Add parallel ov5640 nodes in imx8qxp-mek and create overlay file to enable
-> it because it can work at two mode: MIPI CSI and parallel mode.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index 711e36cc2c99..f54fd4cdd926 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -434,6 +434,9 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek-pcie-ep.dtb
->  imx8qxp-mek-ov5640-csi-dtbs := imx8qxp-mek.dtb imx8qxp-mek-ov5640-csi.dtbo
->  dtb-${CONFIG_ARCH_MXC} += imx8qxp-mek-ov5640-csi.dtb
->  
-> +imx8qxp-mek-ov5640-cpi-dtbs := imx8qxp-mek.dtb imx8qxp-mek-ov5640-cpi.dtbo
-> +dtb-${CONFIG_ARCH_MXC} += imx8qxp-mek-ov5640-cpi.dtb
-> +
->  dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqps-mb-smarc-2.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8ulp-9x9-evk.dtb
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-mek-ov5640-cpi.dtso b/arch/arm64/boot/dts/freescale/imx8qxp-mek-ov5640-cpi.dtso
-> new file mode 100644
-> index 000000000000..9fbdd798f17d
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8qxp-mek-ov5640-cpi.dtso
-> @@ -0,0 +1,83 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2025 NXP
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +#include <dt-bindings/clock/imx8-lpcg.h>
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/media/video-interfaces.h>
-> +#include <dt-bindings/pinctrl/pads-imx8qxp.h>
-> +
-> +&cm40_i2c {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +
-> +	ov5640_pi: camera@3c {
-> +		compatible = "ovti,ov5640";
-> +		reg = <0x3c>;
-> +		clocks = <&pi0_misc_lpcg IMX_LPCG_CLK_0>;
-> +		clock-names = "xclk";
-> +		assigned-clocks = <&pi0_misc_lpcg IMX_LPCG_CLK_0>;
-> +		assigned-clock-rates = <24000000>;
-> +		AVDD-supply = <&reg_2v8>;
-> +		DOVDD-supply = <&reg_1v8>;
-> +		DVDD-supply = <&reg_1v5>;
-> +		pinctrl-0 = <&pinctrl_parallel_cpi>;
-> +		pinctrl-names = "default";
-> +		powerdown-gpios = <&lsio_gpio3 2 GPIO_ACTIVE_HIGH>;
-> +		reset-gpios = <&lsio_gpio3 3 GPIO_ACTIVE_LOW>;
-> +
-> +		port {
-> +			ov5640_pi_ep: endpoint {
-> +				bus-type = <MEDIA_BUS_TYPE_PARALLEL>;
-> +				bus-width = <8>;
-> +				hsync-active = <1>;
-> +				pclk-sample = <1>;
-> +				remote-endpoint = <&parallel_cpi_in>;
-> +				vsync-active = <0>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_parallel_cpi: parallelcpigrp {
-> +		fsl,pins = <
-> +			IMX8QXP_CSI_D00_CI_PI_D02		0xc0000041
-> +			IMX8QXP_CSI_D01_CI_PI_D03		0xc0000041
-> +			IMX8QXP_CSI_D02_CI_PI_D04		0xc0000041
-> +			IMX8QXP_CSI_D03_CI_PI_D05		0xc0000041
-> +			IMX8QXP_CSI_D04_CI_PI_D06		0xc0000041
-> +			IMX8QXP_CSI_D05_CI_PI_D07		0xc0000041
-> +			IMX8QXP_CSI_D06_CI_PI_D08		0xc0000041
-> +			IMX8QXP_CSI_D07_CI_PI_D09		0xc0000041
-> +
-> +			IMX8QXP_CSI_MCLK_CI_PI_MCLK		0xc0000041
-> +			IMX8QXP_CSI_PCLK_CI_PI_PCLK		0xc0000041
-> +			IMX8QXP_CSI_HSYNC_CI_PI_HSYNC		0xc0000041
-> +			IMX8QXP_CSI_VSYNC_CI_PI_VSYNC		0xc0000041
-> +			IMX8QXP_CSI_EN_LSIO_GPIO3_IO02		0xc0000041
-> +			IMX8QXP_CSI_RESET_LSIO_GPIO3_IO03	0xc0000041
-> +		>;
-> +	};
-> +};
-> +
-> +&isi {
-> +	status = "okay";
-> +};
-> +
-> +&parallel_cpi {
-> +	status = "okay";
-> +
-> +	ports {
-> +		port@0 {
-> +			parallel_cpi_in: endpoint {
-> +				hsync-active = <1>;
-> +				remote-endpoint = <&ov5640_pi_ep>;
-> +			};
-> +		};
-> +	};
-> +};
+On Fr, 2026-06-19 at 09:18 -0500, Frank Li wrote:
+> On Fri, Jun 19, 2026 at 06:05:32PM +0800, robby.cai@oss.nxp.com wrote:
+> > [You don't often get email from robby.cai@oss.nxp.com. Learn why this i=
+s important at https://aka.ms/LearnAboutSenderIdentification ]
+> >=20
+> > From: Robby Cai <robby.cai@nxp.com>
+> >=20
+> > Add support for the reset controller framework by acquiring the reset
+> > line using devm_reset_control_get_optional_shared_deasserted(). This
+> > allows the driver to handle reset lines provided by a reset controller,
+> > including shared ones, while avoiding unbalanced deassert counts.
+> >=20
+> > Retain support for legacy reset-gpios as a fallback when no reset
+> > controller is defined. In that case, request the GPIO and keep it in th=
+e
+> > deasserted state as the initial configuration.
+> >=20
+> > This enables the driver to support both reset-controller-backed reset
+> > lines and older GPIO-based descriptions while preserving the existing
+> > power-up sequencing behavior.
+> >=20
+> > Signed-off-by: Robby Cai <robby.cai@nxp.com>
+> > ---
+> >  drivers/media/i2c/ov5640.c | 80 +++++++++++++++++++++++++++++++++-----
+> >  1 file changed, 70 insertions(+), 10 deletions(-)
+> >=20
+> > diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
+> > index 85ecc23b3587..5e6db8aacb11 100644
+> > --- a/drivers/media/i2c/ov5640.c
+> > +++ b/drivers/media/i2c/ov5640.c
+> > @@ -17,6 +17,7 @@
+> >  #include <linux/module.h>
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/regulator/consumer.h>
+> > +#include <linux/reset.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/types.h>
+> >  #include <media/v4l2-async.h>
+> > @@ -442,6 +443,7 @@ struct ov5640_dev {
+> >         u32 xclk_freq;
+> >=20
+> >         struct regulator_bulk_data supplies[OV5640_NUM_SUPPLIES];
+> > +       struct reset_control *reset;
+> >         struct gpio_desc *reset_gpio;
+> >         struct gpio_desc *pwdn_gpio;
+> >         bool   upside_down;
+> > @@ -2431,6 +2433,48 @@ static int ov5640_restore_mode(struct ov5640_dev=
+ *sensor)
+> >         return ov5640_set_framefmt(sensor, &sensor->fmt);
+> >  }
+> >=20
+> > +static int ov5640_get_reset(struct device *dev, struct ov5640_dev *sen=
+sor)
+> > +{
+> > +       /* use deasserted version to avoid unbalanced deassert counts *=
+/
+> > +       sensor->reset =3D
+> > +           devm_reset_control_get_optional_shared_deasserted(dev, NULL=
+);
+> > +       if (IS_ERR(sensor->reset))
+> > +               return dev_err_probe(dev, PTR_ERR(sensor->reset),
+> > +                                    "Failed to get reset\n");
+> > +       else if (sensor->reset)
+> > +               return 0;
+> > +
+> > +       /*
+> > +        * fallback to legacy reset-gpios
+> > +        * GPIOD_OUT_HIGH ensures deasserted state for ACTIVE_LOW reset
+> > +        */
+> > +       sensor->reset_gpio =3D devm_gpiod_get_optional(dev, "reset",
+> > +                                                    GPIOD_OUT_HIGH);
+> > +       if (IS_ERR(sensor->reset_gpio))
+> > +               return dev_err_probe(dev, PTR_ERR(sensor->reset_gpio),
+> > +                                    "Failed to get reset gpio");
+>=20
+> I think needn't fallback here, NO ABI change, just change to use reset-gp=
+io
+> driver.
 
-Reviewed-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+Please keep the gpiod fallback, the reset-gpio driver may not be
+available on all platforms using ov5640.
 
--- 
-Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> > +
+> > +       return 0;
+> > +}
+> > +
+> > +static int ov5640_reset_assert(struct ov5640_dev *sensor)
+> > +{
+> > +       if (sensor->reset)
+> > +               return reset_control_assert(sensor->reset);
+>=20
+> needn't check sensor->reset, reset_control_assert() is no ops if NULL.
+>=20
+> > +
+> > +       gpiod_set_value_cansleep(sensor->reset_gpio, 1);
+>=20
+> Needn't fallback, directly replace.
+
+See above.
+
+
+regards
+Philipp
