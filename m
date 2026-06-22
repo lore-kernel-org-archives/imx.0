@@ -1,55 +1,50 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013023.outbound.protection.outlook.com [52.101.72.23])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013042.outbound.protection.outlook.com [52.101.83.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9847337E310
-	for <imx@lists.linux.dev>; Mon, 22 Jun 2026 07:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5264338E8DD
+	for <imx@lists.linux.dev>; Mon, 22 Jun 2026 08:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782114666; cv=fail; b=lz8qGFPQuUWnUfBiYFsEAPKHiQGEP8rvdweQezBQsvtrZ9mRHipCj5TZD7Xo57+uutbM/IoB2Al1fOJmQ1EcCbN/SubkHCAif7b6AcgeHJxNVORMtpoYKcz2lNgw6NjHekrWJFU4R5QARpvHDON72JrMSdAQKSIip+XHfaHcH4U=
+	t=1782115937; cv=fail; b=HdjZw9mQkzJMlWpUqJyWptbNIL1W3qEenwrMuu+1as3TVUWSPNNN4Kue0/iXrPfi3gO+hOg27oK8gDuS//fl+I/QV0VFBA1Jr1hjaEfYFVePseR6kv1P5j9Mo3JnDjc3Nu0Hz6i78GLR6B/MupuowAFcY9JrfNUI3OGlbVPEAA4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782114666; c=relaxed/simple;
-	bh=PP/BGHbwt57IKpDi7RQliXsMjLtVM8EBNp1VSHMclws=;
+	s=arc-20240116; t=1782115937; c=relaxed/simple;
+	bh=LxHxIfxQBLKW1+bfnugUOHVzussHOT3eX+Z7rVsHAXI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RQi/1DLVlbqD5hSsWpylOcH09OMu740feOYGU1Ys+AByR20Xowy7bFWr2ofMPExSvq4buDCy8U2tlvJGMs5ktQCbV8aVbKRUTcG4VVFjDd+yu+FZzKZsdndK7yKdTMBmxh1BMgnoWG8VG9bNZWZO5e7K4jn6t8HPstLRLY9u608=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JIlvAYEy; arc=fail smtp.client-ip=52.101.72.23
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qaXj3xUYnAiLZoMNu0hwDOS+QQtUV447U523Se7YKkN/kUgAQ6aspJ4Fb65FxoEsP/l9s7uZpIguWc0rWB+quAAnJHdgwY6SRT3R48wVEWNw4MRRAb8LrgXYvtt5KgFprDLgKD+SjgHyPuyWV/9QFWqxDwrRBAgTcCR2YlUrk+U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N+IRGJ3g; arc=fail smtp.client-ip=52.101.83.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JIlvAYEy"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N+IRGJ3g"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S9QXNKthAiGPTkhoNNodvssIJdUblHOXXMzgwluX1o6v/GSgBKwKdTTg0QORjL08HljWGnlLT5bU1QHb33GmyGMh2Fy5JNs8GWJuAa68Wh512U0rLQ4C6/MUMmyZNVlcJSaDVr29tHnhcQy5N9NKWLitw1GEzPX3kRmhUhoo+zmRtQ+nXovK4UsN5AfNt9RA1aSV2w3Xc2MSKIDl52S/ZRpTiDqRKZh9jf5wJl76RvHYZmfWiwVBixPV7KEAah2iZ1iZ8cstsK18B6/CIv4ivzVCAlTSDsb/wTDei6IcFfRgpx+N8W+EHaIUiZgIouzWKgUbNp8LnNCbCRXO2dom2A==
+ b=NOPTOWKva7kWrHCXx4hZbaDIFMmIWOxLLDhXIi9tTTioGu8QTQ+hHlW9V1bqXhaReemdmq39eZmJvsZOq26asAHudOQleQPKHScSGkZrMTrL43zP8Z6Tk5SyCpOarpVqGqIjZm8UWvdrrAAhvLzGNse7hW7WmX+as4PmwRBImddBJCo0YyaIx9kQXpLPkkYE4irXYVXNTkpf2TAR5CheBv+gbFuI7NACzY9r1+drmAc1oEIiTdVGByuE4T9tbtUp/wBVFshgCbHB8QwYW6zf0JI81nZjOOuDH3pQHFDIg1IwDISOOLAIvXvvzv1hwVyE6xfouXnWrXsuxQHbc5qaIQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oMaYIYFNkj4KGSaKf7D8Lg7sbkJf1Fb4UhKjt8H7dP4=;
- b=XW6WiLDEbPse9TuTMkwp+tMIKHISRZjGFQFCUwGjBzmJL+/l0aIGRblojDr9l3Z3gFsHdeGg2iRF1rWiF7G2XVGml6W5aqIoeZK3XY2o6ObaSKmeZz8rsRuBsbfs8tHT3nU9g/dRpuPNU9TlkT7Yjp03N82hFBpLZ8qt1BgPd/B68HCLOg6YHmU/BeKL8s0Xu8qKMvXkg8s3AFdFKctuCDepPuO2beJCDBrw035K/AFJQ1SCXHFjRN0Fy0GOvSGXkdflLdrE6R0bsvIzC5c1Bz1bpfgrfPpe41XWouwM5kSrogKJ1IUbDThhIA58FCkiTHeGVDRp1TippLwltPS4Mw==
+ bh=OxilF9rFrtVB++gIkAJRRGi7VZIs0dRBc1wyQuYlo6w=;
+ b=keNA/2kxnkRrk+s4zxvqp5q11IBQU+0lZqZMykVyOFPDH38TGDTIa1RCrUXvZ1vdadaOsB34V8+u93KBpT1/G6HQ73EYuRWfGplgbNFlzYVxMYKqh+tsqK+HpIPjX4FOoQJOy0JXz7j88EXUdkib9cAJpd1B5cgVuwK3YmfgTk2XpjAgf8v/V0YFDxrQbiMUyuxJjlmOtTTSIXYW590lxgzxjqhMqMjD6t6FkrFGeoQyZ4c63TTgEjbKyJWbNVySXtSprc5YsS7J9RXlxbKYnDauOPgDY44X4fK3YSxxeRYwPGv2VUGNaHz/LdVEv/uYohQqY76Eh+y+foF+B+o/GQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oMaYIYFNkj4KGSaKf7D8Lg7sbkJf1Fb4UhKjt8H7dP4=;
- b=JIlvAYEyBY7EXSWU639+6EdcKZboPpOsSUzZn/m9tkfXI2kaYQ9JFueOEdl1UggsfY493wgoTnPIx9cK/bzyAktn6TG63O3RYrb+Pb1HbObUxObFkMhUuMu4TiZGy6EvQLk4iZlsmVLOwnYBiSBm/qk9z+BQzqh7XI6oEfGJSQqTvoIeeODMBPVMRVfvl02PSSLPP0DiCyKOaeFZOyKXNZvCoNgXaqgT1+o/tWR2EHqHzh55xx3/L406tewMjUSTWBCIZ6QwAGd7D55TLk3MJY5+Er2njwAFitY49MHMgL1wI0Tv2uv0OfpqCZA30yJKOsrHgRks+xb7N9TQlcmsyg==
+ bh=OxilF9rFrtVB++gIkAJRRGi7VZIs0dRBc1wyQuYlo6w=;
+ b=N+IRGJ3gN450toRjlr+OFHx5OIdiGEnpGAKP6RSYzR2VU09iBHYBb6oFawKy3oIf1Yhpimcg69VD+lhQyGNX1uy0oAWYDIhqIrEkpjoSbT8Es8MUpJhaHxf2V0KYlDUWIfE073QQJkNBooMbHyH+EhkpBz4eHKswYYG9Xb7EzCHxOON6v75oN5s13VZEPzvZVCPMEGPao6uXnmwYIbZE2XO/K4FSTaSA05F8Zaz9mmilgKqeWijA3cG3Otqt73hylyKh2i3LBsRAIscvKRhgv8QCzfQjX4b+j8xDkGmyYL7LtMvUo02kx5KdSM/c+Q+nkZd25p/vwM1sETV+Zrcjew==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
- by AM9PR04MB7681.eurprd04.prod.outlook.com (2603:10a6:20b:286::20) with
+ by AS5PR04MB11322.eurprd04.prod.outlook.com (2603:10a6:20b:6c7::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Mon, 22 Jun
- 2026 07:50:57 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.19; Mon, 22 Jun
+ 2026 08:12:12 +0000
 Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
  ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
  ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0139.009; Mon, 22 Jun 2026
- 07:50:56 +0000
-Date: Mon, 22 Jun 2026 15:52:26 +0800
+ 08:12:11 +0000
+Date: Mon, 22 Jun 2026 16:13:42 +0800
 From: Liu Ying <victor.liu@nxp.com>
 To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
+Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
@@ -57,18 +52,20 @@ Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
 	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Hui Pu <Hui.Pu@gehealthcare.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] drm/bridge: imx93-mipi-dsi: Fix mode validation
-Message-ID: <ajjpuroFPI_U2Fw6@raspi>
-References: <20260515-imx93-mipi-dsi-fix-mode-validation-v3-1-91f7d22b2fe4@nxp.com>
- <DJD6I8NMLN3W.3LVT4L17HT5TU@bootlin.com>
+Subject: Re: [PATCH] drm/mxsfb/lcdif: don't hide lcdif_attach_bridge()
+ deferral messages
+Message-ID: <ajjutrHp0SNbq2lV@raspi>
+References: <20260619-drm-lcdif-deferral-msg-v1-1-ce2392dca985@bootlin.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DJD6I8NMLN3W.3LVT4L17HT5TU@bootlin.com>
-X-ClientProxiedBy: SI1PR02CA0031.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::11) To AS1PR04MB9287.eurprd04.prod.outlook.com
+In-Reply-To: <20260619-drm-lcdif-deferral-msg-v1-1-ce2392dca985@bootlin.com>
+X-ClientProxiedBy: MA5P287CA0037.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:175::17) To AS1PR04MB9287.eurprd04.prod.outlook.com
  (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -77,208 +74,74 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|AM9PR04MB7681:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9c8e6f9-a223-499f-d3a2-08ded032fe23
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|AS5PR04MB11322:EE_
+X-MS-Office365-Filtering-Correlation-Id: dbbd606e-9a2b-4589-7ab7-08ded035f639
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|7416014|366016|376014|19092799006|1800799024|23010399003|18002099003|22082099003|3023799007|4143699003|56012099006|6133799003|11063799006;
+	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|376014|366016|7416014|18002099003|22082099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
- 570S1L6PQMLL4NsV8qpS7lw49IzQcdKm142+OFkYgeYyY0l7MHFzRLEGtuyI2o+uQyYkmMmkpAPdjTsFYtfVrN7xDEMEdWQFLVTkPKxpU0pEnRHC4G4OPWd8et//0i3AGRhg1ItXKltERnsxZWOLhnTyOjUMGCn5Un4eLOX52MMcIuI3sclL3Zep9I4cIbHldJUBb7TbiNLMRvOwX9DTfLG2HYSXXZGeOXuV5y7kVbd30q5m9bP9mZE3TXSsWTbayrKgi615KonQi7btBpbWwRgaN/8D9UkeV1VUL8X8iYvziXUHzqwHPtpxbfveWb8YsceNoE0v2DYGr7/A49RRdBDfihVQ6ZGo5EE9Z17hatJBLEUjiOf2lNAWovx6Qo/9kP98kebMV56H2FOhSESJUGVcjCfj90iIkXgozYp0BlES4Bvabysr8ApnpBgs1qBY2o6my9ywRgFsDDQnORlTNXJ9cU/QB/+ihqdpZN+81Ngr/Psz+wS1dxXE78US6/MivToVaRdskzOrsYiyidYR9/kweGAF2nhqTvQSH2hTC+O9ZH/nKxKVt9J4wzMGlMyqMIEYvChZH5zpbI/haciSAgnEO69cjXQM/U+7sb4Mi7E=
+	GFJuABGVmMz09a/CVPBHa93uSI9QJMQeVYXuJf2lC8daDNCgg300znHQ4MopZi1l2OPMep8CJC86IQa8JQwd/Ikp3hn+FE/aqMq+SG/FkYbNGHCaZt6mN7ZrA3XHXblVUC7tp6zAUuDoC6Y5zazubFcl8dCpXqfI3V+dwmuzmfOKXPlxE3zckv/S+CQPnUpdO/XHQD3WE1ET/P37z9yzYR7Ur/RgEHAbEYfW9qc72D7s4EJptOB16WJcsUmpWb2bbON6nzruFUQ37fj8XsAMYMgx3xJW7ioRaOdMvREHfLCCN/y0eyBUpS+jyH78Fhl+HPDXLDzbsAKI4CQydlCUT4VPyOWULPwN5e0QwmGM6RtJlwhOJdZvtXuMVZGObOKr0K2DFW7Fu4UzBfjNOl1XNhkovUwbiAAqCI0F63pePj82QEBhlKPZyleZVa1MjH5JDqbiV+pDR9GBDAym95+DrIOMRE5Ji/kDYE4n958F87kArY9VRHY070mQ3//FJ/Y1F3AZKcL6dQWufyIW4cNJbU0EkPFmnOm9GhklMlKDerfTT0zG9QRyAa2ELjY5+Cdtp2AbE8YCwxGB5pjS7TPhNFIirChov7vp0ehO2PYc45Xz21i2ENf/oQsdcQ3hzhFsaBk/2d0yGMf/W3zCJFtoOg99Jtb3RB8PJh81HvM3zPg=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(19092799006)(1800799024)(23010399003)(18002099003)(22082099003)(3023799007)(4143699003)(56012099006)(6133799003)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(376014)(366016)(7416014)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?Wp5MyLw4ECUJvOODTAtPA3h6KD/cq6kPTFBs10mwy31XhJWGtD5h2gPuJZkw?=
- =?us-ascii?Q?5CWjmR+leWtLbeKLnzhiTCu70zVY8IZBzsnkQeAgnTzMfbn4euavlw+mi7ol?=
- =?us-ascii?Q?oif/TyzrwGqeQCqRSMEkpo0Kzc/m5bO/Kqjm3MgXFiacfcOKJkie8+sXUhXZ?=
- =?us-ascii?Q?g93obqby6Q7piIr9yZNRV5fqWLIAFeCMz9UWF0jdX6X10VsUFg8ziuqypHTL?=
- =?us-ascii?Q?LrK/Y6ZMsVH6Cm2gceqS823KoKiDDz9mC/YWoqIGcVg4G6yYV5hqXjDkis1T?=
- =?us-ascii?Q?IGQG1Pk/JwrB24kEitMHd+JwVM9LiXv/yDZQdTNzTm9kipVyrnw1nXZjthII?=
- =?us-ascii?Q?B/bSvbVhZrKkzWfWcHauGENAidorV5NXDS9jWh8MQI5W4/nvNhPBawxnlL3B?=
- =?us-ascii?Q?20l7Y9DJkELGk3e4NFS8lh/8zI5YoMppVk9JH9Y1ll7EBUoj/wHGnZZwvJEC?=
- =?us-ascii?Q?VCrtobrRauxz5XjGzPWKDFbICW84Dhn1z2hSGkiW+fJtdUpNkc0cFfUXTo2S?=
- =?us-ascii?Q?+1MxfuNJ149kNBNuteTxemfPf2+d7sMbuDWaWoLZhS57T3carhsCCgrZFGXD?=
- =?us-ascii?Q?kBQ3TNmWAsaLymYitfEgo4i4wb/oKtbkqmT24XbdspRF8w/SeCquA0SbqUca?=
- =?us-ascii?Q?S9bD2HrSwZekwruxfGIdrm9BPACv75FNwUS2IhUEg3RXlvK2rbbBkZIY33l6?=
- =?us-ascii?Q?gTT9MI04o0P+xF/AtJIe+kMxoEBIGipMbn/YBsWRF1GPXSugxXUAAnhz6fCk?=
- =?us-ascii?Q?FqAgxE1QbSqMjSpQ0hSWrucMUFJw3a0GDC5CXv041AOCitc0S03h9DwlZMnd?=
- =?us-ascii?Q?CA2uFD8D9tOvnP5FOaCg0XccKESpIVsMKzp3M4+OMIK0R3G6lXI1QnnMjJlD?=
- =?us-ascii?Q?IQj6DwBSA0rRMnyGtNww4w3b55RDeprGJQ0ixXUGTIPYpJ8dkP8tIWYTfER9?=
- =?us-ascii?Q?msy5MFuJZGUrOGAtdcQY8uQzRYDUnzcSUne2dpO/j1+V2wCMlaG0UGD8N9e4?=
- =?us-ascii?Q?nMuqogQY5f34vIgOLuioftGNiQ9hckLcHMlE0+cUfZgbyOGhzcUf9pzL3zGR?=
- =?us-ascii?Q?8OZ3MQiwco6Wrdz2/loDVsyBVVeq4nmKjpvjur9lFgC9wIYJSFtyHUqDi4kZ?=
- =?us-ascii?Q?DRtw4Li8k5Sg6HQMG53W6IbtCjYiM9HP1j/YpkfeYbL/pol/sKPWjCOay6vx?=
- =?us-ascii?Q?c5/MyTp/Loi031VSIhIu2Si+e0+4h8VA3c6hZVkP9WZu0org9CJxFDfqJoZ5?=
- =?us-ascii?Q?DZ3r9Sw4qepjMLUqQHZQ1CFrxsnLRCoYC/8lHm5D+lyh+7nRkRx7a4O2ijQS?=
- =?us-ascii?Q?aJUCIcVGz6zmBZ1xF6Od6iKEcUUAqnRhzKLw/wkF/WI2HbQQY1YrLvWI0WVs?=
- =?us-ascii?Q?u2blDB+b5eUETF9EXqGDLakrlzySFPae/GYU8z5EWENynK5vz+PXD74rXLeJ?=
- =?us-ascii?Q?FjSybIxhBhSRMj9qxIpzL0Gqi3RGVENwXjq0ZpeHmw+PDsZjT2Lb7FK/mqOd?=
- =?us-ascii?Q?s2jVfA0DnO1J0bGZzELnKLe2sxi7sqnio9mLsoD0b3wp2HP6un4uGz4HSBAV?=
- =?us-ascii?Q?A2f5OtAvbUkImLPR8v5IVDXq/1Nnw27bXzDrHOLhgjlIYNiz/19sc78fD9Ji?=
- =?us-ascii?Q?O2HGssr90eZ6368xejYlvMDPomN56KjPO5Sp+1Zja9w4CCWNwXx56+S7sifW?=
- =?us-ascii?Q?lZYz/pRSFydrPmWQS1aKAtd01nbwLwZBTH+PgSZ3fJP2uYtR+i208GxuC+LJ?=
- =?us-ascii?Q?ZCU+zt+CdA=3D=3D?=
+	=?us-ascii?Q?fN7eP9YST25KqiAMdgilagntQEXqj7JvMyHDjFUygxHeFUkSZSM9nZdgb5DY?=
+ =?us-ascii?Q?hb1JMlmG/nukQPTpZuNyfYeSywnV1hdr1ndHNpLjc/jOFamX6e5fWs6Aspug?=
+ =?us-ascii?Q?AhQpN5VGCah0g/M8zQatQe8+TKQK/rA7LniXOwJHwf6pgVeU7sJ5SDEtSPk0?=
+ =?us-ascii?Q?9900/z9AJkCIYX3SvUu/42fIFxiyojc3WrE5pOSQsxB5QNMayrIL5CvV9P8m?=
+ =?us-ascii?Q?P4kCTMqe0Nyoo5/D5i6cynLsyGeyo2oP6XWywcMwfY5yiKnwEzfdqQd0Ar3B?=
+ =?us-ascii?Q?NMUVA7D+YV1BYJfHj909YYYRB2H23D66xZD6AXo9G5dFXgW2HAESQpaeU+86?=
+ =?us-ascii?Q?lNKFr1rELfqOzelUpcBaB/7eS+nPNkBXQmxR6gySfAR1WhfU5YjOmHDdqfm7?=
+ =?us-ascii?Q?YAU3jSW7MR1A3542b+DmQ9kuRBdBjqJrWxbUG+2xTnVDY6KH+4q9QBahOtzC?=
+ =?us-ascii?Q?GL7tBkQUImhV4rKj15pQyvJYV18oj13Zfkm1KVVwsIz4UouErPlz6pdsxeEK?=
+ =?us-ascii?Q?IjcCN7/+wQqogDvEjy9uu+cpCfmCoEzQ6JyTOg5wZmoC34MWhfU6zSJcVeJL?=
+ =?us-ascii?Q?4ooqAfCS4XkmQh74fxHOW5LpW1qhPtwSiXDko2TmRwd+lfdcvsa/sE045rso?=
+ =?us-ascii?Q?f4qZJyyH91ANEiHwcco0JzhRvu+WyGLUgzupXf7Z+cBVu1+ClIezoENaF0oi?=
+ =?us-ascii?Q?Tj0sVwvTc+KxGmaiwn/J9jha3UonsgOPGV6BDdvbyOs/qf39S8QH0zvmwE0+?=
+ =?us-ascii?Q?L/5sp0phU5DHlGH0tg4GyWGLriNXqaX+O1TDhNtKwGknK3kOxXsnAHjSmTSf?=
+ =?us-ascii?Q?fLA9zIMi47FxPfSuLh8PORx759X1rScnC06spV5MFFq9qriVS56vBGA0/fl6?=
+ =?us-ascii?Q?SfNH53yFQzrcRgT7dXA4USH56p+CM+J9PQX5nCUdmZRfzMpXLI8xEWcG4lL5?=
+ =?us-ascii?Q?TGKnFtaux0KU8v01uJyh9Whnf9GRWYA2uTRyvUIbxH6hNFkQop0dzu5CUtYK?=
+ =?us-ascii?Q?74dJmHL4R/OWiAPvJfcdmoTWONlAncKv21LdCRhm3rUFYCROmY/cin9YxXpg?=
+ =?us-ascii?Q?9eZxgKuk2McrYDC0s2GeBSzDOAMGy4Xpl5MqeIfdO7954C20P0sCO+KnORss?=
+ =?us-ascii?Q?yKLnjFj3l0CMY1q5GbklekdABigcbd4L7VPq1fedvkfpWvCxULxMPuUqCEPe?=
+ =?us-ascii?Q?dhGOPKQyr3DYZu0/xjpZC7wNHkAKGeNg+qpcQOMIrygBYWG7z/YNh+kKbOjG?=
+ =?us-ascii?Q?V/kIoVaukbv429k61GB28tCtiqGathp+JAb3EtZ2CIh1ztzds7KmYLgOl1AY?=
+ =?us-ascii?Q?9r/oGUrakRS9DErISwNSqKngcJu+4H3vKcz7iM2KZiGQuurPb0KR5G1oIwA/?=
+ =?us-ascii?Q?ktiOKk6R2Tmpbs01LGFvnKDRVnKHeNrtucIejjJbd8//AOcAhuBYvMS+JdNa?=
+ =?us-ascii?Q?6frw06QO1q6aFXnBuJPmTMwJ+FzbECZ0vGY3hHg5W0a0VULSbq5SRe+2cd/f?=
+ =?us-ascii?Q?1DajDZMWczUPb291IxIfQZXhfxBbadNRYzanGnxxCf7Rf3x01sSLwN6vGW9X?=
+ =?us-ascii?Q?CJOlbDRdRo+D8XMABUAreE80NWRGcdNDQ0kWwxkjeY08ftRq6weDMItpJB2L?=
+ =?us-ascii?Q?bdhSzzdZh6udQVCwY93ZVWy7SFvOBeU2nNeRbj+AFEbDygzKtymQLjhrfCUG?=
+ =?us-ascii?Q?YABd/yzdGsm0MlBTKmluUCl0WvROJxQFARuoBHj9lVsRIFmASStv0ZALE9cE?=
+ =?us-ascii?Q?WK79m9UVNA=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9c8e6f9-a223-499f-d3a2-08ded032fe23
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbbd606e-9a2b-4589-7ab7-08ded035f639
 X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 07:50:56.8855
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 08:12:11.8801
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eUIOEH6wejSMYZgIL7+QKV8KcgK4hs0k52WU6p9pZh0x4ubTSUeIUpODHlBBfzsLuIdT9yDZzVM3ex1GvmRvVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7681
+X-MS-Exchange-CrossTenant-UserPrincipalName: /dqBPC0ItIhblIP1ZQrS7TTqa5kKfxO4vfgw/wofGElcTd50fPvHxX332URMbk1pmJH9D83fX+DF0GHRN0WWhg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB11322
 
-On Fri, Jun 19, 2026 at 06:49:55PM +0200, Luca Ceresoli wrote:
-> Hello Liu,
-
-Hi Luca,
-
+On Fri, Jun 19, 2026 at 09:02:13AM +0200, Luca Ceresoli wrote:
+> lcdif_attach_bridge() uses dev_err_probe() on all its error returns to
+> store a specific deferral message.
 > 
-> On Fri May 15, 2026 at 8:54 AM CEST, Liu Ying wrote:
-> > i.MX93 MIPI DPHY PLL has limitation for matching with some pixel clock
-> > rates, e.g., the best DPHY PLL frequency is 445.333333MHz for a typical
-> > 1920x1080p@60Hz CEA/DMT display mode with a pixel clock rate running
-> > at 148.5MHz with 4 data lanes + RGB888 pixel in MIPI DSI sync pulse mode,
-> > while the expected PLL frequency is (148.5 * 24) / 4 / 2 MHz = 445.5MHz.
-> > Fortunately, VESA Display Monitor Timing Standard allows +/-0.5% pixel
-> > clock rate deviation for timings.  So, for those display modes read
-> > from EDID through a bridge with DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP_EDID
-> > operation bit masks set, pixel clock rate could be adjusted to match
-> > with the PLL frequency(for the above example, the pixel clock rate is
-> > adjusted to be 148.444444MHz with about -0.03% deviation from the 148.5MHz
-> > nominal rate so that the adjusted rate matches with the 445.333333MHz PLL
-> > frequency).
-> >
-> > Instead of checking the last bridge's operation bit masks against
-> > DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP_EDID to determine if allowing
-> > +/-0.5% pixel clock rate deviation, check any bridge after this bridge,
-> > because the last bridge is usually a display connector bridge without
-> > any operation bit mask when the clock rate deviation is allowed.
-> >
-> > Fixes: ce62f8ea7e3f ("drm/bridge: imx: Add i.MX93 MIPI DSI support")
-> > Fixes: 5849eff7f067 ("drm/bridge: imx93-mipi-dsi: use drm_bridge_chain_get_last_bridge()")
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> However its caller lcdif_load() calls dev_err_probe() again on error,
+> overwriting the specific deferral messages with a unique, unavoidably
+> generic, message.
 > 
-> I'm perhaps not the most qualified to review this change, but let me try.
-
-Thanks for your review.
-
+> Make the specific deferral message visible by using a plain 'return ret' on
+> the caller.
 > 
-> > --- a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
-> > +++ b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
-> > @@ -489,25 +489,43 @@ static int imx93_dsi_get_phy_configure_opts(struct imx93_dsi *dsi,
-> >  	return 0;
-> >  }
-> >
-> > +static inline struct drm_bridge *
-> > +imx93_dsi_get_next_bridge_in_chain(struct drm_bridge *bridge)
-> > +{
-> > +	struct drm_bridge *next = drm_bridge_get_next_bridge(bridge);
-> > +
-> > +	drm_bridge_put(bridge);
-> > +
-> > +	return next;
-> > +}
-> > +
-> >  static enum drm_mode_status
-> >  imx93_dsi_validate_mode(struct imx93_dsi *dsi, const struct drm_display_mode *mode)
-> >  {
-> >  	struct drm_bridge *dmd_bridge = dw_mipi_dsi_get_bridge(dsi->dmd);
-> > -	struct drm_bridge *last_bridge __free(drm_bridge_put) =
-> > -		drm_bridge_chain_get_last_bridge(dmd_bridge->encoder);
-> > +	struct drm_bridge *bridge;
-> >
-> > -	if ((last_bridge->ops & DRM_BRIDGE_OP_DETECT) &&
-> > -	    (last_bridge->ops & DRM_BRIDGE_OP_EDID)) {
-> > -		unsigned long pixel_clock_rate = mode->clock * 1000;
-> > -		unsigned long rounded_rate;
-> > +	for (bridge = drm_bridge_get_next_bridge(dmd_bridge);
-> > +	     bridge;
-> > +	     bridge = imx93_dsi_get_next_bridge_in_chain(bridge)) {
-> > +		if ((bridge->ops & DRM_BRIDGE_OP_DETECT) &&
-> > +		    (bridge->ops & DRM_BRIDGE_OP_EDID)) {
-> > +			unsigned long pixel_clock_rate = mode->clock * 1000;
-> > +			unsigned long rounded_rate;
-> >
-> > -		/* Allow +/-0.5% pixel clock rate deviation */
-> > -		rounded_rate = clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
-> > -		if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
-> > -		    rounded_rate > pixel_clock_rate * 1005 / 1000) {
-> > -			dev_dbg(dsi->dev, "failed to round clock for mode " DRM_MODE_FMT "\n",
-> > -				DRM_MODE_ARG(mode));
-> > -			return MODE_NOCLOCK;
-> > +			/* Allow +/-0.5% pixel clock rate deviation */
-> > +			rounded_rate = clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
-> > +			if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
-> > +			    rounded_rate > pixel_clock_rate * 1005 / 1000) {
-> > +				dev_dbg(dsi->dev,
-> > +					"failed to round clock for mode " DRM_MODE_FMT "\n",
-> > +					DRM_MODE_ARG(mode));
-> > +				drm_bridge_put(bridge);
-> > +				return MODE_NOCLOCK;
-> > +			}
-> > +
-> > +			drm_bridge_put(bridge);
-> > +			break;
-> >  		}
-> >  	}
-> 
-> Is this logic specific to the imx93 MIPI DSI host only? Or should it be
-> made generic for all dw-hdmi users, or even every DSI host?
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+>  drivers/gpu/drm/mxsfb/lcdif_drv.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think it's kind of specific to the i.MX93 MIPI DSI host only, because
-1) the i.MX93 MIPI DPHY PLL(integrated into i.MX93 MIPI DPHY IP) supports
-the best DPHY PLL frequency @445.333333MHz for the typical 1920x1080p@60Hz
-display mode, which is lower than the expected/nominal frequency @445.5MHz
-and 2) the generic DW MIPI DSI driver(dw-mipi-dsi.c) is PHY-agnostic, which
-means vendors may attach different MIPI DPHY IPs to the common MIPI DSI host
-IP and likely there would be no frequency mismatch between the pixel clock
-and the PLL like i.MX93 has.
-
-> 
-> Also, iterating over the bridge chain is not very clean. I'm working on
-> bridge hotplug (not upstream yet) and bad things would happen if a bridge
-> were hot-unplugged during this loop.
-
-The iterating is essentially the same to drm_for_each_bridge_in_chain_from()
-except that bridge_chain_mutex is not taken(since it's already taken) and
-the starting bridge is fixed to be the next bridge.  A few bridge core APIs
-like drm_bridge_chain_mode_valid() call drm_for_each_bridge_in_chain_from().
-So, the iterating looks clean to me and I'm not aware of any bad things which
-would happen when bridge hotplug is considered.
-
-> If the core did this sort of algorithm
-> it would be able to be more robust.
-
-Is the core dw-mipi-dsi.c?
-If yes, do you think it's worth doing that even if the frequency mismatch
-between the pixel clock and the PLL is kind of specific to the i.MX93 MIPI
-DSI host?
-
-> 
-> Finally, out of my utter ignorance on the subject, is the VESA +/-0.5%
-> margin generic enough that this driver can always rely on it?
-
-I see several upstream drivers rely on it, see "git grep '0.5%' drivers/gpu/"
-output.  And every display mode allows -/+ 0.5% pixel clock rate deviation
-according to VESA Display Monitor Timing Standard [1], though [1] is a found
-by a random Google search.
-
-[1] https://glenwing.github.io/docs/VESA-DMT-1.13.pdf
-
-> 
-> Luca
-> 
-> --
-> Luca Ceresoli, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
-
--- 
-Regards,
-Liu Ying
+Acked-by: Liu Ying <victor.liu@nxp.com>
