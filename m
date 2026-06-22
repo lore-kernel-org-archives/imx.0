@@ -1,174 +1,182 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011066.outbound.protection.outlook.com [52.101.70.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21953947B8;
-	Mon, 22 Jun 2026 11:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782127248; cv=fail; b=NQzwvHeE3L9lVlvQOYpsybWhrqG6vDiDvjf2p9G339Hj3ziq1WaHl+fEmq0KtAmNLLv4uVG1xvU86MpFaTLvXiG9Ou5+2FHtuEVa6NW1hxav0NjslyL8ZpRjKg+yEZEMamsHiXq6ykLIOZcQbixyE6YZc0OqvSn6zmpt3OURKsY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782127248; c=relaxed/simple;
-	bh=4XLiLRk+87Zs3hm2BQZ/ykVxFPxL6u8SoJgFjmrlFNM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WSdQUf7Tp6IufP2XQ7j6O4ks6MwWxjgVPDbdqrJgYZOfbUHqiwhOqf2OI5e/InRuasiXnYP+JY9mNnDHBvTbyx9t9a7eH0qF+KTLxz3ic1ev8lY1MUwEdhhhVR9R7yIlYoKcc4KD56/npt9QoD5dGPx5y8aQqzwqhDk6Z9a8HZA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=kE1dwQKZ; arc=fail smtp.client-ip=52.101.70.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDD83B14A1;
+	Mon, 22 Jun 2026 13:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782133953; cv=none; b=tw0M8AYtWYtr37IiI2GmGE21qrs0o8G9N8WS2kZIoEnexccLnEtpAr/Ocx3ktSBBZmPo6xZcgEZJwZ4WgJo9/gMEGEMVT0UW6DwVQsz54wmQJEXO6cBUA8uTUFd1Ezc4fW1sMisNbU7eVQZtMcLrA8X8CAwhfa75+9zwrs8pBFo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782133953; c=relaxed/simple;
+	bh=ZzsheSfI80KF001phM/l6Q6/kuFBmhuyr2vvThi6qSE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LPSWfUxLkS8hy3vYj0mEU8yVHAV0vE8eTaKuRcfjZ88LAhoicUbslL+WqNpbKA1lYUQQ3O4jL59NF9vVXrE0a2mNsKCmkY2+cNSI86x1ZPeMFPMJALiZdkg03HU9/xoRGJIlU5N/wGkcvZuQi21ody+fqQqLD7+yyJOwTGmgTv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TE1Xg9xv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="kE1dwQKZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VV2wlfccEIAM23k+k4GlYWznyG40QMN6Zu8wVVlmp3vbvxMXkZVVAJNDOeZsxJ7D2PMmNYDcVoerWwhuWt0z6dbBCN7dYs1WGG3UsYC8MkNP8JvFIwhjtKHcCOrKepdDJQlL/A2vt3RG4kYz4b6E5gfrBIKFcaXZKFKIk/Oc4Wz7F1LIVxe1UztxpuLuJerDK1Rp+yMQxHm6Sxu7rrb1SCgFwKybW8UO3jY0U7MV1CvwcdtTdN0m07cqOwZHpEb2dNy4r8CARtrDySAVhQ+bx9ZWU1K0dpRQHwlPWoJ7RWTfNRlG/5H9UTcEZAZot0uO7ODZt3lLHfiuzd94Q+lZ0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sc/B6wiF0kc9SOOcKX9/mC30ZDmPvdOcQYxylCdpoDk=;
- b=LbnnclhAmNBwL/xfiE5Nhxsf0VrBqp3Dai9OY9WEI8NlkA5dfzaHNpXGa2aeeexvFrShSm/cIyCfQ2ILWnHyijMTwLGDYqwbd8Uc92xlPRna8VlK0tHDAUj7xa0bZIy2mXdjR/DKxlbvY+qCRWhTvRGExCAc6kDRnQS0PDP3Jc4yp20Q7h5t5i7c61B3rbsQXO6c1j2jM46cuWzY32P2x4SAuXeunSgf6UYzh4MlbIFq10+R1kS2Qf0vkfSNxIWVKn0W3qF4lgDLokLemWpRkEs1w4kC30K/z3B0OeZ8hZNPF7VzF1FZ92H+OHF2/CxUmJ7z6V7dan184MrOoD4Xlg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sc/B6wiF0kc9SOOcKX9/mC30ZDmPvdOcQYxylCdpoDk=;
- b=kE1dwQKZpYE/uavqI2U9G9ulN1l8rSKRUI91JQ69/Re2WswLOf+ePOSwbZlTiRTzZA8rgm+fcgBCN2uDh3mqWX9Xmo6rdOxpUfUlsKyts47FSXteqQ8vyUljbIbBGgKC33WVXZAlrPYC6PCTwl1vxpv1epwClHbgGlcwPvjZ5+a7dQDvsNy3Mlp2Dzv9F5rauqFJ8aPGUGP285TpoaM6jpi653INcg7Yy6IUBTYxr8PBjZkFQRv9AVzygdGZAUrE0usMb8jdDtG5VE65OCqCHJa1YZF2vSVpq4LdD+7GUlB6FdYxeDmIakmV6vZjJtR7ahw4YZBu7ZeeJHWhuEjUjw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
- by PA4PR04MB9709.eurprd04.prod.outlook.com (2603:10a6:102:26b::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.19; Mon, 22 Jun
- 2026 11:20:41 +0000
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9%3]) with mapi id 15.21.0139.009; Mon, 22 Jun 2026
- 11:20:41 +0000
-Date: Mon, 22 Jun 2026 19:24:00 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rt-devel@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v3 01/10] mailbox: imx: Forward the timeout/ error in
- imx_mu_generic_tx()
-Message-ID: <ajkbUNkn6MSw8txc@shlinux89>
-References: <20260617-imx_mbox_rproc-v3-0-77948112defc@linutronix.de>
- <20260617-imx_mbox_rproc-v3-1-77948112defc@linutronix.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617-imx_mbox_rproc-v3-1-77948112defc@linutronix.de>
-X-ClientProxiedBy: SI1PR02CA0014.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::9) To AM8PR04MB7874.eurprd04.prod.outlook.com
- (2603:10a6:20b:24d::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TE1Xg9xv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5F41F000E9;
+	Mon, 22 Jun 2026 13:12:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782133951;
+	bh=cNdjL00WBqqYfozOsasxypzA3JammtyHrJgX4pryvkQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=TE1Xg9xv0dMhSVDV5EGq5eKodXJMYui/TMChcbqljfUPdkceLsZtHN6K+Uy5lz6oN
+	 XV0PADg1y3LvGChpVWDNFSTtWWzamFznR92drIVfrEgXfi3MpEmCf9xv20yM5NizZ1
+	 g4U4MQ9YSV+Wrz17Li4BGRcxeeHtVK2H8lOnrzlhniSq/luzXn2VRMLRS/OMnP/ZkR
+	 0J6YjaNvUS4tRewTPiHJZ7kRDgkHEYrimS6S/FAZAczQIxAa3ExY8khWQ0tdX3Wxkg
+	 hDa43bZZJccGs/ETsTtxqBKm5VLK+NqpD4VqdSRQ3keP+s0CVVpNWm6fUIQoxxLltR
+	 rIPwzvfusfodw==
+Message-ID: <30e02780-52c7-4a71-9d4f-4b7a20494161@kernel.org>
+Date: Mon, 22 Jun 2026 15:12:23 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|PA4PR04MB9709:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b9c75ab-c532-49a2-4374-08ded0504b4e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|19092799006|23010399003|4143699003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	/UYkdyHatYGRdfyBiQD3WnrhV1p36cmaDl7U0QwU6Vu4SRIU78cjfozom/ucZsa3/nzHvF+YWxft6eePsK4FcPSYCwRt+ROEpfMwpftzZdN4dL6UnebwgpyO8zfi1Hm+TTGkerT6XXeHLLRe7E/zEMSFg3bDdCfAqonO0zjb9KkBLpR28z9vzpbp4W6Ess8LroLe/tRKZgO7cKjd3iATxrtKHXt/16NDKeXUUEPNf6G3tAzsna3wMLc5Vd5dUKXkT7Jxfzl1R09QdmZDDvNGGKfIA+f3DRO21f+7VKGpFpsoct+vucO7tclDwSigza/IJx4AXlljl3z3D/OqQdqd0RasvsTAqf1+xkviNEdYv5mCiuWnHENCdKmco3X1YKiBRFxH74KY27ufIe/6l8/uTNrfe9hOU2uB6pU1U5bf8/TdtaK1q/7aViYOYGfw/ETKe1JqmNKnBDudqAssxWYkx/VvzIP/3YDL/m0ujNLY/lfOBahN83Ka737jHkts1Pi9JhKAutzoS5HvWuUm3/Zt7ws3uS0lKiaB2zCcoljw1oXLwBeZt3qB638nrWos2vIF4Gndww3RQtFJRL6SmD97vIDO68Li/r47vV6VjiH5k8gCV/CzxwpFwXF+VfedMXpcnPcAW9QJ6HhP2uXt3rQBu4AzAK+oBS8hVbFEtfuAjkQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(19092799006)(23010399003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EOXCED7ejezImvXJQnNmb8gHJhiKd2cxDca3uouBezyP6ts9r0knS5KAKodL?=
- =?us-ascii?Q?WCOammnetLmcUSeHUtCBq6qWwcfULCI8pJwMufU1WbZTbKyTTKReJV5dTpse?=
- =?us-ascii?Q?mckcbFLggudZgism1fBe7cn5mw3vUxhUQjHwUfvTVdqZHyI4CeANP6QE8aoN?=
- =?us-ascii?Q?/iMHGahGVh32uMc19wNsnLCGAw34haLg55uVuqJ3HIBukJjdzetkj8ctIMsH?=
- =?us-ascii?Q?OZtKuSCi5Wlw79G+QaHzJyBQej/NJYheu6ChCg4NmLjRSS1U8B/Ig832+NNX?=
- =?us-ascii?Q?y3IhM0Eg6OSnlY70Mzj8UzBeIDUf1H3zPV0l0rKSo2Cg5ikWiqzhhlVDpy8P?=
- =?us-ascii?Q?Ar4shSlK629vRJ9sbvd5FQsGMTX0WnDiPPbxrNsTLZg+6IY1ng8AyfNlF9Ia?=
- =?us-ascii?Q?xEqtYeVW9vYg+E/+8eVz+hN6JNlCe2khbXaSGmyTRJB0Mt3DH9A9LuyQmLaY?=
- =?us-ascii?Q?JkZN5R2eYshwp9QGOSlo4fYmLG+XdxIXjyjXlVxiQMMY2pBhu11mpJGgLpoZ?=
- =?us-ascii?Q?6cLNcShQO6QU8Lp/bletpBhKgTUCcz7r3KM0wdqJha5vxg/XZ40cLd4FW5sV?=
- =?us-ascii?Q?eTo4USpFkX2hMyf1UH8a+pSArhTd858QohaejImuKd+IinhGEo7bg3F1SEWt?=
- =?us-ascii?Q?izlFXSF8gnKxnLrjtaeixQGe1F7+JLekFaORs6U1J6CPP9WmVDTd8JckJbPe?=
- =?us-ascii?Q?NGVcS8F6l+A3Xp4cJYgGf3McfiuD6foH3BVCGmEylxcL8vhw2eB2cPeAtcNj?=
- =?us-ascii?Q?QuxGBbiaXz24n8YNxTSYukoc5Nf7JQHAQB96D49Ugqy+dXZddNuUmJH15uI9?=
- =?us-ascii?Q?fZL32gHWdPbP2WK1DlVA+fPpa9g7V4/99gA2g5HFmS24ReGYdw7N4EyGscBe?=
- =?us-ascii?Q?TJzQsYnxR8/0rSiNi1qA/vn2mqSRC0gBLzSe+vWvF2UYcnqPagPCCL2TpcJK?=
- =?us-ascii?Q?8/ZuPbgjfyEcyM5mqnca/xaeGW6gcvKMmS6gNaAQnn6+p//dNAnvblsKBh4i?=
- =?us-ascii?Q?714Gpn9ZPWTdMa1zxCs1ozGWjcRCcTDJ57eLgkc8PIutYUqo+Vc5w0SZJWAz?=
- =?us-ascii?Q?rWZxrzpLv1hBSjAQm4J1pydYZbf+2UGmsJmhjufyLpJzdHb60ZJNOGnbuStg?=
- =?us-ascii?Q?3BIt0kd9CjhbqyjDSwtqadUmt56IX5GTKo7vsEiu2Wk8/LceS1ARvtyTb8MR?=
- =?us-ascii?Q?M6/CBT1gfQf9Mgr80hc/MUUSNaFI2APfs/mtcOOn3QhUxwSssVl7Vx0gJZ9T?=
- =?us-ascii?Q?8YFltED4SPYcgy8zhdgegy0/c46V8iP0ihWiIBq/L0G7kJxGaV3LWfkj6I7y?=
- =?us-ascii?Q?3YbRYG+wAJLObWAetgw9KPiJcUpqoqSSP3o9uwbTkD73QP75/0mDVfmNHwqL?=
- =?us-ascii?Q?Fagx+9n44Cm1RWSClkdwrWzUJzfHyMVpW8T/6jdlILUTHgIunjBZNtnGxMcN?=
- =?us-ascii?Q?5ew77MvQdug2kdcO6bOsFRJK4DRdVanExf2++SSsi4JFJCQj72bItbxESlvc?=
- =?us-ascii?Q?bmrsnfrCZEkLB8R5g9KRUJE9SylAq5YxjIzIv1dXAznAscQbp73M3ojjCNj3?=
- =?us-ascii?Q?wHds4MCLlzYrTbHYdZ39N0IO5d9iLbgAAZ85RJqANTxe2ZsTphBGeGVjk5Jf?=
- =?us-ascii?Q?8A2zrQGvbdu1rl+9LO86iVNnoHa19ie5/5OMKzFQHZ2BH8PW11NmIQGr5C7B?=
- =?us-ascii?Q?0E+38FRK7asXX2TRe1Kcz0VmqP5yCjapAUBdmrjmevvtl1xFDkSGqiVYffMk?=
- =?us-ascii?Q?7KBEi13bC0LsPKd2xlMfppeEsMXfrGAgmdwj0cAhDm1iXHjeA2lU?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b9c75ab-c532-49a2-4374-08ded0504b4e
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 11:20:41.4751
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gNiVLXLxLdPCXU4gweL8xSkgitkvWtUuJER/3mI8PTuqkpu+xvUOHeB/qUoaZ2BXdQwXs+exvN3uYPXCDDd1i75cZ8k5b63JcoQiZMqUgi5OITe9S8P4EUatoLMqwS+B
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9709
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] dt-bindings: nvmem: imx-ocotp: Add support for
+ secure-enclave
+To: Frieder Schrempf <frieder.schrempf@kontron.de>,
+ Frieder Schrempf <frieder@fris.de>
+Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-0-cb7f3698c3e6@kontron.de>
+ <20260616-upstreaming-next-20260609-imx-ocotp-ele-v1-1-cb7f3698c3e6@kontron.de>
+ <20260617-prodigious-private-inchworm-beae1e@quoll>
+ <085262ba-32e5-4011-8df3-5a677575b2db@kontron.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGPBBMBCgA5AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJp2mE8AAoJEBuTQ307QWKbeaIP
+ /ihHTkTW4KsN/DQ945JJbyu5tI0J80Wue7QyyLPglyKfhgb5cLLNPpOC8cCIJsc7+W3i2P38
+ s2c1cOH6CYGE7E9ur3Vfme8NW2S2I/Z8VC7bZnzyS23wT17LrsdS/qCpx4o8U+pt/xdXDKph
+ EGRYrIEmMpUWvyYzyYKGIe25FtaayIIKpq8eZYyFcp2f/sG5IkOW5uZzHPMPdcm87jU7fyuQ
+ rAU2vx9r+ulUfQ/q9Z2roC/ode3l7t2pN7BCBCsUDp6JCrUyZrtT1e7EbA0ZRP3aOBNk2P2E
+ DQOgJGjGdO5Yx2Y9LFtltu6JbsBJHi1syGRX3AtQYOMc4Y1WGoeZJmMlvKj2ZqqXNkcWi2DS
+ IQEWB0uW6CqFsBBIMGDa+6OzdaVO/uAVXWDWml02Men3CILdI1MbVjoh8ECqYUY7OQ+JJvNN
+ vnliuq5WM3Ghd3jg/LZZrxXjdIginRHFQCjIJYLKpLZWm1/iDFedcfzqRNYmTtqscdCNHW41
+ oT3Z7BmO9xwdjuwBS6nmS6JJwkbf5Ot2QR4pB/DRU7ZwjT1qHe+9r9gF32wXVQatHNGK/VVu
+ sfwOnkdxCWkp/qb2gdQRmZh+SedStWshigH6sNfuHBloF/q+hjMRc8b2m326OZdrbSHwY1Sz
+ vti8Hn7n8NjdHO9LKB7BIdjkA9DA5WsqOuVCzsFNBFVDXDQBEADNkrQYSREUL4D3Gws46JEo
+ Z9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLueMNsWLJBv
+ BaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6eiOMheesVS
+ 5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wAGldWsRxb
+ f3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA6z6lBZn0
+ WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9YegxWKvX
+ XHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt91pFzBSO
+ IpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gUBLHFTg2h
+ YnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/JoFzZ4B0
+ p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu4vXVFBYI
+ GmpyNPYzRm0QPwARAQABwsF2BBgBCgAgAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtBYpsFAmna
+ YUkACgkQG5NDfTtBYptX+BAApg32CkxwNucNEi8WfWA8oKkW0y8YDuY6ORMo9FWNGiT/OTy0
+ vyJrLocrpn86zwfjVp+eCrssPYh8eqJfnWqmYv6ACQtHPYzPZQ3mSo8H97Z01oUxITzCxpXm
+ ZkLgPIqtDPcC2E3dPM/fVxcyowM8XsaMA9wcsaUYrta8toOq2b9tKcjleKMfMrm0gQ9u7wUc
+ QbLkwj6TCLOwucb07GXzLTNF9PZmaDUpKAZjMjmrW+le+SFvQbhamx0rxLWPR0NWntXpbCn+
+ +ACch03p/JyTBVktxFsFyCt7pTPE1kEaeuXBTe/a2D9iQvRxRW19LvuO2e59/u1wYUiH/orz
+ wbIC2S4dBsPAPihL3ztOU1yE86GPyQtSE0kU+/7snnLt4QGi6PChf3t5gnNjAzjUUovO8rgI
+ c+5yN5heq5loYHgK6OQ9OlHzsPHO9e9MOQcKlFycs1pyijFGzDwdNUm/SchK8iWT2QApTx4A
+ K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
+ n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
+ qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
+In-Reply-To: <085262ba-32e5-4011-8df3-5a677575b2db@kontron.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 17, 2026 at 08:55:26AM +0200, Sebastian Andrzej Siewior wrote:
->imx_mu_generic_tx() for the IMX_MU_TYPE_TXDB_V2 type polls on a register
->which may timeout and is recognized as an error. This error is siltently
->dropped and not dropped to the caller.
->
->Forward the error to the caller.
->
->Fixes: b5ef17917f3a7 ("mailbox: imx: fix TXDB_V2 channel race condition")
->Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->---
-> drivers/mailbox/imx-mailbox.c | 3 ++-
-> 1 file changed, 2 insertions(+), 1 deletion(-)
->
->diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
->index 246a9a9e39520..0028073be4a71 100644
->--- a/drivers/mailbox/imx-mailbox.c
->+++ b/drivers/mailbox/imx-mailbox.c
->@@ -227,6 +227,7 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
-> 	u32 val;
-> 	int ret, count;
+On 17/06/2026 13:36, Frieder Schrempf wrote:
+> On 17.06.26 12:49, Krzysztof Kozlowski wrote:
+>> On Tue, Jun 16, 2026 at 01:52:16PM +0200, Frieder Schrempf wrote:
+>>> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+>>>
+>>> Some SoCs like the i.MX9 family allow full access to the fuses only
+>>> through the secure enclave firmware API. Add a property to reference
+>>> the secure enclave node and let the driver use the API.
+>>>
+>>> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+>>> ---
+>>>  Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml | 4 ++++
+>>>  1 file changed, 4 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml b/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
+>>> index a8076d0e2737..14a6429f4a4c 100644
+>>> --- a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
+>>> +++ b/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
+>>> @@ -53,6 +53,10 @@ properties:
+>>>    reg:
+>>>      maxItems: 1
+>>>  
+>>> +  secure-enclave:
+>>> +    $ref: /schemas/types.yaml#/definitions/phandle
+>>> +    description: A phandle to the secure enclave node
+>>
+>> Two things here:
+>> 1. Here you describe what for is that phandle, how it is used by the
+>> hardware. Currently the description repeats the property name and type,
+>> so not much useful.
 > 
->+	ret = 0;
-> 	switch (cp->type) {
-> 	case IMX_MU_TYPE_TX:
-> 		imx_mu_write(priv, *arg, priv->dcfg->xTR + cp->idx * 4);
->@@ -259,7 +260,7 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
-> 		return -EINVAL;
-> 	}
+> Ok, agree.
 > 
->-	return 0;
->+	return ret;
-
-We may need to use atomic API for TXDB_V2. For the patchset itself, it
-looks good to me.
-
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-
-> }
+>>
+>> 2. If you access OTP via firmware, then this is completely different
+>> interface than MMIO, thus:
+>> A. reg is not appropriate
+>> B. Device is very different thus it has different compatible and I even
+>> claim should be in different binding. Devices having completely
+>> different SW interface should not be in the same binding, at least
+>> usually.
+>>
+>> If any of above is not accurate, then your commit msg should answer why
+>> and give some background.
 > 
-> static int imx_mu_generic_rx(struct imx_mu_priv *priv,
->
->-- 
->2.53.0
->
+> Thanks for the feedback!
+> 
+> The driver currently uses the limited MMIO (FSB) interface to access the
+> OTPs. The intention is to support the firmware interface alongside the
+> MMIO interface so the driver can pick the interface that is available
+> (firmware might not be loaded) and fallback to MMIO.
+> 
+> Following your argument would mean a driver deciding by itself which
+> interface to use at runtime is not something we want to have in general,
+> right?
+
+No, the property fits DT, but above information should be in commit msg.
+If this SoC has indeed both interfaces - MMIO and firmware calls - then
+everything is in general fine. I assumed that is not the case and MMIO
+is not really working.
+
+What was confusing is that it feels like you are changing existing
+interface, but why wasn't all this documented in the beginning? There is
+imx9 in this binding already, so was it working? Was it not working at
+all? Commit msg must clarify that.
+
+> 
+> In turn this would mean we need two drivers, or at least two
+> compatibles/bindings for something that is effectively the same hardware.
+
+Driver design is orthogonal choice here.
+
+It can reside in separate binding, if MMIO is still valid, but till
+everything is not yet too complex can be also this binding file.
+
+If it stays in this binding, then you need to restrict properties per
+variant, so add if:then: block which will disallow the phandle for other
+variants.
+Best regards,
+Krzysztof
