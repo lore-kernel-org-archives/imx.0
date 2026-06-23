@@ -1,94 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9EF3769E3
-	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 10:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760333CFF50
+	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 10:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782210101; cv=none; b=JIZwhblEbO4cMSQ2zVgyvHkM6WQLsC7tBzg2FZPAWThdc6P/NSU1cV8q0JkCY1kBLnVoGfpo6/t96a2a/n8T90fAqICjFR3gbYjbVyZ5gCRT9oI0nIzgN7RqFYlVBrdQssdDmdUC4I+qJmNfoHHoZOgRaGzaKm4DqnX5jlx5WhI=
+	t=1782210701; cv=none; b=KewUEBeA23Zq0b+ZC483mUz9PHeNZ4lns7wQYGyhMS/YpUxxiasaubbjE6DaZnN7OrMUDMj5xanh6Q1qZS4z0iKLMrqoAuIXowbFXniPtm5mzfJG6uCIFFZ7yMEb2DToHzfxNW7kWHIzeazMSTOg//x8jipi8v/Ou7ozyAmKgIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782210101; c=relaxed/simple;
-	bh=IjpFFomcgYWsNbwOvLu4OPgPpQ31Oogqw6gkqTdzph4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=C4L/uZIDdgbtGPm4cIfWoU0XnstJG3vdwt/CmkWEAQCOfy3TSE4DIKoNhdhlJNgg3DtgqaEZQpU+/x/hb7nW8FkRqgXcMUZXFcvf+hQD0V0hFsh20tXHnlCzGCxFoYuXw/tQEFIEY6tzW7TKFF5myZ8i/2nqE664a2cp5psLLnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TouiWOJG; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TouiWOJG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE021F000E9;
-	Tue, 23 Jun 2026 10:21:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782210099;
-	bh=rPav65QB4r1EMbkHNwQ8dCQCBnsnbjx0/yoppyK5veg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TouiWOJGM2Nxe6GaL+qh+ec0CzW5ScTIrPAp+Kpt7GsZqIrTXIpSlzAXnhFvQl5oq
-	 SPOHTjn/8t4oy4ng3+fCC9rV9GNRmQJYDKWgGq/mntTu5fY6TRE0RlWXLIxxLMxvsm
-	 iWWCeS/z7Eu5McHwePZPSaqz7G2pRLqwDb28VB0OhP/k/9kCvLLC24u482qW4g0IuG
-	 SBk4dn0XwqN8G+UGSTWtInuqynxJ5Nt9vWaYLv3gJXtA4wEA6J1BRoD8WMEN6UsflT
-	 Wq0Yx98m2kpq+b7YcLZCmnKfYbnpGPwEuqYDwLITOPphQReG8pEl1VdwGZNtpuoY8Z
-	 8rguwRlTadXGw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] usb: dwc3: imx8mp: make dwc3_imx_glue_ops static and
- rename to imx8mp
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ben Dooks" <ben.dooks@codethink.co.uk>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260623101043.748359-1-ben.dooks@codethink.co.uk>
-References: <20260623101043.748359-1-ben.dooks@codethink.co.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 23 Jun 2026 10:21:39 +0000
-Message-Id: <20260623102139.8BE021F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1782210701; c=relaxed/simple;
+	bh=g9w1nnoj9PZP9t30ycj4eQL/Tri898VteycyFYDJrpg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=peTf9Ym1fiQYIKztOKW1c6nGFfON3nFYoS2gZzITbHHFhtM2rtWiNxnQcEO/y2Fp7ysucv5SQO0Wy2HVBDD4WMP7MYRVjNNBXM9QsA8kqS8eQgsVA6HdyNC9VkeOuRHxoHQd3V7GOvCUK3vHFlu47GtS8rJXF3J1TGqZZQAZYD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.75.44.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [10.98.66.117])
+	by mtasvr (Coremail) with SMTP id _____wDnVpR_YDpqJsP8Ag--.4251S3;
+	Tue, 23 Jun 2026 18:31:29 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.98.66.117])
+	by mail-app4 (Coremail) with SMTP id zi_KCgAX_DR_YDpqqnXDAQ--.12246S2;
+	Tue, 23 Jun 2026 18:31:27 +0800 (CST)
+From: Fan Wu <fanwu01@zju.edu.cn>
+To: mirela.rabulea@nxp.com,
+	mchehab@kernel.org
+Cc: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Fan Wu <fanwu01@zju.edu.cn>
+Subject: [PATCH] media: imx-jpeg: cancel timeout worker when streaming stops
+Date: Tue, 23 Jun 2026 10:30:31 +0000
+Message-Id: <20260623103031.3051-1-fanwu01@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zi_KCgAX_DR_YDpqqnXDAQ--.12246S2
+X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
+X-CM-DELIVERINFO: =?B?8uYBzAXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
+	sfnXz+g1OQfMo27QHy5TwQyZxPleTyGUXbnChair7cETXyoYXOFSx3siTBxadejsxrIXHa
+	8lA0M4uvHQv4iMs7l3up9E6mavGmQbzmcFsnzP86
+X-Coremail-Antispam: 1Uk129KBj93XoWxGw48Xw15Jr15WrWrtrW5urX_yoW5ZrWDpr
+	WSg3yUAFWUtF4ktFyqqa18uF95GrnxXayUur40g34fArZ3Wr1YqrW8K3W5KFW7A392kFZ2
+	qF45K3y7Za1YqFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
+	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
+	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
+	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
+	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
+	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0E
+	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
+	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
+	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU85l1PUUUUU==
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+Each per-fd context ctx owns a delayed_work (ctx->task_timer, callback
+mxc_jpeg_device_run_timeout) armed via schedule_delayed_work() at the end
+of mxc_jpeg_device_run() to recover a stalled encode/decode job. The only
+existing cancellation is cancel_delayed_work() in the frame-done IRQ
+handler, which de-queues a pending work item but does not wait for a
+callback that has already started, and it only runs when a frame completes.
 
-Pre-existing issues:
-- [High] The `dwc3->glue_ops` pointer is assigned after `of_platform_popula=
-te()` returns, creating a race condition where role switches can occur befo=
-re the `pre_set_role` callback is registered.
---
+When the fd is closed while a job is in flight (the frame-done IRQ has not
+fired yet), nothing syncs the worker before mxc_jpeg_release() frees ctx
+with kfree() after v4l2_m2m_ctx_release(). A queued or executing
+mxc_jpeg_device_run_timeout() can then recover ctx through
+container_of(&ctx->task_timer) and dereference it (ctx->mxc_jpeg,
+slot_data, dev_warn) after ctx has been freed.
 
-commit b965a813ee62bb063a7c9f8c07f1ddfe408ebc85
-Author: Ben Dooks <ben.dooks@codethink.co.uk>
+Cancel the worker from mxc_jpeg_stop_streaming(). The cancel cannot live
+in mxc_jpeg_release(): mxc_jpeg_device_run() arms the timer while holding
+only hw_lock, not the mxc_jpeg->lock mutex that release holds, so a cancel
+in release could still race a concurrent mxc_jpeg_device_run() that
+re-arms the timer afterwards. mxc_jpeg_stop_streaming() instead runs inside
+v4l2_m2m_ctx_release() -> vb2_queue_release(), i.e. after
+v4l2_m2m_cancel_job() has set TRANS_ABORT and waited for any in-flight job
+to finish (so __v4l2_m2m_try_queue() will not queue and v4l2_m2m_try_run()
+will not run any further job for this context, which prevents
+mxc_jpeg_device_run() from re-arming the timer) and before the m2m context
+is freed. cancel_delayed_work_sync() removes a pending work item and waits
+for a running callback, so the worker can no longer race with the
+subsequent kfree(). The cancel is placed before the buffer-release loop so
+a concurrently running timeout callback cannot race with it over the same
+buffers. If the frame-done IRQ canceled a still-pending timer, this cancel
+is a no-op; if the timeout callback has already started, it waits for the
+callback to finish. The same mxc_jpeg_stop_streaming() call is also
+reached from VIDIOC_STREAMOFF, which drains the worker early, although
+STREAMOFF itself does not free ctx -- the use-after-free arises only
+when the fd is later closed.
 
-usb: dwc3: imx8mp: make dwc3_imx_glue_ops static and rename to imx8mp
+This bug was found by static analysis.
 
-This commit renames dwc3_imx_glue_ops to dwc3_imx8mp_glue_ops and makes
-it static to fix a sparse warning about an undeclared symbol.
+Fixes: cfed9632ca8e ("media: imx-jpeg: Add a timeout mechanism for each frame")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+---
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> diff --git a/drivers/usb/dwc3/dwc3-imx8mp.c b/drivers/usb/dwc3/dwc3-imx8m=
-p.c
-> index 1cf96540b66e4..de8c17bc940d2 100644
-> --- a/drivers/usb/dwc3/dwc3-imx8mp.c
-> +++ b/drivers/usb/dwc3/dwc3-imx8mp.c
-[ ... ]
-> @@ -266,7 +266,7 @@ static int dwc3_imx8mp_probe(struct platform_device *=
-pdev)
->  		goto put_dwc3;
->  	}
-> =20
-> -	dwc3->glue_ops =3D &dwc3_imx_glue_ops;
-> +	dwc3->glue_ops =3D &dwc3_imx8mp_glue_ops;
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+index 9e4a813489c0..d85a9d196269 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -1735,6 +1735,8 @@ static void mxc_jpeg_stop_streaming(struct vb2_queue *q)
+ 
+ 	dev_dbg(ctx->mxc_jpeg->dev, "Stop streaming ctx=%p", ctx);
+ 
++	cancel_delayed_work_sync(&ctx->task_timer);
++
+ 	/* Release all active buffers */
+ 	for (;;) {
+ 		if (V4L2_TYPE_IS_OUTPUT(q->type))
+-- 
+2.34.1
 
-[Severity: High]
-This isn't a bug introduced by this patch, but is it possible for a role
-switch to occur before glue_ops is registered?
-
-In dwc3_imx8mp_probe(), of_platform_populate() runs earlier and probes the
-dwc3 core, which registers its USB role switch. If a concurrent Type-C or
-extcon event triggers a role switch before dwc3->glue_ops is assigned here,
-dwc3_imx8mp_pre_set_role() won't be called.
-
-Does this leave pm_runtime autosuspend enabled for the host role, potential=
-ly
-causing the XHCI controller to clear RUN_STOP and disable wakeups so it
-becomes unresponsive to device insertions?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260623101043.7483=
-59-1-ben.dooks@codethink.co.uk?part=3D1
