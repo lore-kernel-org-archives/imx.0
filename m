@@ -1,265 +1,223 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B728363C6C
-	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 06:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA283C3450;
+	Tue, 23 Jun 2026 07:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782195920; cv=none; b=sq1kyu2hMbY3C5dDgvH50RygbzKdiyxIbeSEopBHjfcj1XlcararbLodV4prHTpwAGmaIo2iphiAA1OLrkL0yXrwysGTmxM9ZlWepjQOfnvUYg+sPqic0MvKEHC9f7RRuI/scegz39c/qygyS8FQdWQazb17EsNuW5fBVatErHs=
+	t=1782198865; cv=none; b=RR1Gjeva71pf1uEGAkvXIDUYOnq3jLkoLN7FavEWbUvYHva7joSOX0iYudQqlxvaQoVoqiovGCloYI+cW2S7G4Ic1e+yQ7Jf+iB2UQlgPm1/Tzk4cmsNf4A1TOzqORLUndPD9gQFBXW++GWAGQHl+4vd10jYu2wPmJjRs/KWH6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782195920; c=relaxed/simple;
-	bh=VLehpKV+rsnSYwifcRrtuDdA9GuS3Z9HPyB37eNfUKU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PelJuZ62twVdXXsFrXzByZ3+o0kWr+j398WgU3XHFilx8CHALKgMLKjtbLtF/XRC/QhaadmEK28Y1DU5MFzWcYGMXhigYCvN4ZtpI9bG0PD/iURXNOCZVEvyFpuwFg9OjEX4Qq2hPXmUGX8P4QixZf2hRYeT3ncxiOcWWuUu0t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bh9WneyB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782198865; c=relaxed/simple;
+	bh=8y46Yju15t/1iPyWUiD+fHypEVZTRKbUmfGltB3HmX0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OizbVACHNw4ZD+aiPiKq+L4onN8Ff1HFJKIOjGX+11Bie/Wan3Demo0r/EjOEzvuU/iIKwBmDrQWJwMX2Oax3MqLhbB/8cQHh+Arz0BM0ocGHAx4t4bYHF4CPOnCgKL0s7dpGNCBJ8WhSG+OZogULRd8EujNhZf2+TgG4yl4enU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=kqbvVj+L; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bh9WneyB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7B81F000E9;
-	Tue, 23 Jun 2026 06:25:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782195918;
-	bh=YDi1HR/uAYilrE9a9WgNxd0pqwEH/nO/OHN6kj200OU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Bh9WneyB8bvdlYTSdLQaHINeyz3zKd2KZ/1uzEnh7soClYM2FU4iQ4ep85LAOIZj5
-	 8rLFESMuIB2X3YPaPv6BpP2Ik5jNBRGVkIihwUCHk2smOkQj6hX0KxBgGB2857jqFz
-	 +zxitJ8TN9lJa7vwztvNbcVbjZ4cV0I8ZD31Sd0QYANPM52Y6EKtzy7Y4eIGZLi4TM
-	 3ZjPsSTwK93tQbZ0FejXfrfl2LdjPRQzf1Kuyaa5fzD1GAlmPg2fZ4wrfxMZ/OvtzX
-	 6+77fi4k7biIrOUvIzMXYwi085VjoY/2PQbRayFnBj70ld1HBaYQkldX+ts9oYK7tm
-	 R7GlxEdjSiYYQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] i3c: master: svc: report timeout waiting for STOP idle
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pengpeng Hou" <pengpeng@iscas.ac.cn>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, linux-i3c@lists.infradead.org
-In-Reply-To: <20260623060821.23238-1-pengpeng@iscas.ac.cn>
-References: <20260623060821.23238-1-pengpeng@iscas.ac.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 23 Jun 2026 06:25:18 +0000
-Message-Id: <20260623062518.7B7B81F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="kqbvVj+L"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=sXOBfhLAVLwn3podSYtFoxvOp/Tp82jbXxsxprm1FYY=; b=kqbvVj+LJ8cVuOpaDC1veWCJiX
+	uOgYwPvpWyuyPDFv4+YJbFBwS0jG891C6E3kwpzx8sdGs+VaLL+s6k7PhZdkAogmsGsABVa9K0/20
+	Ut/Dc8nUp2lejzvq4pFyffSvu77bBlVW06LQqOlnrFYf6MwTxRYtFiShPNN6wy5Bma/2HoGZDbNIr
+	BiWNWSohIcej2ukS/q8CA/dLqQ5QCM2yGJnLD4ihOW61/wBC360KWv9rLSYbx3nPDuZ+n7PgdISV1
+	AlkLCHcCdsX/2f+6RLkFm+JXxw/o44W30aULjgnm1ZNxn3UDEW6aZcPZzARaTJh9MEfJJWnc7mFNK
+	SKyrN92Q==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wbvKn-000G3R-1b;
+	Tue, 23 Jun 2026 09:14:13 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wbvKn-000Oj2-1j;
+	Tue, 23 Jun 2026 09:14:12 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Markus Niebel <Markus.Niebel@ew.tq-group.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux@ew.tq-group.com,
+ linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v5 1/1] arm64: dts: add tqma9596la-mba95xxca
+Date: Tue, 23 Jun 2026 09:14:11 +0200
+Message-ID: <6282261.lOV4Wx5bFT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <ajVN4nbmOW-D_Ec9@SMW015318>
+References:
+ <20260619112434.1121610-1-alexander.stein@ew.tq-group.com>
+ <ajVN4nbmOW-D_Ec9@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart5113499.31r3eYUQgx";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28039/Mon Jun 22 08:24:57 2026)
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
-s) to consider:
+--nextPart5113499.31r3eYUQgx
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Subject: Re: [PATCH v5 1/1] arm64: dts: add tqma9596la-mba95xxca
+Date: Tue, 23 Jun 2026 09:14:11 +0200
+Message-ID: <6282261.lOV4Wx5bFT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <ajVN4nbmOW-D_Ec9@SMW015318>
+MIME-Version: 1.0
 
-Pre-existing issues:
-- [Critical] Missing synchronization between IBI processing and device deta=
-chment causes Use-After-Free.
-- [Critical] Stack Buffer Overflow during Dynamic Address Assignment (DAA).
-- [Critical] Heap Buffer Overflow in IBI payload reading loop.
-- [High] Use of sleeping polling macro in atomic/hardirq context.
-- [High] DDR write payload is written twice to the FIFO when SVC_I3C_QUIRK_=
-FIFO_EMPTY is active.
-- [High] Hard lockup (infinite loop) in hardirq handler if hardware reports=
- RX pending without bytes.
-- [High] Endianness Portability Bug (Mixed I/O accessors on FIFO).
---
+Am Freitag, 19. Juni 2026, 16:10:42 CEST schrieb Frank Li:
+> On Fri, Jun 19, 2026 at 01:24:30PM +0200, Alexander Stein wrote:
+> > From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+> >
+> > This adds support for TQMa95xxLA modules, designed to be soldered
+> > on a carrier board. MBa95xxCA is a carrier reference board / starter kit
+> > design.
+> >
+> > There is a common device tree for all variants with e.g. reduced
+> > CPU core / feature count.
+> >
+> > Enable the external accessible PCIe controllers as host,
+> > add clocking and reset GPIO. While at it, add hogs for GPIO
+> > lines from the M.2 slots until M.2 connector driver is available.
+> >
+> > Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > ---
+> > Changes in v5:
+> > * Limit LPSPI4 max frequency
+> > * Replace PCIe M2 Key-E GPIO hogs with dedicated connector node
+> > * Fix PCIe clock configuration
+> >
+> > Changes in v4:
+> > * Fix LPSPI4 pad muxing and control
+> >
+> > Changes in v3:
+> > * Moved reserved-memory to board-lebel
+> > * Remove VPU reserved memory (unused for now)
+> > * Fix typo in connector comment
+> >
+> > Changes in v2:
+> > * removed useless regulator
+> > * added USB PD source configuration
+> > * Removed unused uart-has-rtscts properties (unused by LPUART)
+> > * Fixed RTS/CTS pullups in pinctrl
+> > * Added thermalzone on module
+> >
+> >  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+> >  .../freescale/imx95-tqma9596la-mba95xxca.dts  | 963 ++++++++++++++++++
+> >  .../boot/dts/freescale/imx95-tqma9596la.dtsi  | 278 +++++
+> >  3 files changed, 1242 insertions(+)
+> >  create mode 100644 arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba9=
+5xxca.dts
+> >  create mode 100644 arch/arm64/boot/dts/freescale/imx95-tqma9596la.dtsi
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/d=
+ts/freescale/Makefile
+> > index 8ddaab127ab9c..43e1dc51b11d7 100644
+> > --- a/arch/arm64/boot/dts/freescale/Makefile
+> > +++ b/arch/arm64/boot/dts/freescale/Makefile
+> > @@ -649,6 +649,7 @@ dtb-$(CONFIG_ARCH_MXC) +=3D imx95-19x19-frdm-pro.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-aquila-clover.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-aquila-dev.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-toradex-smarc-dev.dtb
+> > +dtb-$(CONFIG_ARCH_MXC) +=3D imx95-tqma9596la-mba95xxca.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-tqma9596sa-mb-smarc-2.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-var-dart-sonata.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-verdin-nonwifi-dahlia.dtb
+> ...
+> > +
+> > +	ptn5110: usb-typec@50 {
+> > +		compatible =3D "nxp,ptn5110", "tcpci";
+> > +		reg =3D <0x50>;
+> > +		pinctrl-names =3D "default";
+> > +		pinctrl-0 =3D <&pinctrl_typec>;
+> > +		interrupt-parent =3D <&gpio2>;
+> > +		interrupts =3D <28 IRQ_TYPE_LEVEL_LOW>;
+> > +
+> > +		typec_con: connector {
+> > +			compatible =3D "usb-c-connector";
+> > +			label =3D "X9";
+> > +			power-role =3D "source";
+> > +			data-role =3D "dual";
+> > +			source-pdos =3D <PDO_FIXED(5000, 500, PDO_FIXED_USB_COMM)>;
+> > +			self-powered;
+> > +
+> > +			port {
+> > +				typec_con_hs: endpoint {
+> > +					remote-endpoint =3D <&typec_hs>;
+> > +				};
+> > +			};
+> > +		};
+> > +	};
+> > +
+> > +	sensor_mb: temperature-sensor@1e {
+>=20
+> please order by hex address value
 
-commit f5ce1c99dd938b33fc88fc935174301f58c2a87a
-Author: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Ah, thanks for the catch.
 
-i3c: master: svc: report timeout waiting for STOP idle
+> > +		compatible =3D "nxp,se97b", "jedec,jc-42.4-temp";
+> > +		reg =3D <0x1e>;
+> > +	};
+> > +
+> ...
+> > +		m2-keye-dev_bt-wake-hog {
+> > +			gpio-hog;
+> > +			gpios =3D <4 GPIO_ACTIVE_LOW>;
+> > +			input;
+> > +			line-name =3D "M2_KEYE_DEV_BT_WAKE#";
+> > +		};
+>=20
+> Now Key E connector already be upstreamed.
+>=20
+> Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml,
+> which already define these gpios.
 
-The commit modifies svc_i3c_master_xfer() to capture the return value
-of readl_poll_timeout() when waiting for the controller state to become
-idle. It routes the error through the cleanup path to ensure the caller
-observes the failed transfer.
+Thanks for the hint. But these two wake signals are vendor specific
+pins 40 and 42 on key-e. In this case these are for the default module
+JODY-W3 module.
 
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc=
--i3c-master.c
-> index 93805df8a9406..ae38ceee5abf8 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -1488,8 +1488,11 @@ static int svc_i3c_master_xfer(struct svc_i3c_mast=
-er *master,
->  			svc_i3c_master_emit_force_exit(master);
-> =20
->  		/* Wait idle if stop is sent. */
-> -		readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-> -				   SVC_I3C_MSTATUS_STATE_IDLE(reg), 0, 1000);
-> +		ret =3D readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-> +					 SVC_I3C_MSTATUS_STATE_IDLE(reg),
-> +					 0, 1000);
+Thanks and best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+--nextPart5113499.31r3eYUQgx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does this code use a
-sleeping polling macro in an atomic context?
+-----BEGIN PGP SIGNATURE-----
 
-The readl_poll_timeout macro uses ktime_get() for non-zero timeouts.
-Calling this from an atomic context, such as while holding a spinlock
-with interrupts disabled, can cause kernel deadlocks when
-CONFIG_DEBUG_ATOMIC_SLEEP is enabled.
+iQEzBAABCgAdFiEEByESxqszIvkmWRwbaS+g2M0Z/iUFAmo6MkMACgkQaS+g2M0Z
+/iUfDwf/dfqfx6vWvg+eg95x3/68BAFVAkno24HK2jry2c+5CUtsfK7L9wGzymTY
+ZlDGHpZ6VUjgAb2CBnnWa7ZlqadCIGcpEkEIWgIxzw8ACqyeyZdc1S4Fx73ltWGR
+DpXLmvnqVWCHNtOUbUhSeaWL+ZLkYtkZFX5RRilB2jwuKKlw4TUlk9Rykm8rIln6
+VaI9B3LgoF5mGwZmbspj0my+CT/GRX+EbkgbSh0XR53EnsJBf2zT7xedWW/21ojS
+dGPGWQOQyH1LGuF4lYEyFxFGtA3jdyqrod1vj9FR+o/6mLCoTRL7Ox7LusidQot/
+ByET8EIgzKA0t9Nn5mRc9YUZW/d8ww==
+=QyRP
+-----END PGP SIGNATURE-----
 
-This also appears in svc_i3c_master_handle_ibi() where
-readl_relaxed_poll_timeout() is used inside a hardirq handler.
+--nextPart5113499.31r3eYUQgx--
 
-> +		if (ret)
-> +			goto cleanup;
->  	}
-> =20
->  	return 0;
-> @@ -1500,6 +1503,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_maste=
-r *master,
->  	else
->  		svc_i3c_master_emit_force_exit(master);
-> =20
-> +cleanup:
->  	svc_i3c_master_clear_merrwarn(master);
->  	svc_i3c_master_flush_fifo(master);
 
-While reviewing this file, I noticed a few other pre-existing issues:
 
-[Severity: High]
-This is a pre-existing issue, but does this code write the DDR payload to
-the FIFO twice when the SVC_I3C_QUIRK_FIFO_EMPTY quirk is active?
-
-In svc_i3c_master_xfer(), if the transfer is SVC_I3C_MCTRL_TYPE_DDR and
-is a write, the full payload is pushed into the FIFO:
-
-drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_xfer() {
-    ...
-    if (xfer_type =3D=3D SVC_I3C_MCTRL_TYPE_DDR) {
-        writel(rnw_cmd, master->regs + SVC_I3C_MWDATAB);
-        if (!rnw) {
-            ret =3D svc_i3c_master_write(master, out, xfer_len);
-    ...
-}
-
-However, xfer_len is not modified. Later, the quirk workaround triggers
-and pushes the same payload bytes into the FIFO again:
-
-drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_xfer() {
-    ...
-        if (svc_has_quirk(master, SVC_I3C_QUIRK_FIFO_EMPTY) && !rnw && xfer=
-_len) {
-            ...
-            writesb(master->regs + SVC_I3C_MWDATAB1, out, len - 1);
-    ...
-}
-
-[Severity: High]
-This is a pre-existing issue, but does this code mix stream and register
-I/O accessors on the same FIFO, potentially causing data corruption on
-big-endian architectures?
-
-The subsystem architecture guidelines explicitly forbid mixing accessors
-like writesb() and writel() on the same FIFO address because register
-accessors perform implicit byte-swapping while stream accessors do not.
-
-In svc_i3c_master_xfer(), both are mixed for bulk and remainder writes:
-
-drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_xfer() {
-    ...
-            writesb(master->regs + SVC_I3C_MWDATAB1, out, len - 1);
-            /* Mark END bit if this is the last byte */
-            writel(out[len - 1] | end, master->regs + SVC_I3C_MWDATAB);
-    ...
-}
-
-Similarly, readsb() is used in svc_i3c_master_handle_ibi() on the RX FIFO,
-whereas svc_i3c_master_read() uses readl() on the same FIFO.
-
-[Severity: Critical]
-This is a pre-existing issue, but is there missing synchronization between
-IBI processing and device detachment that could cause a use-after-free?
-
-In svc_i3c_master_ibi_isr(), the device descriptor is fetched under
-master->ibi.lock, but the lock is dropped before handling the IBI:
-
-drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_ibi_isr() {
-    ...
-    spin_lock(&master->ibi.lock);
-    dev =3D master->ibi.slots[ibiaddr];
-    spin_unlock(&master->ibi.lock);
-    ...
-    svc_i3c_master_handle_ibi(master, dev);
-    ...
-}
-
-If the I3C core detaches the device concurrently,
-svc_i3c_master_detach_i3c_dev() can free the device data without
-synchronizing against the IRQ handler:
-
-drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_detach_i3c_dev() {
-    ...
-    kfree(data);
-    ...
-}
-
-[Severity: Critical]
-This is a pre-existing issue, but does this code lack bounds checking on
-dev_nb, potentially causing a stack buffer overflow?
-
-The svc_i3c_master_do_daa_locked() function defines fixed-size arrays on
-the stack for up to SVC_I3C_MAX_DEVS (32) devices:
-
-drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_do_daa_locked() {
-    u64 prov_id[SVC_I3C_MAX_DEVS] =3D {}, nacking_prov_id =3D 0;
-    unsigned int dev_nb =3D 0, last_addr =3D 0, dyn_addr =3D 0;
-    ...
-}
-
-The loop assigns addresses to responding devices and writes to these arrays
-using dev_nb without verifying it hasn't exceeded the array bounds:
-
-drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_do_daa_locked() {
-    ...
-    addrs[dev_nb] =3D dyn_addr;
-    ...
-    dev_nb++;
-    ...
-}
-
-[Severity: Critical]
-This is a pre-existing issue, but does the loop draining the hardware
-RX FIFO use a hardcoded bound that could exceed the dynamically allocated
-buffer size?
-
-The slot->data buffer is allocated based on the device's max_payload_len,
-which can be small. However, the loop condition checks against
-SVC_I3C_FIFO_SIZE (16 bytes):
-
-drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_handle_ibi() {
-    ...
-    while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS)) &&
-           slot->len < SVC_I3C_FIFO_SIZE) {
-        ...
-        count =3D SVC_I3C_MDATACTRL_RXCOUNT(mdatactrl);
-        readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
-        slot->len +=3D count;
-        ...
-}
-
-Because the check evaluates slot->len < 16 before adding count (which
-can also be up to 16 bytes), up to 31 bytes could be written to a buffer
-that might only be 1 or 2 bytes long.
-
-[Severity: High]
-This is a pre-existing issue, but could this loop cause a hard lockup in
-the hardirq handler if the hardware reports RXPEND is true but RXCOUNT
-is 0?
-
-drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_handle_ibi() {
-    ...
-    while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS)) &&
-           slot->len < SVC_I3C_FIFO_SIZE) {
-        ...
-        count =3D SVC_I3C_MDATACTRL_RXCOUNT(mdatactrl);
-        readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
-        slot->len +=3D count;
-        buf +=3D count;
-    }
-    ...
-}
-
-The loop relies entirely on the hardware state to terminate. If RXCOUNT
-is 0, count will be 0, slot->len will not increase, and the loop will
-spin indefinitely.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260623060821.2323=
-8-1-pengpeng@iscas.ac.cn?part=3D1
