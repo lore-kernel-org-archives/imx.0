@@ -1,261 +1,165 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696D03D092E
-	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 10:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61764370AF3
+	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 10:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782211315; cv=none; b=qjKkyQyUtr5rl7vtn+SjN8s0Ujm7xNAuKm0ruDcpkLydzTIGPPJN27zpZxJQBN/2e6PWBvdeWB2UzZ+Ssp+0kGcVvVENMCl5dxqZIhH2vNG/MoOqm2oF6sA/ufMDLo3W1z0ryQZdXxDxuAr0Cqen0P4e+6Oe0VtXwRB8WtQHLdU=
+	t=1782211576; cv=none; b=KfUPyZrEpVPh36TehwOEcduNpt9MNus1K913gJ5DakC9hrY7wndw25YzEE9mHgNATB1JnfOMjeJr3mOKwiOExgu7yCqoae3VNhbi9nstaYncWwk928SnF9M8gyMxeVCzFVBmWjSFeT6Ep6WcCGW2ajIiQyma3MbniYOZ6cG9KUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782211315; c=relaxed/simple;
-	bh=kajIBxgPQ5fKSEkaF9i7FE6+WpliJhOreftbLAfeP2g=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=j+RYyvmcYiFAowEjfNH95FQkNGaG/GEwNPEPVkltCWrjOIiNlJ1JUGm4TuXP1zvsjr4PCVAX/aVlC6lSFZ23/6KTOHfWyZWYZ/wu773qzeB5Ss+SZTCH4KNaxcc+JhPThQjJir9PPP/qD/hyLHinErm8WYRwNJoTHxlntqkh/NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TsbFraGx; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1782211576; c=relaxed/simple;
+	bh=wjMPVOYlQDUbbr5l/O1Z3Izp55XAJ8pUek6vzl+NKM4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s5joHXHb6PLo+g40S02b92dpMhOlcaXpIDi0PsARLI9jTzAU7OYiyF5hPNuN064xwadOjoSyKq7Bg2G/rX3Kfgdf2tZmTFWVnpTQ0KahnfXkfmZiEtmvr+zsb9rM+dzT5WnCga2Em2AJZDfpSwiiIyKLz4IIarV4uHqmX16LeCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=Rr0g0kv8; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TsbFraGx"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 623A64E40761;
-	Tue, 23 Jun 2026 10:41:46 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2CA7A601C2;
-	Tue, 23 Jun 2026 10:41:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1C89A106C8442;
-	Tue, 23 Jun 2026 12:41:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782211305; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=nW1cfszAg7S4GsG7xpMPmAq99XG9RkOhVx8ssV5Hh5c=;
-	b=TsbFraGxXYHV0bJDmyjJ8nWcVEoBmdokwtEcPMViUEQJr3dI8dWjtCRqglpRmCiSQl7eUm
-	zXTT9XttBj49SaAJebbKEG88UPnERka2W9CCKKrPvv9WmBgxV6zqujW97fD4hVmiksLmA4
-	PNRg5K1B9HIGJTRCeFRs+FKhjJkxh8dP8wBIMSVweGib4+T/FncpYCcKpppU6LiQMGoa8P
-	FguDA0RmM2I1ccDbBRKVbYhp/ds5aPgKdQT7g1r77Pt/ve2fynQg8R0/7kutRNYpOvhgB0
-	yYocI55vQdENSLFfgwzDfLMiKSKF+qGbdtlAsiEhBuABs3K9zeHmkiIx1roGvw==
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="Rr0g0kv8"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4924593f45dso37929115e9.1
+        for <imx@lists.linux.dev>; Tue, 23 Jun 2026 03:46:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1782211572; x=1782816372; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NeXrq3s7XQQ03NTVUcOFA9RC9zObh9CMfGYLv0lwNEI=;
+        b=Rr0g0kv8nqhMJmJTFnduEc4d6nhZDiED6vFcceWM/T/LgnLzg0/fo1ZcjbadZZcuYS
+         bp4VSEaloLp19/nXN7QYAuoNKvOQpnSSjaNdelxPeR/Wrjznik6L0TzGHssiZDHav/nS
+         PZ5jfaGQuL2XTstWVeIBJFv15jyQvziD9oX71Uh1ejzmmkLZyojJaIhA7bMKJBJFD76f
+         j6EHM3oxVZrULp6xDKsyOJiVTzEarr9qRbiFiRLsN5Vo/x/nR68ZsusBrM/h5EOrlYRO
+         LI+qpyQM+HBSBdnmGkvxOItF9zMf387j1R0KIdr1JpG9iMZIclBfYCeUfNifX6U+dDMf
+         c3fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782211572; x=1782816372;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NeXrq3s7XQQ03NTVUcOFA9RC9zObh9CMfGYLv0lwNEI=;
+        b=hvpBAIO5xi25/zUNYiRj71gAtBgWCHUmQkWu7IvVZSHAHqe86YkOsFGAg+WFlTxRWI
+         7XQ3sY9JAoNY2stAOj3/+TgeMvVEKrmWROyLlYOQ/N+ktnuRODOrivsOGn0++4wurm3w
+         BYPYmw12sKqAiegjgfUfFm6sXvZFted0dAUaOncwUsyMLhXFBTYyilQxKSewKArRvSnt
+         aj9W3EbnuJL+NJMiXKGpjmMimArBBTBcceezQ6emjEgwa2t8z/jpLeU83+QuS3uYOkX/
+         XkbzrxXjNtKnr6xLEzlLaLX4UUAH4IQ1M/Hn70FQIBGonYVhr3lv50wAgvSybeS8MKKe
+         KtZg==
+X-Forwarded-Encrypted: i=1; AFNElJ+IV0agvfaKzg4lyFflI014LmsKrX+PaalCPBxVwNoARHW8pwqx2hO8jRLGvUSOVskuhX8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxrZEbUUvYTJyXLzYQINbGs0BR8ExeXifDHWukGWCJdo/bLBudF
+	B7G5weOY1iQd0Nx1cTfuQuaThBA25ZE6JWYsvcbHR/XpNiLI1T4F64toSrxNl61mrDU=
+X-Gm-Gg: AfdE7cnwgnvr2Nq8UoGJ0b3Y4WVZh5UpV84Vvnitfw4LOSKr+q7gFbbQ+icNJLqywKt
+	Cd2mToDplIGEl3ltEwGx7fmfIb6jerH95HkfA1bIazgpoZGQoexaZnjgZ+sOLATNZEMIPEmRlxA
+	+FOf8tT1Zpaz5mCXnrq09X/mzu4p/g9xKZ6nWkCVyrYGKpbLF2JxeAUjuT8AvwO2ab8K88cb2D/
+	yKZF0zuHsQ9UXm0+LDpCbTB6eQ6dmaSmquZBltzX/XWSgEPyQy12q6oFZsGX51u+/d/aGxCJudx
+	5at8jUzhzVjBw1GHEPJh8xDusp0v6YbTDDvvtdEKNffgKR1WCgtcmxDl9wt6A6E1XdWrWAS3pj1
+	AAHF5Tmdz/j9rHD8Fqtk8YpLWSCpML7TX9SJgCmcAMjQNM5wqhor77f2XACiWRhpJbBp9gWNLH3
+	+2Xc+xhPrVO+1NiwdaVFArcK8SKaXgyTBc+oyz30lgJakZ2T5cWZgI4bxXEQvyCkZHc5/aw7Fu4
+	r4nYSYCG63uYKk=
+X-Received: by 2002:a05:600c:4e86:b0:492:2f3c:d0ed with SMTP id 5b1f17b1804b1-4925b3b6a6dmr32351285e9.30.1782211571510;
+        Tue, 23 Jun 2026 03:46:11 -0700 (PDT)
+Received: from localhost (p200300f65f47db04fc6db6816c271cd4.dip0.t-ipconnect.de. [2003:f6:5f47:db04:fc6d:b681:6c27:1cd4])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-492494497ffsm295458225e9.11.2026.06.23.03.46.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jun 2026 03:46:10 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH] ARM: imx: Drop obsolte stuff from common.h
+Date: Tue, 23 Jun 2026 12:45:57 +0200
+Message-ID: <20260623104557.1801727-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 23 Jun 2026 12:41:36 +0200
-Message-Id: <DJGD6EW5D0FD.V4WHCIICLXQ7@bootlin.com>
-Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Frank Li"
- <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
- "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>,
- <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-To: "Liu Ying" <victor.liu@nxp.com>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v3] drm/bridge: imx93-mipi-dsi: Fix mode validation
-X-Mailer: aerc 0.21.0
-References: <20260515-imx93-mipi-dsi-fix-mode-validation-v3-1-91f7d22b2fe4@nxp.com> <DJD6I8NMLN3W.3LVT4L17HT5TU@bootlin.com> <ajjpuroFPI_U2Fw6@raspi>
-In-Reply-To: <ajjpuroFPI_U2Fw6@raspi>
-X-Last-TLS-Session-Version: TLSv1.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2600; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=wjMPVOYlQDUbbr5l/O1Z3Izp55XAJ8pUek6vzl+NKM4=; b=owGbwMvMwMXY3/A7olbonx/jabUkhiyr5KeZ1bxvclSYN0ryzWjd4DVvquCtxSt7lodOrRP6X hEy0Sirk9GYhYGRi0FWTJHFvnFNplWVXGTn2n+XYQaxMoFMYeDiFICJVIaw/xXf8WnFlD3W+lJ5 T/lFGpdftL3ntyQ4yLp1b/2krSWLe5l9hfqiZhxbpK0tWRNle+P2aSOhcre5c7Z2GExI/B7aVMc e1rC182PkjJh9NsqqJ1MF9i+1SbW/vS7Qrywlw3wN+1yjrMmF60t6PKely7cyK3+8ymW6+nMlR4 yi743T0cam9rsbu1339sxLjiq99+EB6+VS5m5Ww005QvZTXjxd6Vr6//G0l0k6+7zWF82/Fndcy v3RBvPlpdMUzqhkWz3Y2FPQXGj6+caE/uwDmS5KCReDloWcmNjZGN2/Ka6FY1+0wof14etk2XM1 1m1Z57Ch9H2E3LYFJpP1rzy3VlO0cvO8em5dsP+HFOXrAA==
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-Hello Liu,
+i.MX21 (and thus imx21_init_early()) is gone since v5.10-rc1 (commit
+4b563a066611 ("ARM: imx: Remove imx21 support")).
 
-On Mon Jun 22, 2026 at 9:52 AM CEST, Liu Ying wrote:
-> On Fri, Jun 19, 2026 at 06:49:55PM +0200, Luca Ceresoli wrote:
->> Hello Liu,
->
-> Hi Luca,
->
->>
->> On Fri May 15, 2026 at 8:54 AM CEST, Liu Ying wrote:
->> > i.MX93 MIPI DPHY PLL has limitation for matching with some pixel clock
->> > rates, e.g., the best DPHY PLL frequency is 445.333333MHz for a typica=
-l
->> > 1920x1080p@60Hz CEA/DMT display mode with a pixel clock rate running
->> > at 148.5MHz with 4 data lanes + RGB888 pixel in MIPI DSI sync pulse mo=
-de,
->> > while the expected PLL frequency is (148.5 * 24) / 4 / 2 MHz =3D 445.5=
-MHz.
->> > Fortunately, VESA Display Monitor Timing Standard allows +/-0.5% pixel
->> > clock rate deviation for timings.  So, for those display modes read
->> > from EDID through a bridge with DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP=
-_EDID
->> > operation bit masks set, pixel clock rate could be adjusted to match
->> > with the PLL frequency(for the above example, the pixel clock rate is
->> > adjusted to be 148.444444MHz with about -0.03% deviation from the 148.=
-5MHz
->> > nominal rate so that the adjusted rate matches with the 445.333333MHz =
-PLL
->> > frequency).
->> >
->> > Instead of checking the last bridge's operation bit masks against
->> > DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP_EDID to determine if allowing
->> > +/-0.5% pixel clock rate deviation, check any bridge after this bridge=
-,
->> > because the last bridge is usually a display connector bridge without
->> > any operation bit mask when the clock rate deviation is allowed.
->> >
->> > Fixes: ce62f8ea7e3f ("drm/bridge: imx: Add i.MX93 MIPI DSI support")
->> > Fixes: 5849eff7f067 ("drm/bridge: imx93-mipi-dsi: use drm_bridge_chain=
-_get_last_bridge()")
->> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
->> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
->>
->> I'm perhaps not the most qualified to review this change, but let me try=
-.
->
-> Thanks for your review.
->
->>
->> > --- a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
->> > +++ b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
->> > @@ -489,25 +489,43 @@ static int imx93_dsi_get_phy_configure_opts(stru=
-ct imx93_dsi *dsi,
->> >  	return 0;
->> >  }
->> >
->> > +static inline struct drm_bridge *
->> > +imx93_dsi_get_next_bridge_in_chain(struct drm_bridge *bridge)
->> > +{
->> > +	struct drm_bridge *next =3D drm_bridge_get_next_bridge(bridge);
->> > +
->> > +	drm_bridge_put(bridge);
->> > +
->> > +	return next;
->> > +}
->> > +
->> >  static enum drm_mode_status
->> >  imx93_dsi_validate_mode(struct imx93_dsi *dsi, const struct drm_displ=
-ay_mode *mode)
->> >  {
->> >  	struct drm_bridge *dmd_bridge =3D dw_mipi_dsi_get_bridge(dsi->dmd);
->> > -	struct drm_bridge *last_bridge __free(drm_bridge_put) =3D
->> > -		drm_bridge_chain_get_last_bridge(dmd_bridge->encoder);
->> > +	struct drm_bridge *bridge;
->> >
->> > -	if ((last_bridge->ops & DRM_BRIDGE_OP_DETECT) &&
->> > -	    (last_bridge->ops & DRM_BRIDGE_OP_EDID)) {
->> > -		unsigned long pixel_clock_rate =3D mode->clock * 1000;
->> > -		unsigned long rounded_rate;
->> > +	for (bridge =3D drm_bridge_get_next_bridge(dmd_bridge);
->> > +	     bridge;
->> > +	     bridge =3D imx93_dsi_get_next_bridge_in_chain(bridge)) {
->> > +		if ((bridge->ops & DRM_BRIDGE_OP_DETECT) &&
->> > +		    (bridge->ops & DRM_BRIDGE_OP_EDID)) {
->> > +			unsigned long pixel_clock_rate =3D mode->clock * 1000;
->> > +			unsigned long rounded_rate;
->> >
->> > -		/* Allow +/-0.5% pixel clock rate deviation */
->> > -		rounded_rate =3D clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
->> > -		if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
->> > -		    rounded_rate > pixel_clock_rate * 1005 / 1000) {
->> > -			dev_dbg(dsi->dev, "failed to round clock for mode " DRM_MODE_FMT "=
-\n",
->> > -				DRM_MODE_ARG(mode));
->> > -			return MODE_NOCLOCK;
->> > +			/* Allow +/-0.5% pixel clock rate deviation */
->> > +			rounded_rate =3D clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
->> > +			if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
->> > +			    rounded_rate > pixel_clock_rate * 1005 / 1000) {
->> > +				dev_dbg(dsi->dev,
->> > +					"failed to round clock for mode " DRM_MODE_FMT "\n",
->> > +					DRM_MODE_ARG(mode));
->> > +				drm_bridge_put(bridge);
->> > +				return MODE_NOCLOCK;
->> > +			}
->> > +
->> > +			drm_bridge_put(bridge);
->> > +			break;
->> >  		}
->> >  	}
->>
->> Is this logic specific to the imx93 MIPI DSI host only? Or should it be
->> made generic for all dw-hdmi users, or even every DSI host?
->
-> I think it's kind of specific to the i.MX93 MIPI DSI host only, because
-> 1) the i.MX93 MIPI DPHY PLL(integrated into i.MX93 MIPI DPHY IP) supports
-> the best DPHY PLL frequency @445.333333MHz for the typical 1920x1080p@60H=
-z
-> display mode, which is lower than the expected/nominal frequency @445.5MH=
-z
-> and 2) the generic DW MIPI DSI driver(dw-mipi-dsi.c) is PHY-agnostic, whi=
-ch
-> means vendors may attach different MIPI DPHY IPs to the common MIPI DSI h=
-ost
-> IP and likely there would be no frequency mismatch between the pixel cloc=
-k
-> and the PLL like i.MX93 has.
+The init_irq() functions are gone since v5.12-rc5 (commit e2c1b0ff38c9
+("ARM: imx: avic: Convert to using IRQCHIP_DECLARE")).
 
-I see, OK, thanks for the clarification!
+And mxc_device_init() was removed for v5.10-rc1 (in commit 8485adf17a15
+("ARM: imx: Remove imx device directory")).
 
->> Also, iterating over the bridge chain is not very clean. I'm working on
->> bridge hotplug (not upstream yet) and bad things would happen if a bridg=
-e
->> were hot-unplugged during this loop.
->
-> The iterating is essentially the same to drm_for_each_bridge_in_chain_fro=
-m()
-> except that bridge_chain_mutex is not taken(since it's already taken) and
-> the starting bridge is fixed to be the next bridge.  A few bridge core AP=
-Is
-> like drm_bridge_chain_mode_valid() call drm_for_each_bridge_in_chain_from=
-().
-> So, the iterating looks clean to me and I'm not aware of any bad things w=
-hich
-> would happen when bridge hotplug is considered.
+The last user of imx1_reset_init() is gone since v4.9-rc1 (commit
+e1291cffcc50 ("ARM: i.MX: Remove i.MX1 non-DT support")).
 
-I had missed this is called from drm_bridge_chain_mode_valid(), which
-already takes the bridge_chain_mutex thanks to
-drm_for_each_bridge_in_chain_from().
+Drop declaration of enum mxc_cpu_pwr_mode, the actual definition follows
+later in common.h without a usage in-between.
 
-So that means this loop is safe, but it would be nice to add a comment to
-make it clear to future readers. E.g. "/* we are called by
-drm_bridge_chain_mode_valid(), so the bridge_chain_mutex is locked */".
+All users of of_device_id also include <linux/of.h>,
+<linux/of_address.h> or <linux/of_platform.h> which is enough to not
+need the forward declaration.
 
-Still I'm not a fan of having a loop over the bridge chain (this function)
-inside another loop over the same bridge chain (in
-drm_bridge_chain_mode_valid(). And even more I'm not a fan of drivers
-walking around the bridge chain on their own, IMO the core (perhaps
-drm_bridge.c in this case) should to the loops . However this is a general
-concern, it happens also elsewhere, and I have no immediate proposal to
-improve this, so don't consider it as a blocker for this patch.
+Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+---
+Hello,
 
->> If the core did this sort of algorithm
->> it would be able to be more robust.
->
-> Is the core dw-mipi-dsi.c?
-> If yes, do you think it's worth doing that even if the frequency mismatch
-> between the pixel clock and the PLL is kind of specific to the i.MX93 MIP=
-I
-> DSI host?
->
->>
->> Finally, out of my utter ignorance on the subject, is the VESA +/-0.5%
->> margin generic enough that this driver can always rely on it?
->
-> I see several upstream drivers rely on it, see "git grep '0.5%' drivers/g=
-pu/"
-> output.  And every display mode allows -/+ 0.5% pixel clock rate deviatio=
-n
-> according to VESA Display Monitor Timing Standard [1], though [1] is a fo=
-und
-> by a random Google search.
->
-> [1] https://glenwing.github.io/docs/VESA-DMT-1.13.pdf
+found while working on *_device_id.
 
-As I said I'm quite ignorance about this aspect, so I asked to better
-understand. In reply to another part fo the thread: no, I don't have a
-specific concern if this is the common practice.
+Best regards
+Uwe
 
-Luca
+ arch/arm/mach-imx/common.h | 7 -------
+ arch/arm/mach-imx/system.c | 8 --------
+ 2 files changed, 15 deletions(-)
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/arch/arm/mach-imx/common.h b/arch/arm/mach-imx/common.h
+index 45c1a2a7b35f..d7ecaa822adb 100644
+--- a/arch/arm/mach-imx/common.h
++++ b/arch/arm/mach-imx/common.h
+@@ -14,23 +14,16 @@ struct platform_device;
+ struct pt_regs;
+ struct clk;
+ struct device_node;
+-enum mxc_cpu_pwr_mode;
+-struct of_device_id;
+ 
+ void mx31_map_io(void);
+ void mx35_map_io(void);
+-void imx21_init_early(void);
+ void imx31_init_early(void);
+ void imx35_init_early(void);
+-void mx31_init_irq(void);
+-void mx35_init_irq(void);
+ void mxc_set_cpu_type(unsigned int type);
+ void mxc_restart(enum reboot_mode, const char *);
+ void mxc_arch_reset_init(void __iomem *);
+-void imx1_reset_init(void __iomem *);
+ void imx_set_aips(void __iomem *);
+ void imx_aips_allow_unprivileged_access(const char *compat);
+-int mxc_device_init(void);
+ void imx_set_soc_revision(unsigned int rev);
+ void imx_init_revision_from_anatop(void);
+ void imx6_enable_rbc(bool enable);
+diff --git a/arch/arm/mach-imx/system.c b/arch/arm/mach-imx/system.c
+index e88ca027129d..1afae485f203 100644
+--- a/arch/arm/mach-imx/system.c
++++ b/arch/arm/mach-imx/system.c
+@@ -74,14 +74,6 @@ void __init mxc_arch_reset_init(void __iomem *base)
+ 		clk_prepare(wdog_clk);
+ }
+ 
+-#ifdef CONFIG_SOC_IMX1
+-void __init imx1_reset_init(void __iomem *base)
+-{
+-	wcr_enable = (1 << 0);
+-	mxc_arch_reset_init(base);
+-}
+-#endif
+-
+ #ifdef CONFIG_CACHE_L2X0
+ void __init imx_init_l2cache(void)
+ {
+
+base-commit: ef0c9f75a19532d7675384708fc8621e10850104
+-- 
+2.47.3
+
