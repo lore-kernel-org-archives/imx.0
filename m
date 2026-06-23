@@ -1,223 +1,158 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010011.outbound.protection.outlook.com [52.101.69.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA283C3450;
-	Tue, 23 Jun 2026 07:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782198865; cv=none; b=RR1Gjeva71pf1uEGAkvXIDUYOnq3jLkoLN7FavEWbUvYHva7joSOX0iYudQqlxvaQoVoqiovGCloYI+cW2S7G4Ic1e+yQ7Jf+iB2UQlgPm1/Tzk4cmsNf4A1TOzqORLUndPD9gQFBXW++GWAGQHl+4vd10jYu2wPmJjRs/KWH6w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782198865; c=relaxed/simple;
-	bh=8y46Yju15t/1iPyWUiD+fHypEVZTRKbUmfGltB3HmX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OizbVACHNw4ZD+aiPiKq+L4onN8Ff1HFJKIOjGX+11Bie/Wan3Demo0r/EjOEzvuU/iIKwBmDrQWJwMX2Oax3MqLhbB/8cQHh+Arz0BM0ocGHAx4t4bYHF4CPOnCgKL0s7dpGNCBJ8WhSG+OZogULRd8EujNhZf2+TgG4yl4enU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=kqbvVj+L; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF152797AC
+	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 07:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782200017; cv=fail; b=aQyGC7fU4NBmkwWVYqbn8osUqEFjKQu4BQ1ljQupR1+dy1QrDRHoqx07cpF5N/yGUCOZpN440N5wkYsEZNAK9qGWMpkP7/HSoxeiGL7zoopmAjjbLt0nCSo2/pMa0Vu2wkL4ZjFOldQjirl/hx3gTkvCE3ZGBK1NGcsWh302XOk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782200017; c=relaxed/simple;
+	bh=byuxGeRgXMxAEWbHKywha/397D4QSOMp7sCkdLz6HD0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=VKjEPCsw6+RPJICQ1BW5Dxd/AXFAaZQwH0Pp1zV8RkWZJn9+Yi08AJf63wVUru+ImXF/b5B1GlMn5zKAwKLslIYPnPESfzQa3zHJLzPLwCdJLGyqEJNrGu1vHU+hWyEzwxb7ABTjAj0o1LUGca4V/JzazUKFa8eSTvJZiSmGUOE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bfROix0b; arc=fail smtp.client-ip=52.101.69.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="kqbvVj+L"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=sXOBfhLAVLwn3podSYtFoxvOp/Tp82jbXxsxprm1FYY=; b=kqbvVj+LJ8cVuOpaDC1veWCJiX
-	uOgYwPvpWyuyPDFv4+YJbFBwS0jG891C6E3kwpzx8sdGs+VaLL+s6k7PhZdkAogmsGsABVa9K0/20
-	Ut/Dc8nUp2lejzvq4pFyffSvu77bBlVW06LQqOlnrFYf6MwTxRYtFiShPNN6wy5Bma/2HoGZDbNIr
-	BiWNWSohIcej2ukS/q8CA/dLqQ5QCM2yGJnLD4ihOW61/wBC360KWv9rLSYbx3nPDuZ+n7PgdISV1
-	AlkLCHcCdsX/2f+6RLkFm+JXxw/o44W30aULjgnm1ZNxn3UDEW6aZcPZzARaTJh9MEfJJWnc7mFNK
-	SKyrN92Q==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wbvKn-000G3R-1b;
-	Tue, 23 Jun 2026 09:14:13 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wbvKn-000Oj2-1j;
-	Tue, 23 Jun 2026 09:14:12 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>,
- Markus Niebel <Markus.Niebel@ew.tq-group.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux@ew.tq-group.com,
- linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v5 1/1] arm64: dts: add tqma9596la-mba95xxca
-Date: Tue, 23 Jun 2026 09:14:11 +0200
-Message-ID: <6282261.lOV4Wx5bFT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <ajVN4nbmOW-D_Ec9@SMW015318>
-References:
- <20260619112434.1121610-1-alexander.stein@ew.tq-group.com>
- <ajVN4nbmOW-D_Ec9@SMW015318>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bfROix0b"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=APprQJMQ4MD2CsgULfGWI+Bv3dATlLip6XkEuoFBS6EF1ReiP1Wdx8jAHPuy7ZTZkQoQOOQ397AlXoqJIhHi/sqRPeJveGpWiE0h31+LBLkB2MZMPnmTRq4ftfxUKXzhLkmfYnYMIjGQxvVkdSC9+NkrieQJHBp4To06m7TSYqh3puCeJU0im2STwTjsfkoM5jiKdAY+h9Jr9g5HGT+bprJ/IsfAFzWAPAST/Q2tG67BC+cYM2NVsRscG/FamVuY9NbICpFUrce7cBfAGqr1FxFf7cSZsxY+V0yOd5LVGI0tebP9iXtbwFWJ9M3JjrqzCUbaEg42f1Uc4Y8y29+2iA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NR/VoFyHozuy5UDE0zuUguElHTrHRsxV+lSSlnMtD94=;
+ b=htwP3KwSG1O6WnQdujkbXSmEwLKtpCgHTVpmNzosWPRShB3ogcaOl7zlsjoIiAf3bawVCp6cWheQ3325l5sz5Lp5XwPkTivMKUhnEaKmFFTrdRC1CgGO9wATlvcumCOoETBBlS9vO3rKzMVbtTYzOGfo8mQ8OgWLR0u3am8oVTOje+dL4K9d0/D+5Tk3ntTAEVu70uY69YvYujS0UQA68qFIW5Uju9dU61ehyCcrZYOQ05KMeBil16L8AcB+/G7/XMx1J8N/4Whe5ClrJem9toOFOLy9+H90igBMs8RI3OV6VOQw3fif5c1bF4pBNC+KKmjOjg4urBr6z+636KN9xg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NR/VoFyHozuy5UDE0zuUguElHTrHRsxV+lSSlnMtD94=;
+ b=bfROix0bIKSsYPyqo7N48ym5c41AK8S7XkM1mhuGuY8vwGvfrVVHYKzwtbviMAzhmZGrtb31ZHvD1vxl5BxhR99Isfn+XS6lWRGja/LWxP5lgOlLxamK0Db+sFJhYQ8iQrDzmfyypuRYNnyT5f9KWdJJ+dC22wowIMakIMGDo0CEkZEJbshRmt37oDVHP8jNYbDP/VANOYsu9cDl402jr1S4+voKmbcss+soXe9z/Z/LMVguordBRw5UEwBiSrZFoUDcfP0EOHnDkFr7HGK8qau0U7z/PKXKHMKyYh504VQhUfagmjP9hKTFt6YofOWg8SmXaFAAVYZpc1eqRFUd3g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU2PR04MB9180.eurprd04.prod.outlook.com (2603:10a6:10:2f7::6)
+ by GV1PR04MB10822.eurprd04.prod.outlook.com (2603:10a6:150:205::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.12; Tue, 23 Jun
+ 2026 07:33:32 +0000
+Received: from DU2PR04MB9180.eurprd04.prod.outlook.com
+ ([fe80::f94c:ce27:1558:fb05]) by DU2PR04MB9180.eurprd04.prod.outlook.com
+ ([fe80::f94c:ce27:1558:fb05%6]) with mapi id 15.21.0139.018; Tue, 23 Jun 2026
+ 07:33:32 +0000
+From: ziniu.wang_1@oss.nxp.com
+To: adrian.hunter@intel.com,
+	ulf.hansson@linaro.org,
+	haibo.chen@nxp.com
+Cc: Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-mmc@vger.kernel.org,
+	s32@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] mmc: sdhci-esdhc-imx: fix SDIO suspend/resume issues
+Date: Tue, 23 Jun 2026 15:35:11 +0800
+Message-Id: <20260623073515.2658205-1-ziniu.wang_1@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS9PR01CA0004.eurprd01.prod.exchangelabs.com
+ (2603:10a6:20b:540::13) To DU2PR04MB9180.eurprd04.prod.outlook.com
+ (2603:10a6:10:2f7::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5113499.31r3eYUQgx";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28039/Mon Jun 22 08:24:57 2026)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB9180:EE_|GV1PR04MB10822:EE_
+X-MS-Office365-Filtering-Correlation-Id: a453bcdf-e031-4212-1101-08ded0f9ba20
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|19092799006|18002099003|6133799003|56012099006|3023799007|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	8RAV3OvXuFaCW1+qIpuxQSxRM0CetLu4vQlKkHBVMYnH6T4Y2HI9P/cohRBojxdc+dJhofFgAAnk+PXCdF4e8GTRK6ayuXxU7qSH8DPj2b2f4cIJHU5E0KNL7+w/NzHYaIsxTrLIjoKq0d3I/JlX4nqz+jPtf5i/jVmJocjkcIB0EYssPmA0LNtkmiuefErX0NI2BBZr9Wi9Z/RpOADXkE+QRUYEkJg4rppNLmhnddsq869mTkXJN4mPlzmeHSI3EnXJ/aKTEaspqBx7pql46OPoR7IsV00sPiSEtWHD9o2Sg/IFJheAmJ23w9fiC9Sa7qFphBD72lXE9N/7dcBY0KzAs/i0lM1Fl89s3iOmKqYyMnAz91iVEdAaqDbD8u3hd9lho4rnXCyHSJl7YYUmEPzKWAZ03eu8V2wiAUXPzO9NXhBI7+GCwiAy1Zv7u6YJFFYY3fAYrdgNUT1k3GtLz+fLQkpA5PTjvXj9HidEFQ7XinzLHRXOP8mZT1rQ0J0WHWsbOBdxCxuA7M0/Wn1QBZS//WO5D78RRzuT1bTNTVo/rgCzx7IciONgyu69MfB8sDTz8wpFILDZ5+nXVditD9BImQr8Ca/S4LiSwzI048oyfk8MxRWR9QtdEh1mhSl18k45neuJpeloutuB2BePjEKXgAVlljtpHOUVHQIK314=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB9180.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(19092799006)(18002099003)(6133799003)(56012099006)(3023799007)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?264DDgfbOW0bvWS7RtqCq1Az18ar8R1wiA8wcRTLQvHdGEeDtL4FTpSYhkeg?=
+ =?us-ascii?Q?s85Y/C7qxdpk3Gv8w0nDe09TSBzk6EqEWtaPi67QUMGWogyLxVr+rO4a+1IG?=
+ =?us-ascii?Q?tRXnyXJBBh9FoXIutSWF0iqmQ9D9OhH6UH29hnTQ/PhzRlHgOekw4DNdI5xD?=
+ =?us-ascii?Q?c6F+DSgXbyUgXf0vlApVbkiPDAv/xfnhoIJgmP3/v/Id9JYevKujy9BE/JjF?=
+ =?us-ascii?Q?HnF4hXtLJfVOPdLFO9t2gO/sMTaLVm223OQcjxyk8TTpfGjW7GCP0zqq7wa+?=
+ =?us-ascii?Q?xAwAO9TFV3zp5uGXeODwAvTEtXaeqzLOwgw3v+7xEvWz1CicyChBn3ORBnhk?=
+ =?us-ascii?Q?vYy8fQVkobu9xTqgHFye7O+RSWK3FiP4x9S00l+TeP9/S/iaAJ9zSf2DtjC5?=
+ =?us-ascii?Q?2XXUPu6UsiD2S4de0tIBromrioPeQa/fBSRMY0CI3K4qi5i9P0832DRsctdf?=
+ =?us-ascii?Q?r+2NOJRirAJLR26dM7/6Tjb7v4/AiD1nMt4RZGQkw2BRiIYn3GuD+kKO7NAe?=
+ =?us-ascii?Q?WfctYtIK8gV81pBgdCWMPgkwixIAGgQaunOHEzPIyxIbIOBH8F3cOP5p18kI?=
+ =?us-ascii?Q?+i4CM5Yf3R60TBt7sknIwlkmi7HQdVNmVsLf8cmgQnwql4DIacgpIlQC2ujz?=
+ =?us-ascii?Q?nr1KxAYsz26BVL0uRSXD+p+zCM1rnEES91lf9VYpT1wAX0GNuQdp8h7D4zjg?=
+ =?us-ascii?Q?tc67oiEMM9qkAEvtxxhRunT0JbhfuNhufLkOSQWWeqqamZp/9ekDj4QQxMTI?=
+ =?us-ascii?Q?4IPUtUUwCCO5pkO3ZJeA638gFPcOfJcelkcs3lt5KYvFcZShCnyJR8KzX9Xb?=
+ =?us-ascii?Q?6LIvee1DMOiO0RMomGauw2kzx4u7Pm4AqpTvFSX6sxXqQCncNLav5qwqtIWr?=
+ =?us-ascii?Q?CT75E8ZvIkgIbCFLqGyRon//wfqXDKH4VohxI9eZqMnJ9JXHhExk+2QMXucj?=
+ =?us-ascii?Q?gTThvDro9j1bRxh/uXA1EtAopEBkkBkz16WbF6MvOOPIDbVZwyielt0Cfm4n?=
+ =?us-ascii?Q?rJAS0YLd24F9/cqy21hVdcBNjqHb4iyQQCqWcssrkgI+5hb9QSYY02S+NMGd?=
+ =?us-ascii?Q?7u0Xvy31emzr+dalPBfkHzbTTPVRgIehNtVzPhh1pcutVy95ZPzLpCHSjGVq?=
+ =?us-ascii?Q?Qh59NAgR4Tfp/yjl4jJhFKnVev7+pDQKGmipa7derN7t0xXJm7AJSVk4iYPw?=
+ =?us-ascii?Q?InAEbeO/9Xz00DjoCSN991i9Y294bnSQfu92e89kHxrgTM2xcI//pjBmpExn?=
+ =?us-ascii?Q?Ec+bh5sVVj4Andj+2xThif8A3n9c1DIhqfI1oLNMZgLZhwTVX+iddXkR26R4?=
+ =?us-ascii?Q?kjd+pjM6lLtFwyhKyfAJmWUzXRiFGS4HijUewLK9LUW1DcrhOoC/HSHeEjJZ?=
+ =?us-ascii?Q?c7giAxyboNGs3BTg65lUS/wKbDrT+WzxuP1tPyDzPsj4YCMV5F34Nt1QKo5q?=
+ =?us-ascii?Q?5lkchk04vZGRuOz4PsWCIxZ5wYq8nrjn64HXDz21iJ4LJRQ9/tD9cXX6U1Yc?=
+ =?us-ascii?Q?/3eLdabdUHYjqcjGDlo6q4FfheiSiPhcBE9TBAiudjyiy8j/kr3vfRHSXl0g?=
+ =?us-ascii?Q?mKBRnf0TgAl0tLFMDJi7wnrwXzoJn0giQXCKvB3f1HBfefXw1PasAt7Dolh6?=
+ =?us-ascii?Q?MTZe/WowmKGsnTgJUsa4/8Mxm2xRP9S/o8aYihRUAxVAuCfEliI3V5sEPOhf?=
+ =?us-ascii?Q?TnA41dTUK2tUAEV8QHBY8M8JKK3UiEuSh9GPAEeFb3rps/M6mMgudqmovmk4?=
+ =?us-ascii?Q?SvRHI28qdb3nhNJ7Vq7+XlvykwqmFAdgmmNspOt/3xGCuLChVSFh?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a453bcdf-e031-4212-1101-08ded0f9ba20
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB9180.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 07:33:32.3144
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JPSAXqBUl6iLvLOgqPvIagPFneIXyBW5h+unPQKqioD+LDJznSAMveVM4VwMmIcQlFl46Q2aYgVCb6FNBcG8KiYAIDeMuvQAQbsEHWPzQGTNbOG3A3l4yh+K+3RQrEuU
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10822
 
---nextPart5113499.31r3eYUQgx
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Subject: Re: [PATCH v5 1/1] arm64: dts: add tqma9596la-mba95xxca
-Date: Tue, 23 Jun 2026 09:14:11 +0200
-Message-ID: <6282261.lOV4Wx5bFT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <ajVN4nbmOW-D_Ec9@SMW015318>
-MIME-Version: 1.0
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-Am Freitag, 19. Juni 2026, 16:10:42 CEST schrieb Frank Li:
-> On Fri, Jun 19, 2026 at 01:24:30PM +0200, Alexander Stein wrote:
-> > From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-> >
-> > This adds support for TQMa95xxLA modules, designed to be soldered
-> > on a carrier board. MBa95xxCA is a carrier reference board / starter kit
-> > design.
-> >
-> > There is a common device tree for all variants with e.g. reduced
-> > CPU core / feature count.
-> >
-> > Enable the external accessible PCIe controllers as host,
-> > add clocking and reset GPIO. While at it, add hogs for GPIO
-> > lines from the M.2 slots until M.2 connector driver is available.
-> >
-> > Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> > Changes in v5:
-> > * Limit LPSPI4 max frequency
-> > * Replace PCIe M2 Key-E GPIO hogs with dedicated connector node
-> > * Fix PCIe clock configuration
-> >
-> > Changes in v4:
-> > * Fix LPSPI4 pad muxing and control
-> >
-> > Changes in v3:
-> > * Moved reserved-memory to board-lebel
-> > * Remove VPU reserved memory (unused for now)
-> > * Fix typo in connector comment
-> >
-> > Changes in v2:
-> > * removed useless regulator
-> > * added USB PD source configuration
-> > * Removed unused uart-has-rtscts properties (unused by LPUART)
-> > * Fixed RTS/CTS pullups in pinctrl
-> > * Added thermalzone on module
-> >
-> >  arch/arm64/boot/dts/freescale/Makefile        |   1 +
-> >  .../freescale/imx95-tqma9596la-mba95xxca.dts  | 963 ++++++++++++++++++
-> >  .../boot/dts/freescale/imx95-tqma9596la.dtsi  | 278 +++++
-> >  3 files changed, 1242 insertions(+)
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba9=
-5xxca.dts
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx95-tqma9596la.dtsi
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/d=
-ts/freescale/Makefile
-> > index 8ddaab127ab9c..43e1dc51b11d7 100644
-> > --- a/arch/arm64/boot/dts/freescale/Makefile
-> > +++ b/arch/arm64/boot/dts/freescale/Makefile
-> > @@ -649,6 +649,7 @@ dtb-$(CONFIG_ARCH_MXC) +=3D imx95-19x19-frdm-pro.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-aquila-clover.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-aquila-dev.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-toradex-smarc-dev.dtb
-> > +dtb-$(CONFIG_ARCH_MXC) +=3D imx95-tqma9596la-mba95xxca.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-tqma9596sa-mb-smarc-2.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-var-dart-sonata.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx95-verdin-nonwifi-dahlia.dtb
-> ...
-> > +
-> > +	ptn5110: usb-typec@50 {
-> > +		compatible =3D "nxp,ptn5110", "tcpci";
-> > +		reg =3D <0x50>;
-> > +		pinctrl-names =3D "default";
-> > +		pinctrl-0 =3D <&pinctrl_typec>;
-> > +		interrupt-parent =3D <&gpio2>;
-> > +		interrupts =3D <28 IRQ_TYPE_LEVEL_LOW>;
-> > +
-> > +		typec_con: connector {
-> > +			compatible =3D "usb-c-connector";
-> > +			label =3D "X9";
-> > +			power-role =3D "source";
-> > +			data-role =3D "dual";
-> > +			source-pdos =3D <PDO_FIXED(5000, 500, PDO_FIXED_USB_COMM)>;
-> > +			self-powered;
-> > +
-> > +			port {
-> > +				typec_con_hs: endpoint {
-> > +					remote-endpoint =3D <&typec_hs>;
-> > +				};
-> > +			};
-> > +		};
-> > +	};
-> > +
-> > +	sensor_mb: temperature-sensor@1e {
->=20
-> please order by hex address value
+This series fixes several issues with SDIO devices that keep power
+during system suspend on i.MX platforms.
 
-Ah, thanks for the catch.
+Patch 1 removes unnecessary mmc_card_wake_sdio_irq() check from tuning
+save/restore paths.
 
-> > +		compatible =3D "nxp,se97b", "jedec,jc-42.4-temp";
-> > +		reg =3D <0x1e>;
-> > +	};
-> > +
-> ...
-> > +		m2-keye-dev_bt-wake-hog {
-> > +			gpio-hog;
-> > +			gpios =3D <4 GPIO_ACTIVE_LOW>;
-> > +			input;
-> > +			line-name =3D "M2_KEYE_DEV_BT_WAKE#";
-> > +		};
->=20
-> Now Key E connector already be upstreamed.
->=20
-> Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml,
-> which already define these gpios.
+Patch 2 restores DLL override configuration for DDR modes on resume,
+which is lost when sdhci_esdhc_imx_hwinit() clears ESDHC_DLL_CTRL.
 
-Thanks for the hint. But these two wake signals are vendor specific
-pins 40 and 42 on key-e. In this case these are for the default module
-JODY-W3 module.
+Patch 3 restores pinctrl before pm_runtime_force_resume() to ensure
+proper pin configuration before DDR_EN is set, avoiding CRC errors.
 
-Thanks and best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
---nextPart5113499.31r3eYUQgx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Patch 4 unconditionally disables usdhc interrupt during suspend to
+prevent "irq xxx: nobody cared" warnings during resume.
 
------BEGIN PGP SIGNATURE-----
+Luke Wang (4):
+  mmc: sdhci-esdhc-imx: remove unnecessary mmc_card_wake_sdio_irq check
+    for tuning save/restore
+  mmc: sdhci-esdhc-imx: restore DLL override for DDR modes on resume
+  mmc: sdhci-esdhc-imx: restore pinctrl before restoring ios timing on
+    resume
+  mmc: sdhci-esdhc-imx: disable irq during suspend to fix unhandled
+    interrupt
 
-iQEzBAABCgAdFiEEByESxqszIvkmWRwbaS+g2M0Z/iUFAmo6MkMACgkQaS+g2M0Z
-/iUfDwf/dfqfx6vWvg+eg95x3/68BAFVAkno24HK2jry2c+5CUtsfK7L9wGzymTY
-ZlDGHpZ6VUjgAb2CBnnWa7ZlqadCIGcpEkEIWgIxzw8ACqyeyZdc1S4Fx73ltWGR
-DpXLmvnqVWCHNtOUbUhSeaWL+ZLkYtkZFX5RRilB2jwuKKlw4TUlk9Rykm8rIln6
-VaI9B3LgoF5mGwZmbspj0my+CT/GRX+EbkgbSh0XR53EnsJBf2zT7xedWW/21ojS
-dGPGWQOQyH1LGuF4lYEyFxFGtA3jdyqrod1vj9FR+o/6mLCoTRL7Ox7LusidQot/
-ByET8EIgzKA0t9Nn5mRc9YUZW/d8ww==
-=QyRP
------END PGP SIGNATURE-----
+ drivers/mmc/host/sdhci-esdhc-imx.c | 57 ++++++++++++++++++++----------
+ 1 file changed, 39 insertions(+), 18 deletions(-)
 
---nextPart5113499.31r3eYUQgx--
-
-
+-- 
+2.34.1
 
