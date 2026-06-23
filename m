@@ -1,167 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F213BA253
-	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 07:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5279C311C38
+	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 07:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782200722; cv=none; b=qycDac8UN0IGS2UnbJIKA8CYdVIpTxNtj6mpgrxdaSHOvN7kqtSzIF5fbhZyZeUc3wRIm7fVkCp/bBEbY3okp9WUpkUtMLCq4v0J6i335KIHNsVZHESYyziEkkN5RJG7mtBwTIWRoN5fRm91QLQIj+ZNWbZyrb3EBfmUMJaY4fs=
+	t=1782200864; cv=none; b=uUtwMQDW9TSVZYBKeYUsgog7ofUPEGz7GFo3aaSZp2sNt+osIFSnRpfY1QkFxSK89LkazozUpNh8s9d5l2GckIK8/Rv+9/Cnm78T3f56Wt6UEX+m91r5VjlOlw85DLMBeJjbqdyxhL/MoRhs12bjLPposRkpvH5oqmuGEye37NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782200722; c=relaxed/simple;
-	bh=RTT4427FFQuwlwHZM3Q1pphpjfcL6NZFpSPJwdLmd2M=;
+	s=arc-20240116; t=1782200864; c=relaxed/simple;
+	bh=S6QYJ/I5uFCpbyOUcAsAQfuwlngh9FnNTqCBQaKsYaI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HUA8A7lCkKz7BQoKv7pi/0bL63S+TQ6Eaqd/WjErzfWyJkrdhwmMhfeJgrFN+HdBC1wndygHUd5ZRENrR8mrqhIbK1Uo5PeeVY4RcIrm1hzuzZ5AtoHpcbRehcDSXV/sRGCOBQtk/5if+HktGP1zl9iwYpiEuABxiTZ9g563u0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cfs4sQQg; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=doLBaV4aPHjOWLioba53XxRQrcMtmjIE0tpiORE6/mfsZgkj7HJk3/Y9bcyqcgEFER9FIzpmljKLEaHShXAde9S/7KDOEvTV8iuLebUcY/Z0KL9HmYg22HAa/ZIUzp/8VEIDN9u0/XqWUkn0tqkUm8hWrKx6aBt2iX7YO1Sw9/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bsj1U13i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cfs4sQQg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE4A71F000E9;
-	Tue, 23 Jun 2026 07:45:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bsj1U13i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E691F000E9;
+	Tue, 23 Jun 2026 07:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782200721;
-	bh=v0SvNdW6v4Od7vrF3fWlYS9zxsLqIewnjmDsRW0wISA=;
+	s=k20260515; t=1782200863;
+	bh=vggJVGt5nhQ0KzzAX4OpNIls9UcdFdpnG0FMzvTIZRA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Cfs4sQQgJWyGA09+XrxycCZk/AqSG/xe4dG4QiNc+rdeUDcUydl4hlUbvpftFI2Ph
-	 ww6hdV9Bj8WAMI4I1PNlQ7QTbPtOfFRqpgrclUIap5q7a05OyN5cisToonuTqEQmaY
-	 HL+TI1v0keHqAvhJG+ZaDR0+1BQ5roBKBDAsbyklpNLm8nlVWmnWpcSr7+3Ok1IP8r
-	 DRChzQbRtyFNMIfTy1OU9lZ5GpaNLE3xyS2NUgA6aDE9d9gnSyIDI9PXc/y/n4gU/7
-	 ZZtj77hhO+4iQ5QLHURqtRwe5qDFlA2PVOQZ0TO3Ql+pgd1zmGzdHuVJUa0uLhlDGS
-	 GlBthPOb4k0uA==
+	b=bsj1U13ih0JiygdDremoftNdj3tvhrIYKmynavEISZYr7LiWA6zcmc+60eEf/wk3E
+	 T6lfeJJ2amo3ynPVGDabvtLaMhVe/zFk446OwMJEJE29aNkjkou0qNyS5a77q/NEDV
+	 1QYfpdjjJkhX4uSIiL1G6XnC+N2lYG4Fi/IqNJbg5vMzGGx7FffjePABtBeNf4vyeR
+	 3lKtCuYWze2UiQ1hcZaKkqhDudjE+jVEZFJUrCGOf6IO22mYSurnFhuvtZib6Pnpwz
+	 yp0NYvIbtBQZVBM/cVMISd83wmyWtd7f4HGKLiqLgfEzcABtmpN3YN8WSNfSBCZkRC
+	 LZcFIsSVfLKhw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/4] mmc: sdhci-esdhc-imx: remove unnecessary
- mmc_card_wake_sdio_irq check for tuning save/restore
+Subject: Re: [PATCH 3/4] mmc: sdhci-esdhc-imx: restore pinctrl before
+ restoring ios timing on resume
 Reply-To: sashiko-reviews@lists.linux.dev
 To: ziniu.wang_1@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260623073515.2658205-2-ziniu.wang_1@oss.nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260623073515.2658205-4-ziniu.wang_1@oss.nxp.com>
 References: <20260623073515.2658205-1-ziniu.wang_1@oss.nxp.com>
- <20260623073515.2658205-2-ziniu.wang_1@oss.nxp.com>
+ <20260623073515.2658205-4-ziniu.wang_1@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 23 Jun 2026 07:45:20 +0000
-Message-Id: <20260623074520.EE4A71F000E9@smtp.kernel.org>
+Date: Tue, 23 Jun 2026 07:47:42 +0000
+Message-Id: <20260623074742.C3E691F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
 
+New issues:
+- [High] The newly added early return on `pinctrl_pm_select_default_state()=
+` failure skips critical PM state restoration, IRQ re-enablement, and leaks=
+ the runtime PM usage counter.
+- [Medium] Unconditional transition to default pinctrl state on resume over=
+rides the active pin state retained for wakeup-enabled SDIO devices.
+
 Pre-existing issues:
-- [High] Unchecked return values from `pm_runtime_get_sync()` and `pm_runti=
-me_force_resume()` can lead to kernel panics via unclocked hardware registe=
-r accesses.
-- [High] Error paths in system suspend and resume callbacks leak PM runtime=
- usage counters, bypass PM state changes, and leave the host IRQ permanentl=
-y disabled.
+- [High] Preexisting early returns in both the suspend and resume paths lea=
+k the runtime PM usage counter and leave the device's IRQ permanently disab=
+led.
 --
 
-commit 3bcc9d5490c53923eb1abbde361cd46732c4aeb4
+commit 36afd1c0e24c2aa82ce799711cc1629a34958ef4
 Author: Luke Wang <ziniu.wang_1@nxp.com>
 
-mmc: sdhci-esdhc-imx: remove unnecessary mmc_card_wake_sdio_irq check for t=
-uning save/restore
+mmc: sdhci-esdhc-imx: restore pinctrl before restoring ios timing on resume
 
-This commit removes the mmc_card_wake_sdio_irq() check from the suspend and
-resume paths, as tuning values should be preserved when the card keeps power
-regardless of the SDIO IRQ wake flag.
+SDIO devices such as WiFi may keep power during suspend, so the MMC core sk=
+ips
+full card re-initialization on resume. When DDR_EN is set during
+pm_runtime_force_resume() without the default pinctrl state, the loopback
+clock is invalid and causes read CRC errors. This patch restores the default
+pinctrl state before pm_runtime_force_resume() to fix this issue.
 
 > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
 esdhc-imx.c
+> index a944351dbcdff..a3688c94cf580 100644
 > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -2064,8 +2064,7 @@ static int sdhci_esdhc_suspend(struct device *dev)
->  	 * to save the tuning delay value just in case the usdhc
->  	 * lost power during system PM.
->  	 */
-> -	if (mmc_card_keep_power(host->mmc) && mmc_card_wake_sdio_irq(host->mmc)=
- &&
-> -	    esdhc_is_usdhc(imx_data))
-> +	if (mmc_card_keep_power(host->mmc) && esdhc_is_usdhc(imx_data))
->  		sdhc_esdhc_tuning_save(host);
+> @@ -2114,6 +2114,10 @@ static int sdhci_esdhc_resume(struct device *dev)
+>  	struct pltfm_imx_data *imx_data =3D sdhci_pltfm_priv(pltfm_host);
+>  	int ret;
+> =20
+> +	ret =3D pinctrl_pm_select_default_state(dev);
+
+[Severity: Medium]
+Does this unconditional transition to the default pinctrl state override the
+active pin state retained for wakeup-enabled SDIO devices?
+
+During suspend, if a device is a wakeup source, it intentionally avoids cha=
+nging
+the pinctrl state to sleep, retaining its active high-speed state.
+
+If we unconditionally select the default state here, could it glitch the SD
+bus pins for powered SDIO cards by forcing them out of the retained state
+before switching back to high-speed later?
+
+> +	if (ret)
+> +		return ret;
 
 [Severity: High]
-This is a pre-existing issue, but does the earlier call to
-pm_runtime_get_sync() in sdhci_esdhc_suspend() need its return value checke=
-d?
+If pinctrl_pm_select_default_state() fails and we return early, does this s=
+kip
+important PM state restoration?
 
-If pm_runtime_get_sync() fails, for example due to a clock enable failure, =
-it
-returns a negative error code but leaves the device unclocked. When the code
-reaches this point and calls sdhc_esdhc_tuning_save(), it will blindly acce=
-ss
-hardware registers. On i.MX platforms, accessing an unclocked peripheral
-triggers an asynchronous external abort, resulting in a kernel panic.
+It looks like returning here bypasses pm_runtime_force_resume(), enable_irq=
+(),
+and the final pm_runtime_put_autosuspend(). Could this permanently leave the
+device with its hardware unresumed, its runtime PM usage count elevated, and
+its interrupt disabled?
 
-Additionally, returning early further down in sdhci_esdhc_suspend() if
-pinctrl_pm_select_sleep_state() fails:
-
-	ret =3D pinctrl_pm_select_sleep_state(dev);
-	if (ret)
-		return ret;
-
-bypasses decrementing the usage counter, leaking the runtime PM reference. =
-It
-also leaves the host IRQ permanently disabled because it skips
-pm_runtime_force_suspend() and the PM core aborts system suspend, bypassing
-the resume callback.
-
-Also, later in this function:
-
-	ret =3D mmc_gpio_set_cd_wake(host->mmc, true);
-	pm_runtime_force_suspend(dev);
-	return ret;
-
-If mmc_gpio_set_cd_wake() fails, returning an error here after calling
-pm_runtime_force_suspend() seems to break the PM core's state tracking,
-confusing the PM core into skipping the resume callback while the device is
-fully suspended.
-
+> +
+>  	pm_runtime_force_resume(dev);
 > =20
->  	if (device_may_wakeup(dev)) {
-
-[ ... ]
-
-> @@ -2124,8 +2123,7 @@ static int sdhci_esdhc_resume(struct device *dev)
->  	 * restore the saved tuning delay value for the device which keep
->  	 * power during system PM.
->  	 */
-> -	if (mmc_card_keep_power(host->mmc) && mmc_card_wake_sdio_irq(host->mmc)=
- &&
-> -	    esdhc_is_usdhc(imx_data))
-> +	if (mmc_card_keep_power(host->mmc) && esdhc_is_usdhc(imx_data))
->  		sdhc_esdhc_tuning_restore(host);
+>  	ret =3D mmc_gpio_set_cd_wake(host->mmc, false);
+>  	if (ret)
+>  		return ret;
 
 [Severity: High]
-This is a pre-existing issue, but similar to the suspend path, should we
-check the return value of pm_runtime_force_resume() called earlier in
-sdhci_esdhc_resume()?
+This is a pre-existing issue, but does this early return leak the PM usage
+counter and leave the IRQ disabled?
 
-If pm_runtime_force_resume() fails, the subsequent calls to
-sdhci_esdhc_imx_hwinit() and sdhc_esdhc_tuning_restore() here will blindly
-access hardware registers on an unclocked device, which can trigger a kernel
-panic.
+If mmc_gpio_set_cd_wake() fails, we return early without calling enable_irq=
+()
+or pm_runtime_put_autosuspend(), potentially rendering the device unusable.
 
-Also, earlier in this function:
-
-	ret =3D pinctrl_pm_select_default_state(dev);
-	if (ret)
-		return ret;
-
-and later:
-
-	ret =3D mmc_gpio_set_cd_wake(host->mmc, false);
-	if (ret)
-		return ret;
-
-Returning early on these failures skips enable_irq() and
-pm_runtime_put_autosuspend(), which leaves the IRQ permanently disabled and
-leaks the PM usage counter.
-
-> =20
->  	pm_runtime_put_autosuspend(dev);
+There appears to be a similar pre-existing early return on pinctrl failure =
+in
+sdhci_esdhc_suspend() that skips balancing pm_runtime_get_sync() and
+disable_irq().
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260623073515.2658=
-205-1-ziniu.wang_1@oss.nxp.com?part=3D1
+205-1-ziniu.wang_1@oss.nxp.com?part=3D3
