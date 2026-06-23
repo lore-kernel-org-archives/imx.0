@@ -1,172 +1,165 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A999272E6D
-	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 15:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5E5311C38;
+	Tue, 23 Jun 2026 20:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782229758; cv=none; b=QrqF/NlWS9lji3hMz2Z14MwmVR7zcGjQO+A6Xu5ikaONuYUcMuzAgQKEUXETlWHluAG7N66C14EDHucGm+RQ0lLtDwmYl0VaG0hqvZBXpwKszSBThSLNnwAAHm8GJN37bbv6sE3//CmmRO/lrxyfRbKl7fRqxh81U50TOaawXKM=
+	t=1782245421; cv=none; b=TM3DzsWTNL+2dMiogvVn4GxA4ASXMFv2qfH1hzwqdlcIQ5rzVVtoJ5WedYdvO7DKUtw2/4aPqZ0pHKuPumUtq1C3/F7mQLshFeNa3GXwPUjFTJ9g8v1QzMu1LlAI0JZ724XYJhlKPvDK7Er74hsav+ObJZlRyMECpPD0oEtWm6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782229758; c=relaxed/simple;
-	bh=BQdSoUiWENZqBVgAxSlwho3H7mYk5wW76rHGIVOv3K8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=QzoM6PfqQuy0upXP7lBJw3yeB/R8wD/7OUtgVpy/lvPtLK+6SYoCoIZsVo0DroMFi77hhTesA07ajP5JhmKSjmXC9ryra2rMuDsQrSOysG3fFPEmqDowla8vPtQQk7/hRw70fa4tIgdl8UPRyM/OEoKAKPFoL7giD6NcgymKVTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwlY8TS0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782245421; c=relaxed/simple;
+	bh=Nt3A2NFe2hgxN+mXwP/5LU9r32AXsdxR1NzGfIsWQSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BVzsIhN8qMyIj3MwvqmY3NuG9muoOp0eOxv+pSoblVbsdh2Odowa3OGLR1xYn3NmOUrZI1hICe/UHC08raGmu72yNs+YXTPmiYBzVZgEXt5lSWQGPZ2INDHbKAEPQL/6EU7d/YyBVtHMxtNkmCmP5nkAW2lTPCH+dAc2x8vlYMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=asEztcvP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwlY8TS0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D47D1F00A3A;
-	Tue, 23 Jun 2026 15:49:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="asEztcvP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1071F000E9;
+	Tue, 23 Jun 2026 20:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782229757;
-	bh=8QEAOUkYosH74LQigp9leG8Mhm2+sw53zF30VZm48Lc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dwlY8TS00yncIy4uv0yrT6QMSJ/wrQy69aCUlaXSmu8WdgG4hPLdiIWCqjstQVM4v
-	 F7v3VxVjxUug/D2Dr17eOZGos0nBXEUxcR7ZF3pfiVssYA6MEFBR5SgrfpDrj2mcsK
-	 3+C46rOSVQ4fokhrcNPPKJn6/QuZ03Ij/urRGkdbcua4qBDMW5qSyrRdyt9Fht2HBG
-	 0vllPtJli5MxWkmXwal/KFzOkrMKZCkHsGrViG1iS5SgbbwxQQ7usz+D89jgQpadCP
-	 IWYAuU+ESegODptqQeve6w9pcPtJfYm3bUISTNrHKbSxtN2ZWNQcBYI7LXeg4okT8l
-	 NHpD3v5ade9mA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] spi: imx: reconfigure for PIO when DMA cannot be
- started
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Javier Fernandez Pastrana" <javier.pastrana@linutronix.de>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260623153240.57185-1-javier.pastrana@linutronix.de>
-References: <20260623153240.57185-1-javier.pastrana@linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 23 Jun 2026 15:49:16 +0000
-Message-Id: <20260623154917.1D47D1F00A3A@smtp.kernel.org>
+	s=k20260515; t=1782245420;
+	bh=8TrQZE9vH39dIRDw32V4DNDUUodeQOx70heLgohi/mA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=asEztcvPQ0Qf1LSCraHYg3M2kMxixqmxcDmg7KxK4v9lajXjJ7NiSl+hkqIlYTIqF
+	 QuNpna1+Hpu92/DLFRuk5Fc/Y8fRH4s5Yy1v+n6GLoDgEjycRjTrPiCwJqbTRrWM6z
+	 h8O3pSBLK7EE+rdh0OgE3Wm0J8Ca7iLPnaQX4zVGtnf9nkbKpFkyo5oF3SdCvSGVaO
+	 /a0owvNBzJ6tOB1esP/TbrU0HrTDVDidVJNdOz09qbt1nw5BHBgjOrEhRZv9wZCU/k
+	 1NjfCzKtHhlREKUcVXwgGX41rxC4GJdUwv2SiXbuij/Fn4Iy0980+aKiVwGtQy3a0Y
+	 XYuP7M3bcNMqQ==
+Date: Tue, 23 Jun 2026 22:10:16 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, s.hauer@pengutronix.de, 
+	festevam@gmail.com, carlos.song@nxp.com, haibo.chen@nxp.com, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5] i2c: imx: mark I2C adapter when hardware is powered
+ down
+Message-ID: <ajrn2kvH_MelCv4Q@zenone.zhora.eu>
+References: <20260525030400.3182911-1-carlos.song@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525030400.3182911-1-carlos.song@oss.nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+Hi Oleksij,
 
-Pre-existing issues:
-- [High] Fallback to PIO on partial multi-package DMA failure causes data d=
-uplication and memory corruption.
-- [High] Lost target abort due to unprotected state re-initialization.
-- [High] Target abort fails to wake up DMA completions.
-- [High] Interrupts are left enabled on PIO transfer timeout, causing Use-A=
-fter-Free.
---
+Any chance you can give this a review?
 
-commit db5f8647fd97621341925478931a93f928c1d2fb
-Author: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
+Thanks,
+Andi
 
-spi: imx: reconfigure for PIO when DMA cannot be started
-
-When a DMA descriptor cannot be prepared during an SPI transfer, the transf=
-er
-falls back to PIO. This patch ensures the controller is correctly reconfigu=
-red
-for PIO mode before falling back to prevent data corruption.
-
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index ae9912905c67a..96b0315d501c4 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -2153,6 +2153,8 @@ static int spi_imx_transfer_one(struct spi_controll=
-er *controller,
->  		ret =3D spi_imx_dma_transfer(spi_imx, transfer);
->  		if (transfer->error & SPI_TRANS_FAIL_NO_START) {
->  			spi_imx->usedma =3D false;
-> +			controller->fallback =3D true;
-
-[Severity: High]
-This is a pre-existing issue, but can this fallback cause data duplication
-if a multi-package DMA transfer partially succeeds?
-
-Looking at spi_imx_dma_transfer(), a large transfer can be split into
-multiple packages:
-
-for (i =3D 0; i < spi_imx->dma_package_num; i++) {
-    ...
-    ret =3D spi_imx_dma_package_transfer(spi_imx, ...);
-    ...
-}
-
-If the first package successfully transmits via DMA but a subsequent package
-fails DMA preparation and sets SPI_TRANS_FAIL_NO_START, the loop breaks and
-returns.
-
-Since we then trigger this PIO fallback, will the PIO transfer start over
-from the beginning of the buffer and re-transmit the previously sent data?
-
-> +			spi_imx_setupxfer(spi, transfer);
->  			if (spi_imx->target_mode)
->  				return spi_imx_pio_transfer_target(spi, transfer);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does spi_imx_pio_transfer_ta=
-rget()
-have a race condition that could cause a permanent hang?
-
-At the beginning of spi_imx_pio_transfer_target(), the driver re-initializes
-state unconditionally without locks:
-
-spi_imx_pio_transfer_target()
-    ...
-    reinit_completion(&spi_imx->xfer_done);
-    spi_imx->target_aborted =3D false;
-    ...
-
-If the SPI master aborts the transfer asynchronously and spi_imx_target_abo=
-rt()
-signals the completion just prior to this unprotected reset, could the abort
-event be wiped out?
-
-[Severity: High]
-This is also a pre-existing issue, but does spi_imx_target_abort() wake up
-DMA completions correctly?
-
-When in DMA target mode, spi_imx_dma_submit() waits on spi_imx->dma_tx_comp=
-letion
-and spi_imx->dma_rx_completion. However, spi_imx_target_abort() uncondition=
-ally
-completes spi_imx->xfer_done:
-
-spi_imx_target_abort()
-    ...
-    complete(&spi_imx->xfer_done);
-
-Will an external abort leave the DMA thread waiting indefinitely on the
-DMA completions instead of waking it up?
-
->  			else
->  				return spi_imx_pio_transfer(spi, transfer);
-
-[Severity: High]
-This is a pre-existing issue, but does spi_imx_pio_transfer() leave interru=
-pts
-enabled on timeout?
-
-If wait_for_completion_timeout() expires in spi_imx_pio_transfer(), the
-driver returns -ETIMEDOUT:
-
-spi_imx_pio_transfer()
-    ...
-    if (!time_left) {
-        dev_err(&spi->dev, "I/O Error in PIO\n");
-        spi_imx->devtype_data->reset(spi_imx);
-        return -ETIMEDOUT;
-    }
-
-Because it doesn't disable the controller interrupt (MXC_INT_TE), and the
-SPI core will free the message structure and buffers, could a delayed SPI
-interrupt fire later?
-
-If it does, would spi_imx_isr() access freed buffers via spi_imx_push()?
-
->  		}
->  		return ret;
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260623153240.5718=
-5-1-javier.pastrana@linutronix.de?part=3D1
+On Mon, May 25, 2026 at 11:04:00AM +0800, Carlos Song (OSS) wrote:
+> From: Carlos Song <carlos.song@nxp.com>
+> 
+> On some i.MX platforms, certain I2C client drivers keep a periodic
+> workqueue which continues to trigger I2C transfers.
+> 
+> During system suspend/resume, there exists a time window between:
+>   - suspend_noirq and the system entering suspend
+>   - the system starting to resume and resume_noirq
+> 
+> In this window, the I2C controller resources such as clock and pinctrl
+> may already be disabled or not yet restored.
+> 
+> If a workqueue triggers an I2C transfer in this period, the driver
+> attempts to access I2C registers while the hardware resources are
+> unavailable, which may lead to system hang.
+> 
+> Mark the I2C adapter as suspended during noirq suspend and block new
+> transfers until resume, ensuring that I2C transfers are only issued
+> when hardware resources are available.
+> 
+> Fixes: 358025ac091e ("i2c: imx: make controller available until system suspend_noirq() and from resume_noirq()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> ---
+> Change for v5:
+>   - Remake commit log including the issue detail from Mukesh's
+>     suggestion.
+> Change for v4:
+>   - Restore hrtimer when pm_runtime_force_suspend failed when slave mode
+>     enabled.
+> Change for v3:
+>   - Add hrtimer_cancel in i2c_imx_suspend_noirq to cancel slave_timer for
+>     safe suspend in i2c slave mode.
+> Change for v2:
+>   - Call i2c_mark_adapter_suspended() before pm_runtime_force_suspend()
+>     to prevent potential deadlock if a transfer is active during suspend.
+>   - Roll back with i2c_mark_adapter_resumed() if pm_runtime_force_suspend()
+>     fails.
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 45 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 43 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 28313d0fad37..73317ddd5f02 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1922,6 +1922,47 @@ static int i2c_imx_runtime_resume(struct device *dev)
+>  	return 0;
+>  }
+>  
+> +static int __maybe_unused i2c_imx_suspend_noirq(struct device *dev)
+> +{
+> +	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	i2c_mark_adapter_suspended(&i2c_imx->adapter);
+> +
+> +	/*
+> +	 * Cancel the slave timer before powering down to prevent
+> +	 * i2c_imx_slave_timeout() from accessing hardware registers
+> +	 * while the clock is disabled.
+> +	 */
+> +	hrtimer_cancel(&i2c_imx->slave_timer);
+> +
+> +	ret = pm_runtime_force_suspend(dev);
+> +	if (ret) {
+> +		i2c_mark_adapter_resumed(&i2c_imx->adapter);
+> +		if (i2c_imx->slave) {
+> +			hrtimer_forward_now(&i2c_imx->slave_timer, I2C_IMX_CHECK_DELAY);
+> +			hrtimer_restart(&i2c_imx->slave_timer);
+> +		}
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused i2c_imx_resume_noirq(struct device *dev)
+> +{
+> +	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	ret = pm_runtime_force_resume(dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	i2c_mark_adapter_resumed(&i2c_imx->adapter);
+> +
+> +	return 0;
+> +}
+> +
+>  static int i2c_imx_suspend(struct device *dev)
+>  {
+>  	/*
+> @@ -1955,8 +1996,8 @@ static int i2c_imx_resume(struct device *dev)
+>  }
+>  
+>  static const struct dev_pm_ops i2c_imx_pm_ops = {
+> -	NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+> -				  pm_runtime_force_resume)
+> +	NOIRQ_SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend_noirq,
+> +				  i2c_imx_resume_noirq)
+>  	SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend, i2c_imx_resume)
+>  	RUNTIME_PM_OPS(i2c_imx_runtime_suspend, i2c_imx_runtime_resume, NULL)
+>  };
+> -- 
+> 2.43.0
+> 
