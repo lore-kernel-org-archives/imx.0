@@ -1,62 +1,71 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011062.outbound.protection.outlook.com [40.107.130.62])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011002.outbound.protection.outlook.com [52.101.65.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0668E384CEB
-	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 14:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A036384CFB
+	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 14:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.2
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782224638; cv=fail; b=BGqM72xTNwdwftQll1ongGdgY/kvWyxyk/I6dU0k2A7PbKCOU3JjVDu4gP637S82VQ9y7EWQ9Y5uYXJYtCDmNTYPzKDe/xlxIgMDRT/ovSRD7dJeCl7o6w3rRLLI8NjFk1nrVekb36ggRjohBTL0DoXLxCKNQJltgqsxvp18Mac=
+	t=1782224701; cv=fail; b=Ut3Zjy+pbe3KZeR6kStzolr8BCdwEw8xFMAI4PAyESgd9Qw/8kXluAhHpw8mg1r/ZvVYOuUP9HQMNS7oK2w5NEWeY95BnY8t4xJhvgDfMTLyRVVRt3KtpZh/b1ZGQE69yklbSk6CBP7yXOd6cA64gN7tKdEnNtMncgrUqZP73Lg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782224638; c=relaxed/simple;
-	bh=NtxcAKTN33pyqBRjBcjmAbEVi9XtsoxdkaAC8dQFEFk=;
+	s=arc-20240116; t=1782224701; c=relaxed/simple;
+	bh=EeioU1p3d5VklOM5tgYvEfC7HV9l1nlQGVEYzZ1Ftr4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dhOQ58+7+m6cYqyAAeBEzHr9TJvZVX1zM+oIm4m3VjZFkg8hutKRKYXrsHkQFZN1c64HOY1m+K62be6dybqwlbFFBLJb+pFOzFOIogDL8A5TtobnrSiU4ODrdkQiQeaWAVuhCbD6NkI0V1qOQtBzVS0ZyTa2GWXvmlPN9a6ApPA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=etQOtkKz; arc=fail smtp.client-ip=40.107.130.62
+	 Content-Disposition:In-Reply-To:MIME-Version; b=eH2LOP14LSnrPsD49YRAYHf6DizTvBN1D1UPPyCzFDCDMG1+QDLU7YAwscgE6XJ3SFxervGTupuGJFDYrmaGZLSZWA8SAE8AQRw28+aKwh8Ow3uG/wI5V6fiKe/iGJF92yTcbu+KPUSggDGpFF5PzghMTjKEkunxTexsvt9J4/c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=HgMWY8AA; arc=fail smtp.client-ip=52.101.65.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="etQOtkKz"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="HgMWY8AA"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q9Q4sF1OHhPixVV5YFAy6xB13nbn8ROjXGam82N0pu2viZPxbWby0pQ4ikb0j17gu14U4eHzrOTnXKBqWqAsmW07QAYLnRy28dMHMfhjYuFX5viHsjgWYy8Y393VHn6dYssy7gU+4PhDspzF6z0vxbFbFxbdlH+M/WXvG3GteN6wJkAYCUsUr4hZ203c6uAqFotJ03WkSgg0T+waOzju/JnHtfzaQ7RvktjHHyXvafYC2fPKO5FsmUQwf4d9fygmao0dmCdYLil0Q42eP58T2I/wDEedhMsuuPhTjNfObBm/qbvU0B55PsEuM8xTvMXM4oVzqyzZx6ODhhCEl2uC3w==
+ b=EiAXbyUfjxWMceK1OOUNYiOISMLJ8P54ihwVzcXYA1xkKHIqQz2+nGyrf/ZLRqqjRE5PjTEUaATnBA1mKCdUN+0CShTjUjqWmZmZVOzsib/nHosvwdaYjGZOqfJsrk1BoMXAJ77VyrqsgZvB4kTrJDX/idJvSWMVXCrTAxoqgAKOgJxGk9kZkn5a5e8hQR351jPbfUMDMUzp1VBXt+iaK4ijQ5Vz0K8L/YtarjKy7+qwQWHk2PE+m1BfivuDSHNpACW7K5ko4/6sn+JXTTIpgObdZ/l0jbt+usL9g4cC/xw3hHx1Q8nadQoHpDx7n+N4hOMqb3lcam86CYCFCudK7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=acwTRMsDddI6xJa2nWo4Bj+QAIjFayLzzSBSE/d612Y=;
- b=G3YNbpb9Kk3SSgzOPvsfcKrnrR9MDPpM9N/GNsnnsTryLttf+wWffx0ufeh5gys88Rgi9jT4ZQ42saF8Rs4HZ0s+B17wnAvCVYGt7HqC/c+8SgbZaMkXKqvQWbmiYZVRVugKyboyWZEgk+DH1PkNkiT+X0cZctY5rTjZWMEFw//5/zpdWhrM/Cf/gdZ+gZp7CvspLd4BT56j5+TJn79b2/t7bbQYXhUAQdQw3HOA6Y7XXF3ZdMTgr+6NrEpaMrWWTrustaaeM3os85QfDfwOVxKC2zIMEfh4RXpajMWtnB6Ryu/OWw59GZWhYbJ8Hkd5QabrgvCwoP69yw0CjW3D0w==
+ bh=1itCu2FsQzREsfp8kM6Bp7Zah1j5ty2bgb6hwamJMeA=;
+ b=oF5I1nedymmlx70hTRcEvbMUxfBp+Rr2gGu6f6a4e2+tu8hPzQN95gheLywZbzDv6McH1Gckrqr5R+3oTTkwrmb7ah57O7Gv6qR9g76IbLIIsgfI5bhZEcijWd5I6t5HMF/jwn+cuEmOPZBz5HQ28lEgmtuQopJwgw6Hw1LgRlw1vWmUvx7licBrwbTt40UNsJbkD8wmRbAvcV9yjEQoZFU8LJqg6A6GZFYK3EDD2KPQOso6t9Qumu9zmwgnNMDA5y0GJhEvuudC/dloadPkGF1oXSi+HHH1ZlIdLxQtlnZoMxyXRYguUFQzEn6WHAse+/lFouWbS7nHmGDLaYnt1w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=acwTRMsDddI6xJa2nWo4Bj+QAIjFayLzzSBSE/d612Y=;
- b=etQOtkKzsBLVkCyUkeb1FzOHcdNkOXzOS0zTzmRJ3rXDXWqerI5zrahi0/ydRzc/sWYZ4H7Z0SORAYjxVsqu51VZThodR72H4icGcxDc0xw2YNjhnE/uwErBXlY8xPAxztomp2JKQ7jtWQBettZbY3x+rlAyqtT+LGZfYhCTDxXCs+t6dRoF63zP5LODVtHf3ArIcTHr1viHwWGXlaS9T9GuZ07J4MH03GPpG5RWfSm+eW3bBfEchjSAowT8a5Js6CQVR0E14FqCzcejRYrhDYNnNl539h+CHbPJdjwEeBK+OuPkHMajxsUWWdiL68zaSKjq0t3/w8cX8F0qOZ55+w==
+ bh=1itCu2FsQzREsfp8kM6Bp7Zah1j5ty2bgb6hwamJMeA=;
+ b=HgMWY8AATQwMs7VrNNOdP5PmnGw5Mr9VsgsELn3gwzvQiWA+YsWcePukYmLYc6Os8fmUe/jUhlmR7+hrHxn76GXe4m9q3Gy3s9d2v9Ubct77cts3ZTxDmMciNFRq0vi+lWmDFeZsWh4vAlERI3YA+qjyYCwDi3fnZR03jRjns5DD4VkEG5eHjJXCXvxhGFrijFVtB5pazj/kZMeiPLNksPDT6i7dZXEq5UO43N6aej630mXUc0A2nWdR3W+HqsL6d3mXoq2WyJ8uLlsZ/VeYqRWCoF5iyaAchcyobCwVJY5OV2ie025BuM0uj2TS5JTFr5uvWxfmTXeP5vM/MeWOXw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DBBPR04MB8028.eurprd04.prod.outlook.com (2603:10a6:10:1e0::23) with
+ by DBBPR04MB7659.eurprd04.prod.outlook.com (2603:10a6:10:209::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Tue, 23 Jun
- 2026 14:23:51 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Tue, 23 Jun
+ 2026 14:24:56 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Tue, 23 Jun 2026
- 14:23:51 +0000
-Date: Tue, 23 Jun 2026 09:23:41 -0500
+ 14:24:56 +0000
+Date: Tue, 23 Jun 2026 09:24:42 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>, Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-i3c@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i3c: master: svc: report timeout waiting for STOP idle
-Message-ID: <ajqW7U8cM0ybj2Jr@SMW015318>
-References: <20260623060821.23238-1-pengpeng@iscas.ac.cn>
+To: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, amitkumar.karwar@nxp.com,
+	neeraj.sanjaykale@nxp.com, marcel@holtmann.org,
+	luiz.dentz@gmail.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de,
+	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
+	bhelgaas@google.com, brgl@kernel.org, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-pm@vger.kernel.org,
+	sherry.sun@nxp.com
+Subject: Re: [PATCH V2 3/8] Bluetooth: btnxpuart: Add M.2 Bluetooth device
+ support using pwrseq
+Message-ID: <ajqXKnUQ2wlWS_jz@SMW015318>
+References: <20260623030736.1421537-1-sherry.sun@oss.nxp.com>
+ <20260623030736.1421537-4-sherry.sun@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260623060821.23238-1-pengpeng@iscas.ac.cn>
-X-ClientProxiedBy: PH8PR05CA0015.namprd05.prod.outlook.com
- (2603:10b6:510:2cc::16) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260623030736.1421537-4-sherry.sun@oss.nxp.com>
+X-ClientProxiedBy: PH7PR17CA0065.namprd17.prod.outlook.com
+ (2603:10b6:510:325::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -65,111 +74,111 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBBPR04MB8028:EE_
-X-MS-Office365-Filtering-Correlation-Id: e11613b2-2c2c-4deb-50cd-08ded1330c22
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBBPR04MB7659:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90086a6b-2bed-4d88-dbdb-08ded13332e2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|19092799006|366016|1800799024|22082099003|18002099003|11063799006|56012099006|6133799003;
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|19092799006|376014|7416014|22082099003|18002099003|56012099006|11063799006|4143699003;
 X-Microsoft-Antispam-Message-Info:
-	c39EpK50rFM1ZK2gcQR1da8e/ABxPMSJhgwh5vu6a5JKY7wmL0vYFE++0OVrNifLtfxZT8nRRAmMaXDtPkeVw8mmtqNAYAMwagZN5mOoRylHoPAjVDnvqLBl8QaWEqJ0JfAKixmcZei/phatHj6Q+V1/9J6CwyucHO18zuT3YjV2CErpLDPUbBkJ1mOMqY/aVEtmP6KNpVPKq9Bm4kIwt+4fybn3rIsAsJ4jFrNJzoaanEVjNHeL+NoWCBD4GMCDPaqIm//xMA/Z110bwS7tsmgNrYn58bwUTXrVt2PTh1pfHHiJ5Ihm3Hur/CZMsUgD0E0icdv0OcFQdKG6hy/Y/veagUNiyT0a4iqY9nnZoXg7lbDZ68AHQVWZFlOOsSQSkiDLO9WlBBE5fZy0y1cJS8A6a205GTE38ALMXYAfm3UZOTsOS+FSp0nNHTdg70CHmpnxL1WHJFBnOMDdbILdmqnAqCTaRLPKEv6cvZ6w8xajXQ1DRnSTwSbCYqA+lkfc0dvp/gFchbIuaP+fgC8fGMuggf6Z1QdnlNevPV1mAu2izz0qHhArG/uzfVpzCG/8mjpn6ctLLeuyJyiWm1F7kFrnm/10yBnplFh+PsaUD6ohIsZGqE4em/kOZKKFpwTF3pyfl1ELXHxH5AM5YPSYuOfdAagghCsigHSs8pE8gqw=
+	4KP/1J64EHz2AbytdAj37kyC0YStFb3fdPVOpu5aHUJ8uZUigYwUdm/LjkXPdG3QwC9mhMuJBOBeszygDT17jouOuDjqB9t/I4P35v8gLXujvqdeApJj0b3livHmLHXTwAMnRp8OFo/4BZwDLyWDNQavEacqPyCI2CXsgBnOBQoqg63HOlteiFXO0UayR670u7s71z1yUi9N+wuPs3o72wq/XbF6Y87g0ekTI8HKbKThlPnyM1pX6wUXP9RH1xbrcgn2eosKvcdFmqtnvbYBBEd/Oo/Yy6Pol9ZYIbu3zBzQ6p6BtwEqCiArxUIzSfkaBMu60ullOEhQqlESGaMPP9Bk8oJnCjEFqL5wzik+7PnxDxmjHt6nQkKQB50wDNPgSCpJhiUkqTqX7JN7sFTsg6BmbnN+8hiP75RAJfs/t1xD5p/8uU44SOYnlQWZ/N0qJulv28RPePMi2JjHhm6W6O0BvGMfFfiqEDa8Mr7UgSrBe0jy1KphOK2zhoP9+lc2YN2WTd8VKk/SEL3M4920kp0090tWwNLyApKv433NedB9aIjF0+OitNpHW36NY8Ocz54Y/wbclXHU99OCUy4mI+PuQ991bgy5ncOg4w6OK1H4RA//Bqc92kQOiacShxwZIh5bKA7UVlvRUt7WTXTn9QFXasMplNE8e2ICJadQlQM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(19092799006)(366016)(1800799024)(22082099003)(18002099003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(19092799006)(376014)(7416014)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?L/f7QfYcWs1g/PIECjZbN7fmb8PBdze84U9K7uVKXLib+HaIUq19GEHThOXq?=
- =?us-ascii?Q?jyNLur2XQjTiRtmVg+ocDeSFiiW7otYNCeJxyP5gBlNCmgaFjkAbjND0E7PV?=
- =?us-ascii?Q?5+ReNRkBn6a3HkESAdAnvZsYVYca+Tnf2T6EaWLvlg0BeX4zppwb6wQ4an5n?=
- =?us-ascii?Q?6Mqw1HIWWWDNvBACcbunvWbb7WUoj2xsbVXcnRiMEZN53SfVoO1lse7Dj50D?=
- =?us-ascii?Q?oEUpOdzI19YQi83bcGeJ+WqCJR4HV+1u10h2JpAGmpV7oWha3rgoJj2o/4MP?=
- =?us-ascii?Q?YAkaf+44bRWwJyRdJB3L0eO/7lQ98hRodV50tKQPQC0lkTHNfib2d9m4YLde?=
- =?us-ascii?Q?7FweCmvs5sWOV0il3JUMe8lmkpYN4jcMcgg49296jA/A2t/YL/o5M2GknvON?=
- =?us-ascii?Q?Ths99Kr1ouuFTd355R5nT8WAo4sCTP88d2T1J0TSGQw2Yw6aqNJTIB52DZ03?=
- =?us-ascii?Q?yo6YN3G5wm+PzTQdU8pGUS2ktcx+TLtifsqvEJwYgtjsT/yaZo7d+ssAAmEt?=
- =?us-ascii?Q?0cBcyskgf8uhbmLWSkh9qTv6FuP4IqBHf6BIVMOjPXTbjcRDOuGWezt97m7E?=
- =?us-ascii?Q?piHr6IAvlt/YFuwBrnjnxnQAeliJi8hLkreXGoruk0EPu8jE/79PDIcTHZrQ?=
- =?us-ascii?Q?+V0fpI96c/JAO9k2oHY4XKMnzifthOpGbLtpWGubbgvQQOEzhIKxLJjYaZej?=
- =?us-ascii?Q?HJA8sgNPKlIGTIpkFz1NCAH91Ax0WYPBkCjRdWlR7/DK/GPiDW4ASqqFr2m9?=
- =?us-ascii?Q?S1jnQjJs7zmOiy7EUYZMxa8eJ43S8ZHs39t5w2o30i/Nr/ApNy/iVfXA3DtR?=
- =?us-ascii?Q?Ek7j1GEldqn3qvmU1l30pcatdEFk9A21U7dRPTPw94dPpZhtQ/nk3tdfoUpN?=
- =?us-ascii?Q?rwRtYjLOvKukkfuVzitNJiVTplEcd1UtwFjH8s4C6o4arMCD9FrrE3hgpQdH?=
- =?us-ascii?Q?gqOUJQVCFw9XViVQlc+weGB8phLXxW0AbdAlPzEqY7RbRi8n8hBSaZ0YB6oz?=
- =?us-ascii?Q?1Jerrj+/jlwaZFMhYYgBiHNH9AhoCCHycWBrp70QfnFpGEDrvkUxgO4DpJDy?=
- =?us-ascii?Q?gC8C7w7WCo6zNjbs5xBuAezidBvenq484BazFqYnPKTEBgZBzTCU3W3VihPq?=
- =?us-ascii?Q?ZLlZL6sTG9MsGQXmV8xLrcEfk2r1qnVFKINPJgQnWwkaxFyMD6ejJ8kV1SQo?=
- =?us-ascii?Q?uGnV3Wv4691lFARMyoGQmPiaMWNOSTbi52Zwicnpx58acmUSjX4oEsVSl0Px?=
- =?us-ascii?Q?YLtfpUOfkgO+82JWwyuyNEDTVs0Ax1HV8n7iAjFRKLV1CviC4FJObnyfEV2N?=
- =?us-ascii?Q?iLR6ZvaWqsQV28Iogo3N+hSWertuAM/qsTrIf2fWkv5mST5WkE+VaifkO24s?=
- =?us-ascii?Q?yuIETBKTuF4zOyNNa5Q2+wezIbX6SK0oTkDNGWpLsjEVbEq5Zxbv2KM1hx63?=
- =?us-ascii?Q?1ZE4rTziW9lgXEsipyMMtYMHkeCqOcU3BzMOJ06hGXTbcAdJReSQ++hMPDA4?=
- =?us-ascii?Q?6NYQdFGB3JpO8wKA/aI5w+MDbPxdOTZ3wjI3dZR+umrM6gfPBfgzRCU9xNN9?=
- =?us-ascii?Q?96Bz9CWlNo4Agd8Lrsm8JootIYEa5dEn7z8xaoLE5Z89Qu+xJaZA0Cv7XOK/?=
- =?us-ascii?Q?zmzf4NAgDxb0gk+mrc5I2QiHgRiTlZ3ZU0wNZZmrX9Y39wJWN50ygopebi7F?=
- =?us-ascii?Q?ECKVcdkuhpYJQQ9kMDsrEsV586NjVWpPzi96J4hDdwQeSQutr0Y4yzP/9t2a?=
- =?us-ascii?Q?i6UVV0eiIxv8WsAD0Zz+TSQXfeeU9vPVrNhtjrOKo8W+d7uHYZw5?=
+	=?us-ascii?Q?nQEMKdSQCCHGLIB7DzVtBrPA9gIkrys3hiSydyc1IJfkDTlcLLXZJ0VcPG7W?=
+ =?us-ascii?Q?iezLHbHYJZeYi/TprqT6sYxk/j7ZQSIrdFZ4mCbM/h6SK2nUVoQ07lkUmQ6u?=
+ =?us-ascii?Q?lKv0KY5GNpVZZV8SPhPQgT51IAw/pFKVu3iU0aCN35L3wpKmA7ozmuvvoPye?=
+ =?us-ascii?Q?kYeGxGLZ2/I6XeWJZsLHmf8igrG/kdzID3lzATKZs8xyIYlYW+P3+y/mXyZU?=
+ =?us-ascii?Q?J2VQLx7bX+Z5cGF+avOdF4CCZoKxroE+4D9wFuNtDtgqAZw1HWTjzBFppX5A?=
+ =?us-ascii?Q?j7naZ8/WR0ZtTYkWMNd7AkOoblixqFG1fE2LDi9j+PZpYQ8JubYDH2Oak+j3?=
+ =?us-ascii?Q?ukDjaChMRep8wcIKs8qayLW/q4npdQQwWCCMvRMkBbVBcUESCmOoEacaM6KZ?=
+ =?us-ascii?Q?mDSpUZmfrU6yCFwfr9Vtg8tM/OBqfaPexzDYp0Rya0Ucn8E5At8kHz5amUv2?=
+ =?us-ascii?Q?E9i+zaLZQ5YB9MU3DI7ypLZrlNjYkt/7rlpKeoUBxkcb9ksXU3GC57DMWGJd?=
+ =?us-ascii?Q?hts9HmtjX1V730JqJExjyh3jgbUnSzuqM8eFnNSFBAAbfWKSa9SfovlVjOP/?=
+ =?us-ascii?Q?ZCRO+9BlLVKneKAlW1HODPsWw03lPlKwvdSJCN9nQGkYTUblmfaBu6ITJw4K?=
+ =?us-ascii?Q?fUUlqbBxzmYpbBNA9jEvkIgRjnsF5LYddfeM+iCNMH/p0dzdncqvAMcpQG5+?=
+ =?us-ascii?Q?1ypDWtB4Ba/lZ+tAIAK5uZa2G7N32E6D7VkqFegfVvIYVoPeCKLKTA8FDvgQ?=
+ =?us-ascii?Q?lcfOq+VCzpuEj+olLqxJEFPaHG9kI9m2QPc5m3/w2WJhdYVZEhvWPVJoqgMX?=
+ =?us-ascii?Q?Jw8wGgqD8nI+0cSgM5GyNbozYEs1Cx8KeiFPPXEptz8l9dqwvV2GwKTRnyfG?=
+ =?us-ascii?Q?3RL8omg7Z9/gsSPpujAnr+KMs1BcFjIuO0cC0dgIye7pSpSFhBxiM3Lz2tY5?=
+ =?us-ascii?Q?S6ybOJ8ivw2kQ/PyHGeNM98uh076HBecHF+t8dlJXB31V/t5WefiSM9bCX1s?=
+ =?us-ascii?Q?53yF4GFKEd2Fxoa6OUbZmHW+bYSdfi/m0N+kNRM3H5hm85ZFKggP+Zfs4Alg?=
+ =?us-ascii?Q?trlfUab0D87wV8IMXqO9PlHFWZG3pxqMV46Rj/sytZ/nFdW8Pa5iLNtSRaKR?=
+ =?us-ascii?Q?Vus3IwwXB5gNSjPUQn+5uhM9Aa1WYYOYbObgMSH3YIqjQxOkdIzA2FvBU8FC?=
+ =?us-ascii?Q?/pj5YbI/GtRZchb6eff9Uuj0q6Xwdmq3TfrpDqeTCv/6F2cQhA1mtogC7PY2?=
+ =?us-ascii?Q?xGkj+3Xfdzy0g8NUMm76AwrKWZdh7UhxGQg5J/KARMvTlvB0hqS1XX/6gBst?=
+ =?us-ascii?Q?nKdEY9DSKFEe/0m+hZThOUybplFND8trs0g3gBGxgzZhhOCUIvDvgkBW6QpI?=
+ =?us-ascii?Q?l2bZBxE9re9wac6JZoUVyLzSn37f++7cPrd2bnricuUGme4HapMgqeCFC4OW?=
+ =?us-ascii?Q?nwfX6IKK+KUifLKuCiFJcRbzr3hPiOXoTlvhxqkWTKGZBJxaAmP+7ja59eGX?=
+ =?us-ascii?Q?Nlggr34lLVZQ746penLMGGarROgdNxsmW94yChYPyr5D2VdNll/GvWetRmI5?=
+ =?us-ascii?Q?Zjydj2sOVCnHKWrkjIEHn0S0Ch1bhjXPTaUmOTpwvL3N/HVZ4X84JbloMqOG?=
+ =?us-ascii?Q?ufLzv2dcplVQMF0icR1oxAhGycY5zbsy0mABCr0OeC44k98/TSqdQ8H8Pc/m?=
+ =?us-ascii?Q?LY+x9RDx3jz6rKcQSwGJ9XW+qkeQacFncf50lWXUDabZ6wbRqvAzFgs1tE6J?=
+ =?us-ascii?Q?eASrcKoNxY/1HMbAQWa1hrQ8MP/qSQtHLj+6y3lcGGynfrFhtDQ6?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e11613b2-2c2c-4deb-50cd-08ded1330c22
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90086a6b-2bed-4d88-dbdb-08ded13332e2
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 14:23:51.3428
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 14:24:56.3641
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q5Fri0BznzSDaZs2A0oWDgVIwn/j7we8EkaY271FKh9DjR+CZuKY02lLvZVMpbrIs5otCMVC3wrmouro8LEV25lr8ZKgwz7gSJgsBbsGg2gxVpYlseuOxD5ucFNzHrn3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8028
+X-MS-Exchange-CrossTenant-UserPrincipalName: x7n2vugvrO0cRk17e9cATNs8UZna5ts4mI5/rp9PFCgx7TfRNnsf5lbT9+1TkSny4Ls1GH5+tBYUe2TS4UbOIZspsvn+bkJSa0Ee0xzjtl7Wyfqe7LsJ2IlzOXRBSmVk
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7659
 
-On Tue, Jun 23, 2026 at 02:08:21PM +0800, Pengpeng Hou wrote:
+On Tue, Jun 23, 2026 at 11:07:30AM +0800, Sherry Sun (OSS) wrote:
+> From: Sherry Sun <sherry.sun@nxp.com>
 >
-> svc_i3c_master_xfer() emits STOP or force-exit for the final transfer
-> and then waits for the controller state to become idle, but ignores
-> readl_poll_timeout(). The function can therefore return success while
-> the controller is still not idle.
+> Power supply to the M.2 Bluetooth device attached to the host using M.2
+> connector is controlled using the 'uart' pwrseq device. So add support for
+> getting the pwrseq device if the OF graph link is present. Once obtained,
+> pwrseq_power_on() is called to power up the M.2 Bluetooth card. The power
+> sequencer descriptor is obtained via devm_pwrseq_get(), so the power-off
+> and cleanup are handled automatically when the device is unbound.
 >
-> Return the idle-wait error through the existing warning/FIFO cleanup
-> path so the caller observes the failed transfer without emitting a
-> second STOP after the final STOP or force-exit has already been sent.
->
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
 > ---
-
-Dose you really met timeout? if yes, what step to reproduce it. Suppose
-only few FCLK to emit STOP or force-exit unconditional.
-
-Any way not harmful to add check it.
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
->  drivers/i3c/master/svc-i3c-master.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  drivers/bluetooth/btnxpuart.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 >
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-> index 93805df8a940..93ae6eb1a355 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -1488,8 +1488,11 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
->                         svc_i3c_master_emit_force_exit(master);
+> diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
+> index e7036a48ce48..438ccaa2b56d 100644
+> --- a/drivers/bluetooth/btnxpuart.c
+> +++ b/drivers/bluetooth/btnxpuart.c
+> @@ -9,6 +9,8 @@
 >
->                 /* Wait idle if stop is sent. */
-> -               readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-> -                                  SVC_I3C_MSTATUS_STATE_IDLE(reg), 0, 1000);
-> +               ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-> +                                        SVC_I3C_MSTATUS_STATE_IDLE(reg),
-> +                                        0, 1000);
-> +               if (ret)
-> +                       goto cleanup;
->         }
+>  #include <linux/serdev.h>
+>  #include <linux/of.h>
+> +#include <linux/of_graph.h>
+> +#include <linux/pwrseq/consumer.h>
+>  #include <linux/skbuff.h>
+>  #include <linux/unaligned.h>
+>  #include <linux/firmware.h>
+> @@ -1866,6 +1868,18 @@ static int nxp_serdev_probe(struct serdev_device *serdev)
+>  		return err;
+>  	}
 >
->         return 0;
-> @@ -1502,6 +1505,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
->         else
->                 svc_i3c_master_emit_force_exit(master);
->
-> +cleanup:
->         svc_i3c_master_clear_merrwarn(master);
->         svc_i3c_master_flush_fifo(master);
->
+> +	if (of_graph_is_present(dev_of_node(&serdev->ctrl->dev))) {
+> +		struct pwrseq_desc *pwrseq;
+> +
+> +		pwrseq = devm_pwrseq_get(&serdev->ctrl->dev, "uart");
+> +		if (IS_ERR(pwrseq))
+> +			return PTR_ERR(pwrseq);
+> +
+> +		err = pwrseq_power_on(pwrseq);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+>  	/* Initialize and register HCI device */
+>  	hdev = hci_alloc_dev();
+>  	if (!hdev) {
 > --
-> 2.50.1 (Apple Git-155)
+> 2.50.1
 >
 >
