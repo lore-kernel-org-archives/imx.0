@@ -1,126 +1,261 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760333CFF50
-	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 10:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696D03D092E
+	for <imx@lists.linux.dev>; Tue, 23 Jun 2026 10:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782210701; cv=none; b=KewUEBeA23Zq0b+ZC483mUz9PHeNZ4lns7wQYGyhMS/YpUxxiasaubbjE6DaZnN7OrMUDMj5xanh6Q1qZS4z0iKLMrqoAuIXowbFXniPtm5mzfJG6uCIFFZ7yMEb2DToHzfxNW7kWHIzeazMSTOg//x8jipi8v/Ou7ozyAmKgIQ=
+	t=1782211315; cv=none; b=qjKkyQyUtr5rl7vtn+SjN8s0Ujm7xNAuKm0ruDcpkLydzTIGPPJN27zpZxJQBN/2e6PWBvdeWB2UzZ+Ssp+0kGcVvVENMCl5dxqZIhH2vNG/MoOqm2oF6sA/ufMDLo3W1z0ryQZdXxDxuAr0Cqen0P4e+6Oe0VtXwRB8WtQHLdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782210701; c=relaxed/simple;
-	bh=g9w1nnoj9PZP9t30ycj4eQL/Tri898VteycyFYDJrpg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=peTf9Ym1fiQYIKztOKW1c6nGFfON3nFYoS2gZzITbHHFhtM2rtWiNxnQcEO/y2Fp7ysucv5SQO0Wy2HVBDD4WMP7MYRVjNNBXM9QsA8kqS8eQgsVA6HdyNC9VkeOuRHxoHQd3V7GOvCUK3vHFlu47GtS8rJXF3J1TGqZZQAZYD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wDnVpR_YDpqJsP8Ag--.4251S3;
-	Tue, 23 Jun 2026 18:31:29 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app4 (Coremail) with SMTP id zi_KCgAX_DR_YDpqqnXDAQ--.12246S2;
-	Tue, 23 Jun 2026 18:31:27 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: mirela.rabulea@nxp.com,
-	mchehab@kernel.org
-Cc: shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH] media: imx-jpeg: cancel timeout worker when streaming stops
-Date: Tue, 23 Jun 2026 10:30:31 +0000
-Message-Id: <20260623103031.3051-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1782211315; c=relaxed/simple;
+	bh=kajIBxgPQ5fKSEkaF9i7FE6+WpliJhOreftbLAfeP2g=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=j+RYyvmcYiFAowEjfNH95FQkNGaG/GEwNPEPVkltCWrjOIiNlJ1JUGm4TuXP1zvsjr4PCVAX/aVlC6lSFZ23/6KTOHfWyZWYZ/wu773qzeB5Ss+SZTCH4KNaxcc+JhPThQjJir9PPP/qD/hyLHinErm8WYRwNJoTHxlntqkh/NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TsbFraGx; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TsbFraGx"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 623A64E40761;
+	Tue, 23 Jun 2026 10:41:46 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2CA7A601C2;
+	Tue, 23 Jun 2026 10:41:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1C89A106C8442;
+	Tue, 23 Jun 2026 12:41:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782211305; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=nW1cfszAg7S4GsG7xpMPmAq99XG9RkOhVx8ssV5Hh5c=;
+	b=TsbFraGxXYHV0bJDmyjJ8nWcVEoBmdokwtEcPMViUEQJr3dI8dWjtCRqglpRmCiSQl7eUm
+	zXTT9XttBj49SaAJebbKEG88UPnERka2W9CCKKrPvv9WmBgxV6zqujW97fD4hVmiksLmA4
+	PNRg5K1B9HIGJTRCeFRs+FKhjJkxh8dP8wBIMSVweGib4+T/FncpYCcKpppU6LiQMGoa8P
+	FguDA0RmM2I1ccDbBRKVbYhp/ds5aPgKdQT7g1r77Pt/ve2fynQg8R0/7kutRNYpOvhgB0
+	yYocI55vQdENSLFfgwzDfLMiKSKF+qGbdtlAsiEhBuABs3K9zeHmkiIx1roGvw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zi_KCgAX_DR_YDpqqnXDAQ--.12246S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?8uYBzAXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnXz+g1OQfMo27QHy5TwQyZxPleTyGUXbnChair7cETXyoYXOFSx3siTBxadejsxrIXHa
-	8lA0M4uvHQv4iMs7l3up9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj93XoWxGw48Xw15Jr15WrWrtrW5urX_yoW5ZrWDpr
-	WSg3yUAFWUtF4ktFyqqa18uF95GrnxXayUur40g34fArZ3Wr1YqrW8K3W5KFW7A392kFZ2
-	qF45K3y7Za1YqFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
-	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
-	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
-	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0E
-	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
-	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
-	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU85l1PUUUUU==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 23 Jun 2026 12:41:36 +0200
+Message-Id: <DJGD6EW5D0FD.V4WHCIICLXQ7@bootlin.com>
+Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Frank Li"
+ <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
+ "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>,
+ <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+To: "Liu Ying" <victor.liu@nxp.com>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v3] drm/bridge: imx93-mipi-dsi: Fix mode validation
+X-Mailer: aerc 0.21.0
+References: <20260515-imx93-mipi-dsi-fix-mode-validation-v3-1-91f7d22b2fe4@nxp.com> <DJD6I8NMLN3W.3LVT4L17HT5TU@bootlin.com> <ajjpuroFPI_U2Fw6@raspi>
+In-Reply-To: <ajjpuroFPI_U2Fw6@raspi>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Each per-fd context ctx owns a delayed_work (ctx->task_timer, callback
-mxc_jpeg_device_run_timeout) armed via schedule_delayed_work() at the end
-of mxc_jpeg_device_run() to recover a stalled encode/decode job. The only
-existing cancellation is cancel_delayed_work() in the frame-done IRQ
-handler, which de-queues a pending work item but does not wait for a
-callback that has already started, and it only runs when a frame completes.
+Hello Liu,
 
-When the fd is closed while a job is in flight (the frame-done IRQ has not
-fired yet), nothing syncs the worker before mxc_jpeg_release() frees ctx
-with kfree() after v4l2_m2m_ctx_release(). A queued or executing
-mxc_jpeg_device_run_timeout() can then recover ctx through
-container_of(&ctx->task_timer) and dereference it (ctx->mxc_jpeg,
-slot_data, dev_warn) after ctx has been freed.
+On Mon Jun 22, 2026 at 9:52 AM CEST, Liu Ying wrote:
+> On Fri, Jun 19, 2026 at 06:49:55PM +0200, Luca Ceresoli wrote:
+>> Hello Liu,
+>
+> Hi Luca,
+>
+>>
+>> On Fri May 15, 2026 at 8:54 AM CEST, Liu Ying wrote:
+>> > i.MX93 MIPI DPHY PLL has limitation for matching with some pixel clock
+>> > rates, e.g., the best DPHY PLL frequency is 445.333333MHz for a typica=
+l
+>> > 1920x1080p@60Hz CEA/DMT display mode with a pixel clock rate running
+>> > at 148.5MHz with 4 data lanes + RGB888 pixel in MIPI DSI sync pulse mo=
+de,
+>> > while the expected PLL frequency is (148.5 * 24) / 4 / 2 MHz =3D 445.5=
+MHz.
+>> > Fortunately, VESA Display Monitor Timing Standard allows +/-0.5% pixel
+>> > clock rate deviation for timings.  So, for those display modes read
+>> > from EDID through a bridge with DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP=
+_EDID
+>> > operation bit masks set, pixel clock rate could be adjusted to match
+>> > with the PLL frequency(for the above example, the pixel clock rate is
+>> > adjusted to be 148.444444MHz with about -0.03% deviation from the 148.=
+5MHz
+>> > nominal rate so that the adjusted rate matches with the 445.333333MHz =
+PLL
+>> > frequency).
+>> >
+>> > Instead of checking the last bridge's operation bit masks against
+>> > DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP_EDID to determine if allowing
+>> > +/-0.5% pixel clock rate deviation, check any bridge after this bridge=
+,
+>> > because the last bridge is usually a display connector bridge without
+>> > any operation bit mask when the clock rate deviation is allowed.
+>> >
+>> > Fixes: ce62f8ea7e3f ("drm/bridge: imx: Add i.MX93 MIPI DSI support")
+>> > Fixes: 5849eff7f067 ("drm/bridge: imx93-mipi-dsi: use drm_bridge_chain=
+_get_last_bridge()")
+>> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
+>>
+>> I'm perhaps not the most qualified to review this change, but let me try=
+.
+>
+> Thanks for your review.
+>
+>>
+>> > --- a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
+>> > +++ b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
+>> > @@ -489,25 +489,43 @@ static int imx93_dsi_get_phy_configure_opts(stru=
+ct imx93_dsi *dsi,
+>> >  	return 0;
+>> >  }
+>> >
+>> > +static inline struct drm_bridge *
+>> > +imx93_dsi_get_next_bridge_in_chain(struct drm_bridge *bridge)
+>> > +{
+>> > +	struct drm_bridge *next =3D drm_bridge_get_next_bridge(bridge);
+>> > +
+>> > +	drm_bridge_put(bridge);
+>> > +
+>> > +	return next;
+>> > +}
+>> > +
+>> >  static enum drm_mode_status
+>> >  imx93_dsi_validate_mode(struct imx93_dsi *dsi, const struct drm_displ=
+ay_mode *mode)
+>> >  {
+>> >  	struct drm_bridge *dmd_bridge =3D dw_mipi_dsi_get_bridge(dsi->dmd);
+>> > -	struct drm_bridge *last_bridge __free(drm_bridge_put) =3D
+>> > -		drm_bridge_chain_get_last_bridge(dmd_bridge->encoder);
+>> > +	struct drm_bridge *bridge;
+>> >
+>> > -	if ((last_bridge->ops & DRM_BRIDGE_OP_DETECT) &&
+>> > -	    (last_bridge->ops & DRM_BRIDGE_OP_EDID)) {
+>> > -		unsigned long pixel_clock_rate =3D mode->clock * 1000;
+>> > -		unsigned long rounded_rate;
+>> > +	for (bridge =3D drm_bridge_get_next_bridge(dmd_bridge);
+>> > +	     bridge;
+>> > +	     bridge =3D imx93_dsi_get_next_bridge_in_chain(bridge)) {
+>> > +		if ((bridge->ops & DRM_BRIDGE_OP_DETECT) &&
+>> > +		    (bridge->ops & DRM_BRIDGE_OP_EDID)) {
+>> > +			unsigned long pixel_clock_rate =3D mode->clock * 1000;
+>> > +			unsigned long rounded_rate;
+>> >
+>> > -		/* Allow +/-0.5% pixel clock rate deviation */
+>> > -		rounded_rate =3D clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
+>> > -		if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
+>> > -		    rounded_rate > pixel_clock_rate * 1005 / 1000) {
+>> > -			dev_dbg(dsi->dev, "failed to round clock for mode " DRM_MODE_FMT "=
+\n",
+>> > -				DRM_MODE_ARG(mode));
+>> > -			return MODE_NOCLOCK;
+>> > +			/* Allow +/-0.5% pixel clock rate deviation */
+>> > +			rounded_rate =3D clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
+>> > +			if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
+>> > +			    rounded_rate > pixel_clock_rate * 1005 / 1000) {
+>> > +				dev_dbg(dsi->dev,
+>> > +					"failed to round clock for mode " DRM_MODE_FMT "\n",
+>> > +					DRM_MODE_ARG(mode));
+>> > +				drm_bridge_put(bridge);
+>> > +				return MODE_NOCLOCK;
+>> > +			}
+>> > +
+>> > +			drm_bridge_put(bridge);
+>> > +			break;
+>> >  		}
+>> >  	}
+>>
+>> Is this logic specific to the imx93 MIPI DSI host only? Or should it be
+>> made generic for all dw-hdmi users, or even every DSI host?
+>
+> I think it's kind of specific to the i.MX93 MIPI DSI host only, because
+> 1) the i.MX93 MIPI DPHY PLL(integrated into i.MX93 MIPI DPHY IP) supports
+> the best DPHY PLL frequency @445.333333MHz for the typical 1920x1080p@60H=
+z
+> display mode, which is lower than the expected/nominal frequency @445.5MH=
+z
+> and 2) the generic DW MIPI DSI driver(dw-mipi-dsi.c) is PHY-agnostic, whi=
+ch
+> means vendors may attach different MIPI DPHY IPs to the common MIPI DSI h=
+ost
+> IP and likely there would be no frequency mismatch between the pixel cloc=
+k
+> and the PLL like i.MX93 has.
 
-Cancel the worker from mxc_jpeg_stop_streaming(). The cancel cannot live
-in mxc_jpeg_release(): mxc_jpeg_device_run() arms the timer while holding
-only hw_lock, not the mxc_jpeg->lock mutex that release holds, so a cancel
-in release could still race a concurrent mxc_jpeg_device_run() that
-re-arms the timer afterwards. mxc_jpeg_stop_streaming() instead runs inside
-v4l2_m2m_ctx_release() -> vb2_queue_release(), i.e. after
-v4l2_m2m_cancel_job() has set TRANS_ABORT and waited for any in-flight job
-to finish (so __v4l2_m2m_try_queue() will not queue and v4l2_m2m_try_run()
-will not run any further job for this context, which prevents
-mxc_jpeg_device_run() from re-arming the timer) and before the m2m context
-is freed. cancel_delayed_work_sync() removes a pending work item and waits
-for a running callback, so the worker can no longer race with the
-subsequent kfree(). The cancel is placed before the buffer-release loop so
-a concurrently running timeout callback cannot race with it over the same
-buffers. If the frame-done IRQ canceled a still-pending timer, this cancel
-is a no-op; if the timeout callback has already started, it waits for the
-callback to finish. The same mxc_jpeg_stop_streaming() call is also
-reached from VIDIOC_STREAMOFF, which drains the worker early, although
-STREAMOFF itself does not free ctx -- the use-after-free arises only
-when the fd is later closed.
+I see, OK, thanks for the clarification!
 
-This bug was found by static analysis.
+>> Also, iterating over the bridge chain is not very clean. I'm working on
+>> bridge hotplug (not upstream yet) and bad things would happen if a bridg=
+e
+>> were hot-unplugged during this loop.
+>
+> The iterating is essentially the same to drm_for_each_bridge_in_chain_fro=
+m()
+> except that bridge_chain_mutex is not taken(since it's already taken) and
+> the starting bridge is fixed to be the next bridge.  A few bridge core AP=
+Is
+> like drm_bridge_chain_mode_valid() call drm_for_each_bridge_in_chain_from=
+().
+> So, the iterating looks clean to me and I'm not aware of any bad things w=
+hich
+> would happen when bridge hotplug is considered.
 
-Fixes: cfed9632ca8e ("media: imx-jpeg: Add a timeout mechanism for each frame")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
----
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 2 ++
- 1 file changed, 2 insertions(+)
+I had missed this is called from drm_bridge_chain_mode_valid(), which
+already takes the bridge_chain_mutex thanks to
+drm_for_each_bridge_in_chain_from().
 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index 9e4a813489c0..d85a9d196269 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -1735,6 +1735,8 @@ static void mxc_jpeg_stop_streaming(struct vb2_queue *q)
- 
- 	dev_dbg(ctx->mxc_jpeg->dev, "Stop streaming ctx=%p", ctx);
- 
-+	cancel_delayed_work_sync(&ctx->task_timer);
-+
- 	/* Release all active buffers */
- 	for (;;) {
- 		if (V4L2_TYPE_IS_OUTPUT(q->type))
--- 
-2.34.1
+So that means this loop is safe, but it would be nice to add a comment to
+make it clear to future readers. E.g. "/* we are called by
+drm_bridge_chain_mode_valid(), so the bridge_chain_mutex is locked */".
 
+Still I'm not a fan of having a loop over the bridge chain (this function)
+inside another loop over the same bridge chain (in
+drm_bridge_chain_mode_valid(). And even more I'm not a fan of drivers
+walking around the bridge chain on their own, IMO the core (perhaps
+drm_bridge.c in this case) should to the loops . However this is a general
+concern, it happens also elsewhere, and I have no immediate proposal to
+improve this, so don't consider it as a blocker for this patch.
+
+>> If the core did this sort of algorithm
+>> it would be able to be more robust.
+>
+> Is the core dw-mipi-dsi.c?
+> If yes, do you think it's worth doing that even if the frequency mismatch
+> between the pixel clock and the PLL is kind of specific to the i.MX93 MIP=
+I
+> DSI host?
+>
+>>
+>> Finally, out of my utter ignorance on the subject, is the VESA +/-0.5%
+>> margin generic enough that this driver can always rely on it?
+>
+> I see several upstream drivers rely on it, see "git grep '0.5%' drivers/g=
+pu/"
+> output.  And every display mode allows -/+ 0.5% pixel clock rate deviatio=
+n
+> according to VESA Display Monitor Timing Standard [1], though [1] is a fo=
+und
+> by a random Google search.
+>
+> [1] https://glenwing.github.io/docs/VESA-DMT-1.13.pdf
+
+As I said I'm quite ignorance about this aspect, so I asked to better
+understand. In reply to another part fo the thread: no, I don't have a
+specific concern if this is the common practice.
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
