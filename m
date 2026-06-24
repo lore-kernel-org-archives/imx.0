@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3E020459A;
-	Wed, 24 Jun 2026 12:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80E5259C80;
+	Wed, 24 Jun 2026 13:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782304006; cv=none; b=C2wFS/AWZE7bW+cZuWfNgjaS7P0/gCO2hron5TnhgEARFt4VN06cjkJr4R15x6yoiw/sO/349j24BDjLrCtMHwwcSwnvg4OWDNYh+bBCmEU3ZF5X6mhttGqceLbXoW8cubFO8WIMeCX2UqoiPSXF7RzXPnEzPVz87JSh+J/as10=
+	t=1782306263; cv=none; b=c8KZ72f6R2DVrlEWHlVCJmwiOWVvAQwkiCEuN1lAZa9pj1iLxdbHMYYp4O3AxXp82m2U77oL4f6Ux0pOfuOQDuWG7uAde9qgZjDPb7jKxHW5W/6C04ihEKYb+G2KgDdF/GqodGW3ygWIfS0OLMu98IkatPWQ5ldWsjgK2hi4FsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782304006; c=relaxed/simple;
-	bh=/VirFeEOFI7LE6HKVK5k8Z9YsTp00W/IfBPelAxW+Yc=;
+	s=arc-20240116; t=1782306263; c=relaxed/simple;
+	bh=ffRaDjvCy9x1Qb7A599+eUpMi1nniGkrv/uTQ6dXYpM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GVP3xOT3ZJRx8u2TIfzukojvdv7orch+/8wyDBmZ24CwcfP4kWW5fyS0TDRWn0SHB6DPjXw8e4gDeETFGoVc8lFTH61cPEwlZzEoZm7ijetysooNJLIbe9hrwFmcyKUMfYD2m7n2xB4prGP0b0sF47N7mrlMBXqPKEgW0bXL+Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhyfHIEM; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cl7+yEOAO81P2l748HVurx7IP0inrVSNWDItIREJ3jTrSTjD0gsBlFxidjr623uiYmt7Ss3Yw1wE/GwlM8BvpvhyFguQEL5uTKi1+UD1o50yWggUdqd7ylp5hTsNHA+WjDKTMEZ5f5uW2xtwLhDQKEiOp3Z4JlTKUaiQBZzPN4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVDAUURG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhyfHIEM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A861F00A3D;
-	Wed, 24 Jun 2026 12:26:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVDAUURG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30851F000E9;
+	Wed, 24 Jun 2026 13:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782304002;
-	bh=FyoWGqDXNXkDv+TpnC2bHZVSCNeq8GboVi/p3SCbn98=;
+	s=k20260515; t=1782306262;
+	bh=eWHl0udhvjCV2mjGVC5uD1U/TvHNrVW3aXd0HzDYa1U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jhyfHIEMGRWNkp3KiQUMVY7dHLKfjJzrWbIsyAeIsseRu5QuOZJhwAPPHwmQ0QWvH
-	 WGYwlNYxl1mnVmp1ZGZ8iqsxwxFXzoRVne3yK1M534Q2V4qGdWv9onURl4Ee8BG0FS
-	 lcsLTQrTg0ozRtjGNY5rpJVc1OCqzc7X8nap9bkj1+JTb5Fv53GwRtOuC8WOLUEUYM
-	 3bdSV/ZrMI2nyHYRJKGfkE/1JVqdloixiX3wwfbhAu598I30csYL3xHzuD5SjT/0T5
-	 kWjcrqimprGPD4LcpMUuPUjr2GYV2l3KQFiGOd7tkFcjP8G8LhbOXkUWmcax7V0BeL
-	 YhktxORHN27PA==
-Date: Wed, 24 Jun 2026 14:26:40 +0200
+	b=FVDAUURG5/OnVD/2XG5fzA49+V/z3pAgKME/Z9UXdbjAATGJL7M3qh98G+bnxhA8y
+	 zvn8Vir+IzYGhhHsGRzq15UnjwPKF3AWWu37ET7ogGxEu95K7qdVsdQ4W2hTvJMESV
+	 BCwWgJDd84CnVWefJoKqTcKxoZ5DOc0EgfqgJ6eedQs5wdcaHeFoUa+Htx2y3HpN3y
+	 0ehEMWnE+LupoJaQcFZpdLLmP97qbW0M9g2fxDKXUKvgup+VBq3KxMNhTQyHyiZ5fL
+	 AztfsXKYTjbMO6PWpYeSCHDEuxlk0qhkY5eU1VhvqfK7oFMtH/4wyCDTTa0+Fm3JHN
+	 6INBjM3evlPJQ==
+Date: Wed, 24 Jun 2026 15:04:19 +0200
 From: Maxime Ripard <mripard@kernel.org>
 To: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -42,13 +42,13 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
 	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 18/37] drm/bridge: samsung-dsim: remove the panel_bridge
- on host_detach
-Message-ID: <20260624-delectable-sexy-crayfish-e15c1f@houat>
+Subject: Re: [PATCH 30/37] drm/bridge: add drm_bridge_is_tail() to know
+ whether a bridge completes the pipeline
+Message-ID: <20260624-vagabond-neon-gorilla-cd6487@houat>
 References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-18-45e2bdb3dfb4@bootlin.com>
- <20260608-nano-kangaroo-of-piety-b5ab3d@houat>
- <DJ5EHSOPNQZH.22I96C6QXN9KJ@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-30-45e2bdb3dfb4@bootlin.com>
+ <20260608-shapeless-opal-ferret-c8b105@houat>
+ <DJ4DGYZ3GQZH.3AZOC0Z69W92S@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -56,179 +56,130 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="cstjwexp6hdv64qh"
+	protocol="application/pgp-signature"; boundary="kbqprj5uqeblzkb7"
 Content-Disposition: inline
-In-Reply-To: <DJ5EHSOPNQZH.22I96C6QXN9KJ@bootlin.com>
+In-Reply-To: <DJ4DGYZ3GQZH.3AZOC0Z69W92S@bootlin.com>
 
 
---cstjwexp6hdv64qh
+--kbqprj5uqeblzkb7
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 18/37] drm/bridge: samsung-dsim: remove the panel_bridge
- on host_detach
+Subject: Re: [PATCH 30/37] drm/bridge: add drm_bridge_is_tail() to know
+ whether a bridge completes the pipeline
 MIME-Version: 1.0
 
-On Wed, Jun 10, 2026 at 03:24:10PM +0200, Luca Ceresoli wrote:
-> On Mon Jun 8, 2026 at 1:53 PM CEST, Maxime Ripard wrote:
-> > On Tue, May 19, 2026 at 12:37:35PM +0200, Luca Ceresoli wrote:
-> >> In preparation for DRM bridge hot-plugging, we need to handle the dyna=
-mic
-> >> lifetime of the following bridge in case the samsung-dsim is always pr=
-esent
-> >> and the following bridge (next_bridge) is hot-unplugged.
+On Tue, Jun 09, 2026 at 10:23:24AM +0200, Luca Ceresoli wrote:
+> Hi Maxime,
+>=20
+> thanks for the review of this long series!
+>=20
+> On Mon Jun 8, 2026 at 2:34 PM CEST, Maxime Ripard wrote:
+> ...
+> >> --- a/include/drm/drm_bridge.h
+> >> +++ b/include/drm/drm_bridge.h
+> >> @@ -78,6 +78,19 @@ struct drm_bridge_funcs {
+> >>  	int (*attach)(struct drm_bridge *bridge, struct drm_encoder *encoder,
+> >>  		      enum drm_bridge_attach_flags flags);
 > >>
-> >> Based on the 'if (!IS_ERR(panel))' check in samsung_dsim_host_attach()=
-, the
-> >> next_bridge could be A) a panel bridge created by this driver via
-> >> devm_drm_panel_bridge_add() or B) a pre-existing bridge obtained via
-> >> of_drm_find_and_get_bridge().
-> >>
-> >> For case B) we need to put that reference when the next_bridge is remo=
-ved,
-> >> which is already handled by calling drm_bridge_clear_and_put() in
-> >> samsung_dsim_host_detach() and in the samsung_dsim_host_attach() error
-> >> management code.
-> >>
-> >> In case A) we additionally have to remove the panel bridge. Currently =
-it is
-> >> created by devm_drm_panel_bridge_add(), which adds two devm actions wi=
-th
-> >> the refcounted panel bridge:
-> >>
-> >>  - drm_bridge_put_void() via devm_drm_bridge_alloc() on panel->dev
-> >>  - devm_drm_panel_bridge_release() via devm_drm_panel_bridge_add_typed=
-()
-> >>    on the consumer device (samsung-dsim)
-> >>
-> >> The first action is OK: being tied to panel->dev it will happen when t=
-he
-> >> panel is unplugged.
-> >>
-> >> The second action is bound to the consumer device, so the devm semanti=
-cs is
-> >> not useful here when introducing hotplug. Indeed we need to drop the
-> >> next_bridge in samsung_dsim_host_detach() anyway, before the driver .r=
-emove
-> >> function, in order to support {add, {attach, detach} x N, remove} hotp=
-lug
-> >> event sequences.
-> >>
-> >> Thus move to the non-devm drm_panel_bridge_add() along with the matchi=
-ng
-> >> drm_panel_bridge_remove(), so the lifetime of the panel-bridge is tied=
- to
-> >> the host_attach/host_detach cycle and not the whole samsung-dsim device
-> >> lifetime.
-> >>
-> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> >>
-> >> ---
-> >>
-> >> In a previous discussion with Maxime he mentioned a plan to make every
-> >> drm_panel always have a wrapping bridge. With that done, all the code
-> >> handling the panel and adding the panel_bridge would become useless he=
-re
-> >> (and in many other places) and could be entirely removed. This patch i=
-s a
-> >> temporary solution until that happens. The best pointer I could find to
-> >> that discussion is [0], but there might be more recent material I coul=
-d not
-> >> find at the moment.
-> >>
-> >> [0] https://lore.kernel.org/lkml/20250218-faithful-white-magpie-da9ac9=
-@houat/
-> >> ---
-> >>  drivers/gpu/drm/bridge/samsung-dsim.c | 17 ++++++++++++++---
-> >>  include/drm/bridge/samsung-dsim.h     |  2 ++
-> >>  2 files changed, 16 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/b=
-ridge/samsung-dsim.c
-> >> index 5b799619e07e..2af287221e22 100644
-> >> --- a/drivers/gpu/drm/bridge/samsung-dsim.c
-> >> +++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-> >> @@ -1951,14 +1951,16 @@ static int samsung_dsim_host_attach(struct mip=
-i_dsi_host *host,
-> >>  	if (!remote)
-> >>  		return -ENODEV;
-> >>
-> >> +	dsi->panel_bridge_added =3D false;
-> >>  	panel =3D of_drm_find_panel(remote);
-> >>  	if (!IS_ERR(panel)) {
-> >> -		next_bridge =3D devm_drm_panel_bridge_add(dev, panel);
-> >> +		next_bridge =3D drm_panel_bridge_add(panel);
-> >>  		if (IS_ERR(next_bridge)) {
-> >>  			ret =3D PTR_ERR(next_bridge);
-> >>  			next_bridge =3D NULL; // Inhibit the cleanup action on an ERR_PTR
-> >>  		} else {
-> >>  			drm_bridge_get(next_bridge);
-> >> +			dsi->panel_bridge_added =3D true;
-> >>  		}
-> >>  	} else {
-> >>  		next_bridge =3D of_drm_find_and_get_bridge(remote);
-> >> @@ -1989,7 +1991,7 @@ static int samsung_dsim_host_attach(struct mipi_=
-dsi_host *host,
-> >>  	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO)) {
-> >>  		ret =3D samsung_dsim_register_te_irq(dsi, &device->dev);
-> >>  		if (ret)
-> >> -			goto err_remove_bridge;
-> >> +			goto err_remove_panel_bridge;
-> >>  	}
-> >>
-> >>  	// The next bridge can be used by host_ops->attach
-> >> @@ -2011,8 +2013,12 @@ static int samsung_dsim_host_attach(struct mipi=
-_dsi_host *host,
-> >>  	drm_bridge_clear_and_put(&dsi->bridge.next_bridge);
-> >>  	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO))
-> >>  		samsung_dsim_unregister_te_irq(dsi);
-> >> -err_remove_bridge:
-> >> +err_remove_panel_bridge:
-> >>  	drm_bridge_remove(&dsi->bridge);
-> >> +	if (dsi->panel_bridge_added) {
-> >> +		drm_panel_bridge_remove(next_bridge);
-> >> +		dsi->panel_bridge_added =3D false;
-> >> +	}
+> >> +	/**
+> >> +	 * @is_tail:
+> >> +	 *
+> >> +	 * Returns true if this is a tail bridge, i.e. it does not need a
+> >> +	 * next bridge to work. E.g. a panel_bridge is a tail bridge, a
+> >> +	 * DSI-to-LVDS bridge is not a tail bridge (no matter whether the
+> >> +	 * next bridge is present or not).
 > >
-> > This is a pretty big abstraction leak. We don't want to have that in
-> > everything driver. The removal path should be the same for both cases,
-> > and it's not something the driver should take care of.
+> > Why a DSI-to-LDVS bridge isn't a tail bridge? It only needs a panel
+> > next, right?
 >=20
-> Yes. The comment after the '---' separator was meant to discuss this
-> concern:
->=20
-> > In a previous discussion with Maxime he mentioned a plan to make every
-> > drm_panel always have a wrapping bridge. With that done, all the code
-> > handling the panel and adding the panel_bridge would become useless here
-> > (and in many other places) and could be entirely removed. This patch is=
- a
-> > temporary solution until that happens. The best pointer I could find to
-> > that discussion is [0], but there might be more recent material I could=
- not
-> > find at the moment.
->=20
-> Do you have any update about that plan?
+> Uhm, good point, but I'd say it can be a tail bridge or not: in the
+> ATTACH_NO_CONNECTOR case it will need a bridge (a panel_bridge most
+> likely), no?
 
-I think we're pretty much there. As of 7.2, all panels will use
-devm_drm_panel_alloc. It should be fairly easy now to create a bridge
-for them all in devm_drm_panel_alloc, and then call drm_bridge_add in
-drm_panel_add.
+Yeah, I think it cannot (always) be a blanket statement from the driver.
+For drivers that do not support ATTACH_NO_CONNECTOR, then it's always
+going to be a tail, but if the driver supports it, we should use a
+helper because it's going to depend on the DT, basically.
 
-It's also tangentially related to https://lore.kernel.org/ksummit/0fa2fb42-=
-0714-49f7-ba43-22928e1dd488@linaro.org/
+> However this is possibly irrelevant as the whole .is_tail is meant to
+> disappear in v2, see below.
+>
+> >> +	 * The @is_tail callback is optional but it is required if the
+> >> +	 * bridge is part of a pipeline with hot-pluggable components.
+> >> +	 */
+> >> +	bool (*is_tail)(struct drm_bridge *bridge);
+> >> +
+> >
+> > I don't think that's the right way to think about it, if only because
+> > you never really know at the driver level if you're supposed to be last
+> > or not. A DSI-to-LVDS bridge might just as well be chained with an
+> > LVDS-to-eDP bridge, or feed the panel directly without any additional
+> > bridge.
+> >
+> > I *think* that what you're trying to find out here is whether the chain
+> > is complete or not.
+>=20
+> You nailed it.
+>=20
+> That was the main point discussed during the Display Next Hackfest 2026
+> (see the report [0]) and we all agreed the .is_tail along with the
+> -EPROBE_DEFER changes (patches 20+35) are not a good approach.
+>=20
+> This is actually the most crucial aspect of the whole work still not havi=
+ng
+> no well-defined solution.
+
+Ok
+
+> > I think you can get the same information by checking
+> > whether you have a connector for that bridge chain. If you don't, you
+> > know the chain isn't complete, and if you do, it's supposed to be.
+>=20
+> There's a checken-egg problem here. Knowing whether the pipeline is
+> complete or not is needed to know whether we have to create a
+> connector. See patch 36:
+>=20
+>   +  if (drm_bridge_connector_pipeline_is_complete(bridge_connector))
+>   +          drm_bridge_connector_add_connector(bridge_connector);
+>=20
+> So the question is still open, what I need the most right now is comments
+> on the overall architecture of this aspecs. Maybe replying to [0] can be
+> more effective than here.
+>=20
+> In a nutshell what we need is:
+>=20
+>  * when a bridge needs a following element (a bridge, or a panel which
+>    however might/should have a panel_bridge), but that element is not
+>    present, instead of deferring the whole card probe the card should be
+>    allowed to probe but without a connector
+>=20
+>  * when something is added to an incomplete pipeline we need to know
+>    whether the pipeline has become complete (in order to create the
+>    connector)
+>=20
+> How to implement this is still an open point. I'll welcome proposals in
+> addition to the ones in [0].
+
+Thanks for the notes, I think I largely agree with the discussion.
+Reading through it, I thought it would be nice for a new callback called
+get_next_bridge or something that would return either an error, NULL or a
+(refcounted) pointer to the next bridge in the chain. And have some kind
+of special error (ENODEV?) when the bridge should be there but isn't
+(and thus the chain isn't complete).
 
 Maxime
 
---cstjwexp6hdv64qh
+--kbqprj5uqeblzkb7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCajvM+wAKCRAnX84Zoj2+
-dvs6AYCbYwiAHI0RWkIrSJ6HTAS/XRbFVnFHU9MxYcXvsGs3GaljrmWoPw/w/qWK
-d1Yg7qsBgLOHhMlyHfj3U/HJUmXpsK4aLwubF45HUsdZTfAggKa53Wz+5lLcDmOy
-cJOZr5wk3A==
-=S5Am
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCajvVzAAKCRAnX84Zoj2+
+dlmUAYD85u1Hv2vXFhhpb6AcHYKPXjuNOtyNzQsT4JWMH1ryh7eB79pKZqOgRdEy
+eq2O3/oBgPEWUBztGIVs76NR8fkCDIHxxd33fzv2OlQ6wFx/V7B8rXw601tQObK3
+cTgu6ITMBQ==
+=amXL
 -----END PGP SIGNATURE-----
 
---cstjwexp6hdv64qh--
+--kbqprj5uqeblzkb7--
