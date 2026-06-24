@@ -1,128 +1,166 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B2E3E3C47;
-	Wed, 24 Jun 2026 20:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E108B21638D;
+	Wed, 24 Jun 2026 20:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782334622; cv=none; b=etRbfGNv+P2dQof0TOohfDxttJcOZ4hvk+hhs9Rr2dzAw8dEqmT8ZdaEYGCfaUFcQLnyvCloQoZdRHXfS7qxtdBo6XRyGrnuGN/KiOevHsAh+kbZsDu3kWFisg7gLlV6/MtdMjZEHF1RkQCNcxQrl2QE3SMwDO8zBlXKHTfGIhs=
+	t=1782334660; cv=none; b=e6APS3NnCbyUQ6nrmrQXj7lqmqNjlSpoWOYDaabboncOnlR9UlTitKO84tfwis344GzmUhPmmtfgrsYyBxXnDfwAOFOIB5v/Uxa3ngTJO0Iy7BjYbC12FFwEoROGYKJMRPkuGU8qgZrzHxw8P0vi4PhVKNL9inC89ETK7tFC0uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782334622; c=relaxed/simple;
-	bh=ZFg4gWniuY2FkpKpwsLJrlXtY4QHa6XKiXxpiHV4jqI=;
+	s=arc-20240116; t=1782334660; c=relaxed/simple;
+	bh=axiYKaIioZyNN4UxlIpvSlve0tQO7OKxq6+qa3/umpo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=T2PWAK9hJ04JSaDJNZ7HzT/HL7pE2WCTPWkaCNZ9CZaJyNJ5ZDSTv/+s12G6l+zPPGM4AEx/ARE00V3HbwSpnpYeP6mOCm4Sb2jTN0ONEA2XlB0OScEkSmiP7gYizAQP20B50p4C23hzgHGQkiBa5CAHxUE7U0kyhxBIcy9Yd4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UYqtU5jT; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=J3huAJt5oTS9fA6KUwbWRVvaM94JcrbX8rbZZj0H8XRxQ0kfwAlbr0FwU+IOzOgDxzDw/cB2hPJEukiYtAcdsNg34Ad/woPy+MBuu4mnv/edWI2ejre4eFhY9Wz3/UCKePk2I3ZX2ccIHkvuNKgifQqy8gz4W8RyXCIIreDUH/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DG9iUjep; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UYqtU5jT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63B01F000E9;
-	Wed, 24 Jun 2026 20:56:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DG9iUjep"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F781F000E9;
+	Wed, 24 Jun 2026 20:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782334620;
-	bh=2nGRFAaV5wbacsyupEqzn3lqUR0s1RZunjhmlx7s1mA=;
+	s=k20260515; t=1782334659;
+	bh=DR4ZGpwY3GfKmM52IVxT0rmhtjCkXFdR+ad9ypfbzyw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UYqtU5jTe57BC30ruUOINeqJYJD7sVJIrexFetEZVtzFfS7jBql3Z94Q8lIbhFfsF
-	 k3HeJHXptXBbIV5iEePbJ4DoAd0ZqhiDiNKEG6gCsXd6VTX5WxyXGmaOBx+05/Yi+t
-	 4/x+OppGKQEjybn2WBeocYSRFZSJWmPTHTyyQAMnG6ZswWADZ3AwnnxCwZsPQai/tw
-	 tEUJL2vO687seASlOhBjCFGGZXh0OvE4Gcn2XXGcGTFlm3eivzwDazYf2u4AlTAXmv
-	 /SMMdPdRbYLzLpmV4Ueez1X/6JbWNr8bekAn0QWBi+SgKRvVoyjpmJA9DjvRtSelAO
-	 4sCiQ0o7oGUPQ==
+	b=DG9iUjepVfzfix5CAy3NdC0a/B0/r1p+6ogOhGi8e24eNsMP11dkKMVv3FNUReR/4
+	 j2WrWrc2IDLfb3yLOLAEvQwLZaxlhGVyHuBorLMijvOl3j6+0dkpvyGBEUrIhUCYym
+	 Kgn9NiXnFfjTjTzfm6w2LcbUUXvZ7GOXD+mUqZ9xbgI4HO52rE4npndbv1oh4LXkxi
+	 Uo0U7PZDpv+XsRYWrq7vzUGLeh+3JXRay5cHcOq8+K+cQ9+wLq5Ihd1WQu6GQCbItb
+	 Zc84AGz7zmz/V/hzzIOWBiEYKlWlB8sPNZW7WlI6bzLwJ9q7CyDwGui4IMBS9td2ff
+	 /QNOonLkvDTxA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/9] media: mc-entity: Store parsed V4L2 fwnode
- endpoint in media_pad
+Subject: Re: [PATCH v6 6/9] dt-bindings: media: add i.MX parallel CPI
+ support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org
-In-Reply-To: <20260624-imx8qxp_pcam-v6-1-4b3f45920d2f@nxp.com>
+Cc: robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
+In-Reply-To: <20260624-imx8qxp_pcam-v6-6-4b3f45920d2f@nxp.com>
 References: <20260624-imx8qxp_pcam-v6-0-4b3f45920d2f@nxp.com>
- <20260624-imx8qxp_pcam-v6-1-4b3f45920d2f@nxp.com>
+ <20260624-imx8qxp_pcam-v6-6-4b3f45920d2f@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 24 Jun 2026 20:56:59 +0000
-Message-Id: <20260624205659.C63B01F000E9@smtp.kernel.org>
+Date: Wed, 24 Jun 2026 20:57:38 +0000
+Message-Id: <20260624205739.31F781F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] Captured fwnode endpoint contains a dangling pointer to `local=
-_fwnode` if the caller drops its reference after parsing.
-- [Medium] Embedding a large, V4L2-specific `struct v4l2_fwnode_endpoint` i=
-nto the generic Media Controller `struct media_pad` breaks subsystem abstra=
-ction and unconditionally bloats memory.
+- [High] Unhandled resource leaks (memory and fwnode references) and double=
+-free risk in `__media_async_register_subdev` and its cleanup path.
 --
 
-commit 7acfb56349845d6638c963825f0f6b087ebaa54d
+commit 050e10af8571659357b0d6bb808eab4e58871636
 Author: Frank Li <Frank.Li@nxp.com>
 
-media: mc-entity: Store parsed V4L2 fwnode endpoint in media_pad
+media: subdev: Add media_async_register_subdev() helper
 
-This commit captures the parsed v4l2 fwnode endpoint information directly
-within struct media_pad to allow reuse by consumers without reparsing.
+This commit adds media_async_register_subdev(), a helper to register a V4L2
+sub-device with the asynchronous sub-device framework. It parses the firmwa=
+re
+graph, creates media pads for endpoints, and registers asynchronous notifie=
+rs.
+This centralizes common initialization and link creation to reduce boilerpl=
+ate.
 
-> diff --git a/include/media/media-entity.h b/include/media/media-entity.h
-> index d9b72cd87d524..4a3785cd9f370 100644
-> --- a/include/media/media-entity.h
-> +++ b/include/media/media-entity.h
-> @@ -20,6 +20,8 @@
->  #include <linux/minmax.h>
->  #include <linux/types.h>
+> diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-c=
+ore/v4l2-fwnode.c
+> index 62a3a452f7884..169059654478f 100644
+> --- a/drivers/media/v4l2-core/v4l2-fwnode.c
+> +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+> @@ -1302,6 +1303,160 @@ int __v4l2_async_register_subdev_sensor(struct v4=
+l2_subdev *sd, struct module *m
+>  }
+>  EXPORT_SYMBOL_GPL(__v4l2_async_register_subdev_sensor);
 > =20
-> +#include <media/v4l2-fwnode.h>
-> +
-
-[Severity: Medium]
-Does this include break subsystem isolation? struct media_pad is a generic
-structure used across several subsystems like alsa, dvb, drm, and iio.
-Including a v4l2-specific header here appears to tie the generic media
-controller to v4l2.
-
 [ ... ]
+> +void media_async_subdev_cleanup(struct v4l2_subdev *sd)
+> +{
+> +	v4l2_async_unregister_subdev(sd);
+> +	v4l2_subdev_cleanup(sd);
+> +	media_entity_cleanup(&sd->entity);
+> +	v4l2_async_nf_unregister(sd->subdev_notifier);
+> +	v4l2_async_nf_cleanup(sd->subdev_notifier);
+> +	kfree(sd->entity.pads);
+> +}
+> +EXPORT_SYMBOL_GPL(media_async_subdev_cleanup);
 
-> @@ -240,7 +243,7 @@ struct media_pad {
->  	u16 num_links;
->  	enum media_pad_signal_type sig_type;
->  	unsigned long flags;
-> -
-> +	struct v4l2_fwnode_endpoint vep;
+[Severity: High]
+Does this cleanup function leak fwnode references?
 
-[Severity: Medium]
-Is it expected to embed this v4l2-specific structure into every generic
-media_pad? The v4l2_fwnode_endpoint struct is quite large, and
-unconditionally embedding it adds memory overhead for all non-v4l2
-entities that do not use fwnode endpoints.
+v4l2_async_nf_parse_fwnode() parses endpoints directly into pad->vep, taking
+an fwnode reference via fwnode_handle_get(). It appears this cleanup functi=
+on
+fails to iterate over the pads to call v4l2_fwnode_endpoint_free(&pad->vep)=
+ to
+release these references.
 
-[Severity: Critical]
-Can this cause a use-after-free regression with the fwnode pointers?
+Also, if a driver explicitly invokes this cleanup helper to recover after
+__media_async_register_subdev() fails, will kfree(sd->entity.pads) cause a
+double-free panic?
 
-When the endpoint is parsed, v4l2_fwnode_endpoint_parse() assigns the
-fwnode to vep->base.local_fwnode without taking a reference count. This
-was safe when vep was a transient stack variable, but now that it is
-stored persistently in the media_pad, the caller might drop the
-reference.
+> +
+> +int __media_async_register_subdev(struct v4l2_subdev *sd, struct module =
+*module)
+> +{
+> +	struct device *dev =3D sd->dev;
+> +	u32 ep_count;
+> +	int ret;
+> +
+[ ... ]
+> +	struct media_pad *pads __free(kfree) =3D kzalloc_objs(struct media_pad,=
+ ep_count);
+> +	if (!pads)
+> +		return -ENOMEM;
+> +
+> +	ret =3D v4l2_async_nf_parse_fwnode(dev, pads, notifier);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret =3D media_entity_pads_init(&sd->entity, ep_count, pads);
+> +	if (ret)
+> +		goto out_cleanup;
+> +
+> +	ret =3D v4l2_async_nf_register(notifier);
+> +	if (ret < 0)
+> +		goto out_cleanup;
+> +
+> +	ret =3D v4l2_subdev_init_finalize(sd);
+> +	if (ret)
+> +		goto out_unregister;
+> +
+> +	ret =3D __v4l2_async_register_subdev(sd, module);
+> +	if (ret < 0)
+> +		goto out_unregister;
+> +
+> +	sd->subdev_notifier =3D no_free_ptr(notifier);
+> +	retain_and_null_ptr(pads);
+> +
+> +	return 0;
+> +
+> +out_unregister:
+> +	v4l2_async_nf_unregister(notifier);
+> +
+> +out_cleanup:
+> +	v4l2_async_nf_cleanup(notifier);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(__media_async_register_subdev);
 
-For example, if the caller iterates using a scoped iterator:
+[Severity: High]
+If __v4l2_async_register_subdev() fails, the error path returns without
+calling v4l2_subdev_cleanup(sd) to free the active state allocated by
+v4l2_subdev_init_finalize(). Can this leak sd->active_state?
 
-drivers/media/v4l2-core/v4l2-fwnode.c:v4l2_async_nf_parse_fwnode() {
-    ...
-    fwnode_graph_for_each_endpoint_scoped(dev_fwnode(dev), ep) {
-        ret =3D v4l2_fwnode_endpoint_parse(ep, &pad->vep);
-    ...
-}
+Additionally, pads is allocated with __free(kfree) and linked to
+sd->entity.pads. On a registration failure, pads is automatically freed when
+the function returns, but sd->entity.pads is not cleared.
 
-The scoped iterator automatically drops the reference to ep at the end
-of the iteration, leaving pad->vep.base.local_fwnode as a dangling
-pointer.
-
-Later access or pointer comparisons, like in v4l2_common_notifier_bound(),
-might dereference freed memory if the fwnode is deleted.
-
->  	/*
->  	 * The fields below are private, and should only be accessed via
->  	 * appropriate functions.
+Could this leave a dangling pointer that causes a double-free if error
+recovery is attempted?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260624-imx8qxp_pc=
-am-v6-0-4b3f45920d2f@nxp.com?part=3D1
+am-v6-0-4b3f45920d2f@nxp.com?part=3D6
