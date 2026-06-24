@@ -1,165 +1,78 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011060.outbound.protection.outlook.com [40.107.130.60])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD55391E43
-	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 07:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782285861; cv=fail; b=HArpLYh/QxFIbDCGUV5VyDuy7nRLIQvv8XF5BZHooMwP4sueaEFY0LNp6MY/afUmn5emt9E0tUhH+yqclhwfAgFTtd0gaaeaBUtOZPynR6AVh98ws+Z9l/lhFXjMsE8IY3zkjanZWhVhloOTKhkey+Y2ml67rb+z2msJ5BxggQs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782285861; c=relaxed/simple;
-	bh=KI0BMEDKLM3WIg890uWhaeIvhIOf6EqrQLeVqZjljZQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=A+lSPF0hSPQ5JC0jQklvT1597EmeOXilz7Drs4/PUjuIbfhq7zBAoeBLRhZ//ISYjqpARQTq2zEiUMweLdDZ0swWKQsJwsdEyG/FNKjO7sx0uni/aY/EZ50ZqecmuorKZz7wwVbuZ1uNQw8wNksfujJ9AQOD9ByDfy9dDiZpVKU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=m2LIYQFF; arc=fail smtp.client-ip=40.107.130.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA2327FD4F;
+	Wed, 24 Jun 2026 07:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782287054; cv=none; b=X+me3hblcyi2NQX4/+ZjL6LDSMFws+QChITcWdryW6ofi8W7NXdnEz7p30UzGEjPu4MHW7L6Z4HqvIYk6AAM9TFJU3c8pkhCIlk+5qx9qgpbcFh5Q+XAKO+IdOUXQtTcxImc8DFl/UDtZlAStSDtrhcesqpcZ9OWB+vfqWTqA6c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782287054; c=relaxed/simple;
+	bh=SC0qv9apRD8ulfMrCkuA+8Sk3dAISX1q5f5x/LZiL3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wo0vOD6iBvDOwZMdXJx2IvCxOPakQ9pBkL3E0NtGMc8GIpkKQpRyOcY0G2bHg0ufzuCpIlt7HRWSAWdMA9PU60Sf93cMaxGR1HLnN4LZRpj1NEJPdLtLVrfElDBOgFKbJwyWyDU0NqNcCk8h2t1PDnrl4lBrAniLZMj/jBG/Y2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GlhKvYj8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n5tnwOjf; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="m2LIYQFF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zUJm8hoBXPQXkOhF4X8BkfPVKEaFBQjtifEbGUGQwwwWc8VREDQq4Wwp8al1YjwmMe1zUAcIMQpP0skOCXZkHctOQjnOlDAVgTtKr0w+k14p7spo9zyLEu9Gv+g5NpUgYXCzVh8nuVW7Ihp593mbjUlEQKqCO+Z6qaN+6R4zyMcTW9l45OtN3fh9LJEAsb+t+G5HusmolPUsRcuu7TsdofQDmZHsQHTYGRiMf7PL/+RQV4aNPBf4mejo/Mzc+gCX3in2sIz8ueaUA2drtJLx1+NihsezJ92MODcPyKOnnVrmFD2Dln8r8XbK5spVptnGMEC/TtdrrnOqWRqvHaq3iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ERNhWlS/hiidztpcwZacXfFL1MiM/wvrbRkPvUMEIxc=;
- b=mWDQ2etp5yxABxBgQLnb4C8wgH/pQE2IBfTaFoespO+sdx3jKHnD59nxaKsWyN0IL+/zTpR/6axZ7GrrLPdNcPhRrHSTDkYa04avOxd90VB3xsetdCsUEdh/ySo3uPWyLFq3Z+L9rh/NA9MGq/GC07WCt95lkREYeDpJWxrzmHpE+YiVFVoBDa0VgN+NKKxpWFR+Mldy1voBkIOLQRPlREjpFcfzGSnMM4HJKjVi/lWQkqXvWO1XTyQEzM3/uXUe2OLJunuC0R2xW8mD4K3UYiLOlsvMh8oYy+fcZCytMSmEwzj1nmeVp/l5S2rH9Tm8aJgGCctPDvy1mDUa233/pQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ERNhWlS/hiidztpcwZacXfFL1MiM/wvrbRkPvUMEIxc=;
- b=m2LIYQFFxJhqxhKik2fUx2Xh6srN0EoMkG15X91ZAWmm5ONX3gbrd2wpMdo9uZXc3yQ74up/xK8D2xMu/bOJBWarhWV/tr87v6eQe5UVVxmDZ4SNRm2KYlOmWDH9eKzp0VNyg1Skzs1a8jP23RElUqCWLYyT/SNj5zrOx79SWZdQU7rtsSlPLcd2HJdAt4GWdkjjbbiYxrQhq0gDeXznXf97ybn7xaNg0RZIRpJ3qv6BD2t59nZcW9BSgZ2ok2CndCYB3YU3B5uXLJdWVzr6J0jDafFZcUqdbpcpwJrnsmgmVz9NtfDT40P9kgHo76EEi+Lk4QXnahEDHCHtaGh0JA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by DU2PR04MB8599.eurprd04.prod.outlook.com (2603:10a6:10:2da::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Wed, 24 Jun
- 2026 07:24:15 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0159.014; Wed, 24 Jun 2026
- 07:24:14 +0000
-From: wei.fang@oss.nxp.com
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Frank.Li@nxp.com,
-	wei.fang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: enetc: fix potential divide-by-zero when num_vsi is zero
-Date: Wed, 24 Jun 2026 15:27:26 +0800
-Message-Id: <20260624072726.1238903-1-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0017.apcprd02.prod.outlook.com
- (2603:1096:4:194::17) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GlhKvYj8";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n5tnwOjf"
+Date: Wed, 24 Jun 2026 09:44:09 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782287051;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cnJvMuQVhi9MCFGKpBaETELFay8xVUFL4L3HsxzBy4Y=;
+	b=GlhKvYj8f0oiqs5OAVu8iEXM84ouiP/RXUcX2e7S/CxXDpsARb48V49l49buF7I/2R+8va
+	xCFzQgdUKVbmj26DsiaYztexsY2M66vwhgV6jlRyLe0CJuTh11OGeJ6h9RpReW/mGmNmot
+	URmVgKt9UNbueflsNpBLlFnbCio/h/Pqvf6/a+RFOIkw9XCvm2OKEpxUvbvTjPyBaOaz8D
+	Qjep1LqXigy1ndUZ7t//Mt3r0EbvfEyslBu4qlExaTuKxCdVXA4R+f2dQQ1ZdS3/r7y+/j
+	Gn04eMkzjfWI5X8roR+iC2YAZHAX05er42tBBYdTW6yxPeZHROJmdsMRlPlyhQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782287051;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cnJvMuQVhi9MCFGKpBaETELFay8xVUFL4L3HsxzBy4Y=;
+	b=n5tnwOjfI4do1L7kjz5kIb8dirK3WlMxKRhpE5Li/pN+nwD5Wkh1t2mRvoGnpixmXVKKhp
+	B0d7JxObsFU5fdBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rt-devel@lists.linux.dev,
+	Bjorn Andersson <andersson@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v3 01/10] mailbox: imx: Forward the timeout/ error in
+ imx_mu_generic_tx()
+Message-ID: <20260624074409.5jwpWs61@linutronix.de>
+References: <20260617-imx_mbox_rproc-v3-0-77948112defc@linutronix.de>
+ <20260617-imx_mbox_rproc-v3-1-77948112defc@linutronix.de>
+ <ajkbUNkn6MSw8txc@shlinux89>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|DU2PR04MB8599:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c3c143c-1959-4602-ab84-08ded1c1976d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|19092799006|366016|1800799024|23010399003|18002099003|11063799006|3023799007|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	ZBATqeTAG8OVh2qW+DmHuKfg1K64ShOp/1FsL6b71zrpiuZd8Hz7Y6L73It1ZhFKHTogwGilpcRNEQ4fKMPTwDFoUjLQEwypC9kZFIR0ADMuHxiydBKSfKGE+sbbteV4XQCWlQXjVRVfXpVBqH83wDLrCa0lqul6a0LLPuCQ8Y1hTsc8gdqGxN3CebMYAsFFqVga+1rkVb6PgpadpwPD2PZWIKy9nCTc3inMR3H8RqlM3UrLo7MKv6AWomwEZ7Rv/4SHttIkDr8GRr+uooxI2aYJe7/BFnaqI/9EiLFuUigUG8Au0TvPusQtVMGkoQM8hhuXh36hRJPcC9a9rXSxjQ+QOyDJXwgB7eEH3rgYnQ9s0HIgMulVVIMfuuFEzWpQasQgYP2kwK/MFNEBGFyZWJnC/I1sWff7Bf14Eb0Kx/wojpF2NJMnr0X7Ja4vuTJbm/+D4I2KQKTpEBT0dkGlCwjz/0N7lwX6vAjhUKMCqknoAW2F3azEggxwcOCaICNsMts1CZ+l6aetv0ZQRQxzdgHATofIQqpjU7iaKwYc62u3kf/gqWL1jAMGP1p03kKtHrco4CjANGhEFHeqgB2UbrA6LYhb0YVZ2HLKreJKSKx5PcZAKYRMXxQ64M5ZyPMGoRT4kIItnzrRTyM9MMfY/4C4I+cp2T7NF5dnRX9O+6E=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(366016)(1800799024)(23010399003)(18002099003)(11063799006)(3023799007)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cOobiyH2y44yzuUSUjdRhQ+ooj35InLmNz0gwrXWjUdIjLyw6tz5scLi4bUP?=
- =?us-ascii?Q?4d6+f3MMNdWl1lMFuQ+FE55aLsL6mM+tn/VBGbUVmrxIFHN0vv9HTVeC1cco?=
- =?us-ascii?Q?wozhlUxP8SvFWNJYdn/SJG+/YmBWmgtvWUFZTa5wOT751kBWVZk+g3OM7LV7?=
- =?us-ascii?Q?qj5kkQcql7McuD3op4gCAFVyk1ycp2Tj9mh83pEBdCN6+YP7NlqUi/ZkokRF?=
- =?us-ascii?Q?5WdBzkVhaqKZ03HTK8tkur6dArlOvWYEA2C4O5EfJidiWFGmQ5H5iSIPtfOU?=
- =?us-ascii?Q?jhtej5qZ+UPd/Yj2O04i2CoyX9SFXTeUk2CkaBzbcXV7ZiH9R290UJn+SQnE?=
- =?us-ascii?Q?YnvOQ60oSya2Y6QOEq5b1yDqUL39aIsqmGt2PXHE7Qpk/pO6mfg0CkINivBN?=
- =?us-ascii?Q?X4Lnw7HoFf5BfFR1syvcOcOgSr5svaHSO+o02W85PGUr7dD8UA6tQc/q1Cj2?=
- =?us-ascii?Q?BvFTetDPnbWgHTZr6hLXh/7bAx63S7/Zriqtt3fv5wquNF5SFPMrcmALgJri?=
- =?us-ascii?Q?ndlcnNK3WJl9KRyXHgu1G6hfdcQYMbM+NMGbcswpK9ZLMaqcbIzRWWcwygJu?=
- =?us-ascii?Q?NglIHtihNR3qCHmriUA25bq6FxpIYPNcEV7kZCdC6xPoQKhEEpCOEGGkywdy?=
- =?us-ascii?Q?L13/M0J7SNPv9M1GO4yh6ev0dK6K5MQcKHw1SBkjlMtQjMqNE55HlBSYBgyr?=
- =?us-ascii?Q?5eW1QrldgpYBP41yA5t3fHovi7x20pzmpmEBui4AV3yEspNaW+cBimCpJr77?=
- =?us-ascii?Q?5pYTT3uZpSB4i3WKnF31kXBkrrqQcdC5+d8y/oWzyBD6jKJ3aKss8oRuZ41f?=
- =?us-ascii?Q?+le84gW5THIDdmwA4qhzpEPsIY73S0YBH5NPOm3gLzN/QtP51GFUQchfm3V/?=
- =?us-ascii?Q?rOq7SK3Xuh9Ne6WWbMFjGp6w/H5fUUYA+85HfBvGeTWRtkHwSfJfeLaQOZTR?=
- =?us-ascii?Q?rL07jbY+Y6u05W0TBaziXbqmBT3XFndtx/IkHfY4e/xeEBNlZVBno16fXMwh?=
- =?us-ascii?Q?Li/spSi58HifekS1LksnHy4eUmvK9uDpqdFa8AO1VRuEVCkaVxIFYJq/BBnj?=
- =?us-ascii?Q?M3ra/bA0RL0brJpTIALTQHetGi5Vygf9ruOpQPJMB64hx6vLTEZcUApY7kKo?=
- =?us-ascii?Q?Ap5G5Sl38xbZ93PqX65aWEXO2lLeXO/YmEvRRi43eGDSJIdoNWOOqPBG5Ff+?=
- =?us-ascii?Q?DRTOVsntU1qbZJKmi4HabuEgQ4i8h1XhZ7SQ+3HJg3mRETexiO27eiNja+EZ?=
- =?us-ascii?Q?Fxj4ang5p8wAeqNkcsvYaCMRrMZ+9Hl2ZIiyVU5hjU9if9b+fDnN5f7h3i2e?=
- =?us-ascii?Q?TUXgIrtcoZpXcTl/ItZpM51w2/z9WcpzfMuxr0HAWTfCblT+EGptVBtDmLvD?=
- =?us-ascii?Q?pnrnpsX33TkfPWyKiLBNk3pP1+lxzQZDlKkGZKiT/cO5XUCgwBwCt4dMV+uo?=
- =?us-ascii?Q?XAZMRqhv4xqY+0CN2KZgAGYhZUhZZz1OQQjTjCxobAmvR/tinXx6kuXzo7VQ?=
- =?us-ascii?Q?OrGgcMMy6GAJnietj5Fsc2vHWJ8ujgpVdqG79XBCdfU0P+8HsG3tp/qbaPT/?=
- =?us-ascii?Q?Emi2ApJsqbyRWhFs6r2qPHLI+modsQ9mJO5zzMJaAcO136Z4xAXPqFkiguxt?=
- =?us-ascii?Q?NtVfSDfoCCcdI1qPFDIjzdqce7dWKuFjUF30KkOhTVKh1daziRYa/sMGiHEb?=
- =?us-ascii?Q?xeyWpSe+RmIUb92OkWeVg0MENQRMdIf1PGe1C/VyzLTNR85XYgEVO3y8QsK8?=
- =?us-ascii?Q?cW7AlI8NxwBTrnFUU1utPzvmGsqy5CXaX4zasIoMiKadGO43vdMp?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c3c143c-1959-4602-ab84-08ded1c1976d
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 07:24:14.5038
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: s2C2o9eO8BCboJkYUJN52FK+JSyx3fbOVZYkEsejl+DhFf74X507cg/+V5GLd81SKojokWnZia4mB7p/Ffp5u0iA5PR1Eh7K4Lzh1O88yupCh0zK1F1twov0Lo/FbOtW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8599
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ajkbUNkn6MSw8txc@shlinux89>
 
-From: Wei Fang <wei.fang@nxp.com>
+On 2026-06-22 19:24:00 [+0800], Peng Fan wrote:
+> We may need to use atomic API for TXDB_V2. For the patchset itself, it
+> looks good to me.
+> 
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
 
-For i.MX94 series, all the standalone ENETCs do not support SR-IOV, so
-pf->caps.num_vsi is zero. This leads to a divide-by-zero in
-enetc4_default_rings_allocation() when distributing rings among PF and
-VFs.
+Thank you. Is there anything you want me to do or is this series good
+as-is?
 
-Division by zero is undefined behavior in C. On ARM64, the UDIV/SDIV
-instructions silently return zero rather than raising an exception, so
-the issue does not cause a visible crash. However, relying on this
-behavior is incorrect and poses a cross-platform compatibility risk.
-
-Add an explicit check for num_vsi == 0 and return early after the PF's
-rings have been configured.
-
-Fixes: 2d673b0e2f8d ("net: enetc: add standalone ENETC support for i.MX94")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/enetc4_pf.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-index 4e771f852358..437a15bbb47b 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -322,6 +322,9 @@ static void enetc4_default_rings_allocation(struct enetc_pf *pf)
- 	val = enetc4_psicfgr0_val_construct(false, num_tx_bdr, num_rx_bdr);
- 	enetc_port_wr(hw, ENETC4_PSICFGR0(0), val);
- 
-+	if (!pf->caps.num_vsi)
-+		return;
-+
- 	num_rx_bdr = pf->caps.num_rx_bdr - num_rx_bdr;
- 	rx_rem = num_rx_bdr % pf->caps.num_vsi;
- 	num_rx_bdr = num_rx_bdr / pf->caps.num_vsi;
--- 
-2.34.1
-
+Sebastian
