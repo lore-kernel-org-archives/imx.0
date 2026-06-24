@@ -1,203 +1,148 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D962472A2;
-	Wed, 24 Jun 2026 15:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F61D3BBFDD
+	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 15:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782314895; cv=none; b=ZKGFRMzO8V7QPkN1xTNxo5MqtFBnZG9bnSmE3duut4/cqef1uQhpz1ZHkcGNIEs1JSRI491SpPapSvGqBjOYgirStUfSL5GIvlJL18JBP2r1KFaX2x8O23dDb5VMt3WhYguB7NVJh8RjUlCWDWJg7Lb63fxpcS6/qI/nrvasu0U=
+	t=1782315119; cv=none; b=cdQcSUKf06OEAj8hh6G8CiEk8ByAoLohSFZ63Je3WaFDAbChThPd+tzx5XuNZBPEraifHFuImBPiPigy2sGX8JLMYuCJv3Lj3yf2KnYAW6izi5QP/VuVNgmswxh9CKPpYNefdYyLb6hJskOaHXyOJZAGvEjAX7/59+seJ0uw0VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782314895; c=relaxed/simple;
-	bh=IboDL7fn5UJyzuIR0bWUKwNhXhF4/BSOdxzblaRLVEA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l8Ga4KAEYLTzPVsoDJY7Ro09rQedOc2yeDjKmHgMfzNAf6uj2aL4AV7f2pv4B3hq/Qv8RC14+NoAs7Qq5SsAbP1zNbGtoT6Wi6UaE7IzoG1B+Um+Cud4HdBwIw+8Mo3sG9J5/BjnEredHnaMIPfzUfs+otE84HUHGXY0dYmjoGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWwciLsG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782315119; c=relaxed/simple;
+	bh=/zFmrtUBKKZXWBud1TnnIqMs0i0ZD9YOZWvDNsm5C98=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=k8oWlgNhDGW7QcEs2WtVooflCKizbruPbqM7Xtmb45vRDGLNTNfG0UjChQyD81xuc7eeM9l6ahG8Wh6TPnL/M5E98MjE45AJDsqrwZDBsU8MjFgS95ypyi8+Pl7pzjYkbGExq/wveus1qRzt0930++SMn/e3kgphr/QZ4fbSQ48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVHNcHSO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWwciLsG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24961F000E9;
-	Wed, 24 Jun 2026 15:28:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVHNcHSO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B771F000E9;
+	Wed, 24 Jun 2026 15:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782314894;
-	bh=omFTQIQRVhlWvznBGjtYR1dIn7Th/fXo3gPll9BtF0s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MWwciLsG63euJF5Y1+vJRO+66DXAp0XTKvJYM+C7wkaGE3E0xG5imDkRZdjCCW3/S
-	 TEwVtdQBED1NWKWMe5ofm4xRAQ1F4E2aZBtF4a6jlB+qwB1WmzPWCJuIT+Q7a11h/7
-	 d4E/w+g1DCxDpmlVvNm163x6FACUIdDEegjNLeE5qTytE84KVx7L4DzdDFwingmwq3
-	 QThsF0JzoygSvyxOiBZaF+Eij72Ei75qyJ/GYQvqm1fyfGHN8TASB5xAYx6pBxxhdQ
-	 RphSsUKsa3nH/c6iv+852gIDr1yaQyOxp+rIH2Lc4sg1lMRL6zjnLWMBA4cYOC6NYX
-	 KTW+qvKmM13RQ==
-Date: Wed, 24 Jun 2026 17:28:11 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
-	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 19/37] drm/bridge: samsung-dsim: move drm_bridge_add()
- call to probe
-Message-ID: <20260624-courageous-accomplished-sambar-0e3cf8@houat>
-References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-19-45e2bdb3dfb4@bootlin.com>
- <20260608-mellow-weasel-of-politeness-a56172@houat>
- <DJ63DNXUOW46.1DI6982PGPFRR@bootlin.com>
+	s=k20260515; t=1782315117;
+	bh=D5bs8GZ3elXX2FQuyJuS1Gw7xm/HnDP2P4vxBmdwe/o=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=WVHNcHSOB+gnBEqann8M+9rnkjMyGFl8SGGoKCNqvlc+Mi4m+9STzd0nhTvGwRqdj
+	 Kc+U1dpmdj+ypO+XWL6ABfxnGNYbJrblygburlV39ogtoA1Xgm9cctjkreL0UIEiZl
+	 vmRlp/kKv0DtLvvOE2W6vAiWVt/Gy3JpV4U341guepsnkCfQdDcjvL3XrMFyq/KAMJ
+	 XQK2kqUfh+0fNP0jBvE7njtFJNrNPUCDpiydjzwrE0PG/sjfwhyjK11gzF5qZlHu+P
+	 sF1KkM/5zyhpBAFhOzed9GKcDujR6TutPGvbj1vAfHYGxiQ/IMAxZ2dZcpImaKUTFY
+	 c6HpaHogwRo9Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] spi: imx: reconfigure for PIO when DMA cannot be
+ started
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Javier Fernandez Pastrana" <javier.pastrana@linutronix.de>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260624151958.18626-1-javier.pastrana@linutronix.de>
+References: <20260624151958.18626-1-javier.pastrana@linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 24 Jun 2026 15:31:57 +0000
+Message-Id: <20260624153157.B0B771F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="6lai7mk4murtip2q"
-Content-Disposition: inline
-In-Reply-To: <DJ63DNXUOW46.1DI6982PGPFRR@bootlin.com>
 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
---6lai7mk4murtip2q
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 19/37] drm/bridge: samsung-dsim: move drm_bridge_add()
- call to probe
-MIME-Version: 1.0
+Pre-existing issues:
+- [High] Missing SPI_TRANS_FAIL_NO_START flag when TX DMA preparation or su=
+bmission fails, preventing PIO fallback.
+- [High] Mid-transfer DMA failure incorrectly triggers a full PIO fallback,=
+ causing duplicate data transmission and corrupting the SPI stream.
+- [High] Failure to clear `SPI_TRANS_FAIL_NO_START` after an internal PIO f=
+allback leaks stale error state, causing subsequent transfers to silently d=
+uplicate data.
+--
 
-On Thu, Jun 11, 2026 at 10:54:14AM +0200, Luca Ceresoli wrote:
-> On Mon Jun 8, 2026 at 1:58 PM CEST, Maxime Ripard wrote:
-> > On Tue, May 19, 2026 at 12:37:36PM +0200, Luca Ceresoli wrote:
-> >> This bridge driver calls drm_bridge_add() in the DSI host .attach call=
-back
-> >> instead of in the probe function.
-> >>
-> >> This works for current use cases but is problematic for supporting hot=
-plug
-> >> of DRM bridges. The problematic case is when this DSI host is always
-> >> present while its DSI device is hot-pluggable. In such case with the
-> >> current code the DRM card will not be populated until after the DSI de=
-vice
-> >> attaches to the host, which could happen a very long time after bootin=
-g, or
-> >> even not happen at all.
-> >>
-> >> The reason is that the previous pipeline component (the encoder in this
-> >> case) when probing cannot find the samsung-dsim bridge. What happens i=
-s:
-> >>
-> >>  [1 and 2 can happen in any order, same result]
-> >>  1) samsung-dsim probes (does not drm_bridge_add() itself)
-> >>  2) The lcdif starts probing multiple times, but
-> >>     lcdif_probe
-> >>     -> lcdif_load
-> >>        -> lcdif_attach_bridge
-> >>           -> devm_drm_of_get_bridge() returns -EPROBE_DEFER because
-> >>              the samsung-dsim is not in the global bridge_list
-> >>              (deferred probe pending: imx-lcdif: Cannot connect bridge)
-> >>
-> >> The samsung-dsim will not drm_bridge_add() itself until a DSI device w=
-ill
-> >> try to mipi_dsi_attach() to the DSI Host, which can happen arbitratily=
- late
-> >> on hot-pluggable hardware.
-> >>
-> >> As a preliminary step to supporting hotplug move drm_bridge_add() at p=
-robe
-> >> time, so that the samsung-dsim DSI host bridge is available during boo=
-t,
-> >> even without a connected DSI device. This results in:
-> >>
-> >>  1) samsung-dsim probes (and adds to drm_bridge_add() itself)
-> >>  2) The lcdif starts probing multiple times, but
-> >>     lcdif_probe
-> >>     -> lcdif_load
-> >>        -> lcdif_attach_bridge
-> >>           -> devm_drm_of_get_bridge() --> OK, returns samsung-dsim ptr
-> >>
-> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> >
-> > We should probably amend
-> > https://www.kernel.org/doc/html/latest/gpu/drm-kms-helpers.html#special=
--care-with-mipi-dsi-bridges
-> >
-> > To mention this use case here
->=20
-> Right. I haven't updated the docs for this v1 because I was not sure the
-> overall approach would be acked. Now Dmitry acked it overall, and I kind =
-of
-> infer you are not against, so I'll look into updating the docs in v2.
->=20
-> However I find that section of the docs a bit hard to read especially from
-> a newcomer perspective.
+commit 5c8ab49e90372d3c0d5a4aca24ae8e97fcecafbc
+Author: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
 
-It's a complex problem, so I don't think we should expect the target
-audience to be newcomers. But maybe we can indeed improve it.
+spi: imx: reconfigure for PIO when DMA cannot be started
 
-> A better understanding on my side would help in doing the right change as
-> far as this patch is concerned, and as a bonus in improving the section
-> overall (that would probably be a separate series).
->=20
-> So I have a couple questions to start from:
->=20
->  * Do I understand correctly that using the component framework is legacy,
->    not recommended for new DRM development, and that converting existing
->    code to stop using it is welcome?
+When ECSPI DMA descriptor preparation fails, the driver falls back to PIO
+internally without un-doing the DMA-mode controller configuration, leading
+to corrupted data. This commit forces the controller to reconfigure for
+PIO by setting the fallback flag and re-running the setup transfer
+routine.
 
-No. It's not legacy or deprecated. And about the conversion, I guess
-it's on a case-by-case basis? It's not encouraged or discouraged anyway.
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index ae9912905c67a..79a6c1a60b0a0 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -2152,7 +2152,8 @@ static int spi_imx_transfer_one(struct spi_controll=
+er *controller,
+>  	if (spi_imx->usedma) {
+>  		ret =3D spi_imx_dma_transfer(spi_imx, transfer);
+>  		if (transfer->error & SPI_TRANS_FAIL_NO_START) {
 
->  * The first bullet quotes "The upstream driver [...] isn=E2=80=99t a MIP=
-I-DSI
->    host". If the upstream driver of a MIPI DSI link isn't a MIPI DSI host,
->    what else could it be? What are the use cases here?
+[Severity: High]
+This isn't a bug introduced by this patch, but if a transfer succeeds
+internally via the PIO fallback here, doesn't transfer->error still retain
+the SPI_TRANS_FAIL_NO_START flag?
 
-Nowhere is it said that we're considering a MIPI-DSI link here, so the
-use case is any bridge that isn't using MIPI-DSI at all.
+If an SPI client reuses the spi_transfer object, and the next transfer
+finishes successfully via DMA, this condition checks only the error flag
+without verifying if the DMA transfer actually failed (ret < 0).
 
->  * If read literally, none of the 4 bullets after "Indeed, there=E2=80=99=
-s multiple
->    cases that needs to be considered" covers this driver (it does not use
->    the component framework, it does not use DCS, and the upstream device =
-is
->    a DSI host). However the 3 bullets after "The ideal pattern to cover t=
-he
->    last item" appear to cover what this driver does.  Do we need a fifth
->    bullet for drivers like this one? Or...?
+Would this cause the successful DMA transfer to incorrectly evaluate this
+condition as true and redundantly re-transmit the data via PIO?
 
-You tell me :)
+> -			spi_imx->usedma =3D false;
+> +			controller->fallback =3D true;
+> +			spi_imx_setupxfer(spi, transfer);
+>  			if (spi_imx->target_mode)
+>  				return spi_imx_pio_transfer_target(spi, transfer);
+>  			else
+>  				return spi_imx_pio_transfer(spi, transfer);
+>  		}
 
-How does hotplugging, say, a MIPI-DSI device bridge controlled over I2C,
-or a MIPI-DSI host bridge, affect the probing sequence, and can we end
-up in endless probe deferrals?
+[Severity: High]
+This is also a pre-existing issue, but does this fallback logic account for
+partially completed DMA transmissions?
 
->  * To me it looks like the "bridge" word in this section is always used to
->    refer to the DSI device. Would it make sense to replace "bridge" ->
->    "[DSI ]device" in this section?
+If a large transfer is split into multiple DMA packages in
+spi_imx_dma_transfer() and a subsequent package fails,
+spi_imx_dma_package_transfer() unconditionally sets SPI_TRANS_FAIL_NO_START:
 
-Not necessarily, and from a KMS point of view, MIPI-DSI doesn't exist,
-only bridge do.
+spi_imx_dma_package_transfer() {
+    ...
+    dma_failure_no_start:
+        transfer->error |=3D SPI_TRANS_FAIL_NO_START;
+        return ret;
+}
 
-> (especially as the DSI host is also a DRM bridge)
+Since earlier packages were already physically transmitted over the SPI bus,
+would triggering a full PIO fallback here restart the transfer from the
+beginning and corrupt the SPI stream by transmitting duplicate data?
 
-It doesn't have to be.
+[Severity: High]
+Another pre-existing issue related to the DMA fallback: what happens if TX
+DMA descriptor preparation or submission fails in spi_imx_dma_submit()?
 
-Maxime
+drivers/spi/spi-imx.c:spi_imx_dma_submit() {
+    ...
+    desc_tx =3D dmaengine_prep_slave_single(controller->dma_tx, ...);
+    if (!desc_tx)
+        goto dmaengine_terminate_rx;
+    ...
+    cookie =3D dmaengine_submit(desc_tx);
+    if (dma_submit_error(cookie)) {
+        ...
+        goto dmaengine_terminate_tx;
+    }
+    ...
+}
 
---6lai7mk4murtip2q
-Content-Type: application/pgp-signature; name="signature.asc"
+It appears these error paths return without setting the
+SPI_TRANS_FAIL_NO_START flag. Does this prevent the PIO fallback from
+triggering for TX DMA failures, causing the transfer to drop instead?
 
------BEGIN PGP SIGNATURE-----
+>  		return ret;
+>  	}
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCajv3iwAKCRAnX84Zoj2+
-duzoAXwNLrlwbdRVOYJst2aEhp0uYJGAm5tIpEDFk6nna1bvwjexNutjjip1PsuX
-Q5nRIp8BfjUUZUv5AvWGCN66UaMIQLhHvpEc90SzFlp6unG3JHRbNagYQSqgYtJ7
-G/DYfRqPEw==
-=edwN
------END PGP SIGNATURE-----
-
---6lai7mk4murtip2q--
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260624151958.1862=
+6-1-javier.pastrana@linutronix.de?part=3D1
