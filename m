@@ -1,94 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40854396D15;
-	Tue, 23 Jun 2026 20:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.229.168.213])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B7D30C152
+	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 00:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.229.168.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782245671; cv=none; b=JhXN+Tpha+N2eRbQuabAFGDd6e4ZwJfVeNB3wLCqrGKJkrwD4Gc4YuXLnvYZrv0axVPKN2oXXv+zyYdKuRyfKnulOL+EWSYw/s58oNPUuGPMVlNCivhXgjcvMAXhYkRgH9YMQUnTAYXYVhKOKhE7/hWQl/iYj8acc0+5eK6Tekg=
+	t=1782261192; cv=none; b=lBgQiQt05Flvbs4SO5CkFnt+z6USn4E9rqWHTD63z/0BWoLKfF/7RKkhLeGzrZ8Qb4lKY4G01e5riF5Svn0D0VO19OefhwhQHKY6kLG0qGZGDC9sP/AGxMBcEEpVsxzm5lvw+lUHNr96g/0eWolW7XDpwYWoT1eS04L9cHuQSlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782245671; c=relaxed/simple;
-	bh=zYh8pvS9OVG5q1Ex3cNeJ8XRMlAk4G46E113ar53eyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fxEcP8q6RuKluKl0Iv2CerhRIWpNCQpBJqhIHXIZ/HhE6ymfm4oIIEgksEHXTACgbn5ujhPIPF5RGoLrK4y/05yXQna7Ar/Kn2d+Iawr05ZmMtTKmws+tOH7/jWvDBFjdeIXSKShggENSnvOlMKAw14WtYPt6qpWgbtqAUR83SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ArvqaJoP; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ArvqaJoP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825BA1F000E9;
-	Tue, 23 Jun 2026 20:14:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782245670;
-	bh=3RhUwooFwRxx3GisCh/vJn3sB9qCf4G8uwEEmtd3BLM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ArvqaJoPikGqUfb+98b682XDPHtnWUlkdu41diEaQOLkpo3Q91ZWiXEcvyqj/6YRm
-	 ZfQLVpX/G7T6H6EgrNJf9G7whb69yhUL1/kW+ym57bVialzun4QcPZVO4CcpE02viw
-	 dIw1dhKHHEdVMGAykZmoPPyQbYjTeIxH6IEByXumw8Hw1ozK024smQhxVuJELVQln1
-	 ZVLJnzAzaz7gXI4ZP5EwrW+iJgyYj1mSt/iKdcllnOMt7KvFNGJ/QoER5BOXXqQC0i
-	 L8CMqzeAw8/l8Fd6jBHctH2lNykqaWLYg2HDVH3XsrGQzHmCqmTTUd7br7bx2ybFNE
-	 vjebByopwu08Q==
-Date: Tue, 23 Jun 2026 22:14:27 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Vincent Jardin <vjardin@free.fr>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Wolfram Sang <wsa@kernel.org>, Kaushal Butala <kaushalkernelmailinglist@gmail.com>, 
-	Shawn Guo <shawn.guo@freescale.com>, Stefan Eichenberger <stefan.eichenberger@toradex.com>, 
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] i2c: imx: fix SMBus block-read of 0 locking the
- bus
-Message-ID: <ajro79ZTzd9h-nZn@zenone.zhora.eu>
-References: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-0-f30ab53dd97c@free.fr>
- <20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr>
+	s=arc-20240116; t=1782261192; c=relaxed/simple;
+	bh=RJwzbP6AOFlTb+ucuscYV6woLw/D274yC0iKw8Pv4BE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S8AWIL8Lql+zpQfDTDFLH6Uvq/ysUoD9MTXMieVY+AczgCq9nIk+c3YUEtNEsPnxwFKLpoOro3ynlvZRmadYvehZNhtlvnSEOJY9WYVR92vM0LFNAJZJjx5UA/8tjqpAsn8EjInN5mwHoJefYbabLiwQY67u6rztEN7UaZmf9F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=52.229.168.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [10.98.66.117])
+	by mtasvr (Coremail) with SMTP id _____wDnVtC_JTtqNNIEAw--.19900S3;
+	Wed, 24 Jun 2026 08:33:04 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.98.66.117])
+	by mail-app1 (Coremail) with SMTP id yy_KCgBHl5+_JTtqlq47Ag--.46757S2;
+	Wed, 24 Jun 2026 08:33:03 +0800 (CST)
+From: Fan Wu <fanwu01@zju.edu.cn>
+To: mirela.rabulea@nxp.com,
+	mchehab@kernel.org
+Cc: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Fan Wu <fanwu01@zju.edu.cn>
+Subject: [PATCH] media: imx-jpeg: finish the job on device_run() error paths
+Date: Wed, 24 Jun 2026 00:32:08 +0000
+Message-Id: <20260624003208.12400-1-fanwu01@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:yy_KCgBHl5+_JTtqlq47Ag--.46757S2
+X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
+X-CM-DELIVERINFO: =?B?xwzJ2QXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
+	sfnVCjTgEH9dVomQuWcozCBBFB48mKC5DDzTCdDpjvUvjuGCGVJYTzvwsltdPDHA6IOBJZ
+	R1Ezv3MDA86MpxTOsUDN5RPxYw6l01w8CbPzC/8w
+X-Coremail-Antispam: 1Uk129KBj93XoWxuF13trWDuFWUZF43JFWxXwc_yoW5ury5pr
+	ZIgryqkFyFqrs7tF4xtr4UAF1Yyrn3uF42ga18Ww1ku34agF4DtF40k3WUtF17tas29F1F
+	qw4qvwsrurWDCFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E
+	14v26r4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8w
+	AqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8I
+	cVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjc
+	xG0xvY0x0EwIxGrwACjcxG0xvY0x0EwIxGrVCF72vEw4AK0wACI402YVCY1x02628vn2kI
+	c2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jbo7NUUU
+	UU=
 
-Hi Oleksij, Stefan,
+mxc_jpeg_device_run() returns early through a shared "end" label on several
+error paths (no free slot, mxc_jpeg_alloc_slot_data() failure, or missing
+buffers or queue data), and none of them calls v4l2_m2m_job_finish().
+Since the delayed work is queued only after the hardware is started, those
+paths neither finish the job directly nor queue timeout work that could
+finish it later. The job is left with TRANS_RUNNING set, so the
+wait_event() in v4l2_m2m_cancel_job() (reached from v4l2_m2m_ctx_release()
+at close) waits indefinitely and the close hangs.
 
-any chance you ca review this?
+mxc_jpeg_alloc_slot_data() uses dma_alloc_coherent(), so the failure path
+is reachable under memory pressure.
 
-Vincent, please, next time don't send v2 as a reply to v1.
+Return the src/dst buffers with VB2_BUF_STATE_ERROR and call
+v4l2_m2m_job_finish() on those paths: paths that have buffers use a
+"buf_finish" label; the no-buffer path uses "job_finish" directly. This
+mirrors the existing jpeg_parse_error path.
 
-Thanks,
-Andi
+This bug was found by static analysis.
 
-On Mon, May 25, 2026 at 06:43:14PM +0200, Vincent Jardin wrote:
-> i2c-imx rejects a SMBus Block Read byte count of 0 (valid per SMBus 3.1
-> 6.5.7) and it returns without a NACK+STOP, leaving the target
-> holding SDA so the bus is stuck until a power cycle occur.
-> 
-> The same bug is occuring with two independently introduced spots, so the
-> fix is two patches with their respective Fixes: tags and backport ranges:
-> 
->   1/2  atomic/polling path       Fixes: 8e8782c71595   v3.16+
->   2/2  IRQ-driven state machine  Fixes: 5f5c2d4579ca   v6.13+
-> 
-> Signed-off-by: Vincent Jardin <vjardin@free.fr>
-> ---
-> Changes in v2:
-> - Handle when count > I2C_SMBUS_BLOCK_MAX the same way as count == 0
->   Reported by the Sashiko AI review on v1.
-> 
-> ---
-> Vincent Jardin (2):
->       i2c: imx: fix locked bus on SMBus block-read of 0 (atomic)
->       i2c: imx: fix locked bus on SMBus block-read of 0 (IRQ)
-> 
->  drivers/i2c/busses/i2c-imx.c | 36 +++++++++++++++++++++++++++++++++---
->  1 file changed, 33 insertions(+), 3 deletions(-)
-> ---
-> base-commit: 6916d5703ddf9a38f1f6c2cc793381a24ee914c6
-> change-id: 20260525-for-upstream-i2c-lx2160-fix-v1-0cba0a0093e5
-> 
-> Best regards,
-> -- 
-> Vincent Jardin <vjardin@free.fr>
-> 
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+---
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 21 +++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+index 9e4a813489c0..6b224a19f40e 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -1525,15 +1525,15 @@ static void mxc_jpeg_device_run(void *priv)
+ 	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
+ 	if (!src_buf || !dst_buf) {
+ 		dev_err(dev, "Null src or dst buf\n");
+-		goto end;
++		goto job_finish;
+ 	}
+ 
+ 	q_data_cap = mxc_jpeg_get_q_data(ctx, V4L2_BUF_TYPE_VIDEO_CAPTURE);
+ 	if (!q_data_cap)
+-		goto end;
++		goto buf_finish;
+ 	q_data_out = mxc_jpeg_get_q_data(ctx, V4L2_BUF_TYPE_VIDEO_OUTPUT);
+ 	if (!q_data_out)
+-		goto end;
++		goto buf_finish;
+ 	src_buf->sequence = q_data_out->sequence++;
+ 	dst_buf->sequence = q_data_cap->sequence++;
+ 
+@@ -1571,11 +1571,11 @@ static void mxc_jpeg_device_run(void *priv)
+ 	ctx->slot = mxc_get_free_slot(&jpeg->slot_data);
+ 	if (ctx->slot < 0) {
+ 		dev_err(dev, "No more free slots\n");
+-		goto end;
++		goto buf_finish;
+ 	}
+ 	if (!mxc_jpeg_alloc_slot_data(jpeg)) {
+ 		dev_err(dev, "Cannot allocate slot data\n");
+-		goto end;
++		goto buf_finish;
+ 	}
+ 
+ 	mxc_jpeg_enable_slot(reg, ctx->slot);
+@@ -1597,8 +1597,17 @@ static void mxc_jpeg_device_run(void *priv)
+ 		mxc_jpeg_dec_mode_go(dev, reg);
+ 	}
+ 	schedule_delayed_work(&ctx->task_timer, msecs_to_jiffies(hw_timeout));
+-end:
++
+ 	spin_unlock_irqrestore(&ctx->mxc_jpeg->hw_lock, flags);
++	return;
++buf_finish:
++	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
++	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
++	v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_ERROR);
++	v4l2_m2m_buf_done(dst_buf, VB2_BUF_STATE_ERROR);
++job_finish:
++	spin_unlock_irqrestore(&ctx->mxc_jpeg->hw_lock, flags);
++	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+ }
+ 
+ static int mxc_jpeg_decoder_cmd(struct file *file, void *priv,
+-- 
+2.34.1
+
