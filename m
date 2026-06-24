@@ -1,198 +1,186 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011024.outbound.protection.outlook.com [40.107.130.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996B83C6A43
-	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 16:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782317223; cv=none; b=OV7JncTT2DrvdVZ/pEmYPvRh/LFB/xvkuGhAYNA6qMSH9JS2U0GZdI3mpRhDQKBykm3jjd3MM6Fx7XTevDghDpsYG9k5TtfNf6+ByF3ViMG7lBSV0cjAkF4sYV9qAq56U0gYCqdtcMOAyb6xUvln52MXdmhN8SNtIeXcxHG7UNk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782317223; c=relaxed/simple;
-	bh=oMy12p5Cih8EbVR2+wU0ADk5pQIyI7dlCiDdxBA85ko=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=Gy4VGSOmtY/miDtmyZOnM7p9s+EbTXbwLeEtyae9/QF37ui02FCs3Kl7fyRb1TnjGKt18zq0W/3Mqp0mY59qFYZLcqOHWuiP7opiJaw7D4uLz3JY8skd0woDJlwS+pk43JNbA30d//xD0RZZvTUtTGZLQ5HEaHVnAMT9MqP/UXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RjmT+un4; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC13233923
+	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 16:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782318645; cv=fail; b=qwsscnKvVh1D45EwSi7NwXfwqVpxv/JgYRIzJg8YcCjnLKzYDLNivnJ5STkhnPotooQmYdKoNgDR5u7zrk1Y/Eq7YOixsMTYX2pWp2kVPI6++7PoAwlhDYhwM37h7jNe77zt9J7Mw34PC8gJkzKOsvvbKWvAtl8UI5noGfsWetw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782318645; c=relaxed/simple;
+	bh=Qc+lwEegqjIGHH2scvRZElq24b+v8B4n0c+sbD/ZHd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=VHP/uWFMBNS4QBSwwfkygWbuOWsoYz75w9G57HlSHwcyLATBpUDrSIeEGcarsE1FHUty7A2xyYKHutpz3aAx/1FGXFt7ug0XhKtqGVLs5OixtGRsAqzURhOgYWdyTCUgCrsKwSqgfEFKxN4ke1AZgYCZuplbIQofNKRmOK3sqfw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=lW1zSnh2; arc=fail smtp.client-ip=40.107.130.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RjmT+un4"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D48791A0923;
-	Wed, 24 Jun 2026 16:06:56 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A3C69601C5;
-	Wed, 24 Jun 2026 16:06:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 502E1106C8468;
-	Wed, 24 Jun 2026 18:06:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782317215; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=N3v36YslEFTvIe9aSboloVtZTLcZwXqsmCLNtL+8QuI=;
-	b=RjmT+un4qnnBjmGoKLf/boh6gu+rTh4ct3BN5juGXqgOv7bgnvX9vEWv3HUtBp+QuzJD5Q
-	N6vRla5R96P4XxouiUhAdC1HzU5C4ileLGLhhO+vxj2PB3zdepND0Fu6fyhHaKGIe2Ku8Z
-	DsWzrXMd/nqD0xS+lLv8vZrf2rrg+kz0mJZ9Ojb7zCXHExHam5OZsbEeLNZWrV5+UUAQRQ
-	Ue1+yCqg1OKk8ghIpB+KxGaSy3evpBqIWgzGFLWS0HhHotZcB3KbL7lSv4CbEf5NBC58at
-	T6WLbK/qhE2i8Gacrjtc7yinm3pm+aC4JaMPb/LLS/JSyTkS6L6ebzc+kO+bDQ==
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="lW1zSnh2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DBQtelZseDNPT/iKl1Ses/8F0o7smjJmJDF71xk3pKhpU6PDsMEMTPWKFX913Rb8qM0S2LQ5zMKBnM4NCTYnN1FFXVLtNd7KI4Wl/1zPfrqm78Lv9Ek7aXH5R78BbVGI57/J4fCJJUHYhOj24LFmK75290finiCMvZlcSjitQ/jBWSS3oPEu6spXjNEP2dQv9tqPhqepmrsOfrqmzMP26gDSNCX/RhSVzV1/itFmx8M57SimcqC4CgXF5pNjYFL9paoOs+nwQVSynlPpKnbPeqk1U8bvKqfjdQObfBCT7FpON6oUAmcDo3XOmDtD7ByLiQ0ssakxoPKqrlOe9cPqxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t2XG1wxdFF07gS26BmYmnVrmB4zvo0PwNNzXTi7R/lM=;
+ b=XpjRbBdTdOhSq+YU0QAq8iB0RWQLWRfyvcuTaBUCxl/pi1YhS+G7CaQZfcdlv4mPFa5z93HLeWMPPupPofCXNVnpTkuTEipuEUJq5K1kmwo/cjK/cxie6sRS6tHtp0lpsIYVd5MemJpF03qbxLW5Zhapwdq0eWoRxwYdvoo3c3v2Mpet45FZ3hzn5FDQXSm+hD7PwmCiokicI6n7zIDBD3yakUNpbAQzBns2ED6kOyDL1CBtm/u3UJICcZx3Mz0fOc69St6ergR11lPp4UDwXcG6MUteON0OsaLFNWVWc3Fey5J0cdzAh8Fp1qV4Np32cNmkJcV4ipkPmOFdHbnOuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t2XG1wxdFF07gS26BmYmnVrmB4zvo0PwNNzXTi7R/lM=;
+ b=lW1zSnh2TCd6h9eYSetcM88PINZDxZmOEc5hecdYkFutoa7WsjwU85pmJGMl5NYI4T7Co2AC3ojAZPzXLX+hN0lUik9WEn3BlAyOztNvBCjprPchi3QinVm8lyWdBU0kZx5d/hNr0jmKO3wfrX+dH4qLXwZLBuBrRdfq+PWujSkGl48s3h6szFWeCX1DeQW5yYpjW1rmPgPu4LtYWJWJf15bq8o1C2RV8PSEECzAxamS22qKAI7j4dkpgnoDDNiRoz52Lw6TokbTMcsYwlTAtU6RSW4vkmlcyufHg+gQcilt6MCYZC8sNOqFh9j/OODNfB8CsfDY4zno6aESSZKTsA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by VI1PR04MB9857.eurprd04.prod.outlook.com (2603:10a6:800:1d4::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Wed, 24 Jun
+ 2026 16:30:36 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 24 Jun 2026
+ 16:30:35 +0000
+Date: Wed, 24 Jun 2026 11:30:26 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
+Cc: Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Carlos Song <carlos.song@nxp.com>, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] spi: imx: reconfigure for PIO when DMA cannot be
+ started
+Message-ID: <ajwGIjGuyuvpjVib@SMW015318>
+References: <20260624151958.18626-1-javier.pastrana@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260624151958.18626-1-javier.pastrana@linutronix.de>
+X-ClientProxiedBy: SA1P222CA0171.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c3::8) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Jun 2026 18:06:47 +0200
-Message-Id: <DJHEPXMBL9N8.10GN58K6CAULK@bootlin.com>
-To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 30/37] drm/bridge: add drm_bridge_is_tail() to know
- whether a bridge completes the pipeline
-Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
- Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Inki Dae"
- <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
- Szyprowski" <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>,
- "Stefan Agner" <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
- <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
-X-Mailer: aerc 0.21.0
-References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-30-45e2bdb3dfb4@bootlin.com>
- <20260608-shapeless-opal-ferret-c8b105@houat>
- <DJ4DGYZ3GQZH.3AZOC0Z69W92S@bootlin.com>
- <20260624-vagabond-neon-gorilla-cd6487@houat>
-In-Reply-To: <20260624-vagabond-neon-gorilla-cd6487@houat>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI1PR04MB9857:EE_
+X-MS-Office365-Filtering-Correlation-Id: dafada49-1923-47d2-3b53-08ded20deaff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|376014|7416014|23010399003|366016|6133799003|22082099003|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	tBcVg69OFB+IHpE19fo/ajcLzyE/M8VC/ArfP9hX5INrM1IMUaTOyc45MIiQEGeBbwb/FeZnj3dPdEsCHi5XaeumRsGaz9oU4tH7klTDuqDP7wz3txUbBY/iWYS9E3SsUkbmyv5Wkg2pqLQHfJGVKBvIrkKxM8PdqzoN+ZDLO8ishRtiiDIwC8v5nFl10ISM1LEzSW1O3rm/5brertRZb/VtxS9zhHxpSoh0pZIe1oWImTmuEyKmxAEQFmxu30vFglhdZzPqq9c6v7OK6s+yLdj4/K0Bcf87MjiAkEUqDBO0+8mDQmOjua3RUwCtTx+uUMjI2wOQpy8BQvZkIunVFLIdoobCcD6Qv39PrQwmL842VRwfR+beZWHPqrwnwSJksR7hP3xDqHLR0u/qo9YpyP47KMqhKquulWxEXKIUFBQ6/dDhU7Y7PplRsAKK11h64ejIvxzgSrEVbyVcTcVlMcfJf7+dDUsSWRBYuhlX90IfWVKjgFn8J8NBLhpp55asrL4jlPPF3optPv2IpWo/Dt3XgSmaeObMoVMmb1+7dcKOq6TMO1pD0Q9woF3cO1O7Zay/sB94EeE/GXt4uzasF765zFWO87/B+jiLx0OlfwvDBZdTs3wlz4sK1HNuVbpP6ppkF0KlOAFnqIDigzEA925ElLEc8ZqsA5/X/BmlJwg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(7416014)(23010399003)(366016)(6133799003)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?byQReXRJwsdwESAFykKwS0aGc35PoS+Eq0aopK0EJB2aDcLH3stCIpENXFU5?=
+ =?us-ascii?Q?EkPRd0scfFDLbJII7g4UJQxend5GlnKa7cCDO5El5zkab/BruuxO4MXvpByH?=
+ =?us-ascii?Q?9cP2Wjj0jJs/+lezl57Lr/Grg+Vd8DwV+yYUehoWpj/xNLPMEyFLmFeMjFlB?=
+ =?us-ascii?Q?C8f7i1DGa9ivC0B97xyx7jxEmkvqv7uf4wPAuSQEm35zTQeCwsMOaA0+qTm+?=
+ =?us-ascii?Q?sAGPtJn4Rsu1SfhSM6OpLbGDtflaPF04yTL417w+MKEL/jY1ATPYnv8skViJ?=
+ =?us-ascii?Q?Jta1Jj7h+t8wQ33pQvXVDdTLmP62pEojKP8knbSrP4eXwyZPesVeU3GaGael?=
+ =?us-ascii?Q?TeJwVUE8mIWwR10jHRzDjghnMjhsQYjhUn7FDDHNbaYoc7qztFPLZTn4jaYR?=
+ =?us-ascii?Q?R3MhHjhfLwsphs73R7Au9ciTkNTIcmU7QYAikln/9ibML+RloifqxTQV5lsx?=
+ =?us-ascii?Q?dsHbTEHvjPYed98jA7peD7CJ38ldZsKlx+wa9oPNjR3OnyYaREvgKn/bNFEd?=
+ =?us-ascii?Q?MbmfymUx/em0vrAIB5BSlW7ArT7xae2dm/ulpDtrmEIDgcLmW9je4vxFUFll?=
+ =?us-ascii?Q?4nQmJp4FA4bH6qi9SZ0kiMMlAO6RB+dlNjroGVIcXcF8hDyFXrfa1jx/tiEB?=
+ =?us-ascii?Q?jVXwbtqykaEfUGmWjF3Iuk3F+NoHtIXS+ZBiRYnPxBAY0wwUWbRqfIuDoYIh?=
+ =?us-ascii?Q?kE9AnkDhgisQr9FVx/nVlG5U4noP49P0CFzXOTnV9/Vd1Tef2mRYZzgZOoze?=
+ =?us-ascii?Q?igyghEiNRGlJ6Ms+bXTlxte/sP/scAdSS+eoyJGhhUbNaK5JwilclZYOr9p2?=
+ =?us-ascii?Q?7EyU6fhyCL3W+b/5G8ONcsvYYWgsEWTkHEDwij6HugqotqTEM83KSIzF79qh?=
+ =?us-ascii?Q?klT3BWnd4kjM/XtugnESfEkspUEw+hOG6RQmeNTFvgzbtwp1fmfa8uhRNfnV?=
+ =?us-ascii?Q?Vyr3Jvs8cZZtoouI8lN1puub1lb/FheIcigcFoJtRIZthpvloJCC+h5B4MV/?=
+ =?us-ascii?Q?kizR4hB6mq4GT68yATpoxTKrA517Jese8821AdJ18uV7hz7RJsYwYf5wpRUi?=
+ =?us-ascii?Q?Kz6l/ZlcF2jIrTS5WKUTqjibHcGHm/bVncCaVj1rsO8jYNlOEM976c+Uzmz/?=
+ =?us-ascii?Q?9TIt7JkuRJb5T+quM1Or3fLtaHtKt1VOEbPNye31ene34ECznmwrNwQET2Hx?=
+ =?us-ascii?Q?aoxlcnsDCTjdeHnId5LK9dHS116QSV8/Nx06QHgQsV78ABdJHWNxYPGkGIES?=
+ =?us-ascii?Q?z02DSNDgmVinoGqCku76PzgEHTBHyPIGwrZUi/TBQwf0wbpK1KeyGjttE/OH?=
+ =?us-ascii?Q?S002uY0o6F0AfkOl1VWNpGS7/4FWML+JFqiskkK6jiIwrrFKanRYM+oTLAO1?=
+ =?us-ascii?Q?dIoWj7aSSfBNb0NUgsNUJ8KOALqNOzGUI+O9gkOodg0YpVFlTX1q7Bzrp+mb?=
+ =?us-ascii?Q?ifXVOQ9PAp5d8pk0/ivQJbWTNxk/WK65sAO17TTUd+6qD/4EgYCoKGi7syaN?=
+ =?us-ascii?Q?m9MnNcNykT7gjaDlCC7Rm9s+Yzpo6qqN75/k0ErX/C0xphYWqWD2QRDPNRkn?=
+ =?us-ascii?Q?AOEGNt6nG7ckyxryURXgErqsL+bJWdF5GF0jurge/3EAuVUrhfL130V6LP6P?=
+ =?us-ascii?Q?ztNwHe2zyHG5D33o0Ia9ILxuSeDT8ElhNnlNYwXA6/bXtZA6t7K6MuX5yGuy?=
+ =?us-ascii?Q?Y/oYT49qvD2OzRYvzL+jvoptFqIEtypsaCP7GT8UoA6ZBg736wpj/2nY6BAu?=
+ =?us-ascii?Q?eX7g4Nya+NLSpb5xrhb9j32hoqFVDcwGFzJtWqFuc8Qra6ZVGRQQ?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dafada49-1923-47d2-3b53-08ded20deaff
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 16:30:35.7662
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ToAmWOCuVy9OPIqthe3thOY1HqBRkKJifMkg+lZ8y3ghtBJ3VhPCFpmDQ3yZQPE6l07CCq0ve4AVIN2dT/Y+RGoq89O/+eEoczIFBQTJKqOz484ExECfpqSrfBV0RE5t
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9857
 
-On Wed Jun 24, 2026 at 3:04 PM CEST, Maxime Ripard wrote:
-> On Tue, Jun 09, 2026 at 10:23:24AM +0200, Luca Ceresoli wrote:
->> Hi Maxime,
->>
->> thanks for the review of this long series!
->>
->> On Mon Jun 8, 2026 at 2:34 PM CEST, Maxime Ripard wrote:
->> ...
->> >> --- a/include/drm/drm_bridge.h
->> >> +++ b/include/drm/drm_bridge.h
->> >> @@ -78,6 +78,19 @@ struct drm_bridge_funcs {
->> >>  	int (*attach)(struct drm_bridge *bridge, struct drm_encoder *encode=
-r,
->> >>  		      enum drm_bridge_attach_flags flags);
->> >>
->> >> +	/**
->> >> +	 * @is_tail:
->> >> +	 *
->> >> +	 * Returns true if this is a tail bridge, i.e. it does not need a
->> >> +	 * next bridge to work. E.g. a panel_bridge is a tail bridge, a
->> >> +	 * DSI-to-LVDS bridge is not a tail bridge (no matter whether the
->> >> +	 * next bridge is present or not).
->> >
->> > Why a DSI-to-LDVS bridge isn't a tail bridge? It only needs a panel
->> > next, right?
->>
->> Uhm, good point, but I'd say it can be a tail bridge or not: in the
->> ATTACH_NO_CONNECTOR case it will need a bridge (a panel_bridge most
->> likely), no?
+On Wed, Jun 24, 2026 at 05:19:58PM +0200, Javier Fernandez Pastrana wrote:
 >
-> Yeah, I think it cannot (always) be a blanket statement from the driver.
-> For drivers that do not support ATTACH_NO_CONNECTOR, then it's always
-> going to be a tail, but if the driver supports it, we should use a
-> helper because it's going to depend on the DT, basically.
+> When spi_imx_can_dma() selects DMA, the ECSPI is configured for DMA:
+> spi_imx_setupxfer() sets CTRL.SMC and clears dynamic_burst, and
+> spi_imx_dma_transfer() programs the dynamic-burst BURST_LENGTH and the
+> SDMA watermarks.
 >
->> However this is possibly irrelevant as the whole .is_tail is meant to
->> disappear in v2, see below.
->>
->> >> +	 * The @is_tail callback is optional but it is required if the
->> >> +	 * bridge is part of a pipeline with hot-pluggable components.
->> >> +	 */
->> >> +	bool (*is_tail)(struct drm_bridge *bridge);
->> >> +
->> >
->> > I don't think that's the right way to think about it, if only because
->> > you never really know at the driver level if you're supposed to be las=
-t
->> > or not. A DSI-to-LVDS bridge might just as well be chained with an
->> > LVDS-to-eDP bridge, or feed the panel directly without any additional
->> > bridge.
->> >
->> > I *think* that what you're trying to find out here is whether the chai=
-n
->> > is complete or not.
->>
->> You nailed it.
->>
->> That was the main point discussed during the Display Next Hackfest 2026
->> (see the report [0]) and we all agreed the .is_tail along with the
->> -EPROBE_DEFER changes (patches 20+35) are not a good approach.
->>
->> This is actually the most crucial aspect of the whole work still not hav=
-ing
->> no well-defined solution.
+> If the DMA descriptor cannot be prepared (dmaengine_prep_slave_single()
+> returns NULL), the transfer is failed with SPI_TRANS_FAIL_NO_START and
+> falls back to PIO. The dynamic-burst DMA path uses its own bounce
+> buffers instead of the SPI core's mapping, so xfer->{tx,rx}_sg_mapped
+> are not set and the core's DMA->PIO retry is skipped; the driver falls
+> back to PIO internally. But none of the DMA-mode configuration is
+> undone, so the PIO transfer runs with CTRL.SMC set, the wrong burst
+> length and dynamic_burst cleared, and the transferred data is corrupted.
 >
-> Ok
+> This is easily hit on i.MX8MP boards that describe ECSPI DMA in the
+> device tree but run SDMA on ROM firmware (no external sdma-imx7d.bin):
+> every ECSPI DMA prepare fails. An Infineon SLB9670 TPM on ECSPI1 then
+> returns shifted TPM2_GetCapability data, is flagged "field failure
+> mode", /dev/tpmrm0 is never created.
 >
->> > I think you can get the same information by checking
->> > whether you have a connector for that bridge chain. If you don't, you
->> > know the chain isn't complete, and if you do, it's supposed to be.
->>
->> There's a checken-egg problem here. Knowing whether the pipeline is
->> complete or not is needed to know whether we have to create a
->> connector. See patch 36:
->>
->>   +  if (drm_bridge_connector_pipeline_is_complete(bridge_connector))
->>   +          drm_bridge_connector_add_connector(bridge_connector);
->>
->> So the question is still open, what I need the most right now is comment=
-s
->> on the overall architecture of this aspecs. Maybe replying to [0] can be
->> more effective than here.
->>
->> In a nutshell what we need is:
->>
->>  * when a bridge needs a following element (a bridge, or a panel which
->>    however might/should have a panel_bridge), but that element is not
->>    present, instead of deferring the whole card probe the card should be
->>    allowed to probe but without a connector
->>
->>  * when something is added to an incomplete pipeline we need to know
->>    whether the pipeline has become complete (in order to create the
->>    connector)
->>
->> How to implement this is still an open point. I'll welcome proposals in
->> addition to the ones in [0].
+> Set controller->fallback before re-running spi_imx_setupxfer() so the
+> ECSPI is reconfigured exactly like a normal PIO transfer. With
+> controller->fallback set, spi_imx_setupxfer() sees spi_imx_can_dma()
+> return false, so it clears spi_imx->usedma and reprograms the controller
+> (clears CTRL.SMC, restores dynamic_burst and the PIO burst length). No
+> explicit spi_imx->usedma = false is needed: setupxfer() already updates
+> it from the can_dma() result.
 >
-> Thanks for the notes, I think I largely agree with the discussion.
+> Fixes: faa8e404ad8e ("spi: imx: support dynamic burst length for ECSPI DMA mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
+> ---
 
-Good! :)
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> Reading through it, I thought it would be nice for a new callback called
-> get_next_bridge or something that would return either an error, NULL or a
-> (refcounted) pointer to the next bridge in the chain. And have some kind
-> of special error (ENODEV?) when the bridge should be there but isn't
-> (and thus the chain isn't complete).
-
-I initially preferred exposing the fwnode of the next bridge as discussed
-with Dmitry during the Display Next Hackfest, which looks simpler for
-driver writers. But then I realized it would be tricyk in cases such as
-dual-LVDS output bridges (ti-sn65dsi83.c) which have two output ports in
-DT, none of which is mandatory. So I've come to thinking a callback is
-better as it should be flexible enough.
-
-Picking the best errno is probably the only aspect needing special
-attention now.
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> v2: drop redundant spi_imx->usedma = false; spi_imx_setupxfer() already
+>     clears it via spi_imx_can_dma() (Carlos Song)
+>
+>  drivers/spi/spi-imx.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 480d1e8b281f..1837cc7b0b96 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -2152,7 +2152,8 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
+>         if (spi_imx->usedma) {
+>                 ret = spi_imx_dma_transfer(spi_imx, transfer);
+>                 if (transfer->error & SPI_TRANS_FAIL_NO_START) {
+> -                       spi_imx->usedma = false;
+> +                       controller->fallback = true;
+> +                       spi_imx_setupxfer(spi, transfer);
+>                         if (spi_imx->target_mode)
+>                                 return spi_imx_pio_transfer_target(spi, transfer);
+>                         else
+> --
+> 2.47.3
+>
+>
