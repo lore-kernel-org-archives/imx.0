@@ -1,185 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80E5259C80;
-	Wed, 24 Jun 2026 13:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0023B14CE
+	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 13:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782306263; cv=none; b=c8KZ72f6R2DVrlEWHlVCJmwiOWVvAQwkiCEuN1lAZa9pj1iLxdbHMYYp4O3AxXp82m2U77oL4f6Ux0pOfuOQDuWG7uAde9qgZjDPb7jKxHW5W/6C04ihEKYb+G2KgDdF/GqodGW3ygWIfS0OLMu98IkatPWQ5ldWsjgK2hi4FsE=
+	t=1782308954; cv=none; b=ZxlKNHs6ckbw3ktcFntOsCGuBy07C14ldwzN91wDzLVqpfn4OrHUQ6KbTUAu3iVrMQX+HnOiuEjJYAtXBy2GV+GK6/VCKbBwNX6eQUcwa6KGfWjkr8EjVtWiGmabjj5A9s7UbIF5nXZN3PuXJX2PVzrjcUEu3GzUJPj/TTFFA3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782306263; c=relaxed/simple;
-	bh=ffRaDjvCy9x1Qb7A599+eUpMi1nniGkrv/uTQ6dXYpM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cl7+yEOAO81P2l748HVurx7IP0inrVSNWDItIREJ3jTrSTjD0gsBlFxidjr623uiYmt7Ss3Yw1wE/GwlM8BvpvhyFguQEL5uTKi1+UD1o50yWggUdqd7ylp5hTsNHA+WjDKTMEZ5f5uW2xtwLhDQKEiOp3Z4JlTKUaiQBZzPN4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVDAUURG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782308954; c=relaxed/simple;
+	bh=loUJxiJ/NjSSqvgyNBzty0z363aI5eLAG8gds6Fky8Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T44EAhJFigHEO+RIQAG37LrYTtoB253CY1KYk5vppkZj7ZwQEt+dm9F2SobEiqgIXGxBuIfvUB9v0etfTOJcLjwSpwEp8H1JZKqmxstG0wo1itSIhyzJIAeJsuCQ32zaVMKRSYxoZWaWIac1cKBOHpW8EDtZc8BCvsOZpVJxRkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NU/fd+Hb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Pihjrs8n; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVDAUURG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30851F000E9;
-	Wed, 24 Jun 2026 13:04:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782306262;
-	bh=eWHl0udhvjCV2mjGVC5uD1U/TvHNrVW3aXd0HzDYa1U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FVDAUURG5/OnVD/2XG5fzA49+V/z3pAgKME/Z9UXdbjAATGJL7M3qh98G+bnxhA8y
-	 zvn8Vir+IzYGhhHsGRzq15UnjwPKF3AWWu37ET7ogGxEu95K7qdVsdQ4W2hTvJMESV
-	 BCwWgJDd84CnVWefJoKqTcKxoZ5DOc0EgfqgJ6eedQs5wdcaHeFoUa+Htx2y3HpN3y
-	 0ehEMWnE+LupoJaQcFZpdLLmP97qbW0M9g2fxDKXUKvgup+VBq3KxMNhTQyHyiZ5fL
-	 AztfsXKYTjbMO6PWpYeSCHDEuxlk0qhkY5eU1VhvqfK7oFMtH/4wyCDTTa0+Fm3JHN
-	 6INBjM3evlPJQ==
-Date: Wed, 24 Jun 2026 15:04:19 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
-	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 30/37] drm/bridge: add drm_bridge_is_tail() to know
- whether a bridge completes the pipeline
-Message-ID: <20260624-vagabond-neon-gorilla-cd6487@houat>
-References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-30-45e2bdb3dfb4@bootlin.com>
- <20260608-shapeless-opal-ferret-c8b105@houat>
- <DJ4DGYZ3GQZH.3AZOC0Z69W92S@bootlin.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NU/fd+Hb";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Pihjrs8n"
+Date: Wed, 24 Jun 2026 15:49:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782308950;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PWlmJ3AjgAQ2KwtYYm4dQAFpI1/acxUE7N9AR5/HyRk=;
+	b=NU/fd+HbLdNNDHUgWUioiBEHwPr2IT8tpqh9ffhzVUHw40d3Bu9f8yDdZ68YtpqOGfK8ma
+	x72bPJp7Bz+ncZknGeXRrTaEsvYGEGD/eNKOJJBWh3VmdJwLpI+Yppbq/H9lGyQ63xJ3GG
+	IQPElvH/CYcwrMyde68ymEi12Yi0FV3V1bEEYs11m5vexKNs2MIBCVDPJivtumiaJTBX7c
+	st3kWaPgMbcquuzZmMDCsIo+4Au0smqnSuu48aOch1pu7zkKWFMaF+c9TpiDwTAVqYaxcG
+	j0N67WLZrarvNHlBp5lS10L/egyzs2+9B6gsBvN+bISDNqlQKnezJrTdQyQYYw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782308950;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PWlmJ3AjgAQ2KwtYYm4dQAFpI1/acxUE7N9AR5/HyRk=;
+	b=Pihjrs8nNq/ioaSvLpyWo7F9SHAPB2bAOqWKH4VR4+9xBRubKSJERr4Y5725DzDBhkhRQL
+	rYzkoeMfSzha2aDw==
+From: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+Cc: Mark Brown <broonie@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Carlos Song
+ <carlos.song@nxp.com>, "linux-spi@vger.kernel.org"
+ <linux-spi@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH] spi: imx: reconfigure for PIO when DMA cannot be
+ started
+Message-ID: <20260624154905.3d465e47@mail.linutronix.de>
+In-Reply-To: <AM0PR04MB68027B9C426D7CD42E256B92E8ED2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+References: <20260623153240.57185-1-javier.pastrana@linutronix.de>
+	<AM0PR04MB68027B9C426D7CD42E256B92E8ED2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+Organization: Linutronix GmbH
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="kbqprj5uqeblzkb7"
-Content-Disposition: inline
-In-Reply-To: <DJ4DGYZ3GQZH.3AZOC0Z69W92S@bootlin.com>
-
-
---kbqprj5uqeblzkb7
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 30/37] drm/bridge: add drm_bridge_is_tail() to know
- whether a bridge completes the pipeline
-MIME-Version: 1.0
 
-On Tue, Jun 09, 2026 at 10:23:24AM +0200, Luca Ceresoli wrote:
-> Hi Maxime,
->=20
-> thanks for the review of this long series!
->=20
-> On Mon Jun 8, 2026 at 2:34 PM CEST, Maxime Ripard wrote:
-> ...
-> >> --- a/include/drm/drm_bridge.h
-> >> +++ b/include/drm/drm_bridge.h
-> >> @@ -78,6 +78,19 @@ struct drm_bridge_funcs {
-> >>  	int (*attach)(struct drm_bridge *bridge, struct drm_encoder *encoder,
-> >>  		      enum drm_bridge_attach_flags flags);
-> >>
-> >> +	/**
-> >> +	 * @is_tail:
-> >> +	 *
-> >> +	 * Returns true if this is a tail bridge, i.e. it does not need a
-> >> +	 * next bridge to work. E.g. a panel_bridge is a tail bridge, a
-> >> +	 * DSI-to-LVDS bridge is not a tail bridge (no matter whether the
-> >> +	 * next bridge is present or not).
-> >
-> > Why a DSI-to-LDVS bridge isn't a tail bridge? It only needs a panel
-> > next, right?
->=20
-> Uhm, good point, but I'd say it can be a tail bridge or not: in the
-> ATTACH_NO_CONNECTOR case it will need a bridge (a panel_bridge most
-> likely), no?
+Hi Carlos,
 
-Yeah, I think it cannot (always) be a blanket statement from the driver.
-For drivers that do not support ATTACH_NO_CONNECTOR, then it's always
-going to be a tail, but if the driver supports it, we should use a
-helper because it's going to depend on the DT, basically.
+On Wed, 24 Jun 2026 09:22:02 +0000
+"Carlos Song (OSS)" <carlos.song@oss.nxp.com> wrote:
 
-> However this is possibly irrelevant as the whole .is_tail is meant to
-> disappear in v2, see below.
->
-> >> +	 * The @is_tail callback is optional but it is required if the
-> >> +	 * bridge is part of a pipeline with hot-pluggable components.
-> >> +	 */
-> >> +	bool (*is_tail)(struct drm_bridge *bridge);
-> >> +
-> >
-> > I don't think that's the right way to think about it, if only because
-> > you never really know at the driver level if you're supposed to be last
-> > or not. A DSI-to-LVDS bridge might just as well be chained with an
-> > LVDS-to-eDP bridge, or feed the panel directly without any additional
-> > bridge.
-> >
-> > I *think* that what you're trying to find out here is whether the chain
-> > is complete or not.
+> > -----Original Message-----
+> > From: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
+> > Sent: Tuesday, June 23, 2026 11:33 PM
+> > To: Mark Brown <broonie@kernel.org>; Frank Li <frank.li@nxp.com>;
+> > Sascha Hauer <s.hauer@pengutronix.de>; Pengutronix Kernel Team
+> > <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Carlos
+> > Song <carlos.song@nxp.com>; linux-spi@vger.kernel.org;
+> > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org;
+> > linux-kernel@vger.kernel.org Cc: javier.pastrana@linutronix.de;
+> > stable@vger.kernel.org Subject: [PATCH] spi: imx: reconfigure for
+> > PIO when DMA cannot be started
+> >=20
+> > [You don't often get email from javier.pastrana@linutronix.de.
+> > Learn why this is important at
+> > https://aka.ms/LearnAboutSenderIdentification ]
+> >=20
+> > When spi_imx_can_dma() selects DMA, the ECSPI is configured for DMA:
+> > spi_imx_setupxfer() sets CTRL.SMC and clears dynamic_burst, and
+> > spi_imx_dma_transfer() programs the dynamic-burst BURST_LENGTH and
+> > the SDMA watermarks.
+> >=20
+> > If the DMA descriptor cannot be prepared
+> > (dmaengine_prep_slave_single() returns NULL), the transfer is
+> > failed with SPI_TRANS_FAIL_NO_START and falls back to PIO. The
+> > dynamic-burst DMA path uses its own bounce buffers instead of the
+> > SPI core's mapping, so xfer->{tx,rx}_sg_mapped are not set and the
+> > core's DMA->PIO retry is skipped; the driver falls back to PIO
+> > internally. But none of the DMA-mode configuration is undone, so
+> > the PIO transfer runs with CTRL.SMC set, the wrong burst length and
+> > dynamic_burst cleared, and the transferred data is corrupted.
+> >=20
+> > This is easily hit on i.MX8MP boards that describe ECSPI DMA in the
+> > device tree but run SDMA on ROM firmware (no external
+> > sdma-imx7d.bin): every ECSPI DMA prepare fails. An Infineon SLB9670
+> > TPM on ECSPI1 then returns shifted TPM2_GetCapability data, is
+> > flagged "field failure mode", /dev/tpmrm0 is never created.
+> >=20
+> > Mark the controller PIO-only (controller->fallback) and re-run
+> > spi_imx_setupxfer() before falling back, so the ECSPI is
+> > reconfigured exactly like a normal PIO transfer.
+> >=20
+> > Fixes: faa8e404ad8e ("spi: imx: support dynamic burst length for
+> > ECSPI DMA mode")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Javier Fernandez Pastrana
+> > <javier.pastrana@linutronix.de> ---
+> >  drivers/spi/spi-imx.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >=20
+> > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c index
+> > 480d1e8b281f..64c78bd79d7d 100644
+> > --- a/drivers/spi/spi-imx.c
+> > +++ b/drivers/spi/spi-imx.c
+> > @@ -2153,6 +2153,8 @@ static int spi_imx_transfer_one(struct
+> > spi_controller *controller,
+> >                 ret =3D spi_imx_dma_transfer(spi_imx, transfer);
+> >                 if (transfer->error & SPI_TRANS_FAIL_NO_START) {
+> >                         spi_imx->usedma =3D false;
+> > +                       controller->fallback =3D true;
+> > +                       spi_imx_setupxfer(spi, transfer); =20
 >=20
-> You nailed it.
+> Hi, Javier
 >=20
-> That was the main point discussed during the Display Next Hackfest 2026
-> (see the report [0]) and we all agreed the .is_tail along with the
-> -EPROBE_DEFER changes (patches 20+35) are not a good approach.
+> Thank you very much for fixing this issue!
 >=20
-> This is actually the most crucial aspect of the whole work still not havi=
-ng
-> no well-defined solution.
+> You can remove this line also: spi_imx->usedma =3D false;
+> Because spi_imx_setupxfer() will recheck spi_imx_can_dma() and return
+> false because controller->fallback =3D true;
+>=20
+> How do you think about it?
 
-Ok
+Good catch. You're right, spi_imx_setupxfer() rechecks
+spi_imx_can_dma(), so spi_imx->usedma =3D false is redundant.
 
-> > I think you can get the same information by checking
-> > whether you have a connector for that bridge chain. If you don't, you
-> > know the chain isn't complete, and if you do, it's supposed to be.
->=20
-> There's a checken-egg problem here. Knowing whether the pipeline is
-> complete or not is needed to know whether we have to create a
-> connector. See patch 36:
->=20
->   +  if (drm_bridge_connector_pipeline_is_complete(bridge_connector))
->   +          drm_bridge_connector_add_connector(bridge_connector);
->=20
-> So the question is still open, what I need the most right now is comments
-> on the overall architecture of this aspecs. Maybe replying to [0] can be
-> more effective than here.
->=20
-> In a nutshell what we need is:
->=20
->  * when a bridge needs a following element (a bridge, or a panel which
->    however might/should have a panel_bridge), but that element is not
->    present, instead of deferring the whole card probe the card should be
->    allowed to probe but without a connector
->=20
->  * when something is added to an incomplete pipeline we need to know
->    whether the pipeline has become complete (in order to create the
->    connector)
->=20
-> How to implement this is still an open point. I'll welcome proposals in
-> addition to the ones in [0].
+I'll remove it in v2.
 
-Thanks for the notes, I think I largely agree with the discussion.
-Reading through it, I thought it would be nice for a new callback called
-get_next_bridge or something that would return either an error, NULL or a
-(refcounted) pointer to the next bridge in the chain. And have some kind
-of special error (ENODEV?) when the bridge should be there but isn't
-(and thus the chain isn't complete).
+Thanks for reviewing!
 
-Maxime
+>=20
+> Carlos Song
+>=20
+> >                         if (spi_imx->target_mode)
+> >                                 return
+> > spi_imx_pio_transfer_target(spi, transfer);
+> >                         else
+> > --
+> > 2.47.3
+> >  =20
+>=20
 
---kbqprj5uqeblzkb7
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+Javier
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCajvVzAAKCRAnX84Zoj2+
-dlmUAYD85u1Hv2vXFhhpb6AcHYKPXjuNOtyNzQsT4JWMH1ryh7eB79pKZqOgRdEy
-eq2O3/oBgPEWUBztGIVs76NR8fkCDIHxxd33fzv2OlQ6wFx/V7B8rXw601tQObK3
-cTgu6ITMBQ==
-=amXL
------END PGP SIGNATURE-----
+--=20
+Javier Fernandez Pastrana
+Linutronix GmbH | Bahnhofstra=C3=9Fe 3 | D-88690 Uhldingen-M=C3=BChlhofen
+Phone: +49 7556 25 999 32; Fax.: +49 7556 25 999 99
 
---kbqprj5uqeblzkb7--
+Hinweise zum Datenschutz finden Sie hier (Informations on data privacy
+can be found here): https://linutronix.de/legal/data-protection.php
+
+Linutronix GmbH | Firmensitz (Registered Office): Uhldingen-M=C3=BChlhofen |
+Registergericht (Registration Court): Amtsgericht Freiburg i.Br., HRB700
+806 | Gesch=C3=A4ftsf=C3=BChrer (Managing Directors): Heinz Egger, Thomas
+Gleixner, Sharon Heck, Yulia Beck, Tiffany Silva
