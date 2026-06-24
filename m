@@ -1,166 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E108B21638D;
-	Wed, 24 Jun 2026 20:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE86F3E5574;
+	Wed, 24 Jun 2026 21:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782334660; cv=none; b=e6APS3NnCbyUQ6nrmrQXj7lqmqNjlSpoWOYDaabboncOnlR9UlTitKO84tfwis344GzmUhPmmtfgrsYyBxXnDfwAOFOIB5v/Uxa3ngTJO0Iy7BjYbC12FFwEoROGYKJMRPkuGU8qgZrzHxw8P0vi4PhVKNL9inC89ETK7tFC0uU=
+	t=1782334823; cv=none; b=qI542i+xQL6PuhA3Gqt1xdz7yUk9Kj9By3UupbLSeP5LINRTr6+BEZ1oNFddvn+vfXbChioJrNDPlOKpgO9Ho/9Fw+Xs/B4OKwLcsn5+bZoPOuwLvwtvP20WJAfoHtw7R8bJxLLVCcnzepvmp/Q1g5rz7ssg0GQHR+grBewLgnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782334660; c=relaxed/simple;
-	bh=axiYKaIioZyNN4UxlIpvSlve0tQO7OKxq6+qa3/umpo=;
+	s=arc-20240116; t=1782334823; c=relaxed/simple;
+	bh=ZCGyxl1ZkKNbF8wyVMvLYKOWOlR8yW5Wn3hgWp7PbFk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=J3huAJt5oTS9fA6KUwbWRVvaM94JcrbX8rbZZj0H8XRxQ0kfwAlbr0FwU+IOzOgDxzDw/cB2hPJEukiYtAcdsNg34Ad/woPy+MBuu4mnv/edWI2ejre4eFhY9Wz3/UCKePk2I3ZX2ccIHkvuNKgifQqy8gz4W8RyXCIIreDUH/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DG9iUjep; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Jpt8MGLfsmfvGNembNP27O//ga8I2RCj2pHlh6pSGike0kO5ZSOSf8nq2A0j1xBvcn+CnuLw56oGPpnAiFrlxy+J0MIiguwU+s8G8LzDVm/wjUohGdVNCH8+UAGaEZ2myV+lgnCpZ5o6iyrzp7rQHVwGQNyR/rJXYotNAkVZO10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nDRxaxeS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DG9iUjep"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F781F000E9;
-	Wed, 24 Jun 2026 20:57:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nDRxaxeS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DBDC1F00A3A;
+	Wed, 24 Jun 2026 21:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782334659;
-	bh=DR4ZGpwY3GfKmM52IVxT0rmhtjCkXFdR+ad9ypfbzyw=;
+	s=k20260515; t=1782334822;
+	bh=ULklWo7c89n6QzIpJ0lpNjTP8gIzMcPtLqsY9g9+eos=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DG9iUjepVfzfix5CAy3NdC0a/B0/r1p+6ogOhGi8e24eNsMP11dkKMVv3FNUReR/4
-	 j2WrWrc2IDLfb3yLOLAEvQwLZaxlhGVyHuBorLMijvOl3j6+0dkpvyGBEUrIhUCYym
-	 Kgn9NiXnFfjTjTzfm6w2LcbUUXvZ7GOXD+mUqZ9xbgI4HO52rE4npndbv1oh4LXkxi
-	 Uo0U7PZDpv+XsRYWrq7vzUGLeh+3JXRay5cHcOq8+K+cQ9+wLq5Ihd1WQu6GQCbItb
-	 Zc84AGz7zmz/V/hzzIOWBiEYKlWlB8sPNZW7WlI6bzLwJ9q7CyDwGui4IMBS9td2ff
-	 /QNOonLkvDTxA==
+	b=nDRxaxeSIHTWeRPbZ4pY+MuEDblJoBZ9PCzz/NjSNY3Ah0OMyM8BYgiyyInLqBXLN
+	 PnBhJgVZWrbw6SLRCYwfiheR9Sq0WowQ5g7RCa2ATYNVK5ZR07J7QlWjcSr+bCcY9t
+	 nhYQH3s0ZwsbElivEZ8MCbDvtrSffdy8xOkXh6SSTlfuKuqmAFdWZAdXdSeXYcHgrn
+	 xZOKe3U/u2Xk/OEtdk0SuGse4xR522+iBvLrQhaoCSayleXjaiU89aL184J+9R8Fe/
+	 Ym8D8kQwM5rdClsT2+SdwiHDbUShx1Od7klLgFaI3IwImTWsql9zZElpuBD8CP7Gzs
+	 6zY/ritynhgHA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 6/9] dt-bindings: media: add i.MX parallel CPI
- support
+Subject: Re: [PATCH v6 8/9] arm64: dts: imx8: add camera parallel interface
+ (CPI) node
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <20260624-imx8qxp_pcam-v6-6-4b3f45920d2f@nxp.com>
+Cc: conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260624-imx8qxp_pcam-v6-8-4b3f45920d2f@nxp.com>
 References: <20260624-imx8qxp_pcam-v6-0-4b3f45920d2f@nxp.com>
- <20260624-imx8qxp_pcam-v6-6-4b3f45920d2f@nxp.com>
+ <20260624-imx8qxp_pcam-v6-8-4b3f45920d2f@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 24 Jun 2026 20:57:38 +0000
-Message-Id: <20260624205739.31F781F000E9@smtp.kernel.org>
+Date: Wed, 24 Jun 2026 21:00:21 +0000
+Message-Id: <20260624210022.3DBDC1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Unhandled resource leaks (memory and fwnode references) and double=
--free risk in `__media_async_register_subdev` and its cleanup path.
+- [Low] Mismatch between DTS port assignment (`port@4`) and the dt-binding =
+documentation which specifies `port@6` for the Parallel RX.
+- [Low] Devicetree schema validation error: 'ports' is a strictly required =
+property but is missing from the base `parallel_cpi` node.
 --
 
-commit 050e10af8571659357b0d6bb808eab4e58871636
+commit 80a1591fa539edb7320ce7a2c3b3f4dda7b4baa1
 Author: Frank Li <Frank.Li@nxp.com>
 
-media: subdev: Add media_async_register_subdev() helper
+arm64: dts: imx8: add camera parallel interface (CPI) node
 
-This commit adds media_async_register_subdev(), a helper to register a V4L2
-sub-device with the asynchronous sub-device framework. It parses the firmwa=
-re
-graph, creates media pads for endpoints, and registers asynchronous notifie=
-rs.
-This centralizes common initialization and link creation to reduce boilerpl=
-ate.
+This commit adds the camera parallel interface (CPI) node for imx8. It
+defines the base cpi node in imx8-ss-img.dtsi and configures the endpoint
+connections in imx8qxp-ss-img.dtsi.
 
-> diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-c=
-ore/v4l2-fwnode.c
-> index 62a3a452f7884..169059654478f 100644
-> --- a/drivers/media/v4l2-core/v4l2-fwnode.c
-> +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-> @@ -1302,6 +1303,160 @@ int __v4l2_async_register_subdev_sensor(struct v4=
-l2_subdev *sd, struct module *m
->  }
->  EXPORT_SYMBOL_GPL(__v4l2_async_register_subdev_sensor);
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi b/arch/arm64/=
+boot/dts/freescale/imx8-ss-img.dtsi
+> --- a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
+[ ... ]
+> @@ -222,6 +222,19 @@ irqsteer_parallel: irqsteer@58260000 {
+>  		status =3D "disabled";
+>  	};
 > =20
+> +	parallel_cpi: cpi@58261000 {
+> +		compatible =3D "fsl,imx8qxp-pcif";
+> +		reg =3D <0x58261000 0x1000>;
+
+[Severity: Low]
+Does this base node need a ports property to pass dtbs_check validation?
+
+The fsl,imx93-pcif.yaml schema strictly requires the ports property, and
+dt-validate processes nodes regardless of whether status is disabled.
+
+Will building devicetrees that include imx8-ss-img.dtsi without extending
+this node trigger validation errors?
+
+> +		clocks =3D <&pi0_pxl_lpcg IMX_LPCG_CLK_0>,
+> +			 <&pi0_ipg_lpcg IMX_LPCG_CLK_4>;
+> +		clock-names =3D "pixel", "ipg";
+> +		assigned-clocks =3D <&clk IMX_SC_R_PI_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-parents =3D <&clk IMX_SC_R_PI_0_PLL IMX_SC_PM_CLK_PLL>;
+> +		assigned-clock-rates =3D <160000000>;
+> +		power-domains =3D <&pd IMX_SC_R_PI_0>;
+> +		status =3D "disabled";
+> +	};
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8qxp-ss-img.dtsi
+> --- a/arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi
 [ ... ]
-> +void media_async_subdev_cleanup(struct v4l2_subdev *sd)
-> +{
-> +	v4l2_async_unregister_subdev(sd);
-> +	v4l2_subdev_cleanup(sd);
-> +	media_entity_cleanup(&sd->entity);
-> +	v4l2_async_nf_unregister(sd->subdev_notifier);
-> +	v4l2_async_nf_cleanup(sd->subdev_notifier);
-> +	kfree(sd->entity.pads);
-> +}
-> +EXPORT_SYMBOL_GPL(media_async_subdev_cleanup);
+> @@ -62,6 +62,14 @@ isi_in_2: endpoint {
+>  				remote-endpoint =3D <&mipi_csi0_out>;
+>  			};
+>  		};
+> +
+> +		port@4 {
+> +			reg =3D <4>;
+> +
+> +			isi_in_4: endpoint {
+> +				remote-endpoint =3D <&parallel_cpi_out>;
+> +			};
+> +		};
 
-[Severity: High]
-Does this cleanup function leak fwnode references?
+[Severity: Low]
+Does port@4 match the devicetree binding documentation?
 
-v4l2_async_nf_parse_fwnode() parses endpoints directly into pad->vep, taking
-an fwnode reference via fwnode_handle_get(). It appears this cleanup functi=
-on
-fails to iterate over the pads to call v4l2_fwnode_endpoint_free(&pad->vep)=
- to
-release these references.
+The Documentation/devicetree/bindings/media/fsl,imx8qxp-isi.yaml
+documentation explicitly specifies port@6 as the CSI-2 Parallel RX.
 
-Also, if a driver explicitly invokes this cleanup helper to recover after
-__media_async_register_subdev() fails, will kfree(sd->entity.pads) cause a
-double-free panic?
+Even though the driver configures the hardware correctly with num_ports =3D=
+ 5,
+does adding port@4 here introduce an undocumented port and create a schema
+mismatch?
 
-> +
-> +int __media_async_register_subdev(struct v4l2_subdev *sd, struct module =
-*module)
-> +{
-> +	struct device *dev =3D sd->dev;
-> +	u32 ep_count;
-> +	int ret;
-> +
-[ ... ]
-> +	struct media_pad *pads __free(kfree) =3D kzalloc_objs(struct media_pad,=
- ep_count);
-> +	if (!pads)
-> +		return -ENOMEM;
-> +
-> +	ret =3D v4l2_async_nf_parse_fwnode(dev, pads, notifier);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret =3D media_entity_pads_init(&sd->entity, ep_count, pads);
-> +	if (ret)
-> +		goto out_cleanup;
-> +
-> +	ret =3D v4l2_async_nf_register(notifier);
-> +	if (ret < 0)
-> +		goto out_cleanup;
-> +
-> +	ret =3D v4l2_subdev_init_finalize(sd);
-> +	if (ret)
-> +		goto out_unregister;
-> +
-> +	ret =3D __v4l2_async_register_subdev(sd, module);
-> +	if (ret < 0)
-> +		goto out_unregister;
-> +
-> +	sd->subdev_notifier =3D no_free_ptr(notifier);
-> +	retain_and_null_ptr(pads);
-> +
-> +	return 0;
-> +
-> +out_unregister:
-> +	v4l2_async_nf_unregister(notifier);
-> +
-> +out_cleanup:
-> +	v4l2_async_nf_cleanup(notifier);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(__media_async_register_subdev);
-
-[Severity: High]
-If __v4l2_async_register_subdev() fails, the error path returns without
-calling v4l2_subdev_cleanup(sd) to free the active state allocated by
-v4l2_subdev_init_finalize(). Can this leak sd->active_state?
-
-Additionally, pads is allocated with __free(kfree) and linked to
-sd->entity.pads. On a registration failure, pads is automatically freed when
-the function returns, but sd->entity.pads is not cleared.
-
-Could this leave a dangling pointer that causes a double-free if error
-recovery is attempted?
+>  	};
+>  };
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260624-imx8qxp_pc=
-am-v6-0-4b3f45920d2f@nxp.com?part=3D6
+am-v6-0-4b3f45920d2f@nxp.com?part=3D8
