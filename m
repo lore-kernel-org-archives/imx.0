@@ -1,38 +1,38 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D9B2264A9
-	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 15:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996B83C6A43
+	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 16:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782316043; cv=none; b=KqpMJvsQfJctrITm1ERCYRQWWsi71Z16a0fUrqT2CyqyfUGFtvtxRfr0SAdWH/29rgM3ZwQKbMx9Gfc76N71zI4OOUj/zH2gojhqMWDmUmhdUmpSNhsArvXMQIpvbUEL3iyrI8l+Oh7eU+vME+UnHUUbWlgAAUna2snQk9dlfzA=
+	t=1782317223; cv=none; b=OV7JncTT2DrvdVZ/pEmYPvRh/LFB/xvkuGhAYNA6qMSH9JS2U0GZdI3mpRhDQKBykm3jjd3MM6Fx7XTevDghDpsYG9k5TtfNf6+ByF3ViMG7lBSV0cjAkF4sYV9qAq56U0gYCqdtcMOAyb6xUvln52MXdmhN8SNtIeXcxHG7UNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782316043; c=relaxed/simple;
-	bh=zRxvCzWBEjgeH48QxymssJtekIfNlsb5OQj/ZzP/UXI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ArP508VXuyPgm31h7qmo3M1bgtlXk2rYLmqmXAI7/74P2CCXLQmRYDqO+5gXDTkFgb2SxkhrMaBEaJ96udBudXPOW7wZBmpTPv5QEY5czP3zrBHFauvjZr3ulRdZi6/w/5xYaASyC50yf640ueLpvF5gJKsvj7D0zRPkUC1uaT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a+dRWHPD; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1782317223; c=relaxed/simple;
+	bh=oMy12p5Cih8EbVR2+wU0ADk5pQIyI7dlCiDdxBA85ko=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=Gy4VGSOmtY/miDtmyZOnM7p9s+EbTXbwLeEtyae9/QF37ui02FCs3Kl7fyRb1TnjGKt18zq0W/3Mqp0mY59qFYZLcqOHWuiP7opiJaw7D4uLz3JY8skd0woDJlwS+pk43JNbA30d//xD0RZZvTUtTGZLQ5HEaHVnAMT9MqP/UXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RjmT+un4; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a+dRWHPD"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RjmT+un4"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 4FE15C6B3B4;
-	Wed, 24 Jun 2026 15:47:27 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D48791A0923;
+	Wed, 24 Jun 2026 16:06:56 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2AC9E601C5;
-	Wed, 24 Jun 2026 15:47:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 09C53106C8415;
-	Wed, 24 Jun 2026 17:47:10 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A3C69601C5;
+	Wed, 24 Jun 2026 16:06:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 502E1106C8468;
+	Wed, 24 Jun 2026 18:06:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782316037; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1782317215; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=c+RgpsLYw/cPjp2ruDkjJ3jO1w+pGqvDA6P4mjEpeYQ=;
-	b=a+dRWHPDzwJTziT6FjhVvOnUCL54shbP9/BKbxIIBc8eYUwCjAXpNVkY3/NkoOEiK/Nlgt
-	/ghAhu8kFbPH6Ul5I7wFxxI+bIuPOfcTeE7/EqUZZinIbhVhGekWMvImQ2qt8XX0+3P1Ra
-	8EFQkUPBHalpp+L0qRACi7pU/tHmdxB40RZdWFNVRKOEMCD6a9WvDw7VF0S9JJO4Llq/Xl
-	ETGeXAAxN8JrAgJm9xcO+qTrINhtGKkReFk48XjbSKrGka7rBdKteLPz6jYGxtO6xuVMp0
-	SQD8W7CWWglQg40sZW0MeBDbH47p/AZ+RAral6ZQKCafaJBK8Z4ZKXAXTuzO+g==
+	bh=N3v36YslEFTvIe9aSboloVtZTLcZwXqsmCLNtL+8QuI=;
+	b=RjmT+un4qnnBjmGoKLf/boh6gu+rTh4ct3BN5juGXqgOv7bgnvX9vEWv3HUtBp+QuzJD5Q
+	N6vRla5R96P4XxouiUhAdC1HzU5C4ileLGLhhO+vxj2PB3zdepND0Fu6fyhHaKGIe2Ku8Z
+	DsWzrXMd/nqD0xS+lLv8vZrf2rrg+kz0mJZ9Ojb7zCXHExHam5OZsbEeLNZWrV5+UUAQRQ
+	Ue1+yCqg1OKk8ghIpB+KxGaSy3evpBqIWgzGFLWS0HhHotZcB3KbL7lSv4CbEf5NBC58at
+	T6WLbK/qhE2i8Gacrjtc7yinm3pm+aC4JaMPb/LLS/JSyTkS6L6ebzc+kO+bDQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,10 +41,13 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Jun 2026 17:47:10 +0200
-Message-Id: <DJHEAWSEZR79.19UFIKS8QJBQ7@bootlin.com>
-Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code
- creating the connector to a subfunction
+Date: Wed, 24 Jun 2026 18:06:47 +0200
+Message-Id: <DJHEPXMBL9N8.10GN58K6CAULK@bootlin.com>
+To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 30/37] drm/bridge: add drm_bridge_is_tail() to know
+ whether a bridge completes the pipeline
 Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
  Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
  "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
@@ -61,88 +64,131 @@ Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
  Petazzoni" <thomas.petazzoni@bootlin.com>,
  <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
  <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
-To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 X-Mailer: aerc 0.21.0
 References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-5-45e2bdb3dfb4@bootlin.com>
- <20260608-mindful-heavy-frigatebird-be9faf@houat>
- <DJ735MTNMYD1.3LPNV404V8PIU@bootlin.com>
- <20260624-proud-unbiased-pony-ecc3c3@houat>
-In-Reply-To: <20260624-proud-unbiased-pony-ecc3c3@houat>
+ <20260519-drm-bridge-hotplug-v1-30-45e2bdb3dfb4@bootlin.com>
+ <20260608-shapeless-opal-ferret-c8b105@houat>
+ <DJ4DGYZ3GQZH.3AZOC0Z69W92S@bootlin.com>
+ <20260624-vagabond-neon-gorilla-cd6487@houat>
+In-Reply-To: <20260624-vagabond-neon-gorilla-cd6487@houat>
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed Jun 24, 2026 at 1:41 PM CEST, Maxime Ripard wrote:
-> Hi,x
->
-> On Fri, Jun 12, 2026 at 02:56:24PM +0200, Luca Ceresoli wrote:
->> On Mon Jun 8, 2026 at 1:40 PM CEST, Maxime Ripard wrote:
->> > On Tue, May 19, 2026 at 12:37:22PM +0200, Luca Ceresoli wrote:
->> >> In preparation to introduce bridge hotplug, split out from
->> >> drm_bridge_connector_init() the code adding the drm_connector into a
->> >> dedicated function. This will be needed to be able to add (and re-add=
-) the
->> >> connector from different code paths.
+On Wed Jun 24, 2026 at 3:04 PM CEST, Maxime Ripard wrote:
+> On Tue, Jun 09, 2026 at 10:23:24AM +0200, Luca Ceresoli wrote:
+>> Hi Maxime,
+>>
+>> thanks for the review of this long series!
+>>
+>> On Mon Jun 8, 2026 at 2:34 PM CEST, Maxime Ripard wrote:
+>> ...
+>> >> --- a/include/drm/drm_bridge.h
+>> >> +++ b/include/drm/drm_bridge.h
+>> >> @@ -78,6 +78,19 @@ struct drm_bridge_funcs {
+>> >>  	int (*attach)(struct drm_bridge *bridge, struct drm_encoder *encode=
+r,
+>> >>  		      enum drm_bridge_attach_flags flags);
+>> >>
+>> >> +	/**
+>> >> +	 * @is_tail:
+>> >> +	 *
+>> >> +	 * Returns true if this is a tail bridge, i.e. it does not need a
+>> >> +	 * next bridge to work. E.g. a panel_bridge is a tail bridge, a
+>> >> +	 * DSI-to-LVDS bridge is not a tail bridge (no matter whether the
+>> >> +	 * next bridge is present or not).
 >> >
->> > Same story here, explaining what you need later on that calls for that
->> > change would be nice.
+>> > Why a DSI-to-LDVS bridge isn't a tail bridge? It only needs a panel
+>> > next, right?
 >>
->> Here's a more verbose version:
->>
->>     Currently drm_bridge_connector_init() does two things:
->>
->>      * allocate and initialize the drm_bridge_connector
->>        (which embeds a drm_connector)
->>      * initialize and register the embedded drm_connector
->>
->>     For bridge hotplug we need to separate these two actions:
->>
->>      * the drm_connector needs to be added and removed at any time based=
- on
->>        hotplug events
->>      * the drm_bridge_connector is designated to create and remove the
->>        drm_connector, so it must be persistent for the card lifetime
->>
->>     As the lifetimes of drm_bridge_connector and drm_connector become
->>     different, we need to create them in different moments.
->>
->>     In preparation to support that, split out from
->>     drm_bridge_connector_init() the code adding the drm_connector into a
->>     dedicated function. No functional changes, just moving code around f=
-or
->>     now. A future commit will make the drm_connector be created based on
->>     hotplug events.
->>
->> Looks good?
+>> Uhm, good point, but I'd say it can be a tail bridge or not: in the
+>> ATTACH_NO_CONNECTOR case it will need a bridge (a panel_bridge most
+>> likely), no?
 >
-> The message itself, yes, thanks.
+> Yeah, I think it cannot (always) be a blanket statement from the driver.
+> For drivers that do not support ATTACH_NO_CONNECTOR, then it's always
+> going to be a tail, but if the driver supports it, we should use a
+> helper because it's going to depend on the DT, basically.
 >
-> However, I have questions now :)
+>> However this is possibly irrelevant as the whole .is_tail is meant to
+>> disappear in v2, see below.
+>>
+>> >> +	 * The @is_tail callback is optional but it is required if the
+>> >> +	 * bridge is part of a pipeline with hot-pluggable components.
+>> >> +	 */
+>> >> +	bool (*is_tail)(struct drm_bridge *bridge);
+>> >> +
+>> >
+>> > I don't think that's the right way to think about it, if only because
+>> > you never really know at the driver level if you're supposed to be las=
+t
+>> > or not. A DSI-to-LVDS bridge might just as well be chained with an
+>> > LVDS-to-eDP bridge, or feed the panel directly without any additional
+>> > bridge.
+>> >
+>> > I *think* that what you're trying to find out here is whether the chai=
+n
+>> > is complete or not.
+>>
+>> You nailed it.
+>>
+>> That was the main point discussed during the Display Next Hackfest 2026
+>> (see the report [0]) and we all agreed the .is_tail along with the
+>> -EPROBE_DEFER changes (patches 20+35) are not a good approach.
+>>
+>> This is actually the most crucial aspect of the whole work still not hav=
+ing
+>> no well-defined solution.
 >
-> Do we really expect drm_bridge_connector to stick around when a bridge
-> gets unplugged? If so, how does it cope with having, say, an HDMI
-> connector, and then swapping out the hotplugged part for an LVDS one?
-> Does the HDMI connector sticks around indefinitely?
+> Ok
+>
+>> > I think you can get the same information by checking
+>> > whether you have a connector for that bridge chain. If you don't, you
+>> > know the chain isn't complete, and if you do, it's supposed to be.
+>>
+>> There's a checken-egg problem here. Knowing whether the pipeline is
+>> complete or not is needed to know whether we have to create a
+>> connector. See patch 36:
+>>
+>>   +  if (drm_bridge_connector_pipeline_is_complete(bridge_connector))
+>>   +          drm_bridge_connector_add_connector(bridge_connector);
+>>
+>> So the question is still open, what I need the most right now is comment=
+s
+>> on the overall architecture of this aspecs. Maybe replying to [0] can be
+>> more effective than here.
+>>
+>> In a nutshell what we need is:
+>>
+>>  * when a bridge needs a following element (a bridge, or a panel which
+>>    however might/should have a panel_bridge), but that element is not
+>>    present, instead of deferring the whole card probe the card should be
+>>    allowed to probe but without a connector
+>>
+>>  * when something is added to an incomplete pipeline we need to know
+>>    whether the pipeline has become complete (in order to create the
+>>    connector)
+>>
+>> How to implement this is still an open point. I'll welcome proposals in
+>> addition to the ones in [0].
+>
+> Thanks for the notes, I think I largely agree with the discussion.
 
-In your example, the HDMI drm_connector would be unregistered and put on
-hotunplug. Its allocation will stick around until the last put but that's
-quite irrelevant. Then, on plugging the LVDS addon, a new LVDS
-drm_connector will be created and registered.
+Good! :)
 
-> *Especially* if we're using overlays for this, I'd expect everything
->  after the first hotplugged bridge to be destroyed, no?
+> Reading through it, I thought it would be nice for a new callback called
+> get_next_bridge or something that would return either an error, NULL or a
+> (refcounted) pointer to the next bridge in the chain. And have some kind
+> of special error (ENODEV?) when the bridge should be there but isn't
+> (and thus the chain isn't complete).
 
-As said, it would be unregistered immediately but might be freed later on
-if still refcounted.
+I initially preferred exposing the fwnode of the next bridge as discussed
+with Dmitry during the Display Next Hackfest, which looks simpler for
+driver writers. But then I realized it would be tricyk in cases such as
+dual-LVDS output bridges (ti-sn65dsi83.c) which have two output ports in
+DT, none of which is mandatory. So I've come to thinking a callback is
+better as it should be flexible enough.
 
-This is visible in patches 36+15, the path to follow is:
-
- drm_bridge_connector_handle_event(event =3D DRM_BRIDGE_DETACHED) [patch 36=
-]
- -> drm_bridge_connector_dynconn_release()                      [patch 15]
-
-Does this solve your concern?
+Picking the best errno is probably the only aspect needing special
+attention now.
 
 Luca
 
