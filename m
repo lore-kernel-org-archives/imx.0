@@ -1,134 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05793BED75;
-	Wed, 24 Jun 2026 15:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EA73D9DDE
+	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 15:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782313780; cv=none; b=AeLRvLytQtnDf7yhrqKjLRKwmj0KEKFm2qkOZsl6dC69RyWnIYtT9LyQjjD4fFqMp3AuaZTKFxQKLNuVMI5z3X4GbqQMiUpyD1hhCxzickAAHww4nncIWGAyK5PzRQ1V/24Zew4gK/fDVC3ahfnJnaPo7ILRnbzo+AgRPnXmGDI=
+	t=1782314417; cv=none; b=L6jAScneTTdUJHtXZoY+UZqQZfTwHuzi2NdDyTUxj6RU9R+0lBp9aH+vl3EuYvkqHzRgpb/ol5VkMsGXa/fn9dFbRQtZ22uONzWjpsTWgGANMQ28lhI/LTh9hr4aj+gvid3tsmozeHd7gQU2cwa1Cp2dWrayAdHo9XoJZChVoDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782313780; c=relaxed/simple;
-	bh=t/UOCw5SX+/yBaSHom535D7BTN9J5EFhlsqwJwrsyEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VB6ySWizkiUGM+Hv9TNo8Qsr64Gqs3VSNNhBtyUpVqu9IxQeATptUPiMItRWFGaFW+OxQpVh9yDbp6D3djKOnHX0NOtIET7+B162O0JxAazptU2MOluu7+YgfD45/vhStMhXgqrv6d/tyoCxCVEpKyUd3H/TI1G29tAS6bkunIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jeRocl3V; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782314417; c=relaxed/simple;
+	bh=i8fRLo5LYOvfrJBpdpoaACvdd+LXf/b95GMHNF/iCOM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LAAgPJTiUQnUsoktaJ2lpCl4p6OYRWo16me3U5B3Kh9PigQZJsGMZFyyyh4Oe4NIjlryOBxFFgFrixGMwGDVA4U2pX2gyzK67Yjp0Mg7zFTPWfstCbVvVpr7RcSoVeS5LBkEv45CCdNKovj4jbKcK/gkRyJbyq8/XdaKQ4JnSMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O9tX6pV0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IzAxwnba; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jeRocl3V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A9B1F000E9;
-	Wed, 24 Jun 2026 15:09:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782313779;
-	bh=nYXFHsAJ/+YPM5VKCdBLeyhf6SMW4jWJQ75wvJBvxwE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jeRocl3VdznUJWlLXpYFh0jH8rIjHIufr8jZWjRRGmCNBlcBVOUnBI3qqjmhvhCaP
-	 2guiE4zvkZT+1x4r9Tfd8hPA+twEWYtei34OpCDFSzTd7XhklXuPCLRsJrCMHjZp5C
-	 82nuAIe7RCAFRX65RN6kzHhEX1Fky8MWYAXLcADvHYNYd6hdGNFcntvaPA5ErzaoUo
-	 JU8ySaXnvof7D9r0xExOfICtPxQxjLIKkhP5f7tJU6kRTrw34ngR1hweBdIj4CNFE1
-	 zhilgY75adTj2urQDUfPuXa8Gua+hXoRmuHr35CdBIzmkKEZeAL067ne7OEaLysgmH
-	 OFfjEfWKIovWw==
-Date: Wed, 24 Jun 2026 17:09:37 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
-	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 26/37] drm: event-notifier: add mechanism to notify about
- hotplug events
-Message-ID: <20260624-elegant-giraffe-of-finesse-d7d1a5@houat>
-References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-26-45e2bdb3dfb4@bootlin.com>
- <20260608-maize-rooster-of-youth-c0bbde@houat>
- <DJ4EWMIX84PN.3VTENLJT2FWDH@bootlin.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O9tX6pV0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IzAxwnba"
+From: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782314414;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=spgZE5DVRE3AVvzfElFMQQANIXP+yeQwZcb1XoUbe5M=;
+	b=O9tX6pV0wktZmIpN+CncnqgZWeMBK4Lh4d/wB9jj/zXVMzXA3cqBRyI+0OsQQTJJkQERqH
+	sLjU1BAI/NNvGFIXqnIltSBF2nLP13bePTTO5mFBSWKX1gA80VkgSuh25c9P18+Om3YDzx
+	d8SZ7/jGMeeGoYgczeNBRA8VUPGE8JAOt3udFHGQfFj76WdlhmM1yukcMWONTla49c5uK6
+	DOUGfCrDlGt4FNiHZ1P28aBUFh4n4cKKD8auNILF3IKeAWOm3MRafquLBkfo/M2y2Klvsc
+	wU21xQ/YDVyu3TvNjNUASaP/w67B2czopx6Que4NakoraUWxNSp8hzVwf8FosA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782314414;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=spgZE5DVRE3AVvzfElFMQQANIXP+yeQwZcb1XoUbe5M=;
+	b=IzAxwnbagHEsqEK6p/mcyrs2/vaHPgY3vYtHlbjB1OlmLygna0e8Dy+wXWLkzZJpI2gTU6
+	72SNLIUTqoKfwEBw==
+To: Mark Brown <broonie@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: javier.pastrana@linutronix.de,
+	stable@vger.kernel.org
+Subject: [PATCH v2] spi: imx: reconfigure for PIO when DMA cannot be started
+Date: Wed, 24 Jun 2026 17:19:58 +0200
+Message-ID: <20260624151958.18626-1-javier.pastrana@linutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="sih46xtj3h66m2kh"
-Content-Disposition: inline
-In-Reply-To: <DJ4EWMIX84PN.3VTENLJT2FWDH@bootlin.com>
-
-
---sih46xtj3h66m2kh
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 26/37] drm: event-notifier: add mechanism to notify about
- hotplug events
-MIME-Version: 1.0
 
-On Tue, Jun 09, 2026 at 11:30:52AM +0200, Luca Ceresoli wrote:
-> On Mon Jun 8, 2026 at 2:13 PM CEST, Maxime Ripard wrote:
-> > On Tue, May 19, 2026 at 12:37:43PM +0200, Luca Ceresoli wrote:
-> >> In preparation for supporting DRM bridge hotplug, add an event notifie=
-r to
-> >> allow interested parties to be notified about events they need to reac=
-t to.
-> >>
-> >> For the initial implementation of bridge hotplug, two events are neede=
-d:
-> >> bridge detach (happening in drm_bridge.c) and MIPI device attach to MI=
-PI
-> >> host (happening in drm_mipi_dsi.c).
-> >>
-> >> For this reason implement the event notifier in a new common file that
-> >> event producers can easily use to send events.
-> >>
-> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> >
-> > So, you claim in the commit message that it's about a hotplug event, but
-> > the only events are the bridge being attached and detached, so not a
-> > hotplug event?
-> >
-> > And why a bridge would want to be notified that itself (or another?)
-> > bridge is being attached or detached?
-> >
-> > You need documentation, and a more descriptive commit message.
->=20
-> Yes.
->=20
-> But before that I need a decision about the scope we want to give to this
-> notifier. It is a very generic module, with basically no dependencies, so
-> people will try to add more unrelated events and we'd need to set a
-> boundary.
->=20
-> Options:
->=20
->  * Should it be for hotplug-related events only?
->  * Should it be for any DRM event that needs notifications?
->  * Something else?
->=20
-> I'm happy to write that in the docs and commit message once it's agreed, =
-so
-> any comments would be welcome right now.
+When spi_imx_can_dma() selects DMA, the ECSPI is configured for DMA:
+spi_imx_setupxfer() sets CTRL.SMC and clears dynamic_burst, and
+spi_imx_dma_transfer() programs the dynamic-burst BURST_LENGTH and the
+SDMA watermarks.
 
-At the end of the day, you'd be the first user of it, so you get to make
-the rules, but they should be written down :)
+If the DMA descriptor cannot be prepared (dmaengine_prep_slave_single()
+returns NULL), the transfer is failed with SPI_TRANS_FAIL_NO_START and
+falls back to PIO. The dynamic-burst DMA path uses its own bounce
+buffers instead of the SPI core's mapping, so xfer->{tx,rx}_sg_mapped
+are not set and the core's DMA->PIO retry is skipped; the driver falls
+back to PIO internally. But none of the DMA-mode configuration is
+undone, so the PIO transfer runs with CTRL.SMC set, the wrong burst
+length and dynamic_burst cleared, and the transferred data is corrupted.
 
-Maxime
+This is easily hit on i.MX8MP boards that describe ECSPI DMA in the
+device tree but run SDMA on ROM firmware (no external sdma-imx7d.bin):
+every ECSPI DMA prepare fails. An Infineon SLB9670 TPM on ECSPI1 then
+returns shifted TPM2_GetCapability data, is flagged "field failure
+mode", /dev/tpmrm0 is never created.
 
---sih46xtj3h66m2kh
-Content-Type: application/pgp-signature; name="signature.asc"
+Set controller->fallback before re-running spi_imx_setupxfer() so the
+ECSPI is reconfigured exactly like a normal PIO transfer. With
+controller->fallback set, spi_imx_setupxfer() sees spi_imx_can_dma()
+return false, so it clears spi_imx->usedma and reprograms the controller
+(clears CTRL.SMC, restores dynamic_burst and the PIO burst length). No
+explicit spi_imx->usedma =3D false is needed: setupxfer() already updates
+it from the can_dma() result.
 
------BEGIN PGP SIGNATURE-----
+Fixes: faa8e404ad8e ("spi: imx: support dynamic burst length for ECSPI DMA =
+mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
+---
+v2: drop redundant spi_imx->usedma =3D false; spi_imx_setupxfer() already
+    clears it via spi_imx_can_dma() (Carlos Song)
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCajvzIgAKCRAnX84Zoj2+
-diq9AYDS0++BFhEDXmstOP5s8ju5j4ZhnTJ84htQUTs/KNC7r9Sg1q/f9LCWWjoo
-4ygrh/kBgM6Ap5lgJzGFC1vcBkanGawtHnUUVNL2ZCxahZlb9BKtCZusOCK/n06E
-nEmYoeqy4A==
-=wD9S
------END PGP SIGNATURE-----
+ drivers/spi/spi-imx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---sih46xtj3h66m2kh--
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 480d1e8b281f..1837cc7b0b96 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -2152,7 +2152,8 @@ static int spi_imx_transfer_one(struct spi_controller=
+ *controller,
+ 	if (spi_imx->usedma) {
+ 		ret =3D spi_imx_dma_transfer(spi_imx, transfer);
+ 		if (transfer->error & SPI_TRANS_FAIL_NO_START) {
+-			spi_imx->usedma =3D false;
++			controller->fallback =3D true;
++			spi_imx_setupxfer(spi, transfer);
+ 			if (spi_imx->target_mode)
+ 				return spi_imx_pio_transfer_target(spi, transfer);
+ 			else
+--=20
+2.47.3
+
