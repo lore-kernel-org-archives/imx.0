@@ -1,268 +1,299 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D873E4C7A;
-	Wed, 24 Jun 2026 21:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A2C3E5599;
+	Wed, 24 Jun 2026 21:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782335021; cv=none; b=uBC4joow7tgrH1SKHCtsLBk3OB2XxgNCp3Da8IoVjtOmgsLdk8fBeJQOunROLDGvYKEFVJ+wc/sIO3nN6yQvZsH7VAR+F4bjTc5HBZ4l7/ANaj9U64lgUOEi9mI4YXiLo24bm4gm4xQpk5k13xbO/OfM8bdUf90PAOXsmsIOi6g=
+	t=1782335226; cv=none; b=unOhlxrqBNYaT2nBJUIAmO4/elADgpiBh6rRkZILogE0jx8Bo5Tc5+KjUH0vcTwIvLXLNv+sZOIVr79IXQrrf5TLeXvwApvqd/iVO/BvCqQviKOYUUFRtWa5pUJBvBD+R9KBMtB+WgAntNDohvlt6ntl0Y1Ab1TTd75JowAwS1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782335021; c=relaxed/simple;
-	bh=fOD6KBedX3oEr2DsyKXacMQsqIvLOgUwzJmByGFFNBA=;
+	s=arc-20240116; t=1782335226; c=relaxed/simple;
+	bh=wLX0Qnz/2kv6rYdfPeLH4g6pL75eR414jLfj3ku3FRQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bYGZo2ksLiV7hcOtyRiFtOliCh52MqkuZN76jpmCNkfl8pYxTdaGAIqhSV7XK7QobxMWsXZ6Q6SZS34PYLEWVpGkM0iatgQALIViZHZT2E4gtd6yBfXHJwdfuGhTB92kXST7hOZujmrrWxiERXQ28EzhO2Z6PxSLsG9r/YXKpPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hls5TIcp; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=lQgF5jE/RdxPVUMmNwZv+ee2VJmyFJZTo6zmi4qcdskSJK0Kk0Aa/nY3RUhc+Ye209by7fc4JV0OeHUs8qi+ShWBL2PK60bdUv66DWJfP6UCpl+3TYOPdLNjzEi+VMlO5nZTdFs9eU+Ym8V7tdeFd9l9rKTCi0lzzMkJQ2EREmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFtXsDf6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hls5TIcp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1001F000E9;
-	Wed, 24 Jun 2026 21:03:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFtXsDf6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6440F1F000E9;
+	Wed, 24 Jun 2026 21:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782335020;
-	bh=K4/9Pv7Q10DR3NH7kaB5DbhvWCclsV0RF1m6DBcAP7o=;
+	s=k20260515; t=1782335223;
+	bh=IFruGrADjEpACkLysI145JskxTSo7XMx9RG+dJJ95Ao=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Hls5TIcpar9x/Lm2yabUvJKF+6IuSx9/BhFAgIejXAqQbLn6wnlER1iNaX6F72TFK
-	 5qKinr/f7bAyDV6hV1RcDkNf/SDdaar6QJmhLGTYoXrWaJ490qYFwZ/iZwGmkTft/K
-	 z6Jv7AZBJCFLKbXPtSuJDAfihm165w3V5mSLYRnSeL5oIKWvgv1UqsJBp/xhNg9kG1
-	 uL9myeLJvogFoJba/+5XfkAcENUHeQbRuQEPUkHsx/4usbocrqzmeRUJb4v19dSmpq
-	 qdXrd1dJrC7fuxnA5jI0HqDTsKuCoRByL0QUhbeQwN7nPHiqW+dPcCh2NyIYU6MRK/
-	 ZlggmGUCYTaBw==
+	b=AFtXsDf6yBtI+CTr9FZu3twiFcIP57cttdMJtmHp5Yr6qLMEMIcJ7e8HwdQe/KZsB
+	 6sdnL/9WQx5u0KLhOxXVz8WJa0D+l2YeHXIRw0ecEZ7LAZcA8J6nl+dzAl9yIMsWg4
+	 vFoniRAUmGmC5de+8lrmEMfN7cAmMH4HbeWZAl59Rrw5a/Qol5QQbMNJz9l+pgt6FW
+	 N78BAlfZYu/uz860B3ge7h3DI9R3WfZfu+vZWq5sIJCzzP6B+a3PgkvCLht0pucM9A
+	 11yOqFOThZQuvGqmKprYKPnq4yLnYv7ZICaS2tTV6G6EOM0SRmgKW8beM0DJeuLdIc
+	 V7IXv/m3hb29Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 7/9] media: nxp: add V4L2 subdev driver for camera
- parallel interface (CPI)
+Subject: Re: [PATCH v6 5/9] media: synopsys: Use
+ media_async_register_subdev() to simplify code
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260624-imx8qxp_pcam-v6-7-4b3f45920d2f@nxp.com>
+Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
+In-Reply-To: <20260624-imx8qxp_pcam-v6-5-4b3f45920d2f@nxp.com>
 References: <20260624-imx8qxp_pcam-v6-0-4b3f45920d2f@nxp.com>
- <20260624-imx8qxp_pcam-v6-7-4b3f45920d2f@nxp.com>
+ <20260624-imx8qxp_pcam-v6-5-4b3f45920d2f@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 24 Jun 2026 21:03:39 +0000
-Message-Id: <20260624210339.AB1001F000E9@smtp.kernel.org>
+Date: Wed, 24 Jun 2026 21:07:02 +0000
+Message-Id: <20260624210703.6440F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
+Thank you for your contribution! Sashiko AI review found 8 potential issue(=
 s) to consider:
-- [High] Hardcoded pad indices lead to a NULL pointer dereference in `imx_c=
-pi_set_fmt()` if the device tree specifies fewer than 2 endpoints.
-- [High] Hardcoded pad indices cause memory corruption and use of uninitial=
-ized flags if device tree endpoints are reordered.
-- [High] Pending asynchronous PM runtime suspend is cancelled during device=
- removal, permanently leaking hardware clocks.
-- [Medium] The Kconfig symbol `VIDEO_IMX_PARALLEL_CPI` selects a non-existe=
-nt symbol `V4L2_1TO1`.
-- [Medium] Unchecked return value from `of_device_get_match_data()` leads t=
-o a NULL pointer dereference if bound via sysfs.
-- [Medium] Incorrect pad arguments passed to `v4l2_subdev_state_xlate_strea=
-ms()`.
-- [Low] The V2 register macros for `CPI_CTRL_V2_REG1` overlap at bit 16 and=
- exceed the 32-bit register width.
+
+New issues:
+- [Critical] Critical out-of-bounds heap write in v4l2_async_nf_parse_fwnod=
+e() due to mismatched endpoint counting.
+- [High] Mixed goto-based error handling and __free() cleanup violates subs=
+ystem rules and leaves a dangling pointer.
+- [High] Hardcoded array indexing for pads mismatches the dynamic Device Tr=
+ee enumeration order.
+- [High] Heap out-of-bounds access and routing validation failure on single=
+-endpoint Device Trees.
+- [High] Memory leak of `sd->active_state` on subdev registration failure.
+- [High] Unconditional memory leak of `sd->subdev_notifier` during driver r=
+emoval.
+- [High] Leaked async connections and fwnode references on error path.
+
+Pre-existing issues:
+- [High] Lockless traversal of the media entity links list causes a race co=
+ndition.
 --
 
-commit 547923ad3a1ab4157dbe156e0b9151600e5bb65f
-Author: Alice Yuan <alice.yuan@nxp.com>
+commit 892732bd4672cbe12751cfc2979a3f508c5cde6d
+Author: Frank Li <Frank.Li@nxp.com>
+Subject: media: synopsys: Use media_async_register_subdev() to simplify code
 
-media: nxp: add V4L2 subdev driver for camera parallel interface (CPI)
+Use the media_async_register_subdev() to simplify the driver.
+Replace the local subdev registration and media pad setup code with
+media_async_register_subdev(). Reduce boilerplate code and aligns the
+driver with the common pattern used by simple subdevices that each media
+pad has one endpoint in fwnode.
 
-This commit adds a V4L2 sub-device driver for the CPI controller found
-on i.MX8QXP, i.MX8QM, and i.MX93 SoCs. It supports parallel camera
-sensors and enables image data capture through a parallel interface.
-
-> diff --git a/drivers/media/platform/nxp/Kconfig b/drivers/media/platform/=
-nxp/Kconfig
-> index 40e3436669e21..90f7c792003f2 100644
-> --- a/drivers/media/platform/nxp/Kconfig
-> +++ b/drivers/media/platform/nxp/Kconfig
-> @@ -39,6 +39,18 @@ config VIDEO_IMX_MIPI_CSIS
+> diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c b/drivers/m=
+edia/platform/synopsys/dw-mipi-csi2rx.c
+> index f51367409ff46..0fabc89a49b80 100644
+> --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
 [ ... ]
-> +config VIDEO_IMX_PARALLEL_CPI
-> +	tristate "NXP i.MX8/i.MX9 Parallel CPI Driver"
-> +	depends on ARCH_MXC || COMPILE_TEST
-> +	depends on VIDEO_DEV
-> +	select MEDIA_CONTROLLER
-> +	select V4L2_1TO1
-
-[Severity: Medium]
-Is this selecting a non-existent Kconfig symbol? V4L2_1TO1 does not appear
-to exist in the kernel tree. Selecting a missing symbol can cause unmet
-dependency warnings or silent build failures.
-
-> +	select V4L2_FWNODE
-> +	select VIDEO_V4L2_SUBDEV_API
-> +	help
-> +	  Video4Linux2 sub-device driver for PARALLEL CPI receiver found
-> +	  on some iMX8 and iMX9 SoCs.
-
-> diff --git a/drivers/media/platform/nxp/imx-parallel-cpi.c b/drivers/medi=
-a/platform/nxp/imx-parallel-cpi.c
-> new file mode 100644
-> index 0000000000000..0f74b51608715
-> --- /dev/null
-> +++ b/drivers/media/platform/nxp/imx-parallel-cpi.c
-> @@ -0,0 +1,629 @@
-[ ... ]
-> +/* CPI INTERFACE CONTROL REG1 */
-> +#define CPI_CTRL_REG1_PIXEL_WIDTH(v)		FIELD_PREP(GENMASK(15, 0), (v))
-> +#define CPI_CTRL_REG1_VSYNC_PULSE(v)		FIELD_PREP(GENMASK(31, 16), (v))
-> +
-> +#define CPI_CTRL_V2_REG1_PIXEL_WIDTH(v)		FIELD_PREP(GENMASK(16, 0), (v))
-> +#define CPI_CTRL_V2_REG1_VSYNC_PULSE(v)		FIELD_PREP(GENMASK(31, 16), (v))
-
-[Severity: Low]
-Do these V2 register macros overlap? The GENMASK(16, 0) and GENMASK(31, 16)
-overlap at bit 16, resulting in a 33-bit span for what appears to be a
-32-bit register. While currently unused, could this corrupt register
-values if utilized in the future?
-
-> +
-> +/* Need match field DATA_TYPE_IN definition at CPI CTRL register */
-[ ... ]
-> +static void imx_cpi_hw_config(struct imx_cpi_device *pcpidev,
-> +			      const struct imx_cpi_pix_format *pcpidev_fmt)
-> +{
-> +	u32 flags =3D pcpidev->sd.entity.pads[V4L2_SUBDEV_1TO1_PADS_SINK].vep.b=
-us.parallel.flags;
+> @@ -360,9 +350,10 @@ dw_mipi_csi2rx_find_format(struct dw_mipi_csi2rx_dev=
+ice *csi2, u32 mbus_code)
+> =20
+>  static int dw_mipi_csi2rx_start(struct dw_mipi_csi2rx_device *csi2)
+>  {
+> +	struct media_pad *sink_pad =3D &csi2->sd.entity.pads[V4L2_SUBDEV_1TO1_P=
+ADS_SINK];
 
 [Severity: High]
-Can hardcoding the pad index lead to reading uninitialized memory here?
+Does this hardcoded index match the dynamic pad allocation from the Device
+Tree?
 
-The pads array is populated based on the order endpoints appear in the
-Device Tree. If a device tree defines the source endpoint before the
-sink endpoint, pads[0] will correspond to the source pad instead of
-the sink pad.
+Because v4l2_async_nf_parse_fwnode() populates the pads array strictly in t=
+he
+order endpoints appear in the Device Tree, accessing index
+V4L2_SUBDEV_1TO1_PADS_SINK unconditionally here assumes the sink pad is alw=
+ays
+at index 0.
 
-> +	const struct imx_cpi_plat_data *pdata =3D pcpidev->pdata;
-> +	bool hsync_pol =3D flags & V4L2_MBUS_HSYNC_ACTIVE_HIGH;
+If a platform's Device Tree lists the source endpoint before the sink
+endpoint, will the driver access the wrong pad and potentially read incorre=
+ct
+hardware parameters (like lane counts)?
+
+> +	u32 lanes =3D sink_pad->vep.bus.mipi_csi2.num_data_lanes;
+>  	struct media_pad *source_pad;
 [ ... ]
-> +static int imx_cpi_set_fmt(struct v4l2_subdev *sd,
-> +			   struct v4l2_subdev_state *sd_state,
-> +			   struct v4l2_subdev_format *sdformat)
-> +{
-> +	struct imx_cpi_pix_format const *pcpidev_fmt;
-> +	struct v4l2_mbus_framefmt *fmt;
-[ ... ]
-> +	/* Propagate the format from sink to source. */
-> +	fmt =3D v4l2_subdev_state_get_format(sd_state, V4L2_SUBDEV_1TO1_PADS_SO=
-URCE);
-> +	*fmt =3D sdformat->format;
-
-[Severity: High]
-Can this result in a NULL pointer dereference?
-
-If a misconfigured device tree only specifies a single endpoint,
-media_async_register_subdev() will allocate exactly one pad, meaning
-sd->entity.num_pads =3D 1.
-
-When v4l2_subdev_state_get_format() is explicitly called with
-V4L2_SUBDEV_1TO1_PADS_SOURCE (index 1), it will return NULL since the
-index is out of bounds. The pointer is then blindly dereferenced.
-
-> +
-> +	/* The format on the source pad might change due to unpacking. */
-> +	fmt->code =3D pcpidev_fmt->output;
-> +
-> +	return 0;
-> +}
-[ ... ]
-> +static int imx_cpi_enable_streams(struct v4l2_subdev *sd,
-> +				  struct v4l2_subdev_state *state, u32 pad,
-> +				  u64 streams_mask)
-> +{
-> +	struct imx_cpi_device *pcpidev =3D sd_to_imx_cpi_device(sd);
-> +	const struct imx_cpi_pix_format *pcpidev_fmt;
-> +	const struct v4l2_mbus_framefmt *format;
-> +	struct media_pad *sink_pad, *remote_pad;
-> +	struct device *dev =3D pcpidev->dev;
-> +	struct v4l2_subdev *remote_sd;
-> +	u64 mask;
-> +	int ret;
-> +
+> @@ -549,12 +539,12 @@ static int dw_mipi_csi2rx_enable_streams(struct v4l=
+2_subdev *sd,
+>  	u64 mask;
+>  	int ret;
+> =20
+> -	sink_pad =3D &sd->entity.pads[DW_MIPI_CSI2RX_PAD_SINK];
 > +	sink_pad =3D &sd->entity.pads[V4L2_SUBDEV_1TO1_PADS_SINK];
-> +	remote_pad =3D media_pad_remote_pad_first(sink_pad);
-> +	remote_sd =3D media_entity_to_v4l2_subdev(remote_pad->entity);
+>  	remote_pad =3D media_pad_remote_pad_first(sink_pad);
 
 [Severity: High]
-If the device tree endpoints are reordered as mentioned previously, can
-this cast the wrong entity type to a v4l2_subdev?
+This isn't a bug introduced by this patch, but does this lockless list
+traversal race with userspace ioctls?
 
-If pads[0] corresponds to the source pad, its remote entity will be a
-video_device, not a v4l2_subdev. Calling media_entity_to_v4l2_subdev()
-on a video_device produces an invalid pointer that will crash the kernel
-when dereferenced.
+Calling media_pad_remote_pad_first() iterates the media entity links list:
 
-> +
-> +	mask =3D v4l2_subdev_state_xlate_streams(state, V4L2_SUBDEV_1TO1_PADS_S=
-INK,
-> +					       V4L2_SUBDEV_1TO1_PADS_SOURCE,
-> +					       &streams_mask);
+drivers/media/mc/mc-entity.c:media_pad_remote_pad_first() {
+    ...
+    for_each_media_entity_data_link(pad->entity, link) {
+    ...
+}
 
-[Severity: Medium]
-Are the pad arguments reversed here?
+Since v4l2_subdev_enable_streams() does not acquire the global
+mdev->graph_mutex, could this traversal race with userspace ioctls like
+MEDIA_IOC_SETUP_LINK that mutate the graph structure, leading to linked list
+corruption or a use-after-free?
 
-Since v4l2_subdev_enable_streams() is called on the source pad,
-streams_mask represents streams on the source pad. Passing
-V4L2_SUBDEV_1TO1_PADS_SINK as the first argument informs the helper that
-streams_mask belongs to the sink pad. Could this silently break routing
-logic if asymmetrical stream IDs are ever used?
-
-> +
-> +	format =3D v4l2_subdev_state_get_format(state, V4L2_SUBDEV_1TO1_PADS_SI=
-NK);
+>  	remote_sd =3D media_entity_to_v4l2_subdev(remote_pad->entity);
 [ ... ]
-> +static void imx_cpi_remove(struct platform_device *pdev)
-> +{
-> +	struct imx_cpi_device *pcpidev =3D platform_get_drvdata(pdev);
-> +
-> +	media_async_subdev_cleanup(&pcpidev->sd);
-> +}
+> @@ -649,9 +639,9 @@ static int dw_mipi_csi2rx_init_state(struct v4l2_subd=
+ev *sd,
+>  {
+>  	struct v4l2_subdev_route routes[] =3D {
+>  		{
+> -			.sink_pad =3D DW_MIPI_CSI2RX_PAD_SINK,
+> +			.sink_pad =3D V4L2_SUBDEV_1TO1_PADS_SINK,
+>  			.sink_stream =3D 0,
+> -			.source_pad =3D DW_MIPI_CSI2RX_PAD_SRC,
+> +			.source_pad =3D V4L2_SUBDEV_1TO1_PADS_SOURCE,
 
 [Severity: High]
-Could this leak hardware clocks if an asynchronous suspend is pending?
+Could this cause an out-of-bounds heap access if the Device Tree only defin=
+es
+a single endpoint?
 
-When streams are disabled, pm_runtime_put_autosuspend() is called to
-queue an async suspend. If the driver is unbound before the async work
-executes, imx_cpi_remove() will run.
+When __media_async_register_subdev() dynamically sizes the pads array based
+on ep_count, a Device Tree with only a sink endpoint will result in an array
+of size 1.
 
-Since the driver relies on devm_pm_runtime_enable() for PM cleanup,
-pm_runtime_disable() will flush and cancel the pending async suspend,
-which leaves the device permanently powered on. Should this call
-pm_runtime_put_sync() or explicitly suspend the device if an async put
-was previously used?
+Since the driver unconditionally sets up active routes referring to
+V4L2_SUBDEV_1TO1_PADS_SOURCE (index 1), won't this attempt to access pads[1]
+on a size-1 array?
 
-> +
-> +static int imx_cpi_probe(struct platform_device *pdev)
-> +{
-> +	struct imx_cpi_device *pcpidev;
-> +	struct device *dev =3D &pdev->dev;
-> +	struct v4l2_subdev *sd;
-> +	int ret;
-> +
-> +	pcpidev =3D devm_kzalloc(dev, sizeof(*pcpidev), GFP_KERNEL);
-> +	if (!pcpidev)
-> +		return -ENOMEM;
-> +
-> +	pcpidev->dev =3D dev;
-> +	platform_set_drvdata(pdev, pcpidev);
-> +
-> +	pcpidev->pdata =3D of_device_get_match_data(dev);
+>  			.source_stream =3D 0,
+>  			.flags =3D V4L2_SUBDEV_ROUTE_FL_ACTIVE,
+>  		},
+[ ... ]
+> @@ -764,45 +697,12 @@ static int dw_mipi_csi2rx_register(struct dw_mipi_c=
+si2rx_device *csi2)
+>  	snprintf(sd->name, sizeof(sd->name), "dw-mipi-csi2rx %s",
+>  		 dev_name(csi2->dev));
+> =20
+> -	pads[DW_MIPI_CSI2RX_PAD_SINK].flags =3D MEDIA_PAD_FL_SINK |
+> -					      MEDIA_PAD_FL_MUST_CONNECT;
+> -	pads[DW_MIPI_CSI2RX_PAD_SRC].flags =3D MEDIA_PAD_FL_SOURCE;
+> -	ret =3D media_entity_pads_init(&sd->entity, DW_MIPI_CSI2RX_PAD_MAX, pad=
+s);
+> +	ret =3D media_async_register_subdev(&csi2->sd);
 
-[Severity: Medium]
-Does this missing NULL check lead to a crash when binding via sysfs?
+[Severity: High]
+Does calling media_async_register_subdev() here expose a dangling pointer d=
+ue
+to mixed goto and __free() usage in __media_async_register_subdev()?
 
-If an administrator manually binds the driver to a platform device without
-an Open Firmware node via sysfs, of_device_get_match_data() returns NULL.
-The driver will later unconditionally dereference pcpidev->pdata (such as
-in imx_cpi_sw_reset()), leading to a kernel panic instead of gracefully
-failing.
+In drivers/media/v4l2-core/v4l2-fwnode.c:__media_async_register_subdev(), t=
+he
+pads array is bound to scope-based cleanup and assigned to sd->entity.pads:
 
-> +	pcpidev->mode =3D PI_GATE_CLOCK_MODE;
-> +
-> +	pcpidev->regs =3D devm_platform_ioremap_resource(pdev, 0);
+    struct media_pad *pads __free(kfree) =3D kzalloc_objs(struct media_pad,
+                                                        ep_count);
+    ...
+    sd->entity.pads =3D pads;
+
+If __v4l2_async_register_subdev() fails, the code jumps to out_unregister:
+
+    out_unregister:
+        v4l2_async_nf_unregister(notifier);
+
+Because the function returns, pads is automatically freed, but sd->entity.p=
+ads
+is not set to NULL. Does this leave a dangling pointer in the subdevice?
+
+[Severity: High]
+Could media_async_register_subdev() leak the active state if registration
+fails?
+
+In __media_async_register_subdev(), v4l2_subdev_init_finalize() dynamically
+allocates sd->active_state. If the subsequent call to
+__v4l2_async_register_subdev() fails:
+
+    ret =3D v4l2_subdev_init_finalize(sd);
+    if (ret)
+        goto out_unregister;
+
+    ret =3D __v4l2_async_register_subdev(sd, module);
+    if (ret < 0)
+        goto out_unregister;
+
+The error path jumps to out_unregister and returns without calling
+v4l2_subdev_cleanup(). Does this bypass freeing the active state?
+
+[Severity: Critical]
+Can this call trigger a heap out-of-bounds write if the Device Tree contains
+disabled or disconnected endpoints?
+
+In __media_async_register_subdev(), the pads array is allocated based on
+ep_count, which only counts available connected endpoints (flags=3D0):
+
+    struct media_pad *pads __free(kfree) =3D kzalloc_objs(struct media_pad,
+                                                        ep_count);
+
+However, v4l2_async_nf_parse_fwnode() iterates over all endpoints without
+filtering:
+
+    fwnode_graph_for_each_endpoint_scoped(dev_fwnode(dev), ep) {
+        ...
+        ret =3D v4l2_fwnode_endpoint_parse(ep, &pad->vep);
+
+If there are disconnected endpoints in the Device Tree, the loop will itera=
+te
+more times than ep_count. Will this increment the pad pointer beyond the
+allocated array and overwrite adjacent memory?
+
+[Severity: High]
+Does media_async_register_subdev() leak async connections and fwnode
+references if an error occurs during endpoint parsing?
+
+In v4l2_async_nf_parse_fwnode(), newly allocated async connections are added
+to the notifier. If an error occurs in a subsequent loop iteration:
+
+    if (IS_ERR(asd))
+        return dev_err_probe(dev, PTR_ERR(asd), "failed to add notifier\n");
+
+The function returns directly. Then in __media_async_register_subdev():
+
+    ret =3D v4l2_async_nf_parse_fwnode(dev, pads, notifier);
+    if (ret < 0)
+        return ret;
+
+This bypasses the out_cleanup label and fails to call v4l2_async_nf_cleanup=
+(),
+which seems to leak everything added to the notifier so far.
+
+>  	if (ret)
+> -		goto err_notifier_unregister;
+[ ... ]
+> @@ -993,7 +895,7 @@ static void dw_mipi_csi2rx_remove(struct platform_dev=
+ice *pdev)
+>  {
+>  	struct dw_mipi_csi2rx_device *csi2 =3D platform_get_drvdata(pdev);
+> =20
+> -	dw_mipi_csi2rx_unregister(csi2);
+> +	media_async_subdev_cleanup(&csi2->sd);
+
+[Severity: High]
+Does media_async_subdev_cleanup() unconditionally leak the subdevice notifi=
+er?
+
+The function __media_async_register_subdev() dynamically allocates the
+notifier and assigns it to sd->subdev_notifier. During teardown here,
+media_async_subdev_cleanup() calls v4l2_async_nf_cleanup() to clean the lis=
+ts:
+
+drivers/media/v4l2-core/v4l2-fwnode.c:media_async_subdev_cleanup() {
+    ...
+    v4l2_async_nf_cleanup(sd->subdev_notifier);
+    ...
+}
+
+However, it does not appear to call kfree(sd->subdev_notifier). Will this
+leak the notifier structure every time the module is unbound or removed?
+
+>  	phy_exit(csi2->phy);
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260624-imx8qxp_pc=
-am-v6-0-4b3f45920d2f@nxp.com?part=3D7
+am-v6-0-4b3f45920d2f@nxp.com?part=3D5
