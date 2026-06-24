@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCE92D1916
-	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 15:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985F93B19D1
+	for <imx@lists.linux.dev>; Wed, 24 Jun 2026 15:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782315268; cv=none; b=CTT2PF8mkyLWYYlbXQ/b22Z5YXy1aB/N36DG/UpW7O6UgV0KtdR+dqAsmsZ4koUod9VKircJBfxd0Y9+aIhtAoD6W5w+7sclV1c6cFEBrUy2PUFtbrw+ffZQbGtRnLhqSVpjqPsdkoE/yQ2xQ4g/Q6VruO6O+kGsLv2AZkOZFQw=
+	t=1782315573; cv=none; b=R4nLdlplTwdhSz5tbJpxIufz2dP3zCGUQ/3bIIs9aDZNOZe7S8K8BPFKJi7TMpBPxo1JgHmU7oUk1rHM9thXarUgXY0PcPFYs1iHOuxgsQsMnd0eaqdiF+B/Z+KO9bYiNvM2X0IfrpaUrZ7BZSWMdc7IpaF4vaBCotYF+7cGnUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782315268; c=relaxed/simple;
-	bh=42Ed64+3wm0Z8NK99dtzeXWSZhG0dOiv/Jc+q54mDck=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=Wu7HMXpDJJxSXclu0btr7eYKxzK6cTfGhFTPK70JqKY0n4UTqq4c9AMpBkvIwye4VUQ04ppRMrDA60n3lafIaPHmEpZpZs+fSajYnWLS/miU0xJGe6UQ5LCdgIdAeC0DFF3Fk9pp47AxWvMX5Xk0bnLfnve/xod5PaSJ9SIsYjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oyQNmsCI; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1782315573; c=relaxed/simple;
+	bh=7wlapFSWGO6DNer+Ht2N3RKQcuhgJMsXd2Wu+AmSoUk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=VxIdW2JbflVk0DkBPIL6lKgC0C/Wqper9TsUArjrDdgspRKPRYr2WAL8jVFy25d6geYR53avSB3svLWiR/U2IbfyuHKAPYyvMN3Yz1BKYT3We9+wV5bTybezCrUjrafdlYoG04hJL1nNg5VOwCs810uqoCaq7ZABjIp7wS4bBaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=R2tbTHoH; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oyQNmsCI"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="R2tbTHoH"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DC3281A0913;
-	Wed, 24 Jun 2026 15:34:25 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 1B7574E407D5;
+	Wed, 24 Jun 2026 15:39:30 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AB872601C5;
-	Wed, 24 Jun 2026 15:34:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7EAC5106C8382;
-	Wed, 24 Jun 2026 17:34:15 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C776B601C5;
+	Wed, 24 Jun 2026 15:39:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B65AB106C83D2;
+	Wed, 24 Jun 2026 17:39:20 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782315264; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1782315568; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=hQIzpvMfwF06Dy+Dr6X7XbgYJ2zdNKivwH5fV0BlR9A=;
-	b=oyQNmsCIcNTgs68aF1WzEwUyaqMGrQDkkQYBeAFupUMciys441g2Pmpqb9q63M9TgB3z9E
-	obW679sV3ac8zlACQM9Jmg/vA1v3ow+j/P/Xhfnreqz+gfsGN0Qft8YbEltzMW38iraK5G
-	9iEx3IU3pw62tpfcDlC29EJONLP21quC1Rlrlhpp4LfK2hpOrdisPqhb0sZ1oOElcLMo3u
-	oTaeeKfmEJ1VM5c5SAWIaeFvOjdocre7HQHMPxIxunAsVG/t7aa/fRy61Zs8UWONtYA4mP
-	QamLzEJxL0b9mjX7CEKx7PilFcaI1roV0COlX17AIapF6umjrYF86R9VRHohCg==
+	bh=7wlapFSWGO6DNer+Ht2N3RKQcuhgJMsXd2Wu+AmSoUk=;
+	b=R2tbTHoHg6xp8JHCk54cyMomtr3bBIbZWDSp+cCHNJ9OtWW9AnRTIPAEs/OcMPdUKK5JsB
+	k1kNCA8XHXGluZErZz0oiODLWi6Rjj6JmeMb5WlzQLrDI33rqMd7/NTArt1Hx8h+/8SDyb
+	4wcxhbwXNOGXUr2zV6+Pid3E9PaXrfYhfy5rSCzSwOfqGX1klzu5jp9oZy6sr19dEeTcCt
+	q9vMmT/B2ERe48YTHNtQEThtcTQaOnh0NHReQpRz7CDPJ9TH8CQiyLEdBvtOPQ6KBgoS/d
+	2EpjsuTaGx+EfvHQQHy/zY8pEP3SfIHLt38I9JcBfnfOydt3GUe0TJtqZwm3Fw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,8 +41,10 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Jun 2026 17:34:14 +0200
-Message-Id: <DJHE108R7TU6.35ECAUQ8ZX041@bootlin.com>
+Date: Wed, 24 Jun 2026 17:39:19 +0200
+Message-Id: <DJHE4WR3TVF2.21M3201WSTC9O@bootlin.com>
+Subject: Re: [PATCH 06/37] drm/display: bridge-connector: use a
+ drm_bridge_connector internally, not a drm_connector
 Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
  Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
  "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
@@ -62,80 +64,66 @@ Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
 To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
  <luca.ceresoli@bootlin.com>
 From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 15/37] drm/display: bridge-connector: allocate the
- connector dynamically
 X-Mailer: aerc 0.21.0
 References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-15-45e2bdb3dfb4@bootlin.com>
- <20260608-rustling-infrared-turkey-e09af8@houat>
- <DJ72WOUW5FA2.G1MPCAHJQ13F@bootlin.com>
- <20260624-judicious-enigmatic-hippo-b13ffe@houat>
-In-Reply-To: <20260624-judicious-enigmatic-hippo-b13ffe@houat>
+ <20260519-drm-bridge-hotplug-v1-6-45e2bdb3dfb4@bootlin.com>
+ <20260608-little-lyrebird-of-competition-c25f7d@houat>
+ <DJ736L2DR8H8.35296DRNZ1OW@bootlin.com>
+ <20260624-chicken-of-infinite-enthusiasm-8b0e3f@houat>
+In-Reply-To: <20260624-chicken-of-infinite-enthusiasm-8b0e3f@houat>
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Maxime,
-
-thanks for the feedback.
-
-On Wed Jun 24, 2026 at 1:48 PM CEST, Maxime Ripard wrote:
-> On Fri, Jun 12, 2026 at 02:44:43PM +0200, Luca Ceresoli wrote:
->> On Mon Jun 8, 2026 at 1:46 PM CEST, Maxime Ripard wrote:
->> > On Tue, May 19, 2026 at 12:37:32PM +0200, Luca Ceresoli wrote:
->> >> Currently the drm_bridge_connector has an embedded drm_connector, so =
-their
->> >> allocation lifetimes are tied to each other. This is insufficient to
->> >> support DRM bridge hotplugging, which requires the connector to be ad=
-ded
->> >> and removed dynamically at runtime multiple times based on hotplug/un=
-plug
->> >> events while the drm_bridge_connector is persistent.
+On Wed Jun 24, 2026 at 1:47 PM CEST, Maxime Ripard wrote:
+> On Fri, Jun 12, 2026 at 02:57:39PM +0200, Luca Ceresoli wrote:
+>> On Mon Jun 8, 2026 at 1:41 PM CEST, Maxime Ripard wrote:
+>> > On Tue, May 19, 2026 at 12:37:23PM +0200, Luca Ceresoli wrote:
+>> >> Currently drm_bridge_connector_init() always returns the added connec=
+tor or
+>> >> errors out. When adding bridge hotplug the bridge-connector can be
+>> >> successfully initialized without creating a connector, which can be a=
+dded
+>> >> later when the pipeline will be complete.
 >> >>
->> >> Moreover the drm_connector is exposed to user space and thus an ongoi=
-ng
->> >> operation (e.g. an ioctl) might last for an arbitrarily long time eve=
-n
->> >> after the hardware gets removed. This means a new connector might hav=
-e to
->> >> be added when the previous one is still referenced by user space.
+>> >> For this the internal function drm_bridge_connector_add_connector() m=
+ust be
+>> >> able to return a valid drm_bridge_connector even without any drm_conn=
+ector.
 >> >>
->> >> In preparation to handle hotplug, allocate the drm-connector dynamica=
-lly,
->> >> to allow:
+>> >> In preparation to support bridge hotplug, change its return value to =
+be the
+>> >> same drm_bridge_connector pointer it gets as input, or a PTR_ERR.
 >> >>
->> >>  * creating and destroying a connector multiple times during a single
->> >>    drm_bridge_connector lifetime
->> >>  * creating a new connector even though the previous one is still in =
-use
->> >>    and thus still refcounted and not yet freed
+>> >> No functional changes, just changing an internal API.
 >> >>
->> >> This commit does not introduce the actions in the two bullets (it wil=
-l
->> >> happen in a later commit), it only moves to dynamic APIs for connecto=
-r
->> >> allocation and init.
->> >>
->> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>> >> Note the return value could now become an int (0 or negative error) b=
+ecause
+>> >> returning the same value received as input does not carry any added
+>> >> value. However this would be change a lot of lines, so leave such cha=
+nge as
+>> >> a future cleanup.
 >> >
->> > I think this patch should be split in half, with the switch to using
->> > destroy first, and then the actual move to the dynamically allocated
->> > connector API.
+>> > You just created that function and changed "a lot of lines" already, s=
+o
+>> > I'm not sure that argument holds.
 >>
->> Is it doable? drm_connector_dynamic_init() mandates a .destroy callback,
->> drm_connector_init() forbids it.
+>> Do you refer to the previous patch?
+>>
+>> My comment is more about the following patches. It means I separated
+>> changes moving code to a subfunction from changes to the the return valu=
+e
+>> in separate patches, so that each patch is trivial to review for
+>> correctness.
+>>
+>> Makes sense?
 >
-> drmm_connector_init forbids it. drm_connector_init mandates it.
+> What confused me is that I took it as "I'm not going to do that work
+> (yet?)". If you do it later on, I'd drop the "future cleanup" part, or
+> rephrase it.
 
-Something bogus in my reply, sorry. :)
+Ah, I see the issue. I really meant "this change [returning int] is done in
+a following commit".
 
-So you mean splitting in:
-
- * first patch: move from drmm_connector[_hdmi]_init() to
-   drm_connector[_hdmi]_init() and add a .destroy
- * second patch: move from drm_connector[_hdmi]_init() to
-   drm_connector[_hdmi]_dynamic_init() +
-   drm_connector_dynamic_register/unregister()
-
-?
+I guess I'll just drop the whole paragraph.
 
 Luca
 
