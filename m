@@ -1,139 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B313E832B;
-	Thu, 25 Jun 2026 16:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2402571C7
+	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 16:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782403591; cv=none; b=JMNtGCeUtSAcZe+iLp2OqmTq/TFK2ZXRxWCXh2dmFZmPFPPskzgnySDJ6gXiL6rn3VC7LkMpZdD9i08Vs+OQGYpoBI327C1vEGRAekbM9rqEcjPK2vh+Ef7GAeo3G9lIai3Tlm845u1fSMwDZu2Jg14pCndIvHOQh6sHRQuz1A4=
+	t=1782404154; cv=none; b=E/c29FRzGSRPZ1HsPm3O+oBBcdPLoaUr7pwM9Jl/DkwLweGKxg9ZydNcTfP8E9s14b+rcVFVhjppBE0Xd+52ijSGk/FkBqFwLX0oNaVYn5PLxOqiCaBsFap2D6spQiET1q+hzp/S7icJV1ox8Do9MQmNgUiWiuTzcEGWzmq+Xi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782403591; c=relaxed/simple;
-	bh=iMSmx0WUJLs3pRzTfhWKQadJwGQA7jr3+9lyQKvp5v0=;
+	s=arc-20240116; t=1782404154; c=relaxed/simple;
+	bh=gixjXqYhWRNNuuGw4d0wGBS6iavyJrgcTUfg8h6JzBE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MvKl5LWfeQ23XLRCG06TXPDzhJ8HaS6RQpI4davW97T6XdiGiwO6n++alPbbYtN8DvRrHed3LpXgIl6UU3xJT/Pf+hlOriFNhg5PAb2QxtocgeBJ/26fMUupXHrWSuchJT2R2cwlBdAEwKT7HOMYLIOvQeIgLdIs2BqUDNvgh18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0QoB+BH; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=GzyRNxF3JixDl3rMZDkcRRAafdH3mLLLxa8hsnhZDYpS8Nse6Yj/jRVYch3zqg6HEjQf/v88YbHrC49gTBOZeWM7hymGc59+UcZH5aJmqvUTisGb6kZMxl7ET9zy24IrKTFgCE1dUvBQ6XLSN5NJ8NcvzhuvKxkmXlJmq0vzqJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGNd05Fk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0QoB+BH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F911F000E9;
-	Thu, 25 Jun 2026 16:06:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGNd05Fk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DBC1F000E9;
+	Thu, 25 Jun 2026 16:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782403587;
-	bh=r7eJ4ZN15hryT71sF55Lx6shJ6Qymm8GYvhbh4i5h5Y=;
+	s=k20260515; t=1782404152;
+	bh=CdzfLFRneXI3RaP43XP7LzIj+GZz2cVXHT6rJOWP1eM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=a0QoB+BHX8hagcftbuiCcknl05vt68PFNgToE72lFmmBM/DlbkhaVAx/ikzb6KUtx
-	 7MXzxxP37rgfVJ2nXItVMcaI9zgz86HKyrUWI3d5pKA5uq1KCRFL35frlLBAOXdXDs
-	 Fxur2L2yQdpi0QkTTHCu5dNX+0MgQ/in+9+5gBJhAE0IZR81EiXjk05K3N6Mfq0svy
-	 epxubgjqVfS1WqKL4Gi6N7PRScN23+lOj7/3fr2MU43ph6OdCuZFdICoj3tWQcksVV
-	 Y5cvQE+s7PGnRg8JL/yg7+icYOB5s4IIG/y77KR8YCh98DK4DPj5U+gf7Huw4BFfZc
-	 14Kh35ftiNUxA==
+	b=SGNd05FkME86kpKu/uF9Ma2fQgjiWGl6Xeje05Tc9LsXRaMjKuac11AoHw96vjh9w
+	 jGcxklQqB5rfmJHSIpMpFb2BL4CNUzCcQJKoSBCNgdVW/ibttrOVNWEI+Y2j1fwtl+
+	 0b4X8cYYJ23cTu36JZjCHD1+EbSUHsgR2g5EYui3hrvnGyM2+N17zuOSd2c7wHS0yG
+	 1Wdi0mqABo8t7WbURZHm+xHIrMQRhWAvJZh/JnD/6RLEcHe+tgeXIqDphLcfWcNh2d
+	 sgKc2/0kjMc2eQUOlmLznK5rnFLTUPe98cXHErWM6E0w1UtnmBESqS01jpl9Uc7OZi
+	 Y2oP8W4qrq1aQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v14 3/5] rpmsg: core: match rpmsg device IDs by prefix
+Subject: Re: [PATCH v2] i2c: imx: Fix slave registration error path and
+ missing timer cleanup
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shenwei Wang" <shenwei.wang@oss.nxp.com>
-Cc: imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260625155432.815185-4-shenwei.wang@oss.nxp.com>
-References: <20260625155432.815185-1-shenwei.wang@oss.nxp.com>
- <20260625155432.815185-4-shenwei.wang@oss.nxp.com>
+To: Liem <liem16213@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260625160219.55116-1-liem16213@gmail.com>
+References: <20260625071130.93544-1-liem16213@gmail.com>
+ <20260625160219.55116-1-liem16213@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 25 Jun 2026 16:06:26 +0000
-Message-Id: <20260625160627.25F911F000E9@smtp.kernel.org>
+Date: Thu, 25 Jun 2026 16:15:51 +0000
+Message-Id: <20260625161552.41DBC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] Forcing global prefix matching on all rpmsg drivers without a 'lon=
-gest-prefix match' rule can cause unintended device binding and collisions.
-- [Medium] Module auto-loading via udev is broken for dynamically suffixed =
-devices because module alias generation remains exact and lacks a trailing =
-wildcard.
+
+New issues:
+- [High] Lockless modification of `i2c_imx->slave` in `i2c_imx_reg_slave()`=
+ introduces a data race and potential NULL pointer dereference.
+
+Pre-existing issues:
+- [High] Incomplete timer cancellation race in `i2c_imx_unreg_slave()` allo=
+ws the ISR to restart the timer, leading to a kernel panic.
+- [High] The shared interrupt handler `i2c_imx_isr()` accesses hardware reg=
+isters without checking if the device is active, violating PM guidelines an=
+d causing bus faults.
+- [High] Missing IRQ synchronization in `i2c_imx_runtime_suspend()` allows =
+the hardware to be powered down while the shared interrupt handler is execu=
+ting.
 --
 
-commit 7cf465d01393f57a212484ddaf8a931c40ec4179
-Author: Shenwei Wang <shenwei.wang@nxp.com>
+commit 0e234f45db94de278630074d43eb9ffb0e39884e
+Author: Liem <liem16213@gmail.com>
 
-rpmsg: core: match rpmsg device IDs by prefix
+i2c: imx: Fix slave registration error path and missing timer cleanup
 
-This commit updates the rpmsg device matching logic to compare only the
-length of the id->name string. This allows id_table entries to act as
-prefixes, enabling drivers to bind to dynamically suffixed devices.
+This commit fixes a potential -EBUSY deadlock when slave registration fails
+by properly clearing the slave pointer. It also cancels the slave hrtimer
+during unregistration to prevent a system hang caused by the timer firing
+after the slave pointer is cleared.
 
-> diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-> index e7f7831d37f89..f95bfc9965d4c 100644
-> --- a/drivers/rpmsg/rpmsg_core.c
-> +++ b/drivers/rpmsg/rpmsg_core.c
-> @@ -414,7 +414,9 @@ ATTRIBUTE_GROUPS(rpmsg_dev);
->  static inline int rpmsg_id_match(const struct rpmsg_device *rpdev,
->  				  const struct rpmsg_device_id *id)
->  {
-> -	return strncmp(id->name, rpdev->id.name, RPMSG_NAME_SIZE) =3D=3D 0;
-> +	size_t len =3D strnlen(id->name, RPMSG_NAME_SIZE);
-> +
-> +	return strncmp(id->name, rpdev->id.name, len) =3D=3D 0;
->  }
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index cf5bacf3a4884..17b54d1648441 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -871,6 +871,7 @@ static int i2c_imx_reg_slave(struct i2c_client *clien=
+t)
+>  	/* Resume */
+>  	ret =3D pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
+>  	if (ret < 0) {
+> +		i2c_imx->slave =3D NULL;
 
 [Severity: High]
-Will this change cause unintended driver binding for existing drivers that
-expect an exact match?
+Can this assignment race with the interrupt handler?
 
-Because this modifies the global match behavior for all rpmsg drivers witho=
-ut
-an opt-in flag or longest-prefix match logic, a shorter existing prefix cou=
-ld
-hijack a new device.
+Because the driver uses a shared IRQ, i2c_imx_isr() could execute
+concurrently if another device triggers the interrupt line.
 
-For example, if a remote processor creates a channel named rpmsg-tty-contro=
-l,
-would it be incorrectly matched by an existing driver registered as rpmsg-t=
-ty?
+If the ISR acquires slave_lock and evaluates i2c_imx->slave as valid, and
+this error path locklessly sets it to NULL, wouldn't subsequent accesses
+in the ISR dereference a NULL pointer?
 
-Looking at rpmsg_dev_match(), the iteration returns on the first successful
-match:
+>  		dev_err(&i2c_imx->adapter.dev, "failed to resume i2c controller");
+>  		return ret;
+>  	}
 
-drivers/rpmsg/rpmsg_core.c:rpmsg_dev_match() {
-        ...
-        for (i =3D 0; ids[i].name[0]; i++)
-                if (rpmsg_id_match(rpdev, &ids[i])) {
-                        rpdev->id.driver_data =3D ids[i].driver_data;
-                        return 1;
-                }
-        ...
-}
+[ ... ]
 
-Could this result in a collision if multiple IDs share the same prefix?
+> @@ -892,7 +893,7 @@ static int i2c_imx_unreg_slave(struct i2c_client *cli=
+ent)
+>  	imx_i2c_write_reg(0, i2c_imx, IMX_I2C_IADR);
+> =20
+>  	i2c_imx_reset_regs(i2c_imx);
+> -
+> +	hrtimer_cancel(&i2c_imx->slave_timer);
+>  	i2c_imx->slave =3D NULL;
 
+[Severity: High]
+This is a pre-existing issue, but does canceling the timer here completely
+prevent it from running?
 
-[Severity: Medium]
-Does this change break module auto-loading via udev for dynamically suffixed
-devices?
+Since i2c_imx_unreg_slave() doesn't synchronize with the shared interrupt
+handler, i2c_imx_isr() could be actively executing on another CPU. If the
+ISR finishes after hrtimer_cancel() is called, it will reach
+i2c_imx_slave_handle() and unconditionally call
+hrtimer_restart(&i2c_imx->slave_timer).
 
-When a dynamically suffixed device is registered, rpmsg_uevent() emits the
-exact name:
+When the re-armed timer expires, i2c_imx_slave_timeout() will attempt to
+read hardware registers that have already been powered down by
+pm_runtime_put_sync(), which causes a bus fault.
 
-drivers/rpmsg/rpmsg_core.c:rpmsg_uevent() {
-        ...
-        return add_uevent_var(env, "MODALIAS=3D" RPMSG_DEVICE_MODALIAS_FMT,
-                                        rpdev->id.name);
-}
+[Severity: High]
+This is also a pre-existing issue, but does the shared interrupt handler
+safely access hardware registers?
 
-However, the module alias generated by file2alias.c does not append a
-wildcard for prefix matching:
+i2c_imx_isr() unconditionally reads IMX_I2C_I2SR and IMX_I2C_I2CR. Because
+it handles a shared interrupt line, it could be triggered by another device
+while the I2C controller is runtime-suspended and its clock is disabled.
+Should this use pm_runtime_get_if_active() before accessing the registers
+to prevent a synchronous external abort?
 
-scripts/mod/file2alias.c:do_rpmsg_entry() {
-        ...
-        module_alias_printf(mod, false, RPMSG_DEVICE_MODALIAS_FMT, *name);
-}
+[Severity: High]
+This is another pre-existing issue, but does the runtime suspend callback
+safely disable the hardware?
 
-Since module_alias_printf() is called with append_wildcard set to false, the
-generated alias will be an exact match (e.g., rpmsg:rpmsg-io-) which won't
-match the uevent string (e.g., MODALIAS=3Drpmsg:rpmsg-io-1).=20
-
-Will this prevent the module from loading automatically?
+i2c_imx_runtime_suspend() disables the hardware clock via clk_disable()
+without calling synchronize_irq(). If i2c_imx_isr() is mid-execution on
+another CPU when the clock is turned off, wouldn't subsequent register
+accesses within the handler fault?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260625155432.8151=
-85-1-shenwei.wang@oss.nxp.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260625160219.5511=
+6-1-liem16213@gmail.com?part=3D1
