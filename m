@@ -1,159 +1,154 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011058.outbound.protection.outlook.com [52.101.70.58])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535E32D876A
-	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 05:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782366173; cv=fail; b=bhh+gV3G8FakERQ6zYlp/0GRjaD4aJRB3XV6isLcaS5IS5UcUbkAZChFNpmJ7i2w+6W6iwJssJ05CsA97hXgGZrY4AXUmNot8sy+Sw1BxI/KSIFLY75OHjt/IOdIsTBijD3JrfrF9KAZGkjZKZ4WbW6tJQURGRywq89LhW9ZLoA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782366173; c=relaxed/simple;
-	bh=CVXiJuUCV6seqMNX5evHbTfoM+ukUwF90TLa8sFzu4E=;
-	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Onn/MMtcvytrBTTmLSP+uGKSvi4pfbjnTQTIdRx3wi7U5xGzbzSkyz+kk1YPIUPu8Ahv6I8aFpz+sKL2nNyyYo+L26ZRb/y9A9zakUNA4sF6iZO8on51ArbSWRK6Rnc23b/qmV3mGP39tcSjC7cPkQXPKCJmLW98+gdFV4ANvEA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=HOAq73us; arc=fail smtp.client-ip=52.101.70.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F671F63D9;
+	Thu, 25 Jun 2026 06:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782369083; cv=none; b=mnmskOjizAk3ficUSFmvXgVhfbO3huNXny3Y16q4QRLOVxprBM+QzRPKTqrnd7UClOvW7EDxv8KTq6XthGH8Z89Xj1PV8HEiIub1SCE+RBcRbUfy/vYewX7COKtWiiAt8I9qNY/75MVeDaj+tsgsDMfy3gngJjWayhkXogLfvAY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782369083; c=relaxed/simple;
+	bh=fwGnL97xmgeZIlcEfXqmDIbjqKBgP8CglQlDHEXM+X8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EW2C/O2KBlzxe48a0fFUgZSUU0dnoR7xCWVEIRa9NfdKLddsTquBXVca4QpWwbSCPeBSfZiIRqjHkBPEQqQ8Joe/VW48ewkbIQLgbFR+/ZNqmnjZuYA8V4sk5A1BEGn2W6/VIltNP1x28F4HnnEqliPbtkQPStkTwjO4xyrxVPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jCBw0qeI; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="HOAq73us"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eWHXBtUOcVneFg1Qypts6EigWygOIhDN0kW+bY6BBjPfwz03hdSQ2KV37MtOzsHAED2sZyszwJSttCpFtXmTgbQ2kAecVoemtE+vRK/luW7Wbs21cFcalaSCqLN3zAOXEkOKGc5UmBNgNpFX7mz0lSHE6YxH+HqpFRg9iDE0KkrrIIIwiq68Cl2iD8OCn7tZvPwH9Vm44FD7NJVJXW55DgC0qnflEdkCq64aqEoHRsJa570lbk0A4kc2A+vhzYymluh9rW6xQxMYxYTBpxgavFivMarSrmVvrfoK2mpbbSoFVuPAKe6W+xwR1pklLh2dePZdyXeZMh0KwMmhSCgQOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w77rf8sJ0JUCzdThI9boJMxIZVV9fCYLzXBrSmIMf3A=;
- b=CM8j+L1X9fbBPpxNH7huVUUnqpNQ81Hcdg16vBMPZ8Vc2uJk4VdRMC+ltJzZD7yqwRhsuTD045BZDvCBPSz3llXiB61DDN0M1GqMoH9QVAliF7uo1G/MFASbSQaq/9Ve/4pT0Qn/Qj2BZpIylVPMjAPPp2Z1G40klvdZY8x0/GIRJSDx7kh2djJMD7dasJahyWdP87BhrDFrpqkOOXDBg8Q2a9+/0oTi9d9PpvwxvbJaRGUJUezyVRgNgH8ie/N6j7nyyOua9T/DsNx4d6tWiNo05FG84v4IsgqYugSW4Po5AWdz9btUkvmqgoEL2Hh01CwjBpXFQwrJ7PL/1VY5Ew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w77rf8sJ0JUCzdThI9boJMxIZVV9fCYLzXBrSmIMf3A=;
- b=HOAq73usPaRNrSMFN3Xfr+p+zIgyepPFped5bLYPSIW7sg7Jt4CP3YDM0EJ7+CjmGeoAONv8aKFaIzCvMpAsr2P+GB6w6qoHYcFUTOwTQh1h0nxd26uYntlWN2AbQybLmQr8siArwJEEy+9flwSH+AnFI83VwW7wbtdRQChusmVzV/IMYhcEro5VsXHzbkvP3FfOoSJAUfA/bfrxUlk443ttIIbAkHp9d50vK9MlUxsDfbS+09cS51YFs+Cwzxc9BgQbk1JHuSHdPPIY2M06tDuAL7Dl4Dd3egx12zPGV5ZIN4yLGnZvV0tzZafMK2nn+pkBqbFgAxjqsxPun07yZw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB9351.eurprd04.prod.outlook.com (2603:10a6:102:2b6::17)
- by AM8PR04MB7858.eurprd04.prod.outlook.com (2603:10a6:20b:237::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Thu, 25 Jun
- 2026 05:42:48 +0000
-Received: from PAXPR04MB9351.eurprd04.prod.outlook.com
- ([fe80::1058:a430:52c1:5aa]) by PAXPR04MB9351.eurprd04.prod.outlook.com
- ([fe80::1058:a430:52c1:5aa%6]) with mapi id 15.21.0159.013; Thu, 25 Jun 2026
- 05:42:48 +0000
-From: shengjiu.wang@oss.nxp.com
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx8mp-ab2: Enable MU2 for DSP communication
-Date: Thu, 25 Jun 2026 13:47:09 +0800
-Message-Id: <20260625054709.301209-1-shengjiu.wang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA0PR01CA0005.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:80::22) To PAXPR04MB9351.eurprd04.prod.outlook.com
- (2603:10a6:102:2b6::17)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jCBw0qeI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782369082; x=1813905082;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fwGnL97xmgeZIlcEfXqmDIbjqKBgP8CglQlDHEXM+X8=;
+  b=jCBw0qeIx4c4gKAy0zAG5bICAQ+IxZvowUtKXtJuwQDT48D9zsiL4fPr
+   CDXBeueOyIJUTulDU70w1IYU5uYBNdzmVAYiv/H58ucNwLa/UZ1k1QlXY
+   ouBkY/yUmc58XMmfy6Fdpb9Q0949sJq7tudbVNpWk1T2xsUs+vmFZrETq
+   g+cXoeYnDV8r/7knwATN6gNasvieea5QR6omJKNoHpbaMO9E6rWqIDcyh
+   fQNvDQotgfMzq9uVUQn4NqwElfE5c5AaZg4V8vvGPq2sy2l045Ue4DXFi
+   a4uRKsmFTMdoHiIhMDNQQpypg8EU9VpFTEE2TTySEzh0w2f0+O+Iu3NLU
+   g==;
+X-CSE-ConnectionGUID: y/QbhQnqSyWjkxyWUihOgA==
+X-CSE-MsgGUID: 1/earP3ZTJ2S2oq8aYcgTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="87046034"
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="87046034"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 23:31:21 -0700
+X-CSE-ConnectionGUID: slld4H3rR16nX4qt4wrK0A==
+X-CSE-MsgGUID: LScKLZpATE+psYxu0HB+Cg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="252343530"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.245.93])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 23:31:16 -0700
+Date: Thu, 25 Jun 2026 09:31:14 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Dafna Hirschfeld <dafna@fastmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	driver-core@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, Guoniu Zhou <guoniu.zhou@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Subject: Re: [PATCH v2 0/4] media: add and use
+ fwnode_graph_for_each_endpoint_scoped()
+Message-ID: <ajzLMiKrlXf2hFRd@ashevche-desk.local>
+References: <20260624-fw_scoped-v2-0-0a8db472af4a@nxp.com>
+ <20260624191935.GG851255@killaraus.ideasonboard.com>
+ <ajwxcn2LXS8InAjZ@SMW015318>
+ <20260624200237.GJ851255@killaraus.ideasonboard.com>
+ <ajxCOE3avXXLlrfT@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9351:EE_|AM8PR04MB7858:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a46f38b-7eb4-406b-fd85-08ded27c96d1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|376014|23010399003|7416014|1800799024|18002099003|11063799006|56012099006|921020;
-X-Microsoft-Antispam-Message-Info:
-	HeoYExsL0pE3hvYh82f3XOo4fgHklFJVpcR456Hb/bX8VT1wNP+jqYb8dXlmyu8AejzKBos7zqDwTB86NJNVdmZvFd7IqNWnTGqkzyvHEKY0TFbzQrtRnAGSD9Es68I+MPsOs5aPddX9pwYKxQMPlLz9h8HQdW/s+TIeiWodhFRIYhPfrnwisrqRW7AC5tExeetscxGC+hh+WMhyhZxk80M5Bu58mEdC4SrK17sYzWdXwxC1nB8ujaFeUn1LcqImFq5rK3nXlm0DOj2kaRnHNfVmvIEmBx/ykqNvbZuJF4anuQVmNtq2LE7QRb8DX2tdm76mbNmfXLQ6UBuNw1wg74R/MJaNek6eUsVfahpKW1yAPN6Y3H5Sp3A9Fttfj2zN4ZZfIi/DT9LhRUqPPKgToMAFqFLsJi27KAn9DgUYYNLLEcAQjp2jjk5gUEIDTigRhBG/FMuXU1LtugjvdCjLKQ8DXn0W+RcYA/uMcIQBvL9O/m01Oz+44fK2ndsV4ZOLsgXSPrXZEKa9zA7IpUQZYwsmfbe2s3SpoSfw60cNh9iIscev8uCtfzUL1GERzUEXZLlvx6NWFTXTISjcwk2gf3leBMupeCtocdEixFEJpRpnKZPB0iuQXsedKgmUrenPwGACmSIPERsYEHVWR48i4Rc2xH5n/tSEJp9GddAzJ+udrfM+iV426t9RTgDkbm1xaPKRIR3JPweuCmXdferoBA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9351.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(23010399003)(7416014)(1800799024)(18002099003)(11063799006)(56012099006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aXrmhuoJpY0qh4NpYbpkPzrYclpKDZY2kqdm9iH7yneIYoc6e6ulz4oSEEeB?=
- =?us-ascii?Q?JHmuznHNrCiVW4RzvkaMB3v3Q4Ble/HV9ElxPhh4BTAUNRUeyvmhlEJXEGOB?=
- =?us-ascii?Q?CDjhVklJB+Qr28somQYstjb3tRT3bevLmlW8tsjSpvnnEqnLLCbCA0HvMNzc?=
- =?us-ascii?Q?wp0uK7X5vbgnLe2/WlRwbYXMtTEADRFcBpVb8XN5e4tAwJW7/VfTjwrwzEey?=
- =?us-ascii?Q?aM9rGdx5CsnDod2rQKZkaGphvrS4JYrUWtR2HhapnkpKruFYkceK8LacEppZ?=
- =?us-ascii?Q?NFRvXmoaUQBWjbPQZ9ohFsOW3L+i6f9sFznF7wMyp/GcXNYUPl8rkFJPB7TL?=
- =?us-ascii?Q?O4qeqfDb02GahxKn+6gL2HrxNG5l54z+ft41KdV6du/7jZE8phraMSzHrBJN?=
- =?us-ascii?Q?TAsKOMqmMGyrUQQOtPJ++DIr4snIWlknxovDqhx+4eoFOzEC2+AijUep2Xs/?=
- =?us-ascii?Q?y6SHK54TvGlvPGDmmeAfXzi7KiNbcQGwtMhqZSfhZrVlVzUFUqpWBzM8hhwj?=
- =?us-ascii?Q?/At+LcjdW6wryEwSsocBVK4w/hzFqL0PPaoQgJQTw6f5byhRPlr7e9UYDEOe?=
- =?us-ascii?Q?GOFxlHOhaZOp1UKJKZpEzIqpibjWyO3gRjFr1tvLUHgC0Wc8+j/1UJQYEtTk?=
- =?us-ascii?Q?+SMHeforLKXNKlCQBaOSbfFWhVIqPFo77AxEzvri1Nk8deYlO1utD5LPaZAB?=
- =?us-ascii?Q?JAiF3RzRVqW/QzTmyHKzCA4rGkMxBMUM4gLwUebwFNxFSx/HqsJ0IsO4vUqA?=
- =?us-ascii?Q?K0xwEfz4hzKe8Lhg8vZxqV6T1P1xJyV71gIoljIjSv3l1UKbP5fCx4WwaTP7?=
- =?us-ascii?Q?UQ9X2xdpVgIAhmLdUednyYMZpyWdUZqkrXunfogv7H/Gmf2ZZfOM0NOtCpmP?=
- =?us-ascii?Q?Pzz3MX+q7xbUfsemocs9NRydSxs5WtX1Ai6Inz14lOKLNYjw+Fneo2SBXX/O?=
- =?us-ascii?Q?NxGk47vPKPOHDLplZMRiGZxPftyGFSh0flxxuw7Mp6f0exbwtr+C/p+/VT9A?=
- =?us-ascii?Q?hpEFq3zBj/2LgGqDa4ab9Ezm73GdzBvKh0efOYmjWajoMdVu510VLGtvjoYF?=
- =?us-ascii?Q?yi/vVoEjleYnQjyF7aU/iP+XnBKWB4oAfxjht+qB+qHTxEHKvdFBXY/Mdqbt?=
- =?us-ascii?Q?NNVRGMtmew2tGtMY8Z7XobZee0xPmcPa2jeEbGyCkJFl45HUMlE9HIVZzFr7?=
- =?us-ascii?Q?mUKRciaNbeukawLeAH1BvHHP2LPTolgvqAYDUQjUhbfs1EsR8UYr7oRuv1ks?=
- =?us-ascii?Q?tx4PsJbBYh8rM9wQneYMsWxhmU8jVwdQytM/zYEFbw7JE1JSLkVNtfLG9TZx?=
- =?us-ascii?Q?ywYvpQEGOwBWBa6F4h/2uWrhTgsVsL+fQlEMGLmsIjYHvlJnAfWFpOLxdyWV?=
- =?us-ascii?Q?lMe8DAaeoxG2Dj9HlPJSRHnYBc3Z5z2C1bJqRfNGhn2cwf0UTV/uRh9K5mJk?=
- =?us-ascii?Q?CLuuY2QL7dJbQJgtd9e3TVTUQ5owcDxUgvqXiOkO0BtM+vkz6fF8YNN6fz/y?=
- =?us-ascii?Q?MnBTVZkOQrZY8IjmHM56fqlg4DwxLSwTUXZcPnxQ7rrAC2LzKAd17O20/ty6?=
- =?us-ascii?Q?7Lzv4MmKm0JmNaDI3OknRqVDuSDRDn7PigaD8qD9L32dG0HXxdw1lbNQY/oK?=
- =?us-ascii?Q?yLMt7UlQ/yab0/fyrPl+Z5xyN7YSQlrQ0iexllaJYJThJqcC98Wv1Iu0xpQQ?=
- =?us-ascii?Q?psXkI0VOuWVKqZwwbZan9gVEQJCQJS1f0oaOjyN/43wL1QTwBRv1K5AYqhhm?=
- =?us-ascii?Q?70CMMNUOQJMtxCIucsj0yR7UPcFlmjpP4UJ5tdiOo+M1yTdFq2zi?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a46f38b-7eb4-406b-fd85-08ded27c96d1
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9351.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 05:42:48.4956
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O6Nj3OoRCiyla2WuRCZdHd6wgmj7xgRuwI3qOyD/zB7wi1/HUVoPHM/yl3dpjo8H9Rw8OJp2GmCfzwzyD5XofuWOVr5WMoGSs2LWdgZ8L0tl0uFqrYRODCa9VqVqANS1
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7858
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajxCOE3avXXLlrfT@SMW015318>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+On Wed, Jun 24, 2026 at 03:46:48PM -0500, Frank Li wrote:
+> On Wed, Jun 24, 2026 at 11:02:37PM +0300, Laurent Pinchart wrote:
+> > On Wed, Jun 24, 2026 at 02:35:14PM -0500, Frank Li wrote:
+> > > On Wed, Jun 24, 2026 at 10:19:35PM +0300, Laurent Pinchart wrote:
+> > > > On Wed, Jun 24, 2026 at 01:00:08PM -0400, Frank.Li@oss.nxp.com wrote:
+> > > > > Add new helper macro fwnode_graph_for_each_endpoint_scoped() and use it
+> > > > > simplify media code.
+> > > > >
+> > > > > Typical example should qualcomm's driver (camss.c), the v4l2_mc.c and
+> > > > > rkisp1-dev.c only silience improvement.
+> > > > >
+> > > > > Anyways, *_for_each_*_scoped() already use widely and make code clean.
+> > > > >
+> > > > > Build test only.
+> > > > >
+> > > > > Sakari Ailus:
+> > > > > 	when I try to improve the patch
+> > > > > "Add common helper library for 1-to-1 subdev registration", I found need
+> > > > > camss.c pattern, so I create this small improvement firstly.
+> > > >
+> > > > Those are nice cleanups, thank you.
+> > > >
+> > > > After applying this series, the only left users of the
+> > > > fwnode_graph_for_each_endpoint() macro are in drivers/base/property.c.
+> > >
+> > > I already checked previously, two place use it.
+> > >
+> > > fwnode_graph_get_endpoint_count(), it will go though all endpoints, last
+> > > ep is NULL, which totally equial to scoped() version.
+> > >
+> > > another one fwnode_graph_get_endpoint_by_id(), which return ep, expect
+> > > caller to call put().
+> > >
+> > > if use scoped() version, need use no_free_ptr() at return, which make think
+> > > a little bit complex.
+> >
+> > It would introduce a tiny bit of extra complexity there, but the
+> > advantage (in my opinion) is that we'll be able to remove the less safe
+> > fwnode_graph_for_each_endpoint() macro.
+> >
+> > Now one may argue that the risk of
+> > fwnode_graph_for_each_endpoint_scoped() is returning the iterator
+> > without using no_free_ptr(). I wonder if that would be easier to catch
+> > in static analysis tools than the current pattern that leaks a reference
+> > when exiting the loop early.
+> 
+> It's not big deal, if everyone prefer drop fwnode_graph_for_each_endpoint(),
+> I can do it.
 
-Enable the MU2 (Message Unit 2) node on the i.MX8MP Audio Board v2.
-MU2 is required for inter-processor communication between the
-application CPU and the HiFi4 DSP, allowing DSP firmware to exchange
-control and status messages with the Linux host.
+I slightly tend to the safest option (see below), but as a compromise I can
+suggest to inline the fwnode_graph_for_each_endpoint() into that single user
+that doesn't need a put. However, this may uglify the code and rise a question
+of the consistency. So, consider that suggestion with grain of salt and apply
+only if we have wider agreement with it.
 
-Without this change, the DSP driver cannot establish the message
-channel and DSP audio processing is non-functional.
+> > > It'd better leave these as it.
 
-Fixes: bf68c18150efc ("arm64: dts: imx8mp-ab2: add support for NXP i.MX8MP audio board (version 2)")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-ab2.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+TL;DR:
+This is the safest option, of course. And as mentioned above I slightly
+prefer this way. Another argument is that in some cases we might want to
+have it in the future and since we have an existing user, let it live.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-ab2.dts b/arch/arm64/boot/dts/freescale/imx8mp-ab2.dts
-index 443e4fd5b9bf..285bf79864eb 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-ab2.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-ab2.dts
-@@ -775,6 +775,10 @@ &micfil {
- 	status = "okay";
- };
- 
-+&mu2 {
-+	status = "okay";
-+};
-+
- &pwm1 {
- 	pinctrl-0 = <&pinctrl_pwm1>;
- 	pinctrl-names = "default";
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
