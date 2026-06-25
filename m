@@ -1,223 +1,160 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CC13A63E4
-	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 08:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1233B36A34F
+	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 09:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782377988; cv=none; b=dTEDoNFNj7KfDAZEMK3mE03TaU49B+EGHaVbMvXsnmWQvORkpmapSgP7KqApg8lsBMZGnrnjp4qSHrXTf8jyf7SmYIwvtmg0/J7jvwpArEJVBjk9alAddxtIqS+dcn70DSK7LqW36iKN/hQ5lnGY7LYam5IHdpKLyOxUiluyp0Y=
+	t=1782378282; cv=none; b=I21mzV0rl/aCK/fefoDCb5P+mYiEU2xIRGq3ER1u9hRCc0nDuKJCQII/4LrWjl+jPZjCQO5l1pmtO0/+TTJsZ7vXMLidd4QhRgng11IcyFzRbgwJatHva/NcdOD9JUjFnAPl6RbT5Gb4Y0w5AmrU1nBYKvpqvjdTYyfJasLfysw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782377988; c=relaxed/simple;
-	bh=ipduYrTDxXxlk439FugvjGvm/Pmtyx80AMLIO4/acbw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SnFKxdz+s6U00qyalZBYA0ZI59bzWXM/p+IB1Bo9DRhxpHHvPUaqU8z5LVDtmH2tsEQNwZerlOMMi45DTwvJrf+1tj4oVaVnvQIgz2jeF5kBFvA9Qg5HI/ymtiVlnAuDPsu6e/ttu9Gl+x2iQNd8dtMlHDT+Jin4OC1m5M0Qcr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=pQtEuy3/; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yoseli.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
+	s=arc-20240116; t=1782378282; c=relaxed/simple;
+	bh=Fxdlux4xKPEUY23/deSXomK7ZVU4GMGdOEjfBvmQcWs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OLI4iq6h6oCKH+1jIcEQbUbYBI6hoxkZyu+juEINKJ0aXtNwhmaldLiZoZwd6OHr6jFqvfNlB2kxOV5WhfXw/uc5YRjSb6IFGdpGyWjoJTsVQ+5kgEVaHcohHGpH+m6w3oOdRVCS6A6rI+W4sbz5Yg8VNslQ2NlXMD7JuOV1vqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R9HjEjGP; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="pQtEuy3/"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D10B43EBFB;
-	Thu, 25 Jun 2026 08:59:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
-	t=1782377984;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ukvOm3bcCLiPQClxijKiroreAgInSO9drfY7SQITE9U=;
-	b=pQtEuy3/28rmn2shqZh7z2XfZ6g8qR5NrRtIPAEjvizVZF6fiFmqGuCsZC1nEb6ibbZJV3
-	rhQ/r/H0kFr6lBn8Hnq3XUeRPxAQhN+bBAh7FU9fcfx7/VbD3Fq3n47gb8eUv/3FUAz0He
-	4A8TUHBwCbrDj+M8p7GghHJBi5o/JVPERlUtwKCtKc6+oK0Mi6R2l84/jvNcGcINwnUYLP
-	x7xkdzzrAcatmobz+T7DrmXC0fvqGsPPWdz8b9GH1ZJ2qTZOF/MNRbbr5AwO8P5saEtZV9
-	nV/r/GwtwXUQ2O/eEJM4VGvDPxLIeJMMPX757JwqgOMRTBgotgnYbMCBU4cBfg==
-From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Date: Thu, 25 Jun 2026 10:59:41 +0200
-Subject: [PATCH v3 5/5] dmaengine: mcf-edma: Use devm for per-channel IRQ
- registration
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R9HjEjGP"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4924e6fda5dso9875745e9.0
+        for <imx@lists.linux.dev>; Thu, 25 Jun 2026 02:04:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782378279; x=1782983079; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=twZyJNe4oKAUakpXmtBipZs2eMFjp62u4eaHu+ufJQQ=;
+        b=R9HjEjGPQpis0ensBtjVepkxApoRnMnAN3FGYGtg/FMRSALCX4djzLVl181sLzhw51
+         fBrFR7VclScHqMjwqPhP0fGd8OvHP+ZiYNFffcqHbEtajgyQYpHtAMzWSb5sDMxboZ52
+         lPuPFyHI0XLcN6W0+/txtaMTlWmCS6Q83KezuBmPliUQxmKGvkKcE9UUEBmY7yySkCDJ
+         UnnNYEV6aiVjkZBXXdcuw5csWBHGXS+Vs/sPstRpIPSUxfppjoP8p3WPFlqKe1jlCwQD
+         +6F/A2A0HJDYcJQSjTOLBDqIm2rN+tqgA6q9GcL3KnMiMsQEITSes7G/7lU7oNrWdKJU
+         8ZCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782378279; x=1782983079;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=twZyJNe4oKAUakpXmtBipZs2eMFjp62u4eaHu+ufJQQ=;
+        b=epF4zr0dB9nCr9zUaQ5JFYRnEt0ZrHNy64EY0rKoloV50zGbihBkQxJuzFkiTYggqC
+         jD1cq8FXlu5jfIKV3dirsnH/WCcx+Obrm/43Hl1d0dKkk+B3cPCxvyDbkwqDntdz42wB
+         2EndnnHSBs0cSC4gYYXSxh0T8/pDLh19P0jirswVnttXHiL+FOQ1FOYhDDqXN6NInzQV
+         QztfFbOMY9ylnZCuE4ELjTThPwzhXsW+tCWsGUKpFUz2T3WGhcwfvFKkUQj3MTccq4ls
+         pgrspY6V5G+WvEQSPbPV5wEiNgtsmuWuEDd40wzRdnE6W+Fmmj9EbqEhXAjBSbWNgbKd
+         VHNg==
+X-Forwarded-Encrypted: i=1; AFNElJ8M739LrD6IsliJX991c4Ko7ZSGPHgsNVVElEX6w2eEZSbGgE+HdEbAGuYaJyD5/MQGXxw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzgmRKhAyn35Vpv7eyuZfEKEZvV3X0x4DYTKn0d7urLD9Mfdgd1
+	41IIkYVCNgooveqsA0TD4RM2MXTptXGddUk8BzFuwoOj0EJ44G17ozDN
+X-Gm-Gg: AfdE7ckHxRr3cRh1OxdQn1/fXqUn7vMkD6GwSleEBEGzVaWNuDhc873SVZRWYekVevt
+	dgNNVZTTac8TVfJ0PQuwWbyCqGAXzS9PLMIGSHay0mPVPcctZ47JRy5xhn77GJyOEWACt/hHcta
+	v6XWjORJxNJGvERNUp2g7vmwGSYAz2C+f/RrgOOZZ8bHasfBS2dzRzXi6Oo7V2y7iZlBZXGpl+s
+	rTqikVSbxTLqudFmlC5QbnHcarx4dt90ttSbMpg6dEWAwqtGQNRKAtfrM3FYlj4GV36OHYU0iLA
+	nXsJQfHttK3Wr+8tx2Pky4JkGpiLEayxDhG7nasBYwX5gvkJuIUYxcGDh0CDemGpgo1oYdcMwHX
+	VgjqV4+QSevtxqJz3417ugERm0r8d6VVhGmuWsLCFPIqy+80DE5hBDJmcwZNkNoHHsg==
+X-Received: by 2002:a05:600c:c058:b0:492:48c8:c705 with SMTP id 5b1f17b1804b1-49266865fe5mr18834925e9.1.1782378279131;
+        Thu, 25 Jun 2026 02:04:39 -0700 (PDT)
+Received: from eichest-laptop ([2a02:168:af72::cb4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926494f129sm47950825e9.0.2026.06.25.02.04.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 02:04:38 -0700 (PDT)
+Date: Thu, 25 Jun 2026 11:04:36 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Vincent Jardin <vjardin@free.fr>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Wolfram Sang <wsa@kernel.org>,
+	Kaushal Butala <kaushalkernelmailinglist@gmail.com>,
+	Shawn Guo <shawn.guo@freescale.com>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] i2c: imx: fix locked bus on SMBus block-read of 0
+ (atomic)
+Message-ID: <ajzvJE5LuzvLmpZN@eichest-laptop>
+References: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr>
+ <20260525-for-upstream-i2c-lx2160-fix-v1-v2-1-26a3cc8cd055@free.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260625-b4-edma-dmaengine-v3-5-44be00ace37d@yoseli.org>
-References: <20260625-b4-edma-dmaengine-v3-0-44be00ace37d@yoseli.org>
-In-Reply-To: <20260625-b4-edma-dmaengine-v3-0-44be00ace37d@yoseli.org>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>, 
- Angelo Dureghello <angelo@sysam.it>
-Cc: Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782377978; l=5226;
- i=jeanmichel.hautbois@yoseli.org; s=20240925; h=from:subject:message-id;
- bh=ipduYrTDxXxlk439FugvjGvm/Pmtyx80AMLIO4/acbw=;
- b=KC6RWsoDPEcPwNB3rvLjLjVxYSPxfbVReuKyBSnR4evfxCgZ9rKBaO697qa2sEsSQeNvhpk2g
- m2gu5IVJnaEAFg4/4TM0WEh+1Z/A7W7EbNE/APddzENO2kuiXoKm52l
-X-Developer-Key: i=jeanmichel.hautbois@yoseli.org; a=ed25519;
- pk=MsMTVmoV69wLIlSkHlFoACIMVNQFyvJzvsJSQsn/kq4=
-X-GND-Sasl: jeanmichel.hautbois@yoseli.org
-X-GND-Score: -100
-X-GND-Cause: dmFkZTEdwKb+ijIxjHFx5x8TU6lg02lhGCjlq6ldY0tHFTa7vxJKhfMlCyFy/0Le+eC95ttCiSBOuzLWlqa94K4yegjifKX7hLbal3Flzv+zpysuut3t2/PiPt+AMU/aegzeguZ3FK4ckbgbQoLuVqCF+LSIJUhaMMPXBT/7GPv0OyqjrnvbkGcVPNeBO/h08Yke6SoPuiU7VHSouPKsxI5LI6laZdv3BpNwe0acmEJKQV1GVi0i1OIs3SdZFJQaK//3/qdZfPGLAM2+lxs68tF1idIthlxrzeI2lvFh6wQbl71t9vcx/TZsechsKXkCZRJFEyUNr3JmyjjdTelgUsio74PhqAdv+SztRkGKBxwoB7nTQ6af1eaRfqjn+7uvVbD/NAv7zSFnS963H79xT5G+QHS5LnVLqVaJIJLcvtC8iTRnV9APl3obQr2WzhV6yN9COU17S39rAdFpY+DX8Od8AQbnm+/8yob+BRsrJg54lYFL9y2YVxjYWro9So7R4vW2ekGRBrnYW2DkyW+3EZ5/DlykvWweV+pcwwxWIVtYBbYyyqIolv8v6ePs5/IdC1GH79yKOzo2DD27xMGIFydK+zg2Kle4qwW0uor7dgzYcRPV40QXr3PZiQu7yI9j4YG5CWFc+HR/YafKafqWvEOEtEhrLUzigaaiYsZDGuPuk3qT8Q
-X-GND-State: clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-1-26a3cc8cd055@free.fr>
 
-Register each eDMA transfer interrupt with a per-channel name
-("eDMA-<n>") so /proc/interrupts and debugging tools can identify the
-channel behind each line, and switch the whole IRQ setup to
-devm_request_irq().
+Sorry for the late reply.
 
-Using the managed API lets devres release the handlers on probe
-failure or device removal, which removes the manual mcf_edma_irq_free()
-teardown and the IRQ leak / dangling irqaction that the previous error
-paths left behind. The devm_kasprintf() result is now checked for NULL
-before being used as the IRQ name.
+On Mon, May 25, 2026 at 06:43:15PM +0200, Vincent Jardin wrote:
+> SMBus 3.1 6.5.7 allows a Block Read byte count of 0, but the atomic
+> (polling) path rejects it as -EPROTO. Worse, it returns without a
+> NACK+STOP: the next receive cycle has already started, so the target
+> keeps holding SDA and the bus stays stuck until a power cycle for
+> this i2c controller.
+> 
+> Reading I2DR to obtain the count likewise arms the next byte on the
+> count > I2C_SMBUS_BLOCK_MAX path, which also returned -EPROTO directly
+> and left the bus held.
+> 
+> Handle both: NACK the in-flight dummy byte (TXAK) and extend msgs->len so
+> the existing last-byte handling emits STOP; the dummy byte is discarded.
+> A count of 0 is a valid empty block read; a count above
+> I2C_SMBUS_BLOCK_MAX is still reported as -EPROTO, but only after the bus
+> has been released.
+> 
+> The interrupt-driven path has the same flaw from a later commit and is
+> fixed separately, as it carries a different Fixes: tag and stable range.
+> 
+> Fixes: 8e8782c71595 ("i2c: imx: add SMBus block read support")
+> Cc: <stable@vger.kernel.org> # v3.16+
+> Signed-off-by: Vincent Jardin <vjardin@free.fr>
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index a208fefd3c3b..14107e1ad413 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1415,6 +1415,7 @@ static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
+>  	int i, result;
+>  	unsigned int temp;
+>  	int block_data = msgs->flags & I2C_M_RECV_LEN;
+> +	int block_err = 0;
+>  
+>  	result = i2c_imx_prepare_read(i2c_imx, msgs, false);
+>  	if (result)
+> @@ -1436,8 +1437,20 @@ static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
+>  		 */
+>  		if ((!i) && block_data) {
+>  			len = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
+> -			if ((len == 0) || (len > I2C_SMBUS_BLOCK_MAX))
+> -				return -EPROTO;
+> +			if ((len == 0) || (len > I2C_SMBUS_BLOCK_MAX)) {
+> +				/*
+> +				 * SMBus 3.1 6.5.7: support count byte of 0.
+> +				 * I2C_SMBUS_BLOCK_MAX case should not hold the SDA either.
+> +				 */
+> +				if (len > I2C_SMBUS_BLOCK_MAX)
+> +					block_err = -EPROTO;
+> +				temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+> +				temp |= I2CR_TXAK;
+> +				imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
+> +				msgs->buf[0] = 0;
+> +				msgs->len = 2;
+> +				continue;
+> +			}
+>  			dev_dbg(&i2c_imx->adapter.dev,
+>  				"<%s> read length: 0x%X\n",
+>  				__func__, len);
+> @@ -1485,7 +1498,7 @@ static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
+>  			"<%s> read byte: B%d=0x%X\n",
+>  			__func__, i, msgs->buf[i]);
+>  	}
+> -	return 0;
+> +	return block_err;
+>  }
 
-Because devres only frees the handlers after mcf_edma_remove() returns,
-the controller must be quiesced at the start of remove(): disable every
-channel's request and acknowledge any pending interrupt before tearing
-down the virtual channels. Otherwise an interrupt could fire into a
-partially torn-down state while the handlers are still registered.
-
-Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
----
- drivers/dma/mcf-edma-main.c | 84 ++++++++++++++++++++++-----------------------
- 1 file changed, 41 insertions(+), 43 deletions(-)
-
-diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-index 3dab5d475d1b..119d49c829fb 100644
---- a/drivers/dma/mcf-edma-main.c
-+++ b/drivers/dma/mcf-edma-main.c
-@@ -66,7 +66,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
- static int mcf_edma_irq_init(struct platform_device *pdev,
- 				struct fsl_edma_engine *mcf_edma)
- {
--	int ret = 0, i;
-+	int ret, i, chan = 0;
- 	struct resource *res;
- 
- 	res = platform_get_resource_byname(pdev,
-@@ -74,33 +74,47 @@ static int mcf_edma_irq_init(struct platform_device *pdev,
- 	if (!res)
- 		return -1;
- 
--	for (ret = 0, i = res->start; i <= res->end; ++i)
--		ret |= request_irq(i, mcf_edma_tx_handler, 0, "eDMA", mcf_edma);
--	if (ret)
--		return ret;
-+	for (i = res->start; i <= res->end; ++i) {
-+		char *irq_name;
-+
-+		irq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "eDMA-%d", chan++);
-+		if (!irq_name)
-+			return -ENOMEM;
-+		ret = devm_request_irq(&pdev->dev, i, mcf_edma_tx_handler, 0,
-+				       irq_name, mcf_edma);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	res = platform_get_resource_byname(pdev,
- 			IORESOURCE_IRQ, "edma-tx-16-55");
- 	if (!res)
- 		return -1;
- 
--	for (ret = 0, i = res->start; i <= res->end; ++i)
--		ret |= request_irq(i, mcf_edma_tx_handler, 0, "eDMA", mcf_edma);
--	if (ret)
--		return ret;
-+	for (i = res->start; i <= res->end; ++i) {
-+		char *irq_name;
-+
-+		irq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "eDMA-%d", chan++);
-+		if (!irq_name)
-+			return -ENOMEM;
-+		ret = devm_request_irq(&pdev->dev, i, mcf_edma_tx_handler, 0,
-+				       irq_name, mcf_edma);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	ret = platform_get_irq_byname(pdev, "edma-tx-56-63");
- 	if (ret != -ENXIO) {
--		ret = request_irq(ret, mcf_edma_tx_handler,
--				  0, "eDMA", mcf_edma);
-+		ret = devm_request_irq(&pdev->dev, ret, mcf_edma_tx_handler, 0,
-+				       "eDMA-tx-56-63", mcf_edma);
- 		if (ret)
- 			return ret;
- 	}
- 
- 	ret = platform_get_irq_byname(pdev, "edma-err");
- 	if (ret != -ENXIO) {
--		ret = request_irq(ret, mcf_edma_err_handler,
--				  0, "eDMA", mcf_edma);
-+		ret = devm_request_irq(&pdev->dev, ret, mcf_edma_err_handler, 0,
-+				       "eDMA-err", mcf_edma);
- 		if (ret)
- 			return ret;
- 	}
-@@ -108,35 +122,6 @@ static int mcf_edma_irq_init(struct platform_device *pdev,
- 	return 0;
- }
- 
--static void mcf_edma_irq_free(struct platform_device *pdev,
--				struct fsl_edma_engine *mcf_edma)
--{
--	int irq;
--	struct resource *res;
--
--	res = platform_get_resource_byname(pdev,
--			IORESOURCE_IRQ, "edma-tx-00-15");
--	if (res) {
--		for (irq = res->start; irq <= res->end; irq++)
--			free_irq(irq, mcf_edma);
--	}
--
--	res = platform_get_resource_byname(pdev,
--			IORESOURCE_IRQ, "edma-tx-16-55");
--	if (res) {
--		for (irq = res->start; irq <= res->end; irq++)
--			free_irq(irq, mcf_edma);
--	}
--
--	irq = platform_get_irq_byname(pdev, "edma-tx-56-63");
--	if (irq != -ENXIO)
--		free_irq(irq, mcf_edma);
--
--	irq = platform_get_irq_byname(pdev, "edma-err");
--	if (irq != -ENXIO)
--		free_irq(irq, mcf_edma);
--}
--
- static struct fsl_edma_drvdata mcf_data = {
- 	.flags = FSL_EDMA_DRV_EDMA64 | FSL_EDMA_DRV_MCF,
- 	.setup_irq = mcf_edma_irq_init,
-@@ -249,8 +234,21 @@ static int mcf_edma_probe(struct platform_device *pdev)
- static void mcf_edma_remove(struct platform_device *pdev)
- {
- 	struct fsl_edma_engine *mcf_edma = platform_get_drvdata(pdev);
-+	struct edma_regs *regs = &mcf_edma->regs;
-+	int i;
-+
-+	/*
-+	 * The per-channel interrupts are requested with devm and are only
-+	 * freed after this function returns.  Quiesce the controller first so
-+	 * that no interrupt can fire while the virtual channels are torn down:
-+	 * disable every channel's request and acknowledge any pending
-+	 * interrupt.
-+	 */
-+	for (i = 0; i < mcf_edma->n_chans; i++)
-+		fsl_edma_disable_request(&mcf_edma->chans[i]);
-+	iowrite32(~0, regs->inth);
-+	iowrite32(~0, regs->intl);
- 
--	mcf_edma_irq_free(pdev, mcf_edma);
- 	fsl_edma_cleanup_vchan(&mcf_edma->dma_dev);
- 	dma_async_device_unregister(&mcf_edma->dma_dev);
- }
-
--- 
-2.39.5
-
+Reviewed-by: Stefan Eichenberger <eichest@gmail.com>
