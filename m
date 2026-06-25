@@ -1,225 +1,206 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012016.outbound.protection.outlook.com [52.101.66.16])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139883B47E6
-	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 16:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782405600; cv=fail; b=Zfp0MF1/MTpd8wPbMvfCGpvurJY4qFGxDntmt4wtaZEEyWDRYt2yfbezrbE0aFcUL2cyal9imw1d2bG+Y7P9oKpoV1TYKGw9ZjWphnC89mGpeYLlbHP4eaIzubY55ZuXPM+Dewvkf6OpXyPSq0zMUoF2ztpuWlyW3HxM5J/AEpw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782405600; c=relaxed/simple;
-	bh=CKr1veYRR1/EHb62IYElyaSDs2TpF1y5vcr2PaayibE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Qe4QtxIbARSN0v3Iv9zJJS/ZNfZgo1rC1MgFtnyJvI6RKGFhyC/ybe2jsjQ1nanrHURVb0OMINn8fBpc6EF/o9U+pNd5kMFWR7YeRvREMaFC9Cps9TPY56te4LefWYf93Ko0Aa4ZKrfALrdWwlbliB+CpAg3lyVPEphKtGSYQUI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=e7tqj7Vw; arc=fail smtp.client-ip=52.101.66.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9904C3E958F
+	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 17:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782407204; cv=none; b=BfqsOKpBZfJt1ZgHhg7pOwkXPxU9QeG3ylBJfndM6477K5L9EEMUL+ZdvJkN1DOMcFKTQzjTOeDp7TlfNcdjcBOauV+swfIjRxwY7GZNJ4Jf4YD1ZPraxWiquKrjoBFl4UI82wssTBzx1yrcu4p7APUkXknmHgynEKKtuxOOZ3k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782407204; c=relaxed/simple;
+	bh=iPWFoq6qy3klE+C/NkNpqqUR3A8O31ZAylHIdsaVrm4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=Kzp78Z0dq0jmUvaMR0P/qC5GrkunPX9Hd7/cRwOAK4WMIsRoZcT8SUxmAkDaoYG8L3tUVrZzjAawPlawxRzdaErIpx7Z/CN2H7HYW4KVPOjJO+1v8+BcOejEaFa+APgdhXqJetCTP2pBoFCCNuCE63l2849lJYO0JT4kUxo9X08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=uQm8PJkf; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="e7tqj7Vw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nwxP0VvDSMjvy48jce3gFjJYtm2KmY2QYwCYXxe37MmfOAZb8iFfrWYxxa/qH8pSGu0We4b6ZL6Bp+cp4LbyCGZeaMOUennO85fFDYp+ZAFDQTh41DNprCgrKwO6CE1GYGumgvyMqeoZwtWpM4N6CbHM3+5Pvf669KYC8ndtjfGQfWEeARUMyPhuPixeZ+xOCyYE5jHS61VRFM6Uwcv5ixixY9c8yiXR0edw+7rYd300yCjVyi9LYf65lrRwmyJUvzre5okkZqh4JWxG42+LQRR1WHDpnE6/mE9fhKNWPC28vI6hT9btMVtQBaq1eOxwOqvtFdOlXIUIwxzyWfVoXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t93TCeImRU366B78coVnbrkYv6N48NOky1GIO4ZcD5Q=;
- b=gXcqKTpdpy3o9dxJh+EIdEduFYMA8Y4WxpLBc2Uavlseq4fpQKnbkKE5wX/pu1X4EjIzg1Sq5B91Y0HTpD66F75DXgSkenmZkAg71eeIxQPVg06nPXw98mozhqkOC5GSH1VnLRgp0CMetXt+G3M1yhYXcKK+c/J9wuoqNI1GPUSGB5n/y2D5pP0IbvpjEbJyvhbfsYYrXU5yzcHE6EKj5FJzymr2oF7u+TzUFCugJdX/parYx41wwfzPc/RKIHYioqGWkaFM7zuOs9T1MnC3VVvRD5sGN5erbL6IwlztwtfrXAEyoRcx5iVFgWzk9IAiMlDKrMJLgT1J8RfnlVxPyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t93TCeImRU366B78coVnbrkYv6N48NOky1GIO4ZcD5Q=;
- b=e7tqj7Vw35CLWw7gDwTGWt4jGIArSVL9oIiZp/1yLw2KzKlB0JWHavj/UJfjZxVSMq9UvCO40TSYiOk6i10LBozJUu26aZX43kyBI4sMD3dFaiLrZlBZRz4PunhxAgn19Re7ZaZBW3f5Ln0vzdx/BlW/uc4Y+s9+kRC39N5imdtyK3mDbBUfFIjSlix4Wi95e9C3ZCiPEIXUHctGL5/svymn8i9BGqhLAOOE/OuCP05QVPHNzarQtj/jSGui9SeX9+hLrSm0zuw4jenPHvV9/g67Pys4kPUBmqX3UbHJHDy+JMr3+LyoC7/pbmUaohUYpx8r21Zs/k8SkaKrVScbcg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DU4PR04MB10529.eurprd04.prod.outlook.com (2603:10a6:10:55a::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Thu, 25 Jun
- 2026 16:39:55 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Thu, 25 Jun 2026
- 16:39:55 +0000
-Date: Thu, 25 Jun 2026 11:39:45 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: ziniu.wang_1@oss.nxp.com
-Cc: adrian.hunter@intel.com, ulfh@kernel.org, haibo.chen@nxp.com,
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev, linux-mmc@vger.kernel.org,
-	s32@nxp.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] mmc: sdhci-esdhc-imx: fix suspend/resume error
- handling
-Message-ID: <aj1Z0fYSVY4cw0Mq@SMW015318>
-References: <20260625105934.2890635-1-ziniu.wang_1@oss.nxp.com>
- <20260625105934.2890635-6-ziniu.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625105934.2890635-6-ziniu.wang_1@oss.nxp.com>
-X-ClientProxiedBy: PH5P220CA0001.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:34a::8) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="uQm8PJkf"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E7E2F1A09D0;
+	Thu, 25 Jun 2026 17:06:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A6ADF60220;
+	Thu, 25 Jun 2026 17:06:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 15F7B104C944D;
+	Thu, 25 Jun 2026 19:06:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782407197; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=LC73b91HEO74osloKjUTD0DDGZ8iF8lp6LJqm7dhJ8M=;
+	b=uQm8PJkfrXPURCmngvTfk5NTqUnIqV6cUS22d2DQymp7VGhbWSK2YM/nr/FqTxrSJvF0HI
+	b7lUArpGfPlCwTOCWJc8Vjghs6YYfzMlNwNBNy+whbSTPu35wSomkE3LSzZxgygA5o4rl6
+	RlpNtnsDVdzgWQaM02AKxTR/LjHBtvFIzfAqnqcv8RCRrGInl1bxhn2IinCYZxxQzUM8sL
+	WOQz/CggHTDGFsy5iAK7RxegIR4zXGQH6apGh3u85BeK0lCvopk5iDNZW9Iv6IobFB6WaM
+	hKCYQRjkelATr+rfI04ZJjCp+f02zxyQZ7mcRNpRICltWfek6ZQcLhy9zArciQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DU4PR04MB10529:EE_
-X-MS-Office365-Filtering-Correlation-Id: d378f62e-c535-4c25-2e6c-08ded2d86331
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|19092799006|376014|6133799003|22082099003|18002099003|56012099006|4143699003|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info:
-	NouVTTqs/Gsof3N8dyJ+ZaXgibOleVphOtwWJEnsIOI1iDpdGv+nn3YS9ZBYG7+eXhayB7nm2GEjhzjY32WTDypBpDxf4ECHK176e4picvtN5HxdoTIGRvZYSy7wKYcqvSfUwaMiuMFJ0NRTCWoRPuwLcHkoH1amQgi7284/zRV/73JrtYlMYmOgikVHNOxjkRchmhlXbCLVmvMbnEDQHE0F0q1qJ0o6OHSG2YpdCVGVu88X7268Cq4fCDtl8pJPP9a50wbEqjeULxmpk5Ahq4ciVVdG44uIvmtr4GfuHciwDbYdIuBFYKcBmxbFyRn5B5bSBegNFgZPrQzh4kjbtOOrO7BcNUrC463Gh8L9tEOYBJLDGpE6Nj+K7mu4KJNGuldZWtryw+yW0jf/bt4SWmdo6eg9bCvc3htx2USdKKlGZjyIBTaH+gR3K8eOq6ezOenuvFedg+Q48pZUVG9n2WfFaKfX+eUr4FHusGvPdiO8v7fSNEc/4kfFftDViIPBdnL+1oANZiKoa/q+9pJgL73NveiIBVNa+QUZZ38WRyQ7RxrdzM/2t5wjNXn0WumFMpGgQQhqlFS6mb2QWd8Qjni9mvZ14b7lFOVe496b/dxQud6AkNaGB8++mJrJrvcDPET/BdUUmrNoOCErFjB2aNxsqcobcbMH/u9yfn48OIU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(19092799006)(376014)(6133799003)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fGcNjOMOKHPE8qdNC+70YbZigrJWcXWiL5FBopBwiiaLMVMo2PNGJ6ySVejX?=
- =?us-ascii?Q?Wc6XcLr9tOv0fk1DqZflvnazHHvvSB4FUJPgPr9x3DHeg22QYOE2O1LvNaBG?=
- =?us-ascii?Q?tbZlFpPz8hzUGKy0w7qJTFPfvtPP7htvUuSwwgMutaW4s+Zpg4MaT5hcPz8k?=
- =?us-ascii?Q?/e83+7B2fKWFeYxTxpfbOkE3a9IJAyll0HS/ITl38FvVd/Inv6A0l75Rdr9U?=
- =?us-ascii?Q?jVJA1lF8K2i++5/1gJjl6tLOKgTs5QuinFsIHLuQVU77ljPafgV3Cs/R/EEk?=
- =?us-ascii?Q?MQgm1NJSQDiU7rluamHoIU0zSodDPvv3KyMOjx6XgC3FTT6xaXqMkMxCbhLe?=
- =?us-ascii?Q?RRebKL/HvGI2TsEZIOVhqZL+uM2t3JhjhOAsTxD1OZFcZy2B7YcylJ5a32Ep?=
- =?us-ascii?Q?n1ikpMt1SKAi3zwNv53clJH3Icqdg/sRK1+I0bMX5XFW6PI7eYLJjKJqQ57r?=
- =?us-ascii?Q?Uv/rPH7QdlLxechiJmZCMlG1H091fVh9VvGEd/pv17j7hbS9Ojj21HyKqpXW?=
- =?us-ascii?Q?XmKJ/xhYBIqTpIo/urXGR7xtalYiXvqtGTp76ET/I5AE5xGSs9z6SjIA+4Qb?=
- =?us-ascii?Q?oWFAY8cknfMvRlNFRVksSO6CyLoi5fxpBY/ODwDQqSW/jPOO8IFa1s2GTb8j?=
- =?us-ascii?Q?+nTp5gBsa+tUnHcxA71aRA8mcekEtszQeAiJWO00u0OR/Gno81rY1dSubVsH?=
- =?us-ascii?Q?B5ajbpiioEqXOYfb66wCkx4YLm7lGVGif4W+zoMyws62/iiRULXY2Jfk8efs?=
- =?us-ascii?Q?woIINIHikgG/Vx/2EQUvMtoUe/+x740D45KdZlE7hXgedV0YQN5vQpzGwS66?=
- =?us-ascii?Q?rFEzOnkcbKeNMupJ7SYF+3dobuB3SyCs5flAILWDYtINavf9wd9mLEprOR+o?=
- =?us-ascii?Q?+Ea63O3AmnezFt0QzSrLt1XVzYFGq53SJR+Je1VIxeiFoxOJpY8mbLaKB9GU?=
- =?us-ascii?Q?gpm5R4fvTkR6RuEqp6N1AzbmPjGNS1if/bEVltLEDBG8mEGZ7m6okmX4vu8u?=
- =?us-ascii?Q?V4vP4NKet0I78HN9NOpRDBryGrfnPObK+1XvbvWbV/H8ry6Q0+1m2rSs2N+E?=
- =?us-ascii?Q?VTYBuevwWlIjDjJGQeQP7GKUiEIItXe3qF3Y4QOozA0RmRpEUynFXcY74XXQ?=
- =?us-ascii?Q?1eOx7LEmW5NV+cu9qs8bgmeQ5NeIje9ayZXS9FQ97y8qPgEYNiue6jckPLDo?=
- =?us-ascii?Q?5MlNdvhm0a195ClDIyANtfOzVpKN8yw2nQq4CTQ1ELZ22H6iTyfQ777OTV6r?=
- =?us-ascii?Q?+Uv/AlG/8amF9pbYCAUKVtVJkDqGaJ8oq/Zifh2nL5Zpweor48XkJ8X/QsKG?=
- =?us-ascii?Q?TghhtZTTJGzU0KsqT/aHbr7y4W37Ml/T/Q2j8w1DTS60jrm5h6LVvVckR388?=
- =?us-ascii?Q?8pKeUX2vygQfYvkneKrn6DgfydMpTq2ppusR/eYyguVx9vLZTv9V/MxtUIIz?=
- =?us-ascii?Q?64Y5njx3Orzo1ZSPcgl2KoYt7NZjsidmA0ma08U9dU2necf6AIeR6V7wdkOd?=
- =?us-ascii?Q?KN45+6gdIAexHsACOaPwDVAmURp96cJJp7DjeHmSwCaq5znG28pJIjKrkk8v?=
- =?us-ascii?Q?ws+6BRTMLVYkOOmp6+QgAgSjEbktU/qqOKEdY3CUcsgX7jXpZhXJFoM/jAYF?=
- =?us-ascii?Q?slWDhr4n2FjsAZiMyWHWtHjbsvdPJU10sYteSjih0LCyc+cUGB41t1M4TCad?=
- =?us-ascii?Q?IG9uklA65Ty7nxWW2cD7DpIs7bxsPlqAWprjX+fDivaGsxKx0FygZCS1wcGR?=
- =?us-ascii?Q?nWU0KvoynimabQqWGN2DVjPKs1lq/vSzkPk5XUSSE0LQY+IRy2Qx?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d378f62e-c535-4c25-2e6c-08ded2d86331
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 16:39:55.5185
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PekRUF+8PApvydGctGxfFseRKKQCNdI3oxLIDS0qaaTrvNGp/lyGqzLPDmd3td3qhrxDmM8r21Ram9b38l9u6Yl7GF9985HMUbQE9QK8xGKWGsKOqeTNXNbxMr+GC2kd
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10529
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 25 Jun 2026 19:06:26 +0200
+Message-Id: <DJIAM5GDIA9W.NJQJTONTBQRI@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 19/37] drm/bridge: samsung-dsim: move drm_bridge_add()
+ call to probe
+Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Inki Dae"
+ <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>,
+ "Stefan Agner" <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
+ <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.21.0
+References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-19-45e2bdb3dfb4@bootlin.com>
+ <20260608-mellow-weasel-of-politeness-a56172@houat>
+ <DJ63DNXUOW46.1DI6982PGPFRR@bootlin.com>
+ <20260624-courageous-accomplished-sambar-0e3cf8@houat>
+In-Reply-To: <20260624-courageous-accomplished-sambar-0e3cf8@houat>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jun 25, 2026 at 06:59:34PM +0800, ziniu.wang_1@oss.nxp.com wrote:
-> From: Luke Wang <ziniu.wang_1@nxp.com>
+On Wed Jun 24, 2026 at 5:28 PM CEST, Maxime Ripard wrote:
+> On Thu, Jun 11, 2026 at 10:54:14AM +0200, Luca Ceresoli wrote:
+>> On Mon Jun 8, 2026 at 1:58 PM CEST, Maxime Ripard wrote:
+>> > On Tue, May 19, 2026 at 12:37:36PM +0200, Luca Ceresoli wrote:
+>> >> This bridge driver calls drm_bridge_add() in the DSI host .attach cal=
+lback
+>> >> instead of in the probe function.
+>> >>
+>> >> This works for current use cases but is problematic for supporting ho=
+tplug
+>> >> of DRM bridges. The problematic case is when this DSI host is always
+>> >> present while its DSI device is hot-pluggable. In such case with the
+>> >> current code the DRM card will not be populated until after the DSI d=
+evice
+>> >> attaches to the host, which could happen a very long time after booti=
+ng, or
+>> >> even not happen at all.
+>> >>
+>> >> The reason is that the previous pipeline component (the encoder in th=
+is
+>> >> case) when probing cannot find the samsung-dsim bridge. What happens =
+is:
+>> >>
+>> >>  [1 and 2 can happen in any order, same result]
+>> >>  1) samsung-dsim probes (does not drm_bridge_add() itself)
+>> >>  2) The lcdif starts probing multiple times, but
+>> >>     lcdif_probe
+>> >>     -> lcdif_load
+>> >>        -> lcdif_attach_bridge
+>> >>           -> devm_drm_of_get_bridge() returns -EPROBE_DEFER because
+>> >>              the samsung-dsim is not in the global bridge_list
+>> >>              (deferred probe pending: imx-lcdif: Cannot connect bridg=
+e)
+>> >>
+>> >> The samsung-dsim will not drm_bridge_add() itself until a DSI device =
+will
+>> >> try to mipi_dsi_attach() to the DSI Host, which can happen arbitratil=
+y late
+>> >> on hot-pluggable hardware.
+>> >>
+>> >> As a preliminary step to supporting hotplug move drm_bridge_add() at =
+probe
+>> >> time, so that the samsung-dsim DSI host bridge is available during bo=
+ot,
+>> >> even without a connected DSI device. This results in:
+>> >>
+>> >>  1) samsung-dsim probes (and adds to drm_bridge_add() itself)
+>> >>  2) The lcdif starts probing multiple times, but
+>> >>     lcdif_probe
+>> >>     -> lcdif_load
+>> >>        -> lcdif_attach_bridge
+>> >>           -> devm_drm_of_get_bridge() --> OK, returns samsung-dsim pt=
+r
+>> >>
+>> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>> >
+>> > We should probably amend
+>> > https://www.kernel.org/doc/html/latest/gpu/drm-kms-helpers.html#specia=
+l-care-with-mipi-dsi-bridges
+>> >
+>> > To mention this use case here
+>>
+>> Right. I haven't updated the docs for this v1 because I was not sure the
+>> overall approach would be acked. Now Dmitry acked it overall, and I kind=
+ of
+>> infer you are not against, so I'll look into updating the docs in v2.
+>>
+>> However I find that section of the docs a bit hard to read especially fr=
+om
+>> a newcomer perspective.
 >
-> Fix several error handling issues in sdhci_esdhc_suspend/resume:
+> It's a complex problem, so I don't think we should expect the target
+> audience to be newcomers. But maybe we can indeed improve it.
 >
-> 1. Use pm_runtime_resume_and_get() instead of pm_runtime_get_sync()
->    to simplify error handling. If it fails, the device is unclocked
->    and accessing hardware registers would cause a kernel panic.
+>> A better understanding on my side would help in doing the right change a=
+s
+>> far as this patch is concerned, and as a bonus in improving the section
+>> overall (that would probably be a separate series).
+>>
+>> So I have a couple questions to start from:
+>>
+>>  * Do I understand correctly that using the component framework is legac=
+y,
+>>    not recommended for new DRM development, and that converting existing
+>>    code to stop using it is welcome?
 >
-> 2. Make pinctrl_pm_select_sleep_state() and mmc_gpio_set_cd_wake()
->    failures non-fatal in suspend path. These failures only mean
->    slightly higher power consumption or missing CD wakeup, but should
->    not block system suspend.
+> No. It's not legacy or deprecated. And about the conversion, I guess
+> it's on a case-by-case basis? It's not encouraged or discouraged anyway.
 >
-> 3. Check pm_runtime_force_resume() return value in resume. If it
->    fails (clock enable failure), return immediately since accessing
->    hardware registers on an unclocked device would cause a panic.
+>>  * The first bullet quotes "The upstream driver [...] isn=E2=80=99t a MI=
+PI-DSI
+>>    host". If the upstream driver of a MIPI DSI link isn't a MIPI DSI hos=
+t,
+>>    what else could it be? What are the use cases here?
 >
-> 4. Make mmc_gpio_set_cd_wake(false) call in resume not check return
->    value since it always returns 0.
->
-> 5. Always return 0 on success path instead of propagating non-fatal
->    warning return values.
+> Nowhere is it said that we're considering a MIPI-DSI link here,
 
-each patch fix one problem.
+To me, the section title "Special Care with MIPI-DSI bridges" seems to
+suggest that.
 
-Frank
+What about rewording as "Possible driver combinations and their probe
+sequences" or the like?
 
+> so the
+> use case is any bridge that isn't using MIPI-DSI at all.
 >
-> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 18 +++++++++++-------
->  1 file changed, 11 insertions(+), 7 deletions(-)
+>>  * If read literally, none of the 4 bullets after "Indeed, there=E2=80=
+=99s multiple
+>>    cases that needs to be considered" covers this driver (it does not us=
+e
+>>    the component framework, it does not use DCS, and the upstream device=
+ is
+>>    a DSI host). However the 3 bullets after "The ideal pattern to cover =
+the
+>>    last item" appear to cover what this driver does.  Do we need a fifth
+>>    bullet for drivers like this one? Or...?
 >
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index c4a22e42628e..4d6818c95809 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -2060,7 +2060,9 @@ static int sdhci_esdhc_suspend(struct device *dev)
->  	 * 2, make sure the pm_runtime_force_resume() in sdhci_esdhc_resume() really
->  	 *    invoke its ->runtime_resume callback (needs_force_resume = 1).
->  	 */
-> -	pm_runtime_get_sync(dev);
-> +	ret = pm_runtime_resume_and_get(dev);
-> +	if (ret)
-> +		return ret;
+> You tell me :)
 >
->  	if ((imx_data->socdata->flags & ESDHC_FLAG_STATE_LOST_IN_LPMODE) &&
->  		(host->tuning_mode != SDHCI_TUNING_MODE_1)) {
-> @@ -2094,10 +2096,12 @@ static int sdhci_esdhc_suspend(struct device *dev)
->  		 */
->  		ret = pinctrl_pm_select_sleep_state(dev);
->  		if (ret)
-> -			return ret;
-> +			dev_warn(dev, "Failed to select sleep pinctrl state\n");
->  	}
->
->  	ret = mmc_gpio_set_cd_wake(host->mmc, true);
-> +	if (ret)
-> +		dev_warn(dev, "Failed to enable cd wake\n");
->
->  	/*
->  	 * Make sure invoke runtime_suspend to gate off clock.
-> @@ -2105,7 +2109,7 @@ static int sdhci_esdhc_suspend(struct device *dev)
->  	 */
->  	pm_runtime_force_suspend(dev);
->
-> -	return ret;
-> +	return 0;
->  }
->
->  static int sdhci_esdhc_resume(struct device *dev)
-> @@ -2121,12 +2125,12 @@ static int sdhci_esdhc_resume(struct device *dev)
->  			dev_warn(dev, "Failed to restore pinctrl state\n");
->  	}
->
-> -	pm_runtime_force_resume(dev);
-> -
-> -	ret = mmc_gpio_set_cd_wake(host->mmc, false);
-> +	ret = pm_runtime_force_resume(dev);
->  	if (ret)
->  		return ret;
->
-> +	mmc_gpio_set_cd_wake(host->mmc, false);
-> +
->  	/* re-initialize hw state in case it's lost in low power mode */
->  	sdhci_esdhc_imx_hwinit(host);
->
-> @@ -2153,7 +2157,7 @@ static int sdhci_esdhc_resume(struct device *dev)
->
->  	pm_runtime_put_autosuspend(dev);
->
-> -	return ret;
-> +	return 0;
->  }
->
->  static int sdhci_esdhc_runtime_suspend(struct device *dev)
-> --
-> 2.34.1
->
->
+> How does hotplugging, say, a MIPI-DSI device bridge controlled over I2C,
+> or a MIPI-DSI host bridge, affect the probing sequence, and can we end
+> up in endless probe deferrals?
+
+I'll try to write that in a fifth bullet in v2.
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
