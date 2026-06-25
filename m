@@ -1,328 +1,202 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010008.outbound.protection.outlook.com [52.101.69.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205F23C2BBE
-	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 07:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782372356; cv=fail; b=QwUgyZlbPrHfliscuQn1mIXIFhdUdJ+grZKKVYC+pK2eDM7BD5ivpVk7S4+zQQ8n1wp30yjftg0Tw+oe25CpvL2v2igMi/4UstUjOtdKyR5BT5sgEu0gdijLR64egHKLynB+TJpLn86SeZkb3d1Ey9y7sl4ilQs9GK8/vfQqPdU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782372356; c=relaxed/simple;
-	bh=FejVIXwbvloMobkntI+cIlwaOjgw8R0D5EcQ5bVRNI8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=j+sjTAeEAr9dDKd8hcKYWlGs+7GKqo3AaJU5tu3K5jsYE1LlmHy38d0aci3VJWq3B/88m65FJlAjWwD/O0oevd1wEr4kz42w6xqa1wLuXNCKAfOMp6bMJjrnAUomomyVnzalHo2DWFPhdgF+lrWsoBwyL+oB+N/U576NQLbJ27o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NjvHkNKC; arc=fail smtp.client-ip=52.101.69.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F493BE659
+	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 07:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782372390; cv=none; b=S2M2C+aE23JezA19hewDYqELNh28bwTZgp98SQs8Rbbd6Cs62w4q7ciz4TKXWdKD1TTjK9citRFawv/+9b1VtF7wDsFjqaX/qJxoi440CctydFZYd2eXayNfjPUX/LjJ7xaymh7ns593ZE3DZKkrZ4BZTudsp69hXcC4eO1CbQE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782372390; c=relaxed/simple;
+	bh=8GGlx3sWwCNUfi2uyOIRHp+u5UGLgfIPVOqS/BZEtcE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=WFhxVOeMRI0JlQRJFPQH+9r2K8Sj7ZIvhHn9M/py8vtRyayJXPcJgxzfXU0XBjLUqt875Pe+CX9vz3Vs9PnHEQN6HlJRUnOlsr9sm/0EIODLUG1V/BKsMDSCqjBl9hp89tpdNoESwYFGed/24BWM3pe1vfwVIq6iggEgrV5rLu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdoC5efv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NjvHkNKC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nmZiVtSzIbuGK9kbVJVVpnoLb43Wcl/nPm6dRYJwS4t7rHqqfHmpf7b+nuGAjeeJ9DGcA5c6jB4AoMKo87V9BDllRfguQKOPZjEHDCPEoPuV5GNxD2UQ5qKoIa3kI6QzprJqBfc7TMg4x/ySfC1qw6Hd6nW6XI+T3c8Tjmr4CI7PY19J11ouSePFFItbgRPQ+laEjuJimQc8vXotYTIa2MnHwLZ8i1ewBbMVzgw2Wd+1LslMxqLFT0sbAMYegdIy2zeTZ91a14w044Hh6xz6SSOdC6zn2ChpLVMVn6vQp18LyMbxiYWstsg2W9Miwf/r1bzwornltKQEJFinqcOayw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i0Qp1bEdtAOorTeYWACiQslPOlPDx2pu/DIpg0yeUzo=;
- b=IZaEm1NrRyKY036HKEBRuuGQB8IkuUFF2rgAJJL3NqOwAmCIGAHCQT6oeHI4PEno1UmoSW8B18W5nRm7JpxhfDLKv9aUKR1ONIq4JRgYN7kubkeUeGsfcdRYRlwAip5Jgp8QiwGNtoFG0gE85DvhU/xbtDCw7RtDu/ZkHQxW+BbnEBc8qxeEk7K4++rDUBS/y1zhrGhpqv6neOsaldJ+KDpfsrsP/u+3PbPwipM6EL0AVLdrjn/s+mHnpZyqYAwX0SEhg1vSaq+52HG3rzaq4JOr8GiYd9FsI+o5dK5a4UYtcSHl6uiU1+hH843afwO3TfPtUDg6Ha0hcNoBs7c53w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i0Qp1bEdtAOorTeYWACiQslPOlPDx2pu/DIpg0yeUzo=;
- b=NjvHkNKCEyYaJRayr3MmdEqt1nrYWEXZq/4It6k+4p4APw+tSL8WEMJcDJ/cl4bA5kqSMNPpjtOi5QciUV3ntMnkL0palloXHk9hXQ1tM/7TuWjNB2tOk8X+qhQFaEklOmY+Bxc2IP5EtpnSyrvccPdljkao7hANEMvao+YueFE5D+q3uszqvMikkixlhfig/kEtGF7MtWQwZcS5EKykkVbJVlUGCTMWsB7wqGkxm6wFfvcbs2qkH1zJ8LFQJLa/upmSHnhfGKnWjozaGmTc5QKs+yt1PnqBfwwsw/+xfAz7UZvuakQVZpHNqaRczMTlSkhOuvCPGTXFde1+00lx9w==
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- (2603:10a6:800:315::13) by DU2PR04MB8760.eurprd04.prod.outlook.com
- (2603:10a6:10:2e3::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Thu, 25 Jun
- 2026 07:25:46 +0000
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994%6]) with mapi id 15.21.0139.018; Thu, 25 Jun 2026
- 07:25:46 +0000
-From: Sherry Sun <sherry.sun@nxp.com>
-To: "Frank Li (OSS)" <frank.li@oss.nxp.com>
-CC: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>, "robh@kernel.org"
-	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, Amitkumar
- Karwar <amitkumar.karwar@nxp.com>, Neeraj Sanjay Kale
-	<neeraj.sanjaykale@nxp.com>, "marcel@holtmann.org" <marcel@holtmann.org>,
-	"luiz.dentz@gmail.com" <luiz.dentz@gmail.com>, Hongxing Zhu
-	<hongxing.zhu@nxp.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org"
-	<kwilczynski@kernel.org>, "mani@kernel.org" <mani@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>, "brgl@kernel.org"
-	<brgl@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-bluetooth@vger.kernel.org"
-	<linux-bluetooth@vger.kernel.org>, "linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>
-Subject: RE: [PATCH V2 1/8] PCI: imx6: Add skip_pwrctrl_off flag support
-Thread-Topic: [PATCH V2 1/8] PCI: imx6: Add skip_pwrctrl_off flag support
-Thread-Index: AQHdAr0iuX6nZVWy60m8TZTUEemMGrZMNMoAgAEUz+CAAKi0gIAApisQ
-Date: Thu, 25 Jun 2026 07:25:46 +0000
-Message-ID:
- <VI0PR04MB12114BCBD405505888063284492EC2@VI0PR04MB12114.eurprd04.prod.outlook.com>
-References: <20260623030736.1421537-1-sherry.sun@oss.nxp.com>
- <20260623030736.1421537-2-sherry.sun@oss.nxp.com>
- <ajqZBM6IkbDLiVu2@SMW015318>
- <VI0PR04MB121147C305022511469FB603A92ED2@VI0PR04MB12114.eurprd04.prod.outlook.com>
- <ajwOvZUlOEQzmjsu@SMW015318>
-In-Reply-To: <ajwOvZUlOEQzmjsu@SMW015318>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI0PR04MB12114:EE_|DU2PR04MB8760:EE_
-x-ms-office365-filtering-correlation-id: 1f49fc68-87db-4384-a1dd-08ded28af9a2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|19092799006|22082099003|56012099006|11063799006|4143699003|38070700021|18002099003;
-x-microsoft-antispam-message-info:
- DZNDboajsc73uwIOPZLp7NvM1GdvXeltVgNXVDyF/c9SzvACjU21T2xRgX8whPvmnyF2Fi+KdWF4KbRyP0YRYjOHJlKWNeKTGuxO0C0XAcKHMyjXgc/H6oH6zjU4pRpxS3Q7wBNy/hb1qJMGQZgr2cBk5yGLx2CBX03HeNmUMCX1ubL4dFA9wRDCKhI6XOAttTnfV5e3V3XAy5qKZMsoulYVdK1XXjfvaEKZB4X1QDlf9yFixm8K30UlfPA8FfkUVXa1YB2xhW3g5yRpD1qyrZO+TCITN8ZWIJl7FRinRn2UjAqZJyI6kZ5F78Hf01X/+zCEq7XOapybF7dzTItSJnNtRTjjRQOkAUKHrao5SQ622RSOMpvjl7A4GKihFXLqM1WbtS6QxvJZphrqCjHDrd5x8OCSCC87XwUrdV6ZxwxX5k6+eKVkm7mwzg3BCz/Tm/nU20bB/n5sCY3vsH/rZzr6ikpN/AngUdIrwZAiNn378mb4DjqFH3cFifpVjn/eaQuP4h37z73eZqPpAH4TElh5Zx1s8Ed/o7SrgTME779G6GRTdF17ZoQJ06QQDdkW4GDsbCcfLV/VuVyLmb6vdEQO1jQfGg1EuvmkrKKvqOicIDKZXWyc4sKGdpSe6UCHXLwZm1YXz7OVhyzm86rVLdPqyYUQWbsehjp67wDnH2uFfQ/PDsesvTNUBLn/5JQRW1KQV0baNWtE1N2zDv2PTF6eMXGwoba4e4uhxFyR92o=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(19092799006)(22082099003)(56012099006)(11063799006)(4143699003)(38070700021)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?YhfXa6oG50U0UGw+BgnnoqGIGB7VQYd2qE+S9Ci488AYiT6OGTHi3NOdd12v?=
- =?us-ascii?Q?zrILmGVuMLF2dZOxyf434wz31QcecbWHDH/IqoS1nzMqQndp4fDhCCBxe090?=
- =?us-ascii?Q?H1W1DOMvhVAg6ifGOgqrfnM4fv0Zpci+FLi6gen8wzDn0oZQ5GWzdRH5VteF?=
- =?us-ascii?Q?KSh5j0H1hh+mflIK2qqGu/0BOEmcflatU9P8noaNcgYjpVdUOnuDmwVpZQMh?=
- =?us-ascii?Q?KCcZwRT1nKVhlnzcFTYxmRM6BbPcOKl2fMvTpPVAuKKSOY057fOE1kWH5OTW?=
- =?us-ascii?Q?oQc0smcxAJWluzfYbMS6LzXeBZI6OHEYbWo/n5jFee27eInGHc2zULNgDjl6?=
- =?us-ascii?Q?S2QphN+ktUSG/MfnwcamEf6g1d8JfEHLQ9bg6VsrmVtwyux+XQ5axVUNfwG6?=
- =?us-ascii?Q?db2fqcL14rBWTjHy8I6/j7ysZdF5EjIaT56xqD+ay14uEW8AjDaatuSNfKnS?=
- =?us-ascii?Q?qrX+3ECFjgTEsRqpxm4eR57lEpJ8TWGttWLKdnKnEcVuOEQeiKeEM9XeB80z?=
- =?us-ascii?Q?E7bxaLXFN+8iYfvmH6CxmGZ59osi4LHhZo5clcJjvhOsr1LzGm6cOH7bOKux?=
- =?us-ascii?Q?xxdK28qbwb6a9w4A4jax8dA35ZCDHw3miqYLHb5QWh8cZ8cdNlmiLCP97GqZ?=
- =?us-ascii?Q?7RHUVr+5NRPjBT4Jd5WzUAvq5SBQiWWH/Av6SrC/5lO8DTU4vVc1IFOVooiK?=
- =?us-ascii?Q?Qc0SrPsxXk9B0tlj6471xwvq4lMrYnDvC7o3FZTN1udDaLp+jRqw+yQNL1oE?=
- =?us-ascii?Q?Khj1lyxTV9IzZ0M0gOnpEsvQG0KiDsPigZc9Iqq/X5nK0SOi8v4lFaWp49N6?=
- =?us-ascii?Q?W8h4fFNadPUSgSm/eI/bEjeRSTzR0QIUIw7FtqVmLuGrmuo1SaYzA060Ibqo?=
- =?us-ascii?Q?UwIohKdL4uy1/9inoWDedEB/FAFrubMA3PYuQbzWIAn7PLW29HqWqvDrWA0S?=
- =?us-ascii?Q?Cs6pLejQrucaM/kQ4xixwE67g8rGLOiBdRLoHyhmSTbcgVeFhN26HSmnk2Pb?=
- =?us-ascii?Q?zFN5NXS9yQwJ9Q1eHxPi02HG4YHvqu2jUwz+9dnNHSq6rX8luvezuh+geozP?=
- =?us-ascii?Q?QhSHbN4oRiZme9Ia9oJzHfc3sYj6Qo1vNWNxrOdsnojFz2QcliZ8gcFGTC1L?=
- =?us-ascii?Q?VLNxw6lCplCJBrxvEIc5dxMZyBVuOGYUpM6E5TqnHgEJQSlPWvlSmytWtUhe?=
- =?us-ascii?Q?ZljnzB0G1G11j2Cvju2FmBfKmqijeBgCsSqxWtld+4Kb8/1Yh3YUSt8hD7cp?=
- =?us-ascii?Q?HiVMVqZQixaXuudbJ2fGRhTRIOzo2Ot8YQ990HCe98l/Cty0D8ZXeVtTZmtt?=
- =?us-ascii?Q?fQzuCclvMF9aLDCmp9EbJl3r9RiLNJZvkgMPB35EHDWMnLkT6xq5yYk1NORq?=
- =?us-ascii?Q?V5W/NBYGoW/H6EgF+ABdYIbm0VUkttEdBGhGeHy/3dIiObigU5XeNHeFfCr0?=
- =?us-ascii?Q?Dx1UM7E4oBavENg9gZ2wHXQOgjiVVKBnyP5weBNJC3fraGhVpierLJxxu6k3?=
- =?us-ascii?Q?UXlYf8a+3mwAuUZ/nYkuOAmRvP7c/3VQ49EW/yYoi/NbhIfjvojFdwsdn5li?=
- =?us-ascii?Q?3Fy+gZDpsLhMF9ipUIdwSCIDBi4OnEJOx/e4WviM2ZXlyhDc9djx2AknsxLs?=
- =?us-ascii?Q?ZaypdBxYWDoE6JR/WyriljCGhGocackXjj4sNyV+eCNeqahefOR7qmXz8oKC?=
- =?us-ascii?Q?91QWV2EIMG5SyzLbVNBMXP9xjjcQ+h3K0m9tX0+FNVmAnHKY?=
-Content-Type: text/plain; charset="us-ascii"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdoC5efv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6081F00A3A;
+	Thu, 25 Jun 2026 07:26:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782372388;
+	bh=H8HfaKIwFNNxGhgcnN9szR156YBylxxyQ9zuMXBzSlw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cdoC5efvhkGPtpLY+hLgLKCVAOZiTtyu2aEvCET4KEH0e3gDIYLawsM4fZ9zqygk3
+	 Z14XW5BrhyQPBXbLsaL6b1S0L0TlPFs1oAWSa8JTniDucPjDdqglFtYdUZhWVAJSpE
+	 5BOhSHxpJhgKXXNI2+GITYbATsa54enJWv3/LSSB7IPBnq6J3ieJrsIWaUzF4RSRjb
+	 DJYWCDxINTeg4m+EhQfeb3LhjrOo8mYGgvsbWnx315fptjvx4tGP11GSj7FahH8AKB
+	 5BQu1DkUl7UZfWXfWcuN+7PJgA5oWddscDCi8tQfT0WLtls2Fgj8aAvNrpkn6Il1R4
+	 30cD4+hqkcifg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] i2c: imx: Fix slave registration error path and missing
+ NULL check
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Liem <liem16213@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260625071130.93544-1-liem16213@gmail.com>
+References: <20260625071130.93544-1-liem16213@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Date: Thu, 25 Jun 2026 07:26:27 +0000
+Message-Id: <20260625072628.3F6081F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f49fc68-87db-4384-a1dd-08ded28af9a2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jun 2026 07:25:46.8407
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: s9Ua8WcLGb+3nLitrRFDRThEs4RA1CYxEK6sC00xgNZuc1UYBakyX2Nmg25KuTl4yjTf4wqHNkKtNGo6wEHyaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8760
 
-> Subject: Re: [PATCH V2 1/8] PCI: imx6: Add skip_pwrctrl_off flag support
->=20
-> On Wed, Jun 24, 2026 at 07:09:26AM +0000, Sherry Sun wrote:
-> > > Subject: Re: [PATCH V2 1/8] PCI: imx6: Add skip_pwrctrl_off flag
-> > > support
-> > >
-> > > On Tue, Jun 23, 2026 at 11:07:28AM +0800, Sherry Sun (OSS) wrote:
-> > > > From: Sherry Sun <sherry.sun@nxp.com>
-> > > >
-> > > > Use dw_pcie_rp::skip_pwrctrl_off to avoid powering off devices
-> > > > during suspend to preserve wakeup capability of the devices and
-> > > > also not to power on the devices in the init path.
-> > > > This allows controller power-off to be skipped when some devices(e.=
-g.
-> > > > M.2 cards key E without auxiliary power) required to support PCIe
-> > > > L2 link state and wake-up mechanisms.
-> > > >
-> > > > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-> > > > ---
-> > > >  drivers/pci/controller/dwc/pci-imx6.c | 36
-> > > > +++++++++++++++++----------
-> > > >  1 file changed, 23 insertions(+), 13 deletions(-)
-> > > >
-> > > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > index 0fa716d1ed75..ff5a9565dbbf 100644
-> > > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > @@ -1382,16 +1382,20 @@ static int imx_pcie_host_init(struct
-> > > > dw_pcie_rp
-> > > *pp)
-> > > >  		}
-> > > >  	}
-> > > >
-> > > > -	ret =3D pci_pwrctrl_create_devices(dev);
-> > > > -	if (ret) {
-> > > > -		dev_err(dev, "failed to create pwrctrl devices\n");
-> > > > -		goto err_reg_disable;
-> > > > +	if (!pci->suspended) {
-> > > > +		ret =3D pci_pwrctrl_create_devices(dev);
-> > >
-> > > Is possible move pci_pwrctrl_create_devices() of
-> > > pci_pwrctrl_create_devices
-> > >
-> > > and call it direct at probe() function, like other regulator_get func=
-tion.
-> > >
-> >
-> > Hi Frank,
-> > That makes sense. However, if we move pci_pwrctrl_create_devices () to
-> > probe(), we may need to add the following goto err_pwrctrl_destroy
-> > path in imx_pcie_probe() to properly handle errors from
-> > pci_pwrctrl_power_on_devices(), is that acceptable?
->=20
-> Can you add a API devm_pci_pwrctrl_create_devices() ?
->=20
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
 
-Hi Frank, we cannot unconditionally destroy the pwrctrl devices
-when probing fails by using devm API.
-Since we need to check the return value of
-pci_pwrctrl_power_on_devices() for example EPROBE_DEFER to decide
-whether to destroy the pwrctrl devices to avoid the deferred probe loop.
+New issues:
+- [Critical] The newly added NULL check in `i2c_imx_slave_event()` conditio=
+nally prevents state updates, creating an infinite loop in `i2c_imx_slave_f=
+inish_op()`.
+- [High] The lockless NULL check of `i2c_imx->slave` in `i2c_imx_slave_even=
+t()` introduces a Time-of-Check to Time-of-Use (TOCTOU) race condition.
 
-You can find more related discussion here.
-https://lore.kernel.org/all/tutxwjciedqoje5wxvtin4h637auni5zzpvb7rtfg4uticx=
-oux@yfl6xg7oht7t/
+Pre-existing issues:
+- [High] The background `slave_timer` is not synchronously cancelled in `i2=
+c_imx_unreg_slave()`, allowing a suspended device to be accessed.
+- [High] The shared IRQ handler accesses hardware registers unconditionally=
+ without verifying the runtime PM state, violating PM Subsystem guidelines.
+- [High] The runtime suspend callback powers down hardware without calling =
+`synchronize_irq()`, violating PM Subsystem Concurrency rules for shared IR=
+Qs.
+--
 
-Best Regards
-Sherry
->=20
-> >
-> > @@ -1960,11 +1949,15 @@ static int imx_pcie_probe(struct
-> platform_device *pdev)
-> >         if (ret)
-> >                 return ret;
-> >
-> > +       ret =3D pci_pwrctrl_create_devices(dev);
-> > +       if (ret)
-> > +               return dev_err_probe(dev, ret, "failed to create
-> > + pwrctrl devices\n");
-> > +
-> >         pci->use_parent_dt_ranges =3D true;
-> >         if (imx_pcie->drvdata->mode =3D=3D DW_PCIE_EP_TYPE) {
-> >                 ret =3D imx_add_pcie_ep(imx_pcie, pdev);
-> >                 if (ret < 0)
-> > -                       return ret;
-> > +                       goto err_pwrctrl_destroy;
-> >
-> >                 /*
-> >                  * FIXME: Only single Device (EPF) is supported due to
-> > the @@ -1979,7 +1972,7 @@ static int imx_pcie_probe(struct
-> platform_device *pdev)
-> >                 pci->pp.use_atu_msg =3D true;
-> >                 ret =3D dw_pcie_host_init(&pci->pp);
-> >                 if (ret < 0)
-> > -                       return ret;
-> > +                       goto err_pwrctrl_destroy;
-> >
-> >                 if (pci_msi_enabled()) {
-> >                         u8 offset =3D dw_pcie_find_capability(pci,
-> > PCI_CAP_ID_MSI); @@ -1991,6 +1984,11 @@ static int
-> imx_pcie_probe(struct platform_device *pdev)
-> >         }
-> >
-> >         return 0;
-> > +
-> > +err_pwrctrl_destroy:
-> > +       if (ret !=3D -EPROBE_DEFER)
-> > +               pci_pwrctrl_destroy_devices(dev);
-> > +       return ret;
-> >  }
-> >
-> > Best Regards
-> > Sherry
-> >
-> > >
-> > > > +		if (ret) {
-> > > > +			dev_err(dev, "failed to create pwrctrl devices\n");
-> > > > +			goto err_reg_disable;
-> > > > +		}
-> > > >  	}
-> > > >
-> > > > -	ret =3D pci_pwrctrl_power_on_devices(dev);
-> > > > -	if (ret) {
-> > > > -		dev_err(dev, "failed to power on pwrctrl devices\n");
-> > > > -		goto err_pwrctrl_destroy;
-> > > > +	if (!pp->skip_pwrctrl_off) {
-> > > > +		ret =3D pci_pwrctrl_power_on_devices(dev);
-> > > > +		if (ret) {
-> > > > +			dev_err(dev, "failed to power on pwrctrl devices\n");
-> > > > +			goto err_pwrctrl_destroy;
-> > > > +		}
-> > > >  	}
-> > > >
-> > > >  	ret =3D imx_pcie_clk_enable(imx_pcie); @@ -1460,9 +1464,10 @@
-> > > static
-> > > > int imx_pcie_host_init(struct dw_pcie_rp *pp)
-> > > >  err_clk_disable:
-> > > >  	imx_pcie_clk_disable(imx_pcie);
-> > > >  err_pwrctrl_power_off:
-> > > > -	pci_pwrctrl_power_off_devices(dev);
-> > > > +	if (!pp->skip_pwrctrl_off)
-> > > > +		pci_pwrctrl_power_off_devices(dev);
-> > > >  err_pwrctrl_destroy:
-> > > > -	if (ret !=3D -EPROBE_DEFER)
-> > > > +	if (ret !=3D -EPROBE_DEFER && !pci->suspended)
-> > > >  		pci_pwrctrl_destroy_devices(dev);
-> > > >  err_reg_disable:
-> > > >  	if (imx_pcie->vpcie)
-> > > > @@ -1482,7 +1487,8 @@ static void imx_pcie_host_exit(struct
-> > > > dw_pcie_rp
-> > > *pp)
-> > > >  	}
-> > > >  	imx_pcie_clk_disable(imx_pcie);
-> > > >
-> > > > -	pci_pwrctrl_power_off_devices(pci->dev);
-> > > > +	if (!pci->pp.skip_pwrctrl_off)
-> > > > +		pci_pwrctrl_power_off_devices(pci->dev);
-> > > >  	if (imx_pcie->vpcie)
-> > > >  		regulator_disable(imx_pcie->vpcie);
-> > > >  }
-> > > > @@ -1990,12 +1996,16 @@ static int imx_pcie_probe(struct
-> > > > platform_device *pdev)  static void imx_pcie_shutdown(struct
-> > > > platform_device *pdev)  {
-> > > >  	struct imx_pcie *imx_pcie =3D platform_get_drvdata(pdev);
-> > > > +	struct dw_pcie *pci =3D imx_pcie->pci;
-> > > > +	struct dw_pcie_rp *pp =3D &pci->pp;
-> > > >
-> > > >  	/* bring down link, so bootloader gets clean state in case of reb=
-oot */
-> > > >  	imx_pcie_assert_core_reset(imx_pcie);
-> > > >  	imx_pcie_assert_perst(imx_pcie, true);
-> > > > -	pci_pwrctrl_power_off_devices(&pdev->dev);
-> > > > -	pci_pwrctrl_destroy_devices(&pdev->dev);
-> > > > +	if (!pp->skip_pwrctrl_off)
-> > > > +		pci_pwrctrl_power_off_devices(&pdev->dev);
-> > > > +	if (!pci->suspended)
-> > > > +		pci_pwrctrl_destroy_devices(&pdev->dev);
-> > > >  }
-> > > >
-> > > >  static const struct imx_pcie_drvdata drvdata[] =3D {
-> > > > --
-> > > > 2.50.1
-> > > >
-> > > >
+commit acf987bc13c7f8a8bbb96ab3004b61c139d9bb11
+Author: Liem <liem16213@gmail.com>
+
+i2c: imx: Fix slave registration error path and missing NULL check
+
+This patch fixes an issue in i2c_imx_reg_slave() by clearing the slave
+pointer when pm_runtime_resume_and_get() fails. It also adds a NULL check
+in i2c_imx_slave_event() to prevent dereferencing a NULL slave pointer
+during slave events.
+
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index cf5bacf3a4884..8c44f6bf618c1 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -715,8 +715,10 @@ static void i2c_imx_enable_bus_idle(struct imx_i2c_s=
+truct *i2c_imx)
+>  static void i2c_imx_slave_event(struct imx_i2c_struct *i2c_imx,
+>  				enum i2c_slave_event event, u8 *val)
+>  {
+> -	i2c_slave_event(i2c_imx->slave, event, val);
+> -	i2c_imx->last_slave_event =3D event;
+> +	if (i2c_imx->slave) {
+> +		i2c_slave_event(i2c_imx->slave, event, val);
+
+[Severity: High]
+Does this introduce a time-of-check to time-of-use race condition?
+
+The slave pointer is read locklessly here, and the compiler could read
+i2c_imx->slave twice: once for the if-condition and once to pass as an
+argument to i2c_slave_event().
+
+If i2c_imx_unreg_slave() clears the pointer to NULL concurrently from proce=
+ss
+context without holding slave_lock:
+
+i2c_imx_unreg_slave() {
+    ...
+    i2c_imx->slave =3D NULL;
+    ...
+}
+
+Could i2c_slave_event() receive and dereference a NULL pointer?
+
+> +		i2c_imx->last_slave_event =3D event;
+> +	}
+
+[Severity: Critical]
+Does skipping this state update when the slave is NULL cause an infinite lo=
+op
+in i2c_imx_slave_finish_op()?
+
+If i2c_imx->slave is cleared concurrently, last_slave_event is never advanc=
+ed
+to I2C_SLAVE_STOP.
+
+i2c_imx_slave_finish_op() iterates based on this state:
+
+i2c_imx_slave_finish_op() {
+    ...
+    while (i2c_imx->last_slave_event !=3D I2C_SLAVE_STOP) {
+        ...
+        case I2C_SLAVE_WRITE_REQUESTED:
+            ...
+            i2c_imx_slave_event(i2c_imx, I2C_SLAVE_STOP, &val);
+            break;
+    }
+}
+
+Will this cause the while loop to spin indefinitely?
+
+[ ... ]
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does i2c_imx_unreg_slave()
+fail to synchronously cancel the background timer?
+
+It drops the runtime PM reference and disables the clock, but does not canc=
+el
+i2c_imx->slave_timer.
+
+If the timer executes asynchronously after the clock is off:
+
+i2c_imx_slave_timeout() {
+    ...
+    status =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR);
+    ...
+}
+
+Will reading the hardware register trigger an external abort?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the shared IRQ handler
+access hardware registers unconditionally without verifying the runtime PM
+state?
+
+The driver requests a shared IRQ line:
+
+i2c_imx_probe() {
+    ...
+    ret =3D request_threaded_irq(irq, i2c_imx_isr, NULL, IRQF_SHARED,
+                               pdev->name, i2c_imx);
+    ...
+}
+
+If another device on the shared IRQ line triggers an interrupt while the I2C
+controller is runtime-suspended, the ISR reads from a powered-off IP block:
+
+i2c_imx_isr() {
+    ...
+    status =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR);
+    ...
+}
+
+Should the ISR verify the device is active using pm_runtime_get_if_active()?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the runtime suspend
+callback power down hardware without calling synchronize_irq()?
+
+i2c_imx_runtime_suspend() {
+    ...
+    clk_disable(i2c_imx->clk);
+    ...
+}
+
+Because the driver requests an IRQ with the IRQF_SHARED flag, PM subsystem
+guidelines mandate that synchronize_irq() must be called in the runtime
+suspend callback before powering down hardware. This prevents the IRQ
+handler from executing mid-flight on another CPU while the clock is being
+disabled.
+
+Is a call to synchronize_irq() needed here?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260625071130.9354=
+4-1-liem16213@gmail.com?part=3D1
