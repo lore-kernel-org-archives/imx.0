@@ -1,152 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932E42FD665;
-	Thu, 25 Jun 2026 09:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53E2331EC7
+	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 09:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782379279; cv=none; b=KhkOo7CQgcmR9AJTcfakvZdmVGuu+dcm8Sj0GcfFxDWkWwLcfYBwTwWC/L3TyAwIVm2GIjB+zlanjBt9v3/YCVeYmCby8lVsK4WF7wA4BtIvb0OHajF+vfU1Q+aYMCtW1NM7cmXMw1fzY5VhfD7dDGIfqnT6ET19vEcZrnKfvLs=
+	t=1782379969; cv=none; b=KzC7r0GaynicDrqW1TlbCYmreYanOq+w/6qDDRpIPqpT3wwuvWUvYeUtg7wojNS3MIjm4++zh88EAowlt8bMqXj5NLDfJyuQpfM+QEyPJT5Xn0MszUMmamsMYuUK3oraOKbr7ll7JawiwCY5Ig+XKP12/FV8VOrxl39HRUrVhdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782379279; c=relaxed/simple;
-	bh=lwhv5b/WmqtM+0FRnJJk7OcV1ke5fouT28ItryejZc4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CCoHtpluB/o72FstGxBiJB9SNn9L8e/AZiXr0PExFRlNPuwKODzhD069O9RSLLEcZjOA9kpkEjas+2sgc76wxlZSgGBRsy7argNwueWIGkVjHQkMIOsttSqajmwc3BO5+HFR4njFCMbgBtHNfnpobAqY7sFF/AqjSy1cqF1yHzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uu7FtSog; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782379969; c=relaxed/simple;
+	bh=qAWKLj/rSvIMKFR+M0lyvRH0Z5e0F+cetIOOra9vnsE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=WtI21aoY9nIjdOd+M27ZDJVlM/uPn0sTiwzAoOqEG2TTJK7dSHksIu/HOb0kDZEtD9wVQU0UMZgbAawMFLzTRDcF7Urdnp6lKZLhmkX4V4qPRoH4YN5an6B1duhJE/q/Yn32wg5ln7VxGnQo2Wy2NVCoLiUg0mpR9SWSKf+d8As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NVv/0kRP; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uu7FtSog"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C001F000E9;
-	Thu, 25 Jun 2026 09:21:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782379277;
-	bh=V5iJDybVYPLoX8tIWuO1oSOYbYzxjByZEtoOXZZEB1o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Uu7FtSogfsh1/TsUEzgdwoSQBWNkFG5vJ3tixdsCR/67YmVD6Furdy+HvBTV9Cqyk
-	 GJlUnSYCrsZlncPObmImIZp8s0EsTONe9s5xF5V6+0nON6ZpJlIajv6OepeOyq0xlh
-	 pgdw5asM/17CGDBA+9Vy5mIHhQxClHje624+g/KFHSZqp5xBF+ds7ePYLOWkrAb65c
-	 A/jLEl0eilyDqlZ8CO7CelKMyLh5FDACfx6y7iIA71ZRnxMsuDyXG9YyK5l/pU+UG4
-	 4ceDvBgAXAHv4oA8t2sxNTtZjPgCxBLTOSyafyJ9jWJfyQ2BMAjlfw6OgDJHq2zWV+
-	 ubxocSsyjvlhw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 5/5] dmaengine: mcf-edma: Use devm for per-channel
- IRQ registration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jean-Michel Hautbois" <jeanmichel.hautbois@yoseli.org>
-Cc: vkoul@kernel.org, Frank.Li@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260625-b4-edma-dmaengine-v3-5-44be00ace37d@yoseli.org>
-References: <20260625-b4-edma-dmaengine-v3-0-44be00ace37d@yoseli.org>
- <20260625-b4-edma-dmaengine-v3-5-44be00ace37d@yoseli.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 25 Jun 2026 09:21:16 +0000
-Message-Id: <20260625092116.C8C001F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NVv/0kRP"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id EF6481A0997;
+	Thu, 25 Jun 2026 09:32:43 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B48175FF03;
+	Thu, 25 Jun 2026 09:32:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A91F8106F07A6;
+	Thu, 25 Jun 2026 11:32:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782379962; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=gzklC7KBIiORDiPpvxIA/RiOGT5I3aaT1J/z+yclQsw=;
+	b=NVv/0kRPnXsXfA3t4Z35KoZxhi4rXMP0NjvjCK7e+pUAiE1yEzWyFjHOzRXycBAokON8Km
+	3pEjntsgnjJQaztyKwn6+D5BW99kYL2b1WXbBFKqvBxnOWgtIZwd4Nkx7v05NP2C19M9lc
+	xJxlbR8NOherY2tXngy74mGDJltt/mAITbaBccIKy+8ddeapqXKAlnyGVB6FXpxsau/BRv
+	jsf9pbdO1NuJHTjsl8ltGwX1z4NWZ4NP7+WC2q4hmM+2UVF00gWaW8w9IP+OrSXp87vftB
+	xGkQFopFQjmI55oD9do6bpHlZXV65REQHvcrdLz5aULQrJiUb5qxvuXVFmgm7g==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 25 Jun 2026 11:32:32 +0200
+Message-Id: <DJI0YM93PKAM.TMLLL1394R5D@bootlin.com>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Maxime Ripard"
+ <mripard@kernel.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 15/37] drm/display: bridge-connector: allocate the
+ connector dynamically
+Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Inki Dae"
+ <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>,
+ "Stefan Agner" <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
+ <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+X-Mailer: aerc 0.21.0
+References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-15-45e2bdb3dfb4@bootlin.com>
+ <20260608-rustling-infrared-turkey-e09af8@houat>
+ <DJ72WOUW5FA2.G1MPCAHJQ13F@bootlin.com>
+ <20260624-judicious-enigmatic-hippo-b13ffe@houat>
+ <DJHE108R7TU6.35ECAUQ8ZX041@bootlin.com>
+In-Reply-To: <DJHE108R7TU6.35ECAUQ8ZX041@bootlin.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Wed Jun 24, 2026 at 5:34 PM CEST, Luca Ceresoli wrote:
+> Hi Maxime,
+>
+> thanks for the feedback.
+>
+> On Wed Jun 24, 2026 at 1:48 PM CEST, Maxime Ripard wrote:
+>> On Fri, Jun 12, 2026 at 02:44:43PM +0200, Luca Ceresoli wrote:
+>>> On Mon Jun 8, 2026 at 1:46 PM CEST, Maxime Ripard wrote:
+>>> > On Tue, May 19, 2026 at 12:37:32PM +0200, Luca Ceresoli wrote:
+>>> >> Currently the drm_bridge_connector has an embedded drm_connector, so=
+ their
+>>> >> allocation lifetimes are tied to each other. This is insufficient to
+>>> >> support DRM bridge hotplugging, which requires the connector to be a=
+dded
+>>> >> and removed dynamically at runtime multiple times based on hotplug/u=
+nplug
+>>> >> events while the drm_bridge_connector is persistent.
+>>> >>
+>>> >> Moreover the drm_connector is exposed to user space and thus an ongo=
+ing
+>>> >> operation (e.g. an ioctl) might last for an arbitrarily long time ev=
+en
+>>> >> after the hardware gets removed. This means a new connector might ha=
+ve to
+>>> >> be added when the previous one is still referenced by user space.
+>>> >>
+>>> >> In preparation to handle hotplug, allocate the drm-connector dynamic=
+ally,
+>>> >> to allow:
+>>> >>
+>>> >>  * creating and destroying a connector multiple times during a singl=
+e
+>>> >>    drm_bridge_connector lifetime
+>>> >>  * creating a new connector even though the previous one is still in=
+ use
+>>> >>    and thus still refcounted and not yet freed
+>>> >>
+>>> >> This commit does not introduce the actions in the two bullets (it wi=
+ll
+>>> >> happen in a later commit), it only moves to dynamic APIs for connect=
+or
+>>> >> allocation and init.
+>>> >>
+>>> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>>> >
+>>> > I think this patch should be split in half, with the switch to using
+>>> > destroy first, and then the actual move to the dynamically allocated
+>>> > connector API.
+>>>
+>>> Is it doable? drm_connector_dynamic_init() mandates a .destroy callback=
+,
+>>> drm_connector_init() forbids it.
+>>
+>> drmm_connector_init forbids it. drm_connector_init mandates it.
+>
+> Something bogus in my reply, sorry. :)
+>
+> So you mean splitting in:
+>
+>  * first patch: move from drmm_connector[_hdmi]_init() to
+>    drm_connector[_hdmi]_init() and add a .destroy
+>  * second patch: move from drm_connector[_hdmi]_init() to
+>    drm_connector[_hdmi]_dynamic_init() +
+>    drm_connector_dynamic_register/unregister()
 
-New issues:
-- [High] Replacing explicit `free_irq()` with `devm_request_irq()` introduc=
-es a Use-After-Free race condition by deferring IRQ unregistration until af=
-ter the virtual channels are torn down.
+Ah, no, there's an annoyance here. drm_connector_hdmi_init() does not
+exist, so it'd have to be created just for the sake of splitting this
+patch, sitting unused after the second patch.
 
-Pre-existing issues:
-- [High] dma_async_device_unregister() fails to clean up channels because f=
-sl_edma_cleanup_vchan() improperly empties the channel list beforehand, lea=
-ding to a resource leak.
+I don't think it's worth implementing (and maybe deleting) it just for
+that, so I'm leaving this patch as is unless you have counteraguments.
+
+Luca
+
 --
-
-commit 3174cb73d4f28e4270bffd2960b8600186152672
-Author: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-
-dmaengine: mcf-edma: Use devm for per-channel IRQ registration
-
-This patch converts the eDMA transfer interrupt registration to use the
-managed devm_request_irq() API with per-channel names. It also adds logic
-in the remove path to manually quiesce the hardware since the interrupts
-are now freed later by devres.
-
-> diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-> --- a/drivers/dma/mcf-edma-main.c
-> +++ b/drivers/dma/mcf-edma-main.c
-
-[ ... ]
-
-> @@ -249,8 +234,21 @@ static int mcf_edma_probe(struct platform_device *pd=
-ev)
->  static void mcf_edma_remove(struct platform_device *pdev)
->  {
->  	struct fsl_edma_engine *mcf_edma =3D platform_get_drvdata(pdev);
-> +	struct edma_regs *regs =3D &mcf_edma->regs;
-> +	int i;
-> +
-> +	/*
-> +	 * The per-channel interrupts are requested with devm and are only
-> +	 * freed after this function returns.  Quiesce the controller first so
-> +	 * that no interrupt can fire while the virtual channels are torn down:
-> +	 * disable every channel's request and acknowledge any pending
-> +	 * interrupt.
-> +	 */
-> +	for (i =3D 0; i < mcf_edma->n_chans; i++)
-> +		fsl_edma_disable_request(&mcf_edma->chans[i]);
-> +	iowrite32(~0, regs->inth);
-> +	iowrite32(~0, regs->intl);
-> =20
-> -	mcf_edma_irq_free(pdev, mcf_edma);
->  	fsl_edma_cleanup_vchan(&mcf_edma->dma_dev);
-
-[Severity: High]
-Does deferring the IRQ unregistration until after the virtual channels are
-torn down introduce a use-after-free race?
-
-Since devm_request_irq() defers freeing the IRQ until after mcf_edma_remove=
-()
-returns, the driver loses the synchronization barrier that previously waited
-for in-flight handlers. The manual hardware quiescence loop does not
-synchronize with already executing handlers.
-
-If an interrupt handler executes on another CPU, could it complete the tran=
-sfer
-and call vchan_cookie_complete(), which executes tasklet_schedule()?
-
-If this happens after fsl_edma_cleanup_vchan() kills the tasklet:
-
-fsl_edma_cleanup_vchan()
-        tasklet_kill(&chan->vchan.task);
-
-the tasklet could be placed back on the runqueue. After remove() completes,
-devres frees the IRQ and device memory, meaning the scheduled tasklet would
-execute on freed memory.
-
->  	dma_async_device_unregister(&mcf_edma->dma_dev);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the order of operations
-here leave dma_async_device_unregister() operating on an empty list?
-
-Looking at fsl_edma_cleanup_vchan(), it iterates over dmadev->channels and
-removes every channel from the list:
-
-fsl_edma_cleanup_vchan() {
-        list_for_each_entry_safe(...) {
-                list_del(&chan->vchan.chan.device_node);
-                ...
-        }
-}
-
-Immediately after, dma_async_device_unregister() is called, which relies on
-iterating over the exact same device->channels list to unregister the
-channels.
-
-Because the list was just emptied, the iteration does zero passes, skipping
-the core channel unregistration and permanently leaking sysfs entries and
-per-cpu memory.
-
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260625-b4-edma-dm=
-aengine-v3-0-44be00ace37d@yoseli.org?part=3D5
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
