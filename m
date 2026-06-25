@@ -1,145 +1,92 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAD62DAFA9
-	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 07:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7218C40D567
+	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 07:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782371507; cv=none; b=J45QBPbwEQcWeEkFA7teaLomOLIZIItYWg1EqwWkgPMA6YNCaLKH/6MbvcCAANd5BxXar7AqdSnahn4D80LTrzkUzAZPzlkIROE2i+MVN52SSesizm+NoKz2KBzpShpUcMVJDuNn0QysCILQt/HJ6lPm2XCGhKedjJCS0NgqoFU=
+	t=1782371753; cv=none; b=bDiCBSIfA3O78ROkamGxwyfWZR1DZ1UuwHFgA6YDyf+5AXJqhV7q2Ho/4dewyOVJ9ryetPaDxUCTvy+Fqhcw0G8DLkEpTUP2O6HwTEMZX0/+QPkj0a3puBMrkyUieUgZrWX5r6zJYy/FrRpy+R3clbQ8GntcJlX9yt68GMIxZjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782371507; c=relaxed/simple;
-	bh=cT3Hg/8SGJkDy7HTaTfodhduHUgAnrmxwuYSn134zgo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OTdlKJaB/cugY6ToaAnKzI2HM/5+V5TO5TRsf+See/Yxz5jalt/b15/R100eftiRcbXaJw0WXgEi9WhAonTgacx9orUP+Ex7Hup1zjTbO1M5XIIKioVruhx+cQO44/+NJhe8+fQX1EihLXZhfPfeHKJ6Ytb0NDA2RDrdn3DQY7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GgPYPbN6; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GgPYPbN6"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c7f1db3ad4so9701195ad.3
-        for <imx@lists.linux.dev>; Thu, 25 Jun 2026 00:11:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782371505; x=1782976305; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YyhtrgUl91lDu8t83AeqgjUXFN0xPavBjbeVdqHjXo8=;
-        b=GgPYPbN6T5mOfvkzz7EPH5YdeAaq7Ve3OsGvDhZmgVEaIRoVGOt44R1at0Du9IiyJa
-         pgPV5XU6SsAd9vUTnqPW9k+kiito2brcxJTHrZicyysQm8PRfcRXE4nkigs/I1Gno6uF
-         ytSxAAv79gFBhjOqNX3QRC0eiG6fr/W7r375uGdiuHS+SYPHGn7qAtHshCAW7uzf8EMj
-         DOASsQLx1d7bkgqirGlnMJ1+k4e52yKvLOjWqPXp60R8++Z/u5AVUPprdh7zz1FsFxfy
-         k7DS1iDvW7fq9b707iMWWTkE12S0C9J5w/5wn4b6qD/Ornvx2J24kB88qFD1YWZTqZKX
-         f22g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782371505; x=1782976305;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YyhtrgUl91lDu8t83AeqgjUXFN0xPavBjbeVdqHjXo8=;
-        b=UZ85LNN6oc79rqIMALl8b0pmr93hAoTOFpnJ9OfHUrFb/YjYWGpvptWLYaDTI4OxSb
-         w6f01C8jtmIFD46lJ9QgXvnX7VvM7oZ7cOh+DqCH3FI9IDphcLChdiL+SzbOe9LrcgpS
-         r5wTq3DN0OfUyJtiDs+quPMKTlW9tIU8SnZy8PmyfecG6l5RnMs9qF4MlcnG/Zg9uKCl
-         cmk80c+V11806K4OXHiHpxvOwJamS3toZb9drPosynohbJG/GAUoMR+mzmSFGJhTROdZ
-         noBvLqZ3ItlAMZ00wgAOCNoVSJUZvT220CfJuqn/56SgrZxHjbjfzv6t+6gdPGj94eRL
-         9/8w==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2wf/ccS8gxttWXT468nU7rskP1lk3v6oawAiozr7N5zmmUFhJY5bgec0wfR0yWSgoy4E=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwR8rJWZRKJTyIVnB/JnszMaz4zfoXGdO7OFfbtiJ8pCVrnlfp
-	+ARP0l4A0tWFnu4cv0lPyfIBjAz9WPWCE33aJPkUgKt6BvK+VrEdI4Rl
-X-Gm-Gg: AfdE7clhKrSOynuTyOzsOxdnByNwcHQkihEdIncBRFGXoWJp0TRK6MpIqNwJPe2BMa8
-	9j9Bv2nJTE05xJpXqwZgXYnNIFz+/IJH7Cal4ZBdjPxHK1EFqqnlKEY7lMSJrzg7Vqk+e4s84dQ
-	qdJ9oUmSF3YMtP6XUgzVe4+jm8YttpH5fRGAOO9kIOO7NrvUdO+ROEjOrT09FW6ELjuq1v3xGyS
-	aTZ6msXWPYzIDw6z+XacNYe0kFwkel4zBLQXS9mWixrRfzoAMOYNBn2845Og+bZHa7lFsVAXZFV
-	+Zj00ASGdE0Nu9+tvNXl9B+NumaclAOUQyozmW0jdf3QXpXO2pHvtwp5MANVuovkBEV0ygt3l9h
-	JAeZMneSwval72t7YXD7LRsGswrABrjq1IZ/i6xQalZ0yctUUxo7oBhpVeZm1VwpJ2pGR39xfWM
-	Zms/8jfpHVBd4=
-X-Received: by 2002:a17:902:da92:b0:2c0:d097:51bb with SMTP id d9443c01a7336-2c7fc9bfd9cmr15548495ad.1.1782371505585;
-        Thu, 25 Jun 2026 00:11:45 -0700 (PDT)
-Received: from archermind.. ([182.150.55.91])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f58cbe35sm14624385ad.0.2026.06.25.00.11.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 00:11:45 -0700 (PDT)
-From: Liem <liem16213@gmail.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andi Shyti <andi.shyti@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Biwen Li <biwen.li@nxp.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Liem <liem16213@gmail.com>
-Subject: [PATCH] i2c: imx: Fix slave registration error path and missing NULL check
-Date: Thu, 25 Jun 2026 15:11:30 +0800
-Message-Id: <20260625071130.93544-1-liem16213@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1782371753; c=relaxed/simple;
+	bh=jtLyUbKd7dDuflCpKpED/0d4+HlPwf4sht7We6CR1Kg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sbPrTDMtNsMJXr7enWwTTQ02/FjMsapLGJXz68A6tR9Z16zpOqODF79P4NIXv021dr4wsFjtVzMmgOMQNJcBFCPy3GrCKJtmJ/0DVTQ5etV0yGePL7VZA58Pvv7yut1rva2x6EdD9irv23CZLrw4fhJ3cbrXASCcLOq7oqW17ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id EBA0D200320;
+	Thu, 25 Jun 2026 09:15:47 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wceJP-004YMk-2p;
+	Thu, 25 Jun 2026 09:15:47 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wceJP-0000000DGAN-39Df;
+	Thu, 25 Jun 2026 09:15:47 +0200
+Date: Thu, 25 Jun 2026 09:15:47 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+Cc: kernel@pengutronix.de, andi.shyti@kernel.org, s.hauer@pengutronix.de,
+	festevam@gmail.com, carlos.song@nxp.com, haibo.chen@nxp.com,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v5] i2c: imx: mark I2C adapter when hardware is powered
+ down
+Message-ID: <ajzVo1_hnbv-l8gQ@pengutronix.de>
+References: <20260525030400.3182911-1-carlos.song@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260525030400.3182911-1-carlos.song@oss.nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-There are two issues that affect the i2c-imx slave handling:
+On Mon, May 25, 2026 at 11:04:00AM +0800, Carlos Song (OSS) wrote:
+> From: Carlos Song <carlos.song@nxp.com>
+> 
+> On some i.MX platforms, certain I2C client drivers keep a periodic
+> workqueue which continues to trigger I2C transfers.
+> 
+> During system suspend/resume, there exists a time window between:
+>   - suspend_noirq and the system entering suspend
+>   - the system starting to resume and resume_noirq
+> 
+> In this window, the I2C controller resources such as clock and pinctrl
+> may already be disabled or not yet restored.
+> 
+> If a workqueue triggers an I2C transfer in this period, the driver
+> attempts to access I2C registers while the hardware resources are
+> unavailable, which may lead to system hang.
+> 
+> Mark the I2C adapter as suspended during noirq suspend and block new
+> transfers until resume, ensuring that I2C transfers are only issued
+> when hardware resources are available.
+> 
+> Fixes: 358025ac091e ("i2c: imx: make controller available until system suspend_noirq() and from resume_noirq()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
 
-1. In i2c_imx_reg_slave(), i2c_imx->slave is checked at the beginning
-   and the function returns -EBUSY if it is non-NULL.  If
-   pm_runtime_resume_and_get() fails later, the error path returns
-   without clearing i2c_imx->slave, leaving it non-NULL.  Subsequent
-   attempts to register a slave will then immediately fail with
-   -EBUSY, making it impossible to register the slave again.  Fix
-   by setting i2c_imx->slave = NULL on the error path.
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-2. In i2c_imx_unreg_slave(), the slave pointer is set to NULL after
-   disabling interrupts.  However, a pending interrupt might already
-   have started a timer (e.g. for slave event processing) before
-   the pointer was cleared.  The timer callback
-   i2c_imx_slave_event() dereferences i2c_imx->slave without a
-   NULL check, which results in a use-after-free / NULL pointer
-   dereference.  Prevent this by checking that i2c_imx->slave is
-   valid before calling i2c_slave_event() and updating the
-   last_slave_event field.
+Thank you!
 
-Both issues can trigger a kernel oops or permanent slave
-registration failure under certain race conditions.  Add the
-missing NULL assignment and the missing NULL check to harden
-the slave path.
-
-Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Liem <liem16213@gmail.com>
----
- drivers/i2c/busses/i2c-imx.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 28313d0fad37..4f7bcbeecfd0 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -775,8 +775,10 @@ static void i2c_imx_enable_bus_idle(struct imx_i2c_struct *i2c_imx)
- static void i2c_imx_slave_event(struct imx_i2c_struct *i2c_imx,
- 				enum i2c_slave_event event, u8 *val)
- {
--	i2c_slave_event(i2c_imx->slave, event, val);
--	i2c_imx->last_slave_event = event;
-+	if (i2c_imx->slave) {
-+		i2c_slave_event(i2c_imx->slave, event, val);
-+		i2c_imx->last_slave_event = event;
-+	}
- }
- 
- static void i2c_imx_slave_finish_op(struct imx_i2c_struct *i2c_imx)
-@@ -936,6 +938,7 @@ static int i2c_imx_reg_slave(struct i2c_client *client)
- 	/* Resume */
- 	ret = pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
- 	if (ret < 0) {
-+		i2c_imx->slave = NULL;
- 		dev_err(&i2c_imx->adapter.dev, "failed to resume i2c controller");
- 		return ret;
- 	}
+Best Regards,
+Oleksij
 -- 
-2.34.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
