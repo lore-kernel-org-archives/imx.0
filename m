@@ -1,88 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F2C3314BF;
-	Fri, 26 Jun 2026 08:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1CB3E559B
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 08:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782462073; cv=none; b=jz3jSntru49kmBBCB56wg7HKzWW74zbaT+rxu2VUqGcB83B65UXX0uI8sphA/RP8wCfDFvrtVanjCByl/++8EwfNHy49RJqQDeBFWvOKOL1XCpeC3/9SZC5cyxrwhRQsfjXEnMaewWZa8reINlgDe7a83y9ImYfLms8gxVl4j2M=
+	t=1782462640; cv=none; b=kcwHr0kMOooeCIHHsHvBq3zIuKb2BhyrqEI/ZC0dOBF95zVCGhKOtY+jphp2jXI1Wiv5nvldZ3pvyREQAwJKLSN5Bu7QvedT2eyuxnRqi00dbdfXHkC5UYeryzHV8+US7hbu1LW8MX9CWOm/ii03dCx7/IpT6rIxUpuH0oT04Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782462073; c=relaxed/simple;
-	bh=fQ5QPBIlRXuwWqdYdV9ssqCWmUSDxWbJSPaWIIOFzKg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=S7Fq+JK67prEqBIO9wgewR3DAh6jkJDUVAQQIpxWvQLPgmudUibUYyiVWLWqPo+O6JYgXFzUILM+6W3IXUTLkJJnkzVrv5pboKZHTCFHztetnuThtfsoXq5Ragqwy4rpqFHO0aRduiWpdCVDxhF9Rf58MddZQYC7HoU9BuUjT8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oEW0CG/9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782462640; c=relaxed/simple;
+	bh=g7QugsTJVRYqI5KzYuo8WC1k67mQy/4ShxoER+MIinM=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=iR+otmwXpmMFh/jvhrTGe5clMMtmpoxYJXW9PzspPpUbEEahHqoOvRTSIZuYUWniSA0NffnKqRSDrOVOVJovLIJhdWRjkhCVrnTPMRExivt88PL/AxIkW4MasvkH5G/6Uqiej+t5FO0R9ImXPJ5swKd3foy0wQClmWwuq01tSe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BRaROUho; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oEW0CG/9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1993C1F00A3A;
-	Fri, 26 Jun 2026 08:21:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782462070;
-	bh=mKdovRIrKfyxu635TzziBG37YLmIxh49GjmLAgAIHUg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oEW0CG/94G+fLSDLCrwsou32pQbWB6aRMjW87zHUXlLuzZy/K+I1NDQCu52QeCv+N
-	 0TPRnMW9bKrWxlzErKoh6Ecg83BOIz34dfafwUDpyS4WrAIzV9XM9DaMzJmeazcnfe
-	 gUXg2/NLVqviD9vIVFfepRpzSJ8k4Nn7zXmbkbKknP3/7bUrWk6ngWdpkmPqFQAU0z
-	 I5gzfoLdLWMLSFKa5DFSxK35JX+mSj0pTwSe4jpHtdfI5zxX7n7EX7oYXx7eVo+Q8E
-	 lmzcE1dniK06SAVV710pZ1FtvT+xV0UEHP2v9FGQvH7XiEITgiIpEdibHF3Xr4Hjoy
-	 cbujCc5RGAtIQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5697639389E8;
-	Fri, 26 Jun 2026 08:20:58 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BRaROUho"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-845385adf4cso272400b3a.0
+        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 01:30:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782462638; x=1783067438; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g7QugsTJVRYqI5KzYuo8WC1k67mQy/4ShxoER+MIinM=;
+        b=BRaROUhox8HGQjPIGOkq/AWV2Mux7+dBTJZc0mhr7KkxxTQVZoozHASogwRJ4exr6j
+         282o2QkdjemtNAFzdSLx0nBAZQ0CM3Us9fCfgQsfNN76ciAnYR76SkrSFuUTx161dGT1
+         htkEbCw14jDh9eyeYswrbCYllF2secvCqpW5dPu45/5pX/J9Mt+xs6msepc6pQHVzYZF
+         Sk7WFbvFXZf3PIKFghgmlEBcFYqN/wFyLwLLZYCqW4h/fa6yGs6Gt6Qsi2jBAju2Z4p3
+         Ba+YlltRmwvIY/aMX3UU20EfKnecyMYqG7SqGlL7Pu60kx8EVZqO+8Way9NRVx1BspAp
+         mT4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782462638; x=1783067438;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g7QugsTJVRYqI5KzYuo8WC1k67mQy/4ShxoER+MIinM=;
+        b=o2udwe4NMHnskH5uPQp65SFwln98NhSNte2P2KuDHO6RnbRF/bnK2GDo6RUFFCsQNT
+         XKNXa8sub6Gmdb0XMp/4T//JUO8vPfj8ioo95BjpBEXejRlnzZSZYtiZXa7+6ASoT9lR
+         GQnZBqvgzHb9I/0tIaxRRBX2Vw/2nX8TDZO+Ui2GO7CILHzfDsB6VD75YlZcY8mAQjWN
+         9M0nYCMBoGgwcFvTBRqixWar8D4qfKB39rkIzEOeCf0J2BQOkpGaywzN/LjRn58sUPsX
+         Pnsu+N4pMAf9SE48v4qEV3UqR6ZRqzD34fn/305CMhl+Cx9K+KPYeQcMz9tTaHFlDqVc
+         nF0A==
+X-Forwarded-Encrypted: i=1; AFNElJ8i2Gtw8cQSD9JfQKpj92D3CXaDQne/cY+rvL5YM1l4iz/HTauq1M4sORnt5vE1lJDHsgg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzWjlPAkUol3yIKdz0ZoKdZ9OhZbxtGDznEHwdkLFuABkrZQHVR
+	uPDGhRQGoelBxixlNXGBpCwEXv7KQ0t7DBJSO4um9HjeTxncsD2duEh7
+X-Gm-Gg: AfdE7cn4bwirf9tOlEyDIPq/jNx8EadUflsEhTONGwl9XnyvOyXgWZsEzY8+a7thNf4
+	qalCuH0QCzCMADLNU5xBkJMEJ43uapOwvqykQvPtu0Dh9dwzlAwY3xZdeWcIPkCe/c+B+da36bi
+	ZhrIRMSYGbY2976vRXzrcOE8UZq1YZysveBJYqdJt9Mw6LNAGWW0zPzZiID9gfpKL+/BQk8uCB0
+	EixAlyagwX7UVH3mC4Q6nK9KgfNotN1egALZdYe2jsVvwcxWMxuM3K1mfPutzqgqCgfLJCQskGd
+	ZdwPa2HVoMDEjMZ//t4lmwyMz+AfNAcZYVypsVtGic7UX78s6AC0gZwEBPCFGHjPiiXx5H+m98J
+	0ti6ae5i60bLjXyELNsPpVwY0UOcojanR0ObWp9CXjx+V6jHYWLj2s2t+UihYSDee73VA6fyppf
+	nsBAX72qJbunmPfA==
+X-Received: by 2002:a05:6a00:804:b0:82f:72e6:ed4 with SMTP id d2e1a72fcca58-845b382ec89mr7443975b3a.0.1782462638151;
+        Fri, 26 Jun 2026 01:30:38 -0700 (PDT)
+Received: from [10.31.13.168] ([182.150.55.91])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845c104113esm1660225b3a.57.2026.06.26.01.30.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jun 2026 01:30:37 -0700 (PDT)
+Message-ID: <c21cd9dc-9bbf-49dd-9812-4db0733b0636@gmail.com>
+Date: Fri, 26 Jun 2026 16:30:26 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 0/6] power: Use named initializers for
- platform_device_id
- arrays
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <178246205698.3816447.10450599511697138681.git-patchwork-notify@kernel.org>
-Date: Fri, 26 Jun 2026 08:20:56 +0000
-References: <cover.1780048925.git.u.kleine-koenig@baylibre.com>
-In-Reply-To: <cover.1780048925.git.u.kleine-koenig@baylibre.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29_=3Cu=2Ekleine-koenig?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	=?utf-8?q?=40baylibre=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: linux-riscv@lists.infradead.org, sre@kernel.org, visitorckw@gmail.com,
- bleung@chromium.org, groeck@chromium.org, linux@weissschuh.net,
- krzk@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- hansg@kernel.org, m.szyprowski@samsung.com, sebastian.krzyszkowiak@puri.sm,
- kernel@puri.sm, dlan@kernel.org, andreas@kemnade.info,
- mazziesaccount@gmail.com, sven@kernel.org, j@jannau.net, neal@gompa.dev,
- amitsd@google.com, samkay014@gmail.com, spacemit@lists.linux.dev,
- asahi@lists.linux.dev, imx@lists.linux.dev, wens@kernel.org
+User-Agent: Mozilla Thunderbird
+To: carlos.song@oss.nxp.com
+Cc: andi.shyti@kernel.org, biwen.li@nxp.com, festevam@gmail.com,
+ frank.li@nxp.com, frank.li@oss.nxp.com, imx@lists.linux.dev,
+ kernel@pengutronix.de, liem16213@gmail.com,
+ linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
+ linux-kernel@vger.kernel.org, o.rempel@pengutronix.de,
+ s.hauer@pengutronix.de, stable@vger.kernel.org, wsa@kernel.org
+References: <AM0PR04MB6802B863CD9B9AE1609C1785E8EB2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+Subject: RE: [PATCH v3 1/2] i2c: imx: Clear slave pointer on registration
+ error
+Content-Language: en-US
+From: liem <liem16213@gmail.com>
+In-Reply-To: <AM0PR04MB6802B863CD9B9AE1609C1785E8EB2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello:
+Hi, carlos!
 
-This patch was applied to riscv/linux.git (fixes)
-by Sebastian Reichel <sebastian.reichel@collabora.com>:
+Thanks for the review.
+This is a good idea; this is a better way to fix it.
+I'll fix Patch 1 as suggested and send a v4.
 
-On Fri, 29 May 2026 12:18:15 +0200 you wrote:
-> Hello,
-> 
-> this series targets to use named initializers for platform_device_id
-> arrays. In general these are better readable for humans and more robust
-> to changes in the respective struct definition.
-> 
-> This robustness is needed as I want to do
-> 
-> [...]
+Regards,
 
-Here is the summary with links:
-  - [v1,4/6] power: Use named initializers for platform_device_id arrays
-    https://git.kernel.org/riscv/c/e28f7498dd81
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Liem
