@@ -1,267 +1,203 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010024.outbound.protection.outlook.com [52.101.69.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313CF1A9FBD
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 19:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577C03403EC
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 19:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782502840; cv=fail; b=p/o1G6XrPaqKfB2muHiMgqC4Fdk5UnZleaWZ4UA9JqDDAfB14M7vV5a7AHuqJ7R9qwXI90nhSnC0GmSKpj6q75qAmhZSWXSw59JZw/DhiH9DPYZiNeVzCIAlqI7iRuDf9olPyktyr0338Rh/kSxzDmFrktA/9atVrYdT4bWcPdk=
+	t=1782503634; cv=pass; b=pzwoO3zguO2ZdeLiP1FGQB5u8xyl/JMLgR8P4PIb/qZc571ksXGMn8J7PsOj/GyOnVWCCZqctiwdUrO6mWaPTisHqXYtAAYwTIMHvyh8zQmzhiKCCks6FeBQjv7tbwF837XWcqaXqsEzm7nabGpRQNltwgvzniblNNqwUKO2q10=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782502840; c=relaxed/simple;
-	bh=fUhf81kXhW9sUcyc1B2dRVdNkj8VYQgiFdzeRcKFtG8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NxJFxto2C5b6IArDHjsix2DHpRtPpaEwOxOasRg57qihjQjOQDzyXbHQpTVpFdvEd6JUULpfIyvv+YoJwf41moeaS8sYVqT4sEGST4i0ioJdwLFnxOMVvh1d/+TyR566eh5ndio3CAwqW+/rBh244Q4vFVjV+mENCpRIP0TF/mI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=h2q+fz9Y; arc=fail smtp.client-ip=52.101.69.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1782503634; c=relaxed/simple;
+	bh=wSobVBtxGJ1akwNrZpF2zDyzG0HFSPY1i0tXs1vVKIM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pRMfjyR7TjJ9gkxSM+W4EF5QItMp11fWMlJQcbFZmjxsl6/3uaLpkdUd1wQ2+vuBxAHAJOPUi0DnbmhWqla9h0jjAklGx7KRFW0rDV2KKqnmSsUvgVu2APsHON9yru5byGII+c0N5PpO5jdQuHUXOk7E3IauThIzH7Dsk902/Po=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NCpYhUR4; arc=pass smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="h2q+fz9Y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Pql7mb5D3hVshP82PlTw47cpR7V7Toq03ELPJiizOVgCa/ev2r4xdnfejdZUuDBdY3O3SpJAeL4y20PukQv1Lq0tE0rjyqDiUaw4418o+b5IeYFdwUcb49ViODW+VJzSNXvUSNV0C+a7qFSl1kMrlUEEbqDSnNeQd+Ms9b9x6TLwz27SLU4p/VaDd4hrFVcRHCRn3/efm6aTqhSjI5sz5+KCGw/jfDKGA9750XHkheKJZ6SPtoA1mvz7/AcCK5oCMRLqa/H+nUsjMKk8c4K28ylDhw5Ni9AxiHLD6fu59GIyi5aJVGlWeDVQvIGQmAPXQsvMWRk/5Bo71aZyFihbTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+lVeHLVb8pPiGcn30PFmmXYNt3mrErvy8ituM8h0eYQ=;
- b=qFTbGApgU8tIiKih3spGRbUeoPRYl/rb30cVHDGetRD3e8kgza5Ortnxe0OwYz+xBXMD3IoLu1Axz+b5EDLRIhoZ6BeWz+xPvEjHfL559awCqgEntfKAWWW8rhiKGViTYDIFZSlJ5+IYZi5WAH+0J5+bLCi9IV7ykMdDz72ky/v3Tj4mfZJ/0Fq2b79TNKGqbMRCD/ik8FhNH7TASqDYujhz4BRhiF/tv15gHx+tlJ8K/gG6BDc34etjV32mJK/6I7M58ZT1ZATP/7m1qTl2UReLT/ZOLzrRqmNWmBDEtjPu3lJF5n6RzIYfiD4dDVYqhG1Qnj+n/x7h0z2iD1l0BA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+lVeHLVb8pPiGcn30PFmmXYNt3mrErvy8ituM8h0eYQ=;
- b=h2q+fz9YycSBH9uIiAp6jKaIi7EGBaC5r099bKYQK3lLuymMkvsLPYfZGd3xeBC885JuizI5AuM8qFW/WCX2Zhii9esSK8XmuOcIU5Hehwyv4duQa0iuaORqCSOX54yvKNSnOzdvDw7vFtqPHZJ9M9B5O+qaHsyZ0tk4v1HLrfgrZ2kUqlSOUJ0Nvg58vd7cnY03AokcqeFqHP+BtbSvaNaWOBS7UTyxfrnO2nQ/nYrKGRb7vkhZJ4eeUgUky48dAfKOZXKujsGz+TFQ4nTJRdgEC7ajFIc1tkyRF1s+d5JqgFbI62XH8MKF5OIVTJ2vDbV1RDSm/1tokgcEgR1joA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB8819.eurprd04.prod.outlook.com (2603:10a6:20b:42e::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Fri, 26 Jun
- 2026 19:40:33 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Fri, 26 Jun 2026
- 19:40:33 +0000
-Date: Fri, 26 Jun 2026 14:40:22 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, amitkumar.karwar@nxp.com,
-	neeraj.sanjaykale@nxp.com, marcel@holtmann.org,
-	luiz.dentz@gmail.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de,
-	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
-	bhelgaas@google.com, brgl@kernel.org, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-pm@vger.kernel.org,
-	sherry.sun@nxp.com
-Subject: Re: [PATCH V3 1/8] PCI: imx6: Add skip_pwrctrl_off flag support
-Message-ID: <aj7VpvRQxhCyPVPg@SMW015318>
-References: <20260626023126.2189931-1-sherry.sun@oss.nxp.com>
- <20260626023126.2189931-2-sherry.sun@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260626023126.2189931-2-sherry.sun@oss.nxp.com>
-X-ClientProxiedBy: SN7PR04CA0168.namprd04.prod.outlook.com
- (2603:10b6:806:125::23) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCpYhUR4"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-13809223fd4so1680090c88.1
+        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 12:53:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782503632; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LZBIy79wnlVSrZ20oc/JrVOX20YJ0h62agIuzsXzAMqifXox8fK9AE/w/AhDXir+fd
+         txlwdKYSmV+p6gCAcMGsrGOiJPwT5KoaakPYjrQuyYNFO8zAbCjczjFCbjuiSAaIqQJ/
+         f26VeivvfAnNxqgsv2TrBclR8rvV7tuzaFotWGzu74aYQLJPTtDVKZmRf2gbbnM+AKA9
+         PBvRorxPCOGgwNNhx2Z0y0HTYrsMiwXzF6FzDoeddvBV+h+U2Qa29tHcIcgpiYnbEhck
+         mepo6CVnVo6+tp8PCB+eNspP8csnn3L8waRHsCPXBs+D5hwmIi1RLTLxjD963+tEshUL
+         zz9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WHIpLp9HI+rPAwCzsNS6avOzV6ru9OowfuhFK1lFRb0=;
+        fh=TdTDEG/SQC33G8FIFXRRHveSxkBHhUUSjiROrfq1p70=;
+        b=RYYsRsBowjcIFhnLdUbedQam8b1bDjGhnvopFCiwYGJqPX4/aiw7ixEU3LVVTTR0PR
+         sQG2bzmWv33sDnm8a855HvqM8UOAWZVAqpz3493qjjp7/OM3AnWl0r5Qdkk/GTV5eoSi
+         p4SI5xWeC5S5MYbDMjYQ2S8MO1PbpmHZk2yp24q/EAlrG7yImcTZza0bb+ruWsIfqxmq
+         ekov785fGL6jSFzV+wNVuRgiDy0PrhlYyqygTFEHG+7/U+yHZ243teK/VFW0N1Wc4Z1L
+         YeqOJjSeCsneKXlfGL/zVgAb52QeJo447zZ5+2XEA4rQgLnMQ5CDL6hPFXaZk2HhmnLN
+         SQQg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782503632; x=1783108432; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WHIpLp9HI+rPAwCzsNS6avOzV6ru9OowfuhFK1lFRb0=;
+        b=NCpYhUR4Rvr5vejP6crKoHAHUauaxHExZn81TTpAlRLLSZW7nfVga1pPeAO1w7yueX
+         yMcS2OIG00zTpP8QpbQiOBSp60kyPYQa3FbeEtyUkh753hQj8b/fwAnrdIKo96wguoRR
+         YDLoXnIVyDbsWz/VhP3IcfWU4/BLK9Tc6x8zch3+OyaxB+63rnGgRNIaDORuBfYYwTDr
+         ITR/jEH+gi60nJ6N/1SWEztwzme2HQkBq2htcsmiVbLEQqHQzNdctdcl7UbsJuMs7jGh
+         /2sbsq90iMrBZZcWKQxxbp/O3Nei1nHrTO3B0xhBXmlKbmrc171pISfViCEhVe8i7inC
+         xTCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782503632; x=1783108432;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WHIpLp9HI+rPAwCzsNS6avOzV6ru9OowfuhFK1lFRb0=;
+        b=Y0CBrzK29nMdct7XdVOzi03BMhO8Ilrh4KGqi+P0YEmKB+gAONf1RAg7IJDQ/cA8y1
+         Klh2g97iADv9Jris/cypbh9RxxhdgLZH9JOjCul9TSFp9smneJkBCN7dJhGOQXfnmH71
+         DCWFw5iCs3RgXquwfHSaGBGEDL8c5zmnRTznSXr+6PNJncUjGQo/7pgLu4trihrtTLiC
+         4jPagEmPLMloHfcNXlNP/P5MIbsbxQw8Rxpd90NFQV0gOTsdQzZUTJBSxuB54pk/lJsm
+         TFcHgPgt5I7LT83w4Su0rLAxBHRR+4tRlIX9DUKzA5dwDL26dHpzTBscsiPV1oLd+gxv
+         bJQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/CaKEYJGEcGHpHliql1F9aRlrjhDjjLwG7R/FrA6Io4J7f8H8pzdM/hXxzBGzer0q95zc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzqsFJSi4ZRGFj76jc0SbBdEE24+xwpVh4kPw5qeMuXH6yM53kl
+	wzXUiUTVjAVPNm2doNxAXodjO7ChYI+VSxJeB1sc8ogBdnXCzeL0uc7DTXIDvxRMiSMvgMiTyCK
+	0b12NNbkLv5/sZHuuFEJJdUgaotHEh7DMhfMwcNE=
+X-Gm-Gg: AfdE7cmchquvZwaNWEOR0M0kDt3f2JCZ4hXIxnRh2Fwo2JNzV01ELCLfFyBdwMo5fnF
+	Dzff0f8jNAUAkUttH3h0zveW0upQpqiC2FrPBQqgi8mrkS+TUk2OWApT/LNOZWsdLsTbspN5LqU
+	gtJdKZzMfXxeP+Jrmim3berVrbvzMyHN3caTBr3aY0KiEwalve5nSQd8JhRV2lz+BJ1NxSQFvd/
+	c+UBEhDT0oxJWBLaS+L5OnMzg3fUGWiTzB4knpe58AyFLS6TNVGjoLxbSfp/2lscR1YBmp602F6
+	BizC/lOC2iXxGFqY0T4iyBLUUdhM8cWUgmG4jCaJa92GAOZ9v0QXHZuH99AmNew=
+X-Received: by 2002:a05:7022:2528:b0:136:959a:abf2 with SMTP id
+ a92af1059eb24-139db9e5eddmr6574649c88.2.1782503632436; Fri, 26 Jun 2026
+ 12:53:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8819:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2491e50b-082d-4370-2f75-08ded3bac956
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|23010399003|7416014|376014|1800799024|366016|56012099006|4143699003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	rJdFVqRh7eEU2sFX8hSrZDUqPalrtOoM/7Ke+ykodmCb1j+kIGEgtkDhkABmCJUzzNrHZra3yjiJ/6J16rdIF28+DS1NMLSSXL/K6wsoB46B8qrV/Y17o2j/PMxEy1Sdr9id6DtqHgWepMvP3YKKMeDgRMZ9Ua2UrSKHUjx2GdGsVSwr7+cX1D4RQ3166xbmiWxlpkMjnsqk53oUNRhxaCqMOIOk3vo9QHgIK3cSULcRJYXeyOZxKEhUKdasM0lPPyzBQHrbOF8sTVNCDB1j9Mk0b2m/3wwkyw9rHNZzLHvVKQW054eDqzlJg/f2my+MFLlrpbVxB59iWS06y1TvbOvZvn2B676y+iJb0lHxd33PUYcYCupQpVImGoERZtu2QXf+uvPNMApJeO19UoVOefpw/mlelE9w1139i+g48xBjNolfwPP6HPxR/QOvhhg8x+qtUec7HJ+RaLQuxFhWUbjbQRy/tvM2uVvLG3ajNxpg4qaRj6BmF1Y3TcWDRX6hrYrRxHdxXqLX7EkK5SPC6La6FQxQrRxK4nwGSv/QJW5hQ53JKOYCSajWY3k3FIKTtRuzbqgP2SwRDUFofwfbYj1QCK3hJ1DyYsDviN10XFljO/BKxh2hKJnfscfieTs9uqLNEGEE9cIdSsNaGjHDZ0v73rY1dKkKrW5M/hSgswc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(7416014)(376014)(1800799024)(366016)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ArjEU5ry2rhovJpVXNL8VunYpWkgQkSKLVBRCleFplMrdK4PAPp70qk/bQOu?=
- =?us-ascii?Q?X6ldntxD4qdMCgduGlRdSg/x1VOEoGRHBj9w/0r3nx7p+H8LA+iSF0+00kfd?=
- =?us-ascii?Q?NPwNjCKWACz0rnjv7EkdNtkrt2PmIosbifr0Ownu72LKMxKga5VwyYSlvUmW?=
- =?us-ascii?Q?yxaD34eKCCEkgYPsfURjKNTR9j7vBFnxob5xGNBeHgYhUPEV8prLjL6OdN8N?=
- =?us-ascii?Q?hyTgDxPNcGxnZmu9HpL/opjE4LFFkvtodcev/QOL191UvbfwXZhdmK3ecfDQ?=
- =?us-ascii?Q?aXZBWJfWSpaakN9yjTVnSOAkfFQFIkcGuU5PlnH3/GWIXQx4ydxcCRZ/GCTh?=
- =?us-ascii?Q?+8sYMPjiQMSJSXZzQJRKozsJW2Rw9VEIsuDTe8bNO4FM5uuEven3dj9iIDxs?=
- =?us-ascii?Q?ySfpsIQo8eepCXD2A5F3cJXrRfmRd3aL3F5FOXkpIlfqmZCWo+aWa8rmN4tu?=
- =?us-ascii?Q?nBS9OXgb3XuPy4zEC6u1ukmImh+B/I1W3pHwHfA4Cy9hMPdO+DKXGDa8Ne7Y?=
- =?us-ascii?Q?K5w1b+VTeOIivIGboGNWKrbKhN8td44/AWFBQFtz8fhS0iqjtMiYn1hlXiO7?=
- =?us-ascii?Q?lTfPz6YO16OZhFZLWyLJEZdI28IWRqHED5ifKJGcV6gEsUuVMq6kW9/GQS/I?=
- =?us-ascii?Q?H5cY3nhzPxvR5x6ro45VG97IY10YQOSsrE163heiZ5kqJDwBbwcb9KbtSeqZ?=
- =?us-ascii?Q?TNgWSpBIXXefMMWo70o+L826JXt9KdzJiFawSwhr4YA974k3zTgu+d/LBk7j?=
- =?us-ascii?Q?ZdGo08Dz4x4mat2fMHkbs7sQrQz5ckk9fJFX+c8ueT9aeHobKzBziN/726wz?=
- =?us-ascii?Q?slIQQ0F/hOHp3BAPM8lenSFab7976bKMooJLwE/GBI0nNqWAZThEYG0605hj?=
- =?us-ascii?Q?SakXqj0VARXKukGKMYN7QS5Tn6pR/7oFAHXOoTR3AXj21MMGeEBCfNPciakW?=
- =?us-ascii?Q?UX22/TXC6XzErng3AMmbauxpj2JwO8XTbWxH0xuTsXCPuZN54BhC/PBCOLPB?=
- =?us-ascii?Q?ELdqBapQYyUj65Ewi3E5HW7KANcBut5A6zasUVv1Ng6LIWp0Jqp701hkaZWN?=
- =?us-ascii?Q?9npJ7YZUoaLD1g22lc3RoW+mRPFEEb9kj6wf6FdkyRb1l9u9f3tRi0qu7F61?=
- =?us-ascii?Q?+vOvLqHED0SwSLto38NQhaH7vYPhOMkCJQEI2LQjM7vHylEbcknpXbuZGJHu?=
- =?us-ascii?Q?ObEfOLzaleRVJeGq/GPQlOGb1F7FHKor3+alJyLCCrbpGewKHBoeYR+BnZF9?=
- =?us-ascii?Q?HnlBVdkqLyAuLZM0tJmxRwKTLtlS8bVcC11MZZRp705u7dkAkQzUbTijNZcM?=
- =?us-ascii?Q?Eb7rZNytAI7TTeb2dzZ7ryI7E9XKb6wCOVYYLZPyYCosC64NE2Q57M72e4zw?=
- =?us-ascii?Q?aocfQ3kxngy+hSUXoDr9vNIoHSR7+t9TwMvRWDllrgyxdpYy5Ye1JfZIOFpb?=
- =?us-ascii?Q?8zbSC52hW0+cLVdhl9sdN6H69zEPPWPlv3c9W29K4lVLUDDF1VYrjdV5iwaE?=
- =?us-ascii?Q?6lj1wXdtdWi3l7hVUe+yal7QCEPXc6M5UpG48RPW8OQ6X5oO6tbPHIisWRVP?=
- =?us-ascii?Q?mP5dAr9K0CJv4sHZU8D7uEjj+s//XMYiHMbjRjyKsYf3T92AJXAUjP6gjVEr?=
- =?us-ascii?Q?uC9KWNhCa8EFpSeLI5oM7nDNH1YIY6I7zuzuzu02nLPER9L9qTZ2Gkpw9V/Z?=
- =?us-ascii?Q?7kQAMcNWTZTkN/hM87qqGyLmVKfYzmXo05LAQfpyW1GW0pylvINAsikg3NFN?=
- =?us-ascii?Q?OkoujPP7DrCWev5jrUZfPweAhQhtvfUGJb9mEfHXZ3mPLqtTLTn3?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2491e50b-082d-4370-2f75-08ded3bac956
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 19:40:33.2315
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EKy36P76TYo/mhN2Jrkir9M1flR/MeujEZifdeJkuGaS0Fh/OlNspdMjFB1xQSzo7KZbCmY3e39M+xGsjtiAzXv57+bFP79PuqyoQPu+5i99XduI2uzRVyfShxkGFVmp
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8819
+References: <20260624100326.413699-1-piyushpatle228@gmail.com> <aj5MNiKSCiEDvDzL@raspi>
+In-Reply-To: <aj5MNiKSCiEDvDzL@raspi>
+From: Piyush Patle <piyushpatle228@gmail.com>
+Date: Sat, 27 Jun 2026 01:23:13 +0530
+X-Gm-Features: AVVi8Cc8J5b8utQLMkVEyLYbA13emlJ_chAaoJA4TJ2pE9djj-ndQ8odlJXm0ws
+Message-ID: <CAMB+xkbpqNbYpQH331aiXxEhkp6mZTcfkCeELyeS1qbiLTN-9A@mail.gmail.com>
+Subject: Re: [RFC] drm/imx: upstream direction for i.MX95 display support
+To: Liu Ying <victor.liu@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, marex@nabladev.com, 
+	daniel.baluta@nxp.com, Frank.Li@nxp.com, shawnguo@kernel.org, 
+	tzimmermann@suse.de, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	airlied@gmail.com, simona@ffwll.ch
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 26, 2026 at 10:31:19AM +0800, Sherry Sun (OSS) wrote:
-> From: Sherry Sun <sherry.sun@nxp.com>
+On Fri, Jun 26, 2026 at 3:22=E2=80=AFPM Liu Ying <victor.liu@nxp.com> wrote=
+:
 >
-> Use dw_pcie_rp::skip_pwrctrl_off to avoid powering off devices during
-> suspend to preserve wakeup capability of the devices and also not to power
-> on the devices in the init path.
+> On Wed, Jun 24, 2026 at 03:33:18PM +0530, Piyush Patle wrote:
+>
+> [...]
+>
+> > The current dc/ implementation is a multi-device component driver with =
+one
+> > platform_driver per block bound via the component framework. The downst=
+ream
+> > i.MX95 driver is a single monolithic platform_driver mapping all blocks=
+ from
+> > one register base. Unifying appears to require reconciling two bind mod=
+els,
+> > rather than only adding match_data.
+>
 
-Need empty line here.
+Hi Liu,
+Thanks for the detailed reply.
 
-> This allows controller power-off to be skipped when some devices(e.g. M.2
-> cards key E without auxiliary power) required to support PCIe L2 link state
-> and wake-up mechanisms.
+> I think that upstream i.MX95 display controller driver would also be base=
+d
+> on the component helper.  That's something for sure.
 >
-> Move pci_pwrctrl_create_devices() to imx_pcie_probe() so that it is only
-> called once during probe, similar to other regulator_get calls.
->
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 43 ++++++++++++++++-----------
->  1 file changed, 25 insertions(+), 18 deletions(-)
->
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 0fa716d1ed75..0685573fee71 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1382,16 +1382,12 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  		}
->  	}
->
-> -	ret = pci_pwrctrl_create_devices(dev);
-> -	if (ret) {
-> -		dev_err(dev, "failed to create pwrctrl devices\n");
-> -		goto err_reg_disable;
-> -	}
-> -
+> [...]
 
-Please two patch do that. one patch move pci_pwrctrl_create_devices() to
-probe
+That answers the biggest question I had. Knowing that upstream i.MX95 shoul=
+d
+follow the component helper makes the overall direction much clearer.
 
-one patch check skip_power_off.
+>
+> > There is also anticipated divergence which is not yet upstream (i.MX8QX=
+P
+> > prefetch/PRG, LTS and tiling modifiers, and the downstream i.MX95 blit
+> > engine), although mainline dc/ is KMS-only today.
+>
+> Just want to point out that I sent out v5 patch set[2] to add i.MX8QXP
+> prefetch engine(DPRC + PRG) support for KMS.  That changes the driver's
+> mode setting code a lot.
+>
+> [2] https://lore.kernel.org/all/20251027-imx8-dc-prefetch-v5-0-4ecb6c6d49=
+41@nxp.com/
+>
+> [...]
+Thanks for pointing that out. I went through the v5 series together with th=
+e
+downstream i.MX95 driver. Although the modesetting paths are diverging, man=
+y of
+the common display blocks still appear to share very similar register
+programming, with most differences being SoC-specific data such as register
+offsets and tables.
 
-> -	ret = pci_pwrctrl_power_on_devices(dev);
-> -	if (ret) {
-> -		dev_err(dev, "failed to power on pwrctrl devices\n");
-> -		goto err_pwrctrl_destroy;
-> +	if (!pp->skip_pwrctrl_off) {
-> +		ret = pci_pwrctrl_power_on_devices(dev);
-> +		if (ret) {
-> +			dev_err(dev, "failed to power on pwrctrl devices\n");
-> +			goto err_reg_disable;
-> +		}
->  	}
 >
->  	ret = imx_pcie_clk_enable(imx_pcie);
-> @@ -1460,10 +1456,8 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  err_clk_disable:
->  	imx_pcie_clk_disable(imx_pcie);
->  err_pwrctrl_power_off:
-> -	pci_pwrctrl_power_off_devices(dev);
-> -err_pwrctrl_destroy:
-> -	if (ret != -EPROBE_DEFER)
-> -		pci_pwrctrl_destroy_devices(dev);
-> +	if (!pp->skip_pwrctrl_off)
-> +		pci_pwrctrl_power_off_devices(dev);
->  err_reg_disable:
->  	if (imx_pcie->vpcie)
->  		regulator_disable(imx_pcie->vpcie);
-> @@ -1482,7 +1476,8 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
->  	}
->  	imx_pcie_clk_disable(imx_pcie);
+> > One question for Liu Ying is whether the separate-driver plus shared
+> > helper-library approach is still the preferred direction, and where the
+> > helper boundary would be drawn (which blocks/ops are shared versus
+> > implemented per driver).
 >
-> -	pci_pwrctrl_power_off_devices(pci->dev);
-> +	if (!pci->pp.skip_pwrctrl_off)
-> +		pci_pwrctrl_power_off_devices(pci->dev);
->  	if (imx_pcie->vpcie)
->  		regulator_disable(imx_pcie->vpcie);
->  }
-> @@ -1954,11 +1949,15 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
+> Yes, separate DRM drivers + a helper library approach is still the direct=
+ion
+> I want.  I think that the drivers and library would sit in the same
+> directory drivers/gpu/drm/imx/dc/.
 >
-> +	ret = pci_pwrctrl_create_devices(dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to create pwrctrl devices\n");
-> +
->  	pci->use_parent_dt_ranges = true;
->  	if (imx_pcie->drvdata->mode == DW_PCIE_EP_TYPE) {
->  		ret = imx_add_pcie_ep(imx_pcie, pdev);
->  		if (ret < 0)
-> -			return ret;
-> +			goto err_pwrctrl_destroy;
+> The purpose to add a library is to share code to reduce overall code line=
+s.
+> I'd assume that shared blocks or common part of slightly different blocks
+> should be covered by the library.
 >
->  		/*
->  		 * FIXME: Only single Device (EPF) is supported due to the
-> @@ -1973,7 +1972,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  		pci->pp.use_atu_msg = true;
->  		ret = dw_pcie_host_init(&pci->pp);
->  		if (ret < 0)
-> -			return ret;
-> +			goto err_pwrctrl_destroy;
->
->  		if (pci_msi_enabled()) {
->  			u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_MSI);
-> @@ -1985,16 +1984,24 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	}
->
->  	return 0;
-> +
-> +err_pwrctrl_destroy:
-> +	if (ret != -EPROBE_DEFER)
-> +		pci_pwrctrl_destroy_devices(dev);
-> +	return ret;
+> [...]
 
-Mani said he will fix DEFER problem soon.
+Thanks for confirming that.
+Based on that comparison, my current plan is to prepare a refactoring serie=
+s
+that shares the common implementations for ConstFrame, ExtDst, LayerBlend,
+FrameGen and the FetchUnit base through a helper library, while keeping the
+i.MX95-specific blocks as separate component drivers.
 
-Frank
+One implementation detail I'd like to clarify: would you prefer the shared
+code to remain in the existing dc-*.c files with additional i.MX95 match
+data, or would you rather see it extracted into separate helper source file=
+s?
+>
+> > how the component and monolithic driver models
+> > would be reconciled given the differences described above.
+>
+> Like I said above, I don't think upstream driver would be monolithic.
+>
 
->  }
->
->  static void imx_pcie_shutdown(struct platform_device *pdev)
->  {
->  	struct imx_pcie *imx_pcie = platform_get_drvdata(pdev);
-> +	struct dw_pcie *pci = imx_pcie->pci;
-> +	struct dw_pcie_rp *pp = &pci->pp;
->
->  	/* bring down link, so bootloader gets clean state in case of reboot */
->  	imx_pcie_assert_core_reset(imx_pcie);
->  	imx_pcie_assert_perst(imx_pcie, true);
-> -	pci_pwrctrl_power_off_devices(&pdev->dev);
-> +	if (!pp->skip_pwrctrl_off)
-> +		pci_pwrctrl_power_off_devices(&pdev->dev);
->  	pci_pwrctrl_destroy_devices(&pdev->dev);
->  }
->
+Understood. I'll treat the downstream monolithic driver as a reference
+and follow these plan for the upstream implementation.
+I'll start by preparing a refactoring series for the shared blocks. If the
+approach looks reasonable, I'd be happy to post the series for review befor=
+e
+working on the i.MX95 driver itself.
+
+Thanks again for the guidance.
+
+Regards,
+Piyush Patle
+
 > --
-> 2.50.1
->
->
+> Regards,
+> Liu Ying
