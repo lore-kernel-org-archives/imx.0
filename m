@@ -1,156 +1,151 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53F637F007;
-	Fri, 26 Jun 2026 12:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97A03DCD9C;
+	Fri, 26 Jun 2026 12:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782476622; cv=none; b=cL0Z83/4Sa8fKVc++TUq8NypnqPaxuJQACmhQHB4yN0XzOZBdsdhSYKtM1+3/OqszTHHcXRCjTm4vUhyTT5Ee8ijq9hmO70kIgnUbd27CswUmWyocRNjD86xUkp2oQEqgQAX7S6bqzwN639BfGidCt2XIETO/K5FHE+c8A2MqvQ=
+	t=1782476664; cv=none; b=b4JVCCXNOnmWBUVVkf64AfJjP25tl1z/2lyG/FYe19ou9fwjkWP9owpkrtvdlPCfKx8SZfA75Lx++xE8GQkD4POb+nnKvbHKYBf5OnpSB8C5f2W3j95TlabDYO7wJxdOtZJ0uecfwj8L/JK2ZpMi/HS9rMCLUjUZN9GsRaMCfaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782476622; c=relaxed/simple;
-	bh=NswSq8JRSNtf6BmD3v9blB6DkE4oXk7bd0tpb/4jvoY=;
+	s=arc-20240116; t=1782476664; c=relaxed/simple;
+	bh=tzlnOcuaEKImV5OOYdkGAQt3JuvxrVhthgXycma9ZOA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nAy45QfcLIoWnaKy+WxIw1juS1L5ekCWbDbXkovbRpBB58+uu1BNFPzhoR2ReZbHfRAa/VDg6Bt0mUmCN2wseOaxOpodEDv82m2xVsOFJp+JQ/oKnqvc/MEwApIJYpPCqiQps1+3gd/OryAX7MyQd7UXBYGx7BAfhLXca0Yu3Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BillWao9; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=vCYJtZxHF7cgLfTLsh+vFb09PKr0wqieSGD28LVimNZe+aHZ4aZOqr8Eoil3Bud3jbIU6zRTd45z+7aFIkM9P5nRtECtZkfXy6a6jX7C8vcXDMi/ktI0Lielm00kH31yt/jQm8ySjYrTS+3RODuWgRntdDBDbr/HprGqzvHa/w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAf5gb4H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BillWao9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBC21F000E9;
-	Fri, 26 Jun 2026 12:23:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAf5gb4H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002C31F000E9;
+	Fri, 26 Jun 2026 12:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782476621;
-	bh=FzJpcxO7gu0CJT9XiofJ34FlCHXb6Gyg0LPTjg4aHrE=;
+	s=k20260515; t=1782476663;
+	bh=+f7Tl9yTLbF4wJOgKlG8Yes9EsM08NSO/C8EiTuiKXo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BillWao9pvEHWETKiIguS3O2cIDQ4sY3NT0nGwOxfJGfU7u33/P9a6h4NtKQY64n6
-	 HoNM1qc1QL/Uq78Ts3Y76f9Vdd1/oA4l6llqMqvcsToh4DbVLb6MI91lMjPXZhd9gz
-	 KA0XyVLxET5M6QPmuroMsT1bqcqLcO/A4JXWDUsuJzgOKdHHC75V7bLmoiINsgBTWp
-	 FyhkuStF36cbvTBHgOwXF1cTV78u6XhHYfcpURE2WpPhNHg1pxw++tD+zMBexvUX9y
-	 St37FrCZvv/ltrpvUmcf7dF3Obww6AIi9SJW6pdmVzXkFGyVmy50GMYUjQbbOeI6rh
-	 gSKRfoRgyTe9A==
+	b=LAf5gb4HDVjQSdB09+Y/JiXuuHApdcRF/ZljmgnY3F0lSsUeqK16MUypUuJjfV0hU
+	 si5Hzh/T/cWaCboPFn8ilj9B2YkqNL30x+ooFR8ctsJNSUKLP8yoz8aUB0s7Rg385d
+	 2H/ld9x0lI3lpv+VpkPBd/cZ+78FSlKMJ0y/i7IveTBL2KUmOsRfE9Cy0rMnvGIPSb
+	 xMadENKcxIKtY1a9zSb0QsaRhrxUG/8DveWd1d8UFKBUSRAKQA283WZk9M2Qj6FpuI
+	 9WLSAo6M3TF2yNWXm1+j/dosFNJ0f+lXU6WyRpoDGBPS/2Ge2yR3b+0ZLV2pnQeGum
+	 WtgbB28f+9FgA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/5] drm/bridge: release panel reference on all lookup
- exit paths
+Subject: Re: [PATCH 2/5] drm/bridge/panel: hold a reference to the wrapped
+ panel
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Albert Esteve" <aesteve@redhat.com>
-Cc: linux-sunxi@lists.linux.dev, Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, wsa+renesas@sang-engineering.com, imx@lists.linux.dev
-In-Reply-To: <20260626-drm_refcount_wiring-v1-4-cca1a7b3bdef@redhat.com>
+Cc: wsa+renesas@sang-engineering.com, imx@lists.linux.dev, dri-devel@lists.freedesktop.org, linux-sunxi@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260626-drm_refcount_wiring-v1-2-cca1a7b3bdef@redhat.com>
 References: <20260626-drm_refcount_wiring-v1-0-cca1a7b3bdef@redhat.com>
- <20260626-drm_refcount_wiring-v1-4-cca1a7b3bdef@redhat.com>
+ <20260626-drm_refcount_wiring-v1-2-cca1a7b3bdef@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 12:23:40 +0000
-Message-Id: <20260626122341.0DBC21F000E9@smtp.kernel.org>
+Date: Fri, 26 Jun 2026 12:24:22 +0000
+Message-Id: <20260626122423.002C31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Dropping the panel reference before removing the bridge creates a =
-Use-After-Free window during driver removal.
-- [Medium] Panel references acquired during probe/attach are not released o=
-n error paths, causing memory leaks.
-- [Medium] Panel reference leaks when wrapping a panel in a bridge without =
-dropping the lookup reference.
+
+New issues:
+- [High] Accessing `panel_bridge->panel` after calling `drm_bridge_remove()=
+` causes a use-after-free if the panel device was removed first.
+
+Pre-existing issues:
+- [High] Passing `panel->dev` to `devm_drm_put_bridge()` can cause a use-af=
+ter-free or a WARN_ON if the panel's struct device has already been freed.
 --
 
-commit 621578b5ce602b599c8bef0b18966f05081671b7
+commit 0ea9791b2d1689f026240930cee1476a24170351
 Author: Albert Esteve <aesteve@redhat.com>
 
-drm/bridge: release panel reference on all lookup exit paths
+drm/bridge/panel: hold a reference to the wrapped panel
 
-of_drm_find_panel() and drm_of_find_panel_or_bridge() now return a
-counted reference that the caller must release with drm_panel_put().
+drm_panel_bridge_add_typed() stores a pointer to the drm_panel it
+wraps, but never acquires a reference to it. If the panel device
+goes away while a panel_bridge still exists, the dangling pointer can
+be dereferenced through panel_bridge->panel.
 
-For bridge drivers that immediately wrap the panel in a panel_bridge
-(which acquires its own reference), release the lookup reference right
-after the bridge creation call.
+Acquire a reference in drm_panel_bridge_add_typed() with drm_panel_get()
+and release it in each teardown path.
 
-[Severity: Medium]
-Since the lookup functions now return a counted reference, does this
-change introduce memory leaks on driver probe error paths?
-
-If a driver successfully acquires the panel reference during probe or
-attach, but a subsequent initialization step fails (like clock
-registration, component addition, or memory allocation), it appears the
-reference is leaked if drm_panel_put is not called before returning the
-error.
-
-For example, in exynos_dp_probe, if component_add fails, the panel
-reference is not released. Similar leaks appear to happen on error
-paths in analogix_dp_aux_done_probing, sun6i_dsi_attach,
-tegra_output_probe, and lvds_probe.
-
-[Severity: Medium]
-Additionally, are there missing conversions for drivers that wrap the
-panel in a bridge?
-
-The commit message notes that bridge drivers immediately wrapping the
-panel must release the lookup reference right after the bridge creation
-call, since the bridge acquires its own reference.
-
-However, it looks like several drivers were missed, such as
-lvds_codec_probe, fsl_ldb_probe, lt9211_parse_dt, ssd2825_probe,
-tc358767_probe, and tc358768_probe. In these functions, the panel is
-wrapped with devm_drm_panel_bridge_add or drm_panel_bridge_add_typed,
-but the initial lookup reference is never dropped.
-
-> diff --git a/drivers/gpu/drm/bridge/analogix/analogix-anx6345.c b/drivers=
-/gpu/drm/bridge/analogix/analogix-anx6345.c
-> index f3fe47b12edca..1fe11b075f860 100644
-> --- a/drivers/gpu/drm/bridge/analogix/analogix-anx6345.c
-> +++ b/drivers/gpu/drm/bridge/analogix/analogix-anx6345.c
-> @@ -756,6 +756,9 @@ static void anx6345_i2c_remove(struct i2c_client *cli=
-ent)
->  {
->  	struct anx6345 *anx6345 =3D i2c_get_clientdata(client);
-> =20
-> +	if (anx6345->panel)
-> +		drm_panel_put(anx6345->panel);
-> +
->  	drm_bridge_remove(&anx6345->bridge);
-
-[Severity: High]
-Does this create a use-after-free window?
-
-By dropping the last reference to the panel here, the panel object might
-be freed. However, the bridge is removed after this step. During this
-window, the bridge remains globally visible and registered.
-
-If a concurrent drm commit or modeset (like an atomic disable) executes
-on the display pipeline before drm_bridge_remove is called, it could
-invoke the bridge callbacks which would dereference the already-freed
-panel pointer.
-
-Would it be safer to unregister the bridge before dropping the reference
-to the internal structures it relies on?
+> diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/pane=
+l.c
+> index 4978ec98a0828..6b98ad19508df 100644
+> --- a/drivers/gpu/drm/bridge/panel.c
+> +++ b/drivers/gpu/drm/bridge/panel.c
 
 [ ... ]
 
-> diff --git a/drivers/gpu/drm/stm/lvds.c b/drivers/gpu/drm/stm/lvds.c
-> index 50a878688e477..77735e26c56e3 100644
-> --- a/drivers/gpu/drm/stm/lvds.c
-> +++ b/drivers/gpu/drm/stm/lvds.c
-> @@ -1189,6 +1189,9 @@ static void lvds_remove(struct platform_device *pde=
-v)
+> @@ -316,6 +316,7 @@ EXPORT_SYMBOL(drm_panel_bridge_add_typed);
+>  void drm_panel_bridge_remove(struct drm_bridge *bridge)
 >  {
->  	struct stm_lvds *lvds =3D platform_get_drvdata(pdev);
+>  	struct panel_bridge *panel_bridge;
+> +	struct drm_panel *panel;
 > =20
-> +	if (lvds->panel)
-> +		drm_panel_put(lvds->panel);
-> +
->  	lvds_pixel_clk_unregister(lvds);
+>  	if (!bridge)
+>  		return;
+> @@ -326,10 +327,12 @@ void drm_panel_bridge_remove(struct drm_bridge *bri=
+dge)
+>  	}
 > =20
->  	drm_bridge_remove(&lvds->lvds_bridge);
+>  	panel_bridge =3D drm_bridge_to_panel_bridge(bridge);
+> +	panel =3D panel_bridge->panel;
+> =20
+>  	drm_bridge_remove(bridge);
+>  	/* TODO remove this after reworking panel_bridge lifetime */
+> -	devm_drm_put_bridge(panel_bridge->panel->dev, bridge);
+> +	devm_drm_put_bridge(panel->dev, bridge);
 
 [Severity: High]
-Could this also trigger a use-after-free for the panel?
+This isn't a bug introduced by this patch, but could this pass a freed or
+unbound device pointer to devm_drm_put_bridge()?
 
-Similar to the anx6345 driver, the panel reference is dropped before the
-bridge is removed. A concurrent atomic disable could execute in this
-window and dereference the freed panel inside the bridge callbacks.
+If the panel device is unbound and unregistered, its struct device might be
+freed if no other references are held. Even though the struct drm_panel is
+kept alive by drm_panel_get(), it does not inherently hold a reference to
+panel->dev.
+
+If the host device later removes the bridge via drm_panel_bridge_remove(),
+passing panel->dev to devm_drm_put_bridge() would dereference a dangling
+pointer, or trigger a WARN_ON if the device was kept alive but unbound.
+
+> +	drm_panel_put(panel);
+>  }
+>  EXPORT_SYMBOL(drm_panel_bridge_remove);
+
+[ ... ]
+
+> @@ -357,11 +360,14 @@ EXPORT_SYMBOL(drm_panel_bridge_set_orientation);
+>  static void devm_drm_panel_bridge_release(struct device *dev, void *res)
+>  {
+>  	struct drm_bridge *bridge =3D *(struct drm_bridge **)res;
+> +	struct panel_bridge *panel_bridge;
+> =20
+>  	if (!bridge)
+>  		return;
+> =20
+> +	panel_bridge =3D drm_bridge_to_panel_bridge(bridge);
+>  	drm_bridge_remove(bridge);
+> +	drm_panel_put(panel_bridge->panel);
+
+[Severity: High]
+Does this cause a use-after-free of panel_bridge?
+
+If the panel device is unbound before the host device, its devres actions
+drop the bridge's initial reference. Later, when the host device unbinds,
+devm_drm_panel_bridge_release() calls drm_bridge_remove().
+
+Because that was the final reference, drm_bridge_remove() frees the
+panel_bridge structure. The immediate next line dereferences
+panel_bridge->panel.
+
+Should we cache the panel pointer in a local variable before calling
+drm_bridge_remove(), similar to what was done in drm_panel_bridge_remove()?
+
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626-drm_refcou=
-nt_wiring-v1-0-cca1a7b3bdef@redhat.com?part=3D4
+nt_wiring-v1-0-cca1a7b3bdef@redhat.com?part=3D2
