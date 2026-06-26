@@ -1,189 +1,195 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011029.outbound.protection.outlook.com [52.101.65.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783FE279DB6
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 01:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D2B1A5B9E
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 02:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782438952; cv=pass; b=Xxro6f45ZuJphqurIi84pmH6UweR9sEmGSfj6SI1eWzz6NCqXswanhhyiaj6kMblNZEFzF3EQ1k4QcjSPmUHfoM1YPBa9EYjU/Tf6Gbf1rWdC6C9KSz9UH5o12pVuYLXHYatPoTd50mkjZWgDUHT4HR2pncVFou83m8d8yQO+m0=
+	t=1782441031; cv=fail; b=Y7XJlZmUwy4hHPQo+wwIGNX5c7dlFLCZTSM0kPQFqetJbOWNOWb9/vSNN6Y8rRa59nuglJdFmCATVMgXP6dMtRovGISiQYAfMWrq8OgqRq5gPHdT7j932SzM5koFPTxPqsKQwk0AtKpd1QGo5VQyYnGOhFl0nGWpIGgkTyFtNTk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782438952; c=relaxed/simple;
-	bh=jXiXb8BB8/5rZZmokBeg/dECudwiIK4cvNgjgqBgQ3E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZKVOsJWvNcJNtMERHYaj4wNBlwsWXUmDNtnncfNOLuxz+PaPaq4EXHuutcj6oeV2n1f1pyQmgdxdakapmSm2L/jCd53gsEJfuU67PiA9RnABgEKOgl16R4vUhFYmhHzZgVJwoCmr+b/VzaTwIby9DC3lBRoJoCx1o5BrzaaUfM0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mAx8b2wO; arc=pass smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782441031; c=relaxed/simple;
+	bh=k5ZzBfkC6JmjJQDQxpbu42qhrppgtz/uRKtRse+w3iM=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EuamPYsyNur7CIk22shlM+Y3I9bvlpMTDR4KJ7nN45+A0AdKeBOx15lY6SFqgcci9Sx6SO84RFwHhTAaRrXmX9rN8L1wHDAQBB96wFdGGpTgPnuOR1PQJuIc1XA9n/Qjzfd4aGY6RkB7jmYhAsdS7BzYgQeEJiTLM3s8dGNkGig=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=D26oByns; arc=fail smtp.client-ip=52.101.65.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mAx8b2wO"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-69796a9f04bso812768a12.0
-        for <imx@lists.linux.dev>; Thu, 25 Jun 2026 18:55:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782438950; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WwMs3N12iIGS/vKg8h+FXvlqSzEP41diuOp1d8nf0JgoCg9sSM0cy4HvgJ6gGQtj5n
-         pZ96HwcEgTZ2z0OeHWuls/GHCUzsFJBVjpLk5YNargIpJSHJbVFZNg6zkQ5CA/xEi2DY
-         HI9m/j85eXhtRxGnrvPittDq+RSPTikhK7JSF1cwIhuMHvTh1pBnkssLjgimZuVKzdSs
-         LycY6/19itI4PRgyDqPuWsE+l1fEjYj35esGh5cEr7Xu5vsaQrYqOYtu8gSY34ZnkJhb
-         Opac9iQNvp0hUSBplXNYkkam58tQhumGEhcRPWwQ1LEZxkl9eA8bsCrL0Nptd81uhsEe
-         mTlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LNZy2c6rQcybgL+bCAHWO3UrpbXcc8ANhnoFPYD99Hk=;
-        fh=q8nE1/1atpeSQ4ibqPNZBLWhGUdhC/Y6+TQRiV/dbgg=;
-        b=jltmViOi69Xuro0kGOe+HwDXCXKwJn+ACUy5jOpKR6PfXjF2GwF/eVN2RIQEylEduV
-         TO/wV4xCbmquzNBxfANiyI7lMm7grDewrsATwbBzbG9GUE4/UWN7ZZ7X2NpO4sWoQdjg
-         kVUZ6TBuVTZH/zZAxaJGzrD2OrcMuLbgVmR+ar3z2AgJfaDRODzrheCKJYkRadUhIgN7
-         CMjWc+dAyYdhZEy0R2y60C42tf1ZJIiRnKDMGEZLA/psBQdl0SyGQjTybHyOGFvZnT+3
-         c+BIKzUPMBPhG98/LuccIPf71EyvmgEaPI0C0s9ie0P3Q3jYq8Db9PL4eJx0/1iut+Uc
-         SQBg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782438950; x=1783043750; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LNZy2c6rQcybgL+bCAHWO3UrpbXcc8ANhnoFPYD99Hk=;
-        b=mAx8b2wOW4jK4ww4yfaXPpVwWJ9L92obyXgJNcFENwv3YTTCimiW2urJElShZKz9ms
-         tFnY3zzTcgr2gbd9mSKB2i0CoUF5tDfybVm9TR3WAy1LagL4tvddbbjSZFSTBg8tfgWW
-         n1w9HC3nT23seJmfShNih5PlY8RYBu9nnVZQww6dQ5YWeEX8WHOYavP9iFpm9sYaHo11
-         Ff/6BIJphxVtSlT2yJCFOfDjbISLZ2SmBnll1MDTjHKGy0DSJLQxxdeY3K/W6AyNDXgw
-         UNQ7wMd4JcXebpDo5Bce4W9kq/nm+Ca9sj1bqqDahk5G7hT/EoXlE2/MDFNi2hxBwK+y
-         2dEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782438950; x=1783043750;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LNZy2c6rQcybgL+bCAHWO3UrpbXcc8ANhnoFPYD99Hk=;
-        b=Rz+MyrJelMZeYm2/hUwhNUixh09Z3ajh9G3610cCNyDBdF9m+0IrJVktIeqRkbiQa1
-         qXTP+pAdl0cmI0VEj72bkIJuTN9l4Lv4IOy5kAeVBSOnf2P21zXuYA3MCpB1ayhTM8eT
-         6sr2m+Uy0isJX+6Uprj4Y3jmC3SCcgWFTRciL07jaqmF6HkuanTHSLgH/+434/stXe6r
-         YkaSvOxzYLs2R6w1FvqW8brnSamIH//W5dSBIeqn1Yv/cRD5BkPfd1viS1062uSe0d2R
-         yPSwUz/qKZGZ2GWFqgYE89BmEKbRI7FU/t2LxzuzBIBJoUXeeM4h6JxLGmz6bfmV8+2i
-         tDKg==
-X-Forwarded-Encrypted: i=1; AHgh+RqzPLzHuTDBdDTxD2caOvrxnN5cyUIIRPBE9OmqPYlRKL9A+nUAl1dbyP12sV54S/4KCCM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzAlwKrqiRkbzlz4LNW1vzcKJdAqNqMBAcq5CjYg3ynlOwOVTIR
-	iRj50B24K8VasQnNch8e44oyZWPeA1DAB/DIXp7wUinCNj2gJSc1PoGPe4uqyPGqZbmZDuXs2JA
-	GMi7Ehgzhr62uK0Kj2KXcLvRdJJYioDc=
-X-Gm-Gg: AfdE7cmzPoWU+HKHvlxEoZBdc1W3AOkV7eKrJ6pztpqAYS1tGyccJaDS/zzlKM8bkkQ
-	Xnz6hw3vgg0wbKP6G4ESwjP2CLGSsyfge84OZ0RLog1MBe5QfchgUkoWNdJd/cfOx/X+owl0wJ6
-	7gUt78nYiIwZ7tffbDPQKmugoG6gqNIac20H58bXh0rSZ0QpIXQ6MySWHY9NMpYjO+kvvYs7C3d
-	oqixp/vla5RBhovvGOYnOFFnX/OUrFAZRvGH9IT5axgadNBIMjQrSy5jq6sxDFkXrq1o3meCMOq
-	Cf+q8a0=
-X-Received: by 2002:a05:6402:3512:b0:697:eece:eae0 with SMTP id
- 4fb4d7f45d1cf-69810a3a8a5mr919346a12.6.1782438949713; Thu, 25 Jun 2026
- 18:55:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="D26oByns"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ufp1wSzkpTUmRvva+LibKUGXaqOKUUFOPevlh2/VQz1M9cM0Sy68V+ueL5QtwzubzVAz/W735q8O2aUEsEBJj13sR/c4ca5QMJIjFVMKABqKsijgw47LhymVl38vEuexlVJtqA8Vu4BUPLT7z4+4AtbR4JqaNp6s5X9gxat7jEhGYdHQbxJFIvXQTwGnarpKPL4GU7EXBJiIJWxsCbmFhsxkyZPAR3vbvl4X3/Y/ZTbLGQtHTLZViPs65xCQLyhwhj9GQ2gceNYKct4MgjFqUYJ30p+LKUZ9FX29fLveR8rZJEB/ApSXpHu4n7yQvq46BxBskzGnpbt3k8XEtq9TeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Q9+7cOP7Ff1QdF+hcpEndtoLM1eH945ZqCem593y5Go=;
+ b=HuarAR2s/RHT4O1+1ZjVl99W5GOJOfeymsYlNeQoH0hjc7DRp2nrf3F7IcF4lgg56C9lJNFyXYSP/iUbzslwMMwU6BooSt+3wpLYjZlJyLUYi8ZL4nEMhe+tpthcYH30KGryO/lOui2qMbS2hjJSezG9gzpFQfb0aCp4e86XoX3y8D4hlYDpNK0PwBY1nTiNxSUOzxDiUUGdcbQHckXasI1SzQNW/aJFCiXcI9qBJCziV8A9xxhIJKLxBJUWwkREGuDEdulisEVLfjGV9yN7Y8CkHLjaCdL2FiiCS9acgX57Bzbx3H5O+jN8GC93Qtgjo37vu3F6JMV7WNReLvUvqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q9+7cOP7Ff1QdF+hcpEndtoLM1eH945ZqCem593y5Go=;
+ b=D26oByns252f/nqp6aj7oVwM7Ei8b2gz55lbvWPxQmHaOQrFVjKs9tE7zr+lSQzDc3HzKHOLMjraCBTnbaiwwI6uKQ586iPeXTSQk3agtdNDAfF+sXE9RP6kQ+NMlpkRLrTyIIim9s0aRvHosjrdLNdduDppLAuB6u/DR0gWBiCJYJNLciDRsHh1qGEdXqnJgUv29JFT/abcQDAIKYiWFIhMJVKX1wki4GQxYge5KV5Gn8iJ38nChL/ujss90my8VbliwNzwacnBTNuifu4UUFiwURr/Z1qUbXeKKas00Dfg5BI6lgpGquc1FM0AzSceL8lNcsGXiRRuhm6zfcCtxw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VI2PR04MB11276.eurprd04.prod.outlook.com (2603:10a6:800:296::7)
+ by PAXPR04MB9445.eurprd04.prod.outlook.com (2603:10a6:102:2b4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Fri, 26 Jun
+ 2026 02:30:25 +0000
+Received: from VI2PR04MB11276.eurprd04.prod.outlook.com
+ ([fe80::60d7:a8e5:eb88:9be]) by VI2PR04MB11276.eurprd04.prod.outlook.com
+ ([fe80::60d7:a8e5:eb88:9be%5]) with mapi id 15.21.0159.016; Fri, 26 Jun 2026
+ 02:30:25 +0000
+From: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	amitkumar.karwar@nxp.com,
+	neeraj.sanjaykale@nxp.com,
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	bhelgaas@google.com,
+	brgl@kernel.org
+Cc: imx@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	sherry.sun@nxp.com
+Subject: [PATCH V3 0/8] Add PCIe M.2 Key E connector support for NXP i.MX boards
+Date: Fri, 26 Jun 2026 10:31:18 +0800
+Message-ID: <20260626023126.2189931-1-sherry.sun@oss.nxp.com>
+X-Mailer: git-send-email 2.50.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5PR01CA0270.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:21d::17) To VI2PR04MB11276.eurprd04.prod.outlook.com
+ (2603:10a6:800:296::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260625071130.93544-1-liem16213@gmail.com> <20260625160219.55116-1-liem16213@gmail.com>
- <aj1UR5ddawsdMbZC@SMW015318>
-In-Reply-To: <aj1UR5ddawsdMbZC@SMW015318>
-From: liem <liem16213@gmail.com>
-Date: Fri, 26 Jun 2026 09:55:38 +0800
-X-Gm-Features: AVVi8Cdo9F6_HUwGPZkGfKdDVs1g2IkW69-hNTuPosIJl9Kc44faaQDJLD5vnmQ
-Message-ID: <CABoz+=00tywisdxcmkF_F8rOYg=BMtzZDsTN2JOXfzEwsQu01Q@mail.gmail.com>
-Subject: Re: [PATCH v2] i2c: imx: Fix slave registration error path and
- missing timer cleanup
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andi Shyti <andi.shyti@kernel.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Biwen Li <biwen.li@nxp.com>, 
-	Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI2PR04MB11276:EE_|PAXPR04MB9445:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0071e469-b294-4092-72f6-08ded32ae0f3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|19092799006|366016|6133799003|18002099003|11063799006|56012099006|921020;
+X-Microsoft-Antispam-Message-Info:
+	1K+VJ6/mxwtGj+ORFRh5p23K+iQxuvvMgfj0RzWM2F0XJUEbNJncxiWuc9ssFEONx5KIaGLv2GgJwVBKLUYuZR1alrOlo54sjg7g1CFkfd7JDiq/ePuB59ZOuLzVFH7g0ftWCK4FonFa4MRgNJWCek2PWGfiCznVrEFM7VC38TpOA91NXo3fDYI1UQ9bJyXX3doQT1krl/V9cJzU+JznX94gFE3rQkVa4uvcvSgNbZEe6FXGQ6ZUTFMDA72QJOEbncMMSs1XUaKs2UdQ/jcZ+e//f3uj5ecYWyhmc3q42gZNPJazx16XvLWkui2E0eMZRq7Dt8gypYoqwP0A5aemqv1SwThILKFhKhElEvwpVpOhQZ86JqbxTLoggXgHJRzJ9esM2rjnbSkd4eCUpmooedgBT02d2InvLLQc7CjlEfVwk5Zs0FVEt5nBNuYAxA3WYL2nGn8CF8RNVGfSSjLqGvu9zWNYVi7pU25kRXTjx3qrrLAYstE3g/gfzV1r7QHEn5BaYlhd5rBavcvhqbESV22NePRSoEQ1XBqRSOmkgWJ0E0Kp8bSAQSAWKy021jwO/b56jb/4EsFPbDHEDAo1ZGPa2PuXv09k09AygXDx1K4OYciNN7YXrJfmumEbd2aPvklYoB0AOpIrgUfk4vcglHu5J2+FqO7i+6Q/uotrlqg8FrU8NS37QkyxT62xWsb69NoXH7WPSnVvE7EHpDngoQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11276.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(19092799006)(366016)(6133799003)(18002099003)(11063799006)(56012099006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WtyecYo5geVHGCXdziDaxiByBcZvs+LrJI8Oj7r/QWCRSCfhQ+J4BGeU+AjJ?=
+ =?us-ascii?Q?1hOSCe5+qLqkmhqg09GncZ+TWRP0PhtghxPwgFg9mfOkI29nBvnufpqmoTFB?=
+ =?us-ascii?Q?RF+uGBfhgUxYyad/pytKNjcK9Qic22YojNsg1nlUILircaKWwdeeEA8tTu84?=
+ =?us-ascii?Q?ej3CL1j188TAzC0n5r8wPk2I65vcrN51nLZNviXe1j/CnP27V+A6Rd7OcysT?=
+ =?us-ascii?Q?Q3scKTAHO4j48neHQd8z/puv5e0bkHH024TXO1Qsxsdx66Kp0SBncBldRUD3?=
+ =?us-ascii?Q?sMQ1mVcjAAWTVLVOZMbPYjuK3v+zwvETwt+xt0KCu7aLlybQqAWZREy67t95?=
+ =?us-ascii?Q?s1D0zad1EwG9RDY/GA5NWkMQxIYmG5N7ATtU54YByZDxDAXGRhw7Z3JqUil1?=
+ =?us-ascii?Q?+5Hz86ka+S6PWrLkccsOSzgGwbi7IzrZxPzESyk5uNDCJH1svGv6Om4DTG03?=
+ =?us-ascii?Q?PUQ8oxfWbtFxOcJLElVfEM73KkoHndQnbXpp6DICpANj6k0ETdEH9FwWAPb2?=
+ =?us-ascii?Q?KGpNbFSd5haF+g1yTA2kpk+I/9oSVXKjwC+UhsgcfNzk2eQgomvd1NTnWyy3?=
+ =?us-ascii?Q?VcZ0CT9RiqL+VbIXn0Z5qLKbL8gie7YJ5SiKRgdrP1GXm68sotn6HZpkJllI?=
+ =?us-ascii?Q?0Y5EbgXrQ8bhbg7v7+J490ZyvB//XQOUMwlXgDwk+xvNiXPJFsoxbGIpnHQo?=
+ =?us-ascii?Q?5cZ8RWQkyc6v2yWpxClNpyq1dBmXahnxS6fEnwWbDBRwBCx5SM+RXTCBJYc2?=
+ =?us-ascii?Q?O+tsjmdt8CRJ4BNS0O8NH1Yj6K6JqswEVk+zqVCtXnKIxOU5mEse+DeAFvXr?=
+ =?us-ascii?Q?ugJoZp8CIl09NGRQul67HNY9P63x+sAy2vCQLjvxSHDROp7disrPw9eI3BRW?=
+ =?us-ascii?Q?7upk+DxH3ICIkCGNTtx3xt4GO8VGMROFxRLt9hq4UCLUB6JTYAg9ihAl1Ifr?=
+ =?us-ascii?Q?H6tO6ucLifsRUcDut6Oov08I+1q1s0eSfm/gqgZ5aMxigC1UJNzSbbAPi6Tr?=
+ =?us-ascii?Q?C03w5ZkhiXePPe69pUqb6J2Nhi6NQJECCEkMFDSGjzFPvsJ2H/jBAxxPUYu9?=
+ =?us-ascii?Q?YBUliPtfhGs30U2J0yGOfnsNf2rugXVyV8npv6NVZRCpN/tNtn0tpocBI0n+?=
+ =?us-ascii?Q?EuByf7OoLl6eiZGgDG+H5qSqod62YlZlOu8T79rn93lrl6NklYirOcktxHK0?=
+ =?us-ascii?Q?C9uJI+AIaoe10uMkfXdLGk1nUFFP/RTs2SmzR0uE8QIqWeP5nCbrppHfUDPB?=
+ =?us-ascii?Q?bKWNHe/z/7IQZLJFjKjpHmXTQ1Bz68ANUYFkGRXGffqIzsTnHPKG/a4804cf?=
+ =?us-ascii?Q?CNApVllixm4o04Q8PERZctK7BtOZP1drWLOcvaJ9M74iPoQ3dfGodjzIlV7c?=
+ =?us-ascii?Q?dzfJAiPTA05Hi7b9hb9hNIppyipodEoq+sqFiTHjqTI/5WJpg3MZBSg981Kt?=
+ =?us-ascii?Q?0U3K6uA8W6nVByzrwAxRLwRi3qiGShD7sR970Tld/O/J10vF31OC3Bd3Nq19?=
+ =?us-ascii?Q?oa3me6jM9tpLiYyVS0OfaetB8H2T/e89DAWuJZK+6IkVj+URCnIVghu3lCfs?=
+ =?us-ascii?Q?6B4YvjBLYb9jXtshGMB7vqwlo8ES6TtacQx0PH4Cq9bifreGXwGUeilQF/3M?=
+ =?us-ascii?Q?0pNxdECGS5dkeavhnEyJ3N09fjO8wKj3dITznfp4wpB4GedMnmtM1ISTk0YI?=
+ =?us-ascii?Q?U4UA1Kj3nnUzXlOuqTqXY3YjEktZGg5/nwd26su9GGTnmvE3K5/ys7otuRMx?=
+ =?us-ascii?Q?no0/Vlk7BdMq1R0npaoYM0kzrX37xgIQqMqdB/hnwVrevGPpf3rR?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0071e469-b294-4092-72f6-08ded32ae0f3
+X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11276.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 02:30:25.4595
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CNaCgDSTOIS/fTgWhxgM0di9qg1e9eCxyPlHhOUDaASYl2XODa+IgeNX4YmPpDW+FqnFRURvmIXJQknLkx1PeQSZq5PIg1g4Ll2uTpWfvAIm7NQ9lqSLc5SAB+pssA/O
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9445
 
-Hi Frank,
+From: Sherry Sun <sherry.sun@nxp.com>
 
-Thanks for the review. I'll split this into two separate patches and
-send a v3 series.
+This series adds support for NXP Wi-Fi/BT combo chips (88W9098, AW693)
+inserted into PCIe M.2 Key E connectors on several i.MX EVK/MEK boards.
 
-Regards,
-Liem
+For M.2 cards that rely on PCIe L2 link state and wake-up mechanisms, the
+card must remain powered during suspend. Patch #1 uses the existing
+dw_pcie_rp::skip_pwrctrl_off flag to skip power-off during suspend and skip
+power-on during the init path.
 
-On Fri, Jun 26, 2026 at 12:16=E2=80=AFAM Frank Li <Frank.li@oss.nxp.com> wr=
-ote:
->
-> On Fri, Jun 26, 2026 at 12:02:19AM +0800, Liem wrote:
-> >
-> > There are two issues that affect the i2c-imx slave handling:
-> >
-> > 1. In i2c_imx_reg_slave(), i2c_imx->slave is checked at the beginning
-> >    and the function returns -EBUSY if it is non-NULL.  If
-> >    pm_runtime_resume_and_get() fails later, the error path returns
-> >    without clearing i2c_imx->slave, leaving it non-NULL.  Subsequent
-> >    attempts to register a slave will then immediately fail with
-> >    -EBUSY, making it impossible to register the slave again.  Fix
-> >    by setting i2c_imx->slave =3D NULL on the error path.
-> >
-> > 2. In i2c_imx_unreg_slave(), the slave pointer is set to NULL after
-> >    disabling interrupts.  However, a pending interrupt might already
-> >    have started the hrtimer (i2c_imx_slave_timeout) before the pointer
-> >    was cleared.  If the hrtimer fires after i2c_imx->slave is set to
-> >    NULL, the timer callback i2c_imx_slave_finish_op() will call
-> >    i2c_imx_slave_event() with a NULL slave pointer, and the
-> >    last_slave_event check loop in i2c_imx_slave_finish_op() may cause
-> >    a system hang because last_slave_event is no longer updated.  Fix
-> >    by canceling the hrtimer and waiting for it to complete after
-> >    disabling interrupts, before clearing the slave pointer.
->
-> Please use two patches to fix these problem. One patch fix one problem.
->
-> Frank
->
-> >
-> > Both issues can trigger a kernel oops, system hang, or permanent
-> > slave registration failure under certain race conditions.  Add the
-> > missing NULL assignment and the missing hrtimer cleanup to harden
-> > the slave path.
-> >
-> > Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Liem <liem16213@gmail.com>
-> > ---
-> > v1 -> v2:
-> >   - Instead of adding a NULL check in i2c_imx_slave_event(), cancel
-> >     the hrtimer and wait for it to finish in i2c_imx_unreg_slave()
-> >     after disabling interrupts, as suggested by <Carlos Song>.
-> >     This avoids a potential hang in the last_slave_event loop in
-> >     i2c_imx_slave_finish_op().
-> > ---
-> >  drivers/i2c/busses/i2c-imx.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.=
-c
-> > index 28313d0fad37..04ffb927aba9 100644
-> > --- a/drivers/i2c/busses/i2c-imx.c
-> > +++ b/drivers/i2c/busses/i2c-imx.c
-> > @@ -936,6 +936,7 @@ static int i2c_imx_reg_slave(struct i2c_client *cli=
-ent)
-> >         /* Resume */
-> >         ret =3D pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
-> >         if (ret < 0) {
-> > +               i2c_imx->slave =3D NULL;
-> >                 dev_err(&i2c_imx->adapter.dev, "failed to resume i2c co=
-ntroller");
-> >                 return ret;
-> >         }
-> > @@ -957,7 +958,7 @@ static int i2c_imx_unreg_slave(struct i2c_client *c=
-lient)
-> >         imx_i2c_write_reg(0, i2c_imx, IMX_I2C_IADR);
-> >
-> >         i2c_imx_reset_regs(i2c_imx);
-> > -
-> > +       hrtimer_cancel(&i2c_imx->slave_timer);
-> >         i2c_imx->slave =3D NULL;
-> >
-> >         /* Suspend */
-> > --
-> > 2.53.0
-> >
-> >
+Also the btnxpuart driver is extended to obtain a pwrseq descriptor via the
+OF graph on the UART controller device in patch #3.
+
+Note: Patch #4-8 in this patch set depends on the following [1] and [2]
+DTS patches.
+[1] https://lore.kernel.org/all/20260616105201.3214395-1-sherry.sun@oss.nxp.com/
+[2] https://lore.kernel.org/all/20260520084904.2424253-1-sherry.sun@oss.nxp.com/
+
+---
+Changes in V3:
+1. Move pci_pwrctrl_create_devices() to imx_pcie_probe() in parch #1,
+   similar to other regulator_get calls as suggested by Frank.
+2. Collected the tags.
+
+Changes in V2:
+1. Rebased on top of 7.1.0.
+2. Removed the power_off error handling in patch #3 because pwrseq_put()
+   would call pwrseq_power_off() to automatically clean.
+3. Collected the tags.
+---
+
+Sherry Sun (8):
+  PCI: imx6: Add skip_pwrctrl_off flag support
+  power: sequencing: pcie-m2: Add PCI ID for NXP 88W9098 and AW693
+    Bluetooth
+  Bluetooth: btnxpuart: Add M.2 Bluetooth device support using pwrseq
+  arm64: dts: imx8mq-evk: Describe the PCIe M.2 Key E connector
+  arm64: dts: imx95-19x19-evk: Describe the PCIe M.2 Key E connector
+  arm64: dts: imx8dxl-evk: Describe the PCIe M.2 Key E connector
+  arm64: dts: imx8qm-mek: Describe the PCIe M.2 Key E connector
+  arm64: dts: imx8qxp-mek: Describe the PCIe M.2 Key E connector
+
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 56 +++++++++++++-----
+ arch/arm64/boot/dts/freescale/imx8mq-evk.dts  | 44 ++++++++++++--
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts  | 58 ++++++++++++++-----
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts | 54 ++++++++++++-----
+ .../boot/dts/freescale/imx95-19x19-evk.dts    | 55 +++++++++++++-----
+ drivers/bluetooth/btnxpuart.c                 | 14 +++++
+ drivers/pci/controller/dwc/pci-imx6.c         | 43 ++++++++------
+ drivers/power/sequencing/pwrseq-pcie-m2.c     |  4 ++
+ 8 files changed, 250 insertions(+), 78 deletions(-)
+
+-- 
+2.50.1
+
