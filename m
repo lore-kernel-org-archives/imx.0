@@ -1,230 +1,119 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE3F37C910
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 16:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639C73FCB1E
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 16:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782492687; cv=none; b=OWCUwGOu0WzF5K6KuZ4eFnG6YDFFdcArx0L2yPEN4N6/grxou5Nxp4Beuc9BG2FTuqw+ZXwWokXEFf9Z0stNC/zp0OREmpKePD/homdJicPpWAbI+eAGJ/cY50fHer9wCzJToqFPzJ04XYB9jOJWJgv3MUBhd7U4Bjg4vbHS2sk=
+	t=1782493116; cv=none; b=QrIIdpvdFqYU2AHl+98oS8yzaZUi99WZ4IWUGTsrUyFbGZkiKbXXfLMVD1aRSaL4t818Vn9QUTN+g3ut3W9PDK4tFRL04fBFSYPE6+DlJyKCLADnBuB8loEbg/Lzm0cnY2Yx2rxvkldFniuBwgqbFH8T2FDTQVsmi3iN5UEw/mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782492687; c=relaxed/simple;
-	bh=6MXzkFS2E47SUNsfu3fRHzDB0jzVuWRLm15Goqy+6vE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=FXpCsQ+oWVkYedz5GNcZ3LCl8p8dk0ThsqAyvHUu+E8uykcSuPrgjsH7maAYjAlDg5xoH+I3DR2jmCwc3xeeV/3mbn9jzZuU1pWu2ZGmcBiAeooqM4v0ZOmeS5EEFVrcnxDkr7H5+gsoPwMqEKrw8t2ATesz22WIBv3BzE0zkFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=co0ZolZJ; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1782493116; c=relaxed/simple;
+	bh=tctF25yDjX2h/D8jTaVAW8rgtRGo6jx+AhqWLDpBgto=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=PBKTrt3jVWTfD9aXD1FN1++zvIOOvdN5rBph+7yEq/t5tJiS8l2tG6ZjlQxjtp+m0qeHqCyPsb9vRPY0g+ZVFa+tg34vFg2KGIk5d66vbmcXzTJrzgqKLDnY49piOENcz5fyx3q2fi7DAkXdzOqABNYH8jMfKSSq6tzpBg+0ghU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=fail (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=XavWwpTs reason="signature verification failed"; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="co0ZolZJ"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0750FC5CD6A;
-	Fri, 26 Jun 2026 16:51:33 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F1E3460232;
-	Fri, 26 Jun 2026 16:51:23 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 42B2D104C9D9B;
-	Fri, 26 Jun 2026 18:51:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782492682; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=8iEHH7+jMGAu88nTaddZ+kCu6HVN0Ooq1Pzt5v1N4lk=;
-	b=co0ZolZJ858fCfOk8D33vEBCh0s9JzN/MrFxHMj1DWEl0PeQg+TvCZNcOBIk9uJm8A70aQ
-	NtjIEBNc92ycLE6QVXH5Wx9qnfc0mU+Ln60OMBNf/UKB1cKvJgbLHzXBq8rEfVvugoE0zM
-	L7w/q6YkjZrBjop4aIVdjCttWllHn8T8JWL94GdmmD5mJe+APArqEaM4tkXMUI0RxIwLNu
-	HxDcFfDuc8rYTFZFlIqLDDa7aePw9gBvLYD3z4aBlHHR617Z7ZXOoxSDAw+0ac1YH+Hly+
-	oHDEv37X29MEiyfdk4N+Jf7eQxI5P1uIuINj2LLK9d0l53+EyGdzHOue48e2CQ==
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="XavWwpTs"
+Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D3CD91E7;
+	Fri, 26 Jun 2026 18:57:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1782493070;
+	bh=tctF25yDjX2h/D8jTaVAW8rgtRGo6jx+AhqWLDpBgto=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=XavWwpTshvR2O36bfPMEeGMaH0w7ZdslrtG03Qazu+OZnaOrAdHxWil5SaIhIb0cY
+	 JMvAYnk+2anzMx7HlygYjieq5FydLfCQQ2JSjFiBcLiE61AZt31R9BdllD2TjmFZbd
+	 IcL7snuNtXIT11WheBb0ccOUTcoe4r1AFdHxHaok=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Jun 2026 18:51:14 +0200
-Message-Id: <DJJ4X22CJ3FG.5EYF84LVRNOG@bootlin.com>
-Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
- Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Inki Dae"
- <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
- Szyprowski" <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>,
- "Stefan Agner" <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
- <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
-To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code
- creating the connector to a subfunction
-X-Mailer: aerc 0.21.0
-References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-5-45e2bdb3dfb4@bootlin.com>
- <20260608-mindful-heavy-frigatebird-be9faf@houat>
- <DJ735MTNMYD1.3LPNV404V8PIU@bootlin.com>
- <20260624-proud-unbiased-pony-ecc3c3@houat>
- <DJHEAWSEZR79.19UFIKS8QJBQ7@bootlin.com>
- <20260626-polite-hairy-perch-25e1aa@houat>
- <DJJ1MPCEJGZD.UZM9183V6ZE5@bootlin.com>
- <20260626-classy-nightingale-of-romance-1cacad@houat>
-In-Reply-To: <20260626-classy-nightingale-of-romance-1cacad@houat>
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <20260626143310.GF2363897@killaraus.ideasonboard.com>
+References: <20260626-kbingham-orientation-v2-0-47178be927b4@ideasonboard.com> <20260626-kbingham-orientation-v2-4-47178be927b4@ideasonboard.com> <20260626143310.GF2363897@killaraus.ideasonboard.com>
+Subject: Re: [PATCH v2 4/8] ARM: tegra: Convert to new media orientation definitions
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jacopo Mondi <jacopo@jmondi.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, Jimmy Su <jimmy.su@intel.com>, Matthias Fend <matthias.fend@emfend.at>, Mikhail Rudenko <mike.rudenko@gmail.com>, Daniel Scally <dan.scally@ideasonboard.com>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>, Michael Riesch <michael.riesch@collabora.com>, Benjamin Mugnier <benjamin.mugnier@foss.st.com>, Sylvain Petinot <sylvain.petinot@foss.st.com>, Paul Elder <paul.elder@ideasonboard.com>, Martin Kepplinger <martin.kepplinger@puri.sm>, Quentin Schulz <quentin.schulz@theobroma-systems.com>, Tommaso Merciai <tomm.merciai@gmail.com>, Svyatoslav Ryhel <clamor95@gmail.com>, Richard Acayan <mailingradian@gmail.com>, Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.
+ de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, linux@ew.tq-group.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Fri, 26 Jun 2026 17:58:28 +0100
+Message-ID: <178249310801.36676.2030968701607803461@ping.linuxembedded.co.uk>
+User-Agent: alot/0.9.1
 
-On Fri Jun 26, 2026 at 4:38 PM CEST, Maxime Ripard wrote:
-> On Fri, Jun 26, 2026 at 04:16:39PM +0200, Luca Ceresoli wrote:
->> Hi Maxime,
->>
->> On Fri Jun 26, 2026 at 12:09 PM CEST, Maxime Ripard wrote:
->> > On Wed, Jun 24, 2026 at 05:47:10PM +0200, Luca Ceresoli wrote:
->> >> On Wed Jun 24, 2026 at 1:41 PM CEST, Maxime Ripard wrote:
->> >> > Hi,x
->> >> >
->> >> > On Fri, Jun 12, 2026 at 02:56:24PM +0200, Luca Ceresoli wrote:
->> >> >> On Mon Jun 8, 2026 at 1:40 PM CEST, Maxime Ripard wrote:
->> >> >> > On Tue, May 19, 2026 at 12:37:22PM +0200, Luca Ceresoli wrote:
->> >> >> >> In preparation to introduce bridge hotplug, split out from
->> >> >> >> drm_bridge_connector_init() the code adding the drm_connector i=
-nto a
->> >> >> >> dedicated function. This will be needed to be able to add (and =
-re-add) the
->> >> >> >> connector from different code paths.
->> >> >> >
->> >> >> > Same story here, explaining what you need later on that calls fo=
-r that
->> >> >> > change would be nice.
->> >> >>
->> >> >> Here's a more verbose version:
->> >> >>
->> >> >>     Currently drm_bridge_connector_init() does two things:
->> >> >>
->> >> >>      * allocate and initialize the drm_bridge_connector
->> >> >>        (which embeds a drm_connector)
->> >> >>      * initialize and register the embedded drm_connector
->> >> >>
->> >> >>     For bridge hotplug we need to separate these two actions:
->> >> >>
->> >> >>      * the drm_connector needs to be added and removed at any time=
- based on
->> >> >>        hotplug events
->> >> >>      * the drm_bridge_connector is designated to create and remove=
- the
->> >> >>        drm_connector, so it must be persistent for the card lifeti=
-me
->> >> >>
->> >> >>     As the lifetimes of drm_bridge_connector and drm_connector bec=
-ome
->> >> >>     different, we need to create them in different moments.
->> >> >>
->> >> >>     In preparation to support that, split out from
->> >> >>     drm_bridge_connector_init() the code adding the drm_connector =
-into a
->> >> >>     dedicated function. No functional changes, just moving code ar=
-ound for
->> >> >>     now. A future commit will make the drm_connector be created ba=
-sed on
->> >> >>     hotplug events.
->> >> >>
->> >> >> Looks good?
->> >> >
->> >> > The message itself, yes, thanks.
->> >> >
->> >> > However, I have questions now :)
->> >> >
->> >> > Do we really expect drm_bridge_connector to stick around when a bri=
-dge
->> >> > gets unplugged? If so, how does it cope with having, say, an HDMI
->> >> > connector, and then swapping out the hotplugged part for an LVDS on=
-e?
->> >> > Does the HDMI connector sticks around indefinitely?
->> >>
->> >> In your example, the HDMI drm_connector would be unregistered and put=
- on
->> >> hotunplug. Its allocation will stick around until the last put but th=
-at's
->> >> quite irrelevant. Then, on plugging the LVDS addon, a new LVDS
->> >> drm_connector will be created and registered.
->> >>
->> >> > *Especially* if we're using overlays for this, I'd expect everythin=
-g
->> >> >  after the first hotplugged bridge to be destroyed, no?
->> >>
->> >> As said, it would be unregistered immediately but might be freed late=
-r on
->> >> if still refcounted.
->> >>
->> >> This is visible in patches 36+15, the path to follow is:
->> >>
->> >>  drm_bridge_connector_handle_event(event =3D DRM_BRIDGE_DETACHED) [pa=
-tch 36]
->> >>  -> drm_bridge_connector_dynconn_release()                      [patc=
-h 15]
->> >>
->> >> Does this solve your concern?
->> >
->> > Not really, I'm talking about drm_bridge_connector. The fact that
->> > bridges are destroyed make sense to me. The fact that
->> > drm_bridge_connector sticks around doesn't. It's supposed to be a
->> > connector for bridges. If you don't have bridges because they got
->> > destroyed, and connector, drm_bridge_connector doesn't have a reason t=
-o
->> > exist anymore, unless it's drm_bridge_hotplug in a trench coat :)
->>
->> It is not a hotplug-bridge in a trench coat, no :) The code is clear abo=
-ut
->> this.
->>
->> I'd say with this series a "drm_bridge_connector" is just becoming
->> something more (perhaps something else too). Somewhat as "a drm_bridge i=
-s
->> either a bridge or something else". :)
->>
->>
->> But let's leave names aside for a moment. If just looking at the current
->> code, the drm_bridge_connector is "a handler, owned by the card/encoder =
-and
->> having the same lifetime, which takes care of drm_connector
->> creation/destruction at card probe/removal".
->>
->> What we need now is just the same plug " and on hotplug events" appended=
-.
->>
->> So in both cases there needs to be "a handler persitent with the card".
->>
->> Do we agree so far?
->
-> Ish. If we go for that, then we need to update the name.
+Quoting Laurent Pinchart (2026-06-26 15:33:10)
+> On Fri, Jun 26, 2026 at 01:07:56PM +0100, Kieran Bingham wrote:
+> > The orientation property for video interface devices now has definitions
+> > to prevent hardcoded integer values for the enum options.
+> >=20
+> > Update the users throughout the nvidia device trees to use the new
+> > definitions.
+> >=20
+> > Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+> > ---
+> >  arch/arm/boot/dts/nvidia/tegra30-asus-nexus7-grouper-common.dtsi | 3 +=
++-
+> >  arch/arm/boot/dts/nvidia/tegra30-asus-transformer-common.dtsi    | 3 +=
++-
+> >  arch/arm/boot/dts/nvidia/tegra30-lg-p895.dts                     | 4 +=
+++-
+> >  arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi                      | 3 +=
++-
+> >  4 files changed, 9 insertions(+), 4 deletions(-)
+> >=20
+<snip>
+> > diff --git a/arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi b/arch/arm/boo=
+t/dts/nvidia/tegra30-lg-x3.dtsi
+> > index 60e8a19aa70e..c58e3026a115 100644
+> > --- a/arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
+> > +++ b/arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
+> > @@ -4,6 +4,7 @@
+> >  #include <dt-bindings/input/input.h>
+> >  #include <dt-bindings/leds/common.h>
+> >  #include <dt-bindings/media/video-interfaces.h>
+> > +#include <dt-bindings/media/video-interface-devices.h>
+> >  #include <dt-bindings/mfd/max77620.h>
+> >  #include <dt-bindings/thermal/thermal.h>
+> > =20
+> > @@ -1216,7 +1217,7 @@ rear-camera@10 {
+> >                       dvdd-supply =3D <&vdd_1v2_rear>;
+> >                       avdd-supply =3D <&vdd_2v7_rear>;
+> > =20
+> > -                     orientation =3D <1>; /* Rear camera */
+> > +                     orientation =3D <MEDIA_ORIENTATION_REAR>;
+>=20
 
-drm_connector_manager?
-drm_bridge_connector_manager?
+It must have been hot when I typed that one out...
 
-> drm_bridge_connector for something that is neither a bridge or a
-> connector is not great.
->
-> But even then, I'm not even sure why we need to have that "manager" in
-> the first place. You want to make bridges be aware if they are the last
-> in the chain or not. Use that property in attach to either create a
-> drm_bridge_connector instance if you're last, or attach the next bridge
-> if you aren't.
+> This should be MEDIA_ORIENTATION_BACK. And you should compile all the
+> device trees the series touch.
 
-What? o_O
+Indeed, I got caught out by these being in arm, with the others in arm64
+even though I explicitly pulled these out to a separate patch!
 
-Several encoder drivers have been painfully converted to create a
-drm_bridge_connector. Now if the bridges start doing it themselves we
-should go back to those encoder drivers and ditch all the
-drm_bridge_connector from there?
+Fixed up and now I have compiled also with:
 
-I must be missing something. Can you elaborate on this?
+make O=3Darm32 ARCH=3Darm multi_v7_defconfig
+make O=3Darm32 ARCH=3Darm dtbs -j32
 
-Luca
+which looks clean.
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+Thanks
+
+Kieran
+
+>=20
+> >                       rotation =3D <90>;
+> > =20
+> >                       nvmem =3D <&m24c08>;
+>=20
+> --=20
+> Regards,
+>=20
+> Laurent Pinchart
