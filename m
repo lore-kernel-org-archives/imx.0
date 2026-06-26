@@ -1,64 +1,64 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EB837B417
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 15:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0999C33711D
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 15:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782486324; cv=none; b=j9a1a/ildFvhryLdQZHkT7q7/DYhzcutd+o4bEAKxXyDxBD/P4QutJAEir0PNX7wEt+Zwa70rQk6vdZ8FF2vmubc/Y3MZorAObzXbttCIT72VyUzhTvTIf02HuTUQ7AvV3QdISSQQt+uBXSaUzARSodbNIiKuftrzwaJGqcxCw0=
+	t=1782486753; cv=none; b=gKLIpWNhaHXca2OHmiwpNFm+TfQ3eHZFXqDaAH00Lx48EOo8ZyiKTVI57YJy6ZQrRtB7Y7NAqWluba4EciaPUC39RKESJ+FtGCS7VYwacbvTtNEfso1OQ+64qmI9bphPFNUVA1AssmAFIW2W+jsOdNGzULseBUNl2WyDP/CDtEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782486324; c=relaxed/simple;
-	bh=dQWoBG3cdhdrXUGK8cjuSemvsRSH2KT/hQo0wNib96o=;
+	s=arc-20240116; t=1782486753; c=relaxed/simple;
+	bh=Evlqo2mKiWd3GWD+tOTSIJ+Llo4YzdKnMs4LsgHm9FM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tt5tS2w2zNHTqmHjjaJm6oQb85D+wUtAVSJ1I6O3TELcJt/FkAaT5BOAmNOoxoe5Q3Sfoo8FBuwhehAeNltI28QiW/vJMaIC7nWVSJaAXuWlXyisGdKYBEWKIpHL3ORuruRffSb4s6JGa1CdCqOFxSDQCINsnMlP4OynxvrWC0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dfU9ntf5; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=ndrOdqjX+JsjIwe4OAefaUByllA24Zdqz70baM4irw85G0cHLU5XHRtUr1uz7Aqd1OGXoRYe/zv60D4EFRxnvMnAEQ/D+jx7K3zND6wcj6XYV64RD4byGf92SupuqgfBG0Dk9oA9d1RlUmKiWpXMbG3Oj/yk93N+9i0i/pEaBng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ERU0LOL6; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dfU9ntf5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ERU0LOL6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782486316;
+	s=mimecast20190719; t=1782486744;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dQWoBG3cdhdrXUGK8cjuSemvsRSH2KT/hQo0wNib96o=;
-	b=dfU9ntf5VCw2uQpEIlX3yxWsHBXKkdctYP9boMfsXSD7lUE4lRBGTqCeh2mBRwh0nxa1Rs
-	CxPrf1mw9fJDbFZAYsCrkZg4KrmeOu7oGZT9Oq3/m4anIwwWXyyubwdIAlGTcjDQAta7/D
-	De8D06nLkneZ27FcIo0PQoEA73TKDyg=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=gNWd65/LlS1S7z+e2JXdypKHFrBZo/8VRicT21AfZoc=;
+	b=ERU0LOL63oo57CfBJU3Fq6NyNUe9rbY+dICKG1vBP03IrnyyVdAhS6iyxyaCoIBODrDuEw
+	AQgjPQc++Om6hy6GyGLbyyMnI+rsaLG1mptehZTuFhY4RGzx3wn+Tf6JRW4VtgCTWjiROR
+	mg3tIQ3DzHK3VYa1x9a9xqT7iqBdJnM=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-346-l9Vge_S4OTWEqTpfbutG9A-1; Fri, 26 Jun 2026 11:05:14 -0400
-X-MC-Unique: l9Vge_S4OTWEqTpfbutG9A-1
-X-Mimecast-MFC-AGG-ID: l9Vge_S4OTWEqTpfbutG9A_1782486314
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-800292c6be0so15495337b3.1
-        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 08:05:14 -0700 (PDT)
+ us-mta-113-VkS-PIclMmCkHC5eEC89Aw-1; Fri, 26 Jun 2026 11:11:54 -0400
+X-MC-Unique: VkS-PIclMmCkHC5eEC89Aw-1
+X-Mimecast-MFC-AGG-ID: VkS-PIclMmCkHC5eEC89Aw_1782486714
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-7fe0184fa91so20191797b3.2
+        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 08:11:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782486314; x=1783091114;
+        d=1e100.net; s=20251104; t=1782486714; x=1783091514;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dQWoBG3cdhdrXUGK8cjuSemvsRSH2KT/hQo0wNib96o=;
-        b=kIweyL42wqamXKbU57B080NPaRt4iPCsCEj4fM40sBixfcBDvWZvW/TyNAGt/+DJv8
-         ORq0tgHB3RChkrggTuzJwZg4eXe1P8MApc61CEOPPXcf5zXcBDagfac9PuYVkGHZkrVD
-         vHirDnw7x1n3c1pCtSwHsJ1LrV3w/VF1xkCl7IVdTZKZfCz/TPjydU7UxR4OoiVpRUH/
-         AIg9oWlxCRNEknaAg1Nb5wKOrVKJerTNwzKlDnvbPyAyGsUxGTyBFwHpZjB+i1OvG2Ol
-         9Tr7lYGyc9g7753QpTZgh6ynAbUAt2aG8zJyd+2hkKVJCLzjw6Xtni3HyCg4awTVVlgk
-         NA8g==
-X-Forwarded-Encrypted: i=1; AHgh+RpcR6arrLCIl0xA6poQyVjCuhZvPevlgF8+Rl+U3CJ1MkT4DpbzyJ8SCYfwTNFRqFgzWCY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxHxsxYBdJzA+Zvt5rqsuoJ/+dZg1QYo4awrCpBsB1+XWEmOZcl
-	varYrLE0saNKxjXZmNLnMlpWZ71bIpotWujfM2/kZ5UJAUrVyU0PdZ9IFw5Ejk/ytwBeUegmINS
-	XUz+iK3IAqvqE0g0nhXxFBtNvSd0vU4C0si0W+ooJ5heqq0lWonwlK4iHJ3IDX6wc4J+CT9m0uD
-	CQfSNPKrAXMVF89iPb7lDkY4rnA1Zc
-X-Gm-Gg: AfdE7cns0kGlxm/Bp8MPBJEdBCEiYtLhJ77c6RyXMgcxkVpD3Oup8UGH2xf8rzqzI/4
-	ZU7Fokx7yHgHxscwTK70DJC1h+7+E6o65xp4Z9BTO0aCWeEnPbOd37m4/lSG17UHg1dbF+3LBTK
-	BJzFCve1p6oOMfjMCpoATnlAMol+4+zDsMXzY5z0WtHqqcGbXFoPwPAgCIdlycj5aS
-X-Received: by 2002:a05:690c:4881:b0:80c:cad:c4e6 with SMTP id 00721157ae682-80c0cadc8fbmr18141867b3.32.1782486313736;
-        Fri, 26 Jun 2026 08:05:13 -0700 (PDT)
-X-Received: by 2002:a05:690c:4881:b0:80c:cad:c4e6 with SMTP id
- 00721157ae682-80c0cadc8fbmr18140727b3.32.1782486313097; Fri, 26 Jun 2026
- 08:05:13 -0700 (PDT)
+        bh=gNWd65/LlS1S7z+e2JXdypKHFrBZo/8VRicT21AfZoc=;
+        b=HBsaW39XvEGKCbKTBTRv3UE5luR5n/aqp2BWG7hbnCc6kI59NXC2Px8BmwDSWZAsUt
+         B1mY5xebeBq9R0Jii0ps1jFKfl3YHxgd5NS36j+RjCv7W52ld8HpOZzrVc8kbdBdazYf
+         nq0bs5usVp3g214CjOUjxDRvGG34mBSFQJj5DosMiaoxbnFZyYyIzQrbWdlTh3WVmGZp
+         lX43FD6eK8MUXvovVr1Hj7bh35a8uM2Rsyfu3hhouIBHez06txDVj6QJm3N041jiqdGe
+         oLbsQLySlTQl+aRx9Ad+vqO9mT94+iXwdrN5Q4F92iwiBQ5atLkuiXO2vgnbc1AoiAPI
+         kFvw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrgg9lCahnsWa6PXU8Rmza4rtbF0HMNQcRgeV1D0GEZN27SFAE08fAfTUJvD8CqG24Z+68=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwvZKBnmB6/jU6g/UXtsRqYiksU/bsKxiGHCYkJMlyASuECAbg6
+	HvBMyofZNz90epUzNlMtB29PdPzMCa9hOxiZCbYkIX9Vkfqq6P05S3DUwa0PMbyqDb2cWM36+HB
+	zRQgCBzO7kh+bkhNu7GFl5lH2xQCv9mHgmgXOQ1OJWijkzbLgvZMaThvHUScn9hmshmqSVXzeK6
+	cz/maeBCQtCnVEVK+KZD70cdVTSJrl
+X-Gm-Gg: AfdE7clxrshEumDOXad1R1elM6LWWW07WlHevHj8bsFO4h2I2DeC6JLWwezdfvzB51U
+	5/YoGVKC8FWxvrn3hCFxreLwl2npLvJ5UJ5Jd2w73K0BQgvp5rzGIVWPAdJjrE6dT+XLumckoq0
+	qoB2nmPOBdaEiecJh2Gz2UzcZ3vfMR8mAw4AZ/2Xh2Dy/kNHaHl6mC7QLFFZObhuSP
+X-Received: by 2002:a05:690c:6804:b0:7fc:cbe1:746d with SMTP id 00721157ae682-80c73fe6f4bmr9719457b3.42.1782486713994;
+        Fri, 26 Jun 2026 08:11:53 -0700 (PDT)
+X-Received: by 2002:a05:690c:6804:b0:7fc:cbe1:746d with SMTP id
+ 00721157ae682-80c73fe6f4bmr9718797b3.42.1782486713496; Fri, 26 Jun 2026
+ 08:11:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,13 +66,13 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20260626-drm_refcount_wiring-v1-0-cca1a7b3bdef@redhat.com>
- <20260626-drm_refcount_wiring-v1-5-cca1a7b3bdef@redhat.com> <20260626-ivory-tarantula-of-valor-af0e2a@houat>
-In-Reply-To: <20260626-ivory-tarantula-of-valor-af0e2a@houat>
+ <20260626-drm_refcount_wiring-v1-3-cca1a7b3bdef@redhat.com> <20260626-successful-badger-from-neptune-ae2bc6@houat>
+In-Reply-To: <20260626-successful-badger-from-neptune-ae2bc6@houat>
 From: Albert Esteve <aesteve@redhat.com>
-Date: Fri, 26 Jun 2026 17:05:00 +0200
-X-Gm-Features: AVVi8CfUWw7MSpxfIbgb0qtM7cCP9XXdSgcc1xFYb1Fq3hJmdhiO9Zy5mZXSYcU
-Message-ID: <CADSE00Jy9-BR9e-Dg-S4_fiLnjWjXfTq3c6OO8PxTM=gQyA7xw@mail.gmail.com>
-Subject: Re: [PATCH 5/5] drm: release panel reference after panel bridge creation
+Date: Fri, 26 Jun 2026 17:11:42 +0200
+X-Gm-Features: AVVi8CdeJARTOKb4ohxfJd8a69EdpRugjimEtA7qtwxmMR2cbKOdWmwQblTZgKI
+Message-ID: <CADSE00LO98u6aDwvjijO_hAaMBXSGXaWPuFWiveQi_RWQ0MTVA@mail.gmail.com>
+Subject: Re: [PATCH 3/5] drm/panel: make *find_panel*() return a counted reference
 To: Maxime Ripard <mripard@kernel.org>
 Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
@@ -110,53 +110,129 @@ Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmai
 	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
 	linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: I6l91IWm21oDHhEIi1VRtPHEopIhzE8KKDvrlsedKDw_1782486314
+X-Mimecast-MFC-PROC-ID: ZytVapmqYrM_so8VrWGdL0z9OGyqeaAkyPL6Mpbbch4_1782486714
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 26, 2026 at 3:00=E2=80=AFPM Maxime Ripard <mripard@kernel.org> =
+On Fri, Jun 26, 2026 at 2:50=E2=80=AFPM Maxime Ripard <mripard@kernel.org> =
 wrote:
 >
-> On Fri, Jun 26, 2026 at 02:03:27PM +0200, Albert Esteve wrote:
-> > of_drm_find_panel() and drm_of_find_panel_or_bridge() now return a
-> > counted reference. In drivers that immediately wrap the panel in a
-> > bridge via devm_drm_panel_bridge_add() or equivalent, the bridge
-> > acquires its own reference, so the caller's lookup reference must be
-> > released right afterwards.
+> On Fri, Jun 26, 2026 at 02:03:25PM +0200, Albert Esteve wrote:
+> > Callers of of_drm_find_panel() receive a pointer with no reference
+> > held, creating a window where the panel device can be unregistered
+> > and freed between the lookup and first use (e.g., drm_panel_prepare()).
 > >
-> > Also handle the cases where a panel is found but cannot be used,
-> > dropping the reference immediately in those paths.
+> > find_panel_by_fwnode() is the fwnode counterpart of of_drm_find_panel()=
+.
+> > drm_panel_add_follower() worked around the missing panel kref by callin=
+g
+> > get_device() on the panel's underlying struct device. However, get_devi=
+ce()
+> > only prevents the device kobject from being freed. It does not prevent =
+the
+> > panel's kzalloc()'d container memory from being released when the kref
+> > reaches zero.
 > >
-> > Assisted-by: Claude:claude-opus-4-6
+> > Fix both lookup functions by acquiring a reference with drm_panel_get()
+> > before returning, under panel_lock. Callers are now responsible for cal=
+ling
+> > drm_panel_put() when they no longer need the pointer.
+> >
 > > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> > ---
+> >  drivers/gpu/drm/drm_panel.c | 22 +++++++++++++++++-----
+> >  1 file changed, 17 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+> > index 545fe93dc28fe..a00ae98ed0956 100644
+> > --- a/drivers/gpu/drm/drm_panel.c
+> > +++ b/drivers/gpu/drm/drm_panel.c
+> > @@ -458,14 +458,17 @@ EXPORT_SYMBOL(__devm_drm_panel_alloc);
+> >
+> >  #ifdef CONFIG_OF
+> >  /**
+> > - * of_drm_find_panel - look up a panel using a device tree node
+> > + * of_drm_find_panel - look up and reference a panel by device tree no=
+de
+> >   * @np: device tree node of the panel
+> >   *
+> >   * Searches the set of registered panels for one that matches the give=
+n device
+> > - * tree node. If a matching panel is found, return a pointer to it.
+> > + * tree node. If a matching panel is found, the panel's reference coun=
+t is
+> > + * incremented before returning a pointer to it. The caller must call
+> > + * drm_panel_put() when it no longer needs the panel pointer.
+> >   *
+> > - * Return: A pointer to the panel registered for the specified device =
+tree
+> > - * node or an ERR_PTR() if no panel matching the device tree node can =
+be found.
+> > + * Return: A reference-counted pointer to the panel registered for the=
+ specified
+> > + * device tree node or an ERR_PTR() if no panel matching the device tr=
+ee node
+> > + * can be found.
+> >   *
+> >   * Possible error codes returned by this function:
+> >   *
+> > @@ -484,6 +487,7 @@ struct drm_panel *of_drm_find_panel(const struct de=
+vice_node *np)
+> >
+> >       list_for_each_entry(panel, &panel_list, list) {
+> >               if (panel->dev->of_node =3D=3D np) {
+> > +                     drm_panel_get(panel);
+> >                       mutex_unlock(&panel_lock);
+> >                       return panel;
+> >               }
+> > @@ -538,7 +542,13 @@ int of_drm_get_panel_orientation(const struct devi=
+ce_node *np,
+> >  EXPORT_SYMBOL(of_drm_get_panel_orientation);
+> >  #endif
+> >
+> > -/* Find panel by fwnode. This should be identical to of_drm_find_panel=
+(). */
+> > +/*
+> > + * Find panel by fwnode, returning a counted reference.
+> > + *
+> > + * Behaves identically to of_drm_find_panel(). On success the returned
+> > + * pointer has been passed through drm_panel_get(); the caller must ca=
+ll
+> > + * drm_panel_put() when done with it.
+> > + */
+> >  static struct drm_panel *find_panel_by_fwnode(const struct fwnode_hand=
+le *fwnode)
+> >  {
+> >       struct drm_panel *panel;
+> > @@ -550,6 +560,7 @@ static struct drm_panel *find_panel_by_fwnode(const=
+ struct fwnode_handle *fwnode
+> >
+> >       list_for_each_entry(panel, &panel_list, list) {
+> >               if (dev_fwnode(panel->dev) =3D=3D fwnode) {
+> > +                     drm_panel_get(panel);
+> >                       mutex_unlock(&panel_lock);
+> >                       return panel;
+> >               }
 >
-> drm_of_find_panel_or_bridge() does indeed return a refcounted pointer
-> now, but afaik the doc wasn't updated to reflect that.
+> This part should probably be in a separate patch
 
-True, I'll fix that in the next version.
-
->
-> More importantly, I feel like with both of_drm_find_panel and
-> drm_of_find_panel_or_bridge we update a path that is considered legacy
-> anyway now, and we should rather focus on providing a safe alternative.
-
-Oh, I missed that this code path is considered legacy.
+Yes. This is another place where I hesitated on organization, as it is
+very similar to of_drm_find_panel() fix. But find_panel_by_fwnode() is
+much more self-contained (it is declared static to begin with). So it
+makes sense to split them. I will do so in the next version.
 
 >
-> But none of the functions you updated are unsafe, so it won't be more
-> unsafe, or provide any illusion of safety to the caller. Idk.
+> > @@ -686,6 +697,7 @@ void drm_panel_remove_follower(struct drm_panel_fol=
+lower *follower)
+> >       mutex_unlock(&panel->follower_lock);
+> >
+> >       put_device(panel->dev);
+> > +     drm_panel_put(panel);
+> >  }
+> >  EXPORT_SYMBOL(drm_panel_remove_follower);
 >
-> Either way, this should all be on its way out if Luca creates a bridge
-> for every panel, and we'll consolidate on bridges only, so maybe it's
-> not such a big deal to merge this patch.
-
-I see. Given what you wrote, I think it'd make sense to correct them
-while this code isn't completely dead.
-
-BR,
-Albert.
-
+> together with this one?
 >
 > Maxime
 
