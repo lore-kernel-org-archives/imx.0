@@ -1,120 +1,121 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013003.outbound.protection.outlook.com [40.107.162.3])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012058.outbound.protection.outlook.com [52.101.66.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFC0376A08
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 06:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3383D301F
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 06:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782454075; cv=fail; b=jXaF7GN71T9wmSRETV09wx1pdvLfSYAI10d0t3NkPLL+4iY9/gdp5Jy/ajxa9y0kYuBCfPdyv5FoOt7aA/bujlN/w0KFwVrkEAzVwkFjGuL90hoKSOG3PCOuPF8ynZMfO73Au5oJzUlQsCIRyOqS6hadH7IPqzpeyRyRLN9hI2U=
+	t=1782454994; cv=fail; b=DE4xeL6GgeZHbgzrTt8qTuE3ree0V4DO+dLESgYD30FPdbUfriibWCKCqFlyTz6E6dq+3qD6p3xwyjjZ2Oo2Xr7SHcd5OFd3efufcmkxODLEzM2G2GDiNstcXHGXJnjBX8YrGNnuHdULAdp+TCLkVLUEFzI0VESbX7I2xwp3hjg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782454075; c=relaxed/simple;
-	bh=QpAYO4DVoPF1hQu4WQGUhh1Fjm01Arfm844PwvVzHaM=;
+	s=arc-20240116; t=1782454994; c=relaxed/simple;
+	bh=f0+4TNJ7cJw24SMJ1TrdMcnZzogZId5pXUAEPEvttZk=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=A7YeWb7mHOPXnas/9vKZz1ZzlAihuInsS5AQ/S1wjqfL6iY4iHb28URY4Y18atmVZIsLLkarXqX7kJU/YKbht9IBgAfJHPYqgfMRGNxTGBG2L6MSZQdtMCCNL52pwtaD0ElWLsMemQ0wEZ6FmcPs3W1FCNmcNTh3PjrXeDT4L/4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=U94lJs9s; arc=fail smtp.client-ip=40.107.162.3
+	 Content-Type:MIME-Version; b=Ot5Fq9cQpFJ3mS0LzyEIS+3EPeuFYW3tvqwCuETYRorN7KRRGYrskg/nzcjXKVLRz1kWY/B/V4Lkcgrt9AIJE/hB9pnIBITPecmfI0vF1b/bDstm8CGxQA620x33WitoEJOrrNO2b4OYNpSvJBwRQOkDGQfJWp3G/nMW6qOh8Xo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ov/80l+h; arc=fail smtp.client-ip=52.101.66.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="U94lJs9s"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ov/80l+h"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FifWxbKbF/xRqp7VnsGa5jK9P83JMZg5jkegiBuUZQrvb9aXAbmlD5xvpElduL/btO5cSlgEtDUV21YmShhy4Lc/e5Kciwu0lm6IwYIbOeZ9a57pXbNHQACwV7c/LQ3Oh1vPnubsi2D6PtzBM5+6gQOGLu8/AkMfGTX2JXgUabalV1j+ntCeG9bjeHVwUL24LUwB2YLAMh6/PpXizX7GdIcdGiNrnQKrxV9ccWqhxiRxDp/znSdFmDCkqtMLlqJZmMwx0nz6i/zfvXzVGH7UrQuSxV5g72DQUz++0wBuNK1oza6vLE9w6Y2VvQCgpRD1QUr0wKCi7NDUL+QSeOOUtA==
+ b=B4YVRLQPKd3kzQ/BhiOM89j2OyOOBw+HowsOG1LAnGjTcx7D+FakovsDWjdWaXXNv7cBnIVdEXKc+bGQdagBFeoIeuH30LQKQXyNBV/Knpe5yAsavyog9GDOevNyE14jVLc8LQVp+hRlcP8WzWFnYNxuGuTeAMLfwNqFayST6c8sJpePgyNCSbSprFdtN1gAXhPYHrtroQeJ2EOsGHyxFrAyP2ckN1hBvI6+H915cvL5K0PM/+2yr/SqGXw9dBytDNf9doE9pGz3ukvUAcgZY4na33BpqQmrYQoqItDY9JoSMvh2ZS8T90Eefo4ZTqyJgrWGn0V83m8q9bLYEqHF4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UAcktOzfZdqabYVdzER4PUOxGQlguq4h38qJj2IDEmg=;
- b=DSWr7h+lQ2bQ4auE68oDGbRNZIDivXnJXU7M5fP7kr1yMU5eJsCzOgUHQPYjxdkvpQNoGE/A3o6+gYcMv/c76LLKlpoxraRgq7vN9smUinP7MfJi6kFnLygEM3C3J3BUI9KARjv3MIFMYOPbN+2CJuJsgasdYHy17HfYg3jo+M7KysGF85PMw6lsVIB+d05kW1zVofsE6te18+M/gRXjL7s8k4HapioRF6MGg0bRHHbgO/kKLgArhrXraCCHAmlM53EN8eXVoFNKQBSD9YZ9gooFAnmFC++ce650bFgc5kOBIwEa2dp3Xr3upIQCTqxAaK2nYhNlGDHTpHvXcRiugw==
+ bh=cUQZ6ECZifSBVMAbhnFeSTzY4ycAXCqm1vh9j4tp9jg=;
+ b=DW278ZA8TgDJX0Jifd0Tdv397RhJ9Cb0XD3NUZ8sAhpiGSpqaUmaUSzUbtJXih+CqQbLT0QVzV1JjvAVnCcK09PIt/qOOVQQGb7iG1sPs2IKhSXlB5b1aCQP8Yk14zjviFzVDDqmfaS9UDZhr6s9m3vPk4V7ImjLZOM8ppHn1zE9/Pd2Grn+JwcIng8/dWonQqfriN9OoiVWvJbfzGgbWm5zRwMLbVOXHGWpsZ6bGrbUt7qHVfRvxPE0zxr3wpf3pt4SJOuwsHTXasddRv0MQoImoIKzD90x5HkFL2M2uCwpbS9wi1j49VQfXWXT8/wn3HJLrSC/TSGhq+1gYXw+Bw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UAcktOzfZdqabYVdzER4PUOxGQlguq4h38qJj2IDEmg=;
- b=U94lJs9sP71T9qiXXccMp9AIMZYDF4Luo7Z0sO61Dbxq/Lc2hZXMSFdEbS/iE6kU8NyXZILzs9CV5LuIoyTmA4Cn6xi1tU5fPsf6JOhvX2JyId3nrpNxSJEHXByb/La/MZ3a6fRszZG5Frc88KuoGDHFf8zSbrAO0qa7mcfYbwGDhRm/qRRB6b3vEv07rKTbPxzAfAItTUkb5h9O+Q/vSMHA4mwiF8/+cqOmSUvtOJsMaJKWt/3w8wiZLhxjyyGbu4JSxef+aNAnv3j7xkGdoHk9ngzGZLTpKUhPhV92InUQaIXBTIva7CcTUmr7k7RERXFAl5dprM52O2wDatIEIw==
-Received: from AM7PR04MB6870.eurprd04.prod.outlook.com (2603:10a6:20b:107::21)
- by AM9PR04MB8761.eurprd04.prod.outlook.com (2603:10a6:20b:408::17) with
+ bh=cUQZ6ECZifSBVMAbhnFeSTzY4ycAXCqm1vh9j4tp9jg=;
+ b=ov/80l+hv7SoLP5BaVX7RTKxFa9PRNBm2k2IV/nqjRNOxSkVPW2T0+GUPpED8l9r/SBSV/sv/foXGfgu3yR+c2rP1oa3E4+KuiQnnPonaQ/ZGhJaWYJlxSTNnlC7uA5GRoXX6GkDZppItRr4waOqHd9QeDajY8mCQYso/AUhfEU/+kX+ueWLm81/UydpYC43BN7gqJSK2rAej5AEkL31J/co0AeQtRl8dJCDURwDTBN8r/CFfvGNpH2ECzH7b7kDFoloWGywbCwcOmaKsZC/gZis3JN3tDWNzjiyxqFfw8YwOYSGhUXyUIpTJ3hwYtsoOypTBuguFGrpD02ER1FLjQ==
+Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
+ by DB9PR04MB8106.eurprd04.prod.outlook.com (2603:10a6:10:24b::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Fri, 26 Jun
- 2026 06:07:50 +0000
-Received: from AM7PR04MB6870.eurprd04.prod.outlook.com
- ([fe80::f080:2b31:578e:716f]) by AM7PR04MB6870.eurprd04.prod.outlook.com
- ([fe80::f080:2b31:578e:716f%5]) with mapi id 15.21.0159.016; Fri, 26 Jun 2026
- 06:07:50 +0000
-From: "Luke Wang (OSS)" <ziniu.wang_1@oss.nxp.com>
-To: "Frank Li (OSS)" <frank.li@oss.nxp.com>, "Luke Wang (OSS)"
-	<ziniu.wang_1@oss.nxp.com>
-CC: "adrian.hunter@intel.com" <adrian.hunter@intel.com>, "ulfh@kernel.org"
-	<ulfh@kernel.org>, Bough Chen <haibo.chen@nxp.com>, Frank Li
-	<frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+ 2026 06:23:06 +0000
+Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
+ ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
+ ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0159.016; Fri, 26 Jun 2026
+ 06:23:05 +0000
+From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+To: Liem <liem16213@gmail.com>, "Frank Li (OSS)" <frank.li@oss.nxp.com>
+CC: Frank Li <frank.li@nxp.com>, "andi.shyti@kernel.org"
+	<andi.shyti@kernel.org>, Biwen Li <biwen.li@nxp.com>, "festevam@gmail.com"
 	<festevam@gmail.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, dl-S32
-	<S32@nxp.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 5/5] mmc: sdhci-esdhc-imx: fix suspend/resume error
- handling
-Thread-Topic: [PATCH v2 5/5] mmc: sdhci-esdhc-imx: fix suspend/resume error
- handling
-Thread-Index: AQHdBTIeVFLAVwtxMUGkhvuhKDcvgQ==
-Date: Fri, 26 Jun 2026 06:07:50 +0000
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-i2c@vger.kernel.org"
+	<linux-i2c@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "o.rempel@pengutronix.de"
+	<o.rempel@pengutronix.de>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "wsa@kernel.org"
+	<wsa@kernel.org>
+Subject: RE: [PATCH v3 1/2] i2c: imx: Clear slave pointer on registration
+ error
+Thread-Topic: [PATCH v3 1/2] i2c: imx: Clear slave pointer on registration
+ error
+Thread-Index: AQHdBTQ/aFJXFxn/x0CxIaV6/MYxPA==
+Date: Fri, 26 Jun 2026 06:23:05 +0000
 Message-ID:
- <AM7PR04MB6870CDFEB76003273801DA26EDEB2@AM7PR04MB6870.eurprd04.prod.outlook.com>
-References: <20260625105934.2890635-1-ziniu.wang_1@oss.nxp.com>
- <20260625105934.2890635-6-ziniu.wang_1@oss.nxp.com>
- <aj1Z0fYSVY4cw0Mq@SMW015318>
-In-Reply-To: <aj1Z0fYSVY4cw0Mq@SMW015318>
+ <AM0PR04MB6802B863CD9B9AE1609C1785E8EB2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+References: <aj1UR5ddawsdMbZC@SMW015318>
+ <20260626025846.106157-1-liem16213@gmail.com>
+ <20260626025846.106157-2-liem16213@gmail.com>
+In-Reply-To: <20260626025846.106157-2-liem16213@gmail.com>
 Accept-Language: en-US
-Content-Language: zh-CN
+Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 x-ms-exchange-messagesentrepresentingtype: 1
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM7PR04MB6870:EE_|AM9PR04MB8761:EE_
-x-ms-office365-filtering-correlation-id: c095caa7-0e99-4bfd-2ab7-08ded34940e2
+x-ms-traffictypediagnostic: AM0PR04MB6802:EE_|DB9PR04MB8106:EE_
+x-ms-office365-filtering-correlation-id: 645bd355-3ec5-4611-fb1a-08ded34b624d
 x-ms-exchange-sharedmailbox-routingagent-processed: True
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|19092799006|23010399003|376014|366016|6133799003|22082099003|18002099003|38070700021|4143699003|56012099006|11063799006|5023799004;
+ BCL:0;ARA:13230040|19092799006|1800799024|7416014|376014|23010399003|366016|38070700021|22082099003|18002099003|4143699003|6133799003|11063799006|56012099006;
 x-microsoft-antispam-message-info:
- mQMCFZxWHlnr0AfmIscmcZLL/JvChAD7Je2fpiJKqa3ut8gXndVmNKthoq97AswndqzUf81AY1Jb/6dqAWWGV//mllIrvUNaqjDs9IOdxwZs4fEq8E2ybmrFifv7EMcgjFwvhZg9J2kutb3poNCErcqYTvTsc3bBQWuIyKrOYAt+eI4ZKxTBRWzStA2MdS5wHik5aY6onpoCb4zOZJHvE+y7M+E39t0Y3MC7suZpxqFWApfhrrhjmVIlhQ78L+jxjvZbExn5sO41xFJojSrIbcNwXWVBlIxPo43QoM2avVkIV88AjId9K25PTJzZl6PuA2MWTqrTh2DVGozRN+kc8bwWhQUfWdDVTPm3H02KwkSksiUNMQtYbYvVHZVBXzrYf+5/Bi90p9locJMh5jW0pGuoAJuTnHPS72PqLg3u3cL6j5xX6Ok8aQ/nDf1AQkm3j+eMkR9cE0OFCKOR6mVcHdfyBMkMixcxr0quTp5B+L6W7zsNokptdwjo1NxbK33M7rT1atSg0sf/xzm3+Q4Syx7FRitI3T/nLb/Wm2VXui/57SbOesth3Ox+W/O9J63bzF1apwHVClkmCsUbxJ4R6jNLBYF3YCnyfHp7nZs3EAvZMPyxj+ZaWzTtJwKFoGqLGP35DMH2c/pN6tdGmCGfe1/rbnfct9gj4gotByli7cc+4Iq63+QdwLVNu+3N2vrel4fcVMliG+24qoEDZTQraKz57SoIaoGZtzhmUj6c5dA=
+ COsZJ28tskx03qYGFzHHYnMOEVzRlyDYhoxdeynE1GMaTQ8D+UYntBQ6+9v0iGD1P621BYEuY62h+xCts/r6w6nqIjVjSr9PuMvzBBINmf3L4A97bA/Dku+jCpmXSCe2yYCRoTZpYOhNC4nl40AFFFboMYckfXtmtyFvYHWvSWlCLdO66XSNgORyjdBIzfFBwowYdh1stZZz0S7dymQCwHPiAD6FNG6CokU3HBzV6BkfCadHEukRbjF4q4TxbqvVFqeJ3oJs1Qssx2jlATLbNAFWODrQQCb6hZlZpryllQvxP8pN1QqQ4ZGe7vDYSQ0620l2pQhZqFgD9cp+ewajTJq7yLJxfjUElD9OqEh9m2Ry2v9EaQg/FCexkDlk1PUj4ayjbwnbbttTWzpUZAAJGxQJ/7Qm34tjHZmWr5rEjtSBBBye2KiJLrx3EuVVuUAxGRRORsyJqm5PwxwAIVCdeMw8OGsqdaSB3JaEYsuHz1355II1n1MuLrsb1tMlWNCZjqCCzKPeajFMenramAneCSd/GxjeGjlAHpEJiYxzkKQZ5YauTzpVjX2bfOIND9CjQiFWkSsfD0Ari+nBhRpdFwgd9/78heZzitNAi1lp9g/Lpq951IFyZEc0RBwgzYrvHzt2CNFhkYJJVchM0yHjHambnLPX40jFd254KVUpyft8ULuZEe6vcv1BszOpf1s6+zUzJYulbxQjwV4Ma6dGe/oO2Zo1oALSF861Q89XnNs=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB6870.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(23010399003)(376014)(366016)(6133799003)(22082099003)(18002099003)(38070700021)(4143699003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(7416014)(376014)(23010399003)(366016)(38070700021)(22082099003)(18002099003)(4143699003)(6133799003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?QdgI6647OpY0cxDt2E2ItY19ZjJ5Dyl5nLWxi1ZAEdUdCcv7BUt7kFHMB6CX?=
- =?us-ascii?Q?KXE2n2K3iFUMMSMAx77KZ5mvITn1AHzCGiY+0zM4LOr1WeRQRkNfs1ko188Q?=
- =?us-ascii?Q?Bowa39cO/xPc2A3gz1ZR1Zm1fbFQ+GnO7GGkxAo4evbbh3m2HLS7Yus6RDDp?=
- =?us-ascii?Q?WZLLYEIU/XZ6NZ/ad71G8XkJ3T/fqfyBlzTsEl1QcWI31wWVTRsufqyVzWmN?=
- =?us-ascii?Q?DYXVg6uh6Om1VUArwW8E5nIP1Hgz4EwzBAdShmX9xdS4yCDsPzR+40QyQwIA?=
- =?us-ascii?Q?a+4z8R5obWxsqUY+iAe7Bl233Spk+rj+kVmm+CeCXxpLWJThLNeJP/PXTXZE?=
- =?us-ascii?Q?0xyW6FC1eidIiQ528ccKq26F2jbMl2nJEYv5PjviZIVLfTVLF4HP041GwlmO?=
- =?us-ascii?Q?qJolmJrH8si0tE6a4Lnv7rW8GlFm+68aO6yukfnTGO2elYPscflIbdSAzc0c?=
- =?us-ascii?Q?GdXsyNkpj2J8i/CQfsXt9dDXcg+WsMJhWm8CHHsg6dtMPfr1Q7xZTbQq0WA2?=
- =?us-ascii?Q?pcJ8BhMpJHdM+UVXAhvhCpNe1ZmqAFH8PhgjYlH/VSd111FENY0WiM3airk9?=
- =?us-ascii?Q?X7p9496pPatQRQL1ZeG8citCXQ7tcaZHq/2p/+T3gxyB9YOYSCfuLsVUarQd?=
- =?us-ascii?Q?Bu41XTsfwaXphf4G54g+AGmbarffFl4Gn/pwuFaySlK+/kOgwzOB8gpOKszy?=
- =?us-ascii?Q?u3L9yCWw5azgyHVYokbKE2chBuzaz8EmRMoovt6GhwIJCVqBVg4IaLQ1szBo?=
- =?us-ascii?Q?D1cMbxqFoLLryzeguFF60FZwaALezHX2P5BIfNCLkxL1fo5Jh3MteLz4rJk5?=
- =?us-ascii?Q?oxatA5VXD9P5YNkK8CEzOo0UXXOLbwp2v2Y5es/xfB0NKqY6dNH2Fje0APw6?=
- =?us-ascii?Q?JdNsckTwC/v6c6HOPOThe3f6sgAGG0M3iFxlrVpqOqBWEZwROm293nLBOgHe?=
- =?us-ascii?Q?YZeJZI0XWRxF4DaiVBrILjkPdvJ+jkoxsBxMrJLd1JBjRtrJqsP9bORK6wbK?=
- =?us-ascii?Q?qpa8UFR1jvdhuibHUJFVd3rvgBQnz7xDBMV5bRTkdei6Q8E/VFga5z/Lt4aw?=
- =?us-ascii?Q?jI5yd6HSROb+Rxr/BpJMIAXhcCHvdQANq3UyqNU1izFC4ejiwSycWtXdrc9I?=
- =?us-ascii?Q?HIwY67+1jjAhHWl0wBqijTa0rgG4BKJlX/S9391YM4ILJRMKgEfG6YD42xb9?=
- =?us-ascii?Q?r+HZmsGEMVUBUqhXi0P6gJ7fdxHSqhBppoLQUJj0adSHpPz/H+FiWyEOjd9I?=
- =?us-ascii?Q?Q/bEpsSOaZR+ZuG7a8zEdkGkEXP9mv1RqLim239L2jR2ijntzz2ITh+p49Iq?=
- =?us-ascii?Q?c2BV9rc2CpfGUUzADpAafcJfvQkgbbi/mFK1BPUnbM8XOUPRO8/UDyqIwgBG?=
- =?us-ascii?Q?GOBVQcia46EKXCgnidvef8rC4zULiGOH11IF/bwEuoBDqaRiVB/aRyz3BMyQ?=
- =?us-ascii?Q?YrK51EIByaHIkHSF8YIA8gv1Jrbv/2878hKnupAmJ1zSEDK3LA0IevZRHocK?=
- =?us-ascii?Q?pX+Z/B9bzBZ8Qhbd/oLeptlM2+cPmkBwcdEEGWqqCg6EuLBXdXeKQ/xB3u+7?=
- =?us-ascii?Q?TsWnh04s+7Ls+Muc8igdAtXMZYG+KJPFKApeQv1SgJZibM2+7315nSIgi6oN?=
- =?us-ascii?Q?uY9BBSbH3/rWdZSwzilBsA+eb0MNiZu5slK+GdFDTcGKL4OKmtf/KwUiFrdz?=
- =?us-ascii?Q?ghHds2Hnn8Es2OXOONbTtrY771pk3J068j4fAX0Ej38z3UX7+1vsZxVdEBNn?=
- =?us-ascii?Q?+iOVrcXnkg=3D=3D?=
+ =?us-ascii?Q?W5mWmLBr3ZkmMVCHgVzXEfoLbMC6AX5eB2edMnMq606BdRHQNqEKw/bXGx5a?=
+ =?us-ascii?Q?jaZprzaMV26C7TSqIaOmgwhZAtgp9usPjm0f+boa/ylwlQBoz1qNYMUrm+Oc?=
+ =?us-ascii?Q?xgaprB3dNBM61Ql9oMd12VLZw4o4VdfHVNgyRxkWssRDum7JOEwZSmG+FB7a?=
+ =?us-ascii?Q?7cfsFag9yDDtsx1tAMDuwzdVLU5FH9mKUiL4NFQ+li9VVrCEAkdLdfxsQ84E?=
+ =?us-ascii?Q?NuEqd83ed9budGOutSv41Gt8xmVOdBPP/n2lQpRAXJl9P5S55XCZi1NFaLkG?=
+ =?us-ascii?Q?796a1S26/71dW8yHvn8Q6YsSVwnf7aX4rUK6eDzo+KDkNQcrWaA9N4szeuHs?=
+ =?us-ascii?Q?SR5PGnhGvKhwlKVh5qVsZBRxTIi3+9Dgffphf7/U3tOvWOsQIUKWmtnJtPqe?=
+ =?us-ascii?Q?1YWLQzqSHgXgFxmvNWpr6EbVpqnYx++TV+P8LrqhgtRJglZwuUlWdSDDzNqz?=
+ =?us-ascii?Q?9oOF2Qw3jCzeyEPF+zLE8eH+Hs5lKw2FauwmKyfMT33GEM059gAjTZ7RE3eB?=
+ =?us-ascii?Q?ABDa1MPDy3zoy5uxvRTPOBoBVpZIs5G0YVmRWQnUFTyI6yKs2zB8vvrN43uN?=
+ =?us-ascii?Q?MHGY1rkqNT4Xvkc04FeOLpiTSZqEQY2xtu3qwuOdc0Glm9HB3jOoKJd8XQcI?=
+ =?us-ascii?Q?/cBQUKH4XDj3pHm2CMNIVX8U5rqXZcrPlKF5JRzRS5baYwfpB+VNWlFFVyHs?=
+ =?us-ascii?Q?ShPhCDUWmLCY+3xdCGSVlfZj11xcMK5myepDqQJHWYFlOrlw44NZQmsH+5rw?=
+ =?us-ascii?Q?vKEHsLdNNTBLsX1V6ru9WFHCG2wFX5NJZbfBbWznIZc7rYmkMGvtjXfpUbnk?=
+ =?us-ascii?Q?y/lpJROiO/0Mi0MyDifSRswdosc/Q2uVveExg5Ox6ZWbLQ8X4TuiaMDd6yNR?=
+ =?us-ascii?Q?9dg5UAFftb2zqwamO0HfP5ISPPU/MOBwbkqgYPbYsDCIX0ii29BX+udwYiLj?=
+ =?us-ascii?Q?hEDEJDDBSaOAD2GPbl8bwOevTkDL5plJXcHIzYFWJVcCfnnP0zlxYD2ebVvj?=
+ =?us-ascii?Q?OybXsTLXPEYxMb9YVSSm9KtvZEc9QpZGLeMdQ/G6DfbUSsOtsYmgI515SMz3?=
+ =?us-ascii?Q?wmWWTKgmVBHfNA+6/9plk2FJAIO0vPqF+NSrdogDmHz32NOytiqARTgWxSye?=
+ =?us-ascii?Q?Slp1z5iyHzcsumt9JvmnUcWhbi3RGP5Ez+C0/LiWjFnW3tNAEWTcYd13ii25?=
+ =?us-ascii?Q?WLvoFThW3uUrOzWVNt6UAryWJCeWE783l474rI3DznFyx074MAlRmHfPmnUe?=
+ =?us-ascii?Q?L5jNIuFnjHT7l+9tU9P/CLD4GqqVbyGioAOVnK4lKKM3pySiG2h5JKEIMwpJ?=
+ =?us-ascii?Q?7wd96tJfGs25YkPP3EoRcPVjDfSeQEV7qoR8U6dtRixZilyfokXfbH69xmlX?=
+ =?us-ascii?Q?eDTYC9+o4gaFe/6mOkqEMrtyOtkamFM1WKmOCFFR2oeLH/H1hJ3hZhryOVGI?=
+ =?us-ascii?Q?t5/iX6L+FPMi3U2ZThZdY7T50jWNV+mCSltnz9pfVkt6BioXWDuSw2XqYdOb?=
+ =?us-ascii?Q?1qg0OFTVmWVfWQwgaC3pQo+Ka/nodpnDBmmEyfJcRBpgHyF+YKBvR8CfcKLM?=
+ =?us-ascii?Q?jAJMxk552Df/whXHJ5+VdzXvVyM9smXZVvKB0hwVBg1ULnY/UCUeXHr4d2E2?=
+ =?us-ascii?Q?hSa3YPWMQrCzFhwdUkCiSkHrj9ZuUbHCeUNB7CJg4AKjkzLRCS7/QPtf8fFs?=
+ =?us-ascii?Q?HavUmv24fzWaRx9xiLUdexY2XgDKP6k1qSf+610hvIjfWpM6YPhO5DZP+bJv?=
+ =?us-ascii?Q?WrYA0eJaeQ=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -125,147 +126,109 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-OriginatorOrg: oss.nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB6870.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c095caa7-0e99-4bfd-2ab7-08ded34940e2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jun 2026 06:07:50.7251
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 645bd355-3ec5-4611-fb1a-08ded34b624d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jun 2026 06:23:05.8346
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fcPCJGAbH81dw2LdS6j9CPLqdl+xdf83gwi2JY7lGyq7tKUcjgS5/M0NiQuzq78nkRBC2q3f4M+cnzHEYoKRpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8761
+X-MS-Exchange-CrossTenant-userprincipalname: jbJr9hevalubxVV2adPilpwLXREoDpgh+/4mIYIeafA5fpOo1vjfHfF9uXgjqekbK2S8Syt479CrW/C9PSf2Gw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8106
 
 
 
 > -----Original Message-----
-> From: Frank Li (OSS) <frank.li@oss.nxp.com>
-> Sent: Friday, June 26, 2026 12:40 AM
-> To: Luke Wang (OSS) <ziniu.wang_1@oss.nxp.com>
-> Cc: adrian.hunter@intel.com; ulfh@kernel.org; Bough Chen
-> <haibo.chen@nxp.com>; Frank Li <frank.li@nxp.com>;
-> s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> imx@lists.linux.dev; linux-mmc@vger.kernel.org; dl-S32 <S32@nxp.com>;
-> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH v2 5/5] mmc: sdhci-esdhc-imx: fix suspend/resume erro=
-r
-> handling
+> From: Liem <liem16213@gmail.com>
+> Sent: Friday, June 26, 2026 10:59 AM
+> To: Frank Li (OSS) <frank.li@oss.nxp.com>
+> Cc: Frank Li <frank.li@nxp.com>; andi.shyti@kernel.org; Biwen Li
+> <biwen.li@nxp.com>; festevam@gmail.com; imx@lists.linux.dev;
+> kernel@pengutronix.de; liem16213@gmail.com;
+> linux-arm-kernel@lists.infradead.org; linux-i2c@vger.kernel.org;
+> linux-kernel@vger.kernel.org; o.rempel@pengutronix.de;
+> s.hauer@pengutronix.de; stable@vger.kernel.org; wsa@kernel.org
+> Subject: [PATCH v3 1/2] i2c: imx: Clear slave pointer on registration err=
+or
 >=20
-> On Thu, Jun 25, 2026 at 06:59:34PM +0800, ziniu.wang_1@oss.nxp.com
-> wrote:
-> > From: Luke Wang <ziniu.wang_1@nxp.com>
-> >
-> > Fix several error handling issues in sdhci_esdhc_suspend/resume:
-> >
-> > 1. Use pm_runtime_resume_and_get() instead of pm_runtime_get_sync()
-> >    to simplify error handling. If it fails, the device is unclocked
-> >    and accessing hardware registers would cause a kernel panic.
-> >
-> > 2. Make pinctrl_pm_select_sleep_state() and mmc_gpio_set_cd_wake()
-> >    failures non-fatal in suspend path. These failures only mean
-> >    slightly higher power consumption or missing CD wakeup, but should
-> >    not block system suspend.
-> >
-> > 3. Check pm_runtime_force_resume() return value in resume. If it
-> >    fails (clock enable failure), return immediately since accessing
-> >    hardware registers on an unclocked device would cause a panic.
-> >
-> > 4. Make mmc_gpio_set_cd_wake(false) call in resume not check return
-> >    value since it always returns 0.
-> >
-> > 5. Always return 0 on success path instead of propagating non-fatal
-> >    warning return values.
+> In i2c_imx_reg_slave(), i2c_imx->slave is checked at the beginning and th=
+e
+> function returns -EBUSY if it is non-NULL.  If
+> pm_runtime_resume_and_get() fails later, the error path returns without c=
+learing
+> i2c_imx->slave, leaving it non-NULL.  Subsequent attempts to register a s=
+lave will
+> then immediately fail with -EBUSY, making it impossible to register the s=
+lave
+> again.
 >=20
-> each patch fix one problem.
+> Fix by setting i2c_imx->slave =3D NULL on the error path.
+>=20
+> Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Liem <liem16213@gmail.com>
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c =
+index
+> 28313d0fad37..17defb470776 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
 
-I will split this patch in v3
+Hi, Liem
 
-Thanks,
-Luke
+LGTM. But I notice Sashiko give a worth-considering topic:=20
 
+Can this assignment race with the interrupt handler?
+Because the driver uses a shared IRQ, i2c_imx_isr() could execute
+concurrently if another device triggers the interrupt line.
+If the ISR acquires slave_lock and evaluates i2c_imx->slave as valid, and
+this error path locklessly sets it to NULL, wouldn't subsequent accesses
+in the ISR dereference a NULL pointer?
+
+> @@ -936,6 +936,7 @@ static int i2c_imx_reg_slave(struct i2c_client *clien=
+t)
+>  	/* Resume */
+>  	ret =3D pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
+>  	if (ret < 0) {
+> +		i2c_imx->slave =3D NULL;
+
+>  		dev_err(&i2c_imx->adapter.dev, "failed to resume i2c controller");
+>  		return ret;
+>  	}
+
+Is it helpful?
+
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 73317ddd5f02..e50058fd39ee 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -930,14 +930,16 @@ static int i2c_imx_reg_slave(struct i2c_client *clien=
+t)
+        if (i2c_imx->slave)
+                return -EBUSY;
+=20
+-       i2c_imx->slave =3D client;
+-       i2c_imx->last_slave_event =3D I2C_SLAVE_STOP;
+-
+        /* Resume */
+        ret =3D pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
+        if (ret < 0) {
+                dev_err(&i2c_imx->adapter.dev, "failed to resume i2c contro=
+ller");
+                return ret;
++        }
++
++       scoped_guard(spinlock_irqsave, &i2c_imx->slave_lock) {
++               i2c_imx->slave =3D client;
++               i2c_imx->last_slave_event =3D I2C_SLAVE_STOP;
+        }
+=20
+        i2c_imx_slave_init(i2c_imx);
+
+> --
+> 2.34.1
 >=20
-> Frank
->=20
-> >
-> > Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-> > ---
-> >  drivers/mmc/host/sdhci-esdhc-imx.c | 18 +++++++++++-------
-> >  1 file changed, 11 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhc=
-i-
-> esdhc-imx.c
-> > index c4a22e42628e..4d6818c95809 100644
-> > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> > @@ -2060,7 +2060,9 @@ static int sdhci_esdhc_suspend(struct device
-> *dev)
-> >  	 * 2, make sure the pm_runtime_force_resume() in
-> sdhci_esdhc_resume() really
-> >  	 *    invoke its ->runtime_resume callback (needs_force_resume =3D 1)=
-.
-> >  	 */
-> > -	pm_runtime_get_sync(dev);
-> > +	ret =3D pm_runtime_resume_and_get(dev);
-> > +	if (ret)
-> > +		return ret;
-> >
-> >  	if ((imx_data->socdata->flags &
-> ESDHC_FLAG_STATE_LOST_IN_LPMODE) &&
-> >  		(host->tuning_mode !=3D SDHCI_TUNING_MODE_1)) {
-> > @@ -2094,10 +2096,12 @@ static int sdhci_esdhc_suspend(struct device
-> *dev)
-> >  		 */
-> >  		ret =3D pinctrl_pm_select_sleep_state(dev);
-> >  		if (ret)
-> > -			return ret;
-> > +			dev_warn(dev, "Failed to select sleep pinctrl
-> state\n");
-> >  	}
-> >
-> >  	ret =3D mmc_gpio_set_cd_wake(host->mmc, true);
-> > +	if (ret)
-> > +		dev_warn(dev, "Failed to enable cd wake\n");
-> >
-> >  	/*
-> >  	 * Make sure invoke runtime_suspend to gate off clock.
-> > @@ -2105,7 +2109,7 @@ static int sdhci_esdhc_suspend(struct device
-> *dev)
-> >  	 */
-> >  	pm_runtime_force_suspend(dev);
-> >
-> > -	return ret;
-> > +	return 0;
-> >  }
-> >
-> >  static int sdhci_esdhc_resume(struct device *dev)
-> > @@ -2121,12 +2125,12 @@ static int sdhci_esdhc_resume(struct device
-> *dev)
-> >  			dev_warn(dev, "Failed to restore pinctrl state\n");
-> >  	}
-> >
-> > -	pm_runtime_force_resume(dev);
-> > -
-> > -	ret =3D mmc_gpio_set_cd_wake(host->mmc, false);
-> > +	ret =3D pm_runtime_force_resume(dev);
-> >  	if (ret)
-> >  		return ret;
-> >
-> > +	mmc_gpio_set_cd_wake(host->mmc, false);
-> > +
-> >  	/* re-initialize hw state in case it's lost in low power mode */
-> >  	sdhci_esdhc_imx_hwinit(host);
-> >
-> > @@ -2153,7 +2157,7 @@ static int sdhci_esdhc_resume(struct device
-> *dev)
-> >
-> >  	pm_runtime_put_autosuspend(dev);
-> >
-> > -	return ret;
-> > +	return 0;
-> >  }
-> >
-> >  static int sdhci_esdhc_runtime_suspend(struct device *dev)
-> > --
-> > 2.34.1
-> >
-> >
+
