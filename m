@@ -1,106 +1,120 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9533DBD55;
-	Fri, 26 Jun 2026 12:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8434737F007
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 12:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782477190; cv=none; b=Dk3wp5vo5t7B34Gb6aetHB0FBnteyh4bZ3S+qR7uW6TKxdWBKNpad+9W86H2NvDrEmbw5RWhhoVVD6BFTglEvz0Y7jV9eV7L8Za1TtyPx6JDPo6tEa9Qy8Cn8UBrPbfNvAJ07nl2rc1rt0aRB8fzY6K1JrM5YPl0Gk44ZJq2JbI=
+	t=1782477537; cv=none; b=mRROfoxONP36XvXr6CS8MCNBOWEh4Hm2By2qonpn52Rgak+woTHLn60/WfI0pgJH25/2mUDgoRNcTVC561yAM9WssZF3xnP6HWZDFlIUMM33tMZSv+0hZyhHxP3NqO9UcQOK0dD/UGRcpx0UWh21ht/f+S7P2CTNyIeHnR2Wv+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782477190; c=relaxed/simple;
-	bh=AD/rgS2yrWJfwfl9/AeTa0uM/dDOan4Hs9d7ZKdjbjA=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=otATfaHBpLV1r6hdhFubXevDl/oO4GRGSA7dKRgdKUGAinJqCwNquCl+ihF5N+j30RqLZSxawG9AbLnzspaBle1x1jvkQGUMJRfd8AwuTK1k8zP2OmMx2NuTyYKlWdy/sW1JVq/Vs2lb8wr91o3UqV2dzpKaZC110jmHhX55gBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Y9bufFXA; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Y9bufFXA"
-Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D7DFF174;
-	Fri, 26 Jun 2026 14:32:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1782477145;
-	bh=AD/rgS2yrWJfwfl9/AeTa0uM/dDOan4Hs9d7ZKdjbjA=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=Y9bufFXANqvkz3zqsR4De5M/U2SwIEdDJTuNDQIIIPzu76cjy8lmVCUHdi+4YM7pY
-	 Ru7JmT8Bc2PXjx5Xirb2rcDeN4lTLxXtXrC5NNWy+buy9GAbyAKcy3YJn19vEknbuB
-	 a7FiiB6RCy+A05grpyybGkvGwvgQpDse84JXEVwM=
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1782477537; c=relaxed/simple;
+	bh=L8m+v9Mumd9PBrIoKCr6p8n/MbxpHP4z26Qvy7erVnI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JFayeuJ1C/L1iO41+voO6RAPeQOGFRzH7sRe4NQxqVM3dAozZgSPuz0xvWwW/5QWtDHJNgYuqJuQ5oLUqo2BITDo1jN7Oazak9D93bTjahZ3WJn794YETknHyK8WvJNalFPJfOyexJbXRR+SqyZ935P2+4M/viG4LPKxlVy/9DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4474073fa81so595338fac.3
+        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 05:38:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782477535; x=1783082335;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3Qc4TavqegVrav+S2qpl9+8s6wcCSKt3nqOoGSJ8Fvk=;
+        b=N/O3EBldavxOUY9sBMAuokNnS4AK9SP2dbuP1kv7KSsNwyWufA3St67RseXh1h6mQs
+         MGfvCn+BBDkdkez5akvXfdpwOsy2l8EyK1br+gFtP/eX4Y4Fy9gyYfdaFKl/gdLEvnzr
+         vSnomp3rkICcJvrdXZF8Dq8iyvnEtMM9hrmz8eqRk7fZBUqRXhTkfNLMlrDWEJoDnaAt
+         3nVTuy5/mBBlkPx41SlHJdTKrFfqVheAJonE3UbaRpubxVchvYHaa1HrQCnhlEh2Q5vg
+         p9zMLjnkLAg4JofFCqZ0Z8g5dHljgauqESrUTHbKnYibIGaxZfYX+SgfgcUV+7govQvW
+         eTOw==
+X-Forwarded-Encrypted: i=1; AHgh+RrGnyPqaN0QrBXVO9yTAjiADnQVhTFxVfI4VOq64fHFAxbug7XZZ8Md/R3B2rgsCWkpvgY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy0v8svC2COWHMUJ9Pk4FqTTY2joH9gAdx3cqY0sB90gtchix1i
+	DgDY4PZhxhFbyAZBYjODuLK66yIUJFLGrSGnqpEfz/48XJa+KmUzHmXmic7LeHXh
+X-Gm-Gg: AfdE7cm/0GnuAAFLfYh7ozo4hmM+WABopMbGNWAOprcknu0FFKdGYDoC2GSHdslYRN3
+	rITvd7DGIGrQej9cXpK88CwF1RsMvfZu86LZZQlpalGK8vSq7RpkYDgROS72SEwZac6bct+nNHf
+	Nbc9Upi02byXwmHvaRpT7dXxI982X/oOtK5tz4Ib0SgErSRaH3Pv/s8p1gPW1EqdzL5cyYYP8as
+	aGUSdLklfOiX05XFAmoaMh3GV9wWzDXP/gIcFvYjozhTdIq7o1he53RHzoldoGk/CikVnVokvee
+	kqFM3n9dpRfri5Q0TXxSeqCvqzRNSAa2W2t9BWr1HSy25iVn7ygVMaJVM/0/A7zvf8uCDR+hFN1
+	mxAvkqXy0fGq26xbEAgItuBaxjKDMK6AKKhwIVq1DgXXvwTa+EGPhUdtqXPzgFHyYfsws1Dvvr0
+	8PR6SPNZ2CdiFEoxxGGe9QIFiYaq9Jy8ACSfIsOuXvcapiRs+Ffw==
+X-Received: by 2002:a05:6870:4791:b0:43b:bb18:affd with SMTP id 586e51a60fabf-4481184cab9mr5353950fac.8.1782477535459;
+        Fri, 26 Jun 2026 05:38:55 -0700 (PDT)
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com. [209.85.161.51])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-448488af3afsm335852fac.4.2026.06.26.05.38.55
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jun 2026 05:38:55 -0700 (PDT)
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-69ed219d3ecso868515eaf.2
+        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 05:38:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+sNmnPhKdSq8a7yOcfFUqumUJYa9SDZIq5e871AkSC66/1BiyFY/PIWFk3432rR1C1UeI=@lists.linux.dev
+X-Received: by 2002:a05:6102:5491:b0:631:4580:6a46 with SMTP id
+ ada2fe7eead31-73435b90f5fmr3476500137.17.1782477036873; Fri, 26 Jun 2026
+ 05:30:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260626121557.92C6D1F000E9@smtp.kernel.org>
-References: <20260626-kbingham-orientation-v2-0-47178be927b4@ideasonboard.com> <20260626-kbingham-orientation-v2-4-47178be927b4@ideasonboard.com> <20260626121557.92C6D1F000E9@smtp.kernel.org>
-Subject: Re: [PATCH v2 4/8] ARM: tegra: Convert to new media orientation definitions
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: wsa+renesas@sang-engineering.com, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-To: sashiko-bot@kernel.org, sashiko-reviews@lists.linux.dev
-Date: Fri, 26 Jun 2026 13:33:04 +0100
-Message-ID: <178247718423.372005.12851091564301822991@ping.linuxembedded.co.uk>
-User-Agent: alot/0.9.1
+References: <20260626-kbingham-orientation-v2-0-47178be927b4@ideasonboard.com> <20260626-kbingham-orientation-v2-7-47178be927b4@ideasonboard.com>
+In-Reply-To: <20260626-kbingham-orientation-v2-7-47178be927b4@ideasonboard.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 26 Jun 2026 14:30:24 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV+BDLjuhVo5fyHxSEibW8E4opXbaDrgsmTgygXXJoATA@mail.gmail.com>
+X-Gm-Features: AVVi8Cc1rFvCNNORSHDtFmL_tkYQ91oxJ5vGSfmmYwanPmDM2yIyJwQSJ-fX378
+Message-ID: <CAMuHMdV+BDLjuhVo5fyHxSEibW8E4opXbaDrgsmTgygXXJoATA@mail.gmail.com>
+Subject: Re: [PATCH v2 7/8] arm64: dts: renesas: Convert to new media
+ orientation definitions
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jacopo Mondi <jacopo@jmondi.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Jimmy Su <jimmy.su@intel.com>, Matthias Fend <matthias.fend@emfend.at>, 
+	Mikhail Rudenko <mike.rudenko@gmail.com>, Daniel Scally <dan.scally@ideasonboard.com>, 
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+	Michael Riesch <michael.riesch@collabora.com>, 
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
+	Sylvain Petinot <sylvain.petinot@foss.st.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Paul Elder <paul.elder@ideasonboard.com>, Martin Kepplinger <martin.kepplinger@puri.sm>, 
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
+	Tommaso Merciai <tomm.merciai@gmail.com>, Svyatoslav Ryhel <clamor95@gmail.com>, 
+	Richard Acayan <mailingradian@gmail.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Magnus Damm <magnus.damm@gmail.com>, 
+	Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux@ew.tq-group.com, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Sashiko,
+On Fri, 26 Jun 2026 at 14:08, Kieran Bingham
+<kieran.bingham@ideasonboard.com> wrote:
+> From: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+>
+> The orientation property for video interface devices now has definitions
+> to prevent hardcoded integer values for the enum options.
+>
+> Update the users throughout the renesas device trees to use the new
+> definitions.
+>
+> Signed-off-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
 
-Quoting sashiko-bot@kernel.org (2026-06-26 13:15:57)
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Low] The commit introduces an undefined macro `MEDIA_ORIENTATION_REAR`=
-, causing a Device Tree Compiler (dtc) build failure.
-> --
->=20
-> commit 26c9ba57e237b4ebfdbb6dbf2af353106c11c695
-> Author: Kieran Bingham <kieran.bingham@ideasonboard.com>
->=20
-> ARM: tegra: Convert to new media orientation definitions
->=20
-> The commit updates the NVIDIA device trees to use new media orientation
-> definitions instead of hardcoded integer values for video interface devic=
-es.
->=20
-> > diff --git a/arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi b/arch/arm/boo=
-t/dts/nvidia/tegra30-lg-x3.dtsi
-> > index 60e8a19aa70ec..c58e3026a115e 100644
-> > --- a/arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
-> > +++ b/arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
-> [ ... ]
-> > @@ -1216,7 +1217,7 @@ rear-camera@10 {
-> >                       dvdd-supply =3D <&vdd_1v2_rear>;
-> >                       avdd-supply =3D <&vdd_2v7_rear>;
-> > =20
-> > -                     orientation =3D <1>; /* Rear camera */
-> > +                     orientation =3D <MEDIA_ORIENTATION_REAR>;
->=20
-> [Severity: Low]
-> Will this cause a Device Tree Compiler build failure?
->=20
-> Looking at the dt-bindings/media/video-interface-devices.h header, it
-> defines MEDIA_ORIENTATION_FRONT, MEDIA_ORIENTATION_BACK, and
-> MEDIA_ORIENTATION_EXTERNAL.
->=20
-> Since MEDIA_ORIENTATION_REAR is undefined, the C preprocessor will leave =
-it
-> as an unexpanded token, which will cause a syntax error when dtc parses i=
-t.
-> Could this be updated to use MEDIA_ORIENTATION_BACK instead?
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Ah man - the heat must have been getting to me. That's definitely
-supposed to be MEDIA_ORIENTATION_BACK. I shouldn't have read the comment
-I replaced.
+Gr{oetje,eeting}s,
+
+                        Geert
+
 
 --
-Kieran
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
->=20
-> >                       rotation =3D <90>;
-> > =20
-> >                       nvmem =3D <&m24c08>;
->=20
-> --=20
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626-kbingham=
--orientation-v2-0-47178be927b4@ideasonboard.com?part=3D4
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
