@@ -1,167 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5031C3F4DDA
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 13:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2031E3F6C4F
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 13:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782479517; cv=none; b=Zctw9n4jFnC4PODqBRDIcbY8LvbRtnEc34yO+EE9a0P+I6SE8rbotYg7itdPHs2mMLkMUnc322m9G3le1bWYfUVlFMwp5M6VUUdSalUR72ADTgxKtRULekWVua54/Xg10OdJczsg/80zU0sS2h6ighBXu0omVX/TO4eKmOdDXDQ=
+	t=1782480076; cv=none; b=cwNAzJacwuDQwuSU2Aeb9sMKbMAHNEBwL0FvyiArKTzyxPuHe8/SEFL+yWMfkU76s8AYUANA1KLpkFFb75lYlfZso2cGTnGvD/n13I1/SmFySa7ymiFLJiE1UpwUUbamJ8R5rmzIHocEB1hgc5/p3yqE869pAz/zYJTjPvMvCEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782479517; c=relaxed/simple;
-	bh=VKNTFsC75BNMcJnQI4eMzMtTvr9UpO3oOorJIEMb0vQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kKXfenZxG30wekmbNmMoSMYl5ZfpgMVwbQVvWG9NJ3gRxK8hMMmtXaxvuq2nJ9yKMGZd+8EDvmj6TudcGDj8SkDY8Cowam4ODJ2DSF13bWJI3b9r73R+KFE4QH9taDjYOzF0iiCWa32nEjwg76LdWCLvmfsRiExnRCDHWFqTx7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cLmglm0f; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782480076; c=relaxed/simple;
+	bh=BmHJUIMl03bo3cur4LADSXTy4zaBjOxIh5/Huf4taX4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KGctXwuNmKQacXc2qBac4l4T7KcbJRHVfAwCzlwGPeIDO1OjrVVHTt3bRpCtXDwTUSDjGNUmHHi7BKt6/odiQtIh6n1wIfeWfOUtS0EM9Fw9iFgR2bxEYRuAl6UYy+PwNpXGr6qyOZSst/aeGKgq1I4MzbR3XhT75cuV6qfK4+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gZkqzMI/; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cLmglm0f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782479515;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VKNTFsC75BNMcJnQI4eMzMtTvr9UpO3oOorJIEMb0vQ=;
-	b=cLmglm0fFtdT+tIAZb6uKVEXMr65V0gMWXMmZyYqtbeIF6nMdAu+bEKeh2VZ+R1JfpLlrc
-	pU7ZGeCtvqzRnHmVrQsaAAOCvrSNFIjeCgKSqIqGo84Yq7T70fQAU4eNrDSa/MAhN2vjmY
-	3rFzQKQT3MKDDLHfxYtEgTvV8Ku8MIo=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-gIoBopIoP16RJmK9GPEkDg-1; Fri, 26 Jun 2026 09:11:54 -0400
-X-MC-Unique: gIoBopIoP16RJmK9GPEkDg-1
-X-Mimecast-MFC-AGG-ID: gIoBopIoP16RJmK9GPEkDg_1782479513
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-7ff58c89959so21319877b3.0
-        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 06:11:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gZkqzMI/"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-39ad8dbe947so388051fa.3
+        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 06:21:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1782480071; x=1783084871; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=PwLoCPBMvnE4mFTZ0Iskkh0u0N7Zrq4pjwblbNDMp4g=;
+        b=gZkqzMI/1OHiM6GtLSGWd83eBec+LAknbXifkA6S1oSFQnIxB7C3ym3mdQWKrydxGt
+         8FwCrdPKhWV2kJNY4FuTSg3y5rMtTxAx+hTQHkPd0UDgU4ZMCWRMavkXm3OXG2CFTRqs
+         A2Oyn/Qd/KGxo33FcpztFy4l2G37t7w/5uOt7UtGS9l7ZpmoblhpRgs/PWo6QihYPUC8
+         IOm4bLksFZRihaOHMkeuRLzBSuBt8QLVKuZFhnJ/hdmatlAAx4R8375Uq2tG4/AlALwN
+         pu6X7WWJdhirX1M5qA6rMtIeLUUrQZSuSKZml08o0zutev3AKFJkCZ01cWJewdB0fw8T
+         ajVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782479513; x=1783084313;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VKNTFsC75BNMcJnQI4eMzMtTvr9UpO3oOorJIEMb0vQ=;
-        b=J6tIBETa4kUr0dPSNmqflJCMaLV1xpyS8qZSvIQBjyI18ooBVmrSKs+U+LUnqvlfqm
-         tLGWSKmeO99kxhnMJBYf70kTHK7puDudZnNNIvn7tzSdXwRHC4R9X1QvJr7d3pgWHr0E
-         dwJEoAntirnyUybQBE2ZdYNktFkQQaeHdyYI9hSKhY/18bGfgXo1mIONyqraGt4NibiU
-         Frp/C8yc8UNRBDvCJuUBsodvXAZvG4E1npIqp4Pbq4A77mRMPM9wXIJz7zpptkcP22Fe
-         ceb3GOOpK8QAz7h1iFfOEX6l87Z3HJgZ6oYkxkhMGE85uAkkuNtMeMN+HCVUhWf9skSe
-         fKTQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqnRBv1ugSJIOLPbZoQOnaJ8x7ev2mhYHmThzjYXmmtbh2HGKXo4bFKC9YPK7UbP4RMkRM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw7HnQUdsgE5sXI4GNo6YzLkqkxPCLePoyOirSljXkrYuJYZEoC
-	CIw3+cIia8XQXGjjMqN2jaZCdpYlxvSQ8Se4VoDrIngWMHcEBIEUDxP37xfY5mo1Mzre0vdF7Fj
-	a2scLTwle365rH/L1MgkTb62WWhzIuISepHLnX8W94uPtrwe9oZD/cSscoRGCmKpiyh/8/TGXyP
-	V7ZOvhZkfqTCm+Kg/5/Dx308EhsjR6
-X-Gm-Gg: AfdE7ck/aXksAg3UqtHR6Hh3K7JJwRgbwrniI+NJ5gB6MHvajj1CL7aVMdsNndqb+Aj
-	uqcmrPreTv951YIR3WFDe7B+lVfyI0JaVbOzATLBaViw0tNxEpwCatS8eKrWXiXl1ZH+cNNRFP7
-	/TrXjMDHPSz5jvn/TaP8RhW896UUTmZT0bNhjwv5RtMHu/CijdTMG0/tgS1m/q2N9U
-X-Received: by 2002:a05:690c:2601:b0:80b:ef0a:7aad with SMTP id 00721157ae682-80bef0a8585mr15809727b3.31.1782479513432;
-        Fri, 26 Jun 2026 06:11:53 -0700 (PDT)
-X-Received: by 2002:a05:690c:2601:b0:80b:ef0a:7aad with SMTP id
- 00721157ae682-80bef0a8585mr15808937b3.31.1782479512984; Fri, 26 Jun 2026
- 06:11:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782480071; x=1783084871;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PwLoCPBMvnE4mFTZ0Iskkh0u0N7Zrq4pjwblbNDMp4g=;
+        b=mUX3yqwj03VGnZG2dRsHSFidyll/SCX+fsii3VJQGQDcXG9KWlZlrzAsSDMoBuhyo1
+         yYvfpfIt3R47Ngs0842cghokmJ4TYOPZ7VhAHEFdZXgYOxM/zn8XnoSCCtnsAiKGGC9X
+         J+weRgjoTWkcyu5WfLaC6N32snjeH5rt4/BOhy9U9cK94SkjCO7r1rJ1rdm+v4/hjmsA
+         SlqZ+B6yQM1PreB1D9GiZZRued3zz9I9UPa8lL+TFymlFgGBDn5FltlGu/k9cGGv46GV
+         MRc2fA2rws3lSgx/QdHUDOMY4fVe9sNGWgoOSt2a6CCjNjZ9GYpBBRXvgmvY53B8+58Q
+         ENhg==
+X-Forwarded-Encrypted: i=1; AHgh+RrFGlPLrBUQRidGcAGhCz8UbrKlrustw28+TNEIklHmUi8M1pQQVIF2S0BMZDampZ8syoc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy7tulLsbazcG8Na40rDpg445dw+mff15nk98Rb5zZTVN0Do1HY
+	UJ7d4lnhmjY+vfp6fIldmpPT3R19iJJHIO9pNXhF87cMn8ZpmWgxF+P4WhvLTxvLTlk=
+X-Gm-Gg: AfdE7clst+jUMzmnSbbQ6rBXTDTTNqp/eK3+KmITHjw+TCzbrqrOs+Pd91AdSF/TFZF
+	TxSeCKuMXLMtJDzKVpW1dDbUaK0P5MrbknmiXQwf/ypBz6WcJJ9wemSwAL0zDzeb5t9I0KjTOZE
+	gIk0UKeO95586tWbAaxXV2p1q7GKm87wkpl4XDtYblo3mhuQTiCcTe/mi9OWdC/stFIcYadwx8h
+	vqwQfNplNvMxmqlRv/RjN3d9Hn+JjUUbg0DHZhNzQ+tJJYHgj96TgpRFy4Pd7LsPT8fOlxRUZQU
+	I4GwosHsxE/Hb9q2zodAGIqLvgF6mR4+zaoiuIfamcyihTNH5SMzwAQlvcICMPLh8j4l9s2Fzdf
+	cYavYCBQn4vPcqHyTstugs6sjCmvM06NaKZSlFrpv3OS1NpPtlh8AFk6BiJ4yntdXobfdkRK8NU
+	HBxzu4IZRIh7h7IqPubKCGtXTdcrWNxIz2hrpFmvIBp7twmYc/tKM+88fw+HQy/eeOBogb2DINo
+	3JXPA==
+X-Received: by 2002:a05:6512:1252:b0:5a8:bd9c:a2e1 with SMTP id 2adb3069b0e04-5aea1f3c156mr1200847e87.2.1782480071016;
+        Fri, 26 Jun 2026 06:21:11 -0700 (PDT)
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad695859b4sm3327909e87.72.2026.06.26.06.21.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jun 2026 06:21:10 -0700 (PDT)
+Message-ID: <d14af4aa-f791-4aac-9d49-ace834952257@linaro.org>
+Date: Fri, 26 Jun 2026 16:21:08 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260626-drm_refcount_wiring-v1-0-cca1a7b3bdef@redhat.com>
- <20260626-drm_refcount_wiring-v1-4-cca1a7b3bdef@redhat.com> <20260626-manipulative-rainbow-rhino-d73b65@houat>
-In-Reply-To: <20260626-manipulative-rainbow-rhino-d73b65@houat>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Fri, 26 Jun 2026 15:11:41 +0200
-X-Gm-Features: AVVi8CcW-L7vrM5Bm_e3_mA7DiL0CVsM1LDa8FwSzsOcNktoquvN-pr6tbwgp5U
-Message-ID: <CADSE00+1m1ASzJzefO2bLuMYAJa3kSmW4py7Qng70VnZSUv0sg@mail.gmail.com>
-Subject: Re: [PATCH 4/5] drm/bridge: release panel reference on all lookup
- exit paths
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
-	Linus Walleij <linusw@kernel.org>, Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, Sandy Huang <hjc@rock-chips.com>, 
-	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
-	Andy Yan <andy.yan@rock-chips.com>, Yannick Fertre <yannick.fertre@foss.st.com>, 
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
-	Philippe Cornu <philippe.cornu@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Samuel Holland <samuel@sholland.org>, Jyri Sarha <jyri.sarha@iki.fi>, 
-	Jingoo Han <jingoohan1@gmail.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Alison Wang <alison.wang@nxp.com>, Paul Kocialkowski <paulk@sys-base.io>, 
-	Alain Volmat <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
-	linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9Osd_lk8CmccRii28T_c1nsCbTJIgoClG4UCEDSmZI8_1782479513
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/8] dt-bindings: media: Add macros for video interface
+ devices
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jacopo Mondi <jacopo@jmondi.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Jimmy Su <jimmy.su@intel.com>,
+ Matthias Fend <matthias.fend@emfend.at>,
+ Mikhail Rudenko <mike.rudenko@gmail.com>,
+ Daniel Scally <dan.scally@ideasonboard.com>,
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Michael Riesch <michael.riesch@collabora.com>,
+ Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+ Sylvain Petinot <sylvain.petinot@foss.st.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Paul Elder <paul.elder@ideasonboard.com>,
+ Martin Kepplinger <martin.kepplinger@puri.sm>,
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ Tommaso Merciai <tomm.merciai@gmail.com>,
+ Svyatoslav Ryhel <clamor95@gmail.com>,
+ Richard Acayan <mailingradian@gmail.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
+ linux@ew.tq-group.com, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ Conor Dooley <conor.dooley@microchip.com>
+References: <20260626-kbingham-orientation-v2-0-47178be927b4@ideasonboard.com>
+ <20260626-kbingham-orientation-v2-1-47178be927b4@ideasonboard.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20260626-kbingham-orientation-v2-1-47178be927b4@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 26, 2026 at 2:53=E2=80=AFPM Maxime Ripard <mripard@kernel.org> =
-wrote:
->
-> On Fri, Jun 26, 2026 at 02:03:26PM +0200, Albert Esteve wrote:
-> > of_drm_find_panel() and drm_of_find_panel_or_bridge() now return a
-> > counted reference that the caller must release with drm_panel_put().
-> >
-> > For bridge drivers that immediately wrap the panel in a panel_bridge
-> > (which acquires its own reference), release the lookup reference right
-> > after the bridge creation call.
-> >
-> > For analogix-anx6345, which stores the panel for direct use, release
-> > the reference in the i2c remove path.
-> >
-> > For platform drivers using analogix_dp_core with a component lifecycle
-> > (exynos_dp, rockchip analogix_dp), release the lookup reference in the
-> > platform remove() function. The panel_bridge created during bind() hold=
-s
-> > a separate reference that devm cleanup releases after remove() returns.
-> >
-> > Also fix devm_drm_of_get_bridge() and drmm_of_get_bridge() in
-> > bridge/panel.c itself: both call drm_of_find_panel_or_bridge() and
-> > then pass the panel to devm/drmm_panel_bridge_add(), which acquires
-> > its own reference via drm_panel_bridge_add_typed(). The lookup
-> > reference was never released; add drm_panel_put() after each bridge
-> > creation call.
-> >
-> > Assisted-by: Claude:claude-opus-4-6
-> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
->
-> I think this one should be either split into one patch per driver, or
-> merged with the of_drm_find_panel patch. I'm still not quite sure which
-> would be the best, maybe the latter?
+On 6/26/26 15:07, Kieran Bingham wrote:
+> Add a new dt-bindings/media/video-interface-devices.h header that
+> defines macros corresponding to the orientation enumeration types from
+> media/video-interface-devices.yaml.
+> 
+> This allows avoiding hardcoded constants in device tree sources.
+> 
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+> ---
+>   include/dt-bindings/media/video-interface-devices.h | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
+> 
+> diff --git a/include/dt-bindings/media/video-interface-devices.h b/include/dt-bindings/media/video-interface-devices.h
+> new file mode 100644
+> index 000000000000..d2340b457292
+> --- /dev/null
+> +++ b/include/dt-bindings/media/video-interface-devices.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: (GPL-2.0-only OR MIT) */
+> +/*
+> + * Copyright (C) 2026 Kieran Bingham <kieran.bingham@ideasonboard.com>
+> + */
+> +
+> +#ifndef __DT_BINDINGS_MEDIA_VIDEO_INTERFACE_DEVICES_H__
+> +#define __DT_BINDINGS_MEDIA_VIDEO_INTERFACE_DEVICES_H__
+> +
+> +#define MEDIA_ORIENTATION_FRONT		0
+> +#define MEDIA_ORIENTATION_BACK		1
+> +#define MEDIA_ORIENTATION_EXTERNAL	2
+> +
+> +#endif /* __DT_BINDINGS_MEDIA_VIDEO_INTERFACE_DEVICES_H__ */
+> 
 
-I have spent some time myself thinking about how to approach this.
-Initially I thought about doing one patch per driver as you suggested,
-but since there are many similar fixes that are mostly one-liners, In
-the end I decided that grouping them would make the review easier and
-result in a less inflated series. Maybe merging with of_drm_find_panel
-patch makes sense to avoid having one patch introducing a transient
-reference leak (even if it is fixed right after and is bisectable).
-But that will also create a giant patch (harder to review?). Another
-option could be to merge patches 4 and 5, which basically update all
-callers, and keep the API update separated. Either way, I am happy
-with whatever you decide is better. I will take note of this for v2.
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
->
-> Maxime
-
+-- 
+Best wishes,
+Vladimir
