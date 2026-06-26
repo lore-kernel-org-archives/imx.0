@@ -1,167 +1,211 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750353DA7F2;
-	Fri, 26 Jun 2026 11:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6573F3F4105
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 12:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782474272; cv=none; b=r+DCQsT5WNvTZwYTLXXEhdCT73Yl33+IyoOZkkBP7QqdyMppRJ4hAA3HtLUIHbxyN6x2/dCtztV4SLpmU+FkXhg1FqIClY1gHjbCQrgxAM7aoRPpD+iplHAntv7tzVwa744GLIeqrpwayEQnejdyFeTk2PcPHBx5W0lERdVpOj0=
+	t=1782475443; cv=none; b=pr+eSdMIQW9v3feLOaSvBil6uWTyHJ4YfvibVI1UfJOMlPtkWMC/sjTrbNcUY16g/chRoQ4S+QAtuY84kSvXad2Kf+t+tSnY3R9baI4hed7myulg2Z9nwODhzqVXTrmQ/jYU5u34VuG1qOKfA1gTI3+E8pSJN46Ugm57FDgxoGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782474272; c=relaxed/simple;
-	bh=uDud4QbyYyHyoPaDvt2SXTy2nOOy+5o8vCEYXG41ZBg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=acfiKDEhSiojS3woOQOR1rPXAxaINqsKSGkC6gjYkZKSP434pN78gS/c2Hb1dt8wJWxEv7CZwlEO9o1Us9jsW4l/HwCCgbGL/1e84CWAcXet411Nv6tVMG2k7aczDPa07n9IxKYdKK6I/1Bg40X/HW8aXIVhpFLptrBpsgoWtXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fMrCwO2p; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782475443; c=relaxed/simple;
+	bh=3BTWjIQGw6v603+MK6ywCULt+2ytc2OqbIhP38SSlXQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=bQGN8OguabvA+J1zT1vDehgcIQ18TkaDpojw8+53kIxutg5hxYsxyqtAqu2VXPLqg9bHhQP7NPqQNaD/a13t9KUe4jg685wcIJsbyJnp9PA3yv+vKC5a2d26z9fMt+HgtwO7BEI0kbSRn/C0BDddNYUWGVJDqVghv9Xe7BxGQVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TICQNzYS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMrCwO2p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26091F000E9;
-	Fri, 26 Jun 2026 11:44:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782474271;
-	bh=/EzMymxSUM5VRHbvfwnomvo7p7AG4LxoHMkA4hDGBI8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fMrCwO2pP0ZceLP1QpT/U1z6q/JXr09+ePTb2Ziqm9erGt8yebbW0hqeMmzmmWb4O
-	 assosyXSeaB1lnCbmy5dKGSrcjdhNq4eK7FKqV0PlbekGzjMC3z3wP7daMwjfxCRU1
-	 ApX7mdKhlodBF1jL9yyvBHP0DSouh/If9UszYulMaT9Fv7IwfGVj8AQx6bWIspmwTy
-	 D5jNwZJogr2BgoexQg+uWxc/xxp5Bh4THYKQtmK9uJ2bVYiJTqSy0Jz3umL47d7SPN
-	 gyzkHbnGc0kI9+N0zaOmncPEz122A9Js9v8e1+KvGfnmxmF0n1H1ZiYCTii+jrH2dR
-	 bfpqdHfTyqQyw==
-Date: Fri, 26 Jun 2026 13:44:29 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
-	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 15/37] drm/display: bridge-connector: allocate the
- connector dynamically
-Message-ID: <20260626-falcon-of-unmatched-whirlwind-2fbbbf@houat>
-References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-15-45e2bdb3dfb4@bootlin.com>
- <20260608-rustling-infrared-turkey-e09af8@houat>
- <DJ72WOUW5FA2.G1MPCAHJQ13F@bootlin.com>
- <20260624-judicious-enigmatic-hippo-b13ffe@houat>
- <DJHE108R7TU6.35ECAUQ8ZX041@bootlin.com>
- <DJI0YM93PKAM.TMLLL1394R5D@bootlin.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TICQNzYS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782475441;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LfhkIZ+POWtPSh2+rwXD0iwa5BFBBS0Sxs/FAHKJy0U=;
+	b=TICQNzYSaH0ZyIJxp5y14XmEKxDuEv0cO2ccHewQENnFwzhJcSBLGcpHo5ceCfE8wkOodk
+	KjXCTg+FgTJi2iYLOA19XHANaUIkPSm0v20TlHj5tqoq1Os+KsAD6b7+7yHU+h+lC/WBAl
+	LVKlqzSincj3kdgG48vAU/VtedLY6mo=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-165MCCNRPxamt_a__LrLag-1; Fri,
+ 26 Jun 2026 08:03:58 -0400
+X-MC-Unique: 165MCCNRPxamt_a__LrLag-1
+X-Mimecast-MFC-AGG-ID: 165MCCNRPxamt_a__LrLag_1782475432
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 951F01956049;
+	Fri, 26 Jun 2026 12:03:49 +0000 (UTC)
+Received: from [192.168.1.153] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C2A7518005B1;
+	Fri, 26 Jun 2026 12:03:30 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+Subject: [PATCH 0/5] drm/panel: refcounting panel lookups and references
+Date: Fri, 26 Jun 2026 14:03:22 +0200
+Message-Id: <20260626-drm_refcount_wiring-v1-0-cca1a7b3bdef@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="efk5uu5pc7hesw2a"
-Content-Disposition: inline
-In-Reply-To: <DJI0YM93PKAM.TMLLL1394R5D@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MWwqAIBAAryL7naCVSV0lIsK22o801l4Q3T3pc
+ 2BmHojIhBEa8QDjSZGCT6AzAW4Z/IySxsSQq7xSRhdy5LVnnFw4/N5fxORnWaJBayzWqrSQyi0
+ JdP/XtnvfD+CBweFlAAAA
+X-Change-ID: 20260513-drm_refcount_wiring-4e5e757e9047
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, Inki Dae <inki.dae@samsung.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
+ Linus Walleij <linusw@kernel.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
+ Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chen-Yu Tsai <wens@kernel.org>, Samuel Holland <samuel@sholland.org>, 
+ Jyri Sarha <jyri.sarha@iki.fi>, Jingoo Han <jingoohan1@gmail.com>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Peter Griffin <peter.griffin@linaro.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Alison Wang <alison.wang@nxp.com>, 
+ Paul Kocialkowski <paulk@sys-base.io>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ linux-rockchip@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+ linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org, 
+ Albert Esteve <aesteve@redhat.com>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782475410; l=4786;
+ i=aesteve@redhat.com; s=20260303; h=from:subject:message-id;
+ bh=3BTWjIQGw6v603+MK6ywCULt+2ytc2OqbIhP38SSlXQ=;
+ b=vLL8Ben9S7G7GBfAV5/dY7850AeH1O/rgqMk5FTgeHqnK1BhJ7ibVh3+QUe2vagwJMCyn90Tw
+ qkWv9Fv/F5lBvW13X7zWOmhYBwLKK2ZIdvy06sPHln5E/gzS8WLH1Bj
+X-Developer-Key: i=aesteve@redhat.com; a=ed25519;
+ pk=YSFz6sOHd2L45+Fr8DIvHTi6lSIjhLZ5T+rkxspJt1s=
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: iFHrHCZjx4PJAL9D9eeQXwWEMY4qmOw2DMYvzJRnHQU_1782475432
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The drm_panel subsystem provides kref-based reference counting [1]
+(drm_panel_get/put) but almost nothing in the tree actually uses it.
+This results in a systemic use-after-free pattern throughout the codebase.
 
---efk5uu5pc7hesw2a
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 15/37] drm/display: bridge-connector: allocate the
- connector dynamically
-MIME-Version: 1.0
+This series aims to close all those issues.
 
-On Thu, Jun 25, 2026 at 11:32:32AM +0200, Luca Ceresoli wrote:
-> On Wed Jun 24, 2026 at 5:34 PM CEST, Luca Ceresoli wrote:
-> > Hi Maxime,
-> >
-> > thanks for the feedback.
-> >
-> > On Wed Jun 24, 2026 at 1:48 PM CEST, Maxime Ripard wrote:
-> >> On Fri, Jun 12, 2026 at 02:44:43PM +0200, Luca Ceresoli wrote:
-> >>> On Mon Jun 8, 2026 at 1:46 PM CEST, Maxime Ripard wrote:
-> >>> > On Tue, May 19, 2026 at 12:37:32PM +0200, Luca Ceresoli wrote:
-> >>> >> Currently the drm_bridge_connector has an embedded drm_connector, =
-so their
-> >>> >> allocation lifetimes are tied to each other. This is insufficient =
-to
-> >>> >> support DRM bridge hotplugging, which requires the connector to be=
- added
-> >>> >> and removed dynamically at runtime multiple times based on hotplug=
-/unplug
-> >>> >> events while the drm_bridge_connector is persistent.
-> >>> >>
-> >>> >> Moreover the drm_connector is exposed to user space and thus an on=
-going
-> >>> >> operation (e.g. an ioctl) might last for an arbitrarily long time =
-even
-> >>> >> after the hardware gets removed. This means a new connector might =
-have to
-> >>> >> be added when the previous one is still referenced by user space.
-> >>> >>
-> >>> >> In preparation to handle hotplug, allocate the drm-connector dynam=
-ically,
-> >>> >> to allow:
-> >>> >>
-> >>> >>  * creating and destroying a connector multiple times during a sin=
-gle
-> >>> >>    drm_bridge_connector lifetime
-> >>> >>  * creating a new connector even though the previous one is still =
-in use
-> >>> >>    and thus still refcounted and not yet freed
-> >>> >>
-> >>> >> This commit does not introduce the actions in the two bullets (it =
-will
-> >>> >> happen in a later commit), it only moves to dynamic APIs for conne=
-ctor
-> >>> >> allocation and init.
-> >>> >>
-> >>> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> >>> >
-> >>> > I think this patch should be split in half, with the switch to using
-> >>> > destroy first, and then the actual move to the dynamically allocated
-> >>> > connector API.
-> >>>
-> >>> Is it doable? drm_connector_dynamic_init() mandates a .destroy callba=
-ck,
-> >>> drm_connector_init() forbids it.
-> >>
-> >> drmm_connector_init forbids it. drm_connector_init mandates it.
-> >
-> > Something bogus in my reply, sorry. :)
-> >
-> > So you mean splitting in:
-> >
-> >  * first patch: move from drmm_connector[_hdmi]_init() to
-> >    drm_connector[_hdmi]_init() and add a .destroy
-> >  * second patch: move from drm_connector[_hdmi]_init() to
-> >    drm_connector[_hdmi]_dynamic_init() +
-> >    drm_connector_dynamic_register/unregister()
->=20
-> Ah, no, there's an annoyance here. drm_connector_hdmi_init() does not
-> exist, so it'd have to be created just for the sake of splitting this
-> patch, sitting unused after the second patch.
->=20
-> I don't think it's worth implementing (and maybe deleting) it just for
-> that, so I'm leaving this patch as is unless you have counteraguments.
+Patches 1-2: fix the infrastructure. drm_panel_add/remove now keep
+a counted reference for the list entry. drm_panel_bridge_add_typed()
+now holds a counted reference for the lifetime of the panel_bridge.
 
-If it's just to ease the transition, you can have two different set of
-drm_connector_funcs for HDMI vs !HDMI, one with destroy and the other
-using drmm while you rework the init function
+Patch 3: change the semantics of of_drm_find_panel() and
+find_panel_by_fwnode(). They now acquire a reference before returning,
+under panel_lock. Callers are responsible for calling drm_panel_put()
+when they no longer need the pointer.
 
-Maxime
+Patches 4-5: update all in-tree callers of of_drm_find_panel() and
+drm_of_find_panel_or_bridge() to release the reference at the
+appropriate point. Two patterns are repeated in these fixes:
 
---efk5uu5pc7hesw2a
-Content-Type: application/pgp-signature; name="signature.asc"
+- Bridge-wrapping: the panel is passed to devm_drm_panel_bridge_add()
+  or equivalent, which acquires its own reference. The caller (including
+  devm_drm_of_get_bridge() and drmm_of_get_bridge()) releases its lookup
+  reference immediately after.
+- Store-and-use: the panel pointer is kept in a driver struct and
+  used directly for the device lifetime. The reference is released in the
+  remove/unbind path, or via devm_add_action_or_reset() where no explicit
+  teardown function exists.
 
------BEGIN PGP SIGNATURE-----
+In order to catch all places in the tree that required releasing the
+reference, the search was assisted by an AI model. Specifically, a
+Coccinelle script was designed to address the trivial changes (not
+included in the series). Although a few required manual fixes, with goto
+labels or bracket additions. Additionally, the model helped to discern implicit
+teardown paths that were addressed with devm_add_action_or_reset() calls.
+Thus, these commits have the Assisted-by label following the project guidelines.
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaj5mGAAKCRAnX84Zoj2+
-dnJMAYDonRDM7lYwChQvQtwXC8KltmCs4qQ0NQD1obaIE5je/j+3uLNA3Zwa/0QD
-Nr64eHkBf2a3n1y/O3BApWQ00QFwjbklQKszO9JRCcBkAyS8zUaJ11TbFPP2Tqxb
-BP0SynMxDQ==
-=2ozk
------END PGP SIGNATURE-----
+No functional change is intended for any driver. The reference
+counting only affects object lifetime; panel operations are unaffected.
 
---efk5uu5pc7hesw2a--
+[1] https://lore.kernel.org/all/20250331-b4-panel-refcounting-v4-0-dad50c60c6c9@redhat.com/
+
+Signed-off-by: Albert Esteve <aesteve@redhat.com>
+---
+Albert Esteve (5):
+      drm/panel: have drm_panel_add/remove manage a list reference
+      drm/bridge/panel: hold a reference to the wrapped panel
+      drm/panel: make *find_panel*() return a counted reference
+      drm/bridge: release panel reference on all lookup exit paths
+      drm: release panel reference after panel bridge creation
+
+ drivers/gpu/drm/bridge/analogix/analogix-anx6345.c |  3 +++
+ drivers/gpu/drm/bridge/panel.c                     | 18 ++++++++++++----
+ drivers/gpu/drm/drm_panel.c                        | 24 +++++++++++++++++-----
+ drivers/gpu/drm/exynos/exynos_dp.c                 | 10 +++++++++
+ drivers/gpu/drm/exynos/exynos_drm_dpi.c            |  3 +++
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_rgb.c          | 18 ++++++++++++++++
+ drivers/gpu/drm/imx/dcss/dcss-kms.c                |  3 +++
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c          |  4 +++-
+ drivers/gpu/drm/logicvc/logicvc_interface.c        | 12 +++++++++++
+ drivers/gpu/drm/mcde/mcde_drv.c                    |  1 +
+ drivers/gpu/drm/mcde/mcde_dsi.c                    |  1 +
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c                  |  1 +
+ drivers/gpu/drm/omapdrm/dss/output.c               |  1 +
+ drivers/gpu/drm/pl111/pl111_drv.c                  |  1 +
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_encoder.c  |  1 +
+ drivers/gpu/drm/renesas/rcar-du/rcar_lvds.c        |  1 +
+ drivers/gpu/drm/renesas/rz-du/rzg2l_du_encoder.c   |  1 +
+ drivers/gpu/drm/rockchip/analogix_dp-rockchip.c    | 11 ++++++++++
+ drivers/gpu/drm/rockchip/rockchip_lvds.c           |  1 +
+ drivers/gpu/drm/rockchip/rockchip_rgb.c            |  1 +
+ drivers/gpu/drm/sti/sti_dvo.c                      |  3 +++
+ drivers/gpu/drm/stm/ltdc.c                         |  1 +
+ drivers/gpu/drm/stm/lvds.c                         |  3 +++
+ drivers/gpu/drm/sun4i/sun4i_lvds.c                 | 13 ++++++++++++
+ drivers/gpu/drm/sun4i/sun4i_rgb.c                  | 13 ++++++++++++
+ drivers/gpu/drm/sun4i/sun4i_tcon.c                 |  2 ++
+ drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c             |  2 ++
+ drivers/gpu/drm/tegra/dsi.c                        |  1 +
+ drivers/gpu/drm/tegra/output.c                     |  3 +++
+ drivers/gpu/drm/tidss/tidss_kms.c                  | 16 ++++++++++-----
+ drivers/gpu/drm/tve200/tve200_drv.c                |  1 +
+ 31 files changed, 159 insertions(+), 15 deletions(-)
+---
+base-commit: 502d801f0ab03e4f32f9a33d203154ce84887921
+change-id: 20260513-drm_refcount_wiring-4e5e757e9047
+
+Best regards,
+-- 
+Albert Esteve <aesteve@redhat.com>
+
