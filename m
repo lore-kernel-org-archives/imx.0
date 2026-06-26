@@ -1,208 +1,230 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013025.outbound.protection.outlook.com [52.101.83.25])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ACD3FD134
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 16:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782492487; cv=fail; b=D7womnt8bdF2MrLOK8BTY0N49Ihrug1sYRlxj/eJBlT1zn6deTsvGZzErnEoYT6397klKHHqaR7a3XCPOigXJ1/cuctX4F00BbcfWZMPUmHjdckNIgAM6OvJtApW8Hit04ijVUaX+pjGc+W3woSGXEeO6MotcD2TD6ptvLZEX8A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782492487; c=relaxed/simple;
-	bh=g5zC60jbCOWat3wxMgWkpMFifynT7s4QeX++J54Yojc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gZ3jR4otatO6/r5HXuNUl4oy/aa591IYB9sSNIN4EefWrNg6GfiY5Cw70ZSVGmwDMadq6XSyUHHlXq/n9FKJ1QR9UV9/eVDT9pLoqLT/5wHLmDjC6CRTo3IcNXY+i6ZgzJdMHkRa6BNvOwgTWPxRjL3prX8xyqpgktLh81CoYY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FXCb4lu4; arc=fail smtp.client-ip=52.101.83.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE3F37C910
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 16:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782492687; cv=none; b=OWCUwGOu0WzF5K6KuZ4eFnG6YDFFdcArx0L2yPEN4N6/grxou5Nxp4Beuc9BG2FTuqw+ZXwWokXEFf9Z0stNC/zp0OREmpKePD/homdJicPpWAbI+eAGJ/cY50fHer9wCzJToqFPzJ04XYB9jOJWJgv3MUBhd7U4Bjg4vbHS2sk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782492687; c=relaxed/simple;
+	bh=6MXzkFS2E47SUNsfu3fRHzDB0jzVuWRLm15Goqy+6vE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=FXpCsQ+oWVkYedz5GNcZ3LCl8p8dk0ThsqAyvHUu+E8uykcSuPrgjsH7maAYjAlDg5xoH+I3DR2jmCwc3xeeV/3mbn9jzZuU1pWu2ZGmcBiAeooqM4v0ZOmeS5EEFVrcnxDkr7H5+gsoPwMqEKrw8t2ATesz22WIBv3BzE0zkFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=co0ZolZJ; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FXCb4lu4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ep0mRc0XuzwjrBkwBzlwbEZugeXUP53bUtuw6644DRlKFq8OSSa/0HU9r+ABbepiS05ejtPp4OlzMGIwKI5xLb1K+o1qIJuBsr03RRg1IQVZ7VyAnOmGguByLHjkN5tzucsXctoFXHkHRoUCfQQvQJXvf57rgSIUqzpoKtGPLYqux2hFzTqJafNir7f70IFjYEUjfRaNeSDsGV5gZkTMyPixmOqYM/0O0ZUUnUhl8v+8m2WJsEjEPKuCfJigiE6UBJvkITMDEzjykHyn8AFB9/OtrAkxQ/CXEVqjAAUPnil3uuyL1HujN04zOOb9XyFr4pz7EzqC2jd/R8bnZ1AWTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q9Kv0HID05uD+/9pA+QYi69vKrN+E0P3YTeVMde3kEs=;
- b=kKSU95+Fp4m6IegCOvjNj/ZMPTboBanP2d/+k41M5gAaSYZYFRc3AgB0d3JsDLUtgWpxo/imq2vWOLvQt0XZOYWsQ7iGc1P1z81F1UXLn+g1Eqp2dM8HID4l60uNT3LSWVn+QJ6GMolO1ZGUR7cQbveCjlk9eNR7LLvWDmcPukCD6ojE6wpccRSHGyZQHkS4bteOWWYbjI8rTyAA/VcG7CGvrOjn8fKt/vHttk3TCvjEKsqw+600fO57fLTiOvAkcA85QjQEQUyOeDpXSHwcIaPcNT3iK4IqAXDdd1Mgyz+0m1MwGqVjLBgJg6TnvfIeSH+MZkphrKiUHMxiuYym5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q9Kv0HID05uD+/9pA+QYi69vKrN+E0P3YTeVMde3kEs=;
- b=FXCb4lu40xhdjwfYRzzsCW1vJyCowpVpQ6bXoBdbOS0MBJXC2WtDyaNMh/OlEL38ADvCa5aWriCWBnGtIEWHUdw+YetIiBQ2/kcha/P0PhZI0rR/D3Tmu6osQnbxsH4wPYrAu1/BsEWxfS1HZ9FTis4h1a4sLu/meNChFlHyvfuwfr64A6RRnyKjfOnLHQcjEhog3HT0Sht1tmrsN4uevWQu2XWPlmMkEn9Jo2iFWgGjRzLW38PKjRo2mqgqsWWqw19TWN3XnmqYFMGLxFgdcFjinDilaP6UW/Z5LpiwYODEzzI7VHvdSCiTbn7lfggpybbevlfu2A2tZuWVQbN4eg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM0PR04MB12099.eurprd04.prod.outlook.com (2603:10a6:20b:747::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Fri, 26 Jun
- 2026 16:48:01 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Fri, 26 Jun 2026
- 16:48:01 +0000
-Date: Fri, 26 Jun 2026 11:47:46 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Jimmy Su <jimmy.su@intel.com>,
-	Matthias Fend <matthias.fend@emfend.at>,
-	Mikhail Rudenko <mike.rudenko@gmail.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Sylvain Petinot <sylvain.petinot@foss.st.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	Martin Kepplinger <martin.kepplinger@puri.sm>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Richard Acayan <mailingradian@gmail.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-tegra@vger.kernel.org, linux@ew.tq-group.com,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v2 2/8] media: dt-bindings: video-interface-devices: add
- video-interface-devices.h references
-Message-ID: <aj6tMpDies9QEc4a@SMW015318>
-References: <20260626-kbingham-orientation-v2-0-47178be927b4@ideasonboard.com>
- <20260626-kbingham-orientation-v2-2-47178be927b4@ideasonboard.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260626-kbingham-orientation-v2-2-47178be927b4@ideasonboard.com>
-X-ClientProxiedBy: PH8P220CA0002.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:345::6) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="co0ZolZJ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 0750FC5CD6A;
+	Fri, 26 Jun 2026 16:51:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F1E3460232;
+	Fri, 26 Jun 2026 16:51:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 42B2D104C9D9B;
+	Fri, 26 Jun 2026 18:51:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782492682; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=8iEHH7+jMGAu88nTaddZ+kCu6HVN0Ooq1Pzt5v1N4lk=;
+	b=co0ZolZJ858fCfOk8D33vEBCh0s9JzN/MrFxHMj1DWEl0PeQg+TvCZNcOBIk9uJm8A70aQ
+	NtjIEBNc92ycLE6QVXH5Wx9qnfc0mU+Ln60OMBNf/UKB1cKvJgbLHzXBq8rEfVvugoE0zM
+	L7w/q6YkjZrBjop4aIVdjCttWllHn8T8JWL94GdmmD5mJe+APArqEaM4tkXMUI0RxIwLNu
+	HxDcFfDuc8rYTFZFlIqLDDa7aePw9gBvLYD3z4aBlHHR617Z7ZXOoxSDAw+0ac1YH+Hly+
+	oHDEv37X29MEiyfdk4N+Jf7eQxI5P1uIuINj2LLK9d0l53+EyGdzHOue48e2CQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM0PR04MB12099:EE_
-X-MS-Office365-Filtering-Correlation-Id: c54bbe96-7484-4990-cf95-08ded3a2af48
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|7416014|19092799006|23010399003|22082099003|18002099003|20046099003|56012099006|11063799006|3023799007|4143699003;
-X-Microsoft-Antispam-Message-Info:
- ALSPGvUStmf+oc4/z7nIzNXbtfElUHxCpfCVOdgnST+VqNP4ElXSu+GoAInU0pbKtXlbNIOGb2+Lz2R5GZPvWGsWrENSL88+ZP5GWGuIjvSPhMgBe1Sp6w2y68VpJirTYqyyc4tA4qBoFH/K0WGPtAWAm0ODwnHq1QBw6tNSIu51NeinFO+HSbuoDInI7wDb2Ca+/Qtq+0BvsACsk0MuowTGPMHfr7fBZ6m3fC6DV+ZC4UxgRfM+uNo6KzJaNUuwxiLFBs2dQMyRDYD+x7gG+hs+S4W/rE6zfirdCGp5ZVKrs4Uzlv3Fu38JXdEEP261cvfZMJfJjCZcQFpvj7NgRSQrvuN7iV/tWftlRZNgvU6PyJubXJCJhwlHPAQWcE9ICqFEgDwjzRlh4thB/ZfZj6dJRpGoacSnmt6ISNk+6G6epZOuEn64ZOQncnaRCTiQizewwsdsl2dHGXyE9e4zSkkPCPtH93+/6kU/R1mVNWxlMUbQGRxrtPdzFVe2RCzfcPv2khkHiPAr8XrshjQhgul9oRvbSlU0ksyeXpZDx7T1Vqio2G3vyfy76pJQ41g5wX3lKzoFZJWr6qgo1RFnpM7RXYXYtPxqqkkMASv2Ez0lp8ZxmKydFeLbadvbMLYGDKCmHeteqZQjtEXLEE1TFy/XjlEKzGu+sGx5KKLJdYA=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(19092799006)(23010399003)(22082099003)(18002099003)(20046099003)(56012099006)(11063799006)(3023799007)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?0Wn+G5ni6AY6rUCI9a4oUIzPU9yC91debal6rSQmwjJLA1kvSWIVihuAsn7u?=
- =?us-ascii?Q?m1qWFiOB5EV+guArKySCOJ+nR8JJeuFY1MMLrLkMnsQjtxC0IZcr8TVQ67q4?=
- =?us-ascii?Q?ReQyDRpYuWCnWhi/uHgC4UUEBD39Z17sdpEQnnmS+/HWdtvlXrMlHm4G4qVm?=
- =?us-ascii?Q?eSzokzJYp9f8UnfxdlcyLo8sZuh1FqPW72EvwTOaPOB/0CmkVnxmSrL0bi6T?=
- =?us-ascii?Q?oYwJo8aUy7Dj6fqvikZDygEYxrEudPa8YpVkL48+1PnNnW6EQOXba+fhjbbh?=
- =?us-ascii?Q?9EI9SA94tFORdCjyRUQZF845dPf8R+ZWd31ORitmmTK7b271UQW8uVJstKA0?=
- =?us-ascii?Q?+62c/qu8wpE3EsZK/qNkEYb6C4L8iVT5+uuG8ZB8F+edE/CEw+3b0VefrhHA?=
- =?us-ascii?Q?S0bBiFowPqVkwMzhBWQ8DkKQzzNQktyS2M+Rrh9YTVfl1ap/XlaaQpejObVn?=
- =?us-ascii?Q?qqMJy0cRzrvAobt6CDPiynVXaC5WRV9fuJNtmRn00MwUFJvivuSKN2fpC5gm?=
- =?us-ascii?Q?xNPB8MBWtcuCdjPe2LvBZqLRfXdMSU8bLaUNQ37I/BNWP6F2EUNEzELRYgPD?=
- =?us-ascii?Q?qzPyCo6DzmMGonR1RkOkut1iiICyIEBi+sGssADq1CFMfrnPktamcLAUQS5l?=
- =?us-ascii?Q?FgcvUwCRz9BHtW1jlgmhcfN0U5AGrK83H3RhSwx3XDsS0aE/htQvZVXQt1At?=
- =?us-ascii?Q?tdY66Rsrt6dAvVOV2MgPcBVtVj4ue3ESCHUOHtQ4j2mrUX7og2qSHuTKD6LA?=
- =?us-ascii?Q?5XVLrk0pMLlPPFccKG5hN8q/XsErWMoUn6PMd28FBHkRb0D+KPXkrAoLYp+9?=
- =?us-ascii?Q?07Xi49n8HJKi5dHyJp54b+tM99KykUMP2Na+WVWoJILWjUx9St9ZXrBLhW7R?=
- =?us-ascii?Q?E+s++LytbCn2ZnXQywvWN4IheRvPVvB3Qz0z1ixhHJ5JGs+l864qMCQ+w3rL?=
- =?us-ascii?Q?PeJ3HytKaDsyu0F1l1WjX2LJiPxwEiRW+mw5Lu2jO0iAsiUusAMso8VnM0U5?=
- =?us-ascii?Q?hJlpWEb4EE+zXIwN3ej+ge0AJOIw/9C8twIMtCvFNBezMj6Km0SLli0vq20x?=
- =?us-ascii?Q?DVTr4S92LtpzA1lkDJXh+7rj+rD+YCaZ34SmtLtG9So5IERiTmDa1qVW84oK?=
- =?us-ascii?Q?fS8p2FMFYPFWP1RM3S0/R3yCtAwlXNnKsAEjGIZbAiU5F43qnOzSbUf1QwmP?=
- =?us-ascii?Q?r62f8oV5CKHs9uU+vEP4AzuomXaYH5AIKqc7sk6Am+9PNFNZRAMZzuCL/eUn?=
- =?us-ascii?Q?cYh1BltrSR2lx3xaQpiohTeiEUkLLe6gXKynFwzSgI5rwMQYmcC03OzEMYHJ?=
- =?us-ascii?Q?5gioj1QJqLQ//3NwkFKaCQZ2/DXHGJuMS/QG2R8TptJVZXzZh0BAPgJSsXuD?=
- =?us-ascii?Q?clgYxOfWt+x8/I8FEc+qSlHtH71sJ3cm+33xKpYDB5zmskZuznWnH0TG+YL+?=
- =?us-ascii?Q?2QUCgQCiz1GxFEN/RNz93h/4cW4lY93gVIolcZ9gwxr6YmdgsJNSDHDMnOS0?=
- =?us-ascii?Q?dDewnwQYC57ZixdUYxC93JoyC8oKxmwbQB7F+r53Ah9uLsshdMzh6PUrKwK7?=
- =?us-ascii?Q?gAcvFNW7q1McR7Qvg2LLZ5pB04hWQnTH3zV8FMzv1p27A4aHoi0XaOrV6TUO?=
- =?us-ascii?Q?jnbAjDl2zYXHs7m23oa+n6o0D6w1w5pJ0JilvJUBOv2zaXVk5Y1jY/yNRa9t?=
- =?us-ascii?Q?ZBw6fIaaGoK3ZOtS+07+XnJD7HisjSQ+3Fy6cbsHnuoSlZ+We7m27sBRxyBj?=
- =?us-ascii?Q?OfFS6DboWRQow27lcwBJgYSM3bvEM27p856go4Ui1xVymJh+uPLN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c54bbe96-7484-4990-cf95-08ded3a2af48
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 16:48:01.5641
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QCJsl/YghF+Rh/6kwiyE9F8pd1m2SPO8iN7TRboVfr9GpX8bN4NSMMfTTWl9fTywp35NhO61WiZFGMXDGt48iTwLcgwchH4ukbxi1U2EEluBnrBS0tw22z2VIPWQdf9F
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12099
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 26 Jun 2026 18:51:14 +0200
+Message-Id: <DJJ4X22CJ3FG.5EYF84LVRNOG@bootlin.com>
+Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Inki Dae"
+ <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>,
+ "Stefan Agner" <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
+ <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code
+ creating the connector to a subfunction
+X-Mailer: aerc 0.21.0
+References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-5-45e2bdb3dfb4@bootlin.com>
+ <20260608-mindful-heavy-frigatebird-be9faf@houat>
+ <DJ735MTNMYD1.3LPNV404V8PIU@bootlin.com>
+ <20260624-proud-unbiased-pony-ecc3c3@houat>
+ <DJHEAWSEZR79.19UFIKS8QJBQ7@bootlin.com>
+ <20260626-polite-hairy-perch-25e1aa@houat>
+ <DJJ1MPCEJGZD.UZM9183V6ZE5@bootlin.com>
+ <20260626-classy-nightingale-of-romance-1cacad@houat>
+In-Reply-To: <20260626-classy-nightingale-of-romance-1cacad@houat>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jun 26, 2026 at 01:07:54PM +0100, Kieran Bingham wrote:
-> Expand the documentation of the video-interface-devices orientation to
-> reference the include/dt-bindings/media/video-interface-devices.h header
-> which provides human readable defines for the orientation enum, to help
-> avoid hardcoding values in dts.
+On Fri Jun 26, 2026 at 4:38 PM CEST, Maxime Ripard wrote:
+> On Fri, Jun 26, 2026 at 04:16:39PM +0200, Luca Ceresoli wrote:
+>> Hi Maxime,
+>>
+>> On Fri Jun 26, 2026 at 12:09 PM CEST, Maxime Ripard wrote:
+>> > On Wed, Jun 24, 2026 at 05:47:10PM +0200, Luca Ceresoli wrote:
+>> >> On Wed Jun 24, 2026 at 1:41 PM CEST, Maxime Ripard wrote:
+>> >> > Hi,x
+>> >> >
+>> >> > On Fri, Jun 12, 2026 at 02:56:24PM +0200, Luca Ceresoli wrote:
+>> >> >> On Mon Jun 8, 2026 at 1:40 PM CEST, Maxime Ripard wrote:
+>> >> >> > On Tue, May 19, 2026 at 12:37:22PM +0200, Luca Ceresoli wrote:
+>> >> >> >> In preparation to introduce bridge hotplug, split out from
+>> >> >> >> drm_bridge_connector_init() the code adding the drm_connector i=
+nto a
+>> >> >> >> dedicated function. This will be needed to be able to add (and =
+re-add) the
+>> >> >> >> connector from different code paths.
+>> >> >> >
+>> >> >> > Same story here, explaining what you need later on that calls fo=
+r that
+>> >> >> > change would be nice.
+>> >> >>
+>> >> >> Here's a more verbose version:
+>> >> >>
+>> >> >>     Currently drm_bridge_connector_init() does two things:
+>> >> >>
+>> >> >>      * allocate and initialize the drm_bridge_connector
+>> >> >>        (which embeds a drm_connector)
+>> >> >>      * initialize and register the embedded drm_connector
+>> >> >>
+>> >> >>     For bridge hotplug we need to separate these two actions:
+>> >> >>
+>> >> >>      * the drm_connector needs to be added and removed at any time=
+ based on
+>> >> >>        hotplug events
+>> >> >>      * the drm_bridge_connector is designated to create and remove=
+ the
+>> >> >>        drm_connector, so it must be persistent for the card lifeti=
+me
+>> >> >>
+>> >> >>     As the lifetimes of drm_bridge_connector and drm_connector bec=
+ome
+>> >> >>     different, we need to create them in different moments.
+>> >> >>
+>> >> >>     In preparation to support that, split out from
+>> >> >>     drm_bridge_connector_init() the code adding the drm_connector =
+into a
+>> >> >>     dedicated function. No functional changes, just moving code ar=
+ound for
+>> >> >>     now. A future commit will make the drm_connector be created ba=
+sed on
+>> >> >>     hotplug events.
+>> >> >>
+>> >> >> Looks good?
+>> >> >
+>> >> > The message itself, yes, thanks.
+>> >> >
+>> >> > However, I have questions now :)
+>> >> >
+>> >> > Do we really expect drm_bridge_connector to stick around when a bri=
+dge
+>> >> > gets unplugged? If so, how does it cope with having, say, an HDMI
+>> >> > connector, and then swapping out the hotplugged part for an LVDS on=
+e?
+>> >> > Does the HDMI connector sticks around indefinitely?
+>> >>
+>> >> In your example, the HDMI drm_connector would be unregistered and put=
+ on
+>> >> hotunplug. Its allocation will stick around until the last put but th=
+at's
+>> >> quite irrelevant. Then, on plugging the LVDS addon, a new LVDS
+>> >> drm_connector will be created and registered.
+>> >>
+>> >> > *Especially* if we're using overlays for this, I'd expect everythin=
+g
+>> >> >  after the first hotplugged bridge to be destroyed, no?
+>> >>
+>> >> As said, it would be unregistered immediately but might be freed late=
+r on
+>> >> if still refcounted.
+>> >>
+>> >> This is visible in patches 36+15, the path to follow is:
+>> >>
+>> >>  drm_bridge_connector_handle_event(event =3D DRM_BRIDGE_DETACHED) [pa=
+tch 36]
+>> >>  -> drm_bridge_connector_dynconn_release()                      [patc=
+h 15]
+>> >>
+>> >> Does this solve your concern?
+>> >
+>> > Not really, I'm talking about drm_bridge_connector. The fact that
+>> > bridges are destroyed make sense to me. The fact that
+>> > drm_bridge_connector sticks around doesn't. It's supposed to be a
+>> > connector for bridges. If you don't have bridges because they got
+>> > destroyed, and connector, drm_bridge_connector doesn't have a reason t=
+o
+>> > exist anymore, unless it's drm_bridge_hotplug in a trench coat :)
+>>
+>> It is not a hotplug-bridge in a trench coat, no :) The code is clear abo=
+ut
+>> this.
+>>
+>> I'd say with this series a "drm_bridge_connector" is just becoming
+>> something more (perhaps something else too). Somewhat as "a drm_bridge i=
+s
+>> either a bridge or something else". :)
+>>
+>>
+>> But let's leave names aside for a moment. If just looking at the current
+>> code, the drm_bridge_connector is "a handler, owned by the card/encoder =
+and
+>> having the same lifetime, which takes care of drm_connector
+>> creation/destruction at card probe/removal".
+>>
+>> What we need now is just the same plug " and on hotplug events" appended=
+.
+>>
+>> So in both cases there needs to be "a handler persitent with the card".
+>>
+>> Do we agree so far?
 >
-> Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-> ---
+> Ish. If we go for that, then we need to update the name.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+drm_connector_manager?
+drm_bridge_connector_manager?
 
->  .../bindings/media/video-interface-devices.yaml         | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
+> drm_bridge_connector for something that is neither a bridge or a
+> connector is not great.
 >
-> diff --git a/Documentation/devicetree/bindings/media/video-interface-devices.yaml b/Documentation/devicetree/bindings/media/video-interface-devices.yaml
-> index a81d2a155fe6..c9c3f4f16719 100644
-> --- a/Documentation/devicetree/bindings/media/video-interface-devices.yaml
-> +++ b/Documentation/devicetree/bindings/media/video-interface-devices.yaml
-> @@ -392,17 +392,22 @@ properties:
->        The orientation of a device (typically an image sensor or a flash LED)
->        describing its mounting position relative to the usage orientation of the
->        system where the device is installed on.
-> +      See include/dt-bindings/media/video-interface-devices.h.
-> +
->      $ref: /schemas/types.yaml#/definitions/uint32
->      enum:
-> -        # Front. The device is mounted on the front facing side of the system. For
-> -        # mobile devices such as smartphones, tablets and laptops the front side
-> -        # is the user facing side.
-> +        # MEDIA_ORIENTATION_FRONT
-> +        # The device is mounted on the front facing side of the system. For
-> +        # mobile devices such as smartphones, tablets and laptops the front
-> +        # side is the user facing side.
->        - 0
-> -        # Back. The device is mounted on the back side of the system, which is
-> +        # MEDIA_ORIENTATION_BACK
-> +        # The device is mounted on the back side of the system, which is
->          # defined as the opposite side of the front facing one.
->        - 1
-> -        # External. The device is not attached directly to the system but is
-> -        # attached in a way that allows it to move freely.
-> +        # MEDIA_ORIENTATION_EXTERNAL
-> +        # The device is not attached directly to the system but is attached in
-> +        # a way that allows it to move freely.
->        - 2
->
->  additionalProperties: true
->
-> --
-> 2.52.0
->
->
+> But even then, I'm not even sure why we need to have that "manager" in
+> the first place. You want to make bridges be aware if they are the last
+> in the chain or not. Use that property in attach to either create a
+> drm_bridge_connector instance if you're last, or attach the next bridge
+> if you aren't.
+
+What? o_O
+
+Several encoder drivers have been painfully converted to create a
+drm_bridge_connector. Now if the bridges start doing it themselves we
+should go back to those encoder drivers and ditch all the
+drm_bridge_connector from there?
+
+I must be missing something. Can you elaborate on this?
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
