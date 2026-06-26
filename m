@@ -1,119 +1,132 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.ci.icloud.com (ci-2003a-snip4-11.eps.apple.com [57.103.91.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD7C37F73E
-	for <imx@lists.linux.dev>; Thu, 25 Jun 2026 22:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E4E2771B
+	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 00:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.91.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782425849; cv=none; b=GViV4RIksUuD3E/g5PihZo8S1C/mU4QrP9pHLm03qxY1wK3Hn3WmG8ll0m/wsOknBZFb6Cb9Y54xiLwypQM+g74xb5yHhHXhu0JJUiMiUAaCQd1NW3C4VMos0ODIHcVqJRarrqgwQBJWdpZ9aReUQZJvZwi4rzlWMhD2tV34mGA=
+	t=1782432540; cv=none; b=LulW5tWVYWna53ushy76ekk2x5mIyPTnGbAdwHp0QFxGWC0Iyp2WIazSwtp7aqYEyMhGNIMinCEee43sITDY7ZW65o+ELKwWNVStjc96yMZChAqOcBoTgRs8LvFe2+7z5K7cE7f0FNVv4JkTPkkXzQA4TwIfQUkD4XGA0M9hqUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782425849; c=relaxed/simple;
-	bh=I1cXCOm745RXm5RvaDuUdNXcHFBmJV3+a5GoFtpPT64=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZOJX40LUDf6k2tCMQlONtvhrduHq5NW384tRl9W7bhzc/gwGXuFKaraCqhUCr+yo80qwTn1SXnL3R5lDxV/h74k8XqMRLBdh9vNs9whOoaH+BWLJzU8CtoE8Snf+YKYzW7znz9ZvSMxW9jqyvoZnVhDMgiVPzCqvMFqnypwTObE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NOlR0wvk; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782432540; c=relaxed/simple;
+	bh=9vVl/jIBUNxUVlMfSPMhFeVNHE8C1soyxuND0Ev4jgA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WyZ/2ipGRYBZA5uXIj945NDhO0wCPqJfQQ4LS9DJLe5XpZE+fTM4YBmeMss4TjhoGSLH92AbbWu+KVXAr6P9zHJxYY3+oF6JNlHcogYCRN6dtrknngutzxzKBlG4Iskyc7HcOCUryEaO3dXum0VgMmh7edk/cew5jCXB4I6LXJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=A+Qmsujq; arc=none smtp.client-ip=57.103.91.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NOlR0wvk"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4923fb1f095so3204175e9.1
-        for <imx@lists.linux.dev>; Thu, 25 Jun 2026 15:17:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782425846; x=1783030646; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=k+3GoXf2mrfA1KP6AU6rLpBytQHse5+WqLmVOpgycR4=;
-        b=NOlR0wvkeK0P00sPtXPrpymz8UZR8yCHVjQy+7KSxfwA50i2aPYMmbkvvKEaIrtdAF
-         zBuAQpOsxvSgG0okVIXJ3AeEbCBoU7eM+DvrrPb5X/mp99IxzfeW9wi/rS5tULSTjOI/
-         PwW8hB5JNx9JBkdngI55ZutCdEqFXrplqK4xdz26h5sEZDuR+sxv5/5AM2IXBhS6zBD1
-         0m0RMa5HmepF1jwXUKB2vU8V4imz13yrYFNLJ8j7FnwlovgYuLTpLgfLRBIhG2914KA0
-         hbYJw18qEe0Ja1CesKcABhp6r9yqCpLBW5jGjTu2e9qMob0Kx2GYHcfYValMCMI1Sk+I
-         sWsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782425846; x=1783030646;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k+3GoXf2mrfA1KP6AU6rLpBytQHse5+WqLmVOpgycR4=;
-        b=oLCs+LdT0ufv0qqmiEms0Qww14TTAIXVA1OeQHUyccjdIcZK6dWGhqWz8KzWZTQlQw
-         rhMbF5dm4jGvB/IawpGQfEtjD7KyE2IAXGE9kz0wHpbevzit3amd1lwsPlhG8sl2JxSq
-         ULtyUA96uv9e3Kp4mZBlQol9vi0upFO8ZMUwYN+uTPkTvKsXflFpmX+12ncPti06DXAt
-         2zPqBkH4F/bO/7OQkMW2zdP1eBY60SOljkbYJq3u+zYLCRcgOdImfWgRop5WFVu7abtT
-         cCpGudyd3Y8dPBfloIuyOTKR/S7jZVwIrRub3QxQNNO+pCWnlwo17hXp0TW0vtYDvSGF
-         gfHA==
-X-Forwarded-Encrypted: i=1; AFNElJ+EnX8tBeqF3ZkpUVTOL1s6h91MeAlC9ZvAO9TpDsZ81IWmNqiB0J6wgOjxXMUwPN/QG6k=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz2WHCFKrYFOt76w7W0iX09O14dsMq4Odrkm2W276snMU//pN0k
-	doTrqD2WmDPyOtKL6cIxIltYTcf1gSSMr0Za8LgYucIEAeHho4TEVGBQ
-X-Gm-Gg: AfdE7clnoMjU0ikf2P+RIyM6sT7vwPNXuMB0aNiAZhYUXQrzyjpXSgeNldFhCXOipJH
-	klLUtsjoamijWa/2mhowbqQxDNe7GpihiaB9Iy3jvpN7XjFwJ1Atiiig0/Xbl9ToFzMs5ux+R2d
-	XkUp8NEE2alVtxDCWd2aqH+xklIuDWr+zHRQ7c4ht2iyMgKvOEVapiRy40XaAh+lGySfURxt9hf
-	jiAjqES0D6AyBONz5OjjB8eedC5VWODaSgJrl1NpklpuXChvyUcCHah48hnY1BJ3LENNiaqvExa
-	wzSLG4PjsiRcxKGTQzfmHpA7pQk3Mn9h/71f7Vczl2iVdOHgOqlqb64+xhHNiMU1jHwf2I6lvtO
-	IJDD9gvRYmw1G51rTLWuNFtzm6yQjuafyMhf+/i6BTbNsgpdumGS0bhwrVtacqo89cAP3LX6vJS
-	VK5ZC4EAWTEN+3lJd627qGIqwGAENyjTDAkxt5BNV3XIVSz0Jb5GScWE8nbtVwsvEVpc7ZpRkCC
-	+DumXtw
-X-Received: by 2002:a05:600c:3549:b0:492:4363:e7eb with SMTP id 5b1f17b1804b1-492668acc8cmr62424645e9.32.1782425845982;
-        Thu, 25 Jun 2026 15:17:25 -0700 (PDT)
-Received: from [10.128.11.131] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49269071e49sm27961115e9.10.2026.06.25.15.17.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jun 2026 15:17:23 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-Message-ID: <4a35af81-8dc5-4c13-93cc-52585f84372b@gmail.com>
-Date: Thu, 25 Jun 2026 23:17:21 +0100
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="A+Qmsujq"
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPS id D41541800284;
+	Fri, 26 Jun 2026 00:08:54 +0000 (UTC)
+X-ICL-RepId: 019f0142-10e8-74ad-a658-05469e604257
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhPAEMGXAVeC1YBXwFLVxQEDloDVA5cBBcbXwJCH1sVSzhaDlsERxQXG1wAFw1WTVAbXwJCDxwTVhUTH1RWA0cZEFYBWFZdBU0aXBhZDxwTUFZaDlsERxQXG1wAFxtGAgQjAl8ARQJeCVYBMBcPVk1QG18CQg8cE1YVEwBeDw9MC0gBWwddAEYJSANaBl4cQQhJAlUHWB9CFA5aA1QOXAQXG18CQh9bFUs4Wg5bBEcUFxtcAAlLRglJHQ4EVAddBV0=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1782432538; x=1785024538; bh=nZ7wgtXyvk/3FeFYVtkDe9ED7DEv3WBSl1ucjzdxUyY=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=A+QmsujqOS4jOUxaNydR3ytr/pC7Irog7UXG0XvYfLEZYvT7haKlmiAQpuTt731eoCdN5Xe2G8eUrZD1LkRlqVuskrGLrBKVgHYInLLgmr03ynor5QERotET11Lq2+uO6YIe+Le9cfpf+kPfoenJIdUHwWyPnIn3Pe8yWpxc2bjwEx591y8uPlPyGi2wbHJIdDpDQ5LAX/yRXDCn3uqap0+eu0bNE2BuAHYVfZkCm+78cho3VKt6yM0KFX9lHxDm+sQKpT878x1/JwD6rwBWIr/cFkijHDRWqOnRW7YvHtDBJL7PgCCEu/deIvkdaqVJzUZ7DpYN57cODnO5FDdQPw==
+Received: from bigre.localdomain (unknown [17.57.156.36])
+	by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPSA id 45965180017C;
+	Fri, 26 Jun 2026 00:08:53 +0000 (UTC)
+From: Vincent Cloutier <vincent.cloutier@icloud.com>
+To: linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-imx@nxp.com,
+	kernel@puri.sm,
+	Vincent Cloutier <vincent@cloutier.co>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	imx@lists.linux.dev
+Subject: [PATCH RFC 1/4] media: imx8mq-mipi-csi2: Make reset release SoC-specific
+Date: Thu, 25 Jun 2026 20:06:57 -0400
+Message-ID: <20260626000715.1111803-2-vincent.cloutier@icloud.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260626000715.1111803-1-vincent.cloutier@icloud.com>
+References: <20260626000715.1111803-1-vincent.cloutier@icloud.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 4/5] gpio: rpmsg: add generic rpmsg GPIO driver
-To: Shenwei Wang <shenwei.wang@oss.nxp.com>, Linus Walleij
- <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>,
- Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
- Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, b-padhi@ti.com,
- Andrew Lunn <andrew@lunn.ch>, Bartosz Golaszewski <brgl@bgdev.pl>
-References: <20260625155432.815185-1-shenwei.wang@oss.nxp.com>
- <20260625155432.815185-5-shenwei.wang@oss.nxp.com>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <20260625155432.815185-5-shenwei.wang@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDIwOSBTYWx0ZWRfXzl2hTTyf+UFU
+ OufgbIX8ySBfbVloFrhMkgVmNYuVoNY7R+T8/0taSiKkviavsuFD07nBqIXUyJunGfwEXqhO3Bb
+ iBW94lsTc+GZInNgDnTE5By1CT8cJehpcqWb0vjUtMjKVvbsK3B0P09SYOeKWgCqSubrXSbBfHC
+ ZVsH+9iXR9G5aok0bwP2fMy9FiCzCoBM94YRRpJTEhqmpaeSZtITcESOsyT1AsjvCtfK9i1qnNd
+ YDyiol9JzZkIVkqpjK3dhP52ntBiNDywTwFUrp+WKxPqReMSGk9Irxz0Sw9t0y8Cd1wK2GSNunN
+ zprrJc4Dp//grnW0RB8
+X-Proofpoint-ORIG-GUID: rMND97hAp3EnijlxfVwQdwYJpHhh4OWz
+X-Proofpoint-GUID: rMND97hAp3EnijlxfVwQdwYJpHhh4OWz
 
-Hi Shenwei,
+From: Vincent Cloutier <vincent@cloutier.co>
 
-On 6/25/26 16:54, Shenwei Wang wrote:
-> +config GPIO_RPMSG
-> +	tristate "Generic RPMSG GPIO support"
-> +	depends on OF && REMOTEPROC
-> +	select GPIOLIB_IRQCHIP
-> +	default REMOTEPROC
-> +	help
-> +	  Say yes here to support the generic GPIO functions over the RPMSG
-> +	  bus. Currently supported devices: i.MX7ULP, i.MX8ULP, i.MX8x, and
-> +	  i.MX9x.
-> +
-> +	  If unsure, say N.
+The CSI-2 software reset helper currently asserts the reset control and
+then releases it again unconditionally.
 
-You've got GPIO_RPMSG defaulting to REMOTEPROC, which is also a
-dependency, so it's effectively the same as using 'default y'.
+That release step is required by the i.MX8QXP path, but it changes the
+reset sequence used by i.MX8MQ. On Librem 5r4, which is i.MX8MQ-based,
+the unconditional release step prevents the camera pipeline from producing
+frames after reset; captures time out waiting for EOF from the CSI bridge.
 
-But then you've got "If unsure, say N" in the help text. Usually this is
-used when the default is N.
+This series enables the Librem 5 rear camera on the second i.MX8MQ CSI-2
+receiver. Keep the i.MX8MQ path on the known-working assert-only software
+reset sequence while preserving the explicit release step for i.MX8QXP.
 
-- Julian Braha
+Make reset release opt-in through platform data.
+
+Tested on Librem 5r4 with the existing HI846 front camera and the S5K3L6
+rear camera added by this series.
+
+Signed-off-by: Vincent Cloutier <vincent@cloutier.co>
+Assisted-by: OpenCode:gpt-5.5
+---
+ drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+index 950793297496..xxxxxxxxxxxx 100644
+--- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
++++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+@@ -76,6 +76,7 @@ struct imx8mq_plat_data {
+ 	int (*enable)(struct csi_state *state, u32 hs_settle);
+ 	void (*disable)(struct csi_state *state);
+ 	bool use_reg_csr;
++	bool needs_reset_deassert;
+ };
+ 
+ /*
+@@ -244,6 +245,7 @@ static const struct imx8mq_plat_data imx8qxp_data = {
+ 	.enable = imx8qxp_gpr_enable,
+ 	.disable = imx8qxp_gpr_disable,
+ 	.use_reg_csr = true,
++	.needs_reset_deassert = true,
+ };
+ 
+ static const struct csi2_pix_format imx8mq_mipi_csi_formats[] = {
+@@ -363,8 +365,12 @@ static int imx8mq_mipi_csi_sw_reset(struct csi_state *state)
+ 		return ret;
+ 	}
+ 
+-	/* Explicitly release reset to make sure reset bits are cleared. */
+-	return reset_control_deassert(state->rst);
++	/*
++	 * Some SoC integrations require an explicit release after reset
++	 * assertion. Keep this SoC-specific so i.MX8MQ retains its
++	 * known-working assert-only sequence.
++	 */
++	if (!state->pdata->needs_reset_deassert)
++		return 0;
++
++	return reset_control_deassert(state->rst);
+ }
+ 
+ static void imx8mq_mipi_csi_set_params(struct csi_state *state)
+-- 
+2.53.0
