@@ -1,127 +1,220 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924C13F1AD7
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 14:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9653118FDDE;
+	Fri, 26 Jun 2026 14:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782484663; cv=none; b=uLhfUm/9enae5fMCCjAC8x4ShekZ4IoU8vmxZq0lb0YTCm7xGIeZ2qUEPcxC5BT6/nAWSvxoOHXBUG77O4V71k3xjwMQheYU5iMy5iAGaejNAwWJrXTmIs7+3J62zSP73Zbiw/CAqLReX3E0A9Xs+e5I8i81oyeImi2jWsA/2HI=
+	t=1782484690; cv=none; b=VUfG3t1Br9PD25ahrDETEsRt+oSmaODlGZMv66+BkKwxeCiNxqdzbbTLzK6cRclAnqnIinbJicRFLWDJnTh2alZLMgsnFZm5aBLVRlT9G18PlhF8riMIKQ09nQJUBj3aAXsW1XTchHaxvSqYGhIJur/Kf5zCJltkWMkvN1LzEOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782484663; c=relaxed/simple;
-	bh=hdcucjKaXo99zIVLHqBl+pduwyuwZ1Ak8BLvT8zqF9k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YbidwquSDcNYgoKDTy52CY3oj0cuYBveLiUxL6OxoUI2gGY/w4I9ZYSlcWlGHmvNzebXQdFyJzKs1fSw51EY2GmzMgM9D+0mmiBFH/kq5j0m/9UkS3CGM1j3RLRfXuYi5/h49CrzBTZe+xUc5fcQWG+5kKrf8xjNzpic36YBmUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dj56ccUa; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782484690; c=relaxed/simple;
+	bh=egzIU3lthpEelJ7lSz8m8hOjzWhOpjcOGGsbGplxFss=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gxF6kIa6LHZc0FvOK99HyLX/aIwfrNRQLkRJf2g3bj1YnZnhhvRm4A6mzQQ6nTEgTwmDcNJFngSPhbeafEFdoQRPRDbavCfeILF+oCvUeeB98DMebep4+QBJ8DMFS1vGwgAznaQA3S9uUrM4EmqsUC41QbN3Sqc0SNUj0yIe74c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hSzTLFr4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dj56ccUa"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2c8017e981fso4774835ad.0
-        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 07:37:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782484662; x=1783089462; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=f2zIaBu5egU2fz0I8v1SkUtexRvT+jWXEOgQa3ZIiEg=;
-        b=Dj56ccUa5pRGG6079SmsZ5JukoNMgaQKETGu6626h+AkE2YRnFz30qbsG2tCUsde78
-         No7MngiczTqeMk9YDCrrInzJE0OItN8pUYGLpHTq7Xr5PEvOj2sN5hl2E77m3EUKv7DX
-         D7y6qF5aT/cDtC6CS6FEMSAuWo6yZsT5Z7s2vsOKOyroE206UeCis/Jhen8ZsesfuQAy
-         qPn88gz+qf/eCo3K8uBb9K9H+VtxYJ1yD6V1SCN27bo1SrnG2diiNVM8dB1oTskrdV3L
-         AY9GVSs+xe0xwEE+l2zfdECkRUvXkq20FXq3mu2Lzv5rPbvfUy6XtqSMUBKEawxrnC+h
-         kbAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782484662; x=1783089462;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f2zIaBu5egU2fz0I8v1SkUtexRvT+jWXEOgQa3ZIiEg=;
-        b=RBHenyopSdVTIEjlYrgTyh8MjTPS0orcs9IjfUEo3/G6w6vQRv51n4YFPixezEOHVi
-         yXOblzblxCgmE2DmL+RexqeXC/VnYewQ3ETcWO5pLuUiwrlGRM8QPjjc57Fhrdb/NcGh
-         HW4Tvx/LfCyRyHfrisGJ8YRJdnYsH5fx7M/hkXah8nCQdKODmY5R6wyydYGh9a8snXeQ
-         pKOt7PO3w3zabPHKPR7JGiHNzL95q8eJgOhJS88gt+ckGZgdKLJXrj7BR5SWJgHoxsJe
-         4msD+5nJzvBSsH3G33BEU/jdn7RCqSD8PC3aJ+/VtPlZNl43lKayU7Fq2OgRKIxaTvXV
-         8yxw==
-X-Gm-Message-State: AOJu0Yxvgx3u0DLhLoUTsNn2LQI7vp//T0rJBzB4Qb26MZBWNeUM+lw1
-	ps1nqPzkoeam2OEgJBZR41dj1Bj/EW+hmobT+MPqXC5LtGb5/sWxtqDa
-X-Gm-Gg: AfdE7ck72zvtYrra+Ytw3XEvgN/1zhAzd/djP4Q1T/X8/LK52/wvJaJ9og3CNyCwBtO
-	pA4WYXIDzKFQatSMowb0bt7latdGErFf6iP2Am9YO9twlCjomevLQPZgzbYqGQh6IidjaqUu6/i
-	euABwd5755tKVXUQONHELbqNSWqpu30y+cDNqN5lNC+8+rNpuOqpoxtgJaQpO9VbFFPh8W9FpA/
-	1+7s1u4vV6u2Stt5rkR/qH/03FtbCGaEd+zS58uHbR14mv84WuMOWhKMHWQEE8OCVS6XYB6yuCm
-	gEztOnbYcr3DmeW2nEnWFPOBlS1Dk8AWhpdPN6iPuNRSL53PaIOrEDnQ7pd23m3oGdhpRK6qh90
-	AzD4oQWLexgBpnsR+kStaqicH/mX76g1S3N54gunSxOn28TXYtMtAcRSECwNRAmkdUgd2Vx31wz
-	M1DcZQI0P6m9BtKrFJTgouC171tF68fjTf2c+9xkM93+ub5qiRTi311pJr6J/S/j56bDA4MjUTy
-	Ai08B8=
-X-Received: by 2002:a17:903:285:b0:2c9:97a7:f541 with SMTP id d9443c01a7336-2c997a7f613mr2239595ad.39.1782484661576;
-        Fri, 26 Jun 2026 07:37:41 -0700 (PDT)
-Received: from junjungu-PC.localdomain ([223.166.246.74])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f5ac8e3csm40667925ad.10.2026.06.26.07.37.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 07:37:41 -0700 (PDT)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Fri, 26 Jun 2026 22:37:35 +0800
-Subject: [PATCH] soc: imx8m: fix clock reference leak in
- imx8m_soc_prepare()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hSzTLFr4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B427D1F000E9;
+	Fri, 26 Jun 2026 14:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782484689;
+	bh=NNBz9yeKFDt8S3A8rSmCcd4DAlHXOY7KnNCw3bojEvg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hSzTLFr4gv+NL5oRQq/EB2d6PvRcsHIWmf1KI+jbAVPhfkEtVfN/ZLe8yXV1H5xLY
+	 5x7JvsYnUg0yRPQKmO4I/oL6mbDZuzB5LC8fe/73Y2B+/Ig117KyG5EGbNuvvly0qy
+	 dD2TMThOWM4iFfIxDtTS3lI/gFRkJz7KdXJ2l3rerEaUP2TN/X0WPn3i4Lo25/XbRv
+	 pJ/MLMIqMpJEdzXfDJFhmzmzMr9n0EixPA4hLvaGZW5YAx2V+FYM1Jhkh3PPLs+ah9
+	 Swt6Pb0OIEtRgmLG6f/nWymjRmNoQVNv14okSyXYQP1zSeoQIwJ3YKdbqJ2SJhWysv
+	 eDqLm6r+6yvww==
+Date: Fri, 26 Jun 2026 16:38:07 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
+	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
+	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code creating
+ the connector to a subfunction
+Message-ID: <20260626-classy-nightingale-of-romance-1cacad@houat>
+References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
+ <20260519-drm-bridge-hotplug-v1-5-45e2bdb3dfb4@bootlin.com>
+ <20260608-mindful-heavy-frigatebird-be9faf@houat>
+ <DJ735MTNMYD1.3LPNV404V8PIU@bootlin.com>
+ <20260624-proud-unbiased-pony-ecc3c3@houat>
+ <DJHEAWSEZR79.19UFIKS8QJBQ7@bootlin.com>
+ <20260626-polite-hairy-perch-25e1aa@houat>
+ <DJJ1MPCEJGZD.UZM9183V6ZE5@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260626-soc-imx8m-v1-1-62657e3376dc@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAK6OPmoC/yXM3wpAMBSA8VfRubaaWWu8ilwwB0f50w5aybsbL
- n/19V3A6AkZyuQCjycxrUtElibgxmYZUFAXDUoqI40yglcnaA52FkVu0RaZ1FJriP3msafwvar
- 6Nx/thG5/B3DfD4YteVJtAAAA
-X-Change-ID: 20260626-soc-imx8m-938e89104044
-To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Marco Felsch <m.felsch@pengutronix.de>, 
- Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782484658; l=1048;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=hdcucjKaXo99zIVLHqBl+pduwyuwZ1Ak8BLvT8zqF9k=;
- b=/JiTuhoNoGmbRMn7H8kiMgtE+3nCGhdX9twaHyi5h+Z4MushNSaK6p8SzSXEY0Are5Ox6mJEb
- yEATvpMTHfiDWPE6jnnXiBWPtLkIHVRX/wN3H9iNLUv5+gAKIy4IEow
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="dg3qswh7aapydmwm"
+Content-Disposition: inline
+In-Reply-To: <DJJ1MPCEJGZD.UZM9183V6ZE5@bootlin.com>
 
-When clk_prepare_enable() fails, the error path does not release the
-clock reference obtained by of_clk_get_by_name(). Add clk_put() to
-the error path before iounmap().
 
-Fixes: 390c01073f5d ("soc: imx8m: Cleanup with adding imx8m_soc_[un]prepare")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/soc/imx/soc-imx8m.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+--dg3qswh7aapydmwm
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code creating
+ the connector to a subfunction
+MIME-Version: 1.0
 
-diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index fc080e56f50d..de19972435f9 100644
---- a/drivers/soc/imx/soc-imx8m.c
-+++ b/drivers/soc/imx/soc-imx8m.c
-@@ -150,10 +150,12 @@ static int imx8m_soc_prepare(struct platform_device *pdev, const char *ocotp_com
- 
- 	ret = clk_prepare_enable(drvdata->clk);
- 	if (ret)
--		goto err_clk;
-+		goto put_clk;
- 
- 	return 0;
- 
-+put_clk:
-+	clk_put(drvdata->clk);
- err_clk:
- 	iounmap(drvdata->ocotp_base);
- 	return ret;
+On Fri, Jun 26, 2026 at 04:16:39PM +0200, Luca Ceresoli wrote:
+> Hi Maxime,
+>=20
+> On Fri Jun 26, 2026 at 12:09 PM CEST, Maxime Ripard wrote:
+> > On Wed, Jun 24, 2026 at 05:47:10PM +0200, Luca Ceresoli wrote:
+> >> On Wed Jun 24, 2026 at 1:41 PM CEST, Maxime Ripard wrote:
+> >> > Hi,x
+> >> >
+> >> > On Fri, Jun 12, 2026 at 02:56:24PM +0200, Luca Ceresoli wrote:
+> >> >> On Mon Jun 8, 2026 at 1:40 PM CEST, Maxime Ripard wrote:
+> >> >> > On Tue, May 19, 2026 at 12:37:22PM +0200, Luca Ceresoli wrote:
+> >> >> >> In preparation to introduce bridge hotplug, split out from
+> >> >> >> drm_bridge_connector_init() the code adding the drm_connector in=
+to a
+> >> >> >> dedicated function. This will be needed to be able to add (and r=
+e-add) the
+> >> >> >> connector from different code paths.
+> >> >> >
+> >> >> > Same story here, explaining what you need later on that calls for=
+ that
+> >> >> > change would be nice.
+> >> >>
+> >> >> Here's a more verbose version:
+> >> >>
+> >> >>     Currently drm_bridge_connector_init() does two things:
+> >> >>
+> >> >>      * allocate and initialize the drm_bridge_connector
+> >> >>        (which embeds a drm_connector)
+> >> >>      * initialize and register the embedded drm_connector
+> >> >>
+> >> >>     For bridge hotplug we need to separate these two actions:
+> >> >>
+> >> >>      * the drm_connector needs to be added and removed at any time =
+based on
+> >> >>        hotplug events
+> >> >>      * the drm_bridge_connector is designated to create and remove =
+the
+> >> >>        drm_connector, so it must be persistent for the card lifetime
+> >> >>
+> >> >>     As the lifetimes of drm_bridge_connector and drm_connector beco=
+me
+> >> >>     different, we need to create them in different moments.
+> >> >>
+> >> >>     In preparation to support that, split out from
+> >> >>     drm_bridge_connector_init() the code adding the drm_connector i=
+nto a
+> >> >>     dedicated function. No functional changes, just moving code aro=
+und for
+> >> >>     now. A future commit will make the drm_connector be created bas=
+ed on
+> >> >>     hotplug events.
+> >> >>
+> >> >> Looks good?
+> >> >
+> >> > The message itself, yes, thanks.
+> >> >
+> >> > However, I have questions now :)
+> >> >
+> >> > Do we really expect drm_bridge_connector to stick around when a brid=
+ge
+> >> > gets unplugged? If so, how does it cope with having, say, an HDMI
+> >> > connector, and then swapping out the hotplugged part for an LVDS one?
+> >> > Does the HDMI connector sticks around indefinitely?
+> >>
+> >> In your example, the HDMI drm_connector would be unregistered and put =
+on
+> >> hotunplug. Its allocation will stick around until the last put but tha=
+t's
+> >> quite irrelevant. Then, on plugging the LVDS addon, a new LVDS
+> >> drm_connector will be created and registered.
+> >>
+> >> > *Especially* if we're using overlays for this, I'd expect everything
+> >> >  after the first hotplugged bridge to be destroyed, no?
+> >>
+> >> As said, it would be unregistered immediately but might be freed later=
+ on
+> >> if still refcounted.
+> >>
+> >> This is visible in patches 36+15, the path to follow is:
+> >>
+> >>  drm_bridge_connector_handle_event(event =3D DRM_BRIDGE_DETACHED) [pat=
+ch 36]
+> >>  -> drm_bridge_connector_dynconn_release()                      [patch=
+ 15]
+> >>
+> >> Does this solve your concern?
+> >
+> > Not really, I'm talking about drm_bridge_connector. The fact that
+> > bridges are destroyed make sense to me. The fact that
+> > drm_bridge_connector sticks around doesn't. It's supposed to be a
+> > connector for bridges. If you don't have bridges because they got
+> > destroyed, and connector, drm_bridge_connector doesn't have a reason to
+> > exist anymore, unless it's drm_bridge_hotplug in a trench coat :)
+>=20
+> It is not a hotplug-bridge in a trench coat, no :) The code is clear about
+> this.
+>=20
+> I'd say with this series a "drm_bridge_connector" is just becoming
+> something more (perhaps something else too). Somewhat as "a drm_bridge is
+> either a bridge or something else". :)
+>=20
+>=20
+> But let's leave names aside for a moment. If just looking at the current
+> code, the drm_bridge_connector is "a handler, owned by the card/encoder a=
+nd
+> having the same lifetime, which takes care of drm_connector
+> creation/destruction at card probe/removal".
+>
+> What we need now is just the same plug " and on hotplug events" appended.
+>=20
+> So in both cases there needs to be "a handler persitent with the card".
+>=20
+> Do we agree so far?
 
----
-base-commit: 30ffa8de54e5cc80d93fd211ca134d1764a7011f
-change-id: 20260626-soc-imx8m-938e89104044
+Ish. If we go for that, then we need to update the name.
+drm_bridge_connector for something that is neither a bridge or a
+connector is not great.
 
-Best regards,
---  
-Felix Gu <ustc.gu@gmail.com>
+But even then, I'm not even sure why we need to have that "manager" in
+the first place. You want to make bridges be aware if they are the last
+in the chain or not. Use that property in attach to either create a
+drm_bridge_connector instance if you're last, or attach the next bridge
+if you aren't.
 
+And when a bridge is removed, drop everything after it in the chain,
+drm_bridge_connector instance included.
+
+And the encoder can take care of handling bridge remove and tearing down
+the bridge chain itself.
+
+Maximex
+
+--dg3qswh7aapydmwm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaj6OzgAKCRAnX84Zoj2+
+dlHPAYCTNSboNOVXU0dmvN96wAvIb/yzXhKCBdDIWnlDDNW4AejABxGdGyL4blwi
+Bk9zW48Bf1ClZlJpYwJ2D0QMk2WXJ6V+CGe0ae7jM3+A//UFZT9jbXzL8n4VDGNy
+2nljLX6eYw==
+=J8kO
+-----END PGP SIGNATURE-----
+
+--dg3qswh7aapydmwm--
