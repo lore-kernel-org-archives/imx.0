@@ -1,94 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F753248881
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 23:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E78940D560
+	for <imx@lists.linux.dev>; Sat, 27 Jun 2026 14:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782515143; cv=none; b=mbFgcck8FhM2cpBh13ZH9eJsKlLNNDCwOP2hWkqG8Q6HadlKYqK9pmkNNeeN8SDwUmqMIiJpVN51244J09OG2CnnNf4qmT/eZWByjDAYABEHR1HKyaCa5zuZoFekvaHKxM+sjQ9uEqtUVMxnvzuMMPVLXqxdCUQPJmMRFhdapDg=
+	t=1782571588; cv=none; b=df3PlKxT7f1nfo9PRTRG5doZy9izOjvMNf+7MtU9w7ByqOOZNoyCVdLw28XfT50uFyXltQoz2alPTx1Bpv3/KMyYCxxxW8Pq7kN96tdFrXbj+q1QBH+ZBO965bxO3Ybm2m+zqOzEB9RxGGOY0Nh+Fxp/PYYylXjElfrzmTTd8ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782515143; c=relaxed/simple;
-	bh=oDgl9kzs0QzRUmOi5UCM5qXTB4zJ4OD45l3B46hOUDk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y3TkCK1pwmUFAb56xdAfnWpQe2VFXXEfHKvB8D8Ogtw0op95Ru2DmlH+ENL2Rlfd8yWkjsOHkBL/QEhSx188gSj7aHjqc1XIyeikSUymLDbZQqTaS3iqUEckey6Z3fjjcWeMtQJLQOreDdkn9baJxNnjMZvFGLKQ1/5k6sNfjwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYxRBYz2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782571588; c=relaxed/simple;
+	bh=oOPF8wGesowHZTwgzTTwlv6PG/+pRbuklz/XtIB7O/k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GKfu/VgNybxPJV8uvuQegAOyL1JSJnOUJ9gDhbIlGEBRI8peI1+J1RM+l3JYnnSoUzC9naVhTdrp1fwizFgZdFlJeKK3LT96x2MkckHKiXCgkB1L71sD5OS8hz9AAAt38EfHrNaSF09vhcyGi67SerFK0YecvJlu3/FwfuZ8syk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b3uUppG0; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYxRBYz2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FFE1F00A3E
-	for <imx@lists.linux.dev>; Fri, 26 Jun 2026 23:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782515141;
-	bh=CASER/cI9b9IcBcUdv5RWilxLQkJ9A/bPWjit9BYmok=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nYxRBYz2anD9ShSO7oDshQQwChbWmVCxYdnfHnb7G+x2PQRXsCtDBY/C5wQLtSE13
-	 FwdnJsi5Fqa2Y6+NvysaWxqd6DcCjALSXRG4+PX9zB7esE/PPWF0VMr0Kp+708WaWm
-	 N7O2IeV1w0VWvVSKAsqnwQZ4Gn/6klIm7+geKLdX+l+WF9hYcg2GfCRNabW5kYqixZ
-	 sG8fkavFkE34hnnrUkwNf9G26Z+mdMRBLwiA1yykwqjo3B2ecBrAS6AykTlD4iHJ1q
-	 MrElwu+8qgZBQj0FAtfpwsT4kglvPaWgKD/aBbjRgd0tc2fTuyZJPbMFV3fnB6w7+x
-	 DYIa0Th8oKcxA==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5aea8d5a777so450714e87.0
-        for <imx@lists.linux.dev>; Fri, 26 Jun 2026 16:05:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqdVsp5y64lp50kYtfLQf9NnnzkLsDqduLblRvyAkmT6ahDygF3ogPeWUvVW0Q7tt7qVrU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwcCQai7ymINYutlIuM62c98LtViBkNp+aHrp1LG8FVOFi9R0Z4
-	Zjv1Bz7gd2q3F+9a9b0t036nQJHqGuQ7hjZGFc2wB6yg+HHvSpQUXEdYOAgHz1dga1hY+fuNRX8
-	1ilZR7knRGS6P4IQ/KjVLBUg3TofeQHM=
-X-Received: by 2002:a05:6512:2c05:b0:5ae:a9ec:bb38 with SMTP id
- 2adb3069b0e04-5aea9ecbc48mr295117e87.64.1782515139887; Fri, 26 Jun 2026
- 16:05:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b3uUppG0"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49249707788so15349715e9.2
+        for <imx@lists.linux.dev>; Sat, 27 Jun 2026 07:46:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782571586; x=1783176386; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HBg/7OCyilKcHeMXMdL3WuPjtAWiZJrGkie7U7w+6JM=;
+        b=b3uUppG03pPGlD5m7ESSqlrJQW4rPuruP1zjBO1u4j08hqUgB+x0NTjVJ4EBn7ryq7
+         zBwqTAyWzSSANiGiSio+lsJulUaZ04Wdnh8nQj/t1OsXRarxDpMlXZttKYEI021Ef2Ll
+         5mzxnyspk0KJluRGNh0OEYT1HSb5AVT7NuMx//hVH10/NhIzh3FgTvL2pQNpVR2jXslH
+         0sTK0Xm0ZDFvnwAx0KVo8Ui2O7szx64jfv/IWav5g5PFHrhDzO9p3/hby/0WwDmVoFTE
+         ntu0e3KI3IoMUWeDB+Ke/sBSPpbdGTirnwvG50ac892cv3cjPD0W3cmCFAWE/4FdPIQG
+         dV4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782571586; x=1783176386;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HBg/7OCyilKcHeMXMdL3WuPjtAWiZJrGkie7U7w+6JM=;
+        b=r1mibcskkjqSSAKak7QYpRrV80mPMEq9cghgTB32QlK2R6Kgk+9xybWB/bIgPGWrt4
+         19tDUYrKBKMWiXgAkEq2u1P+dO/QW68zm3GNFIeFgClS9mEf0vqNBLd20AgTlYmHp2B7
+         yfANBZfszX8nWsa8kiI9Mqk+4QNXnEsffgTT85WwXutO5iHfGZpH3y6VCU3rsaxTySNk
+         iaRu5c/3Mw1W0zpwQpkhLYHEGxXhIZRfm2EOD/XVP5f75123UOKZ9pRi7xEsQ2+FiOkv
+         GOeqjsx0Uz++P/+pamuOpbk/BlSd24yGzzO87xkhOYVh4uWZVCrAo44NPmbrYOKq63MS
+         BoPg==
+X-Forwarded-Encrypted: i=1; AFNElJ92bEFTaQJXY5JscG3RTnZQ9Z00+yEZmJjEMu9nxGAvu8GLd985Kbmt5l+JYJXURhM2LA4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxpQGYIvTlb8sTezl4aUUnOuVH68ZlgNWACYwAlYX+/LtHaiFib
+	D8xU8coYByRn458RgwlJ3wF0Jg6oL2GDzudCM6cGRYKXDR5yIHjzeFuM
+X-Gm-Gg: AfdE7ckS/aCduGlggu6XbGPqL4t6pf+cb0p6aNf1pYzRkSTzap11GjRuf73oqLrez9m
+	sTnrqvwF4h2wVTzZoFvEvd9j+QW9tpr67ok0lGtB5BDIxSrhnSCcwiAC1rYIcmMWnd9H/LQts5J
+	Figr9/eIgQDiaUwg/wPtWOjGuH2cYlEeWLr1a7ugbiqhrsaDBfgln+5Z3jGyyb28V5+0XVNAveZ
+	S1frPhx5Q/Zi+ntvSRT/liIdX/WujDAoRHS9hZvMTsVN6lMSlLXq1x+2RfEunkCfdPTUVfT6n8U
+	pwNaJKzuJgdB8VpO7MjcMoN0c7sgzNfPrhtwXqVyGElPKVnUiCE8fcJM6hqJ7K0qBI2lagBhdLz
+	pfvKguLoyLCnjtR+xUKeY7TPUeAuKrfX6wN1uq58318KxUOY/i4YAqj7FyHs33gwbnImdYlfLQH
+	AJM0ryZN/ZYuDYEuI+kftnXJqaKMwneYoJTZZ3Eukacx6GoVwVrTF/1VfrqdvmftqICDelO1rdm
+	mipsnlsl+gAM77ZjljC0jcyGJI=
+X-Received: by 2002:a05:600c:c4a3:b0:490:d354:bd00 with SMTP id 5b1f17b1804b1-4926fc8822cmr82329145e9.25.1782571585491;
+        Sat, 27 Jun 2026 07:46:25 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-248.cust.vodafonedsl.it. [93.144.65.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4927038578bsm98709035e9.4.2026.06.27.07.46.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Jun 2026 07:46:24 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH v2 0/3] Add support for Variscite DART-MX8M-MINI and Sonata board
+Date: Sat, 27 Jun 2026 16:46:10 +0200
+Message-ID: <cover.1782571383.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260626183140.3499179-1-Frank.Li@oss.nxp.com>
-In-Reply-To: <20260626183140.3499179-1-Frank.Li@oss.nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sat, 27 Jun 2026 01:05:26 +0200
-X-Gmail-Original-Message-ID: <CAD++jLks=LP73virVRs+9pF76R9qv0Ccgq7k7YUbptN4gHt8Lw@mail.gmail.com>
-X-Gm-Features: AVVi8CcD2cFZ0DbaMYH43Hl9zilL9SByXS-2f9JIaqrnE4P2JDWL4l6YJSprn1k
-Message-ID: <CAD++jLks=LP73virVRs+9pF76R9qv0Ccgq7k7YUbptN4gHt8Lw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] dt-bindings: mfd: st,stmpe: document st,stmpe610 compatible
-To: Frank.Li@oss.nxp.com
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, 
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev, 
-	Frank Li <Frank.Li@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Frank,
+This patch series adds support for the Variscite DART-MX8M-MINI
+system on module and the Sonata carrier board.
 
-thanks for your patch!
+The series includes:
+- SOM device tree with on-module peripherals
+- Sonata carrier board device tree with board-specific features
 
-On Fri, Jun 26, 2026 at 8:31=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
+The implementation follows the standard SOM + carrier board pattern
+where the SOM dtsi contains only peripherals mounted on the module,
+while carrier-specific interfaces are enabled in the board dts.
 
-> From: Frank Li <Frank.Li@nxp.com>
->
-> The STMPE610 has long been supported by the STMPE I2C MFD driver, but its
-> compatible string was never documented.
->
-> Add the missing st,stmpe610 compatible string to fix below CHECK_DTBS
-> warnings:
->   imx53-m53evk.dtb: /soc/bus@60000000/i2c@63fc4000/touchscreen@41: failed=
- to match any schema with compatible: ['st,stmpe610']
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-(...)
+v1->v2:
+ - Remove HDMI from commit message
+ - Fixed eth regulator
 
->    compatible:
->      enum:
->        - st,stmpe601
-> +      - st,stmpe610
+Stefano Radaelli (3):
+  dt-bindings: arm: fsl: add Variscite DART-MX8M-MINI Boards
+  arm64: dts: freescale: Add support for Variscite DART-MX8M-MINI
+  arm64: dts: imx8mm-var-dart: Add support for Variscite Sonata board
 
-There is no STMPE601.
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx8mm-var-dart-sonata.dts  | 517 ++++++++++++++++
+ .../boot/dts/freescale/imx8mm-var-dart.dtsi   | 558 ++++++++++++++++++
+ 4 files changed, 1082 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi
 
-It's a mis-spelled STMPE610, so please delete the row above and
-edit the committ message accordingly.
 
-Yours,
-Linus Walleij
+base-commit: 23a7098c710673ce8f245af317903ae46325a694
+-- 
+2.47.3
+
