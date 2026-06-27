@@ -1,217 +1,225 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005D43BB673;
-	Sat, 27 Jun 2026 15:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D543370EA
+	for <imx@lists.linux.dev>; Sat, 27 Jun 2026 17:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782572448; cv=none; b=FAEsqvlw2+DSyh7wdYsMZUY8ZOBCrOBWfVflXSGjjNTdu2r4FEwYdEHkLgLNcRvufl/AtcJ0uxa3RjgxaDweJsiEwPYDYMEGY9K909yu+Ce6kx8ofkbCbl9HBU7GU7sr2vnUctP6jhppLT88qH4aV6OjjuTmIcn068MlRl7TnCg=
+	t=1782582572; cv=none; b=VvyWmK59vLq50PxuY6TEVijoRik6rzx1LMmUzEXH3ZJMn5Gm058eqek3Sco/oMU5zoHKLsWU+LfR6L6nh2ozuhl6dG6KFAY7jU/SpYnW5WOmQYl9l7TbSWVAB9uIkNhTx7bAlCGPD5jc71zoDoTiIR0YZld5NGjCiHJzS5gUzn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782572448; c=relaxed/simple;
-	bh=956UaQ8wk6PA1AUAewo3GkxQFXRL7E2xvUa/sGNXhaI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SUIs/jXMUbtEtGSJj+9sHTiwnfIC2VaaLP7ZoNbvdle10XiqZf+j1JJudLBqfpS40DRg4CDzeLyJI9BTOVyuCjZ+L5G1NFtGANP0eJTSJKLquF+foqUBtuV/Dvfq9QbjbneZYu/syZYoq6Tlzd5uBKTzYfwcna+pPun0TsVGtFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gsr+PBPc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782582572; c=relaxed/simple;
+	bh=YA+1i/UnBYMi612cEFEOy+3MzER+Xfj7iA6l8jGXb4M=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FXdhIscevGyAi9lCfpjXRbGyMbLpWiu6/6Wk+xcG8/FZ8c2BeUdJhi4VD6h3oTZFbl9AFKyNbF6SYoDG6BfFaYoM5uywxCVs5pUsw4Lt6QrWofc2dQGstQiOdxhK6TNw3ZcuC5guMBHSwIGpmmixVivVDrLl9E9jGW534bvJRjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GTCL3n8B; arc=none smtp.client-ip=209.85.217.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gsr+PBPc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9A91F000E9;
-	Sat, 27 Jun 2026 15:00:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782572443;
-	bh=0RbWgaOi1yWwhMT1EQoDJ8K4OF97lNzZ7KUDExFQJMM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Gsr+PBPcyxRXI3cVSVwaKzbqoclitr6kEryNpLVr68KasgINHGmOdfI+d+Dpcqcbj
-	 Yaqn06O7xlMCz1HLNZmahLuN6XwHqcj6+dlcLdCFUs3q/lfXo5nEJzmQ+Koyfm3JGS
-	 2V2gVUpBp1uT6mG3WGVYT++EMEzYR0WCAFUH5RpZmIVnq4w2RY1aciN54aIe9Khf0S
-	 GxaRQPvGWiu9sz0aloocwuCTscIKFj+NPgbcxAJNJTASuarDYOaN2Mq/PZkpFPnX6v
-	 5NpG2y6fBgCZs1bdrB3fLKsV/r/TJJFOnVKY2klYjLzBLCN18BAv+1sH3H3JD2FQFX
-	 7qM0XXxSPghwA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] arm64: dts: freescale: Add support for Variscite
- DART-MX8M-MINI
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <17f248241982c2d421e83475d7e0f8b61ba50198.1782571383.git.stefano.r@variscite.com>
-References: <cover.1782571383.git.stefano.r@variscite.com>
- <17f248241982c2d421e83475d7e0f8b61ba50198.1782571383.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 27 Jun 2026 15:00:42 +0000
-Message-Id: <20260627150042.8F9A91F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GTCL3n8B"
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-734478b19f7so1484061137.0
+        for <imx@lists.linux.dev>; Sat, 27 Jun 2026 10:49:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782582569; x=1783187369; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+uflCN5dEoFADXWjqBtV9JZXNhAeBkbLG/4dD0z7b4I=;
+        b=GTCL3n8BI5SgH0Vi2fqukut7FUDCw8IIqWMJlw17lHppfN63UhZCOKdp2yX+2GT+lr
+         k4wgk/C7mNZQ41G8a+5oKzQF21CdOkuSrlCLw4qCkhuyvTqME2NkyNs/ZUrqsGXEhInG
+         KpsmUA7AiVKBEC/MgqmqBbKUBKaeQ/uRZdqA0JMdQ1Rcjo4iADympJ8btajCPdyJe2eM
+         XtKxNXwusVSwOvZtYNJA/MDSHZHUwIwfCIpKHPKlq2CbXqMC67KRpg63PEFgo9v3dyG0
+         /pJDumKenO9KpAQhU6gZq/ZTT2TN9M1mV3tYe5wTshGzIUHsJV4kEzd8wyMV4NpTaFpN
+         Umlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782582569; x=1783187369;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+uflCN5dEoFADXWjqBtV9JZXNhAeBkbLG/4dD0z7b4I=;
+        b=oKdzi7+0Ie5lVj16fb1ZIo7EwT6/L9vt96JhDgcnAn86XBH7I49EA0poKZhtjAEm6g
+         aZBaMNd4rVh4UvuElT2c/L4cA9rdODTffcZpLWDJDw+wGBP4GPF6yct6t2qYgK8TTGgG
+         ALWHvHJMAOQB6NUH0q0yFtnvzipaL/zcESyUnK2NJMHM+soOeDV3d/Ez1N3EQ/qLEFZy
+         MnK6vBteEq6QdxCCtlUgDasm/AkoxZqF7dq9UKhs4paEOT49FQLrzblbOKN9lHMhEX3r
+         E2ijXhd3mDelvfO7H6RqPb/CGuGDnHx9UCAyPHWVf7S90XQ1Y1zIUTfj7EGoW21fRdGX
+         hFBA==
+X-Forwarded-Encrypted: i=1; AHgh+RoSPuTINk2jfPK+ty9ULiI26SUGCc+BQkKxlPX+Nvbq1xgZ6OOWUVFLByxN5zPY4gzsRyE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyyz5qw9W6u+/i9MI629keLlo78xIYa7nnyHEWVearR3wqhuNqA
+	FKD3xti00jf8axwJRkouIGjHCp4K4z1dYHj+orq8oPfmMCyV+tuI9dQA
+X-Gm-Gg: AfdE7cmgxuQmid0SZnv8pn9TujsOzrV19psXIINZ37eyY8eAiB7B6TUqX6HhvooBwX3
+	3c87XoQl9Q8F76pBs3tAWTJT5YfXyQq8pcQuJLe+ESt4TghmwgbgArMny7drmIYtuuraN2zEG9j
+	NQs/smW3oyDyDmN2vDRgCRzRhYDnMadUCWyTwD9yPiXMLhE0el4Vw4jhvp7h0ikZAmF4vh0wueJ
+	wGJvQs1ezSKoKRUuDEv4c0G/DewJfmP0LoZhaiIS7woEeW+dE8Fhruo5fOPhkvndH43DF1l/6kU
+	ArCPfm8B3Fr+htojexlqMhgyGrV+u/5j58DNryBkd4W3kqJGGEOxuPiGmBTbOkipNZSMiNTzn0o
+	EM8x9884twqyIxK5acvPApLpm0LKDnf9zLYaDsWQXi6VXP+sbwX29yvb/NSPZ83cZiA49VfVgRZ
+	lwV3eX/t/5fhuLN/37vpFj6u+18Zpmp8AEeaLhrXh77zoW
+X-Received: by 2002:a05:6102:440f:b0:730:db02:1d08 with SMTP id ada2fe7eead31-73434452fd5mr5471882137.10.1782582569056;
+        Sat, 27 Jun 2026 10:49:29 -0700 (PDT)
+Received: from localhost (d-24-145-72-22.fl.cpe.atlanticbb.net. [24.145.72.22])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-96916e5b10dsm2811280241.4.2026.06.27.10.49.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Jun 2026 10:49:28 -0700 (PDT)
+From: Yury Norov <yury.norov@gmail.com>
+X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
+Date: Sat, 27 Jun 2026 13:49:27 -0400
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Will Deacon <will@kernel.org>,
+	Jiucheng Xu <jiucheng.xu@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jing Zhang <renyu.zj@linux.alibaba.com>,
+	Xu Yang <xu.yang_2@nxp.com>, Linu Cherian <lcherian@marvell.com>,
+	Gowthami Thiagarajan <gthiagarajan@marvell.com>,
+	Ji Sheng Teoh <jisheng.teoh@starfivetech.com>,
+	Khuong Dinh <khuong@os.amperecomputing.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Besar Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>,
+	Chengwen Feng <fengchengwen@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-perf-users@vger.kernel.org, linux-acpi@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-fpga@vger.kernel.org,
+	linux-rdma@vger.kernel.org, nvdimm@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-amlogic@lists.infradead.org,
+	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 13/16] perf: Use sysfs_emit() for cpumask show callbacks
+Message-ID: <akANJ-AT7nHpRMq-@yury>
+References: <20260528183625.870813-1-ynorov@nvidia.com>
+ <20260528183625.870813-14-ynorov@nvidia.com>
+ <7e980b99-1e4e-408b-8ebd-4d28116e7ad5@arm.com>
+ <20260529130619.12f24264@pumpkin>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529130619.12f24264@pumpkin>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] Simultaneous assertion/deassertion of Wi-Fi power enable and res=
-et pins in `wifi_pwrseq`, violating typical SDIO Wi-Fi power sequencing req=
-uirements.
-- [Medium] Bluetooth GPIOs configured in `pinctrl_bt` are not assigned to o=
-r claimed by the Bluetooth device node, leaving them as unmanaged floating =
-inputs.
-- [Medium] WM8904 codec configuration contains contradictory settings blind=
-ly copied from binding examples, likely breaking microphone functionality.
---
+On Fri, May 29, 2026 at 01:06:19PM +0100, David Laight wrote:
+> On Fri, 29 May 2026 12:05:08 +0100
+> Robin Murphy <robin.murphy@arm.com> wrote:
+> 
+> > On 2026-05-28 7:36 pm, Yury Norov wrote:
+> > > These callbacks are sysfs show paths.
+> > > 
+> > > Use sysfs_emit() and cpumask_pr_args() to emit the masks.
+> > > 
+> > > This prepares for removing cpumap_print_to_pagebuf().  
+> > 
+> > TBH, looking at this diff I think it only shows the value of having a 
+> > helper to abstract the boilerplate...
+> > 
+> > I'm not sure I agree with the argument of removing something entirely 
+> > just because it may occasionally be misused, but could we at least have 
+> > something like:
+> > 
+> > #define sysfs_emit_cpumask(buf, mask) \
+> > 	sysfs_emit((buf), "%*pbl\n", cpumask_pr_args(mask))
+> >
+> > to save the mess in all the many places where the current 
+> > cpumap_print_to_pagebuf() usage _is_ entirely appropriate?
 
-commit 4642338fef518c3eba73b9681507dd2dd37ee845
-Author: Stefano Radaelli <stefano.r@variscite.com>
+This way you have to add 2 wrappers:
 
-arm64: dts: freescale: Add support for Variscite DART-MX8M-MINI
+ #define sysfs_emit_cpulist(buf, mask) \
+ 	sysfs_emit((buf), "%*pbl\n", cpumask_pr_args(mask))
 
-Add device tree support for the Variscite DART-MX8MM system on module.
-This SOM is designed to be used with various carrier boards. Only
-SOM-specific peripherals are enabled by default.
+ and
 
-Link: https://variscite.com/system-on-module-som/i-mx-8/i-mx-8m-mini/dart-m=
-x8m-mini/
+ #define sysfs_emit_cpumask(buf, mask) \
+ 	sysfs_emit((buf), "%*pb\n", cpumask_pr_args(mask))
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi b/arch/ar=
-m64/boot/dts/freescale/imx8mm-var-dart.dtsi
-> new file mode 100644
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi
+There are people who complain even about DIV_ROUND_UP(), how hard it is
+to keep all that helpers in memory, and all that things.
 
-[ ... ]
+https://lore.kernel.org/all/20260304124805.GB2277644@noisy.programming.kicks-ass.net/
 
-> +	sound-wm8904 {
-> +		compatible =3D "simple-audio-card";
-> +		simple-audio-card,bitclock-master =3D <&codec_dai>;
-> +		simple-audio-card,format =3D "i2s";
-> +		simple-audio-card,frame-master =3D <&codec_dai>;
-> +		simple-audio-card,mclk-fs =3D <256>;
-> +		simple-audio-card,name =3D "wm8904-audio";
-> +		simple-audio-card,routing =3D
-> +			"Headphone Jack", "HPOUTL",
-> +			"Headphone Jack", "HPOUTR",
-> +			"IN2L", "Line In Jack",
-> +			"IN2R", "Line In Jack",
-> +			"IN1L", "Microphone Jack",
-> +			"IN1R", "Microphone Jack";
+Disagree about DIV_ROUND_UP() (because yeah, I'm bad in math), but
+this sysfs_emit_cpumask() is a complete syntax redundancy.
 
-[Severity: Medium]
-Is this analog microphone routing missing a connection to MICBIAS?
+Once we have it, people will do this type of things:
 
-The simple-audio-card,routing property routes the Microphone Jack to the
-codec's analog inputs (IN1L/IN1R), but without a connection to the codec's
-MICBIAS pin, the analog microphone will likely not receive the required bias
-voltage to function.
+        tmp = kmalloc(PAGE_SIZE);
+        sysfs_emit_cpumask(tmp, mask);
+        sysfs_emit(buf, "my prefix: %s\n", tmp);
+        kfree(tmp);
 
-> +		simple-audio-card,widgets =3D
-> +			"Microphone", "Microphone Jack",
-> +			"Headphone", "Headphone Jack",
-> +			"Line", "Line In Jack";
+Patch #1 in this series is one example. My series that removes
+bitmap_print_to_pagebuf() will give you more:
 
-[ ... ]
+https://lore.kernel.org/all/20260303200842.124996-2-ynorov@nvidia.com/
 
-> +	wifi_pwrseq: wifi-pwrseq {
-> +		compatible =3D "mmc-pwrseq-simple";
-> +		post-power-on-delay-ms =3D <100>;
-> +		power-off-delay-us =3D <10000>;
-> +		reset-gpios =3D <&gpio2 10 GPIO_ACTIVE_LOW>, /* WIFI_RESET */
-> +			      <&gpio2 20 GPIO_ACTIVE_LOW>; /* WIFI_PWR_EN */
-> +	};
+It doesn't mean that *you* will misuse the API. It means that *I* will
+have to inspect the codebase for that type of bugs periodically.
 
-[Severity: Medium]
-Does grouping both the power enable and reset pins in this single reset-gpi=
-os
-array violate SDIO Wi-Fi power sequencing requirements?
+So, the overall state is simple: we've got well-established
+printf()-like functions that people know and understand, and we also
+have exotic APIs here and there with a non-standard interface and a
+clear potential to misuse. In this case, they have historical roots,
+but now we don't need them.
 
-The mmc-pwrseq-simple driver toggles all GPIOs in the reset-gpios array
-simultaneously. During power-on, the Wi-Fi chip's power enable and reset li=
-nes
-will be driven high at the exact same moment.
+> That has the advantage of letting you change how it is done (again)
+> without having to find all the callers.
 
-Standard Wi-Fi power sequencing typically requires the power supply to be
-fully ramped and stable before the reset line is released.
+You mean things like silencing the prints or adding a prefix?
 
-[ ... ]
+If you believe that perf subsystem would benefit from it - that's
+OK. Just please keep it local. The kernel globally doesn't need to
+'change how it is done' beyond the lib/vsprintf.  The kernel really
+needs people to use something that the other people are familiar with.
 
-> +&i2c3 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default", "gpio";
-> +	pinctrl-0 =3D <&pinctrl_i2c3>;
-> +	pinctrl-1 =3D <&pinctrl_i2c3_gpio>;
-> +	scl-gpios =3D <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	sda-gpios =3D <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	status =3D "okay";
-> +
-> +	wm8904: audio-codec@1a {
-> +		compatible =3D "wlf,wm8904";
-> +		reg =3D <0x1a>;
-
-[ ... ]
-
-> +		/* GPIO1 =3D DMIC_CLK, don't touch others */
-> +		wlf,gpio-cfg =3D <0x0018>, <0xffff>, <0xffff>, <0xffff>;
-> +	};
-> +};
-
-[Severity: Medium]
-Does this digital microphone clock configuration contradict the analog audio
-routing defined above?
-
-Configuring GPIO1 as a digital microphone clock appears to be a direct copy
-from the wlf,wm8904 binding example, but it contradicts the analog routing =
-for
-the Microphone Jack to IN1L/IN1R.
-
-This might expose unintended side-effects by driving a digital clock out of
-GPIO1 when it's not needed for an analog microphone setup.
-
-[ ... ]
-
-> +/* BT module */
-> +&uart4 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart4>, <&pinctrl_bt>;
-> +	assigned-clocks =3D <&clk IMX8MM_CLK_UART4>;
-> +	assigned-clock-parents =3D <&clk IMX8MM_SYS_PLL1_80M>;
-> +	uart-has-rtscts;
-> +	status =3D "okay";
-> +
-> +	bluetooth_iw61x: bluetooth {
-> +		compatible =3D "nxp,88w8987-bt";
-> +	};
-> +};
-
-[Severity: Medium]
-Are the Bluetooth GPIOs defined in pinctrl_bt missing their assignments her=
-e?
-
-The pinctrl_bt group defines GPIO2_IO6 and GPIO5_IO5 with floating pad
-configurations (0xc1), and the parent uart4 node applies them. However,
-because this bluetooth node doesn't map them to expected driver properties
-(such as device-wakeup-gpios or host-wakeup-gpios), they are left as
-unmanaged floating inputs.
-
-If one of these acts as an enable or reset pin, floating inputs can cause
-erratic behavior due to voltage drift.
-
-> +/* WIFI */
-> +&usdhc1 {
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_wifi>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc1_100mhz>, <&pinctrl_wifi>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc1_200mhz>, <&pinctrl_wifi>;
-> +	bus-width =3D <4>;
-> +	keep-power-in-suspend;
-> +	mmc-pwrseq =3D <&wifi_pwrseq>;
-> +	non-removable;
-> +	status =3D "okay";
-> +};
-
-[Severity: Medium]
-Should this node include a vmmc-supply linking to a regulator for the Wi-Fi
-power enable?
-
-Modeling WIFI_PWR_EN as a regulator-fixed assigned to vmmc-supply in this
-usdhc1 node, while leaving only WIFI_RESET in the mmc-pwrseq-simple node,
-would ensure the power sequencing is handled correctly.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1782571383.gi=
-t.stefano.r@variscite.com?part=3D2
+Thanks,
+Yury
