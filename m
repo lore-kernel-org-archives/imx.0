@@ -1,239 +1,157 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010070.outbound.protection.outlook.com [52.101.69.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640BA3E6DC3
-	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 14:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782745049; cv=fail; b=eXeF9NJw33+jx4OgYGSrBru1Mhq31EtSPfHSN8wQJUCRU1FNRvj4f2RGeFwqNXf/NvWNSl7jSqz7fZ14Vh749lo4HaVA3qqfQbuhgUQUfSUHYPEQXvNUf8jdrTK4WTCaoKI7rNxGF6NPfkS4x5k4qQcOvLKZfv5cTJkuBjBtWTQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782745049; c=relaxed/simple;
-	bh=X9wEqrQpUooI+5ipJaquvKqrfxUDM5lGpf3vT0Cb8nw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=diK9GQAcJwr/G+wvvgVjmExiQyOzmCB/L8nbFyZVynvcxic+i1XKAdcn4V6YAyT1KJE9zsTxVsdG6tGbu6qJKJ+1fMmLBXr0d+uQdjRneltRk4Db7YII/g6Bxns8JnR6s72SgsrdQICC/73zEXKzMsmvKv1CYcsNDm1IJvJcL+0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FhjaGmCx; arc=fail smtp.client-ip=52.101.69.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FhjaGmCx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Bq9nbpe7hRcMFdh8EkUoC/FHAZ7fuW5yNdiT79N7QEVwK4fBU8JG7Tzm/R3C1JM0EYuiMwSRLHL0eO0lB/b9ZM/s+dD9MSUdip7h+96lW/1LC6Jds3saUQZ9GLjZBf06aeAmpwADQzD5jhjPKbVpRSBdZ2qZbv0blW58C45VFTAafzHyrviZfGmHQIYNBlGrkqCcJDm4ycsCTa8dfuoqgrGoGRXi9nfKFgSrO5n3fpA6p0SxQD6ojPQBCT84NLmch4TK2F3IF/XeeVd+pwwgow1+eAGtNRWeH4PB4YYaVtND18OnN6ciM66o+1Z/ziqmxn3R9Ovuf598qewx+J3tSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u/u1WPi+N8qxUGERiF9DGe1utbzEb0Znb4/E4Lz+qUk=;
- b=ryE1Uy7PljkBZxctH8ILZjUfshYS+IolEXd2esPjSnVQ4rH8L7lUeJygcvWQwDFNW1TI+waX1zprrqvTeqaM2L19D7z9n6UIB/QqhDTFWhDdpWjaAP+oikSGtHmKU+2Q3CZhBC5PcqEUUS1E2SKpbjvDR1ZHw+2wrEeCLHyFTb8Adklu1+Rd6qqduLtxI7dWD3xfpkWn33ItL8oPYBHjzec65AxNFkLR2j1BBVjV5oOR3Udbb4sIoFbBAXPdomYpuqZKWRHN/bj/fJeF7fbXs5iSYX/TAYv5Kyhh7LouYFDw6NV+UBMhw4mjMYWfEPPlTflwQWfcnogVpepTob9lUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u/u1WPi+N8qxUGERiF9DGe1utbzEb0Znb4/E4Lz+qUk=;
- b=FhjaGmCxYZLit0VP9n9d1BYYvZvATx9l/JbQhL2THaVf1dSmvfUwCJw+/H+MCKHu9IYmLHR+mltGpqCZkF0xET7ZeZNoiFDMw7tI+9EdvWEb8tS7MXfOiz6U3rby1FX/u54RnFWWZf6XmJSyricFH05BIAF3seukIwGLgMbzljWXTGCbxpRLH+4c2RSpME0W6q7Vgzr5eYa4ojTZAp9ZnL8uwP/6JHnr94oqGLjrudjtBXUpyBECB9ueKj3/nTN09rMSNLH6/BtOfhffPzUQ3JaGFxPQN8inZRcnkL5ghnc6UeSHmYs+pLkaM/KmCh9gvA3klk4WWFwVwKGJc8wJKA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PAWPR04MB9936.eurprd04.prod.outlook.com (2603:10a6:102:38b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 14:57:24 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Mon, 29 Jun 2026
- 14:57:23 +0000
-Date: Mon, 29 Jun 2026 09:57:12 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: guoniu.zhou@oss.nxp.com
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Christian Hemp <c.hemp@phytec.de>,
-	Stefan Riedmueller <s.riedmueller@phytec.de>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Guoniu Zhou <guoniu.zhou@nxp.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Subject: Re: [PATCH 3/5] media: nxp: imx8-isi: Add 16-bit raw Bayer format
- support
-Message-ID: <akKHyBl-Ejo41KXW@SMW015318>
-References: <20260629-isi-v1-0-deebfdb1b07b@oss.nxp.com>
- <20260629-isi-v1-3-deebfdb1b07b@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629-isi-v1-3-deebfdb1b07b@oss.nxp.com>
-X-ClientProxiedBy: SA0PR11CA0112.namprd11.prod.outlook.com
- (2603:10b6:806:d1::27) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAC7352023
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 14:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782745122; cv=none; b=FuSjQXU9F/pKHtD9aLTnXuzRf531gaoW3xIwqNhEVu8rW8PigiNY4cnsnmZF4cNVOI8tBag7itYpvn454qMTITFNIAmlr3pNp0hlNIy0mXg5w8towuwQw7k1LtJh5lAviPCxvHqzUr/HHzb09A57eaxJcZWnGfipFQSJbGxI74U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782745122; c=relaxed/simple;
+	bh=LAoZJqVfdU9+V8F5hBZtY//uWnuQHis0eN8ii8DLed0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sBW80Em2FUK+W2jSKicvwcbzIiaHhk74Mi4s/rTaavoOmVdZ+d8DKkYn6JBUgYW084buklgIusH2HVBPdm9UUVGQe9XuqV53Y08EZfEK+5t391Yb+tgfnLYVab3hL22rGmTH1NCCPi2BuZeWGxhKATdXqrrawQmjMs7R96jWrik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-44841e9f651so2236486fac.0
+        for <imx@lists.linux.dev>; Mon, 29 Jun 2026 07:58:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782745120; x=1783349920;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YrA9ccFaco9J2BZQ3eRpFjtGI3CKCK/xF2koXbFr26M=;
+        b=X5cARsYItFgUNBIWgSx9sNVjnSrSXRhsOa6vttYdeWYwgA7toNj357yIYHK6eFk1RM
+         /rcy23yJakRWZl6zqkLLKC1R9znaq0PG9ncvzEIWDi9m5QvqR0phShFHTjBxC+cjXypO
+         scr9mOXpdRQYjMY/c8TdUgxBcYE8mKpqBJktVK8owBjrIeB6jKTqBeuqcQjtTxAEH5Wt
+         p4L3y09haobCsgNKYEJfRc6CL3HUKR3hcMbnbkqialj2MZkQihXHYsNWj9OJznobHvhx
+         UELvD2iixe6v1anOWGtpdfJTH59NcJE6SNZ9lxvA9jrk/Vhj07knDtxEjeDokDQfLuWK
+         6Ybg==
+X-Forwarded-Encrypted: i=1; AHgh+Roi6QH96l2Nnc1GLtj8OomJXfyOhgbXQADmhKDcvVT+i1BwhtvED0NzX+Ycs2xwPOCbwYc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzecTaB3vDbV3WjacjnfrySQJ81vkaCwiY5gprgwlVfMiocTszD
+	R8gB4NY2s5eTxq9w7kYUR5jE8ABArJcl85ytpOa76Ag956Q4RL53CeOZp7acv47w
+X-Gm-Gg: AfdE7cln7S4jm3Smu/7MjP4WDKpNbRImWoONkRUr5C3xpjC3xpMlWK6CzlQetrBuEVe
+	wbXcZcXOwDxpOY0PDfftKByx7/52q6NEOOeBkuBKsQbXqW55tt053wXEL79tyrFChahim9TqjcH
+	Wk9TedU/Pe1LP4gMJiS5C3EsPhiLeZqUMQ03+0yVf2PsaN7K9V3MDln2NI5wOO5Rw/MNTKqO03B
+	iqpysMXYJCCwK16cXR3Wh71v/74M8uTsrTtw4ZU2izwRg0BlPo2lBiyMss/E1kWWMXzzC6K07e9
+	H9sz7IK/bfz7bo7C0Dp/LNg0f20swP5r33gjQ3DxiJaPu0p5ZLlphXgm4qJeEYjVgSeE8u11Lpt
+	MIRuyGTvmWy05+TinhvfQsnQRdM6hgykjvS+GVhWexT7y87oAiT2PlfGLNRUTxukEBLdOmMyCgG
+	s1Kl3czBzNuZeTLZVp0D4Jp4fuHZYG7wEofGMhV23JRcJmtV85xw==
+X-Received: by 2002:a05:6871:c948:b0:447:7d64:95f8 with SMTP id 586e51a60fabf-44811c463b2mr13125816fac.21.1782745120010;
+        Mon, 29 Jun 2026 07:58:40 -0700 (PDT)
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com. [209.85.160.45])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4472f0475e3sm21760300fac.16.2026.06.29.07.58.39
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Jun 2026 07:58:39 -0700 (PDT)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-44841e9f651so2236470fac.0
+        for <imx@lists.linux.dev>; Mon, 29 Jun 2026 07:58:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpjMrLf61zEStI03HxOY6R+ZhWJMBifS/DYYGlqAZ8ggrm9NRXQMe3nPXaDN4bdoGgFKrQ=@lists.linux.dev
+X-Received: by 2002:a05:6102:c86:b0:738:ecd7:198e with SMTP id
+ ada2fe7eead31-738ecd71defmr1394925137.19.1782744721048; Mon, 29 Jun 2026
+ 07:52:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAWPR04MB9936:EE_
-X-MS-Office365-Filtering-Correlation-Id: c833623d-4036-45be-f43b-08ded5eeba1c
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|376014|19092799006|366016|23010399003|7416014|3023799007|11063799006|4143699003|18002099003|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
- cgE43DdbqFSnps5/B1KnA+jVN421K6Q1t8+zghcweyO/Mpkq7qQgzqcV0hT7Oo4N9u3sWz1egKohpszOlfeH2VB1jOy3xZP9EDPeqVFZCzjnmvEsmmaTXFVxzG7dyCSt1JiWB6YzKIdICw6dNmKkjcZsxyh7g7xwbUeSRU1AgX8HMNeTKbXBqhpkGVtjipRIWx7j3GufCph/dv327Uw4bw5YDu6Z2L1Akex5mnoEE4XNGMLhGwDZGX4vHCn0x0DkpRjWCP7o3ER3fGU7qPwDexs4o4WDtghK83+kiLpRWPVNeFB73MD55SnJ3yXTChiISkgZLVAI/wb7GPAyjp/OuDnC2MB5UJv0GGwQ+Ugww5NX7b7IFUotvSTc6JSbnLcZCNoX9qO3vfJ55SMLuovstf2B1vHIJbh1UnVIF/WSq4OFgCxDsHEdFyfYc/x1tTjfO9DQ7/YVe9pf6YQ2WqoLma0SsYEg/YVtkGvigPeiRZ3elJknAbTns6RBLzhb9sJEVM/2UR2zCzIEPlVHezi+mg5uvhs2diIVLH7zFjIFDGZPOp6INtd0fWRZWvlqKSOJXl7H2xEo5QpapNMqE76tf7anfBsizxIPnbGFw5WvoMyGVFtKR8YjqYnDGtMaDPHsOTXjd0YFgDFdkwhgvmGHPDf7CgWBWWFg916cA8g/udA=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(366016)(23010399003)(7416014)(3023799007)(11063799006)(4143699003)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?qSJWsN9Ko+mK/OywH6cEjwROpXDK1NS5O0QDx9n+8tpooY1BiXQeGcxS8Jit?=
- =?us-ascii?Q?X/h9LSexUDJPw4nF9nNg2vuuU/aHe1Z4JwRlQ7KYNkOkLnJ8SqFp2laRjU4z?=
- =?us-ascii?Q?3LbWoLAA8jqmg2Vg8alyE8ABAPVLymnUdJXmxmd9FGzhhfDP/HhYvPU9Rise?=
- =?us-ascii?Q?GNvFl4eNXetoA5dURhkZz0+QeneoDFINpsV3uI2W9H3oWeAHlL+v8tsvaoz4?=
- =?us-ascii?Q?x5cAD9H9dUVBjCjA91cvdlzehT3mMVeWD3hdqvYqvFMWKYEJR2nm91uv5JY6?=
- =?us-ascii?Q?UAE8U/LtFBa+67cmIz5LWiJBYzPLdiyNGrexbeJYUPRLVfZIpCs8hMEKAsvY?=
- =?us-ascii?Q?EUekUjlZMTVxmrGkyE6XGBSvwtXfODj4H1Bsbz7Cp7Qo+zKPy0bsd9J9j7PA?=
- =?us-ascii?Q?SfZylliY93BW2e2BkzI+nZRGKfvHBmJKznBPKb2+Pk93zbtVvqdJZ1XMg26j?=
- =?us-ascii?Q?UEfIabEDDJ9D1cgW+GmEw0lGNDtdcEb8GnCbgMXJOFqRxfDF3CaYVpBnO9ZH?=
- =?us-ascii?Q?b+2Tr/PGQjL2xF7cNHkHV1S4Rl0m0cp1TYYpP20ashJnKyk9rOi0xdplraCx?=
- =?us-ascii?Q?3HOo0cmh7XBDRZCJms/0u4Bd7uSWZ6sunqRdF+9IrhHKN5qiwNT8/bk8bbST?=
- =?us-ascii?Q?S7sxyfvZ2LnQZXBHZrCMhw410G2ig6lXz6JZvlkobD/eHtddAVb9to4dI1qm?=
- =?us-ascii?Q?Xn7Q6MGszieqQUkonMtXb/kunmEtBkJyRdHgnPzCz1NHbmV/tZQ8/NlrnpsP?=
- =?us-ascii?Q?XpmsF9ZxqGHf6QgAYgyJXJ3tr7KC03+MWx7C6QcHLrXK3agSKW9L9k2kuMQK?=
- =?us-ascii?Q?M2n+f3qtUWiNd1U8lHT8o2FlMPpiiEe2HY6uQJFic5iS21rDvUO3Li0pmnvA?=
- =?us-ascii?Q?gBsdpqhAAK8otKIGVZ5REqzWeE7XxMZjLyZ/qIJB3Be4YbF1XPNclqnZFsaB?=
- =?us-ascii?Q?VS0L7WvtGqf3481TXUmIVbNj+WMfE+4irse693/oKCLGXW6ImahSY6nsBDPw?=
- =?us-ascii?Q?0LYz1j550XvciBZaQhZ5MTYcjeWgYtDuSk/CE4EmjoIixpThdOYTkCSq4h2o?=
- =?us-ascii?Q?xQwer+aqoUTxbbsHO2ViW4D5ZGkC+pMgo/JnrLRh+lcmj6tIkfZTTjL8YkHe?=
- =?us-ascii?Q?37vbllqmL9vWQ/fXN6ThlwTYRi5IIl9Hkq3zqeh6Ca92Pjdu8bvJZQ6RNRWn?=
- =?us-ascii?Q?lzsYlOKU80ndylcZjuHKRcqoqIWoitOhJHcEU1PHgIiauay95X0yRL8mLr2X?=
- =?us-ascii?Q?2M4Cmp8WCXa39cziDHR2SiuObDKTz/8p4+nEv9Hpz6iQnT1XKt7v0jZqrvwT?=
- =?us-ascii?Q?j6425C8g/ckA+eiOany/sVb5sdZHWqNZfr6kYL7sbiCg+o4SXFlan4avEyHi?=
- =?us-ascii?Q?a88xbe5HgF24lDPX8UqRSWhNJQFh8/5QosJqgbqRjN6qXpHqCa72T1ghljt+?=
- =?us-ascii?Q?xynyAZppb/e4TaVmtc85Dxyp4vmtgOPzXp4N7BTHztmF7CfQfETUgpvL5PXV?=
- =?us-ascii?Q?ENx7zyVGvISe1QawCFcWsJjdw6vorUIn6g0GWG9ef1tPsXOS50sYRer3eZLY?=
- =?us-ascii?Q?157ycazFNQN+W7NXgNhB1e7Zc2WRgtpd7nC0tf4RKN+CHi9GnU4SfwGjVdhg?=
- =?us-ascii?Q?bQfRcAxeLXRIzuzahBxktTNqGTljTj3VojF355rAh1XNDDHJPX+6YfGTES/r?=
- =?us-ascii?Q?Op0fnmlzfbLsL4JGRienVRj51xX9yrAli4Y5Oi08JZapJ6DMnP2KhV1UaKZo?=
- =?us-ascii?Q?ETECj4a5fC+IO2bj/TKegVLuo6VE2Hz/6OoLQpGoY6b6vl4mVA3h?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c833623d-4036-45be-f43b-08ded5eeba1c
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 14:57:23.6393
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qDotvgrI6TMCLoqsQaio8Pak7ZG5XM6tsoppjt99Y3l1T+bwuMaxVHcIK++6aNRAwK8tz1iCU+6XdcaYKrqUW9+TRo+tOfqvYFACmBJ0NgrtzTkA/l2yGfeJLE898xyv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9936
+References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
+ <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
+ <CAMuHMdXen+E-Ai51aWBa_KV9W8Fz2cQPpT-FG_kQ7akhrrYa_A@mail.gmail.com> <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
+In-Reply-To: <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 29 Jun 2026 16:51:49 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
+X-Gm-Features: AVVi8CdkJoaQviVQ7ltoNYHwA2g-kW32TDsBBJn2QkEKdC-zwJrV4O3to75iJ6g
+Message-ID: <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
+ PHY on sa8255p
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, Romain Gantois <romain.gantois@bootlin.com>, 
+	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
+	Christophe Roullier <christophe.roullier@foss.st.com>, Radu Rendec <rrendec@redhat.com>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jun 29, 2026 at 03:44:57PM +0800, guoniu.zhou@oss.nxp.com wrote:
->
-> Add support for 16-bit raw Bayer formats (SBGGR16, SGBRG16, SGRBG16,
-> SRGGB16) to both the pipeline subdev and video capture interface.
->
-> These formats are commonly used by high-end image sensors that output
-> 16-bit raw data, enabling the ISI to process and capture full dynamic
-> range from such sensors.
->
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-> ---
+Hi Bartosz,
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On Mon, 29 Jun 2026 at 16:07, Bartosz Golaszewski <brgl@kernel.org> wrote:
+> On Mon, 29 Jun 2026 15:51:31 +0200, Geert Uytterhoeven
+> <geert@linux-m68k.org> said:
+> > On Mon, 29 Jun 2026 at 13:29, Bartosz Golaszewski
+> > <bartosz.golaszewski@oss.qualcomm.com> wrote:
+> >> Describe the SGMII/SerDes PHY present on the Qualcomm sa8255p platforms.
+> >> This is essentially the same hardware as sa8775p rev3 but the PHY is
+> >> managed by firmware over SCMI.
+> >
+> > So why can't it be reuse the DT bindings, and be compatible with
+> > qcom,sa8775p-dwmac-sgmii-phy?
+> >
+> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> >
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml
+> >
+> >> +  power-domains:
+> >> +    maxItems: 1
+> >> +
+> >> +  power-domain-names:
+> >> +    items:
+> >> +      - const: serdes
+> >
+> >> +examples:
+> >> +  - |
+> >> +    phy@8901000 {
+> >> +        compatible = "qcom,sa8255p-dwmac-sgmii-phy";
+> >> +        reg = <0x08901000 0xe10>;
+> >> +        #phy-cells = <0>;
+> >> +        power-domains = <&scmi7_dvfs 0>;
+> >> +        power-domain-names = "serdes";
+> >
+> > Ah, this uses power-domains, while the existing bindings for
+> > qcom,sa8775p-dwmac-sgmii-phy use a clock.
+> > I guess the clock is the correct hardware description?
+> >
+> > Adding to my list of examples for backing a hardware-to-SCMI remapping
+> > driver...
+> >
+>
+> Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
+> driver instead of the MAC driver where it was previously. Instead of cramming
+> both HLOS and firmware handling into the same driver, I figured it makes more
+> sense to have a dedicated, cleaner driver as the two share very little code (if
+> any).
 
->  .../media/platform/nxp/imx8-isi/imx8-isi-pipe.c    | 24 +++++++++++++++
->  .../media/platform/nxp/imx8-isi/imx8-isi-video.c   | 36 ++++++++++++++++++++++
->  2 files changed, 60 insertions(+)
->
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> index 2d0843c86534..e58925d71164 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> @@ -179,6 +179,30 @@ static const struct mxc_isi_bus_format_info mxc_isi_bus_formats[] = {
->  		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
->  				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
->  		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SBGGR16_1X16,
-> +		.output		= MEDIA_BUS_FMT_SBGGR16_1X16,
-> +		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
-> +				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SGBRG16_1X16,
-> +		.output		= MEDIA_BUS_FMT_SGBRG16_1X16,
-> +		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
-> +				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SGRBG16_1X16,
-> +		.output		= MEDIA_BUS_FMT_SGRBG16_1X16,
-> +		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
-> +				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SRGGB16_1X16,
-> +		.output		= MEDIA_BUS_FMT_SRGGB16_1X16,
-> +		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
-> +				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
-> +		.encoding	= MXC_ISI_ENC_RAW,
->  	},
->  	/* JPEG */
->  	{
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> index fe4adfa3a1f0..5eb448f4c26f 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> @@ -356,6 +356,42 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
->  		.color_planes	= 1,
->  		.depth		= { 16 },
->  		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SBGGR16_1X16,
-> +		.fourcc		= V4L2_PIX_FMT_SBGGR16,
-> +		.type		= MXC_ISI_VIDEO_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 16 },
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SGBRG16_1X16,
-> +		.fourcc		= V4L2_PIX_FMT_SGBRG16,
-> +		.type		= MXC_ISI_VIDEO_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 16 },
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SGRBG16_1X16,
-> +		.fourcc		= V4L2_PIX_FMT_SGRBG16,
-> +		.type		= MXC_ISI_VIDEO_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 16 },
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SRGGB16_1X16,
-> +		.fourcc		= V4L2_PIX_FMT_SRGGB16,
-> +		.type		= MXC_ISI_VIDEO_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 16 },
-> +		.encoding	= MXC_ISI_ENC_RAW,
->  	},
->  	/* JPEG */
->  	{
->
-> --
-> 2.34.1
->
->
+I think you are mixing up DT bindings and driver implementation?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
