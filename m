@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266743C13F8;
-	Mon, 29 Jun 2026 07:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A25B3E171F
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 07:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782719618; cv=none; b=pTP4RjsRa6IM4L6G+lYaVXYsBbBHW+y97FptXOYIDOWyQXRpuaTawI/I9zgWI0Y7HSJVH5jLUsh8AstraK0Qq8heCOgL8MKATAFz9rBamDfGwK1gV8HVIn0c7ER0uTSENK9Hqg1a5LyuTs+Svc6b9ujrbTE+5RRlN/h1Rh2IHXE=
+	t=1782719804; cv=none; b=t0GDgvmg0WZHDq7FyaAcU8y8VjOaWLzKUlJnrJVjCQo67O5YcSNxkGDq3wcDWB3oF2DQ7TsK/b+SOqPTwJ8HRHHoSRO1UkRVcU5pEsLOHE0oKa1HKiJIqBs/5Cen26R+2Kula1/vmdLIxFaqXD5j6w+uhFgJ0bXRMwOdkey587c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782719618; c=relaxed/simple;
-	bh=LMa8gfrWVhhvrW92fmaqJLBa5y7TxQYaHEZQFuL2eIE=;
+	s=arc-20240116; t=1782719804; c=relaxed/simple;
+	bh=O054CY/T/Q+1F+UaMK3hsiZeVaUk/LR0GWoHXFVtXVE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nNLS0iR91HnbrFXxv0HCWP0ylPJ5Tz2CgWVJAPbCwiUU8A6QrGBSK8GHGnd4ewAoloYUmgsE0UOn2prQvuvsn8SlLPj025G2C8aB3Hte6fuSjF2HLgxbUbKrwnNcOd9ll8HVnKDhabkEFJ4wta9zJvXWMmqFRWQnW+6wZ9A7X3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHrnEyu7; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=NV2eC15RbarKZu9chltv5hQ5LoXc43k/OocQDXp5dBKtsInl8sjnBSaYdBo68UY/RyUiugvdbdnrFm1r3G+gWnYkw28eZK8q3lncICd7MGe8jUVUASuLNJcTuQDr3+Eav+Z907uPHWWmL7BH5aTQrVouyTtM5E2MqKSrZ2SbmYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kStn6XxL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHrnEyu7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33ED1F000E9;
-	Mon, 29 Jun 2026 07:53:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kStn6XxL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338621F000E9;
+	Mon, 29 Jun 2026 07:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782719616;
-	bh=OCH2ADBFrSK5pycGbrWsAbElIVWubUj64/QZx07LGc4=;
+	s=k20260515; t=1782719801;
+	bh=A2EUs4VBtgsTArqvBiEEPAKRyG6GGvy2cuMsxX6Nk4Y=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BHrnEyu7tMRLQeojFGaS4J2HeRR3cqoDcqnEjgc+44kGE499uMj0H+8kHGvp8Ppni
-	 Gew3mib22mAXPy4HYBJzHRWRjkcC8L9vOYw/mofcaBe9FKJShB1qfq5lMOgIRj0hgc
-	 5kdpo8PctslQKlVIaNBeQxNMv/eRBOd0G3z8Jxi+BD6GRuRe+zfYzxeIIRLpOpdKZz
-	 JWJQ2wdZeR48M0dOgjeGJOxrGccmyqRS3JGOJei1u1U7890D/TnKVrmKUe+5s3hPSw
-	 VNKIvDUKulHp43XnxmcUcx8DeS2oWPXuwceuW3uN1p0GfPiZx0AdYZ8JVvIH6Jze3X
-	 GBCkZ+5HjgSCg==
+	b=kStn6XxLS7qCbFozzho4LhdCZln7zpcZ4d71kfDUsKNMeGY4DuA2vdFdca05WwywJ
+	 1W7d14fQ9CuwFI55hlW+rNKb1v1j3bSKJnXaVhGubo0O02U0LfQipOJIeHiM6YJp7y
+	 u3bLgfa4/CQbwysxzd6bztqFucvWVLY7e+Rx5sRogFgwPsdV88y5rQPmhAiD68BsUj
+	 1H8rTC06r6WU2ssyjeJnRIYZ39zvB/1ZKaLmlIFOqxmc6VWRaI6fgibOq+2yWblWB0
+	 SCB8kbt5sT2A/oA/JeXnRidrCZu3SxA0BzFxMnVZjIPxd4jHU5QQA82P8vi+wFyq/s
+	 TpYMtdqXF+dOA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: connector: Add fsl,aud-io-slot
- binding
+Subject: Re: [PATCH 3/5] media: nxp: imx8-isi: Add 16-bit raw Bayer format
+ support
 Reply-To: sashiko-reviews@lists.linux.dev
-To: chancel.liu@oss.nxp.com
-Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260629074734.3643227-2-chancel.liu@oss.nxp.com>
-References: <20260629074734.3643227-1-chancel.liu@oss.nxp.com>
- <20260629074734.3643227-2-chancel.liu@oss.nxp.com>
+To: guoniu.zhou@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260629-isi-v1-3-deebfdb1b07b@oss.nxp.com>
+References: <20260629-isi-v1-0-deebfdb1b07b@oss.nxp.com>
+ <20260629-isi-v1-3-deebfdb1b07b@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 29 Jun 2026 07:53:35 +0000
-Message-Id: <20260629075335.E33ED1F000E9@smtp.kernel.org>
+Date: Mon, 29 Jun 2026 07:56:40 +0000
+Message-Id: <20260629075641.338621F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,48 +47,94 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] The device tree binding defines clock and interrupt provider capabi=
-lities but omits the corresponding standard properties (`#clock-cells`, `in=
-terrupt-controller`, `#interrupt-cells`) from the `required` list.
+- [High] Crossbar routing artificially restricts sink_stream IDs to the num=
+ber of available pipelines, breaking valid CSI-2 Virtual Channel routing.
 --
 
-commit 600c9389f32346f471a54074928953574a215cfc
-Author: Chancel Liu <chancel.liu@nxp.com>
+commit 7b27c9929d91d2f4cfef36db9983af8a9df1006d
+Author: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 
-dt-bindings: connector: Add fsl,aud-io-slot binding
+media: nxp: imx8-isi: Add 16-bit raw Bayer format support
+   =20
+Add support for 16-bit raw Bayer formats (SBGGR16, SGBRG16, SGRBG16,
+SRGGB16) to both the pipeline subdev and video capture interface.
 
-This commit introduces the NXP AUD-IO slot device tree binding. It acts as
-a nexus exposing GPIOs, clocks, and interrupts from the base board for
-attached expansion cards.
+These formats are commonly used by high-end image sensors that output
+16-bit raw data, enabling the ISI to process and capture full dynamic
+range from such sensors.
 
-> diff --git a/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.=
-yaml b/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
-> new file mode 100644
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/driver=
+s/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> index 2d0843c86534c..e58925d71164d 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
 
 [ ... ]
 
-> +allOf:
-> +  - $ref: /schemas/gpio/gpio-nexus-node.yaml#
-> +  - $ref: /schemas/clock/clock-nexus-node.yaml#
-> +
-> +required:
-> +  - compatible
-> +  - gpio-controller
-> +  - '#gpio-cells'
-> +  - gpio-map
-> +  - gpio-map-mask
-> +  - gpio-map-pass-thru
+While reviewing this series, I noticed an issue in
+drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c. This wasn't
+introduced by this specific patch, but earlier in the series by the commits
+"media: nxp: imx8-isi: Fix stream ID validation bypass in crossbar routing"
+and "media: nxp: imx8-isi: Fix per-stream reference counting for multiplexed
+streams".
 
-[Severity: Low]
-Does this required block miss the standard properties for the clock and
-interrupt providers defined earlier in the schema? Should `#clock-cells`,
-`interrupt-controller`, and `#interrupt-cells` be included here?
+drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c:__mxc_isi_crossbar_=
+set_routing() {
+        ...
+		if (route->sink_stream >=3D xbar->num_sources) {
+			dev_dbg(xbar->isi->dev,
+				"sink_stream %u exceeds hardware limit %u\n",
+				route->sink_stream, xbar->num_sources - 1);
+			return -ENXIO;
+		}
+        ...
+}
 
-> +
-> +additionalProperties: false
+[Severity: High]
+Does this validation artificially restrict sink_stream IDs to the number of
+available pipelines?  On SoCs with a single pipeline (like i.MX8MN where
+num_sources=3D1), this appears to reject valid CSI-2 Virtual Channel routing
+for any stream ID other than 0 (e.g. VC1) with -ENXIO.
+
+Additionally, this logic seems to carry over into the stream tracking array=
+s:
+
+drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c:mxc_isi_crossbar_en=
+able_streams() {
+        ...
+	/* Increment reference count for all requested streams */
+	for (stream =3D 0; stream < xbar->num_sources; stream++) {
+		if (!(sink_streams & BIT(stream)))
+			continue;
+
+		input->enabled_count[stream]++;
+	}
+        ...
+}
+
+[Severity: High]
+Since this loop is bounded by xbar->num_sources, does it fail to track valid
+streams that are >=3D num_sources?
+
+drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c:mxc_isi_stream_coun=
+ters_alloc() {
+        ...
+	for (i =3D 0; i < xbar->num_sinks; ++i) {
+		struct mxc_isi_input *input =3D &xbar->inputs[i];
+
+		input->enabled_count =3D kcalloc(xbar->num_sources,
+					       sizeof(*input->enabled_count),
+					       GFP_KERNEL);
+        ...
+}
+
+[Severity: High]
+Is the enabled_count array incorrectly sized here? It allocates based on
+xbar->num_sources instead of the maximum supported stream ID. If validation
+were bypassed, would this lead to out-of-bounds tracking for streams
+>=3D num_sources, given that the u64 bitmask implies support for up to 64
+streams?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629074734.3643=
-227-1-chancel.liu@oss.nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629-isi-v1-0-d=
+eebfdb1b07b@oss.nxp.com?part=3D3
