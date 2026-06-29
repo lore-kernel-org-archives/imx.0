@@ -1,118 +1,133 @@
-Received: from dd54918.kasserver.com (dd54918.kasserver.com [85.13.167.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6B83B4EB3
-	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 08:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.167.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD343B71BC
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 08:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782720023; cv=none; b=UcXwu85HR8wtpwgtwnhd0l7qgxk4MvAFbCYoU8Z8qxQJbHk9ozmZ2mynMpbPCjFjN1V0Vitl+SZNbw1XS2IMtKA9GqLIhxJKZAQlsBFIDR5d9j4XBWl3Bn3sYOWpGl8dzP0rKSsDmuguT7/HWjALJsRobhRmZ+xNtd2/Jg44nkY=
+	t=1782722721; cv=none; b=c5biO422+4KcsPOzfKZy7tshxWnY5ildJY2UkwEoeVPIV8R6Ez5tJB1jRq+YyDTVxF08poUFTU3G20lwDrQZbCjJUX/LUAzzSFM4uxbdCld33ekYE8JLkS82nto0v6peFt6YuOLT1wASeoANuiCEj4ISzbDwYzufqT4XYk5HiJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782720023; c=relaxed/simple;
-	bh=Mu/vYRPrMM6y78Zq6iLYUkQGJTBkafHpPpDy8E5c9xQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QwXpN5w01tAxYSCXSHl+K451mrYv+WKVW+jwPsH7oVkRAf+0htZc3Atdjg1HEOqA2cHy3uMge37OZq8DmfoL8Z2/fwSJKfuag27fyrfX92wr7Js+eRYyMWf8/Vj4Ze4SvJmd//toQWnz6HoKplIw60mY0GLRa7qfJzIIjP4CrfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=KARO-electronics.de; spf=pass smtp.mailfrom=KARO-electronics.de; dkim=pass (2048-bit key) header.d=karo-electronics.de header.i=@karo-electronics.de header.b=ecw7eren; arc=none smtp.client-ip=85.13.167.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=KARO-electronics.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=KARO-electronics.de
+	s=arc-20240116; t=1782722721; c=relaxed/simple;
+	bh=3mwpvD9m0LM0xROJVh89e4aig42l8CUBljGvEkPTYjo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hYfqfg2LFwrhqvWJHymtv1yPzOBom3FV7dXttNe9Pg3OYBsQ0EuXAzKMHALCJ4EZ3b4NfoaxoSIt2K0sWgmrIGL71cuiZI2LjOTl9MN01ZrKyz8jBkCXpgrgLVQ5eCA2jpkLYoH9FU9LHBrcXXjU+lRvllZ8GB4xFA1lhQlJXwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=VjWlPhJP; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=karo-electronics.de header.i=@karo-electronics.de header.b="ecw7eren"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=karo-electronics.de;
-	s=kas202603021246; t=1782719411;
-	bh=Qylp1+q58BKXjVYMlUJn3x4tvz3kf67QuXXQvLn3hVQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=ecw7erenvWIYPBx2V7ZPPuTiP0QJvB7JeAWgS4GWnn8/503xZok/8BGzb9DeXRFBc
-	 XeC7jO4MWatNjCHC1ECcBW6XrZdV0OBa382Qs/IVNEJ5dgLX3G92WP+J1ri7YIyWer
-	 dwai6hyb94q6EmVN0GrRTOkeBo/h0lefqhkodnLOH1A79zFz1cvQTTHVYCYQsOCsz1
-	 c62YtKjIwpqQE3i0RhHvCf2yilcCcl4J95W3ejucUfo5okw7f5V89GB8iMAPWRex8x
-	 ZZ1n2IpEQXDTL/6Gfp4KBftpnC4mSJJIA2vDTx0WN8aEMFIQMHm9Gls1wkkKm9TBcP
-	 0b7q1/LHFGtGQ==
-Received: from karo-electronics.de (unknown [89.1.81.74])
-	by dd54918.kasserver.com (Postfix) with ESMTPSA id 8485F7722430;
-	Mon, 29 Jun 2026 09:50:10 +0200 (CEST)
-Date: Mon, 29 Jun 2026 09:50:09 +0200
-From: Lothar =?UTF-8?B?V2HDn21hbm4=?= <LW@KARO-electronics.de>
-To: pankaj.gupta@oss.nxp.com
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank
- Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Pankaj Gupta <pankaj.gupta@nxp.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Frieder Schrempf
- <frieder.schrempf@kontron.de>, kernel test robot <lkp@intel.com>,
- sashiko-bot <sashiko-bot@kernel.org>
-Subject: Re: [PATCH v26 3/7] firmware: imx: add driver for NXP EdgeLock
- Enclave
-Message-ID: <20260629095009.3256f956@karo-electronics.de>
-In-Reply-To: <20260629-imx-se-if-v26-3-146446285744@nxp.com>
-References: <20260629-imx-se-if-v26-0-146446285744@nxp.com>
-	<20260629-imx-se-if-v26-3-146446285744@nxp.com>
-Organization: Ka-Ro electronics GmbH
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="VjWlPhJP"
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6D69212F;
+	Mon, 29 Jun 2026 10:44:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1782722674;
+	bh=3mwpvD9m0LM0xROJVh89e4aig42l8CUBljGvEkPTYjo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VjWlPhJPzYIHg18PptzEGYwDvLtAzb2fUCkJiwnGIxi6hQOdv8wATBbgLDCU/oHu+
+	 DsK53Q4xrldvi4EKioRYUSUeM6oqmPda9tImbR5UhFfFiwv82mWpoQQIKL7ubRDyKA
+	 FaVUrcdkJXd3H1scI3qlVoHfhi40eyXHkTm4wAz4=
+Date: Mon, 29 Jun 2026 11:45:16 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Hans Verkuil <hans@jjverkuil.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Purism Kernel Team <kernel@puri.sm>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	Guoniu Zhou <guoniu.zhou@nxp.com>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v6 1/9] media: mc-entity: Store parsed V4L2 fwnode
+ endpoint in media_pad
+Message-ID: <20260629084516.GA3054459@killaraus.ideasonboard.com>
+References: <20260624-imx8qxp_pcam-v6-0-4b3f45920d2f@nxp.com>
+ <20260624-imx8qxp_pcam-v6-1-4b3f45920d2f@nxp.com>
+ <akGD3ZjW6GPHHI3D@kekkonen.localdomain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Bar: /
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <akGD3ZjW6GPHHI3D@kekkonen.localdomain>
 
-Hi,
+On Sun, Jun 28, 2026 at 11:28:13PM +0300, Sakari Ailus wrote:
+> On Wed, Jun 24, 2026 at 04:37:48PM -0400, Frank.Li@oss.nxp.com wrote:
+> > From: Frank Li <Frank.Li@nxp.com>
+> > 
+> > Each media pad is associated with a firmware node endpoint. Capture the
+> > parsed V4L2 fwnode endpoint information in struct media_pad so it can be
+> > reused by consumers.
+> > 
+> > This avoids reparsing firmware node endpoint data every time the endpoint
+> > configuration is needed, reduces duplicate code, and provides a common
+> > place to store endpoint properties associated with a pad.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Assume 1 to 1 map between dt's endpoint to medie pad.
+> > Change in v6
+> > - new patch
+> > ---
+> >  include/media/media-entity.h | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/include/media/media-entity.h b/include/media/media-entity.h
+> > index d9b72cd87d524..4a3785cd9f370 100644
+> > --- a/include/media/media-entity.h
+> > +++ b/include/media/media-entity.h
+> > @@ -20,6 +20,8 @@
+> >  #include <linux/minmax.h>
+> >  #include <linux/types.h>
+> >  
+> > +#include <media/v4l2-fwnode.h>
+> 
+> We have dependencies from V4L2 to MC but not the other way around as MC is
+> (or was?) intended for wider use then just V4L2. I'm thus more than a bit
+> hesitant adding any references to V4L2 in MC.
+> 
+> I wonder what Hans and Laurent think.
 
-On Mon, 29 Jun 2026 17:51:59 +0530 pankaj.gupta@oss.nxp.com wrote:
-> From: Pankaj Gupta <pankaj.gupta@nxp.com>
->=20
-> Add MU-based communication interface for secure enclave.
->=20
-> NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE), are
-> embedded in the SoC to support the features like HSM, SHE & V2X, using
-> message based communication interface.
->=20
-> The secure enclave FW communicates with Linux over single or multiple
-> dedicated messaging unit(MU) based interface(s).
-> Exists on i.MX SoC(s) like i.MX8ULP, i.MX93, i.MX95 etc.
->=20
-> For i.MX9x SoC(s) there is at least one dedicated ELE MU(s) for each
-> world - Linux(one or more) and OPTEE-OS (one or more).
->=20
-[...]
-> +	ret =3D se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-> +				  ELE_GET_INFO_REQ, ELE_GET_INFO_REQ_MSG_SZ,
-> +				  true);
-> +	if (ret)
-> +		goto exit;
-[...]
-> +/* Fill a command message header with a given command ID and length in b=
-ytes. */
-> +static inline int se_fill_cmd_msg_hdr(struct se_if_priv *priv, struct se=
-_msg_hdr *hdr,
-> +				      u8 cmd, u32 len, bool is_base_api)
-> +{
-> +	hdr->tag =3D priv->if_defs->cmd_tag;
-> +	hdr->ver =3D (is_base_api) ? priv->if_defs->base_api_ver : priv->if_def=
-s->fw_api_ver;
-> +	hdr->command =3D cmd;
-> +	hdr->size =3D len >> 2;
-> +
-> +	return 0;
-> +}
->
-I don't see a point in having a function always return zero and
-implement error checks that will never be used.
+I agree. Furthermore, this will significantly increase the size of the
+media_pad structure, for all pads. That's not a good design.
 
-[...]
-> +static const struct of_device_id se_match[] =3D {
-> +	{ .compatible =3D "fsl,imx8ulp-se-ele-hsm", .data =3D &imx8ulp_se_ele_h=
-sm},
-> +	{ .compatible =3D "fsl,imx93-se-ele-hsm", .data =3D &imx93_se_ele_hsm},
-> +	{},
->
-Since the last entry in this array must be a NULL entry, there should be
-no comma after the {}. This will generate a compile error if (e.g. by
-patch conflict resolution) an entry is added after the end marker.
+> > +
+> >  /* Enums used internally at the media controller to represent graphs */
+> >  
+> >  /**
+> > @@ -230,6 +232,7 @@ enum media_pad_signal_type {
+> >   * @flags:	Pad flags, as defined in
+> >   *		:ref:`include/uapi/linux/media.h <media_header>`
+> >   *		(seek for ``MEDIA_PAD_FL_*``)
+> > + * @vep:	associated fwnode endpoint information
+> >   * @pipe:	Pipeline this pad belongs to. Use media_entity_pipeline() to
+> >   *		access this field.
+> >   */
+> > @@ -240,7 +243,7 @@ struct media_pad {
+> >  	u16 num_links;
+> >  	enum media_pad_signal_type sig_type;
+> >  	unsigned long flags;
+> > -
+> > +	struct v4l2_fwnode_endpoint vep;
+> >  	/*
+> >  	 * The fields below are private, and should only be accessed via
+> >  	 * appropriate functions.
+> > 
+> 
+> -- 
+> Regards,
+> 
+> Sakari Ailus
 
+-- 
+Regards,
 
-
-Lothar Wa=C3=9Fmann
+Laurent Pinchart
