@@ -1,189 +1,425 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011046.outbound.protection.outlook.com [52.101.70.46])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013026.outbound.protection.outlook.com [40.107.162.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A625C36212F;
-	Mon, 29 Jun 2026 10:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CB936C581
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 11:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.26
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782727855; cv=fail; b=ZYW7BIgvymw+OOPa1Qa9DqGvnOgZP3SCQWSmKfEkljX1T5l0ArQBIWFxnoRecOijejXqFb9vkSckZqYtl7DcdQfFxHtGr5IFhy64AoN55ZaZzXe/Bq+Uu7A/lEh1KeG/N6bW9e3q8zlyk8DWzKF85jAHaNCaGOQtohObD0fWcaM=
+	t=1782731346; cv=fail; b=HyM9LwE2xWbRnivZd671FD48BP1m8GQQC303RoP+IQ0ogESv9r5/Q8sWyRkJ65vUro35gxRuPhXBHTBmiXJTfhVBGdHyOMXhV5wZFk5YUUCYk3fbqaflhAy8PHFR6Weap4oBLCcpa/t0758H3Xv/EtWdJ600uonJygGQ6P8bcG4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782727855; c=relaxed/simple;
-	bh=8Vdw434bPWtUcWD/k4ThtKixPu0UoKImM3R2ADCyt6w=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=O2mcu91g2r+UBawq68k0s1qZEKYkYjdpjpk4fuCy/jaREP4DPza+RMuGtIrypAgClIYS6ZrtF7PjLFjT1O4ECYaVAENXEKHkUo2Uvrn/jIadmbCm/sHGSFopSQXb97ORL4EMkUZX7tFb1Xb2rOm5X346EJuwJ54p6ci4VzIbJNY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=BOLrwsHS; arc=fail smtp.client-ip=52.101.70.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1782731346; c=relaxed/simple;
+	bh=zoMbyNkH0VN2qIuO/KFHryNDB6/w6KCPivP9PhvRPkM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=F+dtljAHuGB1K9WtjPbvY1LriVbI79CvlqSbWOtCVk2uSDMqIW64+IorigrawFntScCncNNlPMtvPRhf23o0p0B8TTx6cTXLoaw6z5RUHnndEiVEV/zG4yf6IPqSElVxzyO1mRHj8iPxA2ZVk4nts4vXf54Px68+St+nLq7FBs8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=mzFw5iGg; arc=fail smtp.client-ip=40.107.162.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="BOLrwsHS"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="mzFw5iGg"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HFSF4aOWZdrJEKxvXBpifz0HyiJ3L8VqGKsngl0b1TkNkPZl0J2QFvFAX1HTi9wwq0/a6kupdlqgToTNAD1hqEleJkU1a9w/BX5TvfdMVDGmdt6VQtZFv0uPDGcWrgLPIXGG2QcdeC2HqsAaotdiA1YTETEQSunkmGRu2/lbSA0y+BemHPzRHGdl0qRTpP5i/tNt3mu47r4W59+SV+RuTe6Hhpx2XoiIuIKXAC+DcyVo9maHnWkhBEJ/gcnHljaD0v+IhweTGF2Qs3QwNUHWe+YYQRVTQMFJjKdRbKiX0vivcy2ByyhUotS68ImysZ+mGFPtFRcGxRTkBik1KaLomA==
+ b=PiyIghVck3L+99HE2tZ11C9tNHVWlrF2GiwZKdzwZ8lrAhrHtfk9KNrIu7hm/0o9w+9yxmZ1AAjLNLgZE9oMUKjBMpFUk4e6VeRHW4TPJd+ZMdPE1YOgEDrjwx5yhUo6iizKzI0zVstnjkVDA7iFw84tHf0Mh4VM/tMgkxb6YF4PrDwLF8whNOSMIj0AvEWA7wjEj4Sz+jkhPEfwCTm4ggHXvjzanTZ56cSsvKsrAExFOFJ3Wza6wpnoR6lY4q/NjtryN3WcGopx5zAy69H2kIk4IVcdypmaKLBM0MrxG8qQYTbsinZZcfuQamPmBCDTDZAuf5CK6+s4GkylGyvSog==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8Vdw434bPWtUcWD/k4ThtKixPu0UoKImM3R2ADCyt6w=;
- b=mw1e08IyFWU6BohGOwmQRMZJ3uS8+5dxwigo5aTftTc/nq4DM29Wk5qCaYhUp34gQ6C48GwU86lcZ6yLhwCeLJxW2RnQOCYBj0yYNsAhApObe1Bu+IWb8kH4ClUV5lowgWVmwm8fQmoTZKCGcK3D9YBhPY5y4YEarpIdOT33I2cghhPKYx8u6zrjUBa0X0Q+MmhBv18C8mzkvV9VXQIkEn4Y43HS7FzHe6P8O6HHeqFZ+vkNu5k27CbWG1UURsPKLwoPdlmk1KnNMtWc+oL6i5WtQV+lfRxGmct9ccArW5yfG4r3jmEO8rUy9sNLoA1i7K3y1I0x9riSVedT97aH2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ bh=hdYmzlinQrOTdqaXFcBZMTxHGZG54UUEXBcCcFY64eo=;
+ b=P62jiVnVnmsyfUQTgJHvw/Bkx8+cjaypQMSa5hgS74gjMlc+m6NiftRAeKM08Ea8dL9pT2UPLxQTIpH/MHDj/CqSiC0+2uXZpsnsawOjHJKQ0W8yMuzx4c0P6PtuhNh9EvCpz8O/7nlGgygWeV3i2bK5ZkUgxGZn5tMclx7phdVIAkmdXxr4Vgp3VLFrvVUJcO0WTPGghhd5Tf9Rk5aW5PTcku2rcKOxl5YtGR0TxWosAyPv1swHYMvbZdDyqBd59Klr8d+Se30oKLsgjQzabrE9caxVKU4gSfiYhNrdGaE+jaE/qa9L4IJfy+qWXr+HMbz6zjPmWwmROa9qINts6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.59) smtp.rcpttodomain=ideasonboard.com smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8Vdw434bPWtUcWD/k4ThtKixPu0UoKImM3R2ADCyt6w=;
- b=BOLrwsHSxFEp9v8Kf91KP2qpo4YBU3MZfgQKMRD6Oqk3WK3Iy2pVeKj4jZNdOx/agtxeKp1UqATGIV8B3ZDMp96HzjS4RluJKuIKzpIGWmbmmEHoSjj6Sm3KKTh7NyMUrOOc+6fcKUqv4TQFNExS3AHllIdaApLyu3PAWJa9gIQkOi/bOcz6je+3YB4zT5ExTDzcZkv0oXQlrz5guHoGodQrde9z3L3rvpxB6ogsU9U4M77HKpZjF5T+FItXCvT7DN+bj/u2+WHMNHGpRMoYJDjnlMSl2zvINn0n47RN7LRO8FLMRBxMVRY6lRIq699reeh0eRxS919RJ/SxuTALyA==
-Received: from AM7PR04MB6870.eurprd04.prod.outlook.com (2603:10a6:20b:107::21)
- by GVXPR04MB10356.eurprd04.prod.outlook.com (2603:10a6:150:1e3::22) with
+ bh=hdYmzlinQrOTdqaXFcBZMTxHGZG54UUEXBcCcFY64eo=;
+ b=mzFw5iGg/j4eguGMxPV1HxAChkGLp7COImodjkNjwHEW3fVwn7olohPJ+1JA31SmDTgg2bLnEuBvW6Cxi5NWCvk8p7kHhww0L/of0WvtdRaR/rv3TTaPDtSEzUBsNQ6CcBbims+QLhTt+PlZOcAqIR0zMkl8CKYNDt1jv4Ja6JaQWcUdAb83OIh6MdORsPHdw9QXjenKTfkzsL4jrGSsVCuPyns4TVkLipEnegYlwWPQk7MsEs6AKIJQuZFr9Scmpvb9P/fW29Os7Tawqpo4KO/ZBlGp3Aq/dcwrvGnhQ1bSc7qrEvQFev1Bm8628OvYSqW1jxGUo6kE5rGwtSJNpg==
+Received: from CWLP265CA0462.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d4::8)
+ by DB9PR10MB8194.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:4ee::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 10:10:45 +0000
-Received: from AM7PR04MB6870.eurprd04.prod.outlook.com
- ([fe80::f080:2b31:578e:716f]) by AM7PR04MB6870.eurprd04.prod.outlook.com
- ([fe80::f080:2b31:578e:716f%5]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 10:10:45 +0000
-From: "Luke Wang (OSS)" <ziniu.wang_1@oss.nxp.com>
-To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, "Luke
- Wang (OSS)" <ziniu.wang_1@oss.nxp.com>
-CC: "Frank.Li@kernel.org" <Frank.Li@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH v3 7/7] mmc: sdhci-esdhc-imx: fix resume error handling
-Thread-Topic: [PATCH v3 7/7] mmc: sdhci-esdhc-imx: fix resume error handling
-Thread-Index: AQHdB6+Mkg8umpK7R0WWCAHRPYzRLg==
-Date: Mon, 29 Jun 2026 10:10:45 +0000
-Message-ID:
- <AM7PR04MB68701F6FA7C2FD1D950261FEEDE82@AM7PR04MB6870.eurprd04.prod.outlook.com>
-References: <20260629091954.3227151-1-ziniu.wang_1@oss.nxp.com>
- <20260629091954.3227151-8-ziniu.wang_1@oss.nxp.com>
- <20260629095403.0A7951F000E9@smtp.kernel.org>
-In-Reply-To: <20260629095403.0A7951F000E9@smtp.kernel.org>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM7PR04MB6870:EE_|GVXPR04MB10356:EE_
-x-ms-office365-filtering-correlation-id: 3d9f8770-6016-4fa2-2915-08ded5c6af7b
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|23010399003|19092799006|376014|6133799003|38070700021|4143699003|56012099006|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- c7VrneATPHRBQnRyPlYd8BHstMrEt8xs61y+zb0kBAuloWHq3JF2wRN4UYBR2wmvdJN3kD5kCloyJULqnp0d+JiWmjWd9C5+FwUP9YjEIdgi6nSDSfT0ky0Md6oqu8hOzP862aWYCpWHbmen0kPhzHLG8/I4j7zNBBViWV9v+Zdu9Lz0h9D2Eas9UxXh7143RsBcRbXFUrdPlbihHo8D+5KxThBlLBJ+6ujHNNbSQ8eEuf2hZfHUHYDvg003ui/d7NdfMHxfwbZtEWYDAM8ddpfyLv5EVXmFJOTznl0BcPRIeXw/jPOxfr60FlYvuIrNpFJ3r39ruWwmsrVIO/ai5+DIDvuMx4e602F2LurSzD9xD9/xiiHchG+y+5kVuOyFUkc955z7whA7RY+a75EK5sqrHaRqRltOaUCJUDbMfV3ELEQY6aCIfrNcdIRfAqufe+70W0yckHM9SYaSnAwy0LU9wSZwhw1WDmJiTMm/3ULSK4J6mLr/gxbuhTI9OO9lk7naJ4GKK87eoGBn1+kovHHv86p3xISrj/MP30HV+AOL1C0Yn6oxi7UfWcYl68T3CVMV/FDGOFsj05LkPGxsGdk7Tyse37hJbg4nXqQB0tcH7b4BFQPycqYTuzbSGvW+bZxjSsGSsiresP3jOEiC595rj+nWhngY0jqZCKUXTLI=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB6870.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(19092799006)(376014)(6133799003)(38070700021)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?OTMvblY0TkNpU1NuUmdHZVFpa0tldCt2R0F1bGE3cE1aVzMxaC90TE5zVHk5?=
- =?utf-8?B?UzhjU1lIcXJIMXNCMkw4aFV5ZGlmR3BvbUl3Mjg0dHFJS0N6TlZzcWEwblNi?=
- =?utf-8?B?L1o3cTJ6Q1RrMVI1K2ttT0kxVStGamtKbE05ZzVoVW82aVBkQXJMcEMxS3pn?=
- =?utf-8?B?MVRHSnJLazNzNkVvWndZT0RHSHZ2SUxwRW03OTNaSzMveTl1WlZNV0VxZnBG?=
- =?utf-8?B?TTMvTERzQll0NHZ3aDJqWDBCRGhDUXRxcXpLR29SS3d6RmFzeDlWeUtsVWVW?=
- =?utf-8?B?ZWk1MmF6ZjZ4d2pGdFllcTBCSmJkck1rMmI1cnErT0NxcGU3VmJ3ZlBVK1kr?=
- =?utf-8?B?bHZkOExzaGVYaGV3UDdEMTRvTVA0cEpEYy8zSEdURDVheXIwZ3dUL3dHY1l5?=
- =?utf-8?B?NE1uODErWWwyZ1gvRzBXRXhIN1JmMzdHMUUrRXNZclRCS0JEbHgwYzJoVXc4?=
- =?utf-8?B?Y1ZyMXpzc010M3EyMnhzOS9UbDZSMDF6UXROUEREWGJ6Nm5MNERSZEtjVTBv?=
- =?utf-8?B?ak8zckU3NlVHSlRCTVl6T1doK3hSU0k2bEJBaEt0bXBtelZpK1FmaCtzNFB1?=
- =?utf-8?B?bFFpZ3FiMmU5ZjJBeGgxbFBrUllsWUlWc1N0Y0l0M0RjTkh6K05kRkJleVhS?=
- =?utf-8?B?OUtsSERZOVN6YWIyK0RqaENMekQ0WlhTb0dXc21qT2lUOHJINUpTYVlGbHNN?=
- =?utf-8?B?aFNWRklNZkRwSExoMmdiZWNGSFRCNlY0UW5XUmlmOEZQaEc5Ylk1eUhsRkdM?=
- =?utf-8?B?aFBxaUJhRkxKSEs3amVMS3JwM1Q0RkQ0MUtGZFRvQW1rbkE3aWFMZWZWMUZy?=
- =?utf-8?B?LzJzamJsZVQ3RzdidWNZZ2k4UjR0NEwrZWZUd21yVFl0UVVwVVFHNDNtMWFH?=
- =?utf-8?B?eWZVZGkrWTQrN2NpbkYvMDFObEVCODlqT2tFYmNpQ25td3J4SDJHSEFvbzdu?=
- =?utf-8?B?R09INzRhSHplNXFTa3NQMW90emNlWWorMTJnK1ZGdlJsRHhnZkdiUWNjakNK?=
- =?utf-8?B?Ky9pRGRXWUh3eHBDZ0Yyb2VCVHQxWTlMYmxBS3NzdS9QODdLSEh2S3dFVkEx?=
- =?utf-8?B?TFRoMFF3YmRsdXpPL2xMaUx4UTBKZEJGQ1pkcE1zUk01ZER5VEhFL0RYQnRM?=
- =?utf-8?B?dXkwa2NEV1Y5UldOT3hIb2lNdWlDYWRLZkJWcitSMXBWWWozdTBLdTZ2UXBH?=
- =?utf-8?B?elNiYWREVk4xakFPWEJxWkxFU1VuUDM5b3pTTC9wcjdwUUFEWHE0blNyK3BN?=
- =?utf-8?B?a1BoOTU1cFRLeGZhQWZTbjI0cEtFZFRKeGc4ZTFqc2hRVktPcEVLZ1k2bHNq?=
- =?utf-8?B?MHdheVRKQlBtRTBSYW9heFBiVlhGYjc0Z0c1WTVkb2tYY3kyOG9XSE1NZmtU?=
- =?utf-8?B?ZDBOM3pSRHk4Y3NLWWx2ODBRQTlNZ3c1Rk10RjcxbS9ML3pOQWo3azJoOHNB?=
- =?utf-8?B?eGRXclowS0FNdWRVQmQ2ektuRHVVaFM0UmNyN2FvT1VRZ2NDOHl4SXhxa09B?=
- =?utf-8?B?aVBQMFNPNm1lNncyUUpWallUSEpURWhEcDVmWlJQTlNWUUk0Y21oV1FKUFJB?=
- =?utf-8?B?MEIzaVFwZlA5dUk5RzRHeXNYejNVWFhUU05lV3hKa2hVN1V5aHo1L0NTd1By?=
- =?utf-8?B?cjVpNkhjbExsbGl0cXJKQkJrZm0vOUNRNUx5c3RsQU1ZNFhnTHIrb1F0RERw?=
- =?utf-8?B?WWM1bEtzb0syN0lZK1p3N3lpK0ZWUHhDc2plcG1oRWlPM0lCYVVYZmFnOU5I?=
- =?utf-8?B?RnZ0ci9JRC9xUHp3ZVR6aTVjSkpXczNGcER0ZE91OFRNMXlRMW1ocjZScXlR?=
- =?utf-8?B?TUpYNGoxc2ovR3d4aTNJUjA4bzdyZHFPc25tSERYaFZhd09sV2JCaHNrbVBx?=
- =?utf-8?B?QlJaamR2ak40dUxZWTNtcmwybU1rK3ZGbG9BMDYyR1MxejZvMmwydE1uWll4?=
- =?utf-8?B?OVRHVFJqU2xHNFFhckFQUFpuNzdFNWlQRDBmK25mOG9UcEdVd1FMSUVXTWla?=
- =?utf-8?B?R1FLMVJJSXhwN3ZPYTczLzRNWm1IQlg4dzFvK1RucVh4NldZYmM2dkJ2eDF4?=
- =?utf-8?B?ZnhIWnBRTzNudVQ1aEVxSVBxV2JhVW1lcE5EbEROYmlESlgzVWVSQ1ZLQ3Bk?=
- =?utf-8?B?cXNDcitJUmZDd0RINFRhaSsrSDVwT1M0andoK3VNTnIwVGtreDVnekI0bVdK?=
- =?utf-8?B?ekpLSGNPOWhHcFljVldpVUd4RVBHY2VPdDVSMDBxaTl5bFdBZGtMZGFyaGJm?=
- =?utf-8?B?RitJOFN6VWtLQTRyTkZGdWltb1JJWGhWZ1Y3UlMreThiVVZlczAyb3FJaTJG?=
- =?utf-8?B?R2NrdTRYQzhwMmJzOHB3cGtVMkdvQjNGQmE2bzg2bmkyc28yemo4dz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 2026 11:08:57 +0000
+Received: from AMS0EPF0000019F.eurprd05.prod.outlook.com
+ (2603:10a6:400:1d4:cafe::27) by CWLP265CA0462.outlook.office365.com
+ (2603:10a6:400:1d4::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.19 via Frontend Transport; Mon,
+ 29 Jun 2026 11:08:57 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.59; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.59) by
+ AMS0EPF0000019F.mail.protection.outlook.com (10.167.16.251) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Mon, 29 Jun 2026 11:08:57 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpo365.st.com
+ (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 29 Jun
+ 2026 13:13:40 +0200
+Received: from [10.130.78.67] (10.130.78.67) by STKDAG1NODE2.st.com
+ (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 29 Jun
+ 2026 13:08:55 +0200
+Message-ID: <591573d0-587a-4a27-9bef-c707de177a15@foss.st.com>
+Date: Mon, 29 Jun 2026 13:09:00 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB6870.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d9f8770-6016-4fa2-2915-08ded5c6af7b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jun 2026 10:10:45.7241
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/7] dt-bindings: media: i2c: Utilise
+ video-interface-devices enums
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>, Mauro Carvalho Chehab
+	<mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jacopo Mondi
+	<jacopo@jmondi.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, Jimmy Su
+	<jimmy.su@intel.com>, Matthias Fend <matthias.fend@emfend.at>, "Mikhail
+ Rudenko" <mike.rudenko@gmail.com>, Daniel Scally
+	<dan.scally@ideasonboard.com>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Michael Riesch <michael.riesch@collabora.com>, Sylvain Petinot
+	<sylvain.petinot@foss.st.com>, Laurent Pinchart
+	<laurent.pinchart@ideasonboard.com>, Paul Elder
+	<paul.elder@ideasonboard.com>, Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>, Tommaso Merciai
+	<tomm.merciai@gmail.com>, Svyatoslav Ryhel <clamor95@gmail.com>, "Richard
+ Acayan" <mailingradian@gmail.com>, Thierry Reding
+	<thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, Frank Li
+	<Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
+	<konradybcio@kernel.org>, "Geert Uytterhoeven" <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>
+CC: <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+	<linux@ew.tq-group.com>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
+	<linux-renesas-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+References: <20260628-kbingham-orientation-v3-0-4ed92968aff8@ideasonboard.com>
+ <20260628-kbingham-orientation-v3-3-4ed92968aff8@ideasonboard.com>
+Content-Language: en-GB
+From: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+In-Reply-To: <20260628-kbingham-orientation-v3-3-4ed92968aff8@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF0000019F:EE_|DB9PR10MB8194:EE_
+X-MS-Office365-Filtering-Correlation-Id: 151b6c1d-2265-4ada-cf64-08ded5ced0b0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|82310400026|36860700016|1800799024|921020|18002099003|22082099003|11063799006|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	fzwuTA/hR0qRVwMHz/Mt4DJWaMSwl9xyQyKjQ83QwfOzMJdrmZVO12UZoa3kXtEmsAOwz45PeB0j+rEygWWzlj3/aMbxgwKf4jXa4iptkCksBLHNwCNFtQQTDv9KOp4jhoY7qQBxCtI81TfQejiGkoUjFINoJpGOn2YFOFGparvL9UcOaU195pfszB+C+obt1GgCTrDYtxInhG7xuwpuJfnyhsDWCXaCGQRiN+Fm+8eQ9fF0H4FfX7ZXcEd0N9dZ4EyfQHH5jt9WeyZEVsD3ASJad1SUrmwUesbOqDFbrsLwdaUh9jCMAT1/ZLsBDDrpwjKWIKzUkbKO4Bs+TC+9XLpx+bgKk4XJertj8NMCKhX/UIj0oqcL2HCP7RiPzjpqFXv2xqVJwrtX+f7Ktm66r5WZjTOUlGVqHLujgM2KjYFb5Q6LBYP8Tn8T8xKeEWICtZ8Hx6kxxxsnXE4pXiiVQEWfhre5kiPxrbzS9sXm6+juUx4BZUr85vYvSEtAKcsIN36OpL880pOdnKumFaNTbdKGriPn0w3K1gIHTUqus1c2Ods2dQMK66SHkn/sj19Wm+Higm5GSHUOqynDuFE0KG916t9TM5GD/ziaAX1CJqo2zUZh/hZDhpDBWClxWAdMGrgPrITbHqYE1eJKtXS9CPbyCsGi5Z4F2fgYkvzLEWIE/7KSmDWykChyjyETvol7YcURutr1GEV/1orUrAtUpq+tZwgKjyHieWyQfG3hBZ1kKqO95K4JBnC70RrPoCft
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(82310400026)(36860700016)(1800799024)(921020)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	mDPCMtK46muHjsK9RAN5F/4rQoBTq0fV/q7IlGIM118FfKAKpHsPmYgz6gyA5IRZCl14glTL1qqIF6T1a0Y0zk+CRedZPNgdPc4uUSJnkJa4Moqt2LYOSr4ocEv5X4U6k3cg8h5F/srN7EcPywlF+i/GVKn77vw66vKVCu/VC16IdCL9d4NdBqcmH4Ghsh/YEE9fhWS3c8EdmvhruiyV6TbXZlF4cWVugTvh65gAECR6gwBgBVUi0fZjkE5tP1nSrCZyRAbFZ56VCodBimMVMOpAu7Q0cOpA4p9Ft8a6mEqLmussni9I4ax7kBr6lQx4xcnLHB0NxYqGvdGsIZgG9UAP+23r8Y99jf6ZpuazfytB3TfPPAtQLwh7kI2b84Lp5v3TmwdLRjNtFpyd/XLpnz8BYnuokyAEfsTUBrmSTxvRtWZEnDiEIzyYR7aZw+kl
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 11:08:57.3892
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WbDNKGWYvgl08NPFG1+KgJvzOmPRiB+F8vUZVXf/EJBwn9+lyUO6EHXQETLiN+H9om6z2nUVYfrhCv3zoZ3AuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10356
+X-MS-Exchange-CrossTenant-Network-Message-Id: 151b6c1d-2265-4ada-cf64-08ded5ced0b0
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF0000019F.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR10MB8194
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogc2FzaGlrby1ib3RAa2Vy
-bmVsLm9yZyA8c2FzaGlrby1ib3RAa2VybmVsLm9yZz4NCj4gU2VudDogTW9uZGF5LCBKdW5lIDI5
-LCAyMDI2IDU6NTQgUE0NCj4gVG86IEx1a2UgV2FuZyAoT1NTKSA8emluaXUud2FuZ18xQG9zcy5u
-eHAuY29tPg0KPiBDYzogRnJhbmsuTGlAa2VybmVsLm9yZzsgaW14QGxpc3RzLmxpbnV4LmRldg0K
-PiBTdWJqZWN0OiBSZTogW1BBVENIIHYzIDcvN10gbW1jOiBzZGhjaS1lc2RoYy1pbXg6IGZpeCBy
-ZXN1bWUgZXJyb3IgaGFuZGxpbmcNCj4gDQo+IFRoYW5rIHlvdSBmb3IgeW91ciBjb250cmlidXRp
-b24hIFNhc2hpa28gQUkgcmV2aWV3IGZvdW5kIDEgcG90ZW50aWFsIGlzc3VlKHMpDQo+IHRvIGNv
-bnNpZGVyOg0KPiAtIFtIaWdoXSBFYXJseSByZXR1cm4gb24gYHBtX3J1bnRpbWVfZm9yY2VfcmVz
-dW1lKClgIGZhaWx1cmUgaW4NCj4gYHNkaGNpX2VzZGhjX3Jlc3VtZSgpYCBza2lwcyBuZWNlc3Nh
-cnkgc29mdHdhcmUgc3RhdGUgY2xlYW51cHMsIGNhdXNpbmcgYQ0KPiBQTSBydW50aW1lIHVzYWdl
-IGNvdW50ZXIgbGVhayBhbmQgbGVhdmluZyBJUlFzIHVuYmFsYW5jZWQuDQo+IC0tDQo+IA0KPiBj
-b21taXQgMDA3YzE1OTQzZmVkYTdlOTIxYzBjOTYxM2I3MDJjYzhiOWVlN2Y5Nw0KPiBBdXRob3I6
-IEx1a2UgV2FuZyA8emluaXUud2FuZ18xQG54cC5jb20+DQo+IA0KPiBtbWM6IHNkaGNpLWVzZGhj
-LWlteDogZml4IHJlc3VtZSBlcnJvciBoYW5kbGluZw0KPiANCj4gVGhpcyBjb21taXQgdXBkYXRl
-cyB0aGUgcmVzdW1lIGZ1bmN0aW9uIHRvIGNoZWNrIHRoZSByZXR1cm4gdmFsdWUgb2YNCj4gcG1f
-cnVudGltZV9mb3JjZV9yZXN1bWUuIElmIGl0IGZhaWxzLCB0aGUgZnVuY3Rpb24gbm93IHJldHVy
-bnMgaW1tZWRpYXRlbHkNCj4gdG8gYXZvaWQgaGFyZHdhcmUgcGFuaWNzLg0KPiANCj4gPiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9tbWMvaG9zdC9zZGhjaS1lc2RoYy1pbXguYyBiL2RyaXZlcnMvbW1j
-L2hvc3Qvc2RoY2ktDQo+IGVzZGhjLWlteC5jDQo+ID4gLS0tIGEvZHJpdmVycy9tbWMvaG9zdC9z
-ZGhjaS1lc2RoYy1pbXguYw0KPiA+ICsrKyBiL2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2ktZXNkaGMt
-aW14LmMNCj4gPiBAQCAtMjEyNSwxMiArMjEyNSwxMiBAQCBzdGF0aWMgaW50IHNkaGNpX2VzZGhj
-X3Jlc3VtZShzdHJ1Y3QgZGV2aWNlDQo+ICpkZXYpDQo+ID4gIAkJCWRldl93YXJuKGRldiwgIkZh
-aWxlZCB0byByZXN0b3JlIHBpbmN0cmwgc3RhdGVcbiIpOw0KPiA+ICAJfQ0KPiA+DQo+ID4gLQlw
-bV9ydW50aW1lX2ZvcmNlX3Jlc3VtZShkZXYpOw0KPiA+IC0NCj4gPiAtCXJldCA9IG1tY19ncGlv
-X3NldF9jZF93YWtlKGhvc3QtPm1tYywgZmFsc2UpOw0KPiA+ICsJcmV0ID0gcG1fcnVudGltZV9m
-b3JjZV9yZXN1bWUoZGV2KTsNCj4gPiAgCWlmIChyZXQpDQo+ID4gIAkJcmV0dXJuIHJldDsNCj4g
-DQo+IFtTZXZlcml0eTogSGlnaF0NCj4gSWYgcG1fcnVudGltZV9mb3JjZV9yZXN1bWUgZmFpbHMg
-YW5kIHdlIHJldHVybiBlYXJseSBoZXJlLCBkb2VzIHRoaXMgc2tpcA0KPiBuZWNlc3Nhcnkgc29m
-dHdhcmUgc3RhdGUgY2xlYW51cHM/DQo+IA0KPiBJdCBsb29rcyBsaWtlIHJldHVybmluZyBlYXJs
-eSBieXBhc3NlcyB0aGUgZW5hYmxlX2lycSgpIGFuZA0KPiBzZGhjaV9kaXNhYmxlX2lycV93YWtl
-dXBzKCkgY2FsbHMgbGF0ZXIgaW4gc2RoY2lfZXNkaGNfcmVzdW1lLCB3aGljaCBtaWdodA0KPiBs
-ZWF2ZSB0aGUgSVJRIGRlc2NyaXB0b3IgZGVwdGggYW5kIHdha2V1cCBzb3VyY2VzIGluY29ycmVj
-dGx5IGNvbmZpZ3VyZWQuDQoNClllcywgdGhpcyBpcyBpbnRlbnRpb25hbC4gSWYgcG1fcnVudGlt
-ZV9mb3JjZV9yZXN1bWUoKSBmYWlscywgdGhlDQpjb250cm9sbGVyIGNsb2NrcyBhcmUgbm90IGVu
-YWJsZWQuIFByb2NlZWRpbmcgZnVydGhlciB3b3VsZCBhY2Nlc3MNCmhhcmR3YXJlIHJlZ2lzdGVy
-cyBvbiBhbiB1bmNsb2NrZWQgZGV2aWNlLCBjYXVzaW5nIGEga2VybmVsIHBhbmljLg0KDQpUaGUg
-SVJRIGlzIGtlcHQgZGlzYWJsZWQgYmVjYXVzZSB0aGUgaGFuZGxlciByZWFkcyBTREhDSV9JTlRf
-U1RBVFVTIC0NCmEgYnVzIGZhdWx0IG9uIGFuIHVuY2xvY2tlZCBjb250cm9sbGVyLiBUaGUgUE0g
-Y291bnRlciBsZWFrIG9ubHkNCmFmZmVjdHMgdGhpcyBhbHJlYWR5LWJyb2tlbiBkZXZpY2UuIEJv
-dGggYXJlIGFjY2VwdGFibGUgdHJhZGVvZmZzDQp0byBhdm9pZCBjcmFzaGluZyB0aGUgc3lzdGVt
-IG9uIHRoaXMgY29sZCBlcnJvciBwYXRoLg0KDQpUaGFua3MsDQpMdWtlDQoNCj4gDQo+IFsgLi4u
-IF0NCj4gDQo+ID4gQEAgLTIxNTcsNyArMjE1Nyw3IEBAIHN0YXRpYyBpbnQgc2RoY2lfZXNkaGNf
-cmVzdW1lKHN0cnVjdCBkZXZpY2UNCj4gKmRldikNCj4gPg0KPiA+ICAJcG1fcnVudGltZV9wdXRf
-YXV0b3N1c3BlbmQoZGV2KTsNCj4gDQo+IFtTZXZlcml0eTogSGlnaF0NCj4gSWYgdGhlIGVhcmx5
-IHJldHVybiBpcyB0YWtlbiBhYm92ZSwgdGhpcyBQTSB1c2FnZSBjb3VudCBkZWNyZW1lbnQgaXMN
-Cj4gYnlwYXNzZWQuDQo+IA0KPiBXaWxsIHRoaXMgcGVybWFuZW50bHkgbGVhdmUgdGhlIGRldmlj
-ZSdzIFBNIHJ1bnRpbWUgdXNhZ2UgY291bnRlciBlbGV2YXRlZCwNCj4gcHJldmVudGluZyBib3Ro
-IHRoZSBkZXZpY2UgYW5kIGl0cyBwYXJlbnQgcG93ZXIgZG9tYWlucyBmcm9tIGV2ZXIgcnVudGlt
-ZQ0KPiBzdXNwZW5kaW5nIGFnYWluPw0KPiANCj4gPg0KPiA+IC0JcmV0dXJuIHJldDsNCj4gPiAr
-CXJldHVybiAwOw0KPiA+ICB9DQo+IA0KPiAtLQ0KPiBTYXNoaWtvIEFJDQo+IHJldmlldyDCtyBo
-dHRwczovL3Nhc2hpa28uZGV2LyMvcGF0Y2hzZXQvMjAyNjA2MjkwOTE5NTQuMzIyNzE1MS0xLQ0K
-PiB6aW5pdS53YW5nXzFAb3NzLm54cC5jb20/cGFydD03DQo=
+Hi Kieran,
+
+Thank you for this patch.
+
+Le 28/06/2026 à 12:22, Kieran Bingham a écrit :
+> The orientation property for video interface devices now has definitions
+> to prevent hardcoded integer values for the enum options.
+> 
+> Update the existing examples throughout the bindings documentation for
+> camera sensors.
+> 
+> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+
+Reviewed-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+
+> ---
+>  Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml   | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov08d10.yaml  | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml   | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml   | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov5693.yaml   | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov64a40.yaml  | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx111.yaml   | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml   | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml   | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/st,vd55g1.yaml     | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/st,vd56g3.yaml     | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/thine,thp7312.yaml | 3 ++-
+>  12 files changed, 24 insertions(+), 12 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> index 1a57f2aa1982..b7bc6ba26e6e 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> @@ -86,6 +86,7 @@ unevaluatedProperties: false
+>  examples:
+>    - |
+>      #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>  
+>      i2c {
+>          #address-cells = <1>;
+> @@ -102,7 +103,7 @@ examples:
+>              vddio-supply = <&reg_camera_vddio>;
+>              reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+>              shutdown-gpios = <&gpio5 4 GPIO_ACTIVE_LOW>;
+> -            orientation = <0>;
+> +            orientation = <MEDIA_ORIENTATION_FRONT>;
+>              rotation = <0>;
+>  
+>              port {
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov08d10.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov08d10.yaml
+> index 6f2017c75125..b9c61395b24f 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov08d10.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov08d10.yaml
+> @@ -69,6 +69,7 @@ examples:
+>    - |
+>      #include <dt-bindings/gpio/gpio.h>
+>      #include <dt-bindings/media/video-interfaces.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>  
+>      i2c {
+>          #address-cells = <1>;
+> @@ -84,7 +85,7 @@ examples:
+>              avdd-supply = <&ov08d10_vdda_2v8>;
+>              dvdd-supply = <&ov08d10_vddd_1v2>;
+>  
+> -            orientation = <2>;
+> +            orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>              rotation = <0>;
+>  
+>              reset-gpios = <&gpio 1 GPIO_ACTIVE_LOW>;
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml
+> index d96199031b66..fcd617848ce3 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml
+> @@ -96,6 +96,7 @@ unevaluatedProperties: false
+>  examples:
+>    - |
+>      #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>  
+>      i2c {
+>          #address-cells = <1>;
+> @@ -114,7 +115,7 @@ examples:
+>              powerdown-gpios = <&pio 107 GPIO_ACTIVE_LOW>;
+>              reset-gpios = <&pio 109 GPIO_ACTIVE_LOW>;
+>  
+> -            orientation = <2>;
+> +            orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>              rotation = <0>;
+>  
+>              port {
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml
+> index ad07204057f9..6df62fd0c0c0 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml
+> @@ -85,6 +85,7 @@ examples:
+>    - |
+>      #include <dt-bindings/clock/px30-cru.h>
+>      #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>      #include <dt-bindings/pinctrl/rockchip.h>
+>  
+>      i2c {
+> @@ -108,7 +109,7 @@ examples:
+>              dovdd-supply = <&vcc_2v8>;
+>  
+>              rotation = <90>;
+> -            orientation = <0>;
+> +            orientation = <MEDIA_ORIENTATION_FRONT>;
+>  
+>              port {
+>                  ucam_out: endpoint {
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov5693.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov5693.yaml
+> index 3368b3bd8ef2..5732657e1484 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov5693.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov5693.yaml
+> @@ -103,6 +103,7 @@ examples:
+>    - |
+>      #include <dt-bindings/clock/px30-cru.h>
+>      #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>      #include <dt-bindings/pinctrl/rockchip.h>
+>  
+>      i2c {
+> @@ -126,7 +127,7 @@ examples:
+>              dovdd-supply = <&vcc_2v8>;
+>  
+>              rotation = <90>;
+> -            orientation = <0>;
+> +            orientation = <MEDIA_ORIENTATION_FRONT>;
+>  
+>              port {
+>                  ucam_out: endpoint {
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov64a40.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov64a40.yaml
+> index 2b6143aff391..24787c9aa155 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov64a40.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov64a40.yaml
+> @@ -72,6 +72,7 @@ unevaluatedProperties: false
+>  examples:
+>    - |
+>        #include <dt-bindings/gpio/gpio.h>
+> +      #include <dt-bindings/media/video-interface-devices.h>
+>  
+>        i2c {
+>            #address-cells = <1>;
+> @@ -87,7 +88,7 @@ examples:
+>                powerdown-gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;
+>                reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+>                rotation = <180>;
+> -              orientation = <2>;
+> +              orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>  
+>                port {
+>                    endpoint {
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx111.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx111.yaml
+> index 20f48d5e9b2d..56fb5f18f07b 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx111.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx111.yaml
+> @@ -69,6 +69,7 @@ examples:
+>    - |
+>      #include <dt-bindings/gpio/gpio.h>
+>      #include <dt-bindings/media/video-interfaces.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>  
+>      i2c {
+>          #address-cells = <1>;
+> @@ -84,7 +85,7 @@ examples:
+>              dvdd-supply = <&camera_vddd_1v2>;
+>              avdd-supply = <&camera_vdda_2v7>;
+>  
+> -            orientation = <1>;
+> +            orientation = <MEDIA_ORIENTATION_BACK>;
+>              rotation = <90>;
+>  
+>              nvmem = <&eeprom>;
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml
+> index 6050d7e7dcfe..b4a88eaa7ef2 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml
+> @@ -74,6 +74,7 @@ examples:
+>    - |
+>      #include <dt-bindings/clock/qcom,camcc-sdm845.h>
+>      #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>  
+>      i2c {
+>          #address-cells = <1>;
+> @@ -98,7 +99,7 @@ examples:
+>              pinctrl-0 = <&cam_front_default>;
+>  
+>              rotation = <270>;
+> -            orientation = <0>;
+> +            orientation = <MEDIA_ORIENTATION_FRONT>;
+>  
+>              port {
+>                  cam_front_endpoint: endpoint {
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
+> index 7c11e871dca6..69a37ff68db3 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
+> @@ -86,6 +86,7 @@ unevaluatedProperties: false
+>  examples:
+>    - |
+>      #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>  
+>      i2c {
+>          #address-cells = <1>;
+> @@ -98,7 +99,7 @@ examples:
+>              clocks = <&clock_cam>;
+>              dvdd-supply = <&vcc1v1_cam>;
+>              lens-focus = <&vcm>;
+> -            orientation = <2>;
+> +            orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>              ovdd-supply = <&vcc1v8_cam>;
+>              reset-gpios = <&gpio_expander 14 GPIO_ACTIVE_LOW>;
+>              rotation = <180>;
+> diff --git a/Documentation/devicetree/bindings/media/i2c/st,vd55g1.yaml b/Documentation/devicetree/bindings/media/i2c/st,vd55g1.yaml
+> index 060ac6829b66..db9f0c15576c 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/st,vd55g1.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/st,vd55g1.yaml
+> @@ -105,6 +105,7 @@ unevaluatedProperties: false
+>  examples:
+>    - |
+>      #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>  
+>      i2c {
+>          #address-cells = <1>;
+> @@ -123,7 +124,7 @@ examples:
+>              reset-gpios = <&gpio 5 GPIO_ACTIVE_LOW>;
+>              st,leds = <2>;
+>  
+> -            orientation = <2>;
+> +            orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>              rotation = <0>;
+>  
+>              port {
+> diff --git a/Documentation/devicetree/bindings/media/i2c/st,vd56g3.yaml b/Documentation/devicetree/bindings/media/i2c/st,vd56g3.yaml
+> index c6673b8539db..48db22ca4a7e 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/st,vd56g3.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/st,vd56g3.yaml
+> @@ -107,6 +107,7 @@ unevaluatedProperties: false
+>  examples:
+>    - |
+>      #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>  
+>      i2c {
+>          #address-cells = <1>;
+> @@ -125,7 +126,7 @@ examples:
+>              reset-gpios = <&gpio 5 GPIO_ACTIVE_LOW>;
+>              st,leds = <6>;
+>  
+> -            orientation = <2>;
+> +            orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>              rotation = <0>;
+>  
+>              port {
+> diff --git a/Documentation/devicetree/bindings/media/i2c/thine,thp7312.yaml b/Documentation/devicetree/bindings/media/i2c/thine,thp7312.yaml
+> index bc339a7374b2..4a66cb711372 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/thine,thp7312.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/thine,thp7312.yaml
+> @@ -173,6 +173,7 @@ examples:
+>    - |
+>      #include <dt-bindings/gpio/gpio.h>
+>      #include <dt-bindings/media/video-interfaces.h>
+> +    #include <dt-bindings/media/video-interface-devices.h>
+>  
+>      i2c {
+>          #address-cells = <1>;
+> @@ -196,7 +197,7 @@ examples:
+>              vddgpio-0-supply = <&vsys_v4p2>;
+>              vddgpio-1-supply = <&vsys_v4p2>;
+>  
+> -            orientation = <0>;
+> +            orientation = <MEDIA_ORIENTATION_FRONT>;
+>              rotation = <0>;
+>  
+>              sensors {
+> 
+
+-- 
+Regards,
+Benjamin
+
