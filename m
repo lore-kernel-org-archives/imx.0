@@ -1,94 +1,154 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6688D37C0FC;
-	Mon, 29 Jun 2026 12:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2124185B48;
+	Mon, 29 Jun 2026 13:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782735247; cv=none; b=Av2v7VOJ/LTjmSH2OGHh0yoR2kbeVashUBUFeh5vsw3cJ2ADmg3h+E3qGA01Mws6c8ZSSad3lxckHrn0+b42erD7EQ2i3rg7uBfw08e5APqGEELEJtl2cJil4YqY6cKzSQRkKCfcOMyyeteV+lQ1DGMqpnuph/e3ThK8H2lhcZA=
+	t=1782739975; cv=none; b=nUZpXeH/7Duqlzd4VcAymLvdiqvk65mlJqrMjcptGmzhIBWm1UWw+j6FepMlKdgVzuJPzeF11xvTGjH85E2RJfnbZyRa0xvMoPOGKQvAxP4b5ZA7Mub3UlWGm6G0P+orTvSz0ldvWNAKyZP6T/Pqd/cGeTkQWxOpTWQdoJ963TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782735247; c=relaxed/simple;
-	bh=I8SxFiR4w7yQ2Mzp5iIXtB1nJWVUCK0u8oqOK9del00=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=jDa4a7QOI763h1R8POO2vMPSHKbl2s3ktLBe02h6LT5dtm75m2vWtaSvFGhPSt6Xms4M8cm+vVGT7lzp1mTrUsWl7f8+cVUwN4ecv7cT6BMdESUVTHSxSZHRHtEs5S2HOUko02Jl0qQeSvhPv338jIQAttE1D9nDSN9ulr9IP2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIOJGuAk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782739975; c=relaxed/simple;
+	bh=8VTsBeJsTItTrYLIla5gsOdK1SUroginizbkezRNh2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=helZ+9AG34QhiQEPr1ATSU5Qj/Y0XNCqcupBDct3oKMrs+wllRctCmRCVYT5tqdWRlxgJxTakGdyWfa4J6SjT5CU7lhrCYLHjaZ6u2jCn+pjCqx4w/93fpgxif/e1gnNtLDReU1esdTEIzQA/vEgdt4HmmC2RbNuMWLfZ2oiD7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQxSl2C5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIOJGuAk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034CD1F000E9;
-	Mon, 29 Jun 2026 12:14:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQxSl2C5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF3F1F000E9;
+	Mon, 29 Jun 2026 13:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735246;
-	bh=nrRq/rqP6CPHqJ5bPla9J1CX1DPLvJIFTJzunN36uJQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=bIOJGuAkRUeEsVyXg2f4w6mVqSoSoGesHWg/LiHk1eKwRDY89MEN0tl0S4VO1WPXy
-	 2Sqd1qdNgX35zyEUdU5bTL4UPaDxzlgDZ3ek654UY/c5LO38Tsw0tuTZEvTKyDXq6L
-	 BjknxvL2Qg9GjjiXkSKFFdYBQgNU4p7hfawjXKgvtiDKy/M/c4E+j+60uyUbxJVc6M
-	 JwMfNX7yRv71qNizXLd1i5SSXn1Pp2a0htEwDJOSQzgiMq5qDwt1V4h6Lljw6ywzWD
-	 zV9PJCikwOT1EDedQaCR+SuuFCG1az0nrI1bgueqMks/dtJsMTMfUmQfnRsW0OK7SE
-	 owmwQPzsqjNgQ==
-From: Mark Brown <broonie@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Carlos Song <carlos.song@nxp.com>, 
- linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20260624151958.18626-1-javier.pastrana@linutronix.de>
-References: <20260624151958.18626-1-javier.pastrana@linutronix.de>
-Subject: Re: [PATCH v2] spi: imx: reconfigure for PIO when DMA cannot be
- started
-Message-Id: <178231999027.43395.1514985035115232415.b4-ty@b4>
-Date: Wed, 24 Jun 2026 17:53:10 +0100
+	s=k20260515; t=1782739974;
+	bh=Ah5EDiHoXZZ+lJdmyeIH71Txk5rReWMRYVm4i/71Zto=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IQxSl2C5ZVoL+RZJnQ3IGrU4zyMNjh1eQY3r2zP0WlKD7IATkcPbK7dfca6hsG4pS
+	 pxjIWksqD+fcsHFRVIPvbQ6FTsyowM/bEaqgt+NVPjJCSiRYd+l6crhjRUhImCH19w
+	 9I6J+a/uYOHnEzIIuT7pFCJk295i8ji9aSw6zH/6ougbdQwIKenkRyWE2agDpYPaZd
+	 WexRZ5Gk4UluaTfonEeEXYmc+VEBKlpLdLb7mKSr3gxNOyytLSeGUpSOGGrljN6vhe
+	 shavK04GKdJYbw9MOmNjGQJwg2mstrjuZDbIHCHdSSIKzM03CI/PHPFeooC9mLYtZ7
+	 stxgnBRbClUQQ==
+Date: Mon, 29 Jun 2026 08:32:53 -0500
+From: Rob Herring <robh@kernel.org>
+To: chancel.liu@oss.nxp.com
+Cc: krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: connector: Add fsl,aud-io-slot
+ binding
+Message-ID: <20260629133253.GA2593312-robh@kernel.org>
+References: <20260629074734.3643227-1-chancel.liu@oss.nxp.com>
+ <20260629074734.3643227-2-chancel.liu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1139; i=broonie@kernel.org;
- h=from:subject:message-id; bh=I8SxFiR4w7yQ2Mzp5iIXtB1nJWVUCK0u8oqOK9del00=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQmGLTSMvPD+Qz2hu2SvAp+EQjs8+4wlCDYYXX
- 1Pz9qVf13CJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakJhiwAKCRAk1otyXVSH
- 0KSeB/92Zvp4edp2JAXF83YCsb7VKwwI8k9+1fxKerRxav/oc0lreCiVnEvWOxEY0a88/8aAKHw
- L0mOKSavZWuZzlat6yzPzrn8pskTjGQ20NqU7dKPR0RbOgjmhKfBkX+MCoHFzQOKUveZZL/W/Jb
- JUHlAN77K3hZHFLf04upFHGqu4m45Tg+TNpMWZdtPTZgFaqjLUPvGzTh8KR8P/Pa47jortjrABh
- VvDU4dMjH8hkcHoRhrLDhv/yzGqMXi8Jbzz57gcI+jaZ8z9ISAhXc4TVPck7A40WO4u9xsCX61t
- Ajxl6jN96Rfx2MCV/gdet1mnhwsbtYwAYJJiDTDlA1Fm+aZK
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260629074734.3643227-2-chancel.liu@oss.nxp.com>
 
-On Wed, 24 Jun 2026 17:19:58 +0200, Javier Fernandez Pastrana wrote:
-> spi: imx: reconfigure for PIO when DMA cannot be started
+On Mon, Jun 29, 2026 at 04:47:31PM +0900, chancel.liu@oss.nxp.com wrote:
+> From: Chancel Liu <chancel.liu@nxp.com>
+> 
+> The NXP AUD-IO slot represents a physically present I/O connector on
+> the base board. It acts as a nexus that exposes a constrained set of
+> I/O resources, such as GPIOs, clocks and interrupts, through fixed
+> electrical wiring. All actual hardware providers reside on the base
+> board. The connector node only defines index-based mappings to those
+> providers.
+> 
+> This connector type is present on i.MX95 19x19 EVK and i.MX952 EVK,
+> where it is used to attach the IMX-AUD-IO audio expansion card[1]. The
+> same add-on board can be reused across different base boards that carry
+> this connector.
+> 
+> [1]https://www.nxp.com/part/IMX-AUD-IO
+> 
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+> ---
+>  .../bindings/connector/fsl,aud-io-slot.yaml   | 113 ++++++++++++++++++
+>  1 file changed, 113 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml b/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
+> new file mode 100644
+> index 000000000000..5085574d221b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
+> @@ -0,0 +1,113 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/connector/fsl,aud-io-slot.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP AUD-IO Slot
+> +
+> +maintainers:
+> +  - Frank Li <Frank.li@nxp.com>
+> +  - Chancel Liu <chancel.liu@nxp.com>
+> +
+> +description:
+> +  The NXP AUD-IO slot represents a physically present I/O connector on
+> +  the base board. It acts as a nexus that exposes a constrained set of
+> +  I/O resources, such as GPIOs, clocks and interrupts, through fixed
+> +  electrical wiring. All actual hardware providers reside on the base
+> +  board. The connector node only defines index-based mappings to those
+> +  providers. This connector type is present on i.MX95 19x19 EVK and
+> +  i.MX952 EVK, where it is used to attach the IMX-AUD-IO expansion card.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - fsl,imx952-evk-aud-io
+> +          - const: fsl,imx95-19x19-evk-aud-io
+> +      - const: fsl,imx95-19x19-evk-aud-io
+> +
+> +  gpio-controller: true
+> +
+> +  '#gpio-cells':
+> +    const: 2
+> +
+> +  gpio-map:
+> +    minItems: 1
+> +    maxItems: 32
 
-Applied to
+You don't know how many GPIOs are on the connector?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+> +
+> +  gpio-map-mask:
+> +    items:
+> +      - const: 0xffff
+> +      - const: 0x0
+> +
+> +  gpio-map-pass-thru:
+> +    items:
+> +      - const: 0x0
+> +      - const: 0x1
+> +
+> +  '#clock-cells':
+> +    const: 1
+> +
+> +  clock-map:
+> +    minItems: 1
+> +    maxItems: 16
 
-Thanks!
+You don't know how many clocks are on the connector?
 
-[1/1] spi: imx: reconfigure for PIO when DMA cannot be started
-      https://git.kernel.org/broonie/spi/c/245404c26563
+> +
+> +  clock-map-mask:
+> +    items:
+> +      - const: 0xff
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+> +
+> +  clock-map-pass-thru: true
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+The purpose of this property (for GPIO) was to pass thru flag cells 
+which are standardized. That's not the case for clocks.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Anyways, these properties need to be defined in dtschema first.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Rob
