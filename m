@@ -1,65 +1,75 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013070.outbound.protection.outlook.com [40.107.162.70])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013022.outbound.protection.outlook.com [52.101.83.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1A33A8730;
-	Mon, 29 Jun 2026 20:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F105636EA8E
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 20:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782766580; cv=fail; b=qLaFTlcWqMshHosgMSEFcZSnZ9lc7MP3q0u00hs07E5+IgYYOCN6z8oy7eX/TM8aRjhLOHT1pOcGJ85cjJARaupRhHcap9YCwbKgmN8xh/vdJ6t5s449YIpe5HfEmmmDEbIwkGlRRSuPJU/YPyY7HrMWWTRrL1gUfEdYRlLQDt0=
+	t=1782766775; cv=fail; b=ddASfqoefIolej2piAe6flMflb0FNIue3C1p2rCwDX+N5w0HFjdBsqI/z5DNJwSe+rplQeWAlsbrEY8HzBgZ9bvoWRP86wM1nAZORjm3XRcDZqpDRHBoe8g/t+N0b1aZAiW7BZ3M0FTiQgBcc3GeoY1Yfkk5LXTNg1ssGYwgpsM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782766580; c=relaxed/simple;
-	bh=pZJeAzejV5BQqfG+g7b1BUZGrWtLWhpQOC7it/HcOk8=;
+	s=arc-20240116; t=1782766775; c=relaxed/simple;
+	bh=F934TN0BtkmZUDKMeX/DkTBYqFeW3Vk8eW0mNE8DYBY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AuH73TjJvZxEqk2DwqD4RAnZ7op2NstJI6wd4hX+CoA/Jx51oCNO2obUsVMCfiQREpLrlCZnpVSkWYfVkN48cLlVlSpx90I6oiamuYeD0d738CanH93XgIq+kLUcNbzxFXmAQojpKT2ill2I319H1AjZg5InAYJqQk6VVuMLLUs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=eFW5IZFn reason="signature verification failed"; arc=fail smtp.client-ip=40.107.162.70
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ggOTfyitf8oZzZWTilmxJrUGoj8Ex3cobJTluwRQwZJXWf/sMHOrfgVLno0iEH/hwVJpiw2/DZvUBIJbEaHdnW7V6iw4PWVTg1F+pUVZs5YWcmfDk4uGbg980EyU5MWTTPldetkxTN8hW4KJ4VaTdLRJswvrd+eNcidYlJS22mY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=lbNA+Ov7; arc=fail smtp.client-ip=52.101.83.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="eFW5IZFn"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="lbNA+Ov7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=as4ztVKMwcjU97SWGcHikUV8J1gt60/XpbCYsr6gkUe2xi3/YN1LfZEwVi5Na7jNgn1GtPGtbKiVYnGTd9tofk0qYRZkENMz2GlwSq2e9V1zJEPXXRWU2mRe+MP84AVsaUgDO1JYerIV7IKYH63vmGV0VjHID+oV7/I8vuvDpHoJ28MmoQ3WnoSvmByOLN20M0NOg5ODo84h1pVNMV0S0QaYRyzqQ2rWvoHrKxBGknOyOilWosDUHGNx/d8korS6PUhKi2Zv5hWK4VVsPYIycOjq/xVeKkyflUeKTateGoqn+ZinWiO0gQlvkckQC1E70BL0h05TD+GJa4prYXNKuQ==
+ b=uJJ1jemULKxYaBtYKAsocUGUbktOB4wxKtwQ2ofZWqoC83Q0RE4iPlAlYJmsC4GuDzmpJ2/+l84VcxZizA7tfIS2sYkzFp/ZFclUFU4DbilqDSP5Pj632/omtIuu76hhl5doaphkcr25ImgD8xWSBFjMD2Hn1Eyi21o8411vZSL77zHRqQNnYg+gcp4A3OFPmvzcPMFiB8JqLlL1xwgme/lIMABu4AGWm/jTfDwq8VxMlpvwCb9/Cpx9Imucv32HAUTn890KT/qDYqjq5BFMeCp+MCU4Fb/5yfumWTsXc1xZ05SLcQ9dk1xxV3wc+FBsSnZBH/ZMwz84lhqzvgtSvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=57pNQ8iOSknf48rIkZGZhZchqOwx8GV8I2DZYyTHZq0=;
- b=i9lLvOzeNCSGElIgTj7D0KepctsKjbpOCoTvxGAbUz9J2IFwNjwuBSQSe7sU9X+8SL8TvBvH+lHYXpFpmWtg6b3ETSx0sN1fJxmNJetb867ENuc/394pfCokHk+coZ6Hjgcz1VgtP2pcQgoUkpaedLVuvrhASfFKD+q5UUI+vcb4H2tjen3p8x8u9PGSraBP2U3Y5myHTgr12W60ZVlJTLFf7EVHGBYyJ+FIDZNX0jpBdW8RlCaXXZP0Ys+yv16XHtb85Sz0Mf1RiioH/S5Zg9o6+FE8NxAdEtduKNFBxtgrcVZqkL0GbgOZjzWNVDGPB9PtFp/zm5kQVrmqhFeWsQ==
+ bh=sLh4limW5803sh0kjrys/WA3oUN3B8C8TasX9yD7HWE=;
+ b=sudjPn8BuCxWxMUD/XhwlEkglnykHHC3mLVWwlShhSz5v1TY/zY0PTw2xSRtuyrN+8bL8yDu7AeNb6M6X9zXVuoItytD+tk8Qdk0saQTqcOg8Q1CQNA8R6T3mcmdY6a/Y97Xxg6Q+2WTxwbwaR8Dtflj72Wja9FtK66v5QXhy/Px+Lhdi4t+A8Lp96l8jo/twLkpNft2tQmVtk0W4sw98vlwpvwvLIsQMeMLfsBgX3AyQqAMNJ9u+XySvQ/O1rSRA/+UAMTKmkbhYQG9ge1sMZkvFbidyxpKfi4fVUT1mndAAtltooSOfinkoFKk28+tW2Dz2PVUSkJOCxr4vA4u+w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=57pNQ8iOSknf48rIkZGZhZchqOwx8GV8I2DZYyTHZq0=;
- b=eFW5IZFnihukXAUgDJ2UnjphF99PagDjOZ3odNluWZ3CxBeooBeX/lxfjliFDrMkghzI6DKu/SkbLDysXsIAE9YvlBDjEu303ArrfVk3jp/K7DFLSiQwrXYfw0BOkzaeLzBADnh4u+rkhf167R+ODBwJv273TFRj3sI3dskFJ58V0LqWOMCVBv/diu/BICZLRk/JZHBc4yyTJ7yM0/lCeE4IdMNXMK+s2cVLB4qvhW9biK56E0Bhn7UwJkTDlB365R4amBJ9cAnGypAa5nW6M6YE+DjTTOoXxUqBkws65TBlTxKMy8nhYMoyZGb0t+tQi60DwvWaA2laxtrCojgwFA==
+ bh=sLh4limW5803sh0kjrys/WA3oUN3B8C8TasX9yD7HWE=;
+ b=lbNA+Ov7o+Rr6ZngowbzCN0cT/yFJaeHVkWO2fPCB99dATZpXG6KpOkh2mbdeALVkIvzBZKvAT7vzapobWVHGoeBMb2td/XcUNzNyzZBAwRQn+pAEQyBI+27ASl0doNECnl5SkXi7uGDkZTbS2oZtDOyf08GoUPCAIZGOONYuRVoaKC+7lsmqBfgZ+vCsxAeHQNctsjOAnANeL7hkkCkofgeSbX0r4KeoVJ2qdqbvHM6+/vmeoDY8jpsE+OgRMuVsmjvLX5t6Mu6Gs8HC8/oGAVwYoLaLDYVKlkSaLS3S9TPEVfytc7qqJD0rF5dME6DRGLamN0hpzam+sZs4NF2ZA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB7590.eurprd04.prod.outlook.com (2603:10a6:20b:23d::24) with
+ by VI2PR04MB10595.eurprd04.prod.outlook.com (2603:10a6:800:273::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 20:56:11 +0000
+ 2026 20:59:28 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Mon, 29 Jun 2026
- 20:56:10 +0000
-Date: Mon, 29 Jun 2026 16:56:04 -0400
+ 20:59:28 +0000
+Date: Mon, 29 Jun 2026 16:59:19 -0400
 From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: guoniu.zhou@oss.nxp.com, robh@kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, Frank.Li@kernel.org,
-	conor+dt@kernel.org
-Subject: Re: [PATCH v11 3/3] media: nxp: Add i.MX95 CSI pixel formatter v4l2
- driver
-Message-ID: <akLb5LAzG3SL0P-S@lizhi-Precision-Tower-5810>
+To: guoniu.zhou@oss.nxp.com
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Frank Li <frank.li@nxp.com>, Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH v11 2/3] dt-bindings: clock: imx95-blk-ctl: Define
+ formatter child node schema
+Message-ID: <akLcp8coyZUsIR8I@lizhi-Precision-Tower-5810>
 References: <20260623-csi_formatter-v11-0-a792fe9c1502@oss.nxp.com>
- <20260623-csi_formatter-v11-3-a792fe9c1502@oss.nxp.com>
- <20260623040548.7EAE31F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
+ <20260623-csi_formatter-v11-2-a792fe9c1502@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260623040548.7EAE31F000E9@smtp.kernel.org>
-X-ClientProxiedBy: SA0PR11CA0032.namprd11.prod.outlook.com
- (2603:10b6:806:d0::7) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260623-csi_formatter-v11-2-a792fe9c1502@oss.nxp.com>
+X-ClientProxiedBy: SA9PR13CA0130.namprd13.prod.outlook.com
+ (2603:10b6:806:27::15) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -68,358 +78,186 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB7590:EE_
-X-MS-Office365-Filtering-Correlation-Id: f6544e24-9df4-4ba6-ad5b-08ded620d945
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI2PR04MB10595:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c27dbf4-34e9-454a-2149-08ded6214eef
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|19092799006|1800799024|23010399003|6133799003|4143699003|22082099003|11063799006|56012099006|18002099003;
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|19092799006|23010399003|18002099003|22082099003|3023799007|11063799006|4143699003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	QjNgwBIDQx9ZeFUdJVR9VALzfmuUMZcERyKcQ4MwLl+vFiqSOXiltuVMMXlEGcXq5vje5EzterZI22QpNeid96oko4yXsduJteStUYgS2MBq3r5iX1HlcIiwzIJlJ68cBPat1EkGN2Vt9xrc/BX1kkrJ6NgSect9CnPBbkN/eRZiv76yscEfy9e+zMPTJq524CU7W9aorITh3SLDBO2KCi/diQBIfYhV3tr3bOXc3QfhTGKpFcnMmy8+f7EFt+kGXQcE/sOmnKD5MKzN0kLMmndJyl9yMrL71fokB3nqqgffF4RJ90idlivZ8aUT92OaYni05a7v2AEIXoTpKlXG2//Pnwk1BRSnsiN+zPwkHwtmoqjSEBCKqt4KTMCa1syA64e7BJExVu9/fQ1qQ5Qz4uTzTcLK4RoPJTrMdPHyl8ezQ9jiE4t2gUB7UMHzRR0ibA+e35NJkT1lPlVl6P4GiZ2cOaYR/nW+8w1OKtDRzv4yfJAnMPLdhXZxmRMDD4xsX2P6kcd0/NmXX8KSYgxi/NWyfu9o5xdfPJ/OePeHPQ091Pyx4MjzdFjhXbOTBelTeu4tt2hIPKuukPUyvzzZTtnQZyvAPxJ1ViRocTrBScI=
+ xHWVonMj3zE9KwvW2bnwtpTJyJKssoMPjyObrfc9JvG4+O7LxEi0JTz3HIpj3pe4AMulW2lpAXQVP9WTlpsEdFXZr/6fQgSdnF3O8rJMRDnymgihbdtN4Kr1GngSECW5i90FPtmW4POTkuLMFcUjZQuODaBTYMtBdMwYeXC83vZWaqg9hXszctMXahaU8V/4hIBX6cRoeFcnpN+INBHIJFAVCdoJgbOhPOOvSrtUZjGp05Y1CbijDPVs/Okz6qq4Ea+dhQlGWuvJM7vevb+NowiacZB0+/4mrfELpS/XxBfCGW7wELh9qWVfXlpG6N1XkqADXkcmJhHpxuiPXSUm2r4pf361+Y27zu0Vt2OXLUS9trq3kJirkhOoCbSiUxJYRjZMxkpee9zZes6bqi595rAftJ70QT8PZly7sgNDL2+Lsx2x2PbuDLQC0L+V7Hx9KrtkLgU7avF/3jHDqsS2Rkan/bXvz423lg/9hjdlxr1jSS1rTSGADyUOrVTD2RtePE0AlXYWpc3Y+piLPXcJZDQR+kkNbqV87+dfbBO5COohMu9D5/3E7MosHu0dVeD8K1wRagdCZejKi9zVj9oX8rkyj+uEEyKVmFu+fqRMPkB8KLwWqrfa0DRApClUdA7A8o7sdAvin7BGpduL0fCSdR36G2Hc3scIpvx97cYUbK0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(1800799024)(23010399003)(6133799003)(4143699003)(22082099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(19092799006)(23010399003)(18002099003)(22082099003)(3023799007)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?5je2yYa1U7lFXa70eQfC9TLCicGuSc8tiYM3Z2ZvgA9l5Wynaai3bZhRyx?=
- =?iso-8859-1?Q?rlCJ6ose9apN55fLqZyEVhvYmxFMKJ2z7wQZQoHyusngwoXMCmf+3UcV7D?=
- =?iso-8859-1?Q?uVfPmmIhNnqAjko7tZo2ukgno/kzcKmUTa0e93h2QDb1BVEsl6N6LbluRR?=
- =?iso-8859-1?Q?F5eh9Jo81RtNvM0LKJ77yqQR1k0ZL2bbVOd5lQcqtyiQEAiZ4FsfH2qUDz?=
- =?iso-8859-1?Q?apxhdrvgFzfKgthLbyHWXwldaXHdE9b2PQsOrI6ajTj1K+LLVXr/HI8bBA?=
- =?iso-8859-1?Q?GFy82g358TvZJU2rk2PtTAjS3n04kzR8zKQAZ0IhJnWbvZNtxw0l9ofIkz?=
- =?iso-8859-1?Q?unCY+zbYry/rYU/ulXDjJN2JfYnrpSNg/GD8sB8qN75zmNqNR4h5wtpP9F?=
- =?iso-8859-1?Q?/B2RtbNCQfcaDI79QcyOC4hYE3unFy+L+KTrXZKWDmoLyjKAzgGIeOJN9l?=
- =?iso-8859-1?Q?OJdPg5zc527rD0qsuSjVAwB23SQdWEETCCO863jf4jiiafq/dNGf76ZtRQ?=
- =?iso-8859-1?Q?Lv+y3gPepQvPmt3Rh9xdnn62UMP6I824rbH+oh8cCuggP7yZQcremiXXHK?=
- =?iso-8859-1?Q?noyXNUTkRY3quNuLrHyK6zxUZcOcOs7LFxNA1TlafpLTR0FAWmQ6G7NV96?=
- =?iso-8859-1?Q?mqMH9oQOlK+bFeMj+eXqbgKlUVoGl8wuJob2XVMhxN9lJqoZYzOg2hMDRX?=
- =?iso-8859-1?Q?edPYGnHKqkKKrG1ggNPPL6oKP+lsGXmMBCuGG6msulwEjHpkLmloFF44vH?=
- =?iso-8859-1?Q?qDpTJRhA1yAtRNClS6JScI+twhptIWRmqE4rHBt2OP4NgN3igUXaQPLqC4?=
- =?iso-8859-1?Q?WiqFhRV9yRjvk3HUFargy2AKZKnlwJg5T47ioprl6g0OmcGcZIV4rfVmKK?=
- =?iso-8859-1?Q?UNhnxoo0Gx8WXMv5jNNrR5RDnMJdf1W5Zw8KerZktNFWbpHdakfgc1wTTL?=
- =?iso-8859-1?Q?HvCErv9HJZqO9YgFCqXJCAjhhVFlQsXZApKlyu8WngV9C4DLzKa5ANJyGD?=
- =?iso-8859-1?Q?gQl774kyyrRNMbIgtaUw7Rtlu5JAJ7tocRsTYaPI7LhHqgx0xOgl8AaP0B?=
- =?iso-8859-1?Q?fFxXpbggN7y4Ohu1csn5VfOLA5lFmWkzjxqpmIZ0lWQCe+taQeyJH5a5Sa?=
- =?iso-8859-1?Q?8tN+Mvuq6ulD+qBljmYaYQloP6L5wK1EF/Plbv8qSAKYXNb+na6yXprm+V?=
- =?iso-8859-1?Q?10Uz2l2SPrYnSkhCSJXcimZGEJiM5d5cToRW/Cf2xWWwVbi0q8YXI85tnF?=
- =?iso-8859-1?Q?DjrjLgbEsWoQoifio7bQO/3VlNebM2WRF69kuPl//nLBb8qAiTGxaji6sN?=
- =?iso-8859-1?Q?wzcHULwkWHjTPoTPexYPvcUMuKSx0ka9ZBnnNdKeQKzXR3mP5C/Vj+AQAw?=
- =?iso-8859-1?Q?RAyJ22U9yiKQQzWFfk7lehHlk5a5HvngFbSKuBs/2HVW6rv3wVw3TfTuJ8?=
- =?iso-8859-1?Q?n7V/YbFimceCfJeVdGa/TcpdDCgy6MUthX7ZEiboqe1U61GzubASE9giXI?=
- =?iso-8859-1?Q?u868q7o+f5HGFe4mKWf6HHWm+yFBdCCP4nrKNJVbrH7+sHP6Tt5rKyOveK?=
- =?iso-8859-1?Q?+X7NefBGuNTTz2FyZkqfJq89OjnYpSIWQ3+mBl1EAapSGjuOQVWOy8cvu1?=
- =?iso-8859-1?Q?nLkl3AVd1fHc81E3KFALDHQFQOhSIaQDloQMr9iE6U2X5BxkiC3W9+Rx6j?=
- =?iso-8859-1?Q?/nyzIqi1YOe/mIM99NuZ2Sw/xTMaJxHfrMHqYoLCPpNiSaFhfCx0v7CPea?=
- =?iso-8859-1?Q?WrumuZxfab5tdiLtYskD6ahK8vTvLFDv1shHH7K1+WY69icE7B+301FU+s?=
- =?iso-8859-1?Q?flIsSXZ3cV6v0MmzJXg0+dnv+I5PbaKqM8LwBNq2Me/jhzLOpuKZ?=
+ =?us-ascii?Q?g5ZGMqqi2RXbxOVWhxi4HPuF5z3FKQ+ZeBz+FXeCMgzQkDggCXoGD1/EHcGt?=
+ =?us-ascii?Q?CcQM81fCRK2Pg1tcii5cxvM66uoUo4AkdJ4GNpbHwsFMCcS8jtGB5OAswjQ8?=
+ =?us-ascii?Q?IE6yAo4tE4rpLk0FPJ4yS6VNgXhEJc9kjST6Y+LBU1LR9TPrrULQ4N05PL3O?=
+ =?us-ascii?Q?J8j4zPjrNqNgH3y5VtP/yWDu26Q0vilef8nCcQy4q7yU9T6kkmFA1yduEs2t?=
+ =?us-ascii?Q?CkYAfGoIECQIRZbWGtB6O6qwJEYfcnY6nUZZMhqxZVU6SCFu/iCrl7D+DOgd?=
+ =?us-ascii?Q?Op0dY+pjzZLF0lp5K+lFBU/HUhvk4P58psyZoYo+LUPlpZCVWbwL8F8D7l22?=
+ =?us-ascii?Q?VnUh+77Mc0Q4Hro8J6oDg721FBqTkmX9raFEGO3Rtw7/cLqYs3u6gnne8aRp?=
+ =?us-ascii?Q?oSRJZeCrfHmN9KqoP5U14ZrOCC5mw6fuu4tmFXlPm9dZtjb1UDGLMoDRQHo/?=
+ =?us-ascii?Q?0xjqWekxiLrWlVNk6PqKt8NWoKV64UwIRJdnU2LtaBpWp1gFUbi6Fg0QCfhT?=
+ =?us-ascii?Q?zhJj/lL4+QEe160H0dN81kOW0Et1TlbqvD7lGYAP7q92t45kCT5IQKRqEvjz?=
+ =?us-ascii?Q?DqP3R9CN0sPFaCNvs0dITjw1Uc0uq7jam1SzBq109Dg3LkdNaYaKpgBOiaMu?=
+ =?us-ascii?Q?IngewZBPb+jMXOLH4C6wJ6CWP4edufqInM2JsNS9DF//g+/3OSq4RsFReGRK?=
+ =?us-ascii?Q?tOVKKppPdI2saV7jCnZywpJQf/PD0248zY4JNxeNluMI6xcBtcLVD8Mn8hZz?=
+ =?us-ascii?Q?Iw/MFUiTpkqXBNa1zkCAgh1/Fa2dAn9uW0w6F1Xw5Q5+yB2Qoa3gsZLM4Q8N?=
+ =?us-ascii?Q?uN+LTk08zbunWtQ8HRWB3Qb2zRXHUSeEQv7xORwwjAY6O90LP+vFsJXVD4qG?=
+ =?us-ascii?Q?dy3DKtMuXQ3P9HXDaoVLnStwd/pzDcgu9C2nL4CqAxmTMeVH+0ZBGTazeyIX?=
+ =?us-ascii?Q?5AhliJBpZvc2IzZ/yZ2VMla8BjHyUAGkiDu4h22grNGoELAnGuFKCRD9ntcc?=
+ =?us-ascii?Q?Mru5zZuecr/2VdJ3cHDNvhTfeSfNg0OcLrDGRm391penlA41MNL6XRIIiITS?=
+ =?us-ascii?Q?j3AKFGSzhwZsIZefkrU02GlGbTZkI/SoN50utJ5wibN9aG0RZa8MovojLmxL?=
+ =?us-ascii?Q?2RuF9J8nuQuefmLZxhRmaoZQzMn94yg9q5D5zsEwsRX4tVR7Z4Bbur3PauCd?=
+ =?us-ascii?Q?N116pzlSVSBbIJ6R06ekrdGeH/QggUbUylPZv8l0qGpqimqtYHgcQW5Ig6+I?=
+ =?us-ascii?Q?gpP17PmKnhdNyAr9VeoGUvVFlaBbwI46rQvjZzBxHhdbmrTDtcnk5cFJWOJm?=
+ =?us-ascii?Q?QlJ+fr8G+PPpUgs63z7W+zPzqJ+BQGTt6qcC6IupcswO9mouDT+Zat4JEF14?=
+ =?us-ascii?Q?XHTVn2aSSE9BPxuouJ2VGbLpTTBcPB7EFUE0u4KkSm3M0vrYlvHL7SghIn56?=
+ =?us-ascii?Q?/1L7KcUDkVaTvSpqhh4E2ENLjfgIoKYf6znlzi8HYcnSRjzWuwmk/J9FdT8e?=
+ =?us-ascii?Q?zpOYfL+LwsbzH1FtghXWE3QQdTfmieftJTlDDHhhOz7IJoOiHQoIUCfTYzIo?=
+ =?us-ascii?Q?w6Hy5iw2R+V6bHOcTthnF0J+0kaca8MRplT2XXg1LVzI/ZE0TsSh+CWZVUbl?=
+ =?us-ascii?Q?o7CW7ENDBwwkAzWES5Qk68NWGlOV0e2z5g/QX37owzSSuhMZxJ9/aq/Wk944?=
+ =?us-ascii?Q?EmsEge/jq7bM5JO0C6VOLJs7ahCRvo9iZN3KrsXQo1uvSsxuq3jfTJW9vZfT?=
+ =?us-ascii?Q?WPEbb083xDGm65TU4Oz4x5Arpyd8UHhC1ww6wvZ4vASNrklyHuQm?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6544e24-9df4-4ba6-ad5b-08ded620d945
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c27dbf4-34e9-454a-2149-08ded6214eef
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 20:56:10.8669
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 20:59:28.1428
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: g9+SDe22f/ySVKSi0rwR9XSMLAD+urtWESoSagodzSRszKtVf0KnCzXzE5FhY3I3Lkd7UZfigCc9liqety+LDvbdtTHa91gsETLklaY3JDD9ul1ukljFT/o0ouCJtkgJ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7590
+X-MS-Exchange-CrossTenant-UserPrincipalName: myhbvl4CtPLGNGKiiFiKo3+WVBUEkCnahDOeaUoUUOR1ebqn3eZWDvz5LAKIE8RtJIrCCBqAeCXKVqhK75mPYtMBSV24iyvix+qJWmzJkhccpaWvRMUew6Qw8nU6Zu46
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10595
 
-On Tue, Jun 23, 2026 at 04:05:48AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 8 potential issue(s) to consider:
-> - [High] Missing NULL check for the return value of v4l2_subdev_state_get_format() in pad operations, causing a NULL pointer dereference.
-> - [High] The driver incorrectly assumes source stream IDs match sink stream IDs during stream start, leading to a NULL pointer dereference.
-> - [High] Unbalanced PM runtime put in `csi_formatter_subdev_disable_streams` due to state desynchronization on failure.
-> - [High] Dangling `csi_sd` pointer leading to Use-After-Free if the remote subdevice is unbound.
-> - [Medium] The driver fails to validate stream ID bounds, silently ignoring stream IDs >= 8.
-> - [Medium] Overwriting the Virtual Channel Data Type register breaks multiplexed streams sharing the same VC.
-> - [Medium] Mixing `goto`-based error handling with scope-based cleanup helpers (`__free` and `guard`) in the same function.
-> - [Medium] Setting the format on an unrouted sink stream incorrectly fails with `-EINVAL`.
-> --
+On Tue, Jun 23, 2026 at 11:56:32AM +0800, guoniu.zhou@oss.nxp.com wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
 >
-> commit cca7db4730915ca13295d8053b3569d5e6266e0d
-> Author: Guoniu Zhou <guoniu.zhou@nxp.com>
-> Subject: media: nxp: Add i.MX95 CSI pixel formatter v4l2 driver
+> The Camera CSR contains control registers for multiple CSI formatter IPs
+> at different register offsets. Each formatter is an independent hardware
+> block with its own clock input and media pipeline connection.
 >
-> This commit introduces the i.MX95 CSI pixel formatter v4l2 driver,
-> adding data formatting support to match Pixel Link (PL) definitions.
+> Define schema to allow formatter child nodes under nxp,imx95-camera-csr,
+> with 'reg' property specifying the formatter's register offset within the
+> CSR address space.
 >
-> diff --git a/drivers/media/platform/nxp/imx95-csi-formatter.c b/drivers/media/platform/nxp/imx95-csi-formatter.c
-> new file mode 100644
-> index 0000000000000..cfe448fedd37e
-> --- /dev/null
-> +++ b/drivers/media/platform/nxp/imx95-csi-formatter.c
-> @@ -0,0 +1,775 @@
-> [ ... ]
-> > +static int csi_formatter_subdev_enum_mbus_code(struct v4l2_subdev *sd,
-> > +					       struct v4l2_subdev_state *sd_state,
-> > +					       struct v4l2_subdev_mbus_code_enum *code)
-> > +{
-> > +	if (code->pad == CSI_FORMATTER_PAD_SOURCE) {
-> > +		struct v4l2_mbus_framefmt *fmt;
-> > +
-> > +		if (code->index > 0)
-> > +			return -EINVAL;
-> > +
-> > +		fmt = v4l2_subdev_state_get_format(sd_state, code->pad,
-> > +						   code->stream);
-> > +		code->code = fmt->code;
->
-> [Severity: High]
-> Is there a missing NULL check here?
->
-> If the requested stream is not found in the state,
-> v4l2_subdev_state_get_format() returns NULL, which would cause a crash when
-> dereferencing fmt->code.
->
-> Userspace might trigger this by passing an invalid stream ID.
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
 
-Does it really happen?
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
+> Changes in v11:
+> - Move properties to top-level and use if:then:else (Krzysztof/Frank)
 >
-> > +		return 0;
-> > +	}
-> [ ... ]
-> > +static int csi_formatter_subdev_set_fmt(struct v4l2_subdev *sd,
-> > +					struct v4l2_subdev_state *sd_state,
-> > +					struct v4l2_subdev_format *sdformat)
-> > +{
-> > +	struct csi_formatter_pix_format const *format;
-> > +	struct v4l2_mbus_framefmt *fmt;
-> [ ... ]
-> > +	v4l_bound_align_image(&sdformat->format.width, 1, 0xffff, 2,
-> > +			      &sdformat->format.height, 1, 0xffff, 0, 0);
-> > +
-> > +	fmt = v4l2_subdev_state_get_format(sd_state, sdformat->pad,
-> > +					   sdformat->stream);
-> > +	*fmt = sdformat->format;
+> Changes in v10:
+> - Use single quotes for regex pattern to be consistent (Krzysztof Kozlowski)
+> - Add formatter subnode binding and camera-csr syscon example
+> - Update commit title and message
 >
-> [Severity: High]
-> Can this result in a NULL pointer dereference?
+> Changes in v9:
+> - New patch to address the issue of formatter acting as a child node of syscon
+> ---
+>  .../bindings/clock/nxp,imx95-blk-ctl.yaml          | 71 ++++++++++++++++++++++
+>  1 file changed, 71 insertions(+)
 >
-> Similar to the enum_mbus_code operation above, v4l2_subdev_state_get_format()
-> can return NULL if the stream is invalid.
+> diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> index 27403b4c52d6..fbbf1b3f1790 100644
+> --- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> @@ -39,6 +39,18 @@ properties:
+>        ID in its "clocks" phandle cell. See
+>        include/dt-bindings/clock/nxp,imx95-clock.h
 >
-> > +
-> > +	/* Set default code if user set an invalid value */
-> > +	fmt->code = format->code;
-> > +
-> > +	/* Propagate the format from sink stream to source stream */
-> > +	fmt = v4l2_subdev_state_get_opposite_stream_format(sd_state, sdformat->pad,
-> > +							   sdformat->stream);
-> > +	if (!fmt)
-> > +		return -EINVAL;
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 1
+> +
+> +patternProperties:
+> +  '^formatter@[0-9a-f]+$':
+> +    type: object
+> +    $ref: /schemas/media/fsl,imx95-csi-formatter.yaml#
+> +    unevaluatedProperties: false
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -46,6 +58,23 @@ required:
+>    - power-domains
+>    - clocks
 >
-> [Severity: Medium]
-> Should this return -EINVAL when there is no internal route configured?
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: nxp,imx95-camera-csr
+> +    then:
+> +      required:
+> +        - '#address-cells'
+> +        - '#size-cells'
+> +    else:
+> +      properties:
+> +        '#address-cells': false
+> +        '#size-cells': false
+> +      patternProperties:
+> +        '^formatter@[0-9a-f]+$': false
+> +
+>  additionalProperties: false
 >
-> Valid requests to set the format on an unrouted sink stream will fail here,
-> which seems to violate V4L2 semantics where the format on the local sink pad
-> should still be accepted even without an active route.
->
-> > +
-> > +	*fmt = sdformat->format;
-> > +
-> > +	return 0;
-> > +}
-> [ ... ]
-> > +static int csi_formatter_start_stream(struct csi_formatter *formatter,
-> > +				      struct v4l2_subdev_state *state,
-> > +				      u64 stream_mask)
-> > +{
-> [ ... ]
-> > +	for (i = 0; i < CSI_FORMATTER_VC_NUM; ++i) {
-> > +		if (!(stream_mask & BIT(i)))
-> > +			continue;
->
-> [Severity: Medium]
-> Does this fail to configure stream IDs higher than 7?
->
-> The loop terminates at CSI_FORMATTER_VC_NUM (which is 8), silently skipping
-> any higher stream IDs present in the stream_mask.
->
-> V4L2 subdev routing allows stream IDs up to 63.
-
-Is it true?
-
-
->
-> > +
-> > +		fmt = v4l2_subdev_state_get_format(state,
-> > +						   CSI_FORMATTER_PAD_SINK, i);
-> > +
-> > +		pix_fmt = csi_formatter_find_format(fmt->code);
->
-> [Severity: High]
-> Could this crash if the source stream ID does not match the sink stream ID?
->
-> The index i iterates over the source pad's stream_mask, but it is used here
-> to query the format of CSI_FORMATTER_PAD_SINK.
->
-> If userspace configures a route where the sink stream ID differs from the
-> source stream ID, get_format() will return NULL, leading to a crash when
-> accessing fmt->code.
->
-> > +
-> > +		val = BIT(csi_formatter_get_index_by_dt(pix_fmt->data_type));
-> [ ... ]
-> > +		/* Store the stream to VC mapping for stop_stream */
-> > +		formatter->stream_to_vc[i] = vc;
-> > +
-> > +		csi_formatter_write(formatter, CSI_VC_PIXEL_DATA_TYPE(vc), val);
->
-> [Severity: Medium]
-> Will this break multiplexed streams sharing the same virtual channel?
->
-> Writing directly to the register completely overwrites the configuration
-> with the new single bit, which would destroy any existing active data type
-> bindings for that virtual channel.
->
-> Would a read-modify-write operation be more appropriate here?
->
-> > +		configured_streams |= BIT(i);
-> > +	}
-> > +
-> > +	return 0;
-> > +
-> > +err_cleanup:
-> > +	csi_formatter_stop_stream(formatter, configured_streams);
-> > +	return ret;
-> > +}
-> [ ... ]
-> > +static int csi_formatter_subdev_enable_streams(struct v4l2_subdev *sd,
-> > +					       struct v4l2_subdev_state *state,
-> > +					       u32 pad, u64 streams_mask)
-> > +{
-> [ ... ]
-> > +	sink_streams = v4l2_subdev_state_xlate_streams(state,
-> > +						       CSI_FORMATTER_PAD_SOURCE,
-> > +						       CSI_FORMATTER_PAD_SINK,
-> > +						       &streams_mask);
-> > +	if (!sink_streams || !streams_mask)
-> > +		return -EINVAL;
-> > +
-> > +	guard(mutex)(&formatter->lock);
-> > +
-> > +	if (!formatter->enabled_streams) {
-> [ ... ]
-> > +	ret = csi_formatter_start_stream(formatter, state, streams_mask);
->
-> [Severity: High]
-> Is the wrong mask passed to csi_formatter_start_stream here?
-
-Please check this one?
-
->
-> It passes the source pad's streams_mask instead of the translated
-> sink_streams mask.
->
-> > +	if (ret)
-> > +		goto err_runtime_put;
-> > +
-> > +	ret = v4l2_subdev_enable_streams(formatter->csi_sd,
-> > +					 formatter->remote_pad,
-> > +					 sink_streams);
-> > +	if (ret)
-> > +		goto err_stop_stream;
-> > +
-> > +	formatter->enabled_streams |= streams_mask;
-> > +
-> > +	return 0;
-> > +
-> > +err_stop_stream:
-> > +	csi_formatter_stop_stream(formatter, streams_mask);
-> > +err_runtime_put:
-> > +	if (!formatter->enabled_streams)
-> > +		pm_runtime_put(formatter->dev);
-> > +	return ret;
-> > +}
->
-> [Severity: Medium]
-> Is it safe to mix goto-based error handling with scope-based cleanup helpers
-> in this function?
->
-> This function uses guard(mutex) for lock management but also contains goto
-> labels for error unwinding. Mixing these approaches can create confusing
-> resource ownership semantics.
-
-This should be fine, can you check other comments?
-
-Frank
-
->
-> > +
-> > +static int csi_formatter_subdev_disable_streams(struct v4l2_subdev *sd,
-> > +						struct v4l2_subdev_state *state,
-> > +						u32 pad, u64 streams_mask)
-> > +{
-> [ ... ]
-> > +	ret = v4l2_subdev_disable_streams(formatter->csi_sd, formatter->remote_pad,
-> > +					  sink_streams);
-> > +	if (ret)
-> > +		dev_err(formatter->dev, "Failed to disable streams: %d\n", ret);
-> > +
-> > +	csi_formatter_stop_stream(formatter, streams_mask);
-> > +
-> > +	formatter->enabled_streams &= ~streams_mask;
-> > +
-> > +	if (!formatter->enabled_streams)
-> > +		pm_runtime_put(formatter->dev);
-> > +
-> > +	return ret;
-> > +}
->
-> [Severity: High]
-> Can this cause an unbalanced pm_runtime_put() if disable streams fails?
->
-> If the upstream v4l2_subdev_disable_streams() call fails, the function
-> still clears the bit in enabled_streams and calls pm_runtime_put().
->
-> If userspace later retries stopping the stream, this code will run again.
-> Because enabled_streams is already zero, the condition
-> !formatter->enabled_streams evaluates to true, causing a second
-> pm_runtime_put() call.
->
-> [ ... ]
-> > +static const struct v4l2_async_notifier_operations formatter_notify_ops = {
-> > +	.bound = csi_formatter_notify_bound,
-> > +};
->
-> [Severity: High]
-> Does this missing unbind callback lead to a use-after-free?
->
-> The driver stores the remote subdevice pointer in csi_sd during the bound
-> callback, but does not provide an unbind callback to clear it.
->
-> If the remote sensor module is unloaded, the dangling csi_sd pointer could be
-> dereferenced by subsequent stream ioctls.
->
-> [ ... ]
-> > +static int csi_formatter_async_register(struct csi_formatter *formatter)
-> > +{
-> [ ... ]
-> > +	struct fwnode_handle *ep __free(fwnode_handle) =
-> > +		fwnode_graph_get_endpoint_by_id(dev_fwnode(dev), 0, 0,
-> > +						FWNODE_GRAPH_ENDPOINT_NEXT);
-> > +	if (!ep)
-> > +		return -ENOTCONN;
-> [ ... ]
-> > +	ret = v4l2_async_nf_register(&formatter->notifier);
-> > +	if (ret)
-> > +		goto err_cleanup_notifier;
-> [ ... ]
-> > +err_unregister_notifier:
-> > +	v4l2_async_nf_unregister(&formatter->notifier);
-> > +err_cleanup_notifier:
-> > +	v4l2_async_nf_cleanup(&formatter->notifier);
-> > +	return ret;
-> > +}
->
-> [Severity: Medium]
-> Is it safe to mix goto-based error handling with scope-based cleanup helpers
-> in this function?
->
-> This function declares a __free() variable but also uses standard goto
-> unwinding labels, which can lead to double-free issues or confusing
-> resource semantics.
+>  examples:
+> @@ -57,4 +86,46 @@ examples:
+>        clocks = <&scmi_clk 114>;
+>        power-domains = <&scmi_devpd 21>;
+>      };
+> +
+> +  - |
+> +    #include <dt-bindings/clock/nxp,imx95-clock.h>
+> +
+> +    syscon@4ac10000 {
+> +      compatible = "nxp,imx95-camera-csr", "syscon";
+> +      reg = <0x4ac10000 0x10000>;
+> +      #address-cells = <1>;
+> +      #size-cells = <1>;
+> +      #clock-cells = <1>;
+> +      clocks = <&scmi_clk 62>;
+> +      power-domains = <&scmi_devpd 3>;
+> +
+> +      formatter@20 {
+> +        compatible = "fsl,imx95-csi-formatter";
+> +        reg = <0x20 0x100>;
+> +        clocks = <&cameramix_csr IMX95_CLK_CAMBLK_CSI2_FOR0>;
+> +        power-domains = <&scmi_devpd 3>;
+> +
+> +        ports {
+> +          #address-cells = <1>;
+> +          #size-cells = <0>;
+> +
+> +          port@0 {
+> +            reg = <0>;
+> +
+> +            endpoint {
+> +              remote-endpoint = <&mipi_csi_0_out>;
+> +            };
+> +
+> +          };
+> +
+> +          port@1 {
+> +            reg = <1>;
+> +
+> +            endpoint {
+> +              remote-endpoint = <&isi_in_2>;
+> +            };
+> +          };
+> +        };
+> +      };
+> +    };
+>  ...
 >
 > --
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260623-csi_formatter-v11-0-a792fe9c1502@oss.nxp.com?part=3
+> 2.34.1
+>
