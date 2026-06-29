@@ -1,270 +1,134 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013057.outbound.protection.outlook.com [40.107.159.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A307397691
-	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 21:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782768211; cv=fail; b=R2A0XSQzkjcD5K40MRv6R7DDaeBHhQOU96EimlZyX/s45wtTt5EIsbHtnBzeACT2IourWRrBr33kjxA48K3yS3JPaHaA7tHa9DSurLZNxSNP98VvoJYBX0UhbP3ighqxLRfMJn9C6bU/6lvaOclMZJg3wKCNKtXg+8mSBdFz0Es=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782768211; c=relaxed/simple;
-	bh=uu2OFm7VXRIlyI1fftpmnf9PVNIDd26GCo2x91CNiG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=aAjnQfLTHRDFku16XZDvdE0GU/L1SqVwEe/V1RoZMKMZFNrOB+DEEKHXFeC1c43QzC1w73uwI5Ad2J4c3PG3f61rF/bgwCaru0Jel9ZeMcabGZrmTsApmzIsP1Nk3wFXz6uUFKikIqzAu+dhQQeZkL6VD2XtVrBQoHj1j28rSBM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ZzDuV3vB; arc=fail smtp.client-ip=40.107.159.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5803F3AE1A9
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 21:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782769185; cv=none; b=BjsAF0pXsjHrVSBGN0ecjjbvZU2HJlj1db7CIHE7k5tNOlLtNZUXzLtcv37d+hD7MLVR2YEznD2E4I9LRxIiVWPemwghVaYCSu5RzMQzXw9FV0684rWxlXuYXDcX7zJpK78b28ItlYmQueqjrvEPkngzesGolIj33maHRCEMIws=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782769185; c=relaxed/simple;
+	bh=CzRyrS92zt83M2sYdEICZ35wOjTejnYKo5xP1UvTJBc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DWYjZY0YMoV8lqxa9t2YSXvOGGLwUWIvw65CodRbIckkrNIfIHSwkzXK+x9NOeKQX2BytqSPZ2x4DjULHdAxenEZRsITrsa2pJ+4AblnqMzWiiGseveKF2jGcaQyV1wAWYn/akrixnPAOF0nnwtLnVwkNMPgYUbuHzOGLRgaD3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=aqLGmFWO; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ZzDuV3vB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QbI3ZjOKsFMRd4Yqxk163dHW4FLhGwLb3tdqdddqp5HhwN27LYH0MXh7pBboG/kB4wWEV+JKW0kogxbz0IbG3wsPqvh0NdzRqhpXaQFMx9a0T6Hhl8iELvKxUBrtcT3QzITEyQ535ESUGZ2vBrJYgBcUXOzo54YBC0/8MHkrjYGSlsN8yoZTI3va47P2tmfYJz69W0RTD/b+7PrLudWO8VcfT1KFqcpSN5USvS6RLxXiowKb/gyask3Zf6qhjMqK9ZHKipEqM8UfxV4K9ay4664SpG/jMG6rx9DvfFKOUAUyZTTJKlqv0ychQ9ivsQpGbf+cFSY3Wqg+503zq/J+/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3ZlLJ8eKeokazvJmP1FmZ3tWkJpJ2bQi4AHoWyzKyEI=;
- b=MnmTzUXxA7vQPqeofSWP1O+yzQkihc9u0BbtRjQJSrA8PaBkcOYK7RoWh6pwXIOnVkjkvKyzcvPKKXkieWh2va99FEO41IxIIQxpNlrWf/STw2JFrsCvtFJqwbDLEuCI0MuhNq9kF0NHOEoaeE5/xrnBm8GtGf5tek6k8Qn+BdFgpxGl+TCH71VOOlEyDgx+9oPDMw7mkimrXaxkl9OkLsSQzxeid9INONggxt334ItK1JorrLfLAa9/oGwKpq/dF5YURYnaT0wbp9j6AKYDGsHaoggIVZqKdTdI6VeGcvweW2h2MBcyDgntvWJUkbh2J+8RmChXE4dmlieqb+NKcw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3ZlLJ8eKeokazvJmP1FmZ3tWkJpJ2bQi4AHoWyzKyEI=;
- b=ZzDuV3vBuXvBL8pGavjc5gj0JDIl9osWlbuEsh17UX2ZWyg3G3OhicEa74w+iruZPz9zwOygw9MTZDKXhGdWptodhi1hTCAPDQ15aBlfTpnsfQLy4vO6F+RiFR8PdcW5PTYC2pJ+k/8c9G4KwRYyvMVmvTzS0lr0xoPnTollagKNhct+n8dAk2NdTAPT9hKSJHTXFhnieTSfYizzMLPjF+mD9urqhvBhG000jfDsi62tYubactucmrfI5F6B++Xgk8C3eU3Qz+PwgtOmjQM4FfhNsHWYMyAMuZh5IMG/2+tjok31aH1snsxR21OPzKdvKzfNtORxORncABHRaXPlCg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV1PR04MB10305.eurprd04.prod.outlook.com (2603:10a6:150:1d2::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 21:23:25 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Mon, 29 Jun 2026
- 21:23:25 +0000
-Date: Mon, 29 Jun 2026 16:23:13 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: guoniu.zhou@oss.nxp.com
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Frank Li <frank.li@nxp.com>, Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH v11 2/3] dt-bindings: clock: imx95-blk-ctl: Define
- formatter child node schema
-Message-ID: <akLiQc1q1G8C0ZnQ@SMW015318>
-References: <20260623-csi_formatter-v11-0-a792fe9c1502@oss.nxp.com>
- <20260623-csi_formatter-v11-2-a792fe9c1502@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260623-csi_formatter-v11-2-a792fe9c1502@oss.nxp.com>
-X-ClientProxiedBy: SA1PR05CA0018.namprd05.prod.outlook.com
- (2603:10b6:806:2d2::18) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="aqLGmFWO"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493b6f1b14bso3407895e9.0
+        for <imx@lists.linux.dev>; Mon, 29 Jun 2026 14:39:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1782769182; x=1783373982; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5j/JMV1yfh/YR/oT6Vo6fxFZTTv2P3Ka0Eqjwg4hJFs=;
+        b=aqLGmFWO0OP7ZueG/ZskdrTeKgYtZwL9wa+r3iEOgTYK/wnsue9wnv26bNsjH9h8gD
+         J3UCFh8N5m7OQPvUwRr948ADH9TQuDDbRavUzSRgBKT/Da15Wv+QZDibMOZxpVxt7kk+
+         vxwyU+LIrdkTbvvqAewxiTM6xWDiH9PI3YOhSQrk8JB6p3WMLNIWEmqElayUI6T3MLlN
+         vMQ5CjdWE+IxplJV3zUJQ3PTxcQONgKD5mBuiigg9c3BYjAYdFk8oafQqeCvogRGEEpb
+         jut8jkL49+1cvXco1I89FKCsRz+lL/l0lRvUmdIgSrhdIJnaHHuQQtKzThdI5xOmTMK7
+         QsNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782769182; x=1783373982;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5j/JMV1yfh/YR/oT6Vo6fxFZTTv2P3Ka0Eqjwg4hJFs=;
+        b=OgGH+A8KXgzsYPUBG+IGk/ZfcIhb6v70hJ9eY071hyi71CIawGq+4ZNwDT9XWjFYnc
+         YADlel2Ur1ZIv5wgRjmsXNKmSWXKmxSZAdB61sjuSrQVl6Foy9TGJMBphwYs0ZYTh4ta
+         i0Jbt3ksH4WsGvWk1bTrfU+tGJMYodyiVdmTY1eKw43yU0uNMsagdrNnFKyhmUpi0MVC
+         1/ksVd0icUTeLH3la8oKGbwmc5d1Rs3lWXmKqcSryq8vuh7jHxG/AGF2k60tDs8g0J+v
+         0Ri0tSOhnJjV1vS5dXWfAetHklyMKiMqe22GW4zttDWTgCyqh4vVqj+uIPLaYSSjiDel
+         7wkg==
+X-Forwarded-Encrypted: i=1; AFNElJ8R+KLZSHCZc0hoJ3ORlf5WHx+0S5T7bAVUHDZL4u4Uyc02hZaLq6NmaHT2hmgObOTXrnE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyTNaPxTdiN7jO2+A5qy3kWiwP8Axzv47kl54jHrEEw7jzMtjd+
+	GHeGF8H3nVwjqFOd1m4aI7MNgoFC6pi5b+LqVdNwHCsrhsPEPeUZVfmz6SB8h0hkdyA=
+X-Gm-Gg: AfdE7ckkXoooNhPN8GrfVSiYbkY2mb/xfeB4jMjzJwcQETQ/9nTDtfckMLnTkCeLLOD
+	g7VXfKDm3wFvTqvbFdg2CfFlu59AMeeZeStDy17eRBNimw3eBciPHuD8jdqgq/D+BtvQ4geKWc+
+	k4Mc7EjRLdjtSJrjnurhPsl8YYtk/0OLZtzeZXuCD4+7ZPgeE5YPqOBvuRHIy2JKY7nKjene653
+	nO1di9FLDzfRyEMb84dc3vzXfUxhxY7djPdSGQwEYCR7y0ztFDcW/f+POUAFZmAWafUZpySPVpT
+	5o7ENtlzTldB/u+2XGYvmjqwABdNV08ZSIa3DHFuRVKnbIKmeSqz8nAyt0+v/KfLM5Xda4v07E/
+	0Qx0dokzqWSVCGJc7tOqcHJozJmIgqNfEj3OOQL0PCzWeZ70PLpt3YZEHUM8IyW/GgMM1mqYPgH
+	HKubft/EPgJwADaNJECT+RQqVfO3ve
+X-Received: by 2002:a05:600c:5298:b0:492:40df:d49c with SMTP id 5b1f17b1804b1-493b82ac618mr19908775e9.23.1782769181800;
+        Mon, 29 Jun 2026 14:39:41 -0700 (PDT)
+Received: from localhost ([2a02:8071:56d1:2de0:559d:eec2:887f:c200])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-493b8d04907sm15984025e9.9.2026.06.29.14.39.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 14:39:40 -0700 (PDT)
+Date: Mon, 29 Jun 2026 23:39:39 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Frank.Li@oss.nxp.com
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH] ARM: imx: Drop obsolte stuff from common.h
+Message-ID: <akLlvHMcVpXDsS9l@monoceros>
+References: <20260623104557.1801727-2-u.kleine-koenig@baylibre.com>
+ <178276752372.2498119.8965955961315145259.b4-ty@b4>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB10305:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1afa79c-f06b-40ed-bbd9-08ded624a764
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|366016|7416014|23010399003|19092799006|1800799024|18002099003|22082099003|4143699003|11063799006|56012099006|3023799007;
-X-Microsoft-Antispam-Message-Info:
- UZcGRLbWmXuf2I/3O9rNglXoOsuOmT0HmTHCShaz0ibp0J8Rtc69w0+tlgk3pepKPk6Dw/tKzB2ToOghmprZh27/cUD9cMHSG5TJqznk6gkHEBvjH0xoHtE3YkB3XYQEbDuEgnWgv9qzp8MWBbR+3o36WyIvb8qU0efIYrYChIRPNkwGEPQKyJGUvegkkv5bzZ2TzLx6GHZk5WaXlG/C7HyrhWaD6n+PKNDbxa7CgFnPoq0mcPrCydaOr9I5a2FW1nq8lNWgl7RfgFS/8MwzwobfHi8pzxpd0lMf8AvEKpw/EJrDx4GnmPeeQuIUElwTWpexwT9Ew6Riu5lXRT8OSADExPufyHGAlNQaP8OeBl9tyv5GHXxmAEGKJRcW3yoQ9fwCjrv+FQdqFlvc0uBL4rUx9/O9IZUwrfRijPP+YtGFE/CSO+feEw3GB1ugDb/l1KzXonY4GrmDkQUGWczL0m6+bgZlnZDNgR6TnOx5gT2BC2mDu/oAiRoszbwgFd+wISyke3lfUVyDcm4NuvRrTwmgz0TcwMwL4NNZN7Ah0ZxJAhJInux7PESwITnR8yIF5LTBmiWBb5rVyzdtAQo4BIs0K6UlSjCtiqkPDyr/mXc6hXSp41dgpDTziUjSCDCm2ZmkZZwK+TfNMODPiNpm4A2SQ/w9v5dsjI4EmmJwQas=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(23010399003)(19092799006)(1800799024)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?6FxWADYGjnjDS+YxioJkZF/cgyTV7fMwmomXi9AZ6WIUz6h73keXItpvNM6N?=
- =?us-ascii?Q?N5KB77iQ1qRgPWWdcvHU/a8PusPgR0o78oZzzHazyOdz1fDJY5zmU7Lophfs?=
- =?us-ascii?Q?fkHANuWJQy0JoYWBNbAnK1rsRODGHrXAJPovROgJWVTAkUI3TFuYMhQXk4wv?=
- =?us-ascii?Q?Pw/RrwQwguv8uCqExEtUK/T4d0ZoO+SxcCiSwyFh40NV/3d+4rui3B3TL0qn?=
- =?us-ascii?Q?+0ngbU49dnmbsrhr3WKE1Mn9EzkRfymNkwLDPxnVm/OB4uuAL2GeiHjGPtg7?=
- =?us-ascii?Q?XyA/jTxTojcStNsOu4bohm5qQ8ZQ3IRNlrnOMPErFjGy84Mze5rfqoT0Jy9I?=
- =?us-ascii?Q?yibL4C7JCywXC5fukUsvzDwz3T7iyFmfLVlgaBvsmEMlIXssSL0XGe1QBO8N?=
- =?us-ascii?Q?+UP5EoxXDJ7sXhJnXLxPqU6BH7Guvc6BTlLlGd/DYp8czbHpMLkDvyxyI+oi?=
- =?us-ascii?Q?V3/IBZUkQ6G53cUtMYW3bIIat21OWEM3r5v6L8MSbr2XzdMxvQ7Z2jwXSV5Q?=
- =?us-ascii?Q?pf7uy/SBIn2rWeWBldQr65/eoZKkYKgun3oYR7Kn1xidKdjUs44pbu+d7dWY?=
- =?us-ascii?Q?bQDddJzqHsWJ4LvdN2JyN5CCjgs8ZGch7xLb1PqiNq+Cui4eCnoAh1vfA1j+?=
- =?us-ascii?Q?S3ZqEXGpBjGtsRONvbya+ct7AMU3cvdOYhtA0QJmrwM8mIof+7KAcYrjAbh9?=
- =?us-ascii?Q?2TGKHDPTH8evL0SlsasO7wNxYM0xDgsVRJd2iIeQelnZgB96yf1ZFoaeax3G?=
- =?us-ascii?Q?F254KVORMpl4S5ECmbxMd88mYzh0f59rfUCN02IYJ+jpT3fJsgn2yswxWBen?=
- =?us-ascii?Q?JB4RqPh6e8Gg3aF/fCUzdQ7KCRCLY4Lq5j7+amlrAA9Sb9/D8F0X2iQc3PFR?=
- =?us-ascii?Q?ZSPTVLSdWrev01Js04XqpjbWwGZDTUpqFYjYaHkx0SzisNrL4l2wRO9HFLY1?=
- =?us-ascii?Q?G9OCYRqiRGYNvfhgAFEyr/pjcP/9UY6LsHpYonOsmtGaAdy4sjXqQBOqOwnw?=
- =?us-ascii?Q?cv8Uti5vW7GVXcl9RkCiYBBz3onkZVFUtVHbVO1m/24IJFYiKuOyHP8mdant?=
- =?us-ascii?Q?A75onXwfiiouITRDQwsF/2cY6SnF42+BXiosEa1Bqwi+aDxlldj+I7CvBOUA?=
- =?us-ascii?Q?LDpVh25j0FVL8sFUuRcreIrip0HoxegL0MUI024V+zsQwM3Ih6KS5+4OTsEJ?=
- =?us-ascii?Q?qO3+Ms1EdlckObZcECnOilfUS9PWTEuOW/cVdH61lrpqm9qu/1MX7gR0aic0?=
- =?us-ascii?Q?n3zBw0PvDkcbWgFwhDo0xq5+qDFMRdq4/mJcaz/z0UegF7hubg/lF9ds+Dzh?=
- =?us-ascii?Q?um0ZEShojdh1Urx61BHJDZawkiIXDWq5AQu8/BdTNx01E03du7Ifno19CxlR?=
- =?us-ascii?Q?fhdt5CyhjvJrl4ABZFtKLKwsw7h1e9eahv0ws7x9iWBLTd/u8YhtnvGCeIF/?=
- =?us-ascii?Q?MyRpxFq6UmM9T1OxpPkY08q+Jtz6inXBpcdCgql6GRrxcknwUSEravtSz8dz?=
- =?us-ascii?Q?mIqF8ig/EwcbC3CkPx0PJ4aiNQFKGdBmFOycDotXH4Ajx/VNveZI7ioPcAni?=
- =?us-ascii?Q?fNHHbhIwk1v4AUtG0GyufjFvO7zMfPI7claIphZXx5pUKvPp7MDW0vPFrJDi?=
- =?us-ascii?Q?CpbD4vb5Xsv0f/frGo9Byetadi0SHczI6gUNjFwOb1EaEvxEP9/syeFOGMSj?=
- =?us-ascii?Q?zk7JmVKASeSjN0Itf5u/Ev3UlIuXlCykFeziTDo3sGyN3l0jAPJdMxfaJZHt?=
- =?us-ascii?Q?TgeTpB4EAzxuDlyas2jkScghrAiQrGRB8HGrN//8M3BYkWPeq3lN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1afa79c-f06b-40ed-bbd9-08ded624a764
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 21:23:25.1534
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: exHAs7ZfsgFXLmqht9gV+UeDrNlHtGL9uVvxV+2URGyV9xfQ8rKnJXlc6jCNNWmmrZnhvpAKV62uUFAiNJ9i2Q8fuNIbpzLBUsM119w/Db54V9Ca51Mt6Vu7VQ+oWSjm
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10305
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2gwl24wibjwtmlgx"
+Content-Disposition: inline
+In-Reply-To: <178276752372.2498119.8965955961315145259.b4-ty@b4>
 
-On Tue, Jun 23, 2026 at 11:56:32AM +0800, guoniu.zhou@oss.nxp.com wrote:
-> From: Guoniu Zhou <guoniu.zhou@nxp.com>
->
-> The Camera CSR contains control registers for multiple CSI formatter IPs
-> at different register offsets. Each formatter is an independent hardware
-> block with its own clock input and media pipeline connection.
->
-> Define schema to allow formatter child nodes under nxp,imx95-camera-csr,
-> with 'reg' property specifying the formatter's register offset within the
-> CSR address space.
->
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-> ---
 
-Abel Vesa:
+--2gwl24wibjwtmlgx
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] ARM: imx: Drop obsolte stuff from common.h
+MIME-Version: 1.0
 
-	There are week dependence with media driver/binding, Can I pick
-this with media driver together? If this go through clock tree,
-"fsl,imx95-csi-formatter" cause dt_binding_check failure.
+Hello Frank,
 
-Frank
+On Mon, Jun 29, 2026 at 05:12:07PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+>=20
+> On Tue, 23 Jun 2026 12:45:57 +0200, Uwe Kleine-K=F6nig (The Capable Hub) =
+wrote:
+> > i.MX21 (and thus imx21_init_early()) is gone since v5.10-rc1 (commit
+> > 4b563a066611 ("ARM: imx: Remove imx21 support")).
+> >=20
+> > The init_irq() functions are gone since v5.12-rc5 (commit e2c1b0ff38c9
+> > ("ARM: imx: avic: Convert to using IRQCHIP_DECLARE")).
+> >=20
+> > And mxc_device_init() was removed for v5.10-rc1 (in commit 8485adf17a15
+> > ("ARM: imx: Remove imx device directory")).
+> >=20
+> > [...]
+>=20
+> Applied, thanks!
+>=20
+> [1/1] ARM: imx: Drop obsolte stuff from common.h
+                           ^
+There is an 'e' missing ---'  (i.e. s/obsolte/obsolete/).
 
-> Changes in v11:
-> - Move properties to top-level and use if:then:else (Krzysztof/Frank)
->
-> Changes in v10:
-> - Use single quotes for regex pattern to be consistent (Krzysztof Kozlowski)
-> - Add formatter subnode binding and camera-csr syscon example
-> - Update commit title and message
->
-> Changes in v9:
-> - New patch to address the issue of formatter acting as a child node of syscon
-> ---
->  .../bindings/clock/nxp,imx95-blk-ctl.yaml          | 71 ++++++++++++++++++++++
->  1 file changed, 71 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> index 27403b4c52d6..fbbf1b3f1790 100644
-> --- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> @@ -39,6 +39,18 @@ properties:
->        ID in its "clocks" phandle cell. See
->        include/dt-bindings/clock/nxp,imx95-clock.h
->
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 1
-> +
-> +patternProperties:
-> +  '^formatter@[0-9a-f]+$':
-> +    type: object
-> +    $ref: /schemas/media/fsl,imx95-csi-formatter.yaml#
-> +    unevaluatedProperties: false
-> +
->  required:
->    - compatible
->    - reg
-> @@ -46,6 +58,23 @@ required:
->    - power-domains
->    - clocks
->
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: nxp,imx95-camera-csr
-> +    then:
-> +      required:
-> +        - '#address-cells'
-> +        - '#size-cells'
-> +    else:
-> +      properties:
-> +        '#address-cells': false
-> +        '#size-cells': false
-> +      patternProperties:
-> +        '^formatter@[0-9a-f]+$': false
-> +
->  additionalProperties: false
->
->  examples:
-> @@ -57,4 +86,46 @@ examples:
->        clocks = <&scmi_clk 114>;
->        power-domains = <&scmi_devpd 21>;
->      };
-> +
-> +  - |
-> +    #include <dt-bindings/clock/nxp,imx95-clock.h>
-> +
-> +    syscon@4ac10000 {
-> +      compatible = "nxp,imx95-camera-csr", "syscon";
-> +      reg = <0x4ac10000 0x10000>;
-> +      #address-cells = <1>;
-> +      #size-cells = <1>;
-> +      #clock-cells = <1>;
-> +      clocks = <&scmi_clk 62>;
-> +      power-domains = <&scmi_devpd 3>;
-> +
-> +      formatter@20 {
-> +        compatible = "fsl,imx95-csi-formatter";
-> +        reg = <0x20 0x100>;
-> +        clocks = <&cameramix_csr IMX95_CLK_CAMBLK_CSI2_FOR0>;
-> +        power-domains = <&scmi_devpd 3>;
-> +
-> +        ports {
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +
-> +          port@0 {
-> +            reg = <0>;
-> +
-> +            endpoint {
-> +              remote-endpoint = <&mipi_csi_0_out>;
-> +            };
-> +
-> +          };
-> +
-> +          port@1 {
-> +            reg = <1>;
-> +
-> +            endpoint {
-> +              remote-endpoint = <&isi_in_2>;
-> +            };
-> +          };
-> +        };
-> +      };
-> +    };
->  ...
->
-> --
-> 2.34.1
->
->
+If you want to fix-up that's great, if not, I can live with the shame
+:-)
+
+Best regards
+Uwe
+
+--2gwl24wibjwtmlgx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpC5hgACgkQj4D7WH0S
+/k6/KAgAsFaXtrgz86LeL9gRjNk69aMhxBj55LBjrfYQkRcd2ELw8fKZOVe6XiiE
+dyikdqZgsrSNIkQOyRYd7vHkUJRvPXeK4tpsumhoKIZdz3OPQdrZXPoKxlxcobEr
+GMwo4CV0bFXSg0clo1tjsLUXoAOTgBDhYx3++XDKO6imyBblkmRy5oIBUPTjGfGx
+Eszyi8SPkrmR4HFtXDyhtWX7+KxaiI0bc5wrhlDMLI1jAF+EIn3R6zE/8ZoP55RA
+6J5Jr3HrtUM0iVShCgC5VKL6Uwp9t8Dj1G4o4ulHQk5a64uSsK+z7uGmQXAoLg6y
+zMSUuSV1yhBv6kbgWFAbnLQuETkBYA==
+=iJG9
+-----END PGP SIGNATURE-----
+
+--2gwl24wibjwtmlgx--
