@@ -1,192 +1,169 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013002.outbound.protection.outlook.com [40.107.159.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926F3449EA0
-	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 16:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782749110; cv=none; b=OHgL5I8xrnSIdqFXeaBNM5rceYTciCQmGiTbsAoU7KK20veSJZL3QC8DN+fQzba2GD0sOjcOKZymgYWHQqhGq9prl3Sz0szLIfdmoj/Jn3D/7dp9mEO4f6u0hS0PLhC67bCwbANUerJafwJ+CiYAo3cT3GUtiPUchioX3jZxvA0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782749110; c=relaxed/simple;
-	bh=2CqpLrxkdTX7sOcbrrrZvxIln4gPdG+c93HFcDXzXnk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=so/D4YuP6KNl1GTu4EU0HN0LkFYx3GwpepKDLCQaWSSCGSeeguEISaFzZV29cmtdeYNy27QUh3c7OhKhbnW3v6pkarymqXuezH6LqnM+QuDJ8avDf19Vosi6H8hE52+fPxXjsNwYLVUlYOkB5f+rFS0Cp1REX2yuBluDYZ1y10M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZR26Xpj/; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EC54279F9
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 16:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782749504; cv=fail; b=LV6uilpuCeq4bp3lX9Jc+y56FaNtBiS1HB9EExUl3UhMuNWCz1jTu4tm783RMVBDlUq3pcASd7fIrsPt/ZTMy54VhodWYcIBaUFwP34CBVicM37/hrs85aqRVsOCWJEin3KJzQISBJEsrxcjgnxUk2P7nu9XBCVmIG3bzozVJNg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782749504; c=relaxed/simple;
+	bh=kMIYlDmE2Bd3b+ztjGnf3hAN5Lrc1IXJSWd5iNvAANI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CTqGyXqWzL3C16uESejAaSQvlknLBQQEm1p4ieWALbrryz4BEjyNiyNsE7McEBFii9ahz03A1YPmYiblZyEtBfg/T5CNOz27huOMG2Wen+ab9If/yEDJ+RICUoe/wOY3p23YUNvhR3lU06sJ4TBZH20qfxiZvp6gi3NcJhHqROI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=d6OU/0UL; arc=fail smtp.client-ip=40.107.159.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZR26Xpj/"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 193F41A0C78;
-	Mon, 29 Jun 2026 16:05:07 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CC0055FF96;
-	Mon, 29 Jun 2026 16:05:06 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5043D106F1820;
-	Mon, 29 Jun 2026 18:04:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782749105; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references:autocrypt;
-	bh=JEjXI5ld7Y55/QqO5968kb9+2z9CP3Ygxw7dHEqom5Q=;
-	b=ZR26Xpj/h2bjGnEy0rXxSf8ycA92obShxrsaA50vA52kd8FsTZE7hKWfj45lwvmZ0vpUD+
-	CpUIgwZajjKpABmCqVzPtvHNToTYZULmlCgJYH50mOCHNklr/7EFWhOaikdFBh4Asl8OyU
-	ch7IkaMi7YQgKppWdOiA9MnUOIFrKhNQ/8iVMwky19S30P9iMhDCVsHpzHaMYDQioTGKdE
-	4Qt14sxoTHE31GtL7MuzaQVQmQQGxXKg9k/haUnxCq1MCHxk2Vl9MQvubsKjWKosHUr+pL
-	zTWVID89XRmUAVM8XXdJQ+NDg2WpDuH7fDRsVGlLBIroIO52qb4o5+WJWqRxkw==
-Message-ID: <31477953aace52bb6594461e82ddf99493af2329.camel@bootlin.com>
-Subject: Re: [PATCH v5 0/5] Add support for AAEON SRG-IMX8P MCU
-From: Thomas Perrot <thomas.perrot@bootlin.com>
-To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Linus Walleij	 <linusw@kernel.org>, Bartosz
- Golaszewski <brgl@kernel.org>, Shawn Guo	 <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- =?ISO-8859-1?Q?J=E9r=E9mie?= Dautheribes <jeremie.dautheribes@bootlin.com>,
- Wim Van Sebroeck <wim@linux-watchdog.org>, Lee Jones	 <lee@kernel.org>
-Cc: "thomas.perrot@bootlin.com" <thomas.perrot@bootlin.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, Krzysztof Kozlowski
- <krzysztof.kozlowski@oss.qualcomm.com>, Conor Dooley
- <conor.dooley@microchip.com>,  Bartosz Golaszewski
- <bartosz.golaszewski@oss.qualcomm.com>
-Date: Mon, 29 Jun 2026 18:04:59 +0200
-In-Reply-To: <b4396f57-3501-4e89-9cf3-8dc5d7cad9b7@roeck-us.net>
-References: <20260408-dev-b4-aaeon-mcu-driver-v5-0-ad98bd481668@bootlin.com>
-							 <b4396f57-3501-4e89-9cf3-8dc5d7cad9b7@roeck-us.net>
-Autocrypt: addr=thomas.perrot@bootlin.com; prefer-encrypt=mutual;
- keydata=mQGNBF+/ZOUBDAC2DghCjZvmgYcve02OG7dGZ7Iy58uEwne3LB7w7nRwdAxKw7ZaiVqwY
- O+yNGVi+GVx7oA6Wn4pv46z+QDRLQiq6OseuXhkSGCg7U/yBCUq12B/GRGO1Qt2Qi1mJJT1s+1qZ5
- Gxv6Nypz9qKVn94GM2bR1hXBga0t87vBpebThOHmX5d/0dqIcVxRCM7onNb0dDyRoVgLS5rBhQzrL
- CMrJaCy39xZUy0J1SOlH4Mgk6EhJIPYY4wlzikGX6urg+Tc9EjGd78ry0e0p5U5qgjFR5QGJDy1Gn
- U3CfwbT9sowdCASDbQDUoltlv2iWJCLa0xl97KVchCa0pr7HKbFA3J5SLKqFYUBCkFL+5WudYlz2n
- XxiUgyviMQxyK+ij66kEi6/2zFDAecd43pHV7790ptqZBC3Jc67Emj7Vo3ShX6RXPPxxbeCTOF2uk
- I45aJ9XcVFH/MFE96NjXj8uahnIsiTPyuCUoJu8tj7TSQyue874qJqVQvqlFyt2aZYJZ8ruq8AEQE
- AAbQpVGhvbWFzIFBlcnJvdCA8dGhvbWFzLnBlcnJvdEBib290bGluLmNvbT6JAc4EEwEIADgCGwMF
- CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSHQHfGpqMKIwOoEiGfwAsFcf4K7QUCX79mdwAKCRCfw
- AsFcf4K7fhbC/wP0kSl6id2E/K3+UdXk6CLMVRbCFLCREzQs5WFpQ6l/I0WGOamhrOgegdszheiVF
- orlUP8d37XSpFAqydhKGaN78V5Dps0Wmwm4lIlS4MtQXJtSLUHXDJLIZLW0pw8tiPLKsd1o/yDkXE
- dnpsjJTRG6SdDSHnyOB2/gh4p+yTaLytFdARk/r4/P26+L+FiH0fFl+RnBt19LPklfKgeDc7GwIif
- ja+nIWpp3W23DAUuI6xduEut25Q89yu7Ci8CliLfAiLy9bIGjBQWU2Y+1/j/7KuPj6VbBsZWLTZY0
- hUmpJSTnWAqc9SMsNxo7NSQuddgviz5e2tqucaRqxP02FGzNa8U4NAKdWaXrlHG5Dglj9XH0DK+SH
- +c96qqFewYD8VPQ6XAGxQcXbrtJmiMor1R2DfziispLRvJcfYs8xqabbCtoS3ouXB9XRi8hn7A2kh
- ME1ryS+Oh63JshXHnw6bmjCpVd/p+fGLIGU6A47pJOpviKR4jEO84pl2ejtDZ3Tc=
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-yncApkmTxr+3zEDpopn/"
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="d6OU/0UL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uThqY8P2RPwrREqxp5Xr6FZclWgUWc2iTdABACLR/Zfd7yXj4ocmLsaEPnRogicMKVDL2msFvGXP0ZOLaz9lS0tDAmMUnasDYcXi3ERIYDrjKt01tsVhk8EqW+kDetunEXZlJbq9RnlWhgfyWXzIEWIAVEnT7jJVbfnUCudCVXvd2egsmnxMJBJeHxODcWDkOCh2ElH2ZM+ATFXbZ1z/Fa6CXwbJ5r1M0IOXxjesImf9BxhwwDQu0Ldr0zTejAVDgaVB0cXuM3KQxETXLSrDZ0eJG3BKkK67r+WKDWKHyUDsW14GHR4T/HiFxCK7gX0N1eRENlGOQE4teeX9nCdqxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=52sYgVXZMl2pPoypSyZD1aSkfKP4cbv4PDDtd/biNTU=;
+ b=GLdh7mxVljeIu8tNtuMxJIO1x3wbziDkBTgx+DVQjuKJM0k6SaUsqe9OhVfDth+N4soPlYDa9gMnyXAQ5gpJ8OK2fpmWoQ2HBEnwFDgMWuL77t4v+nho4GCxN5pdJlnrA0Gzzva7vzh39VC1SB5Elck/CgvO/OhwRyP9HzlKwfzVrZqP4fAupdUWSELtgaSqneVLdCH+1QjosJ+VPVxTjrexAR4jaFKqQWLxTyK0OM7E0VgQwFJPv0xyV4aOPZinfc8EgEwYudalZOwV9uHO/dABRrQsaQd2MIpPEfLIY3YkhlOkuni9WA8d0MKJISkw2oooMtKJcbfjzrFDRG08+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=52sYgVXZMl2pPoypSyZD1aSkfKP4cbv4PDDtd/biNTU=;
+ b=d6OU/0ULRKSnO1VfYUPm+yPR6dQXQC4bbnyU0pZTrIxmyOSxNlJzNM5R3i1dYYKsONq0pqacMsM1wc/ehEj4c4O4DP4jZB6OrmFYTgK0vwGQQHYaTU2DZ0yNvldLl6Q3jz0gkTfE1n0kmwieoHqVQc0jvztHlWad3aqv04fiBg2SyyVdJEe3mhrc3eOMPMAmAnQW5zlObtDlP/UEW5eTncnqssX9ZdBv0Yh5cpZ3bb9K7RGExlpZLgQAtOxvin4F5cd9m9w3eV3AlZShPyRCETGax3qPLxC/s4GJNwoQnwHYWVzXIEUCpfAox44qMToYVSH6asCKTxDVRz6NywRygQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by VI1PR04MB6944.eurprd04.prod.outlook.com (2603:10a6:803:133::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 16:11:34 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Mon, 29 Jun 2026
+ 16:11:33 +0000
+From: Frank.Li@oss.nxp.com
+To: sherry.sun@nxp.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	frank.li@nxp.com,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	hongxing.zhu@oss.nxp.com
+Cc: Frank Li <Frank.Li@nxp.com>,
+	kernel@pengutronix.de,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: Re: [PATCH v1 1/2] arm64: dts: imx94: Correct PCIe outbound address space configuration
+Date: Mon, 29 Jun 2026 12:11:24 -0400
+Message-ID: <178274947494.2269247.5578929502580839250.b4-ty@b4>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260604023821.134372-1-hongxing.zhu@oss.nxp.com>
+References: <20260604023821.134372-1-hongxing.zhu@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PH7PR10CA0013.namprd10.prod.outlook.com
+ (2603:10b6:510:23d::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI1PR04MB6944:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67a029c4-f9cb-4981-1808-08ded5f916a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|23010399003|19092799006|1800799024|22082099003|18002099003|11063799006|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	u+dLa0U2/StgLact/ndBcA4mJGe9LMHHiM9oXbEDgQhHjKD2pcqOhhlbK4UKIdlhGTu8TaP0DHb53KPXSHVGy76wE4dMlDSuH4VniQ9TmINqZc3z4+R2tjNQAT5KS6nkqq/s5oI+vFX4EmrJO8pxMMFQCXGvLjF+AJ1SKmPWWx0F+D+R8zavpVz4VA3Yn7Qa2EfXtlCNUyjxk3FGmbMhxBGpG4rQvde+8YatPdfuHy7GC/C+VJC+p9xUsxRNF998+3N2qnDxIryqhD9wnCaJH4d4L+pprdMZ0AsA0JvRT+46y8coqBfLSolq6RchtxbEVMngF1joaSXCRMKZmATgQpsmf3Him8uxmRDyCQlk4NXzsC6Fj3z5HUz8ato2ys25DxZrNrK2O5b/rJQ3QJPfMjmV94quOQEvuSjQedrbrOi3aCATropX9Vkw+Xu0RInW3e+jYD2owKgH4Ys/tc/InAaQEPiEO5GPCJjRc8WxaE7yjnp01kYBGeCTM1gZH56HlxQmUWehIw0fB9HJH3653vjilXh5NihYi9MKxsL1iBp3IcesPo1b5yjNopIbIyVBufOE9Sh5R7X9hJH8wSh15z44v1bYYLs0O5q6Mb5+KjIbdBUh6EvvIFb9aROjktcuYyafWIu50j3YgTXcgUek1BwVAgLWreJBteHbUS3QS2Y=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(23010399003)(19092799006)(1800799024)(22082099003)(18002099003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SzBQVG9OaG9XUDNqaE9SemhxcVhSWmZTZlQveFM4SW5RL0ZjNjZmWVBIRmZo?=
+ =?utf-8?B?T0FFUnFEeW1ET1NyWmRxdW5wOU5sNmhSYmlvV1YwVFUzajRkMTZmSGtzSHNI?=
+ =?utf-8?B?anVWZUJ4THdKVnJ2dVczcjNIK05YWGp4Lzl2QXhnVXovOEJqSUQxd2VGb01W?=
+ =?utf-8?B?NXJoQjdmQW1KUFh2bnJpMjVjZVhqTUhkUXpnaTlqWXpGM2MrQkdQcnNjUVk5?=
+ =?utf-8?B?QjNFWXg5TGlHcnVmeHg2Zk85R0NXVDZML0FlelhmSHZXd1JGTmxMZTlrcW1m?=
+ =?utf-8?B?eUFhYlZsZTZock90QXhqRG1iM1RFZnlKZ2I5dExxTmlGakdOOXhEZndTSS9h?=
+ =?utf-8?B?M2xTQSs2WmpRRFhtMFVZMTVsQXIxd3F5SWQ0RjlqaVd1NHlGUDFyZHZZZnRz?=
+ =?utf-8?B?Z2lseERRMkNHR0JWUTdxK0NNaHNMejVLdWNtN0l3aW5iUHhYT0YyNGNPQUlJ?=
+ =?utf-8?B?TkgrdTJmcnhUaEl1cG50OUl6aWRPemVhaXNwWmNsL3hoMzVOT202LzB5V0M3?=
+ =?utf-8?B?Y1I0YVdWYmJMT3E0dkhMZ01ISkd3ZWc4TzhxcmxsaTRmc3ZzUlJoZUpqdncz?=
+ =?utf-8?B?T0VWbitvR2UwMHpwVHNNblNpMG0xb0xyT2JLWGhIWHFLWHJoQlJPL2pxVk9M?=
+ =?utf-8?B?c0JvaUZZak9pY3FzSzBhcW10dG9qVmlPU01Ic1l4NmI1dDFDU2pnWnlDaFFX?=
+ =?utf-8?B?R05BdmcxSkxBUFBmVXU0ayt1RUhHYVVlUWJCSHF3ckpkcGxKNkNOTWp2L29J?=
+ =?utf-8?B?Z3hrUm1QREtsaUxlSGhkb2kvaTUvYnlrOHl6UTNHQy9XWGpsc0xURmdLWmJr?=
+ =?utf-8?B?aGFnRjdRMnllUTBKTHVMRXJ2dkt0ckpOT2E2RW5mdll6aVpXTXlWbzJGWlU0?=
+ =?utf-8?B?MFdES3dsYWFNSmpXRVBvMUFjY2FsS0YzRlllY2NQbG5Bc1JwOHhCdUt5dm5Q?=
+ =?utf-8?B?UVc1UnJWZDNHdzJsOHRRUFdTdnRVWlFaT3hQNmxROW9YKzYxZWFZQittdGg1?=
+ =?utf-8?B?V2pyLzhyUVAvKzFLcWRreGd3V29DY0VjT2FyWjNSVmtFUml3NkJKMkJ5dlFp?=
+ =?utf-8?B?eWxKdnNtSmp3dXlSRkNOQnk2eUFaT2dQbXY5TVJDU3pBUEhCanZ6aks0ZzBZ?=
+ =?utf-8?B?bXVXRUs2b1ZyRnBvakErNzNDZUtOWWM2Z0h4Mno2SHR3aVIrTnQwaUtDSjVq?=
+ =?utf-8?B?eUxwaTM5Rm51b3FJVWo1ODIvemRjVDl2cWV1Mk5TTDdWQndLMndaUkZYUDIz?=
+ =?utf-8?B?Qmx1YVNrK0UzOWdKWFFqY0M0emdOVE9qZGNFT0R5WGJacFU4VXR0VTZEZndS?=
+ =?utf-8?B?MkJJYTRDM04raVFwcnpsU1BMcitvOXB4S3pITllaanRIQnBOMEtGK1c3Z3Zm?=
+ =?utf-8?B?RCt0d09xTUR4YUY1RXdhYUEyb21VU0hqNlI2R091Nkd0NUZFZUdOZnRnTkMx?=
+ =?utf-8?B?R2N1eHhCMHNaL04zdlJCTnJwYzJ4SVFWSXlsS0dNZHpkem9WdTdEaThDTTVl?=
+ =?utf-8?B?UW5nS1RaRHFyb0IyRVJ1OEJMVWRkUU5mMzYvU09hWVB5UXdYQkF4cnZoNWxl?=
+ =?utf-8?B?dmgwREc5UzFHektzTTVjLzBkNjIrMFJCMTZGMU9ETnZtVmlQNmVRUitKQ1Y3?=
+ =?utf-8?B?Nlg4YUJFS01Vc1B4ZlF4UnhQQ3Y5UnI3MmFiZEkxTVY5bUhNSTZ5YTljSXIx?=
+ =?utf-8?B?bGJXejV5aGc3V084ZUQ1eng2OTNVVUtKUjJkc0lOaG4zTWsvaDZJL0wweWNr?=
+ =?utf-8?B?clZ2clg2NFoveTVFZUxRWWNtZVI4dGdiNjNxM1ZBMUhNWVB2ZFlXRkVraHRP?=
+ =?utf-8?B?ZWU2MmVNdEFhbDlEbXVvNzAraU9GTURmTy9BbFcxQUNUeWxXNXdTaTI2MnlJ?=
+ =?utf-8?B?M1J4dDZPU0F1Mklab3VZQk5VUGxqdmVLc1ZzaGZsQzZMUEpMRDk2U1VFQWFW?=
+ =?utf-8?B?azBJWjlKR3BHTmo0cnVDZzNpYXBTWHRMLyt1dHBFcE9ZSVFZQmNyYllhR09w?=
+ =?utf-8?B?VzVtVmg1cjJwZEpPUGRFMGtaWXN6cWVEekRKTUdVa2tva2Z5K01IN3oyT1hK?=
+ =?utf-8?B?RGIyNTF5ZFVlcUVGRk5iaDVUdjZRVzVuN3puV3ZKNk5HdFVjMjhFeDZpa2dh?=
+ =?utf-8?B?eW5rdG82WWxKMFU2MmkycHNCb3NaWUNNS3BKS2hLbUhKS01CdnY0WkZtaWFT?=
+ =?utf-8?B?aVJodVQzdGRuUVpWMzZJb1ZWNUlETUZYRXlFTjB1YTNwSU5BK0tyNFg4RDJY?=
+ =?utf-8?B?SmI4YWtKMHB0bFc5MzkxSm1TbEJSWHZPNmhGL05obXYyVWFlbGFJNWkzaGxk?=
+ =?utf-8?B?cUNGYmZvbFA0MmRoRjhuN25tWDVxTVZUUS9ySFY3R3NHbjFsVTNLbjY2d29y?=
+ =?utf-8?Q?AV31KmQPO3Kop0igKbHb+r2z0a4julmUdloy/?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67a029c4-f9cb-4981-1808-08ded5f916a2
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 16:11:33.8612
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iAq+8N19k9xr6lBgi9diDzbD5iw2rwMvWsmA7aihH3QtGcIWB+iddKqi2rJeBzjDJL1p61kyFfes/Uz3oil44qWvCHFNudqfWkdQyJxdK14COSGSBbCaVnB/MTtI8Rbb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6944
+
+From: Frank Li <Frank.Li@nxp.com>
 
 
---=-yncApkmTxr+3zEDpopn/
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, 04 Jun 2026 10:38:20 +0800, hongxing.zhu@oss.nxp.com wrote:
+> Fix the PCIe outbound memory ranges for both pcie0 controllers on i.MX94.
+> 
+> The memory window size was incorrectly set to 256MB during initial
+> bring-up, but the hardware supports up to 4GB of outbound address space
+> per controller.
+> 
+> Additionally, the ECAM region cannot be mapped as I/O space. Use a
+> memory-mapped region for I/O space instead, and relocate the 1MB I/O
+> region to immediately follow the memory region at offset 0xf0000000
+> within each window.
+> 
+> [...]
 
-Hello Guenter,
+Applied, thanks!
 
-On Sat, 2026-04-11 at 17:12 -0700, Guenter Roeck wrote:
-> snip
->=20
-> Sashiko has some interesting feedback that might be worth looking
-> into.
->=20
-> https://sashiko.dev/#/patchset/20260408-dev-b4-aaeon-mcu-driver-v5-0-ad98=
-bd481668%40bootlin.com
->=20
+[1/2] arm64: dts: imx94: Correct PCIe outbound address space configuration
+      commit: ffccbd6804e885f0fc23f0005f6bee7789a7a887
+[2/2] arm64: dts: imx943: Correct PCIe outbound address space configuration
+      commit: 6de3a7d7a4f653be4901d07425719c4e55805167
 
-Thanks for the pointer. I went through all findings and addressed the
-  valid ones in v6:
-
-  MFD driver:
-   - Set I2C_M_DMA_SAFE on all i2c_msg flags. The buffers were already
-     heap-allocated for DMA safety but the flag was missing, which
-     would have caused unnecessary bounce-buffering by the host driver.
-   - Add select REGMAP to config MFD_AAEON_MCU
-   - "Kconfig COMPILE_TEST link failure": I2C || COMPILE_TEST lets
-     MFD_AAEON_MCU=3Dy even when I2C=3Dm (tristate OR caps to y), which
-     would fail to link since i2c_transfer(), only exist when I2C
-     itself is built in. Will drop the COMPILE_TEST escape and just use
-     depends on I2C, matching the other I2C MFD drivers in this file.
-
-  GPIO driver:
-   - Replace __set_bit/__clear_bit/__assign_bit with their atomic
-     counterparts. gpiolib does not serialize across pins, so
-     concurrent direction changes on different pins could race on the
-     shared bitmaps.
-   - Reverse the order in aaeon_mcu_gpio_config_output_cmd(): write the
-     output value first, then switch the pin to output mode, to avoid a
-     potential glitch if the previously latched value differs.
-   - Add MODULE_ALIAS("platform:aaeon-mcu-gpio") for udev auto-loading.
-
-  Watchdog driver:
-   - Add WDIOF_SETTIMEOUT and watchdog_init_timeout() so the software
-     timeout is configurable via ioctl, DT timeout-sec, or the
-     watchdog_timeout boot parameter. This also addresses the concern
-     you raised about the hardcoded 240s timeout.
-   - Add watchdog_stop_on_reboot() so the MCU watchdog is stopped
-     during system shutdown, preventing a spurious reset from the
-     external MCU.
-   - Add MODULE_ALIAS("platform:aaeon-mcu-wdt") for udev auto-loading.
-
-  The following findings were considered false positives:
-
-   - "Heap buffer overflow during bulk writes": with reg_bits=3D16 and
-     val_bits=3D8, regcache_sync() calls _regmap_write() per register, so
-     the write callback always receives exactly 3 bytes (2 reg + 1
-val).
-     No bulk path reaches the custom bus callback.
-
-   - "Stack DMA violation in read path": val_buf comes from regmap's
-own
-     heap-allocated work_buf, not a stack pointer, so DMA safety is
-     guaranteed by the regmap core.
-
-   - "I2C interleaving race": Concurrent access from child drivers
-     (GPIO and watchdog) is serialized by regmap's internal mutex,
-     which is held for the entire bus transaction ; both i2c_transfer()
-     calls complete under that lock before another caller can enter.
-
-   - "Missing PM suspend/resume callbacks": the watchdog core already
-     handles this via watchdog_pm_ops, which calls wdt->ops->stop() on
-     system suspend.
-
-Kind regards,
-Thomas
-
-
-> Guenter
->=20
-
---=20
-Thomas Perrot, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
---=-yncApkmTxr+3zEDpopn/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCAAdFiEEh0B3xqajCiMDqBIhn8ALBXH+Cu0FAmpCl6sACgkQn8ALBXH+
-Cu3gtwv/WZRg+KDlEazT/qmm8H0EzbCYvvDakncblFOk6oJq75kaC7outXtOGBPs
-RK5rwW7VB2GP37sLS2vrA+JhrJ4gUgY53HnLtpgZhYgV5q449bqqb/8VGSBFYvw/
-CBdvzUlHzP4zA6fxilChd6n8LVFAvxNLMe+wzm5iq8Q5687omtSQG6/Z1DDy/RHo
-B8xahs7i3PGGPoWD3TQXKptPBfMBuZHZb391TGsWs4dmG7JLi1QTM1Z30NBRY3ov
-CQfyzsvn44wcFZosCgWBVtM8n6UZZrIpuUtq/EbRFnk7UzdNB7Tv025plUbXJbRV
-cuKEFUs1DaW7Rlv4DL6Q2sV0DeoLYM24/7Tac7txF4D+8Caqd4u8QPtlqpWmzMfI
-HbHdcQB3sIkbGvVn4wNxmzKNgGqjOUs+p/UqwVhb7w9B7W7DxuH5gTswBWBo2X9O
-vx+YKBejGUw52tqYkAedq8Xi+KwwFwWI5oP2wa/cOmP4YHn1jabk0DCIGmlKfxlj
-hKzlP3Xi
-=aAXr
------END PGP SIGNATURE-----
-
---=-yncApkmTxr+3zEDpopn/--
+Best regards,
+-- 
+Frank Li <Frank.Li@nxp.com>
