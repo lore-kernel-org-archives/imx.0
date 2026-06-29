@@ -1,243 +1,185 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013023.outbound.protection.outlook.com [40.107.162.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0D2426699
-	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 15:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782746984; cv=fail; b=qsHG4Sya10q5lNrX5rOIVtyx7HtbhSdUw/FiqUjMyO6dxWRCbN28bMv8jkLVGvOGyn+fXJRLE/W6Wsklnr7L+p31kQPq50ELVZ1oDkKNeP0+CSrtP9tGbSKFQ73ZmSZbpIpqXYPvze43L9BgoA781kx8KJKT8MoRsKUeEN+QXTs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782746984; c=relaxed/simple;
-	bh=Vt7erQc1gnA/H4xNHBuGW6O/FeRh8tCBBpMN2h25svU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=R3GmYKUDZXjJ6VyfvNb/YoP+kKRSCL8+nzIntaCLTuNrLBCOtCkYt0BHTeVrsYXX6w2dOpcGj5Iml6BdmXeqYNlKJ5b+AwFPnKFPVn3mgcDBvXUFk3JBkcIN9aH0G+szckJH7HHFk7n0ud6O4e1KtmVRwU6+l5W/Cbf6jkVpJbw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=TNZGYOPz; arc=fail smtp.client-ip=40.107.162.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4179423A9A
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 15:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782747367; cv=none; b=mlAd1593LdUB/a6Dg+uWV1nRE+IQsptDlilS4yWd3fVrWFyGUYUC1y9pxKnD8WbEC4BOrqTIHyKUkiMA63ynA7tK/wVbNBUG/AofSSeCJQJI1Ddb/ck/gpwR444TnJvdH0nPG+GhXIkXyL1zhDlm0T0rknDDHkb7FLkpMu527JE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782747367; c=relaxed/simple;
+	bh=dPo8To4lMTniabQIFcwXhKUudpCTlGapUPHUrc4t7vE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U63NW1BLNQ0zjDvvYUwyy8a8PpoDCPvgEaEOKwvAViqSgxE3XpiqbfT6eJa+FqwPIgBSKtSO2GQmjzhkGauLw+lVBmZYTvSP/xUzXyPQNxQQbSep6b0Cd1GJhvfauSNmGGJka2QUcC2H64lSToUmTl+uHMYYIiPVkcpBYjK/+2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BNNM+Oen; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="TNZGYOPz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h68z1V2U163BXQ6Uq/mWPPiNxXN1cqnCdE7hoUtMFx7nUAGxVXabQ295MXRACypM7vlyifWsyfP6vit0Lz6m0uHxmtsfsi4rn7RkPR1mpff5iccKHHss4WlOU2qDJW1qZrVzJNXPJ+FIN5DNRcD8cZmOIZ+NZ5Wtyj1ES5euSJGZp4hFXDRdYLxQcM0eZKp5TpnI8AstsSJT3sr14zSXcXRo19ylgzk3oqSD0qEiAzxrenAjGXHx1sEFOQgyGYRxmla4cmT+SZqbX6Pts1phiGAC+Tjh5H49nD/BgohsFSTGcOPnfkcQXlugYwaLqo0xQ/A8gX6OAB44GP5JLLjOrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=53Q7fDvsLHfCdpxdhUVIYXmixubrZSQ008lgK//m+lE=;
- b=JxJP/cZCs08OcKFzRo5tB4jhr2/cldnUvVSjWNa09F5zfMn6U62BFZ5xDR4PPhFWTd4L2TaRU8HEmRvCm9IT/emjdT5U4XC9gaHr1/inCh2OopfNKgIHHz5M0zb2NsQAuSIX8DsNIhRXEb4Bg8M6alZRzLC1Oi3TEffWYUQjsiauQex60pfY8ymIgGCnfHWSKrkwgA85f5aLwoUNoPKkJHcHY+ZOtsqVIF3aCpR7tfCRD2ikkQG0JCuRICeZ/eLRTLKGBLmLoy0Lh/msSRiQpY+41NTg3yEv8hCe1yWwa1pH6d3MRX9mLTDT+tCMm7Uhkn8o/LgwyDOMx88TtuEXAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=53Q7fDvsLHfCdpxdhUVIYXmixubrZSQ008lgK//m+lE=;
- b=TNZGYOPzRT8N6Lx+pQc5dxd3iOAsx4xtQZW74Xxo66EcpyiPRNb51ULej0aT2YmIYk4hWWEEmDKoZ9/6aDyjuWemokxBd94j6+IPvz12u35dqx0Ukbof09iiSj2cvf0+fJxW55NX1o+fLQRhq/ZQ3Zi+eYhYR0v17zL2NhzPLCL/6xfWEcilt8coVap9xuoGDreNhc28TMZlp+pCEahmbHmJkvNjmX6PVwp4vJfgYW1VrCOHjVvVe1a+WA/3zO00iz6OT4R4OfW6GrmDNWhWosChWiLhR1Dw37slQGn9llambghVcBwHWjtIDcp6y53gf7dOQsX1pJIX0/smHrUR6A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VI0PR04MB11070.eurprd04.prod.outlook.com (2603:10a6:800:264::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 15:29:34 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Mon, 29 Jun 2026
- 15:29:34 +0000
-Date: Mon, 29 Jun 2026 11:29:26 -0400
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BNNM+Oen"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c82da9504cso9950715ad.2
+        for <imx@lists.linux.dev>; Mon, 29 Jun 2026 08:36:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1782747365; x=1783352165; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RsiAkF5rnsXrEzna1iMYWZla+7JEf5EC3Z4oGTp3rT8=;
+        b=BNNM+OentI60EWYk+vU91PgWQBpOVhXv6X2Vj5X3fBlIt9OaBSULqxIVkzjqM/fqkl
+         Bvo/r6VM1uOv7oWAL/UM+kOU1HaAhQL8R5JXd0M7XZlUMfW//3BOLQugBStCfS03BYPX
+         /RVr2Fd7anc2x3VOdlRw7lsAHKxyy4+VVzhgrm+u/3EaCZj/tE7Stb2NyatD3CQkQ1lu
+         KCK/sAfpb4ZDVeUCi29V6vpLiY/fB1h+D9hjIB2pzDs1JlmaOkpa7Iq/prC7veThuC+i
+         gu2EpcKKuaWu+D8Ks+wbu89HC9U8Z58RSDRczznVZgwP5NqH7T2n03aoaCcyTjr1Nynn
+         PJFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782747365; x=1783352165;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RsiAkF5rnsXrEzna1iMYWZla+7JEf5EC3Z4oGTp3rT8=;
+        b=eY3DC4cJpSeCJ5NctSq63/QmvHkaJN3zOKM8Dn8KYeMrTScZpc4V4RJWRGtBpE54j2
+         +HIk/ye7s3HSERui7OESi2XE16D3NN1id51U54A3qV074TOUE7DOBU0Na1lgDFrpiH76
+         rVs6jMebZfW4dWQwjj58vbtUCcYqSJlPKpwyTe/8Gl5Z7IunMnvmr1bmCzUD9G3Vvq1f
+         0oLXnYmVQR6YPXByVFJ2BpNRAGQrzNy/blIYoPlMM3Mtcu9tzRqIznBwhbS5Zl8HjJy4
+         RFi9ZmqjWOUdYLnOd0C77bBAg2lnE4OkS65vFG6EqeCN4Unymz/tKmLlhPBRFpaPMp7P
+         kiRA==
+X-Forwarded-Encrypted: i=1; AHgh+RraVrNuCOTOuHGLWPit8W1aNlf3z2JaeIwahPQawcJgMr2IGuRq3unb2AClWz0RKZ0TYoA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz1p5LJ8WYSNUByu68+BkWRVRGL+OjM9fNol/JJKvURF0fYZgtZ
+	XNqU5vW2FagU8qHF81LGDWjUDYR1ucWqQRi+6f0TBMdv9k2m70DA+NJ3ATH1hYSF4mk=
+X-Gm-Gg: AfdE7ckK8Ajnk4yFgB94pPZSYB00ilslPelkgxZGijg18HMIftoaU4pdkf6prbnTELf
+	88CnBSNo9Goe1rIEs0rljq+wQgw6LlKwGvn9zCK+0Zjxgc2QkvfOC6QdqKFOAnHZSE6+4mg6cw7
+	KgzyWyGHb6bTaLFMnofFd8KWJK4VUyTQqp3m0Xh46s82psO1uHq0DikjrbRlPunQIYa8aRXlady
+	IPzYUiH/w2uTTxa4scsq9OjD00IoUHI9t7zk9HOIW62bxYUDwq1bbPv9N8UZIJ5gNwXiHi6TVT7
+	Zq+1gxONQpfWYwfKC5gDcoIvQAwKQQhbwCAaKynRocW/q3q3Y0KB2UwwcgvTJXNkvV3QdXNqXEH
+	RmJZlZCGsWqclkSfWXXcvBe2UzHiE7K19qcqUCyeEFe9UppxwdRQHPaubeY55J/yuVl1t0wOXbM
+	iNJKdbFWRetPd69UlNihpx18++QzY=
+X-Received: by 2002:a17:903:2f8a:b0:2c0:b5c1:8e22 with SMTP id d9443c01a7336-2c9854b5597mr89458355ad.12.1782747364963;
+        Mon, 29 Jun 2026 08:36:04 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:aa83:261a:68a7:9974])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f63d09f0sm98408955ad.56.2026.06.29.08.36.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 08:36:04 -0700 (PDT)
+Date: Mon, 29 Jun 2026 09:36:00 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Ben Levinsky <ben.levinsky@amd.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	linux-remoteproc@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH v12 2/2] arm64: dts: imx8ulp: Add MIPI CSI-2 and ISI nodes
-Message-ID: <akKPVovk-j-gKAjz@lizhi-Precision-Tower-5810>
-References: <20260424-csi2_imx8ulp-v12-0-da148eabc035@oss.nxp.com>
- <20260424-csi2_imx8ulp-v12-2-da148eabc035@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424-csi2_imx8ulp-v12-2-da148eabc035@oss.nxp.com>
-X-ClientProxiedBy: SA1PR03CA0001.namprd03.prod.outlook.com
- (2603:10b6:806:2d3::12) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Tanmay Shah <tanmay.shah@amd.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v3 0/5] remoteproc: cleanup shared carveout and
+ resource-table helpers
+Message-ID: <akKQ4H09G2MpRVGN@p14s>
+References: <20260529021637.2077602-1-ben.levinsky@amd.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI0PR04MB11070:EE_
-X-MS-Office365-Filtering-Correlation-Id: b8c62635-7909-4b85-5396-08ded5f3388e
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|7416014|23010399003|19092799006|1800799024|366016|4143699003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
- 0czYZSUmzppef8WFIG6DbOrsLmi85eeGHY2dqYwkgMk1tBJlED1h9+i1ivY0h3FhNXaEtZfeR9NRKc6QUQELdkeFuWNx3jWxb3NUn/f6x8+Sx8tU0WyjDLlsIi3ybg8g9G/B+Nq8pOmxUDFT243QLGRFS9tI6XZ6tskke6vFV8ldJrzLYNTW+QoNNwPYtMn8zt8nsDnlu/qlAuLyynamg6slzmNRgkWSuR8dHG9Hu+NlA+CkZ3EWYnS88d38m9uThHHpf2L4czIf8nfoSaf+69ibHcW/OygBk6rNfsGN2zaSVQOf3iibTa8filTmgrsxNcJuliqr+HdREsJ54eMGIiCaLt+uTVc+wEJk+BAKjjJ2x3RsTyUdUirOrpd6rOcOZlw0oMoK+U4jODeD7PBuE+zFVzMLW/PQp1/gM9G3wSJE5LBlGM29SU4lLh+Esg5nvk5OP+LtfMZjzZotpkDU//1oYZKiXyUOUc2RhyiUEpwPSSZwW7x4JwyQaRR43Datc+7jyVJRwJRZYRRks6B8OkBu05vHNuu8pZm7iC+ZoTEB2xYh5i487LKR0JS3aEBGTzZZtWj/xp0MVwB4za8JIFe/cf6u3eJvdk4Dfmlz6GhDXUVuzLz1tB7/MRHDCAySdRUQbYF9HfWG8diu/y6PO6StUVdNlBPHHqC5MTRToxk=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(19092799006)(1800799024)(366016)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?/mwmAL4roQi4WdTapljkoQDAKOWxzyzzr2RqzL3ztuLnSHGuRwM87hh94yOS?=
- =?us-ascii?Q?onw3Azw3w2g14LmN34Wso8/Jul3SVEGzqtIGFNkD7NQz08NfQ60VJrqxpxFt?=
- =?us-ascii?Q?5+s1MDBAumxHarlRS64zVe6Q60bNwsvZF7q7j6+XhlctLWzDUNuSjSOqwe5B?=
- =?us-ascii?Q?kNTymk5cFYHbX9ZpMuI0afFULGnCYNmIyU4Nwp8hXGJ3yVbkN4PBOE3ly8VB?=
- =?us-ascii?Q?aOGrIedy+PF1DPnMyJUuqJ/oH1dWD6HG3kuGYjfFkDUTPltv0QIMVF4vAG4v?=
- =?us-ascii?Q?jntEBBfLPntLVXToB8E1J3TRPV/0kelRv2ikNJJo8SK7EgNnO8kfIxH7hYdF?=
- =?us-ascii?Q?AIwZvL/KXDSgE163vXJmeGB+XJiMzsi9k0xXI20q9kF2J/PfJ+ZpRk3819Is?=
- =?us-ascii?Q?gq5CvcGi0NCHkmrOLJ5yzTcLSrVrXLJSwzPx3S+dRKViBN0MATAd9ej+14Vm?=
- =?us-ascii?Q?pxgwpzpzhTk/uAtPLGMxvPXgiAjE1D+E3me1JBQIX+Bx+C6El5raHj8+oBYp?=
- =?us-ascii?Q?BZKvEOoBIWucJW9P5IYzN0gnZdUWKhMC6eB8ZjFX6KARiAn+076LnXR2+tPr?=
- =?us-ascii?Q?dZS7dB68U+UoS8Ao5NuMtjLgfgFXbeyAWjPZitCZhNCRzHCAFDNmxltibuli?=
- =?us-ascii?Q?GdXij2womtZ8Fo8nnd/wIT1Wq5IBt6bCsqJ7ANaGaOLxU98eLlx9KPfdnhH8?=
- =?us-ascii?Q?17Bh35m2rS1UrBqpnyKHU86GPdRo970GjiO3SS26/YcFrdEEdIHpbef0MwOD?=
- =?us-ascii?Q?8EbrxPlYbwqaUF0FUGD4viRJGH71qfvdpq3PHBjavNhdbnON+DXvePTHSRTT?=
- =?us-ascii?Q?0aNhRULW9wzm4ypbupAXgpnnfze1Qqftqt0ps49ppDGttP4UaDF4zcjw1hTp?=
- =?us-ascii?Q?qXJKSvZT2+zr9AJDqM+nnqF0pwSU/C+2tHzO/BdbT5kWRJonIvTMs9pOqfuQ?=
- =?us-ascii?Q?jRDdakZle2O9SXbvRdqqYO+9tzPg89b1Lbh5usBAwQqj/aQ8OnoDR9twJpzb?=
- =?us-ascii?Q?mucjarOnJwm2Au2sEV76Zt/NCkgt5JhcIWWqVx0myDQFfiCO6TXftYNXgw6q?=
- =?us-ascii?Q?ukErl1FS/j9x1XQbgxiQWlodjDDELK2r1YS8f7d7YXlFv/B1mULkW/B5BOi8?=
- =?us-ascii?Q?GcFj7v6Dw652ngsi7+78ntN4kBBpFin1qIdBTvnp/gZj3fXdm/OElO+SaEKK?=
- =?us-ascii?Q?K8kM4VY4euOJ4kuRBSmL7EOc1dNUQ6iDHL44Uq0L8TsPBS7eo9I9vskW3VAH?=
- =?us-ascii?Q?UzEpYU13aEPcvWJPoSm79koN1VTlhgIp0UfHx4daOn0u1z+tBZiJ05F8Ph28?=
- =?us-ascii?Q?TYJBDMQL8EwNBjujVcJuHgyVr4JJuGvQcz9HFTQPT8MW+P2sJhKzrq920Epc?=
- =?us-ascii?Q?Ez5HSOPhhrSzl6DKS/1G+MJTV9pO/5Dh4b/ZT1IQBqWwFCZgAr5GVR+7SMup?=
- =?us-ascii?Q?EdFCUr6EDvZl1s9jHBL3p8jgjJDah8mjxCLIAycObqXvkLCQsMTBKDcUqz20?=
- =?us-ascii?Q?0MhRZXED9uxNzAOT1GfkqttlTNB5d6oWOpVZukkmdhDXYOs2X22c565wvukn?=
- =?us-ascii?Q?7VUQts2jjgBAF2KsPg3/BrI3FT2xjp14Ak3pcHpW3GJA8sbh2sA7VnVAMGDT?=
- =?us-ascii?Q?9pHCuU7Mo25PvuVsGZ4AdVczfEh8+ZQbJwYohLvgyQra9Eer3PzWCaoHv1ts?=
- =?us-ascii?Q?7vpb57wfAeScKtrzOqmuegNhhRvHfQVvLmajHzA73ag7QKQ9LnwZqqoLqXcv?=
- =?us-ascii?Q?uZAIFfaHImGv3g3IhchMmpbs6fDq07VK9dCLPWGWRv4SD9vZ14s2?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8c62635-7909-4b85-5396-08ded5f3388e
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 15:29:33.9256
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f2mBgyT/iczUU1WF0Wtss5vYHSChaVg4eB8GiMK+Pc3OZEdGyQaECQfl8pzPRyM5GwRfvhVRADXbeTbqfiDtFqZQBs2Kqd97OzNsbKWv9eUy2E3+skZXXyUSeUWjPYXz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11070
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529021637.2077602-1-ben.levinsky@amd.com>
 
-On Fri, Apr 24, 2026 at 02:49:51PM +0800, Guoniu Zhou wrote:
-> The MIPI CSI-2 in the i.MX8ULP is almost identical to the version present
-> in the i.MX8QXP/QM and is routed to the ISI. Add both the MIPI CSI-2 and
-> ISI nodes, disabled by default, as they require an attached camera sensor
-> to function.
->
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-> ---
+Applied.
 
-This part of the previous version patch should be applied. If missed
-something, please send new patch, which base on my dt64 branch.
+Thanks,
+Mathieu
 
-Frank
-
-> Changes in v12:
-> - Swap ISI axi and apb clocks to align with dt-binding requirements
-> - Update commit message
->
-> Changes in v11:
-> - Removed #include <dt-bindings/reset/imx8ulp-pcc-reset.h> which was
->   deleted by Rob's dt-bindings cleanup series [2]
-> - Replaced reset macros with numeric values and added comments to
->   document the reset indices
->
-> Changes in v1-v10:
-> - See cover letter
-> ---
->  arch/arm64/boot/dts/freescale/imx8ulp.dtsi | 66 ++++++++++++++++++++++++++++++
->  1 file changed, 66 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> index 9b5d98766512..c5cae7675ce0 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> @@ -859,6 +859,72 @@ spdif: spdif@2dab0000 {
->  				dma-names = "rx", "tx";
->  				status = "disabled";
->  			};
-> +
-> +			isi: isi@2dac0000 {
-> +				compatible = "fsl,imx8ulp-isi";
-> +				reg = <0x2dac0000 0x10000>;
-> +				interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&cgc2 IMX8ULP_CLK_LPAV_AXI_DIV>,
-> +					 <&pcc5 IMX8ULP_CLK_ISI>;
-> +				clock-names = "axi", "apb";
-> +				power-domains = <&scmi_devpd IMX8ULP_PD_ISI>;
-> +				status = "disabled";
-> +
-> +				ports {
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +
-> +					port@0 {
-> +						reg = <0>;
-> +						isi_in: endpoint {
-> +							remote-endpoint = <&mipi_csi_out>;
-> +						};
-> +					};
-> +				};
-> +			};
-> +
-> +			mipi_csi: csi@2daf0000 {
-> +				compatible = "fsl,imx8ulp-mipi-csi2";
-> +				reg = <0x2daf0000 0x10000>,
-> +				      <0x2dad0000 0x10000>;
-> +				clocks = <&pcc5 IMX8ULP_CLK_CSI>,
-> +					 <&pcc5 IMX8ULP_CLK_CSI_CLK_ESC>,
-> +					 <&pcc5 IMX8ULP_CLK_CSI_CLK_UI>,
-> +					 <&pcc5 IMX8ULP_CLK_CSI_REGS>;
-> +				clock-names = "core", "esc", "ui", "pclk";
-> +				assigned-clocks = <&pcc5 IMX8ULP_CLK_CSI>,
-> +						  <&pcc5 IMX8ULP_CLK_CSI_CLK_ESC>,
-> +						  <&pcc5 IMX8ULP_CLK_CSI_CLK_UI>,
-> +						  <&pcc5 IMX8ULP_CLK_CSI_REGS>;
-> +				assigned-clock-parents = <&cgc2 IMX8ULP_CLK_PLL4_PFD1_DIV1>,
-> +							 <&cgc2 IMX8ULP_CLK_PLL4_PFD1_DIV2>,
-> +							 <&cgc2 IMX8ULP_CLK_PLL4_PFD0_DIV1>;
-> +				assigned-clock-rates = <200000000>,
-> +						       <80000000>,
-> +						       <100000000>,
-> +						       <79200000>;
-> +				power-domains = <&scmi_devpd IMX8ULP_PD_MIPI_CSI>;
-> +				resets = <&pcc5 5>,	/* PCC5_CSI_REGS_SWRST */
-> +					 <&pcc5 6>;	/* PCC5_CSI_SWRST> */
-> +				status = "disabled";
-> +
-> +				ports {
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +
-> +					port@0 {
-> +						reg = <0>;
-> +					};
-> +
-> +					port@1 {
-> +						reg = <1>;
-> +
-> +						mipi_csi_out: endpoint {
-> +							remote-endpoint = <&isi_in>;
-> +						};
-> +					};
-> +				};
-> +			};
->  		};
->
->  		gpiod: gpio@2e200000 {
->
-> --
+On Thu, May 28, 2026 at 07:16:32PM -0700, Ben Levinsky wrote:
+> This series is a preparatory remoteproc cleanup split out from review of
+> the AMD BRAM-based remoteproc series.
+> 
+> During review, there was a request to move the duplicated plain
+> ioremap_wc()/iounmap() carveout callbacks into common code and to
+> factor the "missing resource table is OK" ELF parsing path into a
+> common helper as well. There was also a request to send that cleanup as
+> its own patchset first, with the AMD BRAM series respun afterwards on
+> top once this cleanup is merged.
+> 
+> This version keeps the same overall cleanup goals as v2, but reworks
+> the optional resource-table pieces based on follow-up review:
+> 
+>   - reshape the optional resource-table helper in patch 4 into the thin
+>     parse_fw() wrapper form suggested on the thread
+>   - switch the patch 5 clients over to that helper shape directly,
+>     without post-helper rproc->table_ptr checks
+>   - keep the driver-local parse_fw() wrappers and their existing log
+>     messages and severity choices
+>   - retain as much of the existing per-driver parse_fw() logic and code
+>     placement as possible while moving the missing-table handling
+>     through the shared helper
+> 
+> This series now does that in five patches:
+> 
+>   1. add common subsystem-private callbacks for the exact-match
+>      wc-ioremap carveout case
+>   2. switch the in-tree exact-match users over to those callbacks
+>   3. mark carveouts mapped through the shared wc-ioremap helper as
+>      iomem so the framework uses the proper I/O accessors
+>   4. add a common helper for drivers that treat a missing ELF resource
+>      table as optional while keeping per-driver logging decisions local
+>   5. switch the matching in-tree drivers over to that helper while
+>      keeping thin local parse_fw() wrappers
+> 
+> For the carveout map/unmap cleanup, this series covers the exact-match
+> users called out in review: xlnx_r5_remoteproc, rcar_rproc,
+> st_remoteproc, stm32_rproc, imx_rproc, and imx_dsp_rproc. The zynqmp R5
+> TCM mapping path is left alone because it also clears the mapped memory
+> and is not an exact match.
+> 
+> For the optional resource-table handling, this series converts
+> xlnx_r5_remoteproc, rcar_rproc, stm32_rproc, imx_rproc, and
+> imx_dsp_rproc. st_remoteproc is intentionally left unchanged because its
+> parse_fw() callback also builds carveouts and is therefore not a direct
+> match for the helper introduced here.
+> 
+> Changes in v3:
+>   - rework patch 4 so the optional resource-table helper matches the
+>     thin-wrapper form suggested in review
+>   - note that patch 4 still triggers a checkpatch --strict warning for
+>     the flow-control macro form, but that implementation follows the
+>     maintainer's review suggestion for the thin parse_fw() wrapper shape
+>   - update patch 5 to use that helper shape directly in the client
+>     parse_fw() callbacks
+>   - drop the post-helper rproc->table_ptr checks from the converted
+>     drivers
+>   - keep the converted parse_fw() wrappers otherwise close to their
+>     existing structure and placement
+>   - test xlnx_r5_remoteproc on the latest tree with firmware images
+>     both with and without an ELF resource table
+> 
+> Changes in v2:
+>   - split the mem->is_iomem change out into a separate patch
+>   - add a common error message on ioremap_wc() failure
+>   - drop logging from the optional resource-table helper
+>   - keep driver-local parse_fw() wrappers to preserve per-platform
+>     missing-resource-table logging policy
+> 
+> Ben Levinsky (5):
+>   remoteproc: add common wc-ioremap carveout callbacks
+>   remoteproc: switch exact-match drivers to wc-ioremap callbacks
+>   remoteproc: mark wc-ioremap carveouts as iomem
+>   remoteproc: add helper for optional ELF resource tables
+>   remoteproc: switch drivers to optional resource-table helper
+> 
+>  drivers/remoteproc/imx_dsp_rproc.c       | 41 +++-----------
+>  drivers/remoteproc/imx_rproc.c           | 40 ++------------
+>  drivers/remoteproc/rcar_rproc.c          | 41 ++------------
+>  drivers/remoteproc/remoteproc_internal.h | 38 +++++++++++++
+>  drivers/remoteproc/st_remoteproc.c       | 31 +----------
+>  drivers/remoteproc/stm32_rproc.c         | 39 ++-----------
+>  drivers/remoteproc/xlnx_r5_remoteproc.c  | 70 +++++-------------------
+>  7 files changed, 73 insertions(+), 227 deletions(-)
+> 
+> -- 
 > 2.34.1
->
