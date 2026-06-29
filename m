@@ -1,54 +1,53 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011049.outbound.protection.outlook.com [52.101.70.49])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013023.outbound.protection.outlook.com [40.107.159.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A156F37BE6F
-	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 07:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49F73B1EC0
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 07:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782716659; cv=fail; b=jiwXBtUGRs5kkd06zGeA8n4bWvguvYgCLzmtSF7seai8NUlcxNV7nZDQUzP5rR52RknElLOVtERYzucVAVJmYqsTBFA9OgvjOnH/4ovWcDbp2VOYgYzXeeSTW4w50QrCbWvPBraVqTRJoi5zUdjkvahDiy91WXFfGz7cWIwIiz0=
+	t=1782716665; cv=fail; b=LMvL7+1mnaHiS8geS0YiPCW1ZUBp37qqZQMJ2fsGFsXoYZA9oh43AvwRBSXkCVTW4Hxi3GjKmcGTPk9BOUMF8voeU4xmidTtzDO4B8zq4ubl/7dY5CHLJvju8aWspgYLWZoUcCDbH5JNMxYPO2s1h2cjAlnl8uCsgffCrgDZ67k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782716659; c=relaxed/simple;
-	bh=g/tspJdnIjaYPLnhYruDKhmk89UURmZxtfy22fiiEOA=;
+	s=arc-20240116; t=1782716665; c=relaxed/simple;
+	bh=WweNHDHiElH8o82jk8npSceeFRcm3zMBKegXgf5E3CE=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=dgzTp5Zvj7Om+pjCw1CvA9FI+iN/zLdVyeCYfx4fuTRAr149pz+z0Nm3iq+Z2DmldRm9vXBIHTddoNkdXAskD67wE/O7BhZgWl+wTXYm2s0UQNbZWDvzYyliY9z56FrzO59LrBPRRHGZkgIEYMR9H4Z66UFK69rnAQDQMFovTYI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=DNc560OB; arc=fail smtp.client-ip=52.101.70.49
+	 To:Cc:MIME-Version; b=rtrUYZ1reSWS9tGFiQbzrWZ0nRz9ojGTmyzsJ7ROzqsPxblmAddMxuyv3y2J2yZN58stJzp07Lnrn+GL5pI2l8xem0xDvusxZSEhHdWZhy/n+lfty7KkMuJ4uHUD+z9MOtMcv95JwL17vwBSzWEDYpOzk1Fz0JpAC4DdIoYgkoY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qQVtM7m/; arc=fail smtp.client-ip=40.107.159.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="DNc560OB"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qQVtM7m/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BqrwaMfyu/6E3OdrYjfZ5UHD5ehIBfRgNaPwS7zPWziaV9+DOXPhNDvhR8BoESznWYkQeq9ciDMGahARmScTtpvMGk0DHS/r1diLt0SBm+CjPt4YldbbN831KyDoZy1cbWhIgCCVw9Z72z9oMwoktoOyuLv4hCbTnhRj91h0kDeNaEyH5pzORLnUUG9oqeCHDfSHZ6324l7sd+c14I8z3YDdKORAEddWsIpaKKyZfIzox900Bj6xOEJF1d5gXR4x6+EXMTaOr3MfHylG6bwyAwsVmksnFHyjtHxG/B4xwosmsCEgOTDa+z2qyOBcBcr7sdn4qBL2zc/R3Ai/u70dCQ==
+ b=O+vlqOPoncazuf06609axZBhZVinhQpKBHs+fbhOJFM08jyWLcQFllM1kqDrEAzEZjXHbXdWZeVMmXeLgRpobmofDTiT03sogKIMxJTIpeOlx1By/A0CrHFTIeke5r7heWCbK3EW8GfBUSCXXQVVmxpZsrsLcdXOU+RuJdAdFoH+4W30MDCA8r7qURkW8w4/A1xrv81WVQV9oPnvTaaWhNYJQD2d3tQFnL+nZyKVHsZb7AAMmSa9BbFg3zG6E0K/4h7JbvvDRJn8shoLJUd4axLNuk8dN/MuqdUYBFzchyICI55pmk0uJX8J2MH/AYokPWJca/b0b2hT39Jiiva5jA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v0gFZIF2db8KJGG1tEkguhOHK5K/jZjmuXvyiKIoMp0=;
- b=VZe2OyMPxNqtpzAvFd/p8jntta3cPlLb6TP0PKOb0HVLopjclMUI37LXX1Jii1RnynpHT1qUACoul0UgKHc0tdfBxTE74AQDKZ8NHQtsE3PARMhTZhaNPj9MmMgHWwg3JB2sdBKjiHFa2W94WiBwSohaIVMGdfauhy8D5Et9DTNvmWPlUWs4t0bUQRUxw8Y9FgnuRTkgMgp8wjjgtGm+WQ6D+4qiXqjeBre2Rc5KC+X67w0wObUi/obNcn2QAmC5IZ+kbeHQaxj7BKjkZzgd8EYQQB02c6q32g6io23xgpvYLILlBLVsD5oVZaeOex54oxxUMMUrAhB5ePb7iTPeig==
+ bh=6rHFjSqf+6DCLeGgGMXnp2u+e8Dc03oxwYB+p+SScKQ=;
+ b=O1MK/ahdTCgdzga1hqhKrcK56lk1/sYHYpFM5A1EhlUmNMR7MwCtV/nlFh6cWWhlX8goX+uV8dqRCEMIebQHWwqfPrsv0BnhuQqb5lkONfCoKFiIj2ysecC5jtqXvPbNQOvTzqoGpKKm2jrzCdPwYJMbDRMPNRSLvbthmZAsl/dc9tWpssP235madU2ShSBNzRJ+VbnrgmOxYAkuW36bQM2q2cjmFusGW9U181FtQuLWnbw1TSYW3B/VSi4pWLMrgbe+buTsVjQJmIrrDk2bKxQHNQMXMb6XaPcGnXz85B0MTb1+JEgG7LNrXrfndpu7bAvcduwQyhdOScr/JoC5Pg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v0gFZIF2db8KJGG1tEkguhOHK5K/jZjmuXvyiKIoMp0=;
- b=DNc560OBhnCIyuP1ouQ6SVKeGhETV2zAufMEgeM9CeiKGcektMJwyc8EtI7lrsIMUHc0ANoETaasxNBpkXaAi27tNXMrwqyAdMI51Xsnpz1dySzlujanzUzZ/ayhpoHj37S/rs1AY2zdrJvF7wFp++jpxivlCFqM7oHfo/45b4WH9JZjLCF9+3mtJx/idsUH/+guyfDvZW0wgq0Xoz42hEhqoJDc96P1dZlv+svEBbHFBE8kntY1ZX6HljS3T/OUpWA4aeD7cQV1ma0mFvu021dgzi3z2hX8DJjyeSwlGtu/wG2d7JERMfQGO7YwIxBGp1kore5u6yA91omENnu74A==
+ bh=6rHFjSqf+6DCLeGgGMXnp2u+e8Dc03oxwYB+p+SScKQ=;
+ b=qQVtM7m/giEAOsNZtyt8hotT1nZ0DCpuQnQjgn5TxDf6kVrfLSZBU19KYWjaOQgFTuuGqejz3b5OIj+KvNBecIpgbvao/ttCH3gS7JxhIjYhww49+q+wnRnQLupHjF01eY9ZgSze1y0Mo8E+UW2AIsdOleUYzy8PU0fRlkVrneCRNrQh+nOUbgppyHjoUyDNvEDdeqJwN4Qv7W4UmZdF42mDDL24aHBGnCcJ+f96Kl21f7Nwu7pBb6CTNyMXA6PGg+hob1+ml4+hiHcg17WCdqNrGuXi75Tun2eh15EmqqDKpJbpRtX+tvmN+2/lOgnrM0zg0575zbii5YiilJji5w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from AM9PR04MB8469.eurprd04.prod.outlook.com (2603:10a6:20b:414::15)
  by AS5PR04MB9853.eurprd04.prod.outlook.com (2603:10a6:20b:672::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 07:04:15 +0000
+ 2026 07:04:20 +0000
 Received: from AM9PR04MB8469.eurprd04.prod.outlook.com
  ([fe80::1f31:d3d0:6150:b49c]) by AM9PR04MB8469.eurprd04.prod.outlook.com
  ([fe80::1f31:d3d0:6150:b49c%4]) with mapi id 15.21.0159.013; Mon, 29 Jun 2026
- 07:04:15 +0000
+ 07:04:19 +0000
 From: pankaj.gupta@oss.nxp.com
-Date: Mon, 29 Jun 2026 17:51:57 +0530
-Subject: [PATCH v26 1/7] Documentation/firmware: add imx/se to
- other_interfaces
+Date: Mon, 29 Jun 2026 17:51:58 +0530
+Subject: [PATCH v26 2/7] dt-bindings: arm: fsl: add imx-se-fw binding doc
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260629-imx-se-if-v26-1-146446285744@nxp.com>
+Message-Id: <20260629-imx-se-if-v26-2-146446285744@nxp.com>
 References: <20260629-imx-se-if-v26-0-146446285744@nxp.com>
 In-Reply-To: <20260629-imx-se-if-v26-0-146446285744@nxp.com>
 To: Jonathan Corbet <corbet@lwn.net>, 
@@ -62,15 +61,15 @@ Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782735844; l=7403;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782735844; l=3245;
  i=pankaj.gupta@nxp.com; s=20240523; h=from:subject:message-id;
- bh=ZSAmXRvPjYNeGEa/I9hefXFuALx9geFcXzYMsSoJmHQ=;
- b=IAcIixXhnfNNLyPhwB03kX+A0cbyGynZhuaDibTudH9zN/bkvzK3GwI6w3UvqTAjAhBfKAMEF
- YfkyM8MLQtaCd12kKlW+ncXUfHFkZjruGAwS8+jBCjAoKZ3T9+oWkI/
+ bh=T+yyPOpdxzPdIuNJ+imfCdmSEVDwuOuBb/dhiIQRNpY=;
+ b=AiNF8HJQGcIM/q5X+61dnSC2Q96eJhRNJnHH+gWvNB6HpVI3Ylq4sl8F1+ZkAWRRPG0hv1HJt
+ tcHjPP7M9mtDKPXcU/vJj5UnCk5KLpIRptOgKnEIJdf9vxSMnGltbmB
 X-Developer-Key: i=pankaj.gupta@nxp.com; a=ed25519;
  pk=OA0pBQoupy5lV0XfKzD8B0OOBVB6tpAoIf+0x1bYGRg=
-X-ClientProxiedBy: MA5PR01CA0204.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b0::16) To AM9PR04MB8469.eurprd04.prod.outlook.com
+X-ClientProxiedBy: MA5P287CA0003.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:176::12) To AM9PR04MB8469.eurprd04.prod.outlook.com
  (2603:10a6:20b:414::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -80,222 +79,192 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM9PR04MB8469:EE_|AS5PR04MB9853:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8616b33b-895c-4f26-b465-08ded5aca105
+X-MS-Office365-Filtering-Correlation-Id: 84e6da9f-47d1-4d5a-7c63-08ded5aca3b5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|376014|19092799006|23010399003|7416014|1800799024|366016|6133799003|11063799006|22082099003|18002099003|3023799007|56012099006|921020;
 X-Microsoft-Antispam-Message-Info:
-	91oR/dWyvhsCW3wLWY+lGP/JwmTwAgfkgS5G7r4HpahTrmNTlqRB3A6aAcCsJqZ0Sasj9ajsZ/JQ0ifq/wPaNiGbRLTyQdarNiNIIr0FTw4tVOadohAyyxPSqlcginyS9pq79HUapWufjd6H0m3NmbAofr/VcYWg0L4i0vW0061tp8ru0n69CyHmNUx3esltMYIiy/bAstkx5vbLEFg0qn4k/i0lSX4lG2CWyeeuRfVkTu6lek48LlARYiUi3JkJXjxPTlWbvcpCy3flCLhnz8NiKszDEWA7Pwqy66Win4BHSpUPJSgUv7p+9tWBC86fF7tJ/5+lGQjfxKQjZkutTGi9bDqWF9GYXstMaLtt+waWh7V2VOfaRoqh9psMEBZh80LqpcYlDR5+5mC8YIt/sMNrAjobDn+PMNQVmf3oKBAyj3wOad9SqTKGqdxVsuUfxWxNHETlCfurXpLXRYFmSWqz/1+1sjr8LPIYObZsf3trRutyGC1TcLgbMfu1OMNhwRWYzUiAne9RjE22VhuopblJnkkWAsd8IH6YISRB84ksOwofaULV2z4SjH8E00INCrD1v97pdSxkEj84Pl9DDCavOoVKGvLY8h9EFJXT5uDKkLRWlFNn6g3BZ5CYYvUWzDjw4ANfxCCgpDLPXJD5LfRYVmbOeJ5ubDzZJCI973O5PR8LvGlMkjT8PzXdonZIivaCoDIBNTiFGSGksbvlSw==
+	fTQQwlc79t/0oro7TKsjtjIDTrFk12URuu7wPs5qIzDP0qKvJb4kCmcE2RIbu1uJn8j8AaAteCcld9FWy3cDFjdFgmn8oGIlBsg0h5LkALBt5SB1sY28gnJtOuIkvk4MWG29QdLiTUPcT0cBm4PWmwRcTrWxfBfXHi8J073z7MEDCHbJAbhcEtEYicZ4iPG7JQO2mOobdEVJoKOPlqW3OFgRbDwww7MgieGlhW9OAt2Cva9VzvTURNRNppxyIC7AtjoUIEhrKOmVPaTX0uJhV/DY2P+Gwqk6w+NvrZEcUV1PDPvMhktc0fsyS4ifuqE36j/hop+k7saxIJ2LPTihKMma+EaYyBRITF2L5zvqPlh7XARBoFvzcQqzLDgpZkG/PkEv62S5ZErPhVnrxMmwYxju1/VqC0LLrqX5jHaDn+AW7hZQcQ6/emL4rGRHrgWxBXIGkPgs5YqNrKmGZatLPE+nVs6PRKl7mwIij8DxpDrnriC8Zi2hpQjGxP55LixVJRe5QkeBHyw3gw0JB8bWfsBblqiMH+kfiLPS8zY55iHgTPTVuMZxZvh73+atrGyIp5LjYsSQkToU+CGQnmNvELWuYBMta74kteueo+HngCJ2b3Jf+vxroEZsOJ45wGCrhp0DNydvA4y+PkZdwtuiS6OyepAiKv8vBNsBV2T+rn8=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8469.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(23010399003)(7416014)(1800799024)(366016)(6133799003)(11063799006)(22082099003)(18002099003)(3023799007)(56012099006)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bnYxRGljWUFlNlZ0Q1JqVEpRNDdrNGZmZWhNaHQwcFNvVEdFRUNuemV0dVNC?=
- =?utf-8?B?b3AyWUFIUC9heHEyU3NoNGpwMHVLei9OOTlMaldNYi9wVHNFSURsQnEvdUd5?=
- =?utf-8?B?bkQ4RTlkWFB2czNqM2lVcGY1SkU0NXNkbWN6Ynh3bVB5YmczSko2aU82UitV?=
- =?utf-8?B?cFNiejQyVTVIdXpnSGZYdHlNZE5wRG1Md1FRM1Y4ZjlQdW1JenJ4Q09UNHh1?=
- =?utf-8?B?OHpsMU51TSs3QUc1MEVaWnNzMnMvOEdVdElERGptV2h3aXZYOXBCTzVqNmY1?=
- =?utf-8?B?cm1MVDdNZmdoNldaa1RlSzZPckZlaUlzT3dXbkRSS2xlUlg5QXZhSjh5cDhR?=
- =?utf-8?B?ZVFsZnlBZlhmdG9Cc29oNlY0MGgrT0RId0xPcGRzOTI2WXpUdytDNU5JR2px?=
- =?utf-8?B?U2t3OTRWOU53b3ZQU3M0NkRydDNEb0NzWUZsalZuMmp0amtjSUl1eHR4ai83?=
- =?utf-8?B?QnJJclV0NFFhSjlXZE9PU1BvS0hLZTV5MjMzZmV0bnAxQVpsZ2pLUWR0V2pF?=
- =?utf-8?B?enJxVUVPWGtDLzU3SkIxUWZFV284TVFtRWp6SFRna2JXc1YyUEtGTDVGNjVw?=
- =?utf-8?B?R0NYb2htbzcyTU50U1RKQzF1MkZVNVpPZTgxZXJRRzhSYlNscU1lVFROVTls?=
- =?utf-8?B?RWJ6Z1FEVkZlaURFNDAwcEEwak9vcExVSGpZODlkR0QrVzBtZUFoZkFTKzlh?=
- =?utf-8?B?cWdNWGhBTXd1R1hReHB3R21RSlYvcm1kWTFSVVZBa09KeGUyTWxhOWRtVitM?=
- =?utf-8?B?REFYUUk3MXZJeVUrSjhZZkxsSUZlOGs1RlZvUm9oOENvNDVscTIxcStPbk13?=
- =?utf-8?B?dXllbjR4N2Z0bDVWRlFtbnhsemJRVmJtNU1kc0ZlNEVhaG0xdzhvcjQ3bzU4?=
- =?utf-8?B?cjBhUGI0dHZFenErMFUxQnJaRytreVFCRWZmRkdpNmR0ZWlYd3BxM1R6UkJ2?=
- =?utf-8?B?ZWNaVnJxUjRmYVlOMkJqWUhaVnhiQWhCY0NwaERFTytLQ0poNklBd2p6NEpy?=
- =?utf-8?B?VFBrdFoxanBnVXNaT2FGbFFEN3VNa0E1dWJ2dDJ3azluM21yZHU1REhlZHZ6?=
- =?utf-8?B?Wlk2ZjVZR2t0bHhrRzJEQ08yVk9hdHdnNmR5Q1V4a25XWWtaVW1Oa0huQlJt?=
- =?utf-8?B?Q1V1MzhseGtYTC9zWEJSVkhIbTBxOWN2bUIrUGlXNVF0NHZwMUVZVVFUaXZr?=
- =?utf-8?B?Vkx2Vy9FMm9ROENiMytXYnhQeDBxZEpuVkpvTXlkRUIxQ252SGNXM0x2MzFG?=
- =?utf-8?B?OER4TEtlZmdNQmxaTzNZVkM1Ujk0L1dzVFN1U2F2NTVYbkxoQTNVSUUrM0lC?=
- =?utf-8?B?Qm5aUTdJUk9IeGVZZVNwWWhyK1NmMjdiVmRCWU9tSklDS1VSN1gyYXQ1MGFm?=
- =?utf-8?B?ZVI3ZWtCUlpEeDdqQVlOVit2R2Z6NTd6Z2poTHZvZDVBbDJWbkdHM25hcjBS?=
- =?utf-8?B?N2E3T1UwQlhiZDI0ZThPVlhQZFJURkJlQ21UVHdRNGRJeCtMYWNpMGYwMHZy?=
- =?utf-8?B?elYvRXRVMXZ5MEcyUVVPR3ZzNTFZR0xieHk5ZldyM0N2SVhoQy9POFJ5UzAz?=
- =?utf-8?B?d2tlVnNDeC9VUHI3V3hNbWZzaUUxNjZNcVc2ZThoTWxyaFdPSDIyWlRIRGZB?=
- =?utf-8?B?YmtRTEkvRVIvWFZFVXE1WmI2cjJBRk5FZ1pOeVVKalZFS0pZVVBiOWdpT3NW?=
- =?utf-8?B?cnRuNkI2QTdWUEZHTk9YSTVwclFlcGIyMXpEVHdTVWtsc09uRXlueHp4cCtl?=
- =?utf-8?B?L3ZxUldSc2lTQkVadUdlM3lhUlczSTZwNmNPbGRkczZ3QldBZmhOOXk4S05m?=
- =?utf-8?B?SUk4Mll4TTBqeXFFL2NMMnpTTGxwNzI5OHZqK1JIdXZSM2ZlWTFicE5rNTdl?=
- =?utf-8?B?TUlGQUg1RVA4c2ZJUGJqcjNEMmZrYjdKZSs5NE82NkRRZEYwbWdPUEt2MXNj?=
- =?utf-8?B?Q0hITTRoR21UOEhUQ0V6NmdEaHJrYndOcVRoU1gvY3Qwb3preFVjWlVFeWM1?=
- =?utf-8?B?emFRaU9rRmtQQ2ZBOFVscW1sUkVMR1ZHSWczZFFBUFpJTnh4UVFQK1dMZlJ6?=
- =?utf-8?B?VkwvN0NsdXgwS09EbWd6dUkwcXBWMVNyMys5N0FaTnRvNnN1VDdTVFN1cVhP?=
- =?utf-8?B?ZHcrUW5XdG42ZnI3S2VnZjZGMjBNRnYwV0lNNm4zYm0rWWh5NUt5MkhHbUlX?=
- =?utf-8?B?K09FOW5TdDN3eW9rT0tXZWdRTnkvODZncE9FL0Z1enY2ZGVtS2NoV0NoczEv?=
- =?utf-8?B?VzFFZDg1QjNBbEIrUFVIK2lhbWJ0QVZRek9CZm9LRitoWEc3dWQxZDBqcHc4?=
- =?utf-8?B?azNKejN0S2prYVdPL1ZpQU0wOEcrQ3pnNlBZQk5meEg3MTJqdnU0TlpPS1Nl?=
- =?utf-8?Q?YSerkmfTx1FfGR2k/PwjqcPnqVLYxThIBvz1q?=
+	=?utf-8?B?bjR4blg0cGNaSzZWYzYwR215emR0cmtZWDdLMGVWaE1HNDdldm5wY1pOUWNi?=
+ =?utf-8?B?cm1JZ2hzVlY5UTBOb1pqVXBrWkQ2NXRpOVpVT3M1MmgycVJmbkdZdzUwZjNN?=
+ =?utf-8?B?OGxQeTFmeUJCWFFrbkh6NXJlOStMdmF1UHdoVkVvWTVoMlVzc1J3NXNvZk9F?=
+ =?utf-8?B?bG5HUjQ1SnU1MVh1NVhoaEJOeDEwa3hLdWVuZkRGMVovSm9hUHBVSEpXRVBP?=
+ =?utf-8?B?cXY4T2xVUFdTNkRnUDZFWkpUOHJ3MlhJUklldXpEUStXSVJxZmhocHl4ZmMr?=
+ =?utf-8?B?L0xRZUlzOUU1SVlTS1pERThNcVFPV1prNHNNa0hVNTUya0FOc2g4Ri9mL3lz?=
+ =?utf-8?B?b3pmL3JXNFFsOUZrR1J4TTJyeUpGUmRLS0ZVRVZXUk5DeTVGSFZpYnovakRK?=
+ =?utf-8?B?MUF2cnJOd01BNm55QTQ2dFpMZGIzRWlCZ29UK2wzelBrWUFQczgrcVQxZnJV?=
+ =?utf-8?B?VGkrUG5kMlBOdVh3Yi9iNVNYb0l5c1dMclgxUVVNcFY0Y2JvNjBNU1oxZXlz?=
+ =?utf-8?B?T0ZuSzNwWkdCYUFnOVUzMStvOU1QT2dsUnpZbWNDb3dJL0RZNytuTW41ME1o?=
+ =?utf-8?B?LzNXS1hnMEhYQzVmYmQvOWdsaENBUDlCSmlNWGdWL2k5TGN1N2hldWJhSTU2?=
+ =?utf-8?B?NWVUM2hsdU5kMFE5ZlFYZWNGUTFKNFQ5TmtBMWJoSmUzVXdzdDhRRGpuTlZN?=
+ =?utf-8?B?SmE1QWVYV2VOYWNpTHNoNG9CZmg2cWg1TW9BNzFvai9XejgyNnZuV3lSSHJ3?=
+ =?utf-8?B?OCtzWFoyTlF4cjRpbHdIWTR2RVp0NFZ5QUJPVk5yQy9ldVVTM0RBK1RXck5T?=
+ =?utf-8?B?TXpDa2NDaXFsTWc2R3pWZmNsSHM5c1RrWFo0cTJRRUNuNXVONUtjU3ZxUi82?=
+ =?utf-8?B?ZGNYY3J0M1RYZWlZdStFcWZjcURPU0JyUG84dTNibW1EWW4wQzRkY3B0bEJN?=
+ =?utf-8?B?d0FQR0RlU01pU2paOTk4V2lXb0toWmpXMEdwVDlOZjFvRTJNY2FnOUZ1SGgr?=
+ =?utf-8?B?WnVqL2hVMFhBbkp6ZDJQT2E1bktpb2xDOEVYSytOeXFMeE9wSVRBZEVxb1h3?=
+ =?utf-8?B?dTlLbFE0NzJqNEJWWG83dVVuVFUvSXg5MEJuSW9HRllqSHNoMUJGNTJlY2U4?=
+ =?utf-8?B?cWpyVFVpOVc2QitoR0kwblBaZzBIY3RnVUh0VDBhN0lKU1JLR3pwWlExNTdz?=
+ =?utf-8?B?WjBhSXdzRy9PN2VaUkllSzNqdnh4R0NSSmpHRzk5UmorSjdDVEt3ZEVZcUJi?=
+ =?utf-8?B?cjRyOGR4SHFRMEpheVNPZ1RmUUZqRUJ1N09PRVhNMDBHNFB6TnVwMUxqZS9K?=
+ =?utf-8?B?QTNtanVlK2o3c1hMSmhZU0w5S3Fmb0FOaXhKbTZlSzMwYmpOdHMvUU9SUzVw?=
+ =?utf-8?B?SnZvWVlnTkhIc2RRU25jY0Q3bjd1UnRTOHZIOFp0Rk5rUUlGRVI2bHdaeEs4?=
+ =?utf-8?B?bm5nVTEwYUw0T1owRDFmQXBpenhoa3c0WEMvQU1saXJNTWsrcCtvTzkvWVFZ?=
+ =?utf-8?B?Z1I1cm1JSE0wMEN0TytNbEx5V2VUMC9pSllFV1M4OXBia2tIRWkycStvRkVU?=
+ =?utf-8?B?QXc1NXhpcWdsNVBGSVFiYmt1MGhaekNNOW1RSyszaU1mVmVoM2twaWRMbmtn?=
+ =?utf-8?B?ZEt5WjRJRXhOeTMwcUZyK1pleTRjZDZCdDYya2ZVK3dFakxLY2VHbmdHTi8x?=
+ =?utf-8?B?bzM2dG9ldTBQcUx5dC8rdXBWTDhRVUZJZjZpMCtGWGo1cU0yUVdqNWkzaWRl?=
+ =?utf-8?B?ekRQLzAwV1R1bldpSnZuYk9KZ3VSWHk4VjFIY1NkOFpxeEp6bUpQZGxibUF4?=
+ =?utf-8?B?TGw3ZE52em9zYVowN1lKUkNaYUZBcVh6UXlBNnJmNGtRSlRqbld6WmdCdjV2?=
+ =?utf-8?B?OG9nUHRGZTVEL2Q0aVVrbG80UFVBQlJSWFppMkRrZTllZDBwYmhLdG9Hekl6?=
+ =?utf-8?B?UnZOS2g1YWIzN1V5c1dUckZsMlFnd2NNYnpSWE12VnFqWGk1WEJXNGVuZGhB?=
+ =?utf-8?B?TjhmM1dRUTFpbXFmQTBQRFZOR3RLZXNkOVF5SkhHdmlEdnBoVEtJZzV4UlVF?=
+ =?utf-8?B?dlNML3QyZjlQUEQxOVM2eFVQdkR4SSt2czdwbUJnUXQ2bnZod256dElLaTcz?=
+ =?utf-8?B?cmVBWnAyVWJEZTJjRmJYc01ZTTVMVjIwL294c0dxYyt3Z2FCc05hc0JsMjJ5?=
+ =?utf-8?B?UEkvM09PRzJ5b2JDbUJQSWt5c0ZySTJKWlR2VXRaSUpJRFpDZlVGYXVUZVUz?=
+ =?utf-8?B?ZmZSd05CK3BsSk56cE1IdVpQcHl6QVpyRXhsODl6YWpnR3JOYXNCaGhMd3Bj?=
+ =?utf-8?B?Y0xETUE5UlhHVnRJUXJZc3RnRklKYloxOEJ6Q3p4WDhQSlk2bVVBSEpNQm1j?=
+ =?utf-8?Q?Kj8lVCRcnMmOAYy2mE3SBi6fI9ZFrJwCKAjTk?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8616b33b-895c-4f26-b465-08ded5aca105
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84e6da9f-47d1-4d5a-7c63-08ded5aca3b5
 X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8469.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 07:04:14.9468
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 07:04:19.3725
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u/Bnz8HmSh5izFPLjHEmAyYreZwsdHLnA1APWWeH2i8nyKvL/2KpweGfXBtVguzWYeO0BHZPD3aQNy38n7V3yBQMmLyHznc2EAoGaDIs0i1K4CW5I4qx27ukJdzreGwM
+X-MS-Exchange-CrossTenant-UserPrincipalName: +lftte+7bMeBSJiac9N7TTrQYBKfWpaznEccET4dmWQ4ibnDnX/RResNkL0YVNEImzV8vR5E1l1V6nOazXu+BIvmEhwuqi+2i67IxoRpivmvWnF1v8NHTm8E40IHAHoR
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9853
 
 From: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-Documents i.MX SoC's Service layer and C_DEV driver for selected SoC(s)
-that contains the NXP hardware IP(s) for Secure Enclaves(se) like:
-- NXP EdgeLock Enclave on i.MX93 & i.MX8ULP
+The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
+creates an embedded secure enclave within the SoC boundary to enable
+features like:
+- HSM
+- SHE
+- V2X
+
+Secure-Enclave(s) communication interface are typically via message
+unit, i.e., based on mailbox linux kernel driver. This driver enables
+communication ensuring well defined message sequence protocol between
+Application Core and enclave's firmware.
+
+Driver configures multiple misc-device on the MU, for multiple
+user-space applications, to be able to communicate over single MU.
+
+It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
 
 Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../driver-api/firmware/other_interfaces.rst       | 133 +++++++++++++++++++++
- 1 file changed, 133 insertions(+)
+ .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 91 ++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
 
-diff --git a/Documentation/driver-api/firmware/other_interfaces.rst b/Documentation/driver-api/firmware/other_interfaces.rst
-index 06ac89adaafb..6c6fa9a0ba1d 100644
---- a/Documentation/driver-api/firmware/other_interfaces.rst
-+++ b/Documentation/driver-api/firmware/other_interfaces.rst
-@@ -49,3 +49,136 @@ of the requests on to a secure monitor (EL3).
- 
- .. kernel-doc:: drivers/firmware/stratix10-svc.c
-    :export:
+diff --git a/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+new file mode 100644
+index 000000000000..fa81adbf9b80
+--- /dev/null
++++ b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+@@ -0,0 +1,91 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/firmware/fsl,imx-se.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+NXP Secure Enclave Firmware Interface
-+=====================================
++title: NXP i.MX HW Secure Enclave(s) EdgeLock Enclave
 +
-+Introduction
-+------------
-+The NXP's i.MX HW IP like EdgeLock Enclave, V2X etc., creates an embedded secure
-+enclave within the SoC boundary to enable features like:
++maintainers:
++  - Pankaj Gupta <pankaj.gupta@nxp.com>
 +
-+- Hardware Security Module (HSM)
-+- Security Hardware Extension (SHE)
-+- Vehicular to Anything (V2X)
++description: |
++  NXP's SoC may contain one or multiple embedded secure-enclave HW
++  IP(s) like i.MX EdgeLock Enclave, V2X etc. These NXP's HW IP(s)
++  enables features like
++    - Hardware Security Module (HSM),
++    - Security Hardware Extension (SHE), and
++    - Vehicular to Anything (V2X)
 +
-+Each of the above features is enabled through dedicated NXP H/W IP on the SoC.
-+On a single SoC, multiple hardware IP (or can say more than one secure enclave)
-+can exist.
++  Communication interface to the secure-enclaves(se) is based on the
++  messaging unit(s).
 +
-+NXP SoCs enabled with the such secure enclaves(SEs) IPs are:
-+i.MX93, i.MX8ULP
++properties:
++  compatible:
++    enum:
++      - fsl,imx8ulp-se-ele-hsm
++      - fsl,imx93-se-ele-hsm
++      - fsl,imx95-se-ele-hsm
 +
-+To communicate with one or more co-existing SE(s) on SoC, there is/are dedicated
-+messaging units(MU) per SE. Each co-existing SE can have one or multiple exclusive
-+MUs, dedicated to itself. None of the MU is shared between two SEs. Communication
-+of the MU is realized using the mailbox driver. Each secure enclave can cater to
-+multiple clients by virtue of these exclusive MUs. Also, they can distinguish
-+transactions originating from these clients based on the MU used and core security
-+state. The communication between the clients and secure enclaves is in the form of
-+a command/response mechanism. Each client could expose a specific set of secure enclave
-+features to the higher layers, based on the commands supported by that client. For
-+example, the secure enclave could simultaneously support an OPTEE TA and Linux
-+middleware as clients. Each of these clients can expose a specific set of secure
-+enclave features based on the command set supported by them.
++  mboxes:
++    items:
++      - description: mailbox phandle to send message to se firmware
++      - description: mailbox phandle to receive message from se firmware
 +
-+NXP Secure Enclave(SE) Interface
-+--------------------------------
-+MU(s) is/are not shared between SE(s). But for an SoC like i.MX95 which has
-+multiple SE(s) like HSM, V2X-HSM, V2X-SHE, all the SE(s) and their interfaces 'se-if'
-+that is/are dedicated to a particular SE will be enumerated and provisioned using the
-+single compatible node("fsl,imx95-se").
++  mbox-names:
++    items:
++      - const: tx
++      - const: rx
 +
-+Each 'se-if' comprises two layers:
++  memory-region:
++    maxItems: 1
 +
-+- (C_DEV Layer) User-Space software-access interface.
-+- (Service Layer) OS-level software-access interface.
++  sram:
++    maxItems: 1
 +
-+::
++required:
++  - compatible
++  - mboxes
++  - mbox-names
 +
-+   +--------------------------------------------+
-+   |            Character Device(C_DEV)         |
-+   |                                            |
-+   |   +---------+ +---------+     +---------+  |
-+   |   | misc #1 | | misc #2 | ... | misc #n |  |
-+   |   |  dev    | |  dev    |     | dev     |  |
-+   |   +---------+ +---------+     +---------+  |
-+   |        +-------------------------+         |
-+   |        | Misc. Dev Synchr. Logic |         |
-+   |        +-------------------------+         |
-+   |                                            |
-+   +--------------------------------------------+
++allOf:
++  # memory-region
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - fsl,imx8ulp-se-ele-hsm
++              - fsl,imx93-se-ele-hsm
++    then:
++      required:
++        - memory-region
++    else:
++      properties:
++        memory-region: false
 +
-+   +--------------------------------------------+
-+   |               Service Layer                |
-+   |                                            |
-+   |      +-----------------------------+       |
-+   |      | Message Serialization Logic |       |
-+   |      +-----------------------------+       |
-+   |          +---------------+                 |
-+   |          |  imx-mailbox  |                 |
-+   |          |   mailbox.c   |                 |
-+   |          +---------------+                 |
-+   |                                            |
-+   +--------------------------------------------+
++  # sram
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - fsl,imx8ulp-se-ele-hsm
++    then:
++      required:
++        - sram
 +
-+- service layer:
-+  This layer is responsible for ensuring the communication protocol that is defined
-+  for communication with firmware.
++    else:
++      properties:
++        sram: false
 +
-+  FW Communication protocol ensures two things:
++additionalProperties: false
 +
-+  - Serializing the messages to be sent over an MU.
-+  - FW can handle one command message at a time.
-+
-+- c_dev:
-+  This layer offers character device contexts, created as '/dev/<se>_mux_chx'.
-+  Using these multiple device contexts that are multiplexed over a single MU,
-+  userspace application(s) can call fops like write/read to send the command message,
-+  and read back the command response message to/from Firmware.
-+  fops like read & write use the above defined service layer API(s) to communicate with
-+  Firmware.
-+
-+  Misc-device(/dev/<se>_mux_chn) synchronization protocol::
-+
-+                                Non-Secure               +   Secure
-+                                                         |
-+                                                         |
-+                +-----------+      +-------------+       |
-+                | se_ctrl.c +<---->+imx-mailbox.c|       |
-+                |           |      |  mailbox.c  +<-->+------+    +------+
-+                +-----+-----+      +-------------+    | MU X +<-->+ ELE |
-+                      |                               +------+    +------+
-+                      +----------------+                 |
-+                      |                |                 |
-+                      v                v                 |
-+                  logical           logical              |
-+                  receiver          waiter               |
-+                     +                 +                 |
-+                     |                 |                 |
-+                     |                 |                 |
-+                     |            +----+------+          |
-+                     |            |           |          |
-+                     |            |           |          |
-+              device_ctx     device_ctx     device_ctx   |
-+                                                         |
-+                User 0        User 1       User Y        |
-+                +------+      +------+     +------+      |
-+                |misc.c|      |misc.c|     |misc.c|      |
-+   kernel space +------+      +------+     +------+      |
-+                                                         |
-+   +---------------------------------------------------- |
-+                    |             |           |          |
-+   userspace   /dev/ele_muXch0    |           |          |
-+                          /dev/ele_muXch1     |          |
-+                                        /dev/ele_muXchY  |
-+                                                         |
-+
-+When a user sends a command to the firmware, it registers its device_ctx
-+as waiter of a response from firmware.
-+
-+Enclave's Firmware owns the storage management over a Linux filesystem.
-+For this c_dev provisions a dedicated slave device called "receiver".
-+
-+.. kernel-doc:: drivers/firmware/imx/se_ctrl.c
-+   :export:
++examples:
++  - |
++    secure-enclave {
++      compatible = "fsl,imx95-se-ele-hsm";
++      mboxes = <&ele_mu0 0 0>, <&ele_mu0 1 0>;
++      mbox-names = "tx", "rx";
++    };
++...
 
 -- 
 2.43.0
