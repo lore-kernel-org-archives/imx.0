@@ -1,107 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013001.outbound.protection.outlook.com [52.101.83.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F4A36CDFD
-	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 09:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782726844; cv=none; b=QvN+Bvv1sC6rnkgPXBmR5AXzNmb0SuW4oZ09zAS5lxB6EDJ/Iujgtkp27R6DUvTP9LJYVKSFV4nsyQtwmzRSAXgRCfn0YejhTW4dvt9jmWIfbhsN4XSKycV1Vw2S5RIn5Nxp9Ns4FZgcpc0yRGp7HwJtaku19bXX65FMiyEm/cs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782726844; c=relaxed/simple;
-	bh=8B0dbSWcSwdK7Q+lxlo3PYZa2pMnUiv5H293i/2whrA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=i2zD3jEPEk865P870jhxT34hGK0fu04+put+s8DAD+5+RVwMMdc4Joj1i971Hq3g1ISI9va8Hmm3ahhRpZsCXK1p6VyyuqqotCn7Dx/i3jRQVQR5LNdkdMzyDqQ4K8YNzXXRSUBiaPhwkAKhLGNE7uosiPV6axK3ZyQHptQRkWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijBd2Zws; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5110E3B71C2
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 09:56:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782727003; cv=fail; b=oVvOGllp9dlXq0s0B+vgHxjhz6NvvPwCTUAdcTxCcDwuxnbw81JZPWEKvwCujIGMguac/ivEKgls3jg4gzP9l7syeixZZ5jGuFmYTQD9dr1gsEFGlKbh4piqsyi2rYxyyv8jic4kUx7sACRiqe5Led2lf7CkxOQZr5T3Q71xLJw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782727003; c=relaxed/simple;
+	bh=CLKG3nVPfIr97CnfZt67P/R/ofRP449yGqKVHEcOOE0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=oxiGXaoxGwlfMeNQO5A1FuJzGyQCPjOxW7lqT12CqVYWgpJC4KGHpnliCg1EcH6d6dA3YqDwKDeRTAeMcmut6B5yERieQTWfQtByQkkY0QdHxGkmO7z4pm8vE6gv7pL8uubJ8wKfKBGVoHimv4wpbavFvy9oYFoVsxtKLZnjuKI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cherry.de; spf=pass smtp.mailfrom=cherry.de; dkim=pass (1024-bit key) header.d=cherry.de header.i=@cherry.de header.b=PNWwCWd3; arc=fail smtp.client-ip=52.101.83.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cherry.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherry.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijBd2Zws"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7951F000E9;
-	Mon, 29 Jun 2026 09:54:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782726843;
-	bh=aLtjb89+AjoB3taJeUKfCC0ZoUgPtPcpEG+EDE5K0Z4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ijBd2ZwsNVMdUE50nz55fVqPhkUAACt0ywuMjPWG61IaOOFlKVNOwxCCK8E6HQ9tw
-	 NV4dPh4TYOBYQ3mlC53LfDuCQBMO0isERFBKPnDzhIWpb0ukoT35dl2hafxRs8QfpB
-	 RQyIgpnDrbnLL3WScfgS6LkwKSvwGxVMxwxWOBfgIxGJcom7vDbgpz03M4cgXrLQRL
-	 m7VNYx8RNfqHVOFVtkz9YVW5fpycSQKr+6wQLSZ1sZIAzH2m1yFRMYwz8lqKubWC+B
-	 aYiOE+1o8btYH9d4PdzEy5AlIcPDI3aIEVFg5qjJNOqjL743xQ4Kx34/Fkhc1ljYcJ
-	 Vb53WuYskH2mA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 7/7] mmc: sdhci-esdhc-imx: fix resume error handling
-Reply-To: sashiko-reviews@lists.linux.dev
-To: ziniu.wang_1@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260629091954.3227151-8-ziniu.wang_1@oss.nxp.com>
-References: <20260629091954.3227151-1-ziniu.wang_1@oss.nxp.com>
- <20260629091954.3227151-8-ziniu.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 29 Jun 2026 09:54:02 +0000
-Message-Id: <20260629095403.0A7951F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=cherry.de header.i=@cherry.de header.b="PNWwCWd3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bqjmoHlMDmVchff9oKCdV/dgNKzXJeZbB73bznLQ62pVIUsvSgKz1a4iD5u2CRqXMa/Ov/1aR0hS4wwOIx2dlQyebYu0Pejvx/eFf/4vhzVCCsPMwjl54glE2xyrh1gRMjFCxyoS1x5+rqPD+xcqFGVP5Y4Q+w92ubwUAtxR8HYDASsrkQeGLY6E8F3dxeI+SksPkl1v29M51divJQvpdBBidll2Fw937tBV08ulxT8sSNEq6k3eWfzRdRsLyEjL62Y920ZbF57qrrlS4xK5PHkgSajrvyOob1B+JrSczASkur3Cgb3mBjVXFUOiPUA+hhTfcqMqZtVatxR9SGv0gA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+GOEskry5zO3Leb/QLAcXdrL+EY88IeGXrTPgGclWq0=;
+ b=qDSwD8qhjWjQpYlWkGWQ31kl3tW2/Lw92tZfyrFnvxaSwQVLqdY9bMUKkgvxndW8Jlsn4O5/gt9IK54yv0BngfnPqCRNY9NmA/JJiqofGIx/xcZxn0CchYKbVyA1O7L1FTBwxpfAG0dA7HJabTZFYGry2TuXxlv9/6Mj5zf1Sq80dpWNs5rEDeQODTfOrkCx6SftOYwScvXsAzBE5Ai0YwqfmwXnNPvD2NYzMcrlBEsu8Vor9Sz31OEHx6EbdFAS5dN77TzVc8dNcoYmGuXqH/GtcK65Nxk44259TEcW301IV0qJk7DkzP6sZ9XIj1dIatqIxyKpZEa7924sz8b/Dg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+GOEskry5zO3Leb/QLAcXdrL+EY88IeGXrTPgGclWq0=;
+ b=PNWwCWd3Umz6OjLyyK+ck6K0KYbDRi7sThhbVEudnSwM1uQKyeVkf9tg7T+RObIBQTGRwM+3OoMu/81Rv5elPU9xYoyrNfX49V339aHLn9Xu4MBMds6rD5ciWhSHsVXWjfyhFRRL5oW+OLcspm47un16q2xToDJ63rAFSvT/oY8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from DBBPR04MB7737.eurprd04.prod.outlook.com (2603:10a6:10:1e5::22)
+ by AM9PR04MB8825.eurprd04.prod.outlook.com (2603:10a6:20b:408::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 09:56:37 +0000
+Received: from DBBPR04MB7737.eurprd04.prod.outlook.com
+ ([fe80::5960:fb4b:9313:2b00]) by DBBPR04MB7737.eurprd04.prod.outlook.com
+ ([fe80::5960:fb4b:9313:2b00%5]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
+ 09:56:37 +0000
+Message-ID: <9741588e-daea-4e49-8b32-9f9cc88b6bb5@cherry.de>
+Date: Mon, 29 Jun 2026 11:56:34 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 7/7] arm64: dts: rockchip: Convert to new media
+ orientation definitions
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jacopo Mondi <jacopo@jmondi.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Jimmy Su <jimmy.su@intel.com>,
+ Matthias Fend <matthias.fend@emfend.at>,
+ Mikhail Rudenko <mike.rudenko@gmail.com>,
+ Daniel Scally <dan.scally@ideasonboard.com>,
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Michael Riesch <michael.riesch@collabora.com>,
+ Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+ Sylvain Petinot <sylvain.petinot@foss.st.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Paul Elder <paul.elder@ideasonboard.com>,
+ Martin Kepplinger <martin.kepplinger@puri.sm>,
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ Tommaso Merciai <tomm.merciai@gmail.com>,
+ Svyatoslav Ryhel <clamor95@gmail.com>,
+ Richard Acayan <mailingradian@gmail.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
+ linux@ew.tq-group.com, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+References: <20260628-kbingham-orientation-v3-0-4ed92968aff8@ideasonboard.com>
+ <20260628-kbingham-orientation-v3-7-4ed92968aff8@ideasonboard.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20260628-kbingham-orientation-v3-7-4ed92968aff8@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0202.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a5::6) To DBBPR04MB7737.eurprd04.prod.outlook.com
+ (2603:10a6:10:1e5::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DBBPR04MB7737:EE_|AM9PR04MB8825:EE_
+X-MS-Office365-Filtering-Correlation-Id: 06bf2a3f-2e15-4a01-f015-08ded5c4b5a7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|921020|22082099003|18002099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	m2N1hmJBjIKUujla/i/5Oq5LLrAi72s8FbNv9DPa9/GsjZnTlOa7S/Q4aF3fYf+O6ykI3NDMedOH0KRh6/0/scXlp6dBUdod9XDQuDEC2XffhXGvzoJHoCtiN23f8t9BNu8CSIOuT3680FAdc2G4yar18t/c/k6Ygs6fGef75ecbwNJp23pDcqZf1ApdUsjg6iq11TjeRMjc+Ym1ogiCXbwMtCq0eFlhpz+QVVRp+uYDalUf6hz4h2TmBeJnPNc8vbvtWsUcuROdd5TRfdnGbW15KHwq7zfLNusbKhdrbUD/PjOKrOO3FrOv/AEWnHgCb2JlrBh9nht19jrriIxEd27oNSKvam/cYNgykaEW/HcogvkIa+t1AcoFeQvWlO+QaNTwbsZYJ0XSi9IbN3idUJZ4ie5+5dWYZH5hw7vqZNFF5poSs4KvWanUZkpH+PgR6JAji4Pb39s1cjAWJ4gnW16Q7rh6rZpf/y+03j3xuG9rrbHpto8NouOnWdHLnoZlqqWBP/JlaOWxv7f4yOPtMS6O5B6uMwzvTcaJVI7fyhBE1aUpsilGvhAtt8EEF9iHjElyG6qn+NoAcRb4n9kZRhvvIYXRPfr0NwLY7SFx3Cu0ZFvsvBns1VUN079HBicBlgq9tcErRVG/6icYvwwval1eLZ+Y2Ac6Xvh60uGUx8wyC3OghY6+eecHHRDklU1H1f22KJ6k25TBxwkytBiAFw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7737.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(921020)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Yzlzb3ViNFdMdzNBRlVKSEtqamtpamlESFlmRGdJcTQxNmgvUmxMZzJNbzhi?=
+ =?utf-8?B?ZFhrK3VKbjhwRWxxTWNqOGVkdVJPNjVHVFVRdDF3UGZSUUNZSWpNTnZpbXNu?=
+ =?utf-8?B?U3lyR3FkNXREdURoY21XMU9zb3hkQmNiLzNoL2IxMFBvbFFhS3E4enVhZXBU?=
+ =?utf-8?B?MXpuSzgxWmpVK2VpQXhCeE1jQ1R3cGkvQk5ETEpmT3R4MkxpdWgyMnFyZzY5?=
+ =?utf-8?B?a2RmaDgxZDBvYStrbnNqT2t4b0F5WkpWd2RTYnpjNVlLc1Z1ZDhWYkdEY2JK?=
+ =?utf-8?B?RW1KQTdEMzY1RTVEZXpCS3pxWjYwQUlIZjZEWGNPRzM3SmxVcUlLdkFnekZO?=
+ =?utf-8?B?VXp3ZFVIS2RrVjFoL1ZqOXpnVWNSbGZDNWR5YXNlU0lFajZQTWFWUURPcThU?=
+ =?utf-8?B?SWt6WnZiYk5BbzU5S0dmOGNVV2QrU2F1WWZTWENEMnJnUWh6eUtQWUsxK0Fl?=
+ =?utf-8?B?bHo1bTVGbERZSWlqQW9mcUpkY3Z1UklyT09SZG5HUjVFdEhFeE5oWFgvU25F?=
+ =?utf-8?B?VkJydVVYUVhhdlBSejVOVnZhTUJBUVJhWWp1V2hzeURmdU1JVXovYVBvTmc2?=
+ =?utf-8?B?V0RSUXovSzB0YzFsUkJ4WkIxT1NGVEJwZlBOMzdNL2dkc09CNndVUWRuNkRY?=
+ =?utf-8?B?Ylg1NTF1dFY4K2hWVXV0REkvbHNkUldJQjAvbzN0N1NmSEZjbC80U1hUaVF3?=
+ =?utf-8?B?dGhHZklnUExsa1dpWlVSSzRhc0wwUURzSXM5dHpKRDRuaWk1S2w1U2JkeUFO?=
+ =?utf-8?B?eHdIOVNrSENHUVRlQW9qbk9VL1dYRW16TjkyWjdlbDdmRTdzeWo3bFhIRU5D?=
+ =?utf-8?B?T0FweWFQakFRYUI1YVRmMUp0Z1ZxNEY0L216b3drOFd5bVc0Q09JNlR1TmRu?=
+ =?utf-8?B?Z1diRnY0WFNkMUcrcTVRRmJhd2s0bFNKNTU0b1o4OUlPdkQxdVYwQWdwUEE1?=
+ =?utf-8?B?aWwxb1E3OUVXb3lvbTVzVGlkZ2xlZ01XY3EzUXpBSnY5Mzc3STNQekZsUFZO?=
+ =?utf-8?B?VEhzTXJUSkp3cVlFQjMwQlI5eFVLQkhUVHJjam80ZHo0L2REb1k1WGlrR0dD?=
+ =?utf-8?B?NFB1L2JXcFZHTnVkUjI3cXA0RFV4ZllJOUlqclFTZ3JtOEZJS3EwU2JCTGp3?=
+ =?utf-8?B?Wi80REdjek8rMi9FZFhLeGtoc0FlU0xpV2w0M3plZ015cE80K0x4M3drclNh?=
+ =?utf-8?B?ZWVRODM2cTd4QWNxSXdCZFB2L0IxZWM5eFN0TWNWTGFLYllraHpQakViT3p3?=
+ =?utf-8?B?K0M3UitXZFZ0eXAvN2cySEFtZlg2a1haNy82emRTYmVxV01GTTVveDd2K2FS?=
+ =?utf-8?B?Rmd3cWE1bFhKNzgrS0xySUpZcEFPTklJOVhPSDV2cVZ6V2FSbzc5NHNENlVE?=
+ =?utf-8?B?ZmJnWnBobHlSemZpc0phVWQwMVZiMEtlczRBNzc0SXQyYVdQSXFmTjdySisv?=
+ =?utf-8?B?c0lmY1g3OVNUU29TdTJiMDRUcCsraTlWcG9SN2FrZ2R3SENNMW1jek1MSk1N?=
+ =?utf-8?B?RkQ0TTd1TG5NYWY3d1JNZDAxS1NDM0JBeGhJZW1wWjR1OTl3dFpidTZpT1pF?=
+ =?utf-8?B?YjVkaEM1dnNRa0lEUXBtQlpmeitRVlQ2Vk9VRUZjYnExRGtYS3oxYWFEd2Q0?=
+ =?utf-8?B?MFRyZm9WUVJOdm1HOGc4eGRZV2pJZnhqZUtOMndJclk0Z1FKWWtkZWJHcVRq?=
+ =?utf-8?B?WVQrcDVBREVGbDRQcldrcVEvVEUxK1ZBNklVdmFySXNHRjhPS3dvNHRyNm8z?=
+ =?utf-8?B?cHkvNjlqNFVra29kdHprcU1MZ1prdkpqVVRqbm4zN3dDTTJMWGRoTFlXNGIv?=
+ =?utf-8?B?ckhqOU1TWU5IQWpaSE5URmJkaHRFQ0Fia1d0OW1nbFRrVFhuRy9EUkE3TjNH?=
+ =?utf-8?B?dElZVWF0OENBWEo4VG56NFVGWTM0Y3E5dUw3Z3NsQThMRXAxdUJJUWhWWkc3?=
+ =?utf-8?B?ZCtHQTBqdUt6TTdPaVFlbVYxWGluRHAzQUhvcEp1MVZKQlJnMGlwQ1VDVW1O?=
+ =?utf-8?B?R1lzeDR5eDlQaVBCYXM2SGtRNXBIZmpQbDZuR21IVkRFeVc4MHEzOXdwaDBQ?=
+ =?utf-8?B?MDl3blhLRGxuQUNZSVZueUtSUmJ2a3ZySkVjdFZLZzUrQkVEdkhndmp3Tm9B?=
+ =?utf-8?B?bVZLNURzSjNpRXhGQjFRemNQQTQ2bnZZTG0wcFhHUkJnQ0VMZnhSNmNPMVFX?=
+ =?utf-8?B?bTF2SEN5Umd6eUloVjQvanNkTUtDUkJNNFZvYzNpUUcwdnduSFYrQUFOM3Nn?=
+ =?utf-8?B?RS84MkF4bFVWK1pOcjcwcW1nTlg4cGZIWmtQWnZocjNKb3l2TjRKK0lWNmlp?=
+ =?utf-8?B?SVNOUit2UStkRTVNS2Jpb1A3U3JhYVpZSjNSZk04ajBhaDlnd3Vidz09?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 06bf2a3f-2e15-4a01-f015-08ded5c4b5a7
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7737.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 09:56:37.2706
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y5K5bi2aSru+CrF70Tk1gPjX7gz+NUdaPQ6Q4lyZ0LuEqeu4yl31msorRmlM1JrEiC0GFvHGtMpaW8EY2tFSRSZq/4s2OhJ+ty3NTN8M85A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8825
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Early return on `pm_runtime_force_resume()` failure in `sdhci_esdh=
-c_resume()` skips necessary software state cleanups, causing a PM runtime u=
-sage counter leak and leaving IRQs unbalanced.
---
+Hi Kieran,
 
-commit 007c15943feda7e921c0c9613b702cc8b9ee7f97
-Author: Luke Wang <ziniu.wang_1@nxp.com>
+On 6/28/26 12:22 PM, Kieran Bingham wrote:
+> The orientation property for video interface devices now has definitions
+> to prevent hardcoded integer values for the enum options.
+> 
+> Update the users throughout the rockchip device trees to use the new
+> definitions.
+> 
 
-mmc: sdhci-esdhc-imx: fix resume error handling
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de> # PP-1516 and 
+Ringneck
 
-This commit updates the resume function to check the return value of
-pm_runtime_force_resume. If it fails, the function now returns immediately
-to avoid hardware panics.
-
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
-esdhc-imx.c
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -2125,12 +2125,12 @@ static int sdhci_esdhc_resume(struct device *dev)
->  			dev_warn(dev, "Failed to restore pinctrl state\n");
->  	}
-> =20
-> -	pm_runtime_force_resume(dev);
-> -
-> -	ret =3D mmc_gpio_set_cd_wake(host->mmc, false);
-> +	ret =3D pm_runtime_force_resume(dev);
->  	if (ret)
->  		return ret;
-
-[Severity: High]
-If pm_runtime_force_resume fails and we return early here, does this skip
-necessary software state cleanups?
-
-It looks like returning early bypasses the enable_irq() and
-sdhci_disable_irq_wakeups() calls later in sdhci_esdhc_resume, which might
-leave the IRQ descriptor depth and wakeup sources incorrectly configured.
-
-[ ... ]
-
-> @@ -2157,7 +2157,7 @@ static int sdhci_esdhc_resume(struct device *dev)
-> =20
->  	pm_runtime_put_autosuspend(dev);
-
-[Severity: High]
-If the early return is taken above, this PM usage count decrement is bypass=
-ed.
-
-Will this permanently leave the device's PM runtime usage counter elevated,
-preventing both the device and its parent power domains from ever runtime
-suspending again?
-
-> =20
-> -	return ret;
-> +	return 0;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629091954.3227=
-151-1-ziniu.wang_1@oss.nxp.com?part=3D7
+Thanks!
+Quentin
