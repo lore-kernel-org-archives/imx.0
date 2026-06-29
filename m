@@ -1,108 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from imap5.colo.codethink.co.uk (imap5.colo.codethink.co.uk [78.40.148.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FF83B7754
-	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 09:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A44D3B71DC;
+	Mon, 29 Jun 2026 09:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.40.148.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782727035; cv=none; b=t1n+141z1jYzJZ3IoI4t3mpdVRKgHY1zkwMwy2UpNLfLC6SFVmfgp+VE2TdEG7Jclr93U4mgMnVWX1oeR7wEM/VpYDlyvWtjcH1idNrRdke4eVKsske53vSkXOeDrqlDuFGVaIudPTuJ4XopF6TRWPnzk8wnVynzE8QIbKSVyYk=
+	t=1782727187; cv=none; b=XOQKvoT68J5VZzzkbPk34b4C3eLx9EKPMgAtagoKseV8LXzipfGUDPjCmF5y4ZkOHfH+Xtblmkk0JAJJgNva5kGT9CPJgYDoKCw6oJVr5FsTTcVl5heO7BoKPGRZ+b2TZEGJEiYUO4oXyqyAaQqBThFkVZ/L+CVASJS8mzB6zEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782727035; c=relaxed/simple;
-	bh=9Td49V0zrDndLtVEThOBbOJAGJaN4gnHn2fSnzaNBNI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Y11wJ9R6c7PnNOLgtU/Wd8MwOJaBwi9RUl8Uov8FBy2Qc72zLvbw2y2Exba6Vlss5qNfOPEEOZ1pVW4+CHC4YPz313Xw6NmzO/5d2o9Wv+/mv9bxbzGomCrx1UJ6CviwDvZRihLjMGyA2BN2NzEg99ZKy7mtPz34eY+me5EX1ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gd4nk/rA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782727187; c=relaxed/simple;
+	bh=KkY/rLkhTEqQA3RX9rQX5SoOmyin1QM2p6Z8KFfYKko=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bRDST7XdDa2VLlNZQQ5J1x4WlBSYxoBx2dZhcq7MQuejkLFQDgnhc0OzuK46/dm4PN/T8YS8aIJqDyuBvmOGS4oXMMP3v4+Dl+Kv+lzHi0kFaWKvfKo174op9aXajNfxUj5LAIldp5YbKz2f5ls/K7I0uI3AXM6l9i5qGOtZEXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=codethink.co.uk; spf=pass smtp.mailfrom=codethink.co.uk; dkim=pass (2048-bit key) header.d=codethink.co.uk header.i=@codethink.co.uk header.b=W2rtbNL1; arc=none smtp.client-ip=78.40.148.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=codethink.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codethink.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gd4nk/rA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEFC1F00A3A;
-	Mon, 29 Jun 2026 09:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782727034;
-	bh=jezoQzqSceJfGC3lqbZ9dcJluYkzJNsAOiIzpzDnkSs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gd4nk/rAPGhYBGEMHAOvBxnhXxGduoMAImu2TLDCvGcUAcF1YejMzsU//37mt2v3E
-	 eoR5RoLJmYyiAmJfzpdsNFkUxiZyI9wU9N/S1soHTTQdILfd8e9l6KbHTi4t1Q2s+X
-	 CIQWjhd2s0kJYO68tsrKXUlLNovSnBovKimv7hBr60qzVk14aqxr9EJXxnDTFhwHRk
-	 yF9HPRU3E2Yer+BjXfMyXmyw0dUVrWmBKBU3GuatWUDg55TJjmDN18TPZDPddXnoZY
-	 yaCjtISCSTTg9PYvFGSH2qkMc09fVMJZIkOpVHjqyce4eD6lzgWqI9lx2RUUOwD0v/
-	 WQOov1db8R9IA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 6/7] mmc: sdhci-esdhc-imx: make non-fatal errors
- non-blocking in suspend
-Reply-To: sashiko-reviews@lists.linux.dev
-To: ziniu.wang_1@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260629091954.3227151-7-ziniu.wang_1@oss.nxp.com>
-References: <20260629091954.3227151-1-ziniu.wang_1@oss.nxp.com>
- <20260629091954.3227151-7-ziniu.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 29 Jun 2026 09:57:13 +0000
-Message-Id: <20260629095714.0FEFC1F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=codethink.co.uk header.i=@codethink.co.uk header.b="W2rtbNL1"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+	Reply-To; bh=XSyrZwnIUINkxJQhWfVF+GsCCk7A38r6IJGBNYDXDwo=; b=W2rtbNL1Tp9P7tDv
+	lv82SQ2xDrYZ9iJaROYjoz03ApOhVOAciJH112q1K7bkPl6C5F54jCXLDBJVPMzh8WW6EWM4/S+B0
+	qI709+WCFsdo7cYFw0LKgj+QKtL8q+CV9mNrgGe8IdRmN0mGB2zIIR2ldSe3aSjfaH8puv3/Czjsn
+	z+SrDpwO4ghn4pMfqW/n493UDtK/vxLq5gF3RNboLcczYdqcxiljaHidoRgUEnhxiLXZnIppMrcJF
+	3kd+o/Ty4hZv1LFM0F2YEy03x0PP4bjnP3QFGw6GWQ2YlVRPEU96RNjtg+W6/aYNozrHpPhbBw76t
+	kwvv5LgexOvqKyc81g==;
+Received: from [167.98.27.226] (helo=[10.35.6.194])
+	by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+	id 1we8m5-000BYi-39; Mon, 29 Jun 2026 10:59:33 +0100
+Message-ID: <1c0f84bf-267c-4dc2-a756-1997cf3871d2@codethink.co.uk>
+Date: Mon, 29 Jun 2026 10:59:32 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] usb: dwc3: imx8mp: make dwc3_imx_glue_ops static and
+ rename to imx8mp
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260623101043.748359-1-ben.dooks@codethink.co.uk>
+ <aj792C105VmmZ_nF@vbox>
+Content-Language: en-GB
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+Organization: Codethink Limited.
+In-Reply-To: <aj792C105VmmZ_nF@vbox>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Sender: ben.dooks@codethink.co.uk
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On 26/06/2026 23:32, Thinh Nguyen wrote:
+> On Tue, Jun 23, 2026, Ben Dooks wrote:
+>> The dwc3_imx_glue_ops is not used outside this file, and technically this
+>> is the dwc3-imx8mp driver so whilst making this static to avoid the
+>> following warning, rename it dwc3_imx8mp_glue_ops to distinguish it from
+>> the other driver which also has dwc3_imx_glue_ops.
+>>
+>> Fixes:
+>> drivers/usb/dwc3/dwc3-imx8mp.c:176:22: warning: symbol 'dwc3_imx_glue_ops' was not declared. Should it be static?
+>>
+>> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+>> ---
+>>   drivers/usb/dwc3/dwc3-imx8mp.c | 8 ++++----
+>>   1 file changed, 4 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/usb/dwc3/dwc3-imx8mp.c b/drivers/usb/dwc3/dwc3-imx8mp.c
+>> index 1cf96540b66e..de8c17bc940d 100644
+>> --- a/drivers/usb/dwc3/dwc3-imx8mp.c
+>> +++ b/drivers/usb/dwc3/dwc3-imx8mp.c
+>> @@ -158,7 +158,7 @@ static irqreturn_t dwc3_imx8mp_interrupt(int irq, void *_dwc3_imx)
+>>   	return IRQ_HANDLED;
+>>   }
+>>   
+>> -static void dwc3_imx_pre_set_role(struct dwc3 *dwc, enum usb_role role)
+>> +static void dwc3_imx8mp_pre_set_role(struct dwc3 *dwc, enum usb_role role)
+>>   {
+>>   	if (role == USB_ROLE_HOST)
+>>   		/*
+>> @@ -173,8 +173,8 @@ static void dwc3_imx_pre_set_role(struct dwc3 *dwc, enum usb_role role)
+>>   		pm_runtime_use_autosuspend(dwc->dev);
+>>   }
+>>   
+>> -struct dwc3_glue_ops dwc3_imx_glue_ops = {
+>> -	.pre_set_role   = dwc3_imx_pre_set_role,
+>> +static struct dwc3_glue_ops dwc3_imx8mp_glue_ops = {
+>> +	.pre_set_role   = dwc3_imx8mp_pre_set_role,
+>>   };
+>>   
+>>   static int dwc3_imx8mp_probe(struct platform_device *pdev)
+>> @@ -266,7 +266,7 @@ static int dwc3_imx8mp_probe(struct platform_device *pdev)
+>>   		goto put_dwc3;
+>>   	}
+>>   
+>> -	dwc3->glue_ops = &dwc3_imx_glue_ops;
+>> +	dwc3->glue_ops = &dwc3_imx8mp_glue_ops;
+>>   
+>>   	if (dwc3->dr_mode == USB_DR_MODE_HOST)
+>>   		pm_runtime_dont_use_autosuspend(dwc3->dev);
+>> -- 
+>> 2.37.2.352.g3c44437643
+>>
+> 
+> Please add Fixes and Cc stable tags and backport this change also.
 
-Pre-existing issues:
-- [High] Early return in sdhci_esdhc_resume() upon pm_runtime_force_resume(=
-) failure leaves PM usage counter leaked and IRQ permanently disabled.
---
+Hi, I thought fixes was only for bugs not warnings and stable is
+only for serious bugs?
 
-commit 61953c1fd047583f443719985f25bd317c4b2b1b
-Author: Luke Wang <ziniu.wang_1@nxp.com>
 
-mmc: sdhci-esdhc-imx: make non-fatal errors non-blocking in suspend
-   =20
-Make pinctrl_pm_select_sleep_state() and mmc_gpio_set_cd_wake() failures
-non-fatal in the suspend path to ensure they do not block system suspend.
+> Thanks,
+> Thinh
 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
-esdhc-imx.c
-> index 97ee3f933bda7..abee3d7a07a36 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
 
-[ ... ]
+-- 
+Ben Dooks				http://www.codethink.co.uk/
+Senior Engineer				Codethink - Providing Genius
 
-> @@ -2107,7 +2109,7 @@ static int sdhci_esdhc_suspend(struct device *dev)
->  	 */
->  	pm_runtime_force_suspend(dev);
-> =20
-> -	return ret;
-> +	return 0;
->  }
-> =20
->  static int sdhci_esdhc_resume(struct device *dev)
-
-[Severity: High]
-This is a pre-existing issue, but does the early return inside
-sdhci_esdhc_resume() leave the IRQ permanently disabled and leak the PM
-usage counter?
-
-During sdhci_esdhc_suspend(), the driver increments the PM usage counter and
-disables the IRQ:
-
-    ret =3D pm_runtime_resume_and_get(dev);
-    ...
-    disable_irq(host->irq);
-
-If pm_runtime_force_resume() fails later during sdhci_esdhc_resume(), the
-function returns immediately:
-
-    ret =3D pm_runtime_force_resume(dev);
-    if (ret)
-        return ret;
-
-Does skipping the corresponding enable_irq() and pm_runtime_put_autosuspend=
-()
-calls leave the controller in an unusable state and prevent future runtime
-PM transitions?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629091954.3227=
-151-1-ziniu.wang_1@oss.nxp.com?part=3D6
+https://www.codethink.co.uk/privacy.html
