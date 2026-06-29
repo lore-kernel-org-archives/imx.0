@@ -1,63 +1,63 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A428379C28
-	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 02:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF2F1B86C7
+	for <imx@lists.linux.dev>; Mon, 29 Jun 2026 02:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782700732; cv=none; b=tPNiMRib2/Ml3OVBfHgBiuZ45s1Js1tsGizLCm2zHD0RFeY3VRcdLCoTALwgqDplMRHnq/5zYPm3R8JOkNNBFF6ndt99mcQfPWzKAt4C9FUhUcPfKr9+RD1Dcd3YjdaDh2NEpV2AsRmXlataABZQg4xxHWMqQYH0qUOXKSpPC3s=
+	t=1782700766; cv=none; b=FwkLB1PsF+PoTEUk2Vy+vB8fZPCJh6Lyp7aFnfdFm457MpSj6Km2MnxCi7sWnN4v5vfL7LBouqe7MCbgGLgcSx0yj08Hrww2DA+Kzd93j9NHv6Op8gznDEMYphpqTC8w/mXD044b6Uz/j6qbHNoMAe77IaDFQSKon0jo6OnryfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782700732; c=relaxed/simple;
-	bh=2XanIgMQF7FbF77eiEwNF8U6Cy3OAoH2Y2kGqFdSdBs=;
+	s=arc-20240116; t=1782700766; c=relaxed/simple;
+	bh=3yf/BQq8y+lBmy/U8Na/4Wdy8IPK1JZVpOtqu+QvhLs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NjyWO11RUO4vYYbsdWl+WeEnl/OFwoWqp8aFoKFHtos0vjzyfeS//HZr9O2mVmdYowM/eLFKA0K6TefINja/sp7p89y9hXhfy+v9/8y0DgkJFkA+j0FlKvsWQoMVcMFB6n/SEcGEXxGONRFqOAg+ANNN/KEYNSku6XkHOr/jJNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A48bd5jD; arc=none smtp.client-ip=209.85.210.176
+	 MIME-Version; b=MijY5D5zlITdpn6w/Nf97frYe+r6KXcWiiF9GLfSnQxzTdj/PgiOYw52IdCpALhv672MDA3gL6Y3zlDw7SD+0p+H3U36T+4zqzE9VT1foBsWruRs4e3svA2MJKpM9Vhwb544Cyl0nNHZx3/paSQG4y6RmaAcXTl6NEAY55/o6s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EQRhNMN9; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A48bd5jD"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-845c92bc464so1534178b3a.2
-        for <imx@lists.linux.dev>; Sun, 28 Jun 2026 19:38:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EQRhNMN9"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c969ad04c1dso283249a12.0
+        for <imx@lists.linux.dev>; Sun, 28 Jun 2026 19:39:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782700730; x=1783305530; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1782700764; x=1783305564; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Tbxicf9cOISRpJE96mgO+H/y2TlKZ0WdbLHi50c/C7k=;
-        b=A48bd5jDn5I6EVdEx62t+VRHKKCKdXkr0+5H7c2aQBasNCtpvIPAksHHr/n7vp9qjF
-         Ozu2ZcnBmLh8jvKl8pwMO0kY/h8HFustNRlA7VI6Mp38XSOh7FmNyZJ/vX9SyDkF4TKe
-         ezjyAyQR5vqU16eSkFmS6OHHQsZZ/rjMUg2y0I9/Ot0QrRXn2lV2Twi4YwZD8Oerk5XN
-         gFV2PpBjwjfeojX5bL68IuYGfY7e7zb0k5TmB+ISMriph4TgTocc+5FOifXEjuhPbwzZ
-         fZJqqXNUqsZ6oy7LaJzva4k4RmHA9QdVEb+RREWjOTEC0Yk20js9IX833pD8WvU7B4/C
-         r77w==
+        bh=pjYx+8tIMWDajKptnVsnfbgFJjxKrPWEBY6WEuIFPcI=;
+        b=EQRhNMN9vPo7PXlDveqd3dHT0YhUIkwVYXD0Gt/cLCrDn1+aTYae7J1Zm0er1Ef7Q6
+         0Kx8kcE1fcio4vKDNwkJnLJ5VY91Al8plPS6gFEIQkRR8P5AarRw4bqNT0BXDeY7lxzH
+         qo/VoaWCK+pD6SkfRDXs1MG3oASe1WhL/8xYE0wWmTAehZ1f6ueHI/gq4VO88bvGSeuA
+         UxX6jrfGgDTFXa/GmehRAnyybSuVY2D97ON4P/Gj9szYTnNvYUlE2u9Y+wzibIrf+dEn
+         8DZIPTAZOw9b1UknWH08+AqzfEnDz6uXeTfN0JubplqbtiWlcbV0L/kBfiyVKL+RK+ft
+         SXFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782700730; x=1783305530;
+        d=1e100.net; s=20251104; t=1782700764; x=1783305564;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Tbxicf9cOISRpJE96mgO+H/y2TlKZ0WdbLHi50c/C7k=;
-        b=cQH/Hzjdk2M+cz3xWi7Zp162qzrM42dJfAVTgxreGpqbDujvT5zLa1tqXsvGlSmzm/
-         LEHoCCWbJUT0W3ZtsI9475RZIGT3xBIEQZGibQtD8ohxakwVNd80kAHTXMewAlDnnmuw
-         Cz8R49GKvzGA9jG+7oRflJo5m/zOVq+RNyurqsM6rBKXx8qHwP+OHuTrPD6UIfqjBPbW
-         67YO/JFJljAt0zP4fc1+MEhz3z0ore+OW1hkrav6tyQv86872Qb1TC6Qrks2Musl1kmL
-         GZhj+CbJ8vXnvoVEcQBZUjmHAACu3erwehZLYZnhnOSkjKvbEEvYPPvkNS8VisDTn38T
-         nF3A==
-X-Forwarded-Encrypted: i=1; AFNElJ9+kFIG7Of6nF/v6lLqPT70phKMeWuf8qU4xT4l2E8eI92ifqRvzGKfJeHGvUSxtGnKWlg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwmORsTV9F00hTet2TvUVLZwuu2XPM0X7CCvlwAt8kWedczRr/1
-	TA8pl8/1PsWjfFhpVsNQABiGLYci6RoOxA4pq8FdD1OKFWc4YMvOBP7F
-X-Gm-Gg: AfdE7cnvp3KonTuVVOHwdzyeATw2rUKz+ePDnQlBb7PRWgU2gfftFAwIqVsxevqIpKR
-	idY1QohNeYkVzpZT8UFz0Te1ydC3uNxW+4typAJncb+nbr9VT9D3t4JeArzKmSSUZJE37JN+jsi
-	c9bu2xImQsqP2d/MI4LFAtFBl67+LknQsDq2cHAKX7EcnHsE0/ape42+GBZgrI5VoUYHJCcQz9O
-	eIvdRuAx6cnBu+u6RYuNsqM5uH0CplC032QDdCy1uHXQrXNRtY0ZQ8wmYx4oiqxA6KGSonotZaq
-	4bP+J/6f7rUNPUHJtDBDWqKsiP3DH9oQSSEuHbvSPwKgBaYaM8rCgsnovAcpa1PItn8OVQQiGi9
-	THxUIPhlrJ8qY6Vz5nRYqVlhHk6emrR3HPiAxkS127Z0p3GLNoOM2SOVjYkwRKAdNkByQKTb/SH
-	UdB0RRqbBIhlx7BnxKiDtFsQ==
-X-Received: by 2002:a05:6a00:9493:b0:845:e4d6:bd2b with SMTP id d2e1a72fcca58-845e4d6bfaamr3829675b3a.48.1782700730418;
-        Sun, 28 Jun 2026 19:38:50 -0700 (PDT)
+        bh=pjYx+8tIMWDajKptnVsnfbgFJjxKrPWEBY6WEuIFPcI=;
+        b=eQAIF+hqVCXDDP1m4Fv1lOi46DmP7UGJwNch3AGaP19iQ+lDo1+piWceK44H6pMO8Y
+         gLBmWKzxKj900iJ1TFEOv+f4cY+843Pld1D+1W7U5BzG+QHU/KLyJSfpWw7FEbze6/D+
+         6X20G3Agmk33LAxuznJO92eG5h8Ar0/0Ht2/wrwJDGiDK2oTzpdnbzj3uP3AHDVNeoLb
+         23g4E0sVTtxG/kdZ3zdmjeECS37oS8wV7MwrWJmhP6HokJc7YKAsNSXPbF0kHqhB7dEf
+         chowR+0foLaqgWLJKhlnCLx+4go+jns2MR/GAzzvMECpwUotXHWz//5YuLSrRTwTr090
+         AWRg==
+X-Forwarded-Encrypted: i=1; AFNElJ8U/zj/U/SUa3zdqz1BfOzyCkgoNDkKRFqegaYRQHu3mmVmkVPqLcxip0+8VXBvyz95wjA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy9623bIeTx7QDBpqbVW0DcJf4LcFkrOXOhmExHz04EqKnzeLlG
+	LoFvKnlfUC6SFc6p2lXcVohu4Oo18kdsPkr5CLa8DhsLOXHBU/mVLhxA
+X-Gm-Gg: AfdE7cl6wj9a7gBFTWQkFL4Tqf6Z1P90d52cjQ/YOdOpbh/K1jU4d81HcVqOmn9mfml
+	+k77cnGHZMOHOhTMIQl5+ca6gdMAQvDpmpjVJc0plNC1xhwJgzg6rd7l2zjDw3tr60JPw4XtS17
+	BC/dTRqWLoW+PdstHpeyydKnQuc6lI5UmaZ5lZA/TY+Due+ydH3Kd8JV1Hr9MPuDXg7o0DqCjdr
+	JPlsJXaIFjEAZFm3tXiuURz38AJ1zqhCWNPO3ohcD3gg1RSjQpl4U8nBWXFKZTC281fXLCMpybL
+	VOzRnz6RhThrleCHBrR+cQHak3NPndCRGUgUpoK4OPBz4kEr24Ac3VB3hOJ5KSCwxpywx7lR5YY
+	UVsGfKkzJIvwl2lnqGJvKylXWUI7xnkqfmddeMu+l4F73i2XUlFpIl0e/gmA1ab4PY7EfIDtFED
+	pRPI/m3cqib9HdGfkl5Mq7XQ==
+X-Received: by 2002:a05:6a20:a10e:b0:3bf:6c08:fb8d with SMTP id adf61e73a8af0-3bf6c091306mr7342972637.47.1782700763765;
+        Sun, 28 Jun 2026 19:39:23 -0700 (PDT)
 Received: from archermind.. ([182.150.55.91])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92b9dc216csm6914869a12.9.2026.06.28.19.38.45
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92b9dc216csm6914869a12.9.2026.06.28.19.39.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jun 2026 19:38:49 -0700 (PDT)
+        Sun, 28 Jun 2026 19:39:23 -0700 (PDT)
 From: Liem <liem16213@gmail.com>
 To: carlos.song@oss.nxp.com
 Cc: andi.shyti@kernel.org,
@@ -74,10 +74,11 @@ Cc: andi.shyti@kernel.org,
 	o.rempel@pengutronix.de,
 	s.hauer@pengutronix.de,
 	stable@vger.kernel.org,
-	wsa@kernel.org
-Subject: [PATCH v4 1/2] i2c: imx: Fix slave registration race and error handling
-Date: Mon, 29 Jun 2026 10:38:28 +0800
-Message-Id: <20260629023829.152651-2-liem16213@gmail.com>
+	wsa@kernel.org,
+	Carlos Song <carlos.song@nxp.com>
+Subject: [PATCH v4 2/2] i2c: imx: Cancel hrtimer before clearing slave pointer
+Date: Mon, 29 Jun 2026 10:38:29 +0800
+Message-Id: <20260629023829.152651-3-liem16213@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260629023829.152651-1-liem16213@gmail.com>
 References: <AM0PR04MB6802B863CD9B9AE1609C1785E8EB2@AM0PR04MB6802.eurprd04.prod.outlook.com>
@@ -90,64 +91,39 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In i2c_imx_reg_slave(), the slave pointer was assigned before
-pm_runtime_resume_and_get().  If pm_runtime_resume_and_get() failed,
-the error path returned without clearing i2c_imx->slave, leaving it
-non-NULL and causing all subsequent registration attempts to fail
-with -EBUSY.
+In i2c_imx_unreg_slave(), the slave pointer is set to NULL after
+disabling interrupts.  However, a pending interrupt might already
+have started the hrtimer (i2c_imx_slave_timeout) before the pointer
+was cleared.  If the hrtimer fires after i2c_imx->slave is set to
+NULL, the timer callback i2c_imx_slave_finish_op() will call
+i2c_imx_slave_event() with a NULL slave pointer, which results in a
+use-after-free / NULL pointer dereference.
 
-Additionally, because this driver uses a shared IRQ, the interrupt
-handler i2c_imx_isr() can execute concurrently and, after acquiring
-slave_lock, dereference i2c_imx->slave.  The previous fix attempt
-added a lockless i2c_imx->slave = NULL on the error path, but that
-could race with the ISR under the lock and still cause a NULL pointer
-dereference.
-
-Fix both issues by deferring the assignment of i2c_imx->slave and
-i2c_imx->last_slave_event to after a successful resume, and by
-performing the assignment inside the slave_lock critical section.
-This guarantees that the slave pointer is never left stale on the
-error path and is always valid when observed by the interrupt handler.
+Fix by canceling the hrtimer and waiting for it to complete after
+disabling interrupts, before clearing the slave pointer.
 
 Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
 Cc: stable@vger.kernel.org
+Acked-by: Carlos Song <carlos.song@nxp.com>
 Signed-off-by: Liem <liem16213@gmail.com>
 ---
-v3 -> v4:
-  - Instead of clearing the slave pointer on error, defer the
-    assignment until after pm_runtime_resume_and_get() succeeds,
-    and take slave_lock to avoid racing with the shared IRQ handler.
-    Suggested by Sashiko and Carlos Song
+v3 -> v4: No changes, added Acked-by from Carlos Song.
 ---
- drivers/i2c/busses/i2c-imx.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 28313d0fad37..2398c406e913 100644
+index 2398c406e913..b1c6581db774 100644
 --- a/drivers/i2c/busses/i2c-imx.c
 +++ b/drivers/i2c/busses/i2c-imx.c
-@@ -930,9 +930,6 @@ static int i2c_imx_reg_slave(struct i2c_client *client)
- 	if (i2c_imx->slave)
- 		return -EBUSY;
+@@ -960,6 +960,7 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
  
--	i2c_imx->slave = client;
--	i2c_imx->last_slave_event = I2C_SLAVE_STOP;
--
- 	/* Resume */
- 	ret = pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
- 	if (ret < 0) {
-@@ -940,6 +937,11 @@ static int i2c_imx_reg_slave(struct i2c_client *client)
- 		return ret;
- 	}
+ 	i2c_imx_reset_regs(i2c_imx);
  
-+	scoped_guard(spinlock_irqsave, &i2c_imx->slave_lock) {
-+		i2c_imx->slave = client;
-+		i2c_imx->last_slave_event = I2C_SLAVE_STOP;
-+	}
-+
- 	i2c_imx_slave_init(i2c_imx);
++	hrtimer_cancel(&i2c_imx->slave_timer);
+ 	i2c_imx->slave = NULL;
  
- 	return 0;
+ 	/* Suspend */
 -- 
 2.34.1
 
