@@ -1,126 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DE03F7899;
-	Tue, 30 Jun 2026 11:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51793CB8FB;
+	Tue, 30 Jun 2026 11:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782818201; cv=none; b=SteLX1rZ04/5okTMwaGnReUPQq25Jcz9n3l7Z+sEQ+IMJMJIyEOrmb40AXo77ZQ5TMbONt+vgjYD8PCSzRaF1ej0dxukp9x+wGfjkJxPgvr0wb7ubTWgwqcLXgLc151i5H4kCF/e0TOcRemP/XKobfX0dVO01SCf6C2Uo8E1Tcg=
+	t=1782819506; cv=none; b=CaZzwSMjxqcsoAEoNmL6Z51netE0VoO/AByCjRoAPmJ0MjBft6xgkZq6uOMEsjIIZO/xaioDlwpo3MrvOxTtDVaLUl23AT7En9p0vXd4pLVKQ8rV0VcMlnrRmr7t7Sg3rmfS49Xb29EM2+/pAt61J7aWDAKd2QTjiBrJn6+z5TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782818201; c=relaxed/simple;
-	bh=suxmd7hBx6haxwfUYdAMlT9JDpZz5886NYdo7Mep1MA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=LuqoO38IC+nqC1F0lnF7ghPF9IEPNCEL5mNh3Rtt71mHZkgJK+GcBty28sNSDVokYp+9RTRO/SCo5HUuBBZsotuQspV5jGRUsmI8v6mfuMAo5+j3eHSoFet4lq7UDQkNhC8SXsP5fTROIoCRYVrXOEeZGIEVQx/jBsBjhHydh1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/b/6v/G; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782819506; c=relaxed/simple;
+	bh=oTCNM/AOyFpPb5rIncF1bOxUq0WXQpL6pQN30H0AnWg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Gf3lqbRp7V4zRu3RZYdMQlEvMVqvKSohj6aC98JW5DC4uvf5CLeql+JNEuU96clnctIDD05iBVCT2WHz0aKvmoGIGqzFI1Lf5c0AJsdBCgpnsgj2n0fZLY8iNLUiY/vvh9774FC0CWpFu7UpFTpgxTl+d4/w2ZYsQGj+7reSstI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=YCB6Twpa; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/b/6v/G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD70C1F000E9;
-	Tue, 30 Jun 2026 11:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782818199;
-	bh=1JPnrdxJvL0WFN5wrOSvEBToBxSFJluscDvZ5wP//rQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=a/b/6v/GIOOHx3mkurLDiSwCYEV+FaF40ZarjWBYs9LAk/x2Dab1vbwzWPBbXumSY
-	 qCL/R4hpI/xR+csPkyDFeDvW4uWAciPLePWgJiybdXppe5u25pNrNFO4tn1dzd3v3v
-	 kC6+KrIIGd52n54CP2TaUk1hT7OeTv7S2pKHfi+YAo9wHuuiDJxubujr9JwfkcthuH
-	 qCTk6N3IiLNlrXU3sJcZR+gK9/ZuSgJY1RV8MfARE0y6eRBx9npsHpyXb96vPKEeik
-	 8JCRbFXSCYsoI7lIBSyw4rxO1bn3/GJeaS+q+zB4cPOZNcw+UUdVipomdASSnvbce1
-	 t6tWQb7qzWNGQ==
-From: Mark Brown <broonie@kernel.org>
-To: phucduc.bui@gmail.com
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
- Xiubo Li <Xiubo.Lee@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
- linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20260615093824.115751-1-phucduc.bui@gmail.com>
-References: <20260615093824.115751-1-phucduc.bui@gmail.com>
-Subject: Re: [PATCH v2 00/11] ASoC: fsl: Use guard() for mutex & spin locks
-Message-Id: <178275717908.47562.6018027459951398381.b4-ty@b4>
-Date: Mon, 29 Jun 2026 19:19:39 +0100
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="YCB6Twpa"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4gqLkP18PWz9ttL;
+	Tue, 30 Jun 2026 13:38:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1782819501;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xShlwrKyTIF4qAdBox24ShRYzAy+zv7+bJMeZEybzao=;
+	b=YCB6TwpaO927QjEdXrlIiJBt3S2TMj/lUoTQyC5iej5UxCRKDn/XljRoPJbwW7XxlugG6N
+	xBgQ8xLD8khNkgkWh+g0ulj34prUa724A/+poOtOInojCqpSRpE4vb6OBmRtDmIJAxSA4f
+	q+iHkCtSckNXJ49ELVp3wKYekx4Hu3LHe2ZUyT3N5n18Mwi4lpbcu585fLX8dl6Sm1920r
+	w0LYy0isS0hDcqp6fFRitgGmFoMYdelUtHSbx9Tm6NOH0N4ee+iItLHiYZcykaDEt9MsqF
+	xFH0uK67m+VTeUGiD6g7C/77X5TkshLws6H+4ToFw4GPgFvrVvyldWMMbrXUAQ==
+Message-ID: <263f58b418a27a2339fc2478f93234e0208b0ad9.camel@mailbox.org>
+Subject: Re: [PATCH v2 02/19] driver core: platform: provide
+ platform_device_set_of_node()
+From: Manuel Ebner <manuelebner@mailbox.org>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Lee Jones	
+ <lee@kernel.org>, Thierry Reding <thierry.reding@avionic-design.de>, 
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller"	 <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski	 <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Srinivas Kandagatla	 <srini@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Vinod Koul	 <vkoul@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich	
+ <dakr@kernel.org>, Rob Herring <robh@kernel.org>, Saravana Kannan	
+ <saravanak@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)"	 <chleroy@kernel.org>, Andi Shyti
+ <andi.shyti@kernel.org>, Andy Shevchenko	
+ <andriy.shevchenko@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will
+ Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Doug Berger
+ <opendmb@gmail.com>,  Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list	
+ <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team	 <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, Matthew Brost	 <matthew.brost@intel.com>, Thomas
+ =?ISO-8859-1?Q?Hellstr=F6m?=	 <thomas.hellstrom@linux.intel.com>, Rodrigo
+ Vivi <rodrigo.vivi@intel.com>,  David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>,  Paul
+ Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, Philipp Zabel
+ <p.zabel@pengutronix.de>,  Maximilian Luz <luzmaximilian@gmail.com>, Hans
+ de Goede <hansg@kernel.org>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
+ <ilpo.jarvinen@linux.intel.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
+	driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
+ iommu@lists.linux.dev, 	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
+	linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Date: Tue, 30 Jun 2026 13:37:54 +0200
+In-Reply-To: <20260629-pdev-fwnode-ref-v2-2-8abe2513f96e@oss.qualcomm.com>
+References: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
+	 <20260629-pdev-fwnode-ref-v2-2-8abe2513f96e@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2551; i=broonie@kernel.org;
- h=from:subject:message-id; bh=suxmd7hBx6haxwfUYdAMlT9JDpZz5886NYdo7Mep1MA=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQ6WTVpXn+QGYzZVDWj262eDQ3hIPy1Vgt4Fm/
- PIjKaF1pxuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakOlkwAKCRAk1otyXVSH
- 0AIZB/9pCqWJBKcMORA4HBEEOe7lHfNBdFAzXulEYYl+5A2SiJEdEPvc4Ga9EUUxHrNPS5I4j+P
- deSVsyW0G3OLOTfvVl532NgIvjBtFV3RUjyR4wbrfKtabENJsnxhC0WD40xWSRfVA4ZuzoFc7Zi
- f0qBGcqMWEpTLSdNMPURlZEfhPDctucv4ocZA8ajy/rGXo8Uy+dxI5D+VZq/04pUhz08nU0DCSJ
- +ZIRf3WapsbVH1DdZhOGB6IevhavBKBK84tajirZ6/6E/qraFYdDhGzKHXSOhsqshuzC796HZX0
- WXOBmsq8g0rx9F6D5E+sms6w0i+dK0mbimBO9/HarTYFVEPS
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-MBO-RS-ID: e997ada4adfcbcacfc2
+X-MBO-RS-META: xtee85ryzhfy8x8szdsj4cwckgtw999y
 
-On Mon, 15 Jun 2026 16:38:13 +0700, phucduc.bui@gmail.com wrote:
-> ASoC: fsl: Use guard() for mutex & spin locks
-> 
-> From: bui duc phuc <phucduc.bui@gmail.com>
-> 
-> Hi all,
-> 
-> This series converts mutex and spinlock handling in the FSL sound drivers
-> to use guard() helpers.
-> The changes are code cleanup only and should have no functional impact.
-> 
+On Mon, 2026-06-29 at 11:12 +0200, Bartosz Golaszewski wrote:
 > [...]
+> =C2=A0
+> +/**
+> + * platform_device_set_of_node - assign an OF node to device
+> + * @pdev: platform device to add the node for
+> + * @np: new device node
+> + *
+> + * Assign an OF node to this platform device. Internally keep track of t=
+he
+> + * reference count. Devices created with platform_device_alloc() must us=
+e this
+> + * function instead of assigning the node manually.
 
-Applied to
+Doesn't it make sense to add a remark to the kernel doc of platform_device_=
+alloc()?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.3
+Thanks
+ Manuel
 
-Thanks!
-
-[01/11] ASoC: fsl_asrc: Use guard() for spin locks
-        https://git.kernel.org/broonie/sound/c/d7e261b7ad1b
-[02/11] ASoC: fsl_audmix: Use guard() for spin locks
-        https://git.kernel.org/broonie/sound/c/58712476dee2
-[03/11] ASoC: fsl_easrc: Use guard() for spin locks
-        https://git.kernel.org/broonie/sound/c/48d84310be60
-[04/11] ASoC: fsl_esai: Use guard() for spin locks
-        https://git.kernel.org/broonie/sound/c/cb87bdabd341
-[05/11] ASoC: fsl_spdif: Use guard() for spin locks
-        https://git.kernel.org/broonie/sound/c/a1b865cff274
-[06/11] ASoC: fsl_ssi: Use guard() for mutex locks
-        https://git.kernel.org/broonie/sound/c/4d748e7082ec
-[07/11] ASoC: fsl_xcvr: Use guard() for spin locks
-        https://git.kernel.org/broonie/sound/c/94b0cb1dd6d9
-[08/11] ASoC: imx-audio-rpmsg: Use guard() for spin locks
-        https://git.kernel.org/broonie/sound/c/929d412fdb0d
-[09/11] ASoC: fsl_rpmsg: Use guard() for mutex & spin locks
-        https://git.kernel.org/broonie/sound/c/11ce4dd4e7be
-[10/11] ASoC: fsl: mpc5200_dma: Use guard() for spin locks
-        https://git.kernel.org/broonie/sound/c/caed9fb2e428
-[11/11] ASoC: fsl: mpc5200_psc_ac97: Use guard() for mutex locks
-        https://git.kernel.org/broonie/sound/c/8a2d7e46317a
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+>  [...]
