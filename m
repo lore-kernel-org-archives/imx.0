@@ -1,123 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B66C370D55;
-	Tue, 30 Jun 2026 06:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FB286334;
+	Tue, 30 Jun 2026 06:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782800539; cv=none; b=iSsrzw710ZKDlqMpwF/QY0FCMp3lyHBLoUrAfYJSsvL6Yov5/eta6u5UbZvXCIKPxay2yLy6SRYBWvbFoZV6l88x2Am6MKIuGrATw8yGWc5wrU2iCbpG1qb/HkvbpxSBL4/smjLNsARPQphTwe+6mEuok17Tt/qFNMiFJrntyKg=
+	t=1782800629; cv=none; b=J890CAL2O6ehq4bV+obIRjlMRc4FNaOm18Lh/YHO6InQs85IoyA8682COKrhzNCt+kwvMx+6qzJinArE4xqI/zoM8kCitXJQZuWPqnFPOg6+eoV0xXVl9AYyy9KxV707e583ob0VoMriX2s1tno6M7pWNVapuK2D+cvh6hpKRjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782800539; c=relaxed/simple;
-	bh=RGyMdqNytEpEgUaFV5Se/rYWeE5rfZg7vmZjpJEr8Iw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eJb+T/UonTCYxwcedobsACZfp6J2D6biBI0JubslZtnQnA8EUqm8fVHa2o9iJGQqjtPNnHOFPtOt5Et6xya6mwm6lWOhQO4kgmLpgo/IA1k4WSIeTcqJibQeEi7HY3xZw5p41Z6zLr2JgBzR7GDAZ4ayuQ8/LV+q/xPdhQWwbGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOZ2LkPO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782800629; c=relaxed/simple;
+	bh=SsozXfCOFbqCgfG1zY5IYCgIywPJ4JdDGYmzSp1tM8Y=;
+	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=OGgYUCMcTVjaG+AAH6i/nfK21CxLWgFu8w76/K4ZbXBo2y9MohE5sQidAHW7ud7J2fY0ODIjr8kHJsCdR0Beww3Jc0o1g8JM4qbX7Rr7LXN6X7HdQN2wGuIyK1umJaSLL8u2VtaR1juCckyklQMRh0bfvRNqlPhhiyk8ZzWsJFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hd2+qzhM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOZ2LkPO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104AE1F00A3D;
-	Tue, 30 Jun 2026 06:22:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hd2+qzhM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE471F000E9;
+	Tue, 30 Jun 2026 06:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782800536;
-	bh=N9sVQgkbOfiThVXjaJ4LhvYdhIVzMO8gt6AUByFIZ+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AOZ2LkPOc1zEjYkhUJx3UNTNuuEhwi49bJW/wbpqOxehVX0NXldS2cksO6+5BDz8S
-	 ajDZINz25hbuju7xg3VCbe9rcxWDLnh/t9k+gfAy6/pc5w33jp3/7gUwM1WtH56He7
-	 L3+YTagsWAuUr7sYFxA71KUM9PfooG/zUWR9m43vXDnJ44Ciwz7b+B4Y7aTS/LYGkz
-	 A7wGLJQSRio8RG9qcBYJY1uiNh39b9rhIQlHJWHpV2swSr5fLolrBjBOG0pBWMqLVD
-	 ESKXDXPIjRwBgxXixc83JDgWFhQUs4wtd0LIvrvZZvSCyu1ZRj+fPHMm1ouVI7DIkw
-	 S/xAG+302oaMw==
-Date: Tue, 30 Jun 2026 08:22:12 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
-	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, 
-	Romain Gantois <romain.gantois@bootlin.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Bartosz Golaszewski <brgl@kernel.org>, 
-	Radu Rendec <rrendec@redhat.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
- PHY on sa8255p
-Message-ID: <20260630-exuberant-dramatic-bustard-068bf8@quoll>
-References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
- <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
+	s=k20260515; t=1782800627;
+	bh=gTFMTWjPkmujjW7rKUdfMY/lDYHhCJzeWzdb/3WeK3M=;
+	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
+	b=hd2+qzhM9NusnQDoJHlGdyh8l3K8LHpwqUbVGRZvxm04SkxiQfAQA00KekFXBozvU
+	 DlXw6i7SCyiEfb0fnLJu/WEcuyWK3rSPGTVrxVkH5cK8Tid9hlzs8wFW7gQ4thvmZX
+	 bPKzczEQr29Yo7+XRwcba4qU/WkizkPkfOvXdL+++O+y6ATSpd208rqlin0wbNBMIm
+	 A3PHbGavPUstUkqTuMu8Q82jKQfLcgJ6NlL4YRzqhwcq+xGGoWJNpO/oWfsF4suk+t
+	 G6gni0kP6Uawm2Z1Z5QwN6rsBFwuy3gzGZlrCu2LY0opD+l50rJ6pTlSdGV4vFpG4B
+	 +sMPR6vKRG6CA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH V4 7/7] arm64: dts: imx95: Move power supply properties
+ to Root Port node
+Reply-To: sashiko-reviews@lists.linux.dev
+Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, linux-pci@vger.kernel.org, robh@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260630060710.3294811-8-sherry.sun@oss.nxp.com>
+References: <20260630060710.3294811-1-sherry.sun@oss.nxp.com>
+ <20260630060710.3294811-8-sherry.sun@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 30 Jun 2026 06:23:47 +0000
+Message-Id: <20260630062347.7FE471F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
 
-On Mon, Jun 29, 2026 at 01:28:47PM +0200, Bartosz Golaszewski wrote:
-> Describe the SGMII/SerDes PHY present on the Qualcomm sa8255p platforms.
-> This is essentially the same hardware as sa8775p rev3 but the PHY is
-> managed by firmware over SCMI.
-> 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->  .../bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml | 51 ++++++++++++++++++++++
->  1 file changed, 51 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..4cea6926d1c28872ea7b7aad53088dbbcb74fa99
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml
-> @@ -0,0 +1,51 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm SerDes/SGMII ethernet PHY controller (firmware managed)
-> +
-> +maintainers:
-> +  - Bartosz Golaszewski <brgl@kernel.org>
-> +
-> +description:
-> +  The SerDes PHY sits between the MAC and the external PHY and provides
-> +  separate Rx Tx lines.
-> +
-> +properties:
-> +  compatible:
-> +    const: qcom,sa8255p-dwmac-sgmii-phy
-> +
-> +  reg:
-> +    items:
-> +      - description: serdes
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  power-domain-names:
-> +    items:
-> +      - const: serdes
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Removing legacy power supply properties from the PCIe controller n=
+odes breaks backwards compatibility for older kernels booting with the upda=
+ted Device Tree.
+--
 
-Drop names. Not useful if it repeats the device block name.
+commit 332f451afbc5374b9f81acdbad51ee15f1b90088
+Author: Sherry Sun <sherry.sun@nxp.com>
 
-With this:
+arm64: dts: imx95: Move power supply properties to Root Port node
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+This commit moves power supply properties from the PCIe controller nodes to
+the Root Port child nodes. This change is made to support the new PCI
+pwrctrl framework.
 
-Best regards,
-Krzysztof
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts b/arch/arm=
+64/boot/dts/freescale/imx95-15x15-evk.dts
+> index 7d820a0f80b22..6aedcbbe915a5 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+> @@ -555,8 +555,6 @@ &pcie0 {
+>  	pinctrl-names =3D "default";
+>  	/* This property is deprecated, use reset-gpios from the Root Port node=
+. */
+>  	reset-gpio =3D <&gpio5 13 GPIO_ACTIVE_LOW>;
+> -	vpcie-supply =3D <&reg_m2_pwr>;
+> -	vpcie3v3aux-supply =3D <&reg_m2_pwr>;
 
+[Severity: High]
+Does removing these legacy power supply properties break backwards
+compatibility for older kernels booting with this updated Device Tree?
+
+Since older kernels lack the pwrctrl framework to handle the new Root Port
+properties, they rely on finding vpcie-supply and vpcie3v3aux-supply in the
+PCIe host node. Without them, the legacy pci-imx6 driver silently skips
+enabling the power regulators, and PCIe initialization will fail because the
+slot remains unpowered.
+
+The reset-gpio property was intentionally left to preserve backward
+compatibility, but removing the power supplies appears to defeat that
+effort. Keeping the legacy regulator properties (even if marked as
+deprecated) should be safe, as the kernel regulator framework uses reference
+counting and allows both the legacy driver and the new pwrctrl framework to
+concurrently enable the same regulator without conflict.
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630060710.3294=
+811-1-sherry.sun@oss.nxp.com?part=3D7
