@@ -1,151 +1,149 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDDD421A17
-	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 13:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BDD40911F;
+	Tue, 30 Jun 2026 13:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782825907; cv=none; b=FsIWBRWeBjdsURn+M+TrFANTYCp1axbPbDavZn58j1SLXsT/8Dugw0c44GoiMmjGY8kRon2l85CQY0Qhsvg3wE44Op53tbrASowjx5H1YbNaZtZCBGN7onekUukVd1ViM//YbeYeNLIKPiYFSJ0QfMSln9Fl1H/VYhaetsPjqaQ=
+	t=1782825929; cv=none; b=YBpdt7vexp1UgwlZHpFBd35t9LFSrV8dH0x85XTaej3dSHx3FJLpOePuGmZSJdYzwFVtmNWE76CPKR5463qW9QQ27CgrKN91AHvwNXizK2Hjx50f0oY/4L5gYLs9PLXvfTZhM1lYc6OQRhnLN2XUph4+ztomA1zvZhJlbxA5Tsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782825907; c=relaxed/simple;
-	bh=M3sGTFQyxhf710EoXPL7ZgKgQDTu94F/o5gJOr5YAFU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IKYzAjfCyxPl1c6QiCuxezcBUhinLuNvHsoREtCfcuRNpfSoymCPRihLV0dRuCYKrTD0K6HjGyAdy/oLdT80TWPGgtwvY7VZAiNB9e3F3EjRp4bIZ4Qqh3Y7RNg0mnbxn3vkUlsXHHvi12xZ3s5f7jMgwwCAa/HhzgsCSM7STRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NCUS11JP; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1782825929; c=relaxed/simple;
+	bh=d1HqB2hkvvE4JrPisXGchEFzKRcehw21Pt+GHtzMYaA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qp2+dr+j5HU7waJBXvWbLZoRUOTJanqJqkBOa1yjcjP7aWxjQ0owKJPuR8eCQiAwDrNw82aeg6fkQo3h3EXDOgpWfzrXXVn/Su3THtVExaH0y76SRaFrSrOl7ANj/qVV2UCYULvOlhA9i1XdUES4HEzjZ71ahrT/Ult3Oqi/R1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H88tuu+p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NCUS11JP"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id B9961C51478;
-	Tue, 30 Jun 2026 13:25:12 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 21ECA6025A;
-	Tue, 30 Jun 2026 13:25:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4772B106F1825;
-	Tue, 30 Jun 2026 15:24:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782825900; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references:autocrypt;
-	bh=M3sGTFQyxhf710EoXPL7ZgKgQDTu94F/o5gJOr5YAFU=;
-	b=NCUS11JPwA+J9uH1x6EmuZisSfg1N27jNVUGA4+oa/XrDXtnkh4+PfNiHe//NHF5uGkybc
-	9+HzyGP4ac6GG5KxdH4NAJK5NdKZxUql9EA1nFOu1T+dCxsZNyttEaM2yG32VZdfKCHQFM
-	vgPE95AAKipzasMHwuemjGRQuXi7VoZS4faa+PFGQv5pg3/jE1+CvYGfcMA95ELVTcS66R
-	qfCFRQQ4IaqqpAooacmWlmq7u2uY0D/kO707c6wt9zwr9+vmpm6xKuOaiGjn7Q30J/B57m
-	yZsNdyBincX/LrhiZxs1iYC/It6uz8gTYDAal7G70TqkQ+1pQg5PtY1g0o9qlQ==
-Message-ID: <984d68f4288c225bb4bbb2db88f29098ebaa0ccc.camel@bootlin.com>
-Subject: Re: [PATCH v5 0/5] Add support for AAEON SRG-IMX8P MCU
-From: Thomas Perrot <thomas.perrot@bootlin.com>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: thomas.perrot@bootlin.com, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- imx@lists.linux.dev, 	linux-arm-kernel@lists.infradead.org,
- linux-watchdog@vger.kernel.org, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, Conor Dooley
- <conor.dooley@microchip.com>,  Bartosz Golaszewski
- <bartosz.golaszewski@oss.qualcomm.com>, Guenter Roeck <linux@roeck-us.net>,
- Rob Herring	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley	 <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Shawn Guo	 <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, =?ISO-8859-1?Q?J=E9r=E9mie?= Dautheribes
- <jeremie.dautheribes@bootlin.com>, Wim Van Sebroeck
- <wim@linux-watchdog.org>, Lee Jones	 <lee@kernel.org>
-Date: Tue, 30 Jun 2026 15:24:54 +0200
-In-Reply-To: <CAMRc=MdJJnRTOSEecqpX-EddJRAzWc_1a-cg3wrW8m0jR2Fihw@mail.gmail.com>
-References: <20260408-dev-b4-aaeon-mcu-driver-v5-0-ad98bd481668@bootlin.com>
-								 <b4396f57-3501-4e89-9cf3-8dc5d7cad9b7@roeck-us.net>
-	 <31477953aace52bb6594461e82ddf99493af2329.camel@bootlin.com>
-	 <CAMRc=MdJJnRTOSEecqpX-EddJRAzWc_1a-cg3wrW8m0jR2Fihw@mail.gmail.com>
-Autocrypt: addr=thomas.perrot@bootlin.com; prefer-encrypt=mutual;
- keydata=mQGNBF+/ZOUBDAC2DghCjZvmgYcve02OG7dGZ7Iy58uEwne3LB7w7nRwdAxKw7ZaiVqwY
- O+yNGVi+GVx7oA6Wn4pv46z+QDRLQiq6OseuXhkSGCg7U/yBCUq12B/GRGO1Qt2Qi1mJJT1s+1qZ5
- Gxv6Nypz9qKVn94GM2bR1hXBga0t87vBpebThOHmX5d/0dqIcVxRCM7onNb0dDyRoVgLS5rBhQzrL
- CMrJaCy39xZUy0J1SOlH4Mgk6EhJIPYY4wlzikGX6urg+Tc9EjGd78ry0e0p5U5qgjFR5QGJDy1Gn
- U3CfwbT9sowdCASDbQDUoltlv2iWJCLa0xl97KVchCa0pr7HKbFA3J5SLKqFYUBCkFL+5WudYlz2n
- XxiUgyviMQxyK+ij66kEi6/2zFDAecd43pHV7790ptqZBC3Jc67Emj7Vo3ShX6RXPPxxbeCTOF2uk
- I45aJ9XcVFH/MFE96NjXj8uahnIsiTPyuCUoJu8tj7TSQyue874qJqVQvqlFyt2aZYJZ8ruq8AEQE
- AAbQpVGhvbWFzIFBlcnJvdCA8dGhvbWFzLnBlcnJvdEBib290bGluLmNvbT6JAc4EEwEIADgCGwMF
- CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSHQHfGpqMKIwOoEiGfwAsFcf4K7QUCX79mdwAKCRCfw
- AsFcf4K7fhbC/wP0kSl6id2E/K3+UdXk6CLMVRbCFLCREzQs5WFpQ6l/I0WGOamhrOgegdszheiVF
- orlUP8d37XSpFAqydhKGaN78V5Dps0Wmwm4lIlS4MtQXJtSLUHXDJLIZLW0pw8tiPLKsd1o/yDkXE
- dnpsjJTRG6SdDSHnyOB2/gh4p+yTaLytFdARk/r4/P26+L+FiH0fFl+RnBt19LPklfKgeDc7GwIif
- ja+nIWpp3W23DAUuI6xduEut25Q89yu7Ci8CliLfAiLy9bIGjBQWU2Y+1/j/7KuPj6VbBsZWLTZY0
- hUmpJSTnWAqc9SMsNxo7NSQuddgviz5e2tqucaRqxP02FGzNa8U4NAKdWaXrlHG5Dglj9XH0DK+SH
- +c96qqFewYD8VPQ6XAGxQcXbrtJmiMor1R2DfziispLRvJcfYs8xqabbCtoS3ouXB9XRi8hn7A2kh
- ME1ryS+Oh63JshXHnw6bmjCpVd/p+fGLIGU6A47pJOpviKR4jEO84pl2ejtDZ3Tc=
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-9X53wTzqLt2/ZcqSFvOL"
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H88tuu+p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AC71F000E9;
+	Tue, 30 Jun 2026 13:24:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782825909;
+	bh=qkxqnxawZAg1SGSCnT4v6xXere40vHhVb9+dIzeD4h8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=H88tuu+pvs7E67DlX4qSnxt4ru1hYhsMRoLsG+qdTMLO1ck3Buu5oC51mdjsRE+2R
+	 L9U+vSQ189XiGOt/3yfavF6Ce5DXp2e28HK0HA1EMJTuD2+pH9IOCrZZUH6qGIUyLj
+	 0WJd4E9hrVPbby9qw1ntboLPp7KMKgf2GFuZFOxM8t//V6SSFOG/epIOtsx9mhqYUj
+	 ybqU7oGEtce/fRVTSytmY0SorWDyGdH7arRgjwtihKx4xH/ZadDGxl5RZQMx/V3WQQ
+	 AGh6n1z/xHS6ccsxur6nvxboNayYBJeRcYBbMmDxpqy5n36C9SGq+KKVPzuFjrOuMz
+	 UO45LggHCRSjA==
+Message-ID: <cd407dd0-1d09-465b-94e7-8a413dd95909@kernel.org>
+Date: Tue, 30 Jun 2026 15:24:52 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
+ PHY on sa8255p
+To: Vinod Koul <vkoul@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Bartosz Golaszewski <brgl@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com,
+ Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ Christophe Roullier <christophe.roullier@foss.st.com>,
+ Radu Rendec <rrendec@redhat.com>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, Drew Fustini
+ <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
+ linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
+ imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
+ linux-riscv@lists.infradead.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
+ <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
+ <CAMuHMdXen+E-Ai51aWBa_KV9W8Fz2cQPpT-FG_kQ7akhrrYa_A@mail.gmail.com>
+ <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
+ <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
+ <akOZFIowVvprnAMf@vaman>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <akOZFIowVvprnAMf@vaman>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 30/06/2026 12:23, Vinod Koul wrote:
+> On 29-06-26, 16:51, Geert Uytterhoeven wrote:
+>>> Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
+>>> driver instead of the MAC driver where it was previously. Instead of cramming
+>>> both HLOS and firmware handling into the same driver, I figured it makes more
+>>> sense to have a dedicated, cleaner driver as the two share very little code (if
+>>> any).
+>>
+>> I think you are mixing up DT bindings and driver implementation?
+> 
+> Should the bindings change if we have different driver and firmware
+> implementations? Isn't binding supposed to be agnostic of
+> implementations..?
 
 
---=-9X53wTzqLt2/ZcqSFvOL
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I did not follow earlier discussions, so I do not know Russell
+arguments, but in general it's true that driver choices should not
+influence binding decisions. IOW, you need to figure out which real
+device is part of power domain and add the power-domains to that device
+node (that device).
 
-Hello Bartosz,
 
-On Tue, 2026-06-30 at 00:47 -0700, Bartosz Golaszewski wrote:
-> On Mon, 29 Jun 2026 18:04:59 +0200, Thomas Perrot
-> <thomas.perrot@bootlin.com> said:
-> > Hello Guenter,
-> >=20
-> > On Sat, 2026-04-11 at 17:12 -0700, Guenter Roeck wrote:
-> > > snip
-> > >=20
-> > > Sashiko has some interesting feedback that might be worth looking
-> > > into.
-> > >=20
-> > > https://sashiko.dev/#/patchset/20260408-dev-b4-aaeon-mcu-driver-v5-0-=
-ad98bd481668%40bootlin.com
-> > >=20
-> >=20
-> > Thanks for the pointer. I went through all findings and addressed
-> > the
-> > =C2=A0 valid ones in v6:
-> >=20
->=20
-> Did I miss anything? I don't see the v6 neither in my inbox nor on
-> lore.
-
-I just submitted it. I was waiting for the tests to finish.
-
-Kind regards,
-Thomas Perrot
-
->=20
-> Bart
-
---=20
-Thomas Perrot, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
---=-9X53wTzqLt2/ZcqSFvOL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCAAdFiEEh0B3xqajCiMDqBIhn8ALBXH+Cu0FAmpDw6YACgkQn8ALBXH+
-Cu3Z4QwAtYCULW7li/8c+W51thD4TA+XAWl/WlY9Ygahvsw/16ifn5pstgFNxRvz
-LavDMxiMsym+2YAcZ8Y3UaAWhOdTU18j6LA4mLqb+NUrq7jN2TGepGqcZme5pPdZ
-5NnBdflkVEYlBVcKZp5O+o3TsCKNlgiN7LYpIQ7AZWRlzdNxsdStBUbsK3SZJtUi
-RSKYrjYj5nT11lAMlWWnucJd+9EfIQR+sLUyrkd8nf8NaUWaOH25ltkmhmaeSC9v
-0rsELJYKjWi+xvripQsCgwF9mgY7vTMfVNgnfbw4w8ZYN/4avpqSwZwnDJEB25T7
-NIoNsKoMmbiw/AADZ4yqxNPe0RqGw7+JZ7G9chtrpcoRDAhhYOLHhaxGZxyHZjcS
-1jHcL4KDExhlR8U7WNj7ooJO+Scg1Yq9hlP/p15W7JJ/yLLXNhKrb5VNeWh8P4LY
-tZ2oQvt5yiZThaoh6mSbQYa9u4MENm1tEk9hilHvJLcS60MtXrINYK8PrXK9jw9W
-kpiTGMur
-=CcQS
------END PGP SIGNATURE-----
-
---=-9X53wTzqLt2/ZcqSFvOL--
+Best regards,
+Krzysztof
