@@ -1,228 +1,70 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E1C381AEC
-	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 07:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8452BE03B;
+	Tue, 30 Jun 2026 07:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782803392; cv=none; b=NAeUL4k5qwMtTQkMXyZZOthxB9VfL31p/YZqtRglOQG4pb2psZK5bIHe7eV11eRFeoiNClREf1be8eX/Y2wUaM1XYELEtlbjElWUbjSJKJgoYeHbE84DnbKOsv/nhJcuCiyZuhe7NQE7VwomWVA7Q0OFSZNl07uGyG4+99kRW6s=
+	t=1782803826; cv=none; b=cFlLQL7RirtY35N0mJzHbEpyik6BcaeIDDNCtO3DlHBSZN+s46Ek2H9+3eCIyqqvqp1f/CPxB923TVEKi26yVGfAX4PBxuHuaNrnIH+BrpqyOOmLzSQuavXI1ytAi+nQFFUCLZ2tGsV+lKVFdQO2Q8fh3F+QK1gQuGvfAlVorI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782803392; c=relaxed/simple;
-	bh=HSNV9k7GdpwNxUpmLTuu36JNu5wZ8x7nU1zf/Qcc/m0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RFdDIXArnmMswReiYAGRE0MRxZoaetN6ZN1Y3EurY/+nR1xjzUdC3wUR8pN8qa5/zMrHB4U07PcJ8pa+/C18KT3lekKhWktBC3UJr/N7Y1UFhV+jsP3OqnW64xuupX77cEtueVnFIXs8arGtnPi6Saa1Vz5XovS2ewzUWJcSJC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Tb5CWwQV; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1782803826; c=relaxed/simple;
+	bh=CnOxLrvS6VwbsrpoGfJ+JIBXBBEmKLj/aQm51FG6PwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fyd7T1DCuw2DhslMkBpowy7/KVlrR48TvSylvsFbk4vb4pBm0xBxM7vSesRZNSF7oWziyh3tx6XpMDvnilygBWIKGSpgbzvEzW6vVjF3f8pYPbrh4o8NidwR7+HDLlyMe4B2UwCJyTVJk+YsNChLqc1BhvU91Z19fZXcPSbx4lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N50/KIrd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Tb5CWwQV"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gqDmW2GKlz8tvP;
-	Tue, 30 Jun 2026 09:09:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1782803387;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b0zjs9iwqtrc2J/ztqSJU4UXG4YZ0TfZmlMj54ld8hs=;
-	b=Tb5CWwQVBN8ShO5Nyks160IuESTvOkdDXRJAbLORDvP3ovNPzwgeBUyPR06opUyC3V3qHF
-	l7qwHpyWwV6CdxbqKN/l/xjz2YSy38iS74uT2CJ/wZwrEHxHaR24g04mlOQJZ76E7sUUPw
-	0xsBi0I960LsPjRzFyM/3TIIsrH2all43z661x6wwH9wMK2m/cwTKTOss8qnFyhKna3hzi
-	tbzSRsQBbTlzqyVjl93NimG8H3MqyGs9Jf4Bf4xRqpCjoHek+C1OA22/LN+eSg0CSQOdDX
-	aR/hsV/NiypxvxJssLHT6+GQxMxMFzesYISmcLkvdADvH3VWNN4/qo0W+bdv7A==
-Date: Tue, 30 Jun 2026 09:09:39 +0200
-From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, richardcochran@gmail.com, lgirdwood@gmail.com,
- nathan@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- krzk+dt@kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, robh@kernel.org, Andrew Lunn 
- <andrew@lunn.ch>
-Subject: Re: [net-next v24 3/7] net: mtip: Add buffers management functions
- to the L2 switch driver
-Message-ID: <20260630090939.078b7d6c@wsk>
-In-Reply-To: <20260609103704.443c0b57@wsk>
-References: <20260601112437.2216043-4-lukasz.majewski@mailbox.org>
-	<20260605021853.3594553-1-kuba@kernel.org>
-	<20260609103704.443c0b57@wsk>
-Organization: mailbox.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N50/KIrd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE281F000E9;
+	Tue, 30 Jun 2026 07:17:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782803825;
+	bh=iCdrMUvSSw/mZ+gIsbwP1bklG4AtyFzFYJZ+5GttJBk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N50/KIrdFzKgp/X3seWtKpS9i2aaZ8WpCHLUb9N10JCELAE8iJTzJDh0g2klfL+5+
+	 DfaazjdfOO1T+tlX3zQqFxda68kKphzwXB0bCa3mG0MX2BaL/a41LncCZvtiVlgafp
+	 SBDzGGmiOxpc+rdEunnKN8lR766aGaHGNK0tKWL+kSJl8rPqz0kx7Sh+HUF8HfEjEB
+	 eAqthZ+tGwhggZItNXLA/9AnIPPk8/Ec+AleCrhMjypM1tpL5y0sP+l4CFnCqdw00f
+	 sZf3bA/yFK1nnZlQ0quwAWCbMzrWUBUx7kQGlrH5v0nhkul0SkNRU5e5bSApt3rlOr
+	 8lOeSyIYQqXYw==
+Date: Tue, 30 Jun 2026 09:17:00 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Linus Walleij <linusw@kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev, 
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: mfd: st,stmpe: fix typo st,stmpe601
+ (should be st,stmpe610)
+Message-ID: <20260630-energetic-spiffy-cobra-5b9b9c@quoll>
+References: <20260629223735.2559722-1-Frank.Li@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-MBO-RS-ID: f9fe1692ed39a6225db
-X-MBO-RS-META: 6xr347yciixekcd1193dniyh79nd461i
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260629223735.2559722-1-Frank.Li@oss.nxp.com>
 
-Hi Jakub,
+On Mon, Jun 29, 2026 at 06:37:34PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> The compatible string "st,stmpe601" is a typo and does not correspond to
+> any existing STMPE device in either the driver or DTS files. The correct
+> compatible string is "st,stmpe610".
+> 
+> Fix the typo to ensure proper schema matching and eliminate the
+> following CHECK_DTBS warning:
+>   imx53-m53evk.dtb: /soc/bus@60000000/i2c@63fc4000/touchscreen@41: failed to match any schema with compatible: ['st,stmpe610']
+> 
 
-> Hi Jakub,
->=20
-> > This is an AI-generated review of your patch. The human sending this
-> > email has considered the AI review valid, or at least plausible.
-> > ---
-> > net: mtip: Add buffers management functions to the L2 switch driver
-> >=20
-> > This patch fills in mtip_alloc_buffers() and mtip_free_buffers() for
-> > the MTIP L2 switch driver, replacing the previously empty stubs with
-> > real page_pool setup/teardown and tx_bounce buffer allocation/free.
-> >  =20
-> > > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-> > > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c index
-> > > 1d1005a42306..5b5229ee411d 100644 ---
-> > > a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c +++
-> > > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c @@ -892,11
-> > > +892,101 @@ static void mtip_get_drvinfo(struct net_device *dev,=20
-> > >  static void mtip_free_buffers(struct net_device *dev)
-> > >  {
-> > > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > > +	struct switch_enet_private *fep =3D priv->fep;
-> > > +	int i;
-> > > +
-> > > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
-> > > +		if (!fep->page[i])
-> > > +			continue;
-> > > +
-> > > +		page_pool_put_full_page(fep->page_pool,
-> > > +					fep->page[i], false);
-> > > +		fep->page[i] =3D NULL;
-> > > +	}
-> > > +
-> > > +	page_pool_destroy(fep->page_pool);
-> > > +	fep->page_pool =3D NULL;
-> > > +
-> > > +	for (i =3D 0; i < TX_RING_SIZE; i++) {
-> > > +		kfree(fep->tx_bounce[i]);
-> > > +		fep->tx_bounce[i] =3D NULL;
-> > > +	}
-> > > +}   =20
-> >=20
-> > [High]
-> > Now that mtip_free_buffers() is no longer an empty stub, can the
-> > mtip_open() error path tear down buffers that another active port is
-> > still using?
-> >=20
-> > Looking at mtip_open():
-> >=20
-> > 	if (fep->usage_count =3D=3D 0) {
-> > 		...
-> > 		ret =3D mtip_alloc_buffers(dev);
-> > 		if (ret)
-> > 			goto mtip_alloc_buffers_err;
-> > 	}
-> > 	...
-> > 	ret =3D mtip_mii_probe(dev);
-> > 	if (ret)
-> > 		goto mtip_mii_probe_err;
-> > 	...
-> >  mtip_mii_probe_err:
-> > 	mtip_free_buffers(dev);
-> >  mtip_alloc_buffers_err:
-> > 	if (fep->usage_count =3D=3D 0) {
-> > 		netif_napi_del(&fep->napi);
-> > 		clk_disable(fep->clk_ipg);
-> > 	}
-> > 	return ret;
-> >=20
-> > mtip_alloc_buffers() only runs when fep->usage_count =3D=3D 0, so the
-> > page_pool, fep->page[] and fep->tx_bounce[] are shared across switch
-> > ports and only allocated on first open. mtip_close() reflects this
-> > and only calls mtip_free_buffers() when fep->usage_count =3D=3D 1.
-> >=20
-> > When a second port is opened (fep->usage_count > 0) and
-> > mtip_mii_probe() fails, the mtip_mii_probe_err label still calls
-> > mtip_free_buffers() unconditionally, which destroys the page_pool
-> > and frees the tx_bounce buffers that the first, still-active port is
-> > using.
-> >=20
-> > Should the mtip_mii_probe_err teardown also be guarded by
-> > fep->usage_count =3D=3D 0 (or the labels reordered) so buffers are only
-> > freed for the last user, similar to mtip_close()?
-> >=20
-> > After this change the previously harmless call becomes a real
-> > teardown, so the surviving port's NAPI path (mtip_switch_rx() and
-> > the later mtip_update_cbd() refill) would dereference a freed
-> > fep->page_pool and NULL fep->page[] / fep->tx_bounce[] entries
-> > whenever the second port's PHY probe fails while the first port is
-> > up.=20
-> > > =20
-> > > +static int mtip_create_page_pool(struct switch_enet_private *fep,
-> > > int size) +{   =20
-> > [ ... ] =20
-> > > +}
-> > > =20
-> > >  static int mtip_alloc_buffers(struct net_device *dev)
-> > >  {   =20
-> > [ ... ] =20
-> > >  	return 0;
-> > > +
-> > > + err:
-> > > +	mtip_free_buffers(dev);
-> > > +	return -ENOMEM;
-> > >  }
-> > >   =20
->=20
-> Thank you for sending the AI review.
->=20
-> Please find my comments:
->=20
-> - I've gone through them and yes, there are a few issues found.
->   However, those are IMHO not critical ones.
->=20
-> - Some issues are not valid at all - like concern what happens when
-> the switch is run on multi processor chip - both imx287 and vf610 are
->   single core chips.
->=20
-> - It seems like the AI review is "progressing" - i.e. there were no
->   issues found with v23 for this particular patch. I do guess that the
->   new Orc Mode from [1] has found it.
->=20
-> - I do guess that different AI agent would generate different review
->=20
-> - The aforementioned issues could be addressed with a fix patches -
->   dragging along (and preparing for upstream) patch set with ~3400
->   LOC (which is rejected by non-deterministic AI review) takes too
-> much resources now.
->=20
+Missing fixes tag. This was introduced by conversion, no?
 
-Could you provide some guidelines about how to proceed?
-
-The series was sent shortly before the net-next being open (and then it
-was closed because of the new merge window).
-
-Now it is open again, so maybe you would find some more time for this
-patch set discussion?
-
-Thanks in advance.
-
->=20
-> To sum up:
-> ----------
->=20
-> The MTIP driver for v6.6 kernel (YPRR Scarthgap) with and without
-> PREEMPT_RT for vf610 and imx287 as well as the v24 for net-next can be
-> found at [2].
->=20
->=20
-> Links:
->=20
-> [1] - https://netdev-ai.bots.linux.dev/ai-local.html
-> [2] - https://github.com/lmajewski/linux-imx28-l2switch/branches
->=20
->=20
->=20
-
-
-
---=20
 Best regards,
+Krzysztof
 
-=C5=81ukasz Majewski
