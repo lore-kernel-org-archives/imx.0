@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2473428DC4;
-	Tue, 30 Jun 2026 06:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685A528DC4;
+	Tue, 30 Jun 2026 06:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782800650; cv=none; b=fXGRwQ/HiZhpwTyi8dMMHKtUwxJY6ELkJGda49DKsXO8X2sl4iuNAu6NK+ZlYUvNYWLH0EAGMZFOwnCSrDKNNGZTHEtXFtGkN3zL6r4NGEDecOwxBfPbXTQO+XPQY8ANVgcKzuxZ1k7phTnDjSTZMfhCw4/dCd0aOxFziCSdiCU=
+	t=1782800711; cv=none; b=NZQMhILaGAvh80gxSkxBQYllaWQ6bBSXP0fmSSAQfjlpL0W6XLzQijBs0Vbwys7iCCNAkBjWblApaPnrfvXz9ARhWEz0b9NlXYlwPftdUoU5bELeoZHPvDgQyrHdIfHSp5Ooa6f/WYRpnd1QRgGwjj08oBYQkGGyk5xn8f9vLLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782800650; c=relaxed/simple;
-	bh=pvO2BJi9r4oc+R4EItYeAnU5j3KhRYaz+GrAb/T/fHs=;
+	s=arc-20240116; t=1782800711; c=relaxed/simple;
+	bh=yQDF6daR9hmdhnKHYO09dTsJZYvzr5LzuIphe4/LYCU=;
 	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uZ6PWwLm2Z3ogg21fkghRYwmiHFoVdiSgosCt1+/3LB7dv6AqjNpIzYIvEX0sB1ibH3EKRFVBSUXgQJsN+Lnlxeht3E/W881yLPb1CpZ680Yy7g7vGwxGdob0skdGWQSSMuqKjozWXUHBTexPVWJrYcvHPrwb0onpnu1TS0bAkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZs8X7Wh; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ntud6rf/IvrgCiDQDc9tA+/HPoprx7kZpknzWvPG/xq7xIFD1cioKKH+s11Cv4yO0OEM58LIjLYdF6Ep1jX0iYv1HK6Dtv6SqKnZn3tJewkn4oZmc0FFduejqEAJdfwJRvwkjgJVSegf1zE2mwrJh/xTcdkb2Rs3xlXN7IKlncw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLAqA19D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZs8X7Wh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683A71F000E9;
-	Tue, 30 Jun 2026 06:24:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLAqA19D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01751F000E9;
+	Tue, 30 Jun 2026 06:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782800648;
-	bh=B/XWZZOboEQOva1v86G5UIYvDsWsR8cQQFWTwbJHscQ=;
+	s=k20260515; t=1782800710;
+	bh=SlfqcWdSspYUDQt9VOyb0jq/6VppfzyCtLUsCXL39PE=;
 	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=NZs8X7WhOvp3knRjsx07N7eSI612rjl03g4DuWzxps1w6BO5cewDI5z9WSU/puGV1
-	 fOjWla7dLft1TGAdREwnpVYCKo7ZL6yKli/QjGGalqS2rWc9/AFk0RI13FWbbwISQw
-	 PcOY9eHoOJ44LGpbpDANT5byVpEX9wkagUiqgxq+fDqgfxSQRD5DVtOhfSkpEJvlgr
-	 /A8jhlzmJFDNnHpUeTf+UV9GBom7Pd4QrMo7OA15xsfzsKZFtzXg9IcCtEMjKLQV1S
-	 znZ9Ybggn0dmAreIyegT28urVzEdIy3IPo0m+N+QR33tRz76tGi90FbmQp/r6yi5yy
-	 dF5HSFaa+yFkA==
+	b=OLAqA19DRJEqJdaPbVkai6eiOXz7XfOZ8tssTj1451I39TRPGzM6dg/Nr2UfFgLKR
+	 M3i+WN5+s6HJkpJlXJOx0yQ2f2Gzl2BnVp+HMk5pqWvQklVIThsHGGNWjmT6rVcuRC
+	 9fvVWBwjLjx3ZfrLmBC55BaEkvZxwT6wigaZ7p/SvM7b0Sf+fohgBkvejIO3CCRLPg
+	 /u1cz3+DLcTjqJ+Do80gtZLhIwJxYh1k+lVWlPoweFfGdjP9PCVGSjRs+Mdr9XLvA/
+	 f2Wbx29KB1eUeUTU9g4Tvte0okS1YeBhI3e0FyaHm5iFPCs2+Qr4A2VWttZ0sZ2pjx
+	 20M0ucXYJx4YA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V4 6/7] arm64: dts: imx8dxl/qm/qxp: Move power supply
- properties to Root Port node
+Subject: Re: [PATCH V4 2/7] arm: dts: imx6sx-sdb: Move power supply property
+ to Root Port node
 Reply-To: sashiko-reviews@lists.linux.dev
-Cc: conor+dt@kernel.org, linux-pci@vger.kernel.org, robh@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260630060710.3294811-7-sherry.sun@oss.nxp.com>
+Cc: linux-pci@vger.kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260630060710.3294811-3-sherry.sun@oss.nxp.com>
 References: <20260630060710.3294811-1-sherry.sun@oss.nxp.com>
- <20260630060710.3294811-7-sherry.sun@oss.nxp.com>
+ <20260630060710.3294811-3-sherry.sun@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 06:24:08 +0000
-Message-Id: <20260630062408.683A71F000E9@smtp.kernel.org>
+Date: Tue, 30 Jun 2026 06:25:09 +0000
+Message-Id: <20260630062509.B01751F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,79 +46,60 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Moving `vpcie3v3aux-supply` to the Root Port node delegates its li=
-fecycle to the generic `pci-pwrctrl` framework, causing auxiliary power to =
-be disabled during system suspend, breaking Wake-on-PCIe.
-- [High] Removal of `vpcie-supply` and `vpcie3v3aux-supply` from the host n=
-ode breaks Devicetree forward compatibility for older kernels.
+- [High] Removing `vpcie-supply` from the host controller node breaks DT ba=
+ckward compatibility, as older kernels will fail to enable the regulator an=
+d initialize PCIe.
+- [Low] Adding `vpcie3v3-supply` to the Root Port node without updating the=
+ corresponding binding schema causes `dtbs_check` validation failures.
 --
 
-commit 5e5016406a44aded0d05f19605180a501f38ea48
+commit 9019771c92c02473e9f2657166c7dc76a65b606d
 Author: Sherry Sun <sherry.sun@nxp.com>
 
-arm64: dts: imx8dxl/qm/qxp: Move power supply properties to Root Port node
-   =20
-This commit moves the power supply properties from the PCIe controller nodes
-to the Root Port child nodes to support the new PCI pwrctrl framework.
+arm: dts: imx6sx-sdb: Move power supply property to Root Port node
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/b=
-oot/dts/freescale/imx8dxl-evk.dts
-> index 78e8d41e67916..59d9fe687aaf0 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> @@ -677,8 +677,6 @@ &pcie0 {
->  	pinctrl-names =3D "default";
+Move the power supply property from the PCIe controller node to the Root
+Port child node to support the new PCI pwrctrl framework.
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi b/arch/arm/boot/dt=
+s/nxp/imx/imx6sx-sdb.dtsi
+> index 338de4d144b2a..41a69fe83be85 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi
+> @@ -284,12 +284,12 @@ &pcie {
+>  	pinctrl-0 =3D <&pinctrl_pcie>;
 >  	/* This property is deprecated, use reset-gpios from the Root Port node=
 . */
->  	reset-gpio =3D <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
-> -	vpcie-supply =3D <&reg_pcieb>;
-> -	vpcie3v3aux-supply =3D <&reg_pcieb>;
+>  	reset-gpio =3D <&gpio2 0 GPIO_ACTIVE_LOW>;
+> -	vpcie-supply =3D <&reg_pcie_gpio>;
 
 [Severity: High]
-Will removing these properties break Devicetree forward compatibility for
+Does removing this property break device tree backward compatibility for
 older kernels?
 
-Older kernels lacking the new pci-pwrctrl framework rely on finding the
-vpcie-supply property in the host controller node to power the PCIe physical
-slots. Because these regulators are not marked regulator-always-on, older
-kernels might fail to enable them, resulting in unpowered slots and complete
-device enumeration failure.
-
-Could these properties be kept in the host node as deprecated fallbacks,
-similar to how reset-gpio is handled here? The kernel regulator framework
-uses reference counting, which should safely handle multiple driver
-consumers.
+Older kernels using the pci-imx6.c driver expect the vpcie-supply property
+in the host controller node to find and enable the regulator. If this is
+removed instead of being left as a deprecated fallback (similar to the
+reset-gpio property above), will PCIe initialization fail on older kernels
+booted with this new device tree?
 
 >  	status =3D "okay";
 >  };
 > =20
-> @@ -692,6 +690,8 @@ &pcie0_ep {
-> =20
->  &pcieb_port0 {
->  	reset-gpios =3D <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
-> +	vpcie3v3-supply =3D <&reg_pcieb>;
-> +	vpcie3v3aux-supply =3D <&reg_pcieb>;
+>  &pcie_port0 {
+>  	reset-gpios =3D <&gpio2 0 GPIO_ACTIVE_LOW>;
+> +	vpcie3v3-supply =3D <&reg_pcie_gpio>;
 
-[Severity: High]
-Does moving vpcie3v3aux-supply to the Root Port node break Wake-on-PCIe
-during system suspend?
+[Severity: Low]
+Does adding this property to the Root Port node without a corresponding
+schema update cause dtbs_check validation failures?
 
-By delegating the lifecycle to the generic pci-pwrctrl framework, the
-regulator might be turned off during suspend. Looking at the pci-imx6.c
-driver, during system suspend dw_pcie_suspend_noirq() delegates to the host
-controller's deinit callback imx_pcie_host_exit().
-
-This unconditionally calls pci_pwrctrl_power_off_devices(pci->dev) without
-checking pci->pp.skip_pwrctrl_off, unlike other DWC drivers like pcie-qcom.
-
-If the pci-pwrctrl framework takes ownership and turns the regulator off, it
-would violate the PCIe hardware requirement to maintain Vaux for Wake-on-PC=
-Ie
-(PME from D3cold). Can we ensure the auxiliary supply remains active during
-suspend events?
+The fsl,imx6q-pcie.yaml binding schema defines the root port node with
+unevaluatedProperties: false, but it does not appear to document the newly
+added vpcie3v3-supply property.
 
 [ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630060710.3294=
-811-1-sherry.sun@oss.nxp.com?part=3D6
+811-1-sherry.sun@oss.nxp.com?part=3D2
