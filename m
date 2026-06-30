@@ -1,113 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E22E2727FD;
-	Tue, 30 Jun 2026 06:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD40271443
+	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 06:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782800853; cv=none; b=Yx6sIkMI387B4wJSeQ4ck7SL41gjHgS8rAOtI2VLcMwKxCxrlUjkbb8JQH4YIizqPoThHcbRx7s28lgZVEkseL+dDAEOMB9TIicZ9fn30L/sJK+3mVOmQCtPwIK4IPPSkStiyWnlppbI5C/5X9NI7wjWmFuZbxcxkHUDeabHRDc=
+	t=1782802203; cv=none; b=QUeo6PmR4EVWqkhXgUccUXwL/nSTMkHAxLimRGK1peA6ShpYmPSQypJbKOUvOfBq/26n/Y+QM/zoqhIuGCtQyb8PinOsEgBi0u3W9BcDUOZKhCufgCD2F1VGqIv3R3Y9dm3nHyc0ekQTOqAhmp/QBlMgcU2al8KjPDRVgbOeuac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782800853; c=relaxed/simple;
-	bh=6i/+mIz6fiaCmPQbwnlgXBB6+QZaE3Reo3MUAYiWcGY=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HmdUZKhPu//FglDxgJFZutuYENl12beCkX1+tL9U5Wa9NCTJzvVlaWyQJ+M++Il6lrpzVVkBw+XGo2ritre6pMcLRbaPq94kBJa7UIgtLRm77xjr5aIhPCYTCC6yJPlulnO4A4G/H3waO4FhZvCPg8KGTLbHEWzBe9XNXRj0kVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtEGoDYz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782802203; c=relaxed/simple;
+	bh=czfdUOiQXPZbFnAATDYk5b4JmkpWW4Ig3zzIBmSKRSc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Aa8vFBDhAznXGE8G3CjB7C9xZ43GDYY3MjpTqrGLCM0uPAkH7cxPTrFWm3BI1+g60JluLlou1uVCp2cap8gyeCM0VDMgbTCv9EbEX+Ba2Rgh3PkouB+hBHgIG3f2zzAjI8b/96EA9J1AikRDvMkK+mz4bZ8zRohX6fC5itKeBlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HuFvtGgS; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtEGoDYz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7AA1F000E9;
-	Tue, 30 Jun 2026 06:27:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782800851;
-	bh=xJkiOYeiK27PJ9Tsx0PkVRNWzWe8gtgZDPWwwZcCkNg=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=YtEGoDYzU9D8L0d9+/N0zNP+gliK88vuF8kAP+vre+tFzjCjpz2T/X1L4OGjfXTUA
-	 Pw0iqdMdstMUFaKWfRc8rKTdezM59Yaps++KwH7A9c6Opwe9R+II37plt0kCMHAHV+
-	 pdgJdpl2LdR86e11VuneJC7Ovur7tozV1LM9PEEpMOg7+PkfJ66c9bzjE+VvlHhbS2
-	 h9qLZ0wrr0tWxOTKqyU1YaNuQzcGOIVI8cum2KlRy/YhPCncYXoFdf0x9Bp9bas8bk
-	 AA7AteLcXnuuLcOjCXOQ/ZkvG23J0/d9wvx3wJlkqOCcxBtKf9aaqXp8+F/+8D8L/e
-	 agy72GAV6zxLA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V4 1/7] arm: dts: imx6qdl-sabresd: Move power supply
- property to Root Port node
-Reply-To: sashiko-reviews@lists.linux.dev
-Cc: linux-pci@vger.kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260630060710.3294811-2-sherry.sun@oss.nxp.com>
-References: <20260630060710.3294811-1-sherry.sun@oss.nxp.com>
- <20260630060710.3294811-2-sherry.sun@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 06:27:30 +0000
-Message-Id: <20260630062731.3C7AA1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HuFvtGgS"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c7cfa17fedso33938885ad.3
+        for <imx@lists.linux.dev>; Mon, 29 Jun 2026 23:50:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782802202; x=1783407002; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A1QY57v2o170i5Uh1BA42HSzcmZFQxfvkMqvmdq9s28=;
+        b=HuFvtGgS3hGxfBAr4qaWD4uZ7OUwePu9cuQ/LgcBRgcXyEt/jLeFIsSpv5hwpl/g8U
+         AS1B2O2UcWePM0ByrWe5ljOVbREsj6zNl49ixqro0p8CV5TumZjgq6smbdcL7HjLIoXw
+         ZzGgrDomH9kO7rYnAt3ApeEGbPGRrdS16iu7tadkmgRqYKEWR04CtL4BGehGvdaSwlbW
+         IRaxcJh3+gurugn7NM6EEqBAuDxTfsmQ7SGp3kqkNQyWwdgIUPsAyHyCB6yXQNnv6Z1n
+         0h1XTrKNEJoVvGm/dabEkfI7zNFQOmwAfp9xmFqTRJLOVLfWfmO/p1FvRFVnSz5bLJC8
+         emtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782802202; x=1783407002;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A1QY57v2o170i5Uh1BA42HSzcmZFQxfvkMqvmdq9s28=;
+        b=f7ZIaJR0gQ6rE7pPhtxqv7eHe1mt3T9bXgizdKF+HyIx7sdRUdFCzvlBB441UKV1RL
+         EGmAYreZTimFL7DaVNhvaKYIzNh7eE1yxfDP3rrvgi7WMa0VjCPWrHrwpO34IkxmoRKd
+         VON4N12G9cyREhKdclr7qekEbDNmG4ZFVKfQ2sDJYVEbNTmTHCbVE1d1CI/DTRDyO71A
+         a/9lx8LGna7c5FTW3XkjjKL5Up/uknmmQDdun54D21B4ko2Zj/GJnJA2V2Jjg2bDZ8ix
+         8qC1Lr1wgLByaisDdkQSfux19mKbY4LHr02n3MOcuHlSJXIUt8/a4KGtDD7L1ZwIn+cr
+         j++w==
+X-Forwarded-Encrypted: i=1; AHgh+Ro3J3Ckeyp2qQV5rtlmI3HFVOSFvaw5/OKNo7a9yxTrYRdVindQYynZO8sKnaqsqThaGzQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzstve/3LSV0tR/aEZq7xnzxwR2Jh/J66SIKv+Rw1yNSmYqFM+4
+	XlckaX40F9KTzdVKc4xpraY1IIxwOvcPBPr9wp7xTKGqR8tE79cbY6SB
+X-Gm-Gg: AfdE7ck1CVvDgN1Abe6UOC0n4FI6xSLlSq/eYVLqYVY2mCiBIdBZgnbF86/CekWatgD
+	4QmHvDbWum2hOXlnoWBZgU1cKsBrXrvNORByq/w5vN++LOInl/LC7V8gDAsaPzVNL6ikrcSLE6j
+	AkJPpJ8f9kJt7piIW6QpkkPS4T67cGL0kZUdJQaqoP9KiIlqA9fM1fpbM3P1OmfWYlJ9F1Nz7lh
+	IazhKoLGJVjJBUeTTHaSkM9rRW+ztuIFFQjDSSJ57sUZd91PtTa1ejN00KRSxCdH/Cs+jqDHpX+
+	A5rfbEeZDU6YDWjgeJEtz+dipmpjyzJGIX1tZ2s7tvcdkQvKzRERxRa6WP9MsKcVY3NkuG5SlLW
+	AxxXZm5xT0C6XZgZD5OM4bIW0YmHrHtaHSS32Aoogvl8NbGHAL+D2dZ57pp1y29Bv+Mytjma2U0
+	BOUq29qsHmzlotQg==
+X-Received: by 2002:a17:902:f786:b0:2ca:6a1:1fc with SMTP id d9443c01a7336-2ca2d99a4afmr18114325ad.28.1782802201660;
+        Mon, 29 Jun 2026 23:50:01 -0700 (PDT)
+Received: from [10.31.13.168] ([182.150.55.91])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37a701f9sm7373285ad.13.2026.06.29.23.49.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Jun 2026 23:50:01 -0700 (PDT)
+Message-ID: <1a07fbf9-d21b-45d5-87b7-d9965e73c6a9@gmail.com>
+Date: Tue, 30 Jun 2026 14:49:51 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: frank.li@oss.nxp.com
+Cc: andi.shyti@kernel.org, biwen.li@nxp.com, carlos.song@oss.nxp.com,
+ festevam@gmail.com, frank.li@nxp.com, imx@lists.linux.dev,
+ kernel@pengutronix.de, liem16213@gmail.com,
+ linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
+ linux-kernel@vger.kernel.org, o.rempel@pengutronix.de,
+ s.hauer@pengutronix.de, stable@vger.kernel.org, wsa@kernel.org
+References: <akJ9pd8uhXA6y2s9@SMW015318>
+Subject: Re: [PATCH v4 1/2] i2c: imx: Fix slave registration race and error
+ handling
+Content-Language: en-US
+From: liem <liem16213@gmail.com>
+In-Reply-To: <akJ9pd8uhXA6y2s9@SMW015318>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Removing the legacy `vpcie-supply` property breaks PCIe initializa=
-tion on older kernels and non-pwrctrl environments.
-- [Medium] Adding `vpcie3v3-supply` to the Root Port node without documenti=
-ng it in the binding schema causes a schema validation failure.
---
+Hi,Frank Li!
 
-commit 1190644448a0f1a3780ae7b3d2a75e1606ab6017
-Author: Sherry Sun <sherry.sun@nxp.com>
-arm: dts: imx6qdl-sabresd: Move power supply property to Root Port node
+I apologize for this. I didn't know that different versions required 
+different threads. I did use `--in-reply-to` in the patch email. Do I 
+need to resubmit the patch?
 
-This commit moves the power supply property from the PCIe controller node
-to the Root Port child node. This change aims to support the new PCI pwrctrl
-framework.
+Regards,
+Liem
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi b/arch/arm/bo=
-ot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> index fe9046c03ddd6..c52b8897f9995 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> @@ -756,12 +756,12 @@ &pcie {
->  	pinctrl-0 =3D <&pinctrl_pcie>;
->  	/* This property is deprecated, use reset-gpios from the Root Port node=
-. */
->  	reset-gpio =3D <&gpio7 12 GPIO_ACTIVE_LOW>;
-> -	vpcie-supply =3D <&reg_pcie>;
 
-[Severity: High]
-Will removing the legacy vpcie-supply property break backward compatibility
-with older drivers?
-
-Older drivers, such as pci-imx6.c, looking for this property via
-devm_regulator_get_optional("vpcie") in the host bridge node will receive
-an error code and silently skip enabling the PCIe regulator. Because the
-regulator lacks an always-on constraint, it will remain off, which can cause
-PCIe link failures on older kernels or when booting with the generic PCI po=
-wer
-control framework disabled.
-
-Device trees generally act as stable hardware descriptions. Can this proper=
-ty
-be kept in the parent node while adding vpcie3v3-supply to the child node,
-since the regulator core can safely handle multiple consumers?
-
->  	status =3D "okay";
->  };
-> =20
->  &pcie_port0 {
->  	reset-gpios =3D <&gpio7 12 GPIO_ACTIVE_LOW>;
-> +	vpcie3v3-supply =3D <&reg_pcie>;
-
-[Severity: Medium]
-Could adding vpcie3v3-supply here without documenting it in the binding
-schema cause a schema validation failure?
-
-The pcie@0 node definition in the fsl,imx6q-pcie.yaml binding schema
-uses "unevaluatedProperties: false", meaning all properties must be explici=
-tly
-documented. Since vpcie3v3-supply is not documented in that file or in the
-core PCI schemas, the schema validator will likely reject it.
-
->  };
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630060710.3294=
-811-1-sherry.sun@oss.nxp.com?part=3D1
