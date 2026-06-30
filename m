@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934BC388E51;
-	Tue, 30 Jun 2026 11:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBD03F5BC3
+	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 11:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782817425; cv=none; b=IZHXsJh8uf6Sr6+07LVExSmh+EN+70HsKxjmhUQJ8gq/7Rqyl2hXR07N6wvzt+K2/J4gnKfYKCtKmGcRwpUEUk4fl/UPGrgVE7nifFj2VjGLGD9TlaE1pbeXdDI78liwAL8IaJk1axqzPB7YRo+8C7DhQuUcV0ZFesPgCdLHQUI=
+	t=1782817986; cv=none; b=pB6PssAMQmd/LrzWqDsTs2C6JjP67sEZt0d2+FKNVUuez7pOG4nqEd1saWmIMUgMiELA6WTWt421jZLSI0v5bZkT+5Y+RhPtGRpQ323vXmznjGMU9iYmaSZ6KXqHKS8jD0dEW4X8wiR1mg4i9uSmlJSkKv15jJh8XLICZAKfqhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782817425; c=relaxed/simple;
-	bh=mW3ef+ks4U/CQkN0QFqGkrFCCpCO+1oMFP//obbWpfw=;
+	s=arc-20240116; t=1782817986; c=relaxed/simple;
+	bh=L24rF51Aof3u1CWR8fzeo8bfupF0h4rfgQwMRoff4JY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bzcKG4qOJ7Pp5cNn+Szi+yHSuQSw9uJSnXvsDTueuZ8IJgPZlj7bM0k5D1nu1iTVlar9OaBarQ/YbjrHGqBc/yLESz5MUrVjMAYrSR59ahL31JTJmL5wvdPjLfYgMThcVVHJLFqG0zuqgOMHMu3oml0FlcKor2FB8jEYPp98ELs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XzgWMl+0; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=oy3cnYTAmIfci5JvNTOPNQNAta13HP9yU0SPoMh4pZCTzSkVjQ434nGorZccY85YGrVPQLR5SgSl+csyMpYump+qqxg4Z9Jn36g9T8m7TmHsSqXQwMny7eq+QnS+fvKQ4Aq5p4X4wRwMiJNdnxodGg/VuPJrbFOPk+9qbRHGNkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQ0HFW0y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XzgWMl+0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F501F000E9;
-	Tue, 30 Jun 2026 11:03:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQ0HFW0y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B971F000E9;
+	Tue, 30 Jun 2026 11:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782817424;
-	bh=OiWv7FK3uef9FWIdlJX8EOaHiXMMluLiE6zQVqNbR3I=;
+	s=k20260515; t=1782817984;
+	bh=dXwf9MFnxmrskbOpPhh4KPZhCD/mf9AcUlE163bmeQ4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XzgWMl+0bDAzpPXuEbXruFnBoqu+rQRAWrhdNWvHu5Z2HI2Ayh20QgyMb3/q5DSVv
-	 hNtFbkzCi2IqhHkom9AtJ9sQK0T0PC+2LGc/PSH550K/ia8Ib5plA+aBMPL4RE/6ZU
-	 MxkKR6T3pmNW0BjP+CHYW8D+z01tmqm65W2eW/vcgPHHMmllP4ZaMfY6fynHh6u1Bd
-	 8/kDAQ1Rot1j+V4Bxdf5dRpJYqhVe55jnKI4LRZABr7rfDQR39a71/2yFzpfh8DkTU
-	 wGSfZFtP0g0Tem6G8F75sK8PzoM8NCGOIxKbmokqaaJ7wGfoi4JKA/oYesBFk82TmL
-	 q3F3XH8iJuc1g==
+	b=bQ0HFW0ybAJeXdTzjFRJKMTpqk/CtAI6YHNolFN1WTxuPl6e3GiImUAhpfWnqN7++
+	 SbEvaKX9R1OxsM0t7lfRm5DaJPp+Gze58I+LwKMKKsqZ5nxcjQvFaH66/ggxUtNF77
+	 g7fZ5NNvSnDUlmLgMUPNSUlNts5N94+o4M35AA8jRdlPZuf5lYW9BSHIYskpqXQIfW
+	 qhXVQOEMK5xcSFLbng2F91Yt5vWOVH2nC34Vw5Mi5I+cXTd6mVMLRmiMJAANU+PaoH
+	 OgY+3AM5SYpv6WpLw/CKfncpR0ukA3BCZWLikCkxdk5Y5kOpHzvKvkQjGVEu1liQv1
+	 OphrZSvZoFoDw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/4] arm64: dts: imx95: switch usb3 controller to
- flattened model
+Subject: Re: [PATCH v5 4/5] phy: fsl-imx8mq-usb: add control register regmap
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Xu Yang" <xu.yang_2@oss.nxp.com>
-Cc: Frank.Li@kernel.org, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260630103629.76604-3-xu.yang_2@oss.nxp.com>
-References: <20260630103629.76604-1-xu.yang_2@oss.nxp.com>
- <20260630103629.76604-3-xu.yang_2@oss.nxp.com>
+Cc: Frank.Li@kernel.org, vkoul@kernel.org, olteanv@gmail.com, linux-phy@lists.infradead.org, imx@lists.linux.dev, neil.armstrong@linaro.org
+In-Reply-To: <20260630-imx8mp-usb-phy-improvement-v5-4-25d616403844@nxp.com>
+References: <20260630-imx8mp-usb-phy-improvement-v5-0-25d616403844@nxp.com>
+ <20260630-imx8mp-usb-phy-improvement-v5-4-25d616403844@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 11:03:43 +0000
-Message-Id: <20260630110343.E9F501F000E9@smtp.kernel.org>
+Date: Tue, 30 Jun 2026 11:13:03 +0000
+Message-Id: <20260630111304.68B971F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,50 +46,56 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] The newly added wrapper node `bus@4c100000` contains a unit address=
- but lacks a `reg` property, violating the Devicetree Specification and tri=
-ggering a DTC warning.
+- [Medium] Runtime PM enablement is leaked on probe error paths.
 --
 
-commit a2bcbb6922581174c083a123854fd752994b591f
+commit 487a0a8551844cc9b5c38e7f8d7cbf2ec3f1435d
 Author: Xu Yang <xu.yang_2@nxp.com>
 
-arm64: dts: imx95: switch usb3 controller to flattened model
+phy: fsl-imx8mq-usb: add control register regmap
 
-This commit switches the USB3 controller to use a flattened model. It adds
-a simple-bus wrapper to constrain the DMA address range so the controller
-can access memory correctly.
+This commit adds a control register regmap for the USB 3.0 femtoPHY.
+It exposes these registers through debugfs to assist with diagnostic
+efforts.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
-ts/freescale/imx95.dtsi
-> index 71394871d8dd0..80f935af5b49c 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/fre=
+escale/phy-fsl-imx8mq-usb.c
+> index 9d1dd0e7352ed..4949ec78d3044 100644
+> --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+> +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
 [ ... ]
-> @@ -1772,45 +1772,45 @@ smmu: iommu@490d0000 {
-[ ... ]
-> +		bus@4c100000 {
-> +			compatible =3D "simple-bus";
->  			#address-cells =3D <2>;
->  			#size-cells =3D <2>;
-> -			ranges;
-> -			power-domains =3D <&scmi_devpd IMX95_PD_HSIO_TOP>;
->  			dma-ranges =3D <0x0 0x0 0x0 0x0 0x10 0x0>;
-> -			status =3D "disabled";
-> +			ranges;
-
-[Severity: Low]
-Does this new wrapper node trigger a DTC unit_address_vs_reg warning?
-
-Because the node has a unit address (@4c100000) but lacks a reg property,
-it violates the devicetree specification. Empty ranges properties are
-ignored by DTC for this check, which will result in a build warning when
-compiling with W=3D1.
-
+> @@ -695,6 +707,13 @@ static int imx8mq_usb_phy_probe(struct platform_devi=
+ce *pdev)
+>  	if (IS_ERR(imx_phy->base))
+>  		return PTR_ERR(imx_phy->base);
 > =20
-> -			usb3_dwc3: usb@4c100000 {
-[ ... ]
+> +	imx_phy->cr_regmap =3D devm_regmap_init_mmio(dev, imx_phy->base + PHY_C=
+RCTL,
+> +						   &imx_cr_regmap_config);
+> +	if (IS_ERR(imx_phy->cr_regmap)) {
+> +		dev_warn(dev, "Fail to init debug register regmap\n");
+> +		imx_phy->cr_regmap =3D NULL;
+> +	}
+> +
+>  	pm_runtime_set_active(dev);
+>  	pm_runtime_enable(dev);
+
+[Severity: Medium]
+Is there a leak of the runtime PM enablement state on probe error paths her=
+e?
+
+In imx8mq_usb_phy_probe(), pm_runtime_enable() is called, but subsequent
+initialization steps (like devm_phy_create() or devm_regulator_get()) can f=
+ail
+and return directly without calling pm_runtime_disable().
+
+Could this leave the disable_depth counter at 0 on a probe failure like
+-EPROBE_DEFER, resulting in an 'Unbalanced pm_runtime_enable!' warning on t=
+he
+next probe attempt? Would using devm_pm_runtime_enable() ensure this state =
+is
+properly cleaned up?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630103629.7660=
-4-1-xu.yang_2@oss.nxp.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630-imx8mp-usb=
+-phy-improvement-v5-0-25d616403844@nxp.com?part=3D4
