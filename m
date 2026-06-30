@@ -1,157 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55354192EE;
-	Tue, 30 Jun 2026 13:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDDD421A17
+	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 13:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782825749; cv=none; b=cOyQfGsp5xZ/ZKOU0LEDCSZDUmvujvZNnlWfddK+DLuFOjaBNFefwsOHsRT4Kfog4o9n0v9l3fHk8QaTcKsLk25cWIUj9VuxQ6HNva5X03wO+JKkckduwMHyk6fEOXoHQJLTwmIY4ALjUTvbS8AHxDeJbxWvcs1NkkcjUAVriLc=
+	t=1782825907; cv=none; b=FsIWBRWeBjdsURn+M+TrFANTYCp1axbPbDavZn58j1SLXsT/8Dugw0c44GoiMmjGY8kRon2l85CQY0Qhsvg3wE44Op53tbrASowjx5H1YbNaZtZCBGN7onekUukVd1ViM//YbeYeNLIKPiYFSJ0QfMSln9Fl1H/VYhaetsPjqaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782825749; c=relaxed/simple;
-	bh=Km/nPMavhXNUT8aZ7J55FPdRewGazMX2kAVRJN2HCso=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=EJOzj2cXShgvJ29jxiHbYIUF+cBUcgZODtRHAXls6AvVB0LrbX9ACgF7zs2jV5SRNHdQgevy58wq3aFqaVzj4YEdwdsEPiTmmiS2VpLop3YDPkgOq+1TOaw28rabMJz02JBOvY9cGNdhvD686g0e1P37UtbB7OqD4Dbh31jDE/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXw2px8m; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782825907; c=relaxed/simple;
+	bh=M3sGTFQyxhf710EoXPL7ZgKgQDTu94F/o5gJOr5YAFU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IKYzAjfCyxPl1c6QiCuxezcBUhinLuNvHsoREtCfcuRNpfSoymCPRihLV0dRuCYKrTD0K6HjGyAdy/oLdT80TWPGgtwvY7VZAiNB9e3F3EjRp4bIZ4Qqh3Y7RNg0mnbxn3vkUlsXHHvi12xZ3s5f7jMgwwCAa/HhzgsCSM7STRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NCUS11JP; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXw2px8m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFC11F00A3A;
-	Tue, 30 Jun 2026 13:22:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782825747;
-	bh=ujZhXBSXfj/9VrlLrSIS4Z90OF8oiVFp8/8nI29g8B0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aXw2px8mXWgtXftha/zROiNkPJxxDdLR3mfnWONh1WNoDzx4Pn4TanVFl/lhvNUMb
-	 YF9xxO/6Lg+SPvxMwW5gKIxpNlllAFGgSABTU2OBTV/yEqkqo8ZxExDT+61VkFWZcC
-	 ZEANVNsmZKBpAJp4IXRvKGfybLCaR6nXGxUqKclUqxTNiki9WrEbmZ37a5NduEIjs6
-	 W8+m4QW/8ooGCjYzP0T2p+BKgJffGAU1MuTCySCdWqV3goJ3MDFHNHRDb9MZsjLxov
-	 QhcyFXy/OjKf7b/pkDAbozLBGLzbxfRcowgcUCiHz5iLpP0Dj1Yh1gpqcz7oCvoXOZ
-	 LHfbJNywI/9tQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v12 5/6] pinctrl: s32cc: implement GPIO functionality
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Khristine Andreea Barbulescu" <khristineandreea.barbulescu@oss.nxp.com>
-Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260630125403.546375-6-khristineandreea.barbulescu@oss.nxp.com>
-References: <20260630125403.546375-1-khristineandreea.barbulescu@oss.nxp.com>
- <20260630125403.546375-6-khristineandreea.barbulescu@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 13:22:27 +0000
-Message-Id: <20260630132227.6DFC11F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NCUS11JP"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id B9961C51478;
+	Tue, 30 Jun 2026 13:25:12 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 21ECA6025A;
+	Tue, 30 Jun 2026 13:25:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4772B106F1825;
+	Tue, 30 Jun 2026 15:24:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782825900; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references:autocrypt;
+	bh=M3sGTFQyxhf710EoXPL7ZgKgQDTu94F/o5gJOr5YAFU=;
+	b=NCUS11JPwA+J9uH1x6EmuZisSfg1N27jNVUGA4+oa/XrDXtnkh4+PfNiHe//NHF5uGkybc
+	9+HzyGP4ac6GG5KxdH4NAJK5NdKZxUql9EA1nFOu1T+dCxsZNyttEaM2yG32VZdfKCHQFM
+	vgPE95AAKipzasMHwuemjGRQuXi7VoZS4faa+PFGQv5pg3/jE1+CvYGfcMA95ELVTcS66R
+	qfCFRQQ4IaqqpAooacmWlmq7u2uY0D/kO707c6wt9zwr9+vmpm6xKuOaiGjn7Q30J/B57m
+	yZsNdyBincX/LrhiZxs1iYC/It6uz8gTYDAal7G70TqkQ+1pQg5PtY1g0o9qlQ==
+Message-ID: <984d68f4288c225bb4bbb2db88f29098ebaa0ccc.camel@bootlin.com>
+Subject: Re: [PATCH v5 0/5] Add support for AAEON SRG-IMX8P MCU
+From: Thomas Perrot <thomas.perrot@bootlin.com>
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: thomas.perrot@bootlin.com, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+ imx@lists.linux.dev, 	linux-arm-kernel@lists.infradead.org,
+ linux-watchdog@vger.kernel.org, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, Conor Dooley
+ <conor.dooley@microchip.com>,  Bartosz Golaszewski
+ <bartosz.golaszewski@oss.qualcomm.com>, Guenter Roeck <linux@roeck-us.net>,
+ Rob Herring	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley	 <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ Shawn Guo	 <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, =?ISO-8859-1?Q?J=E9r=E9mie?= Dautheribes
+ <jeremie.dautheribes@bootlin.com>, Wim Van Sebroeck
+ <wim@linux-watchdog.org>, Lee Jones	 <lee@kernel.org>
+Date: Tue, 30 Jun 2026 15:24:54 +0200
+In-Reply-To: <CAMRc=MdJJnRTOSEecqpX-EddJRAzWc_1a-cg3wrW8m0jR2Fihw@mail.gmail.com>
+References: <20260408-dev-b4-aaeon-mcu-driver-v5-0-ad98bd481668@bootlin.com>
+								 <b4396f57-3501-4e89-9cf3-8dc5d7cad9b7@roeck-us.net>
+	 <31477953aace52bb6594461e82ddf99493af2329.camel@bootlin.com>
+	 <CAMRc=MdJJnRTOSEecqpX-EddJRAzWc_1a-cg3wrW8m0jR2Fihw@mail.gmail.com>
+Autocrypt: addr=thomas.perrot@bootlin.com; prefer-encrypt=mutual;
+ keydata=mQGNBF+/ZOUBDAC2DghCjZvmgYcve02OG7dGZ7Iy58uEwne3LB7w7nRwdAxKw7ZaiVqwY
+ O+yNGVi+GVx7oA6Wn4pv46z+QDRLQiq6OseuXhkSGCg7U/yBCUq12B/GRGO1Qt2Qi1mJJT1s+1qZ5
+ Gxv6Nypz9qKVn94GM2bR1hXBga0t87vBpebThOHmX5d/0dqIcVxRCM7onNb0dDyRoVgLS5rBhQzrL
+ CMrJaCy39xZUy0J1SOlH4Mgk6EhJIPYY4wlzikGX6urg+Tc9EjGd78ry0e0p5U5qgjFR5QGJDy1Gn
+ U3CfwbT9sowdCASDbQDUoltlv2iWJCLa0xl97KVchCa0pr7HKbFA3J5SLKqFYUBCkFL+5WudYlz2n
+ XxiUgyviMQxyK+ij66kEi6/2zFDAecd43pHV7790ptqZBC3Jc67Emj7Vo3ShX6RXPPxxbeCTOF2uk
+ I45aJ9XcVFH/MFE96NjXj8uahnIsiTPyuCUoJu8tj7TSQyue874qJqVQvqlFyt2aZYJZ8ruq8AEQE
+ AAbQpVGhvbWFzIFBlcnJvdCA8dGhvbWFzLnBlcnJvdEBib290bGluLmNvbT6JAc4EEwEIADgCGwMF
+ CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSHQHfGpqMKIwOoEiGfwAsFcf4K7QUCX79mdwAKCRCfw
+ AsFcf4K7fhbC/wP0kSl6id2E/K3+UdXk6CLMVRbCFLCREzQs5WFpQ6l/I0WGOamhrOgegdszheiVF
+ orlUP8d37XSpFAqydhKGaN78V5Dps0Wmwm4lIlS4MtQXJtSLUHXDJLIZLW0pw8tiPLKsd1o/yDkXE
+ dnpsjJTRG6SdDSHnyOB2/gh4p+yTaLytFdARk/r4/P26+L+FiH0fFl+RnBt19LPklfKgeDc7GwIif
+ ja+nIWpp3W23DAUuI6xduEut25Q89yu7Ci8CliLfAiLy9bIGjBQWU2Y+1/j/7KuPj6VbBsZWLTZY0
+ hUmpJSTnWAqc9SMsNxo7NSQuddgviz5e2tqucaRqxP02FGzNa8U4NAKdWaXrlHG5Dglj9XH0DK+SH
+ +c96qqFewYD8VPQ6XAGxQcXbrtJmiMor1R2DfziispLRvJcfYs8xqabbCtoS3ouXB9XRi8hn7A2kh
+ ME1ryS+Oh63JshXHnw6bmjCpVd/p+fGLIGU6A47pJOpviKR4jEO84pl2ejtDZ3Tc=
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-9X53wTzqLt2/ZcqSFvOL"
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] The GPIO output data registers (PGPDO) are not saved or restored d=
-uring system suspend/resume, which will cause active GPIO outputs to glitch=
- or lose their state upon resume.
-- [High] The pinctrl device is exposed to the system via `pinctrl_enable()`=
- before the newly added GPIO initialization is complete, creating a race co=
-ndition if probe fails.
---
 
-commit bb28a701f031ec673e77d3ce510a41fe2c84ffb3
-Author: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
-Subject: pinctrl: s32cc: implement GPIO functionality
+--=-9X53wTzqLt2/ZcqSFvOL
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The commit implements GPIO data access and direction handling using the
-gpio-regmap library backed by a virtual regmap. It translates the
-gpio-regmap register model to the underlying SIUL2 registers (MSCR,
-PGPDI, PGPDO) and uses existing pinctrl GPIO callbacks for request/free
-paths. Both legacy and extended DT layouts are supported.
+Hello Bartosz,
 
-Link: https://lore.kernel.org/linux-gpio/20260120115923.3463866-4-khristine=
-andreea.barbulescu@oss.nxp.com/T/#m543c9edbdde74bdc68b6a2364e8b975356c33043
-Link: https://lore.kernel.org/all/20260504131148.3622697-7-khristineandreea=
-.barbulescu@oss.nxp.com/
+On Tue, 2026-06-30 at 00:47 -0700, Bartosz Golaszewski wrote:
+> On Mon, 29 Jun 2026 18:04:59 +0200, Thomas Perrot
+> <thomas.perrot@bootlin.com> said:
+> > Hello Guenter,
+> >=20
+> > On Sat, 2026-04-11 at 17:12 -0700, Guenter Roeck wrote:
+> > > snip
+> > >=20
+> > > Sashiko has some interesting feedback that might be worth looking
+> > > into.
+> > >=20
+> > > https://sashiko.dev/#/patchset/20260408-dev-b4-aaeon-mcu-driver-v5-0-=
+ad98bd481668%40bootlin.com
+> > >=20
+> >=20
+> > Thanks for the pointer. I went through all findings and addressed
+> > the
+> > =C2=A0 valid ones in v6:
+> >=20
+>=20
+> Did I miss anything? I don't see the v6 neither in my inbox nor on
+> lore.
 
-> diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pi=
-nctrl-s32cc.c
-> index b9b757e28bff4..35e2f8a18ef23 100644
-> --- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
-> +++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+I just submitted it. I was waiting for the tests to finish.
 
-[ ... ]
+Kind regards,
+Thomas Perrot
 
-> @@ -721,7 +1249,7 @@ int s32_pinctrl_suspend(struct device *dev)
-> =20
->  		ret =3D s32_regmap_read(ipctl->pctl, pin->number, &config);
->  		if (ret)
-> -			return -EINVAL;
-> +			return ret;
-> =20
->  		saved_context->pads[i] =3D config;
->  	}
-
-[Severity: High]
-Does this code miss saving the GPIO output data registers (PGPDO)?
-
-Currently, only the MSCR pad configuration registers are saved. When the
-system enters deep sleep and the SIUL2 hardware block loses context, the
-GPIO output states would be lost.
-
-[ ... ]
-
-> @@ -745,7 +1273,7 @@ int s32_pinctrl_resume(struct device *dev)
->  			continue;
-> =20
->  		ret =3D s32_regmap_write(ipctl->pctl, pin->number,
-> -					 saved_context->pads[i]);
-> +				 saved_context->pads[i]);
->  		if (ret)
->  			return ret;
->  	}
-
-[Severity: High]
-Will restoring the pad configurations without restoring the PGPDO registers
-cause active GPIO outputs to glitch?
-
-Since restoring the MSCR registers enables the output buffer, but the PGPDO
-registers were not restored, GPIOs configured as outputs might drive a logic
-level of 0 upon resume regardless of their previous state. This could
-potentially break external peripherals.
-
-[ ... ]
-
-> @@ -995,7 +1535,42 @@ int s32_pinctrl_probe(struct platform_device *pdev,
->  		return dev_err_probe(&pdev->dev, ret,
->  				     "Failed to enable pinctrl\n");
-
-[Severity: High]
-Could exposing the pinctrl device before completing GPIO initialization cau=
-se
-a use-after-free race condition if probe fails?
-
-pinctrl_enable() makes the pinctrl device globally visible in pinctrldev_li=
-st.
-If a concurrent consumer acquires a reference to it, but a subsequent GPIO
-initialization step fails:
-
-> -	dev_info(&pdev->dev, "Initialized S32 pinctrl driver\n");
-> +	/* Setup GPIO if GPIO ranges are defined */
-> +	if (!soc_data->gpio_ranges || !soc_data->num_gpio_ranges)
-> +		return 0;
-> +
-> +	ret =3D s32_gpio_get_ngpio(soc_data, &ngpio);
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret, "Invalid GPIO ranges\n");
-
-[ ... ]
-
-> +	ipctl->gpio_rgm =3D devm_gpio_regmap_register(&pdev->dev, &gpio_cfg);
-> +	if (IS_ERR(ipctl->gpio_rgm))
-> +		return dev_err_probe(&pdev->dev,
-> +				     PTR_ERR(ipctl->gpio_rgm),
-> +				     "Unable to add gpio_regmap chip\n");
-
-Could we be left with a dangling pointer when devres cleans up the unregist=
-ered
-pinctrl device on the error return path?
+>=20
+> Bart
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630125403.5463=
-75-1-khristineandreea.barbulescu@oss.nxp.com?part=3D5
+Thomas Perrot, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
+--=-9X53wTzqLt2/ZcqSFvOL
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCAAdFiEEh0B3xqajCiMDqBIhn8ALBXH+Cu0FAmpDw6YACgkQn8ALBXH+
+Cu3Z4QwAtYCULW7li/8c+W51thD4TA+XAWl/WlY9Ygahvsw/16ifn5pstgFNxRvz
+LavDMxiMsym+2YAcZ8Y3UaAWhOdTU18j6LA4mLqb+NUrq7jN2TGepGqcZme5pPdZ
+5NnBdflkVEYlBVcKZp5O+o3TsCKNlgiN7LYpIQ7AZWRlzdNxsdStBUbsK3SZJtUi
+RSKYrjYj5nT11lAMlWWnucJd+9EfIQR+sLUyrkd8nf8NaUWaOH25ltkmhmaeSC9v
+0rsELJYKjWi+xvripQsCgwF9mgY7vTMfVNgnfbw4w8ZYN/4avpqSwZwnDJEB25T7
+NIoNsKoMmbiw/AADZ4yqxNPe0RqGw7+JZ7G9chtrpcoRDAhhYOLHhaxGZxyHZjcS
+1jHcL4KDExhlR8U7WNj7ooJO+Scg1Yq9hlP/p15W7JJ/yLLXNhKrb5VNeWh8P4LY
+tZ2oQvt5yiZThaoh6mSbQYa9u4MENm1tEk9hilHvJLcS60MtXrINYK8PrXK9jw9W
+kpiTGMur
+=CcQS
+-----END PGP SIGNATURE-----
+
+--=-9X53wTzqLt2/ZcqSFvOL--
