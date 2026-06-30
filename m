@@ -1,102 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC8E35F5F8;
-	Tue, 30 Jun 2026 09:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A433537F9;
+	Tue, 30 Jun 2026 09:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782811123; cv=none; b=n7i9z8kFovpnyzF31v2vZ8qqDkFL5+WtA7wmljY0j1IlYu2LA7FYcxEvrjRLUcqz4pN9CVLsThiYgESt1c7TI+An85Ki3fxcnqXAb90jLl21Kl9X+qdCl0204bKfnEcDOERpX28gKi4f9KssJwFyzYpQRMd47R5s1kvgFSsjVbE=
+	t=1782811124; cv=none; b=htVplP+SaRKP6HTS+61Kxh+tzjpiaG0G8RJnZxjEZggslG6/Xsf7wC5+yhItbg+4H5qwBEovIMA0v8SfxFNp7MHsRmVaYKnOUF7PanavjExHaJKLj37dmRoLO5gC3hPLjsuqBUW5VbYClLlN34s5H+mItwZSM8Bg7BZIGsSOwqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782811123; c=relaxed/simple;
-	bh=X29VePm95MCgABr7iJfqKTBMBDQQyDsnnWLJgSZHTHU=;
+	s=arc-20240116; t=1782811124; c=relaxed/simple;
+	bh=yzGKDmVGP3AUw9LwpdPjleo/babIFsWUcOySeTLhklM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fbFTAkiN6GdCsy4RuU5XKWUKB3xw0V0ZhlA9x2X+c5Ao/AmDLobGj7cbPEQFGjS3JDz20zDP7gFJZKL+ErG5kjstxgU2SAGTP5Pn+PdhNgtkB4t29H8Di53wuCRJDxXs+e+c56UwcMv/QDgljuqqHAtsqyMuEbmk7IfF2ysx5Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BjFtZ6lY; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Qv5e+bmXcedYoXgR7cGM2Z6WJsld/xoki4DHNoJehOuApq8txVLlnku8edh2TxnkIx+jkO7xQXVoCrx/tZFoi8JqN7Nj/tBn2J6x1giUSZ1nkxkGpqqs5xIfyyVFCDIoMMhkP06UxBEnvyzzVnkMK3Ah/PPyvG7ejJY77VFnBT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nDN4GIX1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BjFtZ6lY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD6D1F00A3E;
-	Tue, 30 Jun 2026 09:18:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nDN4GIX1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE2F1F00A3D;
+	Tue, 30 Jun 2026 09:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782811122;
-	bh=EH5/L2M1XpJnyfHNsfPqgccrseXM6UKjnYvjmKgJ5Jc=;
+	s=k20260515; t=1782811123;
+	bh=9OH3q4zyN12p0WjlOzyD0rZl+9v/3ZiPP5Jehec6diA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BjFtZ6lYWu6gymDB6S0FINyVl8dWvlLSYBgSnNC4plnBdpg9Bf8IbCuB4qEfCdd3R
-	 fiNK8D8w9m1rpA7c4hWxGwx5kQr1qF09kJfxTHufYclbQuvybA7gA4gQornzq8HTEX
-	 atB9RL9bYSPmkJ22BjiLBwpK56fQ5YyqSNG5LpVDLlnTdRYRbQj6XiE+VnjLRY3BRL
-	 heOu8U7xlr9si9xHfeyXSx4w/jUxL6u7tJXbHbZUXdMru/IAJvK27mCCeEQ68j5UOe
-	 ddaNFJfVVW4SaeiobgLW81UpGdicHlRTkO8Ki5FdK8Kq50j09HSw3wXn40aZzsHvB0
-	 IlvdoEFzOHISQ==
+	b=nDN4GIX1F8Ob8rJfntIJzBUXdUCidFseMnZzWe1UROIM5t3UT7nvTjlmbJjc7OQTS
+	 93CtTLqvn3ZliBHtch3PXjK4+jGUdQU8ggMQnVAz/W2Kk9JkCYzrvUKIu1XuP6BV66
+	 MoPPDwSFyzhZTymBdQjenZhBqg9zfEGsh2capCVE6hyjiGU3emFVUWYnAFcT85fa4S
+	 aX8Xc/oqlUoF1i/EK7/uUtRT8SbbPHnJExYnxaJP4upobPORw4NY21GnaAPmUHpKD2
+	 eG1oTyZqlQaC5p35ANR9+8vQipvIyIs3h/tpgufOhtaz1MIRL5ctKi2IW1MgbBGU+0
+	 ZUEXbUHfzDPrw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 17/19] usb: musb: use
- platform_device_set_of_node_from_dev()
+Subject: Re: [PATCH v2 19/19] driver core: platform: count references to all
+ kinds of firmware nodes
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev
-In-Reply-To: <20260629-pdev-fwnode-ref-v2-17-8abe2513f96e@oss.qualcomm.com>
+Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+In-Reply-To: <20260629-pdev-fwnode-ref-v2-19-8abe2513f96e@oss.qualcomm.com>
 References: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
- <20260629-pdev-fwnode-ref-v2-17-8abe2513f96e@oss.qualcomm.com>
+ <20260629-pdev-fwnode-ref-v2-19-8abe2513f96e@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 09:18:41 +0000
-Message-Id: <20260630091841.CFD6D1F00A3E@smtp.kernel.org>
+Date: Tue, 30 Jun 2026 09:18:42 +0000
+Message-Id: <20260630091842.BCE2F1F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Incomplete migration to `platform_device_set_of_node_from_dev()` l=
-eading to OF node reference leaks.
+- [High] Memory leak of `of_node` references in platform device release
+- [High] Refcount underflow and use-after-free of software nodes on platfor=
+m device release
 --
 
-commit fb8a9bf1bacccb38cbdade8a447f9b482f1bd4a3
+commit f2aa250a52f31d368fee3251e58597913170101a
 Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-usb: musb: use platform_device_set_of_node_from_dev()
+driver core: platform: count references to all kinds of firmware nodes
+   =20
+This patch switches to counting references for all kinds of firmware nodes =
+by
+replacing the of_node_put with fwnode_handle_put in platform device release.
+It also updates platform device setup helpers to properly acquire fwnode
+references.
 
-Ahead of reworking the reference counting logic for platform devices,
-encapsulate the assignment of the OF node from another device for
-dynamically allocated platform devices with the provided helper.
-
-> diff --git a/drivers/usb/musb/jz4740.c b/drivers/usb/musb/jz4740.c
-> index df56c972986f7..c770ba576f05b 100644
-> --- a/drivers/usb/musb/jz4740.c
-> +++ b/drivers/usb/musb/jz4740.c
-> @@ -273,7 +273,7 @@ static int jz4740_probe(struct platform_device *pdev)
->  	musb->dev.parent		=3D dev;
->  	musb->dev.dma_mask		=3D &musb->dev.coherent_dma_mask;
->  	musb->dev.coherent_dma_mask	=3D DMA_BIT_MASK(32);
-> -	device_set_of_node_from_dev(&musb->dev, dev);
-> +	platform_device_set_of_node_from_dev(musb, dev);
+> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> index f24a5f406746b..bb5f5bddd047d 100644
+> --- a/drivers/base/platform.c
+> +++ b/drivers/base/platform.c
+> @@ -599,7 +599,7 @@ static void platform_device_release(struct device *de=
+v)
+>  	struct platform_object *pa =3D container_of(dev, struct platform_object,
+>  						  pdev.dev);
+> =20
+> -	of_node_put(pa->pdev.dev.of_node);
+> +	fwnode_handle_put(pa->pdev.dev.fwnode);
 
 [Severity: High]
-Are there other MUSB drivers that need to be updated to prevent OF node
-reference leaks?
+Does replacing of_node_put() here cause a memory leak of of_node references?
 
-When the dynamically allocated MUSB platform device is destroyed (e.g.,
-during driver unbind or probe error), the reworked platform device reference
-counting will drop references using fwnode_handle_put(pdev->dev.fwnode) rat=
-her
-than of_node_put(pdev->dev.of_node). Because device_set_of_node_from_dev()
-doesn't set pdev->dev.fwnode, this leaves the fwnode pointer NULL and leaks
-the OF node reference.
+Many drivers and core APIs manually acquire an of_node reference and assign
+it directly to pdev->dev.of_node without setting pdev->dev.fwnode. For
+example, in drivers/base/core.c:device_set_of_node_from_dev():
 
-It looks like several other MUSB drivers still use
-device_set_of_node_from_dev() for dynamically allocated platform devices:
+	of_node_put(dev->of_node);
+	dev->of_node =3D of_node_get(dev2->of_node);
 
-- drivers/usb/musb/mpfs.c:mpfs_probe()
-- drivers/usb/musb/musb_dsps.c:dsps_create_musb_pdev()
-- drivers/usb/musb/omap2430.c:omap2430_probe()
-- drivers/usb/musb/ux500.c:ux500_probe()
+When a platform device set up this way is released, fwnode_handle_put() will
+operate on a NULL or unrelated fwnode, failing to drop the of_node referenc=
+e.
 
-Will these also be updated to use platform_device_set_of_node_from_dev()?
+[Severity: High]
+Can this fwnode_handle_put() cause a refcount underflow for software nodes?
 
-> =20
->  	glue->pdev			=3D musb;
->  	glue->clk			=3D clk;
+Platform drivers often inherit their parent's fwnode without taking an
+additional reference. For example, in drivers/gpio/gpio-arizona.c:
+
+	device_set_node(&pdev->dev, dev_fwnode(pdev->dev.parent));
+
+Before this patch, calling of_node_put(dev->of_node) on a software node was
+a safe no-op (as of_node was NULL). Unconditionally calling
+fwnode_handle_put() here will now invoke software_node_put() and decrement
+the unacquired reference, potentially leading to a use-after-free when the
+device is unregistered.
+
+>  	kfree(pa->pdev.dev.platform_data);
+>  	kfree(pa->pdev.mfd_cell);
+>  	kfree(pa->pdev.resource);
+
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629-pdev-fwnod=
-e-ref-v2-0-8abe2513f96e@oss.qualcomm.com?part=3D17
+e-ref-v2-0-8abe2513f96e@oss.qualcomm.com?part=3D19
