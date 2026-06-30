@@ -1,154 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4842175A88;
-	Tue, 30 Jun 2026 10:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714863EE1FD;
+	Tue, 30 Jun 2026 10:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782814870; cv=none; b=SMQQgQhb3USfS56RPfnf1n6iyqwSGDoDzO1haOXWUefZ4tCnGLBLx3OZ1M96bjyyOxZ8OoTvu2MKFP5pAN8L6x6jsIndhjhpfw/RHWtFzYeFNtYdkhbdouGWY54C81gt3ccMUqlWrtY2in98CgJJBDGWZOk7mnfDYLJi3+wh5PI=
+	t=1782815002; cv=none; b=RncUNqWCgQomFOkDhotmzxjYTWGKpJrrzj4yoxpDCpKzv3GbLAPMLB2mZFO50kOHGmnvmN/fEa8pl05WwKvNpjxC0H8BK/o75RrobsCq1z6zQI5PWE9U32OYrFfHvEKcH+MQ7J1roR5TgNCFYp4/TTlvKb2smW/pnsEpb6w7p54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782814870; c=relaxed/simple;
-	bh=Ze3p65S0J4T9Et2Zf0vTwCHMiKP5g0eXFKhCWNlqt70=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Svjz+aJ1WiFFhfdupzV+cbsMQ+A3/xlmBP/SBXjrrFVritXH01T+T+hGVPiXiTddqV9LLbQoBEKSg52txnjweQgNJgyKZV2a9g5sZmXLce4TMv1SaHaoS5Dyru8vLL/IJ1m0cyAJedrUaCXJOvv5h6cqtCeSx+GowsCOBp3Iym8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OecS+R6K; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782815002; c=relaxed/simple;
+	bh=DHteYR30RM1d5bPe1YPpE3im/+JF9z4CCZ3DJ0TOyls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eAzm3/4ck3PC97bHAaB1YOG3zkYdwCqBvw6Iewq40/xnJkkJld1JhJMCADxUNMzkdiVpg8HUkpnuEmiHu98lrAUdJXuBkMoYa/CwtIao8KvrfSPPh1NDHa4/xjNAvujIq16VOxZ1W1YXZOH8+BVL29lU46H+kJyezNkNVx8lanU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyBy2bQc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OecS+R6K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108461F000E9;
-	Tue, 30 Jun 2026 10:21:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XyBy2bQc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8E41F000E9;
+	Tue, 30 Jun 2026 10:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782814869;
-	bh=t+gXZ250ySliolo18rcwG9oY/wKGHhldTqXM11kaWGg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OecS+R6KFRZxAfJ/jyh4PDAhkASHseV1o5mLByepKPUtmbyUVfNPZkWa5V7V2SuwX
-	 Tyl1mDQqqO5FZcJA4tSFnAdLrszNiaT+UTLH7SBUTZa0AbQfPIW5BPDXy5Z4Ftf4PO
-	 1/UVSFMJF4f86FIt95SO6Xj5OQ3n3ha/IXi1dGzioXMk1NzUkhQWycivTrJXkbVCsz
-	 Emkd8Ydv/BMSVbzK5GczC3jDUnnLh/O14ii76Km3c+NZIGH6t7k+r1TgCL5LCMkB7U
-	 kErlQ79iMwWr1ereLmp0P6aHVYxHHaiGHO/G2Q4Oqkn9P6DQPcehMWZ5NZrXnGOtAj
-	 gRf4kyVpIITWA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 3/3] arm64: dts: imx8qm-var-som: Add support for
- Variscite Symphony board
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <2cdbea18bba7c9e05addd24390e54063216bcf88.1782812572.git.stefano.r@variscite.com>
-References: <cover.1782812572.git.stefano.r@variscite.com>
- <2cdbea18bba7c9e05addd24390e54063216bcf88.1782812572.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 10:21:08 +0000
-Message-Id: <20260630102109.108461F000E9@smtp.kernel.org>
+	s=k20260515; t=1782815001;
+	bh=hGencHR1rqX4oR1/IqjhQFQRDCZNECISdf4kfhlCG0g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XyBy2bQcCpF6LYOuss3LRRJeQlCYc8dvpcRUfK1ZagqxIqYPz5p0WwpsaFIQBW9vW
+	 IlOw0fNJJFpKyyg9iic4NuDm02LrPL3qHKHefNIo7aqpS80LB6lvKqynKgGBvzbREO
+	 4ZvHpLHCO720wCr2vYLratFlyl/gE//Y7cU/ye1HTlkGVUfMCklP+eJYoqc/HjpTxw
+	 MZXb8/jIFyvGrFJo82KLZha9Mhc3PkZrDWmDJGTsxLZUbwokWPsckf2VwK19WHIVoz
+	 +qkE0c3p44BQOkrv6SHKYZtWI+7gQ0YPbPbglot3g6oJ2J7Z4K4XFytNkclDQawEPq
+	 nxmkjQc7MH7Bg==
+Date: Tue, 30 Jun 2026 15:53:16 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Bartosz Golaszewski <brgl@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Christophe Roullier <christophe.roullier@foss.st.com>,
+	Radu Rendec <rrendec@redhat.com>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Drew Fustini <dfustini@tenstorrent.com>,
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-mips@vger.kernel.org, imx@lists.linux.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
+ PHY on sa8255p
+Message-ID: <akOZFIowVvprnAMf@vaman>
+References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
+ <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
+ <CAMuHMdXen+E-Ai51aWBa_KV9W8Fz2cQPpT-FG_kQ7akhrrYa_A@mail.gmail.com>
+ <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
+ <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] The PTN5150 USB Type-C controller's interrupt is incorrectly confi=
-gured as active-high (`IRQ_TYPE_LEVEL_HIGH`), which will cause an interrupt=
- storm.
-- [Medium] The SPI chip select GPIO is configured as active-high by mistake=
-, breaking standard SPI devices.
---
+On 29-06-26, 16:51, Geert Uytterhoeven wrote:
+> > Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
+> > driver instead of the MAC driver where it was previously. Instead of cramming
+> > both HLOS and firmware handling into the same driver, I figured it makes more
+> > sense to have a dedicated, cleaner driver as the two share very little code (if
+> > any).
+> 
+> I think you are mixing up DT bindings and driver implementation?
 
-commit 640b696a79494ebf66cec9e81eee16f6d3d56651
-Author: Stefano Radaelli <stefano.r@variscite.com>
-Date:   Tue Jun 30 09:46:56 2026 +0000
+Should the bindings change if we have different driver and firmware
+implementations? Isn't binding supposed to be agnostic of
+implementations..?
 
-arm64: dts: imx8qm-var-som: Add support for Variscite Symphony board
-
-Add device tree support for the Variscite Symphony carrier board with
-the VAR-SOM-MX8 QuadMax system on module.
-
-Link: https://variscite.com/carrier-boards/symphony-board/
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts b/=
-arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts
-> new file mode 100644
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts
-
-[ ... ]
-
-> +&i2c1 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c1>;
-> +	status =3D "okay";
-> +
-> +	pca9534: gpio@20 {
-> +		compatible =3D "nxp,pca9534";
-> +		reg =3D <0x20>;
-> +		gpio-controller;
-> +		#gpio-cells =3D <2>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_pca9534>;
-> +		interrupt-parent =3D <&lsio_gpio1>;
-> +		interrupts =3D <24 IRQ_TYPE_LEVEL_LOW>;
-> +	};
-> +
-> +	/* USB Type-C Controller */
-> +	typec_ptn5150: typec@3d {
-> +		compatible =3D "nxp,ptn5150";
-> +		reg =3D <0x3d>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_ptn5150>;
-> +		interrupt-parent =3D <&lsio_gpio3>;
-> +		interrupts =3D <11 IRQ_TYPE_LEVEL_HIGH>;
-
-[Severity: High]
-Will this active-high interrupt polarity cause an interrupt storm at boot?
-
-The PTN5150 hardware pin INTB is open-drain and active-low, which means it
-idles high. By configuring the interrupt trigger as IRQ_TYPE_LEVEL_HIGH,
-the kernel expects an active-high signal. Since the idle state is high, the
-interrupt will fire continuously as long as it is idle.
-
-Other Variscite Symphony board DTs correctly configure this identical
-component's interrupt as IRQ_TYPE_LEVEL_LOW.
-
-> +
-> +		port {
-> +			typec_dr_sw: endpoint {
-> +				remote-endpoint =3D <&usb3_drd_sw>;
-> +			};
-> +		};
-> +	};
-> +};
-
-[ ... ]
-
-> +&lpspi1 {
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_lpspi1>;
-> +	cs-gpios =3D <&lsio_gpio3 24 0>;
-
-[Severity: Medium]
-Does this active-high chip select polarity break standard SPI devices
-attached to the bus?
-
-Standard SPI chip selects are active-low, expecting the line to go low to
-select the peripheral. By setting the cs-gpios polarity to 0
-(GPIO_ACTIVE_HIGH), the SPI subsystem will drive the pin logically true
-(physically HIGH) when asserting CS, and physically LOW when idle.
-
-This means an attached standard SPI device will be continuously selected
-when idle, leading to bus contention. While gpiolib contains a legacy
-quirk to rewrite this if a statically defined active-low child node is
-present at parse time, this quirk will not protect dynamically added
-devices.
-
-Should this be updated to use GPIO_ACTIVE_LOW to match standard SPI
-behavior?
-
-> +	status =3D "okay";
-> +};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1782812572.gi=
-t.stefano.r@variscite.com?part=3D3
+-- 
+~Vinod
