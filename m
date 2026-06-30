@@ -1,115 +1,86 @@
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53B232FA29
-	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 20:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC681D45E8
+	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 21:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782852290; cv=none; b=ZAgLflQoPCzl3jlX/TTg4bM5fezLQPoYjmu9u/KB7nOW7ONFipE9H3s/K25WpWtFNVqFLEUVKAEvaF2pDbl4P/EWrW5lESUNRJMopeFufEEGRd3JeOPMKP55tzaCD+HjUwwm95jU29DUrizyDAJV8dC/V+7AJTlwO+UWcJhEm7s=
+	t=1782856055; cv=none; b=nKgyCC7dTbZhAOa67X41EvMdF7c0hGs/gBk8r1Q7mlG09Fxbd92sKsGdcDskotininFIztqfuwnH/Ixvhyyem5fFgWGdzzR32q7ctybyoNb0yZ8sCo1h26yS3P3YXoZCQtRReq2y/cVLZQFgvIbt5GGX53U6EdjJaDp1/SLgVtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782852290; c=relaxed/simple;
-	bh=okUmui3VnSblvrHsA0uQ2PWyrXWsJn9ztW+KVwyEb8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PQ6UZUQW54+MghZNKbpPwKmeLZzIl82T5k39fDPvwZahkwP7gMOLR7j9hg2VJixsq2AnIAdvmovK0BWQ0drKyzA5gRsM4KjJ1bXSM9C8pbqNGf6O8WpG2VfYpfKeHl8YzAn95fSYzsCsqnDlIE6lNXgl45FWzQn+iUI9kc9ezKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9EEE940114;
-	Tue, 30 Jun 2026 20:44:41 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf13.hostedemail.com (Postfix) with ESMTPA id 992DC20010;
-	Tue, 30 Jun 2026 20:44:39 +0000 (UTC)
-Date: Tue, 30 Jun 2026 16:44:39 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Martin Kaiser <martin@kaiser.cx>
-Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, imx@lists.linux.dev,
- dmaengine@vger.kernel.org
-Subject: Re: [PATCH] fsl-edma: tracing: no ptr dereference during log output
-Message-ID: <20260630164439.51e61b71@gandalf.local.home>
-In-Reply-To: <20260630160544.4211ae88@gandalf.local.home>
-References: <20260630200022.1826420-1-martin@kaiser.cx>
-	<20260630160544.4211ae88@gandalf.local.home>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1782856055; c=relaxed/simple;
+	bh=Y6VjBS3HyRAWX5iZeWFYWtKTx1dcO8J8PTnC3B9sF1w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ww9YcQQZb8K3kRvj5qK8EZ9miEdmWeJajI2uTNYHyv8WE4EuwSxBtl0dM9z7Bf0pZO/Bc/YL81I0zKxJwA/15IhS0lhgxCOLSZjjXelZ808700C0H3uxy++szp6qKjrUtio6YtXBCRx1NbXaAtZcQnZTBU0jnYkR65n8Lm72R94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9NGkgHZ; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9NGkgHZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70951F0155A
+	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 21:47:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782856053;
+	bh=2JxJYxohjUwYJZXlwl2tLOoasJsXfNDAaAFi3yYBE98=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Y9NGkgHZLpaRaQ/GYEiL6lK3CAMGUofQgj6W749BCmhAJwGfv7PfPOzT0Lrhf9wjJ
+	 odK6K1HXY8GRgj9N0Sr7mmgq0f3iFRok76msFEnfPsxjMEo6RZQEViSTYAL6veHifz
+	 xuSoGxrVGpPRx6LldqQUky3tXsZaFP6sjDlLALL6dYen6EzJbGI/TBQ76DExATBq2Y
+	 7m+anBtqBIyk8bXp9kkzI+Ybu4R2I20wbiThaT9wIbS4UgPlRNGZ5mPo11lNsHIa7n
+	 necjaN5baTVa1Ncu9tnTWyy6NvA/XMLVvhyBTV4bELdcdzANXN5pT/+kamfV54zJHE
+	 wz7eCnP1bsnlw==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aea5e2a361so3398850e87.1
+        for <imx@lists.linux.dev>; Tue, 30 Jun 2026 14:47:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrwoLF12gZThbV8XYlIblLFfjwH+JzpapC1A9UcNsFzzbC7hcXVRLRoNdGzoso3JOQerOk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzy4GvebDnfpbZ2/q9ijAKtKbsUATBLhMRQz80r5Ym8jF0YsN+x
+	diKM4Uss+Wwy/6XTTWxD6EC2Ukzt5kFJ2jow8VoU9btpfqU7HCAjzBXLdnudOnqwoMFjCAYdiql
+	VREJrPXhp0ZGw4GeKrlccoFY/wrzZ6Rk=
+X-Received: by 2002:a05:6512:3349:b0:5ae:b24c:7723 with SMTP id
+ 2adb3069b0e04-5aebdb8affamr1374084e87.17.1782856052738; Tue, 30 Jun 2026
+ 14:47:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 992DC20010
-X-Stat-Signature: escraam5swnpxnqpeejqfpqgu6pioyan
-X-Rspamd-Server: rspamout07
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1+gSQo04mtg4lddc8VRqnjAeGh6sOoXIKg=
-X-HE-Tag: 1782852279-513083
-X-HE-Meta: U2FsdGVkX19y2SwDl4vlu3cXx7MA/npPcPGdgyjL0EyfSoivuVG5l3o2BVIlfOLzkWK4chTTmGSvRJaygmOiqaCcJd6jFIKCY8EHjJbMe733rUj/YW+32/NGWTM9yD3IMU2B59Mw4P9HsYL3OkpdDvlUhc33H/RDGJJWUDlMlGY8Oqp51LTcMa/Um7L2VJhWUjhfX/DEz3urGiCr4oArsKs1Hhpj+1H84pSZq2TgMgGqVr9aO/xM4IGkGWZJcGM9VoizH3OzDWLh9htGEwmb2FYmVB0CKwLP4JaplJfyoaeaGmUgQ8awxOV+zBkG7aIjl96Qy8aFPIY9RmYv2seXBpH/EoBUzqCnjakYfDwXhEU3eyaO0OOUX8jZawZVyFxF
+References: <20260629223735.2559722-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20260629223735.2559722-1-Frank.Li@oss.nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 30 Jun 2026 23:47:19 +0200
+X-Gmail-Original-Message-ID: <CAD++jLmx7sJCsxMOp63OfHzBHL8Ps7i7PAQK=6ebx-e05rzcgA@mail.gmail.com>
+X-Gm-Features: AVVi8CfiTow26248TidhGIW7dw9G825VZt5ZIC_cLTjC4s5J8jEFZkDnZkIzjiU
+Message-ID: <CAD++jLmx7sJCsxMOp63OfHzBHL8Ps7i7PAQK=6ebx-e05rzcgA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: mfd: st,stmpe: fix typo st,stmpe601
+ (should be st,stmpe610)
+To: Frank.Li@oss.nxp.com
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev, 
+	Frank Li <Frank.Li@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 30 Jun 2026 16:05:44 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
+On Tue, Jun 30, 2026 at 12:37=E2=80=AFAM <Frank.Li@oss.nxp.com> wrote:
 
-> >  	TP_printk("offset %08x: value %08x",
-> > -		(u32)(__entry->addr - __entry->edma->membase), __entry->value)
-> > +		(u32)(__entry->addr - __entry->membase), __entry->value)  
-> 
-> Hmm, I think I should update the TP_printk checks at boot to cover this too.
+> From: Frank Li <Frank.Li@nxp.com>
+>
+> The compatible string "st,stmpe601" is a typo and does not correspond to
+> any existing STMPE device in either the driver or DTS files. The correct
+> compatible string is "st,stmpe610".
+>
+> Fix the typo to ensure proper schema matching and eliminate the
+> following CHECK_DTBS warning:
+>   imx53-m53evk.dtb: /soc/bus@60000000/i2c@63fc4000/touchscreen@41: failed=
+ to match any schema with compatible: ['st,stmpe610']
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-I created the following to catch this:
+Fixes: e10038ce1ba9 ("dt-bindings: mfd: Convert STMPE to YAML schema")
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index c46e623e7e0d..2da3c02bea54 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -400,10 +400,37 @@ static bool process_string(const char *fmt, int len, struct trace_event_call *ca
- 	return true;
- }
- 
-+static void test_double_dereference(const char *str, int len,
-+				    struct trace_event_call *call)
-+{
-+	const char *ptr;
-+	const char *end = str + len;
-+
-+	ptr = strstr(str, "REC->");
-+
-+	while (ptr && ptr < end) {
-+
-+		ptr += 5;
-+		for (; ptr < end; ptr++) {
-+			if (ptr[0] == '-' && ptr[1] == '>') {
-+				WARN_ONCE(1, "Event %s has double dereference in TP_printk: %*s\n",
-+					  trace_event_name(call), len, str);
-+				return;
-+			}
-+			if (!isalnum(*ptr) && *ptr != '_')
-+				break;
-+		}
-+
-+		ptr = strstr(ptr, "REC->");
-+	}
-+}
-+
- static void handle_dereference_arg(const char *arg_str, u64 string_flags, int len,
- 				   u64 *dereference_flags, int arg,
- 				   struct trace_event_call *call)
- {
-+	test_double_dereference(arg_str, len, call);
-+
- 	if (string_flags & (1ULL << arg)) {
- 		if (process_string(arg_str, len, call))
- 			*dereference_flags &= ~(1ULL << arg);
+With that added:
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-Enabled this event to see if it would trigger, but instead it found *another* BUG!
-
-[    0.719012][    T0] ------------[ cut here ]------------
-[    0.720850][    T0] Event ufshcd_exception_event has double dereference in TP_printk: dev_name(REC->hba->dev), REC->status
-[    0.724646][    T0] WARNING: kernel/trace/trace_events.c:416 at handle_dereference_arg+0x342/0x5a0, CPU#0: swapper/0/0
-
-
-I'll go make a fix for the ufshcd_exception_event event, and then I will
-definitely add this patch to make sure this bug isn't in other places.
-
--- Steve
+Yours,
+Linus Walleij
