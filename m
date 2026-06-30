@@ -1,46 +1,47 @@
 Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012047.outbound.protection.outlook.com [52.101.43.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948C63FC5C1
-	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 13:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12F9411670
+	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 13:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782825638; cv=fail; b=Yn5npkcr8AmsLaHCC1fD1wq/Xm0alZ6pz7c32D+xlXYJEFR/Fs1C9jWMW7IEc55B9ggms0Kmu8g7QziFf37XtDM4XrO8PBLf3/nLV09FBsmclLDmlFuAMkUKF2qeUgdeFlvMuPTVEMyCRpvsXix9jC/sqtmeS3a0SC04lDpe070=
+	t=1782825640; cv=fail; b=mxX8c9a9ROr3g62djd6hrxoMNEdR9s2kKKPmtB1oMvoZcxy8/4lk/fURkT1Enlc4IZXrVDkFMUHaDeD+qrU7khH3gHuHc9O3COIjCasSaoRQeGJR+rmWlrJilsTM+Q15wt08fn8IiEqmaT8VNWV379UgH3M1NtGzPBwvehcsCg0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782825638; c=relaxed/simple;
-	bh=WK4boK5s0DZDAZHa0gWOPAKYtanpg2BCg9/VKrerNMw=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Jzsb0oGoC71CmDAsdYhnN3HyznTofY6oR0J8OU+A2NSzoI36fIJrZNzR6bCY0wU24JEeNkcSnIfiWWD0ixW8i0bXsiveUguBK4+ACoSDIMK5xZevlHlRmBdFWF9CTPepDNCdah69QM8mWJ5vRLtB1+Ow4IiClOAySWL5ynb5LLg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=qdvcvNMy; arc=fail smtp.client-ip=52.101.43.47
+	s=arc-20240116; t=1782825640; c=relaxed/simple;
+	bh=SbIz8HRGl30q/LcqCdx5wVWzZGW+kRRlewU8AtyTL4A=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CSz/5DWojwmL1XiFxayMnMEhMXAIvhKDo6Yx9T94JrBhtpKS/UmdyeOi0QB8YSOvxL0FjltIGyXZZ8wOxRE1z25p28T2Xr0w+sPt5u3bwzU6C0PtqtV1e6YA0T8/bzAgwl8E8C842AO4wb6BGtQWuJWncbHY8UdzYAfD1yQhsT8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=kCW713lx; arc=fail smtp.client-ip=52.101.43.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="qdvcvNMy"
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="kCW713lx"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wPlIAuFuzaxWuIe9ubbdeP1mw0hCODnnrbldrBO8d2WAX7xC0RS7Ij+eXYLYrl9i3aCkms5QBZ8PJkwXdpl0bTRc8XbsNxveYyC47Pm4mKwDMzeKAfFy9Tfx6LU+8KzyOE5Ycy/UVRwQIaqQVST2JqYKMcZr+JHziKPXXRLMq8S9Lu8KKhlQ/xSWMcS3UioCZ6t9zeurf/MisqIK/SdwLyFoWaCwdseO/QjdkUIIFStJO/GhTOPqtRVGvI8aCTmMG8Gs5x4AxjBZguz20n1bk2gEAdrsEjlVz+OAjOKpa7MACMnsEKaAzsI1ipJ7WNxzGnTxa2Xa3YSXEZ0NVAZeHg==
+ b=VFLCsxzoWxl42T+2M1M/SgyDFNdyiL5Hmk0oP7XHU216MUg3kIcGtid5GGBoXddIDgwVeI0zaht0g6gtoD0f6f3BYOoGZG+/SgwmGTl4IgiF3QuyB3aLXvf7kRWUJhx+TdxcGid8a8bMZUp1iq8ErVSCxxwtc+AcvZABZ2fbRZZ9c8RH4JrxvW9labrp4/Ehf4RooOLa7BAW0aM+1XorzLYgyEqSIdeEprJm3BXOmPnkOjtl56t1aHPE1xGlZT0WtbhgQpx4T1YUcjQlraYogxUIvU/hI9iJOLPAPr7Fef1Qzaj1xNQaeKFB55XhJGdwKlK0qDOK72XXig5alNcU2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+B104nHtC7nVQZf7ssrZnXLrYzAblxWLflVo0brYFwo=;
- b=Mel18FmO/pP0Qw1wC8g6Xa14t416Se13r6PG5AFqa2lPj4zvtvhYcXM2im1M7NycPnQmhR9dH/G0X1B84dQ+GO33KANC/GdalqDlYXuWTGdrWrle+H8zkC4+ID0zx5c8WsP2oJDBypcSGpt25qeOSMHRDzol71YDUCqCg/UeTgFeS0/L46tjakxZI+UYM1X78Bch7xikS79TCa2AkfYmkxQlpOLinu/hoZeg1/V1yCzTbUIwTS2E1WuwBymKJ72kCrzOd2bxBbR+jWjBkeVgwLMpDhIy/1bLn30/+6bnUVSDP5PS13czIeouMPvXsnSb9CRY9Wnq2BD231HlPjFnRQ==
+ bh=QRw8c6t9VOg3qmoTmdBAUxYDXkc/YqmdatcBpwcVSaY=;
+ b=aaooyfnBmYPfaLK+s9y0fYCglVTRTfEEKtU0RVmUHo38+ICPCFUJX6qBF4Hd2uTrAcHEA6f4DB4PFZ49/abXf9riyOefYOe+HjA+1/eNpnT7a0uE8ZquiI3CO9oQ1E2quk83pdzzDOy+/1vOsKtttAowVfYlqh9BHo65W5zYtwFcErdcCvIxScPlsd4q0hu/f+oZSL9ovjaJ7scvC7F59YxeEITRe0XfO9L5gbHv/lEDVyqnd1cSrP+wsrT98lfU9ChXm4rQNRasyq/8xRXkltj3EAINNUfBBp5tnksDR9T/L5H67MlS/OaBYSED/xTUw4O+7iu3H6uczjm00x+QEw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
  dkim=pass header.d=altera.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+B104nHtC7nVQZf7ssrZnXLrYzAblxWLflVo0brYFwo=;
- b=qdvcvNMyWT1ypFVHCqsB5nT5ZIN139vOTzQ9mUXKOWRTw3JZXRUM4xWsA30mTtNzDL1R4sbf2Us2SY9bxCBvF4PIY+XF002xT/Rxrq1muV8YP7svv6qybl7qJoJTHLlALuCtgfc2YoFamK8yam5iAOfW6lOOKennxvlAGsFYnpjcralptr7YjusoQKVbeFS2/n0qdYy51Uz9BYyJV87oqdSTOs1Kw4+Sox6KsNQlPg7yp4KKcGH/0UBGgJeVSu48nlepnDCcOjJeZ8mcaCQB31ey8G0XZy6RB6mwasbZ7XVmAgwyOlUANDJBDeaLBzZI0Tvoxsy8BIfCPwDeq0Y4fg==
+ bh=QRw8c6t9VOg3qmoTmdBAUxYDXkc/YqmdatcBpwcVSaY=;
+ b=kCW713lx9EM6RtjUE0KBGlFsTxNad6Kk3W381jVGmQu9ZX1T4UT57F8zfBUZuvxMIO8mUb9o6TU2hjJnvP3V2mae8ODxGmlm99NceSLMCC5APvjLGyaN0h7xud4FLV7YNQqEG5UtYlRnPDWlfEcun/ypQJoKjyqHNX9A347aTV+9UmhBmD08IsdE3wGsdBHw8Zho14bCV7up3INIatCGMrV0lurZ5Dxf2CEDyy5is9Hp3ZMjlCxy2I3Gd2b3bn9olhQQBW6nH7UNGlrQvd7VgZrCE0PfUrPF36YbHKq4Tl2jaHLf5RM5BOx9CbNKmFhyGs99JaCGgKI/M5G9iv1dGQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=altera.com;
 Received: from CO1PR03MB5937.namprd03.prod.outlook.com (2603:10b6:303:6e::18)
  by MW4PR03MB6394.namprd03.prod.outlook.com (2603:10b6:303:121::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Tue, 30 Jun
- 2026 13:20:31 +0000
+ 2026 13:20:32 +0000
 Received: from CO1PR03MB5937.namprd03.prod.outlook.com
  ([fe80::f970:684e:8c80:91c3]) by CO1PR03MB5937.namprd03.prod.outlook.com
  ([fe80::f970:684e:8c80:91c3%6]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
- 13:20:31 +0000
+ 13:20:32 +0000
 From: tze.yee.ng@altera.com
 To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Frank Li <Frank.Li@nxp.com>,
@@ -58,10 +59,12 @@ To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
 	imx@lists.linux.dev
-Subject: [PATCH v4 0/3] i3c: Improve CCC reliability for DesignWare master
-Date: Tue, 30 Jun 2026 06:20:24 -0700
-Message-ID: <cover.1782824628.git.tze.yee.ng@altera.com>
+Subject: [PATCH v4 1/3] i3c: master: dw: Report actual GET CCC payload length on success
+Date: Tue, 30 Jun 2026 06:20:25 -0700
+Message-ID: <b99393b7761ff249dfd147b5ac028ea2e48915ce.1782824628.git.tze.yee.ng@altera.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <cover.1782824628.git.tze.yee.ng@altera.com>
+References: <cover.1782824628.git.tze.yee.ng@altera.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: BY5PR03CA0004.namprd03.prod.outlook.com
@@ -75,126 +78,109 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CO1PR03MB5937:EE_|MW4PR03MB6394:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03653eb8-f35b-4285-4f24-08ded6aa5c0e
+X-MS-Office365-Filtering-Correlation-Id: 179a7a83-9800-4519-2e62-08ded6aa5c9a
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|11063799006|56012099006|18002099003|55112099003|921020;
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|11063799006|56012099006|18002099003|22082099003|55112099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	pebkfhEWtdvcuFHBkSLOm5BOKqdR3Z/76hXjMzgiGP0akopAPHMxQcp9rp3n2l4c48aJH++2jRzmGXCUXPAySxMiolqQscsJnveSf9feNVfqEcmUhRefriB94If2tl68W2Nl6g7aU18Zxtx4WtWY4hERfNJUpEETEHhLF/KIWhd3lDgIZZJS9ghjWAxTvls0tDQ/HVzeCIw926x0LaolF8sapslVjxRSQw4Lb9di+HFYqAbaUdf6qpWcPje0YLH+to/48QgdnzhGxPdfPGF6PUVGGNPqNBHuggw4yZP3ldmJCbmmkRdcfOBFdLEDD2qKyDs3ubhL/zIG69u9n2R+YnM49jpgf4j0yav5XmdqoFeol0eHw2RViEtdEhI2b+bSCiBw1ntZ07jHsQLPPJ1/0fPSa33HLOWyllJr5Bxgu+52pxVdk3MoljcHcA1GXQ1tuk6EM+6ehzE0ynkeqnKscRTJtrF8n6/SOqSOBATPiWJcQ3bQK+wYhSgsky0JHDu1fSk3ualEEZp2reVHTs+fd9piv5p3QKioOXLEug3HVZJzmy2meN3epI9Jy5AMsTW3oCSsWfl65FOiWz83akA4s6tOA9Pa7D1VQuJTirt7lRh0V5jSVwrTflacpbI4e1YsA3aK0Ck32ATdArrzcjzeSTioH1w7fjng2g7hull6QE6Q/1Zh78X8kiaSPzkB6KwZiHX3ABLSQ0aRqTLmzHRReA==
+	wgYLJ06CEkwIjB0YzbyiVKkJbeFG56KgEa9QXHfFXiYlCaqhMfvA42/0D0b05whTUYFIWuqhIbKvQw2ty3W6oorX7F7mKWpX3oo6J197fi8tZJFI3bUzPusRW7kQAOSXYj1+kl7K25zUksH0VwN6eA1LmZsWE6X0WbkQB+n/Hj620DUlFHrgupAXRmElPH5I8FkihY267s8gUf4P1bTP/tB28W95xFJ/Y+U+hqzio45i/lqeOsmlkCq+in7YKIgFhze7jqMDpId7YSqJ6JNd1gp6u/lT1Gam3JXVBXw4hEjoyrnjqlUi2PBNcZCft250IdLrHVqYgiBTs6ZBDhnvkipfy6iRCUKJWIGkAJpnRiOkYWgUHQfVpDGTt2tdCoyt//Q8j4k3Hwuh4vcfeimKjqDtOp65Q5kqy2VOIjU/gdhPsGScr6EfEpsWwLK3HnURM1eE24A2sJzWPpdY8zwkdt2zTmT/DVfGB4AzIBJq+c/edk2UV1KnavNbFCOxUynuk6hB9SbWHXaM8WU+kFk89OVUGzuMxjWYnbQSZNXZhwpmAtBwtk/wkKq36AnZT5ckiTT38qJS8GQKwS6eotehZrGFkVgtDzX5Nl3UW7/QVU8OeZ1g+Zna0BsLcx8MfbfIQoT/sSwEObPpAsvs+rjnjQuDNeDs8ACP29YRct/PvFKpHJKA+4KL5ucVdACl/Moi8W0UGXmlVB9U6SaTz7m+Ww==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR03MB5937.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(11063799006)(56012099006)(18002099003)(55112099003)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR03MB5937.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(11063799006)(56012099006)(18002099003)(22082099003)(55112099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4qjz52BHlbaaohFBUxvo1FIJaBwDe1/+iLboPG6FqR7L6HE1XA05+AewfgOi?=
- =?us-ascii?Q?nvwqC2GK4Kl487MGRH48Rz9sc2pqVOQSajE6h5t40m1ymArsaIuhNzk7u4co?=
- =?us-ascii?Q?X2vhdUSgl0dpBuwn5H80VSGmp1AKCYZ6jupysI0GUObfNYKpn6Ib7hG76IHP?=
- =?us-ascii?Q?mXO+8+wj5OgYJA92VC8eeKQ/jMd85R2zE56SnJa1R6Q0u7bWBQHN3Xcy3HAy?=
- =?us-ascii?Q?YFUlI5J9V0KwLs1RBrrxGTo+dY9CkvXJKwg4ks67Dnw5nBOKQA1IJIDDG/V6?=
- =?us-ascii?Q?NX9RKtC2PzvcSt2z9D49tkSJZrF37RWjIQ0s/P4gcf1DkMS/twPxNPhOEt3s?=
- =?us-ascii?Q?/l2RcoyzvrL/wNNsxswA5V4NPBQTD/ordcOPanmrsE2A/2hH8UMcoh8gCMpJ?=
- =?us-ascii?Q?P7NXw7MXB6YMgHSZW+MtPbdPV5peqoT+UnHVlk3m7l8+kaGVtWMzCARURToS?=
- =?us-ascii?Q?RqaiPwR+diAoXEdBVizYfB5mC0FXBg+kWVlZN/OdgZY+GT8A/O/JywirGdBD?=
- =?us-ascii?Q?NkgOlXGU4Ss7RO/AjxIoWHyfW+rbhnfWNFi9jS9/cOYRsJpgEmBIi7ZBNM6a?=
- =?us-ascii?Q?VKM/HDw8nukRg52JQv/45/7tNK8MwbBtQFf2+j/6MW8jp6JWn6lwyD1k7jYT?=
- =?us-ascii?Q?yv6xeXrxo4/jfT7yQhKhqZRSw6oPPfv9xHGksrBDa+HVPDMmK7aiu3TzQT9/?=
- =?us-ascii?Q?pstCdS9X0ME+KcSh2uV3ijfxg3CAGTXbkH0jIdz/PAJcLlWlG/E6mWVcO7Zm?=
- =?us-ascii?Q?p77wEJMDG2SSHkTE/G4UMJTtt0AOaZicoD2G5AI4sUSR8ANQoDQcisqixHXN?=
- =?us-ascii?Q?JZ/OvXqpED+t4C+iAyghzvaCnhiCfbbOz3cynMusEj+KkIPu8ITrWIL1Jdt6?=
- =?us-ascii?Q?Y707IvEn6FguxHRHqxrpsz/CbEFgGsyfSu80xE9tOOnSWw6btSpnr+uKqjP1?=
- =?us-ascii?Q?FpFATOAR7UmRTsyWJOUkgN3aPExh1XOBLPULIS8/MLkPE2pg4yk/hQ4A/LaB?=
- =?us-ascii?Q?6DITeirabZRuv+FrVcyY2k88mMQLpzGDlVEXKm48xULdIWXmwi5OdM2LEhO9?=
- =?us-ascii?Q?D6fS3W3ID5whjCNRh31sqsDoV46l5A9crL81TIIEwy82Drgmbm0juyjY3riU?=
- =?us-ascii?Q?I5ncdbjyhlOvg8FFtLxGzhvg0OkSShCucGOuql+nATBNJU3xXkDaBZrxg3fB?=
- =?us-ascii?Q?dH0kmtz7NBhEMddvbEHC63vZBa6p1jUI6VVhGNFpC87RcNRP5tRALb79cTFJ?=
- =?us-ascii?Q?dcniWHI6osGBZP7HdKZ0gFLBi4UgaOjtFFutw1BY6jq61jX174bezTwcKTMi?=
- =?us-ascii?Q?akbAfNoCXIFgPMTgAi9tvvV0AxxlW8M+Xo4Z2Xzdq/pEQiqKcYLHyBnUr7SP?=
- =?us-ascii?Q?as4ixIXYAibBqH6KGLng4gh+KHChPipRE5qsirssCl8ovF5qbV37nKhNdtcB?=
- =?us-ascii?Q?W7jwfZie58Jc8LuX+J6i5qoi0RCsOrhNtxKyfaQvKBFjbWW9OgRLrw2rJvXD?=
- =?us-ascii?Q?uyd9YBiGwIzDgbnwaqT5d9++1prHWD8p9NDEv3TmS2jv9oEAMj+yixIjvN6F?=
- =?us-ascii?Q?XP6NpeBVVajSH7jal921fV+M+gxKIRvGEmVj8EqqJ/nt495aNvpCqnbEE1pK?=
- =?us-ascii?Q?89xKrXDIOWZHT0KCBU8piZj889H6CeXh89xLrFvmDd4PcaMRMyjn6xrk+YcP?=
- =?us-ascii?Q?fBp2BUt8zmzaRdZjnwQkJNphJuDIQyLHkt1rO1GFYXfQcv/MI+iHfFAVqLrn?=
- =?us-ascii?Q?gm2TNRkc8Q=3D=3D?=
+	=?us-ascii?Q?7arcfhswqir/DNa36as/wKtFEI9mXk2RLlE+8Rgy/CqO7TP6cgGd/WuC3iEG?=
+ =?us-ascii?Q?S7pUmTRDULIN1CJmS6v3pxli8cH35y1pAYffXlFOY9gAtZZPRztIyjUUUvgu?=
+ =?us-ascii?Q?TGyrqU1dmsdaNqesziO2/zGLFUme5v6Gjpyu8XwUcvw571wCOMXCPoMDK9TZ?=
+ =?us-ascii?Q?u0HSo5iXfOwqJYCebAIdHkQFdmg6oSs/7Zk6h9iqzv8kykc2ZoE8f23VX8Yy?=
+ =?us-ascii?Q?ddhKmg85HpzOqgorfp3ZoCzRGFo76a19eS5/lT5ms63Kpuj1K34LHpQneXeC?=
+ =?us-ascii?Q?/PZ/GuiDnLkGuKuxcUh4HnFzxTzBCqj19JQemH2+Fap5Th8qLdgkq2DdmgFl?=
+ =?us-ascii?Q?q5LDwHW7OUsfApjp+85HkFzP1N033dGL8txr48WoHus0BCVnok8d5D/ymDq8?=
+ =?us-ascii?Q?2sdReZbDbNuzxY9lvocXF2Sn+A0w2c6J/TUl42xBMOzVmuCHKhu57k10w2jF?=
+ =?us-ascii?Q?ypUr4Rb7VmnBvxyqjWaoSsL5e8SRbixY79bB82HnTD4lFxM5qtRspAr9QgM/?=
+ =?us-ascii?Q?2vKxTQ5igm3SvfQF68Ru1yhg6ojc50H3htFNNQvmM5tt+Xw2u2mQ6kzbCzWb?=
+ =?us-ascii?Q?9P5rjGExBBXLxkTj5SSwQjscQLJFsVxviZWwCv8CyiGGQ8zKFCsEwDCFEhPP?=
+ =?us-ascii?Q?NsNBzV8ePlSZ1BHqzYCvQv39D5Vu/L6OWbDc9N1+Yl+ZPpIMv10RchfsKeVn?=
+ =?us-ascii?Q?Vc9BXNnn9grXKyUp5ZwpJWT8gWcRetC4d8ze9OfBQMigUwYgk3AGx7WQs2Ru?=
+ =?us-ascii?Q?+kND7bb7aGcA8MisvScAkPwvrjjvH4cGNo/jTNarHNaHQuaiaKinGmszjaFq?=
+ =?us-ascii?Q?KXn4wP6prGE8amFITmP6QBQM5tU9VUj3qX7y/UORzxU5uHE4MaPLUia7HlHg?=
+ =?us-ascii?Q?PrWJr8OdQUcQHA6GkrBWMOPfG9ui5CzFc2ArVyhdWIJKkcoK5YAJ4pKxGp19?=
+ =?us-ascii?Q?ziTMunJRvkUUex16dA0QK9RYj+9AMFhaeI9WtFGgJN3iJWXl4UkWUcR+IpaN?=
+ =?us-ascii?Q?v/q2I/rgjvkBohNg0YgdfnxaJB+0XD+qQ4dRAKuoDWSUKAJFNMZI2twg9AXi?=
+ =?us-ascii?Q?iljaQOS2pruFglCCSfIqzk8ciKrKVF2lBRCPaYlkb52ZYg4aDVCpWw8lcrXF?=
+ =?us-ascii?Q?y0aZ/HAd8kkXv50cXURlo5Mv97bw9qUUJTSzavntqb2nxa6IyzcT4im6+CEU?=
+ =?us-ascii?Q?FGBP6640oyYxxul3HRKFnzAIkS1i1JD7/MCvsSN3Aoiq267uUoLufacDV75n?=
+ =?us-ascii?Q?HszR5EtI4Gz7UOS/fZlX33bvmAtigPqTWYyWt33SBW8pX+ngylB3zCaPrRKh?=
+ =?us-ascii?Q?koxtNgx+DE7NCeFLCP1Wudm6Ym9dH93g23kzozL4zS0sNm5n3X7X7930OP8I?=
+ =?us-ascii?Q?rSBffGZTMgKlUpbXVE9EzVP0u/7GnOTlmcEX/sgmfE24WHdiBQSmKaxRIW3P?=
+ =?us-ascii?Q?xHJwqlmFpPWsMmj8kmUZQHMZbPsTlItQFhROml0Yv62LUk0OZKcvvtTtxRcH?=
+ =?us-ascii?Q?5PONNfnauOH3aP3YXWqi7YFSlc3G+FcvY4TXe/dbG0gZQnxWVwVv0xSQKE6q?=
+ =?us-ascii?Q?U9tsayjMW/9nHFEhvwYo78EXqglrbZlftTT3W238iOnMMRmbzSACUeHoehbN?=
+ =?us-ascii?Q?8FEeVPW35sBReWjOM512xFVYMJQGJi8CqC/IQxneAtGwHCm5YpRaiLyMX31O?=
+ =?us-ascii?Q?3RPJ/c8LA4rdmeS5Xdpn0nZDXC9Dj/CRsE8kMLYyy7uVTVuKGbSD8wcqkX0a?=
+ =?us-ascii?Q?PPQl5IuxAg=3D=3D?=
 X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03653eb8-f35b-4285-4f24-08ded6aa5c0e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 179a7a83-9800-4519-2e62-08ded6aa5c9a
 X-MS-Exchange-CrossTenant-AuthSource: CO1PR03MB5937.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 13:20:31.2276
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 13:20:32.1671
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vzBQgD+yA2tM3M1IFl+zutD3IbE3nt8KfvlemCBjSfMxrl+KDLenzKHQqfC/taRgVmSepvmMSe1Yk27KSpF4lw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5f7fpSeHFCE3nzMYNcOYJz+kjMNIxTbRjpDxg6qu3tLk6y61OwkVnHPE7wfe47gbCW560ss1pQ407vfUs1mCwA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR03MB6394
 
-From: Tze Yee Ng <tze.yee.ng@altera.com>
+From: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
 
-This series improves I3C Common Command Code (CCC) handling for the
-DesignWare I3C master used on SoCFPGA platforms, and adds core
-infrastructure so the I3C subsystem can validate GET CCC responses and
-retry failed Direct GET transfers.
+On successful GET CCC transfers, set dests[0].payload.actual_len from
+RESPONSE_PORT_DATA_LEN so the I3C core receives the number of bytes
+actually read. Add actual_len to struct i3c_ccc_cmd_payload to keep
+the requested buffer size in len.
 
-Patch 1/3 adds actual_len to struct i3c_ccc_cmd_payload and has the
-DesignWare driver report the number of bytes actually received on
-successful GET CCC transfers, without overwriting the caller's
-requested buffer size in len.
+Signed-off-by: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
+Signed-off-by: Tze Yee Ng <tze.yee.ng@altera.com>
+---
+ drivers/i3c/master/dw-i3c-master.c | 5 ++++-
+ include/linux/i3c/ccc.h            | 4 +++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-Patch 2/3 maps DesignWare response-queue errors to I3C M0/M2 in
-ccc->err. M2 is reported only when the broadcast address (7'h7E) is not
-ACKed. Target-address NACK returns -EIO and is not reported as M2.
-
-Patch 3/3 adds optional_bytes and a per-command retries field, validates
-GET payload length generically in i3c_master_send_ccc_cmd_locked(),
-and retries failed Direct GET CCCs once by default. GETMRL and GETMXDS
-describe their variable-length responses at the call site via
-optional_bytes. Other I3C master drivers are updated to set actual_len
-on successful GET transfers.
-
-Changes in v4:
-- Add actual_len to keep requested and received lengths separate.
-- Map M2 only for broadcast-address NACK; not for target-address NACK.
-- Replace CCC-ID-specific validation with generic actual_len /
-  optional_bytes checks.
-- Retry Direct GET CCCs on any error (default once), not only M0/M2.
-- Add optional_bytes and cmd->retries to ccc.h; drop req_len and
-  payload.len save/restore in the core.
-- Update SVC, Cadence, ADI, Renesas, and MIPI HCI master drivers.
-
-Changes in v3:
-- In dw_i3c_master_end_xfer_locked(), move RESPONSE_ERROR_ADDRESS_NACK to
-  return -EIO.
-
-Changes in v2:
-- Split the monolithic patch into three patches (per review feedback).
-- Move GET payload validation and CCC retry from the DW driver to
-  drivers/i3c/master.c.
-- Validate GET CCCs only; drop SET payload-length checks (DW
-  RESPONSE_PORT_DATA_LEN is 0 on SET).
-- Retry GET CCCs only; do not repeat side-effecting SET CCCs.
-- Tighten GETMRL validation to exactly 2 or 3 bytes; add GETMXDS
-  2/5-byte handling.
-- Expand M0 mapping to CRC/parity/transfer-abort, not only frame
-  errors.
-- Restore dests[].payload.len before retry and on error return.
-- Avoid kmalloc on the common single-destination GET path.
-
-Adrian Ng Ho Yin (3):
-  i3c: master: dw: Report actual GET CCC payload length on success
-  i3c: master: dw: Map CCC hardware errors to I3C M0/M2
-  i3c: master: Validate GET CCC payload length and retry Direct GET once
-
- drivers/i3c/master.c                   | 92 ++++++++++++++++++++++----
- drivers/i3c/master/adi-i3c-master.c    |  2 +
- drivers/i3c/master/dw-i3c-master.c     | 31 +++++++--
- drivers/i3c/master/i3c-master-cdns.c   |  2 +
- drivers/i3c/master/mipi-i3c-hci/core.c |  5 +-
- drivers/i3c/master/renesas-i3c.c       |  2 +
- drivers/i3c/master/svc-i3c-master.c    |  4 +-
- include/linux/i3c/ccc.h                | 11 ++-
- 8 files changed, 127 insertions(+), 22 deletions(-)
-
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index 655693a2187e..856961da1827 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -742,7 +742,10 @@ static int dw_i3c_ccc_set(struct dw_i3c_master *master,
+ 		dw_i3c_master_dequeue_xfer(master, xfer);
+ 
+ 	ret = xfer->ret;
+-	if (xfer->cmds[0].error == RESPONSE_ERROR_IBA_NACK)
++	cmd = &xfer->cmds[0];
++	if (!ret)
++		ccc->dests[0].payload.actual_len = cmd->rx_len;
++	if (cmd->error == RESPONSE_ERROR_IBA_NACK)
+ 		ccc->err = I3C_ERROR_M2;
+ 
+ 	return ret;
+diff --git a/include/linux/i3c/ccc.h b/include/linux/i3c/ccc.h
+index ad59a4ae60d1..d8052949e57e 100644
+--- a/include/linux/i3c/ccc.h
++++ b/include/linux/i3c/ccc.h
+@@ -343,11 +343,13 @@ struct i3c_ccc_getxtime {
+ /**
+  * struct i3c_ccc_cmd_payload - CCC payload
+  *
+- * @len: payload length
++ * @len: requested payload length
++ * @actual_len: number of bytes received on a GET CCC (filled by the driver)
+  * @data: payload data. This buffer must be DMA-able
+  */
+ struct i3c_ccc_cmd_payload {
+ 	u16 len;
++	u16 actual_len;
+ 	void *data;
+ };
+ 
 -- 
 2.43.7
 
