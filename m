@@ -1,113 +1,156 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51793CB8FB;
-	Tue, 30 Jun 2026 11:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458DE401A26;
+	Tue, 30 Jun 2026 11:44:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782819506; cv=none; b=CaZzwSMjxqcsoAEoNmL6Z51netE0VoO/AByCjRoAPmJ0MjBft6xgkZq6uOMEsjIIZO/xaioDlwpo3MrvOxTtDVaLUl23AT7En9p0vXd4pLVKQ8rV0VcMlnrRmr7t7Sg3rmfS49Xb29EM2+/pAt61J7aWDAKd2QTjiBrJn6+z5TA=
+	t=1782819872; cv=none; b=p+o4YX5L26KQaoPAYIjLBVFfdLTEWxouehYIwzMgz1w9qVjKkUSiE0gV0AGIJxuhlQwriWZimwCFJFrmXDnzLJLE+KvvSx+tK0xQNR1adCbozoWeJh53VHt8GvLlCKGQGJgWY+I4m+pbzoA3OkSIfve5ZvOYD/npSj5EzpP5+yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782819506; c=relaxed/simple;
-	bh=oTCNM/AOyFpPb5rIncF1bOxUq0WXQpL6pQN30H0AnWg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Gf3lqbRp7V4zRu3RZYdMQlEvMVqvKSohj6aC98JW5DC4uvf5CLeql+JNEuU96clnctIDD05iBVCT2WHz0aKvmoGIGqzFI1Lf5c0AJsdBCgpnsgj2n0fZLY8iNLUiY/vvh9774FC0CWpFu7UpFTpgxTl+d4/w2ZYsQGj+7reSstI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=YCB6Twpa; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1782819872; c=relaxed/simple;
+	bh=5yq77nu9XP0da0HQr/0ginv99dRYo67hL0d3GpMJoM0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ALNvD9yfTpqsUpzesTz7SPMtsYiJ4iAnvIfineAH7I9z809zsV0rYOioFNBdHC8IbD1JMXyxYpxTZthU8vRVk5/bLCf6rGztjOf57nmax7+yMVntiQnEYIPOa0ehlor4axKcldYyszNsFNvru7d6qy7JAKvU60/KqMH6Z8DF3qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERiLVI57; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="YCB6Twpa"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4gqLkP18PWz9ttL;
-	Tue, 30 Jun 2026 13:38:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1782819501;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xShlwrKyTIF4qAdBox24ShRYzAy+zv7+bJMeZEybzao=;
-	b=YCB6TwpaO927QjEdXrlIiJBt3S2TMj/lUoTQyC5iej5UxCRKDn/XljRoPJbwW7XxlugG6N
-	xBgQ8xLD8khNkgkWh+g0ulj34prUa724A/+poOtOInojCqpSRpE4vb6OBmRtDmIJAxSA4f
-	q+iHkCtSckNXJ49ELVp3wKYekx4Hu3LHe2ZUyT3N5n18Mwi4lpbcu585fLX8dl6Sm1920r
-	w0LYy0isS0hDcqp6fFRitgGmFoMYdelUtHSbx9Tm6NOH0N4ee+iItLHiYZcykaDEt9MsqF
-	xFH0uK67m+VTeUGiD6g7C/77X5TkshLws6H+4ToFw4GPgFvrVvyldWMMbrXUAQ==
-Message-ID: <263f58b418a27a2339fc2478f93234e0208b0ad9.camel@mailbox.org>
-Subject: Re: [PATCH v2 02/19] driver core: platform: provide
- platform_device_set_of_node()
-From: Manuel Ebner <manuelebner@mailbox.org>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Lee Jones	
- <lee@kernel.org>, Thierry Reding <thierry.reding@avionic-design.de>, 
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller"	 <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski	 <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Srinivas Kandagatla	 <srini@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Vinod Koul	 <vkoul@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich	
- <dakr@kernel.org>, Rob Herring <robh@kernel.org>, Saravana Kannan	
- <saravanak@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)"	 <chleroy@kernel.org>, Andi Shyti
- <andi.shyti@kernel.org>, Andy Shevchenko	
- <andriy.shevchenko@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will
- Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Doug Berger
- <opendmb@gmail.com>,  Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list	
- <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team	 <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, Matthew Brost	 <matthew.brost@intel.com>, Thomas
- =?ISO-8859-1?Q?Hellstr=F6m?=	 <thomas.hellstrom@linux.intel.com>, Rodrigo
- Vivi <rodrigo.vivi@intel.com>,  David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>,  Paul
- Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, Philipp Zabel
- <p.zabel@pengutronix.de>,  Maximilian Luz <luzmaximilian@gmail.com>, Hans
- de Goede <hansg@kernel.org>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
- <ilpo.jarvinen@linux.intel.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
- iommu@lists.linux.dev, 	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
-	linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Date: Tue, 30 Jun 2026 13:37:54 +0200
-In-Reply-To: <20260629-pdev-fwnode-ref-v2-2-8abe2513f96e@oss.qualcomm.com>
-References: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
-	 <20260629-pdev-fwnode-ref-v2-2-8abe2513f96e@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERiLVI57"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C467D1F000E9;
+	Tue, 30 Jun 2026 11:44:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782819871;
+	bh=2KBDOll4GMj8Xfu4+L85xz6BotaANVhD9Ce6vFh6LHI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ERiLVI57eEZpqup9A7Um99SlDXCimXro4YdJYEivIUVgGFlwn7spuweuA2iufdsi/
+	 yHis0b92rWQk8YfxXmUgT1GJ0oyH/4PwVwl3I2uOm5hG2XfV6pheU2w71PTNZLSRKp
+	 c8g8dqRAECK1sEUzJxExkvnIVmQVKd9/lDrVQozsyHZa3Jd+XLqmwdiCBYZhlnzk9d
+	 /xkVSsbxM3lNIGL6zQAqyFFp7q5pJSZyJ0s3zuS8Gg56KuP3LXepVnpddqLAUdTgHr
+	 tQYRpQeL2sy+eEtAqEhJcRMhngohKbN+pn9x35VWoQtRpmPQ/n7ajbOLkyiGJ5KsU3
+	 1q9975ubJ9gbw==
+Date: Tue, 30 Jun 2026 13:44:22 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
+	"sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, 
+	"manivannan.sadhasivam@oss.qualcomm.com" <manivannan.sadhasivam@oss.qualcomm.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"robh@kernel.org" <robh@kernel.org>, "Frank.Li@kernel.org" <Frank.Li@kernel.org>, 
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, Hongxing Zhu <hongxing.zhu@nxp.com>
+Subject: Re: [PATCH 1/2] dt-bindings: connector: pcie-m2-e: Add 3.3Vaux
+ supply support
+Message-ID: <yzittnr2ebvzcozvoquvjiuxxh4a7wn5g4lqdyqmv663jutjii@bhfrxrs4oga6>
+References: <20260609033840.2006078-2-sherry.sun@oss.nxp.com>
+ <20260609034408.BC69D1F00893@smtp.kernel.org>
+ <20260609-unique-magnificent-eel-eb623f@quoll>
+ <VI0PR04MB121140EFB8E614326D799503A921A2@VI0PR04MB12114.eurprd04.prod.outlook.com>
+ <mvxoynvocxcalxcwogbiovg5yurjczxqfu2fqkji33bunmlplz@zxqjsdjts65j>
+ <VI0PR04MB12114DBDD65F25FB615EA8967921A2@VI0PR04MB12114.eurprd04.prod.outlook.com>
+ <ihrmgh6etb2n5zqjbrykfjjms4a6zgpzwjgrd3rvy24jufbss7@f4nfxrp7jksy>
+ <VI0PR04MB12114DA25D08329D3DC2C3ADA921B2@VI0PR04MB12114.eurprd04.prod.outlook.com>
+ <6ouch5ybqk7gws3yrvc2sylq67nioqva6klc7o7wcgbpobs2lu@ioscmsg6ufyx>
+ <VI0PR04MB1211485955B552B1F2207680592182@VI0PR04MB12114.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MBO-RS-ID: e997ada4adfcbcacfc2
-X-MBO-RS-META: xtee85ryzhfy8x8szdsj4cwckgtw999y
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <VI0PR04MB1211485955B552B1F2207680592182@VI0PR04MB12114.eurprd04.prod.outlook.com>
 
-On Mon, 2026-06-29 at 11:12 +0200, Bartosz Golaszewski wrote:
-> [...]
-> =C2=A0
-> +/**
-> + * platform_device_set_of_node - assign an OF node to device
-> + * @pdev: platform device to add the node for
-> + * @np: new device node
-> + *
-> + * Assign an OF node to this platform device. Internally keep track of t=
-he
-> + * reference count. Devices created with platform_device_alloc() must us=
-e this
-> + * function instead of assigning the node manually.
+On Fri, Jun 12, 2026 at 10:52:10AM +0000, Sherry Sun wrote:
+> > On Thu, Jun 11, 2026 at 03:59:28AM +0000, Sherry Sun wrote:
+> > > > On Wed, Jun 10, 2026 at 10:13:00AM +0000, Sherry Sun wrote:
+> > > > > > On Wed, Jun 10, 2026 at 08:40:54AM +0000, Sherry Sun wrote:
+> > > > > > > > On Tue, Jun 09, 2026 at 03:44:08AM +0000,
+> > > > > > > > sashiko-bot@kernel.org
+> > > > wrote:
+> > > > > > > > > Thank you for your contribution! Sashiko AI review found 1
+> > > > > > > > > potential
+> > > > > > > > issue(s) to consider:
+> > > > > > > > > - [Medium] The `vpcie3v3aux-supply` property describes a
+> > > > > > > > > non-existent
+> > > > > > > > hardware feature on the M.2 Key E connector to work around a
+> > > > > > > > software policy.
+> > > > > > > >
+> > > > > > > > Feels valid. Describe which pin on M2 connector are you
+> > representing.
+> > > > > > > >
+> > > > > > >
+> > > > > > > Refer to PCI Express M.2 Specification r5.1 sec3.1.1 Power
+> > > > > > > Sources and Grounds.
+> > > > > > >
+> > > > > > > PCI Express M.2 Socket 1 utilizes a 3.3 V power source. The
+> > > > > > > voltage source, 3.3 V, is expected to be available during the
+> > > > > > > system’s stand-by/suspend state to support wake event
+> > > > > > > processing on the communications card.
+> > > > > > >
+> > > > > > > But the current vpcie3v3-supply may be gated off during system
+> > > > suspend.
+> > > > > > > So I  tried to add vpcie3v3aux-supply to let this 3.3 V power
+> > > > > > > source always on for PCIe M.2 Key E connector. That means
+> > > > > > > vpcie3v3aux-supply and vpcie3v3-supply actually refer to the
+> > > > > > > same 3.3 V
+> > > > power source.
+> > > > > > >
+> > > > > > > @Mani, do you think this is reasonable? Or do you have any
+> > > > > > > other better solutions? Thanks!
+> > > > > > >
+> > > > > >
+> > > > > > There is no Vaux defined in the M.2 spec. So you cannot define
+> > > > > > that supply in the binding. You can define the custom Vaux
+> > > > > > supply as a fixed regulator in DT and mark it always on so that
+> > > > > > it is keeps supplying
+> > > > 3.3v to the card.
+> > > > > >
+> > > > >
+> > > > > Hi Mani, thanks for the suggestion, but adding an always on
+> > > > > regulator may cause board power waste, current solution ensures
+> > > > > the 3.3v regulator is only enabled when M.2 connector needs to work .
+> > > > >
+> > > >
+> > > > What do you mean by 'need to work'? For getting the M.2 card to
+> > > > work, you already have 3.3v supply. If you want the board to be
+> > > > always ON, then you need to supply 3.3Vaux, which should be always ON
+> > too.
+> > > >
+> > > > But who is turning off vpcie3v3-supply? M.2 connector driver or the
+> > > > platform?
+> > > >
+> > >
+> > > Hi Mani,
+> > > I'm not sure if I understand your question correctly, actually it's
+> > > the platform driver that calls the M.2 connector driver to turn off vpcie3v3-
+> > supply.
+> > > Take i.MX pci device as an example,
+> > > pm_suspend() -> imx_pcie_suspend_noirq() -> imx_pcie_host_exit() ->
+> > > pci_pwrctrl_power_off_devices() -> pwrseq_power_off() ->
+> > > pwrseq_unit_disable() -> pwrseq_pcie_m2_vregs_disable()
+> > >
+> > > Taking back to M.2 Specification:
+> > > PCI Express M.2 Socket 1 utilizes a 3.3 V power source. The voltage
+> > > source, 3.3 V, is expected to be available during the system’s
+> > > stand-by/suspend state to support wake event processing on the
+> > > communications card.
+> > >
+> > > Per my understanding of the above, the M.2 Spec actually suggest the
+> > > 3.3 V power source should not be turned off.
+> > > Should we simply enable the 3.3 V power source in
+> > > pwrseq_pcie_m2_probe() and remove the
+> > pwrseq_pcie_m2_vregs_unit_data?
+> > >
+> > 
+> > Just don't call pci_pwrctrl_power_off_devices() from the suspend path.
+> > 
+> 
+> Hi Mani, do you mean use dw_pcie_rp::skip_pwrctrl_off flag to avoid powering
+> off devices during suspend and also not power on the devices in the init path?
+> 
 
-Doesn't it make sense to add a remark to the kernel doc of platform_device_=
-alloc()?
+Yes, something along those lines.
 
-Thanks
- Manuel
+- Mani
 
->  [...]
+-- 
+மணிவண்ணன் சதாசிவம்
