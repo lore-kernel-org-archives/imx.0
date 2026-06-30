@@ -1,101 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013069.outbound.protection.outlook.com [52.101.72.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729EA2D3ED2;
-	Tue, 30 Jun 2026 15:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782834542; cv=none; b=jqIES2cGNJR23kXaPlyHbcE1tcAYnkO3LfwCZJSKkCwHaaJJhoG+f9HhT9NZdaQmzMMMP4x5Scg3ZxV0AOQylneI+El4AFPqEAM0PkOP+Yrx2QQCZFnr5eWArYWMiMWnFJKQ4xaisomjspLORROPrp4FVcsqEAtu8RDb+gWU6CU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782834542; c=relaxed/simple;
-	bh=C3JSY7LsM258ERdXIoF3eG96fX8fD7qObUt5ovIpD+8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=BttOmeOIZZtTBPOhHf8Wm30UIU2pcHn+iFTjxYGseIT7KOGhIyagxPFe77vi0Ybc479cmqOSbf0kpGTBt9j4JN48ZpJyPMunH9n9BxHCTDvgnQqyqVkAp+wdpXuRcYEheOob1ScOw9VNTbdQ4dM7pyepHx6T3atkTG7+wuqPasM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BYWPeRN/; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A010466B6C
+	for <imx@lists.linux.dev>; Tue, 30 Jun 2026 15:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782834749; cv=fail; b=GM77ke5x8YH0epCur11eu3/Z1GOW1xFzLyIxPTUOExgi1MNBCoN8zDoErOkTRkdC+zV28MwQ+SEyAQ9DNbnKA/JuszYUkosAvFrLZhfZRun2/eU7JNLbhuCtdKb6OmXynDaFa5MkJfkIX07awsPFrY6oDdKE91j53dt/bkd0kUM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782834749; c=relaxed/simple;
+	bh=ZoQm2oLSD3NGukMknAkQRVF02eloMWhEVi9MqCZz+94=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bcnFM8PkbpQarSdNDr6jmRUjqOZd7wZNkb0PKNs/WJQt8KIYXvKNnHw0OAgKK39XTbRuLXdLU3AKvcDjQQA6FlqWlY0BXZtpudgt+fzS03KQF4f5hgOAj/l+BOrdJiI8EHJov/GnZn7hrn/mcTXNxgOwh+ewSw7y8SxdkrfEWBw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JkaUkmSM; arc=fail smtp.client-ip=52.101.72.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BYWPeRN/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C05B1F000E9;
-	Tue, 30 Jun 2026 15:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782834541;
-	bh=pRvchszo0nQt/Xjvizm3xNardmGDX4zYQCWhb6sGWm4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=BYWPeRN/yAk1EE8Vh1jkKDr+ETZAMjiYcgrfIZ/OUZF0XTDYhsJuk4imqTp9Nnxzr
-	 EMuMVTsfRr+OkyEW/BvTa2yGeLKUcLKLx9mUSEYWWGAG2U45ccRpJDUeZLbOigyO+5
-	 UTmDSJCLNBmn6b6QRa663hg0QmsgvmquJr5PPkBA6u6h3mlQyxdrhkdx18DW1S+MhA
-	 hN1PuyMCh9M3SPrL68brDaKfjApKzM50jvfmGIpvl9fzUcaoUTCSGCHyjaJSUjuGxZ
-	 6z6CxmPtuhWXMCxbyDFrHIAaMrUrD3pkROqPnVtPhFK+jvRNRVVZRRwfXrgvmdjuKM
-	 z3eoijOJgt3+Q==
-From: Mark Brown <broonie@kernel.org>
-To: Jiawen Liu <1298662399@qq.com>
-Cc: cl634@andestech.com, william.zhang@broadcom.com, 
- kursad.oney@broadcom.com, jonas.gorski@gmail.com, 
- bcm-kernel-feedback-list@broadcom.com, anand.gore@broadcom.com, 
- f.fainelli@gmail.com, rafal@milecki.pl, olteanv@gmail.com, han.xu@nxp.com, 
- haibo.chen@nxp.com, yogeshgaur.83@gmail.com, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev
-In-Reply-To: <tencent_306FA547FD68D10EE4B2AE9C132060F12F06@qq.com>
-References: <tencent_306FA547FD68D10EE4B2AE9C132060F12F06@qq.com>
-Subject: Re: [PATCH 1/4] spi: atcspi200: return error from failed
- controller suspend
-Message-Id: <178281951147.79320.2850287290547638465.b4-ty@b4>
-Date: Tue, 30 Jun 2026 12:38:31 +0100
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="JkaUkmSM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g4w6QZRqhmW81ZGc8tT31WLcLlMEgztDYwok6SGDhAkHaYusZDnCJ9Q/QHC4J5z5pS9UCMM0L96rGBYDR1NvVbqYpBAjBpLq6B4AUJVl74MhNOga/OLBJy8xP4NUtRXuwZNbmGBL/LkKvLVUBmJMwpuS8M3Hg4T5geQdAH3SFHjsUIzEuefATsm42QVx+pfaAsn3AVchWQBEeHAP/JSThUlTN+zMkLPpXNzsUXAh2TLdPrPzHW/YIw8DYqu+yexcAaRAk93BlcRiMaZjr2vLl1LeN+/l8JdecKO9ncJWOHEDOyA1NxFAmhv0ZYlCix96lcWgXQR5Sllu7Oy0iig6rw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Wlv76N5EuH9P6KSkDdhOV8+L2Ot3b9xQqRotC21u6ac=;
+ b=gAxE0fcTNIAPaD0ES/RNFikjcFAC5/izGQyH4+EGNyeFKE+t9nDYhDMuo1o5IP8Uq+sOjwRMpygMWcGFab2jWRCbpA6CAoEBnXJ19m6d7k81xq/Oshmhgp6yhosO0+eLAloMPrxH64X9KgcVBWXou8DCpud9M2Z17auOJExsMVg0PRYf7MSMmllhz7PiDZKmUL0LqNvhzNgfqh4/QMO51O7rDtRmjMCBjV8X7WoN+ZKOjbdvl57/E2EPyF9m0bPasYVVjHpnZuUaIzbsDcT8e4SN6UVFOYQz0ctA9RsryKSQ6doshoa7yAjUNTNCrYSMZWxzHhjwf/0HpyfcjPsL9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Wlv76N5EuH9P6KSkDdhOV8+L2Ot3b9xQqRotC21u6ac=;
+ b=JkaUkmSMYj6AEkDIuG24ZUbAgJmarq9320fPqpAOiTsuUpt+aXnha0mQt2THKn9FvJC7CAarAHrN7EJRFJbFfDjtHTQ4uPwAe773iDycFTJdRi/Gx3RzRmLecctYXLHmZMMFKWbeHTBX7mOlUWUHS6BKDiPZwUTdp+FqEZE4m1rzYI+RLt03nt6nYgQ07ctQ8C+N4+aSsEf1isPg/JCI93ZLIi60h8/pvqnXDd6JzIiNdcmHKbBV63kvT0lYVeKeRpt5YLuVLQesdI6DVNoySQgroxUvVxE18Woz3Xl9DMpQmWyy2FYidcEDh+/9m9nQW7EQuWgfAMgpxZmK6qe7bA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AS8PR04MB8913.eurprd04.prod.outlook.com (2603:10a6:20b:42c::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Tue, 30 Jun
+ 2026 15:52:21 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Tue, 30 Jun 2026
+ 15:52:21 +0000
+Date: Tue, 30 Jun 2026 10:52:11 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
+	bhelgaas@google.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de,
+	"Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	sherry.sun@nxp.com
+Subject: Re: [PATCH V4 0/7] PCI: imx6: Integrate pwrctrl API and update
+ device trees
+Message-ID: <akPmK--SgmTTAjFw@SMW015318>
+References: <20260630060710.3294811-1-sherry.sun@oss.nxp.com>
+ <178283343009.3269775.506226017892254973.b4-ty@b4>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178283343009.3269775.506226017892254973.b4-ty@b4>
+X-ClientProxiedBy: PH8P220CA0019.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:345::10) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1493; i=broonie@kernel.org;
- h=from:subject:message-id; bh=C3JSY7LsM258ERdXIoF3eG96fX8fD7qObUt5ovIpD+8=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQ+VpiPuVzxpAvS84L65zppHxOvbxCK8c5TCwA
- NFj8w3hn4aJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakPlaQAKCRAk1otyXVSH
- 0J5jB/4peKxomewjfJZCS8MkQQ8Xw/hCWmsvdbjnbe8zsMwT5r+kdffG7v1bV1H0Nw7ZOQ7/0am
- rPGpfMbGydlaDFzRa0D7QogQL2oWbF/djJ/Ag9y+t5wUBF3syAIEZ+CrmVBozRe4CCQkkm5ddJ9
- CyTNuZYGSyO7Py7KW2ygzFDZOGKq5jCg2Fb70g0M/n25yZKJEdejH3Ie8kfXqXbDjpial21WiXk
- rKyMHuGcJwMjkyoQWB3ff0Xdc8xTGnG0nW3Qanq/0F1iXGvuNJXNNLjs4ozSKHZQtQiAuKaPFV1
- Sz78MKsJYk1u14bBspBi/S9XCFiuMGD1tVDKM1EUs3wjyBRr
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8913:EE_
+X-MS-Office365-Filtering-Correlation-Id: eca95978-4c03-4163-a32b-08ded6bf921d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|19092799006|23010399003|18002099003|22082099003|11063799006|4143699003|56012099006|921020;
+X-Microsoft-Antispam-Message-Info:
+	woZGRPVj7+NGse2EYVeANnsV5hOLQ8SbTwjcSVKGjzkeRpxwogeNSLFKzFg6nZkBDxR8clkpwDF1f2PiYz1gEG1OkR5MgPwMyruaPct7qFeuHQUfu8NPTTPffK32V7e52l887qQkXIq8gdunlFiEbryFJPU/dhd3/FcOnSLvDubs/ze+xAcDkb7FX9qslrjV74ueSwu5/7+42vKoAOWR0w3Mcrm9wHfBUfthGv2nrZo3CvPoowhRWjeyKEqCtF/vxjk81P8ZpGjslDTmvp+T602T2weiuzF4kwQn1Aeb39BcKgNXaYlaQmothePwf61dRcjxGuZMKtXvxOyVvTdycPTQIzP1AvPVcd54DYg0TUyzfxw1J2ZU1SwnrA9PDmR4I/Zgm3Ir5LFHXP2P34AGjLuP8PC7Sw6fqPvNzSIYOwDCTM3SMAcFNcfaESBGKJnjUMFQx3an4ZQqLm3fv69khJ2VeSCenUljR5POrUqYi9ehLuAETZGyzY7tEIsRRfdbx6Url9o5dqnM8umjbzKi/kN1wGOzvWN8PJBlZdyvBYOTVExAlZiCDk5lEW3XnGxuDMr63ylrnTJQX8VqHvl65QXWWI+EybAYJ2ZAAnTSe4KSwI9b4a7JJKhQ8sGiq8iWuXT+0AqBqGjVLe+KYNugFtVM6R500qJUNtOCFncrzaPDGw5IbU+ZrMdEthNyXjPl+31byXWaf4oGNG9Dj9CxJA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(19092799006)(23010399003)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?z7RTtSGV8/XZPZ4xs8BJQkSZ9bF2NwNrzMFLJiquKB0Nr0ywCOdegIuVDJKO?=
+ =?us-ascii?Q?8EdHO7dxwNfbxyYR6fIHkVzK+QrhsaaozNxuu87whZkGxIbkbV6rKv0l4qEO?=
+ =?us-ascii?Q?7cTlSaGCnxElbLpk3xZWLup29iws6ah4dZDFIUjd+pSEVRb7W9J0ixJIn9b4?=
+ =?us-ascii?Q?Ea/m03T5fMvrCLH94GddaAl3E6965WsPuMCkLuGr3feBueeA1COo+vLTIoyU?=
+ =?us-ascii?Q?gWknCQLglKOeQEW6TD6HVdOsC2cCfaOVYz1BaAR5c0nEnaCNE+IA/htfDHXe?=
+ =?us-ascii?Q?9SZr756GMTVEsXirHldopKVhxuMpfr1vjOIFHMM7bwXR/NfPYoCSVW0UOxlO?=
+ =?us-ascii?Q?jDFIbHwvSoMX1rpxG3C6SvXF3aay89E+4q1N8OcrTvl2LUTv8e2dDKPSKNe4?=
+ =?us-ascii?Q?EmEnhX9lqb7MOwAT9Ce67goQBDVeDgJEVmzNhYdqCUTYMR7pAWP/rh/uupZ5?=
+ =?us-ascii?Q?yaFDS5dIeoSmzL2L8muKSdRTeBjfQIUP6naRct8wgfQxpzA8aHKmylib4js1?=
+ =?us-ascii?Q?OBg1nDZkaprIEQUwGkZpU8yB9OAykmiJ+KQx2PTpvLBTIululIu0bsl+1yA7?=
+ =?us-ascii?Q?OWOFLGDaij7t3oFitZ8SAQM5+AZNIQ2gSirztcgSrXSen7dO9caVdSj+XBaE?=
+ =?us-ascii?Q?uZQXWSLEv5Kqw0RbXqA7KIsI7/zPoY6mZZKmoPXL1E+8GoLqT+OAc/ocwHNn?=
+ =?us-ascii?Q?QhZRdK6k0UfaC6+OWbXngq9/EXtDRIwE3TW/LzeewxwxOby8bQ71aVDHDlmL?=
+ =?us-ascii?Q?u3PIcx1yJjn/LyC2DvcP6xfXGmV48grKvbmU7jzZSU/em886JfZfG/wVeUBR?=
+ =?us-ascii?Q?OBWbUyOcg76El2cWOBcs5nNf1+6LIQbCx0Dg4UV1rLjLzKAlRWAaZ4y+x08L?=
+ =?us-ascii?Q?q0NnnunnUIpcJLyB4T7N6HrzBAHYhSko+uErDYMbGdmqiqXq/pKqyADPSgt1?=
+ =?us-ascii?Q?SFgNoGBiSg7koVeb4MkS5UILZY4ZzIqy048ZrtCynmlGWt0ZKrrC/TpXdEnm?=
+ =?us-ascii?Q?XzjgymREJz/oMXdH0oAth0PBlypmKZG1vSG0k1D/OYbRd4uGvAGXBlYR9+xN?=
+ =?us-ascii?Q?FsHwt3px268uxWXjXSnH2G4MLGjGrF4tt+eHIp/6PE5QqKQn03+PYvd2GOTu?=
+ =?us-ascii?Q?6sAEo9Ww9Y3umYvDu47wr3pFB3TWDgF9sMNd+cFlg7Ht14RRHHOgzXGI4Mqa?=
+ =?us-ascii?Q?oqa7wCTr8xn4PJQNPgRuivk+oRP4+hQeMe+YjoX9Uw7K5GTeWZgza3GIXXk1?=
+ =?us-ascii?Q?2WbXftb7vOhwtOTfnDrG5IZNS5TG9RwGxY7+Tp55tKyjJar1quSWXKCDFZjB?=
+ =?us-ascii?Q?JhzIOlmlM6yj1yocEL4oYMWiYMgu0ocjLwiM81iENTNb1/X92fHsQfDgPLzY?=
+ =?us-ascii?Q?kT1/D+CeleAOncMuNzFooggU7/9xXP5q0n0tKPd7chtI5yM6kqbgg5RYAlXT?=
+ =?us-ascii?Q?gyFUy17E/gMrf7xw/uPdhbQo4I5Ibn52Y9Hc9YcQDn0cZ4obZTNXkthh0L5G?=
+ =?us-ascii?Q?1Ihf0cQE4wtlLMfgDvbqj7sPJX+x2fv98bHKncIwaPVfQ+eZ+HHXCMU+bRMe?=
+ =?us-ascii?Q?i8lChujuGR5PCJ1U3HLtp+LXk3U2zaaD+gBI5+rxbpVt+Da7/9WYS373HZqs?=
+ =?us-ascii?Q?3OCa3Ngp5KyOxfUBWHvJHCduz0xxptdIpj/tDHHj9Pz/JdbLlvypNiWNROFa?=
+ =?us-ascii?Q?n34DmWF2XiKCdNQ0ySnzpHzj74vlE8sUGLgBYT4mGjWmo9T+kJklo+MhGPhD?=
+ =?us-ascii?Q?CyFK3Insd1P6UfTAXpiQO4/AB5BlwYBkUI6+D+79aj2sGmOpdiOl?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eca95978-4c03-4163-a32b-08ded6bf921d
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 15:52:21.5475
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m0+2l7YKqfZGL6MSQxdOrhGHMji65dHXEWUd9NYHSfbbHdfQHg1zXf4oW9SJ1xJFkMr2roBHXvR7ketmjmZx0uJ66GY4U148XjOBWupEJ0yud9ZdbfE+wbJ+QNcK/4AS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8913
 
-On Sat, 20 Jun 2026 12:39:28 +0400, Jiawen Liu wrote:
-> spi: atcspi200: return error from failed controller suspend
+On Tue, Jun 30, 2026 at 11:31:10AM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+>
+>
+> On Tue, 30 Jun 2026 14:07:03 +0800, Sherry Sun (OSS) wrote:
+> > From: Sherry Sun <sherry.sun@nxp.com>
+> >
+> > This series integrates the PCI pwrctrl framework into the pci-imx6
+> > driver and updates i.MX EVK board device trees to support it.
+> >
+> > Patches 2-8 update device trees for i.MX EVK boards which maintained
+> > by NXP to move power supply properties from the PCIe controller node
+> > to the Root Port child node, which is required for pwrctrl framework.
+> > Affected boards:
+> > - i.MX6Q/DL SABRESD
+> > - i.MX6SX SDB
+> > - i.MX8MM EVK
+> > - i.MX8MP EVK
+> > - i.MX8MQ EVK
+> > - i.MX8DXL/QM/QXP EVK
+> > - i.MX95 15x15/19x19 EVK
+> >
+> > [...]
+>
+> Applied, thanks!
+>
+> [1/7] arm: dts: imx6qdl-sabresd: Move power supply property to Root Port node
+>       commit: b16fded592305f04ae40764f5fa91d5ac6f02a65
+> [2/7] arm: dts: imx6sx-sdb: Move power supply property to Root Port node
+>       commit: a1af6cf5a6ce526ea41d4686fa14580a48b2e768
+> [3/7] arm64: dts: imx8mm-evk: Move power supply property to Root Port node
+>       commit: b6a38d70bcbf0893ce5493f3daf0cb19e5102269
+> [4/7] arm64: dts: imx8mp-evk: Move power supply properties to Root Port node
+>       commit: fde093c386a64c820a704abaab9ffd9ec738cd4d
+> [5/7] arm64: dts: imx8mq-evk: Move power supply properties to Root Port node
+>       commit: 78610987333b0811a456f9a4782472fad00f4a19
+> [6/7] arm64: dts: imx8dxl/qm/qxp: Move power supply properties to Root Port node
+>       commit: 240950f3ad76761066ffe399f62670321c1be1f1
+> [7/7] arm64: dts: imx95: Move power supply properties to Root Port node
+>       commit: 6e53e8b854bc6f8330d07905b73e53ad02aff62b
 
-Applied to
+Sorry, I have to drop again because miss consider back compatible problem.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
+All old platform, 1 - 6, need keep both under pcie and root port.
 
-Thanks!
+iMX95, you can move under root becasue it is new platform, it should be
+fine to break compatible since development phase.
 
-[1/4] spi: atcspi200: return error from failed controller suspend
-      https://git.kernel.org/broonie/spi/c/f4b14e67baff
-[2/4] spi: bcmbca-hsspi: return error from failed controller suspend
-      https://git.kernel.org/broonie/spi/c/faa878d4805c
-[3/4] spi: fsl-dspi: clean up after failed suspend and resume
-      https://git.kernel.org/broonie/spi/c/2543355f3da5
-[4/4] spi: nxp-fspi: disable runtime PM on probe failures
-      https://git.kernel.org/broonie/spi/c/5d14285d60ba
+Frank
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+>
+> Best regards,
+> --
+> Frank Li <Frank.Li@nxp.com>
+>
