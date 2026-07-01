@@ -1,107 +1,213 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011035.outbound.protection.outlook.com [40.107.130.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2F934A3AB;
-	Wed,  1 Jul 2026 14:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782916380; cv=none; b=uklO0VR0NcYVLQ7O+l4hfm5M3uaFoFbZJ5Gb6Ct6nX+c/L2JhgCyfQ3wn8G3M2vRnz0XrojDvvTC8Ht1GMm+s9B+tDS6ZN+67w/SdxY9Eu26wo18FzSS27DJLhk240dezC+cmICchquACUv3A7UIBDO1QbYmgYYPz6Ra7sWn/is=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782916380; c=relaxed/simple;
-	bh=iwW0yaAypSyo6hwff9OUVhDwHVYyHZ51Ck+6K7RqP68=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SPUMyf/EFOgL2YD7QqO5Mpph4i7otDKLmyFBFZQruLG27xzfj4ugGGiOX/09a4t714CTgORRteCDjgcBmhP3hWxe0z68ZRFj+Fg+SrwZAed1zIB30ON64Oq8y9R+096IqsjN2oRtzFCWeSEQVbozd4H9IdMu7+jiLp1GTYw1kO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=imXC22Hj; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D7834C140
+	for <imx@lists.linux.dev>; Wed,  1 Jul 2026 14:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782916855; cv=fail; b=hij2CsmZuhfWkXU26179VftbtO/6cQsFHksls06dVq+tHwyndYFmDsMX28vMOfIplD/95TIudgwyfkQImlX7DZqNtRkZeXf/l7899iTh2Fq/wJGEVo/6D+Ro1D51gfRUXuAtD1V4EejLUqmHCOb8jb4wS4wmuSNr1JS5EzEAodA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782916855; c=relaxed/simple;
+	bh=77NDaW7VVgN2CVkoBMZNZNzY62+ZFp1WSppmDALCCsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=IdT4nr+EUa5KLL2rGUb7rP8t48e43qw/ovMQ5OxGhAX7lt6aS6+zr+j2YLBEVzG6+BtnKlqSwFu6boS2k8zTbN+yE13Ag3vnuwfgWc9+aV1VW6HHaggYhAaAt5OaW3aE+/rBbZgtQpMSpKsnc62QwEuMlmYsCjI2k4Q3WaWtHcA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=OAV4t5Sa; arc=fail smtp.client-ip=40.107.130.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="imXC22Hj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DSlKJeVPx0TZyfKvWqzdvEvnU87xuN/vChHfrWxBrfs=; b=imXC22HjhlOkc9h4b18XVYlGGW
-	O4dhAyf+be6Xme2EZyOOcVPmU8/NlC6Hz2MXsL3viBKs19fkysVtCab9ZvJLpYynNorsE0btcBHHW
-	SRZQzOATxGtiywnlc+EmaenzaDoGf+Z1nfquitPstqZd5w+fzj5At043GykggATUg7t4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wevzV-00ABKo-CO; Wed, 01 Jul 2026 16:32:41 +0200
-Date: Wed, 1 Jul 2026 16:32:41 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Clark Wang <xiaoning.wang@nxp.com>
-Cc: Breno Leitao <leitao@debian.org>,
-	"Clark Wang (OSS)" <xiaoning.wang@oss.nxp.com>,
-	"Frank.Sae@motor-comm.com" <Frank.Sae@motor-comm.com>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH net] net: phy: motorcomm: read EEE abilities in
- yt8521_get_features()
-Message-ID: <677882ca-16cb-4fd7-86d9-b00d62147bf9@lunn.ch>
-References: <20260701075730.133707-1-xiaoning.wang@oss.nxp.com>
- <akTLmyF0r70Jyn9m@gmail.com>
- <GV2PR04MB12213F4758648CD71F5D5B3B7F3F62@GV2PR04MB12213.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="OAV4t5Sa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lJHlS/l2W6sWPHserplMbBT3UvH2ae074PKbd6WDdR1e2D1Saz39NtD/RZAf6GJfA8wJdiu0JCbTGCjeCzz1mcrNrdVFOeZmtxGwuYNH+vfacOSeCmwuFBWhgIbuZItB8sAqL3boJoC01tbqI2qSzO7KWZRtkJcWV8MpJe3EhywmOCJ81i2fn8lY63GUXBalTf9MgHt8Jla0q99hQyv9HzMz1rFTkYJuWRyLXA6e6mZzp3xQBlhTGh35tQSB/FkzLuzfNkZPPH1yOc1UJxJ3HDccHEyR1M632XuVSgmQVIKs6injjMKtUNe3yJsSqivx3rXI4QR4Q+lxUxysF7exTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BHLVISdzurZic7l7i2k1INz/1p0kYk6YH6IRHv5/J9I=;
+ b=PjlX40QM9aBs5rKHJrhmKUYlAoSI9xHrANYTbQXMIOWRpXtP1d5V/PuG5+SLP7PhFYXOsP19s9pb+XSnxHzm0VzHwrmAazdXPwkOWF47PFRBCuLPthQfRuCSjby95SM38Tcu0ABYclq0VjrLlwtPdjMweQZw+SZD4o1KYYQ5+aLrQLUM1tCrHCF/joG1fjpddb83aGLkrh5flOWtJ5TocoUyT1BWLqFLnTbeQZmGHx5nXK2kfWmgD3lUK+MS9dZ+tcDY3O4GAS+Ovo4t5iJBEHLIRsPEIJaawTf05VRsn/XXRUJIbuf82Z/c9+ncDlsVSxJ+ndDZLUd9pCsFowDgWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BHLVISdzurZic7l7i2k1INz/1p0kYk6YH6IRHv5/J9I=;
+ b=OAV4t5Sai8RMChhIaguhf23IpmEhiXf2PPDTB6JTTm4jbal39ATe8xyFD2S+38bOaYnB3wLZhDjGrQKA/37qDRiGeqCKG4VsK1Yi8SIHI35r0wZOlie7TREj6fVf3O9nkBuxKMvEOXdpRny91BZlxZ++eSQCz1TZtPUl6VHxc98qyrg73tknrxE8rFfpaQD9G7sJc4JZdACN+geG1Pbg7yamZ53wOu+dtcbCH8O5NSfPJEBX++w2YpvAL1msMbZb10quLHSws0Uhb0585ljleUJ9PZ6/PviGW+ne1p/uj7YwMFwT38Nvy77bLAUMRKr4Urxq6SDS+5P5afhmI/dalg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by VI0PR04MB10710.eurprd04.prod.outlook.com (2603:10a6:800:260::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
+ 14:40:50 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 1 Jul 2026
+ 14:40:49 +0000
+Date: Wed, 1 Jul 2026 09:40:36 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] pmdomain: imx: Fix i.MX8MP VC8000E power up
+ sequence
+Message-ID: <akUm5AFBhzNwuA3r@SMW015318>
+References: <20260610-b4-imx8mp-vc8000e-pm-v4-1-v4-0-ea58ce929c84@nxp.com>
+ <20260610-b4-imx8mp-vc8000e-pm-v4-1-v4-2-ea58ce929c84@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610-b4-imx8mp-vc8000e-pm-v4-1-v4-2-ea58ce929c84@nxp.com>
+X-ClientProxiedBy: SA9PR11CA0007.namprd11.prod.outlook.com
+ (2603:10b6:806:6e::12) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <GV2PR04MB12213F4758648CD71F5D5B3B7F3F62@GV2PR04MB12213.eurprd04.prod.outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI0PR04MB10710:EE_
+X-MS-Office365-Filtering-Correlation-Id: ddb4c4a0-b383-4c29-b980-08ded77ebe09
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|19092799006|366016|18002099003|22082099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	nO2/zkoFhz7t5941ChBkGzr51qNlalGZnDlWXT6RGJk+SkW+ZHmxX3iMVVzE5Boou/8WFppA+tOhLA4c0HLfPcTfd27tzIw3F5nTlbC2Y5G58qTFaRK6tgvMwnPHaXGPLAf0DVK9khaOfWL2YCfl8S1oLdYyNBo0Ur5hASeohQGO+alNqlOs1GN3sd5JB+grpra70N3NZrScMccSiP/4+33CUYV624z5j0b81UWYnPLgGDbeDHafHPpnnasdWWpqtdDLi/PfLc25QLLJ2epQCyOhHDw8pPgx/fnMlR0qiFvCaUsH9hiaO9wJ6q+kG1gOCW/YhYKE+qLbtXyI/yvx+udQ4wPO5Zv+qLFvnGSbzkas6UCseHFJecYJd/rq3r0qrcvrTZyRUBQuW6uMVPaD28oCCLRQTV305m7uA3wGUVOrWHayLoX+xPc9gu0Y6vLjb9Lj3NzXyraIRjBG1w8Wqou6eGDAlWBP7OPCwS6vySgbJt5XRulJC7Nvbsy0U0OWlhtbAsQO3YsnlGAGiMJBwJzXhRoTKlIo0hnn42QLGE9A5+mSVvf1xP2wkrQnL6r3Dfyu+qjNolnTvZl8j+Go2sf6W9NgYBPNK8dI1Qwm+hbkHoTprFkCwxQFujXc8YT7pIDWh3WJq0SEVG4U7BbAZPh8t1Zysef+h+AK5GTkjnw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(19092799006)(366016)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?08HqyORT5F7yQKAivoW4AanVk9mdfFfcrPbqJWqsYYl0LYX+VKwHOhdcyWB6?=
+ =?us-ascii?Q?ciYI8AclWEU4CduRf37a7FA16s2w7JJTyqCLz9Ac77zQtDGUuZr4MEKZrp7d?=
+ =?us-ascii?Q?y8Nn2G2rMS/x6n0T6LSHoqH9tOjsIqdUl8XEMF7/DPnKhD27uH+ZkwXHMy8V?=
+ =?us-ascii?Q?T11Rjvx1EWM56lF6TExWyvJONqwxqb1o+YkG09W7PmBJJ069lymK7qII2hHV?=
+ =?us-ascii?Q?k06XX97nnt3eYpep8uk3/I/H214s6X61Z2IBMA/pdF8OIdfFiOAEExKzKT2N?=
+ =?us-ascii?Q?O8w4XU+qj8R9BXg854fDty6wjEU4hsEZi6vaDJKSu0ThJUuflQXn9ThYRQWj?=
+ =?us-ascii?Q?2bTqytj0u7v9+eRJLuC0BfvPPT6yOO5+xENFkJU0h7/3nmtod0hL5MnugnZC?=
+ =?us-ascii?Q?2ZlEQkoyqn8uDQU3GRmXLBcgx7aze5Q69zuozwBy3JwgTKNYzG5gXzIwtrCM?=
+ =?us-ascii?Q?GgnVHE3I/zJn48cOsMmkM0c98S9Jr5qpS+9azrb4NH6FHeLil+RVvChPqJEU?=
+ =?us-ascii?Q?fRdJ6sxfFzRKCOR56TyrrjHXEnwc87D/PXADuuIOgkNc+ZiSGlQVtn8kj8/R?=
+ =?us-ascii?Q?gHRF3fUgjrYkZKLHQYmYc5QizyWU9npumiU6ywwVMoK/W/Csg+naYUEOUSHr?=
+ =?us-ascii?Q?H093CoVQwzFf6ZG5Po/SL17wn+J8V93PJQay9yYbYxJO1jPJVDSMsgi8/lje?=
+ =?us-ascii?Q?hEpRghFLUStFlIPy+igeHzVWM8mrksmMEzgC3MVgvqSsF2rH1QdaLEWWOEEE?=
+ =?us-ascii?Q?K2qNTBPckJg29GRI4vR9xIN9DOHD6RErFZx+M0AqBB1B8Q/63s2RZc84kXP3?=
+ =?us-ascii?Q?2JVLSKBuYQUgosyPc5vAKh2wYOUEbEG8uYHR81Gn9+3ys1y7bkJGtjv8nh3l?=
+ =?us-ascii?Q?4R4G+ENx7kQJJ1vAK1LLGCXgwBoNFwdw4nj4XH/S5EvRIqQfA0VCrqY2myat?=
+ =?us-ascii?Q?ERb+rzkwasNzUKV0yrr0bHfFZ2KFEvYiQwdY0zXan4KqU1RagiKyqjje+RlL?=
+ =?us-ascii?Q?KioanP9WtQfE2eFPs/ZjXiJu/YCqHgT8OmOLL4vq10CFKY/P5nSwN3tW/RDz?=
+ =?us-ascii?Q?8HFQbVCHrla1dSNkRPLWyw2pqxjzGH2HY3g8TxAFum8+nE7XzASkn6bwRvRr?=
+ =?us-ascii?Q?KRh3n1J3NrfwEQI6NNjsF/AQheh8BA/UWK3t4b9YvnyyIvpywY4hg0u1zeyj?=
+ =?us-ascii?Q?bFqAAN++iu9B6TvcWqnVrRSNojnHjXCDmNgkRq/rtKjcRdyLaeYxKR5w8TC9?=
+ =?us-ascii?Q?1XEDhgt+lFi7BCOCxft1xHl3fvbVjYSTyg08uREsT2NlAsA5q3dDD+tfBl5X?=
+ =?us-ascii?Q?5udbVsxDBdzgiAFXfHB8a/CMzgFDTmh9N7CCzU4GrcWESRbxAwPHup4YWNB2?=
+ =?us-ascii?Q?+AmOD9RqUAmLvIp/MFr0CUYDAO2LLIag+DPYwlN6ltkuOPrM3Qwh5ZzDuPy2?=
+ =?us-ascii?Q?8x0F3yx/Dr7JamRyihG8fp+/ABdz6mg7DCFhBmpRt7CeYH6RQ86aetPxYFw6?=
+ =?us-ascii?Q?pJ+2IgwespFDgGAmojSbYMSxIu4IZQw5fw7tVQt7GHLDLz9JVa2YYBwCPdza?=
+ =?us-ascii?Q?TXZJPSpHmjeLZkpeGcs4sJIbGh8rX7CzWGMM/U0FVaTd1x4DvMCM14yBnmKf?=
+ =?us-ascii?Q?tnDHemnznbsrSR+6k8rLTmwoZILOWkcf93Im5hwHnQH9L+u3lntGefri3W+M?=
+ =?us-ascii?Q?/v2PB6pE1XtbKF6zwHEM56T1BSgVwdhod/YTb8mC8h6Ur9WS2QVU1cmVEM+y?=
+ =?us-ascii?Q?z0MYrOnX5/bNpDKGGzlLTOwVGsCaAVtucpw6ZjNsScdzxNM/gUao?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ddb4c4a0-b383-4c29-b980-08ded77ebe09
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 14:40:49.0732
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8Yh/yuA9lC/goHs/c+5A5JP9VhQwEeYhVH8hQwKn6sVHIdRu5JsmJGGigfVT45fojUc6vamNd5DivtKK0GZyENHWtmRiCr4LkZViP14pKirSvw+SErfooeVwuRpfBQWJ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10710
 
-On Wed, Jul 01, 2026 at 08:16:13AM +0000, Clark Wang wrote:
-> > > In phy_probe(), genphy_c45_read_eee_abilities() is only called when a
-> > > driver uses phydrv->features. Drivers that implement .get_features are
-> > > responsible for reading the EEE abilities themselves.
-> > >
-> > > yt8521_get_features() does not do this, so phydev->supported_eee stays
-> > > empty for YT8521/YT8531S and "ethtool --show-eee" reports "EEE status:
-> > > not supported", even though the PHY has the standard EEE capability
-> > > registers.
-> > >
-> > > Call genphy_c45_read_eee_abilities() at the end of
-> > > yt8521_get_features() to populate supported_eee.
-> > >
-> > > Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521
-> > > gigabit ethernet phy")
-> > > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> > > ---
-> > >  drivers/net/phy/motorcomm.c | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > >
-> > > diff --git a/drivers/net/phy/motorcomm.c
-> > b/drivers/net/phy/motorcomm.c
-> > > index b49897500a59..46efa3406841 100644
-> > > --- a/drivers/net/phy/motorcomm.c
-> > > +++ b/drivers/net/phy/motorcomm.c
-> > > @@ -2439,6 +2439,9 @@ static int yt8521_get_features(struct phy_device
-> > *phydev)
-> > >  		/* add fiber's features to phydev->supported */
-> > >  		yt8521_prepare_fiber_features(phydev, phydev->supported);
-> > >  	}
-> > > +
-> > > +	genphy_c45_read_eee_abilities(phydev);
-> > 
-> > Don't you want to return error if genphy_c45_read_eee_abilities() fails?
-> 
-> EEE is an optional functionality, and the call in genphy_read_abilities() has the following comment. Therefore, I do not return its error here either.
-> "
-> 	/* This is optional functionality. If not supported, we may get an error
-> 	 * which should be ignored.
-> 	 */
-> "
+On Wed, Jun 10, 2026 at 10:39:11PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> Per errata[1]:
+> ERR050531: VPU_NOC power down handshake may hang during VC8000E/VPUMIX
+> power up/down cycling.
+> Description: VC8000E reset de-assertion edge and AXI clock may have a
+> timing issue.
+> Workaround: Set bit2 (vc8000e_clk_en) of BLK_CLK_EN_CSR to 0 to gate off
+> both AXI clock and VC8000E clock sent to VC8000E and AXI clock sent to
+> VPU_NOC m_v_2 interface during VC8000E power up(VC8000E reset is
+> de-asserted by HW)
+>
+> Add a bool variable is_errata_err050531 in
+> 'struct imx8m_blk_ctrl_domain_data' to represent whether the workaround
+> is needed. If is_errata_err050531 is true, first clear the clk before
+> powering up gpc, then enable the clk after powering up gpc.
+>
+> [1] https://www.nxp.com/webapp/Download?colCode=IMX8MP_1P33A
+>
+> Fixes: a1a5f15f7f6cb ("soc: imx: imx8m-blk-ctrl: add i.MX8MP VPU blk ctrl")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
 
-This conversation then raises the question, should this be a void
-function?
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-	Andrew
-
+>  drivers/pmdomain/imx/imx8m-blk-ctrl.c | 19 ++++++++++++++++++-
+>  1 file changed, 18 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> index e13a47eeed75..99d100e1d923 100644
+> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> @@ -54,6 +54,15 @@ struct imx8m_blk_ctrl_domain_data {
+>  	 * register.
+>  	 */
+>  	u32 mipi_phy_rst_mask;
+> +
+> +	/*
+> +	 * VC8000E reset de-assertion edge and AXI clock may have a timing issue.
+> +	 * Workaround: Set bit2 (vc8000e_clk_en) of BLK_CLK_EN_CSR to 0 to gate off
+> +	 * both AXI clock and VC8000E clock sent to VC8000E and AXI clock sent to
+> +	 * VPU_NOC m_v_2 interface during VC8000E power up(VC8000E reset is
+> +	 * de-asserted by HW)
+> +	 */
+> +	bool is_errata_err050531;
+>  };
+>
+>  #define DOMAIN_MAX_CLKS 4
+> @@ -108,7 +117,11 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+>  		dev_err(bc->dev, "failed to enable clocks\n");
+>  		goto bus_put;
+>  	}
+> -	regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
+> +
+> +	if (data->is_errata_err050531)
+> +		regmap_clear_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
+> +	else
+> +		regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
+>
+>  	/* power up upstream GPC domain */
+>  	ret = pm_runtime_get_sync(domain->power_dev);
+> @@ -117,6 +130,9 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+>  		goto clk_disable;
+>  	}
+>
+> +	if (data->is_errata_err050531)
+> +		regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
+> +
+>  	/* wait for reset to propagate */
+>  	udelay(5);
+>
+> @@ -511,6 +527,7 @@ static const struct imx8m_blk_ctrl_domain_data imx8mp_vpu_blk_ctl_domain_data[]
+>  		.clk_mask = BIT(2),
+>  		.path_names = (const char *[]){"vc8000e"},
+>  		.num_paths = 1,
+> +		.is_errata_err050531 = true,
+>  	},
+>  };
+>
+>
+> --
+> 2.51.0
+>
+>
