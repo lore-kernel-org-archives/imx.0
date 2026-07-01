@@ -1,67 +1,65 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011057.outbound.protection.outlook.com [52.101.65.57])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011034.outbound.protection.outlook.com [52.101.70.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D828D4ADDAB
-	for <imx@lists.linux.dev>; Wed,  1 Jul 2026 13:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D456342510
+	for <imx@lists.linux.dev>; Wed,  1 Jul 2026 14:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.34
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782911522; cv=fail; b=GknIn2lIiKXAkJZ7PiCJ2ap8pZKSicgNUN12js8HkKkcEnP/6qBBaXXcFeZvEHFGPLj00GFoCwhqcgokAcaOuGoTic0Nr38XmIfk0zeRjPC9f4CxRxcpCq1EXEX1wpJ8dPcInmfxrWMQ4X9gkXdGWgodnoE2EeCnI6K6Mwa9m4o=
+	t=1782916038; cv=fail; b=t5q1paIokGirnyF0FIzuBys362JDkl57ZkYs0++WpmO4hPVX439dVwPNgy5bUa69FOOQmMqRzv+4McCf2jyU7Tq6wCk30Atg1iz0CN9IwhdTgWtKNFG/AtX6XEOlOuwb9Msz3FmorPaBmSrIGh9Io3+eWNHRr+/AFv6twT8KxFY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782911522; c=relaxed/simple;
-	bh=ARHQYNV/beDBiBLhuRDBIgSY0fqSn3/jHE5PiceMicw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=td5ZzIe9noNGer3C17I9T/E43YmGwcfXfBMQBaUjQhnKsd3WDdT271F+JYjF2+UO5unyFVx9eufkijlfxJT+sEZdKuvveW4UIKulgQo5W1rz5NIv/p7Bn9/DEZi3uX26lGslnQQ59n2GQysF1OJw7Ub47gjvCdyfxn8yZZC2vo4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=H+w9lDR3; arc=fail smtp.client-ip=52.101.65.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1782916038; c=relaxed/simple;
+	bh=0Ah15O4lP0dswmFc++kM2cFcwrqgocsgs3ylygx23qo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Ihu1CeW8ZA3wKjeM16N/EbnfenvrMVwhtHLMVqtb+bzGTSz16w7LR1VjYp9bPqE/59T6Qr4slNUkUShp8FlpVxrcwAYADfLuplIoJuZJWSn33QzaXj1bdDxx1kFXB0Y19lHMv1Lf1fSFJKXd8zE2o1h8+wHCrIiVy98do4iZMHs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tQknxcJV; arc=fail smtp.client-ip=52.101.70.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="H+w9lDR3"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="tQknxcJV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L+hqTkjaBXwcJhNwLTgNA5DM5uQJUU5u2/OYjwvyWejoZv78krJg8vWeR028ptMB9IGu23272G1kzXbGwzO2tssn2kl+cna3AYQ8y2/SIpev8XlGnJjBY1sUdcVG+5iD3gRq0KPudwJT1n09yAKKW/GwVBBOKQcXTVs9HtVE89a+AXMI1L2nu5gchG5EOE6o1XGUo8G36J2sSXDNwgwhGTmqUifSIzVxg29OPZt1bTLrFSCqNHss6zyKC20NI7kuKeZfllKmidm+a2AONIjjcZJ23Q30pN8SprXKJEQfA2wwhEPU32XpAQLF0yr1s4WzTeFNMYxYtXGEYSC6aIPSHQ==
+ b=nI0kTsAo7PI94iHLFSuwwhk9Oyw2AKRRTxViI3cOpsvXWjFaQXkAl6gD1JVmd1mZfqM+lAg0irLA3IPjNsYOPLXhE7yiDKcv8gmZMvG+5K5o/uae1I7FWCfkMsq9rkVgASuBwNsdVebzpXZt2JQQ3Qmdzu0IzjjmCBneuqJ+Ygbf5yyeCIL1Nrjzi1uRydkbA2otAojhjDLRbmbuTFtIMuxXe/XU5g/+FAc4RNqjJlK7fJb2QbX1tElJQa2OVhnNXO98Rq0ti5ztnGC2Lals9FyWjX7hoEVyV8Wp+TpPXw7Bkogkid702x0WtfgJ+oV3LrFItTF4NuviQQUH4akwIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LbLmQuH9gq03OUO7pge7522NOqSCrHOmz1rqFrvSapw=;
- b=URJHGPelc6yG8XHKJSjDquK5yKKtdxMzP+Lj6EeQGPaq6l/QU4GiGhv/UWm+jZDWJNGWnqv/trlwnJY7pF4Gr8oDjyDcEvSGnJkO33H65EIcGAadB/Tl52wtnGpc4h+/8pQALdwXmicoRWHwCvGx0LQRGM7iutXQDjkLpAP+UD4g++PCjekdXPx7Ieyr01UGoRZ7w1TNquM79MTaXiIAF4S8iJou0EzdgJ7JC2eOoc12rCtRvAgDa81Rys8GSY4FMMuDHPgS8qbsL3S73z8tivFbePQDER53fm1WSWSQ0hP1aTC5jm6yzjD35c+5aTcjrNKVMPBh/QmDFOeiVImvUA==
+ bh=l9KLtpA1OYRz5CRbdM5Z97ti/AlXd/L0OITQB0Tauqw=;
+ b=m/juC6pqRfE1GTwfutOxq6xRbM5uFg4wxQy688dqiu2WpkfZK+pBns9GrC5wFrTvuN/B4EY+UgFw55Hg2jUvWusAs01STzAeXeYW94iNG4dtxoPFMDL/dr1B1SRy1IkH/CLns9VTCjfxzqpTVq/UMGrcO5Ix9osolkb8dzeT3IqxJJuHki+TnUODBzUIH8mgMJmpL2n/QQAr/vj8eXe5fj5nuOO3GcdiKUd4Cl87K7eVHUOxZCKVQ0MsUmV1afT8dBVBgKNuwU/U9man57qiLhSjx+8YZBeu8oc5WeBcmZabDJ/uT4v6eMNO8J+nvm0LkQXncBqkLJKO6TM2oLP2VQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LbLmQuH9gq03OUO7pge7522NOqSCrHOmz1rqFrvSapw=;
- b=H+w9lDR3AN3UbyuAQ9fs3ff5sHdkhQ1DFnYqYKZpzfDfeom0jvOW6PG4shMlkMv8g8m4kMyFu/c3kkhFCCBatXPEgE37d3qUqeFMCqHUDIzIn2KQqvsJy2yAYHatvPKeyoPgAgmDKb4ZDICvmEF+LrrLaClVmcSWs2gguBgs8ZlLuW/jIBkOYyPed0jfc2xOttz59Uv4Txm3uHwkWr+8q38OHo5D4AaMduHJaOk0dvM6wp8ERYGL2ekDP+5TJYRtu0hlJoBMJdDC1ZHEHCextKON044xEtkQTrqbf2GW05yBzi/zNrCXkwscuHIei+3M9TvKHAnj++3NMqzvsMgPdw==
+ bh=l9KLtpA1OYRz5CRbdM5Z97ti/AlXd/L0OITQB0Tauqw=;
+ b=tQknxcJVfLku9C6SJbcaxwQa2Rw0+VmjGdTGHt/P//MGyekTphelWjhd8oU6/FEzqzxE5psFldNkaPmd0Ij47dgMmNmW10ul4Zdmejo0KwN64Sqvp1GnrLd0ysqwmvh1W76Bi7TnQdZ/rbYyKcJti3R1Hg5wR6vFJ8Dpbrl8eCy/bfI+uVCkw+qTcM/201SblBYYAJGIFR1s775C/93Gz2IgeCVO5RpNBTTP5i1YrJaNHWTP7JXDplNd6eglEwulpSFbGQp0DPzXdI+h/TJaQehm+Yz6c6VdH7oSU3RI0kFM5jCTO+gcSZtCv+s24KEDTG5ZXODsOVm8At/cLjjvTg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13) by AM9PR04MB7569.eurprd04.prod.outlook.com
- (2603:10a6:20b:2d8::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
- 13:11:57 +0000
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd%6]) with mapi id 15.21.0159.018; Wed, 1 Jul 2026
- 13:11:57 +0000
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: Frank.Li@nxp.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org
-Cc: vladimir.oltean@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v2 5/5] arm64: dts: ls1088a: describe the Lynx 10G SerDes blocks
-Date: Wed,  1 Jul 2026 16:11:37 +0300
-Message-Id: <20260701131137.940145-6-ioana.ciornei@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260701131137.940145-1-ioana.ciornei@nxp.com>
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AMDPR04MB11649.eurprd04.prod.outlook.com (2603:10a6:20b:71d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Wed, 1 Jul
+ 2026 14:27:13 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 1 Jul 2026
+ 14:27:13 +0000
+Date: Wed, 1 Jul 2026 09:27:03 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc: Frank.Li@nxp.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, devicetree@vger.kernel.org,
+	vladimir.oltean@nxp.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/5] arm64: dts: lx2160a: transition to
+ device-specific SerDes compatible strings
+Message-ID: <akUjt5OPiO5cJ1D9@SMW015318>
 References: <20260701131137.940145-1-ioana.ciornei@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM9P192CA0023.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:21d::28) To GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13)
+ <20260701131137.940145-2-ioana.ciornei@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701131137.940145-2-ioana.ciornei@nxp.com>
+X-ClientProxiedBy: SJ2P220CA0009.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5da::8) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,141 +67,177 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|AM9PR04MB7569:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed26562f-3440-4a7a-8a53-08ded772547f
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AMDPR04MB11649:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1316cc75-585b-4ebf-4a10-08ded77cd808
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|19092799006|1800799024|366016|18002099003|22082099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|366016|376014|19092799006|1800799024|23010399003|18002099003|22082099003|4143699003|56012099006|11063799006|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	Cs/Wf4TqCKpsjB+40NJY9c/JEkAeXfe/vGzmLvnvMIZH2TpP5rFOUEBteW2wXXW2Myw3h6QmOx33hxsf9RzxG3j1BDeiGTURT+tdd2huOl8Y0ABMDi/zVBgxIIjfz/BFyX4yUwgjDYJ52LVxJ4IeUx9mtK57CJB0RM8ygrMufhyPA8hMTckJ+hPryy7pJTgeobL48khlJEKCdZtyJVBo2RgUw56ay6CoDalzbViRJRwya1jV0aaDm6v3uSND2xIoD6I7zEJwIisFhuYo50002sZ7c9HKhtBWRNCjz3h6MqT//ywLHNl9nTZrJf6KhQNp3SFu8FBkV1T2aTyBydULGx9NcY7q3YB+R5bwPtr65+gDUACkxv28VxW50+k2zc3MOA1KQSZfKXa6yRrOMgFr+Vj+hOgwGgD+gCWxZ9/NAs+eW9IByF/d1MrbFeYh5MR0Y5NLRJ8wRcU/pfcfqOqC/6mCRumWj0vXr3UyTF59vbfAuKaIISXIgI/RLpLJ7xMr6oc43eXThevdKKulx73N06ZbOfVAkGJ7D0OPwzrndVDDoIumjLOS/c2lsjxyIJAmOpaSLsmjSOyckp4S12TXt05wxEw5xHbgVrZpifS6PuAfPOoPvVoLsYniA5zl2xgb208VYksFXzJBxGGDudg1XSXlVnnN/FLktPZQppHmDJw=
+	gs4b78QEaTDoWy/tKjOgzrfbU3JUYCTvP2bTQziGgFrksbhQGeRvlLSVzI24qSv1cVCo0+iF6jTNFtNhzOeZ0mbaFfiUTeHIssVa3rMb5s9fCMGlWKGC4U6rLn049cl1CbEE1lWEAJCtj8VJhvh9E8atvWnq3D1qo1nMPdhHQ16phWHE7dCmRCY7emLCcgbW/xMMG9Ed0hn/CJUVz/U0wLlykgRDCDWTXP+ROq2YVF4abtN7yP6D1UCBoqH7hVJz/IoYHWtp54jdbfa8agbeDv0fDzsAsliG3IeVp2IjELlz7WMSV50YOY6grFQUpNfyAzOKotXqRGgcMqqH9QgwCU5JYeQwDjOJj56TkWBiaMvEZAYMpDv2KgXinPAHo1CLXKMqa7anEV8Dz25e2qwZLoejX17id8OOrUTcGdjdd3m39cDysj9m7N7Ha5g75wKpubFw/uCJ6M+y4VCgoPy+90vrO3pZVATNF2HMjPiYC2qhBXU6yyGqelT+jDhbNKtz1EqhYVm0kVnI5y2Qg1P5QCulq3J1XI/OCyAZD6QDqAEvJXQ4ec02NfUJfbV4nE6da5ikw1T2wW4/0DVDB08aEnWT+WWAZx41lp4DbH3FxaMmAwy4bKaLmlORdqKYVFwkValdzvy76rKW8aeOLbze32BYzTdgZa30ZBgLnfmjTz8=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(19092799006)(1800799024)(366016)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(1800799024)(23010399003)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vFHsjznF2zjthOW39csana7lzCDhmGLrOFi/01d7RjOCnbGAk3rby9c+vIj+?=
- =?us-ascii?Q?7EaoPJqUh9WdKV6z7jXyiJdBVBqM62WMhBn/Ll97cYZzgNcdYOe9eG4FPMbW?=
- =?us-ascii?Q?wTDMxGWoGvfvx8nkT92tSPxk4zk0udv/qNfYHepA2tCiM+w/2/xoAtbH2MYN?=
- =?us-ascii?Q?4nRntAKQnmeDJZfAvEoy1FrIL3hreVDAKK3Beu/Xo4S1zQCfCKYPgSfKY9+F?=
- =?us-ascii?Q?ERacJ8U0fEnmGKPP/Hzkg8c4TRbOosCmFgl6rWr2TCYnTlHHHbx6STQg23L8?=
- =?us-ascii?Q?4QrpVNrYn7MZVKbQXzKpQnUiSEa8S0Qd6GTQHtl2coHTVaLpPLrtjRatEku7?=
- =?us-ascii?Q?WzoCsCH1Vv/vSWRiGXITf/XQkqTYVuViNYA6QkYpTwEXASvJ7Btbs9cvqfqb?=
- =?us-ascii?Q?nN8hXVtOxllEPQ6XZPNK1yd+/BfvKuofZQImy5cgy14MQ/OivTTlMuRl471r?=
- =?us-ascii?Q?5F10xituJe/AaadLWH/MfskrPDYMmHYtma0fIBGG/wgIGaMBW+4aZWCfUafw?=
- =?us-ascii?Q?igNVMydrFWDGwN8YippwBy9w7bYkNBymh1GM0Qk1fLHrNURGBRXmSmHGq1u0?=
- =?us-ascii?Q?qiGUysOPRI25Mv/VtLiCHEqHlqd8fbakTV0cxheWCoWgalLKGyYVpE1HEsqa?=
- =?us-ascii?Q?WwPFjsNtLI5aYouZ7k+xEEVWGalG9Yyz/iJjjvLunUeNqHwVjiHYlN6a8MMQ?=
- =?us-ascii?Q?hnwmgtEHW6CZ8OKiCD1XVW123cepab31gF7uoCvJF90lqAgIGwhEKhx3+Wkz?=
- =?us-ascii?Q?PdvHciBB3xUNCpamHcLXKya4hG01KkZ/PiE5VtDhXopRwCzXKh/4OqV80Wpo?=
- =?us-ascii?Q?AxgSb2x1yF/yXiHi0L1+ocVcE8WsPUrQDJnfpn46OAfAuTdfG8IersBJSJhk?=
- =?us-ascii?Q?cdxAnJwNq5pik9triMEFEGluFzRTXsel3unbWPaAXEp5uCDemgH8QhO9HupS?=
- =?us-ascii?Q?k5bwv7dXvk/EO6iM81j7+xMF8SPq2uvyacHI2L7E+ChubV5eHksXF7JzP7TE?=
- =?us-ascii?Q?TXM/E5X95T2GEZVLyJla4x99voM/zBxgRWS8C4ZcKLCgvu3glOEJKTbZwAAh?=
- =?us-ascii?Q?v4oO8PvhHprwL+iymXCi6civE0pc8oqTq9a/eQ1/JpNOHj88UmKtJOEeuoeF?=
- =?us-ascii?Q?APFWTsuWNk3NgahPznBy6eHhKvpOtGww/37imshY3hsfsUkzmWBfpR1n80vM?=
- =?us-ascii?Q?2JA2quZ9wkSTKEi46cnrcsf1LFqHiLSUfkZCOHiCNs6PuvoTPrra5le4aiSy?=
- =?us-ascii?Q?GufWq2/hfGWft3wx5BRQdRWsa6+ndrYaZLq7XF4fPycgDIqmhdi7YtqtFR6H?=
- =?us-ascii?Q?CzfDbYsOHAVv7gj4dgRAsIBVm+4c8J2iueSGEaUQjiMFZ7aGuJ8Y2Q7lIDtT?=
- =?us-ascii?Q?LmkQa/xpMz65HAzCv7Glyq7ruAh+I7iwXvnvK5zjceAk7X8jZCWoiwY41Vl+?=
- =?us-ascii?Q?GbuQSL7BkS0X6/uR8gUyyaqQT4Q9H5+Casj4s6uNB+E2UOXiGgSqlVrS5cFU?=
- =?us-ascii?Q?UvGjE8MEzkPeanR84wCpQ5bnr+92/17MiK8XQdEtAUi6rvL/tBYJd8ywtO6r?=
- =?us-ascii?Q?eAKJYJyu4dKNVR1z0Sxqn80uHrjWWGHyXyYepA07PT5tDPuPgWftMPo1b8Dk?=
- =?us-ascii?Q?ngvDl3Z0N4N1LuirGe+6WTBw7THeKCjOQ4XMu7fE2eEgx50gHzf4JnyK9+d+?=
- =?us-ascii?Q?mo9o3g2dDM+q4Ko8PnT2l6/1hfLI3g9Y2ZaRnDyCWTjIKizj0BJJ2TiEY2RC?=
- =?us-ascii?Q?EnFPJ9IfMw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed26562f-3440-4a7a-8a53-08ded772547f
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
+	=?us-ascii?Q?BFEnqUy281VSEF1kJIJ/fKBZCvu117ZNgdkdJgT7k3pYq6k02hq6BxofsX6G?=
+ =?us-ascii?Q?Bwi8PI1zOz5Zdr6Se2NxFNEPdkY5sy0Kd2TX7UtYn2+v+s6PETCGu2+2fbTA?=
+ =?us-ascii?Q?r+3YKzQ85PPQmgbberbjUgIYkg+TyJHlVDkEiQxrOlDTnq2Es06F6jFpph/M?=
+ =?us-ascii?Q?9/npjDgxotVneoLkR7AgQ4NTB6U8cmGDFDD/J7/N/FGrY4qWXrzxWVCn52i0?=
+ =?us-ascii?Q?jVRfhi4FzG60jO1FvWxjIyx/HhBhtLiKHW2JqfhXdJw2obFJUxmF6glfHCyl?=
+ =?us-ascii?Q?jkfIestAexQH48hVJwof2tZAP6s641Qdtefsg2qvgqWkm2kumo2LIgCQb9qc?=
+ =?us-ascii?Q?eHpvTd52LOA3+BmgnT56ZPSdOWPSntfcZ0vJFQLIj5SW1J5touoWfQEo1x0P?=
+ =?us-ascii?Q?c/sLtfHvmjDEYjvw1/xyiUSfs03krU1eE/frUG8wq5cIxr7W3bg3/+PVJIHg?=
+ =?us-ascii?Q?chHSJjIKIPd8A7eKIz8t23+bZGYUwqG3Mah3KJDA08JzyDTMdB3MbyAeVIf9?=
+ =?us-ascii?Q?xbtC48spe2bIiNF8XTHUESl+ejd6PgJD43aoYWGMp58RXoI4e1ckOTwhIK4v?=
+ =?us-ascii?Q?KFm5yqXPZfwr2D2220ViSvDsdIxzyDTRevmebdX47A0/vW6+0hynZ7zPz/7a?=
+ =?us-ascii?Q?DsxmXQJJfhGaYz+PVdGk/9DIQlokbFwqk3Q9bRAc1B3bJ2q4ilDm8pGsXyrr?=
+ =?us-ascii?Q?/twRp+puMpEyt2P2jig9VAWqWgpkskNpSugMpDctchZ4NMyj1gmwOPa+M16B?=
+ =?us-ascii?Q?jpQZ8K2hE6SioBgi9jao/rGAIdbqwp7zZhv7aZhjEvt4ElMvEviX3u6ODjE4?=
+ =?us-ascii?Q?mFRvLhdzN7E4VTMYHoNBs2Vy5q91MbdHEp2R986wwILx0/HkE/r9w8kB2Jdh?=
+ =?us-ascii?Q?4YdFojTxFDP0y6aOkT7NWYSvDuUBhMVyBlvl/OPxFBr8bh925IuvoJBVEmVI?=
+ =?us-ascii?Q?6804EE2RBpJobKd8UvCa1ZtZh7tcNP5i6GULrrsOQVZelbcuLW9qVIKb+rEb?=
+ =?us-ascii?Q?CcPPe8u5lWDX8or7bsTtIR7n/3GtpzsJU/BaHJKU40Ufxlh5CagJs3OxJyrf?=
+ =?us-ascii?Q?PkRB96FztqgSXKyd0RdoTHF85Ehq9um3tqymZHuPw76/9f0sJ4KPU42J90+c?=
+ =?us-ascii?Q?GVPyUg67njiXFHKMX87a+iNaDk1BTXHjpvZhSq2SoMbi6NjWcqn7uH/SxMrq?=
+ =?us-ascii?Q?BDQdkMWgnzn0EQ2yjSS2i5mu1WAJJDpPrXDLOztZKsIjHAnV6+RQwySTsslK?=
+ =?us-ascii?Q?iy8a089urMlPjoF1Nb8XjWe4eEuk04FPwbXyF1K4/9bxjZyevbp+hweXvkeY?=
+ =?us-ascii?Q?jV/SWyOY8hbIRxZI0DXVUwIW0o+5xolqRIYM5MCwPYPoQixS+3TWaAoOvmHM?=
+ =?us-ascii?Q?6M399//nZaza6rj5a0JM7cVO0+RPZkg2SSZNPI8x/rGvL5SJDUhvHNdShlI6?=
+ =?us-ascii?Q?h0uV20y8y+f6DjCuAECOk7yfVXT2TscEZOGx8azaNzS8v7EOtoc5CxbqluJQ?=
+ =?us-ascii?Q?nAnDRQiJu7C1w1ixbO+C25Cez5uNj43RAm9H9xp+71/YeEyrtbgE7cQeWngf?=
+ =?us-ascii?Q?9/0a6FjFr7c3E476wobFWm4tpJM64LZ0s09Uauo/vy6VlMJU0UY0RGDwCGHP?=
+ =?us-ascii?Q?lb6KUTGSbZ/OoqWxffsa/yl0E1t8nU0B/21dAJ+sGBLe8+OTw651LJzx2uE7?=
+ =?us-ascii?Q?UkrbJTfEAKfZFPBYpQ1AkfDIsPh6SJ6+sv9+MMQYhhmZq12uGqdTQlO/cWLM?=
+ =?us-ascii?Q?/JXIucODH3F+aYXOhuBHSoqWzr0yyFK3RGrOaSt8dmyVsfdJeyzu?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1316cc75-585b-4ebf-4a10-08ded77cd808
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 13:11:57.7979
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 14:27:13.6856
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T8EWs4Y2jIxKbFokMApPNllb/M0WFnuDTknVp02g/fImDKELOdxUdyKezn0qne8AMrUEKWznTcHV6wQNhpggAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7569
+X-MS-Exchange-CrossTenant-UserPrincipalName: BcJbCjHgxnebN7bJCG04UtoLoyqLMvwvUQLQimrrLv6XsMbKD5VUMW1ypiC1EaTIoBzyy27MknKQsJWA5g9TgGFtXZ4HtrmwJw/5o9mBZJ2Bh4Cc/R7HJlxsYEBaRN2w
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR04MB11649
 
-Describe the two Lynx 10G SerDes blocks and their associated lanes found
-on the LS1088A SoC. The nodes are left disabled at the SoC level; board
-DTs will enable them once there are consumers.
+On Wed, Jul 01, 2026 at 04:11:33PM +0300, Ioana Ciornei wrote:
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+>
+> Align to the modern fsl,lynx-28g.yaml binding, where the SoC and SerDes
+> instance is present in the compatible string, to allow reliable per-lane
+> capability detection and per-lane customization of electrical properties.
+>
+> The modern bindings are backward-incompatible with old kernels, due
+> to the consumer phandles being either in one form or in another, as
+> explained here:
+> https://lore.kernel.org/lkml/20250930140735.mvo3jii7wgmzh2bs@skbuf/
+>
+> One of the major differences between the LX2160A and LX2162A is the
+> SerDes. So far, LX2162A has used fsl-lx2160a-rev2.dtsi, but we need to
+> split that up even further, and derive a fsl-lx2162a.dtsi which
+> overrides the SerDes properties.
+>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+> ---
+> Changes in v2:
+> - Enable serdes_1 on all board DTs that has consumers for it.
+> - Use the proper name for serdes_3 in fsl-lx2162a.dtsi.
+> - Remove paragraph from commit message which mentioned some consumer
+> changes that are no longer needed nor part of the commit.
+> ---
+>  .../freescale/fsl-lx2160a-clearfog-itx.dtsi   |   4 +
+>  .../dts/freescale/fsl-lx2160a-half-twins.dts  |   4 +
+>  .../boot/dts/freescale/fsl-lx2160a-rdb.dts    |   4 +
+>  .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 150 +++++++++++++++++-
+>  .../dts/freescale/fsl-lx2162a-clearfog.dts    |   6 +-
+>  .../boot/dts/freescale/fsl-lx2162a-qds.dts    |   2 +-
+>  .../arm64/boot/dts/freescale/fsl-lx2162a.dtsi |  24 +++
+>  7 files changed, 190 insertions(+), 4 deletions(-)
+>  create mode 100644 arch/arm64/boot/dts/freescale/fsl-lx2162a.dtsi
+>
+...
+>
+> +&serdes_1 {
+> +       status = "okay";
+> +};
+> +
 
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
----
-Changes in v2:
-- Change the size of the region to 0x2000
----
- .../arm64/boot/dts/freescale/fsl-ls1088a.dtsi | 58 +++++++++++++++++++
- 1 file changed, 58 insertions(+)
+Can you try keep alphabet order? may old file is not ordersed, but try
+best, at least should before &uart0
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-index 99016768b73f..e02f34329988 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-@@ -239,6 +239,64 @@ reset: syscon@1e60000 {
- 			reg = <0x0 0x1e60000 0x0 0x10000>;
- 		};
- 
-+		serdes1: phy@1ea0000 {
-+			compatible = "fsl,ls1088a-serdes1";
-+			reg = <0x00 0x1ea0000 0x0 0x2000>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#phy-cells = <1>;
-+			status = "disabled";
-+
-+			serdes1_lane_a: phy@0 {
-+				reg = <0>;
-+				#phy-cells = <0>;
-+			};
-+
-+			serdes1_lane_b: phy@1 {
-+				reg = <1>;
-+				#phy-cells = <0>;
-+			};
-+
-+			serdes1_lane_c: phy@2 {
-+				reg = <2>;
-+				#phy-cells = <0>;
-+			};
-+
-+			serdes1_lane_d: phy@3 {
-+				reg = <3>;
-+				#phy-cells = <0>;
-+			};
-+		};
-+
-+		serdes2: phy@1eb0000 {
-+			compatible = "fsl,ls1088a-serdes2";
-+			reg = <0x00 0x1eb0000 0x0 0x2000>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#phy-cells = <1>;
-+			status = "disabled";
-+
-+			serdes2_lane_a: phy@0 {
-+				reg = <0>;
-+				#phy-cells = <0>;
-+			};
-+
-+			serdes2_lane_b: phy@1 {
-+				reg = <1>;
-+				#phy-cells = <0>;
-+			};
-+
-+			serdes2_lane_c: phy@2 {
-+				reg = <2>;
-+				#phy-cells = <0>;
-+			};
-+
-+			serdes2_lane_d: phy@3 {
-+				reg = <3>;
-+				#phy-cells = <0>;
-+			};
-+		};
-+
- 		isc: syscon@1f70000 {
- 			compatible = "fsl,ls1088a-isc", "syscon";
- 			reg = <0x0 0x1f70000 0x0 0x10000>;
--- 
-2.25.1
+>  &uart1 {
+>         status = "okay";
+>  };
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+> index 1d73abffa6b7..a687eb3e3190 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
 
+Please split chips dtsi and boards dts to two patch.
+
+> @@ -621,17 +621,163 @@ soc: soc {
+>                 ranges;
+>                 dma-ranges = <0x0 0x0 0x0 0x0 0x10000 0x00000000>;
+>
+> +               /* Note on the interpretation of SerDes lane numbering from
+> +                * LX2160ARM lane mappings for RCW[SRDS_PRTCL_S1]:
+> +                * The letters (A-H) correspond to logical lane numbers in the
+> +                * SerDes register map (lane A's registers start with LNAGCR0),
+> +                * while the numbers (0-7) correspond to physical lanes as
+> +                * routed to pins.  SerDes block #1 is flipped in the LX2160A
+> +                * floorplan (logical lane A goes to physical lane 7's pins),
+> +                * while SerDes blocks #2 and #3 are not.  The lanes below are
+> +                * listed right to left when looking at that table.
+> +                * Both the numbers and the letters are according to the logical
+> +                * numbering scheme, and do not account for the flipping.
+> +                */
+...
+> +                       compatible = "fsl,lx2160a-serdes3";
+> +                       reg = <0x0 0x1ec0000 0x0 0x1e30>;
+> +                       #address-cells = <1>;
+> +                       #size-cells = <0>;
+> +                       status = "disabled";
+
+status should be last property
+
+> +                       #phy-cells = <1>;
+> +
+> +                       serdes_3_lane_a: phy@0 {
+> +                               reg = <0>;
+> +                               #phy-cells = <0>;
+> +                       };
+> +
+...
+> +
+> +#include "fsl-lx2160a-rev2.dtsi"
+> +
+> +&serdes_1 {
+> +       compatible = "fsl,lx2162a-serdes1", "fsl,lynx-28g";
+> +
+> +       /delete-node/ phy@0;
+> +       /delete-node/ phy@1;
+> +       /delete-node/ phy@2;
+> +       /delete-node/ phy@3;
+
+Now, do not perfer delete-node. if ver2 is not include phy@0, ...
+
+create ver2 files, let ver2 include it. Now most people like A + B, not
+A - B.
+
+Frank
+
+> +};
+> +
+> +&serdes_2 {
+> +       compatible = "fsl,lx2162a-serdes2", "fsl,lynx-28g";
+> +};
+> +
+> +&soc {
+> +       /delete-node/ phy@1ec0000;
+> +};
+> --
+> 2.25.1
+>
+>
