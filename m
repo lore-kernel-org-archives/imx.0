@@ -1,178 +1,143 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011026.outbound.protection.outlook.com [52.101.70.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D606740E8FA
-	for <imx@lists.linux.dev>; Wed,  1 Jul 2026 10:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782900271; cv=fail; b=eXwO6s8J/Ci91nNIcSHFM6cMHv0k+lhKLdoYGL07d39Ezw9yuX6/+xZ/0q80eO6GGMyC89Im7aWAM/cOf8iZlnie9XMGvNGl9B0Q3A300ZUcxAAZhRlLoj8kBxh9Bd0AkioQWWoz+0WdeN/oQTpZVOQczmzAAyoPijkp8pX5i5E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782900271; c=relaxed/simple;
-	bh=S+WuRZOv0VFMsXM/uQBuQRHSA5xdheW5Pn91V/D9veE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=hkmhV6vW0hzBvkxAv818ai1NWipRh1KPa43zsmaLNK8zjtGSh+fdy3nBZkuskzBECQr0yH/QVGxJ0siGZwyHbO+sKiYZCSJ4Kkvwpg8g3iKXG0Axw0xdq2tjFOAbbMLAUjQ8rrQT21rx32YEKjD+y1UoBMgFD0QAxXbgWakesjs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=szhkFR76; arc=fail smtp.client-ip=52.101.70.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5623C060E
+	for <imx@lists.linux.dev>; Wed,  1 Jul 2026 10:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782900364; cv=none; b=ir1dUqnK5jq+hFTSXtHG9d7vNg35gpjY+XUgz8h8NXPzJquT7wfRvZCM+Qyx+YWUXyk30hHbrsgHsiyimmF7hYZX/y8zDqqkhi38i7STaSmUwNgvO0if8ysXl2YZ9tOWpEld4bxzlhJtRnn7N/FE8A05i4pWNEzx1igDt9VrqZM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782900364; c=relaxed/simple;
+	bh=OMgFl3mgRw7oi7ee7+ffpJeMPc/deSBSwkR2KYQda/0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XgINcbJm31GFhjA383hUG0yAhPmB2rcOFhVqtgpCXKvEimyCtaRIVn3FKs4iS8IaM2vTHJJKoM+uQeOnOq5vfIgNOidyGztdVWURWJdkCYFW9HcCOCnPjcdLfmtt9LIpxul+XDDsxvpAY7659sPuunFwiJ5SP8wfKO0G51nI4Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eq8pBJNe; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="szhkFR76"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VuU+sAqSudYMsMu7odeSEG1zJuFrkUIyX2buVVtSEzWKqQwETlaWi4BYvOh3TTCAb+BwKfzCj8NT578Gh5JLaA037N2L31z8RZSA8dnKPiKnACBWpvrY+sTyeIHWSgS3deI9lIMElys2WsYFhE/bIgsabL2nkV8QO7opCSEOxCFtsGTDH5vwdr5WHgQhnov9c+mve8D2YiOavkgoxHFraGgiOo+i+2Dkhji9ITpgmZTq5z/9l8z/O6cy2vgbMzpB4k2eqW/t/6tf0DoV6XqOAajqoBtSBvyPPrQ+sMNmVObDjJemnBnHPHZIgu+3v/2iDnfrEnEhABRI1pDDMERhhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Qpi0yLvFHq1L5fy+jThaEg9BGKUbcOGn7QXIotOHLsw=;
- b=be/+k9WsisFGQOHjo0K5Kt02WeVvFW2o3Lg1FIVlhaVdB0EQ842JF2GJMRSTVBzsZxhd+IcwYJEZd2U8/U++xaUM1VYighj69VCamX9O0nW8Uvo9+sXtRUHkx6rJlKRL/FbFhYK37Nn5AwaL4DmSLS2ypOfrWaH+E5JWUf5JrfFk1qh/sZEcOgURLBu/uYwwa9vx6Sb3MQa57z2qvCNPjfX2F1jrCUU0+Lqg96LBo7YjzqMe23/tzlcvqqCLiMCcTfYmzPV2YhS9Vhms1DCyO088OcDGjOk89exBc9yILRpZwrIs2F0xhk7mP6EtQ0gosvX5unY06MnAxnP8qWpR/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qpi0yLvFHq1L5fy+jThaEg9BGKUbcOGn7QXIotOHLsw=;
- b=szhkFR76X2k277KE4xvqCRubaT0WssjezRl3jv6pxqzHYMGWWuQdVhShoVjxoCuZXRInhbXIWZFGbpralMInTiVQOmmntmsBBSZLpyaVm7jgLE/Ystjg4I8zd9PjSaSS+GwPMxre88/HXsy6hXnN3H/E0zqqjRqXI7UNmDbM1B74sD01K1woedliD6ATUPeS4O47TGjG9a23cWDYPNnYw+RezdBpmnK99UKFANDCaK/cE9XW7g4ig7IPO96XhVNf4/asGIF7apc9devwxv+SKpmQpldZ1T/aqRb+PmO2WszFtqLXTuYcrS698M9pQeE/07ywiSN55MK82bGjJHigTw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
- by AS8PR04MB7557.eurprd04.prod.outlook.com (2603:10a6:20b:294::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
- 10:04:26 +0000
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9%3]) with mapi id 15.21.0139.009; Wed, 1 Jul 2026
- 10:04:26 +0000
-Date: Wed, 1 Jul 2026 18:07:50 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eq8pBJNe"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47488efcf30so261159f8f.3
+        for <imx@lists.linux.dev>; Wed, 01 Jul 2026 03:06:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782900362; x=1783505162; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IK0eBtS7c0+Md+AQXziX/hdIdbv0oXutseltgb0KCfI=;
+        b=eq8pBJNeEqx7/MgwEUZbz/S/7M/496SR2+sksOuiL0nASZPF93+10LfTs4wV8gHk5d
+         2uc5qIsmKNDxg1SJoEZH4TCaVFn5jsqN5RVNhUWk1tqBZ0HxyOrbwUWt32RYHJnGBV52
+         mUnNNOcZVbORrz/dcIgFHkMtfXRlwxoUSdyJPqgYoTo9xhoUbCe9nPDyFUk7Be9Vr6CH
+         n5CBSkqqW5XcZJSAUw27xJacxNjX1hsiNBMK3UUgK9McnJD5pSffsXrgRkIOd5D2zBOq
+         mfSvnuW4niPsF6OEtNB7uRkJZ6zPYF02lzSyREBSQgAQNMT7SlLGKdhVGoS6N7PDoB8T
+         G2rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782900362; x=1783505162;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IK0eBtS7c0+Md+AQXziX/hdIdbv0oXutseltgb0KCfI=;
+        b=Pz9pV+4fTgHwa7VbTnSgu4FKbpReN0JaMjcCdNYgIUGKqsoJ3i4ZCjsZOPv4vx3x2Z
+         8fW89CImOYJX4maq+O35AxCgHWKKFuU8Ac4YOpLfYqU3QZiH3av/slpo3eSVQUHFS3dP
+         CPIINzfCjuwOH31tj4pBnY4CUIjmKh7M8DizpwD5MbsPPePxk61mEU4hGDy+pCO0KQ5y
+         qChF+4qW7Hcr66vTx7nC7DdSKcMCUxhymf7rWh2nk2ymCxI5p3Z50L/cuo+LDV3eS6SS
+         vDtLkJlDmgZrgdobtwehSpe0w5lGu9YWsPaWSiwnJnFTyjhp8Zo51rzxTMy13veDubBx
+         XbWQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrwTc5tpQv+faQEt9x1k+Ua0zU6XheljbNA4+O76gJdPr5uK0DlNPSyr8OdogK3yVbd9HI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyCfkOLTgSJlndkVnQTvYpfKGQUi5M0yipbA97ja7DUQqy+hTSP
+	Y1QauCLEZFHFZiuFqAEoFvDUm8sBCiNqVTycL3auYDb+8zz7qik8MMbAABYEIN8B
+X-Gm-Gg: AfdE7clfzWqzIeJp7HmdbfBfn4h26M+j1GorC0Wa5xpfCMR+wcVJxWrtT8swZPEFtQe
+	9XihraJTXxLVUaOuDtJZzRm2+NLp5rKz8VGMVzWUVgSv538JP0dUHno9jsbdlX48L9BpO9Q8vAr
+	kuNicKC5XoQNa0zTFlqDrx0tAyV1Ui5MXhzzobGzdD0QFKi1W2EaWTQjtypugeiRQZQdby9AYf8
+	IpX1Og5figNEJpF9DoVOKo4V+udiVdkeTkUzf+9WJt0s5wVXGt/FaXiUBAevRCVoOjctXXvd3jt
+	hjnmHO6eSrP4sFMQ2LGMycvch/uQyqxIOlzeLsMzwVwAZO869jfsOjN2Gx3639D674RKayTe5Fn
+	0NC/qziky8DQ25x0ID1I1eXoWkpwTNLNyArfjLOgVoT0EJ4MqiucfRikHdH0nk4GITtVzPpmDuL
+	FJHKq22AXRvW9iijEwLEjrfneQkXt46KcqdDAywFtKd7uwla3EfVIp7LqU5ea09LdNIehuuuJkZ
+	OCp29UNVORV+85BhFNdHKM2eyPX9v+mPC2S
+X-Received: by 2002:a5d:68c5:0:b0:45e:779a:302c with SMTP id ffacd0b85a97d-4775a100e55mr1113050f8f.29.1782900361613;
+        Wed, 01 Jul 2026 03:06:01 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-248.cust.dsl.teletu.it. [93.144.65.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4756636cf26sm13742935f8f.19.2026.07.01.03.06.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 03:06:01 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>
-Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] pmdomain: imx: Fix i.MX8MP VC8000E power up
- sequence
-Message-ID: <akTm9rfJe41zu47l@shlinux89>
-References: <20260610-b4-imx8mp-vc8000e-pm-v4-1-v4-0-ea58ce929c84@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610-b4-imx8mp-vc8000e-pm-v4-1-v4-0-ea58ce929c84@nxp.com>
-X-ClientProxiedBy: MA5P287CA0110.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b5::10) To AM8PR04MB7874.eurprd04.prod.outlook.com
- (2603:10a6:20b:24d::9)
+	Shawn Guo <shawnguo@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH v6 0/3] Add support for Variscite DART-MX8M-PLUS and Sonata board
+Date: Wed,  1 Jul 2026 12:05:54 +0200
+Message-ID: <cover.1782898728.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|AS8PR04MB7557:EE_
-X-MS-Office365-Filtering-Correlation-Id: a13fad01-640d-407f-3639-08ded7582214
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|19092799006|376014|1800799024|11063799006|18002099003|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	kq4C8ecfn05EV08hlwesvdJ0zvkNTOQW90QlswHhDac5JpotP/zrngfJFpcnJnRkY9nyBe3SaKxUBTdFjAatkJeDUvpJhFDoTNCQTxfZk3+tFq3vUZnwNZvJ8WQeCRueKkuqg8bKlvFDZhNsn+a2PN2x9kwIrmZTUpUil1ZKrAu4nsoge3bibz0ZUdFztlLTZnOqPQarC45OrTxf+spGPFGOFylQRX2lb6cqsbmVVxdEy4J8hxjPLXPDLc5OcHEzO/eEFY9u87Pxo9/WmqkWAdnLsdTRKDMJGcIQ9HGr1GXvjrd7Y0SXPf8a1tFyxohWbYgIvC5h6kEqbyHYngrLo/7vWWWQOWagruEPDwHcKozqMJjoT0o9kflYLuTJp16PeAYodQ6XZ5FFW8kYQfu663q07Ty/TCM3VNqVZvmh1G3v7A+VnTq22gPwPYPRoSbVZcs9GoYL009iZsjvPqxNAdSn9U5ITXa4+SXL9lkBcCtUD9XBIr2on9UGPyi0hSj3GDcSQj1FpAfD95lgTkBWAC8Y1gUOGZW2t5IP08usrfIThg/kP/AkcXBXSvC5lQjzhzEmF42IRYEvuoM1MYGiVj5F4BBjHkvXSZ4lixTOzmIwrBDwSKMREQE0KqUANGt/mDJaSua5oKNs1265Log9Xpse/BT7V+aFkhiKbHdbaqs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(19092799006)(376014)(1800799024)(11063799006)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tPi+bbXCB6e1E+Wn6piLtFI8gRI73jTQX2MXaQ4FNeCX9sxRS1i1a+f+5tqn?=
- =?us-ascii?Q?IHR2tlhEjNcsB/FPL7oe7WMBTmA5PLPv/KCONGOjlsEITzuJFAgfQqxRLdhI?=
- =?us-ascii?Q?7XtyIYO4YF3ln7VXoOJyTIwu1qlCwd1MEs+L0vdjQ6JSSIj6P6SoH7tB2P9L?=
- =?us-ascii?Q?XeAZoudNgdllsrTMTwOiz4FF6FQt3wtw45apxMKgTkJjsDXUotV4kSsAaebj?=
- =?us-ascii?Q?izYCizn7VLmCXZLIVS0bE94KE7Gzo2HCF1w44eWwxk4og43wCh6GDx4wT5Ke?=
- =?us-ascii?Q?1Ew+EygRPLOiaFBi+2otRvsRHmYiqhJP63BNptPJ3aU6bVZG13gFIeOXPgcn?=
- =?us-ascii?Q?VJDXbUFyEsD0nv3bgicCfD+y06jgP3tPgsYKAbD7nt6Z2oQnvH1ROGMT1lk7?=
- =?us-ascii?Q?mdoAF4AsO0Q3Dqq/Ez1vayoTTDhqVr2J7ibwVMPuBmLy4jnAWazqvhWy1vfX?=
- =?us-ascii?Q?hpcEGe/5QNtdE84NKlO0dfH7eJ32junzsxx915wfolIXMAW/k+pjmNpNQlZS?=
- =?us-ascii?Q?/5Y51BayrreKsFEevtKQFFh25nR+VKgRAsPdENh6WarDE8VwMj407xNnrq2l?=
- =?us-ascii?Q?TFNr4XKQ70N6HXwT31sq0O0WX1L7JC6U6BnU6uSC7CdaWmKXQOJV50qY5gph?=
- =?us-ascii?Q?Fd8TlFZlKR2O/HxnrGC/0QodpkmzA2Nk3RdSR7KyZ51RBWq9hjUbr/Elo7Mp?=
- =?us-ascii?Q?DpGg1AL7Qh9iyL/x9JONKUYX+kVBselQW48xkqQkSxpRtVHZocNnK3d8r9me?=
- =?us-ascii?Q?iEGqhVPVoV6ze8Wr8pXs3vbmFl+nrzl7gdp0zwAZkDbkmELUSK81eD49SxYS?=
- =?us-ascii?Q?04gSQivWGlv6WU9mG0a8d465a9OZZH6BRI7SZZ9u0bl80YJTLoarIbX5s/O+?=
- =?us-ascii?Q?CEqC82m44+SxuC6DUHGGezrQ2LaH8pFOzengRVmNhU4ju2F81ulfkse6a8f8?=
- =?us-ascii?Q?0bsHw2ku7/9GsaKpviapeIthI1M0M/j4qwpBOWUHVDFyUWHAz+VE2ZMhvvRo?=
- =?us-ascii?Q?jwggO5PHbRFXH5BWkh/RM5k+Nc10j4q5r4G/bgtwze5Cmzin47pN8uEC2/JW?=
- =?us-ascii?Q?6eD0nX0NdZDsCkqSIFXgGJnyEidghOYMNN3lxwQU8xEroHrhyAtP8khbD8b/?=
- =?us-ascii?Q?mcc9VnDSG6Li2bWD9JpRtAQai7t8CFeZHMuGRbgqg7omlSIfN0RPtq6dUi7V?=
- =?us-ascii?Q?OFy2i6p3OXjqwXuhmx8T2Gy3qhsdVaBC5AKC3EMEHYFZbDNeJDMueAkHBr+R?=
- =?us-ascii?Q?Kk07WP+oITnfnwJqO3LyVmrxxZqXkUr23z/wqjsoBVnXsg9eWST3mk6J30rf?=
- =?us-ascii?Q?6avnt4cZNjJ3gRmDgKDBsVbITWw+lQalhpSdwSink+RdFtzT4eIUrZwShvgH?=
- =?us-ascii?Q?jdBcKeGAcx98BCbNxV5NU1g/jWUJD5DYjTgdyUf4qDx7LhjfGK0T6ghHGQnR?=
- =?us-ascii?Q?XNP/b3B/L7BENV4Kn4ryy4Au8g+EJT0LfjuPjgLI68iFnBpqxQD4lmCEQjl/?=
- =?us-ascii?Q?Ir+YKry0755VMv2WeioJ223dciERhQI9qq3/Nsj2FAJ/ojYmD/3iUOQnBHiR?=
- =?us-ascii?Q?S5tg11FhD6W1/o1mh4uA70F1qqPbaK4+TdUng+3jDBJuOuUkq83AmR19oBu3?=
- =?us-ascii?Q?pcdDPFj/foaZvDUuXE799v9X5+mNJbxl6SbpxCG7TGvrefdHh+gZGPkmDjZP?=
- =?us-ascii?Q?opz49HI6841BhQDXqowZbGR1q/r5Qk5yUvor0ii06cT0rmv2umCFwEpJTcoM?=
- =?us-ascii?Q?gNLqjOko8aVg99dhv1YwSNO192dHFPNX+OxJd6mU9kzCVR1ydT8Z?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a13fad01-640d-407f-3639-08ded7582214
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 10:04:26.3708
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tChh+tAIe/saPHa29DgkJgx5TGw6hczemiUDTiHpK2/pDBJCF/drubKSrNzMb2r58IUvjZEaHX4d+b7OpN6BqA/67crecaNrDAi2j5hnrIHqO6AytRbqrVL2AdVMbC67
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7557
+Content-Transfer-Encoding: 8bit
 
-Hi Ulf,
+This patch series adds support for the Variscite DART-MX8M-PLUS
+system on module and the Sonata carrier board.
 
-ping..
+The series includes:
+- SOM device tree with on-module peripherals
+- Sonata carrier board device tree with board-specific features
 
-Thanks,
-Peng
-On Wed, Jun 10, 2026 at 10:39:09PM +0800, Peng Fan (OSS) wrote:
->There is an errata for i.MX8MP VC8000E:
->    ERR050531: VPU_NOC power down handshake may hang during VC8000E/VPUMIX
->    power up/down cycling.
->    Description: VC8000E reset de-assertion edge and AXI clock may have a
->    timing issue.
->    Workaround: Set bit2 (vc8000e_clk_en) of BLK_CLK_EN_CSR to 0 to gate off
->    both AXI clock and VC8000E clock sent to VC8000E and AXI clock sent to
->    VPU_NOC m_v_2 interface during VC8000E power up(VC8000E reset is
->    de-asserted by HW)
->
->This patchset is to fix the errata. More info could be found in each
->patch commit.
->
->Sorry for sending v4 at 7.1-rc7, no rush for 7.1.
->
->Signed-off-by: Peng Fan <peng.fan@nxp.com>
->---
->Changes in v4:
->- Add R-b
->- Set is_errata_err050531 to true for vc8000e
->- Link to v3: https://lore.kernel.org/r/20260409-imx8mp-vc8000e-pm-v3-0-3e023eaa245b@nxp.com
->
->Changes in v3:
->- Separate power up notifier fix into patch 1
->- Link to v2: https://lore.kernel.org/r/20260228-imx8mp-vc8000e-pm-v2-1-fd255a0d5958@nxp.com
->
->Changes in v2:
->- Add errata link in commit message
->- Add comment for is_errata_err050531
->- Link to v1: https://lore.kernel.org/r/20260128-imx8mp-vc8000e-pm-v1-1-6c171451c732@nxp.com
->
->---
->Peng Fan (2):
->      pmdomain: imx: Fix i.MX8MP power notifier
->      pmdomain: imx: Fix i.MX8MP VC8000E power up sequence
->
-> drivers/pmdomain/imx/imx8m-blk-ctrl.c | 46 +++++++++++++++++++++++++++++++++--
-> 1 file changed, 44 insertions(+), 2 deletions(-)
->---
->base-commit: 49e02880ec0a8c378e811bc9d85da188d7c6204c
->change-id: 20260610-b4-imx8mp-vc8000e-pm-v4-1-a978b40c59d0
->
->Best regards,
->--  
->Peng Fan <peng.fan@nxp.com>
->
+The implementation follows the standard SOM + carrier board pattern
+where the SOM dtsi contains only peripherals mounted on the module,
+while carrier-specific interfaces are enabled in the board dts.
+
+v5->v6:
+ - 
+
+v4->v5:
+ - Fix nodes order
+
+v3->v4:
+ - Add snvs nodes
+
+v2->v3:
+ - Fixed wrong som eth phy address
+
+v1->v2:
+ - Fixed wrong sai peripheral reference
+ - Fixed wrong eqos pinctrl gpio
+ - Fixed model name
+ - Added new usdhc2 regulator pinctrl
+ - Adjusted irq edges
+
+Stefano Radaelli (3):
+  dt-bindings: arm: fsl: add Variscite DART-MX8M PLUS Boards
+  arm64: dts: freescale: Add support for Variscite DART-MX8M-PLUS
+  arm64: dts: imx8mp-var-dart: Add support for Variscite Sonata board
+
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx8mp-var-dart-sonata.dts  | 733 ++++++++++++++++++
+ .../boot/dts/freescale/imx8mp-var-dart.dtsi   | 475 ++++++++++++
+ 4 files changed, 1215 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-sonata.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
+
+
+base-commit: d0c222c2e2ce577d801bdf129dc6c078f29e22df
+-- 
+2.47.3
+
