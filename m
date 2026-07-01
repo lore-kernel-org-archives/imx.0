@@ -1,89 +1,174 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010009.outbound.protection.outlook.com [52.101.69.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E393266581;
-	Wed,  1 Jul 2026 08:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782893546; cv=none; b=HWEjFEcPdSdivYOcu0hc6hrWajiSiUXx8iXec1HXAnZE+8fuuXr2qdfnJJvisrFSPO0rEwB2IaEIT20tjbuWn1ssjI5IlsgG3SvKJNLhUNDRfuS7S1Kevebh6yN5xnWw1JsAJfk+yavHtPdLMhsCHzoeG+aw7EnaMtc08FrGCKU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782893546; c=relaxed/simple;
-	bh=dnTBwMaWuMHTaR3/bJ/PyY+98lVg0sMedIPX7wWnC6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gEf7RwBUg93we4MWdCWZS+DvBkgm/Ynh2VpgYfwMHRklLAQc38GCUIhC9vw95vk8NN/JkrVOtsuFA+gqknjeMg9d8QPze93JT8qG9ZQAv8tKBJt4sTatxdLu2Y7nvwxmsgGbNhvNO5yS5RnqGfGfPpoFMc7dMXyMenePzvhan+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=tVsFeyyB; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2C03DE424
+	for <imx@lists.linux.dev>; Wed,  1 Jul 2026 08:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782893785; cv=fail; b=IMNliVY2a5eGEpBt6frP3cggHuMFp70S0jevm9wW7j2XAJMz5c+cjKDZDsBZknJ3C/UbwYvpBTHhLmMP6CpgVKC0Y3VC8uN/9J2yGK8r5fmT47aAK//lH2cg3LYsRn9Y4ERKbfA4xR1BUZDsP/Bwtvqh4rqUL/ndUNmO3kbug00=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782893785; c=relaxed/simple;
+	bh=wRv9jvXbNr7xHcRboerJ1wYxzGSbfGSodZuxos9J7K8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hKGBQGwpRWT7I5pRTlNOPIISFFTjOPe0/Vbm/eOQixw+doD9XZJQXo/sutSf/4UAc6yo311jaqf/1aXbn3q6M6O063pDISt/3QIrVD2EHCjtwLSSmno7J4qBQUlRMfmGv2NleTXwYc5RGR9s+UmwXsXUvpec2GnQwyc2PoplyF4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bw9ptL9O; arc=fail smtp.client-ip=52.101.69.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="tVsFeyyB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=o6RBggN3Hgiu6z0GFAxZZZJunuE0PHxzZTI4tyLYr88=; b=tVsFeyyBVFkimBhFb35JSufVFl
-	+3YtGEG7ygHb86xkHu+wNINyhoVZa2szN7HACC3vj4bvYKWQTJ1VDTPI/Mg/U3jxLdqBKK1PpK2XA
-	XuGaslu42uOzHYc0hP5EJJhIrh74NfPOhVUEF8lcN1+0PKCoj8jMq9WH26QsZuMgMEG0qh6Gt0ovq
-	W6RNlvR/ch87c+ioBOUIX3tr+S7g217SK0nuoA12yC2SBe3AtaXgt+cdT8LxGNPN8hOOkAEG6aOGJ
-	u0pxN5ayzPHkcLFIDVKQ289ft4o8rsQPv+pBv4y2/BwyjvCd1f2o8swA2ZMghzJtiJltaPjKLfAwF
-	JkHrH5lg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1weq32-007hg0-1Y;
-	Wed, 01 Jul 2026 08:11:56 +0000
-Date: Wed, 1 Jul 2026 01:11:51 -0700
-From: Breno Leitao <leitao@debian.org>
-To: xiaoning.wang@oss.nxp.com
-Cc: Frank.Sae@motor-comm.com, andrew@lunn.ch, hkallweit1@gmail.com, 
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, xiaoning.wang@nxp.com
-Subject: Re: [PATCH net] net: phy: motorcomm: read EEE abilities in
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bw9ptL9O"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MThs95ddQ+eQfdsP93hwSnJRKnXZjKEeTBfzv0/huSESrKWh/I+INyruO83iES+MSLxz1m8QZSn/aAPbYsPOPwgWiR8a1aXCs7mbV+ePKvTvb3F3iJ+7pI51KchzOatg0R7H2Yfx20VQkLCJo5yseQJr2Z+53Q8I+X8vhJ64XtCIiqcVTQ5FSo5oN45vCpmrl3mt48lODMh3mD0EgOUswuT/75Rf6m4p4z0qB2EDI87mSCkQbi3gKHE1YjravcCRnLFyXccbIphVZrSHIFvS3RNd3LOUrfy0ch7nMkGP4smnOhgbt7eq9c0AAoczgPXIWn2gROwZUtTUPmoshzskOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EBnyzgt0WlnpLIpzR06eGr2OpORuf9+SqnRt01DjpSY=;
+ b=m28PHk+8H1vGIfWn5h8VkhsNnjajd2hrPT2RC82mM3IyoafLgPdEJgbHUVw7JKVqwgjo1D8lrjZv73Rqt9qKZyqjZQMNGsVFuzg3S+ipov6AKWUtivV93Ao8juQnzLAxme8M8yYxv6XS3N6eD6x2uAGJvS/bM2wDYVYPU5simcNiMzDXlK/e1ao8s++v++cxaMkvyu/Nnr9mE+WBQhQkaHzL2AQ2C3EtqUqWJ6zkAfQMedaQOoi7Ncx8ghj2M4/Uq/vjQICqRiLo/wDXsnIIKDuXP2qGoDYxYWk9uobss1qZenJFrh21lMgrNT6h0c62rWiQK9wuHCNYcvs/T7j2bw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EBnyzgt0WlnpLIpzR06eGr2OpORuf9+SqnRt01DjpSY=;
+ b=bw9ptL9Op/W1eIxXgIR3UN9HjbcW0gD/oMave/tBcPDKmSStsOe4DdsOSRRL7fmsp9EOJFEV5eeR+tuiePM/btSYv+8PC5xnxmXyWBdj+6NngdW+LUjFmgM3lr2hbKPeXDjjB57qDk/EG0vXBqMy0b3HOPhBDEPX6BxCtYHj1/X70LQ+vhWw8gPPuDNC6Vpx4EGX7zJoQqcgPLNcOiGh2OFtKD4R7GjM2UD8UQj9LnWRPNMpsTtVjpGNyGyWIOXoNVOiU/cOs1Gl67oGrU1SaDWxesELUMrnMA2mqnz/sEdSVK+dydvW9sfxwvbB8l8+W15z+z+YLBxd8v1m3juxdg==
+Received: from GV2PR04MB12213.eurprd04.prod.outlook.com
+ (2603:10a6:150:336::11) by GVXPR04MB10270.eurprd04.prod.outlook.com
+ (2603:10a6:150:1c0::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
+ 08:16:13 +0000
+Received: from GV2PR04MB12213.eurprd04.prod.outlook.com
+ ([fe80::52ff:eacf:430f:494]) by GV2PR04MB12213.eurprd04.prod.outlook.com
+ ([fe80::52ff:eacf:430f:494%4]) with mapi id 15.21.0159.018; Wed, 1 Jul 2026
+ 08:16:13 +0000
+From: Clark Wang <xiaoning.wang@nxp.com>
+To: Breno Leitao <leitao@debian.org>, "Clark Wang (OSS)"
+	<xiaoning.wang@oss.nxp.com>
+CC: "Frank.Sae@motor-comm.com" <Frank.Sae@motor-comm.com>, "andrew@lunn.ch"
+	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH net] net: phy: motorcomm: read EEE abilities in
  yt8521_get_features()
-Message-ID: <akTLmyF0r70Jyn9m@gmail.com>
+Thread-Topic: [PATCH net] net: phy: motorcomm: read EEE abilities in
+ yt8521_get_features()
+Thread-Index: AQHdCS9Kh6EXypCdTUSz62mUjSw8ybZYUCuAgAAAPRA=
+Date: Wed, 1 Jul 2026 08:16:13 +0000
+Message-ID:
+ <GV2PR04MB12213F4758648CD71F5D5B3B7F3F62@GV2PR04MB12213.eurprd04.prod.outlook.com>
 References: <20260701075730.133707-1-xiaoning.wang@oss.nxp.com>
+ <akTLmyF0r70Jyn9m@gmail.com>
+In-Reply-To: <akTLmyF0r70Jyn9m@gmail.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB12213:EE_|GVXPR04MB10270:EE_
+x-ms-office365-filtering-correlation-id: dfb731c8-bc4e-4012-65d7-08ded74903fc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|19092799006|376014|7416014|366016|38070700021|22082099003|18002099003|4143699003|11063799006|56012099006;
+x-microsoft-antispam-message-info:
+ iTlVjZw0DBu+CIRTnCYMKCQxG6JFD9P1l2DvYzG3fy4mC47Xdx2p8NGZvP0q8cJ4fn8EEDL/sd1JfwWcHiqDwhxaDN5zFyi6JkLUs5n5OIFQnzLZyOPIExDFN1Wyt/nN9oaeZ8WbTwdPmWMI6a04yYQu2Lkem1vgTtRTHWF8kPyRhQw6sb0h0h/8YDBNkf4yRe55US/3P0y7O67ZPFmbxERVjbg0n9friNP/TgzrQuyweThdMHLg6JQKLwBOHbNlU8YXg+0+8Fs0GBUOE+UDXFZ0CCDGHPlndenMb0yrZuOHfmRCFHnXAp6GU+zWxgdHsON5sQipym0a4YZHm4QxKOdBcW9gEUbXgoSyXziVUn1oRMOf+yOk8OBfG25/B+78Hf7c5pJo73jJ/aYd75Ba1mQmfX3KU7FHWU8YNYrCAU8eHBHIbWBaw5pQAbhU7SiozhdTmsyXl94/QsUJP4BQD14RCq/1vEmHo1ZD8tCy5NHcLjBfMDOFDc4M2ULWu30FGKsotVpcS+iqNfEJfYwv0hKL7ktoBVrMkBxrwDFzgg+aWhAwc2IVsdNWrPQTi08MI/5npNJGPJkMtg6SIwe/CPI282lWP4vnbRjEUJCJV3PYNSxFolLJRV0/D5HRBtmLHHcfKx3s1kWRRHaThVD+fwgrMuqyqslNzlT8lllqwvwP3zLw0+mveCrN160Zqyfd16YXBhZnFRkqcX5Ek5tw2R0/8TVDzFXc+FdZiLjs3NQ=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12213.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(19092799006)(376014)(7416014)(366016)(38070700021)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?tZt7RKrjrQFgjbNuSPCyo3Q4SNm47JH9HGPQ68WSpjQNIXtuD/h2YfTpgIhq?=
+ =?us-ascii?Q?bSayqmzUVuIacFivcWRs3ostth2wCNH8N9TqfU/A+GWgFwZVVCr+jTppamYN?=
+ =?us-ascii?Q?kTAQbfIJ5d71DhumbW4GEYubW3CKw8TTLX7DGxC1AIm9+/52tN264cwEQeP3?=
+ =?us-ascii?Q?3FZFvKB6RrkHYl7Yg+GkEwPTf7sdwYXhAz8jt4JDrKaXJaZiJmtd/MuKnY5V?=
+ =?us-ascii?Q?Mu5plF6b+zLZooON8JEaV4ZAgPN8899Z52xkKJm7KwvrRIdt7ozT/INYBwpP?=
+ =?us-ascii?Q?YHWVf+kz18ZLG+ApO8Bv2jLVTHmwhBjRokabV30UagNp5EacnMS2LznLJyOB?=
+ =?us-ascii?Q?PGZYgvsMUoil5715Fh2GPr3qmq4TkOy1FDVKP3hqwOYLD8StzYrhO5zVIzxF?=
+ =?us-ascii?Q?3yi2ehSKI5qfi3ckRkAK/tmm07Ei+a4QZLNNiRX2RHAGmPIW3S1VERImNEXY?=
+ =?us-ascii?Q?u4R1dPqqC6qS+ErHYdm1rWt46fPKxh/kXG2kdx3H2yP/l4r/qrnV+CsqvM8F?=
+ =?us-ascii?Q?ybpIhkHGRLI27mDcB43Ou5UA2Rthn5MRE30Wi29/HnYbP0EDzmYvaQ8yR7N/?=
+ =?us-ascii?Q?2P6R6UJjHdHJ+n1CFP9F/YJf4AEGEWsYiMYaCskTgdSZGqC9lw+4WlsielEY?=
+ =?us-ascii?Q?fcSnVUnda22yIcDojuPt+8aW/tsNKaG/5ev7ySPdYUy2zw+cXYaPMHdu/19S?=
+ =?us-ascii?Q?dNuNMLjtGXYqQIeBRXimdEBjV3oGt/zZoKACPzIJUTFM17Uheb4ZPspn18G0?=
+ =?us-ascii?Q?5c6e3vPBxX0rHEcw5/uupCsCt0zueppsBmkzLzcSzHUAkZufsuyE/v6I9h1z?=
+ =?us-ascii?Q?wTXR5D1qjmG8UQzKUzuuDvMSoSi4he8vI1bAnQsMt5MbQvKGaJDAgC33RhBg?=
+ =?us-ascii?Q?wh630O4iC/Z0tMz0K+/dBTNRt9ybt/xCqEcieMXFnXXF2ugTufYrnSXfBmQe?=
+ =?us-ascii?Q?ALLT5ZYsy+OL08wiW5gNJVhvbGqIKRUigK39HOgWLUDKii68vOlNgbHAGTTw?=
+ =?us-ascii?Q?3h5cV+mZSin6+2Ho7yDm3OWc8i3GSWUZIraAN7/ezlAG3M88b7UDWm4lWAtY?=
+ =?us-ascii?Q?FaSaxqhAj8+xuAVZap8WwG54okhMtaRsNusSs6WXnmcyeDpH4136JMXaLLhT?=
+ =?us-ascii?Q?vK3PzfgCj45Uej9PDt70Zh3VWIxhekEeukJZ8TcYWyhRWcZigN0wFhW5/K9u?=
+ =?us-ascii?Q?q/rzP049sFV4XWnGtZXIedFZ6SijiP3UlJEepPTIFrSowW8YqxwLlNs+WEu1?=
+ =?us-ascii?Q?zVplAqcM6UyHm+xxiUsCfaVmiIA3uh8brCKuVUMdYzvtyOSAX/yUu7Yao2tE?=
+ =?us-ascii?Q?t19gTGFkhMHtVKxsJqzunidW+sqVDyffz6pAMhARMkaSURwwUXc38KH6HaNP?=
+ =?us-ascii?Q?TTbKsIZh5Km5XidAPaTBgK9Z9VodGCpPxtQdas9IZlQj2nlphXKz7prkssOq?=
+ =?us-ascii?Q?5JGG5MQjPh4ggtUvYSux9nDm2lnJsYk/yN2z9eW1hP+ymcAwVrFLYikG/gwD?=
+ =?us-ascii?Q?wFNA6iNLMEQIuDmoCweiGtvwnZK4cz7o8uJhMUjopkn3KckPf6r4n2M6F0SU?=
+ =?us-ascii?Q?BginQ+bYGe/GxJuuIe+vklXp9mFS9P5h1vB8Uuxv2uA9nZWnmBlST/I7hqVU?=
+ =?us-ascii?Q?Cdzn1khBhNuN/Oa/iTgRidJetYelpmFhxm4+7Y2CiIEPY3q4kkiQrD5jr2w7?=
+ =?us-ascii?Q?8C/UGdpoJYd5XWOgxvZltbShva2V8jbBxODMOP/Uu9XjhH+zZascDuOILzM+?=
+ =?us-ascii?Q?8o1+EpVoug=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260701075730.133707-1-xiaoning.wang@oss.nxp.com>
-X-Debian-User: leitao
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12213.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfb731c8-bc4e-4012-65d7-08ded74903fc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2026 08:16:13.2172
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mOdO5ogWcqwHVN7854OXUhXe5O31gKRXTLmsbNwd+su+LnZuCgnlOw6LMVVdD2W9hgJEm7Z+vpfMtVTWjDSiUg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10270
 
-On Wed, Jul 01, 2026 at 03:57:30PM +0800, xiaoning.wang@oss.nxp.com wrote:
-> From: Clark Wang <xiaoning.wang@nxp.com>
-> 
-> In phy_probe(), genphy_c45_read_eee_abilities() is only called when a
-> driver uses phydrv->features. Drivers that implement .get_features are
-> responsible for reading the EEE abilities themselves.
-> 
-> yt8521_get_features() does not do this, so phydev->supported_eee stays
-> empty for YT8521/YT8531S and "ethtool --show-eee" reports "EEE status:
-> not supported", even though the PHY has the standard EEE capability
-> registers.
-> 
-> Call genphy_c45_read_eee_abilities() at the end of yt8521_get_features()
-> to populate supported_eee.
-> 
-> Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521 gigabit ethernet phy")
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> ---
->  drivers/net/phy/motorcomm.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index b49897500a59..46efa3406841 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
-> @@ -2439,6 +2439,9 @@ static int yt8521_get_features(struct phy_device *phydev)
->  		/* add fiber's features to phydev->supported */
->  		yt8521_prepare_fiber_features(phydev, phydev->supported);
->  	}
-> +
-> +	genphy_c45_read_eee_abilities(phydev);
+> > In phy_probe(), genphy_c45_read_eee_abilities() is only called when a
+> > driver uses phydrv->features. Drivers that implement .get_features are
+> > responsible for reading the EEE abilities themselves.
+> >
+> > yt8521_get_features() does not do this, so phydev->supported_eee stays
+> > empty for YT8521/YT8531S and "ethtool --show-eee" reports "EEE status:
+> > not supported", even though the PHY has the standard EEE capability
+> > registers.
+> >
+> > Call genphy_c45_read_eee_abilities() at the end of
+> > yt8521_get_features() to populate supported_eee.
+> >
+> > Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521
+> > gigabit ethernet phy")
+> > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> > ---
+> >  drivers/net/phy/motorcomm.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/net/phy/motorcomm.c
+> b/drivers/net/phy/motorcomm.c
+> > index b49897500a59..46efa3406841 100644
+> > --- a/drivers/net/phy/motorcomm.c
+> > +++ b/drivers/net/phy/motorcomm.c
+> > @@ -2439,6 +2439,9 @@ static int yt8521_get_features(struct phy_device
+> *phydev)
+> >  		/* add fiber's features to phydev->supported */
+> >  		yt8521_prepare_fiber_features(phydev, phydev->supported);
+> >  	}
+> > +
+> > +	genphy_c45_read_eee_abilities(phydev);
+>=20
+> Don't you want to return error if genphy_c45_read_eee_abilities() fails?
 
-Don't you want to return error if genphy_c45_read_eee_abilities() fails?
+EEE is an optional functionality, and the call in genphy_read_abilities() h=
+as the following comment. Therefore, I do not return its error here either.
+"
+	/* This is optional functionality. If not supported, we may get an error
+	 * which should be ignored.
+	 */
+"
+
