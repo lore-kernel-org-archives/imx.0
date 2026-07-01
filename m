@@ -1,217 +1,104 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4F0182D6;
-	Wed,  1 Jul 2026 08:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E89C3B637F
+	for <imx@lists.linux.dev>; Wed,  1 Jul 2026 08:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782895816; cv=none; b=XiOkddyClHxaIG5WaWcf8Er7MuB+bw3x4Z+3TYib4KX5Wlv3SJEN45fXMAgitKa7tMYNyT1a9TAsCDZTqekXslGaaMb+qCrWfmEzNiwJxlzu9NO78+gy9lPIvLTsGndZyrgcfJptMibKkkV3NdrRWz51CM3G48mGmXGu+v90Hw4=
+	t=1782895818; cv=none; b=g5Nf8B1lj6QE+EztvkaOM0MtEHDkVAJg9qfsTt3PrL8Atej6g8MA82s2X6Rjwv581I5567w2WnOr3OFraSX4NLUZP116qewSqXdn7UNhKveUGjIX5XpHzviNBmjU+qLz6mxr98g/zpAHJa4ZSjJeX/gKcnLHv2gPd2mXf2zaAIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782895816; c=relaxed/simple;
-	bh=5eilU705tp1cuMmdd9UjB9+ztsF4icFnT7Q7omOKcX4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MRW3XYeS95TX36yMDtXFq3sP2OYz0AkLlHTwmykKoyGWUwB6/hHWhNA85WEUUk12gTRUc/NJZocfOR0Nlbp367hPZqDE2sYjk6bsV7i2RYHFAo5zhhYb0/BDvkK/QrZEK5fs+y7LLwb+yxelKcf4noC2VO9hu3f0A3lzJ2RK4p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=WuYHFzTL; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="WuYHFzTL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=TcjewTMbKqCfQPM8SSPvtYzOxIR7T++bcwwvFAoDU28=; b=WuYHFzTL08wKntVEtULPAYQxir
-	vzOS1Jz3av5FbNRt4W4NXGj0oZf70+WatQ9wBAuuk8DZkbaIgkaluhvTplB/VrBvhUuVRcquwLpV7
-	wsYvYM30wn5ZcigJfrZkiwRZ874F3G1vhH7avi8rGCz/d892Ttf4We6r4mKm/Le48N4ILiy16PcSA
-	v0d0X7miy06yFZPGIzYBFuzvt70M0PRq39osCcKydhTdkoyCLil5Th2xrK3WEdrHse+G+TrKZElh5
-	x+hTB7pv8OxvpvF/7hWWBJRGzc+RsLj8NX5qlgHZh31WceNsKlDsBfglXKEGniRTyoW4zKAMYbdP+
-	7FH6uCCg==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1weqe5-0006gl-0Z;
-	Wed, 01 Jul 2026 10:50:13 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1weqe5-0003ux-28;
-	Wed, 01 Jul 2026 10:50:12 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org,
- wsa+renesas@sang-engineering.com, imx@lists.linux.dev, conor+dt@kernel.org
-Subject: Re: [PATCH v6 1/1] arm64: dts: add tqma9596la-mba95xxca
-Date: Wed, 01 Jul 2026 10:50:11 +0200
-Message-ID: <15795907.O9o76ZdvQC@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20260701084522.5A5301F000E9@smtp.kernel.org>
-References:
- <20260701082611.3126036-1-alexander.stein@ew.tq-group.com>
- <20260701084522.5A5301F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1782895818; c=relaxed/simple;
+	bh=hHFBD6IAL9KyNgKAgN7lpNWUABAcsodkJiIi1NiV3O0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bJDKlrCDbBQhRdMu3b74TkO3Utb3m60wE8EOcgV6j0RugeoEoJ8f6JtdMl/VPaxLsP3EBAndssOtZhLtMlxCpQ7AmTweUJBYEQSxCx5PXWhQnslhinRoh3/aN+m5r1GB4GEii6fsZOy61rcWotXkk+61ctoBpZzo/rdFZDx3lzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1weqLE-00051f-8R; Wed, 01 Jul 2026 10:30:44 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [PATCH v3 0/2] arm64: dts: imx8mp-skov: add new 7" variant
+Date: Wed, 01 Jul 2026 10:30:21 +0200
+Message-Id: <20260701-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v3-0-d74f7e3f8293@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart8879389.DvuYhMxLoT";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28047/Tue Jun 30 23:29:24 2026)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB7QRGoC/5WOsW7CMBBAfwV57lXOOSENE4iFkYGtYiD2QQ6EH
+ dmOlQrl32vC0KETy0l3enrvHiKQZwpitXgIT4kDO5sX9bEQujvZCwGbvAuUuJQKK0g1SIiuZw1
+ 8H7/uPYSbS2BigOsQ3aA7qNnmqUyr27KSJ9VokXW9pzOPc+pb7DeH7U4cX+cwtFfS8Zl5gh2H6
+ PzP/FIqZvz9eioyWEisKoNqWapm3ZO9DNE7y+Onobmd8M9eYv2GHTNI2NbNWWOWF//s0zT9AtM
+ 8NMpcAQAA
+X-Change-ID: 20260325-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-3dbcb450a39c
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1599;
+ i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
+ bh=hHFBD6IAL9KyNgKAgN7lpNWUABAcsodkJiIi1NiV3O0=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ5bLBeOqEwfeCAXoXRLdzyX7IPb5X+3s3xrvqt9c0ZexM
+ j/OGnGjo5SFQYyLQVZMkUVlYQWfqMcHz8hpIlwwc1iZQIYwcHEKwESWPGVkmOD7xWJb6OuYrf3L
+ 9mx5U1QwK+7wBfPHYg9nl3yMmHpa7i7DX9nNrm4WxtuvXr4YnhNiFOvFnqmhukkwTHj1l/gjx18
+ JMAAA
+X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
+ fpr=24A1780E1548F0495996140A1ABD20720A5E5622
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
---nextPart8879389.DvuYhMxLoT
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: sashiko-reviews@lists.linux.dev
-Subject: Re: [PATCH v6 1/1] arm64: dts: add tqma9596la-mba95xxca
-Date: Wed, 01 Jul 2026 10:50:11 +0200
-Message-ID: <15795907.O9o76ZdvQC@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20260701084522.5A5301F000E9@smtp.kernel.org>
-MIME-Version: 1.0
+Add a new board variant for the Skov i.MX8MP based family of boards.
 
-Hi,
+This variant uses a different 7" panel than the existing ones.
 
-here some comments about the findings.
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+Changes in v3:
+- rebase to v7.2-rc1
+- Link to v2: https://patch.msgid.link/20260427-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v2-0-e2b79fc24391@pengutronix.de
 
-Am Mittwoch, 1. Juli 2026, 10:45:22 CEST schrieb sashiko-bot@kernel.org:
-> Thank you for your contribution! Sashiko AI review found 2 potential issu=
-e(s) to consider:
-> - [High] Hardware components (PWM fan and 10G SFP) remain permanently unp=
-owered due to disabled regulators
-> - [Low] Dead code: Unreferenced `pinctrl_ethphy0` node
-> --
->=20
-> commit f54617810555494fd6b435aa3ac070a14b264e01
-> Author: Markus Niebel <Markus.Niebel@ew.tq-group.com>
->=20
-> arm64: dts: add tqma9596la-mba95xxca
->=20
-> This adds support for TQMa95xxLA modules, designed to be soldered
-> on a carrier board. MBa95xxCA is a carrier reference board / starter kit
-> design. Enable the external accessible PCIe controllers as host, add
-> clocking and reset GPIO.
->=20
-> > diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.d=
-ts b/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts
-> > new file mode 100644
-> > index 0000000000000..e90f37bbdcd80
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts
->=20
-> [ ... ]
->=20
-> > +	reg_3v3a_10g: regulator-3v3a-10g {
-> > +		compatible =3D "regulator-fixed";
-> > +		regulator-name =3D "3V3A_10G";
-> > +		regulator-min-microvolt =3D <3300000>;
-> > +		regulator-max-microvolt =3D <3300000>;
-> > +		gpio =3D <&expander2 15 GPIO_ACTIVE_HIGH>;
-> > +		startup-delay-us =3D <2000>;
-> > +		enable-active-high;
-> > +	};
->=20
-> [Severity: High]
-> Is this regulator missing a consumer or the regulator-always-on property?
->=20
-> Since the sfp_xfi node does not have a vcc-supply or vcc link to this
-> regulator, and there is no always-on flag, won't the regulator framework
-> automatically disable it, leaving the 10G SFP module unpowered?
+Changes in v2:
+- rebase to v7.1-rc1
+- Link to v1: https://patch.msgid.link/20260325-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v1-0-10255d236439@pengutronix.de
 
-XFI is not yet supported upstream, but the regulator is already prepared.
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Shawn Guo <shawnguo@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
 
-> [ ... ]
->=20
-> > +	fan_controller: fan-controller@2f {
-> > +		compatible =3D "microchip,emc2301", "microchip,emc2305";
-> > +		reg =3D <0x2f>;
-> > +		#address-cells =3D <1>;
-> > +		#size-cells =3D <0>;
-> > +		#pwm-cells =3D <3>;
-> > +		status =3D "okay";
-> > +
-> > +		fan: fan@0 {
-> > +			reg =3D <0x0>;
-> > +			pwms =3D <&fan_controller 40000 PWM_POLARITY_INVERTED 1>;
-> > +			#cooling-cells =3D <2>;
-> > +			fan-supply =3D <&reg_pwm_fan>;
-> > +		};
-> > +	};
->=20
-> [Severity: High]
-> Is reg_pwm_fan guaranteed to be enabled to power the cooling fan?
->=20
-> While it is referenced via fan-supply in the fan@0 node here, the
-> microchip,emc2305 hardware monitor driver does not parse fan-supply or ma=
-nage
-> regulators.=20
->=20
-> Without regulator-always-on in the reg_pwm_fan node, won't this regulator
-> remain permanently disabled, preventing the fan from operating?
+---
+Steffen Trumtrar (2):
+      dt-bindings: arm: fsl: add compatible for new Skov I.MX8MP variant
+      arm64: dts: imx8mp-skov: support new 7inch panel board
 
-Indeed the driver is missing regulator support for now.
+ Documentation/devicetree/bindings/arm/fsl.yaml     |  1 +
+ arch/arm64/boot/dts/freescale/Makefile             |  1 +
+ .../imx8mp-skov-revc-jutouch-jt070tm041.dts        | 79 ++++++++++++++++++++++
+ 3 files changed, 81 insertions(+)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260325-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-3dbcb450a39c
 
-> [ ... ]
->=20
-> > +	/* IRQ pin is AON GPIO, not usable */
-> > +	ethphy0: ethernet-phy@0 {
-> > +		compatible =3D "ethernet-phy-ieee802.3-c22";
-> > +		reg =3D <0>;
-> > +		reset-gpios =3D <&expander3 0 GPIO_ACTIVE_LOW>;
-> > +		reset-assert-us =3D <500000>;
-> > +		reset-deassert-us =3D <50000>;
-> > +		ti,rx-internal-delay =3D <DP83867_RGMIIDCTL_2_50_NS>;
-> > +		ti,tx-internal-delay =3D <DP83867_RGMIIDCTL_2_50_NS>;
-> > +		ti,fifo-depth =3D <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
-> > +		ti,dp83867-rxctrl-strap-quirk;
-> > +		ti,clk-output-sel =3D <DP83867_CLK_O_SEL_OFF>;
-> > +	};
->=20
-> [ ... ]
->=20
-> > +	pinctrl_ethphy0: ethphy0grp {
-> > +		fsl,pins =3D <IMX95_PAD_PDM_BIT_STREAM0__AONMIX_TOP_GPIO1_IO_BIT9		0=
-x1100>;
-> > +	};
->=20
-> [Severity: Low]
-> Is this pinctrl group missing a reference?
->=20
-> It defines pin configuration for the ethphy0 IRQ pin, but doesn't seem to=
- be
-> referenced by the ethphy0 node (e.g., via pinctrl-0) or any other node.
-
-This pad is connected to gpio1 which is under control of the system manager,
-so Cortex-A55 (Linux) has no access to it.
-
-Best regards
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
---nextPart8879389.DvuYhMxLoT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEByESxqszIvkmWRwbaS+g2M0Z/iUFAmpE1MQACgkQaS+g2M0Z
-/iVLWwf/fk8nQFU7ErPNiaXq3faQw6stgzboWoi8uhRqDAJ1+Zz0YOvu8VWjjSdQ
-bENCvALL/2GH1Y4xpQLzSJZYX7811a/jQKCmWl6TgaLwtFFfN38aR2i6Ge/egiYZ
-dIBx2W2rNsodubBLRNQVniPw3aw+ks+c13iJW2/Ykj+uC19pyzYeWGK1gZX6rD0C
-pXzznUVgBWOQ6Jpa4mDvw3oElDr8atu4a/XrURGYeuGV9G0tsPb9iUzGkw4a1xUn
-tyy6z/X1vAwgYx5dZgWZ6AFi5WqhdmDAVHnhYUk158nrX8z1Jj2HKC07/EkcEE6Z
-uxnV6RfwQMzTzmWfQRQPZRBEkutQCA==
-=nc0t
------END PGP SIGNATURE-----
-
---nextPart8879389.DvuYhMxLoT--
-
-
+Best regards,
+--  
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
