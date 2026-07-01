@@ -1,180 +1,129 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013047.outbound.protection.outlook.com [52.101.72.47])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B8C360ED2;
-	Wed,  1 Jul 2026 15:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782918181; cv=fail; b=k7/f+HmSohfYk+Z+7XaZlLDJR4r2mNJtyniSVNAsxZwvjbSKtZU658fAeuhQuBp4PbYofWqsDAjw6wTZfYKi95LcOKpM9pBANk7vffrMrmqhnSLQca3Vhvwc1RAaLhsIYKomkUi2Xc2xDBo/qmR63pi2MXMn4dsm+SCQIRDBi3o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782918181; c=relaxed/simple;
-	bh=x1MfN1eEhFPIGeSQ2DYnPhBcer4Opw5ryDnipwO8kb4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=S/lFSmqJH2nCIRghqRJoZvsRPqcvg2G2SEHYtrXb3LonDAvfUs7hg2VDIcYA8smhq6FwK0miEVS7cahithIRM+YlR6VsAqWb+xKBu+GRMfngA3KfRh14/RUSPkmuc70DRVPQqO00/YUnCP04fQrVrTwuAb2dTSz40hIQ4ARAc+I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=h1fKRAgM reason="signature verification failed"; arc=fail smtp.client-ip=52.101.72.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08CB48097D;
+	Wed,  1 Jul 2026 15:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782918389; cv=none; b=KGMvYsvFuaCNY2JMsDKTR1HeQGJBh08R/rwKUcnePmSdYzoy5vHbe6/UrBWKM3kLRkoFIgAuoB8eDSGln+o+tyd6DOpT+G19mMgGlcn5klRo35f927Hg4W5wYBwN1LRB9BbrUnfETkdsjc8O9LFTCGSnK07RfNrb8mDnY82xs/Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782918389; c=relaxed/simple;
+	bh=7iK4BGNHJy0tB94tmLVRjvi1Oe1FniGBRLtTBxRpX9I=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oDl+hdKun8WIAGtLjBZjPYFBKLStZDEUmKv7juqlaNIGFjFCouDcqYQAUcErAM/+JdBpxnfOQXAj4fLHtWl8ghqIkFkMux1TNSeDn5/G8xzCexKSlNLFfKmhHc53EDjgtou6Cn2P2jFP6ybQt/X/+3WzTWZkBMWGsjOWL+4s2Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=pcd0PeJh; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="h1fKRAgM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=guYOyXTy4VTTjCcex4L6YyyWqpqNjCLudp1I8cxBUqPS7dQ/s8LCkhF0avcHcQnii3aymzg1drsYxWco/Nm4Zp6I/D48ZFab6BCbKDZyc3nwPSDmSWcNc2KYPrVdiGGfd7yk6Xi+7UZaf7p6t3n5SxGZkZqPcBBziJA/NtU834M6a505Cw3ZXpBvQwNcbKPwiMlOJpP4WO59iAcKTbz1hcmBgeEfkwAz+8Y5xXiywQTpNDYqcuFjJ14HRgMxeOUHI4AL1JlW3VKkID4WnssOkVOKx6fhB0pUbGPBPz9nkC/nHfvtHuZi0xG9v6eh0UINjK/FXRFG1A0wx513dxeByQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gzgHgoTx6NJ5dqJLjzlZ09JXRL5pIi2CPlG0SRSqfGQ=;
- b=CvROs7+gNAQw5HUKmPQep5C7MhquyiZ+LC9yq7hYURI7TM9uYkcWXukZ3pALYQWLVkOIJxB6Gu4ZmpGcLElXfDYCSwpwMyLDLQyk6GSscaRy3AF+XS8StdNdA9a+GPaNI2l3iROrryOPHjObmCHJR40m02aK02p1XgANejp8awytDplLzla5rhJfL0cvZRpnf038XPpGwBR4d67U7928Ub8lFGtWY9yOKAl7tFI258TQYNy82n7DOcUiZmMI7rGtnElUz3ui723dEFX8zBmRWEbbb+DTrsHZQDEzToZcTeIFTLbLuwEzFP7s8TYSNbWe1vx1T8fiPKvR/Tm/FbRUzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gzgHgoTx6NJ5dqJLjzlZ09JXRL5pIi2CPlG0SRSqfGQ=;
- b=h1fKRAgMwQJmgNhf1tUZTf9fkNmkngCnZJgcCxknxRDGjF32E40XuB+rZy+GP8jflSlBLB68BXsv2uyBtuxAr1OuhBcdED10TQhMPFLUEzUBtHXENnrtFS4P3zOzoUBoi2mi/jZ5cenbh3zPtUoU+hpQCelij9FBtSI3j81wPsSAEe33ZOzHBLs/fXR92IOJWQh0vfG10rkzCxmL5vvNHepqPlfHriSebJjLNReeay5gxf5t/vFCCau5pH+aVwcc90QNAlM+V8dUccde9467chfUwcNNHEXBwCfzU5nFchpb9/c1gQcyKGP0vDZ0O0Y/I1DJQI75oBMqx85DF++RVA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV1PR04MB10847.eurprd04.prod.outlook.com (2603:10a6:150:20a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
- 15:02:53 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 1 Jul 2026
- 15:02:53 +0000
-Date: Wed, 1 Jul 2026 10:02:43 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: sashiko-reviews@lists.linux.dev, Frank.Li@kernel.org, robh@kernel.org,
-	devicetree@vger.kernel.org, wsa+renesas@sang-engineering.com,
-	imx@lists.linux.dev, conor+dt@kernel.org
-Subject: Re: [PATCH v6 1/1] arm64: dts: add tqma9596la-mba95xxca
-Message-ID: <akUsE6A6lX0mgM5g@SMW015318>
-References: <20260701082611.3126036-1-alexander.stein@ew.tq-group.com>
- <20260701084522.5A5301F000E9@smtp.kernel.org>
- <15795907.O9o76ZdvQC@steina-w>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <15795907.O9o76ZdvQC@steina-w>
-X-ClientProxiedBy: SA1P222CA0160.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c3::6) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="pcd0PeJh"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4gr3Hr4RPhz9ts8;
+	Wed,  1 Jul 2026 17:06:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1782918376;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7iK4BGNHJy0tB94tmLVRjvi1Oe1FniGBRLtTBxRpX9I=;
+	b=pcd0PeJh7Iv8r/KVTFH5oFdA/lvvSyvuvKi3if55cztI2n/XSqmRdnZKteH85HKKVV85yU
+	j9HVmz2EWbdR6s0CcET0z1vhIRn4hJ25bjWnCJwEuRpc0w/NW+iGM63mTUN/npapcFcSR/
+	fvTXXtkA/gTpkwn7ezESk2MSMTKfcqmvoICSsIiJierSEvXB9xwtVzbElgLSVNcJv+Ritx
+	B8K9i27AJIekT+XY6QmKpjCphMf9LuJwlimFmayP7Cy6geBGJUxhP+KSpU8c/IrGtSWTsI
+	iKUJjdFVYMmR+verObzbMA+hWZMieIpK2Ln1S3xxLh3nAIF0DvnMe971s5Fifw==
+Message-ID: <f6ce9878f3528dd026e6ca8ff56ac773a264e476.camel@mailbox.org>
+Subject: Re: [PATCH v2 02/19] driver core: platform: provide
+ platform_device_set_of_node()
+From: Manuel Ebner <manuelebner@mailbox.org>
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
+	driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
+ iommu@lists.linux.dev, 	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
+	linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org, Bartosz
+ Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Lee Jones
+ <lee@kernel.org>, Thierry Reding	 <thierry.reding@avionic-design.de>,
+ Sebastian Hesselbarth	 <sebastian.hesselbarth@gmail.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>,  "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Srinivas Kandagatla <srini@kernel.org>, Greg
+ Kroah-Hartman	 <gregkh@linuxfoundation.org>, Vinod Koul <vkoul@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Rob Herring <robh@kernel.org>,  Saravana Kannan
+ <saravanak@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman	 <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti
+ <andi.shyti@kernel.org>, Andy Shevchenko	
+ <andriy.shevchenko@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will
+ Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Doug Berger
+ <opendmb@gmail.com>,  Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list	
+ <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team	 <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, Matthew Brost	 <matthew.brost@intel.com>, Thomas
+ =?ISO-8859-1?Q?Hellstr=F6m?=	 <thomas.hellstrom@linux.intel.com>, Rodrigo
+ Vivi <rodrigo.vivi@intel.com>,  David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>,  Paul
+ Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, Philipp Zabel
+ <p.zabel@pengutronix.de>,  Maximilian Luz <luzmaximilian@gmail.com>, Hans
+ de Goede <hansg@kernel.org>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
+ <ilpo.jarvinen@linux.intel.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Date: Wed, 01 Jul 2026 17:05:49 +0200
+In-Reply-To: <CAMRc=MdQURjypSn+QjSDJfEiOMC8bbEZmZLgjpt=EquAM1Q1pw@mail.gmail.com>
+References: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
+		 <20260629-pdev-fwnode-ref-v2-2-8abe2513f96e@oss.qualcomm.com>
+	 <263f58b418a27a2339fc2478f93234e0208b0ad9.camel@mailbox.org>
+	 <CAMRc=MdQURjypSn+QjSDJfEiOMC8bbEZmZLgjpt=EquAM1Q1pw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB10847:EE_
-X-MS-Office365-Filtering-Correlation-Id: e738a682-8379-44ad-9439-08ded781d36b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|19092799006|376014|18002099003|22082099003|11063799006|56012099006|4143699003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	h8YYwRK50eFtU/xr9UV2ZXTjAjLbc61yXVo1QTtBcPvxqGjIVp91FpJiZzrDSnBrYF5fosQdissZY14ARJIS4g/qAyN238TsMAHf/ks1HbVh95cq20k1UOLcOvXrbQEEYhZkQdt+pc+FwkmIDAF3NUTEm1Zg2cXmpTw4VBaDeW57G681uoQUF2S0xmQL2Td9NLClvitH+ZM85eTGdmMrX/NolS19Da43pY3NAMsn0xT8N5txVRBRypXHeMGgwUc/AZEY7fG2apthLg8UzH20BP6mjXWjwXAF0T7mMNUZz8KLBkqS3c29YOgzAn5jwT0txNcPCfAjXfI55HxTenaqt8FvWaZpD8k95BfkYZ1/B5DYvccppdB8X+aDKe2Ix0UGKes1nIV1/4jlmaRSi3HbU3922ldYK+pNbQJ2znVbQmtXqi5dp+Ye8a3fCpv9QPxKVjCdWGL1nsu1TU/q/WwE2o5up6xpWiVoveiPFgEd2ytA8MHHRfgWfR/q6c4nt9VkKRXj3A/Xq0YRvoZmks8ZHcglJxyvDqgxtVMQym3nd3w2ptcTBMewdvt5FBOLZabhIOzdxJVYebjwsk15LgQ0+P84E666uPhYHBX2T/B2UrM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(19092799006)(376014)(18002099003)(22082099003)(11063799006)(56012099006)(4143699003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?zQJ6vlgkdz739MzSH9azL0KF19+EHOZI3AhcqEZu5MV3gE4GCRCwEZUV2M?=
- =?iso-8859-1?Q?5MjiItAErYXd/h2J9gr76RDHdz9a2I7CjSTzUkSz/stANQRCcVCsRTUzjl?=
- =?iso-8859-1?Q?eoCmJcqe2ftwJKuaLwycfcBi+N5QatjIM+TNVTq65R2efoQffJ9y6VI94M?=
- =?iso-8859-1?Q?Og2TYZOvlXp7qSDNnh/qGSQL+7WYdF0cEnXL62yW5TIk82BwHTtHc8CkXC?=
- =?iso-8859-1?Q?UpXmZBvwNFJOrrC0VIL+jpcG1ErtmktaZB0nHqwfjLYzMq0oJ7Z6r/Mk20?=
- =?iso-8859-1?Q?dcDWWlGW6pfhCNCUPVWz3r4iUzBMQSZIberVMBBm8/NYEqesjbsNsps8Sv?=
- =?iso-8859-1?Q?U54GCF7+DJ8wiGpFA4zz8ba2BbIkQtZS4o2KG/hkcZut7ItlN5DIJ2jPd9?=
- =?iso-8859-1?Q?apYeEMQnxOQcAaNZiGsqhx2KRjxihgdm+zVd3pvoz9cj4edmk+aYbBM13D?=
- =?iso-8859-1?Q?cNGAUKlz+SUQAOUHlTStWb6joQUTAiykjdsvNpvbVqoLMOU4t7/m+2Ej1X?=
- =?iso-8859-1?Q?nquGOxjcB3QqcQ+Xvcl8X5zy7u00x+gVLDWYcVnXY5rCbd+pD+mrPaKhnL?=
- =?iso-8859-1?Q?zzpYii4K0kFJh8jDDq2M1nW654CtUwKjCoeWMpYvsaEZMcbU9+/E9T7far?=
- =?iso-8859-1?Q?k+8zHK2X4nqUWfm8nIGkMF3VHT9LLkIWYAx8MxicyFyvxiXGwoFTUVVo/c?=
- =?iso-8859-1?Q?d993rDItKfVFo2C99l4ICtW2jjLVP6Kh7My2CmxDK3LsHOQyy1UB23Kfr8?=
- =?iso-8859-1?Q?N4Vvx+phxyK21CMz/eBpR0C3K4vRyDZDxtLV2DXYushSlxxxWJFPqkHdJ8?=
- =?iso-8859-1?Q?sKIVP4mbG19OnHQ9EBqm4ppB9QkcGnKMEeHCc/0WVgpm6OWC4iWEVQZa3T?=
- =?iso-8859-1?Q?RXO4PQukoUcQxq9XPpSwld/xZQYspkkgcxAMj0PLoXY9ZrL6XkrTvXloYp?=
- =?iso-8859-1?Q?/PTS3R/W1AulnJz3NjndKn/DldEhXLQUcvb1kvdJ2T5iROrzno89EdX1wH?=
- =?iso-8859-1?Q?6nqq4R3T0PBMe50o/1ZWxS3NvRplPHqsSMLkFmqBBCeHTba2Wz0iV9uhre?=
- =?iso-8859-1?Q?Vt3Ow3tK2i3RjmFOMUPUhIM19/870QJkDjPF2tQy0XTZvQIqTdQ5R/i1MU?=
- =?iso-8859-1?Q?G9F123/NGbdwtiypaz5RPcW+sGvKevxEtZ8HnbXZpenATMCsb/gWbAVdBY?=
- =?iso-8859-1?Q?7Fey6ylfVGK6uYKgwrqSEt+foPMhjW6HhMw6A0JioKdEbOgO8WFx9R2x3w?=
- =?iso-8859-1?Q?+g5EsqzBQwzmxM1R/ekJkcyAXgGLK9PS3oAPxfLxHMXaX6NVCGZvNr3sFU?=
- =?iso-8859-1?Q?FXZa0KTuv9y3hEizCYc+IpcfSqt4MqQqQ9EsQL8zpzXsJC+e6VGJpiyFxO?=
- =?iso-8859-1?Q?GQYiMdG8Xxpi6H0/gH5jVgxrDLNNhtWwxubHZ0dW/BkKrs9DqS5wMtsp98?=
- =?iso-8859-1?Q?Id5MLlV76qSGHl9i7KIhwWh1N58car9Q2QgFJwB5Rp2qGqsQKt7QWw14gn?=
- =?iso-8859-1?Q?Mjvj/wvKctTLnWcjqX4o91R27HnLg+HCFHCwPwb9bklnazEkCW9SEC52Zo?=
- =?iso-8859-1?Q?LWrJIKYtv0JjLWgGJlS3oPJqyAZF8598148iC5qxKPzscmPXDaJASbTh1+?=
- =?iso-8859-1?Q?E5Rr5j4ikIF2ZunnzI1G0f1tzdIaG8SiOc/xbJZN3ZB7xrx24xq97kKlww?=
- =?iso-8859-1?Q?SrcbXBH7Zxtb0Rbq3XUTdrwIy5waBNDxes5WXRsBIG0WoxfRF0QZ6x/0Ax?=
- =?iso-8859-1?Q?2HdPq2zmnR6dGE7P/vG5vg4lhms+zdxKJ95ZRrET1+CfVQ8Q5unxH7Kn6E?=
- =?iso-8859-1?Q?QxC3pBmkL8ifjCZRZ/q8+g1ru8sqL1ExrUeh7oUZgzOkPg6hfkV/?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e738a682-8379-44ad-9439-08ded781d36b
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 15:02:53.3940
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CIRlc2R2qfYSCw/xdrjnAR5A813H1UxgY2T3OsJSHiYMKNiiLbGkPgBRLuUJuPwUQbbpmkpXjPyKjfdei/XO0sFBKlvUIjArk6FOyasZfYFJRlUtUfDWW+PwPcBB13D2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10847
+X-MBO-RS-META: 37tty84b1zxogwptawjudbroswqcnaqn
+X-MBO-RS-ID: 303d5cb0e0c41c6b372
 
-On Wed, Jul 01, 2026 at 10:50:11AM +0200, Alexander Stein wrote:
-> Hi,
->
-> here some comments about the findings.
->
-> Am Mittwoch, 1. Juli 2026, 10:45:22 CEST schrieb sashiko-bot@kernel.org:
-> > Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> > - [High] Hardware components (PWM fan and 10G SFP) remain permanently unpowered due to disabled regulators
-> > - [Low] Dead code: Unreferenced `pinctrl_ethphy0` node
-> > --
-> >
-> > commit f54617810555494fd6b435aa3ac070a14b264e01
-> > Author: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-> >
-> > arm64: dts: add tqma9596la-mba95xxca
-> >
-> > This adds support for TQMa95xxLA modules, designed to be soldered
-> > on a carrier board. MBa95xxCA is a carrier reference board / starter kit
-> > design. Enable the external accessible PCIe controllers as host, add
-> > clocking and reset GPIO.
-> >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts b/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts
-> > > new file mode 100644
-> > > index 0000000000000..e90f37bbdcd80
-> > > --- /dev/null
-> > > +++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts
-> >
-...
-> >
-> > > +	pinctrl_ethphy0: ethphy0grp {
-> > > +		fsl,pins = <IMX95_PAD_PDM_BIT_STREAM0__AONMIX_TOP_GPIO1_IO_BIT9		0x1100>;
-> > > +	};
-> >
-> > [Severity: Low]
-> > Is this pinctrl group missing a reference?
-> >
-> > It defines pin configuration for the ethphy0 IRQ pin, but doesn't seem to be
-> > referenced by the ethphy0 node (e.g., via pinctrl-0) or any other node.
->
-> This pad is connected to gpio1 which is under control of the system manager,
-> so Cortex-A55 (Linux) has no access to it.
+On Tue, 2026-06-30 at 09:22 -0400, Bartosz Golaszewski wrote:
+> On Tue, 30 Jun 2026 13:37:54 +0200, Manuel Ebner <manuelebner@mailbox.org=
+> said:
+> > On Mon, 2026-06-29 at 11:12 +0200, Bartosz Golaszewski wrote:
+> > > [...]
+> > >=20
+> > > +/**
+> > > + * platform_device_set_of_node - assign an OF node to device
+> > > + * @pdev: platform device to add the node for
+> > > + * @np: new device node
+> > > + *
+> > > + * Assign an OF node to this platform device. Internally keep track =
+of the
+> > > + * reference count. Devices created with platform_device_alloc() mus=
+t use this
+> > > + * function instead of assigning the node manually.
+> >=20
+> > Doesn't it make sense to add a remark to the kernel doc of platform_dev=
+ice_alloc()?
+> >=20
+> > Thanks
+> > =C2=A0Manuel
+> >=20
+> > > =C2=A0[...]
+> >=20
+>=20
+> Sure, will do in the next iteration.
 
-If not one refer it, it will never be set to GPIO at all.
+then you can add
+Reviewed-by: Manuel Ebner <manuelebner@mailbox.org>
 
-Frank
-
->
-> Best regards
-> Alexander
-> --
-> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-> Amtsgericht München, HRB 105018
-> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-> http://www.tq-group.com/
-
-
+ Manuel
+>=20
+> Bart
