@@ -1,894 +1,219 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011007.outbound.protection.outlook.com [52.101.65.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5021A683C
-	for <imx@lists.linux.dev>; Wed,  1 Jul 2026 10:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782900369; cv=none; b=vBxis/Y1KUZYNIwOcthZPo/m/EoffHVxExsC7E7HgIqe5YW/CFUXN5O7TJ0o/3HsZRATcGoXzU6oUGR1BDlYTHdOWfIp/WWy0UKyQAuLcuGmgAXbxfmDmgzec0ZHAsAQC1u24M9SEk2Ckd+vypyDxeykn6+Wr7RzF+MR5k0IoME=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782900369; c=relaxed/simple;
-	bh=gHjrpRrPAr9iivMy33ty1JozHLOCJ6qtngogOGlLpsE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XkwhhI1y5x2KU1x4Mi+StrrvM/SWsKizBsFzvq3l4s0gJrAwlfEhf0VvuW0YveFkL+oItxyoRZ8C1ywnRrgo9lvQF8Kp3Dp2wuKQ2+K4T5RR6NZo1/IPRFnl0nPLGhi92nkioSRvd9PbeXmwcn2OUU8WHr04XwDOyBim7MsuSwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SadbwSVY; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C073F871E;
+	Wed,  1 Jul 2026 10:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782900780; cv=fail; b=XveSuZT2RDJuVckIHjl9LlpJMB3crXSY2XEkRIEE/ikk1I9YmOx6wxTyNyotCvgL/p8Wf0PAKPanyBS5VHCbMxzxv7zNIkACSCEpjeiQ1GPJqfZ+gvacg7pVUmN806unG4t/1A7FIygMXLLMsd7TyAveTqhzvjlcZZK++lrOpew=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782900780; c=relaxed/simple;
+	bh=Y0h1d123tRMBpxZGegzOl/P+yTqJfbCcMUN+WqMbwig=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Q544t9wo1lTW2aUl4sTlBKqti5rAwJIY39IQlZ1637bLER2qAInYl0Wf2QrCAlswt46qMGaNC6F3CZq/ts6GKM4350NmIrJKmyYhEnHS9xrkJjThoQQOsq2hPbTqqBcy3VVi0gBMwheSgvPzU6qGghx7boq6OeQ9qgeGf6lyrY0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=nnqjXG9r; arc=fail smtp.client-ip=52.101.65.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SadbwSVY"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-472493849a3so569093f8f.2
-        for <imx@lists.linux.dev>; Wed, 01 Jul 2026 03:06:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782900366; x=1783505166; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+pQfZOJ05XnTs5E4jQZq3wfn7h3UGgF7upxrgDNgRiY=;
-        b=SadbwSVYjufNVoXhSGx/SZueBRWnv/2Y0XxNb5NvsuJ8pTbHRljYsSmbfltUA0iJ2S
-         HqNbpUiYrTUzE/ixRB6B2YbAxIgFrzrIMOPxm+EAMpyXI/K8RjKZGLL/AkQ++231BLRo
-         XXUAMKn8L1fbkOPJxpv+GWH/RZrfie6HGkpkTGZL+UJwJL0COZsuneJXy+s//kuSFWNE
-         Cw7sYFaVPAxSpdV3nCrWJ2ytsgXFout+chLoc+w2dc7k04xSsU34qS1q11tHOPHz8ic0
-         GQCWosRi0OzMe2fTpqXkVcTpZJWAF794pLH9EVkjT04Xj01Cv2Que2C+EoNs/8LlPIMd
-         QvdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782900366; x=1783505166;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+pQfZOJ05XnTs5E4jQZq3wfn7h3UGgF7upxrgDNgRiY=;
-        b=jAhFLthMB59KheJZc0Xi2wjQQO2BvR+QArOp8T2ykX1DB3wqfHQxF31UGyiRVYxmF8
-         aggN6W9dn0KZWglpONgt7zaehI+eJ1cPZrlfZT5dQHMS2SVTNFj5uhquij0Rn7YDdMAq
-         gizSKycFjkm8FdOkMo2qqpbWDEvONbxG1tUTlDKPw24U7MPP2xVFMxefCISng8EypRcJ
-         2AT1Im9wkWB4yydiW6/gPb6N9YOKSGDuoQjHfZEeWt9ZfRJdj91rdOOdPpKn6XL7tBGu
-         J8Ffi2ZdOap6RTbcwS7dmxy8nRhYa/yxnrLGGgiGvlAqb01xl938FPGZiJSjCvbPJfC1
-         UVlA==
-X-Forwarded-Encrypted: i=1; AHgh+RowfqpmJshq3zGacegbkcdamCCss5j2Vh4F2ALsSa3OXTsIKprrzSPkTasrOznotOaMNJE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzgZtX0bd7hr2W0/OAqS3cjp8KbwbCMfZmywAneRJQolMI4oXE6
-	rVscH72R5SbyZSCMm6pOWituMd0LJ55UIQCf/hzxY0SEflA6AP/k7NfZ
-X-Gm-Gg: AfdE7cmcifePbeeMubScXUM9PcepGJ1zF6KUS0rsATS88Et2GLQ+sCBPrj2pkRKVJ3w
-	eV9NfYxW5YQSVIxJ2RF4HVJ4A/pCooJurDTZNkct4x9AKeA7c8aDLThTkYJSr0RJ7avK214csXL
-	0lfh7GqEzxGFJujPek5X+EQr7+rVWsmvEHHPYqOBwPnpJaXEsv47Xmym2wFhFZvbKb1lNaHBQtE
-	rRwePLVsJb+pbhpW2DpB5mlgg1lcWjiHw8sVPvtHozf9tOZEtIQeXDEnwVFiqRuCUnY5WUxsbh3
-	CMkfsW0+SnLbrANPyeRSNDbf3YYs/Z+xF/xUbvng2qelIrUNeWnUoR6ToFg+QoEWfB+8TSF793o
-	eOScBIB2lCMVTF+ft9NQjptRM1z1DtqVvrChvnRCw2tLgkEyy9ubww2jtvApdvOvbAMA+BWswyU
-	ZKH9hnePJXKCLy+7Y1bZbu85uWYjlZZ9X4uoWjiYVqQ2OfYcexvI76dATTscU6Fgy60sZkEWMng
-	NRP8WTrFsCwEBHBiYTC/DOD9KLXVB6ttOlx
-X-Received: by 2002:a5d:64e2:0:b0:476:d52b:b85 with SMTP id ffacd0b85a97d-47758607362mr1544898f8f.16.1782900365737;
-        Wed, 01 Jul 2026 03:06:05 -0700 (PDT)
-Received: from Lord-Beerus.station (net-93-144-65-248.cust.dsl.teletu.it. [93.144.65.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4756636cf26sm13742935f8f.19.2026.07.01.03.06.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 03:06:05 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH v6 3/3] arm64: dts: imx8mp-var-dart: Add support for Variscite Sonata board
-Date: Wed,  1 Jul 2026 12:05:57 +0200
-Message-ID: <22468e4999c2255fbf46ceb1a5be6e0d24fa27e3.1782898728.git.stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1782898728.git.stefano.r@variscite.com>
-References: <cover.1782898728.git.stefano.r@variscite.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="nnqjXG9r"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qbWjJnVCFGcAB102qvikRU1idFV6G9k5QVmC6k65wO0HKVQnbxRUQxNEhdT2VPM4+H0ZfVbAbkFg1vzM5VMv5KTKgqFKcZTiojkKw4JpdlnbVeZpuXQj4lduFTSp3WPerfCBiUEyZIbYtN7L/+wRlaWvu1pB3gx2nmnhE672HYh0vUAT+wPXp8tmn3VBx4kmsx6YK3rtVS96LiDHq09u2fMlUT8veFK854a8XsJ2yIXqWBNGN8aYlyflGuQujUY0nAsnkv+rZlL25mvZzBfADmWTvohjPzZ55hwS7oZK0mdAhulbOhD+IM3lo1xmrN+8IBCARBUzxLi7sF/cnE3oOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y0h1d123tRMBpxZGegzOl/P+yTqJfbCcMUN+WqMbwig=;
+ b=tuF5Zktvc5ti8iAk53V/xzudmgYdbAwpp1UQZ1y+pYLltz8aRzLLKDHsn69FxIdNNlTRmi8EEqzUEqP/LXW+x1gFm6EziqFUxtx10bLcOAUW24Z/+Eilwe6BpEdC+t5TNtlUlQ+X/xySDT6p7l6ZsfEvvbIy2VldZcE/zze9Ocuz09Eo6d0NI5SbckcK/lUCJcxR9zVIFcgpLyj9MXd8E3evW6jFuj2XvV1hpma2usops5g4XX21gyE8Z1Ed54HJJIRW/ZoEiG7z0cI06+lurzNKBgSFRxoolJskUvQaIq1hnkL0qVadB56gV6ddMp52zWsTzysX+R8ElVdbJMbcZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y0h1d123tRMBpxZGegzOl/P+yTqJfbCcMUN+WqMbwig=;
+ b=nnqjXG9rpB2aCW5SHACM9eiGUoBCgoycCdUJA6tZlc31pM8pTDRcv0rs20K3IKFO4b5E4vBDRgM7+eDolCs43E90dHCMNApbbIM3kCZzXQLFtfE1eFu50ULAsmQr1RpQ61eebYTj3JxeZNiXsfTGq4MH4lzVLapDEC0SbIru9gFr+9bWKPayU0yuUFOm3sUF6p3b2fVaSO/Y9pjaSdDfCytxGTD6JEoxb8pZ/sgGloEhhHJOZJ6oZUDWl5vGAue7YSiYQP1itxcI0JY9P6CwsWcFXuyVvjKx/idKCOXqu/n1ZSa1srsA02s8a2aJX61hwRfFan2yJXccHcvVUYsWNw==
+Received: from DU2PR04MB8629.eurprd04.prod.outlook.com (2603:10a6:10:2dc::6)
+ by VE1PR04MB7247.eurprd04.prod.outlook.com (2603:10a6:800:1a2::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
+ 10:12:54 +0000
+Received: from DU2PR04MB8629.eurprd04.prod.outlook.com
+ ([fe80::9d04:7526:a901:fe47]) by DU2PR04MB8629.eurprd04.prod.outlook.com
+ ([fe80::9d04:7526:a901:fe47%6]) with mapi id 15.21.0181.008; Wed, 1 Jul 2026
+ 10:12:54 +0000
+From: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
+To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "Frank.Li@kernel.org"
+	<Frank.Li@kernel.org>, network dev <netdev@vger.kernel.org>
+Subject: RE: [PATCH net-next 07/14] net: enetc: differentiate phylink
+ capabilities for pseudo-MAC and standalone MAC
+Thread-Topic: [PATCH net-next 07/14] net: enetc: differentiate phylink
+ capabilities for pseudo-MAC and standalone MAC
+Thread-Index: AQHdCGT09JFS8OPv8U+rOC+NGehpl7ZYTAAAgAAnj6A=
+Date: Wed, 1 Jul 2026 10:12:54 +0000
+Message-ID:
+ <DU2PR04MB8629588C93ABE0E27C482D3688F62@DU2PR04MB8629.eurprd04.prod.outlook.com>
+References: <20260630072036.382761-1-wei.fang@oss.nxp.com>
+ <20260630072036.382761-8-wei.fang@oss.nxp.com>
+ <20260701075116.900D81F00A3A@smtp.kernel.org>
+In-Reply-To: <20260701075116.900D81F00A3A@smtp.kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU2PR04MB8629:EE_|VE1PR04MB7247:EE_
+x-ms-office365-filtering-correlation-id: f2d2cb5a-196c-4c28-2e4c-08ded75950f5
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|23010399003|19092799006|376014|1800799024|38070700021|6133799003|11063799006|18002099003|22082099003|5023799004|56012099006|4143699003;
+x-microsoft-antispam-message-info:
+ +VdikgsAPvddv1DNIltwHnsY8KU8ODDWF9pzOL6zG1w3gN9AFpJObiO/I2knljOdNU7CkgqQvTGkbS8UliwZp1r1RcxpD//DScdWfMDb5/VMvvwarPbs8TZgaLBKESaIabtqmf6rspfLjtIifu4w2CCvOkvIvezfh8M49eIwu4gRxAQbcGNkyOrElxem24pV4JY8JywwQTQF0aFj4imDVc5jxRRYtoX4C5MhptM26AO+aIU/QwiyfYBVxK5yYPVNCIXbUmqt/vEIEMEQt/TBcWky+sW1lX5KRIu0QzgEYAd2zl0iwTO9N6pl9hzivjIdjUDH5xZ78xmsWu6VdgLYexAXbCZlXmYbbju8d2NeHBmKe85v0129h3986iVZ7e0eTYzrXvG+8opBlce6Hq2ELoYZzIngRQ6FnTYWJTJgu+GGA0gAEnBKLnhgZnl2UwawP1gW+bOF5rA582ch6NTNvTqyuIuvgreogVFuYY8wm3OCySDFzXFswSZL9duKty/6/14re4qVjoWChVBhXdYrgAYLKjEePFx51Zqq5pO7qzq6ebhd9meBTCKJAFxsbNQ96x0dXladCZozMYu3eSKXv9LPNG8Z8DwYWLnbZbSl3bBmmRIYEclB9yAwCmsz6gfsRhC3fS/EOFI6RZC9OBcMozlz5+6HnyHdkS56mGWl9QWPYzuZ7DE8nNyVEz4ME9bYsOS4Ju742FgldOLFw9pn8BckvHMhHklWIOa1RtbPVto=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8629.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(19092799006)(376014)(1800799024)(38070700021)(6133799003)(11063799006)(18002099003)(22082099003)(5023799004)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?RXlOSTYxckwvN25HeHdpYWlqQUZvQUlPdEpsVEZNTWp5eCtDZ3RYTUNQbkxH?=
+ =?utf-8?B?dkNBbXJXY000Q1g3cm91c2pWMHd4WmViTHAwSnhGTExWSkpQRm9lM0JOMEZq?=
+ =?utf-8?B?UnI0alRkUUNlRUtFSkRDWng1eGJ4UGg0K203TkJVb25TMzFHa0tzbE5RTGox?=
+ =?utf-8?B?Y0hqVWFFa0xsamozRGQyWndCMm1vWk5VL2EyYS93VHpMY2JhYzFURUJmbDB2?=
+ =?utf-8?B?VzhSZ2dJTnNlTXVIVlJxTEEzS2hWcis3YkJtbkVCVldDZmViNXlMVEU0Nnd2?=
+ =?utf-8?B?bEdhTTgrdHBJSlY2ZkMxVGc3a1g4VkxXNDBlZVFEckN1MGhpaUVJRkNkV1ZO?=
+ =?utf-8?B?ZUtXbmVGakZXaEJPUnZsbUJRbFVTVkM2SGdvRGw0ZGw0YUFjRFZPMzhFK2F1?=
+ =?utf-8?B?d3puQWY2cVdmYndlc2RrWjVMR0J4cjgycWJqQzdlM3k3MzY0ZVNkemFqblBi?=
+ =?utf-8?B?dWRrb3E3M1drUEkyNjUrdzBIYlRpTmpUVXJYbVdIekdHdHg1cHFBektod0wx?=
+ =?utf-8?B?QkthVEM2MTROZTF2OUwrVFp6TDI4czBYQTJTR2dmRitPaVFET0hmSlg0V21P?=
+ =?utf-8?B?KzAvaXZ4VnJvNXQ5NUEvYVlnQ29JT1hkZm1jQ2hReHZEUzhWdVVxdzVQcVhu?=
+ =?utf-8?B?VGI0eGttSDlJSSszYVFkZ0lONndybms2RFB6WjZGM3JkaWRKWW43OFgzTXJT?=
+ =?utf-8?B?TTRzTEpnb0x3NnUzenpoUS93NkNxcVltQ0NLKzBZSUdzTVRrQUdqRE95Wm1w?=
+ =?utf-8?B?L1liQWlPUnZVU2NzNk1PZVZ0dysyc0d3a1Z5d0x2UDVaWWZFMU9TQW1KZ3Aw?=
+ =?utf-8?B?RTZYZ2JoYXZHeFp3RlI1bXBpc3hrZlNrcjdIQm9VM0ZKOC9vdWJ2ZXA2cFhl?=
+ =?utf-8?B?R0pOSGtGOVIzeGFraFFzSHh0WWRtdlljWTFHR3V5SzZrZDBYdy81ekljNkpU?=
+ =?utf-8?B?aFh6V1MyWXc2VVJUeWxoVGV3U1FXeDdoY3RoQ3ZGSjIzZ0RqeUZvbUk0czNX?=
+ =?utf-8?B?N1AxbEFqU3YxL3hQUmNjYlNxK3QxNTB4R2RxNmFyVVdHZ0FjUnVPN1I1S3Rp?=
+ =?utf-8?B?RGhPQ0ZwUGpJUXI2NkFWN3dtUHRJRVJJY3E5ZjQrUjdIcUpuaEZ1a3NubnFL?=
+ =?utf-8?B?R2EvTU9PQk1IdnlQTGppNHdINWRGOGdlYmNlZWc5VmNRVnA1c001aXhvMmtu?=
+ =?utf-8?B?WTdEOXIxZTZjdE5ITWMvVERGM3FwWnBYaEtLQU5haVhDL1dtSVdPQW5sTnlh?=
+ =?utf-8?B?TUhrZjBPaCtCZkxUUzMxcjQ5M29LMkNYbWtJaXNwZjVXRWFWQWx5eUpWYnV4?=
+ =?utf-8?B?QU1VT2w0ZUZ0VkhpSng3QVdyYXRQeGU3a0pjM1h1RWNBaTdkeFp2QzY2ZGVk?=
+ =?utf-8?B?TUszd2Q3bEUyLzd2aFVCNG9QRE9jRmpUa0xRZUxmQ1lmdFk4ZHNmT0FqOFIz?=
+ =?utf-8?B?dllHUjU3NEFZVVlrcFNINlV5dVFmWFc3ZGdCalpuOTV4Q2F1YW9EVk9QUzF5?=
+ =?utf-8?B?aThNZlhCYjBnWkZvK1FhMFo5K1YxUElHWVMxNnJyZytJQW5vU3M5K0F4cUw4?=
+ =?utf-8?B?QVgrY0FYUEQybVZIYzlocEJBMnRkZlAzSjZ4eERMeGZ5RUZVTnkxeTFKRkgy?=
+ =?utf-8?B?NEF4eHNVbWdaaHN3TGVmalphSzFSOCtSOHpYR0JhWUFvb0ZiK09VWHFqUlNo?=
+ =?utf-8?B?c3BIVm05TXZsZXdCMzdlbG05cTU3UzBvczlqKzJiZjljTlRJR2ZYSDdFc1Yr?=
+ =?utf-8?B?c1lvWkJpaTkyYWY4ZVZ5WmttWWVYUTF2VTlya1gxbFE1UVdFYmhpV3dZbWZJ?=
+ =?utf-8?B?K3kyOU1EYjFpRFRET0UwOGJXSFFKL0VZWHkxcEdhbDJ5aHN3NEc1RU1qMHUr?=
+ =?utf-8?B?c2hqd0ZtMS9mQlhNRmxGZW5CSGVENjY1dkhvRS9qVWt2QnJ5OG9yZVcrTHp0?=
+ =?utf-8?B?b0NsN0paWFZQTzd5T3ExSzF2U3hOVmtwR0RaeFkySGF0YTlvcDl4dDZtOGFS?=
+ =?utf-8?B?RWF5a1k4ZzM1Nzloc2VWNkVHMkZieE5PUXJmV2NvNkk1b3ZLZ3haSzNPOFMz?=
+ =?utf-8?B?VUdkS3M2ZWpPSFl5dU9wbXZERThzRW5BR29NZSsydzc0c1B1MGNoMVhyTkND?=
+ =?utf-8?B?RnA3bjZXeWVkOGUzeFpBWUdaUUllM3VzMzBFanFTYktnSm1iemdMYVpnMlJF?=
+ =?utf-8?B?R004UjNXRWcwVEJ6QmpuSExlS29YM3JCZHFsa2hncWRZMlcvTWZsZmxCeDlr?=
+ =?utf-8?B?WWV2aG41L0xDdmxCK0U4WkRsK3NjRSs5b2NMMVE4VEEvYSs2T1dBYXBDM3Y1?=
+ =?utf-8?Q?szd8StdiefvslP0CxO?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8629.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2d2cb5a-196c-4c28-2e4c-08ded75950f5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2026 10:12:54.3070
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mU/3ynm3K5YPgL/omxrB+pkjUFsbEaCmmuzDa81H4mQV6SKB8dggkaZdKe10XWY99Z5p41/g3Kn9xRx/TgcmsQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7247
 
-From: Stefano Radaelli <stefano.r@variscite.com>
-
-Add device tree support for the Variscite Sonata carrier board with the
-DART-MX8M-PLUS system on module.
-
-The Sonata board includes
-- uSD Card support
-- USB ports and OTG
-- Additional Gigabit Ethernet interface
-- Uart, SPI and I2C interfaces
-- HDMI support
-- GPIO Expanders
-- RTC module
-- TPM module
-- CAN peripherals
-
-Link: https://variscite.com/carrier-boards/sonata-board/
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
-v5->v6:
- - Added comment for rgb_sel hog
-
-v4->v5:
- - Fix nodes order
-
-v3->v4:
- - Add snvs nodes
-
-v2->v3:
- - 
-
-v1->v2:
- - Fixed model name
- - Added new usdhc2 regulator pinctrl
- - Adjusted irq edges
-
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../dts/freescale/imx8mp-var-dart-sonata.dts  | 733 ++++++++++++++++++
- 2 files changed, 734 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-sonata.dts
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 430085123b4e..01d4ddfde098 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -453,6 +453,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-ultra-mach-sbc.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-dart-sonata.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw71xx-2x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw72xx-2x.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx8mp-var-dart-sonata.dts
-new file mode 100644
-index 000000000000..983d67a0c1de
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-dart-sonata.dts
-@@ -0,0 +1,733 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Variscite Sonata carrier board for DART-MX8M-PLUS
-+ *
-+ * Link: https://variscite.com/carrier-boards/sonata-board/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+
-+#include <dt-bindings/leds/common.h>
-+#include <dt-bindings/phy/phy-imx8-pcie.h>
-+#include "imx8mp-var-dart.dtsi"
-+
-+/ {
-+	model = "Variscite DART-MX8M-PLUS on Sonata-Board";
-+	compatible = "variscite,var-dart-mx8mp-sonata",
-+		     "variscite,var-dart-mx8mp",
-+		     "fsl,imx8mp";
-+
-+	chosen {
-+		stdout-path = &uart1;
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		button-home {
-+			label = "Home";
-+			linux,code = <KEY_HOME>;
-+			gpios = <&pca6408_1 4 GPIO_ACTIVE_LOW>;
-+			wakeup-source;
-+		};
-+
-+		button-up {
-+			label = "Up";
-+			linux,code = <KEY_UP>;
-+			gpios = <&pca6408_1 5 GPIO_ACTIVE_LOW>;
-+			wakeup-source;
-+		};
-+
-+		button-down {
-+			label = "Down";
-+			linux,code = <KEY_DOWN>;
-+			gpios = <&pca6408_1 6 GPIO_ACTIVE_LOW>;
-+			wakeup-source;
-+		};
-+
-+		button-back {
-+			label = "Back";
-+			linux,code = <KEY_BACK>;
-+			gpios = <&pca6408_1 7 GPIO_ACTIVE_LOW>;
-+			wakeup-source;
-+		};
-+	};
-+
-+	gpio-leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_gpio_leds>;
-+
-+		led-emmc {
-+			gpios = <&gpio4 18 GPIO_ACTIVE_HIGH>;
-+			label = "eMMC";
-+			linux,default-trigger = "mmc2";
-+		};
-+	};
-+
-+	native-hdmi-connector {
-+		compatible = "hdmi-connector";
-+		label = "HDMI OUT";
-+		type = "a";
-+
-+		port {
-+			hdmi_in: endpoint {
-+				remote-endpoint = <&hdmi_tx_out>;
-+			};
-+		};
-+	};
-+
-+	clk40m: oscillator {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <40000000>;
-+		clock-output-names = "can_osc";
-+	};
-+
-+	pcie0_refclk: pcie0-refclk {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <100000000>;
-+	};
-+
-+	reg_usdhc2_vmmc: regulator-vmmc-usdhc2 {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_vmmc_usdhc2>;
-+		regulator-name = "VSD_3V3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		startup-delay-us = <100>;
-+		off-on-delay-us = <12000>;
-+	};
-+
-+	sound-hdmi {
-+		compatible = "fsl,imx-audio-hdmi";
-+		model = "audio-hdmi";
-+		audio-cpu = <&aud2htx>;
-+		hdmi-out;
-+	};
-+
-+	sound-xcvr {
-+		compatible = "fsl,imx-audio-card";
-+		model = "imx-audio-xcvr";
-+
-+		pri-dai-link {
-+			link-name = "XCVR PCM";
-+
-+			cpu {
-+				sound-dai = <&xcvr>;
-+			};
-+		};
-+	};
-+};
-+
-+&aud2htx {
-+	status = "okay";
-+};
-+
-+&ecspi1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi1>;
-+	cs-gpios = <&gpio5  9 GPIO_ACTIVE_LOW>,
-+		   <&gpio1 12 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	ads7846: touchscreen@0 {
-+		compatible = "ti,ads7846";
-+		reg = <0>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_restouch>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		spi-max-frequency = <1500000>;
-+		pendown-gpio = <&gpio1 7 GPIO_ACTIVE_LOW>;
-+		ti,x-min = /bits/ 16 <125>;
-+		ti,x-max = /bits/ 16 <4008>;
-+		ti,y-min = /bits/ 16 <282>;
-+		ti,y-max = /bits/ 16 <3864>;
-+		ti,x-plate-ohms = /bits/ 16 <180>;
-+		ti,pressure-max = /bits/ 16 <255>;
-+		ti,debounce-max = /bits/ 16 <10>;
-+		ti,debounce-tol = /bits/ 16 <3>;
-+		ti,debounce-rep = /bits/ 16 <1>;
-+		ti,settle-delay-usec = /bits/ 16 <150>;
-+		ti,keep-vref-on;
-+		wakeup-source;
-+	};
-+
-+	can0: can@1 {
-+		compatible = "microchip,mcp251xfd";
-+		reg = <1>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_can>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
-+		microchip,rx-int-gpios = <&gpio5 4 GPIO_ACTIVE_LOW>;
-+		clocks = <&clk40m>;
-+		spi-max-frequency = <20000000>;
-+	};
-+};
-+
-+&eqos {
-+	mdio {
-+		ethphy1: ethernet-phy@1 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <1>;
-+			reset-gpios = <&pca6408_2 0 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10000>;
-+			reset-deassert-us = <20000>;
-+			vddio-supply = <&reg_phy_vddio>;
-+
-+			leds {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				led@0 {
-+					reg = <0>;
-+					color = <LED_COLOR_ID_YELLOW>;
-+					function = LED_FUNCTION_LAN;
-+					linux,default-trigger = "netdev";
-+				};
-+
-+				led@1 {
-+					reg = <1>;
-+					color = <LED_COLOR_ID_GREEN>;
-+					function = LED_FUNCTION_LAN;
-+					linux,default-trigger = "netdev";
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&ethphy0 {
-+	leds {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@0 {
-+			reg = <0>;
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+
-+		led@1 {
-+			reg = <1>;
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+	};
-+};
-+
-+&fec {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_fec>;
-+	/*
-+	 * The required RGMII TX and RX 2ns delays are implemented directly
-+	 * in hardware via passive delay elements on the SOM PCB.
-+	 * No delay configuration is needed in software via PHY driver.
-+	 */
-+	phy-mode = "rgmii";
-+	phy-handle = <&ethphy1>;
-+	status = "okay";
-+};
-+
-+&flexcan1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan1>;
-+	status = "okay";
-+};
-+
-+&flexcan2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan2>;
-+	status = "okay";
-+};
-+
-+&hdmi_pai {
-+	status = "okay";
-+};
-+
-+&hdmi_pvi {
-+	status = "okay";
-+};
-+
-+&hdmi_tx {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hdmi>;
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			hdmi_tx_out: endpoint {
-+				remote-endpoint = <&hdmi_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&hdmi_tx_phy {
-+	status = "okay";
-+};
-+
-+&i2c2 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	pinctrl-1 = <&pinctrl_i2c2_gpio>;
-+	scl-gpios = <&gpio5 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 17 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	status = "okay";
-+
-+	pca9534: gpio@22 {
-+		compatible = "nxp,pca9534";
-+		reg = <0x22>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+
-+		eth10g-en-hog {
-+			gpio-hog;
-+			gpios = <5 GPIO_ACTIVE_HIGH>;
-+			output-low;
-+			line-name = "eth10g_sel";
-+		};
-+
-+		pcie2-en-hog {
-+			gpio-hog;
-+			gpios = <6 GPIO_ACTIVE_HIGH>;
-+			output-high;
-+			line-name = "pcie2_sel";
-+		};
-+
-+		/* RGB_SEL
-+		 * Keep signal low and not floating
-+		 */
-+		lvds-brg-enable-hog {
-+			gpio-hog;
-+			gpios = <7 GPIO_ACTIVE_HIGH>;
-+			output-low;
-+			line-name = "lvds_brg_en";
-+		};
-+	};
-+
-+	/* Capacitive touch controller */
-+	ft5x06_ts: touchscreen@38 {
-+		compatible = "edt,edt-ft5206";
-+		reg = <0x38>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_captouch>;
-+		reset-gpios = <&pca6408_2 4 GPIO_ACTIVE_LOW>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
-+		touchscreen-size-x = <800>;
-+		touchscreen-size-y = <480>;
-+		touchscreen-inverted-x;
-+		touchscreen-inverted-y;
-+		wakeup-source;
-+	};
-+
-+	typec@3d {
-+		compatible = "nxp,ptn5150";
-+		reg = <0x3d>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_extcon>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <10 IRQ_TYPE_EDGE_FALLING>;
-+
-+		port {
-+			typec_dr_sw: endpoint {
-+				remote-endpoint = <&usb3_drd_sw>;
-+			};
-+		};
-+	};
-+
-+	rtc@68 {
-+		compatible = "dallas,ds1337";
-+		reg = <0x68>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_rtc>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <15 IRQ_TYPE_EDGE_FALLING>;
-+		wakeup-source;
-+	};
-+};
-+
-+&i2c3 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	pinctrl-1 = <&pinctrl_i2c3_gpio>;
-+	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	status = "okay";
-+};
-+
-+&i2c4 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c4>;
-+	pinctrl-1 = <&pinctrl_i2c4_gpio>;
-+	scl-gpios = <&gpio5 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 21 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	status = "okay";
-+
-+	pca6408_1: gpio@20 {
-+		compatible = "nxp,pcal6408";
-+		reg = <0x20>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pca6408>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+
-+	pca6408_2: gpio@21 {
-+		compatible = "nxp,pcal6408";
-+		reg = <0x21>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+
-+	st33ktpm2xi2c: tpm@2e {
-+		compatible = "st,st33ktpm2xi2c", "tcg,tpm-tis-i2c";
-+		reg = <0x2e>;
-+		label = "tpm";
-+		reset-gpios = <&pca9534 0 GPIO_ACTIVE_HIGH>;
-+	};
-+};
-+
-+&lcdif3 {
-+	status = "okay";
-+};
-+
-+&pcie {
-+	reset-gpios = <&pca6408_2 3 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+};
-+
-+&pcie_phy {
-+	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
-+	clocks = <&pcie0_refclk>;
-+	clock-names = "ref";
-+	status = "okay";
-+};
-+
-+&pwm1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm1>;
-+	status = "okay";
-+};
-+
-+&snvs_pwrkey {
-+	status = "okay";
-+};
-+
-+&snvs_rtc {
-+	status = "disabled";
-+};
-+
-+/* Console */
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+/* Header */
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	status = "okay";
-+};
-+
-+/* Header */
-+&uart3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart3>;
-+	status = "okay";
-+};
-+
-+&usb3_0 {
-+	status = "okay";
-+};
-+
-+&usb3_1 {
-+	status = "okay";
-+};
-+
-+&usb_dwc3_0 {
-+	dr_mode = "otg";
-+	hnp-disable;
-+	srp-disable;
-+	adp-disable;
-+	usb-role-switch;
-+	snps,dis-u1-entry-quirk;
-+	snps,dis-u2-entry-quirk;
-+	status = "okay";
-+
-+	port {
-+		usb3_drd_sw: endpoint {
-+			remote-endpoint = <&typec_dr_sw>;
-+		};
-+	};
-+};
-+
-+&usb_dwc3_1 {
-+	dr_mode = "host";
-+	status = "okay";
-+};
-+
-+&usb3_phy0 {
-+	fsl,phy-tx-vref-tune-percent = <122>;
-+	fsl,phy-tx-preemp-amp-tune-microamp = <1800>;
-+	fsl,phy-tx-vboost-level-microvolt = <1156>;
-+	fsl,phy-comp-dis-tune-percent = <115>;
-+	fsl,phy-pcs-tx-deemph-3p5db-attenuation-db = <33>;
-+	fsl,phy-pcs-tx-swing-full-percent = <100>;
-+	status = "okay";
-+};
-+
-+&usb3_phy1 {
-+	fsl,phy-tx-preemp-amp-tune-microamp = <1800>;
-+	fsl,phy-tx-vref-tune-percent = <116>;
-+	status = "okay";
-+};
-+
-+&usdhc2 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-+	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-+	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	bus-width = <4>;
-+	status = "okay";
-+};
-+
-+&xcvr {
-+	#sound-dai-cells = <0>;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_can: cangrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO06__GPIO1_IO06		0x1c6
-+			MX8MP_IOMUXC_SPDIF_RX__GPIO5_IO04		0x16
-+		>;
-+	};
-+
-+	pinctrl_captouch: captouchgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14		0x16
-+		>;
-+	};
-+
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK		0x12
-+			MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI		0x12
-+			MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO		0x12
-+			MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09		0x12
-+			MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12		0x12
-+		>;
-+	};
-+
-+	pinctrl_extcon: extcongrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10		0x10
-+		>;
-+	};
-+
-+	pinctrl_fec: fecgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_RXD4__ENET1_RGMII_RD0		0x90
-+			MX8MP_IOMUXC_SAI1_RXD5__ENET1_RGMII_RD1		0x90
-+			MX8MP_IOMUXC_SAI1_RXD6__ENET1_RGMII_RD2		0x90
-+			MX8MP_IOMUXC_SAI1_RXD7__ENET1_RGMII_RD3		0x1d0
-+			MX8MP_IOMUXC_SAI1_TXC__ENET1_RGMII_RXC		0x90
-+			MX8MP_IOMUXC_SAI1_TXFS__ENET1_RGMII_RX_CTL	0x90
-+			MX8MP_IOMUXC_SAI1_TXD0__ENET1_RGMII_TD0		0x00
-+			MX8MP_IOMUXC_SAI1_TXD1__ENET1_RGMII_TD1		0x00
-+			MX8MP_IOMUXC_SAI1_TXD2__ENET1_RGMII_TD2		0x00
-+			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3		0x00
-+			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL	0x00
-+			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC		0x00
-+		>;
-+	};
-+
-+	pinctrl_flexcan1: flexcan1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_RXC__CAN1_TX			0x154
-+			MX8MP_IOMUXC_SAI2_TXC__CAN1_RX			0x154
-+		>;
-+	};
-+
-+	pinctrl_flexcan2: flexcan2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_MCLK__CAN2_RX			0x154
-+			MX8MP_IOMUXC_SAI2_TXD0__CAN2_TX			0x154
-+		>;
-+	};
-+
-+	pinctrl_gpio_leds: ledgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18		0xc6
-+		>;
-+	};
-+
-+	pinctrl_hdmi: hdmigrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c2
-+			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x1c2
-+			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x10
-+			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x10
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL			0x400001c2
-+			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA			0x400001c2
-+		>;
-+	};
-+
-+	pinctrl_i2c2_gpio: i2c2gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C2_SCL__GPIO5_IO16		0x1c2
-+			MX8MP_IOMUXC_I2C2_SDA__GPIO5_IO17		0x1c2
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL			0x400001c2
-+			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA			0x400001c2
-+		>;
-+	};
-+
-+	pinctrl_i2c3_gpio: i2c3gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C3_SCL__GPIO5_IO18		0x1c2
-+			MX8MP_IOMUXC_I2C3_SDA__GPIO5_IO19		0x1c2
-+		>;
-+	};
-+
-+	pinctrl_i2c4: i2c4grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL			0x400001c2
-+			MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA			0x400001c2
-+		>;
-+	};
-+
-+	pinctrl_i2c4_gpio: i2c4gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C4_SCL__GPIO5_IO20		0x1c2
-+			MX8MP_IOMUXC_I2C4_SDA__GPIO5_IO21		0x1c2
-+		>;
-+	};
-+
-+	pinctrl_pca6408: pca6408grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO05__GPIO1_IO05		0x1c6
-+		>;
-+	};
-+
-+	pinctrl_pwm1: pwm1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO01__PWM1_OUT		0x116
-+		>;
-+	};
-+
-+	pinctrl_restouch: restouchgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07		0xc0
-+		>;
-+	};
-+
-+	pinctrl_rtc: rtcgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO15__GPIO1_IO15		0x1c0
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX		0x40
-+			MX8MP_IOMUXC_UART1_TXD__UART1_DCE_TX		0x40
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX		0x40
-+			MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX		0x40
-+		>;
-+	};
-+
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX		0x40
-+			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX		0x40
-+		>;
-+	};
-+
-+	pinctrl_usdhc2: usdhc2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x190
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d0
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d0
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d0
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d0
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d0
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0xc0
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x194
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d4
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d4
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d4
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d4
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d4
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0xc0
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x196
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d6
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d6
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d6
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d6
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d6
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0xc0
-+		>;
-+	};
-+
-+	pinctrl_vmmc_usdhc2: regvmmc-usdhc2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19		0x40
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CD_B__GPIO2_IO12		0x1c4
-+		>;
-+	};
-+};
--- 
-2.47.3
-
+DQoNCkJlc3QgUmVnYXJkcywNCldlaSBGYW5nDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
+LS0NCj4gRnJvbTogc2FzaGlrby1ib3RAa2VybmVsLm9yZyA8c2FzaGlrby1ib3RAa2VybmVsLm9y
+Zz4NCj4gU2VudDogMjAyNuW5tDfmnIgx5pelIDE1OjUxDQo+IFRvOiBXZWkgRmFuZyAoT1NTKSA8
+d2VpLmZhbmdAb3NzLm54cC5jb20+DQo+IENjOiBpbXhAbGlzdHMubGludXguZGV2OyBGcmFuay5M
+aUBrZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggbmV0LW5leHQgMDcvMTRdIG5ldDog
+ZW5ldGM6IGRpZmZlcmVudGlhdGUgcGh5bGluayBjYXBhYmlsaXRpZXMNCj4gZm9yIHBzZXVkby1N
+QUMgYW5kIHN0YW5kYWxvbmUgTUFDDQo+IA0KPiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0
+aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3VuZCAxIHBvdGVudGlhbCBpc3N1ZShzKSB0bw0KPiBj
+b25zaWRlcjoNCj4gLSBbSGlnaF0gSW5jb3JyZWN0IHVuY29uZGl0aW9uYWwgYWR2ZXJ0aXNlbWVu
+dCBvZiA1Ry8xMEcgTUFDIGNhcGFiaWxpdGllcyBhbmQNCj4gMTBHQkFTRVIvWEdNSUkgaW50ZXJm
+YWNlIG1vZGVzIGZvciBvbGRlciBFTkVUQyB2MSBoYXJkd2FyZS4NCj4gLS0NCj4gDQo+IGNvbW1p
+dCBhZmI5ZjFiNjA3YzcwZDNhNmE4NTRlMTVhYWEwMzRmOTlmYjQ5ZjVjDQo+IEF1dGhvcjogQ2xh
+dWRpdSBNYW5vaWwgPGNsYXVkaXUubWFub2lsQG54cC5jb20+DQo+IA0KPiBuZXQ6IGVuZXRjOiBk
+aWZmZXJlbnRpYXRlIHBoeWxpbmsgY2FwYWJpbGl0aWVzIGZvciBwc2V1ZG8tTUFDIGFuZCBzdGFu
+ZGFsb25lDQo+IE1BQw0KPiANCj4gVGhlIEVORVRDIHBzZXVkby1NQUNzIGFyZSBwcm9wcmlldGFy
+eSBpbnRlcm5hbCBsaW5rcyB0aGF0IGRvIG5vdCBpbXBsZW1lbnQNCj4gYW55IHN0YW5kYXJkIE1J
+SSBpbnRlcmZhY2UsIHNvIHJlc3RyaWN0IHRoZWlyIHN1cHBvcnRlZCBQSFkgaW50ZXJmYWNlIG1v
+ZGVzDQo+IHRvIFBIWV9JTlRFUkZBQ0VfTU9ERV9JTlRFUk5BTCBvbmx5LiBUaGlzIGFsc28gZXhw
+YW5kcyB0aGUgc3VwcG9ydGVkDQo+IGludGVyZmFjZSBtb2RlcyBhbmQgTUFDIGNhcGFiaWxpdGll
+cyBmb3Igc3RhbmRhbG9uZSBFTkVUQy4NCj4gDQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0
+L2V0aGVybmV0L2ZyZWVzY2FsZS9lbmV0Yy9lbmV0Y19wZl9jb21tb24uYw0KPiBiL2RyaXZlcnMv
+bmV0L2V0aGVybmV0L2ZyZWVzY2FsZS9lbmV0Yy9lbmV0Y19wZl9jb21tb24uYw0KPiA+IGluZGV4
+IDM1OTdjYjgxYTdjY2IuLmFkZjc5YTk5YThjODEgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9u
+ZXQvZXRoZXJuZXQvZnJlZXNjYWxlL2VuZXRjL2VuZXRjX3BmX2NvbW1vbi5jDQo+ID4gKysrIGIv
+ZHJpdmVycy9uZXQvZXRoZXJuZXQvZnJlZXNjYWxlL2VuZXRjL2VuZXRjX3BmX2NvbW1vbi5jDQo+
+IA0KPiBbIC4uLiBdDQo+IA0KPiA+IEBAIC00MDAsMjUgKzQwMCw0MCBAQCBpbnQgZW5ldGNfcGh5
+bGlua19jcmVhdGUoc3RydWN0IGVuZXRjX25kZXZfcHJpdg0KPiAqcHJpdiwgc3RydWN0IGRldmlj
+ZV9ub2RlICpub2RlLA0KPiA+ICB7DQo+ID4gIAlzdHJ1Y3QgZW5ldGNfcGYgKnBmID0gZW5ldGNf
+c2lfcHJpdihwcml2LT5zaSk7DQo+ID4gIAlzdHJ1Y3QgcGh5bGluayAqcGh5bGluazsNCj4gPiAr
+CXVuc2lnbmVkIGxvbmcgbWFjX2NhcHM7DQo+ID4gIAlpbnQgZXJyOw0KPiA+DQo+ID4gIAlwZi0+
+cGh5bGlua19jb25maWcuZGV2ID0gJnByaXYtPm5kZXYtPmRldjsNCj4gPiAgCXBmLT5waHlsaW5r
+X2NvbmZpZy50eXBlID0gUEhZTElOS19ORVRERVY7DQo+ID4gLQlwZi0+cGh5bGlua19jb25maWcu
+bWFjX2NhcGFiaWxpdGllcyA9IE1BQ19BU1lNX1BBVVNFIHwNCj4gTUFDX1NZTV9QQVVTRSB8DQo+
+ID4gLQkJTUFDXzEwIHwgTUFDXzEwMCB8IE1BQ18xMDAwIHwgTUFDXzI1MDBGRDsNCj4gPg0KPiA+
+ICAJX19zZXRfYml0KFBIWV9JTlRFUkZBQ0VfTU9ERV9JTlRFUk5BTCwNCj4gPiAgCQkgIHBmLT5w
+aHlsaW5rX2NvbmZpZy5zdXBwb3J0ZWRfaW50ZXJmYWNlcyk7DQo+ID4gLQlfX3NldF9iaXQoUEhZ
+X0lOVEVSRkFDRV9NT0RFX1NHTUlJLA0KPiA+IC0JCSAgcGYtPnBoeWxpbmtfY29uZmlnLnN1cHBv
+cnRlZF9pbnRlcmZhY2VzKTsNCj4gPiAtCV9fc2V0X2JpdChQSFlfSU5URVJGQUNFX01PREVfMTAw
+MEJBU0VYLA0KPiA+IC0JCSAgcGYtPnBoeWxpbmtfY29uZmlnLnN1cHBvcnRlZF9pbnRlcmZhY2Vz
+KTsNCj4gPiAtCV9fc2V0X2JpdChQSFlfSU5URVJGQUNFX01PREVfMjUwMEJBU0VYLA0KPiA+IC0J
+CSAgcGYtPnBoeWxpbmtfY29uZmlnLnN1cHBvcnRlZF9pbnRlcmZhY2VzKTsNCj4gPiAtCV9fc2V0
+X2JpdChQSFlfSU5URVJGQUNFX01PREVfVVNYR01JSSwNCj4gPiAtCQkgIHBmLT5waHlsaW5rX2Nv
+bmZpZy5zdXBwb3J0ZWRfaW50ZXJmYWNlcyk7DQo+ID4gLQlwaHlfaW50ZXJmYWNlX3NldF9yZ21p
+aShwZi0+cGh5bGlua19jb25maWcuc3VwcG9ydGVkX2ludGVyZmFjZXMpOw0KPiA+DQo+ID4gKwlt
+YWNfY2FwcyA9IE1BQ19BU1lNX1BBVVNFIHwgTUFDX1NZTV9QQVVTRTsNCj4gPiArCWlmICghZW5l
+dGNfaXNfcHNldWRvX21hYyhwcml2LT5zaSkpIHsNCj4gPiArCQltYWNfY2FwcyB8PSBNQUNfMTAg
+fCBNQUNfMTAwIHwgTUFDXzEwMDBGRCB8IE1BQ18yNTAwRkQgfA0KPiA+ICsJCQkgICAgTUFDXzUw
+MDBGRCB8IE1BQ18xMDAwMEZEOw0KPiA+ICsNCj4gPiArCQlfX3NldF9iaXQoUEhZX0lOVEVSRkFD
+RV9NT0RFX1NHTUlJLA0KPiA+ICsJCQkgIHBmLT5waHlsaW5rX2NvbmZpZy5zdXBwb3J0ZWRfaW50
+ZXJmYWNlcyk7DQo+ID4gKwkJX19zZXRfYml0KFBIWV9JTlRFUkZBQ0VfTU9ERV8xMDAwQkFTRVgs
+DQo+ID4gKwkJCSAgcGYtPnBoeWxpbmtfY29uZmlnLnN1cHBvcnRlZF9pbnRlcmZhY2VzKTsNCj4g
+PiArCQlfX3NldF9iaXQoUEhZX0lOVEVSRkFDRV9NT0RFXzI1MDBCQVNFWCwNCj4gPiArCQkJICBw
+Zi0+cGh5bGlua19jb25maWcuc3VwcG9ydGVkX2ludGVyZmFjZXMpOw0KPiA+ICsJCV9fc2V0X2Jp
+dChQSFlfSU5URVJGQUNFX01PREVfVVNYR01JSSwNCj4gPiArCQkJICBwZi0+cGh5bGlua19jb25m
+aWcuc3VwcG9ydGVkX2ludGVyZmFjZXMpOw0KPiA+ICsJCV9fc2V0X2JpdChQSFlfSU5URVJGQUNF
+X01PREVfMTBHQkFTRVIsDQo+ID4gKwkJCSAgcGYtPnBoeWxpbmtfY29uZmlnLnN1cHBvcnRlZF9p
+bnRlcmZhY2VzKTsNCj4gPiArCQlfX3NldF9iaXQoUEhZX0lOVEVSRkFDRV9NT0RFX1hHTUlJLA0K
+PiA+ICsJCQkgIHBmLT5waHlsaW5rX2NvbmZpZy5zdXBwb3J0ZWRfaW50ZXJmYWNlcyk7DQo+IA0K
+PiBbU2V2ZXJpdHk6IEhpZ2hdDQo+IFdpbGwgdGhpcyB1bmNvbmRpdGlvbmFsbHkgZW5hYmxlIDVH
+IGFuZCAxMEcgc3BlZWRzIGZvciBvbGRlciBFTkVUQyB2MQ0KPiBoYXJkd2FyZT8NCj4gDQo+IElm
+IGEgMTBHIGNhcGFibGUgUEhZIGlzIGF0dGFjaGVkIHZpYSBVU1hHTUlJIHRvIGFuIEVORVRDIHYx
+IHBvcnQsIGl0IGFwcGVhcnMNCj4gdGhlIGxpbmsgd2lsbCBuZWdvdGlhdGUgYXQgMTBHYnBzIGlu
+c3RlYWQgb2YgYmVpbmcgY2FwcGVkIGF0IDIuNUdicHMuDQo+IA0KPiBJZiB0aGF0IGhhcHBlbnMs
+IGVuZXRjX3NjaGVkX3NwZWVkX3NldCgpIGRvZXNuJ3Qgc2VlbSB0byBoYW5kbGUgU1BFRURfNTAw
+MA0KPiBvcg0KPiBTUEVFRF8xMDAwMDoNCj4gDQo+IGRyaXZlcnMvbmV0L2V0aGVybmV0L2ZyZWVz
+Y2FsZS9lbmV0Yy9lbmV0Y19xb3MuYzplbmV0Y19zY2hlZF9zcGVlZF9zZXQoKSB7DQo+IAkuLi4N
+Cj4gCXN3aXRjaCAoc3BlZWQpIHsNCj4gCWNhc2UgU1BFRURfMTAwMDoNCj4gCQlwc3BlZWQgPSBF
+TkVUQ19QTVJfUFNQRUVEXzEwMDBNOw0KPiAJCWJyZWFrOw0KPiAJY2FzZSBTUEVFRF8yNTAwOg0K
+PiAJCXBzcGVlZCA9IEVORVRDX1BNUl9QU1BFRURfMjUwME07DQo+IAkJYnJlYWs7DQo+IAljYXNl
+IFNQRUVEXzEwMDoNCj4gCQlwc3BlZWQgPSBFTkVUQ19QTVJfUFNQRUVEXzEwME07DQo+IAkJYnJl
+YWs7DQo+IAljYXNlIFNQRUVEXzEwOg0KPiAJZGVmYXVsdDoNCj4gCQlwc3BlZWQgPSBFTkVUQ19Q
+TVJfUFNQRUVEXzEwTTsNCj4gCX0NCj4gCS4uLg0KPiB9DQo+IA0KPiBUaGlzIHdvdWxkIGNhdXNl
+IGl0IHRvIGZhbGwgdGhyb3VnaCB0byAxMCBNYnBzIGFuZCBicmVhayBRb1Mgc2NoZWR1bGluZy4N
+Cj4gDQo+IEFkZGl0aW9uYWxseSwgZW5ldGNfbWFjX2NvbmZpZygpIGRvZXNuJ3QgYXBwZWFyIHRv
+IGhhdmUgc3VwcG9ydCBmb3INCj4gY29uZmlndXJpbmcgdGhlIGhhcmR3YXJlIGZvciBQSFlfSU5U
+RVJGQUNFX01PREVfMTBHQkFTRVIgb3INCj4gUEhZX0lOVEVSRkFDRV9NT0RFX1hHTUlJIHdoaWNo
+IGFyZSBub3cgYmVpbmcgYWR2ZXJ0aXNlZC4NCj4gDQo+IFNob3VsZCB0aGVzZSBuZXcgY2FwYWJp
+bGl0aWVzIGJlIHJlc3RyaWN0ZWQgdG8gbmV3ZXIgaGFyZHdhcmUgcmV2aXNpb25zPw0KPiANCg0K
+SSB3aWxsIHJlbW92ZSBYR01JSSBhbmQgMTBHQkFTRVIgbW9kZXMgaW5jbHVkaW5nIHRoZSAxMEcg
+YW5kIDVHIHNwZWVkcw0KYXMgdGhleSBhcmUgbm90IHN1cHBvcnRlZCB5ZXQgaW4gdXBzdHJlYW0u
+DQoNCg==
