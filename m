@@ -1,73 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BFA379EDC;
-	Wed,  1 Jul 2026 17:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6583914E9
+	for <imx@lists.linux.dev>; Wed,  1 Jul 2026 17:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782925642; cv=none; b=kvuaVI3GPhKAVZGOhPxFngYFL5o0MIQyIzF5znHe0t75nYS9OVvThI7Dkur3z28L7nhYoIiARphs9Qmot6wsaYx4Y6RSrR6z+dTLFS8pOG3vapGVcwMgsvJrDBEXGvZVSAmcr0IN5uE8hKIm/eHAVd6RAnIA8ztweNvqYrrQmAo=
+	t=1782926383; cv=none; b=SoYhzxfRcyNlCM7Dr1aXzj2Ck+pxZK/kVZBDCkVRuOMqBH9PY2HI/uM793ZDhi0N+WEVde8JO8CYvAYIBUmofLfwowXqtHlqo0DOiel4MqCouZl+WKeaGQuOx/umQY+mIx5azjeHmuXVRHs08LLvmDNsfTbth9JSvpMXi9F1M94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782925642; c=relaxed/simple;
-	bh=jQjO0POpW5npv7gePynnmnZhFEpgwRLzhnQyTwlih9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RvAQnkMkj+S6lMMW2muKi0Zx/yk/1AOKzyudMifkfNysBglYuNei1+5Ug4636z6/KxQCBuYrSVHnFE040cNKHSpzG+/KUIs2wwAByaqjO5jyg/RpNO6XrZhgCGs24y+p8WOww69ARotD+phuMHlwv3pczo9xNvy5lakCASiclGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4C6p94J; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782926383; c=relaxed/simple;
+	bh=vj4xt35+yFypfI4zYD/RTd5QCw84XhaDn1ZS2j5Xkzg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=OYLpsL264LhvsnwmTCnAP2AccoIdTzH4++zn8hyzZA1az00lZD45ostsVGwYjsLlpKunnhe/1pE4l8ohcIOB5wKDMY3cLtbqnGI5B3fRpGojSV0WCb6CfLA1qlB/ae8eziDBAFeQ1kCjiFXIQkOxLaBD2T8Wil0a+fjkS6rUhrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=y9QUWxlV; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4C6p94J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E291F000E9;
-	Wed,  1 Jul 2026 17:07:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782925641;
-	bh=jQjO0POpW5npv7gePynnmnZhFEpgwRLzhnQyTwlih9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=d4C6p94JW+TBVhPikzZjIEPEzISzz+e4aGhdMTzu8fjimtFMF5ANFijXKXsbMI5m3
-	 4b64KGe2iAMmj7T9XmkS02AlhwA/TIHGhP7eaoQYqsDwBjYwnEsDK5ZhdAnZDXWiD9
-	 SvhN+RUFoYRF718u6rSzZbRUXP/zd0jOCaW6OEsD3d4ascqQzTT7EnqLhJKvJ2bEY7
-	 YpqqlcAws1S9ihtwO6F7ZAxVr9MOHn9e1XpFprKMb7KMUg4vTW4A5Tt8elReYyDTKD
-	 Wp9WQBQ/0x1SOs6H/Zyu0aY0UMA3rSjANO4Ygpg33g9a8QGiba3pZLDfEDAw272Fo0
-	 c7gOl4Dba8a5A==
-Date: Wed, 1 Jul 2026 18:07:17 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: arm: fsl: add compatible for new
- Skov I.MX8MP variant
-Message-ID: <20260701-tingly-splendor-490c985bb91f@spud>
-References: <20260701-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v3-0-d74f7e3f8293@pengutronix.de>
- <20260701-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v3-1-d74f7e3f8293@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="y9QUWxlV"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 3FD07C4FECB;
+	Wed,  1 Jul 2026 17:19:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 030955FD9D;
+	Wed,  1 Jul 2026 17:19:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C7306104C948E;
+	Wed,  1 Jul 2026 19:19:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782926376; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=9IjGriL20aUDrYKm6+vTu9029BmucxRxhyWYYY+OsIA=;
+	b=y9QUWxlV0KdIf9f/c4LLTFZWCL9K6cSxJ/+M78N1Z9c1zI/NLsntj7oPAFKCXCpZxmnZxy
+	alT4YKxKZFYGyT+BFHqW0GwcfRgehJWuH9JkuEfKyuWtyVMIjOGqF6REFNJmf+kUMt7Q7c
+	0PvtvmNs6hOoxfJ9G+p6z+B6fitYNygvlI4q8INBZ/lDSbL+LWeTJ9zzcs0mS37NuSJHfj
+	3BgM+ueb3u+bs6Wwtv5v11Km4oq8x/vkwCS4/PvbFL9S+u1ExOoV+SQo311mp5LfzBDoDN
+	2w765HyEMzksiUMFNcnPmxeZWvdxOYB8q1B2P9ciZK/JxfRGj40HEvUYuJwHeg==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260619-drm-lcdif-deferral-msg-v1-1-ce2392dca985@bootlin.com>
+References: <20260619-drm-lcdif-deferral-msg-v1-1-ce2392dca985@bootlin.com>
+Subject: Re: [PATCH] drm/mxsfb/lcdif: don't hide lcdif_attach_bridge()
+ deferral messages
+Message-Id: <178292637135.3330226.15837707987617382686.b4-ty@b4>
+Date: Wed, 01 Jul 2026 19:19:31 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2nTvnn+3qjdlH96h"
-Content-Disposition: inline
-In-Reply-To: <20260701-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v3-1-d74f7e3f8293@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
---2nTvnn+3qjdlH96h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+On Fri, 19 Jun 2026 09:02:13 +0200, Luca Ceresoli wrote:
+> lcdif_attach_bridge() uses dev_err_probe() on all its error returns to
+> store a specific deferral message.
+> 
+> However its caller lcdif_load() calls dev_err_probe() again on error,
+> overwriting the specific deferral messages with a unique, unavoidably
+> generic, message.
+> 
+> [...]
 
---2nTvnn+3qjdlH96h
-Content-Type: application/pgp-signature; name=signature.asc
+Applied, thanks!
 
------BEGIN PGP SIGNATURE-----
+[1/1] drm/mxsfb/lcdif: don't hide lcdif_attach_bridge() deferral messages
+      commit: cff96362794a5c1f3adb013b4a46c7233149a629
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCakVJRQAKCRB4tDGHoIJi
-0pNVAPwNAlfWYnCiw8kwj89N3eXDVY04B4SiP+XAAonRzhCV0AEAtSursEhGx4D1
-IRD7ENVrg8nW3zpXj2penFbCtfIjIAE=
-=4KXq
------END PGP SIGNATURE-----
+Best regards,
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
---2nTvnn+3qjdlH96h--
+
