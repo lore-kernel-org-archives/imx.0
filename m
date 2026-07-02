@@ -1,223 +1,342 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012047.outbound.protection.outlook.com [52.101.53.47])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8D332B106;
-	Thu,  2 Jul 2026 16:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783008362; cv=fail; b=Z3onSuDV/QDRQwyr0NRczhCkgHx3a1zTXWNCDX6vXQxLfoZF3Hn+oiDJQLKr6w+rztyAEB5y1sPIrAUU8jYqg4KhvBoe4Tm0qL+DmtdqPOfH9x8b5p73UPb4gw/yKljnD/muEO+U5ODNSHgEFKx1QWM/v6imc/00EKddJKM3wRs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783008362; c=relaxed/simple;
-	bh=J2+7E4nAtLBdGmR2XnhEnshIy9e2iTvE9iNmIcPuENU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HLeXutQWX7ULrX0w/xugmtsPXejj5qnlPwXySAkcJJwRbLDljrPlVRoTIY6KLPUpKv4X1j6TX1XvrcdKb2AEDlmNcTTS7HuLhSLWldCQ+5WuF6MsSE1MjtD5NJ3Jqa0m7sUXnqJA4lo0kD/4ynA2380yJdv0HePI8JQBrSmTpf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=A8YZnDcY; arc=fail smtp.client-ip=52.101.53.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C7830C165
+	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 16:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783008926; cv=none; b=PsmX5GW0Euziz5z6VJU2/B3JgqS/6CRdpTutoJC6srLIg/w9Hl7cmQtd6SNrfN+hl10kk5FVVYs5kh/0Ybp4U9ZLnkF1ZrGhZn9KKV68N80S1pRwduwRohlqGkgEoITRTvY4ZstxPwFFHqonxT5jD/rskYWoPiHGtC0L+xTzRgo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783008926; c=relaxed/simple;
+	bh=FaARUEjrFyJuj8uGntTCA4eGDykM1s2cESVLncfkhos=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=clhJ6LyWxMxVa+dyWXwX/7U6hMJBKiJT7WCmwuYqe/FOX/M8920F95pL+TNYb9tm/DVqnmJMRC1slRTNi1G5VS4fvmikc579OapMl427Wf3j8ydISSEpXBA8PiipRBhxzawB7Hk7Q4AGojXGdcRPvjV/15UgjFXRV5Zp5rvKpNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=dxdAH/ca; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="A8YZnDcY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EfGfXRt/s7NY3+iLF3g42aZDC2ZApDBAJtj9rCdvzqu8KM/RhmlGmR+XVpvRGRjAWC3A/kSeXNnn1c3sLgIh+s17ZAHbTARTY3LK9I9fGDfaSmwWcEUFUWS7K19HR9XSqr0HXeqDrxK9Bq9p0Tw6ky/iudSchZifIBa6i8mBdc7aff5h/Zr6ohUQyQ1oTVlfd0v6KNOW4zq1/5WxtgGF4OdGxO4mPy9Gh0zZwiHC9J1Rk3ts0+mphTsS8gLtjUTE9oe2Tv94XMWxi7QvxAFD41CZoXaUpGAo25VLleCKWYgONbZnQaH1zetVhMLjQ2DVOXojlmvdy4rpAkRBtJtVDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Tb5/w1j+O7NmmHE/vQJFbC8aSTx7oM31onkPhnOCb3o=;
- b=fd03WInRcyefPoZuxXETcvYzp2hMoG0cAwJoSAremaeYQ+YlT6u5OVjXY0QwVYVDzAGSk56GIzJ23HW3+K38uu+bp2Rhg8vTMdRuCDYWbIxyeSaE/hpjsE19k+LwEorHGVxtwwG4aA+W2dDcvVUMbHkxDksDwJYny4kk7ZNzjxzkrRwAY2h+f6iyvXF+CPjhFgy6zXieG0OdnjqnS6iuxjYvA2kekiZOyqiCS2fTz+noxouudAc55zO0Qwc0oupYCjaLSGwY6PSJGWzdzUBvQEXSahePVyRiIBESld90/gSDU8wNuQFhCnFo6dGgasnV1rPhD5PDId5SY2KvHfg/lw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Tb5/w1j+O7NmmHE/vQJFbC8aSTx7oM31onkPhnOCb3o=;
- b=A8YZnDcYZHrVqcDSi3GIbP2/zki+F6MZ23eb261H0DBbL/17fInTkQIlOxfyDTYWiOgXkuQkAC3hpiiw4b26zMtKnIEhpYvrmJ3kq/cbRyt1DIK2qhk9IU8JAfaQgfYAOEoRndQvoxBvkHYC1aF12GqYF+3N7nrRRnQiuLYdSILjrOF30zIeELxjNuynfJX1+VWQQEYfd9cyf8v9mZXABxOoGXXenyCy8gXzi/64EFubMi+guGNellsWEfCQkghoaiA9Vux9pfySQdiXygs6yrpLh5VdRNcITq/8R4BdD/AlrtxLcfRVHPWkKxuH/YqTlnPud/l5zkMOt4TcxgaIhQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by CH3PR12MB7716.namprd12.prod.outlook.com (2603:10b6:610:145::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Thu, 2 Jul 2026
- 16:05:39 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0181.009; Thu, 2 Jul 2026
- 16:05:39 +0000
-Date: Thu, 2 Jul 2026 12:05:36 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="dxdAH/ca"
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8B8C88CB;
+	Thu,  2 Jul 2026 18:14:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1783008875;
+	bh=FaARUEjrFyJuj8uGntTCA4eGDykM1s2cESVLncfkhos=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dxdAH/caapOtAKAs+fQGBJuECOgXbJMXWbNP6VbeHZ4/7smBFbzgFixqa/HlBNRMQ
+	 yGEADDco/OnHTJ3Xh+etq/6dTqCa3ui6QzWcT8gfpqSzVPpk2lxS8hYR/MB8QMSHm1
+	 KLsVLKDhjEu64NJFHfqsi8O3S4vG0DDKwsYPknRw=
+Date: Thu, 2 Jul 2026 19:15:19 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank.Li@oss.nxp.com
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Purism Kernel Team <kernel@puri.sm>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Heiko Stuebner <heiko@sntech.de>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>, Moritz Fischer <mdf@kernel.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Will Deacon <will@kernel.org>,
-	Jiucheng Xu <jiucheng.xu@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Jing Zhang <renyu.zj@linux.alibaba.com>,
-	Xu Yang <xu.yang_2@nxp.com>, Linu Cherian <lcherian@marvell.com>,
-	Gowthami Thiagarajan <gthiagarajan@marvell.com>,
-	Ji Sheng Teoh <jisheng.teoh@starfivetech.com>,
-	Khuong Dinh <khuong@os.amperecomputing.com>,
-	Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Besar Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>,
-	Chengwen Feng <fengchengwen@huawei.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Yushan Wang <wangyushan12@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-perf-users@vger.kernel.org, x86@kernel.org,
-	driver-core@lists.linux.dev, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-fpga@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-amlogic@lists.infradead.org, linux-cxl@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 01/11] arm: Use sysfs_emit() for cpumask show callbacks
-Message-ID: <akaMUHFG4yYciZSJ@yury>
-References: <20260702154725.185376-1-ynorov@nvidia.com>
- <20260702154725.185376-2-ynorov@nvidia.com>
- <2026070244-flier-large-17d1@gregkh>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026070244-flier-large-17d1@gregkh>
-X-ClientProxiedBy: SJ0PR03CA0365.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::10) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	Guoniu Zhou <guoniu.zhou@nxp.com>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v7 2/8] media: subdev: Add media_async_register_subdev()
+ helper
+Message-ID: <20260702161519.GI3534761@killaraus.ideasonboard.com>
+References: <20260702-imx8qxp_pcam-v7-0-b47d9e363400@nxp.com>
+ <20260702-imx8qxp_pcam-v7-2-b47d9e363400@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|CH3PR12MB7716:EE_
-X-MS-Office365-Filtering-Correlation-Id: 66c362a0-4d46-4dae-f7b7-08ded853c26b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|18002099003|22082099003|4143699003|5023799004|56012099006|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	t4hzXNkNSTqXLzpLpeuFtAoluuCHk0YVxC5cBGPlDe7FrU1E1WX2CgNzPFyiiTbNxSN5FRco6X29R4PryBXs1rbUn2Ae/n4Y79buSunQ4NbBMIwi7c+eI2ZDbAbYjBxcCtEmPu+AnzhYPgCJohxx+pp0vHJRp7ZMluIpJ30KdXXGgmIFpXADkOuIPM1Q5OdKI7g1+O/Nv82j4g0ZjZy8JaBeXB/CO9nnqgfthxq324FW214ueUN0yd6WQHF1LEKbOHhdzoEi0fO2xY5wKL3AVLAkVvqtwZ+6XIwZtkDPPmj4ivuiblRT7ll/4238s9kECFViObPTCGEpfBemR62RtIkGGKSwEyvBSSnAyb0DK+GxKh4XpzHHbzo8fcfANxjbyQlNioYrGl8y4nVePXDHTf6lr4oJiPKG+zvCtc5TqOl6Sgk037jFhumLmNa1wRwSr6W968C3A/Zsqr5PQ/g+TGXb9nuGJ46/hJm9yHbYPyI66WrDXdcp54mUnPLc1F67wrQVxAPELKsQHb5cuwCbjvmxonNeviTElNpTKCb1lTTHv0A1lq5zoWoccXOms68TTmlPIbDSO1IeHOQ92It92URErC9Ak89EmMhXSRgHfDhRbUbPQ9uXmUpMTFb7N+Yjgy7nwwMa0hzb/QCLeI0crm1w4P4bvhhv91Hddi5yXF4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(18002099003)(22082099003)(4143699003)(5023799004)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ipiqxxVQQv+tpWu4Q8AibhsWk5CjBCqpLpi74aYnC4Rqzz2c01ijb8epOv0b?=
- =?us-ascii?Q?AePBGzTZ175wIHPLeaEOcB/3WZzuq3u2qNG3PhxuXG/zcPeQXYbmnf2fdGoJ?=
- =?us-ascii?Q?2Q9TjSwyPLhQEG06mkiD5TCVeLpkZDTX2OYHgQ0Toa/f61gyYSUjlyu7jWcP?=
- =?us-ascii?Q?XVmNsx7WdkxFjIFcpvRX3lG0PLCNxY+JKrStgmgZNaXixO+1G2XwPImN9+3M?=
- =?us-ascii?Q?vBIOYxaYvwYpbqVE9uq092LxkLurB7BJNfXrLWAafiUeLgaKWLdCTmogkQqm?=
- =?us-ascii?Q?3bpDiHuMSx9KfK0M97kQgMIk7sOzDkzglnKDlBDLhXDmnmQlbofsl2gh9um0?=
- =?us-ascii?Q?1bat2nELU6qFZ5v3GJwYlNjbgW/QMyGTf6SCDWwqCUxyBxwEsWbGBajbeS31?=
- =?us-ascii?Q?y1T3P+I5XlAGH4TsSppPmKPau81JSboX1XTgXQIsvH57bNv9dwpeRnY8SiPA?=
- =?us-ascii?Q?ETyf6qsEZ4T6hUe9KxyCd+rOPNA7u6jxfBuNgiiWHaXCmPjKsMy4sp4qy+M4?=
- =?us-ascii?Q?OneAQt+DJ3qa66xCImeIYxX57RoX4zMdjBx4Auv2hYTgfNwc1W/xCk1pfqCy?=
- =?us-ascii?Q?PbdtfUed3P/POQQfkC2KfVRf3wdThW7apzbbbuNqT4ZmlR/52YNj940MXYvv?=
- =?us-ascii?Q?x5HFxp4HBFMz/HlQNJEgUKMyKyuJS77fT142SxkUEbXfcAu5yfMpbgZg/pBy?=
- =?us-ascii?Q?QVe98T6FyMABYE/4DhvAFyiSga0KCPOtEswVZLybnMu/pbbRE6/fX+/daIXT?=
- =?us-ascii?Q?Qp3/5pLGXIBW32egegcH294+3CrzotgsfxvN9uh9G4FRq/XkVdsZIMhUb6WF?=
- =?us-ascii?Q?POYjlhJ2zJyKFxeDMa8yQJdTFLpZZE7u8Yy1r/HStJd+QyEvyFXqoeFJNvaJ?=
- =?us-ascii?Q?8aLKwYHZLk23pIqHeI0sggyQdCLkWg1xUtv9Z0iAJHsD9RCKswoXyQANs2Lj?=
- =?us-ascii?Q?Ow9mmk0PEjC1sMaKUL+eIe6YfiBLkLm21/WMWSi7evglXgIvKqsV/9APAat3?=
- =?us-ascii?Q?rSK+nrY9honl93jun0euS6sXGhVOjDZ+43/PT5+f+tn4MiTiJm2GOSl5XQmw?=
- =?us-ascii?Q?/QOAnxR/L/K4i9Xo5MC3qmrNZgcMEq7Wbx7mgzobZpXZWUDIhhtHz74s+FF7?=
- =?us-ascii?Q?qB/DsFLzloG8ZAY7PNJXYJ/WPoOzwc6qDf1jjLTSZX4Q/QQ9Z0w+45gySdvG?=
- =?us-ascii?Q?NJ/lmoEYSEaWpwdGYNlrvRPYshq+s50kzMT6OlaQjRe+87nCINZtwH5HLPlq?=
- =?us-ascii?Q?eLmxpxgIDBkqJL6GGdxno2IKZvzhb4Do4lMuFyVXq5rliCwa9SK7yzg18CZq?=
- =?us-ascii?Q?asy+vFbT9uZLjisrCyf8bUs92mVDnRmgbE41JW1KGBaGLCsQ/PlTs360IYZ+?=
- =?us-ascii?Q?VOULoPLgVdjxt7KsRSbP2IjNvGlwlP4ijvz7aCJmE7NTZH4lX1u5kkLyjgsL?=
- =?us-ascii?Q?BQdSFGFVpS8lPCSSibaS4gCoi3V/Wv99GEvVkxgPVj4bIBNQKYdwmQqmOnfZ?=
- =?us-ascii?Q?J4pLmwuKN3/b5BlgoQjMHOYCeky8MtYk8BTXbZQqCmHRjCain38HjuXszBSx?=
- =?us-ascii?Q?FpP35cdWVCX51Na0HswpjlfcvwlUlwoup6IzvwuylZWd89XUnxd4VALVMwzu?=
- =?us-ascii?Q?nghs/e+58MaosedmzjSmjUeUmeesB69YKRKB6wrfXL/v3s4BVFNmootJoz+Q?=
- =?us-ascii?Q?WZFPV85gGnao+Au7ac8fBIh/7SCSprhFKlAPgKiajnXFiyfx73k5MSyC/lVP?=
- =?us-ascii?Q?rRxyBVv2iQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66c362a0-4d46-4dae-f7b7-08ded853c26b
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 16:05:38.9912
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PlmgdzxtUMvJNkF4GRxsJUcWLslzHnt7ztCOFPDBh4uQqp/WFK9Tnf8MmKSwFswDadDS44iE9UD+qjy9VCLAuQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7716
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260702-imx8qxp_pcam-v7-2-b47d9e363400@nxp.com>
 
-On Thu, Jul 02, 2026 at 05:58:11PM +0200, Greg Kroah-Hartman wrote:
-> On Thu, Jul 02, 2026 at 11:47:14AM -0400, Yury Norov wrote:
-> > These callbacks are sysfs show paths.
-> > 
-> > Use sysfs_emit() and cpumask_pr_args() to emit the masks.
-> > 
-> > This prepares for removing cpumap_print_to_pagebuf().
-> > 
-> > Signed-off-by: Yury Norov <ynorov@nvidia.com>
-> > ---
-> >  arch/arm/mach-imx/mmdc.c     | 2 +-
-> >  arch/arm/mm/cache-l2x0-pmu.c | 2 +-
-> >  2 files changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm/mach-imx/mmdc.c b/arch/arm/mach-imx/mmdc.c
-> > index b71467c48b87..f6d993b9b1d4 100644
-> > --- a/arch/arm/mach-imx/mmdc.c
-> > +++ b/arch/arm/mach-imx/mmdc.c
-> > @@ -127,7 +127,7 @@ static ssize_t mmdc_pmu_cpumask_show(struct device *dev,
-> >  {
-> >  	struct mmdc_pmu *pmu_mmdc = dev_get_drvdata(dev);
-> >  
-> > -	return cpumap_print_to_pagebuf(true, buf, &pmu_mmdc->cpu);
-> > +	return sysfs_emit(buf, "%*pbl\n", cpumask_pr_args(&pmu_mmdc->cpu));
+Hi Frank,
+
+Have you missed the comment in v6 ?
+
+https://lore.kernel.org/all/20260629084654.GB3054459@killaraus.ideasonboard.com/
+
+On Thu, Jul 02, 2026 at 12:03:58PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
 > 
-> Really?  Looks like the original is much simpler to understand, why must
-> this function go away?
+> Add media_async_register_subdev(), a helper to register a V4L2 sub-device
+> with the asynchronous sub-device framework.
+> 
+> The helper requires each port to contain a single endpoint, with port
+> addresses starting at 0 and increasing consecutively.
+> 
+> During registration it parses the firmware graph, creates media pads for
+> all endpoints, and registers common asynchronous notifiers for sink
+> endpoints. These notifiers automatically create media links when the
+> corresponding remote source devices become available.
+> 
+> The set_pad_by_ep() callback allows drivers to determine the media pad
+> associated with a firmware endpoint and identify whether the endpoint
+> represents a sink pad.
+> 
+> By centralizing firmware graph parsing, media pad creation, notifier
+> registration, and link creation, this helper reduces duplicated code and
+> simplifies error handling in V4L2 sub-device drivers.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v7
+> - don't use saved vep informaiton from media pand
+> - fix sashiko report problem
+> 
+> change in v6
+> - new patch
+> ---
+>  drivers/media/v4l2-core/v4l2-fwnode.c | 169 ++++++++++++++++++++++++++++++++++
+>  include/media/v4l2-async.h            |  39 ++++++++
+>  2 files changed, 208 insertions(+)
+> 
+> diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
+> index 62a3a452f7884..4e15adc1af065 100644
+> --- a/drivers/media/v4l2-core/v4l2-fwnode.c
+> +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+> @@ -26,6 +26,7 @@
+>  
+>  #include <media/v4l2-async.h>
+>  #include <media/v4l2-fwnode.h>
+> +#include <media/v4l2-mc.h>
+>  #include <media/v4l2-subdev.h>
+>  
+>  #include "v4l2-subdev-priv.h"
+> @@ -1302,6 +1303,174 @@ int __v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd, struct module *m
+>  }
+>  EXPORT_SYMBOL_GPL(__v4l2_async_register_subdev_sensor);
+>  
+> +static int v4l2_common_notifier_bound(struct v4l2_async_notifier *notifier,
+> +				      struct v4l2_subdev *sd,
+> +				      struct v4l2_async_connection *asd)
+> +{
+> +	struct media_pad *pad = NULL;
+> +	struct fwnode_endpoint ep;
+> +	int ret;
+> +
+> +	if (asd->match.type != V4L2_ASYNC_MATCH_TYPE_FWNODE)
+> +		return -EINVAL;
+> +
+> +	if (!asd->match.fwnode)
+> +		return -EINVAL;
+> +
+> +	struct fwnode_handle *remote __free(fwnode_handle) =
+> +		fwnode_graph_get_remote_endpoint(asd->match.fwnode);
+> +
+> +	ret = fwnode_graph_parse_endpoint(remote, &ep);
+> +	if (ret)
+> +		return -EINVAL;
+> +
+> +	for (int i = 0; i < notifier->sd->entity.num_pads; i++) {
+> +		if (notifier->sd->entity.pads[i].index == ep.port) {
+> +			pad = &notifier->sd->entity.pads[i];
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (!pad) {
+> +		dev_err(notifier->sd->dev, "failed to find sink pad\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = v4l2_create_fwnode_links_to_pad(sd, pad, MEDIA_LNK_FL_ENABLED);
+> +	if (ret) {
+> +		dev_err(sd->dev, "failed to link source pad\n");
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct v4l2_async_notifier_operations v4l2_common_notifier_ops = {
+> +	.bound = v4l2_common_notifier_bound,
+> +};
+> +
+> +/*
+> + * The only one endpoint under one port. And all ports number is continues.
+> + */
+> +static int
+> +v4l2_async_nf_parse_fwnode(struct device *dev, struct media_pad *pads, u32 pads_count,
+> +			   struct v4l2_async_notifier *notifier)
+> +{
+> +	struct v4l2_subdev *sd = notifier->sd;
+> +	struct v4l2_async_connection *asd;
+> +	struct v4l2_fwnode_endpoint vep;
+> +	struct media_pad *pad;
+> +	int ret;
+> +
+> +	if (!sd->internal_ops || !sd->internal_ops->set_pad_by_ep)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "Missed set_pad_by_ep() callback\n");
+> +	pad = pads;
+> +
+> +	fwnode_graph_for_each_endpoint_scoped(dev_fwnode(dev), ep) {
+> +		u32 flags;
+> +
+> +		ret = v4l2_fwnode_endpoint_parse(ep, &vep);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret, "failed to parse endpoint\n");
+> +
+> +		if (vep.base.port >= pads_count)
+> +			return dev_err_probe(dev, -EINVAL,
+> +					     "port number bigger than pad number\n");
+> +
+> +		pad = pads + vep.base.port;
+> +
+> +		ret = sd->internal_ops->set_pad_by_ep(sd, pad, &vep);
+> +		if (ret < 0)
+> +			return dev_err_probe(dev, ret, "Can support endpoint\n");
+> +
+> +		flags = pad->flags;
+> +
+> +		if (flags & MEDIA_PAD_FL_SOURCE)
+> +			continue; /* Bypass source port */
+> +
+> +		notifier->ops = &v4l2_common_notifier_ops;
+> +
+> +		asd = v4l2_async_nf_add_fwnode_remote(notifier, ep,
+> +						      struct v4l2_async_connection);
+> +		if (IS_ERR(asd))
+> +			return dev_err_probe(dev, PTR_ERR(asd),
+> +					      "failed to add notifier\n");
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +void media_async_subdev_cleanup(struct v4l2_subdev *sd)
+> +{
+> +	v4l2_async_unregister_subdev(sd);
+> +	v4l2_subdev_cleanup(sd);
+> +	media_entity_cleanup(&sd->entity);
+> +	v4l2_async_nf_unregister(sd->subdev_notifier);
+> +	v4l2_async_nf_cleanup(sd->subdev_notifier);
+> +	kfree(sd->entity.pads);
+> +}
+> +EXPORT_SYMBOL_GPL(media_async_subdev_cleanup);
+> +
+> +int __media_async_register_subdev(struct v4l2_subdev *sd, struct module *module)
+> +{
+> +	struct device *dev = sd->dev;
+> +	u32 ep_count;
+> +	int ret;
+> +
+> +	if (WARN_ON(!sd->dev))
+> +		return -ENODEV;
+> +
+> +	struct v4l2_async_notifier *notifier __free(kfree) = kzalloc_obj(*notifier);
+> +	if (!notifier)
+> +		return -ENOMEM;
+> +
+> +	v4l2_async_subdev_nf_init(notifier, sd);
+> +
+> +	ep_count = fwnode_graph_get_endpoint_count(dev_fwnode(dev),
+> +						   FWNODE_GRAPH_DEVICE_DISABLED);
+> +	if (!ep_count)
+> +		return dev_err_probe(dev, -EINVAL, "No connected endpoints\n");
+> +
+> +	struct media_pad *pads __free(kfree) = kzalloc_objs(struct media_pad, ep_count);
+> +	if (!pads)
+> +		return -ENOMEM;
+> +
+> +	ret = v4l2_async_nf_parse_fwnode(dev, pads, ep_count, notifier);
+> +	if (ret < 0)
+> +		goto out_cleanup;
+> +
+> +	ret = media_entity_pads_init(&sd->entity, ep_count, pads);
+> +	if (ret)
+> +		goto out_cleanup;
+> +
+> +	ret = v4l2_async_nf_register(notifier);
+> +	if (ret < 0)
+> +		goto out_cleanup;
+> +
+> +	ret = v4l2_subdev_init_finalize(sd);
+> +	if (ret)
+> +		goto out_unregister;
+> +
+> +	ret = __v4l2_async_register_subdev(sd, module);
+> +	if (ret < 0)
+> +		goto out_unregister;
+> +
+> +	sd->subdev_notifier = no_free_ptr(notifier);
+> +	retain_and_null_ptr(pads);
+> +
+> +	return 0;
+> +
+> +out_unregister:
+> +	v4l2_async_nf_unregister(notifier);
+> +	v4l2_subdev_cleanup(sd);
+> +out_cleanup:
+> +	v4l2_async_nf_cleanup(notifier);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(__media_async_register_subdev);
+> +
+>  MODULE_DESCRIPTION("V4L2 fwnode binding parsing library");
+>  MODULE_LICENSE("GPL");
+>  MODULE_AUTHOR("Sakari Ailus <sakari.ailus@linux.intel.com>");
+> diff --git a/include/media/v4l2-async.h b/include/media/v4l2-async.h
+> index 54a2d9620ed5b..ca41820f776c5 100644
+> --- a/include/media/v4l2-async.h
+> +++ b/include/media/v4l2-async.h
+> @@ -345,4 +345,43 @@ __v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd, struct module *modul
+>   * @sd: pointer to &struct v4l2_subdev
+>   */
+>  void v4l2_async_unregister_subdev(struct v4l2_subdev *sd);
+> +
+> +enum v4l2_subdev_1to1_pads {
+> +	V4L2_SUBDEV_1TO1_PADS_SINK,
+> +	V4L2_SUBDEV_1TO1_PADS_SOURCE,
+> +	V4L2_SUBDEV_1TO1_PADS_TOTAL,
+> +};
+> +
+> +/**
+> + * media_async_register_subdev - registers a sub-device to the asynchronous
+> + *				 sub-device framework and parse set up common
+> + *				 related devices
+> + *
+> + * @sd: pointer to struct &v4l2_subdev
+> + *
+> + * Register a V4L2 sub-device with the asynchronous sub-device framework.
+> + * In addition to v4l2_async_register_subdev(), this function parses the
+> + * firmware graph, creates media pads for the endpoints, and registers common
+> + * notifiers to create media links between connected devices.
+> + *
+> + * This function also init media_pads.
+> + *
+> + * The sub-device is unregistered and cleanup by media_async_subdev_cleanup()
+> + *
+> + * While registered, the subdev module is marked as in-use.
+> + *
+> + * An error is returned if the module is no longer loaded on any attempts
+> + * to register it.
+> + */
+> +#define media_async_register_subdev(sd_1to1) \
+> +	 __media_async_register_subdev(sd_1to1, THIS_MODULE)
+> +
+> +int __media_async_register_subdev(struct v4l2_subdev *sd_1to1, struct module *module);
+> +
+> +/**
+> + * media_async_subdev_cleanup - unregistered and cleanup subdev and media pads
+> + * @sd_1to1: pointer to struct &v4l2_subdev_1to1
+> + */
+> +void media_async_subdev_cleanup(struct v4l2_subdev *sd_1to1);
+> +
+>  #endif
 
-Because it's a duplicate of printk("*pbl"), and nothing is simpler in
-practice.
+-- 
+Regards,
 
-Because the 'true' vs 'false' parameter in cpumap_print_to_pagebuf() is much
-harder to remember, comparing to "*pbl" vs "*pb" in the standard printk-like
-API. And because the 'print_to_pagebuf' has a record of misuse.
-
-For more details, see:
-
-https://lore.kernel.org/all/akANJ-AT7nHpRMq-@yury/
-
-Thanks,
-Yury
+Laurent Pinchart
