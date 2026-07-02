@@ -1,97 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F61E33859C;
-	Thu,  2 Jul 2026 16:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9A0393DF1;
+	Thu,  2 Jul 2026 16:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009641; cv=none; b=GZEqlZKzAw4tXYpkXE2gr4yXfoAOjaFlDYKexhy44dMpH0bXVOS5uq/jtDKek9WvRpkiLXuS/D64Cn4WoP4I8fATDW2lXNlbf6BrjA2uMMHod/Vo0fbKJaulCsqaEfBLzngUbwphryYBIxhIdVAXO5MsrMBZ036tOqeP1CNUmyA=
+	t=1783009692; cv=none; b=kvXch6Vt9fp2n9eVndz8e+M2qiadXi4G4nWe5zcVw1cSWJaXrD3CN+7ub0P9J/TYgghCwdPSvHJlRiOXAh+0GYBJv499OKvC9M2607FqPXW3DEXWv0JXf7X2s4HGD1mL1ea13X9GUpoGfr+XLbhXmY8aEbjQxOwT2XtfUuhSqLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009641; c=relaxed/simple;
-	bh=csOgkJiX1ZLoiMdcNIG9gIC2SSERDjlJCL2ZBAotkaQ=;
+	s=arc-20240116; t=1783009692; c=relaxed/simple;
+	bh=mVo1G00c3l88BwKZi+ZTPsqMNj/YA1nT5ZjRuIV4KuU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Wh3TpzdkBUV23C6YOvOIzF5XwAYPZv76aID1VKzF97B71kmv55BjRHjB/RnIObrZcLzFYUtIs8a9F2aTVBj6bV+xLkllQeVWElOdJt1d3NGu/oV/878usYX2lTYhjLJUZj/s9pnegG6bSG35Vw8u/A7J8woYPdrUePgo75YbFsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DTzzzVJN; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WfcG2GD0uLmCpq2rxGlcM7kI2ecxAmuCefAdeaWqkDX5+GC8DqxBs02whmUorhtVvrmGlP3HvJvZclMOocnEgltQ5qpacw2SaF1XLeSoxtqD+TbDaJu/sXvf2oWZR9yO+xEiPhMi6/1yORrgFEiJjq7Ue6ZPcGMdJcWVQTK6OJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJY5E+m7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DTzzzVJN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573FE1F00A3D;
-	Thu,  2 Jul 2026 16:27:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJY5E+m7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6171F00A3A;
+	Thu,  2 Jul 2026 16:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783009637;
-	bh=3OnABRpYmVyOew1BB7l34CeJI8P52XjOQ/iUUyUh1jg=;
+	s=k20260515; t=1783009690;
+	bh=uurK9LU/RZdJVqbkKWXI/XhMYuQjKnFrt/vaLcGOcN4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DTzzzVJN5a+57/sRdbaRFGYfBhNNNs8LpGn33VEwqD2T3Ze0p8W+GRDuTGv0KZaWL
-	 PHwO7PJtjBAvrecbVN4zkpheS3vWOg2uKRhPgTluwCpiF/qCwvdiOIaVWGvFe2Gg1+
-	 J3oqmgzi46an31k3Q2l6FloBMPiZ69YS053D1BbTDiFUXVi/Uv6LxCd7IWGfVArXoW
-	 NdG0aZvBqP4sj95PelY9u7d3qM/eTn7O5UP2wq3Y6A78kWrgggxK/h0w09R9PmNW7Y
-	 DK8+BkbhxKhDwRsb7hUXYSNWf3aRuI8pcXsoWkjwTCKjb/8mczs9SWXmaPP8kLa1Bd
-	 aJb3QRO3+UYfA==
+	b=aJY5E+m7g7IeheLK6oKduFyi1uzCemalGrFIudKv9DGQaDfY90l31B0IYkmKmuk0M
+	 1wSykzNTf+h5AHqiBUZZcb5Ygoa7U0pLm72FUQbOuqPqxZ3LZI+OwnBva1Y5HtOMfU
+	 SpWas8iWMGofWZwquFDGRmfIVJ/HjhzKyX3BmSTv0lPH1lAFzdmK0h/wniMsM/EaSj
+	 vDFur14i90tbAHsPsw/O86Wk+IZ5e6jX/dPx7CNn98zScWvHG3INZ5HP9vSm1OKY5n
+	 9Lj6bO+L7mtGTkswNa70WA/FBVCbLOaUmxfxogGszXZQokZgUrjI1+oVl7Q1k90jrm
+	 panQXthCHxWPg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 7/8] arm64: dts: imx8: add camera parallel interface
- (CPI) node
+Subject: Re: [PATCH v7 4/8] media: synopsys: Use
+ media_async_register_subdev() to simplify code
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
-Cc: robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260702-imx8qxp_pcam-v7-7-b47d9e363400@nxp.com>
+Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org
+In-Reply-To: <20260702-imx8qxp_pcam-v7-4-b47d9e363400@nxp.com>
 References: <20260702-imx8qxp_pcam-v7-0-b47d9e363400@nxp.com>
- <20260702-imx8qxp_pcam-v7-7-b47d9e363400@nxp.com>
+ <20260702-imx8qxp_pcam-v7-4-b47d9e363400@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 02 Jul 2026 16:27:15 +0000
-Message-Id: <20260702162717.573FE1F00A3D@smtp.kernel.org>
+Date: Thu, 02 Jul 2026 16:28:09 +0000
+Message-Id: <20260702162809.AC6171F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Low] Missing required `ports` property in `parallel_cpi` devicetree node.
+
+Pre-existing issues:
+- [Critical] The code uses an undefined macro `fwnode_graph_for_each_endpoi=
+nt_scoped`.
+- [High] The `vep` variable is used without initialization in `v4l2_async_n=
+f_parse_fwnode`, leading to non-deterministic parsing failures.
+- [High] `v4l2_async_nf_parse_fwnode` incorrectly bounds array checks by `e=
+p_count` but indexes by `port`, causing array out-of-bounds access and over=
+writes.
 --
 
-commit 1d4cc7458532cecd40b7f34cec88fcc17577ec4d
+Note: The format of this review is altered due to recitation restrictions. =
+I am providing a free-form summary of the findings rather than using inline=
+ quotes from the patch.
+
+commit a062c04404605739dc18e1d269233cd3c55f2e65
 Author: Frank Li <Frank.Li@nxp.com>
 
-arm64: dts: imx8: add camera parallel interface (CPI) node
-   =20
-This commit adds the camera parallel interface (CPI) node to the imx8-ss-img
-device tree. It also wires up the corresponding endpoints in the imx8qxp
-wrapper.
+media: synopsys: Use media_async_register_subdev() to simplify code
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi b/arch/arm64/=
-boot/dts/freescale/imx8-ss-img.dtsi
-> index a72b2f1c4a1b2..b504f99f6acdb 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
-[ ... ]
-> @@ -222,6 +222,19 @@ irqsteer_parallel: irqsteer@58260000 {
->  		status =3D "disabled";
->  	};
-> =20
-> +	parallel_cpi: cpi@58261000 {
-> +		compatible =3D "fsl,imx8qxp-pcif";
-> +		reg =3D <0x58261000 0x1000>;
-> +		clocks =3D <&pi0_pxl_lpcg IMX_LPCG_CLK_0>,
-> +			 <&pi0_ipg_lpcg IMX_LPCG_CLK_4>;
-> +		clock-names =3D "pixel", "ipg";
-> +		assigned-clocks =3D <&clk IMX_SC_R_PI_0 IMX_SC_PM_CLK_PER>;
-> +		assigned-clock-parents =3D <&clk IMX_SC_R_PI_0_PLL IMX_SC_PM_CLK_PLL>;
-> +		assigned-clock-rates =3D <160000000>;
-> +		power-domains =3D <&pd IMX_SC_R_PI_0>;
-> +		status =3D "disabled";
-> +	};
+This commit simplifies the driver by replacing local subdev registration
+and pad setup with media_async_register_subdev().
 
-[Severity: Low]
-Does this node need a ports child property to pass dtbs_check validation?
+[Severity: Critical]
+This isn't a bug introduced by this patch, but by a previous patch in the
+series that added v4l2_async_nf_parse_fwnode().
 
-The fsl,imx93-pcif.yaml binding strictly requires the ports property in the
-fsl,imx8qxp-pcif compatible node. While the i.MX8QXP wrapper subsequently
-appends the ports node, other platforms like i.MX8QM that include this shar=
-ed
-base dtsi do not. This will cause devicetree validation to fail for those
-other platforms.
+In drivers/media/v4l2-core/v4l2-fwnode.c:v4l2_async_nf_parse_fwnode(), is
+the macro fwnode_graph_for_each_endpoint_scoped() defined anywhere in the
+kernel?
+
+It appears this macro is invoked but undefined, which results in an
+immediate compilation failure.
+
+
+[Severity: High]
+This is a pre-existing issue from a previous patch in the series, but
+looking at v4l2_async_nf_parse_fwnode(), does the uninitialized stack
+variable vep cause parsing failures?
+
+The struct v4l2_fwnode_endpoint vep is allocated on the stack but not
+zero-initialized before being passed to v4l2_fwnode_endpoint_parse().
+
+The parser relies on vep.bus_type being V4L2_MBUS_UNKNOWN (0) to correctly
+guess the bus type:
+
+drivers/media/v4l2-core/v4l2-fwnode.c:__v4l2_fwnode_endpoint_parse() {
+    if (vep->bus_type !=3D V4L2_MBUS_UNKNOWN) {
+        ...
+}
+
+Since vep contains random stack garbage, vep.bus_type will likely be
+non-zero, causing the parser to incorrectly assume a specific bus type
+was requested. Will this result in a spurious -ENXIO error and break driver
+initialization?
+
+
+[Severity: High]
+This is also a pre-existing issue from the previous patch adding
+v4l2_async_nf_parse_fwnode(), but does the pad allocation logic
+safely handle non-contiguous port numbers or multiple endpoints per port?
+
+The wrapper dynamically allocates exactly ep_count pads based on the total
+number of device tree endpoints. However, it indexes the array directly by
+the endpoint's port number:
+
+    pad =3D pads + vep.base.port;
+
+If a port number is skipped in the device tree (for example, port 1 is
+present but port 0 is not, making ep_count=3D1), will vep.base.port (1)
+trigger a false-positive vep.base.port >=3D pads_count bounds check, return=
+ing
+-EINVAL and failing probe?
+
+Conversely, if a port contains multiple endpoints (e.g., two endpoints under
+port 0), won't they both overwrite pads[0], leaving subsequent array elemen=
+ts
+completely uninitialized?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702-imx8qxp_pc=
-am-v7-0-b47d9e363400@nxp.com?part=3D7
+am-v7-0-b47d9e363400@nxp.com?part=3D4
