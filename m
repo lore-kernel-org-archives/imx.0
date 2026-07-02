@@ -1,77 +1,61 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B0E33F5B3
-	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 15:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BA63368AB;
+	Thu,  2 Jul 2026 15:54:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783007627; cv=none; b=g8VdV+JHn4/Bwf2mGxEGpdwF6Z9ERjhr+OL5GsEyd678i84AAV3ryqXnmpknGMajN6hy/VzeMdsEmugWZ7PE9XtQ2qowRvwXwB+eUXFAH2mg76Tl2YgkwY5angYvwKo8hK3piLxDl9l8KY/SQS4pgeI2vJCoQYGHf+KhF+cjPnM=
+	t=1783007663; cv=none; b=Ix2nbOj/kz1IR11fW+onGglBp5m1H9yJbTESdGcDewcOW/FLY/3VUx0Pi3RvD3m82G3lvocmbm63jemEZS8+E05pQtW6mKuxV13z4jyZ1edt3lzcp4z7eBn3JZ/UDNvokeWR6Vm+rxTQittE6fYSn6MbAuIMPvBPVxFOyDWmBTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783007627; c=relaxed/simple;
-	bh=YqqW/cPnYArpEDfel1ZuOY5yT2suBWd/apbOMVJBscU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DL/Z9eDtlCHdAGdIL3iY0rD/vmvoQl9rQywzadj3IAuw0QH2ArU53f1UfkC3vZ3Le86H2ngfxmTxz7wkrQ6DlYXbZOYp4rzT4cyyBh1Z6ovgrnEGU3/WF4I5OugoL7U55BN5BWokbc2ARpDAbmgz7kky+zQ0xR7FG9/u+FIC8OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 22CDE202631;
-	Thu, 02 Jul 2026 17:53:44 +0200 (CEST)
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1wfJjU-005lgD-0C;
-	Thu, 02 Jul 2026 17:53:44 +0200
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1wfJjT-00000000Feq-44uq;
-	Thu, 02 Jul 2026 17:53:43 +0200
-Message-ID: <4fa5149db18bfac88780382cf8d2d6ee18470c71.camel@pengutronix.de>
-Subject: Re: [PATCH v3 1/1] reset: imx7: Correct polarity of MIPI CSI resets
- on i.MX8MQ
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: robby.cai@oss.nxp.com, Frank.Li@nxp.com, s.hauer@pengutronix.de, 
-	festevam@gmail.com
-Cc: krzk+dt@kernel.org, andrew.smirnov@gmail.com, kernel@pengutronix.de, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, aisheng.dong@nxp.com, guoniu.zhou@nxp.com
-Date: Thu, 02 Jul 2026 17:53:43 +0200
-In-Reply-To: <20260619073115.3778313-1-robby.cai@oss.nxp.com>
-References: <20260619073115.3778313-1-robby.cai@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+	s=arc-20240116; t=1783007663; c=relaxed/simple;
+	bh=UQN/ulBGEMPe0Pumu5fkewtDCPeEZj7oOJ2MNLZMVTA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=aFzM07ACdykYTgyR7OZfyIuyFuUUfE+WxrHpS88v1G7oheiipQFg4fseqAcaM+FbiCmP0W0sSFrAdTKjD6M+diVpKKPKRHqTQpdA8kLawZHHSvZzZh8qNkv5KeApPE6dwPEWaVq5zrvzjl5fDo8SuxRpuXNvlDrqzS5y8CMoMJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXjEJE51; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXjEJE51"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055F21F000E9;
+	Thu,  2 Jul 2026 15:54:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783007662;
+	bh=UQN/ulBGEMPe0Pumu5fkewtDCPeEZj7oOJ2MNLZMVTA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MXjEJE51vOsOoaWIzpRk3pY9F2SzwkGi+m5FVl5rDTRVpctNcpMfPv7PNxj09TjRU
+	 IV9ASpEvpXu4yM8cZQ8oEoC5c/RZ9z676tV+LeVqQ9SweLe1LJd3OQ1M5KY3QKOsym
+	 K8Rl1rRip9eBv7d4xnvW6t0c+YruIOakefjgxx8gUPARdvNKHIhK00KIfca/m7sm1E
+	 g2cyvTBz8BnRtWKMfCWB5Y9SZ/BBNVJSsYtZqbw+G5/8KUZMr/16Ju2rRtzWGHfGjt
+	 /jcQV/2xqq2bahsC/zjZyuS0hPNoot2Nf3h7BsHJA2JVlZDyME4i2LgVQIOUmpEI1D
+	 uqVVAYDYWMVFg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 01/11] arm: Use sysfs_emit() for cpumask show
+ callbacks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yury Norov" <ynorov@nvidia.com>
+Cc: neil.armstrong@linaro.org, linux-pci@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-amlogic@lists.infradead.org, linux-cxl@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260702154725.185376-2-ynorov@nvidia.com>
+References: <20260702154725.185376-1-ynorov@nvidia.com>
+ <20260702154725.185376-2-ynorov@nvidia.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+Date: Thu, 02 Jul 2026 15:54:21 +0000
+Message-Id: <20260702155422.055F21F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
 
-On Fr, 2026-06-19 at 15:31 +0800, robby.cai@oss.nxp.com wrote:
-> From: Robby Cai <robby.cai@nxp.com>
+> These callbacks are sysfs show paths.
 >=20
-> On i.MX8MQ, the MIPI CSI reset lines are active-low and not self-clearing=
-.
-> Writing '0' asserts reset and it remains asserted until explicitly
-> deasserted by software.
+> Use sysfs_emit() and cpumask_pr_args() to emit the masks.
 >=20
-> This driver previously treated the MIPI CSI reset signals as active-high,
-> which led to incorrect reset assert/deassert sequencing. This issue was
-> exposed by commit 6d79bb8fd2aa ("media: imx8mq-mipi-csi2: Explicitly
-> release reset").
+> This prepares for removing cpumap_print_to_pagebuf().
 >=20
-> Fix this by reflecting the correct reset polarity and ensuring proper
-> reset handling.
-[...]
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
 
-Applied to reset/fixes, thanks!
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-[1/1] reset: imx7: Correct polarity of MIPI CSI resets on i.MX8MQ
-      https://git.kernel.org/pub/scm/linux/kernel/git/pza/linux.git/commit/=
-?id=3D71827776667f
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702154725.1853=
+76-1-ynorov@nvidia.com?part=3D1
 
-regards
-Philipp
