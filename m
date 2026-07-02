@@ -1,93 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE35B3CAA5F
-	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 07:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7F447D93E
+	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 09:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782979070; cv=none; b=aaISQr/Rtc7xQFXf7/XaFWR7dahuK0E42mIE8Rg7VSCnNiXOG8+okzNn7/Re105WW4csYVgsNxP7AVLM/RJ44hdzTC0QJFxKRF24KGxIfmxPqScLcmNUwW68qMBz6eg+cGBoEYkI2VzdoIk2tWjlGskJhCxEO8sObe5LtQAvlWU=
+	t=1782983573; cv=none; b=SumOGe1ZhgLONiIEMlByJVhJDxkw0pT/30ZNhX3V9U5j3JD9yDwWO8Ohu5mV1ukXfJ8mXzIUMntD1g0X4xUPtSdzE9GkOHtNk1xqZ9nExWego+hG8P1oH7soC8BigyTCWjLt+qEM942Muu55BF+mbSrylEvK2Oky+4wZi31bln0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782979070; c=relaxed/simple;
-	bh=SoznX48Lc5tjiNftEh/MMwDC3M+9GjVZvEsdN5LRwEQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dI5d/f2zFDYd5Q5Xo/ArCMy8e7wphCL6NDIVs7Sbb5P3OM7f752JnYpvKdbhXCa4jfF0g6IMmcEg/2+58M7Mn2AL3EdFrebzBkV/6teKGHxbFBvIfsPNu2/f3otpwQewdBJ4nkufBEx2s7zE69Qihyf7XuMMi1OBgXIjIdp366I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=la1yQKc3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782983573; c=relaxed/simple;
+	bh=z3us1EYcPhA08D2V/YJ+nWiOnRiCmeZ4lZeMhncdG0g=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q1xq6KWgxIitpvqgmZy5R1Rk36SdXX9C+f06aqdI/81KZUB4/Rd1ThhcUseBeEtp/tb1jIk82QTVEEOoM6eR9k2lq6rmKOtmt42E0CRKE8wwWLljYz2ikXpbLPVPtW/82Ldqqfut944/aENJSIowYjNDkuytr5SajSRlmvxb0xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lPyvPnDu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="la1yQKc3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DCC1F000E9;
-	Thu,  2 Jul 2026 07:57:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lPyvPnDu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDF81F00AC4
+	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 09:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782979069;
-	bh=qjyrfAtAAMMFMspjYcRPMZAeVxutGpCc3ymu9bwJ6/Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=la1yQKc3ih+/Lvl3wQPgNZ3Wj0/xm/sbWcesu424arHLDMwzh+s4c/usbzQNrMzwm
-	 DVqlb5g0s5RM3ZAxngqr9loejzU4tfI2IZoHj/PpP1W4sc7UqKACKcJeJlWdkoDQtv
-	 /1ixyCdbc+3HgBU9JMcyR/wYnnah7giUA1dezaB80j0bKVEwO9kXfrwT+RnYlHYskE
-	 v3JOZo1/wEEhM17jhdKXV17tDijr2XDQfDdG33M/vYCA03olbhfUFaQWhLzSLBzVzX
-	 VeZbN3XCFaAMalDJFXdRhNjcOUoVDhkZxTbEmpn3wXYDTYwsaaebQCb8o9YaWMjkqB
-	 0rI0PZ2wBXonQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net] net: phy: motorcomm: read EEE abilities in
- yt8521_get_features()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: xiaoning.wang@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260701075730.133707-1-xiaoning.wang@oss.nxp.com>
-References: <20260701075730.133707-1-xiaoning.wang@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 02 Jul 2026 07:57:48 +0000
-Message-Id: <20260702075749.16DCC1F000E9@smtp.kernel.org>
+	s=k20260515; t=1782983572;
+	bh=z3us1EYcPhA08D2V/YJ+nWiOnRiCmeZ4lZeMhncdG0g=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=lPyvPnDueqS9ZIaG4AR8IxxE8u+oV1PYjwXXaoyKWknbM6OhQLYanydVuc1qzgo3z
+	 R+JWVZq5YV93ScxHlquZZEI93rboq8ubHxikSWMv+AFhTH61bnsbIfLwDQqmN/fcDh
+	 L7OatAaU/eNHLzOUDAhmQAWRK86el8sgoojYtGqc2e+aa4Ab7EPhmdyDoi/e3911uD
+	 H9YT4uVHlukHAKxHgypn/78J+0kzaG/PPT63uA23z0e0Jy2jiwUJiGiPEI4aLZoKPK
+	 fgZnHkddf2MFQObw8Uq2YbfAhlewJXDrb5n2lpce9v8zY+WoWQU5rj6NBSeycKhtT0
+	 BpJ6v3y8RhK+A==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-39b38198496so8059941fa.3
+        for <imx@lists.linux.dev>; Thu, 02 Jul 2026 02:12:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rqk+l8hV8GwV8P+vJhUlzgMAqFN/OYLnbazEjLdNdSYcqjBmq9Sf4t1tNFp3t10y0J8yPA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwGimiVV3JYwMsK1LRdXLKOoWCACPJpbSk6nMAXMfMGT2WiZt+u
+	ujBDu1tZbJOnqrnK7odBHViw1QOktxLWLeUIQX/aOjd2rzbp72DFQh+TO/zFI+55hUIceNONq2P
+	3khMsBVu/RK7ot1JNpy1rfF/1gAf6FbtYpJxd6FV1nw==
+X-Received: by 2002:a2e:9c86:0:b0:39b:35bd:e705 with SMTP id
+ 38308e7fff4ca-39b35bdebfemr6340391fa.37.1782983570078; Thu, 02 Jul 2026
+ 02:12:50 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 2 Jul 2026 04:12:46 -0500
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 2 Jul 2026 04:12:46 -0500
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <akOZFIowVvprnAMf@vaman>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
+ <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
+ <CAMuHMdXen+E-Ai51aWBa_KV9W8Fz2cQPpT-FG_kQ7akhrrYa_A@mail.gmail.com>
+ <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
+ <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com> <akOZFIowVvprnAMf@vaman>
+Date: Thu, 2 Jul 2026 04:12:46 -0500
+X-Gmail-Original-Message-ID: <CAMRc=MfBcOhbj=ETxy2Xz9o_nyzykrEhKAc3jYi6V5_jMZEE3Q@mail.gmail.com>
+X-Gm-Features: AVVi8Cc0cbGsvWIHn6Ltbm1wzcUWjyqAHy25YdAMNK19MIl0j9ziewcxopNMKrw
+Message-ID: <CAMRc=MfBcOhbj=ETxy2Xz9o_nyzykrEhKAc3jYi6V5_jMZEE3Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
+ PHY on sa8255p
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, Romain Gantois <romain.gantois@bootlin.com>, 
+	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
+	Christophe Roullier <christophe.roullier@foss.st.com>, Radu Rendec <rrendec@redhat.com>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Missing early return on the error path allows execution to fall thr=
-ough, causing unnecessary MDIO reads during a failure state.
---
+On Tue, 30 Jun 2026 12:23:16 +0200, Vinod Koul <vkoul@kernel.org> said:
+> On 29-06-26, 16:51, Geert Uytterhoeven wrote:
+>> > Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
+>> > driver instead of the MAC driver where it was previously. Instead of cramming
+>> > both HLOS and firmware handling into the same driver, I figured it makes more
+>> > sense to have a dedicated, cleaner driver as the two share very little code (if
+>> > any).
+>>
+>> I think you are mixing up DT bindings and driver implementation?
+>
+> Should the bindings change if we have different driver and firmware
+> implementations? Isn't binding supposed to be agnostic of
+> implementations..?
+>
 
-commit 4dca8ceeaa7210baaf997bd7af025147319f1c9b
-Author: Clark Wang <xiaoning.wang@nxp.com>
+I've thought about it some more and I believe this question is philosophical in
+nature.
 
-net: phy: motorcomm: read EEE abilities in yt8521_get_features()
+sa8775p and sa8255p are *the same* hardware. I can flash different firmware on
+the same Lemans Ride board and it becomes one or the other. Yet they are not
+described by the same DTS and the bindings differ as well. I don't see why we
+wouldn't allow the same approach for the this PHY.
 
-This patch updates yt8521_get_features() to call
-genphy_c45_read_eee_abilities() so that EEE abilities are correctly
-populated for YT8521/YT8531S devices.
+We treat it as different HW variant when it's managed by firmware - just like
+we do with the rest of the SoC.
 
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index 5071605a1a117..e69c453af574b 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
-> @@ -2490,6 +2490,9 @@ static int yt8521_get_features(struct phy_device *p=
-hydev)
->  		/* add fiber's features to phydev->supported */
->  		yt8521_prepare_fiber_features(phydev, phydev->supported);
->  	}
-> +
-> +	genphy_c45_read_eee_abilities(phydev);
-
-[Severity: Low]
-If yt8521_get_features_paged() fails in the first branch of this function:
-
-	if (priv->reg_page !=3D YT8521_RSSR_TO_BE_ARBITRATED) {
-		ret =3D yt8521_get_features_paged(phydev, priv->reg_page);
-	} else {
-
-ret will contain an error code, but there is no early return check before
-falling through to this new call.
-
-Could this cause genphy_c45_read_eee_abilities() to perform unnecessary
-MDIO reads during a failure state?
-
-> +
->  	return ret;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701075730.1337=
-07-1-xiaoning.wang@oss.nxp.com?part=3D1
+Bart
