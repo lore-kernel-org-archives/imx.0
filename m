@@ -1,111 +1,285 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011032.outbound.protection.outlook.com [52.101.70.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371D03859F4
-	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 19:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783019539; cv=none; b=GgaeHSxpTI/FyWVsD7vq6bkjFVnolazfChh564uhoRdLLsS01Ot3DeQmiF9/OM+twn5ZGaLVObdc7D2Qd4nzhROkv/YxKBegjHC8TO5XAewbSL4XQLeeRzKgNO7SHCZy+bhHF437r/XKKtOgzwNla0phagLZp7FTZH7FlCnxti0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783019539; c=relaxed/simple;
-	bh=AVIYuPCgubCuYve1OA2lx01GpnFJKVLmIPNWXCKWycQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F3x89jnmjuz1kMrl5HPlYi+JhrhF9Bq/UpvIWhaYL2FU00h02vwePPMPzuQIU47yK7+amO5rJWcqPYfyWMCha26K1Hbyysf11/LQj9HFoUJo0T2JOmFhxmj+6wQQTiMWgCAEYc7NWfsar2LqlJ/vrHN3BHoYP2PCuzr8LPBuCJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QRq3tbHt; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3392D1907
+	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 21:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783027298; cv=fail; b=gtF1maS5IXq9FOqYdl1HDDgq/bs3hl7eGoRXQQOOxBnjb9MWapUxojRGoCoIMPrqNnZ1lF1jMs94FwPdGaiP2ZNHZodwZ86myJpJy8cJ6QBwj4227emXFCtqCyQvv19mvGdKjROPuA96FXMew5Iwk9dXGajmuiVxkiUqjuaXSTc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783027298; c=relaxed/simple;
+	bh=PH/sQ3RZ8YFvzu4kEo4SOecxpFyLtvyDs1BY6wkMbwE=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=YRFnjQ63o4VS47OM0FQT5/9V4Z8Bui2K1mPCaX+sjtU6s6bcbuJJiUD748VdFH3Z/XJFg2RQDJlr+PIxT8cTxUVbqC8NVsrP4zNkhSwWOu3jfHQ3cd+j9CTDUrEX+8F4vbQLu+EReGZCW42xvzf5peTTfyAtHhT4TsFXPKOmoCQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jTN5qEPB; arc=fail smtp.client-ip=52.101.70.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QRq3tbHt"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-493c5220cb7so10446185e9.3
-        for <imx@lists.linux.dev>; Thu, 02 Jul 2026 12:12:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783019535; x=1783624335; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yWVl92ySB0LOea/djTBKxUFhK5i6uFHRlukNHQHiJp8=;
-        b=QRq3tbHtqZElUpwKtkkl+hdnXiEIIscWIIH13glEE98++t8Gu/j0VQEDlO8ewpQooq
-         DQ7ADE+Ksf9h+L+ebi/Pdaw9vpnvDnH4tSb6T0v++SXLs+xPtzUTcT4frhwGt0l864HZ
-         JzxJWNZ3b+Nka1GlOAX4vON4EYUc+d8nEnvfOOMsxw3kkGmjrg5/kchDR9LBLTGO6hln
-         rQe5HjNOvScYfb96/1tV7J4xUB33Csra2O+j/yBZcxI0Sb8l6YzBAExqTDLsLBJvb/S4
-         nI/5jNq/CvnrKktdmQCbLxVFGJrf40C0ZbumMB7uzeLiIEqn+oKvShQAlVfXyI+Zamj8
-         553A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783019535; x=1783624335;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yWVl92ySB0LOea/djTBKxUFhK5i6uFHRlukNHQHiJp8=;
-        b=WUoBm7WNcDoMHotXo8v100llYnCyVL1IHc1RvSpvUIFlBpu2h/8c05QnFrgCPL0WP8
-         IdhQmCU3TDxOsQdPz9C8g2Q/Q41PaV4GXj2OK2e/R0d1JElysBIJGXcFqfL6PUgPs4Mx
-         Iv91vd51XFf1TQJkVillpSqrlxIC6Gzg3nuOGka+eNOqhPC43OfSiUifQ7UHoAKOTvC0
-         B4sXzYcvLjUZJ5j/3cmZFcHp7ujPmG/6r/Vb/Y/b/6YKn1kgH1IJdJalZqW9yz7xUda0
-         YeIB+2ZpKDhRZUuWaNZkujRHCkYbDdhSSWST0IYgoA1lyEdjUXy96hZU84SfIAYToBfd
-         AVRw==
-X-Forwarded-Encrypted: i=1; AFNElJ/ilCb/lpO5lqjpuQMr+wcksi796QW/sei5b/VqR7jbuE3sB+Ghq1/dxK72YU8Yw/ei9jU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyzWrBMqa9B8xEUzctT+h7tFUFZgT2rh3z3l1tgkPGFL36ivGY5
-	chmDa2cy7zFxsoET1W2MSQ6HTW02wk0aY55QeVbbOrZar/yHyZCABbvh
-X-Gm-Gg: AfdE7cnenQnuYCYKP0jaCvY3XI//7beNcWaGbtNSlX7oIZXK/Y9Fyj807ITNwlj7Irh
-	lS1LprHrdi8DqyNWZKFB/MZiE0PnwLw7vJwxH7vvcfrYgTpGIGkONuOcmEed125rnOe1jFYN4CN
-	Pz27BH3MB9JRBenPDsv+QlmVAfeino7SMosFd3w/aHTytyknwVYpgyrXAb07RaPdInix/cC1PKM
-	rcmKHAFLyDZ9XN6i+ndSqhxlI06q2KtKot6SKpGizuWsQgxAc5P+8wf3pftbCU0rM5ay20uMAVq
-	qR3pHjmvgPEXSifYnh+jhQfs4Pato4blc1VL9cYmvnOguCtLH45WzGnyZW9GKyLdA2lP6NpL3hx
-	NOcCE21iO67FO6nolcojy6fd4e9ZLkWTdqlZNld+ul6wI2kLjXGnOjfGLlNvdsogzLg/liJWXSD
-	ad28Q0urk8IFrd6DufDQIxSLZ0IH0gmIn6Ao4bUjxTZwjxYqvVampKNgOY/5ruY0/lWLH45jgGN
-	tfXFVP7
-X-Received: by 2002:a05:600c:290:b0:493:a613:56b2 with SMTP id 5b1f17b1804b1-493c3cd5967mr65147035e9.8.1783019535315;
-        Thu, 02 Jul 2026 12:12:15 -0700 (PDT)
-Received: from [10.128.11.240] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c636cc08sm83399065e9.11.2026.07.02.12.12.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2026 12:12:13 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-Message-ID: <eff80e31-f833-4790-8114-1ece4ed3a044@gmail.com>
-Date: Thu, 2 Jul 2026 20:12:12 +0100
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jTN5qEPB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nIXLct1dFC4tU4j8QCxtTQbDd3MoFhzaiAgExNgVQx74MshHIzeqvgTsVWg25Qfl1lwTuC7ggtUX2gpd09eoa7MJ7K8Pip0tD+Wy/4kq5+vk6f8UxzjS1PAyAFaQBr1p9hx3X36LVdEwGvWKYz3nMw35Ort56uItudBghQTHIibC3vB/WJYt3PiFuJ9bkLrgTXXjC6X9Y2gWhY86wFnkP/9+c9xkYjtuyMEUz5g3JHTMiYtVbNzDeGDMUeh0VlGPaTkM/UAekMeergCW8iYIKRKUCo1WqIPw7Hgwdv5KCIn9W+iYes/1ZHoBrEilQcWR+dkap/x5M5eKzj9zxRMFzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nceZxM8HCEeaizbbM3pPQ28huhxHyW7R3n1qlW9CHR8=;
+ b=oN2r9wQ9/iMZcDmQc5rq3Pp0EKdQ9f2QUeTSZN01GwhihtUEXkrADgXJorFqWDaWkr7xgub5Ed8wSX/fzWPvWZasBAuN0KdT8MbaG79hTE0U+6Nr2ooQqH9pj+pfAd87yjPCq+G/6nlewim8paENxZDcJO3hLRKZiDP84etRRASExUWOOzStlPG4JAptVWL7WZqkC2IGGM99u63w+MD2wS/G9IIONfhGwym2/8DE5Y5qtOvMQ6ahFyWdnrr7l1cJs63JCss4tkkO1RDLnA1Ho8/B7LO7O374aZG90hL5QEQEg9nqe9jioaArUfQ7lVJ5z5M2VaQ08rygaUSxTKQXkg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nceZxM8HCEeaizbbM3pPQ28huhxHyW7R3n1qlW9CHR8=;
+ b=jTN5qEPB6iAkSHyQuckHrvKJ8yn0p6uok4P/FG94vvy6uKr67pMLbClu/v/THE7GceaH33p6UHJ2crAObqqiwH9RsyQT54Gx1HY5cEJpU1l71f1Lz6nur36v26aR+6nQXA5yspYtmeiNqe+KfsNuaLiKA6er2/oDgeuXN7eGyRHDyZvV2CmcRJzjHaT7LliKKJTE00loWMjFoMOc+GrWctmQa5Kf+tgCoFFR9/eciVDrLMebwHbgTr5JUPZxGVOcfXZcngjtzNsJuXtewxVacVmbeQOhXmjQEcPN0ukNEaG71K/Q2Couygydk86ejNf4gREqqrDEP1yWbQFol1co7Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DB9PR04MB10066.eurprd04.prod.outlook.com (2603:10a6:10:4c1::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Thu, 2 Jul
+ 2026 21:21:33 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Thu, 2 Jul 2026
+ 21:21:32 +0000
+From: Frank.Li@oss.nxp.com
+Subject: [PATCH v3 00/10] dmaengine: dw-edma: flatten desc structions and
+ simple code
+Date: Thu, 02 Jul 2026 17:21:20 -0400
+Message-Id: <20260702-edma_ll-v3-0-877aa463740c@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAFDWRmoC/0WMwQqDMBAFf0X23JTNqqnpqf9RSokxqQGrkpRgE
+ f+9UbAe5/FmZgjGOxPgms3gTXTBDX2C/JSBblX/Msw1iYGQSk6cM9O81bPrGEosaoWVtMghvUd
+ vrJu20v2RuHXhM/jvFo58XfcG/RuRM2RWVyJvpC21ym/9NJ718Ia1EGm3BHKUh0XJKjXWdKlJC
+ 1Ec1rIsP8wkiuTSAAAA
+X-Change-ID: 20251211-edma_ll-0904ba089f01
+To: Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+ Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, 
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>, 
+ Niklas Cassel <cassel@kernel.org>
+Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org, 
+ linux-nvme@lists.infradead.org, Koichiro Den <den@valinux.co.jp>, 
+ imx@lists.linux.dev, "Verma, Devendra" <devverma@amd.com>, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783027287; l=6351;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=PH/sQ3RZ8YFvzu4kEo4SOecxpFyLtvyDs1BY6wkMbwE=;
+ b=VSMjurXW7nf1lSCw7lkkHQR6qaLDbMzBqS3q1Dcr51swoQpGAWWSYout/LZBJflyNufUgIfRh
+ yYckJv2jFE3DsdVUKLXvk/WYrewBxxCR0yycYsmLlaPbiUCtINwaTOg
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SA1P222CA0044.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:2d0::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/5] mfd: aaeon: Add SRG-IMX8P MCU driver
-To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- =?UTF-8?B?SsOpcsOpbWllIERhdXRoZXJpYmVz?= <jeremie.dautheribes@bootlin.com>,
- Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck
- <linux@roeck-us.net>, Lee Jones <lee@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>
-References: <20260630-dev-b4-aaeon-mcu-driver-v6-0-d66b5fcbd2f0@bootlin.com>
- <20260630-dev-b4-aaeon-mcu-driver-v6-3-d66b5fcbd2f0@bootlin.com>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <20260630-dev-b4-aaeon-mcu-driver-v6-3-d66b5fcbd2f0@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DB9PR04MB10066:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9be0fed-1f72-4bb8-3a11-08ded87fe338
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|7416014|376014|23010399003|366016|18002099003|56012099006|11063799006|921020;
+X-Microsoft-Antispam-Message-Info:
+	CzRZjRRZ6RRtTJ0mY0fZ1HzgGp/CwAWxB1U1YA4TCptHthaWtG/EfG3XwrStirGXwCQXj4AQ+sOgbUjeuY5utFH9D95G4aAw3xXZbY9d5OPAa2Kpu51nN1+vRtH8xu2UrU9zPgYbqcrWhLD03f7XJk1fWx2qcGc/9LZ6npKNEgDCOpZGhTPX6YPki5pl7P+rKgMjESfF17YkpqYQRWTw3c1J/wB0sBdpNHIlaUCtFh+RpwlpT1qHLeCSAjQqwsHZ/EufC9B+RsmenPSDUcBiqdsOyU1dxzt7DI7AxSPsDA8+38otXvdJdMZNP404WgpGKaF9WVgzPoACpdU+rQmo0eryVmnQRGRWuTWxjqW+31AKbcl6TLf5NEQadMkIrcJQmKHkPJYgPEgVfHDhcZSB2le1lG9ffh0ikUsu6I/BcZ+nfT5fHE2Mtbjn4Yx0nX+VpviVypkI2lN3Eu7yr+XgO59G10aPLwRVi9ReseZYR4AxeCLv9RD+Ym1lMFYHAGnHnJjHdFce6RbW7yl2/qMKdAZj/orW2Q62owvGCjcfXwKaxT+sOAxTNwMihULXrzSO6aUnV7HXs6KAG5EQ1ZVbIdAVpjsNaULcSJwU1imCLtEheabOMXS+xnGLKyZopDiKr8U5+KomjNn7cgOFuw2osA1AqI/wKsrx8KigY39iS2kHZIofivNq6e1RBo8KEiF1riWy1ai/Hf8OYlivzdAOmg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(7416014)(376014)(23010399003)(366016)(18002099003)(56012099006)(11063799006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bXRNMlpZQUhHOStWaGNpdGpLMVordTJpUitBMis2bWZNSkF4Q0dQUi8zeWpZ?=
+ =?utf-8?B?UFZxUXlIVjZqekNKQ2hyVUxLSTdrdWgzV3lOT1dQR05GVmoxalN5THRyM2xG?=
+ =?utf-8?B?N2tIZXV6QXhtUGtnMDVwM0UrK0ErMU5rczZqRWFVU1VqaE0zSDZia0FNU3ll?=
+ =?utf-8?B?S2cyZUg5bW9oekNUQUhicitjOU4zNkNySUNOZGJGaE9JaURONHRnZWNGK0Fp?=
+ =?utf-8?B?NTNCWmd4UnRpVVVCMWNpc0Z0QWFZaXJjc2JlTFZpd3I0ZVk5QWJWekZmNlpG?=
+ =?utf-8?B?VUJtY3IzVWtiaU9nUkl4U2pSUlJNU201KzF5TkVwbjR3WmptVW5JYm5kTFVy?=
+ =?utf-8?B?d1ZqOENOaGhUKzdIclhMdGFnT25JTldpdmV3dERGeFVLZEtCSThVZzh0UjNM?=
+ =?utf-8?B?Nm50WE5oc1J2YnlubXBXZ3F4VmlmcFZ4SGxaM251WXNYOGs3Rm5EbGlueGxR?=
+ =?utf-8?B?WFl2bXZBTEVJY1ZoWnZ2YW95NE1Dcm5IeURFc3pkNFFNNkpMWENOQm0xZFk0?=
+ =?utf-8?B?a0pCeDBqV3hlZUFWN3ZqSmVJYkE1c3l1OU94SnRVcDNSSmF4cnJKYVV4dzE2?=
+ =?utf-8?B?M0VGdUl6dlo3ZW1SdTdOL3Q2c291K1hxZ0NiUEh6NFdLVkx6S1lTdVRkakRm?=
+ =?utf-8?B?dFRUQm1Ka2JhRDVFaC9hYlYzTThTUVZtOURYNlgwN09WSTNNMWprc2IyUkRj?=
+ =?utf-8?B?WjFpMDl1Q08vQ2RHaElaeEFja3BjY3p2dVhpakhFMFZVZU55Q2lpWmFocklh?=
+ =?utf-8?B?VE80K1JXcHRPemRCekZwV29INVZkWDBUdWs2MFVQb1Q3bHpCdVhUb3FOdzhE?=
+ =?utf-8?B?azc1N2ZEaUxoNDF0NkgwZDFCYk5FOWdJMlhhUUdERk84S0NiL2JuREhoMTly?=
+ =?utf-8?B?MmR5UnQ3d0tjNkZtZ09IUC8vTVA2ZCt4RXRmbUplREhCbEl4QkNzZ3lJajdQ?=
+ =?utf-8?B?UWpyV3ZpZW8xTnd4SXR5bmJKc05ySE9IRzNLbUpWYS9uQUVaQjREU1ljTGtk?=
+ =?utf-8?B?Y0FSbnBSMWdERThSbWNFaDZnVXpPT1lpYVUvVXVKQnpoQmQ4d3FsblF1VmdY?=
+ =?utf-8?B?RFI1TVJRR0tmL0xBUUVxSjBLdzdrSlpxcE1CWHhpNEQ1V25yM2RCeCtRbi9x?=
+ =?utf-8?B?K0RNeDZxeDc3UXcyc0VqR3pYdlUrV2lPZnh0YmsveVpPVlRtRnBzaFZtK0Fk?=
+ =?utf-8?B?UUI1UytiSXYvRzZOR1YyQ0ZCZDhmdjVyVGhlUHNUbzVmcWxRUy9nQ29mazF5?=
+ =?utf-8?B?VTErV2wzQm5NTS9WenBpM2JUeHN5NU5aZ295QWQ0R1hOUjY4bmRZb0wxeWtn?=
+ =?utf-8?B?MkZCSGZRVmM5bnptSFpGNGkwVjNVM284VnI5SCtKY0h6VWgxTnhuazBGeVdp?=
+ =?utf-8?B?Z1U4UUVrS29mSEhJa212T1BESVlUVUdPeG5GM0NXbVZnNHRQWDFjTGs0VHRT?=
+ =?utf-8?B?dG41NEJRUzV4aU41dm9OU1lIZ1UwcCtiSHZPdER3Q1d3NUJKOU1pWkg5VmJM?=
+ =?utf-8?B?NUxHMTZxbzFpS2dacTVabzM5Z2JVbGszc0JFMTFxcENDbGF5RXAxNW5PUE9L?=
+ =?utf-8?B?cWxBMm5BdlhZejAzYlFWRzVIMGxLeEw2M3NIYVVvTEJSSG1ZRmQ2dWtuMERO?=
+ =?utf-8?B?NkpYUWZUTWUvNS91clNtQ2NFUTU3dnRLYlk0YTQyUmNwNFpUbURrd1RzbWRE?=
+ =?utf-8?B?TFJscjNKN1lsSXV0amJsdjF3ajdrWVZja3RvaWVNcXdSM2pJcTdFdXIzZmU5?=
+ =?utf-8?B?Nk1ZbllZeHF3eDIzNzdEalZUU01pd09QaEUwTVF4YlltUzlQbHR6Unkvd0JU?=
+ =?utf-8?B?L21mMk95YlZEakM3Z0tWSDBJUWdxcGtmQ2FUS01vSU1xdGFoSFFUQVJuNTg0?=
+ =?utf-8?B?T2lSSlB0dWRFSjY4RDl5NUgzQjNKemJTZjFxOHB6YU5aNUlZOExwVjcyd09D?=
+ =?utf-8?B?YVk5RjlheVNuTjgxUHo5NEhUd1dvRkRkNW1iV3QzRGtRcFg0YnRnSElmZUdI?=
+ =?utf-8?B?eEVRaTJEcXQyTElrVnZybTJ5L212bFpZTGtRdmNCYmhHWUt3dGRUZ1Nkb2ZW?=
+ =?utf-8?B?dzNlZ1RzdnBkblVWckxrZGFSNkJLUzYwa2swRHZCUzVyTFN0RmdWajBpOElw?=
+ =?utf-8?B?NjFuTURlVlFVMlg0b0tvUHFKZ2EvMCtycUdoVUJjTEFId2VSZ1VsQ3N2RnRs?=
+ =?utf-8?B?Y3l6ZW9HUkY3YllWRFhhOURXUlFTcGZTZ0J3cmY2NkxsYUdjVzNNTG9OSTNL?=
+ =?utf-8?B?Wm9vcUZrZXJhNjJZbDNCMHMrcGw2dE51VVZQVU9lVlNRcU0zcGZEblJvTzFn?=
+ =?utf-8?B?U2hjY2NEakRIODdkdTJnNUVwU3hlM3FWUExwbk0wOVBucXFTRFpGSTFCRUN2?=
+ =?utf-8?Q?eRogAVBKr9UtegPhX877VsBkcs0A6v65rcMcQ?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9be0fed-1f72-4bb8-3a11-08ded87fe338
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 21:21:32.1586
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QsmRJe+XFEoGJtSGfmWwd5YiGhqipE2EeIFUjI4oaE8ukI2vz7w05XyCd8T29F4vq1GU6iMBMHpf5wnMUthkixVwIKbvtXYwKvdNEpMwQpOGld+Ac32n/5T3tsf7dKPc
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB10066
 
-Hi Thomas,
+Koichiro Den:
+	My hardware temperately is unavaible recently. Can you help test
+it.
 
-On 6/30/26 13:51, Thomas Perrot (Schneider Electric) wrote:
-> +config MFD_AAEON_MCU
-> +	tristate "Aaeon SRG-IMX8P MCU Driver"
-> +	depends on I2C
-> +	select MFD_CORE
-> +    select REGMAP
-> +	help
+Rebase and compile test only now.
 
-Your REGMAP select here strangely indents with spaces, while the rest
-of your kconfig attributes (and this file) are using a tab.
+Verma, Devendra:
+	Can you help check if block non-ll mode?
 
-- Julian Braha
+Frank
+
+Basic change
+
+struct dw_edma_desc *desc
+       └─ chunk list
+            └─ burst list
+
+To
+
+struct dw_edma_desc *desc
+            └─ burst[n]
+
+And reduce at least 2 times kzalloc() for each dma descriptor create.
+
+I only test eDMA part, not hardware test hdma part.
+
+The finial goal is dymatic add DMA request when DMA running. So needn't
+wait for irq for fetch next round DMA request.
+
+This work is neccesary to for dymatic DMA request appending.
+
+The post this part first to review and test firstly during working dymatic
+DMA part.
+
+performance is little bit better. Use NVME as EP function
+
+Before
+
+  Rnd read,    4KB,  QD=1, 1 job :  IOPS=6660, BW=26.0MiB/s (27.3MB/s)
+  Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+  Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+  Rnd read,  128KB,  QD=1, 1 job :  IOPS=914, BW=114MiB/s (120MB/s)
+  Rnd read,  128KB, QD=32, 1 job :  IOPS=1204, BW=151MiB/s (158MB/s)
+  Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1255, BW=157MiB/s (165MB/s)
+  Rnd read,  512KB,  QD=1, 1 job :  IOPS=248, BW=124MiB/s (131MB/s)
+  Rnd read,  512KB, QD=32, 1 job :  IOPS=353, BW=177MiB/s (185MB/s)
+  Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+  Rnd write,   4KB,  QD=1, 1 job :  IOPS=6241, BW=24.4MiB/s (25.6MB/s)
+  Rnd write,   4KB, QD=32, 1 job :  IOPS=24.7k, BW=96.5MiB/s (101MB/s)
+  Rnd write,   4KB, QD=32, 4 jobs:  IOPS=26.9k, BW=105MiB/s (110MB/s)
+  Rnd write, 128KB,  QD=1, 1 job :  IOPS=780, BW=97.5MiB/s (102MB/s)
+  Rnd write, 128KB, QD=32, 1 job :  IOPS=987, BW=123MiB/s (129MB/s)
+  Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1021, BW=128MiB/s (134MB/s)
+  Seq read,  128KB,  QD=1, 1 job :  IOPS=1190, BW=149MiB/s (156MB/s)
+  Seq read,  128KB, QD=32, 1 job :  IOPS=1400, BW=175MiB/s (184MB/s)
+  Seq read,  512KB,  QD=1, 1 job :  IOPS=243, BW=122MiB/s (128MB/s)
+  Seq read,  512KB, QD=32, 1 job :  IOPS=355, BW=178MiB/s (186MB/s)
+  Seq read,    1MB, QD=32, 1 job :  IOPS=191, BW=192MiB/s (201MB/s)
+  Seq write, 128KB,  QD=1, 1 job :  IOPS=784, BW=98.1MiB/s (103MB/s)
+  Seq write, 128KB, QD=32, 1 job :  IOPS=1030, BW=129MiB/s (135MB/s)
+  Seq write, 512KB,  QD=1, 1 job :  IOPS=216, BW=108MiB/s (114MB/s)
+  Seq write, 512KB, QD=32, 1 job :  IOPS=295, BW=148MiB/s (155MB/s)
+  Seq write,   1MB, QD=32, 1 job :  IOPS=164, BW=165MiB/s (173MB/s)
+  Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=250, BW=126MiB/s (132MB/s)
+  IOPS=261, BW=132MiB/s (138MB/s
+
+After
+  Rnd read,    4KB,  QD=1, 1 job :  IOPS=6780, BW=26.5MiB/s (27.8MB/s)
+  Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+  Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+  Rnd read,  128KB,  QD=1, 1 job :  IOPS=1188, BW=149MiB/s (156MB/s)
+  Rnd read,  128KB, QD=32, 1 job :  IOPS=1440, BW=180MiB/s (189MB/s)
+  Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1282, BW=160MiB/s (168MB/s)
+  Rnd read,  512KB,  QD=1, 1 job :  IOPS=254, BW=127MiB/s (134MB/s)
+  Rnd read,  512KB, QD=32, 1 job :  IOPS=354, BW=177MiB/s (186MB/s)
+  Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+  Rnd write,   4KB,  QD=1, 1 job :  IOPS=6282, BW=24.5MiB/s (25.7MB/s)
+  Rnd write,   4KB, QD=32, 1 job :  IOPS=24.9k, BW=97.5MiB/s (102MB/s)
+  Rnd write,   4KB, QD=32, 4 jobs:  IOPS=27.4k, BW=107MiB/s (112MB/s)
+  Rnd write, 128KB,  QD=1, 1 job :  IOPS=1098, BW=137MiB/s (144MB/s)
+  Rnd write, 128KB, QD=32, 1 job :  IOPS=1195, BW=149MiB/s (157MB/s)
+  Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1120, BW=140MiB/s (147MB/s)
+  Seq read,  128KB,  QD=1, 1 job :  IOPS=936, BW=117MiB/s (123MB/s)
+  Seq read,  128KB, QD=32, 1 job :  IOPS=1218, BW=152MiB/s (160MB/s)
+  Seq read,  512KB,  QD=1, 1 job :  IOPS=301, BW=151MiB/s (158MB/s)
+  Seq read,  512KB, QD=32, 1 job :  IOPS=360, BW=180MiB/s (189MB/s)
+  Seq read,    1MB, QD=32, 1 job :  IOPS=193, BW=194MiB/s (203MB/s)
+  Seq write, 128KB,  QD=1, 1 job :  IOPS=796, BW=99.5MiB/s (104MB/s)
+  Seq write, 128KB, QD=32, 1 job :  IOPS=1019, BW=127MiB/s (134MB/s)
+  Seq write, 512KB,  QD=1, 1 job :  IOPS=213, BW=107MiB/s (112MB/s)
+  Seq write, 512KB, QD=32, 1 job :  IOPS=273, BW=137MiB/s (143MB/s)
+  Seq write,   1MB, QD=32, 1 job :  IOPS=168, BW=168MiB/s (177MB/s)
+  Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=255, BW=128MiB/s (134MB/s)
+   IOPS=266, BW=135MiB/s (141MB/s)
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v3:
+- remove patch dmaengine: dw-edma: Remove ll_max = -1 in dw_edma_channel_setup()
+- rebase to vnod's dmaengine topic/config_prep_api
+- Add non-ll-start() callback to handle non-ll mode transfer
+- Link to v2: https://lore.kernel.org/r/20260109-edma_ll-v2-0-5c0b27b2c664@nxp.com
+
+Changes in v2:
+- use 'eDMA' and 'HDMA' at commit message
+- remove debug code.
+- keep 'inline' to avoid build warning
+- Link to v1: https://lore.kernel.org/r/20251212-edma_ll-v1-0-fc863d9f5ca3@nxp.com
+
+---
+Frank Li (10):
+      dmaengine: dw-edma: Move control field update of DMA link to the last step
+      dmaengine: dw-edma: Add xfer_sz field to struct dw_edma_chunk
+      dmaengine: dw-edma: Move ll_region from struct dw_edma_chunk to struct dw_edma_chan
+      dmaengine: dw-edma: Pass down dw_edma_chan to reduce one level of indirection
+      dmaengine: dw-edma: Add helper dw_(edma|hdma)_v0_core_ch_enable()
+      dmaengine: dw-edma: Add callbacks to fill link list entries
+      dmaengine: dw-edma: Add non_ll_start() callback
+      dmaengine: dw-edma: Use common dw_edma_core_start() for both eDMA and HDMA
+      dmaengine: dw-edma: Use burst array instead of linked list
+      dmaengine: dw-edma: Remove struct dw_edma_chunk
+
+ drivers/dma/dw-edma/dw-edma-core.c    | 216 ++++++++----------------------
+ drivers/dma/dw-edma/dw-edma-core.h    |  65 ++++++---
+ drivers/dma/dw-edma/dw-edma-v0-core.c | 240 +++++++++++++++++-----------------
+ drivers/dma/dw-edma/dw-hdma-v0-core.c | 169 ++++++++++++------------
+ 4 files changed, 302 insertions(+), 388 deletions(-)
+---
+base-commit: c9e9927c6d8346cdf6555a8f97da093980172e4b
+change-id: 20251211-edma_ll-0904ba089f01
+
+Best regards,
+--  
+Frank Li <Frank.Li@nxp.com>
+
