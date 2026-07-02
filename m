@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4E23431F8;
-	Thu,  2 Jul 2026 09:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0277B3368A2;
+	Thu,  2 Jul 2026 09:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782985596; cv=none; b=ALGVJB4o2SbfYFluZB/kKtNh4X8oVGau6m9fAq8jjJI7F4yi6NNlBqwGlzQxRqvxFYnJCBvMZqCsEtLQXthEJnWV+Sih7iQyd6yyrbCQ0BRb8MLYlsN7FjZCJKsOUhedfCYIuL3IyRjiPGWTO5OwVX0iaFa9KMb+8WZJLWjWhR0=
+	t=1782985627; cv=none; b=R+oUsjdzRay2Cy79nMPF7UboAASiMIW9s352Bml+Dg6gmt5F/6luP6vx6PvW+2dYnYFmp6wKgrTdreNH6Vop0WmKE+dLJ6EL1VpPiRriU7BKPU5Cf6RPi9n6FRNuDoH0uI0uOu+6b5LyF7jFdpKcw/un5Svhbh7KDBaOkYTV94w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782985596; c=relaxed/simple;
-	bh=gyd1DnYBjYc2aEb9gh1FybrC7uWKynToGOctNhrPA4E=;
+	s=arc-20240116; t=1782985627; c=relaxed/simple;
+	bh=6iXVgONTwhgqMxN2GVHdDi0p5yvbCUmSkOnHLUnT3aY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Y7SV2RgKUATTQNFdGQ65o5oYckxCWtRvm6v+kkMogH3ncDvdOm51dL8ieSpwj5Kv135stl9jVru2MvD/HiQ/SkY82fBTUAmPVDvVB6mFYfHtRse9VA0+20GLZ6vL1LfikFASpHa2iuMztIAQ6L3Q/v8ZleWDUpyN9JPRVT5rCMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zn5pmVOU; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=vBCGFfmIOo7YyoB6/AULajghyH2bcVzM3EGtd+0cgInG0twdN1wUNcVnsc4OYkC5uiJgGRo/EgVo2ObhUme311NhrXJlZvuNceWbRTmP5o1KjKXtR0TSD/7q9HW+RxQ//6rgTEnDRogvWcMCMHuIHRgzQQvWub8s96U6ufJZjmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fYp5wMzP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zn5pmVOU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3FA1F00A3A;
-	Thu,  2 Jul 2026 09:46:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fYp5wMzP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8035E1F000E9;
+	Thu,  2 Jul 2026 09:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782985594;
-	bh=lJkpx0NucCXPso1sxGsRDMtrW6wIhGWlRDuljKI6dyg=;
+	s=k20260515; t=1782985625;
+	bh=J5pD3h5SfTHnJUVBHbQSpp/4MpRN45lwjHDR+azgb6U=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Zn5pmVOUsGrsFuIlBzo5O5Nu5voaNDV3fN3r5rzMzyo1bMPf4CqEF3i91FlOaR8UM
-	 r/h3tmZjmloT1D9SlrYoR0uX287BSlUwXXXOxULGsIo86VJUemkF4HZehGGXReMk8H
-	 ziPh/e0TVOzcQcSCMQMBy9llimCrA/557PHslX0wj8BIBZEoUXsk2qwPbxZspzlcep
-	 1kfCqN07KYIF8RZ8iV6i040S+yrllWwEX7oJkyqPR7sJPLxOWzf0ewvnX9OzDCZGxd
-	 2c6BC+mgOrTFHhP9X0Gi9GbSQLJckZzgKAmi7W5E2QbP02eFCNGi+CNz1SFFTKTpAg
-	 zZ5bxYY5JXMBg==
+	b=fYp5wMzPUwhK5ZDh4JZKTsd9M9Z9IAqcuRHgj4lIhOcNuu5aVrPZr0iYOH0CfbZ3o
+	 gQYwTM1M9xlzUQrGtsXsALfBvGudiTew0Kr+8jbNRl88LjqWKOISvKR8lbPn4OpRXg
+	 5VCrTbkbU4K90HRPlYVeblTfweltNL7oqeLHSloFWtw1m/E/lHhQ9Gp04pKaFXX0Cj
+	 V9TJ7TUBDTKUg+cfC7WWW8iZkNXgMNjSrwyFpxEPuyVcHgD0gzHbNIfNOeuDa+LP6p
+	 E65L+sjoAqwEdYlH0fu9njheVBge8Dq2QSQ16SaCXeaFP7Qld5FAELJscTqzkmSsX/
+	 zSHUvXO6kHNDA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 04/18] arm64: dts: ti: k3-j784s4-j742s2-main-common: Add
- multiple channels for CSI2RX DMA
+Subject: Re: [PATCH 07/18] arm64: dts: ti: k3-j721e: Add overlay for fusion
+ application daughter board
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Yemike Abhilash Chandra" <y-abhilashchandra@ti.com>
-Cc: imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260702093123.1048575-5-y-abhilashchandra@ti.com>
+Cc: Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org
+In-Reply-To: <20260702093123.1048575-8-y-abhilashchandra@ti.com>
 References: <20260702093123.1048575-1-y-abhilashchandra@ti.com>
- <20260702093123.1048575-5-y-abhilashchandra@ti.com>
+ <20260702093123.1048575-8-y-abhilashchandra@ti.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 02 Jul 2026 09:46:34 +0000
-Message-Id: <20260702094634.6C3FA1F00A3A@smtp.kernel.org>
+Date: Thu, 02 Jul 2026 09:47:05 +0000
+Message-Id: <20260702094705.8035E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,69 +47,82 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] DMA channel leak on driver removal and probe failure due to incorr=
-ect PM runtime status checks.
+- [Low] Missing `bus-type` property in `csi2_phy0` endpoint for `cdns_csi2r=
+x0`.
 --
 
-commit ea67c91b4fdffdca029b973dd9749e310980e700
+commit c46b85eb404e26671d904b1552f797a50e25e19d
 Author: Vaishnav Achath <vaishnav.a@ti.com>
 
-arm64: dts: ti: k3-j784s4-j742s2-main-common: Add multiple channels for CSI=
-2RX DMA
+arm64: dts: ti: k3-j721e: Add overlay for fusion application daughter board
 
-J721E CSI2RX SHIM layer can support up to 32 DMA channel contexts,
-Add additional DMA channels to enable multistream support for CSI2RX.
+This patch adds a device tree overlay for the Fusion application daughter
+board, which connects multiple FPDLink-III based sensors to TI EVMs. It
+configures two DS90UB960 deserializers that aggregate input from up to 8
+sensors over the two CSI RX ports on the J721E.
 
-> diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi b/a=
-rch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-> index c2636e624f18b..4b4545a5af192 100644
-> --- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-> +++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-> @@ -811,8 +811,11 @@ ti_csi2rx0: ticsi2rx@4500000 {
->  		ranges;
->  		#address-cells =3D <2>;
->  		#size-cells =3D <2>;
-> -		dmas =3D <&main_bcdma_csi 0 0x4940 0>;
-> -		dma-names =3D "rx0";
-> +		dmas =3D <&main_bcdma_csi 0 0x4940 0>, <&main_bcdma_csi 0 0x4941 0>,
-> +		       <&main_bcdma_csi 0 0x4942 0>, <&main_bcdma_csi 0 0x4943 0>,
-> +		       <&main_bcdma_csi 0 0x4944 0>, <&main_bcdma_csi 0 0x4945 0>,
-> +		       <&main_bcdma_csi 0 0x4946 0>, <&main_bcdma_csi 0 0x4947 0>;
-> +		dma-names =3D "rx0", "rx1", "rx2", "rx3", "rx4", "rx5", "rx6", "rx7";
->  		power-domains =3D <&k3_pds 72 TI_SCI_PD_EXCLUSIVE>;
->  		status =3D "disabled";
-> =20
+[1]: https://svtronics.com/product/fusion-application-daughter-board-evm577=
+pfusion-v1-0/?srsltid=3DAfmBOooMsRAd5ibFOGJaKbjsC3j9-loTPK2wWqsqPq2Adj55g1n=
+PluxX
 
-[Severity: High]
-This isn't a bug introduced by this patch, but adding these multiple channe=
-ls
-amplifies a pre-existing DMA channel leak in the j721e-csi2rx driver.
-
-When ti_csi2rx_remove() is called or during probe failure, are all of these
-allocated DMA channels permanently leaked?
-
-Looking at ti_csi2rx_remove() in
-drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c, the device is
-explicitly forced into a suspended state before cleaning up the contexts:
-
-	if (!pm_runtime_status_suspended(&pdev->dev))
-		pm_runtime_set_suspended(&pdev->dev);
-
-	for (unsigned int i =3D 0; i < csi->num_ctx; i++)
-		ti_csi2rx_cleanup_ctx(&csi->ctx[i]);
-
-When ti_csi2rx_cleanup_ctx() is called, it checks the suspend status:
-
-	if (!pm_runtime_status_suspended(ctx->csi->dev))
-		dma_release_channel(ctx->dma.chan);
-
-Since the device was suspended just prior to this loop, won't this check
-always evaluate to false and skip dma_release_channel() completely?
-
+> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-evm-fusion.dtso b/arch/arm64=
+/boot/dts/ti/k3-j721e-evm-fusion.dtso
+> new file mode 100644
+> index 0000000000000..0df2e48a4089c
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/ti/k3-j721e-evm-fusion.dtso
 [ ... ]
+> +&cdns_csi2rx0 {
+> +	ports {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +
+> +		csi0_port0: port@0 {
+> +			reg =3D <0>;
+> +			status =3D "okay";
+> +
+> +			csi2_phy0: endpoint {
+> +				remote-endpoint =3D <&ds90ub960_0_csi_out>;
+> +				clock-lanes =3D <0>;
+> +				data-lanes =3D <1 2 3 4>;
+> +				link-frequencies =3D /bits/ 64 <800000000>;
+> +
+> +			};
+
+[Severity: Low]
+Does the csi2_phy0 endpoint need an explicit bus-type property?
+
+While device tree parsing will likely fall back to V4L2_MBUS_CSI2_DPHY
+automatically because clock-lanes and data-lanes are present, the
+bus-type =3D <4>; property is missing here.
+
+This creates a minor inconsistency with the identically structured
+csi2_phy1 endpoint just below it, which explicitly defines the bus type.
+
+> +		};
+> +	};
+> +};
+> +
+> +&cdns_csi2rx1 {
+> +	ports {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +
+> +		csi1_port0: port@0 {
+> +			reg =3D <0>;
+> +			status =3D "okay";
+> +
+> +			csi2_phy1: endpoint {
+> +				remote-endpoint =3D <&ds90ub960_1_csi_out>;
+> +				bus-type =3D <4>; /* CSI2 DPHY */
+> +				clock-lanes =3D <0>;
+> +				data-lanes =3D <1 2 3 4>;
+> +				link-frequencies =3D /bits/ 64 <800000000>;
+> +			};
+> +		};
+> +	};
+> +};
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702093123.1048=
-575-1-y-abhilashchandra@ti.com?part=3D4
+575-1-y-abhilashchandra@ti.com?part=3D7
