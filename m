@@ -1,46 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7F447D93E
-	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 09:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD473C4B94
+	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 09:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782983573; cv=none; b=SumOGe1ZhgLONiIEMlByJVhJDxkw0pT/30ZNhX3V9U5j3JD9yDwWO8Ohu5mV1ukXfJ8mXzIUMntD1g0X4xUPtSdzE9GkOHtNk1xqZ9nExWego+hG8P1oH7soC8BigyTCWjLt+qEM942Muu55BF+mbSrylEvK2Oky+4wZi31bln0=
+	t=1782984238; cv=none; b=UK/m4QrxmfndJrEdZ0DcdK/C1LaHBp3hgL5mGHNlh8dG2A+ptPCLwAkg0/vym6dwdQLIJw1UOkn+HiHkTWfWD3DnEdK7oJ7Vhzzk+g2VPAi1ROhHx2107hYB7qM+JTqjdoyxbNJipYqHUXDswx/vS5Fr8CelsxcX0FpTpOqdm5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782983573; c=relaxed/simple;
-	bh=z3us1EYcPhA08D2V/YJ+nWiOnRiCmeZ4lZeMhncdG0g=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q1xq6KWgxIitpvqgmZy5R1Rk36SdXX9C+f06aqdI/81KZUB4/Rd1ThhcUseBeEtp/tb1jIk82QTVEEOoM6eR9k2lq6rmKOtmt42E0CRKE8wwWLljYz2ikXpbLPVPtW/82Ldqqfut944/aENJSIowYjNDkuytr5SajSRlmvxb0xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lPyvPnDu; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lPyvPnDu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDF81F00AC4
-	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 09:12:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782983572;
-	bh=z3us1EYcPhA08D2V/YJ+nWiOnRiCmeZ4lZeMhncdG0g=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=lPyvPnDueqS9ZIaG4AR8IxxE8u+oV1PYjwXXaoyKWknbM6OhQLYanydVuc1qzgo3z
-	 R+JWVZq5YV93ScxHlquZZEI93rboq8ubHxikSWMv+AFhTH61bnsbIfLwDQqmN/fcDh
-	 L7OatAaU/eNHLzOUDAhmQAWRK86el8sgoojYtGqc2e+aa4Ab7EPhmdyDoi/e3911uD
-	 H9YT4uVHlukHAKxHgypn/78J+0kzaG/PPT63uA23z0e0Jy2jiwUJiGiPEI4aLZoKPK
-	 fgZnHkddf2MFQObw8Uq2YbfAhlewJXDrb5n2lpce9v8zY+WoWQU5rj6NBSeycKhtT0
-	 BpJ6v3y8RhK+A==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-39b38198496so8059941fa.3
-        for <imx@lists.linux.dev>; Thu, 02 Jul 2026 02:12:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rqk+l8hV8GwV8P+vJhUlzgMAqFN/OYLnbazEjLdNdSYcqjBmq9Sf4t1tNFp3t10y0J8yPA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwGimiVV3JYwMsK1LRdXLKOoWCACPJpbSk6nMAXMfMGT2WiZt+u
-	ujBDu1tZbJOnqrnK7odBHViw1QOktxLWLeUIQX/aOjd2rzbp72DFQh+TO/zFI+55hUIceNONq2P
-	3khMsBVu/RK7ot1JNpy1rfF/1gAf6FbtYpJxd6FV1nw==
-X-Received: by 2002:a2e:9c86:0:b0:39b:35bd:e705 with SMTP id
- 38308e7fff4ca-39b35bdebfemr6340391fa.37.1782983570078; Thu, 02 Jul 2026
- 02:12:50 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 2 Jul 2026 04:12:46 -0500
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 2 Jul 2026 04:12:46 -0500
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <akOZFIowVvprnAMf@vaman>
+	s=arc-20240116; t=1782984238; c=relaxed/simple;
+	bh=n9yLVv4ONKzRdpCf8VFwTS/MdDc1G1FjImPOjJ/IqKk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tLc52r6FfgMeB222grFGo65SwT8eccxt1fSsoIwZPfx3KY2sj0Z8/MMqGnWEjkdaCTh4RPIQeVN/MGsVPmJgkfQBlWcGPNTO5Mw8CecTYUJxQDDPh+rk1v0uqT+gpTCg+iqP8pH2ASA8gnaV/lLcsEa2WWwdawCduMQ8VZGiZ30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c6b67d5fa1so15155055ad.2
+        for <imx@lists.linux.dev>; Thu, 02 Jul 2026 02:23:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782984236; x=1783589036;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w3iqz34neGUxAgVEYrpwzzcpe57aRQt9k5cgKzpkuWc=;
+        b=FnSJFlUNM6bWW/aSFDDcBPTNbWavgi20qlj4rCBu7u/5G6Kf5y+o3l3Ko4K7imIiTs
+         Lz2tze9VLxJXp6eP7D96gJfARTc5blMaeWOCmc572TTgHwA126GmUwEet/Kgnma9o0gm
+         ECbuFat8H9jzrNv8yvYaE8CANKd/qzeVPlC9Gyg2gsp9vHTOtEdCEeEsQ1q6tGmxUheY
+         sKpuKvsPCgu9yPKhyNAN4y2W59QJBRRNiqizb8/HsT1ofTnAkzpMBV3ypwm25lo6md4V
+         g3u+nfAoEYIGbYPq5ukSOAMDLS+L274GSLIkoRPjotgqRnHoPktJhfgqN85AQ8P7WxC8
+         CZYg==
+X-Forwarded-Encrypted: i=1; AHgh+RrQnt0cIlw3ZqyGloV59QlMaf4d19yUe0ObKMHErQX7935E1qbXPGQrHEqQSnZNUlDRe50=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxrXoW8CFGGkn9R926XbSiw5leEgEF97cFMzXmHP5O90N0y57R3
+	6OaQUUGOqL+44CQX51GQEECJs6gXUU1beKIDjzFVzljeO8/WgyNaefQboQufmFOQFDY=
+X-Gm-Gg: AfdE7clGQ3/UCyZXqf/u+RwKnik65lTta06C6WaVjYLn46g+A8RUNbwHaYns0XagLSV
+	fees/QGkYq5MCswpHZotkF+1sbhza7zZ14WHLoVFzHvKjTY2QF+iqzGfnVlBNGmBh1Qe2Am9M8Z
+	2tpnhZdjIxDsvTd96hooJHR6u87wkBycUY8LnSz0AOV6F2blAycCORS7jjH2OoNtnz0nN4W8CaN
+	1EXMYOGg89bQ/bjmXWxDALVdS/Ngc59X45xyiBmhyyHj4arWwrDDJSk8iz1zTN3vvsqho9BVrza
+	rauIUBqFpjWh0e3YiFmTwn2E24RSQ441GKyxmyLzHbnaVv+xPmMXf5S3RP0NnL+QLlzlOd8V26Q
+	y+hVF2ANurFKd3gCAmziLAEv+9gqRfBW+9P4Irbr+9VDLV3APCpa2GIu9wbRtVSibjz3GC6s5w4
+	prTvNMZplukwwUnv5qgCVxfbup9H02txNXoIBwOFpD8agAlW5B7g==
+X-Received: by 2002:a17:902:dac8:b0:2ca:1eef:5096 with SMTP id d9443c01a7336-2ca7e9078bcmr59699095ad.36.1782984235745;
+        Thu, 02 Jul 2026 02:23:55 -0700 (PDT)
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com. [209.85.216.53])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2caa9a52a55sm4552495ad.29.2026.07.02.02.23.55
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jul 2026 02:23:55 -0700 (PDT)
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-37d46e0d246so1201002a91.2
+        for <imx@lists.linux.dev>; Thu, 02 Jul 2026 02:23:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrKBm1mkIm9gAc1VqkqccLyCFk8laLf6+GK1tk7HD+KcK9Qwz2C6WxeSyASNjGoKDBX+fs=@lists.linux.dev
+X-Received: by 2002:a05:6102:1620:b0:62f:46be:8318 with SMTP id
+ ada2fe7eead31-73da7681403mr2525301137.6.1782983793184; Thu, 02 Jul 2026
+ 02:16:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,15 +61,18 @@ References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
  <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
  <CAMuHMdXen+E-Ai51aWBa_KV9W8Fz2cQPpT-FG_kQ7akhrrYa_A@mail.gmail.com>
  <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
- <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com> <akOZFIowVvprnAMf@vaman>
-Date: Thu, 2 Jul 2026 04:12:46 -0500
-X-Gmail-Original-Message-ID: <CAMRc=MfBcOhbj=ETxy2Xz9o_nyzykrEhKAc3jYi6V5_jMZEE3Q@mail.gmail.com>
-X-Gm-Features: AVVi8Cc0cbGsvWIHn6Ltbm1wzcUWjyqAHy25YdAMNK19MIl0j9ziewcxopNMKrw
-Message-ID: <CAMRc=MfBcOhbj=ETxy2Xz9o_nyzykrEhKAc3jYi6V5_jMZEE3Q@mail.gmail.com>
+ <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
+ <akOZFIowVvprnAMf@vaman> <CAMRc=MfBcOhbj=ETxy2Xz9o_nyzykrEhKAc3jYi6V5_jMZEE3Q@mail.gmail.com>
+In-Reply-To: <CAMRc=MfBcOhbj=ETxy2Xz9o_nyzykrEhKAc3jYi6V5_jMZEE3Q@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 2 Jul 2026 11:16:22 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXNG=C=XcioQUEN1M7cQgKhO0AxUyg5X+TWb2rQ3-H3fw@mail.gmail.com>
+X-Gm-Features: AVVi8Cef5-UyxrfN1fWvFDcXcIwIbwhU7f5lsircbKpxY8MZwCT2oXalNKmt_xQ
+Message-ID: <CAMuHMdXNG=C=XcioQUEN1M7cQgKhO0AxUyg5X+TWb2rQ3-H3fw@mail.gmail.com>
 Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
  PHY on sa8255p
-To: Vinod Koul <vkoul@kernel.org>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
@@ -82,34 +95,46 @@ Cc: Bartosz Golaszewski <brgl@kernel.org>, Bjorn Andersson <andersson@kernel.org
 	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
 	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 30 Jun 2026 12:23:16 +0200, Vinod Koul <vkoul@kernel.org> said:
-> On 29-06-26, 16:51, Geert Uytterhoeven wrote:
->> > Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
->> > driver instead of the MAC driver where it was previously. Instead of cramming
->> > both HLOS and firmware handling into the same driver, I figured it makes more
->> > sense to have a dedicated, cleaner driver as the two share very little code (if
->> > any).
->>
->> I think you are mixing up DT bindings and driver implementation?
+Hi Bartosz,
+
+On Thu, 2 Jul 2026 at 11:12, Bartosz Golaszewski <brgl@kernel.org> wrote:
+> On Tue, 30 Jun 2026 12:23:16 +0200, Vinod Koul <vkoul@kernel.org> said:
+> > On 29-06-26, 16:51, Geert Uytterhoeven wrote:
+> >> > Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
+> >> > driver instead of the MAC driver where it was previously. Instead of cramming
+> >> > both HLOS and firmware handling into the same driver, I figured it makes more
+> >> > sense to have a dedicated, cleaner driver as the two share very little code (if
+> >> > any).
+> >>
+> >> I think you are mixing up DT bindings and driver implementation?
+> >
+> > Should the bindings change if we have different driver and firmware
+> > implementations? Isn't binding supposed to be agnostic of
+> > implementations..?
 >
-> Should the bindings change if we have different driver and firmware
-> implementations? Isn't binding supposed to be agnostic of
-> implementations..?
+> I've thought about it some more and I believe this question is philosophical in
+> nature.
 >
+> sa8775p and sa8255p are *the same* hardware. I can flash different firmware on
+> the same Lemans Ride board and it becomes one or the other. Yet they are not
+> described by the same DTS and the bindings differ as well. I don't see why we
+> wouldn't allow the same approach for the this PHY.
+>
+> We treat it as different HW variant when it's managed by firmware - just like
+> we do with the rest of the SoC.
 
-I've thought about it some more and I believe this question is philosophical in
-nature.
+DT describes hardware, not software policy.
 
-sa8775p and sa8255p are *the same* hardware. I can flash different firmware on
-the same Lemans Ride board and it becomes one or the other. Yet they are not
-described by the same DTS and the bindings differ as well. I don't see why we
-wouldn't allow the same approach for the this PHY.
+Gr{oetje,eeting}s,
 
-We treat it as different HW variant when it's managed by firmware - just like
-we do with the rest of the SoC.
+                        Geert
 
-Bart
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
