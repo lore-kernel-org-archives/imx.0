@@ -1,34 +1,50 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010067.outbound.protection.outlook.com [52.101.69.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D333A4F46
-	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 18:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783016367; cv=none; b=IO8sQeAkWHgXwvamvlN/CEjcK5ppeWXyURxEd2p4VF8E3a0YDtzJXgyXCXsXFCdShuWRRpmlzi6+hGinB0mId2VPGQBdfTHGyaW2syInS1/RqfQIbzNAiDLxidweB5fjlePeFW35IRXWBtXxPl9LOflwYyyfcjYVEFOCgLvhMUs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783016367; c=relaxed/simple;
-	bh=iMO17iTJWoMt5HRqYvRyCxPEU2GVfSbOr9hY4SHBp+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q38be65v5ys4NBHsqRhSHXp5UWURQLwdy6++xNpT6Avw3CEOIPy1UQqCGCyrPPiB+SkP13ooC/sUvjxS6Yuk/LqYFqzjlJH0T5FjnM+/PIvPhD6cAccIGHu1qZhs81jWlR0l7/4MCG8JxcwcaCSkUHuxlm95EDmjqVybsZHQmAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=tPBG9AD5; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03796371CEC
+	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 18:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783018802; cv=fail; b=PtChHOQxfn78DxzNglfsYWhYoJ6X6r05s2nmoCH4eiNZ12coICzg5xKrv8vNT6uoc0k/GbY6PSYZbNzdlJdeb+PVMHYWZefe3SRUaEpSrbrSRyaDYP94VCIZCyi2zBPu6kXE1AoJwKml1hxeEFvIbhExftYBRaEJ7+6JY52X7x8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783018802; c=relaxed/simple;
+	bh=wJkyAFlBL9UguzFac1zTtX83kUekBA+QIwn1Y2uhNNY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dX0qA7lx4pq+Cr0rJtSxlyR6s6oSFWHAJIJfBVT+i8xSLNN0JwJR6Qk4LMip6YpglOGK3xWwn+FEgrGrrp6eRcf2hDujhCtjZX9xGKdn/BZP7pSydo1M87o1l3Zk5D4973VfoPKLu/E8fLtuiZ7TSiPx2AfsgdhtQQ/iwg69uJU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=s1ZYim2k; arc=fail smtp.client-ip=52.101.69.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="tPBG9AD5"
-Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 58B7F22B;
-	Thu,  2 Jul 2026 20:18:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1783016316;
-	bh=iMO17iTJWoMt5HRqYvRyCxPEU2GVfSbOr9hY4SHBp+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tPBG9AD57PqMUbbV4c8F5rp5Dxrl9hEWI7znN6ivnuTxoP6cW1ENk5f3fXliUt63a
-	 dep90ED20b45Z/eJfJHwHeb7IDRe7zMtvjNtjnQYHegXsWKAzK+0ZABu6pdBr6L4y7
-	 dqc7sSKTDHBcNBd8iRFCrABCrH+2RpnDW3noPK34=
-Date: Thu, 2 Jul 2026 21:19:20 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="s1ZYim2k"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xefZsPHiqWlRCZiS63YGoG8EGjr6r8FLb0xdGDLMsP5iMf5t/Mi1DyLq9vyDrfiqgsgPc8a+O8S/onB+qYm4TafFSWUo5ksa4o9PiSVZKphgbQCzEFbMNb8NgloCsXg6G3u9iqcObOeh/friBFkCV2r+y9oFCGcMyya28o89Y8YDsBCFJVy/tESmkHsbUh4jVgK7YPjLMO23++ME8mUK/AqTcCa5YzjEnW8nI/g+kCNe6OspHemDtZo1ZcbHeF11fjoHmDjfO5hCyqz1XsTzof8sIKBesqXJFbFk18sbj05VBbejIZLa0eYtcEIBZvqQywn4iaQG4NiMm84M+Gc7RA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wJkyAFlBL9UguzFac1zTtX83kUekBA+QIwn1Y2uhNNY=;
+ b=WkOOUHRSEPyCxObiD0Izc6jWzFVn4lZHdhHoZ6Ok6PwouT/bZ5gSFJz3mD4VslFJxSAzvkjS77L/gxhLacteV5DcJ3y3sRln2NUPZhPDiXEEBbDQGnFhq6uQcmpGujN9u9gTatf49q29ef/LStdORLYSJHcOA/RklYBFfHclbiaAVt0qZD7fsY9sL8zOtNuriB/m07tNlxnntq0cION0L424kXo02fW0rmhJ/PUJou8faeEonIvHotOwc8M3Y0vqOib2rgjYTS480yeHuk6JKXXMSvYhsPP8G5iUeymp3UfjTPe9HMiQT8o5VHlg/hTXByytY44FWuJQr5pxduORmQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wJkyAFlBL9UguzFac1zTtX83kUekBA+QIwn1Y2uhNNY=;
+ b=s1ZYim2k85INqrjtvDb48SvZHeWrdCphzB+Uh61+Ipk7omLtj6KwF4ZAm9Rq6TFXs4au06SiwP3qLk0+be7q1RnTRrWnSIh7I5ps9pcnuTwoneIN0nLZ/1JCGamVJbtevQwdzPz/78MoHz22Mj65kQ7fRjrYk50sfmUFBWHR4wlAfDHML2o32TWPKgkXGar8UdOvEd9EI+csz9aNq2YI/apB/VdeQQ47keJqnDyHKW2zGFWzNUlLjgns5bOTXjdpu0RJ+ZY3blPWmkO3HUwDgygokRPjlST5cshIL+mV8utAF0CkT0AgjYeFLyALK0ccr4OMOCnHa1laHZA91NFMTQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DU2PR04MB9194.eurprd04.prod.outlook.com (2603:10a6:10:2f9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.18; Thu, 2 Jul
+ 2026 18:59:54 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Thu, 2 Jul 2026
+ 18:59:53 +0000
+Date: Thu, 2 Jul 2026 13:59:44 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Michael Riesch <michael.riesch@collabora.com>,
@@ -46,45 +62,118 @@ Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
 	linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH v7 2/8] media: subdev: Add media_async_register_subdev()
  helper
-Message-ID: <20260702181920.GJ3534761@killaraus.ideasonboard.com>
+Message-ID: <aka1IHI3ar8FS0ei@SMW015318>
 References: <20260702-imx8qxp_pcam-v7-0-b47d9e363400@nxp.com>
  <20260702-imx8qxp_pcam-v7-2-b47d9e363400@nxp.com>
  <20260702161519.GI3534761@killaraus.ideasonboard.com>
  <akapt6v_DBJSAnj0@SMW015318>
+ <20260702181920.GJ3534761@killaraus.ideasonboard.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702181920.GJ3534761@killaraus.ideasonboard.com>
+X-ClientProxiedBy: SA1P222CA0077.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:2c1::24) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <akapt6v_DBJSAnj0@SMW015318>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DU2PR04MB9194:EE_
+X-MS-Office365-Filtering-Correlation-Id: e47510ba-ef2f-4955-3aeb-08ded86c1996
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|376014|19092799006|7416014|366016|22082099003|18002099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+ R0d/VAxblMc1WSfqHxGjdVKMqquOFPzIsoeHds8p+F7n6sPDt3YiKd+XXuE5ON2+jFZJZqjjSlpb/KF9QKyU5M5MSfevX5gfup3P+W2BKDlwjKgirV+pHbzItwRm6gCoWv6l6CQAh97P3+MvpGRrqf9hVoXwXFwmJgN1QNL0Nlb071qIPOYgt4hIpKu7wvazNJnHQiqrgYDhiEzOsq9umF2+KHQHm1nG4tLUHSm84y9H2n5h0QF+eznxwD0gN8vcPeOvCo3o302tLyhImXEXd/jJku3Rd8w0Ql+yPhFx2Jp6t7gIHsxOh9UWMBtbYvN9N1BgzN1u8KZCkHx1WikvJtlcEqB/4S3IDyUCF74F409o8oRe6BOnDMO9NR/7mSl2O/+b/ogqp14E6ohFR3M72l7mXprf+fJGu9CDhsDyEpyUwOD4x2xII6HMP/C6ev+Mw/x1T4qtFQBezMiD5iB4uRqL+meqkHRWZIc4Nx5qxUYyBuh7qY85f62YlNW5dUqjVFzs+cRgbv4bfvt3oeN9l+mV97XNxzvEPmDc4aZC5Q4ti/pZQE+YZidX5rBPuvvG7Fju1h9iDlzvJ6/FDUOOs8vM/2UeXbHzpt1Dy4QHsy7j6ezvf4mc79iJNaMV6eHxnDQ83Eh5Iuo/6oLjqB2D130m/GSP85rchgtkvKdFe14=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(19092799006)(7416014)(366016)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?25v3w16HdBAyXQIIO77aDGsR6wJxcKfjHAl2wEyTZWi3fVFTppVNRJEl7ucN?=
+ =?us-ascii?Q?m8lFvLa2I1D7YgKSWWbkQ0u+6Pf2fYeCYwbwvxqTLot1O7kdv2AgS7Mj0afq?=
+ =?us-ascii?Q?Uj7VZuBJZZevmatUI5sDNNiBsLj7vFMLbJ/xczTWs/LOTKURi3uMYPo5+z9H?=
+ =?us-ascii?Q?lCYhh2ky1URiNLiHZ0qC3+Geee64GL3coJJPB8DaI22q0A+XNfwfU0tPKBmU?=
+ =?us-ascii?Q?OQW338wefFtrkeWgcD0wBz8bgFPEsVocQBP3X7FkyX8OOAM+o0ljavRwAe4Q?=
+ =?us-ascii?Q?dKsyiIDbm6ZVmniH8QrYOgxD88lSqFr+j7hjuToUsiwBzeu55CHtMuLCpLX5?=
+ =?us-ascii?Q?JZG9KHwSrGmxIIoyeXHceTE/DdaHl9SuVTid3YEGdp/eJOT+0z/uOFCCBYye?=
+ =?us-ascii?Q?snqIVfuamuVbcMXExKG2EBO5hhxwbQXjM50TOSEn5Dp8hCf1It1PfnbE7c0w?=
+ =?us-ascii?Q?AEwiwk8qY8jNN1yFroZn/h42hYFso0jzDmxX7NEir9koDkjhRO0piwU4lWRP?=
+ =?us-ascii?Q?E5L8UP9OB+3ngYBa5QzAm7rEabETtkRGrxxG1ivPH4gsUq/N9vl0tFzS2AWZ?=
+ =?us-ascii?Q?sOrGMLXh91pdm6JngbAdSoxxY6gKPuOcMWxC+2G2UnhcX1SmC0KrteKT+JzZ?=
+ =?us-ascii?Q?lWC03CzySKPKujfgBaNBwR7LSuDN5R5zcd9Codha6rMYkaWzSdwmAkDe6aiU?=
+ =?us-ascii?Q?UtS2mSwN7PcvnT7o+suNIQDn01YPcCvQOxc6obn15bNgl5ib0nwpMY6iRwEw?=
+ =?us-ascii?Q?BtyTJgRrLb8oiBrHAzBJAwkdq9p1dfq2s9GFh9XPzpjcWvaKposC/E8XeIja?=
+ =?us-ascii?Q?EY5iYZLTVtqIbuzXxATh+OyQGGEqQ4y7QpflgttxxDBQf53+W40UryGcUGwF?=
+ =?us-ascii?Q?LCPviupQOxPDAlSK2r/UBIBQbkBhA+SuFXzSOHrS7HgODhW3R/ezz9lBOT4/?=
+ =?us-ascii?Q?GkgLpcdYSrvlOJtQ7q7CC1xXCfd+sL3TJgBfD16nHkuw6vGXihaixLFpDHuN?=
+ =?us-ascii?Q?HusgBTz61HVjaIv1Ye4b/2ls87+0lglickkd/oR7EZFrEWFOfsgfD3PACrEm?=
+ =?us-ascii?Q?LhFv+whIbDSPyyq7XS1PO57FQbETVIlqVf8YNpZyjzXz0qXNYZCSzlTIN4L5?=
+ =?us-ascii?Q?4LXSaq05a3IdTTCtWOnICr/zJ+59rzcmPQH6baGCBfUD7sZQKVAF8PhmUKL0?=
+ =?us-ascii?Q?Mt/s+HDjPCM35b4w2l6blIks4qQ/MLmvECrs/B1BaGBKzZBwqzb/Kd2wlE41?=
+ =?us-ascii?Q?Km5ng1OPTmBB+FF42CksJcWduIxS5MQjZOpuJZ9+cEnlF8KCr+Gn0AzzmjlR?=
+ =?us-ascii?Q?4HLs4+Gj0vjkACHZvxsF8wVH+UZ3a06Is9AoMCOhEYJmzjTRg408B5taftmW?=
+ =?us-ascii?Q?K7tZD9l2zHn5NVFlLxI46vaGzCH8sItM5UKwiHszV0SnkPChOjYuRrXJDNtM?=
+ =?us-ascii?Q?LQblKFdY4eb1/LWFAzrkJF5slLQMoJddD+Rpdeq80ElEZ4O27J4186faoH/W?=
+ =?us-ascii?Q?5PvTDocVYHGoeQA//aXfkHtXdT9GJ2CWU3y16tJNZ5V1DsEBwyN06wxF0zg8?=
+ =?us-ascii?Q?GOY2cpuor7RUg/YrZ4LWpQYhY3wWt0Isgorum6laFoHDgtN60Y1xllxbIDCz?=
+ =?us-ascii?Q?lkzIXogg339qGExKMu3rP99oDvS/SaQ/pk77zPJ+UaWgreqEzzjGXXtukqse?=
+ =?us-ascii?Q?1R1RnFHgufSIl5R3HOVClbqIpjSbaPlqhxAH1+32LyYA5KVlhD1GyIVj+qyD?=
+ =?us-ascii?Q?Jv6JhuTtV2fycXimR8CzKhqnmCf4kgFq+c3+vvb/CceNctjSxEHm?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e47510ba-ef2f-4955-3aeb-08ded86c1996
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 18:59:53.7406
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7wO7jDaWNyKidJ8NMuKCzTKy35iNwoJ/9q/23P32MX9kcckxy2eupy0FFc9ljjAV8pup31xWl+XNJDh6rLnz8M3LDScTqps29cgjj1YSlgF9ibD9BGf+6uyCeDmVlJWk
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9194
 
-On Thu, Jul 02, 2026 at 01:11:03PM -0500, Frank Li wrote:
-> On Thu, Jul 02, 2026 at 07:15:19PM +0300, Laurent Pinchart wrote:
-> > Hi Frank,
+On Thu, Jul 02, 2026 at 09:19:20PM +0300, Laurent Pinchart wrote:
+> On Thu, Jul 02, 2026 at 01:11:03PM -0500, Frank Li wrote:
+> > On Thu, Jul 02, 2026 at 07:15:19PM +0300, Laurent Pinchart wrote:
+> > > Hi Frank,
+> > >
+> > > Have you missed the comment in v6 ?
+> > >
+> > > https://lore.kernel.org/all/20260629084654.GB3054459@killaraus.ideasonboard.com/
 > >
-> > Have you missed the comment in v6 ?
+> > Sorry, I forget emphased it in change log.
 > >
-> > https://lore.kernel.org/all/20260629084654.GB3054459@killaraus.ideasonboard.com/
-> 
-> Sorry, I forget emphased it in change log.
-> 
-> "For the reason stated by Sakari in patch 1/9 (dependency from MC to
-> V4L2), I don't think a "media_async_register_subdev()" function is a
-> good idea."
-> 
-> The reason already NOT existed in v7, I removed v4l2_fwnode_endpoint from
-> media_pad. So MC will not depdent to V4L2.
-> 
-> So this comments is not suit for this version.
+> > "For the reason stated by Sakari in patch 1/9 (dependency from MC to
+> > V4L2), I don't think a "media_async_register_subdev()" function is a
+> > good idea."
+> >
+> > The reason already NOT existed in v7, I removed v4l2_fwnode_endpoint from
+> > media_pad. So MC will not depdent to V4L2.
+> >
+> > So this comments is not suit for this version.
+>
+> media_async_register_subdev(), with its "media_" prefix, appears part of
+> the MC API, but it operates on a subdev. At least the function name
+> should be changed in my opinion.
 
-media_async_register_subdev(), with its "media_" prefix, appears part of
-the MC API, but it operates on a subdev. At least the function name
-should be changed in my opinion.
+Name is easy to fix. The key is if the overall direction and method is
+good enough to go futher.
 
--- 
-Regards,
+Optional naming here
 
-Laurent Pinchart
+v4l2_async_register_subdev_with_created_pad()
+v4l2_create_pad_and_async_register_subdev()
+v4l2_async_register_subdev_from_fw_ports()
+...
+
+Frank
+
+>
+> --
+> Regards,
+>
+> Laurent Pinchart
