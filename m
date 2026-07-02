@@ -1,131 +1,168 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3E147CC8C
-	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 09:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56AA3E8C67;
+	Thu,  2 Jul 2026 09:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782985499; cv=none; b=fUpaEcfGfVBgmkUR7jZd7aw2NYxGzCufgH9G+0czTtRt1r7vFl/1IrPMBb1EH4ssUmSx767xOhMXW4XhRoS7d0Ohhj0ppapTh96u2WkysCaoBcWlANHC9Rt8mpMJyzGAYrp10KpyE7BDHjcuVmu5Mt3zBHP5x7MbLB67N9P0vKw=
+	t=1782985523; cv=none; b=OvA2xobGD/eCEh7tZBqSevKXnVL4qccMVNQuHhgsdXrDZ0B5R2c7zzuP70J1o+EMluvXivf/Lb/2BD0ayBym4mDnaCLdMVb4X7QGZXR8DbJ06rmC73OgcuqgV5uFnza/iHy9P3MYKa7wLDTJtJd78d2WETtoLbnvHN3t0WaFuMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782985499; c=relaxed/simple;
-	bh=ECZSUW9hSj34SFz4G8bfbFkApIByTwPPDgQgHBlg2lY=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=umMYXSizRM2JDkPvHnKAoe5VARNdJGTEUPd3BTTBKgBeU9DQ9TLx2l6vxhVAIy6OI1/EJUVbak12CYfmcP+ehnHvf4vmZx2oGjNLNn8JE08PbeLfoyrMsA7VyDc6IratugezQcaHIjIUA/8pPLbxDIejH1oqF+39NRFltuGpn0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CM1pHfbL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782985523; c=relaxed/simple;
+	bh=FXQ0J1sUaKEYDNwY9Eaio4lIKbY83SkOjHdb2kkmq/4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Q60XvQ2L+OE4+OT4/VdqtKOrhnTZJd4lPVNFP+paBGT59ffjH0yrqL8pi5NYCov3rsXwxgwvbyvuCflW2QakltmwyEXjXfgN/EkysJtIpooMF0VNcaE+NYy+YgTlHi5CP6A/EzXG++pXVgQ4Pak+CK4+q2XvZsbCBoxHqvwWttQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZzBFjMd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CM1pHfbL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DAC1F01563
-	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 09:44:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZzBFjMd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD0A1F000E9;
+	Thu,  2 Jul 2026 09:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782985498;
-	bh=ECZSUW9hSj34SFz4G8bfbFkApIByTwPPDgQgHBlg2lY=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=CM1pHfbLgxMYkSotRohphHAwfHiS2Jq6WgdNtLNVx9uS9WhtbtNpBou5sFbv3Zfbs
-	 t4EYEkBRrQ2RPOdC3sKXIYU/bXdz1i/2PmuYsFxoCMwyYQGcvrEq342mZyLtAsgOpG
-	 w/sfT7k5FjdRPizXj5j9sXzzoLSxaH4bXp0ZuISOJV1Aj9GCea4PDHBExCwb2cLFYk
-	 vD2m1iI2wTjiyqshwUVGQuj011ZBWZgfKMQS8l8tVqa50gCgevokuKhUvpXzlG1EZ+
-	 4tnuwDISjYXV/puQzCG1Qd5pr3KEdBJbwvMtN8gpQX6Ik/85EwSf3YqBWFGGYzSx4P
-	 2QjvHhzDq8Dhw==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-39b28814916so14926991fa.2
-        for <imx@lists.linux.dev>; Thu, 02 Jul 2026 02:44:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq8oL8RjbXYdRhbtVBHTdq3HBy5aXzfY+bJEVpxOn5d//LhKllDQd5l1P+LloPgLTOUuHA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YykqgLwuZel2U37DHJdnpkV5AbLBCAgKRrWF/Kg4A93auf68Bp0
-	qU8eS/SBjOhNn+TLN0OIgvhPIEgDwonQ66xkfJdS8N62DMI+S5hW5NNA7M/nxUBudUr/67fT+Sm
-	fzJdpVWHpkh3ba0VQ5mwVin1DFadZNdoLGRYW0NZMpg==
-X-Received: by 2002:a05:651c:2129:b0:39b:128e:ae5d with SMTP id
- 38308e7fff4ca-39b36e539cdmr10506381fa.9.1782985496830; Thu, 02 Jul 2026
- 02:44:56 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 2 Jul 2026 04:44:55 -0500
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 2 Jul 2026 04:44:55 -0500
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <CAMuHMdXNG=C=XcioQUEN1M7cQgKhO0AxUyg5X+TWb2rQ3-H3fw@mail.gmail.com>
+	s=k20260515; t=1782985521;
+	bh=4DzRso8YGT4LeBfgQmKZde/DEc5L2unI6guTuPGWCgM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cZzBFjMdF/p2CXWnCzuvLucc+w7OSOo3IRkR0NgzsFcqwji4w98XzgJa0L4vTNw1l
+	 KB0BqnuLS50O69WVDWy3e4LiRLEV0d6GKf8eFsA2vE8MSk2IKtYXc8+dZNZZCozLZd
+	 X7za/L4pgOH+93rtd0CQZICEDxRzLRjsFRGzihFBhf4Rquu3KGiFlI/QQ2HL6dei2q
+	 jq8m40v+xAgzu4xcUkxLdG+xnfnqSf7NDHX7Geg2yFUDWxuXKCwgmlVFZ54B+4/Bjm
+	 3yGfcvIhmx4UxgRGKw+TM9MHYngZKDtVH/OzGDBd0eFhl9jlmFp+HZYilgbPDVtbEK
+	 35Gfm1F1pysJw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 08/18] arm64: dts: ti: k3-j721s2: Add overlay for fusion
+ application daughter board
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yemike Abhilash Chandra" <y-abhilashchandra@ti.com>
+Cc: devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260702093123.1048575-9-y-abhilashchandra@ti.com>
+References: <20260702093123.1048575-1-y-abhilashchandra@ti.com>
+ <20260702093123.1048575-9-y-abhilashchandra@ti.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 02 Jul 2026 09:45:20 +0000
+Message-Id: <20260702094521.1CD0A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
- <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
- <CAMuHMdXen+E-Ai51aWBa_KV9W8Fz2cQPpT-FG_kQ7akhrrYa_A@mail.gmail.com>
- <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
- <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
- <akOZFIowVvprnAMf@vaman> <CAMRc=MfBcOhbj=ETxy2Xz9o_nyzykrEhKAc3jYi6V5_jMZEE3Q@mail.gmail.com>
- <CAMuHMdXNG=C=XcioQUEN1M7cQgKhO0AxUyg5X+TWb2rQ3-H3fw@mail.gmail.com>
-Date: Thu, 2 Jul 2026 04:44:55 -0500
-X-Gmail-Original-Message-ID: <CAMRc=MfwB_51OLjX_19eagZ1m3UUM2iHny5rx6besR6+Np_A0g@mail.gmail.com>
-X-Gm-Features: AVVi8Cfm4QcPsY-kBu80DyHJVbYDW8Jkdy81l2_sPTIAALqyBLBgGUF_GjAGTTs
-Message-ID: <CAMRc=MfwB_51OLjX_19eagZ1m3UUM2iHny5rx6besR6+Np_A0g@mail.gmail.com>
-Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
- PHY on sa8255p
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Vinod Koul <vkoul@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
-	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, Romain Gantois <romain.gantois@bootlin.com>, 
-	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Radu Rendec <rrendec@redhat.com>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Bartosz Golaszewski <brgl@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 2 Jul 2026 11:16:22 +0200, Geert Uytterhoeven
-<geert@linux-m68k.org> said:
-> Hi Bartosz,
->
-> On Thu, 2 Jul 2026 at 11:12, Bartosz Golaszewski <brgl@kernel.org> wrote:
->> On Tue, 30 Jun 2026 12:23:16 +0200, Vinod Koul <vkoul@kernel.org> said:
->> > On 29-06-26, 16:51, Geert Uytterhoeven wrote:
->> >> > Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
->> >> > driver instead of the MAC driver where it was previously. Instead of cramming
->> >> > both HLOS and firmware handling into the same driver, I figured it makes more
->> >> > sense to have a dedicated, cleaner driver as the two share very little code (if
->> >> > any).
->> >>
->> >> I think you are mixing up DT bindings and driver implementation?
->> >
->> > Should the bindings change if we have different driver and firmware
->> > implementations? Isn't binding supposed to be agnostic of
->> > implementations..?
->>
->> I've thought about it some more and I believe this question is philosophical in
->> nature.
->>
->> sa8775p and sa8255p are *the same* hardware. I can flash different firmware on
->> the same Lemans Ride board and it becomes one or the other. Yet they are not
->> described by the same DTS and the bindings differ as well. I don't see why we
->> wouldn't allow the same approach for the this PHY.
->>
->> We treat it as different HW variant when it's managed by firmware - just like
->> we do with the rest of the SoC.
->
-> DT describes hardware, not software policy.
->
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] The commit message claims the overlay can be reused for J742S2, =
+but the required device tree combination target is missing from the Makefil=
+e.
+- [Low] The `csi2_phy0` endpoint definition is missing the `bus-type =3D <4=
+>;` property, while the identical `csi2_phy1` endpoint explicitly defines i=
+t.
+--
 
-I'll defer to DT maintainers then for that particular case because it affects
-more than just this platform. For instance: Qualcomm Nord[1] is already being
-upstreamed with a similar split into common parts and then sources specific to
-the SCMI and non-SCMI variants - even though it's the same SoC.
+commit 38600625d6a88602aa3dc77a7657b2be15b2c563
+Author: Vaishnav Achath <vaishnav.a@ti.com>
 
-Bartosz
+arm64: dts: ti: k3-j721s2: Add overlay for fusion application daughter board
 
-[1] https://lore.kernel.org/all/20260526051300.1669201-1-shengchao.guo@oss.qualcomm.com/
+This patch adds an overlay for the Fusion application daughter board to
+connect multiple FPDLink-III based sensors to TI EVMs. The commit message
+notes that CSI2RX connectivity on J784S4 and J742S2 is the same as J721S2,
+allowing the overlay to be reused.
+
+Link: https://svtronics.com/product/fusion-application-daughter-board-evm57=
+7pfusion-v1-0/?srsltid=3DAfmBOooMsRAd5ibFOGJaKbjsC3j9-loTPK2wWqsqPq2Adj55g1=
+nPluxX
+
+> diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Mak=
+efile
+> index 350a8b5ad275c..9dd25a21d738e 100644
+> --- a/arch/arm64/boot/dts/ti/Makefile
+> +++ b/arch/arm64/boot/dts/ti/Makefile
+[ ... ]
+> @@ -333,6 +336,8 @@ k3-j722s-evm-csi2-quad-tevi-ov5640-dtbs :=3D k3-j722s=
+-evm.dtb \
+>  	k3-j722s-evm-csi2-quad-tevi-ov5640.dtbo
+>  k3-j742s2-evm-usb0-type-a-dtbs :=3D k3-j742s2-evm.dtb \
+>  	k3-j784s4-j742s2-evm-usb0-type-a.dtbo
+> +k3-j784s4-evm-fpdlink-fusion-dtbs :=3D k3-j784s4-evm.dtb \
+> +	k3-j721s2-evm-fusion.dtbo
+
+[Severity: Medium]
+The commit message mentions the overlay can be reused for J742S2, but should
+a build target for k3-j742s2-evm-fpdlink-fusion.dtbs also be added here?
+
+>  k3-j784s4-evm-pcie0-pcie1-ep-dtbs :=3D k3-j784s4-evm.dtb \
+>  	k3-j784s4-evm-pcie0-pcie1-ep.dtbo
+>  k3-j784s4-evm-quad-port-eth-exp1-dtbs :=3D k3-j784s4-evm.dtb \
+[ ... ]
+> @@ -400,11 +405,13 @@ dtb- +=3D k3-am625-beagleplay-csi2-ov5640.dtb \
+>  	k3-j721e-evm-pcie0-ep.dtb \
+>  	k3-j721e-evm-pcie1-ep.dtb \
+>  	k3-j721e-sk-csi2-dual-imx219.dtb \
+> +	k3-j721s2-evm-fpdlink-fusion.dtb \
+>  	k3-j721s2-evm-pcie1-ep.dtb \
+>  	k3-j721s2-evm-usb0-type-a.dtb \
+>  	k3-j722s-evm-csi2-quad-rpi-cam-imx219.dtb \
+>  	k3-j722s-evm-csi2-quad-tevi-ov5640.dtb \
+>  	k3-j742s2-evm-usb0-type-a.dtb \
+> +	k3-j784s4-evm-fpdlink-fusion.dtb \
+
+[Severity: Medium]
+Does k3-j742s2-evm-fpdlink-fusion.dtb need to be appended to this list so
+the J742S2 combination device tree gets built?
+
+>  	k3-j784s4-evm-pcie0-pcie1-ep.dtb \
+>  	k3-j784s4-evm-quad-port-eth-exp1.dtb \
+>  	k3-j784s4-evm-usb0-type-a.dtb \
+> diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-evm-fusion.dtso b/arch/arm6=
+4/boot/dts/ti/k3-j721s2-evm-fusion.dtso
+> new file mode 100644
+> index 0000000000000..f200cdaa1bab1
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/ti/k3-j721s2-evm-fusion.dtso
+[ ... ]
+> +&cdns_csi2rx0 {
+> +	ports {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +
+> +		csi0_port0: port@0 {
+> +			reg =3D <0>;
+> +			status =3D "okay";
+> +
+> +			csi2_phy0: endpoint {
+> +				remote-endpoint =3D <&ds90ub960_0_csi_out>;
+
+[Severity: Low]
+This isn't a bug, but should this endpoint explicitly define bus-type =3D <=
+4>
+to remain consistent with how csi2_phy1 configures it below?
+
+> +				clock-lanes =3D <0>;
+> +				data-lanes =3D <1 2 3 4>;
+> +				link-frequencies =3D /bits/ 64 <800000000>;
+> +
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&cdns_csi2rx1 {
+> +	ports {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +
+> +		csi1_port0: port@0 {
+> +			reg =3D <0>;
+> +			status =3D "okay";
+> +
+> +			csi2_phy1: endpoint {
+> +				remote-endpoint =3D <&ds90ub960_1_csi_out>;
+> +				bus-type =3D <4>; /* CSI2 DPHY */
+> +				clock-lanes =3D <0>;
+> +				data-lanes =3D <1 2 3 4>;
+> +				link-frequencies =3D /bits/ 64 <800000000>;
+> +			};
+> +		};
+> +	};
+> +};
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702093123.1048=
+575-1-y-abhilashchandra@ti.com?part=3D8
