@@ -1,40 +1,40 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA78B3624DB
-	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 17:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02FA349AF6
+	for <imx@lists.linux.dev>; Thu,  2 Jul 2026 17:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783013565; cv=none; b=jEbG+oPr0YTBf37n0lsZc1ZLYZicZuvlfIIjYCp1y4jL11mav5NnEuwJ9PKt++Fq5nd6W/Y0yfDNadNNzhWJ7NmXdnzIH3xEGOyg8LQp8MYKOHTrjSSV89uWaK1WzjstQcQjUOaqytM4m2G2ZRExmCg6GB5iuOKj0GJv7xo5sIw=
+	t=1783013742; cv=none; b=AdVDb0lAM0LDAusQ+rbqld7+NQEEgDdfZwzNOWHqzpfZ4ijAdNV2b1/PiWVJ/QbItXeBhFEsc1n/n66/9AxBjuw1PHQGSaETSx1U1VRriB67zIfXVe1zVyMpZGYzszCeegbkUu6l5GEmA0s8MN/V+QLGrByu9cGaJ01qcHoRlm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783013565; c=relaxed/simple;
-	bh=SVU13DfE2fT6nkswzbMyYJliSQ2g5smcRYHE9U21wyc=;
+	s=arc-20240116; t=1783013742; c=relaxed/simple;
+	bh=avGu4IKziAyDJgW08rAHM4Td2vBUWc8qt6JC9PD6t1c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nZ2rM9QGD48RZspL4CCa8bgQx2873GhhBcWYbkz87S/QUKQqiqjk0cJiGrHFy+Yi2fGWfeC5oQYYKjvGQX9msZwBi91DHe3Wc9iLnEJPfGlM8eWw5EKfm4puDZTOuzWb/JNJXIZ77hnRpfQdmVXRkSto4YYxrclS4F27wekE8yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QwGsMLQ+; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:Content-Type; b=e6yY1pyrGv1p4Jdc2AAsVKbwdYXQ9cfzbX549rYcggGz4n9h9bAe37+BiXM4AC2ZfpGy9ffY5BZwlEABH7rmnlUVGRZEOg0e6teh558Exn1upj7eD0sceAE5s36yJg/suyFEk2whb+1zceAZotmeFMHUtK3XP+5v3sJEST64cSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=uUye/Yfp; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QwGsMLQ+"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="uUye/Yfp"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id AB58CC4FEE7;
-	Thu,  2 Jul 2026 17:32:53 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 279A61A0DF2;
+	Thu,  2 Jul 2026 17:35:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 30144602EE;
-	Thu,  2 Jul 2026 17:32:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 64165104C958B;
-	Thu,  2 Jul 2026 19:32:37 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DF68B602EE;
+	Thu,  2 Jul 2026 17:35:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 032F3104C9590;
+	Thu,  2 Jul 2026 19:35:33 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783013561; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1783013737; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=333yUrvHkRG3UJz4DC6yymWTSQQMoVp1nOXtAD9WMA8=;
-	b=QwGsMLQ+DqpF5JZ+NnixOA+M8lmYER25GoqwC0efJeFI0li+g/47xhqrpPpCeLvv327DAE
-	H8HwO/7xTB7AH1gUwp11SVVjBeRshE5MhDuDpPb8c/El1c7KTm9PKcOr6qQ9nUvyp/B+9R
-	tLOgnqi/DPNBZKDVb7arIdKD2Hx9Q5URaDh53087/pgZqz2FrqV/8wERH2Glm5T/Thple1
-	tZWwgzwEqkxA5ot/XUWLMut4saogTMrBQx//J/c13GvTIjHdynI5qNjsM5FFtNYv0KEJ/c
-	zc5/cVQcwpmIcdGov9DBCe7VYlxhX7oNK7xfiVqg7vZ5vwelkHxac1OX2CoEuQ==
-Message-ID: <74b45119-46d8-42c2-afea-e0f0bc340304@bootlin.com>
-Date: Thu, 2 Jul 2026 19:32:36 +0200
+	bh=DaEsGQyA9lchO5J2AFHDiPCEx3TudYnthel4tv0857M=;
+	b=uUye/YfpNoN/FMZ4X1Cn5/O4LhI3ptQAjczCfgJX3Bgk4hJuMyoIOcI0vKjJFYSg4hta1o
+	NueV4e13bB7rgP9zShZjzGVlRgHXl31jmbYmC490Y5gAkRP2hr+Te8eqPXQrEsPsv0LcOk
+	i0wP3lPGzw8jKCoXv99iRmQKTa57dYfQwlxKM5hpRBGwWZe7z+AWr3aE1dxEsB+riUbAOi
+	cjEd2M1+miyQmR7++DBBR/jO8ubnNEQVvFGttwGquZNFNlM3CtpTmuCodM/r1++YovdfRz
+	kOSQB8asI5ks9XwqQ9/PmKCvMR7wB/YFw4S23LaDauAsQ0sfRIBYg8kIvdWnPw==
+Message-ID: <11de0ecc-17af-4f64-884f-e1b146d80aaf@bootlin.com>
+Date: Thu, 2 Jul 2026 19:35:33 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net-next 06/14] net: enetc: simplify
- enetc4_set_port_speed()
+Subject: Re: [PATCH v2 net-next 08/14] net: enetc: remove invalid code from
+ enetc4_pl_mac_link_up()
 To: wei.fang@oss.nxp.com, claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
  xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
@@ -52,10 +52,10 @@ Cc: imx@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-arm-kernel@lists.infradead.org
 References: <20260702025714.456233-1-wei.fang@oss.nxp.com>
- <20260702025714.456233-7-wei.fang@oss.nxp.com>
-Content-Language: en-US
+ <20260702025714.456233-9-wei.fang@oss.nxp.com>
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260702025714.456233-7-wei.fang@oss.nxp.com>
+Content-Language: en-US
+In-Reply-To: <20260702025714.456233-9-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,15 +65,26 @@ X-Last-TLS-Session-Version: TLSv1.3
 On 7/2/26 04:57, wei.fang@oss.nxp.com wrote:
 > From: Wei Fang <wei.fang@nxp.com>
 > 
-> Since phylink only passes valid speed values to mac_link_up, the switch
-> statement with its default fallback to SPEED_10 is unnecessary. Replace
-> it with a direct call to PCR_PSPEED_VAL(). Also update PCR_PSPEED_VAL()
-> to use FIELD_PREP() for proper field masking instead of an open-coded
-> shift.
+> When adding phylink MAC operations support to the NETC switch driver,
+> Russell King pointed out several pieces of invalid logic in the
+> .mac_link_up() implementation (see [1] and [2]):
 > 
+> 1) Half-duplex backpressure is not supported by the kernel, Ethernet
+>    relies on packet dropping for congestion management.
+> 
+> 2) phylink_autoneg_inband() is unnecessary, as RGMII in-band status is
+>    not supported.
+> 
+> 3) TX and RX pause are disabled in half-duplex mode, so there is no
+>    need to override them in .mac_link_up().
+> 
+> The same invalid logic is also present in enetc4_pl_mac_link_up(), so
+> remove the invalid code from it.
+> 
+> Link: https://lore.kernel.org/imx/acEIQqI-_oyCym8O@shell.armlinux.org.uk/ # 1
+> Link: https://lore.kernel.org/imx/acEFwqmAvWls_9Ef@shell.armlinux.org.uk/ # 2
 > Signed-off-by: Wei Fang <wei.fang@nxp.com>
 
 Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
 Maxime
-
