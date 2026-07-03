@@ -1,69 +1,81 @@
-Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4943CB8FF
-	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 12:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C09135AC20
+	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 14:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783080881; cv=none; b=pT94+YsaDooXujzfDxPr6jBNJzcXzRWF8nsqHaqg1pKXIX1+CEo4sUFh9pDXh9QEWbB1UO18TaSDp3jg4cGVLoqaeN/WhEjKsJrmIUpGBV/GQkQscGdJZt8j0VPwlsCtSlir8QzwkJ3DjMu6rzYFQ9T08AiMNCxF22RBh6jznic=
+	t=1783090211; cv=none; b=Jk4v6IsGWjGUhxOEfAxEfPgcZdePYXSC4CbSI/plaZlvq8obIa5lOZEbSPmYdzmlU7rRrVNJUv5i34yExKiqJ7GkKIZVC7xdO2GkQsn+etmqDYIlvMavNC+lRjrCeyiWGlX463E107d4i+JOLnCd3R1R0fWZZ7GLZbkLRIoRRCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783080881; c=relaxed/simple;
-	bh=KWWCjLkg4h9x3km9rFZ2Wfc0d2ZwVc895DbuVuZ74O4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OLQulZCZQDxNCxRgK2eCqc4HW3V3+Px4U1SBgz3R6mveN9vqCFQlmyXmXhINA0aG6FsfUhu8v3EK4eA6i1vu8jhFO4xpMkcUUVsIszzt034zwv10Qpp2lGzgVWhZQhtP8Ppr8MqOUSYdxaxhFklzLSQ0pRef/8XsJfJJwnvUj2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=AG6PM/yh; arc=none smtp.client-ip=93.188.205.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+	s=arc-20240116; t=1783090211; c=relaxed/simple;
+	bh=H0fA7UXVvTZNMGM0szq2vnWgiH9jWNQNaiQNMYqM7dY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jt63Hyy7h3VBzD3Gc5GA32krNawFnA1xGBVe1VcHV6SEKiloa5XYMoqed0hmrvYy9vKPUEROAhp/QwaablEzdUWnsdeDJ560gW5tYFUm5eF1IcKSsQN/8g58E9mXe/ukXrUsIx+tKKiv0YweXY0h9N3qBkIojAKpFifzbVyb79U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aSpUeYNe; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="AG6PM/yh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1783080866;
-	bh=KWWCjLkg4h9x3km9rFZ2Wfc0d2ZwVc895DbuVuZ74O4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=AG6PM/yhZE5mNO0tX1LnotZZjELMcvmJXDmIX/c8ZQZZRmqb4F+z0DwHJeotD5bSo
-	 TMCq+vjZRGTadIb7+1dbJQ4mZJLRTcvuT0XKke14kfpTeDOD8za86PV9FoyLs1RnBQ
-	 3hI1TUZPvcv0wUNdz7lvmh6yV9xjQyEEgBwL4VaFVO6f5DaDS1EN002XeBlTl/3nIZ
-	 ESitHEAvo/Td6xMh19gW7Xf9LS8PoQZ2wjJJgg4NfaYW8k8qFMi0eoi2H+9Z0BLPSO
-	 UpSs8207PQNBTZCwMoiVP4kNBwE+zC461C4uFRpI2f2Hma1MSzkRnZviL7bMuZ78ee
-	 V/9JZ6zwwVMYA==
-Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id E39021F42D;
-	Fri,  3 Jul 2026 15:14:26 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Fri,  3 Jul 2026 15:14:24 +0300 (MSK)
-Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.198.56.105])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gsCNb6Flsz1Q8W;
-	Fri, 03 Jul 2026 15:14:23 +0300 (MSK)
-From: Alexandra Diupina <adiupina@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexandra Diupina <adiupina@astralinux.ru>,
-	Abel Vesa <abel.vesa@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aSpUeYNe"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47488efcf30so436517f8f.3
+        for <imx@lists.linux.dev>; Fri, 03 Jul 2026 07:50:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783090208; x=1783695008; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yv5c3aAX22MotkI1huu0Usc8fAYg0ktXennCOkB+608=;
+        b=aSpUeYNes7gkqVeMujkUNkVtAFIno0P3aBQNUU34V7rRofmP9pXRhOcrR1dJpbmQjl
+         TNi4lZ01xv1ez3xzxtDxzAh5hOsqtLqs0Pc4QLgpmFh7SALdJQvYWx3KdMaK+ME/dBnH
+         0PG787+lbrqy+KjoGPObqV/wsdp8LoY19SF9UQAh5OPpG/LU3HTZUxHiEHH5dV/Uxx6l
+         1Kcu94nVVsFUzInpy0OM7IeGt6ktxrPluVy2HwPkmyOXrothuRym0zaaPZYqMEY6P6B6
+         7H+9MXY+nY28Or2qw6KcrjzFwWYhwQmPdtMPByGuv6vsBB8dYgFAw7zXZY4Unyh1yW/M
+         145A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783090208; x=1783695008;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yv5c3aAX22MotkI1huu0Usc8fAYg0ktXennCOkB+608=;
+        b=necbdTN2lTvH/avZsvRjtiYnMz9+C0+3Z1aDXPoTTYndVUed57u63i/yXnwX5DEOKZ
+         o44NIM+SKfIDyzv41R8+Q2xGdgYhOo5doMrrwsAi5Si8iiJgh6t8F1GbPsEcbeeWEAYk
+         eUJiZHwSHDMEUt39BKOGs2mR4v8YiqV5smOwMyUSHpXbHpvw3PVjiSXCnZbUPjNhDZ+E
+         uCXag8BDAGo2S4j2H6SKUk1Y0IiU5zLBN+bz0NGkrvLIYdRyFRAjeZZzBQ5A99sMzBXo
+         fvvqAokjJiKhj2LwQ22MoiIatRwxJPgl5XYU08/zZXLCOnJrFAaqaTwS8+xodFE7CDvN
+         HPsA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpn7zCjzH6Xc3Qnj7NIU7fj386XCtrrIhCb5J3cH9t0k9HcfAKG+pszNxQBHkE9oHm44WM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzMV6kXqgVXi6keQHhXFml94NV/swdtfomrwGGL/0m8MSxQmCRn
+	NOO08Sh0jISO0SZ/8eU4TBAS1viLF5ZeKVe8Cpn3hwQKG/iOO/yP1vBa
+X-Gm-Gg: AfdE7clNyipEV06g+DKrJPE74ZLmcjxmjbC+YN2Devop+vCUUaW7/fDc1OVvYhLK7qD
+	tE4GOgXJtoF4LahJj6hY/3esLh0ONH07Ds1bDVT6FeZzAteEpUNaTOrXoERyi+xwYly2nUbonjC
+	YYlGAVBANejhbq4KbOyibDil+NbuzwLxjm8UYbVoLk9+Ml5vAf86DyRqvJYtUFCdSGXe7kFXtjs
+	TyEVwA1Uiw2QFpSNfkwZ5FP77rkDy2GnW46x4Fwsq5mBqoeQuozcpLFfAG7VmcEcWtmPAviy3+k
+	Zl50IZYBGId1bfKZrJtIrLoo3cnNSsWA6856WEkYnwgy7KPQiOgEAVgDskhnTovDuAMJ4nIfSVM
+	JUDvHK5spswZXXC3io2o6r5zXmRKr4AbLN7Ht/hUrQUNz5V5UT0GIqJa0G7U/a0Rv9KRsjk4c4m
+	FPPmsg1+tpF4HHKCEHw4UabaRen1QIXFmjaiZo+guYe5KZTa3XliKPlFZu1rs/kS19XKOpHufmP
+	Q9e7odew/XadqPLMIeqHpDcXY8=
+X-Received: by 2002:a5d:5f42:0:b0:46b:cab9:f697 with SMTP id ffacd0b85a97d-47758bca818mr13901139f8f.24.1783090208322;
+        Fri, 03 Jul 2026 07:50:08 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-248.cust.vodafonedsl.it. [93.144.65.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db8a4ad4sm20087616f8f.11.2026.07.03.07.50.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jul 2026 07:50:07 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Adam Ford <aford173@gmail.com>,
-	linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Brian Masney <bmasney@redhat.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 5.10/5.15] clk: imx: Add check for kcalloc
-Date: Fri,  3 Jul 2026 15:13:38 +0300
-Message-Id: <20260703121338.25747-1-adiupina@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v1 1/1] arm64: dts: freescale: imx95-var-dart: enable NETC block control
+Date: Fri,  3 Jul 2026 16:49:22 +0200
+Message-ID: <20260703144922.231608-1-stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,53 +83,33 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/07/03 11:40:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: adiupina@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 112 0.3.112 7c8d497b0e572fbfa504a2ee62037c045a8cb4ec, {date_rfc_vio_soft_silent}, {Tracking_ml_letters}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lore.kernel.org:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 204227 [Jul 03 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/07/03 10:45:00 #28371015
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/07/03 11:40:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-commit ed713e2bc093239ccd380c2ce8ae9e4162f5c037 upstream.
+Enable the NETC block control node on the DART-MX95 SoM.
 
-As the potential failure of the kcalloc(),
-it should be better to check it in order to
-avoid the dereference of the NULL pointer.
+This is required for the NETC Ethernet ports to be enabled and used.
 
-Fixes: 379c9a24cc23 ("clk: imx: Fix reparenting of UARTs not associated with stdout")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Reviewed-by: Abel Vesa <abel.vesa@nxp.com>
-Link: https://lore.kernel.org/r/20220310080257.1988412-1-jiasheng@iscas.ac.cn
-Signed-off-by: Abel Vesa <abel.vesa@nxp.com>
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
-Backport fix for CVE-2022-3114
- drivers/clk/imx/clk.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
-index d4cf0c7045ab2..be0493e5b494e 100644
---- a/drivers/clk/imx/clk.c
-+++ b/drivers/clk/imx/clk.c
-@@ -173,6 +173,8 @@ void imx_register_uart_clocks(unsigned int clk_count)
- 		int i;
+diff --git a/arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi
+index d43270a1d907..174ded589d6f 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi
+@@ -178,6 +178,10 @@ &mu7 {
+ 	status = "okay";
+ };
  
- 		imx_uart_clocks = kcalloc(clk_count, sizeof(struct clk *), GFP_KERNEL);
-+		if (!imx_uart_clocks)
-+			return;
- 
- 		if (!of_stdout)
- 			return;
++&netc_blk_ctrl {
++	status = "okay";
++};
++
+ &netc_emdio {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_emdio>, <&pinctrl_phy0res>;
 -- 
 2.47.3
+
