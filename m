@@ -1,243 +1,164 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C55396D2E;
-	Fri,  3 Jul 2026 11:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9CF3B8124
+	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 11:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783076459; cv=none; b=pe2hlpeDondR9SbFdt0vWZ2Mz+surfOvWq1AVs21mchHhedzGGuxkWBM8MAl29JqjWHJZLHQ2NzZYpToSvXZbHQh/r3Asnp5tqsSiyc7HoXL4qAcFilUTGDUSOMLDy8czMXbvb7/CLDbbCCmXA2CK6I6hw80NZwjKhFr/hEVDBo=
+	t=1783076801; cv=none; b=F4Zn7yMT53n1IyL4Mj/njqYpNL2mOq9n1Ey1DypdQO4xEE3Qun4bvtaxOhWHmXstx2Hp1Z7gwrDwmRcX79qZEGI2wfJCuJvoEj6NddYNXCtYdT7m/pHbKUue92LEGCkChy9pkF4EjIuCP1id5Jqt2t1gMDElG9yZkf2PyS6Ze5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783076459; c=relaxed/simple;
-	bh=KF4PYzd4QpVqQctLB1X3TIU1Beyh4krzNY6wZfbMYTk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=a9qRqB21t4JPJtmcwCpmo28WygMGkW+iG73p3jYwZeZUB8EKL0BY77cHx4Q7+u5XzjyawbBsdyBGH56Aov3Iz1UC0M3xpGHhxTWsUPzol27C8Fi+1wmhsCB+QSuBU4mCVeiB9wqglso6UnFKDDNGerybS5HOt9AMDXr0ssUidPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pKDTG8AI; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1783076801; c=relaxed/simple;
+	bh=S1QhCSUz6Qo/MWP4sxF64RizscYS7Vl3rRqlFFZ15y8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=sZgLG9t0AEHWLn0IEDKkWWQoLZpeuD5mbMdNqF6J8f+1DxDrguCe9kF5vkEgRNlDfR67wgIHA4GUxIopleTX3nTF8/Nc+I20TjxX9fP+WxOVkw/BgSndRyTP9kulRsrLT4FbKzTjyuhfCFQnKzxGtAoIIyPWhb2mYkYNCp4q2qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UouzQ2/f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pKDTG8AI"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 23B251A0E0B;
-	Fri,  3 Jul 2026 11:00:55 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DF22860300;
-	Fri,  3 Jul 2026 11:00:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 31629104C9573;
-	Fri,  3 Jul 2026 13:00:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783076454; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references:autocrypt;
-	bh=tYlcpJ6f3u67IWkL7tEFKVx4Px8m/+qr9gJGkqxbauE=;
-	b=pKDTG8AIgN9e3RHvh1fQhOPC0ZiZVZOKR1WcO6TBaWOCxwGHHUBmXmgmjdMlmYyGesOnhy
-	cAzjH2QYqEyWi586aY8E7+EgHZ0XHyDb2ZUzjyuoRYFBFGBvznrIvLt5MtBg3tI8tvs4tJ
-	fb2rMzIEAQ8hNX/ZJILsxmSTUXIkA0JgTEczu7QK4ARJ6HiJDKJWtLHe+rtdE0nbnZXF5z
-	alPLRz97m8DQoc/HoM9Q0ZQ5nsPivMrk50gmF8XPmLHf6zF9WW98+gP+uje2vPIJdnZZmX
-	eFz+b88y+EMy07uqEAwKu7yz6gaR5ZeCzOTdgUO4Ca9P56j8sweHcuL/a2o60w==
-Message-ID: <abfc86c41c19c73e9e41dc9654935a0fc89bc5e2.camel@bootlin.com>
-Subject: Re: [PATCH v6 4/5] gpio: aaeon: Add GPIO driver for SRG-IMX8P MCU
-From: Thomas Perrot <thomas.perrot@bootlin.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: thomas.perrot@bootlin.com, Frank.Li@kernel.org,
- devicetree@vger.kernel.org, 	linux-watchdog@vger.kernel.org,
- conor+dt@kernel.org, robh@kernel.org, 	imx@lists.linux.dev
-Date: Fri, 03 Jul 2026 13:00:51 +0200
-In-Reply-To: <20260630131017.60D8C1F000E9@smtp.kernel.org>
-References: <20260630-dev-b4-aaeon-mcu-driver-v6-0-d66b5fcbd2f0@bootlin.com>
-	 <20260630-dev-b4-aaeon-mcu-driver-v6-4-d66b5fcbd2f0@bootlin.com>
-	 <20260630131017.60D8C1F000E9@smtp.kernel.org>
-Autocrypt: addr=thomas.perrot@bootlin.com; prefer-encrypt=mutual;
- keydata=mQGNBF+/ZOUBDAC2DghCjZvmgYcve02OG7dGZ7Iy58uEwne3LB7w7nRwdAxKw7ZaiVqwY
- O+yNGVi+GVx7oA6Wn4pv46z+QDRLQiq6OseuXhkSGCg7U/yBCUq12B/GRGO1Qt2Qi1mJJT1s+1qZ5
- Gxv6Nypz9qKVn94GM2bR1hXBga0t87vBpebThOHmX5d/0dqIcVxRCM7onNb0dDyRoVgLS5rBhQzrL
- CMrJaCy39xZUy0J1SOlH4Mgk6EhJIPYY4wlzikGX6urg+Tc9EjGd78ry0e0p5U5qgjFR5QGJDy1Gn
- U3CfwbT9sowdCASDbQDUoltlv2iWJCLa0xl97KVchCa0pr7HKbFA3J5SLKqFYUBCkFL+5WudYlz2n
- XxiUgyviMQxyK+ij66kEi6/2zFDAecd43pHV7790ptqZBC3Jc67Emj7Vo3ShX6RXPPxxbeCTOF2uk
- I45aJ9XcVFH/MFE96NjXj8uahnIsiTPyuCUoJu8tj7TSQyue874qJqVQvqlFyt2aZYJZ8ruq8AEQE
- AAbQpVGhvbWFzIFBlcnJvdCA8dGhvbWFzLnBlcnJvdEBib290bGluLmNvbT6JAc4EEwEIADgCGwMF
- CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSHQHfGpqMKIwOoEiGfwAsFcf4K7QUCX79mdwAKCRCfw
- AsFcf4K7fhbC/wP0kSl6id2E/K3+UdXk6CLMVRbCFLCREzQs5WFpQ6l/I0WGOamhrOgegdszheiVF
- orlUP8d37XSpFAqydhKGaN78V5Dps0Wmwm4lIlS4MtQXJtSLUHXDJLIZLW0pw8tiPLKsd1o/yDkXE
- dnpsjJTRG6SdDSHnyOB2/gh4p+yTaLytFdARk/r4/P26+L+FiH0fFl+RnBt19LPklfKgeDc7GwIif
- ja+nIWpp3W23DAUuI6xduEut25Q89yu7Ci8CliLfAiLy9bIGjBQWU2Y+1/j/7KuPj6VbBsZWLTZY0
- hUmpJSTnWAqc9SMsNxo7NSQuddgviz5e2tqucaRqxP02FGzNa8U4NAKdWaXrlHG5Dglj9XH0DK+SH
- +c96qqFewYD8VPQ6XAGxQcXbrtJmiMor1R2DfziispLRvJcfYs8xqabbCtoS3ouXB9XRi8hn7A2kh
- ME1ryS+Oh63JshXHnw6bmjCpVd/p+fGLIGU6A47pJOpviKR4jEO84pl2ejtDZ3Tc=
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-sykvhHvoBFGpNBeq5KNz"
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UouzQ2/f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748421F000E9;
+	Fri,  3 Jul 2026 11:06:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783076799;
+	bh=DSI1frzYQEZ9/cAbNsXxD+2xVyGDPTz5LWKgW9a8/4Y=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UouzQ2/fRHsHtPOZKD/xEgYaQv6albt8qqj+vI+MYy9pFAAzlM9yf06OYxEa7rL2T
+	 dgRQHAwWdOUdNOWkAhtulb/8NARhzwY6wEAGuVPxR7r6WRcb2/vTXAcVp07IYhzEwL
+	 rEgk8R30bac5JfT2uU7OdlWIjox5cFai9oXh8aosClIY3lyR0epli7LzKZi7J9wmme
+	 CsZZoAO4m2nFyb319YhEvE3zsez8LVYEJIeZT8p/D0qsi/PX2DjxkrY8aY5RvYDgz8
+	 Q5hvWGOIQdgLUpoLNwgREk2ZKi/I5TI8+lZh1uDu00peOIZLeZng2dZVE142H2W0ga
+	 0v6muiACjtnag==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 2/5] i3c: master: Report actual GET CCC payload
+ length on success
+Reply-To: sashiko-reviews@lists.linux.dev
+To: tze.yee.ng@altera.com
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, linux-i3c@lists.infradead.org, "Alexandre
+ Belloni" <alexandre.belloni@bootlin.com>
+In-Reply-To: <b5899827bdcf3f3097ef4cf5dae221cc5305337c.1783074850.git.tze.yee.ng@altera.com>
+References: <cover.1783074850.git.tze.yee.ng@altera.com>
+ <b5899827bdcf3f3097ef4cf5dae221cc5305337c.1783074850.git.tze.yee.ng@altera.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 03 Jul 2026 11:06:38 +0000
+Message-Id: <20260703110639.748421F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] ADI and Cadence I3C master drivers spoof actual_len, hiding short =
+reads and bypassing core validation.
+- [High] Renesas I3C master driver leaves rx_count at 0 for small transfers=
+, breaking device enumeration.
+--
 
---=-sykvhHvoBFGpNBeq5KNz
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+commit bc63836138deed26f2a332a0c5e19f4ac088d4ab
+Author: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
 
-Hello Sashiko,
+i3c: master: Report actual GET CCC payload length on success
+   =20
+Set dests[].payload.actual_len on successful GET CCC transfers in I3C
+master drivers so the core can distinguish requested and received
+buffer lengths. Switch core GET helpers to use actual_len instead of
+len when interpreting GET CCC results.
 
-On Tue, 2026-06-30 at 13:10 +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider:
-> - [High] Unconditional resetting of all hardware pins in the `probe`
-> function breaks bootloader hand-off and destroys firmware
-> configuration.
-> - [Medium] Ignoring critical hardware errors during probe
-> initialization leads to inconsistent software state.
-> --
->=20
-> commit 73ee6d66b506331ac77e36c415e83febae316cf0
-> Author: Thomas Perrot (Schneider Electric)
-> <thomas.perrot@bootlin.com>
->=20
-> gpio: aaeon: Add GPIO driver for SRG-IMX8P MCU
->=20
-> This commit adds a GPIO driver for the Aaeon SRG-IMX8P embedded
-> controller.
-> It supports 7 GPO pins and 12 GPIO pins, providing access to pins
-> handled
-> by the microcontroller. During probe, all pins are reset to a known
-> state.
->=20
-> > diff --git a/drivers/gpio/gpio-aaeon-mcu.c b/drivers/gpio/gpio-
-> > aaeon-mcu.c
-> > new file mode 100644
-> > index 0000000000000..a9e048c865f5c
-> > --- /dev/null
-> > +++ b/drivers/gpio/gpio-aaeon-mcu.c
->=20
-> [ ... ]
->=20
-> > +static void aaeon_mcu_gpio_reset(struct aaeon_mcu_gpio *data,
-> > struct device *dev)
-> > +{
-> > +	unsigned int i;
-> > +	int ret;
-> > +
-> > +	/* Reset all GPOs */
-> > +	for (i =3D 0; i < MAX_GPOS; i++) {
-> > +		ret =3D aaeon_mcu_gpo_set_cmd(data, i, 0);
-> > +		if (ret < 0)
-> > +			dev_warn(dev, "Failed to reset GPO %u
-> > state: %d\n", i, ret);
-> > +		clear_bit(i, data->dir_in);
->=20
-> [Severity: Medium]
-> Is it safe to update the internal software state tracking when the
-> hardware
-> command fails?
+[ ... ]
 
-aaeon_mcu_gpio_reset() is a best-effort initialization: the MCU does
-not reset GPIO state on soft reboot, so the driver attempts to bring
-both hardware and software into a known state at probe time.
+> diff --git a/drivers/i3c/master/adi-i3c-master.c b/drivers/i3c/master/adi=
+-i3c-master.c
+> index 047081c9f0643..64735b4887261 100644
+> --- a/drivers/i3c/master/adi-i3c-master.c
+> +++ b/drivers/i3c/master/adi-i3c-master.c
+[ ... ]
+> @@ -360,6 +360,8 @@ static int adi_i3c_master_send_ccc_cmd(struct i3c_mas=
+ter_controller *m,
+>  		adi_i3c_master_unqueue_xfer(master, xfer);
+> =20
+>  	cmd->err =3D adi_i3c_cmd_get_err(&xfer->cmds[0]);
+> +	if (!xfer->ret && cmd->rnw)
+> +		cmd->dests[0].payload.actual_len =3D cmd->dests[0].payload.len;
 
-If an I2C error occurs, the true hardware state is unknown and
-unrecoverable without a power cycle. Keeping the software bitmaps at
-the desired post-reset state (GPOs as outputs, GPIOs as inputs) is
-safer than preserving stale values from the previous boot, which could
-cause get_direction() to return wrong results for subsequent callers.=C2=A0
-Any ongoing I2C fault will surface as errors in the regular GPIO ops.
+[Severity: High]
+Does this unconditionally set actual_len to the requested length, discarding
+the true hardware transfer size?
 
->=20
-> If aaeon_mcu_gpo_set_cmd() returns an error because the underlying
-> bus is
-> temporarily inaccessible, clear_bit() is still executed. This could
-> result
-> in the GPIO controller registering with a mismatched view of the
-> hardware.
->=20
-> > +	}
-> > +
-> > +	/* Reset all GPIOs */
-> > +	for (i =3D MAX_GPOS; i < MAX_GPOS + MAX_GPIOS; i++) {
-> > +		ret =3D aaeon_mcu_gpio_config_input_cmd(data, i);
-> > +		if (ret < 0)
-> > +			dev_warn(dev, "Failed to reset GPIO %u
-> > state: %d\n", i, ret);
-> > +		set_bit(i, data->dir_in);
->=20
-> [Severity: Medium]
-> Similarly, does this code lead to an inconsistent state by blindly
-> updating
-> data->dir_in even if aaeon_mcu_gpio_config_input_cmd() fails?
->=20
+By blindly copying the requested length here, it seems this defeats the new=
+ GET
+CCC validation logic. If a device returns 0 bytes or a short read, the core
+validation could falsely pass, potentially causing the kernel to parse
+uninitialized or zero-padded memory as valid device capabilities.
 
-Please refer to my other answers.
+> =20
+>  	return xfer->ret;
+>  }
+[ ... ]
+> diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3=
+c-master-cdns.c
+> index 6d221596ea357..36998ee4073d7 100644
+> --- a/drivers/i3c/master/i3c-master-cdns.c
+> +++ b/drivers/i3c/master/i3c-master-cdns.c
+[ ... ]
+> @@ -714,6 +714,8 @@ static int cdns_i3c_master_send_ccc_cmd(struct i3c_ma=
+ster_controller *m,
+> =20
+>  	ret =3D xfer->ret;
+>  	cmd->err =3D cdns_i3c_cmd_get_err(&xfer->cmds[0]);
+> +	if (!ret && cmd->rnw)
+> +		cmd->dests[0].payload.actual_len =3D cmd->dests[0].payload.len;
 
-> > +	}
-> > +}
-> > +
-> > +static int aaeon_mcu_gpio_probe(struct platform_device *pdev)
-> > +{
->=20
-> [ ... ]
->=20
-> > +	/*
-> > +	 * Reset all GPIO states to a known configuration. The MCU
-> > does not
-> > +	 * reset GPIO state on soft reboot, only on power cycle
-> > (hard reboot).
-> > +	 * Without this reset, GPIOs would retain their previous
-> > state across
-> > +	 * reboots, which could lead to unexpected behavior.
-> > +	 */
-> > +	aaeon_mcu_gpio_reset(data, &pdev->dev);
->=20
-> [Severity: High]
-> Could forcing all output pins to low and resetting GPIO
-> configurations to
-> inputs unconditionally during probe disrupt the state established by
-> the
-> bootloader?
->=20
+[Severity: High]
+Similar to the ADI driver, does this bypass the core validation by
+unconditionally copying the requested length?
 
-There is currently no bootloader support for the SRG-IMX8P MCU, so no
-bootloader-established GPIO state exists to preserve. The reset at
-probe time ensures a known quiescent state on every boot, which is
-necessary because the MCU retains GPIO state across soft reboots
-(kexec, reboot) but not across power cycles. Without it, GPIO state
-would be non-deterministic depending on the boot path.
+If a short read occurs, the driver will incorrectly report a full read inst=
+ead
+of the actual hardware byte count.
 
-Kind regards,
-Thomas
+>  	cdns_i3c_master_free_xfer(xfer);
+> =20
+>  	return ret;
+[ ... ]
+> diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesa=
+s-i3c.c
+> index f39c449922ca2..fec614700843f 100644
+> --- a/drivers/i3c/master/renesas-i3c.c
+> +++ b/drivers/i3c/master/renesas-i3c.c
+[ ... ]
+> @@ -805,6 +805,8 @@ static int renesas_i3c_send_ccc_cmd(struct i3c_master=
+_controller *m,
+>  	ret =3D xfer->ret;
+>  	if (ret)
+>  		ccc->err =3D I3C_ERROR_M2;
+> +	else if (ccc->rnw)
+> +		ccc->dests[0].payload.actual_len =3D cmd->rx_count;
 
-> Overriding the hardware state on every boot could inadvertently cut
-> power to
-> critical system components like regulators, eMMC, or displays that
-> were left
-> on by the bootloader or previous kernel execution.
->=20
-> > +
-> > +	return devm_gpiochip_add_data(&pdev->dev, &data->gc,
-> > data);
-> > +}
+[Severity: High]
+Does this leave actual_len at 0 for small transfers, breaking device
+enumeration?
+
+For small GET CCC reads, if the read buffer full interrupt doesn't
+trigger, the transfer completes in renesas_i3c_resp_isr() where it drains t=
+he
+remaining bytes from the FIFO but doesn't accumulate bytes_remaining into
+cmd->rx_count:
+
+drivers/i3c/master/renesas-i3c.c:renesas_i3c_resp_isr() {
+    ...
+    bytes_remaining =3D data_len - cmd->rx_count;
+    i3c_readl_fifo(i3c->regs + NTDTBP0, cmd->rx_buf, bytes_remaining);
+    ...
+}
+
+Since cmd->rx_count remains 0, won't this propagate an actual_len of 0 to t=
+he
+core, causing the core validation to reject the transfer with -EIO?
+
+> =20
+>  	return ret;
+>  }
 
 --=20
-Thomas Perrot, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
---=-sykvhHvoBFGpNBeq5KNz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCAAdFiEEh0B3xqajCiMDqBIhn8ALBXH+Cu0FAmpHlmMACgkQn8ALBXH+
-Cu3segv/WPTTakAXGaVG+gZhTD71CddcNfzJqf1VYZSLWZ4flJ+bzuOCAl6zUg2J
-EWZCFtxXT8xON/DKoz8o2MywoJoPk/FiLLDTCsL1tmiWRmi/dnFc8NC/tW6gSmAB
-WDhU+tjykBMG7e7QXd+nc2KU+1+JyIvb02lPy4aydVHTU6QGhy+8sXlD5SFUR84q
-bIHv7RqFNhqlQzc5VdUknY0RkPcP2sKBjFs5sNM3Ma5H69E+IeU5y+b5iCgU3nDl
-RHQZffajxi7of0pyPO1V3Hr+P+Xlot/hIjpCrhSWpYOJGvEV79ia3u4YXUomxfAA
-/9QfIQH0D+1yI+2GQmkjxUBcDuWSfGCpNYRGQ33QZ5JtyvIUVaGnsQGdr4d+zRkY
-k0jkkp1IwM4scE4stLjg35FI8OBZfMikP6nNDc6yiJG8ENy7QH4f6pqb0sj1VvCN
-Pv0K8Vg+co2toV/gMkJdCC47KZe+7nJ0g90NRxaTELOXl7Itx2Z/TwBubDToWNfN
-ldb9ecGd
-=wpFY
------END PGP SIGNATURE-----
-
---=-sykvhHvoBFGpNBeq5KNz--
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1783074850.gi=
+t.tze.yee.ng@altera.com?part=3D2
