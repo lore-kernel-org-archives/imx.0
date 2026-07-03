@@ -1,106 +1,243 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F671F91F6
-	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 10:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C55396D2E;
+	Fri,  3 Jul 2026 11:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783076372; cv=none; b=b4oRC3mBk8H7FC5CpKirUhNiBm6ccU1vsPGelnaeaizUf+pXyCCy1Q9ZNYmfYuTOPKGpBCKlsPlnnpnkSS5g6ORjpqQJhmyEmqFj8dumMVQ2t27nc1SjFXu72N4UPpUeiGUz/8oJ2hYvzZmHnmz8co6ARuYp1e9XzXZ5eKc0udw=
+	t=1783076459; cv=none; b=pe2hlpeDondR9SbFdt0vWZ2Mz+surfOvWq1AVs21mchHhedzGGuxkWBM8MAl29JqjWHJZLHQ2NzZYpToSvXZbHQh/r3Asnp5tqsSiyc7HoXL4qAcFilUTGDUSOMLDy8czMXbvb7/CLDbbCCmXA2CK6I6hw80NZwjKhFr/hEVDBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783076372; c=relaxed/simple;
-	bh=gWo7Ic6vXryTpsgNAWjpVGqE92dtb+2mfmmyB9Ga91c=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Z6103tcXEodkKnPMJF0j/jpLA3sAOscaao6QNsxJ2Sii84PR39U5fTo64Wv91zFWqijCVaVZ1TSp3YEDOnMKhed2B5t2tvnK3lAXSvlWJsnCieBc/OOkZrP/8p3J4Hx213m9NA++Aihjj3AWsw3m5j86Vt0m8zLqAuOGPhIAKWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/IAvFUE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783076459; c=relaxed/simple;
+	bh=KF4PYzd4QpVqQctLB1X3TIU1Beyh4krzNY6wZfbMYTk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=a9qRqB21t4JPJtmcwCpmo28WygMGkW+iG73p3jYwZeZUB8EKL0BY77cHx4Q7+u5XzjyawbBsdyBGH56Aov3Iz1UC0M3xpGHhxTWsUPzol27C8Fi+1wmhsCB+QSuBU4mCVeiB9wqglso6UnFKDDNGerybS5HOt9AMDXr0ssUidPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pKDTG8AI; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/IAvFUE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103B51F00A3F;
-	Fri,  3 Jul 2026 10:59:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783076371;
-	bh=qQwMPLheEAO10XFR6ln98RVZIFkpCCMDRgmGHQ2Eknc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Q/IAvFUESjAWABmnJFGV6GJeQn7lsl6cS2WYwqyX0RcTGuJ9dx9clI2n6DPqtwIKE
-	 jpW3geQ8cmd3bwtRD5Vv4EagZIz2d86clkUkCAf9ophV4hDegQ594w0JCv60/64wxH
-	 d+4i8nr26gYjrqJlfrFzBnpxBPFRS3q1/xUT8HydSf2Z9pjonUIov/cYukujYm7C0C
-	 xD4wnpFehu/4NeCWWkxti5Vx1eeXQFMN+kPr2Fc/Uw61QkWgk/wLwau5kUoDWEZ2Ba
-	 1Gwd1ckQVa2e2d61bKmvEyrK469SYux4Q4gBQX7XsxtkxHIHf/sYpvmTXFSrwm288X
-	 5U/4V4NeB60fQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/5] i3c: master: dw: Map CCC hardware errors to I3C
- M0/M2
-Reply-To: sashiko-reviews@lists.linux.dev
-To: tze.yee.ng@altera.com
-Cc: "Alexandre Belloni" <alexandre.belloni@bootlin.com>, imx@lists.linux.dev, linux-i3c@lists.infradead.org, Frank.Li@kernel.org
-In-Reply-To: <7b85402977d59f7f3d28f15fa7005bbfafffbe20.1783074850.git.tze.yee.ng@altera.com>
-References: <cover.1783074850.git.tze.yee.ng@altera.com>
- <7b85402977d59f7f3d28f15fa7005bbfafffbe20.1783074850.git.tze.yee.ng@altera.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 10:59:30 +0000
-Message-Id: <20260703105931.103B51F00A3F@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pKDTG8AI"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 23B251A0E0B;
+	Fri,  3 Jul 2026 11:00:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DF22860300;
+	Fri,  3 Jul 2026 11:00:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 31629104C9573;
+	Fri,  3 Jul 2026 13:00:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783076454; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references:autocrypt;
+	bh=tYlcpJ6f3u67IWkL7tEFKVx4Px8m/+qr9gJGkqxbauE=;
+	b=pKDTG8AIgN9e3RHvh1fQhOPC0ZiZVZOKR1WcO6TBaWOCxwGHHUBmXmgmjdMlmYyGesOnhy
+	cAzjH2QYqEyWi586aY8E7+EgHZ0XHyDb2ZUzjyuoRYFBFGBvznrIvLt5MtBg3tI8tvs4tJ
+	fb2rMzIEAQ8hNX/ZJILsxmSTUXIkA0JgTEczu7QK4ARJ6HiJDKJWtLHe+rtdE0nbnZXF5z
+	alPLRz97m8DQoc/HoM9Q0ZQ5nsPivMrk50gmF8XPmLHf6zF9WW98+gP+uje2vPIJdnZZmX
+	eFz+b88y+EMy07uqEAwKu7yz6gaR5ZeCzOTdgUO4Ca9P56j8sweHcuL/a2o60w==
+Message-ID: <abfc86c41c19c73e9e41dc9654935a0fc89bc5e2.camel@bootlin.com>
+Subject: Re: [PATCH v6 4/5] gpio: aaeon: Add GPIO driver for SRG-IMX8P MCU
+From: Thomas Perrot <thomas.perrot@bootlin.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: thomas.perrot@bootlin.com, Frank.Li@kernel.org,
+ devicetree@vger.kernel.org, 	linux-watchdog@vger.kernel.org,
+ conor+dt@kernel.org, robh@kernel.org, 	imx@lists.linux.dev
+Date: Fri, 03 Jul 2026 13:00:51 +0200
+In-Reply-To: <20260630131017.60D8C1F000E9@smtp.kernel.org>
+References: <20260630-dev-b4-aaeon-mcu-driver-v6-0-d66b5fcbd2f0@bootlin.com>
+	 <20260630-dev-b4-aaeon-mcu-driver-v6-4-d66b5fcbd2f0@bootlin.com>
+	 <20260630131017.60D8C1F000E9@smtp.kernel.org>
+Autocrypt: addr=thomas.perrot@bootlin.com; prefer-encrypt=mutual;
+ keydata=mQGNBF+/ZOUBDAC2DghCjZvmgYcve02OG7dGZ7Iy58uEwne3LB7w7nRwdAxKw7ZaiVqwY
+ O+yNGVi+GVx7oA6Wn4pv46z+QDRLQiq6OseuXhkSGCg7U/yBCUq12B/GRGO1Qt2Qi1mJJT1s+1qZ5
+ Gxv6Nypz9qKVn94GM2bR1hXBga0t87vBpebThOHmX5d/0dqIcVxRCM7onNb0dDyRoVgLS5rBhQzrL
+ CMrJaCy39xZUy0J1SOlH4Mgk6EhJIPYY4wlzikGX6urg+Tc9EjGd78ry0e0p5U5qgjFR5QGJDy1Gn
+ U3CfwbT9sowdCASDbQDUoltlv2iWJCLa0xl97KVchCa0pr7HKbFA3J5SLKqFYUBCkFL+5WudYlz2n
+ XxiUgyviMQxyK+ij66kEi6/2zFDAecd43pHV7790ptqZBC3Jc67Emj7Vo3ShX6RXPPxxbeCTOF2uk
+ I45aJ9XcVFH/MFE96NjXj8uahnIsiTPyuCUoJu8tj7TSQyue874qJqVQvqlFyt2aZYJZ8ruq8AEQE
+ AAbQpVGhvbWFzIFBlcnJvdCA8dGhvbWFzLnBlcnJvdEBib290bGluLmNvbT6JAc4EEwEIADgCGwMF
+ CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSHQHfGpqMKIwOoEiGfwAsFcf4K7QUCX79mdwAKCRCfw
+ AsFcf4K7fhbC/wP0kSl6id2E/K3+UdXk6CLMVRbCFLCREzQs5WFpQ6l/I0WGOamhrOgegdszheiVF
+ orlUP8d37XSpFAqydhKGaN78V5Dps0Wmwm4lIlS4MtQXJtSLUHXDJLIZLW0pw8tiPLKsd1o/yDkXE
+ dnpsjJTRG6SdDSHnyOB2/gh4p+yTaLytFdARk/r4/P26+L+FiH0fFl+RnBt19LPklfKgeDc7GwIif
+ ja+nIWpp3W23DAUuI6xduEut25Q89yu7Ci8CliLfAiLy9bIGjBQWU2Y+1/j/7KuPj6VbBsZWLTZY0
+ hUmpJSTnWAqc9SMsNxo7NSQuddgviz5e2tqucaRqxP02FGzNa8U4NAKdWaXrlHG5Dglj9XH0DK+SH
+ +c96qqFewYD8VPQ6XAGxQcXbrtJmiMor1R2DfziispLRvJcfYs8xqabbCtoS3ouXB9XRi8hn7A2kh
+ ME1ryS+Oh63JshXHnw6bmjCpVd/p+fGLIGU6A47pJOpviKR4jEO84pl2ejtDZ3Tc=
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-sykvhHvoBFGpNBeq5KNz"
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] dw_i3c_ccc_set() fails to use dw_i3c_ccc_map_err(), resulting in=
- inconsistent M0 error mapping for CCC SET commands
---
 
-commit 0ce229b1e86f48f8bc79433bee08c7da0909bad8
-Author: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
+--=-sykvhHvoBFGpNBeq5KNz
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-i3c: master: dw: Map CCC hardware errors to I3C M0/M2
-   =20
-This commit maps DesignWare I3C master CCC hardware errors to I3C M0/M2 err=
-or
-codes. It introduces a new mapping function to handle this translation and
-updates CCC commands to use it.
+Hello Sashiko,
 
-> diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i=
-3c-master.c
-> --- a/drivers/i3c/master/dw-i3c-master.c
-> +++ b/drivers/i3c/master/dw-i3c-master.c
-[ ... ]
-> @@ -781,10 +800,9 @@ static int dw_i3c_ccc_get(struct dw_i3c_master *mast=
-er, struct i3c_ccc_cmd *ccc)
-> =20
->  	ret =3D xfer->ret;
->  	cmd =3D &xfer->cmds[0];
-> +	ccc->err =3D dw_i3c_ccc_map_err(cmd->error);
->  	if (!ret)
->  		ccc->dests[0].payload.actual_len =3D cmd->rx_len;
-> -	if (cmd->error =3D=3D RESPONSE_ERROR_IBA_NACK)
-> -		ccc->err =3D I3C_ERROR_M2;
+On Tue, 2026-06-30 at 13:10 +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+> - [High] Unconditional resetting of all hardware pins in the `probe`
+> function breaks bootloader hand-off and destroys firmware
+> configuration.
+> - [Medium] Ignoring critical hardware errors during probe
+> initialization leads to inconsistent software state.
+> --
+>=20
+> commit 73ee6d66b506331ac77e36c415e83febae316cf0
+> Author: Thomas Perrot (Schneider Electric)
+> <thomas.perrot@bootlin.com>
+>=20
+> gpio: aaeon: Add GPIO driver for SRG-IMX8P MCU
+>=20
+> This commit adds a GPIO driver for the Aaeon SRG-IMX8P embedded
+> controller.
+> It supports 7 GPO pins and 12 GPIO pins, providing access to pins
+> handled
+> by the microcontroller. During probe, all pins are reset to a known
+> state.
+>=20
+> > diff --git a/drivers/gpio/gpio-aaeon-mcu.c b/drivers/gpio/gpio-
+> > aaeon-mcu.c
+> > new file mode 100644
+> > index 0000000000000..a9e048c865f5c
+> > --- /dev/null
+> > +++ b/drivers/gpio/gpio-aaeon-mcu.c
+>=20
+> [ ... ]
+>=20
+> > +static void aaeon_mcu_gpio_reset(struct aaeon_mcu_gpio *data,
+> > struct device *dev)
+> > +{
+> > +	unsigned int i;
+> > +	int ret;
+> > +
+> > +	/* Reset all GPOs */
+> > +	for (i =3D 0; i < MAX_GPOS; i++) {
+> > +		ret =3D aaeon_mcu_gpo_set_cmd(data, i, 0);
+> > +		if (ret < 0)
+> > +			dev_warn(dev, "Failed to reset GPO %u
+> > state: %d\n", i, ret);
+> > +		clear_bit(i, data->dir_in);
+>=20
+> [Severity: Medium]
+> Is it safe to update the internal software state tracking when the
+> hardware
+> command fails?
 
-[Severity: Medium]
-Should dw_i3c_ccc_set() also be updated to use the new dw_i3c_ccc_map_err()
-function?
+aaeon_mcu_gpio_reset() is a best-effort initialization: the MCU does
+not reset GPIO state on soft reboot, so the driver attempts to bring
+both hardware and software into a known state at probe time.
 
-It looks like dw_i3c_ccc_get() was updated to map M0/M2 errors, but
-dw_i3c_ccc_set() retains the legacy hardcoded check:
+If an I2C error occurs, the true hardware state is unknown and
+unrecoverable without a power cycle. Keeping the software bitmaps at
+the desired post-reset state (GPOs as outputs, GPIOs as inputs) is
+safer than preserving stale values from the previous boot, which could
+cause get_direction() to return wrong results for subsequent callers.=C2=A0
+Any ongoing I2C fault will surface as errors in the regular GPIO ops.
 
-drivers/i3c/master/dw-i3c-master.c:dw_i3c_ccc_set() {
-...
-	ret =3D xfer->ret;
-	if (xfer->cmds[0].error =3D=3D RESPONSE_ERROR_IBA_NACK)
-		ccc->err =3D I3C_ERROR_M2;
-...
-}
+>=20
+> If aaeon_mcu_gpo_set_cmd() returns an error because the underlying
+> bus is
+> temporarily inaccessible, clear_bit() is still executed. This could
+> result
+> in the GPIO controller registering with a mismatched view of the
+> hardware.
+>=20
+> > +	}
+> > +
+> > +	/* Reset all GPIOs */
+> > +	for (i =3D MAX_GPOS; i < MAX_GPOS + MAX_GPIOS; i++) {
+> > +		ret =3D aaeon_mcu_gpio_config_input_cmd(data, i);
+> > +		if (ret < 0)
+> > +			dev_warn(dev, "Failed to reset GPIO %u
+> > state: %d\n", i, ret);
+> > +		set_bit(i, data->dir_in);
+>=20
+> [Severity: Medium]
+> Similarly, does this code lead to an inconsistent state by blindly
+> updating
+> data->dir_in even if aaeon_mcu_gpio_config_input_cmd() fails?
+>=20
 
-Without using the new mapping function here, hardware errors (like CRC,
-Parity, or Frame errors) during CCC SET commands will not be mapped to
-I3C_ERROR_M0, resulting in inconsistent error handling compared to GET
-commands.
+Please refer to my other answers.
 
-> =20
->  	return ret;
->  }
+> > +	}
+> > +}
+> > +
+> > +static int aaeon_mcu_gpio_probe(struct platform_device *pdev)
+> > +{
+>=20
+> [ ... ]
+>=20
+> > +	/*
+> > +	 * Reset all GPIO states to a known configuration. The MCU
+> > does not
+> > +	 * reset GPIO state on soft reboot, only on power cycle
+> > (hard reboot).
+> > +	 * Without this reset, GPIOs would retain their previous
+> > state across
+> > +	 * reboots, which could lead to unexpected behavior.
+> > +	 */
+> > +	aaeon_mcu_gpio_reset(data, &pdev->dev);
+>=20
+> [Severity: High]
+> Could forcing all output pins to low and resetting GPIO
+> configurations to
+> inputs unconditionally during probe disrupt the state established by
+> the
+> bootloader?
+>=20
+
+There is currently no bootloader support for the SRG-IMX8P MCU, so no
+bootloader-established GPIO state exists to preserve. The reset at
+probe time ensures a known quiescent state on every boot, which is
+necessary because the MCU retains GPIO state across soft reboots
+(kexec, reboot) but not across power cycles. Without it, GPIO state
+would be non-deterministic depending on the boot path.
+
+Kind regards,
+Thomas
+
+> Overriding the hardware state on every boot could inadvertently cut
+> power to
+> critical system components like regulators, eMMC, or displays that
+> were left
+> on by the bootloader or previous kernel execution.
+>=20
+> > +
+> > +	return devm_gpiochip_add_data(&pdev->dev, &data->gc,
+> > data);
+> > +}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1783074850.gi=
-t.tze.yee.ng@altera.com?part=3D3
+Thomas Perrot, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
+--=-sykvhHvoBFGpNBeq5KNz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCAAdFiEEh0B3xqajCiMDqBIhn8ALBXH+Cu0FAmpHlmMACgkQn8ALBXH+
+Cu3segv/WPTTakAXGaVG+gZhTD71CddcNfzJqf1VYZSLWZ4flJ+bzuOCAl6zUg2J
+EWZCFtxXT8xON/DKoz8o2MywoJoPk/FiLLDTCsL1tmiWRmi/dnFc8NC/tW6gSmAB
+WDhU+tjykBMG7e7QXd+nc2KU+1+JyIvb02lPy4aydVHTU6QGhy+8sXlD5SFUR84q
+bIHv7RqFNhqlQzc5VdUknY0RkPcP2sKBjFs5sNM3Ma5H69E+IeU5y+b5iCgU3nDl
+RHQZffajxi7of0pyPO1V3Hr+P+Xlot/hIjpCrhSWpYOJGvEV79ia3u4YXUomxfAA
+/9QfIQH0D+1yI+2GQmkjxUBcDuWSfGCpNYRGQ33QZ5JtyvIUVaGnsQGdr4d+zRkY
+k0jkkp1IwM4scE4stLjg35FI8OBZfMikP6nNDc6yiJG8ENy7QH4f6pqb0sj1VvCN
+Pv0K8Vg+co2toV/gMkJdCC47KZe+7nJ0g90NRxaTELOXl7Itx2Z/TwBubDToWNfN
+ldb9ecGd
+=wpFY
+-----END PGP SIGNATURE-----
+
+--=-sykvhHvoBFGpNBeq5KNz--
