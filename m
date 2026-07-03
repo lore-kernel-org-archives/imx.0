@@ -1,139 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A588282F05;
-	Fri,  3 Jul 2026 08:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654AC37D126
+	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 08:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783068323; cv=none; b=JWgXMTksVhF6s2Qt00GPsz+X23Teh/IljGprBKDASWZSvjunE07UEGniSD38VM22S5fFLYyE2yYIPtND+hoYHtcfZO20Zlkp20ElvfXPUsp5tw36+TsA+zTEH+g1QH72BuOvpKfYUK1xNRzXV4IelmkX02W2QxFf0VsLOFkhZ84=
+	t=1783068373; cv=none; b=gfGv6FsfCn0t6qqMnNsZ3RfRkIVgOKnyOILr2Zba4veHo4Yy4J7fEVa1gKhXk7CmEYgeP2nMRf6eS2J7PdzLCSf4sEk+xEgBr8gd9R+8dY97eWLPqm1ESnQ1y6hxpGbTit22KrEvBEGcq0PLOq9lSdW0A8qPSg7TWIdvReJL+sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783068323; c=relaxed/simple;
-	bh=/OLpNwgDewrrq8i2+sB+btgtkVfoF3i7aU8UhoMSFh0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=V9uT5GUQLZWEJQCqaOiMQCiS/qprOEE10bzxfz+9OeVJis4Pv9gyhRshROEylRXxLgLFSL+zDGdX0Uly21nBiVW1gpBAJDjQgwKUCdDgmNUW2IrsrJcXDH1o7IqQEV8kU5RxoEDvdpkEr9bvXNmfbC6LD3fr0SPbNSMcVPSOYO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I32TYtmC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783068373; c=relaxed/simple;
+	bh=E8D2Pp3GZk7l8flDyWsDGN+v1xV8lS1HufxU972x9Do=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HQpKfkV7gOXAiEqYS5ZYzr66G0jdaOMLEQQX/4Zee1YwZPB41vHx+RiDd4pgrkxxb8f6cQF9TmhgUVtwo6qoOdw3e+gRsp7m/M6fspQhSeI9e48U+D1h4+oXojxwydEg84QLa+sjdGo+nsNhB3itoXZDrrfudWQSEyiCdNRNNmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qg/xEzs2; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I32TYtmC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F4B1F000E9;
-	Fri,  3 Jul 2026 08:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783068322;
-	bh=Be6hosvtsW4hWYn4TwQetckFZyIJOaogWw8UlPld7gc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=I32TYtmCPazkVwHS3G4hz4Xv1nVNpN2HWw1Wn8cawHFT0G8vVeCq5t1233sgE1+79
-	 e8VGt8erluK01ggQYN8dcutHkX6sghXqzDiZO5SdsJl3wX9hu2b89B+SluEIvEPMcS
-	 4ZCILJO+lW7jHNiZR7CjLkpHIVV1u2BX8swwuS6KB+KJrOqIupRe47umSMF+E8BKYH
-	 qzH7G8SVJG9mEcA8Th3mA3MmIoXxoru5SqXzZI6+b972pjrfQEU06/Ecu43PA6GCbV
-	 +vQ4OuvO+xuMuPGtWBW/GyJtfqZlAwVtlZJHu0iPPcjtSnobvaUMYgKdfXUkefuvw5
-	 M+fnX5dd7khAw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4] remoteproc: imx_rproc: Invoke the callback directly
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
-Cc: linux-rt-devel@lists.linux.dev, Frank.Li@kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260703-imx_mbox_rproc-v4-1-67b10560a861@linutronix.de>
-References: <20260703-imx_mbox_rproc-v4-1-67b10560a861@linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 08:45:21 +0000
-Message-Id: <20260703084521.D8F4B1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qg/xEzs2"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-493bab44440so1741065e9.0
+        for <imx@lists.linux.dev>; Fri, 03 Jul 2026 01:46:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783068368; x=1783673168; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1/Vk5h3C2/HoI+a/W5fGw2if/3IbStBgrfTZj/tnSBs=;
+        b=Qg/xEzs23C0qg676WY/JOQSLQycq2gyZNPglcR4z1TAoAFd1oslE3cQsQ0sVJKPitr
+         KusFFNPSV/r7eUVlkbxH4uKHWs0VsRfvYodR9CqsRsji8caPZkdjlnbBWxzZvcsH4JYi
+         FJ8A62BLZpuiIKTIZECwGRR83nFC15ieiUBkkWX4JM9T/MMCGegI2/xltOUvFOWhZuaV
+         rxPKc06XL+SOiYjiY6/JqnotaUu8qF4tjS045PYDzQIht4gOD2pSX8PonUmpqMXLJnPT
+         8KbMmLmMw5IcCrBYVbNnAKmQnbCEs56iX5qQcGU7CAWnxN7ql3H4L+hwnYhs4g7K5kb6
+         cTnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783068368; x=1783673168;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1/Vk5h3C2/HoI+a/W5fGw2if/3IbStBgrfTZj/tnSBs=;
+        b=sQwNHlI8zsRAfSAtkjkA1yP+okNqv5mHHYyxj8lop7G+FZY+pO1sEkveHQtO/QvGYN
+         VMmXwD0setuDNjH+35JfX1C2RG14345Iu1dUNf/ST4O4N2kr/1kXJTyYPyNszmmvV9KH
+         dEFSAI33jrBXNOJOgUzlFwTyxnF7xiNyZSxoHPMeDRkEyALaC9O26ArpHPmAJ3Uj13n5
+         YhGGB8sjXxdH9NVnPQiQ90Nd59BVnquc+DS51p7QqBtup9rzc8oJcE3BG66in8iCcHds
+         Z9GVdgXIQ4Avd7wL7kZFxTzS2j3wwEwGNHqIGBVjaKFnOCyfB4n0TSO8mSOT5/b6nevW
+         AybQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/IjNpvZYmPa/7CbEXsb8IaN7P0nZ4L/gC2cCLlgNM2BH64Yzf+eu0gom048mnaVHyhOb8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzTav80It0U049x6Fg0F00WDl3hY0+lGTGPiYZzcN0DGUwK4xNF
+	8ZH3iu9F+azstNVntdlSA0zbWbCu7YFHZ3IlNRhEYCxq7X0+gD2xiaAe
+X-Gm-Gg: AfdE7cm+MDtS/Jew2905HujXppEqtwZKnRwS853yeYGy1uMwMls3j1fzUuid9Ke0i3m
+	onGoBFqecP6suZfas90lzcbwbwgDz4rtLBD2nHSfniFbc48p2OVV0xHJ6mt1vWui8fpyjR7ZZUe
+	i5dA+ouAyc73dkkj8dQnci2aoBB5/aFxm6W0V43GoNtwBPxW3VBL2xuvzmpb+0w2VHbCHlf7JOv
+	cCkuSde5BOMrM4dOdbCxuIuT+WzvR93sFwNA28k73+7kgWHW/FXPnY+ozKE3Fx6/CRBlkSWR2gU
+	DjF/Blpe2H1otCOX+8lXbLdwfuqvk62bB6OpoGXzVsjitw+BZjbMXZZiB7LzkVVQSh+V+5pcZlf
+	pTumL9u9q0k0w+DNrFFXgzQt4vjv1dRoY7eIPazLTXlQXCLB3IZwNW9Hw9qW+BxAu2depQxy1u+
+	Oan7DhJmS8yj6FwjXQ6O/bdvQUnYk48eVBgLM1WhutkSFGayG9m7UP2TIBeLFc7HYusjVu/UF7R
+	jedmAA9HYNiopRwWse+eV/qQw==
+X-Received: by 2002:a05:600c:3f0b:b0:493:cbdc:7cd2 with SMTP id 5b1f17b1804b1-493cbdc80cemr21533515e9.3.1783068368277;
+        Fri, 03 Jul 2026 01:46:08 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-248.cust.dsl.teletu.it. [93.144.65.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493cfb6f199sm6335505e9.3.2026.07.03.01.46.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jul 2026 01:46:07 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: [PATCH v1 01/15] arm64: dts: freescale: imx8mn-var-som: Move UART4 description to Symphony
+Date: Fri,  3 Jul 2026 10:45:48 +0200
+Message-ID: <3ddf65049a048dc4760df1e8ae5af4d3e91ca77f.1783067947.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1783067947.git.stefano.r@variscite.com>
+References: <cover.1783067947.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-Pre-existing issues:
-- [High] Missing RCU read lock around idr_for_each() and idr_find() in pree=
-mptible context.
-- [High] Improper devm cleanup order leaves mailbox active during driver te=
-ardown, causing Use-After-Free.
---
+The VAR-SOM-MX8MN module does not provide an onboard debug console.
+UART4 is routed and exposed only on the Symphony carrier board, while
+custom carrier designs may choose to expose a different UART.
 
-commit 24cd624015487c1ba761a43443263ce588b90c10
-Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Move the UART4 node from the SOM device tree to the
+imx8mn-var-som-symphony.dts, keeping the SOM dtsi limited to hardware
+present on the module itself.
 
-remoteproc: imx_rproc: Invoke the callback directly
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
+ .../dts/freescale/imx8mn-var-som-symphony.dts  | 18 ++++++++++++++++++
+ .../boot/dts/freescale/imx8mn-var-som.dtsi     | 18 ------------------
+ 2 files changed, 18 insertions(+), 18 deletions(-)
 
-This commit removes the workqueue used for callback invocation in the
-imx_rproc driver. The callback is now invoked directly from the threaded
-IRQ handler since it runs in a preemptible context.
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts
+index 3434b189fa58..b07e71d3adee 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts
+@@ -15,6 +15,10 @@ / {
+ 	model = "Variscite VAR-SOM-MX8MN Symphony evaluation board";
+ 	compatible = "variscite,var-som-mx8mn-symphony", "variscite,var-som-mx8mn", "fsl,imx8mn";
+ 
++	chosen {
++		stdout-path = &uart4;
++	};
++
+ 	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -171,6 +175,13 @@ &uart3 {
+ 	status = "okay";
+ };
+ 
++/* Console */
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart4>;
++	status = "okay";
++};
++
+ &usbotg1 {
+ 	dr_mode = "otg";
+ 	hnp-disable;
+@@ -234,4 +245,11 @@ MX8MN_IOMUXC_UART3_RXD_UART3_DCE_RX	0x140
+ 			MX8MN_IOMUXC_UART3_TXD_UART3_DCE_TX	0x140
+ 		>;
+ 	};
++
++	pinctrl_uart4: uart4grp {
++		fsl,pins = <
++			MX8MN_IOMUXC_UART4_RXD_UART4_DCE_RX	0x140
++			MX8MN_IOMUXC_UART4_TXD_UART4_DCE_TX	0x140
++		>;
++	};
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
+index 38ef9e4fdf07..32f101ef2850 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
+@@ -11,10 +11,6 @@ / {
+ 	model = "Variscite VAR-SOM-MX8MN module";
+ 	compatible = "variscite,var-som-mx8mn", "fsl,imx8mn";
+ 
+-	chosen {
+-		stdout-path = &uart4;
+-	};
+-
+ 	memory@40000000 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x40000000 0 0x40000000>;
+@@ -274,13 +270,6 @@ &uart2 {
+ 	status = "okay";
+ };
+ 
+-/* Console */
+-&uart4 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart4>;
+-	status = "okay";
+-};
+-
+ &usbotg1 {
+ 	dr_mode = "otg";
+ 	usb-role-switch;
+@@ -432,13 +421,6 @@ MX8MN_IOMUXC_SAI3_RXD_UART2_DCE_RTS_B	0x140
+ 		>;
+ 	};
+ 
+-	pinctrl_uart4: uart4grp {
+-		fsl,pins = <
+-			MX8MN_IOMUXC_UART4_RXD_UART4_DCE_RX	0x140
+-			MX8MN_IOMUXC_UART4_TXD_UART4_DCE_TX	0x140
+-		>;
+-	};
+-
+ 	pinctrl_usdhc1: usdhc1grp {
+ 		fsl,pins = <
+ 			MX8MN_IOMUXC_SD1_CLK_USDHC1_CLK		0x190
+-- 
+2.47.3
 
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rpro=
-c.c
-> index 745ce52cd8226..a1f2b76ec8187 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-[ ... ]
->  static void imx_rproc_rx_callback(struct mbox_client *cl, void *msg)
->  {
->  	struct rproc *rproc =3D dev_get_drvdata(cl->dev);
-> =20
-> -	queue_work(priv->workqueue, &priv->rproc_work);
-> +	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this lockless iteration
-over the notifyids IDR lack RCU protection?
-
-Because imx_rproc_rx_callback() now runs in a preemptible context (threaded
-IRQ handler), it iterates over the rproc->notifyids IDR using idr_for_each()
-without the rcu_read_lock().=20
-
-The IDR API requires lockless readers to hold rcu_read_lock() to prevent ra=
-dix
-tree nodes from being freed during traversal. If a concurrent modification
-like idr_remove() occurs during teardown, the RCU grace period could expire,
-leading to a use-after-free on the IDR internal nodes.
-
->  }
-> =20
->  static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block)
-[ ... ]
-> @@ -1273,17 +1253,6 @@ static int imx_rproc_probe(struct platform_device =
-*pdev)
->  		priv->ops =3D dcfg->ops;
-> =20
->  	dev_set_drvdata(dev, rproc);
-> -	priv->workqueue =3D create_workqueue(dev_name(dev));
-> -	if (!priv->workqueue) {
-> -		dev_err(dev, "cannot create workqueue\n");
-> -		return -ENOMEM;
-> -	}
-> -
-> -	ret =3D devm_add_action_or_reset(dev, imx_rproc_destroy_workqueue, priv=
-->workqueue);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "Failed to add devm destroy workqueue a=
-ction\n");
-> -
-> -	INIT_WORK(&priv->rproc_work, imx_rproc_vq_work);
-> =20
->  	ret =3D imx_rproc_xtr_mbox_init(rproc, true);
->  	if (ret)
-
-[Severity: High]
-This is a pre-existing issue, but could the devm cleanup order in
-imx_rproc_probe() lead to a use-after-free during driver teardown?
-
-Earlier in imx_rproc_probe(), the mailbox cleanup action imx_rproc_free_mbox
-is registered via devm_add_action_or_reset() before devm_rproc_add() is
-called.
-
-Because devm actions execute in LIFO order, devm_rproc_remove() executes
-first, which tears down the remote processor and frees virtio subdevices and
-their IDR entries.
-
-This leaves a dangerous race window during driver unbind where the mailbox =
-is
-still fully active while the core remoteproc data structures are being torn
-down. If a mailbox interrupt fires during this window, the RX handler will
-access the notifyids IDR and rvring structures while they are concurrently
-being modified or freed by rproc_del().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703-imx_mbox_r=
-proc-v4-1-67b10560a861@linutronix.de?part=3D1
