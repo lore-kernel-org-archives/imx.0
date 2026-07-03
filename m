@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D85C270552
-	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 03:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A452FC00D
+	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 03:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783049228; cv=none; b=kTe2ykol9HiZrXaKX0x52LZFh+jpTE/8iFX1hRUTCd+tF+5qshvDO5/tR+PbC6gY23kz3uedNaE/4hQa8OH9Idsr84dkiBUyAnCC8vd3QPlkznULHRkX/DluYvGaGmr9iYiqg5kg3PoK6oHzD8zL25VEohCAZFoZoVD1mwlZrlU=
+	t=1783049230; cv=none; b=KvyyS9tPwWmXLF11Nsw+F0kcKPqZ+gh+NRo58HEL0hc2qPLONjYrz+UCUY8DBD77hbZFNPT5tFOZm13vv6IUy56hYCsbQ+eCPo8nIerROZPJXWZI2/H3kD2mRq4iSoupCvRMQNP8K7smtqYitoP67P2UMbRpsTxZ0CrjkvgU0DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783049228; c=relaxed/simple;
-	bh=I4SXTljAZcckNukx/LPvK6u8S2UtZwl+csCmJVWt6AM=;
+	s=arc-20240116; t=1783049230; c=relaxed/simple;
+	bh=mQuc1AcVlaiBMsyRXQawxJQdXb59zcxtG66Spo/bh88=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PxYMhdpfUq+DMl5YznKY28+/rc7Unvo8eE5LQ6j+3iInkKmhDcYuYJCrN9tZ6m9uKBUyhRsF/bkOvm2oU56m4n9tcOqou7xb+sZnNYZ9TIw8KyA7EkUZB+YJAGMWGqAz2fwbkFj0Ydj6IPjmDx0CPnFsB0A7bB671V7UA03mZ8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSC02cq6; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Z7aFBVJBEVpCKoFgOATfqT0cY2ITy9I9p3CgFUoFeP+6hAviH2/NRHv/vlfgcYo+ZHpwcqbzum6QdjYdNyZ1mlWUcgGF+JkMRoVQMDAlm0+W9X1shUcYn5FSLnuGWfLRHPztyYl5Sjygrx3OodE5jXHvGZ9vrvAHxiiuLeo3dKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EshG45kx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSC02cq6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231E51F000E9;
-	Fri,  3 Jul 2026 03:27:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EshG45kx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A831F00A3A;
+	Fri,  3 Jul 2026 03:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783049222;
-	bh=F74FbMOnwADdlnjPJjntZ9gzD6J6B0/KVKIl3x3qbdI=;
+	s=k20260515; t=1783049223;
+	bh=UcZkgJq3boWiP2opXeD3nGsRXrWIiMV8kccf+ZDdrw0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZSC02cq6U7f7Ys94fThQeGBfWJK28/XJMYJRKVfY7FZqn9qZIpBlpfqKXncZKKNfD
-	 /K38Lm+jieLlJL2ineHz76im284fCGm6Je1Pd+py7FwgaEe+TQV4wnDjI7Nj40B8I8
-	 +KwUm2d1yyYsGWBLqZO05grf+kdWQx7vv0tN0LtEOCnD1MzkZnX0LZ9ct9daGnMXab
-	 IYeY6vGEcBloHJSmQpj0YlwEVr0sQ60zlBjMnu+eZpfq0o1iC/D7zOejkAAsFOfTeO
-	 FczY0CG+NvO5d93RubJ/p+Q6kGliAIwVbuDdkIlR6FTICKF4ZQ2IcAwTTDuNfuS+tn
-	 HyslFVD8GWYIg==
+	b=EshG45kxEy88Gl7SrjKqziEQbPuEjCiVywkRjvAXMfDW7GJ8dJS9KwHtiCl4yvELD
+	 xFDV5LoRqYcpUnkp/xXECHIbEn6rkkOHbcNnyH8QT6BRbFeQMgQTBe7xlcFpYNS1pY
+	 pDZia7mlQfmwwvCtOwiKJ3GIOl5+9KlLoV54pJmJEoipJdqcCp4KRWcIou5f7KwXVV
+	 TVjtJwv4hAC2SsY0UOu8XwL1vBYaNyuwKgclIeuzdDb0jqk6wiLVlKAlwKmr7pOXnc
+	 ircj2W2Cb5y2LIz/y7cFh7u+BDGEozUlClirCkr9jEhhVRXhYzlSOHYhetXsuvPi81
+	 Hpj2ZaaJV/G8w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net-next 02/14] net: enetc: extract common helpers
- for MAC hash filter configuration
+Subject: Re: [PATCH v2 net-next 06/14] net: enetc: simplify
+ enetc4_set_port_speed()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260702025714.456233-3-wei.fang@oss.nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260702025714.456233-7-wei.fang@oss.nxp.com>
 References: <20260702025714.456233-1-wei.fang@oss.nxp.com>
- <20260702025714.456233-3-wei.fang@oss.nxp.com>
+ <20260702025714.456233-7-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 03:27:01 +0000
-Message-Id: <20260703032702.231E51F000E9@smtp.kernel.org>
+Date: Fri, 03 Jul 2026 03:27:02 +0000
+Message-Id: <20260703032702.E6A831F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,91 +47,88 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Pre-existing logic bug: Fallback to hash-based filtering fails for=
- exact match (EM) MAC addresses because the hash table is not populated.
+- [High] Removal of the switch statement allows SPEED_UNKNOWN to be program=
+med as an invalid hardware state.
 --
 
-commit 0373b31ab4e7a0beb8461d5ceb05e09d7d5b61ab
+commit 923303ff32884703a5eb3f948098684f15149ba1
 Author: Wei Fang <wei.fang@nxp.com>
-Date:   Thu Jul 2 02:57:02 2026 +0000
 
-net: enetc: extract common helpers for MAC hash filter configuration
+net: enetc: simplify enetc4_set_port_speed()
 
-The patch extracts enetc_set_si_uc_hash_filter() and=20
-enetc_set_si_mc_hash_filter() into enetc_pf_common.c. This allows sharing=20
-the MAC hash filter configuration between ENETC v1 and v4 drivers, and=20
-removes redundant hardware-specific functions.
+This commit simplifies enetc4_set_port_speed() by removing a switch
+statement, assuming phylink only passes valid speed values. It also
+updates PCR_PSPEED_VAL() to use FIELD_PREP() instead of an open-coded
+shift.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_pf.c
-> index a97d2e2dd07b7..db2a800a7aaf0 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-[ ... ]
-> @@ -135,7 +108,7 @@ static void enetc_sync_mac_filters(struct enetc_pf *p=
-f)
->  		if (em) {
->  			int err;
-> =20
-> -			enetc_clear_mac_ht_flt(si, 0, UC);
-> +			enetc_set_si_uc_hash_filter(si, 0, 0);
-> =20
->  			err =3D enetc_set_mac_flt_entry(si, pos, f->mac_addr,
->  						      BIT(0));
-> @@ -147,11 +120,15 @@ static void enetc_sync_mac_filters(struct enetc_pf =
-*pf)
->  				 err);
->  		}
-> =20
-> +		bitmap_to_arr64(&hash, f->mac_hash_table,
-> +				ENETC_MADDR_HASH_TBL_SZ);
->  		/* hash table filter, clear EM filter for UC entries */
-> -		if (i =3D=3D UC)
-> +		if (i =3D=3D UC) {
->  			enetc_clear_mac_flt_entry(si, pos);
-> -
-> -		enetc_set_mac_ht_flt(si, 0, i, *f->mac_hash_table);
-> +			enetc_set_si_uc_hash_filter(si, 0, hash);
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h b/drivers/n=
+et/ethernet/freescale/enetc/enetc4_hw.h
+> index 6a8f2ed56017c..dea1fd0b81758 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
+> @@ -148,7 +148,7 @@
+>  #define  PCR_L2DOSE			BIT(4)
+>  #define  PCR_TIMER_CS			BIT(8)
+>  #define  PCR_PSPEED			GENMASK(29, 16)
+> -#define  PCR_PSPEED_VAL(speed)		(((speed) / 10 - 1) << 16)
+> +#define  PCR_PSPEED_VAL(s)		FIELD_PREP(PCR_PSPEED, ((s) / 10 - 1))
 
 [Severity: High]
-This is a pre-existing issue, but does this fallback path actually work for
-exact match MAC addresses?
+Does this safely handle negative values like SPEED_UNKNOWN?
 
-In enetc_pf_set_rx_mode(), when configuring a single unicast MAC address,
-enetc_add_mac_addr_em_filter() is called, but the hash table population is
-explicitly skipped:
+If SPEED_UNKNOWN (-1) is passed here, the expression ((s) / 10 - 1)
+evaluates to -1. FIELD_PREP then casts this to an unsigned type and masks
+it against PCR_PSPEED, filling all 14 bits with 1s (0x3FFF).
 
-enetc_pf_set_rx_mode() {
-	...
-	em =3D (netdev_uc_count(ndev) =3D=3D 1);
-	netdev_for_each_uc_addr(ha, ndev) {
-		if (em) {
-			enetc_add_mac_addr_em_filter(filter, ha->addr);
-			break;
-		}
-		enetc_add_mac_addr_ht_filter(filter, ha->addr);
-	}
-	...
-}
+> =20
+>  /* Port MAC address register 0/1 */
+>  #define ENETC4_PMAR0			0x4020
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc4_pf.c
+> index b966637572a7a..db7bad2c3cbde 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+[ ... ]
+> -	switch (speed) {
+> -	case SPEED_100:
+> -	case SPEED_1000:
+> -	case SPEED_2500:
+> -	case SPEED_10000:
+> -		val |=3D (PCR_PSPEED & PCR_PSPEED_VAL(speed));
+> -		break;
+> -	case SPEED_10:
+> -	default:
+> -		val |=3D (PCR_PSPEED & PCR_PSPEED_VAL(SPEED_10));
+> -	}
+> -
+> -	priv->speed =3D speed;
+> +	val =3D enetc_port_rd(&priv->si->hw, ENETC4_PCR) & (~PCR_PSPEED);
+> +	val |=3D PCR_PSPEED_VAL(speed);
 
-Because of this, mac_hash_table remains empty for the EM filter.
+[Severity: High]
+The commit message states: "Since phylink only passes valid speed values
+to mac_link_up, the switch statement with its default fallback to SPEED_10
+is unnecessary."
 
-If enetc_set_mac_flt_entry() fails in enetc_sync_mac_filters(), the driver
-warns "fallback to HT filt" and falls through to this block. However, since
-the hash table was never populated, the derived hash is 0.
+Is this assumption accurate?
 
-Doesn't this result in programming an empty hash filter, which will silently
-drop all packets for this intended MAC address instead of falling back to
-hash-based filtering?
+In the kernel phylib/phylink implementation, if a PHY establishes link befo=
+re
+autonegotiation completes (or if an out-of-band PCS status hasn't fully
+resolved the speed), genphy_read_status() can leave phydev->speed as
+SPEED_UNKNOWN (-1) while phydev->link is 1.
 
-> +		} else {
-> +			enetc_set_si_mc_hash_filter(si, 0, hash);
-> +		}
->  	}
+Phylink then propagates this state via phylink_resolve() and calls
+mac_link_up() with SPEED_UNKNOWN.
+
+Without the switch statement's default case, won't this write the 0x3FFF
+garbage value generated by PCR_PSPEED_VAL() to the MAC speed configuration
+register (ENETC4_PCR) and cause undefined hardware behavior?
+
+>  	enetc_port_wr(&priv->si->hw, ENETC4_PCR, val);
+> +	priv->speed =3D speed;
 >  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702025714.4562=
-33-1-wei.fang@oss.nxp.com?part=3D2
+33-1-wei.fang@oss.nxp.com?part=3D6
