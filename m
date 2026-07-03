@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F893016EE
-	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 03:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9341433E7A
+	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 03:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783049230; cv=none; b=H3DxaEPzmW8NBWJJq3COxO0FWIy8VoRhkRjxlFTv/KtjHM9ljJlDYU8Ik1ZkrzZ9lv0KurW3ZgROEGUHXxk0PVEFoe/yh6F8/lfdlYZjKuuKX3U9q/EKzweWll3RS4z9MFovYP3z5lDaF0SQxotKMyVvv+C+92cW1s7G4rRnkF0=
+	t=1783049231; cv=none; b=W+bMhY9Ghe2JWq47MI+5SIJ14NrmM7t4kaz0v3CMZfuMPdmMJiC/nAkuvLXsuU8lW741JvITsHJ5dOiWTNqma3gQUpQaUHntX9arZdGwuqHbgJblzbdkN1mjdyr8gnEQbxuDxO0dXOjCaORP2hq3SZ90Fekn4+uRCsAK2QX4XVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783049230; c=relaxed/simple;
-	bh=1clCkGEjeq1s5UL/ipxfgLMbbOqeeE19QS72+FeTsh0=;
+	s=arc-20240116; t=1783049231; c=relaxed/simple;
+	bh=npVNi3MwUX3/Xwyx5jI6siKm+qIXPCKutYAFMo/t0NE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZjiEbFPoIjxyw6I4PdMz6bYmZREW0kGtYWJ1SFPNhlk24kUluJXM/1veNhIcUuKagoKsLDEWjVh5V5ZfBfRiaPQAVoE6MybFk2aehlaJ5la1wVn5q+7z1mKX3M9V7jkkYWztz0wIGpz9UvgkzMCTkRdIvOR8awNd395jvLPwT+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUvs6CCW; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=NcJGY446DSghacuyHM3thdszvSXJe6sr/pWVDZCLZlI0CU/rd4ol1zBGeOrin4csGVysFXP6VoaY3//0+ojnTaYWoMxIu0ohsGR8R4kyM2nCHDTMBhAhMhPZis2G5leR3R3hmMJ4sFDjanqtLtGTTpidWeFS8+XMt/k31+4rsF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oSrjQPC4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUvs6CCW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558691F00A3D;
-	Fri,  3 Jul 2026 03:27:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oSrjQPC4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E751F00A3E;
+	Fri,  3 Jul 2026 03:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783049224;
-	bh=Fz5DAP68C6ygImXV1sETlWVv5QAjcVm+uL69o2znDi8=;
+	s=k20260515; t=1783049225;
+	bh=7V1ZI+Ldt0ZsMrvzFcJlkRL1O3s6f7c3yoxtWR4Trs8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jUvs6CCWqY1vOAQvb2i0D95WqoIbGcXY0WMihkFSFd+5PAfRemFYsJvGq+MGO+aTm
-	 8MGTdJmJjmip9UhzDwffDGga2QcCwPwR1rVZaWYWh3ERLNIfBKBw/M/ChJx5rc0jwE
-	 85x8J/eeMceOm/kLsNa2H09CDRzL9vRtQy+YKPA62xerVGdc/gVu3vjP1i/JO8aTiu
-	 JrvZ4K2S960N/OJ0uL3HnymvzJjW+nWr7/FwhvjaVndk8ELx2lDEpyEnAB3aMFAgFP
-	 vUqT90SOX1+Bzyxdx5Say9HIQCje9fYD31fvOvixSXA7otKDyVlXz/3O5HNnW4DK3w
-	 W0Wi01Wv4jKbg==
+	b=oSrjQPC416AbTPrhl12jTsa3unhf3FN0TKc9/0rTQUYHexrphdnnoW2pRgzF9BbM5
+	 PsZRuPZ0ah9ZThrIOVLYCSjSUO42KUWZr1P0eyH/QNgYjmK069z0wbKp2+P+DVqQqD
+	 P+czsO0b02/VS69b0fRj2KpW6bt/qNSuOLZvskQtI3ngChRegWJCMNEL4DWtwEQWEp
+	 yixr7jKTFlJ1l03oOuDrifgGMMaiVuRcfSr/dKIFzxQcpL7UWFngqZFjjqtJnFwK6k
+	 zJViN1S2i6w0Lr7cbQGkxr0srUbeXiBY10VC0eehO6D9xJJC/R5dwIrazmCIvrdv0/
+	 qCCcFGktJMzXQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net-next 07/14] net: enetc: differentiate phylink
- capabilities for pseudo-MAC and standalone MAC
+Subject: Re: [PATCH v2 net-next 10/14] net: enetc: refactor SI VLAN
+ promiscuous mode configuration
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260702025714.456233-8-wei.fang@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260702025714.456233-11-wei.fang@oss.nxp.com>
 References: <20260702025714.456233-1-wei.fang@oss.nxp.com>
- <20260702025714.456233-8-wei.fang@oss.nxp.com>
+ <20260702025714.456233-11-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 03:27:03 +0000
-Message-Id: <20260703032704.558691F00A3D@smtp.kernel.org>
+Date: Fri, 03 Jul 2026 03:27:04 +0000
+Message-Id: <20260703032705.28E751F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,55 +47,53 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Adding PHY_INTERFACE_MODE_XGMII to enetc_port_has_pcs() erroneousl=
-y associates a parallel interface with an internal PCS, breaking XGMII prob=
-e.
+- [High] Removing explicit initialization of VLAN promiscuous mode leaves h=
+ardware and software out of sync if PCI FLR fails or is bypassed.
 --
 
-commit 0ce9c644ca0e73f4e3a24d681275147515f923ae
-Author: Claudiu Manoil <claudiu.manoil@nxp.com>
+commit e4ae080b51f21aa8943d5f438c5a46ac35824f4b
+Author: Wei Fang <wei.fang@nxp.com>
+Subject: net: enetc: refactor SI VLAN promiscuous mode configuration
 
-net: enetc: differentiate phylink capabilities for pseudo-MAC and standalon=
-e MAC
+This commit refactors the VLAN promiscuous mode configuration in the enetc
+driver. It removes explicit initialization of VLAN promiscuous mode during
+port configuration, relying instead on the PCI FLR default state, and
+introduces a unified function for setting SI VLAN promiscuous mode.
 
-This commit separates phylink capabilities for ENETC pseudo-MACs and
-standalone MACs. It restricts pseudo-MACs to internal modes and expands
-standalone MACs to support additional interfaces like 10GBASER and XGMII.
-
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
+t/ethernet/freescale/enetc/enetc_pf.c
+> index db2a800a7aaf0..096ccb35508c5 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
 [ ... ]
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/dri=
-vers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> index 3597cb81a7ccb..6ccf9b9090549 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-[ ... ]
-> @@ -359,7 +359,9 @@ static bool enetc_port_has_pcs(struct enetc_pf *pf)
->  	return (pf->if_mode =3D=3D PHY_INTERFACE_MODE_SGMII ||
->  		pf->if_mode =3D=3D PHY_INTERFACE_MODE_1000BASEX ||
->  		pf->if_mode =3D=3D PHY_INTERFACE_MODE_2500BASEX ||
-> -		pf->if_mode =3D=3D PHY_INTERFACE_MODE_USXGMII);
-> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_USXGMII ||
-> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_10GBASER ||
-> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_XGMII);
+> @@ -442,10 +438,6 @@ static void enetc_configure_port(struct enetc_pf *pf)
+>  	/* split up RFS entries */
+>  	enetc_port_assign_rfs_entries(pf->si);
+> =20
+> -	/* enforce VLAN promisc mode for all SIs */
+> -	pf->vlan_promisc_simap =3D ENETC_VLAN_PROMISC_MAP_ALL;
+> -	enetc_set_vlan_promisc(hw, pf->vlan_promisc_simap);
+> -
+>  	enetc_port_wr(hw, ENETC_PSIPMMR, 0);
 
 [Severity: High]
-Does adding XGMII here cause probe failures for ENETC v4 devices?
+Is it safe to rely solely on PCI FLR for VLAN promiscuous mode initializati=
+on
+here in enetc_configure_port()?
 
-XGMII is a direct parallel MAC-to-PHY interface that fundamentally does not
-use a PCS. If enetc_port_has_pcs() returns true for XGMII,=20
-enetc_mdiobus_create() will attempt to create an internal PCS via=20
-enetc_imdio_create().
+If the PF driver is reloaded, or the kernel is warm-booted (e.g., via kexec)
+and PCI FLR fails or is disabled (e.g., via pci=3Dnoflr), the hardware's VL=
+AN
+promiscuous mode register (ENETC_PSIPVMR) will retain its previous state.
 
-Since the ENETC v4 .create_pcs callback is NULL, enetc_imdio_create() will
-unconditionally fail and return -EOPNOTSUPP, preventing initialization when
-configured with phy-mode =3D "xgmii".
+If VLAN filtering was previously enabled, could the hardware silently drop
+VLAN-tagged packets while the software assumes they are accepted?
 
-Should PHY_INTERFACE_MODE_XGMII be excluded from this check so it can bypass
-PCS initialization and allow phylink to configure the link based purely on
-MAC capabilities?
-
-[ ... ]
+Because NETIF_F_HW_VLAN_CTAG_FILTER is not enabled by default in
+ndev->features, the core network stack will not invoke enetc_pf_set_feature=
+s()
+during registration to sync the software state with the hardware.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702025714.4562=
-33-1-wei.fang@oss.nxp.com?part=3D7
+33-1-wei.fang@oss.nxp.com?part=3D10
