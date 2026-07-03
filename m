@@ -1,137 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013035.outbound.protection.outlook.com [52.101.83.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8463134167B
-	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 11:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783078378; cv=none; b=UTpMmaLOiWCmt0ASjTDYXtKhhdOYzVPSf2TDTtPBNlKYRgT6RaIBSnKLKgD5PZfmltlt2JAlzy1zgHivNpao05w/MVZkY82GhL8e3UXitB9y0mqReMaajVrJeOtLHYSsn9PDNMZHzwCNon4UaqaHXk7B8Ilpa1oJUSUO+YgE/AQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783078378; c=relaxed/simple;
-	bh=SvMmzKu7/Sp5DTIWmnt18rstHOmIAVedGfvH11zJ7ug=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VkPOtjibUqtsHw2oyCoV1xNpImbrTp4CEjdt0ltP/jwrGXwxOy8N6xDSWuYuBhuwutV79q7fmEHF7ww169LNEL8dg8852LAnSlEn1NFWF/5lv3Y3JGQ2WqIySlhg7qvLEm7hycEP4H94I0Jyp4Tq5j6QgFnw3ZB6+eFg7jdOYn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBAb5l3h; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA69F3CA48E
+	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 11:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783078970; cv=fail; b=LhkQMC44Z6Mt2Dg7yeKg+DASMSx0Ij5ryqxRIBae6425RMdCawldinJw7lLan8K4IJrSOiCVASOxfkr3N7lXFmodCqyjXx/F67GpG/VeSaVsNn/k+tcA7ZSsvyiNv+nQR5YrIb58s0/fkrn6XSRSrzsApRS2Z0ifuTkz0yBkM0c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783078970; c=relaxed/simple;
+	bh=aTB9/mOlVLWFW9SCSDVPXKXWA93QwQPlkiFJkXtMLIs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WHDzIpwJ/U1bnLOFtak7uD7BYhyqc6zJyz6VjoplZ5vSfulVbM6ipNLWv4/rHlK+2N7f6aLq0PkqKk9X+i0exEA8LJgtA0BztT9Ydyb/Wezf+VZaDJEFjl6HKPISByATUNvWhLorPqnCecoW5WHgeizDwxK8NFbQ4SGkdFEetug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=X8YayfbD; arc=fail smtp.client-ip=52.101.83.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBAb5l3h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CCB1F000E9;
-	Fri,  3 Jul 2026 11:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783078377;
-	bh=/kM5RTt+qZCYZsqWErXIPNVYs9oGL2v/hr6mex8ZVTo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cBAb5l3hs/QjMgztF6OZ3llZ+KroyzQD7K1UHpkqz6fE0V84BfJZzX976EpXXh+6A
-	 /X7y2T6Iwte3HJYuZmqQSj4mH3HuVP68FJgaaFaBrwAZHpA+0ThKgk3GoGdgW0yg6r
-	 yVWYnPPUdb5xxJEuwWx5YiZSPA3W3H/MUo9fK4JMqKkOu/V72Oy9OeqqTA/ItJfe5i
-	 DpDaVIvjEOt5UP6cXykL9FkRMPzKlljShHWOO2ADnN7kU6ZZRbBBCf6VENNE4RnIF8
-	 mf05RTVf1VHEea1VaVodx2r1XZgulC/dHBOsGIwj1KSVmeFlt3AoHeHD6SHEvE+ATB
-	 /Lr2cm3LkevfA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 7/7] mmc: sdhci-esdhc-imx: fix resume error handling
-Reply-To: sashiko-reviews@lists.linux.dev
-To: ziniu.wang_1@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260703104208.3426374-8-ziniu.wang_1@oss.nxp.com>
-References: <20260703104208.3426374-1-ziniu.wang_1@oss.nxp.com>
- <20260703104208.3426374-8-ziniu.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 11:32:56 +0000
-Message-Id: <20260703113257.06CCB1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="X8YayfbD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l+//Ga3zPPvaJrZhbCjSeb5NK2RgWl+xlzLb2XuzX+htqu9wCyZ9tDqLLPXSObUrV5FkfmfnUBPZjK44UGCFExwnNQxf6wXQxJgq0lHDW/L4Ib4AOXcB6CJyRjx3waS2u0kR9OFCVeqEVDRAhilaJro9wgEmEnd232GHT5jqOecBAltyh2JFqP8NFF6PWwlCC2nP9FVS5qeVvNJsmqXDsJN7eXrsZyFPwL4DNAr81Aszl+a6KYF54Rshx8Z8vw+6O0yRTF228wwNTbELDvw5rDFQKFZVeNkonC7JoxdNutu5Y6tV3u+QAL8NsBB9QJ0Ep+wNjmN7e6JgQXMPaDTRQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t80gl3IUWbK7cUtRimcj9he7fKdt0GDbnCJNahf+y1o=;
+ b=ux+r1MMxsfDeVXDOeBDg1M2KoS53DNYu4G90v6Mg/g/O1SD5khNVLFBJYuWWW+tGEakscNXTHMosXgOO91D0pBVNu3gKZFuOQzZWmoIIycPTDNeRselLSR3lwhUqN/UaOAWs3J2mRLx6v5aOHYa/1ie8a3BuT5/iwHKvx1M8QoIKfDIGjVpGLPM/BGuMdG1FUj3vylmL5TFCfYUf/kg5QJ527Zoe/3YObGtqITo2a6tLmC144z8AbC/y/auX9gywGrebgFjZaix7zw/xbmigIqKQbUDkxxQVRmYWpguRBv6HLNOB+87Ft1weuYqzXXN64eX7rhsNLtOL30Fc3K/BIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t80gl3IUWbK7cUtRimcj9he7fKdt0GDbnCJNahf+y1o=;
+ b=X8YayfbD4fPnJ7inXz1UCucqWGnKWKUq7QPPJVVpujGL85HhraaOowYvRi9YkcTi+V9DLjceI04OVc+wnZ65s1tyt831eEsM6jddyjZ6nzM7xADMctPezplJ9l8AArkU+8MTUgPr/prGJlewXCddH9wwK7aNBMxN9kwMvamYnN38KStPBGCQZzIfTRc8VHjv3Ck9njEFTFO7ZPP+Az/BfYjUXn3NzT1TyHh9PHcLWBGCy/JkJ7w3Si1c3V0mlPH9kqveWimPIVOpIPYQUoTUV92R3F6XiSVBbmPsmzmx4PWVrWcyXFlpfwP4p+Xxl3hSfChDUd7rJ8cBzEsszLXhSg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
+ (2603:10a6:150:319::13) by AS1PR04MB9560.eurprd04.prod.outlook.com
+ (2603:10a6:20b:470::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Fri, 3 Jul
+ 2026 11:42:43 +0000
+Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
+ ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
+ ([fe80::1739:3404:2175:33dd%6]) with mapi id 15.21.0159.018; Fri, 3 Jul 2026
+ 11:42:43 +0000
+Date: Fri, 3 Jul 2026 14:42:39 +0300
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Frank.Li@nxp.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, devicetree@vger.kernel.org, vladimir.oltean@nxp.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/5] arm64: dts: lx2160a: transition to
+ device-specific SerDes compatible strings
+Message-ID: <jzpkcoqnyl63w6ugyv6vph3yp7fsoiemutqknqsykd7ebyw3lo@qpkzhpknirk7>
+References: <20260701131137.940145-1-ioana.ciornei@nxp.com>
+ <20260701131137.940145-2-ioana.ciornei@nxp.com>
+ <akUjt5OPiO5cJ1D9@SMW015318>
+ <b5lpw3xu6svsq7xmmgp3jn4cg455zhp3iw4q6lcsxq4bqy7mwh@guuitghg3xal>
+ <akZYUNtEmdLp0Kvu@SMW015318>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akZYUNtEmdLp0Kvu@SMW015318>
+X-ClientProxiedBy: AM0PR02CA0158.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28d::25) To GVXPR04MB12290.eurprd04.prod.outlook.com
+ (2603:10a6:150:319::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|AS1PR04MB9560:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a2b5b19-bf72-4592-bec5-08ded8f831cd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|19092799006|23010399003|366016|22082099003|18002099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	adVv94MeSGGaYecl8Z/3qKJ3JXh2T9ENjvEjsuW58sxJawqz7r1CYpmWA1d8UakgS6aUelPLKwecVoZnvWLgpBMpVZd5GIHGL3V6212pMbvdwEGw+0vFkQqg2G0K7SYv//8ANRj/t6B/HI5dg9FN/UmdjgQFLXqWKU/f3vWEgToI9swp3fIpvbmh9+7UpdeMCG17iUzt50r3RrsKO1dVOivB+JFbmV1ZkcjTlhRnxkbnOEmi9vuxbcbUPUSmS/wmLCFnurcxfUwJcoRiJkYB3h+ihuFEEP5lxK/8yvLFjzOgdIqrR5lhofkyynyBIG6FlFbbkFWTJCdwuC6w8Xwk8hqAuObiqBylm5fECKzI28XnVjfASt33p8admhFeG6zgbreDmxcDC9fiOCx5krEOObspRk4LvetMGokKV0OWq8jtoeUyK0Ba13t5tKLS6PipYul9XsHPB6UFQZD5CpVJlPoRoYqyDdkenmYaKaJFROH80ZnSbRZXIRRfGpdWo9JancVlc/UeLC8FPp6Uq4UHamVNRuoXcP1FmabcN5zLSWl6qTPGkQVdXMlRGI5bsPV0ePEWLO1tAAKRfXhssgnC4gnl4aYyEiGyEuOtYssLpc5RJasvGXJYz2uVWk4fYl9I4Js+mOLQ+emFz8A2t7/uCZ4Ypmpe9vRn3OWjBziFCFA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(19092799006)(23010399003)(366016)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?tDhqms3J2v4W2ERRcvRPhhHSZ7rAWZy5hCPYLkM6x0do/CcDd8kA6IiT4NJl?=
+ =?us-ascii?Q?Tz9qIo4g+LRE1EobuFcvg5/hVtUg/DwvBi4c/x2TrunIGOFxSmEXIJHYCv7y?=
+ =?us-ascii?Q?3JsZ5DtgUWVlT+zIebMdFWapyCisnMltt9TuryCAIIJseIS1bbBZMcuK9kcW?=
+ =?us-ascii?Q?ab6DgGR63QYVuzaOARHAXK71kqvw6GimwLNs1Z/0Nzts6wp8oQ8yd4jy7Zhp?=
+ =?us-ascii?Q?Xc0nkIsXTjWNRDURoE8tztvL5tCGU3jmiuF43xYzmfzAbwDqv1hwBDqOz1OU?=
+ =?us-ascii?Q?k2BrkFn2068+KDE9ZiFmqgdx8Lkb27BvRAyfFCCwnuwrAUttGVgLaMpDgUDj?=
+ =?us-ascii?Q?qG7j0N14q5jmij3IP9MOD8G+TpasGxvdMKYwbmu9fJP992o/apSqUnAVDIDn?=
+ =?us-ascii?Q?pB1Lua/bz8vVrTXittkcy2YMC0BtwE0yaLL1h05uquETFdLh+rTRulApKz8p?=
+ =?us-ascii?Q?/s7y55D+Fq78g4HU7lgCQ2ns4uwACWY6WD3zzk7Kfa8f5iUp9z+rzQTOdyoj?=
+ =?us-ascii?Q?M9otKV+UoYvLYno4COEJhHQWLY1/dsCh/4LBP0rHHUUVwlRjnu+YWZQCqWII?=
+ =?us-ascii?Q?74INY94PDmlLA2EMGw4GYCOjlxQ0VhXwd48TxFvpu+iBwxCQCIsfJxkHE0vY?=
+ =?us-ascii?Q?Dq3WBkoxjVmEakx1Tga4IjU7YlQXYx6uyadn65OSY2erSAZiX1z4E15QODco?=
+ =?us-ascii?Q?84//T/ATLxnq2K8Y0vG5aNqRqSrjXQygwXl/nG77wTJOooKcpnQqCfJ6MuOn?=
+ =?us-ascii?Q?2CkLiqV4IkQTvA0rEVqi5Hrh8tPyYcN73AimkLhUlaOk+5Blf6S2eUBN7HKF?=
+ =?us-ascii?Q?5U57sahNCy75uK71CiDGlC1PbsSLDi1GyOmNl4KnU5PfEDVgxD7Z5gS3HNXP?=
+ =?us-ascii?Q?u+rEqM6H2odxSbQgRXxjtMTFq9Q9vAmaczvVZ2wOVlYjuuyVgE0Y3F0RqAfa?=
+ =?us-ascii?Q?UoIonoqLgDVaIf9gkH++P86H+csIB+1i+S7QzJ/fHf+x+Tme5bS9Q0GIiErC?=
+ =?us-ascii?Q?oaus3oWXmGz4rsrtCqzg4emNyn04y5b3J+jD5JyEWiAIitPFguwpmvtWc6qy?=
+ =?us-ascii?Q?h8S1iYCnKAjuBBtcx180tsBvSbICeyLz6XgrsT4aT7yjIRfbshQ/frPg/QQH?=
+ =?us-ascii?Q?JBCO41brTLfrC4xS/c2wKQ71nqDOaW4OHKczsQRYrWEVFr13IEsUJJc0G4gX?=
+ =?us-ascii?Q?xboonOcPw3jagUAk5UeAuZXqAWhQe2TZwhP/3KRfbtoCnYOg933itC235RlQ?=
+ =?us-ascii?Q?NC4amXzQltMEgbd9rXvFbhg/10p+yu2OCZqoXVWiQOkLwciyVjsa9ebML3t/?=
+ =?us-ascii?Q?tsGMT2SlD5b5oOFz7OuFCgma/+4OUe7N9CWtJG2H5bfljXfc9pIxrEJpMnq2?=
+ =?us-ascii?Q?VaeuK+0c5URcl9Rtl+uoeV7fgDJS1PP9mTHpcBHX2XDFy0+qdD8C02hjhsZX?=
+ =?us-ascii?Q?lBPJNhrLZpeutG0Klq0YZUh2G9nIFUWN259jXn19raCc0hnADP9AFpSkhFtm?=
+ =?us-ascii?Q?tKZo6s2XAKZadgQGLPoLb58HyY4mR9sGafdSAQ2kECft1km0vnl964e/YwAU?=
+ =?us-ascii?Q?Z0zutDKmYSVLh6V+eesmlVelY1aKp+vATLsE6GMpB/gbwYBAP8MSpv656yFR?=
+ =?us-ascii?Q?vrFmownm742BHIHpc8RZrAryYrlQDiEayPTkOMhXvAwzk9kttl/NSeX+tI7r?=
+ =?us-ascii?Q?MRpzagoMZB7F50fqr3dN1hyE/mr2+zuzo+5gim/qg70Voh4J02IyEfUTcWEe?=
+ =?us-ascii?Q?icqTzasQZA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a2b5b19-bf72-4592-bec5-08ded8f831cd
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 11:42:43.3948
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0rd8Jk1yo+y/QgFQaB1m+P3f0NlcuHiaFu8OVpTvjDBsnRbePVieXxDUVmcIppuWsO/sFaeYaySvDwvmeSfLNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9560
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+I just realized that I somehow didn't reply-all to this message and only
+responded to Frank. My response is copied below now.
 
-New issues:
-- [High] The early return on `pm_runtime_force_resume()` failure intentiona=
-lly skips software teardowns, leading to permanent resource leaks and IRQ d=
-epth nesting.
-- [High] The patch's error handling fails to prevent a kernel panic, as the=
- panic is simply deferred to the MMC child device resume.
+> > > > +
+> > > > +#include "fsl-lx2160a-rev2.dtsi"
+> > > > +
+> > > > +&serdes_1 {
+> > > > +       compatible = "fsl,lx2162a-serdes1", "fsl,lynx-28g";
+> > > > +
+> > > > +       /delete-node/ phy@0;
+> > > > +       /delete-node/ phy@1;
+> > > > +       /delete-node/ phy@2;
+> > > > +       /delete-node/ phy@3;
+> > >
+> > > Now, do not perfer delete-node. if ver2 is not include phy@0, ...
+> > >
+> > > create ver2 files, let ver2 include it. Now most people like A + B, not
+> > > A - B.
+> > >
+> >
+> > I am not sure I follow what you say about the ver2 files - are you
+> > referring to -rev2 or LX2162A?
+> >
+> > The LX2162A is a version of the LX2160A SoC, also known as "LX2-Lite".
+> > And the main difference is that the LX2162A does not have the 3rd SerDes
+> > block and only 4 SerDes lanes on the first block.
+> 
+> If it is the same die and it is disable by fuse box. I suggest leave it here
+> now because default it is disabled and try to access-control-cell in future.
+> 
+> https://lore.kernel.org/imx/20241212-imx-ocotp-v1-1-198bb0af86a0@nxp.com/
+> 
+> That these nodes can be dymatically disabled it.
+> 
+> If it is difference die, it should lx2160a.dtsi include lx2-lite. you
+> can rename old lx2160a.dtsi to lx2-lites.dtsi. You need adjust file name
+> and I just said overwhole method.
 
-Pre-existing issues:
-- [High] `sdhci_esdhc_imx_remove()` ignores the return value of `pm_runtime=
-_get_sync()`, leading to a kernel panic on device removal if clocks fail to=
- enable.
---
+LX2160A and LX2162A are different dies but the process is not that
+simple as just a rename of the fsl-lx2160a.dtsi. First of all, because
+the LX2162A has the same PCIe controller as LX2160A Rev2
+(fsl-lx2160a-rev2.dtsi) and not LX2160A Rev1 (fsl-lx2160a.dtsi), so if
+there would be a rename it should be fsl-lx2160a-rev2.dtsi ->
+fsl-lx2162a.dtsi.
 
-commit 2ca3586c0fc9237c4716073c7d74f73e6e520449
-Author: Luke Wang <ziniu.wang_1@nxp.com>
+But even that rename is problematic. SerDes nodes currently live in the
+fsl-lx2160a.dtsi (common for Rev1 and Rev2) which would mean that
+fsl-lx2162a.dtsi would still inherit all the SerDes nodes, even the
+SerDes block #3 not present on LX2162A. I can combat this by keeping
+only the common SerDes nodes in fsl-lx2160a.dtsi and add the necessary
+extra SerDes nodes in fsl-lx2160a-rev2.dtsi. But this would leave the
+Rev1 dtsi without all the necessary nodes, which is not ok.
 
-mmc: sdhci-esdhc-imx: fix resume error handling
+In this context, I think that if there is a need to not use delete-node
+I need to come up with some kind of a scheme like below:
 
-This commit checks the return value of pm_runtime_force_resume() in
-sdhci_esdhc_resume(). If it fails, the code returns immediately,
-intentionally skipping some software teardown steps to prevent accessing
-unclocked hardware registers which would cause a kernel panic.
+fsl-lx216x.dtsi			---> fsl-lx2160a.dtsi (PCIe gen4, 3 SerDes blocks)
+(no PCIe, no SerDes)		---> fsl-lx2160a-rev2.dtsi (PCIe gen3, 3 SerDes blocks)
+				---> fsl-lx2162a.dtsi (PCIe gen3, 2 SerDes blocks)
 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
-esdhc-imx.c
-> index 6920f0425508d..586a1debf0981 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -2124,12 +2124,12 @@ static int sdhci_esdhc_resume(struct device *dev)
->  			dev_warn(dev, "Failed to restore pinctrl state\n");
->  	}
-> =20
-> -	pm_runtime_force_resume(dev);
-> -
-> -	ret =3D mmc_gpio_set_cd_wake(host->mmc, false);
-> +	ret =3D pm_runtime_force_resume(dev);
-> +	if (ret)
-> +		return ret;
+For the "PCIe gen4", "PCIe gen3", "3 SerDes nodes" and "2 SerDes blocks"
+above I would add independent .dtsi files that can be included as
+needed, so that there is no dt duplication.
 
-[Severity: High]
-If pm_runtime_force_resume() fails and we return early here, doesn't this
-skip re-enabling the IRQ?
+That is why I said that there would be a lot of unnecessary churn.
 
-Since sdhci_esdhc_suspend() calls disable_irq(), skipping enable_irq()
-leaves the interrupt permanently disabled and results in kernel warnings
-due to an unbalanced wake depth on subsequent suspend cycles.
-
-
-[Severity: High]
-Does this early return actually prevent the kernel panic?
-
-The PM core does not stop resuming child devices when a parent fails.
-When the MMC class device resumes, it unblocks the block queue and calls
-down into mmc_power_up(), which will access the unclocked
-SDHCI_HOST_CONTROL register because __mmc_claim_host() ignores the
-pm_runtime_get_sync() failure.
-
-Should the code set host->flags |=3D SDHCI_DEVICE_DEAD before returning
-the error so the MMC core is prevented from attempting to access the
-unclocked hardware?
-
-> +
-> +	mmc_gpio_set_cd_wake(host->mmc, false);
-> +
->  	/* re-initialize hw state in case it's lost in low power mode */
->  	sdhci_esdhc_imx_hwinit(host);
-> =20
-
-[ ... ]
-
-[Severity: High]
-This isn't a bug introduced by this patch, but I noticed a similar issue in
-sdhci_esdhc_imx_remove():
-
-drivers/mmc/host/sdhci-esdhc-imx.c:sdhci_esdhc_imx_remove() {
-    ...
-    pm_runtime_get_sync(&pdev->dev);
-    dead =3D (readl(host->ioaddr + SDHCI_INT_STATUS) =3D=3D 0xffffffff);
-    ...
-}
-
-Since the return value of pm_runtime_get_sync() is ignored before accessing
-hardware registers, could this also cause a synchronous external abort
-on device removal if the clocks fail to enable?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703104208.3426=
-374-1-ziniu.wang_1@oss.nxp.com?part=3D7
+Ioana
