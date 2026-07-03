@@ -1,76 +1,72 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010046.outbound.protection.outlook.com [52.101.69.46])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010015.outbound.protection.outlook.com [40.93.198.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EC43D9052
-	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 10:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9320C3A9D84
+	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 10:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783075419; cv=fail; b=gOQWbwmffZiWRv0/LfKKoPDhBilzbpJ80z9vSPYkrcXM8pw+FmWbqY7uqbFt8CBp+kqHKGT5Sj8lGZaKN6LChnaLytoq3XhoESliFmIbqw/9dw73mxmLlFPFGHncPMSOSgoXASOLSZ/QC8oW6CdpM/R5OiZEXkt6mfPOp0wKUo8=
+	t=1783075891; cv=fail; b=gFVb39JNu9xqwEpqB0GidS7u0Z/G/76haXL3sZmzr2J68mcpYREPw3ZGfa8RaaIThdwApbAhpSWaJFYvelVCeGcQLjLby1EXBYzWumXc52XA1dmlxOVGT1OKbdd/bH+JYdzYF/5NrHHL5SLOM84ABWTwnN8Myb1xhyzsHkhKp2U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783075419; c=relaxed/simple;
-	bh=xs5XQR4GCTJgSYpvY0nM42qJl1+P3JkQUA1R73tXpik=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I6gcPIFt/PQv2fm0BMHUafabo8pB9ohgO1j8Dkqvg3ho3D/W69U1oO0lGm8zYQ8+kQzCjWG5kjT2NUlSqMN0kMM1yIgZdQpg+DmbGsrJ1cPCLz3Vj9hjKvYmdF+fFxNfaw0uTY0dIphbiY3y3XUjktzswTEifmLg0R3fFd8LCKs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=m/5VkBrQ; arc=fail smtp.client-ip=52.101.69.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1783075891; c=relaxed/simple;
+	bh=Nqoabe4JR2JxH5/JswbWtKP2qOrP4AamonZqwvv8xWA=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=OJVWHLiq6GHCd0JANEOb76wGcQHrBTUeqmaPo9Edp9XIeLfnGpWVYrQlUBzjtoB955q4LCCs1mSpveqJZuhmvahdy1T3+VxmNvd0cdxJmL9FXoyzIJ5RFWrOL2gpc/PW94o8I9Rl1frKTsL+XEBhuXI9sNo4ug6nXtZ7K0NQlG0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=tDuPuWLh; arc=fail smtp.client-ip=40.93.198.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="m/5VkBrQ"
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="tDuPuWLh"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I3Y42OHWsc8TecQaN7SEOlP2qqrZgK+40W394XAl8THBwosHDBrCuwGwjAOUrdJf57S+AFerLag+CyqtOUu8ShPaUgYZr88RPJaneanHbH7lIuEXY/hrZge/Na9HF0NHkEQuM5tDVbNdYmRNYjdrOy8mJzeDWIQiF300foJPP+5lT8+u/YXEwTgUEZMKncsbnaC4iOmRH879HMmNVW00iHYUVPYrEKs5Urg5wIiU+B7YPK6njpiCqQEtxAceXb2Gh2gcZfFSklxxoftnLE1Ikj/k+SNkPMcwByjcVMUe6dHLItBznB6Z0KIK3QtlBdKViSv9TNrw4hds0annj2bD1Q==
+ b=yhdSdoYjZy9AO9r44MSimgAxfEUHHjvsTH0dxUpRqY+GflSWpQ0WM52PgC+OkpUQ1MY4JVqC5aHC7uz+XB/plKIqpaEPdr36QiGzVVcRuOGD3nCCzF0r7EkXeAo6so2mh22JOYm7y4YznRGZ8kkFMBq7xPQ9/J3zTrXuJgx7w882RrbAitni7veyLUwsmmox5UNUTFeVBzHz2qbO5t5kEQLy2rC64b35wWADteiplltqz31Y9gyHCTHCvMWT49cQ6EQdIYoUg37+KSsQHxyTS3SrieKL5giPYIA4dgfJG9wiOvi5mMjIl+7WCnB6tNeph60JrjfycYNhUjExzTTUDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fV8Ikb13ip2x5qNT/bfhYmUDt+DWXX5h4YDEVsNj9z8=;
- b=huZNjO4KoJTwNdR8OrjbySGUDGdYGlybjvCKiPrOqvmwbeXHCXaDNd3p+TyobSPVT+DO8HTwOVm+iZwaFnEyuwgdDZG8mVIaxlr+twU4uP5I3FKMm2fhmXZvIHUzVeR5ol7yQDz0EmaIF2sjQbqLSN1apKlEKp2m+g8yvn+QRP1QnDJqpTkjyl8QjLT2ayn+6mJjEPClmhwlft7i2kSD/j0RieQiMmYqMBTM+aYhAyLmC0hwaHRHNglWZxzz3l942hRIbJ3n3UJ0MvLqVNETa4BJ4CYeOb9dbve+RtWBYBfvwKOyOGt0TVSPEt14hhw7+V6x6hL2Pcrxm81jCtgpnQ==
+ bh=aP7gsTdrMjF8bOE6NodLMF7JabLkzGrLDGtuA6eiKiE=;
+ b=kdYswrpUe8xonvxyjKNbttx1xVyiJTF6wIAyWs4Z8yoadyFMCnILp5yhFXIyH3mDrIzuiK5ulguoEu3GtLd7vK8ePN4WdxUW5LxmJsVHBLUIu3b4l66xM3expbibub43IFfGzupCX2cWO/6CMY89N41Xrsa6AqKcblA4NVGM3zCahiBQFRZDltQToXoRKUYEEzDQy3Dw2ZH2AfOT4eo6S/Fu/A+1x7ssjzbmZBcBxvNyaM7U7n2tbJa6kP3zddfdC7OWZIF7yIQZ1A7cNTlX1wHy/IMjRLPh/VY8ikMMazevlOPLKQvLLBHY05jIR81h6LR5SOj8xRwL6/rJzKfSTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fV8Ikb13ip2x5qNT/bfhYmUDt+DWXX5h4YDEVsNj9z8=;
- b=m/5VkBrQz3Q/WMltlDKVKirakV+SqVULsvBwBlLSKMNq32OnFH/UmvD2aW83J8MZf9izPXCL41B+lNgNqhNl0TdONHsPpvqKIpyjAu45R+w+EZ+friC1j+Y39onQo4R7u8NNIphdcgxcKyQdkjez3QiXa7qQoyvT4kFVmY6gFh5JUx9zgD87SedH9RvDWAhvd4LugZF4rEJUrE3pPfBKdLxQQ4X6POp4Ut6MFOIvjohuTyUzQuecxGzK/Ws+o05a5JTcp9ySBsXU/UDtqTmxs7o2XSzVIy8olzk//fqAALN5zZzf3j/L1v4NX3tQJ9pwchfKWybtayzPWrnAh3+9Lg==
+ bh=aP7gsTdrMjF8bOE6NodLMF7JabLkzGrLDGtuA6eiKiE=;
+ b=tDuPuWLhH20AfjtrkQqcVXcDb9YPvhTu7FKrBZjPQzHOE62/0DWEZwTLBx5N2R0l1wEUATKEEXwgRevHtTwRkdyQ54ymZ2zrnSphVei5uMWe2it90vNw9CTvhbZI4zIQzOGCyNedtT5Chd9iZoGkP41pPraxTM+WwaggHNl5HWETIwMXKTAysgAjySBq20qexR3FCl474cPfihicpCLHqxziPKpYyP9qkpkZg1Mythun1OchIse23k3N1jLlWDDDpNK8yIGIcZjo1RXvpxZxX2P4514lnLGmVZ+RJKTR/edXn820/nlLG/tP7O7pefxZ7yJlIxfQOh8durshsQSnfQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by PA1PR04MB10867.eurprd04.prod.outlook.com (2603:10a6:102:483::17) with
+ header.d=none;dmarc=none action=none header.from=altera.com;
+Received: from SJ0PR03MB5950.namprd03.prod.outlook.com (2603:10b6:a03:2d3::20)
+ by DS0PR03MB7631.namprd03.prod.outlook.com (2603:10b6:8:202::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Fri, 3 Jul
- 2026 10:43:35 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0181.010; Fri, 3 Jul 2026
- 10:43:35 +0000
-From: wei.fang@oss.nxp.com
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	wei.fang@nxp.com,
-	chleroy@kernel.org,
-	maxime.chevallier@bootlin.com
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
+ 2026 10:51:26 +0000
+Received: from SJ0PR03MB5950.namprd03.prod.outlook.com
+ ([fe80::53a0:bf93:6b6b:de01]) by SJ0PR03MB5950.namprd03.prod.outlook.com
+ ([fe80::53a0:bf93:6b6b:de01%5]) with mapi id 15.21.0181.010; Fri, 3 Jul 2026
+ 10:51:21 +0000
+From: tze.yee.ng@altera.com
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	linux-i3c@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 net-next 14/14] net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
-Date: Fri,  3 Jul 2026 18:13:28 +0800
-Message-Id: <20260703101328.550714-15-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260703101328.550714-1-wei.fang@oss.nxp.com>
-References: <20260703101328.550714-1-wei.fang@oss.nxp.com>
+	Jorge Marques <jorge.marques@analog.com>,
+	=?UTF-8?q?Przemys=C5=82aw=20Gaj?= <pgaj@cadence.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	imx@lists.linux.dev
+Subject: [PATCH v5 0/5] i3c: Improve CCC reliability with actual_len,  validation, and Direct GET retry
+Date: Fri,  3 Jul 2026 03:51:12 -0700
+Message-ID: <cover.1783074850.git.tze.yee.ng@altera.com>
+X-Mailer: git-send-email 2.43.7
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MA5P287CA0053.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d3::18) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+X-ClientProxiedBy: BY5PR04CA0024.namprd04.prod.outlook.com
+ (2603:10b6:a03:1d0::34) To SJ0PR03MB5950.namprd03.prod.outlook.com
+ (2603:10b6:a03:2d3::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,94 +74,154 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|PA1PR04MB10867:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa8f8369-812d-4221-cc48-08ded8efeecd
+X-MS-TrafficTypeDiagnostic: SJ0PR03MB5950:EE_|DS0PR03MB7631:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a037ae9-0cf3-4667-ecad-08ded8f10471
+X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|19092799006|1800799024|366016|921020|56012099006|11063799006|18002099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|55112099003|18002099003|11063799006|56012099006|921020;
 X-Microsoft-Antispam-Message-Info:
-	EzbrwlY9csZdmW1L1dEX1rop6loTKTVgOI/mysZckvW9h2AI92c0XsY7z344bgZQq6XKp5Lk/xx2c0QdEBxFZnQ8mNuse6HULiphItmbVxnArLlb8oisHQSFpk1/WBULrshH4eX5YmVhnhEtVfgZYyam7V/Jofd1t7ESCgy3dydCFNONjf5tNnr+f7VyVMnUgrFJj1ar0XAXwYutYzVFaQCR7S28kMbzcKr/oxmtJyia1Logs28DSCxqPYjJLOgP2MXMcIhjlGP4yIqrgDSa80IpoYIK5noTDNx2+DhPp0B2I9n6Z+XBchtiWPTmDEkiSv/M1feHm4M5Jjur3iq59crtSLKGyPlnH06NzejWR5eiLL2OTEv/tzW99UDor0/l2RPHxcERztC+shlKg8cii6FlJ1Q7AXde0lQxt1P8GqCYoawjBOuswI8nXJMbIFRMtlD9LF6FbZdkcUOGyiFR29zbiFyC90xUdpFTzbCelPM5pp58mJpTgcoUpg2If7oKQ2OSnU3UXHn+hEN4lEwYc6KyKXqrW9HbEFXtn1F9YStA/5JDZGAwlsjjtfNj0qjUEOPH85HNPaFSeBhJb6kcg34sieGCa+ituJUc+bn0D2b4gUEheQ5deJ7xdC/5uNeOYVDsWUx00e67qLJINWklU2VMF8aUC4TEHHk/FF+zJpQ4FwquFhX8XYFTcJ9p40pP5IzWUPyRCNT51v2157jNRg==
+	yGgxD3uv+dCkM4rbB8RpFGPX9dAKAc9Brp8edgeNe4N8+cNDZ3s+3DOdfkdOehdAszKC/AyaZt9MTVbUOBWUSDwLUP4zKPyn+iLILnzIIuLGo/dOSMWC0kY6MrGknUoTk1Blw/btjtPrTdHPbtOF4vUbmU9NEJtFIzQH9/3pj93R3eh2RyZAhS/nfA2Mjw3/oH7m8ERv31GzJqyRiJvbJsvoH2Z21OFLJb0IvU7Ws0i3Ah11FPs1xyqA/ITeovrgYezxJz/nuIVGWrrMeTT8CI+cmSshCnoiDziPHQfmxf/FGhcLkv88UbLXY6fIo5V1F5KWOzCu3GG5zxRlLGuRG/zQ/Yprc7KEU4gSJrG03+njxSJ9ADQFZJFNiwkiKJQ2LSMNgZcqtNmbaRgYrxOlpWuh+Xn+8U7kZBV0tnJ28XA3AeT9I2SG1B3jla3XPnReR559uqeCGwJxCLVirJAMelLw8y0AgoW5LlQ1lzv5164gle3Eqa/aLqsPA9G0wu1pOAbNyioJeDxmK5FQJgvqyF4qSCTyzOTDu7zBsBtXHkLLi3mv3UX4KZ8kb1RDICsSXXyrCAhxUBLdNGMoSlmexIrtVoNzr/56JkOfcE4A1WWmKINCgC0Bn/EC4JDNo5dj6JQParmP371qK655nGkFX22wxhxY/Te0DHE3DIO9QEG/pugdkfLPNzIoJWXwZvcmxLOjKRzeLJBA6bJ26/e5dQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(19092799006)(1800799024)(366016)(921020)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB5950.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(55112099003)(18002099003)(11063799006)(56012099006)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?rQuEFqUhfoK5gW0+53razjDcGvTh8JVBySTZ/BLEx2zkrsAUbWgZspPKuufO?=
- =?us-ascii?Q?RQdKoev30YfQ8rB2rzGtASEgjA9jMUXf2bVFTM5ME+I3hDplIVa3MOT8L+nv?=
- =?us-ascii?Q?LV/eMfMa18gw5t7mp55LVpsSha0do10O5FMb+CmcyWFdhzr4qkfpmBf/Y9sb?=
- =?us-ascii?Q?3wdv7H+uCE7bj4kBUrgEVaEYGdDrD9fcqynRyhDre0DAiKNIXgNJ8/MJSU3/?=
- =?us-ascii?Q?/JMuO5OT7dPvuW0H6BuM+NsS8rSY6vBwmfu3vKwZyJOhU+d2mt2qVgLE/EHs?=
- =?us-ascii?Q?B0vRH0udfRbnGg3z++ly3NKApV3fr4nEQftPK7qE++QKo8QRqS7gZvJDNCcj?=
- =?us-ascii?Q?3i0x0IOKHd2BAGn8jWAiPt0eSr8FUfIF1RX9qDsqcdxrLODQ1GHvp9brGJdj?=
- =?us-ascii?Q?6uc2+fokc9F7qcK9kuu1pJE9k1SOCIRVZg74omNp0n2NkJ5Wgl+zcG0Zyh97?=
- =?us-ascii?Q?cOsq1m0aK9GYVKqrgvPgOjPnYr+uhPV7x0AQtPDJl94ecmi234FfBDLhrYlQ?=
- =?us-ascii?Q?sHGAF1Vr4GCPoZ44B34LFj3EnBHxbcaEsvEp06CbW3GuT+bfl8OjA9Np8rXC?=
- =?us-ascii?Q?Zot+HkTaopgfLGGr+40GMMCS4QPE5yhg9xkA5O0o/rNU/VLkt4tyhKQiID9V?=
- =?us-ascii?Q?DVp2XIOs8FYClZC3OOrwVMMgLCS4OSmBZYO35ca59ZR23SsX+kYS0pYzQJ7r?=
- =?us-ascii?Q?tKMzmZa5VHuCKtz/uNCQavtS7nmptB+pcGSfSajDKSljDzSlERw0rT3HM4kR?=
- =?us-ascii?Q?fSI4KV0wXHU7PX2tS+KFMIpNr7LPs6LYLw55/aHhPOoiNNqxh8s8EcVka5oe?=
- =?us-ascii?Q?+Jyy6OhxshG43fqye+ahYO0OJum8h1u8kNo6sv2lkuuPfJLjcMpNrbxsOCp9?=
- =?us-ascii?Q?EHeXPi8W4cdgUpLQBO3Kj6py+BmsLnX8IzAMM65VMhUv2DEtjlN95+41CEsQ?=
- =?us-ascii?Q?b1YewQM7poq/nn4XnpSPtXFfLDDGz7gQPlCNq8hqVLmT8w9wYGQuqxoeuveQ?=
- =?us-ascii?Q?4opOYHUR9WS/i5Seoa4zjTTrJuPCQVnSk7bxuGRKOKojeNfgeG+r8PmwpBpW?=
- =?us-ascii?Q?EMWMAwBqag4WcLXJ3O6dNnrZIrc2i2U98Jqzc69zfJefPFwYg/NQzFxiqosY?=
- =?us-ascii?Q?yJd98r65Wguj9JebrpYaY+EjLmsytr9zHcy3thmc/DG4BCVwUMewEZmeYE6g?=
- =?us-ascii?Q?CgOROcYOJrfbjJG/zT0JfcgYe2ip61R1xorEAnmSO0BkCJfbeIFxyBRVbiSu?=
- =?us-ascii?Q?oi8zZAybl8un4o46UTVlFDBx6YU7vaioa/k7n4egDMu7rOY+fNvstUBtb21q?=
- =?us-ascii?Q?d0am9vkkWOD1L8yQ9QXX7if9CKluv4Cx+dzcnHrkizhv6bg/ql5V28uahdWY?=
- =?us-ascii?Q?NrtVgg1QygeFvsosSBCOgis6uxDtz/dQPVOIwp+4Qtct4Js8jryMnuupLnND?=
- =?us-ascii?Q?fnynF9RAq10aj9BhH/Wmfpgru8QgtP8MbgQM1y7dkSaJgjjP30Lwj46i2lRU?=
- =?us-ascii?Q?gz6MYGe/pVekWtXkwNrVNaqI2oOFX4G3mxgyGF7edzWc56Qb4bO8HoVOKd75?=
- =?us-ascii?Q?Wrqs2nGcZN8jgxZo+SEt0dbI5c4UPg5y1w5jaFHUDA6IRvnMLPYkwwkZYyqb?=
- =?us-ascii?Q?c25/2YWVqSc+spk5QXMOGJA4dWd1v94K2jyfC1vQ40F/luMjA1SBw4QzccTx?=
- =?us-ascii?Q?CMYQ+L+zNVundBBNVKDe3AaULsnAai1gdjOPQbtsnued1dJfV6cLq1vSTG5G?=
- =?us-ascii?Q?p9YOe/9XOO430x4HnCd01c1DhXX+M12JBAJqvBgmXIwA3OhtOoCl?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa8f8369-812d-4221-cc48-08ded8efeecd
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+	=?us-ascii?Q?WvY0wQtMzGx8HRqlWdU7sqFDefBInuqI3O1wXpAO8LpLZdDYw5TjcbVBIj7O?=
+ =?us-ascii?Q?PUzrQuOnBDRHO7v1Pd8I3uxWuCl2ycNII+cGxHaV+amQL2PFumEAzAQOBkgE?=
+ =?us-ascii?Q?UzE/ijmCiWnCOG9tcfN8YPy+p7PdMfIfrnVPPMIfSNPek00UdN2e7D0iX5xw?=
+ =?us-ascii?Q?wFshvZh7AIVr6bJ3vyG+fDnxsgWyRK+ioG8PNIfWDc81S4I0ZGcaIIlMztYo?=
+ =?us-ascii?Q?GpXCxLB5UFKCULDJvdEDUggDFYtK2Xp9OGhTnKcUcb6+utyFZCNJrTPYbsOJ?=
+ =?us-ascii?Q?er5PVuyxEFP0XlYTnQe+BuAwZHyRlVGikiCXDXX0sm8jdlNI6BGGcvWUAUFU?=
+ =?us-ascii?Q?/xmN98nr8Oog5EZTPl10IeoN59R+6ZclPs5ljnTjOfdE57FBOhtIkKvrOOYu?=
+ =?us-ascii?Q?upc4sd2VW0mu0pn8Ft558I+HpyIymjOyXEgFrjV0CT7SQAMF/8TO1FtGd/H2?=
+ =?us-ascii?Q?YHDyaqFWbV3rIDK1GdrTJqR/trpLHvWl0Itb9/W6agIhnG7sW+ghRrHH5STA?=
+ =?us-ascii?Q?PL2kNtRdwrpEvX8B6i4cn/edWbKa0jSBkN9DnEzqSmItO8lYsOo50jyN0qLm?=
+ =?us-ascii?Q?qv16syEEdTTdpopkrps1aHp3Q9M7r75YGPycBBs25DkRRW1cspc706XAncIB?=
+ =?us-ascii?Q?Pau/t8LaMMo0Fs8ZKdT6CQTOwFav7xUkD5ZVBbQuD9n/+D3M+S7wwD1LxG09?=
+ =?us-ascii?Q?FtLxFljze34ypz5L/NL9rlF+SuKJUmZTkmTzlgtgPk2Mpr0pOV98s9lc/Na/?=
+ =?us-ascii?Q?tGlxStdrSTExb++bZEM7ydpO+zTm9UhTdPnTZ2lDVhxQ5rnEIl2DDD9TzeFK?=
+ =?us-ascii?Q?4qi2UgML4l/bC8hNTazCLvrP0y3Ln7G5gzryqzcE6avHmoFalZnBkO9WGiEe?=
+ =?us-ascii?Q?MsZsdXnUEn4JbJeP2VqlldsMUvri+imwu1GzE+ChkTYS0nYCa/InDJlYNOaT?=
+ =?us-ascii?Q?L1DIpjgwS6Yik/Dn6goN2VivEIrnCkBBSus91pkdpA16ebybM1TUP7519SdJ?=
+ =?us-ascii?Q?jN8GknAG7EB85IKybA9sLut4LNYqw79M4OsLTIp8zdCOJTwPpwolZ4XP1FFW?=
+ =?us-ascii?Q?d+7gFTyjVTjxA0RADFwNoiQKF5Qsp//AYfHYYmg3aLlfxlFgk7YLC3Py9Sil?=
+ =?us-ascii?Q?+ht6QWpm5Slp3tW8Tp4tlnAcYGUZWc1oLrgkXzajiODr4t7GklUiQN6BUG1g?=
+ =?us-ascii?Q?9pnl2ILWvfrnuC4RHGGDXqqkq1kcqvBWXT+YPKvJGa8AJo464vijIYYInixw?=
+ =?us-ascii?Q?by7gxbda1lsNcZODnW8PdGMnWqnVAZC1l3HkrOcQvSs5/aNEjYWk7fUDemg2?=
+ =?us-ascii?Q?wDsEfkIruf9F0EcXKYwceEpqSvhX0qFcvgaPWW7t4Hxpd4aU4abS8zcoeRuO?=
+ =?us-ascii?Q?ia0jkYvkN2n36kOp4SpvG+ebbram3WYiUvvzkrKELJfiBQbFTtXiRI8DV77D?=
+ =?us-ascii?Q?L0i2qSC0XHg6kKYxYoTUmIwmIJ9vAqt+hr2PmRE76osDjheHe1V7Ax8j4N6F?=
+ =?us-ascii?Q?9Rm8RmRaFAQRLzv6ttTynVuP35ZO8yyd1wYiXlIJ8QgTV2O1j5bKkCIrJ80D?=
+ =?us-ascii?Q?RJmTC79Habmo9moKBfOQk/GZ/E8qdyXvCn7DF6Nj6598LvL49jWmI/DYi9P/?=
+ =?us-ascii?Q?WbyUgoSBpDfNURG8TPUWD3w8vsGNuxo5TOusZ8Urq6xKtP3hCiTKqsGzTEOO?=
+ =?us-ascii?Q?r91wYPWT+DihbqZ6nP5D8EwB+Jf1PYs6X9PAaXpjR65iDZwSj8x2tnTq/LKk?=
+ =?us-ascii?Q?RyKq5LoF1A=3D=3D?=
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a037ae9-0cf3-4667-ecad-08ded8f10471
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB5950.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 10:43:34.9682
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 10:51:21.1906
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P4ZbzMIoZ5TPYTW4IGqdY8s2aEtW+XeMQRGqBvdPutJrw7hkdlXqSdlmkT7BY2Wyo0x2lO8U1vO0XPuJzaHwb9JMfY3oGHka0HAxyOK87iaJ9+PQu6ctv6MJDAVriI+u
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10867
+X-MS-Exchange-CrossTenant-UserPrincipalName: mBbnVxvJehR+8xm5V3tId9c2JlmxPWi3rxxsKaRjVd98riBTvc5uJQhVdmx5UUbGnxjqi60FtKwj5OkSl60a3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR03MB7631
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Tze Yee Ng <tze.yee.ng@altera.com>
 
-Replace the open-coded struct_size() + kzalloc() pattern with the
-kzalloc_flex() helper when allocating struct enetc_psfp_gate. This
-removes the intermediate entries_size local variable and makes the
-allocation site more concise.
+This series improves I3C Common Command Code (CCC) handling in the I3C
+core and master drivers. It separates requested and received GET payload
+lengths, validates GET responses centrally, and retries failed Direct GET
+CCCs once by default.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/enetc_qos.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+The DesignWare I3C master driver reports standard I3C M0/M2 error codes so
+the core can decide when a retry is appropriate. Variable-length GET CCC
+rules (GETMRL, GETMXDS) are described by callers via optional_bytes.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-index 7b17bca24f26..2aa0fcaafcd2 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-@@ -1135,7 +1135,6 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
- 	struct flow_action_entry *entry;
- 	struct action_gate_entry *e;
- 	u8 sfi_overwrite = 0;
--	int entries_size;
- 	int i, err;
- 
- 	if (f->common.chain_index >= priv->psfp_cap.max_streamid) {
-@@ -1242,8 +1241,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
- 		goto free_filter;
- 	}
- 
--	entries_size = struct_size(sgi, entries, entryg->gate.num_entries);
--	sgi = kzalloc(entries_size, GFP_KERNEL);
-+	sgi = kzalloc_flex(*sgi, entries, entryg->gate.num_entries);
- 	if (!sgi) {
- 		err = -ENOMEM;
- 		goto free_filter;
+Patch 1/5 adds actual_len to struct i3c_ccc_cmd_payload.
+
+Patch 2/5 has all I3C master drivers set actual_len on successful GET
+transfers and updates core GET helpers to interpret results from actual_len
+instead of len.
+
+Patch 3/5 maps DesignWare CCC hardware errors to I3C M0/M2. M2 is reported
+only for broadcast address-header NACK (7'h7E). Target address NACK
+returns -EIO.
+
+Patch 4/5 adds retries to struct i3c_ccc_cmd, validates GET payload length
+in i3c_master_send_ccc_cmd_locked() after a successful transfer, and
+retries failed Direct GET CCCs when the driver reports failure or an I3C
+error. Validation failures are not retried.
+
+Patch 5/5 adds optional_bytes so callers describe variable-length GET CCC
+responses. GETMRL and GETMXDS set optional_bytes at the call site.
+
+Changes in v5:
+- Split the series into five patches for clearer review:
+  actual_len API, driver/core adoption, DW error mapping, core validation/
+  retry, and optional_bytes.
+- Fix regression in v4 patch 1: keep actual_len assignment in
+  dw_i3c_ccc_get(), not dw_i3c_ccc_set().
+- Move actual_len adoption in drivers/i3c/master.c into patch 2 so patch 2
+  matches its title and works on its own.
+- Split optional_bytes into its own patch (5/5); patch 4/5 adds strict
+  exact-length validation and retry only.
+- Do not retry on validation failure; retry only on driver/I3C errors.
+- Reset actual_len before each GET retry only when cmd->rnw is set.
+- Add @retries kernel-doc for struct i3c_ccc_cmd.
+- Simplify i3c_ccc_validate_payload_len() per review (drop redundant
+  exact-length check when optional_bytes == 0).
+- Clarify GETMXDS fallback comment: with optional_bytes = 3, a 2-byte
+  success on the first attempt no longer needs the shorter retry path.
+- Add Reviewed-by: Alexandre Mergnat on patch 3/5.
+
+Changes in v4:
+- Add actual_len to keep requested and received lengths separate.
+- Map M2 only for broadcast-address NACK; not for target-address NACK.
+- Replace CCC-ID-specific validation with generic actual_len /
+  optional_bytes checks.
+- Retry Direct GET CCCs on any error (default once), not only M0/M2.
+- Add optional_bytes and cmd->retries to ccc.h; drop req_len and
+  payload.len save/restore in the core.
+- Update SVC, Cadence, ADI, Renesas, and MIPI HCI master drivers.
+
+Changes in v3:
+- In dw_i3c_master_end_xfer_locked(), move RESPONSE_ERROR_ADDRESS_NACK to
+  return -EIO.
+
+Changes in v2:
+- Split the monolithic patch into three patches (per review feedback).
+- Move GET payload validation and CCC retry from the DW driver to
+  drivers/i3c/master.c.
+- Validate GET CCCs only; drop SET payload-length checks (DW
+  RESPONSE_PORT_DATA_LEN is 0 on SET).
+- Retry GET CCCs only; do not repeat side-effecting SET CCCs.
+- Tighten GETMRL validation to exactly 2 or 3 bytes; add GETMXDS
+  2/5-byte handling.
+- Expand M0 mapping to CRC/parity/transfer-abort, not only frame
+  errors.
+- Restore dests[].payload.len before retry and on error return.
+- Avoid kmalloc on the common single-destination GET path.
+
+Adrian Ng Ho Yin (5):
+  i3c: ccc: Add actual_len to struct i3c_ccc_cmd_payload
+  i3c: master: Report actual GET CCC payload length on success
+  i3c: master: dw: Map CCC hardware errors to I3C M0/M2
+  i3c: master: Validate GET CCC payload length and retry Direct GET once
+  i3c: master: Add optional_bytes for variable-length GET CCC validation
+
+ drivers/i3c/master.c                   | 97 ++++++++++++++++++++++----
+ drivers/i3c/master/adi-i3c-master.c    |  2 +
+ drivers/i3c/master/dw-i3c-master.c     | 27 ++++++-
+ drivers/i3c/master/i3c-master-cdns.c   |  2 +
+ drivers/i3c/master/mipi-i3c-hci/core.c |  5 +-
+ drivers/i3c/master/renesas-i3c.c       |  2 +
+ drivers/i3c/master/svc-i3c-master.c    |  4 +-
+ include/linux/i3c/ccc.h                | 11 ++-
+ 8 files changed, 128 insertions(+), 22 deletions(-)
+
 -- 
-2.34.1
+2.43.7
 
