@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A452FC00D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F893016EE
 	for <imx@lists.linux.dev>; Fri,  3 Jul 2026 03:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783049230; cv=none; b=KvyyS9tPwWmXLF11Nsw+F0kcKPqZ+gh+NRo58HEL0hc2qPLONjYrz+UCUY8DBD77hbZFNPT5tFOZm13vv6IUy56hYCsbQ+eCPo8nIerROZPJXWZI2/H3kD2mRq4iSoupCvRMQNP8K7smtqYitoP67P2UMbRpsTxZ0CrjkvgU0DM=
+	t=1783049230; cv=none; b=H3DxaEPzmW8NBWJJq3COxO0FWIy8VoRhkRjxlFTv/KtjHM9ljJlDYU8Ik1ZkrzZ9lv0KurW3ZgROEGUHXxk0PVEFoe/yh6F8/lfdlYZjKuuKX3U9q/EKzweWll3RS4z9MFovYP3z5lDaF0SQxotKMyVvv+C+92cW1s7G4rRnkF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783049230; c=relaxed/simple;
-	bh=mQuc1AcVlaiBMsyRXQawxJQdXb59zcxtG66Spo/bh88=;
+	bh=1clCkGEjeq1s5UL/ipxfgLMbbOqeeE19QS72+FeTsh0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Z7aFBVJBEVpCKoFgOATfqT0cY2ITy9I9p3CgFUoFeP+6hAviH2/NRHv/vlfgcYo+ZHpwcqbzum6QdjYdNyZ1mlWUcgGF+JkMRoVQMDAlm0+W9X1shUcYn5FSLnuGWfLRHPztyYl5Sjygrx3OodE5jXHvGZ9vrvAHxiiuLeo3dKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EshG45kx; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ZjiEbFPoIjxyw6I4PdMz6bYmZREW0kGtYWJ1SFPNhlk24kUluJXM/1veNhIcUuKagoKsLDEWjVh5V5ZfBfRiaPQAVoE6MybFk2aehlaJ5la1wVn5q+7z1mKX3M9V7jkkYWztz0wIGpz9UvgkzMCTkRdIvOR8awNd395jvLPwT+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUvs6CCW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EshG45kx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A831F00A3A;
-	Fri,  3 Jul 2026 03:27:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUvs6CCW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558691F00A3D;
+	Fri,  3 Jul 2026 03:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783049223;
-	bh=UcZkgJq3boWiP2opXeD3nGsRXrWIiMV8kccf+ZDdrw0=;
+	s=k20260515; t=1783049224;
+	bh=Fz5DAP68C6ygImXV1sETlWVv5QAjcVm+uL69o2znDi8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EshG45kxEy88Gl7SrjKqziEQbPuEjCiVywkRjvAXMfDW7GJ8dJS9KwHtiCl4yvELD
-	 xFDV5LoRqYcpUnkp/xXECHIbEn6rkkOHbcNnyH8QT6BRbFeQMgQTBe7xlcFpYNS1pY
-	 pDZia7mlQfmwwvCtOwiKJ3GIOl5+9KlLoV54pJmJEoipJdqcCp4KRWcIou5f7KwXVV
-	 TVjtJwv4hAC2SsY0UOu8XwL1vBYaNyuwKgclIeuzdDb0jqk6wiLVlKAlwKmr7pOXnc
-	 ircj2W2Cb5y2LIz/y7cFh7u+BDGEozUlClirCkr9jEhhVRXhYzlSOHYhetXsuvPi81
-	 Hpj2ZaaJV/G8w==
+	b=jUvs6CCWqY1vOAQvb2i0D95WqoIbGcXY0WMihkFSFd+5PAfRemFYsJvGq+MGO+aTm
+	 8MGTdJmJjmip9UhzDwffDGga2QcCwPwR1rVZaWYWh3ERLNIfBKBw/M/ChJx5rc0jwE
+	 85x8J/eeMceOm/kLsNa2H09CDRzL9vRtQy+YKPA62xerVGdc/gVu3vjP1i/JO8aTiu
+	 JrvZ4K2S960N/OJ0uL3HnymvzJjW+nWr7/FwhvjaVndk8ELx2lDEpyEnAB3aMFAgFP
+	 vUqT90SOX1+Bzyxdx5Say9HIQCje9fYD31fvOvixSXA7otKDyVlXz/3O5HNnW4DK3w
+	 W0Wi01Wv4jKbg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net-next 06/14] net: enetc: simplify
- enetc4_set_port_speed()
+Subject: Re: [PATCH v2 net-next 07/14] net: enetc: differentiate phylink
+ capabilities for pseudo-MAC and standalone MAC
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260702025714.456233-7-wei.fang@oss.nxp.com>
+In-Reply-To: <20260702025714.456233-8-wei.fang@oss.nxp.com>
 References: <20260702025714.456233-1-wei.fang@oss.nxp.com>
- <20260702025714.456233-7-wei.fang@oss.nxp.com>
+ <20260702025714.456233-8-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 03:27:02 +0000
-Message-Id: <20260703032702.E6A831F00A3A@smtp.kernel.org>
+Date: Fri, 03 Jul 2026 03:27:03 +0000
+Message-Id: <20260703032704.558691F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,88 +47,55 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Removal of the switch statement allows SPEED_UNKNOWN to be program=
-med as an invalid hardware state.
+- [High] Adding PHY_INTERFACE_MODE_XGMII to enetc_port_has_pcs() erroneousl=
+y associates a parallel interface with an internal PCS, breaking XGMII prob=
+e.
 --
 
-commit 923303ff32884703a5eb3f948098684f15149ba1
-Author: Wei Fang <wei.fang@nxp.com>
+commit 0ce9c644ca0e73f4e3a24d681275147515f923ae
+Author: Claudiu Manoil <claudiu.manoil@nxp.com>
 
-net: enetc: simplify enetc4_set_port_speed()
+net: enetc: differentiate phylink capabilities for pseudo-MAC and standalon=
+e MAC
 
-This commit simplifies enetc4_set_port_speed() by removing a switch
-statement, assuming phylink only passes valid speed values. It also
-updates PCR_PSPEED_VAL() to use FIELD_PREP() instead of an open-coded
-shift.
+This commit separates phylink capabilities for ENETC pseudo-MACs and
+standalone MACs. It restricts pseudo-MACs to internal modes and expands
+standalone MACs to support additional interfaces like 10GBASER and XGMII.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h b/drivers/n=
-et/ethernet/freescale/enetc/enetc4_hw.h
-> index 6a8f2ed56017c..dea1fd0b81758 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-> @@ -148,7 +148,7 @@
->  #define  PCR_L2DOSE			BIT(4)
->  #define  PCR_TIMER_CS			BIT(8)
->  #define  PCR_PSPEED			GENMASK(29, 16)
-> -#define  PCR_PSPEED_VAL(speed)		(((speed) / 10 - 1) << 16)
-> +#define  PCR_PSPEED_VAL(s)		FIELD_PREP(PCR_PSPEED, ((s) / 10 - 1))
-
-[Severity: High]
-Does this safely handle negative values like SPEED_UNKNOWN?
-
-If SPEED_UNKNOWN (-1) is passed here, the expression ((s) / 10 - 1)
-evaluates to -1. FIELD_PREP then casts this to an unsigned type and masks
-it against PCR_PSPEED, filling all 14 bits with 1s (0x3FFF).
-
-> =20
->  /* Port MAC address register 0/1 */
->  #define ENETC4_PMAR0			0x4020
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc4_pf.c
-> index b966637572a7a..db7bad2c3cbde 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
 [ ... ]
-> -	switch (speed) {
-> -	case SPEED_100:
-> -	case SPEED_1000:
-> -	case SPEED_2500:
-> -	case SPEED_10000:
-> -		val |=3D (PCR_PSPEED & PCR_PSPEED_VAL(speed));
-> -		break;
-> -	case SPEED_10:
-> -	default:
-> -		val |=3D (PCR_PSPEED & PCR_PSPEED_VAL(SPEED_10));
-> -	}
-> -
-> -	priv->speed =3D speed;
-> +	val =3D enetc_port_rd(&priv->si->hw, ENETC4_PCR) & (~PCR_PSPEED);
-> +	val |=3D PCR_PSPEED_VAL(speed);
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/dri=
+vers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> index 3597cb81a7ccb..6ccf9b9090549 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+[ ... ]
+> @@ -359,7 +359,9 @@ static bool enetc_port_has_pcs(struct enetc_pf *pf)
+>  	return (pf->if_mode =3D=3D PHY_INTERFACE_MODE_SGMII ||
+>  		pf->if_mode =3D=3D PHY_INTERFACE_MODE_1000BASEX ||
+>  		pf->if_mode =3D=3D PHY_INTERFACE_MODE_2500BASEX ||
+> -		pf->if_mode =3D=3D PHY_INTERFACE_MODE_USXGMII);
+> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_USXGMII ||
+> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_10GBASER ||
+> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_XGMII);
 
 [Severity: High]
-The commit message states: "Since phylink only passes valid speed values
-to mac_link_up, the switch statement with its default fallback to SPEED_10
-is unnecessary."
+Does adding XGMII here cause probe failures for ENETC v4 devices?
 
-Is this assumption accurate?
+XGMII is a direct parallel MAC-to-PHY interface that fundamentally does not
+use a PCS. If enetc_port_has_pcs() returns true for XGMII,=20
+enetc_mdiobus_create() will attempt to create an internal PCS via=20
+enetc_imdio_create().
 
-In the kernel phylib/phylink implementation, if a PHY establishes link befo=
-re
-autonegotiation completes (or if an out-of-band PCS status hasn't fully
-resolved the speed), genphy_read_status() can leave phydev->speed as
-SPEED_UNKNOWN (-1) while phydev->link is 1.
+Since the ENETC v4 .create_pcs callback is NULL, enetc_imdio_create() will
+unconditionally fail and return -EOPNOTSUPP, preventing initialization when
+configured with phy-mode =3D "xgmii".
 
-Phylink then propagates this state via phylink_resolve() and calls
-mac_link_up() with SPEED_UNKNOWN.
+Should PHY_INTERFACE_MODE_XGMII be excluded from this check so it can bypass
+PCS initialization and allow phylink to configure the link based purely on
+MAC capabilities?
 
-Without the switch statement's default case, won't this write the 0x3FFF
-garbage value generated by PCR_PSPEED_VAL() to the MAC speed configuration
-register (ENETC4_PCR) and cause undefined hardware behavior?
-
->  	enetc_port_wr(&priv->si->hw, ENETC4_PCR, val);
-> +	priv->speed =3D speed;
->  }
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702025714.4562=
-33-1-wei.fang@oss.nxp.com?part=3D6
+33-1-wei.fang@oss.nxp.com?part=3D7
