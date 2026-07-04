@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C1BDDC5
-	for <imx@lists.linux.dev>; Sat,  4 Jul 2026 10:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D625F2472B8
+	for <imx@lists.linux.dev>; Sat,  4 Jul 2026 10:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783161825; cv=none; b=n+ZOkzz2R/ZpzCGK5I6bJtvBXsSM+eVAh9QIFBiOn/WM3k2SHHoMUkD1wG+iQrxndE6j9IdPWvp0ZTBqug8p83LUIf+zntJhik6/6fMxq9N9cb2DGmDxkVtlhXSpSmGEHjFFN/bKoEwQdCSFvVfk2Kdq2SMAIPQmJn+cKGxbMsg=
+	t=1783161826; cv=none; b=axJDqpprMo/ImjsKqVkyHbwKCVB55TlE+KfV6WX51p6H5zh5YUOLEa/pz9wB8IXsvOiZ0dpAW9/a/rnKWihSZVFYUM8150apsvwPU4M99B5PwoQ/WmOIuj0v5nSlcJ9VxCE+Mxa4KlSDxsSVPrkt3GAkTlhVnDta5FKu3u4UlQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783161825; c=relaxed/simple;
-	bh=U+CfRG1uaFzzoDOeWvG4LQRPB5HVGGRCbBeLHomEbAE=;
+	s=arc-20240116; t=1783161826; c=relaxed/simple;
+	bh=PE1Hl55CaiC7UmRKzFmwXCYPM2NAyj36BAyjXGbRJf4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XzZPFoNseygcisfJL25FfhkNiBbUZG0hPrVUK64OpZcmZvfQnJ5AngcZUo/9UIU9+M5ONjTKinoaFeIpxGtl3xHGAPtTHBWpDMn2i+DJ1qVQTjZOjUQAO/Osq/B0nBmD9pxQDpPSB88QII7ylmZk57rZQT/BC7dCjOnRlWvj8dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZ/VKtca; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=LQvu/hZiXUL6tzO9RlhGA9rPDLHUpklBqAK1oK6fvW+l3oE5KU4HE4qtfCES5XzER0TN/8nBGymMOFtaK4R1CVrtqhjmLzQnaO0/KtJwsYm2Nc2e2pWGjZ3CjoYUiSzJqQNf+eeXHh1xUC6e7pOqfjkab6WMSwyPf5mS6u+k76Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ie9QuR28; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZ/VKtca"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE861F000E9;
-	Sat,  4 Jul 2026 10:43:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ie9QuR28"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B94F1F00A3A;
+	Sat,  4 Jul 2026 10:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783161824;
-	bh=Ui0UfFqqyI7E/FJxPc1DOsGmwvA7D+I22uT6T6K2704=;
+	s=k20260515; t=1783161825;
+	bh=W/nJnRJ+xPIYLRcl4GCLGFlDdPpkkCFw5pZQGqf1qDk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HZ/VKtcanMXG05jc2aEqS8yF7Ky2lt5iAY7GUma8DS9NyPtRmLnJBgfAxUq4wmhKm
-	 dh2CCy1v8xXQHZnW2yXeSN85WKZdzj08r+oqbVICXueI67JvYMJkwQUZvZWXAVgrhR
-	 m08oMGJGJwnK/+aaopYhYdOZLHl3Rkt+U9iqes6So3Bmy/YehRijKikE+PmKTtAJVV
-	 Thu/03U+thz7bOqBbaa2XVWRxGTzQPCndq9NGXAnfWac1gfNwuJ5pmw/wtqRAoIZNJ
-	 m5+z8Hjkfg+LE/sALHrGUN7pIa0a8ti9+ETndXDSuPZkjcu563owz/cbquToGEiIaU
-	 LesdWdprqU3Aw==
+	b=Ie9QuR28SQyHFe7zhhS4VR0rxEokcESw3P/X9ZCyFlTKi9dCsh2sz7WhWSKEX6Qzl
+	 T9z/FxXd6bLgTUKmvEbYy36Xouc97XEzU/l97UVNpTccaYKd6yc6vD2nqHtrsn00Pl
+	 V+0U6+Rx5VP9D7wdHDarDqnDdN2J//tU/mxAueeQyLW2BPJAQWaZlvZ5ZZxNnz1+Jz
+	 eYgrq80x6oxoKcQOg7vhO258bGfNT+bDCX7vgXemkOF7dRRdYJn3zPzQG45RIqtJXV
+	 6UUuQG/is6DqJun06n7F7euPt3HsfCnED3guhv1unvdiYV8Us2NPWDP/18il2qDei9
+	 siprco9g9pj0A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 net-next 02/14] net: enetc: extract common helpers
- for MAC hash filter configuration
+Subject: Re: [PATCH v3 net-next 07/14] net: enetc: differentiate phylink
+ capabilities for pseudo-MAC and standalone MAC
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260703101328.550714-3-wei.fang@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260703101328.550714-8-wei.fang@oss.nxp.com>
 References: <20260703101328.550714-1-wei.fang@oss.nxp.com>
- <20260703101328.550714-3-wei.fang@oss.nxp.com>
+ <20260703101328.550714-8-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 04 Jul 2026 10:43:43 +0000
-Message-Id: <20260704104344.1AE861F000E9@smtp.kernel.org>
+Date: Sat, 04 Jul 2026 10:43:44 +0000
+Message-Id: <20260704104345.5B94F1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,87 +47,77 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but when the exact m=
-atch MAC filter fails to be programmed, the fallback to hash table (HT) fil=
-tering configures the hardware with a corrupted hash bitmask.
+- [High] Adding PHY_INTERFACE_MODE_10GBASER to `enetc_port_has_pcs()` cause=
+s ENETC v4 probe to fail because `.create_pcs` is not implemented.
 --
 
-commit 7a34e5eaa6513d77933432617ababa625bd03ac3
-Author: Wei Fang <wei.fang@nxp.com>
+commit 394f96d762ecbfe37dfe5cfd42c152159d4e5353
+Author: Claudiu Manoil <claudiu.manoil@nxp.com>
 
-    net: enetc: extract common helpers for MAC hash filter configuration
-   =20
-    The PSIUMHFR and PSIMMHFR registers in ENETC v4 have the same bit layout
-    as in ENETC v1. The only difference between the two hardware generations
-    is the register address offsets.
-   =20
-    Since the register functionality is identical, the MAC hash filter
-    configuration code can be shared between the ENETC v1 and v4 drivers.
-    Extract two new common helper functions, enetc_set_si_uc_hash_filter()
-    and enetc_set_si_mc_hash_filter(), into enetc_pf_common.c.
+net: enetc: differentiate phylink capabilities for pseudo-MAC and standalon=
+e MAC
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_pf.c
-> index a97d2e2dd07b7..db2a800a7aaf0 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+This commit differentiates phylink capabilities between ENETC pseudo-MACs a=
+nd
+standalone MACs. It restricts pseudo-MACs to internal mode while configurin=
+g a
+wide range of speeds, and expands standalone ENETC (v4) to support 10GBASER
+mode.
 
-[ ... ]
-
-> @@ -135,7 +108,7 @@ static void enetc_sync_mac_filters(struct enetc_pf *p=
-f)
->  		if (em) {
->  			int err;
-> =20
-> -			enetc_clear_mac_ht_flt(si, 0, UC);
-> +			enetc_set_si_uc_hash_filter(si, 0, 0);
-> =20
->  			err =3D enetc_set_mac_flt_entry(si, pos, f->mac_addr,
->  						      BIT(0));
-> @@ -147,11 +120,15 @@ static void enetc_sync_mac_filters(struct enetc_pf =
-*pf)
->  				 err);
->  		}
-> =20
-> +		bitmap_to_arr64(&hash, f->mac_hash_table,
-> +				ENETC_MADDR_HASH_TBL_SZ);
->  		/* hash table filter, clear EM filter for UC entries */
-> -		if (i =3D=3D UC)
-> +		if (i =3D=3D UC) {
->  			enetc_clear_mac_flt_entry(si, pos);
-> -
-> -		enetc_set_mac_ht_flt(si, 0, i, *f->mac_hash_table);
-> +			enetc_set_si_uc_hash_filter(si, 0, hash);
-> +		} else {
-> +			enetc_set_si_mc_hash_filter(si, 0, hash);
-> +		}
->  	}
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/dri=
+vers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> index 3597cb81a7ccb..781b22198ca86 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> @@ -359,7 +359,8 @@ static bool enetc_port_has_pcs(struct enetc_pf *pf)
+>  	return (pf->if_mode =3D=3D PHY_INTERFACE_MODE_SGMII ||
+>  		pf->if_mode =3D=3D PHY_INTERFACE_MODE_1000BASEX ||
+>  		pf->if_mode =3D=3D PHY_INTERFACE_MODE_2500BASEX ||
+> -		pf->if_mode =3D=3D PHY_INTERFACE_MODE_USXGMII);
+> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_USXGMII ||
+> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_10GBASER);
 >  }
 
 [Severity: High]
-This isn't a bug introduced by this patch, but when the exact match (EM) MAC
-filter fails to be programmed, the fallback to hash table (HT) filtering
-appears to configure the hardware with a corrupted hash bitmask.
+Will adding PHY_INTERFACE_MODE_10GBASER here cause the ENETC v4 probe to fa=
+il?
 
-Because mac_addr and mac_hash_table share a union in struct enetc_mac_filte=
-r:
+If enetc_port_has_pcs() returns true for 10gbase-r, enetc_mdiobus_create()
+will call enetc_imdio_create(), which does this check:
 
-	union {
-		char mac_addr[ETH_ALEN];
-		DECLARE_BITMAP(mac_hash_table, ENETC_MADDR_HASH_TBL_SZ);
-	};
+enetc_imdio_create() {
+    ...
+	if (!pf->ops->create_pcs) {
+		dev_err(dev, "Creating PCS is not supported\n");
+		return -EOPNOTSUPP;
+	}
+    ...
+}
 
-and the exact match path populated mac_addr, doesn't f->mac_hash_table now
-just contain the raw bytes of the MAC address?
+Since enetc4_pf_ops doesn't appear to implement .create_pcs, will device
+initialization now fail entirely with -EOPNOTSUPP when configured with
+the newly supported 10GBASER mode?
 
-If so, won't bitmap_to_arr64() (and the prior enetc_set_mac_ht_flt() code)
-read the raw MAC address bytes as if they were a bitmap of hash indices?
-This seems like it would result in the hardware being programmed with a
-corrupted MAC hash filter, leading to silently dropping incoming packets for
-the correct MAC address.
+> @@ -400,25 +401,42 @@ int enetc_phylink_create(struct enetc_ndev_priv *pr=
+iv, struct device_node *node,
+[ ... ]
+> +		if (!is_enetc_rev1(priv->si)) {
+> +			mac_caps |=3D MAC_5000FD | MAC_10000FD;
+> +			__set_bit(PHY_INTERFACE_MODE_10GBASER,
+> +				  pf->phylink_config.supported_interfaces);
+> +		}
+> +
+> +		phy_interface_set_rgmii(pf->phylink_config.supported_interfaces);
+> +	} else {
+> +		mac_caps |=3D MAC_10FD | MAC_100FD | MAC_1000FD | MAC_2500FD |
+> +			    MAC_5000FD | MAC_10000FD | MAC_20000FD |
+> +			    MAC_25000FD;
+> +	}
+> +
+> +	pf->phylink_config.mac_capabilities =3D mac_caps;
+>  	phylink =3D phylink_create(&pf->phylink_config, of_fwnode_handle(node),
+>  				 pf->if_mode, ops);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703101328.5507=
-14-1-wei.fang@oss.nxp.com?part=3D2
+14-1-wei.fang@oss.nxp.com?part=3D7
