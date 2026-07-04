@@ -1,85 +1,87 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6BC288C30
-	for <imx@lists.linux.dev>; Sat,  4 Jul 2026 18:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DC62571B8
+	for <imx@lists.linux.dev>; Sat,  4 Jul 2026 18:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783189958; cv=none; b=qJGY64pC1PejmD2xDw0Zd4Ol/QdjddqsQoKWEFx+vZfUVSzoEIBuftiL4Ac/AdI2rFnvBUAdRMfNyyklWmrhWB7mwyLVBWeeg+my4r/veNRuygNDS/+7KeUVVUAZbKGJ+CubSJnz9yBtWaqqcLp0SyavPmGaNJxINtlaTi9aoEY=
+	t=1783189966; cv=none; b=rM8BLjBEXMscHOrQDSF+s8vca1qbobK/VXD5EuAbvgksd/3mhYf+GTnmEKcQrccDQpx26MYBFb5vFRSglMC3musHU9PAmuzPYeJWBbqmHmxEfEVdpXqbpJ8ywdW9ursRLeVUhDTBSlnbDYcD7fD6aEUyLiApXvzqWJEgw3nEjUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783189958; c=relaxed/simple;
-	bh=a3oJlDmIy4JLxHP8+Zy827sxSxkG1qtSrEiIUv8u7fM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YS8kfoc1XL1SqIY1JNmfeHkiOib1rbIKR0oxyTFyIGXeWGiY5lAiPFdWTSXN9OZAevYuAyhkzB+UOqNeO3zjonc69SWwkJosmOv+JAmG0e2YHojCDno546anmZJDFwmYsyfONi4OW3sq0Vz2MopTP2vXstXyfH4SbDUhh0c1+44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CSEUNTWN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=C5A8TVw/; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1783189966; c=relaxed/simple;
+	bh=8mMAnYSE2j9kvPoy0U0PiscxYaNacGiFej3sM2jbRJE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=C6coi/atNH/ihHVTpqgfX7tyo5GYTXFM5L96+ej2Dux1G35BDZOIrGTgEFRtB18MY6nVONaikfshpC1aoV+4rrw8HJtGpkWF44hLbG8JdCWzGbh3ccBRDCmyxTtJoZzYB0AwbmEjK63qSmnM+TQXa9IQOdfdcdOG8GgeEwlB6m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HigA/Yvo; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DPVS38p+; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CSEUNTWN";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="C5A8TVw/"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 664G8SBM3272764
-	for <imx@lists.linux.dev>; Sat, 4 Jul 2026 18:32:34 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HigA/Yvo";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DPVS38p+"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 664HvEwJ3635529
+	for <imx@lists.linux.dev>; Sat, 4 Jul 2026 18:32:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=MltfzpfpaLuZDnkNZx+Lb6
-	VWJ4GPL8eKrD3GSx0ATGM=; b=CSEUNTWN1DlO1mccs9tBOSMPvsm87QKPUuehKQ
-	4K6kTjt1FKnv2ec0M8Ysv/X+5cdqXiRHqij/ORCYEDmUr+Lvfqi2Bb10tvUqlWYK
-	6bUxEtHDeSVXR1YlKacaMujOYA044wSdNr9b9B9nlb84ycDuDYWoCL+A2qahMRDh
-	QaXY3ntdMFBxDIr+RrCRCbj6/BLG0BZQLRU8QJzw6wEZsRPcqLF+9/q4Kr6AjCvh
-	6HdIKJwHHUAO8X324yL3sIeCAbzFf/FbdmaEFj/XSnPAux4wnR7Iw7HkLjguUK31
-	c2tOSjRDtb3pqINNlxcgrFkpU1+GI/Hxp75MpAT7pOVePlMQ==
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f6tj8haw2-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hhnZnblLCIszQtw+LJyheg1p5e5bbTPNhk3k4G3KLZE=; b=HigA/YvowAIAk3nt
+	u90/giw64WMUkmqqUONEvT6QA+HElUmhEe9nMBPgMGXIiCsru/1th/i+26Ti+VPU
+	VqC6CR+1O9aO7xlv3V2IfALvNs/JXPFhhXYQAmu8RnGmT3VXS/g/KZNAnMfyf63V
+	Kxhyq+2qPDB+3/CZZhBC+/vDo6fJXQUA6q2doODDUnsQQbXtgKhPlWs1zZiIS+dp
+	88CkD6YJ8VmeESdB3zsViZszqFk4ECq1XxJqVbJ3sQ/6CblyG65fIcGJ57s8eKMO
+	zG7GjLSO340QWRV/QKuGOEVfrnh3WJSLZuI1zRXFhRyJJOBAPwB1Ox1/tpWOJhNK
+	P4/oWg==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f6t8uhbp1-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sat, 04 Jul 2026 18:32:34 +0000 (GMT)
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8478ff5d801so2819316b3a.2
-        for <imx@lists.linux.dev>; Sat, 04 Jul 2026 11:32:34 -0700 (PDT)
+	for <imx@lists.linux.dev>; Sat, 04 Jul 2026 18:32:43 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8478423e020so2624918b3a.0
+        for <imx@lists.linux.dev>; Sat, 04 Jul 2026 11:32:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783189954; x=1783794754; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MltfzpfpaLuZDnkNZx+Lb6VWJ4GPL8eKrD3GSx0ATGM=;
-        b=C5A8TVw/mtKqTMaSS37uviNOmURIw8rbzUeh4hITnMc92a3gKZGpcnO3/BtdmXLZwR
-         egNtGdpuI6nRyEXf7Oo/hxnqktdPUj7KJSrBQSrwD88YMdsLhr/XDtFjLy05qudJphRQ
-         4OaEvV8EZHK3FKyykkayF6eAUMsvJBO1WScU+Z/z0vXs2KaaviDWS35/tZ9OorqlgaoX
-         loZf93x3TUf0vopAO4uIVfd4R3wq53TFaPb1UqOViRUe3WAIu5Gi3Wl9PJkTjT94YsBG
-         B42bsimn/z8O/R/F/92PuJBYSEgpC+7yR65zjVIxhFNFfMRwAyWOGlZx4uVkeJ1HrdU9
-         288A==
+        d=oss.qualcomm.com; s=google; t=1783189962; x=1783794762; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hhnZnblLCIszQtw+LJyheg1p5e5bbTPNhk3k4G3KLZE=;
+        b=DPVS38p+05q5Avpk2R4tWwts1s/OTywxD/DhjIbO/fF+kW4cGc6iq2LBxQVRuxT0Qc
+         O6JZfnQ7VwEtb0iBlSwc16d5pvjwWAfKFJ9e8KFyPP585UWOIumdYn8RJFowwJOklkIE
+         g2lOTjbyf8p7bEa4/ltxEqGKqubgQXUDQ0Ul7MyMuwUaZdNbcE9VZ8HMJLfFmpxr74ul
+         bCDp0pKqxiwHlwV8mgTrMf9JTtLFcAqTK4Pae+DA4ZhTmwRs97bJ6ZGZdjI14wYlhuuD
+         gfpvtI9EfYqyw1U6iYf5BBt+Z/unUqhDq47GKEiwq5op7IQVqg5Ou/kRL2Z4MJZOued2
+         UklA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783189954; x=1783794754;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MltfzpfpaLuZDnkNZx+Lb6VWJ4GPL8eKrD3GSx0ATGM=;
-        b=JaKow74alpiNeqYICOdjgE4hhk12BfjJPzpgX2ShUeMsaMFi2e0nQPlqkrS1ua8BMx
-         /e/S7IcFMWNC/0FAVUIP06A7PSO1NlMSSnbf8ru7agoV1Glo1lzJw7inNI9aulcr5L6J
-         dxvCqUvVxCHlYqM1YwMoRyzm6SF1dyJXCnHUj+vLwrMqSHnLBelfNymwL/z+aAmqh2Uu
-         fR5gKxUN/qvzSsCLMkPFZqCfr8CRBKH+rxD+HATPepfbL4fVqlHd9Phw+b3puqhyfGpC
-         BNvTss3noqabgEot/UiXXhAkiYwUN1quFdL1KYYv3a6j7YhouInLlLjnn8b0OtxXANxc
-         N+oQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/tg+crW5bt5Gh/spvBLkofzDiie2qInNqaxAviCDA9lLH4P/UWKEEz4MOJwGxWT4Mu0gU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwudGovK4YGjNYNi3K+4rzByYNLAoHg6nTjY58vAuzZrZN84fmb
-	iPF5lfj4AlI0LVQ3zcxVHU/1oppS2lcbkL4r3a519g/zvH3tzOj7cxxL64S1ppaXUr/Bg/kojKC
-	NPwy9nt9JpOX2p17Lgdv4kMVuqReCTVA9hba8ULqwlAt4EjFvGxt9BK0=
-X-Gm-Gg: AfdE7cnewAVPgU03N8DJEZP7skoMOa6J2n3tfQwvdqLfnrbSn/l8GYOSVGy45i6YiI1
-	MV4QBjTlzqVIxsdke+ElZ4oXvppiUxUmI4DaDF4XVwtcbD9gGSNCYmI5Zwae0weo6o2r4QiQiWS
-	sAyqvMQuaLM+Eb82KTu/RQIw8V5p8/vS9yaOt1kpdXBrJdOZDCmymPGjdejlRbQy+LVGsC5ixAx
-	YDtcqpsagPjahkmZgGOwhgiq0zkQWN2O9xpFgfEVzkO6sG1R9GYXIuQ+2YNWihNlsRCy8vNE/Eo
-	ubidxyAEq/k+dAdb2n3eJ/vQyIGOx6QnKKzMChIplhPKq+SnclPT/IIbgrZCgnSM707S/XLDIDj
-	g7hEakGLtPWE7+nu6ZntF0zQ=
-X-Received: by 2002:a05:6a00:1881:b0:845:ebbf:e7be with SMTP id d2e1a72fcca58-847f6dd3dd7mr3575647b3a.23.1783189953626;
-        Sat, 04 Jul 2026 11:32:33 -0700 (PDT)
-X-Received: by 2002:a05:6a00:1881:b0:845:ebbf:e7be with SMTP id d2e1a72fcca58-847f6dd3dd7mr3575622b3a.23.1783189953074;
-        Sat, 04 Jul 2026 11:32:33 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783189962; x=1783794762;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hhnZnblLCIszQtw+LJyheg1p5e5bbTPNhk3k4G3KLZE=;
+        b=kk2l73WpDMBMiwqCro/ZvyDH1O/XffrwAKRyvZJM+WiwqTw+Z9ZsI27fnXRNSVJ38o
+         EiJdErVV4dFehvyMeTAGWDabQjwcSnpneJyRyjoZVsASrZjotekGUZ8qUvbMHT29O1KF
+         3uNdCCPD76Klqzi4Fw016VX4kvW4U1M3sGkVP2JMM0IrtH1dTrTfSs3xl2q60+AXt4J3
+         c63Q30GofwDbhpdgDONW+uKsXHSQTbJeDrVu2JvSD0nGMX0oV2y0/QOluAyNdTr1hXMq
+         d7kvyXDXzVDJw3/c7XbXiix9/jr0AvGR9Uggf1GIzuFvtyS0Vr8yqm8nQ27mLyXmLlMg
+         u8gw==
+X-Forwarded-Encrypted: i=1; AHgh+RrkJEVYvNNx1CuFT80A0UHDsZNWQgdY3HqSb3QrGw0kJjb6VM87Jw4IOqdjCxwPDSnARnA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxUQ38mhnXIaEkysVNAgqf5VZUIcvw8/9IuBMVR927EdhvdXZ6k
+	r9shF9vbnzIH2sm/pTwkFkCCfoQKadOWmxAzB2VuqJ3PHFXM2kuGXUCiibRwrAI1w15NZh3xZkH
+	5CYtxcLm7UfYo3oU8o288TwNmHSsasMEyUOZsUgShedjIosudzY3/6nE=
+X-Gm-Gg: AfdE7cngKdXrIO4mR3xN0JpbnffV/LLmjC83AxSgYu7LljJHrjONb8WuMuPXrOhjpD0
+	P2r+OBbsE0lez5/YjSfKVGoaH8ZeN2VJBiqZpAIfRA+GKc6GpQ2X0l/ORFP9opSYqoGYPuHInNT
+	4bzXItwZScP+Vkbcwg4D4wxa8FgCjTr+mpBgZ/T1jhiq99LaBGZlm7rbNh42io3gZX1KYopXRQn
+	0SvCVikqLUguMy/EQ1UN/9mzanhrfXtdtC/LlekJSxZXHqlGag5/wzwMuyjXFjInMp6w66VgT3C
+	R6Dj8GSpsOCPxT3JuFLpUjLywKI9I4CPUym4abx/Z8IVlj4+0osYzfgaU3HeagQjrYhpfx6eH2v
+	a77KHvHW+Xek7Kv3B4ixRRgY=
+X-Received: by 2002:a05:6a00:3409:b0:847:82db:9046 with SMTP id d2e1a72fcca58-847f6e23426mr3892380b3a.26.1783189962373;
+        Sat, 04 Jul 2026 11:32:42 -0700 (PDT)
+X-Received: by 2002:a05:6a00:3409:b0:847:82db:9046 with SMTP id d2e1a72fcca58-847f6e23426mr3892367b3a.26.1783189961907;
+        Sat, 04 Jul 2026 11:32:41 -0700 (PDT)
 Received: from [192.168.1.100] ([151.243.38.149])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6b6057dsm1508437b3a.7.2026.07.04.11.32.26
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6b6057dsm1508437b3a.7.2026.07.04.11.32.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jul 2026 11:32:31 -0700 (PDT)
+        Sat, 04 Jul 2026 11:32:40 -0700 (PDT)
 From: Ze Huang <ze.huang@oss.qualcomm.com>
-Subject: [PATCH 0/9] drm: replace simple display pipe users with atomic
- helpers
-Date: Sun, 05 Jul 2026 02:31:09 +0800
-Message-Id: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com>
+Date: Sun, 05 Jul 2026 02:31:10 +0800
+Subject: [PATCH 1/9] drm/arcpgu: replace struct drm_simple_display_pipe
+ with regular atomic helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -88,11 +90,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NQQ6CMBBFr0Jm7SRtNRC5imFRyqijFLBTCAnh7
- rbi8iX/v7eBUGASqIsNAi0sPA4J9KkA97TDg5C7xGCUKVWlLtgFj8J+6gnfXjCQHxfbo9JWnbU
- rrTZXSOcp0J3Xn/jWHCxz+yIXs+2/CPSZUzEeM2itELrRe451kTsDrRFzGVWJpoJm37+GdJ5Cs
- QAAAA==
-X-Change-ID: 20260704-drm-simple-kms-removal-01a031c6a129
+Message-Id: <20260705-drm-simple-kms-removal-v1-1-b4e1ca053623@oss.qualcomm.com>
+References: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com>
+In-Reply-To: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com>
 To: Alexey Brodkin <abrodkin@synopsys.com>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <mripard@kernel.org>,
@@ -111,118 +111,337 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         imx@lists.linux.dev, xen-devel@lists.xenproject.org,
         Ze Huang <ze.huang@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783189912; l=3497;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783189912; l=10574;
  i=ze.huang@oss.qualcomm.com; s=20260704; h=from:subject:message-id;
- bh=a3oJlDmIy4JLxHP8+Zy827sxSxkG1qtSrEiIUv8u7fM=;
- b=oTFO2p3qM2CB2fGh5FbCqHWfsLjAUpA01rJUrP5DdH2raMv7Em7rY0rPoVQz7ExoGxuGHOYTD
- NpzXPoGsHqtBE5XHc7JyEmeSHN8I2421kM7XwjgHHvZaekp39t8rsAh
+ bh=8mMAnYSE2j9kvPoy0U0PiscxYaNacGiFej3sM2jbRJE=;
+ b=txK25+zxNcWE7LzIDK50/Vc0ek9cJ1ZHZwndvZY/Gaj4xa5vBqoV/ECCeA+Q5X53hzG7BWkCk
+ vsnaMg/njluBVTDN1MNDL31skfyvaUfXMg+jVWOC+g+y4xzRJwbd4JO
 X-Developer-Key: i=ze.huang@oss.qualcomm.com; a=ed25519;
  pk=pSsISLZF2ubEjJRmslsa6Ps4W3yAuPY7yaircQTlQQU=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA0MDE5MiBTYWx0ZWRfX4AIq93cpOeO/
- Zf2PIgnzza2qLNd6spx/OldHIOZq4N4WFl744nEBn22vgBAddTKbpnC2QHAGW1cl+R0P0ktXuXn
- BY4Ea+jKxpVkjdyC++hcc3yi4KaYkSPNcz63h8UBUSnYLOgNvce77JwnB78htstEFYcpoIlzm/V
- kE436XYkn7YbRVSQ06IYrVKykQQDtr1XRkQHoDAvv+emKoaPx4HVivzALTdYKfT0UHbtBFEjMlE
- NAfr5B/QB3AnYPBqlrkLG+RCIgeYMmGXBtUOOQF9rO0wwL7m97QQEKu1gkege+hnKDWUVVsbG7a
- L36qzGpSNIqCibxug3CFPu75BJmaDnoMgEYlU8XzS5td/FzsGmkp3K1qo/56q1qqFt7oREc7ZK1
- VIi1yr+jYrGPq+mKweqXXatJd0emFoDwqYMCXZQQdqbk+afMU8wIpDm8VgHLErtl7bIJjzog8PF
- I7mp3qt/p33j5c0RHCQ==
-X-Proofpoint-ORIG-GUID: QXH41GTwFg-xhuzuRdcGTp0_OEMmlloS
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA0MDE5MiBTYWx0ZWRfX5ziNJTQmXnfn
- T5P9Ok4HJHFWF5t8l+OJ+WWlUb9XTm6VZUKg1KO93o4RIJ+JUK5lqOVMuSVzG8bE5amVcfNWtLo
- fjWvhMYx7h9ZBicYqDNehtTuGx/tdt8=
-X-Proofpoint-GUID: QXH41GTwFg-xhuzuRdcGTp0_OEMmlloS
-X-Authority-Analysis: v=2.4 cv=H6TrBeYi c=1 sm=1 tr=0 ts=6a4951c2 cx=c_pps
- a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=cNux22OjBTKCC6TmznXXXA==:17
+X-Proofpoint-ORIG-GUID: onvzWspzy-TueiuPIM_kW7ZziI-ly3IL
+X-Proofpoint-GUID: onvzWspzy-TueiuPIM_kW7ZziI-ly3IL
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA0MDE5MiBTYWx0ZWRfXzKeF5um8UdJo
+ 5atT1KVw6FoHQ6dqy+cj47IGLEGt6xODLRmS4s0TKmgUBz0kgGV212X0n46z+xT+Fz+hZ85PA7m
+ iMEFnHE0EBUBn3HJz8VqlW3XccigxsY=
+X-Authority-Analysis: v=2.4 cv=MZxcfZ/f c=1 sm=1 tr=0 ts=6a4951cb cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=cNux22OjBTKCC6TmznXXXA==:17
  a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=EUspDBNiAAAA:8 a=mcgfQexBA9BlAWrkqKUA:9 a=QEXdDO2ut3YA:10
- a=OpyuDcXvxspvyRM73sMx:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=EUspDBNiAAAA:8 a=GdXnK45ANdTc1KOwPkkA:9 a=QEXdDO2ut3YA:10
+ a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA0MDE5MiBTYWx0ZWRfX4bxp1RT2xYsO
+ HJ940cnuZpV/ucVnWL/MU80oGmpVnJinBh0twWrK5Mgxg3dqpSi1bJkSCo5Gy0ZJWRUZm8eS0N1
+ 004SHlLXNm9dbB34xkGujKqLgoMyhA8cyPsnp/OyvSKC/u9w+Qzyjc9FHYWHVqEKiVqmPNBwALa
+ 62dUqk9sqadIB+nJBjdMd97ihkCPIw92EShSMAOnKF4nq9SfpbNFodjNE8m4FwVqd95uKhf270h
+ wN0/G/a2pGrkNoCx4yxhRK8IefkHioIKBI1AX9R0Gl85IXVjvzQqcqM35reibfXuXeI9ZVktW7o
+ LUXQLHO1j18Ex0MRz0lexeBqRWfkd79ZVntPp7gGUFrJjJo8YneEQcaHlyvKt7wkTG6ea5ZFFRD
+ s6B8+2hAXtU8sse0FPLKmWctBjvNJ/P4DERZM92PZQUQCgU1Q7X2GhPqt8nuWY3ZuYYByZo4y/t
+ FMXcNAJmt9uFe65XPWQ==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-07-04_02,2026-07-03_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1011 priorityscore=1501
- lowpriorityscore=0 suspectscore=0 bulkscore=0 impostorscore=0 adultscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607040192
+ clxscore=1011 priorityscore=1501 impostorscore=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607040192
 
-struct drm_simple_display_pipe was meant to simplify simple DRM
-drivers, but instead adds an extra wrapper around normal DRM atomic
-helper setup. As noted in Documentation/gpu/todo.rst, remaining users
-should be converted to regular atomic helpers and stop depending on the
-simple-KMS interfaces.
+Instantiate plane, CRTC and encoder directly and wire them up with
+standard atomic helpers.
 
-This series converts the following drivers:
-
-  - arcpgu
-  - aspeed
-  - imx lcdc
-  - mcde
-  - pl111
-  - gm12u320
-  - repaper
-  - tve200
-  - xen frontend
-
-Each patch replaces drm_simple_display_pipe_init() with explicit
-primary plane, CRTC and encoder setup, and moves the old simple-pipe
-callbacks into regular plane and CRTC helper callbacks named according
-to local driver conventions.
-
-The conversions preserve helper behavior that used to be implicit in
-drm_simple_kms_helper.c, including plane-state validation, CRTC
-primary-plane checks, affected-plane propagation, framebuffer prepare
-handling, and existing event/vblank flow where applicable.
-
-Result is less helper indirection and more explicit driver-side atomic
-wiring, with no remaining simple-KMS dependency in these drivers.
-
-These changes are build-tested only. No hardware testing has been
-performed on the affected devices.
-
-This series is based on drm-next-2026-06-27.
-
-Thanks,
-Ze Huang
+This removes arcpgu's dependency on deprecated simple-KMS display pipe
+interface.
 
 Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
 ---
-Ze Huang (9):
-      drm/arcpgu: replace struct drm_simple_display_pipe with regular atomic helpers
-      drm/aspeed: replace struct drm_simple_display_pipe with regular atomic helpers
-      drm/imx: replace struct drm_simple_display_pipe with regular atomic helpers
-      drm/mcde: replace struct drm_simple_display_pipe with regular atomic helpers
-      drm/pl111: replace struct drm_simple_display_pipe with regular atomic helpers
-      drm/gm12u320: replace struct drm_simple_display_pipe with regular atomic helpers
-      drm/repaper: replace struct drm_simple_display_pipe with regular atomic helpers
-      drm/tve200: replace struct drm_simple_display_pipe with regular atomic helpers
-      drm/xen: replace struct drm_simple_display_pipe with regular atomic helpers
+ drivers/gpu/drm/tiny/arcpgu.c | 165 +++++++++++++++++++++++++++++++++---------
+ 1 file changed, 131 insertions(+), 34 deletions(-)
 
- drivers/gpu/drm/aspeed/aspeed_gfx.h      |   5 +-
- drivers/gpu/drm/aspeed/aspeed_gfx_crtc.c | 156 ++++++++++++++++------
- drivers/gpu/drm/aspeed/aspeed_gfx_drv.c  |   3 +-
- drivers/gpu/drm/imx/lcdc/imx-lcdc.c      | 178 ++++++++++++++++++-------
- drivers/gpu/drm/mcde/mcde_display.c      | 162 ++++++++++++++++------
- drivers/gpu/drm/mcde/mcde_drm.h          |   6 +-
- drivers/gpu/drm/mcde/mcde_drv.c          |   3 +-
- drivers/gpu/drm/pl111/pl111_display.c    | 174 ++++++++++++++++++------
- drivers/gpu/drm/pl111/pl111_drm.h        |   5 +-
- drivers/gpu/drm/pl111/pl111_drv.c        |   3 +-
- drivers/gpu/drm/tiny/arcpgu.c            | 165 ++++++++++++++++++-----
- drivers/gpu/drm/tiny/gm12u320.c          | 128 ++++++++++++++----
- drivers/gpu/drm/tiny/repaper.c           | 130 ++++++++++++++----
- drivers/gpu/drm/tve200/tve200_display.c  | 221 +++++++++++++++++++++----------
- drivers/gpu/drm/tve200/tve200_drm.h      |   6 +-
- drivers/gpu/drm/tve200/tve200_drv.c      |  17 ++-
- drivers/gpu/drm/xen/xen_drm_front.h      |   6 +-
- drivers/gpu/drm/xen/xen_drm_front_kms.c  | 177 +++++++++++++++++++------
- 18 files changed, 1164 insertions(+), 381 deletions(-)
----
-base-commit: 3696d07837d1df13a5603d77f667685e7dfb3c53
-change-id: 20260704-drm-simple-kms-removal-01a031c6a129
+diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
+index c93d61ac0bb7..375cdb79e4e8 100644
+--- a/drivers/gpu/drm/tiny/arcpgu.c
++++ b/drivers/gpu/drm/tiny/arcpgu.c
+@@ -17,12 +17,12 @@
+ #include <drm/drm_fbdev_dma.h>
+ #include <drm/drm_fourcc.h>
+ #include <drm/drm_framebuffer.h>
++#include <drm/drm_gem_atomic_helper.h>
+ #include <drm/drm_gem_dma_helper.h>
+ #include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_module.h>
+ #include <drm/drm_of.h>
+ #include <drm/drm_probe_helper.h>
+-#include <drm/drm_simple_kms_helper.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/module.h>
+ #include <linux/of_reserved_mem.h>
+@@ -52,14 +52,14 @@ struct arcpgu_drm_private {
+ 	struct drm_device	drm;
+ 	void __iomem		*regs;
+ 	struct clk		*clk;
+-	struct drm_simple_display_pipe pipe;
++	struct drm_plane	plane;
++	struct drm_crtc		crtc;
++	struct drm_encoder	encoder;
+ 	struct drm_connector	sim_conn;
+ };
+ 
+ #define dev_to_arcpgu(x) container_of(x, struct arcpgu_drm_private, drm)
+ 
+-#define pipe_to_arcpgu_priv(x) container_of(x, struct arcpgu_drm_private, pipe)
+-
+ static inline void arc_pgu_write(struct arcpgu_drm_private *arcpgu,
+ 				 unsigned int reg, u32 value)
+ {
+@@ -117,7 +117,7 @@ static const u32 arc_pgu_supported_formats[] = {
+ 
+ static void arc_pgu_set_pxl_fmt(struct arcpgu_drm_private *arcpgu)
+ {
+-	const struct drm_framebuffer *fb = arcpgu->pipe.plane.state->fb;
++	const struct drm_framebuffer *fb = arcpgu->plane.state->fb;
+ 	uint32_t pixel_format = fb->format->format;
+ 	u32 format = DRM_FORMAT_INVALID;
+ 	int i;
+@@ -139,10 +139,10 @@ static void arc_pgu_set_pxl_fmt(struct arcpgu_drm_private *arcpgu)
+ 	arc_pgu_write(arcpgu, ARCPGU_REG_CTRL, reg_ctrl);
+ }
+ 
+-static enum drm_mode_status arc_pgu_mode_valid(struct drm_simple_display_pipe *pipe,
+-					       const struct drm_display_mode *mode)
++static enum drm_mode_status arcpgu_crtc_helper_mode_valid(struct drm_crtc *crtc,
++							  const struct drm_display_mode *mode)
+ {
+-	struct arcpgu_drm_private *arcpgu = pipe_to_arcpgu_priv(pipe);
++	struct arcpgu_drm_private *arcpgu = dev_to_arcpgu(crtc->dev);
+ 	long rate, clk_rate = mode->clock * 1000;
+ 	long diff = clk_rate / 200; /* +-0.5% allowed by HDMI spec */
+ 
+@@ -155,7 +155,7 @@ static enum drm_mode_status arc_pgu_mode_valid(struct drm_simple_display_pipe *p
+ 
+ static void arc_pgu_mode_set(struct arcpgu_drm_private *arcpgu)
+ {
+-	struct drm_display_mode *m = &arcpgu->pipe.crtc.state->adjusted_mode;
++	struct drm_display_mode *m = &arcpgu->crtc.state->adjusted_mode;
+ 	u32 val;
+ 
+ 	arc_pgu_write(arcpgu, ARCPGU_REG_FMT,
+@@ -194,11 +194,10 @@ static void arc_pgu_mode_set(struct arcpgu_drm_private *arcpgu)
+ 	clk_set_rate(arcpgu->clk, m->crtc_clock * 1000);
+ }
+ 
+-static void arc_pgu_enable(struct drm_simple_display_pipe *pipe,
+-			   struct drm_crtc_state *crtc_state,
+-			   struct drm_plane_state *plane_state)
++static void arcpgu_crtc_helper_atomic_enable(struct drm_crtc *crtc,
++					     struct drm_atomic_commit *state)
+ {
+-	struct arcpgu_drm_private *arcpgu = pipe_to_arcpgu_priv(pipe);
++	struct arcpgu_drm_private *arcpgu = dev_to_arcpgu(crtc->dev);
+ 
+ 	arc_pgu_mode_set(arcpgu);
+ 
+@@ -208,9 +207,10 @@ static void arc_pgu_enable(struct drm_simple_display_pipe *pipe,
+ 		      ARCPGU_CTRL_ENABLE_MASK);
+ }
+ 
+-static void arc_pgu_disable(struct drm_simple_display_pipe *pipe)
++static void arcpgu_crtc_helper_atomic_disable(struct drm_crtc *crtc,
++					      struct drm_atomic_commit *state)
+ {
+-	struct arcpgu_drm_private *arcpgu = pipe_to_arcpgu_priv(pipe);
++	struct arcpgu_drm_private *arcpgu = dev_to_arcpgu(crtc->dev);
+ 
+ 	clk_disable_unprepare(arcpgu->clk);
+ 	arc_pgu_write(arcpgu, ARCPGU_REG_CTRL,
+@@ -218,35 +218,106 @@ static void arc_pgu_disable(struct drm_simple_display_pipe *pipe)
+ 			      ~ARCPGU_CTRL_ENABLE_MASK);
+ }
+ 
+-static void arc_pgu_update(struct drm_simple_display_pipe *pipe,
+-			   struct drm_plane_state *state)
++static void arcpgu_plane_helper_atomic_update(struct drm_plane *plane,
++					      struct drm_atomic_commit *state)
+ {
+ 	struct arcpgu_drm_private *arcpgu;
+ 	struct drm_gem_dma_object *gem;
+ 
+-	if (!pipe->plane.state->fb)
++	if (!plane->state->fb)
+ 		return;
+ 
+-	arcpgu = pipe_to_arcpgu_priv(pipe);
+-	gem = drm_fb_dma_get_gem_obj(pipe->plane.state->fb, 0);
++	arcpgu = dev_to_arcpgu(plane->dev);
++	gem = drm_fb_dma_get_gem_obj(plane->state->fb, 0);
+ 	arc_pgu_write(arcpgu, ARCPGU_REG_BUF0_ADDR, gem->dma_addr);
+ }
+ 
+-static const struct drm_simple_display_pipe_funcs arc_pgu_pipe_funcs = {
+-	.update = arc_pgu_update,
+-	.mode_valid = arc_pgu_mode_valid,
+-	.enable	= arc_pgu_enable,
+-	.disable = arc_pgu_disable,
+-};
+-
+ static const struct drm_mode_config_funcs arcpgu_drm_modecfg_funcs = {
+-	.fb_create  = drm_gem_fb_create,
++	.fb_create = drm_gem_fb_create,
+ 	.atomic_check = drm_atomic_helper_check,
+ 	.atomic_commit = drm_atomic_helper_commit,
+ };
+ 
+ DEFINE_DRM_GEM_DMA_FOPS(arcpgu_drm_ops);
+ 
++static int arcpgu_plane_helper_atomic_check(struct drm_plane *plane,
++					    struct drm_atomic_commit *state)
++{
++	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(state, plane);
++	struct drm_crtc *crtc = plane_state->crtc;
++	struct drm_crtc_state *crtc_state = NULL;
++	int ret;
++
++	if (crtc)
++		crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
++
++	ret = drm_atomic_helper_check_plane_state(plane_state, crtc_state,
++						  DRM_PLANE_NO_SCALING,
++						  DRM_PLANE_NO_SCALING,
++						  false, false);
++	return ret;
++}
++
++static const struct drm_plane_helper_funcs arcpgu_plane_helper_funcs = {
++	.prepare_fb	= drm_gem_plane_helper_prepare_fb,
++	.atomic_check	= arcpgu_plane_helper_atomic_check,
++	.atomic_update	= arcpgu_plane_helper_atomic_update,
++};
++
++static bool arcpgu_plane_format_mod_supported(struct drm_plane *plane,
++					      u32 format,
++					      u64 modifier)
++{
++	return modifier == DRM_FORMAT_MOD_LINEAR;
++}
++
++static const struct drm_plane_funcs arcpgu_plane_funcs = {
++	.update_plane		= drm_atomic_helper_update_plane,
++	.disable_plane		= drm_atomic_helper_disable_plane,
++	.destroy		= drm_plane_cleanup,
++	.reset			= drm_atomic_helper_plane_reset,
++	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
++	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
++	.format_mod_supported	= arcpgu_plane_format_mod_supported,
++};
++
++static int arcpgu_crtc_helper_atomic_check(struct drm_crtc *crtc,
++					   struct drm_atomic_commit *state)
++{
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
++	int ret;
++
++	if (!crtc_state->enable)
++		goto out;
++
++	ret = drm_atomic_helper_check_crtc_primary_plane(crtc_state);
++	if (ret)
++		return ret;
++
++out:
++	return drm_atomic_add_affected_planes(state, crtc);
++}
++
++static const struct drm_crtc_helper_funcs arcpgu_crtc_helper_funcs = {
++	.mode_valid	= arcpgu_crtc_helper_mode_valid,
++	.atomic_check	= arcpgu_crtc_helper_atomic_check,
++	.atomic_enable	= arcpgu_crtc_helper_atomic_enable,
++	.atomic_disable	= arcpgu_crtc_helper_atomic_disable,
++};
++
++static const struct drm_crtc_funcs arcpgu_crtc_funcs = {
++	.reset			= drm_atomic_helper_crtc_reset,
++	.destroy		= drm_crtc_cleanup,
++	.set_config		= drm_atomic_helper_set_config,
++	.page_flip		= drm_atomic_helper_page_flip,
++	.atomic_duplicate_state	= drm_atomic_helper_crtc_duplicate_state,
++	.atomic_destroy_state	= drm_atomic_helper_crtc_destroy_state,
++};
++
++static const struct drm_encoder_funcs arcpgu_encoder_funcs = {
++	.destroy = drm_encoder_cleanup,
++};
++
+ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+ {
+ 	struct platform_device *pdev = to_platform_device(arcpgu->drm.dev);
+@@ -254,6 +325,9 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+ 	struct device_node *endpoint_node = NULL;
+ 	struct drm_connector *connector = NULL;
+ 	struct drm_device *drm = &arcpgu->drm;
++	struct drm_plane *plane;
++	struct drm_encoder *encoder;
++	struct drm_crtc *crtc;
+ 	int ret;
+ 
+ 	arcpgu->clk = devm_clk_get(drm->dev, "pxlclk");
+@@ -301,12 +375,35 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+ 			return ret;
+ 	}
+ 
+-	ret = drm_simple_display_pipe_init(drm, &arcpgu->pipe, &arc_pgu_pipe_funcs,
+-					   arc_pgu_supported_formats,
+-					   ARRAY_SIZE(arc_pgu_supported_formats),
+-					   NULL, connector);
++	plane = &arcpgu->plane;
++	ret = drm_universal_plane_init(drm, plane, 0,
++				       &arcpgu_plane_funcs,
++				       arc_pgu_supported_formats,
++				       ARRAY_SIZE(arc_pgu_supported_formats),
++				       NULL,
++				       DRM_PLANE_TYPE_PRIMARY, NULL);
+ 	if (ret)
+ 		return ret;
++	drm_plane_helper_add(plane, &arcpgu_plane_helper_funcs);
++
++	crtc = &arcpgu->crtc;
++	ret = drm_crtc_init_with_planes(drm, crtc, plane, NULL,
++					&arcpgu_crtc_funcs, NULL);
++	if (ret)
++		return ret;
++	drm_crtc_helper_add(crtc, &arcpgu_crtc_helper_funcs);
++
++	encoder = &arcpgu->encoder;
++	ret = drm_encoder_init(drm, encoder, &arcpgu_encoder_funcs, DRM_MODE_ENCODER_NONE, NULL);
++	if (ret)
++		return ret;
++	encoder->possible_crtcs = drm_crtc_mask(crtc);
++
++	if (connector) {
++		ret = drm_connector_attach_encoder(connector, encoder);
++		if (ret)
++			return ret;
++	}
+ 
+ 	if (encoder_node) {
+ 		/* Locate drm bridge from the hdmi encoder DT node */
+@@ -315,7 +412,7 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+ 		if (!bridge)
+ 			return -EPROBE_DEFER;
+ 
+-		ret = drm_simple_display_pipe_attach_bridge(&arcpgu->pipe, bridge);
++		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -342,7 +439,7 @@ static int arcpgu_show_pxlclock(struct seq_file *m, void *arg)
+ 	struct drm_device *drm = node->minor->dev;
+ 	struct arcpgu_drm_private *arcpgu = dev_to_arcpgu(drm);
+ 	unsigned long clkrate = clk_get_rate(arcpgu->clk);
+-	unsigned long mode_clock = arcpgu->pipe.crtc.mode.crtc_clock * 1000;
++	unsigned long mode_clock = arcpgu->crtc.mode.crtc_clock * 1000;
+ 
+ 	seq_printf(m, "hw  : %lu\n", clkrate);
+ 	seq_printf(m, "mode: %lu\n", mode_clock);
 
-Best regards,
---  
-Ze Huang <ze.huang@oss.qualcomm.com>
+-- 
+2.55.0
 
