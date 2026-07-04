@@ -1,142 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC686314A84
-	for <imx@lists.linux.dev>; Sat,  4 Jul 2026 10:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36C2DDC5
+	for <imx@lists.linux.dev>; Sat,  4 Jul 2026 10:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783161829; cv=none; b=G7Z0VjyLQw/mtaq0J59dLiSPMwQXgduZlohgXdqhuYPWvasHzUiOA3wT+mOCBUr5opT5Dw9z/Cl4WKc6NpBZTpcB0Q7Ymw6Tj3G3x1XdPTu04cSLhrXd5dwoY7+bQ6lmtuw7QsOBCn6NvRANItEl9wK/LSjOCbAAmQTFx61aMdE=
+	t=1783161829; cv=none; b=tyj4Ag7uTgHWC8FKab3X5tCnfJfddBaU/38m8WnvUHw5wZ9L9/Qf0obLUi5Z+WVzpyWpjAYEb3sW/PCR+uWcZKz08o6Mp3fNG1FTNpbsvkzBGkseFpgBDO1Up+2b/9qPkCzJ9EHsuDvGFZIyJybYFAbijorUBfdbdND28lMQUdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783161829; c=relaxed/simple;
-	bh=/McM7el0YTQq4uCAUyk3sRfocMUj+NC2csX5/bKlYbw=;
+	bh=6a1uVsj3orgv75/FN9LP/a08pRuzo/YQeYF0AQYPNAM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JzAXKuLvpEuXjZiw58f5EAENKAuTeCCzy4YTicJrYl8rb/PPGE8F6OO5YAYbJfyhx2J3/i4zXIhNJwIMHzJQkolrE6T/RlQzLcDeW4FLd79A2RPMX7jmoRtQvBzvuxSJeKGCW40+6ABeWtQ5lOigzKfF+Gj/1ze/oXlm0q1RpHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LHYzliBf; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=f/H2a2tE+Pzun8L+kxuT+2BVrcfO3RA73BFmLa9PWz7TpoEBpG+K6plziMNM3WZZlV5YR51tzpkdmZTBzBiWEdI1GnxXQ8SZXCP6MW3nn3XJu+VbLz7JPdAxab0u8d4tA8RhGO8vaR+2qzWv8lCOtuqjDlLGUuh0TX1r7pqIbIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqLPh0E9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LHYzliBf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969BB1F00A3A;
-	Sat,  4 Jul 2026 10:43:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqLPh0E9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5374F1F000E9;
+	Sat,  4 Jul 2026 10:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783161827;
-	bh=tZQEHCrr6f56zJLIH8mXIzFRE5MhkzeQ2MSbDNr+4UA=;
+	s=k20260515; t=1783161828;
+	bh=5AM5tq5tiLlxHrAEDBlds3ZkLRmbIQx7BOnzlZIvjtE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LHYzliBfrZW+PtKAg6JGeu7c4MWpXDCbd+VPqPdcm4u0kQR1UdrxIRr+n8E5lj4HK
-	 uTYXj+CLrZlEx6g7WTPD+g199yYPCQZxbG/y2X49YYBCqJA7F4YdROnXpzH7IkDq/6
-	 F9SLzefqU44yn46tL0ntDRRxN8gfHVazHfE5EJlJhg8+p+cFNO/PO++DU2/7q30A1B
-	 kJ8AANRL7OAfnBlxVyZ1+IYNOg1jEK5M1QDLXslOsmrDWxy2vQvzDpp+lwvabzBXZ4
-	 Z3F6BfLecMOSvQIC4mVQE4sY3lrVHE9B0kIZpm8cP5z4r+s4ITpXCLYCZxXce7u5AI
-	 66Y8ozLjDIyrw==
+	b=dqLPh0E9FsXIsdzTiOJ05NDLPiUkYYr09i/WDw6JzaICLHUHAWOX11Zw8glv5CXSP
+	 z6mqIzfQGmTr4sckRIUaWX2qG9GmBcSq8MoOYqQ73MkzKPvSqP2aGWqu2v275dwlTm
+	 73l6WnMvSDwYnxonmyQzurY+fKiU4nw9If0dqG018YArOol6nXeBzpjJbxbG+FI9jZ
+	 2TeRb0YdSc1J640n6gCbMIfTt0NxzmxF6yUR93bRofZP017RZdYkWEWWtkShF7MwN6
+	 jlKKeSAFec+HzB7juHyZ/grwPnkzU0/+8JByFzd4zZi7/BvIjXlaQX1KmEc1qOa69l
+	 38CfbJOObPZ4g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 net-next 13/14] net: enetc: use alloc_etherdev_mqs()
- to create netdev for VF driver
+Subject: Re: [PATCH v3 net-next 14/14] net: enetc: use kzalloc_flex() for
+ enetc_psfp_gate allocation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260703101328.550714-14-wei.fang@oss.nxp.com>
+In-Reply-To: <20260703101328.550714-15-wei.fang@oss.nxp.com>
 References: <20260703101328.550714-1-wei.fang@oss.nxp.com>
- <20260703101328.550714-14-wei.fang@oss.nxp.com>
+ <20260703101328.550714-15-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Sat, 04 Jul 2026 10:43:47 +0000
-Message-Id: <20260704104347.969BB1F00A3A@smtp.kernel.org>
+Message-Id: <20260704104348.5374F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Hardware-provided values for TX/RX rings are not bounded against i=
-nternal fixed-size arrays, leading to out-of-bounds memory writes.
-- [High] Missing `cancel_work_sync` for `tx_onestep_tstamp` leads to a Use-=
-After-Free when the device is removed.
+- [High] This problem wasn't introduced by this patch, but the error rollba=
+ck path in `enetc_psfp_hw_set()` breaks existing hardware state by uncondit=
+ionally reverting shared resources.
 --
 
-commit bc3a89d79f3274d57f2fc8eeefc80908aed8f007
+commit 6d57d48e343452bcc08a00c11bfae2b630b9f68a
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: use alloc_etherdev_mqs() to create netdev for VF driver
-   =20
-The VF driver uses alloc_etherdev_mq() with ENETC_MAX_NUM_TXQS as the
-queue count, which forces the TX and RX queue counts to be equal and
-uses a compile-time constant rather than the actual hardware capability.
-This patch switches to alloc_etherdev_mqs() so that the TX and RX queue
-counts are set independently based on the actual rings assigned.
+net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_vf.c
-> index 9cdb0a4d6bafb..7dcb4a0246f52 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> @@ -317,7 +317,14 @@ static int enetc_vf_probe(struct pci_dev *pdev,
-> =20
->  	enetc_get_si_caps(si);
-> =20
+This patch replaces the open-coded struct_size() + kzalloc() pattern with
+the kzalloc_flex() helper when allocating struct enetc_psfp_gate. This
+removes the intermediate entries_size local variable and makes the
+allocation site more concise.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but can a malicious PF or
-hypervisor cause an out-of-bounds write here?
-
-Looking at enetc_get_si_caps(), it reads si->num_tx_rings and
-si->num_rx_rings directly from the hardware register ENETC_SICAPR0 and
-masks them with 0xff. This allows values up to 255.
-
-While this patch properly bounds the values passed to alloc_etherdev_mqs()
-using min(), the driver's internal arrays priv->tx_ring (size 16) and
-priv->int_vector (size ENETC_MAX_BDR_INT) are still exposed to these
-unbounded hardware values. During initialization, enetc_int_vector_init()
-writes to these arrays using the unbounded ring counts, which could
-overflow the fixed-size arrays.
-
-Should the hardware capabilities be explicitly bounded against the internal
-array sizes when they are read in enetc_get_si_caps()?
-
-> -	ndev =3D alloc_etherdev_mq(sizeof(*priv), ENETC_MAX_NUM_TXQS);
-> +	/* Currently, the supported SoCs have a max of 6 CPUs and the VFs
-> +	 * have less than 6 RX/TX rings. So no issues for these supported
-> +	 * SoCs, but for future SoCs which have more CPUs or more TX/RX
-> +	 * rings, all the related logic needs to be improved.
-> +	 */
-> +	ndev =3D alloc_etherdev_mqs(sizeof(*priv),
-> +				  min(si->num_tx_rings, ENETC_MAX_NUM_TXQS),
-> +				  min(si->num_rx_rings, ENETC_MAX_NUM_TXQS));
->  	if (!ndev) {
->  		err =3D -ENOMEM;
->  		dev_err(&pdev->dev, "netdev creation failed\n");
-
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc_qos.c
+> index 7b17bca24f260..2aa0fcaafcd23 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
 [ ... ]
-
->  err_alloc_si_res:
->  	si->ops->teardown_cbdr(si);
->  err_setup_cbdr:
->  	si->ndev =3D NULL;
->  	free_netdev(ndev);
+> @@ -1242,8 +1241,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_=
+ndev_priv *priv,
+>  		goto free_filter;
+>  	}
+> =20
+> -	entries_size =3D struct_size(sgi, entries, entryg->gate.num_entries);
+> -	sgi =3D kzalloc(entries_size, GFP_KERNEL);
+> +	sgi =3D kzalloc_flex(*sgi, entries, entryg->gate.num_entries);
+>  	if (!sgi) {
+>  		err =3D -ENOMEM;
+>  		goto free_filter;
 
 [Severity: High]
-This is a pre-existing issue, but does this driver have a use-after-free
-risk during device removal?
+This isn't a bug introduced by this patch, but while reviewing this code I
+noticed an issue with the error rollback path in enetc_psfp_hw_set() which =
+is
+called shortly after this allocation.
 
-In the device removal path enetc_vf_remove(), which similarly calls
-free_netdev(), the driver unregisters and frees the netdev (which also
-frees the priv structure) without first calling
-cancel_work_sync(&priv->tx_onestep_tstamp).
+When enetc_psfp_hw_set() fails, it unconditionally disables the stream gate=
+ in
+hardware:
 
-If a user requests hardware timestamping for outgoing packets and the
-device is concurrently unbound, could the background workqueue thread
-execute enetc_tx_onestep_tstamp() and dereference the freed priv pointer?
+drivers/net/ethernet/freescale/enetc/enetc_qos.c:enetc_psfp_hw_set() {
+    ...
+    if (fmi) {
+        err =3D enetc_flowmeter_hw_set(priv, fmi, true);
+        if (err)
+            goto revert_sgi;
+    }
+    ...
+revert_sgi:
+    enetc_streamgate_hw_set(priv, sgi, false);
+    ...
+}
 
->  err_alloc_netdev:
->  err_get_driver_data:
->  	msg =3D si->msg;
->  	enetc_pci_remove(pdev);
->  	enetc_msg_dma_free(&pdev->dev, &msg);
-> =20
->  	return err;
->  }
+Because enetc_psfp_parse_clsflower() allows stream gates to be shared and
+reused across multiple filters (via enetc_get_gate_by_index()), could this
+rollback path break existing hardware state?
+
+If a user adds a new tc-flower filter that reuses an existing stream gate
+index, and a subsequent hardware setup step fails, the error handling path
+blindly calls enetc_streamgate_hw_set(..., false). Will this disable the
+already active stream gate and break all other filters relying on it?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703101328.5507=
-14-1-wei.fang@oss.nxp.com?part=3D13
+14-1-wei.fang@oss.nxp.com?part=3D14
