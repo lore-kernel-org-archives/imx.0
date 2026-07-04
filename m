@@ -1,119 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36C2DDC5
-	for <imx@lists.linux.dev>; Sat,  4 Jul 2026 10:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF80FC0A
+	for <imx@lists.linux.dev>; Sat,  4 Jul 2026 15:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783161829; cv=none; b=tyj4Ag7uTgHWC8FKab3X5tCnfJfddBaU/38m8WnvUHw5wZ9L9/Qf0obLUi5Z+WVzpyWpjAYEb3sW/PCR+uWcZKz08o6Mp3fNG1FTNpbsvkzBGkseFpgBDO1Up+2b/9qPkCzJ9EHsuDvGFZIyJybYFAbijorUBfdbdND28lMQUdM=
+	t=1783177436; cv=none; b=GbpBUI/e2fZ3UCIv4/29qsiTXTuyo5ZkKskRrVRAcXhaynIOIka9mpsBn6zy/CRE+7C6sIVA8ksgr3Gtng1iJcjImXp6dmqisoH7bPKnTuIgEHpO2k/kY3QF7+OAoXx0uPDN4bQ4CCuxrkTxgMpW6AN/a2PHF+6Z9Brc12EDqo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783161829; c=relaxed/simple;
-	bh=6a1uVsj3orgv75/FN9LP/a08pRuzo/YQeYF0AQYPNAM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=f/H2a2tE+Pzun8L+kxuT+2BVrcfO3RA73BFmLa9PWz7TpoEBpG+K6plziMNM3WZZlV5YR51tzpkdmZTBzBiWEdI1GnxXQ8SZXCP6MW3nn3XJu+VbLz7JPdAxab0u8d4tA8RhGO8vaR+2qzWv8lCOtuqjDlLGUuh0TX1r7pqIbIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqLPh0E9; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqLPh0E9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5374F1F000E9;
-	Sat,  4 Jul 2026 10:43:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783161828;
-	bh=5AM5tq5tiLlxHrAEDBlds3ZkLRmbIQx7BOnzlZIvjtE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dqLPh0E9FsXIsdzTiOJ05NDLPiUkYYr09i/WDw6JzaICLHUHAWOX11Zw8glv5CXSP
-	 z6mqIzfQGmTr4sckRIUaWX2qG9GmBcSq8MoOYqQ73MkzKPvSqP2aGWqu2v275dwlTm
-	 73l6WnMvSDwYnxonmyQzurY+fKiU4nw9If0dqG018YArOol6nXeBzpjJbxbG+FI9jZ
-	 2TeRb0YdSc1J640n6gCbMIfTt0NxzmxF6yUR93bRofZP017RZdYkWEWWtkShF7MwN6
-	 jlKKeSAFec+HzB7juHyZ/grwPnkzU0/+8JByFzd4zZi7/BvIjXlaQX1KmEc1qOa69l
-	 38CfbJOObPZ4g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 net-next 14/14] net: enetc: use kzalloc_flex() for
- enetc_psfp_gate allocation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: wei.fang@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260703101328.550714-15-wei.fang@oss.nxp.com>
-References: <20260703101328.550714-1-wei.fang@oss.nxp.com>
- <20260703101328.550714-15-wei.fang@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 04 Jul 2026 10:43:47 +0000
-Message-Id: <20260704104348.5374F1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1783177436; c=relaxed/simple;
+	bh=MKVVAnm6U89jXxRZqi+W60g0hZkcZvO3cUTUPItqK64=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SoZoSH1ni2UHRlct8h+a91rzWlzirJp43AlWltGfRo4BHVSfACbU4UplB8Ne2hHEjZaImG4RGkHDJ09y0VQnFQrVAUNiwfjkUKSfavKfhmYCVGbAJh0wudDtDn+N/aBNek2t0bb2Z7540QNy3IB3bZDS4KxyDH9NmEmKQbUl8XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.245.140])
+	by APP-05 (Coremail) with SMTP id zQCowABnus3SIElqjPfaFg--.1873S2;
+	Sat, 04 Jul 2026 23:03:47 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] clk: imx: imx8qxp-lpcg: add missing MODULE_DEVICE_TABLE()
+Date: Sat,  4 Jul 2026 23:01:41 +0800
+Message-ID: <20260704150344.59563-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABnus3SIElqjPfaFg--.1873S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xw47WF43Aw43JF17XrWkWFg_yoWkWFb_uF
+	18ur4fWFW8CryYk3WUKr4fZryIva47ur1kXFyIqasxta4DZr13JFZ2gwsxXw1UGry8JFZ8
+	XwnrWF48urW29jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3AFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWxJVW8Jr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26F4j6r4UJwCI42IY6I8E87Iv6xkF7I0E14v26F4UJVW0obIYCT
+	nIWIevJa73UjIFyTuYvjfUFL05UUUUU
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+The driver has a match table for the of bus wired into its driver
+structure, but the table is not exported with MODULE_DEVICE_TABLE().
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the error rollba=
-ck path in `enetc_psfp_hw_set()` breaks existing hardware state by uncondit=
-ionally reverting shared resources.
---
+Add the missing MODULE_DEVICE_TABLE() entry so module alias information
+is generated for automatic module loading.
 
-commit 6d57d48e343452bcc08a00c11bfae2b630b9f68a
-Author: Wei Fang <wei.fang@nxp.com>
+This is a source-level fix.  It does not claim dynamic hardware
+reproduction; the evidence is the driver-owned match table, its use by
+the driver registration structure, and the missing module alias
+publication.
 
-net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ drivers/clk/imx/clk-imx8qxp-lpcg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This patch replaces the open-coded struct_size() + kzalloc() pattern with
-the kzalloc_flex() helper when allocating struct enetc_psfp_gate. This
-removes the intermediate entries_size local variable and makes the
-allocation site more concise.
+diff --git a/drivers/clk/imx/clk-imx8qxp-lpcg.c b/drivers/clk/imx/clk-imx8qxp-lpcg.c
+index 1dae3410ee99..f0cf6cf91899 100644
+--- a/drivers/clk/imx/clk-imx8qxp-lpcg.c
++++ b/drivers/clk/imx/clk-imx8qxp-lpcg.c
+@@ -354,6 +354,7 @@ static const struct of_device_id imx8qxp_lpcg_match[] = {
+ 	{ .compatible = "fsl,imx8qxp-lpcg", NULL },
+ 	{ /* sentinel */ }
+ };
++MODULE_DEVICE_TABLE(of, imx8qxp_lpcg_match);
+ 
+ static struct platform_driver imx8qxp_lpcg_clk_driver = {
+ 	.driver = {
+-- 
+2.53.0
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc_qos.c
-> index 7b17bca24f260..2aa0fcaafcd23 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-[ ... ]
-> @@ -1242,8 +1241,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_=
-ndev_priv *priv,
->  		goto free_filter;
->  	}
-> =20
-> -	entries_size =3D struct_size(sgi, entries, entryg->gate.num_entries);
-> -	sgi =3D kzalloc(entries_size, GFP_KERNEL);
-> +	sgi =3D kzalloc_flex(*sgi, entries, entryg->gate.num_entries);
->  	if (!sgi) {
->  		err =3D -ENOMEM;
->  		goto free_filter;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but while reviewing this code I
-noticed an issue with the error rollback path in enetc_psfp_hw_set() which =
-is
-called shortly after this allocation.
-
-When enetc_psfp_hw_set() fails, it unconditionally disables the stream gate=
- in
-hardware:
-
-drivers/net/ethernet/freescale/enetc/enetc_qos.c:enetc_psfp_hw_set() {
-    ...
-    if (fmi) {
-        err =3D enetc_flowmeter_hw_set(priv, fmi, true);
-        if (err)
-            goto revert_sgi;
-    }
-    ...
-revert_sgi:
-    enetc_streamgate_hw_set(priv, sgi, false);
-    ...
-}
-
-Because enetc_psfp_parse_clsflower() allows stream gates to be shared and
-reused across multiple filters (via enetc_get_gate_by_index()), could this
-rollback path break existing hardware state?
-
-If a user adds a new tc-flower filter that reuses an existing stream gate
-index, and a subsequent hardware setup step fails, the error handling path
-blindly calls enetc_streamgate_hw_set(..., false). Will this disable the
-already active stream gate and break all other filters relying on it?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703101328.5507=
-14-1-wei.fang@oss.nxp.com?part=3D14
