@@ -1,121 +1,176 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AFB2F7F0D;
-	Sun,  5 Jul 2026 20:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7103033EC;
+	Sun,  5 Jul 2026 20:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783282808; cv=none; b=RqhHXoXkUZBxKLjxBIe7TE71a6ho8de+Xx14R/hlMTVdSmKdyZoN4Rup1YXBIsrGLqK9TTWVwmd04tL0FhKjoS7DvoYeQFiRkpFc22KCLX86wu/rttXExpDio70c3M8W5halS3toqK0gRxOKtGZ9OiJzl5SDFA7+Sv1X1d724p4=
+	t=1783282932; cv=none; b=NEDQkCHRd9S1OQ5GBaSB5D9f8HXL3Z/WXjQ8rqFfhQQb7n/wuhUUf79YOfpYAT3hrYhAp07zdqp8orQNmwey1i+xOO+WHNvvYNGrFYYDx0s2HOpMkYQwRmFtYvt8ikc6rwpAgOoH7puM6uEKgafoeIXuuftrhUuoJeSuzoM4Tw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783282808; c=relaxed/simple;
-	bh=OaEZaMtq4G4odncaNUhJFPtVu6XPtqpzjBRSLgjOZHc=;
+	s=arc-20240116; t=1783282932; c=relaxed/simple;
+	bh=630NZWIWghc2i1xEWQEupUfCvZrp0c+SaC+EFiCdVjw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=j2JjFZg3QcjJBMG9xDWXaqXjzSgpevSyvFJheVjjuQetfftxYbmAEIchq3Z2gtddUEXTSaIJx6E2ObdaXX9KzHlUUqwLh/Ivoqw5FZbW+Q3Ty0GZgm/cMqLfTB0mwHjtTC8eG8Go4+NPrAFV1u7J7NhEG8US38wME0q9y6fM4Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfa4ltsk; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=YjUaxLrP7tx1bsNWQ1VB1zszjagM06y5NDAAXGSeilQnHpyzQ4K7++tsm1PazZg1uYPxyxhqmA6UMSqTJXUroZarQcZyF++iWPP/zIU65K5DZbd2MsD2oasE+Kkt8mHRTYIkIl5cvDO0Iqf7LKUAiQ4+ERCvrnv3LO4SZLZ5KYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMA1D4Cf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfa4ltsk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AF01F000E9;
-	Sun,  5 Jul 2026 20:20:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMA1D4Cf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B33C1F000E9;
+	Sun,  5 Jul 2026 20:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783282807;
-	bh=TmWI8EiJGS/P23xAJ4kju+fbso66aTyfHiRYxjr1ffs=;
+	s=k20260515; t=1783282931;
+	bh=7twe035JGRukfZHpyLgKiHv9eL4dM3dECJc4yFf2aZc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jfa4ltskIf7zHhWj+F5q/NacwGeumBd5QqMcfFxxo9Noi1fPxYhmtrlTPVUb2tA/j
-	 0xwgzO7WiVERmLwdq2qmlKJzRGaE42Y6mFTd0vTycNjNFgUC9yH3h9tx7CJlmNFczf
-	 7GyWUb9liq/11LRdm7LFqleaW8+XSyQDnMwlsEhjeuxv/OVnirkDrf6t3G/Aket+uv
-	 QY9KPx4Xnz0TS6m72KW1WK+z26HzcIv0BtZFvg5rJi7jWBh4Xpm/G8HLMCWly//67o
-	 XLnmh+BIUT5HoY5I+AwAqjzTg/M2iBiIvgoPrix0dggAZUIinnDfcidNqnWdJg4YBV
-	 1OZ2vUpYO9ECA==
+	b=QMA1D4CfjV7hjCrAdz23EgdfRJfjt3L9bbm+gEyxRQcVsWsrs5Ju/28zcP6Df9zwv
+	 4RAvUg9zLd6nkkqQ37M+4wXenmK4brRgKe5fK/hrrxvZBvVMZpNYmIDtUMf0ET1GPO
+	 8e0xW63uRYIsMQZCWcbShxvzZO3HcZSrEbPW8UdDjhRYLHic/tskX+Rg2mNnaaL4rh
+	 YarHAMXjhLJZvVl3pxTQeLj5He23pM78IEhDxwcuoIdPOvsEDk2TDL7GpHJ08OBcqQ
+	 yIzbbl8MFlljYA8fcBoL9ODjbeB06bl7Jm0OhCdBInGmaJ5kHWHobOeQfdCoayag4m
+	 kt2CyK1U8WEyA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 5/6] arm64: dts: imx8mm: imx8mp: Add FIO1 DTOs for
+Subject: Re: [PATCH v4 1/6] arm64: dts: imx8mm: imx8mp: Add LVDS DTOs for
  Data Modul i.MX8M Mini and Plus eDM SBC
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Marek Vasut" <marex@nabladev.com>
-Cc: imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org
-In-Reply-To: <20260705200534.151803-5-marex@nabladev.com>
+Cc: imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260705200534.151803-1-marex@nabladev.com>
 References: <20260705200534.151803-1-marex@nabladev.com>
- <20260705200534.151803-5-marex@nabladev.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 05 Jul 2026 20:20:06 +0000
-Message-Id: <20260705202007.43AF01F000E9@smtp.kernel.org>
+Date: Sun, 05 Jul 2026 20:22:10 +0000
+Message-Id: <20260705202211.1B33C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] I2C node address collision corrupts LVDS configuration.
+- [Medium] The G215HVN011 panel overlay hardcodes the backlight GPIO (`&gpi=
+o3 0`) and pinctrl, breaking compatibility with the native i.MX8MP LVDS ada=
+pter which requires `&gpiowifi 0`.
+- [Low] The DTSI file for the G156HCE panel has a typo in its filename, usi=
+ng 'g151hce' instead of 'g156hce'.
 --
 
-commit 24245aa090bd2ca7fbe263d45e29abf9a13de9cf
+commit efae14021476e67ea060b69a60b51676e1ba8af5
 Author: Marek Vasut <marex@nabladev.com>
-
-arm64: dts: imx8mm: imx8mp: Add FIO1 DTOs for Data Modul i.MX8M Mini and Pl=
+arm64: dts: imx8mm: imx8mp: Add LVDS DTOs for Data Modul i.MX8M Mini and Pl=
 us eDM SBC
-   =20
-Add DT overlay for feature connector expansion module eDM-MOD-iMX8Mm-FIO1
-providing additional UARTs, CAN, PWM Beeper, I2C, SPI and GPIO breakout.
-This adapter can be optionally populated onto the eDM SBC.
+
+This commit adds DT overlays for the DSI-to-LVDS adapter eDM-MOD-iMX8Mm-LVDS
+populated with a Lontium LT9211 bridge. The adapter can be extended with
+multiple panels, supported on i.MX8M Mini and Plus eDM SBCs.
 
 > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-over=
-lay-edm-mod-imx8mm-fio1.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-mo=
-dul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi
+lay-edm-mod-imx8mm-lvds-g151hce-l01.dtsi b/arch/arm64/boot/dts/freescale/im=
+x8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g151hce-l01.dtsi
 > new file mode 100644
-> index 0000000000000..7851ca73ccd8e
+> index 0000000000000..f478f4e557cce
 > --- /dev/null
 > +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm=
--mod-imx8mm-fio1.dtsi
-> @@ -0,0 +1,69 @@
-[ ... ]
-> +&i2c_feature {	/* Feature connector I2C */
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
+-mod-imx8mm-lvds-g151hce-l01.dtsi
+> @@ -0,0 +1,12 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2026 Marek Vasut
+> + */
 > +
-> +	gpio_feature: io-expander@20 {
-> +		compatible =3D "nxp,pca9554";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_gpio_expander>;
-> +		reg =3D <0x20>;
+> +#include "imx8mm-data-modul-edm-sbc-overlay-lvds-g156hce-l01.dtsi"
 
-[Severity: High]
-Does this node create an address collision on the i.MX8MP base board?
+[Severity: Low]
+Is this filename supposed to be imx8mm-data-modul-edm-sbc-overlay-edm-mod-i=
+mx8mm-lvds-g156hce-l01.dtsi
+instead of g151hce? The panel appears to be G156HCE based on the included
+files and the commit message.
 
-The i.MX8MP base board (imx8mp-data-modul-edm-sbc.dts) already defines an L=
-VDS
-PCA9554 GPIO expander at 0x20 on i2c2 (which is aliased to i2c_feature):
+[ ... ]
 
-arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts:
-i2c_feature: &i2c2 {
-	...
-	gpiolvds: io-expander@20 {
-		compatible =3D "nxp,pca9554";
-		reg =3D <0x20>;
-	...
-}
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-over=
+lay-edm-mod-imx8mm-lvds-g156hce-l01.dtso b/arch/arm64/boot/dts/freescale/im=
+x8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g156hce-l01.dtso
+> new file mode 100644
+> index 0000000000000..5f77946e042e3
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm=
+-mod-imx8mm-lvds-g156hce-l01.dtso
+> @@ -0,0 +1,7 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2023-2026 Marek Vasut
+> + */
+> +
+> +#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds.dtsi"
+> +#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g151hce-=
+l01.dtsi"
 
-Loading the imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso over=
-lay
-would merge this io-expander@20 node into the existing gpiolvds node. Will
-this overwrite the gpio-line-names and interrupts of the base board's LVDS
-expander, and cause a physical I2C address conflict on the bus when the FIO1
-module is populated?
+[Severity: Low]
+This includes the potentially misnamed g151hce file from above.
 
-> +		#gpio-cells =3D <2>;
-> +		gpio-controller;
-> +		#interrupt-cells =3D <2>;
-> +		interrupt-controller;
-> +		interrupt-parent =3D <&gpio4>;
-> +		interrupts =3D <27 IRQ_TYPE_LEVEL_LOW>;
-> +		gpio-line-names =3D
-> +			"GPIO1_output", "GPIO1_input",
-> +			"GPIO2_output", "GPIO2_input",
-> +			"GPIO3_output", "GPIO3_input",
-> +			"PCA9511A_READY", "";
-> +	};
+[ ... ]
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-over=
+lay-lvds-g215hvn011.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-=
+edm-sbc-overlay-lvds-g215hvn011.dtsi
+> new file mode 100644
+> index 0000000000000..3585170bd59dd
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvd=
+s-g215hvn011.dtsi
+> @@ -0,0 +1,30 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2022-2026 Marek Vasut
+> + */
+> +
+> +#include "imx8mm-data-modul-edm-sbc-overlay-lvds-5v0.dtsi"
+> +#include "imx8mm-data-modul-edm-sbc-overlay-lvds-dual.dtsi"
+> +
+> +&backlight {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_panel_backlight>;
+> +	enable-gpios =3D <&gpio3 0 GPIO_ACTIVE_HIGH>;
+
+[Severity: Medium]
+Will hardcoding the backlight GPIO and pinctrl here break compatibility when
+using this panel with the native i.MX8MP LVDS adapter?
+
+By setting enable-gpios to <&gpio3 0> here instead of using the abstracted
+reg_panel_bl regulator pattern seen in other panels, the native i.MX8MP
+adapter (which requires <&gpiowifi 0>) will likely fail to turn on the
+backlight.
+
+[ ... ]
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-over=
+lay-edm-sbc-imx8mp-lvds-g215hvn011.dtso b/arch/arm64/boot/dts/freescale/imx=
+8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-g215hvn011.dtso
+> new file mode 100644
+> index 0000000000000..a6d13c3609796
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm=
+-sbc-imx8mp-lvds-g215hvn011.dtso
+> @@ -0,0 +1,36 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2023-2026 Marek Vasut
+> + */
+> +
+> +#include "imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds.dtsi"
+> +#include "imx8mm-data-modul-edm-sbc-overlay-lvds-g215hvn011.dtsi"
+> +
+> +&backlight {
+> +	power-supply =3D <&reg_panel_bl_supply>;
+> +};
+
+[Severity: Medium]
+Should this native i.MX8MP adapter overlay override enable-gpios to=20
+<&gpiowifi 0> and delete the pinctrl-0 property? As it stands, it inherits =
+the
+<&gpio3 0> setting from imx8mm-data-modul-edm-sbc-overlay-lvds-g215hvn011.d=
+tsi
+above, which means it will toggle the wrong GPIO for the backlight.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260705200534.1518=
-03-1-marex@nabladev.com?part=3D5
+03-1-marex@nabladev.com?part=3D1
