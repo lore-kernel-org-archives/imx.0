@@ -1,57 +1,100 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14A02EAD1B
-	for <imx@lists.linux.dev>; Sun,  5 Jul 2026 16:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B7238C40B
+	for <imx@lists.linux.dev>; Sun,  5 Jul 2026 19:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783269366; cv=none; b=fJNut347v7QXxZ7H4BF6FMRhw3GkoHlQvDz7flYpC0U7046RJb6mfD3o+o6HguhHuMNOVHSXQLp0tzmtll1XtaDoL1rJuuYRx2m0FjiFPzJ/3u3U7QPAqKB17Z1+ar1Y9cPhXqtWYB2Zc8g5ERAFMr4vBtmZ03c8K/57yxpJrds=
+	t=1783280434; cv=none; b=M0iLraGjFKHJk4Ui2hZu/kxvKz32wQ9t6OkfHyu6Qd2agX0eShcBV/cMCNgnO49buK1/C/fjbBbi4WoZDuFcbmmfqzd0YwmXFYiurba4C/FIGCuj7S9DLshJ+LYE79QDnwJ7YvLuJxDjaV1NniMQjginybAB/yxZxO87WQtSLcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783269366; c=relaxed/simple;
-	bh=6xbZjbrXk1dVqAjU7CwpJKC/AiWpv4lpwinO5ZPYIIA=;
+	s=arc-20240116; t=1783280434; c=relaxed/simple;
+	bh=hPzzIh+00z/2sTyljZcHfK6TfnoHNAT4ontX894B59I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BglvxtMUXfeGA5qghVDAuzvk7naz7SX274j5HvH1MvVBW0y/4HEotVeIjFqvFeZZM3DkjeMtBjl2cUBUF4ckvyKcER+XZJiBxkZGmUHxl08Zf9GE8RoSv2A0ypGUg+cJZb1AegpQdNnhuGn7/WXnDLKWCOHC8W9laE6tS3Nk/gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=K9agOq9E; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	 MIME-Version; b=XxsKvfKockIv8xiJjwZAIqaLaFnf8VfAHdZDb65DL7m+GuLlgwGzo1BaMno+7INWNiIpmeuDMTr+IBByWcPYq1a1ZeK+u+QHG6j+b6rq42PpXrNKXtjs8/OpdxPCykZ6ndRDVhnjegsWul/qEjVYlWY5Uw+s3bPGVyNu9Dw50u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EDqYFdv4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=H60MQVeW; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="K9agOq9E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=oHSShcJl397/HFNYBPP/veNd+JpVpT3y1XWR8oMTxew=; b=K9agOq
-	9EfbMhjGoL6xdXXD2iruAtiKiCJ8sRV41oQoAfXPKxUNejUIbjGE9tKTbgQ3+Clf
-	gyGX1ir87Jqal/RMSePdYGpxLxmi1fW+WrqRAu1uded4o8XMuH3j7GNk4Dv9Lhbd
-	RVdz7+H0yVcPa0Zhod7Sx3yuL/8syDrN766Ri3Y6AypneDT1djO+yl/ZhGohkIH4
-	kh/LjL5oIzs6Y2mYwjedS+zd2qK8noyiZYGE6Ft3Z/XXvWT/uWTF3V0d3VhSlWvy
-	SoHWmjPuR/dEDsvcGuw5BDvDS+5tGe/koFETGpLPKVPhpfQoJdqczweiOzmAEV2f
-	2TOSIUwdx+/uK1tQ==
-Received: (qmail 2287450 invoked from network); 5 Jul 2026 18:36:01 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 5 Jul 2026 18:36:01 +0200
-X-UD-Smtp-Session: l3s3148p1@TAfQwN9V+gdtKjFj
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-kernel@vger.kernel.org
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Liu Ying <victor.liu@nxp.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 2/3] drm/imx: remove unneeded 'fast_io' parameter in regmap_config
-Date: Sun,  5 Jul 2026 18:35:37 +0200
-Message-ID: <20260705163536.1850-7-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260705163536.1850-5-wsa+renesas@sang-engineering.com>
-References: <20260705163536.1850-5-wsa+renesas@sang-engineering.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EDqYFdv4";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="H60MQVeW"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 665HhfBs2167948
+	for <imx@lists.linux.dev>; Sun, 5 Jul 2026 19:40:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=03p+FFlmwi4
+	5suRC+aZpApiuhNt9KA4gObs4WxBM+z8=; b=EDqYFdv4Pmeqy9IR99dcNiLiDAT
+	/yuTE7Ljg9Hev+D7GIua619X8FUaXVlexko06UWo2I1UG1HwTHa/3pcOiO1FNKdk
+	YiY1UO4+AP6rm2LO5F78feakLwRgePs5DdWtrzsXwhYCgTfecFqPFRL/MQqcfyO9
+	pb9r2UQAkfcA5gru+dfTHa2mdfv7340zDAANejxt7cH1lKuJqEenlOMOzxtkjth3
+	hBP3jcZzSc9vRDjWjL0r4gMT/svWmjZh1dvVGSJdpYFTDJ+ZtuRTINMxgHG6Wmig
+	3zizUVw2wRtMv7D6VUvWZqVy2hRD9jXlwyfLqvXinpJSMddoU1sfRGdzOYQ==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f6tj8k8rn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Sun, 05 Jul 2026 19:40:31 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c9fe4c5eb39so1236032a12.1
+        for <imx@lists.linux.dev>; Sun, 05 Jul 2026 12:40:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1783280430; x=1783885230; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=03p+FFlmwi45suRC+aZpApiuhNt9KA4gObs4WxBM+z8=;
+        b=H60MQVeWtlvAfuWVTZThlnb7VuYCdgMUN8i71jzaT+TvemNvj4lu13+783Y02wQHI0
+         7yWAv5AVV0p1I9dJJ/1EZlUfDDXa/uS3VSnygqO6aZWD980/ZNbCT/4ORBMPrMsDpNH/
+         iS43gu9KT/nOCBsXqCeycG+7bKp/Erj8ndv3R4uQE2SjGlvIQ5vCK/7oXGoKtuPdvE6j
+         822z7/BGxErh4lnf+j/IO5vPQntAv63sJaaJ+ybm+femKMeSBpm73wgtVVcBURniaPn6
+         J2qgSDxtWrLBY8jHhTm9Wz81p1asU+ZIx9xTX6BgB2t5+rnbpJVxRiseY1eGthaWKEaV
+         Ic8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783280430; x=1783885230;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=03p+FFlmwi45suRC+aZpApiuhNt9KA4gObs4WxBM+z8=;
+        b=nHMEFPvuC8U8e2KU+gh91oMMg3kQJtoS+gYXZraNeCNZtRga5IMVanUBC+/x8lSKzm
+         86kK4a3nh0m5/Cmagy1+pTguZPnhAgxHOeo2tfqWxlhifo5qGw4hBL8acvG8vL4eKMqh
+         qfUkbYhbhkP/ku8tn7nB7vv4okOG/RghPbm5q9sIqHuZ1xhSINq1kk4jjfOvOxwFBLg5
+         trqXH5EOgskrqrqRYmhI2u90ZCijBmBeUuPNh5X/3pO7B1vG0LeJbcSyn3rMZBpd6Bi4
+         3P5S5lYfojW0bTEohB2LAuxpUQmfrKTtXhH0dcgEoqXGDeeE/E/4eO/Br7HqtNyTzQ7G
+         p+Ng==
+X-Forwarded-Encrypted: i=1; AHgh+RrTTRKLEMElpjcR+knqBwzv7PrrZ+J9wzRkxeyaTSV4n+zqUHpbnbl+1BAefEDhzc0Lzu0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywst2s4AcMgWvbp0+XhFUhQeQ0bbYIMYoBQ3eVr+0yMCCXc0U9/
+	eeuzwwzp54vpMj9KRTHDgr0bqTzYphuFycM/XmarLc58d96Kyb7XAYdSApUiRtbWQXeP0oQt1Jx
+	lL3m2tDXI9b1pg7AIeDy5zBXD4ZdFY4xSfYqj/+pEePNfOsWfd5ONuVc=
+X-Gm-Gg: AfdE7cmYMkbaml0Fv5Zztc0lPs67VEaGcB4KwknbAbq5xsvDbUsEybsHHbb1R7Y8I4Y
+	rOpVvNzTjMrVZL4dUeYlOpSa4xW+m44+MIz/95ghQRH2+jYQ6lzyQchlilQb4lnh8B22xJoxnuV
+	b2FSU92ewXgpYF0lmMEQk95Gm12E6ZaNqZu9ziJpY5XHpG+R5kVkVaVLzi6m3fpkqU8475PXRav
+	vUUgdvR9En18JvsaVve+D7QIaqjl2MQwaO2QHwQBm9ZQBkcn22pXXM9kKYer/UuTtts0g+5gSJx
+	MJ2+8ij3cA2JMl9pOSJ2tLO/SMWd/tUZ+9rIGfxu4DftT+O/iqch9o5zsjg5ZsWqHwLYKRqLZ92
+	F4qnaaQrQG1YKB1XQTkVQx2osl3AwZE/ux2upLA==
+X-Received: by 2002:a05:6a20:a122:b0:3bf:9944:a8d8 with SMTP id adf61e73a8af0-3c03e3ed638mr7693673637.34.1783280430280;
+        Sun, 05 Jul 2026 12:40:30 -0700 (PDT)
+X-Received: by 2002:a05:6a20:a122:b0:3bf:9944:a8d8 with SMTP id adf61e73a8af0-3c03e3ed638mr7693658637.34.1783280429779;
+        Sun, 05 Jul 2026 12:40:29 -0700 (PDT)
+Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b3c7fa566sm40573417c88.4.2026.07.05.12.40.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jul 2026 12:40:29 -0700 (PDT)
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+To: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-sound@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-sunxi@lists.linux.dev,
+        linux-tegra@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, sound-open-firmware@alsa-project.org
+Cc: Konrad Dybcio <konradybcio@kernel.org>,
+        Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Subject: [PATCH 33/42] drm: arcpgu: Use devm_of_reserved_mem_device_init()
+Date: Mon,  6 Jul 2026 01:10:09 +0530
+Message-ID: <20260705194019.2565498-1-mukesh.ojha@oss.qualcomm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260703193855.110619-1-mukesh.ojha@oss.qualcomm.com>
+References: <20260703193855.110619-1-mukesh.ojha@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,172 +102,56 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA1MDIxMiBTYWx0ZWRfXxVTpnHnJ9dor
+ 8rPF1lRfsbgMU/DzMqnt0F+EBp156YQzAMva3HOGFlRn14ULn8l6uquCZ1QfCuMtdENfau5kkhH
+ bYALs2sHuRlJyPtKTDVH6+2VIX8VBPmaB+QhTZnBPQNsyFhk7bhQdbnszGMVddSQLXRuCnelQp4
+ SeXGYCllolGgp5als8WY+4iGXsi0tomPLJMSV1pd/vcHCTw0BAUoK/dAlVYslf9aZYbkF5zcaCl
+ ygmaWVhhG02iNnWNn2LDjOXaJBl7ylqT1etbb4uKXOGbsnUw/A/vQH7GBDLQ9c7wcTZPGNvkkep
+ xkIEBLSYV+vfBJL1vYw++DH7agJil2A+TGMqA1dIlK4+Fo9pITNKiYWsECdqH9qvm52QuB7vGJ/
+ scYdEHRbkYKv858Fx3vQindYgQbe27GMz/3Vx2qGLXtD5/U5wfGiTsr913zZzhq7d1Zpq9s6vOE
+ ERyVSc35bWi7OvNnQwg==
+X-Proofpoint-ORIG-GUID: fPi3jVfKWKYBU4AnEsn0Z9JcJ-4vcKvw
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA1MDIxMiBTYWx0ZWRfXybKpUBQeRFND
+ L/FEWWUAnRzi4nEga/pxgEkQmhkjU8Cr8CrfxushLvbHHVRe1shnVfHlm+RtINiLTVbSjIB+X7A
+ N9yD7qft2EnAaFKGGwrRV4K/LEbiV4g=
+X-Proofpoint-GUID: fPi3jVfKWKYBU4AnEsn0Z9JcJ-4vcKvw
+X-Authority-Analysis: v=2.4 cv=H6TrBeYi c=1 sm=1 tr=0 ts=6a4ab32f cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=EUspDBNiAAAA:8
+ a=lEtn7xO9CsvGDZioIccA:9 a=_Vgx9l1VpLgwpw_dHYaR:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-05_01,2026-07-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 impostorscore=0 adultscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607050212
 
-When using MMIO with regmap, fast_io is implied. No need to set it
-again.
+Use the devres-managed devm_of_reserved_mem_device_init() to ensure
+the optional reserved memory region is released on device removal,
+fixing a missing cleanup in the original code.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 ---
-No dependencies, can be applied directly to the subsystem tree. Buildbot is
-happy, too.
+ drivers/gpu/drm/tiny/arcpgu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/gpu/drm/imx/dc/dc-cf.c      | 1 -
- drivers/gpu/drm/imx/dc/dc-de.c      | 1 -
- drivers/gpu/drm/imx/dc/dc-ed.c      | 2 --
- drivers/gpu/drm/imx/dc/dc-fg.c      | 1 -
- drivers/gpu/drm/imx/dc/dc-fl.c      | 1 -
- drivers/gpu/drm/imx/dc/dc-fw.c      | 2 --
- drivers/gpu/drm/imx/dc/dc-ic.c      | 1 -
- drivers/gpu/drm/imx/dc/dc-lb.c      | 2 --
- drivers/gpu/drm/imx/dc/dc-tc.c      | 1 -
- drivers/gpu/drm/imx/ipuv3/imx-tve.c | 2 --
- 10 files changed, 14 deletions(-)
-
-diff --git a/drivers/gpu/drm/imx/dc/dc-cf.c b/drivers/gpu/drm/imx/dc/dc-cf.c
-index 2f077161e912..6431ecd442c9 100644
---- a/drivers/gpu/drm/imx/dc/dc-cf.c
-+++ b/drivers/gpu/drm/imx/dc/dc-cf.c
-@@ -45,7 +45,6 @@ static const struct regmap_config dc_cf_cfg_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_cf_regmap_access_table,
- 	.rd_table = &dc_cf_regmap_access_table,
- 	.max_register = CONSTANTCOLOR,
-diff --git a/drivers/gpu/drm/imx/dc/dc-de.c b/drivers/gpu/drm/imx/dc/dc-de.c
-index 5a3125596fdf..7a93dda20c59 100644
---- a/drivers/gpu/drm/imx/dc/dc-de.c
-+++ b/drivers/gpu/drm/imx/dc/dc-de.c
-@@ -37,7 +37,6 @@ static const struct regmap_config dc_de_top_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_de_regmap_access_table,
- 	.rd_table = &dc_de_regmap_access_table,
- 	.max_register = POLARITYCTRL,
-diff --git a/drivers/gpu/drm/imx/dc/dc-ed.c b/drivers/gpu/drm/imx/dc/dc-ed.c
-index d42f33d6f3fc..bde6173615eb 100644
---- a/drivers/gpu/drm/imx/dc/dc-ed.c
-+++ b/drivers/gpu/drm/imx/dc/dc-ed.c
-@@ -77,7 +77,6 @@ static const struct regmap_config dc_ed_pec_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_ed_pec_regmap_write_table,
- 	.rd_table = &dc_ed_pec_regmap_read_table,
- 	.volatile_table = &dc_ed_pec_regmap_volatile_table,
-@@ -99,7 +98,6 @@ static const struct regmap_config dc_ed_cfg_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_ed_regmap_access_table,
- 	.rd_table = &dc_ed_regmap_access_table,
- 	.max_register = CONTROL,
-diff --git a/drivers/gpu/drm/imx/dc/dc-fg.c b/drivers/gpu/drm/imx/dc/dc-fg.c
-index 28f372be9247..fdf5bc34554d 100644
---- a/drivers/gpu/drm/imx/dc/dc-fg.c
-+++ b/drivers/gpu/drm/imx/dc/dc-fg.c
-@@ -122,7 +122,6 @@ static const struct regmap_config dc_fg_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_fg_regmap_write_table,
- 	.rd_table = &dc_fg_regmap_read_table,
- 	.max_register = FGCHSTATCLR,
-diff --git a/drivers/gpu/drm/imx/dc/dc-fl.c b/drivers/gpu/drm/imx/dc/dc-fl.c
-index 3ce24c72aa13..003476ac2fa1 100644
---- a/drivers/gpu/drm/imx/dc/dc-fl.c
-+++ b/drivers/gpu/drm/imx/dc/dc-fl.c
-@@ -49,7 +49,6 @@ static const struct regmap_config dc_fl_cfg_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_fl_regmap_access_table,
- 	.rd_table = &dc_fl_regmap_access_table,
- 	.max_register = FRAMEDIMENSIONS,
-diff --git a/drivers/gpu/drm/imx/dc/dc-fw.c b/drivers/gpu/drm/imx/dc/dc-fw.c
-index acb2d4d9e2ec..96bc3c7c8f9b 100644
---- a/drivers/gpu/drm/imx/dc/dc-fw.c
-+++ b/drivers/gpu/drm/imx/dc/dc-fw.c
-@@ -51,7 +51,6 @@ static const struct regmap_config dc_fw_pec_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_fw_pec_regmap_access_table,
- 	.rd_table = &dc_fw_pec_regmap_access_table,
- 	.max_register = PIXENGCFG_DYNAMIC,
-@@ -72,7 +71,6 @@ static const struct regmap_config dc_fw_cfg_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_fw_regmap_access_table,
- 	.rd_table = &dc_fw_regmap_access_table,
- 	.max_register = CONTROL,
-diff --git a/drivers/gpu/drm/imx/dc/dc-ic.c b/drivers/gpu/drm/imx/dc/dc-ic.c
-index a270ae4030cd..f1c371a95cae 100644
---- a/drivers/gpu/drm/imx/dc/dc-ic.c
-+++ b/drivers/gpu/drm/imx/dc/dc-ic.c
-@@ -76,7 +76,6 @@ static const struct regmap_config dc_ic_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_ic_regmap_write_table,
- 	.rd_table = &dc_ic_regmap_read_table,
- 	.volatile_table = &dc_ic_regmap_volatile_table,
-diff --git a/drivers/gpu/drm/imx/dc/dc-lb.c b/drivers/gpu/drm/imx/dc/dc-lb.c
-index ca1d714c8d6e..4f5c15833efa 100644
---- a/drivers/gpu/drm/imx/dc/dc-lb.c
-+++ b/drivers/gpu/drm/imx/dc/dc-lb.c
-@@ -92,7 +92,6 @@ static const struct regmap_config dc_lb_pec_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_lb_pec_regmap_access_table,
- 	.rd_table = &dc_lb_pec_regmap_access_table,
- 	.max_register = PIXENGCFG_DYNAMIC,
-@@ -112,7 +111,6 @@ static const struct regmap_config dc_lb_cfg_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_lb_regmap_access_table,
- 	.rd_table = &dc_lb_regmap_access_table,
- 	.max_register = POSITION,
-diff --git a/drivers/gpu/drm/imx/dc/dc-tc.c b/drivers/gpu/drm/imx/dc/dc-tc.c
-index 0bfd381b2cea..54b56dadbe36 100644
---- a/drivers/gpu/drm/imx/dc/dc-tc.c
-+++ b/drivers/gpu/drm/imx/dc/dc-tc.c
-@@ -44,7 +44,6 @@ static const struct regmap_config dc_tc_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.fast_io = true,
- 	.wr_table = &dc_tc_regmap_access_table,
- 	.rd_table = &dc_tc_regmap_access_table,
- 	.max_register = MAPBIT31_28,
-diff --git a/drivers/gpu/drm/imx/ipuv3/imx-tve.c b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
-index e861b8b9d8fa..cb09c3f23312 100644
---- a/drivers/gpu/drm/imx/ipuv3/imx-tve.c
-+++ b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
-@@ -460,8 +460,6 @@ static struct regmap_config tve_regmap_config = {
+diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
+index c93d61ac0bb7..fa01407570a8 100644
+--- a/drivers/gpu/drm/tiny/arcpgu.c
++++ b/drivers/gpu/drm/tiny/arcpgu.c
+@@ -278,7 +278,7 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+ 		 arc_pgu_read(arcpgu, ARCPGU_REG_ID));
  
- 	.readable_reg = imx_tve_readable_reg,
- 
--	.fast_io = true,
--
- 	.max_register = 0xdc,
- };
+ 	/* Get the optional framebuffer memory resource */
+-	ret = of_reserved_mem_device_init(drm->dev);
++	ret = devm_of_reserved_mem_device_init(drm->dev);
+ 	if (ret && ret != -ENODEV)
+ 		return ret;
  
 -- 
-2.51.0
+2.53.0
 
