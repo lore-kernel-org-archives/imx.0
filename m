@@ -1,244 +1,228 @@
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BA0371068
-	for <imx@lists.linux.dev>; Sun,  5 Jul 2026 09:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AAF37AA61
+	for <imx@lists.linux.dev>; Sun,  5 Jul 2026 15:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783242649; cv=none; b=AOwbad1zD3HwernHG8QReeqVLNvWv//d2gc+GKTT2X5WKE7k755iM8M9DEDvYIPO182mmbt6F8VoXtDVps5+p481xbG0IqwmbDVcMHmX/p9A+KKM8jxhqmjZProB8K8w3ABXr5xACZybB6Ez1qg9cWZaexCZVpiU2nJPvAgv+uA=
+	t=1783264477; cv=none; b=HfnqIfIO5md6tsFUF1VnFVklnG7SrdEWOg+dXzjmY7doIFgnZ4kJBSyUqii6wUsDgd2kKhgsV/d+mpDq+qh2OCMqO2yUSp4/9AWQzgYJ0Re9BYykHcaTijPm/gAozRBKkQIVY5UN6k24pnFbLnR0n7Pn2Y6fBq86dQZx+FO3M9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783242649; c=relaxed/simple;
-	bh=iS5G+xYG7iAyoNXePhTxtqj1OocT+t5iw3ftcUJ9ibQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OlOhpJGcahSA2e+LeYh78q4vFbggAIJwc8N9UmkEiiTgDr/99l9TxGddaC3FDkfbyxl8kC5YjtmyOSJYiLptkqfmJKOK3LVE2RuikZ9+tJXj1++XtmKyztOWwdJTWoz0hLY34mEhyTIiTAkyrCAzC2bZ8NTW/COZNZFDA5lMQoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=smoch@web.de header.b=saiz0Q0M; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1783264477; c=relaxed/simple;
+	bh=/ARYZ3nMFNE4qw1dHISvtgGeE92jI229vSRxfVl732s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ALC4yjKGTATgQ9+NistdtMVyZBxPyQ41s3TBAD5wK/5/xKo4kSqL06bIbOv6KwJw0+NTY24svPOzJ0Q6pTOrseeAIgVOcxMgMJYBTBzdPx7EjP49X/lJWeaV4Nwmf9/ew7HPjw4D0JtuIfqaZLQUoWKpBR/thUJUdRz4FcrxHN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=MbhTadv+; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=smoch@web.de header.b="saiz0Q0M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1783242634; x=1783847434; i=smoch@web.de;
-	bh=dmcS/2Z8c7bLB3cq33oZxXF1hzP0249gNKxn5kuNito=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=saiz0Q0MT6ko5S6w+4uAmxWH/lWIa4M1YOwDNKmlRIz2t5kMDaBlA5vusOrmCZVo
-	 ortqj590Ccjt0RF1hfboPTvc5W8A4bdOlyyz6ooDxCOKKLl/4GvV1BezdS2vEhTwZ
-	 HT1zu09TSVilySZhahnHOBsL5rmqsK+0XTcrq4OTjJQCPCdp4Vmrfl6LKAAOwL1kG
-	 W7MsFWpgsEtHzGTwBVqaokBZXAnACtpolc/bfZGY+bu1i3H2pHEv4LDHmGbaw9r4C
-	 QSX4yN9U8lRA0W1joe5RpJr7m+LJgk4ybezS2lfwR4CsN+ZEpvoNkg4ihOxCpdcHh
-	 OJuMePGK60rdezSzyA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MGgJM-1wsy400Ta6-00EJUi; Sun, 05
- Jul 2026 11:10:34 +0200
-Message-ID: <ba9ff61d-8840-48c1-828a-842ab0956e3b@web.de>
-Date: Sun, 5 Jul 2026 11:10:32 +0200
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="MbhTadv+"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-493ba701891so16757195e9.3
+        for <imx@lists.linux.dev>; Sun, 05 Jul 2026 08:14:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1783264474; x=1783869274; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=W1sbIzpLoPVOsWAp5a91/2b+hubQz3OERKvp78vmABs=;
+        b=MbhTadv+99Zcggl2heAkO6VqyZUDyRx6D3eDIWeIrKJ2D0thFWV4fVF9pllGTfvRUt
+         qg7wyGKm0r6SrDoJXwSR0waGuBkrlOounF1HQd7qFfp5gQtKSP7/YLRbdofjdU/gEkzR
+         NxUf5+Djcs9HvYUk86nxREsb7qHkZSWGE5KeJ3g5MWStDhTCX9gFyVZpkNVSqCC3IoNq
+         KItTWPzTxsv/vw4zM8YANj5Y+eLrDShOcCkvVqCC/FOXWbBtKPd0MbSeLcGti0hJue8d
+         hNUkp+0l/k9tjHLp/LjWCnl5rEyBGrKVoWd+0gxOpZO6KpZPCf4e4uWZ2jUcs8ry0+eT
+         ynww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783264474; x=1783869274;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=W1sbIzpLoPVOsWAp5a91/2b+hubQz3OERKvp78vmABs=;
+        b=pKfvdtXqpSK1GdpQ7I3ivSpH1j5rn40FG/KrT1H1NSGGLkVjMvTsrgxcHxsO81uxnV
+         4VTPXaVa1cqw7mA/xLVDiYNH0UKPfMJ0CkB5rZXu/OWpOO3khdJxPmbjDct3akERUAQ9
+         J5F6Q2RVKhZY3fCVCxGKZoo9Ri0xd0z/lb7IsESMLB8M655dR+eEhWZYH2VQR7WiM4V4
+         IxzoplvZ4Lcp/+Tb87koht4Bh/MDC43uX0GvbjzYOmBLVfZSvAIE8n3/4+qsBVmxZ56H
+         0xI3+DjCtBBYeXFA3rItTZCyy9ibfAgdS++xw5aza849e9+56i4p7k8foBHAGqPjUl7l
+         KiOA==
+X-Forwarded-Encrypted: i=1; AFNElJ+mlyGzqyZwu62nrWFRnZNTHoBrzgFTXp5HiNd5RK7WUIH6hC09j0MGO4RfYNTs5c/jtI4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw9pwE3ObkDUodc66sQJgu0fPBh00HWKpMalT8E2aY4Bt8ANi1S
+	Bkkh8onXY1nNQ0dOYnPMNzKGuJOOhdfaB7M8hvHreqstgcJxfcE2/ySfureeFDr1eFI=
+X-Gm-Gg: AfdE7cmFajaPY97cr8psdhqT8eKqVzz0s5EPZZrLeh8wQ6/er++WQj69M37qj8WKXDM
+	f59+SbRpvkXsPWKCcyPfLzvTz/WXzpyKn+AihfSonY7PI5EkKiYq9g4kkgIyIodC7xk88jCy1a4
+	0Ge+6jBddzREcwcW9jD4x8W874mwC099RJ0SqJCYGQyEkOv/SLjjF90pHK6fCJLSin+oMmzpF+7
+	Q7zZfTIx9MJf5ws78sOgu+lmiizudeh22aajkd/qEqmRCMdkha665xjCRepPFbzOSpFxiv67G+M
+	J58vZyITzldNwQXFYi+VCiDGLt4w0D0Kh4kRi0ih9zSGZFt6bobO+2/g31ldH0x/Vnob9m3XQoI
+	WXh8Ippa697aESNXftyiYNbTdeStHyIzgtezPYtDURuAe3BR69NJkYeJ3I6us17PAUoyVt+exfC
+	7+1+fHsLTTOgWiP65n8Q==
+X-Received: by 2002:a05:600c:8b61:b0:492:7084:32af with SMTP id 5b1f17b1804b1-493d11f4b80mr87345205e9.23.1783264473096;
+        Sun, 05 Jul 2026 08:14:33 -0700 (PDT)
+Received: from localhost ([2a02:8071:56d1:2de0:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-493c63b6f8csm262180195e9.11.2026.07.05.08.14.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jul 2026 08:14:32 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: linux-pwm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Benson Leung <bleung@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Chen Wang <chen.wang@linux.dev>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Hammer Hsieh <hammerh0314@gmail.com>,
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
+	Alexey Charkov <alchark@gmail.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Michal Simek <michal.simek@amd.com>,
+	asahi@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org,
+	chrome-platform@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	sophgo@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev
+Subject: [PATCH v1 0/5] pwm: Unify arrays of various *_device_id
+Date: Sun,  5 Jul 2026 17:14:12 +0200
+Message-ID: <cover.1783263835.git.ukleinek@kernel.org>
+X-Mailer: git-send-email 2.55.0.11.g153666a7d9bb
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Lucas Stach
- <l.stach@pengutronix.de>, Bjorn Helgaas <bhelgaas@google.com>,
- Frank Li <frank.li@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260427115804.134231-1-smoch@web.de>
- <AM0PR04MB5220EBE4BF61ECBFAF162A4D8C372@AM0PR04MB5220.eurprd04.prod.outlook.com>
-Content-Language: en-US, de-DE
-From: Soeren Moch <smoch@web.de>
-In-Reply-To: <AM0PR04MB5220EBE4BF61ECBFAF162A4D8C372@AM0PR04MB5220.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:28JiQIGXKLlJZQRTCEmyBOJ7EjmP3jqOkDtW/WELL8i5gVpU2uX
- JdmEND69icmVdefpzNuQ52R0Wffdq8iEKqOTtWNlk1QTSk/ZrZl4ICElnJO5KkojaA3kWlq
- dZm5wVgPHctVPaObsQcFIjADYKuQusNEWAIlHLD52fuaWjbIua/HEAu/JCdXfJROOEZoLJ2
- BCQo4Q3FAuH7yjnY/HFeA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:C7gBAdrINs4=;n2uDLsfH8MEC7pHphums0T4Ws5a
- onsy5y3nyY0dLwnSvsxzILmebnUP39v8Bt3R1vCVXSenAIcsLYb3/OPSJP4l7rjYonBJN8am/
- 2INRtuayA0AyBWWlv7z4VrhQrCudCfEpro3FJsTufYvkNVlOz/R8q77leOUma59jNDnOThtlR
- hBJqOZhD1SR+C7Rqdz6014UmdtEf9Y5211OA03RLDX+HgxlptydBxCsH3khiuswOhNod/Rze+
- wiVM28eRuPF/IIo3JYFOwhUGfqRONBHDwobgWdoE6t2q6WlMkia/L9viv2HVt4iRea2TSwJiT
- haIPyOG+X6eka742EnH64eVKrM4H3YsMr2eKINdzO5SjDF6/ZJMx5x2OBnBq1qfTH00UYrWrH
- HYM6vGNh5WIC9eUzQi5VYn06qHuTzF/2dJQ92ORSmoB+Lbjf4OI4TkiGNHrpc36kht0gva9tw
- dogoLnWGK1Tmy732KPMt81VE9a9yOiMt4B9rcdJT0KghI3lQIA0W+jT/jhRwNxRDhhZEiwzTT
- nDhDaehjpOv0BJKHwGCvX8Xv/sSIsWCCgmNivFdp17CxLs7KYx+U61/hALW/TFJQ1xgfzCRJT
- LOiFqi5ohR2x2gF6ZREsHcxqzqbxdnoMk0aW6vqqTpuMfi7a4Z82B6MIXtZLx26h4aLQNYa28
- b7gTzRynygZDJ0T9+2TxFkONmltPsQGkKUi71XOPfbmgSU3c0W4YLxqzowGqWQvnAfW4MjhnT
- k3NiO6+8K9KVwqll867seNaK4c/eCB3CvXfrEV5Q6V+ymunNH4ZQEOdtag7aqnyjSeX8YMMn9
- mDT3egJ/bQH0j1Rb27vb2rYaQ3IQJzVQwkLzljTlp+e9FCMfrwmxfuEx/yP0lPoM2Mqj62AJL
- QZKfRbKVfG2XwB7fTTjjvA0Zrfj1sCo+X8u5rrqgFjL7KEDezsXAiWC2fdZJEMPdYY6vRJr8N
- AnAUggnJ6K56km3XKgutf9aaz6j/+DNLpGkLV3TR3mAaDZLW3wpm3gB+U2sCN0Ff7v9L9bPS0
- +F81jzYMP/AzbtCrLIPcdLtu+9SiEUNXEWbK2cIhiAIb/HpF5f0053hToJIH1VTEg5hHNAHlM
- KuJodcNu06cRrVV0aaTO6xYXNDM9TE7SVTzrVbrTkfmTP2wZ5F9XLO5Y5+4slyvMZLeiYXbSl
- ckhcEP8mvAacEiuVsuoQtQz6N1vDbbOlNexDtE4avtlPALYpkXGeAjDKdsxVMVRkbEDaHPEk5
- Kef41mUMITXPkumBkxNI/f8Hd7P2YHyhTjfh8nhLdygc1Yfmm7xffxzD+S8fuNLML6LKl2j36
- paY+IRPdjgIP2aFaXvzdZ91hpKN+U36yKi2Vv+1EUHhmJ3Ut564VJEq/cojfarE2AaMDlc1Hx
- K+ljDJ8xAoMmZeP6CRxApYEBW/dAzAwRgqfUkZu7XwnAZxJViz7cpk4i+D1GAFIgNhKW/370D
- AqStP/ZEXd1LFzLnFRGKGR7EtJxmq0MoJTr7s6zVKYOvm5PMWadM/MFFca0xB1E4kxqwR4AEU
- zZrhSCAtKdaw0noUZ4yAVV4cQDLeDHcSa+kDn3lYQBU68uPlLTWfJqMJuJEFOJq+Ax+O+r8PV
- KsRgvT8JpkYnroQNT+rVEnpzoE+B3ja7F+eEzX8cL3sdL96+r101gwgk0r6YUj35OeVq7IALg
- MNzAqquyaqT4xdhgy/RBw8qDTM2ghLGLCOE1aHXS0Okl95M/S0fyJfr2nFMg8YdjP55hi7HRj
- INcIyU2mwXDSbNPPS06Gs1emwlnXJMlqOaBHyoSiETGD+HJuAoU6JrnonYKMVVanVrAmV4dFV
- oMIZzoesI/8i4wz8b15/3AzEBhRyzvlxTfxWgk1VPAm9f8qTsS7ohOUfBucZwpVfurArx3Izn
- V0VoGK4IwZ8YRejQisfdpUmX7pPODffjPf0DexyYzxOcNPUYYaEg9eD4FTLFrewtmEfiAT5Jj
- p6oM/J6GLpzfBhbqoK9kbIMDlo6XaiWT/qpH9Klf1qBayQ35U9BbVzzGXwlaXcScCJAw3Upox
- vi0vyoYD0xj47yrV6CRUzzfpQSuZm6DsSc6EQNwYS+NF8wkXrGKOw2NbnGVeTA6dnCPFJ6EJ1
- O2AxTfR45kT7ktK4h+Zy90FGWMa66UhOHCXfDiEszG14KWqkSsfhLDopLK7FYMwnXaxh3Z+jS
- qDLbJHXGHq/nsUu1RBLD8hvodjcBD7Ne+ObLkBX6uCZkzKoJstDc0RUxHG6gXs55htTFjWovI
- m06csiNnVIYrk7gKpcZeGISJas0djvYA4LnFxaZnZavPVd5jeDMSopqsL4ki/ZnLY3vsYORD3
- tqZBUJnD8YVCUVTx8xXmjO2pQUN5FGInAMcmwVXosYi9b4kzncG956I+4jEKmP87CFiVWOPRy
- Vnvq7CS0P0v+jkT0z0GZ63og1CDonnkrqg07cBMUlHIRJ81cVBIEvBfKiI0xJYnGQXe4G264Z
- 6TPnzziYlv3TSYydhM1clt6eSP81tQtasi/TUaZldThqSIehxNALzlo0vPtVy12bDU/tDEP3x
- ewiCDhbf0Un31KeHOnQq5JouqKLHgejeB0Vspp+QTfGgj8NfWAkYiOFPnygzL2t2Z2/TU2UDS
- Oy/kD0i6/yQUCs063fDFQsucguGQKab8EjLHhgf0CDRKoY24P2dEkmF+CWKBIx2U85Q/WyIjv
- kPg01DqbWPYlRqzSI/3R9hCaDX7TnoHNTNrhViccTYEaSKlKRgwvA4IBW9mwYntMcjHvI/wbH
- ZsqDfzZjYUMgbDyq/WXigGheqtAl4zuN8vk6dzNg4ESkaQrUqX/Acm4gj4l8ZwbaLq29aIO/o
- lBC9xizgNzdjlb05PAL85cYFAYzI9Fpy2xJyVPpccbZCqad8kaxghKauf3OxJYRmWOMmqyOSC
- /1agtGqT1FccMVat/SUOwnBP59AvSDQ1DlG9vr7mn78fUMdJsCQdI8ayhTFROlnd3qa5k03tZ
- mdYPBoGV9/t5UT1N2zIeMHLObQovH0hLzo9KzFq/Cw0hHdx5LzS5oQxZItc2m+UPgxY1kMCV/
- /KMmRWFRzpDeyW3kMMownxc82wvhr5BDQXcokW/qTctMaJgzG6V8+p8wz+kKc5D1aCRzof0/J
- f5zUO+BHp0YTNkNT73zNHMBmvy0d9u8guU/noqf4Y7xPnW1wBlwwX4YINuQsqYOKy2WTBG7qx
- mbC5D+OwNFR0GYVFqeMjyKSk/kx06uWeUV5b4l0tce/3JX8lhYOJmjkGJGrgEtVCLMSud9ZFm
- 706lKhFVtcEjwmxw3s1Rs0rJnJpFD4n4QhyZjzjWa6PwsCjqJbVTG8rknHUKuj/kNusc+0kxx
- wzyyQKdrI4H3AgcElg+emcyZyKUWDSjPE3GH5aGFJJb2dhlEtQvHf+6Rna0j2xmkHxfW0imMb
- +C1j8B+0o84o2KYUAJQ7CMiAETJ0TgfnDLXae1EvOjAGui6rPG9GFuTy6NwhrcMJreuBBajbi
- 12nzLGMfjM+tl7OZicgmanGf1l7HVG1FXD4Tn7YMSxyQyRGkH9N35w00zXcxEDCnAiAWFZntd
- TfEv02MM1mlWFy0XjXX9dYbUB4gjEJJVwR+AuX9aneO3xGDrFMEdpb0MPupVvcRjicoFv+/VA
- d/7H4L6V8b7w8QMTocSDXrOBaaylTsN65T9LDDJ6GeHpPugqOiaUMcM3BsktBY3fO9u+9Li8P
- S9EWlxG/gEeAddnfxEMP7xvOA2PibSwsPu94A5L2i6QwW17zNZaeQLsZABF+B0FA3d+lyzFcS
- syXkLiMjMmfvnxgtIyV10A9gk2lYhLiPwr4o+Gzjyz8tAm5hVyEhW2VcZTKjNrCHAhgqjgabT
- +gIIxn22iYHR2BAOg4F76U7+7Wc+Fj643s+in4A53WmygG0AIihfwU/VN85eSDJRd9K/x+adj
- Sy5/naf/0pC8mXyjcQawNQl//hJbOMP+ZeLeUTXorVPASBFYVYRnPakJtLW5I4fHT2UchKnXB
- b7UatdsI46iIG5wNoB6aw6GfzzmfypCYnsCxM/WsoMZ4NvAaEEiNF91FONSZ5/39Uay84end8
- OLVVdydkuImsBCLh+aK7uOOdStvUrm53tyEwuFuU/tdNsbRtUU1Z8dPkiRE0bqNLpcqRwfN37
- NdJgreeqowqaNIpGQOx+N2ERxq0Bs8rHlwJlEB11bzGRx80YWh8B3OOAhIWcFxOA2SzQxeFA3
- 4avw9d4kSEKUtxFSAFpuZKEtITbemffbkNDaL4q/rvVt1jKNwvxw0Ealcy3mLDXXGEsOlTlEO
- ZEC7ozLIw1HzubvPIM9wwkVtdjsXqUgmsqykn67hCYcmkncqJzphv+4EgQNYmcWo0+JxhfJbb
- vpwDhXu+JhdJQlZGOaSreuaIFO2XnSz7im4uhSrW0PhUV2eM4Z/DLMroCQszUxnFGfL+aEwCY
- HdjDxgavZ6+3it3k9Z9xWFGWHyoE0nW8oUPRHAOZDHhnqetyadKV/cvGCwLj5PaNMYx6xY8bM
- /Y2sk1p1fJAgsrgacTvV5EGXIH5jSNyuL2dUPw0to5g6NB1WVagp0P9dmYK8vOhc9Ia/xbTxl
- P8eNtaqTI7vym1jhBtE6OxbuXsZBwBviEycXftZ0F1fFKmoTpB6fRDyDfIyOmv96LD1+rjyqX
- OoQnR0eL2ze3qHp1QvDbijzf8Vkkd96T3cr2LJ9VSsoQhLTCE/+M5dUEh6gj1tDDCxmqow776
- 6SDYJzhGyJuR6FA6zUfWCs6Pkqf0xgGZ/QmNYAc12DGkkFGwsOUXphM4O551b6rIda6iDrSE6
- LJ2Kd4PEfS9VL0iO/pycIR9L/GnY8qUXDRHvYa5QrTy8A7StJ4jGentOjrMnWh0btaQUrB31g
- x3Xb35Xb2ct1Mw4lzcPziBbY1d0iYZekVFMktP2dO3iIeSBNOjUg33eUJE5wGFY/rJcaa5BZm
- LVgG5RWzodKA8CLKq292MURxl1/lzEo1R6+19luo4s3h1xqS+cHEu38UQdzwBk+a3Zd+BIW94
- CUPoWurU5XydvSOKz++OcDe9kOvl5eHwBMMHUgPh6qGAb4V/yfe9/zQL1ACuPBJapgIVpW3Jl
- k8GmIbinhr3kwLzz75jT566UWpQhlGAxoA8FULDez2qReSrxwlSvpCjjP689wIz9Kd/1ilwba
- Xc/NyzBbZNCt8PGy55uFa/jsOzbdaiQJQDgwe9xyKm3uDP4LSs3tyYa3khld6W6DaLIBrXHKc
- 5n+pObyCPOMIyMNY58TTPTXKDaYJTbBsAn/NnrG1BtwRm36Yli4dhd4EXXWBu9VFdGpnRKN9T
- DK8lNblvhZbGaTTPYtrWZ+UOFbHL54aWAfkajFtrZjs10irO+G53zPRZ3QTyswZBr2vzSwPq1
- SngFMXRnjmuN8ieiDxh4sFGk99vbY7T569GxgsB2dcv9MAwVkzDW42FPsMWrxUMX0nuhwXScq
- OkbEU7vgKJcWVPf+GI556e1bExTrWqFdzUy+IJJ7dsr1ND58+kHLY4Cn+cR7zslwJOqK1kKm+
- uqX2yqplbXKXlq/6epU+AW3WiVA6ZCYM3qDWx3ZVHn0N/+4Ylik4azzbMQIWwwAKiUcGwLURn
- mfad7UU0UXGHdj3B9gDZla3Ti29a1OQSmSMU7nac/yW+9YdukDSA63yDVPReRjsVLbr7tfntA
- pbokcNn7xj2V7CA1/o=
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3597; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=/ARYZ3nMFNE4qw1dHISvtgGeE92jI229vSRxfVl732s=; b=owEBbAGT/pANAwAKAY+A+1h9Ev5OAcsmYgBqSnTF02HXaqUpIDE1Mt23JzG4uWfnR2u11awWU 3umjMoAUj+JATIEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCakp0xQAKCRCPgPtYfRL+ TnxCB/i0tqSm4WRb5bStOYawCPIjfRWQcr4xSi/+9osjT9WCMkOFcdJIALH3OTjRDssO1bo27Lf HlxVL0NC+cyu2/kdQnTKxCwlN4Mr+K0ubzHhjQG0p5hKoo0E+ymyawDtJ372H29L5zSSYeZCvIo x4WE6N9MvkYqMFbIYzoBUakF9cYdVbu6ohyBqtXYSqr1ZwGjdHd4MWHija/sPCTtV/LrwSg4fhc gQCbrGPW2Y9VKehuNTAzHv2wje5Cu3eNO+c3uV15dBMdPgO9DfEp3EXIwH2ZR09Uaz5HwWXbYK9 FN+Z8CfZYziZ0D7HLlPGgse2ncweWpObjQ6pQzued8YQFKE=
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On 28.04.26 04:19, Hongxing Zhu wrote:
->> -----Original Message-----
->> From: Soeren Moch <smoch@web.de>
->> Sent: Monday, April 27, 2026 7:58 PM
->> To: Hongxing Zhu <hongxing.zhu@nxp.com>
->> Cc: Soeren Moch <smoch@web.de>; stable@vger.kernel.org; Manivannan
->> Sadhasivam <mani@kernel.org>; Lucas Stach <l.stach@pengutronix.de>; Bjo=
-rn
->> Helgaas <bhelgaas@google.com>; Frank Li <frank.li@nxp.com>; Fabio Estev=
-am
->> <festevam@gmail.com>; linux-pci@vger.kernel.org; linux-arm-
->> kernel@lists.infradead.org; imx@lists.linux.dev; linux-kernel@vger.kern=
-el.org
->> Subject: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX=
-6Q
->>
->> [You don't often get email from smoch@web.de. Learn why this is importa=
-nt at
->> https://aka.ms/LearnAboutSenderIdentification ]
->>
->> Also on the NXP i.MX6Q chipset MSIs from the endpoints won't be receive=
-d by
->> the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
->>
->> Even though the Root Port MSIs won't be received by the iMSI-RX control=
-ler due
->> to design, this chipset has some weird hardware bug that prevents the e=
-ndpoint
->> MSIs from reaching when the Root Port MSI capability is disabled.
->>
->> Hence, always keep the Root Port MSI capability for this chipset.
->>
->> Note that by keeping Root Port MSI capability, Root Port MSIs such as A=
-ER, PME
->> and others won't be received by default. So users need to use workaroun=
-ds such
->> as passing 'pcie_pme=3Dnomsi' cmdline param.
->>
->> Fixes: 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMS=
-I-RX to
->> work around hardware bug")
->> Cc: <stable@vger.kernel.org> # 7.0.x
->> Signed-off-by: Soeren Moch <smoch@web.de>
-> Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
+Hello,
 
-This patch is a regression fix for linux-7.0.
-It is still not part of linux-7.2-rc1 .
+this series is part of a preparation for changing .driver_data (and
+similarily named members) of *_device_id to an anonymous union.
+See e.g.
+https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com/
+for the idea behind it. I also grabbed the opportunity to unify the
+coding style for all these arrays while going through these.
 
-Can I do something to get this merged, is something still missing from=20
-my side?
+The patch series is based on pwm/for-next + "pwm: pxa: Depend on OF and
+simplify accordingly" [1].
 
-Thanks,
-Soeren
+Best regards
+Uwe
 
->=20
-> Best Regards
-> Richard Zhu
->> ---
->> Cc: Manivannan Sadhasivam <mani@kernel.org>
->> Cc: Richard Zhu <hongxing.zhu@nxp.com>
->> Cc: Lucas Stach <l.stach@pengutronix.de>
->> Cc: Bjorn Helgaas <bhelgaas@google.com>
->> Cc: Frank Li <Frank.Li@nxp.com>
->> Cc: Fabio Estevam <festevam@gmail.com>
->> Cc: linux-pci@vger.kernel.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: imx@lists.linux.dev
->> Cc: linux-kernel@vger.kernel.org
->>
->> Tested on a tbs2910 board [1]
->> [1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
->> ---
->>   drivers/pci/controller/dwc/pci-imx6.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/pci/controller/dwc/pci-imx6.c
->> b/drivers/pci/controller/dwc/pci-imx6.c
->> index 6d6a1688e7eb..3d461bdef967 100644
->> --- a/drivers/pci/controller/dwc/pci-imx6.c
->> +++ b/drivers/pci/controller/dwc/pci-imx6.c
->> @@ -1865,7 +1865,8 @@ static const struct imx_pcie_drvdata drvdata[] =
-=3D {
->>                  .flags =3D IMX_PCIE_FLAG_IMX_PHY |
->>                           IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
->>                           IMX_PCIE_FLAG_BROKEN_SUSPEND |
->> -                        IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
->> +                        IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
->> +                        IMX_PCIE_FLAG_KEEP_MSI_CAP,
->>                  .dbi_length =3D 0x200,
->>                  .gpr =3D "fsl,imx6q-iomuxc-gpr",
->>                  .ltssm_off =3D IOMUXC_GPR12,
->> --
->> 2.43.0
->=20
+[1] https://lore.kernel.org/linux-pwm/20260705083910.3502207-2-u.kleine-koenig@baylibre.com
+
+Uwe Kleine-König (The Capable Hub) (5):
+  pwm: pca9685: Drop unused assignment of acpi_device_id driver data
+  pwm: Use named initializers for arrays of acpi_device_id
+  pwm: Unify coding style of acpi_device_id arrays
+  pwm: Unify coding style of of_device_id arrays
+  pwm: lpss-pci: Unify coding style of pci_device_id array
+
+ drivers/pwm/pwm-apple.c           |  2 +-
+ drivers/pwm/pwm-argon-fan-hat.c   |  2 +-
+ drivers/pwm/pwm-atmel-hlcdc.c     | 15 ++++++---------
+ drivers/pwm/pwm-atmel-tcb.c       |  6 +++---
+ drivers/pwm/pwm-atmel.c           |  3 +--
+ drivers/pwm/pwm-bcm-iproc.c       |  2 +-
+ drivers/pwm/pwm-bcm-kona.c        |  2 +-
+ drivers/pwm/pwm-bcm2835.c         |  2 +-
+ drivers/pwm/pwm-berlin.c          |  2 +-
+ drivers/pwm/pwm-brcmstb.c         |  2 +-
+ drivers/pwm/pwm-clk.c             |  2 +-
+ drivers/pwm/pwm-clps711x.c        |  2 +-
+ drivers/pwm/pwm-cros-ec.c         |  2 +-
+ drivers/pwm/pwm-hibvt.c           |  2 +-
+ drivers/pwm/pwm-imx-tpm.c         |  2 +-
+ drivers/pwm/pwm-imx1.c            |  2 +-
+ drivers/pwm/pwm-imx27.c           |  2 +-
+ drivers/pwm/pwm-ipq.c             |  4 ++--
+ drivers/pwm/pwm-jz4740.c          |  2 +-
+ drivers/pwm/pwm-loongson.c        |  2 +-
+ drivers/pwm/pwm-lp3943.c          |  2 +-
+ drivers/pwm/pwm-lpc18xx-sct.c     |  2 +-
+ drivers/pwm/pwm-lpc32xx.c         |  2 +-
+ drivers/pwm/pwm-lpss-pci.c        |  2 +-
+ drivers/pwm/pwm-lpss-platform.c   | 10 +++++-----
+ drivers/pwm/pwm-mediatek.c        |  2 +-
+ drivers/pwm/pwm-meson.c           |  9 ++++-----
+ drivers/pwm/pwm-mtk-disp.c        |  8 ++++----
+ drivers/pwm/pwm-mxs.c             |  2 +-
+ drivers/pwm/pwm-omap-dmtimer.c    |  4 ++--
+ drivers/pwm/pwm-pca9685.c         |  6 +++---
+ drivers/pwm/pwm-pxa.c             |  8 ++++----
+ drivers/pwm/pwm-raspberrypi-poe.c |  2 +-
+ drivers/pwm/pwm-rcar.c            |  4 ++--
+ drivers/pwm/pwm-renesas-tpu.c     | 10 +++++-----
+ drivers/pwm/pwm-rockchip.c        |  8 ++++----
+ drivers/pwm/pwm-rzg2l-gpt.c       |  2 +-
+ drivers/pwm/pwm-samsung.c         |  2 +-
+ drivers/pwm/pwm-sifive.c          |  2 +-
+ drivers/pwm/pwm-sl28cpld.c        |  2 +-
+ drivers/pwm/pwm-sophgo-sg2042.c   |  7 +++----
+ drivers/pwm/pwm-sprd.c            |  4 ++--
+ drivers/pwm/pwm-sti.c             |  2 +-
+ drivers/pwm/pwm-stm32-lp.c        |  4 ++--
+ drivers/pwm/pwm-stm32.c           |  6 +++---
+ drivers/pwm/pwm-sun4i.c           |  2 +-
+ drivers/pwm/pwm-sunplus.c         |  4 ++--
+ drivers/pwm/pwm-tiecap.c          |  6 +++---
+ drivers/pwm/pwm-tiehrpwm.c        |  2 +-
+ drivers/pwm/pwm-twl-led.c         |  2 +-
+ drivers/pwm/pwm-twl.c             |  2 +-
+ drivers/pwm/pwm-visconti.c        |  2 +-
+ drivers/pwm/pwm-vt8500.c          |  2 +-
+ drivers/pwm/pwm-xilinx.c          |  4 ++--
+ 54 files changed, 96 insertions(+), 102 deletions(-)
+
+
+base-commit: 1a4920940ebfd8d907858abd8f8dd09b13752946
+prerequisite-patch-id: b423a9d049b4520ef37b40635c95004363ecf692
+-- 
+2.55.0.11.g153666a7d9bb
 
