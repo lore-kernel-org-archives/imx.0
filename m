@@ -1,415 +1,174 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC16137DEB9
-	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 15:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE3A376A1E;
+	Mon,  6 Jul 2026 15:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783350143; cv=pass; b=DeQL7q0COYMmidklPDYhOgpVA+l80hKM/UPl7sEWPtLlB+fpig0gmYchEoc2EN/fh1uO2EjrV0bNbQ6ucmWB6HEDPnVxoZ+xmCjOz9syWvw1L1cugXkEXXOltU3JlkwYLYls+1XTkTrGkX0XbQMpzbSLzlEwxlNV7HCfe4tFmrg=
+	t=1783350173; cv=pass; b=Mc9fRp0GcYRHlV6A9UbvaKdblnJAauPdyddbxQ5MbLEsRjXi9iYvetLT2rCpimmmZx41lE/70wY++X1MUVuMDnfskR36ctBsf5KCbmCQsrYA8EHi8MJUax8+nDrWhatWVTPz3eQZg1JOzA781OgCyCi1xX5bgMQRLGCufLF/n8E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783350143; c=relaxed/simple;
-	bh=uwie9VKIViz/AqclWFsim2aaQPT5dg/nPcZEXlZNetQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t+DG9Bbt7UTSGP6P9PabtengA4ANCK8QphNVpniR8jSGKuJ6gpBw0EwgEWJvoEG2is3fq8Kqx277u9/crk6/6k10ZXq5sqhUsl97mUgtPEib6o/4hs/MnS3424R+S4I2szWlFJTsopcXVE+DH3GjRczmrc9NGPC+JGgFn35vu50=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XETIcxZ2; arc=pass smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783350173; c=relaxed/simple;
+	bh=Lu9wLxVbs/Lk9+t6I1rSrNmYpbDMa4qMMSV45NFfKlI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dhSqMm+J88fCSJzsAc7xWVidGP5NYAJpFA2AEnwijdD0SO+HiQ+llNoaMh/Sh0SxIG78g4aQMEcN8x3eTHmMtlYnRPL39A+lQzHlJm3r6tMxHD6wJlu9ORS1tiNl2bky9JkKQDpD8kMdSgr1w3LeRQotx3EglPeJbXtB3py7Ugc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=ImgA1Hj8; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XETIcxZ2"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3997a448ecbso31650291fa.0
-        for <imx@lists.linux.dev>; Mon, 06 Jul 2026 08:02:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783350140; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RrRTsfcNN9i/8toJcndAsw39U12dR8WJ/UNgaQAhkI+4VuVHu76wfDQYTpgeNfIgc0
-         1n+1pB9o6UZGYrmf930qvQXGChB1QzhkwdB9NpCvbbsPigpT+8A/mMFUcS5qJyHPs7VP
-         ZaFJhzeIxwmVYYkY5EamwcvG4T7HtJySkmjxWsiN5Tnc8iWYsFw9HrYTlIFbCFnEuoCN
-         ms3ePV6Ocz0TW0WF1sT2DTirBPy/W+NqRqtoXH1zmoz2GiKEU6mjy21by47jf41RtnMA
-         dBY4kr3iwPxbfoqg7PwFdDKoZ8Bv0K1lP2jtBaTy78IQR1O1miwvpRy3T1SSEWqzqsRX
-         3WVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PWV4JkS2cCeJPf0nGFS2jwqaTnw6RGYanrKcHVTs/QE=;
-        fh=bCCnq8rX+o+rOJPu6WWyR3sifpnOTIxyYv0t/4m8oYA=;
-        b=k6qweE1ixkyHxMrbWGUa9In5ZAThygpwM2rs8NQ1qRokb86IPMJxNjSaQA1qnz6lpg
-         Ph2Swrn6+aiw1RlvPDY6+SeGykoqXQe9259aTZUQ0Be/DWolppbGNe/BpRxG11BnICZw
-         S4+8SAfCMOox9e7hsX+9ffXtjOMn4Jjz5fdO6clWA+/FFyfpke+Rt6Nhgiel3+xUUjKA
-         n0DMtgbgC6/eDs5ePBWDFOdMnorACV+4UB5rkopT1iwkp/qlwdHC18q1weK3mZXYBJl4
-         69zixOoF28E3avkc/U4K6e5lXfB9A2AYN4N2ujYs43bfdonc/pyWAQPzKt2TN8IPDSqK
-         e8ig==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783350140; x=1783954940; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PWV4JkS2cCeJPf0nGFS2jwqaTnw6RGYanrKcHVTs/QE=;
-        b=XETIcxZ2dTx7t8hvSKvs4WuQNhROd6cPNuGGu1TjFp9ETSmP4q74s8UyO0TuQJWenl
-         OAtXEtf5jyHIvy0Kc3san0zehEcBMIzKRgrVPDFk/TcDpyIWMrQNI5sCtuiLc8H7iZEE
-         ctiWHkc6LbhTOq+HkgJs0qANCuFhLqdTyOAVLa9mdQfhHWGqnGhs8RhoWUQekTH8JIhD
-         HOSQedwScAbxoA506KPH9C1MN3BKlMiIPZDdQOS/XTwTaAwnD7MoYVqTtStcaOn1LKet
-         RppSITOMxgLS6f8amMhIL6FpvswB0v3nPgscLRX/R97BKbZud371r8KVUBv3xkTqLh6U
-         8Xyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783350140; x=1783954940;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PWV4JkS2cCeJPf0nGFS2jwqaTnw6RGYanrKcHVTs/QE=;
-        b=XQfx1Mef/uJ2l2Jg5ldOWgOdo//o8TukG3ScPcFEesHrBBotd5PAvy/pp6zieN1AWc
-         tDwgHcpKER94Zpn84/5PvzTGj5Z6xhcEi2Nb4ZFyg1lyGZcfy0ZpxmfT6HKZjmQE8Dv5
-         E0wddT/3MUAVBt0LJubkglW3bURGkwP1Fjq/4PD0KZD9SsHqj0d/c9V7tt5QUpAIxT6E
-         wsxa9lmEBVo3izqesIIaaZA33cTL+MlQFjxfiGE/8eEEFDTY/5hiGIzb8Xi8cLI1nldo
-         S/e6xuhTbe+v0Dv3HjMFAmk+VvnG34b+1okkbTLR0wZVkLnzbhRv4bZvdEMwB10VpQmQ
-         kKAA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqopj+uLFZozs2Z3BdaMGoUtZeC2+ApL7RXvIJle6gUX+ag+rZqoq7MowVxxpL9gsaDq5E=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzzvXsdM60ytDDBM+xO3u7tgEZWkjEa433CiFtcehNt1EXZdQsp
-	X3Y9hqqoCzwOSl9Qjw1+YPbolj4PxSZ7CcWMMTrUbGCu/nYVZZAcq0a/R6pSSAIqybYvUF69dQw
-	6iWbccbK2frEfMmOuFMn19jc1uP6xMXU=
-X-Gm-Gg: AfdE7ckEX3g90popnv0DABEtdlpI+lvYU/bCEnJN+6pNdVWL5tz5mvA+QCl9SayKQJa
-	rWkluODhhgdx0O0v+wU1AuK9mqyW8Qf22Hogov+N6ewK8StfjkTxUWOlmk8jAMWlMoZasXdvjtC
-	Dbq8FUluiTPlMKM610mm3OAdCofKIyFeJQuSGiY1XeYmRB0uANHyTApC6Bwj7TgNmyinAth3HWf
-	FT+eigM3eRsuPjALl24kTVva105hn9jqzCJZU3UkyAHk2r4iieb0fHFLJZ7yIniEOEZ+4yXG7Kc
-	L9DGkvKWTgkMltqCp+M0sjWv22KedAg/C10em55NoBdxbJVsIHSiKiqYpcegfAE=
-X-Received: by 2002:a2e:bc26:0:b0:39a:d718:da74 with SMTP id
- 38308e7fff4ca-39c5fb3b7cemr2704641fa.0.1783350139532; Mon, 06 Jul 2026
- 08:02:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="ImgA1Hj8"
+ARC-Seal: i=1; a=rsa-sha256; t=1783350034; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ShBwgIB9Tp0j2ieVFNXD2nNlBvkYSrZX6KL3AeDB+tfLOnE+7CHZu5rN/HP3/wiA65AfS2awNfBnLG6v3KttLERp5k37uX5cTjLkGlHu1epQC0tpKbiWTjw2bmWO4R3cJ9Bceq/UN4MGpiO+12hQk2boeKqRMVN9X9phSckbKF0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783350034; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=3XwyWTIrA/V6J7edt1EVqOvQjuCfvvAm71aap9OvOCI=; 
+	b=aUIQNdoKYFXhqBqNhsY+F02CkGve6EXcuTScFbe5OHL/WHUKXk+LgtUumBUdfOodPJNOea5bCjHJ9ycCR0cPvohjbCewZV5P129fWS7uy+uA2tTiwdLdX3wI3zpXyvb7h2kq1Re2lQrUV6CFisZwObNuwW+4qzyVdb787O027/g=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783350034;
+	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=3XwyWTIrA/V6J7edt1EVqOvQjuCfvvAm71aap9OvOCI=;
+	b=ImgA1Hj80B9JHQg2Jp0iR3Hfkzuv+c1ZmjHHLY5vXEEHJlu3rx/mY5cc4HVAWJDf
+	QREjGnw/uNA5JcHG0nEUz0PUvTE/0uKgXtwmj8p0wIRVC2fcF+pZOIvPjdNL8NnCNrh
+	RgJCMxLw7XsRX8tO1eirdxvjf97IRGDZQzh4oCj8=
+Received: by mx.zohomail.com with SMTPS id 1783350031182921.1240379629376;
+	Mon, 6 Jul 2026 08:00:31 -0700 (PDT)
+Message-ID: <3541fb84-81ce-4415-8027-38aa611834ae@collabora.com>
+Date: Mon, 6 Jul 2026 18:00:09 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260624100326.413699-1-piyushpatle228@gmail.com>
- <aj5MNiKSCiEDvDzL@raspi> <CAMB+xkayaViXeC2GyMMUfeCMzA4=fh-Dq6NYOL-hzKoLfAF19w@mail.gmail.com>
- <aksVMhFr8YzedE1w@raspi> <CAMB+xkY2rut-sEUMyFnXqYCNmyseP4nAGj4BfreORTTM=SN8_g@mail.gmail.com>
- <akuEOT2FRa77L0Jn@raspi>
-In-Reply-To: <akuEOT2FRa77L0Jn@raspi>
-From: Piyush Patle <piyushpatle228@gmail.com>
-Date: Mon, 6 Jul 2026 20:31:42 +0530
-X-Gm-Features: AVVi8CfYmix7GDHRP2N19e9NG0C7gIJlvJ3wBifD247sso2jQN2_T0J0s6RlIs4
-Message-ID: <CAMB+xka8Fame7aFZSiWEtVcozSTXX8g9MKJu+cycU2vtiSDHmQ@mail.gmail.com>
-Subject: Re: [RFC] drm/imx: upstream direction for i.MX95 display support
-To: Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, marex@nabladev.com, 
-	daniel.baluta@nxp.com, Frank.Li@nxp.com, shawnguo@kernel.org, 
-	tzimmermann@suse.de, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	airlied@gmail.com, simona@ffwll.ch
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/42] media: synopsys: hdmirx: Use
+ devm_of_reserved_mem_device_init()
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Paul Cercueil <paul@crapouillou.net>,
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+ Paul Kocialkowski <paulk@sys-base.io>, Linus Walleij <linusw@kernel.org>,
+ Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Alexey Brodkin
+ <abrodkin@synopsys.com>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Michal Simek <michal.simek@amd.com>,
+ Daniel Scally <dan.scally@ideasonboard.com>,
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Eddie James <eajames@linux.ibm.com>, Tiffany Lin <tiffany.lin@mediatek.com>,
+ Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+ Yunfei Dong <yunfei.dong@mediatek.com>,
+ Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
+ Houlong Wei <houlong.wei@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Joseph Liu <kwliu@nuvoton.com>, Marvin Lin <kflin@nuvoton.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Srinivas Kandagatla <srini@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ge Gordon
+ <gordon.ge@bst.ai>, Adrian Hunter <adrian.hunter@intel.com>,
+ Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Orson Zhai <orsonzhai@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Peter Chen <peter.chen@cixtech.com>, Fugang Duan <fugang.duan@cixtech.com>
+Cc: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
+ BST Linux Kernel Upstream Group <bst-upstream@bstai.top>,
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+ Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+ Chunyan Zhang <zhang.lyra@gmail.com>,
+ CIX Linux Kernel Upstream Group <cix-kernel-upstream@cixtech.com>,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-aspeed@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
+ openbmc@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+ kernel@collabora.com, linux-tegra@vger.kernel.org,
+ linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ imx@lists.linux.dev, sound-open-firmware@alsa-project.org
+References: <20260703193855.110619-1-mukesh.ojha@oss.qualcomm.com>
+ <20260703193855.110619-7-mukesh.ojha@oss.qualcomm.com>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20260703193855.110619-7-mukesh.ojha@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On Mon, Jul 6, 2026 at 4:00=E2=80=AFPM Liu Ying <victor.liu@nxp.com> wrote:
->
-> On Mon, Jul 06, 2026 at 03:15:24PM +0530, Piyush Patle wrote:
-> > On Mon, Jul 6, 2026 at 8:07=E2=80=AFAM Liu Ying <victor.liu@nxp.com> wr=
-ote:
-> > >
-> > > On Sun, Jul 05, 2026 at 03:33:51AM +0530, Piyush Patle wrote:
-> > > > On Fri, Jun 26, 2026 at 3:22=E2=80=AFPM Liu Ying <victor.liu@nxp.co=
-m> wrote:
-> > > > >
-> > > > > On Wed, Jun 24, 2026 at 03:33:18PM +0530, Piyush Patle wrote:
-> > > > >
-> > > > > [...]
-> > > > >
-> > > > > > The current dc/ implementation is a multi-device component driv=
-er
-> > with one
-> > > > > > platform_driver per block bound via the component framework. Th=
-e
-> > downstream
-> > > > > > i.MX95 driver is a single monolithic platform_driver mapping al=
-l
-> > blocks from
-> > > > > > one register base. Unifying appears to require reconciling two =
-bind
-> > models,
-> > > > > > rather than only adding match_data.
-> > > > >
-> > > > > I think that upstream i.MX95 display controller driver would also=
- be
-> > based
-> > > > > on the component helper.  That's something for sure.
-> > > > >
-> > > > > [...]
-> > > > >
-> > > > > > There is also anticipated divergence which is not yet upstream
-> > (i.MX8QXP
-> > > > > > prefetch/PRG, LTS and tiling modifiers, and the downstream i.MX=
-95
-> > blit
-> > > > > > engine), although mainline dc/ is KMS-only today.
-> > > > >
-> > > > > Just want to point out that I sent out v5 patch set[2] to add i.M=
-X8QXP
-> > > > > prefetch engine(DPRC + PRG) support for KMS.  That changes the
-> > driver's
-> > > > > mode setting code a lot.
-> > > > >
-> > > > > [2]
-> > https://lore.kernel.org/all/20251027-imx8-dc-prefetch-v5-0-4ecb6c6d4941=
-@nxp.com/
-> > > > >
-> > > > > [...]
-> > > > >
-> > > > > > One question for Liu Ying is whether the separate-driver plus s=
-hared
-> > > > > > helper-library approach is still the preferred direction, and w=
-here
-> > the
-> > > > > > helper boundary would be drawn (which blocks/ops are shared ver=
-sus
-> > > > > > implemented per driver).
-> > > > >
-> > > > > Yes, separate DRM drivers + a helper library approach is still th=
-e
-> > direction
-> > > > > I want.  I think that the drivers and library would sit in the sa=
-me
-> > > > > directory drivers/gpu/drm/imx/dc/.
-> > > > >
-> > > > > The purpose to add a library is to share code to reduce overall c=
-ode
-> > lines.
-> > > > > I'd assume that shared blocks or common part of slightly differen=
-t
-> > blocks
-> > > > > should be covered by the library.
-> > > > >
-> > > > > [...]
-> > > > >
-> > > > > > how the component and monolithic driver models
-> > > > > > would be reconciled given the differences described above.
-> > > > >
-> > > > > Like I said above, I don't think upstream driver would be monolit=
-hic.
-> > > > >
-> > > > > --
-> > > > > Regards,
-> > > > > Liu Ying
-> > > >
-> > > > Hi Liu,
-> > >
-> > > Hi Piyush,
-> > >
-> > > >
-> > > > A quick follow-up with some progress.
-> > > > I went ahead with the refactoring we discussed and now have it work=
-ing
-> > on the
-> > > > i.MX95 15x15 FRDM, following the component-based model.
-> > > > The common implementations for ConstFrame, ExtDst, LayerBlend, Fram=
-eGen
-> > and
-> > > > the FetchUnit base have been moved into shared dc-lib-* helpers, wi=
-th
-> > >
-> > > Can you please share the code in a public place, like github?
-> > >
-> >
-> > Sure. I've pushed the current work-in-progress branch here:
-> > https://github.com/PiyushPatle26/linux-mecha-im95-wip/tree/imx95-dc-pre=
-view
->
-> I gave this branch a quick look.  The major problem is that you are using
-> the same 'struct drm_driver dc_drm_driver' for i.MX95 and i.MX8QXP displa=
-y
-> controllers instead of using separate DRM drivers.  From userspace's POV,
-> they should see different driver names(drm_driver.name).  From drivers'
-> POVs, they should implement different mode setting callbacks.
+On 7/3/26 22:38, Mukesh Ojha wrote:
+> Replace the hand-rolled devm_hdmirx_of_reserved_mem_device_release()
+> devres action with devm_of_reserved_mem_device_init(), which handles the
+> cleanup automatically. This removes both the wrapper function and the
+> devm_add_action_or_reset() call.
+> 
+> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> ---
+>  .../media/platform/synopsys/hdmirx/snps_hdmirx.c | 16 ++--------------
+>  1 file changed, 2 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/media/platform/synopsys/hdmirx/snps_hdmirx.c b/drivers/media/platform/synopsys/hdmirx/snps_hdmirx.c
+> index 25f8ca0d6d94..7c6acc6d7e88 100644
+> --- a/drivers/media/platform/synopsys/hdmirx/snps_hdmirx.c
+> +++ b/drivers/media/platform/synopsys/hdmirx/snps_hdmirx.c
+> @@ -2265,11 +2265,6 @@ static const struct hdmirx_cec_ops hdmirx_cec_ops = {
+>  	.read = hdmirx_readl,
+>  };
+>  
+> -static void devm_hdmirx_of_reserved_mem_device_release(void *dev)
+> -{
+> -	of_reserved_mem_device_release(dev);
+> -}
+> -
+>  static int hdmirx_parse_dt(struct snps_hdmirx_dev *hdmirx_dev)
+>  {
+>  	struct device *dev = hdmirx_dev->dev;
+> @@ -2316,16 +2311,9 @@ static int hdmirx_parse_dt(struct snps_hdmirx_dev *hdmirx_dev)
+>  	if (!device_property_read_bool(dev, "hpd-is-active-low"))
+>  		hdmirx_dev->hpd_trigger_level_high = true;
+>  
+> -	ret = of_reserved_mem_device_init(dev);
+> -	if (ret) {
+> +	ret = devm_of_reserved_mem_device_init(dev);
+> +	if (ret)
+>  		dev_warn(dev, "no reserved memory for HDMIRX, use default CMA\n");
+> -	} else {
+> -		ret = devm_add_action_or_reset(dev,
+> -					       devm_hdmirx_of_reserved_mem_device_release,
+> -					       dev);
+> -		if (ret)
+> -			return ret;
+> -	}
+>  
+>  	return 0;
+>  }
 
-I've reworked it based on your feedback and updated version to the same bra=
-nch
-I've split them into separate DRM drivers.
-The shared dc_drm_driver and dc-drv-common.c are gone. i.MX8QXP and i.MX95
-now each have their own struct drm_driver, component bind path, probe logic=
- and
-mode-setting callbacks. Userspace now also sees different driver names
-for the two SoCs.
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
-The mode_valid, atomic_check, atomic_begin and atomic_flush callbacks
-were already
-identical in the previous version, so I've left them as a small shared
-helper to avoid
-duplicating the same code. If they diverge later, I'll split them into
-separate implementations.
-
->
-> It looks like it's not worth extracting common code into those dc-lib-* f=
-iles.
-> Each dc-[block].c is a library itself, though I could be wrong - after al=
-l,
-> I haven't find a time slice to add i.MX95 blocks to them and see how they
-> will be.
->
-
-Agreed. I removed the dc-lib-* split. The shared register code is now place=
-d
-directly inside each dc-[block].c file, so every block stays
-self-contained while
-still being reused by both drivers where needed.
-
-> The idea is to share some code between the two DRM drivers *naturally*.
->
-> >
-> > The files you asked about are:
-> > drivers/gpu/drm/imx/dc/dc-drv-common.c
-> > drivers/gpu/drm/imx/dc/dc-lib-*.c
-> > One thing I'd like to point out is that the pixel interleaver, display =
-pixel
-> > link, LDB and LVDS PHY drivers are ports of the existing NXP downstream
-> > drivers. The new work in this branch is mainly the DC refactoring into =
-the
-> > component model and the shared helper library.
-> > > > SoC-specific register layouts and tables supplied as data. The per-=
-SoC
-> > glue is
-> > > > split into dc-drv-common.c, dc-drv-imx8qxp.c and dc-drv-imx95.c, wh=
-ile
-> > >
-> > > Same here, just want to see how dc-drv-common.c and dc-lib-* would lo=
-ok
-> > like.
-> > >
-> > The files you mentioned are available under:
-> > drivers/gpu/drm/imx/dc/dc-drv-common.c
-> > drivers/gpu/drm/imx/dc/dc-lib-*.c
-> > The helper library currently contains the common implementations for
-> > ConstFrame, ExtDst, LayerBlend, FrameGen and the FetchUnit base.
-> >
-> > > > i.MX95-specific blocks such as DomainBlend, Dither, FetchEco, Fetch=
-YUV,
-> > > > HScaler and VScaler remain separate component drivers.
-> > >
-> > > i.MX8QXP display controller also has Dither, FetchEco, HScaler and
-> > Vscaler,
-> > > so they are not i.MX95-specific blocks.  To add minimal feautures at
-> > first,
-> > > we don't need to support them as of now.  i.MX95-specific FetchYUV is
-> > similar
-> > > to i.MX8QXP-specific FetchDecode, so maybe FetchYUV won't be a separa=
-te
-> > > component driver at the end of the day.  To start up small, I think t=
-he
-> > > must-have DomainBlend and Dither(for Data-Enable, HSync and VSync pol=
-arity
-> > > controls) and two FetchLayers can be enabled to support two display
-> > pipelines.
-> > >
-> >
-> > Okay, I've reduced the implementation accordingly. The current branch
-> > only keeps DomainBlend, Dither and two FetchLayers. FetchEco, FetchYUV,
-> > HScaler and VScaler have been dropped for now.
-> > > BTW, do you have the i.MX95 TRM?  If no, then it would be difficult f=
-or
-> > you
-> > > to add DT bindings for *all* blocks.  Note that the DT bindings are
-> > supposed
-> > > to be complete at the first place.
-> > >
-> >
-> > Yes, I do.
-> >
-> > > >
-> > > > The implementation is functional on the FRDM over the pipeline
-> > > > DPU -> pixel-interleaver -> pixel-link -> LDB -> LVDS PHY -> IT6263=
- ->
-> > HDMI
-> > >
-> > > As I said before in separate mail thread, pixel link is not used in t=
-he
-> > LVDS
-> > > display pipeline, but instead it's only used in the MIPI DSI display
-> > pipeline.
-> > >
-> >
-> > Thanks for pointing that out. After checking the TRM, I updated the DT =
-graph
-> > so the LVDS pipeline is now:
-> >
-> > DC -> Pixel-interleaver -> LDB -> LVDS PHY -> IT6263 -> HDMI
->
-> Yes, this pipeline is correct.
->
-> >
-> > Removing display_pixel_link from the LVDS path also required moving the
-> > bridge
-> > format translation into the pixel interleaver driver.
-> > > >
-> > > > EDID is read successfully, the initial modeset works for all tested
-> > modes
-> > > > (1920x1080@60, 1280x720@60, 720x480 and 640x480), and Weston and sw=
-ay
-> > both run.
-> > > >
-> > > > There are still two known limitations. The initial modeset works, b=
-ut
-> > > > subsequent mode changes currently wedge the ExtDst content shadow l=
-oad,
-> > which
-> > > > appears related to the lack of a reset path for the i.MX95 FrameGen=
-.
-> > >
-> > > Not sure what's the cause of the issue, but FrameGen needs to be disa=
-bled
-> > and
-> > > then re-enabled if you want to do a full modeset.  I'd say that's not=
- a
-> > reset
-> > > path.  This critical issue needs to be fixed before posting formal
-> > patches.
-> > >
-> >
-> > Understood. I'll continue investigating the modeset issue before postin=
-g the
-> > formal patch series.
-> >
-> > > > In
-> > > > addition, the DSI path is implemented on the DC side but remains
-> > unvalidated.
-> > >
-> > > It's fine to support the LVDS display pipeline first as long as it do=
-esn't
-> > > do harm to the MIPI DSI display pipeline support.  So, maybe drop the
-> > latter
-> > > first.
-> >
-> > I've done that in the current branch. It now focuses only on the valida=
-ted
-> > LVDS pipeline.
-> >
-> > >
-> > > >
-> > > > The implementation is currently based on v7.2-rc1 together with you=
-r
-> > prefetch
-> > > > v5 series.
-> > > >
-> > > > The work is now ready to be posted as patch series: Adding LVDS/DSI
-> > > > i.MX95 support.
-> > > >
-> > > >
-> > > > Regards,
-> > > > Piyush Patle
-> > >
-> > > --
-> > > Regards,
-> > > Liu Ying
-> >
-> > Thanks again for taking the time to review this.
-> >
-> > Regards,
-> > Piyush Patle
->
-> --
-> Regards,
-> Liu Ying
-
-framegen re-tune issue is still unresolved.
-I'll fix that before posting the formal patch series.
-
-Regards,
-Piyush Patle
+-- 
+Best regards,
+Dmitry
