@@ -1,80 +1,80 @@
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB772BFC7B
-	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 07:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8436E3E51F8
+	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 07:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783322875; cv=none; b=bbMXRUrA1dBZEe+we2MgNmNyNpGeToOb5txk5XhdfbTskpWWGlbB+cDMaB80GbUgGsDwjeLTNO8pSIc9/lws6ZJfSq8HACkt0za3sNCCkVW16ryOcBNbhucFSFTJwLt4bKrMIvK9Bxesuwp+qPteJqGZFSTBQhHbqARYLNfrou0=
+	t=1783323811; cv=none; b=Zru5+zWWB261syHbaqP6DvwT849n0nA2jzSE9xyhjyx2vcjCxoKxvYC0n2knnVzbWnNmp1Sw5lSAxVv8LNdWHYguX15eqo91KkplBpN+8VnvFow+BpDmRn/2FMRuZFZp//vW62bQrti9zA4Lfe4CmawYgu4YbIE6Kj6GVgL3feA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783322875; c=relaxed/simple;
-	bh=E2IPGWg6g9z+kmInCDCaFk0puYcvTRbJqMUseelOiNM=;
+	s=arc-20240116; t=1783323811; c=relaxed/simple;
+	bh=O3zLruKzuhrBX/Lm3TcADZ4xWO3kBpDMA8fvapkLsbM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e/KlXUDMKes9IvV6sRsc4F7jOhnJURcxAGAAZb6LmYdq84XyS9P83+R+K2m78nvsdVSA9RQXxGrvIQdjIUJxolHYbZ+0eseyCVvu9dyJwhofT3YXDga+obmvseXzGju+oJ8qr0o2Vfr7MwolonMKlMO1lOXvWE1wLc+KU3FkNsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0wpOaniI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vRZoMy4m; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0wpOaniI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vRZoMy4m; arc=none smtp.client-ip=195.135.223.131
+	 In-Reply-To:Content-Type; b=HEKdCklEJky5s5kgFn40C2tNiHXbtfySPK/DJtw8QCNPCZle6HrTKSbIVIlA1QUVbAJJ2Xm/LFjbClqjLG0Ko+6XQVFestKZaGd51ns0b7yCa9PGP2o/YM0EOrnh+wzv+0QGUDOtfH1oQjJz5gDhuvg3jhjDfFgXSV+rCN305fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zCgjAI6f; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2ZUu++hR; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zCgjAI6f; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2ZUu++hR; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0wpOaniI";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vRZoMy4m";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0wpOaniI";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vRZoMy4m"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zCgjAI6f";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2ZUu++hR";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zCgjAI6f";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2ZUu++hR"
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3F04575D1A;
-	Mon,  6 Jul 2026 07:27:48 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A4C5E759A7;
+	Mon,  6 Jul 2026 07:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783322868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1783323796; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+2Djb0q9WRkslYZbyJ71zpFQjsAPKkL2tq9BmdbU6nU=;
-	b=0wpOaniIIGdIp6z0GgnhUgcX7Ud0CNlgNZsCsQlsgePgV/syB4GI+NetQO74Bu88DWebkJ
-	JV4RcnUvOxIyYy8sZyMKhb2UP77fMvZEMirZrApFrnCjD5L+0SYMYo+ZFQQ5lID32YXDF1
-	lItEzeSK46VQqsmy5ExgcL0vPlIuQ7Y=
+	bh=08mM5gDTURucsGOhS+HdslmQIHzZiRSggy8aPce9TiE=;
+	b=zCgjAI6fpA6GmcgNxyuzJYM8KOKA/6QaBBf0JmY261B5Tn5KYNVPyCA9m2XC//t4TExRPd
+	WwN9iYO76FPsHxNDYYdEGiutBmdi+h+6KzT05S5arVhHpCnfkl8oY7xNIu1VP8NBiWIVKI
+	dtyUShE6tNfCq/tsZoAsCXCxaL3p0VA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783322868;
+	s=susede2_ed25519; t=1783323796;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+2Djb0q9WRkslYZbyJ71zpFQjsAPKkL2tq9BmdbU6nU=;
-	b=vRZoMy4mlXVDCDDzBHVKqK0jVdeF3GKGuTQBv6rpUASi6BEc+d8w4iSN5qdOKqb9Ez4Cpc
-	/dCOcX9RcSAElJAA==
+	bh=08mM5gDTURucsGOhS+HdslmQIHzZiRSggy8aPce9TiE=;
+	b=2ZUu++hRze2+Op2oUeinD/MlR4/Evs+M08V2foYX6ZH6wVqaIjDE62Fggq6bEzBdYmCWd+
+	yeGo1nj+hgQsLRCA==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783322868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1783323796; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+2Djb0q9WRkslYZbyJ71zpFQjsAPKkL2tq9BmdbU6nU=;
-	b=0wpOaniIIGdIp6z0GgnhUgcX7Ud0CNlgNZsCsQlsgePgV/syB4GI+NetQO74Bu88DWebkJ
-	JV4RcnUvOxIyYy8sZyMKhb2UP77fMvZEMirZrApFrnCjD5L+0SYMYo+ZFQQ5lID32YXDF1
-	lItEzeSK46VQqsmy5ExgcL0vPlIuQ7Y=
+	bh=08mM5gDTURucsGOhS+HdslmQIHzZiRSggy8aPce9TiE=;
+	b=zCgjAI6fpA6GmcgNxyuzJYM8KOKA/6QaBBf0JmY261B5Tn5KYNVPyCA9m2XC//t4TExRPd
+	WwN9iYO76FPsHxNDYYdEGiutBmdi+h+6KzT05S5arVhHpCnfkl8oY7xNIu1VP8NBiWIVKI
+	dtyUShE6tNfCq/tsZoAsCXCxaL3p0VA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783322868;
+	s=susede2_ed25519; t=1783323796;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+2Djb0q9WRkslYZbyJ71zpFQjsAPKkL2tq9BmdbU6nU=;
-	b=vRZoMy4mlXVDCDDzBHVKqK0jVdeF3GKGuTQBv6rpUASi6BEc+d8w4iSN5qdOKqb9Ez4Cpc
-	/dCOcX9RcSAElJAA==
+	bh=08mM5gDTURucsGOhS+HdslmQIHzZiRSggy8aPce9TiE=;
+	b=2ZUu++hRze2+Op2oUeinD/MlR4/Evs+M08V2foYX6ZH6wVqaIjDE62Fggq6bEzBdYmCWd+
+	yeGo1nj+hgQsLRCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A3D21779AA;
-	Mon,  6 Jul 2026 07:27:47 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7B6AC779AA;
+	Mon,  6 Jul 2026 07:43:16 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WgXvJfNYS2pBcQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 06 Jul 2026 07:27:47 +0000
-Message-ID: <9612bb41-db52-4169-a7fa-e57268d69e24@suse.de>
-Date: Mon, 6 Jul 2026 09:27:47 +0200
+	id OkawHJRcS2q9fwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 06 Jul 2026 07:43:16 +0000
+Message-ID: <17c3bd76-9c01-436c-932d-159e936ef1f1@suse.de>
+Date: Mon, 6 Jul 2026 09:43:16 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,23 +82,13 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/9] drm: replace simple display pipe users with atomic
- helpers
-To: Ze Huang <ze.huang@oss.qualcomm.com>,
- Alexey Brodkin <abrodkin@synopsys.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
- Hans de Goede <hansg@kernel.org>, Alex Lanzano <lanzano.alex@gmail.com>,
- Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-aspeed@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 1/9] drm/arcpgu: replace struct drm_simple_display_pipe
+ with regular atomic helpers
+To: sashiko-reviews@lists.linux.dev, Ze Huang <ze.huang@oss.qualcomm.com>
+Cc: Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev
 References: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com>
+ <20260705-drm-simple-kms-removal-v1-1-b4e1ca053623@oss.qualcomm.com>
+ <20260704184304.6567A1F000E9@smtp.kernel.org>
 Content-Language: en-US
 From: Thomas Zimmermann <tzimmermann@suse.de>
 Autocrypt: addr=tzimmermann@suse.de; keydata=
@@ -125,125 +115,150 @@ Autocrypt: addr=tzimmermann@suse.de; keydata=
  SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
  Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
  4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com>
+In-Reply-To: <20260704184304.6567A1F000E9@smtp.kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Flag: NO
-X-Spamd-Result: default: False [-2.80 / 50.00];
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	NEURAL_HAM_SHORT(-0.20)[-0.989];
 	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,synopsys.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,jms.id.au,codeconstruct.com.au,nxp.com,pengutronix.de,epam.com];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TAGGED_RCPT(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,qualcomm.com:email,imap1.dmz-prg2.suse.org:helo]
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,qualcomm.com:email,imap1.dmz-prg2.suse.org:helo,suse.de:mid]
 X-Spam-Level: 
-X-Spam-Score: -2.80
 
-Hi
 
-Am 04.07.26 um 20:31 schrieb Ze Huang:
-> struct drm_simple_display_pipe was meant to simplify simple DRM
-> drivers, but instead adds an extra wrapper around normal DRM atomic
-> helper setup. As noted in Documentation/gpu/todo.rst, remaining users
-> should be converted to regular atomic helpers and stop depending on the
-> simple-KMS interfaces.
->
-> This series converts the following drivers:
->
->    - arcpgu
->    - aspeed
->    - imx lcdc
->    - mcde
->    - pl111
->    - gm12u320
->    - repaper
->    - tve200
->    - xen frontend
->
-> Each patch replaces drm_simple_display_pipe_init() with explicit
-> primary plane, CRTC and encoder setup, and moves the old simple-pipe
-> callbacks into regular plane and CRTC helper callbacks named according
-> to local driver conventions.
->
-> The conversions preserve helper behavior that used to be implicit in
-> drm_simple_kms_helper.c, including plane-state validation, CRTC
-> primary-plane checks, affected-plane propagation, framebuffer prepare
-> handling, and existing event/vblank flow where applicable.
->
-> Result is less helper indirection and more explicit driver-side atomic
-> wiring, with no remaining simple-KMS dependency in these drivers.
->
-> These changes are build-tested only. No hardware testing has been
-> performed on the affected devices.
 
-Thanks a lot for the series. That's quite a nice cleanup.  Did you use 
-any AI to create these patches?
+Am 04.07.26 um 20:43 schrieb sashiko-bot@kernel.org:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+>
+> New issues:
+> - [High] NULL pointer dereference when enabling CRTC without a primary plane framebuffer.
 
-Best regards
-Thomas
+False positive here. Calling drm_atomic_helper_check_primary_plane() 
+from the CRTC's atomic check makes it impossible to enable the CRTC 
+without a primary plane.
+
+
 
 >
-> This series is based on drm-next-2026-06-27.
->
-> Thanks,
-> Ze Huang
->
-> Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
-> ---
-> Ze Huang (9):
->        drm/arcpgu: replace struct drm_simple_display_pipe with regular atomic helpers
->        drm/aspeed: replace struct drm_simple_display_pipe with regular atomic helpers
->        drm/imx: replace struct drm_simple_display_pipe with regular atomic helpers
->        drm/mcde: replace struct drm_simple_display_pipe with regular atomic helpers
->        drm/pl111: replace struct drm_simple_display_pipe with regular atomic helpers
->        drm/gm12u320: replace struct drm_simple_display_pipe with regular atomic helpers
->        drm/repaper: replace struct drm_simple_display_pipe with regular atomic helpers
->        drm/tve200: replace struct drm_simple_display_pipe with regular atomic helpers
->        drm/xen: replace struct drm_simple_display_pipe with regular atomic helpers
->
->   drivers/gpu/drm/aspeed/aspeed_gfx.h      |   5 +-
->   drivers/gpu/drm/aspeed/aspeed_gfx_crtc.c | 156 ++++++++++++++++------
->   drivers/gpu/drm/aspeed/aspeed_gfx_drv.c  |   3 +-
->   drivers/gpu/drm/imx/lcdc/imx-lcdc.c      | 178 ++++++++++++++++++-------
->   drivers/gpu/drm/mcde/mcde_display.c      | 162 ++++++++++++++++------
->   drivers/gpu/drm/mcde/mcde_drm.h          |   6 +-
->   drivers/gpu/drm/mcde/mcde_drv.c          |   3 +-
->   drivers/gpu/drm/pl111/pl111_display.c    | 174 ++++++++++++++++++------
->   drivers/gpu/drm/pl111/pl111_drm.h        |   5 +-
->   drivers/gpu/drm/pl111/pl111_drv.c        |   3 +-
->   drivers/gpu/drm/tiny/arcpgu.c            | 165 ++++++++++++++++++-----
->   drivers/gpu/drm/tiny/gm12u320.c          | 128 ++++++++++++++----
->   drivers/gpu/drm/tiny/repaper.c           | 130 ++++++++++++++----
->   drivers/gpu/drm/tve200/tve200_display.c  | 221 +++++++++++++++++++++----------
->   drivers/gpu/drm/tve200/tve200_drm.h      |   6 +-
->   drivers/gpu/drm/tve200/tve200_drv.c      |  17 ++-
->   drivers/gpu/drm/xen/xen_drm_front.h      |   6 +-
->   drivers/gpu/drm/xen/xen_drm_front_kms.c  | 177 +++++++++++++++++++------
->   18 files changed, 1164 insertions(+), 381 deletions(-)
-> ---
-> base-commit: 3696d07837d1df13a5603d77f667685e7dfb3c53
-> change-id: 20260704-drm-simple-kms-removal-01a031c6a129
->
-> Best regards,
+> Pre-existing issues:
+> - [High] Unsafe direct access of global plane and CRTC state pointers in atomic commit callbacks.
 > --
-> Ze Huang <ze.huang@oss.qualcomm.com>
 >
+> commit 6344532446cab68117e44660f110ef0c8aec15d7
+> Author: Ze Huang <ze.huang@oss.qualcomm.com>
+>
+> drm/arcpgu: replace struct drm_simple_display_pipe with regular atomic helpers
+>
+> This commit replaces drm_simple_display_pipe with regular atomic helpers.
+> It instantiates the plane, CRTC, and encoder directly, wiring them up with
+> standard atomic helpers to remove the dependency on the simple-KMS interface.
+>
+>> diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
+>> index c93d61ac0bb75..375cdb79e4e89 100644
+>> --- a/drivers/gpu/drm/tiny/arcpgu.c
+>> +++ b/drivers/gpu/drm/tiny/arcpgu.c
+> [ ... ]
+>> @@ -117,7 +117,7 @@ static const u32 arc_pgu_supported_formats[] = {
+>>   
+>>   static void arc_pgu_set_pxl_fmt(struct arcpgu_drm_private *arcpgu)
+>>   {
+>> -	const struct drm_framebuffer *fb = arcpgu->pipe.plane.state->fb;
+>> +	const struct drm_framebuffer *fb = arcpgu->plane.state->fb;
+> [Severity: High]
+> This isn't a bug introduced by this patch, but does reading the global
+> plane->state pointer here instead of using the state passed via the
+> drm_atomic_commit parameter cause issues during non-blocking atomic commits?
+>
+> If multiple non-blocking commits are queued rapidly, the global pointers
+> advance to the newest state. When the first commit's commit_tail finally
+> executes, reading plane->state directly instead of extracting the specific
+> commit's state could cause the older commit to program the hardware using a
+> future commit's state.
+>
+> [Severity: High]
+> Can this dereference a NULL pointer if the CRTC is enabled without a primary
+> plane framebuffer?
+>
+> The transition from drm_simple_display_pipe to generic atomic helpers removed
+> the underlying protection that previously prevented the CRTC from enabling
+> without a valid framebuffer. If userspace performs an atomic commit that
+> enables the CRTC but sets the primary plane's framebuffer to 0 (NULL),
+> drm_atomic_helper_check_crtc_primary_plane verifies the plane is attached but
+> does not enforce plane_state->fb != NULL.
+>
+> This would allow the commit to proceed to arcpgu_crtc_helper_atomic_enable(),
+> which calls arc_pgu_mode_set(), and then arc_pgu_set_pxl_fmt(), blindly
+> dereferencing fb->format->format here.
+>
+>>   	uint32_t pixel_format = fb->format->format;
+>>   	u32 format = DRM_FORMAT_INVALID;
+>>   	int i;
+> [ ... ]
+>> @@ -155,7 +155,7 @@ static enum drm_mode_status arc_pgu_mode_valid(struct drm_simple_display_pipe *p
+>>   
+>>   static void arc_pgu_mode_set(struct arcpgu_drm_private *arcpgu)
+>>   {
+>> -	struct drm_display_mode *m = &arcpgu->pipe.crtc.state->adjusted_mode;
+>> +	struct drm_display_mode *m = &arcpgu->crtc.state->adjusted_mode;
+> [Severity: High]
+> This is a pre-existing issue, but could reading the global crtc->state pointer
+> directly cause hardware state corruption or frame tearing?
+>
+> Similar to the plane state issue above, if rapid non-blocking atomic commits
+> are generated, arc_pgu_mode_set() might read from the newest global state
+> rather than the specific commit's state object.
+>
+>>   	u32 val;
+>>   
+>>   	arc_pgu_write(arcpgu, ARCPGU_REG_FMT,
+> [ ... ]
+>> @@ -218,35 +218,106 @@ static void arc_pgu_disable(struct drm_simple_display_pipe *pipe)
+>>   			      ~ARCPGU_CTRL_ENABLE_MASK);
+>>   }
+>>   
+>> -static void arc_pgu_update(struct drm_simple_display_pipe *pipe,
+>> -			   struct drm_plane_state *state)
+>> +static void arcpgu_plane_helper_atomic_update(struct drm_plane *plane,
+>> +					      struct drm_atomic_commit *state)
+>>   {
+>>   	struct arcpgu_drm_private *arcpgu;
+>>   	struct drm_gem_dma_object *gem;
+>>   
+>> -	if (!pipe->plane.state->fb)
+>> +	if (!plane->state->fb)
+> [Severity: High]
+> This is a pre-existing issue, but does arcpgu_plane_helper_atomic_update()
+> safely handle non-blocking atomic commits when reading plane->state->fb
+> directly?
+>
+> Reading the global plane->state pointer instead of extracting the new plane
+> state from the drm_atomic_commit parameter could result in the same race
+> condition during asynchronous commit_tail execution.
+>
+>>   		return;
+>>   
+>> -	arcpgu = pipe_to_arcpgu_priv(pipe);
+>> -	gem = drm_fb_dma_get_gem_obj(pipe->plane.state->fb, 0);
+>> +	arcpgu = dev_to_arcpgu(plane->dev);
+>> +	gem = drm_fb_dma_get_gem_obj(plane->state->fb, 0);
+>>   	arc_pgu_write(arcpgu, ARCPGU_REG_BUF0_ADDR, gem->dma_addr);
+>>   }
 
 -- 
 --
