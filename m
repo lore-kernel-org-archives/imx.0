@@ -1,110 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357AD36C9EC;
-	Mon,  6 Jul 2026 10:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746B33ACA71;
+	Mon,  6 Jul 2026 10:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783333594; cv=none; b=Q1NrkpJ/bB0wBJFXIm5fvhk01Qgv/z70E4CqboM0CUMRsPRZ0lBzZb8PVrv0wdrrVJtdR9C27VvdvoaTrxisRvANPfyfmWs2aE2mBZxuD+dcYXOk+iLBuYytoFVvfuRT8oJnvdh/WSrd7utuyEWy4CB+DZ1Ld0D38zh5BgxLogc=
+	t=1783333791; cv=none; b=SmkJXNHraa4SKztlpFO/FNrNc12d6ZsPPYQZVqVp1BG6YBs8G7fiibHWqjwQf/aF9voc0zFVqdiADTFB4FpGbHbS/0YL6pRX1XZaa/pV5E3RikMKvpYnfa3EkbZyLbDBhH8EaU6UQbMO1wvxcSxSQYXuTUKAIkYqCHjxWo1EVCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783333594; c=relaxed/simple;
-	bh=XDmuIwuJdOtznxpg+cwaOzIFgK5CCYcPv3D3OXpvFG8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=eI301vVnwtbYGxS2zb2Q77sa7ho1hSSiQbYXGMd1fhnima4vCqMqBHpY5dsZyA7R3TpoIWpsMqbtjJxVJshcHHHUxhbRg+6aOSJVrSV4txwmSBWODsairiuKM9OabSFSe9oHs8mYvf+Q3ypFPLJyvYZCxakf+gnTdvLhDxDP0Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGYtTZF4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783333791; c=relaxed/simple;
+	bh=HP+bijMJa9X7wYxSCkOyzfRBILRidWOlKxrUNln+31Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D5Gvvel4+JhD0YYijf7b5NbyYwN0xcZ4u5yE1GMSzRnyuNlP0zFaO/P4sqeS6fzOQ1rZabMk+3rSAZGtuzEKVA6mJP1ESCzzBkCEEHsaDFcZDMBuMuNG2as9B1wycEjRfE+ZVjK84Z6luMoaWgMV5UfkLsushlK35wUGaV9j7x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=deZw+PHZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGYtTZF4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6D71F00A3A;
-	Mon,  6 Jul 2026 10:26:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="deZw+PHZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366911F000E9;
+	Mon,  6 Jul 2026 10:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783333593;
-	bh=6mWpv0lhMwk3uzBmxJwjSpwXF3qzESzWiXeVpYXIPL0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IGYtTZF4fPloB067F9SzJJ5j4AbZ6cfpnWy3YyyjgDIoq8ef90FQG3kb8VAfcEhtf
-	 E3m8RiaaUJh9G89uHojIcGKcewkxDO5dreI3QkeCKfjEc+ooMgx+e9eBp3u7rf2zdW
-	 tl84kLlZ7VdFwCQIcDjM85aTkLqqPMMtIXiKc5viIXrqlS/dRmhQTMQu3eNiB6pJic
-	 gXvqZ6ZchggDQER9RXuR0iMMAS1ppegxGqrlqFTfTo+XogViYLzc36NuDFvqcGdW2z
-	 YSLw5nJYMV5PnvY0nD0tFkUeKu7dulL0RaZtFZt+bBOtfCi3w8+n0iDUBpx0CPhFFN
-	 V6k3Kg/8TLfmA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 07/15] arm64: dts: freescale: imx8mn-var-som: Rework
- WiFi/BT and add legacy dts
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <ecf72149729d31be30e6f5bcc1cc53a5321a124d.1783330236.git.stefano.r@variscite.com>
-References: <cover.1783330236.git.stefano.r@variscite.com>
- <ecf72149729d31be30e6f5bcc1cc53a5321a124d.1783330236.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 06 Jul 2026 10:26:31 +0000
-Message-Id: <20260706102632.3B6D71F00A3A@smtp.kernel.org>
+	s=k20260515; t=1783333788;
+	bh=YaiT2z3qpXhTNE58QdMIFf3NiMwIsaqv9pHhX1hnvXY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=deZw+PHZpD4PiC0sDZ+djpQLp9rq1RHiV3XJ4vz8ya27J+ITC8sQrrFsxsgM2rbWh
+	 QuSF3XOxqXtS59J7ZItsOgAlnu8M2dhW2VLiuzRfi1OnHZe4bXe6JoL+JMdZDMVL7u
+	 cbW/kExxihnu45MyBitLObmt8fn15wK+TewA4KedSUbFbJ+PU2eAdTumd7y9ggk92o
+	 aGjvtMcgUi/3cVFZXh3NKYfH6BJtKa5cl5Cben3FaoC11KQD2j/b1wMO0aXBnZuL/d
+	 ekH98V2cPLpFUPgye9mTySNgTjrat1iOCiF7PT/7uH0Eu7S8MW/lJD3wKNwAIVjBM8
+	 PLDBE0qSS+ydw==
+Date: Mon, 6 Jul 2026 12:29:35 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Soeren Moch <smoch@web.de>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org, 
+	Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
+Message-ID: <2cbqhvfjszzuanp4i3rohntkxpfgftfjvzt66te3wkohsvw26g@yv4txuy74tvu>
+References: <20260427115804.134231-1-smoch@web.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260427115804.134231-1-smoch@web.de>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The legacy Symphony device tree (`imx8mn-var-som-symphony-legacy.d=
-ts`) fails to revert the `uart2` pinctrl configuration, permanently claimin=
-g the Bluetooth enable GPIO and breaking legacy Bluetooth initialization.
---
+On Mon, Apr 27, 2026 at 01:58:04PM +0200, Soeren Moch wrote:
+> Also on the NXP i.MX6Q chipset MSIs from the endpoints won't be received by
+> the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
+> 
+> Even though the Root Port MSIs won't be received by the iMSI-RX controller
+> due to design, this chipset has some weird hardware bug that prevents
+> the endpoint MSIs from reaching when the Root Port MSI capability is
+> disabled.
+> 
+> Hence, always keep the Root Port MSI capability for this chipset.
+> 
+> Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
+> PME and others won't be received by default. So users need to use
+> workarounds such as passing 'pcie_pme=nomsi' cmdline param.
+> 
+> Fixes: 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMSI-RX to work around hardware bug")
 
-commit 31b3d797e663552df95cdacb42e55c6c3a65c79e
-Author: Stefano Radaelli <stefano.r@variscite.com>
+This is not the correct fixes tag. Correct one is:
+f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port if iMSI-RX is used as MSI controller")
 
-arm64: dts: freescale: imx8mn-var-som: Rework WiFi/BT and add legacy dts
+> Cc: <stable@vger.kernel.org> # 7.0.x
+> Signed-off-by: Soeren Moch <smoch@web.de>
 
-This moves the IW61x wireless module configuration out of the base
-imx8mn-var-som.dtsi into dedicated variant includes. It also adds a legacy
-device tree to support older SOM revisions with Broadcom WiFi.
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
 
-[ ... ]
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony-legacy=
-.dts b/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony-legacy.dts
-> new file mode 100644
-> index 0000000000000..5998ebcef4740
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony-legacy.dts
-> @@ -0,0 +1,19 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2026 Variscite Ltd.
-> + */
-> +
-> +#include "imx8mn-var-som-symphony.dts"
-> +#include "imx8mn-var-som-wifi-brcm-legacy.dtsi"
-> +
-> +&bluetooth_iw61x {
-> +	status =3D "disabled";
-> +};
+@Bjorn: Can you merge this patch for 7.2-rcS with correct fixes tag?
 
-[Severity: High]
-Will this leave the pinctrl_bt group claimed by uart2?
+- Mani
 
-Since this legacy device tree includes imx8mn-var-som-symphony.dts (which
-includes the new IW61x setup), uart2 is initially configured with:
+> ---
+> Cc: Manivannan Sadhasivam <mani@kernel.org>
+> Cc: Richard Zhu <hongxing.zhu@nxp.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: linux-pci@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-kernel@vger.kernel.org
+> 
+> Tested on a tbs2910 board [1]
+> [1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 6d6a1688e7eb..3d461bdef967 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1865,7 +1865,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  		.flags = IMX_PCIE_FLAG_IMX_PHY |
+>  			 IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
+>  			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
+> -			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+> +			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP,
+>  		.dbi_length = 0x200,
+>  		.gpr = "fsl,imx6q-iomuxc-gpr",
+>  		.ltssm_off = IOMUXC_GPR12,
+> -- 
+> 2.43.0
+> 
 
-&uart2 {
-        pinctrl-0 =3D <&pinctrl_uart2>, <&pinctrl_bt>;
-        ...
-}
-
-Disabling bluetooth_iw61x here leaves the pinctrl-0 property on uart2
-unchanged. Because the i.MX pinctrl driver uses strict pinmux claiming,
-wouldn't this permanently claim the BT enable GPIO (GPIO2_IO6) and prevent
-legacy userspace scripts or drivers from exporting or toggling it?
-
-Does uart2 need an override here to drop pinctrl_bt?
-
-> +
-> +&iw61x_pwrseq {
-> +	status =3D "disabled";
-> +};
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1783330236.gi=
-t.stefano.r@variscite.com?part=3D7
+-- 
+மணிவண்ணன் சதாசிவம்
