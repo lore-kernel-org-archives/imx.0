@@ -1,64 +1,64 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5577643031C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2603D4302F9
 	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 09:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330515; cv=none; b=t3rygq13IkYSrOLKon3MM/kUT+kcwMAOhKcSjsGLgjl+pNEGoHfzB5+sVWBg3gen8e2xzFUZInIEvzgMZbYLQbRCJUGgCYzdI5m5IMtUz/PlKjFmcL0V7tMnBwrKfg6LQJKyYkU/dj2DkPmt42jSJk4djtSnb2wVFy3cU5ufCgI=
+	t=1783330515; cv=none; b=EiZggj6/DZTRSrPMxDStx0u+N9/B2dVflc/eHxdeXNEhVrgdk7aJmAgaJ4N5hEOTePewaSpahyOCFih9OTmrAQuxMhq+pgOxudZx/9G7l1Os6I3ZUglpOmEig56erC+GaXek4vh69rT59i+r3WTv55g3W0tx9wifRE13LZWWKys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783330515; c=relaxed/simple;
-	bh=Q4v5bfCa3zcVlX407NKJzOWwffez90vSERchrwCoa0M=;
+	bh=azFMDunEsAeZS7lsKgLMHZ5TSgtywquodFmaXPUTAGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJ6LO0bGdeEJU+LLg1pvzeJoerQjoOgNrnZyZzWWR2wAkP85SyE+E1fLkBL+JyZmFY449pi+e5f/q9dgEJRxt0IXH2ngvQhk+miRAlyvrb7Ok/h0YhZuQeMWhvZo+IEEnRNr2A1dZufASGqJJcxxe/itd/3AzQdeJdrnNBdMtfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=afwDbaox; arc=none smtp.client-ip=209.85.128.48
+	 MIME-Version; b=I0iUw1EOZB/6VaDmpznENaPKv61tH9l6KiFpcwDrysTZbDnsYfooZ17dJfcBocgejAQRTv1hBYyaKFQtCytKk7FfLBpxwklYH/8qRp863vQU9fcSmdFLbe6S47EUA6qdHybXHGI4CeUk5cLSVXPgp67fK4CWKyBD/RYUmNFW9QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EcZT5t8p; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="afwDbaox"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-493b27c7451so34208995e9.0
-        for <imx@lists.linux.dev>; Mon, 06 Jul 2026 02:35:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EcZT5t8p"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493d92b7db3so10828635e9.2
+        for <imx@lists.linux.dev>; Mon, 06 Jul 2026 02:35:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783330506; x=1783935306; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1783330502; x=1783935302; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0XwcD1YM4S5mxZpb6HPRyUkQ1D1PQTfgU3TqWz44TsM=;
-        b=afwDbaox0DLfQ1u+qD3GYzV9MqOBEsgAb+2wusC6kUEbj9fdDrMbnStJ+ZJepH8NTJ
-         4q6hCXc7KAoBl/nPq/NMZrblGu/dAMcJuIBdA3/y6O/mVG+dOvBLQSMqj8LLuRxpshC/
-         O1YstHNtviVWXUSUY1UrXHmSnzR4WaJmnv38lK2WHJEC5T9cljKQKscORL1t4K3QXicZ
-         R3LzQOsDEdP1bqGspFit98rD8EVNOxDnwiQchqfEB/ozxSUVvBGKasnhqfUudC6pM5Gd
-         is3q4daTYMjydYiraWpWcLb0Y+5wxR3pqPC0PFrrtoVBCnbT9SlUhYPQKG404x6JERyB
-         FDmg==
+         :message-id:reply-to:content-type;
+        bh=S4URuhOSsv1qbc8AjA0mUMbgajYr+DySa1kGTUK9qwU=;
+        b=EcZT5t8p+0VGitSFO3d7w5sjLG7Ivt+BCkymEZ5JMMk4GYuLEnFeadNsuiVFCvKoVn
+         fci0cwZIC2hfPLj7mA/VSB+vzEPU0CkhseHkM6kdkoLnboDHvnwqxPSQ6xcjiPLNNcKn
+         vczDpdGyZKsRh7Nxwk/pZ3lsfoIhnrSZ4rmwPD9ADJEc8wjoh4s0kVHvSpTD0HFOuL+i
+         SpTG2iHtYpXajC3FqMPC5S0U1n9KpxaujVRaLSTzAbOAEhxiuIYu8CB6kG3LaoLwQn58
+         ioUEJxSDNm0J2G+sVLpHtRnKE71hRRoZNbWpGPdj13WsICikqbl3Ijnikjh4zWH4cRSk
+         Ezyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783330506; x=1783935306;
+        d=1e100.net; s=20251104; t=1783330502; x=1783935302;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0XwcD1YM4S5mxZpb6HPRyUkQ1D1PQTfgU3TqWz44TsM=;
-        b=IOVpdgZhowXrDCiQCqxhNivWOWtQKLTRzCnIHozREoxze6pnZuXvc37ov1pq9D4veL
-         Eo0ZCJuzC+BtLLRMiZLw1TbjHH3y+b2zXM2SEP3RyEWpRs0WXAXY4bpGMAmeFmU2ePYT
-         fLOVWUpmKX+EvRsgM10nl6P/7zqQ3vvkxVs+RE0buXOQ9T6AwtIl9U1he1Va1wO32xda
-         tfH+gZq5L/QOljpaJTdNmhnyGVqLqQYsp4hvJ4uSUKWWBYlf82EI12/PK91Quso6dlfy
-         zh16qGA1o4VaH2DFjOHSYczd4kW2c9f/bsj16r09VsM3V+7kxCaGgEGlEnDMUZOXmG/I
-         1MAA==
-X-Forwarded-Encrypted: i=1; AHgh+RrdPf1GTlmS8w3Wp+HvyDuEICUBULDslYiavB04Or+r2MbxdoDwqawDOpIf+9lLZYvfYI8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwnEsKhZLUWr73LKK489dtLp4XnsCY76coJQS0iJaoWaDu4tWC+
-	ExJxB1LEl+aGN3d7WQ2/Msb4dcfcMZ1Npu/7o3XeXDr+8XM/e1T67f5f
-X-Gm-Gg: AfdE7ck6NLGdezjRUC54I2UUwLxTql6zjhniJNusC6EL5M2fevPhXlCGRT19VMPod4E
-	8fGCOPEUPSMjtbzcVoQnH3ZNyUgPHnVMIFjcZZ00NehVerrcL3Vo+u/ZidAFjQgtKoKFaivlex1
-	ddg1za80VZsF8lo/GzM+GyEjjWLBtrelyN8LXFR+tKM2we07n2iAYxlOTwXPWk2F5Ka6xiBE+rV
-	aV62W/QCYIPj/UuXGaVYkcufSjLMkFaeeiyD5vv4bP/QDStj9QKnqcLt+TcbAVQEDAWzWwCkz2/
-	srCwetblB1l9g+LrEw1AVcOImo72LlR/+b269c/HfGE2IYK0OlFlTcXZA9TPByQLIlIqdrG2z9R
-	NkjUCt0paUnnRqERRH2fn5b6A8yqiUG2ybCKnuCere+oGPGIEhAEUlOyPzLqBUURgztDL7Gas6S
-	SbG2r92eXbJlplbyIrAiVi1cgKi8yWHo0pkEd8T1A8RcNULpIBZlZo5I3zSQW68KPH+pLXN81F9
-	5HsPtEWyrXTMCvAdXUHScKwqw==
-X-Received: by 2002:a05:600c:37c3:b0:493:d3c5:6c32 with SMTP id 5b1f17b1804b1-493d4b50573mr74590875e9.6.1783330505673;
-        Mon, 06 Jul 2026 02:35:05 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=S4URuhOSsv1qbc8AjA0mUMbgajYr+DySa1kGTUK9qwU=;
+        b=M+7pjXw9IYK2PRmiSAPBnbcGERfiZUXnKdL1v/3kA1Cw5+Ghrza0esLFpXEL+SSxFM
+         R3GTmW15ab2afcPLVfgtZyxEgwkOHjhCthwslg++zYjIVRXPlfLgug1m9H4MLi3JPW1v
+         hoNBEbLY7LvHvWJmfjhrUvhE005yJj2E3ATAX4oUPW74ukJF1gmR7EduElg1pYL8TQsi
+         8ICvdB5kXtATc50QX5WpwcFpa89SU/+hQaYAtC42bgRVkWFYtkFRO0P0jPfVLQbbtXoj
+         ceplMimsddkGI85E7whWmlB0H1wct0kkXPFFOu6x1faFch8WQyWyXHf+iGKOil7vG/+b
+         p7NA==
+X-Forwarded-Encrypted: i=1; AHgh+RpLMjcTgJxoYw3SKgVNvvGaBX9ZmJUoFbQl7i5SSvpCpsdgQDqpjjIqcLljVNxxbBSVx0g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwvG2SuHMiKRuY/Q+laqyIljehibh23PmwHFifHU5fbBYmnSHGm
+	02MO2SuWYI2diKCkhMNqOR2Z1uP8VAcvRji7PBqWtPcuxBuFKP0Ya1kV
+X-Gm-Gg: AfdE7cmVvp2mHBuGTgrMJ1djVjLCyHQkxsmQ9/FHhlII5y7ZykoBqee90srwItXCcpG
+	jWJBHPSrYmUZjNZhw2xyft9crhBQVE3Xc3r3jF8UDPq9KHQ2vlK7ouCqOV4wgfudoCmLnSIkmfK
+	r+fpGXH9M1eNr8xWUx4gUYpVo/Dr+L5zl6HWMBesyFeiUiTnVjvL3PX4mNqvv4pXgUQ/XgP+OO6
+	T1RiWmM1kYgid2vgZ9JQtLi1L67gWnLnCLDoOiVNoWfUO/X5ZPXIFTvfjc3JYeksaCShwvbG07g
+	f8PIlMlGvdANI6ItFpCyngBNFu/5mPFBTDBp3TlMRyBc2TeKK9O4ptF5IY9xEcaQGrzFWWlGDuY
+	rgO8eERw2TWpCZIusb0ZbujWFTqA9QgRETI3oVNZ7jWLJCx9631nDxDv5VPmNJeO1d3NGHUsm1V
+	o/3jaaE/j29SgDbzQbjjWt4NgOFLfQQSot4auTOJzhC6GPnlmB9BY94zMJ2G1mCk3I/0G32oMml
+	JrZanbzmwMZbvsWklSap8769Q==
+X-Received: by 2002:a05:600c:8715:b0:493:de4b:de17 with SMTP id 5b1f17b1804b1-493de4bde72mr8048525e9.14.1783330502365;
+        Mon, 06 Jul 2026 02:35:02 -0700 (PDT)
 Received: from Lord-Beerus.station (net-93-144-65-248.cust.dsl.teletu.it. [93.144.65.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c6375764sm314379715e9.5.2026.07.06.02.35.04
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c6375764sm314379715e9.5.2026.07.06.02.35.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 02:35:05 -0700 (PDT)
+        Mon, 06 Jul 2026 02:35:01 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: linux-kernel@vger.kernel.org,
@@ -74,9 +74,9 @@ Cc: pierluigi.p@variscite.com,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>
-Subject: [PATCH v2 13/15] arm64: dts: imx8mn-var-som-symphony: keep RGB_SEL low
-Date: Mon,  6 Jul 2026 11:34:43 +0200
-Message-ID: <0b02e984925f48a2b22f46e21d7e237fa9558679.1783330236.git.stefano.r@variscite.com>
+Subject: [PATCH v2 10/15] arm64: dts: imx8mn-var-som-symphony: Add TPM2 support
+Date: Mon,  6 Jul 2026 11:34:40 +0200
+Message-ID: <7cd17d03fa70ee1f5fd5986fbb0e8a39ad7b4fbe.1783330236.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1783330236.git.stefano.r@variscite.com>
 References: <cover.1783330236.git.stefano.r@variscite.com>
@@ -90,38 +90,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-Keep the RGB_SEL line driven low on the Symphony carrier board.
+Add support for the TPM2 device on the VAR-SOM Symphony carrier board.
 
-This avoids leaving the line floating and ensures the board remains in
-the expected display configuration.
+The ST33K TPM2 is connected over I2C, and A PCA6408 GPIO expander is
+used to control the reset signal required to release the TPM from reset.
+
+Add the PCA6408 GPIO expander and the ST33K TPM2 device node.
 
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
 v1->v2:
  - 
 
- arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../boot/dts/freescale/imx8mn-var-som-symphony.dts | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts
-index c98dca8e7889..ddd4651b35d7 100644
+index 53130b521b5b..7d016ed5e911 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts
 +++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts
-@@ -168,6 +168,14 @@ pca6408: gpio@21 {
- 		reg = <0x21>;
- 		gpio-controller;
- 		#gpio-cells = <2>;
-+
-+		/* RGB_SEL */
-+		lvds-brg-enable-hog {
-+			gpio-hog;
-+			gpios = <7 GPIO_ACTIVE_HIGH>;
-+			output-low;
-+			line-name = "rgb_sel";
-+		};
- 	};
+@@ -160,6 +160,20 @@ typec1_dr_sw: endpoint {
+ };
  
- 	st33ktpm2xi2c: tpm@2e {
+ &i2c3 {
++	pca6408: gpio@21 {
++		compatible = "nxp,pcal6408";
++		reg = <0x21>;
++		gpio-controller;
++		#gpio-cells = <2>;
++	};
++
++	st33ktpm2xi2c: tpm@2e {
++		compatible = "st,st33ktpm2xi2c", "tcg,tpm-tis-i2c";
++		reg = <0x2e>;
++		label = "tpm";
++		reset-gpios = <&pca6408 4 GPIO_ACTIVE_LOW>;
++	};
++
+ 	/* Capacitive touch controller */
+ 	ft5x06_ts: touchscreen@38 {
+ 		compatible = "edt,edt-ft5406";
 -- 
 2.47.3
 
