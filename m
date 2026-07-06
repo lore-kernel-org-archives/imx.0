@@ -1,251 +1,279 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11020094.outbound.protection.outlook.com [52.101.228.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CAD416132
-	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 13:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783344051; cv=none; b=iUqMdsEnfWtImsFn1yF9KUEKFOQjzgE/pZC6r5W3moyKeqx47CkUu0rmBOZfME3T1tFEJhsCjs/NKKfdgUYrz7nSim6VlQn/1pU4gyAu19t7Va9IL4afKM5FvmlixQRxutMzCagZs2OW/wLwE9oIHWahaJxcVAU1xhgIULSPwLQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53335416131
+	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 13:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.94
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783344051; cv=fail; b=Yxe0BvoIAef/7bDjelshNhtRhjiD7q8t0PTuiu56TesffOd7h0OYqS1Tatj8X5JJ2Ybb+vBlj0VVnksEFfgsKpI7Rf4h+ByWs05j9ZzfIpFrr+17rAiwmUTl+0eput+0rDqoil1N4Tg/QDwkcnMaT32mA6/FA9waa0CjmfemGLU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783344051; c=relaxed/simple;
-	bh=BfrbL1Fwh6l+Z6nIdrB6wR8juwiurOHR3kGeK2lY/yQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FoQxAe1ounHfcP0EU8TB23TgTmBOeUeZgQTEvFhXLMlbcb7mR5vB3NzJxUeBRmOearLj5F4J8mpPBR6L1kDYhODl6DQnKBY/y7UtW3ZRoFlSNy+bDRffA0BbhLIo1mLVk0gzc1fl8PPtkiGDSfS1u11RwS9/Qnx7Nc0Zi4jlUow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Of8SDNd8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Fw5N2pB3; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	bh=g8OeGYbkwQ3DGoA4Sb9agfIU+mYNyeMK2hR19YD3Nzw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=eKPhf3uus97pFDgadXrPjhrHN8qVJ26mVZZGIqwra21rJoX2bQ/fyGcUQs2Rlo29iGQ2JTR+B6LlX7cWcufCYo65GQMgXa0gYKPr7jm9pYJAImGIc4Qdrgzs8ih1k/EqG/j5lIei3oF0dJAli9YsndMCGguUbuXaQijSwCeZ98k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=m4cNntfW; arc=fail smtp.client-ip=52.101.228.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Of8SDNd8";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Fw5N2pB3"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 666Ax99T391072
-	for <imx@lists.linux.dev>; Mon, 6 Jul 2026 13:20:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	EswjIYLr1e96wvciUd6ySjqcZdj8RdoKtvkdKwUdjN0=; b=Of8SDNd8nSgjJ/b5
-	fAMXAah/f8yVIsJxTIQZN4IS2TX1ZZhDbCRfkHtS8STKVwFNOX8hJ6rtZjjNUEWk
-	ra1QRqhWhwEJuEuVJmIkKEjCyGnYRMyRouN4tOaQAL7WKGtLf6pMWd3jpTt3Y2mH
-	yIB97QBgecowYhAqufxukVzcuFZFwM+XGvXOXPI7akvWbXSao/JQePT7AfyhqsKl
-	TBlSuuWv5ZI5egv8hAhp+bNRuAmFql5cHMa4v59zda0oprUQ6QKaXhc46VcuwXqD
-	ZXNRNv/BvaRTphCiqzmfQNUHvh356ktFDDX9m+0cmqfA2hO64P63QMAfeXoDLHrX
-	zbhaew==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f89kgrwme-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 06 Jul 2026 13:20:42 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-92e63df032bso332373885a.0
-        for <imx@lists.linux.dev>; Mon, 06 Jul 2026 06:20:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783344041; x=1783948841; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EswjIYLr1e96wvciUd6ySjqcZdj8RdoKtvkdKwUdjN0=;
-        b=Fw5N2pB3akGd5lSFI0mB0Ns21ioCXtVypR0XvpN6kyi8c3dzsGAGG/Ypx2V6ASTtdz
-         XkzPJCh8IBGY/oE/WAajokUDeoXGc2gWIALYhgO/jUMGHOmYZvmd+79PAG7oZl3+6Me3
-         XWEoHfixfB0rP+AjHELsb79Ur2pPU4LsPK0Ml0k8qp6u71o8q56plrSJGLZ3QD5cz4sI
-         c5nGlZOLKecNYkQwy7zdPW2kx1g7K2oWVwBsXzhkVF9wu4iCbMVeaKazUNM+26mxaNZJ
-         z4KZaXTPDvCBX1Fx1uFOeMu/sQEw93/y4oxWmuasG69q8mJpnsP7R/xK58VI4D907PzM
-         780Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783344041; x=1783948841;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EswjIYLr1e96wvciUd6ySjqcZdj8RdoKtvkdKwUdjN0=;
-        b=et1iYR41927yfk/Bahym/yjpB/TsCRWDV9DOHZJXjt54q3+qY15uVOUCf+ysu+tHwm
-         CQk16JFqaqi3FxaaHTYL3i8wcosRL4PM63VNTYv+4rQ53aSrt7LhyINUpFJeIzgUpN1v
-         47z1A4/782O9E9n3pqQRmjauk8VLQR3o7JXjkPONEK5qma7G/H31Sa5y5dsuSHTLjdP4
-         t5pjAincR1bAThGkQnblj0CO+GKWpPlfgMBH4F7jG0/Nxykhg2+pYdjL3kV2OaeKqO4p
-         BNN4Xyg8mOvoQAw+kwLsmVDUKBPLdBqcYuKY4lheyAMPtkH5AuxglVIGG/S038Tzb9ob
-         B57w==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5l/vjvcoFyixY0Bc7i9gt/WaX0z1zW6VfjA2ZtTBUo1lraq3sMRqhm3Og2umtqozl5Eo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzJ8KaMYw9u7HveOHrv3/a17G3ooUNFKS73Ics27uJ25O7ulXUE
-	45K4Vop1kgc9ngPSSurYug0UB9VENc66Y0uY5hACk6ormW032dHoSeuftRGRkgrYE3OcLv6PPPR
-	5NPF9y64M8qSvQf+1eZdnf7zDMvZCypyQ0KbVw1M4Hwy2ORt23kq1ZHg=
-X-Gm-Gg: AfdE7ckXo8yBnlvVrx3ymqCcD5loVnXWHY6uERjd1S9c4byuk33A1whc1Za0tOsGz6i
-	0Avi4NuKpBkVhDaVtP5/xRW2IjUjjzSJJvDwLZG2egRkNY4nnKOvBalv6qt1cYAQL3Q7bX3oiOT
-	gOd7qK1BLAwMy3mDt1PGPmjoACasR76I8ZJeAPXkzCXg7T/vEa9NelS4rJ5krj+ULTqRmR55Uyt
-	DAO2ZMbiGWA80SNthAP1C5F7BNLRrQCTrFs7T8q0gf2l8/KCVH4s8HRypZs83nKieKoZJBXLITn
-	OPzCQCH2/ZnA+CUzvNOW6eAcAQ16JhhaXskIm3YVczQuCekQPFLnf0fGte74S3uw1Kb4ssNreoj
-	SJsD2fkVbrxRifnGDEODjltIiLcZTaMwyBrFOvWNG
-X-Received: by 2002:a05:620a:688f:b0:92e:5f7e:3089 with SMTP id af79cd13be357-92e8b4bd907mr1698931485a.19.1783344040790;
-        Mon, 06 Jul 2026 06:20:40 -0700 (PDT)
-X-Received: by 2002:a05:620a:688f:b0:92e:5f7e:3089 with SMTP id af79cd13be357-92e8b4bd907mr1698924685a.19.1783344040264;
-        Mon, 06 Jul 2026 06:20:40 -0700 (PDT)
-Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:86f0:c42b:ef4c:d3bb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ad69519c2sm25910584f8f.37.2026.07.06.06.20.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 06:20:39 -0700 (PDT)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Date: Mon, 06 Jul 2026 15:20:16 +0200
-Subject: [PATCH net-next v12 1/7] dt-bindings: phy: document the serdes PHY
- on sa8255p
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="m4cNntfW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oQUPWDrH5mw+sjZerFWLIWiYlgV2TOIFWjJUOTEWceg1E/xfWWFevA00C721p2tUKAzh+nb8hBnRUxFHaRVeWiIOCzyKDjohad2f/eqJbrrsgey39N8wJrYMVGUNDBdIdQXdlQRhPinFvbNvkNYAVsaTZCjYLUaGSBXkEzM41Ih2FrRnCtae2vz6ej93GJhKwENnkSSkztkKMGyQFS2O6BZaMi/A4WfxfSQ1nsVwI5sY74d+HD5hZoqmbmONzv8ba2qYSV+K5GEPR3UzM07N4+F0qfMU9fpdcweO+3HF0vhJJdx/dgI4ZPLlB/bLh2xaXHMFcfv5kPVlun5RhTRPtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i/iXOOdgdMfxRDLYmcgTlP0PnUI2kVt+61ugHMsL9Ao=;
+ b=q2+VAjYUFXGJTXtjZMUjrBIqAIgcHqVPR9T9AC41z4bE6Kd+zYGG3Q2Zy3W+v7Xeb3K0hwvkL+nKzwG4iCVp5DjWzlLCXgDVwS3/HBh6eLPCR6M9kTOew95u1Nx/M7V2FTwNNTbi8McHbPd4qTFJiImzVobmpV0JRlLglSh4V64uwOarJO82KVIjbDSX/+Gef83f1O+ENx6N41maGTSe0JFde3H3oVFTm3Nt9I+ZLBj0tG+HiDSElM85ln2Kdqtk9HH1TmNPVfbeL5N7YkzzmhBxPInl8z1Nrtojz6bfG+rm8o7luNgpwbe/JZW1EhAyzVcHk4BWX0b1j9x+QveWaQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i/iXOOdgdMfxRDLYmcgTlP0PnUI2kVt+61ugHMsL9Ao=;
+ b=m4cNntfWGwgNliOP/ypymtoFQEWl+IXLRVeHloDa1nd5U+YDMRSDmltSnLdLfYDmjW2140rJ0E6AdNi3HZqIBzmzmC/0fCquIg04UBCs3V7FvoYX+A74vb2bzqkdxJmLacxl2PgmMOfKJU113w05ifaLelCKEDvejC5Pmy1uBCs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by OSCP286MB5902.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:3e7::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Mon, 6 Jul
+ 2026 13:20:39 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.21.0181.009; Mon, 6 Jul 2026
+ 13:20:39 +0000
+Date: Mon, 6 Jul 2026 22:20:38 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Frank.Li@oss.nxp.com
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Christoph Hellwig <hch@lst.de>, Niklas Cassel <cassel@kernel.org>, dmaengine@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, imx@lists.linux.dev, "Verma, Devendra" <devverma@amd.com>, 
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 00/10] dmaengine: dw-edma: flatten desc structions and
+ simple code
+Message-ID: <gfylpnuieclkt52xzbcghzaza7oirunstgzfmru7aqpnapdlit@dpgmjrs6ww7u>
+References: <20260702-edma_ll-v3-0-877aa463740c@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260702-edma_ll-v3-0-877aa463740c@nxp.com>
+X-ClientProxiedBy: TY4P301CA0108.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:37b::11) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260706-qcom-sa8255p-emac-v12-1-e3ab1ecf2901@oss.qualcomm.com>
-References: <20260706-qcom-sa8255p-emac-v12-0-e3ab1ecf2901@oss.qualcomm.com>
-In-Reply-To: <20260706-qcom-sa8255p-emac-v12-0-e3ab1ecf2901@oss.qualcomm.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Chen-Yu Tsai <wens@kernel.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com,
-        Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-        Romain Gantois <romain.gantois@bootlin.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Christophe Roullier <christophe.roullier@foss.st.com>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Radu Rendec <rrendec@redhat.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Drew Fustini <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
-        linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
-        imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
-        linux-riscv@lists.infradead.org, brgl@kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1956;
- i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
- bh=BfrbL1Fwh6l+Z6nIdrB6wR8juwiurOHR3kGeK2lY/yQ=;
- b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBqS6ubiXdhUge3ye8k09h+7C2wjU8OFOs2+lRmu
- FCvxgxqyhyJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCakurmwAKCRAFnS7L/zaE
- w9S3D/0WsPuArRuolQJdGz26v9pT9Wt0u35Mgl6MOyqF8MpFHp1lFyjsAjDjk4AncmfnUl8tvC6
- PVNRwP4pwlRWfAsOg7ipKdd01pTeZ4FZss0kgxwsyhwvDYpCC9olobyevp+eDaonoGUFpbCe+mI
- IeoyE856odq0d7waceNBYKbUKPNM1Wn0rJwKYyNrOmp4srgyyo0ZZ64s7uIKF1dZFtpCRsd36FU
- +WK3Nc2BfpdGf0aJnTEx6WQ5dWwLf/g5nbOgU7Wz3lcHRKSkIBwUfBx7faOER/Cm99qiDp3+9Tr
- dMQWNkO7DDcZ5/2d6vJOQcnRiAUuJN6iKoYwaqaqYKIlSO1aoW//LHz/m+mD0zYciPYhazP0xKy
- eEp5FcB5PhL1n/Xb0XFnuYxJSfh1bWvVuPK+o0gS6NHanHquydjKhJ5QkIi7OsuJ5b63LU3wWmG
- Cu/MfIMUnEpiHZw9KbEV077HhSipqMXzxdG07s4sOJAOW2TwwH7igsRy+0EywCQ+LP7TSxBvaLG
- INjs00fu3a9KB1BL2O2kfmpZRawHyXgdKtMqMTRW/pPkp72D0F4KGm0iDReGqocgixQAGKSr9eX
- vKMbfamjR9j820ac19f2q34B0tVxvUosuSTcPQ+vHIwvd9S/uXcsDT0tRs2FwWTxH4xjIEFgPmv
- iYb2sLD5F8kSxfw==
-X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
-X-Proofpoint-GUID: ut-SnVK1SyB1-8OBhlA9bgVtQ44yOJic
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA2MDEzNiBTYWx0ZWRfX7jR0y07qIj+T
- 3ZErqrapfMfhYWUqY3oZ1j1VJ9NgVNfS4BSzMBTZWl1Fwc/OYi/BaO2tCHXAiW2IvMc3qRlrYBU
- Hulq9eed2pQvUzjSu269wLw+KR6daY1t6qW/54ra2XVR7RfBPnApXe64pNoEuWQAfEaBSMnrdBV
- cDhVgWKTtuNI69l7mPnziPT4JZ8TO3kyI8vNhp5aAQn8XIUVIfG3QxijuyS0x1oUWNfh2hoLxTj
- YDINOlE0Nf6wbbbP+op+zDTbho8lnS5eXcImzgBHAMLJupMyLGr7QdH2kX7SUqjS+pVm32cZN1X
- VtuOuvQO6ZG1fB0P8+VEgCqj6kTPS+sD4+dIQ+wuYfegbDNPoah+wa1FTqBT53fi3L80ZsRftnl
- l0elHY0AlF8gGDeJ2dJc7qAbSoN2LEC/RYJzxVVWK1RChQQ8Dak1XjI2ZSthLI1Uj0nrFP0RG5k
- +wFekfe1Ysrk77kM+tQ==
-X-Proofpoint-ORIG-GUID: ut-SnVK1SyB1-8OBhlA9bgVtQ44yOJic
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA2MDEzNiBTYWx0ZWRfX1iE2f5vE3d6s
- 4wptUSyAZO3NoldMc7wWIiHLjiHfMCDs1Z6WCgBUh0YxlsiRefabr56SK+6dOfO4WhfmjCSYwEI
- d29I8uXdaDfaBj+T9D0DjUh92QLneSg=
-X-Authority-Analysis: v=2.4 cv=c6Sbhx9l c=1 sm=1 tr=0 ts=6a4babaa cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=gEfo2CItAAAA:8
- a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=wENndLYK2PIMvs9AUu4A:9 a=QEXdDO2ut3YA:10
- a=IoWCM6iH3mJn3m4BftBB:22 a=sptkURWiP4Gy88Gu7hUp:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-06_01,2026-07-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 clxscore=1015
- adultscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607060136
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OSCP286MB5902:EE_
+X-MS-Office365-Filtering-Correlation-Id: d4ad0e54-5fe4-4750-22b3-08dedb615f4e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|10070799003|376014|7416014|18002099003|22082099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	6pTIDpnYkBgJqhPuVcqnx62WuuCFrOTf2l/wXbMmPyXGsUxfJ9l/ZGZ1zu3kT9Eyxq1APA2oE3y8JuwV7MwfcqpKsCbafjykYBfDkiTfqdrpBq6fTvfSGWvGkDfXri4a6pwFGYRDUW4tqrFJm0rec8FOE60dQhPcYWegyRdDy9aCggRs2tG+6tHOOM+V9WX9qbnEAG06XUb9J19cva72pgIFFWkrP0lhOMCjPmJY5Ap6YyJyZwP1pKNDmd03BRtR2iz52J6sCnDiNDd2P2NX+CpRiEBYiwbBeyHo5O8Npta9Y8Kn35TlcvvfmSMVAFLSRCHq7oR1nJzOaC7vm5NWzybrbP80q5uAquA91h53J88iAHWKRTSKpDh1/npNsJwvW8yJ0LwcxW6+6YxHauVmJwT8VPhvBRBpmHlmqVAbI7Rvnl8iOs4gDgWqd3AUjAsSRSm7OzAV3WLgP9UXIeeMX1ZtGR47MvlcArZ8DuomhkHgCj43/drFEkcBmJ0runD9ggaIE6RzFT94d+8q4CyNwR7fvQ+Wz9TNkAZkhByEW4NNo+ay8AINj4UfU1tmdv31kcseINdIqQ7RpnRHRywpH31Qvim/RInC7Bjb+UPJq7BoB0oGTutypJrTFtsRsoiSVAFiV0rpflf3YXkvMZOVz11A9z09X4dbqqIs0NAIg+c=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(10070799003)(376014)(7416014)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TzgxNjdaUm9CUnVyUzZKV04xNG45TjNMZlY5M2VmUGNuaFduaDlFSS9KV0Nr?=
+ =?utf-8?B?ek0wRTlOcCtxb3hDUkVYNVhSc2tHQmo5NEdyckE1WEN5c1dncUFUT082K3hl?=
+ =?utf-8?B?TmpSeHN1NEZibFJ4U3Y5UFJKYjNDcXRYOHVrVE9EalJzZUZxZnBBZzZOV1JQ?=
+ =?utf-8?B?QWpycmx2b1dSYzk4bmdLT3JmWGhtZGxxTVF0SUp0ejNUaDlJV3FscUQ3ajB1?=
+ =?utf-8?B?R0xzSjFtRUk5dS9zamRSNDlTSEtpYWszRnVMTEZZZWlDemxTUzVQYkVBZXli?=
+ =?utf-8?B?SGNOdmk0NDd0NFEvYWpFTm5jb2kwV0J5SjJVY3RQOVpWOFJIa2x5QjloYUJz?=
+ =?utf-8?B?RXdCRTV1Zk1aWFF3SGhBcWs4T3NodndBaU5xWG1obUZPOGJrUTFPZVMwK28x?=
+ =?utf-8?B?SmwvQnJuTHJxYUFQdVp5c3JmNXRLMEUwSEgzZTh4SjMwang0WDhHZE15bTZS?=
+ =?utf-8?B?aGFVRWFxTDFRRjNMSXZUNWQ4TEV6MWlRY3c1RW52b2llSkxxVzBSM2M2RUxH?=
+ =?utf-8?B?QTFoRXVFQkhRZkNRWUg4a1N0eVdVM3gzclU4MmsxZ2FXeCtiZjBPeDIwUmd5?=
+ =?utf-8?B?M3pPZU5HTEZUL05MTnZiVFBmZ2ZlVmNBYzdwWE9ESDE2ZTIvR1pndUdkQ0NO?=
+ =?utf-8?B?ZUFiOUo0RTJ5c2lNcDdIUnFFbmwxNFBBamtlSzJLUW0xRjBkd1FwclFBa2cw?=
+ =?utf-8?B?cWQzQzFCaXFLdyt0ZVc0SERrTkxDUXZmWXJteVR3VmplY2JxSnA4RUJkMitN?=
+ =?utf-8?B?M2dPaWRMNmpGMFM4NTRuYWdXN3hWbFFxT1pIT0xTcW9ZTEZnZEpZalBsTjR3?=
+ =?utf-8?B?S3pubGd6bkRkQk9aNGt6UGR3RFI2TUk4RnBva2VwS3hDRjB3V2I5bUgyWWlE?=
+ =?utf-8?B?VCs4NGQ1OWcwU0J1bnJySjNpRFZrZTVNLzVkMlBPMHJZQklYUTREdk5VSHVW?=
+ =?utf-8?B?UFNVZ1dLdjJ5cXRpUzBySmtvUHpaengvM0JsWnp4N0FHWUl2bDB4OWxnNlBC?=
+ =?utf-8?B?c2lWYlE5TUd2UDlTZy9yc0tVcEo1Z1dyRXJGUmNnd3YvUVNvZ0lHSi92YXlx?=
+ =?utf-8?B?V2RkOGxOREFQNkJWVzhCWXE5R3NDaXlPVStQMFNYVUhiWHNYb3dXTkxWM2pN?=
+ =?utf-8?B?WjRkTFlVQnJFNEcxbVFlWmUzLzFxOWNpN01uNS9CMnB0OU5MUmUxZ2NJd2Mz?=
+ =?utf-8?B?QmcvcGd1V1IyZHVieEpJTUt4dDRKckU5MmIvSW5adlN2b0VteG5GcERlOVpE?=
+ =?utf-8?B?bm5ieEQ4L2pPb05RcUVHWnR4WWczM1IwKy9FTTBGSzJvSU5ldlMyQm96MzFn?=
+ =?utf-8?B?Z0N4alN3RElhRmd3cEh3aVpvMVhJWDBXd2daRWNBOThGVW5Wb091bXlNNEJI?=
+ =?utf-8?B?TmRUK2VsaFFOWmh5Q3ZvaWEvWUp3N3hYTHhuU25kQ2M3UHVQSVZMTjJWN2I1?=
+ =?utf-8?B?bGo3Q1F1SjgzUEkvZlRvVE9IeEtyN1NKY1dYMDNRWTVtclBGVVZvRzljZkZ0?=
+ =?utf-8?B?L0hmckhXamY2eDFJTy95cVpYRHo2alVCb2REVGxYOFNkMFQ3V2dvWStsWmVj?=
+ =?utf-8?B?R3RmeVplV0NON2wzZzNRUlkzYW1YdHUzM0l5NTY3ejZWclcwNm5iUEFPUVFx?=
+ =?utf-8?B?QjN3Y1A1VDZqeEFqQ3Uzd0ZVeERXUnBpMWdkTFBzMVN3SUpYaE0rQVdvcTg2?=
+ =?utf-8?B?RkQ2eWxIU2d0M0FMNGpOTkdRYThHZ2xCTDc4cE5Rbmc1cm1WNThvRUNncy9m?=
+ =?utf-8?B?SEFSbjFabXFnbnBEQS9TbmtPMExjTXhYUnFYcFl2WlovaVBYamZpdHRxY3Yy?=
+ =?utf-8?B?Rzk4Z3FzSkwyR3ZkZUpCY3JoMWh2elE1S3dvMU1Qa1lySGNtVmNIaDJwMm1G?=
+ =?utf-8?B?SGorLzBBV0o0RERaSzJ6Qjd0RUJ5d0RSeHJKZWJGelJObUpDaHRiRGNrb09M?=
+ =?utf-8?B?d1d6S0lIQTFNcmxBZmFKWWVWU3ViVUZUczRYM1ZMTUQ3QW1EaVdyZGtYeUZu?=
+ =?utf-8?B?VXZ1SnUzL1VlbUlRNDFtY0s2azF4L2JZWVJqOFlQTDY3N2ViVHU0b1FvOFky?=
+ =?utf-8?B?M1UydkNhaVROLzdIVjlGbmdoMy9Hb2lkQzVQcmdmWEYxR0xkZHpvZC9LUlRi?=
+ =?utf-8?B?Q2hKbHVpNUhtR25Yc1l1WVNNTGZyYXV4bWlPcG1KeHQyU2FtU2VmNTU3dDNP?=
+ =?utf-8?B?bDZSVWEyTVBXdWlnTzc3NnZDY0I1SElid1Q5cnFQbzA2bjc5RkZvVlloY2Z3?=
+ =?utf-8?B?VC9VUVZKRnpMVFFQN3UvYXFTMm9sN3BvUmZlcWk0TnJaVXlvT2dIbEJQMVUy?=
+ =?utf-8?B?Q2lQL0tQSXpoa2FJRmNqclhGNXdYWVErMVhxWmVhNjMrN0lFa3BUeTlLeXhU?=
+ =?utf-8?Q?Eh85Uw9af9c0RHUV4Rrsz6PKTjZV5E0M8aVF/?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4ad0e54-5fe4-4750-22b3-08dedb615f4e
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 13:20:39.1079
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eHPT9FZBrhA4+tLW6ZzHjVHK3/yWJMl61D8Uazl3QVpCZ25Wyq06bLr0b02MU29/HlziIBji0f8USeOmZgWKNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSCP286MB5902
 
-Describe the SGMII/SerDes PHY present on the Qualcomm sa8255p platforms.
-This is essentially the same hardware as sa8775p rev3 but the PHY is
-managed by firmware over SCMI.
+On Thu, Jul 02, 2026 at 05:21:20PM -0400, Frank.Li@oss.nxp.com wrote:
+> Koichiro Den:
+> 	My hardware temperately is unavaible recently. Can you help test
+> it.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
----
- .../bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml | 50 ++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+Sure, I can test it on my side. I'll report back once I have the results.
 
-diff --git a/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..9e846e381555514bb32177f884abf0cf2c942948
---- /dev/null
-+++ b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Qualcomm SerDes/SGMII ethernet PHY controller (firmware managed)
-+
-+maintainers:
-+  - Bartosz Golaszewski <brgl@kernel.org>
-+
-+description:
-+  The SerDes PHY sits between the MAC and the external PHY and provides
-+  separate Rx Tx lines.
-+
-+properties:
-+  compatible:
-+    const: qcom,sa8255p-dwmac-sgmii-phy
-+
-+  reg:
-+    items:
-+      - description: serdes
-+
-+  power-domains:
-+    maxItems: 1
-+
-+  power-domain-names:
-+    maxItems: 1
-+
-+  "#phy-cells":
-+    const: 0
-+
-+required:
-+  - compatible
-+  - reg
-+  - "#phy-cells"
-+  - power-domains
-+  - power-domain-names
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    phy@8901000 {
-+        compatible = "qcom,sa8255p-dwmac-sgmii-phy";
-+        reg = <0x08901000 0xe10>;
-+        #phy-cells = <0>;
-+        power-domains = <&scmi7_dvfs 0>;
-+        power-domain-names = "serdes";
-+    };
+Best regards,
+Koichiro
 
--- 
-2.47.3
-
+> 
+> Rebase and compile test only now.
+> 
+> Verma, Devendra:
+> 	Can you help check if block non-ll mode?
+> 
+> Frank
+> 
+> Basic change
+> 
+> struct dw_edma_desc *desc
+>        └─ chunk list
+>             └─ burst list
+> 
+> To
+> 
+> struct dw_edma_desc *desc
+>             └─ burst[n]
+> 
+> And reduce at least 2 times kzalloc() for each dma descriptor create.
+> 
+> I only test eDMA part, not hardware test hdma part.
+> 
+> The finial goal is dymatic add DMA request when DMA running. So needn't
+> wait for irq for fetch next round DMA request.
+> 
+> This work is neccesary to for dymatic DMA request appending.
+> 
+> The post this part first to review and test firstly during working dymatic
+> DMA part.
+> 
+> performance is little bit better. Use NVME as EP function
+> 
+> Before
+> 
+>   Rnd read,    4KB,  QD=1, 1 job :  IOPS=6660, BW=26.0MiB/s (27.3MB/s)
+>   Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+>   Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+>   Rnd read,  128KB,  QD=1, 1 job :  IOPS=914, BW=114MiB/s (120MB/s)
+>   Rnd read,  128KB, QD=32, 1 job :  IOPS=1204, BW=151MiB/s (158MB/s)
+>   Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1255, BW=157MiB/s (165MB/s)
+>   Rnd read,  512KB,  QD=1, 1 job :  IOPS=248, BW=124MiB/s (131MB/s)
+>   Rnd read,  512KB, QD=32, 1 job :  IOPS=353, BW=177MiB/s (185MB/s)
+>   Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+>   Rnd write,   4KB,  QD=1, 1 job :  IOPS=6241, BW=24.4MiB/s (25.6MB/s)
+>   Rnd write,   4KB, QD=32, 1 job :  IOPS=24.7k, BW=96.5MiB/s (101MB/s)
+>   Rnd write,   4KB, QD=32, 4 jobs:  IOPS=26.9k, BW=105MiB/s (110MB/s)
+>   Rnd write, 128KB,  QD=1, 1 job :  IOPS=780, BW=97.5MiB/s (102MB/s)
+>   Rnd write, 128KB, QD=32, 1 job :  IOPS=987, BW=123MiB/s (129MB/s)
+>   Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1021, BW=128MiB/s (134MB/s)
+>   Seq read,  128KB,  QD=1, 1 job :  IOPS=1190, BW=149MiB/s (156MB/s)
+>   Seq read,  128KB, QD=32, 1 job :  IOPS=1400, BW=175MiB/s (184MB/s)
+>   Seq read,  512KB,  QD=1, 1 job :  IOPS=243, BW=122MiB/s (128MB/s)
+>   Seq read,  512KB, QD=32, 1 job :  IOPS=355, BW=178MiB/s (186MB/s)
+>   Seq read,    1MB, QD=32, 1 job :  IOPS=191, BW=192MiB/s (201MB/s)
+>   Seq write, 128KB,  QD=1, 1 job :  IOPS=784, BW=98.1MiB/s (103MB/s)
+>   Seq write, 128KB, QD=32, 1 job :  IOPS=1030, BW=129MiB/s (135MB/s)
+>   Seq write, 512KB,  QD=1, 1 job :  IOPS=216, BW=108MiB/s (114MB/s)
+>   Seq write, 512KB, QD=32, 1 job :  IOPS=295, BW=148MiB/s (155MB/s)
+>   Seq write,   1MB, QD=32, 1 job :  IOPS=164, BW=165MiB/s (173MB/s)
+>   Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=250, BW=126MiB/s (132MB/s)
+>   IOPS=261, BW=132MiB/s (138MB/s
+> 
+> After
+>   Rnd read,    4KB,  QD=1, 1 job :  IOPS=6780, BW=26.5MiB/s (27.8MB/s)
+>   Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+>   Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+>   Rnd read,  128KB,  QD=1, 1 job :  IOPS=1188, BW=149MiB/s (156MB/s)
+>   Rnd read,  128KB, QD=32, 1 job :  IOPS=1440, BW=180MiB/s (189MB/s)
+>   Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1282, BW=160MiB/s (168MB/s)
+>   Rnd read,  512KB,  QD=1, 1 job :  IOPS=254, BW=127MiB/s (134MB/s)
+>   Rnd read,  512KB, QD=32, 1 job :  IOPS=354, BW=177MiB/s (186MB/s)
+>   Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+>   Rnd write,   4KB,  QD=1, 1 job :  IOPS=6282, BW=24.5MiB/s (25.7MB/s)
+>   Rnd write,   4KB, QD=32, 1 job :  IOPS=24.9k, BW=97.5MiB/s (102MB/s)
+>   Rnd write,   4KB, QD=32, 4 jobs:  IOPS=27.4k, BW=107MiB/s (112MB/s)
+>   Rnd write, 128KB,  QD=1, 1 job :  IOPS=1098, BW=137MiB/s (144MB/s)
+>   Rnd write, 128KB, QD=32, 1 job :  IOPS=1195, BW=149MiB/s (157MB/s)
+>   Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1120, BW=140MiB/s (147MB/s)
+>   Seq read,  128KB,  QD=1, 1 job :  IOPS=936, BW=117MiB/s (123MB/s)
+>   Seq read,  128KB, QD=32, 1 job :  IOPS=1218, BW=152MiB/s (160MB/s)
+>   Seq read,  512KB,  QD=1, 1 job :  IOPS=301, BW=151MiB/s (158MB/s)
+>   Seq read,  512KB, QD=32, 1 job :  IOPS=360, BW=180MiB/s (189MB/s)
+>   Seq read,    1MB, QD=32, 1 job :  IOPS=193, BW=194MiB/s (203MB/s)
+>   Seq write, 128KB,  QD=1, 1 job :  IOPS=796, BW=99.5MiB/s (104MB/s)
+>   Seq write, 128KB, QD=32, 1 job :  IOPS=1019, BW=127MiB/s (134MB/s)
+>   Seq write, 512KB,  QD=1, 1 job :  IOPS=213, BW=107MiB/s (112MB/s)
+>   Seq write, 512KB, QD=32, 1 job :  IOPS=273, BW=137MiB/s (143MB/s)
+>   Seq write,   1MB, QD=32, 1 job :  IOPS=168, BW=168MiB/s (177MB/s)
+>   Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=255, BW=128MiB/s (134MB/s)
+>    IOPS=266, BW=135MiB/s (141MB/s)
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Changes in v3:
+> - remove patch dmaengine: dw-edma: Remove ll_max = -1 in dw_edma_channel_setup()
+> - rebase to vnod's dmaengine topic/config_prep_api
+> - Add non-ll-start() callback to handle non-ll mode transfer
+> - Link to v2: https://lore.kernel.org/r/20260109-edma_ll-v2-0-5c0b27b2c664@nxp.com
+> 
+> Changes in v2:
+> - use 'eDMA' and 'HDMA' at commit message
+> - remove debug code.
+> - keep 'inline' to avoid build warning
+> - Link to v1: https://lore.kernel.org/r/20251212-edma_ll-v1-0-fc863d9f5ca3@nxp.com
+> 
+> ---
+> Frank Li (10):
+>       dmaengine: dw-edma: Move control field update of DMA link to the last step
+>       dmaengine: dw-edma: Add xfer_sz field to struct dw_edma_chunk
+>       dmaengine: dw-edma: Move ll_region from struct dw_edma_chunk to struct dw_edma_chan
+>       dmaengine: dw-edma: Pass down dw_edma_chan to reduce one level of indirection
+>       dmaengine: dw-edma: Add helper dw_(edma|hdma)_v0_core_ch_enable()
+>       dmaengine: dw-edma: Add callbacks to fill link list entries
+>       dmaengine: dw-edma: Add non_ll_start() callback
+>       dmaengine: dw-edma: Use common dw_edma_core_start() for both eDMA and HDMA
+>       dmaengine: dw-edma: Use burst array instead of linked list
+>       dmaengine: dw-edma: Remove struct dw_edma_chunk
+> 
+>  drivers/dma/dw-edma/dw-edma-core.c    | 216 ++++++++----------------------
+>  drivers/dma/dw-edma/dw-edma-core.h    |  65 ++++++---
+>  drivers/dma/dw-edma/dw-edma-v0-core.c | 240 +++++++++++++++++-----------------
+>  drivers/dma/dw-edma/dw-hdma-v0-core.c | 169 ++++++++++++------------
+>  4 files changed, 302 insertions(+), 388 deletions(-)
+> ---
+> base-commit: c9e9927c6d8346cdf6555a8f97da093980172e4b
+> change-id: 20251211-edma_ll-0904ba089f01
+> 
+> Best regards,
+> --  
+> Frank Li <Frank.Li@nxp.com>
+> 
