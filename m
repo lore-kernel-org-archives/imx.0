@@ -1,137 +1,165 @@
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011032.outbound.protection.outlook.com [52.101.65.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D84031A053
-	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 08:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783325281; cv=none; b=gPKyP6+VzHtvSZV+HaxpjRd2SPgNTfJGpexJ5MGZivj/Bg60WZ0+3XDK405oaWGnqM9ZuKEEJkbLLDv+xj5FeyC8iu0OYHkt9COG+24OgjfAHoi0iLPInTvMalj6vcaj6nKwXDK0KsgBzypD1J1X9qL/MBqZvye35ytPpACvv1k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783325281; c=relaxed/simple;
-	bh=6FRXXocn1lfRgJnxiPkpYYSBB5w4wnBEBhNnIuipX2o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ojfu07E25o/sztyBXmpZX6DsdPVndhf9nClHZfYsluYOhggsQClClr737O4d5rqYjMdLBgdCCdNgQeDanpcOz5Jj9xSGM1s+nvSO49xyGkXGodHzjSmK7h9pt7vW1ADD7zx7TPRyLGPiPsOQCBCN05TM5LG7NvTi4vTwZ4mFLlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5bdb162ee53so2027090e0c.2
-        for <imx@lists.linux.dev>; Mon, 06 Jul 2026 01:07:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783325274; x=1783930074;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xlcdnSGCAGaaD3Qtz41jPpd7wkV1TEYjW94sOKYd3zY=;
-        b=QJz+Jq/5Bg9K5UXiuvBCxLvsxOEeB061JIcnREPB8qzYTtDzkxGs94vrgewyyYY+Dg
-         INNFy7cvdkuNf1AdEDwqjUIYPQZ/jIoDgEDKE1/0StPRzDkkQ9lymVvpkvqkGshERzs/
-         zGSEBfSYXFqnfIef7oBN2TNC2KxyXb6FObfRI4wCJxySkn/IVILd7KXBxzgqwZFyHMLy
-         rxR16l+MnSRAGsx9LfrOIL6W7RBy94ngE66GTHlmUGORjpC9wR3RD7vd20kYss/DtLpk
-         +vkqm2EZ3rfHnuAU7HvvreX2caPQ39Hbe5GELhtxl7ZK8vZUtR1mYVlKJ5aWzuNEWJ0S
-         f+xA==
-X-Forwarded-Encrypted: i=1; AHgh+RphiseZLBRbpP0FfcagcN2G+F54EQBCofJRTPrw5mMDEOn/6rtwrCICnW9xEoosii9/XJM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyc4zuZ5ceGMLVxatErfG6lMGCKV5nYmmJbQjKyLAt2wG6HdnTy
-	j9/VOiFrDEtEFAst6bcXMu8JPSIYfPC/IB4N3G3y5xrPLRjBxzQUnko1kvx2ZX5p
-X-Gm-Gg: AfdE7ckNSgaWq5M8PAWT3TdAZgD1PN6sO4GT8sYz8ZsWIAlsPnp8p5DeOA9Y7SUyWlg
-	c24Do/4Zb/0rZ2kwfgybnZmp1gHza5yiQdZNZBLhDQG+/8KWyGRv745JNwV51GYAqtOxPo4QQUj
-	w0RQXX95nGeYnwx5OWsQkGgfTjMQM3SBr8lUynyK24Y//dnowpO8XdzYd/3p20I6ryT6/BgPoht
-	n3fY73SysMtyoyajspesbbU2Vla9SjBQmsW8eGJZNJ27jsoXHv+oBo+zEopRzOTMuQ8pefN9qiF
-	zkJPS7TAHd8VohILER+xoCc9ioDE7cT+QMiQSwgO9gFYAOxI3Pud23mvQlVFQv5ASZq0NUxHpmi
-	W4eukYAPAaiaO4zcvmndE2H8zQm9v3WoQEX8IyV0oucuuA4iSTzRqLzLoLPYEIiGVJRngLFfAaU
-	eRVYCKVgW0Rnls8IKk2ZshBu5XecjUgSU/36pR6DNJ1w08GQNNnewtGA==
-X-Received: by 2002:a05:6102:5785:b0:739:77a7:90bc with SMTP id ada2fe7eead31-7427f46099cmr2948351137.23.1783325272402;
-        Mon, 06 Jul 2026 01:07:52 -0700 (PDT)
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com. [209.85.221.171])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-96983a0b1efsm4849852241.12.2026.07.06.01.07.52
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jul 2026 01:07:52 -0700 (PDT)
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5bdb162ee53so2027061e0c.2
-        for <imx@lists.linux.dev>; Mon, 06 Jul 2026 01:07:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqV6uTVG94pmlpOe8Pv9VIZUctKy4bVDM4zA5BlSHKjaZvruYL/endSJIecMU3PnNJE6jY=@lists.linux.dev
-X-Received: by 2002:a05:6102:800d:b0:722:826e:1423 with SMTP id
- ada2fe7eead31-7427f0478a0mr3286706137.20.1783324855096; Mon, 06 Jul 2026
- 01:00:55 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B003E120C
+	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 08:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783325376; cv=fail; b=RwCDwpfLAll/kWMK/mNARLYgQ6ax3o69yR0oOltXt9lmbb2TpZAo45FyNQH/602bxJHOv/7Q9K40mU9HbbMvqN8EagVmRrxnreP/rOoU2kQAnxB8d23f1NuNqcAWecCZh0AGwRir8oVmRbtVTBYkNPo7Bvg/bOJrGpWfb4NRyYE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783325376; c=relaxed/simple;
+	bh=XNzdhdWQ2X3GPwnVdvMwmXfNOebfZsB+JKfZS223VMo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Qlq/lMC3ftBXsiTE8r4/IUHQVSi9Iaz2BylBJV9JqZQID4hCHjgPD8fjFBZMaFYn3VEsvtTHREKEwksVuRsepQaBf1R3pYiBAahyTjaToi26yAQD6lYOAui9U0WbS0k2s3LXTdhEMXczBQoJ8IYXj2XyXMB7d3pgG6vXc4qRf7g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Aac4C8Xh; arc=fail smtp.client-ip=52.101.65.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Aac4C8Xh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V345XYsmXA7wvg1LB9b3Yi/BQSJ2Irn4o4Gc208fPfKCHOzPkHl0oFtl7qSZGFzJZwawnm1f3auIqb8SBYjMTrGKlJ7ffqFIJYK1kgEbetzw49AHt79fiDoxKqXW6LnpJsPSUoK95Meh0VlEAUKaLq0ZcnsdbttwadknD+cTWU6giTbmjOvj1MwPSrCdF35BEa1jV5fBPkEMiYqAsuW8XyDphlrig8KisQNss/fkikR2F4H+PZ5DhGBEEn4gWnuGKkofG5eoG6yQ1jajB1VC3dyMkZXtKByF4lknCX88ToNLlPmH/ntc8zEaIKD1Dhne18q9IZzkxnKZhdYM+VzzNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QYcBFQc5KfS80UzHV+Vmdge2YtvAKnLmA4mcsh1NvfA=;
+ b=lLiUB8OR0btpBjN+3Zf5byVXQyJzfvYmV1adXvkkPkP3kYVu7lIZonPZlCCUMTWYwWyLkJR/g7SnJ9STipHP0n6U9VHjnd1nAzIZPTmU3bF435lbmicxbZo2tr1ZeuQgt2AMS/Ioo5aUXI+DvvjfEB2Py5WDHX3YyiQ0zulCaPkUqcvl8x9DID/60fqIC22XnEpDLdb3ncrp+TZoUhz8yjOtSGUARfa+//aIbzwT4OsNPVbO6R25ZdzwZ+JL6MWpFmqRVrj9pK7zrqChkH+/t92syEJHoTFo5WGFVZ7WqMR/4dPTat8MNs9+GX9IOL+64LKNGdZWhtsC8rQUIeh0eA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QYcBFQc5KfS80UzHV+Vmdge2YtvAKnLmA4mcsh1NvfA=;
+ b=Aac4C8Xha6wxJFVrUErx8RNf2dxJMNig2GTVAmvWmpGg42P/hVGVzGDlzQpfCO6Mou4YqAzLgkyVB7YW5CQX6zpvjjBAbyL7DVH4W1SYinxNHH7wdiUggwaYoOf/P1/ha0jhpiF+pGJJFS8f67/beFi+VS261jRZRhRtVUO/Wy3omP/FftTYK2AxuE9TSNeNZ0v1ZzBqgenZYTMNqBiZBC5597ShwX5sD9M7a7QZa1EkB1uBawx9WviDhOuTI0zwcyvh9KuxG34RRk4WxZBsgEGBkvI/ryGoPb21zLxdVQ8FBow8GfW/AAn7Wym4PKTKMz1syDmj+pUT3dNdX4wL4w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by VI0PR04MB10437.eurprd04.prod.outlook.com (2603:10a6:800:216::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Mon, 6 Jul
+ 2026 08:09:21 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0181.012; Mon, 6 Jul 2026
+ 08:09:21 +0000
+From: wei.fang@oss.nxp.com
+To: richardcochran@gmail.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Frank.Li@nxp.com
+Cc: netdev@vger.kernel.org,
+	imx@lists.linux.dev,
+	wei.fang@nxp.com
+Subject: [PATCH net] ptp: netc: explicitly clear TMR_OFF during initialization
+Date: Mon,  6 Jul 2026 16:12:32 +0800
+Message-Id: <20260706081232.3661826-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR02CA0138.apcprd02.prod.outlook.com
+ (2603:1096:4:188::12) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1783263835.git.ukleinek@kernel.org> <20de6cd60c2938aad2d21397b92742849418ab1b.1783263835.git.ukleinek@kernel.org>
-In-Reply-To: <20de6cd60c2938aad2d21397b92742849418ab1b.1783263835.git.ukleinek@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 6 Jul 2026 10:00:43 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXKyFJ20N6qKafvMZ_0sVj5+XTxcod_6wGkwTsokn7dvw@mail.gmail.com>
-X-Gm-Features: AVVi8CfQACxAMot5VlqKHI6FXvkOZpEWhTZp1dlkgWSruFHOk1f-I-dS5kVo31s
-Message-ID: <CAMuHMdXKyFJ20N6qKafvMZ_0sVj5+XTxcod_6wGkwTsokn7dvw@mail.gmail.com>
-Subject: Re: [PATCH v1 4/5] pwm: Unify coding style of of_device_id arrays
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: linux-pwm@vger.kernel.org, Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>, 
-	Neal Gompa <neal@gompa.dev>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Benson Leung <bleung@chromium.org>, 
-	Guenter Roeck <groeck@chromium.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
-	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Paul Walmsley <pjw@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, 
-	Michael Walle <mwalle@kernel.org>, Chen Wang <chen.wang@linux.dev>, 
-	Inochi Amaoto <inochiama@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Hammer Hsieh <hammerh0314@gmail.com>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, Alexey Charkov <alchark@gmail.com>, 
-	Sean Anderson <sean.anderson@linux.dev>, Michal Simek <michal.simek@amd.com>, asahi@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-rpi-kernel@lists.infradead.org, chrome-platform@lists.linux.dev, 
-	imx@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linux-amlogic@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	sophgo@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-sunxi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|VI0PR04MB10437:EE_
+X-MS-Office365-Filtering-Correlation-Id: dbbb2249-534e-450f-02a3-08dedb35e224
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|19092799006|23010399003|366016|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	zEPFlJDtIuK+z+DivJRALk7U2zbhgypRkIQcSNNpawlpXjPCztE4Nc5wJJtmTF4OgtkIfVteZoNLs9yDl7JeExucHOMR4TFB9t+grB055DBURw2jFiV+IHZw2xP8wIJdYhEmJjCwLZFQMopENLH/OYuKfOLFm9PCQgdUyu+43oX//zJwDtsOn2QkBhS2qm8HqcZXmLemjAIEhJdoSVX4sKsrYKXRq1xK7w1AlFf+DGfNBh1nW0iwyO99HrtTTpST0chXA9t0Kg9F7AS/BnPl+fqWmNIUmjA1/kdgJEY4bEjL8IaEJ3oKocq5/YMS+275gZ2hRjJMHu+11vwfk5xXTKZI/oyevy7UqDKQwXYMeozOpnMmYOa9cWkvHbi9s0kmVZ4vZhUYngOCVO7NtgYHs07J/MCKqRDubEJwmg5uKfM0Xgd68s5o7J9Wnc2TAA+UwjsNF+P3CfbVFffNQbEbJBYwPdCscJuDn+qOu79j1Z8vbuzaOdg02DhkKkDlNwuGQ40Got24vCRK3BdsQSgbJv5vOgrQ9Z251ZJSNzehovsirp7U3RSr7XHJ3fTJqePpQZ2vsCtRWHXsH3IUmoFTXtMBE0IvKFTFzrgrco90GBxJbWzPT101jg1HJ4wSvOIp2XQgTNzD0wNpZ3gC2C25mpvTMJUSb405qEkaXgXZdP0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(23010399003)(366016)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?B625627w0i+a/iPw3BVgYeLXCyERGpk3oIg6p70DRsVey2EibW0JQ+c1SvVz?=
+ =?us-ascii?Q?R7Ne1HN2HVb3C3/F4zq2OxLW5ObNOKYFfOqPFKb/OcvTQfbVnswMRKvxgxPM?=
+ =?us-ascii?Q?8gRZdmB51LTQPYrIJ0/PajgBbxT0nybB73zGD4NsIxoXgfm8Uq8sQLlzzSMw?=
+ =?us-ascii?Q?YIqPlCsbxG/u91jZ4gKmDXzMYcCp8SecVwAuoc+xExf4pLTPMnAVuSZFK6ku?=
+ =?us-ascii?Q?aHxriblkVy+QQJz0DdeaQ8TsISp7Hezu8+0Cl526nXLFf/GGZAbohNsQp9ZD?=
+ =?us-ascii?Q?D7tG7Q1jYl/RNCa3ulux37Ke4Vll1GdOcZpBpgOnFl343/rTkHLYkqLaHdw8?=
+ =?us-ascii?Q?8fN+oVkx1/is96F5Ds68lBFX0B4Ht7Y0bki0EwBtLowptelT6QKKPUZ4WTOZ?=
+ =?us-ascii?Q?smcwiI5HgSTCCLWouV65UGkHtTnF4xhgqg/IW2blFKkYB7+rn6h+YSjmBFVX?=
+ =?us-ascii?Q?wjvI8TxNyUyzb7lwhDmwwN7HNZHawgO3xM+EYyCdfxhebEpMq0VfridjgBAJ?=
+ =?us-ascii?Q?XimuX6RvXQdOUkZfUgqRTACurA7XAmeLiEGNGF3bwcOSL7IM+P6A5VoH4di7?=
+ =?us-ascii?Q?uddAhHIuW74ZMUaYd4nzsywBPXi4KCMx+3gauH2pA90nE/qcyxll9E8HZsAP?=
+ =?us-ascii?Q?88yN1PTT+giJ/R7pibj/9TehJXwjwcuaIKVYtrs5d4+4YjJOqVWCaMKVdhMd?=
+ =?us-ascii?Q?OI4RsUj7lNfYHffcvz4iICcYVBP4JKvRrH44uDPw5KG2kMuGc2HdWGhbdQJb?=
+ =?us-ascii?Q?VMNFXahIBYVHdkhHi1uEFvxmKwS0ZrsuZKcOfFdNyW6BHUd7wqVGnbb2vlJq?=
+ =?us-ascii?Q?rm+NEt/RQ71rC65qjMFFzrz6XClG5IkbMutc5e/7Pl8baV9aIYlDXufB6fjl?=
+ =?us-ascii?Q?+OQV1GvYZEZlXhn4KLsKSwPZpzga5IhGz/gckR9xKC54Z1b2oWMI5QiAtq7V?=
+ =?us-ascii?Q?VvEjnWo4HruineqmTw6/jW83s4YK7JvQVjKTsY3JAl6kKdUs5SmNliX7+7Vt?=
+ =?us-ascii?Q?Xp6twQhkOTwKRU626USONxhGbBN+Gvxs0lWSDKzVKtrV1NSXYGypbyw3vYOB?=
+ =?us-ascii?Q?7EOTEwHSBynuFSPIebzCWbqmVMoCKMwxMVpbPMCPCWvOLfHRh+FSksxmnxME?=
+ =?us-ascii?Q?zPNhRXwowi2acrZhcFOnq1Eprf3jf7fRcvytQy0EPKMjx9iYysfoAwjVmzgj?=
+ =?us-ascii?Q?5QN64GYvzMQsZwQKW2102w+bvMfQDtwh6Dm+77hcUVzQDzYDizKaFNlhuP1T?=
+ =?us-ascii?Q?nlDw7Y3tZhYErpnmsLfB43Aorz9W88DpusTi9ABIAO1n8PpotNIWdSlXdDx5?=
+ =?us-ascii?Q?25d2ZYOWFiuFxWdEtHvnftuJiwWncjToPDjzrqCKDRUN2tjNQTjESaou/zp2?=
+ =?us-ascii?Q?Bf98anpGeXGiFjY6m9z8PMUE/YixCCK5v9Li38OiXnpR/whAOWqqJ9PmTTog?=
+ =?us-ascii?Q?kXWpbLwAUH/AEq0zeUQC+3HyIrGxkas0jok/tHxZ48KfYd6XNwTbxY7ETi2l?=
+ =?us-ascii?Q?wp1Iu0/2R549mAMSKzyNKnDG5bBBcsmrpJUYszH7vdNxAqxXlQYS6IPBlL8t?=
+ =?us-ascii?Q?T3cdoKCUO/JNJxv+62CFs21EAg64EDcpQJ/lWGsJGWzRE1Ahv/yxIK9rqJ+Q?=
+ =?us-ascii?Q?OXmJfk75W6SpbWhW2T3+cEbVTQm8leVpT+mFOlaJuhpeuDx7QelSDPiqoSp5?=
+ =?us-ascii?Q?I+GQtZ6DKn2sd1lrxOTR6lYZeFnRb+JDPhkcHvSlsSrNbV7uTE5R0o2ktF08?=
+ =?us-ascii?Q?7yKgIBOt8SnFwT6KbCzsiHI6E0xmuEcz4jPogGTCAk9SfXLZjkT3?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbbb2249-534e-450f-02a3-08dedb35e224
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 08:09:21.2276
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QizmUVfDpR2ugK+PLWLGvVR3iK1OjQRRD9vuw9RG+ouQ307bkZbRnlvzoF/PWb3qOlJQCYmQH4lx8+WXpLSH6debtPxFE+vnEbplqnrOFFS9BjWrayyLQObe2TrTbNTy
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10437
 
-On Sun, 5 Jul 2026 at 17:14, Uwe Kleine-K=C3=B6nig (The Capable Hub)
-<u.kleine-koenig@baylibre.com> wrote:
->  - Use a single space in a of_device_id array terminator; A single space
->    after the opening { and before the closing } in non-empty
->    initializers;
->  - No comma after an array terminator;
->  - Also no trailing comma after a named initializer iff the
->    closing } is on the same line;
->
-> Signed-off-by: Uwe Kleine-K=C3=B6nig (The Capable Hub) <u.kleine-koenig@b=
-aylibre.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
->  drivers/pwm/pwm-rcar.c            |  4 ++--
->  drivers/pwm/pwm-renesas-tpu.c     | 10 +++++-----
->  drivers/pwm/pwm-rzg2l-gpt.c       |  2 +-
+The NETC timer does not support function level reset, so TMR_OFF_L/H
+registers are not cleared by pcie_flr(). If TMR_OFF was set to a
+non-zero value in a previous binding, it will persist across driver
+rebind and cause inaccurate PTP time.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be> # renesas
+There is also a hardware issue: after a warm reset or soft reset,
+TMR_OFF_L/H registers appear to be cleared to zero, but the timer clock
+domain internally retains the stale value. When the timer is re-enabled,
+TMR_CUR_TIME continues to track the old offset until TMR_OFF is written
+explicitly. This can cause incorrect PTP timestamps and even PTP clock
+synchronization failures.
 
-Gr{oetje,eeting}s,
+Per the recommendation from the IP team, explicitly write 0 to TMR_OFF
+in netc_timer_init() to flush the internally cached value and ensure
+TMR_CUR_TIME follows the freshly initialized counter.
 
-                        Geert
+Fixes: 87a201d59963 ("ptp: netc: add NETC V4 Timer PTP driver support")
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ drivers/ptp/ptp_netc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+index 94e952ee6990..5e381c354d74 100644
+--- a/drivers/ptp/ptp_netc.c
++++ b/drivers/ptp/ptp_netc.c
+@@ -779,6 +779,7 @@ static void netc_timer_init(struct netc_timer *priv)
+ 	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+ 	netc_timer_wr(priv, NETC_TMR_ECTRL, NETC_TMR_DEFAULT_ETTF_THR);
+ 
++	netc_timer_offset_write(priv, 0);
+ 	ktime_get_real_ts64(&now);
+ 	ns = timespec64_to_ns(&now);
+ 	netc_timer_cnt_write(priv, ns);
+-- 
+2.34.1
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
