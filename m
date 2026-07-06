@@ -1,295 +1,260 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013069.outbound.protection.outlook.com [52.101.72.69])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013025.outbound.protection.outlook.com [52.101.72.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3586B18BBAE;
-	Mon,  6 Jul 2026 02:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0676139768C
+	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 02:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783304839; cv=fail; b=CMQQ88PtDX1SI2xGSLbbQ/GdSAlGOSZFqXfIAq+ApLkLa0hpIQ5w/GHw2Y17TaMIszJIcW3xzOyr0InbWreogq7mJDSvoS6i2g7MDupqd2Gj02Q1EYTnP1GIJ6pQj6WzgT0WLgQFv4vRB6RXQMCexGQLnlR1BwnkQEy9WdvChOE=
+	t=1783305437; cv=fail; b=LiT6R4x4uLPOs3IvZBBcES+EVTToX2lNLD+IN4obq3bUOKF5jTNIUTuVOVcRZmM5vPdEXqL8cVG3NLJBmsLn3TlDIOmTH1jUG7DFAFHxhCPO0L9wEzaLmE6SFToxy1DpaWXrOfqweKlXPbrcM6CifLv7AWe+9qE9jeaIW6M/A5s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783304839; c=relaxed/simple;
-	bh=NPzQjGlaHp/MSNIp1rUBeRysJEsGHTFC5WYpX+AXSxI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fGT9+kLkx1xp4rcmZrgQRT7CAE4mJJfZwq/gbmr8f2s6GvznA799qdY0i64UhmJLBhRvePx9lRmCdq/ziGUkmVfM1FuOENm9vRp/T4EkkzM6/F7IFV6A+vEpdn4YoeqIP6xtAG1o/rf61ct9WAEMTPEMggMLY1SfhOzS5OWX+qc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dU/PDrvI; arc=fail smtp.client-ip=52.101.72.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1783305437; c=relaxed/simple;
+	bh=4LqkXH8qnKyoEnJSAtF0rYltuzy37KRrUqJlt4QF67o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jSn2E4fhMb9wUg6cLfIsLpUALS6/2q2O9BfR/Dfm3+YsddTttbu2S93CJDQlb01j5GLNe3lyc3RqGkPQwEZ5SnSVymdAD0q3rfs5fdS5nRtk4jT3olWj1IJPIuuy8AL/0y/QCAiawhVOspZ+NJ0IdVg7RY+kX5M4p4EADxzj1n0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d8EI9I4o; arc=fail smtp.client-ip=52.101.72.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dU/PDrvI"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d8EI9I4o"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S9WYsUZS7BZmlwjKlYcC7M2VIa5TyRxP7GOxqD52LqRpF9D+9gsYpW7e2TXTMBQKN3+tQFipdzUA5nwP+/w7xWWNnqVpu4KDQ+8v1tH/Vg2mAP+P20GD5BMTCoY6mTzUoGIMAvxQWEgtg+Tuc7mAbCBuP5J+7/ndyidErC5je9QLcRyNFyLcYU0baYERZPkjTOBcaSqHUfKW7L5tuCzo8mdc87wCq0d2CgCW4/5WXFjRAoyNRcUxhshc2mIyHKlvBeTa1TiVYBfufVccWZHK3jNxfeuzpA0bPPmzCGpKypM92cLx1VQzhPqey9iw/m6M0om2X7mFXvwB3A6iCOR3/A==
+ b=vpzTDm4s3hn96YGyfO6YXYTL4b02ESWnUp4RYFaTjY9KeyW63l9BG0RW+Jwmse1o/84xjcFY7FLNv3xchqYXhsF4baPqFbWfy+BJyh1z9Hrwke0U+GkU8q51JmYmkeO2FZnGgo+W3US4dLgftEYiqe6ihefFw/c2lYC70EXd17oaTN0ekwu0mpiUb2A9LU5bL6lUeXzHZKFRtHzND8mOyeIpGVrgAMY4TA89QIfvPDnT73TZLGLQRRjwoLq5AWh6djj9Km0gJPiLw0GZfeRnIKCBLYDN6Un2PXoa1m0eu4UDkbalGZOV6p7Fbd7y501TInOBKyORyWLAhsd3yfe5lQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ltFs5X+UI0sdAOMoJW88OuNsgNNs27hss8Daiyq9mQE=;
- b=WfxMRFp/+2hNNFH/1v5GjRmwLYsQwbHxh+BrlIi5sU0MO+syFipTDN6vbkyiGdkI4nUrxkqh72V1UU7O9RJQyufLKkNx+0Zdtk6ZoEz6O8gUPoC2qCxM3tv3fwmWA5Gv0EBGIKtFPiliBeVU/lF8WWW9c49OoMQjak9MnvU6iP04hAR72HaxyhyUoibQ5dU7Ou71RtW6ONxyqKW5N6NNWBnAom/9LchbuOV5nIK13dzxnPmpuz1p0FZFIkcwPm9SXYSaVzd+A+L2iSvmDd13R1HMQt+GwjjDiiISPrGaLhKV2P/MHFOnu7lKZQhRgdLChB6x87XE1GuvClaKh7e7+g==
+ bh=fY4O8pzvsBkYA1Xb3RflCYMXPbXpMxzI0FmgP5+loOk=;
+ b=tZ8YN7lcs64tmJHsqNz+aYFRzH+irwklqErPQbKt3rWSQxKf1YiMbaejf3gy5R8y2e/Py7Pk9btUZzmEqgBnYpgZqW+KwEJIKdygC5qnZIcWWSBoJTiujGY0YYUSUKLZgeWoTSKgkOBy1uH/aVqt4NdIGslwpejy/2QPZ4fn9/GwXf2BCJGGpnsvpdiHV8cEw+aFCURZefH5jopEdDbLnWd2fLJP6kkyPntHURL++r9XXCwtvnglvIgv0AQtlkaZHCBegMglLNNJ/38M/fat/ryBg+6G45wwbsk5tfUVLxXZoDaHwfOPjZ58AsxuCuLsCIWb8dcrnsHjkMPm8EBBTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ltFs5X+UI0sdAOMoJW88OuNsgNNs27hss8Daiyq9mQE=;
- b=dU/PDrvIcUQsNuvJyuorc+SwH9xOFtDH/EfUmb4gNWwwcCIN0u2UrNBuZw5zhGZ5H49gCSA1aOnWz2gdogFA/uv/Qe5OCq10FkMxPUsotv2pGljkgg+IAVo2oXDJlcnEzuF2dRabhQ3qxHNM9aMZGC3w08nGlEJPI2QzFIvvUAs3JpmsATIVSddOUz8eYgcMNG/6AhS35joN4ibuDwdk9fUvLNcdNvrkCFiwAyu65/xCdlHHoHY/X3eT/pl2KPhc765uHBlcC/zZG4Z9EBWHWX3Lj8ew1BMQJL623FDHVgnccLQ9W3w0bgkDhJb6rrKEz7BR/VgWGSl57pX8gpjlPQ==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by AS4PR04MB9412.eurprd04.prod.outlook.com
- (2603:10a6:20b:4eb::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 6 Jul
- 2026 02:27:10 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
- 02:27:10 +0000
-From: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
-To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "Frank.Li@kernel.org"
-	<Frank.Li@kernel.org>, network dev <netdev@vger.kernel.org>
-Subject: RE: [PATCH v3 net-next 12/14] net: enetc: remove redundant num_vsi
- field from enetc_port_caps
-Thread-Topic: [PATCH v3 net-next 12/14] net: enetc: remove redundant num_vsi
- field from enetc_port_caps
-Thread-Index: AQHdCtjEfvc9w9H5EkyJWpXYqeiHgrZdLkkAgAKZ5xA=
-Date: Mon, 6 Jul 2026 02:27:09 +0000
-Message-ID:
- <GV2PR04MB1173938D9F16EA1D1AEBD596B88F12@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260703101328.550714-1-wei.fang@oss.nxp.com>
- <20260703101328.550714-13-wei.fang@oss.nxp.com>
- <20260704104346.D7A561F00A3D@smtp.kernel.org>
-In-Reply-To: <20260704104346.D7A561F00A3D@smtp.kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AS4PR04MB9412:EE_
-x-ms-office365-filtering-correlation-id: 8454824e-efbe-43e6-7f75-08dedb0614ee
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|366016|19092799006|376014|1800799024|38070700021|6133799003|11063799006|4143699003|56012099006|5023799004|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- R7D6J1U2Qcz9xX4vDy9mGNFHzhR+CUMo72c1v2o/c3TtHU2MaC+c30FlteUWJNCRACIKY48mGqOUzogOy079TxzgUyi5YL2xoxSHx7ev1hSBbSaXVKPSPWQURTvqE87RtRQSKaMxo2tdZg2y+xjLU5phq/sPiyJzP0xTJdOtFRlNsEJQ8iUj6PwTU2KBC1UaQz11yTHzpd9J3YqF9Yxr4r95baxfb1529L4/hfaqq9lhVHu7mm6OnQnHNttGSlFOKItdQJi8Y/pHz7YIdMHjWu3bjzHH/tsnohHB1Moq5fOzXD8rUBvVZ/+THyQbur1g7m/BRPZYSBYXmng2p78X9PmAr3189QseB4qsxeAQhQo3h72TGjL6cFz9sqgDMTgnBDpCuwdXHj4IV4p05o6RF8OtZgfB256Sg/psxPuOidg0vaPMY4w7YF8uKJcHFDpDjS0+iRuTH7+N5gaHidboIZdpkUJBrPeLM/llwYbjw06c2TfaraI/Khzi2fsNmETruEk35Rq7FaxXgiHJ3qYzXzSEVfc0ifOCWADZUaNQaf2zEcWifaARF4+thE4FLL70F2Pe3boott/H1zeSrXFUpUiVzs/tp0HC/P30VI7QUp0nG3wDxcTy9buSclBWPTwE+yEjzyMhR0VOpnYrCPh4Cg0c7Ouxr/zleC3+kQNxsfaRIUmHjYWURSu9aiPmRfTE9UHk9/rIo279JAvECspUBG26GZFXtU2BiwsMZZEYPGA=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(19092799006)(376014)(1800799024)(38070700021)(6133799003)(11063799006)(4143699003)(56012099006)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?WuZMopkOhA9xpJYHbak7kbx6/wtL0MJaHFBaAKS05GJuUJYDZ97SDcYEVTjW?=
- =?us-ascii?Q?clhBIIW9T0f7csegMFj+fC6oNDNUlshqTu9JOjPOv9VveuLQn2S/5mXRIAn7?=
- =?us-ascii?Q?zekNtRSVwMyEMwY87Le6PAVuk0HkAj9AAJe3xl3SCgvuKRjWwA+6K+bynA+y?=
- =?us-ascii?Q?MrTfNQ7YVLxcTXP0tZOooJkgIzJdFrBCwn7XwzswMu0EPnvwLUr+TMGykN17?=
- =?us-ascii?Q?C3/xzcy4jAs+sDIINJpvzAng+yFO+5X5eNk4xUW400mcGYzdGaSGpfl8Jwz1?=
- =?us-ascii?Q?xve1TplMMsldieB8+JUHuUX8pc0KH1XcImwX0HGiBbQbHtMKZeGoa5udtxeL?=
- =?us-ascii?Q?wSMkVrdGqnud33y6aIsTr5MMh8aiYr4Z2T6S5ejI6bRYnEO8kj7F/E9qGMHK?=
- =?us-ascii?Q?7C5trUGktq0YtZgrWoo450t4Btkg6IuViZETIHjuV9w6R016/tOhsd8QH5A6?=
- =?us-ascii?Q?2D/mRPSo+ZZH1WTklwF6rda4AELKHkusvxy3SFaeTHie+zs85+8ZEELu4i0A?=
- =?us-ascii?Q?+xORy/L1ptMUS4jwyT/olr9lJ7yaO8/uqOQY6OJHO97Xu/NmF6U9rREt+BYl?=
- =?us-ascii?Q?vlpizFUyveuntzhC31gN4GjezLsWWMnTXbiT2CRF20cMlNAOCtBJ2pWwWhLW?=
- =?us-ascii?Q?QHy22MxThzUGpEIO84IBcMvRCqRskoOneShxc55qgeRsgy3HBVob9hHDJhJp?=
- =?us-ascii?Q?yMjp+bKNcCzVn6JwpHs8vbbHDzkTzJQHtMRQbRML4ad8pbRTexdfS325VZA+?=
- =?us-ascii?Q?By4zrdteRpzip9ZhD2H4+dMB/LEIlVLQtXBnVbNx7+r/bER+ANxThaFKJDLT?=
- =?us-ascii?Q?wOPdsiW+hGSsts6ruZCZa3LOZ6NEVqvO9IQYL6UIwOlPH7cgaif8Nrvjo7NC?=
- =?us-ascii?Q?qIXwqlHdpdRbkJRaOgZYKyUWYS7Hbz1p7jo9GgRUDh5Qfxs7u32G25s0WjK9?=
- =?us-ascii?Q?RN2K3EwXV9mzlE6a+6W97sXfxr6RtW9oJDsutcLVVLr0lCNTmWrX+bnmftYG?=
- =?us-ascii?Q?uqx8IkumuM+g14eN7aeYFRfAWdNVxInF8suFBmuB1bzOP21iRUd4EVY+g03x?=
- =?us-ascii?Q?c1QPodirO23T+UBMBkqrjlsK1FpcVJaIc24yDwkGkSNHmFnpULBmfwrUOw4e?=
- =?us-ascii?Q?NdlkUA5UiYSSeKFfF51ShDT7WT825LPeUWoqgkuz+wyzTz3YLxGggn3y5SYX?=
- =?us-ascii?Q?jM/Jsdl81zoeui50qJN5w0lBlVIlVJRRQ+beFvZFLjFHHe9PUQusKibd+/m3?=
- =?us-ascii?Q?57CxbNOO494YTgJ84i3oLqET0vudVa7GQl2+FNmFklnsoB1/Z5EzCAciIhLA?=
- =?us-ascii?Q?J37X2B33fNWrCNXlTYLciDL6EWDFBKATwiFaGdEvITvXnwJKrZGiZLQmZZm6?=
- =?us-ascii?Q?egEG8ZEnrd0/avt4DI02uh3QQS3/LGovMHSvCn/cfrqwFmTYF9uFFC550K7i?=
- =?us-ascii?Q?O5Fr03x3DbtaudPaMxMX0niSXNqa2DDizzTK37WGCMWJu+egFIt1m0esZJJp?=
- =?us-ascii?Q?xrr/NytqYplFy2wjnptSNWlo5DNHx367Hdyyxx4btETEB3FTEyxgYgSKFRbT?=
- =?us-ascii?Q?sgOytdN4kwI1a0poCWDRjbmzTBvzffX59Og3gkNxORvjHLdIUtCm2xqHk9mC?=
- =?us-ascii?Q?0H3mpV9A4UY71GRFLBEuXej+z4pplRuVg+ClHa2CmCqq68Zee/ZEUrgU0m3v?=
- =?us-ascii?Q?t4YktXGNqm1ZL/SEodZGO1kKfYX+CRTn0jQ61+tALH2yHUvl?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ bh=fY4O8pzvsBkYA1Xb3RflCYMXPbXpMxzI0FmgP5+loOk=;
+ b=d8EI9I4oBXKIxXwti44hq3knr1VqaRtuZ1aUv9Q4RSA17fqCTAZkqW/XsNN/4icT7aLTtMPTGIsp+v9qItp21BVWLANYhwKhVisa2o8Y1E3SP3tkuXhlqWyMBzWJDSPSveWGf3AKVue8dZqgDIkr5LbCX8ExssTdJR5R8IOqAQilD05W/mKzOsAzS+09oQNXRchP2un2jrp0PSmA6txVM7gOTgylZYuE6BSyoaO2StlRhgTeioKcJvu7nA60IkcLpCK5GgW2AJTbWCmP4IE6DuHGrUTVG1CoQypEOU4Nxug35PNZOCLe+uoRs25EgOfEyJi1IT/mulR1kiNwHQ9BqA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ by DB9PR04MB9497.eurprd04.prod.outlook.com (2603:10a6:10:373::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Mon, 6 Jul 2026
+ 02:37:10 +0000
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
+ 02:37:10 +0000
+Date: Mon, 6 Jul 2026 10:38:42 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Piyush Patle <piyushpatle228@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, marex@nabladev.com,
+	daniel.baluta@nxp.com, Frank.Li@nxp.com, shawnguo@kernel.org,
+	tzimmermann@suse.de, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch
+Subject: Re: [RFC] drm/imx: upstream direction for i.MX95 display support
+Message-ID: <aksVMhFr8YzedE1w@raspi>
+References: <20260624100326.413699-1-piyushpatle228@gmail.com>
+ <aj5MNiKSCiEDvDzL@raspi>
+ <CAMB+xkayaViXeC2GyMMUfeCMzA4=fh-Dq6NYOL-hzKoLfAF19w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMB+xkayaViXeC2GyMMUfeCMzA4=fh-Dq6NYOL-hzKoLfAF19w@mail.gmail.com>
+X-ClientProxiedBy: MA5P287CA0322.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:21a::10) To AS1PR04MB9287.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|DB9PR04MB9497:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9e78b76-0cfa-4959-0e3d-08dedb077a94
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|23010399003|1800799024|7416014|376014|18002099003|22082099003|56012099006|11063799006|4143699003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	znnMUzeNz/B/naQ81PguXKdREtRqTr9MppDrWhk8Vbhpe6Nf68ciJgadr4DxxRl6BWD2J5hN/TlLHzxooxMRswSuQdBt7HLqc8+rYcIuHI3zsA9fEBYI6F9MglHkxvlStyPxRdrHbw9pd+LiJT1xD1mRzBzeBIgOVKudmlqGSUDVEU8Hg5cz+SFTQnQZr3r1hBXWRnkABL1Oy5k4b/Lr8yQblTQL5vQOgnNTvEK2SMq8PvNqajhX3e7y3+XHdMNRxJIesH9JBwLukd9ZdBJTERpSgb53h6Uf/TyKuChPAG9fr6qgjtjE0rmrCPJUWqqmNmdRf4jAaLXcua+pWK2mycGG+PwozGRZy7RBuZxuzS8KNIpDNcCNsEs3/loq86s4mEfGokimiUB17zaLimb7QuyF+6GYNr6WcnIv4PN3rDqjkQgZsVmzJq46am/K9zHvXeEeM8Qd+40pqVnrRu5Kf6VBhXEPFcyGfm/hW5ta+WPovTgg5m3NeypkMN3OZK0H/NyhcsfKaflemlqr8p1bhzqOUVAuGnb9jV4TLHnJUpKaFbb4c6kkHs2fDNaRYhRLifKB47QIlVtDqqvbBK1r+mPpz+c5mvI2eN68ucpIGQVhMFRRRrPqJ9C6lZJav8rqOOdRe7YTU0d4jZ28ubLoDEci5JCPxP1G+zuK3TIzU5k=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(23010399003)(1800799024)(7416014)(376014)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Zm9zZnh2TTFyOWN3eDE3MXFQMWdTbnBsNHZkNUtEZDlDNjB0R29weFBNL2lm?=
+ =?utf-8?B?aWcyTzY2OG1sc0JHUzdmYUl0eUZVeCtoL2RrL0lCenV2YnZZYThjcEEyZUxv?=
+ =?utf-8?B?dXo4dWV3SWs5cHY1Uld1UjVWRXV0QnNZSTFNMzE0dnhMbnJyRFdDNUpqMXFs?=
+ =?utf-8?B?c1hwZTlNSkhhY3V4TWhEQUJybFZvRHRFM3MwSUx1UWxDNUhYOWdROU9JRlFk?=
+ =?utf-8?B?ZWg5UmlvN0M4bndyd1pBY3JGQVl3Q0hKMmhuYi9RMHgrSHRFdGR5d2JmeHgx?=
+ =?utf-8?B?VEVmeGhvMGR4SUU3NEhkK0k5YUFuSGZvZ3BxWCtLWmppRnF6T0JoVFhVL2dH?=
+ =?utf-8?B?dHl6enNnNEt5elhId2Y2SVRmNkhwbENHYSs4TUNYNWpUc0wveHlFa2IrRnFM?=
+ =?utf-8?B?OENwOGIrY2YxZWVaQlhjVHZnK3ZORHBLN01rM2krSFRmQ0hIZEVnd25HbDlU?=
+ =?utf-8?B?UU9CbCtJczNCcWxHdE9UVjVDNm44c3dKeDcvME4wdnVIbVFzRHFkWFpDTXJi?=
+ =?utf-8?B?bklYMUZ3dHJTSHJFMUprdk5zVlN6NERPN1RwUmhFVGFUWmxXMjcyenI4Tmxz?=
+ =?utf-8?B?UTdiRW5WS21GMFUrWVBLZTZ4TEhKbFNvZGowelVWLzhvdnk2MkJkUS9GNVcy?=
+ =?utf-8?B?Qkx6d3dQWjJhaEhSL0FiRW4vTWgvcU9sM2gxTkl0SHQrTFN3dDRVMHZwcVY4?=
+ =?utf-8?B?VHR1N0I0bk5kRSt1RzFsOUtlVHcrdWxPbUNZUGlTZzZMTkdoemxSOWllWmov?=
+ =?utf-8?B?SGlRUUc2K1VvS1JXejE2bkl6SjB0b2VqM2V3WGpEUnNLWHVyK084ZktTY3JQ?=
+ =?utf-8?B?bG1QTFhTbVRHVWRUNGpKa3lEL3BHZWVOZ1VTb3pNdldkaElXdUZKUnBRa29w?=
+ =?utf-8?B?Zk9ZcW9oT2RQVFpNOEVEN09McWdrN0cvWjRIMkpId2NPNk5yWkFoVUpkNHBr?=
+ =?utf-8?B?MUU2ZDdoNHh4bFg1M1VWRm1Jb2xpc0J0SEFpbW1FQlowTDFTdTN1UTV0RmtJ?=
+ =?utf-8?B?eDZsdzhpNzE3RkI3aC9GR3YvWTZFOVZrNzZXK0FTa2JFMUYwZjR2QUJ3dVNl?=
+ =?utf-8?B?V0M0RWxLT0xPNnExTzhkUEtkSXZRM0o0Qk03UmpoRWUyTEdRd0Y2RHI5NWpq?=
+ =?utf-8?B?Z3dPODhHdklkRWdtdldBQTJlM3dBMXZTZ0hZbmprTTVsNSt5RlRUa1RmUVUr?=
+ =?utf-8?B?Y2VYY0dRSUk4SzYrdzMwc09UdHErUjFUM2pDemtsWS94c04zRjdmZWJkYUgr?=
+ =?utf-8?B?emhUZjdTekxaTWRPeExCMzhqc0dnNU5KSDNZOVMrMi9rNW04T2p5VWI5emZ3?=
+ =?utf-8?B?eTBVRDNjRElXa1ViV3FOcHdpYVVMMS9BYW0vR2lPMHpubHRmeWhUcU1McU5Y?=
+ =?utf-8?B?dEFYYmtGd0o2V0NWQVJpYnB6UHU3WEN0U1pNeUZOYXlTeHZYdTIvSUszM1Vj?=
+ =?utf-8?B?clNEMG50TDAzZ1FJME5Td2Erd05jeEJIaEVvYThaRmNhK3FUcVZBcnJhcFI3?=
+ =?utf-8?B?Y2o1TEZaZjhuLzVLZCs5UjNrdnQ4ejBGTHVsNXFFUVlVQ285cm5UeGFjVHYv?=
+ =?utf-8?B?Tm80dlJQYTk5UlpCRVVvbmh5YkZrSGd2VXV2VGNSekV2dUNkOFN1MUlUTk55?=
+ =?utf-8?B?RmlzTUk3cjVzTVRuZDRGN3cvcUtiT0ltTlBUaGVsOTk2N0xoOVVyK0RiZEdm?=
+ =?utf-8?B?d2Nha05uN3pDbVo0dXJyWFFjR1dsaUZ1L0szdUIwRmNtQ0tPQkI0RGZRVVJz?=
+ =?utf-8?B?UFd3VVFKM3hOUURVdis0amdLUTlSTDlZVGowRkF3VzhMVWNsMXp3RXhrUnV3?=
+ =?utf-8?B?UU9mYmZuTE9kclRxVEtiSVl3RGQwVUJNbWVqY1BCYkdGZXM5Rmo4OWlScmQr?=
+ =?utf-8?B?YTR2d3o3UXg0WWM1MmJRNklCdlRuYXdOUnJYWk8rTU9zam4rNi9sTHZSNzNl?=
+ =?utf-8?B?TThZbFN3cVJvV2VtWGZqVnRSK3lSVEdBZmVvV3Z1QzlZVGxUbmJoZUNUczd3?=
+ =?utf-8?B?M1FIMVVxaVlvQUpBYy9UNk8rSU91QW5LVGVMZ1FmVkROZGpSNWNlQ0JzRVVH?=
+ =?utf-8?B?T1NTZ3dDcWxtenNxOXFwQjEvVEVEYndETDBRUlBUR2QwY3ZLOU8vajIwVmdU?=
+ =?utf-8?B?SXFqZmZLYzBDUlU2WHNiV2tDUW0xSGxGaXUrRCswOG5OaEx0ay94bEc0ODJn?=
+ =?utf-8?B?bTJYQW9jNTdUeEp3YUxIZkJxbkdVWjUrNmJ5dmdZdXFSUldPeEJUK1dPVWtL?=
+ =?utf-8?B?OFRuVVpvSTFjNDV6NGEyOSs0a2N3MGN2RnNzdVZ6QlFlZXhpNVJFenNyY0RP?=
+ =?utf-8?B?cHJoUjJqSUJCSDhBM2lKK1BaMHUzUHBaK3FCVW1BUXpKSUQ5YWdlQT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9e78b76-0cfa-4959-0e3d-08dedb077a94
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8454824e-efbe-43e6-7f75-08dedb0614ee
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jul 2026 02:27:10.0178
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 02:37:10.2642
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0xVS+ZCgvq99QbjX8qsp6Wcg6RkkXjSD6URj9E4UQqVFNISYd6mQYD7Ncdi/T9yyPbBWgL/SqLg1qqI0ejPTqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9412
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Jm3FbblLrO/LSCBt/3MQ2TPbwWtQb/pJqG9tR7dwkwJmJHs21cptSyTtihgZMZA2FxDL9l4OowIF0b8ztzNC7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9497
 
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c
-> b/drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c
-> > index be378bf8f74d1..5029038bf99fa 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c
-> [ ... ]
-> > @@ -28,17 +28,14 @@ static void enetc_show_si_mac_hash_filter(struct
-> seq_file *s, int i)
+On Sun, Jul 05, 2026 at 03:33:51AM +0530, Piyush Patle wrote:
+> On Fri, Jun 26, 2026 at 3:22 PM Liu Ying <victor.liu@nxp.com> wrote:
 > >
-> >  static int enetc_mac_filter_show(struct seq_file *s, void *data)
-> >  {
-> > -	struct enetc_si *si =3D s->private;
-> > -	struct enetc_hw *hw =3D &si->hw;
-> > +	struct enetc_pf *pf =3D enetc_si_priv(s->private);
-> > +	struct enetc_hw *hw =3D &pf->si->hw;
-> > +	int num_si =3D pf->total_vfs + 1;
->=20
-> [Severity: Medium]
-> Could the unconstrained num_si derived from pf->total_vfs cause undefined
-> behavior in the loops further down in this function?
->=20
-> The original code used caps.num_vsi, which was structurally capped by a 4=
--bit
-> hardware register mask. The value total_vfs is read from
-> pci_sriov_get_totalvfs(), which returns an unvalidated 16-bit PCIe
-> configuration value.
->=20
-> An arbitrarily large total_vfs from a misconfigured or malicious firmware=
- would
-> cause PSIPMMR_SI_MAC_MP(i) (which evaluates to BIT(i + 16)) to shift beyo=
-nd
-> the bounds of its type when evaluating:
-> str_enabled_disabled(PSIPMMR_SI_MAC_MP(i) & val).
-
-Actually, the value of ECAPR1[NUM_VSI] field is equal to the value of
-PCI_SRIOV_TOTAL_VF register. They are all determined by IERB register
-EaVFRIDAR[NUM_VF], which is 4-bit field.
-
-When CONFIG_PCI_IOV is disabled, pf->total_vfs is 0, all hardware resources=
- can
-be assigned to PF. When CONFIG_PCI_IOV is enabled, pf->pf->total_vfs is act=
-ually
-obtained from the PCI_SRIOV_TOTAL_VF register, while the ENETC hardware onl=
-y
-supports a maximum of 15 VFs. And for ENETC, PCI_SRIOV_TOTAL_VF is a read
-only register.
-
->=20
-> >  	struct maft_entry_data maft;
-> >  	struct ntmp_user *user;
-> > -	struct enetc_pf *pf;
-> >  	u32 val, entry_id;
-> > -	int i, num_si;
-> >  	int err =3D 0;
-> > -
-> > -	pf =3D enetc_si_priv(si);
-> > -	num_si =3D pf->caps.num_vsi + 1;
-> > +	int i;
-> [ ... ]
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> > index cab79f81d6fe0..8d536a3831e3a 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> [ ... ]
-> > @@ -255,34 +254,35 @@ static void enetc4_default_rings_allocation(struc=
-t
-> enetc_pf *pf)
-> >  {
-> >  	struct enetc_hw *hw =3D &pf->si->hw;
-> >  	u32 num_rx_bdr, num_tx_bdr, val;
-> > +	int num_vfs =3D pf->total_vfs;
-> >  	u32 vf_tx_bdr, vf_rx_bdr;
-> >  	int i, rx_rem, tx_rem;
+> > On Wed, Jun 24, 2026 at 03:33:18PM +0530, Piyush Patle wrote:
 > >
-> [ ... ]
-> > -	for (i =3D 0; i < pf->caps.num_vsi; i++) {
-> > +	for (i =3D 0; i < num_vfs; i++) {
-> >  		vf_tx_bdr =3D (i < tx_rem) ? num_tx_bdr + 1 : num_tx_bdr;
-> >  		vf_rx_bdr =3D (i < rx_rem) ? num_rx_bdr + 1 : num_rx_bdr;
-> >  		val =3D enetc4_psicfgr0_val_construct(true, vf_tx_bdr, vf_rx_bdr);
-> > -		enetc_port_wr(hw, ENETC4_PSICFGR0(i + 1), val);
-> > +		enetc_port_wr(hw, ENETC4_PSICFGR0(i + 1), val);
->=20
-> [Severity: Medium]
-> Could this result in out-of-bounds MMIO accesses if a misconfigured or ma=
-licious
-> PCIe device firmware reports a total_vfs value larger than the actual har=
-dware
-> capacity (e.g., > 15) in its SR-IOV Extended Capability?
->=20
-> Similar to the debugfs issue above, replacing the hardware-capped
-> caps.num_vsi
-> with an unvalidated total_vfs causes this unconstrained loop to write pas=
-t the
-> instantiated ENETC4_PSICFGR0 register bounds.
-
-For ENETC, PCI_SRIOV_TOTAL_VF is a read only register. Its value is derived
-from IERB register EaVFRIDAR[NUM_VF], which is 4-bit field. So I do not thi=
-nk
-the total_vfs will be > 15.
-
->=20
-> >  	}
-> >  }
-> [ ... ]
-> > @@ -299,26 +299,25 @@ static void enetc4_allocate_si_rings(struct
-> enetc_pf *pf)
-> >  static void enetc4_set_si_msix_num(struct enetc_pf *pf)
-> >  {
-> >  	struct enetc_hw *hw =3D &pf->si->hw;
-> > -	int i, num_msix, total_si;
-> > +	int num_si =3D pf->total_vfs + 1;
-> > +	int i, num_msix;
-> >  	u32 val;
+> > [...]
 > >
-> > -	total_si =3D pf->caps.num_vsi + 1;
-> > -
-> > -	num_msix =3D pf->caps.num_msix / total_si +
-> > -		   pf->caps.num_msix % total_si - 1;
-> > +	num_msix =3D pf->caps.num_msix / num_si +
-> > +		   pf->caps.num_msix % num_si - 1;
-> >  	val =3D num_msix & PSICFGR2_NUM_MSIX;
-> >  	enetc_port_wr(hw, ENETC4_PSICFGR2(0), val);
->=20
-> [Severity: High]
-> Can this cause bitwise truncation and starve the PF of interrupts when SR=
--IOV
-> is disabled?
->=20
-> If CONFIG_PCI_IOV is disabled, pf->total_vfs evaluates to 0, making
-> num_si =3D 1. The driver will then attempt to allocate all available hard=
-ware
-> MSI-X vectors to the PF (num_msix =3D pf->caps.num_msix - 1).
->=20
-> If the hardware supports more than 64 MSI-X vectors, num_msix will exceed=
- the
-> 6-bit width (max 63) of the hardware register field PSICFGR2_NUM_MSIX.
-> The bitwise AND operator & PSICFGR2_NUM_MSIX truncates the value instead
-> of
-> clamping it (e.g., 64 & 0x3F =3D=3D 0).
->=20
-> This programs the PF to receive 0 vectors (effectively 1 vector due to th=
-e N-1
-> encoding), starving it of necessary interrupts. The previous implementati=
-on
-> divided by pf->caps.num_vsi + 1, which structurally guarded against this
-> large allocation.
-
-This is not a problem for current SoCs, because current SoCs support a maxi=
-mum
-of 64 MSI-Xs, so there will be no truncation issue. However, if future SoCs=
- support
-more than 64 MSI-Xs, this will indeed be an issue, and I will improve this =
-logic to
-better support more capable SoCs in the future.
-
->=20
+> > > The current dc/ implementation is a multi-device component driver with one
+> > > platform_driver per block bound via the component framework. The downstream
+> > > i.MX95 driver is a single monolithic platform_driver mapping all blocks from
+> > > one register base. Unifying appears to require reconciling two bind models,
+> > > rather than only adding match_data.
 > >
-> > -	num_msix =3D pf->caps.num_msix / total_si - 1;
-> > +	num_msix =3D pf->caps.num_msix / num_si - 1;
-> >  	val =3D num_msix & PSICFGR2_NUM_MSIX;
-> > -	for (i =3D 0; i < pf->caps.num_vsi; i++)
-> > +	for (i =3D 0; i < pf->total_vfs; i++)
-> >  		enetc_port_wr(hw, ENETC4_PSICFGR2(i + 1), val);
-> >  }
+> > I think that upstream i.MX95 display controller driver would also be based
+> > on the component helper.  That's something for sure.
+> >
+> > [...]
+> >
+> > > There is also anticipated divergence which is not yet upstream (i.MX8QXP
+> > > prefetch/PRG, LTS and tiling modifiers, and the downstream i.MX95 blit
+> > > engine), although mainline dc/ is KMS-only today.
+> >
+> > Just want to point out that I sent out v5 patch set[2] to add i.MX8QXP
+> > prefetch engine(DPRC + PRG) support for KMS.  That changes the driver's
+> > mode setting code a lot.
+> >
+> > [2] https://lore.kernel.org/all/20251027-imx8-dc-prefetch-v5-0-4ecb6c6d4941@nxp.com/
+> >
+> > [...]
+> >
+> > > One question for Liu Ying is whether the separate-driver plus shared
+> > > helper-library approach is still the preferred direction, and where the
+> > > helper boundary would be drawn (which blocks/ops are shared versus
+> > > implemented per driver).
+> >
+> > Yes, separate DRM drivers + a helper library approach is still the direction
+> > I want.  I think that the drivers and library would sit in the same
+> > directory drivers/gpu/drm/imx/dc/.
+> >
+> > The purpose to add a library is to share code to reduce overall code lines.
+> > I'd assume that shared blocks or common part of slightly different blocks
+> > should be covered by the library.
+> >
+> > [...]
+> >
+> > > how the component and monolithic driver models
+> > > would be reconciled given the differences described above.
+> >
+> > Like I said above, I don't think upstream driver would be monolithic.
+> >
+> > --
+> > Regards,
+> > Liu Ying
+> 
+> Hi Liu,
 
+Hi Piyush,
+
+> 
+> A quick follow-up with some progress.
+> I went ahead with the refactoring we discussed and now have it working on the
+> i.MX95 15x15 FRDM, following the component-based model.
+> The common implementations for ConstFrame, ExtDst, LayerBlend, FrameGen and
+> the FetchUnit base have been moved into shared dc-lib-* helpers, with
+
+Can you please share the code in a public place, like github?
+
+> SoC-specific register layouts and tables supplied as data. The per-SoC glue is
+> split into dc-drv-common.c, dc-drv-imx8qxp.c and dc-drv-imx95.c, while
+
+Same here, just want to see how dc-drv-common.c and dc-lib-* would look like.
+
+> i.MX95-specific blocks such as DomainBlend, Dither, FetchEco, FetchYUV,
+> HScaler and VScaler remain separate component drivers.
+
+i.MX8QXP display controller also has Dither, FetchEco, HScaler and Vscaler,
+so they are not i.MX95-specific blocks.  To add minimal feautures at first,
+we don't need to support them as of now.  i.MX95-specific FetchYUV is similar
+to i.MX8QXP-specific FetchDecode, so maybe FetchYUV won't be a separate
+component driver at the end of the day.  To start up small, I think the
+must-have DomainBlend and Dither(for Data-Enable, HSync and VSync polarity
+controls) and two FetchLayers can be enabled to support two display pipelines.
+
+BTW, do you have the i.MX95 TRM?  If no, then it would be difficult for you
+to add DT bindings for *all* blocks.  Note that the DT bindings are supposed
+to be complete at the first place.
+
+> 
+> The implementation is functional on the FRDM over the pipeline
+> DPU -> pixel-interleaver -> pixel-link -> LDB -> LVDS PHY -> IT6263 -> HDMI
+
+As I said before in separate mail thread, pixel link is not used in the LVDS
+display pipeline, but instead it's only used in the MIPI DSI display pipeline.
+
+> 
+> EDID is read successfully, the initial modeset works for all tested modes
+> (1920x1080@60, 1280x720@60, 720x480 and 640x480), and Weston and sway both run.
+> 
+> There are still two known limitations. The initial modeset works, but
+> subsequent mode changes currently wedge the ExtDst content shadow load, which
+> appears related to the lack of a reset path for the i.MX95 FrameGen.
+
+Not sure what's the cause of the issue, but FrameGen needs to be disabled and
+then re-enabled if you want to do a full modeset.  I'd say that's not a reset
+path.  This critical issue needs to be fixed before posting formal patches.
+
+> In
+> addition, the DSI path is implemented on the DC side but remains unvalidated.
+
+It's fine to support the LVDS display pipeline first as long as it doesn't
+do harm to the MIPI DSI display pipeline support.  So, maybe drop the latter
+first.
+
+> 
+> The implementation is currently based on v7.2-rc1 together with your prefetch
+> v5 series.
+> 
+> The work is now ready to be posted as patch series: Adding LVDS/DSI
+> i.MX95 support.
+> 
+> 
+> Regards,
+> Piyush Patle
+
+-- 
+Regards,
+Liu Ying
