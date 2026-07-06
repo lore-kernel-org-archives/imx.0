@@ -1,186 +1,256 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312E33955C3
-	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 07:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB772BFC7B
+	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 07:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783322406; cv=none; b=iE1/DrL54Q7TNgCJuGC7BzmzVB1nkJy4PW2h5FV47Y7CUwpuNYn/fhCgMyQRwzLRw0clIufWDcE4wNYipdyizKWKm/+CwGRw29Ca+6Gnf4xRiZgpA+IYha0lH7DxUw4nO2dhnzR2YZar8lL/t1Dv56KJj0jhFxaOUtrvPzNUcJM=
+	t=1783322875; cv=none; b=bbMXRUrA1dBZEe+we2MgNmNyNpGeToOb5txk5XhdfbTskpWWGlbB+cDMaB80GbUgGsDwjeLTNO8pSIc9/lws6ZJfSq8HACkt0za3sNCCkVW16ryOcBNbhucFSFTJwLt4bKrMIvK9Bxesuwp+qPteJqGZFSTBQhHbqARYLNfrou0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783322406; c=relaxed/simple;
-	bh=9ZXUr18b6ICtMwcnfCfQqcoadYON5lGnHDJBPbVufHU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K6vnI2wzl44Ip07jKAuEYD0hA5is1RqMY09mDhSgew0x2u1OKVg7++pIQHzivGGRWYJE3ML2199SLHz5Xe4RO/3e9WOwZxAg+n2tpbNW3WJHy+ba7kra33evJscbRTMUdq/mqenv9Qltz6zUaexxGOxZzGgZLzy2ZBa5iZEUC7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=Zl5T4/KD; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1783322875; c=relaxed/simple;
+	bh=E2IPGWg6g9z+kmInCDCaFk0puYcvTRbJqMUseelOiNM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e/KlXUDMKes9IvV6sRsc4F7jOhnJURcxAGAAZb6LmYdq84XyS9P83+R+K2m78nvsdVSA9RQXxGrvIQdjIUJxolHYbZ+0eseyCVvu9dyJwhofT3YXDga+obmvseXzGju+oJ8qr0o2Vfr7MwolonMKlMO1lOXvWE1wLc+KU3FkNsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0wpOaniI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vRZoMy4m; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0wpOaniI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vRZoMy4m; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="Zl5T4/KD"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47de0093c42so704065f8f.3
-        for <imx@lists.linux.dev>; Mon, 06 Jul 2026 00:19:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1783322390; x=1783927190; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VIt88eh6zWv+oEhKK/Aw514C6mk0Vd1i5LusZK/Ssuc=;
-        b=Zl5T4/KDsgVn9y77bkrN3Vo4LXpucrt0YSk3UxI3dPE6uHG4wr1a0ePCiIQG9BXnN7
-         tTUJmovfC4OuOdu+X6gBWIDvoM75oOFoBjAR/McjnE29YMltrcxeH9fDy2UYJNIAPC7V
-         YXuO+KmzvpCufmoDgSjvOAuHcISCmJScZo98QgINYZ0lOMJQtUsMGys4sQJa3scFPQ7c
-         5odf/cb7fWdFzDN/alxmTlCRiCvIzJG0EfbWoHiXSLTvztjW1p3Mh8Z/pojwSCbX77cC
-         XQI6DWIGWKVqchcgGhEpmf9zjRvh3i32HmunrPpuRqPiI+jpkJ4UNf66DgLyCDbtQpQL
-         JoIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783322390; x=1783927190;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VIt88eh6zWv+oEhKK/Aw514C6mk0Vd1i5LusZK/Ssuc=;
-        b=b+PHGtXD1S+J4gqM8+R53/TTQlNKhZTR5jCZZwR6ln53umKC5vDI6wI1LKI28BmZzv
-         SzAlciHopd6U34CkSmpEFCQIpbbw1EbDThfdsBIuXlCWrZ/EP/mhLeJygfRa4G7qlWb2
-         1bql57sLgP5xfZ+HhCL+DxYpW4cMSwtN6YsYpRXX4/npci36t+Fx9h2PKpz6AWVqsCdF
-         tee2wK70PbOVCB/6KsQKC2iSNW0DTo/5I7qJrT+/7nTk+ABYHRcGvZfxB1JypQ8WtEyD
-         PqOYn0v6YMQnIElz8BodEX1I0gkH7bSl5b/qUSMjwAA0jLXZJystVC+9/ZQV+AhwYZpO
-         m/5Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rqr86v9wAUA4o36/G9zKsnie9jJ5VR2cJA2ClnVcqlexOKoo4Oah3HtOaxeSNM3XkUsa/o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxPozUvfuwkLUkx/kDXP8yO8J8/OX+n/LcjrFB5kB7V/wLQZKt1
-	5AUp9mH4PADdSpuMrdQO5xZ4N4fQDZ5+C5Jk8chOGU8kQ/LtGmgulvczna2LwPKIJlo=
-X-Gm-Gg: AfdE7ckklBxWsEI2PcnI6kjctSF7Mnq2VYmdqhX8Nahc8vJUo46Ox6/QOmQzabvl77h
-	6u6ePJZYOAB57hY/Q2eoBSlIX3u3osuG6YOSXjzRMXlLzmO0VlOXjjNEwppq3nCOPeuY2R/b8Yn
-	7MRwjdiJkIZBop6f0LEE2f57tstXkZ9BW0LlpDAdtslf6E4XQGmU2qjD8eYjbLfsuRVyLIaULDc
-	Xf6LrhoqmZVRBmoKbkfxGipBJWKeTyoaD6wozlT5fwqNqZbRw3QVeThtfFaZe5U3gcbdbABC/gv
-	oSx1+WWZM4DLtdHhamVSfHgHIRyqHjOpGmeQCLD2EqEW73EGwNunTs2rdOQJGu3mF6Ev7CrLfUC
-	MdBnXpfQbOePUQ77SgcUnGARbVf/yx9XXbQ2PSnTfiCJgX36RS2GgTkpb20KTkIsj3EjTkFarK5
-	rQapRf0mUze6gctf8xJvLZz9A5t2VjJtYP//aVDpf3pYRJAmGu5JBdeZwjltZiLGDOSD9dEXNED
-	yXQ
-X-Received: by 2002:a05:6000:d4f:b0:478:4de8:9b91 with SMTP id ffacd0b85a97d-47aac7d018dmr7577860f8f.41.1783322390409;
-        Mon, 06 Jul 2026 00:19:50 -0700 (PDT)
-Received: from localhost (p200300f65f47db0426af56a07ec3b32d.dip0.t-ipconnect.de. [2003:f6:5f47:db04:26af:56a0:7ec3:b32d])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47aa039bcdasm23183058f8f.21.2026.07.06.00.19.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 00:19:49 -0700 (PDT)
-Date: Mon, 6 Jul 2026 09:19:47 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Chen Wang <chen.wang@linux.dev>
-Cc: linux-pwm@vger.kernel.org, Sven Peter <sven@kernel.org>, 
-	Janne Grunau <j@jannau.net>, Neal Gompa <neal@gompa.dev>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
-	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Paul Walmsley <pjw@kernel.org>, 
-	Samuel Holland <samuel.holland@sifive.com>, Michael Walle <mwalle@kernel.org>, 
-	Inochi Amaoto <inochiama@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Hammer Hsieh <hammerh0314@gmail.com>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, Alexey Charkov <alchark@gmail.com>, 
-	Sean Anderson <sean.anderson@linux.dev>, Michal Simek <michal.simek@amd.com>, asahi@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-rpi-kernel@lists.infradead.org, chrome-platform@lists.linux.dev, imx@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-amlogic@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, sophgo@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v1 4/5] pwm: Unify coding style of of_device_id arrays
-Message-ID: <aktWoIfY_DdO6gb4@monoceros>
-References: <cover.1783263835.git.ukleinek@kernel.org>
- <20de6cd60c2938aad2d21397b92742849418ab1b.1783263835.git.ukleinek@kernel.org>
- <973f3d6f-6ff4-4685-9c9f-b07987f74d98@linux.dev>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0wpOaniI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vRZoMy4m";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0wpOaniI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vRZoMy4m"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3F04575D1A;
+	Mon,  6 Jul 2026 07:27:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783322868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+2Djb0q9WRkslYZbyJ71zpFQjsAPKkL2tq9BmdbU6nU=;
+	b=0wpOaniIIGdIp6z0GgnhUgcX7Ud0CNlgNZsCsQlsgePgV/syB4GI+NetQO74Bu88DWebkJ
+	JV4RcnUvOxIyYy8sZyMKhb2UP77fMvZEMirZrApFrnCjD5L+0SYMYo+ZFQQ5lID32YXDF1
+	lItEzeSK46VQqsmy5ExgcL0vPlIuQ7Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783322868;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+2Djb0q9WRkslYZbyJ71zpFQjsAPKkL2tq9BmdbU6nU=;
+	b=vRZoMy4mlXVDCDDzBHVKqK0jVdeF3GKGuTQBv6rpUASi6BEc+d8w4iSN5qdOKqb9Ez4Cpc
+	/dCOcX9RcSAElJAA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783322868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+2Djb0q9WRkslYZbyJ71zpFQjsAPKkL2tq9BmdbU6nU=;
+	b=0wpOaniIIGdIp6z0GgnhUgcX7Ud0CNlgNZsCsQlsgePgV/syB4GI+NetQO74Bu88DWebkJ
+	JV4RcnUvOxIyYy8sZyMKhb2UP77fMvZEMirZrApFrnCjD5L+0SYMYo+ZFQQ5lID32YXDF1
+	lItEzeSK46VQqsmy5ExgcL0vPlIuQ7Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783322868;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+2Djb0q9WRkslYZbyJ71zpFQjsAPKkL2tq9BmdbU6nU=;
+	b=vRZoMy4mlXVDCDDzBHVKqK0jVdeF3GKGuTQBv6rpUASi6BEc+d8w4iSN5qdOKqb9Ez4Cpc
+	/dCOcX9RcSAElJAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A3D21779AA;
+	Mon,  6 Jul 2026 07:27:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WgXvJfNYS2pBcQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 06 Jul 2026 07:27:47 +0000
+Message-ID: <9612bb41-db52-4169-a7fa-e57268d69e24@suse.de>
+Date: Mon, 6 Jul 2026 09:27:47 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="64vjgbl764osolti"
-Content-Disposition: inline
-In-Reply-To: <973f3d6f-6ff4-4685-9c9f-b07987f74d98@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/9] drm: replace simple display pipe users with atomic
+ helpers
+To: Ze Huang <ze.huang@oss.qualcomm.com>,
+ Alexey Brodkin <abrodkin@synopsys.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
+ Hans de Goede <hansg@kernel.org>, Alex Lanzano <lanzano.alex@gmail.com>,
+ Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-aspeed@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, xen-devel@lists.xenproject.org
+References: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,synopsys.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,jms.id.au,codeconstruct.com.au,nxp.com,pengutronix.de,epam.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TAGGED_RCPT(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,qualcomm.com:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
+X-Spam-Score: -2.80
+
+Hi
+
+Am 04.07.26 um 20:31 schrieb Ze Huang:
+> struct drm_simple_display_pipe was meant to simplify simple DRM
+> drivers, but instead adds an extra wrapper around normal DRM atomic
+> helper setup. As noted in Documentation/gpu/todo.rst, remaining users
+> should be converted to regular atomic helpers and stop depending on the
+> simple-KMS interfaces.
+>
+> This series converts the following drivers:
+>
+>    - arcpgu
+>    - aspeed
+>    - imx lcdc
+>    - mcde
+>    - pl111
+>    - gm12u320
+>    - repaper
+>    - tve200
+>    - xen frontend
+>
+> Each patch replaces drm_simple_display_pipe_init() with explicit
+> primary plane, CRTC and encoder setup, and moves the old simple-pipe
+> callbacks into regular plane and CRTC helper callbacks named according
+> to local driver conventions.
+>
+> The conversions preserve helper behavior that used to be implicit in
+> drm_simple_kms_helper.c, including plane-state validation, CRTC
+> primary-plane checks, affected-plane propagation, framebuffer prepare
+> handling, and existing event/vblank flow where applicable.
+>
+> Result is less helper indirection and more explicit driver-side atomic
+> wiring, with no remaining simple-KMS dependency in these drivers.
+>
+> These changes are build-tested only. No hardware testing has been
+> performed on the affected devices.
+
+Thanks a lot for the series. That's quite a nice cleanup.  Did you use 
+any AI to create these patches?
+
+Best regards
+Thomas
+
+>
+> This series is based on drm-next-2026-06-27.
+>
+> Thanks,
+> Ze Huang
+>
+> Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
+> ---
+> Ze Huang (9):
+>        drm/arcpgu: replace struct drm_simple_display_pipe with regular atomic helpers
+>        drm/aspeed: replace struct drm_simple_display_pipe with regular atomic helpers
+>        drm/imx: replace struct drm_simple_display_pipe with regular atomic helpers
+>        drm/mcde: replace struct drm_simple_display_pipe with regular atomic helpers
+>        drm/pl111: replace struct drm_simple_display_pipe with regular atomic helpers
+>        drm/gm12u320: replace struct drm_simple_display_pipe with regular atomic helpers
+>        drm/repaper: replace struct drm_simple_display_pipe with regular atomic helpers
+>        drm/tve200: replace struct drm_simple_display_pipe with regular atomic helpers
+>        drm/xen: replace struct drm_simple_display_pipe with regular atomic helpers
+>
+>   drivers/gpu/drm/aspeed/aspeed_gfx.h      |   5 +-
+>   drivers/gpu/drm/aspeed/aspeed_gfx_crtc.c | 156 ++++++++++++++++------
+>   drivers/gpu/drm/aspeed/aspeed_gfx_drv.c  |   3 +-
+>   drivers/gpu/drm/imx/lcdc/imx-lcdc.c      | 178 ++++++++++++++++++-------
+>   drivers/gpu/drm/mcde/mcde_display.c      | 162 ++++++++++++++++------
+>   drivers/gpu/drm/mcde/mcde_drm.h          |   6 +-
+>   drivers/gpu/drm/mcde/mcde_drv.c          |   3 +-
+>   drivers/gpu/drm/pl111/pl111_display.c    | 174 ++++++++++++++++++------
+>   drivers/gpu/drm/pl111/pl111_drm.h        |   5 +-
+>   drivers/gpu/drm/pl111/pl111_drv.c        |   3 +-
+>   drivers/gpu/drm/tiny/arcpgu.c            | 165 ++++++++++++++++++-----
+>   drivers/gpu/drm/tiny/gm12u320.c          | 128 ++++++++++++++----
+>   drivers/gpu/drm/tiny/repaper.c           | 130 ++++++++++++++----
+>   drivers/gpu/drm/tve200/tve200_display.c  | 221 +++++++++++++++++++++----------
+>   drivers/gpu/drm/tve200/tve200_drm.h      |   6 +-
+>   drivers/gpu/drm/tve200/tve200_drv.c      |  17 ++-
+>   drivers/gpu/drm/xen/xen_drm_front.h      |   6 +-
+>   drivers/gpu/drm/xen/xen_drm_front_kms.c  | 177 +++++++++++++++++++------
+>   18 files changed, 1164 insertions(+), 381 deletions(-)
+> ---
+> base-commit: 3696d07837d1df13a5603d77f667685e7dfb3c53
+> change-id: 20260704-drm-simple-kms-removal-01a031c6a129
+>
+> Best regards,
+> --
+> Ze Huang <ze.huang@oss.qualcomm.com>
+>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
 
 
---64vjgbl764osolti
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 4/5] pwm: Unify coding style of of_device_id arrays
-MIME-Version: 1.0
-
-Hello Chen,
-
-On Mon, Jul 06, 2026 at 08:33:47AM +0800, Chen Wang wrote:
-> On 7/5/2026 11:14 PM, Uwe Kleine-K=C3=B6nig (The Capable Hub) wrote:
-> >   - Use a single space in a of_device_id array terminator; A single spa=
-ce
-> >     after the opening { and before the closing } in non-empty
-> >     initializers;
-> >   - No comma after an array terminator;
-> >   - Also no trailing comma after a named initializer iff the
-> iff -> if
-
-This is actually intended. iff =3D "if and only if", see e.g.
-https://en.wikipedia.org/wiki/If_and_only_if .
-
-> >     closing } is on the same line;
-> >=20
-> > Signed-off-by: Uwe Kleine-K=C3=B6nig (The Capable Hub) <u.kleine-koenig=
-@baylibre.com>
->=20
-> [......]
->=20
-> > diff --git a/drivers/pwm/pwm-sophgo-sg2042.c b/drivers/pwm/pwm-sophgo-s=
-g2042.c
-> > index 7d07b0ca7d29..0b6461172e6a 100644
-> > --- a/drivers/pwm/pwm-sophgo-sg2042.c
-> > +++ b/drivers/pwm/pwm-sophgo-sg2042.c
-> > @@ -225,11 +225,10 @@ static const struct sg2042_chip_data sg2044_chip_=
-data =3D {
-> >   static const struct of_device_id sg2042_pwm_ids[] =3D {
-> >   	{
-> >   		.compatible =3D "sophgo,sg2042-pwm",
-> > -		.data =3D &sg2042_chip_data
-> > -	},
-> > -	{
-> > +		.data =3D &sg2042_chip_data,
-> > +	}, {
-> >   		.compatible =3D "sophgo,sg2044-pwm",
-> > -		.data =3D &sg2044_chip_data
-> > +		.data =3D &sg2044_chip_data,
-> >   	},
-> >   	{ }
-> >   };
->=20
-> Changes to sophgo related files=EF=BC=9A
->=20
-> Reviewed-by: Chen Wang <chen.wang@linux.dev>
-
-Thanks
-Uwe
-
---64vjgbl764osolti
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpLVxEACgkQj4D7WH0S
-/k6otAf+MDN98V1OLHB7JSvapxuE4DwDpddJFumdMe3z/vu/P/VdI1oEao4PKhGo
-2fMsJUgJT4k/6wIfoB6C3asAQFoEg3UirigbTf0d26+LpcWXfr+MJ/e2tzlX/Yzn
-2dH88yKAhOR4HFj73YAi1FscS6vtyPmk7w2A84lWRMvteeY+zJan75O9xwgRC7FX
-gEMJExnAEBHY9tEW8dgB3EK07MFFQWLlVpGQll6BbLHxOcMIz17Pj/sI6+7Sv0xW
-cahUhiwZ1m+Y0EElAHIwQFoWyyyg7KINbFYsCsnyL1ev/EbUFyGCMRuR270OEIJW
-bKMoVE2keTYc8IQjmKqk7x/VPRLsTw==
-=LX/u
------END PGP SIGNATURE-----
-
---64vjgbl764osolti--
