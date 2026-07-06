@@ -1,165 +1,124 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011032.outbound.protection.outlook.com [52.101.65.32])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B003E120C
-	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 08:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783325376; cv=fail; b=RwCDwpfLAll/kWMK/mNARLYgQ6ax3o69yR0oOltXt9lmbb2TpZAo45FyNQH/602bxJHOv/7Q9K40mU9HbbMvqN8EagVmRrxnreP/rOoU2kQAnxB8d23f1NuNqcAWecCZh0AGwRir8oVmRbtVTBYkNPo7Bvg/bOJrGpWfb4NRyYE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783325376; c=relaxed/simple;
-	bh=XNzdhdWQ2X3GPwnVdvMwmXfNOebfZsB+JKfZS223VMo=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Qlq/lMC3ftBXsiTE8r4/IUHQVSi9Iaz2BylBJV9JqZQID4hCHjgPD8fjFBZMaFYn3VEsvtTHREKEwksVuRsepQaBf1R3pYiBAahyTjaToi26yAQD6lYOAui9U0WbS0k2s3LXTdhEMXczBQoJ8IYXj2XyXMB7d3pgG6vXc4qRf7g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Aac4C8Xh; arc=fail smtp.client-ip=52.101.65.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Aac4C8Xh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V345XYsmXA7wvg1LB9b3Yi/BQSJ2Irn4o4Gc208fPfKCHOzPkHl0oFtl7qSZGFzJZwawnm1f3auIqb8SBYjMTrGKlJ7ffqFIJYK1kgEbetzw49AHt79fiDoxKqXW6LnpJsPSUoK95Meh0VlEAUKaLq0ZcnsdbttwadknD+cTWU6giTbmjOvj1MwPSrCdF35BEa1jV5fBPkEMiYqAsuW8XyDphlrig8KisQNss/fkikR2F4H+PZ5DhGBEEn4gWnuGKkofG5eoG6yQ1jajB1VC3dyMkZXtKByF4lknCX88ToNLlPmH/ntc8zEaIKD1Dhne18q9IZzkxnKZhdYM+VzzNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QYcBFQc5KfS80UzHV+Vmdge2YtvAKnLmA4mcsh1NvfA=;
- b=lLiUB8OR0btpBjN+3Zf5byVXQyJzfvYmV1adXvkkPkP3kYVu7lIZonPZlCCUMTWYwWyLkJR/g7SnJ9STipHP0n6U9VHjnd1nAzIZPTmU3bF435lbmicxbZo2tr1ZeuQgt2AMS/Ioo5aUXI+DvvjfEB2Py5WDHX3YyiQ0zulCaPkUqcvl8x9DID/60fqIC22XnEpDLdb3ncrp+TZoUhz8yjOtSGUARfa+//aIbzwT4OsNPVbO6R25ZdzwZ+JL6MWpFmqRVrj9pK7zrqChkH+/t92syEJHoTFo5WGFVZ7WqMR/4dPTat8MNs9+GX9IOL+64LKNGdZWhtsC8rQUIeh0eA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QYcBFQc5KfS80UzHV+Vmdge2YtvAKnLmA4mcsh1NvfA=;
- b=Aac4C8Xha6wxJFVrUErx8RNf2dxJMNig2GTVAmvWmpGg42P/hVGVzGDlzQpfCO6Mou4YqAzLgkyVB7YW5CQX6zpvjjBAbyL7DVH4W1SYinxNHH7wdiUggwaYoOf/P1/ha0jhpiF+pGJJFS8f67/beFi+VS261jRZRhRtVUO/Wy3omP/FftTYK2AxuE9TSNeNZ0v1ZzBqgenZYTMNqBiZBC5597ShwX5sD9M7a7QZa1EkB1uBawx9WviDhOuTI0zwcyvh9KuxG34RRk4WxZBsgEGBkvI/ryGoPb21zLxdVQ8FBow8GfW/AAn7Wym4PKTKMz1syDmj+pUT3dNdX4wL4w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by VI0PR04MB10437.eurprd04.prod.outlook.com (2603:10a6:800:216::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Mon, 6 Jul
- 2026 08:09:21 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0181.012; Mon, 6 Jul 2026
- 08:09:21 +0000
-From: wei.fang@oss.nxp.com
-To: richardcochran@gmail.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Frank.Li@nxp.com
-Cc: netdev@vger.kernel.org,
-	imx@lists.linux.dev,
-	wei.fang@nxp.com
-Subject: [PATCH net] ptp: netc: explicitly clear TMR_OFF during initialization
-Date: Mon,  6 Jul 2026 16:12:32 +0800
-Message-Id: <20260706081232.3661826-1-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0138.apcprd02.prod.outlook.com
- (2603:1096:4:188::12) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A5B3EFFD0
+	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 08:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783326174; cv=none; b=OmzDyBXGikPh7ZGeA8jmbfGLYqNEp/PkN4wag5lAS5fJG0C48WMDeYcEj6Wn6lPeUOrmkS8FLLcfhFqe7nAWjjeITyCns1ZZdCmkGYYh47IM4HbHN5FmLP9Up3MQQOJI2+sYNJK/NUOfvYPgOlfIUn8EhpKKJtstknlVFHryew0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783326174; c=relaxed/simple;
+	bh=o/sNQR5LZGDkyJ4EvrA/HWAL0Z7LOSlQgm1toN7Mxqk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=W4aDzxJiHVXruVXZElkFYYyk499O2XrutlPi0bQshXHeoaN7dQ9ndgQAV2/8HWfqwmZ3JCjGR/HejFFll7PuOogwbZmdoyU5//0ks+Hgks4s/dH9odduckyWdSghtTomFcmxlYJ1T9dufMucXKSI5OnMgKhqSZhK6/SaDfzlVsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|VI0PR04MB10437:EE_
-X-MS-Office365-Filtering-Correlation-Id: dbbb2249-534e-450f-02a3-08dedb35e224
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|19092799006|23010399003|366016|11063799006|56012099006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	zEPFlJDtIuK+z+DivJRALk7U2zbhgypRkIQcSNNpawlpXjPCztE4Nc5wJJtmTF4OgtkIfVteZoNLs9yDl7JeExucHOMR4TFB9t+grB055DBURw2jFiV+IHZw2xP8wIJdYhEmJjCwLZFQMopENLH/OYuKfOLFm9PCQgdUyu+43oX//zJwDtsOn2QkBhS2qm8HqcZXmLemjAIEhJdoSVX4sKsrYKXRq1xK7w1AlFf+DGfNBh1nW0iwyO99HrtTTpST0chXA9t0Kg9F7AS/BnPl+fqWmNIUmjA1/kdgJEY4bEjL8IaEJ3oKocq5/YMS+275gZ2hRjJMHu+11vwfk5xXTKZI/oyevy7UqDKQwXYMeozOpnMmYOa9cWkvHbi9s0kmVZ4vZhUYngOCVO7NtgYHs07J/MCKqRDubEJwmg5uKfM0Xgd68s5o7J9Wnc2TAA+UwjsNF+P3CfbVFffNQbEbJBYwPdCscJuDn+qOu79j1Z8vbuzaOdg02DhkKkDlNwuGQ40Got24vCRK3BdsQSgbJv5vOgrQ9Z251ZJSNzehovsirp7U3RSr7XHJ3fTJqePpQZ2vsCtRWHXsH3IUmoFTXtMBE0IvKFTFzrgrco90GBxJbWzPT101jg1HJ4wSvOIp2XQgTNzD0wNpZ3gC2C25mpvTMJUSb405qEkaXgXZdP0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(23010399003)(366016)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?B625627w0i+a/iPw3BVgYeLXCyERGpk3oIg6p70DRsVey2EibW0JQ+c1SvVz?=
- =?us-ascii?Q?R7Ne1HN2HVb3C3/F4zq2OxLW5ObNOKYFfOqPFKb/OcvTQfbVnswMRKvxgxPM?=
- =?us-ascii?Q?8gRZdmB51LTQPYrIJ0/PajgBbxT0nybB73zGD4NsIxoXgfm8Uq8sQLlzzSMw?=
- =?us-ascii?Q?YIqPlCsbxG/u91jZ4gKmDXzMYcCp8SecVwAuoc+xExf4pLTPMnAVuSZFK6ku?=
- =?us-ascii?Q?aHxriblkVy+QQJz0DdeaQ8TsISp7Hezu8+0Cl526nXLFf/GGZAbohNsQp9ZD?=
- =?us-ascii?Q?D7tG7Q1jYl/RNCa3ulux37Ke4Vll1GdOcZpBpgOnFl343/rTkHLYkqLaHdw8?=
- =?us-ascii?Q?8fN+oVkx1/is96F5Ds68lBFX0B4Ht7Y0bki0EwBtLowptelT6QKKPUZ4WTOZ?=
- =?us-ascii?Q?smcwiI5HgSTCCLWouV65UGkHtTnF4xhgqg/IW2blFKkYB7+rn6h+YSjmBFVX?=
- =?us-ascii?Q?wjvI8TxNyUyzb7lwhDmwwN7HNZHawgO3xM+EYyCdfxhebEpMq0VfridjgBAJ?=
- =?us-ascii?Q?XimuX6RvXQdOUkZfUgqRTACurA7XAmeLiEGNGF3bwcOSL7IM+P6A5VoH4di7?=
- =?us-ascii?Q?uddAhHIuW74ZMUaYd4nzsywBPXi4KCMx+3gauH2pA90nE/qcyxll9E8HZsAP?=
- =?us-ascii?Q?88yN1PTT+giJ/R7pibj/9TehJXwjwcuaIKVYtrs5d4+4YjJOqVWCaMKVdhMd?=
- =?us-ascii?Q?OI4RsUj7lNfYHffcvz4iICcYVBP4JKvRrH44uDPw5KG2kMuGc2HdWGhbdQJb?=
- =?us-ascii?Q?VMNFXahIBYVHdkhHi1uEFvxmKwS0ZrsuZKcOfFdNyW6BHUd7wqVGnbb2vlJq?=
- =?us-ascii?Q?rm+NEt/RQ71rC65qjMFFzrz6XClG5IkbMutc5e/7Pl8baV9aIYlDXufB6fjl?=
- =?us-ascii?Q?+OQV1GvYZEZlXhn4KLsKSwPZpzga5IhGz/gckR9xKC54Z1b2oWMI5QiAtq7V?=
- =?us-ascii?Q?VvEjnWo4HruineqmTw6/jW83s4YK7JvQVjKTsY3JAl6kKdUs5SmNliX7+7Vt?=
- =?us-ascii?Q?Xp6twQhkOTwKRU626USONxhGbBN+Gvxs0lWSDKzVKtrV1NSXYGypbyw3vYOB?=
- =?us-ascii?Q?7EOTEwHSBynuFSPIebzCWbqmVMoCKMwxMVpbPMCPCWvOLfHRh+FSksxmnxME?=
- =?us-ascii?Q?zPNhRXwowi2acrZhcFOnq1Eprf3jf7fRcvytQy0EPKMjx9iYysfoAwjVmzgj?=
- =?us-ascii?Q?5QN64GYvzMQsZwQKW2102w+bvMfQDtwh6Dm+77hcUVzQDzYDizKaFNlhuP1T?=
- =?us-ascii?Q?nlDw7Y3tZhYErpnmsLfB43Aorz9W88DpusTi9ABIAO1n8PpotNIWdSlXdDx5?=
- =?us-ascii?Q?25d2ZYOWFiuFxWdEtHvnftuJiwWncjToPDjzrqCKDRUN2tjNQTjESaou/zp2?=
- =?us-ascii?Q?Bf98anpGeXGiFjY6m9z8PMUE/YixCCK5v9Li38OiXnpR/whAOWqqJ9PmTTog?=
- =?us-ascii?Q?kXWpbLwAUH/AEq0zeUQC+3HyIrGxkas0jok/tHxZ48KfYd6XNwTbxY7ETi2l?=
- =?us-ascii?Q?wp1Iu0/2R549mAMSKzyNKnDG5bBBcsmrpJUYszH7vdNxAqxXlQYS6IPBlL8t?=
- =?us-ascii?Q?T3cdoKCUO/JNJxv+62CFs21EAg64EDcpQJ/lWGsJGWzRE1Ahv/yxIK9rqJ+Q?=
- =?us-ascii?Q?OXmJfk75W6SpbWhW2T3+cEbVTQm8leVpT+mFOlaJuhpeuDx7QelSDPiqoSp5?=
- =?us-ascii?Q?I+GQtZ6DKn2sd1lrxOTR6lYZeFnRb+JDPhkcHvSlsSrNbV7uTE5R0o2ktF08?=
- =?us-ascii?Q?7yKgIBOt8SnFwT6KbCzsiHI6E0xmuEcz4jPogGTCAk9SfXLZjkT3?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbbb2249-534e-450f-02a3-08dedb35e224
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 08:09:21.2276
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QizmUVfDpR2ugK+PLWLGvVR3iK1OjQRRD9vuw9RG+ouQ307bkZbRnlvzoF/PWb3qOlJQCYmQH4lx8+WXpLSH6debtPxFE+vnEbplqnrOFFS9BjWrayyLQObe2TrTbNTy
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10437
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 06 Jul 2026 16:22:24 +0800
+Message-Id: <DJRCCWQOT4TA.1OPAZI88KOWLW@oss.qualcomm.com>
+Cc: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <linux-aspeed@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
+ <imx@lists.linux.dev>, <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH 0/9] drm: replace simple display pipe users with atomic
+ helpers
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Ze Huang" <ze.huang@oss.qualcomm.com>
+To: "Thomas Zimmermann" <tzimmermann@suse.de>, "Ze Huang"
+ <ze.huang@oss.qualcomm.com>, "Alexey Brodkin" <abrodkin@synopsys.com>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Joel Stanley" <joel@jms.id.au>, "Andrew Jeffery"
+ <andrew@codeconstruct.com.au>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Linus
+ Walleij" <linusw@kernel.org>, "Hans de Goede" <hansg@kernel.org>, "Alex
+ Lanzano" <lanzano.alex@gmail.com>, "Oleksandr Andrushchenko"
+ <oleksandr_andrushchenko@epam.com>
+References: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com> <9612bb41-db52-4169-a7fa-e57268d69e24@suse.de>
+In-Reply-To: <9612bb41-db52-4169-a7fa-e57268d69e24@suse.de>
+X-Migadu-Flow: FLOW_OUT
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+On Mon Jul 6, 2026 at 3:27 PM CST, Thomas Zimmermann wrote:
+> Hi
+>
+> Am 04.07.26 um 20:31 schrieb Ze Huang:
+>> struct drm_simple_display_pipe was meant to simplify simple DRM
+>> drivers, but instead adds an extra wrapper around normal DRM atomic
+>> helper setup. As noted in Documentation/gpu/todo.rst, remaining users
+>> should be converted to regular atomic helpers and stop depending on the
+>> simple-KMS interfaces.
+>>
+>> This series converts the following drivers:
+>>
+>>    - arcpgu
+>>    - aspeed
+>>    - imx lcdc
+>>    - mcde
+>>    - pl111
+>>    - gm12u320
+>>    - repaper
+>>    - tve200
+>>    - xen frontend
+>>
+>> Each patch replaces drm_simple_display_pipe_init() with explicit
+>> primary plane, CRTC and encoder setup, and moves the old simple-pipe
+>> callbacks into regular plane and CRTC helper callbacks named according
+>> to local driver conventions.
+>>
+>> The conversions preserve helper behavior that used to be implicit in
+>> drm_simple_kms_helper.c, including plane-state validation, CRTC
+>> primary-plane checks, affected-plane propagation, framebuffer prepare
+>> handling, and existing event/vblank flow where applicable.
+>>
+>> Result is less helper indirection and more explicit driver-side atomic
+>> wiring, with no remaining simple-KMS dependency in these drivers.
+>>
+>> These changes are build-tested only. No hardware testing has been
+>> performed on the affected devices.
+>
+> Thanks a lot for the series. That's quite a nice cleanup.=C2=A0 Did you u=
+se=20
+> any AI to create these patches?
+>
 
-The NETC timer does not support function level reset, so TMR_OFF_L/H
-registers are not cleared by pcie_flr(). If TMR_OFF was set to a
-non-zero value in a previous binding, it will persist across driver
-rebind and cause inaccurate PTP time.
+Hi Thomas,
 
-There is also a hardware issue: after a warm reset or soft reset,
-TMR_OFF_L/H registers appear to be cleared to zero, but the timer clock
-domain internally retains the stale value. When the timer is re-enabled,
-TMR_CUR_TIME continues to track the old offset until TMR_OFF is written
-explicitly. This can cause incorrect PTP timestamps and even PTP clock
-synchronization failures.
+Yes, I did. I wrote the first two conversion patches (arcpgu and
+aspeed) myself to understand the migration pattern. For the remaining
+drivers, I used GPT-5.5 to help with the repetitive boilerplate
+conversion.
 
-Per the recommendation from the IP team, explicitly write 0 to TMR_OFF
-in netc_timer_init() to flush the internally cached value and ensure
-TMR_CUR_TIME follows the freshly initialized counter.
+I should have reviewed the generated code more carefully before sending
+the series. The sashiko-bot feedback shows that I missed several important
+details, including commit-local state handling, the implicit NULL fb /
+visibility checks from simple-KMS, and vblank/pageflip event ordering.
+I am now going through these issues more carefully and working out the
+correct fixes before sending a v2.
 
-Fixes: 87a201d59963 ("ptp: netc: add NETC V4 Timer PTP driver support")
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/ptp/ptp_netc.c | 1 +
- 1 file changed, 1 insertion(+)
+Do you expect AI assistance to be mentioned in the cover letter or commit
+messages in some specific form? If there is a preferred tag or wording
+for this, I will use it in v2.
 
-diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-index 94e952ee6990..5e381c354d74 100644
---- a/drivers/ptp/ptp_netc.c
-+++ b/drivers/ptp/ptp_netc.c
-@@ -779,6 +779,7 @@ static void netc_timer_init(struct netc_timer *priv)
- 	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
- 	netc_timer_wr(priv, NETC_TMR_ECTRL, NETC_TMR_DEFAULT_ETTF_THR);
- 
-+	netc_timer_offset_write(priv, 0);
- 	ktime_get_real_ts64(&now);
- 	ns = timespec64_to_ns(&now);
- 	netc_timer_cnt_write(priv, ns);
--- 
-2.34.1
+For issues that appear to be pre-existing but are exposed or carried over
+by the migration, which is better?
 
+1. Include them as separate prep/fix patches at the beginning of the v2
+series, before the corresponding conversion patches; or
+2. address those pre-existing issues in a separate follow-up series?
+
+Thanks for your time and review. :)
+
+> Best regards
+> Thomas
+>
+
+Best regards,
+Ze
