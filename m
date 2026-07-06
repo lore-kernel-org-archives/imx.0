@@ -1,165 +1,134 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012016.outbound.protection.outlook.com [52.101.66.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173B63AFAFE
-	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 16:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783355527; cv=fail; b=ruHIOtnTQ1rurw6Kb1k4qF7FCn4EjxE3hBdX1mg8pzk6fULXg6jB/laKdwhmEKu2hiTef4mwWFe9WnOoFecqiEgAvKaHWcvqYamQ2bWPrJCxMn2OpDO9n9lFffNUnDY/tKIWT4WaNp3dRdkmhsJT2RinGuUqOQAfJ41YCH6IVCU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783355527; c=relaxed/simple;
-	bh=p1uxvQ6NxlCEVCSj7ZkTnnk/4LzC6h0jEcLgUhfuPzg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=XtO0ywjFvYi6BjSXqcSLNaXM/HEf38sXVCfjYxhYgUw//TuuAuUHP8NsvzyHJeUCGrIJ/5HAPkfluwTikGoq85m97COC760uyXxdQl+tgSp7jPbXunKD80byF24bdu6Y5BjrLiUEghojlJqy7ka/Z8nwEVkwiTHVrVkL5ct8/Dg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mE9yOTjF; arc=fail smtp.client-ip=52.101.66.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E660C2F745E
+	for <imx@lists.linux.dev>; Mon,  6 Jul 2026 17:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783357841; cv=none; b=qIEofYtiCuVpgs/jvAEP3Dfr41apCiRgMttbZ2CGY8ENTaflMwUx75bmY5DZUDv+rgTjnxmIZlN6tb8K0gEv4qgM5KsUTK8FT09vZqGU/5PYD88uxTHR4UqhqgVmbX+dQDOMBCrMmeo3sIdcbtzab7eeY83tPgiA9JSFQwYW3VQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783357841; c=relaxed/simple;
+	bh=YwUdG1I8kJNunEWTpdhFYSiUn8LDq7cMo60LuGY0n18=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQ69Fi/6+5YSsjDgy8WRUAMJgyo8yv+bIm335GKxGrrgp9vAhxhkkin8i+okmx1dBJPJ1aXynkC50o3SNANQozZY4S5GGUnbaekwJvNOSDcwV5W5nwHmTCI24+wNl3YllwHdcufL1X05FFAoiVvh5vFkUQlQedFl0UukPIAF1SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=cRYzLN/y; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mE9yOTjF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kHNUucThWt4FiSdGhYvE94YIN/wZnjiT67fbgBDGY3oSMz/jlg27SnP5UjtQq7GtMk0wvtE6b94r7dIaJov/GwN3jXJ+FWhmQfyGhl170ML6yROZ1xnjykM5Y42NQqLmSY7e18Q63eAYwkxe4GBMH3SNY6j3s0n7u6d7Wv7DxamOYww7/DLvdTtRSlhXkWIqJNTWWYjeO53AxPKRQ8HY//Kz+w/zFxlT931vxPaXjx3OQnQqfToUSn8a5/rnpAb4WC7UBeWIBinkraZZ1WzacLgWZgFO5aC6CEsu0U9o97TOjaKX1y1OW0tbo1mk7AIBsQrV2qRun8fJAHJgZhB+lA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=05b26zV5jSO2zg8ZHuDXjLWZQl+FuHrOlCt22LdSjGk=;
- b=ZCV/yOvnemwEsTmNfGdnnll6S3/MM/agZzxBseKzjS9ZpfXipzLyDAI47v3p8CCq4wBY0wTxfP+MaGrYymlt/yuMyW1T+4DNrXb/3+knE7QPMI5LQ3qW/Xm4pFhqZXNPxhIoZPwghyVLcJi3aNkSvwTmE/XIGRBFIF78f7LX5lKgKfjpoIn09UxM8A66AQUL5E6578uHJLxvkYyb1/ORkDafaBG0Lju0RWIMgJWpFw2ehWpvQWhUnEePYA61jLDYHJVW2mw3kiU3O4Y9gsbVQE59WpAD9hvXsiErOUr7NREuT45V7KGVMweUGlSj0uZedSgZNLWoZ1ur6DIEaSvERw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=05b26zV5jSO2zg8ZHuDXjLWZQl+FuHrOlCt22LdSjGk=;
- b=mE9yOTjFyewKRssE7hDBgBy9TOyjrR34mWfW5S1/Yp26CtRI2EbEPU440DJp60vkEjqHUgO7dtQn3dH98N3nknIchW2rH83iAW9j25PyCPVqedHRYt4Hr+204VkByLzlT8v5Q5GhiE+Okp0cgCout9w7mm+6FKBvxBud9HKV8fvc5ssRz9EC7GFQaNLRp+4zq6WjDKtseMjnIKhEChPIoKTZOXHEDwrgbRNeLSRHYTMiFo2QH6HpGmOuCkQHPRwymwGSx9p5id9g4m3ZIBdFvRjqV9bMlfGe06R0ysy96ReMMR84SwtIBP4eQLZI63YZsens/wgbjp6RkhQVZ20puA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB8149.eurprd04.prod.outlook.com (2603:10a6:20b:3fd::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Mon, 6 Jul
- 2026 16:32:03 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Mon, 6 Jul 2026
- 16:32:03 +0000
-Date: Mon, 6 Jul 2026 12:31:56 -0400
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Griffin Kroah-Hartman <griffin@kroah.com>,
-	stable <stable@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH] dmaengine: fl1-edma: Add error handling for
- devm_kasprintf
-Message-ID: <akvYfEbgBzSSwJkU@lizhi-Precision-Tower-5810>
-References: <2026070605-frying-fling-b9c5@gregkh>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026070605-frying-fling-b9c5@gregkh>
-X-ClientProxiedBy: PH8PR07CA0044.namprd07.prod.outlook.com
- (2603:10b6:510:2cf::12) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="cRYzLN/y"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493d3135f62so11850115e9.2
+        for <imx@lists.linux.dev>; Mon, 06 Jul 2026 10:10:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1783357837; x=1783962637; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YwUdG1I8kJNunEWTpdhFYSiUn8LDq7cMo60LuGY0n18=;
+        b=cRYzLN/yntD+gRUbedxTtKdzyaRTvvd3SWBC38r8mQuKacuzU7sHtNt6WeaXTalTTU
+         vbTK4Y2EgnPGiTglYUCBhZYa/PvmSBwev7TbCDGFnajXA4603AsUouz5yyhmBeMM4VNf
+         BWILSnEblPfUo85cFJQlfkSBfwhDkMCjA+b1hik8/4KV9tMrQOfB9JavNDFPWHQ8gYFz
+         mNzFAw65InTExF4QVMfeqHW0dEogCA7WA5A3QQDC24gZO/mV06SYJ7gwrMFYhjOVe5yM
+         zBUXUVSTChMSp0scYtdiEXyhoMxh5AuPfeZzihnIkiz0UF31jQnK0b3+bfp37Ghvyr48
+         S2eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783357837; x=1783962637;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YwUdG1I8kJNunEWTpdhFYSiUn8LDq7cMo60LuGY0n18=;
+        b=AXVyZ2Ja70lp38F1eJwYlU1IYyebtKSCT484+E09HI9BojVPhYr61K+W5zE8EyfqU/
+         5yryH+qy7odsP1qNq2pBM/qsUQoujGckRhdFYqGfjc7LD/bTNOnp5Zxq3edfVNh5bJIQ
+         Da2nQxRVKUNrcYAYnzGOdc24qVSLLFsfGJnZCkuHaXe9GUdsxEcTTzVd2b0psgfGRsuN
+         skaO/29tJpchbo2odY5nae1YsfGSymxv4YiEAqFUFdgCgfm00gEd9IIA1Rwtw3oubuUS
+         mLVubULayVCGnvqM7O0nNSSBTCx7/xGr/TV2NnxXNfzoJhoHqp/gu4ZjeZm9wJPw3RHL
+         cvMw==
+X-Forwarded-Encrypted: i=1; AHgh+RojkE39nOyxceHasZAH64O+m29DwSdpPae7Tx7A4XdT0LTQpgbFwkF+UNJfTGy/DaOT+sE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw4p8OshA11jKqoEPHaridfpqQ1JKvet9oRC7XSRth7NeRnCmoe
+	TeRp1xbK9xOSwXkDXma/kKDMc6QswGgQHupm0nRTlMFCN/cFH4Q3jv2JPvLi0U6+kzk=
+X-Gm-Gg: AfdE7clfoQBaBOurisnixUqlJuP8Z1g3cOrIvCzcu/+cafs7qIv1pOR/XjXEua0vxHb
+	su4FcFDye0bLrYNrUjGKEOmh84ktBF6xs++AdAiESEwVMY8xrqztZ8yAZrRpJbMywQbVLxK/j6+
+	KrYn/G8Z80e8HdtuuGe6YztNIe/4f1Vd86x0+rVjIVe37ULehyDFK+8ylVU9ut0//TQfcC04IXt
+	xUkmnKRxvkLrTraIoLB3GGH3nNGWIxQKbLKzRJi2FGrtfnfzhA65Ze2xgRPDBxsxYBozEK9dd8N
+	5cj1RmtpaYJlPDgw/uyaLE0S4cFbSbrCMYzpWW2ZyB8inXZBKGhFjrbeEXxeT/qC0Vc0VDKdMig
+	UDA4LUIByNLVVVuziT/8r2y7Vnx0xQO5jIsEVUmB+ckA0XZPJKa4VRfyxfu849utP4zfB1Qv0pO
+	1y0mVzyfbpsOwip76H1+6oIr1q7oAvSg3WMfiwX6l0a3KnBKX3kolhmgymn0raBvbMn9/tJLw+H
+	w8=
+X-Received: by 2002:a05:600c:548d:b0:493:c478:8744 with SMTP id 5b1f17b1804b1-493df0644a7mr17176475e9.18.1783357837297;
+        Mon, 06 Jul 2026 10:10:37 -0700 (PDT)
+Received: from localhost (p200300f65f47db0404eb41111570ffdc.dip0.t-ipconnect.de. [2003:f6:5f47:db04:4eb:4111:1570:ffdc])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-493df703391sm6037585e9.0.2026.07.06.10.10.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 10:10:36 -0700 (PDT)
+Date: Mon, 6 Jul 2026 19:10:34 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, 
+	Romain Gantois <romain.gantois@bootlin.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
+	Christophe Roullier <christophe.roullier@foss.st.com>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Radu Rendec <rrendec@redhat.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org, 
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH net-next v12 2/7] phy: qcom: add the SGMII SerDes PHY
+ driver for SCMI systems
+Message-ID: <akvhUwQ_FFSJYICA@monoceros>
+References: <20260706-qcom-sa8255p-emac-v12-0-e3ab1ecf2901@oss.qualcomm.com>
+ <20260706-qcom-sa8255p-emac-v12-2-e3ab1ecf2901@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8149:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a6331e3-875a-4cbb-78f2-08dedb7c1c1d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|23010399003|366016|1800799024|376014|6133799003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	4O5jeq1XD2M9q9KL4a/TeRazXns5ahw9/nsu532XOI1Noec30k9RVcakQRBlYU8I8muMb4rV0WNp8ev3Y7XT52gAUovrTC9aZhhIMHiYc8bUT9twbhsbDTbX7f+TlChjzbI8GJ3eknd4B3/RuRGb+AfMFzV6YuWY0xWinc5nJM2Pppw8k/lIlXkaCboJMBiDSC6s8JLUt3V2qRn+LVNHK3eGyXpltlbi5Ez8U1EU3tXl351v5uv9WhFM7AY5nMchR8H1boFm2mrUSerfXfPLtJ7aRk6ru61NlpOf3IG8yi5Il9YE//odVX4hDIQjv20Xc7TBVA8TYzpcfWd0dtj/PLh1l+BFD8Px5I0Q3GO90g7a6RBPezIPSbO1AHWBrACoBx0k2NQ0eeDV8AkHZj0uHUOJr7VDECk4Pf1L5JGCgN0m2NHRzKuJfr3R1Y+FBsnLcRp1IVrIoCmn90Jjxzbz2kp+23TAN83P3LVBtq1cZIVyDxeubjrwMEDhFbF5oxC72tk0FCyGO9QNscUddJC337SFS6Pi2VcFXNrO69I2DjSDfn/S4qu121FroXhgTjJnFLQeOW0f35KT53tTEK7cMdlBkfjPp9h3Kl3ZYfshow3hjt9nyWDCSvqbtG9kiLl0AXr7xXOoKi9h1fU82UY8FTSgA3+U3+chqlZCAbEdPeo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(366016)(1800799024)(376014)(6133799003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?f0nfYYF+c3nszJx9CR2lhT7B499M1UJPwI69vO1CheeJcIwf76HNNoCWJlc9?=
- =?us-ascii?Q?uOeAyX6o5QAnfbL9qHgbHzzjeZbKay23GouCEnGvO67Hh+oqjYUtBQxR+Jh5?=
- =?us-ascii?Q?4JY7ygbHSi2sLjXRYGmGNDhrhV8gIrB6pqiZ3lam5kPXFJK650LypIA760Ft?=
- =?us-ascii?Q?YOY8D3BWbrWEQpKVx0R7d8msk7VKUD5+kQZP+tAGzK61Yx/Qbp40nFcaygQV?=
- =?us-ascii?Q?7aeiyb3ol0j9UgupuMrUXewkod8BT2IKT24hxanqI3iJR9wqasjvbHPnVn8c?=
- =?us-ascii?Q?CxIZ6r8WRaUrYOYSwUFRZt37Y7DYLoAIbR76U8k1H+DuEdok819phhFRwH10?=
- =?us-ascii?Q?U6a2Gj+YltvlWPH0X98U+Z/hafLbB+Bq94yfaq7ngSb5ywhefwVmleXrJrn3?=
- =?us-ascii?Q?XkWr/vY5StiVHhsEgmpB0y34riTwU5GMX/FrKqglpYf5Vhp/8kjlVQ90jPgU?=
- =?us-ascii?Q?QOQHTo6LsiZbP799pGgLZRYMIZS6coHnAhoS684WM9XaLlKsPfAiHUpgfqbs?=
- =?us-ascii?Q?x3K40zNCm/FUZCw6LzKn5C0rQyeKfQC8P26LzCwVCcGb5KdmfYndO3W3Syy2?=
- =?us-ascii?Q?yqcK9AA2yoAydzDFQqLcDGKi7sKCwD4bOV7TJdu/lI8mRUIjQaid+UEhK7m0?=
- =?us-ascii?Q?4hKGMH1bVn3IfusPCYedJFluuZyjkGcePQMS6XDetj2Xlr9hH/AJdhDD+hns?=
- =?us-ascii?Q?jgqQTagTLhQ1odLwq/iNg5a3/aqdzOnECXti6/V/FN6HdzVBGcDjMv+QLasE?=
- =?us-ascii?Q?PdzjexCi/uACUU908THXpFXqo75jVToaHrX5rAnWn+OJxssjoNMBl0IYDNw/?=
- =?us-ascii?Q?dQ/YioYdGKJ0pt+CkhhknjO2Xj7xl25mnTNYO8eYfrx7G2GR0LTzLbEaGrDt?=
- =?us-ascii?Q?XMMb2dFwrDiSkKUllNHz6V5LVyvNm/SK+1bJugo2mJbwOPbgPUHkt3qhcBr0?=
- =?us-ascii?Q?/gvKQKnqDiSOY2/E5GXab7+V4ZxCz11AFnibDA1NaqOu6SD+uMwk5wX1b3JP?=
- =?us-ascii?Q?BRoYIJ0eK4zzFVTKRi6pPBeLzeeUkhJ/U3Wc2UP5MpsEKRAakH+8/EBrFl3b?=
- =?us-ascii?Q?DZIDv9A0R8DUH3HKmR5HLZ2BYHgaXkciGz3448HuPa2iwyBq22w5Kw5tscbJ?=
- =?us-ascii?Q?SY72pfwX39BcoEs2O2/RcdhMebZTp+VaxVurUD7ihv+IuvZBibRGULvxDaLF?=
- =?us-ascii?Q?dRGGk0M95cbObmCyyKCCKuEQk6aLwq2Dg0ypB+s0Lldf5GbZ/R1emqe2UU4t?=
- =?us-ascii?Q?ghgJ76MBtM4pGbeqTarr9+n9HtuYt94Ogw+i6/kOvDbDV0UE2LSpUp0y4hir?=
- =?us-ascii?Q?T0D4GDqtuxTEAkMk0HIyEv+3gLmEvHmRSVdhBnEeBEta0qbKFlk+hgVnJY00?=
- =?us-ascii?Q?cGSj1VrB111O6bs1E/NSbwKliboLs2YJGYmrMbQi6FUg0JG7UO3N05Skw/Wk?=
- =?us-ascii?Q?SoF0U0+ImYMc7bUvKNZRrxHE0UDf1RBIzWw+r5a+Yh9P3/c4WLxiTdxMdYZH?=
- =?us-ascii?Q?Avka9bNyN5mONDfRf06m2Dx+q+RvV+KQBp3nVqtTM0lPnUnTl0Iau92JXcCH?=
- =?us-ascii?Q?sQqXqD6P2ec1HOa0/Au4rZCG/+doI8KeW+Yr80jsC7YAwuegCDmy0clwpLz8?=
- =?us-ascii?Q?MYXQJRi3Y5PUcKwmnsU9kHpeZNyfJF46YHPB0mBLnfMXlp2H0B21HrhR9XoF?=
- =?us-ascii?Q?WyDIdQ8qk3EMowtCIXk0uFj5gYd+WWXiB4jvQv2MjSzIka6QPUB3DRikOQF9?=
- =?us-ascii?Q?0QFSydVFcpSyriFxvQ6zpd30z++399UI4kS3NXuMNuSVfvRYQP4Z?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a6331e3-875a-4cbb-78f2-08dedb7c1c1d
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 16:32:02.9804
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oWhuZujctDVZ555G8x4o6QzLsQwtqgAAgoXjaoPLvtupECeh6HKmTLH3Z9Z7rPO0R7ZXUYCmysEquYKAHUrYFt2CzDdMLJRRBA1BilAwvDup0yrctB+aoYKlVXv4E2wn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8149
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hya7dxqb4rmwvjro"
+Content-Disposition: inline
+In-Reply-To: <20260706-qcom-sa8255p-emac-v12-2-e3ab1ecf2901@oss.qualcomm.com>
 
-On Mon, Jul 06, 2026 at 04:57:06PM +0200, Greg Kroah-Hartman wrote:
-> From: Griffin Kroah-Hartman <griffin@kroah.com>
 
-Please subject tags
+--hya7dxqb4rmwvjro
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH net-next v12 2/7] phy: qcom: add the SGMII SerDes PHY
+ driver for SCMI systems
+MIME-Version: 1.0
 
-dmaengine: fsl-edma: ....
+On Mon, Jul 06, 2026 at 03:20:17PM +0200, Bartosz Golaszewski wrote:
+> +#include <linux/mod_devicetable.h>
 
->
-> Add error handling statement to fls_edma3_irq_init() for the
-> devm_kasprintf call.
+Please only include those <linux/device-id/*.h> that you actually need.
+I'm actively working on deprecating <linux/mod_devicetable.h>.
 
-function need ()
-devm_kasprintf()
+Thanks
+Uwe
 
-Frank
->
-> Assisted-by: gkh_clanker_2000
-> Cc: stable <stable@kernel.org>
-> Cc: Frank Li <Frank.Li@nxp.com>
-> Cc: Vinod Koul <vkoul@kernel.org>
-> Cc: imx@lists.linux.dev
-> Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/dma/fsl-edma-main.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index 36155ab1602a..d9fb717b5b53 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-> @@ -414,6 +414,8 @@ static int fsl_edma3_irq_init(struct platform_device *pdev, struct fsl_edma_engi
->
->  		errirq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s-err",
->  					     dev_name(&pdev->dev));
-> +		if (!errirq_name)
-> +			return -ENOMEM;
->
->  		ret = devm_request_irq(&pdev->dev, fsl_edma->errirq, fsl_edma3_err_handler_shared,
->  				       0, errirq_name, fsl_edma);
-> --
-> 2.55.0
->
+--hya7dxqb4rmwvjro
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpL4YcACgkQj4D7WH0S
+/k57CAf/UgOJNneAcYY3lQuZ+RhwSluKHlS9kU+LP6KfWURj/Pj78uMbougI/MWm
+NOPHFAV0gOZPyox4TK4XImoVNCHq9wWJVtMM0UMCguoEBhrqgoeV/Esik9YncvIc
+INlZjmDSd0r0OJd9oMZmIM7O1eIZxLQugbLTCT2WK9eW0OCT+20CmmtgHzGHZ7eU
+krIfDqpfq0wJOa70OZmh/lowgwbJIjabcxyyCGiY0Scvf4F31ClocQmot5e6gabR
+OcwHOulxqkUKBtOVZtPrt5lRsawYjY+ZslpAnnZvlrbrqmj2M9IuVyQGMqEW6kkC
+CFP1TQBoEVajey5oRSMzdQ2ZlvM/wA==
+=Sskc
+-----END PGP SIGNATURE-----
+
+--hya7dxqb4rmwvjro--
