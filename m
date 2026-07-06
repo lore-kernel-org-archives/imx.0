@@ -1,175 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D315C27EFE9;
-	Mon,  6 Jul 2026 10:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D044C81;
+	Mon,  6 Jul 2026 10:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783334535; cv=none; b=B+UlcavTTEROSbPYYvC6wpaJIHW92Gg3Gr9Xsxl6rnGszc3e9Gs8hL9IV3X8inwaoccCnrjYin3TsRiGbPmSW5fF+jiDewfmp150bDfWVsTAzUUOMdFzGADqPF7O8wUyfSc7LRft5eClLqinDfr0nByWgQMI9lcUSPK1rfCQAVo=
+	t=1783334877; cv=none; b=mu4aNuxWsbjkilsr90vMa6nmpOvU5eLtiOjsiSr6iLG/HKN4bhqQkXtAJQmNP0qiLVPQkvoq15fwWyezyd0WoIKnfseVnfFzrIZINmyHCR1/RkJGpbj1Og5RrEC5uaiDmneiDL+u7srceVVsmor+7+uLLPeHhdR12O+2+leptHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783334535; c=relaxed/simple;
-	bh=ZI+8Ym1JoAmIg+xj+e8J/p0YVeu9gjmkzgzv5jA8YqY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lr5JRaqfEFDsaEpMjwiX88MPQVWZ23F/IFhGZIIqBG/80Ynk4ecw9LFb1utUA/crjwjYADqBBUsDS1r6H6auDeXg8wiXIYcKKQ3gvwrgut3HVr+2hlTq3aJzG6tAB5UhzVGJfP707vk4WmqM7CJatx7eQerUCBy0nd4E6HKdHLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=niCT3sGc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783334877; c=relaxed/simple;
+	bh=Gtk6EHmzfHZR7gLfNLT8AhWb8J2fFiFjfs1O8Wub8ig=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=SXdXPTWgqLotW9dT2HFqAcnd3sR3iqtb7hoekKLUiNS1XIStlonBE/E/UFR3AD5UAmYu76ItHoS0je4JH01Q5KQJ8db8Z8flMYAzWeTOER3XcK50GuxLxVWoEz0VMmfJtyeACUGSte7K9cKAP1I0inOp6eugmMTb4MKPkxMqOWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dXDAR4eT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="niCT3sGc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9351F000E9;
-	Mon,  6 Jul 2026 10:41:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dXDAR4eT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B40D1F000E9;
+	Mon,  6 Jul 2026 10:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783334534;
-	bh=IPNGdHh56ZVB5CsH+UE6uKclV6wrHeJiGGx7ee1V988=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=niCT3sGc0nhu+MKE15cOmixqFTzPAzuM+JXHh8UIXYk/QBka7MHhqMK31Rs7xrUui
-	 xWGDcEAn0KH3fSUj83doKefDip0SFnyx16083vHWs+Kz/7ZVvzznmcx5qDRVfg8LRe
-	 3OGHJyq88POyqmD9Q0N+dHeptgzoKsLXAQyY56gXSsYYda9+mWdnG9RnCgZrXYhEbn
-	 w1koFeCcrUiwzWK3rjzPQ5TtnKvznRG4e/kjkMKoZSJ0vBmrMiHW0HZ0h857QzKX6G
-	 LzLqYxYxRMqnNvvlH6/OgMEZS0QJvZ9Ej3lAOZ6ChIR0MJF9B15eOAaE5AqCdfcyMC
-	 H0rD9sCNUcMXQ==
-Message-ID: <f5fad349-7086-4b3a-a91f-5a471f340c14@kernel.org>
-Date: Mon, 6 Jul 2026 12:41:49 +0200
+	s=k20260515; t=1783334875;
+	bh=nR6lIf0xZDMLn8XpW5DtqbVhn+YcthXZqdlw6PEzE5Y=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=dXDAR4eTgK7X+cT7KKW/VCr554GsjYiD5WXNtzo6ew+vOAVDs6VOw4iqhsZAd4eP5
+	 MXNKd71qJ0s7ORT67u5T955sKSoylTs3z/+hl9Yv8rFrWCkPLtWlz+V8UK1mQsG2oQ
+	 sid7E3rhlDUpetwWWN7tT4jbbLJtXrxqrwnGjsEdvHVE0MlUzGHYPxVn3uNb9uhSwu
+	 sb+ErMQIFlnsa48tGxU8SrGyNaYJCarS1mQ7uj4l7xTPz4wp+zlbzJpthAWftFsj0L
+	 JEMtcnbPaSt4vElD/LAjjFt/j9XCiOyp7wWSDWRQwYPnHZIfWS2pygB3ud/yh7hkbp
+	 IIurirYIz12kA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 10/15] arm64: dts: imx8mn-var-som-symphony: Add TPM2
+ support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
+Cc: conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <7cd17d03fa70ee1f5fd5986fbb0e8a39ad7b4fbe.1783330236.git.stefano.r@variscite.com>
+References: <cover.1783330236.git.stefano.r@variscite.com>
+ <7cd17d03fa70ee1f5fd5986fbb0e8a39ad7b4fbe.1783330236.git.stefano.r@variscite.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 06 Jul 2026 10:47:54 +0000
+Message-Id: <20260706104755.2B40D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 4/5] pwm: Unify coding style of of_device_id arrays
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?=
- <u.kleine-koenig@baylibre.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
-Cc: Chen Wang <chen.wang@linux.dev>, linux-pwm@vger.kernel.org,
- Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
- Neal Gompa <neal@gompa.dev>, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Ray Jui <rjui@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>,
- Vladimir Zapolskiy <vz@mleia.com>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
- Peter Griffin <peter.griffin@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Paul Walmsley <pjw@kernel.org>,
- Samuel Holland <samuel.holland@sifive.com>, Michael Walle
- <mwalle@kernel.org>, Inochi Amaoto <inochiama@gmail.com>,
- Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
- Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Hammer Hsieh <hammerh0314@gmail.com>,
- Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
- Alexey Charkov <alchark@gmail.com>, Sean Anderson <sean.anderson@linux.dev>,
- Michal Simek <michal.simek@amd.com>, asahi@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-rpi-kernel@lists.infradead.org, chrome-platform@lists.linux.dev,
- imx@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-amlogic@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
- sophgo@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
- linux-sunxi@lists.linux.dev
-References: <cover.1783263835.git.ukleinek@kernel.org>
- <20de6cd60c2938aad2d21397b92742849418ab1b.1783263835.git.ukleinek@kernel.org>
- <973f3d6f-6ff4-4685-9c9f-b07987f74d98@linux.dev> <aktWoIfY_DdO6gb4@monoceros>
- <bc697542-b1e2-41c2-af36-b708ca4aad5c@oss.qualcomm.com>
- <akuFirxGTqu_gt4O@monoceros>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <akuFirxGTqu_gt4O@monoceros>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 06/07/2026 12:39, Uwe Kleine-König (The Capable Hub) wrote:
-> Hello,
-> 
-> On Mon, Jul 06, 2026 at 10:28:16AM +0200, Philippe Mathieu-Daudé wrote:
->> Hi Uwe,
->>
->> On 6/7/26 09:19, Uwe Kleine-KÃ¶nig (The Capable Hub) wrote:
->>> Hello Chen,
->>>
->>> On Mon, Jul 06, 2026 at 08:33:47AM +0800, Chen Wang wrote:
->>>> On 7/5/2026 11:14 PM, Uwe Kleine-König (The Capable Hub) wrote:
->>>>>    - Use a single space in a of_device_id array terminator; A single space
->>>>>      after the opening { and before the closing } in non-empty
->>>>>      initializers;
->>>>>    - No comma after an array terminator;
->>>>>    - Also no trailing comma after a named initializer iff the
->>>> iff -> if
->>>
->>> This is actually intended. iff = "if and only if", see e.g.
->>> https://en.wikipedia.org/wiki/If_and_only_if .
->>
->> I agree this scientific idiomatic expression is not well known
->> by non-native English speakers, and using the expanded form is
->> just simpler to review (thinking at non-native English speaker
->> reading your commit in the future).
-> 
-> fine for me, I'll fixup to 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The device tree specifies `reset-gpios` for the TPM device, but =
+the kernel lacks support to drive this GPIO, potentially leaving the TPM st=
+uck in reset.
+--
 
-Noooo, really, this is nitpicking on this commit. Not that I like that
-commit - it's just churn - but 'iff' is widely known and widely used in
-Linux kernel. It's completely correct, it is common and expected.
+commit 5bd051d2688db25353ab678262b0998bf9810906
+Author: Stefano Radaelli <stefano.r@variscite.com>
 
-It is not scientific expression. It is common in the kernel docs.
+arm64: dts: imx8mn-var-som-symphony: Add TPM2 support
 
-Best regards,
-Krzysztof
+This commit adds support for the ST33K TPM2 device on the VAR-SOM Symphony
+carrier board over I2C. It also adds the PCA6408 GPIO expander node used to
+control the TPM reset signal.
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts b/=
+arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts
+> index 53130b521b5b7..7d016ed5e911a 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dts
+
+[ ... ]
+
+> @@ -160,6 +160,20 @@ typec1_dr_sw: endpoint {
+>  };
+> =20
+>  &i2c3 {
+> +	pca6408: gpio@21 {
+> +		compatible =3D "nxp,pcal6408";
+> +		reg =3D <0x21>;
+> +		gpio-controller;
+> +		#gpio-cells =3D <2>;
+> +	};
+> +
+> +	st33ktpm2xi2c: tpm@2e {
+> +		compatible =3D "st,st33ktpm2xi2c", "tcg,tpm-tis-i2c";
+> +		reg =3D <0x2e>;
+> +		label =3D "tpm";
+> +		reset-gpios =3D <&pca6408 4 GPIO_ACTIVE_LOW>;
+
+[Severity: Medium]
+Will the kernel actually use this reset-gpios property to release the TPM?
+
+The commit message states the PCA6408 is used to control the reset signal
+to release the TPM from reset. However, neither the tpm_tis_i2c driver nor
+the TPM core appear to parse the reset-gpios property or request a reset GP=
+IO.
+There is also no gpio-hog configured in the pca6408 node to force the pin
+state.
+
+Does this setup rely entirely on the bootloader initializing the PCA6408
+and leaving the GPIO driven to the correct state?
+
+If the system goes through a suspend/resume sequence or if the PCA6408
+defaults back to an input state, could the TPM become stuck in reset and
+fail to probe?
+
+> +	};
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1783330236.gi=
+t.stefano.r@variscite.com?part=3D10
