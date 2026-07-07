@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1A7383310;
-	Tue,  7 Jul 2026 14:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F552346A02;
+	Tue,  7 Jul 2026 14:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783433499; cv=none; b=f3sCzK+XkTQvNNZwdELUo8SaqcnEDsRbjjULKDYB7+yJEO/9QUQqAxfpus1bMk5rolxo8WJ7BBkez3WKxmYDP+miZjkkR26gLW+p5DbWxfhsTT9s7WqJLUkQg4/LWHKXp2/R3DlxeQ7IvIQh35ztuPhCbeBPrMAv9ZWf71meJIA=
+	t=1783433500; cv=none; b=eiUnko1bSPzXoDdhZgxuqrqFPrC9faGS0FTtQXFCxFgv9BrdImDO84Gfr4PywbvmVrtG0CrN4Pbx9PDcVZRBqtyhiyDCVNSW2Z2C3F5oumEnmYljuU0FWNIRB/HHSeQ+6Zaxoa8rprZ7HRGx5/PQv9/I5hpCxCRsMFSF6HFBkKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783433499; c=relaxed/simple;
-	bh=qKAmug+HfAmeMQQjw4jr6547Icst8f/y+UIGjYKsPiY=;
+	s=arc-20240116; t=1783433500; c=relaxed/simple;
+	bh=ckq5dzFJ3uvu3aiOcWFE9vWICSPlLmaKPIODkiQTrIM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lLybrSHaJXgMw49DJIoTkevyvu7+F5xIVUKYcN2JPbbPRXQlpmCx/WDbv48G3Ck80tLFAuFfg3TZqiK76/9aIHBhTKHYlu516qNgQEGuUH9rO5XX2b/02AtCBgOigPLD4GS9nDNGaWBtYzHC9YvFUPrVK8BBWwsBC2cU0GbOW3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVQLAHYL; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Mt29wAnwNmu+C/4OxgmXdPLzIP8TqTDq3NiplY5FVlAl85InenGfyoPTyBw/VJiQzd/d9KvKiD2n3pa0lYyxxMOH/hlvN8Ku/ZV9LYiIaaGuQcmJjgndvtF0foSLx20DYFoU2TY7v4yNzc//EqjFPg0do5XY8fHqRHYOrwTfFJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enDqMtlq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVQLAHYL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943421F000E9;
-	Tue,  7 Jul 2026 14:11:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enDqMtlq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90881F00A3D;
+	Tue,  7 Jul 2026 14:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783433496;
-	bh=nm0y0ggHgyoSIFEw/puAOvt8d3BgJyeQmpoK6IqR2TI=;
+	s=k20260515; t=1783433498;
+	bh=QvOkRjNNXyNBULDO3YhwROa7FJoE/Fu63a+r6ZP3gGM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VVQLAHYLitZPOD6hz4ljD9bztAdGMzeyKCguU8ZNikNhGPg/habFh1ZqwmeiwAm8A
-	 gU+/FtTNIcwYgbJQDC2+cChk9FmDTdehA+USeLYIoz2r2lc2pkmquvse91dTDknMRT
-	 8Kj+AwMDNQLdjDlBUVQuSdfjqZ+yNBeH0ubpaOgUMbhdsnoAjIsPmNpV5OS/YlMmAd
-	 LZtemV3Qiu7TEAdUkDca8k4xKnSkj5+QKj5Ne3I4R+nFp8Mja4joPmjyUp/+abd5VU
-	 uCVFtFKt9LvjIkE88bSpbok8vCiS8p6uIpoDtAKr2su1iMfuq+Zo5hA0LEAWTKeNl3
-	 IpNDONfZMLOVg==
+	b=enDqMtlqswZM7ZTmdcuIHCv25Z2Hi52Wa3SWLflYMCgX9F39TJL9hMFOw3PgxYos5
+	 9wBYzqcAVkiIUIODHls/QGbZAcj8h9+wYV1uGETMT1ak2iwzx3qGXlLjZKOVm1fBL+
+	 FF8AxzWzzrcpDvHOyVqWUVTELGqYtxJPt7YoUbwG4LKOI89uc0nc4CleJ7Cq+vprFQ
+	 2NCBwp6PoKbSY6A6pDnxpgZe5mGOEOiMNdMdwS1FTk6Jsu9Q/OVAfy4z0PVBh8+07z
+	 tMHdg51Vrvm3nveYs6yDl6RERMLaI6GYPwzklR/47F9o1G7l7uvcvoE2kaQJpHpZt1
+	 GAVlpAQ8aHPPA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v12 1/7] dt-bindings: phy: document the serdes
- PHY on sa8255p
+Subject: Re: [PATCH net-next v12 3/7] dt-bindings: net: qcom: document the
+ ethqos device for SCMI-based systems
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: devicetree@vger.kernel.org, linux-amlogic@lists.infradead.org, robh@kernel.org, linux-sunxi@lists.linux.dev, neil.armstrong@linaro.org, conor+dt@kernel.org, wsa+renesas@sang-engineering.com, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260706-qcom-sa8255p-emac-v12-1-e3ab1ecf2901@oss.qualcomm.com>
+Cc: devicetree@vger.kernel.org, robh@kernel.org, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, neil.armstrong@linaro.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, conor+dt@kernel.org, linux-sunxi@lists.linux.dev
+In-Reply-To: <20260706-qcom-sa8255p-emac-v12-3-e3ab1ecf2901@oss.qualcomm.com>
 References: <20260706-qcom-sa8255p-emac-v12-0-e3ab1ecf2901@oss.qualcomm.com>
- <20260706-qcom-sa8255p-emac-v12-1-e3ab1ecf2901@oss.qualcomm.com>
+ <20260706-qcom-sa8255p-emac-v12-3-e3ab1ecf2901@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 14:11:35 +0000
-Message-Id: <20260707141135.943421F000E9@smtp.kernel.org>
+Date: Tue, 07 Jul 2026 14:11:37 +0000
+Message-Id: <20260707141137.B90881F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,47 +47,48 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] The `power-domain-names` property lacks a string value constraint, =
-allowing arbitrary strings to pass validation.
+- [Medium] The device tree bindings for Nuvoton MA35D1 and Spacemit K3 DWMA=
+C were not updated to restrict `power-domains` to `maxItems: 1`, contradict=
+ing the commit message claim and inadvertently relaxing their constraints.
 --
 
-commit da2d01b0c5abee156fdc9bf1e261e5789a2c6fb7
-Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+commit 172a7357589e2c110ace7edfdec50dee477c4a83
+Author: Bartosz Golaszewski <brgl@kernel.org>
 
-dt-bindings: phy: document the serdes PHY on sa8255p
+dt-bindings: net: qcom: document the ethqos device for SCMI-based systems
 
-Describe the SGMII/SerDes PHY present on the Qualcomm sa8255p platforms.
-This is essentially the same hardware as sa8775p rev3 but the PHY is
-managed by firmware over SCMI.
+This patch describes the firmware-managed variant of the QCom DesignWare MA=
+C.
+It introduces the qcom,sa8255p-ethqos binding and increases the power-domai=
+ns
+maximum to 2 in the top-level snps,dwmac.yaml schema, while updating existi=
+ng
+referencing bindings to limit their power-domains maxItems back to 1.
 
-> diff --git a/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgm=
-ii-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmi=
-i-phy.yaml
-> new file mode 100644
-> index 0000000000000..9e846e3815555
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.=
-yaml
+> diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Docu=
+mentation/devicetree/bindings/net/snps,dwmac.yaml
+> index 2449311c6d28e..d3aff1df3070d 100644
+> --- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
 [ ... ]
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  power-domain-names:
-> +    maxItems: 1
+> @@ -185,7 +186,8 @@ properties:
+>            - const: ahb
+> =20
+>    power-domains:
+> -    maxItems: 1
+> +    minItems: 1
+> +    maxItems: 2
 
-[Severity: Low]
-Does this property need a string value constraint?=20
+[Severity: Medium]
+The commit message states that existing bindings referencing the top-level
+snps,dwmac.yaml were updated to limit their maxItems for power-domains to 1.
+Were Nuvoton MA35D1 (nuvoton,ma35d1-dwmac.yaml) and Spacemit K3
+(spacemit,k3-dwmac.yaml) missed during this refactoring?
 
-The current schema limits the array length but allows arbitrary strings to =
-pass
-schema validation. Should it include an items list with a const value, such=
- as
-const: serdes, to match the usage in the example?
-
-> +
-> +  "#phy-cells":
-> +    const: 0
+Since both of those schemas inherit from snps,dwmac.yaml, they will now
+inadvertently inherit the relaxed maxItems: 2 constraint, allowing invalid
+configurations to pass validation.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706-qcom-sa825=
-5p-emac-v12-0-e3ab1ecf2901@oss.qualcomm.com?part=3D1
+5p-emac-v12-0-e3ab1ecf2901@oss.qualcomm.com?part=3D3
