@@ -1,134 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DF93E7141
-	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 11:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0487081AA8
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 11:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783422975; cv=none; b=OWsZIz5osRg+a4AnR/oErW5h1XOoM8mEtqN88nMS617lTSEpwK7FB7SrPmMwiaZXIiqTg7rMz4jmSyX7lU4i2RVbuJT+XJb7OQ2FXaCoJQiXVxoGBDZw+hqWZh8Ds6IZr7RQMjpjrrFoLrLI2UMzgTKsnxGPaAxmUoTCkJ5w4vI=
+	t=1783423027; cv=none; b=ABMCX9ikBFxalqjLC0LmTrNKBXK0bdvrlQu77pDmYziGPBhUItTn++LaKuTkFgCoSFGh+Ro/1anquh3F3tMkwzAyyOpOcdEQbCAkLoHf0d2+lfsfuJTL/P3wIpNj+wdaWBA/hH+mT0/zIHLwnF6iAhNlKcE8lgwCw5wiQAE8eFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783422975; c=relaxed/simple;
-	bh=r9RzAMX6+Kl+OJv/jqnERGotUl/DxXRNEsT1LsnUIHY=;
+	s=arc-20240116; t=1783423027; c=relaxed/simple;
+	bh=ynxjIFvBPFwWmFsOZRA8frYn8xbiNiC5OMGP5NZiWC0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=X/kLX9FwpUNKRFic0as4nfc8RUl45yzk6FgYze/mLYDnxNlgMIqJbocC+eU+e3NZUx4eEXH83pr68+HvuSCCsJMa2h9ggqPnxi3DHYGoD24IjxWu+xVwjyx1ghKrZ0MkyO5i94DvRL69V8aSTlmHjlnpTse7z7W8BGVSMudkE1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OGc4qT0C; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=XQPyTNK1Al4QfYeAAgF1uCPRONO6GD1wzYPhUwbmIUph6uQYfTYq72Ji4QiDduNuhYgZBMBNWjWeOgOOOXH3rAzeXF9a4Ez0POGLOYFqWRS48ur+BwGiflH6rvpfYER95D3jxCk526nzUHf6BFa+Kyenz88xXokctbLT3/v7kpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FyHCTj30; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OGc4qT0C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88AD1F000E9;
-	Tue,  7 Jul 2026 11:16:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FyHCTj30"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD8F1F000E9;
+	Tue,  7 Jul 2026 11:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783422974;
-	bh=8Qv4H65cQ5wRck/lUSRNsytV2HwtwlMT32ouqWeAOHY=;
+	s=k20260515; t=1783423025;
+	bh=93D1TyY1k2vAOD4N2iLJ2wX1SNSalyPvpcGvGDFXMf4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OGc4qT0CgH7oB66uOT9C6A+4Guazbc8UuyPTVrHnlv9jJRyUx0kTPDD+JtqKh9G4R
-	 UAXxUPbJmjU3B0OOPdZmQgCwY2FBrPALV/+WKOdl/SF/j0D5uZ0r+83Jrh9ApQZTS9
-	 TVeUtSWJla3HiycRT/s/RHukMr2t7jg5T1vCJUsK4urW14UcgH3W6jlCDaTtKN91Vd
-	 CJb3+MZNAoeovlYL6EAgKqhrcGIoOAj8fuSxqkXUvWKyip65ASerBr8Z+h+11jokV4
-	 4NF0X/brnNXOHKOM/wZN8HFoopF+fN7EJHRCmt/xIxTJGJufyGd8Gk6b2tRg8hcoZM
-	 8JgHO8+GMuiWA==
+	b=FyHCTj30B9hsln4I/r037FE2fXecP2bzrPfH2z0PLmhQC/neo7mXo1knMzbHoWpz1
+	 kFJYD2uIUu/4VQ/Flh8LVxmcIj1yUPCiZvvTUQ29Wi2F2Aq3hpeJ9nYmSWY1lT6x9r
+	 tLRhMW3wV5zwe7W8gmdhG3Y6W6qnm9QJWZRIoPsbQdzn51NbaKgae68WH9ZpC1eVry
+	 /Hm9Udnbl0f5EM0ZrY6q899DmTiq2518jXtptGk4N82oBJl6l9IVT+/sbty7JQMy0h
+	 Ypnau/3+tO3Afw1d3b5DTJf0N3FHel0g2m0WjYXct4bc4EjvflU8id16DAD5I8iQpt
+	 3VedETbpeif9Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 8/8] mmc: sdhci-esdhc-imx: fix resume error handling
+Subject: Re: [PATCH v5 3/8] mmc: sdhci-esdhc-imx: fix
+ esdhc_change_pinstate() to allow default state restore
 Reply-To: sashiko-reviews@lists.linux.dev
 To: ziniu.wang_1@oss.nxp.com
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260707110303.3779799-9-ziniu.wang_1@oss.nxp.com>
+In-Reply-To: <20260707110303.3779799-4-ziniu.wang_1@oss.nxp.com>
 References: <20260707110303.3779799-1-ziniu.wang_1@oss.nxp.com>
- <20260707110303.3779799-9-ziniu.wang_1@oss.nxp.com>
+ <20260707110303.3779799-4-ziniu.wang_1@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 11:16:13 +0000
-Message-Id: <20260707111613.D88AD1F000E9@smtp.kernel.org>
+Date: Tue, 07 Jul 2026 11:17:04 +0000
+Message-Id: <20260707111705.4FD8F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
-New issues:
-- [High] The early return delays a kernel panic because the MMC core is not=
- notified that the device is dead, leading to subsequent unclocked hardware=
- accesses.
-- [Medium] The card detect GPIO IRQ is incorrectly left configured as a sys=
-tem wake source on the error path.
-
 Pre-existing issues:
-- [High] The driver ignores the return value of `pm_runtime_get_sync()` in =
-the unbind/remove path, leading to a kernel panic.
+- [High] Pre-existing NULL pointer dereference in `esdhc_change_pinstate()`=
+ due to insufficient pointer validation.
 --
 
---- Patch [8]: [PATCH v5 8/8] mmc: sdhci-esdhc-imx: fix resume error handli=
-ng ---
-commit eb59f1a91caafc261d97666e5d0b0450cef19279
+--- Patch [3]: [PATCH v5 3/8] mmc: sdhci-esdhc-imx: fix esdhc_change_pinsta=
+te() to allow default state restore ---
+commit a74e8c023dfc4c92edd0793b792f39383f06ef13
 Author: Luke Wang <ziniu.wang_1@nxp.com>
 
-mmc: sdhci-esdhc-imx: fix resume error handling
+mmc: sdhci-esdhc-imx: fix esdhc_change_pinstate() to allow default state re=
+store
 
-This commit adds a return value check for pm_runtime_force_resume() in
-sdhci_esdhc_resume(). If it fails, it returns early to prevent unclocked
-hardware accesses. It also simplifies the return value handling on success.
+This commit moves the IS_ERR checks for pins_100mhz and pins_200mhz into
+their respective switch cases. This allows devices with a sleep pinctrl
+state but without high-speed pin states to restore their default pin
+configuration.
 
 > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
 esdhc-imx.c
-> index 6cb84690fde4e..f4bfb14423e4d 100644
 > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -2126,12 +2126,12 @@ static int sdhci_esdhc_resume(struct device *dev)
->  			dev_warn(dev, "Failed to restore pinctrl state\n");
->  	}
+> @@ -1326,19 +1326,21 @@ static int esdhc_change_pinstate(struct sdhci_hos=
+t *host,
 > =20
-> -	pm_runtime_force_resume(dev);
-> -
-> -	ret =3D mmc_gpio_set_cd_wake(host->mmc, false);
-> +	ret =3D pm_runtime_force_resume(dev);
->  	if (ret)
->  		return ret;
+>  	dev_dbg(mmc_dev(host->mmc), "change pinctrl state for uhs %d\n", uhs);
+> =20
+> -	if (IS_ERR(imx_data->pinctrl) ||
+> -		IS_ERR(imx_data->pins_100mhz) ||
+> -		IS_ERR(imx_data->pins_200mhz))
+> +	if (IS_ERR(imx_data->pinctrl))
+>  		return -EINVAL;
+> =20
+>  	switch (uhs) {
+>  	case MMC_TIMING_UHS_SDR50:
+>  	case MMC_TIMING_UHS_DDR50:
+> +		if (IS_ERR(imx_data->pins_100mhz))
 
 [Severity: High]
-If we return early here without setting host->flags |=3D SDHCI_DEVICE_DEAD,
-will the MMC core still attempt to access unclocked hardware?
+This is a pre-existing issue, but could this lead to a NULL pointer
+dereference?
 
-The PM core will continue system resume and eventually invoke
-mmc_resume_host() on the child MMC device. The MMC core would then call host
-operations like sdhci_set_ios(), which attempt to read and write SDHCI
-hardware registers on an unclocked controller. Could this trigger a
-synchronous external abort and result in a kernel panic?
+On non-USDHC platforms where the device tree incorrectly advertises UHS
+capabilities, pins_100mhz might be uninitialized and left as NULL. Since
+IS_ERR() evaluates to false for a NULL pointer, this check will pass,
+allowing the NULL pointer to be assigned to pinctrl and later passed to
+pinctrl_select_state(), which will panic in pinctrl_commit_state().
 
-[Severity: Medium]
-Does this early return skip the GPIO CD wake IRQ cleanup, leaving the
-wake source configured?
+Would it be safer to use IS_ERR_OR_NULL() here instead?
 
-During sdhci_esdhc_suspend(), the card detect IRQ is configured as a wake
-source via mmc_gpio_set_cd_wake(..., true). Because the card detect
-configuration interacts with the GPIO controller and has no dependency on
-SDHCI clocks, should it be executed on the error path to avoid leaking the
-wake source configuration?
-
-> =20
-> +	mmc_gpio_set_cd_wake(host->mmc, false);
-> +
->  	/* re-initialize hw state in case it's lost in low power mode */
->  	sdhci_esdhc_imx_hwinit(host);
-
-[ ... ]
+> +			return -EINVAL;
+>  		pinctrl =3D imx_data->pins_100mhz;
+>  		break;
+>  	case MMC_TIMING_UHS_SDR104:
+>  	case MMC_TIMING_MMC_HS200:
+>  	case MMC_TIMING_MMC_HS400:
+> +		if (IS_ERR(imx_data->pins_200mhz))
 
 [Severity: High]
-This isn't a bug introduced by this patch, but does ignoring the return
-value of pm_runtime_get_sync() in sdhci_esdhc_imx_remove() lead to the same
-kernel panic on unclocked hardware access?
+This is also a pre-existing issue, but could the same NULL pointer
+dereference happen here?
 
-In drivers/mmc/host/sdhci-esdhc-imx.c:sdhci_esdhc_imx_remove():
+If pins_200mhz is NULL due to the same misconfigured device tree scenario
+mentioned above, this check will also pass, resulting in a panic when NULL
+is passed to pinctrl_select_state().
 
-	pm_runtime_get_sync(&pdev->dev);
-	dead =3D (readl(host->ioaddr + SDHCI_INT_STATUS) =3D=3D 0xffffffff);
+Should this check also be updated to IS_ERR_OR_NULL()?
 
-If the device is in an error state and clocks fail to enable,
-pm_runtime_get_sync() returns a negative error. By immediately executing
-readl(host->ioaddr + SDHCI_INT_STATUS) on an unclocked device, could this
-trigger a synchronous external abort when the device is unbound?
+> +			return -EINVAL;
+>  		pinctrl =3D imx_data->pins_200mhz;
+>  		break;
+>  	default:
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707110303.3779=
-799-1-ziniu.wang_1@oss.nxp.com?part=3D8
+799-1-ziniu.wang_1@oss.nxp.com?part=3D3
