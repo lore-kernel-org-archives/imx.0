@@ -1,210 +1,124 @@
-Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C57F346AED;
-	Tue,  7 Jul 2026 14:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05D63750C9
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 15:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783433673; cv=none; b=WsMPP4JF2SN0G5edSeKXi9h/CrilrJStTS/LqFQgCNP39dauOjso8x4JfzsEiYqFnDMbifzE/feaxCIAGAXTzeYj5WudR7mgvkcRsB/M/RYDNRLZtgBBEHL5ZHGwz15JWW1iiYZPqAVOiAsH79MwRZhuHXaeZBPNbHnTuRlBpKM=
+	t=1783436721; cv=none; b=e+B0t9vGsdRQSnfLY9DtsXiRhccdXCoFrQBdoWYQdMua7WQ7ig5Q2OuaM4gck8lnCmK0MvT1NYN+zQQ76zccY0AqvAriuUXkYfGzW1TayRbxcV14lFVq2bIofGB6AiNZEFO7ykAhfIIn3fBFp07oeYCb7gVT1DhRDe8IaSE9+xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783433673; c=relaxed/simple;
-	bh=cDkkd24TuEhRoo77Q3IfPX4+7jMgAhu1podNsQgsZr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eoTr8NKgP2PgiT2//O51lu/GyEN9wqQTA5PAM5Bre+ffYfIG5bVmMmZ3qPv3aCBLcIpRuu6qRmoekB4ayfSNAGLO55uVaBdhNrPpo81m7O7p8rmjoAFIRBSnW/O8g/2Ii1NunffAPSlM6gdsJrNoe1HjCi4Gb8hJAjP7nSyfUSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
-Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id 881BF370032E;
-	Tue,  7 Jul 2026 14:05:39 +0000 (UTC)
-Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id 284D3AE5ECA; Tue,  7 Jul 2026 14:05:31 +0000 (UTC)
-X-Spam-Level: 
-Received: from shepard (unknown [192.168.1.1])
-	by laika.paulk.fr (Postfix) with ESMTPSA id B6432AE5EB6;
-	Tue,  7 Jul 2026 14:05:21 +0000 (UTC)
-Date: Tue, 7 Jul 2026 16:05:19 +0200
-From: Paul Kocialkowski <paulk@sys-base.io>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-	Linus Walleij <linusw@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Alexey Brodkin <abrodkin@synopsys.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Eddie James <eajames@linux.ibm.com>,
-	Tiffany Lin <tiffany.lin@mediatek.com>,
-	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
-	Houlong Wei <houlong.wei@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joseph Liu <kwliu@nuvoton.com>, Marvin Lin <kflin@nuvoton.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ge Gordon <gordon.ge@bst.ai>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Peter Chen <peter.chen@cixtech.com>,
-	Fugang Duan <fugang.duan@cixtech.com>,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	BST Linux Kernel Upstream Group <bst-upstream@bstai.top>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	CIX Linux Kernel Upstream Group <cix-kernel-upstream@cixtech.com>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-aspeed@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
-	openbmc@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
-	kernel@collabora.com, linux-tegra@vger.kernel.org,
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev, sound-open-firmware@alsa-project.org
-Subject: Re: [PATCH 30/42] staging: media: cedrus: Use
- devm_of_reserved_mem_device_init()
-Message-ID: <ak0HnzMzGT_WZ9u1@shepard>
-References: <20260703193855.110619-1-mukesh.ojha@oss.qualcomm.com>
- <20260703193855.110619-31-mukesh.ojha@oss.qualcomm.com>
+	s=arc-20240116; t=1783436721; c=relaxed/simple;
+	bh=wCwdT+MCVwlDfg5F3ZYmVPpwSAOE6JBBtrXsacrrEBQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TRGl7KUKtJ0FHdTn7uXG/7r6lX2V5e7TgVjeow9ZVId2tyZKSFeuf8/5Vb8D8+GT+RKIkxpSKH+PQbd0H/kLVnldBWX8tVwIa07g7sNS3iwRfoc6G3uTZsL/gFjNsO9iZ9yp2TcwwE1jYbe/sVggyPqXdNEU9ono7DqYOzGth4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VblNaNmX; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VblNaNmX"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cace91f112so37422545ad.0
+        for <imx@lists.linux.dev>; Tue, 07 Jul 2026 08:05:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783436717; x=1784041517; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JGVhoJBTQ+C/shIBMcaZxxiUzHSDCbdKbDb/tDZozNo=;
+        b=VblNaNmXUz0xZqrYfSOFc06+QI6DkgNsKuW0vf3/1zo/N5pZ3mRz4I9XKUQeQWEoMB
+         c6AifEJRch+y9CpPHmrMuNJfNbibBNZuSYP6B+7OTo6XN9oJH8750bAVUyT3NC27Jvba
+         /FTyTv2McV/zdAoHtJMOaHa6Ddl9G2LysP+CM0081NQy/mw1tFoBNWeQpr9fKfDH1Nd2
+         sktenP0SczPoFtSll9haltsP7NISIhYHpteRk5iGfqLKn9kuUFoiTmpg8I8r+8NLzJmU
+         9e/hgfBaeRJqo/AuZUuUHXKrhayXz92xYfwTdkunav6W9RZvPCTnKokIy7ponb2svRHK
+         OZcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783436717; x=1784041517;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JGVhoJBTQ+C/shIBMcaZxxiUzHSDCbdKbDb/tDZozNo=;
+        b=K448PAPO1O74McSFT0fhLRoRMBHvZq9x35oeW2Hd08EOI+1kHReiNt4Wa2Jn+tzHQF
+         d1AIkju1DgV/MQsQ6mG02vyg+ZLHsHRdPasoS5Vtxt9U8aSb3rPwBmpkPXZtEAmk1QgH
+         oWLpUIP/V32qpjW8h1I7f19R0F9HGTJ9+NGlrDmNa6M0rH8zBVnho0cMey2V2+g4At/g
+         F9QbdGBhQEMIm3fPeKlJj+MBp6JjCNr+zVzSe/xH1MjAsFl+I8yIeY8IR6rBycoLQjpi
+         pH6y8S7wYGD+a9Sg4zEvAlEOGWkraOhdO05G1F46N4ss1F9lCr4IrKv3soIeatD6vKO8
+         c/8w==
+X-Forwarded-Encrypted: i=1; AHgh+Rqh9aiH18ebFF5Xebe+5VHnLsuGGAMYcbrElfQ7ZetLMVE5uT4n2RdT4vqJCtqVSvlSJyU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyl5OhuzE6k6dNeGAPtdfz/cG8tYtFs/Q+QNIFTCBlIEUslSFi/
+	S3KgghphTICoo0SRoZlddl6oZp7YepzvR52LU+dfnqDOQuvBCzs9VBK2
+X-Gm-Gg: AfdE7clAX9L3XOk6Ae4zCqEuZcPGPc8zP/YIzbDOLMy34kXohrnUX7SubSiFGHZw7+y
+	YdRnpBpycsKM7D/hNGU5/WbEL4gkMOXLbqxrzzRrrBUrAB9qznwSRHAJVxd1KgBjapH7vvxKJfm
+	ZGjem7ces9NluwRiUZ5VEqPDxSt+gcQ4gPREyt8xXN4SOftKom6M5wnIiwQTIqBSNtZ1XouXQvS
+	eNQxo90/ekS4YuGysL6KQoI+k55SjqJaATNPSQSdnvc6vQd0glQzLkBLES6xXgzDZTA2CBQht0U
+	OL4Tv4n9OID7D7QEsFNJSNsZ2FFjNgAYU6+XbAzgl0pM30RdTQiXRNQKromT0+tXfTTej+WeNcO
+	dwnrGc4OkQomEvTN3W4AitEtCjL+Fq0ODV0GHU+3pLGEPHq0VjF3mgDlpJEidRxIAWYDKDd2m8f
+	9MWn1uidn89u/u840a555FoiDOGO/ulOHzmm8l861BS0c=
+X-Received: by 2002:a17:902:ef44:b0:2c9:cf62:6f61 with SMTP id d9443c01a7336-2ccbe616252mr55602255ad.17.1783436715990;
+        Tue, 07 Jul 2026 08:05:15 -0700 (PDT)
+Received: from haichao.tail057a43.ts.net ([2001:da8:e000:1206:239e:a31b:1d0d:374f])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bc42sm13598865ad.63.2026.07.07.08.05.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 08:05:15 -0700 (PDT)
+From: Ruoyu Wang <ruoyuw560@gmail.com>
+To: p.zabel@pengutronix.de,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Ruoyu Wang <ruoyuw560@gmail.com>
+Subject: [PATCH] drm/imx/ipuv3: Check CRTC state before freeing
+Date: Tue,  7 Jul 2026 23:05:08 +0800
+Message-ID: <20260707150508.2267884-1-ruoyuw560@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="L/gXhcj/KYS6Adou"
-Content-Disposition: inline
-In-Reply-To: <20260703193855.110619-31-mukesh.ojha@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
 
---L/gXhcj/KYS6Adou
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+imx_drm_crtc_reset() destroys the current CRTC state only when
+crtc->state is non-NULL, but it always converts crtc->state to
+struct imx_crtc_state and passes the result to kfree().
 
-Hi Mukesh,
+When reset is called without an existing state, container_of(NULL, ...)
+does not produce NULL. Keep the imx state free in the same crtc->state
+guard as the helper state destruction.
 
-On Sat 04 Jul 26, 01:08, Mukesh Ojha wrote:
-> Use the devres-managed devm_of_reserved_mem_device_init() instead of
-> the manual of_reserved_mem_device_init()/of_reserved_mem_device_release()
-> pair, letting the device resource manager handle cleanup automatically.
+This issue was found by a static analysis checker and confirmed by
+manual source review.
 
-Thanks for your work!
+Fixes: 8ed5dcf966dd ("drm/imx: Use __drm_atomic_helper_crtc_reset")
+Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
+---
+ drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> ---
->  drivers/staging/media/sunxi/cedrus/cedrus_hw.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
->=20
-> diff --git a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c b/drivers/sta=
-ging/media/sunxi/cedrus/cedrus_hw.c
-> index 444fb53878d1..7b5aa94064a1 100644
-> --- a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
-> +++ b/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
-> @@ -266,7 +266,7 @@ int cedrus_hw_probe(struct cedrus_dev *dev)
->  		return ret;
->  	}
-> =20
-> -	ret =3D of_reserved_mem_device_init(dev->dev);
-> +	ret =3D devm_of_reserved_mem_device_init(dev->dev);
->  	if (ret && ret !=3D -ENODEV) {
->  		dev_err(dev->dev, "Failed to reserve memory\n");
-> =20
-> @@ -341,8 +341,6 @@ int cedrus_hw_probe(struct cedrus_dev *dev)
->  err_sram:
->  	sunxi_sram_release(dev->dev);
->  err_mem:
+diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
+index 1405e50ee56b5..e4f0c91dc7610 100644
+--- a/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
++++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
+@@ -111,10 +111,10 @@ static void imx_drm_crtc_reset(struct drm_crtc *crtc)
+ {
+ 	struct imx_crtc_state *state;
+ 
+-	if (crtc->state)
++	if (crtc->state) {
+ 		__drm_atomic_helper_crtc_destroy_state(crtc->state);
+-
+-	kfree(to_imx_crtc_state(crtc->state));
++		kfree(to_imx_crtc_state(crtc->state));
++	}
+ 	crtc->state = NULL;
+ 
+ 	state = kzalloc_obj(*state);
+-- 
+2.51.0
 
-Could you also remove this label and switch the goto user to a regular
-return ret?
-
-Thanks!
-
-All the best,
-
-Paul
-
-> -	of_reserved_mem_device_release(dev->dev);
-> -
->  	return ret;
->  }
-> =20
-> @@ -353,6 +351,4 @@ void cedrus_hw_remove(struct cedrus_dev *dev)
->  		cedrus_hw_suspend(dev->dev);
-> =20
->  	sunxi_sram_release(dev->dev);
-> -
-> -	of_reserved_mem_device_release(dev->dev);
->  }
-> --=20
-> 2.53.0
->=20
-
---=20
-Paul Kocialkowski,
-
-Independent contractor - sys-base - https://www.sys-base.io/
-Free software developer - https://www.paulk.fr/
-
-Expert in multimedia, graphics and embedded hardware support with Linux.
-
---L/gXhcj/KYS6Adou
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmpNB58ACgkQhP3B6o/u
-lQyTjg//fLyoug7RFssI1dop/066e79975deN6blykU3a96LxKKn7ru6j0LCnfu4
-VTSFjvO7qjkf2yQeXqxnQWvrXBT/JiPMb/nPvBW0MGDi1M1+4kT7238LR5fuNLU0
-eBAuY181rHDg+ftoXP7Rzj0XZlZ/dck0119WsWFEUk9gP0Q8BlgTs7QTUu3k2E+E
-VUftOitNophkc0JUvgUi5wKODfIgzgp/nj9ZnCsjF9QSDjcr3Wjn2qwvdS4hG43H
-m8QkFdiim8NX6PKzgqcjLNOUEXjjphI6+onlAT3qREs2ThXycXu0m5/+r+5IP6AT
-OeVpkJQ9zrx91+tL94Yi4iXPERdq1zcnpUsiE1YhOnlB/KfCAXX3WeS6ZjLfF5aW
-7/5j2Bd/rTlqCSH25ek2EQKZj476WJUgYplyAGFpLb/3iXyV89VpkdIk2VEc7ynK
-V99TGimHONG+iiDOl/z3pn+MX5RzXeMWhmevSrfiTJzsG5Kb+mOKr86er3oTehf0
-g8NOS3ITmO5IGHbfJSUx236uPw58QMEWKmKyZ/Sx7nDhhhskPBSgCJSvSPn0cbz9
-cXejK2y8wLRj1RaSjCGUdM9ZoZPlNDoyqDrWZDxI2tzgXFYDbcuFEHM19GIDPTTY
-2iujg05WmAKMP0jVtjzc7NoSbdBmeZG2atzsSP6M76kSPNdEJvI=
-=0n6x
------END PGP SIGNATURE-----
-
---L/gXhcj/KYS6Adou--
