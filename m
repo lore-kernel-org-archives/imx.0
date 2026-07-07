@@ -1,100 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECAA4189C5;
-	Tue,  7 Jul 2026 13:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8BD416122
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 13:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783430710; cv=none; b=bjAgR6wVqkD99JEFR21zSQfCkgfZkcw2xhOYHvNI4PHvutDUlVGo+bIlRqBIhDF4WaoS+bQ2/bykjtXKwaV7E8XnEn1cM7rE90nMDW3N0LBPUhAmbAF3GlwJGXp66dAO39F3YzEz9YpwJuLyJhZtzBNarorbOcR23FNonqY4hfQ=
+	t=1783430964; cv=none; b=fYykvDs+ThcDMkhHs8e3FblYWMi5s/gtk0qOKQpWlQWDwxTbqswHvi6/JQve8dcLG7bxOF3nLLgp3vqqO4RdMw6r2IKUelSq+OpePnu5a31epZg6Jy33FsN92TMnToI+KXyttH/xVVemMgSFr4h/P47ZK9JPfqFjUn71flv+mlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783430710; c=relaxed/simple;
-	bh=EleOnnZBM+dhfixq6r7HFdUJR63bJmvSqZ0s17iL/Ls=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SPyCeBM6MBtzkgmkQeJ1uCnntr+SXo0HCW2OVKq0zJFPoqLIOlzOsMm3MgiK0JojPG0xzYYqVH+CJ5gNi6S5k3L9fgyMpm+G1W1WTNKIsqhVyGmvKZzvrYPEAEyu5fSc1Mf98bfutHDF4Tc73oaqSPTQO4vA9NyUu0t6mdgQ7QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezdrps5t; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783430964; c=relaxed/simple;
+	bh=dSWgcEVqn96YNXIDhps5X6Ob0cQ6Yr4ZQ8+nRr7zu7g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U25CsyRtP/948Z0ybsAJdTJUPGBk4tWCFzze+QPOoK0QmDo9B8Jb9tY+dtiZ8JHv3iMgpMCfW/SzAfdSOH8PpmLikmFYegPdtSJLkB++LrYaknPP8WkhQ0ig2gpNA4MnLhBO9uG7aUVK8Lug/TuaJq3Y4TAotfjp4pDMxbTPfJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=drOpDDGI; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezdrps5t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B361F000E9;
-	Tue,  7 Jul 2026 13:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783430709;
-	bh=sRTsZByg3jigN6FqrDwzd3A6GFnHFsVi5eGWHjMDrJ4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ezdrps5t0qJIGAcRzSumhAkuU01eJSeJuBJnO4UghsHoqNwV4KISXfbgRVxsM9ITL
-	 QwOkB4lhFC+zaQWP8qUkoTYwwMMMpJ2C5uIduHqPguFElwcgWiN1M8m5GeGkjb+2Mp
-	 br//pVzcdQ2bMSsdavvV1d/Z+XAte0bKrWdO7wLyM16J+DTO/fj/Qjlo8BaDVDc84u
-	 aWdUizfEf5y7+UmZMx4a0/Kp4H6TX7tXMpdz8kJs4u/RzBVDGZhjS0aXp5/8GyAgEh
-	 WLn/kv5QuTmlj4AiIZyiNL9qKcr+l4Y65wlGh/fo9wEEO9YZPxEQY0Z/oIejkhIp70
-	 n8gB8cBHM+KJQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 20/20] driver core: platform: count references to all
- kinds of firmware nodes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: robh@kernel.org, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, lee@kernel.org, Frank.Li@kernel.org, mfd@lists.linux.dev, conor+dt@kernel.org
-In-Reply-To: <20260706-pdev-fwnode-ref-v3-20-1ff028e33779@oss.qualcomm.com>
-References: <20260706-pdev-fwnode-ref-v3-0-1ff028e33779@oss.qualcomm.com>
- <20260706-pdev-fwnode-ref-v3-20-1ff028e33779@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 13:25:08 +0000
-Message-Id: <20260707132509.06B361F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="drOpDDGI"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47db714766aso361048f8f.0
+        for <imx@lists.linux.dev>; Tue, 07 Jul 2026 06:29:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783430961; x=1784035761; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=i4adAtmWIIeDRmlqxSvfydtiZtPinCJztXXi755Yp48=;
+        b=drOpDDGI/coysr+G+OsreyWuSl93O9a7yXmtCKcH0+IaKomhHVUhM2id8dL9itBx1W
+         3ah+iefKbjrveUVxljF16gwqjcEk8H5E24mqgT/Yc8oXB3VW5x1QsoSkm4s2nS1xzuaN
+         zJIWrOHQx7RwNeK+Wsp2hXr7YgyRZLVPKZdxwSNT+Il3g6bHG9ipC5BPfH55zOx0kMeg
+         5TKK9dlUOh8t3W2VyYvjiqqnIfFE7f9MSCdSCMkUj1aBo7VroVUhmUV/ha4ikM3MHqy8
+         sNFm7VlQ1Yf+iR+oExLeVtqd//4bibOfINidH2E3rkq5IfaLrcOJKq50+JtC0YWb7xbS
+         D2yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783430961; x=1784035761;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i4adAtmWIIeDRmlqxSvfydtiZtPinCJztXXi755Yp48=;
+        b=EX3OEdmEhPOMloJt+hNJrupOjrKoLR/dCJgeYUDp0m3uODbE3U6VTH82vJ2mKsA4Ys
+         ItrerF+tbTRtCOhZeJb5TAViTIAW3gDUL3R76RbzrI601W7Fp8HQtxeMO6Vs0Vm5+F18
+         7avGx1fBiWIhIX1ZZ0Y3lMauc6hT8O3g5DuLH5bFJUlr6vhwQiWB5hjMsdkErgnO3fgs
+         vsyIPxr/GBXe14rbOrCGzE3CzuqUvyEboh+WF5c2UZ1n53lZ/nZHk0iWP1oqFNQaA9mG
+         Fnme/oNSJqf2tWpRHLABZZhZc3bSlRwM63xFhPNJhZqdZEvtDHX1qhRilS4sQfdljwUe
+         +7sw==
+X-Forwarded-Encrypted: i=1; AHgh+RoOne2SDD7u+hKNQ/a8Q6OZDf98UStZCSTd5EWpqQawUJ2fitHwt3JVcrGqRxq2D0YOGKk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwRzGqCs0HxPQoegf4pK5fPXNgN1SUNcAp2THRHX4dY/7BKk04L
+	kOZ5FG7E4YUYklG/S3Q0+gHKjwMQN0iken7YSvqxiEhCUviNzrHzgASW
+X-Gm-Gg: AfdE7cnh+nfaHptrGJjAe2Rb/DtcmHDNqCw4lMBwEhtIOa6HjMgf2c+UfvF5i0f7hCO
+	Rt+c5fIqgT7SHTlFmcrHbplVzVZUPJPoifma1BzjPla8YA7ym0utIktz5n5ayyFT5cx78OOiGJz
+	qALKLnOB8XYOfDZqq3ekyeBA2+i2sGkVM3BgMiK8d21NJlNbl34E8+U5+JVMh+sR14VZZaP2hRV
+	gfNaemZbBntjggDbr/wciNmR7f0lj6jtqJA4Aa9QIQQ6GYWZfJgKniB0Yl1ZnSyNfHc1WfdpxZl
+	9KfRN2WvkXg4R/LX2KNifpqXboQDC09zTfGDn12uYzdFw4SdA//TLhBI1oAMev3755dNHM34Psx
+	oVdyu6rTsQDWfeXEIuqiH70GiXb5ae05/55mt4YU2IEdbJCHfZXw4roNIlkeqKzHkrHu1uBdLpp
+	9M0i6ETojTt4I+EIFlyzWQhyLsTJXX+OCaU7QIw9JYfYarGru1caMrl0YzkwJKhd+C8zb2HaK1Y
+	7fql3hvNvFm3/19gVt/7y0gwElfRqNePw==
+X-Received: by 2002:a05:6000:41ea:b0:475:f0c2:75b3 with SMTP id ffacd0b85a97d-47de9a415e6mr3180060f8f.30.1783430961279;
+        Tue, 07 Jul 2026 06:29:21 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-248.cust.vodafonedsl.it. [93.144.65.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d843csm33030923f8f.14.2026.07.07.06.29.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 06:29:20 -0700 (PDT)
+Date: Tue, 7 Jul 2026 15:29:18 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: sashiko-reviews@lists.linux.dev, Frank.Li@kernel.org,
+	imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org,
+	conor+dt@kernel.org
+Subject: Re: [PATCH v2 05/15] arm64: dts: freescale: imx8mn-var-som: Add
+ support for WM8904 audio codec
+Message-ID: <akz_Lr1bRSEE5rhC@Lord-Beerus.station>
+References: <cover.1783330236.git.stefano.r@variscite.com>
+ <4487a350b0e4667816c3fe62e9fd6df2696c18cf.1783330236.git.stefano.r@variscite.com>
+ <20260706100948.DDA391F000E9@smtp.kernel.org>
+ <akvC8UV5N6Tpk0_h@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akvC8UV5N6Tpk0_h@SMW015318>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] OF node reference leak for dynamically allocated platform devices =
-due to incomplete tree-wide conversion.
---
+Hi Frank,
 
-commit 50bc78e1d223d4a9addf4cc0c3c1d384a104d5a6
-Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+On Mon, Jul 06, 2026 at 10:00:01AM -0500, Frank Li wrote:
+> On Mon, Jul 06, 2026 at 10:09:47AM +0000, sashiko-bot@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> > - [Medium] The `simple-audio-card,routing` property maps `Microphone Jack` to `IN1L` and `IN1R` but omits the connection to the `MICBIAS` supply, which will leave standard electret microphones unpowered.
+> > --
+> >
+> > commit 78e4da0f71f2e53ae4312cbe5ceecb0f6f2345db
+> > Author: Stefano Radaelli <stefano.r@variscite.com>
+> >
+> > arm64: dts: freescale: imx8mn-var-som: Add support for WM8904 audio codec
+> >
+> > This commit adds support for the WM8904 audio codec on the VAR-SOM-MX8MN board.
+> > It configures the device on the I2C bus, enables the SAI peripheral, and adds a
+> > simple-audio-card sound node to expose the sound card to the system.
+> >
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
+> > > index 09146ab763858..e2e04ad2fbb65 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
+> >
+> > [ ... ]
+> >
+> > > @@ -42,6 +50,34 @@ reg_phy_vddio: regulator-phy-vddio {
+> > >  		regulator-min-microvolt = <1800000>;
+> > >  		regulator-max-microvolt = <1800000>;
+> > >  	};
+> > > +
+> > > +	sound {
+> > > +		compatible = "simple-audio-card";
+> > > +		simple-audio-card,bitclock-master = <&codec_dai>;
+> > > +		simple-audio-card,format = "i2s";
+> > > +		simple-audio-card,frame-master = <&codec_dai>;
+> > > +		simple-audio-card,mclk-fs = <256>;
+> > > +		simple-audio-card,name = "wm8904-audio";
+> > > +		simple-audio-card,routing =
+> > > +			"Headphone Jack", "HPOUTL",
+> > > +			"Headphone Jack", "HPOUTR",
+> > > +			"IN2L", "Line In Jack",
+> > > +			"IN2R", "Line In Jack",
+> > > +			"IN1L", "Microphone Jack",
+> > > +			"IN1R", "Microphone Jack";
+> > [Severity: Medium]
+> > Will standard electret microphones remain unpowered with this routing?
+> >
+> > The routing maps "Microphone Jack" to "IN1L" and "IN1R", but omits a link to
+> > the "MICBIAS" supply (e.g., "Microphone Jack", "MICBIAS"). Because "MICBIAS"
+> > is defined as a DAPM supply widget in the codec driver, DAPM will not enable
+> > it unless it has an explicit routing link connecting it to the active audio
+> > path. This could leave the microphone without its required bias voltage when
+> > recording.
+> 
+> Is this true?
+> 
+> Frank
+> 
 
-driver core: platform: count references to all kinds of firmware nodes
+Thanks for pointing this out.
 
-When using platform_device_register_full(), we currently only increase
-the reference count of the OF node associated with a platform device. We
-symmetrically decrease it in platform_device_release(). With all users in
-tree now converted to using provided platform device helpers for
-assigning OF and firmware nodes, we can now switch to counting references
-of all kinds of firmware nodes.
+This audio routing is not new for this board. It follows the same WM8904
+routing that we have been using on our other platforms for quite some
+time, and we are not aware of any reported issues related to the
+analogue microphone path.
 
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 9357942d0c79b..a71015f1d9153 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -599,7 +599,7 @@ static void platform_device_release(struct device *de=
-v)
->  	struct platform_object *pa =3D container_of(dev, struct platform_object,
->  						  pdev.dev);
-> =20
-> -	of_node_put(pa->pdev.dev.of_node);
-> +	fwnode_handle_put(pa->pdev.dev.fwnode);
+If adding an explicit route to MICBIAS is indeed required by the
+codec driver, then this would not be specific to this board but would
+potentially apply to all of our WM8904-based platforms.
 
-[Severity: High]
-Does this code leak the device_node for drivers that haven't been fully
-converted to the platform device helpers?
+I'd prefer not to introduce this functional change as part of this DTS
+alignment series without validating it across all affected platforms.
+If needed, we can investigate the MICBIAS routing separately and
+submit a dedicated fix covering all WM8904-based boards.
 
-The commit message mentions that all in-tree users are converted, but there
-appear to be some unconverted drivers still using device_set_of_node_from_d=
-ev
-on dynamically allocated platform devices.
-
-For example, in drivers/usb/host/fsl-mph-dr-of.c:fsl_usb2_device_register():
-	device_set_of_node_from_dev(&pdev->dev, &ofdev->dev);
-
-And in drivers/usb/musb/musb_dsps.c:dsps_create_musb_pdev():
-	device_set_of_node_from_dev(&musb->dev, &parent->dev);
-
-Since device_set_of_node_from_dev() sets and increments dev->of_node without
-setting dev->fwnode, won't fwnode_handle_put(NULL) do nothing and permanent=
-ly
-leak the OF node reference when these devices are released?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706-pdev-fwnod=
-e-ref-v3-0-1ff028e33779@oss.qualcomm.com?part=3D20
+Thanks,
+Stefano
