@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB54341A780;
-	Tue,  7 Jul 2026 13:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA86841A796;
+	Tue,  7 Jul 2026 13:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783430702; cv=none; b=CNJ8HSx1Bc/ECii+41K2Hf1KLQj82wBtKmBpRBUME6mjeeQYjZjkHf3tm3Ut3wyImoKwhbgE8Q/G+1VNnOErcIZXDoC9G8TEhIdUfEF8ueSkfmIQXrCcmsjJ74Vwz9BttytAm8Ou8BOf+h2ge+RyAhRbv77X8AERwKnY+0jBTEY=
+	t=1783430703; cv=none; b=WviYUvn/usljmhtYI7mTlxdmN3zIO+CRsDUpAgr4WEePnTSvN5Z0+WnkQUwnOAFTDIhH6Fa4fZ9OCoDS1j9lE7abkd6s3V8blcgCtP+dcibXtG0szRw6Sg5UTBPGjoJGPJu4wl8NhzD6AaDUJGZPQVRXZCe2rKUX+655V6zqJuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783430702; c=relaxed/simple;
-	bh=603jh6tkUuRe0PvaIZh455aJBK78BRPfx9VziufotAw=;
+	s=arc-20240116; t=1783430703; c=relaxed/simple;
+	bh=PRUKwsc4nH27Rvd+7/xVMHE9ayUhF+dOLe5rM9miXGY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=l5I/f3GppO26TiPvao2JsT1/jdfArQsdnRNvVjMHo5qTMvknoshvSU2ytx1HG5loJmIYg5qY7EgnSyfw33KTRJPbzb/owspY4CrcxBlUGI1UuAft4LyneQNmjZnrh50PTzJCz/cAVQt8fV72JSeRM0k7lhB8GyNr5iZWNwChZvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0qNtlev; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=kcXOtgDx3o1RhFWNEHIScbGpw2Nbul7hiJD0eRbI/H8Uo8BgND9Y8K25IN+qsL3vDAv7Psbg1dQ7/pJoETJwBd0dkx/IFO7qWu0om/0izHKlkHiNH4BA6l80VL1KELIqR3GDy3Kp8PzI98Gq/X1owefa8h5HaFI2U+39Pn7RSRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0paQOEt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0qNtlev"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEAD1F000E9;
-	Tue,  7 Jul 2026 13:24:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0paQOEt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326531F00A3A;
+	Tue,  7 Jul 2026 13:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783430700;
-	bh=YR7OVTOka+yAGIFejWErZW21aVeNFMmNHnyc0lNA9gM=;
+	s=k20260515; t=1783430701;
+	bh=VScE8+lksLF74beM7uhLPsbzmHWf8o/zFQnHwmEj9CY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=f0qNtlevUwAYzZhgdYvX3EbEt+Hzwb42I4TktDLWhSA9egp8hdj0N/q1JMzYo8Edv
-	 zpvDzI4Q940ukozD7I4KJYtBCX7KIwauWZZT4b8sUtMqc0v45p/YZJvNf4p75wbMpy
-	 32MVSX0i90QZgah72/D4KfTwQ+07AZ5gac94JFgjBqeqUws1/Q7cgUDwBhFDWdexpv
-	 lHSvZlwnuaiuKCGcjVM1xOeGWEYwOPnwT/PSeSNaZRFuIX0VxPUgK4ZNI/S5QO4wX8
-	 HX7Gk04ScB7ZfPGKTloWKCa4PZ9l33OTvrxzgslizbVo7rmQumiA7VLDPzZifqnfVa
-	 k9A8cKm8k6akA==
+	b=a0paQOEt4XsrxoKTwzs+HdRqRpq9+MmrmI+i+whSbudaMqZ+E3nJVr8SE1Rc4eOMR
+	 qH4AXAtcYqm2EruoDXsbgU696rSbXvsM/lo04yBT7zk+GAsSivP+XYCnkAxLvV+j6w
+	 x2TQiifMe6PZUzMpR9HSCVO7earyMdRqpLJhpXSSr9xbDFFxJPbQB7r6d7Ktsixn0V
+	 EEkSYR35k84VjclvTd8ZmBd/WpDaQUzBU0jwgkpJJeQjRb1g25CixX30Ijgl1FAoIV
+	 DbY5kCXOhZJAfpqtQt0Hr0kRq61wb/zrrcseUDbMm4WkhB3x8apQx9OjehwJoYvXlu
+	 zUF2IhJoKE95g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 12/20] mfd: tps6586: use
+Subject: Re: [PATCH v3 13/20] slimbus: qcom-ngd-ctrl: use
  platform_device_set_of_node()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: dri-devel@lists.freedesktop.org, conor+dt@kernel.org, imx@lists.linux.dev, lee@kernel.org, robh@kernel.org, mfd@lists.linux.dev, Frank.Li@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260706-pdev-fwnode-ref-v3-12-1ff028e33779@oss.qualcomm.com>
+Cc: lee@kernel.org, dri-devel@lists.freedesktop.org, conor+dt@kernel.org, devicetree@vger.kernel.org, mfd@lists.linux.dev, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org
+In-Reply-To: <20260706-pdev-fwnode-ref-v3-13-1ff028e33779@oss.qualcomm.com>
 References: <20260706-pdev-fwnode-ref-v3-0-1ff028e33779@oss.qualcomm.com>
- <20260706-pdev-fwnode-ref-v3-12-1ff028e33779@oss.qualcomm.com>
+ <20260706-pdev-fwnode-ref-v3-13-1ff028e33779@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 13:24:59 +0000
-Message-Id: <20260707132459.6CEAD1F000E9@smtp.kernel.org>
+Date: Tue, 07 Jul 2026 13:25:00 +0000
+Message-Id: <20260707132501.326531F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,101 +49,97 @@ Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Subdevice cleanup unconditionally unregisters all children, premat=
-urely removing MFD cell devices and bypassing `mfd_remove_devices_fn()`.
-- [Medium] Manual assignment of `pdev->dev.platform_data` leads to invalid =
-`kfree()`.
-- [Medium] Missing IRQ domain and IRQ descriptors cleanup on teardown and e=
-rror paths.
+- [High] The dynamically allocated platform device and its associated OF no=
+de reference are leaked during device unregistration.
+- [High] Unconditional dereference of `of_match_node()` return value leads =
+to a NULL pointer dereference.
+- [High] Missing cancellation of asynchronous work `ngd_up_work` causes a U=
+se-After-Free of the `ctrl` structure on module removal.
 --
 
-commit 0df04ec4b22ac2adb3b77bf67e6a1339f5fd4523
+commit 4a2753767e946e9e44740066e0bb9147c741d781
 Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-mfd: tps6586: use platform_device_set_of_node()
 
-This commit encapsulates the assignment of the OF node for dynamically
-allocated platform devices by using the platform_device_set_of_node() helpe=
-r.
-This change prepares for reworking the reference counting logic for platform
-devices.
+slimbus: qcom-ngd-ctrl: use platform_device_set_of_node()
 
-> diff --git a/drivers/mfd/tps6586x.c b/drivers/mfd/tps6586x.c
-> index f5f8054466033..3cfd2f02b62f3 100644
-> --- a/drivers/mfd/tps6586x.c
-> +++ b/drivers/mfd/tps6586x.c
-> @@ -397,7 +397,7 @@ static int tps6586x_add_subdevs(struct tps6586x *tps6=
-586x,
-> =20
->  		pdev->dev.parent =3D tps6586x->dev;
->  		pdev->dev.platform_data =3D subdev->platform_data;
+Ahead of reworking the reference counting logic for platform devices,
+encapsulate the assignment of the OF node for dynamically allocated
+platform devices with the provided helper.
 
-[Severity: Medium]
-This is a pre-existing issue, but does this manual assignment of
-platform_data at line 399 in tps6586x_add_subdevs() cause problems during
-device release?
+Acked-by: Konrad Dybcio <konradybcio@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-When the platform device is unregistered, platform_device_release()
-unconditionally calls kfree(pdev->dev.platform_data).
+> diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-c=
+trl.c
+> index 3071e46d03bea..6e89415712ce1 100644
+> --- a/drivers/slimbus/qcom-ngd-ctrl.c
+> +++ b/drivers/slimbus/qcom-ngd-ctrl.c
 
-If subdev->platform_data was statically allocated or part of devm_kzalloc
-memory, could this corrupt the heap?
-
-> -		pdev->dev.of_node =3D of_node_get(subdev->of_node);
-> +		platform_device_set_of_node(pdev, subdev->of_node);
-> =20
->  		ret =3D platform_device_add(pdev);
->  		if (ret) {
+[ ... ]
 
 [Severity: High]
-This isn't a bug introduced by this patch, but does the cleanup in
-tps6586x_remove_subdevs() interfere with MFD core cleanup?
+This isn't a bug introduced by this patch, but can this code cause a NULL
+pointer dereference?
 
-drivers/mfd/tps6586x.c:tps6586x_remove_subdevs() {
+Looking at the beginning of of_qcom_slim_ngd_register():
+
+drivers/slimbus/qcom-ngd-ctrl.c:of_qcom_slim_ngd_register() {
     ...
-    return device_for_each_child(tps6586x->dev, NULL, __remove_subdev);
-}
+    match =3D of_match_node(qcom_slim_ngd_dt_match, parent->of_node);
+    data =3D match->data;
 
-drivers/mfd/tps6586x.c:__remove_subdev() {
+If the driver is bound via sysfs to a platform device that lacks a device
+tree node, of_match_node() will return NULL. Should this use
+of_device_get_match_data() or validate the match pointer before accessing
+data?
+
+> @@ -1539,7 +1539,7 @@ static int of_qcom_slim_ngd_register(struct device =
+*parent,
+>  			kfree(ngd);
+>  			return ret;
+>  		}
+> -		ngd->pdev->dev.of_node =3D of_node_get(node);
+> +		platform_device_set_of_node(ngd->pdev, node);
+>  		ctrl->ngd =3D ngd;
+> =20
+>  		ret =3D platform_device_add(ngd->pdev);
+
+[Severity: High]
+This is a pre-existing issue, but does this dynamically allocated device
+get leaked when unregistered?
+
+Looking at qcom_slim_ngd_unregister() in drivers/slimbus/qcom-ngd-ctrl.c:
+
+qcom_slim_ngd_unregister() {
     ...
-    platform_device_unregister(to_platform_device(dev));
-}
-
-Since MFD cells added by mfd_add_devices() are children of tps6586x->dev,
-this unconditional unregistering of all children appears to bypass
-mfd_remove_devices_fn().
-
-Could blindly casting dev to struct platform_device also be unsafe if any
-child is not a platform device?
-
-[Severity: Medium]
-This is a pre-existing issue, but does the driver leak IRQ descriptors and
-the IRQ domain during removal or on error paths?
-
-In the removal path, tps6586x_i2c_remove() in drivers/mfd/tps6586x.c cleans
-up other resources but misses IRQ cleanup:
-
-drivers/mfd/tps6586x.c:tps6586x_i2c_remove() {
-    struct tps6586x *tps6586x =3D i2c_get_clientdata(client);
-
-    tps6586x_remove_subdevs(tps6586x);
-    mfd_remove_devices(tps6586x->dev);
-}
-
-Additionally, if irq_domain_create_simple() or request_threaded_irq() fail
-in tps6586x_irq_init():
-
-drivers/mfd/tps6586x.c:tps6586x_irq_init() {
-    ...
-    if (!tps6586x->irq_domain) {
-        dev_err(tps6586x->dev, "Failed to create IRQ domain\n");
-        return -ENOMEM;
-    }
+    platform_device_del(ngd->pdev);
     ...
 }
 
-The error paths exit without freeing the previously allocated descriptors or
-domain. Can this cause resource leakage on cold paths?
+Since of_qcom_slim_ngd_register() allocates the device with
+platform_device_alloc(), shouldn't platform_device_put() be called to drop
+the initial reference count? Without it, both the device structure and the
+device tree node reference acquired above are never freed during unbind.
+
+[Severity: High]
+This is a pre-existing issue, but is there a risk of a use-after-free
+during module removal?
+
+Looking at the driver teardown in qcom_slim_ngd_ctrl_remove():
+
+drivers/slimbus/qcom-ngd-ctrl.c:qcom_slim_ngd_ctrl_remove() {
+    ...
+    qcom_slim_ngd_unregister(ctrl);
+
+    destroy_workqueue(ctrl->mwq);
+}
+
+If qcom_slim_ngd_ssr_pdr_notify() has scheduled ctrl->ngd_up_work on the
+system workqueue, can it execute after the devres-managed ctrl structure
+is freed? Would adding cancel_work_sync(&ctrl->ngd_up_work) here ensure
+the background task completes before the memory is released?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706-pdev-fwnod=
-e-ref-v3-0-1ff028e33779@oss.qualcomm.com?part=3D12
+e-ref-v3-0-1ff028e33779@oss.qualcomm.com?part=3D13
