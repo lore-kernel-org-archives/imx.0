@@ -1,261 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013067.outbound.protection.outlook.com [40.107.162.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F25C2F8EA5;
-	Tue,  7 Jul 2026 09:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783418159; cv=none; b=FtA+5wxO09rpqmtfgVjUkYFngKK99hXyVrXrGeeZCCjzW/u0leyFen/0ZhHOqGuccpqbXPECP6sNMaf/fkACPLOxWNH1+cZrF07+T2s4zS6t5QIF58QMsa17cMZqLxmFimooIg+EmVGP1dT9DvmaNp5CgPksBgDDAmBtovWbysA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783418159; c=relaxed/simple;
-	bh=KArJOMy44D5yEKKHm8pcNQa9Mo2n1ATAn0DfOaybfos=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qh4TANImUFspXSuQ5+kp3ur5UwNVH21KQk2eKu5RWP7BmqRsJRRHVYXwLaY/xRLTbMUJ7hCSyPB93OpgrwQ9ycb3E9BWl3zF641GdFs09dj0/9rJQ1mi4/wz35elsFXacrxlKdfz/v8tD/yXbFd8GoIaGuOW0KjZQD5DDiudu+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dSbu4sez; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC1923D7E3
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 10:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783420598; cv=fail; b=HGO9l/I3CUrV2mz9Chhkh+ldX2QsMJpL0vURMtrYeRHr/ZTz7xuTIieg7vaKvOB9XuRVYwvqeqHttgdokvZRAC5fo+QvQVeu0jdXkeSXTJqLe5E9ovENU23K7zoJ1x06VS99ifH1U8KG4riOtKHNLBUC33r3Lco+h4rlaeFtQOA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783420598; c=relaxed/simple;
+	bh=1liwYdZi+lGiO2DE45qlWF1RGMjbmaRaPM5bGQcqSMk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=G6QJOv56mX+QTK2D6HPYCz2cVNVTDRyZH4RZMZpPmsNoWCFfUKo4aexl3Yjx5gUX5kEXtgv9YPc/D6tf9T+qrCvSCMIYz/vqGPfAjNWIVZEGMY6HgIqLr+ZKSZvcdmAh5MncAhfmOydeR0Mo5aHWzMKYVSH7he9bK8Lcj1afqEs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ZooWuhZr; arc=fail smtp.client-ip=40.107.162.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dSbu4sez"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5041F000E9;
-	Tue,  7 Jul 2026 09:55:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783418158;
-	bh=CRr4dvDSTrtgIM0uL2TEeCIgJbcPdJkwFKqZsm9On88=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dSbu4sezCpiyZYiGx0PLDZAQ55o+ZeIKfjWWXZYfT7bA+FsgQHZN5Optg9YptTxjc
-	 6Ts0kg8S7I/y2DmY9LrQ60hFpWf2JXFT/EhFO+4vYT48lkCPy1v34uiUNTsCYysXe8
-	 l7byjyy2QjcGH8pgXrxdS9dpdEOfSmLrbri92hbWYD73+0J3oC4nzYnKeYzjQqulCY
-	 PizqRD5BicV39E55wY/U7TMtNah8F7G4a5kMvhlOI+X/s6iTgSTvO9JMyeaXLyQx8y
-	 Y52od4UC+Ky9QjRPxgo/DcSNvyvwrPu1dILUXBsQjHR577uU7Z9OfNHOI6QsroQSFp
-	 R6ETxyqFCaCMA==
-Date: Tue, 7 Jul 2026 11:55:54 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
-	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code creating
- the connector to a subfunction
-Message-ID: <20260707-warping-goshawk-of-swiftness-beea4a@penduick>
-References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
- <20260519-drm-bridge-hotplug-v1-5-45e2bdb3dfb4@bootlin.com>
- <20260608-mindful-heavy-frigatebird-be9faf@houat>
- <DJ735MTNMYD1.3LPNV404V8PIU@bootlin.com>
- <20260624-proud-unbiased-pony-ecc3c3@houat>
- <DJHEAWSEZR79.19UFIKS8QJBQ7@bootlin.com>
- <20260626-polite-hairy-perch-25e1aa@houat>
- <DJJ1MPCEJGZD.UZM9183V6ZE5@bootlin.com>
- <20260626-classy-nightingale-of-romance-1cacad@houat>
- <DJJ4X22CJ3FG.5EYF84LVRNOG@bootlin.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ZooWuhZr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZZLRmdvM/b8+NfQoMVnRiExWKsHg83T4ua9XZdPx1PFmZ4uCuOqU6H4PqhccpgvxtYzPrzizYX+Ug3hHkcVabc1v5tZapBfnm8o7tVVSn7I9zVaKgvsPIOqJBTpvJlgAC7+vQCbqX0F5xSSVI91ix5sYQYldMazyHI5tCDBlU4p5FHUIxvy3fse+WvuSC2iEMNuFEQ6gSlkGzj0GsjMudKYbeId5uGv9jVjXFZXW5ytBiWlEzhfoBwB3ZCchh4PsomqCPtZn0sKkhyDAoUYqeQh0epQDlNpAAc+SuQVr+8w9x6H4tlHwBogCEpJwsZqdck5INEGGWU4Y9RAko6UPzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uK0xKUpK7gbH9CCIGziXQDlUGdPZfbQD+vcFxJq4DpY=;
+ b=C0joCbyQ+b8Z6GiN7yH7T27cIolJuu3znGy/LvUBeNzS386+02EEi6ga0L4m5N6QdiAK9rFkbnClYXXhVRMdnXTQUn5tiDbFGQN4hxva1Gr7vgCrgBiarby7KqZ8/7OSGfq8/cwkgx9I94pERwCTnV7WyFjBAY/3QcY9clD/2co28ra/wI3ZDruuPRmuaIuj1Kt0bBCa16Ehb0aCNOKv3wx3QZ/sAbWaR+YJ/VXOJB47Cmt8zC//jXh6Z4bGeyxZrLazojDm/40XOFoLjljNmi3SKMFo6oyIw97grE7rXmHRV/lwv2855D53QD6Yj6rtsaOF4HmNISYFkI495c+V2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uK0xKUpK7gbH9CCIGziXQDlUGdPZfbQD+vcFxJq4DpY=;
+ b=ZooWuhZrW0nHbTvOm0TLrwSInuqDIEcNlomffX0hDyxLvGUAlnO1EpcNcDmyGMuqBs/rokqQq8a5BOGVFq8e69kDGc+vJwrXVm0nxTAqovciH5UuyHnWOF8vmXFX9Z3JAkTcYT0wTgZqxcxtopr7+iUb9sHk0XqzT946YBLaNp3SuMU8cpK+y8wy6Fgs0pxjHFKeL17NqbKckr2zfMcUKaDa4OWaoUHeltpQDyg7uUaRi7r5jsX52/ZiMN0+vK7dGjvVvgiFF9Bdc7/Lzthcf3x379L9du9x8Myb8smfzCN4NSqqH0faX9NsEFd/VKgivEHMT40WZbyO6GUVL1j81A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5858.eurprd04.prod.outlook.com (2603:10a6:208:132::23)
+ by DU7PR04MB11138.eurprd04.prod.outlook.com (2603:10a6:10:5b1::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Tue, 7 Jul
+ 2026 10:36:25 +0000
+Received: from AM0PR04MB5858.eurprd04.prod.outlook.com
+ ([fe80::bdf4:c9d1:4e3f:68c6]) by AM0PR04MB5858.eurprd04.prod.outlook.com
+ ([fe80::bdf4:c9d1:4e3f:68c6%4]) with mapi id 15.21.0181.010; Tue, 7 Jul 2026
+ 10:36:25 +0000
+Message-ID: <1296950c-07a2-477c-a1de-598ca8be9a81@oss.nxp.com>
+Date: Tue, 7 Jul 2026 13:36:17 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/8] can: flexcan: Add NXP S32N79 SoC support
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-can@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, NXP S32 Linux Team <s32@nxp.com>,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>
+References: <20260609142954.1807421-1-ciprianmarian.costea@oss.nxp.com>
+Content-Language: en-US
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <20260609142954.1807421-1-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P195CA0028.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d6::13) To AM0PR04MB5858.eurprd04.prod.outlook.com
+ (2603:10a6:208:132::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="x6pdrlblnduy4h5o"
-Content-Disposition: inline
-In-Reply-To: <DJJ4X22CJ3FG.5EYF84LVRNOG@bootlin.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5858:EE_|DU7PR04MB11138:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56d0782b-8600-4cc7-e2af-08dedc13985c
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|19092799006|1800799024|366016|23010399003|7416014|376014|11063799006|56012099006|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+ itlxNF/GbdsrzWBx36HxQG87FGTm3uNHP3tPzrawhz6/zcv/rPwFcUQGO/moDyNsSzTv6eEPrHxwZg28rM9nxFYG8vkNcoo8MZUuHvIKLB/qGXWCRhdKljVMenYTUqepPThimwC49vZ+bJHvO4vJLFwan0N1BI+hMjcOTz+f/X+y1hylUgJ959HIui1AJc2tJkGFKuGTphHJixcaPAQGPD5NCIl/xQ95GFs8yDbDOOo78UGXkX0llSj9E7wVjswSAeN9vLNrie9JSNGkAZd0AoNjc5HDB92YiApsm3IQkhSSiLd7209+XuYWRdaHhllIFyYZiJamflJQ0aDuy4V9QIOdlkrDYTcJcMfnoef/atVUrGBFFJpggeTenPgLSYKNLTIaE67h4wJRvK28zrsWyVQKYzZtW3u++orf9VrkWANxePvXGL7Iny5AvpYQcGHf7JIeUntIY58Iv4ujCSlMIxq+QXrxB51ozRLHJtpHA7mJ3tmH5hU7kF9+7pLfJzcAgV/RXTGBeDcY6v5mr7v4LIvtL5lar+nfk2pLhyVVa/Ckeve/N71o0zu3qGBpa+MUbfR/hwHmN51mBl+QanQinNsPbt5eGPPbddSRoMSSsjsjZyKy4Mt04SPZNXBsnv6o2/TNaPudqxs93LHYNlxmqe7hyFdzWIvHg6e+dieMu1A=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(23010399003)(7416014)(376014)(11063799006)(56012099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?S0orcGQwcVNuZFVZZnMyZlg0d0ZTY2dxbkxEYmc1YTZUdEFDckFZYkNnZGUw?=
+ =?utf-8?B?SWlicm9QTStBcHludFBnQUo5RU90Z0wzK1J4K2RKWFp1SUE5TkxqL0laREJ2?=
+ =?utf-8?B?cUxvdzY4TFlESkZaTjR1djUwSHJLT2oxQ3hWUTRnNnlUL1dud1MzTVhVZUN4?=
+ =?utf-8?B?Z0Zzb0pTN0pYUVZjVEhQMlMxT2F4dUpPY1c4MzVBRG5GWnZRdWpNZ0hITkZo?=
+ =?utf-8?B?d3R1NU9iMmpYRTZvZVNacHlVMVZiazI0MHBvZHpocms0Z3J0M0lEYitEUGk4?=
+ =?utf-8?B?a0prNmE0c3pva0NLL1pKaDlkV0VBK1dlZ3g3WWJSWlNxUVAyUjVROU9jRUVh?=
+ =?utf-8?B?L1V0VUt3c2hoQnB2Vjl2UHYyWWdMVkxpeGRtV2JqU1lld2JhU2ozYnk5clkr?=
+ =?utf-8?B?ODFZRE0zdVFJN2VkU3hiUy9SVW9lTWhUU0hyRW5kWU1OWkFJZDZ1SFgrSWJR?=
+ =?utf-8?B?SmFxQW1ra1o2NDJIUklaUlZFbFphVGFyazZOcEtyOStFcUt4ZVVtNEVXWFZK?=
+ =?utf-8?B?MGkvcEhGcjNKam9mdUxISURuV2Y3WHVmbzVlYmZMeURIaElUWG0zL0U2bVp1?=
+ =?utf-8?B?dE1XZUtXOW5ScVdTcmFCUFJFTWhkMlBjeHVaQkxQOG14M3pUYXQrVHNjY0pG?=
+ =?utf-8?B?cXlOU21PRVRvTWhDZlBlb3BCeHNLbU5QYXZhT0FjR0U1a212anNWcWFDWUpW?=
+ =?utf-8?B?eFIrQllLRktyT1NXdGhFRUJrZ1UrZktKd0hGRzJtekRQNm1QSTQvWnNBcGRN?=
+ =?utf-8?B?eEt4RjJ3QW1HSUdqdDZKNEtPdUtGVktPd0JNYUd2WHNhR2U1cGMrcnJLTE5n?=
+ =?utf-8?B?dXBKWTZWOHpieURsVVdOdklmWUQ3Tk1JaFdLUThpY0d0cU5vcHRxL0xmc1Q3?=
+ =?utf-8?B?eDFCajk1YnlMeTBHTldQV09vS20wODBmZXNzZEg2WDhuekozZHZIUWJYTGJX?=
+ =?utf-8?B?UWpoRkNGODZZaUVZcHZwQ1JURzhaSFRVRkJiSFJxajFwOU5iSS80N3hBNzF4?=
+ =?utf-8?B?ekFocU9oNXBKU0FmdXBWZHZlNGZWYlkzT2dVL3l3L3EveW0rWExLb21wZ0RW?=
+ =?utf-8?B?emxvZHlIYU1BODUvUjg0bjc2MzM3V0FnT0hjLzQydktpZ3lBeXFtaFZ0YTYw?=
+ =?utf-8?B?ZUJMUVNrZmFBc3pYalFwWFMrR1pnbURCQ0VxcXdjYlUvQ0JjWU1UYm1RUlhm?=
+ =?utf-8?B?MjVQVlU0bWdlTngxQTJDcnlVa1FYUEdHYUQ0ZnYxU0ZIUHg3TmV2c1hpTzhq?=
+ =?utf-8?B?c0d5bkM4WXVsY2ErV3FJTTVmQWlZYnpqUjkrdWJ4cHhRalQ2Z0RtY1BoY0V5?=
+ =?utf-8?B?enladzZWaUNKYVN2REl2QU10MUcrTWUxOFYrTG4vK0J4Q3ZjSzBBTDRWWkpT?=
+ =?utf-8?B?UTdNd296bUY5cjk2djZMRFJQeDY3bFdhQmxlSGxvZEZnUnhhRFBycjZKNDVG?=
+ =?utf-8?B?VG5pU2c1cTd4eTNRWC93akVoaC93WW9JQW02MlpteFZZNk13eDY1Yk5udXgv?=
+ =?utf-8?B?MkpWcm4xd3FaRklnak9BWW84MTFjQ2FaelZteFdNY2ZOblAzb2RoUVozZTFx?=
+ =?utf-8?B?bVN5OXBoTzVzUnphMFNTYmNRYXNVRE5rbHVzejFCUTBYSXVlRTI0eWpHWE1C?=
+ =?utf-8?B?eWZ6QUlMMlgybTR3ZFg2OFNXUkVsY0V3cFV0TTVCWnZmZnlEQW9aNWdUS3M5?=
+ =?utf-8?B?a3VmYkg3MC9kQmJuOFF6Y0JvYlM0bXdrWUlCemYxdnZPYW5JaVdqNTdBaTdZ?=
+ =?utf-8?B?bUZkNUVyaDFxRUxLckhVZXF1Y3B5QTRDMS9hVU95QUQ2UDBqcUUyd09pNGFV?=
+ =?utf-8?B?Q0JQS2E4SWo1Q3JEbmsvaFpGcU9qT21HTFJZMnVsMzJOT2FpM1B4V2RTSm90?=
+ =?utf-8?B?d29COG03THYrai9TNWNGa3FnMFcyN1dHRWdKcmVnSTFzajRWWVZHRER4RWVk?=
+ =?utf-8?B?THJUbVp6Y1cyNjZSOVZuakc2RGNFZGtUYURDUllENnE0d2U2YWZiNW90S3Nu?=
+ =?utf-8?B?QWxBdHdhbVVqbGRDazVvc1lIazd6b0ZIRG5nLytYTmVoUVVPZU5scll1TU1t?=
+ =?utf-8?B?NmhMNjhFY1ZHWjZDa2ZMUUxkc0NSOHQxSTNyaWhodXE5Y1hNSmIrRGsxWVpv?=
+ =?utf-8?B?dVA5K1g4MUYrdWRSUlFGWkpHcjNmUjFvblpuMlB6WEJOUzFzbmpKb2lQQmtn?=
+ =?utf-8?B?MmFFZjc1QXVvb1A2OVhMbVlFcE9lMllSS1ZrdVZDSXlFbkUyODY2U0k4N0ln?=
+ =?utf-8?B?cjJCdW1UamtWYkxkMzF2ZERjQ3FLT2RTdmFDY051WGF3OHR4TFhZNklRODJR?=
+ =?utf-8?B?NTMxTy9XRTR3dUVrd01lWHFHTFBCRVNDYVZZM2gra3hWNUlsajJ0blVRVVVY?=
+ =?utf-8?Q?LJTwih/Kxp8171DU=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56d0782b-8600-4cc7-e2af-08dedc13985c
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5858.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 10:36:25.4639
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xQ9IfcoyomFApwTFdyC07O1ZEDrbVs3Ut8NGMb+k5rjUp9lL8AI+SiLls3kokzyalEhdl1jz7dQTqUxQZJfcOqbe/XAYm49GMFR5pca4HiY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR04MB11138
 
+On 6/9/2026 5:29 PM, Ciprian Costea wrote:
 
---x6pdrlblnduy4h5o
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code creating
- the connector to a subfunction
-MIME-Version: 1.0
+Hello,
 
-On Fri, Jun 26, 2026 at 06:51:14PM +0200, Luca Ceresoli wrote:
-> On Fri Jun 26, 2026 at 4:38 PM CEST, Maxime Ripard wrote:
-> > On Fri, Jun 26, 2026 at 04:16:39PM +0200, Luca Ceresoli wrote:
-> >> Hi Maxime,
-> >>
-> >> On Fri Jun 26, 2026 at 12:09 PM CEST, Maxime Ripard wrote:
-> >> > On Wed, Jun 24, 2026 at 05:47:10PM +0200, Luca Ceresoli wrote:
-> >> >> On Wed Jun 24, 2026 at 1:41 PM CEST, Maxime Ripard wrote:
-> >> >> > Hi,x
-> >> >> >
-> >> >> > On Fri, Jun 12, 2026 at 02:56:24PM +0200, Luca Ceresoli wrote:
-> >> >> >> On Mon Jun 8, 2026 at 1:40 PM CEST, Maxime Ripard wrote:
-> >> >> >> > On Tue, May 19, 2026 at 12:37:22PM +0200, Luca Ceresoli wrote:
-> >> >> >> >> In preparation to introduce bridge hotplug, split out from
-> >> >> >> >> drm_bridge_connector_init() the code adding the drm_connector=
- into a
-> >> >> >> >> dedicated function. This will be needed to be able to add (an=
-d re-add) the
-> >> >> >> >> connector from different code paths.
-> >> >> >> >
-> >> >> >> > Same story here, explaining what you need later on that calls =
-for that
-> >> >> >> > change would be nice.
-> >> >> >>
-> >> >> >> Here's a more verbose version:
-> >> >> >>
-> >> >> >>     Currently drm_bridge_connector_init() does two things:
-> >> >> >>
-> >> >> >>      * allocate and initialize the drm_bridge_connector
-> >> >> >>        (which embeds a drm_connector)
-> >> >> >>      * initialize and register the embedded drm_connector
-> >> >> >>
-> >> >> >>     For bridge hotplug we need to separate these two actions:
-> >> >> >>
-> >> >> >>      * the drm_connector needs to be added and removed at any ti=
-me based on
-> >> >> >>        hotplug events
-> >> >> >>      * the drm_bridge_connector is designated to create and remo=
-ve the
-> >> >> >>        drm_connector, so it must be persistent for the card life=
-time
-> >> >> >>
-> >> >> >>     As the lifetimes of drm_bridge_connector and drm_connector b=
-ecome
-> >> >> >>     different, we need to create them in different moments.
-> >> >> >>
-> >> >> >>     In preparation to support that, split out from
-> >> >> >>     drm_bridge_connector_init() the code adding the drm_connecto=
-r into a
-> >> >> >>     dedicated function. No functional changes, just moving code =
-around for
-> >> >> >>     now. A future commit will make the drm_connector be created =
-based on
-> >> >> >>     hotplug events.
-> >> >> >>
-> >> >> >> Looks good?
-> >> >> >
-> >> >> > The message itself, yes, thanks.
-> >> >> >
-> >> >> > However, I have questions now :)
-> >> >> >
-> >> >> > Do we really expect drm_bridge_connector to stick around when a b=
-ridge
-> >> >> > gets unplugged? If so, how does it cope with having, say, an HDMI
-> >> >> > connector, and then swapping out the hotplugged part for an LVDS =
-one?
-> >> >> > Does the HDMI connector sticks around indefinitely?
-> >> >>
-> >> >> In your example, the HDMI drm_connector would be unregistered and p=
-ut on
-> >> >> hotunplug. Its allocation will stick around until the last put but =
-that's
-> >> >> quite irrelevant. Then, on plugging the LVDS addon, a new LVDS
-> >> >> drm_connector will be created and registered.
-> >> >>
-> >> >> > *Especially* if we're using overlays for this, I'd expect everyth=
-ing
-> >> >> >  after the first hotplugged bridge to be destroyed, no?
-> >> >>
-> >> >> As said, it would be unregistered immediately but might be freed la=
-ter on
-> >> >> if still refcounted.
-> >> >>
-> >> >> This is visible in patches 36+15, the path to follow is:
-> >> >>
-> >> >>  drm_bridge_connector_handle_event(event =3D DRM_BRIDGE_DETACHED) [=
-patch 36]
-> >> >>  -> drm_bridge_connector_dynconn_release()                      [pa=
-tch 15]
-> >> >>
-> >> >> Does this solve your concern?
-> >> >
-> >> > Not really, I'm talking about drm_bridge_connector. The fact that
-> >> > bridges are destroyed make sense to me. The fact that
-> >> > drm_bridge_connector sticks around doesn't. It's supposed to be a
-> >> > connector for bridges. If you don't have bridges because they got
-> >> > destroyed, and connector, drm_bridge_connector doesn't have a reason=
- to
-> >> > exist anymore, unless it's drm_bridge_hotplug in a trench coat :)
-> >>
-> >> It is not a hotplug-bridge in a trench coat, no :) The code is clear a=
-bout
-> >> this.
-> >>
-> >> I'd say with this series a "drm_bridge_connector" is just becoming
-> >> something more (perhaps something else too). Somewhat as "a drm_bridge=
- is
-> >> either a bridge or something else". :)
-> >>
-> >>
-> >> But let's leave names aside for a moment. If just looking at the curre=
-nt
-> >> code, the drm_bridge_connector is "a handler, owned by the card/encode=
-r and
-> >> having the same lifetime, which takes care of drm_connector
-> >> creation/destruction at card probe/removal".
-> >>
-> >> What we need now is just the same plug " and on hotplug events" append=
-ed.
-> >>
-> >> So in both cases there needs to be "a handler persitent with the card".
-> >>
-> >> Do we agree so far?
-> >
-> > Ish. If we go for that, then we need to update the name.
->=20
-> drm_connector_manager?
-> drm_bridge_connector_manager?
->=20
-> > drm_bridge_connector for something that is neither a bridge or a
-> > connector is not great.
-> >
-> > But even then, I'm not even sure why we need to have that "manager" in
-> > the first place. You want to make bridges be aware if they are the last
-> > in the chain or not. Use that property in attach to either create a
-> > drm_bridge_connector instance if you're last, or attach the next bridge
-> > if you aren't.
->=20
-> What? o_O
->=20
-> Several encoder drivers have been painfully converted to create a
-> drm_bridge_connector.
+Just sending another ping for this series since it has been hanging for 
+a while.
 
-I mean, it was done at a time where bridge hotplug wasn't a thing and
-the assumption was that the bridge chain is static. You're now breaking
-that assumption, it shouldn't come as a surprise that it might break
-other things.
+Best Regards,
+Ciprian
 
-And I know that you have experienced it already, which makes your
-reaction even more surprising to me :)
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> 
+> This patch series adds FlexCAN support for the NXP S32N79 SoC.
+> 
+> The S32N79 is an automotive-grade processor from NXP with multiple
+> FlexCAN instances. The FlexCAN IP integration on S32N79 differs from
+> other SoCs in the interrupt routing - it uses two separate interrupt
+> lines:
+>    - one interrupt for mailboxes 0-127
+>    - one interrupt for bus error detection and device state changes
+> 
+> The CAN controllers are connected through an irqsteer interrupt
+> controller in the RCU (Resource Control Unit) domain.
+> 
+> This series:
+>    1. Splits flexcan_irq() into dedicated handlers for multi-IRQ platforms
+>    2. Adds dt-bindings documentation for S32N79 FlexCAN
+>    3. Introduces FLEXCAN_QUIRK_IRQ_BERR to handle the two-interrupt
+>       configuration
+>    4. Adds S32N79 device data and compatible string to the driver
+>    5. Adds FlexCAN device tree nodes for S32N79 SoC
+>    6. Enables FlexCAN devices on the S32N79-RDB board
+> 
+> Tested on S32N79-RDB board with CAN and CAN FD communication.
+> 
+> v5 -> v4
+> - Simplified splitting rx/tx masks per mailbox IRQ line
+> 
+> v4 -> v3
+> - flexcan_chip_interrupts_enable(): disable/enable all IRQ lines
+>    (not just dev->irq) during IMASK register writes
+> - Split rx/tx masks per mailbox IRQ line (struct flexcan_mb_irq) so
+>    each handler on S32G2 only processes its own MB range
+> - Added received Acked-by tag on DT bindings patch
+> 
+> v3 -> v2
+> - Split flexcan_irq() into dedicated handlers (flexcan_irq_mb,
+>    flexcan_irq_boff, flexcan_irq_berr) to fix duplicate event
+>    processing when multiple IRQ lines run concurrently (new patch).
+> - Added flexcan_irq_esr() handler composing state + berr for S32N79
+> - Ordered quirks used by s32n devtype data by value.
+> 
+> v2 -> v1
+> - Renamed FLEXCAN_QUIRK_NR_IRQ_2 to FLEXCAN_QUIRK_IRQ_BERR to better
+> describe the actual hardware feature
+> - Appended new quirk at the end
+> - Switched from platform_get_irq to platform_get_irq_byname usage
+> - Updated interrupt description in dt-bindings
+> 
+> Ciprian Marian Costea (8):
+>    can: flexcan: use dedicated IRQ handlers for multi-IRQ platforms
+>    can: flexcan: disable all IRQ lines in
+>      flexcan_chip_interrupts_enable()
+>    can: flexcan: split rx/tx masks per mailbox IRQ line
+>    dt-bindings: can: fsl,flexcan: add NXP S32N79 SoC support
+>    can: flexcan: add FLEXCAN_QUIRK_IRQ_BERR quirk
+>    can: flexcan: add NXP S32N79 SoC support
+>    arm64: dts: s32n79: add FlexCAN nodes
+>    arm64: dts: s32n79: enable FlexCAN devices
+> 
+>   .../bindings/net/can/fsl,flexcan.yaml         |  30 ++-
+>   arch/arm64/boot/dts/freescale/s32n79-rdb.dts  |  12 +
+>   arch/arm64/boot/dts/freescale/s32n79.dtsi     |  50 ++++
+>   drivers/net/can/flexcan/flexcan-core.c        | 227 +++++++++++++++---
+>   drivers/net/can/flexcan/flexcan.h             |   2 +
+>   5 files changed, 292 insertions(+), 29 deletions(-)
+> 
 
-> Now if the bridges start doing it themselves we should go back to
-> those encoder drivers and ditch all the drm_bridge_connector from
-> there?
->=20
-> I must be missing something. Can you elaborate on this?
-
-drm_bridge_connectors bring together a (complete) bridge chain and a
-connector. If you don't have either anymore, then we shouldn't keep it
-around.
-
-What I was suggesting before was only a suggestion. I guess we could
-also make the encoder own the hotplug handling code and create the
-drm_bridge_connector when the chain is complete, and remove it when it's
-no longer the case.
-
-We can discuss alternatives too. But either way, we shouldn't have it
-stick around.
-
-Maxime
-
---x6pdrlblnduy4h5o
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCakzNIQAKCRAnX84Zoj2+
-du+qAX43kljZZucgvri1zfEzUShKq54Eo19xSTUSYyjPDqJ97MVWyR/twJsiom7M
-c1IT+5gBgPOy0Sqp9zNOEu4WUU2GiUkEcQulYkP9buQk0paAeCEbBX7WLLC9xT12
-W3H+U3JZYg==
-=wzdu
------END PGP SIGNATURE-----
-
---x6pdrlblnduy4h5o--
