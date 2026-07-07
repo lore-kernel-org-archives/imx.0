@@ -1,140 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99873F65EA
-	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 11:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371EA13DDAA
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 11:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783422773; cv=none; b=DQg2mCoFvrw/zOesxnjKpV9mv+apUv8WLzyrLJoJ/NbFlxYFl/EWLLSwR5kXl6PWIf8wJkU+veKVdcmHSfdOK9BcNoDCmOZUHWa1I+UV549GCMu5XtqN9ecajtM4s7rJd9u0MkAixmiYQ3XGGVLYhIS2k77r8dncZadpHM6YWLg=
+	t=1783422873; cv=none; b=fuuLiutnO8BD7w3qRv3nPUIiTaxYW/tBxtje5pQ2c//IQ9YbtKmJjcZP2TduUfhLabH0L2/mTzR6fowrV3Jrv+yIvorB+Jv4wByOBt5r/QBodfazOAn2HYFT8yYmibkbsRQ1eCuco2JzVWe+uecQPNZmC8P8C2gtpq15F/uWtac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783422773; c=relaxed/simple;
-	bh=RBV+VdFVgYBiC02M4cD5KNOimloccn9w41l3y2Eqago=;
+	s=arc-20240116; t=1783422873; c=relaxed/simple;
+	bh=q4HuwyxtdWWJYNMfpF+PrIo3e0E733zE6IV0inpeUcM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GGgwPGeyjuK7YLXACY1D6W1KbJym9TY/19DWxJoFyw7eXghClvx7nGl8+Y6RsgBAsRsmr7vOEkGcJSvcqQCEHcG7Aa+pGy21xmCPIwXQqYvDAsfnxM48KANowMiom9BKEK6YripkWrTGLjonZImtnyLXycPymNFoPh0gugR7gi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQn/Y8rh; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=YrLwuYMYwddK8bQuLDURxlIXtdEbq+LVnybLW/otAQvNdjQ4ooHPJv646XxvxcK7K6t17bwdE/DDHo0Z92Xtd7iWq+9fuUMvKSCWi1D7IuI86BJZAz5njscmaJjR2/XchY/KINHCf4x2cHFvWMT3zfJ7xkYsCeb5OmrWdEQ8ZYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ek2Pf3Uv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQn/Y8rh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38781F000E9;
-	Tue,  7 Jul 2026 11:12:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ek2Pf3Uv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A66A1F000E9;
+	Tue,  7 Jul 2026 11:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783422770;
-	bh=KgMnKplG+tQP2ffS0Fw6DJn4nZfJdIz9ZMxkZm7hbIc=;
+	s=k20260515; t=1783422871;
+	bh=dWYFkmZjj/mBuN+j9r9CkBSfjWApAn8RAjMoBZMbuEg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VQn/Y8rhIAlp+BmU2S+HNstbIVJacvnrd3np3kQm4e4ag6AFcQdMY8/f4kdna7cwS
-	 99wmwej3gM++7UXsojw8AneAabPgWSkTcOJyQQH79d0xjDxr8i0GszSzsrTclSGZa6
-	 Egyv6cLpW860NgsoC60+P9ET9w98vkLNOCK0cVZZjhrgf9YlkWdMYboPi85x53hG6m
-	 b4j8letVwCsE2f01MT1kAKXoeiZA94PySKVXySn+9dSUw4oAkMEijc/nquS+Ncvymi
-	 eLWVCBjLAx2HQrDNSw26aR9Ma9dXPIBoJr+eiAGpgeVwV6qWtqvSegL63821JCbEHf
-	 wfqZzdaEew6rg==
+	b=ek2Pf3Uvndvx+dXzIIwTx28M1Qa0eQVu0msuPmAiuBF9uQ1BEObbQ+HNrAwtmkul2
+	 w5rOvdTEHOubQUBqNJcNropGe5YWQ4giL6P2E0KSVfXZ8wPq+qm44HvyLG7DCF9BvS
+	 QaS6kLyUPaKBWBGAszwH8c8vulmad+aZ3EwkHK4WqUX8BuVmdZYz4mNJKiHKMkx4is
+	 5zmnj1hLKP7YZXCgjAjvhhKQd6rGeXI7WPZN4VrL8vS6aUlGfKn9fqVEdNvUx9UcjO
+	 41dCyZqo9JMf0nJ/6dH/GDXLUfvP1j/vQ3iSwUVKZW6++SqDnRr8Ji7gUXi3psCzhH
+	 fsZ3JIUHBk3Rw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 6/8] mmc: sdhci-esdhc-imx: use
- pm_runtime_resume_and_get() in suspend
+Subject: Re: [PATCH v5 7/8] mmc: sdhci-esdhc-imx: make non-fatal errors
+ non-blocking in suspend
 Reply-To: sashiko-reviews@lists.linux.dev
 To: ziniu.wang_1@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260707110303.3779799-7-ziniu.wang_1@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260707110303.3779799-8-ziniu.wang_1@oss.nxp.com>
 References: <20260707110303.3779799-1-ziniu.wang_1@oss.nxp.com>
- <20260707110303.3779799-7-ziniu.wang_1@oss.nxp.com>
+ <20260707110303.3779799-8-ziniu.wang_1@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 11:12:49 +0000
-Message-Id: <20260707111249.F38781F000E9@smtp.kernel.org>
+Date: Tue, 07 Jul 2026 11:14:31 +0000
+Message-Id: <20260707111431.8A66A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] The exact same unchecked pm_runtime_get_sync() bug that this patch=
- fixes in sdhci_esdhc_suspend() is present in sdhci_esdhc_imx_remove().
-- [High] Ignoring pm_runtime_force_resume() failure in sdhci_esdhc_resume()=
- can lead to unclocked register access and a kernel panic.
+- [High] Ignoring `pm_runtime_force_suspend()` failure leads to an unbalanc=
+ed PM state and potential system crash during resume.
 --
 
---- Patch [6]: [PATCH v5 6/8] mmc: sdhci-esdhc-imx: use pm_runtime_resume_a=
-nd_get() in suspend ---
-commit 96d8d6ad1f0e2f2a06d51f1a48050880d936f2ca
+--- Patch [7]: [PATCH v5 7/8] mmc: sdhci-esdhc-imx: make non-fatal errors n=
+on-blocking in suspend ---
+commit 4c281f4618f6273e8644ab8fb66535c0ebe7c6e2
 Author: Luke Wang <ziniu.wang_1@nxp.com>
 
-mmc: sdhci-esdhc-imx: use pm_runtime_resume_and_get() in suspend
+mmc: sdhci-esdhc-imx: make non-fatal errors non-blocking in suspend
 
-Replace pm_runtime_get_sync() with pm_runtime_resume_and_get() to
-simplify error handling. pm_runtime_resume_and_get() automatically
-drops the usage counter on failure, avoiding the need for a separate
-pm_runtime_put_noidle() call. If it fails, the device is unclocked and
-accessing hardware registers would cause a kernel panic, so return the
-error immediately.
+This commit modifies the suspend path of the sdhci-esdhc-imx driver to
+make failures in pinctrl_pm_select_sleep_state() and mmc_gpio_set_cd_wake()
+non-fatal. It logs warnings instead of returning an error for these cases
+and changes sdhci_esdhc_suspend() to always return 0 on completion.
 
 > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
 esdhc-imx.c
-> index d980dea9cad1f..7818f351a58ae 100644
+> index 7818f351a58ae..6cb84690fde4e 100644
 > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -2061,7 +2061,9 @@ static int sdhci_esdhc_suspend(struct device *dev)
->  	 * 2, make sure the pm_runtime_force_resume() in sdhci_esdhc_resume() r=
-eally
->  	 *    invoke its ->runtime_resume callback (needs_force_resume =3D 1).
+[ ... ]
+> @@ -2108,7 +2110,7 @@ static int sdhci_esdhc_suspend(struct device *dev)
 >  	 */
-> -	pm_runtime_get_sync(dev);
-> +	ret =3D pm_runtime_resume_and_get(dev);
-> +	if (ret)
-> +		return ret;
+>  	pm_runtime_force_suspend(dev);
 > =20
->  	if ((imx_data->socdata->flags & ESDHC_FLAG_STATE_LOST_IN_LPMODE) &&
->  		(host->tuning_mode !=3D SDHCI_TUNING_MODE_1)) {
+> -	return ret;
+> +	return 0;
+>  }
 
 [Severity: High]
-This is a pre-existing issue, but I noticed similar unchecked runtime PM ca=
-lls
-in this driver that could lead to the same unclocked register access panics
-mentioned in the commit message.
+This is a pre-existing issue, but does ignoring the return value of
+pm_runtime_force_suspend() lead to an unbalanced PM state?
 
-In sdhci_esdhc_imx_remove(), the return value of pm_runtime_get_sync() is
-ignored immediately before performing a hardware register read:
+If pm_runtime_force_suspend() fails (for example, if cqhci_suspend() times
+out and returns -ETIMEDOUT), the device's runtime PM status will remain
+RPM_ACTIVE, but the suspend process continues.
 
-drivers/mmc/host/sdhci-esdhc-imx.c:sdhci_esdhc_imx_remove() {
-	...
-	pm_runtime_get_sync(&pdev->dev);
-	dead =3D (readl(host->ioaddr + SDHCI_INT_STATUS) =3D=3D 0xffffffff);
-	...
-}
+Upon system resume, sdhci_esdhc_resume() calls pm_runtime_force_resume().
+Because pm_runtime_force_resume() checks pm_runtime_status_suspended(), it
+will see RPM_ACTIVE and assume the device is already active, skipping the
+driver's runtime_resume callback.
 
-If pm_runtime_get_sync() fails to resume the device (for example, due to
-clk_prepare_enable() failing) during driver unbind, it returns an error. Do=
-es
-ignoring this error and immediately reading SDHCI_INT_STATUS cause a
-synchronous external abort that crashes the system?
+Since the runtime_resume callback is skipped, cqhci_resume() is never called
+to reinitialize the Command Queuing Engine (CQE), and clock enablement might
+also be skipped. Subsequent accesses to the hardware in
+sdhci_esdhc_imx_hwinit() or later MMC operations could then trigger a
+synchronous external abort (if clocks are off) or lead to I/O errors
+(due to an uninitialized CQE).
 
-[Severity: High]
-This isn't a bug introduced by this patch, but a similar issue exists in the
-system resume path.
-
-In sdhci_esdhc_resume(), pm_runtime_force_resume() is called and its error =
-is
-ignored immediately before hardware register initialization:
-
-drivers/mmc/host/sdhci-esdhc-imx.c:sdhci_esdhc_resume() {
-	...
-	pm_runtime_force_resume(dev);
-
-	ret =3D mmc_gpio_set_cd_wake(host->mmc, false);
-	if (ret)
-		return ret;
-
-	/* re-initialize hw state in case it's lost in low power mode */
-	sdhci_esdhc_imx_hwinit(host);
-	...
-}
-
-If pm_runtime_force_resume() fails and returns an error, the driver
-proceeds to call sdhci_esdhc_imx_hwinit(), which writes to hardware
-registers like ESDHC_WTMK_LVL. Could accessing these registers while
-clocks are gated off cause a synchronous external abort on i.MX platforms?
+If the error from pm_runtime_force_suspend() is propagated instead, shouldn=
+'t
+the driver also roll back the operations performed earlier in
+sdhci_esdhc_suspend(), specifically disable_irq() and
+pm_runtime_resume_and_get(), since the PM core will abort the suspend and
+will not call sdhci_esdhc_resume() for this device?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707110303.3779=
-799-1-ziniu.wang_1@oss.nxp.com?part=3D6
+799-1-ziniu.wang_1@oss.nxp.com?part=3D7
