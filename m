@@ -1,126 +1,250 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0487081AA8
-	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 11:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2ED4315F
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 11:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783423027; cv=none; b=ABMCX9ikBFxalqjLC0LmTrNKBXK0bdvrlQu77pDmYziGPBhUItTn++LaKuTkFgCoSFGh+Ro/1anquh3F3tMkwzAyyOpOcdEQbCAkLoHf0d2+lfsfuJTL/P3wIpNj+wdaWBA/hH+mT0/zIHLwnF6iAhNlKcE8lgwCw5wiQAE8eFQ=
+	t=1783424514; cv=none; b=K8atE13I2q3DRYm8ZdXRDVxRplv6lVp1RqcifX3Glu50fhXWQuoffUwnJAmlmy2QeChOdfbACq43Z0H1rlnm8zhGY5A0keEQQd1AWuTu9GJC8xC+oDO1eYjokv6u+2uuHSw1PqIzxcOJ+jB+yLbpUTPylywWht2FLCRKprfA74E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783423027; c=relaxed/simple;
-	bh=ynxjIFvBPFwWmFsOZRA8frYn8xbiNiC5OMGP5NZiWC0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XQPyTNK1Al4QfYeAAgF1uCPRONO6GD1wzYPhUwbmIUph6uQYfTYq72Ji4QiDduNuhYgZBMBNWjWeOgOOOXH3rAzeXF9a4Ez0POGLOYFqWRS48ur+BwGiflH6rvpfYER95D3jxCk526nzUHf6BFa+Kyenz88xXokctbLT3/v7kpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FyHCTj30; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783424514; c=relaxed/simple;
+	bh=AXimq/rtIFwP4aD04kh/5vfPSxje93mi8aUhDJB2eB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pGzaxqGz8r3hPRThnrTXHmEmkCoAaZhLcGrrERc/e4I912GNMApfksr3e90EakVDdYVREKAwpCkOl6ZbXdV0hv6k3KXsRsNJpJ63DAbu6ZqaJZjqNwWnrkR8KeYRNEF+IleHVwG/A+7adrvK/6JT/xzJpHGvkELfY8zTrkVK4qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ADw/n6k3; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FyHCTj30"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD8F1F000E9;
-	Tue,  7 Jul 2026 11:17:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783423025;
-	bh=93D1TyY1k2vAOD4N2iLJ2wX1SNSalyPvpcGvGDFXMf4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FyHCTj30B9hsln4I/r037FE2fXecP2bzrPfH2z0PLmhQC/neo7mXo1knMzbHoWpz1
-	 kFJYD2uIUu/4VQ/Flh8LVxmcIj1yUPCiZvvTUQ29Wi2F2Aq3hpeJ9nYmSWY1lT6x9r
-	 tLRhMW3wV5zwe7W8gmdhG3Y6W6qnm9QJWZRIoPsbQdzn51NbaKgae68WH9ZpC1eVry
-	 /Hm9Udnbl0f5EM0ZrY6q899DmTiq2518jXtptGk4N82oBJl6l9IVT+/sbty7JQMy0h
-	 Ypnau/3+tO3Afw1d3b5DTJf0N3FHel0g2m0WjYXct4bc4EjvflU8id16DAD5I8iQpt
-	 3VedETbpeif9Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/8] mmc: sdhci-esdhc-imx: fix
- esdhc_change_pinstate() to allow default state restore
-Reply-To: sashiko-reviews@lists.linux.dev
-To: ziniu.wang_1@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260707110303.3779799-4-ziniu.wang_1@oss.nxp.com>
-References: <20260707110303.3779799-1-ziniu.wang_1@oss.nxp.com>
- <20260707110303.3779799-4-ziniu.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 11:17:04 +0000
-Message-Id: <20260707111705.4FD8F1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ADw/n6k3"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3731271B
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 04:41:47 -0700 (PDT)
+Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id F2A8C3F85F
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 04:41:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783424512; bh=AXimq/rtIFwP4aD04kh/5vfPSxje93mi8aUhDJB2eB0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ADw/n6k3gun+9tChWeWdkSSEFJ8BOdJnoz0PVKYcc87hgBRKdmXd8oItv4A6Rc09O
+	 39JY4jQeAoI6+AyPtS/07cAKfvdpx3Smf3rrK3fgP/nHAyvk4OPQPdSDXOipnB6QGO
+	 spAmnghIKDJP8DACgSmQYKEKGU8fBelaso/1+D3o=
+Date: Tue, 7 Jul 2026 12:39:54 +0100
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Linus Walleij <linusw@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Eddie James <eajames@linux.ibm.com>,
+	Tiffany Lin <tiffany.lin@mediatek.com>,
+	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
+	Houlong Wei <houlong.wei@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joseph Liu <kwliu@nuvoton.com>, Marvin Lin <kflin@nuvoton.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ge Gordon <gordon.ge@bst.ai>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Peter Chen <peter.chen@cixtech.com>,
+	Fugang Duan <fugang.duan@cixtech.com>,
+	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
+	BST Linux Kernel Upstream Group <bst-upstream@bstai.top>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	CIX Linux Kernel Upstream Group <cix-kernel-upstream@cixtech.com>,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-aspeed@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
+	openbmc@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+	kernel@collabora.com, linux-tegra@vger.kernel.org,
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev, sound-open-firmware@alsa-project.org
+Subject: Re: [PATCH 00/42] of: reserved_mem: Introduce devres helpers and
+ convert drivers
+Message-ID: <akzliqtjZVwNw594@e142607>
+References: <20260703193855.110619-1-mukesh.ojha@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260703193855.110619-1-mukesh.ojha@oss.qualcomm.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Sat, Jul 04, 2026 at 01:08:13AM +0530, Mukesh Ojha wrote:
+> Drivers using of_reserved_mem_device_init() and its variants must
+> manually call of_reserved_mem_device_release() in their remove and
+> error-unwind paths. This is repetitive boilerplate that is easy to
+> get wrong, and several drivers have open-coded the teardown
+> inconsistently or skipped it entirely, leading to dangling reserved
+> memory references.
+> 
+> This series introduces devres-managed wrappers —
+> devm_of_reserved_mem_device_init(), devm_of_reserved_mem_device_init_by_idx(),
+> and devm_of_reserved_mem_device_init_by_name() — that tie the reserved
+> memory region lifetime to the device, releasing it automatically on
+> unbind. The remaining 40 patches convert drivers across the drm, media,
+> ASoC, remoteproc, firmware, mmc, memory and misc subsystems to use these
+> helpers, yielding a net reduction of ~90 lines of boilerplate.
+> 
+> This series depends on  https://lore.kernel.org/lkml/20260703164457.4040457-1-mukesh.ojha@oss.qualcomm.com/
+> 
+> Konrad Dybcio (1):
+>   of: reserved_mem: Introduce devres-managed initialization functions
+> 
+> Mukesh Ojha (41):
+>   of: reserved_mem: Add devm_of_reserved_mem_device_init_by_name()
+>   firmware: qcom: scm: Use devm_of_reserved_mem_device_init()
+>   remoteproc: da8xx: Use devm_of_reserved_mem_device_init()
+>   remoteproc: keystone: Use devm_of_reserved_mem_device_init()
+>   media: synopsys: hdmirx: Use devm_of_reserved_mem_device_init()
+>   remoteproc: omap: Use devm_of_reserved_mem_device_init()
+>   drm: logicvc: Use devm_of_reserved_mem_device_init()
+>   drm: hdlcd: Use devm_of_reserved_mem_device_init()
+>   drm: pl111: Use devm_of_reserved_mem_device_init()
+>   remoteproc: mtk_scp: Use devm_of_reserved_mem_device_init()
+>   media: aspeed: Use devm_of_reserved_mem_device_init()
+>   media: nuvoton: npcm-video: Use devm_of_reserved_mem_device_init()
+>   memory: tegra210-emc: Use devm_of_reserved_mem_device_init_by_name()
+>   drm: komeda: Use devm_of_reserved_mem_device_init()
+>   drm: malidp: Use devm_of_reserved_mem_device_init()
 
-Pre-existing issues:
-- [High] Pre-existing NULL pointer dereference in `esdhc_change_pinstate()`=
- due to insufficient pointer validation.
---
+For the hdlcd, komeda and malidp drivers:
 
---- Patch [3]: [PATCH v5 3/8] mmc: sdhci-esdhc-imx: fix esdhc_change_pinsta=
-te() to allow default state restore ---
-commit a74e8c023dfc4c92edd0793b792f39383f06ef13
-Author: Luke Wang <ziniu.wang_1@nxp.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 
-mmc: sdhci-esdhc-imx: fix esdhc_change_pinstate() to allow default state re=
-store
+Best regards,
+Liviu
 
-This commit moves the IS_ERR checks for pins_100mhz and pins_200mhz into
-their respective switch cases. This allows devices with a sleep pinctrl
-state but without high-speed pin states to restore their default pin
-configuration.
+>   drm: ingenic: Use devm_of_reserved_mem_device_init()
+>   drm: kmb: Use devm_of_reserved_mem_device_init()
+>   drm: sun4i: Use devm_of_reserved_mem_device_init()
+>   drm: xlnx: zynqmp_dpsub: Use devm_of_reserved_mem_device_init()
+>   media: arm: mali-c55: Use devm_of_reserved_mem_device_init()
+>   media: mediatek: vpu: Use devm_of_reserved_mem_device_init()
+>   mmc: sdhci-of-bst: Use devm_of_reserved_mem_device_init_by_idx()
+>   remoteproc: ti_k3: Use devm_of_reserved_mem_device_init()
+>   ASoC: mediatek: mt8192: Use devm_of_reserved_mem_device_init()
+>   ASoC: mediatek: mt8196: Use devm_of_reserved_mem_device_init()
+>   ASoC: mediatek: mt8183: Use devm_of_reserved_mem_device_init()
+>   ASoC: mediatek: mt8189: Use devm_of_reserved_mem_device_init()
+>   ASoC: SOF: imx: Use devm_of_reserved_mem_device_init_by_name()
+>   staging: media: cedrus: Use devm_of_reserved_mem_device_init()
+>   ASoC: cix-ipbloq: Use devm_of_reserved_mem_device_init()
+>   drm: aspeed: Use devm_of_reserved_mem_device_init()
+>   drm: arcpgu: Use devm_of_reserved_mem_device_init()
+>   ASoC: mediatek: mt8173: Use devm_of_reserved_mem_device_init()
+>   ASoC: mediatek: mt8186: Use devm_of_reserved_mem_device_init()
+>   ASoC: mediatek: mt8188: Use devm_of_reserved_mem_device_init()
+>   ASoC: mediatek: mt8195: Use devm_of_reserved_mem_device_init()
+>   ASoC: SOF: mediatek: mt8186: Use devm_of_reserved_mem_device_init()
+>   ASoC: SOF: mediatek: mt8195: Use devm_of_reserved_mem_device_init()
+>   misc: fastrpc: Use devm_of_reserved_mem_device_init()
+>   ASoC: fsl: imx-rpmsg: Use devm_of_reserved_mem_device_init_by_idx()
+>   ASoC: sprd: Use devm_of_reserved_mem_device_init()
+> 
+>  drivers/firmware/qcom/qcom_scm.c              | 22 +++------
+>  .../gpu/drm/arm/display/komeda/komeda_dev.c   |  4 +-
+>  drivers/gpu/drm/arm/hdlcd_drv.c               |  6 +--
+>  drivers/gpu/drm/arm/malidp_drv.c              |  4 +-
+>  drivers/gpu/drm/aspeed/aspeed_gfx_drv.c       |  2 +-
+>  drivers/gpu/drm/ingenic/ingenic-drm-drv.c     | 13 +-----
+>  drivers/gpu/drm/kmb/kmb_drv.c                 | 12 +----
+>  drivers/gpu/drm/logicvc/logicvc_drm.c         | 21 ++++-----
+>  drivers/gpu/drm/pl111/pl111_drv.c             |  4 +-
+>  drivers/gpu/drm/sun4i/sun4i_drv.c             |  4 +-
+>  drivers/gpu/drm/tiny/arcpgu.c                 |  2 +-
+>  drivers/gpu/drm/xlnx/zynqmp_dpsub.c           |  4 +-
+>  .../platform/arm/mali-c55/mali-c55-core.c     | 12 ++---
+>  drivers/media/platform/aspeed/aspeed-video.c  | 12 ++---
+>  drivers/media/platform/mediatek/vpu/mtk_vpu.c |  3 +-
+>  drivers/media/platform/nuvoton/npcm-video.c   |  9 +---
+>  .../platform/synopsys/hdmirx/snps_hdmirx.c    | 16 +------
+>  drivers/memory/tegra/tegra210-emc-core.c      | 21 ++++-----
+>  drivers/misc/fastrpc.c                        |  2 +-
+>  drivers/mmc/host/sdhci-of-bst.c               |  7 +--
+>  drivers/of/of_reserved_mem.c                  | 41 +++++++++++++++++
+>  drivers/remoteproc/da8xx_remoteproc.c         | 10 +---
+>  drivers/remoteproc/keystone_remoteproc.c      | 16 +------
+>  drivers/remoteproc/mtk_scp.c                  |  3 +-
+>  drivers/remoteproc/omap_remoteproc.c          | 13 +-----
+>  drivers/remoteproc/ti_k3_common.c             | 13 +-----
+>  drivers/remoteproc/ti_k3_common.h             |  1 -
+>  .../staging/media/sunxi/cedrus/cedrus_hw.c    |  6 +--
+>  include/linux/of_reserved_mem.h               | 46 +++++++++++++++++++
+>  sound/hda/controllers/cix-ipbloq.c            |  2 +-
+>  sound/soc/fsl/imx-rpmsg.c                     |  2 +-
+>  sound/soc/mediatek/mt8173/mt8173-afe-pcm.c    |  2 +-
+>  sound/soc/mediatek/mt8183/mt8183-afe-pcm.c    | 13 +-----
+>  sound/soc/mediatek/mt8186/mt8186-afe-pcm.c    |  2 +-
+>  sound/soc/mediatek/mt8188/mt8188-afe-pcm.c    |  2 +-
+>  sound/soc/mediatek/mt8189/mt8189-afe-pcm.c    | 16 +------
+>  sound/soc/mediatek/mt8192/mt8192-afe-pcm.c    | 11 +----
+>  sound/soc/mediatek/mt8195/mt8195-afe-pcm.c    |  2 +-
+>  sound/soc/mediatek/mt8196/mt8196-afe-pcm.c    | 14 +-----
+>  sound/soc/sof/imx/imx-common.c                |  9 ++--
+>  sound/soc/sof/mediatek/mt8186/mt8186.c        |  2 +-
+>  sound/soc/sof/mediatek/mt8195/mt8195.c        |  2 +-
+>  sound/soc/sprd/sprd-pcm-dma.c                 |  3 +-
+>  43 files changed, 162 insertions(+), 249 deletions(-)
+> 
+> -- 
+> 2.53.0
+> 
 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
-esdhc-imx.c
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -1326,19 +1326,21 @@ static int esdhc_change_pinstate(struct sdhci_hos=
-t *host,
-> =20
->  	dev_dbg(mmc_dev(host->mmc), "change pinctrl state for uhs %d\n", uhs);
-> =20
-> -	if (IS_ERR(imx_data->pinctrl) ||
-> -		IS_ERR(imx_data->pins_100mhz) ||
-> -		IS_ERR(imx_data->pins_200mhz))
-> +	if (IS_ERR(imx_data->pinctrl))
->  		return -EINVAL;
-> =20
->  	switch (uhs) {
->  	case MMC_TIMING_UHS_SDR50:
->  	case MMC_TIMING_UHS_DDR50:
-> +		if (IS_ERR(imx_data->pins_100mhz))
-
-[Severity: High]
-This is a pre-existing issue, but could this lead to a NULL pointer
-dereference?
-
-On non-USDHC platforms where the device tree incorrectly advertises UHS
-capabilities, pins_100mhz might be uninitialized and left as NULL. Since
-IS_ERR() evaluates to false for a NULL pointer, this check will pass,
-allowing the NULL pointer to be assigned to pinctrl and later passed to
-pinctrl_select_state(), which will panic in pinctrl_commit_state().
-
-Would it be safer to use IS_ERR_OR_NULL() here instead?
-
-> +			return -EINVAL;
->  		pinctrl =3D imx_data->pins_100mhz;
->  		break;
->  	case MMC_TIMING_UHS_SDR104:
->  	case MMC_TIMING_MMC_HS200:
->  	case MMC_TIMING_MMC_HS400:
-> +		if (IS_ERR(imx_data->pins_200mhz))
-
-[Severity: High]
-This is also a pre-existing issue, but could the same NULL pointer
-dereference happen here?
-
-If pins_200mhz is NULL due to the same misconfigured device tree scenario
-mentioned above, this check will also pass, resulting in a panic when NULL
-is passed to pinctrl_select_state().
-
-Should this check also be updated to IS_ERR_OR_NULL()?
-
-> +			return -EINVAL;
->  		pinctrl =3D imx_data->pins_200mhz;
->  		break;
->  	default:
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707110303.3779=
-799-1-ziniu.wang_1@oss.nxp.com?part=3D3
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
