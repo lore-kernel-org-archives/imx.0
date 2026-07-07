@@ -1,203 +1,440 @@
-Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11023084.outbound.protection.outlook.com [40.107.44.84])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013012.outbound.protection.outlook.com [52.101.72.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF6618E02A;
-	Tue,  7 Jul 2026 01:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.44.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862D12874E6
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 02:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783388210; cv=fail; b=EpKMi24CGSjgO6VLtsfglTykE2SkAR4dBWPx9erFib0gAgLTrqDxDi0yjLlykXbpRvjCUeLky2/AJgT9OVTm1nmVNP/FkDEfusDvv81RuTpbmZ6u6v0jLsauDsiTTB9ptNz2U/xiLoGy5wlIPKD2/L4HEiOOaPUjzcju/fphRjs=
+	t=1783391084; cv=fail; b=hmMOiSrUfqonGFo/7Uh+rp6ohLQTvy1fyqxLbBe26ZtxPk/+Oxv84YUnfyHdgpGhW/8T99kEXUtX3bZws0cI7KsMjGr8FwANbpZEsyk7rJ4JJ16OTuz6dfthmL1XwlzbXWpBTBo6r77daLNJKv6MhjET94SBbj3JTKO3FH+DtJw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783388210; c=relaxed/simple;
-	bh=91Je8gFr6JB5PfNsNijcj8PMTQF0z+oCEFcEsEaHduc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XpQMu94SQ54g3FicLHxEaj8sTBNkI+hLjfvzUY/hIpDwteXvNn6PPTyFz+0tqakgFUs0RwnMoZPkoSBZdoguz33zuqVN6aE5P7YxNzXKENNCKZmKZpiadWOhOfvW9H1oAjo/WgSGt9YhvhtzfyvW7SJr1Q07uyTbzIJtkuAEg9I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com; spf=pass smtp.mailfrom=cixtech.com; arc=fail smtp.client-ip=40.107.44.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cixtech.com
+	s=arc-20240116; t=1783391084; c=relaxed/simple;
+	bh=l73R9O8iBF2C0RV0BTwua33XaDi4sR+ViKpzpHJPWwM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=iixgwIc27oCXPVqrfeJetqFbcnJ1qqAegxmQxFSgRVVRpSGeAPPlxUwGr2NgJJM44Gvv4uveqaI2wE6fyjbWjDj93taD1RWMETmXyLKMnWf+EVjFkUeaO7KPcdpkwC34sq7353cBpCp/KBknN82HgRU9y40JTHHT1laHZHwworM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NR60oah2; arc=fail smtp.client-ip=52.101.72.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NR60oah2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=enilA8zYZzVL1Y1E8qXyS7/jZFIXtdnJgPiYOmK83r9gOPTKJqwAyI7CyKQs+aKJ1M+HROiyeuGbdPHmRVnJhy8f9qATTUWW/dR+MGYmZboIEBamyfvWeCtG4iGsKDHMY2kTdJvNX5nHkKeH7TKowAy9NEs1b0yc3CF/5K1y/QsnJDJ3tJKH2NOWanUBrhBBdaKZhZN/Ldv5hNETIzEw1qS3ZklECAswkfAwdyvZsZb6Z0hIrUVzYZFStGf3lUW33Dk6c2R8Dsy3z4d2cRMJHVFhIL64JDowVSpYTgqbLqB1q7KSMChujI+tLRZo//qeztXYZaGviP1AgewKeZG6ZA==
+ b=KweJsYuXeeABTYQCcQpxlg7kbgNKMxEPJA/EeP3+U9telOFvoiAjuSwPmc5IGsZ743Ia7pDh6hvNk9ewbxWhDuSExd9ZzxZoeReczYF47XJ9o2tpxlZMUsdO1Se/JLYpSQJOKFH+faQG+FtWwKZeJnT/x/Y4wSGIJHSfY4vjKmYgw95a3n4dOOUS6/WHKQ6KXAh1/mU6T5UbpVxRI+Efc7SnCtw1vnafJR9iYLNh7gfTA+hKX6bX2K5H2AwYJ+6r6uY86LghUzvZbj5erX4Cla1elrefbKMlbtSiX7GttdcIMkrkgost+df+FoBnfNoMxyd11ZA6vyXJg9x4lgoIxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zVAt++BBwa9Lp7CQU3w81aHy4kuxWu8xS5VkSssx/8s=;
- b=SfMp+HnA/nq59x5AwpIC0k7qpcQi7ldLr+1t2moMNCA4VpXIRK3jyw4SzceIhwaMHBE62OTqFCusu/qV9Hq8mUU68M1RknexNMQwMUDWX/+KLaLBBZyVNSNGSGqQm3zZgCj9USN3uKolqS4FnPJiwobgFokr8JLFK3TBIPxfdipT4A8d5ADV0EfacqXDymSeClaJP+h3oiNPCUqGtmh3/j8fLFwEOVTATcnMN4cKKHaV2K0LTEk6qNqFqsL9MlYAmlqdDk0UAPnSHh+/XIkw/3D+bp8Tt4mg8bzdqVe0S5tO/Hr939ErpSqiU5v4MfF4esSzg4pG1LLn6dbXRZrL2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 222.71.101.198) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=cixtech.com;
- dmarc=bestguesspass action=none header.from=cixtech.com; dkim=none (message
- not signed); arc=none (0)
-Received: from PUVP216CA0003.KORP216.PROD.OUTLOOK.COM (2603:1096:301:16f::7)
- by SEZPR06MB5992.apcprd06.prod.outlook.com (2603:1096:101:f2::14) with
+ bh=ZnzNz2mbJT5/vwhb5017rjxk5AnsEDgbkzobgbgUkHI=;
+ b=WappL+XFU2693f2bQbS8L9C4rx4+aa5DPeVhqc3KNEXT2PPBmUS/MsW0wSoBMYkapJPlvIQYL9D4vU64aqZSMtuJud9dQjj8amhSjGH7Ptnwdm4aSAlNdKT3VtsSY3Cxt4pdOCA5/6KShWr9+mSfIo6ULuUH1byMYZnarK5iXFGTk4gd7NdYLULC0g7slyUmh012pDExFjvVmS+rBGfCf8JRL3k/DyoqYUu1pYTiKqXAH0OnQYMwpEpUxRtHhZJI8SAuIwoo6cvPQgbEqIdm6myF8w/5BM0W8ztKwdk/jhiY19FsYuxqr40VRPbrBSa6Kggwch88JAD9yFtZ0TriXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZnzNz2mbJT5/vwhb5017rjxk5AnsEDgbkzobgbgUkHI=;
+ b=NR60oah2MOFMWtuBWeFnohvPHI6NqEyIaVoH18r+Bwu/jAR8+BB/9n4rqBPG/gyTYRQ+mTpk4TeQ9Wp8GQrcLnn8xTp/+SjjqmmZ/brAU94fHauh54PvZ7vGgaXIjg2fv5wiPp8J6rSmjQCDYcsPAT3hT/9PPYsCeyzwkLQESGe+WoHkA1AOC85hat459V9FJRnhb4T0Q+Ji/g2ceZq07iWvGFPdzhRh+qXT/VIehBDCM3vaCiLtIxm/0A1F5RmhNVwNJfuj+fhYUhzfBaQjftNZnbDd/s8F1OZwBOEblzTL+MwjLXlRsrXhx5R9nuzPya0NlKCTEQT3Oh2H5mUKvw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ by DU2PR04MB8918.eurprd04.prod.outlook.com (2603:10a6:10:2e1::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Tue, 7 Jul
- 2026 01:36:42 +0000
-Received: from TY2PEPF0000AB85.apcprd03.prod.outlook.com
- (2603:1096:301:16f:cafe::97) by PUVP216CA0003.outlook.office365.com
- (2603:1096:301:16f::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.13 via Frontend Transport; Tue, 7
- Jul 2026 01:36:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 222.71.101.198)
- smtp.mailfrom=cixtech.com; dkim=none (message not signed)
- header.d=none;dmarc=bestguesspass action=none header.from=cixtech.com;
-Received-SPF: Pass (protection.outlook.com: domain of cixtech.com designates
- 222.71.101.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=222.71.101.198; helo=smtprelay.cixcomputing.com; pr=C
-Received: from smtprelay.cixcomputing.com (222.71.101.198) by
- TY2PEPF0000AB85.mail.protection.outlook.com (10.167.253.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Tue, 7 Jul 2026 01:36:41 +0000
-Received: from gary-System-Product-Name (unknown [172.16.64.196])
-	by smtprelay.cixcomputing.com (Postfix) with ESMTPSA id 15ED34351F23;
-	Tue,  7 Jul 2026 09:36:40 +0800 (CST)
-Date: Tue, 7 Jul 2026 09:34:46 +0800
-From: Gary Yang <gary.yang@cixtech.com>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Linus Walleij <linusw@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Alexey Brodkin <abrodkin@synopsys.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Eddie James <eajames@linux.ibm.com>,
-	Tiffany Lin <tiffany.lin@mediatek.com>,
-	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
-	Houlong Wei <houlong.wei@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joseph Liu <kwliu@nuvoton.com>, Marvin Lin <kflin@nuvoton.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ge Gordon <gordon.ge@bst.ai>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Peter Chen <peter.chen@cixtech.com>,
-	Fugang Duan <fugang.duan@cixtech.com>,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	BST Linux Kernel Upstream Group <bst-upstream@bstai.top>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	CIX Linux Kernel Upstream Group <cix-kernel-upstream@cixtech.com>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-aspeed@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
-	openbmc@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
-	kernel@collabora.com, linux-tegra@vger.kernel.org,
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev, sound-open-firmware@alsa-project.org
-Subject: Re: [PATCH 31/42] ASoC: cix-ipbloq: Use
- devm_of_reserved_mem_device_init()
-Message-ID: <akxXtlUYtT3T-huE@gary-System-Product-Name>
-References: <20260703193855.110619-1-mukesh.ojha@oss.qualcomm.com>
- <20260703193855.110619-32-mukesh.ojha@oss.qualcomm.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Tue, 7 Jul
+ 2026 02:24:36 +0000
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0181.008; Tue, 7 Jul 2026
+ 02:24:36 +0000
+Date: Tue, 7 Jul 2026 10:26:09 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Piyush Patle <piyushpatle228@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, marex@nabladev.com,
+	daniel.baluta@nxp.com, Frank.Li@nxp.com, shawnguo@kernel.org,
+	tzimmermann@suse.de, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch
+Subject: Re: [RFC] drm/imx: upstream direction for i.MX95 display support
+Message-ID: <akxjwULa-p6c6IvR@raspi>
+References: <20260624100326.413699-1-piyushpatle228@gmail.com>
+ <aj5MNiKSCiEDvDzL@raspi>
+ <CAMB+xkayaViXeC2GyMMUfeCMzA4=fh-Dq6NYOL-hzKoLfAF19w@mail.gmail.com>
+ <aksVMhFr8YzedE1w@raspi>
+ <CAMB+xkY2rut-sEUMyFnXqYCNmyseP4nAGj4BfreORTTM=SN8_g@mail.gmail.com>
+ <akuEOT2FRa77L0Jn@raspi>
+ <CAMB+xka8Fame7aFZSiWEtVcozSTXX8g9MKJu+cycU2vtiSDHmQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMB+xka8Fame7aFZSiWEtVcozSTXX8g9MKJu+cycU2vtiSDHmQ@mail.gmail.com>
+X-ClientProxiedBy: SI2PR02CA0032.apcprd02.prod.outlook.com
+ (2603:1096:4:195::12) To AS1PR04MB9287.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260703193855.110619-32-mukesh.ojha@oss.qualcomm.com>
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY2PEPF0000AB85:EE_|SEZPR06MB5992:EE_
-X-MS-Office365-Filtering-Correlation-Id: 58b0bcd8-fc53-439a-90a3-08dedbc83256
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|DU2PR04MB8918:EE_
+X-MS-Office365-Filtering-Correlation-Id: d533a114-2162-4c2d-4d33-08dedbcee37a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|82310400026|1800799024|36860700016|376014|4143699003|22082099003|18002099003|56012099006;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|19092799006|23010399003|366016|18002099003|22082099003|4143699003|11063799006|56012099006|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	PbsmJJUC3r+PSMHFYv1/5KAHLPksanDfP7Pr+9GjfsZBINxm7MQ/6oaciRBlKjgm8PiiDmCKpLrQa3R0g79rj/OxhD1HdasUwlMwOHrf0JU8wHBBXuG3hdrKLpnv3P2vBaYKWkRyc7YH5GxFLqRfvvRthoAbKoabp1FOx4VB5JAj7OOr80zr2tzMjzlR47UUAXdphACxz6nv6LEjFZjw5nkP/Lfsoqsy57C1SI/3g+k5VsMhfKjzOnAQN3EyPypuAs7HBnj/AgliW+5HrJP1s74vhFuGt9CA1adcAJymarP4P5Nu6rX/AGOmLp1FnrjZvD2gczG1qUGKllxinGTkHAq4cqKLnqUQi8kaQUtaGx1KVfb86Qb1Z9CU5EFISIvQPEeR4m6sVRd3OljqlwtBXwmq8NH0FKD6SzKRqX4kD7GACn0dK6g6lsKQaR0sduqxWfqLbbg995xOWjawLEAXZ5XeivDMAZdOzhoR1hZr9DyJLv97YF00hvFCX5vTY7XkkngNF6u6oJDxRFbKaxRldx2PRzrbyC1rKEQxL5IX49C9fw7ENvTpNXgi0JPL/z+qTwPIgc77MJq1fRsrgmnB0IzA4DF+dUOpoKdg8bFdE74+HkbQgvupu+ng7tbGCb//sb+zUbDWK84eo+dJfWy2FVgLDQ3OEd3TdRSJu+GPRJAWAcu149u8rXkMyUlF6D54k0cbFWV3qZoNda129jn/Gg==
+	1uNwJhW/6aGcDcI51xRdykxiPXC1Df51MdQgXTJIE6XkUL7OGLCZDXe13m2y93vxF8rqT2lljI3fk2i53oHasDz5nJ00uDSQH0cgXHstY44AAnc/oFkDb+fzQYDWOWZsEqIpY3vVQg6jJP0/5Px2SYwfg6uosDYzcrBQdvQWj3EpZOocZWzKMmPwCtIEcUfRKJDVmcmVOowa/Vwq2YQ4vqZf4geZjHF3X33IfqhyQXyh4Fgrg99neKqW2tw4ET/XhPDBDVPle6l1n9uEU2QOZ4Xr5+/R2r/mRMGE+6uzuqodkrC1OZ+SzZI0CtRIaDMe5DtLO4QjfGBMU2X+QU0SQiNOJEiaBOdrH5uH5FapXaGa0NQMdjnCilTPe76dEHXac8sz0mvAM+YxwjhGALlUMot61qbbdMeI1cZQ6lxwaFbqKtrFPur+alym4mNKeeMDOAQvEctDkDPgCTsp7trbCu5nDUN1F32UgGoh7zp7nRWL6Zcqv4wBNYx1hWy+DfRA4xIBwTsnAAPvk7pHwyV9nugsQBfiFgZn4SmmyuMYWVx9tgEeyuE1vZYPD0QS1c73/x/zG7iPoSoWH6eSJ9JSamYESCt/tFsqy5M2ac9bZXwJpg8ieBmx7XQF4nDOcvIa18UUit4GCQRrn7qMP3NCSj/6TeQeMRH8Nkx9f2Fas3s=
 X-Forefront-Antispam-Report:
-	CIP:222.71.101.198;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtprelay.cixcomputing.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(82310400026)(1800799024)(36860700016)(376014)(4143699003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(19092799006)(23010399003)(366016)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	YQP9tmTZsZsst2XVhSMEt6ze26TOYYsaRySCTBU4b2JeGgsxxgjlxfxR5rqo9srtq52gxFXeRrAQpizWmq4rnR131aJL0yADN5UOJK5lOhRoyD34mXpqnTYllYtoO8lT3DKhABUr/r2VCTrknBLHcdjkvQxRqySLGfkJL2ujdOo/T6nQjmBRjqZerpuQXpvNUbQjY+9vRg32YosHnAcL16AMcUeJKjcxDswM9WRodsARyKalf+gPqZeGfVvQ8KBlfqwwBXHZU+z4FORlOWYRleGy1UUtXHCYuF2zFO2AEVXiVpYxVmrrfudDWbEcZaDDnNgniI5tZ2x+7qCWJ2wsDNzhdk4pdS+t1rXnoA677qfpLmy+0wLuODVSDADMZKXY1btJl1j4/a4CCslM/GsYj2UZ3ZJuQONRDXT5z0louJEFMWXX8aZh++Us93/xLCDu
-X-OriginatorOrg: cixtech.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 01:36:41.4300
+	=?utf-8?B?akJzZWZsc2w2VG45bWtxRXFucHZlSkQ1K0o3a0tlV2hETjUrSVRqWXlJQWd1?=
+ =?utf-8?B?N1NrcUhsYTlmM2ZkdlJrWlVRdGtQNkU2UlE5K1B6ZEFQUzhZcjJkMDc1Vkxy?=
+ =?utf-8?B?Y0RHWTZYRWxDRUFtZUlMZWdzRUJZZm5saGM2ZUc4bjJ0UytlS0hXOW5SQmlR?=
+ =?utf-8?B?SEhxMTJiTFYvd0pFQi9mKytQUWtXbTU4dUI1eTFTV2I2S29rb2xWSEplYzlH?=
+ =?utf-8?B?ZmlaUGxieGxISjNyeDFnNFdpTHlSU2w4TzkybFZoazAyZUNmVXZ3dTdqM29U?=
+ =?utf-8?B?elRWZHZHVkVSaWlsT05HRXU5U3VKdE5sY2ViM3pVSSt3c2NTNWI2Z1ZSaFQx?=
+ =?utf-8?B?V2U0UmlrZWd0aGJNREs5azdPU2pMdUE5MEdjUjFJMzVaYnI1WnQwelRPbXlQ?=
+ =?utf-8?B?MENVbzM2NHhqN25GU3FWcGFObWVZRjJTR0JWcUpubFBWWmc2M3lYbXBoRnMy?=
+ =?utf-8?B?UlNhWGRCQmpEdmZOcUx3RWtqUWRHVFFGTFZPdWFlRTZKUDV5QjlGaGlLWncw?=
+ =?utf-8?B?RlgxRCtpOGpPdmZIT0daanUwSnU5WUpkdithNXRpckt1NXl6YzNWL0VQUnZO?=
+ =?utf-8?B?a1hCWlFJRmRtS1JmcGNSSFFZUlg2UWRjTW4xdUtzUHFEeGU5NS9iZmdIVC9y?=
+ =?utf-8?B?Zit0cFlnTlJSU1RvelI3QklUSHN0ODVyeDRpckJQcktzeWVGQm9hbjhpYW9W?=
+ =?utf-8?B?TGl0b2ROVjl5dCtXWTlYdzhxWkhmT0JYQnA4L0wyTHhGVjJTM3E5TjRtWDZB?=
+ =?utf-8?B?eSthQyt2d1Nrbi9mTGNxOUZmMUNJaktCaXpxdEYrZjlERkgrZkFrYjQ3RmI0?=
+ =?utf-8?B?UDh5Q0xsSlYrUlJ1bmpXTVdnNE5HZjd3ai94ZlBOcEhrQzNOejcvdkdqbjhE?=
+ =?utf-8?B?SmptT3BlMENyc3I3RTA2N3dXTlBjOVNIcFNrd0p1NXdvQzNnTTBnU2ZKUy9W?=
+ =?utf-8?B?bHk3SkwzQjVaU1owdkZWM1J6WitkMHZnb0dhdCs0M3d2b3ZuTXgzWkdLVlVE?=
+ =?utf-8?B?Um80dDY4WHB6MTBjQkZET3dNcmRJYXZ1VXAxOXpIWXUrUTNVdThKcHlXTHF3?=
+ =?utf-8?B?aXZ5ZUFHd3hCK2dLc2tOWU9laGVseUJLaFMxU04vclE4NEdXem5oWDRPSm0r?=
+ =?utf-8?B?U2pCR25oMmZFbmhPS2dKZGs1azQxT1AzNHFhemFWMXpvS21TSHY4empyZG90?=
+ =?utf-8?B?SkI1STNGZzFRQWhiNS85eTJIeE9pRWNsSFBXbmxPdEd2T29XcjFycGpndGdC?=
+ =?utf-8?B?bE0zd1A0dEx1eUprWUVqVVVVZkhSRTJCN21RYitGR1QxQ3ZaWURSZ1J3UWE4?=
+ =?utf-8?B?elE4U3pxSEs5YjVkelhEUlIxbzdHdUh3c1prYUpjTmwvb2orWTFzSkFGR1I4?=
+ =?utf-8?B?ZStyQ3BTbzZWQnozY3ErWVlaTnh0cXVaMWRaUWVQMzRJL3VjeGFCb043R0hi?=
+ =?utf-8?B?ZXcvankyRVNaaXVneTBpSlpDWkY0MU5BRlp5cjhVZEpoNGY1UUppclNwUmNT?=
+ =?utf-8?B?b09BdmhJczR6bGNPbkFXdFlId2dsSjFlSDhCSGNjT0N2ZDRvLzJwZHZMVGxP?=
+ =?utf-8?B?alZqZVExeDhXWkJNWkVnZkhma1ByaHRTanlmWnp0cFY1a2NiZUVhUEU5bmNC?=
+ =?utf-8?B?RVVBVEtZQVdEa2tZcURMaWsveFd4YjM2d0M1U2pzcjBjdDYrT3Y4U0xIeGJ1?=
+ =?utf-8?B?NXVYK1VXcnpHU2huNlJVWWVWU01FQVRPbWN6TVpNZ3FMbnRGdG5vOHY0eGdD?=
+ =?utf-8?B?ckRiOG8vU0lZY0RhRHJnRjV1NmVYY2d5QzVLU0t2L2xJUXNGVHdXR251Tytw?=
+ =?utf-8?B?Zkx5VCtENGVDTE8zMHVJb1dMNkJYV1o3Z3V3VzRDSGxmOXUrL2tjUE0vbHV0?=
+ =?utf-8?B?b05zQlVGcnFnQjlnU1pKenVaekZpblBGSmQwd3BLTTU2M0Q3OFdDL3FDVU9U?=
+ =?utf-8?B?WGZ2NXFPclFSbjcyOS9sTGpSbE5LRmUra1I4b3F0NkorQk5yN2p2dlZYWGNZ?=
+ =?utf-8?B?bzBnK1E1akJ4RmdBY3BrQ1daVHhlT3k1bVJwZGtaYlNRSlN2Z1lZZldaMzBp?=
+ =?utf-8?B?QXlYbnd4OEZYaWx5U2VDUGoxY0NRdzQrUDBSR3hWNG9sVFpMVTBnWjBlZjl4?=
+ =?utf-8?B?VjZDYWkxL1RUV29jNm92RkhjRWdRQ01wZjBiMFh4K0VuZkFQZ3VzUGNwT2lr?=
+ =?utf-8?B?OUV5UmpSZmI1MSt3WEpINXNLOGNWQjdyUTZHc2J1bzdOVEFreU9JY2N6ZHdT?=
+ =?utf-8?B?UnhQUG55MVVNTHdld3NzT0tJZURUSFRqZXBDMjFMQVJxcEtqSXlxUlN2NXB4?=
+ =?utf-8?B?TnZUeXNOUGVFVzB3S1NhdTVMdE90ellmOW51eW5WUWM1VUFydlhEQT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d533a114-2162-4c2d-4d33-08dedbcee37a
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 02:24:36.1322
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 58b0bcd8-fc53-439a-90a3-08dedbc83256
-X-MS-Exchange-CrossTenant-Id: 0409f77a-e53d-4d23-943e-ccade7cb4811
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0409f77a-e53d-4d23-943e-ccade7cb4811;Ip=[222.71.101.198];Helo=[smtprelay.cixcomputing.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	TY2PEPF0000AB85.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB5992
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: unf9J4JfoeJWEBCX0Sqy5NcCQNlTEirksAEhUek1R2pWVTr9ISDu18MQUDrVXp8bVGxLbJS1sZzrZq6U57Gqig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8918
 
-On 2026-07-04 01:08, Mukesh Ojha wrote:
+On Mon, Jul 06, 2026 at 08:31:42PM +0530, Piyush Patle wrote:
+> On Mon, Jul 6, 2026 at 4:00 PM Liu Ying <victor.liu@nxp.com> wrote:
+> >
+> > On Mon, Jul 06, 2026 at 03:15:24PM +0530, Piyush Patle wrote:
+> > > On Mon, Jul 6, 2026 at 8:07 AM Liu Ying <victor.liu@nxp.com> wrote:
+> > > >
+> > > > On Sun, Jul 05, 2026 at 03:33:51AM +0530, Piyush Patle wrote:
+> > > > > On Fri, Jun 26, 2026 at 3:22 PM Liu Ying <victor.liu@nxp.com> wrote:
+> > > > > >
+> > > > > > On Wed, Jun 24, 2026 at 03:33:18PM +0530, Piyush Patle wrote:
+> > > > > >
+> > > > > > [...]
+> > > > > >
+> > > > > > > The current dc/ implementation is a multi-device component driver
+> > > with one
+> > > > > > > platform_driver per block bound via the component framework. The
+> > > downstream
+> > > > > > > i.MX95 driver is a single monolithic platform_driver mapping all
+> > > blocks from
+> > > > > > > one register base. Unifying appears to require reconciling two bind
+> > > models,
+> > > > > > > rather than only adding match_data.
+> > > > > >
+> > > > > > I think that upstream i.MX95 display controller driver would also be
+> > > based
+> > > > > > on the component helper.  That's something for sure.
+> > > > > >
+> > > > > > [...]
+> > > > > >
+> > > > > > > There is also anticipated divergence which is not yet upstream
+> > > (i.MX8QXP
+> > > > > > > prefetch/PRG, LTS and tiling modifiers, and the downstream i.MX95
+> > > blit
+> > > > > > > engine), although mainline dc/ is KMS-only today.
+> > > > > >
+> > > > > > Just want to point out that I sent out v5 patch set[2] to add i.MX8QXP
+> > > > > > prefetch engine(DPRC + PRG) support for KMS.  That changes the
+> > > driver's
+> > > > > > mode setting code a lot.
+> > > > > >
+> > > > > > [2]
+> > > https://lore.kernel.org/all/20251027-imx8-dc-prefetch-v5-0-4ecb6c6d4941@nxp.com/
+> > > > > >
+> > > > > > [...]
+> > > > > >
+> > > > > > > One question for Liu Ying is whether the separate-driver plus shared
+> > > > > > > helper-library approach is still the preferred direction, and where
+> > > the
+> > > > > > > helper boundary would be drawn (which blocks/ops are shared versus
+> > > > > > > implemented per driver).
+> > > > > >
+> > > > > > Yes, separate DRM drivers + a helper library approach is still the
+> > > direction
+> > > > > > I want.  I think that the drivers and library would sit in the same
+> > > > > > directory drivers/gpu/drm/imx/dc/.
+> > > > > >
+> > > > > > The purpose to add a library is to share code to reduce overall code
+> > > lines.
+> > > > > > I'd assume that shared blocks or common part of slightly different
+> > > blocks
+> > > > > > should be covered by the library.
+> > > > > >
+> > > > > > [...]
+> > > > > >
+> > > > > > > how the component and monolithic driver models
+> > > > > > > would be reconciled given the differences described above.
+> > > > > >
+> > > > > > Like I said above, I don't think upstream driver would be monolithic.
+> > > > > >
+> > > > > > --
+> > > > > > Regards,
+> > > > > > Liu Ying
+> > > > >
+> > > > > Hi Liu,
+> > > >
+> > > > Hi Piyush,
+> > > >
+> > > > >
+> > > > > A quick follow-up with some progress.
+> > > > > I went ahead with the refactoring we discussed and now have it working
+> > > on the
+> > > > > i.MX95 15x15 FRDM, following the component-based model.
+> > > > > The common implementations for ConstFrame, ExtDst, LayerBlend, FrameGen
+> > > and
+> > > > > the FetchUnit base have been moved into shared dc-lib-* helpers, with
+> > > >
+> > > > Can you please share the code in a public place, like github?
+> > > >
+> > >
+> > > Sure. I've pushed the current work-in-progress branch here:
+> > > https://github.com/PiyushPatle26/linux-mecha-im95-wip/tree/imx95-dc-preview
+> >
+> > I gave this branch a quick look.  The major problem is that you are using
+> > the same 'struct drm_driver dc_drm_driver' for i.MX95 and i.MX8QXP display
+> > controllers instead of using separate DRM drivers.  From userspace's POV,
+> > they should see different driver names(drm_driver.name).  From drivers'
+> > POVs, they should implement different mode setting callbacks.
+> 
+> I've reworked it based on your feedback and updated version to the same branch
+> I've split them into separate DRM drivers.
+> The shared dc_drm_driver and dc-drv-common.c are gone. i.MX8QXP and i.MX95
+> now each have their own struct drm_driver, component bind path, probe logic and
+> mode-setting callbacks. Userspace now also sees different driver names
+> for the two SoCs.
 
-> [Some people who received this message don't often get email from mukesh.ojha@oss.qualcomm.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> EXTERNAL EMAIL
-> 
-> Use the devres-managed devm_of_reserved_mem_device_init() to ensure
-> the reserved memory region is released on device removal, fixing a
-> missing cleanup in the original code.
-> 
-> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> ---
->  sound/hda/controllers/cix-ipbloq.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/hda/controllers/cix-ipbloq.c b/sound/hda/controllers/cix-ipbloq.c
-> index c1084a915c13..815932e5c58b 100644
-> --- a/sound/hda/controllers/cix-ipbloq.c
-> +++ b/sound/hda/controllers/cix-ipbloq.c
-> @@ -257,7 +257,7 @@ static int cix_ipbloq_hda_probe(struct platform_device *pdev)
-> 
->         dma_set_mask_and_coherent(hda->dev, DMA_BIT_MASK(32));
-> 
-> -       err = of_reserved_mem_device_init(hda->dev);
-> +       err = devm_of_reserved_mem_device_init(hda->dev);
->         if (err < 0 && err != -ENODEV) {
->                 dev_err(hda->dev,
->                         "failed to init reserved mem for DMA, err = %d\n", err);
+It seems that there are common stuff that can be shared between dc-drv-imx95.c
+and dc-drv-imx8qxp.c.
 
-Reviewed-by: Gary Yang <gary.yang@cixtech.com>
+Please don't rename driver name from "imx8-dc" to "imx8qxp-dc".  Diver name
+is supposed to be stable ABI.  "imx8-dc" implies that the driver would support
+both i.MX8QXP display controller and i.MX8QM display controller which have
+some H/W differences but still fit into a same driver.
 
-> --
-> 2.53.0
+I'm not sure why you mention 'DC8000' in your code.  We don't have this term
+internally to describe the display controllers.
+
+Those i.MX95 clocks used by dc-drv-imx95.c are not correct.  I'd assume only
+cfg/axi/ocram clocks are needed.
+
 > 
+> The mode_valid, atomic_check, atomic_begin and atomic_flush callbacks
+> were already
+> identical in the previous version, so I've left them as a small shared
+> helper to avoid
+> duplicating the same code. If they diverge later, I'll split them into
+> separate implementations.
+
+It seems that mode-setting callbacks in dc-plane.c are still shared, which
+seems to be worth splitting.
+
+> 
+> >
+> > It looks like it's not worth extracting common code into those dc-lib-* files.
+> > Each dc-[block].c is a library itself, though I could be wrong - after all,
+> > I haven't find a time slice to add i.MX95 blocks to them and see how they
+> > will be.
+> >
+> 
+> Agreed. I removed the dc-lib-* split. The shared register code is now placed
+> directly inside each dc-[block].c file, so every block stays
+> self-contained while
+> still being reused by both drivers where needed.
+
+Didn't look into dc-[block].c files in detail.  Maybe, things need to be
+improved there too.
+
+> 
+> > The idea is to share some code between the two DRM drivers *naturally*.
+> >
+> > >
+> > > The files you asked about are:
+> > > drivers/gpu/drm/imx/dc/dc-drv-common.c
+> > > drivers/gpu/drm/imx/dc/dc-lib-*.c
+> > > One thing I'd like to point out is that the pixel interleaver, display pixel
+> > > link, LDB and LVDS PHY drivers are ports of the existing NXP downstream
+> > > drivers. The new work in this branch is mainly the DC refactoring into the
+> > > component model and the shared helper library.
+> > > > > SoC-specific register layouts and tables supplied as data. The per-SoC
+> > > glue is
+> > > > > split into dc-drv-common.c, dc-drv-imx8qxp.c and dc-drv-imx95.c, while
+> > > >
+> > > > Same here, just want to see how dc-drv-common.c and dc-lib-* would look
+> > > like.
+> > > >
+> > > The files you mentioned are available under:
+> > > drivers/gpu/drm/imx/dc/dc-drv-common.c
+> > > drivers/gpu/drm/imx/dc/dc-lib-*.c
+> > > The helper library currently contains the common implementations for
+> > > ConstFrame, ExtDst, LayerBlend, FrameGen and the FetchUnit base.
+> > >
+> > > > > i.MX95-specific blocks such as DomainBlend, Dither, FetchEco, FetchYUV,
+> > > > > HScaler and VScaler remain separate component drivers.
+> > > >
+> > > > i.MX8QXP display controller also has Dither, FetchEco, HScaler and
+> > > Vscaler,
+> > > > so they are not i.MX95-specific blocks.  To add minimal feautures at
+> > > first,
+> > > > we don't need to support them as of now.  i.MX95-specific FetchYUV is
+> > > similar
+> > > > to i.MX8QXP-specific FetchDecode, so maybe FetchYUV won't be a separate
+> > > > component driver at the end of the day.  To start up small, I think the
+> > > > must-have DomainBlend and Dither(for Data-Enable, HSync and VSync polarity
+> > > > controls) and two FetchLayers can be enabled to support two display
+> > > pipelines.
+> > > >
+> > >
+> > > Okay, I've reduced the implementation accordingly. The current branch
+> > > only keeps DomainBlend, Dither and two FetchLayers. FetchEco, FetchYUV,
+> > > HScaler and VScaler have been dropped for now.
+> > > > BTW, do you have the i.MX95 TRM?  If no, then it would be difficult for
+> > > you
+> > > > to add DT bindings for *all* blocks.  Note that the DT bindings are
+> > > supposed
+> > > > to be complete at the first place.
+> > > >
+> > >
+> > > Yes, I do.
+> > >
+> > > > >
+> > > > > The implementation is functional on the FRDM over the pipeline
+> > > > > DPU -> pixel-interleaver -> pixel-link -> LDB -> LVDS PHY -> IT6263 ->
+> > > HDMI
+> > > >
+> > > > As I said before in separate mail thread, pixel link is not used in the
+> > > LVDS
+> > > > display pipeline, but instead it's only used in the MIPI DSI display
+> > > pipeline.
+> > > >
+> > >
+> > > Thanks for pointing that out. After checking the TRM, I updated the DT graph
+> > > so the LVDS pipeline is now:
+> > >
+> > > DC -> Pixel-interleaver -> LDB -> LVDS PHY -> IT6263 -> HDMI
+> >
+> > Yes, this pipeline is correct.
+> >
+> > >
+> > > Removing display_pixel_link from the LVDS path also required moving the
+> > > bridge
+> > > format translation into the pixel interleaver driver.
+> > > > >
+> > > > > EDID is read successfully, the initial modeset works for all tested
+> > > modes
+> > > > > (1920x1080@60, 1280x720@60, 720x480 and 640x480), and Weston and sway
+> > > both run.
+> > > > >
+> > > > > There are still two known limitations. The initial modeset works, but
+> > > > > subsequent mode changes currently wedge the ExtDst content shadow load,
+> > > which
+> > > > > appears related to the lack of a reset path for the i.MX95 FrameGen.
+> > > >
+> > > > Not sure what's the cause of the issue, but FrameGen needs to be disabled
+> > > and
+> > > > then re-enabled if you want to do a full modeset.  I'd say that's not a
+> > > reset
+> > > > path.  This critical issue needs to be fixed before posting formal
+> > > patches.
+> > > >
+> > >
+> > > Understood. I'll continue investigating the modeset issue before posting the
+> > > formal patch series.
+> > >
+> > > > > In
+> > > > > addition, the DSI path is implemented on the DC side but remains
+> > > unvalidated.
+> > > >
+> > > > It's fine to support the LVDS display pipeline first as long as it doesn't
+> > > > do harm to the MIPI DSI display pipeline support.  So, maybe drop the
+> > > latter
+> > > > first.
+> > >
+> > > I've done that in the current branch. It now focuses only on the validated
+> > > LVDS pipeline.
+> > >
+> > > >
+> > > > >
+> > > > > The implementation is currently based on v7.2-rc1 together with your
+> > > prefetch
+> > > > > v5 series.
+> > > > >
+> > > > > The work is now ready to be posted as patch series: Adding LVDS/DSI
+> > > > > i.MX95 support.
+> > > > >
+> > > > >
+> > > > > Regards,
+> > > > > Piyush Patle
+> > > >
+> > > > --
+> > > > Regards,
+> > > > Liu Ying
+> > >
+> > > Thanks again for taking the time to review this.
+> > >
+> > > Regards,
+> > > Piyush Patle
+> >
+> > --
+> > Regards,
+> > Liu Ying
+> 
+> framegen re-tune issue is still unresolved.
+> I'll fix that before posting the formal patch series.
+
+I need to point out that i.MX95 display controller also has 2 display engines
+and 1 pixel engine, which is something missing in your code.  This makes me
+think that you have no enough i.MX95 display controller documents.
+
+Generally speaking, I'd say there is a lot to be improved before posting the
+formal patch series.  Gut feeling is that maybe it's a bit too difficult
+for you to get the drivers right.  As I said earlier, my original plan is to
+add i.MX8QXP prefetch engine support first with the posted patch series and
+then to add i.MX95 display controller support, but maybe I can try to add the
+latter first - just need to find a time slot.  However, adding prefetch engine
+support first would directly show a reason to people why two DRM drivers are
+warranted when adding i.MX95 display controller support.
+
+> 
+> Regards,
+> Piyush Patle
+
+-- 
+Regards,
+Liu Ying
