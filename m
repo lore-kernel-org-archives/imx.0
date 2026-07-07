@@ -1,97 +1,123 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F5641D4DE;
-	Tue,  7 Jul 2026 13:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C55841D4CE;
+	Tue,  7 Jul 2026 13:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783430699; cv=none; b=Y0Z4JHW1GGn8uwg8qaUt+CUxnuyZJ/bCmpo16Yev98EMI5lk5IPlxOPCeOWcUfkhlyIh0h0UUpVScHar3cJluKF0e1d57xVr8EYXCX4UYZOLUWgrsK5imaBailr+DI1vJYGYZUHI++ay3707LQVuR8CF4JySzTaw3v0nVBbpQvU=
+	t=1783430700; cv=none; b=KytSLhMQrUJQNxnjfu69GM/Zo5WJEvca0iP4Lsq+IoLdodCBCYS24FO/J+X2Rj9BD5OmcOvAJYB4X0nWxRB/jom5M9TJY16r2kTgFONCQyFJIT1MG6hRBmzJlsT6ZGz4qsBxvWeBNkHhoahOjHkJX/GH1XYaDnYavy6NkzgxPNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783430699; c=relaxed/simple;
-	bh=iNWCRffadB+Kck3U1S6A6km6PWsdT3ya3GkDOyGRHlw=;
+	s=arc-20240116; t=1783430700; c=relaxed/simple;
+	bh=5EPcOSTxkPPps31qw4biGKFPyKCI6ua5x/f63EjEOE0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lyCLvuI/6Wbzdq45PtBH5YI/efZHWQy08W7qyIabv60yCUJnuxZynZ27sYfu3iFvfGrFiAqcq4NN1jzjP5nSyUKfILhnboud3ZnaNCDK37b8F0bmvZZVBt6+YD51Cg0cKqwR+vAjrIuesMc7YQYOrrxzE5JvlgUPRecOeoCB6tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6V9pTFE; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=bz/1iomr9PcBQUua2yf+O0xUow3FBN6Zgvcb53jLuWKMnjvHHxTTV7t3/HHCMT7sMnTkWr8oO8o+hNNCKobHzQHMIepEBTDC27t3clAohdQN22WSY5je1rFsNhsvDfTGd67nLnkAfd8bVR+DQ7JT8PY1uxnpdwYrt3Ich2PYC14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ian6Kg+T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6V9pTFE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23C41F00A3A;
-	Tue,  7 Jul 2026 13:24:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ian6Kg+T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7371F00A3D;
+	Tue,  7 Jul 2026 13:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783430698;
-	bh=F9wf81DUrFRYlTgbDUYEac7HMXcil+UOZENGoJcInJg=;
+	s=k20260515; t=1783430699;
+	bh=9J/5kdUzNZ4A1zvWuu+ZIn5vyFjeG5mMP6m9LXXbf/I=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=m6V9pTFEiov7ozZFACq6/OJ49HW+A0rUKcqJVq8EKHjrZRuHZAufmYtBK3RiApU9T
-	 yiD+ybowTG+NbFpcCcPHFN5RrtA2GTHIBcoW4C05eygAY7mK1X1woN58Vm4xzH4igY
-	 q7xafcgDoJgN1p7j5OzBRKMnualElX0vhPIAn/atcJJ85NQJApDj/6Wkf7LCEJg0e/
-	 umoYOcldjA8ueepLrYwouegTHhB5D2JS00ecdrTpQf6jg4HqERGjfgHv/uwaAA/uhd
-	 IYXhi/hj9alA3jQpnLlsc2y8iNBApxAeVp5Nc2g7QXUFv5PrOVY0y5VFI5WgqE575R
-	 q0HMMOEWvGlhQ==
+	b=ian6Kg+T8E9rhyk0z8vcxmm3rnQUFwc35apDM5FVYpdlp8ppMxaGfYzPgIDJe9Kg7
+	 UZSj5hu2X7TsVh4pOOfzwXohO8A7nlwCTADd193u3lWOwRooM/t13uMEyodkm9MNO3
+	 /wCtJfL3U8JJwFeFhIs0mveSGyeDiw/yFVBTzUR7wyztE+xzhaej5IQpFYzGb1rxOG
+	 tvhUFxUAKtu4hx86lB4J+mOlS5EYaKvjCL7xrNicq3ypSjGWJLLqRyaAhk+MrUq9nS
+	 xJVdC1jqhHztxM9Ko81X20dTzTYKCWApoa55VgK3YSBK4IPao77GIX0gKLCEVGKnal
+	 gRPW3MyfpBhNw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 10/20] net: bcmgenet: use
+Subject: Re: [PATCH v3 11/20] pmdomain: imx: use
  platform_device_set_of_node()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, dri-devel@lists.freedesktop.org, lee@kernel.org, Frank.Li@kernel.org, mfd@lists.linux.dev
-In-Reply-To: <20260706-pdev-fwnode-ref-v3-10-1ff028e33779@oss.qualcomm.com>
+Cc: Frank.Li@kernel.org, lee@kernel.org, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, conor+dt@kernel.org, imx@lists.linux.dev, mfd@lists.linux.dev, robh@kernel.org
+In-Reply-To: <20260706-pdev-fwnode-ref-v3-11-1ff028e33779@oss.qualcomm.com>
 References: <20260706-pdev-fwnode-ref-v3-0-1ff028e33779@oss.qualcomm.com>
- <20260706-pdev-fwnode-ref-v3-10-1ff028e33779@oss.qualcomm.com>
+ <20260706-pdev-fwnode-ref-v3-11-1ff028e33779@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 13:24:57 +0000
-Message-Id: <20260707132457.B23C41F00A3A@smtp.kernel.org>
+Date: Tue, 07 Jul 2026 13:24:58 +0000
+Message-Id: <20260707132458.9E7371F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] OF Node Reference Leak due to missing of_node_put() on the resul=
-t of bcmgenet_mii_of_find_mdio()
+
+Pre-existing issues:
+- [High] Child platform devices dynamically added during probe are not unre=
+gistered on probe error paths or during driver removal.
+- [High] The i.MX GPC power domain driver initializes domains as powered on=
+ but does not set GENPD_FLAG_NO_STAY_ON or provide a sync_state callback, c=
+ausing domains to stay on indefinitely.
 --
 
-commit 3b29ae0c601cb855b049f7da529812b74080533b
+commit 183445e8048cfd412f98719fae14416614f14176
 Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-net: bcmgenet: use platform_device_set_of_node()
+pmdomain: imx: use platform_device_set_of_node()
 
-This commit encapsulates the assignment of the OF node for dynamically
-allocated platform devices using platform_device_set_of_node().
+Ahead of reworking the reference counting logic for platform devices,
+encapsulate the assignment of the OF node for dynamically allocated
+platform devices with the provided helper.
 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/e=
-thernet/broadcom/genet/bcmmii.c
-> index a4e0d5a682687..0f0dbabfaabbc 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-[ ... ]
-> @@ -490,8 +490,9 @@ static int bcmgenet_mii_register(struct bcmgenet_priv=
- *priv)
->  	/* Retain this platform_device pointer for later cleanup */
->  	priv->mii_pdev =3D ppdev;
->  	ppdev->dev.parent =3D &pdev->dev;
-> +
->  	if (dn)
-> -		ppdev->dev.of_node =3D bcmgenet_mii_of_find_mdio(priv);
-> +		platform_device_set_of_node(ppdev, bcmgenet_mii_of_find_mdio(priv));
+> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+> index 42e50c9b4fb9f..abca5f449a226 100644
+> --- a/drivers/pmdomain/imx/gpc.c
+> +++ b/drivers/pmdomain/imx/gpc.c
+> @@ -487,8 +487,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
+>  			domain->ipg_rate_mhz =3D ipg_rate_mhz;
+> =20
+>  			pd_pdev->dev.parent =3D &pdev->dev;
+> -			pd_pdev->dev.of_node =3D of_node_get(np);
+> -			pd_pdev->dev.fwnode =3D of_fwnode_handle(np);
+> +			platform_device_set_of_node(pd_pdev, np);
+> =20
+>  			ret =3D platform_device_add(pd_pdev);
+>  			if (ret) {
 
-[Severity: Medium]
-Does this leak the OF node reference? bcmgenet_mii_of_find_mdio() internally
-calls of_get_compatible_child(), which returns a device node with an
-incremented reference count.
+[Severity: High]
+This isn't a bug introduced by this patch, but I noticed that child platform
+devices added in previous loop iterations are not unregistered on this error
+path.
 
-Previously, direct assignment allowed the platform device to consume this
-reference when it was eventually released. Now that
-platform_device_set_of_node() is used, it acquires its own reference
-internally.=20
+If platform_device_add() fails, or if platform_device_alloc() fails earlier
+in the loop, imx_gpc_probe() returns immediately. Any successfully added
+"imx-pgc-power-domain" devices from previous iterations are left orphaned.
 
-Should there be an explicit of_node_put() to drop the initial reference
-returned by bcmgenet_mii_of_find_mdio() so it isn't leaked?
+Because these orphaned child devices hold references to the parent's
+devm-managed regmap, does this create a use-after-free when the parent's
+devres cleanup runs?
 
->  	else
->  		ppd.phy_mask =3D ~0;
->
+The same unregistering step appears to be missing in imx_gpc_remove(), which
+skips the cleanup of these dynamically added platform devices entirely when
+pgc_node is present.
+
+[Severity: High]
+This is also a pre-existing issue, but I noticed a potential problem with h=
+ow
+these domains are initialized.
+
+In imx_pgc_power_domain_probe(), the domains are initialized as powered on
+via pm_genpd_init(&domain->base, NULL, false). For OF-based genpd providers,
+this sets genpd->stay_on =3D true.
+
+However, neither imx_gpc_driver nor imx_pgc_power_domain_driver registers a
+.sync_state callback, and the domains do not have GENPD_FLAG_NO_STAY_ON set.
+
+Since the stay_on flag is never cleared, will this cause the domains to
+remain powered on indefinitely? If regulator_late_cleanup() later disables
+the underlying regulators while the domains are still active, could this
+lead to hardware malfunctions?
+
+>  				platform_device_put(pd_pdev);
+>  				return ret;
+>  			}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706-pdev-fwnod=
-e-ref-v3-0-1ff028e33779@oss.qualcomm.com?part=3D10
+e-ref-v3-0-1ff028e33779@oss.qualcomm.com?part=3D11
