@@ -1,281 +1,155 @@
-Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00313246F4;
-	Tue,  7 Jul 2026 14:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC0E343883;
+	Tue,  7 Jul 2026 14:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783433496; cv=none; b=ih5239ehR05M8z4W6B5TNJOJ/jQEO7t3qlG9A2EPcb73WqFBu0GbfK4I4qwnAOHLJKxT1nVwzf1kA8cXisvmlwgzDmDG2vHuYnprYqptJMTvZQJREkxn32FjAxxcZAfwYVyackXYhmRl/ZvHB2dJHDGcfmskZWH924u7ryeql+w=
+	t=1783433499; cv=none; b=biJ76lqgjQbFX8n9ufdA05tFwrCP38r3i1tgFs20riMOHZUZkG82SkZfMqc5+KxfDOsiTxUXx5O1IvBOmtgDWIvSqPFkHUA9wIWD6IkyAPAat4J8et+lbUmmaYkZGSK1jnePfjGBGhPV5tgVDbJO0gaYa0k2tmFsMr0CguMMp5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783433496; c=relaxed/simple;
-	bh=Qw+DDNMPifPgLVRQbdGaymOOKrgVAVwhIDLS55Of8sY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i3MDRebvhUJTD2o0YhQ7/5e3cneM7nNTZQogBZQfWNITl0Q1g4gaR/18i9PXlbunJh1Qae9DC7OidZAPGFpXOFXsVjwDSBb7+m1iJhtKZGcGimF45AhlMIXItinetA739YEsNu4V/pJpIg2IcRwavgpcbbLqH8lZ3hSLHbASoLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
-Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id 875773700331;
-	Tue,  7 Jul 2026 14:11:09 +0000 (UTC)
-Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id 9BD9DAE5ECC; Tue,  7 Jul 2026 14:11:05 +0000 (UTC)
-X-Spam-Level: 
-Received: from shepard (unknown [192.168.1.1])
-	by laika.paulk.fr (Postfix) with ESMTPSA id 6816EAE5EBF;
-	Tue,  7 Jul 2026 14:10:55 +0000 (UTC)
-Date: Tue, 7 Jul 2026 16:10:52 +0200
-From: Paul Kocialkowski <paulk@sys-base.io>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-	Linus Walleij <linusw@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Alexey Brodkin <abrodkin@synopsys.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Eddie James <eajames@linux.ibm.com>,
-	Tiffany Lin <tiffany.lin@mediatek.com>,
-	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
-	Houlong Wei <houlong.wei@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joseph Liu <kwliu@nuvoton.com>, Marvin Lin <kflin@nuvoton.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ge Gordon <gordon.ge@bst.ai>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Peter Chen <peter.chen@cixtech.com>,
-	Fugang Duan <fugang.duan@cixtech.com>,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	BST Linux Kernel Upstream Group <bst-upstream@bstai.top>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	CIX Linux Kernel Upstream Group <cix-kernel-upstream@cixtech.com>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-aspeed@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
-	openbmc@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
-	kernel@collabora.com, linux-tegra@vger.kernel.org,
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev, sound-open-firmware@alsa-project.org
-Subject: Re: [PATCH 08/42] drm: logicvc: Use
- devm_of_reserved_mem_device_init()
-Message-ID: <ak0I7AbfFITG1nyi@shepard>
-References: <20260703193855.110619-1-mukesh.ojha@oss.qualcomm.com>
- <20260703193855.110619-9-mukesh.ojha@oss.qualcomm.com>
+	s=arc-20240116; t=1783433499; c=relaxed/simple;
+	bh=11E3cLXszqK54bdjggG6ZFRBIxhg+IbdhCdkzPrOauM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=mjqvVV/5FB5ZCYVll2QMOD6Z6cj6Pi6hDZFqvFSZGdT9rO3yZrVD0Yc35DAUmkhBlbnbd1LCyJP4LmoioJr+1HxaQvnL4mZQTIfPCSJ9xpWbWZNdODKuPG2+tKOms8Eh66JISr2wVfFSHxtIoxfiDOyMzS7TxcBFJTGlB3YUbD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4LH6Y79; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a4LH6Y79"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE031F00A3A;
+	Tue,  7 Jul 2026 14:11:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783433497;
+	bh=bPmEwesHC2AS1HkjPhZDQwSfdjHZQo0VGS0dYxaRFDM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=a4LH6Y79I6wzscYgLyuUhZcE9ZYVaPMk8Wt1y6pXLaPtI+Ki+IdqYnfzUdaul+QYX
+	 K08eRdaSblR8oSa8DMpy5s6c+yM7jdDXVQO863trhbuffRq892mqHh1jwmvCJC2I5H
+	 e4B2dNEZ9FWnuwSmxPrHf2gopcFpcGRNAPaw4jtSBNO+AuCyzyymzOOZYEe7ZauyEm
+	 tWdIydxOTmsRn4h3smJGrEx0WdzY6CfMjIP/+H6NZsDx9RXKuqco7cK43ONbbHFYRu
+	 /LGRqy9O7wb/AOAYImtooFC+P/B06itTPqyJ3G6VVSaSuuwc8CvrLG+J3po0ULyYMD
+	 4RBp19Mao+NSA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net-next v12 2/7] phy: qcom: add the SGMII SerDes PHY
+ driver for SCMI systems
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
+Cc: wsa+renesas@sang-engineering.com, devicetree@vger.kernel.org, robh@kernel.org, linux-amlogic@lists.infradead.org, linux-sunxi@lists.linux.dev, neil.armstrong@linaro.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260706-qcom-sa8255p-emac-v12-2-e3ab1ecf2901@oss.qualcomm.com>
+References: <20260706-qcom-sa8255p-emac-v12-0-e3ab1ecf2901@oss.qualcomm.com>
+ <20260706-qcom-sa8255p-emac-v12-2-e3ab1ecf2901@oss.qualcomm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 07 Jul 2026 14:11:36 +0000
+Message-Id: <20260707141136.AAE031F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ThTwSIZV2a2cCNSQ"
-Content-Disposition: inline
-In-Reply-To: <20260703193855.110619-9-mukesh.ojha@oss.qualcomm.com>
 
---ThTwSIZV2a2cCNSQ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The `set_mode` callback fails to dynamically apply the new perform=
+ance state to the PM domain when the PHY is already active.
+- [High] Incorrect ordering of `dev_pm_genpd_set_performance_state()` aroun=
+d runtime PM functions causes hardware under-voltage.
+--
 
-Hi Mukesh,
+commit d60c07674fdf361d41a55e9d09fbdf040bae5797
+Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-On Sat 04 Jul 26, 01:08, Mukesh Ojha wrote:
-> Switch to devm_of_reserved_mem_device_init() so the reserved memory
-> region is released automatically on probe failure or device unbind.
-> Replace all error paths that jumped to error_reserved_mem: with
-> error_early: since the manual cleanup label is no longer needed, and
-> remove the explicit of_reserved_mem_device_release() call in the remove
-> function.
->=20
-> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+phy: qcom: add the SGMII SerDes PHY driver for SCMI systems
 
-Looks good to me, thanks!
+This commit implements support for the firmware-managed SGMII/SerDes PHY
+present on Qualcomm platforms. It introduces a separate driver for the SCMI
+system variant as it shares almost no code with the HLOS-managed version.
 
-Reviewed-by: Paul Kocialkowski <paulk@sys-base.io>
-Acked-by: Paul Kocialkowski <paulk@sys-base.io>
+> diff --git a/drivers/phy/qualcomm/phy-qcom-sgmii-eth-scmi.c b/drivers/phy=
+/qualcomm/phy-qcom-sgmii-eth-scmi.c
+> new file mode 100644
+> index 0000000000000..8ee62189556fe
+> --- /dev/null
+> +++ b/drivers/phy/qualcomm/phy-qcom-sgmii-eth-scmi.c
+[ ... ]
+> +static int qcom_dwmac_sgmii_phy_scmi_power_on(struct phy *phy)
+> +{
+> +	struct qcom_dwmac_sgmii_phy_scmi *priv =3D phy_get_drvdata(phy);
+> +	struct device *dev =3D phy->dev.parent;
+> +	int ret;
+> +
+> +	ret =3D pm_runtime_resume_and_get(dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D dev_pm_genpd_set_performance_state(dev, priv->perf_state);
 
-All the best,
+[Severity: High]
+Should dev_pm_genpd_set_performance_state() be called before
+pm_runtime_resume_and_get()?
 
-Paul
+If pm_runtime_resume_and_get() runs first, it appears the genpd runtime
+resume handler will power on the domain at its previous performance state (=
+0)
+before the driver raises it. Could this starve the hardware during power-on?
 
-> ---
->  drivers/gpu/drm/logicvc/logicvc_drm.c | 21 ++++++++-------------
->  1 file changed, 8 insertions(+), 13 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/logicvc/logicvc_drm.c b/drivers/gpu/drm/logi=
-cvc/logicvc_drm.c
-> index bbebf4fc7f51..d6dbe52ff0a9 100644
-> --- a/drivers/gpu/drm/logicvc/logicvc_drm.c
-> +++ b/drivers/gpu/drm/logicvc/logicvc_drm.c
-> @@ -306,7 +306,7 @@ static int logicvc_drm_probe(struct platform_device *=
-pdev)
->  	int irq;
->  	int ret;
-> =20
-> -	ret =3D of_reserved_mem_device_init(dev);
-> +	ret =3D devm_of_reserved_mem_device_init(dev);
->  	if (ret && ret !=3D -ENODEV) {
->  		dev_err(dev, "Failed to init memory region\n");
->  		goto error_early;
-> @@ -327,14 +327,14 @@ static int logicvc_drm_probe(struct platform_device=
- *pdev)
->  		ret =3D of_address_to_resource(of_node, 0, &res);
->  		if (ret) {
->  			dev_err(dev, "Failed to get resource from address\n");
-> -			goto error_reserved_mem;
-> +			goto error_early;
->  		}
-> =20
->  		base =3D devm_ioremap_resource(dev, &res);
->  		if (IS_ERR(base)) {
->  			dev_err(dev, "Failed to map I/O base\n");
->  			ret =3D PTR_ERR(base);
-> -			goto error_reserved_mem;
-> +			goto error_early;
->  		}
-> =20
->  		logicvc_drm_regmap_config.max_register =3D resource_size(&res) -
-> @@ -345,21 +345,21 @@ static int logicvc_drm_probe(struct platform_device=
- *pdev)
->  		if (IS_ERR(regmap)) {
->  			dev_err(dev, "Failed to create regmap for I/O\n");
->  			ret =3D PTR_ERR(regmap);
-> -			goto error_reserved_mem;
-> +			goto error_early;
->  		}
->  	}
-> =20
->  	irq =3D platform_get_irq(pdev, 0);
->  	if (irq < 0) {
->  		ret =3D -ENODEV;
-> -		goto error_reserved_mem;
-> +		goto error_early;
->  	}
-> =20
->  	logicvc =3D devm_drm_dev_alloc(dev, &logicvc_drm_driver,
->  				     struct logicvc_drm, drm_dev);
->  	if (IS_ERR(logicvc)) {
->  		ret =3D PTR_ERR(logicvc);
-> -		goto error_reserved_mem;
-> +		goto error_early;
->  	}
-> =20
->  	platform_set_drvdata(pdev, logicvc);
-> @@ -371,7 +371,7 @@ static int logicvc_drm_probe(struct platform_device *=
-pdev)
->  	caps =3D logicvc_drm_caps_match(logicvc);
->  	if (!caps) {
->  		ret =3D -EINVAL;
-> -		goto error_reserved_mem;
-> +		goto error_early;
->  	}
-> =20
->  	logicvc->caps =3D caps;
-> @@ -382,7 +382,7 @@ static int logicvc_drm_probe(struct platform_device *=
-pdev)
->  	ret =3D logicvc_clocks_prepare(logicvc);
->  	if (ret) {
->  		drm_err(drm_dev, "Failed to prepare clocks\n");
-> -		goto error_reserved_mem;
-> +		goto error_early;
->  	}
-> =20
->  	ret =3D devm_request_irq(dev, irq, logicvc_drm_irq_handler, 0,
-> @@ -450,9 +450,6 @@ static int logicvc_drm_probe(struct platform_device *=
-pdev)
->  error_clocks:
->  	logicvc_clocks_unprepare(logicvc);
-> =20
-> -error_reserved_mem:
-> -	of_reserved_mem_device_release(dev);
-> -
->  error_early:
->  	return ret;
->  }
-> @@ -469,8 +466,6 @@ static void logicvc_drm_remove(struct platform_device=
- *pdev)
->  	logicvc_mode_fini(logicvc);
-> =20
->  	logicvc_clocks_unprepare(logicvc);
-> -
-> -	of_reserved_mem_device_release(dev);
->  }
-> =20
->  static void logicvc_drm_shutdown(struct platform_device *pdev)
-> --=20
-> 2.53.0
->=20
+> +	if (ret) {
+> +		pm_runtime_put(dev);
+> +		return ret;
+> +	}
+> +
+> +	usleep_range(5000, 10000);
+> +
+> +	return 0;
+> +}
+> +
+> +static int qcom_dwmac_sgmii_phy_scmi_power_off(struct phy *phy)
+> +{
+> +	struct device *dev =3D phy->dev.parent;
+> +
+> +	dev_pm_genpd_set_performance_state(dev, 0);
+> +	pm_runtime_put(dev);
+
+[Severity: High]
+Does dropping the performance state before putting the device cause a volta=
+ge
+drop while the hardware is still active?
+
+Since pm_runtime_put() is asynchronous, the hardware might still be actively
+powered when dev_pm_genpd_set_performance_state(dev, 0) drops the state. Co=
+uld
+this ordering violate hardware voltage requirements?
+
+> +
+> +	return 0;
+> +}
+[ ... ]
+> +static int qcom_dwmac_sgmii_phy_scmi_set_mode(struct phy *phy, enum phy_=
+mode mode,
+> +					      int submode)
+> +{
+> +	struct qcom_dwmac_sgmii_phy_scmi *priv =3D phy_get_drvdata(phy);
+> +	int ret;
+> +
+> +	ret =3D qcom_dwmac_sgmii_phy_scmi_validate(phy, mode, submode, NULL);
+> +	if (ret)
+> +		return ret;
+> +
+> +	priv->perf_state =3D (submode =3D=3D PHY_INTERFACE_MODE_2500BASEX) ?
+> +			   SPEED_2500 : SPEED_1000;
+> +
+> +	return 0;
+> +}
+
+[Severity: High]
+Does this code need to apply the new performance state to the active PM dom=
+ain
+if the PHY is already powered on?
+
+When the MAC driver dynamically changes the link speed while the interface =
+is
+up, updating only priv->perf_state without calling
+dev_pm_genpd_set_performance_state() might leave the hardware operating at =
+an
+incorrect voltage state.
 
 --=20
-Paul Kocialkowski,
-
-Independent contractor - sys-base - https://www.sys-base.io/
-Free software developer - https://www.paulk.fr/
-
-Expert in multimedia, graphics and embedded hardware support with Linux.
-
---ThTwSIZV2a2cCNSQ
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmpNCOwACgkQhP3B6o/u
-lQyaPQ//f4pAYoEPe2VkBx5ziaC0VkGALJ8pMaCBZzEG6pnd2z1UBPK8Y2xJLlQP
-5bkyAxCQjpN0fwzwtB+kdA0jp2iokJqDThaLYoql9R0Qvj2DyOy7x+SwRqbRzdyJ
-npZtxXLCuF9oXL4YlUHBVPkgL9WsGf2cMpqkXAI/iPd0K+9zBfxT48xlRnuslCQF
-gwlVwkghlca2EFVG0f4q4HVkGRcFkAM9pYpKZD4B4iS89SwzHmJo44SZWV0CsWfe
-ysY5SERP+XL8EbiVlQxCWyqo9Yb//Ikc/EuIWFPMzPW7hp4ZTzjzYaRtVdWEM3Or
-GQ8uFNoXZfWHzfBpHk1Ewfdr7JBtXM0vPIh650GS2SCdGaCS0Ud2UUv7QZdSluel
-uGrsM82ZQ6ts4V8ct1O/dWG7TwYnc8BaFADG90JdKck+zb3fRnQ07aTNrF/bRDU1
-gcnN0yfM/zPIZAc7GA+4Stzok5c+bj2Sb849b5S5g6LNETsScU+WPK5pvEjjWq9E
-zsLawR41dclgUWujmQqflY1sbvVA3YsAADIxWAAsT1WDULfQ/c70/2rMIvNATzBN
-VxbCWSZtk77xMlu6aje7HIbEQa9PGm52xeqNOqfwv/t5kGZxU1fqyAULXAfSYQ2R
-jkjMhoWPkeb15z5Be0yQY0auFkEuIORZboIqn49NxQW0LVu7byA=
-=tX4X
------END PGP SIGNATURE-----
-
---ThTwSIZV2a2cCNSQ--
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706-qcom-sa825=
+5p-emac-v12-0-e3ab1ecf2901@oss.qualcomm.com?part=3D2
