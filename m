@@ -1,66 +1,123 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010069.outbound.protection.outlook.com [52.101.69.69])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010019.outbound.protection.outlook.com [52.101.46.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2501B3EB0FF;
-	Tue,  7 Jul 2026 18:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044A23876C3;
+	Tue,  7 Jul 2026 18:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783449563; cv=fail; b=Qr9uoPYa+L9toGPUM9NzSZlOiXU0vg2pbecDOenYSqPSWtf57XGnYD5Qp30sGqn/w02FoCE3XiXrur0suPDQX/K5lHA8nFleZNgQNrQ9rlyb6BclxQrWeApit5/W/MBrDXcUfn3tOC3KqbQAM4v0iIiIrQvcybekZM84q1G8oN0=
+	t=1783449767; cv=fail; b=EgpNoz4lSd4TMlXSzRhx2d7gjJ4NJr/lKDuKwlLR/RtO6dOUdOmwTzYE4HrD88QXB3MP1fUMyWi5DgIHcQTiiHAxC2BDw3YRPVIPuyPeVGxJbZUCFC+MAKcbIi8jh0uToUBoXHKsPfZ9ClTzZ9YafRd85B1wYQ9WrSMi8SkFjuk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783449563; c=relaxed/simple;
-	bh=WkGCbB9gz/q3glUQa2H5s0ZM/i80uyDUEjNS27d5Cfg=;
+	s=arc-20240116; t=1783449767; c=relaxed/simple;
+	bh=JmgLcGbYd1opqxH/2KwpP34ePsMKIANWKCZzYFvqmRE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=No/Ts5J49he5g2yb5TWr1pXBxSJ6YhLNAywFQfpooFTqObJGGMWL+GDBJu/d6DsSd1RuR799K4/aSwHbFRWldusKPwog5qHQAB9Xjoy3bDRKnqCxYSsE1AXKVTLv0eGZgj7DtTrCuxE60ccQ74EERI0La701k1X2f22TfUJzkAA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dnaB9DPN reason="signature verification failed"; arc=fail smtp.client-ip=52.101.69.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fN8dYOhTsT/dBmJrgy6BVV5+RQn+b0uTXzqXBKRJMJhEHWhCFOC7bt5n8PyyIJ/dQrlf/u0zoDGJGOHuUM3czvMXXpHqKcJEZXc8wNyZc2QNDjAQRH6mAQ/Hiu2SSAnsfB5Tv3vkeOk+6/sUGChkLhfLLLfO1FhKzt8XwfhCLEM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Hfvhbpny; arc=fail smtp.client-ip=52.101.46.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dnaB9DPN"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Hfvhbpny"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PX05SF4R1OFP2ApswCoF8yLQiixSgnk22TCy3Be8oGRz3ORFEOwsTBJP4Sl3Zr4m3EWcStiU4dC4b5BLEp60QjmldH/+elzHVjUbu7yhHP0CWZwQKLv+mE6/oUM/M+lJywgN6pQLTVv54YG4ba5PYwnUZGBQcizFRjxsiTIYd3yJ5j0tfBWrsf7KFqR7lUxSVZpjpp82SxNwZuIQCpRNf1g4fA0OrcNGXytXTxKueFR6QaIQhpJ0SkvwMLrzu79F7u2zNHrrNK/yb4ITzXLfY0soUetqT+DaKG/8sRMLunpf9xR5yLkaeeD8IksB0FpUlojXpENMTdqBlkwczQgQ3w==
+ b=RmTJ31Ct0+CUX97U2ZHkeLIC67kfdPmYljzcXQ24Eq72xGvEkrOtI5yYaSIcjiHbryxlfnUFDud1qPikhfgpVu7Asg8LGw6knYwEEg8Pzom6XlH2ceskkAzSLH5v3jrQgg1s5Bgw9tLFp35yTot6FPpxBIsmAVDepUo5ctsL7Mpjyk6F+GpBBjPrzOXEFL2SEDinpGyeriMRCNOLviJd4eBw68XjXDp66QBz61anrl2L/iRh8/Oczp02fWDutLzbS9XCtt+fJaxqMCAmxj0fvuCs26sgk6TWHspLoc+BfOtL6aQIKtE4MRkL/+VcecqPeXQzlNngHSPngoouWm//VQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MZ8ETfVP2AEBwUBxry7WQO4H2pLTi5cw7+q8So0bGVQ=;
- b=MZK04IbeJoaM5MgOPTS06c7Pp70vnqf2m4r9FMmplRVNw1aPUpIo8P376d/F8mxl4eLDVAvjYxqsI1xstiXy8arcXDYxkJmX9bkzBDxM6lvXDFMGSOVTPa/Qf/uolOXuHg/xzf5wF4gNAAyl/zcreqOXo1WM+GKVehkUfh5HPbwNOIQX4lXWfZBpzAnYKm9x60HoIcAmSJTc1sIU0mpWJB/DX+UHT5zcqwQgHNh+PhyYehxlQHEd21/NzYTwVHWudZd9clKPeio+yNLZfP+fY5lEJHl9A4q5OtjtslgdKSrjnQS4QXd09zUOrMYK4V02halziHNfVsH82K1xmassKA==
+ bh=8IIIY9pm8QsmrcsmVwRwM6OzE1/6nUvrPB27JfGzzx8=;
+ b=iylyzlrc4c/wmEyxxb8Osn2/wtpafvvsCC4yT1r+wG5zsQPF2wh6HkBkM9OAJhlxz5LPDzMOPMANYrEm5CQOTvDQVIaEno6XoyquLlVFPZQ0sKLMU5bdvXvr5k687h1vgKzr38U8ahF7YdhKA4hch8SCEm9v40FJU7pggxGWvZK2DYop7sNI2X3rIOiiP61cxO08Xr6Hf5rfJS1OEPGA4klO21Ti/wFJPTXP5hCOjlBmxZc2ma+GNnyo5mxFbv1/5UG3Lpd8z94APxmJMd2e97c9CUaE2B15/y5aIw8wwm2H3Y/RCHSG7ucBIUVVdII3cgRRH6pUvQHMZOErMp/1kA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MZ8ETfVP2AEBwUBxry7WQO4H2pLTi5cw7+q8So0bGVQ=;
- b=dnaB9DPN4nJrULzFuohCyUHxHA8BeGO4MzVjT5n01EC8hR648hD52FQdZKQEgAjED7g5SZz6roCbj+OMJdi/jziQJIzNVAdmOi1gPKTyP/1MzEoAnAmu1JHAp6hb0wnj4sKm4TKpxWhgkJCs4ywMQsTMC0/4elCbpLIaXpEI8wlx+32ueuppt95A9OwEkb1ZOwcCTrXZGAlNrQYqi6U+fUYJ5WLyaES8NwzPvalOZlTdCHyM1N4uNaFQyAn78CcxJXXLmDbJjTwUqJGhcgS2pUZR5zPHsIgr/oLqJ3koEqd6FvWvhMPQG5mn11ufbBgHX5zCKfmX/9exn2BKOOngwg==
+ bh=8IIIY9pm8QsmrcsmVwRwM6OzE1/6nUvrPB27JfGzzx8=;
+ b=HfvhbpnyNLIK283FnMtZc11O7Q568YHI2HJyZywHF4FZU91KTHyI2dejIn4X+I9JA0QOZ1fyNOXLr8M+FaY+TmLhGnWcHkyhFkwpuW/CyplekBCXy89HNQz5i8E2jFXPBGnH2CL+9yxvK+UZzphQILbyhnWGqJhz25pPkmovuxLYedWY4hGNNS38+MTND4n+SDLSE9jlb1mWPaaW3JRd9rE6Ktgyn1r1VDMA+DbC/cbvH/w5wLRTKe07lZqN+gmMSfyPykUWyrnbNf7xs5O/41MRn7c2owKJQ65zXETneeefJHbqrGoS8cg3ppgxh744YDa2DfvuTqIZpAHOP8QdyQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB8309.eurprd04.prod.outlook.com (2603:10a6:20b:3fe::20) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ by DM6PR12MB4281.namprd12.prod.outlook.com (2603:10b6:5:21e::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Tue, 7 Jul
- 2026 18:39:18 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Tue, 7 Jul 2026
- 18:39:17 +0000
-Date: Tue, 7 Jul 2026 13:39:09 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, Frank.Li@kernel.org,
-	devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 1/2] dt-bindings: arm: add MBa93xxCA as mainboard for
- TQMa91xxCA and TQMa91xxLA SOM
-Message-ID: <ak1HzWkelgKjYiut@SMW015318>
-References: <20260707091424.1702245-1-alexander.stein@ew.tq-group.com>
- <20260707091424.1702245-2-alexander.stein@ew.tq-group.com>
- <20260707092008.B7E771F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.14; Tue, 7 Jul
+ 2026 18:42:32 +0000
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0181.009; Tue, 7 Jul 2026
+ 18:42:32 +0000
+Date: Tue, 7 Jul 2026 14:42:30 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Heiko Stuebner <heiko@sntech.de>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>, Moritz Fischer <mdf@kernel.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Will Deacon <will@kernel.org>,
+	Jiucheng Xu <jiucheng.xu@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Jing Zhang <renyu.zj@linux.alibaba.com>,
+	Xu Yang <xu.yang_2@nxp.com>, Linu Cherian <lcherian@marvell.com>,
+	Gowthami Thiagarajan <gthiagarajan@marvell.com>,
+	Ji Sheng Teoh <jisheng.teoh@starfivetech.com>,
+	Khuong Dinh <khuong@os.amperecomputing.com>,
+	Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Besar Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>,
+	Chengwen Feng <fengchengwen@huawei.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Yushan Wang <wangyushan12@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-perf-users@vger.kernel.org, x86@kernel.org,
+	driver-core@lists.linux.dev, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-fpga@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-amlogic@lists.infradead.org, linux-cxl@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 00/11] lib/cpumask: get rid of
+ cpumap_print_to_pagebuf()
+Message-ID: <ak1IltLSvhw2xj2H@yury>
+References: <20260702154725.185376-1-ynorov@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260707092008.B7E771F000E9@smtp.kernel.org>
-X-ClientProxiedBy: PH8P221CA0044.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:346::22) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+In-Reply-To: <20260702154725.185376-1-ynorov@nvidia.com>
+X-ClientProxiedBy: CH0PR03CA0037.namprd03.prod.outlook.com
+ (2603:10b6:610:b3::12) To LV3PR12MB9356.namprd12.prod.outlook.com
+ (2603:10b6:408:20c::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,113 +125,145 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8309:EE_
-X-MS-Office365-Filtering-Correlation-Id: 205a6ac1-e401-40f6-4a19-08dedc570d2a
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|DM6PR12MB4281:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9fe8075-5163-4391-bea2-08dedc578130
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|376014|1800799024|23010399003|22082099003|56012099006|4143699003|18002099003|11063799006|3023799007;
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|22082099003|18002099003|11063799006|56012099006|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	kgZydP2JJPbgSys78RR22LnIvo8wDgh6jI3FmA8zAIhRycvl2o4ltDSLPTFS79Lexe0RJAzzj2yZ4+0f3Wa+ws4pchBPMR6C++NILwPJ+PMW8CWXNn3O4ktXeROOjqNsLi6lFgR32a/bf9yudviHU7f6I0GluiNdOlHAtEJFKIDGixZZ+W4l5Mue43g8owpR34b2iuSqqY4YlfKRuCnzFZgGbx+RHRAW2tVfUrvw5i+kEXw9RLP8lqBWU061vsqkccfZ5HJsBLYkvYrf3hPejndIa5pBlxxu1lYrjBSekqyE+0Kk4+aE75EAY97Mack+ePVoWNE2/y2wy/2nDV/GFZdYuueZlQUSK9Pc6zw0N19AQkj1jIHSg6g70GRx1y9iakXKWw1T9/3qtOmwSjF+n1eGs5B0wptMcQXiCyHVjSzFkj8l3LVeDIQlpCINUp8zih8QcmwuoiH14g07N+ZBce9gPe52bDhTA0NYPOJao/YUiukw0FiS//aVgh6xtkmEO7oN6UB1UrTM8S37gDJEQEH9hfNiFI9CJ7ZELq8sSx3Sol0IuUpvZWF20yQe0zmTfbAxZfU4uXHx+wkMm3SlYTCVypAa0cMdoHm/iDIR5Og=
+	NxpmzHpLRHbkpQwIcSIbqnmUt1oSohXxde2OGgxei0cGQUG0PntrEJZuhETYGiDkfQkSrhL90K9iaUdXgb7Lmvk0FpHYsDiYegAwjmh2PYkgS0paPwYWxovWF3etkfsvgC575c2uC1+AbSZpPyGFkKmHBp+8heQlQk+XM0m8V/Q4U0R/3OJt7VTQOFdWp9d7ZJe0EBl6gk6QsSA9C2TMr0mzQtt7Ct6iOa15KPkm1Y0/ZqfWFdmqyokl4lUlN2Fk6oODKPoNdEE4lvVcTRkb0GrkPs/TgpabINay7QUgayipdxmKGlRlA9m5FAxHlC1sJi04lllmjuBKXH5wU2Qyhi1rhUWcMYHj03k1IAFTkf+HmnbfatkjtlJ3EjjOApqrTtFDB77Ooj+AZwuVgQiSWM7xnri+o50Qgk4F8z/U2ph2aKq5avzKyscbhLgQOZVTYlmBjD0eC5EuMoSWXycvW02femTwdL/v3wOTei+1H+kd44iQGMmrm4nM/vjs9Nzs1WDDMsKgnl0x+gonK8YTnZ+BXD4Bo5ugM8PSFWQYWvd97C/o/ZTyHhYg+WlMUQW5J+IkC7GufPiM7MTS1v9rbnH7Cb0c0iKYBTDQQnvZJi/PWnUGIWIAZuMzaC8jdKZvjM79sihzbWiN9syqiR7IFhfSyz0F0uFXoKUMrRPYM6U=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(1800799024)(23010399003)(22082099003)(56012099006)(4143699003)(18002099003)(11063799006)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(22082099003)(18002099003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?myOBlybO1T28R1azfOBPMy4QC0kDo3htSzyyNdFs0P/AI3duHiVHj/CTxJ?=
- =?iso-8859-1?Q?1+52FefFnrwkncVj/a3/DIxJzXn9UGzA6NuK/MqnCIdLe8popCIEgD3z9W?=
- =?iso-8859-1?Q?7oaQsEkMb1lIhtgOhiTNlLLT2BCqVZk/S1JMzMqzRHSTbu1OwNkqI8rPJ2?=
- =?iso-8859-1?Q?xcPo/zy2kFAm0TSwQd8lPw3l7c31xHBbZuvJacWRnyZMB8V1ow5Ru/hteq?=
- =?iso-8859-1?Q?2Zxv2XoA0aIru94q89p4O95bZoi0re9eSJZJeUsCqpLXI3316XfW72aham?=
- =?iso-8859-1?Q?fucFySQhB10MMXv1a7uH+mWr44q/ppxTTJGpOmtzY3/d0M2EzaXGYy3idy?=
- =?iso-8859-1?Q?cbDQZ74L9BcOGWw7ZcnoNiUP4Y+X+bLsB9lDcVH20JSbTN5l+LPtMN8EED?=
- =?iso-8859-1?Q?yRqxYiP4G+7syHgjhKFO1Ep8UEFomJJI58EVob4XGz+J9OT/M9RZdeAZCg?=
- =?iso-8859-1?Q?OLejRJI0TqXXjvSU36iBbzauEyZ8BkQW4+h//g5uHVvkAXFoDuIUMztInt?=
- =?iso-8859-1?Q?CLkbm76rbAZ9G3sBFI+uL7VLIxliaHjGdXu+sdAKEDa8GJo/eFSZPgEVrE?=
- =?iso-8859-1?Q?3yfyHCxa/Jeo0omkavq+wzN0+L0dSAQwvyiz+otnVdhiAfzb34i5uzYcC9?=
- =?iso-8859-1?Q?IFD64SV5W1Nw0OdJrrQssHcJ3IT4xLJze4hBtXOmEH/BIFGnjX/eEhMefm?=
- =?iso-8859-1?Q?43k5rGM6XX2lw9ONGAiTMlCrtlO/24PD6hD7g3YhVO9dUkdca2mQQwy9U8?=
- =?iso-8859-1?Q?BP5soGefRpb9BohLRtZStEUTcm+xowGUMt+oOs30TeqsOmlIGEqlnbwwc0?=
- =?iso-8859-1?Q?uidUXzhpBwEWYbTzSonA3xJMFmarFxgwrdkDeLmmnKiaupYVyVHY5rKhAe?=
- =?iso-8859-1?Q?mzurV0neV1nBi/sqzBDbI6buGFV4CeF0VigSbrMzJgWjrl8Zv9hfPDQy4n?=
- =?iso-8859-1?Q?ZTmooC4Lfsu0WvoTmdcWlJ6cmXuZFmPrBEc6FUu5fqdvrR6Kw+2//kgtts?=
- =?iso-8859-1?Q?0/pFK6jusqyIxrXktg7qD4IHPh6HT7BkfPghunRojHvKBWvPjHYh+M+wtl?=
- =?iso-8859-1?Q?J2aNtQeSbXHhE+acxIHbSfjc1fv+AsiGIzY0pyeFhiF59Jol7lY6fbCrbd?=
- =?iso-8859-1?Q?qC+JuwJPFXL7GCETZshBAXUNjuO/RwMp2YxHx0JMoRlragqjrmByAMenVN?=
- =?iso-8859-1?Q?f5efvAKXkeSBTpXP/SKTJCTHfO0FxCOqtT4UyqwTsMUic3aRuPKG351rQg?=
- =?iso-8859-1?Q?ILWVJe+5oNH0fcP2EWsldi86+jUO7/W8qKGNwzLUMpHSelkIhrbp5nk5IF?=
- =?iso-8859-1?Q?UvYl6OwCXMSIFkoLMhDsCn7aFrTlsrxQ18lU9e6k5iQIxbizeNptydfxNu?=
- =?iso-8859-1?Q?H3DddnJK25pGpI6GqENlyLoQqj82JhtrNRA/okSfrpt0mRtlo20TGkeNjJ?=
- =?iso-8859-1?Q?jVNkRv8suBl9fZrOH792Vatz0rL4N5n2XJ/4tAIiq/kcchWdJAHGNEIiwb?=
- =?iso-8859-1?Q?0SBUDJkb/Ir28tIa49yUonpFqjQrGBYbM3DwVO35EWg9opTE22HCGHQA1Z?=
- =?iso-8859-1?Q?XwOKJDhUZDa2NsZV82o+XOXEGfLlnX9aEQm8DHpuoj1mjiHB34DJGnh0Tv?=
- =?iso-8859-1?Q?h8v576NjQd0F5B3KVtIGEgVpti3sNO3e0tF38b809tYsv7TFMAHXDAIoZI?=
- =?iso-8859-1?Q?pBDjJBWzblaMEwpzcRRjsdYK/EQStvzkDU7kJjV8v2U9LGsRBdOVnZBeB+?=
- =?iso-8859-1?Q?Hja+ivqiJ3QAZ57eEtBOFw09x9FhokzB/FfzojSvii/9jX+oo/lmFxk+FN?=
- =?iso-8859-1?Q?MP27UzhBneB2HtIY9E686hvinDFQADJVd/bXn/06c9PkSwLQdPO9?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 205a6ac1-e401-40f6-4a19-08dedc570d2a
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+	=?us-ascii?Q?SiQzI8ohKs62x9Az4vlIly7jtkeb1zq7fA+N8Y4QXsU61R7rOL2lPYxQZrJV?=
+ =?us-ascii?Q?jP7N+OUGHezZWOqNG/LoH5SUHQzpeU3DN2iv01A5qCWtqxiGFrUdkP/WVTYY?=
+ =?us-ascii?Q?ag86fU/SBiF26PIDjxOXkIVIkOJYXWeSE/+U8dUBQHXI38pTnU3cLgtR5k3a?=
+ =?us-ascii?Q?TMDzZ5ajUwGstujZN4hJi+nGZlMJEfmPUHGHl4Ug8FNXlkisEhdIO2IqDJLl?=
+ =?us-ascii?Q?WAU8x41BDPDuwLYkSn3tKoWz94Rq7eBA/+kx3cMg8AQXhvIaxDpq+BbbEyLD?=
+ =?us-ascii?Q?WyXKA0Bg1L/ob8eaQiAp07uaxAzOaEKWPXHEb4y93BXynfLoR4lV4maDG0RT?=
+ =?us-ascii?Q?FMCiiZrmoJr5seo0du/jwMovnBkeer4TV8WCj4xcMKR9YkgOP/t2NN97u7x9?=
+ =?us-ascii?Q?wtKEIKN3Exs79ezHOg8haKhW7f5JcCmi+Jr60sYIbJCeRaF4TKnQi2NZgrcQ?=
+ =?us-ascii?Q?mbU86xNacK2UJ4u5QriD33CiMjlgwbd9/ZqSgdg0Xfz6wK6r8mlhYx2mdEYQ?=
+ =?us-ascii?Q?e8NV3+VcqyPrqTzlOKpHONruyACX5W6UNaBUNCnGfpj4RVETdhU4FwKq/l7E?=
+ =?us-ascii?Q?HizgZWA87T+4saJQ1OHCw0zy7xo9QAoprQUxOkZj/x8zlYsa8olqBooTThug?=
+ =?us-ascii?Q?XtXTolV/G6yN0dhX9idQ/qb9pJVV4+YYcUhXldKPUNZxo6sR6PAenoS4UkMR?=
+ =?us-ascii?Q?qvGypU0jO1wGKVOkQI75LusZ6WvOrQqrGJjxbzktl7Bzcb3+UCq7W4YMI8Tn?=
+ =?us-ascii?Q?+0SCpqUjGVWeQJH5a/0jTuxeG1TGJzJAcnC5Dl0TU4BIB7Njy/A3BX8YXH/R?=
+ =?us-ascii?Q?WcusWrkSKkU4CxJICvLYbUrCEOwfyLG5gMMBsz75Wa7vKmWMRoJ/HajiSwDt?=
+ =?us-ascii?Q?sLWXsO20+oAFm3BQg7ewE5Ugc8OAGL00DBfH3Nw0JefnNNwCW3PThWs/Wwer?=
+ =?us-ascii?Q?eWEo3cnHdPCm0KVOxcjfk3ICWg7aRFT1ULay1y4c4L5vZyxr2ltI8d/hp1lW?=
+ =?us-ascii?Q?HIoa65wmbpVUmFT6DggUgCq6iuyks3jl7nJ0xkRRIrsZ3sDVLSdf/I4tXemx?=
+ =?us-ascii?Q?SLwRekoK0bn9gx6cQFVQ6XZV0xuMDVSdZYfaMwjAbp2KtxjJMGenE/hi6T2D?=
+ =?us-ascii?Q?Dp3wF5Rm01fFzulYcl0r8IvrQm2ip7ZazotHt/zQ4UZ2JVgJZYmK4IHgBVh/?=
+ =?us-ascii?Q?BBUeK+5nJrCyfYxUsF35C8Itc7M4cH4QiICtKk9lNVxIc2Q4JqODoKdMdtDB?=
+ =?us-ascii?Q?hpfmREYiRPwHE1T+2dmMWX7WCGcfXNCKvFLv2tMRWiVPIINgd4b66QYUPQUY?=
+ =?us-ascii?Q?dWXcDUfKkC5TyFXUdYLt2vX/72zJS6qJP/ZfuVxMn9MJHYtHrNID0W2fVu9S?=
+ =?us-ascii?Q?gALekxfX/Y6MVNjd0sdzCajc7HIFptn3zGIUeB4Qh4JIB8q2o5lwBLu/a1yc?=
+ =?us-ascii?Q?7KGU+O8XVRe0gMr5V1lctB/X9rDPIaRlKdYjyP/+stqcqdnWHE4diBFIgR7D?=
+ =?us-ascii?Q?TevUlbhUhTGr1Dk4bAUoWJB91OS+m9yM5lE3sIjZ9d3eRlkjsPdomyWKViYr?=
+ =?us-ascii?Q?gjjLcSVlh6It5NIVUojhSIgRw7rKXIfUpDN1R7WYShiCww6NVRlD+h63FQlO?=
+ =?us-ascii?Q?7BPZLNOTGSDFbZ4G6/lgY2dIqJnIX85aJwFrns6W8Bq2TEISe+AOc0Ge38Tz?=
+ =?us-ascii?Q?GTq5lrSUyvCAF+HoUWUAk2uh8pytRVQ5bMGCvLEP4IDtgX5B?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9fe8075-5163-4391-bea2-08dedc578130
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 18:39:17.7812
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 18:42:32.3185
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LeMvWbbb1Ne2kfHGlTJXxZCZyB4waKWzX8ULT8bK0yDLrGkq7RRbjvdkTzyY33mDrWE6hcGABTASi2D3Nc0HsNnyM9Vkh4b5zVgmHU8Ex0oH35/+uLNZsMSEAmUPkjPX
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8309
+X-MS-Exchange-CrossTenant-UserPrincipalName: uJ94FGIl5fGyIsMqJde9xM/7YwLuqHPmfqSuXko5YdDmTTaQuMcbWQZX6PT8XmAvMMaaqUt/VzshdNwEyjxqQQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4281
 
-On Tue, Jul 07, 2026 at 09:20:07AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Low] The patch introduces duplicated and repetitive text in the dt-binding description block and contains a factual typo in the commit message.
-> --
->
-> --- Patch [1]: [PATCH 1/2] dt-bindings: arm: add MBa93xxCA as mainboard for TQMa91xxCA and TQMa91xxLA SOM ---
-> commit 3332dfa95ce8d051969053f3ea74bbf075143869
-> Author: Markus Niebel <Markus.Niebel@ew.tq-group.com>
->
-> dt-bindings: arm: add MBa93xxCA as mainboard for TQMa91xxCA and TQMa91xxLA SOM
->
-> This commit documents the MBa93xxCA starterkit mainboard for the TQMa91xxCA
-> and TQMa91xxLA System-on-Modules. It adds the corresponding compatible string
-> and updates the board descriptions in the fsl.yaml binding.
->
-> > TQMa93xxLA and TQMa93xxCA are two series of feature compatible SOM
-> > using NXP i.MX91 SOC in 11x11 mm package.
->
-> [Severity: Low]
-> This isn't a bug, but there appears to be a typo in the SOM series names here.
-> Should TQMa93xxLA and TQMa93xxCA be TQMa91xxLA and TQMa91xxCA since they use
-> the i.MX91 SOC?
+Added in bitmap-for-next. Thanks.
 
-Look likes correct, please double check it.
-
-Frank
-
->
-> > diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-> > index 86876311ec59a..84c4311cf7c30 100644
-> > --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> > +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> [ ... ]
-> >            soldered on an adapter board or for the connector variant
-> >            MBa91xxLA mainboard is a single board computer using the solderable
-> >            SOM variant
-> > +          MBa91xxCA mainboard can be used as starterkit for the SOM soldered
-> > +          on an adapter board or for the connector variant to demonstrate parallel
-> > +          display and majority of interfaces while MBa93xxCA starterkit mainboard
-> > +          is focused on communication interfaces without display support.
-> >          items:
->
-> [Severity: Low]
-> This isn't a bug, but it looks like the new description block duplicates the
-> existing phrasing for the MBa91xxCA board instead of replacing it.
->
-> The context above this addition already contains fragments like soldered on an
-> adapter board or for the connector variant which seem to originate from the
-> older description of the MBa91xxCA board.
->
-> Could the previous, redundant sentences describing the MBa91xxCA mainboard be
-> removed to avoid duplication in the final schema text?
->
-> --
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260707091424.1702245-1-alexander.stein@ew.tq-group.com?part=1
+On Thu, Jul 02, 2026 at 11:47:13AM -0400, Yury Norov wrote:
+> cpumap_print_to_pagebuf() is the equivalent for the "&*pb[l]" notation
+> in printk-like functions. In some cases, it makes people to create
+> temporary buffers for the printed cpumasks, where it can be avoided.
+> 
+> Get rid of it in a favor of more standard printing API.
+> 
+> Each patch, except for the last one, is independent and may be moved with
+> the corresponding subsystem. Or I can take it in bitmap-for-next, at
+> maintainers' discretion.
+> 
+> On top of -next.
+> 
+> This is the resend of:
+> 
+> https://lore.kernel.org/all/20260528183625.870813-1-ynorov@nvidia.com/
+> 
+> Except the patches merged in 7.1 cycle. I'm going to apply the material
+> in 7.2 unless explicit NAKs received.
+> 
+> Yury Norov (11):
+>   arm: Use sysfs_emit() for cpumask show callbacks
+>   powerpc: Use sysfs_emit() for cpumask show callbacks
+>   x86/events: Use sysfs_emit() for cpumask show callbacks
+>   cpu: Use sysfs_emit() for cpumask show callback
+>   devfreq: Use sysfs_emit() for cpumask show callbacks
+>   fpga: dfl-fme-perf: Use sysfs_emit() for cpumask show
+>   hwtracing: hisi_ptt: Use sysfs_emit() for cpumask show
+>   RDMA/hfi1: Use sysfs_emit() for cpumask show helper
+>   PCI/sysfs: Use sysfs_emit() for cpumask show callbacks
+>   perf: Use sysfs_emit() for cpumask show callbacks
+>   lib/bitmap-str: get rid of cpumap_print_to_pagebuf()
+> 
+>  arch/arm/mach-imx/mmdc.c                    |  2 +-
+>  arch/arm/mm/cache-l2x0-pmu.c                |  2 +-
+>  arch/powerpc/kernel/cacheinfo.c             |  3 ++-
+>  arch/powerpc/perf/hv-24x7.c                 |  2 +-
+>  arch/powerpc/perf/hv-gpci.c                 |  2 +-
+>  arch/powerpc/perf/imc-pmu.c                 |  2 +-
+>  arch/x86/events/amd/iommu.c                 |  2 +-
+>  arch/x86/events/amd/power.c                 |  2 +-
+>  arch/x86/events/amd/uncore.c                |  2 +-
+>  arch/x86/events/intel/core.c                |  2 +-
+>  arch/x86/events/intel/uncore.c              |  2 +-
+>  drivers/base/cpu.c                          |  2 +-
+>  drivers/devfreq/event/rockchip-dfi.c        |  2 +-
+>  drivers/devfreq/hisi_uncore_freq.c          |  2 +-
+>  drivers/fpga/dfl-fme-perf.c                 |  2 +-
+>  drivers/hwtracing/ptt/hisi_ptt.c            |  2 +-
+>  drivers/infiniband/hw/hfi1/sdma.c           |  3 ++-
+>  drivers/pci/pci-sysfs.c                     |  7 ++++---
+>  drivers/perf/alibaba_uncore_drw_pmu.c       |  2 +-
+>  drivers/perf/amlogic/meson_ddr_pmu_core.c   |  2 +-
+>  drivers/perf/arm-cci.c                      |  2 +-
+>  drivers/perf/arm-ccn.c                      |  2 +-
+>  drivers/perf/arm-cmn.c                      |  2 +-
+>  drivers/perf/arm-ni.c                       |  2 +-
+>  drivers/perf/arm_cspmu/arm_cspmu.c          |  2 +-
+>  drivers/perf/arm_dmc620_pmu.c               |  4 ++--
+>  drivers/perf/arm_dsu_pmu.c                  |  2 +-
+>  drivers/perf/arm_pmu.c                      |  2 +-
+>  drivers/perf/arm_smmuv3_pmu.c               |  2 +-
+>  drivers/perf/arm_spe_pmu.c                  |  2 +-
+>  drivers/perf/cxl_pmu.c                      |  2 +-
+>  drivers/perf/dwc_pcie_pmu.c                 |  2 +-
+>  drivers/perf/fsl_imx8_ddr_perf.c            |  2 +-
+>  drivers/perf/fsl_imx9_ddr_perf.c            |  2 +-
+>  drivers/perf/fujitsu_uncore_pmu.c           |  2 +-
+>  drivers/perf/hisilicon/hisi_pcie_pmu.c      |  2 +-
+>  drivers/perf/hisilicon/hisi_uncore_pmu.c    |  2 +-
+>  drivers/perf/marvell_cn10k_ddr_pmu.c        |  2 +-
+>  drivers/perf/marvell_cn10k_tad_pmu.c        |  2 +-
+>  drivers/perf/marvell_pem_pmu.c              |  2 +-
+>  drivers/perf/nvidia_t410_c2c_pmu.c          |  2 +-
+>  drivers/perf/nvidia_t410_cmem_latency_pmu.c |  2 +-
+>  drivers/perf/qcom_l2_pmu.c                  |  2 +-
+>  drivers/perf/qcom_l3_pmu.c                  |  2 +-
+>  drivers/perf/starfive_starlink_pmu.c        |  2 +-
+>  drivers/perf/thunderx2_pmu.c                |  2 +-
+>  drivers/perf/xgene_pmu.c                    |  2 +-
+>  include/linux/cpumask.h                     | 19 -------------------
+>  kernel/events/core.c                        |  2 +-
+>  lib/bitmap-str.c                            |  9 ++++-----
+>  50 files changed, 58 insertions(+), 75 deletions(-)
+> 
+> -- 
+> 2.53.0
