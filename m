@@ -1,182 +1,73 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEE03B14D3;
-	Tue,  7 Jul 2026 06:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD083CF1FF;
+	Tue,  7 Jul 2026 06:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783407123; cv=none; b=RmcvW6y47haEYIqJnqbkMqiT/MEvVZfLekZUNktXLN4gLX97OXUoYYP4ouIYKeMgNBXFHxiZX1tjeNccyMiz8Wf+tLQs/uNxfikv806rZd0Fs0t3Ku2ksNf5PCGrT3KOEt13OSNRoLFgnm8dPg1aXaXaSvQlPCEoj/rTfvalirw=
+	t=1783407228; cv=none; b=RN92fNXFqBy7+f2r3m1eWFb24gsoh2u7BtbkE31I4py6WDG0BH1JFKsKAlboOLWwa+Mxr7u6Ahmt5lSLfhTXrg2j9lXrLfqSWN84wjoD2mlNw+PBmSNg8eC2vlki97z5r+GkdVc6W9772RVAX3GfNeu8WzbqTFe0dQt2GuLCslU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783407123; c=relaxed/simple;
-	bh=RKBXk2pOO/OrjbB9a953GmKcbuimzLO1VqdWKIi9E+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXIUeiVhd5JEv0dACtqrxECM596w2ehd13JUa28bcDgfmTO259t8f50sPkCfcdNQ+p094aT/d2Z1fntMJkOC1T/CDNOBC7BVr62wNTJVtaA0cX+PW86fUvjBwu5bgWqcZLvRw3HTujHyBS5QPm2RAvlZjZiHxUD/EZ1rstViWEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=fS2MrMU2; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1783407228; c=relaxed/simple;
+	bh=l/gi+BZo6ThnO/G247ifExseAfWUqdKg/mGRm1zQ3DE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N4rt2394OIToeIhP39U5M58vSqJ9balPKNM8CWXpqNx0h7yXajZoTMeu3U0MDKUJa43LNNqVSPZ6J/WagFRsDitYm208MZuHNDWYNC2++M8wmVC7ZxoY18S2bF7KzGOwxsgwxywvezrhcRyppURfdK3xrc5BIkEkGh9Xej3dyqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQuv3+yn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="fS2MrMU2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=MbXdZhtUuDIonkcq4DJdkdJwFhpkeCbRr3uUZF592xU=; b=fS2MrMU2X2qPk15J7JupnkAQz7
-	GqBrS18ZjeC3RSdk68KlT17qpVh4eNEQPi2Gv5Ot2uzxNLimI1rl0CdPVOiPpGBpP19Qdb11oA8xP
-	Er2999foeeHE3iVIfT+t9Bw11Mo/hJrrDLPUqA+MFz0JsawcFRoQ3D8lQy1r0UreXjRHsSxrpr1ZE
-	+Fp9u1zkPM8KtFbkvHbYY1DZ0m29CB2Ux6zVSaLpp83EcHlOj8cJ1nqHop0jl7XSkiRVhDWALmzkO
-	FR9wLXow4XquejoRmnvR5oJY0LNauh8o3hADoVac0zYQgyDxhFRzOO289hEjVWaqkQKFp7dPs7m4m
-	MPzfa58g==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wgzes-000LgJ-1K;
-	Tue, 07 Jul 2026 08:51:54 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wgzes-0005WX-0w;
-	Tue, 07 Jul 2026 08:51:54 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com
-Subject: [PATCH v4 1/3] arm64: dts: imx93-tqma9352-mba93xxla: Add LVDS overlay
-Date: Tue,  7 Jul 2026 08:51:47 +0200
-Message-ID: <20260707065151.1079667-2-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260707065151.1079667-1-alexander.stein@ew.tq-group.com>
-References: <20260707065151.1079667-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQuv3+yn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7EE1F00A3A;
+	Tue,  7 Jul 2026 06:53:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783407223;
+	bh=v0mT1gYQutRbQjr/KeeBWDlUXYQvp5XqEtNxRNxpekI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BQuv3+yny3139qCwzgvCBjU5d1NWhDE3G7OLGFL+dceVhuD4j0RX3oThwQzUmNd21
+	 BUZdb8187uOzXqJh/MKgrOw/HfY/SmbI6oVh8B2yoMEG8pxaq+eb21DK9MFA/w68iC
+	 pmHLPDjtdIQAO67bYZ30nOkdZt+krW5PL2QIp4ziv7+NXZLfo9+sr2K48xTjNuRqcr
+	 pHuVM4XXOT82oBNvv9JVJzCGuLc9FzNTlBZXfPcHvQ337qsBD/yZ8EKhBzQwcG+2db
+	 Slbj3McbZtH9BbtVeVX5bV7yUShEoTLtTowJKVe2bxHflL0FtIuxgdSGISMeedkirj
+	 6HjsLM3s6ATNw==
+Date: Tue, 7 Jul 2026 08:53:40 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Linus Walleij <linusw@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev, 
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 1/1] dt-bindings: mfd: st,stmpe: fix typo st,stmpe601
+ (should be st,stmpe610)
+Message-ID: <20260707-little-organic-horse-a0be9c@quoll>
+References: <20260706192932.1573584-1-Frank.Li@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28052/Mon Jul  6 08:24:35 2026)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260706192932.1573584-1-Frank.Li@oss.nxp.com>
 
-Add the overlay for the Tianma TM070JVHG33 LVDS display.
+On Mon, Jul 06, 2026 at 03:29:32PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> The compatible string "st,stmpe601" is a typo and does not correspond to
+> any existing STMPE device in either the driver or DTS files. The correct
+> compatible string is "st,stmpe610".
+> 
+> Fix the typo to ensure proper schema matching and eliminate the
+> following CHECK_DTBS warning:
+>   imx53-m53evk.dtb: /soc/bus@60000000/i2c@63fc4000/touchscreen@41: failed to match any schema with compatible: ['st,stmpe610']
+> 
+> Fixes: e10038ce1ba9 ("dt-bindings: mfd: Convert STMPE to YAML schema")
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/Makefile        |  2 +
- ...3-tqma9352-mba93xxla-lvds-tm070jvhg33.dtso | 38 +++++++++++++++++++
- .../freescale/imx93-tqma9352-mba93xxla.dts    | 21 ++++++++++
- 3 files changed, 61 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtso
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 430085123b4e3..de796f2134145 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -641,8 +641,10 @@ imx93-tqma9352-mba91xxca-rgb-cdtech-dc44-dtbs := imx93-tqma9352-mba91xxca.dtb im
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba91xxca-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtb
- 
-+imx93-tqma9352-mba93xxla-lvds-tm070jvhg33-dtbs += imx93-tqma9352-mba93xxla.dtb imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtbo
- imx93-tqma9352-mba93xxla-mini-ezurio-wlan-dtbs += imx93-tqma9352-mba93xxla-mini.dtb imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtbo
- 
-+dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtso b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtso
-new file mode 100644
-index 0000000000000..4cb2d08b671ed
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtso
-@@ -0,0 +1,38 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-+/*
-+ * Copyright (c) 2023-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Alexander Stein
-+ */
-+
-+#include <dt-bindings/clock/imx93-clock.h>
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&backlight_lvds {
-+	status = "okay";
-+};
-+
-+&display {
-+	compatible = "tianma,tm070jvhg33";
-+	status = "okay";
-+};
-+
-+&lcdif {
-+	assigned-clocks = <&clk IMX93_CLK_VIDEO_PLL>;
-+	assigned-clock-rates = <477400000>;
-+	status = "okay";
-+};
-+
-+&lvds_bridge {
-+	status = "okay";
-+};
-+
-+&media_blk_ctrl {
-+	status = "okay";
-+};
-+
-+&tpm5 {
-+	status = "okay";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-index a78bbc46c59b2..914efa9b1c22a 100644
---- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-@@ -73,6 +73,23 @@ clk_dp: clk-dp {
- 		clock-frequency = <26000000>;
- 	};
- 
-+	display: display {
-+		/*
-+		 * Display is not fixed, so compatible has to be added from
-+		 * DT overlay
-+		 */
-+		power-supply = <&reg_3v3>;
-+		enable-gpios = <&expander2 1 GPIO_ACTIVE_HIGH>;
-+		backlight = <&backlight_lvds>;
-+		status = "disabled";
-+
-+		port {
-+			panel_in_lvds0: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch0>;
-+			};
-+		};
-+	};
-+
- 	gpio-keys {
- 		compatible = "gpio-keys";
- 		autorepeat;
-@@ -534,6 +551,10 @@ &lpuart8 {
- 	status = "okay";
- };
- 
-+&ldb_lvds_ch0 {
-+	remote-endpoint = <&panel_in_lvds0>;
-+};
-+
- &pcf85063 {
- 	/* RTC_EVENT# from SoM is connected on mainboard */
- 	pinctrl-names = "default";
--- 
-2.54.0
+Best regards,
+Krzysztof
 
