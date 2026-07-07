@@ -1,163 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011044.outbound.protection.outlook.com [40.107.130.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0950526F2B9;
-	Tue,  7 Jul 2026 08:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783412225; cv=none; b=gdt1lythyHmHq8Q/RFQgvGU8WiJItKtKsMH7rUp0jidHqZ2K3GwWGq/tLPqzBSCA/A5WaZBcKbXTlt/QtPJkbCsrXpMvWkgEYF3ZwMEL/EJmHFtrp6m1VEUXKiB7YgJYvekV6H72R6RvnjHpt11r+6djpRaarR3Kr6EUSp5zcf8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783412225; c=relaxed/simple;
-	bh=mEr1KdXxHudSFqFmnxi4MJTgUjdPkfs9rh899k4SYOQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RHj3xt2Cobt4AeMsDrT8QJloZe+qVUfdRt6G5fLWFeCvEOdUxmXymLvBO/jKT4yBweCjrB0TS1iOljT3d7nEnX7f6rsPJhMaJbpGml13Ia//uwW8QpEgI3JZMrDfYOXw0VEIrf/mFEjqsUy6YshYCVwHzK/wfqG51chtVeaxgB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HFx1bAqD; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF2D23ED6F
+	for <imx@lists.linux.dev>; Tue,  7 Jul 2026 08:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783414012; cv=fail; b=SU8eSrFU75Pm4DZ4l5Hdh2unQ15Bco8LbUlxHyOei4yyLJswtodZjczu2XP2bTXDQAK3yOYUc7zN58xedF03asQNnj5ILtVS9oeUcxIT6Ho7TcaK7Zb1/BnfvpxHEaoh9LfBXYLWgqmB4oLWUS6JuN6H0fsHtQel4XNvqNPmeR4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783414012; c=relaxed/simple;
+	bh=gNVVafJDL4KbuE7WKS7zKOCtl3XyKLynmdckTHaqOUk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=n/rnYLBHJj6cnzpIIgwKpgCEakyeko0dZ8yl28pDtCLzD/m1kCh+3fiDcGgv1zTUHP240xUkIF0xwHcfPazR4L0TsHis/gPH56v3UxPLJNs16RcQQ+ph6eSxCGKThtAeba8ZzfwVo9XYYMU6r0K9MRoz71fb3s1dpoCSagHSfds=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gMSRLXcs; arc=fail smtp.client-ip=40.107.130.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HFx1bAqD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443B51F000E9;
-	Tue,  7 Jul 2026 08:17:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783412223;
-	bh=9QHfejCwCFHVTnua7eG3aMl31B3p2Jiye6Z6joMIFFw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HFx1bAqD2EO3vZijc+tYql5hBMX9jhDCJKFz9hUrubghNwnTrdEDXuG4xvJXpoEYt
-	 GpNDJH8xNyC7vnIGUZeAC1vH3Uyhhe4QMzGhK6dmp5JX6HWg6d5Uw5aqK0PvFwTGUQ
-	 SRknkbC2cuGSMGtYnQb0yqkB1Vz5DPwhAlUFurcyEXOQyxY4dgBSFNXF63Em0QvVTO
-	 SsXjMnl6B9SEBluqXsiAdzMENhtWgUldGQJ8eMCec91bTaNyRskB+fQgDpJNLqh8Ww
-	 a/tUqSM2ey2tzIENEhzBUM2VqvM5X+0OboAGJuu2sR46d5/FzznhrOwwsLmBDmBJ5Q
-	 RQ438AX1e39Ew==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 5/5] watchdog: aaeon: Add watchdog driver for
- SRG-IMX8P MCU
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?VGhvbWFzIFBlcnJvdCAoU2NobmVpZGVyIEVsZWN0cmljKQ==?= <thomas.perrot@bootlin.com>
-Cc: linux-watchdog@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260707-dev-b4-aaeon-mcu-driver-v7-5-ca6c59abd672@bootlin.com>
-References: <20260707-dev-b4-aaeon-mcu-driver-v7-0-ca6c59abd672@bootlin.com>
- <20260707-dev-b4-aaeon-mcu-driver-v7-5-ca6c59abd672@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 08:17:02 +0000
-Message-Id: <20260707081703.443B51F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gMSRLXcs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tJac1pqNnqhJ34oyd7oX5H+x72P/d/65+D4PWv7DZe4W7d2xbMr1FEUqbg1clATxQnTchsDLwzkygzX/FMAhgaJqZPhAPdxuFof6Gp2I+I9GgFY9ZW5Qi5UQaIKN0r8kyasp+vq84TnuRQiJs/n+m6jLfCl/KGwqKFxh1ecouXOlTmntBcG1lC5i3tx49f/GgjUSEhPRqO0nDdZbIvEzIHqIQeXifXNR9WtzIqcNSe4vRX6sDlNUO570gDBGDu9OGpC/HiCMK/23Ws7eF/U+emijpe5aqRVmEFg19jShVvf/ffLT/kTijlo/lNfEKjEWHHQq37jVX9Zt3lVBnoR4+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VgPnzfXMfKg4CJENz6fu8LczSELELf1lTHmWEHwhssw=;
+ b=p5Ac9OBvMFcu66ObPykaYKatOObHakI7rWUdEwXVK1FO5ZMwodLxMcFVjzss85iyrcywn8jehaUaS/abX3K7H4L5HCuWcy5XP8sbSxdvPt5LHDwmYuW/5PNL6GwOJS2/A94daHJVRh+iQPBnCHDxpNDMX6DYI+kHJY+jXNjpBJF7p8/k/jiyFSirjgDqQGAD8St2j0QvVU1WptrZW1bjvNJWBOKyy8r7y96X4s7ZnqQsRpkZZ/DS9rZkuTw+oXAzkmqf/CbThubgMBM0S73lPJRb8SiAhpLbwEEea0tFRy9gwRwr9pnyUQjabgluTPEPSE1LzqOEXSbd8AWL2SXC7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VgPnzfXMfKg4CJENz6fu8LczSELELf1lTHmWEHwhssw=;
+ b=gMSRLXcs6fbuEBDPTRr0EDubFqkV8S1UkJxjD2zqE74JD6aDHfybnxKXRNyMlmRFMLFxcVH2y1fg30xBjpZN0BgtMVaRRAN94QwoA3v1HqDIgtkUhcWWFXlCxMo/IyouERPd94gnJSdWyUeXZepL/eqLB9XlTBWWUZrN3En+3ovyYHKXjRBuF5m/WzcVm5bFKovDjTuGcvZARxZxkwgmw9xWUID0LEAGyySLf6mPhmGxD1OSqbSk5LLPM2RJFu5ptI68i6wOURsfmHBXmLyZKxI/4j/VQNUxyrAIxVzmQ8ZvgV9CB4K6os+bgyRCoZ0MBqDoz96F+m8uQHOvx0jBow==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by VI1PR04MB7182.eurprd04.prod.outlook.com (2603:10a6:800:121::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Tue, 7 Jul
+ 2026 08:46:45 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0181.012; Tue, 7 Jul 2026
+ 08:46:45 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	wei.fang@nxp.com,
+	chleroy@kernel.org,
+	maxime.chevallier@bootlin.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 net-next 00/14] net: enetc: cleanups and improvements
+Date: Tue,  7 Jul 2026 16:18:20 +0800
+Message-Id: <20260707081834.710730-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5P287CA0204.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1aa::16) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|VI1PR04MB7182:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45d2ded5-5cc5-4792-d6e7-08dedc044657
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|19092799006|56012099006|6133799003|11063799006|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	ezb7ZCQN8mm7gY54HrozLnnqpv7Rj/lraoBXjXh9owygq1P8Jl1B5kXqa8peaa8cXyWueSj4AyBEmlqPPcJL32IlHCqeyv2YWAemHruVu4/VA6rkRNEDP02ijdGxWDja2B7fDoDYAXBpvCYoKkleYTfjN66ROOqiT6V92i9Tq82Vt+jLMVpPzwMXZ+8WPubWj6yof9THue4VxLMFgSf/1FAsLX4zFY4QxSzeN8ob1xj5gB4gPaIGEYc6xVBAfkHf/PFeDokM1ZIC6tK2chy+WIg8dXMxNBoKx4oMUxbPXUUpi7JjkGF67tbAL36N+NEKKTltGTkCGqS8txqUqTIb8d088hTJml92k71bgx1s0LT0BJ8Ps+eHdHBQK2VuTOU7HZ0ZVJ6nUCfd2VLqcEl3lDABU2I2HlzC2/5I6XDQUjUgxrJdgfzBZGkSOe46iOJCQR8xv1Ung+/siBnWVVpkv5mPsQnRi5YUlxi03kP668iFpf827q/yfuzo6Qrvmw7bQtSd6QrkGD41tafXxTcnXc+HpQKpk4Krt5GgprGJ822SxxCVD385WJ7jF3zI1MHm88ASlHW4m8sbZ5IDA0VUTXN2ig/5D5edBQllQZaxsL4vOiMdQzPi0uSSQi+w+A79HHbEIA5mEdC6luRrPww3QA9hyvOECKnMAw4J6n1wzScrIO5metQaPL0sB1ozLW4v6K7vtIal5SnnK1czC09cTQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(19092799006)(56012099006)(6133799003)(11063799006)(18002099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lJNOUuUAc2qg7gdolJJ+N08fxPlADZxnOgpdVr031f/pEe/8rO+5mxB7D48N?=
+ =?us-ascii?Q?FqqAVTrkvmDZOpln8aXiL2zaXXOhog2jYg7hcMHlU1qRf+ivceVAfJGsC3/I?=
+ =?us-ascii?Q?xKSXGmXIZDBH3f9RBmVFODVzi+YHFckAgl2YnV8bVEsZi4kofqvx1FFvVwl0?=
+ =?us-ascii?Q?kemDdx8s17qgBhQtdzVwlWdpb1wABw0mjeVmK6/C1z/eou4s2leSC/xfeJMp?=
+ =?us-ascii?Q?WZkaF10uE8vUOp0i09oCpBlqRXSmO3T1Y3BY1luJUZwLDWL7yokbiVgWz4nR?=
+ =?us-ascii?Q?z9Ocz9w/LSWiV9Rjb3hdfAIS5WLMlWz5rJ7UvlFPBIxXnU0FA0DStTsJRt0k?=
+ =?us-ascii?Q?DOMiIJsky6ygWuNyPsiR8lQBf0/gSoTh2oZfBjZsq+N2F9vwppVLwzjT/vRI?=
+ =?us-ascii?Q?wmT6RiM9Aq4BaeS8l+9nw4PNoyFVxXR5PBXHhtDbNLhiZvksta3UENpiItnG?=
+ =?us-ascii?Q?XUBCAG5H5DQjnKQI7mwfDF+o5iB70Gy1ob8W9HKrgtJD2tXN8KAaw/aUss2D?=
+ =?us-ascii?Q?HmCevKphScXANszESqLWxj2dDLTCOQOVRiDgV4gyqMTHjlOTlbEkbW4q9hDf?=
+ =?us-ascii?Q?G/EctVf0H/39EkflOgLv4EvYYV3v/jHhlCwN3LxBICIWmD66MgXQrWAAdVRD?=
+ =?us-ascii?Q?6iWTx3XK3iNKogpro8aQkQC230ZUT0+3rJg/TENf6Ays9PwBzUsuM3oKYrPu?=
+ =?us-ascii?Q?BLsEA+B3ZLzy8EG2ke5ek7v7/mslPGhV42zwfOihQsyKtMLfWeYDehEDByT2?=
+ =?us-ascii?Q?2Ugj5nHdTdfmipk2OkjP1ZSWAoFcxqRS5x2aiEa/Ln7xRcvq603pG9X/egPo?=
+ =?us-ascii?Q?UyRQR7ED+q1ee/VZjM5X5M2ZBCm5K4ZOkphlyMEfMx7eEy78pnZ7Vzh7DBvc?=
+ =?us-ascii?Q?59rPcjpeKJMKquJinp42h6da2qYWEW0e/7VfvCmY8YaPqdixewm6OAjkE1Qb?=
+ =?us-ascii?Q?qXikEA3c6ela0iRsWhYFvK8CQ6dO/OIHlAau80NTHw9uN+bSoCXjOy5vGt6O?=
+ =?us-ascii?Q?prSCf4rO4COh9bsRX9Sc9TxeO7sNn1yzAZmE+nobNthuQBgm2LcJQkc2Xh20?=
+ =?us-ascii?Q?7P+yqJHMbvlXHMuHKH7SmzdNyQqP2geN4JZnYGAUkku8QLl+nPB4aNEimKUr?=
+ =?us-ascii?Q?JNG3IG3DmviHbVlD0PD+xmRpEv23wVmyRxoEr9FL5xh+6pGX08lvHLFAhhKf?=
+ =?us-ascii?Q?9QoNQbleHzewh6IpnX+7mWGEMVMW/vtGqgDCrYU9si/1uqKoa8j/R85WapHJ?=
+ =?us-ascii?Q?Hz3gTkp/JgWsO14HAR9iwTBcbK8IMS4jc0HXPGVBYGU0IJnCbENbXgQay228?=
+ =?us-ascii?Q?JwVmxzyhmVkp4pGj4Y6Nq9kNzpdDKQaeZZq4xvIT7FkqpjpGbgJ7O+GHEtlH?=
+ =?us-ascii?Q?UHvmFeL8j11IHmoNXhQ5Vz16Za0U+F8iwd6jy/GMm6eJbLqHmPrmzco33MAh?=
+ =?us-ascii?Q?1KkNIyGhIuw23zMfzAopJ8GORNOfDlzHSbNe4qSCffvnMd2KTOch8WWdl4O/?=
+ =?us-ascii?Q?AaEeoM2RI36e+mg+zPSw4Pa9zyCQIzeRUJPHA+zTI2cckbh/8K8yLXZ4a6Ov?=
+ =?us-ascii?Q?kr98e9PLUGbzh0CYUV93EC7RxDbLSaHkYyGkYhWFlvNP3gLZZnAqTd8vvBqR?=
+ =?us-ascii?Q?s4vg4wrpz510YXZIZ2LbOaUzC/IBPjJkfT0nXUHr4a+KABoslMma4h/MP/3I?=
+ =?us-ascii?Q?DPPLPBzORcukLXZ/NJvuFDkSadBF3prtMeRUr9NGwYgZQ+LH281Wpw24+N5r?=
+ =?us-ascii?Q?Qaf3dcRcXvyCGgPoE9mHPqH2B9L1xGXiq4czTH4aYZv8MKUtstFt?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45d2ded5-5cc5-4792-d6e7-08dedc044657
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 08:46:45.4544
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: n2DuEGJf+liqkbcieDvqsn9vqQ3/+6MVuImymsG2sfepajDrTwjNxsq9JBRVtfTUtH+7/eVWsisDtJ3bQHlkUF9ANrftbrKqhQfpA30TU7pIl1Y9VEKtjT94wgvGsylE
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7182
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] The hardware watchdog is not stopped during system suspend if it w=
-as started by the bootloader but not yet opened by userspace, leading to a =
-system reset.
-- [High] The watchdog core's ping worker is not stopped on suspend, leading=
- to I2C transactions on a suspended MFD parent.
-- [Medium] The driver's `min_timeout` is incorrectly set to 1, violating th=
-e API contract for the hardware's fixed 25-second timeout.
---
+From: Wei Fang <wei.fang@nxp.com>
 
---- Patch [5]: [PATCH v7 5/5] watchdog: aaeon: Add watchdog driver for SRG-=
-IMX8P MCU ---
-commit 7a0cc8bfbb00c11d5c1b8e4bd30df8f3d386356e
-Author: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
+The first group of patches (1, 2, 5-7) eliminates code duplication
+between the ENETC v1 and v4 drivers. Since both hardware generations
+share identical register layouts for MAC promiscuous mode, MAC hash
+filters, and VLAN promiscuous mode - differing only in register address
+offsets - common helper functions are extracted into enetc_pf_common.c
+and shared by both drivers.
 
-watchdog: aaeon: Add watchdog driver for SRG-IMX8P MCU
+Patch 3 converts ndo_set_rx_mode() to ndo_set_rx_mode_async(), removing
+the dedicated workqueue that was previously needed to defer MAC address
+list updates to a sleepable context.
 
-Add watchdog driver for the Aaeon SRG-IMX8P embedded controller.
-This driver provides system monitoring and recovery capabilities
-through the MCU's watchdog timer.
+Patch 4 replaces counter-based MAFT entry tracking with a bitmap, which
+keeps hardware and software state in sync and avoids partial failures
+during entry allocation.
 
-> diff --git a/drivers/watchdog/aaeon_mcu_wdt.c b/drivers/watchdog/aaeon_mc=
-u_wdt.c
-> new file mode 100644
-> index 0000000000000..9ff559a69fd7b
-> --- /dev/null
-> +++ b/drivers/watchdog/aaeon_mcu_wdt.c
-[ ... ]
-> +static int aaeon_mcu_wdt_probe(struct platform_device *pdev)
-> +{
-[ ... ]
-> +	wdt->timeout =3D AAEON_MCU_WDT_TIMEOUT;
-> +	wdt->min_timeout =3D AAEON_MCU_WDT_MIN_TIMEOUT;
+Patches 8 and 9 fix phylink-related issues: removing invalid code from
+enetc4_pl_mac_link_up() and properly differentiating phylink capabilities
+between pseudo-MAC and standalone MAC.
 
-[Severity: Medium]
-Is it correct to set min_timeout to 1 here?
+The remaining patches (10-14) are minor cleanups: removing a redundant
+VLAN promiscuous mode initialization in probe, using the PCI device name
+for the debugfs directory, simplifying port speed configuration, removing
+a redundant num_vsi field, using alloc_etherdev_mqs() for the VF driver,
+and using kzalloc_flex() for a flexible array allocation.
 
-Since the hardware has a fixed 25-second timeout, the watchdog core's ping
-worker can only extend timeouts, not shorten them. If a user requests a
-timeout shorter than 25 seconds, the core will accept it, but the system
-will still take the full 25 seconds to reboot.
+---
+v4:
+1. Improve enetc4_set_si_msix_num()
+2. Update commit messages
+v3 link: https://lore.kernel.org/imx/20260703101328.550714-1-wei.fang@oss.nxp.com/
+v2 link: https://lore.kernel.org/imx/20260702025714.456233-1-wei.fang@oss.nxp.com/
+v1 link: https://lore.kernel.org/imx/20260630072036.382761-1-wei.fang@oss.nxp.com/
+---
 
-Should min_timeout be set to 25 to reject impossible configurations?
+Claudiu Manoil (1):
+  net: enetc: differentiate phylink capabilities for pseudo-MAC and
+    standalone MAC
 
-> +	wdt->max_hw_heartbeat_ms =3D AAEON_MCU_WDT_HEARTBEAT_MS;
-> +	watchdog_init_timeout(wdt, timeout, dev->parent);
-> +
-> +	watchdog_set_drvdata(wdt, data);
+Wei Fang (13):
+  net: enetc: extract common helpers for MAC promiscuous mode setting
+  net: enetc: extract common helpers for MAC hash filter configuration
+  net: enetc: convert ndo_set_rx_mode() to ndo_set_rx_mode_async()
+  net: enetc: improve MAFT entry management with bitmap tracking
+  net: enetc: use PCI device name for debugfs directory
+  net: enetc: simplify enetc4_set_port_speed()
+  net: enetc: remove invalid code from enetc4_pl_mac_link_up()
+  net: enetc: open-code enetc4_set_default_si_vlan_promisc()
+  net: enetc: refactor SI VLAN promiscuous mode configuration
+  net: enetc: move enetc_set_si_vlan_promisc() to enetc_pf_common.c
+  net: enetc: remove redundant num_vsi field from enetc_port_caps
+  net: enetc: use alloc_etherdev_mqs() to create netdev for VF driver
+  net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
 
-[Severity: High]
-Does this driver need to call watchdog_stop_ping_on_suspend() here?
+ drivers/net/ethernet/freescale/enetc/enetc.h  |   4 +-
+ .../ethernet/freescale/enetc/enetc4_debugfs.c |  42 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |   6 +-
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 471 ++++++++----------
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |   2 +-
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |  12 +-
+ .../net/ethernet/freescale/enetc/enetc_pf.c   |  94 +---
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |   6 -
+ .../freescale/enetc/enetc_pf_common.c         | 150 +++++-
+ .../freescale/enetc/enetc_pf_common.h         |   5 +
+ .../net/ethernet/freescale/enetc/enetc_qos.c  |   4 +-
+ .../net/ethernet/freescale/enetc/enetc_vf.c   |   9 +-
+ include/linux/fsl/ntmp.h                      |   2 +
+ 13 files changed, 411 insertions(+), 396 deletions(-)
 
-Because max_hw_heartbeat_ms is set, the watchdog core spawns a kthread
-worker to periodically ping the hardware. Without registering the PM
-notifier to stop the ping worker on suspend, the unfrozen kthread could
-call aaeon_mcu_wdt_ping() while the parent I2C/MFD device is already
-suspended.
+-- 
+2.34.1
 
-Could this lead to I2C bus lockups or transfer failures during sleep?
-
-> +	watchdog_stop_on_reboot(wdt);
-> +	dev_set_drvdata(dev, wdt);
-> +
-> +	ret =3D aaeon_mcu_wdt_status(wdt, &enabled);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (enabled)
-> +		set_bit(WDOG_HW_RUNNING, &wdt->status);
-> +
-> +	return devm_watchdog_register_device(dev, wdt);
-> +}
-> +
-> +static int aaeon_mcu_wdt_suspend(struct device *dev)
-> +{
-> +	struct watchdog_device *wdt =3D dev_get_drvdata(dev);
-> +
-> +	if (watchdog_active(wdt))
-> +		return aaeon_mcu_wdt_stop(wdt);
-
-[Severity: High]
-Will this properly handle the case where the bootloader started the watchdog
-but userspace hasn't opened it yet?
-
-In that scenario, watchdog_active() is false but WDOG_HW_RUNNING is set.
-This suspend routine would return early, leaving the 25-second hardware
-timer running. This might trigger an unintended system reset while the
-system is asleep.
-
-Should this also check watchdog_hw_running()?
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int aaeon_mcu_wdt_resume(struct device *dev)
-> +{
-> +	struct watchdog_device *wdt =3D dev_get_drvdata(dev);
-> +
-> +	if (watchdog_active(wdt))
-> +		return aaeon_mcu_wdt_start(wdt);
-
-[Severity: High]
-Similar to the suspend callback, if the watchdog was solely in the
-WDOG_HW_RUNNING state, it won't be restarted on resume.
-
-Would checking watchdog_hw_running() ensure it resumes correctly?
-
-> +
-> +	return 0;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707-dev-b4-aae=
-on-mcu-driver-v7-0-ca6c59abd672@bootlin.com?part=3D5
