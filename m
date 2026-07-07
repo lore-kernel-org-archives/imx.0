@@ -1,131 +1,75 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694683385AC;
-	Tue,  7 Jul 2026 16:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FABD1DF980;
+	Tue,  7 Jul 2026 16:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783440360; cv=none; b=ZR+G078yvUu4iRHJcEFK50okh03Gss1Nbo0tAlvj1uUfHhFrfP4f53pzRVFhKI35ZfaWQMOIkGoWqi3S6/vs87Pyo4b4/WK1yLuXuIJFyf5t9gqNsFtRsnvLeEjM1nQpT3LOSuvK+5uXWb3cjNFJzKulJTmThSi4HSD3TTyJLhU=
+	t=1783441046; cv=none; b=E3dDLXpKEiH3CdthsLv83Wq9mtG6JEaJtPUYpiMPj39urBSGQH4bJA8HX7WcdLPlqGjYMxplzsjH53gsfGac4w25JQbTBnjiTohFUWO/f6Vr3Ev2smUxWoWQ2kWhsg0TGbKHZ2N3GeiZRp0HZCDzA43W8lQu7EB/lnrAHdEiBpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783440360; c=relaxed/simple;
-	bh=WGu1H7KZ2YHXBPQTafzG2nNs51jULw2SwYV9eRAWAxk=;
+	s=arc-20240116; t=1783441046; c=relaxed/simple;
+	bh=xgLExI0ZuL5DFxT5uluj7rr7PhbjkL77u6MZZR5PtbI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ghv95dlUoUbfEY5YNnjG0dwcVHZJ36Y3IyIM1ecuLLxF0gjT2Td6q+EfL3kPfwjlhzjqi0Z14aYaJSS5hRsLY65VrAkplKKYgZ41b1vVI5w9A3mn9NLPB4q+Sygt2oismqPQBjZdq7dpkWqR7Utsejwy0AlC4oll6t/49oCzB8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kdwDxmmO; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=i92jEi0SO5QvoQDwOji2mEFnaJ38xdXMiJv0qoEUUhUvy5/h2bWS3ffPyuh/pBZP9gkNFfOvXKXo58Vy7SmV6iDTQTV/NhvwZsmBdgqqXOplb0YoT7KRD5U/5ujzILjSXyGUynmkdXkOwyXOkx/G9qxi31OpTcHP7Y+tUFDFv+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b17ecv03; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kdwDxmmO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783440358; x=1814976358;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WGu1H7KZ2YHXBPQTafzG2nNs51jULw2SwYV9eRAWAxk=;
-  b=kdwDxmmO5JLE/zyHQl+sX0ypyvH2caL2rR/jkFOR0JV93+gVbBVZ/tZN
-   +OwxSxPwNStVCbP+24xqn7P7GWgbQUQlwmldShRGvxZAc7Jhcv3yrL2Ln
-   DBrtOuRr+cTKhbJD3SbuKrUdwb2UJReLqxHdlOqxb8TUmR6JA7N1+BXmO
-   DPQMk6xgl8Jk1SDY8g20QKnuH3/bsHwGnw+07YO0gS8384YN9N3LvYaPk
-   aLkDzcIiTrdLBADcRfgDsFXOoSC6rGCY+qQCe5t/j6fwJ9dV2YULo0C8f
-   efUAeGxYKLYllX1SfQ3fzSsSO/UEGeji9wwooscsRILDWgkBUQ7HUVkRn
-   Q==;
-X-CSE-ConnectionGUID: ceE7CoKLRrabi3P3sNPVlQ==
-X-CSE-MsgGUID: AlcI4xP5QO65LyfZ0Ln4wQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="83952068"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="83952068"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 09:05:47 -0700
-X-CSE-ConnectionGUID: tBOk0B/0SG6kjtraoD2mfg==
-X-CSE-MsgGUID: bDNaWP1RQpiCsfz4/eJ9hQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="254117548"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.36])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 09:05:33 -0700
-Date: Tue, 7 Jul 2026 19:05:29 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b17ecv03"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33B31F000E9;
+	Tue,  7 Jul 2026 16:17:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783441044;
+	bh=xgLExI0ZuL5DFxT5uluj7rr7PhbjkL77u6MZZR5PtbI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=b17ecv03MbfTVaSpEzLG6tQCe0ajEsjzdNtBF5yFEw/xPJ9mPRLmTOQXzIj7xi5rl
+	 5L+BXGRiEEFdKGSBkxo8EEtDk3rXdY8rSN8ZE0u5JMqCc+rWqYA/LtDNYOo6To3uXs
+	 feJg2WMJard4Bb1WAOF5R9F0YffjOaq9AGBgNSbwXYK8kzTwaq8P1Gchj5EaqxZAu/
+	 eUA2qKVCfT2e9eljFA8jolj9IN409SZLQnbi/E0MjVb3ygyX2wr2/yisVbDhqVGuWF
+	 dTNhqfICrvYN/KYsCjks5axFkmWfvYOtvPQreo7yB6o7lUPiyG0fhzAsMnMgr5YvEQ
+	 lvIkg6FCHDCLQ==
+Date: Tue, 7 Jul 2026 17:17:19 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Peter Chen <peter.chen@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, mfd@lists.linux.dev,
-	Manuel Ebner <manuelebner@mailbox.org>
-Subject: Re: [PATCH v3 05/20] driver core: update kerneldoc for
- platform_device_alloc()
-Message-ID: <ak0jyUbNonSRiP_g@ashevche-desk.local>
-References: <20260706-pdev-fwnode-ref-v3-0-1ff028e33779@oss.qualcomm.com>
- <20260706-pdev-fwnode-ref-v3-5-1ff028e33779@oss.qualcomm.com>
+	linux@ew.tq-group.com
+Subject: Re: [PATCH 1/2] dt-bindings: arm: add MBa93xxCA as mainboard for
+ TQMa91xxCA and TQMa91xxLA SOM
+Message-ID: <20260707-shriek-pogo-92d37cd50a0f@spud>
+References: <20260707091424.1702245-1-alexander.stein@ew.tq-group.com>
+ <20260707091424.1702245-2-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="bzecNQfsPEZxdUFH"
+Content-Disposition: inline
+In-Reply-To: <20260707091424.1702245-2-alexander.stein@ew.tq-group.com>
+
+--bzecNQfsPEZxdUFH
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260706-pdev-fwnode-ref-v3-5-1ff028e33779@oss.qualcomm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Jul 06, 2026 at 02:44:17PM +0200, Bartosz Golaszewski wrote:
-> Users of platform_device_alloc() + platform_device_add() must not modify
-> certain fields of the dynamically created platform device object. Update
-> the kernel doc to say which fields are affected and which functions to
-> use.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-Consider using __private checker attribute for them as well. It will make
-sparse scream.
+--bzecNQfsPEZxdUFH
+Content-Type: application/pgp-signature; name=signature.asc
 
-> Suggested-by: Manuel Ebner <manuelebner@mailbox.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+-----BEGIN PGP SIGNATURE-----
 
--- 
-With Best Regards,
-Andy Shevchenko
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCak0mjwAKCRB4tDGHoIJi
+0ngXAP4weMhA+W5ND8F/QU6x2I5O9/BMKIggo/2x2S9gYoOMJQEA/2wqCmFM7+6V
+Mrx0WZSCsLtoqqQ56pFvzD7qbnF9pwE=
+=KS78
+-----END PGP SIGNATURE-----
 
-
+--bzecNQfsPEZxdUFH--
