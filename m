@@ -1,110 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885683081BE;
-	Tue,  7 Jul 2026 09:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA123BB9F1;
+	Tue,  7 Jul 2026 09:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783416010; cv=none; b=MRFtNnIMkKUTLghD+QuZ67p+/oKDyrVs8wPscdBxOOj3+rFqvi1oOBroMciAiEvkVmhfSg52Jp9ma7shRhxf4B+X28aLjbobqwChYH3GhNO2dnyJQp3SpRAIP26atUjrVITVwNruwA0G36p6nYoMwk7SsP989SPKpDlGiGcJ1fk=
+	t=1783417292; cv=none; b=MrGA1xYecA6XcUk4rIFdVFxSttmxB4PwdbY2jvD0PnO8D7G0ve36RI6Ugz0jxOvzGX3O84A+asmD8YXY+xtMfOcLeqGpHqe+s6jBo/lZIko+FvPwYDc1P+gOikLftLVhr3le3TxRSZc+1MNdDpSHn/k+N7yU4fuQrxEKVDz1XC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783416010; c=relaxed/simple;
-	bh=P+qnuMnPVKw+S23mG/afUWlqNmPjA3vhnVWukRopopM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Js3TSEdQH+FNawbsmUoCqwZiRiveOYWOb+FCNLac8SY+exgvQM2Cj17RFe9b40XuqhJ2ApKiiavM9DUQEWjZI18PISiDe0Y53cvRZx6tXPmm11+Szk+QVoXCYA8Jrls4QmuW4d1Z60V5r/d6VBXXMSXeI7geZdWm4Sqi49SxFko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zr9ck7kI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783417292; c=relaxed/simple;
+	bh=h0po1Os8ZunCzE+ZaUnP35rATp045/rLREFpUqiStww=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WTicr6EQxC9Y0lW81RijscS2jZHihqZZEToDokcDNQoa5ZEs5sy02+hMIsfC/jll0FUvlQFpHRUCFrXxMxk2b2xW20IpklSw3CyjCE29fz6qpjZEedBsu4mirQZCaxAbbvQjoVAM2FqIESEb8r1d+6rHYjlRrjmqg7H6d8sotUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=mPJhhhlI; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zr9ck7kI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E771F000E9;
-	Tue,  7 Jul 2026 09:20:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783416009;
-	bh=iVBy8jeipDQv0VjKFpZMos1H2x/2c1BmEL3GceFJcmQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Zr9ck7kIZm7xRnpPD8Aj5GOCMoUsHanv/xNtOLTnEib3zgtRk5xt4/3cf4MpoeVVI
-	 3zMj2as2jJIJ7IiZM7H8wUK59homfqUURh64KljlqGROgHwEINCkhUWKqKyxwajiTN
-	 c0zJPttGrA4aP0MFxmEno9JIJXXJshf4yz7BJJ0uS+rzFXInI6Cw1oSQajcmMZjnq7
-	 Q6MdRVqt0X6UcRWhYqZHntKrvgBW4jlf9iSk5paYBro3coqZ910s68qfxzHHrYHEii
-	 HDFlm6TEvMcOOJDKq9ti16f7X9/8x7AmBxVN2ZsvWZwkHhb2fVBwUIaC0f9mx6UXaM
-	 pj9m9PSza1q/g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: arm: add MBa93xxCA as mainboard for
- TQMa91xxCA and TQMa91xxLA SOM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
-Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260707091424.1702245-2-alexander.stein@ew.tq-group.com>
-References: <20260707091424.1702245-1-alexander.stein@ew.tq-group.com>
- <20260707091424.1702245-2-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 09:20:07 +0000
-Message-Id: <20260707092008.B7E771F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="mPJhhhlI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=v9NXiIWq97CSEahGJjuUvI29ZGrwLPU2keRY+33LcSI=; b=mPJhhhlI56T75SYEhfYWfwOqEq
+	kJoGB6le84rtACnnIWrrYt6AjvnoXy3upKM7sn3Qsf3UDVv/fNc1VS6GgTQ6aVR+Xfei3Ub7PW186
+	YrP9rEDl7Jw76r9ZP6k8rQl2gaR6dYSZkmRY/8ePA7zyfIoDvajISiadFJZQGT44rh3CIjKqYhSkJ
+	mC7t7+Vn/3KHJOPORzwlVcO59kjt7unu5a7AkfHC81Q0WoMSaLsX1QCtMxiVrAjrOxkcpRNXN1HzS
+	cxlvS8ho0dgWyyFlqYf4TN4ZjD9924uuWKgJEYI4cXC1qU5UTzMs6BB8Jtfr5Q2Slm/XQzOPOCIVe
+	MX5cXaGw==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wh2Iy-000OVg-27;
+	Tue, 07 Jul 2026 11:41:28 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wh2Iy-0007v7-21;
+	Tue, 07 Jul 2026 11:41:28 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] arm64: dts: imx8mp: add missing #sound-dai-cells to xcvr
+Date: Tue,  7 Jul 2026 11:41:25 +0200
+Message-ID: <20260707094126.1738410-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28053/Tue Jul  7 08:24:37 2026)
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The patch introduces duplicated and repetitive text in the dt-bindi=
-ng description block and contains a factual typo in the commit message.
---
+This device is used for 'sound-dai' and needs #sound-dai-cells. dtbs_check
+raises a warning regarding sound_dai_property.
 
---- Patch [1]: [PATCH 1/2] dt-bindings: arm: add MBa93xxCA as mainboard for=
- TQMa91xxCA and TQMa91xxLA SOM ---
-commit 3332dfa95ce8d051969053f3ea74bbf075143869
-Author: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-dt-bindings: arm: add MBa93xxCA as mainboard for TQMa91xxCA and TQMa91xxLA =
-SOM
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 5ce2825182fdb..9cf9f6f08654d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1599,6 +1599,7 @@ xcvr: xcvr@30cc0000 {
+ 					      <0x30cc0e00 0x080>;
+ 					reg-names = "ram", "regs", "rxfifo",
+ 						    "txfifo";
++					#sound-dai-cells = <0>;
+ 					interrupts = /* XCVR IRQ 0 */
+ 						     <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>,
+ 						     /* XCVR IRQ 1 */
+-- 
+2.54.0
 
-This commit documents the MBa93xxCA starterkit mainboard for the TQMa91xxCA
-and TQMa91xxLA System-on-Modules. It adds the corresponding compatible stri=
-ng
-and updates the board descriptions in the fsl.yaml binding.
-
-> TQMa93xxLA and TQMa93xxCA are two series of feature compatible SOM
-> using NXP i.MX91 SOC in 11x11 mm package.
-
-[Severity: Low]
-This isn't a bug, but there appears to be a typo in the SOM series names he=
-re.
-Should TQMa93xxLA and TQMa93xxCA be TQMa91xxLA and TQMa91xxCA since they use
-the i.MX91 SOC?
-
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
-on/devicetree/bindings/arm/fsl.yaml
-> index 86876311ec59a..84c4311cf7c30 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-[ ... ]
->            soldered on an adapter board or for the connector variant
->            MBa91xxLA mainboard is a single board computer using the solde=
-rable
->            SOM variant
-> +          MBa91xxCA mainboard can be used as starterkit for the SOM sold=
-ered
-> +          on an adapter board or for the connector variant to demonstrat=
-e parallel
-> +          display and majority of interfaces while MBa93xxCA starterkit =
-mainboard
-> +          is focused on communication interfaces without display support.
->          items:
-
-[Severity: Low]
-This isn't a bug, but it looks like the new description block duplicates the
-existing phrasing for the MBa91xxCA board instead of replacing it.
-
-The context above this addition already contains fragments like soldered on=
- an
-adapter board or for the connector variant which seem to originate from the
-older description of the MBa91xxCA board.=20
-
-Could the previous, redundant sentences describing the MBa91xxCA mainboard =
-be
-removed to avoid duplication in the final schema text?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707091424.1702=
-245-1-alexander.stein@ew.tq-group.com?part=3D1
