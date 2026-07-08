@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAA13FF893
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 08:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9934A137923
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 08:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783500512; cv=none; b=pBC0x9CtVYurhRoUnKyCpdOZTbV25ZjBzT7Kp2ZjCBzOC6NSV6kukfXM2ma3iSahoDcjE7DvUgv1iMml11XQZ3ei8D94eFDgvIQdRSkQAjeTob8ad7GMSyBBVUvWJJuEIrKdjXtiFVvgdpj/bMeLLfsl0Ur4OtXwjwk1BbiIxYo=
+	t=1783500513; cv=none; b=TZdG4Q+BGSkZhaKx1XAa65RBe7yMsVj8fqLGu243Ae0oxGWQX2YLggWOT0+0kRMvEcq2vCd4Df9MWztzB66OQPdKtP+M2Swm1Z3+gCzvfJEaiywx7vU/PWMyHUuNz7cK/xi5eAWJ8ckfmZUmAfxpTOsJc/ajgiBqRUQuFcoJJp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783500512; c=relaxed/simple;
-	bh=3tH0mZwzdG21HqEcfD4/xgWYfYWmL0xVQ8qauokyMhA=;
+	s=arc-20240116; t=1783500513; c=relaxed/simple;
+	bh=1UNVT+cA427/Rje3vUJ9pjWy+H9INMvEUyAzDOBxugo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hYG7jkiXykCCYttVp/9sJ7tEtu+KSRtDFmR9b379uJo1XbCWvo1jBg/+fbrnQ5YH1T8W0d/gSBaedS4KToug25qh862mZSgxzXbHSo7LwapX5WWyC/n45fNkbSHI64EMB7WmTfWTVPHkoaNe8vFBmUlYx4e+ezLr9gsPVqUCt9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GVqkQEQu; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=XOxVfwaD1OlDE7cJfH70BKBl0MSvwde8buHwKBGELgLGrFfi8tP6EYpGfjea40x2se5SmtNptC0YvEGY+565mxdPCPALeeTzkqekE6VQOc0noK4xH33rqy3Rr5DVt8m9E5JLbpnIV13rAeXvHj0wOWaSOgplP+VMmqdB3VPxMX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJ0GzY6Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GVqkQEQu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9AE1F000E9;
-	Wed,  8 Jul 2026 08:48:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJ0GzY6Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33ECC1F00A3A;
+	Wed,  8 Jul 2026 08:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783500511;
-	bh=UXy6ldyMKwSq0ZH0Z7gbDxUYwNqu1R4TQM4EdbxI5EI=;
+	s=k20260515; t=1783500512;
+	bh=69E73cMVKsRgoa8H9AWO3okc62dj7DFVBADzAj1P1kg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GVqkQEQukcDklQxVRfTxe5umpk+ZGaaUo/Woa0yiNM0hx9jxXh91IQwLXwBon8v5i
-	 G8eivlZEZV15Dj/QoEWHltiakrCdKs9YejQ0o5Cl1OOWZphlVwKSc2n7NOTEuNOhoL
-	 rdJ+7W8d9vhMpejm6OGpvz1ZZf6rLpZxvXv6lNCxhqT6UKO3GnJ3hi1s/VzBRZna1u
-	 IZ4U+kO2aUxbj2ULAXt2HiPy/Xk0fsc2QCa56TbK6R2j1nor+H58YQfixldDsxsVlP
-	 gTQg709o225KTUMfdCR1G3FQYbB29U6P35e0RlFAdaU+DtbrlU8v+xc1v1N4I84PYl
-	 39P34VrATAawg==
+	b=CJ0GzY6Y7jHi9zrAoIvRb1bWl1zPmPBxnWRmp2ZUuOvWhCpEh8RtzZuKRqJAQ06lU
+	 kwFxNKh3THTKvVkwNqK7ttrjnv4f08QxcppyzHO04z/s0+8uidFJPD/dqVmm5axaoB
+	 5KZqtMXvKNdIbo+vEqspV7rNjOKPtzDqvR0szCyB7tvxQ7DZFsFK18pIZ6t6DJoG4P
+	 cWx9CdXOGli+3ffUztBZHrVJtCm5smAcEXDF4UgKRGF/SLY1Jpi/4LZad7uKgTODXG
+	 /Aj/1i5AO6L4oKSlAcFSvf2+N/+j4nY5pLSk9kVaye6SrdLOALSz4+FdLrAgkrybXm
+	 Qg41bbZSM4naQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 net-next 13/14] net: enetc: use alloc_etherdev_mqs()
- to create netdev for VF driver
+Subject: Re: [PATCH v4 net-next 14/14] net: enetc: use kzalloc_flex() for
+ enetc_psfp_gate allocation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260707081834.710730-14-wei.fang@oss.nxp.com>
+In-Reply-To: <20260707081834.710730-15-wei.fang@oss.nxp.com>
 References: <20260707081834.710730-1-wei.fang@oss.nxp.com>
- <20260707081834.710730-14-wei.fang@oss.nxp.com>
+ <20260707081834.710730-15-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Wed, 08 Jul 2026 08:48:31 +0000
-Message-Id: <20260708084831.6C9AE1F000E9@smtp.kernel.org>
+Message-Id: <20260708084832.33ECC1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,87 +49,82 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Missing bounds checks on hardware-provided ring counts lead to hea=
-p buffer overflows in internal driver structures and undefined behavior via=
- out-of-bounds pointer arithmetic.
+- [High] Inconsistent locking around the `epsfp` global state lists risks c=
+oncurrent access issues, such as list corruption or use-after-free, particu=
+larly during stats polling.
 --
 
---- Patch [13]: [PATCH v4 net-next 13/14] net: enetc: use alloc_etherdev_mq=
-s() to create netdev for VF driver ---
-commit 351253af314542011d0490ff56bc5d410a44e0d7
+--- Patch [14]: [PATCH v4 net-next 14/14] net: enetc: use kzalloc_flex() fo=
+r enetc_psfp_gate allocation ---
+commit 1354b34382c1b22bf61c564f93df2dfb8dea78a7
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: use alloc_etherdev_mqs() to create netdev for VF driver
+net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
+   =20
+Replace the open-coded struct_size() + kzalloc() pattern with the
+kzalloc_flex() helper when allocating struct enetc_psfp_gate. This
+removes the intermediate entries_size local variable and makes the
+allocation site more concise.
 
-The VF driver uses alloc_etherdev_mq() with ENETC_MAX_NUM_TXQS as the
-queue count, which forces the TX and RX queue counts to be equal and
-uses a compile-time constant rather than the actual hardware capability.
-This patch switches to alloc_etherdev_mqs() so that the TX and RX queue
-counts are set independently, each capped at ENETC_MAX_NUM_TXQS, based
-on the actual number of rings assigned to the VF by the PF.
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc_qos.c
+> index 7b17bca24f260..2aa0fcaafcd23 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_vf.c
-> index 9cdb0a4d6bafb..7dcb4a0246f52 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> @@ -317,7 +317,14 @@ static int enetc_vf_probe(struct pci_dev *pdev,
+[ ... ]
+
+> @@ -1242,8 +1241,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_=
+ndev_priv *priv,
+>  		goto free_filter;
+>  	}
 > =20
->  	enetc_get_si_caps(si);
-> =20
-> -	ndev =3D alloc_etherdev_mq(sizeof(*priv), ENETC_MAX_NUM_TXQS);
-> +	/* Currently, the supported SoCs have a max of 6 CPUs and the VFs
-> +	 * have less than 6 RX/TX rings. So no issues for these supported
-> +	 * SoCs, but for future SoCs which have more CPUs or more TX/RX
-> +	 * rings, all the related logic needs to be improved.
-> +	 */
-> +	ndev =3D alloc_etherdev_mqs(sizeof(*priv),
-> +				  min(si->num_tx_rings, ENETC_MAX_NUM_TXQS),
-> +				  min(si->num_rx_rings, ENETC_MAX_NUM_TXQS));
+> -	entries_size =3D struct_size(sgi, entries, entryg->gate.num_entries);
+> -	sgi =3D kzalloc(entries_size, GFP_KERNEL);
+> +	sgi =3D kzalloc_flex(*sgi, entries, entryg->gate.num_entries);
 
 [Severity: High]
-This is a pre-existing issue, but since we are relying on hardware-provided
-values (si->num_tx_rings and si->num_rx_rings) read from ENETC_SICAPR0, is
-it possible for a misconfigured or malicious PF/hypervisor to provide values
-larger than the fixed-size arrays in struct enetc_ndev_priv?
+This isn't a bug introduced by this patch, but is there a risk of list
+corruption or a use-after-free due to inconsistent locking around the epsfp
+global state lists?
 
-In enetc_init_si_rings_params():
+Looking at enetc_psfp_destroy_clsflower(), it calls remove_one_chain()
+without holding epsfp.psfp_lock:
 
-	priv->num_rx_rings =3D min_t(int, cpus, si->num_rx_rings);
-	priv->num_tx_rings =3D si->num_tx_rings;
-
-These values are then used in enetc_alloc_msix() which calls
-enetc_int_vector_init(). Since priv->int_vector is sized to 6
-(ENETC_MAX_BDR_INT) and priv->tx_ring is sized to 16, a VF providing a large
-number of rings could cause out-of-bounds pointer writes:
-
-drivers/net/ethernet/freescale/enetc/enetc.c:enetc_int_vector_init() {
-	...
-	priv->int_vector[i] =3D v;
-	...
-	priv->tx_ring[idx] =3D bdr;
-	...
+enetc_qos.c:enetc_psfp_destroy_clsflower() {
+    ...
+	remove_one_chain(priv, filter);
+    ...
 }
 
-Additionally, in enetc_alloc_msix(), if priv->num_tx_rings is less than
-num_possible_cpus(), does this calculation lead to out-of-bounds pointer
-arithmetic?
+Which then unlinks and frees the filter memory without list-protection
+locks or RCU mechanisms:
 
-drivers/net/ethernet/freescale/enetc/enetc.c:enetc_alloc_msix() {
-	...
-	first_xdp_tx_ring =3D priv->num_tx_rings - num_possible_cpus();
-	priv->xdp_tx_ring =3D &priv->tx_ring[first_xdp_tx_ring];
-	...
+enetc_qos.c:remove_one_chain() {
+    ...
+	hlist_del(&filter->node);
+	kfree(filter);
+    ...
 }
 
-Would it be safer to explicitly validate si->num_tx_rings and
-si->num_rx_rings against ENETC_MAX_BDR_INT and ARRAY_SIZE(priv->tx_ring)
-early in the initialization rather than assuming they will always be small?
+If this destruction runs concurrently with stats polling, such as a user
+executing tc filter show or the background stats timer, the reading path
+can be actively iterating the list locklessly:
 
->  	if (!ndev) {
+enetc_qos.c:enetc_get_stream_by_index() {
+    ...
+	hlist_for_each_entry(f, &epsfp.stream_list, node)
+    ...
+}
+
+Could this concurrent hlist_del() and kfree() during a lockless
+hlist_for_each_entry() traversal lead to a use-after-free or a kernel
+panic?
+
+>  	if (!sgi) {
 >  		err =3D -ENOMEM;
->  		dev_err(&pdev->dev, "netdev creation failed\n");
+>  		goto free_filter;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707081834.7107=
-30-1-wei.fang@oss.nxp.com?part=3D13
+30-1-wei.fang@oss.nxp.com?part=3D14
