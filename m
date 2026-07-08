@@ -1,34 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C1E3FAE11
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 11:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5375E3F86FB;
+	Thu,  9 Jul 2026 12:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783597971; cv=none; b=XQCSOQgVSTWRkSpdSMve9qScSbmjbsLkBUZ83T+cx7Fi25wPXx0NNmtda+daMp/x1GZkAMtwTtmeqpQdT1nRXbONq+dV7sGsMt/KaR8C2uNdhVYxBhNiLbGU0jlZkDoCbMjDtdMk7Ieh4vUUPFBbpY7ZrGMxuXcGyQLSXztv+Hk=
+	t=1783599555; cv=none; b=IaZVsnLoThqUF0sRziC3vlhMlONfs4Fpu//S22cwEjTp2gkxtlhoMRqGQx/CGnFe12BrK4SHDr+f452i6SucITZ7GWltQ2QO9bvpLHey75peWTAM0E+Ym3ZHJBiYrVCaMWgcXfUlEDRCLZP8kPn40RC9LdDS6aQ4tiZdV0VhnxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783597971; c=relaxed/simple;
-	bh=p3L5yCKfboXr7PflJmag43CI0oO7dqWoEg/c9ILC1Ec=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nIHdZhYCeYogPAjQS8iS9ieA/rALavmUtiUpCPnmPWncsWkC48NDIuw6ZtQ/fLoi0bni+pWFooyYzNBIfm9c+2+/sKys675UvrMGYPHaJrrlbJI+XzCm4JmnNIJZgAlBOpUEFo+q0mxK1/Tt7DHUzZSoQvkvm3dUeVtKuVCsDo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SU2vuGUF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783599555; c=relaxed/simple;
+	bh=MplgETsFM0VexgxoMrMIq6KgDR0KfukYSXZ79Q+Fz88=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=evFt/Sfa9vkxUdlASSlm7PlnVZp1DVGvR7+pySgabGCUr8TTvhiBex+PTbJRdWzuLOanuoNwVBaWVWAJeKG6cLE/lQpgcF07XLrEz5HiNhm/iJHlZhT1K8dQ0MIKpExwIuz1ugvvhXIRx8bwImx5zZSZn4OGRqgEl5mo3QJI1ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P8CD5IG1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SU2vuGUF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AF21F000E9;
-	Thu,  9 Jul 2026 11:52:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P8CD5IG1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BB61F000E9;
+	Thu,  9 Jul 2026 12:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783597969;
-	bh=hQxEv9czX1ZokGsR+AkOQmDPqmwzOfPx177uoreYsKo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SU2vuGUF4pHyzKawC1EdZ7XDlt3NwPsA/M7fcx/vk8wsuLNfjeakBDIasSFd6sn7W
-	 EXkAVVS4/ZhLJRQlJI5eytbR8g1jklCqdlnV65kewSZ0TadE2wr7RoYlfwdKS1HHT9
-	 THkj94Ldbgp0Un9tNgU66Ojuj6zz3B/Kq9LxFG/VV8tSKrh/OGNPPmAjT36SyaFjFv
-	 QcRgEvMaNfjIew8rFp/qBRPZGcSm8NXn8B6Vj3u8tp41b/phY9LGZPAl44CfDbPXpA
-	 XyPtu25DrZeAkr+qW7yBXmm3ndKdHhbe9DNJwixg+IP0eklbxduO3vYMH7QG7bs7j7
-	 lN754Y+rRfjwQ==
-From: Maxime Ripard <mripard@kernel.org>
-Date: Thu, 09 Jul 2026 13:51:11 +0200
-Subject: [PATCH 45/60] drm/imx/ipuv3: Convert to atomic_create_state
+	s=k20260515; t=1783599554;
+	bh=CZCFvOFR+D0f5Pbt8AtYWBwNyj+1RPtceMZuCD+FMqU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=P8CD5IG1QerO/rMxsjVGMH8VVGwWc7LbqHxR/JTqs2O8cmCHIh8pv4tmYsjza7UYF
+	 nijiUr90kSMEHTrf6pZnLquyRq1F4fLXnqosDwaWyF7Avhg66ACT5ZTYAJ6Qvdpk4C
+	 yS1Zk03/NS3OL39YRuRk/uec/u6e+qnF7j+/DEkyD2mOHi9FWku62UUs1d7cpa7h8Z
+	 S6lTuWa0Zv5OYjEBD44hkE8dGkobo3xnDSyNeM5rCPFuQ5l2TfiGmJ5j+rHIVzqBBR
+	 Jd+o04fNovG/MaAOZB29N74Xwz9CTSpPD7Iqr25zBpkdAAw15fsJ3dt6IBxgaVUOb0
+	 4RsG+rqCt7vMg==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de, 
+ chancel.liu@oss.nxp.com
+Cc: kernel@pengutronix.de, festevam@gmail.com, linux-sound@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20260707065725.312450-1-chancel.liu@oss.nxp.com>
+References: <20260707065725.312450-1-chancel.liu@oss.nxp.com>
+Subject: Re: (subset) [PATCH 0/6] Add audio support on i.MX91 9x9 QSB
+Message-Id: <178353053174.26140.5507506345849775715.b4-ty@b4>
+Date: Wed, 08 Jul 2026 18:08:51 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,353 +46,59 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-drm-no-more-plane-reset-v1-45-302d986fe5f0@kernel.org>
-References: <20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org>
-In-Reply-To: <20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
- Frank.Li@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, 
- imx@lists.linux.dev, kernel@pengutronix.de, p.zabel@pengutronix.de
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6992; i=mripard@kernel.org;
- h=from:subject:message-id; bh=p3L5yCKfboXr7PflJmag43CI0oO7dqWoEg/c9ILC1Ec=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFn+3bIcHwwYTGLZ/+v+EOVlZ77IExE+/1PebrXUr26hF
- luCIp50TGVhEOZkkBVTZHkiE3Z6efviKgf7lT9g5rAygQxh4OIUgIlsvcTYsOXxUyM+WV7GFT+7
- bJvuf5lu0zU3Wq+w/PfnBz/SZms2VIVlemw9c+z0NoHCb3tLhStrGBuW9Uz8UvwlvWY196UlfsE
- qbz3yla/WmU7j+fj4bUuW4m/vytCnDHKfHr52XL0hX6jysSAA
-X-Developer-Key: i=mripard@kernel.org; a=openpgp;
- fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1664; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=MplgETsFM0VexgxoMrMIq6KgDR0KfukYSXZ79Q+Fz88=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqT5G+bOeWXFq6laYD7zprq60YsaMtJmfMGd1gB
+ n8CI8Eks86JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCak+RvgAKCRAk1otyXVSH
+ 0LrbB/9HQlTk58Ks5hTLUaXIH8HSzFf+mA6d/gBSskg+ClnJe2s5pNC4SrdFEP5Jf+aJvH8z5mP
+ Zy3JnXF/I8pX/zrA8A/hSci8qGld7sG8JVgvuYwO7CqIlj+L45XxiltorhsYwf1mSoTuUZ1YCox
+ mGtbtWyOr1BQQ7WHAfWCBHFZUko7QfTGAC8044YPGlNTc3FoPymNxNiGQKQuYoYq6dW4my4DVmZ
+ Q8brkK+WUyZhQBUIwd3un7aZrK3sg4zz8LFWprPBr3eMMEuU7/J3j1mNYWWDTSn9NrG40Dqg8tu
+ H5H2NWCNMnS4we0AI9lEpJdCVJHC8SqOuDYBYywzyP2locLf
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-The plane reset implementation creates a custom state
-subclass, but only initializes a pristine state without resetting any
-hardware. This is equivalent to what atomic_create_state expects.
-Convert to it.
+On Tue, 07 Jul 2026 15:57:19 +0900, chancel.liu@oss.nxp.com wrote:
+> Add audio support on i.MX91 9x9 QSB
+> 
+> From: Chancel Liu <chancel.liu@nxp.com>
+> 
+> The board routes audio related signals through on-board muxes controlled
+> by a GPIO expander. Add the mux states required by SAI1 playback and PDM
+> capture. Add support for WM8524 and PDM microphone sound cards in DT.
+> 
+> [...]
 
-The conversion was done using the following Coccinelle semantic patch:
+Applied to
 
-@@
-identifier funcs;
-symbol drm_atomic_helper_plane_reset;
-symbol drm_atomic_helper_plane_create_state;
-@@
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.3
 
-struct drm_plane_funcs funcs = {
-  ...,
-- .reset = drm_atomic_helper_plane_reset,
-+ .atomic_create_state = drm_atomic_helper_plane_create_state,
-  ...,
-};
+Thanks!
 
-@match_struct_reset@
-identifier funcs, reset_func;
-@@
-struct drm_plane_funcs funcs = {
-    ...,
-    .reset = reset_func,
-    ...,
-};
+[1/6] ASoC: dt-bindings: wlf,wm8524: Add audio-graph port support
+      https://git.kernel.org/broonie/sound/c/7ccad5668957
+[2/6] ASoC: dt-bindings: fsl,micfil: Add audio-graph port support
+      https://git.kernel.org/broonie/sound/c/28017bf7f762
+[3/6] ASoC: dt-bindings: dmic-codec: Add audio-graph port support
+      https://git.kernel.org/broonie/sound/c/cf3bd20c43f7
 
-@reset_uses_helpers depends on match_struct_reset@
-identifier match_struct_reset.reset_func;
-@@
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
- void reset_func(...)
- {
- 	<+...
-(
- 	__drm_atomic_helper_plane_reset(...);
-|
-	__drm_gem_reset_shadow_plane(...);
-)
- 	...+>
- }
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-@match_struct_destroy@
-identifier funcs, destroy_func;
-@@
-struct drm_plane_funcs funcs = {
-    ...,
-    .atomic_destroy_state = destroy_func,
-    ...,
-};
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-@script:python renamed_func@
-old_name << match_struct_reset.reset_func;
-new_name;
-@@
-if old_name.endswith("_reset"):
-    coccinelle.new_name = old_name.replace("_reset", "_create_state")
-else:
-    coccinelle.new_name = old_name
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-@update_struct depends on match_struct_reset && reset_uses_helpers@
-identifier match_struct_reset.funcs, match_struct_reset.reset_func;
-identifier renamed_func.new_name;
-@@
-struct drm_plane_funcs funcs = {
-    ...,
--   .reset = reset_func,
-+   .atomic_create_state = new_name,
-    ...,
-};
-
-@drop_destroy depends on update_struct && match_struct_destroy@
-identifier match_struct_reset.reset_func;
-identifier match_struct_destroy.destroy_func;
-identifier container_func;
-identifier P;
-symbol drm_atomic_helper_plane_destroy_state;
-symbol __drm_atomic_helper_plane_destroy_state;
-@@
-
- void reset_func(struct drm_plane *P)
- {
- 	...
-(
--	if (P->state) {
-- 		<+...
-(
--		drm_atomic_helper_plane_destroy_state(P, P->state);
-|
--		__drm_atomic_helper_plane_destroy_state(P->state);
-|
--		P->funcs->atomic_destroy_state(P, P->state);
-|
--		destroy_func(P, P->state);
-)
-- 		...+>
-- 	}
-|
--	drm_WARN_ON_ONCE(P->dev, P->state);
-|
--	WARN_ON(P->state);
-)
- 	...
-(
--	kfree(P->state);
-|
--	kfree(container_func(P->state));
-|
- 	// kfree is optional
-)
-(
--	P->state = NULL;
-|
- 	// plane->state clearing is optional
-)
- 	...
- }
-
-@drop_destroy_mtk depends on update_struct@
-identifier P;
-symbol __drm_atomic_helper_plane_destroy_state;
-symbol to_mtk_plane_state;
-@@
-
- void mtk_plane_reset(struct drm_plane *P)
- {
- 	...
--	if (P->state) {
--		__drm_atomic_helper_plane_destroy_state(P->state);
--		...
--	} else {
- 		...
--	}
- 	...
- }
-
-@transform_nv50_wndw depends on update_struct@
-identifier S;
-@@
-
- void nv50_wndw_reset(...)
- {
- 	...
--	if (WARN_ON(!(S = kzalloc_obj(*S))))
-+	S = kzalloc_obj(*S);
-+	if (WARN_ON(!S))
- 		return;
- 	...
- }
-
-@transform_kzalloc depends on update_struct@
-identifier match_struct_reset.reset_func;
-identifier P, S;
-statement ST;
-statement list STL;
-@@
-
- void reset_func(struct drm_plane *P)
- {
- 	<...
- 	S = kzalloc_obj(*S);
-(
--	if (S)
--	{
--		STL
--	}
-+	if (!S) return;
-+
-+	STL
-|
--	if (S) ST
-+	if (!S) return;
-+
-+	ST
-)
-	...>
- }
-
-@transform_body depends on update_struct@
-identifier match_struct_reset.reset_func;
-identifier renamed_func.new_name;
-identifier S, P;
-expression PS;
-@@
-- void reset_func(struct drm_plane *P)
-+ struct drm_plane_state *new_name(struct drm_plane *P)
-{
-	...
- 	S = kzalloc_obj(*S);
-	...
-(
- 	if (!S) {
-		...
--		return;
-+		return ERR_PTR(-ENOMEM);
- 	}
-|
- 	if (WARN_ON(!S)) {
-		...
--		return;
-+		return ERR_PTR(-ENOMEM);
- 	}
-|
- 	if (S == NULL) {
- 		...
--		return;
-+		return ERR_PTR(-ENOMEM);
- 	}
-)
-	...
-(
--	__drm_atomic_helper_plane_reset(P, PS);
-+	__drm_atomic_helper_plane_state_init(PS, P);
-|
--	__drm_gem_reset_shadow_plane(P, PS);
-+	__drm_gem_shadow_plane_state_init(P, PS);
-)
-	...
-}
-
-@update_early_return depends on update_struct@
-identifier match_struct_reset.reset_func;
-identifier renamed_func.new_name;
-identifier P;
-expression PS;
-@@
- struct drm_plane_state *new_name(struct drm_plane *P)
-{
-	<+...
--	return;
-+	return ERR_PTR(-EINVAL);
-	...+>
-}
-
-@update_return_plane depends on update_struct@
-identifier match_struct_reset.reset_func;
-identifier renamed_func.new_name;
-identifier P;
-expression PS;
-@@
- struct drm_plane_state *new_name(struct drm_plane *P)
-{
-	...
- 	__drm_atomic_helper_plane_state_init(PS, P);
-	...
-+
-+	return PS;
-}
-
-@update_return_shadow depends on update_struct@
-identifier renamed_func.new_name;
-identifier P;
-expression PS;
-@@
- struct drm_plane_state *new_name(struct drm_plane *P)
-{
-	...
- 	__drm_gem_shadow_plane_state_init(P, PS);
-	...
-+
-+	return &PS->base;
-}
-
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
----
-Cc: Frank.Li@nxp.com
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: festevam@gmail.com
-Cc: imx@lists.linux.dev
-Cc: kernel@pengutronix.de
-Cc: p.zabel@pengutronix.de
----
- drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-index c7ec09e557c1..afebd4fe4395 100644
---- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-+++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-@@ -295,25 +295,22 @@ void ipu_plane_disable_deferred(struct drm_plane *plane)
- 		ipu_plane->disabling = false;
- 		ipu_plane_disable(ipu_plane, false);
- 	}
- }
- 
--static void ipu_plane_state_reset(struct drm_plane *plane)
-+static struct drm_plane_state *ipu_plane_state_create_state(struct drm_plane *plane)
- {
- 	struct ipu_plane_state *ipu_state;
- 
--	if (plane->state) {
--		ipu_state = to_ipu_plane_state(plane->state);
--		__drm_atomic_helper_plane_destroy_state(plane->state);
--		kfree(ipu_state);
--		plane->state = NULL;
--	}
--
- 	ipu_state = kzalloc_obj(*ipu_state);
- 
--	if (ipu_state)
--		__drm_atomic_helper_plane_reset(plane, &ipu_state->base);
-+	if (!ipu_state)
-+		return ERR_PTR(-ENOMEM);
-+
-+	__drm_atomic_helper_plane_state_init(&ipu_state->base, plane);
-+
-+	return &ipu_state->base;
- }
- 
- static struct drm_plane_state *
- ipu_plane_duplicate_state(struct drm_plane *plane)
- {
-@@ -356,11 +353,11 @@ static bool ipu_plane_format_mod_supported(struct drm_plane *plane,
- }
- 
- static const struct drm_plane_funcs ipu_plane_funcs = {
- 	.update_plane	= drm_atomic_helper_update_plane,
- 	.disable_plane	= drm_atomic_helper_disable_plane,
--	.reset		= ipu_plane_state_reset,
-+	.atomic_create_state = ipu_plane_state_create_state,
- 	.atomic_duplicate_state	= ipu_plane_duplicate_state,
- 	.atomic_destroy_state	= ipu_plane_destroy_state,
- 	.format_mod_supported = ipu_plane_format_mod_supported,
- };
- 
-
--- 
-2.54.0
+Thanks,
+Mark
 
