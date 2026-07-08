@@ -1,63 +1,63 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E150E2DF126
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 20:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3753876B8
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 20:23:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783542091; cv=none; b=cZWkdGPaTbH8ZcTA/7BScOXkORvAqvZcmSjdhtv7oZIZfGdODdEfMT2kbYXMM5Fapy2uqP3Y+leyb4PcaGAUO8aRfz/KvuVvigjBkVqrx0HgHXLNCS0sgXYGU0ux0hfyjlfB8s2DXegQ+rkfddSZbgJp45O4MHA3bz5xOCXpwHQ=
+	t=1783542196; cv=none; b=s7zpYflA15nojoA4fsuRVtlpyyPZODu0BYjWdgH9CkIxJmh2XiFGfl6A5X75NARiophBXA2my0msy0+CLwDO5fQuecnij9XHB7SRZ4ak87NnOvb508opyEX1vUzx3YtMfc3gHuAOg1U8BViZHv0SmyA/UaN9bROtn09tgypLsAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783542091; c=relaxed/simple;
-	bh=Xa6BF4P0OpiaSuiLW+xRdnqpjJkGE7kzujlfd60Km5I=;
+	s=arc-20240116; t=1783542196; c=relaxed/simple;
+	bh=Dh7op/D6y72KqSKFeOFfXlBif3+8TipGaZ3CMsbhypI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1ht3eQriBgm59YQ3Sn2GGbDfC+GQ/xeSUmAqOElAeCjG+opXEvr9MLztIj4OmJ8L2THB4ue/99CJdBEsfLwAbcdKf7y6krpGlO/cDQwVl3WxjR504Im7wRfolAq9MkhBXeF8x8X/Tl1BF3BymXFZqCA7eem7aTHkZ4CCWvY2pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U/4hL7xI; arc=none smtp.client-ip=209.85.128.45
+	 MIME-Version; b=F8lKLsbF7u+lcvYT4qAI2Ot/CifOssQgAk6+IqqGuJZ0eVszRws9Usuye+0jy6vPeSb+8JVYL+exOphLRCX05IFjxBZPgVa+I+E3ZDoxZO0SbI4n46oQ/vjU+T+eKTNDBBIOBb3v9PZ2RR4Dk9KWOdPmI9a0jzP7UgMdOA0rH4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I5AhhM54; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U/4hL7xI"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-493bfe9f886so5956855e9.0
-        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 13:21:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I5AhhM54"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493b779003fso1028205e9.3
+        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 13:23:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783542088; x=1784146888; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1783542193; x=1784146993; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lPC/fPRplTXrPRJP9WPEDmAAHY+62t7UA57bz5CaOyI=;
-        b=U/4hL7xI+77jmMhO6SzL6kzxGo4b6Keoj744GIU/A8AZGIL9b37kbrv+oig5QWKxd/
-         4I7q6w3fkp+eXJiHBMcX1J+Ie/lXtylTfGByPvceZykcGUF6ke46CBu3YsZdEipD0JpC
-         oYraCFSH7dQWJecMJKgF1BPAia0r7GogY77+M811hAaegLkzZRJJtUBR47iPoSMq1qh8
-         ltX6fOxmJVTT/I0un8yGmVrWLv/HzJGUUfwPNirq5kPigWreRkdUrET/luvf08Vy2QGP
-         nvh1dwjwxTh57gozMgpQLakR+52X5mNhUzoItIv20LX2Zc6zRbdtT2+5T754nKkh3d19
-         lPEg==
+        bh=xGPWKT+T/Sc4FxhkqkRyahjTyPdMRSTRlzX+JKb5mbQ=;
+        b=I5AhhM54x9ZqZHzEbZBvp3llEe0a3uEhuzRzPY+chGaspbqGGEjXiO9wGt8Br9kHvh
+         Qjm8FLviZL6LF6C7KwBpkENpQ5fE3LQsfFGRQhwxopSmSAG1JdQbTpOnWw6Ua55EL8H4
+         qgHg78EA9Za7xR9yH7Qn5Eyi+cyHLsn3BgCIcfphZas4Hbmi/yzmyGIruEs+wpeH6nao
+         msZw5YgWP2rNm59ZehLotTLVcV1L0DdDF9/zG5q1BhNXMS7lZnpbWIfyT90AuFr0q3jj
+         9khVbSSe32ksN8DRHGL83QZC8EYXVuZ1RZXsnqaBJuy6jE63ko1Lienb1pqbW68Yk07P
+         zoxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783542088; x=1784146888;
+        d=1e100.net; s=20251104; t=1783542193; x=1784146993;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lPC/fPRplTXrPRJP9WPEDmAAHY+62t7UA57bz5CaOyI=;
-        b=k/ZP3wjmHk9v8aKW3yCBltQQk5RuFng53n9tRaIV1SytCnWhyMhiE5G/11QlwjTCvk
-         xBeb7UT97qNEGd3WuQxA25qgA8vjb2gR44OYtp+s0MPGm+GGpbgc5dj3P/HxyAwY+6yX
-         6XkHzUH8a4r7JBoghMvf576Q6WiUhSzdQGRc8bNM0lUEbKdA4IYGhK4ffmiVhVzJMisg
-         E+0ppmFeUxW2maaAolwmrbxQVaWjR/NP/k47kJatZoMVGcqoGSRVdTcwWRNoUvGkOUmR
-         bH+qB6Hrx6+MlZ/mtpyb3WDHWy7s06UNXuYFG6OcV9WEBi0rq5KCP6rloRtB/80K7u+9
-         Domg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrm+tZ7br5+Gm3/lH1PWNMYHvz70x8DM4ZnhjNFK2I+rZpqqplQ6hhh2pwSRWk7vDX5cWY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzbjMCevW+JUteV0nyEQyrWjv3bmR9kgHpiUzU6R2Dpst46HBtN
-	D3SFG+OBGhY0IDy/B/PkYjeVyz2IZTXUpvJZWxCnzLjxB6SuBDVjT5dP
-X-Gm-Gg: AfdE7cmlURbmCTg6lJMdBCH3QW+DOSTfvEvkxRKNukrzJZSMQPpW7FpPWcCzy4MWBIQ
-	OI8Wq3tU75IAafnToSgaasxUjPrurwzxPHKZX+HVgaJwiIGGoqdMsBi7ZQeP/Cs1G3m62X85qc+
-	A2AO9/dp7CGiTdKu03HDL18W6qum6HckhIKnjIG2oWli+mWvJeLC+8X5qMp+lmmBFNF3zA09y2Y
-	nezHea9c/0Sm9VexVxByHePjzvtO1PZcq4B6hh96vSNafJ2wvB8WPZbKHO88odMnsIbTHZ/klmh
-	FR9YRAi/BvFvcLcz/y3qsWAOylXZDunRhBxXCtA4DdYIn+yR98TVnjOJ53+6eHLnpx0EmdvG5ex
-	LtuP9Ps6Ge8kaDWtzUOURwQ35GY7Wt6x/qNjto35vsl/0Ws+7qckdvjBfqz6qYWQovozYm73uv2
-	8tlp2xZh7A7ucvI5qSY4ZWB5zZOnLR1yVrRzO1UYg2wQo+Wq3uwQ==
-X-Received: by 2002:a05:600c:3e07:b0:493:de89:61b with SMTP id 5b1f17b1804b1-493e6868766mr42351155e9.26.1783542088002;
-        Wed, 08 Jul 2026 13:21:28 -0700 (PDT)
+        bh=xGPWKT+T/Sc4FxhkqkRyahjTyPdMRSTRlzX+JKb5mbQ=;
+        b=SS/HpJ2j92WHre3LHZoXNEndGZq8+NDVvPgaU6v3Jy2MAxk+dHE3lsJmPtcdHWtPFd
+         1SFmRh2cEQ37aW22/rFrM5lVU1eLmt0a6YaQ0KZ8q9dtxX7dgRIn6m63LR4Df94eEFQ6
+         Ge4vhE0V+AUZdYz5/vcby0eMZbgD5fi9F0erukNKfaimzCjxAkKdsTQNdRuT6U43tGW7
+         CPmcWLQUdQpjb5g/weN98hYMxvyNXC4XN1tb7wuhZ7uwgQ4XXgaHjKpMap5eNpOT30Ai
+         unDwyVz+pJ5lHaCs0J0V0L33xyJ7PJxJg8EcVlidRHmxHZJHrMG4bsgBT0SubqUUlNEr
+         msPg==
+X-Forwarded-Encrypted: i=1; AHgh+RogbwSxm096SoyaWdRL4swq28NCMr4wXQ9xM/QFJwEfYuNt2QrfUTyPSXOK2zm3Z3bTUAc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx1BOrih1fYZHYI5DZQRZwYOIMCDLPdK7ROlpU5F1pei1SuWGYD
+	UmaGf4Bcrpn4KEwUd2LGjwMwASQeSkXw9AiBF3+lZkO2TmhMUGZS9Pup
+X-Gm-Gg: AfdE7cl8d6FClFEG/4nXOenBBpBRQtd0j9U/xy+r0aPSJoxbfuOMw1yEzguvLf7vl3B
+	JIvPvGk4UiosRpurrnr/o8fUae2issX0HvwR4Qa8zeNuFjOHZbZPIaJ8DHkPRrszP8P3MkgzCxA
+	V5MVS2h3GKDBuvQsWLqV8Kw2yXBRvz+tZb+gXtMJnf4pC3LNIeoEoh8J6xzQW+hOXfL2MtHC8oG
+	mk0ZtKbjhy2HymK2K1L+4IhzxORNEdB4QPV86uFvWrIQjrb14QxVZjmcM7EbjGGX0JTh2Wulz4x
+	AQcMBgq40m4jXHlEo+1nHO71XyeYgHevbN/zt7C4ryk97BlVGRUkuQHC9MJRb8MucJFO9mv5aAp
+	6EOEAM6Yn8g3skk42diGXJXg4uqS9sy2z9GLn1EZDDeLlcImuM5F0E3ssso7H1jp+Mu36bYwCBb
+	3b1EWWduvspbi1bk/jlvxZEUX8KIAd28aAieoDWxrz6zGcjkMXQw==
+X-Received: by 2002:a05:600c:528e:b0:492:4363:e7eb with SMTP id 5b1f17b1804b1-493e68f03damr41743525e9.32.1783542193163;
+        Wed, 08 Jul 2026 13:23:13 -0700 (PDT)
 Received: from osama.. ([2a02:908:1b8:2060:2b86:7192:b44e:9f03])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e54a25cfsm97381485e9.0.2026.07.08.13.21.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e5a5d174sm101663785e9.2.2026.07.08.13.23.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 13:21:27 -0700 (PDT)
+        Wed, 08 Jul 2026 13:23:12 -0700 (PDT)
 From: Osama Abdelkader <osama.abdelkader@gmail.com>
 To: Philipp Zabel <p.zabel@pengutronix.de>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -69,19 +69,19 @@ To: Philipp Zabel <p.zabel@pengutronix.de>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Dmitry Baryshkov <lumag@kernel.org>,
 	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
 Cc: Osama Abdelkader <osama.abdelkader@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] drm/imx: Fix ipu_plane_duplicate_state() OOM handling
-Date: Wed,  8 Jul 2026 22:21:23 +0200
-Message-ID: <20260708202124.12560-1-osama.abdelkader@gmail.com>
+Subject: [PATCH v2] drm/imx: check parallel-display drm_bridge_attach
+Date: Wed,  8 Jul 2026 22:23:09 +0200
+Message-ID: <20260708202310.12971-1-osama.abdelkader@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260706140246.41506-1-osama.abdelkader@gmail.com>
-References: <20260706140246.41506-1-osama.abdelkader@gmail.com>
+In-Reply-To: <20260706142732.49397-1-osama.abdelkader@gmail.com>
+References: <20260706142732.49397-1-osama.abdelkader@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -90,38 +90,36 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ipu_plane_duplicate_state() could dereference NULL when kmalloc() fails
-by returning &state->base unconditionally.
+imx_pd_bind() ignored the return value of drm_bridge_attach(), so a
+failed attach could still proceed to drm_bridge_connector_init().
 
-Return NULL on allocation failure, as the CRTC duplicate helper does.
+Check the return value, as imx-ldb and dw_hdmi-imx already do.
 
-Fixes: 00514e859335 ("drm/imx: use PRG/PRE when possible")
+Fixes: f94b9707a1c9 ("drm/imx: parallel-display: switch to imx_legacy_bridge / drm_bridge_connector")
 Cc: stable@vger.kernel.org
 Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
 ---
 v2:
 - add Fixes and Cc tags
 ---
- drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-index c7ec09e557c1..67f2da7f2b65 100644
---- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-+++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-@@ -323,9 +323,10 @@ ipu_plane_duplicate_state(struct drm_plane *plane)
- 		return NULL;
+diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+index eb75827394f8..fd48845877cc 100644
+--- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
++++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+@@ -210,7 +210,9 @@ static int imx_pd_bind(struct device *dev, struct device *master, void *data)
+ 	if (ret)
+ 		return ret;
  
- 	state = kmalloc_obj(*state);
--	if (state)
--		__drm_atomic_helper_plane_duplicate_state(plane, &state->base);
-+	if (!state)
-+		return NULL;
+-	drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
++	ret = drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
++	if (ret)
++		return ret;
  
-+	__drm_atomic_helper_plane_duplicate_state(plane, &state->base);
- 	return &state->base;
- }
- 
+ 	connector = drm_bridge_connector_init(drm, encoder);
+ 	if (IS_ERR(connector))
 -- 
 2.43.0
 
