@@ -1,124 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010049.outbound.protection.outlook.com [52.101.84.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A133B3B8405;
-	Wed,  8 Jul 2026 19:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783539197; cv=none; b=DgoSdKRbBgTqUssC7H3t7y/MnPSz11YrqjCTdykIby0+F2HFF9tLCkxflvIbXA+ioS40bx4dgy1pBViCUqWFauCnrZEeF2YEPEX6W9PG/V6Piuk8I0dnwqC384ItLFmTBxrEj8PuReVqc7gvDgizstYY0+h1XEXC8CG9Fl2Ws1E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783539197; c=relaxed/simple;
-	bh=IA2X3JrtXkQ0X5oDzj1XlIo+bnOml/YZMG7g0W/D/xY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=N+Y7QB34lIYOb8ho+QtqQpROEdSbh7W/qs3Vf/5rZSaRx/mDAfRp6KPP9/cjURToFu9DF3BvVPFUjPdBnzCvY+yMmAYDzivd49Wc7kmT3S8POI0U0n2FCLwz+y8c/p0VabRvBVNbnLKmmEOw9nz0fesjO4sTlwmT1TIQhbGmiiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvGalbIB; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843613BB690
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 19:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783539602; cv=fail; b=bEAGGQDrnH/yZ5fLXWHnyl5hVUsj6RhiTycN+01mhNFroBFKF2yoNs2ZGPyf3f8tMBPL9k76Ch5xnPTLVISqVqVRhOkMEe78TtIChY3LEVZfkznjVA/F6ccVMOa6ode/yXGtGbbzaZusUaTgW29x8uJowt7SZvtFAeSEbW9wWKY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783539602; c=relaxed/simple;
+	bh=gOx8qdT3ncnpldTDuC1Dg0dYKRWNTDYxvqWkB6VnBqQ=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=k7BXZomxfMda0EEftiuxL+cTsYnZwE5b+eeR5epDuVdrJqwMdADqwyI719qllUu16avAWV5lho9nm8sfNWdRSSj4fchbM0WB6as1RQtVy7EWw/l5XKDD1qzWT8CSelj+ofkCzaUHzW5tLu15n3AENF2EPMN0hLC2HisumWUtB8o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ARUs53gw; arc=fail smtp.client-ip=52.101.84.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvGalbIB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8821F000E9;
-	Wed,  8 Jul 2026 19:33:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783539196;
-	bh=qcBYfFq0WQmCqqQUoi03aFwT1WzRmvljiH1w8pTgowI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lvGalbIB/V/Dm3bNWQzJUni1XDWEmpZ1TdDT+tzGlXEZRFI6ZrB60y07pf/HV0GUP
-	 WjgVtIG80Qqr6mhiIhwEA2jRm/UgYCLDSW+rIy+co9Or5OwLCvHOAOzhivJDTEi/ze
-	 B94FhaY0Rn7j9a3+8yjV4FI9m+SteUBlt9gmGvSZ80ra7he0/0neiWRLdClyfRz39C
-	 67aFbY4o3BXJ1MSxCb4u4oKYMs7xIqE46/Hqe1hZKqh7mHGtjoxcfo/UsAqsP5RrBV
-	 9oW6i3KBc8EAiu9fgP2iV7diJ35OV/ujjc3Ed1kHGn1tOmqa53G95f9KqbN3BEUcdX
-	 1glw8L1/OGC2g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/5] ARM: dts: ls1021a-moxa-uc-8410a: add led suffix to
- fix CHECK_DTBS warnings
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260708-ls-dts-warning-v1-1-5daa24061c31@nxp.com>
-References: <20260708-ls-dts-warning-v1-0-5daa24061c31@nxp.com>
- <20260708-ls-dts-warning-v1-1-5daa24061c31@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 19:33:14 +0000
-Message-Id: <20260708193315.9B8821F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ARUs53gw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r86hGJJ4HCAspICBn1xGQlZmZxMSpdk1WneqYB3JPeI5C4XxwpigUF3v5BEncaEmdQadTYsI2zPEubsOPINi8MaNU74YkRnVoIIKZr8icvj3gJ8aXlGd8+iM+7gJrqJ4aQXo3a9h6dpSTd57NQNQYjmPoMiVXijHNAHfrIl4XwYrvb7iWhmt1LabAXk/53VpZiAeURvvwxEKanDFLwxykXFT5dCYieFFQNbIwJx+02bd2pb2efgGcN2W+kf2dwBf0L08ftVtZwlHhfF79xWGsKgYkiaiEN44nz4suVMpwMG8whAvZhBZvqWIxIy06pMqoFH7sWp8JkffDvKN04Btgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HV5gyyppKDbcNSGqDVktfI5gzEdhO+az2luMFJR9V1w=;
+ b=ghsUlU4s4eqKYBNRjOVxEtjRmTXO4O8EUYnJNAgmjPtrPMT2MOaGtAavNRYBSiqi5hnx0K3lXHBJD7nb6UwR+qAamh87y/CZCWftuc4XRZaOKjk+57Y99a076yQj3BIZK7pd60f/EWuehyJdmqmdiIiS3+5E4fZ1O1AuyHKfDNwh6bj3E9Ayzmv72qbD9xZiLMOYcbpY3pHckEzPztyBijjKGUWe1yBcErasB1F752+Nn5iiUl2dtW9X7AR/4xsQvCqVUOhuUWL/f0bd8hH2HI2FbfaplCgDpZpoeMkKEylN1WYsVmFJkMnkVlA4Ziu/QGWDM5s1yoTxlyWeMp80WA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HV5gyyppKDbcNSGqDVktfI5gzEdhO+az2luMFJR9V1w=;
+ b=ARUs53gwODBYeZpSYO0CsLmJm67ieWoSRi29MN4gz/ehgx8NGKxyhHacumvVrRSZ2IJFOnYkY3nw/p4P8N1D7v4jXCBy2/i/bsyZduDwBPsx/Jer7yyz0DNa8YzQqtk9sNMByQucJek+Yfc5p8EJEkEviYsKyGbVRkBivNqU1Ub8fureEhjKGAo5aZMEaURlHf3SoVYSz1cenqHqFe2RxMYFIEZFIl+8KAGn5irQkN3F9KGZbKkvUjed57EADG/pcyqAtesiUzEw6DgTwZMGDlVJfXAHWUWjpfwdqzUos/3pp8Bm0Ei8XXYTBHkZSk0ZtRtinK+aaf2bKtn885RFSg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AS5PR04MB11465.eurprd04.prod.outlook.com (2603:10a6:20b:6c2::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
+ 2026 19:39:58 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 8 Jul 2026
+ 19:39:58 +0000
+From: Frank.Li@oss.nxp.com
+Subject: [PATCH 0/2] ARM: dts: ls1021a-iot: clean up dts related display
+Date: Wed, 08 Jul 2026 15:39:50 -0400
+Message-Id: <20260708-ls-dts-display-v1-0-1986b2611895@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIanTmoC/yXMyw5AMBCF4VeRWWtSQl1eRSxoByOCdBDSeHfF4
+ iy+xfkdMFpChjJwYPEgpmX2iMIA9NDMPQoy3hDLWMlM5mJiYTY/4nVqLiFzHXU6LVqlEvCn1WJ
+ H5xes6t+8tyPq7a3AfT99Oj8GcgAAAA==
+X-Change-ID: 20260708-ls-dts-display-08c1fc59b664
+To: Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, vladimir.oltean@nxp.com, ioana.ciornei@nxp.com, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783539593; l=594;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=gOx8qdT3ncnpldTDuC1Dg0dYKRWNTDYxvqWkB6VnBqQ=;
+ b=sgolYvBn7r2wIjTCWKFqSCsZ+kncFEu7yfcDcThM/saAVPb6cVIes/1+CRblFKrwkBoxAVpLJ
+ jsd1/OPuUlcCiXw2aDZCwarwQAIQjnojQY2sO7Jq2nOTUsAi/TyHXRJ
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SA0PR11CA0006.namprd11.prod.outlook.com
+ (2603:10b6:806:d3::11) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS5PR04MB11465:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68ca8844-d965-48a0-e97b-08dedd28b170
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|19092799006|23010399003|1800799024|366016|921020|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	uXB/VayoSMA50EskiU2+jmKZnllmQjli1RngQue+E8mwPdTJxUZepxYDnAxK+O/Dcjc35A3Ftcu+SRlOyoy6lHf5CoaBOvMT4oiD22CIPhLDm+h4zpMTmDz8/fY7lQHSuvD4rqBJDDfR3GO1BjVE0xX7B7fz3ejKzYYgHmT1cNUZIQ8wh37NBxpfL4+ulaQrF1Xzv/cAH9Qc4OZDh6rapfCoD1DxeAY4nUFAyuCad7Rz1JwxzOMGT/lirTVk2zOCTiIa/RTcPNKDpzf/qetp9Bl7YRyS/oonQldeJ/3Rl4qXkPoC9t49syaGLzxm1xqlNqqksE6s8sjf24/wJhNy3u0pcthHe3XyD1Iko8xatLAjumzCSA07zmglwnOUYR6dD5v48p21cxzLRkKNHxqmp8B5g2DN1drt3H2FMuG5pmbLf2qkGJzyExHWdphYkv4iHiyV4SGmU4HimK1AOh/bRNmxJpdNuAsYil3agjggQa5rumE/i/pfDOQKlLdQpULobMTikC2izcy1oeBdR7rSJTauybd6BNMqMIb2Jy1hHwONxVE5ZPLiDJR2ekrrxwNFIyP+wIF1gbpMUHFFUxVQSI+ZjumwS9x4eZnOteUJ1wMgOGoAwPfUoNRHZ4+dV8zNorDeb2OiOhYQZJwHj3CcDynf3GdJvdjhHJ0BVt085j8sACWihBJDQAdelXStwdX15bBZxyWP5Gfe4WnP8UI8IQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(23010399003)(1800799024)(366016)(921020)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Vm8yZUlud1lVWUk5Q0tzVGlKWEFhVFQyZHZ4WUdKRDFDMmhkN1hqQ05wVG8w?=
+ =?utf-8?B?SXJnZDBUZWRpOVo4NU8zRDVYMDZseTVCNnFqNnhWcGNMS3NRTXFmVmtIUGJR?=
+ =?utf-8?B?bXpsSW9KS2hzMDl6Yld5aENCRmM1eDFzT2xpUUxBNWhsUDc2UXd6N09NcG94?=
+ =?utf-8?B?OXRaMm5CU2NheUVzWWVlU2VPYm45QytMUUQxb0JNUEtabTh2MWR4Z0V6S3VY?=
+ =?utf-8?B?dVd6MzZSd1JCS3JmQVg1KzVleno1d3k3YndBQXBpUS9hREh6enlyd283dmhl?=
+ =?utf-8?B?SzlMMkJjVXFNdHNaaDVyY2poNUd6OUs1T1p4ODZJSjB2bXltT2lUd2ZpT25o?=
+ =?utf-8?B?TGMrSlhmQnNmRUpSd2JmQS9ldnpEbUtrVFVpV0hVcEFkcnd2MGthSm5UdGpy?=
+ =?utf-8?B?RjArTFM5MkdGVzY4emIwZnF1VVV3ZVNEcHdSa3ora3R1QjlvVlRlTEpqNkxj?=
+ =?utf-8?B?OGVobFJ4R21DVjdwTU1KRElMSzE1VkRtcnFwQ1IzS004b1ZMRFpySnVBeWIw?=
+ =?utf-8?B?OGhuMGRRdHQ1VDBkb2Y1T3Q3UUlBMC9BODE4UzdoZmdNdTRBNXpmcktNNUdU?=
+ =?utf-8?B?MkNjNzY3dGRPcUdvZ014KzVhdDFlZDhNYk1sZXJOT0dab1ZpK3lxdkxtdmN5?=
+ =?utf-8?B?ZzY5ajhxVGFNMk9vQ3BuSEJrMEZlNjVtODlyYVhaWVNmMFI1ZU95Y0VuTWZl?=
+ =?utf-8?B?aDRPcHd0ZDRRZmpLamJoampxRXN3YjJodDZXNjh3MW4zbkFyRGhpMGVXZmVs?=
+ =?utf-8?B?UVVzU3RIcWVXU0dCbGNia09mdXBBSXRmWlI2M3MxbjZwR08wUEdabkMxVEZh?=
+ =?utf-8?B?OGlSZ3VvamJYWmg1cElsL3p5dDVrRGZMZjZPNDU1djVpZTZEQWFMRGNaY1pC?=
+ =?utf-8?B?Z2pKcjNhTnhsdXo0bWQ1SjRqMTJKRjEvUTBsN1BFQTI3YVEvTVdMRkZjYlFF?=
+ =?utf-8?B?bHNldHlUNFRLdWdyZDlCZThSd1ZKRDlrTnlGYUhVQ1FpOXRvdEh2aElTYUhR?=
+ =?utf-8?B?azE0ZWhaa1AyWWt5SWtEOXhVMXU4djhFYUtpWWpNdUcySFBUbW9ZV2VvaVdr?=
+ =?utf-8?B?SlZUcndVdkhOVjF5b2hlMDFIaktOZ0VKSklCNzFTV3lJL0JUL3BreHl2Mll0?=
+ =?utf-8?B?czBaNm9SeDA1ZzlXRjVqcFJoSFlnMTRUM2UxUEp6SEtpZGtYQngvemd1NndR?=
+ =?utf-8?B?QVppQm1pUVBVU1F2YkpzNS94T1dqUjJsdlVnSUNTSWJSTFRncGdST0ZMN2p0?=
+ =?utf-8?B?VGFkV0E5eWdaamdNUEYza2pMNTBTQXhROGJNdUxiekdzL3ZXSjNtY29aR1lt?=
+ =?utf-8?B?MWU3cmV3SVIzSEh0bFVrMXQyeEZxSGxLc1dQTEdPZCtUVGM3S2N3VmFjNkRI?=
+ =?utf-8?B?UWhTVWpNcHNTU09wVHlCWTFUcWsvdllVSWNFdjkybElnN1gxRlZVcHNZWldD?=
+ =?utf-8?B?bW0wb1BxRlFBeEJ6bEhiTldxZkxiellWcnBKVDJiWFduRjZGUjBZc09LV2Y4?=
+ =?utf-8?B?Z1FndVYxNEV2NmdxdW1OV3d6WHM0YWZxRGZ0WVRRS050eHBvbTUyRWsycW1E?=
+ =?utf-8?B?SWJDbE11cHg2NVRTR2xaTkgyendER0QxM0RsaStNNUFxTnFDOU5IOU5iRFYw?=
+ =?utf-8?B?MnU2YTZmZFlmOCtLSVYxWHlRdllIK0J2Y3VnY251OURoOVpCOEZLOUN2VnZ6?=
+ =?utf-8?B?cjZvaDRaSVNOd3JxSHZVV3M3TW1zWXRVQ09MTnJ2YTRnOTg4MXhsblJYSkxk?=
+ =?utf-8?B?ZXkxbkNIMXB0a3ZLdnllVVBNYTFrWTBlc1RKdlBGL245QW9PUWhzYkRBeTRL?=
+ =?utf-8?B?WHRieVc0Y200RkNXZmhOeWh5S3pHbitvVlp4QTZjczQ5R0Q2YitUVFBjREQv?=
+ =?utf-8?B?c0pjQTdETHhnR0RKREoxMDJHeThnR2tLS3YzdlJIcFNUSk9wd2ZhL2RLV3hQ?=
+ =?utf-8?B?ejQ2S3ZYT3lJSkNXQlFIcFhqZHVJdkw2ZGdMUTMzYlB4bDN4UmZTS255SkVM?=
+ =?utf-8?B?c3A0YlZiTC9SK04zSGdOMzZ0Yzc2SjdlNGRDdWhxemh2RDE1S295YWltN0pl?=
+ =?utf-8?B?bVVnWnZ3aFA1RCt1a04wV2JJN2ZKK3E5SVpUbWtsWnpzZkMrbjNheHlkWG9q?=
+ =?utf-8?B?MWRpOHgvOXVoMnpObmhHRlo0V3RiYjZPdVA4bzJBWEZ0R2xCTXNmbnA5b0oy?=
+ =?utf-8?B?cjZLLzdQeFY5ZklKeHZaUHA3VnV1WXRhVVVobENVU1NJeU9yakVjejRyT3RW?=
+ =?utf-8?B?T1JKRDgyU1NpbnRtSStvTmpTV3pvVkx6N1lhenpmTmtXNktKNk15WnRHWGtV?=
+ =?utf-8?B?OVdHbGo0dHl1cXlIclpLdjhKY2xiNitWMExLK2I4VmM1TnFSTWtoQW9ieWNS?=
+ =?utf-8?Q?Asg1GCnSlIb4Wz0BYLWhUs0oexSXe6tSUhHjw?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68ca8844-d965-48a0-e97b-08dedd28b170
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 19:39:58.1442
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cVrPZMiXUCliLIHDe7hkJl4O/LN4sAw8ONAlL9Fi/cX4AvioWERTdQnJgVsCEF2MnO8zI3WfpjHGQFHCKrpiS0k5GufrLqXq3FLhoJWybe0HS1zIcbQZEPUzriqbOt7m
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB11465
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Appending the '-led' suffix to non-LED hardware components artifici=
-ally bypasses DT schema validation while falsely describing the hardware.
---
+clean up dts related display.
 
---- Patch [1]: [PATCH 1/5] ARM: dts: ls1021a-moxa-uc-8410a: add led suffix =
-to fix CHECK_DTBS warnings ---
-commit 74fab37b2f25e9ccf8e82f5b1103b80dbcd12253
-Author: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Frank Li (2):
+      dt-bindings: display: imx: Add deprecated property display and display0
+      ARM: dts: ls1021a-iot: rename display@0 to display0
 
-ARM: dts: ls1021a-moxa-uc-8410a: add led suffix to fix CHECK_DTBS warnings
+ .../bindings/display/fsl,ls1021a-dcu.yaml          | 22 ++++++++++++++++++++++
+ arch/arm/boot/dts/nxp/ls/ls1021a-iot.dts           |  4 ++--
+ 2 files changed, 24 insertions(+), 2 deletions(-)
+---
+base-commit: 6c94b38b83a04c43ea49004275f0391404051093
+change-id: 20260708-ls-dts-display-08c1fc59b664
 
-This commit appends the -led suffix to several nodes within a gpio-leds
-block to resolve dtbs_check warnings.
+Best regards,
+--  
+Frank Li <Frank.Li@nxp.com>
 
-> diff --git a/arch/arm/boot/dts/nxp/ls/ls1021a-moxa-uc-8410a.dts b/arch/ar=
-m/boot/dts/nxp/ls/ls1021a-moxa-uc-8410a.dts
-> index d2cae8c7d7a61..8efe6b615ca85 100644
-> --- a/arch/arm/boot/dts/nxp/ls/ls1021a-moxa-uc-8410a.dts
-> +++ b/arch/arm/boot/dts/nxp/ls/ls1021a-moxa-uc-8410a.dts
-> @@ -40,13 +40,13 @@ reg_3p3v: regulator-3p3v {
->  	leds {
->  		compatible =3D "gpio-leds";
-> =20
-> -		cel-pwr {
-> +		cel-pwr-led {
->  			label =3D "UC8410A:CEL-PWR";
->  			gpios =3D <&gpio3 27 GPIO_ACTIVE_LOW>;
->  			default-state =3D "off";
->  		};
-> =20
-> -		cel-reset {
-> +		cel-reset-led {
->  			label =3D "UC8410A:CEL-RESET";
->  			gpios =3D <&gpio3 28 GPIO_ACTIVE_LOW>;
->  			default-state =3D "off";
->  		};
-
-[Severity: Low]
-Does appending the -led suffix here artificially bypass DT schema validation
-while falsely describing the hardware?
-
-Placing these cellular modem control lines under the gpio-leds compatible
-node was existing behavior, but renaming them to include -led simply hides
-the validation warning from the linter instead of migrating the pins to an
-appropriate modem or power controller abstraction.
-
-> @@ -58,13 +58,13 @@ str-led {
->  			linux,default-trigger =3D "mmc0";
->  		};
-> =20
-> -		sw-ready {
-> +		sw-ready-led {
->  			label =3D "UC8410A:GREEN:SWRDY";
->  			gpios =3D <&gpio0 18 GPIO_ACTIVE_HIGH>;
->  			default-state =3D "on";
->  		};
-> =20
-> -		beeper {
-> +		beeper-led {
->  			label =3D "UC8410A:BEEP";
->  			gpios =3D <&gpio0 20 GPIO_ACTIVE_HIGH>;
->  			default-state =3D "off";
->  		};
-
-[Severity: Low]
-Is it correct to label an acoustic device as an LED?
-
-Similar to the cellular GPIOs above, using gpio-leds for a beeper is an
-existing inaccuracy, but renaming it to beeper-led strictly to satisfy
-the regex solidifies an incorrect hardware description. Would it be better
-to migrate this to use gpio-beeper instead?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260708-ls-dts-war=
-ning-v1-0-5daa24061c31@nxp.com?part=3D1
