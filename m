@@ -1,102 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D444D3E5A22;
-	Wed,  8 Jul 2026 20:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E150E2DF126
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 20:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783541426; cv=none; b=Hp4sOGJ4dyp0Vg+fBpsdzYGH3Sb98ItYBexXBBESypcm3rzpixp+egt9r0qITPu3euOAJ4od6txxvC81wDjj2BsKQCppDMZ4IQ16670BwSP5h5btIgJO+TFj8drGRtdsdnA1HjQMdWIMbRn5lgKpqzvDtZ+S3ZJItAiVw5UEoIc=
+	t=1783542091; cv=none; b=cZWkdGPaTbH8ZcTA/7BScOXkORvAqvZcmSjdhtv7oZIZfGdODdEfMT2kbYXMM5Fapy2uqP3Y+leyb4PcaGAUO8aRfz/KvuVvigjBkVqrx0HgHXLNCS0sgXYGU0ux0hfyjlfB8s2DXegQ+rkfddSZbgJp45O4MHA3bz5xOCXpwHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783541426; c=relaxed/simple;
-	bh=bm4Cg7N5H0NnDEjj73TujxMNebFIrhWLZS0A67bj3g4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=gbHn2NGaZkDj8J+R4RDSKwAaFvdcZQUzSlk2WHMdzLN/a0FDl7I9FDoki3jMBMECfhtUPtod0ujuCW/EWSXNFoByO0lOTK8Y1Lf1dwyr/Wu/AtRIMWYYWt3allI2Hyic9BtxXX9HvAxc8R6hcEcj5M3y7xnOq+CdpETV3VjGF3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kgKknX5m; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783542091; c=relaxed/simple;
+	bh=Xa6BF4P0OpiaSuiLW+xRdnqpjJkGE7kzujlfd60Km5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=i1ht3eQriBgm59YQ3Sn2GGbDfC+GQ/xeSUmAqOElAeCjG+opXEvr9MLztIj4OmJ8L2THB4ue/99CJdBEsfLwAbcdKf7y6krpGlO/cDQwVl3WxjR504Im7wRfolAq9MkhBXeF8x8X/Tl1BF3BymXFZqCA7eem7aTHkZ4CCWvY2pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U/4hL7xI; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kgKknX5m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C2A1F000E9;
-	Wed,  8 Jul 2026 20:10:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783541419;
-	bh=5FRIKaHj1K6umMKvbkOQwI8kz2MS4CkhOKlDejjLwPE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kgKknX5mtQ1QdMtQweKx8dsrW/meCeEeNFp7v5KB9dx9Xm9f541HsgEe0TzVtRG8Z
-	 QzugXx5CjJrodEyHFz0xABNZEArbQq6ApJeK0c3TCLPmVtdV3Q5eSizy35zEtVY31Q
-	 sKAQlmE/cHkDHave2E5TQnZUhtqtaQj37AgcEAm0uWlsG2doZeB1nhqTUV2SJaiwUX
-	 h7AF6dFmUUwPzv6Bzw/sXuewUTJSAeqAJqYPHpCsZ5U9sWyJcwezUQfVAWY2x2hSdj
-	 BDfJNXytyx71E/siYSXNbBchXLtY/ElqVJEBptXrQGaqSbY99R8ampEcCyvGY3Cegk
-	 ZS07pRpqaMWHw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: soc: imx: Add fsl,eim-bus
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260708-imx53-eim-v1-1-913b4559e5b5@nxp.com>
-References: <20260708-imx53-eim-v1-0-913b4559e5b5@nxp.com>
- <20260708-imx53-eim-v1-1-913b4559e5b5@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 20:10:18 +0000
-Message-Id: <20260708201018.C7C2A1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U/4hL7xI"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-493bfe9f886so5956855e9.0
+        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 13:21:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783542088; x=1784146888; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lPC/fPRplTXrPRJP9WPEDmAAHY+62t7UA57bz5CaOyI=;
+        b=U/4hL7xI+77jmMhO6SzL6kzxGo4b6Keoj744GIU/A8AZGIL9b37kbrv+oig5QWKxd/
+         4I7q6w3fkp+eXJiHBMcX1J+Ie/lXtylTfGByPvceZykcGUF6ke46CBu3YsZdEipD0JpC
+         oYraCFSH7dQWJecMJKgF1BPAia0r7GogY77+M811hAaegLkzZRJJtUBR47iPoSMq1qh8
+         ltX6fOxmJVTT/I0un8yGmVrWLv/HzJGUUfwPNirq5kPigWreRkdUrET/luvf08Vy2QGP
+         nvh1dwjwxTh57gozMgpQLakR+52X5mNhUzoItIv20LX2Zc6zRbdtT2+5T754nKkh3d19
+         lPEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783542088; x=1784146888;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lPC/fPRplTXrPRJP9WPEDmAAHY+62t7UA57bz5CaOyI=;
+        b=k/ZP3wjmHk9v8aKW3yCBltQQk5RuFng53n9tRaIV1SytCnWhyMhiE5G/11QlwjTCvk
+         xBeb7UT97qNEGd3WuQxA25qgA8vjb2gR44OYtp+s0MPGm+GGpbgc5dj3P/HxyAwY+6yX
+         6XkHzUH8a4r7JBoghMvf576Q6WiUhSzdQGRc8bNM0lUEbKdA4IYGhK4ffmiVhVzJMisg
+         E+0ppmFeUxW2maaAolwmrbxQVaWjR/NP/k47kJatZoMVGcqoGSRVdTcwWRNoUvGkOUmR
+         bH+qB6Hrx6+MlZ/mtpyb3WDHWy7s06UNXuYFG6OcV9WEBi0rq5KCP6rloRtB/80K7u+9
+         Domg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrm+tZ7br5+Gm3/lH1PWNMYHvz70x8DM4ZnhjNFK2I+rZpqqplQ6hhh2pwSRWk7vDX5cWY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzbjMCevW+JUteV0nyEQyrWjv3bmR9kgHpiUzU6R2Dpst46HBtN
+	D3SFG+OBGhY0IDy/B/PkYjeVyz2IZTXUpvJZWxCnzLjxB6SuBDVjT5dP
+X-Gm-Gg: AfdE7cmlURbmCTg6lJMdBCH3QW+DOSTfvEvkxRKNukrzJZSMQPpW7FpPWcCzy4MWBIQ
+	OI8Wq3tU75IAafnToSgaasxUjPrurwzxPHKZX+HVgaJwiIGGoqdMsBi7ZQeP/Cs1G3m62X85qc+
+	A2AO9/dp7CGiTdKu03HDL18W6qum6HckhIKnjIG2oWli+mWvJeLC+8X5qMp+lmmBFNF3zA09y2Y
+	nezHea9c/0Sm9VexVxByHePjzvtO1PZcq4B6hh96vSNafJ2wvB8WPZbKHO88odMnsIbTHZ/klmh
+	FR9YRAi/BvFvcLcz/y3qsWAOylXZDunRhBxXCtA4DdYIn+yR98TVnjOJ53+6eHLnpx0EmdvG5ex
+	LtuP9Ps6Ge8kaDWtzUOURwQ35GY7Wt6x/qNjto35vsl/0Ws+7qckdvjBfqz6qYWQovozYm73uv2
+	8tlp2xZh7A7ucvI5qSY4ZWB5zZOnLR1yVrRzO1UYg2wQo+Wq3uwQ==
+X-Received: by 2002:a05:600c:3e07:b0:493:de89:61b with SMTP id 5b1f17b1804b1-493e6868766mr42351155e9.26.1783542088002;
+        Wed, 08 Jul 2026 13:21:28 -0700 (PDT)
+Received: from osama.. ([2a02:908:1b8:2060:2b86:7192:b44e:9f03])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e54a25cfsm97381485e9.0.2026.07.08.13.21.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 13:21:27 -0700 (PDT)
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Osama Abdelkader <osama.abdelkader@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] drm/imx: Fix ipu_plane_duplicate_state() OOM handling
+Date: Wed,  8 Jul 2026 22:21:23 +0200
+Message-ID: <20260708202124.12560-1-osama.abdelkader@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260706140246.41506-1-osama.abdelkader@gmail.com>
+References: <20260706140246.41506-1-osama.abdelkader@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The updated `$nodename` regex explicitly allows `eim-bus` but ma=
-thematically fails to match the actual node name `eim-cs1` used in the devi=
-ce tree, resulting in a new schema validation warning instead of fixing the=
- issue.
-- [Low] The commit message incorrectly attributes the compatible string to =
-i.MX51 variants instead of i.MX53.
---
+ipu_plane_duplicate_state() could dereference NULL when kmalloc() fails
+by returning &state->base unconditionally.
 
---- Patch [1]: [PATCH 1/2] dt-bindings: soc: imx: Add fsl,eim-bus ---
-commit c123bec5543c2323c455145cf374a9559692a3a5
-Author: Frank Li <Frank.Li@nxp.com>
+Return NULL on allocation failure, as the CRTC duplicate helper does.
 
-dt-bindings: soc: imx: Add fsl,eim-bus
+Fixes: 00514e859335 ("drm/imx: use PRG/PRE when possible")
+Cc: stable@vger.kernel.org
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+---
+v2:
+- add Fixes and Cc tags
+---
+ drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-This commit adds the fsl,eim-bus compatible string to the fsl,spba-bus
-binding to resolve schema validation warnings for legacy i.MX devices. It
-also updates the nodename pattern in the schema.
+diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+index c7ec09e557c1..67f2da7f2b65 100644
+--- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
++++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+@@ -323,9 +323,10 @@ ipu_plane_duplicate_state(struct drm_plane *plane)
+ 		return NULL;
+ 
+ 	state = kmalloc_obj(*state);
+-	if (state)
+-		__drm_atomic_helper_plane_duplicate_state(plane, &state->base);
++	if (!state)
++		return NULL;
+ 
++	__drm_atomic_helper_plane_duplicate_state(plane, &state->base);
+ 	return &state->base;
+ }
+ 
+-- 
+2.43.0
 
-> dt-bindings: soc: imx: Add fsl,eim-bus
->   =20
-> Add the fsl,eim-bus compatible strings for i.MX51 variants.
-
-[Severity: Low]
-This isn't a bug, but is the reference to i.MX51 variants accurate in the
-commit message? The CHECK_DTBS warning listed below is specifically for
-imx53-ard.dtb, which suggests this compatible is actually targeting i.MX53
-variants rather than i.MX51.
-
-[ ... ]
-
-> diff --git a/Documentation/devicetree/bindings/bus/fsl,spba-bus.yaml b/Do=
-cumentation/devicetree/bindings/bus/fsl,spba-bus.yaml
-> --- a/Documentation/devicetree/bindings/bus/fsl,spba-bus.yaml
-> +++ b/Documentation/devicetree/bindings/bus/fsl,spba-bus.yaml
-[ ... ]
-> @@ -36,13 +37,14 @@ select:
-> =20
->  properties:
->    $nodename:
-> -    pattern: "^((spba|emi)-bus|bus)(@[0-9a-f]+)?$"
-> +    pattern: "^((spba|emi|eim)-bus|bus)(@[0-9a-f]+)?$"
-
-[Severity: Medium]
-Will this regex change successfully clear the validation warning?
-
-The commit message states we are fixing a warning for the node
-eim-cs1@f4000000. However, the updated pattern permits eim-bus but
-structurally fails to match eim-cs1. Does this mean make dtbs_check
-will simply evaluate the regex against the eim-cs1@f4000000 node and emit
-a new schema validation warning for the nodename?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260708-imx53-eim-=
-v1-0-913b4559e5b5@nxp.com?part=3D1
