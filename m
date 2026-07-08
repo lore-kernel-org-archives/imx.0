@@ -1,226 +1,123 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010060.outbound.protection.outlook.com [52.101.69.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D805E2FD1B5
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 15:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783523962; cv=fail; b=QmMkdh/4o6bXHlOjVOHlLsplipoJSVU1h3OD+H68f2A+qcYGGEzsudsjYVhxxsTAYgOf31YSOemSVRZeAfpMy0T1wEshpH2tgr1iXHwbYbEnOnveGG6dMqY0r3JUJmmOHfBoEM7YvzRjk86PvwpjPNswtEAq0in8npSwiM7BQ7c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783523962; c=relaxed/simple;
-	bh=A7ZTQecetBSvwVoNO5zI2q/LE/xSxNBiqZmR4rFD4ms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=E9IglWa6rEUKDCn6iE5nhIld9kvQCnGeWO0JCzpjOcxrSg1Dd/X+QBJttLLqKKVt8kFqKwpe2DSZ6mHaFiS1CMLVYpfZPWl8PRTRIUG+h9fTxwhFyVYdruBqb7fvd7jBapbzRtizwZ3I5yabDWo9pq5JALjwfhsUZNj1D2yeFPM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mjeb1EKC; arc=fail smtp.client-ip=52.101.69.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0986037FF43
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 15:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783524010; cv=none; b=glts/C8xMX3CNZoGpZ27BsCP2k4DVZc0vGy14EqnV1FU3o6GPpRy6DKw4Ka8M6htbXkp2rMtp8AT37NDMtbrFI8j/VcBvXGjCULMxtuRynNE/ImL3vokCkra+3yV3oZDPp+kKjxgID6NW0JmYZ9RuMPaaMLvRs7Mh5dpThXoKO8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783524010; c=relaxed/simple;
+	bh=BBen1slmhyf3fNvsg7q5c4rkJsBFClN8c8AiUxc7BWQ=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=Ow+PBAPjm3NiVae3cwTjIfbOB/DNofdkowWNnxeW3go9yLLcaLClaMvbTfdTUOMee1VhWd47sVLoo04/iQEminYSc8CiqF2Jbg3heD/AMBIQpOb9Z8bGDiZcBTaa/EsPcXXmkRTePDGXZNZ5qBz0y9XzPj5u3P2T5jrvqbIx8io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=YuyMTsta; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mjeb1EKC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s2oyrePzo7Ol47fUk0hNrnMnCbS3fwx4s7i4Z1YilPP8NlRjXERlHwWwq5/yVkJYDFneBK9+BGgfiKWIOEyXPydPW57JJRYdSspUlO0kZA9/WP0IzErmfZBmXSbR7PNc6eGySK8c6yIhjdpYt7l5HjLWJJJUKQUFFBSdMT2gLaibd+yJ7JblmNSDXvCbuXCrmWRrpK132egfSW7iNm33CdnWrweKCHsbCBhwWNCrXNXoUSzLzSqJsdyB+wU7zDQhSz0ElJr7u/gJVix8B6PCSQY7fIcNf0fzhE5P6RgRoR5IC2VEnLkFOiNwh0AP/8WiwT9CwTH7FM2WqUWsSTJQ5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NFhFa2Ii9TmzpYQN/UZouh7djHLEwjb3i4yEv9XD3Xw=;
- b=wndWXyIkGkJMMxLRGdQGao4ePPPjpRhUB3W9Yxf3BdIBz3FH8LJtvd5JYohfz2t8nc3wDrVQILjagwplkld7mbNCM7TOoP1F46ylM4coAwYgFfaa9mfjywK2SvsNEWbKcKsuCHsQwTuZgLtndqKnKRSFlGQ8ZP6n0l2zDITWe9vJZcFI7cZP4LxIrNW1zdfIXWEi7jbKmW9Rvf3blzeTU2OE4ifcMX7M4rr+MQk1YyM5AfB44yRt/wMiYdGDp5HZrJznxsuJpATVasb1xlot+WgJOU8NH70SJH9KFtFWpGAC/xlsC5Cd0DBxwQYJefkFbfB0oGxoZCVgedPLN2msew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NFhFa2Ii9TmzpYQN/UZouh7djHLEwjb3i4yEv9XD3Xw=;
- b=mjeb1EKC6NRXFv6S6ayAHF4dLKHm3UtXwmO8BaJ+YSbRUNQdDMh89ZfVtzDs2ZiOKUpH4TDrEIwzccPOgFOldoRxXugQuYDRumgHx8Wpi+Es2UV34ujw6uVJ/xaljQhsqb5Ij+foqdoOHXt99Nh5x0KfURaqbWAqoZOfzHstpYUhpMsp1/51l2pPg+y34X2W3Ht/l30EH09MRADcKhPUUZviSYYaBr1M17n1azNa9OOXmTbzhCiTqsVRGW2L0HAD28Tr4X0ZhYbkbU8FYHQ/HxCuH3JdxlcpA8PlY5/djLEl0noNhgLZYdxY7t2iFtaGT82HDFWqjmwWw0+DmenqHA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV2PR04MB11325.eurprd04.prod.outlook.com (2603:10a6:150:2a8::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Wed, 8 Jul
- 2026 15:19:15 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 8 Jul 2026
- 15:19:15 +0000
-Date: Wed, 8 Jul 2026 10:19:03 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: hongxing.zhu@oss.nxp.com
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	bhelgaas@google.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Richard Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v2] PCI: imx6: Update MPLLB bandwidth to improve i.MX95
- Gen3 PCIe stability
-Message-ID: <ak5qZxsTsIWqe-ML@SMW015318>
-References: <20260708035928.580236-1-hongxing.zhu@oss.nxp.com>
- <20260708035928.580236-3-hongxing.zhu@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708035928.580236-3-hongxing.zhu@oss.nxp.com>
-X-ClientProxiedBy: PH7P220CA0150.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:327::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="YuyMTsta"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-493bb510ce4so5672955e9.1
+        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 08:20:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1783524006; x=1784128806; darn=lists.linux.dev;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=CHzrrzSnVqIsHsO09qrkEkxGis4AbbzO3jB0Pw7dZJs=;
+        b=YuyMTstakGd1hoJdsVgDWoWzD/fkUMya9ZlG7QP9q414kQA0MsXymIhuKGf2/ebEMN
+         21CtBEzi3CqZMxdfNliZGRH0WnfKys1sgmB54w4mGKQvACC/qOzkrA8ll4VYNlTYXU4M
+         5ZG55vjJQyrHiNYZg98TeFUyp4Rs1TW0Qkm0/72xHzUSI9ABEBTl3jhMQO+NegC6CKRh
+         JM5aK+uAwA0Ag+kGRJfkNDN/L88biXazZUKFoUAldjsdVuKs0dpUgkyxjQQID7o836/e
+         zwUwaeJ+7+SnEYxlAlUkR61nWQIVvSQQ2847oTEAZCwFBP7ZF2oWuZj8wtXoo/nJK25I
+         9lWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783524006; x=1784128806;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CHzrrzSnVqIsHsO09qrkEkxGis4AbbzO3jB0Pw7dZJs=;
+        b=TppmC8Phv1JMMpJfgvtOsKfVEn/VNvgE3EAhBC5LZlne3ugT3i6ihb+kgssAS9o2wk
+         bRljUrU1VNtu3NqvvJC1QHW7lzATvIdIjA4Vt4jtmydbJBayNWfbAkSAoBhiZPGvpMvX
+         Ps4W+YX4sALPeuJoz6J/F8sCm3YxOPcmCHWjCvPnzxwSzceW4FsLJlw5DzLuDj/enXIv
+         XYZF+3dPZxVk97bEscmRT0pOKHBIdyMWyCbrcR810fT/MWU3/cv0Mz7xpznLnNCq/Hiu
+         9h8yL+P/U9Z2DvSCnrNW2nWgaPwhdrU/K2BUao5wg89Kxu7qwz0HXwaYriGXfhcRCk3p
+         ILfg==
+X-Forwarded-Encrypted: i=1; AHgh+RqOq/wB2wIzzTq5e42dW3UGOSQhp7iF77idDteLWDqQ2H/bkDdXaqQYzpmxpUpyv0fAFWY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz3Oj/ZfTYDvamU+hVDW/wZ1AzHpDNNPKa/u4GJbvJ5MLedge+q
+	xE6tmEwKWzUb4vovre1L1YrogoQFsSGzjT6RgXpXyYoES8vSARAy3nmCFSTKuzGd7n8=
+X-Gm-Gg: AfdE7ckaGQU4qGnHwfr4ws8ZnuIqPoFmE0r/onrv/ZB3+fMnVdSgtSZ7Yse6w74vPp0
+	gl+nhiTwGgmQSQT1yVBzRWE/C6GgargaypMMrjeWIpjHS958cc70TE9RwijlD4AAMx74C3kZ1c9
+	1Uu3HgZ+KjYXk/9M0Qu9xJ7KHlRQxeE7B2rWFGWGF+Y7HtVw+IyUDUPDr2XxuzWSLSB6vnSRirR
+	MBoXk/cY+0IccH3nw8X8v4ySYIE05Wf89v6XZfWSz1NRURxOpFfGbdEmFhUNZk8szzId596J/zD
+	+WKfGPgwwljy+TNlYivg2tLUYKocXEcetbsu736yEArvglZujgufqCZ2y2rM5gIGqcV2cAVX2k+
+	3/u1QLweyRb1U19U90hRx0zsCjRItDabydjR5WdC5PvNtZYWOR+jqK+h7BQQ9m6+0TpRIc5jHaB
+	6pux4kIXR26VQovS7IsjrJdxlc6Gn+E0IHDP+9ox9GWMGaTo32780q
+X-Received: by 2002:a05:600c:34ce:b0:492:4911:8a with SMTP id 5b1f17b1804b1-493e68bfa4emr32295945e9.12.1783524006307;
+        Wed, 08 Jul 2026 08:20:06 -0700 (PDT)
+Received: from [192.168.7.218] (88-127-185-231.subs.proxad.net. [88.127.185.231])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-493e0f3676dsm152501015e9.5.2026.07.08.08.20.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 08:20:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV2PR04MB11325:EE_
-X-MS-Office365-Filtering-Correlation-Id: d800b8fc-e18d-45ae-f105-08dedd04457a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|19092799006|1800799024|366016|4143699003|56012099006|18002099003|22082099003|11063799006|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	HrHXCXPZvwaRbmtImtSMTvdD2ALEyIc0k+NSYzrsozvlbkaRw/SuE9uxAb2OlzWCMPj4PN0p8MalWHpTOhzaoiLw+DHp6R2KLOs0jGCQSkVVtKtFPrnbICdzVS88s8gNGkk7VB7/NDq1v/+JiqIYRdagP2EeFKq/6Mtk3t1Jw2EfqBstUF7nwyfyQl3tJFaIQtRRJywkxKXHHu/q/VIPO64x4uRRhqcda3i8D/OYe9lFQP6UlbIvWpW3YRCEoC26JXSA86/AWS/wp1ccosNFzgyHaLg/EtZLdhFSHd1xZn4VnuxFF8o6T5gj5aUaQP9vb5nH73AhyPHQ1LsJ+MYKUIQXexuuMX3j0VPO7XSq5B9/UaRmpUnLj4BJ+rjVFoQP4x7OLE4esIw8F6qm32zloPhvxoJM3t6CGLlaYGiZyhOeh40NtyTw6n7KUzs2Q00kiRpJdxnctNIcJpCCBa0+q30B+KlyRUOsUJ2ZGBr6CnofbRRSioSM8i7Kh5xCmTHQ2ahhhvv/wnPKXx8us+qHFWY/xFDbYvtMF3b9aQjEUsa0vXTqAtY628P75lhjsTJ6zfn2/DMa2O++Oawi3IACJ/8pBtuXD+nv1P+8B7LW+auXQGBYriN/frLpVzp1Yk0PmVYnwkPhyMp2B1Qu1fqjYZg0tukY1GLQHi8ObbGb6+M=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(19092799006)(1800799024)(366016)(4143699003)(56012099006)(18002099003)(22082099003)(11063799006)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6pZ8NpwH1a/00N/z5HqgbpSVizl/mRNgR0AplVmeIQW6OqfKatPQ6kuWP5mT?=
- =?us-ascii?Q?r0cli7fhp74RbzDHINESClCljm//3Tu1L0gQmHE2SRqENImEG6ApABvochae?=
- =?us-ascii?Q?PxzpjRDqvzpCBxKsV6O3WN0w2AJBFRejErm4r8ylPmkcAagP8yY+lVM0EvaU?=
- =?us-ascii?Q?IqHvtciJPuCq7Qt00g3mgHMVc7xA9mQHhNo7YXwkrK31AQ3uLUUksPBPBLja?=
- =?us-ascii?Q?v971sq/5mhcHcvkgzm1ESpHv4wPNtZwtBJV+SZXiM26aueuH8far8NNi6qjF?=
- =?us-ascii?Q?Ca7oZQrRyEo92xidTKKajrWDf25G1xfYFoba2gH10Oh/g6Xyos+h6lHoWKDN?=
- =?us-ascii?Q?/1/fqpqOfwDd2FeSD+f9VTKwN+Vc+QBv1uMyslM6tBlIAaY2RZWnC1LCLEXh?=
- =?us-ascii?Q?gRF8XvPvGZ75JmBPir5uYvzdpqKzCgMIMoIwXIv0/K5/8Oh2+x4A6oLnQgTA?=
- =?us-ascii?Q?c1x8Hxtelz23k0vIlMr47WTPC2O7nBW9ReGEscLbJNTJR3VFldVC4kavZ13d?=
- =?us-ascii?Q?BoACHwaWrzYzPnGp5XAv4RFi3/YJ4XGw+9PIauM1EqdQ6EV2XBsFeNFizzTf?=
- =?us-ascii?Q?WwRU9ELOy+LIjKYPjPUSGLAMPUhYw6EOTC5Q4PkX/UHBuFmcfCe8deD/ik9C?=
- =?us-ascii?Q?hAHteYjT9ByOsBcR+3TbIckkeRSzUmZUH1IC/i8FwxD26MGj3xJEv7g5vtFA?=
- =?us-ascii?Q?tRqYUcpUgeIGz0UZMqqRy7j0FUZBdO+teg7sLvXweYBNQ+dX/acAuEw8hZvl?=
- =?us-ascii?Q?P2ahnez0OgMU9g1G9z+FfTpMNuF4QBYvN6zsy+UXKOAGATYjDoBxzVLAI47a?=
- =?us-ascii?Q?ILAkf9lPmM9LksxSBDPHeU/7zIiB7iGU4aFz4cOsiduMh8ueDcWzh0StAXB1?=
- =?us-ascii?Q?v57FHHbli9QKL+dAgQ3toLIPVw19VNYm7WpXO0FN9DUj5XypXt+Zb5OJLqhw?=
- =?us-ascii?Q?UO16zHqiHwzpvxKOiZcQCzFHzfQAlJCmeHm6clB0qT6gNuOYY0Vf3iirSp6A?=
- =?us-ascii?Q?D21lnOh+6oDOBUjlxaFV5XOU1s8wDGDre2/smadcnaAUNQdXVfitVsDMpgkp?=
- =?us-ascii?Q?HOLeJpbrGaQafxJZlzv8yswPW1E+zMVcSQHNvrXiDOrA8eYG+/h05FTyn7X3?=
- =?us-ascii?Q?FD85ddkimizZ2sJJB9pMC14iNyXlkni+jbtInQlioavO/tGcxUVDb4pbKnJm?=
- =?us-ascii?Q?mvaxU6zAJYkwElmwgNzihBC4+fCfLzMhu5IOiwJnArk0BGLkEFwKJ/mDjhnv?=
- =?us-ascii?Q?f2WxHxflXv4fFHtNo/jL0ppICqZx0dhSbRGubdQUqsXuz+xGR/X82pAMS4oZ?=
- =?us-ascii?Q?OI8Y7hnEudvNPS1W3EEby+HKA4RecNvoBaFVjzRxYmTWvbKbkrIWIrCMu9s5?=
- =?us-ascii?Q?CUVnko3WJwOwVBRO92RbOrjRqgzaWjFngaNCq4PLsVzYhmYqzQBkGLCLY7GG?=
- =?us-ascii?Q?j7nnK+oMpqmUK3h5H9X+xlAt1KLxV/hApuksVYO4YZP7R1fS1SvNV1CqSuNR?=
- =?us-ascii?Q?eldqTM9cM39r4HlmOh5k32fnL8LHMjR6FWzOCDn/bE6Rm3Khp9fryip0dOEX?=
- =?us-ascii?Q?F6/o2WovAVZY8DkFD1rpUH8Cc8JsGWFFvOCHAG1S9NX4FqvJqEyb3NcLEoBx?=
- =?us-ascii?Q?E8WHua5KOCE5h5XMKBUn4pE18icIkyjAorEzDaCoGI4FJMNOVkQB8MuEM49V?=
- =?us-ascii?Q?mEJTBJ4GV4QyKf5rHcTp1HZ/ZQrxwzhhODcNp0tzCC8NerUMMglOr96aQAu4?=
- =?us-ascii?Q?2mNTOpwzgL69N7urC/WwsABL0vGlXL81gQClgBGOpgV18OHI6NvS?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d800b8fc-e18d-45ae-f105-08dedd04457a
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 15:19:15.2370
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wpbuThyLnrPcmLdtVABqJFxYpE3mrE7FBgQorkXRPEVI4yBwMCMeQCswTL1dVQWNTNjLfTXepiySGp9wxMsAsgd5vLA6xJbLLo1QcUs8EQThEk2xDS/tFONPdkQCrAkP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11325
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 4/5] i3c: master: Validate GET CCC payload length
+ and retry Direct GET once
+From: Alexandre Mergnat <amergnat@baylibre.com>
+To: tze.yee.ng@altera.com
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Jorge Marques <jorge.marques@analog.com>, 
+ =?utf-8?q?Przemys=C5=82aw_Gaj?= <pgaj@cadence.com>, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+ Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>, 
+ Felix Gu <ustc.gu@gmail.com>, 
+ Manikanta Guntupalli <manikanta.guntupalli@amd.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>, imx@lists.linux.dev
+In-Reply-To: <b467f01edfaaa0710f30e719ce7f2753b06c1a3f.1783493868.git.tze.yee.ng@altera.com>
+References: <cover.1783493867.git.tze.yee.ng@altera.com>
+ <b467f01edfaaa0710f30e719ce7f2753b06c1a3f.1783493868.git.tze.yee.ng@altera.com>
+Date: Wed, 08 Jul 2026 17:19:44 +0200
+Message-Id: <178352398481.1152337.5612091417598122410.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=535; i=amergnat@baylibre.com;
+ h=from:subject:message-id; bh=BBen1slmhyf3fNvsg7q5c4rkJsBFClN8c8AiUxc7BWQ=;
+ b=owEBbQKS/ZANAwAKAStGSZ1+MdRFAcsmYgBqTmqiTQ1rYO8GDztzO+9B2umFemmkdZs7MFhoy
+ ESfmnQstfWJAjMEAAEKAB0WIQQjG17X8+qqcA5g/osrRkmdfjHURQUCak5qogAKCRArRkmdfjHU
+ RcNUEACNWK8pbRiPjKANkZ4jeEENSyt0IX6HsnAyxQv4ppMPyrZ1dYD8MITnulU19VAsQJhV5Hi
+ ojameuWr4iIb2TXJ5ikFi9IH556sBOK36r8tEahFHG+YJe630/ByNMlXh5lZ7d3YEYCEtqPE+dT
+ 5zrqNNRH4VakQGxf5maivJpeoToQA4/Dz9z82qX43C6ZmyWzpOADASeoh9Luzb6dZFnqb9YwmjF
+ XtSsv823lxvlZZdSb2JvMG020i5FpgkvIXtoNngFisjRgQfBWFmYZrYID2a5PVSV2QD1HLwHUPR
+ aKrE8Ro75R7qEpx3eP/xMWsloFBxuLwuigzWAHiXxr6lyEUgZ1uwum8nJP0SfkUPj5rAJXoXY88
+ mYl6x6DjfN3ZiLbp9S8m6bTes46lXAHoPiTvoGxpgwMNFmLTsbVsrnlHFGi7+Q+l2CJepeabOOO
+ vfKEXk4WjeTrT0pjYL+3Zs8B9F1HxLm3g1WrxqPpH2uXDkB8XTEkdzR/L9WblVHrQZH+ygxG211
+ PkKLeh8EGRDahSsRUDcDjXxt0miVGQr+aimm+p0xsGSaeQbayYTvmkuCBWecuD4ObTQOYlTmJ6z
+ InagyA7bafmaV0AnRUXgZu46snw+rxIs6E1tI+MI2kwmQwqLr4dHFL7/NAhCvFJRWiIso8nNDUI
+ CJdyvB768fIMaYw==
+X-Developer-Key: i=amergnat@baylibre.com; a=openpgp;
+ fpr=231B5ED7F3EAAA700E60FE8B2B46499D7E31D445
 
-On Wed, Jul 08, 2026 at 11:59:28AM +0800, hongxing.zhu@oss.nxp.com wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
->
-> Bandwidth marginality was observed during i.MX95 Gen3 PCIe tests with
-> the default MPLLB_BINDWIDTH value. This margin degradation worsens
-> across voltage and temperature (VT) variations and different test
-> matrices, potentially causing link stability issues.
->
-> Testing with MPLLB_BINDWIDTH value of 140 (0x8c) shows significant
-> improvement in bandwidth margins across all VT conditions and test
-> scenarios.
->
-> Implement PHY register write helper function and configure:
-> - MPLLB_BW_OVRD_IN = 140 (0x8c) for improved bandwidth margin
-> - MPLLB_BW_OVRD_EN to enable the override
->
-> This ensures robust PCIe Gen3 performance across all operating
-> conditions.
->
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
-> Changes in v2:
-> Update the register name and bit definitions.
-> Don't move IMX95_PCIE_PHY_CR_PARA_SEL settings.
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 53f3da6ab30d5..5f75aa09e0377 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -80,6 +80,15 @@
->  #define IMX95_SID_MASK				GENMASK(5, 0)
->  #define IMX95_MAX_LUT				32
->
-> +#define IMX95_PCIE_PHY_REG_ADDR			0x3008
-> +#define IMX95_PCIE_PHY_REG_EN			BIT(31)
-> +#define IMX95_PCIE_PHY_REG_ADDR_MASK		GENMASK(15, 0)
-> +#define IMX95_PCIE_PHY_REG_DATA			0x300c
-> +#define IMX95_PCIE_PHY_MPLLB_OVRD_IN		0x2004
-> +#define IMX95_PCIE_PHY_MPLLB_OVRD_BW_EN		0x400
+On Wed, 08 Jul 2026 00:17:40 -0700, tze.yee.ng@altera.com <tze.yee.ng@altera.com> wrote:
+> Add retries to struct i3c_ccc_cmd. Validate GET payload length in
+> i3c_master_send_ccc_cmd_locked() after a successful transfer.
+> 
+> Retry failed Direct GET CCCs up to cmd->retries times when the driver
+> reports failure or an I3C error; validation failures are not retried.
+> SET CCCs are not retried by default.
+> 
+> [...]
 
-> +#define IMX95_PCIE_PHY_MPLLB_OVRD_BW_IN		0x2005
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
 
-This one IMX95_PCIE_PHY_MPLLB_BW_IN to keep naming consistent
-
-write IMX95_PCIE_PHY_MPLLB_OVRD_BW_EN -> IMX95_PCIE_PHY_MPLLB_OVRD_IN
-write IMX95_PCIE_PHY_MPLLB_BW -> IMX95_PCIE_PHY_MPLLB_BW_IN
-
-> +#define IMX95_PCIE_PHY_MPLLB_BW			0x8c
-
-0x8c only one special value.
-
-IMX95_PCIE_PHY_MPLLB_BW_XXX put special name for 0x8c, if no means, you
-can put 0x8c direct at
-
-imx95_pcie_phy_write(imx_pcie, IMX95_PCIE_PHY_MPLLB_OVRD_BW_IN, 0x8c)
-
-We need knows what's macro means, like it is offset of regiser or it is
-field in register easily.
-
-Frank
-
-> +
->  #define IMX95_PCIE_RST_CTRL			0x3010
->  #define IMX95_PCIE_COLD_RST			BIT(0)
->
-> @@ -269,6 +278,16 @@ static int imx95_pcie_select_ref_clk_src(struct imx_pcie *imx_pcie)
->  	return 0;
->  }
->
-> +static void imx95_pcie_phy_write(struct imx_pcie *imx_pcie, int addr, u16 data)
-> +{
-> +	udelay(200);
-> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_PHY_REG_ADDR,
-> +			   IMX95_PCIE_PHY_REG_EN, IMX95_PCIE_PHY_REG_EN);
-> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_PHY_REG_ADDR,
-> +			   IMX95_PCIE_PHY_REG_ADDR_MASK, addr);
-> +	regmap_write(imx_pcie->iomuxc_gpr, IMX95_PCIE_PHY_REG_DATA, data);
-> +}
-> +
->  static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
->  {
->  	/*
-> @@ -289,6 +308,11 @@ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
->  			IMX95_PCIE_PHY_CR_PARA_SEL,
->  			IMX95_PCIE_PHY_CR_PARA_SEL);
->
-> +	imx95_pcie_phy_write(imx_pcie, IMX95_PCIE_PHY_MPLLB_OVRD_BW_IN,
-> +			     IMX95_PCIE_PHY_MPLLB_BW);
-> +	imx95_pcie_phy_write(imx_pcie, IMX95_PCIE_PHY_MPLLB_OVRD_IN,
-> +			     IMX95_PCIE_PHY_MPLLB_OVRD_BW_EN);
-> +
->  	return 0;
->  }
->
-> --
-> 2.34.1
->
->
+-- 
+Alexandre Mergnat <amergnat@baylibre.com>
