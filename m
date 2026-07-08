@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F36420883;
-	Wed,  8 Jul 2026 09:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA56367F31;
+	Wed,  8 Jul 2026 09:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783504612; cv=none; b=XXgX2z6rZJ53o7hSOaZn1LWtR4RfiZvlBJPolyTRQyZ2RyrHYoIW1eGb1gVhbxNxG8h4NGgkTF9eRRAtPrLPC0h66nlJGxc+fzgGFlzGTpTJeJ/DcjcW2BjPofJnp1zBIDz4VNuADUTCGVg62yFSW+7kQuJHxBNBOsjsoMzNpWk=
+	t=1783504615; cv=none; b=B09GKB8KUZhFLJbEtnHs1tC1kzNxALGsHjAu1DRKM7XdIJAnqOdfxIjTkrjgfCcTqg4Kygk6hS0DeBQut0VrSKoJHOSHVt9K9QwEOMipyEtv0CgW3+f+GKvv+TBqA8ws12rmRb6OnlbI7lEMROR8bBMykJmHKmfngA4ENATJFPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783504612; c=relaxed/simple;
-	bh=E3PjqcHSVjrlBsvzlQTx6J3vANorpjqGUjPlrAPBNis=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ilnKzqVb/IqQ1R25tnsfJWAHaemcGfvpNNu4egsK2fCZx/bMxLPRAjFPkcsh/V/SlpoM5+dN++ErAPQ+0mpTrxa56Su0LPePdTTv/x/adtvD6ADbi1ZhQx8mYlt84iUiVUTA/J6vt6d3Rprd+524dcO45gL9ikqtEtIxSPw4zzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BYgAx0qK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783504615; c=relaxed/simple;
+	bh=JrsAw7bFLrtENAc7wlDmRUrZ9pXUdlTu7kcIAj7E7iA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D6gAZxwSLqF7v3xqenT7IVWaycrwVg16UUwe3ZqLrrdAcQVXu4VdWnW+yFrZhKfDyFatp4NXSmisZOnnEczCxVIkoG+a+dGro0+8yTmhN6w9r8y1ZwtmrgII9tSAn/0xzHHEJVkbHDEMlQpkoOEaljhmjESYZLkfNo1f1w6m9ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HlcTHUEs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BYgAx0qK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCF41F000E9;
-	Wed,  8 Jul 2026 09:56:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HlcTHUEs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3B91F00A3A;
+	Wed,  8 Jul 2026 09:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783504610;
-	bh=pdc8kUJhsaq8N1r0m6ge5yol36Y1IShouOM/AGoYtqI=;
-	h=From:To:Cc:Subject:Date;
-	b=BYgAx0qK9olgdiSMsctTirYk+2OK+/P6NF8jVdupbK4WVeCQYnBZPMzljrqEki9Hi
-	 g63ETnn2EcLzAc5m1SXYmJ0Igg4HRO2THScLohlbmm3aGf3D7BuXkCGEBJyzH240mT
-	 W/mexf9Dvgleiv/2vFoRICj0wDJrmL9EdfC9L+L+ljovAbL4tBe4IA5IKsg0JMmBYR
-	 X5XmeQAIGy0SNtHzaKJ7FcAaHoSS9bl7Hhk3m0VeP7exEZLc7mpK1unJX1GFWXd+RT
-	 OlHi01cNAUq4nB2fx2BwtoLbmsK5OMY1xEvbriF7QcNJF1mWXavaZgUMmE447qrdKG
-	 wYRlPrLoIfemQ==
+	s=k20260515; t=1783504614;
+	bh=OSrEVIc8I4v07uohcflk865RNS4QPYoK87cBft0LbSM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HlcTHUEsJFmDC0ZybPXosmPoLjcHJc1ZrYdI5BbtiFZFWW+fjLQB85cQhMZj6bxxP
+	 7X92SlATxbpmo1NZCeZFgOch6oJz4E5ZiAppcOotnPwePTsYIFx1jci6fNTpKcDq0x
+	 dTuMYaDswy5tyZzi6atIUSb7oHn2//ape9Tyayu+XhAhTOnsVFyviK8eaM/ypgiXO4
+	 jzN5i4FW6QYjLc6/THZTj3BDKmG/cFLrbtVlFJAsH/9ukbaKXUzeqgqLmmzqXxm8P1
+	 zv4gjQn0mIYDv5VZ5bNwmemtdOd2POWex0OffYJRTGGI9eJcGvD2ipxYfPBRDiaeDG
+	 q3oiZA9dNNO7A==
 From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
 To: victor.liu@nxp.com
 Cc: linux-kernel@vger.kernel.org,
 	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
@@ -42,10 +42,12 @@ Cc: linux-kernel@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 1/2] drm/imx: Switch to irq_domain_create_linear()
-Date: Wed,  8 Jul 2026 11:56:44 +0200
-Message-ID: <20260708095645.385291-1-jirislaby@kernel.org>
+Subject: [PATCH 2/2] drm/imx: include dc-drv.h to avoid sparse warning
+Date: Wed,  8 Jul 2026 11:56:45 +0200
+Message-ID: <20260708095645.385291-2-jirislaby@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260708095645.385291-1-jirislaby@kernel.org>
+References: <20260708095645.385291-1-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,19 +56,13 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-irq_domain_add_linear() is going away as being obsolete now. Switch to
-the preferred irq_domain_create_linear(). That differs in the first
-parameter: It takes more generic struct fwnode_handle instead of struct
-device_node. Therefore, of_fwnode_handle() is added around the
-parameter.
+sparse (build with C=1) warns:
+drivers/gpu/drm/imx/dc/dc-ic.c:273:24: warning: symbol 'dc_ic_driver' was not declared. Should it be static?
 
-Note some of the users can likely use dev->fwnode directly instead of
-indirect of_fwnode_handle(dev->of_node). But dev->fwnode is not
-guaranteed to be set for all, so this has to be investigated on case to
-case basis (by people who can actually test with the HW).
+And it is right. Include dc-drv.h which declares the struct. This
+ensures the types of both match.
 
 Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Thomas Gleixner <tglx@kernel.org>
 Cc: Liu Ying <victor.liu@nxp.com>
 ---
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
@@ -82,22 +78,22 @@ Cc: dri-devel@lists.freedesktop.org
 Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 ---
- drivers/gpu/drm/imx/dc/dc-ic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/imx/dc/dc-ic.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/gpu/drm/imx/dc/dc-ic.c b/drivers/gpu/drm/imx/dc/dc-ic.c
-index a270ae4030cd..d8aa46ee6a7a 100644
+index d8aa46ee6a7a..0f2fc7aecf31 100644
 --- a/drivers/gpu/drm/imx/dc/dc-ic.c
 +++ b/drivers/gpu/drm/imx/dc/dc-ic.c
-@@ -174,7 +174,7 @@ static int dc_ic_probe(struct platform_device *pdev)
- 		regmap_write(data->regs, USERINTERRUPTMASK(i), 0xffffffff);
- 	}
+@@ -14,6 +14,8 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/regmap.h>
  
--	data->domain = irq_domain_add_linear(dev->of_node, IRQ_COUNT,
-+	data->domain = irq_domain_create_linear(of_fwnode_handle(dev->of_node), IRQ_COUNT,
- 					     &irq_generic_chip_ops, data);
- 	if (!data->domain) {
- 		dev_err(dev, "failed to create IRQ domain\n");
++#include "dc-drv.h"
++
+ #define USERINTERRUPTMASK(n)	(0x8 + 4 * (n))
+ #define INTERRUPTENABLE(n)	(0x10 + 4 * (n))
+ #define INTERRUPTPRESET(n)	(0x18 + 4 * (n))
 -- 
 2.55.0
 
