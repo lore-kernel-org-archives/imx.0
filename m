@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B42137923
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 08:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAA13FF893
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 08:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783500512; cv=none; b=dOTH9WMeXHOn0o+sLQDwLrQin8TOTxUMopalNx8FpiykBJosy16m9J3JNhkFjg47RB6yrakt5+rowJnTeYNxhti3cu5YKX1dwuXtQjcO89n/qT0/r9xO37LSj7m1zUR3sOAGsttwn+qIAy5B8theiPdfWU31leKd8LY9K5lH5V8=
+	t=1783500512; cv=none; b=pBC0x9CtVYurhRoUnKyCpdOZTbV25ZjBzT7Kp2ZjCBzOC6NSV6kukfXM2ma3iSahoDcjE7DvUgv1iMml11XQZ3ei8D94eFDgvIQdRSkQAjeTob8ad7GMSyBBVUvWJJuEIrKdjXtiFVvgdpj/bMeLLfsl0Ur4OtXwjwk1BbiIxYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783500512; c=relaxed/simple;
-	bh=VbR7QnqyAnEiFyb/BnGBFnYAnIcXbQzFv7M+O6KqPQg=;
+	bh=3tH0mZwzdG21HqEcfD4/xgWYfYWmL0xVQ8qauokyMhA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NmIn7F3TQLnkKjZVDLQwTPZ4MQu0l9vCbovrVAwTkUBZ7MymUoMZL7WeNDGHJuy7AmhvzFEDHn5CEIy1b5MLGRmJSsE9zaEDV/yWw0a/2gTL7aFjAY3Fb9DTpCjeP+l0ux4gNEh9ZnKS2s5YCHMKpJV3c0EYoQYuLLAlgzXoWFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N9IvSmSM; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hYG7jkiXykCCYttVp/9sJ7tEtu+KSRtDFmR9b379uJo1XbCWvo1jBg/+fbrnQ5YH1T8W0d/gSBaedS4KToug25qh862mZSgxzXbHSo7LwapX5WWyC/n45fNkbSHI64EMB7WmTfWTVPHkoaNe8vFBmUlYx4e+ezLr9gsPVqUCt9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GVqkQEQu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N9IvSmSM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E5E1F00A3D;
-	Wed,  8 Jul 2026 08:48:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GVqkQEQu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9AE1F000E9;
+	Wed,  8 Jul 2026 08:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783500510;
-	bh=hMExHXYyrR8PzqlED5QW5dk66mMwtUlXS9e4kQznJAk=;
+	s=k20260515; t=1783500511;
+	bh=UXy6ldyMKwSq0ZH0Z7gbDxUYwNqu1R4TQM4EdbxI5EI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=N9IvSmSMo4KhsFbnqzk/VzcEr3EPFKrjZNUotCqRAa3AFzPBz2qr7+6f+DaTu3+tm
-	 ie21P0MUga6IemKTBk1I2C0uM3nyabbx0rAO1YuK95MJCIlyQ1chZXc3bun0eRkI+w
-	 ad3x7PWSlM2dy17JPlYegEhXD1dAgECuYAMYvOKCY62pM3S6pH8DK8vhH2KffErQql
-	 nqYxF8w0kgY3Esjqe2i9fTScidTmlJeHi4I4jKCN5iDTy1pllOJ+SxBfIFqjxrDaIL
-	 v0IpqoR9/nZP0WPU5nWcHXE4vj9cdxM4hvgKbmxbKp6LKFosFM4SXw2MAKSM+9dUg7
-	 xxeqouMmAthMg==
+	b=GVqkQEQukcDklQxVRfTxe5umpk+ZGaaUo/Woa0yiNM0hx9jxXh91IQwLXwBon8v5i
+	 G8eivlZEZV15Dj/QoEWHltiakrCdKs9YejQ0o5Cl1OOWZphlVwKSc2n7NOTEuNOhoL
+	 rdJ+7W8d9vhMpejm6OGpvz1ZZf6rLpZxvXv6lNCxhqT6UKO3GnJ3hi1s/VzBRZna1u
+	 IZ4U+kO2aUxbj2ULAXt2HiPy/Xk0fsc2QCa56TbK6R2j1nor+H58YQfixldDsxsVlP
+	 gTQg709o225KTUMfdCR1G3FQYbB29U6P35e0RlFAdaU+DtbrlU8v+xc1v1N4I84PYl
+	 39P34VrATAawg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 net-next 12/14] net: enetc: remove redundant num_vsi
- field from enetc_port_caps
+Subject: Re: [PATCH v4 net-next 13/14] net: enetc: use alloc_etherdev_mqs()
+ to create netdev for VF driver
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260707081834.710730-13-wei.fang@oss.nxp.com>
+In-Reply-To: <20260707081834.710730-14-wei.fang@oss.nxp.com>
 References: <20260707081834.710730-1-wei.fang@oss.nxp.com>
- <20260707081834.710730-13-wei.fang@oss.nxp.com>
+ <20260707081834.710730-14-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 08:48:30 +0000
-Message-Id: <20260708084830.90E5E1F00A3D@smtp.kernel.org>
+Date: Wed, 08 Jul 2026 08:48:31 +0000
+Message-Id: <20260708084831.6C9AE1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,72 +47,89 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Hardware ring overallocation when CONFIG_PCI_IOV is disabled due t=
-o uninitialized VSI PSICFGR0 registers.
+
+Pre-existing issues:
+- [High] Missing bounds checks on hardware-provided ring counts lead to hea=
+p buffer overflows in internal driver structures and undefined behavior via=
+ out-of-bounds pointer arithmetic.
 --
 
---- Patch [12]: [PATCH v4 net-next 12/14] net: enetc: remove redundant num_=
-vsi field from enetc_port_caps ---
-commit d0ac7548c05e5390933f00261830b4e5d8ae719a
+--- Patch [13]: [PATCH v4 net-next 13/14] net: enetc: use alloc_etherdev_mq=
+s() to create netdev for VF driver ---
+commit 351253af314542011d0490ff56bc5d410a44e0d7
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: remove redundant num_vsi field from enetc_port_caps
+net: enetc: use alloc_etherdev_mqs() to create netdev for VF driver
 
-This commit removes the num_vsi field from the enetc_port_caps structure
-and replaces its usage with pf->total_vfs. The justification is that
-pf->total_vfs already reflects the number of VFs that can actually be used.
+The VF driver uses alloc_etherdev_mq() with ENETC_MAX_NUM_TXQS as the
+queue count, which forces the TX and RX queue counts to be equal and
+uses a compile-time constant rather than the actual hardware capability.
+This patch switches to alloc_etherdev_mqs() so that the TX and RX queue
+counts are set independently, each capped at ENETC_MAX_NUM_TXQS, based
+on the actual number of rings assigned to the VF by the PF.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc4_pf.c
-> index cab79f81d6fe0..fcfbabb29d22e 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-[ ... ]
-> @@ -255,34 +254,35 @@ static void enetc4_default_rings_allocation(struct =
-enetc_pf *pf)
->  {
->  	struct enetc_hw *hw =3D &pf->si->hw;
->  	u32 num_rx_bdr, num_tx_bdr, val;
-> +	int num_vfs =3D pf->total_vfs;
->  	u32 vf_tx_bdr, vf_rx_bdr;
->  	int i, rx_rem, tx_rem;
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/ne=
+t/ethernet/freescale/enetc/enetc_vf.c
+> index 9cdb0a4d6bafb..7dcb4a0246f52 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> @@ -317,7 +317,14 @@ static int enetc_vf_probe(struct pci_dev *pdev,
 > =20
-> -	if (pf->caps.num_rx_bdr < ENETC_SI_MAX_RING_NUM + pf->caps.num_vsi)
-> -		num_rx_bdr =3D pf->caps.num_rx_bdr - pf->caps.num_vsi;
-> +	if (pf->caps.num_rx_bdr < ENETC_SI_MAX_RING_NUM + num_vfs)
-> +		num_rx_bdr =3D pf->caps.num_rx_bdr - num_vfs;
->  	else
->  		num_rx_bdr =3D ENETC_SI_MAX_RING_NUM;
+>  	enetc_get_si_caps(si);
 > =20
-> -	if (pf->caps.num_tx_bdr < ENETC_SI_MAX_RING_NUM + pf->caps.num_vsi)
-> -		num_tx_bdr =3D pf->caps.num_tx_bdr - pf->caps.num_vsi;
-> +	if (pf->caps.num_tx_bdr < ENETC_SI_MAX_RING_NUM + num_vfs)
-> +		num_tx_bdr =3D pf->caps.num_tx_bdr - num_vfs;
->  	else
->  		num_tx_bdr =3D ENETC_SI_MAX_RING_NUM;
-> =20
->  	val =3D enetc4_psicfgr0_val_construct(false, num_tx_bdr, num_rx_bdr);
->  	enetc_port_wr(hw, ENETC4_PSICFGR0(0), val);
-> =20
-> -	if (!pf->caps.num_vsi)
-> +	if (!num_vfs)
->  		return;
+> -	ndev =3D alloc_etherdev_mq(sizeof(*priv), ENETC_MAX_NUM_TXQS);
+> +	/* Currently, the supported SoCs have a max of 6 CPUs and the VFs
+> +	 * have less than 6 RX/TX rings. So no issues for these supported
+> +	 * SoCs, but for future SoCs which have more CPUs or more TX/RX
+> +	 * rings, all the related logic needs to be improved.
+> +	 */
+> +	ndev =3D alloc_etherdev_mqs(sizeof(*priv),
+> +				  min(si->num_tx_rings, ENETC_MAX_NUM_TXQS),
+> +				  min(si->num_rx_rings, ENETC_MAX_NUM_TXQS));
 
 [Severity: High]
-In enetc4_default_rings_allocation(), when num_vfs is 0 (such as when
-CONFIG_PCI_IOV is disabled), this returns early without zeroing the ring
-allocations in the VSIs' PSICFGR0 registers.
+This is a pre-existing issue, but since we are relying on hardware-provided
+values (si->num_tx_rings and si->num_rx_rings) read from ENETC_SICAPR0, is
+it possible for a misconfigured or malicious PF/hypervisor to provide values
+larger than the fixed-size arrays in struct enetc_ndev_priv?
 
-Because num_vfs is 0 instead of the true physical VSI count, the PF is
-allocated the maximum possible hardware rings.
+In enetc_init_si_rings_params():
 
-If these VSI registers retain non-zero values (e.g., from firmware defaults
-or after a warm reboot), won't the sum of configured rings across the PF and
-VSIs strictly exceed the physical hardware capacity?
+	priv->num_rx_rings =3D min_t(int, cpus, si->num_rx_rings);
+	priv->num_tx_rings =3D si->num_tx_rings;
 
-Could this lead to memory corruption within the ENETC device's internal
-SRAM or cause DMA issues due to overlapping BD ring structures?
+These values are then used in enetc_alloc_msix() which calls
+enetc_int_vector_init(). Since priv->int_vector is sized to 6
+(ENETC_MAX_BDR_INT) and priv->tx_ring is sized to 16, a VF providing a large
+number of rings could cause out-of-bounds pointer writes:
+
+drivers/net/ethernet/freescale/enetc/enetc.c:enetc_int_vector_init() {
+	...
+	priv->int_vector[i] =3D v;
+	...
+	priv->tx_ring[idx] =3D bdr;
+	...
+}
+
+Additionally, in enetc_alloc_msix(), if priv->num_tx_rings is less than
+num_possible_cpus(), does this calculation lead to out-of-bounds pointer
+arithmetic?
+
+drivers/net/ethernet/freescale/enetc/enetc.c:enetc_alloc_msix() {
+	...
+	first_xdp_tx_ring =3D priv->num_tx_rings - num_possible_cpus();
+	priv->xdp_tx_ring =3D &priv->tx_ring[first_xdp_tx_ring];
+	...
+}
+
+Would it be safer to explicitly validate si->num_tx_rings and
+si->num_rx_rings against ENETC_MAX_BDR_INT and ARRAY_SIZE(priv->tx_ring)
+early in the initialization rather than assuming they will always be small?
+
+>  	if (!ndev) {
+>  		err =3D -ENOMEM;
+>  		dev_err(&pdev->dev, "netdev creation failed\n");
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707081834.7107=
-30-1-wei.fang@oss.nxp.com?part=3D12
+30-1-wei.fang@oss.nxp.com?part=3D13
