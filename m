@@ -1,159 +1,152 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011041.outbound.protection.outlook.com [52.101.65.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558923E7BB9
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 20:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783544304; cv=fail; b=uQV2cgwl5EbBtXGZOnFxG0hHf2kaLP/KRXLU6B/vhtijQu2mNWZ7b0/E0U7E0kwTtaxQlFjeTyXosFKSWaaIRXOQZz0I2J7IR1SVxYIOPB5bTqI95usl9JiMJzyJ5ba0zBs/FtRPqL74AmzMrE37/F1oAzvAeTXUYX8vUZzgoko=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783544304; c=relaxed/simple;
-	bh=pzp0EwKoPFHYmBwWSlxxKQneG+dEZeplCM2NDYFKrQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=W9OLajFGXGOxsCVJlwAhZ48vI4Um2S+mrcA0obMN5Q/TbejpyF/+ctp3W0Ksq1XT4olVSWsfR76DXvQld2z1Ge26DCWSAMnd7wlCFk9u5V3fgPt4fzXIBdARl7i6NRclv5ffCwzkTQfWM3gFcbEffCXbHpXVnKcziCB65DdC71Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jNlk/OQ8; arc=fail smtp.client-ip=52.101.65.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEFB37AA64
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 21:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783547639; cv=none; b=S9RgREplBphm3FdJai3w/LUPRG0nuUp1Ba5hV1OViX+jvqs7ocwDQnADExvNe6cKTiI4RiR+7nD3venMB6qC1XAMz4uw3ie7j4YkbM7Hu978ceFGvTL4QzZ3Mc6uIbi4B/nMtE4l0uCUkfAOncHZTAiD37pRpJpqC7xS3XfbTM4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783547639; c=relaxed/simple;
+	bh=6Ybfx0lFdICtzKlrOMUeIb8C42jMZMhMcXq2Ao+QSu8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A3zzIbFok2WeICExWaQ6PCNDAbgZyUMGJCRmT1g5/gRePOC8NjcFWuQAHj5XwIl6YC2Ki6jppwNnMtIK5yBMdnehLEAfMdIboXiPnbvsDGt86pwfECSvH8ttJnIbQhQDMhTy+kVQhdOHd/HQ5p7fOJzfR4Yi37qGezMxXiceFao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UfWZ4ILR; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jNlk/OQ8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yYNiEHYYwADSIdnc3LYcu9zSOLbboTU65bopzhTZj5t6a153aAGabfqWAyvvytT4PpTpOto9SA8VwzADlV+Dt7hrH1GOnUPdfzeLB4dEWbSvX0NjnW9Xcd/wElO6qc0EhkF0Kq1xAzxWyD2S3tTdrPiPB4UJhL31bJjNqB7CYL7LIZx7l0ZtBXDPj2RpdnsZgcUlhNU4gSv9Kn8kG+lyUJw8fA7Au8ZGIKZXcV9JkpJhTa6mjVE9pfP3dJh7utXHisFlmCHsr/a7YpmLFXEaYFuS+hReZHR2OmtOcNcyGNUnT3zRlau380X+LRxUbkxgtEGxpWL6Vmr2o+PHBuPjNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PGpN4MQAOW0G2+Qa5XwzwznJKpiVbFFo8X4MRmfl2zU=;
- b=uytokUHSfF5DqRZAYvr3gMDpcmrgxkIoX4WRNYdYBUlcCL8B4t/R4kLCDOslYKLc9joeTRFSpgSj2K+o4XZnSosDUA9bEL/TTgGmmNAz5EhYBgXRnPbJbGAZ/5ayVXl+1eZou3E5n6AdrWt72fvMaPuMoueLQQLc7+RxgW3GlS6xEjxXV37MPyPy6Rhb/qa+CFOsUbBpwnYo3LdfSMEZl6o8/D6C0wy1SzPV74+EHBRKVZ2yB6hQqBCqoWxVcEmvlU0LyPlf5rQiiH2Wk1MrYj0cE/4m5zlYQOjIu7OOpeHFE/FVgTJX8ALA/LBHk/ITDr7QM7+Ey5/uJohyZPpNYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PGpN4MQAOW0G2+Qa5XwzwznJKpiVbFFo8X4MRmfl2zU=;
- b=jNlk/OQ8fREFYb9z7koD+rCsv+fZE5ysdCrBWE+lCDsldaaNBXMrAT06fpCQmYtFu/cRDMR8svMwkZisUItvyaW8VdYIRMTD+g6WIRoPOdKZMevaPNV//QjD2WQJXwRtqLZB7ZPoiJ4c8e2Mw4pQiYa+/PAI8o3lnKOeZDLahxG6X7DqEjhFiGjBQd9GtQeU2ugw7yLrO2SMBPhGVMffKfd0sfeAphzmllDk9e4WtFqNa43kqHvsIAknHJJYWJeXyynCj97CW8I5Z/T0oYjd6bUCce39CCminRSzMciJ9J2Ztgyn2w4HBOZFH24TVnUDaZB5Klsh1pdiKLpDbOtzpA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PAXPR04MB8815.eurprd04.prod.outlook.com (2603:10a6:102:20e::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.14; Wed, 8 Jul
- 2026 20:58:17 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 8 Jul 2026
- 20:58:17 +0000
-Date: Wed, 8 Jul 2026 15:58:09 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Griffin Kroah-Hartman <griffin@kroah.com>
-Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable <stable@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>, imx@lists.linux.dev,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v2] dmaengine: fsl-edma: Add error handling for
- devm_kasprintf
-Message-ID: <ak654b3IyRUHf2cw@SMW015318>
-References: <20260708075736.47822-1-griffin@kroah.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708075736.47822-1-griffin@kroah.com>
-X-ClientProxiedBy: SA1P222CA0010.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:22c::12) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UfWZ4ILR"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47de008b020so149221f8f.1
+        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 14:53:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783547634; x=1784152434; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IIMECz0v1f4LVIdLn0HTlLUSx/SJvMxrwrh19eAWfPY=;
+        b=UfWZ4ILRL3h4zhUfeUqXoK6loLDyUUFDYrhNEk1EqS+JkwmZstSn29xFVZmPBqi/0g
+         tNQhNtlEvMhpZ629Fg+mdEgUDHbQOfifVzlRpW2bzUJHU0pOBmn1lCWvBWJGn9d8rN+l
+         6OnkVAo9a43xRlDau0CAFdbtqvY1t2DeVkA3PW+qBM9IkAaeBrXotZ/RwRWlV+NQaoLZ
+         jI4j59jTLejLNIv6/mDQw1Wm23bHazYGmBNHP9mPiXov28SWa9SM8TZGRXhSPUnU9iKc
+         V+2oOHn/g0sh6/4lu5DbfuFbvXuRH1fuG2wckbU0afXMe1xT1hMBORZbL5lqCGfbn0nL
+         RS5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783547634; x=1784152434;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IIMECz0v1f4LVIdLn0HTlLUSx/SJvMxrwrh19eAWfPY=;
+        b=QLXT9U/l6u7PTIsuaCoLnTlO7etD0L2WKDTJjZ5GZcyg3/hLZWmQQYZQ8JoHI7nAYF
+         gP0ZhBMNxtocHbCluEAWVsX8v1i4ZiBmzgwVfzIZ5D285t+t9gPGN97DmloHjUBl1SjI
+         nuxHNZ4tHfpl8WxD3dYZEHVgiACKi8LfbCeISQWFwKdBZ7H4/Cu9AyHdQJoTgB8BzvXN
+         tDNQOHKSvmfsKoQEMZ7Xlr7UfBoDAWal1JOPx2dlh0s/sApbQNOL8aHSR5rid6/1086r
+         fqnL4c5NS9yTnJmBZNjrDXg8xTiNS6P55ar4f5ut6rw6xsXvEyYOnpcyyqR5cbHRgZTs
+         3Lrg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrf/RocGi6ZwXnzxdlLfSDWjL7UaiElb0oghGARfSQ40Tp1uP/HmgcLtpfoVI3CXQMNGnM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzKbKSHTcG/9hMxTdq+TBpup9vcvplcVTVoX/aZ9vMdFKOHvC5J
+	n0XcsUOyxFkiCbDSWVt1tTFl6T/NPvbtqmo3Ul6nhacyT6tNo1ceRzvj
+X-Gm-Gg: AfdE7cmGm9akcc1RLoBlQ7jVRdESyxP7wCpxXnPSyR0+RqBOVrM1cFcVBUI2HfDnwch
+	sVtYrnKzBREhK6WexGUJlRX+q+a/Ibgf1KPOBkQHeUmsmB5qrI9MRzH3cyM0Di6PB6hA4LFHS72
+	X5exiz6S9lc+MH9reYXNVlq7g6vx7XSC/4K5vIzG3JEYvgLg1V/6JT/JqdbiqcGe9J2BWFMjpud
+	rUXox3Kffy4pHVXjsXTAtalQ4RWLgLdOO1VlP1HcqUX/QPeIZuiadRWjuAC8lBw3MBHDSBHRnC/
+	4aEik+UCGevAq6OZxPvj0F02ur0YhEilANgiR9o0mGSpCVyWURIeqdVmBp+bWFvqhiwQWaFOuRg
+	voNZtpE2j+vqa8acVr97ZcGWIZP5nCQlyij9UWT302UotifQP1gc0YRVycpLqL/9Pnryvl2t5SM
+	/nG117IBK0Ve84+iSS46QStfldxvE4HGncONnRNJHGD2xJm+cxyA==
+X-Received: by 2002:a05:6000:4602:b0:47d:f6a5:1fd6 with SMTP id ffacd0b85a97d-47df7561c98mr84937f8f.26.1783547634411;
+        Wed, 08 Jul 2026 14:53:54 -0700 (PDT)
+Received: from osama.. ([2a02:908:1b8:2060:7550:b182:7bdf:fbd0])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d8410sm46622289f8f.15.2026.07.08.14.53.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 14:53:53 -0700 (PDT)
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Osama Abdelkader <osama.abdelkader@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm/imx: ipuv3: account for active PREs in atomic check
+Date: Wed,  8 Jul 2026 23:53:38 +0200
+Message-ID: <20260708215338.147145-1-osama.abdelkader@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB8815:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32b8a80a-1970-41e3-4855-08dedd33a258
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|19092799006|56012099006|11063799006|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	OBQqLQmv8d6aCkyXd5ucWLKD9qX5fsdqpTq64iqNrouD34nfKkHStHmFIsYeEBL/D8t8kFs/Wa7BmmcavPtwJrixi5K7Dl0OQB+eKVPUHap4x4WZ86M0ll07gh3qT4y9T1vtiAsjXJkJxVv+qb4iduulKVGifSXy7pxCJ+0Uld9aGKzOPwwHUQ5U0zdIhbtslEC9R3uWa2THQnkpUJz6UpkrG51B+nVX680Vs4iFvAKi7Ad1gA1euKHQqtQ+79u7TvUwc8I4MRlI/80sYm03ZuymNnTH1Pn8r0wLIBXhabaiqpn7Yd1xzfjk5qxDDOVXY7aEAzz6O4qp2G+sm4joIXiRB/WKZzNuiWcSGmvZH+5LUsQpxaiTehT51ovX3VZaPE6COjXhNXWzi/LjXo80VcqI131ltA6FBgytZHtzn4OndWgMcZsOU3frusFu9UzOjaj4ghxoPjeaJVEQwcdc50UAXbulO+KARmPW2M5773IZYlsrdaFBJ26etzQnaquMx2S1aJYxQ1hm2GlgJ3jZw1FenAmRsYHcFHvFIVQdIlEyMjrS0X/0Kj/YPGrId+ZS5gjR7MkXq55Zp6v/vyiBg4p476Gby4clXiwLvq7PofUwzwJbiPOOg1FMfR3qjWTNDcRF+PFXyvfIbx+Alj6qtASiIK5rg/x5ltF/ut7ywZA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(19092799006)(56012099006)(11063799006)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mXmTI5DUyhZsw+I37Z7CS64xzyb87S7DJB28WjQ3HPYuB4XdKIdmfYYoT1y3?=
- =?us-ascii?Q?J1MAIFDz6Nhwm8q6fjtd9NuyuTmo3S2Bn3SdlKPK3fjWImQLUisappYLmEA3?=
- =?us-ascii?Q?rGcK4qruQRPrgL6aRDqUtx64BFrt90l+XSsWGsVO3Qc0+EF1OxsYLJigzuY8?=
- =?us-ascii?Q?ckw8vyqi20eLIJ9sSaV88L459HzIEjyf+8wTQ/CED610NPJDLgxN5m6uB9+X?=
- =?us-ascii?Q?z8Dm09MRhdIBgM2SgnsSvtSTLuuJj9r0gwCKNS3fy5UVTiQxC4DPAJpKgdOg?=
- =?us-ascii?Q?zINpp7+hbApNRGHghAFlGL4ULT8A98lQnhfI9O9MxXX2hYaDYCseNtpOv1iY?=
- =?us-ascii?Q?YaJkjh92gRIBDhd9HCXvAE9vARh2tFcYNBhKtvasSMZguA5IF7TKdxBcGPD5?=
- =?us-ascii?Q?kn212CUjO7aaFEs2F+Es33fCPT7hlf2wh/OI8icW+EGw0h8j+xGreQBetdAB?=
- =?us-ascii?Q?nnhNaYtwpHCgwJQY/AsLyU0YsiDrNpgCtm1FEg2KfcxpefdJ0hD/RTDS77jv?=
- =?us-ascii?Q?lFogQf+JPvTSv11FhS5nE+0NJ1Wnu5aNlXijeEMxEelcjH9iiYYIlTOro8rl?=
- =?us-ascii?Q?7faILzzszB9vxWkMLlCOpj8xoLk+bEG0h05afBaQ1rTjtlote/MRmje4Qwuv?=
- =?us-ascii?Q?sWFdol/5Iuwz/Ix9hYbxR7FX9YGpJw7b2Hbdo5++8pH85YRXFykuiiYDJ7YF?=
- =?us-ascii?Q?02MeP8ZFOMnJenEtwfvS3Ovr2SCO0mArX3/JN7WlqUGIwQKxcCg7+VX5MbIY?=
- =?us-ascii?Q?1cYH9rkuik2gIcESY3/Zyu1FlAZlnKLgQWHBSqPeE+Q44vYUg/GMVXcxtpv6?=
- =?us-ascii?Q?GguXsxqyueMpM+8795CoVfR+mWi3xPogBZ1+79vI30l8ulDdBpN4MzqRMAwY?=
- =?us-ascii?Q?5XP980p6Y820UpdrET4kPbwM6wHbNz4qjHkMDmU10mEQdGG1gxH7bUJE0n3J?=
- =?us-ascii?Q?l7h7UjF6JpcHNztxu0oBhP9T0m3eHXxeSz5efcqALi06hQpdaYYypHXZBPaD?=
- =?us-ascii?Q?WGv83qa1MvRh7CgBk4eBG4WGYMrGFzE28Vnt4zH0UqvquwG/Ho17rF1ZY+3/?=
- =?us-ascii?Q?aqYVMvYcAbkmlKhUOfKaotxtfBE0/iysHK4z4L+iwDVN4sAfmMnuCsyEXDyB?=
- =?us-ascii?Q?G7Ytav0wT9nwEV3uinSjsFf+kibz2xnG9hAEDwM93Jvkqs7rH6D45Ty8SS5C?=
- =?us-ascii?Q?8KV9ibE+mN49gKBuNr1cMERqriWIHr8eiQsFecSVlTcEnwv3wP0dvGey8bQ5?=
- =?us-ascii?Q?1hiVba3ALBtC4RN+c9APTJoTrg+i5R1NHhDkEIG7eHymCWyngTasYSwg2xI/?=
- =?us-ascii?Q?+YZRcovDA/2pL6AOVv3D/P+1Bz2cW8KZb7GPiBz9M+GiIATSNleg+I1swEOd?=
- =?us-ascii?Q?KkhoziannMyJfTNkfmcHFEKwxj2R1RP0kT8xzq8ukwHDtopq+4HbpoNzyt9D?=
- =?us-ascii?Q?kEF+II0TuhqOCwaQJ8Z89u7TDoLyKjCiv/C9Qv05cXhDJmwZedozj04oIwaT?=
- =?us-ascii?Q?ybF6PbshC9gmentDIDl/dKk1CShtYeuocdh9/DOoohWAjBNaihSh9nrWtlIH?=
- =?us-ascii?Q?k0njCi2zfkCQECvGrFePRZKcgtkT4oNJDkfoOFcDDmrILkRm839PZYb6hSWK?=
- =?us-ascii?Q?ONqzyy46f22e0sJbrk+AfnH1QERRABHRsbL92ydZMv/9Pwcj7YU3TE5xArP5?=
- =?us-ascii?Q?ULqBCHpYtDGzOWFT4VzPVCMbCIo0D7vzYWuCYSjfp0Rv+jJTzZNa0GAKEpMP?=
- =?us-ascii?Q?XroOnZAqJfjHNB9tJOUU+NiJs3xR/tYuME4k+LL/oEyVCKFAaWxF?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32b8a80a-1970-41e3-4855-08dedd33a258
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 20:58:17.3749
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6UrcUS5Iy3RoecHMW9s0mjbvQzNpoLkOz+1qEjGW/z/EQ9gLxX/UWGaHZ6r6+ix/fc5heRIM7fZrwMvfgOCuQa2pFCtKuAhRBSXpJ4JArDk1Ep0dsH6fG9XfNSP+Q4+e
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8815
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 08, 2026 at 09:57:36AM +0200, Griffin Kroah-Hartman wrote:
-> Add error handling statement to fsl_edma3_irq_init() for the
-> devm_kasprintf() call.
->
-> Assisted-by: gkh_clanker_2000
-> Cc: stable <stable@kernel.org>
-> Cc: Frank Li <Frank.Li@nxp.com>
-> Cc: Vinod Koul <vkoul@kernel.org>
-> Cc: imx@lists.linux.dev
-> Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
+ipu_planes_assign_pre() starts each atomic check with the number of
+registered PRE blocks, but that value does not account for PREs that are
+already used by planes outside the current atomic state.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+This can happen when CRTCs are updated independently: the current commit
+only adds planes from the affected CRTCs, while PREs used by other active
+CRTCs are ignored. As a result, atomic check can approve more PRE users
+than the hardware can provide.
 
-> v2: fixed typos in subject and changelog text
->
->  drivers/dma/fsl-edma-main.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index 36155ab1602a..d9fb717b5b53 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-> @@ -414,6 +414,8 @@ static int fsl_edma3_irq_init(struct platform_device *pdev, struct fsl_edma_engi
->
->  		errirq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s-err",
->  					     dev_name(&pdev->dev));
-> +		if (!errirq_name)
-> +			return -ENOMEM;
->
->  		ret = devm_request_irq(&pdev->dev, fsl_edma->errirq, fsl_edma3_err_handler_shared,
->  				       0, errirq_name, fsl_edma);
-> --
-> 2.55.0
->
->
+Subtract already-active PRE users that are not part of the current atomic
+state before assigning PREs to the planes in the commit.
+
+Fixes: 00514e859335 ("drm/imx: use PRG/PRE when possible")
+Cc: stable@vger.kernel.org
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+---
+ drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+index 67f2da7f2b65..d6806d1ae6e1 100644
+--- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
++++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+@@ -822,6 +822,19 @@ int ipu_planes_assign_pre(struct drm_device *dev,
+ 			return ret;
+ 	}
+ 
++	list_for_each_entry(plane, &dev->mode_config.plane_list, head) {
++		if (drm_atomic_get_new_plane_state(state, plane))
++			continue;
++
++		plane_state = plane->state;
++		if (!plane_state || !plane_state->crtc || !plane_state->fb)
++			continue;
++
++		ipu_state = to_ipu_plane_state(plane_state);
++		if (ipu_state->use_pre)
++			available_pres--;
++	}
++
+ 	/*
+ 	 * We are going over the planes in 2 passes: first we assign PREs to
+ 	 * planes with a tiling modifier, which need the PREs to resolve into
+@@ -843,7 +856,7 @@ int ipu_planes_assign_pre(struct drm_device *dev,
+ 		    plane_state->fb->modifier == DRM_FORMAT_MOD_LINEAR)
+ 			continue;
+ 
+-		if (!ipu_prg_present(ipu_plane->ipu) || !available_pres)
++		if (!ipu_prg_present(ipu_plane->ipu) || available_pres <= 0)
+ 			return -EINVAL;
+ 
+ 		if (!ipu_prg_format_supported(ipu_plane->ipu,
+@@ -871,7 +884,7 @@ int ipu_planes_assign_pre(struct drm_device *dev,
+ 		/* make sure that modifier is initialized */
+ 		plane_state->fb->modifier = DRM_FORMAT_MOD_LINEAR;
+ 
+-		if (ipu_prg_present(ipu_plane->ipu) && available_pres &&
++		if (ipu_prg_present(ipu_plane->ipu) && available_pres > 0 &&
+ 		    ipu_prg_format_supported(ipu_plane->ipu,
+ 					     plane_state->fb->format->format,
+ 					     plane_state->fb->modifier)) {
+-- 
+2.43.0
+
