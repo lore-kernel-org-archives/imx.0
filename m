@@ -1,212 +1,283 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011051.outbound.protection.outlook.com [40.107.130.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D4D439356
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 16:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDA43B9D8D
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 18:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783526404; cv=pass; b=mH5xeMUJ+pN3P+gh8e+05kpObMzuxzhqYjV7EGBU2iDMaj8W15hTGJdiNeGH8ZQ+2R+2AX5ZfDne/vWeJaJmLJzhXhN8I++Romrkmznk/M1z66+TXmChclNKC2slgNRVRjMvZ+PV0LI3yxtA4tXBMTzFhhPXjC1zBiRV3SaSKj4=
+	t=1783535718; cv=fail; b=e5u+EhQjZR26M1swsFnjPcb1KfO/T9VYaY/X7fHOZ8+QplTnO+Rgf7vdfAfeA/HMV9saDBbauydkI78j6Vc/5eeRZF84Xnrx7nz2eXOenrn+8JsIQKFG19m2AvOL9XxrsiOUK3PEue+Axr/VRQ7vS886sarVegRXctxgHmSL3Gc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783526404; c=relaxed/simple;
-	bh=S20u3kEIoDTzgKRFIDn8D1YCZgVa4uT1ltEDRmJ5pQg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ct2s6qQWiNUXhy9dGXSRVrL8xJDa4I6/0CxLDgio8wHId8RHqSDN/HCG+K9bOaXDRluNs58sFAq0wUkvNYi6BRHO8Mzv2UnGC9NJac8pP2rKfKSpClfgHkUkFFsw0Lj4/QlCLy8L5cBVJLgT0W+g7vHZWiiOgaq6kMqfpBsVRgA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=joLcvzan; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=W0Gcw2Yf; arc=pass smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1783535718; c=relaxed/simple;
+	bh=Fx2G78hHYjpcV57npHbY1m2fyd5VcQvHbIfOkHYql/M=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=f11wAOi35+w9QiKo5ihaLIv75TXynuw4DwU1KVhb65Y+w4wDilP7kgE8jkXa0nPRKPB9dZ4+aw/heJVcwLVidF1OAL85xsHQ2DszBvVqzPAm0T/y4/cqdXRWMxZwQ19wc34FyvHVmS5X2gaXWfuf9Uh39suB6SfAb7OGIHJmxNc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=pYoV0XHw; arc=fail smtp.client-ip=40.107.130.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="joLcvzan";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="W0Gcw2Yf"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 668C3NYu2608062
-	for <imx@lists.linux.dev>; Wed, 8 Jul 2026 16:00:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pXMZY/w5WVF0nRMX+GxiSjwNGLzZb02w3JE1D3SfZP4=; b=joLcvzannCuf3Ryg
-	V2K/EMBuiTgNwVujenQonsGEky+ayxJmShjkbJJt+EoBPez1XnLbujmHhejHNZC0
-	sUKxfVr97r+FGeWuLbLSlfpJNGv5X40kvQS9OfFowNKaZFN5vmf71h/iGriZzweE
-	JjL3aUgfWB9AERjWRq5Y4SYXQw0CVyiY7KUVJ6oYYf4daNwD2oYozgpvCNb2bXnn
-	s4WrxFtKp4DQJK42g7VBjAGqT7XRrEZr4GbO/EeO8sJuyiS93gnHiwTDFyQHyNh1
-	QomU2GcRbfc2ilhey5UZFJ6HOjjwCNYRFGx4rMNcFXkG3UbcPQoi+0QX6sJInlzh
-	Mf6XTQ==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9be5bkb8-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 08 Jul 2026 16:00:02 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-91ed0e140c5so163684085a.0
-        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 09:00:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783526401; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mGlhrUN69Mg4D9lC93DlbpcaaNhw9UUpvruPdeIldXKkI4MSx+R+1ptTwXZfqqaGZJ
-         xn2p8g4L4ES4cRojUC7JipU2LsSMOyl1QsWW/BvcFKGEVlKnqlU6x0XCfw1oFxbIkO+y
-         ZvynlBO3VO4196xKauzC3wdGZu07uQvzTeyfiZbZQB0/OwK9SJTBF/kJJKZwUdaXZ517
-         xaptz2D4cZ3KLUegkxS3BHBJNRMKOUcD2U/1tUYRIm9hJ2/j38qSdXLV6aj8pr6hL6l9
-         0H+ocP3d5tiEOfRoD0CKgDwllJPW9C6lqeLRzfIj5Bjmk34KeJgc5A1BswHTtB9o4fW8
-         /AoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pXMZY/w5WVF0nRMX+GxiSjwNGLzZb02w3JE1D3SfZP4=;
-        fh=MDu/7kKhEMdbWF6Rv0q/QL82lVRhPERDAoGqZplJUZQ=;
-        b=T/iZ7PhMH2E493lYSGUBVu7f91y7bcabNFbXEuUMrO9/slzkGwpIC5pQ3C+kzX/PiR
-         xAfn0nevVRfuHSLomUBarZfAtN4vIllRMo0gL1guspzX4obXLB853ph7L3cJrw66Jsa6
-         HlTzIdwQnYD3aejSZzqyMPnJ7wQdKB47+bpNzWpDzv1NpYpzSYwck1wHyS7aLLAoWhep
-         ivKHVffM1trrNelPr2zJyhH2GYWIhOxJUquGhpMnsj2LhrumHDwCjI44O1IxRCGoJRht
-         9XqA4EZAjXgJupoMUaJEtcNU+rxVlcs7eBbBncuZvf+mnoObcw/uARfn9tOwyB23abc9
-         /vFw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783526401; x=1784131201; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pXMZY/w5WVF0nRMX+GxiSjwNGLzZb02w3JE1D3SfZP4=;
-        b=W0Gcw2YfFl0eFgsFNjI+M1LhSCDMbq0qsUdTvDl/ZfrwtDp3Ao06uumvvsOuRHSpnY
-         dXO6cnB4CItnQKj0UMU//OSR4fzhCyY0H03mdZygubPS6h8jzRKWZ+ATKVYs2EGIwPvw
-         cd3en6wVC6K107C94FAEdy8JOYxwcPtKLa2dzrpI80VFIzE/q6h36DIxQzAOml7o1StZ
-         xAO0Yn1VDDKrfTsTgJuqEUy/JdQK7PndOvIvLDLxYP6DhxIQsbsPiy9hZnHp9NDYv9wS
-         TKYEJIq1Vs/gMp0TGcOn1IHE9TeNEThxZ6vVwf0IU9nWfLa2X3PH5i6YCiTcC9Pj7oMg
-         Trvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783526401; x=1784131201;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pXMZY/w5WVF0nRMX+GxiSjwNGLzZb02w3JE1D3SfZP4=;
-        b=ijX460j6jHUji+AjGzcSd6qBfsBrx7cXZIePZgoYeZyj9uq7Wm0xg3Y9UghIQerMB9
-         Z0wg7tVM3YbEXKA2dvNzXNQyuSwhywsirLD49fFvrP5kIaAkx6gjSLtFPqFz1d8JPGAR
-         g2+tbakrYdE1oWXC8tB+txbRybe+uDCkQ5TDQBSfE1tdY7vsvOxj6DEnLUPGN9rRxAk2
-         m2vHMLUWJ4uNW+rGFcnmrUzOpD1eqL9G7+ps3Ae03IUJ8YzHiF8SOREFE+w2Jj5Yxvk8
-         KqwcrCkbgZLqsxyI1UpExviru/DQnrBaIRR3YxT45aApaaix5TR2rR5Td2Po2RQSjttX
-         6viA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqw0dg8SGiaah+2z/a0PTqIa4bVVpeKR5oOUvyKGG1R690onsWhnmkfd4qcMVhFH/4p2XA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YypQsZOJhJ44ohGIY2SvrQp7MpcfTkGNtxWSimt5keeKkhtsGC/
-	Ts40tn20+rRg4qQzspNHg6rJai/u5FWIu1AfUYSybD23r6tl+Ycz/OxBv6/KIsPw0v1YG3HJoS3
-	4CKkzcreUcrtsgO9NuYnWXOeE6resF8/4h1W4H6W1Yfl0wYMSqTYq8rIB1GdSxJyUhvhlfOYjCS
-	QcEpvm9iK0pjbXhQzHGT7k5xVQoWVd0A==
-X-Gm-Gg: AfdE7cmsVCCxPKTbuH262yqj0XBLBWdlTpUYr8KwCsF+hO5t+JARobJEUoEEQEmmJUv
-	3BSX9Qbg49iLIH1IJOszH1DGgsfXggDyawgivnw8QLMNM6HnaXt1RBKZ59MFtmGnfhu+hVq17ax
-	NR75iL3oXTjx2Qb43XYMN4LNNFKbSzZeIDTXdE8ZnTzSJQ7EHvg5nfSosjEkmM+9Ce0JaY
-X-Received: by 2002:a05:620a:1a07:b0:92d:e54e:72d9 with SMTP id af79cd13be357-92ecf5c527emr315778485a.1.1783526400541;
-        Wed, 08 Jul 2026 09:00:00 -0700 (PDT)
-X-Received: by 2002:a05:620a:1a07:b0:92d:e54e:72d9 with SMTP id
- af79cd13be357-92ecf5c527emr315764985a.1.1783526398870; Wed, 08 Jul 2026
- 08:59:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="pYoV0XHw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hzjxrFRz9vKQyZxmzg8NzdmvktVLuDhKlRZ8/Qqei1/uRXusjDxTVbeTCQ2tWrVroFeFNbZYF/RaMSAU/r8TpfYC9TdGCWi7g03nAU3pctVCFmE3yAnbzdKjZIMvFDN4qUa8s4Am/5vcK6KEi6yJWSSYIYNmqEMaUWHMtOad6yXGDF/29lqxaBut8XZYkx20Yt1jLIV5WrisAcHYAHIanbUZIb2qissfSHJzagiQREltPttl5V64+2s9uLd1R6nBXp6JDFrILMpbxOF4+ndK/eS8AVMXdvEB5pws1EDu66iu744qlKSjT7RYwmMt5XNEFQzyiRcTiivnP7PI9zE2Pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ydRism5BVeBIOMMsZga1pva95bk0uVRrzHmdGkcABFc=;
+ b=JZmQu+1sjkkqi4nLqcW1jKqOXA8fhGTObxy4edtD8jOfAh07ooaUITUC7ZgXNViEZc1JX0hynTvNStVTDv5E+8sOvPCcrCJUkViKPRI8Zpa+i3UWgeuThSWH6wCtPl418+fYz3Mh00pjHA0+s9rmQXPA7uISldEDTytJzBIMNSLtgjZ2rMW6OLHXulaJgQiq7V1o4MbNaHBHBwj/yd1NbwmYkfRKrTU/Pwv2gir8aetUB5JGVQb3wabD+uvL4VwVR7tBnknmdOHEcO2Dv02XXatEmTd+Lj/vsik5Rqtyd5XV6VLxObJPg+tzvkhEkAkz+ojubOf9ZCWbhm/okdwFLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ydRism5BVeBIOMMsZga1pva95bk0uVRrzHmdGkcABFc=;
+ b=pYoV0XHw4VYT1/F6Wh/bV1dKBNJ0OUudJMoYVKd2AfTg8bQQzaPjCL/XSA20fxYhevqGPc42+lVCQCtCCmXLBsyUHYbGTIptrZiK7EYY/FmWYjxjALWyt9CxR1mbK8Z4TYiN2FHguk2AEUvEblm7uo9h8EttIVfwG8kTWWx5iERr3qKMdI3B0jmUpr2NnDCmThZQmqZHacpUANs1ayRww3lhccA9k8oGUjlXbljUdjcgoI8reFgcN333ntVq3N+qph1zs3/Wy2OzBHX7QD+mHpuciTRJ9lGqzJEMxzOI8m/JPb+rm68G9nNL2hPxC3jFnpBAi4ks07D+oklaXE5i3g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GV2PR04MB11883.eurprd04.prod.outlook.com (2603:10a6:150:2f9::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 8 Jul 2026
+ 18:35:12 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 8 Jul 2026
+ 18:35:12 +0000
+From: Frank.Li@oss.nxp.com
+Subject: [PATCH v4 00/10] dmaengine: dw-edma: flatten desc structions and
+ simple code
+Date: Wed, 08 Jul 2026 14:35:00 -0400
+Message-Id: <20260708-edma_ll-v4-0-cc128f0afb61@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAFWYTmoC/1XN3QqDIBjG8VsJj+d4/UhrR7uPMYaZLqEvdEgju
+ vdZ0NoOnxd/f2cUjHcmoEs2I2+iC27o0+CnDOlG9U+DXZ02okBzQgnBpu7Uo20xlMArBUVpgaD
+ 0evTGumkr3e5pNy68Bv/ewpGs171Bv41IMGCrC8Hq0uZasWs/jWc9dGgtRLorAQTKQ9Gkcg0Vl
+ RXVQvB/xQ4l4ecvllQhpVJcMMlBH2pZlg+b93GoCAEAAA==
+X-Change-ID: 20251211-edma_ll-0904ba089f01
+To: Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+ Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, 
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>, 
+ Niklas Cassel <cassel@kernel.org>
+Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org, 
+ linux-nvme@lists.infradead.org, Koichiro Den <den@valinux.co.jp>, 
+ imx@lists.linux.dev, "Verma, Devendra" <devverma@amd.com>, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783535707; l=6489;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=Fx2G78hHYjpcV57npHbY1m2fyd5VcQvHbIfOkHYql/M=;
+ b=omTiHkfVvWFBtF+ClBT1Q6g/JILvO+kMZAcHCCG/LcJlkcNz0QYLtjXPzovYLro4Pg/eBKFli
+ SANoZnUKyKyAO+FnZZYpcI76AtIXCU1vn1+tS7KWn3ZjnwfKn9ZqoZG
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SA9PR10CA0020.namprd10.prod.outlook.com
+ (2603:10b6:806:a7::25) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260610-b4-imx8mp-vc8000e-pm-v4-1-v4-0-ea58ce929c84@nxp.com>
-In-Reply-To: <20260610-b4-imx8mp-vc8000e-pm-v4-1-v4-0-ea58ce929c84@nxp.com>
-From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
-Date: Wed, 8 Jul 2026 17:59:20 +0200
-X-Gm-Features: AVVi8CdAnkt7W-EK3sRgfNkIzKWDE74xqiNiWEwP6a_AAGRkEBuSzmKj65KtehM
-Message-ID: <CAPx+jO-NMUPfXJpSUa09VrA=naiiFTMpg0qzqi4QeYbeeK3SkA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] pmdomain: imx: Fix i.MX8MP VC8000E power up sequence
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>, linux-pm@vger.kernel.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Authority-Analysis: v=2.4 cv=GJc41ONK c=1 sm=1 tr=0 ts=6a4e7402 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=YMgV9FUhrdKAYTUUvYB2:22 a=VwQbUJbxAAAA:8 a=8AirrxEcAAAA:8
- a=P6ToQuPI3Mtl0Vbz5-oA:9 a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
- a=ST-jHhOKWsTCqRlWije3:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDE1NyBTYWx0ZWRfX4R//TyEozM1f
- pWXNWeaD0a62wEpSU2xmKje5O2xhMhTtQgFv2zW+Or2NWn6h7D+NZLZEnG6GhBAEBu14d4ESN2p
- IKJir19uGgnYXKh+P/K3lyosmeCyOX4=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDE1NyBTYWx0ZWRfX2JLoXAaZIpKj
- 1RET4k5aTaChfgGvrGhZlKz9cUm3h8kDzP+T4z4C/CotX1MASNBpQfSCYF17TV0N6jmesYwYjf7
- pNyh4/dRtu/h6dund+OG60uhO1vsow024y72lszpQPWKHykbhxOFt+Tt2KN6sYiFhj6zmrJZd+o
- K7ZIkliU8XRVKjuw0g1gVJijZejB8UCO5z+M2VCkIuOxLpNS0iOiOqKw25Et5XTSgH6BU745V7W
- Wr/cUsQtOTTSxL9GO3DAuMlkFafR43aIfsxLTBGRjpzsmP05GBs43kX556vI4X1KU0H8D5Z9Yt+
- 6kapVux5zpoSWrgIj3cGWNtubg7QF+sy4HkdrmQOEO4okd31DfCBuYofLSWGvjvl9Tm+rz76Bxj
- gRI2wRCKxGoG3zCYp4TNMs0+WE96HTL3oBxLjP8ToQMl+m9HiLMbrGFhzlBTSdjMLKoNeLoSyuU
- w1vSiXfdL5pPNt++BuQ==
-X-Proofpoint-ORIG-GUID: kAP16owgnrPz0fSqg29MG_gJZrV6NudG
-X-Proofpoint-GUID: kAP16owgnrPz0fSqg29MG_gJZrV6NudG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-08_02,2026-07-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 impostorscore=0
- adultscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080157
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV2PR04MB11883:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac82577f-25b4-490c-4dcf-08dedd1fa504
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|19092799006|23010399003|366016|1800799024|7416014|921020|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	W/tQhBec9w4x6b2HpRHwN0WHokLko2yUcCjcAe4t79Gi/t7UicEkkvZgsfGf1En14CHSkCq1u8JgFodLB7FqNBNrYtq9Xd4ejc51kjG2uE+Srw/xGBmqUGz+1k6o9MueGLEYVkjeuVoyxxShVELul3RYJgfxU4f35MlGnkTMFx81rTRHcaOmNyUTm81FbztaA+nxP3UPMxuVLlOVInBUqKic62yw8jl33OgFIW+qnqlahFure1mT97pi9kM2gWZfemTJbokCiVkSiQOrflOiPJaqSxzo96JHFc+gFfjK97jhsRJApV8QSh8xrYq0DFXBVt7qApcD0wQ2PAim2YVWfi4h5OnmPZD/DcSVTqBAFNhe7FzPjPn3mWaiGlKOies0I1GOQ8DEduNydWKtmOT+NAhuyxfWcFYfJwj0BtdlZaqxPbOGMiw413BEfYznLbkbfqBYPuRgwpNr7UwQd/ZDKVoxHxiS5hjj14JBiyl+S90UQmLg2XfKBhhTWkj+o3xwylduVIQ73AmcV0xNtegWz0ydMqz29+jB93xGWEGYeCnZuoE34fsRoDQ2WXhHFxPaZfW/OyuKkgDB4qjrPqjQLTgtD6NdIl+Q8O7K2ljvV1qsiIFin77W23lk5ZxJPh1KUVKkz80g6y/eeLSC1biyJfwPXGvbwi6pL6WsHv4rEOg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(23010399003)(366016)(1800799024)(7416014)(921020)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VDBJUEFuUVJjeDM1M2ZiSGc3TDN0VjgxU2dSU0lCOE1WRHFFS2x6cDhFaVVm?=
+ =?utf-8?B?eTNUeWU2MHRNL2NDdlIyYUhGeTZEL1RkdFZEVlVmUml1Vk1Yakt6UjFvQW90?=
+ =?utf-8?B?RSs4SWtxUzcyWkt3NHV5cS9KcnlDTWhyZCtVeHdIdEd1NmZvVG4vNFpVU3cx?=
+ =?utf-8?B?QUI3aW0zU0xDN1dtTnhmTlBXdTlkcjU0MDNKWm5BbWVQKzdSN2tVZ01IWllL?=
+ =?utf-8?B?c1JmdU55WnJtNkxFcTMyb1BMWmxRN0RDKzhReitpLzg4VkVrV0dPNmVyOEwx?=
+ =?utf-8?B?U3JWZGtMYTZTU1V1cUxJK1JKdTZZR2R1bDVkZjdGbEZMSFpwYnBKMGFYZFpu?=
+ =?utf-8?B?WFA3Yk1YcElJL1NBT3VqTUdSNk9TYWJiSmtscE9TTVl4c2NINm9CZGpkWGEr?=
+ =?utf-8?B?ZXlFbndsSytrVCtEVjVjZWt3VTRJUThVYk1SejhnTzNlL0ljQ2hYZ29FRU15?=
+ =?utf-8?B?dUEyalNGUTJ6ZGtOSmVEbmcrMVlob0dEb2hXbHNTRlIvNG4veFFLMU5uZnhj?=
+ =?utf-8?B?TEZlSTkrYnBJSjI2MmE4cTBudkRoaVRtSitXTkwwbkZOWGJNMkhpVTFDYm1V?=
+ =?utf-8?B?WjA3OGdnbVF1eG1NVlNwaUpBcEFBSWE0SllOQ3J6T1AvcFNzQXZDSXZ3TVVW?=
+ =?utf-8?B?MURnc0ZCYzIyaWdoL0FwdzJ2UkNHbDhnU2hPL2pxTU5lL1AyL3NiaFJEaC9X?=
+ =?utf-8?B?bk9ENThEbkJab2ROcEtIV3pmM3J0b2NGcEpZdDBoQXhDLzBTU0JXV1lUTWEx?=
+ =?utf-8?B?NDBTUk5sUHVBcHpTVytXS3FRbjJZR281VVBzbkhnS28yc05kQnhETStUdGFX?=
+ =?utf-8?B?SlZpZ3ZFQ09PS2xKZzU3emZQaEFsTVZWeDVpblZrQzJZVlNrQUtpU2kwZEo1?=
+ =?utf-8?B?Z2gzMnk2MnE2MUhOdTlxUVY2UTlLZ2NHSXVTdDBaMDhrVlYvcHA0dlpnVEJm?=
+ =?utf-8?B?Q09lRDYvWE9CaEEvanZLbmZnbldoeFE2SEZGc21KYkdHc3lNSjNra01uUjlK?=
+ =?utf-8?B?dWM1dERmQXU4Z2REb3dKSWYxZ3QzTXVoQUZPUWRyTnc3bTdjemRXQ2lGVTNV?=
+ =?utf-8?B?UkVpb3pFekk2aE1mWFdzdWYzRHhRMkl1djlSNkUwYm9FSVlxOFQxWFFsaHM3?=
+ =?utf-8?B?MGRKK1o0VEdyYkxnZ1VudXhvdWU5Q0U4UWxuV3NiVUJWYy9yeG9JdmdwS0Z1?=
+ =?utf-8?B?STJ2MzdDa0pqVzcya3ordGlOTUJTaGJ0TVVGOHZMNmhIdWRkNndkYzh3bnNN?=
+ =?utf-8?B?YnlXZXdEUFU1amg1U3h6SE8yUU5LK3VpWVhyN2xsd1RERzJJNytvQk12Ky83?=
+ =?utf-8?B?cU8ySFVZZWZ2YzdONjhYUmI4RTlqbFlPc1EvanRjTzBmcktTRWx3emYvYU5R?=
+ =?utf-8?B?WjRKK2tsR0FjUy9BeHdoczhRYjhqRDJpcEg5U09HZVowMTl2LzdJT016Qnkv?=
+ =?utf-8?B?MFdWRTllNnFSWERCc0FGQ0NMNnRPenRsNVg1Z0JUSVMzQXpseTF2NGdiVitM?=
+ =?utf-8?B?eS9DcDM1OE5wdWlIaXdLd1hVVDFPMEdHLzVCTitWOG9Ra2hjYTJhSW9xdlRC?=
+ =?utf-8?B?YUx6VnZZa0F6b0JwR1ZBT2IyQnQrTi8xcWdMbUVTTnkweXJGU1V6ZWZ5S3ox?=
+ =?utf-8?B?NWpUeUN4MmZJTktycm5nMG1PeFNhWEwwK1EwbG1GRUxqY0QxVnhpWVZST01j?=
+ =?utf-8?B?eXNmS0JjQWdEVStIc0lvbmpYM0M1UDgwcWd6NXZYbjRxTGk1UUpFdERxRk5s?=
+ =?utf-8?B?TWpMNDgzMVdLYUhkRVo3L0lDd0gyRkM1VXk5WVBsakFNb3hyQjN1UnJwSThG?=
+ =?utf-8?B?QkxRL29TWHZJWFN1SnVhNnM2OExTLzdraS9jQWl6alR6K04xQmxaVWNzTmp4?=
+ =?utf-8?B?V0pPSzhyUlQ4eFJXbnNNVDJYUzI1UUFIWHJBMGQ1eTVrczEyZDgvaHB5TEZW?=
+ =?utf-8?B?bUljOWtkZ3MvUGRpZEVmM3YwRFNwRjAvNzM4eHlPTE8yS28reE42bS9JcmhD?=
+ =?utf-8?B?c1Q0dDhBaG8wYnY3VkdaZThWRHhVNW0yRFFDcUY2cVJYWHdRb3B5SFZDRXJT?=
+ =?utf-8?B?UkpCTTZQMVVoclFJN2M3bGR5dGZ5cWJ5ZGxFMERSOGFDckoyRDFiL201bStJ?=
+ =?utf-8?B?UUdNWUl3ZXBzSzRkYm5CcGY4M2pZQnQzQmhuYWVXTndLejN3WllBNDRodkFT?=
+ =?utf-8?B?Myt5cnl3a05zZ0RFamRFaThIRDYyVnRiUUFXUDdnRmJVajIvb25oelhzZGlh?=
+ =?utf-8?B?a1hFN2plL2Mxanc1N1Zpam5US1BLNDRvaUEwTHVuTUxGQ1Bhb2wrM29VZTAz?=
+ =?utf-8?B?ZFQ5QnRzTmY3VnVvZ3ZlQk9KSkhuZVkyN3VWdzFjdkhRUU5CaUFBeUgweFpF?=
+ =?utf-8?Q?U1AB+qXYoPlpgsi+aQWT5ti8cCR3OxqrdEUi8?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac82577f-25b4-490c-4dcf-08dedd1fa504
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 18:35:11.8260
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1ODUONLHQg0Wnwomdk5jWWJdLMz4kqJ8Wv8jcn73zHk1upoIZbkYSSVT11r0NXxMuamVPXBjVGH9YIdqyeu8Jy06IUAPCv2YyefqVBvCABQr3OtMZ1KAhIUdIovTdSNy
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11883
 
-On Wed, Jun 10, 2026 at 3:22=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.co=
-m> wrote:
->
-> There is an errata for i.MX8MP VC8000E:
->     ERR050531: VPU_NOC power down handshake may hang during VC8000E/VPUMI=
-X
->     power up/down cycling.
->     Description: VC8000E reset de-assertion edge and AXI clock may have a
->     timing issue.
->     Workaround: Set bit2 (vc8000e_clk_en) of BLK_CLK_EN_CSR to 0 to gate =
-off
->     both AXI clock and VC8000E clock sent to VC8000E and AXI clock sent t=
-o
->     VPU_NOC m_v_2 interface during VC8000E power up(VC8000E reset is
->     de-asserted by HW)
->
-> This patchset is to fix the errata. More info could be found in each
-> patch commit.
->
-> Sorry for sending v4 at 7.1-rc7, no rush for 7.1.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Verma, Devendra:
+	Can you help check if block non-ll mode?
 
-The v4 series applied for next, thanks!
+Basic change
 
-Kind regards
-Uffe
+struct dw_edma_desc *desc
+       └─ chunk list
+            └─ burst list
 
+To
 
-> ---
-> Changes in v4:
-> - Add R-b
-> - Set is_errata_err050531 to true for vc8000e
-> - Link to v3: https://lore.kernel.org/r/20260409-imx8mp-vc8000e-pm-v3-0-3=
-e023eaa245b@nxp.com
->
-> Changes in v3:
-> - Separate power up notifier fix into patch 1
-> - Link to v2: https://lore.kernel.org/r/20260228-imx8mp-vc8000e-pm-v2-1-f=
-d255a0d5958@nxp.com
->
-> Changes in v2:
-> - Add errata link in commit message
-> - Add comment for is_errata_err050531
-> - Link to v1: https://lore.kernel.org/r/20260128-imx8mp-vc8000e-pm-v1-1-6=
-c171451c732@nxp.com
->
-> ---
-> Peng Fan (2):
->       pmdomain: imx: Fix i.MX8MP power notifier
->       pmdomain: imx: Fix i.MX8MP VC8000E power up sequence
->
->  drivers/pmdomain/imx/imx8m-blk-ctrl.c | 46 +++++++++++++++++++++++++++++=
-++++--
->  1 file changed, 44 insertions(+), 2 deletions(-)
-> ---
-> base-commit: 49e02880ec0a8c378e811bc9d85da188d7c6204c
-> change-id: 20260610-b4-imx8mp-vc8000e-pm-v4-1-a978b40c59d0
->
-> Best regards,
-> --
-> Peng Fan <peng.fan@nxp.com>
->
+struct dw_edma_desc *desc
+            └─ burst[n]
+
+And reduce at least 2 times kzalloc() for each dma descriptor create.
+
+I only test eDMA part, not hardware test hdma part.
+
+The finial goal is dymatic add DMA request when DMA running. So needn't
+wait for irq for fetch next round DMA request.
+
+This work is neccesary to for dymatic DMA request appending.
+
+The post this part first to review and test firstly during working dymatic
+DMA part.
+
+performance is little bit better. Use NVME as EP function
+
+Before
+
+  Rnd read,    4KB,  QD=1, 1 job :  IOPS=6660, BW=26.0MiB/s (27.3MB/s)
+  Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+  Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+  Rnd read,  128KB,  QD=1, 1 job :  IOPS=914, BW=114MiB/s (120MB/s)
+  Rnd read,  128KB, QD=32, 1 job :  IOPS=1204, BW=151MiB/s (158MB/s)
+  Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1255, BW=157MiB/s (165MB/s)
+  Rnd read,  512KB,  QD=1, 1 job :  IOPS=248, BW=124MiB/s (131MB/s)
+  Rnd read,  512KB, QD=32, 1 job :  IOPS=353, BW=177MiB/s (185MB/s)
+  Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+  Rnd write,   4KB,  QD=1, 1 job :  IOPS=6241, BW=24.4MiB/s (25.6MB/s)
+  Rnd write,   4KB, QD=32, 1 job :  IOPS=24.7k, BW=96.5MiB/s (101MB/s)
+  Rnd write,   4KB, QD=32, 4 jobs:  IOPS=26.9k, BW=105MiB/s (110MB/s)
+  Rnd write, 128KB,  QD=1, 1 job :  IOPS=780, BW=97.5MiB/s (102MB/s)
+  Rnd write, 128KB, QD=32, 1 job :  IOPS=987, BW=123MiB/s (129MB/s)
+  Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1021, BW=128MiB/s (134MB/s)
+  Seq read,  128KB,  QD=1, 1 job :  IOPS=1190, BW=149MiB/s (156MB/s)
+  Seq read,  128KB, QD=32, 1 job :  IOPS=1400, BW=175MiB/s (184MB/s)
+  Seq read,  512KB,  QD=1, 1 job :  IOPS=243, BW=122MiB/s (128MB/s)
+  Seq read,  512KB, QD=32, 1 job :  IOPS=355, BW=178MiB/s (186MB/s)
+  Seq read,    1MB, QD=32, 1 job :  IOPS=191, BW=192MiB/s (201MB/s)
+  Seq write, 128KB,  QD=1, 1 job :  IOPS=784, BW=98.1MiB/s (103MB/s)
+  Seq write, 128KB, QD=32, 1 job :  IOPS=1030, BW=129MiB/s (135MB/s)
+  Seq write, 512KB,  QD=1, 1 job :  IOPS=216, BW=108MiB/s (114MB/s)
+  Seq write, 512KB, QD=32, 1 job :  IOPS=295, BW=148MiB/s (155MB/s)
+  Seq write,   1MB, QD=32, 1 job :  IOPS=164, BW=165MiB/s (173MB/s)
+  Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=250, BW=126MiB/s (132MB/s)
+  IOPS=261, BW=132MiB/s (138MB/s
+
+After
+  Rnd read,    4KB,  QD=1, 1 job :  IOPS=6780, BW=26.5MiB/s (27.8MB/s)
+  Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+  Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+  Rnd read,  128KB,  QD=1, 1 job :  IOPS=1188, BW=149MiB/s (156MB/s)
+  Rnd read,  128KB, QD=32, 1 job :  IOPS=1440, BW=180MiB/s (189MB/s)
+  Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1282, BW=160MiB/s (168MB/s)
+  Rnd read,  512KB,  QD=1, 1 job :  IOPS=254, BW=127MiB/s (134MB/s)
+  Rnd read,  512KB, QD=32, 1 job :  IOPS=354, BW=177MiB/s (186MB/s)
+  Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+  Rnd write,   4KB,  QD=1, 1 job :  IOPS=6282, BW=24.5MiB/s (25.7MB/s)
+  Rnd write,   4KB, QD=32, 1 job :  IOPS=24.9k, BW=97.5MiB/s (102MB/s)
+  Rnd write,   4KB, QD=32, 4 jobs:  IOPS=27.4k, BW=107MiB/s (112MB/s)
+  Rnd write, 128KB,  QD=1, 1 job :  IOPS=1098, BW=137MiB/s (144MB/s)
+  Rnd write, 128KB, QD=32, 1 job :  IOPS=1195, BW=149MiB/s (157MB/s)
+  Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1120, BW=140MiB/s (147MB/s)
+  Seq read,  128KB,  QD=1, 1 job :  IOPS=936, BW=117MiB/s (123MB/s)
+  Seq read,  128KB, QD=32, 1 job :  IOPS=1218, BW=152MiB/s (160MB/s)
+  Seq read,  512KB,  QD=1, 1 job :  IOPS=301, BW=151MiB/s (158MB/s)
+  Seq read,  512KB, QD=32, 1 job :  IOPS=360, BW=180MiB/s (189MB/s)
+  Seq read,    1MB, QD=32, 1 job :  IOPS=193, BW=194MiB/s (203MB/s)
+  Seq write, 128KB,  QD=1, 1 job :  IOPS=796, BW=99.5MiB/s (104MB/s)
+  Seq write, 128KB, QD=32, 1 job :  IOPS=1019, BW=127MiB/s (134MB/s)
+  Seq write, 512KB,  QD=1, 1 job :  IOPS=213, BW=107MiB/s (112MB/s)
+  Seq write, 512KB, QD=32, 1 job :  IOPS=273, BW=137MiB/s (143MB/s)
+  Seq write,   1MB, QD=32, 1 job :  IOPS=168, BW=168MiB/s (177MB/s)
+  Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=255, BW=128MiB/s (134MB/s)
+   IOPS=266, BW=135MiB/s (141MB/s)
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v4:
+- collect Koichiro Den test by tags
+- use addr in argument when set ll address, found by sashiko
+- fix iterate burst problem when exceed max link list, found by sashiko
+- Link to v3: https://patch.msgid.link/20260702-edma_ll-v3-0-877aa463740c@nxp.com
+
+Changes in v3:
+- remove patch dmaengine: dw-edma: Remove ll_max = -1 in dw_edma_channel_setup()
+- rebase to vnod's dmaengine topic/config_prep_api
+- Add non-ll-start() callback to handle non-ll mode transfer
+- Link to v2: https://lore.kernel.org/r/20260109-edma_ll-v2-0-5c0b27b2c664@nxp.com
+
+Changes in v2:
+- use 'eDMA' and 'HDMA' at commit message
+- remove debug code.
+- keep 'inline' to avoid build warning
+- Link to v1: https://lore.kernel.org/r/20251212-edma_ll-v1-0-fc863d9f5ca3@nxp.com
+
+---
+Frank Li (10):
+      dmaengine: dw-edma: Move control field update of DMA link to the last step
+      dmaengine: dw-edma: Add xfer_sz field to struct dw_edma_chunk
+      dmaengine: dw-edma: Move ll_region from struct dw_edma_chunk to struct dw_edma_chan
+      dmaengine: dw-edma: Pass down dw_edma_chan to reduce one level of indirection
+      dmaengine: dw-edma: Add helper dw_(edma|hdma)_v0_core_ch_enable()
+      dmaengine: dw-edma: Add callbacks to fill link list entries
+      dmaengine: dw-edma: Add non_ll_start() callback
+      dmaengine: dw-edma: Use common dw_edma_core_start() for both eDMA and HDMA
+      dmaengine: dw-edma: Use burst array instead of linked list
+      dmaengine: dw-edma: Remove struct dw_edma_chunk
+
+ drivers/dma/dw-edma/dw-edma-core.c    | 218 ++++++++----------------------
+ drivers/dma/dw-edma/dw-edma-core.h    |  65 ++++++---
+ drivers/dma/dw-edma/dw-edma-v0-core.c | 240 +++++++++++++++++-----------------
+ drivers/dma/dw-edma/dw-hdma-v0-core.c | 169 ++++++++++++------------
+ 4 files changed, 304 insertions(+), 388 deletions(-)
+---
+base-commit: c9e9927c6d8346cdf6555a8f97da093980172e4b
+change-id: 20251211-edma_ll-0904ba089f01
+
+Best regards,
+--  
+Frank Li <Frank.Li@nxp.com>
+
