@@ -1,119 +1,310 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010062.outbound.protection.outlook.com [52.101.84.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7083BFE4C
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 14:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783522359; cv=none; b=P+4IUFiygmhyivSp5twEo+IUWYuLPZU3/pL40/Nr4GJVuMUQlsXTnPKKdCEYU3TALenVirH6l0yq30wDO3l6cCITaO8nQa5wup+yWhRioCeYHsWRJzsZNztK+oF9RPoKbIPmUIAsURB/tqXaV49wG+xRkNGjC+2ixQVP8/7Rq8U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783522359; c=relaxed/simple;
-	bh=6zw6s0CTUaTnsBUWyMIQn5jdniJ3Uw5VK2cUDuuWjfk=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=Gu6r9bfRTyLkmk0s0QpvbAJxyNgr/HR8uu/pI7/0cn+wCUuCQIft4LRZAk1S1piuhbbzOWP8b34zxyTz+IwX6Pj/qukrQ+Fy9eb2djhdOiOirNUX946g0k/wr9XvfY7gTROqJTk2JFIl/F9CR3V5/OLzZudReUK3xWGw7RLNr4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=ksxp5PZw; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655E03FADF1
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 14:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783522447; cv=fail; b=owViRQ9oMpClTOGX8zySJpchcYo3N1ukAXBboz+gHOmnXm2A8uQmhm6Igg2oQm1G22jHC5jN/mi6vsflXdnbiqoaY6wseAjmJdTNf/kPOkRfT9UhirNBlQ7BNLaAvYANEQVKsTIrdCCVOJeoqpfAArfn6ZNnnokobmDicd9ZR8U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783522447; c=relaxed/simple;
+	bh=lV4iW9ojc+Ka8HAenqzg5TERHNr6cbKrpbj0ZEEQ4a8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lnhc5pxy/B+rJEe+b/BAcE10vItlpd6Csh/nJPzAVLto8/OQilrvbsJ1WDQmgxs8XMGNoWI1VTH2+GDoDVHkfyGpAbaJqLrLtgz4leVPkrH7W0TXRe6HnC0Q4s6GO1Gi3G6B4mGXNGIm744Ly4EBbGPT2C8gNYSmRdmwkpkPyxs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bvLk8SWl reason="signature verification failed"; arc=fail smtp.client-ip=52.101.84.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="ksxp5PZw"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490cf3000f0so5533615e9.1
-        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 07:52:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1783522355; x=1784127155; darn=lists.linux.dev;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=WtG/3aGhNl95hDYaYcCOha2vB+cS3A8UgbqMAykU0ZM=;
-        b=ksxp5PZwCYP9fJqRGq7m7s9f9XPTtxmk7KzyW9IM2klzoX3gUWdR9KAmy+c41apexY
-         BIXhInnA4+jnUstYWR4Y/D/u53jhWNNeKwkRT2GNJ17peKtP4icyvBgdfSVhmyT/qaP2
-         KFa14n5atv043fftqeqMMVy86AusFKvd2F8mvJtjILkOwi6nanKAD/Tz1b22JQ/VVilC
-         z9PqShUyg1s709jRGMSdUDxSwq2kOY26ol4VRbClog0h9D+mHQ8Rh4XRpX/BfDrSMN9E
-         iAD8/NbQx3sAY9k3TVUBW4PsmcrZXoeg8U1HMGX9dRr8S90lmFvDDsmP2cIyOP2VDVB2
-         WhYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783522355; x=1784127155;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WtG/3aGhNl95hDYaYcCOha2vB+cS3A8UgbqMAykU0ZM=;
-        b=IUbk6CofkK3in4ThdebbVckN29HIgrmG+2pdxNpMSl2K16MzobM+DOxSOXY82VUjof
-         FQagqi14i4Xqawgv0kPztlD8MntZR2g9RIJFm9/uvgiqtd0EhhBxx3zfK4aq9E92izsu
-         Jv9p1ISiUmf5JAn4gWr0aT18abntNMzwQLsq2AzOiY+9EKRnhQFR8PrByPJSiLrGRMfE
-         vN4QT83mrELd8jO1O18cMArbJlFXct1nxt5tTS02cFFoH2o7DS8ddkzqosR6+oBjTYwg
-         K8uvt76wElw5D0QgITnCBvWEtqtIUhBn6jo0U932udWgzcVDVVeGx1ohdMIdpPU3RCYd
-         /JDw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp7CKflQ11fTPcnUH6Rwnp9mU0N9dKQ5wU1r5imKaCgUOHuN8jwOEJkGtGrHevi5evvDnM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyYQgj6kr4mu+xDcIKw+tMqr2pU6cdD34FG4IzxoL/Gb0BiYN6T
-	R9JhlDTKM18psNhu1wo/bSkXaKz0bnyuxCG8qpvwWyE1a9P1fh/qPIuHQHOvmt2kwi4=
-X-Gm-Gg: AfdE7cllqZe8kQb2ixoB/eo6+7+vLx/BmOHsDzsPQI4Nr0TQPyJr891/QoyRMrleLM4
-	Wq5fGCWS5krVQWL0764rjX9ZmoyuAvvWvkn9fgpz7V46Xs62Gkw5nAuMMYli05OReK3LVe0UiZe
-	kVSp7WGXtUaDQ2yAqJZxUswmI55I4mWV4gvMBZgjxpNxIVVKfdUvPs0Nw2pqJh9pIRi4vL1xjSH
-	+/IFXPkpr22W6+/KXpDs/48oQqi8/0EYjkjv+nIzMM+1SadSaSp1k8FcNm5NSKN2WS6vXx2E1wJ
-	Y7jTk9i4EjE0IDQhDqaAX+mfx8MC0m0nv4Zzx0DMqj7Hz+TaOjBQ0m5DtLwkA3N9HL4osOoywgs
-	S3HzxlqjFT2QglblhL4W6pGrVAwf4xt0U+8VtSGTls+BM+gzVgTvVXfg3Ll0VUj8fJbuKyrLmiR
-	NA88AnyWELdTUcUY6pIIqtFLjRDy24y+4L9HfdGcILKpxqGZMCorKY
-X-Received: by 2002:a05:600d:8496:10b0:493:ad1b:b38d with SMTP id 5b1f17b1804b1-493e68ef1bcmr22810655e9.37.1783522355279;
-        Wed, 08 Jul 2026 07:52:35 -0700 (PDT)
-Received: from [192.168.7.218] (88-127-185-231.subs.proxad.net. [88.127.185.231])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-493e0fbb410sm147686695e9.12.2026.07.08.07.52.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 07:52:34 -0700 (PDT)
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bvLk8SWl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fSuuySyTFr5xxCoB7YxQJU8BXklQ3z1adJIksQLn6yZWI5nOVKbGQB2BxgE3VYtp9g9qhEAan+a6z6vm9yx6eEcZVp7gcep/qwLKdxZRdjOEX3Q+yykMD7XbW/jV9nFQaXLI6pWGmLe6CjwkOa/Hzm74NuYk4rDF4UmMNCPUerQ5U/0uNV6sc8AcJTCpR+cakM7SADfhAYlXkwKJrt755ShSf8JQQkp176s60Gv7pv1aGW4BrKyypUOfz/CDS5IzupC5dvK5RNVd0QoJZm/6NsFqasSY8ZRVg2GlwIbBsvZXSDoJrCsZBMHNO1bHHO0CDdupsYjrR1IvjRGxSxIZ1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cQ/PXep9HzV/wFH83SF8oHldU7L95x/GbnizAExu7is=;
+ b=SqjSRG80UfQBSkWZPwYW7cl+TAgSioe65axpX8Uwao6MJuUXj7jCL3SLtTJPpjQ5CE5Zaq8G5MQQDg0MNaScV0BUAZNBhff34fQmxTf/4GdC52Qj65+Gw/YZ6Aok1kZNyI0hx+0tmI0QoOpO0gOQhis5+G6mcHRrMLasc7w+a3+F94j0DZR5IOCxXu8jpuo/f5jTgG1d1I1pDyMb7wgCiCvdLXyo345s6rYqJZvgMTXzejFdNisaE59rd2gvEkSGMUGUVZM1QSu1FAgKGRlUEtvpPXlrq7LmuhyWbtTOK2nP4M0EgOZdS/kCLPo4amUK20nIIuw9qxIQs1JkLvx9PA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cQ/PXep9HzV/wFH83SF8oHldU7L95x/GbnizAExu7is=;
+ b=bvLk8SWlj06oNmKfT587+65mOTTvS8bOKoRhjrdUjefn7uXKvtAXRgsvUm854nWi+2gQkdE+AJHNWQGC7u4TpWtQiIBtFwHQb3o4WfX6RxiuqOQSCqCROPtMc7hMbmaur2TVMcUZOOtvddPbGnj1FUkxSpSnflMOck7K8jGso9LAWLAEWsYQHhMkCUG9UV40/V1xBVI2WnozUs4Y7cacPDWqWkYUxX0cnyNjCbf43R/ncLiyhlqZ/QjtrdSHf1cO1+84sfqJ/s/FTXwqW+bGFYUo2TlMORzN9FUGGUxVwqqygGEHwPEoH5fyrDhzBodmFYQE4oEdUisYwbDulA9aIA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by VI2PR04MB10761.eurprd04.prod.outlook.com (2603:10a6:800:27e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.9; Wed, 8 Jul 2026
+ 14:53:57 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 8 Jul 2026
+ 14:53:57 +0000
+Date: Wed, 8 Jul 2026 09:53:46 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: tze.yee.ng@altera.com
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jorge Marques <jorge.marques@analog.com>,
+	=?utf-8?Q?Przemys=C5=82aw?= Gaj <pgaj@cadence.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>, imx@lists.linux.dev
+Subject: Re: [PATCH v6 4/5] i3c: master: Validate GET CCC payload length and
+ retry Direct GET once
+Message-ID: <ak5kenGbrXOACLuN@SMW015318>
+References: <cover.1783493867.git.tze.yee.ng@altera.com>
+ <b467f01edfaaa0710f30e719ce7f2753b06c1a3f.1783493868.git.tze.yee.ng@altera.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b467f01edfaaa0710f30e719ce7f2753b06c1a3f.1783493868.git.tze.yee.ng@altera.com>
+X-ClientProxiedBy: SA1PR04CA0008.namprd04.prod.outlook.com
+ (2603:10b6:806:2ce::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 2/5] i3c: master: Report actual GET CCC payload
- length on success
-From: Alexandre Mergnat <amergnat@baylibre.com>
-To: tze.yee.ng@altera.com
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Jorge Marques <jorge.marques@analog.com>, 
- =?utf-8?q?Przemys=C5=82aw_Gaj?= <pgaj@cadence.com>, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>, 
- Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>, 
- Felix Gu <ustc.gu@gmail.com>, 
- Manikanta Guntupalli <manikanta.guntupalli@amd.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- Jarkko Nikula <jarkko.nikula@linux.intel.com>, imx@lists.linux.dev
-In-Reply-To: <6c66571ae7166aa4b87616d900e6d643631ac355.1783493868.git.tze.yee.ng@altera.com>
-References: <cover.1783493867.git.tze.yee.ng@altera.com>
- <6c66571ae7166aa4b87616d900e6d643631ac355.1783493868.git.tze.yee.ng@altera.com>
-Date: Wed, 08 Jul 2026 16:52:26 +0200
-Message-Id: <178352234642.1152337.590208523920132503.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=454; i=amergnat@baylibre.com;
- h=from:subject:message-id; bh=6zw6s0CTUaTnsBUWyMIQn5jdniJ3Uw5VK2cUDuuWjfk=;
- b=owEBbQKS/ZANAwAKAStGSZ1+MdRFAcsmYgBqTmQuTCnP8OXYLKhboPk6Bl8nbFgpA/6RLfuKS
- tt5ICq2sy6JAjMEAAEKAB0WIQQjG17X8+qqcA5g/osrRkmdfjHURQUCak5kLgAKCRArRkmdfjHU
- RT1DD/9snuCIVJwmkX0+pQPjtzsR+oWk69wMjJFQo0woOwVq97mTPmBA7toL30HCe8eGpBJZUFd
- wOPEKLsqdjD1KK6DeyUMAPPXqgsQSh5NEUy402ECdc8meshXzUxxu/KQg1vxqgVWdXS88lc9aCx
- O4zKMkldNrJfgTHYaDtZ7XAY4LKy/6/22qJPUYwLWIjWrIuuvg74Wfu/1Obc8r+QPU0ScAGGTeS
- h74ETP2VELs7uxm4tcp/Da7nWuG0J+wJmG5HWiwJEF3AgModpFWXUx6+3Zq4UBlY9uXDycaJ7ZA
- lLL2wVPAggIxHhwYUh+gfKUatmovTu7IlC849OFwh30Gz6k7OHGehUmvqqK9/ScjOaQON2QwbEa
- WA7lUF6h29nUYyDGNitDqxP06Xetm5cInKalya1vFTCY6JcXv8kEuo0vBb7S6hefEJhMM6smtYJ
- GfSuZu2QlWJ3cGUTkZgRkWm8C07zf+vPhvQ7VIQ6ipfK5E4qFZ6fygWvCV+3Ph+wywh7nBpW+ex
- eZRgQ0Aem4tAUC25+9TRVrMl4B68/BZnTHpSDhk1qAf3H8whGYyWptWB+AKFXtWlzK4Qmtxh8Ax
- Y8wZVy3Tc+ADJ37vaar07z8KQ34wEHSD+PNv3UX3FTOvYu6An9D+48bhrA5b8HOYqcIwBgCMpqx
- hxVWbKSM7uW88IQ==
-X-Developer-Key: i=amergnat@baylibre.com; a=openpgp;
- fpr=231B5ED7F3EAAA700E60FE8B2B46499D7E31D445
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI2PR04MB10761:EE_
+X-MS-Office365-Filtering-Correlation-Id: e27c036a-af0e-465f-04d8-08dedd00bc60
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|19092799006|7416014|376014|22082099003|18002099003|11063799006|56012099006|3023799007|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	GDs/vY+mEtSb/dmKzJ3DYqR1UB678JSLXvKQQttDS+wGvvSXFukRcBTX5MaCXfi5qbLaym5TNB4wgLoCTzg7HyvXdnMXfDb/6K3Wj1I1QfZ/IeI7YcE5SxLcjgpCqsJtb1M5D7Tt1jACFMi/SWznd2cHwd4n46J1J4KYmmTrIexJvS8qwCtMffYrlT1uuRtS0UH29AyIq1/zqTX24sb2R7xFQdVKMPJZQ2izZmmdXS+bVINtRjSHnGJk6JIIvFlMBtlR8Q2uNgduMsrevb2bgHu49z/6LU88pNTkZPUz+R2murwHLGOyjkszR+RdRs2gQMfNO2hxUR106/qx0JJs+QUdHADmGesBPTmQ/bFvl228O2PQK9EW8ytMguKz7li+WH3LebY39EjWpoZ1U+eBfKZi8KeeDtKLmZAgnOCPFM0HSkGz8O5Ul9yXF4m4y1/mO6xTF3746A/Nt4KsLgE0vSnSQPBT8F3UG8GUgn62LEhad67K2q0JCARvVTJkexdfAAsUtH4296lgXh0OVwrJrbL9omqTDrLEJtZSZ0ImrFYObOkrcWbSFrLfqKHZ9HLkjw7gUMQygmlyk1ZDLtLIKdTzxvQq9ixdIpYI8XP+vsdUDZv8Y0qhUMfXpQ+Icv9QFiuY7JLUCFe/SM/vy6m+5qsHP1ShBYbhC/lwuQE9WSw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(19092799006)(7416014)(376014)(22082099003)(18002099003)(11063799006)(56012099006)(3023799007)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?Ti72c1I/+s2viZQTd7tRh/V3CkuFL7fY0z0QDvNnOS8wfhdtAEZ+5ZjHA4?=
+ =?iso-8859-1?Q?l/uH9yMkcyERreE/jTVIsm4UttVNykbEdNXwGeAxGDsgYODUH/YqTI5mGK?=
+ =?iso-8859-1?Q?7sWjG3Z0WoI8YtlApXf2h0OyGGiAFGs3hPHzyULQE6sjSi0nA/kX3weV0d?=
+ =?iso-8859-1?Q?nkA+F5qAp00vWyGgaUQN59838EuLfiaHfkhhhB50R7lQnMEsZT9WSxohel?=
+ =?iso-8859-1?Q?y7suRA2GhTY+M697mRMCxIEEPOpw/Faz65XBXnAJf+F+CUiPuSJFGPkFFG?=
+ =?iso-8859-1?Q?3FPiDZ9XlKuZn85mTtldBdKASBnWWoWWObXnfqSzt93pwyaBNZTFsUEtft?=
+ =?iso-8859-1?Q?g8i3WEuS5tOBraV6v7COXz8X076k1+vMgXUwXmqudBgHky57xBHMLTNUcy?=
+ =?iso-8859-1?Q?WDAGfOyqU1WejykR8Cw9Dwww0HWyLMkcbcXpTioPOnZlsRi8Ovkzdt+x/t?=
+ =?iso-8859-1?Q?qf8XSO94YZuICWD9MA5VkVYJMh1NGpUOED8E5Q0rGlx5/6f1PjH/ynECHN?=
+ =?iso-8859-1?Q?a2NDRI8GnJCXvwA9gxyMLjkvcSHWHwnzP/XF3tVAhVp2RshJ1ufaD2JDeT?=
+ =?iso-8859-1?Q?RasXtTiKaRKFGq3PK0HmbVj58zSL52yXneI+jnReQNCdDCcj4jDXNGTIUm?=
+ =?iso-8859-1?Q?kFXJtKVLGRpCzGCM9foGeqRD2sPR8QL/8/ffvLBiCE3G+MemeysgrgeU9r?=
+ =?iso-8859-1?Q?cjWKUwvtRmVnd89l0rbtX6eQzPohNeLi3OY/xbHV6nAv0nbrXC186iopYj?=
+ =?iso-8859-1?Q?tfsyPGqwLN6erzsCTMJxO317RnY+sQak2UTyq1F+Ig7MZBO2enrhQX+pni?=
+ =?iso-8859-1?Q?LCVCTOYq7PKbPKJuaOnyDHzpfcUn8YxjCO3lmJx27sNwyvpzV2heK4dqpr?=
+ =?iso-8859-1?Q?1thu7xvYrs2S2LbsVaRgTZqDt3RhbNqVpeJPeFkd7oueFzfY1Ry3v8uWLS?=
+ =?iso-8859-1?Q?IrrETZlqLGy4I4xaj30VoxDFw9Vjjj2qEMVRm4iFPb/Cp2T5HEQHfEV/hs?=
+ =?iso-8859-1?Q?ml1lrmeD8z4DNDcBu27lNAdtjSCxOxjkQtXniil6O5vwb8dLc/fpuVY4U6?=
+ =?iso-8859-1?Q?31a3fahJLKf8C64RdLSAX1PIo4e0/TG2Ag+2fFAGP8gkyb6j0hD8UPK3JQ?=
+ =?iso-8859-1?Q?qmBn+9cAXriY2mP7Ac9nI10lFolJ53XNPt3+ppj771/0wdWNhlY4vdCPQd?=
+ =?iso-8859-1?Q?cQ8Z41dcPIdbIC6DKZb6feuC0eiLjkc0GGMsgD7K6UiPaEuWRvwJ7ORUbv?=
+ =?iso-8859-1?Q?wJ6MXvbGCXU8brojMhqLsgDIguBQbDbm1dvt0ZbQE6I7ELvnoJXuAlzQrY?=
+ =?iso-8859-1?Q?CLH3qviPSDCcBfnUIbsVyGYlYVlf5GZd2t4dp9UmmpCpoCPGHjQ774/Jzs?=
+ =?iso-8859-1?Q?ltwQhRkD1dVjOCEWsfAYUovPY5Pz/5jkZwgzJGuu8iu+mD2KPCyfOMgp7H?=
+ =?iso-8859-1?Q?+REJ7RuHnpVAGfQNFuy6IO3BSJWHyVwGhJ5X71rFAMdeQua+tACJOlme9Q?=
+ =?iso-8859-1?Q?wtf1KTLb1AXVRUTMfZGl8GVHlvXS3kAQ5mugihY1rrqNJ5wxXWaV7Cq81p?=
+ =?iso-8859-1?Q?gQHcg13EQ2LTT3+DoLN4bmWIxqUnaH5e6kATTYFITJHzJpUZe1Hef8FKW+?=
+ =?iso-8859-1?Q?pIKHSiIKSPI1U57t6GT5al4THUykqHZndGIAo4FCpzyxgeRx5cpkk9L5eH?=
+ =?iso-8859-1?Q?6xvDHIE4zEzMpbR57b/Qy4iLzmSRrwHsWjVeiFCx4fY0mXR171yblyAbKs?=
+ =?iso-8859-1?Q?3vkKRQ/VmzuanpoXdU0/hyFU//8fIu/W4TlL1dFWva+I0346nANrmy7UCj?=
+ =?iso-8859-1?Q?3tIqZWZ7vz+SErqFToWrLpqtzRoYxfTl7GxoMQlwYCMI34rQ90IV?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e27c036a-af0e-465f-04d8-08dedd00bc60
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 14:53:57.0206
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mWcDdr2umnE5oNWCXxQdC0eDvs90hcGCfxLUJjp565htH9hE1cUg/v1Dig5xC9kLmxYDxQChqgC/E+Qb+8VLCaLM+n+BD6AcebyudmXHKxBPFUDPT3NiZzeJdvWq8Zal
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10761
 
-On Wed, 08 Jul 2026 00:17:38 -0700, tze.yee.ng@altera.com <tze.yee.ng@altera.com> wrote:
-> Set dests[].payload.actual_len on successful GET CCC transfers in I3C
-> master drivers so the core can distinguish requested and received
-> buffer lengths. Switch core GET helpers to use actual_len instead of
-> len when interpreting GET CCC results.
+On Wed, Jul 08, 2026 at 12:17:40AM -0700, tze.yee.ng@altera.com wrote:
+> From: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
+>
+> Add retries to struct i3c_ccc_cmd. Validate GET payload length in
+> i3c_master_send_ccc_cmd_locked() after a successful transfer.
+>
+> Retry failed Direct GET CCCs up to cmd->retries times when the driver
+> reports failure or an I3C error; validation failures are not retried.
+> SET CCCs are not retried by default.
+>
+> Signed-off-by: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
+> Signed-off-by: Tze Yee Ng <tze.yee.ng@altera.com>
+> ---
 
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
--- 
-Alexandre Mergnat <amergnat@baylibre.com>
+> Changes in v5:
+> - Split from v4 patch 3/3: retry and strict validation only; optional_bytes
+>   moved to patch 5/5.
+> - Validate GET payload length after a successful transfer.
+> - Retry failed Direct GET CCCs when the driver reports failure or an I3C
+>   error; validation failures are not retried.
+>
+> Changes in v4:
+> - Add optional_bytes to struct i3c_ccc_cmd_payload and retries to
+>   struct i3c_ccc_cmd (default I3C_CCC_RETRIES for GET, 0 for SET).
+> - Replace CCC-ID-specific payload checks with generic validation using
+>   actual_len, len, and optional_bytes.
+> - GETMRL and GETMXDS set optional_bytes at the call site instead of
+>   hardcoding lengths in the core.
+> - Retry failed Direct GET CCCs on any error up to cmd->retries times,
+>   per I3C spec Direct GET single-retry model (§5.1.9.2.3); drop M0/M2-
+>   gated retry logic.
+> - Drop req_lens save/restore and the stack/kmalloc bookkeeping for
+>   payload.len.
+> - Update I3C master drivers (SVC, Cadence, ADI, Renesas, MIPI HCI) to
+>   populate actual_len on successful GET transfers.
+> - Use actual_len in getmrl_locked(), getmwl_locked(), getmxds_locked(),
+>   and gethdrcap_locked().
+> ---
+>  drivers/i3c/master.c    | 59 ++++++++++++++++++++++++++++++++++++++---
+>  include/linux/i3c/ccc.h |  5 ++++
+>  2 files changed, 60 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> index 037b3b980717..3b6d3ecd9d12 100644
+> --- a/drivers/i3c/master.c
+> +++ b/drivers/i3c/master.c
+> @@ -915,17 +915,46 @@ static void i3c_ccc_cmd_dest_cleanup(struct i3c_ccc_cmd_dest *dest)
+>  	kfree(dest->payload.data);
+>  }
+>
+> -static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
+> -			     struct i3c_ccc_cmd_dest *dests,
+> -			     unsigned int ndests)
+> +static void i3c_ccc_cmd_init_retries(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
+> +				     struct i3c_ccc_cmd_dest *dests,
+> +				     unsigned int ndests, unsigned int retries)
+>  {
+>  	cmd->rnw = rnw ? 1 : 0;
+>  	cmd->id = id;
+>  	cmd->dests = dests;
+>  	cmd->ndests = ndests;
+> +	cmd->retries = retries;
+>  	cmd->err = I3C_ERROR_UNKNOWN;
+>  }
+>
+> +static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
+> +			     struct i3c_ccc_cmd_dest *dests,
+> +			     unsigned int ndests)
+> +{
+> +	i3c_ccc_cmd_init_retries(cmd, rnw, id, dests, ndests,
+> +				 rnw ? I3C_CCC_RETRIES : 0);
+> +}
+> +
+> +static int i3c_ccc_validate_payload_len(struct i3c_ccc_cmd *cmd)
+> +{
+> +	unsigned int i;
+> +
+> +	if (!cmd->rnw)
+> +		return 0;
+> +
+> +	for (i = 0; i < cmd->ndests; i++) {
+> +		struct i3c_ccc_cmd_payload *p = &cmd->dests[i].payload;
+> +
+> +		if (p->actual_len > p->len)
+> +			return -EIO;
+> +
+> +		if (p->len && p->actual_len != p->len)
+> +			return -EIO;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  /**
+>   * i3c_master_send_ccc_cmd_locked() - send a CCC (Common Command Codes)
+>   * @master: master used to send frames on the bus
+> @@ -937,6 +966,9 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
+>  static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
+>  					  struct i3c_ccc_cmd *cmd)
+>  {
+> +	unsigned int attempt, max_attempts;
+> +	int ret;
+> +
+>  	if (!cmd || !master)
+>  		return -EINVAL;
+>
+> @@ -954,7 +986,25 @@ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
+>  	    !master->ops->supports_ccc_cmd(master, cmd))
+>  		return -EOPNOTSUPP;
+>
+> -	return master->ops->send_ccc_cmd(master, cmd);
+> +	max_attempts = cmd->retries + 1;
+> +	ret = -EIO;
+> +	for (attempt = 0; attempt < max_attempts; attempt++) {
+> +		unsigned int i;
+> +
+> +		if (cmd->rnw)
+> +			for (i = 0; i < cmd->ndests; i++)
+> +				cmd->dests[i].payload.actual_len = 0;
+> +
+> +		cmd->err = I3C_ERROR_UNKNOWN;
+> +		ret = master->ops->send_ccc_cmd(master, cmd);
+> +		if (!ret && cmd->err == I3C_ERROR_UNKNOWN)
+> +			break;
+> +	}
+> +
+> +	if (!ret)
+> +		ret = i3c_ccc_validate_payload_len(cmd);
+> +
+> +	return ret;
+>
+>  static struct i2c_dev_desc *
+> @@ -1372,6 +1422,7 @@ static int i3c_master_getmxds_locked(struct i3c_master_controller *master,
+>  		 * while expecting shorter length from this CCC command.
+>  		 */
+>  		dest.payload.len -= 3;
+> +		i3c_ccc_cmd_init(&cmd, true, I3C_CCC_GETMXDS, &dest, 1);
+>  		ret = i3c_master_send_ccc_cmd_locked(master, &cmd);
+>  		if (ret)
+>  			goto out;
+> diff --git a/include/linux/i3c/ccc.h b/include/linux/i3c/ccc.h
+> index d8052949e57e..2506d83b8255 100644
+> --- a/include/linux/i3c/ccc.h
+> +++ b/include/linux/i3c/ccc.h
+> @@ -12,6 +12,8 @@
+>  #include <linux/i3c/device.h>
+>
+>  /* I3C CCC (Common Command Codes) related definitions */
+> +#define I3C_CCC_RETRIES	1
+> +
+>  #define I3C_CCC_DIRECT			BIT(7)
+>
+>  #define I3C_CCC_ID(id, broadcast)	\
+> @@ -374,12 +376,15 @@ struct i3c_ccc_cmd_dest {
+>   * @ndests: number of destinations. Should always be one for broadcast commands
+>   * @dests: array of destinations and associated payload for this CCC. Most of
+>   *	   the time, only one destination is provided
+> + * @retries: number of times to retry a failed Direct GET CCC (see
+> + *	     &I3C_CCC_RETRIES)
+>   * @err: I3C error code
+>   */
+>  struct i3c_ccc_cmd {
+>  	u8 rnw;
+>  	u8 id;
+>  	unsigned int ndests;
+> +	unsigned int retries;
+>  	struct i3c_ccc_cmd_dest *dests;
+>  	enum i3c_error_code err;
+>  };
+> --
+> 2.43.7
+>
+>
