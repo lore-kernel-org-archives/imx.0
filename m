@@ -1,244 +1,361 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013056.outbound.protection.outlook.com [40.107.159.56])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BB02EDD69
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 13:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783516854; cv=fail; b=CNj7ir6gxvZI4c1bju7FZr4kgU9MPzH2EhLWwydx/tIkoa5udTeHX1DRKRV/o/tb7EztyYEvLnqDZMk19aMkQCOz+hlBTeuyZcS+J1AxmZCBwg2pn6e/WziPT1Qtcffb3ppyJBZigbA+qtCCe0ibQ5WSWGYTGfzAcJ8asdwOVvo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783516854; c=relaxed/simple;
-	bh=a4dOfB1WWgcdKSv6CcF8xs22WZQxriOtcL4MvD39Z7M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PZ8FaPrGOt9TaoxVUVw7CDD4NJcdAjzdItN5rJUDRby7YIF2iIiBA2Xx1F3RM8i8h8OlFi5qYamm0ahNip34PJbDb4QH8Jt75Dus052Nuptth1GTo86mBSnFPkW3V6Tbs6cphUghLtVAOIYjYOaBVL9qyex6wPvb+Ygvp8d2ZHw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Y7/DHmeT; arc=fail smtp.client-ip=40.107.159.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D0A41B358
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 14:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783519485; cv=none; b=Ijz4Yy2aLwKicHyYCr6hONdvCEKOVevBnAyTwunG19vcXV3glBEFRF2GUi1CaNycU5ilEaDUweaqsczyCa3/iSIjC9isFz4UKCu3lSZPZoZ/bRrDS2/1E3E3kOnWDTA2OhGk6E+K5e8FlZAFaGcOETrWI6eRBlwRH46HNZvlQXE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783519485; c=relaxed/simple;
+	bh=pZDAo2fXU9zm/L+nZo4Y/MZEcAPv/9yavajM2aOb2CM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=lqu0KVxMz/EOo/7qMoBBH8n5H7eQ77nox9EnSGKEhLebRm9nB3CIdJO2CaNBd2frXnDSB57lX9/kd/F8TR+GakDsTR79UPUd8/c3qIZ/4Dk4Uclo5eciIdYJLa5qPG3TinjkzTZvoC7YVsEVejWhN/jNREL9+rlPswpDiIgMNt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XYn5xS7i; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fpiNds0w; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Y7/DHmeT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=noN9A4mN0WzWLFEvqWojEyuGlXhJ2JV85SvNsTizS7RKfXNntU4nmVtAYpgpLTzQsOdIhdnkEgWTEfpwruX4lfe7JVDsUBjsU96PWcWgEd16JOsDPHTM+H/AyGMNrtiUUrvTqGNkAz0GNMHgfexKdXrqn9DzIwSgG4gV+ofJbfS0+XEmxulm6ieue8kmBygHmNGU3O6Oo+zgC+47OqauOb225DzPIBsknfjnUR47S4Y4yhUrFfQryxV91rERIoFiy6GjpvCr0tNk6k8pUUSaf4c6brXKsSOGtUqymKQTDmS4LRu7Zx7M6PZI94uUwLSZahLK3jcnhqGy4+fBPfLHeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PDPDme4CasIMSK8VR2NeqNmVv2wzfzBy2f1sMZAv6Eo=;
- b=GWLFi9KPBRgRWKqRTD81teuPIRCWMuW7SB3XLKQK/jEFIcnZwqSMOCxusJftAWZC7QesxMYfXIMQnaTknMkX2dYlTt0qJxp8dOkww2+R8bpKVZouX4tnW1D7UROUmpxWa/f2eJuK/RVMl/oPp039J5za6PKk8IqNgzCMJLVi9ANyLWHy28qKWbJ+OM6D/CoqRso6mQ+xdSzhyJ3YHGDfKzMWF5HQytil5mf4U8YVdVX2v/B5MRX9+6JGceWic3qSsVGzVWXL07j2BI+KKo4WA265eCqQmxGhxGRStkHCmFwarFu8Q3UuVWz8weLL/ffVKGvq2vtF87D8TCinaDFDfw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PDPDme4CasIMSK8VR2NeqNmVv2wzfzBy2f1sMZAv6Eo=;
- b=Y7/DHmeTu67yCQcOQRsBrlq8w23yiXQiHuACOcNEUrcnUrOtFGjD6dmoLykW5AZl6EwapheU3U1KmL/xt1DRjXD5RWsgrHCVqxXkm+HFypa2EtCL2wmAycpTmBr0f0qjq+xBzumR0S3+dWTEJE7jWC3iEsP4x3zFh2BwFo0rWVJezn3Za4cCftcGqAR5ZkVVYf2vG0/N3pzTeSdldmVOzN0xe12hSrW1gCB5dOLfN4TuPfWKTxB7Bhpm0TCHeNmxvCR7B+QdTVIQYbJnR/kBHa3Re4ChZ0cGgYpbCs4l/N1qPpd69k/Wh6G83e+7HoBANbRI4rG/hPSug9uiRadqHw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PA1PR04MB10793.eurprd04.prod.outlook.com (2603:10a6:102:485::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
- 2026 13:20:48 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 8 Jul 2026
- 13:20:48 +0000
-Date: Wed, 8 Jul 2026 08:20:34 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: tze.yee.ng@altera.com
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jorge Marques <jorge.marques@analog.com>,
-	=?utf-8?Q?Przemys=C5=82aw?= Gaj <pgaj@cadence.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>, imx@lists.linux.dev
-Subject: Re: [PATCH v6 3/5] i3c: master: dw: Map CCC hardware errors to I3C
- M0/M2
-Message-ID: <ak5Oovrfj-o0Fhcx@SMW015318>
-References: <cover.1783493867.git.tze.yee.ng@altera.com>
- <05994f0479041f3d8d199babe2a4535d6dcba3bf.1783493868.git.tze.yee.ng@altera.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <05994f0479041f3d8d199babe2a4535d6dcba3bf.1783493868.git.tze.yee.ng@altera.com>
-X-ClientProxiedBy: PH0PR07CA0043.namprd07.prod.outlook.com
- (2603:10b6:510:e::18) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XYn5xS7i";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fpiNds0w"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 668C3aWG2727603
+	for <imx@lists.linux.dev>; Wed, 8 Jul 2026 14:04:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7S+MjchcQqeSwjWf/6h1QHGeCWnNy62k3EwNXzSfzYE=; b=XYn5xS7iC7VCcWix
+	xhnhTIcvDNsc1/nvfBhoPlNbOhiej2Avy11JpIjojoQiY5W7VaF6F64qB174NOCl
+	2CQumGJy+kTFU2ACISEHy1qwarBGDEfgE0UKgxgCq12USRJvImgwzKRpvwoihH4a
+	E8Dc1MurOOAeC6VGsIkChHnSuAel5oo0Yf4wS7G8TILVblGK+LApBlJNmAFhJrE3
+	iMNn1EO5gr+PsJHXUPL5j/Z3LK24ZSi7OEIPpG/qFsg48yuKx+nfFFww6QPfWnLo
+	FZxPnOLImbYNSBpBGfMHvs2t6mdaDaMv4RClDsBsjH5NqC5WGizNkXg9m+Uo2Pue
+	d726+Q==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9c6aawra-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 08 Jul 2026 14:04:42 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cc88e22f92so18785135ad.1
+        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 07:04:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1783519482; x=1784124282; darn=lists.linux.dev;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7S+MjchcQqeSwjWf/6h1QHGeCWnNy62k3EwNXzSfzYE=;
+        b=fpiNds0w2TzmgQOgJ4x6heHpp17euD0zKS6KsksecsQyCZQ5BNK1nv9uLz/Oeozv8r
+         KymGvVTIMy+eLBEEjxnJQZeazB/NV9qSsVnSueBnyDZTRESd1qtOwh0uo7M6I84t0q9B
+         9H06ru8UCCr9bMb5Qi/VPjHDA51osAlsySE369UrkNP3MnWs4QKuLa6F2w9EPLg2b+k9
+         6ZnNO7tN2kR/biN+jgTuq5c5LrQypm1qmEWupxSZK4JCx/L2cIUjrxx9FDzCQTYL8147
+         RgfFA74NxMFhmyBDd++atPNH6E0erwQCf6EYW7BZ77T+JeIBwPtDLFygz1pfv1aYiZZj
+         AtBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783519482; x=1784124282;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7S+MjchcQqeSwjWf/6h1QHGeCWnNy62k3EwNXzSfzYE=;
+        b=m29+S3XxxUo2PvcgmCgcr4pkeZEHjPDQjzBHBmgq3BTgKT/0S9oYKieT28VfJbDgM6
+         10nkoRtVr0iBLZB9UYKp4mUEB+ICY+Itjc/KsHehIORbRdWQ4BxSW9bGhY8iOe4KmMZb
+         TiVZVGsGE1JgngB4DGq7hBBwdcremb/s5FC58tYrLhlLcc1FM7Hu3KHLpOyx9K0AhrnZ
+         4CJOEG/A7hf0R+xBQZlDi4aHtu33h3GgeU2ha+CcWVdTjgP3KCFZJn1DISSKMlBfHt77
+         xfjxHxzEtidzmwOyfIKBQ6b+pgsTrCkTJT1QdNAt/5QVlrdtcXAz0c11JyTbhdgM92cs
+         wxDQ==
+X-Forwarded-Encrypted: i=1; AHgh+RryEGznC5YHlm4gYHi4cYsJr1a/4nSxwbdtXG2zdAGZH1ENbvFOUZgN6r2u8X0We+xiY2Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxQX24W2cZErVN5y3AFEwcWINyZ4dFAoh1gZ3YzmTJQdqy7wsCd
+	smyiCBtbbGmrcXMqxbHKHWU1H4LCPO5TmvBkc2UJTgnsZ/95itOjQHmZCEOydXdAT8h2YRVtgek
+	aazCM5JhJx4+shewIUxKMZRUs7Hnl83o+2jye8lIIdbaKLTcRAnbejpw=
+X-Gm-Gg: AfdE7ckJbB9V32XF5M5PJfr4TjrF6vQHW+soJLn2/+dhTrI5uk+0VvUXRm4EPPPO4yY
+	p/aQqZguHae56VRJVZs/n9YQDFIsB4+/lAd5WjcwTN93xaQZn6s+WBKJi8YB7WuR8sC7CAli4Xb
+	GGpS47S1ix1EYKpovG0IhdxPCYyQHjKBE+GtViM0RUlGh9MPaMQX7DzVxmu2cegYv+6Ja4Ilbwr
+	lIJ4y9oVBWb2dys3MvsJTi8Tk0XVn2yH7PGFBUSaoTgrdYd3Dlln17RSjxPcl7k5/6/0gxoiRfC
+	HUxyqYJgEvuc+Zx4xX7Z2i71k7WBPDiZj0Wf5RaSB5l/PdmDvAFGN4LhksVze0c6jA58CG7iLUq
+	l8ThHGUiemFJR6mk=
+X-Received: by 2002:a17:903:110f:b0:2c9:ae0b:61e3 with SMTP id d9443c01a7336-2ccea2d7e14mr27467155ad.2.1783519481632;
+        Wed, 08 Jul 2026 07:04:41 -0700 (PDT)
+X-Received: by 2002:a17:903:110f:b0:2c9:ae0b:61e3 with SMTP id d9443c01a7336-2ccea2d7e14mr27466655ad.2.1783519481069;
+        Wed, 08 Jul 2026 07:04:41 -0700 (PDT)
+Received: from localhost ([151.243.38.149])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdcbe2sm29180235ad.9.2026.07.08.07.04.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2026 07:04:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PA1PR04MB10793:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6aba97d-76b8-4502-a855-08dedcf3b918
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|19092799006|7416014|23010399003|366016|11063799006|4143699003|18002099003|56012099006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	ME7wN/pqcSb8n/btMcGy+J+3kmqU0YDxAalbbeB53mLd9el/uZsVecydfg2owJOg7iE8PVPabmlbqiO8FpKO/jAktj/QgPQS4JEY/eW0pdncbNhEVzWNRlUIIYR06srQfKAvuAXLnSDcFg5SDxj7f2p/VmC6xTeBezkAbFTJCLQqg/6TslvBgn6zQRALXxIauT+x+xpbeY2SStgSpP2BttHgBkrRjr7+ySoqQPJAxtPZOv75huctb+1U0vBm0blxv8I5zs5PGiHe1Nj1pDiT6vdxteXaUuDlsc0YrIOa3z+HVSyC3H6alg3tBbjcigh7b85fb2RJX4JxYmhecDWvSVHyxo2F5Z5aAP4ASydZMWzr9xnEPmJLPmKrevVaGq1hT/Ly4zc7Na4WG3oJjzrk0ocAvfcr56oQjQbgvlLqAFMAX4W7UiOV9hfTCjcvp6GZR/qW4z52ygTE4FLzU4St/XI4IUw2YbmZmpwotQqufy0hSbVjOLein+1NVuQxG0bLnlTNkQdGV/50JMDonCChV5o1YvKoVQ26nOmgOJeJhWvgArfmjy4lZ99kyzeEC6EvxUStoaAZwhgzQMwh9D4+HaWFq1c8SsQgzeUVfVvbAFcV0CqhJHgyzfFZbKPik5THo8rljAdGJ7tVXHcFCzxKcdrZX5hX/NHeN3XrzzlNKSM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(19092799006)(7416014)(23010399003)(366016)(11063799006)(4143699003)(18002099003)(56012099006)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9VK4aAar3StjYCSYhPtXPyePhBV5g6sMNmGbmIK+DTGYIqUaw+zIo7QK4hhc?=
- =?us-ascii?Q?vyDsOvxM4r75tGFenpR9mgrfBT37AxCge+fkjGcswARXKI3Yn39D7nMPxIVW?=
- =?us-ascii?Q?DrUMhKsIhx86u+HulcMrYwOmyfTSnCqDqgVGdYRrOy5Rp2aRCKDkryvkPCSA?=
- =?us-ascii?Q?iPDtxE2R7yc7rqz23oxdjTnLG95QKZjP+fXe8rXt3zP7F9EiyJMDCxwDxWZW?=
- =?us-ascii?Q?qb4eFmBl+95u0nGgsxwbpESIgbIe3+2SNrdXEmrLoyKPhx5Q0LK0BhMzegS4?=
- =?us-ascii?Q?b36E9N37wB2DSXoItSn3RNV8WJoLA0vs4DvlgcojLqLQA2esrEzaU7b6Wu9m?=
- =?us-ascii?Q?wPD/bNZfMhSODRK8mSRVPON3M8Xo58JxzIpicXQb1gyfMNR0f27x+3TAOgHI?=
- =?us-ascii?Q?OwE5F0SISe1AkcV4hS2lZq2KyyN+TG591GNkYxfS2COmBjs2zoH0+tdscHDh?=
- =?us-ascii?Q?ree8msjzp7Ak1kuIJeMZ8EaMwM8M+HoL3SiIZ+ug9EwvGI7gHdOabyjFn35F?=
- =?us-ascii?Q?2jb2qvbg1IZSjsSIJ2Vfr+8AdBYeoUIzBGONKfyKkEeHqX7sFLvm1F/YEwJq?=
- =?us-ascii?Q?5Owa26TTzcX1c9Lx+EfoPhqZGPHAr4Af83v2NZRLZueh88VKo3OCjmyNEkLy?=
- =?us-ascii?Q?XIh86MNdniyrlrMqNCv4NahW2yLjhsDm8mlrJfY9L8E37WxSFovTKm+AQjVt?=
- =?us-ascii?Q?J+BPngUjN5BZOZK6ungIHNaSEV5ZL1vpmvPwXxbuqC3HOAt+enSMTD0x2tTk?=
- =?us-ascii?Q?0VfVB8uLwd0c5gCaQbQCY/fUe2XBFVCcZ1/zuCmPO6KlVosNMr0jDGxAhMR9?=
- =?us-ascii?Q?wjb4q4yBEGeSOsw2GtvjVsQSO4Ke9mutnN0J/eNdkEykyFqqcDYCyHwJcasN?=
- =?us-ascii?Q?fNjNcQuu4K0377OZbNyOkREbmmjedFnLy0Y0xGxQes/2+m92E/uKGsZpFAbC?=
- =?us-ascii?Q?302qV0N1AFWoU8sTyDFQ7RxhAy9toJaHSF7CvuiHS9JC8HMT11rqI4Y4Vmos?=
- =?us-ascii?Q?70hm8WC+meQ6ACEGY3egOXDTXqggPfThv2KFWEcFJad1NEJW9Jga7CQkliIp?=
- =?us-ascii?Q?yBkWiATM22xLP3+dTB7qzNdk92+eSxdqqX+oEHlI0ONbzYqafly8GioVUkt0?=
- =?us-ascii?Q?8PILsLPXDtqmTMVsSuDGjnAefTnx9QHhkO/6TjZthKJ8G3uOowdIavTGjl2N?=
- =?us-ascii?Q?zRVhiB8hoVASiB0tH5HWLJZQVEuaHQgpE6BFZr3qtD34ZeEMqp6aDM3Edk/G?=
- =?us-ascii?Q?yQP0HMmraoMVhHCYS/durEEmkzDJcKBi96zhVupNvxtJM0p3+Cyd1WX9Paq/?=
- =?us-ascii?Q?ZvjmLdxT9jOH02idcK7nYq39G0c/yFJm/clti8Asr9NbO5cxYJ5yIgYHgUl+?=
- =?us-ascii?Q?rgcNGMwmKwPZYhdJrNn0fJAn4WNpxPQ0JaQqcet/Chjhzq3Dpa1y9kY7y/Y1?=
- =?us-ascii?Q?BsciRQ0JJ9jNbPGlLcZXMr6GhS5uhftHGJl1jbVpcOy9ODuFkvgYsDMGF9A0?=
- =?us-ascii?Q?yconiOoIqChrf/Ad3m05hXWXfpghp0KrmlgA+SjkQxLo2279ckwhSNmOnNEa?=
- =?us-ascii?Q?4FjrdBuYSxUF5SkVJUeb+3SP1DCA9y/ixNNItVTBOtoH0sgEMDPxh5/kiViO?=
- =?us-ascii?Q?IkyRaMd21QA18lpy1CGsyhSRX5yu67pUVCAQKq+HZInYD5/i7C6LosH8mYfg?=
- =?us-ascii?Q?UMD2uMQmsCZxVbLKZKdoq44PHCn6z3DSHkc6cSlsy4fS/olYOa0GsWVTkhRJ?=
- =?us-ascii?Q?UTG6xjiVk2ZXGVIhA2zQmH4TYpEjQujEnlxof+LLDE4plHiThxDj?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6aba97d-76b8-4502-a855-08dedcf3b918
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 13:20:48.0054
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hgAirk+NELo2u7DpXAZj5gfAgC04XhvKE5F0B8ETK36fxiCamx7Uer9El5M0YTCALyA+TwlKIBK2HQEvc2tT5ZyfU7d0iyynH5CPHRqzy/CnUKtgEYtlgz4cCPWTMSW8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10793
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 Jul 2026 22:04:21 +0800
+Message-Id: <DJT8VTO893BW.1DXRZNVOUL362@oss.qualcomm.com>
+Subject: Re: [PATCH 4/9] drm/mcde: replace struct drm_simple_display_pipe
+ with regular atomic helpers
+From: "Ze Huang" <ze.huang@oss.qualcomm.com>
+To: "Thomas Zimmermann" <tzimmermann@suse.de>,
+        "Ze Huang"
+ <ze.huang@oss.qualcomm.com>,
+        "Alexey Brodkin" <abrodkin@synopsys.com>,
+        "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+        "Maxime Ripard"
+ <mripard@kernel.org>,
+        "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>,
+        "Joel Stanley" <joel@jms.id.au>,
+        "Andrew Jeffery"
+ <andrew@codeconstruct.com.au>,
+        "Frank Li" <Frank.Li@nxp.com>,
+        "Sascha
+ Hauer" <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>,
+        "Fabio Estevam" <festevam@gmail.com>,
+        "Linus
+ Walleij" <linusw@kernel.org>,
+        "Hans de Goede" <hansg@kernel.org>,
+        "Alex
+ Lanzano" <lanzano.alex@gmail.com>,
+        "Oleksandr Andrushchenko"
+ <oleksandr_andrushchenko@epam.com>
+Cc: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <linux-aspeed@lists.ozlabs.org>,
+        <linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>,
+        <xen-devel@lists.xenproject.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com> <20260705-drm-simple-kms-removal-v1-4-b4e1ca053623@oss.qualcomm.com> <4d1ddd5d-2635-4ee0-8481-78f3a034233b@suse.de>
+In-Reply-To: <4d1ddd5d-2635-4ee0-8481-78f3a034233b@suse.de>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDEzNyBTYWx0ZWRfX9q/DE8JECi4Q
+ UP3tlmANb+1cVCVT88F7d+OCQayZetLiCu2q6gASmQDyGlkRsQBhKgwN9DsM39lA67/R8fBP97I
+ oyj/e9U7sM02UDRyumEF/X3xtjdykO9Ve90cz8wlXDbMbeD1Jm4NKrtIp4oEG2bH8k+nunPeUm1
+ SJbzBaw89BFbH+aPQz2vnkcLNs+/707urupGCvnczgQOvJkP8agO/qVo2wEbawujZTJBawKdeQP
+ 90Zr7JM4TOQYU/yT/z4Z0SAC8Z4LSucIrzl9rctoBcAzDAtElDrvgQR0cnNlF7+6KU349xOgCLa
+ y/fi+2vBODbxIz9iTCoOrwBCrJ3rMXNy8rv2jKcuSKuF2LhA+5/9xfKxSfw0bnlCuIaEQLxL4Um
+ kn0cAaDy/rS/HbdBFfmPY+qYyCeOvpHPNFzI02QejaBMHM8c/g5NPx4WB18fEVvzKCK1jZD1DSX
+ 3MEV3UEckg4tp84c20g==
+X-Proofpoint-ORIG-GUID: PZYQrDB0N4IIOTz44so-7447XcUmGfcZ
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDEzNyBTYWx0ZWRfX40dDuFz6Unzs
+ Q5dir6bhV0YmA5k1cSlPbGOeDcIqiIMwucc5u/zHBRQuKWOb9mJg9ZCe+XEnGhZwRqAjlR93rd+
+ TpzDP9lQewemzYmtccd1cwkZjTsSvfc=
+X-Authority-Analysis: v=2.4 cv=UehhjqSN c=1 sm=1 tr=0 ts=6a4e58fa cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=cNux22OjBTKCC6TmznXXXA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=P-IC7800AAAA:8 a=EUspDBNiAAAA:8 a=7ZHkO8slaP7M83yUoBMA:9 a=QEXdDO2ut3YA:10
+ a=324X-CrmTo6CU4MGRt3R:22 a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-GUID: PZYQrDB0N4IIOTz44so-7447XcUmGfcZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-08_02,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 spamscore=0 phishscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 priorityscore=1501 bulkscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607080137
 
-On Wed, Jul 08, 2026 at 12:17:39AM -0700, tze.yee.ng@altera.com wrote:
-> From: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
+On Wed Jul 8, 2026 at 9:02 PM CST, Thomas Zimmermann wrote:
+> Hi
 >
-> Map DesignWare I3C master CCC hardware errors to I3C M0/M2 error codes.
-> I3C_ERROR_M2 is reported only for broadcast address-header NACK
-> (RESPONSE_ERROR_IBA_NACK). Target address NACK remains -EIO.
+> Am 04.07.26 um 20:31 schrieb Ze Huang:
+>> Convert MCDE to explicit plane, CRTC and encoder objects.
+>>
+>> Keep FIFO, event and framebuffer update sequencing intact, and install
+>> GEM framebuffer prepare callback explicitly.
+>>
+>> Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
+>> ---
+>>   drivers/gpu/drm/mcde/mcde_display.c | 162 +++++++++++++++++++++++++++-=
+--------
+>>   drivers/gpu/drm/mcde/mcde_drm.h     |   6 +-
+>>   drivers/gpu/drm/mcde/mcde_drv.c     |   3 +-
+>>   3 files changed, 129 insertions(+), 42 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/mcde/mcde_display.c b/drivers/gpu/drm/mcde/=
+mcde_display.c
+>> index 257a6e84dd58..4d86fa5030eb 100644
+>> --- a/drivers/gpu/drm/mcde/mcde_display.c
+>> +++ b/drivers/gpu/drm/mcde/mcde_display.c
+>> @@ -10,6 +10,7 @@
+>>   #include <linux/regulator/consumer.h>
+>>   #include <linux/media-bus-format.h>
+>>  =20
+>> +#include <drm/drm_atomic_helper.h>
+>>   #include <drm/drm_device.h>
+>>   #include <drm/drm_fb_dma_helper.h>
+>>   #include <drm/drm_fourcc.h>
+>> @@ -18,7 +19,6 @@
+>>   #include <drm/drm_gem_dma_helper.h>
+>>   #include <drm/drm_mipi_dsi.h>
+>>   #include <drm/drm_print.h>
+>> -#include <drm/drm_simple_kms_helper.h>
+>>   #include <drm/drm_bridge.h>
+>>   #include <drm/drm_vblank.h>
+>>   #include <video/mipi_display.h>
+>> @@ -132,7 +132,7 @@ void mcde_display_irq(struct mcde *mcde)
+>>   	writel(mispp, mcde->regs + MCDE_RISPP);
+>>  =20
+>>   	if (vblank)
+>> -		drm_crtc_handle_vblank(&mcde->pipe.crtc);
+>> +		drm_crtc_handle_vblank(&mcde->crtc);
+>>  =20
+>>   	if (misovl)
+>>   		dev_info(mcde->dev, "some stray overlay IRQ %08x\n", misovl);
+>> @@ -157,13 +157,35 @@ void mcde_display_disable_irqs(struct mcde *mcde)
+>>   	writel(0xFFFFFFFF, mcde->regs + MCDE_RISCHNL);
+>>   }
+>>  =20
+>> -static int mcde_display_check(struct drm_simple_display_pipe *pipe,
+>> -			      struct drm_plane_state *pstate,
+>> -			      struct drm_crtc_state *cstate)
+>> +static int mcde_plane_helper_atomic_check(struct drm_plane *plane,
+>> +					  struct drm_atomic_commit *state)
+>>   {
+>> -	const struct drm_display_mode *mode =3D &cstate->mode;
+>> -	struct drm_framebuffer *old_fb =3D pipe->plane.state->fb;
+>> +	struct drm_plane_state *pstate =3D drm_atomic_get_new_plane_state(stat=
+e, plane);
+>> +	struct drm_crtc *crtc =3D pstate->crtc;
+>> +	struct drm_crtc_state *cstate;
+>> +	const struct drm_display_mode *mode;
+>> +	struct drm_framebuffer *old_fb =3D plane->state->fb;
+>>   	struct drm_framebuffer *fb =3D pstate->fb;
+>> +	int ret;
+>> +
+>> +	if (!crtc)
+>> +		return 0;
 >
-> Signed-off-by: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
-> Signed-off-by: Tze Yee Ng <tze.yee.ng@altera.com>
-> Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-> ---
+> Your planes' atomic_check functions should always run=20
+> drm_atomic_helper_check_plane_state() first. Otherwise, the plane state=
+=20
+> will be incorrect.
+>
+> If there is no crtc, simply pass NULL for the CRTC state.=C2=A0 I'd advis=
+e to=20
+> duplicate the pattern at [1] from lines 487 to 498.=C2=A0 After=20
+> _check_plane_state() ran, the atomic_check can do additional tests.
+>
+> If not looked over all the other patches for this problem, but this=20
+> comment would apply to all of them.
+>
+> [1]=20
+> https://elixir.bootlin.com/linux/v7.1.2/source/drivers/gpu/drm/mgag200/mg=
+ag200_mode.c#L487
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Will follow, thanks
 
-> Changes in v6:
-> - Fix dw_i3c_ccc_set() to use dw_i3c_ccc_map_err() so SET CCCs get the
->   same M0/M2 mapping as GET.
 >
-> Changes in v5:
-> - Unchanged from v4 patch 2/3.
-> - Add Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>.
-> ---
->  drivers/i3c/master/dw-i3c-master.c | 28 +++++++++++++++++++++++-----
->  1 file changed, 23 insertions(+), 5 deletions(-)
+>> +
+>> +	cstate =3D drm_atomic_get_new_crtc_state(state, crtc);
+>> +	if (!cstate)
+>> +		return 0;
+>> +
+>> +	ret =3D drm_atomic_helper_check_plane_state(pstate, cstate,
+>> +						  DRM_PLANE_NO_SCALING,
+>> +						  DRM_PLANE_NO_SCALING,
+>> +						  false, false);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	if (!pstate->visible)
+>> +		return 0;
+>> +
+>> +	mode =3D &cstate->mode;
+>>  =20
+>>   	if (fb) {
+>>   		u32 offset =3D drm_fb_dma_get_gem_addr(fb, pstate, 0);
+>> @@ -1149,16 +1171,14 @@ static void mcde_setup_dsi(struct mcde *mcde, co=
+nst struct drm_display_mode *mod
+>>   	*dsi_formatter_frame =3D formatter_frame;
+>>   }
+>>  =20
+>> -static void mcde_display_enable(struct drm_simple_display_pipe *pipe,
+>> -				struct drm_crtc_state *cstate,
+>> -				struct drm_plane_state *plane_state)
+>> +static void mcde_crtc_helper_atomic_enable(struct drm_crtc *crtc,
+>> +					   struct drm_atomic_commit *state)
+>>   {
+>> -	struct drm_crtc *crtc =3D &pipe->crtc;
+>> -	struct drm_plane *plane =3D &pipe->plane;
+>>   	struct drm_device *drm =3D crtc->dev;
+>>   	struct mcde *mcde =3D to_mcde(drm);
+>> +	struct drm_crtc_state *cstate =3D crtc->state;
+>>   	const struct drm_display_mode *mode =3D &cstate->mode;
+>> -	struct drm_framebuffer *fb =3D plane->state->fb;
+>> +	struct drm_framebuffer *fb =3D mcde->plane.state->fb;
+>>   	u32 format =3D fb->format->format;
+>>   	int dsi_pkt_size;
+>>   	int fifo_wtrmrk;
+>> @@ -1298,9 +1318,9 @@ static void mcde_display_enable(struct drm_simple_=
+display_pipe *pipe,
+>>   	dev_info(drm->dev, "MCDE display is enabled\n");
+>>   }
+>>  =20
+>> -static void mcde_display_disable(struct drm_simple_display_pipe *pipe)
+>> +static void mcde_crtc_helper_atomic_disable(struct drm_crtc *crtc,
+>> +					    struct drm_atomic_commit *state)
+>>   {
+>> -	struct drm_crtc *crtc =3D &pipe->crtc;
+>>   	struct drm_device *drm =3D crtc->dev;
+>>   	struct mcde *mcde =3D to_mcde(drm);
+>>   	struct drm_pending_vblank_event *event;
+>> @@ -1381,17 +1401,23 @@ static void mcde_set_extsrc(struct mcde *mcde, u=
+32 buffer_address)
+>>   	writel(buffer_address + mcde->stride, mcde->regs + MCDE_EXTSRCXA1);
+>>   }
+>>  =20
+>> -static void mcde_display_update(struct drm_simple_display_pipe *pipe,
+>> -				struct drm_plane_state *old_pstate)
+>> +static void mcde_plane_helper_atomic_update(struct drm_plane *plane,
+>> +					    struct drm_atomic_commit *state)
+>>   {
+>> -	struct drm_crtc *crtc =3D &pipe->crtc;
+>> -	struct drm_device *drm =3D crtc->dev;
+>> -	struct mcde *mcde =3D to_mcde(drm);
+>> -	struct drm_pending_vblank_event *event =3D crtc->state->event;
+>> -	struct drm_plane *plane =3D &pipe->plane;
+>> +	struct drm_crtc *crtc =3D plane->state->crtc;
+>> +	struct drm_device *drm;
+>> +	struct mcde *mcde;
+>> +	struct drm_pending_vblank_event *event;
+>>   	struct drm_plane_state *pstate =3D plane->state;
+>>   	struct drm_framebuffer *fb =3D pstate->fb;
+>>  =20
+>> +	if (!crtc)
+>> +		return;
 >
-> diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-> index 6998ffd15f5f..c70f6876bd38 100644
-> --- a/drivers/i3c/master/dw-i3c-master.c
-> +++ b/drivers/i3c/master/dw-i3c-master.c
-> @@ -493,6 +493,7 @@ static void dw_i3c_master_end_xfer_locked(struct dw_i3c_master *master, u32 isr)
->  			break;
->  		case RESPONSE_ERROR_PARITY:
->  		case RESPONSE_ERROR_IBA_NACK:
-> +		case RESPONSE_ERROR_ADDRESS_NACK:
->  		case RESPONSE_ERROR_TRANSF_ABORT:
->  		case RESPONSE_ERROR_CRC:
->  		case RESPONSE_ERROR_FRAME:
-> @@ -502,7 +503,6 @@ static void dw_i3c_master_end_xfer_locked(struct dw_i3c_master *master, u32 isr)
->  			ret = -ENOSPC;
->  			break;
->  		case RESPONSE_ERROR_I2C_W_NACK_ERR:
-> -		case RESPONSE_ERROR_ADDRESS_NACK:
->  		default:
->  			ret = -EINVAL;
->  			break;
-> @@ -708,12 +708,29 @@ static void dw_i3c_master_bus_cleanup(struct i3c_master_controller *m)
->  	dw_i3c_master_disable(master);
->  }
+> The helper first does vblank handling and then handles visibility by=20
+> testing "if (fb)". No need for this test.
+
+Will drop it
+
 >
-> +static enum i3c_error_code dw_i3c_ccc_map_err(u8 dw_err)
-> +{
-> +	switch (dw_err) {
-> +	case RESPONSE_ERROR_IBA_NACK:
-> +		return I3C_ERROR_M2;
-> +	case RESPONSE_ERROR_CRC:
-> +	case RESPONSE_ERROR_PARITY:
-> +	case RESPONSE_ERROR_FRAME:
-> +	case RESPONSE_ERROR_TRANSF_ABORT:
-> +		return I3C_ERROR_M0;
-> +	default:
-> +		return I3C_ERROR_UNKNOWN;
-> +	}
-> +}
-> +
->  static int dw_i3c_ccc_set(struct dw_i3c_master *master,
->  			  struct i3c_ccc_cmd *ccc)
->  {
->  	struct dw_i3c_cmd *cmd;
->  	int ret, pos = 0;
+>> +
+>> +	drm =3D crtc->dev;
+>> +	mcde =3D to_mcde(drm);
+>> +	event =3D crtc->state->event;
+>> +
 >
-> +	ccc->err = I3C_ERROR_UNKNOWN;
-> +
->  	if (ccc->id & I3C_CCC_DIRECT) {
->  		pos = dw_i3c_master_get_addr_pos(master, ccc->dests[0].addr);
->  		if (pos < 0)
-> @@ -742,8 +759,8 @@ static int dw_i3c_ccc_set(struct dw_i3c_master *master,
->  		dw_i3c_master_dequeue_xfer(master, xfer);
+> And this needs to handle !crtc without returning.
 >
->  	ret = xfer->ret;
-> -	if (xfer->cmds[0].error == RESPONSE_ERROR_IBA_NACK)
-> -		ccc->err = I3C_ERROR_M2;
-> +	cmd = &xfer->cmds[0];
-> +	ccc->err = dw_i3c_ccc_map_err(cmd->error);
+>>   	/*
+>>   	 * Handle any pending event first, we need to arm the vblank
 >
->  	return ret;
->  }
-> @@ -753,6 +770,8 @@ static int dw_i3c_ccc_get(struct dw_i3c_master *master, struct i3c_ccc_cmd *ccc)
->  	struct dw_i3c_cmd *cmd;
->  	int ret, pos;
+> And the next block handled vblanks, which is not the right place. That's=
+=20
+> a preexisting issue.=C2=A0 Vblank handling is better done in the crtc's=
+=20
+> atomic_flush.
+
+I'll move vblank handling logic to new atomic_flush function
+
 >
-> +	ccc->err = I3C_ERROR_UNKNOWN;
-> +
->  	pos = dw_i3c_master_get_addr_pos(master, ccc->dests[0].addr);
->  	if (pos < 0)
->  		return pos;
-> @@ -781,10 +800,9 @@ static int dw_i3c_ccc_get(struct dw_i3c_master *master, struct i3c_ccc_cmd *ccc)
+> Best regards
+> Thomas
 >
->  	ret = xfer->ret;
->  	cmd = &xfer->cmds[0];
-> +	ccc->err = dw_i3c_ccc_map_err(cmd->error);
->  	if (!ret)
->  		ccc->dests[0].payload.actual_len = cmd->rx_len;
-> -	if (cmd->error == RESPONSE_ERROR_IBA_NACK)
-> -		ccc->err = I3C_ERROR_M2;
->
->  	return ret;
->  }
-> --
-> 2.43.7
->
->
+>>   	 * interrupt before sending any update to the display so we don't
+>> @@ -1443,9 +1469,8 @@ static void mcde_display_update(struct drm_simple_=
+display_pipe *pipe,
+>>   	}
+>>   }
+
+Thanks,
+Ze
