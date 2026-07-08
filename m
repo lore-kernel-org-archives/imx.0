@@ -1,76 +1,70 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010062.outbound.protection.outlook.com [52.101.84.62])
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021132.outbound.protection.outlook.com [52.101.125.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655E03FADF1
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 14:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D05B3B7765
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 14:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.132
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783522447; cv=fail; b=owViRQ9oMpClTOGX8zySJpchcYo3N1ukAXBboz+gHOmnXm2A8uQmhm6Igg2oQm1G22jHC5jN/mi6vsflXdnbiqoaY6wseAjmJdTNf/kPOkRfT9UhirNBlQ7BNLaAvYANEQVKsTIrdCCVOJeoqpfAArfn6ZNnnokobmDicd9ZR8U=
+	t=1783522769; cv=fail; b=kBzWsB+5hj3yaE5vGEakCH6ugqzQAQQydqwBb525Can6OFNtwz3NTAeSCpYzfFlSMAhunUI5KUtj4X5CAqfWw6qAVzYctvsbk97Ng+eP22NuQ3xuWhUckH5wjVDYUuDEFAcR0ByHlS7Tx7taeDLlPviEKX1Z09g4W0ZOtkjE49s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783522447; c=relaxed/simple;
-	bh=lV4iW9ojc+Ka8HAenqzg5TERHNr6cbKrpbj0ZEEQ4a8=;
+	s=arc-20240116; t=1783522769; c=relaxed/simple;
+	bh=eNIKwONsp71McZJNBY1dVB+jS1MbHIo8s1WDvgvYwjo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lnhc5pxy/B+rJEe+b/BAcE10vItlpd6Csh/nJPzAVLto8/OQilrvbsJ1WDQmgxs8XMGNoWI1VTH2+GDoDVHkfyGpAbaJqLrLtgz4leVPkrH7W0TXRe6HnC0Q4s6GO1Gi3G6B4mGXNGIm744Ly4EBbGPT2C8gNYSmRdmwkpkPyxs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bvLk8SWl reason="signature verification failed"; arc=fail smtp.client-ip=52.101.84.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jdZuQtevxclFUDBdypkoq1LqPG2zuHEj+mQ2inE/QzCfsh0y/kxYEtSdKi+Cpa9No5yp6x07XsG9Y0YjEkKNH7a7MYzwNgi2ovYdmCUNCy87PwidXak+KIbcJOI/FupFDn2odEhl6wyjnOTFks2KtMvL8bud9wFHKpjTY0Jpfyc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=PmovbEYB; arc=fail smtp.client-ip=52.101.125.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bvLk8SWl"
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="PmovbEYB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fSuuySyTFr5xxCoB7YxQJU8BXklQ3z1adJIksQLn6yZWI5nOVKbGQB2BxgE3VYtp9g9qhEAan+a6z6vm9yx6eEcZVp7gcep/qwLKdxZRdjOEX3Q+yykMD7XbW/jV9nFQaXLI6pWGmLe6CjwkOa/Hzm74NuYk4rDF4UmMNCPUerQ5U/0uNV6sc8AcJTCpR+cakM7SADfhAYlXkwKJrt755ShSf8JQQkp176s60Gv7pv1aGW4BrKyypUOfz/CDS5IzupC5dvK5RNVd0QoJZm/6NsFqasSY8ZRVg2GlwIbBsvZXSDoJrCsZBMHNO1bHHO0CDdupsYjrR1IvjRGxSxIZ1g==
+ b=d/ZHIak4yIFchA7PedijbD/XEoapTMETACyp9Nc8m7HUc/Cydg2c8XwMgTwYL5TT4m4LUSK+05PJRd+OvIgX5Bl17QDAe4pgmSbK4G7HzZX6aLrBQQvSjTXLXLxUu9eTqtzPBJBUF/J+sHdYe1TcHid1RU7AZlY5YILZF15CBO4L8xGUZphcznocX6gad78nyusjMfZWEJwIwJB3Xb0MEVqIHq2VmihD9vY6151gTKMpK8HgtuySGYQuZojFS0/BGR5WQp2T4IaoffEbDcsDZAaeaG7FIbqt+TT6h1zTtBsfqb4ANZJ5MtVmHzu3kkcXVNVaK8KRlXlBWrd8yQ7rew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cQ/PXep9HzV/wFH83SF8oHldU7L95x/GbnizAExu7is=;
- b=SqjSRG80UfQBSkWZPwYW7cl+TAgSioe65axpX8Uwao6MJuUXj7jCL3SLtTJPpjQ5CE5Zaq8G5MQQDg0MNaScV0BUAZNBhff34fQmxTf/4GdC52Qj65+Gw/YZ6Aok1kZNyI0hx+0tmI0QoOpO0gOQhis5+G6mcHRrMLasc7w+a3+F94j0DZR5IOCxXu8jpuo/f5jTgG1d1I1pDyMb7wgCiCvdLXyo345s6rYqJZvgMTXzejFdNisaE59rd2gvEkSGMUGUVZM1QSu1FAgKGRlUEtvpPXlrq7LmuhyWbtTOK2nP4M0EgOZdS/kCLPo4amUK20nIIuw9qxIQs1JkLvx9PA==
+ bh=iZ7gHoOpTW5FUvLG5q0wLKL/3AqrhvNpgjdxkKlT0w4=;
+ b=r4z/yY3bEdh0Q7wJGc6EV0ec5Oagx9t+e0xSSJ8yC3A+mVwIe9CQDASBfwlNBOo47SmbIjGZEc+vNScnxYOkE1TBdzkadbYrQMNDNmA4VfuUI40+I/UApNxpBhiYd0FwoCnAjVSYjNRl6h8x6MsONQd6Yc3W+avwC2XA4MI8nH2S4QNHSkbsobfJP8tqhXfX53sSQx4AhwR4ZDbosO7Y5dpYIOHfa11OWpA9NQavwpw4ubB9ADANKOzFH1A576kchrUJJdha9uuLibUwS8OK+2yTbhlTRQEO+UPCb9d11/xI6Eg24TNiffLiXZjwSE/OfnRPiroATZ4wdS9cKXlEkw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cQ/PXep9HzV/wFH83SF8oHldU7L95x/GbnizAExu7is=;
- b=bvLk8SWlj06oNmKfT587+65mOTTvS8bOKoRhjrdUjefn7uXKvtAXRgsvUm854nWi+2gQkdE+AJHNWQGC7u4TpWtQiIBtFwHQb3o4WfX6RxiuqOQSCqCROPtMc7hMbmaur2TVMcUZOOtvddPbGnj1FUkxSpSnflMOck7K8jGso9LAWLAEWsYQHhMkCUG9UV40/V1xBVI2WnozUs4Y7cacPDWqWkYUxX0cnyNjCbf43R/ncLiyhlqZ/QjtrdSHf1cO1+84sfqJ/s/FTXwqW+bGFYUo2TlMORzN9FUGGUxVwqqygGEHwPEoH5fyrDhzBodmFYQE4oEdUisYwbDulA9aIA==
+ bh=iZ7gHoOpTW5FUvLG5q0wLKL/3AqrhvNpgjdxkKlT0w4=;
+ b=PmovbEYBn53MpL/7NWXsel4ac2QP8kujy/bc6/7hnz4B+ykqPnIXr02Qz0ndi57DM1tf6vuJs4skUhegvEuEzLdi/jQP3EcDhWMsp0gzR31Ij1csz4VUAk+86sKtBut0S+XPZsduUoZuURF/AKDtlz6IO5wTvNderAwZATdbHXU=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VI2PR04MB10761.eurprd04.prod.outlook.com (2603:10a6:800:27e::22) with
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by OS7P286MB5531.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:36e::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.9; Wed, 8 Jul 2026
- 14:53:57 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 8 Jul 2026
- 14:53:57 +0000
-Date: Wed, 8 Jul 2026 09:53:46 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: tze.yee.ng@altera.com
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jorge Marques <jorge.marques@analog.com>,
-	=?utf-8?Q?Przemys=C5=82aw?= Gaj <pgaj@cadence.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>, imx@lists.linux.dev
-Subject: Re: [PATCH v6 4/5] i3c: master: Validate GET CCC payload length and
- retry Direct GET once
-Message-ID: <ak5kenGbrXOACLuN@SMW015318>
-References: <cover.1783493867.git.tze.yee.ng@altera.com>
- <b467f01edfaaa0710f30e719ce7f2753b06c1a3f.1783493868.git.tze.yee.ng@altera.com>
-Content-Type: text/plain; charset=iso-8859-1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Wed, 8 Jul
+ 2026 14:59:22 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.21.0181.009; Wed, 8 Jul 2026
+ 14:59:22 +0000
+Date: Wed, 8 Jul 2026 23:59:21 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Frank.Li@oss.nxp.com
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Christoph Hellwig <hch@lst.de>, Niklas Cassel <cassel@kernel.org>, dmaengine@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, imx@lists.linux.dev, "Verma, Devendra" <devverma@amd.com>, 
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 00/10] dmaengine: dw-edma: flatten desc structions and
+ simple code
+Message-ID: <2z2ba5kwgtyjzipkhxqf2jxjscerbx35ep7jndedv5zk6l6xwk@esy2ayjyhcoo>
+References: <20260702-edma_ll-v3-0-877aa463740c@nxp.com>
+ <gfylpnuieclkt52xzbcghzaza7oirunstgzfmru7aqpnapdlit@dpgmjrs6ww7u>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b467f01edfaaa0710f30e719ce7f2753b06c1a3f.1783493868.git.tze.yee.ng@altera.com>
-X-ClientProxiedBy: SA1PR04CA0008.namprd04.prod.outlook.com
- (2603:10b6:806:2ce::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+In-Reply-To: <gfylpnuieclkt52xzbcghzaza7oirunstgzfmru7aqpnapdlit@dpgmjrs6ww7u>
+X-ClientProxiedBy: TYCP286CA0086.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b3::12) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,233 +72,318 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI2PR04MB10761:EE_
-X-MS-Office365-Filtering-Correlation-Id: e27c036a-af0e-465f-04d8-08dedd00bc60
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OS7P286MB5531:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3fc028d-2a98-433f-8318-08dedd017ed9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|19092799006|7416014|376014|22082099003|18002099003|11063799006|56012099006|3023799007|4143699003;
+	BCL:0;ARA:13230040|10070799003|7416014|376014|366016|23010399003|1800799024|4143699003|56012099006|6133799003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	GDs/vY+mEtSb/dmKzJ3DYqR1UB678JSLXvKQQttDS+wGvvSXFukRcBTX5MaCXfi5qbLaym5TNB4wgLoCTzg7HyvXdnMXfDb/6K3Wj1I1QfZ/IeI7YcE5SxLcjgpCqsJtb1M5D7Tt1jACFMi/SWznd2cHwd4n46J1J4KYmmTrIexJvS8qwCtMffYrlT1uuRtS0UH29AyIq1/zqTX24sb2R7xFQdVKMPJZQ2izZmmdXS+bVINtRjSHnGJk6JIIvFlMBtlR8Q2uNgduMsrevb2bgHu49z/6LU88pNTkZPUz+R2murwHLGOyjkszR+RdRs2gQMfNO2hxUR106/qx0JJs+QUdHADmGesBPTmQ/bFvl228O2PQK9EW8ytMguKz7li+WH3LebY39EjWpoZ1U+eBfKZi8KeeDtKLmZAgnOCPFM0HSkGz8O5Ul9yXF4m4y1/mO6xTF3746A/Nt4KsLgE0vSnSQPBT8F3UG8GUgn62LEhad67K2q0JCARvVTJkexdfAAsUtH4296lgXh0OVwrJrbL9omqTDrLEJtZSZ0ImrFYObOkrcWbSFrLfqKHZ9HLkjw7gUMQygmlyk1ZDLtLIKdTzxvQq9ixdIpYI8XP+vsdUDZv8Y0qhUMfXpQ+Icv9QFiuY7JLUCFe/SM/vy6m+5qsHP1ShBYbhC/lwuQE9WSw=
+	jL9g+AQuXa85tCT02tZ3w5JApEPodmMPX/JhTQVY/O9pZCvysVcPyCWDrBrlaGQTOVydCvTFl7dyEaRlcqG96rXXBuXEAt2d+/eEhcrWlpGSFbNyZioFlSnxXJK2yHUyp0XdLKQ7nVpq9hYYp1fORvm4vAStWnFZEiOcHQreY59u7D5Jmyi0IWCgBVLXdCsyO+oD6BgPvkZWrfvEeeLwjuUovbMf1INZcI2vY8wGDhvtMkUtQyzk3fcnrNDBDB9h/FOy/yLWjgwDxINUwkylHttD4B7Ee9RNaLuDHg38NtUsBriFvM2CU2hdFGsw10eCIgSju+2LMM9K3S5QZ1kyLSLd9JCcKJGx19tB9VaI2SHYL+tHfzJTxaFxfHHBrDf0zUw7kxsleKy+B7KGQNi8o7AbeVtLaAhLsUF2Pz2OqzNRv7b4Ruy5wsUoqYWyPOROiXXPN/peMwSdDR4v1raDRFeLwZLd0S7/mDUKkwOH/1SxfU2MLc64qJyAnH9l2SBG+Ra12Tw/Wvuj2xsAxaanKcrVOiml2+blpxyooKrFaFWr+1XWbbrKbWBO89hCKji4CkeeDVnLc+DQed1DTevSvT2mMQ3VDouQR+hXeCXjZJPLcsYKsAm9qm0RV+121HXCR5GD3PKS8eR19lj4gVpiqB7bjacf4eTwxC6MeF4Nhjg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(19092799006)(7416014)(376014)(22082099003)(18002099003)(11063799006)(56012099006)(3023799007)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(366016)(23010399003)(1800799024)(4143699003)(56012099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?Ti72c1I/+s2viZQTd7tRh/V3CkuFL7fY0z0QDvNnOS8wfhdtAEZ+5ZjHA4?=
- =?iso-8859-1?Q?l/uH9yMkcyERreE/jTVIsm4UttVNykbEdNXwGeAxGDsgYODUH/YqTI5mGK?=
- =?iso-8859-1?Q?7sWjG3Z0WoI8YtlApXf2h0OyGGiAFGs3hPHzyULQE6sjSi0nA/kX3weV0d?=
- =?iso-8859-1?Q?nkA+F5qAp00vWyGgaUQN59838EuLfiaHfkhhhB50R7lQnMEsZT9WSxohel?=
- =?iso-8859-1?Q?y7suRA2GhTY+M697mRMCxIEEPOpw/Faz65XBXnAJf+F+CUiPuSJFGPkFFG?=
- =?iso-8859-1?Q?3FPiDZ9XlKuZn85mTtldBdKASBnWWoWWObXnfqSzt93pwyaBNZTFsUEtft?=
- =?iso-8859-1?Q?g8i3WEuS5tOBraV6v7COXz8X076k1+vMgXUwXmqudBgHky57xBHMLTNUcy?=
- =?iso-8859-1?Q?WDAGfOyqU1WejykR8Cw9Dwww0HWyLMkcbcXpTioPOnZlsRi8Ovkzdt+x/t?=
- =?iso-8859-1?Q?qf8XSO94YZuICWD9MA5VkVYJMh1NGpUOED8E5Q0rGlx5/6f1PjH/ynECHN?=
- =?iso-8859-1?Q?a2NDRI8GnJCXvwA9gxyMLjkvcSHWHwnzP/XF3tVAhVp2RshJ1ufaD2JDeT?=
- =?iso-8859-1?Q?RasXtTiKaRKFGq3PK0HmbVj58zSL52yXneI+jnReQNCdDCcj4jDXNGTIUm?=
- =?iso-8859-1?Q?kFXJtKVLGRpCzGCM9foGeqRD2sPR8QL/8/ffvLBiCE3G+MemeysgrgeU9r?=
- =?iso-8859-1?Q?cjWKUwvtRmVnd89l0rbtX6eQzPohNeLi3OY/xbHV6nAv0nbrXC186iopYj?=
- =?iso-8859-1?Q?tfsyPGqwLN6erzsCTMJxO317RnY+sQak2UTyq1F+Ig7MZBO2enrhQX+pni?=
- =?iso-8859-1?Q?LCVCTOYq7PKbPKJuaOnyDHzpfcUn8YxjCO3lmJx27sNwyvpzV2heK4dqpr?=
- =?iso-8859-1?Q?1thu7xvYrs2S2LbsVaRgTZqDt3RhbNqVpeJPeFkd7oueFzfY1Ry3v8uWLS?=
- =?iso-8859-1?Q?IrrETZlqLGy4I4xaj30VoxDFw9Vjjj2qEMVRm4iFPb/Cp2T5HEQHfEV/hs?=
- =?iso-8859-1?Q?ml1lrmeD8z4DNDcBu27lNAdtjSCxOxjkQtXniil6O5vwb8dLc/fpuVY4U6?=
- =?iso-8859-1?Q?31a3fahJLKf8C64RdLSAX1PIo4e0/TG2Ag+2fFAGP8gkyb6j0hD8UPK3JQ?=
- =?iso-8859-1?Q?qmBn+9cAXriY2mP7Ac9nI10lFolJ53XNPt3+ppj771/0wdWNhlY4vdCPQd?=
- =?iso-8859-1?Q?cQ8Z41dcPIdbIC6DKZb6feuC0eiLjkc0GGMsgD7K6UiPaEuWRvwJ7ORUbv?=
- =?iso-8859-1?Q?wJ6MXvbGCXU8brojMhqLsgDIguBQbDbm1dvt0ZbQE6I7ELvnoJXuAlzQrY?=
- =?iso-8859-1?Q?CLH3qviPSDCcBfnUIbsVyGYlYVlf5GZd2t4dp9UmmpCpoCPGHjQ774/Jzs?=
- =?iso-8859-1?Q?ltwQhRkD1dVjOCEWsfAYUovPY5Pz/5jkZwgzJGuu8iu+mD2KPCyfOMgp7H?=
- =?iso-8859-1?Q?+REJ7RuHnpVAGfQNFuy6IO3BSJWHyVwGhJ5X71rFAMdeQua+tACJOlme9Q?=
- =?iso-8859-1?Q?wtf1KTLb1AXVRUTMfZGl8GVHlvXS3kAQ5mugihY1rrqNJ5wxXWaV7Cq81p?=
- =?iso-8859-1?Q?gQHcg13EQ2LTT3+DoLN4bmWIxqUnaH5e6kATTYFITJHzJpUZe1Hef8FKW+?=
- =?iso-8859-1?Q?pIKHSiIKSPI1U57t6GT5al4THUykqHZndGIAo4FCpzyxgeRx5cpkk9L5eH?=
- =?iso-8859-1?Q?6xvDHIE4zEzMpbR57b/Qy4iLzmSRrwHsWjVeiFCx4fY0mXR171yblyAbKs?=
- =?iso-8859-1?Q?3vkKRQ/VmzuanpoXdU0/hyFU//8fIu/W4TlL1dFWva+I0346nANrmy7UCj?=
- =?iso-8859-1?Q?3tIqZWZ7vz+SErqFToWrLpqtzRoYxfTl7GxoMQlwYCMI34rQ90IV?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e27c036a-af0e-465f-04d8-08dedd00bc60
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+	=?utf-8?B?TXpHMTNyaDlyK1Zlc2xHRkk5QUpvRkI3eHZBbmVwdnROTVpzTDB6Ty9SZXRt?=
+ =?utf-8?B?cmxxcGV1ZnBsZXdNUGkxelJobHVaMnQ2RnNiZUtudldZUUNvWVlEVnc2aUdL?=
+ =?utf-8?B?SXY1NHBCNlhENnh6bWx2WmtGQzBWK2ZtYW03OWp4TERIc0xWRzR4bS8zOS9O?=
+ =?utf-8?B?dndMWVBuT012cXRUVUhXbFpEcXFaUEZTbWc2RFozY09uUmNSYmptT01keGYz?=
+ =?utf-8?B?VVRid0w1YmxTaDQxdXdRTDV1NSs2U2Q3Ymd0ZUFzNHFOV24reDN5dVgrYUxL?=
+ =?utf-8?B?QkF0blJ2NUJXT0llQ2VPRmhla0NBR3Q0aCtCcHdWWjFJL0E0dktaaVFlbjJl?=
+ =?utf-8?B?SXdkak9aZkFWRjJ0VzRveDJ4OFhqNXIzNkloVWJuMTcrS2Qrb21qSU9iZlVq?=
+ =?utf-8?B?UkhNbDE5WEtZcWhZTzN5SDREVjdiWnBNUU9sb25PVU9Lbm5nbU9aRnlqR0o3?=
+ =?utf-8?B?U1A0bGhiUzhqdFVuUVUwNGhXWW1WWHVjQkpER3krRDNTTmhCRjhlUE9IQm1T?=
+ =?utf-8?B?WU5jSHZ3WVVBVGRuWDdSV2JBc0RFUWNpSDA5TkIzaGpqRzA0SHN3VDIySE53?=
+ =?utf-8?B?ai9HK0hiUnpwVE9MdUMvNlVTMnVKTnEzcm9lSllJb3luZHVWOGFhdlZaaFRa?=
+ =?utf-8?B?RFlsajA5UWMzaGMwTEpUNXEwTGRjTzhOZm9BMGtnSDdUSVhCY1h5SnpqVVlI?=
+ =?utf-8?B?WVlqWWJqUFc0OWcyNzdzbFFhTmFvaGtBb2hrYkZyeVBtZVREeG1DUDZ1VExm?=
+ =?utf-8?B?d09CbzZnWERyNmp6aEFUMU96Qk9jNXgyMllTOTlkaCt6VVFIT3JLbUd5K3hE?=
+ =?utf-8?B?ZU1WS1R4cE8yeFYrVlpxY3RaeTZNY0Q3c1V3bGNPL2dyVUtBVDlBTGIwSUNF?=
+ =?utf-8?B?czBCdGhiU0x6c2hENVNhUWg4cUNhZlFYbUY0OFhMZzF6UmxEbXdZUjEwelRt?=
+ =?utf-8?B?OGpnNGpLRGk4VDRLeXMwZmVtUTMxdWVkZ2E5Y0ZNRGlTUVlkdXJBcHpRZW95?=
+ =?utf-8?B?QUtXTXA3Y25LaUN5bWptM2pvUkVzUWVLeFlvdU53bThPMXZaMTBENWppTkY4?=
+ =?utf-8?B?c2FQWThPWEdLMklJR3BzRVNBazZsT3Iva2JHQXEzcHZiYlFlM1p4V2tWblFR?=
+ =?utf-8?B?WkZGZmJHeXFOR2IrQjNZMWZxRWFpbVBjQlh5WVZsZmkxaUQwN0dRRnBKYm91?=
+ =?utf-8?B?RUY2ZFgvY280cWdGMVNJaXJvTzJMNmRSWkFVUHRicmhyelArbXA4di9FOVJr?=
+ =?utf-8?B?bUpCTVNWeGRsNXR5c2lxWEFPRXZMSkErbGRUeFZmL0tSaklvZlQ2L0pIWnlG?=
+ =?utf-8?B?bFFZZXdXRTlLMHE5L0dDNkNnWXByRXlKaWNqY2FPSFJEaEZpL0FJUldURm1q?=
+ =?utf-8?B?akhKNldlQTRKb1hUalByeXQva2Jyell6c0tIMGk5OThVZ2s0YVhMVGdhM2c2?=
+ =?utf-8?B?RmVEZjdlUjVGbDVNNmFVdE84c1EzZlBTempPQThCUExFVjB6NFQ4K3ZJa0Z0?=
+ =?utf-8?B?bkJSMno5QzNPU3JLOVA3NjJBWDV2UlRVSWlVcUtLZVFVblFEQWVxY3Z6dkx5?=
+ =?utf-8?B?TVR2aWdxUDBWNFJRWmxBWnBtWktmSlg0dC9DVXVwWTJVWnl5aE1lNHZhMHNl?=
+ =?utf-8?B?M0FEeDBkOFczbGVjaHZmdzgzQTFPMFNreWh6bkR5ZWZ6UXIzcVVYS3ZBdG5x?=
+ =?utf-8?B?cnhRcjlTNk5sYjh0ankyeXhFMS84UngzekYrdHJKN2thNERqeEx2TnQ0R2d5?=
+ =?utf-8?B?YlMrMXFBem1pVlZpTzZWZGJiSzkzRXJMcnRBODBmV2I3Qll1UWlaK0x4Z1Fq?=
+ =?utf-8?B?UlVWOHR5MlJ3Um1rcnovY2crU04vNkpYTkVvZlpUMGFlcVMwUU9ZVTRIWisv?=
+ =?utf-8?B?RHlaaEN5Q3VVWmhKV0NuOVhFa20xOEp4Wm5KR09tYkViZndEUmdkVHZXb3dZ?=
+ =?utf-8?B?Z0dQeEdFUVR0TndsTzl5YzdVTTRYeGpUSkJNYmJyOTlUZWhXZDF4b2gwb1ZK?=
+ =?utf-8?B?UnhMaFVncVJScUQzLzFaSFBRWHowaUVMamlqcTNtVFVXQkc0YkVrK1lJT1c4?=
+ =?utf-8?B?UHIzVWQ5Y0Q3WUZ1cGpmS3pJd1Z2TmViM1RGN3VXZW42UzkvM1BkaUYrZ3V5?=
+ =?utf-8?B?OHF0K0dIdFdBMDR3Y2xSOGVaZEFjeW1rNHZKaXNSWVJZcmpUWXpDZzhQQkRW?=
+ =?utf-8?B?UWJxQS9MbXM5Uzc5aStoUUE5SWMzTm1BQmN1a09qUkJ6aUdpK1dlcUR1MHJU?=
+ =?utf-8?B?Nkh1M2JQVXZjT2ZpaHlTYzQ0QlZxampIeS9HSlVJZTZBUHF1OGJuK0pqSkhJ?=
+ =?utf-8?B?V0RtV1VNa3UvbGtPVnozM0F0VjljRnNpbHExa0sxSFVzY1RpVnZBbUZIU29a?=
+ =?utf-8?Q?rOqA8oPhHK4YnNR89q29VQ9x5/K3gKPW3zJEO?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3fc028d-2a98-433f-8318-08dedd017ed9
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 14:53:57.0206
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 14:59:22.6802
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mWcDdr2umnE5oNWCXxQdC0eDvs90hcGCfxLUJjp565htH9hE1cUg/v1Dig5xC9kLmxYDxQChqgC/E+Qb+8VLCaLM+n+BD6AcebyudmXHKxBPFUDPT3NiZzeJdvWq8Zal
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10761
+X-MS-Exchange-CrossTenant-UserPrincipalName: HHQmcly1LYJ7YJB7Lx4KuAX3ilWL5DXSM+kBfAHE+3THkUbZHkCW1UET295l4dL2WvAuGmXEf0wVZ5cTKOZ2jw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7P286MB5531
 
-On Wed, Jul 08, 2026 at 12:17:40AM -0700, tze.yee.ng@altera.com wrote:
-> From: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
->
-> Add retries to struct i3c_ccc_cmd. Validate GET payload length in
-> i3c_master_send_ccc_cmd_locked() after a successful transfer.
->
-> Retry failed Direct GET CCCs up to cmd->retries times when the driver
-> reports failure or an I3C error; validation failures are not retried.
-> SET CCCs are not retried by default.
->
-> Signed-off-by: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
-> Signed-off-by: Tze Yee Ng <tze.yee.ng@altera.com>
-> ---
+On Mon, Jul 06, 2026 at 10:20:38PM +0900, Koichiro Den wrote:
+> On Thu, Jul 02, 2026 at 05:21:20PM -0400, Frank.Li@oss.nxp.com wrote:
+> > Koichiro Den:
+> > 	My hardware temperately is unavaible recently. Can you help test
+> > it.
+> 
+> Sure, I can test it on my side. I'll report back once I have the results.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Here are the results. For the series:
 
-> Changes in v5:
-> - Split from v4 patch 3/3: retry and strict validation only; optional_bytes
->   moved to patch 5/5.
-> - Validate GET payload length after a successful transfer.
-> - Retry failed Direct GET CCCs when the driver reports failure or an I3C
->   error; validation failures are not retried.
->
-> Changes in v4:
-> - Add optional_bytes to struct i3c_ccc_cmd_payload and retries to
->   struct i3c_ccc_cmd (default I3C_CCC_RETRIES for GET, 0 for SET).
-> - Replace CCC-ID-specific payload checks with generic validation using
->   actual_len, len, and optional_bytes.
-> - GETMRL and GETMXDS set optional_bytes at the call site instead of
->   hardcoding lengths in the core.
-> - Retry failed Direct GET CCCs on any error up to cmd->retries times,
->   per I3C spec Direct GET single-retry model (�5.1.9.2.3); drop M0/M2-
->   gated retry logic.
-> - Drop req_lens save/restore and the stack/kmalloc bookkeeping for
->   payload.len.
-> - Update I3C master drivers (SVC, Cadence, ADI, Renesas, MIPI HCI) to
->   populate actual_len on successful GET transfers.
-> - Use actual_len in getmrl_locked(), getmwl_locked(), getmxds_locked(),
->   and gethdrcap_locked().
-> ---
->  drivers/i3c/master.c    | 59 ++++++++++++++++++++++++++++++++++++++---
->  include/linux/i3c/ccc.h |  5 ++++
->  2 files changed, 60 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-> index 037b3b980717..3b6d3ecd9d12 100644
-> --- a/drivers/i3c/master.c
-> +++ b/drivers/i3c/master.c
-> @@ -915,17 +915,46 @@ static void i3c_ccc_cmd_dest_cleanup(struct i3c_ccc_cmd_dest *dest)
->  	kfree(dest->payload.data);
->  }
->
-> -static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
-> -			     struct i3c_ccc_cmd_dest *dests,
-> -			     unsigned int ndests)
-> +static void i3c_ccc_cmd_init_retries(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
-> +				     struct i3c_ccc_cmd_dest *dests,
-> +				     unsigned int ndests, unsigned int retries)
->  {
->  	cmd->rnw = rnw ? 1 : 0;
->  	cmd->id = id;
->  	cmd->dests = dests;
->  	cmd->ndests = ndests;
-> +	cmd->retries = retries;
->  	cmd->err = I3C_ERROR_UNKNOWN;
->  }
->
-> +static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
-> +			     struct i3c_ccc_cmd_dest *dests,
-> +			     unsigned int ndests)
-> +{
-> +	i3c_ccc_cmd_init_retries(cmd, rnw, id, dests, ndests,
-> +				 rnw ? I3C_CCC_RETRIES : 0);
-> +}
-> +
-> +static int i3c_ccc_validate_payload_len(struct i3c_ccc_cmd *cmd)
-> +{
-> +	unsigned int i;
-> +
-> +	if (!cmd->rnw)
-> +		return 0;
-> +
-> +	for (i = 0; i < cmd->ndests; i++) {
-> +		struct i3c_ccc_cmd_payload *p = &cmd->dests[i].payload;
-> +
-> +		if (p->actual_len > p->len)
-> +			return -EIO;
-> +
-> +		if (p->len && p->actual_len != p->len)
-> +			return -EIO;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  /**
->   * i3c_master_send_ccc_cmd_locked() - send a CCC (Common Command Codes)
->   * @master: master used to send frames on the bus
-> @@ -937,6 +966,9 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
->  static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
->  					  struct i3c_ccc_cmd *cmd)
->  {
-> +	unsigned int attempt, max_attempts;
-> +	int ret;
-> +
->  	if (!cmd || !master)
->  		return -EINVAL;
->
-> @@ -954,7 +986,25 @@ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
->  	    !master->ops->supports_ccc_cmd(master, cmd))
->  		return -EOPNOTSUPP;
->
-> -	return master->ops->send_ccc_cmd(master, cmd);
-> +	max_attempts = cmd->retries + 1;
-> +	ret = -EIO;
-> +	for (attempt = 0; attempt < max_attempts; attempt++) {
-> +		unsigned int i;
-> +
-> +		if (cmd->rnw)
-> +			for (i = 0; i < cmd->ndests; i++)
-> +				cmd->dests[i].payload.actual_len = 0;
-> +
-> +		cmd->err = I3C_ERROR_UNKNOWN;
-> +		ret = master->ops->send_ccc_cmd(master, cmd);
-> +		if (!ret && cmd->err == I3C_ERROR_UNKNOWN)
-> +			break;
-> +	}
-> +
-> +	if (!ret)
-> +		ret = i3c_ccc_validate_payload_len(cmd);
-> +
-> +	return ret;
->
->  static struct i2c_dev_desc *
-> @@ -1372,6 +1422,7 @@ static int i3c_master_getmxds_locked(struct i3c_master_controller *master,
->  		 * while expecting shorter length from this CCC command.
->  		 */
->  		dest.payload.len -= 3;
-> +		i3c_ccc_cmd_init(&cmd, true, I3C_CCC_GETMXDS, &dest, 1);
->  		ret = i3c_master_send_ccc_cmd_locked(master, &cmd);
->  		if (ret)
->  			goto out;
-> diff --git a/include/linux/i3c/ccc.h b/include/linux/i3c/ccc.h
-> index d8052949e57e..2506d83b8255 100644
-> --- a/include/linux/i3c/ccc.h
-> +++ b/include/linux/i3c/ccc.h
-> @@ -12,6 +12,8 @@
->  #include <linux/i3c/device.h>
->
->  /* I3C CCC (Common Command Codes) related definitions */
-> +#define I3C_CCC_RETRIES	1
-> +
->  #define I3C_CCC_DIRECT			BIT(7)
->
->  #define I3C_CCC_ID(id, broadcast)	\
-> @@ -374,12 +376,15 @@ struct i3c_ccc_cmd_dest {
->   * @ndests: number of destinations. Should always be one for broadcast commands
->   * @dests: array of destinations and associated payload for this CCC. Most of
->   *	   the time, only one destination is provided
-> + * @retries: number of times to retry a failed Direct GET CCC (see
-> + *	     &I3C_CCC_RETRIES)
->   * @err: I3C error code
->   */
->  struct i3c_ccc_cmd {
->  	u8 rnw;
->  	u8 id;
->  	unsigned int ndests;
-> +	unsigned int retries;
->  	struct i3c_ccc_cmd_dest *dests;
->  	enum i3c_error_code err;
->  };
-> --
-> 2.43.7
->
->
+Tested-by: Koichiro Den <den@valinux.co.jp>
+
+* I don't see a significant difference between Before and After, but I don't
+  think that is an issue at all. Most of the differences look like normal
+  run-to-run variation.
+* Each full fio test set was run three times in alternating order (B-A-B-A-B-A),
+  with runtime=30s and ramp_time=5s.
+
+eDMA:
+  - Testbed:
+    * Endpoint: RK3588 (Rock 5B)
+      controller IP version: v5.60a
+      ll_max: 170
+
+  - Summary by group (BW delta %)
+    all          n=26 mean=  -2.3 median=  +0.2 min= -28.0 max= +11.7
+    read         n=14 mean=  -3.2 median=  +0.2 min= -17.3 max=  +3.1
+    write        n=11 mean=  -1.5 median=  -0.2 min= -28.0 max= +11.7
+    qd32         n=16 mean=  +0.5 median=  +0.3 min=  -3.8 max=  +3.1
+    q1           n= 9 mean=  -7.6 median=  -6.7 min= -28.0 max= +11.7
+    small 4K     n= 6 mean=  -4.0 median=  +1.1 min= -28.0 max=  +3.1
+    large >=128K n=20 mean=  -1.8 median=  +0.1 min= -17.3 max= +11.7
+
+  - Before mean -> After mean (MiB/s)
+
+    Case                         Before             After              Delta
+    ---------------------------  -----------------  -----------------  ------
+    Rnd read     4KB q1  1j         33.4 (sd 10.1)     32.0 (sd 10.9)    -4.0%
+    Rnd read     4KB q32 1j        196.0 (sd 28.6)    202.0 (sd 29.5)    +3.1%
+    Rnd read     4KB q32 4j        196.7 (sd 29.2)    202.0 (sd 25.1)    +2.7%
+    Rnd read   128KB q1  1j        497.7 (sd 12.2)   420.7 (sd 181.3)   -15.5%
+    Rnd read   128KB q32 1j        2248.0 (sd 6.6)   2277.3 (sd 34.2)    +1.3%
+    Rnd read   128KB q32 4j        2381.3 (sd 2.5)   2386.3 (sd 17.9)    +0.2%
+    Rnd read   512KB q1  1j        627.3 (sd 15.2)    585.3 (sd 78.2)    -6.7%
+    Rnd read   512KB q32 1j        2376.0 (sd 5.2)   2381.3 (sd 21.4)    +0.2%
+    Rnd read   512KB q32 4j        2379.7 (sd 6.7)   2386.7 (sd 17.6)    +0.3%
+    Rnd write    4KB q1  1j          28.1 (sd 4.1)     20.2 (sd 10.1)   -28.0%
+    Rnd write    4KB q32 1j         120.3 (sd 6.1)     122.0 (sd 6.2)    +1.4%
+    Rnd write    4KB q32 4j         124.7 (sd 3.8)     125.7 (sd 4.6)    +0.8%
+    Rnd write  128KB q1  1j        318.7 (sd 44.7)     327.0 (sd 4.4)    +2.6%
+    Rnd write  128KB q32 1j       1080.0 (sd 20.2)   1077.3 (sd 37.6)    -0.2%
+    Rnd write  128KB q32 4j       1069.7 (sd 20.3)   1056.0 (sd 46.2)    -1.3%
+    Seq read   128KB q1  1j       486.3 (sd 138.3)    402.3 (sd 38.0)   -17.3%
+    Seq read   128KB q32 1j        2245.3 (sd 3.5)   2258.7 (sd 26.3)    +0.6%
+    Seq read   512KB q1  1j        662.0 (sd 29.2)    594.3 (sd 13.7)   -10.2%
+    Seq read   512KB q32 1j        2375.7 (sd 7.4)   2382.0 (sd 22.9)    +0.3%
+    Seq read     1MB q32 1j        2380.7 (sd 4.7)   2385.3 (sd 19.3)    +0.2%
+    Seq write  128KB q1  1j        342.0 (sd 58.9)   382.0 (sd 101.1)   +11.7%
+    Seq write  128KB q32 1j       1080.3 (sd 48.8)   1070.7 (sd 37.0)    -0.9%
+    Seq write  512KB q1  1j        509.7 (sd 35.4)    502.7 (sd 39.2)    -1.4%
+    Seq write  512KB q32 1j       1043.3 (sd 56.7)   1074.0 (sd 47.8)    +2.9%
+    Seq write    1MB q32 1j        989.3 (sd 23.0)    952.0 (sd 57.4)    -3.8%
+    Rnd rdwr  4K..1MB q8  4j       841.3 (sd 15.1)    841.7 (sd 12.9)    +0.0%
+
+HDMA:
+  - Testbed:
+    * Endpoint: SpacemiT K3
+      controller IP version: v6.30a
+      ll_max: 170
+
+  - Summary by group (BW delta %)
+
+    all          n=26 mean=  +1.1 median=  -0.6 min=  -4.4 max=  +9.5
+    read         n=14 mean=  +2.1 median=  +0.7 min=  -2.5 max=  +9.5
+    write        n=11 mean=  -0.1 median=  -0.8 min=  -4.4 max=  +4.7
+    qd32         n=16 mean=  +0.6 median=  -0.8 min=  -2.5 max=  +9.5
+    q1           n= 9 mean=  +2.0 median=  +4.4 min=  -4.4 max=  +7.9
+    small 4K     n= 6 mean=  +4.8 median=  +4.5 min=  +0.2 max=  +9.5
+    large >=128K n=20 mean=  -0.0 median=  -0.9 min=  -4.4 max=  +7.9
+
+  - Before mean -> After mean (MiB/s)
+
+    Case                         Before             After              Delta
+    ---------------------------  -----------------  -----------------  ------
+    Rnd read     4KB q1  1j          66.3 (sd 5.8)      69.4 (sd 7.0)    +4.6%
+    Rnd read     4KB q32 1j        300.3 (sd 45.5)    329.0 (sd 21.7)    +9.5%
+    Rnd read     4KB q32 4j        312.0 (sd 51.1)     341.7 (sd 3.1)    +9.5%
+    Rnd read   128KB q1  1j        705.7 (sd 34.8)    736.7 (sd 51.6)    +4.4%
+    Rnd read   128KB q32 1j       1507.7 (sd 25.6)    1486.3 (sd 5.9)    -1.4%
+    Rnd read   128KB q32 4j        1549.7 (sd 7.0)   1534.3 (sd 16.9)    -1.0%
+    Rnd read   512KB q1  1j         848.7 (sd 9.5)    858.0 (sd 15.5)    +1.1%
+    Rnd read   512KB q32 1j       1530.0 (sd 27.0)   1536.0 (sd 14.8)    +0.4%
+    Rnd read   512KB q32 4j       1519.0 (sd 66.7)   1544.3 (sd 15.0)    +1.7%
+    Rnd write    4KB q1  1j          64.0 (sd 6.2)      66.9 (sd 2.2)    +4.5%
+    Rnd write    4KB q32 1j         199.3 (sd 7.1)     199.7 (sd 2.9)    +0.2%
+    Rnd write    4KB q32 4j         199.7 (sd 7.6)     200.3 (sd 3.2)    +0.3%
+    Rnd write  128KB q1  1j        558.3 (sd 18.3)     533.7 (sd 5.0)    -4.4%
+    Rnd write  128KB q32 1j       1248.0 (sd 21.3)    1237.3 (sd 7.5)    -0.9%
+    Rnd write  128KB q32 4j       1248.7 (sd 23.0)    1238.0 (sd 6.1)    -0.9%
+    Seq read   128KB q1  1j        640.7 (sd 60.1)     691.3 (sd 9.0)    +7.9%
+    Seq read   128KB q32 1j       1507.7 (sd 24.2)    1488.3 (sd 5.1)    -1.3%
+    Seq read   512KB q1  1j        866.7 (sd 45.8)    847.0 (sd 32.2)    -2.3%
+    Seq read   512KB q32 1j       1532.3 (sd 31.7)   1516.7 (sd 40.3)    -1.0%
+    Seq read     1MB q32 1j        1550.7 (sd 7.2)   1512.0 (sd 32.9)    -2.5%
+    Seq write  128KB q1  1j        514.0 (sd 34.7)    538.0 (sd 15.1)    +4.7%
+    Seq write  128KB q32 1j       1248.0 (sd 22.1)    1237.0 (sd 7.8)    -0.9%
+    Seq write  512KB q1  1j        755.7 (sd 30.0)     739.3 (sd 2.1)    -2.2%
+    Seq write  512KB q32 1j       1248.7 (sd 22.6)    1238.3 (sd 6.7)    -0.8%
+    Seq write    1MB q32 1j       1248.0 (sd 22.5)    1238.3 (sd 7.6)    -0.8%
+    Rnd rdwr  4K..1MB q8  4j        869.0 (sd 8.9)     865.3 (sd 1.5)    -0.4%
+
+Best regards,
+Koichiro
+
+> 
+> Best regards,
+> Koichiro
+> 
+> > 
+> > Rebase and compile test only now.
+> > 
+> > Verma, Devendra:
+> > 	Can you help check if block non-ll mode?
+> > 
+> > Frank
+> > 
+> > Basic change
+> > 
+> > struct dw_edma_desc *desc
+> >        └─ chunk list
+> >             └─ burst list
+> > 
+> > To
+> > 
+> > struct dw_edma_desc *desc
+> >             └─ burst[n]
+> > 
+> > And reduce at least 2 times kzalloc() for each dma descriptor create.
+> > 
+> > I only test eDMA part, not hardware test hdma part.
+> > 
+> > The finial goal is dymatic add DMA request when DMA running. So needn't
+> > wait for irq for fetch next round DMA request.
+> > 
+> > This work is neccesary to for dymatic DMA request appending.
+> > 
+> > The post this part first to review and test firstly during working dymatic
+> > DMA part.
+> > 
+> > performance is little bit better. Use NVME as EP function
+> > 
+> > Before
+> > 
+> >   Rnd read,    4KB,  QD=1, 1 job :  IOPS=6660, BW=26.0MiB/s (27.3MB/s)
+> >   Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+> >   Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+> >   Rnd read,  128KB,  QD=1, 1 job :  IOPS=914, BW=114MiB/s (120MB/s)
+> >   Rnd read,  128KB, QD=32, 1 job :  IOPS=1204, BW=151MiB/s (158MB/s)
+> >   Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1255, BW=157MiB/s (165MB/s)
+> >   Rnd read,  512KB,  QD=1, 1 job :  IOPS=248, BW=124MiB/s (131MB/s)
+> >   Rnd read,  512KB, QD=32, 1 job :  IOPS=353, BW=177MiB/s (185MB/s)
+> >   Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+> >   Rnd write,   4KB,  QD=1, 1 job :  IOPS=6241, BW=24.4MiB/s (25.6MB/s)
+> >   Rnd write,   4KB, QD=32, 1 job :  IOPS=24.7k, BW=96.5MiB/s (101MB/s)
+> >   Rnd write,   4KB, QD=32, 4 jobs:  IOPS=26.9k, BW=105MiB/s (110MB/s)
+> >   Rnd write, 128KB,  QD=1, 1 job :  IOPS=780, BW=97.5MiB/s (102MB/s)
+> >   Rnd write, 128KB, QD=32, 1 job :  IOPS=987, BW=123MiB/s (129MB/s)
+> >   Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1021, BW=128MiB/s (134MB/s)
+> >   Seq read,  128KB,  QD=1, 1 job :  IOPS=1190, BW=149MiB/s (156MB/s)
+> >   Seq read,  128KB, QD=32, 1 job :  IOPS=1400, BW=175MiB/s (184MB/s)
+> >   Seq read,  512KB,  QD=1, 1 job :  IOPS=243, BW=122MiB/s (128MB/s)
+> >   Seq read,  512KB, QD=32, 1 job :  IOPS=355, BW=178MiB/s (186MB/s)
+> >   Seq read,    1MB, QD=32, 1 job :  IOPS=191, BW=192MiB/s (201MB/s)
+> >   Seq write, 128KB,  QD=1, 1 job :  IOPS=784, BW=98.1MiB/s (103MB/s)
+> >   Seq write, 128KB, QD=32, 1 job :  IOPS=1030, BW=129MiB/s (135MB/s)
+> >   Seq write, 512KB,  QD=1, 1 job :  IOPS=216, BW=108MiB/s (114MB/s)
+> >   Seq write, 512KB, QD=32, 1 job :  IOPS=295, BW=148MiB/s (155MB/s)
+> >   Seq write,   1MB, QD=32, 1 job :  IOPS=164, BW=165MiB/s (173MB/s)
+> >   Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=250, BW=126MiB/s (132MB/s)
+> >   IOPS=261, BW=132MiB/s (138MB/s
+> > 
+> > After
+> >   Rnd read,    4KB,  QD=1, 1 job :  IOPS=6780, BW=26.5MiB/s (27.8MB/s)
+> >   Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+> >   Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+> >   Rnd read,  128KB,  QD=1, 1 job :  IOPS=1188, BW=149MiB/s (156MB/s)
+> >   Rnd read,  128KB, QD=32, 1 job :  IOPS=1440, BW=180MiB/s (189MB/s)
+> >   Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1282, BW=160MiB/s (168MB/s)
+> >   Rnd read,  512KB,  QD=1, 1 job :  IOPS=254, BW=127MiB/s (134MB/s)
+> >   Rnd read,  512KB, QD=32, 1 job :  IOPS=354, BW=177MiB/s (186MB/s)
+> >   Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+> >   Rnd write,   4KB,  QD=1, 1 job :  IOPS=6282, BW=24.5MiB/s (25.7MB/s)
+> >   Rnd write,   4KB, QD=32, 1 job :  IOPS=24.9k, BW=97.5MiB/s (102MB/s)
+> >   Rnd write,   4KB, QD=32, 4 jobs:  IOPS=27.4k, BW=107MiB/s (112MB/s)
+> >   Rnd write, 128KB,  QD=1, 1 job :  IOPS=1098, BW=137MiB/s (144MB/s)
+> >   Rnd write, 128KB, QD=32, 1 job :  IOPS=1195, BW=149MiB/s (157MB/s)
+> >   Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1120, BW=140MiB/s (147MB/s)
+> >   Seq read,  128KB,  QD=1, 1 job :  IOPS=936, BW=117MiB/s (123MB/s)
+> >   Seq read,  128KB, QD=32, 1 job :  IOPS=1218, BW=152MiB/s (160MB/s)
+> >   Seq read,  512KB,  QD=1, 1 job :  IOPS=301, BW=151MiB/s (158MB/s)
+> >   Seq read,  512KB, QD=32, 1 job :  IOPS=360, BW=180MiB/s (189MB/s)
+> >   Seq read,    1MB, QD=32, 1 job :  IOPS=193, BW=194MiB/s (203MB/s)
+> >   Seq write, 128KB,  QD=1, 1 job :  IOPS=796, BW=99.5MiB/s (104MB/s)
+> >   Seq write, 128KB, QD=32, 1 job :  IOPS=1019, BW=127MiB/s (134MB/s)
+> >   Seq write, 512KB,  QD=1, 1 job :  IOPS=213, BW=107MiB/s (112MB/s)
+> >   Seq write, 512KB, QD=32, 1 job :  IOPS=273, BW=137MiB/s (143MB/s)
+> >   Seq write,   1MB, QD=32, 1 job :  IOPS=168, BW=168MiB/s (177MB/s)
+> >   Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=255, BW=128MiB/s (134MB/s)
+> >    IOPS=266, BW=135MiB/s (141MB/s)
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Changes in v3:
+> > - remove patch dmaengine: dw-edma: Remove ll_max = -1 in dw_edma_channel_setup()
+> > - rebase to vnod's dmaengine topic/config_prep_api
+> > - Add non-ll-start() callback to handle non-ll mode transfer
+> > - Link to v2: https://lore.kernel.org/r/20260109-edma_ll-v2-0-5c0b27b2c664@nxp.com
+> > 
+> > Changes in v2:
+> > - use 'eDMA' and 'HDMA' at commit message
+> > - remove debug code.
+> > - keep 'inline' to avoid build warning
+> > - Link to v1: https://lore.kernel.org/r/20251212-edma_ll-v1-0-fc863d9f5ca3@nxp.com
+> > 
+> > ---
+> > Frank Li (10):
+> >       dmaengine: dw-edma: Move control field update of DMA link to the last step
+> >       dmaengine: dw-edma: Add xfer_sz field to struct dw_edma_chunk
+> >       dmaengine: dw-edma: Move ll_region from struct dw_edma_chunk to struct dw_edma_chan
+> >       dmaengine: dw-edma: Pass down dw_edma_chan to reduce one level of indirection
+> >       dmaengine: dw-edma: Add helper dw_(edma|hdma)_v0_core_ch_enable()
+> >       dmaengine: dw-edma: Add callbacks to fill link list entries
+> >       dmaengine: dw-edma: Add non_ll_start() callback
+> >       dmaengine: dw-edma: Use common dw_edma_core_start() for both eDMA and HDMA
+> >       dmaengine: dw-edma: Use burst array instead of linked list
+> >       dmaengine: dw-edma: Remove struct dw_edma_chunk
+> > 
+> >  drivers/dma/dw-edma/dw-edma-core.c    | 216 ++++++++----------------------
+> >  drivers/dma/dw-edma/dw-edma-core.h    |  65 ++++++---
+> >  drivers/dma/dw-edma/dw-edma-v0-core.c | 240 +++++++++++++++++-----------------
+> >  drivers/dma/dw-edma/dw-hdma-v0-core.c | 169 ++++++++++++------------
+> >  4 files changed, 302 insertions(+), 388 deletions(-)
+> > ---
+> > base-commit: c9e9927c6d8346cdf6555a8f97da093980172e4b
+> > change-id: 20251211-edma_ll-0904ba089f01
+> > 
+> > Best regards,
+> > --  
+> > Frank Li <Frank.Li@nxp.com>
+> > 
+> 
