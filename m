@@ -1,259 +1,259 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013022.outbound.protection.outlook.com [40.107.162.22])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E4E37FF43
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 15:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783524528; cv=fail; b=WD2/adIvHFEgsbwEIholxf8TFnDxOXRH9iA17T3HgjzKO7ZOSnszj/9U6wN2EzYSLHXKQk9Pt5pwNiwuQPa+gTgWk3goTZx0cfdFhKOyxln7dDgHHNl8kd4VBP9tZGyv6uWxDdlDw9Hz233n6VGjN0meBXCXJra3eclF9morn5I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783524528; c=relaxed/simple;
-	bh=jAuLxklGZYknPrF79YxqCb+aD66+3trk6dF53Fvr+4I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=c6O0ryzIY49tdNwo0i/Ohi6QUCk91V2Tc1ZfegQcevgODoDvlAPE/nWSqhbOyPIWtzNbzXam1jWMhJkyWhf8RRtovOzVVJXHuDHcO1MKyQViLvxUXLZE51C+Z453UQhzCTr9Mc4ypicTspW9XdL3kblmHKpyT5ivDV+a3FIYfPI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=L6MdxQJE; arc=fail smtp.client-ip=40.107.162.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB693F12CB
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 15:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783524578; cv=none; b=U8zdEzhxOWoAXJKPDf0cqByLKW8z2hI1uz+8lE6GF+lqOXmdJXDK2wXCoCGDF1L9TShOYid5T7utj8vX9ZghX51wADWSRkYneE1YSKhAY2ju9VX4kh4iDD28gJFCyQMPbFs23b9Uz7ErHAvt29wEdvTcRMRqMvuYro0xFDt0QVI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783524578; c=relaxed/simple;
+	bh=/EWbXHkDyxmRFCrpZ9sOacNz3FNzYc9YRSOdSm46RNw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=AZzeAhrzITsRukG5RxFkmUQVPt7cA2NGYPhmnt3Wsp8WLQy11TQg+fL0dUVytOeNeyv88aHlvtwbFVKOYvRA6pcyTV+6rxtXzPNEfp/ly00BgCbXiNXrvT3jNOJ4sRlngilgP2MLiRSpea6qhFFXvFfKWKJKB5OGVgbhMOpJs2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MJxcrN1J; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=X85zUz/w; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="L6MdxQJE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GHixEC0XzvUZzkN7VDmS71qyoG70vuwKPo10MSKdQ5Ibd3mQrvoJOMwVEDOQdKNd9GXS/ggBGovIseSrVOt3DDfZWmauBVukE+Goqef9QUZfGrLMRLDHDSKox4PtQKfp9MY3JxHr5Ng7qSZtpjodLVjtghEohLR9EOpBvakjnlLvol27FJtcACAp5pGMEBakoJ+Cy5RI2lJt/+49nolAikIa9wh2FaoR1eoH7isAtF4ANVaDdVAhHAU1Yz2TeFhZpa829XBJQyaYjbpEtv2bGhfdl1v2olZTTpdWf1uJG06Nqz9uXS5zq16ionwxg64a0VINTOZ0+ZgTYkCqusdWcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CpNoegAwBBgpFOJ/94wfRUOQ5QhCTpt2OyfKFS0Y0u0=;
- b=sbfilosmdijBDie8+gSAxPEA2jW9pu2CL1a6Tk7WVNTBd3wdbFpZLHMs7qJQ97LqNy2AmFs7k1Eq+vlcMd7M86QQ6bysebA9NxnvHJKon+TkmXWf5W0SNJtAcOvwHxRFVEJYsGbbo9KnUiFovKxRgStzJd9/ZRwl/G2Yu3oBdgHhwHsoYfD81fUmF2HZ9ikzCar6vtuH2fA1fae6vqIA+uH/3svRVhFrtYYBB+LY0irklmUXbyzlVcqY3dM9sxLQQlgtZZovY+P+m/o1I8wN4HSdt1G5cJhB1/wdbum0voRxFuhX3uYcdaXlGZeCDz3htjgUWbWKJJHW1jXBlYIJ2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CpNoegAwBBgpFOJ/94wfRUOQ5QhCTpt2OyfKFS0Y0u0=;
- b=L6MdxQJEMRyrV35uIh7zyKeov6EqAbp85T2a16b826WQxCRaM3UrCfOsSxxjFFLXVA9Mp1qJ5/u9sBi+OfBCahyno3buvYBORXQxbjMLyMymAwWmpcf4Ks/DB4nZZ1W0HNcBqtkteRoGEeyhW9aM7mentBn4r13ig470u+KOxvuxkIzyMjA9lWIYEvDRJOp9RFbN4C4alEUkPQ3AuRniIq3IFizA+gVl3uME3Onzxoz0/ngKh1WsU8QELZ0HJEF1LeMDtiZmCdIC2bCratwt9xi1XckfCn+gdRq+7lljTRGM1VH2cVv9jWpYI2JxC8k351G5K2zXGDQG/hnHoFLF6g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DB9PR04MB8332.eurprd04.prod.outlook.com (2603:10a6:10:24f::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.14; Wed, 8 Jul
- 2026 15:28:42 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Wed, 8 Jul 2026
- 15:28:42 +0000
-Date: Wed, 8 Jul 2026 10:28:29 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: hongxing.zhu@oss.nxp.com
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	bhelgaas@google.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Richard Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v2] PCI: imx6: Fix i.MX6Q/DL boot hang by separating PHY
- power and reference clock control
-Message-ID: <ak5snUBVsITwkLr-@SMW015318>
-References: <20260708035928.580236-1-hongxing.zhu@oss.nxp.com>
- <20260708035928.580236-2-hongxing.zhu@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708035928.580236-2-hongxing.zhu@oss.nxp.com>
-X-ClientProxiedBy: PH7PR17CA0019.namprd17.prod.outlook.com
- (2603:10b6:510:324::16) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MJxcrN1J";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="X85zUz/w"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 668C4V0T2752750
+	for <imx@lists.linux.dev>; Wed, 8 Jul 2026 15:29:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	70zYiNfQoqGUZwaTbkI3q8uUAT8YrVOohiWmsnW1WKY=; b=MJxcrN1JXBcMtK19
+	Pfev8qimb74w+MKw5k/hUYNzgU+zE4Mw0fSpCrFZ7lOHvxSs7oJm7ErpsBWzwnpI
+	un/NMMOnDxsNcpt35kidw/cp/zKCBzjBPf5Jt4Mg8aW5zQgbqsPs64EiB9yHTduO
+	hOs/FTUhYu8rcejTKUgvikj1tz5ROiKrcsqFKbvtzLjwOzLrBSUFjar/QB5/mBxC
+	Vdmmmh+jeVwJkXXyWVzBj6xnOpcug6wFu1X5gsWcMTLci35ybLIj71oZisxgrzwt
+	vWPl0BbEThkIZX4pYpJ2aB1KhJwDUSwlzFmsg10/omwf9phFFsq/4ToVgHjd+VlX
+	yF+Lqw==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9cssu5y2-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 08 Jul 2026 15:29:35 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cccfa32670so11310425ad.2
+        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 08:29:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1783524574; x=1784129374; darn=lists.linux.dev;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=70zYiNfQoqGUZwaTbkI3q8uUAT8YrVOohiWmsnW1WKY=;
+        b=X85zUz/wYPxCRrdYrYxrifMWDdaqu5nolpM75uygUHllxUSZg9pVSZJ/gVuEaKs0em
+         U34lfcFbU6noi1xfxxIse61j3y1GUTmUlZeQiDMjNQ+Ywb+iMOLHMgnXdsg9/pwAgVG+
+         9BZ7FTTGOowwSIvy9yWu0MpYXyyJuvKUlwkSnbEL8CiXiPF6em4ooGdY6lQwUQGUM/Yu
+         3XBY2a8DWY+f17Xch5PABIJE/o1kytuz+95w4gSYMFWnTpuwO7xBqLRuajUYXjYvQ42m
+         eQQhafJpkf6y9v6l2WSkbUUhoOdnCc2GRbqlV42JMpX2glj/2C9/J+I72DpLqi9SaqOJ
+         w+wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783524574; x=1784129374;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=70zYiNfQoqGUZwaTbkI3q8uUAT8YrVOohiWmsnW1WKY=;
+        b=PjQLMbm7P9eAGtKtwCs/Lh9NsHYhuge02nl7tWzObvJwPYJr4OjQXxTczci5AAODZQ
+         MJ10WDSyCB2czQk5ixCiNkXWEArAcT8w63RfXevZfJsZHY9v1tgoYeQVKr8Bfz+KrJwX
+         oFTTXF2foOdPFeVvXbb+1uPeZh24ToMF6eZitg1D7wFJRK6/OjyIFckHHnfuGVMcVrK3
+         YBf8t1OH3f3LvM/61zzyTM9BDk4I+eQcwRZFcy7p0hUZV8g/gRy1GY4kzPOJ3Pw0I7JZ
+         zUC8GF1pUf90jarECwYjfzdbkjUhaz2c6q7Mp4HS3YnlTlVszIkVOL2HEnggVphI8WhK
+         t4Jw==
+X-Gm-Message-State: AOJu0YyysoXcCrr8h2cgp9KoafIT7g7z8fczcyr0S1xBFY8nMTSf+3Oh
+	PtiAKq+E7WLjnpVVECiO/OPcpMDLGjzzTifqSZFNuyVSEmDQxko3DjmJza3+DY7PK43s+mFjsVk
+	KI3IxsE1tml4T71b10h1KNLtIzjs0IRsTwFG0XEFf5W77K30sI37+iac=
+X-Gm-Gg: AfdE7cmXsyt1S4foCUVPaIDj72zlktCXUrNKIgtqRk7x9BHlmcqg8HlipqN7HGHEl9o
+	fJ64kJm7BNEAmNbLA+fYHefAkPR7rI5h8ahzsv5O1ZzZnK7bbx+OAMJWbN5CsU+wy/ASvunOrM8
+	X0qBHSslKxTR8AKTnb4HuUCaAN+3HtE5qnxK1VTk02Wupw9uBeTa5O3xKAKS01800aktOA9C6+M
+	t4uNiZWnjaNpTyl46Ciic0kyhszfZaknNxiug1cglss0xRKDqLYFcB+XfCCGIKnREPL0+xwLCd/
+	tRAdOvdyJQ8rveSdrHASmB53eYqTLEgTfUuae8ElJ6bI/Egg4eOCLgw0b3vnC2/cP/yBPGO/9d7
+	MU3D1glz6DqhzRFo=
+X-Received: by 2002:a17:90b:1f83:b0:380:540:d499 with SMTP id 98e67ed59e1d1-3893fe5c05dmr3200405a91.6.1783524574186;
+        Wed, 08 Jul 2026 08:29:34 -0700 (PDT)
+X-Received: by 2002:a17:90b:1f83:b0:380:540:d499 with SMTP id 98e67ed59e1d1-3893fe5c05dmr3200358a91.6.1783524573598;
+        Wed, 08 Jul 2026 08:29:33 -0700 (PDT)
+Received: from localhost ([151.243.38.149])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d3c675b1sm2862308a91.15.2026.07.08.08.29.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2026 08:29:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DB9PR04MB8332:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca506221-c720-47df-312b-08dedd059717
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|19092799006|366016|1800799024|56012099006|11063799006|5023799004|4143699003|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	rNP1oHcHsS/s8SWiLccKLrg0zvsgEbsPiGBMZcFjCfLnpy3sS2WHQ4k4h818XinWygGMhdQWQT64I8XqQWhvbjRqG5QOHwxW/4k9bk6IU6YDIytH/2geIU5edipouaNgNzN9zy8YwcOZUcy10yMUEvrRI0lovGEirlERWMrA8teHbPnU52cJKsg6e/sZn/Bs5NnYwcXaIru3QTZSpjl1w3dZjghTKd1n+B96N8J50aEJ8+fkQjplW1fUH1iOYbzTfmXhRDYkGbV7MpU3L/JRZPGqIHuFz3HuACBT2lktPaVmiVBPDFGuB3lnSeIUnlJzUWJfQvZTixNEFEBtZkM1X7zSE1bx2cdWiW69r95djyJJMcDz9ePElJtn77kh+ZNd1Kx/skio4k4M4fEIT2Lh0xuounE6f2tz8IlVcahf/5KuhSg05Kjp2g8VrGvDc+0M4oeaxVSkJrMO4E0K1K1yfQ8zJ/EjGTuUdeGUcH3tnSo54H9wLDuRXYavtNHN2YxaEH7wvOvjK+WiZRhg54N2h2vRHQzWrV1NxCeqXAHjQcxS3AUCQ8dABoKNqL+zTVtVazgSGkb3FRFZ/FRPP0kepEG/ZWcTUXTm4e4xQw7rOp72N/EcZO6wqdTlTzcAqnEf38zdL2uYFtjQnhBB9AYFte3u0LFpUKAY4iC4df41gJA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(19092799006)(366016)(1800799024)(56012099006)(11063799006)(5023799004)(4143699003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?abM0sC/ZTz7bUY4WpD8eQvn1+M0WTWbj83MmZh0x+k49y1niha3q7s/3H6Cf?=
- =?us-ascii?Q?Ymd0e1dS1dedbozVFh2N+xKBYH+mhYim8Py6wdJ3V7LYn9v4g2z0Ly4Zosv0?=
- =?us-ascii?Q?o1MYqVds61/cQunCdh4RZcn+usinj67zAoDEjDtUpGIRe75t20hPRyAz3c0W?=
- =?us-ascii?Q?bpuT3GQvS1wWBz9Sdi3KFj2/zO3xb/IBp8sVK1zQDEJj2H51rgt93pNhlRrJ?=
- =?us-ascii?Q?QLTA7i0kj6bmrtFwZgVsyqbZkLkB55cH+Quz//CJHVQiuPl5GOLqrXNz1Ef2?=
- =?us-ascii?Q?/MAdSL9fw1hNtXID+f7FCrcffnCbsWCMgrH1An2SlaxjfBVewr2Jpwayfn2+?=
- =?us-ascii?Q?NIsAEawEHoO5RuA+XZvZeaypDUmOTf9FRH7tITmKw2qAACrMtmCyNNK4zVLc?=
- =?us-ascii?Q?/bGaqs5REJFYcyeNe3VKQ9G2zQctzEnrtaW907VheLEl3lyPn2knhx87SZWg?=
- =?us-ascii?Q?MkOS1xAWwH00GHlqDFBYdAeNIl4lQASUULbtrCTM6fYlGKZgF0y5+nomwZOs?=
- =?us-ascii?Q?FL/5Z1T8fiQ9H6egxtiKpTidWBm1b58jBNg7EgWsUDi7lzPszpS9LZ7uu/6h?=
- =?us-ascii?Q?T5jb1lvCbBdOM/2mOV/MWsTysDTdpwmGFwXeYyw5TvrwM8VYtH+jWAXkF4/k?=
- =?us-ascii?Q?NpSVeFq1gKCwhl1DftbVbRP86Jnnh3Vh7jDJ6h+KDxy+NsfadducF0SMMCRq?=
- =?us-ascii?Q?BjyHHgEQEI9M3OGmwExsNwYL1UJSO2bXEKFd7B3Dedjif9/W1xwvmZIN1WD+?=
- =?us-ascii?Q?z1gt0ZK5omejBjyPn8K2HtewYTkiSyp8yY/MZRelLN9n++igvqGQGgNt4UqM?=
- =?us-ascii?Q?9dIK23HhVd7ltoemAoQx4j3hFEoQU6Pn0J6eFbSfqNzo+2LHBl5E6yR4p2Q4?=
- =?us-ascii?Q?SI3zGCOX/S8x6NSfOhX9/8kRcQilMOUQQjCMEU2zRAFNb+G5doiaKGYMGETj?=
- =?us-ascii?Q?7QTuEf0MXovCAsD1sROTOVW3IfSm2a5ytXstO672npqZYyscN26HRchNOFXk?=
- =?us-ascii?Q?yPbX8hqf12WKm9KaMYLDGwcndSDLCp3mdb0z5CfVG+C4CZXP7RMmH7MnQZ89?=
- =?us-ascii?Q?0I4NxbwhMUHyatCoQ8J9or7AZDzKdxIHP28RWe0+zC5JFGsPIlqhNRv8+NmK?=
- =?us-ascii?Q?zhKTAR0DbtKTab50eoxgrlS8zHWrboWyHRvStHTcgqaSQZMh1fu0vUGDbwPn?=
- =?us-ascii?Q?bdrTkaCnRWbB4RBHj9rj82RWX0/Ilw7BGBtA6pUggpTWIvTarfmkmw97Et6Z?=
- =?us-ascii?Q?uYg9LSEPCmWsU+hZTkgVSru/698R4aVuuUFDpGk+hxMSNcdx94tyIHoTlri1?=
- =?us-ascii?Q?3yivxeNwW5JpYInbSAAoSfr3//POffY9S6ZxL7SnkUcfscHaJR3RMZ/P6xs6?=
- =?us-ascii?Q?r2m0S2Dh7rRB9DqIcMl1EDR2DMtAN2Z7eU/ozfJeD6p7IF0ijHd+nm3CeeB2?=
- =?us-ascii?Q?FLTRZvLwjEzicXOHR15BbD2NlTM67JM5RGLdntoLPHE7UowmvMegFDCXem9g?=
- =?us-ascii?Q?wiakMx4E4SdVI5HlnpzAXBbrCCmnqarjh6u5dvK2rOviprajBznqz39EojBq?=
- =?us-ascii?Q?ZNI8/OQHAHNLrjGpMTZNFHoND+o7tPXsmWPVHYMXcl0AKPkR5so4sQ4ufzjk?=
- =?us-ascii?Q?xTUgWm9qQlFp+ClOr1CKQ41mO1ICHKBgY13h4pLc3xkkKS3RcANgF6VHen3t?=
- =?us-ascii?Q?do2cuy1t3L8EEcMYfsaoHqhxK7Van/BxQiUUELQ+OjNGsebRk+MEUtfAz1x6?=
- =?us-ascii?Q?NYKU6RRCAxulCtF52sX3MLeR9ZPKmgedSkkJT4Er1nbUSxB+2NXW?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca506221-c720-47df-312b-08dedd059717
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 15:28:41.7653
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gfGxyE/TpMJqsD+FtG1qQp38aUDfJ6YhCJzcIepGmczjLGTYxapOWpqTMeLP1kSveLQlr0nKiRCdPxRMEnLUc0KQAxLbwc6wdKOmP1rcXBEuJ3cIIwkS5d4KIah1K94B
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8332
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 Jul 2026 23:29:18 +0800
+Message-Id: <DJTAOV6K82ZR.3T4EZDN7HVQ28@oss.qualcomm.com>
+Cc: <imx@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+        <Frank.Li@kernel.org>
+Subject: Re: [PATCH 9/9] drm/xen: replace struct drm_simple_display_pipe
+ with regular atomic helpers
+From: "Ze Huang" <ze.huang@oss.qualcomm.com>
+To: <sashiko-reviews@lists.linux.dev>, "Ze Huang"
+ <ze.huang@oss.qualcomm.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com> <20260705-drm-simple-kms-removal-v1-9-b4e1ca053623@oss.qualcomm.com> <20260704185346.627B61F000E9@smtp.kernel.org>
+In-Reply-To: <20260704185346.627B61F000E9@smtp.kernel.org>
+X-Authority-Analysis: v=2.4 cv=EtziaycA c=1 sm=1 tr=0 ts=6a4e6cdf cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=cNux22OjBTKCC6TmznXXXA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=EUspDBNiAAAA:8 a=cXiuqu8dGSoeSI90gQIA:9 a=QEXdDO2ut3YA:10
+ a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDE1MiBTYWx0ZWRfXx4vwYdorr/yS
+ 562bMkHAhldp26Zr2+17CmxjgN5nVIfxxBWkqC3ygAZrAXVJWGuIV+/Cl2LVkSxcwy5b3DUCZ02
+ CWMEiFsO23617hQXhSdf5s6uG7zuD2vfmOb2ZiCR3TUPzzEgqhHGov46Luxn4gOjkAlDKaSvjd6
+ ALu4UqRXJNmsvmA4Nb5HY/M+FPNXIE5y6cwEIA4KmNtLhmuznI383a6wPFj0/mB1SCgTuw32vCs
+ C7vEFCA+OMD77yCkeTgU6tbAkLLHyHHUTMRl0qkQTM4jP4Oq0mM1rSMc3gveMFnEYMBQFIM05SR
+ 79B6o4qvffrRvLSBipz3QPYIO0zhcUekYgylIREZ7VMlv6EUiX7Aqeqmr9B6lECqQa8YsV+UMfx
+ KByQE5+XbZeIka/hFOVMbCHeksPpL8HZY/5XLILfCMbu2DRKR6Bcv7J5DuA5AS5/dpaMGoS6Js3
+ Ty3IIYZdapegYej4J7w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDE1MiBTYWx0ZWRfX8z7igsPs3G99
+ PqbH/BGby0mAmhq7/PFgBX4il9hChNe11fsf5ogsvSLziGfU7roSoj49GPb9KO7iVYbhCW5yENo
+ aV+B1apu8INsWpS/Dgqq7Z1wDroXJ04=
+X-Proofpoint-GUID: NUooO3SLLwPHzvhBEgGRW-aZ_YBGlHV3
+X-Proofpoint-ORIG-GUID: NUooO3SLLwPHzvhBEgGRW-aZ_YBGlHV3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-08_02,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 suspectscore=0 bulkscore=0 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607080152
 
-On Wed, Jul 08, 2026 at 11:59:27AM +0800, hongxing.zhu@oss.nxp.com wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
->
-> Commit 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
-> introduced a boot hang on i.MX6Q/DL variants by changing the initialization
-> sequence.
->
-> The issue stems from coupling PHY power (TEST_PD) and reference clock
-> (REF_CLK_EN) control in imx6q_pcie_enable_ref_clk(). When these are
-> managed together, the timing between PHY power-up and reference clock
-> enablement cannot be properly controlled, leading to initialization
-> failures.
->
-> Fix this by separating the two concerns:
->
-> - Move PHY power control (TEST_PD) to imx6q_pcie_core_reset() where it
->   logically belongs with reset operations. This ensures PHY power state
->   is managed as part of the core reset sequence.
->
-> - Update imx6qp_pcie_core_reset() to call imx6q_pcie_core_reset() for
->   shared PHY power management, avoiding code duplication.
->
-> - Make imx6q_pcie_enable_ref_clk() responsible only for reference clock
->   (REF_CLK_EN) control, simplifying its purpose.
->
-> - Remove the 10us delay workaround from imx6q_pcie_enable_ref_clk() as
->   proper sequencing is now handled by the core_reset functions.
->
-> This refactoring ensures PHY power is controlled during reset
-> operations, fixing the boot hang while improving code maintainability.
->
-> Fixes: 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
-
-look more symmetry than before.
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
-> Changes in v2:
-> Regarding sashiko's reivew, invoke imx_pcie_assert_core_reset() explicitly
-> in error path of imx_pcie_host_init() and imx_pcie_host_exit().
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 45 ++++++++++++---------------
->  1 file changed, 20 insertions(+), 25 deletions(-)
->
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 9406bba36953f..53f3da6ab30d5 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -680,21 +680,12 @@ static int imx_pcie_attach_pd(struct device *dev)
->
->  static int imx6q_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
->  {
-> -	if (enable) {
-> -		/* power up core phy and enable ref clock */
-> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD);
-> -		/*
-> -		 * The async reset input need ref clock to sync internally,
-> -		 * when the ref clock comes after reset, internal synced
-> -		 * reset time is too short, cannot meet the requirement.
-> -		 * Add a ~10us delay here.
-> -		 */
-> -		usleep_range(10, 100);
-> -		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_REF_CLK_EN);
-> -	} else {
-> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_REF_CLK_EN);
-> -		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD);
-> -	}
-> +	if (enable)
-> +		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				IMX6Q_GPR1_PCIE_REF_CLK_EN);
-> +	else
-> +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				  IMX6Q_GPR1_PCIE_REF_CLK_EN);
->
->  	return 0;
->  }
-> @@ -823,23 +814,25 @@ static int imx6sx_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
->  	return 0;
->  }
->
-> -static int imx6qp_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
-> +static int imx6q_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
->  {
-> -	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_SW_RST,
-> -			   assert ? IMX6Q_GPR1_PCIE_SW_RST : 0);
-> -	if (!assert)
-> -		usleep_range(200, 500);
-> +	if (assert)
-> +		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				IMX6Q_GPR1_PCIE_TEST_PD);
-> +	else
-> +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				  IMX6Q_GPR1_PCIE_TEST_PD);
->
->  	return 0;
->  }
->
-> -static int imx6q_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
-> +static int imx6qp_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
->  {
-> +	imx6q_pcie_core_reset(imx_pcie, assert);
-> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_SW_RST,
-> +			   assert ? IMX6Q_GPR1_PCIE_SW_RST : 0);
->  	if (!assert)
-> -		return 0;
-> -
-> -	regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD);
-> -	regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_REF_CLK_EN);
-> +		usleep_range(200, 500);
->
->  	return 0;
->  }
-> @@ -1445,6 +1438,7 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  	return 0;
->
->  err_phy_off:
-> +	imx_pcie_assert_core_reset(imx_pcie);
->  	phy_power_off(imx_pcie->phy);
->  err_phy_exit:
->  	phy_exit(imx_pcie->phy);
-> @@ -1471,6 +1465,7 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
->  			dev_err(pci->dev, "unable to power off PHY\n");
->  		phy_exit(imx_pcie->phy);
->  	}
-> +	imx_pcie_assert_core_reset(imx_pcie);
->  	imx_pcie_clk_disable(imx_pcie);
->
->  	pci_pwrctrl_power_off_devices(pci->dev);
+On Sun Jul 5, 2026 at 2:53 AM CST, sashiko-bot wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issu=
+e(s) to consider:
+> - [High] Hardcoded `possible_crtcs` mask restricts all primary planes to =
+CRTC 0, breaking multi-display support.
+> - [High] Direct access of global `plane->state` and `crtc->state` in atom=
+ic commit hooks leads to race conditions and stalled events.
 > --
-> 2.34.1
 >
+> commit 8a32b307abb3d8e006d032d01a1802aa1e4ae6f0
+> Author: Ze Huang <ze.huang@oss.qualcomm.com>
 >
+> drm/xen: replace struct drm_simple_display_pipe with regular atomic helpe=
+rs
+>
+> Replace Xen frontend simple display pipe with explicit plane, CRTC and
+> encoder objects for each pipeline. Keep generic plane-state validation
+> before Xen-specific checks, and install GEM framebuffer prepare helper
+> explicitly.
+>
+>> diff --git a/drivers/gpu/drm/xen/xen_drm_front_kms.c b/drivers/gpu/drm/x=
+en/xen_drm_front_kms.c
+>> index 48772b5fe71cf..57e1bef452f83 100644
+>> --- a/drivers/gpu/drm/xen/xen_drm_front_kms.c
+>> +++ b/drivers/gpu/drm/xen/xen_drm_front_kms.c
+>
+> [ ... ]
+>
+>> @@ -105,17 +105,15 @@ static void send_pending_event(struct xen_drm_fron=
+t_drm_pipeline *pipeline)
+>>  	spin_unlock_irqrestore(&dev->event_lock, flags);
+>>  }
+>> =20
+>> -static void display_enable(struct drm_simple_display_pipe *pipe,
+>> -			   struct drm_crtc_state *crtc_state,
+>> -			   struct drm_plane_state *plane_state)
+>> +static void xen_drm_crtc_helper_atomic_enable(struct drm_crtc *crtc,
+>> +					      struct drm_atomic_commit *state)
+>>  {
+>> -	struct xen_drm_front_drm_pipeline *pipeline =3D
+>> -			to_xen_drm_pipeline(pipe);
+>> -	struct drm_crtc *crtc =3D &pipe->crtc;
+>> +	struct xen_drm_front_drm_pipeline *pipeline =3D to_xen_drm_pipeline(cr=
+tc);
+>> +	struct drm_plane_state *plane_state =3D pipeline->plane.state;
+>
+> [Severity: High]
+> Is it safe to access the global pipeline->plane.state directly here? If
+> non-blocking commits overlap, this pointer might point to a newer,
+> uncommitted state. Should this code use drm_atomic_get_new_plane_state()
+> to extract the state from the drm_atomic_commit object instead?
+>
+>>  	struct drm_framebuffer *fb =3D plane_state->fb;
+>>  	int ret, idx;
+>
+> [ ... ]
+>
+>> @@ -242,15 +259,19 @@ static int display_check(struct drm_simple_display=
+_pipe *pipe,
+>>  	return 0;
+>>  }
+>> =20
+>> -static void display_update(struct drm_simple_display_pipe *pipe,
+>> -			   struct drm_plane_state *old_plane_state)
+>> +static void xen_drm_plane_helper_atomic_update(struct drm_plane *plane,
+>> +					       struct drm_atomic_commit *state)
+>>  {
+>> -	struct xen_drm_front_drm_pipeline *pipeline =3D
+>> -			to_xen_drm_pipeline(pipe);
+>> -	struct drm_crtc *crtc =3D &pipe->crtc;
+>> +	struct drm_plane_state *old_plane_state =3D drm_atomic_get_old_plane_s=
+tate(state, plane);
+>> +	struct drm_crtc *crtc =3D plane->state->crtc ?: old_plane_state->crtc;
+>
+> [Severity: High]
+> Can accessing the global plane->state pointer here cause race conditions?
+> It might be safer to use drm_atomic_get_new_plane_state(state, plane)->cr=
+tc
+> to ensure the correct state is referenced during the atomic commit.
+>
+>> +	struct xen_drm_front_drm_pipeline *pipeline;
+>>  	struct drm_pending_vblank_event *event;
+>>  	int idx;
+>> =20
+>> +	if (!crtc)
+>> +		return;
+>> +
+>> +	pipeline =3D to_xen_drm_pipeline(crtc);
+>>  	event =3D crtc->state->event;
+>
+> [Severity: High]
+> Similarly, does reading and modifying the global crtc->state directly ris=
+k
+> fetching state from a concurrent commit instead of the current one?
+>
+>>  	if (event) {
+>>  		struct drm_device *dev =3D crtc->dev;
+>
+> [ ... ]
+>
+>> @@ -331,10 +395,37 @@ static int display_pipe_init(struct xen_drm_front_=
+drm_info *drm_info,
+>> =20
+>>  	formats =3D xen_drm_front_conn_get_formats(&format_count);
+>> =20
+>> -	return drm_simple_display_pipe_init(dev, &pipeline->pipe,
+>> -					    &display_funcs, formats,
+>> -					    format_count, NULL,
+>> -					    &pipeline->conn);
+>> +	ret =3D drm_universal_plane_init(dev, &pipeline->plane, 1,
+>> +				       &display_plane_funcs,
+>> +				       formats, format_count,
+>> +				       NULL,
+>> +				       DRM_PLANE_TYPE_PRIMARY, NULL);
+>
+> [Severity: High]
+> Does hardcoding the possible_crtcs mask to 1 restrict all primary planes =
+to
+> CRTC 0? For pipelines with an index greater than 0, the CRTC might fail t=
+o
+> find a compatible primary plane during atomic validation. Would using
+> 1 << pipeline->index allow multi-display configurations to work correctly=
+?
+>
+
+Will change possible_crtcs to 0 to populate automatically.
+
+>> +	if (ret)
+>> +		return ret;
+
