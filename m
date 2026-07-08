@@ -1,259 +1,191 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB693F12CB
-	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 15:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783524578; cv=none; b=U8zdEzhxOWoAXJKPDf0cqByLKW8z2hI1uz+8lE6GF+lqOXmdJXDK2wXCoCGDF1L9TShOYid5T7utj8vX9ZghX51wADWSRkYneE1YSKhAY2ju9VX4kh4iDD28gJFCyQMPbFs23b9Uz7ErHAvt29wEdvTcRMRqMvuYro0xFDt0QVI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783524578; c=relaxed/simple;
-	bh=/EWbXHkDyxmRFCrpZ9sOacNz3FNzYc9YRSOdSm46RNw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=AZzeAhrzITsRukG5RxFkmUQVPt7cA2NGYPhmnt3Wsp8WLQy11TQg+fL0dUVytOeNeyv88aHlvtwbFVKOYvRA6pcyTV+6rxtXzPNEfp/ly00BgCbXiNXrvT3jNOJ4sRlngilgP2MLiRSpea6qhFFXvFfKWKJKB5OGVgbhMOpJs2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MJxcrN1J; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=X85zUz/w; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2076409286
+	for <imx@lists.linux.dev>; Wed,  8 Jul 2026 15:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783526372; cv=pass; b=OWiFAx+yx5OmJA6Rgt5KI/IRCsjB7b2cysYbZ+z4KEbFmyCZuYcXI5Vx+FQuYMM2Cg8g2ezisWsCoZCpLu62WRMa2vZlHWQ1idB6DrmLMwnB29toRNJxztYDOuqyHPCWePX3PO7e2gYlDaXiSHrbLT6JzsXdcbgloqbZAwvSa5U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783526372; c=relaxed/simple;
+	bh=HIVEgcuKsvKP9oTptdmuFPNK/sIQQFxDjbmix66hFW8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GTeWuUempKr9CLG3tAQMB74wuj15eY+y4xUeGg1OepX7lW50QmMClYj3IJ8dD6XXri1oj8fbQJWUXDOoo/esozoJ3GMvVi6b4Hfmv6bbKsVP23vCkW65+tUiN521nO49yr4LNKqlgglqJ+w7hWCqK7PGyZ1AFwkA2iIT/DOVQuo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XyA045nB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cKLCDtuX; arc=pass smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MJxcrN1J";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="X85zUz/w"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 668C4V0T2752750
-	for <imx@lists.linux.dev>; Wed, 8 Jul 2026 15:29:35 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XyA045nB";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cKLCDtuX"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 668Er2EJ3100847
+	for <imx@lists.linux.dev>; Wed, 8 Jul 2026 15:59:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	70zYiNfQoqGUZwaTbkI3q8uUAT8YrVOohiWmsnW1WKY=; b=MJxcrN1JXBcMtK19
-	Pfev8qimb74w+MKw5k/hUYNzgU+zE4Mw0fSpCrFZ7lOHvxSs7oJm7ErpsBWzwnpI
-	un/NMMOnDxsNcpt35kidw/cp/zKCBzjBPf5Jt4Mg8aW5zQgbqsPs64EiB9yHTduO
-	hOs/FTUhYu8rcejTKUgvikj1tz5ROiKrcsqFKbvtzLjwOzLrBSUFjar/QB5/mBxC
-	Vdmmmh+jeVwJkXXyWVzBj6xnOpcug6wFu1X5gsWcMTLci35ybLIj71oZisxgrzwt
-	vWPl0BbEThkIZX4pYpJ2aB1KhJwDUSwlzFmsg10/omwf9phFFsq/4ToVgHjd+VlX
-	yF+Lqw==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9cssu5y2-1
+	k6RDR7xs+vqWJV5AWHV0iQasXN7uaTYZIuIDBIYGDn4=; b=XyA045nBOM5EH5Ke
+	LNkFrfA9nQDJlcveGj2IHyeLt/bwfZVepg2Lvu1e8orRvbvsxiIi7z8zdI274WG1
+	boey+aCihWfvPW4e5Nw6dcPx4Vj8dz8y3KDI3BfCIOP9AKlfSYhb48poQ21W5n6j
+	gzaStDxvYVKkgOiRbEePjq89MlTbXpRjCEYHnTemwLl3whXN7lv60jJO3ClGjege
+	h92FRnTFNsKKDVA9IbE/vq1trLW3UwOxTMH+GILaJxgi77uiIykYMQLx+zAiEJ5B
+	tp8+/n+37p6V0FGEd4wpGQ5aC+xKz2KHp7F59PUEvOgGcn+nQivIx0OiMkAUKtu7
+	8jOAOg==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9rq30a96-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 08 Jul 2026 15:29:35 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cccfa32670so11310425ad.2
-        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 08:29:35 -0700 (PDT)
+	for <imx@lists.linux.dev>; Wed, 08 Jul 2026 15:59:29 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8ee593a5a2fso15590516d6.1
+        for <imx@lists.linux.dev>; Wed, 08 Jul 2026 08:59:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783526369; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WWasMXrk/jfjoFHdVDNsMlpmdcZ2gDC+iBBrttvICuNjisv5IYu6D4VcGQ1jvOKxqH
+         pjrGtpq+AAu2RgMA7UHqZ5wgjfVkRZtCDQlD9OpUU3KmgplgauyCuVI1V2aAVUDxR5Dr
+         5rUEu5TOKbcvVFxpgkgJc5hNd9slvhEb65j9l7SAvnNbv1B5DzPEfEDx56Hu8MJMwegc
+         y5ZOau4bbuRZf2ihXEBNnbNLy0jeg1/7myFn5/uWMbu2VjODZqnhwiWMcPNeB0QhH8U0
+         tX8xj/rulRjS1Nwek33ajwd5oBF4SOyw73mc4gF1vIqYYGSSWfQFyPxqRjf+VAcuPo/W
+         e3RA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k6RDR7xs+vqWJV5AWHV0iQasXN7uaTYZIuIDBIYGDn4=;
+        fh=J6ArTwHowg+AuWG4AhMtvX+SOHX81Krky6DKdfdH62Y=;
+        b=N/Mj9SWIx7i6Q8q6O6BmzVI8Et2gSd0N6B7WAMyIznF7Ava9OeEvAw6C6WMuG22AmN
+         8ac/ccq/cKlmTwmk+H7kE+LOKJsMZthJr7o2suqqlEmzk6nKjaCBQXkX0d7a/bloz/Ov
+         wx9zRrPOwdGls71kUpfCdGQUHmtBuNjyDZtadVmWszt+DqyWrKGlsQBYPe9LOdo42/gk
+         6r+uyfby5tLoJxL6iOi9jLlKmXSVGL6VsnULm8LWJr8jprrZ2gkYpxp2JswaTYfst3MF
+         RYfiTGJwkI8OfNxXaQH+vW1VSJiPMFoMAMnC8TY9NnfFXw+M4W2nxpyV4EmdTvu5FQCj
+         b4nQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783524574; x=1784129374; darn=lists.linux.dev;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=70zYiNfQoqGUZwaTbkI3q8uUAT8YrVOohiWmsnW1WKY=;
-        b=X85zUz/wYPxCRrdYrYxrifMWDdaqu5nolpM75uygUHllxUSZg9pVSZJ/gVuEaKs0em
-         U34lfcFbU6noi1xfxxIse61j3y1GUTmUlZeQiDMjNQ+Ywb+iMOLHMgnXdsg9/pwAgVG+
-         9BZ7FTTGOowwSIvy9yWu0MpYXyyJuvKUlwkSnbEL8CiXiPF6em4ooGdY6lQwUQGUM/Yu
-         3XBY2a8DWY+f17Xch5PABIJE/o1kytuz+95w4gSYMFWnTpuwO7xBqLRuajUYXjYvQ42m
-         eQQhafJpkf6y9v6l2WSkbUUhoOdnCc2GRbqlV42JMpX2glj/2C9/J+I72DpLqi9SaqOJ
-         w+wA==
+        d=oss.qualcomm.com; s=google; t=1783526369; x=1784131169; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k6RDR7xs+vqWJV5AWHV0iQasXN7uaTYZIuIDBIYGDn4=;
+        b=cKLCDtuXfrE62tY385vNSa7RPOHRgCW+4O6aGFuVRPXTaOyUslCUFMoaIOhD01kwZl
+         Hoeu98TOcZt+aigMRk2/GkKLJ6d8dbbS10b4bhU+rH4yY8WHkJJnvOhjOqtVV7yTbBNZ
+         D6fonv9BNglf5o9O13MDQgB9tQqN8cEWSOna9fK/kQ/zdh85z7SyksU14/xDtoAyBw05
+         lgzVNndSVVTTkbKc3IbXOdS2OO4KAlS9qK00wSMclef+Ihq7+jUM21Bz3AaRIcQV8eiz
+         DZ1DjfkZhjCzbpNEsxvC5hu7lPRo1HLO6xmO5c7wCbWgTFq3lkRXGbhUpw24MP7+9/eQ
+         lZUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783524574; x=1784129374;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1783526369; x=1784131169;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=70zYiNfQoqGUZwaTbkI3q8uUAT8YrVOohiWmsnW1WKY=;
-        b=PjQLMbm7P9eAGtKtwCs/Lh9NsHYhuge02nl7tWzObvJwPYJr4OjQXxTczci5AAODZQ
-         MJ10WDSyCB2czQk5ixCiNkXWEArAcT8w63RfXevZfJsZHY9v1tgoYeQVKr8Bfz+KrJwX
-         oFTTXF2foOdPFeVvXbb+1uPeZh24ToMF6eZitg1D7wFJRK6/OjyIFckHHnfuGVMcVrK3
-         YBf8t1OH3f3LvM/61zzyTM9BDk4I+eQcwRZFcy7p0hUZV8g/gRy1GY4kzPOJ3Pw0I7JZ
-         zUC8GF1pUf90jarECwYjfzdbkjUhaz2c6q7Mp4HS3YnlTlVszIkVOL2HEnggVphI8WhK
-         t4Jw==
-X-Gm-Message-State: AOJu0YyysoXcCrr8h2cgp9KoafIT7g7z8fczcyr0S1xBFY8nMTSf+3Oh
-	PtiAKq+E7WLjnpVVECiO/OPcpMDLGjzzTifqSZFNuyVSEmDQxko3DjmJza3+DY7PK43s+mFjsVk
-	KI3IxsE1tml4T71b10h1KNLtIzjs0IRsTwFG0XEFf5W77K30sI37+iac=
-X-Gm-Gg: AfdE7cmXsyt1S4foCUVPaIDj72zlktCXUrNKIgtqRk7x9BHlmcqg8HlipqN7HGHEl9o
-	fJ64kJm7BNEAmNbLA+fYHefAkPR7rI5h8ahzsv5O1ZzZnK7bbx+OAMJWbN5CsU+wy/ASvunOrM8
-	X0qBHSslKxTR8AKTnb4HuUCaAN+3HtE5qnxK1VTk02Wupw9uBeTa5O3xKAKS01800aktOA9C6+M
-	t4uNiZWnjaNpTyl46Ciic0kyhszfZaknNxiug1cglss0xRKDqLYFcB+XfCCGIKnREPL0+xwLCd/
-	tRAdOvdyJQ8rveSdrHASmB53eYqTLEgTfUuae8ElJ6bI/Egg4eOCLgw0b3vnC2/cP/yBPGO/9d7
-	MU3D1glz6DqhzRFo=
-X-Received: by 2002:a17:90b:1f83:b0:380:540:d499 with SMTP id 98e67ed59e1d1-3893fe5c05dmr3200405a91.6.1783524574186;
-        Wed, 08 Jul 2026 08:29:34 -0700 (PDT)
-X-Received: by 2002:a17:90b:1f83:b0:380:540:d499 with SMTP id 98e67ed59e1d1-3893fe5c05dmr3200358a91.6.1783524573598;
-        Wed, 08 Jul 2026 08:29:33 -0700 (PDT)
-Received: from localhost ([151.243.38.149])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d3c675b1sm2862308a91.15.2026.07.08.08.29.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jul 2026 08:29:33 -0700 (PDT)
+        bh=k6RDR7xs+vqWJV5AWHV0iQasXN7uaTYZIuIDBIYGDn4=;
+        b=OJo46rK6RROiR8P9pN3O2mfiRhUcNI9Ica34UZMR7QoZqrVIYrkWIhqLOltzax4XMx
+         xOPW4y7gwPtpxTN/2Q3Y70I62oFKIdIRUXPePSIx6yOo82W9K9fJ72nTtNYuiC9HUrnk
+         xJHwwfW78DeKqTrwhd5frOLgwx1OjUtZn8zbf+CkJn9R0QqnqH1Yut+SdZX6TAwVy+yu
+         PX0vxtwe8/ymlQa70akG3CMxK1qnbK2sJzMM3YFvmo5ZjkGqyvPDTcFzd/Rk7RHetvNY
+         N/k++eHGxMcrAiCHudBPmN2/Cc0iM2VaqGtz+vz9SgPFdR6HrKmhd73mdl5ocFNMznCZ
+         dbZA==
+X-Forwarded-Encrypted: i=1; AHgh+RpxpeEhQXABbjiDG5kmZg8x4vTFDa6GRCbDQV/PzVRRPTNyd87G5nLpSBhwHNmCjDQHAa4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx65rTKb4do/XqMJ5ml1UDi53+TqrsHf8Z2BbKysXfONypz2KVB
+	+BM3f8+kedeuj2xVWoMTm/Sl2UgkyeszVj/gMM+JLPza4ERlJatVtC4Rd7QJzpwrfx7I2XvYfSX
+	U8N2mEriLuikx7TuPSHSzAq5kiJKD4fvHT3Zq6sOxtuzpA+twNw9BqCPtMgGPjOxHDOt2eqtbYg
+	6ne5KsIB3lXH5MeK44+Y+g2m8ydp5Gjw==
+X-Gm-Gg: AfdE7cnM94ODnu1TO4HWcJJ8zscrHJmD43UMm6heFttkszc86x7zz8O1WPexrzGKc+p
+	guusEW4raNJ5WQGgtzh/3QGi5D2oy8h3gb1WQd5Irx6pHSoiOF8ElrEVtN+pSti6KBWJdCpyvjo
+	6UDDyPA1EU862fxZhq+6f1GJd2I/hBwCZj2DugmTpE/pUSUnzop1VHystLDVCMCcTOJjce
+X-Received: by 2002:a05:6214:20eb:b0:8f6:9379:ecb with SMTP id 6a1803df08f44-8fd3b9b13b5mr81854996d6.26.1783526368972;
+        Wed, 08 Jul 2026 08:59:28 -0700 (PDT)
+X-Received: by 2002:a05:6214:20eb:b0:8f6:9379:ecb with SMTP id
+ 6a1803df08f44-8fd3b9b13b5mr81854656d6.26.1783526368570; Wed, 08 Jul 2026
+ 08:59:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260609-pm_imx93-v1-0-d06c004b0f51@oss.nxp.com>
+In-Reply-To: <20260609-pm_imx93-v1-0-d06c004b0f51@oss.nxp.com>
+From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
+Date: Wed, 8 Jul 2026 17:59:17 +0200
+X-Gm-Features: AVVi8CeC7wqwD-02BFpq0hOApFiP2f8o6VkvQcjct29H4Ae_roSruiCfTUPVGNA
+Message-ID: <CAPx+jO-BkzRPcuxkC4rCwGvXg8io_yD0Cx7zrwC6Sw6t5ff3SQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] pmdomain: imx93: Fix shared MIPI PHY resource management
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Ulf Hansson <ulfh@kernel.org>,
+        Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+        devicetree@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 Jul 2026 23:29:18 +0800
-Message-Id: <DJTAOV6K82ZR.3T4EZDN7HVQ28@oss.qualcomm.com>
-Cc: <imx@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
-        <Frank.Li@kernel.org>
-Subject: Re: [PATCH 9/9] drm/xen: replace struct drm_simple_display_pipe
- with regular atomic helpers
-From: "Ze Huang" <ze.huang@oss.qualcomm.com>
-To: <sashiko-reviews@lists.linux.dev>, "Ze Huang"
- <ze.huang@oss.qualcomm.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com> <20260705-drm-simple-kms-removal-v1-9-b4e1ca053623@oss.qualcomm.com> <20260704185346.627B61F000E9@smtp.kernel.org>
-In-Reply-To: <20260704185346.627B61F000E9@smtp.kernel.org>
-X-Authority-Analysis: v=2.4 cv=EtziaycA c=1 sm=1 tr=0 ts=6a4e6cdf cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=cNux22OjBTKCC6TmznXXXA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=cXiuqu8dGSoeSI90gQIA:9 a=QEXdDO2ut3YA:10
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDE1MiBTYWx0ZWRfXx4vwYdorr/yS
- 562bMkHAhldp26Zr2+17CmxjgN5nVIfxxBWkqC3ygAZrAXVJWGuIV+/Cl2LVkSxcwy5b3DUCZ02
- CWMEiFsO23617hQXhSdf5s6uG7zuD2vfmOb2ZiCR3TUPzzEgqhHGov46Luxn4gOjkAlDKaSvjd6
- ALu4UqRXJNmsvmA4Nb5HY/M+FPNXIE5y6cwEIA4KmNtLhmuznI383a6wPFj0/mB1SCgTuw32vCs
- C7vEFCA+OMD77yCkeTgU6tbAkLLHyHHUTMRl0qkQTM4jP4Oq0mM1rSMc3gveMFnEYMBQFIM05SR
- 79B6o4qvffrRvLSBipz3QPYIO0zhcUekYgylIREZ7VMlv6EUiX7Aqeqmr9B6lECqQa8YsV+UMfx
- KByQE5+XbZeIka/hFOVMbCHeksPpL8HZY/5XLILfCMbu2DRKR6Bcv7J5DuA5AS5/dpaMGoS6Js3
- Ty3IIYZdapegYej4J7w==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDE1MiBTYWx0ZWRfX8z7igsPs3G99
- PqbH/BGby0mAmhq7/PFgBX4il9hChNe11fsf5ogsvSLziGfU7roSoj49GPb9KO7iVYbhCW5yENo
- aV+B1apu8INsWpS/Dgqq7Z1wDroXJ04=
-X-Proofpoint-GUID: NUooO3SLLwPHzvhBEgGRW-aZ_YBGlHV3
-X-Proofpoint-ORIG-GUID: NUooO3SLLwPHzvhBEgGRW-aZ_YBGlHV3
+X-Proofpoint-ORIG-GUID: sd1K36oLzr5TjVPrAeTN8pbfEJwVozox
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDE1NyBTYWx0ZWRfX/qxJjeNiYaN2
+ 9GrsCvDpCLCK7f0MXLoFtiIUDhN1rfZdka2CxJvRjlIekeJbn+aIzxm/LGoIbHGResqcWke1uMN
+ YcbSUEDPScbhsMSTibDoGHHQNC29x66eAXNFQOlqbBZOn6BUsYlIeCuOb76QJVUlKwhpibpJGh0
+ DxKuQErT0z/8iaEChpNUQFsGmmI3HiDa0r1Sg/ITDkEGSYZj0TdSUvgj1Exfy0a/tOsoZiKfNuD
+ SfCPhIk4RcCTGJ8rklsTu7afnaKpXvbbg12JenUXEhsFnr8z0POtF2d3cXhpbu67RxOpu2LJxyz
+ 4/we89z0vOrtJDyOTbKWSXfUIaofigsZyAZb9YdtLZfDSAnjnhkW1nUhKRp9HCr7elZFc3lSg9U
+ 8vQWT/CnOXWr3i0cpoXiWYGPD/zGDZQcaLEd6yvEBYgm7456dTTv2QLXIAbNjsKeDqsg7ZOYBTA
+ eRUaYHbx2sIrRvDFq/w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDE1NyBTYWx0ZWRfX7jkqYje0QH9Q
+ hgFSd240Obng1vQkUKpv/4E86fC+ekhSUcr3aRfM16+1Ui4VoU0Bi3o4pjaKfM9aSM7J5xtRe6h
+ a7sr0voGDIhNeypmByYV1Blnm9QYR5s=
+X-Authority-Analysis: v=2.4 cv=PYPPQChd c=1 sm=1 tr=0 ts=6a4e73e1 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=gowsoOTTUOVcmtlkKump:22 a=8AirrxEcAAAA:8 a=v9JiyUteCMCEH8Pa4FgA:9
+ a=QEXdDO2ut3YA:10 a=iYH6xdkBrDN1Jqds4HTS:22 a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-GUID: sd1K36oLzr5TjVPrAeTN8pbfEJwVozox
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-08_02,2026-07-08_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 bulkscore=0 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607080152
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 impostorscore=0
+ malwarescore=0 adultscore=0 clxscore=1015 bulkscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607080157
 
-On Sun Jul 5, 2026 at 2:53 AM CST, sashiko-bot wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issu=
-e(s) to consider:
-> - [High] Hardcoded `possible_crtcs` mask restricts all primary planes to =
-CRTC 0, breaking multi-display support.
-> - [High] Direct access of global `plane->state` and `crtc->state` in atom=
-ic commit hooks leads to race conditions and stalled events.
+On Tue, Jun 9, 2026 at 8:24=E2=80=AFAM Guoniu Zhou <guoniu.zhou@oss.nxp.com=
+> wrote:
+>
+> The i.MX93 MIPI DSI and CSI domains share control bits for clock and
+> reset in the media block controller. This creates a resource conflict
+> where one domain can inadvertently disable shared resources while the
+> other domain is still active, leading to system instability.
+>
+> This series fixes the issue by introducing a dedicated MIPI PHY power
+> domain that owns the shared clock and reset control bits. The DSI and
+> CSI domains are then made subdomains of this PHY domain, ensuring proper
+> reference counting and preventing premature resource shutdown.
+>
+> Tested on i.MX93 EVK with concurrent DSI and CSI operations.
+>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+
+Both patches applied for fixes and by adding fixes/stable tag to
+patch1 as well, thanks!
+
+Kind regards
+Uffe
+
+
+> ---
+> Guoniu Zhou (2):
+>       dt-bindings: power: imx93: Add MIPI PHY power domain
+>       pmdomain: imx93-blk-ctrl: Extract PHY as shared domain for DSI/CSI
+>
+>  drivers/pmdomain/imx/imx93-blk-ctrl.c       | 60 +++++++++++++++++++++++=
++++++-
+>  include/dt-bindings/power/fsl,imx93-power.h |  1 +
+>  2 files changed, 59 insertions(+), 2 deletions(-)
+> ---
+> base-commit: 3b7a18a34e8d3b14c7c926f033488a0350de9759
+> change-id: 20260608-pm_imx93-6ccc1aa11932
+>
+> Best regards,
 > --
+> Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 >
-> commit 8a32b307abb3d8e006d032d01a1802aa1e4ae6f0
-> Author: Ze Huang <ze.huang@oss.qualcomm.com>
->
-> drm/xen: replace struct drm_simple_display_pipe with regular atomic helpe=
-rs
->
-> Replace Xen frontend simple display pipe with explicit plane, CRTC and
-> encoder objects for each pipeline. Keep generic plane-state validation
-> before Xen-specific checks, and install GEM framebuffer prepare helper
-> explicitly.
->
->> diff --git a/drivers/gpu/drm/xen/xen_drm_front_kms.c b/drivers/gpu/drm/x=
-en/xen_drm_front_kms.c
->> index 48772b5fe71cf..57e1bef452f83 100644
->> --- a/drivers/gpu/drm/xen/xen_drm_front_kms.c
->> +++ b/drivers/gpu/drm/xen/xen_drm_front_kms.c
->
-> [ ... ]
->
->> @@ -105,17 +105,15 @@ static void send_pending_event(struct xen_drm_fron=
-t_drm_pipeline *pipeline)
->>  	spin_unlock_irqrestore(&dev->event_lock, flags);
->>  }
->> =20
->> -static void display_enable(struct drm_simple_display_pipe *pipe,
->> -			   struct drm_crtc_state *crtc_state,
->> -			   struct drm_plane_state *plane_state)
->> +static void xen_drm_crtc_helper_atomic_enable(struct drm_crtc *crtc,
->> +					      struct drm_atomic_commit *state)
->>  {
->> -	struct xen_drm_front_drm_pipeline *pipeline =3D
->> -			to_xen_drm_pipeline(pipe);
->> -	struct drm_crtc *crtc =3D &pipe->crtc;
->> +	struct xen_drm_front_drm_pipeline *pipeline =3D to_xen_drm_pipeline(cr=
-tc);
->> +	struct drm_plane_state *plane_state =3D pipeline->plane.state;
->
-> [Severity: High]
-> Is it safe to access the global pipeline->plane.state directly here? If
-> non-blocking commits overlap, this pointer might point to a newer,
-> uncommitted state. Should this code use drm_atomic_get_new_plane_state()
-> to extract the state from the drm_atomic_commit object instead?
->
->>  	struct drm_framebuffer *fb =3D plane_state->fb;
->>  	int ret, idx;
->
-> [ ... ]
->
->> @@ -242,15 +259,19 @@ static int display_check(struct drm_simple_display=
-_pipe *pipe,
->>  	return 0;
->>  }
->> =20
->> -static void display_update(struct drm_simple_display_pipe *pipe,
->> -			   struct drm_plane_state *old_plane_state)
->> +static void xen_drm_plane_helper_atomic_update(struct drm_plane *plane,
->> +					       struct drm_atomic_commit *state)
->>  {
->> -	struct xen_drm_front_drm_pipeline *pipeline =3D
->> -			to_xen_drm_pipeline(pipe);
->> -	struct drm_crtc *crtc =3D &pipe->crtc;
->> +	struct drm_plane_state *old_plane_state =3D drm_atomic_get_old_plane_s=
-tate(state, plane);
->> +	struct drm_crtc *crtc =3D plane->state->crtc ?: old_plane_state->crtc;
->
-> [Severity: High]
-> Can accessing the global plane->state pointer here cause race conditions?
-> It might be safer to use drm_atomic_get_new_plane_state(state, plane)->cr=
-tc
-> to ensure the correct state is referenced during the atomic commit.
->
->> +	struct xen_drm_front_drm_pipeline *pipeline;
->>  	struct drm_pending_vblank_event *event;
->>  	int idx;
->> =20
->> +	if (!crtc)
->> +		return;
->> +
->> +	pipeline =3D to_xen_drm_pipeline(crtc);
->>  	event =3D crtc->state->event;
->
-> [Severity: High]
-> Similarly, does reading and modifying the global crtc->state directly ris=
-k
-> fetching state from a concurrent commit instead of the current one?
->
->>  	if (event) {
->>  		struct drm_device *dev =3D crtc->dev;
->
-> [ ... ]
->
->> @@ -331,10 +395,37 @@ static int display_pipe_init(struct xen_drm_front_=
-drm_info *drm_info,
->> =20
->>  	formats =3D xen_drm_front_conn_get_formats(&format_count);
->> =20
->> -	return drm_simple_display_pipe_init(dev, &pipeline->pipe,
->> -					    &display_funcs, formats,
->> -					    format_count, NULL,
->> -					    &pipeline->conn);
->> +	ret =3D drm_universal_plane_init(dev, &pipeline->plane, 1,
->> +				       &display_plane_funcs,
->> +				       formats, format_count,
->> +				       NULL,
->> +				       DRM_PLANE_TYPE_PRIMARY, NULL);
->
-> [Severity: High]
-> Does hardcoding the possible_crtcs mask to 1 restrict all primary planes =
-to
-> CRTC 0? For pipelines with an index greater than 0, the CRTC might fail t=
-o
-> find a compatible primary plane during atomic validation. Would using
-> 1 << pipeline->index allow multi-display configurations to work correctly=
-?
->
-
-Will change possible_crtcs to 0 to populate automatically.
-
->> +	if (ret)
->> +		return ret;
-
