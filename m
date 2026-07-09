@@ -1,101 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013028.outbound.protection.outlook.com [52.101.72.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC223C344D;
-	Thu,  9 Jul 2026 06:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783578425; cv=none; b=prUC6F9sfiyt7BxCvU03aiIFNkabl5QyXU+tg0/L/MQp1HHJeTIkJc69CQsKCypdGpEfPyXIECKpNxIcAZmHNPOY9ARQCDFNUhYjVdn6h5bXX6wZslcxOngMbCzfxUUpLYhtE97xeZ9RAAyeBVXs7MGxlvOfQJ8Sk1wNxxLNkRU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783578425; c=relaxed/simple;
-	bh=tIF/4sb9k03T1hnlPdwGe7DwZNLEH4JOGcJEXyWdIgQ=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=uiuh2cOB/lN4Rsak7iVLLlU1HU9v8o1y8DCXcGZWGakCG5Z7yTpna1OQEpaKi7gSgzjsu12nkSTF7VM5yIJm7fxjPblWSggLxnIs2q21HHSXeduSgohRra6AflpDhdYHhtzmoTIFdAeAtCOcFk8MPLdWn8kzpeyK3wWMInY8zfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIchCuaJ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACEB3D1707
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 06:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783578694; cv=fail; b=UD9IQeowxbmOYykvotBJZ9xrh/eu3kSfmuXO0TeCb04taOc4zx3echxzUS4NMJM2M/aBj5G6PQUi6BEYiP/mnGfcUSaGm+YUi2943DdiBryFjgZn09CwNK6ur+k0fRrhSnCgj19t778Y1lIs33le8UHGIsrXzb4gYx1KKe7zDDE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783578694; c=relaxed/simple;
+	bh=tsKUdkLSo8TrUIVUTq4s+yPdfeR1Gk2FFlWICFLnBHM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uebL11Tx3gfgWZhzjtbXnZ+GQ8vYKr73GFCvVIJPEaBlS1JZJcEnHZUE2JPPblaWffFK9TWRT+aQsoP7o6BJ2h7k6gENeGXrJJssAdM8t4rJxbUyqfkCKESTv27aHoNKegSLoWMhpL3d8vjvFgat2fL8teEnLYBNn/C3kVJFIes=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ifI5efxZ; arc=fail smtp.client-ip=52.101.72.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIchCuaJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E3F1F000E9;
-	Thu,  9 Jul 2026 06:26:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783578418;
-	bh=nB+cpqmLQ5TvquFyBkVqXjC4cUU8Rx0rLzive8Z2Klw=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject;
-	b=FIchCuaJZfI3hMERE7nFlfjJMObH+5Xvhdauf1jzYaSKlEWnVskZzT+A78UIbRvq5
-	 wxX+Lj6NdAv6fmgEz7gmZRbcpWoL0H5ZOAUfUVLb+tCYqyTt9DtY+VLdqe/hWecZZ7
-	 x+7hx8UmZPZZBe0cqHE9fbbc5WMpOYXp4/UcfZMBwbv6bZSr4tIRa041Jsugh59nW4
-	 f4A653EJbP2EOuI/oF2QWANakQ/8d52otcMD0vQiDCqnB0qoiH15X4BvucK4XifodR
-	 TYwpv8IvqGGplFixKe/hAJTV4ig986fgATtQiSBhanBMj3DQ6HDk9hdOy0ijLJtnWy
-	 OKcbsOkxm3SYw==
-Date: Thu, 09 Jul 2026 01:26:58 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ifI5efxZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Uq5bsKoaaK/im2XxZTck1iOjy+d/ShlbeAt2IExfuzBWrIVMBh0Wx39Qe7Cu3h13irzdz+C7xWkyOV03+rllLk82L+3O7WSBnl7kgbQYT5Yv6AxgEujMr1lgzMO9YIgiqXjmLKH7x7lTd0VXmCRfXkCxh9ZGYjkM5U69d+7t907kSF1CrTubM/7+xv44xeXQQEqBd4QZVsG7eAGm/FDld6f6a3fb73EkOQEesTrs1pePtEWglBotM2+vbOPdxoZsME1Gs8hHw5p2sdVEHQDORcVR1/FiSrhRz+ymNyj0dSpKhYrDZojSrSs5AB3onkfo6Ea4IA9fJiaT8iekS+RXrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S8DPv8kkEC9Yh9+QtClD8vC8dWL/7URFjUvAwvsLzrA=;
+ b=txlJAnZE96NFK7p6xnMxkzELdb4Q6rCLVky17EQZJA6FzHPp4yYwXxM6n5oY9wL9Ap327gAZi4AKMpXev1c1ZyzSXILK9gALNl+4xONH2Tlzv+9hk6m8+lkd1IEmI1QC7aJ8307sSf7PFOIXM4MmtP4JaZw3OECPUFTG3wKFNf5GOfAg1LEXZ8fkXw5O3FieqNHXny46atprBlclEi++Zx/NzrkgsnTcdE6SA7tKWUAhR1oned8TIYeeFK4bJvFWqf9ucpJDn3SjQba9I8ppRjLfhMOLpTlS0RXOWsH/V1yXhJG1maYD5Th+Nqm+PeFm3CMlhdGvSjSxaK2m3L9Ajg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=S8DPv8kkEC9Yh9+QtClD8vC8dWL/7URFjUvAwvsLzrA=;
+ b=ifI5efxZgIMWTkmgFlKD1y+tOdp14uht10uP+vvENq9ahAkByDR/YMk1bPri/C5RPz0cpGwBkdpj2KpVuOnmdTR0ze9zO782sf01hF1WUtOp6HX/LMGepjv2D+qRFmgs2n2VTlly+5p3+naewbvzbHJFRrV9Jehud6T7SPx35DWmQ+N1xPVO0Mxg+8aIwWSrCdA5mrC7xVeqnSXjIMZb2udDVRAp2d4XoGtF8maMvlV/7QIQqlfcojJNr9gntCK4xLOzoHpa9kPjSeEwyV2cnyRWNZc+et0hkRNed7VlWl3Hx56r1ZRiUNR4gGF6mBtq4rL0yqkR/Jyz+9Owl1pavg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ by VE1PR04MB7344.eurprd04.prod.outlook.com (2603:10a6:800:1a1::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Thu, 9 Jul
+ 2026 06:31:25 +0000
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
+ 06:31:25 +0000
+Date: Thu, 9 Jul 2026 14:32:57 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] drm/imx: Switch to irq_domain_create_linear()
+Message-ID: <ak9Amc3uqJ6kWYqu@raspi>
+References: <20260708095645.385291-1-jirislaby@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708095645.385291-1-jirislaby@kernel.org>
+X-ClientProxiedBy: SI2PR01CA0024.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::20) To AS1PR04MB9287.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Zhang Rui <rui.zhang@intel.com>, linux-arm-kernel@lists.infradead.org, 
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
- imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, 
- Lukasz Luba <lukasz.luba@arm.com>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org
-To: HaoNing Cheng <Haoning.CHENG@cn.bosch.com>
-In-Reply-To: <20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-1-00f88f42930b@cn.bosch.com>
-References: <20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-0-00f88f42930b@cn.bosch.com>
- <20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-1-00f88f42930b@cn.bosch.com>
-Message-Id: <178357841806.2262413.17682316564929970184.robh@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: thermal: imx: Document calibration
- offset property
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|VE1PR04MB7344:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2e09389b-876f-4911-6a6b-08dedd83b2b6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|19092799006|366016|22082099003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	eSDe1XQvzPwpQ37tkFG+xmlpiQ7Y7HMY+7KJsDjPrPb+vH5SlC91KJvaV4vneqoC97nh4svsK3AmxcWWUR0utjGJjOK8Yw61S15O3UgF1H+3CNyv6dn48JY4YKd1ZJy+aQ3DDqZq1wrckx9pZL8Kto1g0Y/YPe2jH/vvUkk3+l27/eqrhyfx64tRxzqtgOXwYi1oa0rtUiIEp3o/xbe7NByrCT2JlHypSH0rgrkiCXXNa34Jt85aNzmXpyWLCyvQdrWPVsVqnGRMDXJBvKE5TOdJ4mdvMhZO4a9+93k5Xt1EK8qLsvTPE6v3Wn3hlhvHvIJPoI8LT3w9/6bFVN6hOwZ/ADoMMQb8Y3xxwkQAs0RcJNWFaBr1Q5x1YpD2RSmU3FNxIPijWBFLm7wG9EgxaLTCoOo3oRveEprJdyCw2NiSZoVdDqGeerM1e+LGCfQYQd3e2Eec0GSJBN5Chy7iGJJqfmPDNPgw4zkFdXJ3ci6fe/jefk7S6slBrg4qpc5cLl7eHsI4q67IlVRo4/0YSFR9L9lXTAtF1vtMjTGKaSoc3TWH0kI19si2xnbsSF1kfuiC2Xp4vsF++1N1ZvWklD5+iIgIh8u/aHQxucBD21iEAChlSXccLz8Qe5zve3UkateXUfkS2mXAdsPK1XZNqFSnGt6poRJn3tBi7J3MfVQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(19092799006)(366016)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bpMY3dBR4ddAMMCu9i6CKbR2Nmfy0bczlcZPJlh1QDsbP3BSsic8sb6XpFER?=
+ =?us-ascii?Q?XCKAi1Mk1pzGGCABLlwcPQkW4RBXJxx5GhDRCa7N6yv+AmVwIkW8Ncj8tz0l?=
+ =?us-ascii?Q?adRZ/rz+Ak4MYo+NosFfB6OV+i3DKIUizP7YwmmKoZWnbPsyqv43RiBd99QJ?=
+ =?us-ascii?Q?3QcQDc0LVd76ih2Emz5wpC+eD6FuA+toUaqp5Mga0lMzfLp1lkBLpv0PpaZN?=
+ =?us-ascii?Q?2Q8AvPc6uWbpkuaP7z5+8dQkd6ZOsVLQXmAwYEkflaV1ApEfCKx4YgfT6W+a?=
+ =?us-ascii?Q?6x/Zhj4YkWB9Z7wE0MY/svdVKFNAevnJS9PFALB8uK1WrkyypQFXhzit4JH5?=
+ =?us-ascii?Q?YvCARGYXno3Lh2j5EwGOao6SW75YV2SvTa3yd2DM5LFOb45/p1i1dgj4oMgt?=
+ =?us-ascii?Q?4RvlMvteS9kHfQhY9jfBtY91RKTAdASLLyuNyEIiMy1luzWQFZxjV3xZlWNu?=
+ =?us-ascii?Q?E8rXcMArMNeJFPbUqUEmKR8xFZmHr58W3Mqtr+ij/dFDAcAkCgtc7GR/GH+U?=
+ =?us-ascii?Q?Mmit8tboZ7nU1Z98tsmpHDj+Q+L1Zc/Ez6kTZCD9chbwk5gaq5A8KqYSXp3l?=
+ =?us-ascii?Q?1i71nBwu7QLyVDiWC9jWGKcnsuxYjRo5lcTzTqi/qmTI9in6960tkQ/K/h1g?=
+ =?us-ascii?Q?h7vE3FHH9Fo8XWawMg9hemhDhA9q5jqEl5Q4/LxwRkpEA3hh2/tM6n12DbhR?=
+ =?us-ascii?Q?yFOVLiaXvvi3aZ4U419veVz+8TetCHpyJJ+1yJitWqoDjSNFVDL2B3lAmIXd?=
+ =?us-ascii?Q?ySt9N/25YHU7LEJcNWQmI7d3bKPCOMhGWVbck90pbQAgVxpcnQVkQmbUmmwO?=
+ =?us-ascii?Q?/dnwJG3NlhCeezx0lYU07pbGFYg5ybcrKPELGExpxrn4xA3QL6ZG7Q7bSXmF?=
+ =?us-ascii?Q?aysGQ0HhRvxLSi6yi/LTlR9cMcRwuNNtdg59P4Xi/Rx3Y7VFwLdyp7UYc7PD?=
+ =?us-ascii?Q?Fs6QZdM/JmvfI6VSkZSEDIlTpgWP4Gr+gXuznzSEWA3mrX0nDGPaLnIRdNi5?=
+ =?us-ascii?Q?MOt1rpmdOs5ndKBIyuPB0ltU7C7vqxepD1KgguW5SgMW47H8ClA+RMoNMhtT?=
+ =?us-ascii?Q?yZ3LS3UVfimqUPgw4FUGJF84fDwv5+8YnbEyQvM8ekGbMdZEyGEJePLpscF5?=
+ =?us-ascii?Q?2x5eW5V/p2iHwHvQnZPzMq9L86m28vvXp5vaB1IEu4ACldKkQm87OYx43C4y?=
+ =?us-ascii?Q?Ags8KhkkiljRGULxKGyVZ8DTFxOCexQqEcGb17UU5aF+ANG6E4R8bIW9/RAV?=
+ =?us-ascii?Q?BXQx7gfdVJRvPdrCwn2RNJ9C9bdQo3BGy0ji+Ez+67WK4qna5YgFNFN9QPdp?=
+ =?us-ascii?Q?9BzwrAqHZ6Wytl2PVcaJF0P4gRj3/7PSU4f3y2XvvcI0c/Uvpqx6M9YBJNxn?=
+ =?us-ascii?Q?PwP1Gsi6tJJHjr+KtdCPUcqjw8cnSd/4BVWU4YjYA39hQsDxEnlPQAPCief+?=
+ =?us-ascii?Q?pccZSVHsRKlmsJny+fA5+4veRLPbbZZo4cF4aACIUeThSD12jmKLxkeCXG/d?=
+ =?us-ascii?Q?G5gVVwAXI9CC3a2Y0h0Ki5asZtG3bMY5LX4TZ9Ez4/PEuOuew1krFW9qnYAa?=
+ =?us-ascii?Q?ETTZeJxkeJz8/5kkm2lj7w5nbOKv/G42aAmTPLAE+BRT4u/mDxOGEqHqJ29u?=
+ =?us-ascii?Q?Pga8/zG8zWeTJey8pen0DdQGcGX44dBSbVK3yk/1BMCqvbIVoSykItPPLz4b?=
+ =?us-ascii?Q?tGwV43KQ28LrCVmYQD2rUp1m6RNbdK83LyM9zEOrv3EhzP55qB0WWFHO2SGv?=
+ =?us-ascii?Q?8EpdlIHWxA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e09389b-876f-4911-6a6b-08dedd83b2b6
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 06:31:25.1409
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ER1Yds/a56FfUfRl71chtIIWwf46f/1rzQ684eV9wtcUGOv59QEqL0x0J9w1eHedWrZf13x5lYrLR8+/WZ/znQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7344
 
-
-On Thu, 09 Jul 2026 13:43:27 +0800, HaoNing Cheng wrote:
-> Some boards need a small per-design correction to align the reported CPU
-> temperature with board-level measurements.
+On Wed, Jul 08, 2026 at 11:56:44AM +0200, Jiri Slaby (SUSE) wrote:
+> irq_domain_add_linear() is going away as being obsolete now. Switch to
+> the preferred irq_domain_create_linear(). That differs in the first
+> parameter: It takes more generic struct fwnode_handle instead of struct
+> device_node. Therefore, of_fwnode_handle() is added around the
+> parameter.
 > 
-> Document the optional fsl,temp-calibration-offset-millicelsius property,
-> a signed offset in millicelsius that is added to the calculated sensor
-> temperature. The property is optional and the existing behaviour is kept
-> when it is omitted.
+> Note some of the users can likely use dev->fwnode directly instead of
+> indirect of_fwnode_handle(dev->of_node). But dev->fwnode is not
+> guaranteed to be set for all, so this has to be investigated on case to
+> case basis (by people who can actually test with the HW).
 > 
-> Update the binding example to show its usage.
-> 
-> Signed-off-by: HaoNing Cheng <Haoning.CHENG@cn.bosch.com>
+> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+> Cc: Thomas Gleixner <tglx@kernel.org>
+> Cc: Liu Ying <victor.liu@nxp.com>
 > ---
->  Documentation/devicetree/bindings/thermal/imx-thermal.yaml | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> ---
+>  drivers/gpu/drm/imx/dc/dc-ic.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/imx/dc/dc-ic.c b/drivers/gpu/drm/imx/dc/dc-ic.c
+> index a270ae4030cd..d8aa46ee6a7a 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-ic.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-ic.c
+> @@ -174,7 +174,7 @@ static int dc_ic_probe(struct platform_device *pdev)
+>  		regmap_write(data->regs, USERINTERRUPTMASK(i), 0xffffffff);
+>  	}
+>  
+> -	data->domain = irq_domain_add_linear(dev->of_node, IRQ_COUNT,
+> +	data->domain = irq_domain_create_linear(of_fwnode_handle(dev->of_node), IRQ_COUNT,
+>  					     &irq_generic_chip_ops, data);
+
+'./scripts/checkpatch.pl --strict' complaints:
+CHECK: Alignment should match open parenthesis
+#34: FILE: drivers/gpu/drm/imx/dc/dc-ic.c:178:
++	data->domain = irq_domain_create_linear(of_fwnode_handle(dev->of_node), IRQ_COUNT,
+ 					     &irq_generic_chip_ops, data);
+
+Acked-by: Liu Ying <victor.liu@nxp.com>
+
+>  	if (!data->domain) {
+>  		dev_err(dev, "failed to create IRQ domain\n");
+> -- 
+> 2.55.0
 > 
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/thermal/imx-thermal.yaml: properties:fsl,temp-calibration-offset-millicelsius: '$ref' should not be valid under {'const': '$ref'}
-	hint: Standard unit suffix properties don't need a type $ref
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/thermal/imx-thermal.example.dtb: tempmon (fsl,imx6sx-tempmon): fsl,temp-calibration-offset-millicelsius: -6400 is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/property-units.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.kernel.org/project/devicetree/patch/20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-1-00f88f42930b@cn.bosch.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+-- 
+Regards,
+Liu Ying
