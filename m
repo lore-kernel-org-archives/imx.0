@@ -1,208 +1,276 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012024.outbound.protection.outlook.com [40.107.75.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB4E376466
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 03:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783566009; cv=none; b=g/AjoyVYrx7O/pvpqBqzuKIxQYa/MuQJ1IXQHslzveKNV8biJuQD63vTWBQHW0t+2j6T6xv8oiUKC308uqpWfL67AtrWdfEBq330gJYzu9dE6W+kz+xpb5KTdf60BsCuizQ8xdSUipk8R81XlHEYrPXOfdCcmZqoBLSrs/xJjyM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783566009; c=relaxed/simple;
-	bh=/fIuUzsh5mbgMTZ9pyQWpBHECPI/bV5pjrA8ljMrUIg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=B0w0KNYQa7jwj9Mj1XrJNSTpNn3rKtKDb0EeigF2KUjBDNbGzozfAoEmhCDkTnyg3LspEvNuQLGLPXPlbRcm6cFcCcOYYIg2gLCQqywbDSM8M/QtislM24usgHJVRxgw/C9629NpY4NS0/6UvfYthE8GlGw/ebIdrLPstnN+LvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGw7Y4ws; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABBF38D3E4
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 03:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783568103; cv=fail; b=SSvgf7ZQT85IYsWZ4v5skUiki0oScsZnD7JyhpQr/BLnCNVVcmnCy0oAy3C7MVYn0tirjt5ZIYyvCAmuICfGmp/ECWvV4gatwLeCPtYcc+LWGeZmqo7enXAWyJGMuzRRXOTxS77ay7TpRVHWnuhlgyYTKaXsh+MSECyRhvPP9Zk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783568103; c=relaxed/simple;
+	bh=+3J/eDnCSZCZBu6Nd4AH6Y1kNjQle7pe+8I3hPRCuTQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=oCb29zM1uhDEY2e/mcAzCvt/mzAgJxCbz9hC6IxTUeea9nmgbqfG+x/OgyBBuRaRFXdqgnLgrt/yIaMngrcTycXc/CKKvXauQm/qGN3EsXHbXXRBzggz1KnlocP6KZgA3ViZwLf1FlFndUj8HVwc6Sgf35nq467vhcysdGrRiss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=NutE10Fz; arc=fail smtp.client-ip=40.107.75.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGw7Y4ws"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A5A1F00A3A;
-	Thu,  9 Jul 2026 03:00:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783566007;
-	bh=30Z4YnaeodJKgHZKqo9nhpFfXw0UZguepRT1WuWGlk4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fGw7Y4wsAdjjsruETTqPOKIJ9rhkzhGQXk5dFMyfEXEJxJYhGJ5o13c++L9L4keJs
-	 Q/rCQMjbwWJg914a9LDvl7UZ2280Fiplm2lVWhXSaEx2E9KvStblmisypTj50LMvY6
-	 jk08lw5EqA77qWCdLB8fRhBishlsB6wypGg2h12EZaj9TDiM85hEEHpLsEgjAwahlk
-	 ix9RMcbu/eCldAPfFr0Jd9vAS1ud3MMXtqNziVbQkhhhkCs7DMYIxYQSGlycd+rtpV
-	 0BqAXipsiLn6t2lIW8O9SOVWfrCTKefC4N8M0J6rsFC25BTuYRkHjEkWV8sN8G+YdO
-	 oZHwR5vtr0nqg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 18/18] thermal/drivers/imx91: Remove redundant
- dev_err_probe()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pan Chuang" <panchuang@vivo.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260709023048.599150-19-panchuang@vivo.com>
-References: <20260709023048.599150-1-panchuang@vivo.com>
- <20260709023048.599150-19-panchuang@vivo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 03:00:07 +0000
-Message-Id: <20260709030007.B3A5A1F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="NutE10Fz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z54+tPnbz0UYYpSHMNHndnOS2Glq9YQIJrz4SOJ5vJHuRdQRv0KuhKocSJSXeLij7m6khOs8yUG0y9HE+RwOrXfpyA0XZJH7Dh62cCZcBaVQFy3jGGJtuYDuHl+uK1lah0Ea6pICJBk5ByOj9SM6EzC90TDxNueiVFHNYbFIZYVW72+IKXs/soPoipQ5lmZD8GWQEppa/wwxQwUZDmiR9sorAVA0KYx6qCqLlZpeISWuZlUstJ4zewZt4cGAmkkYsZYF0B4VbWoL9pcB2ZPEIFeagfBRYExn7hlX08d+XcBFxxQO/44ZlDRcqGs7OYqSnhphZ4VPCstq6S4vtwLwWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m7JAm6c5QpWscHDUz2WKVnHugJ6te115xZNRdOcGfts=;
+ b=c/DHEjK/sqWW3eQVC7t31SEohMwEzqRV31SCpo10mb97+fy7LoJBzCMR5bO2NeC4R5xF9LXD8WsvUO93mx+FF3CPN67NEE6a0me3Y+7rRwjuTVt7dzJbiG7wntAdWITtdgFb6Gnv5wnr3fkc363DowNwd/jKS8MELsuxTD2FVnDAlB22KCm6TrjCgGwnxNP01kDeofjlYk+wAJg4+GE5c2sZJmUwE2KYQ4JVyWH/SzvUfbQGxA3T20o33Ma2rPu60JQMpDx7Wy46MB3r3Bnt2cwHc7SRq/VkhbqTDaAJMC2s727sjWqfTw4R/afRtkbZg8cLWym7gYnkW4bQ6Ejmvw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m7JAm6c5QpWscHDUz2WKVnHugJ6te115xZNRdOcGfts=;
+ b=NutE10FzDHfNJpMrKlBLPBYaVA75/dwliVb7gjlaVv/8DIOLvUSkR5gXgabMpII98TH1rC+MqYsUy9q1SnLqAc55uXA/moe7k0G3MSqwJ57SOO9TImRKL229Q2W5PECxxKjqWuqUlKJB+RP4Jbu8SF9xpJM0+Nzkt42i3a0ENDzU6RyRmnxasWftG5UHptrgSeermQNPLJv0vdsqd8jk61nRuXvUH5ht2HZ7HoThNrELMmLDoDvIWKWb1o9euYSWcAKo6AQ7p3Md9BakAX+y7Qe+CzDC00r+/j7tk2a9sWihaK32VSJ/ewCXHNvqbSvIvAqxoOHy+735jvVRla4TLw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SEZPR06MB5832.apcprd06.prod.outlook.com (2603:1096:101:c8::12)
+ by SEYPR06MB6360.apcprd06.prod.outlook.com (2603:1096:101:13f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Thu, 9 Jul
+ 2026 03:34:50 +0000
+Received: from SEZPR06MB5832.apcprd06.prod.outlook.com
+ ([fe80::f98:5e32:4ccb:d07b]) by SEZPR06MB5832.apcprd06.prod.outlook.com
+ ([fe80::f98:5e32:4ccb:d07b%6]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
+ 03:34:50 +0000
+From: Pan Chuang <panchuang@vivo.com>
+To: Sebastian Reichel <sre@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Support Opensource <support.opensource@diasemi.com>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Saravanan Sekar <sravanhome@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Samuel Kayode <samkay014@gmail.com>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	linux-pm@vger.kernel.org (open list:SYSTEM RESET/SHUTDOWN DRIVERS),
+	linux-kernel@vger.kernel.org (open list),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
+	linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
+	imx@lists.linux.dev (open list:NXP PF1550 PMIC MFD DRIVER),
+	linux-arm-msm@vger.kernel.org (open list:ARM/QUALCOMM MAILING LIST)
+Cc: Pan Chuang <panchuang@vivo.com>
+Subject: [PATCH 00/43] power: Remove redundant error messages on IRQ request failure
+Date: Thu,  9 Jul 2026 11:33:39 +0800
+Message-Id: <20260709033428.362970-1-panchuang@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TPYP295CA0017.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:a::9)
+ To SEZPR06MB5832.apcprd06.prod.outlook.com (2603:1096:101:c8::12)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEZPR06MB5832:EE_|SEYPR06MB6360:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2303c2f-d8ba-435a-dc1d-08dedd6b07cc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|52116014|11063799006|56012099006|18002099003|6133799003|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	P0c5wX6Zdb0agOCKZa0qbc0jN69beP1K8FHaERdiu6e56Gf/yLNpXvxXHoMPlOKLVSGeYQf7cQ6wAmReAARiy1MQLI8HUVsd38saL77lgr6j2WjTup3u6fHv4zHPYk5Bvq3pV3vnir1QdSQZeeA1DhvPwJZDIq8iAiGLj8g2fh4/eN8KtTMme1IWN6Po9gyadHLjWQhX6wfczS8fK9wocZps2X7eGonBJ5WKeMuKadv190JODDoB1SSHi7X71O8anqq0dUKxVgRam4mq+wgA/YXLeZMj9T333paFWryw/c9XeLiXYdEV9rnf9HLH3OucCOoCiKJpKGc8ve+xC476uDt8q62smpg3X/VPXb7QBJ0tSl913krygohiupVImHSia2jNAq2VAIrS1OmTPL6OJsSvMxa7bNE0oZA4975Qd8Omka0XQkhCQ3UftYqgiElFVIfK/h48UajCBN2seAX7A0dHz65x2Ogpn2cX696v5NYuP6UTPaWshNDi7Mr9XbF2Tom6G5O6TqTT4w9XkAs+/RcjVmUvDNjAbcDzQ0ukG3M/8ey/+U+jYP68GMQm3fKjCjd307LMZxDV1IsHtPoKbjLOGe/grg279u96NhqWgv3cJPGcjmp3nEVlQ99LIsJ1UQUSbDTQuZhFqduUqtsFergZWluDQmoyZlF6l1atL14wcGr7A6qWR1vWwND4RXQm06uin61hKcJ2roevFYDXMTTlD0r2aMYb2UAf5TvTMMt1h2wklPCunOYtnhneEzNy
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5832.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(52116014)(11063799006)(56012099006)(18002099003)(6133799003)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Gm++FXjTYhidG/YOq9mDMeP/GsaWmq78sj8PLiBG+pGVYK7CultcMM31rXRU?=
+ =?us-ascii?Q?oDgPZizZyPPqjbJxlqJdj6/mnLPmnQuiv4guPL9dnToe8ufRQbGqO02GwODR?=
+ =?us-ascii?Q?+vuWO1JxmvbtXhM9afGoyVZKMuZQ1NnThwanWKYb9lDQsgOuJrgwa42DK47P?=
+ =?us-ascii?Q?0pXmqTnAgn+t6QS9jBk9qa/q4CZpQ/3xxjy7uqSgYN3jlbf3hMZ76CwcX04Y?=
+ =?us-ascii?Q?tWKZ6HVyPHYSbD1kf3I8rJbxzigWZJBpKt2D1auoMX/wmesFGcZLRliKp93n?=
+ =?us-ascii?Q?ga9R5LG3KdWvW9vy45mV2sAuQczZpAH0oSX/CtlwZb/bDV3hBtLEUPLB0y1g?=
+ =?us-ascii?Q?34HMlcMxL7ZcGtfkllzohooyTWVi924oWN2vYOn6n0+cJYXtdvlIppNbjOiP?=
+ =?us-ascii?Q?73Yid07/KF9pBt1n0chkOYmuBHcx70AEaojcjf/AVGGjbUHUhggOrwzxBw8B?=
+ =?us-ascii?Q?4SJeLDjgUT8joF5hzUKC/ddwdvf7iaTy4l7bVE7PwvZznbbYiBwVoASkKZlH?=
+ =?us-ascii?Q?xrhwbJIzsGjbHLCWa6OsXtFs3Kv3TDNFNHkcQ2Vh6BWpAPOVAEJj1MgW+029?=
+ =?us-ascii?Q?+naz+RgoJG9DLFC8K59PePvZ92DfinPGTWS2weVXrzjCqocn3He+o2qaBebE?=
+ =?us-ascii?Q?wvhrq9UL5nxl79HAfMJDhzq068gZ6DJNXOqpp7HvS4NHtgNKm9LR6OnFDgbp?=
+ =?us-ascii?Q?AS+40G4curgPbMRh/kSacHPIoJamN5AYVXdzCkFJ74QFaQ6Hh4WAMQrQ+rUc?=
+ =?us-ascii?Q?r6gpDsRvqH/BH+xZS29GCoACMap7M5dcxSQYhrUCuPIAXDEaPVhbNsE9+AUu?=
+ =?us-ascii?Q?pb8TSxwh4vqR1QnYNpiS/3Hd7OALUHTnniZTdqT9q6h9YPhd6B4bR/+gZhKa?=
+ =?us-ascii?Q?JDocYS7NUfc/D6NSCfmVcnyY0MXOIlTFsINwBDfMNL8ejX7Pk6XtUPzQfIqi?=
+ =?us-ascii?Q?J4mx3PZBKWcQBZjVQm/Yp5vmOhv0jJdA+SNKPf/eMSOTLuc0b+/jvlKZQCX+?=
+ =?us-ascii?Q?TTyCA6DYdz76bJvm3oNdCkbLV5IMT7W2f+m+xoJvtZubERY+mU65bm5n1WLH?=
+ =?us-ascii?Q?OrHvZCCvgMDIToqcl7L1JC4W5b3kTPyHloMFJT0b7T976BQkocPnMh7y+W+6?=
+ =?us-ascii?Q?KpE6/0qzigzp6fJTTdLPVcbYB59PFV3B0FCBJ2vlj01RBG9PWb8SryktFY+T?=
+ =?us-ascii?Q?1V5D5jAY2WT4aq360BnXOv3npX9RPoJtDqiLxKBUNklW1gvtFq8kDOml+92a?=
+ =?us-ascii?Q?BBKcRtTmEx88CxRuI9x57Lx5+kNrWJsUmXKCIYX8h8QmiyXsmPV1Fn0mkWuA?=
+ =?us-ascii?Q?ou3UQDB+DqGTY21esEO7P25EsJygET9mKnkJ9d6C+kYvd2peh9vMsAPkONDf?=
+ =?us-ascii?Q?w66X33gl5nvcP2Cr07U0y50jmXBmKIoWWRm2fLe07qyjbwTTO7bDHowt4lPQ?=
+ =?us-ascii?Q?XfPhDYNTZUhGQ+yblQ5b4mWfxjliLb7H6Ht7Fc+7lpJ2qYIWOitOZpSlbr5f?=
+ =?us-ascii?Q?etXpt0iSzph70OqooPEhNKsTzcEt3+lZrxrTd6hQlayRy0yBmNqvE4nyJpZs?=
+ =?us-ascii?Q?UnmmxLNNXnFU8Tq1i8bzFawN8gRNwZu0TDiYTkcUDj8oAve93HvRFmatG/+9?=
+ =?us-ascii?Q?PHcpYMz19CkVmoYTcOVl/D+ynAT+9ArcKJ673iBnV0n4d4Ph2xvpliaHBolG?=
+ =?us-ascii?Q?+w2S23Mmi+9oj1uRyvY8Yi5H+fS7oVP2T/fM7xTLB6x22FlqeXfbCDrNHC8W?=
+ =?us-ascii?Q?0L4sN5FX1w=3D=3D?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2303c2f-d8ba-435a-dc1d-08dedd6b07cc
+X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5832.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 03:34:49.7346
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WhJoL70c7Z48w8Et6VIKeRc3R+ZzNUJdv2Ale4Ygp3C6mEr87vMLZ9leLvs2/2LlHbvQxSqDyChlw2xakVfeqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB6360
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
+Commit 55b48e23f5c4b6f5ca9b7ab09599b17dcf501c10 ("genirq/devres: Add
+error handling in devm_request_*_irq()") added automatic error logging
+to devm_request_threaded_irq() and devm_request_any_context_irq() via
+the new devm_request_result() helper. The helper prints device name,
+IRQ number, handler functions, and error code on failure.
 
-Pre-existing issues:
-- [Critical] Driver unbind causes a fatal hardware access and double-disabl=
-e of the TMU clock if the device is suspended.
-- [Critical] Hardware is accessed before asynchronous PM resume completes, =
-and PM usage count leaks on error.
-- [Critical] Reading the temperature via sysfs when the thermal zone is dis=
-abled causes a kernel crash due to unclocked hardware access.
-- [High] PM runtime usage counter is permanently leaked on error paths in `=
-imx91_tmu_probe()`.
-- [High] The IRQ handler accesses hardware registers without verifying the =
-device is runtime-active, risking a bus error.
---
+Since devm_request_irq() is a static inline wrapper around
+devm_request_threaded_irq(), it also benefits from this automatic
+logging.
 
---- Patch [18]: [PATCH 18/18] thermal/drivers/imx91: Remove redundant dev_e=
-rr_probe() ---
-commit 49fc5692bf44b8731b85be1cb5d7f3ecfbbc5b8d
-Author: Pan Chuang <panchuang@vivo.com>
+This series removes the now-redundant dev_err() and dev_err_probe() calls
+in power drivers that follow these devm_request_*_irq() functions, as the
+core now provides more detailed diagnostic information on failure.
 
-thermal/drivers/imx91: Remove redundant dev_err_probe()
+Pan Chuang (43):
+  power: reset: pwr-mlxbf: Remove redundant dev_err()/dev_err_probe()
+  power: supply: 88pm860x_battery: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: 88pm860x_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: ab8500_btemp: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: ab8500_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: ab8500_fg: Remove redundant dev_err()/dev_err_probe()
+  power: supply: act8945a_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: axp20x_ac_power: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: axp20x_usb_power: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: axp288_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: axp288_fuel_gauge: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: bq24190_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: bq24257_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: bq24735-charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: bq256xx_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: bq257xx_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: cpcap-battery: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: cpcap-charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: da9150-fg: Remove redundant dev_err()/dev_err_probe()
+  power: supply: generic-adc-battery: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: max14656_charger_detector: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: max77759_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: max8903_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: max8971_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: mp2629_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: mt6360_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: mt6370-charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: pf1550-charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: qcom_smbb: Remove redundant dev_err()/dev_err_probe()
+  power: supply: qcom_smbx: Remove redundant dev_err()/dev_err_probe()
+  power: supply: rk817_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: rn5t618_power: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: rt9455_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: rt9467-charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: rt9471: Remove redundant dev_err()/dev_err_probe()
+  power: supply: sbs-charger: Remove redundant dev_err()/dev_err_probe()
+  power: supply: sc27xx_fuel_gauge: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: surface-rt-ec: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: tps65090-charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: tps65217_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: twl4030_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: twl6030_charger: Remove redundant
+    dev_err()/dev_err_probe()
+  power: supply: ucs1002_power: Remove redundant
+    dev_err()/dev_err_probe()
 
-The devm_request_threaded_irq() now automatically logs detailed error
-messages on failure. This eliminates the need for driver-specific
-dev_err_probe() calls that previously printed generic messages.
+ drivers/power/reset/pwr-mlxbf.c                  |  2 --
+ drivers/power/supply/88pm860x_battery.c          | 10 ++--------
+ drivers/power/supply/88pm860x_charger.c          |  5 +----
+ drivers/power/supply/ab8500_btemp.c              |  5 +----
+ drivers/power/supply/ab8500_charger.c            |  5 +----
+ drivers/power/supply/ab8500_fg.c                 |  2 --
+ drivers/power/supply/act8945a_charger.c          |  4 +---
+ drivers/power/supply/axp20x_ac_power.c           |  5 +----
+ drivers/power/supply/axp20x_usb_power.c          |  5 +----
+ drivers/power/supply/axp288_charger.c            |  3 +--
+ drivers/power/supply/axp288_fuel_gauge.c         |  2 +-
+ drivers/power/supply/bq24190_charger.c           |  4 +---
+ drivers/power/supply/bq24257_charger.c           |  4 +---
+ drivers/power/supply/bq24735-charger.c           |  6 +-----
+ drivers/power/supply/bq256xx_charger.c           |  4 +---
+ drivers/power/supply/bq257xx_charger.c           |  2 --
+ drivers/power/supply/cpcap-battery.c             |  6 +-----
+ drivers/power/supply/cpcap-charger.c             |  6 +-----
+ drivers/power/supply/da9150-fg.c                 |  4 +---
+ drivers/power/supply/generic-adc-battery.c       |  2 +-
+ drivers/power/supply/max14656_charger_detector.c |  4 +---
+ drivers/power/supply/max77759_charger.c          |  4 +---
+ drivers/power/supply/max8903_charger.c           | 15 +++------------
+ drivers/power/supply/max8971_charger.c           |  2 +-
+ drivers/power/supply/mp2629_charger.c            |  4 +---
+ drivers/power/supply/mt6360_charger.c            |  3 +--
+ drivers/power/supply/mt6370-charger.c            |  4 +---
+ drivers/power/supply/pf1550-charger.c            |  3 +--
+ drivers/power/supply/qcom_smbb.c                 |  5 +----
+ drivers/power/supply/qcom_smbx.c                 |  3 +--
+ drivers/power/supply/rk817_charger.c             | 12 ++++--------
+ drivers/power/supply/rn5t618_power.c             |  5 +----
+ drivers/power/supply/rt9455_charger.c            |  4 +---
+ drivers/power/supply/rt9467-charger.c            |  3 +--
+ drivers/power/supply/rt9471.c                    |  3 +--
+ drivers/power/supply/sbs-charger.c               |  2 +-
+ drivers/power/supply/sc27xx_fuel_gauge.c         |  8 ++------
+ drivers/power/supply/surface-rt-ec.c             |  2 +-
+ drivers/power/supply/tps65090-charger.c          |  6 +-----
+ drivers/power/supply/tps65217_charger.c          |  6 +-----
+ drivers/power/supply/twl4030_charger.c           | 10 ++--------
+ drivers/power/supply/twl6030_charger.c           |  4 +---
+ drivers/power/supply/ucs1002_power.c             | 10 ++--------
+ 43 files changed, 49 insertions(+), 159 deletions(-)
 
-> diff --git a/drivers/thermal/imx91_thermal.c b/drivers/thermal/imx91_ther=
-mal.c
-> index 25915bb702bea..274eee3031429 100644
-> --- a/drivers/thermal/imx91_thermal.c
-> +++ b/drivers/thermal/imx91_thermal.c
-> @@ -331,7 +331,7 @@ static int imx91_tmu_probe(struct platform_device *pd=
-ev)
->  					IRQF_ONESHOT, "imx91_thermal", tmu);
-> =20
->  	if (ret < 0)
-> -		return dev_err_probe(dev, ret, "failed to request alarm irq\n");
-> +		return ret;
+-- 
+2.34.1
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does this error path permane=
-ntly
-leak the PM runtime usage counter?
-
-If an error occurs during probe (e.g., in devm_thermal_of_zone_register(),
-platform_get_irq(), or devm_request_threaded_irq()), the function returns
-without dropping the usage counter.
-
-The usage counter incremented by pm_runtime_get_noresume(dev) earlier in
-probe is never decremented, preventing the device and its parent power
-domain from entering low-power states.
-
-> =20
->  	pm_runtime_put(dev);
-> =20
-
-[Severity: Critical]
-This is a pre-existing issue, but does driver unbind cause a fatal hardware
-access if the device is suspended?
-
-drivers/thermal/imx91_thermal.c:imx91_tmu_action_remove() {
-	struct imx91_tmu *tmu =3D data;
-
-	/* disable tmu */
-	imx91_tmu_enable(tmu, false);
-}
-
-During driver unbind, devres executes cleanup actions in reverse order:
-pm_runtime_disable() (which does not wake the device), followed by
-imx91_tmu_action_remove(), and finally clk_disable_unprepare() from
-devm_clk_get_enabled().
-
-If the device is suspended (its normal idle state), its clock is already
-disabled.
-
-Calling imx91_tmu_enable() writes to hardware registers without a clock, wh=
-ich
-can cause a fatal bus fault that crashes the system.
-
-Will the devres clock cleanup also underflow the clock reference count?
-
-[Severity: High]
-This is a pre-existing issue, but does the IRQ handler access hardware
-registers without verifying the device is runtime-active?
-
-drivers/thermal/imx91_thermal.c:imx91_tmu_alarm_irq() {
-	struct imx91_tmu *tmu =3D data;
-	u32 val;
-
-	val =3D readl_relaxed(tmu->base + IMX91_TMU_STAT0);
-...
-}
-
-The interrupt handler reads IMX91_TMU_STAT0 unconditionally. The driver does
-not disable the IRQ during imx91_tmu_runtime_suspend().
-
-If a spurious interrupt fires, or if an interrupt is raised mid-flight
-concurrently with the device entering runtime suspend, the handler will
-access unclocked hardware, resulting in a fatal bus fault.
-
-Should the handler use pm_runtime_get_if_active() to verify the device is
-powered before touching registers?
-
-[Severity: Critical]
-This is a pre-existing issue, but is hardware accessed here before the
-asynchronous PM resume completes?
-
-drivers/thermal/imx91_thermal.c:imx91_tmu_change_mode() {
-...
-	if (mode =3D=3D THERMAL_DEVICE_ENABLED) {
-		ret =3D pm_runtime_get(tmu->dev);
-		if (ret < 0)
-			return ret;
-
-		writel_relaxed(IMX91_TMU_CTRL0_THR1_IE | IMX91_TMU_CTRL0_THR1_MASK,
-			       tmu->base + IMX91_TMU_CTRL0 + REG_CLR);
-...
-}
-
-The driver uses pm_runtime_get(), which queues an asynchronous resume and
-returns 0 if the device was suspended.
-
-The driver then immediately accesses hardware registers, racing ahead of the
-actual clock enablement in imx91_tmu_runtime_resume(). Accessing unclocked
-hardware causes a fatal bus fault.
-
-Additionally, if pm_runtime_get() returns a negative error code, the driver
-returns directly without dropping the usage counter, causing a PM leak.
-
-Should pm_runtime_resume_and_get() be used instead?
-
-[Severity: Critical]
-This is a pre-existing issue, but does reading the temperature via sysfs wh=
-en
-the thermal zone is disabled cause a kernel crash?
-
-drivers/thermal/imx91_thermal.c:imx91_tmu_get_temp() {
-	struct imx91_tmu *tmu =3D thermal_zone_device_priv(tz);
-	s16 data;
-
-	/* DATA0 is 16bit signed number */
-	data =3D readw_relaxed(tmu->base + IMX91_TMU_DATA0);
-...
-}
-
-When the thermal zone is disabled via sysfs, imx91_tmu_change_mode() calls
-pm_runtime_put(), suspending the device and disabling its clock.
-
-The thermal core does not block sysfs reads of the temp attribute while the
-zone is disabled.
-
-When any user reads the temperature, imx91_tmu_get_temp() directly accesses
-the IMX91_TMU_DATA0 register without ensuring the device is resumed.
-
-Accessing unclocked registers triggers a bus fault, allowing an unprivileged
-user to cause a Denial of Service.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709023048.5991=
-50-1-panchuang@vivo.com?part=3D18
