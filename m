@@ -1,209 +1,134 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013061.outbound.protection.outlook.com [40.107.162.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30A1331EDB
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 14:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783607654; cv=fail; b=i0oWE+8LAgDK5GxTKlJHstzG3KvFQ/ZVLq65fx8PNNOG1fSDswQcA38xtx9k9o2OGLIsF4uu8jkbW2r0mcLoLOftQ0CKAxIoxyty8KvmRUHzesKFu1f84wm7YDMkACJYhbXy5w4j9VWHZIMtJTr/Wy8eyoz9OrSukZKcLTfkFSM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783607654; c=relaxed/simple;
-	bh=gCzl3W/fed9R3vxGkXTznyXJ1ejTut89/UfDrIAyigI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BQ5D4sUMMZ7i14Xqeg6HSdSn0jnRa3/S6CqlY1H/LFixucZYEjWKb+h3z52KdCz+DrVx6bPZqst5VGQkAqDH4Hqmb3apFDaw+2VTi3SJK0J4T8mTfcGrESG8okWUTwDisMXv2Ur6aFRNlbNu8BdXvacFGs0I8N4w0mlQiv8TRgA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=aR9RW7kg; arc=fail smtp.client-ip=40.107.162.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD90737757F;
+	Thu,  9 Jul 2026 14:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783607862; cv=none; b=lhbK38nL9yy8rdxuBJDOsJ8RsHsXnoDCPv2nEi6rhDITco52R80el4iPhipA0yWrQ28BeuJhGv61qNqu1s3aIKouKwDy+ltExMQejRmohaEK47SnHh2+Xmw4jNShMXEphBqRlP++xiGe/QGJ/c2dOjYhpy1Pt4dXlcu92OUJ+RU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783607862; c=relaxed/simple;
+	bh=G/JqQwW0dwNDKeTP8VENiBouDgdm24+mpw3kLDWuuJg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=leolVpr8yWln9EY/oqVlYLViAi0bZe7g1ZkScqDhEaATCw1F3rEkGNWfWPe7RtxnWf9r6s6PyQKIuoRmIwHrzZPwZMA4rDmLpMHFWeSt336JoAXLog42jyH4mQOqiscQmvH/FxegTImm9wHtv5Zo8vOtTFTn5W/AqcqrDcdMPLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNoPdcPd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="aR9RW7kg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=su2xPYDd41jEUYY8eUimQyKDb3bVl7SunTAHa7a3WRU57g2h/aXd3WLUCqIfhfkvvWXZwWTiLDZ56N4fr+yXrj1waHQHF4tI/x5AFCf8adQy1V+ARio/Gb9CHC1tgHhG+JqIypMZrOpQ0ep/zLLugxdTPvDNi8gUsTdINj6YmGZjVcP1/e1QeBTOBjYpayIBEl2Dmv4G20KISHw4+nsQc4XxbCUIDwIrpDU8pFaT0mzj5Ukv8Nq+KplVcOZzrixeMa4Hx1BLJtnZ1Yf4LnlV4k6LFZoA0B8KMPqJGZGf3/ytpSO6mV6rWAPPzABJyvoNMHcD1ygkOYtdFo7aO/nMyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xW00tJNIshy0xy5+FQFD3GiaAM5NcjsuhlRNaGxQr/A=;
- b=sJoluXDt52Z2hkcuZOh1f22xK+QSlbe3YJLT7VSzEMM7MPkdlCh7Oq2nGcuyoIHqUBcnG0spNK+CHmC75FCReOGQjccit0NBa/NQFWJvO7NfhvxoN2CyZAkEAK2D+m7aw8k7k5B93cYLjlMcgUck9wl2C7XhdCbBN+TWdR46POIemNAUopmru4y+1ymecIEEBryOJY9HL8fTB0rs0smBvYskpZeUnVvpMSy/1EfQbYgBlADaES0pLGJ1yKL0oMxufcgKpTC8HDnESx5SbEcIegUCSXwjefWYSRKfhMeFbmvJPzpBVyO/edSJW2gclUpTkpRe30hexWeFkM1FWgIemg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xW00tJNIshy0xy5+FQFD3GiaAM5NcjsuhlRNaGxQr/A=;
- b=aR9RW7kgWnGYMnkas0VpFw2qKfG7mFRZ71lQ7mY59Bk2AAAKFEE3HEj5Nb5rhds+WsCdOvMWKuV+qewzmd8QN7DisEhhVP+ZbDyym7nGG71Jah2Tske0SvDKLSVotjpSMUvLq9nYaQZ4Pp6cxlqkc97lJAymhvagoSllQsjkrub3m6GeBf1XkrQ7G/0zOSa+kzSTQFBGQRhXOFUxZ6D7MmnPMKrPDtVl66MBXqgSN6fUbX9K5cgQ3xSl7GOngOzI+lzaQbumvIln5aQK+1FgR6TXzyMQ9p0UHcaj2I/+hPjoh9Vwc696xZNZZQ0OTNzKxDd2yUtxSWxd4HwIYja34A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB8344.eurprd04.prod.outlook.com (2603:10a6:20b:3b3::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Thu, 9 Jul
- 2026 14:34:09 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Thu, 9 Jul 2026
- 14:34:08 +0000
-Date: Thu, 9 Jul 2026 09:33:58 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Pan Chuang <panchuang@vivo.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	"open list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>,
-	"open list:FREESCALE eDMA DRIVER" <dmaengine@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 01/26] dmaengine: fsl-edma-main: Remove redundant
- dev_err()/dev_err_probe()
-Message-ID: <ak-xVi5t3u2ajnMj@SMW015318>
-References: <20260709135846.97972-1-panchuang@vivo.com>
- <20260709135846.97972-2-panchuang@vivo.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709135846.97972-2-panchuang@vivo.com>
-X-ClientProxiedBy: PH8PR07CA0026.namprd07.prod.outlook.com
- (2603:10b6:510:2cf::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNoPdcPd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BACF1F000E9;
+	Thu,  9 Jul 2026 14:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783607861;
+	bh=a5n4xtOREpdY6Sr1GJeuEOG4Zfh2qQG7JXpk/xNyFHQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NNoPdcPdHHEA7wneNqoHR7kIfdtqLLA7a80M+468gJQTPvaoJ/q3J4jpegzGTZF4A
+	 48p10WBPIxB41MPfCmVKwK7rvwEc7N9cBqdZfubGdcp3/tiSkgYP3KHjXLfG0OyK2d
+	 yvYObiNoeqngQG10i7t0OaTS9VgDIEw9ILAj2APpKQBhlPCrpTDXUoP4T9yP37/Bho
+	 EMT5tz9w8KOTMJTqnm5kpufpgEcauUdPxiYHu9IgOXwBnmrOIRsJqJgwL6h+DH+Nso
+	 ag1+4TdZ2ce27hCjz7MpmdUHFpOcUtbXxy1jf+gK6oSvIfKdZz/S3VOMR075gmG0Si
+	 uwbV4skc2OTdQ==
+Date: Thu, 9 Jul 2026 15:37:33 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Brian Masney <bmasney@redhat.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Stephen Boyd <sboyd@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jyoti Bhayana <jbhayana@google.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-hwmon@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-rtc@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] firmware: arm_scmi: Ensure automatic module
+ loading
+Message-ID: <20260709-exuberant-narwhal-of-correction-7f4650@sudeepholla>
+References: <20260618-scmi-modalias-v2-0-8c7547c1be21@oss.qualcomm.com>
+ <8c2a4ae3-95cc-489a-a7a4-90a3ee2597e9@oss.qualcomm.com>
+ <20260709-spicy-fiery-squid-6eec1d@sudeepholla>
+ <dae4deba-7e5f-434e-80ae-89033bdeb793@oss.qualcomm.com>
+ <ak-h8oPcL69fCUg2@redhat.com>
+ <f05860be-dd75-49f8-b27a-bff7b554e71b@oss.qualcomm.com>
+ <20260709-exuberant-galago-of-spirit-1c908f@sudeepholla>
+ <5fb236b7-7b99-40fb-b80b-fa7e1dfccd70@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8344:EE_
-X-MS-Office365-Filtering-Correlation-Id: 831a35d7-60a7-42e3-bc38-08deddc72250
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|376014|366016|18002099003|22082099003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	Adlij8mcjwkpxP7jKgjDEDp8cqGiVX0j9i+8/4pBPacNJ23+7J149DjgmUw6WzGR6DuqVHpimHmV3qRGVZQP2dI+gfyiwc+0gQdkOhLpFNbk0JVlY5UKaLbVn0pmvIfegN7nwxVExv7iM7tca1L3mckgs6Qmh2lMH6YR+AXr+MAvn6+mZQ2WxrxnmSQwTjg1VQeRva0XD1IHjrxkHceMPHEQ1dz2VpBh5OsoMT2SvcWOFpN29BCaglS/WW9DxaYRnT8BHbAUdbVHqDoOET7JGk0GDqOrQcITxaW2Oyuz89N8ZcJCakCzqFPqLUbsS5GXyFsuDKgkgaS1Zx9pXr/0f/LKATF1pimxY5xB/fEMPddbMOpAt6Xs7l1h9bwDrfUXOvuo0aZWx6dpuGRAFtHybNxqIKvdyeFcGA5eJMYp1VLNf5rzV5jmc9oOx5snRWhkhMgbmoGJQOhaKdBt7/9rEJTk6mnhq/pS2NNfF90ZNbnpVdRVzCLmqQ6tHwcWXmuD6H1PJd+lMviExlpF38RYp9yr79s1fOG+QMJYsaZNiMPRTd9cQH2TjmRvNPE5qxOi0yz19M91eJhex2BZG0W1BCJLxwZpQXTzI2xdSqQc7EfSkTWUVExpYsa7MWUyQ9Ak0Uvt04waZLkDGH7cWf8DqNgUWGCZE4eKcXRQAO/eogo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(376014)(366016)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+MaEv21Uq16C0ffIhlJmunAqnoJpeQUGYRiSoO067+XYeSAg2rShLXTlksVR?=
- =?us-ascii?Q?Kch/7TT+Ep0KJoH6F92SwODrmduHK7j8d3njecX5IjkM/PnHneUbvP0yva57?=
- =?us-ascii?Q?NEnTU14P/kBxZe87BUJ6YQRLko/Ztx9IcuCeYpxzeypPpEck7u+ONkCyXOeK?=
- =?us-ascii?Q?raTgDOxqUvXywI6QXg6QR8aJkC7IlXANjNmjktfeCdK671rGtnbhytpflMYR?=
- =?us-ascii?Q?F4f0VV72Y5jU6ujaiUsdwmCDQtb8ECuqQ9hIdt+OTaS2EkIdKMWWNab3Lz6q?=
- =?us-ascii?Q?KBhPNxhho9ERYxdckcQxgktGvqGH3Re0t2siRnESDq4tFI6TURzkxWeMq6oj?=
- =?us-ascii?Q?0GK9/0uOyi7XLZInpzRGfcDTcH4hnK+FtLgApyusRvC7E7tV2FusLAC+tApX?=
- =?us-ascii?Q?be8ozq7qHIY4UWWHHwTYY194LEGv7QBnX6W46q52nOPTV6NZU+uGKwzVy5ZQ?=
- =?us-ascii?Q?5M2NFqL1rUQ3HG4oK0osvnyv8Lksrrnmms4Z6SuAW/oC7U+HnJeSIm97jgAR?=
- =?us-ascii?Q?aBz9h5qcvg+wghVoc5B18JIB4FzivUl0vBu+vkvz998oWb0AMZ6A/Jb5KfKu?=
- =?us-ascii?Q?IZRV5KF/oYMkRcWgpMEWETBLXWIQwsXEZ/BY8XszidZGI5sqWsXnUF23/8sR?=
- =?us-ascii?Q?3Aod7ifTf0LcTx1SEla8kc1ezTKVgM7lMRiVH3X9TMDQOudmhABS2eLwZ3JT?=
- =?us-ascii?Q?xoZGxusB6lQcjjNNKuIgGq171r7iCjY8kExUgN+n8Mx8pqpP6wr6mBHjzXM0?=
- =?us-ascii?Q?/5xwH95gQYfXh1CdbRr4vMlN26FWkVt/i8JZJ0aX4UaimCPwVHMUiYueM8Oj?=
- =?us-ascii?Q?r+pfEsSdnATvH4EOy1Y4THkCZs6wWyLimgzyAmgT5ckEuTv2OAoxqQYcQSWA?=
- =?us-ascii?Q?If0TpOJzll0FQDyjl7R5ajd4C7awtDp4ZJF5G3tPXVyLAIvO0lNyOc398HDr?=
- =?us-ascii?Q?VGS2c/0nlZog5eSKCOnRHNwCzKjAzD5lG3HV6XV1QPhNp4ba7DIToasE6UBi?=
- =?us-ascii?Q?Ybs6ozDqdujKiHhHPSsWW9wCGTRosXW5fUhTo9/JK18XJ6Awhbf7u7XOUGlc?=
- =?us-ascii?Q?7WQtI8mrJ+IYjB9cWsuLLLCg4v8z2/cz+b+Z3hR+A/wv2V23/7zw7asGi7Op?=
- =?us-ascii?Q?AfmyLtMuNFvXUTYluDDc1F7Grg10siRhFCWQMjTjLcPJ+RYTm+4PtYc9r5aW?=
- =?us-ascii?Q?Uoc6Oul4Y+g1lJFQ3V1XHQIWLnW2l5R7+EknKPZvSBCsi6wQcHh/mqw1TcZh?=
- =?us-ascii?Q?d4UUmuCznrlgWKT6bPsg0X9FJyMLAcZdVIsSK+dG35Ps9KMWKzHq9eGg/fX9?=
- =?us-ascii?Q?zxoE/o2tZ8rTbeso7ne7srAw6Yaxb6KMtB7DNa7O3XvOQBiEsmL0f//4Cl0r?=
- =?us-ascii?Q?FfEWxbZMA628L66OHoBZK+eB1XgjdJ7NKqg89GgZPxwGy1LPNxdQhoW2xUTM?=
- =?us-ascii?Q?ihzih3u8oNNoJ5DXV8c5BdfhovzqW985bLCWYDf2meyRusFOu4DP0nbl7s2V?=
- =?us-ascii?Q?ddA/Jcm/TQYz6GLmTAnX3nXe2vErBXkCl2oWFeawW0TWgmXmpyRKLdTYBdAP?=
- =?us-ascii?Q?XtOgKuL+WH5iJcyAslr+HNwMeH6M0efSsMzLQmspjMgnK6Wn6xr3XWzTaWEG?=
- =?us-ascii?Q?vL7fePKNN80yvd5D0dVN4CWP1qs5o4eLiIpRFJpDZbw9mjGE8kiwJwvhN5s1?=
- =?us-ascii?Q?lGNfjDZZ0ie8FzvTie2mwyaDyrPa51SnysdbWIPPqRoC5hbLFKLiZN2+rO2k?=
- =?us-ascii?Q?sc8oA6cnlJYFN2Q7x5YR/s/KgG5FxO4BMR56KmKSHFPvIeuuHCVB?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 831a35d7-60a7-42e3-bc38-08deddc72250
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 14:34:08.1425
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: H0p220NOHUJjFtXrE9pZcGZ9TfSVTr3P17t/qPmS8pYU5CBoqKWflaA9iCvZdqhNqsu6zFs9S/6LD+hSGtsIO2jf0G6/4uwKDuNhz/unxQGWeCd7WmVV7LvOp+nr4jD7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8344
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5fb236b7-7b99-40fb-b80b-fa7e1dfccd70@oss.qualcomm.com>
 
-On Thu, Jul 09, 2026 at 09:58:05PM +0800, Pan Chuang wrote:
-> The devm_request_irq() now automatically logs detailed error messages on
-> failure. This eliminates the need for driver-specific dev_err() and
-> dev_err_probe() calls that previously printed generic messages.
->
-> Signed-off-by: Pan Chuang <panchuang@vivo.com>
-> ---
+On Thu, Jul 09, 2026 at 04:31:00PM +0200, Hans de Goede wrote:
+> Hi,
+> 
+> On 9-Jul-26 16:21, Sudeep Holla wrote:
+[...]
+> > 
+> > I need to recall why we moved from static list of devices to dynamic.
+> > One reason I can think right now is the vendor protocols and their drivers
+> > But in general it was an attempt to help multiple drivers bind to different
+> > scmi_devices that have same protocol ID. E.g. the performance protocol
+> > can be used by cpufreq and devfreq/performance genpd drivers.
+> 
+> Note it is ok to have multiple drivers bind to the same modalias,
+> depending on the reason why there are multiple drivers either one
+> should detect that it is not compatible and exit probe() with -ENODEV
+> or there should be some other mechanism to make sure only one driver
+> loads.
+> 
+> E.g. duplicate USB device-ids happen (they shouldn't but they do) and
+> then the drivers typically figure out if they are talking to the device
+> which they were written for, or the other device with the same USB-ids
+> and then one of the 2 drivers exits with -ENODEV.
+> 
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Understood. Sorry I tried to explain with examples assuming you may not
+be aware of the details, but now reading your response, you have better
+examples.
 
->  drivers/dma/fsl-edma-main.c | 23 +++++++----------------
->  1 file changed, 7 insertions(+), 16 deletions(-)
->
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index 36155ab1602a..0881f4f36b3f 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-> @@ -357,24 +357,18 @@ fsl_edma_irq_init(struct platform_device *pdev, struct fsl_edma_engine *fsl_edma
->  	if (fsl_edma->txirq == fsl_edma->errirq) {
->  		ret = devm_request_irq(&pdev->dev, fsl_edma->txirq,
->  				fsl_edma_irq_handler, 0, "eDMA", fsl_edma);
-> -		if (ret) {
-> -			dev_err(&pdev->dev, "Can't register eDMA IRQ.\n");
-> +		if (ret)
->  			return ret;
-> -		}
->  	} else {
->  		ret = devm_request_irq(&pdev->dev, fsl_edma->txirq,
->  				fsl_edma_tx_handler, 0, "eDMA tx", fsl_edma);
-> -		if (ret) {
-> -			dev_err(&pdev->dev, "Can't register eDMA tx IRQ.\n");
-> +		if (ret)
->  			return ret;
-> -		}
->
->  		ret = devm_request_irq(&pdev->dev, fsl_edma->errirq,
->  				fsl_edma_err_handler, 0, "eDMA err", fsl_edma);
-> -		if (ret) {
-> -			dev_err(&pdev->dev, "Can't register eDMA err IRQ.\n");
-> +		if (ret)
->  			return ret;
-> -		}
->  	}
->
->  	return 0;
-> @@ -418,7 +412,7 @@ static int fsl_edma3_irq_init(struct platform_device *pdev, struct fsl_edma_engi
->  		ret = devm_request_irq(&pdev->dev, fsl_edma->errirq, fsl_edma3_err_handler_shared,
->  				       0, errirq_name, fsl_edma);
->  		if (ret)
-> -			return dev_err_probe(&pdev->dev, ret, "Can't register eDMA err IRQ.\n");
-> +			return ret;
->  	}
->
->  	return 0;
-> @@ -445,24 +439,21 @@ static int fsl_edma3_or_irq_init(struct platform_device *pdev,
->  			       fsl_edma3_tx_0_15_handler, 0, "eDMA tx0_15",
->  			       fsl_edma);
->  	if (ret)
-> -		return dev_err_probe(&pdev->dev, ret,
-> -			       "Can't register eDMA tx0_15 IRQ.\n");
-> +		return ret;
->
->  	if (fsl_edma->n_chans > 16) {
->  		ret = devm_request_irq(&pdev->dev, fsl_edma->txirq_16_31,
->  				       fsl_edma3_tx_16_31_handler, 0,
->  				       "eDMA tx16_31", fsl_edma);
->  		if (ret)
-> -			return dev_err_probe(&pdev->dev, ret,
-> -					"Can't register eDMA tx16_31 IRQ.\n");
-> +			return ret;
->  	}
->
->  	ret = devm_request_irq(&pdev->dev, fsl_edma->errirq,
->  			       fsl_edma3_or_err_handler, 0, "eDMA err",
->  			       fsl_edma);
->  	if (ret)
-> -		return dev_err_probe(&pdev->dev, ret,
-> -				     "Can't register eDMA err IRQ.\n");
-> +		return ret;
->
->  	return 0;
->  }
-> --
-> 2.34.1
->
->
+> >> I wonder if we can just move a small part of the drivers
+> >> (some mapping table) into the bus code and then just have this work as it
+> >> does on regular busses. I hope to be able to make some time to look into
+> >> this soonish.
+> >>
+> > 
+> > I started with that few years ago and we then moved to this dynamic
+> > device creation. But I agree if it is deviation from the norms(which I
+> > wasn't aware of at the time), we can remove it.
+> 
+> Looking at the issue this is causing for automatic module loading if we
+> can get back to the bus enumeration code always creating a device without
+> waiting for the driver kmod to load then that would be good IMHO.
+> 
+
+Sure if it fixes the issue for you. Cristian can point out anything I
+might have missed to consider as he is the one who reworked it and made
+it dynamic device creation which at the time sounded nice option to
+solve the issue. We weren't aware that it could cause such issues 🙁.
+
+-- 
+Regards,
+Sudeep
