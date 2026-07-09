@@ -1,246 +1,228 @@
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11013025.outbound.protection.outlook.com [52.101.127.25])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44072414A0D;
-	Thu,  9 Jul 2026 13:59:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.127.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783605552; cv=fail; b=eTd73Xir1K5NJdlr2c5hTJRD0NcXdvq+yypiyyt4SICExiTMaQlDD3taV6pxDepyZXK94/nijEmN9RTDjVlhGt4+sr+3U7bX3CAUMluZl9YXgeJ2rHizLO/CMcyrt78t95J7T4d8ZLZGiFQ8U5GG/dh2PoYh2wwjEWwg/Wx3e3k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783605552; c=relaxed/simple;
-	bh=MBg2lHEI6G0ylalMjaLwymqa9oAGin3pdRQYMpRXu38=;
-	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=R2/+UL66LQtUJevvJGyUKEGALtu5UvBeOMUmxae6bC3zPYUBdTgwn8rYpIzpYSZSBLRdh/uog96dFJYzhBkGoSqG0jhuKvqilZ/Y+9e/1ojIiFA885JF6af0S0k9JV/+z5R8/YnNPWmvNcP9Bm6p2XWuD8S7M2ldxkP9xBQqTw4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=ILXVx4+h; arc=fail smtp.client-ip=52.101.127.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4378345CA8
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 14:07:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783606044; cv=none; b=gOMwemErHs7QeawEr6Qgry4U8zvJo9SdyKM8CQiQ5vLNXvCSDpWjKObe/16mk/ZRIXS96evclGO1/Pc4nJiRGuSouwXuRLGmB42Hnyte2rWrZnTFSPZZaG02QXZqtA9tswZ9D5JvYb2HprUknqa/WInCIaqI8WY6bgOpUxoZiBc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783606044; c=relaxed/simple;
+	bh=/bYHC6ljg2WQE3J+hhPWQjPMOcrXeK0n87YNg5RX++E=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jBFrEPI/YxUxLZmks2iJMeY4hroSkVhI2c5oRLhWiBxgOLeikEZNXKAyIRDtfDsieJdkBr1h+YjlGn5WmsNtbqtJCTodh4rSrc4SWar2/BLadJ86UObJj5JzBfo+cDEQb5xNxTopGLn+fTReFXRxewbxi1+HkTn/0kjXCaQcfpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=R9VjSNvC; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GlZCHejH; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="ILXVx4+h"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ifb/3cTpOKpweRJ2AASLT/5/Nw2HPjtcxkkb5aJXdcW00hY0fGBjKcxJZDhEoEo8Ehe4qQtzwlMBZH8gF5Hj/BI2hXNr+7oHY5pAuWh8t/QpRRAoVglhEaSwgJJQ7uWht8iXK9SXnWkuPQgIT9bLcAjgcooGlf9FTKiMhQ8h9q0FDxY2b5hOINdXVFnIZRkPeEcsu0O1yUWyCvjtgE3WB6WZ2dzCPKd5O6U5C9ph1p43G8Kt24kyIFkng+C4+TwP5IZutW3xKUt/QgHFVhcC3qBOeXdZ1sc1kw/ERSHv+nwzRBxNSHsmXjVxiwb4ZeRspmwjks2Ur0XCLzEQCtZtDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oOzwOcQbvakUVf8rVMR1KArGq4nCtlU53/DRC0r1R/g=;
- b=MQu051oXLJbGXwwE/tzxe2j/puHA2bpNwr7+23zcCic8F13NnPFYSlCdfqheeqVHDj/qCUmi++b8FOe3fd60lorBHjf936ZaWdtW99LM7Vkw8FsrduaYfW9OryDNcTNQw+2IxiCfHSUbO1+f723qjYjwYc2jmEgCsKGTE8OUqYYC1i9tg6+rPPCrOiYzBe964+nkZwGct70cr66b8Aq0onvE3+tuAF2dvivSHP5dU63solZVh/l87z65tGhkJQxahB1fqFAUqvB1VmLfNTzNdXytovv+jO0S0G9rZaeOzH7WdJmQof7ATV2eNIIWqukvg4tInRzAa4E2N0tO4nncRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oOzwOcQbvakUVf8rVMR1KArGq4nCtlU53/DRC0r1R/g=;
- b=ILXVx4+hd517/hcQPFiqr4A/Qx+2GjH2ZibTDLuTh5GCh6kA4Ri8oAAnZAbVdXDV/NoUm6Lx/MxOamU6dxS8E1r8iMiAmcno9k0NaLuPIF2VCkIo9bkom08GDo3shVWcljZea5/MM4rgrNyaNIuWMLCYhT81N8lkvYC0A441YyEkbxShJHK5PFO9IK7GR71erQJ5pszLjClOvuFCvXIOLSI5zj5Hh3oB9lN44akIi0/g/c+3f8tp4oWmdJZ9WC8EY2SIOY2X/TSjDv3xHb/r7Sg3lwLHYRWdmp+GGJ6tij7tLsBXdR0ZNuJPVIYO5qMG2TaifWbrcld6lyKzshVCQA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SEZPR06MB5832.apcprd06.prod.outlook.com (2603:1096:101:c8::12)
- by PUZPR06MB5673.apcprd06.prod.outlook.com (2603:1096:301:fb::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Thu, 9 Jul
- 2026 13:59:03 +0000
-Received: from SEZPR06MB5832.apcprd06.prod.outlook.com
- ([fe80::f98:5e32:4ccb:d07b]) by SEZPR06MB5832.apcprd06.prod.outlook.com
- ([fe80::f98:5e32:4ccb:d07b%6]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
- 13:59:02 +0000
-From: Pan Chuang <panchuang@vivo.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	=?UTF-8?q?Am=C3=A9lie=20Delaunay?= <amelie.delaunay@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	Kees Cook <kees@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Pan Chuang <panchuang@vivo.com>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Jyothi Kumar Seerapu <quic_jseerapu@quicinc.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	John Madieu <john.madieu.xa@bp.renesas.com>,
-	Thomas Andreatta <thomasandreatta2000@gmail.com>,
-	imx@lists.linux.dev (open list:FREESCALE eDMA DRIVER),
-	dmaengine@vger.kernel.org (open list:FREESCALE eDMA DRIVER),
-	linux-kernel@vger.kernel.org (open list),
-	linux-mips@vger.kernel.org (open list:MIPS/LOONGSON1 ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:MEDIATEK DMA DRIVER),
-	linux-mediatek@lists.infradead.org (moderated list:MEDIATEK DMA DRIVER),
-	linux-actions@lists.infradead.org (moderated list:ARM/ACTIONS SEMI ARCHITECTURE),
-	linux-arm-msm@vger.kernel.org (open list:ARM/QUALCOMM MAILING LIST),
-	linux-riscv@lists.infradead.org (open list:SIFIVE DRIVERS),
-	linux-renesas-soc@vger.kernel.org (open list:ARM/RISC-V/RENESAS ARCHITECTURE),
-	linux-stm32@st-md-mailman.stormreply.com (moderated list:STM32 DMA DRIVERS),
-	linux-sunxi@lists.linux.dev (open list:ARM/Allwinner sunXi SoC support),
-	linux-tegra@vger.kernel.org (open list:TEGRA ARCHITECTURE SUPPORT)
-Subject: [PATCH 00/26] dmaengine: Remove redundant error messages on IRQ request failure
-Date: Thu,  9 Jul 2026 21:58:04 +0800
-Message-Id: <20260709135846.97972-1-panchuang@vivo.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCP301CA0073.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:7d::11) To SEZPR06MB5832.apcprd06.prod.outlook.com
- (2603:1096:101:c8::12)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="R9VjSNvC";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GlZCHejH"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669Dw5DF1970748
+	for <imx@lists.linux.dev>; Thu, 9 Jul 2026 14:07:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	/y/ahoOnHj/TUbb1MBrebh+AQ6I/elKTEZ594W2J7GI=; b=R9VjSNvCHGYmCikI
+	POz42573KX+Iw8RgVFzKweFwM4uIUVDrleq2QM4u4N63wFSC6y4eafKE9g+j6oJa
+	wexGDy5oP/PmZX42bkzmF/XrlxpSS6BX7oIEQZGzCw7j6s4+GtJc0iA1pbPshNHH
+	cf5CkhjCw1KEKiXHeOGvqq8Aj1T1lvSY5wZ/8MunyUee7rcn8OuxeqGMjBHWuwtU
+	C/DUKHRVGdTyUAlWCTSh1TThGgE0dx7ILNfY7enxMbLzoJiknXW7dZ72gHeDUbrd
+	9D7nHt+t+WqUrbC1OrumUCyLK+4XIsL3yVhUniz4wDq5znTasz4NYtkq9CNCHNSO
+	VEq2oA==
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4facqpg48j-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Thu, 09 Jul 2026 14:07:21 +0000 (GMT)
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8ef18406878so12550296d6.2
+        for <imx@lists.linux.dev>; Thu, 09 Jul 2026 07:07:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1783606041; x=1784210841; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/y/ahoOnHj/TUbb1MBrebh+AQ6I/elKTEZ594W2J7GI=;
+        b=GlZCHejH4CICKG3nWS9QirKmv4LbGSCk4iKLmBAU8J9sXGzp+tH9aovgbZlqMIgHRg
+         E/ndjjepYa4qCwzqhgkdtsxynjHjfZoWLtXMdy3+vpl2ZuKHbLplRYgIO2G9NaFr6x4F
+         Ts2OvDd3Rh5qzyohJVfFQrTpKZHBd86DLrq8+9V45qmAxd48zER2SxXhDGLnPOzpwRKs
+         AzrJ86voLTOgVU2lvMPwedtT84/bElMDOoOrTSvIVCQDff0qxPWM6K/s4/ywRefjoCmj
+         sG9RQltlYQ99cs/uQ08X5cLgCumcAjcYG1Hs4zNTVjQpqbF1El30UoyL1u6tyTLMPePn
+         h4QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783606041; x=1784210841;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/y/ahoOnHj/TUbb1MBrebh+AQ6I/elKTEZ594W2J7GI=;
+        b=H8sF3hzU5MJhraPcvf6FNnbqzgnaj2kU/t/cVEokla5bHHcIB5c5jiFQVtLkh57ZK3
+         8UnfbYZ4945K9NuJSWsY6bC5jQ35x60NYIe9rX19kM8SA6wBArj22kinZ1/AJthn7oB8
+         jhT6brrsXyLbTNcQN8utcHatiMDVpXrKfwVkTj+84s92RJsqUh63lQt4knMLWiU8/6iv
+         VItDdo9MILQSDq06E+rRQ8DDYVgVPO2MPKNE8e4Q8UdY5GZ69vpZ+jkXz2yJrhdRL1VF
+         Y3loX5CtMwWzxHX7B9iQEMIO19y2fTLBrQa3ph5lfJoizq2run3M6S7+lqkiTxTtxONu
+         2Bnw==
+X-Forwarded-Encrypted: i=1; AHgh+Rru5CFWiKlNNreOofha1FdXuj5RG6TJT4fCyWIDGj+oU0GiS3KzP31j/i9O8vuQ24CubY0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzdz3/VUgws6DaGXFlHjQ6hSfxX8durlOqM7E4Uzurwc+e8BOF6
+	n6Ymc+FvnYRTdyp9S30DH/ZympjY92i0capbOP8ZEuMxQCJplmCRfkIq1nBg56YVubBLxSSKHkV
+	TbKWgthBLyck0l9xZCkU1mTN6b48Cg+yK9/wvYNCu2I0r/5Ee7w0sy24=
+X-Gm-Gg: AfdE7cn6gnAtEY6BvWHlJy4G64mwrHfgj3yySM27s4H+U/Q43fTdfFdrFFT3DOxyw/o
+	vZR+4Q5igegm1oeCVnFWzo7b49AJDcpa1UqIR4jSIDr03+8SVLwDHcQ9wn0DWwn5H4SVYZZSTFR
+	SMqyrfZw95sNi6qPdBXpLdH5DhlppZIC5sqj5VC4kY3crqUl2oLm7O+PsuuNc63c6vpRO43m6hP
+	Hs+w7nR6XQfyS12vsRAQ/ETRmmXRqDeiUT7DaY6RkM8TuWMPYnWGrvzhGBxtyK6cporZwmDuNGs
+	as9zbBfCR1Kyo0VU3NeMZtewX0PZ+0oOuWAuC3sov3UAN7d9DB3CM1VDKtsGNP8FklfcLjsK2jP
+	nELSdLaLWmdwXtszYe3GxhreC7ZhEoj8fwc1e4M3KGmcMaaBmmCMm7D6PxHjim370TBiNE0c+q9
+	mQsY1Si5baGMiRk1X9RCu0zHWfJ+fMSy0+BiS42DW2EosL4XxxL0B5SnBygvtTa8VHYBY+P0as7
+	k4Mag==
+X-Received: by 2002:ac8:5d88:0:b0:51c:667:7e30 with SMTP id d75a77b69052e-51c8b4d60cfmr76152651cf.47.1783606040469;
+        Thu, 09 Jul 2026 07:07:20 -0700 (PDT)
+X-Received: by 2002:ac8:5d88:0:b0:51c:667:7e30 with SMTP id d75a77b69052e-51c8b4d60cfmr76151081cf.47.1783606039359;
+        Thu, 09 Jul 2026 07:07:19 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15c79f2a3fsm301861766b.49.2026.07.09.07.07.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Jul 2026 07:07:18 -0700 (PDT)
+Message-ID: <f05860be-dd75-49f8-b27a-bff7b554e71b@oss.qualcomm.com>
+Date: Thu, 9 Jul 2026 16:07:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEZPR06MB5832:EE_|PUZPR06MB5673:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7fcd5df5-2006-45b2-e3ad-08deddc23b56
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|23010399003|18002099003|56012099006|11063799006|921020|38350700014|6133799003|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	ilQVOiP7mW7zZkAoqwuF2SKeDCbTeIa3bwZhFZd06A4lanF5GgK8UN7cbORqHeiP14zEYw9/NW76TdHeBMOc7KbLxxmmfmATu2VDParzQXIXMzMXur2IUUwnLzCYVKUEvRfD/0CJ+zFFpTYJE93U2d0FeTh3KQcuNKf5BxfqlbCvfYqmUXz+AOeyn38JXFZC7PrkLKB+egLQj91PO9OMUnNY1Gzj84m/yGLU0/9FnFlMgXlkbMAzXAm+hM4e1XgeCab7CGd53dKMjKnmmHGNw8UrYM9FO6aKXIKY2q29ho7kb0aYVtUIcsGugR3fUF4wUwkihncpz3QPv4cR0vL3MkfuFs1mLbYH/hsCRAT9AMA4CZ3L5LVe2TsGsa766jdCq0X4q7VSAGmlZPrvenwnaxlvsDWjSVVGjpdrw45K0poDJlTIStOrNnErmAKpl73YR2R/ZkkPRg412Vv39G/A6gLqnVQEBWnLfphRF9N2Wgez0+VWyYHbSEtjZ8mbrs0/3fJR4wlJLoBbnMwdwh28P9JM7hti2S5IqKdD/o9HKJ53TAd5A13GB8VcRqsM17IjSZj6Or1SRgPZ3LirVQtXDAZiNER003nTXPbqinsi2zZ/aEtc2HB2jU6Lt8ZuBPlPwcX0pTaldkSZ5nI0VutpjIhgiBm7vEFc313IFJUe9dE9nEQEW93myFpY1xEn2dlIEcpRD2bgx8itZiRE5VsGO/q6xNgKETBWpeROfVaSgrKG0tRKubGd4u+1xtrpimYpnDDnTfFE1+wWHHDPvJIevA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5832.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(23010399003)(18002099003)(56012099006)(11063799006)(921020)(38350700014)(6133799003)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aw2kElSYYd+5jSr9MQ4IQOlIvGiXaQs2AlEPZnyMee/6bxyQ6Bxm0qGzHWk3?=
- =?us-ascii?Q?w5/jh3NdyHInHO8TPJQTAbLOCSL3HjSiOdyIEjVTeTeCLPfetBjfZxwXB2az?=
- =?us-ascii?Q?ObBet0x/i2YJyjydcB7Lcj5MYIwvSQgWIcL9lGY0aZrPaa4VK3fqDXkPUBzA?=
- =?us-ascii?Q?1TRmfRAho+lgCJ0er9cQtAUf52wh4r0pfGBQg/NqNX4gE+LYXAaSe91zw0FQ?=
- =?us-ascii?Q?+RYHXs8LW4X5CjYdWaVflhBul/xFvxNQugSkXk2wa2hXRhAbwJCfShpZ/Zjr?=
- =?us-ascii?Q?rDpF5qXavGUwpTep1yHmFWIaHpDQsdgRZEC2yIkPGcN6qmVKDtUni64TgCIj?=
- =?us-ascii?Q?AeCqTZcyZHPkHcaJB9lAHVdArL7KdpZkv4SIQYaxiBiK9pMpEeKulkQNvRW9?=
- =?us-ascii?Q?Cf9PZxhJYfZeIcX2aFc+bXADKI16KoQX3B+n9ORZVYJii4HqpfJULSixMsgi?=
- =?us-ascii?Q?AO3BW3CiEMvis1l1pPsaRz+pSYzSIYVpbmHZxbXmO01g9WXhfI1WjPkzUq5X?=
- =?us-ascii?Q?zhkeEQ05p6spp5r9SQI14dJdIv6AF0Dv/XpEU0+I8uukKBqzJDkKvTX7hR3o?=
- =?us-ascii?Q?1HaHEXAw9iUN22fkTIH8u0O0iivPghm9nquCr4x0nrAIGsfnChOzwqSPaJil?=
- =?us-ascii?Q?4dl2nIqwZfngezJeG3HKa9aBCV9KAFsISu5F/MvszAzfXd45p2jeCCThUPCe?=
- =?us-ascii?Q?vl0qJdzDcbG53wCFBi+FzOxU/stt7z607rpArCMtJh/M8JC5IrZVqZ8genlZ?=
- =?us-ascii?Q?pJyQNe6oCbONHs/4jZGOm22KDRpBTFdSP6RXyRS/5dc1kpto8zkd01asDDBu?=
- =?us-ascii?Q?8UsfmFaYKpYdYm6x+F2c5I0kwKNJqE7loUs1pwhBZwrSqsZM8fQU2ahKmDj8?=
- =?us-ascii?Q?V3YapXNNgq3s138UX5/yb/70WF2dNbt+CQ7AJLy1Qxc0oozjGm1E3UaDPFt/?=
- =?us-ascii?Q?jUvJRG0z2i/ZTJs8UbyDVAXePoneMjeDD8W4XN1j4anp407g5aAAIIXOpET/?=
- =?us-ascii?Q?2cis2Hfg254tMIZSszLDXAASdQbwdm+YnhAc7iZcZd9VRm6DTLzbRM5JgVZm?=
- =?us-ascii?Q?tjkZy3ovddq+qlFW6zuSGGRC8DveVVAKZOtDYXdE1pK9ScJBnR5f9RVZkP69?=
- =?us-ascii?Q?atkAKNvBNwBxzudzn36PCG03zHeTMIidr5VSgMZNb6anc7K0GaH/KNXfcCNi?=
- =?us-ascii?Q?bmT7y68bOB7jC+NFpSTaEP5//vHNQGEVId0WxcA67GAqMbIRDyjLFbU8Ms03?=
- =?us-ascii?Q?kXLs7JikTd41baBZcbO3O5+aHOUJfIX3LwPF9wgkjptzyUn1/YumhVfSMfDY?=
- =?us-ascii?Q?0ftSyMJ/BKRknCHsZqb/o0HnzFSAD8y5BKHbzlUeDNqo1r5xpyWjCF3cTPAO?=
- =?us-ascii?Q?3pkF1ShrUdkiXjHpYLS4CdtxqrVud8aOrsdkPwHrEFJDDAoPgqXvJWm8yqEx?=
- =?us-ascii?Q?+vMQALUiSGDODJGOAWEFmBS32LCB1XTTPxdCUAC3QVqRax68soeDXI4nCb+o?=
- =?us-ascii?Q?8KU1f39RquunVbZ7FWcbuPLwFXpBJmMIXw3mgnd/G6bxmocb7B3l+XXvBUUU?=
- =?us-ascii?Q?PToBGu6oZM3YxxEjZKJvb3pn0xBA20vAJ+6h3H6xWksylUn2pEl9zkdm6oBQ?=
- =?us-ascii?Q?wcWSbvhF2ceC7gma/xigQuZWMfaZGYiDwOLOMY/VOaA3Nnerqhfc3UIcaCZ2?=
- =?us-ascii?Q?JpAZSlwbtgnZM26wwPGCD4LcCVcikKOaZn/dSk7bcvytVUUXz1G2xVVMgstk?=
- =?us-ascii?Q?GgXAqzLAQA=3D=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7fcd5df5-2006-45b2-e3ad-08deddc23b56
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5832.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 13:59:02.5293
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: j9BqxFm1rEhzm30o8qIar/kq5DJdfww5Oa5Osi004Zw8gdJxEtscjggn3n0/0DvfT5S2bUBf0/yii4ALFUu00Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PUZPR06MB5673
+User-Agent: Mozilla Thunderbird
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Subject: Re: [PATCH v2 0/2] firmware: arm_scmi: Ensure automatic module
+ loading
+To: Brian Masney <bmasney@redhat.com>
+Cc: Sudeep Holla <sudeep.holla@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>, arm-scmi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Guenter Roeck <linux@roeck-us.net>,
+        Jyoti Bhayana <jbhayana@google.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        David Lechner <dlechner@baylibre.com>,
+        =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Ulf Hansson <ulfh@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
+        imx@lists.linux.dev, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-rtc@vger.kernel.org
+References: <20260618-scmi-modalias-v2-0-8c7547c1be21@oss.qualcomm.com>
+ <8c2a4ae3-95cc-489a-a7a4-90a3ee2597e9@oss.qualcomm.com>
+ <20260709-spicy-fiery-squid-6eec1d@sudeepholla>
+ <dae4deba-7e5f-434e-80ae-89033bdeb793@oss.qualcomm.com>
+ <ak-h8oPcL69fCUg2@redhat.com>
+Content-Language: en-US, nl
+In-Reply-To: <ak-h8oPcL69fCUg2@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDEzNyBTYWx0ZWRfXz0pNFOM+mxJk
+ PixHnad03+6qMPyamddJ4Nfif8aVkfHcARrL26TlCzaHnWdpUFJTQ+hNA72GrfRhdtybMwxeyuP
+ uDm4GhduW7ngCH8PTwMLrEWsGeOi7ha8dBJvkQxFibTe+dcXZrAi493ZHr8Ya4gOsyAg9gswjNR
+ Cm4uIm9Ojib4S9/la6Ie5PttHWjFV2VC6uuMCLEbCXgPWhaPKem2lF4wnxedDbdB4TjQt+smDSm
+ YWI/6CQRlwxd1+yng3Jiph35MS373MJtFqIIQmKm9aXFUo3ixB5LWFK6k17i1ECX/Rk2+aJDMac
+ RlgCtmHu/gFzea2unf8CCx8XA0tDOT+gQGIVrcXCh8pS7BYrR6eKDKXcki0ioQZP40rgizS0dH1
+ wa1eW2koj6LLTmTmJKpcuLju+6sLmYF3pxOQbQs0BegS4l2Wh2vbFLsWxWEKEtoQ9hR1Qn0XNwn
+ GYZj+hErfe6ukna9bWg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDEzNyBTYWx0ZWRfX5VxwncbEB//y
+ 3UzyzqRshRAfLXkf2nkIl6T69+N44QZY4+gTCKD8r1NKGySy/PSs88zJMRq4I72wNAGntda3F0A
+ lzYljnO2sTHCP9CFvmv44U6kG/UU7Js=
+X-Proofpoint-GUID: gepIUzin7yUJfD7GTC8_3eOQtbV4vaqJ
+X-Proofpoint-ORIG-GUID: gepIUzin7yUJfD7GTC8_3eOQtbV4vaqJ
+X-Authority-Analysis: v=2.4 cv=GJ441ONK c=1 sm=1 tr=0 ts=6a4fab19 cx=c_pps
+ a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=1Iq74HBXAAAA:20
+ a=EUspDBNiAAAA:8 a=F1v2bmbY3Q6w0W2l7n4A:9 a=QEXdDO2ut3YA:10
+ a=pJ04lnu7RYOZP9TFuWaZ:22 a=bA3UWDv6hWIuX7UZL3qL:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_03,2026-07-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501
+ clxscore=1015 suspectscore=0 spamscore=0 phishscore=0 adultscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607090137
 
-Commit 55b48e23f5c4b6f5ca9b7ab09599b17dcf501c10 ("genirq/devres: Add
-error handling in devm_request_*_irq()") added automatic error logging
-to devm_request_threaded_irq() and devm_request_any_context_irq() via
-the new devm_request_result() helper. The helper prints device name,
-IRQ number, handler functions, and error code on failure.
+Hi Brian,
 
-Since devm_request_irq() is a static inline wrapper around
-devm_request_threaded_irq(), it also benefits from this automatic
-logging.
+On 9-Jul-26 15:28, Brian Masney wrote:
+> Hi Hans,
+> 
+> On Thu, Jul 09, 2026 at 03:22:29PM +0200, Hans de Goede wrote:
+>> On 9-Jul-26 12:10, Sudeep Holla wrote:
+>>> On Thu, Jun 18, 2026 at 10:31:12PM +0200, Hans de Goede wrote:
+>>>> On 18-Jun-26 17:56, Bjorn Andersson wrote:
+>>>>> SCMI drivers such as the Arm SCMI CPUfreq driver are allowed to built as
+>>>>> modules, but they are then not automatically loaded. Rework the SCMI
+>>>>> device table alias support to make modpost consume the information from
+>>>>> MODULE_DEVICE_TABLE(scmi, ...) and allow drivers to be loaded based on
+>>>>> this information, if known. Also add a protocol-based alias to also
+>>>>> trigger driver loading when only the SCMI protocol id is known.
+>>>>>
+>>>>> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+>>>>
+>>>> So I just gave this a test spin and unfortunately it does not work.
+>>>>
+>>>> The problem with Fedora's kernel-config / setup is that the
+>>>> request_module() from patch 2/2 runs from the initramfs, but
+>>>> the scmi_cpufreq module is only available in the rootfs.
+>>>>
+>>>> It does work if I explictly add the scmi_cpufreq module to
+>>>> the initramfs, then it does get autoloaded.
+>>>>
+>>>> We really need some place to put a uevent sysfs attr which then
+>>>> gets replayed when udev is restarted from the rootfs and then
+>>>> re-reads all the uevent files as part of its coldplug
+>>>> enumeration.
+>>>>
+>>>
+>>> I don't have much knowledge on uevent to provide any suggestions/help.
+>>> But isn't this a generic requirement ? I mean you could have modules
+>>> install on the rootfs and not all of them are packed in initramfs ?
+>>> Just wondering if that works for other modules, we can examine how
+>>> do they work and what are we missing ?
+>>
+>> scmi is special because the actual devices under /sys/bus/scmi/devices
+>> only get created when the module with the driver is loaded because
+>> of some funtion/id mapping requiring info from the driver.
+>>
+>> Patch 2/2 tries to work around this by loading all scmi drivers matching
+>> the scmi protocol which is known at bus enumeration time, but this only
+>> works if the actual scmi driver is in the initramfs because this done
+>> through directly calling modprobe() from the kernel which does not
+>> get "replayed" when switching to the real rootfs.
+> 
+> Should the SCMI drivers be added to the dracut module here?
+> 
+> https://github.com/dracut-ng/dracut/blob/main/modules.d/70kernel-modules/module-setup.sh#L73
+> 
+> A few years ago we had to add the interconnect drivers to the list for
+> Fedora.
 
-This series removes the now-redundant dev_err() and dev_err_probe() calls
-in dmaengine drivers that follow these devm_request_*_irq() functions,
-as the core now provides more detailed diagnostic information on failure.
+That would be one solution. I first want to understand the problem better
+though. The scmi bus not creating the devices until the kmod with the driver
+has loaded is weird. I wonder if we can just move a small part of the drivers
+(some mapping table) into the bus code and then just have this work as it
+does on regular busses. I hope to be able to make some time to look into
+this soonish.
 
-Pan Chuang (26):
-  dmaengine: fsl-edma-main: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: fsl-qdma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: loongson-loongson1-apb-dma: Remove redundant
-    dev_err()/dev_err_probe()
-  dmaengine: mediatek-mtk-cqdma: Remove redundant
-    dev_err()/dev_err_probe()
-  dmaengine: mediatek-mtk-hsdma: Remove redundant
-    dev_err()/dev_err_probe()
-  dmaengine: mmp_pdma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: moxart-dma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: owl-dma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: pxa_dma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: qcom-gpi: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: sf-pdma-sf-pdma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: sh-rcar-dmac: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: sh-rz-dmac: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: sh-shdmac: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: sh-usb-dmac: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: sprd-dma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: st_fdma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: stm32-stm32-dma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: stm32-stm32-dma3: Remove redundant
-    dev_err()/dev_err_probe()
-  dmaengine: stm32-stm32-mdma: Remove redundant
-    dev_err()/dev_err_probe()
-  dmaengine: sun4i-dma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: sun6i-dma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: tegra20-apb-dma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: ti-edma: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: uniphier-xdmac: Remove redundant dev_err()/dev_err_probe()
-  dmaengine: xgene-dma: Remove redundant dev_err()/dev_err_probe()
+Regards,
 
- drivers/dma/fsl-edma-main.c              | 23 +++++++----------------
- drivers/dma/fsl-qdma.c                   |  4 +---
- drivers/dma/loongson/loongson1-apb-dma.c |  4 +---
- drivers/dma/mediatek/mtk-cqdma.c         |  5 +----
- drivers/dma/mediatek/mtk-hsdma.c         |  5 +----
- drivers/dma/mmp_pdma.c                   |  4 +---
- drivers/dma/moxart-dma.c                 |  4 +---
- drivers/dma/owl-dma.c                    |  4 +---
- drivers/dma/pxa_dma.c                    |  6 +-----
- drivers/dma/qcom/gpi.c                   |  5 +----
- drivers/dma/sf-pdma/sf-pdma.c            |  8 ++------
- drivers/dma/sh/rcar-dmac.c               |  5 +----
- drivers/dma/sh/rz-dmac.c                 |  8 +-------
- drivers/dma/sh/shdmac.c                  |  6 +-----
- drivers/dma/sh/usb-dmac.c                |  5 +----
- drivers/dma/sprd-dma.c                   |  4 +---
- drivers/dma/st_fdma.c                    |  4 +---
- drivers/dma/stm32/stm32-dma.c            |  6 +-----
- drivers/dma/stm32/stm32-dma3.c           |  5 +----
- drivers/dma/stm32/stm32-mdma.c           |  4 +---
- drivers/dma/sun4i-dma.c                  |  2 +-
- drivers/dma/sun6i-dma.c                  |  4 +---
- drivers/dma/tegra20-apb-dma.c            |  6 +-----
- drivers/dma/ti/edma.c                    |  8 ++------
- drivers/dma/uniphier-xdmac.c             |  4 +---
- drivers/dma/xgene-dma.c                  |  5 +----
- 26 files changed, 34 insertions(+), 114 deletions(-)
-
--- 
-2.34.1
+Hans
 
