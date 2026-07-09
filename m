@@ -1,101 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4293E47B;
-	Thu,  9 Jul 2026 05:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95ED3AC0C9;
+	Thu,  9 Jul 2026 05:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783575188; cv=none; b=EAIIIV/sMLNel7C9wv61OuxR3x6mnxjnwfcfKRs7z35NIS5R4hK/zAWUxemY96Xip6quFgIaFKqtUgt6ohYCogpKdQqN4APMI3QeXuMQllSoKIri4GQeVLyALHbxWeo6KCYACwEROIG9e/I9pVHwU8o5cCFldyBAU788oL9oDEE=
+	t=1783575921; cv=none; b=lpwTM96BMK59/oOza6gr1oza6gNNJ63vuqDPUf4Jkh4HXoPqslB8TT9lD05qg6+jm5md+IGnXFAu80Xgu3v/OtgPc9F1Y81lVZpUllrkFrcHtjGpjFGav8/jMbuwGmguJuPIzb/orl7svDZTebrFCEmNBBy8WGWSim2WsRcgHQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783575188; c=relaxed/simple;
-	bh=dEB7NpNEAwaFV11hKPo9q1Kuk2WAIFjuldgYRvwUPl0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PfkUDtLvqwurvYERcxGFd6JFV4dJfJ/TQV5Y3cvIUe9/ElfbIr/p3Ux0b2SwS79iCBG16Nb+AScfs7OfzrwDl33NtsqQZcISmawYVYs/s+RzpYx0v39RfNymIxfYxuyPq0f7bp6xosJSLSNmTHCwY8xXgTyLmfky3ZhnfrBMNRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBMm959g; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783575921; c=relaxed/simple;
+	bh=WbMChnrVJ5hLjteSDIcwpCRJ7d6FUBqAjyKBvueOBbk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=X/Df8817zJ7qYJjTArOvTfUXuTtsFMNMmIBBHzUYErMbKQkHuW3Hfrg9qNXmUUdl+sYSSz8PXBwMIbgq6uU30r3UMMbgNClHKXCm02XKMDxI7I1wnJEYsGxdUkRshQKbSGq2D9ZtDG6aZNKtjme0JnPu6/C0fHAIUT7H7PC0WQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G06ykPQd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBMm959g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992801F000E9;
-	Thu,  9 Jul 2026 05:33:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783575187;
-	bh=xeP49zf1w0gTwqolkCaocObyBkxqCco+Hzh4w8rsnOI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IBMm959gelwhn17rIU12/wczRgh8z1kWb0FWJiN/BALc86TuiOhjvYO3YiumpzfU5
-	 4gTWjMYxe88acDiv+XYCcRSbyTGaG7Gx8LvgJ6zVj72H4KrcvQqxPoCfn9/qthzqM0
-	 i3G6yFYi1P2wlRf9a8WHEcXJIyIwZzaCPoWQP0F0=
-Date: Thu, 9 Jul 2026 07:33:03 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Xu Yang <xu.yang_2@oss.nxp.com>, kees@kernel.org,
-	christophe.jaillet@wanadoo.fr, xu.yang_2@nxp.com,
-	hataegu0826@gmail.com, balbi@ti.com, andrzej.p@samsung.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH] usb: gadget: f_uac1_legacy: fix inverted NULL check
- after kstrndup()
-Message-ID: <2026070922-density-onto-3ce6@gregkh>
-References: <20260625113154.1954813-1-xu.yang_2@oss.nxp.com>
- <2026070831-peso-aluminum-df0c@gregkh>
- <ak64635tgUj3MPEx@SMW015318>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G06ykPQd"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 64C1DC2BCC6;
+	Thu,  9 Jul 2026 05:45:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783575921;
+	bh=WbMChnrVJ5hLjteSDIcwpCRJ7d6FUBqAjyKBvueOBbk=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=G06ykPQdF2bEvLEaIZfns4aNwe6V/hyy8+VmBsch3GqLiu/JulFxmJUdEJXiqAyd5
+	 HgL9kb2KGpblOajJbw8GHyoArzbvhpR07xHe7MIQhtDSl8HQkURWqgtDjrVuhevwq8
+	 7jGesErIpVSTlsjNUvMhagjDhzorLe+XsGF914Q7K4L3OabyAUhO6zfJcSzS8fvM7g
+	 HBTDbTr9wTNSnwAeFxZjwDTlNWU/VwN13UAw1hdlx09nYSN+sWBRpQzG5D5qe5qJS3
+	 vpkMPy3bPA9xWijItik8DDQLThgim3ISbpg83gDIQEjvkziVStBOgtbrvvOYTihx0x
+	 SSa8iAId4r0oQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40D3BC43458;
+	Thu,  9 Jul 2026 05:45:21 +0000 (UTC)
+From: HaoNing Cheng via B4 Relay <devnull+Haoning.CHENG.cn.bosch.com@kernel.org>
+Subject: [PATCH 0/2] thermal: imx: Add calibration offset support
+Date: Thu, 09 Jul 2026 13:43:26 +0800
+Message-Id: <20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-0-00f88f42930b@cn.bosch.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ak64635tgUj3MPEx@SMW015318>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP40T2oC/yXNQQ7CIBCF4as0s3YSIIRSr2JcQDtajLSEAVPT9
+ O6ibl7ybd6/A1MOxHDudsj0ChzWpUGeOhhnt9wJw9QMSigjejGg18jv6BanJEqp2oa4YZkpR/d
+ ErimtuWBNXDK5iAalRSesHqyeyPcG2nPKdAvbr3q5/s3VP2gs3xQcxweapxislwAAAA==
+X-Change-ID: 20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-a084984deb76
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Haoning CHENG <Haoning.CHENG@cn.bosch.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783575916; l=1237;
+ i=Haoning.CHENG@cn.bosch.com; s=20260709; h=from:subject:message-id;
+ bh=WbMChnrVJ5hLjteSDIcwpCRJ7d6FUBqAjyKBvueOBbk=;
+ b=WqH42b8JtaKetUkHD06W8GNAZAw0KozZWsslG7Ipqvnb+EYgHYP8NqvJfBOBEGbSM6bSooo1o
+ nWVtP19QWlOAX+w3nngyrP1CIkHZCbSldQtk5eiLEPKYL8xtICKNCmS
+X-Developer-Key: i=Haoning.CHENG@cn.bosch.com; a=ed25519;
+ pk=glQGwad/fosRS5gZUJYbLDPPLGe7rFTrTV2VxY/ySdc=
+X-Endpoint-Received: by B4 Relay for Haoning.CHENG@cn.bosch.com/20260709
+ with auth_id=860
+X-Original-From: HaoNing Cheng <Haoning.CHENG@cn.bosch.com>
+Reply-To: Haoning.CHENG@cn.bosch.com
 
-On Wed, Jul 08, 2026 at 03:54:03PM -0500, Frank Li wrote:
-> On Wed, Jul 08, 2026 at 05:05:03PM +0200, Greg KH wrote:
-> > On Thu, Jun 25, 2026 at 07:31:54PM +0800, Xu Yang wrote:
-> > > From: Xu Yang <xu.yang_2@nxp.com>
-> > >
-> > > kstrndup() returns NULL on allocation failure. The condition was
-> > > checking 'if (tmp)' to detect failure, but this is inverted — it
-> > > would treat a successful allocation as an error and return -ENOMEM
-> > > while leaking the string, and proceed with a NULL pointer on failure.
-> > >
-> > > Fix by changing the condition to 'if (!tmp)'.
-> > >
-> > > Fixes: 0854611a19ae ("usb: gadget: f_uac1: add configfs support")
-> > > Cc: stable@vger.kernel.org
-> > > Assisted-by: Claude:claude-sonnet-4-6
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > > ---
-> > >  drivers/usb/gadget/function/f_uac1_legacy.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/usb/gadget/function/f_uac1_legacy.c b/drivers/usb/gadget/function/f_uac1_legacy.c
-> > > index 5d201a2e30e7..e9f2632ce785 100644
-> > > --- a/drivers/usb/gadget/function/f_uac1_legacy.c
-> > > +++ b/drivers/usb/gadget/function/f_uac1_legacy.c
-> > > @@ -914,7 +914,7 @@ static ssize_t f_uac1_opts_##name##_store(struct config_item *item,	\
-> > >  		goto end;						\
-> > >  									\
-> > >  	tmp = kstrndup(page, len, GFP_KERNEL);				\
-> > > -	if (tmp) {							\
-> > > +	if (!tmp) {							\
-> > >  		ret = -ENOMEM;						\
-> > >  		goto end;						\
-> > >  	}								\
-> > > --
-> > > 2.34.1
-> > >
-> > >
-> >
-> > So this has never worked?  How has no one ever noticed that in the
-> > decade this has been in the kernel?  Does that mean that no one uses
-> > this file/driver and we can just remove it?
-> 
-> I think just no one use sys interface to change name.
+Some i.MX boards need a small per-design correction to align the
+reported CPU temperature with board-level measurements. This series
+adds an optional DT property to specify such a calibration offset
+and implements the corresponding support in the imx_thermal driver.
 
-So it can just be removed?  Please submit a patch to do that instead.
+Patch 1 documents the new fsl,temp-calibration-offset-millicelsius
+property in the i.MX thermal DT binding.
 
-Ideally this whole file can be removed, does anyone still use it?
+Patch 2 reads this property in the imx_thermal driver and applies
+the offset to the i.MX6/6SX/7D calibration formulas. When the
+property is absent, the default offset remains 0, preserving the
+current behaviour.
 
-thanks,
+Signed-off-by: Haoning CHENG <Haoning.CHENG@cn.bosch.com>
+---
+HaoNing Cheng (2):
+      dt-bindings: thermal: imx: Document calibration offset property
+      thermal/drivers/imx: Add calibration offset support
 
-greg k-h
+ Documentation/devicetree/bindings/thermal/imx-thermal.yaml |  8 ++++++++
+ drivers/thermal/imx_thermal.c                              | 11 ++++++++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+---
+base-commit: c50a940dcde35c647e097e89a9150003abd48329
+change-id: 20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-a084984deb76
+
+Best regards,
+--  
+Haoning CHENG <Haoning.CHENG@cn.bosch.com>
+
+
