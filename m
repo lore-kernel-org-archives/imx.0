@@ -1,73 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254B32EA481;
-	Thu,  9 Jul 2026 14:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25A01BD9D0
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 14:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783606926; cv=none; b=jj8H3k5ZqGwcaXlKFwO2JHzz/NodXrkbcpMr6V3iWKVxRol3pgtugFB27LYjWW2KiMkX93WJMesAvKqG2s6cMdTkO63/9fTxE/thH3PWMgefqxqzWkbuRzAdeLPy7aNMZ6796uufrdfNnGii0SfH+0aOvBbGnxIlxc4AV/5+QfI=
+	t=1783607198; cv=none; b=IyRzZI4RqEYH3OsPl6o/0QfJPGyJfbTJEspzRW9X7BnUWRSYgEiVX1VPNIydS1EysZE6QFjJWvJCX8B8t+Azs8FGYQe+LliooepBxDxHUOD28Zuws8y4joa8gfwivIlrxJwX3dkI6V88NK+AOGwHpi3iiSP23qSWrqebU8KaUYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783606926; c=relaxed/simple;
-	bh=W21wUqm9EIrm3eEV4YgXrawyhjom7o6O9PwtWGEDJck=;
+	s=arc-20240116; t=1783607198; c=relaxed/simple;
+	bh=h1ju3EVqaKp6EYSTzX8YR5qdeLvUidypMDyLlo7QjJc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LvzL3lwe9ETKqf7eahmKZT6UuGfoZQoRlXBAGhiBgMKz9WnNUBNA4HaAnxhCh/RxadaYns7QZ7DYtobXAdytFQKNe6bHuajKID0nis4+Wf+aZxyP4W/TOwdW45jOScscxp9zTsCh/Y9j9AFLnc9VSs1wQKBwq3xhKASzNXyEkvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U08lohmL; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=GBIedRFpb+qJqZ+FhydF8FLKhR2AhS7pK7C+7XaAbUwHUkXljFMPsG70lqKSpuS45FNf3ZZJii6z4VUrz+wQINuHX7gMXBMJZ9I3ArNjsdM8xZERYy/a7SfdLsDL003b9/f91cxoi0tGE1zC983knMat+xcZ/IdIrQ36BT/B5D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=PUzFH9mS; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U08lohmL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35A11F000E9;
-	Thu,  9 Jul 2026 14:21:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783606924;
-	bh=PPd4R3RZr6XUvBWe8w2VqRwuexC/tSsRCq8hfew2igY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U08lohmL+eSOg1LzXZz61RAnsviHoTM8uo6PezdCXwkZ0kCcScSo7S/bMAVS5stPn
-	 IlnPyj/jltNh/nTNg+T8ltK51/WdXLFxB7UM+nyRs1gsv7XUXPBwCSND4dFHCSw7Jh
-	 JgJ7XLHUqCTInOiiYAOls0uhaHscVPp2rt3Qgrl814QeN3zAXkTuarAPY3WFzT/CRm
-	 k+7zqVWpPxRfiCOnp8TtyDt55QxOBsDZfYGzKqzhsKURSUUUHmp1eQDosGhysk5aC1
-	 05bPv+Q3wj3zg/WGUDtQafiL/OHy2rdEs9a/aLjZkPr8c6DRRDa1fcIeojzwz3bAF0
-	 Mb/4oRbxSDinA==
-Date: Thu, 9 Jul 2026 15:21:57 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Brian Masney <bmasney@redhat.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Stephen Boyd <sboyd@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jyoti Bhayana <jbhayana@google.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Ulf Hansson <ulfh@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-hwmon@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] firmware: arm_scmi: Ensure automatic module
- loading
-Message-ID: <20260709-exuberant-galago-of-spirit-1c908f@sudeepholla>
-References: <20260618-scmi-modalias-v2-0-8c7547c1be21@oss.qualcomm.com>
- <8c2a4ae3-95cc-489a-a7a4-90a3ee2597e9@oss.qualcomm.com>
- <20260709-spicy-fiery-squid-6eec1d@sudeepholla>
- <dae4deba-7e5f-434e-80ae-89033bdeb793@oss.qualcomm.com>
- <ak-h8oPcL69fCUg2@redhat.com>
- <f05860be-dd75-49f8-b27a-bff7b554e71b@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="PUzFH9mS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=ULW9
+	VBv4cRlM6iC85iVcPrTJ/RUoBanK7j5g1mX7o9s=; b=PUzFH9mSrFXR0BT7bcHZ
+	Edu7cwpTc+qJ+OrNpmfIGFDVhxIXkWvuhCfoFDFMwIRDsg61YTEhJsUS9CVKi6az
+	P6v9kZs22j7OxfFuONh4fL96A7/4aZXTeYEKXEFLvDnbaWjtQMvRU/sqEcZFKEHD
+	8CbLj3eD9wSCrMFlNxTu44NT6Nq72wdBYP4Zha/eGHVeKZZ2hJbbBLrepfix+5y8
+	wPbx7qBDvD10x4wZ1uvqlRfiKPJQNDeM6c9wbZwAjaetlqpPufip7tXqIrrtvEGv
+	yj/byiXXftAa0kvhgazHR8mM/mwB9T9fZRFwzl2sGHwDRyxeR+oELM4DKsYB1m8w
+	Vg==
+Received: (qmail 1163672 invoked from network); 9 Jul 2026 16:26:26 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 9 Jul 2026 16:26:26 +0200
+X-UD-Smtp-Session: l3s3148p1@Of/AaC5WFLZQT+F6
+Date: Thu, 9 Jul 2026 16:26:25 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Pan Chuang <panchuang@vivo.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Paul Walmsley <pjw@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	=?utf-8?Q?Am=C3=A9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
+	Kees Cook <kees@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Jyothi Kumar Seerapu <quic_jseerapu@quicinc.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	John Madieu <john.madieu.xa@bp.renesas.com>,
+	Thomas Andreatta <thomasandreatta2000@gmail.com>,
+	"open list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>,
+	"open list:FREESCALE eDMA DRIVER" <dmaengine@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:MIPS/LOONGSON1 ARCHITECTURE" <linux-mips@vger.kernel.org>,
+	"moderated list:MEDIATEK DMA DRIVER" <linux-arm-kernel@lists.infradead.org>,
+	"moderated list:MEDIATEK DMA DRIVER" <linux-mediatek@lists.infradead.org>,
+	"moderated list:ARM/ACTIONS SEMI ARCHITECTURE" <linux-actions@lists.infradead.org>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	"open list:SIFIVE DRIVERS" <linux-riscv@lists.infradead.org>,
+	"open list:ARM/RISC-V/RENESAS ARCHITECTURE" <linux-renesas-soc@vger.kernel.org>,
+	"moderated list:STM32 DMA DRIVERS" <linux-stm32@st-md-mailman.stormreply.com>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH 00/26] dmaengine: Remove redundant error messages on IRQ
+ request failure
+Message-ID: <ak-vkQ8g_ePdY15f@shikoro>
+References: <20260709135846.97972-1-panchuang@vivo.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,85 +96,55 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f05860be-dd75-49f8-b27a-bff7b554e71b@oss.qualcomm.com>
+In-Reply-To: <20260709135846.97972-1-panchuang@vivo.com>
 
-On Thu, Jul 09, 2026 at 04:07:17PM +0200, Hans de Goede wrote:
-> Hi Brian,
+On Thu, Jul 09, 2026 at 09:58:04PM +0800, Pan Chuang wrote:
+> Commit 55b48e23f5c4b6f5ca9b7ab09599b17dcf501c10 ("genirq/devres: Add
+> error handling in devm_request_*_irq()") added automatic error logging
+> to devm_request_threaded_irq() and devm_request_any_context_irq() via
+> the new devm_request_result() helper. The helper prints device name,
+> IRQ number, handler functions, and error code on failure.
 > 
-> On 9-Jul-26 15:28, Brian Masney wrote:
-> > Hi Hans,
-> > 
-> > On Thu, Jul 09, 2026 at 03:22:29PM +0200, Hans de Goede wrote:
-> >> On 9-Jul-26 12:10, Sudeep Holla wrote:
-> >>> On Thu, Jun 18, 2026 at 10:31:12PM +0200, Hans de Goede wrote:
-> >>>> On 18-Jun-26 17:56, Bjorn Andersson wrote:
-> >>>>> SCMI drivers such as the Arm SCMI CPUfreq driver are allowed to built as
-> >>>>> modules, but they are then not automatically loaded. Rework the SCMI
-> >>>>> device table alias support to make modpost consume the information from
-> >>>>> MODULE_DEVICE_TABLE(scmi, ...) and allow drivers to be loaded based on
-> >>>>> this information, if known. Also add a protocol-based alias to also
-> >>>>> trigger driver loading when only the SCMI protocol id is known.
-> >>>>>
-> >>>>> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> >>>>
-> >>>> So I just gave this a test spin and unfortunately it does not work.
-> >>>>
-> >>>> The problem with Fedora's kernel-config / setup is that the
-> >>>> request_module() from patch 2/2 runs from the initramfs, but
-> >>>> the scmi_cpufreq module is only available in the rootfs.
-> >>>>
-> >>>> It does work if I explictly add the scmi_cpufreq module to
-> >>>> the initramfs, then it does get autoloaded.
-> >>>>
-> >>>> We really need some place to put a uevent sysfs attr which then
-> >>>> gets replayed when udev is restarted from the rootfs and then
-> >>>> re-reads all the uevent files as part of its coldplug
-> >>>> enumeration.
-> >>>>
-> >>>
-> >>> I don't have much knowledge on uevent to provide any suggestions/help.
-> >>> But isn't this a generic requirement ? I mean you could have modules
-> >>> install on the rootfs and not all of them are packed in initramfs ?
-> >>> Just wondering if that works for other modules, we can examine how
-> >>> do they work and what are we missing ?
-> >>
-> >> scmi is special because the actual devices under /sys/bus/scmi/devices
-> >> only get created when the module with the driver is loaded because
-> >> of some funtion/id mapping requiring info from the driver.
-> >>
-> >> Patch 2/2 tries to work around this by loading all scmi drivers matching
-> >> the scmi protocol which is known at bus enumeration time, but this only
-> >> works if the actual scmi driver is in the initramfs because this done
-> >> through directly calling modprobe() from the kernel which does not
-> >> get "replayed" when switching to the real rootfs.
-> > 
-> > Should the SCMI drivers be added to the dracut module here?
-> > 
-> > https://github.com/dracut-ng/dracut/blob/main/modules.d/70kernel-modules/module-setup.sh#L73
-> > 
-> > A few years ago we had to add the interconnect drivers to the list for
-> > Fedora.
+> Since devm_request_irq() is a static inline wrapper around
+> devm_request_threaded_irq(), it also benefits from this automatic
+> logging.
 > 
-> That would be one solution. I first want to understand the problem better
-> though. The scmi bus not creating the devices until the kmod with the driver
-> has loaded is weird.
-
-I need to recall why we moved from static list of devices to dynamic.
-One reason I can think right now is the vendor protocols and their drivers
-But in general it was an attempt to help multiple drivers bind to different
-scmi_devices that have same protocol ID. E.g. the performance protocol
-can be used by cpufreq and devfreq/performance genpd drivers.
-
-> I wonder if we can just move a small part of the drivers
-> (some mapping table) into the bus code and then just have this work as it
-> does on regular busses. I hope to be able to make some time to look into
-> this soonish.
+> This series removes the now-redundant dev_err() and dev_err_probe() calls
+> in dmaengine drivers that follow these devm_request_*_irq() functions,
+> as the core now provides more detailed diagnostic information on failure.
 > 
+> Pan Chuang (26):
+>   dmaengine: fsl-edma-main: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: fsl-qdma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: loongson-loongson1-apb-dma: Remove redundant
+>     dev_err()/dev_err_probe()
+>   dmaengine: mediatek-mtk-cqdma: Remove redundant
+>     dev_err()/dev_err_probe()
+>   dmaengine: mediatek-mtk-hsdma: Remove redundant
+>     dev_err()/dev_err_probe()
+>   dmaengine: mmp_pdma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: moxart-dma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: owl-dma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: pxa_dma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: qcom-gpi: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: sf-pdma-sf-pdma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: sh-rcar-dmac: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: sh-rz-dmac: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: sh-shdmac: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: sh-usb-dmac: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: sprd-dma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: st_fdma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: stm32-stm32-dma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: stm32-stm32-dma3: Remove redundant
+>     dev_err()/dev_err_probe()
+>   dmaengine: stm32-stm32-mdma: Remove redundant
+>     dev_err()/dev_err_probe()
+>   dmaengine: sun4i-dma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: sun6i-dma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: tegra20-apb-dma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: ti-edma: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: uniphier-xdmac: Remove redundant dev_err()/dev_err_probe()
+>   dmaengine: xgene-dma: Remove redundant dev_err()/dev_err_probe()
 
-I started with that few years ago and we then moved to this dynamic
-device creation. But I agree if it is deviation from the norms(which I
-wasn't aware of at the time), we can remove it.
+One patch per subsystem for such trivial changes, please.
 
--- 
-Regards,
-Sudeep
