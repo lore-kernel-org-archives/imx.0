@@ -1,116 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39F1274FD1;
-	Thu,  9 Jul 2026 15:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587EC3E63A4
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 15:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783612020; cv=none; b=g0dvKjwkObNBjlcjzs8QwVUu721trEIdKOy9+lwiCfgqIymKi4M4PZijxI1P43w7bV+4lHIUXYq3+KTUwuLfY1rdNOkXc8dRnPOZB91nR023+gMtjQAFO4svOOm+h2tA/93nn/hYCgU63ZNhnGBiwsWWmoULAJ20MQAf9aggpns=
+	t=1783612189; cv=none; b=gvoJq3EXIJTUTan3epCHTwMehFA8G3HllZb4O4X3BlDodMmd74RLWZSMO229PQOO8H2K7Mqfl3Tp2hzoZ56a513oKO5VwV72PCagTC9NslFhjkLwnfScK4SeZBZAdRrkUGHLWC4aqg4YZ1bI6byw4NVSPOn6Pc5JeVM43s96R/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783612020; c=relaxed/simple;
-	bh=rpTPAQO8B2j0SuxiCO2nTIwL6jv0aW/9C/ORSgLsHNU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mHjzCuYtWkwWXGNSnv3NYkjTlQEytM5cnzLC/dk9+q3z7NeN/zRMC6UT3HOvW5/7udkHo57I82nqfhl1w3A1/1pL1m9InGYTDjdOz8NWGfA3RE5PEJi1HbGRv8+ZNuQ0wFs8OnEHPBVH4fH7z4uDGIePSCNWXBfU8RM3SnO1JAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muERIO6C; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783612189; c=relaxed/simple;
+	bh=ZsaKwAUaY+JsR6IrwdSMe3xghd912Wa8gpID9dHYC30=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CXlYcMHNGGo6N94vnPX78P1I2u8wtadk6yM4OBimBDnixZzZjeneSG6M7F2cxZz0kAzJw0SvdOJozxd/WOf5cAiqRCRYeUF8tY+4XVOu8i+FVJX1aCB7p1h7CS4uzd0QiyIckjG3AW/8+rynh1dgomiXkpKstthkIB5Ry1+3RQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=evPqTocH; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muERIO6C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522331F000E9;
-	Thu,  9 Jul 2026 15:46:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783612019;
-	bh=hia3ZzYxJbVWfdQouoVfTdODNDb+brOfP3M+wdoFBgM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=muERIO6CROCHEuaOf/YBVq8CSscsrqqNMR+wpAwAJuPhWeoTqNuRhb76dTzkEqXn7
-	 3m248FV4UZfrt9Zg7+RMrEBDIBRcjvWiXkwv3Ta/2Cb8OiQt3ZNsjicd70hrp/uUz7
-	 650HEgUwfYjhHSp7TtXQy0UXnew89N8t0pxXNJO93SCz0DOR9YY5cJgwvoEXBQPX8u
-	 iRPYLhNgH8H7eeeP0ytdl20gMj9xltsGCRiquwJaKyATyoX3/cE+Ktw2zq0E1QssmQ
-	 N1+UaT2+KMd4fx8Sw2at1ISNrOglh1K+03Pm/vgDobKf+bHYqepaHnNdz/C2Gbdd+R
-	 CX+TIi1B7v6ew==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 08/10] dmaengine: dw-edma: Use common
- dw_edma_core_start() for both eDMA and HDMA
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: vkoul@kernel.org, dmaengine@vger.kernel.org, Frank.Li@kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260709-edma_ll-v5-8-e199053d4300@nxp.com>
-References: <20260709-edma_ll-v5-0-e199053d4300@nxp.com>
- <20260709-edma_ll-v5-8-e199053d4300@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 15:46:58 +0000
-Message-Id: <20260709154659.522331F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="evPqTocH"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B76163591;
+	Thu,  9 Jul 2026 08:49:41 -0700 (PDT)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D82703FC81;
+	Thu,  9 Jul 2026 08:49:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783612186; bh=ZsaKwAUaY+JsR6IrwdSMe3xghd912Wa8gpID9dHYC30=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=evPqTocHRC03pIflm2SZxRRhVRTiFHKTvKcjolKMB239pCjvuYrLCRhAd4L02W3jy
+	 OFtPohxvaG0XD94c3XJ/Bfko/yektPa6o5yoouYGp8VpZFlOjWdSIMlvetlMiXttOV
+	 mwgBG7Zg+hn0jDotXznT+qvyAZDMTiIfgXQkn4Eo=
+Date: Thu, 9 Jul 2026 16:49:30 +0100
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Sudeep Holla <sudeep.holla@kernel.org>
+Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Stephen Boyd <sboyd@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jyoti Bhayana <jbhayana@google.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-hwmon@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-rtc@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] firmware: arm_scmi: Ensure automatic module
+ loading
+Message-ID: <ak_DCuTgF5uTI_Lb@pluto>
+References: <20260618-scmi-modalias-v2-0-8c7547c1be21@oss.qualcomm.com>
+ <8c2a4ae3-95cc-489a-a7a4-90a3ee2597e9@oss.qualcomm.com>
+ <20260709-spicy-fiery-squid-6eec1d@sudeepholla>
+ <dae4deba-7e5f-434e-80ae-89033bdeb793@oss.qualcomm.com>
+ <ak-h8oPcL69fCUg2@redhat.com>
+ <f05860be-dd75-49f8-b27a-bff7b554e71b@oss.qualcomm.com>
+ <20260709-exuberant-galago-of-spirit-1c908f@sudeepholla>
+ <5fb236b7-7b99-40fb-b80b-fa7e1dfccd70@oss.qualcomm.com>
+ <20260709-exuberant-narwhal-of-correction-7f4650@sudeepholla>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260709-exuberant-narwhal-of-correction-7f4650@sudeepholla>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Thu, Jul 09, 2026 at 03:37:33PM +0100, Sudeep Holla wrote:
+> On Thu, Jul 09, 2026 at 04:31:00PM +0200, Hans de Goede wrote:
+> > Hi,
+> > 
+> > On 9-Jul-26 16:21, Sudeep Holla wrote:
+> [...]
+> > > 
+> > > I need to recall why we moved from static list of devices to dynamic.
+> > > One reason I can think right now is the vendor protocols and their drivers
+> > > But in general it was an attempt to help multiple drivers bind to different
+> > > scmi_devices that have same protocol ID. E.g. the performance protocol
+> > > can be used by cpufreq and devfreq/performance genpd drivers.
+> > 
+> > Note it is ok to have multiple drivers bind to the same modalias,
+> > depending on the reason why there are multiple drivers either one
+> > should detect that it is not compatible and exit probe() with -ENODEV
+> > or there should be some other mechanism to make sure only one driver
+> > loads.
+> > 
+> > E.g. duplicate USB device-ids happen (they shouldn't but they do) and
+> > then the drivers typically figure out if they are talking to the device
+> > which they were written for, or the other device with the same USB-ids
+> > and then one of the 2 drivers exits with -ENODEV.
+> > 
+> 
+> Understood. Sorry I tried to explain with examples assuming you may not
+> be aware of the details, but now reading your response, you have better
+> examples.
+> 
+> > >> I wonder if we can just move a small part of the drivers
+> > >> (some mapping table) into the bus code and then just have this work as it
+> > >> does on regular busses. I hope to be able to make some time to look into
+> > >> this soonish.
+> > >>
+> > > 
+> > > I started with that few years ago and we then moved to this dynamic
+> > > device creation. But I agree if it is deviation from the norms(which I
+> > > wasn't aware of at the time), we can remove it.
+> > 
+> > Looking at the issue this is causing for automatic module loading if we
+> > can get back to the bus enumeration code always creating a device without
+> > waiting for the driver kmod to load then that would be good IMHO.
+> > 
+> 
+> Sure if it fixes the issue for you. Cristian can point out anything I
+> might have missed to consider as he is the one who reworked it and made
+> it dynamic device creation which at the time sounded nice option to
+> solve the issue. We weren't aware that it could cause such issues 🙁.
+> 
 
-Pre-existing issues:
-- [High] Race condition and lockdep violation in dw_edma_device_resume via =
-lockless virt-dma list access
---
+The reason for the awkward mechanism of dynamic device creation AFAICR
+was an explicit request by Qualcomm (via its Linaro landing team at
+that time) for the generic vendor module suppport that I was adding to
+be fully self-contained: so that you can write your own protocol and
+add the DT node and that's it, without the need to patch some centrally
+maintained table in the core SCMI stack to add your new vendor protocol.
 
---- Patch [8]: [PATCH v5 08/10] dmaengine: dw-edma: Use common dw_edma_core=
-_start() for both eDMA and HDMA ---
-commit bffbb7894cff6d55d1d7037fe698320bf5288b87
-Author: Frank Li <Frank.Li@nxp.com>
+Not saying that it was necesarily a good idea to allow that, but that
+was the origin of this....as far as I can remember....together with the
+fact that the internal interfaces were reworked to be absolutely the
+same for standard protocols and vendor protocols...
 
-dmaengine: dw-edma: Use common dw_edma_core_start() for both eDMA and HDMA
+I thought that the current situation was that auto-loading was working
+for vendor protocols (this autoload issue appeared at first for vendors
+protocols one year ago) then I had made this hacky attempt to make it
+work for standard protocols by forcibly emitting a uevent for all known
+standard protos:
 
-This patch consolidates the eDMA and HDMA start routines by introducing a
-common dw_edma_core_start() function. It removes the now-redundant start
-callbacks from the eDMA and HDMA core structures.
+https://lore.kernel.org/arm-scmi/20250203100154.140877-2-cristian.marussi@arm.com/
 
-> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-=
-edma-core.c
-> index 2652ad8e7a8f6..f52d9fd18e573 100644
-> --- a/drivers/dma/dw-edma/dw-edma-core.c
-> +++ b/drivers/dma/dw-edma/dw-edma-core.c
 
-[ ... ]
+...but that was clearly not the proper way..and all the rework was
+dropped...
 
-> @@ -183,7 +211,7 @@ static int dw_edma_start_transfer(struct dw_edma_chan=
- *chan)
->  	if (!child)
->  		return 0;
-> =20
-> -	dw_edma_core_start(dw, child, !desc->xfer_sz);
-> +	dw_edma_core_start(child, !desc->xfer_sz);
-
-[Severity: High]
-This is a pre-existing issue, but can this lead to a race condition and
-lockdep splat when called from dw_edma_device_resume()?
-
-When the client driver calls dmaengine_resume(), it reaches
-dw_edma_device_resume(). This function evaluates if the channel is paused,
-and calls dw_edma_start_transfer() without acquiring chan->vc.lock:
-
-drivers/dma/dw-edma/dw-edma-core.c:dw_edma_device_resume() {
-	...
-	} else {
-		chan->status =3D EDMA_ST_BUSY;
-		dw_edma_start_transfer(chan);
-	}
-}
-
-Inside dw_edma_start_transfer(), vchan_next_desc() is called, which
-immediately trips lockdep_assert_held(&vc->lock).=20
-
-If an in-flight or delayed interrupt triggers dw_edma_done_interrupt()
-concurrently, both paths may execute dw_edma_start_transfer() simultaneously
-on the same descriptor, which could result in double list_del() and kfree()
-on the chunk.
-
-Should dw_edma_device_resume() take the chan->vc.lock before calling
-dw_edma_start_transfer()?
-
->  	desc->xfer_sz +=3D child->xfer_sz;
->  	dw_edma_free_burst(child);
->  	list_del(&child->list);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709-edma_ll-v5=
--0-e199053d4300@nxp.com?part=3D8
+Thanks,
+Cristian
