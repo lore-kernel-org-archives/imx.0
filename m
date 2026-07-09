@@ -1,118 +1,166 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EB0421EF4
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 11:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CC841DEF0
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 11:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783596779; cv=none; b=o9marf+QDet64NIiA+Q6pNNoXhGL/yAeler5eOGB/RDkNA+6WcMjAKFVNFEaSrV000ybUiNHI/7zWt2gA8kp9C3ecIglB0V0UttYtqgOUM8zEkcJ0SSsnju6OcJaBTDOo7NJe8NcEvC2YaVuA7gHZurbtIcYQ1hdpj1LCvg+WJs=
+	t=1783596844; cv=none; b=o8BVVJgTMQ2QnKYtlulEcaOSR6JK8C5J3Z5fUomelnUuxPOsFEgc59bQ2h74KtuFboC0upBI8ZeLW4Ixts0AIN/fn1yKgjU31dWZLqvfdTS1z406ccOCnVSHVOz5E4WbLjNz+i37vMDeL4Nny6lFVr/NrMl3v5rbJ/cOTbQW3NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783596779; c=relaxed/simple;
-	bh=lvRoX7NF7koqKSVMWIj1y8gTZBU4/f7JqGnAfGc3AXE=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=ke7q1q3MEG9A9q/mkgyfwNmfdyzX14uhhseowE137qTS4p+2NALEn9PDBa3Y7S/AANN8ckiPFlB2vvhUvCi0o88noCdaYnQdryxvR6v3Szex1IIUanZK/dP5gcQdjvbhLCS7CD8uxff64Dycfh10/0/bFgjhql5+DLRpsiliQxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=j9i0vHo/; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1783596844; c=relaxed/simple;
+	bh=3u1eCIMC61U1iunia4gabiq+oDAXttkxAv6ATOhWy2A=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=kOJIiUmnzV3lypENPj8vMRqhQanVkAq+WhzUH9j1mvkq48jLsaRemmD3B1gWHziOFnC8gLSZ18fsY65dsvytScJKcfY1d8hB7hkpvBWnF29hG73Wlh3h1/vmOZBLn1dCsDizOLEmo7AB4eDuRF904wqmnHs2Ba6XtMFLAUyiE/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=ApEx2uWT; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="j9i0vHo/"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47dec32798aso657215f8f.1
-        for <imx@lists.linux.dev>; Thu, 09 Jul 2026 04:32:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1783596775; x=1784201575; darn=lists.linux.dev;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=CLjzyOv/WTLBRnX5mDjhunmkUjnf60dz6rJau52ia58=;
-        b=j9i0vHo/PB9mgOqwRQMctl+seD3pTGPXW+PaudWESpv0rbn3zq7ecoBMo78qUiYm8I
-         n3ZzkLowZSd90rP6rue7M3wS9KKpOkoZZ7RfxYkPeDCSOhC3tQqQWKZU436qe3XK3lcX
-         aABJoZWt61UfH6BqKmSSkoSx5avEEldSv2WgrFuOd+BOHBYy4QBOgyRBbg0xOvHdyt87
-         KNkLYUNGCt16OAmZIjafz8a5ZoYCVT5F0K03cUSZ9Lw1v4IzohcMY+KAacBtnuNPin3A
-         +fNBTk3f8I4wTn6+/sCI+1JUM9EpND4heh+1TQCKjVz50r4Rh/8HLHxas/mmz+poU1gw
-         DEEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783596775; x=1784201575;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CLjzyOv/WTLBRnX5mDjhunmkUjnf60dz6rJau52ia58=;
-        b=rHUx4MRxFyuWIFWB1sXnLaXOb04ZIg5tXVG/U2aZDOxxDc5EO3O5KqAQNzQNd6mPV8
-         n3p3ohgXFKaMkncNZ11uN7cmOdW7P7JIoIn/W4b2wyiuD9T0kIDD2URm16oe9mQL1bSu
-         XsT/hT9QSwLUQAK07FFiSQQVl4uCuj84Lg0nYrRZb20861JCUJS4q98qH+p9U8toezT5
-         UrXSIR6l6W3JB9Y3uCHzd6IhcqsvDcjJHIoibHNdxGPLyN/C6tyscgC2kOo1TQTJVhMM
-         8BlAUGN0xZWMu5jUQz/Q1fk1EVEiKFD8Yobn6/4F6TJjX3Nshdhm6Hx0Yey9zuIhFpUX
-         FUdQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro6tncgCoIfPQNzduP7BjfMRH9ZXg6U7jGCh+S/tCax8NyrxGs/XguPK0pKiZEfflf1wRI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy6qax8QaPKdFCcaBOoE+tifIPcwF75NeSeuDb6Ma9uAMo3faad
-	TRBr4q+vlTuqqblZRCx2pw35DP0jnWj4iGdyarO2b5pZ1QLjxkLOuWkUNI1w+npTfVw=
-X-Gm-Gg: AfdE7clTN2jEyU0MjPgpjnGV9xURM+kUodq2jsLuvNN8PqZK8MZAlnSGjvsR5IyVq0w
-	HDbaEaKmfc9e4AbkUJ+TlN2tZJi514bkvg2c+7VJJoJ6uMMcfcYG4gfV4vYfXcmOe6yXTIvigx8
-	GecF4+/M+r11lrlgqQwxKg86S5lydLYwJEMxPeeILtzPjcnNB2PuXqkFLSY4jv18lTomSc4w0Xn
-	1XMjQzY+lFizSqjHx+ziDPs/AOimAkSVgJnSc/mEP5FhszFuU4yhqIE0StDsRNDSVXKLumrEJIz
-	TW4IHkVtrQvO7D0siDfEXsy6P7ZNuGoxBnUS9dEdtPQcP829cUN8/6dkvpuBIEj0pX0thd0CJRW
-	kkwF9bBOJ8BbmyfwtwSzdP1LMCiDWtWsRdA+GC1ufj0EfeUiK4j5WuYQ4IYdm9dCPCP5QAKPNR0
-	42rKL3BA5ssVcsknCQcQ13NRkc72DDwx80m3fx4v0NbMy5uKCclB4Q
-X-Received: by 2002:adf:e195:0:b0:47d:eee8:ec40 with SMTP id ffacd0b85a97d-47df0797e7fmr7287312f8f.38.1783596774909;
-        Thu, 09 Jul 2026 04:32:54 -0700 (PDT)
-Received: from [192.168.7.218] (88-127-185-231.subs.proxad.net. [88.127.185.231])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-47a9de1d8f1sm51491575f8f.3.2026.07.09.04.32.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 04:32:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="ApEx2uWT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1783596808; x=1784201608; i=markus.elfring@web.de;
+	bh=dU3V5lsCup//9g4z3abO31CvstIgXQ6vFr0DdAt97Vk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=ApEx2uWT2md4Ljv7OHE2JGXqcbX/scE8BbdwHpueNt/FfjNRPd7zMo5xWTJ64KA+
+	 4HD4/CmpOpy4leFt00T+d515WIuTFPEkT8ol5X2FRuM6ttauJK91ZSjl47bKkq6mj
+	 0+Y4zx2epfB7tmTepLDGItLZQD/3SYGuWhpaXd6Y3Ok/+3d3YuV5apyTEn5kgLaO/
+	 NXKsDFrjTUD7AYIsr+O/ZafS9APq3ogw9k2o8D1ErXmD0DbcQeLCxORtZjRbNmc8s
+	 BW1FAN5znfDfut8cAqUK8pdpaSxhXmCD69ancM4JHm1reQCmZlpc2f56Pg6yeovPF
+	 pfy3VVHXnyvvnn828Q==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MVJRl-1wXA3L0Rrb-00RPky; Thu, 09
+ Jul 2026 13:33:28 +0200
+Message-ID: <eb695a2a-2e80-414c-91a1-3d7fa580c7ec@web.de>
+Date: Thu, 9 Jul 2026 13:33:24 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 5/5] i3c: master: Add optional_bytes for
- variable-length GET CCC validation
-From: Alexandre Mergnat <amergnat@baylibre.com>
-To: tze.yee.ng@altera.com
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Jorge Marques <jorge.marques@analog.com>, 
- =?utf-8?q?Przemys=C5=82aw_Gaj?= <pgaj@cadence.com>, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>, 
- Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>, 
- Felix Gu <ustc.gu@gmail.com>, 
- Manikanta Guntupalli <manikanta.guntupalli@amd.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- Jarkko Nikula <jarkko.nikula@linux.intel.com>, imx@lists.linux.dev
-In-Reply-To: <2e07dc944eab1c4358be1da87fa5000e711ac8bd.1783493868.git.tze.yee.ng@altera.com>
-References: <cover.1783493867.git.tze.yee.ng@altera.com>
- <2e07dc944eab1c4358be1da87fa5000e711ac8bd.1783493868.git.tze.yee.ng@altera.com>
-Date: Thu, 09 Jul 2026 13:32:44 +0200
-Message-Id: <178359676411.1767060.12087768870697006429.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=419; i=amergnat@baylibre.com;
- h=from:subject:message-id; bh=lvRoX7NF7koqKSVMWIj1y8gTZBU4/f7JqGnAfGc3AXE=;
- b=owEBbQKS/ZANAwAKAStGSZ1+MdRFAcsmYgBqT4bjluy7zrbpNSclHQ8EeuHb7lIqwFLY+2OQL
- p7mhmQgtriJAjMEAAEKAB0WIQQjG17X8+qqcA5g/osrRkmdfjHURQUCak+G4wAKCRArRkmdfjHU
- RTpYD/0X1X+hSUbcA7uP4N9hoS+E+Xq0BvJeA8eUc0sZaGfgUreShrBwNL0ypoYqbiVlDQ40m1s
- q1p9XAmjHaPZZaA5O7SYeT3i91SRyAmETeelF2NuQ1uv5OOefSIhSvSQHGmZRaIjN08EexAe4sn
- YiSTEYg8UMZHGwAQ5TFPSY2c8iwdpmx8fdgLTzWfqIXiAR9IgY39Iw2UdGGPxHKSlwMHnZEdO0s
- EjNI/3xiz5zzUUS9ao3nFQ59zEFUq5RAL5xFQ5uhq7Y08OiIr+9K3F6F0d7JGHCkca8SdkqRLJq
- oRs9ZKdWRXOsA/95u42z+84L1YMMTf8vWGtZ+pUoOYEBbPcbFUt+eM0Dn4y7aZHU6L0y71qjog5
- iom/UaCK/awELvrQuqbE06LCcsNYBRU5MLwFjusZagYQhDcSE5RHf7+zrjZF9G21S3HFCYZ93Ek
- gfZhFcRG57xq5d9QQDlmKzjpWFMXpCCYy+R1VsrCS6C1RrmdeJMjVrMUI2tPVoYzGul+w8gD9ld
- byKUACRjbuv70DuZU9V9HD9wbIgNWCqsg+7c504pmLTx8B8L8qaFTzfO65fv8Lw2tDbw0c0MGa8
- dePEULSAhsn9+7bH0d3001RlmO57outneVIpswo3jds8TtddxB/2INOjr/WwxZW5D2ZRZTFfPRt
- sOi7v6P0RP428yw==
-X-Developer-Key: i=amergnat@baylibre.com; a=openpgp;
- fpr=231B5ED7F3EAAA700E60FE8B2B46499D7E31D445
+User-Agent: Mozilla Thunderbird
+To: Frank Li <Frank.Li@nxp.com>, dmaengine@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-nvme@lists.infradead.org, imx@lists.linux.dev,
+ Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, Kees Cook
+ <kees@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ Vinod Koul <vkoul@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Devendra Verma <devverma@amd.com>,
+ Koichiro Den <den@valinux.co.jp>
+References: <20260708-edma_ll-v4-0-cc128f0afb61@nxp.com>
+Subject: Re: [PATCH v4 00/10] dmaengine: dw-edma: flatten desc structions and
+ simple code
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20260708-edma_ll-v4-0-cc128f0afb61@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lazUhBIMmLzqNSbxN+eYaYB2AqlmNHAb516c8ebt3InwwhzLtrl
+ JOpmxNLhNl0IGmmgJGm4FIip5O7NhfW9Q72B3HqfOpbI6n9lkr37fMKSuMcllBOayHT34Ej
+ dWsUTUCocwfbqdOphT2+KXnImaUeXXrLj2zus2RjLoJRYfsnwi1MY8kdF38mq3HXujFwSmi
+ ecu9u0pPRgv56187FP8Gw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+Sjfrk61JOk=;sgpjzjLoMopB1XcWzDVZmB7Gaex
+ 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
+ TZd1CGY3MxPtY0zsSGDpfPyMdP4=
 
-On Wed, 08 Jul 2026 00:17:41 -0700, tze.yee.ng@altera.com <tze.yee.ng@altera.com> wrote:
-> Add optional_bytes to struct i3c_ccc_cmd_payload so callers describe
-> variable-length GET CCC responses. GETMRL and GETMXDS set optional_bytes
-> at the call site. Extend i3c_ccc_validate_payload_len() to honour it.
+=E2=80=A6
+> And reduce at least 2 times kzalloc() for each dma descriptor create.
+=E2=80=A6
 
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+How do you think about to use a summary phrase like =E2=80=9CFlatten destr=
+uctions
+and simplify code=E2=80=9D?
 
--- 
-Alexandre Mergnat <amergnat@baylibre.com>
+
+=E2=80=A6
+> The finial goal is dymatic add DMA request when DMA running. =E2=80=A6
+
+                     dynamic?
+
+Regards,
+Markus
+
