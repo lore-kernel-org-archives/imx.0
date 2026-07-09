@@ -1,203 +1,150 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DAE43441B
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 16:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607CD385D61
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 16:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783613329; cv=none; b=KwsU3dMAj6QM6zRY6Z7w+DtNu80up+n8JR5GLWcnFS3JsGdEWU9tVVQkOhLfCi/jFzb6I/slj1gUzFZ2R8VnjDQsk2GgjC4rJFtDmc9ICma5nqe3HODEOgYHZcNmJ+G4jT+xbxDyXKl/yIHv8q7Go1vGSE0PJRouzSqwbRlD4WU=
+	t=1783615191; cv=none; b=PZlFddaCdbTp72t1rHA1Ghqy4SGDdI77PkBKWUJHxDbf3HBlK95nbQn6dK4nnviGWhjk4ZZWHcT7hz4Xc02AoqzlxtbUinHfc41yOpr8lwMgUx4uW8gF3mqJQkmUHAnYpBty3c09SL6mueqYiUnRQoDW4l5nLqmQpTv1YCrM5IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783613329; c=relaxed/simple;
-	bh=LdoEID+mftfieJuREjeHFGnl1pSH4i3KPMTl65rvBKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UQo0k3Lp6uhvwJ9zQ9ZzSDsxFI31epXfYq4Cm6k7clDka3BCm97hsL1fpRWOhl5xvQf1i7hAMeFoC4vz2bZ2lQqwYTagJ2cMQxR88oJTnHd1y1zkhQg7wxZb7a1dSgIv1acOFn63Odty74pwkIpa90lpVm3Ns6HdRtXUfLDALqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=OlaXl+Dq; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1783615191; c=relaxed/simple;
+	bh=vaNwRoIjhye69eveL4rFSb3FVRqGKzDCxkgsIv4QOPU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JJiABUaVqCSLjdUye3RMbwmjngZrcczm229UC0gN62Dj2SS4PF/UGOtGD9zqC6vEw/FxdIYgdiSG9pj/Wmle7mh7/diBSCnNFTR1euGdNIB/H1yG9D6ntWsJxY2C0BWXZqqGUXZ7jjQVHeDwYugtwmLtN2hhJC+MpuAcA8RV6S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h3XXUZYP; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="OlaXl+Dq"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4758bd3731bso23505f8f.0
-        for <imx@lists.linux.dev>; Thu, 09 Jul 2026 09:08:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h3XXUZYP"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-470174001a0so89283f8f.0
+        for <imx@lists.linux.dev>; Thu, 09 Jul 2026 09:39:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1783613326; x=1784218126; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1783615188; x=1784219988; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Gov176wXURlzSR3dUDxqqJ+JUc69jBkAANSG0MToDuM=;
-        b=OlaXl+DqVUYjmvG6NAStY4tSM729WeXdVYHYvehgyyNS3UFOcQe3Bkvmc+PAcJwJqy
-         3PH80vdK4EtH6FiMArgeFh9rUzwf+7eONeMESnzq3M80Qct28P52E+OvWkCUgWIDlPLa
-         Ek9B43PNYf493kNsgX8YdUQ+Y5rxd+clfUWoguE+7ctQEIC7bSUAJq19820VGpTtSj7X
-         gG3Nzptbl03Y4Q0uNAI2XlmzI5YLBIKSLbyiSkcKkV4+5B5eh129FAMsPAhbs+mwDA0Y
-         tZK/QhqHaAKiBfDprQUw9C3QT7PqIgRYJO7ANV+kQQ5fpKph9BegGEeabXMOD+AwLlnY
-         RpWQ==
+        bh=YXX9nNx5eZSBjCWWcOzM36IZ91PUM/Pz7bOwY12g6SQ=;
+        b=h3XXUZYPVgaU3EP98sd0xvDN3CwTTl/wwrBiJfuvuyGrgoKnGeGKVZCH6so2lmq1nx
+         56xfgELDCNHcWeUKCczk5ZZTrnbqgRgzcC/NjY6PDLy/khR04hKQveQ9pl6i5a1XemKE
+         o6p2GkIu2IjrVPqSMffGGtAQXTAykuxa1EeWMi8yUlHvjF4GXhuRejzPDpaYRfye3p9Y
+         l06qysvHUWXnRqVEwPSGO0QRXk4DHu+t1CQvZEIeKntUbU6iaqt6qXgWNH6vbZYQ1mS1
+         hqajYyxTYRuF6baKKIfcacxGLLzNXO6pNgxBGbm2HAFyZsUTZ0EAAuWihOKYcvLRLmvs
+         6vWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783613326; x=1784218126;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1783615188; x=1784219988;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Gov176wXURlzSR3dUDxqqJ+JUc69jBkAANSG0MToDuM=;
-        b=QfnAzCbA7orQJ8XZ00PNwEGxyWaCpm/P+2mIfyf3DsDRrOfkmUtMfEmfr+R8YvQcq7
-         Ot/+MWjSVADYfykgKSCxlLbihRA48uBzmpKq2VR/Uw/E2xF4Ar6ybNoFpf34tzFyvkHn
-         bS3OopMbU/KNP1I9YbcT60yFJZBCHll88rzaYbpR0+V5naWqNwLQYnJZ3GVEytXyfMkh
-         ZiuSiUUpgwOH69ZheBdnm2QsiV20/Ct7MfHYsoTh0PRvidwgseBprhKH8IymiLydBDyd
-         U5+jW5JqanZJcgZMyg37wEeQ49rzeLc6fEMn5CK0hlpFlqnCx+F6xLin1CbhDnAYdojm
-         yhUg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq8eEnu/ZbAd8zJs/9Kaj5d9Wl2TBQcMg3rNUiBy09grJ9i433sSfPd7GvaRUug/PjaGc4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwgPsUVcV2VwTFaf4cNXtFHX29vdTdazzD7mH2qzX0XBRPmeeq9
-	39P8I4rdc22F2Cj0flfKN9sgBB1tXoqHWyWoByhqM096ZhQWUFU+DeNnKpytev4rsEo=
-X-Gm-Gg: AfdE7ckr9onKzcIFwpumKeG+bq/txt7MNhOLhCkE9H5621mEQhyzh/Ja/3u6r+nS+xW
-	WZpu+3lzuS8vA2XbeHnR9GmUmtooLLuV/WEsLxCY+Xvw0zSLS/zh25TMI1LMg94a2Aop89/7Kla
-	LRST9A/i/KGUbBJOp/lAbSS+u4GH9F6d4bBSf4YhGsM1md7god16/VYMNbAhEryQXzwjB8O3E/2
-	UkDpI6GeRv5wexi6OWXDeyVmMFBtbtc/bNZRtLHvlakwoB5bYsGDEAmVu+lAeqgs6fzo5k1aYrt
-	FU0TAuGE7ihsPFP6CuGO3fGcpQvNuvplfagHa1y/Je3YnyuqDVeXvUAS7sWxAdr5lGgDjKsoT8o
-	YQURBpdFKZmwRhqDeu1SWpH4NwTR5fJSf+K8ptRCcUKz3CeD/GUi0BEBxxfnZlJr/OVgmxQvfM1
-	OzgoDhYUpoh6KDX+EK/tC2XUQuYyo7S2DGdCiZxywGVMjHyt9GXO1As4QfrVpCzUV67kz3dSvjT
-	qT3
-X-Received: by 2002:a05:6000:230b:b0:46d:f979:1827 with SMTP id ffacd0b85a97d-47df757026bmr3824909f8f.23.1783613325532;
-        Thu, 09 Jul 2026 09:08:45 -0700 (PDT)
-Received: from localhost (p200300f65f47db043de98c19b374aa68.dip0.t-ipconnect.de. [2003:f6:5f47:db04:3de9:8c19:b374:aa68])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47aa0960816sm50486350f8f.29.2026.07.09.09.08.43
+        bh=YXX9nNx5eZSBjCWWcOzM36IZ91PUM/Pz7bOwY12g6SQ=;
+        b=JhxrJNVreB4ajRuy4KKnab9wvfcqHt637t9Ah/7Z0TSzAgzKx4wn0tfl2qQkCgmMsF
+         z01DPZ7pcC+HII8ZzXxmM1l+3uIqEJIz0XtjBLgt+3ODslTW5+vZgHvmeIBJOJdoQ9iv
+         Exlw1Px2k9599LQQ7GxgqCJsyZpXcZoOAslLE9qEGjauL4UtPW3EOn/iC9GP345yTnot
+         RKC782+2fCx+qAw0E+epoGTsheeF9chi/rXWAkbE5YmvT189Z/PGfueyqOtmr8sDzInB
+         8M1KbRYRp1+DPn1OGfvBxR87R5ComDXTCMIgqtgRbdttdthCnJ5JxkfuC8j7gUroqP3R
+         L8Qw==
+X-Forwarded-Encrypted: i=1; AHgh+RrgFbpb+/n6Xc3HGTdOw1oSGdAatR9XG6nLR08SOtwTzc1oeBg4J6pUEu4p96HSaQl2qfs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwkzpAL3lI3/U9Ry8svD0w1kJ8Ld5ApwzNXp7wrSZS16t7dMg3W
+	0aapmpKgVvwBsE0XqlfPde0yF/zgjgbv3YwZZQlHWpdzIQhBXc5IXXxn
+X-Gm-Gg: AfdE7ckJYLV0geZbvBjkRpPW6RDyh2qk8rWhzXJ+2J635KzsNCwJn1JdkYrQ1rKe04r
+	zCaNcEl0h9JEZLmVWbFitWYA82TjYeW8r3F+IivL4wB16NPEkZWvGtpr9MDUDAHXbh1DCeRwgqP
+	UxtHFtGbWg+xYHcGW5krvGYU2/OdvIwhL+FIyKdm3+yshHBYntoiVATMl0GhNaLFeGQgqr0E8zS
+	RsdzbFVfnvDGInWs+cZTeL18I1blg+phSsVWWKKKy2eAkzmBjBsbHcBZ11mvKf5E/miqp3J+jQg
+	ZYw4VSreaYdW1o+ZSofc1b14sk1xisH5rPG/HhqzGYweLhgFdtKSehf7/gKFrAwqfcKwN6s/82p
+	vUIDtrfrsdgHytWVErqbT4raFOTA9KF92G5seItVkHEk6XwZxJ0u67mI0yJH01xu5wcg9GXQYqP
+	4TEu33sHLr+PDgOHjhONzOxYF8vd52LNzuewyf5UkY/U82Og==
+X-Received: by 2002:a5d:588a:0:b0:47d:ee7d:c125 with SMTP id ffacd0b85a97d-47df07faccemr8178775f8f.40.1783615187636;
+        Thu, 09 Jul 2026 09:39:47 -0700 (PDT)
+Received: from pumpkin (host-92-21-50-228.as13285.net. [92.21.50.228])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d83bdsm52545593f8f.13.2026.07.09.09.39.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 09:08:43 -0700 (PDT)
-Date: Thu, 9 Jul 2026 18:08:42 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Lee Jones <lee@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, mfd@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-mediatek@lists.infradead.org, 
-	Qunqin Zhao <zhaoqunqin@loongson.cn>, linux-crypto@vger.kernel.org, Benson Leung <bleung@chromium.org>, 
-	Guenter Roeck <groeck@chromium.org>, chrome-platform@lists.linux.dev, 
-	Colin Foster <colin.foster@in-advantage.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Zha Qipeng <qipeng.zha@intel.com>, Thomas Richard <thomas.richard@bootlin.com>, 
-	linux-sound@vger.kernel.org, patches@opensource.cirrus.com, Xu Yilun <yilun.xu@intel.com>, 
-	Tom Rix <trix@redhat.com>, Michael Hennerich <michael.hennerich@analog.com>, 
-	Chen-Yu Tsai <wens@kernel.org>, Marek Vasut <marek.vasut+renesas@gmail.com>, 
-	James Ogletree <jogletre@opensource.cirrus.com>, Fred Treven <fred.treven@cirrus.com>, 
-	Ben Bright <ben.bright@cirrus.com>, Support Opensource <support.opensource@diasemi.com>, 
-	Andy Shevchenko <andy@kernel.org>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	=?utf-8?B?QW5kcsOp?= Draszik <andre.draszik@linaro.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
-	Samuel Kayode <samkay014@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org, 
-	imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
-	Linus Walleij <linusw@kernel.org>, linux@ew.tq-group.com, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Tim Harvey <tharvey@gateworks.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>, 
-	Neal Gompa <neal@gompa.dev>, Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>, 
-	Luca Ceresoli <luca.ceresoli@bootlin.com>, Saravanan Sekar <sravanhome@gmail.com>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chunyan Zhang <zhang.lyra@gmail.com>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, linux-samsung-soc@vger.kernel.org, 
-	linux-amlogic@lists.infradead.org, asahi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, Peter Tyser <ptyser@xes-inc.com>
-Subject: Re: [PATCH v2 00/23] mfd: Use named initializers for arrays of
- *_device_data
-Message-ID: <ak_DIUQI9MX5aB8e@monoceros>
-References: <cover.1783507945.git.u.kleine-koenig@baylibre.com>
- <ak41yQp3x78s4Fmx@ashevche-desk.local>
+        Thu, 09 Jul 2026 09:39:47 -0700 (PDT)
+Date: Thu, 9 Jul 2026 17:39:45 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Xu Yang <xu.yang_2@oss.nxp.com>,
+ kees@kernel.org, christophe.jaillet@wanadoo.fr, xu.yang_2@nxp.com,
+ hataegu0826@gmail.com, balbi@ti.com, andrzej.p@samsung.com,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev
+Subject: Re: [PATCH] usb: gadget: f_uac1_legacy: fix inverted NULL check
+ after kstrndup()
+Message-ID: <20260709173945.268a9917@pumpkin>
+In-Reply-To: <ak64635tgUj3MPEx@SMW015318>
+References: <20260625113154.1954813-1-xu.yang_2@oss.nxp.com>
+	<2026070831-peso-aluminum-df0c@gregkh>
+	<ak64635tgUj3MPEx@SMW015318>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ka4fpqo6ejmxfupn"
-Content-Disposition: inline
-In-Reply-To: <ak41yQp3x78s4Fmx@ashevche-desk.local>
-
-
---ka4fpqo6ejmxfupn
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 00/23] mfd: Use named initializers for arrays of
- *_device_data
-MIME-Version: 1.0
 
-Hello,
+On Wed, 8 Jul 2026 15:54:03 -0500
+Frank Li <Frank.li@oss.nxp.com> wrote:
 
-On Wed, Jul 08, 2026 at 02:34:33PM +0300, Andy Shevchenko wrote:
-> On Wed, Jul 08, 2026 at 01:15:07PM +0200, Uwe Kleine-K=F6nig (The Capable=
- Hub) wrote:
-> > Hello,
-> >=20
-> > this series superseeds my previous patch "[PATCH v1] mfd: Use named
-> > initializers for arrays of i2c_device_data"
-> > (https://lore.kernel.org/lkml/20260515095839.4005460-2-u.kleine-koenig@=
-baylibre.com)
-> > that Lee asked me to rebase and also the series "[PATCH v1 0/3] mfd:
-> > Initialize spi_device_id arrays using member names"
-> > (https://lore.kernel.org/lkml/cover.1783003256.git.u.kleine-koenig@bayl=
-ibre.com).
-> >=20
-> > The objective for this series is to prepare mfd for changing
-> > of_device_id etc to make driver_data a union, see
-> > https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylib=
-re.com/
-> > for the idea behind it.
-> >=20
-> > This series is based on yesterday's next/master and it does the
-> > restructuring not only for i2c and spi (as the two series mentioned
-> > above), but for all *_device_id structures that I intend to modify with
-> > a union that affect mfd. So (I hope) this is the only patch series
-> > affecting mfd for this quest.
-> >=20
-> > I don't care much about the last few patches unifying the coding style.
-> > I think it's a good opportunity to do that, but if you don't like them,
-> > just don't apply these.
+> On Wed, Jul 08, 2026 at 05:05:03PM +0200, Greg KH wrote:
+> > On Thu, Jun 25, 2026 at 07:31:54PM +0800, Xu Yang wrote: =20
+> > > From: Xu Yang <xu.yang_2@nxp.com>
+> > >
+> > > kstrndup() returns NULL on allocation failure. The condition was
+> > > checking 'if (tmp)' to detect failure, but this is inverted =E2=80=94=
+ it
+> > > would treat a successful allocation as an error and return -ENOMEM
+> > > while leaking the string, and proceed with a NULL pointer on failure.
+> > >
+> > > Fix by changing the condition to 'if (!tmp)'.
+> > >
+> > > Fixes: 0854611a19ae ("usb: gadget: f_uac1: add configfs support")
+> > > Cc: stable@vger.kernel.org
+> > > Assisted-by: Claude:claude-sonnet-4-6
+> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > > ---
+> > >  drivers/usb/gadget/function/f_uac1_legacy.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/usb/gadget/function/f_uac1_legacy.c b/drivers/us=
+b/gadget/function/f_uac1_legacy.c
+> > > index 5d201a2e30e7..e9f2632ce785 100644
+> > > --- a/drivers/usb/gadget/function/f_uac1_legacy.c
+> > > +++ b/drivers/usb/gadget/function/f_uac1_legacy.c
+> > > @@ -914,7 +914,7 @@ static ssize_t f_uac1_opts_##name##_store(struct =
+config_item *item,	\
+> > >  		goto end;						\
+> > >  									\
+> > >  	tmp =3D kstrndup(page, len, GFP_KERNEL);				\
+> > > -	if (tmp) {							\
+> > > +	if (!tmp) {							\
+> > >  		ret =3D -ENOMEM;						\
+> > >  		goto end;						\
+> > >  	}								\
+> > > --
+> > > 2.34.1
+> > >
+> > > =20
+> >
+> > So this has never worked?  How has no one ever noticed that in the
+> > decade this has been in the kernel?  Does that mean that no one uses
+> > this file/driver and we can just remove it? =20
 >=20
-> The patches bring inconsistency (or still leave it) with the terminator s=
-tyle
-> in both I=B2C and ACPI ID tables. Can you revisit that?
+> I think just no one use sys interface to change name.
 
-I found a few inconstencies for of_device_id, but not for acpi and i2c.
-I have a script for the acpi and i2c (and now also for the of) changes
-and don't spot inconsistencys in the terminator style for acpi and i2c
-devices apart from comments.
+Or doesn't notice/care that is didn't work and didn't try often
+enough to leak enough memory to break things.
 
-(I looked at the output of:
+	David
 
-	git grep -lE '(i2c|acpi)_device_id [a-z0-9_]*\[\]' drivers/mfd | xargs -r =
-sed -rn '/(i2c|acpi)_device_id [a-zA-Z0-9_]*\[/,/^};/p' | grep -B1 ^\} | so=
-rt | uniq -c
+>=20
+> Frank
+>=20
+> >
+> > thanks,
+> >
+> > greg k-h
+> > =20
+>=20
 
-)
-
-Do you mean to unify the comments, too?
-
-Best regards
-Uwe
-
---ka4fpqo6ejmxfupn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpPx4cACgkQj4D7WH0S
-/k624gf/dzy2q/+UDcko+3qRC/vjduntKV5JaImo1jv66pbGa0vVyVdYDHS/QwvV
-X+Jr6jTMyEZcw6O1onRP1ZIcKU6MTkl/wvtqeLkFJ4PXv/hKftTSkP/IHkLuekNm
-Cn37LNIalY7gpr1gfPvcL5Q/BN1qqXCUggmW0xXf+Gi9W5bwWuTaRsJ9ehVptA3+
-rMp5HAYJ1isaiiqfMZJ/TqtNWHN6aVh8ZS6YU5b2iDitwtnRCQD1pOcYCYaXgfrt
-fbXqb+xpQvMfRgK+MLErhmJUfHf2tKi1s5OKoG1T9fiLCmp0VzTkB4+o4AgpQgeE
-pUTRSN5jhrCLDAt7v6B6b4XHPcYmTQ==
-=tSBk
------END PGP SIGNATURE-----
-
---ka4fpqo6ejmxfupn--
