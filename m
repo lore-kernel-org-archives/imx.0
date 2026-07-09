@@ -1,92 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D003A7858;
-	Thu,  9 Jul 2026 05:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2692E173B;
+	Thu,  9 Jul 2026 05:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783576240; cv=none; b=bjdJccJ8sJNfq7Kr/GSG5Au/E6V/XN0tj3BA0Mq0gPKhMEcKrrbHgi/i+8wb/ZO5qb7WQYp8D85E7Va9u5T2fGcT6jWgYcadnGL+qMXlXjohoEj27QaeKeJAjWFexikOZPF2XRZAh0a1l1p8BY055v9J6Ln9gPA8tC7DA14v8Wc=
+	t=1783576449; cv=none; b=iqecfInXrCwrqwHawuaJBg217i8NLJA6WC0wYskvL8SDRNxIfWWDoo3dwQXvSU72A56pslAX1a/LJxrpLujofihO4lccqTQUH0hbn/eVT6VwEpPECKVrdVy5kVA3ZATcX26bd4Dp7cRRQlxhKr8loW66o1MU5+Tti7h9rJoeEUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783576240; c=relaxed/simple;
-	bh=FX7whN65jVrE20PvneALpRHqPhH6kmMEfSszGNbBOJY=;
+	s=arc-20240116; t=1783576449; c=relaxed/simple;
+	bh=VH6bVmiNH4nbZJBBw2HuSqwGIDZUgDGeJSQoz+HxKaU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dOgvBD78OiWSJPNGs+7Lm8eZyESzR06K8JEbGt5AP/7FIrTbgtpm73GvrmDuJfULIoUmdn6RH//Tpcv2g6awhUi+PTOcf1Kw/B/EXscWqk9auNDvsbLHV7AO83DrCaexBzRn8wZ8EK60cNuI7wCiMEIzgRR+ytWO018s+WNDvfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MH7QksTF; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=NXtG3Up9NFuyd+Y9NyNpLiroUGLvrtjByKsgPs9wvrnTFZP7Ac0xYN/feqE82+fnzJUOofKIXqB5W27lf/25FYvbxTMXxWhV3cO94V5hSLaDo2KbGKqMV0Zu/L3RuoHU4WuSYM3jdJvJZisMv0tidLLIblRT4o9N1rwifBp66ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FEdhUuZG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MH7QksTF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1E61F000E9;
-	Thu,  9 Jul 2026 05:50:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FEdhUuZG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040201F000E9;
+	Thu,  9 Jul 2026 05:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783576239;
-	bh=YNn6ISIEjfzZs3npYxuLbY/ckJbGgqpqaTejrCtmRcE=;
+	s=k20260515; t=1783576448;
+	bh=namYQtzeSTib3/PgrQCBvhYcGPphyRkijlDWXFdDpk4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MH7QksTFDL1iM/bByvrapR8cbRQxfcdXy6oHlU3Xl38gEpJPxLVaOdwaWt4Dd/PmU
-	 FHw9Pfddpbmg8OIaXVLf0dWGiBZ6h9gawbZ5EWJ2cQhWeSVb5ZeBE2PjBc4Uo3aggr
-	 luyncI9IFV2JLU5LorSKC3La1Z8eYAacCB/hbwd1O3ai+eJ0jMdbgSGIxOv0jbSQ1J
-	 UiUdqE1hYlqPZ6WngGTzRRmKRjqzk4z31ouXlf4vGiX3pbZcbGrs8GWUQrz4Vn8tlq
-	 YVgpj27Y2voMkzgkbFx3n1lgX7SoB8+T6cRH/TY27YsN4N6HgEkyL4OOZTVdZ74krI
-	 5Zu0s+/3k+CNw==
+	b=FEdhUuZGgeUimWzzxAEueR7ixE+B2+FHfVqfcfHyRXKAKu6Zpdvj6sCLYVpD0kVzk
+	 /84JsaSkIoA02NyOV5SQxri3rQSomehQFuFKuWVRuNq1buanTq1YaNEfL63mJvD+CP
+	 K+xLEEj7TPSlMpN1bAhWUUmek1QwrtijHAOSgZ1qTpKPKeXAIP/JjObyGuGSCdnJaL
+	 Bxr4bhbHn+jTVI6GGES+6MHpCLNvcb695M7WMBa+3x6EmNk9LriQmfmI6YAcKcuOva
+	 QjoAaTL57tDrlF16y6bUN9Y4P1Xhgi1t6pNDfw/0XvnzYKyGQ5+1VCbg+VTL+1C7Hz
+	 25GsDNM/ee3rw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: thermal: imx: Document calibration
- offset property
+Subject: Re: [PATCH 2/2] thermal/drivers/imx: Add calibration offset support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "HaoNing Cheng" <Haoning.CHENG@cn.bosch.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-1-00f88f42930b@cn.bosch.com>
+Cc: conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-2-00f88f42930b@cn.bosch.com>
 References: <20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-0-00f88f42930b@cn.bosch.com>
- <20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-1-00f88f42930b@cn.bosch.com>
+ <20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-2-00f88f42930b@cn.bosch.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 05:50:38 +0000
-Message-Id: <20260709055038.BF1E61F000E9@smtp.kernel.org>
+Date: Thu, 09 Jul 2026 05:54:07 +0000
+Message-Id: <20260709055408.040201F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Low] Inconsistent indentation in the device tree example for the newly a=
-dded property.
+
+New issues:
+- [High] The i.MX7D alarm temperature calculation truncates towards zero, l=
+eading to an early hardware trigger and an IRQ storm when the calibration o=
+ffset is not a multiple of 1000.
+
+Pre-existing issues:
+- [High] The computed `alarm_value` is shifted and written to the high alar=
+m control hardware register without bitwise masking, allowing out-of-bounds=
+ or negative values to corrupt adjacent register fields.
 --
 
---- Patch [1]: [PATCH 1/2] dt-bindings: thermal: imx: Document calibration =
-offset property ---
-commit 1a75813b8a61f5ee87309553dc49a0dab98ae1c1
+--- Patch [2]: [PATCH 2/2] thermal/drivers/imx: Add calibration offset supp=
+ort ---
+commit b15c0dce27dccd66bd58b8f22bb746933db67a41
 Author: HaoNing Cheng <Haoning.CHENG@cn.bosch.com>
 
-dt-bindings: thermal: imx: Document calibration offset property
+thermal/drivers/imx: Add calibration offset support
 
-This commit documents a new optional property,
-fsl,temp-calibration-offset-millicelsius, to align the reported CPU
-temperature with board-level measurements. The binding example is also
-updated to demonstrate its usage.
+Some boards need a small per-design correction to align the reported CPU
+temperature with board-level measurements.
 
-> diff --git a/Documentation/devicetree/bindings/thermal/imx-thermal.yaml b=
-/Documentation/devicetree/bindings/thermal/imx-thermal.yaml
-> --- a/Documentation/devicetree/bindings/thermal/imx-thermal.yaml
-> +++ b/Documentation/devicetree/bindings/thermal/imx-thermal.yaml
+> diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
+> index 5aaacbc534786..3e1eec2fc3613 100644
+> --- a/drivers/thermal/imx_thermal.c
+> +++ b/drivers/thermal/imx_thermal.c
+> @@ -241,7 +242,7 @@ static void imx_set_alarm_temp(struct imx_thermal_dat=
+a *data,
+>  	data->alarm_temp =3D alarm_temp;
+> =20
+>  	if (data->socdata->version =3D=3D TEMPMON_IMX7D)
+> -		alarm_value =3D alarm_temp / 1000 + data->c1 - 25;
+> +		alarm_value =3D (alarm_temp - data->calibration_offset) / 1000 + data-=
+>c1 - 25;
 
-[ ... ]
+[Severity: High]
+If the device tree property fsl,temp-calibration-offset-millicelsius is set
+to a value that is not a multiple of 1000 (e.g., 500), does this integer
+division truncate towards zero and cause an early hardware alarm trigger?
 
-> @@ -109,6 +116,7 @@ examples:
->              nvmem-cells =3D <&tempmon_calib>, <&tempmon_temp_grade>;
->              nvmem-cell-names =3D "calib", "temp_grade";
->              clocks =3D <&clks IMX6SX_CLK_PLL3_USB_OTG>;
-> +             fsl,temp-calibration-offset-millicelsius =3D <(-6400)>;
+When the hardware asserts the thermal interrupt due to the truncated thresh=
+old,
+the IRQ handler would read the temperature, calculate that the temperature =
+is
+still below the alarm_temp, and immediately re-enable the IRQ. Could this
+regression lead to an infinite IRQ storm?
 
-[Severity: Low]
-This isn't a bug, but does this line have an extra leading space? It appears
-to be indented with 13 spaces instead of 12, misaligning it slightly with t=
-he
-surrounding properties in the example.
+[Severity: High]
+This is a pre-existing issue, but the computed alarm_value is shifted and
+written to the high alarm control register shortly after this without maski=
+ng:
 
->              #thermal-sensor-cells =3D <0>;
->          };
->      };
+    regmap_write(map, soc_data->high_alarm_ctrl + REG_SET,
+                 alarm_value << soc_data->high_alarm_shift);
+
+Since the newly introduced calibration offset could make alarm_value negati=
+ve
+or exceed its 9-bit mask, shifting a negative signed value will set the upp=
+er
+bits to 1.=20
+
+Because this is a bit-set operation, could writing this value overwrite and
+corrupt the adjacent IMX7_TEMPSENSE0_PANIC_ALARM field (bits 18-26)? The sa=
+me
+pattern appears to exist for the panic alarm threshold in imx_set_panic_tem=
+p().
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709-b4-symana2=
 1-11221-imx-thermal-support-upstream-6-18-v1-0-00f88f42930b@cn.bosch.com?pa=
-rt=3D1
+rt=3D2
