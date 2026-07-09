@@ -1,166 +1,278 @@
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CC841DEF0
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 11:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA4E31E826;
+	Thu,  9 Jul 2026 11:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783596844; cv=none; b=o8BVVJgTMQ2QnKYtlulEcaOSR6JK8C5J3Z5fUomelnUuxPOsFEgc59bQ2h74KtuFboC0upBI8ZeLW4Ixts0AIN/fn1yKgjU31dWZLqvfdTS1z406ccOCnVSHVOz5E4WbLjNz+i37vMDeL4Nny6lFVr/NrMl3v5rbJ/cOTbQW3NE=
+	t=1783597864; cv=none; b=qQyNnELVadxZYNS8jUtCp0dvJJtQZDQPHY3rtL3uwGucnSsynBTNZUFekeJSI9OrpUQjUknySRPPyfQTjF9XbrZwIOmr7G4lVHmhKE/ruwW5u6COnBpb230pvpd+czmJweJGqpEyAUSPSmkEt/FjRJ6hJ44nTtHi1rRr0uOuXoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783596844; c=relaxed/simple;
-	bh=3u1eCIMC61U1iunia4gabiq+oDAXttkxAv6ATOhWy2A=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=kOJIiUmnzV3lypENPj8vMRqhQanVkAq+WhzUH9j1mvkq48jLsaRemmD3B1gWHziOFnC8gLSZ18fsY65dsvytScJKcfY1d8hB7hkpvBWnF29hG73Wlh3h1/vmOZBLn1dCsDizOLEmo7AB4eDuRF904wqmnHs2Ba6XtMFLAUyiE/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=ApEx2uWT; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1783597864; c=relaxed/simple;
+	bh=JmRhDhqbmSAvKKkO6usOJ6CSLIocA/0NYxM/BFFcjzs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hytMW+xwL929+q8y/ngIDy4uDCtjUIAtDIK5LKGoSCXJYmWRq+xmppt8JwbhXsnBdbskCFqTll+w569ZCsgMoj33zd7i8yWj0ArAp5ppvwLckVrDM2gsNXVfvxsCo70IGONGRGIbAwLN1mrUKJ2R+J94PGSgjb/3/e/5YBmh6HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8lQzUzN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="ApEx2uWT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1783596808; x=1784201608; i=markus.elfring@web.de;
-	bh=dU3V5lsCup//9g4z3abO31CvstIgXQ6vFr0DdAt97Vk=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=ApEx2uWT2md4Ljv7OHE2JGXqcbX/scE8BbdwHpueNt/FfjNRPd7zMo5xWTJ64KA+
-	 4HD4/CmpOpy4leFt00T+d515WIuTFPEkT8ol5X2FRuM6ttauJK91ZSjl47bKkq6mj
-	 0+Y4zx2epfB7tmTepLDGItLZQD/3SYGuWhpaXd6Y3Ok/+3d3YuV5apyTEn5kgLaO/
-	 NXKsDFrjTUD7AYIsr+O/ZafS9APq3ogw9k2o8D1ErXmD0DbcQeLCxORtZjRbNmc8s
-	 BW1FAN5znfDfut8cAqUK8pdpaSxhXmCD69ancM4JHm1reQCmZlpc2f56Pg6yeovPF
-	 pfy3VVHXnyvvnn828Q==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MVJRl-1wXA3L0Rrb-00RPky; Thu, 09
- Jul 2026 13:33:28 +0200
-Message-ID: <eb695a2a-2e80-414c-91a1-3d7fa580c7ec@web.de>
-Date: Thu, 9 Jul 2026 13:33:24 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8lQzUzN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAC71F000E9;
+	Thu,  9 Jul 2026 11:51:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783597863;
+	bh=HLZuilKn15UjlROjcEHBSkIw1f/U3/ZjhuuZ1CowQV8=;
+	h=From:Subject:Date:To:Cc;
+	b=b8lQzUzNugSFha+J2oAgQmeii3dX/XceaCkhPFiKHVNfsMh3yjL/xV3J6GlJtrIl8
+	 dzQQsGqJzJ57R7BsH80KdfPcCu+ALBASeuewJteDehE3tTjoKTcD/RkHIj8FfhE8HL
+	 tVYRfJGwoqjPK8SOXH463lg3sWUa9kiINxbJXKW1/r35P6x5XY+U2XxpJe0uh4ZtSc
+	 nkrz/r6VkedPz430fF5o2vbdMU24G33v3WPa0tcsuUruhaPuQImo1HMuVmdqju+7bZ
+	 ksQTUACIQ7N7mGLZcu+6xB7eYjqc6aewvvWjkzCdEw/TbxgQqC4HqpUGUWun8X+2VJ
+	 UrI2Q2Fnv+wAg==
+From: Maxime Ripard <mripard@kernel.org>
+Subject: [PATCH 00/60] drm/plane: Convert all drivers to
+ atomic_create_state and remove reset
+Date: Thu, 09 Jul 2026 13:50:26 +0200
+Message-Id: <20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Frank Li <Frank.Li@nxp.com>, dmaengine@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-nvme@lists.infradead.org, imx@lists.linux.dev,
- Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, Kees Cook
- <kees@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Niklas Cassel <cassel@kernel.org>,
- Vinod Koul <vkoul@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Devendra Verma <devverma@amd.com>,
- Koichiro Den <den@valinux.co.jp>
-References: <20260708-edma_ll-v4-0-cc128f0afb61@nxp.com>
-Subject: Re: [PATCH v4 00/10] dmaengine: dw-edma: flatten desc structions and
- simple code
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260708-edma_ll-v4-0-cc128f0afb61@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lazUhBIMmLzqNSbxN+eYaYB2AqlmNHAb516c8ebt3InwwhzLtrl
- JOpmxNLhNl0IGmmgJGm4FIip5O7NhfW9Q72B3HqfOpbI6n9lkr37fMKSuMcllBOayHT34Ej
- dWsUTUCocwfbqdOphT2+KXnImaUeXXrLj2zus2RjLoJRYfsnwi1MY8kdF38mq3HXujFwSmi
- ecu9u0pPRgv56187FP8Gw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:+Sjfrk61JOk=;sgpjzjLoMopB1XcWzDVZmB7Gaex
- 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
- TZd1CGY3MxPtY0zsSGDpfPyMdP4=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqEMAxG4atI1gZicRS9irgQ/TsT0FZSEUG8u
+ 2WW3+K9mxJMkagvbjKcmjSGjKosaP5N4QvWJZucuEYa1/FiG4fIWzTwvk4BbEg4WOruI752kNZ
+ TrneD1+t/HsbneQE0wdFXaQAAAA==
+X-Change-ID: 20260629-drm-no-more-plane-reset-04950f42e07f
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
+ javierm@redhat.com, ikerpedrosam@gmail.com, admin@kodeit.net, 
+ gargaditya08@proton.me, hamohammed.sa@gmail.com, louis.chauvet@bootlin.com, 
+ melissa.srw@gmail.com, alexander.deucher@amd.com, 
+ amd-gfx@lists.freedesktop.org, christian.koenig@amd.com, 
+ liviu.dudau@arm.com, alison.wang@nxp.com, stefan@agner.ch, 
+ jstultz@google.com, sumit.semwal@linaro.org, xinliang.liu@linaro.org, 
+ yongqin.liu@linaro.org, Frank.Li@nxp.com, 
+ Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, 
+ imx@lists.linux.dev, kernel@pengutronix.de, victor.liu@nxp.com, 
+ l.stach@pengutronix.de, laurentiu.palcu@oss.nxp.com, 
+ linux-mips@vger.kernel.org, paul@crapouillou.net, 
+ anitha.chrisanthus@intel.com, paulk@sys-base.io, chenhuacai@kernel.org, 
+ jeffbai@aosc.io, lvjianmin@loongson.cn, wuqianhai@loongson.cn, 
+ xry111@xry111.site, zhengxingda@iscas.ac.cn, jbrunet@baylibre.com, 
+ khilman@baylibre.com, linux-amlogic@lists.infradead.org, 
+ martin.blumenstingl@googlemail.com, abhinav.kumar@linux.dev, 
+ freedreno@lists.freedesktop.org, jesszhan0024@gmail.com, 
+ linux-arm-msm@vger.kernel.org, lumag@kernel.org, 
+ marijn.suijten@somainline.org, robin.clark@oss.qualcomm.com, 
+ sean@poorly.run, marex@denx.de, airlied@redhat.com, kraxel@redhat.com, 
+ spice-devel@lists.freedesktop.org, virtualization@lists.linux.dev, 
+ andy.yan@rock-chips.com, heiko@sntech.de, hjc@rock-chips.com, 
+ linux-rockchip@lists.infradead.org, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, orsonzhai@gmail.com, 
+ zhang.lyra@gmail.com, alain.volmat@foss.st.com, rgallaispou@gmail.com, 
+ alexandre.torgue@foss.st.com, mcoquelin.stm32@gmail.com, 
+ philippe.cornu@foss.st.com, raphael.gallais-pou@foss.st.com, 
+ yannick.fertre@foss.st.com, linux-sunxi@lists.linux.dev, 
+ samuel@sholland.org, wens@kernel.org, jyri.sarha@iki.fi, 
+ tomi.valkeinen@ideasonboard.com, hansg@kernel.org, 
+ dmitry.osipenko@collabora.com, gurchetansingh@chromium.org, 
+ olvaffe@gmail.com, michal.simek@amd.com, harry.wentland@amd.com, 
+ siqueira@igalia.com, sunpeng.li@amd.com, linux@armlinux.org.uk, 
+ alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev, 
+ dharma.b@microchip.com, manikandan.m@microchip.com, 
+ nicolas.ferre@microchip.com, alim.akhtar@samsung.com, inki.dae@samsung.com, 
+ krzk@kernel.org, kyungmin.park@samsung.com, 
+ linux-samsung-soc@vger.kernel.org, sw0312.kim@samsung.com, 
+ p.zabel@pengutronix.de, angelogioacchino.delregno@collabora.com, 
+ chunkuang.hu@kernel.org, matthias.bgg@gmail.com, dakr@kernel.org, 
+ lyude@redhat.com, nouveau@lists.freedesktop.org, geert+renesas@glider.be, 
+ kieran.bingham+renesas@ideasonboard.com, 
+ laurent.pinchart+renesas@ideasonboard.com, 
+ linux-renesas-soc@vger.kernel.org, magnus.damm@gmail.com, 
+ tomi.valkeinen+renesas@ideasonboard.com, biju.das.jz@bp.renesas.com, 
+ dave.stevenson@raspberrypi.com, kernel-list@raspberrypi.com, 
+ mcanal@igalia.com, bcm-kernel-feedback-list@broadcom.com, 
+ zack.rusin@broadcom.com, jonathanh@nvidia.com, linux-tegra@vger.kernel.org, 
+ mperttunen@nvidia.com, thierry.reding@kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9472; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=JmRhDhqbmSAvKKkO6usOJ6CSLIocA/0NYxM/BFFcjzs=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFn+3ZwXH8zfF77if3wb97yNrHGxvT6+qe94BZTz/y44y
+ pFRk8PZMZWFQZiTQVZMkeWJTNjp5e2LqxzsV/6AmcPKBDKEgYtTACbypIOx4ROf2yGJb31qtr9v
+ iUgGWElk8heukaq+0+V1ms2Na734mtTv9xvmyZeocU2Rip8uV2zGWMWkccCj/1Tp37PWIeKbZI4
+ LH7NtEA/X3LTswPQSJv6rK5M4l6e3KQeJ3b2bNkH637TXLgA=
+X-Developer-Key: i=mripard@kernel.org; a=openpgp;
+ fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-=E2=80=A6
-> And reduce at least 2 times kzalloc() for each dma descriptor create.
-=E2=80=A6
+This is a follow-up to the bridge reset removal series, and part of a
+larger effort to remove the reset hook from all KMS objects.
 
-How do you think about to use a summary phrase like =E2=80=9CFlatten destr=
-uctions
-and simplify code=E2=80=9D?
+The plane reset hook is overloaded: it is called both at probe time
+to create the initial software state and during suspend/resume to
+reset hardware and software state. These two roles have different
+requirements, and the reset hook is not fallible, making error
+handling difficult for the initial state allocation path.
 
+While reset has the semantics to reset both the software and hardware
+state, the vast majority of implementations and all the helpers only
+reset the software state, making them equivalent to
+atomic_create_state in practice. The atomic_create_state hook makes
+this explicit: it only allocates and initializes a pristine state
+without any side effect, and returns the state pointer or an ERR_PTR
+on failure.
 
-=E2=80=A6
-> The finial goal is dymatic add DMA request when DMA running. =E2=80=A6
+This series first adds the necessary infrastructure in the simple-kms
+and GEM atomic helpers, then converts all 51 plane drivers tree-wide
+from the reset hook to atomic_create_state. The conversions were done
+using a combination of Coccinelle semantic patches and manual
+adjustments. Once all drivers are converted, the old helpers and the
+reset hook itself are removed from struct drm_plane_funcs.
 
-                     dynamic?
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+---
+Maxime Ripard (60):
+      drm/simple-kms: Add create_plane_state hook
+      drm/gem-atomic-helper: Create drm_gem_create_shadow_plane_state()
+      drm/gem-atomic-helper: Convert simple-kms shadow helpers to create_plane_state
+      drm/gem-atomic-helper: Switch DRM_GEM_SHADOW_PLANE_FUNCS to atomic_create_state
+      drm/gem-atomic-helper: Remove drm_gem_reset_shadow_plane()
+      drm/sysfb: Convert to atomic_create_state
+      drm/simple-kms: Switch to atomic_create_state
+      drm/ssd130x: Convert to atomic_create_state
+      drm/st7920: Convert to atomic_create_state
+      drm/appletbdrm: Convert to atomic_create_state
+      drm/vkms: Convert to atomic_create_state
+      drm/gem-atomic-helper: Remove __drm_gem_reset_shadow_plane()
+      drm/amdgpu: Convert to atomic_create_state
+      drm/hdlcd: Convert to atomic_create_state
+      drm/fsl-dcu: Convert to atomic_create_state
+      drm/hisilicon/kirin: Convert to atomic_create_state
+      drm/imx/dc: Convert to atomic_create_state
+      drm/imx/dcss: Convert to atomic_create_state
+      drm/ingenic: Convert to atomic_create_state
+      drm/kmb: Convert to atomic_create_state
+      drm/logicvc: Convert to atomic_create_state
+      drm/loongson: Convert to atomic_create_state
+      drm/meson: Convert to atomic_create_state
+      drm/msm/mdp4: Convert to atomic_create_state
+      drm/lcdif: Convert to atomic_create_state
+      drm/mxsfb: Convert to atomic_create_state
+      drm/qxl: Convert to atomic_create_state
+      drm/rockchip: Convert to atomic_create_state
+      drm/sprd: Convert to atomic_create_state
+      drm/sti: Convert to atomic_create_state
+      drm/stm: Convert to atomic_create_state
+      drm/sun4i: sun8i: Convert to atomic_create_state
+      drm/tests: kunit: Convert to atomic_create_state
+      drm/tilcdc: Convert to atomic_create_state
+      drm/vboxvideo: Convert to atomic_create_state
+      drm/virtio: Convert to atomic_create_state
+      drm/xlnx: Convert to atomic_create_state
+      drm/atomic-state-helper: Remove drm_atomic_helper_plane_reset()
+      drm/amdgpu_dm: Convert to atomic_create_state
+      drm/komeda: Convert to atomic_create_state
+      drm/malidp: Convert to atomic_create_state
+      drm/armada: Convert to atomic_create_state
+      drm/atmel-hlcdc: Convert to atomic_create_state
+      drm/exynos: Convert to atomic_create_state
+      drm/imx/ipuv3: Convert to atomic_create_state
+      drm/mediatek: Convert to atomic_create_state
+      drm/msm/dpu1: Convert to atomic_create_state
+      drm/msm/mdp5: Convert to atomic_create_state
+      drm/nouveau: Convert to atomic_create_state
+      drm/omap: Convert to atomic_create_state
+      drm/rcar-du: Convert to atomic_create_state
+      drm/rz-du: Convert to atomic_create_state
+      drm/shmobile: Convert to atomic_create_state
+      drm/sun4i: layer: Convert to atomic_create_state
+      drm/vc4: Convert to atomic_create_state
+      drm/verisilicon: Convert to atomic_create_state
+      drm/vmwgfx: Convert to atomic_create_state
+      drm/atomic-state-helper: Remove __drm_atomic_helper_plane_reset()
+      drm/tegra: Convert to atomic_create_state
+      drm/plane: Remove reset
 
-Regards,
-Markus
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c           |   2 +-
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c    |  17 ++--
+ drivers/gpu/drm/arm/display/komeda/komeda_plane.c  |  18 ++--
+ drivers/gpu/drm/arm/hdlcd_crtc.c                   |   2 +-
+ drivers/gpu/drm/arm/malidp_planes.c                |  12 ++-
+ drivers/gpu/drm/armada/armada_overlay.c            |  39 ++++----
+ drivers/gpu/drm/armada/armada_plane.c              |  15 ++--
+ drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c    |  27 +++---
+ drivers/gpu/drm/drm_atomic_state_helper.c          |  41 ---------
+ drivers/gpu/drm/drm_gem_atomic_helper.c            | 100 +++++++++++----------
+ drivers/gpu/drm/drm_mode_config.c                  |   4 +-
+ drivers/gpu/drm/drm_simple_kms_helper.c            |  11 +--
+ drivers/gpu/drm/exynos/exynos_drm_plane.c          |  22 ++---
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_plane.c        |   2 +-
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c    |   2 +-
+ drivers/gpu/drm/imx/dc/dc-plane.c                  |   2 +-
+ drivers/gpu/drm/imx/dcss/dcss-plane.c              |   2 +-
+ drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c            |  19 ++--
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c          |   2 +-
+ drivers/gpu/drm/ingenic/ingenic-ipu.c              |   2 +-
+ drivers/gpu/drm/kmb/kmb_plane.c                    |   2 +-
+ drivers/gpu/drm/logicvc/logicvc_layer.c            |   2 +-
+ drivers/gpu/drm/loongson/lsdc_plane.c              |   2 +-
+ drivers/gpu/drm/mediatek/mtk_plane.c               |  22 ++---
+ drivers/gpu/drm/meson/meson_overlay.c              |   2 +-
+ drivers/gpu/drm/meson/meson_plane.c                |   2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c          |  18 ++--
+ drivers/gpu/drm/msm/disp/mdp4/mdp4_plane.c         |   2 +-
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c         |  16 ++--
+ drivers/gpu/drm/mxsfb/lcdif_kms.c                  |   2 +-
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c                  |   2 +-
+ drivers/gpu/drm/nouveau/dispnv50/wndw.c            |  15 ++--
+ drivers/gpu/drm/omapdrm/omap_plane.c               |  13 ++-
+ drivers/gpu/drm/qxl/qxl_display.c                  |   4 +-
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_plane.c    |  15 ++--
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_vsp.c      |  15 ++--
+ drivers/gpu/drm/renesas/rz-du/rzg2l_du_vsp.c       |  15 ++--
+ drivers/gpu/drm/renesas/shmobile/shmob_drm_plane.c |  15 ++--
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c        |   2 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c       |   2 +-
+ drivers/gpu/drm/sitronix/st7920.c                  |  12 +--
+ drivers/gpu/drm/solomon/ssd130x.c                  |  12 +--
+ drivers/gpu/drm/sprd/sprd_dpu.c                    |   2 +-
+ drivers/gpu/drm/sti/sti_cursor.c                   |   2 +-
+ drivers/gpu/drm/sti/sti_gdp.c                      |   2 +-
+ drivers/gpu/drm/sti/sti_hqvdp.c                    |   2 +-
+ drivers/gpu/drm/stm/ltdc.c                         |   2 +-
+ drivers/gpu/drm/sun4i/sun4i_layer.c                |  12 ++-
+ drivers/gpu/drm/sun4i/sun8i_ui_layer.c             |   2 +-
+ drivers/gpu/drm/sun4i/sun8i_vi_layer.c             |   2 +-
+ drivers/gpu/drm/sysfb/drm_sysfb_helper.h           |   4 +-
+ drivers/gpu/drm/sysfb/drm_sysfb_modeset.c          |  30 +++++--
+ drivers/gpu/drm/tegra/plane.c                      |  28 +++---
+ drivers/gpu/drm/tests/drm_kunit_helpers.c          |   2 +-
+ drivers/gpu/drm/tilcdc/tilcdc_plane.c              |   2 +-
+ drivers/gpu/drm/tiny/appletbdrm.c                  |  12 +--
+ drivers/gpu/drm/vboxvideo/vbox_mode.c              |   2 +-
+ drivers/gpu/drm/vc4/vc4_plane.c                    |  15 ++--
+ drivers/gpu/drm/verisilicon/vs_cursor_plane.c      |   2 +-
+ drivers/gpu/drm/verisilicon/vs_plane.c             |  14 ++-
+ drivers/gpu/drm/verisilicon/vs_plane.h             |   2 +-
+ drivers/gpu/drm/verisilicon/vs_primary_plane.c     |   2 +-
+ drivers/gpu/drm/virtio/virtgpu_plane.c             |   2 +-
+ drivers/gpu/drm/vkms/vkms_plane.c                  |  15 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c                |  17 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h                |   2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c                |   4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c               |   4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c               |   4 +-
+ drivers/gpu/drm/xlnx/zynqmp_kms.c                  |   2 +-
+ include/drm/drm_atomic_state_helper.h              |   3 -
+ include/drm/drm_gem_atomic_helper.h                |  13 +--
+ include/drm/drm_plane.h                            |  12 ---
+ include/drm/drm_simple_kms_helper.h                |   1 +
+ 74 files changed, 331 insertions(+), 422 deletions(-)
+---
+base-commit: 671b7825dbfe9ea6e3ad3001003aeee0df48d1b5
+change-id: 20260629-drm-no-more-plane-reset-04950f42e07f
+
+Best regards,
+-- 
+Maxime Ripard <mripard@kernel.org>
 
