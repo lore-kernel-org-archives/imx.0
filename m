@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBAD2D877B
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 11:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAA23F12C8
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 11:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783597927; cv=none; b=SvVBUfiBhwLgTxYau/EbkNbfsNCQMGShFD/Hu0bekq/H1pkMG67peptzrL4BxAamf/qnHVlIDGEUVDN09tB4q4iewuQ++g6cPNi8KjMuPROHVJU6rZbu3Vtg+YkVbKni5pAaHR3NYK6yO9XTTXt0NAmvadCyBONEMjFrEzDDO4k=
+	t=1783597928; cv=none; b=q83OrarjPNnDxwecyg8dMaanfT4IuVIkFNDRprpha33QfTZwEjracvBTEpl5z+r8v96TR5fgCuyfrfuFLXRRboirh2f/8Ild98yL6FLaZGhaJkLa50FXjAIn6TtS/iOZktkkJpIIUD4ltsqGeG+Zq0FRPkqsgHEiML0Dgh7VBGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783597927; c=relaxed/simple;
-	bh=YtCcbLp50K9TPu7Ouja3Zoa3mE9DLOLjAe1pk7yc5tw=;
+	s=arc-20240116; t=1783597928; c=relaxed/simple;
+	bh=IzvcJHqz1q+E+HZDPM3YeISgOIXKaHemBkNkw83NkGs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WsKon053/BKNUaARAdo8367fmkJsvT9453VfeYhVHmwub21PuvT4lcdKyui50mYfxuZUon+z/qUc1a6nuAOh4NHQg4XEG8iP/Ht0peFu7y1JL3Re8dpoopoJeFe7LkjkU2qCi5lavGS34VVX+efx93fYGsG9H0D69pSphVTG4Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxiYWCVH; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=crtnWY9i6hcbrwh8ktwEZLtzcQMJVSjYLWmrkDxsB9WZBd0z07/3Lz+uZ47d44edy/idbOVpSk7fmAULmTyH0SyF5i3x3q0sUh1XNuQq0c6N7rohDB+R9zDhYrDOVb48mX9ef4O09hnjQi8fln9LXmBMDLUhB3+/tuusuY/7sEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jCVEqU5I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxiYWCVH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4FF1F00A3D;
-	Thu,  9 Jul 2026 11:52:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jCVEqU5I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5F61F000E9;
+	Thu,  9 Jul 2026 11:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783597922;
-	bh=7M+7uC8nKBfCAQhppnMx15BPmGmv14yCNbkDWJSe4qQ=;
+	s=k20260515; t=1783597925;
+	bh=2Bac6YP/Tn2l1RqpMGKer/Pd7u0To7oOXNa+A6+PUH4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mxiYWCVHry4XCktviRkoLVkoqIkUQ/Fs5pKyscQ6QKxB59hsavLofWwdFfLV41j6j
-	 /bUORnM8WA9p8XB5OO4ABbOl8aB4BhxROlss4xLWqTUlPgyKwED//n0uX8TOI9zqFu
-	 iMM7qfhDlmm4kkMDIAhZmtQp2mR5R8aBJtuqCg6QqV9BdQDAMvOqX7T0A+Lw579/QJ
-	 leT5NhBjkyOWyLC2xF2aZ2RJHUdQ0/hV58gf6ReI2pU8OyVFqa7XFiKuzOzvYud5Q9
-	 fC43yNSWfzox9SRr36NiL3cz+fmWQo8TzfXL5rEC2cAvJ30F5UdabOWOfzEoaBpzl9
-	 +0H30jEPQGsTw==
+	b=jCVEqU5IEHZ8KqLaB/dYdXYVIwjZ9gbTw7f2VpzMk6bu/Tz0pPBPwqhiH+IbJOgSP
+	 eNJuYqx0YC0Ut+U9LTAhlqNMgfd0XDe2wrZuwXtf/TjbTPoI9uqmF0lAK9D6P8NrCh
+	 7caRcZAZLNkq/urehcfDszPst/C9t92jmcgZpRII+vqW4wGA9exQiT0kV7sWVc1rDm
+	 vZL28JMeKAOyGD9BhacxgisJpCiGqjel0ro8ljCmQxd2C+ryFYxDFdJ3ACA8dpikTk
+	 D244mk2NXDm+IOx9vG63yPJ725wzy31tgPKLPs3Jq4nK4TAHgQcE1Ihm1sNvi9RkO0
+	 R3jDHCmZJnpTg==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Thu, 09 Jul 2026 13:50:51 +0200
-Subject: [PATCH 25/60] drm/lcdif: Convert to atomic_create_state
+Date: Thu, 09 Jul 2026 13:50:52 +0200
+Subject: [PATCH 26/60] drm/mxsfb: Convert to atomic_create_state
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-drm-no-more-plane-reset-v1-25-302d986fe5f0@kernel.org>
+Message-Id: <20260709-drm-no-more-plane-reset-v1-26-302d986fe5f0@kernel.org>
 References: <20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org>
 In-Reply-To: <20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -47,12 +47,12 @@ Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>,
  Frank.Li@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, 
  imx@lists.linux.dev, kernel@pengutronix.de, marex@denx.de, stefan@agner.ch
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6141; i=mripard@kernel.org;
- h=from:subject:message-id; bh=YtCcbLp50K9TPu7Ouja3Zoa3mE9DLOLjAe1pk7yc5tw=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFn+3SLKvHY+FhE5zmyvCuuY+Vp0O4z4P7P+k53VLPi+Y
- Wtx36yOqSwMwpwMsmKKLE9kwk4vb19c5WC/8gfMHFYmkCEMXJwCMJG5lYz1ab1Bp/04jz+4LaH+
- 84paU8rT2yelZzUkr1zweOb/6vW35smH3AtVZGz5svJB+npn8Zw5jPVBipdfT3uxalZZTbDfZv0
- /fOtsdO6s1FT326g9L5qzp9zpwo7ca4ffP1B+vMzv1vtnkTUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6146; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=IzvcJHqz1q+E+HZDPM3YeISgOIXKaHemBkNkw83NkGs=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFn+3SKvCo5LTdzz4FX4Gu0NMQcWd8z5zLCjgY0lKNeYu
+ /k6e/P2jqksDMKcDLJiiixPZMJOL29fXOVgv/IHzBxWJpAhDFycAjAR88mMDVP+eEm/nG2x82zX
+ KTtdV7cj804+fGjjI5UeURH8jaHcmvPoHbUJtfl2+zNm+9jlruTTYWzY+u1a+TKjOeF7GDYy5d7
+ Oupz+5sV/02DVXfJ2zUI2c9iPV3wwD3I66SzLI1fe7RjaYAwA
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
@@ -330,16 +330,16 @@ Cc: kernel@pengutronix.de
 Cc: marex@denx.de
 Cc: stefan@agner.ch
 ---
- drivers/gpu/drm/mxsfb/lcdif_kms.c | 2 +-
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_kms.c b/drivers/gpu/drm/mxsfb/lcdif_kms.c
-index 79e0f483ca20..4bd826e1de4a 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
-@@ -722,11 +722,11 @@ static const struct drm_plane_helper_funcs lcdif_plane_primary_helper_funcs = {
- static const struct drm_plane_funcs lcdif_plane_funcs = {
- 	.format_mod_supported	= lcdif_format_mod_supported,
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_kms.c b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+index d8ebebc5314b..a2e86b82ab11 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+@@ -641,11 +641,11 @@ static const struct drm_plane_helper_funcs mxsfb_plane_overlay_helper_funcs = {
+ static const struct drm_plane_funcs mxsfb_plane_funcs = {
+ 	.format_mod_supported	= mxsfb_format_mod_supported,
  	.update_plane		= drm_atomic_helper_update_plane,
  	.disable_plane		= drm_atomic_helper_disable_plane,
  	.destroy		= drm_plane_cleanup,
@@ -349,7 +349,7 @@ index 79e0f483ca20..4bd826e1de4a 100644
  	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
  };
  
- static const u32 lcdif_primary_plane_formats[] = {
+ static const uint32_t mxsfb_primary_plane_formats[] = {
 
 -- 
 2.54.0
