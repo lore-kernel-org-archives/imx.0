@@ -1,251 +1,151 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF6542CB04;
-	Thu,  9 Jul 2026 15:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C420347524;
+	Thu,  9 Jul 2026 15:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783612434; cv=none; b=e2yntLk60HIFHzz1pU2U+MfuSFWsMGuPJD00J5w89RlpGFdU1++Ljpf6hU25XpWabFYT6u6MliniMLbEhS2Pr2v1LpGSp6nUwkf6T+f038IBFmURErODfdVvdaZIqenYMa4w9yVYtepcViLV/XWK8fTv35vdcNd+10WKPFRUnZQ=
+	t=1783612502; cv=none; b=Mq9wOPH4FzxPhxS7JoTmnSTDcPx+wFWrgmsKEk9jZeJNVv2T0t5K7srvE4mzZur77buUQ1IPPdE9PCq2GrYhn1DtZrMp2IgjyuZ1Da68QaqDbxSD81auGCaoXOeN72PwSaXI9Vv1G6gG9S4NWdTMh543CJt1nqYAsWq/UsfBM2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783612434; c=relaxed/simple;
-	bh=JdlkAZCgwrZl6G7E0YoJUl1TshJd8fAmikgzGCGedEQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=k9LDZMRpY/M9zY6uGQqeX/E1b2nR+48ZR3tfIoQ4vx17tdAz2Jij9Vf4eM/Yvuj/n+a4xqQpBY9GIKIzld5ihfiOZseXr1weTXLIyOAUYnP2eWIhUlxz5gzMznfN+OqOQ+9b/VtIRM3bVFNlpaKZFIEX5QIWtColn8M1cL+N6+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5xxM+dJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783612502; c=relaxed/simple;
+	bh=9mNqEvfqjhsVEIi9u+oh6DpD3WvbBmuHHEOFe8zdlaI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YY1qdY0jiR72Ruv1IsiUIk3dhFSO7zEJeLc9LHwFcBsMdgh2dZs1OjL8VNq46Dwz7LPQ3v4bwuVnK8YDIeaLL8RPRqutnihjCVogqWctDW0D+CRiThbB4XXBb9UwJI8NURKWgU0ojIFr63UQ8gLsVXQw6F4sUY0lfxjOKK9Omyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XaG2qQ4l; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5xxM+dJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B7F1F000E9;
-	Thu,  9 Jul 2026 15:53:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XaG2qQ4l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729F11F000E9;
+	Thu,  9 Jul 2026 15:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783612431;
-	bh=BpU6xBVrwZ7pEEMxWPwaehuCjxICqGXOCdqqSV7C7og=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B5xxM+dJsjKCokV99dMXgUXnn4Sx6fluma06PzlTG2uBOyAXYr7S27haWpg2aSBfV
-	 gOVrJsOt08lXPCQAaew0O51iE5YZVrL49RfPT75+cdlOlHitu2fFzrvIrV2zRm5hFS
-	 jpIQ+QW5M1al8M/X5e9T4VLXiubyur4s0aogxDvJ+uNqur1vaMc26sgaXE8gz02dyo
-	 1tLWtLus4DWlu4Sl2yvTtXsJ9lnudy5xh43pqmxn8xGdzpontVMyueYbJHalc6C0wX
-	 Oi3cY9rMqWniOpbOrNi8oYxkeogxihocl2aQlQJSSMfYnAZq+8/5nmSTFEXUkPtCFS
-	 Qbx+4tGsnRBQw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 10/10] dmaengine: dw-edma: Remove struct
- dw_edma_chunk
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: vkoul@kernel.org, Frank.Li@kernel.org, dmaengine@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260709-edma_ll-v5-10-e199053d4300@nxp.com>
-References: <20260709-edma_ll-v5-0-e199053d4300@nxp.com>
- <20260709-edma_ll-v5-10-e199053d4300@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 15:53:51 +0000
-Message-Id: <20260709155351.97B7F1F000E9@smtp.kernel.org>
+	s=k20260515; t=1783612501;
+	bh=6MsUtMMF0iX7CLexIqOJRQHr1SBSErDvCsEOI8eH/gI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XaG2qQ4lKyQHhnKBQceTBgsARkSR1fZhkvfbcutKN6ZPCGSyvfrZckrXqgjhjHz0t
+	 nMenzU4cqVHyzTR+yvbLA57qSrBwR1/mdS9wJKsnVwTdwxX6yAMZjSIWVehdeBndRL
+	 93M+hB0LGjPiRjBhZWm/Fp+AFZS1hTDDF4o0tOJVO2nU2xWKwpD7Xq7KC+Z1XB2aW6
+	 awbRb+E53okTkYmdHUezT47eDMXNRcvbF0Lk1oKAT2FP9jgP4JaJa1doC9QwIZ4bTY
+	 dgdF0k7f5Uw9tBFDXDW8R+eAhJuSZ5KvmYM/Jp39GFmRgC54iWBGDC1ywpVcySZ/BC
+	 tN9m5rLEF1n+Q==
+Date: Thu, 9 Jul 2026 16:54:53 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Brian Masney <bmasney@redhat.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Stephen Boyd <sboyd@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jyoti Bhayana <jbhayana@google.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-hwmon@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-rtc@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] firmware: arm_scmi: Ensure automatic module
+ loading
+Message-ID: <20260709-rainbow-expert-bloodhound-b887e6@sudeepholla>
+References: <20260618-scmi-modalias-v2-0-8c7547c1be21@oss.qualcomm.com>
+ <8c2a4ae3-95cc-489a-a7a4-90a3ee2597e9@oss.qualcomm.com>
+ <20260709-spicy-fiery-squid-6eec1d@sudeepholla>
+ <dae4deba-7e5f-434e-80ae-89033bdeb793@oss.qualcomm.com>
+ <ak-h8oPcL69fCUg2@redhat.com>
+ <f05860be-dd75-49f8-b27a-bff7b554e71b@oss.qualcomm.com>
+ <20260709-exuberant-galago-of-spirit-1c908f@sudeepholla>
+ <5fb236b7-7b99-40fb-b80b-fa7e1dfccd70@oss.qualcomm.com>
+ <20260709-exuberant-narwhal-of-correction-7f4650@sudeepholla>
+ <158aa658-3109-4b7e-8213-1cc2cbd5aeb5@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <158aa658-3109-4b7e-8213-1cc2cbd5aeb5@oss.qualcomm.com>
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
+On Thu, Jul 09, 2026 at 04:49:18PM +0200, Hans de Goede wrote:
+> Hi,
+> 
+> On 9-Jul-26 16:37, Sudeep Holla wrote:
+> > On Thu, Jul 09, 2026 at 04:31:00PM +0200, Hans de Goede wrote:
+> >> Hi,
+> >>
+> >> On 9-Jul-26 16:21, Sudeep Holla wrote:
+> > [...]
+> >>>
+> >>> I need to recall why we moved from static list of devices to dynamic.
+> >>> One reason I can think right now is the vendor protocols and their drivers
+> >>> But in general it was an attempt to help multiple drivers bind to different
+> >>> scmi_devices that have same protocol ID. E.g. the performance protocol
+> >>> can be used by cpufreq and devfreq/performance genpd drivers.
+> >>
+> >> Note it is ok to have multiple drivers bind to the same modalias,
+> >> depending on the reason why there are multiple drivers either one
+> >> should detect that it is not compatible and exit probe() with -ENODEV
+> >> or there should be some other mechanism to make sure only one driver
+> >> loads.
+> >>
+> >> E.g. duplicate USB device-ids happen (they shouldn't but they do) and
+> >> then the drivers typically figure out if they are talking to the device
+> >> which they were written for, or the other device with the same USB-ids
+> >> and then one of the 2 drivers exits with -ENODEV.
+> >>
+> > 
+> > Understood. Sorry I tried to explain with examples assuming you may not
+> > be aware of the details, but now reading your response, you have better
+> > examples.
+> > 
+> >>>> I wonder if we can just move a small part of the drivers
+> >>>> (some mapping table) into the bus code and then just have this work as it
+> >>>> does on regular busses. I hope to be able to make some time to look into
+> >>>> this soonish.
+> >>>>
+> >>>
+> >>> I started with that few years ago and we then moved to this dynamic
+> >>> device creation. But I agree if it is deviation from the norms(which I
+> >>> wasn't aware of at the time), we can remove it.
+> >>
+> >> Looking at the issue this is causing for automatic module loading if we
+> >> can get back to the bus enumeration code always creating a device without
+> >> waiting for the driver kmod to load then that would be good IMHO.
+> >>
+> > 
+> > Sure if it fixes the issue for you. Cristian can point out anything I
+> > might have missed to consider as he is the one who reworked it and made
+> > it dynamic device creation which at the time sounded nice option to
+> > solve the issue. We weren't aware that it could cause such issues 🙁.
+> 
+> Note that before patch 1/2 of this series we did not have working
+> module-autoloading for SCMI modules at all. With that said yes it would
+> be nice to get this working.
+> 
+> Can you provide a patch for this to try ?
+> 
 
-New issues:
-- [High] Replacing dynamically allocated small chunks with a single flat ar=
-ray creates a high risk of contiguous memory allocation failures for large =
-scatter-gather lists.
-- [High] If a channel is paused while the final burst is in flight, resumin=
-g the channel causes an out-of-bounds access on the descriptor's flexible a=
-rray.
-- [High] An integer overflow in calculating the transfer count for interlea=
-ved transfers leads to a zero-sized flexible array allocation, resulting in=
- out-of-bounds memory accesses.
-- [Medium] Failure to update the descriptor's `nburst` field when the scatt=
-er-gather loop terminates early causes uninitialized memory to be programme=
-d into the hardware and incorrect residue calculations.
-- [Low] Fields used to manage the removed chunk layer are left unused in `s=
-truct dw_edma_desc`.
+Not sure what exactly are you asking, but I don't have anything w.r.t
+the discussion handy to share. The codebase has moved a lot to revert
+just the dynamic creation addition patch unfortunately.
 
-Pre-existing issues:
-- [High] Cyclic DMA transfers do not increment the memory address per perio=
-d, causing the hardware to overwrite the same memory block repeatedly.
---
-
---- Patch [10]: [PATCH v5 10/10] dmaengine: dw-edma: Remove struct dw_edma_=
-chunk ---
-commit f95bbeacc03c2793d791c26855c3782bd0ea8bc2
-Author: Frank Li <Frank.Li@nxp.com>
-
-dmaengine: dw-edma: Remove struct dw_edma_chunk
-
-This commit removes the dw_edma_chunk linked list layer from the DMA
-descriptor layout. It embeds the burst array directly into struct
-dw_edma_desc as a flexible array, aiming to reduce memory allocation
-overhead by allocating descriptors and bursts together.
-
-> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-=
-edma-core.c
-> index 01bee22fe3b3e..30b034a94a815 100644
-> --- a/drivers/dma/dw-edma/dw-edma-core.c
-> +++ b/drivers/dma/dw-edma/dw-edma-core.c
-[ ... ]
-> -static struct dw_edma_desc *dw_edma_alloc_desc(struct dw_edma_chan *chan)
-> +static struct dw_edma_desc *
-> +dw_edma_alloc_desc(struct dw_edma_chan *chan, u32 nburst)
->  {
->  	struct dw_edma_desc *desc;
-> =20
-> -	desc =3D kzalloc_obj(*desc, GFP_NOWAIT);
-> +	desc =3D kzalloc_flex(*desc, burst, nburst, GFP_NOWAIT);
-
-[Severity: High]
-Does allocating the entire burst array contiguously with GFP_NOWAIT introdu=
-ce
-a risk of allocation failures? Previously, chunking the allocations into si=
-zes
-bounded by chan->ll_max mitigated memory fragmentation. Now, large
-scatter-gather lists (e.g., > 1000 entries) require large high-order
-contiguous memory blocks, which might fail since reclaim and compaction
-are disabled.
-
->  	if (unlikely(!desc))
->  		return NULL;
-[ ... ]
-> -static void dw_edma_core_start(struct dw_edma_chunk *chunk, bool first)
-> +static void dw_edma_core_start(struct dw_edma_desc *desc, bool first)
->  {
-> -	struct dw_edma_chan *chan =3D chunk->chan;
-> +	struct dw_edma_chan *chan =3D desc->chan;
->  	u32 i =3D 0;
-> =20
->  	if (chan->non_ll) {
-> -		if (chunk->nburst =3D=3D 1)
-> -			chan->dw->core->non_ll_start(chunk->chan, &chunk->burst[0]);
-> +		chan->dw->core->non_ll_start(chan, &desc->burst[desc->start_burst]);
-
-[Severity: High]
-Can resuming a paused channel cause an out-of-bounds access here?
-
-If a channel is paused (EDMA_REQ_PAUSE) right as its final burst completes =
-in
-dw_edma_done_interrupt(), the pause request skips the completion block,
-leaving the fully completed descriptor on the active list. When resumed,
-dw_edma_start_transfer() will retrieve the descriptor and call
-dw_edma_core_start().
-
-Because the chunk-list exhaustion check was removed, won't this blindly acc=
-ess
-desc->burst[desc->start_burst] when start_burst equals nburst, reading past
-the end of the flexible array?
-
-> +		desc->done_burst =3D desc->start_burst;
-> +		desc->start_burst +=3D 1;
->  		return;
->  	}
-[ ... ]
-> @@ -452,19 +405,15 @@ dw_edma_device_transfer(struct dw_edma_transfer *xf=
-er,
->  		fsz =3D xfer->xfer.il->frame_size;
->  	}
-> =20
-> +	desc =3D dw_edma_alloc_desc(chan, cnt);
-> +	if (unlikely(!desc))
-> +		return NULL;
-> +
-
-[Severity: High]
-Could this allocation create a zero-sized flexible array if an integer
-overflow occurs?
-
-The cnt variable is a u32, but it is calculated just above using size_t fie=
-lds
-from the interleaved transfer:
-
-    } else if (xfer->type =3D=3D EDMA_XFER_INTERLEAVED) {
-        cnt =3D xfer->xfer.il->numf * xfer->xfer.il->frame_size;
-        fsz =3D xfer->xfer.il->frame_size;
-    }
-
-If a client driver submits an interleaved transfer where numf * frame_size
-equals a multiple of 4GB (e.g., 0x100000000), the product wraps to 0.
-This would allocate a 0-length flexible array, leading to out-of-bounds
-accesses later in dw_edma_start_transfer() and dw_hdma_set_callback_result(=
-).
-
->  	for (i =3D 0; i < cnt; i++) {
->  		if (xfer->type =3D=3D EDMA_XFER_SCATTER_GATHER && !sg)
->  			break;
-
-[Severity: Medium]
-Does desc->nburst need to be updated if this scatter-gather loop breaks ear=
-ly?
-
-If a client submits a scatter-gather list where len is greater than the act=
-ual
-mapped entries, the loop exits early, but desc->nburst remains set to the
-artificially large cnt value. dw_edma_core_start() will then loop up to
-desc->nburst and submit uninitialized bursts to the DMA engine. Furthermore,
-dw_hdma_set_callback_result() will access the uninitialized last element to
-calculate residue, causing it to subtract a zero xfer_sz and report incorre=
-ct
-results.
-
-> =20
-> -		if (!(i % chan->ll_max)) {
-> -			u32 n =3D min(cnt - i, chan->ll_max);
-> -
-> -			chunk =3D dw_edma_alloc_chunk(desc, n);
-> -			if (unlikely(!chunk))
-> -				goto err_alloc;
-> -		}
-> -
-> -		burst =3D chunk->burst + (i % chan->ll_max);
-> +		burst =3D desc->burst + i;
-> =20
->  		if (xfer->type =3D=3D EDMA_XFER_CYCLIC)
->  			burst->sz =3D xfer->xfer.cyclic.len;
-> @@ -473,8 +422,8 @@ dw_edma_device_transfer(struct dw_edma_transfer *xfer,
->  		else if (xfer->type =3D=3D EDMA_XFER_INTERLEAVED)
->  			burst->sz =3D xfer->xfer.il->sgl[i % fsz].size;
-> =20
-> -		chunk->xfer_sz +=3D burst->sz;
->  		desc->alloc_sz +=3D burst->sz;
-> +		burst->xfer_sz =3D desc->alloc_sz;
-> =20
->  		if (dir =3D=3D DMA_DEV_TO_MEM) {
->  			burst->sar =3D src_addr;
->  			if (xfer->type =3D=3D EDMA_XFER_CYCLIC) {
->  				burst->dar =3D xfer->xfer.cyclic.paddr;
-
-[Severity: High]
-This is a pre-existing issue, but do cyclic DMA transfers fail to increment
-the memory address per period here?
-
-burst->dar (and similarly burst->sar for the opposite direction) is assigned
-the fixed xfer->xfer.cyclic.paddr without adding any offset per period. Sin=
-ce
-the addresses are not incremented by the period size across iterations, won=
-'t
-the hardware repeatedly overwrite or read the exact same memory block?
-
-[ ... ]
-> diff --git a/drivers/dma/dw-edma/dw-edma-core.h b/drivers/dma/dw-edma/dw-=
-edma-core.h
-> index 4950c57fca34f..7f2ec871f5bd5 100644
-> --- a/drivers/dma/dw-edma/dw-edma-core.h
-> +++ b/drivers/dma/dw-edma/dw-edma-core.h
-[ ... ]
-> @@ -66,6 +59,12 @@ struct dw_edma_desc {
-> =20
->  	u32				alloc_sz;
->  	u32				xfer_sz;
-> +
-> +	u32				done_burst;
-
-[Severity: Low]
-Since the struct dw_edma_chunk layer was removed, are the chunk_list,
-chunks_alloc, and xfer_sz fields still needed in struct dw_edma_desc?
-Looking at the full struct definition, they appear to be unused now,
-and leaving them in wastes memory for every descriptor allocation.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709-edma_ll-v5=
--0-e199053d4300@nxp.com?part=3D10
+-- 
+Regards,
+Sudeep
