@@ -1,79 +1,69 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012018.outbound.protection.outlook.com [52.101.66.18])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013022.outbound.protection.outlook.com [40.107.162.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE95634104B
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 03:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7F7395AF8
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 03:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783568254; cv=fail; b=bmMC43O4ASgV2U+utsUijKkA4dVscPuU+S/uIWuzvuvhiCpJU4cmoBlG0sTFjuVVch62xYqdwd5riNC+ogTsoSAAFRY4sTiyUnATzrwBEiwtpvwM8r/NJQmHC0cFUi/G/6DYXEJg2+O7h82E7Ki4/ATQJsKQuklwwgDZL9kWjmY=
+	t=1783568298; cv=fail; b=FlCufsmRTFsgg8gOWRIh65u5Q1+cVCsIqhtnunRW3U3kKYZdPDF2yYhZiKLG1BDfXr+1xZ5DzHuzqBHoV2zmYuhe2ckKj4I53H0INqFrJ7cuaysW/QkiTjLhfWcgoFjCffYtp/uxUygh5h6YAZ8rLMo/dAWbcm3vioRDgH3neZ8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783568254; c=relaxed/simple;
-	bh=P5vyP+S13hwEVhkYwKWgahwPWAejJov1RN5V1c9vJMs=;
+	s=arc-20240116; t=1783568298; c=relaxed/simple;
+	bh=nyYfHgztVMo70S0Kk1gzTNiGPXCi1p74ThNZ5SJpeag=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CxbzJfMWg4POIdDXMYwWMfViKcyku7/GWQX/v52ZH80eDOoBXN7uWCEDIn28Ghr4EpT/MNoZwUsOIS/qJ/eRfM0KLRLrP/VncqBcLyB4NExJpztubh6nSUw8bF+g5A7uDvp+aaeK+irgo/f2lHANYQv7EN3KX0WlG8iooGvI/Y0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=V+wuiOqQ; arc=fail smtp.client-ip=52.101.66.18
+	 Content-Disposition:In-Reply-To:MIME-Version; b=k+/MrkHno+VPwfJ3Zqy7YVqIl3sgEdA9sfmGjRd/XWI1q8KRakPFl09enwd6MiAoFcSnq0JSCZv7mcHXMI6l79jmSqTRpg8WCGQ8U5Zzf8CFS6B6fxDhY9wBIHegjMBNFYDCzB9QmVW+WMu8/fX/M4avyLUVfN/7a1X4rJ9nMCg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=nA2+KcAj; arc=fail smtp.client-ip=40.107.162.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="V+wuiOqQ"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="nA2+KcAj"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PQFz3okyiiUMkwKq0JRnVih78R4RLg6yvn1icwsCypDX72dJgGb00txPGGQM6+ycGLbZck4Rzw7+uL8ml0DD7nIYRuupb6sR5qRnqNNkZnw+fH3A8P2UExIEXLcd7cmyJsyU5WDYzG9njiQKZn5ZL1KKfZV+J0m41oZE0Z6sycrj7aWiXk+k1chE34tRNdk3Smhwwf+nFLe3vCPeeNoUcz8T51j9lWc1Fi9kQzGjXtZy1nJKwx3Av7zNETZHB1S2YXunBBeuxkSChhwdYyHufMmem8n57+nJ1vosqHTnV2BrXIE/nVYH4pU0zZpAyco5luw+POd+G+2r1MBypOZb1g==
+ b=ZAS4UMl6qx9xezKlnjcN2pZb7ljuxaybnap9hvjTOkGVku8z19qrlY4GWLO+zmq3fU1kZuKQLFI9SbIp+WH/mt+4FOGz9JZT5ykQvYXU0tVRuqVaZ+rABkRxeq25xP1pTV2UEfTuInZV6i/CF9DFa0Z/V70Br5B4ven24ZhsNgwFj7GxxRFegVgvWjIIESVxiBSGqM8JYHNOGPjwBGOSlrlav/ov/xe3U4bo9lP9fhVQjvBShfCbZhzvmBTeRB882um06gTfleeIQSqvcSbck5zyU2s0awG+JBWTnYHwW/b+nTFby6dHJC0saL31BRPdx8+ASXTg2PYPtdJXk4ISXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Da3lwKNokylrbRQO/e92tRizUcPKDTbA8VxSKVb4bYk=;
- b=Z+jcIwlx7z4jZ6100UngvmhybcLUkveeebPiRGZWCoXQagED+8ctEexgm1VX6+mzI4/7L40t6Q/BTvCcdN0uguOJACR3wOvnDxo3sTvD9u0jC6Mln82mZo9oJr4DshUMwBj59+AAFyxqeU5qkd4tDvpebSbOsHxv9Ub+uNC2kkh5N7BFWtmHZ3NPj4RqC/tv+I5QAwboi1U4OLtNQ2Aby2Qgig9RWAzhME0bX11VQwH8qZ66VizXyDduqDTwZJFF9ndSoQ3uLNPmZi8J7j9asT7UZ9D0ef8V807FG9R4DnpKW944ndPNulTFU9ogAcmVI2zaoKb+cxsFd5zQVbnDJQ==
+ bh=6z+GRB+cuZi74CAJ6wLQ+p23nwPo8BcaZondDmM9XbE=;
+ b=IjETZhU85macvNvRHJKGKdTE3s767h2uM5k3CSl5vKmVBst7Qy2cE1SxTt5VwXF3Lx3FOJgyV5eokEppXDTNschfMKI4b6z52eTRCULYswM4DfXm7WzZcJw+0Y5hQjJsCcbEpV6xkX6Jeoov5Nu76gfgiSoqY6rtPdTMrz8GTsRot1GSFLbb3hXfP2Hk7Adm5QoiU2sUgfBXaLo5pAIlyxF5y/TTH9FYb1PulfVXo3KyhDRrKWJi+Uzw2ijAdxYUmLQoXxOC1U7UC+60Wzj+VUEa2mWwLKxllu160MQn6yLsVGDgurH+iiPuwzhHK2Casc0XlunJbWR0YmDze6Bv6Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Da3lwKNokylrbRQO/e92tRizUcPKDTbA8VxSKVb4bYk=;
- b=V+wuiOqQqyOsxnohjDDiyyFEq9raGkhiBq89vU2DI4bsERIZcLIlLURiy/32Ig9RRuBl7kcCW+JSDuyE99C4JPKMvbvUdcOkGct+r/Oh9S7QuNW8UGLMXSSFWTSywqswp21WK2gHXNEvDq67nKxoSwDuKNd1G8JLEWyQQXoCzk5lzwjgyfb8/L9TypYHoixJ/X50Yism5UBpANC0y3BOQ8tlkqD/7PVRN6UB6CUiZ/nJ+OmNBggQfgViDNTdGPUpSUVTR0L8EpforoxXb4aIbHUH9euBIvuOW1kzjInIcNylBqihFmcxBj7VSVtjfmxTGXiXcPutZ0mZ5Z8trUiM+w==
+ bh=6z+GRB+cuZi74CAJ6wLQ+p23nwPo8BcaZondDmM9XbE=;
+ b=nA2+KcAjjIQPX6gZT3YzyhEvrYuPtkJNP0+j3fQOv7uKiGDyH1GjNeuK1JjUBZRLedfnD+exUxNCl/POGJldY47QFDAYZXmVm2u/2rN2Eg3tqIzR/3Eggzdvfcsd1489PZCe42GpOf9oyqcXxWgcdlvIIZsk3uw+asyGqHJXTUXa4mCGw7amoBWQETI18vnzJscDtoNWcDyhq1XJBRX1P8LQm/y8mmccUrP39t+sukc5KY6H99Ey8WbiUHHRSncHwNmI/hqULqXg+8CChc9H5UwDZq7SAjbWwf6VHJxsu1veDufSz4BzMAICqs4gnc/+CWSTZ3qHF4CD7iSmjm829w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
  by PAXPR04MB8093.eurprd04.prod.outlook.com (2603:10a6:102:1c9::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Thu, 9 Jul
- 2026 03:37:29 +0000
+ 2026 03:38:14 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Thu, 9 Jul 2026
- 03:37:29 +0000
-Date: Wed, 8 Jul 2026 22:37:16 -0500
+ 03:38:14 +0000
+Date: Wed, 8 Jul 2026 22:38:03 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: "NG, TZE YEE" <tze.yee.ng@altera.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	"linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Jorge Marques <jorge.marques@analog.com>,
-	=?utf-8?Q?Przemys=C5=82aw?= Gaj <pgaj@cadence.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	"NG, ADRIAN HO YIN" <adrian.ho.yin.ng@altera.com>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH v6 5/5] i3c: master: Add optional_bytes for
- variable-length GET CCC validation
-Message-ID: <ak8XbBwHsI9QgEhA@SMW015318>
-References: <cover.1783493867.git.tze.yee.ng@altera.com>
- <2e07dc944eab1c4358be1da87fa5000e711ac8bd.1783493868.git.tze.yee.ng@altera.com>
- <ak5mMbPlO8dCxH8R@SMW015318>
- <7ffb03e1-0f06-48af-ac9f-57058641429e@altera.com>
-Content-Type: text/plain; charset=utf-8
+To: Pan Chuang <panchuang@vivo.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:THERMAL" <linux-pm@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 05/18] thermal/drivers/imx: Remove redundant dev_err()
+Message-ID: <ak8Xm0taDauxMsIZ@SMW015318>
+References: <20260709023048.599150-1-panchuang@vivo.com>
+ <20260709023048.599150-6-panchuang@vivo.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7ffb03e1-0f06-48af-ac9f-57058641429e@altera.com>
-X-ClientProxiedBy: PH8P220CA0017.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:345::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260709023048.599150-6-panchuang@vivo.com>
+X-ClientProxiedBy: SN7PR18CA0018.namprd18.prod.outlook.com
+ (2603:10b6:806:f3::10) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -83,213 +73,90 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB8093:EE_
-X-MS-Office365-Filtering-Correlation-Id: f545274c-2629-4b9c-d85f-08dedd6b66d2
+X-MS-Office365-Filtering-Correlation-Id: 5ed38ae7-9379-4b0c-0ec9-08dedd6b81b7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|19092799006|366016|1800799024|23010399003|376014|7416014|18002099003|22082099003|4143699003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	rMdobeVju1ArpCU1iXl4GdTl+OEvQCjDcoUKS9bwpwyIEru6K5ktUHzHFvAVTOir0BTyvyybkWLsHvDRLC+lQZgCDckOzpQgI3+pOtfDGwyie9hfDTdQVKquT0sc++IYaDYcAlhoWNFXjcURacho+mnqiNimi6woW6IgXmuXRhTnFG3k3S0JtP8eKylUfw+XrUFy5A58YsJH8zg+SbDglALSRFYuaGZ4vk2RfRGlvSoZyogaEhtGfD7yFu3TEcRmjUplzeXtSb3T9lj4l0fhv7BAKIhgIKxWP/csdLw2fxrf1JhGdjypoYhgAOPYAtM5Yd9e8tcyZelBfSxuVcnKKKe/mh4Mfvd3aNrhfuyPfnoq+pCnLmG6luAjEifZDrUqM7KLvyozrVXGwmPcX4wmKSKRB3fJjwDcBnOyX/aUcrZtrlJKtR1lrNu2EDJc7gvGqfd5k8FCK0INmNPgXuTfu4eyDJLkUDPcdScXpErIWkb6BabIenZJkYTbIw8oOwdnnhGTpoim1W5fiODlytHqsLpSdhbDkOIhgEP+AxuSFucOjRT0MxbNKVva8YFccmzg7aVdXf+3exWN7b4VY0bi3XLuGJob56PAKnsbale7zYj3flh8lqIz2cv9TYp1cGKIRy142QaeMGg2cvbSXcq84acVauBJy/4QncJO+aVndMk=
+	ubas3EzX8I2/3+Obj9IMWCj2wVZnOrdy4y4539QBcdRnUsh7TycteoxD2W5Ae1uG5BDf6IM9XjmK5CfprESOb6M190YXph2ea+yjoaU5LfeYlihC8SnNdhTMoT3ymd6ftIndeo4jUs7RXN+d3Vjcwg7OIgV8HN7JXHbntCyUp3+w8xZG9eigh47W0KF7KGs/22UveY8fbQwbfGijxKQcqxq/NWqlqeR+/SIGhVCixP5B8QliwaTXYuYju+y8q+ImvpVDcTG+H49+sqC3BatEpuNk09KtrLIIUINpmawX+2knWHSGVR6pE72vjlf1e7vqgRb613FhcXiCi2yNlFU07TOGmc57FruHILFZOpf5lIcO/Y0huxybIPWaA6yiHJAG65TadtX0Ff23Vtejd/dg8J9B8MeEgQs0yyKKpFT6bmRoUVeh5i/CTdWJRTWLCZH2mi9Ok9XahT9Clz00cPUpCS21WERERrklgpnhPIYJXY0hvKo6mTH+a8LMD/9JQvi+B9QnyIxrH1yP+4EaMEHcvurS8zEJBu8GNNl3cnM1u4Og6uqocyFwcMAbXSjfltOhvSgS2N2cbheUlEEFw7xn2mLPlis624LGeNXFxO6RvtN2e1zg4lO+QfesHHLUOsL7VJ3tADl+J00gZ3Iq0aie8R3Pu3hEXiYnyTsdihgAsZw=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c2tyNEUxdUxpQnpUVjRpVG4yMkg2a1dwZkhwbnQ3bzlMdzh4Q3pOVXhsVjkz?=
- =?utf-8?B?N3dOVDNYYmRWNmJBa0dpcU1jUXFvYmcwSHZDQjQ1T3g1ZlZXd3dKQTBJSlFW?=
- =?utf-8?B?RFJUUis0UHFxejZQa2NwTFJ5ZGFZK0VKRXNnOWhtN0V6ajNyb2NHMXM1WDZW?=
- =?utf-8?B?NkIvRDhSNjVmN042Qlo3K3N0ek9FQThGMlBDbFd5dGNMeVdPdUNKY1hLU2Nj?=
- =?utf-8?B?VmZXY2RyRnlZMGNrcElMWnE0bzdCOGo2NWdmc3dYUGs1MzBSaW9pNkZIRnpW?=
- =?utf-8?B?dG1xcjNXT1J5VVRpZTZYZzdCNDhML0d3YjJNRjF6dUtJZE81VFZVd2hBcjhh?=
- =?utf-8?B?VWpJWTdRclJnaHZzMTJLakJmR2dHS3c1YUpWMWhpZ0VKUWZ2Z25zS1BzanRl?=
- =?utf-8?B?M2JMZ0Flc285NkZ5eVBkaGpVOTQ3T0lwcUNpRGhPK2FFM1UrY0hlYVIrNHdG?=
- =?utf-8?B?cTZXVXAydjZva2dqRE1FdG5RR1hJd2pmc05wdk9hZ3BYblpMNE5IdjlkeXI4?=
- =?utf-8?B?eWFTOWtOZW5SakxiaVRmeEFoYU1IdTNsQ1lYSnlJUU5xWWp0OWdoSHhMNHZ0?=
- =?utf-8?B?K1Y4aktFWUR2R00vOHZoRy9VaVVvQlNialUvU0E5T0x5cUgwalh6U0FIRStp?=
- =?utf-8?B?dkVsWUE5VGFyVUt0aXQvbnlXUTEzd1lydkMvYkowVHhJdEFYSStqSWZDYkd3?=
- =?utf-8?B?d2E3NVlNblY1TkVqemVxdmljN3ZkWDlPckt6TmlwM09zY1BLeHRPbDV1QmpI?=
- =?utf-8?B?bmc4THRJMmJuU1VrVUpUb0tjdFg0bTJGckdtOUQ5ZWl0eDQwT2RXUjEvekpO?=
- =?utf-8?B?ejhROVl1M2toMFl2NStQTUNzNEJtUWVvMTVZc050QzZtQVdwZ05FWVpZUVpR?=
- =?utf-8?B?ZlpDMmdxNnFkUnl1TE1VeERXTThPbUNsMVBOaXBIQWJsSWtLWjJtNEpYZUc2?=
- =?utf-8?B?S2duakw4YWdscUZvNWtDdU1xbE43U1BHdE96c0J3L1BNUm1vMGFLUWQ0dWg3?=
- =?utf-8?B?ZFVLa0Erc2h4Y0VWNTRUbysySzhIamRaUnBtZkZUS0hMellLckVnQWVmRXV3?=
- =?utf-8?B?Y1I1WTZBQVhhR0xzVmNnRklPYVhPTDRsRTBmSGJ0UWtXOG1SVTN0aDJhYTN2?=
- =?utf-8?B?TU1MdVpyOTRXYmVMZFp4WDJnRS8xUHVmcEFxUjMyUWQzSEhlNW9jRWhpcCtZ?=
- =?utf-8?B?Q0VWa0ZQY0pwTDE1RjNMRUlNOVpyQVlubng3cXhWSFZ3RnA0T3pxKzdVaG5U?=
- =?utf-8?B?NWFSTVYrOGZtMFVhNVkzVnVXRnYvZWpMcmNWRmJPQ0QxL2ExRDdjSkFCUys4?=
- =?utf-8?B?TVdNRVJmQTRhd0VBTGwyaUYzSFZYSUlzMWNKWWdjUTcrRjR1QTJYNTVobFgv?=
- =?utf-8?B?dml1QVdXY1FUWGsyaHpVME5UbERZZ1JTTVJTakdLVEhEdG55c0hrM0hCc1RY?=
- =?utf-8?B?U0JlTlExeUdJS1lTa1p6Q3ljN0ZDZHk4SUVZYmxkRGVUeDNxSCtLMnJYNnll?=
- =?utf-8?B?M2FFajd0L3BzQTlVYWdVQ3l3SUN5VFpUOGwxakh5QkdxWFJiZVNMUVN2bUNr?=
- =?utf-8?B?RWo3ZllTd2JBWXZZbDV3WlBRMUgxMzF1Zkx5K0ZkMjZBUHBNeUg0R1VzMk1N?=
- =?utf-8?B?UEJFK3lEcXl2eDg2RXpFTDVyc2VjNmptbThkM21ZaHM5NG5QS3hhenYrKzVT?=
- =?utf-8?B?THVSUXVQZVNtSEhUUlN4cTJJN01RU3pVRGpRYUpCTEhCUVVkbWpTSndEKzN5?=
- =?utf-8?B?bWc1TGNsK21hQUhOSit3MSt4bkNld3pmdkNCTU9DZ1pJVjd0K0tlZS9maFZv?=
- =?utf-8?B?YzFQNytOaWhXa05wczR3UWNMMUdFV0RLN05yU21YUUE5cytYWG4yUEhZejRq?=
- =?utf-8?B?YkpLY1p0V1hnMm9zb0dYS3FOZ25LamN1YjZjVDYrWTkzbmpKMGtTZTNpOVpM?=
- =?utf-8?B?WGE2eUJMVTRnSzJsNHNqT0IzZDdVR3FPNTl6dTdYTWd6MG1TblF0R1NIbHVT?=
- =?utf-8?B?elhjVkxwV0h5dSszZlkrMmphWWxQQ1d3b0tla1FsdEEyb2ZIQmE4QkNkc3Z6?=
- =?utf-8?B?OHc3Y0hoOW12MzA2Ylk5K0tZMUN2K2dlUU1UMi9NT1p0VEJ6N1QrU3p4MGdo?=
- =?utf-8?B?L0VqN3hESXcyUjhxTmRzS0RrZUUyNUgzbm5Bc1hMSjBCaGlOWUNwWXhLeHAw?=
- =?utf-8?B?WWdVazArc0ZLbEJYbGl6UUVKdkt1SVhWVlBKYWEybWlJdW02K21QOVc3Z1pN?=
- =?utf-8?B?amFGWTUwMXZTMzFUblJnWGdCdWVCbWFobytnZ0xMQ3lVeWg4aXF5eWpoWlBk?=
- =?utf-8?B?Y2thc2NzQ2JJMVBQSE1jQjBUYXhJRDBRWW1VcmRhaDE5VUpiejFwTSszeDdU?=
- =?utf-8?Q?2f2u9sG/PrHOVjNSYCmK5vjaI+xqCRoOwp2aJ?=
+	=?us-ascii?Q?Jvz6IYfoTD2b9uJ85jgDBcv2aBPUv6azDrsRB7hPoEd9PaVcOcruQQhlEFV5?=
+ =?us-ascii?Q?oZOkZ0rSGnZdqvhBynFpHr7Jjhh1f+2Tfzd2yyYv5firG42UCdQ2bNGD/bBV?=
+ =?us-ascii?Q?XBzG4uu34+Xx1sUYJy5MhnDJQMeL/++kyBFKchlL6o3iHd1zp+Bh2dWnNSXM?=
+ =?us-ascii?Q?4vMy3dP6tMAajqoR1e+ne7/xnS7e/Xs9nu68LaJGU7j/3b5unkbdffyex6IM?=
+ =?us-ascii?Q?rqwdMGI0m8IW5WO+zm8lSp+BPOTAcaSabtgmayQewET9NdmkY7isFZ7AFc4v?=
+ =?us-ascii?Q?yktivt/7XiPB04bEuMiDV+sP/58bxqLMGGorcz41AeSpEKwzL6jwK/aG5L+7?=
+ =?us-ascii?Q?QkgqnTdgfa75JxKLAhN0DbDJE/dhbxrhBLEgGIeWXIj4VaE4mJWL6d79G3ih?=
+ =?us-ascii?Q?eRyWtJ5DHzFgQ2M9jXsSWQLSIQ0dt+wdO4yNEjevHeCmfCVnZwqrcU2wfTC8?=
+ =?us-ascii?Q?8r6H7vkOlM7BDcI0NvZM4eXa/lBN7YCgtCDlDHu2W65PUrs1BMWHtD5mrgW0?=
+ =?us-ascii?Q?xo4mKuYBQq/6styvM4gyjNr4KH8mrkxY9sb+A5Kyqo/OspfoK9tl7p8AqJ5/?=
+ =?us-ascii?Q?Cp1twskPW3Ki3r2SyLIqihK6Dmm46/mFMNnx4YZYR4E1YN+Oc41rLxJZ0DJ6?=
+ =?us-ascii?Q?4sbLhhBBTf/aOZZlYgElPhLDzpDmDHQDJQFFO9nDl5hPJ0pGxrDxm1EH5Lxa?=
+ =?us-ascii?Q?xI6QyooPaAszQrPj91Ehhvrkwe/Kcp3w4oAHT5dwfXJelo6u8kHTy7bcjo4d?=
+ =?us-ascii?Q?ONELIEYm3XzSEFQC2EWYt1CFNuwGtV8sju4ZP/wuV92P32Gq8Y1pPSwMsSbu?=
+ =?us-ascii?Q?XPLw47kGqU8QgPbYLEf0RrU+WL2Sa3FvOJOHG/wEf9e8G04YLTbw8miENSS2?=
+ =?us-ascii?Q?MwQ1XXI+9xS371bSYQ0/yJqZFT809NOzDwM9GkzO6KTS5hly9PHis+mnGN5B?=
+ =?us-ascii?Q?u3zqI86Y+7IG5rDRJtzWeKlneYfbIAaEsxIIYtBpwt+FdsonkPVxWkObtxJJ?=
+ =?us-ascii?Q?nnx+WBnL4q5+lYrtG3se0YGHh7zKmc7T5ocQyg9/4X/eAKWdnkjM6Xe2XlI7?=
+ =?us-ascii?Q?oI24CKtJgIcecymwm7vx+sSi4T4UKhPyAaWz7XRTlVvXM5OYArrI3AW2hRAZ?=
+ =?us-ascii?Q?SLWb5+Xjt1ZhRV6vWLA8wwcphyYtwpvd1OLag5/c453M86y/lBIsdOlbtUY5?=
+ =?us-ascii?Q?DkvNJfx4ZxlbCuh9oBqQm0yuOIpq8KVV7/fuNjAm2SPQ+AK2Dc8xl32uuOwL?=
+ =?us-ascii?Q?AC0K8O8bPQUVqC/MdXgSDm7cXw9z8sKOUrOiRuXSIc76dRht+NF6+4TWrXip?=
+ =?us-ascii?Q?9s4uuZ2ghLqiCwDIVTAUtAjUUTDCpVoLUFaDTXyXNZCgtSGyQKULE+YBc+R3?=
+ =?us-ascii?Q?ymxS+U2PubjVrKmWmMckDKhTozT0mmuUbtUMYSyJuxALDaiSK+/qA4wNFRJh?=
+ =?us-ascii?Q?o7vehPF+h/3Y/1oBBf2CAwSmip4tWKbJHu6X8WefHwAWiuLq+fbcCUj7PMBA?=
+ =?us-ascii?Q?B275sketCaScNXE/LlDozV+BZi3wqL08RhBFKzRIzTBMOB/woZeMjZDuMrhu?=
+ =?us-ascii?Q?UAutifTA4FAjsURtQqmhFKLiBO6H+n252X4f8bFa6r5NQ11tuLwX0EzK+WQw?=
+ =?us-ascii?Q?HvIEkDO7ArCjSncu0CRv97UhDawe667EC/p+0+fZJZNVERiYFnu/NKUA94ud?=
+ =?us-ascii?Q?E0JvIf7NUD3WnZfznH6kSAB4cFWsJqVq/NQ0caNp8rPRYvdM9lPEXLNyevWn?=
+ =?us-ascii?Q?V3c3GrtJgmX/JaI00PSmJ8SOn1WqBy9vlO4uCnvK/Ob6abkTLdrY?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f545274c-2629-4b9c-d85f-08dedd6b66d2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ed38ae7-9379-4b0c-0ec9-08dedd6b81b7
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 03:37:29.2631
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 03:38:14.3272
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v+dYjVZ+8dWuh72wFKTLrUBYlnNQdDVhNIz0oaYFvD5M0sPxeo+/1ccSn0VMJ2Bqfb7VyciUIpGi9IKiEYJANPEbgYCFLW5vshKsIh/PqZEvVhyfBtX+7Le5Q1QF5cs7
+X-MS-Exchange-CrossTenant-UserPrincipalName: VCsosq0xUjoWNwqIoxnG28EcHRd+pls630BZ/9zD1EBof8mIDxtcGLSkfTyZFKWthKYuwztJRAo0vtrgV0CcT2/KSfrEobazfRdJhXB4SFk9GWBMWQkhlHQqB29EUbzD
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8093
 
-On Thu, Jul 09, 2026 at 02:56:37AM +0000, NG, TZE YEE wrote:
-> On 8/7/2026 11:01 pm, Frank Li wrote:
-> > On Wed, Jul 08, 2026 at 12:17:41AM -0700, tze.yee.ng@altera.com wrote:
-> >> From: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
-> >>
-> >> Add optional_bytes to struct i3c_ccc_cmd_payload so callers describe
-> >> variable-length GET CCC responses. GETMRL and GETMXDS set optional_bytes
-> >> at the call site. Extend i3c_ccc_validate_payload_len() to honour it.
-> >>
-> >> Signed-off-by: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
-> >> Signed-off-by: Tze Yee Ng <tze.yee.ng@altera.com>
-> >> ---
-> >> Changes in v5:
-> >> - Split from v4 patch 3/3: optional_bytes and variable-length GET rules only.
-> >> - Simplify validation: drop redundant exact-length check when
-> >>    optional_bytes == 0 (per review).
-> >> - Clarify GETMXDS fallback: with optional_bytes = 3, a 2-byte success on
-> >>    the first attempt no longer needs the fallback; it remains for when the
-> >>    5-byte request fails rather than short-reading.
-> >> ---
-> >>   drivers/i3c/master.c    | 29 +++++++++++++++++++++++------
-> >>   include/linux/i3c/ccc.h |  2 ++
-> >>   2 files changed, 25 insertions(+), 6 deletions(-)
-> >>
-> >> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-> >> index 3b6d3ecd9d12..12ca7c929ee5 100644
-> >> --- a/drivers/i3c/master.c
-> >> +++ b/drivers/i3c/master.c
-> >> @@ -902,6 +902,7 @@ static void *i3c_ccc_cmd_dest_init(struct i3c_ccc_cmd_dest *dest, u8 addr,
-> >>   	dest->addr = addr;
-> >>   	dest->payload.len = payloadlen;
-> >>   	dest->payload.actual_len = 0;
-> >> +	dest->payload.optional_bytes = 0;
-> >>   	if (payloadlen)
-> >>   		dest->payload.data = kzalloc(payloadlen, GFP_KERNEL);
-> >>   	else
-> >> @@ -944,11 +945,19 @@ static int i3c_ccc_validate_payload_len(struct i3c_ccc_cmd *cmd)
-> >>
-> >>   	for (i = 0; i < cmd->ndests; i++) {
-> >>   		struct i3c_ccc_cmd_payload *p = &cmd->dests[i].payload;
-> >> +		u16 min_len;
-> >> +
-> >> +		if (p->optional_bytes > p->len)
-> >> +			return -EINVAL;
-> >>
-> >>   		if (p->actual_len > p->len)
-> >>   			return -EIO;
-> >>
-> >> -		if (p->len && p->actual_len != p->len)
-> >> +		if (!p->len)
-> >> +			continue;
-> >> +
-> >> +		min_len = p->len - p->optional_bytes;
-> >> +		if (p->actual_len < min_len)
-> >>   			return -EIO;
-> >>   	}
-> >>
-> >> @@ -1342,10 +1351,14 @@ static int i3c_master_getmrl_locked(struct i3c_master_controller *master,
-> >>   		return -ENOMEM;
-> >>
-> >>   	/*
-> >> -	 * When the device does not have IBI payload GETMRL only returns 2
-> >> -	 * bytes of data.
-> >> +	 * GETMRL returns 2 bytes (max read length) when the device does not
-> >> +	 * advertise IBI payload, or 2 or 3 bytes when it does (the optional
-> >> +	 * third byte is max IBI length). Use optional_bytes to allow either
-> >> +	 * length when IBI payload is supported.
-> >>   	 */
-> >> -	if (!(info->bcr & I3C_BCR_IBI_PAYLOAD))
-> >> +	if (info->bcr & I3C_BCR_IBI_PAYLOAD)
-> >> +		dest.payload.optional_bytes = 1;
-> >> +	else
-> >>   		dest.payload.len -= 1;
-> >>
-> >>   	i3c_ccc_cmd_init(&cmd, true, I3C_CCC_GETMRL, &dest, 1);
-> >> @@ -1414,14 +1427,18 @@ static int i3c_master_getmxds_locked(struct i3c_master_controller *master,
-> >>   	if (!getmaxds)
-> >>   		return -ENOMEM;
-> >>
-> >> +	dest.payload.optional_bytes = 3;
-> >> +
-> >>   	i3c_ccc_cmd_init(&cmd, true, I3C_CCC_GETMXDS, &dest, 1);
-> >>   	ret = i3c_master_send_ccc_cmd_locked(master, &cmd);
-> >>   	if (ret) {
-> >>   		/*
-> >> -		 * Retry when the device does not support max read turnaround
-> >> -		 * while expecting shorter length from this CCC command.
-> >> +		 * optional_bytes = 3 accepts a 2-byte response on the first
-> >> +		 * attempt, so this fallback runs only when the 5-byte request
-> >> +		 * fails rather than returning a short read.
-> >>   		 */
-> >>   		dest.payload.len -= 3;
-> >> +		dest.payload.optional_bytes = 0;
-> >>   		i3c_ccc_cmd_init(&cmd, true, I3C_CCC_GETMXDS, &dest, 1);
-> >
-> > where use retry != 1 case ? if all is 1, patch 4 is not necessary.
-> >
-> > Frank
-> >
+On Thu, Jul 09, 2026 at 10:30:08AM +0800, Pan Chuang wrote:
 >
-> Hi Frank,
+> The devm_request_threaded_irq() now automatically logs detailed error
+> messages on failure. This eliminates the need for driver-specific
+> dev_err() calls that previously printed generic messages.
 >
-> The retry count is not always 1. retries is 1 for GET and 0 for SET (rnw
-> ? I3C_CCC_RETRIES : 0). max_attempts = retries + 1 gives 2 attempts for
-> Direct GET (spec §5.1.9.2.3) and 1 for side-effecting SET CCCs. This
-> follows Adrian Hunter’s v4 suggestion in
-> https://lore.kernel.org/all/382a7c2d-2e9e-4a83-94d1-b917921d91f1@intel.com/;
-> patch 4 is still required for validation and the central retry path, not
-> only for the field itself.
->
-> Patch 4 is still needed for the central retry path, GET payload
-> validation after a successful transfer, and resetting actual_len between
-> attempts — not only for exposing retries in struct i3c_ccc_cmd.
-
-Okay
+> Signed-off-by: Pan Chuang <panchuang@vivo.com>
+> ---
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
+>  drivers/thermal/imx_thermal.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 >
-> Thanks,
-> Tze Yee
+> diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
+> index 5aaacbc53478..416d89c6287a 100644
+> --- a/drivers/thermal/imx_thermal.c
+> +++ b/drivers/thermal/imx_thermal.c
+> @@ -732,10 +732,8 @@ static int imx_thermal_probe(struct platform_device *pdev)
+>         ret = devm_request_threaded_irq(dev, data->irq,
+>                         imx_thermal_alarm_irq, imx_thermal_alarm_irq_thread,
+>                         0, "imx_thermal", data);
+> -       if (ret < 0) {
+> -               dev_err(dev, "failed to request alarm irq: %d\n", ret);
+> +       if (ret < 0)
+>                 goto thermal_zone_unregister;
+> -       }
 >
-> >>   		ret = i3c_master_send_ccc_cmd_locked(master, &cmd);
-> >>   		if (ret)
-> >> diff --git a/include/linux/i3c/ccc.h b/include/linux/i3c/ccc.h
-> >> index 2506d83b8255..7ad677baf761 100644
-> >> --- a/include/linux/i3c/ccc.h
-> >> +++ b/include/linux/i3c/ccc.h
-> >> @@ -347,11 +347,13 @@ struct i3c_ccc_getxtime {
-> >>    *
-> >>    * @len: requested payload length
-> >>    * @actual_len: number of bytes received on a GET CCC (filled by the driver)
-> >> + * @optional_bytes: GET CCCs may return up to this many fewer bytes than @len
-> >>    * @data: payload data. This buffer must be DMA-able
-> >>    */
-> >>   struct i3c_ccc_cmd_payload {
-> >>   	u16 len;
-> >>   	u16 actual_len;
-> >> +	u16 optional_bytes;
-> >>   	void *data;
-> >>   };
-> >>
-> >> --
-> >> 2.43.7
-> >>
-> >>
+>         pm_runtime_put(data->dev);
+>
+> --
+> 2.34.1
+>
 >
