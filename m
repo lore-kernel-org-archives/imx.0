@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58143FADEE
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 11:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FF331E826
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 11:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783597905; cv=none; b=geu6cFO/qB9auG0iWgtcBwXSo6/uXpNqMRy8m9ExO9RPfi32WZKRBksKsfLspxktNFngjJWMyCjde6NaY4gjMm4OfwU/C90FULWxHGrrA42TDQqHDUXwTO9MMnCbOa8J1MNkAMlpfJviXwhg4GZDgZ7gV5Syb/rgsAZEnP8dFdU=
+	t=1783597908; cv=none; b=DBY2ODFrQF8nQdrQZ5uRy8pwL7W/lLE085h17BpEE0C5BKt8/B7QFVQuIbYAJX3GSH5RsDpxjSImetxRv5GaYNlZZ6WiKKGoesaZ6Yi0kVsLwy3u+ajwajMyEx6d31Wy638AHIMwCLZzSV/GZUvg4JoNDYnDf6kmefHLvAqviL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783597905; c=relaxed/simple;
-	bh=GOwcUyzYR9zsKXyOhWiDwWUwgXhPUuXxU2BdFGflfWM=;
+	s=arc-20240116; t=1783597908; c=relaxed/simple;
+	bh=hDmSNEE/W/m/mNuZMkobwPjTFt7UVzAmSYtSH5FEgdw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tgZDVVgXThsw3DW4eFzfAA/WkRpqtG4YU2mbLK2K452VshCrzccHOnofHg9AVfXqQI0cBPngwHHTjKDPbzbKLoBz1FIf9Fw2GUGlzC21vG+eVYGZZmeH4M9MHMNPhbazvCZ7CUmcDLnU+2U5orc1WwqSBWKYNwZspWIX+XOmU74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RYgSw3pn; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=h7V8Tpi6VoIrxMAOmYaO6fVgSVoMwyACi04hagdnG4KAzXmU1Icy3Q6kKRMmNlpDasrVzSWqTWPwR9HNaB0XxQJdz8rb0ExnzZUMZ9bMsg/PNgcyGkVGWwJf/z3vuWYkzBWqSsig1v6NdzE5hrNRbA4iCHSV3WMJjGwUI2ZdsCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSfB4BEW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RYgSw3pn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BA41F000E9;
-	Thu,  9 Jul 2026 11:51:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSfB4BEW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BB91F000E9;
+	Thu,  9 Jul 2026 11:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783597903;
-	bh=8eOm7/qmFfT/TfZC5GlM6oBk8DV/cdFZats8Kqq5++M=;
+	s=k20260515; t=1783597906;
+	bh=F9a6z3mKeSIqQHwMdQJsowI3MI9fnVUO5zF+roXVWN8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=RYgSw3pn1tyG8QEfvptufY7g4J5NLAiscwQ3xqKx4qwem82gYRgcVo5D7uOpoBHIu
-	 /b50qSiHQejfwCESepAuH2hgdmgzIjucqBa6DBUBKW4sru7x0nANwkG+UJYrABICXV
-	 nIMYcuveGGvkpQ8luI4ScjqFA1amm6LNglH2lcKNS34ssaPAFhJdFgjuie1WEI0cWw
-	 0qIOrXmKpkrWg/3QLyWlyXb2aduZWvwO6N0Z1vPQmg9fy0V/ox701s4X0PGjYATsnR
-	 +0QQfhaSFScekVQdEHIiQzYZ/iBGXlSbdNOqsClqjAQz9h1bR+k6dEMCl8JABaeT9e
-	 Q2Cqj1OD9Ek+w==
+	b=SSfB4BEWI3HgsZzcRzu4vCyB2LqN8nyZ3XsX2lW82+oEYrA+Z5VFQ9oN5zoiWBuVa
+	 rdjy2KlYPFJv3PP18SAA32MhGDWF0bEJPQf9K8HTlc+lM+uzPPIE7JgzafyUnpurLD
+	 Xpw0qUZBNej4QE1WBeS4bfasPIsPtj3hmLCVaCladX8BP9wNNwc7Zn/24WhBGyOZap
+	 lYCGRYKMR51MztruuxO8leZHYoJT9fLK0mddoDHEfK8wFIfPVdvzrky/eGJmuPyzTu
+	 VkPQgR120QHvIFk++fpp6XsipJJHPHmHU2AxTPOiAURt4I1VW7D5nE/RofIQrMr08l
+	 9hU4TBDT18Keg==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Thu, 09 Jul 2026 13:50:43 +0200
-Subject: [PATCH 17/60] drm/imx/dc: Convert to atomic_create_state
+Date: Thu, 09 Jul 2026 13:50:44 +0200
+Subject: [PATCH 18/60] drm/imx/dcss: Convert to atomic_create_state
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-drm-no-more-plane-reset-v1-17-302d986fe5f0@kernel.org>
+Message-Id: <20260709-drm-no-more-plane-reset-v1-18-302d986fe5f0@kernel.org>
 References: <20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org>
 In-Reply-To: <20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -45,14 +45,15 @@ To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Simona Vetter <simona@ffwll.ch>
 Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
  Frank.Li@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, 
- imx@lists.linux.dev, kernel@pengutronix.de, victor.liu@nxp.com
+ imx@lists.linux.dev, kernel@pengutronix.de, l.stach@pengutronix.de, 
+ laurentiu.palcu@oss.nxp.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6050; i=mripard@kernel.org;
- h=from:subject:message-id; bh=GOwcUyzYR9zsKXyOhWiDwWUwgXhPUuXxU2BdFGflfWM=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFn+3QJVS9lUZ+58sW4Jp9W7F9Pco0Jnbmn9WVDSFeu+8
- pPzQ36PjqksDMKcDLJiiixPZMJOL29fXOVgv/IHzBxWJpAhDFycAjCRw0aMDW8/zmtbGSTVtfsC
- p/x5XbHpXHdXWwTd2z99Cp+yu6Ixm3E+h8Sm9brCv8vmmQTuv2SgxlhnvKHxBDd/mC6DvY9aoi7
- njmtv46zjIuvV3AouWl7t+ZxSkGHkt7A1etmSOXqfWhetOgQA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6124; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=hDmSNEE/W/m/mNuZMkobwPjTFt7UVzAmSYtSH5FEgdw=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFn+3YLVOqHaprOSBYIn/HwYaiTA9bD+Q4aDl+fKpEt7u
+ L2+R+Z2TGVhEOZkkBVTZHkiE3Z6efviKgf7lT9g5rAygQxh4OIUgIk88WasZr/l6NocutvQvb7T
+ 9/RvS92itQGizzayRIb0THsnszb39ZclBhN/aclX8z3yUlS7YZjMWMO/dDfTkQ1vCv0vxu/Zw2u
+ dZfByhVeVWvq9HZyCxsaHPr2p1N7ldcZmq/62TYWx3FdeiwMA
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
@@ -327,28 +328,29 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: festevam@gmail.com
 Cc: imx@lists.linux.dev
 Cc: kernel@pengutronix.de
-Cc: victor.liu@nxp.com
+Cc: l.stach@pengutronix.de
+Cc: laurentiu.palcu@oss.nxp.com
 ---
- drivers/gpu/drm/imx/dc/dc-plane.c | 2 +-
+ drivers/gpu/drm/imx/dcss/dcss-plane.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/dc/dc-plane.c b/drivers/gpu/drm/imx/dc/dc-plane.c
-index dea7404fe659..62dd0576fadc 100644
---- a/drivers/gpu/drm/imx/dc/dc-plane.c
-+++ b/drivers/gpu/drm/imx/dc/dc-plane.c
-@@ -37,11 +37,11 @@ static const uint32_t dc_plane_formats[] = {
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-plane.c b/drivers/gpu/drm/imx/dcss/dcss-plane.c
+index 1746dc5d4b64..303e93fd036c 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-plane.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-plane.c
+@@ -94,11 +94,11 @@ static bool dcss_plane_format_mod_supported(struct drm_plane *plane,
  
- static const struct drm_plane_funcs dc_plane_funcs = {
+ static const struct drm_plane_funcs dcss_plane_funcs = {
  	.update_plane		= drm_atomic_helper_update_plane,
  	.disable_plane		= drm_atomic_helper_disable_plane,
- 	.destroy		= drm_plane_cleanup,
+ 	.destroy		= dcss_plane_destroy,
 -	.reset			= drm_atomic_helper_plane_reset,
 +	.atomic_create_state = drm_atomic_helper_plane_create_state,
  	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
  	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
+ 	.format_mod_supported	= dcss_plane_format_mod_supported,
  };
  
- static inline struct dc_plane *to_dc_plane(struct drm_plane *plane)
 
 -- 
 2.54.0
