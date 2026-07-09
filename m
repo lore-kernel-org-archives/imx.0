@@ -1,175 +1,762 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013055.outbound.protection.outlook.com [52.101.83.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F8E23D7FB
-	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 15:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E4F333445
+	for <imx@lists.linux.dev>; Thu,  9 Jul 2026 15:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783609297; cv=fail; b=J0BTqg5DNKqL0Nucilx6zHfeHzQx/dMH57Io/VXeVdtY+NfJ4x04w/SyaH8TlWyvkS9E2wYVrKxJz/zbP9JRKw4qowVrYO58G+jT1iug80jo/s9gPkkpeMn4QGswK1QuMKfiKW15DgtvyzkGYHjxHxGCftFQ+0GHQ/erbRL/p/U=
+	t=1783609510; cv=pass; b=MDfeuUWjyR/1vBJMuyj19TzTyOlLzkbF37lCGu6s2I04NeGBypt0cMJBlTj5xx8PY7PlnJ1aKIXGOoWBayEvU14HHFJkbG6W4CL2PAfQD8PDyVZxQmCCqBoqKvyplOEZ2jDJuO8tbo8Ofd7SdP6iyl/y7kzs+qk+QqjDMx2BYEs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783609297; c=relaxed/simple;
-	bh=z3Ew+2Psg49uxo/P2/DaveKdyaoYnfEs0LmTRe2zANY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=InnBP5OSb6GcfsrtgFfGGMfqsXJ9vSoszARFmi+ShambeDSWOyGZ0V3EMTCRhQ3JagzGYH6jl4vF5grLn49yjVfW3WzRNpYNxFQ6O0kBNiKl2NOaQ0lHlk+60zw1WVxgzTSnZQgBs5AniCR7jkJERPF54JsjjkK5CPcuB9PRi7g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=IkT157QZ; arc=fail smtp.client-ip=52.101.83.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1783609510; c=relaxed/simple;
+	bh=rEwRUj5n+D4ueXWDyWk/iyVYv80zVGiG3xeWbPp8d84=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O/XDoNp3Gy6el9ATg1HOBaWbUOHMjxfeAIQLTCiiHEo6CEirD7W2GkDGqwpNcYFek1QxjauUCc9WV1eDV397iKMX6OiL+bqo2dKy0qoKP41Cx5j0+9567JKrr8srNhqyEzjoCccuSD3COVAYcyUKsUlfR9822XDxILXz/dITCgU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Pm5My+yF; arc=pass smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="IkT157QZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IEaezLK7joPVMlDSYO0Ql8183YLd3nKAY5cpaNtkU3Ll1ykUHkw0pu+R3VKXq8Tj8hzIFAM69YMhbD7278hh1VXoK0/0xLObcjaRFEgW2oxXvr78ta3hOYvY4v9jCs4m++ea3216lIOoplgrsIAarH7MHhqC25F8g3pLXyV0ZL3xqAY49+NHmCMQMTTnaIn4ThggZk42Uq781ZuMArOCr329eCngrZt5W7B26DVha4Jk+Xf199ypX1Pvw01g6NR/Ty4B/9XYAWnM/csPMh1aZJL3YFnARa75C+pbxPvI7WLzf+C+yVI5r2rtJ+U032s9n5mOHinQzBK+NNo4PC/Ang==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kCLIJXBl2w39voCh0FBiouFR+dS1XE/RMFL10ASi+CI=;
- b=FI+D+yRK1pzH7PWKE2C544CU5Mf3l5lmFo+zZrTRqkRYAG7OJcwjYupQ2PuFtrR5GbajuiNLl4/OyNjQlT2dDJhuitorIi4nEajG3P2gKxMen6pOuBBERC5L1o9Wa8rmW9ZrMswgjUrkFWWVhgw6LEbIdwYGSStpSFse1zp9/91DAPZMX/8aNkQjpOO1SrfSIvcrLQHIe/Hs3wH6YfJDeOy+j1CyCnoFo6bRqoGxPBBd8vNpvocs4U6RKWWmiFodpKsODLzVjCOLDGQPaFhlPrr1d6wySz3N0kZvSHRH8jaYhbJkiaZByuOmxTMWJdGudI/HjCA7QnCh8d1/Yd+KOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kCLIJXBl2w39voCh0FBiouFR+dS1XE/RMFL10ASi+CI=;
- b=IkT157QZIFSGrDwEclKNx6pr1gaTgyb1zDC8WtuQSEXn8OF4/NXICGhdo0VaRvD4AiYzqt7P6V6dkjIbeltFi7ZnFYHkMU1ROYVARfNqlVo3HO41Ycta4/kL0GLwQFJUU3D9F125Xdb3hx5rqLRyMn986fmo7FJz/o90pXcgFosinBeVLR2MEtrUFels+2PLiZt1kGl03dbagQnuss0uzjyp3nzeQ8QNbHTeJbn6lWBljqT6AeX2AGmZ5OaoCvqWwylKQquy+5MISvLPfbdxIZvHs19Jv+fIzF5dKx2L8o4X6Hvms8SiDR2AtmXKnmADC/l7BGFHtakVZxgCzzzeuw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VI0PR04MB10759.eurprd04.prod.outlook.com (2603:10a6:800:260::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Thu, 9 Jul
- 2026 15:01:32 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Thu, 9 Jul 2026
- 15:01:32 +0000
-Date: Thu, 9 Jul 2026 10:01:16 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Lee Jones <lee@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/3] dt-bindings: mfd: st,stmpe: add deprecated properties
-Message-ID: <ak-3vC3BOoQMj7nT@SMW015318>
-References: <20260708-dts-stmpe-v1-0-1f51d15bb358@nxp.com>
- <20260708-dts-stmpe-v1-1-1f51d15bb358@nxp.com>
- <20260709103237.GF2045740@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709103237.GF2045740@google.com>
-X-ClientProxiedBy: PH1PEPF000132EA.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:518:1::2e) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Pm5My+yF"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6976b0c5adbso1868831a12.2
+        for <imx@lists.linux.dev>; Thu, 09 Jul 2026 08:05:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783609504; cv=none;
+        d=google.com; s=arc-20260327;
+        b=c3gXnZ0pbeRoS9jqqDrxSkB2L58m78/nBG/GuAoHym8mmw00TYkP1GDTOivSLfPNCu
+         JiWZ8usRgj/7LiNOTqzMkUjYRPnENSLKECwxhSDuD0MgSpclyrh3y5erKLHMU3wXkSbe
+         aWpJakc/wvlCQEFvoePNwhyP1+kTn6FexfnVl7IBx+4/rqPmZb3KitzvnWIe5+i7zgep
+         +tvtFJS4+upMq/EWWGR7LJ4ZFfuHNdncPMnvdMTZI7wFnVHopMGokTOwmcfXBLqNYTIJ
+         nyd8JsfE8F/DjQV8NjD/ferKkqQJGZi6c0D7Sf7nxSnvwmcWxTEjU+2C8uSfsm3gbUwx
+         cIoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZqzpN44guGdonZBxzCyAR5YSvJH+eiLOFsoMHP8Exug=;
+        fh=WWgaG71cb8RsZZLLv+u9Zhvy8bh97id7PuUh5/rfoBs=;
+        b=Vru3rbcH3lu65HUahNRs+VEOkt8A98mAU9jqWxWyL0EDuCSF+w/HUuawpKwFenoEzd
+         hJhNBzDVJEIE6GN8nv6sZcIYWyCjd39WgrtZ7W5sq4OL6LD8trN9aE/kW4LZrEyhp1a8
+         rABs3AjB2GkWaoDZJTDxvyRzzuZifC4omap1yPfBA/2BbfQ7ykR+i1P4kF1lMNcuL2zd
+         rZ0DszlRu0DABCa5GvdR/7ewaUekOw1K/rVSljiAo0wLrq1AnrvaLEodtj4hf7JJkoNt
+         DC0nanRsrFnnTC1jecM4UlzhnqdSfHjTcA5Xn8XFze1SgMZ5JTe2XfpvKbrsm+ljoJvn
+         oiUg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1783609504; x=1784214304; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZqzpN44guGdonZBxzCyAR5YSvJH+eiLOFsoMHP8Exug=;
+        b=Pm5My+yFlqXnrKTZsfyySPBfoK6B6F8S7isXEOECdua0QP91n7quPE/kG8vWDueBlU
+         TSylA92EVNizKhA/ulcJsuAaFe9kaY8fwJXQnIT1z4zwX7djbDd1Atht0peMZPwDSH5e
+         JQ7E39RD1Dq+4qyWdoUM5ddlzHoylOz6XdXwmG8zNg04scZQeTMY7EoDq57fuRSQs2Nm
+         yRHpgh34Wp1IaCEJ2rlT96ZODzd4+eKg97HeluxPuyUoMnPIwWZ+hcsrpTuituvPU/E1
+         orfZeWT4pffzZyp5B5oHXklWn4iX0DYATqF5cZZtzs6gN6L5HuaY7graRDRYUXisZjNR
+         zGhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783609504; x=1784214304;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZqzpN44guGdonZBxzCyAR5YSvJH+eiLOFsoMHP8Exug=;
+        b=G1nlefRXC+p/zpqnaTQ6gz52Gw5Ngd3OtkG/JjF4QYFounEyh1f9FRUiTcaQcq+nLi
+         QqTehyR7CAdKUf5MubNajaCcXT1tC02MAIeltdl0VRrg/XLs0Mp74nPnHoSZDfiRzGYe
+         zzdQu1yER+EqKlJs/77FBLVdLCMq1acwt5u0PD4Iga1h7vL+aKYr+vyoNeviM8LLoKca
+         sJgGU/yI+8InpKTflloseNAou1mNdJ7baAN1L7JlJr+02sbj1D63T+1Apa+4aygHzIhB
+         uJaASy2+vV2vLJyUZzud2O6kN92YNsGgglAwik77cMeCmOrEODCpF48DsX1nktr4zsAG
+         VHjw==
+X-Forwarded-Encrypted: i=1; AHgh+RpgiGOBbEuFsWia7x41J1iDrU4peTVE1o45zrxV80m74DiMEtW4lu1jTuTRLMKcRdt1ZH4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yziqy7TCy8sz8H4oq8GTqiNJwQtV+MAM3e/E2y+Of78U8k3kex/
+	+t/m+Ahjoj2EWmiLElnaWQnWmGsZfVMVMYRVyOCmgOgUIkyTv4sfPmwh8G0s3r2bZNEjWnVY0xg
+	2znEArbV2NHIynJ9YRsHd+zY2CaQW++P6FbfjBWf9eA==
+X-Gm-Gg: AfdE7ckN/WxQFjnpqQzNT/2bIsmjsw+idPxzZ5+se8fhWPuu9ZseiTiNb7lFE+TI/P7
+	Dx66n6XYHPq7ZHzoSYYUcgT6VIjJRM8TnKJhcL3ZoFJi1XeEjXQehHPE3RZp5OFhgA14RlzjiH5
+	ISTXTp3IEWViXSSG3YEUemRuLB2DNHD5Rr4/oSh7j68vP/XH4bOQP0wzoZGKCG7qgXCA8o9IMQj
+	GB5wgSpufVomzA3Fim+dD9DmV3hobbrtdGfySjBOIypFAzizaPbyAfBQ9S4Qvz+uiuKNQ6jM2zv
+	+WioMxD7w5AsyeoxC5d5fHEeE5EpQwRYQlF5
+X-Received: by 2002:a05:6402:43c4:b0:698:af30:5dde with SMTP id
+ 4fb4d7f45d1cf-69ab44612bamr3206035a12.13.1783609504280; Thu, 09 Jul 2026
+ 08:05:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI0PR04MB10759:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed27296e-942d-45e4-b9db-08deddcaf65c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|19092799006|18002099003|4143699003|3023799007|11063799006|56012099006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	lANp3EgCTTlqbPPiZyUi4fyBS7QaI47X8L7hxD2sMIqGUAnqMKw8p+lULDRmMfTvgAOpkw2eAKkboyEtK/bcAcFaR6TcvA1sjgPT2xgJ+4SvxBCql5hlZlWxBfYZqoFZQM5Ocgl8W6HLWhZ2ymgizbTw1KokSbSbPhQDxgZCvuisFdRdP/zU+MXWd8egBr6RTJZzlpK9PTwxtX/r23Rwc/eBiUXUTh7eGC531VBigVmD5w8hNY2YFxrUEAeL7g3eG1GCE0GYYQ+qmT7xScFJU7D1SZtmdKGdGRMiZ3Ss2JnzHYdz/aeAHLgicQ958yk5QcgKQe/oQxzYyuoZTEjx0gW+wqkRqKkfFtaPMdVUg4guf8oH9uvkyIKReVtKzz7kRc7guU0CEKg8B1zM/Aq8cAzk0BcDjDJtR63V6S2JzSyaK2UyyxDbk6tMPYJYEo+y7//ZeUPwdSB8qQmbzQlWzp2WlcMKyL5efXxuwcz8ktK19dNMU1Mvf6PTaSnoVV9BFycLaq9RZEtrDUuwoFU+lWQGsXRuL6eQY7yMAKQUt0v63mHPIMK9zXlHrbls6c+S6QS01Ebhu+qQZO+h0ahHNRZAWOKm8ilrRw9fTBsXjZ71q1csG5ZF+ZgQ/OzjRaRe
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(19092799006)(18002099003)(4143699003)(3023799007)(11063799006)(56012099006)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iwyD5QW10DnWfdeKypx0wkXN44um5hCEc6MbfwEMWS8ctK8oBLN7pNEvRI/Z?=
- =?us-ascii?Q?PB93+iwTz/b8dbv0cJbw7OkWzNbauyUf9wabV5xS+9j854dXvakyorjgvV6+?=
- =?us-ascii?Q?Zurpu5HRKdPInDA7tkfestEyFZZw+65CpGdQ4TK8D/46eqn0j4DdTXk+bRiJ?=
- =?us-ascii?Q?GqY3Ssk+VVX7c9fMZF0Pc7b3lJPPJ4MyRVLjOYlnHMUa+cMUo85kaS2PsN0p?=
- =?us-ascii?Q?h2+ThASEXWANlrrsQ4rEn2tF2mehM9ZRIHKLT9II15pEizaUNB/Qv9JIOmC3?=
- =?us-ascii?Q?ZGwK6HYX1c3fuiCG0f9r/kJFZGzYbwJbaRNJTc2Ly20aHf/vtTymq50zlAWx?=
- =?us-ascii?Q?FecNE9XBM57a4bbKGiT87W9W3yAaaK3/rpj97AHb1+JbomtTA2Wm5MawyLGv?=
- =?us-ascii?Q?slswC4S1Trl1s6TQVQ/k/CBCdFB5iLKsivDdONe5XfSmutFGaEpebscUALWO?=
- =?us-ascii?Q?QzpcA8JOZX/zlB/tC4aUvpiePHtVGSwYDcujtbPqloSQhRWa5pZz4lyZwQ8K?=
- =?us-ascii?Q?N7iknB1DZ8vTbgz+2s/8eDJLLMAV/9mytjrgPFDxJR0VZQGKuevrKXhD6J5A?=
- =?us-ascii?Q?SMbrEbK6Q56VYzNnFgOVgFcoKNNyeG6QSFpSp8TS0PP5OixwsLbOU9BI1inh?=
- =?us-ascii?Q?0vhmfDuC8lmNkjYHAPqjd5qEbROBzjuPtf8vd9TlSJlWcnRAzTZD+OyaLkPB?=
- =?us-ascii?Q?41FLURb3lyyMQQlULsZis8OoSRs6/zE6ZSkCzDrZFwGypgziznm3LC8/J4BI?=
- =?us-ascii?Q?ktfArGhFXV3KeHMGTcLfheCtlJkbjFuTmPaBOlK6mAEH2VmWz2qxi6uaUkIV?=
- =?us-ascii?Q?FqR7HTnjNuONj4B8CvLoUuEzfvQ1MqEYDK2aHffFZE14Cy4xOVAhaqIZl6qK?=
- =?us-ascii?Q?o4LuRrYEav35f4wBLJGnCwL94leSXYIAwJBzE33/Qeyk0DHKoohpqMw6Laq8?=
- =?us-ascii?Q?hPTIA/t/f5LSe2hzuzK8CF7GukfVmKKE7XC3BYmgMZ/8YWBD/ykjxUHLuJhb?=
- =?us-ascii?Q?uxzh3vpYrEJ9YNje+4uleXm2BfbRKzejyCSDbgndGrmt5GWpk5OxRh+w/LHs?=
- =?us-ascii?Q?FHGlgLEaV551yL4HTWA5cq0DQcLNkwLFiVFzlP0NfA6MCFt2mj034ifOOmyc?=
- =?us-ascii?Q?480uvVzNPvDN+Yz+jsajIOv1ng31nu7oWcPhrTPMY970GPDFEhs4DtZLr8An?=
- =?us-ascii?Q?e2Jh9KycIZ0wlIyyzh/nFgRMN41ksG7VH/9zsXGnnOb0pCavICOdizHNRvqy?=
- =?us-ascii?Q?3DoYhw8pQZYmumVQrIKwwRSzGBWJsmxIBnKkPlyVHKoeDgEdWp9676IZ2939?=
- =?us-ascii?Q?Klcroa3jqZOgBhMJ8vUP2UKfLAuwdGiIWOgFYNO1htdlitBehz2yhSf+1KsI?=
- =?us-ascii?Q?KqOnYvnGVypC1MY8T2h01GX2m6CrL+GE6Y40Kh/Mdq+55zu8i/FX08SGOuxw?=
- =?us-ascii?Q?4OA9s9Xme8hbLw3NCe+ZfLmGe2t0s5ktsvPklSEZynxPYULzrNeBqz9zsTni?=
- =?us-ascii?Q?72Mv8lGqLbMztnWOzdo+4/uck0ue5wvmNOYW7kcGNYr6jrhQrQLbqtbRe72i?=
- =?us-ascii?Q?FOSX66Cig0DmVkjxY5etmYoQK+K5DW1Rfkzspz9MmNFsvyynM8v4Jbru7rd3?=
- =?us-ascii?Q?9oZvvONNM0O6lxJ6SYhWwOVHBwxYHDPOnmXF207rDqPHj1/dtxH8Eq720g2t?=
- =?us-ascii?Q?rSHNlVaUDLhYk0Ussj53rVqF90JvS54m+YENbDa7rl2cG2Pf6CLgG9bh4ijE?=
- =?us-ascii?Q?f19jN61YkfJoPteyydkTlOvxFXqRrtLIY65gFvxXmTLQW3uOfNLn?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed27296e-942d-45e4-b9db-08deddcaf65c
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 15:01:32.2955
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ffWr4dnpi3BBHmTQPxxTsc2jyXwZx8N/or2bU+/s9d8ZFn/4TmAj+N0nU3uUS28SXNx0YrkOzOzxKt8RXFzNZFoPR4M3xihRtUXLygno7PHLDbExWuYrI5QxesY2XQJD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10759
+References: <d7f7e8c9589d937b60e43168845ab4fda15037a3.1783603600.git.michal.simek@amd.com>
+In-Reply-To: <d7f7e8c9589d937b60e43168845ab4fda15037a3.1783603600.git.michal.simek@amd.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Thu, 9 Jul 2026 17:04:52 +0200
+X-Gm-Features: AUfX_mxIBzHMPQNpSXnMtJ5nAckyvtqUZpsw3N-GZ2wcaGq2h6aw6oD6BWgvcxU
+Message-ID: <CAKfTPtCQSjyGmqBOOV8BjqB5EEqjVjCQ8hihDFQ0umtaG1CWSg@mail.gmail.com>
+Subject: Re: [RFC PATCH] firmware: scmi: Make SCMI arch independent
+To: Michal Simek <michal.simek@amd.com>
+Cc: linux-kernel@vger.kernel.org, monstr@monstr.eu, git@amd.com, 
+	Souvik.Chakravarty@arm.com, Alex Shi <alexs@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Brian Masney <bmasney@redhat.com>, 
+	Cristian Marussi <cristian.marussi@arm.com>, David Lechner <dlechner@baylibre.com>, 
+	Dongliang Mu <dzm91@hust.edu.cn>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Guenter Roeck <linux@roeck-us.net>, Jonathan Cameron <jic23@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Len Brown <lenb@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Linus Walleij <linusw@kernel.org>, 
+	Lukasz Luba <lukasz.luba@arm.com>, Mark Brown <broonie@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Pavel Machek <pavel@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Stephen Boyd <sboyd@kernel.org>, 
+	Sudeep Holla <sudeep.holla@kernel.org>, Ulf Hansson <ulfh@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Yanteng Si <si.yanteng@linux.dev>, arm-scmi@vger.kernel.org, 
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, linux-arm-kernel@lists.infradead.org, 
+	"open list:COMMON CLK FRAMEWORK" <linux-clk@vger.kernel.org>, 
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
+	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>, 
+	"open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>, 
+	"open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>, 
+	"open list:ENERGY MODEL" <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 09, 2026 at 11:32:37AM +0100, Lee Jones wrote:
-> On Wed, 08 Jul 2026, Frank.Li@oss.nxp.com wrote:
+On Thu, 9 Jul 2026 at 15:28, Michal Simek <michal.simek@amd.com> wrote:
 >
-> > From: Frank Li <Frank.Li@nxp.com>
-> >
-> > Add deprecated properties st,sample-time, st,sample-time, st,mod-12b and
-> > st,ref-sel. The both driver drivers/mfd/stmpe.c and
-> > drivers/input/touchscreen/stmpe-ts.c parse these information. Some dts
-> > put these properties under mfd, but some put these under child node
-> > sample_ts.
-> >
-> > Allow these properties put under sample_ts and mark as deprecated to fix
-> > below CHECK_DTBS warnings:
-> >   arch/arm/boot/dts/nxp/imx/imx6q-novena.dtb: stmpe811@44 (st,stmpe811): touchscreen: Unevaluated properties are not allowed ('st,adc-freq', 'st,mod-12b', 'st,ref-sel', 'st,sample-time' were unexpected)
-> >         from schema $id: http://devicetree.org/schemas/mfd/st,stmpe.yaml
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  .../devicetree/bindings/mfd/st,stmpe.yaml          | 24 ++++++++++++++++++++++
-> >  1 file changed, 24 insertions(+)
+> On heterogenious systems like AMD/Xilinx FPGA there is a need to talk to
+> SCMI server from different architectures than ARM that's why remove
+> ARM/ARM64 Kconfig dependency with also remove ARM from description and
+> rename folder to reflect it.
+> From specification perspective only ARM specific transport layers should =
+be
+> available on ARM/ARM64 architectures.
 >
-> Why is this attached to submission:
+> That's why get rid of ARM prefix and description from documentation, file
+> names, folder names, MODULE description, module names, Kconfig and
+> comments.
+> But keep origin Kconfig symbols not to break existing users.
 >
->   [PATCH 0/3] ARM: dts: imx: cleanup st,stmpe touch screen related CHECK_DTB warings
+> Hwmon, pinctrl, powercap, regulator, reset, clk and cpufreq scmi drivers
+> already miss arm prefix that's why synchronize all of them to be without
+> arm prefix.
 >
-> And where are the other 2 patches?
-
-whole thread should be here
-https://lore.kernel.org/imx/CAD++jL=tBRFXzqa6gXNnZ3-DRUMvs=waSdDvq5h5MPHAQoheqw@mail.gmail.com/T/#m08252cde5cb39f897cf06926d87bf782ceafc7ca
-
-I use b4 send, you should be in to list for whole patches.
-
+> Signed-off-by: Michal Simek <michal.simek@amd.com>
+> ---
 >
-> Pleas send new patches as a new thread.
+> Likely I missed other locations but I wanted to send this RFC to have a
+> discussion about it.
+
+FWIW, make sense to me
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+
+> ---
+>  Documentation/power/energy-model.rst                  |  2 +-
+>  .../translations/zh_CN/power/energy-model.rst         |  2 +-
+>  MAINTAINERS                                           |  6 +++---
+>  drivers/clk/clk-scmi.c                                |  2 +-
+>  drivers/cpufreq/scmi-cpufreq.c                        |  2 +-
+>  drivers/firmware/Kconfig                              |  2 +-
+>  drivers/firmware/Makefile                             |  2 +-
+>  drivers/firmware/{arm_scmi =3D> scmi}/Kconfig           | 11 +++++------
+>  drivers/firmware/{arm_scmi =3D> scmi}/Makefile          |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/base.c            |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/bus.c             |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/clock.c           |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/common.h          |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/driver.c          |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/msg.c             |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/notify.c          |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/notify.h          |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/perf.c            |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/pinctrl.c         |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/power.c           |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/powercap.c        |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/protocols.h       |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/quirks.c          |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/quirks.h          |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/raw_mode.c        |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/raw_mode.h        |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/reset.c           |  0
+>  .../firmware/{arm_scmi =3D> scmi}/scmi_power_control.c  |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/sensors.c         |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/shmem.c           |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/system.c          |  0
+>  .../firmware/{arm_scmi =3D> scmi}/transports/Kconfig    |  0
+>  .../firmware/{arm_scmi =3D> scmi}/transports/Makefile   |  0
+>  .../firmware/{arm_scmi =3D> scmi}/transports/mailbox.c  |  0
+>  .../firmware/{arm_scmi =3D> scmi}/transports/optee.c    |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/transports/smc.c  |  0
+>  .../firmware/{arm_scmi =3D> scmi}/transports/virtio.c   |  0
+>  .../firmware/{arm_scmi =3D> scmi}/vendors/imx/Kconfig   |  0
+>  .../firmware/{arm_scmi =3D> scmi}/vendors/imx/Makefile  |  0
+>  .../{arm_scmi =3D> scmi}/vendors/imx/imx-sm-bbm.c       |  0
+>  .../{arm_scmi =3D> scmi}/vendors/imx/imx-sm-cpu.c       |  0
+>  .../{arm_scmi =3D> scmi}/vendors/imx/imx-sm-lmm.c       |  0
+>  .../{arm_scmi =3D> scmi}/vendors/imx/imx-sm-misc.c      |  0
+>  .../firmware/{arm_scmi =3D> scmi}/vendors/imx/imx95.rst |  0
+>  drivers/firmware/{arm_scmi =3D> scmi}/voltage.c         |  0
+>  drivers/gpio/Kconfig                                  |  2 +-
+>  drivers/hwmon/Kconfig                                 |  2 +-
+>  drivers/iio/common/scmi_sensors/Kconfig               |  2 +-
+>  drivers/pinctrl/pinctrl-scmi.c                        |  2 +-
+>  drivers/pmdomain/arm/scmi_perf_domain.c               |  2 +-
+>  drivers/pmdomain/arm/scmi_pm_domain.c                 |  2 +-
+>  drivers/powercap/Kconfig                              |  4 ++--
+>  drivers/powercap/Makefile                             |  2 +-
+>  .../powercap/{arm_scmi_powercap.c =3D> scmi_powercap.c} |  2 +-
+>  drivers/regulator/scmi-regulator.c                    |  2 +-
+>  drivers/reset/Kconfig                                 |  2 +-
+>  drivers/reset/reset-scmi.c                            |  4 ++--
+>  57 files changed, 28 insertions(+), 29 deletions(-)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/Kconfig (91%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/Makefile (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/base.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/bus.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/clock.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/common.h (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/driver.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/msg.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/notify.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/notify.h (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/perf.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/pinctrl.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/power.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/powercap.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/protocols.h (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/quirks.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/quirks.h (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/raw_mode.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/raw_mode.h (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/reset.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/scmi_power_control.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/sensors.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/shmem.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/system.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/transports/Kconfig (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/transports/Makefile (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/transports/mailbox.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/transports/optee.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/transports/smc.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/transports/virtio.c (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/vendors/imx/Kconfig (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/vendors/imx/Makefile (100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/vendors/imx/imx-sm-bbm.c (1=
+00%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/vendors/imx/imx-sm-cpu.c (1=
+00%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/vendors/imx/imx-sm-lmm.c (1=
+00%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/vendors/imx/imx-sm-misc.c (=
+100%)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/vendors/imx/imx95.rst (100%=
+)
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/voltage.c (100%)
+>  rename drivers/powercap/{arm_scmi_powercap.c =3D> scmi_powercap.c} (99%)
 >
-> Never attach a new patch to an existing thread.
-
-Maybe your system has problem, which merge similar email to one thread.
-I meet similar issue before, mutt wrong merge two thread.
-
-Frank
-
+> diff --git a/Documentation/power/energy-model.rst b/Documentation/power/e=
+nergy-model.rst
+> index 0d4644d72767..ca147ea36232 100644
+> --- a/Documentation/power/energy-model.rst
+> +++ b/Documentation/power/energy-model.rst
+> @@ -56,7 +56,7 @@ framework, and interested clients reading the data from=
+ it::
+>                  +----------+       |       +---------+
+>                  |                  |                 |
+>          +---------------+  +---------------+  +--------------+
+> -        |  cpufreq-dt   |  |   arm_scmi    |  |    Other     |
+> +        |  cpufreq-dt   |  |      scmi     |  |    Other     |
+>          +---------------+  +---------------+  +--------------+
+>                  ^                  ^                 ^
+>                  |                  |                 |
+> diff --git a/Documentation/translations/zh_CN/power/energy-model.rst b/Do=
+cumentation/translations/zh_CN/power/energy-model.rst
+> index 48849919d8aa..057c76a087cd 100644
+> --- a/Documentation/translations/zh_CN/power/energy-model.rst
+> +++ b/Documentation/translations/zh_CN/power/energy-model.rst
+> @@ -54,7 +54,7 @@ Documentation/driver-api/thermal/power_allocator.rst=E6=
+=96=87=E6=A1=A3=E4=B8=AD=E6=89=BE=E5=88=B0=E3=80=82
+>                  +----------+       |       +---------+
+>                  |                  |                 |
+>          +---------------+  +---------------+  +--------------+
+> -        |  cpufreq-dt   |  |   arm_scmi    |  |    Other     |
+> +        |  cpufreq-dt   |  |      scmi     |  |    Other     |
+>          +---------------+  +---------------+  +--------------+
+>                  ^                  ^                 ^
+>                  |                  |                 |
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f37a81950e25..a15909357b10 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -26293,12 +26293,12 @@ S:    Maintained
+>  F:     Documentation/devicetree/bindings/firmware/arm,sc[mp]i.yaml
+>  F:     drivers/clk/clk-sc[mp]i.c
+>  F:     drivers/cpufreq/sc[mp]i-cpufreq.c
+> -F:     drivers/firmware/arm_scmi/
+> +F:     drivers/firmware/scmi/
+>  F:     drivers/firmware/arm_scpi.c
+>  F:     drivers/hwmon/scmi-hwmon.c
+>  F:     drivers/pinctrl/pinctrl-scmi.c
+>  F:     drivers/pmdomain/arm/
+> -F:     drivers/powercap/arm_scmi_powercap.c
+> +F:     drivers/powercap/scmi_powercap.c
+>  F:     drivers/regulator/scmi-regulator.c
+>  F:     drivers/reset/reset-scmi.c
+>  F:     include/linux/sc[mp]i_protocol.h
+> @@ -26312,7 +26312,7 @@ L:      imx@lists.linux.dev
+>  L:     linux-arm-kernel@lists.infradead.org (moderated for non-subscribe=
+rs)
+>  S:     Maintained
+>  F:     Documentation/devicetree/bindings/firmware/nxp,*scmi.yaml
+> -F:     drivers/firmware/arm_scmi/vendors/imx/
+> +F:     drivers/firmware/scmi/vendors/imx/
+>
+>  SYSTEM RESET/SHUTDOWN DRIVERS
+>  M:     Sebastian Reichel <sre@kernel.org>
+> diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
+> index 7c562559ad8b..d8736feb73fd 100644
+> --- a/drivers/clk/clk-scmi.c
+> +++ b/drivers/clk/clk-scmi.c
+> @@ -481,5 +481,5 @@ static struct scmi_driver scmi_clocks_driver =3D {
+>  module_scmi_driver(scmi_clocks_driver);
+>
+>  MODULE_AUTHOR("Sudeep Holla <sudeep.holla@arm.com>");
+> -MODULE_DESCRIPTION("ARM SCMI clock driver");
+> +MODULE_DESCRIPTION("SCMI clock driver");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufre=
+q.c
+> index 4edb4f7a8aa9..51cff1838aca 100644
+> --- a/drivers/cpufreq/scmi-cpufreq.c
+> +++ b/drivers/cpufreq/scmi-cpufreq.c
+> @@ -493,5 +493,5 @@ static struct scmi_driver scmi_cpufreq_drv =3D {
+>  module_scmi_driver(scmi_cpufreq_drv);
+>
+>  MODULE_AUTHOR("Sudeep Holla <sudeep.holla@arm.com>");
+> -MODULE_DESCRIPTION("ARM SCMI CPUFreq interface driver");
+> +MODULE_DESCRIPTION("SCMI CPUFreq interface driver");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> index 12dc70254842..79c2477b1a7a 100644
+> --- a/drivers/firmware/Kconfig
+> +++ b/drivers/firmware/Kconfig
+> @@ -6,7 +6,7 @@
+>
+>  menu "Firmware Drivers"
+>
+> -source "drivers/firmware/arm_scmi/Kconfig"
+> +source "drivers/firmware/scmi/Kconfig"
+>
+>  config ARM_SCPI_PROTOCOL
+>         tristate "ARM System Control and Power Interface (SCPI) Message P=
+rotocol"
+> diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+> index 4ddec2820c96..0d4c2f29069a 100644
+> --- a/drivers/firmware/Makefile
+> +++ b/drivers/firmware/Makefile
+> @@ -24,7 +24,7 @@ obj-$(CONFIG_TRUSTED_FOUNDATIONS) +=3D trusted_foundati=
+ons.o
+>  obj-$(CONFIG_TURRIS_MOX_RWTM)  +=3D turris-mox-rwtm.o
+>
+>  obj-y                          +=3D arm_ffa/
+> -obj-y                          +=3D arm_scmi/
+> +obj-y                          +=3D scmi/
+>  obj-y                          +=3D broadcom/
+>  obj-y                          +=3D cirrus/
+>  obj-y                          +=3D meson/
+> diff --git a/drivers/firmware/arm_scmi/Kconfig b/drivers/firmware/scmi/Kc=
+onfig
+> similarity index 91%
+> rename from drivers/firmware/arm_scmi/Kconfig
+> rename to drivers/firmware/scmi/Kconfig
+> index e3fb36825978..167c22a788a8 100644
+> --- a/drivers/firmware/arm_scmi/Kconfig
+> +++ b/drivers/firmware/scmi/Kconfig
+> @@ -1,11 +1,10 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> -menu "ARM System Control and Management Interface Protocol"
+> +menu "System Control and Management Interface Protocol"
+>
+>  config ARM_SCMI_PROTOCOL
+> -       tristate "ARM System Control and Management Interface (SCMI) Mess=
+age Protocol"
+> -       depends on ARM || ARM64 || COMPILE_TEST
+> +       tristate "System Control and Management Interface (SCMI) Message =
+Protocol"
+>         help
+> -         ARM System Control and Management Interface (SCMI) protocol is =
+a
+> +         System Control and Management Interface (SCMI) protocol is a
+>           set of operating system-independent software interfaces that ar=
+e
+>           used in system management. SCMI is extensible and currently pro=
+vides
+>           interfaces for: Discovery and self-description of the interface=
+s
+> @@ -82,8 +81,8 @@ config ARM_SCMI_QUIRKS
+>           depending on the SCMI firmware advertised versions and/or machi=
+ne
+>           compatibles.
+>
+> -source "drivers/firmware/arm_scmi/transports/Kconfig"
+> -source "drivers/firmware/arm_scmi/vendors/imx/Kconfig"
+> +source "drivers/firmware/scmi/transports/Kconfig"
+> +source "drivers/firmware/scmi/vendors/imx/Kconfig"
+>
+>  endif #ARM_SCMI_PROTOCOL
+>
+> diff --git a/drivers/firmware/arm_scmi/Makefile b/drivers/firmware/scmi/M=
+akefile
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/Makefile
+> rename to drivers/firmware/scmi/Makefile
+> diff --git a/drivers/firmware/arm_scmi/base.c b/drivers/firmware/scmi/bas=
+e.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/base.c
+> rename to drivers/firmware/scmi/base.c
+> diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/scmi/bus.=
+c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/bus.c
+> rename to drivers/firmware/scmi/bus.c
+> diff --git a/drivers/firmware/arm_scmi/clock.c b/drivers/firmware/scmi/cl=
+ock.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/clock.c
+> rename to drivers/firmware/scmi/clock.c
+> diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/scmi/c=
+ommon.h
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/common.h
+> rename to drivers/firmware/scmi/common.h
+> diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/scmi/d=
+river.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/driver.c
+> rename to drivers/firmware/scmi/driver.c
+> diff --git a/drivers/firmware/arm_scmi/msg.c b/drivers/firmware/scmi/msg.=
+c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/msg.c
+> rename to drivers/firmware/scmi/msg.c
+> diff --git a/drivers/firmware/arm_scmi/notify.c b/drivers/firmware/scmi/n=
+otify.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/notify.c
+> rename to drivers/firmware/scmi/notify.c
+> diff --git a/drivers/firmware/arm_scmi/notify.h b/drivers/firmware/scmi/n=
+otify.h
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/notify.h
+> rename to drivers/firmware/scmi/notify.h
+> diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/scmi/per=
+f.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/perf.c
+> rename to drivers/firmware/scmi/perf.c
+> diff --git a/drivers/firmware/arm_scmi/pinctrl.c b/drivers/firmware/scmi/=
+pinctrl.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/pinctrl.c
+> rename to drivers/firmware/scmi/pinctrl.c
+> diff --git a/drivers/firmware/arm_scmi/power.c b/drivers/firmware/scmi/po=
+wer.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/power.c
+> rename to drivers/firmware/scmi/power.c
+> diff --git a/drivers/firmware/arm_scmi/powercap.c b/drivers/firmware/scmi=
+/powercap.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/powercap.c
+> rename to drivers/firmware/scmi/powercap.c
+> diff --git a/drivers/firmware/arm_scmi/protocols.h b/drivers/firmware/scm=
+i/protocols.h
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/protocols.h
+> rename to drivers/firmware/scmi/protocols.h
+> diff --git a/drivers/firmware/arm_scmi/quirks.c b/drivers/firmware/scmi/q=
+uirks.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/quirks.c
+> rename to drivers/firmware/scmi/quirks.c
+> diff --git a/drivers/firmware/arm_scmi/quirks.h b/drivers/firmware/scmi/q=
+uirks.h
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/quirks.h
+> rename to drivers/firmware/scmi/quirks.h
+> diff --git a/drivers/firmware/arm_scmi/raw_mode.c b/drivers/firmware/scmi=
+/raw_mode.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/raw_mode.c
+> rename to drivers/firmware/scmi/raw_mode.c
+> diff --git a/drivers/firmware/arm_scmi/raw_mode.h b/drivers/firmware/scmi=
+/raw_mode.h
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/raw_mode.h
+> rename to drivers/firmware/scmi/raw_mode.h
+> diff --git a/drivers/firmware/arm_scmi/reset.c b/drivers/firmware/scmi/re=
+set.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/reset.c
+> rename to drivers/firmware/scmi/reset.c
+> diff --git a/drivers/firmware/arm_scmi/scmi_power_control.c b/drivers/fir=
+mware/scmi/scmi_power_control.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/scmi_power_control.c
+> rename to drivers/firmware/scmi/scmi_power_control.c
+> diff --git a/drivers/firmware/arm_scmi/sensors.c b/drivers/firmware/scmi/=
+sensors.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/sensors.c
+> rename to drivers/firmware/scmi/sensors.c
+> diff --git a/drivers/firmware/arm_scmi/shmem.c b/drivers/firmware/scmi/sh=
+mem.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/shmem.c
+> rename to drivers/firmware/scmi/shmem.c
+> diff --git a/drivers/firmware/arm_scmi/system.c b/drivers/firmware/scmi/s=
+ystem.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/system.c
+> rename to drivers/firmware/scmi/system.c
+> diff --git a/drivers/firmware/arm_scmi/transports/Kconfig b/drivers/firmw=
+are/scmi/transports/Kconfig
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/transports/Kconfig
+> rename to drivers/firmware/scmi/transports/Kconfig
+> diff --git a/drivers/firmware/arm_scmi/transports/Makefile b/drivers/firm=
+ware/scmi/transports/Makefile
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/transports/Makefile
+> rename to drivers/firmware/scmi/transports/Makefile
+> diff --git a/drivers/firmware/arm_scmi/transports/mailbox.c b/drivers/fir=
+mware/scmi/transports/mailbox.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/transports/mailbox.c
+> rename to drivers/firmware/scmi/transports/mailbox.c
+> diff --git a/drivers/firmware/arm_scmi/transports/optee.c b/drivers/firmw=
+are/scmi/transports/optee.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/transports/optee.c
+> rename to drivers/firmware/scmi/transports/optee.c
+> diff --git a/drivers/firmware/arm_scmi/transports/smc.c b/drivers/firmwar=
+e/scmi/transports/smc.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/transports/smc.c
+> rename to drivers/firmware/scmi/transports/smc.c
+> diff --git a/drivers/firmware/arm_scmi/transports/virtio.c b/drivers/firm=
+ware/scmi/transports/virtio.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/transports/virtio.c
+> rename to drivers/firmware/scmi/transports/virtio.c
+> diff --git a/drivers/firmware/arm_scmi/vendors/imx/Kconfig b/drivers/firm=
+ware/scmi/vendors/imx/Kconfig
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/vendors/imx/Kconfig
+> rename to drivers/firmware/scmi/vendors/imx/Kconfig
+> diff --git a/drivers/firmware/arm_scmi/vendors/imx/Makefile b/drivers/fir=
+mware/scmi/vendors/imx/Makefile
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/vendors/imx/Makefile
+> rename to drivers/firmware/scmi/vendors/imx/Makefile
+> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c b/drivers=
+/firmware/scmi/vendors/imx/imx-sm-bbm.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c
+> rename to drivers/firmware/scmi/vendors/imx/imx-sm-bbm.c
+> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c b/drivers=
+/firmware/scmi/vendors/imx/imx-sm-cpu.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c
+> rename to drivers/firmware/scmi/vendors/imx/imx-sm-cpu.c
+> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c b/drivers=
+/firmware/scmi/vendors/imx/imx-sm-lmm.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c
+> rename to drivers/firmware/scmi/vendors/imx/imx-sm-lmm.c
+> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c b/driver=
+s/firmware/scmi/vendors/imx/imx-sm-misc.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> rename to drivers/firmware/scmi/vendors/imx/imx-sm-misc.c
+> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst b/drivers/fi=
+rmware/scmi/vendors/imx/imx95.rst
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/vendors/imx/imx95.rst
+> rename to drivers/firmware/scmi/vendors/imx/imx95.rst
+> diff --git a/drivers/firmware/arm_scmi/voltage.c b/drivers/firmware/scmi/=
+voltage.c
+> similarity index 100%
+> rename from drivers/firmware/arm_scmi/voltage.c
+> rename to drivers/firmware/scmi/voltage.c
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index 28cf6d2e83c2..1319c466ee87 100644
+> --- a/drivers/gpio/Kconfig
+> +++ b/drivers/gpio/Kconfig
+> @@ -262,7 +262,7 @@ config GPIO_BY_PINCTRL
+>           create a simple GPIO device based on the pin control interface
+>           without doing anything custom.
+>
+> -         This driver is used to access GPIOs over the ARM SCMI protocol.
+> +         This driver is used to access GPIOs over the SCMI protocol.
+>
+>  config GPIO_CADENCE
+>         tristate "Cadence GPIO support"
+> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+> index 2bfbcc033d59..cda0aedb36ca 100644
+> --- a/drivers/hwmon/Kconfig
+> +++ b/drivers/hwmon/Kconfig
+> @@ -401,7 +401,7 @@ config SENSORS_ARCTIC_FAN_CONTROLLER
+>           will be called arctic_fan_controller.
+>
+>  config SENSORS_ARM_SCMI
+> -       tristate "ARM SCMI Sensors"
+> +       tristate "SCMI Sensors"
+>         depends on ARM_SCMI_PROTOCOL
+>         depends on THERMAL || !THERMAL_OF
+>         help
+> diff --git a/drivers/iio/common/scmi_sensors/Kconfig b/drivers/iio/common=
+/scmi_sensors/Kconfig
+> index 67e084cbb1ab..5c152d9d30d2 100644
+> --- a/drivers/iio/common/scmi_sensors/Kconfig
+> +++ b/drivers/iio/common/scmi_sensors/Kconfig
+> @@ -12,7 +12,7 @@ config IIO_SCMI
+>          select IIO_KFIFO_BUF
+>         help
+>            Say yes here to build support for IIO SCMI Driver.
+> -          This provides ARM SCMI Protocol based IIO device.
+> +          This provides SCMI Protocol based IIO device.
+>            This driver provides support for accelerometer and gyroscope
+>            sensors available on SCMI based platforms.
+>  endmenu
+> diff --git a/drivers/pinctrl/pinctrl-scmi.c b/drivers/pinctrl/pinctrl-scm=
+i.c
+> index 1bb36ca477b7..e6fb0699c0a2 100644
+> --- a/drivers/pinctrl/pinctrl-scmi.c
+> +++ b/drivers/pinctrl/pinctrl-scmi.c
+> @@ -595,5 +595,5 @@ module_scmi_driver(scmi_pinctrl_driver);
+>
+>  MODULE_AUTHOR("Oleksii Moisieiev <oleksii_moisieiev@epam.com>");
+>  MODULE_AUTHOR("Peng Fan <peng.fan@nxp.com>");
+> -MODULE_DESCRIPTION("ARM SCMI pin controller driver");
+> +MODULE_DESCRIPTION("SCMI pin controller driver");
+>  MODULE_LICENSE("GPL");
+> diff --git a/drivers/pmdomain/arm/scmi_perf_domain.c b/drivers/pmdomain/a=
+rm/scmi_perf_domain.c
+> index 3693423459c9..00bae4e04aaa 100644
+> --- a/drivers/pmdomain/arm/scmi_perf_domain.c
+> +++ b/drivers/pmdomain/arm/scmi_perf_domain.c
+> @@ -184,5 +184,5 @@ static struct scmi_driver scmi_perf_domain_driver =3D=
+ {
+>  module_scmi_driver(scmi_perf_domain_driver);
+>
+>  MODULE_AUTHOR("Ulf Hansson <ulf.hansson@linaro.org>");
+> -MODULE_DESCRIPTION("ARM SCMI perf domain driver");
+> +MODULE_DESCRIPTION("SCMI perf domain driver");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/pmdomain/arm/scmi_pm_domain.c b/drivers/pmdomain/arm=
+/scmi_pm_domain.c
+> index 3d73aef21d2f..64ac7566d943 100644
+> --- a/drivers/pmdomain/arm/scmi_pm_domain.c
+> +++ b/drivers/pmdomain/arm/scmi_pm_domain.c
+> @@ -168,5 +168,5 @@ static struct scmi_driver scmi_power_domain_driver =
+=3D {
+>  module_scmi_driver(scmi_power_domain_driver);
+>
+>  MODULE_AUTHOR("Sudeep Holla <sudeep.holla@arm.com>");
+> -MODULE_DESCRIPTION("ARM SCMI power domain driver");
+> +MODULE_DESCRIPTION("SCMI power domain driver");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/powercap/Kconfig b/drivers/powercap/Kconfig
+> index 03c4c796d993..d3eda4a70978 100644
+> --- a/drivers/powercap/Kconfig
+> +++ b/drivers/powercap/Kconfig
+> @@ -61,7 +61,7 @@ config IDLE_INJECT
+>           on a per CPU basis.
+>
+>  config ARM_SCMI_POWERCAP
+> -       tristate "ARM SCMI Powercap driver"
+> +       tristate "SCMI Powercap driver"
+>         depends on ARM_SCMI_PROTOCOL
+>         help
+>           This enables support for the ARM Powercap based on ARM SCMI
+> @@ -71,7 +71,7 @@ config ARM_SCMI_POWERCAP
+>           and monitored against the SCMI Powercap domains advertised as
+>           available by the SCMI platform firmware.
+>
+> -         When compiled as module it will be called arm_scmi_powercap.ko.
+> +         When compiled as module it will be called scmi_powercap.ko.
+>
+>  config DTPM
+>         bool "Power capping for Dynamic Thermal Power Management (EXPERIM=
+ENTAL)"
+> diff --git a/drivers/powercap/Makefile b/drivers/powercap/Makefile
+> index 5ab0dce565b9..b0d5d1e91d7e 100644
+> --- a/drivers/powercap/Makefile
+> +++ b/drivers/powercap/Makefile
+> @@ -7,4 +7,4 @@ obj-$(CONFIG_INTEL_RAPL_CORE) +=3D intel_rapl_common.o
+>  obj-$(CONFIG_INTEL_RAPL) +=3D intel_rapl_msr.o
+>  obj-$(CONFIG_INTEL_RAPL_TPMI) +=3D intel_rapl_tpmi.o
+>  obj-$(CONFIG_IDLE_INJECT) +=3D idle_inject.o
+> -obj-$(CONFIG_ARM_SCMI_POWERCAP) +=3D arm_scmi_powercap.o
+> +obj-$(CONFIG_ARM_SCMI_POWERCAP) +=3D scmi_powercap.o
+> diff --git a/drivers/powercap/arm_scmi_powercap.c b/drivers/powercap/scmi=
+_powercap.c
+> similarity index 99%
+> rename from drivers/powercap/arm_scmi_powercap.c
+> rename to drivers/powercap/scmi_powercap.c
+> index ab66e9a3b1e2..24eef8045e80 100644
+> --- a/drivers/powercap/arm_scmi_powercap.c
+> +++ b/drivers/powercap/scmi_powercap.c
+> @@ -546,5 +546,5 @@ static void __exit scmi_powercap_exit(void)
+>  module_exit(scmi_powercap_exit);
+>
+>  MODULE_AUTHOR("Cristian Marussi <cristian.marussi@arm.com>");
+> -MODULE_DESCRIPTION("ARM SCMI Powercap driver");
+> +MODULE_DESCRIPTION("SCMI Powercap driver");
+>  MODULE_LICENSE("GPL");
+> diff --git a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-=
+regulator.c
+> index c005e65ba0ec..ffceaa66e257 100644
+> --- a/drivers/regulator/scmi-regulator.c
+> +++ b/drivers/regulator/scmi-regulator.c
+> @@ -417,5 +417,5 @@ static struct scmi_driver scmi_drv =3D {
+>  module_scmi_driver(scmi_drv);
+>
+>  MODULE_AUTHOR("Cristian Marussi <cristian.marussi@arm.com>");
+> -MODULE_DESCRIPTION("ARM SCMI regulator driver");
+> +MODULE_DESCRIPTION("SCMI regulator driver");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+> index d009eb0849a3..f09d2107d158 100644
+> --- a/drivers/reset/Kconfig
+> +++ b/drivers/reset/Kconfig
+> @@ -264,7 +264,7 @@ config RESET_RZV2H_USB2PHY
+>           (and similar SoCs).
+>
+>  config RESET_SCMI
+> -       tristate "Reset driver controlled via ARM SCMI interface"
+> +       tristate "Reset driver controlled via SCMI interface"
+>         depends on ARM_SCMI_PROTOCOL || COMPILE_TEST
+>         default ARM_SCMI_PROTOCOL
+>         help
+> diff --git a/drivers/reset/reset-scmi.c b/drivers/reset/reset-scmi.c
+> index 4335811e0cfa..a4f95a7fff87 100644
+> --- a/drivers/reset/reset-scmi.c
+> +++ b/drivers/reset/reset-scmi.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /*
+> - * ARM System Control and Management Interface (ARM SCMI) reset driver
+> + * System Control and Management Interface (SCMI) reset driver
+>   *
+>   * Copyright (C) 2019-2021 ARM Ltd.
+>   */
+> @@ -128,5 +128,5 @@ static struct scmi_driver scmi_reset_driver =3D {
+>  module_scmi_driver(scmi_reset_driver);
+>
+>  MODULE_AUTHOR("Sudeep Holla <sudeep.holla@arm.com>");
+> -MODULE_DESCRIPTION("ARM SCMI reset controller driver");
+> +MODULE_DESCRIPTION("SCMI reset controller driver");
+>  MODULE_LICENSE("GPL v2");
+> ---
+> base-commit: 0e35b9b6ec0ffcc5e23cbdec09f5c622ad532b53
+> branch: xnext/scmi
 >
 > --
-> Lee Jones
+> 2.43.0
+>
