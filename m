@@ -1,216 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026BA22097;
-	Fri, 10 Jul 2026 12:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1664266A8;
+	Fri, 10 Jul 2026 12:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783686241; cv=none; b=u1yLaPVr85ujnpRo5GgfK+lVC8c/DqFkHn6TCf64AGMUsN5QijkveJ2OHTtvnyCJkiO0PZEJFe53760o/CbOkKJeaIV9Yyg45T5HOv4x89S52zMnpqy/Kv0mlqRiaMQrFET89srD8MJIwQlnaLm1KcbUU0OD8uFLJvN+WgosCuM=
+	t=1783686821; cv=none; b=RzCLzR0o4rRcoVhlJzCTuMgiHT2NFt2b5vjxzOYSo3Fr9GyFE6/Ur0GPy51+x3yK8tBGzf9oDT3N9+0fQ5zEJnTz0syK/yqX8jRXpTNBnug/SgaIEbt95HM1mFgT46mw7khOrCNEdubw+KrJkwOITpV3wV5C3yJIHlDhJ1aPI/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783686241; c=relaxed/simple;
-	bh=hVc/B1svHTP8EAJNeTMhg+8KwMwaHI2XhsUZDgamRSY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qaBGUli3XPsssBnOEM8kF00o31WRiotpAtsuK/iWVOCtlHTqlDEoSLyL8Zs98NSUCYVrdl28Za9+ln921KEzRTstPfr6qaDDhBb5P1Qjm16HBQjIYp9Dh8UPbIcdTTbR94ayUKcir/508rpJ+Bu0ykyhglbfHtF9Z8D2ci2eOZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPFLlFb/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783686821; c=relaxed/simple;
+	bh=44sDJm9Q4dJ5FvMNDcKQuBJZxQA44oMgkthYo0Mgl3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NgGlDFwZN+20+b3XbiKWSrmn5BTa9jNQNByRNiEtJt+kio/lryW5aBzRUfHvAWPPKfAe9RXhpsE0DzMeCa2Yo/RCfT/lIgKm9fLwryLdcDUIRqeSAc+Aoxt7vCWzU2Wbj2RoP96NsLuI1tLAVnzyjI+Slwq25vZqHMMA+pqKHQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSi6wN5m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPFLlFb/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674951F000E9;
-	Fri, 10 Jul 2026 12:23:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783686239;
-	bh=X0MzYYhXsYkWBbyvi2u6dYHxS/oEFzLOCJ5JgyIgDRw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WPFLlFb/2aDWJdd8AG6lVf8OLvGLZrr5oOWe6T3XHAs5VHWH10wFPd0U6mWScDF4g
-	 PNZ9NdaEW6KLD9ja4UWL2hRYci09y5svlM/iaSwJ1f0eddC/fQ4KrSN/jJpjnamViQ
-	 fnB80lu/JgROx7r4RUiBSqFsNTHWNtHYkVSCrg351hK1LI8aTCnQ2wUmIwywSZr8Jt
-	 mJZF5YfFRGKOT/aT5MOp21/bYg4q5qcpUfthD8rjWQgso4tTxS+cI1U/m3gCgE4jxn
-	 nGC64sLigiZdfraViXGFrICzZHG0VI1eAr8BJzPqkBgwvGK08qqF2BCdSHWCsX2wI2
-	 hj37a3UAb8tyA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/2] dmaengine: fsl-edma: Implement
- device_prep_peripheral_dma_vec
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QmVub8OudCBNb25pbg==?= <benoit.monin@bootlin.com>
-Cc: vkoul@kernel.org, Frank.Li@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260710-fsl-edma-dyn-sg-v6-1-831b96be3f31@bootlin.com>
-References: <20260710-fsl-edma-dyn-sg-v6-0-831b96be3f31@bootlin.com>
- <20260710-fsl-edma-dyn-sg-v6-1-831b96be3f31@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 10 Jul 2026 12:23:58 +0000
-Message-Id: <20260710122359.674951F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSi6wN5m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8271F000E9;
+	Fri, 10 Jul 2026 12:33:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783686819;
+	bh=b130bPAJHPNf/pKE6j8b+YefwbbZ9vGIzK3XSyiPhaw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nSi6wN5mBUuDgAFXA5HTlCsy00feN6LpmFRylXWtoPjHKTzqWNVFnhVM2UZ8eiwVM
+	 G6Ir838afNlquhcnb13tMc8l7k/5u/YthY+CiPZnWYCmsF7MSDkuwfohMUNsE4BysB
+	 WtSUyQWFHeCuhfhFERZD/g4VJyDJ+FZRy1UZmv8A=
+Date: Fri, 10 Jul 2026 14:33:35 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-serial@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-kernel@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCHv3 0/6] serial: mxs-auart: devm conversion, clock rework,
+ and IRQ ordering fixes
+Message-ID: <2026071011-geiger-smugly-4069@gregkh>
+References: <20260611033856.6476-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260611033856.6476-1-rosenp@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
+On Wed, Jun 10, 2026 at 08:38:50PM -0700, Rosen Penev wrote:
+> This series cleans up the mxs-auart driver by converting to devm-managed
+> resources, fixing clock prepare/enable ordering, and addressing IRQ
+> registration races.
+> 
+> Patch 1 fixes compilation on 64-bit build with W=1
+> 
+> Patch 2 reworks the clock handling to use devm_clk_get_enabled and
+> reorders clk_prepare_enable after clk_set_rate to avoid
+> CLK_SET_RATE_GATE failures.
+> 
+> Patch 3 converts iomem mapping and GPIO IRQ requests to devm,
+> removing the manual cleanup paths.
+> 
+> Patch 4 moves the main UART IRQ registration after uart_add_one_port
+> so the port state is initialized before the handler can run, and
+> manages the module clock for console vs non-console ports correctly.
 
-New issues:
-- [High] Missing validation for maximum segment transfer length causes sile=
-nt 16-bit truncation of the loop iteration count.
+Do you have this hardware to test this with?  If not, I would just leave
+this alone as devm_* conversions are tricky and prone to bugs.
 
-Pre-existing issues:
-- [Critical] Unconditional division and modulo by zero occur during DMA_DEV=
-_TO_DEV transfers due to hardcoded zero offsets.
-- [Critical] Missing `is_multi_fifo` and `port_window_size` handling causes=
- the peripheral address pointer to permanently walk backwards.
-- [High] Missing validation for `nb =3D=3D 0` leads to a zero-length flexib=
-le array allocation and a subsequent out-of-bounds access.
-- [High] Missing validation for slave configuration parameters allows clien=
-ts to trigger a divide-by-zero crash.
-- [High] Calling `dma_map_resource` with `DMA_NONE` triggers a BUG_ON in th=
-e DMA mapping subsystem.
---
+thanks,
 
---- Patch [1]: [PATCH v6 1/2] dmaengine: fsl-edma: Implement device_prep_pe=
-ripheral_dma_vec ---
-commit 70924f5c721616d3d99a0c89b36974c0edfc571b
-Author: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
-
-dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
-
-Add implementation of .device_prep_peripheral_dma_vec() callback to setup
-a scatter/gather DMA transfer from an array of dma_vec structures. Setup
-a cyclic transfer if the DMA_PREP_REPEAT flag is set.
-
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index bb7531c456dfa..c10190164926a 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-> @@ -673,6 +673,115 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_c=
-yclic(
->  	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
->  }
-> =20
-> +struct dma_async_tx_descriptor *
-> +fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma=
-_vec *vecs,
-> +				 size_t nb, enum dma_transfer_direction direction,
-> +				 unsigned long flags)
-> +{
-> +	struct fsl_edma_chan *fsl_chan =3D to_fsl_edma_chan(chan);
-> +	dma_addr_t src_addr, dst_addr, last_sg;
-> +	struct fsl_edma_desc *fsl_desc;
-> +	u16 soff, doff, iter;
-> +	u32 nbytes;
-> +	int i;
-> +
-> +	if (!is_slave_direction(direction))
-> +		return NULL;
-> +
-> +	if (!fsl_edma_prep_slave_dma(fsl_chan, direction))
-> +		return NULL;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does calling
-fsl_edma_prep_slave_dma() with DMA_DEV_TO_DEV trigger a BUG_ON()?
-
-fsl_edma_prep_slave_dma() translates DEV_TO_DEV to DMA_NONE, which is then
-passed to dma_map_resource(). The DMA subsystem enforces a BUG_ON for
-invalid directions like DMA_NONE, which would crash the kernel.
-
-> +
-> +	fsl_desc =3D fsl_edma_alloc_desc(fsl_chan, nb);
-> +	if (!fsl_desc)
-> +		return NULL;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is it possible for nb to be
-0 here?
-
-If so, fsl_edma_alloc_desc() will allocate a descriptor with a 0-length
-tcd flexible array, and later fsl_edma_xfer_desc() might dereference it
-out of bounds.
-
-> +	fsl_desc->iscyclic =3D flags & DMA_PREP_REPEAT;
-> +	fsl_desc->dirn =3D direction;
-> +
-> +	if (direction =3D=3D DMA_MEM_TO_DEV) {
-> +		if (!fsl_chan->cfg.src_addr_width)
-> +			fsl_chan->cfg.src_addr_width =3D fsl_chan->cfg.dst_addr_width;
-> +		fsl_chan->attr =3D
-> +			fsl_edma_get_tcd_attr(fsl_chan->cfg.src_addr_width,
-> +					      fsl_chan->cfg.dst_addr_width);
-> +		nbytes =3D fsl_chan->cfg.dst_addr_width * fsl_chan->cfg.dst_maxburst;
-
-[Severity: High]
-This is a pre-existing issue, but what happens if the client misconfigures
-dst_maxburst or dst_addr_width and leaves them at 0?
-
-It looks like nbytes evaluates to 0, which would cause a divide-by-zero
-kernel panic later when evaluating vecs[i].len % nbytes.
-
-[ ... ]
-> +	for (i =3D 0; i < nb; i++) {
-> +		if (direction =3D=3D DMA_MEM_TO_DEV) {
-> +			src_addr =3D vecs[i].addr;
-> +			dst_addr =3D fsl_chan->dma_dev_addr;
-> +			soff =3D fsl_chan->cfg.dst_addr_width;
-> +			doff =3D 0;
-> +		} else if (direction =3D=3D DMA_DEV_TO_MEM) {
-> +			src_addr =3D fsl_chan->dma_dev_addr;
-> +			dst_addr =3D vecs[i].addr;
-> +			soff =3D 0;
-> +			doff =3D fsl_chan->cfg.src_addr_width;
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but doesn't the lack of
-is_multi_fifo and port_window_size handling here cause the address to
-permanently walk backwards?
-
-fsl_edma_fill_tcd() applies a negative minor loop offset if these are
-enabled, but since doff and soff are hardcoded to 0 here, the address doesn=
-'t
-increment during the minor loop and still gets subtracted at the end.
-
-[ ... ]
-> +		/*
-> +		 * Choose the suitable burst length if dma_vec length is not
-> +		 * multiple of burst length so that the whole transfer length is
-> +		 * multiple of minor loop(burst length).
-> +		 */
-> +		if (vecs[i].len % nbytes) {
-> +			u32 width =3D (direction =3D=3D DMA_DEV_TO_MEM) ? doff : soff;
-> +			u32 burst =3D (direction =3D=3D DMA_DEV_TO_MEM) ?
-> +						fsl_chan->cfg.src_maxburst :
-> +						fsl_chan->cfg.dst_maxburst;
-> +			int j;
-> +
-> +			for (j =3D burst; j > 1; j--) {
-> +				if (!(vecs[i].len % (j * width))) {
-
-[Severity: Critical]
-This is a pre-existing issue copied from fsl_edma_prep_slave_sg(), but
-could this cause a divide-by-zero panic during a DMA_DEV_TO_DEV transfer?
-
-For DEV_TO_DEV, both soff and doff are hardcoded to 0 earlier in the loop,
-so width becomes 0. If the vector length isn't a multiple of nbytes,
-this modulo operation will divide by zero.
-
-> +					nbytes =3D j * width;
-> +					break;
-> +				}
-> +			}
-> +			/* Set burst size as 1 if there's no suitable one */
-> +			if (j =3D=3D 1)
-> +				nbytes =3D width;
-> +		}
-> +
-> +		iter =3D vecs[i].len / nbytes;
-
-[Severity: High]
-Does this properly handle vectors that exceed the hardware's maximum segment
-size?
-
-The dma_vec API passes raw vector lengths directly from the client, and
-iter is a u16. If vecs[i].len / nbytes exceeds 65535, will this silently
-truncate and lead to a partial transfer and data corruption?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260710-fsl-edma-d=
-yn-sg-v6-0-831b96be3f31@bootlin.com?part=3D1
+greg k-h
