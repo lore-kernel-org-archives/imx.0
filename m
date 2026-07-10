@@ -1,301 +1,249 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013023.outbound.protection.outlook.com [52.101.72.23])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0AD43F4DF
-	for <imx@lists.linux.dev>; Fri, 10 Jul 2026 16:50:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF06336F8F0;
+	Fri, 10 Jul 2026 16:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.152.168
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783702226; cv=fail; b=rhqew/RyawVZlf/ophRDmCUJQqxyITDnrmZqtnFnxq/vHgFcJ8esTTmQlMqM7kwtN7Zs7lzRHvqGZjFaivF+pvwEeCvpI3ZnYQi5U+WwmAMqPFEMJ8xWFy1OrG9URYTCxhfAzGsyI4mAQgUyTTCuQB4Wtzy+bTdMXYTAwTKYdT4=
+	t=1783702471; cv=fail; b=CQW+7KOYU2C81OM1B+stkzuW2GHgH3gtZjJxUk139ait+WeU4wBem0pNzJsu4fY4Zuuzvtos8/9Y14Ldd473t95sxs4TnbXobijWMriUydq9QnyudeFcAEiWjEm6+ILAOP5CGLqoq/SWt6qQNxh2WEOfv9E7JF7eIJ6cWMhEuiI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783702226; c=relaxed/simple;
-	bh=rcjSSfBj1g69VjoH/BuKmW0T0whson4IPh1X7+0SB6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=OvnBEpM9OUd/hnLpdegzSTeLjw92u8EsGjghWLAkO+s5+VSnZtMfa+TaRnZt5y7iAl+CfiScvgAMbPG4MFF/mbGzpE1CXt/PYIDLr7hgYpqbs3mqIduBw6cjzgq+lR9UFtTm5Kop+lIMGwFJWZ3fmhSKoAYcs2DlGycTNWvvEWM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=H89fasaF; arc=fail smtp.client-ip=52.101.72.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1783702471; c=relaxed/simple;
+	bh=NR45ycRzkLU9ejaysk0XYyYfHofrTG/rBlX3v3IGvo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oNiXzXIqg8r1K/xzA2ih7UGlGDRvtfavdZNuhexR/On6I5vh+GX13nWG//p1G5Yijj/xsd1hqaiEPwrJTlmJeKVnYAKnGm1f5g6LhTWaNjfRgfqMR98G5QJ1fNtdcnpR+fBrkEO43IPGU/6Se9M0Ky2ow2YaAGaKRe9S1z4A2Zg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=GE9u7lhU; dkim=fail (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=piIz7mDT reason="signature verification failed"; arc=fail smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="H89fasaF"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="GE9u7lhU";
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b="piIz7mDT"
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66AEkwLp3337969;
+	Fri, 10 Jul 2026 11:54:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=WsfF+mbRDPD+GsPWqxzNZj+dFo6F1e9HzKDlJXCosvc=; b=
+	GE9u7lhURyNL+eTo/OdMcVkqkDFiwsWZlR+aDNVMTBARCjC2zqdI8W+BULvhCWu3
+	j3Rbbp3pPiMtI73Xgs3sUPdhUeRmMzhTZNEB13UMWCU/hIkjrrMmfI+OTXm3aFpc
+	63cX4lxcX047b4cwgMJkLJe0UdSMcQcY4zo8B83yEijUZwBODV14il+1ILRxbN5K
+	UPoMng1CArzavq1MzwbbQCfp2M97jbiNf5mOsesepWNZwx7IFQVtwpShzRsFbVjB
+	HHz9Re6tc7OcnJ1UwV5sMUMBgpaRvyaEi7h5K+QPlzPjnWPceQbH+hRZYoqDsXXM
+	x2W8es3UmIIJGGpAW3i80A==
+Received: from bn8pr05cu002.outbound.protection.outlook.com (mail-eastus2azon11021134.outbound.protection.outlook.com [52.101.57.134])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 4fb2t6g7be-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 10 Jul 2026 11:54:19 -0500 (CDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NyT8W3ll5uBJYR4ib7CwcK0kJesu+oFmdzRmA5W5H9nh6MYY0SRTsoqvXdb1lWcMvOupjLL14LbeSQqXTYjaSjn/qpt+vB4vVACx+H9L4Q8UWQ/qtU3HTrvWgOGi8VtFudOH95RrBL2swsXAU1divc/CAtns15+VE/k6/Incy0COtP/nVAl42oWVzSB0+XRLZc43b857qeLwKUs3H45uIk7PUwuVGeGpMkCsRt+LJzlGIktmDBY+dV02XHgL19ks2SjAkU1+zddCSdZegy8TEtnDv/69Sut2yHQQVFtdsQ+8Kidox9OEe0t/tr3DlOH8H7QGgLOicYn3WOJOYpfWqg==
+ b=CvZJNENh7cNx+HzMNwGICXqY48LWLEwE5ZQs1lGtcuc44MxaZ9kml3oiOK2uvnr+SvarIi23eV5EgObyj7jP4ht9wx+8dj4tnqgWHmUCC/nRdoNw6Z9GFyBs+RPo1WUtSdVs2AWxFunRdEf6r6hQKb38vhPlpgsrIWkariie8rQzTsnSp5Y+Nv7MZAc9h4phgGq92yxSsLGgIpcdkkeYJEQjE6Y+YxnaFkJR8W3xI67d4D50cMX6qRdN+GGUwjjXBpPQCZAcHs5tOeATfGXYUSC+nnu5pjpGyuedbGpjX99r6Aa+E6ePRtrPIJlg6PhUTZ+oIKsveGVAWz1u2G+8rg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0DsSwQEJmG09ntZAq6Nh+jSnpGUXjndZ2MGsSM0OKak=;
- b=sOgsuQTvLXbfhOJ3ySrpAgYZxbhvXy9/EjsLNmPjnIELP3Z2rdz7nP01zU4ON4+TK7aYVcrqd6UTuo/fYPfq32ZLvxG8LqmX08zR1uz+sDlpopxgpc26p3KGtHy1akCCB/Ye2OALoOfNl6uD5RF/XCTSdtweip2vK/IWofE9yRstInQysv3/dHbJqidsn2wpa5cxDYn1chrfhuqkFMWv+jx1+xtaZoO/XowgaF7m/QvcTAMdgS/BX1u+UUqMA0UcXrbzg0yPcv/0d6UGvbMWEOBpazZfwJmS6vRCpOG5hb+hkbK8ck2NabMENS4Vat51ji0r/zg3n1fvoNpDxKF4ow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ bh=tYaBMSvSvX6TdwuniTCPEburPNpHEzqff4k2rv+0oJo=;
+ b=vywk/NVJW0AQtXVCxk/ZivbV4hPf1PhHrcOIERLisnozVf+Rz8GXRFzWyKMTN0e/tTJo3t6H/ul1U4L9VQ/pt7hBuOIT2wxDmFs3QnpCFQA0UHoqlNhppcOhfRrElHJOtJduHZIi7kKLEizf+p21R3duEQm1HT8mKoy7X5wtQw+ay5DKP1h9uuwWAiIABmExHTjsgpfvsWkVdczj0H6VREh0ipo/bRA7zhfQIwg0RMBVKghHC/tpB1dsHjtjjm7strW4EP2BkRIsUCiuMstpkCl2IdHOtjD8Npk4QziFzNIir1lq5Xt6ZkM9DULWGKpukYTsUSB6ZDO7v+Eg2GoNeQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 84.19.233.75) smtp.rcpttodomain=lists.infradead.org
+ smtp.mailfrom=opensource.cirrus.com; dmarc=fail (p=reject sp=reject pct=100)
+ action=oreject header.from=opensource.cirrus.com; dkim=none (message not
+ signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0DsSwQEJmG09ntZAq6Nh+jSnpGUXjndZ2MGsSM0OKak=;
- b=H89fasaFlhApjqfP+UROlk6SZZfF1PrcGt8oA4HGQjLrWw4IWrhCxyVN4C/0/v92lRRwQr+Y+K4xpe+lI3GuKsahQxR1IDJc2Ub7314Mevnwg7o6Zgt6byZNr2rCbbQUh1ll8efdafCPZ1LcmKJfqCvAizI64C31Xc1nL/ZPzRJjeng4IHbYQQy1KkTTet7m1sg9wm6m3VFYW4Z+kjYGI5RAhSZ943UQ9Tkt3+6kZEhnIRZgRf8G6LUBSeUI9YsuNbQtzlttXUk3Td8gFo8U2/JylFSXEZC+XD5GQ1/0cUeWR/za95vVHMjIgzo/ZSmrs8hyryRlSk43SiAJZxtdzw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PAXPR04MB8574.eurprd04.prod.outlook.com (2603:10a6:102:215::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.17; Fri, 10 Jul
- 2026 16:50:20 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Fri, 10 Jul 2026
- 16:50:20 +0000
-Date: Fri, 10 Jul 2026 11:50:08 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: "Verma, Devendra" <devverma@amd.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
-	Niklas Cassel <cassel@kernel.org>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-	Koichiro Den <den@valinux.co.jp>, imx@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v5 00/10] dmaengine: dw-edma: flatten desc structions and
- simplify code
-Message-ID: <alEiwEChHTsoNJK2@SMW015318>
-References: <20260709-edma_ll-v5-0-e199053d4300@nxp.com>
- <1fad886d-9d69-4c73-b6d8-c1771c0a1075@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1fad886d-9d69-4c73-b6d8-c1771c0a1075@amd.com>
-X-ClientProxiedBy: PH0P220CA0016.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:d3::19) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ bh=tYaBMSvSvX6TdwuniTCPEburPNpHEzqff4k2rv+0oJo=;
+ b=piIz7mDT96dCdvMPHGgKmg8TxMRUY7sCNlcF0ANVRkfI5MK+h6Bu/V/osG6ZGJV/xqMY8/FHnZxwvJu2nK2jB2DA71jsfRLhCmqos99x9ILemFN3LLcX9EURAf9OaCALXeucoHMNVZh3UF5obI38gHJ+z05GcXoKMnI1PCtRxM4=
+Received: from MN2PR01CA0057.prod.exchangelabs.com (2603:10b6:208:23f::26) by
+ SA0PR19MB4458.namprd19.prod.outlook.com (2603:10b6:806:b6::18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.17; Fri, 10 Jul 2026 16:54:16 +0000
+Received: from BN2PEPF00004FC1.namprd04.prod.outlook.com
+ (2603:10b6:208:23f:cafe::30) by MN2PR01CA0057.outlook.office365.com
+ (2603:10b6:208:23f::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.12 via Frontend Transport; Fri,
+ 10 Jul 2026 16:54:16 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 84.19.233.75)
+ smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ opensource.cirrus.com discourages use of 84.19.233.75 as permitted sender)
+Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
+ BN2PEPF00004FC1.mail.protection.outlook.com (10.167.243.187) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.6
+ via Frontend Transport; Fri, 10 Jul 2026 16:54:15 +0000
+Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id E590B406542;
+	Fri, 10 Jul 2026 16:54:14 +0000 (UTC)
+Received: from opensource.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id BEE57820244;
+	Fri, 10 Jul 2026 16:54:14 +0000 (UTC)
+Date: Fri, 10 Jul 2026 17:54:13 +0100
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>,
+        Lee Jones <lee@kernel.org>, Linus Walleij <linusw@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Chen-Yu Tsai <wens@kernel.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+        Marek Vasut <marek.vasut+renesas@gmail.com>,
+        James Ogletree <jogletre@opensource.cirrus.com>,
+        Fred Treven <fred.treven@cirrus.com>,
+        Ben Bright <ben.bright@cirrus.com>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Peter Griffin <peter.griffin@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+        Neal Gompa <neal@gompa.dev>, Chanwoo Choi <cw00.choi@samsung.com>,
+        Luca Ceresoli <luca.ceresoli@bootlin.com>,
+        =?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+        Saravanan Sekar <sravanhome@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
+        mfd@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, patches@opensource.cirrus.com,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org, linux-sound@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        asahi@lists.linux.dev, linux-mediatek@lists.infradead.org,
+        imx@lists.linux.dev, linux-omap@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
+        linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v3 21/23] mfd: Unify style of of_device_id arrays
+Message-ID: <alEjtTiSvVTpc67y@opensource.cirrus.com>
+References: <cover.1783615311.git.u.kleine-koenig@baylibre.com>
+ <e5cc82aa51da5f545f745b126923fdd6085a68a0.1783615311.git.u.kleine-koenig@baylibre.com>
+ <DJUWS6ZZUDS0.2ILHWRFQ1XD1S@bootlin.com>
+ <315a0aec-99e8-4d03-a04b-613acfae1f52@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <315a0aec-99e8-4d03-a04b-613acfae1f52@kernel.org>
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB8574:EE_
-X-MS-Office365-Filtering-Correlation-Id: e61369a3-b0a0-494a-76ad-08dedea353b3
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FC1:EE_|SA0PR19MB4458:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83d4dfbc-63ca-48ec-9d6e-08dedea3e07e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|366016|376014|23010399003|7416014|18002099003|22082099003|4143699003|11063799006|56012099006;
+	BCL:0;ARA:13230040|82310400026|36860700016|61400799027|7416014|376014|23010399003|16102099003|18002099003|22082099003|5023799004|11063799006|56012099006|4143699003;
 X-Microsoft-Antispam-Message-Info:
-	7gIJUee8NwB/WlgHBzCcS012z72hwaYkwNIcVoR1253vyQmSTKhs8YGq/yZF0vLeamcRtDfdfUpFQLWkOHg89v1YSXYuY0REHBSKga0sB2XLc1KI5miAhp6XyCwbENyHd/vZVZIoP49fQPufBU3U8F+BrEIpjAeyOQFL2Gkx2s4DPVyjmbuSRWdyic49rjxiFnskO59J9GP6C1J4YkKd9jfSxW2TUWQZN/jnaoxCK8cWtN1PtieBIYxvFrV70anjyDLdPltvAVU4p2n4XOcMDTR1Ot9Jv0xjRnzxGOY2y7gffYbpqYBOslze5ztSnsCXwPbwWmXFB78LZ+Sk3w8KEkYFGoHXa/vlodZtiB/TYQ3s1F+DnXVn6QjJc+KSEylhlaXmBMqvnZIc83huRVR/FHsfJ5H2t7CdZsLJJC20l7Aff1nGTBeavkhC0+yQG71T50nECC5y3KiHjxg1dbT/eOcrEtzK3UdayduIWW5HOj8p5cjIzpP3V5YaO/7kEwfqcLXow2bPPrpy7dfH2aJ7reX5qy27TOXgazLeMlEkPJWptAlBoZ0pu+E7dj11oJ9abpYnYyes5sgLfBgRlSgrPpAWR0QaA3Cnhieb6dqePbZmyf5X7SMKZbS06flnSewe
+	5/4Lr+tbhbqPodXSAkHEkh6L+55dCUessVj57Kp9Q+4XjSNmxV3SPlUCPJswooj6I0DfpPMChZFRg/9aqSndatwrDrnKIMPZG4bPvpvR48g7gJ2P6ob+n0O2tr0wJ1hn8xgYWV65E3OGE2xH1QK32TjpDjZhF62C06dJXFq2tKUU3pyYU1yzfIYSnXIeDJNy3p/eNmO9csNm6jTAXVy1hXD4jJJGStJVubc/w0U1QBvmBTSTX/TseMeNQRpdM/eLeYkML0MA34Yhr5Ipu6ZGB9hihDhkEY61lCiLdaZHEAHrdsrRZjsmbdlBtK++wKxcmpro6YnKFnhnXCNrv0sW/N94J+FG3JQ3rFct0wzbKdvlNLWptp84FHYvwmP2uRX3gaVl8+sbO7IpniVMilHSo6Uac6mHi/M4DvIvFF+3gb3xLP9mkxwkDPxe/IQ62SBh1pNk8JcUekPcLFaLpyGdHyUEGO7uQKx1rWhmNYpvACwI1/C/rBJqtqaDTQ8ZddCQvMLASNEOP2CXwGDRKR70ABoziyOKTZQb5KzR52HCj0gh/dxxMPiWx3uB44wY6Xjb83Q2qJ3oZq2N0qycDMioUYGEJ4rri3j2QZLQWFtmkl6tAhn6RtCECF253Za9SwJdQFqAFTLUj2eraBiYhVsvuhW15vlm6olEUesNBC3uuOIuApI7+2ibcVHVqR6BowvNI54iKEBp2PEFWnRtdJJLZg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(376014)(23010399003)(7416014)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(61400799027)(7416014)(376014)(23010399003)(16102099003)(18002099003)(22082099003)(5023799004)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UXFzeEdjSjFxQ2lVTCs4SXRFTWMxUW9nUnpkZU04STZUamJ4b1VGcFlnV09R?=
- =?utf-8?B?ZmNrSS9SSkkwc3k0RFBRc0JkK0dwREtUYlcvbHM1cDhOZ0h1bEs3TDVQYUxD?=
- =?utf-8?B?OFFFR3BDdmhUY2ZRdndKZTFtdmtUMGRuZ25wWm9admZhTElGQ2hWSXlYNFBN?=
- =?utf-8?B?dGM0ait2WXNIY082TUQvMXJPQXEwK3ljQ3J2RzBYZEEvU2JFUEN5VHcrcFFu?=
- =?utf-8?B?eUtKT1dwZkRMajdaVXYyaTJuTi8ra3NUTUNzcnkzbnRuQmZXamlQU3FEUk9y?=
- =?utf-8?B?WFYwendUQnJzbzhVUWZpcnhBbUFYaVQ0QVMyQjY4cU1GSGNaNHJSNnZMcVhL?=
- =?utf-8?B?Y042L001cCtCNFE3R3JhQzhUSTdNSlJrcUNCQWNYUHhBbzNhV3ZDTUo0bzlB?=
- =?utf-8?B?L1pnNzlLRVM5a3JjZE12dDNrWWtQMTNlR1RzWnNWcmdTYlJycU9aYXZVSTB4?=
- =?utf-8?B?NjNuSVU2KzI1LzVkMjd3R2JwVlhCYnBhN1hFV3djVHlCNDlJR05OVmlvc2NZ?=
- =?utf-8?B?S0d6V042eXhtT3FzdTdiQWRSZXB1UEpDS1MxRVZxajF2eDZSR2VkUHFncmMv?=
- =?utf-8?B?YjZrUi85bHNwb0tYTkRQeGVIRFZhbzdwYnVnZHZTdGhjeHYybVEvQzUxYlVS?=
- =?utf-8?B?Y1pIK3gxTGN6K2xyMktMZ3RISG1ZV1RxQ2xkemJNNUlFb05XRlNIQlp2YVVq?=
- =?utf-8?B?eE4xQjVrcEN5dnFmZVlmSE8waVBWeWhMMGYvUjJTVFIxVGRDdllucU55VnJI?=
- =?utf-8?B?eHorM0pqU2x0OGR4aWI2K1FTS1FqMWdyRVhiZ1l6Wk5lZVZyVmMwQ0syWGF3?=
- =?utf-8?B?bFNZemhjU0FpMGxyVlBJRnVvdmdFTjNFZmd5N0Z5MDNtd0NwLytDbjVvdmNs?=
- =?utf-8?B?cHZQU05HcG1DN1FRMk53cGRWd0R4MTh1c0Vmc2NKRURQNndCbWJCbHkxcEhh?=
- =?utf-8?B?Y0x0TW9yVDNCS2VUSTVtbEZrWVVYanduZXQzRWtsT05yL3hVVnZZZ25XUjFx?=
- =?utf-8?B?OFBJYzdUKzY3cU5aU01ISGNhT1pUK1BrV2FRVWtZZjh1Tkd6QXhUSXBhTVlH?=
- =?utf-8?B?MFlITnhUN3d6cUI5RHhWMFgrZGhLV3BKN0lFcFRUK1NnUWwrWEFQSW9HTEdV?=
- =?utf-8?B?S2J0aXo4aTBkcCt5MjY3djhGZzJ6a1gxSCtHTzBvbG9SQ0ZxcTlkZlpsQ1BJ?=
- =?utf-8?B?eURKSUhnUkNlSmxHYXl6QkM5Um1xVUVJTGowTnUwMnhOL201OUlVWHFJOHVW?=
- =?utf-8?B?T3RVVUNVRTZxREloY2laWHJ6V0ttRmNSS0JBTlZ6czl4dUtTQzArWDBhME5y?=
- =?utf-8?B?c2RadjBlQlpSQXd3U0hKaklVL2RmOFdlb1BSRFQxOWtnS0lQSG5sTDZsYVVR?=
- =?utf-8?B?b1piVmNTRUdoYlhUSUpGTU1BcHZJajRmUUNVQmJaUDNKVHBiRTNLNStZT29V?=
- =?utf-8?B?K2swNGNhNFk3QkRURGswKzRpUFBUU25oR2p1RnJKcHMxS1dIMm5HeVFMK0tG?=
- =?utf-8?B?T1dOT2l1ZU1sTHpBYlpUVDJiaXFza3lwWU8zMy92RVBPaFZXclZsOE00WHk5?=
- =?utf-8?B?eHRKTVF5QkFVTXhjOE9ZS3lwOWxXcG1GUk1VOUZlLzhHQ05rWDBZRWtLQ3R3?=
- =?utf-8?B?NXJwTTJXZG9kaFNOay9jeDNBMEUxR0hMZ3NiNzdkVUVwY29Od2gwN2dYVE5q?=
- =?utf-8?B?T0ovRHJXYUNPekNscktlSVdpNlpCSmhwcU1ub0d0MUFqNlc1Sm5qcjFqbnc0?=
- =?utf-8?B?cTZNVHc3SkE4c0grdlhvVUNNRDdRaFVlR1FrcFJlOXF2eHNmZHFxVFFudnRE?=
- =?utf-8?B?RlVQdUJpTjVzTVdyNWgyOGhGSklsL2VkK0l3eXhCWHZyU3ovZUxmNnY4NVBD?=
- =?utf-8?B?ZWRGMmVBU1VwQkhRRkF4cktLWFNjTk5MbkU4QmF1SzFUSlRwT3AySjExVFVN?=
- =?utf-8?B?Y095MVp5NWhtQmpLMVVuOEk2QmpTdlIzMWJEN1BsZmNCYWVRLzNSMFY1RU11?=
- =?utf-8?B?dEVwYWwwN1ZrZTJDdmIxVkR0ZXZFNmJWU2xrZ20zUjFXeVVVbDJqVlhwUEFm?=
- =?utf-8?B?SFdoRUc4NFMvcTVSOWFpclV2NGZwR3p4V3c2dkZHNFdUYXZTMHdGOUFuWmkv?=
- =?utf-8?B?dk00cTFPejE3ZjM0d2t3U1JLVVIwM0xJL1Z6NGFEdldxV21LSHp6UFN0b0k1?=
- =?utf-8?B?VEorZloydmhrd0hjZ3BPM1haSkRaSkVnUWxCZFR2VXAyaVJMYWVkY2tsK0JB?=
- =?utf-8?B?V0gvMnJJZVJFWSs2cGx6Y29GYlFDZURTSklqQ0lyeGpHbFliS0w2M2phV3Ur?=
- =?utf-8?B?R0p0dWw0OHVTNU1LbWFQdnRpdUxVWjdZNXoyZzArWk1xeDZRczdrN3NmZGt4?=
- =?utf-8?Q?ZcE0S9gj13wEwGpN031a4zx5sGQBxKSKCzofz?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e61369a3-b0a0-494a-76ad-08dedea353b3
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 16:50:20.2404
+	JoOFsxH1ffJr3SMgRwVqC4RiJg6aW2HJU7koyN0AjnX/OVLH0tXhb5s11mMmXHgkIeJj1OQv+fMLQ/J5QHx3GeKewE6eMEsI5w9NiBHVUSA0XmL2lyCzhAskRQ6rPVu9f+4lN2gWXg4Ad7fhbyCBgOoIXp8AQTqSmSzDV4bJGzcTHs2ifj/k3r2pSeAbGpnCZ+B7VvhFHNa7MO5KdsNFhLMmwRYENyVIuJmu9JZ9jV4omu+9U7F+2NM8cSmd+ZTrTBiY80wLtpu6ATvVZf3K6eFe+wHnnPraFTnqxGTTESbn1UNLhGQdyg6EijOpdxMCnwcK/MQ+p9RHV+gowNhrAd/VPzQpliVaosUYbEH5gb8X3Ui00fu0Brq8MrrdpoDDg5bYhIyBky2hk4pkbaerq4fMrGFzwmESrpV8UNTSnlO21qNbjLqzn60nenQoCUDB
+X-Exchange-RoutingPolicyChecked:
+	Xp101HBMD9YUUXSGEQN6ky2NAr3PtWXk0VOnL7cTFQQFJTuYwyNLANyxUDK19qFP1uKuMR7DUisWRdwwb/fQDh5njNbIJjY7fFmKNe7K2u/cTiR3Jf5M93KNA98fHws+n0XGtVoeLcGBB2AHO6hjJPrzoecfZNzqvCp6f/62wKHw7EyHvOF75wHHBUE8I1a4Bzfxb4+1CdkxZ4wZISubVl8U47s/IiNg6jsvkgMLKbDsFEI/4Q9/MkZyj7S+CKPkX6mj4brl7UDn1tL3EC8ObxNq9w/RVaprqm9LH5IzCdZ6Al6NLquhVFJALJD/37jmyfmMXtYAxjHAWSE3ePQdiw==
+X-OriginatorOrg: opensource.cirrus.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 16:54:15.8418
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jHFDElt7xNQUiTpJF+V6dwKX/L/uGiJt0bwvzBKymVrXDZ+7s43iR1wuHsd1mH+X7LqewWuBaryfIq+0TL3r0Ff1bdu4/r0ieF6TVu5dKsICkB3zkJcvl/gF9jLHmYll
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8574
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83d4dfbc-63ca-48ec-9d6e-08dedea3e07e
+X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-BN2PEPF00004FC1.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR19MB4458
+X-Proofpoint-GUID: 25obz_yyNkCnp7YlV3Vkq9nrrYZ2wkQZ
+X-Proofpoint-ORIG-GUID: 25obz_yyNkCnp7YlV3Vkq9nrrYZ2wkQZ
+X-Authority-Analysis: v=2.4 cv=LNBWhpW9 c=1 sm=1 tr=0 ts=6a5123bb cx=c_pps
+ a=5CsiemZREWOr6tJEzaiJew==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=8nJEP1OIZ-IA:10 a=RAioF0-LDSMA:10 a=s63m1ICgrNkA:10 a=RWc_ulEos4gA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=iX4cTi3TZMoOKdANLEfx:22 a=KfkQE9S9VqCBgivYGm0O:22
+ a=KKAkSRfTAAAA:8 a=w1d2syhTAAAA:8 a=tVKXKcanaTD3nCZxYbUA:9 a=3ZKOabzyN94A:10
+ a=wPNLvfGTeEIA:10 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEwMDE2OSBTYWx0ZWRfX/oW/6gBxVPFi
+ Qhi4uwSdb7NM/Uf8jm/aoJCHoFK3nEX5W7ba+ZDO11MzMmxW9p1Dgqw/yLvM6RA96yF+nP0zYY8
+ RL+yhsPLS2xZqGRLHDOOmhIN3phX0ygTMbp8ZEkbk6XATyW75ZSjP2fm+ZqsAE4ya6Cr2KzWKno
+ iUfpgPowO97vk3z9Y/bxfI1pRehKQ2mhRaFaoQzJvURF2BKFOHw5JIfCFPc1Gue7sfJvLlOY7/p
+ oNPHLEYYQKcs6FTVrN73cIuL3JYyBetIHcAfiKiPOz1SnlHE6BRpuAnNlGU8JcgYko2Wv02oVCy
+ VEoTb3RTeC1is2wwc5HQpjd2wkDV+xorAxoFY59BmQ2mKSQpzjALauOc51MJDWgwYZVB4DrdRMq
+ jTnfHplE0sTfv0wPtR/2AfXJCUjhYn8wAL36RTgHUL5k0axZQBT4OkrnXYqWoFbJ8eM5y8yxodP
+ RGTzm1bOz1vOi0gH4fQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEwMDE2OSBTYWx0ZWRfX1hRY44W9w1P2
+ 2Avh9ilPdk4PhQ1wNCnK5zb4FBq0ljGqyJ8nhmkgQM84FP1Mh41Ry2uvFhATqpceGJ3HPcx7ejW
+ 5s+ovOGNZ74U/NKh3LKFpGM4F4+GdBA=
+X-Proofpoint-Spam-Reason: safe
 
-On Fri, Jul 10, 2026 at 10:15:24PM +0530, Verma, Devendra wrote:
->
->
-> On 09-Jul-26 21:03, Frank.Li@oss.nxp.com wrote:
-> > Verma, Devendra:
-> > 	Can you help check if block non-ll mode?
-> >
->
-> The current patch series is tested for non-LL mode.
-> The testing included varying data sizes for transfer and running
-> C2H (Write) & H2C (Read) for a specified duration on all the 8 Read
-> and 8 Write channels.
-> non-LL code works fine with this patch series.
-> Tested-By: Devendra Verma <devendra.verma@amd.com>
+On Fri, Jul 10, 2026 at 03:15:17PM +0200, Krzysztof Kozlowski wrote:
+> On 10/07/2026 15:00, Mathieu Dubois-Briand wrote:
+> > On Thu Jul 9, 2026 at 6:58 PM CEST, Uwe Kleine-K�nig (The Capable Hub) wrote:
+> >> These arrays already mostly match the most used and generally
+> >> recommended coding style. That is:
+> >>
+> >>  - no comma after the list terminator;
+> >>  - a comma after an initializer if (and only if) the closing } is not
+> >>    directly following;
+> >>  - no explicit zeros in the list terminator;
+> >>  - a space after an opening { and before a closing }, a single space in
+> >>    the list terminator;
+> >>
+> >> Adapt the offenders accordingly.
+> >>
+> >> Reviewed-by: Andr� Draszik <andre.draszik@linaro.org> # for Maxim MAX77759
+> >> Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> 
+> Thesr are all Acks, not reviews. Entire commit will now carry multiple
+> review tags, implying it was reviewed by 3 or more people but none of
+> these people actually reviewed the commit. None!
+> 
+> They looked at one line out of 100.
 
-Can you post at v6 again, Sorry, I just missed this email during prep v6
-for sashiko report problem.
+Technically 16 lines out of 375 ;-)
 
-Frank
+> This is ridiculous.
+> 
+> Quoting:
+> "Reviewed-by:, instead, indicates that the patch has been reviewed and
+> found acceptable according to the Reviewer's Statement:"
+> 
+> Not piece of a patch. THE PATCH.
 
->
-> -Devendra
->
-> > Basic change
-> >
-> > struct dw_edma_desc *desc
-> >         └─ chunk list
-> >              └─ burst list
-> >
-> > To
-> >
-> > struct dw_edma_desc *desc
-> >              └─ burst[n]
-> >
-> > Flatten desc structions and simplify code.
-> >
-> > I only test eDMA part, not hardware test hdma part.
-> >
-> > The finial goal is dymatic add DMA request when DMA running. So needn't
-> > wait for irq for fetch next round DMA request.
-> >
-> > This work is neccesary to for dymatic DMA request appending.
-> >
-> > The post this part first to review and test firstly during working dymatic
-> > DMA part.
-> >
-> > performance is little bit better. Use NVME as EP function
-> >
-> > Before
-> >
-> >    Rnd read,    4KB,  QD=1, 1 job :  IOPS=6660, BW=26.0MiB/s (27.3MB/s)
-> >    Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
-> >    Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
-> >    Rnd read,  128KB,  QD=1, 1 job :  IOPS=914, BW=114MiB/s (120MB/s)
-> >    Rnd read,  128KB, QD=32, 1 job :  IOPS=1204, BW=151MiB/s (158MB/s)
-> >    Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1255, BW=157MiB/s (165MB/s)
-> >    Rnd read,  512KB,  QD=1, 1 job :  IOPS=248, BW=124MiB/s (131MB/s)
-> >    Rnd read,  512KB, QD=32, 1 job :  IOPS=353, BW=177MiB/s (185MB/s)
-> >    Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
-> >    Rnd write,   4KB,  QD=1, 1 job :  IOPS=6241, BW=24.4MiB/s (25.6MB/s)
-> >    Rnd write,   4KB, QD=32, 1 job :  IOPS=24.7k, BW=96.5MiB/s (101MB/s)
-> >    Rnd write,   4KB, QD=32, 4 jobs:  IOPS=26.9k, BW=105MiB/s (110MB/s)
-> >    Rnd write, 128KB,  QD=1, 1 job :  IOPS=780, BW=97.5MiB/s (102MB/s)
-> >    Rnd write, 128KB, QD=32, 1 job :  IOPS=987, BW=123MiB/s (129MB/s)
-> >    Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1021, BW=128MiB/s (134MB/s)
-> >    Seq read,  128KB,  QD=1, 1 job :  IOPS=1190, BW=149MiB/s (156MB/s)
-> >    Seq read,  128KB, QD=32, 1 job :  IOPS=1400, BW=175MiB/s (184MB/s)
-> >    Seq read,  512KB,  QD=1, 1 job :  IOPS=243, BW=122MiB/s (128MB/s)
-> >    Seq read,  512KB, QD=32, 1 job :  IOPS=355, BW=178MiB/s (186MB/s)
-> >    Seq read,    1MB, QD=32, 1 job :  IOPS=191, BW=192MiB/s (201MB/s)
-> >    Seq write, 128KB,  QD=1, 1 job :  IOPS=784, BW=98.1MiB/s (103MB/s)
-> >    Seq write, 128KB, QD=32, 1 job :  IOPS=1030, BW=129MiB/s (135MB/s)
-> >    Seq write, 512KB,  QD=1, 1 job :  IOPS=216, BW=108MiB/s (114MB/s)
-> >    Seq write, 512KB, QD=32, 1 job :  IOPS=295, BW=148MiB/s (155MB/s)
-> >    Seq write,   1MB, QD=32, 1 job :  IOPS=164, BW=165MiB/s (173MB/s)
-> >    Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=250, BW=126MiB/s (132MB/s)
-> >    IOPS=261, BW=132MiB/s (138MB/s
-> >
-> > After
-> >    Rnd read,    4KB,  QD=1, 1 job :  IOPS=6780, BW=26.5MiB/s (27.8MB/s)
-> >    Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
-> >    Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
-> >    Rnd read,  128KB,  QD=1, 1 job :  IOPS=1188, BW=149MiB/s (156MB/s)
-> >    Rnd read,  128KB, QD=32, 1 job :  IOPS=1440, BW=180MiB/s (189MB/s)
-> >    Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1282, BW=160MiB/s (168MB/s)
-> >    Rnd read,  512KB,  QD=1, 1 job :  IOPS=254, BW=127MiB/s (134MB/s)
-> >    Rnd read,  512KB, QD=32, 1 job :  IOPS=354, BW=177MiB/s (186MB/s)
-> >    Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
-> >    Rnd write,   4KB,  QD=1, 1 job :  IOPS=6282, BW=24.5MiB/s (25.7MB/s)
-> >    Rnd write,   4KB, QD=32, 1 job :  IOPS=24.9k, BW=97.5MiB/s (102MB/s)
-> >    Rnd write,   4KB, QD=32, 4 jobs:  IOPS=27.4k, BW=107MiB/s (112MB/s)
-> >    Rnd write, 128KB,  QD=1, 1 job :  IOPS=1098, BW=137MiB/s (144MB/s)
-> >    Rnd write, 128KB, QD=32, 1 job :  IOPS=1195, BW=149MiB/s (157MB/s)
-> >    Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1120, BW=140MiB/s (147MB/s)
-> >    Seq read,  128KB,  QD=1, 1 job :  IOPS=936, BW=117MiB/s (123MB/s)
-> >    Seq read,  128KB, QD=32, 1 job :  IOPS=1218, BW=152MiB/s (160MB/s)
-> >    Seq read,  512KB,  QD=1, 1 job :  IOPS=301, BW=151MiB/s (158MB/s)
-> >    Seq read,  512KB, QD=32, 1 job :  IOPS=360, BW=180MiB/s (189MB/s)
-> >    Seq read,    1MB, QD=32, 1 job :  IOPS=193, BW=194MiB/s (203MB/s)
-> >    Seq write, 128KB,  QD=1, 1 job :  IOPS=796, BW=99.5MiB/s (104MB/s)
-> >    Seq write, 128KB, QD=32, 1 job :  IOPS=1019, BW=127MiB/s (134MB/s)
-> >    Seq write, 512KB,  QD=1, 1 job :  IOPS=213, BW=107MiB/s (112MB/s)
-> >    Seq write, 512KB, QD=32, 1 job :  IOPS=273, BW=137MiB/s (143MB/s)
-> >    Seq write,   1MB, QD=32, 1 job :  IOPS=168, BW=168MiB/s (177MB/s)
-> >    Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=255, BW=128MiB/s (134MB/s)
-> >     IOPS=266, BW=135MiB/s (141MB/s)
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > Changes in v5:
-> > - Fix cover letter typo
-> > - Fix double subtract found by sashiko AI
-> > - Link to v4: https://patch.msgid.link/20260708-edma_ll-v4-0-cc128f0afb61@nxp.com
-> >
-> > Changes in v4:
-> > - collect Koichiro Den test by tags
-> > - use addr in argument when set ll address, found by sashiko
-> > - fix iterate burst problem when exceed max link list, found by sashiko
-> > - Link to v3: https://patch.msgid.link/20260702-edma_ll-v3-0-877aa463740c@nxp.com
-> >
-> > Changes in v3:
-> > - remove patch dmaengine: dw-edma: Remove ll_max = -1 in dw_edma_channel_setup()
-> > - rebase to vnod's dmaengine topic/config_prep_api
-> > - Add non-ll-start() callback to handle non-ll mode transfer
-> > - Link to v2: https://lore.kernel.org/r/20260109-edma_ll-v2-0-5c0b27b2c664@nxp.com
-> >
-> > Changes in v2:
-> > - use 'eDMA' and 'HDMA' at commit message
-> > - remove debug code.
-> > - keep 'inline' to avoid build warning
-> > - Link to v1: https://lore.kernel.org/r/20251212-edma_ll-v1-0-fc863d9f5ca3@nxp.com
-> >
-> > ---
-> > Frank Li (10):
-> >        dmaengine: dw-edma: Move control field update of DMA link to the last step
-> >        dmaengine: dw-edma: Add xfer_sz field to struct dw_edma_chunk
-> >        dmaengine: dw-edma: Move ll_region from struct dw_edma_chunk to struct dw_edma_chan
-> >        dmaengine: dw-edma: Pass down dw_edma_chan to reduce one level of indirection
-> >        dmaengine: dw-edma: Add helper dw_(edma|hdma)_v0_core_ch_enable()
-> >        dmaengine: dw-edma: Add callbacks to fill link list entries
-> >        dmaengine: dw-edma: Add non_ll_start() callback
-> >        dmaengine: dw-edma: Use common dw_edma_core_start() for both eDMA and HDMA
-> >        dmaengine: dw-edma: Use burst array instead of linked list
-> >        dmaengine: dw-edma: Remove struct dw_edma_chunk
-> >
-> >   drivers/dma/dw-edma/dw-edma-core.c    | 218 ++++++++----------------------
-> >   drivers/dma/dw-edma/dw-edma-core.h    |  65 ++++++---
-> >   drivers/dma/dw-edma/dw-edma-v0-core.c | 240 +++++++++++++++++-----------------
-> >   drivers/dma/dw-edma/dw-hdma-v0-core.c | 169 ++++++++++++------------
-> >   4 files changed, 304 insertions(+), 388 deletions(-)
-> > ---
-> > base-commit: c9e9927c6d8346cdf6555a8f97da093980172e4b
-> > change-id: 20251211-edma_ll-0904ba089f01
-> >
-> > Best regards,
-> > --
-> > Frank Li <Frank.Li@nxp.com>
-> >
->
+More than happy for it to be switched to an ack if that is the
+preferred process when reviewing parts of larger patches. I have
+always just indicated the parts of the patch reviewed whilst
+responding, apologies for my ignorance of the process. Would
+probably be an idea to update the docs with a specific comment
+for this case I am not sure that is as obvious to me as it was to
+you, and it is very common to be reviewing a part of a larger patch.
+
+Thanks,
+Charles
