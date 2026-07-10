@@ -1,147 +1,75 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000103E51FC
-	for <imx@lists.linux.dev>; Fri, 10 Jul 2026 08:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783671533; cv=pass; b=X2fnD7lkZphNCSnTN5y2MDX7+ohGt9vF9SO8INJefbk0mARoNvjmyFEMlWwH6tcJFqsoz2DNCW6/o+Lw/8cDmm8KSxo0ZjVkMLZO061OD2r+slxSb4r+YweB6lHbziTkN4Dmeo86RlzObbOh+zW8tyxb+/aziHTDIvk+UDKojto=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783671533; c=relaxed/simple;
-	bh=A6yuDsR2nZi6+auXXFpGtmRTYQlKL2m32zKzAUWpsuY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bUxOksulTCDcOE+6ZW59fCWyxQruvCUAjLNSjJH50MhtiMW6LK/IPi/aa6YYVjTb0nILK0V7iZhH291r8xmrhbq2/Mr/+LHMC+0bDUfaMM5Y/ubqjEEMdBv4zGcEyL9g4pqf+O+3waHZhkPL2XY9Ly1dPpns5B5L4HnLu7PCs54=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=michael.riesch@collabora.com header.b=FFnMn0Cf; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7213EEAF8;
+	Fri, 10 Jul 2026 08:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783671614; cv=none; b=GZLhSSMu3bwzuCMBbACLQMTFQ+UQKnH5jkvlEjVC4p7yk9xI8heJpWzA0ggD/qrNAeafU8mV//l5octOpaHdB5j5W2/wMJnwl2URE9Gt5Y1XjUuYH24yz80jwyNIItD5XA1OeffZ6zG0cp4VNqd3Fo3BO4NOpNLcrofGQ8ya8aM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783671614; c=relaxed/simple;
+	bh=WBv4g3SERUXVfGCwMZXdY1BqMEw5ovh8+sE1MB26oOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ps7tmPSoB/fENEW27tLPebjTBILsgynchKkWp29om7s1OVKIr9+DRTsGw1V/cdLGlJpFFP93LXa7iSUGJm5O+1i22w66b2brpmeu2PZVfrrkm8ZUND9awEt3lE61RsRW35mhZWkPqN/0Qd+ZBPe3ra6S3N0OOFs1Nzt9xQAiAZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=mPtOGxo0; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=michael.riesch@collabora.com header.b="FFnMn0Cf"
-ARC-Seal: i=1; a=rsa-sha256; t=1783671496; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=n1lilrOhB4g5YW6x6G9IiFkIE7cfPY646RXZhmeBeRU8vt/Xx9bipqzOH437Yw97SoOGWsi6diBYmTI0TYz7Spkgc8HTkBcyOyMzfh59yPBSw05OA6h2azT2bgsLebTK/kztYKqSVt1g4J+Lfr3EC3HBXmEksib7LE6CevODMbI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783671496; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=wNhWASr7b/ZTOhcTDo/rAGZJQBNr7Kmww1CuII50ggg=; 
-	b=KzVJV3qeyarguw6hz9kE7z6vCLOBH41NDHxBP60XjAWbYdVyRx4BdzoxPYnBsKXqISCpPpiknHP/lbrKwWbfZSlZj8qPWnerYwHuVZfthM/RiwyHsk1sJsbpbDcruZtep4SIczOrhwHVxxhJF8ObBRv1kKP+7ED7nKrf1V47Ws0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=michael.riesch@collabora.com;
-	dmarc=pass header.from=<michael.riesch@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783671496;
-	s=zohomail; d=collabora.com; i=michael.riesch@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=wNhWASr7b/ZTOhcTDo/rAGZJQBNr7Kmww1CuII50ggg=;
-	b=FFnMn0CfDn5F3352XtaZr/QmRsRz8rLmzZocUKukr5Ojp1+hiTHPyc3rbW2Zy+S1
-	bOUZDwihK/kW3HXc+EyDdMZPXBcsEVnrUiNVKyPQWNQCSgGFPDMhHaTIewGDobgikZT
-	oCrvfmpvHCAuKEHCF4PM+K5AHYqHi8YICnThQ1PA=
-Received: by mx.zohomail.com with SMTPS id 1783671494588655.4558382967103;
-	Fri, 10 Jul 2026 01:18:14 -0700 (PDT)
-Message-ID: <66d4ed68-f8b1-4275-96de-83d1125d49c9@collabora.com>
-Date: Fri, 10 Jul 2026 10:18:05 +0200
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="mPtOGxo0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=K6D5rhqdc9cjQivBsJt7uQxaSWphCdpgMsHZkpUgSGo=; b=mPtOGxo0IcJ0LlIFhsBANc2Njt
+	DlF74zV6UPkJCOHGVm7rgCk20p/hBxHvYYKDow7yeMDeHv1+Fp5oLZo7xV6BQxA2AhyA/Hb9VBq0K
+	PauR3gsqxngfflaufXLF6qc/Y4BwepGXSK5gniH45PJ+BB54amPraLavHkFFXpiaNdH0D2RCKJWQo
+	1MwEnSAcaVWuXKhJ0kyaSBDwyx1EjtJzVIjCaWsV2HsJgLXTfsslFgjQQYo1kJZ5Ii7jM8tsNVtp4
+	Ov8sdeOg5T+K4/CBw6xrfDr41QgQYzeufV+2qKYdh2lHRAtzHnBaWn+sv1yIrhNf3cr89yFUT7x5E
+	EKR40Jkw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wi6Sd-004LUY-1f;
+	Fri, 10 Jul 2026 08:19:51 +0000
+Date: Fri, 10 Jul 2026 01:19:45 -0700
+From: Breno Leitao <leitao@debian.org>
+To: xiaoning.wang@oss.nxp.com
+Cc: Frank.Sae@motor-comm.com, andrew@lunn.ch, hkallweit1@gmail.com, 
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, xiaoning.wang@nxp.com
+Subject: Re: [PATCH net V2] net: phy: motorcomm: read EEE abilities in
+ yt8521_get_features()
+Message-ID: <alCrGOlOj2oof7Xm@gmail.com>
+References: <20260710080018.1070789-1-xiaoning.wang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/7] media: dt-bindings: video-interface-devices: add
- video-interface-devices.h references
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jacopo Mondi <jacopo@jmondi.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Jimmy Su <jimmy.su@intel.com>,
- Matthias Fend <matthias.fend@emfend.at>,
- Mikhail Rudenko <mike.rudenko@gmail.com>,
- Daniel Scally <dan.scally@ideasonboard.com>,
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
- Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
- Sylvain Petinot <sylvain.petinot@foss.st.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Paul Elder <paul.elder@ideasonboard.com>,
- Martin Kepplinger <martin.kepplinger@puri.sm>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- Tommaso Merciai <tomm.merciai@gmail.com>,
- Svyatoslav Ryhel <clamor95@gmail.com>,
- Richard Acayan <mailingradian@gmail.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
- linux@ew.tq-group.com, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-References: <20260628-kbingham-orientation-v3-0-4ed92968aff8@ideasonboard.com>
- <20260628-kbingham-orientation-v3-2-4ed92968aff8@ideasonboard.com>
-Content-Language: en-US
-From: Michael Riesch <michael.riesch@collabora.com>
-In-Reply-To: <20260628-kbingham-orientation-v3-2-4ed92968aff8@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710080018.1070789-1-xiaoning.wang@oss.nxp.com>
+X-Debian-User: leitao
 
-Hi Kieran,
-
-On 6/28/26 12:22, Kieran Bingham wrote:
-> Expand the documentation of the video-interface-devices orientation to
-> reference the include/dt-bindings/media/video-interface-devices.h header
-> which provides human readable defines for the orientation enum, to help
-> avoid hardcoding values in dts.
+On Fri, Jul 10, 2026 at 04:00:18PM +0800, xiaoning.wang@oss.nxp.com wrote:
+> From: Clark Wang <xiaoning.wang@nxp.com>
 > 
-> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-
-Acked-by: Michael Riesch <michael.riesch@collabora.com>
-
-Thanks and best regards,
-Michael
-
-> ---
->  .../bindings/media/video-interface-devices.yaml         | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
+> In phy_probe(), genphy_c45_read_eee_abilities() is only called when a
+> driver uses phydrv->features. Drivers that implement .get_features are
+> responsible for reading the EEE abilities themselves.
 > 
-> diff --git a/Documentation/devicetree/bindings/media/video-interface-devices.yaml b/Documentation/devicetree/bindings/media/video-interface-devices.yaml
-> index a81d2a155fe6..c9c3f4f16719 100644
-> --- a/Documentation/devicetree/bindings/media/video-interface-devices.yaml
-> +++ b/Documentation/devicetree/bindings/media/video-interface-devices.yaml
-> @@ -392,17 +392,22 @@ properties:
->        The orientation of a device (typically an image sensor or a flash LED)
->        describing its mounting position relative to the usage orientation of the
->        system where the device is installed on.
-> +      See include/dt-bindings/media/video-interface-devices.h.
-> +
->      $ref: /schemas/types.yaml#/definitions/uint32
->      enum:
-> -        # Front. The device is mounted on the front facing side of the system. For
-> -        # mobile devices such as smartphones, tablets and laptops the front side
-> -        # is the user facing side.
-> +        # MEDIA_ORIENTATION_FRONT
-> +        # The device is mounted on the front facing side of the system. For
-> +        # mobile devices such as smartphones, tablets and laptops the front
-> +        # side is the user facing side.
->        - 0
-> -        # Back. The device is mounted on the back side of the system, which is
-> +        # MEDIA_ORIENTATION_BACK
-> +        # The device is mounted on the back side of the system, which is
->          # defined as the opposite side of the front facing one.
->        - 1
-> -        # External. The device is not attached directly to the system but is
-> -        # attached in a way that allows it to move freely.
-> +        # MEDIA_ORIENTATION_EXTERNAL
-> +        # The device is not attached directly to the system but is attached in
-> +        # a way that allows it to move freely.
->        - 2
->  
->  additionalProperties: true
+> yt8521_get_features() does not do this, so phydev->supported_eee stays
+> empty for YT8521/YT8531S and "ethtool --show-eee" reports "EEE status:
+> not supported", even though the PHY has the standard EEE capability
+> registers.
 > 
+> Call genphy_c45_read_eee_abilities() at the end of yt8521_get_features()
+> to populate supported_eee.
+> 
+> Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521 gigabit ethernet phy")
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 
+Reviewed-by: Breno Leitao <leitao@debian.org>
