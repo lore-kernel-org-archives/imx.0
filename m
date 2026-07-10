@@ -1,72 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1664266A8;
-	Fri, 10 Jul 2026 12:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7023B4279E4;
+	Fri, 10 Jul 2026 12:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783686821; cv=none; b=RzCLzR0o4rRcoVhlJzCTuMgiHT2NFt2b5vjxzOYSo3Fr9GyFE6/Ur0GPy51+x3yK8tBGzf9oDT3N9+0fQ5zEJnTz0syK/yqX8jRXpTNBnug/SgaIEbt95HM1mFgT46mw7khOrCNEdubw+KrJkwOITpV3wV5C3yJIHlDhJ1aPI/U=
+	t=1783688288; cv=none; b=fywrYFHC+VhQvz2zQq12wBNpdKgXagrAwZuKDghaGFjDB5fSsgLiU7pWpJvC5tr3ovajnWAgWvny8lBmDNoGJGOnOEwCEPKzuGm5UuzPuVmklO95rsiqLepLqb6Ic/X4ELwKspEJbZDP6f/1U4ba7HsU0+3CZ6+Ly7LaKWXfYRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783686821; c=relaxed/simple;
-	bh=44sDJm9Q4dJ5FvMNDcKQuBJZxQA44oMgkthYo0Mgl3Y=;
+	s=arc-20240116; t=1783688288; c=relaxed/simple;
+	bh=lrkkoQAn3SzjQxs27pqXKcHV/Cx73M9esAvvS1J8F0s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NgGlDFwZN+20+b3XbiKWSrmn5BTa9jNQNByRNiEtJt+kio/lryW5aBzRUfHvAWPPKfAe9RXhpsE0DzMeCa2Yo/RCfT/lIgKm9fLwryLdcDUIRqeSAc+Aoxt7vCWzU2Wbj2RoP96NsLuI1tLAVnzyjI+Slwq25vZqHMMA+pqKHQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSi6wN5m; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=VC6zS54LJ/ALrixwCJ0y+cbnHs/gqFwEwb6uh6s2Y4JQpsNpxb+clXwlYsmhWfcJdYGduyEonikwJZhVJ16Xne3UczVSF8aKJHm1TgW4BYZrbtSyto/jJR6HoSN9zi63wWFa06qxJNPQNug8MzJQu+qGa6QhSal86L0L+8H0qes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgmVy2cV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSi6wN5m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8271F000E9;
-	Fri, 10 Jul 2026 12:33:38 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgmVy2cV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E8B1F000E9;
+	Fri, 10 Jul 2026 12:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783686819;
-	bh=b130bPAJHPNf/pKE6j8b+YefwbbZ9vGIzK3XSyiPhaw=;
+	s=korg; t=1783688286;
+	bh=CtGVFGGmzdxDyBQbWhj0761znkhrhApCkJzSpjQnaCI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nSi6wN5mBUuDgAFXA5HTlCsy00feN6LpmFRylXWtoPjHKTzqWNVFnhVM2UZ8eiwVM
-	 G6Ir838afNlquhcnb13tMc8l7k/5u/YthY+CiPZnWYCmsF7MSDkuwfohMUNsE4BysB
-	 WtSUyQWFHeCuhfhFERZD/g4VJyDJ+FZRy1UZmv8A=
-Date: Fri, 10 Jul 2026 14:33:35 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-serial@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-kernel@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCHv3 0/6] serial: mxs-auart: devm conversion, clock rework,
- and IRQ ordering fixes
-Message-ID: <2026071011-geiger-smugly-4069@gregkh>
-References: <20260611033856.6476-1-rosenp@gmail.com>
+	b=NgmVy2cV93CaRJ6YwwStzTzAPPoR7WMvDiCxPehOkp5lC61Q9Cpl/3l29QYgR5/z9
+	 +/a1BkimCGgEm1fbTs5GCNQmU84GxVvIRc60DRfYU5rVz+o/im/TOklbvkG88ceuER
+	 v/C9+gfYfdTazGA1J9V2Y7MzcODLcLa9jpBqLupo=
+Date: Fri, 10 Jul 2026 14:58:02 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xu Yang <xu.yang_2@oss.nxp.com>
+Cc: Frank Li <Frank.li@oss.nxp.com>, kees@kernel.org,
+	christophe.jaillet@wanadoo.fr, xu.yang_2@nxp.com,
+	hataegu0826@gmail.com, balbi@ti.com, andrzej.p@samsung.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH] usb: gadget: f_uac1_legacy: fix inverted NULL check
+ after kstrndup()
+Message-ID: <2026071019-parkway-captivate-086f@gregkh>
+References: <20260625113154.1954813-1-xu.yang_2@oss.nxp.com>
+ <2026070831-peso-aluminum-df0c@gregkh>
+ <ak64635tgUj3MPEx@SMW015318>
+ <2026070922-density-onto-3ce6@gregkh>
+ <n7h2d72m2lqdnrtvlbztwrkfmmzsh2nbb77luwomxrcyrpimuk@fdlg44plusyw>
+ <2026070908-semisweet-parabola-4a48@gregkh>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260611033856.6476-1-rosenp@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2026070908-semisweet-parabola-4a48@gregkh>
 
-On Wed, Jun 10, 2026 at 08:38:50PM -0700, Rosen Penev wrote:
-> This series cleans up the mxs-auart driver by converting to devm-managed
-> resources, fixing clock prepare/enable ordering, and addressing IRQ
-> registration races.
+On Thu, Jul 09, 2026 at 08:48:08AM +0200, Greg KH wrote:
+> On Thu, Jul 09, 2026 at 02:23:51PM +0800, Xu Yang wrote:
+> > On Thu, Jul 09, 2026 at 07:33:03AM +0200, Greg KH wrote:
+> > > On Wed, Jul 08, 2026 at 03:54:03PM -0500, Frank Li wrote:
+> > > > On Wed, Jul 08, 2026 at 05:05:03PM +0200, Greg KH wrote:
+> > > > > On Thu, Jun 25, 2026 at 07:31:54PM +0800, Xu Yang wrote:
+> > > > > > From: Xu Yang <xu.yang_2@nxp.com>
+> > > > > >
+> > > > > > kstrndup() returns NULL on allocation failure. The condition was
+> > > > > > checking 'if (tmp)' to detect failure, but this is inverted — it
+> > > > > > would treat a successful allocation as an error and return -ENOMEM
+> > > > > > while leaking the string, and proceed with a NULL pointer on failure.
+> > > > > >
+> > > > > > Fix by changing the condition to 'if (!tmp)'.
+> > > > > >
+> > > > > > Fixes: 0854611a19ae ("usb: gadget: f_uac1: add configfs support")
+> > > > > > Cc: stable@vger.kernel.org
+> > > > > > Assisted-by: Claude:claude-sonnet-4-6
+> > > > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > > > > > ---
+> > > > > >  drivers/usb/gadget/function/f_uac1_legacy.c | 2 +-
+> > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > >
+> > > > > > diff --git a/drivers/usb/gadget/function/f_uac1_legacy.c b/drivers/usb/gadget/function/f_uac1_legacy.c
+> > > > > > index 5d201a2e30e7..e9f2632ce785 100644
+> > > > > > --- a/drivers/usb/gadget/function/f_uac1_legacy.c
+> > > > > > +++ b/drivers/usb/gadget/function/f_uac1_legacy.c
+> > > > > > @@ -914,7 +914,7 @@ static ssize_t f_uac1_opts_##name##_store(struct config_item *item,	\
+> > > > > >  		goto end;						\
+> > > > > >  									\
+> > > > > >  	tmp = kstrndup(page, len, GFP_KERNEL);				\
+> > > > > > -	if (tmp) {							\
+> > > > > > +	if (!tmp) {							\
+> > > > > >  		ret = -ENOMEM;						\
+> > > > > >  		goto end;						\
+> > > > > >  	}								\
+> > > > > > --
+> > > > > > 2.34.1
+> > > > > >
+> > > > > >
+> > > > >
+> > > > > So this has never worked?  How has no one ever noticed that in the
+> > > > > decade this has been in the kernel?  Does that mean that no one uses
+> > > > > this file/driver and we can just remove it?
+> > > > 
+> > > > I think just no one use sys interface to change name.
+> > > 
+> > > So it can just be removed?  Please submit a patch to do that instead.
+> > > 
+> > > Ideally this whole file can be removed, does anyone still use it?
+> > 
+> > This legacy driver is still built in kernel in multi_v7_defconfig: 
+> > 
+> > ~/work/usb$ grep -nr CONFIG_USB_CONFIGFS_F_UAC1_LEGACY arch/*/configs/
+> > arch/arm/configs/multi_v7_defconfig:939:CONFIG_USB_CONFIGFS_F_UAC1_LEGACY=y
 > 
-> Patch 1 fixes compilation on 64-bit build with W=1
+> defconfig doesn't mean much.  Perhaps look at some of the Android
+> configs?
 > 
-> Patch 2 reworks the clock handling to use devm_clk_get_enabled and
-> reorders clk_prepare_enable after clk_set_rate to avoid
-> CLK_SET_RATE_GATE failures.
+> > It seems we can't simply remove it. 
 > 
-> Patch 3 converts iomem mapping and GPIO IRQ requests to devm,
-> removing the manual cleanup paths.
+> Why?
 > 
-> Patch 4 moves the main UART IRQ registration after uart_add_one_port
-> so the port state is initialized before the handler can run, and
-> manages the module clock for console vs non-console ports correctly.
+> > BTW, do we have other ways to figure out if it can be removed?
+> 
+> Remove it and see who complains?  :)
 
-Do you have this hardware to test this with?  If not, I would just leave
-this alone as devm_* conversions are tricky and prone to bugs.
+Seriously, let's remove the ability to set the name as that has never
+worked.  If anyone wants it to work, they can make a new patch to add
+that feature as a new one.
 
 thanks,
 
