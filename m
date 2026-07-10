@@ -1,201 +1,384 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467B84499A6;
-	Fri, 10 Jul 2026 08:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E99615C14F
+	for <imx@lists.linux.dev>; Fri, 10 Jul 2026 09:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783673954; cv=none; b=p2t/JCM01EcgNjiu/Bgwq+9Ak3XT4VoHsjfG0E1l9XUIZf+b3HIxCPKj8uKDOqurMpddDxsYNjXLzKpUgqtAfBye85IkJpvxijZZ74cWJl8njOAWIpC94Axf1TNn0+zjLt54wM72DQThUgBgn4AUHWX98dytFeA0Wy8e9bEHvOA=
+	t=1783674583; cv=none; b=AD2oe4rU+dp6cFpq8rdLHEngzRSPIky+bta14Jm8/QVjHjY1sBU2Mh7R2u3pZI2LTSvZNVFkatA/sq8YpMCTxk2mOTa1kjW6o1NwRXpPpxfJ6D4OHpbwmL6pGuwmFDMXhv/RSWk4id1pWwDQplCUQhqj20qiUEHEvQVshtJjOa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783673954; c=relaxed/simple;
-	bh=D3CnLG9FMhGkspTiDvmFSOI76CFvY6t7t6rmY+pnKgw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s75argpoPt7CZ7fEvlAQktHATCh7oAxbvmBAor1RYmaDLv0KdlzccRVAaYbAtYH9cOMMywhlHDHd7B1z6cfHQ+UFYw2wHkXXXULbyflF1OtABu52nHesTZj2osk1WCVgD2LThp2Vy4TiZD2EgCk9p6RYl852WX4Obj3ERyeENLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IKhLW3fT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783674583; c=relaxed/simple;
+	bh=hPmkeGDDbPLIk1KACesgoM889XJq0XSfWejrYXvNKRk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bl8wpp2RwAgzHl4Th7b0SK8GJaQQfeuSbjommGRr6mZDVQ+uhDxSzTdamOAaclL2JDXfYf7Ae5AXn3GN/gkd0ftzPl1nd2bhzpiboTimZ186mpRy/UAqjFiCdw2pUm01dK6d+G8T3abmeWYWN8e8a7yFBzhrarCBuWl7ztOrlfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=k+QJoD0u; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/4ehUeG0; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tdA8pSdz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wxAgPYyM; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKhLW3fT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8721F000E9;
-	Fri, 10 Jul 2026 08:59:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783673953;
-	bh=CVSlTfeD5BHl+GRA9mEIc/4kG/WjY5gCS/LshAAC+Q4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IKhLW3fT6orMnTU1cwoiIfWK4bgn1LdEED5oWv50CCfHaVe8qgo6eYDeGHu2BctBl
-	 IJsGA9DzhqEpXt5Wjeql5EAtBZzfkBMPykg71PinzYNhaiLtzRJsA87tra5b3Cyg4R
-	 Q+/eeF+UJCHFkQXYvozwBac7xayvBSF202VvsriDRYTTZ4tjeIVzFUUrcI7lY9TKUn
-	 bYRZHekZ/vchzYYCskcm3GsW4LmNEmsSDNlrrx4jxqKHm4Vf9d2mXeLFI6P7yCB+Hy
-	 IRf1jv45MJCjXXX4cas8jHZ+lTBJ2H+Eq3lSEX6tIcCYjXik+w8F2NgCWz21P++Gha
-	 BqK/EUaeJMFIg==
-Date: Fri, 10 Jul 2026 09:59:04 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Michal Simek <michal.simek@amd.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	linux-kernel@vger.kernel.org, monstr@monstr.eu, git@amd.com,
-	vincent.guittot@linaro.org, Souvik.Chakravarty@arm.com,
-	Alex Shi <alexs@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Brian Masney <bmasney@redhat.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>, Mark Brown <broonie@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Pavel Machek <pavel@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Stephen Boyd <sboyd@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Yanteng Si <si.yanteng@linux.dev>, arm-scmi@vger.kernel.org,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	linux-arm-kernel@lists.infradead.org,
-	"open list:COMMON CLK FRAMEWORK" <linux-clk@vger.kernel.org>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-	"open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
-	"open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-	"open list:ENERGY MODEL" <linux-pm@vger.kernel.org>
-Subject: Re: [RFC PATCH] firmware: scmi: Make SCMI arch independent
-Message-ID: <20260710-romantic-dashing-gecko-e31a98@sudeepholla>
-References: <d7f7e8c9589d937b60e43168845ab4fda15037a3.1783603600.git.michal.simek@amd.com>
- <ak_Eu_eQKalPMwo-@pluto>
- <77110e77-941d-4173-b2f5-6f3cf4858339@amd.com>
- <20260710-lemon-pogona-of-wind-b3a003@sudeepholla>
- <5f5e8341-dbcc-4467-976e-35d007ae148e@amd.com>
- <20260710-macho-pristine-tanuki-b0d3ce@sudeepholla>
- <6f823bad-014c-4ac3-9e75-9edcdf28f7b8@amd.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="k+QJoD0u";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/4ehUeG0";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tdA8pSdz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wxAgPYyM"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id ACC1076709;
+	Fri, 10 Jul 2026 09:09:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783674579; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WYana5gcemuDvpyp9NIAbnx2PeGEB3xQn2SDg+e4dzQ=;
+	b=k+QJoD0uzbelEsf++/2y4ND5oJjvieTzrZpGMXWCRRfUXGx2fLqKKwtRnDBmVJ/jGW1osR
+	hlgubkxEHUEPqz+AfK1Qps9dCT7D/75iaZrYsmT8tjZ6ATt16FDXVrrEttTRpwgfF5xCNL
+	vAnAqzrZYfeHfE/UYALEsYGi0PI529c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783674579;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WYana5gcemuDvpyp9NIAbnx2PeGEB3xQn2SDg+e4dzQ=;
+	b=/4ehUeG0YJTYcU44d+BOlXTzRC2uecfBMBB/SaVQ3viFmonS6/GNVlZbppLbE1TnpwpB5V
+	lXW5gABB7Mz1QDAg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783674578; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WYana5gcemuDvpyp9NIAbnx2PeGEB3xQn2SDg+e4dzQ=;
+	b=tdA8pSdzfeXEKy7XND4BnIXo5St5lY0gIhoL7qSpcO/bthuvk33yRYAZNpOPn+HJc0pFxI
+	w1NHHP93n7QrQX2tdckcRPtoBEWzOCEA9ARHCYPYnjkajPYa51UGoj6lZF06ViKqQ3YRmb
+	vk7PbAICwF/5jD0ws6FZZzNwKLY79x4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783674578;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WYana5gcemuDvpyp9NIAbnx2PeGEB3xQn2SDg+e4dzQ=;
+	b=wxAgPYyMx2NxMJ213r8fL6XLneJbj6RlnBSqsYKUeEYgpkR5SmTFVVlqMiX17q112i7/nF
+	3kPPnn6rnKVefFAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 28604779BD;
+	Fri, 10 Jul 2026 09:09:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LQdoCNK2UGouCgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 10 Jul 2026 09:09:38 +0000
+Message-ID: <e69b3cf5-9a9f-46ca-abc8-68c1375ef6ca@suse.de>
+Date: Fri, 10 Jul 2026 11:09:37 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/9] drm/gm12u320: replace struct drm_simple_display_pipe
+ with regular atomic helpers
+To: Ze Huang <ze.huang@oss.qualcomm.com>,
+ Alexey Brodkin <abrodkin@synopsys.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
+ Hans de Goede <hansg@kernel.org>, Alex Lanzano <lanzano.alex@gmail.com>,
+ Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-aspeed@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, xen-devel@lists.xenproject.org
+References: <20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com>
+ <20260705-drm-simple-kms-removal-v1-6-b4e1ca053623@oss.qualcomm.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260705-drm-simple-kms-removal-v1-6-b4e1ca053623@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6f823bad-014c-4ac3-9e75-9edcdf28f7b8@amd.com>
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,synopsys.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,jms.id.au,codeconstruct.com.au,nxp.com,pengutronix.de,epam.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,qualcomm.com:email,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
+X-Spam-Score: -2.80
 
-On Fri, Jul 10, 2026 at 10:46:15AM +0200, Michal Simek wrote:
-> 
-> 
-> On 7/10/26 10:38, Sudeep Holla wrote:
-> > On Fri, Jul 10, 2026 at 09:42:09AM +0200, Michal Simek wrote:
-> > > 
-> > > 
-> > > On 7/10/26 09:35, Sudeep Holla wrote:
-> > > > On Fri, Jul 10, 2026 at 09:03:32AM +0200, Michal Simek wrote:
-> > > > > 
-> > > > > 
-> > > > > On 7/9/26 17:56, Cristian Marussi wrote:
-> > > > > > On Thu, Jul 09, 2026 at 03:27:00PM +0200, Michal Simek wrote:
-> > > > > > > On heterogenious systems like AMD/Xilinx FPGA there is a need to talk to
-> > > > > > > SCMI server from different architectures than ARM that's why remove
-> > > > > > > ARM/ARM64 Kconfig dependency with also remove ARM from description and
-> > > > > > > rename folder to reflect it.
-> > > > > > 
-> > > > > > While I understand dropping the dependency on ARM (I always wanted to do
-> > > > > > that and test if it worked at all on some otehr archs with QEMU), I am
-> > > > > > not sure about the whole renaming party ? why is needed just for
-> > > > > > cosmetic reasons ? it is at the end an arm originated protocol so I dont
-> > > > > > see it as a being wrong to be named as such even though used by other
-> > > > > > archs...I have not really strong opinion on this...
-> > > > > 
-> > > > > I have been in CC on U-Boot RPMI patches which got to my attention because
-> > > > > I don't want to have another interface for MB-V(riscv-) running in
-> > > > > programmable logic and have another server in the system doing the same
-> > > > > thing.
-> > > > > 
-> > > > 
-> > > > Ah that's interesting. I wasn't aware of that. I still agree with the move
-> > > > in principle, but how does that align with these:
-> > > > 
-> > > > drivers/clk/clk-rpmi.c
-> > > > drivers/irqchip/irq-riscv-rpmi-sysmsi.c
-> > > > include/linux/mailbox/riscv-rpmi-message.h
-> > > > drivers/mailbox/riscv-sbi-mpxy-mbox.c(Should be fine as it is just transport)
-> > > 
-> > > I am having separate discussion on u-boot mailing list about RPMI and it's
-> > > usage on non riscv architectures because one raised argument was that it is
-> > > community driver spec compare to SCMI which is owned by ARM. But IMHO only
-> > > for riscv.
-> > > 
-> > 
-> > IIRC in LPC 2024, we did discuss opening up SCMI so that RISCV could use it as
-> > is instead of copying quite a lot from SCMI for RPMI in some closed groups.
-> > 
-> > Here is the summary we got from couple of RISC-V vendors at the time:
-> > "
-> > RPMI is comparable to Arm SCMI, but it includes RISC-V-specific services such
-> > as HART State Management, CPPC, Management Mode, and RAS Agent. The SBI MPXY
-> > extension enables secure and non-secure system partitions to exchange RPMI
-> > messages, allows an M-mode RPMI transport to be shared with S-mode, and lets
-> > hypervisors virtualize RPMI for guests or VMs.
-> > 
-> > RPMI development is already well advanced, with much of the client-driver work
-> > implemented in OpenSBI. Supervisor software can access selected RPMI services
-> > through SBI MPXY. A permissively licensed reference implementation, librpmi,
-> > is also available for platform vendors.
-> > 
-> > RPMI was created after evaluating Arm SCMI, mainly to support RISC-V-specific
-> > requirements.
-> > "
-> > 
-> > I didn't pursue it any further following some of these followup discussions
-> > post LPC 2024.
-> 
-> interesting. It looks like that they even didn't try to ARM about it.
-> 
-> > 
-> > > > 
-> > > > Now I feel we need some alignment before making $subject move.
-> > > > 
-> > > > > Based on that we had discussed about it with Vincent and Souvik (we missed
-> > > > > you there) about using SCMI on non ARM platform and both of them didn't see
-> > > > > the concern to be marked as ARM only protocol.
-> > > > > Truth is that some of protocols have ARM in description, file names, etc but
-> > > > > some of them not. That's why I think it is good time to sync it up and
-> > > > > enable
-> > > > > running this protocol on other SOCs.
-> > > > > 
-> > > > > > ... my concern really is ... wont this full scale rename simply generate
-> > > > > > a lot of un-needed churn for future fixes and/or backporting ?
-> > > > > I don't think it is going to be a big problem because it is just git mv
-> > > > > which git is able to gracefully handle.
-> > > > > 
-> > > > 
-> > > > Otherwise it may end up being unnecessary churn though I completely agree
-> > > > with the git/backporting aspects. Just don't want to churn things up until
-> > > > we have some plan and further changes/users of this move.
-> > > 
-> > > As I wrote above AMD/Xilinx platform with SCMI server where ARM RPU/APUs
-> > > (with multiple VMs) and Microblaze-V in programmable logic acting as
-> > > separate agents is going to be the first user. And for being able to run
-> > > SCMI on Linux running on Microblaze-V I need enable SCMI on non ARM
-> > > architecture.
-> > > 
-> > 
-> > Ah OK, if the plan is to just use SCMI as is and having "ARM/arm" name is
-> > a blocker, then sure we can get that done. Hope you are aware of and already
-> > considered some of the RISC-V specifics listed above and ruled out any of
-> > those as concerns to use SCMI on RISC-V platforms.
-> 
-> I know that we can't maintain SCMI and RPMI servers running on the same chip
-> doing the same things. We don't have space for it and make no sense to
-> duplicate testing on it too.
-> 
+Hi
 
-That is very valid and compelling reason to re-use and agree with your
-assessment. If you can make it work, go for it 😉.
+Am 04.07.26 um 20:31 schrieb Ze Huang:
+> Convert gm12u320 to direct primary plane, CRTC and encoder setup.
+>
+> Keep shadow-plane helper state, framebuffer access helpers and
+> no-scaling plane-state check from simple-KMS path.
+>
+> Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+And I also have this device. Works nicely with the patch
+
+Tested-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+> ---
+>   drivers/gpu/drm/tiny/gm12u320.c | 128 ++++++++++++++++++++++++++++++++--------
+>   1 file changed, 104 insertions(+), 24 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/tiny/gm12u320.c b/drivers/gpu/drm/tiny/gm12u320.c
+> index d73dfebb4353..992160ea794d 100644
+> --- a/drivers/gpu/drm/tiny/gm12u320.c
+> +++ b/drivers/gpu/drm/tiny/gm12u320.c
+> @@ -8,6 +8,7 @@
+>   #include <linux/usb.h>
+>   
+>   #include <drm/clients/drm_client_setup.h>
+> +#include <drm/drm_atomic.h>
+>   #include <drm/drm_atomic_helper.h>
+>   #include <drm/drm_atomic_state_helper.h>
+>   #include <drm/drm_connector.h>
+> @@ -27,7 +28,6 @@
+>   #include <drm/drm_modeset_helper_vtables.h>
+>   #include <drm/drm_print.h>
+>   #include <drm/drm_probe_helper.h>
+> -#include <drm/drm_simple_kms_helper.h>
+>   
+>   static bool eco_mode;
+>   module_param(eco_mode, bool, 0644);
+> @@ -87,7 +87,9 @@ MODULE_PARM_DESC(eco_mode, "Turn on Eco mode (less bright, more silent)");
+>   
+>   struct gm12u320_device {
+>   	struct drm_device	         dev;
+> -	struct drm_simple_display_pipe   pipe;
+> +	struct drm_plane	         plane;
+> +	struct drm_crtc		         crtc;
+> +	struct drm_encoder	         encoder;
+>   	struct drm_connector	         conn;
+>   	unsigned char                   *cmd_buf;
+>   	unsigned char                   *data_buf[GM12U320_BLOCK_COUNT];
+> @@ -554,31 +556,33 @@ static int gm12u320_conn_init(struct gm12u320_device *gm12u320)
+>   }
+>   
+>   /* ------------------------------------------------------------------ */
+> -/* gm12u320 (simple) display pipe				      */
+> +/* gm12u320 display pipe						      */
+>   
+> -static void gm12u320_pipe_enable(struct drm_simple_display_pipe *pipe,
+> -				 struct drm_crtc_state *crtc_state,
+> -				 struct drm_plane_state *plane_state)
+> +static void gm12u320_crtc_helper_atomic_enable(struct drm_crtc *crtc,
+> +					       struct drm_atomic_commit *commit)
+>   {
+>   	struct drm_rect rect = { 0, 0, GM12U320_USER_WIDTH, GM12U320_HEIGHT };
+> -	struct gm12u320_device *gm12u320 = to_gm12u320(pipe->crtc.dev);
+> +	struct gm12u320_device *gm12u320 = to_gm12u320(crtc->dev);
+> +	struct drm_plane_state *plane_state = crtc->primary->state;
+>   	struct drm_shadow_plane_state *shadow_plane_state = to_drm_shadow_plane_state(plane_state);
+>   
+>   	gm12u320->fb_update.draw_status_timeout = FIRST_FRAME_TIMEOUT;
+>   	gm12u320_fb_mark_dirty(plane_state->fb, &shadow_plane_state->data[0], &rect);
+>   }
+>   
+> -static void gm12u320_pipe_disable(struct drm_simple_display_pipe *pipe)
+> +static void gm12u320_crtc_helper_atomic_disable(struct drm_crtc *crtc,
+> +						struct drm_atomic_commit *commit)
+>   {
+> -	struct gm12u320_device *gm12u320 = to_gm12u320(pipe->crtc.dev);
+> +	struct gm12u320_device *gm12u320 = to_gm12u320(crtc->dev);
+>   
+>   	gm12u320_stop_fb_update(gm12u320);
+>   }
+>   
+> -static void gm12u320_pipe_update(struct drm_simple_display_pipe *pipe,
+> -				 struct drm_plane_state *old_state)
+> +static void gm12u320_plane_helper_atomic_update(struct drm_plane *plane,
+> +						struct drm_atomic_commit *commit)
+>   {
+> -	struct drm_plane_state *state = pipe->plane.state;
+> +	struct drm_plane_state *old_state = drm_atomic_get_old_plane_state(commit, plane);
+> +	struct drm_plane_state *state = plane->state;
+>   	struct drm_shadow_plane_state *shadow_plane_state = to_drm_shadow_plane_state(state);
+>   	struct drm_rect rect;
+>   
+> @@ -586,11 +590,71 @@ static void gm12u320_pipe_update(struct drm_simple_display_pipe *pipe,
+>   		gm12u320_fb_mark_dirty(state->fb, &shadow_plane_state->data[0], &rect);
+>   }
+>   
+> -static const struct drm_simple_display_pipe_funcs gm12u320_pipe_funcs = {
+> -	.enable	    = gm12u320_pipe_enable,
+> -	.disable    = gm12u320_pipe_disable,
+> -	.update	    = gm12u320_pipe_update,
+> -	DRM_GEM_SIMPLE_DISPLAY_PIPE_SHADOW_PLANE_FUNCS,
+> +static const struct drm_plane_funcs gm12u320_plane_funcs = {
+> +	.update_plane	= drm_atomic_helper_update_plane,
+> +	.disable_plane	= drm_atomic_helper_disable_plane,
+> +	.destroy	= drm_plane_cleanup,
+> +	DRM_GEM_SHADOW_PLANE_FUNCS,
+> +};
+> +
+> +static int gm12u320_plane_helper_atomic_check(struct drm_plane *plane,
+> +					      struct drm_atomic_commit *state)
+> +{
+> +	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(state, plane);
+> +	struct drm_crtc *crtc = plane_state->crtc;
+> +	struct drm_crtc_state *crtc_state = NULL;
+> +	int ret;
+> +
+> +	if (crtc)
+> +		crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
+> +
+> +	ret = drm_atomic_helper_check_plane_state(plane_state, crtc_state,
+> +						  DRM_PLANE_NO_SCALING,
+> +						  DRM_PLANE_NO_SCALING,
+> +						  false, false);
+> +	return ret;
+
+Interestingly, this patch handled _check_plane_state() correctly.
+
+Best regards
+Thomas
+
+> +}
+> +
+> +static const struct drm_plane_helper_funcs gm12u320_plane_helper_funcs = {
+> +	DRM_GEM_SHADOW_PLANE_HELPER_FUNCS,
+> +	.atomic_check	= gm12u320_plane_helper_atomic_check,
+> +	.atomic_update	= gm12u320_plane_helper_atomic_update,
+> +};
+> +
+> +static int gm12u320_crtc_helper_atomic_check(struct drm_crtc *crtc,
+> +					     struct drm_atomic_commit *state)
+> +{
+> +	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
+> +	int ret;
+> +
+> +	if (!crtc_state->enable)
+> +		goto out;
+> +
+> +	ret = drm_atomic_helper_check_crtc_primary_plane(crtc_state);
+> +	if (ret)
+> +		return ret;
+> +
+> +out:
+> +	return drm_atomic_add_affected_planes(state, crtc);
+> +}
+> +
+> +static const struct drm_crtc_helper_funcs gm12u320_crtc_helper_funcs = {
+> +	.atomic_check	= gm12u320_crtc_helper_atomic_check,
+> +	.atomic_enable	= gm12u320_crtc_helper_atomic_enable,
+> +	.atomic_disable	= gm12u320_crtc_helper_atomic_disable,
+> +};
+> +
+> +static const struct drm_crtc_funcs gm12u320_crtc_funcs = {
+> +	.set_config		= drm_atomic_helper_set_config,
+> +	.page_flip		= drm_atomic_helper_page_flip,
+> +	.reset			= drm_atomic_helper_crtc_reset,
+> +	.destroy		= drm_crtc_cleanup,
+> +	.atomic_duplicate_state	= drm_atomic_helper_crtc_duplicate_state,
+> +	.atomic_destroy_state	= drm_atomic_helper_crtc_destroy_state,
+> +};
+> +
+> +static const struct drm_encoder_funcs gm12u320_encoder_funcs = {
+> +	.destroy = drm_encoder_cleanup,
+>   };
+>   
+>   static const uint32_t gm12u320_pipe_formats[] = {
+> @@ -677,13 +741,29 @@ static int gm12u320_usb_probe(struct usb_interface *interface,
+>   	if (ret)
+>   		return ret;
+>   
+> -	ret = drm_simple_display_pipe_init(&gm12u320->dev,
+> -					   &gm12u320->pipe,
+> -					   &gm12u320_pipe_funcs,
+> -					   gm12u320_pipe_formats,
+> -					   ARRAY_SIZE(gm12u320_pipe_formats),
+> -					   gm12u320_pipe_modifiers,
+> -					   &gm12u320->conn);
+> +	ret = drm_universal_plane_init(dev, &gm12u320->plane, 0,
+> +				       &gm12u320_plane_funcs,
+> +				       gm12u320_pipe_formats,
+> +				       ARRAY_SIZE(gm12u320_pipe_formats),
+> +				       gm12u320_pipe_modifiers,
+> +				       DRM_PLANE_TYPE_PRIMARY, NULL);
+> +	if (ret)
+> +		return ret;
+> +	drm_plane_helper_add(&gm12u320->plane, &gm12u320_plane_helper_funcs);
+> +
+> +	ret = drm_crtc_init_with_planes(dev, &gm12u320->crtc, &gm12u320->plane, NULL,
+> +					&gm12u320_crtc_funcs, NULL);
+> +	if (ret)
+> +		return ret;
+> +	drm_crtc_helper_add(&gm12u320->crtc, &gm12u320_crtc_helper_funcs);
+> +
+> +	ret = drm_encoder_init(dev, &gm12u320->encoder, &gm12u320_encoder_funcs,
+> +			       DRM_MODE_ENCODER_NONE, NULL);
+> +	if (ret)
+> +		return ret;
+> +	gm12u320->encoder.possible_crtcs = drm_crtc_mask(&gm12u320->crtc);
+> +
+> +	ret = drm_connector_attach_encoder(&gm12u320->conn, &gm12u320->encoder);
+>   	if (ret)
+>   		return ret;
+>   
+>
 
 -- 
-Regards,
-Sudeep
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
+
+
