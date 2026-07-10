@@ -1,127 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7023B4279E4;
-	Fri, 10 Jul 2026 12:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B14F42B732
+	for <imx@lists.linux.dev>; Fri, 10 Jul 2026 13:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783688288; cv=none; b=fywrYFHC+VhQvz2zQq12wBNpdKgXagrAwZuKDghaGFjDB5fSsgLiU7pWpJvC5tr3ovajnWAgWvny8lBmDNoGJGOnOEwCEPKzuGm5UuzPuVmklO95rsiqLepLqb6Ic/X4ELwKspEJbZDP6f/1U4ba7HsU0+3CZ6+Ly7LaKWXfYRE=
+	t=1783688469; cv=none; b=LEyiNQPNsarZQeTqLZIUOLNzqst9CLkawzaXaFk0H2cgYi/9jeCTyRhW4T/B0txTcAC0IuVEfmARGNfyhrmofghaGTfTcO5SpL0IMcCbApPIDz6nyWA7wBVOz6WJFYzHsrjuGMzIdvHf/y1ywT3aYPeE/udAGI2cuPREJ6YT/Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783688288; c=relaxed/simple;
-	bh=lrkkoQAn3SzjQxs27pqXKcHV/Cx73M9esAvvS1J8F0s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VC6zS54LJ/ALrixwCJ0y+cbnHs/gqFwEwb6uh6s2Y4JQpsNpxb+clXwlYsmhWfcJdYGduyEonikwJZhVJ16Xne3UczVSF8aKJHm1TgW4BYZrbtSyto/jJR6HoSN9zi63wWFa06qxJNPQNug8MzJQu+qGa6QhSal86L0L+8H0qes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgmVy2cV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783688469; c=relaxed/simple;
+	bh=M94SjjYhfG0qMo3AdWDmx7QCzOOMR1z6U/G7HOPFbC0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Subject:Cc:From:
+	 References:In-Reply-To; b=I0DHFmz/gYymeb7cNllJ00DbcJMWmKy6VsIMfGb8LIYqUYE1EG+9mos5hOAhByhAHgPqZ/5vfkXoPtdM6pvb4p5TTDMMx4yIRhAklxLXHYEsO34OU0fpmxPbaRr8DBqOO/hhh+0MKlCq4GpLxXOrCEVFYmHbf2Ur23W3Ug6jZl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wZEo0zVu; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgmVy2cV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E8B1F000E9;
-	Fri, 10 Jul 2026 12:58:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783688286;
-	bh=CtGVFGGmzdxDyBQbWhj0761znkhrhApCkJzSpjQnaCI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NgmVy2cV93CaRJ6YwwStzTzAPPoR7WMvDiCxPehOkp5lC61Q9Cpl/3l29QYgR5/z9
-	 +/a1BkimCGgEm1fbTs5GCNQmU84GxVvIRc60DRfYU5rVz+o/im/TOklbvkG88ceuER
-	 v/C9+gfYfdTazGA1J9V2Y7MzcODLcLa9jpBqLupo=
-Date: Fri, 10 Jul 2026 14:58:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xu Yang <xu.yang_2@oss.nxp.com>
-Cc: Frank Li <Frank.li@oss.nxp.com>, kees@kernel.org,
-	christophe.jaillet@wanadoo.fr, xu.yang_2@nxp.com,
-	hataegu0826@gmail.com, balbi@ti.com, andrzej.p@samsung.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH] usb: gadget: f_uac1_legacy: fix inverted NULL check
- after kstrndup()
-Message-ID: <2026071019-parkway-captivate-086f@gregkh>
-References: <20260625113154.1954813-1-xu.yang_2@oss.nxp.com>
- <2026070831-peso-aluminum-df0c@gregkh>
- <ak64635tgUj3MPEx@SMW015318>
- <2026070922-density-onto-3ce6@gregkh>
- <n7h2d72m2lqdnrtvlbztwrkfmmzsh2nbb77luwomxrcyrpimuk@fdlg44plusyw>
- <2026070908-semisweet-parabola-4a48@gregkh>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wZEo0zVu"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id B2972C2C645;
+	Fri, 10 Jul 2026 13:01:20 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CC97760345;
+	Fri, 10 Jul 2026 13:01:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9B95911BD0DEB;
+	Fri, 10 Jul 2026 15:00:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783688461; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=OpR8EpUWoLVWD1U7hF0BGvXpeDpChn5vhtnYxeMgZ/M=;
+	b=wZEo0zVumBZvota9lj9ysImh10+E4+BbYYrgpWI8VBXNocIci+MYRA9CPFt7nqEwahCYw+
+	WGH/gbKanRQqklTcRaZlOdZcR2vWKZucFD13TXdAx/Gpc3+UIBLDDcSpYjyXTiFDp62YdU
+	/9/G1w78+Iq5ZxLNsh8doY94LRg4F6sBcLJh6gazI/BPBSS8plkEkDP90Iw3Jipm5LWHpd
+	t5JPw5/FOpeSvJgrAYi5ApGSR02OuWhrI719bSjbOdQQNoma1YvCMPW0BShr4FskJBpZKn
+	RT65XADHkqNtWjPe5eSMFoaw249fIMLHxmMPTQGGDMENM6BCXdXRMwQnlO+2yA==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2026070908-semisweet-parabola-4a48@gregkh>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 10 Jul 2026 15:00:43 +0200
+Message-Id: <DJUWS6ZZUDS0.2ILHWRFQ1XD1S@bootlin.com>
+To: =?utf-8?b?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
+ <u.kleine-koenig@baylibre.com>, "Lee Jones" <lee@kernel.org>
+Subject: Re: [PATCH v3 21/23] mfd: Unify style of of_device_id arrays
+Cc: "Linus Walleij" <linusw@kernel.org>, "Nicolas Ferre"
+ <nicolas.ferre@microchip.com>, "Alexandre Belloni"
+ <alexandre.belloni@bootlin.com>, "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>, "Chen-Yu Tsai" <wens@kernel.org>, "Florian
+ Fainelli" <florian.fainelli@broadcom.com>, "Broadcom internal kernel review
+ list" <bcm-kernel-feedback-list@broadcom.com>, "Ray Jui"
+ <rjui@broadcom.com>, "Scott Branden" <sbranden@broadcom.com>, "Marek Vasut"
+ <marek.vasut+renesas@gmail.com>, "James Ogletree"
+ <jogletre@opensource.cirrus.com>, "Fred Treven" <fred.treven@cirrus.com>,
+ "Ben Bright" <ben.bright@cirrus.com>, "David Rhodes"
+ <david.rhodes@cirrus.com>, "Richard Fitzgerald" <rf@opensource.cirrus.com>,
+ "Support Opensource" <support.opensource@diasemi.com>, "Krzysztof
+ Kozlowski" <krzk@kernel.org>, "Peter Griffin" <peter.griffin@linaro.org>,
+ "Alim Akhtar" <alim.akhtar@samsung.com>, "Tim Harvey"
+ <tharvey@gateworks.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Charles Keepax" <ckeepax@opensource.cirrus.com>, "Sven Peter"
+ <sven@kernel.org>, "Janne Grunau" <j@jannau.net>, "Neal Gompa"
+ <neal@gompa.dev>, "Chanwoo Choi" <cw00.choi@samsung.com>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>, =?utf-8?q?Andr=C3=A9_Draszik?=
+ <andre.draszik@linaro.org>, "Saravanan Sekar" <sravanhome@gmail.com>,
+ "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Frank Li" <Frank.Li@nxp.com>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, "Aaro
+ Koskinen" <aaro.koskinen@iki.fi>, "Andreas Kemnade" <andreas@kemnade.info>,
+ "Kevin Hilman" <khilman@baylibre.com>, "Roger Quadros" <rogerq@kernel.org>,
+ "Tony Lindgren" <tony@atomide.com>, "Matti Vaittinen"
+ <mazziesaccount@gmail.com>, "Orson Zhai" <orsonzhai@gmail.com>, "Baolin
+ Wang" <baolin.wang@linux.alibaba.com>, "Chunyan Zhang"
+ <zhang.lyra@gmail.com>, "Fabrice Gasnier" <fabrice.gasnier@foss.st.com>,
+ "Maxime Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Samuel Holland" <samuel@sholland.org>, "Liviu
+ Dudau" <liviu.dudau@arm.com>, "Sudeep Holla" <sudeep.holla@kernel.org>,
+ "Lorenzo Pieralisi" <lpieralisi@kernel.org>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Heiko
+ Stuebner" <heiko@sntech.de>, <mfd@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <patches@opensource.cirrus.com>, <linux-rpi-kernel@lists.infradead.org>,
+ <linux-renesas-soc@vger.kernel.org>, <linux-sound@vger.kernel.org>,
+ <linux-samsung-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+ <asahi@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
+ <imx@lists.linux.dev>, <linux-omap@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>, <linux-sunxi@lists.linux.dev>,
+ <linux-rockchip@lists.infradead.org>
+From: "Mathieu Dubois-Briand" <mathieu.dubois-briand@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <cover.1783615311.git.u.kleine-koenig@baylibre.com>
+ <e5cc82aa51da5f545f745b126923fdd6085a68a0.1783615311.git.u.kleine-koenig@baylibre.com>
+In-Reply-To: <e5cc82aa51da5f545f745b126923fdd6085a68a0.1783615311.git.u.kleine-koenig@baylibre.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jul 09, 2026 at 08:48:08AM +0200, Greg KH wrote:
-> On Thu, Jul 09, 2026 at 02:23:51PM +0800, Xu Yang wrote:
-> > On Thu, Jul 09, 2026 at 07:33:03AM +0200, Greg KH wrote:
-> > > On Wed, Jul 08, 2026 at 03:54:03PM -0500, Frank Li wrote:
-> > > > On Wed, Jul 08, 2026 at 05:05:03PM +0200, Greg KH wrote:
-> > > > > On Thu, Jun 25, 2026 at 07:31:54PM +0800, Xu Yang wrote:
-> > > > > > From: Xu Yang <xu.yang_2@nxp.com>
-> > > > > >
-> > > > > > kstrndup() returns NULL on allocation failure. The condition was
-> > > > > > checking 'if (tmp)' to detect failure, but this is inverted — it
-> > > > > > would treat a successful allocation as an error and return -ENOMEM
-> > > > > > while leaking the string, and proceed with a NULL pointer on failure.
-> > > > > >
-> > > > > > Fix by changing the condition to 'if (!tmp)'.
-> > > > > >
-> > > > > > Fixes: 0854611a19ae ("usb: gadget: f_uac1: add configfs support")
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > Assisted-by: Claude:claude-sonnet-4-6
-> > > > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > > > > > ---
-> > > > > >  drivers/usb/gadget/function/f_uac1_legacy.c | 2 +-
-> > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > >
-> > > > > > diff --git a/drivers/usb/gadget/function/f_uac1_legacy.c b/drivers/usb/gadget/function/f_uac1_legacy.c
-> > > > > > index 5d201a2e30e7..e9f2632ce785 100644
-> > > > > > --- a/drivers/usb/gadget/function/f_uac1_legacy.c
-> > > > > > +++ b/drivers/usb/gadget/function/f_uac1_legacy.c
-> > > > > > @@ -914,7 +914,7 @@ static ssize_t f_uac1_opts_##name##_store(struct config_item *item,	\
-> > > > > >  		goto end;						\
-> > > > > >  									\
-> > > > > >  	tmp = kstrndup(page, len, GFP_KERNEL);				\
-> > > > > > -	if (tmp) {							\
-> > > > > > +	if (!tmp) {							\
-> > > > > >  		ret = -ENOMEM;						\
-> > > > > >  		goto end;						\
-> > > > > >  	}								\
-> > > > > > --
-> > > > > > 2.34.1
-> > > > > >
-> > > > > >
-> > > > >
-> > > > > So this has never worked?  How has no one ever noticed that in the
-> > > > > decade this has been in the kernel?  Does that mean that no one uses
-> > > > > this file/driver and we can just remove it?
-> > > > 
-> > > > I think just no one use sys interface to change name.
-> > > 
-> > > So it can just be removed?  Please submit a patch to do that instead.
-> > > 
-> > > Ideally this whole file can be removed, does anyone still use it?
-> > 
-> > This legacy driver is still built in kernel in multi_v7_defconfig: 
-> > 
-> > ~/work/usb$ grep -nr CONFIG_USB_CONFIGFS_F_UAC1_LEGACY arch/*/configs/
-> > arch/arm/configs/multi_v7_defconfig:939:CONFIG_USB_CONFIGFS_F_UAC1_LEGACY=y
-> 
-> defconfig doesn't mean much.  Perhaps look at some of the Android
-> configs?
-> 
-> > It seems we can't simply remove it. 
-> 
-> Why?
-> 
-> > BTW, do we have other ways to figure out if it can be removed?
-> 
-> Remove it and see who complains?  :)
+On Thu Jul 9, 2026 at 6:58 PM CEST, Uwe Kleine-K=C3=B6nig (The Capable Hub)=
+ wrote:
+> These arrays already mostly match the most used and generally
+> recommended coding style. That is:
+>
+>  - no comma after the list terminator;
+>  - a comma after an initializer if (and only if) the closing } is not
+>    directly following;
+>  - no explicit zeros in the list terminator;
+>  - a space after an opening { and before a closing }, a single space in
+>    the list terminator;
+>
+> Adapt the offenders accordingly.
+>
+> Reviewed-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org> # for Maxim MA=
+X77759
+> Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig (The Capable Hub) <u.kleine-koenig@b=
+aylibre.com>
+> ---
 
-Seriously, let's remove the ability to set the name as that has never
-worked.  If anyone wants it to work, they can make a new patch to add
-that feature as a new one.
+...
 
-thanks,
+> =20
+> diff --git a/drivers/mfd/max7360.c b/drivers/mfd/max7360.c
+> index 52fffed0c0dd..dc744b40bb38 100644
+> --- a/drivers/mfd/max7360.c
+> +++ b/drivers/mfd/max7360.c
+> @@ -152,7 +152,7 @@ static int max7360_probe(struct i2c_client *client)
+> =20
+>  static const struct of_device_id max7360_dt_match[] =3D {
+>  	{ .compatible =3D "maxim,max7360" },
+> -	{}
+> +	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, max7360_dt_match);
+> =20
 
-greg k-h
+Reviewed-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com> # ma=
+x7360
+
+--=20
+Mathieu Dubois-Briand, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
