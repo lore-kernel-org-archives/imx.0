@@ -1,76 +1,122 @@
-Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC73353A61
-	for <imx@lists.linux.dev>; Sat, 11 Jul 2026 10:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E983A1DB
+	for <imx@lists.linux.dev>; Sun, 12 Jul 2026 01:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783765904; cv=none; b=s+Vyk5Lc2iBT8/I0vo2FbnMjdJXnEriullRHujnzFdYBDhi1G8BLPHqu0MkTBG/ayWDEMOOAmtsjGgimbfbpUFsM9vgy0mrQsRrTmN4EUc7YRJQ6qbW6iah4nJD9R/ugn2z6Ff5U+b31qSkprGZNRO5L/QfZ0kvad9by/ODSGOI=
+	t=1783818254; cv=none; b=mAkgl4JwX/m7j9Pfjhg7CnDyA0MREKnonmkjSSsqBpoz3clMz1vA4mvmhamv8pWRlRh7PPKbhfyi9G3ckezkmrTfTG2ZF3B8a2SCaOl9thvmgHDH9BTyjBkZw7eLsw7xq+ui6lmvBYrHV6Fhx8NlcF+I4GVxkPnT1dDjhPUNPlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783765904; c=relaxed/simple;
-	bh=UcrPwjleYOJgTRCrEQFOiFPMRIAmirHboh5hjApdo34=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=d8sEF7mru3/LOP5IxgYIJudJp57zkogIhNCEDYGIpEGuaSu09tBnRlc+1ha6IqNXh7gqzggc4DEsiKoo1HtTBYRprkDasJ1Y2JAo6o2CJcujUB/sNMUIuni2Gsc+ADxFny6sWiDQJVN78zrKaDm0Me0s7SeaC4tlGZnmOlt9FoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=j53sk1Z8; arc=none smtp.client-ip=109.224.244.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+	s=arc-20240116; t=1783818254; c=relaxed/simple;
+	bh=quWeediN60w1LhX9cWPFn0Dv7qd1bLLqDXDnujMdG1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XMfJ2RCPjofKxgkW+Rv/IpOGGk7O5iq+Y0dgWTtBozS431vmoQ9gQB+yS/eZOvR3BMoW8VyUizug1KdqNhTpEuMs9Zkctvd0eG/ZEaaXVsuJXK6phuC7g+/0/NVQlXUWfk9P0mS9mVu9ZnlxUsR2S3XCOYcDjmbXVeTCfynXn5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOvKWlIK; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="j53sk1Z8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail3; t=1783765898; x=1784025098;
-	bh=CAr/fKi5/LA7pN+4fry0IljwDp0zJrV9bzcJxHbBrak=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=j53sk1Z8BCBT0JaWNBmDkBmhVzVt2scS0S9lTygAWUmdjhHAnQumSoe8wGzqvvlyh
-	 3DK6hh3zAI5KLFaeVratreLsORFP9IDSO3nOD47C6N59f9LVhKDjzvq+HPSSl0vneE
-	 oaboup5OMxwtTOQqq0KRxsptDXYOvr92afH/eRHiSKWBmJgX7rIkQ/bv0Aw69Zf2rC
-	 tXQ43ycYnZqHNm1oxMLA9g2cxj6LGSCpwGRy1Cia4UJjQmnNgmfJ4v6MYgVoNVRM5O
-	 QzXhdr6OUb5ukqtYdmlL/lm2NJr0Wqk+URBd6Yo1ldJdSZnq5cLhZRrZ0YwKoH7nvf
-	 cBb+hZry7cmCw==
-X-Pm-Submission-Id: 4gy4kK6mcgz1DDLC
-From: Esben Haabendal <esben@geanix.com>
-To: <sashiko-bot@kernel.org>
-Cc: <sashiko-reviews@lists.linux.dev>,  <conor+dt@kernel.org>,
-  <Frank.Li@kernel.org>,  <devicetree@vger.kernel.org>,  <robh@kernel.org>,
-  <imx@lists.linux.dev>
-Subject: Re: [PATCH] arm64: dts: imx8mq: Add dcss node
-In-Reply-To: <20260710095211.6BE9D1F000E9@smtp.kernel.org>
-	(sashiko-bot@kernel.org's message of "Fri, 10 Jul 2026 09:52:10
-	+0000")
-References: <20260710-imx8mq-dcss-device-tree-node-v1-1-fc724dfd574e@geanix.com>
-	<eQdptVZkkupu8jyArfhLV_zAdXoQ3HJb0IsarA60euM68FAWXbTrtljsPnGROjwCVAirW-eB13e6B7vNsN5g-g==@protonmail.internalid>
-	<20260710095211.6BE9D1F000E9@smtp.kernel.org>
-Date: Sat, 11 Jul 2026 12:31:37 +0200
-Message-ID: <87o6gdes1i.fsf@geanix.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gOvKWlIK"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493b27c7451so37881575e9.0
+        for <imx@lists.linux.dev>; Sat, 11 Jul 2026 18:04:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783818251; x=1784423051; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IH/34IPpqm+flKepaUz3IWK/5zpVie015ZDy8bQoYCs=;
+        b=gOvKWlIKJgjCcaZsh5PNHxldrNcB1/uPm98FfiTD5xfrzNuGSwtkBM6lDtxSs7vmiy
+         AqRLEctI3daz1lX6q/Lz2dkrRFq37ydW+9hzn91kv6bxzloIPoGSHsXaoHbmMuEkFBqS
+         zrtCBVl+qjOmnN6Y+x8Id6B4BJza/PJMiDsNLJxgpGOtCyMR4fbuAY/Hkeub6gZ1z0aF
+         1gPoLbi8wM+dG/xN9ip/sEN5489pHTNSYOniqM5oTalp/LKfEzCswN8JYqm3jyNm9hKv
+         3WFkkD4BrsJKFAUn2ZPUC6QLMOVZQHBSgTUnNI78rslzwz+Sss/rkPmlmkYj434jqYdC
+         7/1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783818251; x=1784423051;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IH/34IPpqm+flKepaUz3IWK/5zpVie015ZDy8bQoYCs=;
+        b=c2T+EeRMVB/KpQjUk3nwgfQvDCZpwbaFxPuEDR2861FiYqPe6EKmr+ySIhDOS5MFeO
+         41ogyX4NdVa+GLR2FupelTsigL3I1iOoLCbKA3VclQSLDkMZMM5Hv9wP+l5+ctkHZ2FZ
+         lIJTu6R9+5KncVRWlr5ezfs5L4EJpAnvyvqcaKM61J6UC1b35b2Z86vfztT9QnKiNe9u
+         WEEjHN8+raQLnN75DAmJDHTDhaGmkklme3iXNsSODFtEoedOw+sBC2pClaHkjJdZqRe6
+         JJ4xDvDQVkWlbXBZV+Z0nxiRYiUu7t6RHQiKmGvqvlLvDkvmRCPErjBRCebIfj8Bp6mT
+         Hb2A==
+X-Forwarded-Encrypted: i=1; AHgh+RpnNpmO0N7KfzvP7bLCnxb6GQQzDWLyw7uJw9tKSXmZ+NZVAOc+UKgH5v+uo0ukunG13dY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzmAMc5GPCd8Jbe+YlHp5i2JYhmoRMuNzLFP844GCmoje8Ax1CF
+	iPFTbfkJqQAdJFCuN33w5mp1yINlsv/X5x3MB9aGh/WBGzHawaPJjEgv
+X-Gm-Gg: AfdE7cnoy+2jwpU689vV9OJ4ZmzgucGq55Qx+A8r531vqQzaLYhSJuFfanZQ76uE6RD
+	tvD918GfqMMzNZtfbIfs+NTTIJRsseM1prqjyt+D5xymfbF+gE5HP/TwrMassThN0CJwS1OEXdB
+	Yq1XQ2kxDZtkE3yIMBQO4mG8BwvdNj2LyTy/8rYks60kzMptGGjIXLJx3iIq2dMp2l3gRRUY/aI
+	VaQYjR/eNiTB2sNL430k//FwVe6O+/FQC7mCvv0H9upkmsZ9SOyv6eg41ay1EbUY0kjDQ8DMo2t
+	k5KokGCLhIECAiF6FvF4Sb04VSf8NC2IVz+3XT3ZBGGHrqJSMFzLbDyvlfgOMWZfiFAZikSAhQ0
+	0Sv9ca5+S3EpSe+aMYxs+qwVKgw5SEHdJIqjrIQrIkoh5vntJKiqJGqtRbJktJ8M3ij9+T2OhVN
+	ZavxDlSUv6wYAnWE1g6kjVOxtqujykCKuDzNos7ZrwxOC5UrN1OaTrGcm94nuArzVT4tjtg8dT4
+	h/b
+X-Received: by 2002:a05:600d:2398:b0:493:ecf5:89fd with SMTP id 5b1f17b1804b1-493f88d2f7cmr27656375e9.17.1783818250715;
+        Sat, 11 Jul 2026 18:04:10 -0700 (PDT)
+Received: from nixos-office (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f2d97527sm188580565e9.2.2026.07.11.18.04.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Jul 2026 18:04:10 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+From: Julian Braha <julianbraha@gmail.com>
+To: p.zabel@pengutronix.de,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de
+Cc: arnd@arndb.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	lumag@kernel.org,
+	alexander.stein@ew.tq-group.com,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Julian Braha <julianbraha@gmail.com>
+Subject: [PATCH] drm/imx: fix unmet dependency for DRM_IMX_LDB
+Date: Sun, 12 Jul 2026 02:04:07 +0100
+Message-ID: <20260712010407.2387049-1-julianbraha@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-<sashiko-bot@kernel.org> writes:
+Currently, DRM_IMX_LDB selects DRM_BRIDGE_CONNECTOR without ensuring
+DRM_DISPLAY_HELPER is enabled.
 
->> +			compatible = "nxp,imx8mq-dcss";
->> +			reg = <0x32e00000 0x2d000>, <0x32e2f000 0x1000>;
->> +			interrupts = <6>, <8>, <9>;
->
-> [Severity: High]
-> If power-domains = <&pgc_disp>; is omitted, the generic PM domain framework
-> won't track the dependency between this device and the DISP domain.
->
-> If no other active devices claim pgc_disp, the PM core may disable the
-> domain during late_initcall.
->
-> If a board enables this node and the driver subsequently tries to access the
-> memory-mapped registers of the unpowered peripheral, it will trigger a
-> synchronous external abort and panic the kernel.
->
-> Is this node missing the power-domains property?
+Other similar options select DRM_DISPLAY_HELPER so let's do the same
+here.
 
-As the bindings for it does not include a power-domains property, I
-don't think it is missing.
+This unmet dependency bug was found by kconfirm, a static analysis tool
+for Kconfig.
 
-/Esben
+Fixes: f673055a4678 ("drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency")
+Signed-off-by: Julian Braha <julianbraha@gmail.com>
+---
+ drivers/gpu/drm/imx/ipuv3/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv3/Kconfig
+index 3ca237515e46..c54b176649f1 100644
+--- a/drivers/gpu/drm/imx/ipuv3/Kconfig
++++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
+@@ -37,6 +37,7 @@ config DRM_IMX_LDB
+ 	depends on OF
+ 	select MFD_SYSCON
+ 	select DRM_BRIDGE
++	select DRM_DISPLAY_HELPER
+ 	select DRM_BRIDGE_CONNECTOR
+ 	select DRM_PANEL_BRIDGE
+ 	select DRM_OF_DISPLAY_MODE_BRIDGE
+-- 
+2.54.0
+
