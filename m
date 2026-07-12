@@ -1,248 +1,248 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F2C28CF5F;
-	Sun, 12 Jul 2026 12:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4583A4F4A;
+	Sun, 12 Jul 2026 12:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783858203; cv=none; b=Ntk3DHcSleZV1+cLtEOqScamGbcTfgB46FB1cM5zH+BbDyZ3v4vy5fGe5B+NZbkhA6xhzfpvWMYPZ3F0OueMCwTZaXhToIEiFILpgPGJ6H3qzzXBVqEcw96Ca4pABkQSzfJIG/v1bY6UH5JFMxV89J3kj8iJnCmewL3Bxy0dzKw=
+	t=1783858393; cv=none; b=hZ13HiB2+9Tk72PVyxKY2/ov9GVN8jYW1NA5fg61TDpJMc/F3FyLylMS1WcPEI0erdHTNC4utlzZEqt5kI3M3j6YnOGXBQ5hJmlGT8SK4AXQnDG07akzdbM+U7kg7nE424ss09REThp2GKsOcNFeaMznvkXnlc6XuFxoa2jZIA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783858203; c=relaxed/simple;
-	bh=FmAVubC3OixvOWobefiVwd5ISYWd1cWlTvxP6y94u+Y=;
+	s=arc-20240116; t=1783858393; c=relaxed/simple;
+	bh=D+X0O0chaY+dxk73/+5x15hGDZcG8k3ueF8xdzcT7Sw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ud0LVmMZVq+1eBxi180tHtZVOuhUxvKHrumnnTeY2YhwJJ7Z6wZz1SKw7oAl8HPMdr0ZZVVIud/cBcQXDHw/dAVU507hp9VKF+rsK90eLeP+rqCfXN/qe2W1NAqs73n3JxHDiWNZKatLxbOGm0pIjTfesH8TzJQ+ZYpHniy2joY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0iCUtGg; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=H952usa5wDviiUw5s3Le9zfK37WHUvxUckjOM23u9px/ShcJc4CpEJ866qsrSFXA0wzyAhoDz67qGJ0P6AQQWgEhnwUDy63l1bhdrEQpmn2sgUixEs8b0eoG7uI2xLMLCV9fy6YnAvKWPeivBoYcxFC0cWqwI90pdI6MLF/Hf5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AWydNVvN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0iCUtGg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B3F1F000E9;
-	Sun, 12 Jul 2026 12:10:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AWydNVvN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F771F000E9;
+	Sun, 12 Jul 2026 12:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783858202;
-	bh=rOTF0/Rl7N+qAeyZ3yMlTrfRKjEE8IGf2XoFMRPbf1g=;
+	s=k20260515; t=1783858391;
+	bh=bwifOs3ARdMGHT87KJ+xGdNEjJ/ce/EhL8WqDfk2fN4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=g0iCUtGg5oVjMTDWI7vWvMNBvYGXoRO6rni3XaKj0ejQLBECydgc3ITkfIsBl9qXq
-	 UbRSBbLMUNxxWpOBjxaBe1gY5FZS1W5Mjd4/uGnOlDZ7ASuT943KFGRrlR/+Qxdhpz
-	 VKUSgPId0T3NmFMV62BpzrvWxmeT3jLvavrE/clVQsCwwE3x/6b9D4PamgnNzJX/CI
-	 f97ab4Qvd/EjM++As0sc5FccZQEgBcIRzlIrDSKwOcjFoBMJirobon5egVUn4N2uKJ
-	 arTte++HGStqI2H8kamYz9O6eewRMocVzbWidj5tOM664j6ZT11pIuIvX72d8dltQO
-	 zMQncDkMIR8DQ==
+	b=AWydNVvNuSVtau77GHGBTr7WnKtsDnmxElUT1rgAWJmReJUNK9DyuZvqy7mN7OfiE
+	 SAhuUy4YvVdUwDYRSfMWdZ7LJeGRf0sjDzYNYX7xWjWmw/sIxJ2gkWqRvPpI3wfxyf
+	 q26ifXjKTe9KQrELiy4DMT7vJ5elgUA8cPdb99o2A/bFfaMWr691JrU+xBuRJMVtAI
+	 23qd3NcPQFMd+iiQ/uYL0OxWzeRG5ML2I2xmVJwAbCLX4PeOaZhARGgHzlPF1xdsG8
+	 SbJ75e+mvZfsQisLS7FonQnk+fOhet0c4Y5H2uI7GudNfhBx/5+1EYxXfmdNVDEMMS
+	 r+ltD6d6rDqaA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/5] media: hi846: Fix link frequency handling
+Subject: Re: [PATCH v5 4/5] media: hi846: Add 6MP and 8MP modes support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Pengyu Luo" <mitltlatltl@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org
-In-Reply-To: <20260712115012.91600-3-mitltlatltl@gmail.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260712115012.91600-5-mitltlatltl@gmail.com>
 References: <20260712115012.91600-1-mitltlatltl@gmail.com>
- <20260712115012.91600-3-mitltlatltl@gmail.com>
+ <20260712115012.91600-5-mitltlatltl@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 12 Jul 2026 12:10:01 +0000
-Message-Id: <20260712121001.C1B3F1F000E9@smtp.kernel.org>
+Date: Sun, 12 Jul 2026 12:13:10 +0000
+Message-Id: <20260712121311.23F771F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
 
 New issues:
-- [Critical] The device tree link frequency validation is silently bypassed=
- because `hi846->clock` is used before it is initialized, causing the check=
- to always succeed erroneously.
-- [High] Removing the V4L2_CID_LINK_FREQ control without implementing the g=
-et_mbus_config pad operation breaks CSI-2 receiver drivers that rely on it.
-- [High] Link frequency validation in probe fails for all configurations be=
-cause it mandates frequencies for modes that do not support the active lane=
- count.
+- [High] Unconditional link frequency validation fails probe on 2-lane hard=
+ware for modes with dummy frequencies.
+- [High] Dynamic link frequency calculation breaks backward compatibility w=
+ith existing device trees.
+- [Medium] The active crop rectangles for the new 6MP and 8MP modes exceed =
+the sensor's native crop bounds.
+- [Low] The patch author failed to address reviewer feedback requesting the=
+ use of separated fields for PLL configuration.
 
 Pre-existing issues:
-- [High] Format changes silently fail to update the pixel_rate control valu=
-e due to unmodified control limits.
-- [High] hi846_set_format performs an unprotected read of hi846->cur_mode o=
-utside a lock and validates the old mode rather than the newly requested on=
-e.
-- [High] hi846_set_ctrl incorrectly handles the -EINVAL return value from p=
-m_runtime_get_if_in_use(), leading to an unconditional usage_count decremen=
-t.
-- [High] hi846_set_stream fails to track internal streaming state, allowing=
- unbalanced s_stream(0) calls to underflow the PM runtime usage count.
+- [High] The default active mode lacks a 4-lane register configuration, lea=
+ding to missing MIPI setup and streaming failures on 4-lane hardware.
 --
 
---- Patch [2]: [PATCH v5 2/5] media: hi846: Fix link frequency handling ---
-commit 552600ce78beca6ba3cd666623936aecd2e1ea5d
+--- Patch [4]: [PATCH v5 4/5] media: hi846: Add 6MP and 8MP modes support -=
+--
+commit 3cb5bb77cc3eceb92db3158280dae51e0e69e655
 Author: Pengyu Luo <mitltlatltl@gmail.com>
 
-media: hi846: Fix link frequency handling
+media: hi846: Add 6MP and 8MP modes support
+   =20
+Hi846 is an 8MP sensor, but the upstream driver has only supported 2MP
+mode for years. This patch adds 6MP and 8MP modes to maximize sensor
+utilization.
 
-This patch updates the link frequency handling to dynamically calculate it
-based on PLL configuration, lane count, and external clock rate. It removes
-the hardcoded link frequencies and the V4L2_CID_LINK_FREQ control, and drops
-the MCLK rate check.
+Note that these modes require 4-lane MIPI CSI-2, as the downstream
+driver only exposes 2MP, 6MP, and 8MP configurations in 4-lane
+operation on the target device. The register sequences are extracted
+from the downstream Windows driver.
 
 > diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
-> index 7f069aca0fce5..6bcd862aee301 100644
+> index df7ea3ecf0d82..0fc27545eec8b 100644
 > --- a/drivers/media/i2c/hi846.c
 > +++ b/drivers/media/i2c/hi846.c
+> @@ -1028,6 +1028,106 @@ static const struct hi846_reg mode_1632x1224_mipi=
+_4lane[] =3D {
 [ ... ]
-> @@ -1426,14 +1434,6 @@ static int hi846_init_controls(struct hi846 *hi846)
-> =20
->  	ctrl_hdlr->lock =3D &hi846->mutex;
-> =20
-> -	hi846->link_freq =3D
-> -		v4l2_ctrl_new_int_menu(ctrl_hdlr, &hi846_ctrl_ops,
-> -				       V4L2_CID_LINK_FREQ,
-> -				       ARRAY_SIZE(hi846_link_freqs) - 1,
-> -				       0, hi846_link_freqs);
-> -	if (hi846->link_freq)
-> -		hi846->link_freq->flags |=3D V4L2_CTRL_FLAG_READ_ONLY;
-> -
-
-[Severity: High]
-Does removing V4L2_CID_LINK_FREQ without implementing the get_mbus_config p=
-ad
-operation break CSI-2 receiver drivers?
-
-Several CSI-2 receivers rely on v4l2_get_link_freq(), which falls back to
-V4L2_CID_PIXEL_RATE only if the caller provides valid mul and div arguments.
-
-When downstream receivers pass 0 for these arguments, the framework relies
-entirely on .get_mbus_config or V4L2_CID_LINK_FREQ. Without either, the
-framework returns -ENOENT, preventing the camera pipeline from streaming.
-
+> +static const struct hi846_reg mode_3264x1836_mipi_4lane[] =3D {
 [ ... ]
-> @@ -1749,7 +1748,6 @@ static int hi846_set_format(struct v4l2_subdev *sd,
->  	mf->code =3D HI846_MEDIA_BUS_FORMAT;
->  	mf->field =3D V4L2_FIELD_NONE;
-> =20
-> -	__v4l2_ctrl_s_ctrl(hi846->link_freq, hi846_get_link_freq_index(hi846));
->  	__v4l2_ctrl_s_ctrl_int64(hi846->pixel_rate,
->  				 hi846_calc_pixel_rate(hi846));
+> +	{HI846_REG_UNKNOWN_095A,		0x9240},
+> +	{HI846_REG_PLL_CFG_MIPI2_H,		0x4124},
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does this silently fail to
-update the pixel_rate control value when changing formats?
+[Severity: Low]
+Does this still use raw register values instead of separated fields?
 
-The control is instantiated in hi846_init_controls() with its maximum bound
-permanently locked to the lowest-resolution mode's pixel rate:
+The v5 changelog states: "Use separated fields instead of raw register valu=
+es
+for PLL cfg (Sakari)".=20
 
-hi846_init_controls()
-    hi846->pixel_rate =3D v4l2_ctrl_new_std(ctrl_hdlr, ...,
-                                          hi846_calc_pixel_rate(hi846), 1,
-                                          hi846_calc_pixel_rate(hi846));
+However, this newly added array defines the PLL configuration using a raw 1=
+6-bit
+payload (0x4124) rather than using field preparation macros (FIELD_PREP) or
+separated fields.
 
-When setting a new format with a higher pixel rate, the new rate is applied
-here but it fails to call __v4l2_ctrl_modify_range() to raise the upper lim=
-it
-first. The framework will clamp the new value to the old maximum limit,
-breaking downstream bandwidth calculations.
+Was this reviewer feedback missed?
 
-[Severity: High]
-This is a pre-existing issue, but does hi846_set_format() perform validation
-against the old mode rather than the newly requested one?
-
-Earlier in hi846_set_format(), the code checks lane capability using an
-unprotected read of hi846->cur_mode before the new mode is resolved:
-
-    if (hi846->nr_lanes =3D=3D 2) {
-        if (!hi846->cur_mode->reg_list_2lane.num_of_regs) {
-
-This allows users to configure a mode that is incompatible with the active
-hardware lane count (because it checks the current mode, not the requested
-one), causing a silent failure when the stream starts and MIPI registers
-are omitted.
-
+> +	{HI846_REG_TG_ENABLE,			0x0100},
+> +};
+> +
 [ ... ]
-> @@ -1950,16 +1948,17 @@ static int hi846_identify_module(struct hi846 *hi=
-846)
->  static s64 hi846_check_link_freqs(struct hi846 *hi846,
->  				  struct v4l2_fwnode_endpoint *ep)
->  {
-> -	const s64 *freqs =3D hi846_link_freqs;
-> -	int freqs_count =3D ARRAY_SIZE(hi846_link_freqs);
-> +	int freqs_count =3D ARRAY_SIZE(supported_modes);
-> +	u64 link_freq;
->  	int i, j;
-> =20
->  	for (i =3D 0; i < freqs_count; i++) {
-> +		link_freq =3D hi846_get_link_freq(hi846, &supported_modes[i]);
-
-[Severity: Critical]
-Will this call to hi846_get_link_freq() result in a zero frequency calculat=
-ion
-because the clock is not yet initialized?
-
-In hi846_probe(), hi846_parse_dt() is called before the clock is initialize=
-d:
-
-hi846_probe()
-    hi846_parse_dt()
-        hi846_check_link_freqs()
-            hi846_get_link_freq()
-                clk_get_rate(hi846->clock);
-
-    hi846->clock =3D devm_v4l2_sensor_clk_get(&client->dev, NULL);
-
-Since hi846->clock is NULL during the DT parsing, clk_get_rate() will retur=
-n 0.
-The validation loop then checks if 0 is in the device tree endpoints, fails=
- to
-find it, and returns 0. The caller hi846_parse_dt() checks "if (fq)", which
-evaluates to false when fq is 0, completely bypassing the error path and
-treating the validation as successful.
-
-[Severity: High]
-Does iterating over all supported_modes cause probe to unconditionally fail?
-
-For modes that do not support the active lane count, the calculation uses
-dummy divider values (like mipi_clk_div_2lane =3D 1 in the 3264x1836 mode).
-
-This incorrectly calculates a bogus link frequency and demands that it exis=
-ts
-in the device tree link-frequencies array. When it is naturally not found,
-the validation rejects the device tree and aborts the probe.
-
+> +static const struct hi846_reg mode_3264x2448_mipi_4lane[] =3D {
 [ ... ]
+> +	{HI846_REG_UNKNOWN_095A,		0x9240},
+> +	{HI846_REG_PLL_CFG_MIPI2_H,		0x4124},
 
-There are also a couple of pre-existing issues in other parts of the driver
-that were noticed during this review:
+[Severity: Low]
+Does this still use raw register values instead of separated fields?
+
+As mentioned above, the v5 changelog indicates this should use separated fi=
+elds
+rather than a raw 16-bit payload.
+
+> +	{HI846_REG_TG_ENABLE,			0x0100},
+> +};
+> +
+[ ... ]
+> @@ -1136,7 +1236,59 @@ static const struct hi846_mode supported_modes[] =
+=3D {
+>  			.width =3D 1632 * 2,
+>  			.height =3D 1224 * 2,
+>  		},
+> -	}
 
 [Severity: High]
-This is a pre-existing issue, but does hi846_set_ctrl() incorrectly handle =
-the
--EINVAL return value from pm_runtime_get_if_in_use()?
+This isn't a bug introduced by this patch, but does the default active mode
+lack a 4-lane register configuration, leading to missing MIPI setup?
 
-In hi846_set_ctrl():
-    ret =3D pm_runtime_get_if_in_use(&client->dev);
-    if (!ret || ret =3D=3D -EAGAIN)
-        return 0;
-    ...
-    pm_runtime_put(&client->dev);
+During probe, the driver sets the default format in hi846->cur_mode to
+&supported_modes[0] (640x480). This mode has an empty 4-lane MIPI configura=
+tion.
 
-If runtime PM is disabled, pm_runtime_get_if_in_use() returns -EINVAL.
-The condition fails to catch -EINVAL, falls through, and unconditionally
-executes pm_runtime_put(). Since the PM refcount was not incremented,
-this underflows the usage count.
+If a userspace application running on 4-lane hardware starts streaming with=
+out
+explicitly setting a supported format via VIDIOC_S_FMT, hi846_start_streami=
+ng()
+will attempt to apply the empty 4-lane register list.=20
+
+Will this silently leave the sensor's MIPI interface unconfigured, resultin=
+g in
+capture hangs or deadlocks?
+
+> +	},
+> +	{
+> +		.width =3D 3264,
+> +		.height =3D 1836,
+> +		.mipi_clk_div_2lane =3D 1, /* dummy */
 
 [Severity: High]
-This is a pre-existing issue, but does hi846_set_stream() fail to track
-internal streaming state?
+Does this dummy frequency break probe on 2-lane hardware?
 
-In hi846_set_stream():
-    if (!enable || ret) {
-        hi846_stop_streaming(hi846);
-        pm_runtime_put(&client->dev);
-    }
+During probe, hi846_check_link_freqs() iterates over all elements in
+supported_modes, calculating their link frequencies and verifying they exist
+in the device tree endpoint.
 
-Subdev s_stream(0) can be called multiple times. The function does not veri=
-fy
-if the sensor is actually currently streaming. When called with enable =3D =
-0,
-it unconditionally enters the teardown block and executes pm_runtime_put().
-If the stream was already stopped, the refcount was already dropped, leading
-to an underflow.
+Since this dummy frequency is not present in the 2-lane device tree's
+link-frequencies property, will the check unconditionally fail and abort dr=
+iver
+probe, breaking 2-lane hardware configurations?
+
+> +		.mipi_clk_div_4lane =3D 2,
+
+[Severity: High]
+Does this dynamic link frequency calculation break backward compatibility w=
+ith
+existing device trees?
+
+Prior to this series, the driver hardcoded acceptable link frequencies (80M=
+Hz
+and 200MHz), and existing device trees list these specific values in their
+link-frequencies property.=20
+
+Since patch 2 ("media: hi846: Fix link frequency handling") replaced these
+hardcoded values with a dynamic calculation based on mclk and lane count,
+calculating it here yields 187.5MHz and 375MHz when driven by the previously
+standard 25MHz external clock.=20
+
+Because hi846_check_link_freqs() requires the exact calculated frequencies =
+to
+exist in the device tree, will probe fail on existing platforms using the l=
+egacy
+mandated values, violating Device Tree backward compatibility rules?
+
+> +		.fps =3D 30,
+[ ... ]
+> +		.crop =3D {
+> +			.left =3D 0x46,
+> +			.top =3D 0x172,
+> +			.width =3D 3264,
+> +			.height =3D 1836,
+> +		},
+
+[Severity: Medium]
+Do these active crop rectangles exceed the sensor's native crop bounds?
+
+The V4L2 selection API strictly requires that any active crop rectangle mus=
+t be
+fully contained within the native bounds (V4L2_SEL_TGT_CROP_BOUNDS), which =
+are
+hardcoded to 3264x2448 in hi846_get_selection().
+
+However, this crop rectangle is defined with a width of 3264 and a left off=
+set
+of 0x46 (70), positioning the rightmost edge at X =3D 3334, which exceeds t=
+he
+3264 width limit.
+
+Can this API violation cause v4l2-compliance test failures and confuse
+userspace applications?
+
+> +	},
+> +	{
+> +		.width =3D 3264,
+> +		.height =3D 2448,
+> +		.mipi_clk_div_2lane =3D 1, /* dummy */
+> +		.mipi_clk_div_4lane =3D 2,
+[ ... ]
+> +		.crop =3D {
+> +			.left =3D 0x46,
+> +			.top =3D 0x40,
+> +			.width =3D 3264,
+> +			.height =3D 2448,
+> +		},
+
+[Severity: Medium]
+Similarly, does this crop rectangle exceed the sensor's native bounds?
+
+With a top offset of 0x40 and height of 2448, the bottom edge is at Y =3D 2=
+512,
+which exceeds the 2448 native height limit, in addition to exceeding the wi=
+dth
+limit as seen in the previous mode.
+
+> +	},
+>  };
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260712115012.9160=
-0-1-mitltlatltl@gmail.com?part=3D2
+0-1-mitltlatltl@gmail.com?part=3D4
