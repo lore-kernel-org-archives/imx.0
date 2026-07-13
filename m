@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5060E3BC69C;
-	Mon, 13 Jul 2026 09:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A312C2AD3C;
+	Mon, 13 Jul 2026 09:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783935561; cv=none; b=OXRyMdJDLKt01loVYWsMQOAy//We90C3GPN3/7bFF5+NEbPkCOSSd6s7seiUEvvyQGxOou9qUe/F3PLrKJpBDukFWNguzmevZF/SJB4EuEf0Ysh6dSnHuF2krDBxObPul3/gYuXcg7cyEOqHR6JsUkwwSR5Xa2KJIQM+rc7aVXY=
+	t=1783935674; cv=none; b=Uz1WxHhYMMKQEf1lI3d8+KzP2URCEJ4q6CHtFS0dQR6ZCsIo/cWoqmDxTPVeTFVBNPAV87DVAWLc4gkaHO93oyis+/CwghtnB8u8I7SLjbDDmUgrPZmbqNcqg+FFY0m0RFW60HwhMD4mDGofLVDjYY4zS7BoTSeoQw5mWdyDDCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783935561; c=relaxed/simple;
-	bh=NvDWYEUBma992w94iywI9ML4b1HSPn45nyPpaknJtMI=;
+	s=arc-20240116; t=1783935674; c=relaxed/simple;
+	bh=hJQ1ziTW2JI09ZxZcoU9nNprmRwrz6JnyxTyNxt/O/A=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mHuqTw8sHxvq8AFqUenURo/vNYVODpjvarBGcr4631Yxviy8s34KID9gTzMyQaCESVbTj41t4Z1QO1V04N/41dKaZLnotz+Ei6x8JlLorZVk2N6D9DI6nrs8/srr3ghF0SQ6lHJkTWlq+1Hwmp/HtyPJjkqQzvIugWVKbEKNGA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ibQXPQlJ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=EBQidKanmxT48J/KbMT6t2bbaTqiE/DezMsrmtHdEUVAkWcVhFFs1uCaSbEFOtlZB3CigeJWbCCiOSt3xQsHv6IRAFmyzkg7EFQKff5nAX4Gd47ayZzGPAhvf2pnBooGZb3Pe4Gc6YZWTgIosQwITT3UPd+29iFLqcV00QDbl94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQhJJar9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ibQXPQlJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71F41F000E9;
-	Mon, 13 Jul 2026 09:39:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQhJJar9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9AD1F000E9;
+	Mon, 13 Jul 2026 09:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783935560;
-	bh=RXLH4XgvzcJUTnQ0Ir6+TwStOgLs32YTKlWqg58T3yE=;
+	s=k20260515; t=1783935673;
+	bh=JOiqyyOIGH5pzpK5RIgRBrgElun3fjrf7x0O+jBl87k=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ibQXPQlJFE005lDUslFBgWX1LE7bKjBFGxhO6hTLXnxN9GoiyPTUzyaohuoABlrwS
-	 hAuFDWqquzrdegtaFK94pNRe2lfbtLnbkt2H0uSSmlCxduypwCGLmXLQE3xkjyvRtv
-	 FHeHRiXgNkpLS56kQijuUKvnGfDYCVhwCWxUpsyDkI8SVALrT8DGFVj1ZMrGRn9kLc
-	 MvrAQdNl9Bu4wHQS5yBf32z3IgOfh0/y6XfW4CrJEq3LLXVUfr2aHTRO9PjfRWOAHm
-	 l/IwKjV0v+LPogNaj1v7OenfGhjMG7NNRa7Dc2+ALyaL1cGPY5+mS+gyMwrmtSCg/C
-	 wrz7ElRSB12/A==
+	b=iQhJJar9f8Vnzwkv/ETtK01NLtId+xxuCp72bWCJWBGDNZ2ZWjnj7R9TiFtSNWyEp
+	 gzwgAPGB+pVceul5pEZaj91u5EI3F6lROGdKhEe6Js3qrQozyG+DP72Sh2OVDK6A8X
+	 PGhl44Y7DdedtN+YI5V8QK7yo3TXE6Bex/3lA0bGRmbeHpvEeuszmwNaprf5KkRd9D
+	 2uAPiazkKsknDR8foNCE04i9l8ItFij4yW50y8HclmDzI4lJ4D7V6JA6TlMd5J1f4m
+	 X1VGLm5PlM5Ej6rD+y1t0M3fwQ4vHp48TpQcuWr2/YFUqRijX3jJdnpHdg9ds1QGmx
+	 RnerrqC5Onqtg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/6] arm64: dts: qcom: shikra: Add CAMSS node
+Subject: Re: [PATCH v5 1/6] dt-bindings: media: qcom: Add Shikra CAMSS
+ compatible
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Nihal Kumar Gupta" <nihal.gupta@oss.qualcomm.com>
-Cc: imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260713-shikra-camss-review-v5-2-db53be15dc4f@oss.qualcomm.com>
+Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260713-shikra-camss-review-v5-1-db53be15dc4f@oss.qualcomm.com>
 References: <20260713-shikra-camss-review-v5-0-db53be15dc4f@oss.qualcomm.com>
- <20260713-shikra-camss-review-v5-2-db53be15dc4f@oss.qualcomm.com>
+ <20260713-shikra-camss-review-v5-1-db53be15dc4f@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 Jul 2026 09:39:19 +0000
-Message-Id: <20260713093919.B71F41F000E9@smtp.kernel.org>
+Date: Mon, 13 Jul 2026 09:41:12 +0000
+Message-Id: <20260713094112.DF9AD1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,48 +47,61 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] The `camss@5c11000` node is placed out of order in `shikra.dtsi`, v=
-iolating device tree sorting rules.
+- [Medium] The schema uses a global `oneOf` for `iommus` instead of conditi=
+onally restricting the number of items per compatible string, allowing inva=
+lid configurations to silently pass validation.
 --
 
---- Patch [2]: [PATCH v5 2/6] arm64: dts: qcom: shikra: Add CAMSS node ---
-commit 3b1defa09283750cdb86a9b19398c488f2a5fdb0
+--- Patch [1]: [PATCH v5 1/6] dt-bindings: media: qcom: Add Shikra CAMSS co=
+mpatible ---
+commit fc0a6e2efaafe1932112e71e5a72e67dfe8ffb3f
 Author: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
 
-arm64: dts: qcom: shikra: Add CAMSS node
-   =20
-This patch adds the Camera Subsystem (CAMSS) node for Shikra. It specifies
-that Shikra shares the same IP as QCM2290 but drops CDM and OPE blocks,
-requiring only a single IOMMU context bank.
+dt-bindings: media: qcom: Add Shikra CAMSS compatible
 
-> diff --git a/arch/arm64/boot/dts/qcom/shikra.dtsi b/arch/arm64/boot/dts/q=
-com/shikra.dtsi
-> index 4e5bc9e17c8ed..6335caca32980 100644
-> --- a/arch/arm64/boot/dts/qcom/shikra.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/shikra.dtsi
-> @@ -604,6 +604,106 @@ opp-384000000 {
->  			};
->  		};
-> =20
-> +		camss: camss@5c11000 {
-> +			compatible =3D "qcom,shikra-camss", "qcom,qcm2290-camss";
+This commit documents the Shikra Camera Subsystem IP, using qcm2290-camss
+as a fallback. It updates the compatible string list and changes the iommus
+property to allow either 1 or 4 items depending on whether the CDM and OPE
+blocks are present.
 
-[Severity: Low]
-Could this node be placed out of order?=20
-
-Device tree node unit-addresses are generally sorted numerically, but here=
-=20
-camss@5c11000 is placed before the geniqup@4ac0000 node, which breaks the=20
-numerical sorting under the soc node.
+> diff --git a/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.y=
+aml b/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml
+> index 391d0f6f67ef5..490a7f3a8c5ff 100644
+> --- a/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml
+> +++ b/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml
 
 [ ... ]
 
-> +		};
-> +
->  		qupv3_0: geniqup@4ac0000 {
->  			compatible =3D "qcom,geni-se-qup";
->  			reg =3D <0x0 0x04ac0000 0x0 0x2000>;
+> @@ -76,7 +80,14 @@ properties:
+>        - const: sf_mnoc
+> =20
+>    iommus:
+> -    maxItems: 4
+> +    oneOf:
+> +      - items:
+> +          - description: S1 HLOS VFE non-protected (VFE only)
+> +      - items:
+> +          - description: S1 HLOS VFE non-protected
+> +          - description: S1 HLOS CDM non-protected
+> +          - description: S1 HLOS OPE read non-protected
+> +          - description: S1 HLOS OPE write non-protected
+
+[Severity: Medium]
+By using a global oneOf for the iommus property, doesn't this allow invalid
+configurations to pass schema validation?
+
+Without an allOf block containing if-then conditional constraints tying the
+specific compatible string to its corresponding number of IOMMUs, a device
+tree configuring a QCM2290 device with only 1 IOMMU, or a Shikra device with
+4 IOMMUs, will silently pass validation.
+
+Should this constraint be enforced conditionally based on the compatible
+string?
+
+> =20
+>    power-domains:
+>      items:
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713-shikra-cam=
-ss-review-v5-0-db53be15dc4f@oss.qualcomm.com?part=3D2
+ss-review-v5-0-db53be15dc4f@oss.qualcomm.com?part=3D1
