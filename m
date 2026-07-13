@@ -1,190 +1,248 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011057.outbound.protection.outlook.com [40.107.74.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD8C1E1E12;
-	Mon, 13 Jul 2026 17:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783963524; cv=none; b=isMZ3ztvQ9kD9ktbVT7gOzF3EVfWjE2x6Nv2ju24GIAw6kuP7TUkeBnoAZhMpUIBT8XzRyEAYgvr7/IawyVWBcMV6hlcD/0rEMZKer8mUic1bwtfLpIgI8ZlUuunk1+nkEHtHd3FxX5fKKg7nk+L5aWOf9UilVzIuOPAZmvlpo4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783963524; c=relaxed/simple;
-	bh=PR+cxLj73+fjanKV1NKzCtcMQE/BpTFkVaimgkXvc1Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SpjLPsyr9zb4ZBqnMmz4p7AsXXwsGdnG8aOCPqmC4RLeiNm5p7EKGXHo9ax/FjT5J+e6OO3ZTwePIXNRQCr2mp4iju8Qbq3/7QO7N/gVirpCCsRLCDUwotM/f7/gf1Wae++wp9KCQs/S7oGBzkG6i2HXFh3JFfHwt/BGTJqXnm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jFRSbDy/; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A880346ADE
+	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 17:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783963703; cv=fail; b=VSWyH5kud9NeCxbsYNZ9jr73kk4ngzYiQ2crZRT9DJ+xk2SwHK6Z8Vtk7oqOe87i/iVLf3PRE57bLtTmNqYL7I82Bhs8iOOPivv5ziiNMLMW4zltucJ0kesqpkG6MsZvLUyNz8lrmsrftoGZtM7JwfEOAG8OcuG0tsmHVRjwT6g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783963703; c=relaxed/simple;
+	bh=6J+buBYolYuV0Cf4ZPd0ErYvkCHerciHoCd+Q7srv+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Ym719+DfXFeAmloMhNz7zSWx36DnF2K7FroQlele1CZzuj9Zx4fowisLuOQrC8IDEQ428ll1FDfki84T7nnaNjfLUZ5PNC+AfoUes/KN+Q4+QMo1O7fB8RFajcNiyF0j0JGnMCsPCxUq56HXMYcGO062s/vNjvrDCnJeXL7oI/0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=r2sjSQue; arc=fail smtp.client-ip=40.107.74.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jFRSbDy/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3571F1F000E9;
-	Mon, 13 Jul 2026 17:25:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783963522;
-	bh=6PvRjjv5Ke6VW5MwcuvoC+CkH/D2yP8rRnpwMBC1Uko=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jFRSbDy/GsbA2nqk9jeAvsdy79jOSii0jgXxep/Kl/m8VyR5YRzuFP5Eyr00LXAbi
-	 bgR4JwclyFoQ0B+nXlB6P4lk4nh2BT3nCvmCalUjtOSIpeEm3qurpKRjh1Nr3AG8eK
-	 Q8xREB05EKjDSHry7Pz7OOrBPMK8zhscPpliHnyOib3/LWqIjimtXuY5gUj4Vq36Eb
-	 a1954xV5yRF8T9jQQ3RVy4NkMKGO7fQPbq2SwKMDpgwtbhzr8bxXW0W/rjmI0QhPjP
-	 +AtxAIlISyZTA/EeqjMR0yCsxENZPHJjl2wvdim63mlmNQqkjQSK1sy+rFnyFBE/Vg
-	 irrk8tcpUs4Kw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 09/10] dmaengine: dw-edma: Use burst array instead of
- linked list
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: dmaengine@vger.kernel.org, linux-pci@vger.kernel.org, vkoul@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260713-edma_ll-v7-9-6fb7498c901e@nxp.com>
-References: <20260713-edma_ll-v7-0-6fb7498c901e@nxp.com>
- <20260713-edma_ll-v7-9-6fb7498c901e@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 Jul 2026 17:25:21 +0000
-Message-Id: <20260713172522.3571F1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="r2sjSQue"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PLMh7HYmX77FPm6dVfp1s0cU/eTeEKWMTgsxcoOsSbT4DidlZpU/m4GdZ1/Dq0UDRyfsIex/TEcTYRYkXTDa+hiCS1Gsm6lAeQOV7JOwr5lVXrscRR8frv2jJFXnD2vWcKS66r7xyXJEOFZMl1jHY4tJaRN06OMz1YRpi8If5oP75wqsiKWJ4DLdCvz+baDDFlAVOVZE1d3KfBQq93PlyrPaCzFjPxwBadqIdDLUmHYSQtfF000iQNPPLdGhAZnaaLgZnhdKcm95ZUzGtmhSbyX+MaBTgBEo0OITY9UE/fu2m30fUBDsxymaMyMRedi1PBRP1Q2XVIh5ersFmFuIpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=smgkgHgq5der1uIbrwii7UCRBdLNx/jffsmxxDTJR3w=;
+ b=tjxM4F82GXLNqRS9zpyXSRHh5tDDFJO5ElR2rEqS0UtKUI5OGifcMU8uFhSESgTYak5zUu16xzw3aVXc5nEf8s7U8Jxs4Hl2raoTp9ffkZR5CaB3KRIyjh019vJgngn5lEfswPIOqKhhQpD4jOoxSJtN219THppPEwVy1P5QlWOY+/vVFCRapeSMOa9PQsTPYfjpFZlbTFznq7re2sxjp3Cf7goXnXFkL6tI/KGyp6c4JwiiYo5lEt9S3sJJSgQZSRvmSv1l4U8cOul4Pz+zgZpvO5HCA9Oa+RZA8MkXK9kynvON+4ic9NtxKEfESWEi+1dju+hUeAkUx2/dKNs/sQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=smgkgHgq5der1uIbrwii7UCRBdLNx/jffsmxxDTJR3w=;
+ b=r2sjSQueOruvUHTIDK+XWoRAv/XyKojibe3ZzFbFIPWRQ3fthKpv7+vS5c/nVtEOIDBY5MHnOQF+kaxH3iRE+ZjL0paAcK2wURX263zcmsNrkJ/XpYd6fVWZYNRANnLinyFBPfxxH74cGtglJmLToguoCCuP/sVPLw93hdPCn4M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+Received: from TYRPR01MB13588.jpnprd01.prod.outlook.com (2603:1096:405:18d::7)
+ by TYCPR01MB18075.jpnprd01.prod.outlook.com (2603:1096:405:391::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
+ 2026 17:28:18 +0000
+Received: from TYRPR01MB13588.jpnprd01.prod.outlook.com
+ ([fe80::2f5b:8560:48ed:3828]) by TYRPR01MB13588.jpnprd01.prod.outlook.com
+ ([fe80::2f5b:8560:48ed:3828%4]) with mapi id 15.21.0202.014; Mon, 13 Jul 2026
+ 17:28:18 +0000
+Date: Mon, 13 Jul 2026 19:27:59 +0200
+From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+To: tze.yee.ng@altera.com
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jorge Marques <jorge.marques@analog.com>,
+	=?utf-8?Q?Przemys=C5=82aw?= Gaj <pgaj@cadence.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>, imx@lists.linux.dev
+Subject: Re: [PATCH v6 0/5] i3c: Improve CCC reliability with actual_len,
+ validation, and Direct GET retry
+Message-ID: <alUgH73gxpKQPOIF@tom-desktop>
+References: <cover.1783493867.git.tze.yee.ng@altera.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1783493867.git.tze.yee.ng@altera.com>
+X-ClientProxiedBy: FR3P281CA0026.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1c::17) To TYRPR01MB13588.jpnprd01.prod.outlook.com
+ (2603:1096:405:18d::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYRPR01MB13588:EE_|TYCPR01MB18075:EE_
+X-MS-Office365-Filtering-Correlation-Id: a5ad2462-d9b1-4c09-1f1e-08dee104209d
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|52116014|376014|7416014|56012099006|11063799006|38350700014|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	jcMWPetV0z4rdb29TAg8/3Zi6GLXmKgUmgocN5C/U/CCyn3/qqPuHLj7gmZEE8n5T4rxIQqMsiaM5OVEJkWMeXDplsVS5hjURLgHjTHYN+ujEMaTJV1cZWBNGLGVNmCO/o6RoBDgAuLFrmeQPWGgyRFE3Hi7JeO0dDnXBe82vg+TWurQcKPRDafBc2ybjJQ+sdK0YH510YdaCiXEi8jNx7/K8Khl7jSYeik23ZQvP2K+43QIxUEXpmUm64AflqJWLkJJXt0UoGV7zlGmBbXQxLtc5RS7kpX+74GrC+Amkme396zFn+wicuZ7C7eNcQevjVQ/zYYCIHyCtReLqLnfwPiUdHWIkuVa8u8YxSbtFqNbNc5jrvkEuZ0QQW8JTt4qpN+WsVePrhJhg0GrUc8k4GBvJDp1Y4WhXM+10+4dQym5iEj3bZQNkLPDCFpYkgevjYOvk+1R5PtKzWIjeZVngVJT/SPwWwrJGBcmoP4bAMa0NY7lzub1VDBuUxQL6fTgns4hyW2T3pfe0rTAPnIwq1K/Y1hF3UyQPATovjLw7eicgxQbwQQc0w940y//6F9eCoAwIaHlkZPnGhMLLy19suv/uEx9AwZnLALwycvU/71I02SGHG4aYtPuudwW049gq2azN1s47qcz5j6X5YurL3/jocZbaNPBIKLdj50e6tVdSHHotYh4lGXp1LcqIR/uyo51nw7tz0GSooKM/DwY4lrFUpid60ZD9Ba0a/uoJ48=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYRPR01MB13588.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(52116014)(376014)(7416014)(56012099006)(11063799006)(38350700014)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?m6w9gAbnzUXto0DsBc5bxpToLPreiX5IX0x5d6bX+PY6/yRwSP4YoaJ6cNRj?=
+ =?us-ascii?Q?yew5beNz6JsNyX2MPECI2QtmezUVxV9TbtMTmGYhMsvcxuVaXSkedR9DmWpW?=
+ =?us-ascii?Q?zc9J5bTQB0x38jDdEC1NuZscWBB7nvOHYaJF+B7WK+KQam/uTCaQLCeBtETm?=
+ =?us-ascii?Q?rlZh5EvazX3ax5z4/EciN/OPZri5d/HSdrUK2si0IgU9yOdvC2dCiGXqA6k2?=
+ =?us-ascii?Q?j+WnaFo24SuaWF73CYpJI+Zftvk4e/LAVNnI87615Gm8zJHIuJrpPwhDr86F?=
+ =?us-ascii?Q?vCHqX9F1Zh3JwgjT+F2gaK9F4AHkyu8arfKTydEwwTG3BIHhpEbQeEf8TUK1?=
+ =?us-ascii?Q?qLl+qYzQIBZVDLP0AM9i1BizoXMCbGr7ksEvkPWASg7kODundASw0laz0orH?=
+ =?us-ascii?Q?0ayftyUH1GyiP8F7QUlo/VyfjEbwMm9vp/+AdlRHOVay4+8arMNtazXPFwfu?=
+ =?us-ascii?Q?FfQCHTUB6PdoI4Z/7iqjYK/Gk8eMJD2jxnFRi51/DuidGI9WTQME8Uy/JGJT?=
+ =?us-ascii?Q?2S2kyLahp3N01c6MlvrW725JX+CWbyenG1aXKc951f6M4gIMxnMAIXSXyKxu?=
+ =?us-ascii?Q?5Gj2SfY/7lmsOOMb5Wo/7Q9oLouZer9zHbxoM/4ZekDeOrs7rHKnGXZMyGHE?=
+ =?us-ascii?Q?8WYpiV8ygFLW8swIJoMgo9Wiw0CZz4uQcEz+SFVj/4BfYNF/+Ny4TPGMTq+M?=
+ =?us-ascii?Q?JSjFcndgSC1Yy+iEQMrBytOmO2VvMuY+txNaEujmo7lyF9A7oOFnK6gCiFoJ?=
+ =?us-ascii?Q?TfiSzeTvnqqthL06wcX0t/yv9PTdadGJiwbXipvGTDN/E47hpfxTjFxjcg5z?=
+ =?us-ascii?Q?dwy1o2X01ceIAs37XOZsLRjpWbhO6XIG+koRFpPUxd3iGVydtPetnjgzSQcb?=
+ =?us-ascii?Q?m8vi8IOOu+qyBYQYMWOp8QHr8JlCfPnOs/tdytFTHufR/kwi/4yzFeS42Ahx?=
+ =?us-ascii?Q?jecoVeWarTnjwylARfXugXWUHANpIdIV2GFJksvCDhxd38VFGqvsJNSAWhHz?=
+ =?us-ascii?Q?NAEfLZYjVzo1v5VYX7RGcuLXhHFmZwXVvNhHE6Be7gGf0zNukmp6X0fZ44z+?=
+ =?us-ascii?Q?ugUUyfiE+7Cor6RdnOAEzctfMPYsr7EcX7dArlVZrXsGJd1q0qqnqWuL9R77?=
+ =?us-ascii?Q?oY7Lz6is+NZm/DWm1nqFKivMDrR3U7iwHztVJWCoW97PRBBEw5eU8aBiPt+J?=
+ =?us-ascii?Q?x/kRold5J+dggBpKGW3ZdHPX/vSE7/ajqRqRBvQ3WtN+1L5tKX006XpsaAcD?=
+ =?us-ascii?Q?39iiJzalr6eJVXZ87Eb7LS0waohKSeSBYiOW5Zg7PgbnGvYjEBeNus8nIw2h?=
+ =?us-ascii?Q?tnPZd1kBgw+il0ipzMcrtGxalNgK4cS2Xno2z0P+YfXbsnRW75TKUhjoBCjy?=
+ =?us-ascii?Q?OynYhzhE0Hc7Q6pol533nH0tTcUidAkF4Xw5EWAryakNCaOVdYQURG3T30Kj?=
+ =?us-ascii?Q?u2dfyy3jBlortl3GJUZ7cXU7acvhzxFI4cQwBCPQwnmwBP4ItW9d8/qMv4qQ?=
+ =?us-ascii?Q?7UtSDN4css49t0z2HrI8nku52+BFlWTZntNkwuP2xEynwOd5Uw8zf4GC21+r?=
+ =?us-ascii?Q?nZb/yj0OEBwDMUEL/RQfWJTdZa7WzvqfacGyL/RhylJM0QwaV0kDH7FS9fPP?=
+ =?us-ascii?Q?PPOvlZeJpFO/rTUgzdndEtsSEGJB5Ae9F9bUIwPB/H3HLL8P2+3Z56T/DNod?=
+ =?us-ascii?Q?06EJFuvdjHgVVyDWSZUn40PM9YNftQ7LXavpodO57+7YuqbQlP0JP1i8kKEM?=
+ =?us-ascii?Q?U/pWFgK+xbLKmctbVFZ9WswGVsjCXKP28ICTm5U9mldIeLMR+Yyi?=
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5ad2462-d9b1-4c09-1f1e-08dee104209d
+X-MS-Exchange-CrossTenant-AuthSource: TYRPR01MB13588.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 17:28:18.0234
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X07Fdh1oLsDrwWJASZVH+uce3HPXVlYlgiPTcshAWaAHw2PbI18uUjqkrx1YnL4tR/fiyZtYc0HY1PDSjDtlRqs0gsZPi2rCFsmxSmfLt5SF78sVTYiB14n1KhTHp83E
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB18075
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+On Wed, Jul 08, 2026 at 12:17:36AM -0700, tze.yee.ng@altera.com wrote:
+> From: Tze Yee Ng <tze.yee.ng@altera.com>
+> 
+> This series improves I3C Common Command Code (CCC) handling in the I3C
+> core and master drivers. It separates requested and received GET payload
+> lengths, validates GET responses centrally, and retries failed Direct GET
+> CCCs once by default.
+> 
+> The DesignWare I3C master driver reports standard I3C M0/M2 error codes so
+> the core can decide when a retry is appropriate. Variable-length GET CCC
+> rules (GETMRL, GETMXDS) are described by callers via optional_bytes.
+> 
+> Patch 1/5 adds actual_len to struct i3c_ccc_cmd_payload.
+> 
+> Patch 2/5 has all I3C master drivers set actual_len on successful GET
+> transfers and updates core GET helpers to interpret results from actual_len
+> instead of len.
+> 
+> Patch 3/5 maps DesignWare CCC hardware errors to I3C M0/M2. M2 is reported
+> only for broadcast address-header NACK (7'h7E). Target address NACK
+> returns -EIO.
+> 
+> Patch 4/5 adds retries to struct i3c_ccc_cmd, validates GET payload length
+> in i3c_master_send_ccc_cmd_locked() after a successful transfer, and
+> retries failed Direct GET CCCs when the driver reports failure or an I3C
+> error. Validation failures are not retried.
+> 
+> Patch 5/5 adds optional_bytes so callers describe variable-length GET CCC
+> responses. GETMRL and GETMXDS set optional_bytes at the call site.
+> 
+> Changes in v6:
+> - Fix ADI and Cadence GET actual_len: store hardware-reported xfer bytes
+>   in cmd->rx_len and set actual_len from that, not from payload.len.
+> - Fix Renesas GET actual_len: drain the response FIFO at rx_buf + rx_count
+>   in resp_isr, clamp rx_count to data_len before subtracting (avoids
+>   unsigned underflow when rx_isr reads round up to 32-bit words), and
+>   report actual_len from cmd->rx_count.
+> - Fix dw_i3c_ccc_set() to use dw_i3c_ccc_map_err() so SET CCCs get the
+>   same M0/M2 mapping as GET.
+> 
+> Changes in v5:
+> - Split the series into five patches for clearer review:
+>   actual_len API, driver/core adoption, DW error mapping, core validation/
+>   retry, and optional_bytes.
+> - Fix regression in v4 patch 1: keep actual_len assignment in
+>   dw_i3c_ccc_get(), not dw_i3c_ccc_set().
+> - Move actual_len adoption in drivers/i3c/master.c into patch 2 so patch 2
+>   matches its title and works on its own.
+> - Split optional_bytes into its own patch (5/5); patch 4/5 adds strict
+>   exact-length validation and retry only.
+> - Do not retry on validation failure; retry only on driver/I3C errors.
+> - Reset actual_len before each GET retry only when cmd->rnw is set.
+> - Add @retries kernel-doc for struct i3c_ccc_cmd.
+> - Simplify i3c_ccc_validate_payload_len() per review (drop redundant
+>   exact-length check when optional_bytes == 0).
+> - Clarify GETMXDS fallback comment: with optional_bytes = 3, a 2-byte
+>   success on the first attempt no longer needs the shorter retry path.
+> - Add Reviewed-by: Alexandre Mergnat on patch 3/5.
+> 
+> Changes in v4:
+> - Add actual_len to keep requested and received lengths separate.
+> - Map M2 only for broadcast-address NACK; not for target-address NACK.
+> - Replace CCC-ID-specific validation with generic actual_len /
+>   optional_bytes checks.
+> - Retry Direct GET CCCs on any error (default once), not only M0/M2.
+> - Add optional_bytes and cmd->retries to ccc.h; drop req_len and
+>   payload.len save/restore in the core.
+> - Update SVC, Cadence, ADI, Renesas, and MIPI HCI master drivers.
+> 
+> Changes in v3:
+> - In dw_i3c_master_end_xfer_locked(), move RESPONSE_ERROR_ADDRESS_NACK to
+>   return -EIO.
+> 
+> Changes in v2:
+> - Split the monolithic patch into three patches (per review feedback).
+> - Move GET payload validation and CCC retry from the DW driver to
+>   drivers/i3c/master.c.
+> - Validate GET CCCs only; drop SET payload-length checks (DW
+>   RESPONSE_PORT_DATA_LEN is 0 on SET).
+> - Retry GET CCCs only; do not repeat side-effecting SET CCCs.
+> - Tighten GETMRL validation to exactly 2 or 3 bytes; add GETMXDS
+>   2/5-byte handling.
+> - Expand M0 mapping to CRC/parity/transfer-abort, not only frame
+>   errors.
+> - Restore dests[].payload.len before retry and on error return.
+> - Avoid kmalloc on the common single-destination GET path.
+> 
+> 
+> Adrian Ng Ho Yin (5):
+>   i3c: ccc: Add actual_len to struct i3c_ccc_cmd_payload
+>   i3c: master: Report actual GET CCC payload length on success
+>   i3c: master: dw: Map CCC hardware errors to I3C M0/M2
+>   i3c: master: Validate GET CCC payload length and retry Direct GET once
+>   i3c: master: Add optional_bytes for variable-length GET CCC validation
 
-New issues:
-- [High] Early break in scatter-gather loop leaves `chunk->nburst` incorrec=
-tly sized, causing uninitialized descriptors to be submitted to the hardwar=
-e.
-- [Medium] A zero value for `bursts_max` due to small linked-list region si=
-zes causes a fatal divide-by-zero exception.
-- [Medium] Replacing multiple small slab allocations with a single large fl=
-exible array allocation in atomic context risks memory allocation failures.
+Tested on RZ/G3E:
 
-Pre-existing issues:
-- [High] `dw_edma_device_resume` calls `dw_edma_start_transfer` without hol=
-ding the channel lock, causing list corruption.
---
+Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
 
---- Patch [9]: [PATCH v7 09/10] dmaengine: dw-edma: Use burst array instead=
- of linked list ---
-commit 7aeaeaa1123dc1b005fda28afac5f4dff692b62b
-Author: Frank Li <Frank.Li@nxp.com>
+Kind Regards,
+Tommaso
 
-dmaengine: dw-edma: Use burst array instead of linked list
-
-Creating a DMA descriptor requires at least three kzalloc() calls because
-each burst is allocated as a linked-list node. Since the number of bursts
-is already known when the descriptor is created, a linked list is not
-necessary. Allocate a burst array when creating each chunk to simplify the
-code and eliminate one kzalloc() call.
-
-Tested-by: Koichiro Den <den@valinux.co.jp>
-Tested-By: Devendra Verma <devendra.verma@amd.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-=
-edma-core.c
-> index f52d9fd18e573..c028011cc61ca 100644
-> --- a/drivers/dma/dw-edma/dw-edma-core.c
-> +++ b/drivers/dma/dw-edma/dw-edma-core.c
-[ ... ]
-> -static struct dw_edma_chunk *dw_edma_alloc_chunk(struct dw_edma_desc *de=
-sc)
-> +static struct dw_edma_chunk *dw_edma_alloc_chunk(struct dw_edma_desc *de=
-sc, u32 nburst)
->  {
->  	struct dw_edma_chan *chan =3D desc->chan;
->  	struct dw_edma_chunk *chunk;
-> =20
-> -	chunk =3D kzalloc_obj(*chunk, GFP_NOWAIT);
-> +	chunk =3D kzalloc_flex(*chunk, burst, nburst, GFP_NOWAIT);
-
-[Severity: Medium]
-Does this single large flexible array allocation risk failing under memory
-pressure?
-
-If the hardware configuration results in a large linked-list region,
-bursts_max can exceed 2700. This turns what used to be many small 24-byte
-allocations into a high-order contiguous allocation in an atomic context
-with GFP_NOWAIT, which is highly likely to fail if memory is fragmented.
-
-[ ... ]
-> @@ -166,23 +103,17 @@ static void vchan_free_desc(struct virt_dma_desc *v=
-desc)
->  static void dw_edma_core_start(struct dw_edma_chunk *chunk, bool first)
->  {
->  	struct dw_edma_chan *chan =3D chunk->chan;
-[ ... ]
-> -	j =3D chunk->bursts_alloc;
-> -	list_for_each_entry(child, &chunk->burst->list, list) {
-> -		j--;
-> -		dw_edma_core_ll_data(chan, child, i++, chunk->cb, !j);
-> -	}
-> +	for (i =3D 0; i < chunk->nburst; i++)
-> +		dw_edma_core_ll_data(chan, &chunk->burst[i], i, chunk->cb,
-> +				     i =3D=3D chunk->nburst - 1);
-
-[Severity: High]
-Can this loop submit uninitialized trailing descriptors to the hardware if
-the scatter-gather loop breaks early?
-
-In dw_edma_device_transfer(), if the SG list is exhausted before reaching
-cnt (which can happen if the original length was passed instead of the
-mapped length), the loop breaks out early.
-
-Since chunk->nburst is pre-allocated and not reduced to the actual number
-of prepared elements, this dw_edma_core_start() loop will process the
-remaining zero-initialized elements.
-
-Because the completion interrupt flag is only set when
-i =3D=3D chunk->nburst - 1, the valid elements won't trigger an interrupt,
-and the zero-initialized elements might cause a hardware hang.
-
-[ ... ]
-> @@ -206,14 +137,13 @@ static int dw_edma_start_transfer(struct dw_edma_ch=
-an *chan)
->  	if (!desc)
->  		return 0;
-> =20
-> -	child =3D list_first_entry_or_null(&desc->chunk->list,
-> +	child =3D list_first_entry_or_null(&desc->chunk_list,
->  					 struct dw_edma_chunk, list);
-
-[Severity: High]
-This is a pre-existing issue, but does dw_edma_device_resume() call
-dw_edma_start_transfer() without holding the channel lock?
-
-When the dmaengine core invokes device_resume() without holding the
-virtual channel lock, dw_edma_device_resume() modifies the channel state
-and calls dw_edma_start_transfer().
-
-Because dw_edma_start_transfer() calls vchan_next_desc() and reads the
-chunk lists locklessly, this can race with concurrent interrupts
-(dw_edma_done_interrupt) or software calls (dw_edma_device_issue_pending)
-that legitimately take chan->vc.lock to modify these same lists.
-
-Can this lead to list corruption or a use-after-free?
-
-[ ... ]
-> @@ -530,15 +456,15 @@ dw_edma_device_transfer(struct dw_edma_transfer *xf=
-er,
->  		if (xfer->type =3D=3D EDMA_XFER_SCATTER_GATHER && !sg)
->  			break;
-> =20
-> -		if (chunk->bursts_alloc =3D=3D bursts_max) {
-> -			chunk =3D dw_edma_alloc_chunk(desc);
-> +		if (!(i % bursts_max)) {
-> +			u32 n =3D min(cnt - i, bursts_max);
-> +
-> +			chunk =3D dw_edma_alloc_chunk(desc, n);
-
-[Severity: Medium]
-Does this modulo operation risk a divide-by-zero exception if bursts_max
-is zero?
-
-If the hardware or device tree configures a linked-list region size
-between 24 and 47 bytes, ll_max will evaluate to 0.
-
-This leaves bursts_max at 0, which would cause the kernel to panic when
-evaluating this modulo operation.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713-edma_ll-v7=
--0-6fb7498c901e@nxp.com?part=3D9
+> 
+>  drivers/i3c/master.c                   | 97 ++++++++++++++++++++++----
+>  drivers/i3c/master/adi-i3c-master.c    |  3 +
+>  drivers/i3c/master/dw-i3c-master.c     | 31 ++++++--
+>  drivers/i3c/master/i3c-master-cdns.c   |  3 +
+>  drivers/i3c/master/mipi-i3c-hci/core.c |  5 +-
+>  drivers/i3c/master/renesas-i3c.c       | 16 +++--
+>  drivers/i3c/master/svc-i3c-master.c    |  4 +-
+>  include/linux/i3c/ccc.h                | 11 ++-
+>  8 files changed, 142 insertions(+), 28 deletions(-)
+> 
+> -- 
+> 2.43.7
+> 
