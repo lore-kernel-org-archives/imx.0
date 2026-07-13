@@ -1,246 +1,160 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012071.outbound.protection.outlook.com [52.101.66.71])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8653E273D77;
-	Mon, 13 Jul 2026 18:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783966966; cv=fail; b=UtOLHli8jAsA+HaFs996yQgBNhiXeF9QZen93i7qHmwGt+vAGXCMd/8jq1lGO4H3arxPFqcKb6RRWoTQSAVEGZA1V8q6VefudcejcBvK9z7zD1K6evSAm3KAkZcilzYP8m33keDg3s7DYbtiLo6k2z3jtNEhXz6DhU5PoDDxZe4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783966966; c=relaxed/simple;
-	bh=ZBTakGzLoUAf9bYD4ocpxAIDgzxwxER5luN2nO6ebd0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dZ6kl/D9p3ZtY4rDJZTikh+7A4/d50w4h0Z/uk5mYq7Mj3VT7vgC2LYlSL2J4+05BLBzX0XzK7KrfQXSO2xzNXjDQ3CpqHe78DDpeNRuGo+kCg3BSZ34eFCPvLGPM0iGgdIC7nj/k/rUehya/tknwGy1mfunqEqewAmEl7uFkPc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gZYZV24e reason="signature verification failed"; arc=fail smtp.client-ip=52.101.66.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12306347BAF
+	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 18:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783967199; cv=none; b=YXxLCjsvqt76Hz3G/a3lCDahle8/zGo0RgMGxTR/EjkMAxhF1kWuqJr+aX1As61Ct6/HsdS6HKS2t/31ZHuKZekSx9Q3Q5kiSe5TANIALLDnYrcSWrvMs9F34R0VG5+nNf/WrdwmGBnXzN0FW6qO40CeTvkwqeVEudyNEpqb4T8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783967199; c=relaxed/simple;
+	bh=Iyt/8c70E14w9HCdSrHVcRsUlZasMHvcwR0tmOYfAUM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=tM00tTz9rpqRYgKAfd4h0jfzEKUXBI1/+7mu+6O12YyMMjvaUHwYApUQpM6M+YEgq+AKoF2iOEAyCAbtxDhCdNNBMinCACBLmkLanwXswWplzan63a3IU6nVDujghuQMdpc3IQCI/2kfGRQBkB9jYmwHn/BZzbi2UwP8Ju/Gm5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFzkxtzS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gZYZV24e"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QxeF4AyyjFI/fCwKC/H6ZxcOiLUzwagHS+3T0/N+FXTQHTN6drg9iLJ4MhzqlbYGwNUPZfm/+ar/NIxLkmIUMT6Ybd6/XJk6dvvu2aBmFy+fgNSLKdGm+19eGm3tbYH7xVkm4M1r+QnOk8rTt9tAAKrgMGgbduXHqPHpcALc28KUic7Yj/+2LuDqmkcR0/0HNhYXBGPU01Wz6dh74MMkAe1R98W2Rcx00QBeA2vMdoMZmUfW0abBNfM7n/cbk6kFQoMbApEcR2ZYaJMHsTtW7HspL01FVkiMtu25y3JT+53REv0UhPqSpwWiCXvvz4JNP979NzXe6Ngk2o11vEPDQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rx6wbK2YEAnQoyUq/Z2S8HR+2UOhbfY3BKMGChyDMpA=;
- b=rGQ+kNCCPllv6s4Lncd97p6AqhBX2jys+v/ZMwVW6axDTH/Fyon2B/0b9Ikm58CzYVdsFR7cNv9kJ5ZY7LsYMDOcmIavVygPn1zmPpLZx4z8yHnf8IO+FMPx8T8S3MaTRq6tzqpOb8LRQYgWBqAQn09z8y5SmCosm8vCknhjaNkwK2BNgaqgl5t+qybrCkzzF7P1ADRLQzOGTBc/1LKC1dgzzJbIZZxp8Wv4eRcMuX6FqsY3BQQ3p0+J3WGY65YXhPyv5chnuTqxileQpgsv9zY7gV+/86Xz32FM4cJqYY/WEXXf1E0Yu8xPMwhsJUsp4RzFq+LSYCJtr/ecycS8Eg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rx6wbK2YEAnQoyUq/Z2S8HR+2UOhbfY3BKMGChyDMpA=;
- b=gZYZV24eN0QkSxK08ctV8nFuw1evkyDFvkgRgPi2Q2/tPIwf5DGXCe9cVsi1illBk5trb6kLpxtGioGgGw78WimvsuqUB7QNC008m98QD/GOKf7pWuuTwq20uK/4kHt03+af8Aj5PbKxCmUD5EqP1qDc+7vDZwwpAv2EMYHJONCcsPUzbdnWYHysOZjeK0Uj56EktIQqFmRxemwENRMOJBDwWVITPUtjxZ/V85/i02YolzmdjJDyi/ikLL6POs9brPA+qxTM9kbhkN56/ADdn4vK0lJhsgYfzmjhGdqddatDletMEkihZ65op+XAgbClJ2t2i0gbgqAdHHjNh3mntw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PA4PR04MB7646.eurprd04.prod.outlook.com (2603:10a6:102:f3::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
- 2026 18:22:41 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0181.019; Mon, 13 Jul 2026
- 18:22:41 +0000
-Date: Mon, 13 Jul 2026 13:22:33 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: vkoul@kernel.org, linux-pci@vger.kernel.org, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, Frank.Li@kernel.org
-Subject: Re: [PATCH v7 01/10] dmaengine: dw-edma: Move control field update
- of DMA link to the last step
-Message-ID: <alUs6X2OnZjzE4dF@SMW015318>
-References: <20260713-edma_ll-v7-0-6fb7498c901e@nxp.com>
- <20260713-edma_ll-v7-1-6fb7498c901e@nxp.com>
- <20260713171252.03DA81F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260713171252.03DA81F000E9@smtp.kernel.org>
-X-ClientProxiedBy: SA0PR11CA0200.namprd11.prod.outlook.com
- (2603:10b6:806:1bc::25) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFzkxtzS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9141F000E9;
+	Mon, 13 Jul 2026 18:26:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783967197;
+	bh=X5H6KVyLK3TE+v/HODkxAgyLNeFFO0o0+iUzO9nkNHk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CFzkxtzSVWT4zok8mf9YvFubc7ASN2Sj1I8CuxEapzUDYMkSRhchIEvxqvpi7y/wq
+	 IWJEIZXARbzvSxZ4PDcwxBiUjU4cDwnR1s2R/fFGTkfXv+oqtvUICfhHIRSUWPhNJf
+	 eWYNPXoZ/5MOgGvoW9OHPu0eLYvwO7gIOOVzYehqvd2YVX2OsQioY3b6yd1J69lG33
+	 MjYyjMi6xf/qzkXZOfp79Yzv4Pk8G1sjwcaoocK/7s3AE28HIuV1ZhpGQ8Mos3zYM0
+	 btoJJYkc+tZyqIv4e4tCGyKdDPdJeVv9R+8DW6cHDwHYBjCF+SiNYN3zgvPbVJQ9C0
+	 0WkQG+g/C1P6A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 1/2] i2c: imx: fix locked bus on SMBus block-read of
+ 0 (atomic)
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Vincent Jardin" <vjardin@free.fr>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-1-073ac9e103a5@free.fr>
+References: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-0-073ac9e103a5@free.fr>
+ <20260713-for-upstream-i2c-lx2160-fix-v1-v3-1-073ac9e103a5@free.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 13 Jul 2026 18:26:37 +0000
+Message-Id: <20260713182637.8A9141F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PA4PR04MB7646:EE_
-X-MS-Office365-Filtering-Correlation-Id: 35c79370-0b92-4f81-f38f-08dee10bb9c4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|366016|1800799024|376014|22082099003|18002099003|6133799003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	RIHhQ3zzBw8bmHm2AV78wTTF7xKRrwVdm+HkxnRvGbKbuGGQQB6QjKOtvYIcrKNVlg5UaNsMwngV17h8me0VebRnc2cA6KUUAIBMyeD/RrmrN0WEP4OdJK4ElbI4h7GE+8apZH3BvLb3j37zz+gz+ckC1aI6HA2FVuNHdPO9jDil4QWXgeL7YO+K1EcKWC3FkMsStKL3s9LtAMGIyVBaVBxDAxfXRj2/beFmDXNlrfGKU4hD/sUGKxH9lR7w/6Jo8/18a9PjV05AzA5+9dE5736gmHoQopqkbLYsN3w4lJBI/2NPfXELKVyOJNltXiMNu7Vodun9T+SU4G+X1xnSiAkBjZ/DLqsQJryavmbsn1wEJGUZo3ZcwhvkMNhW2bf4tTq9EGRj4p04iEYZM1b6aQwVqDnORsMYSUsegiU4wSjTm0p1qVxiEkArzSE2O+ovUlwphAA7uD+NA65UT4OtTAnnkF+Q0U0669S+y2RlheyOif7dpBhB554IVHfTL70j5JNymiA73vPeDT/PBBHeg3+knqVslyt2vOhmy0Tt2MKAMsfb9PQt+c2WAaqPwkrZuaLKZqvkX/S/HbUv9ni4h/JyqayS9qmBs+Tbo86fBvI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(366016)(1800799024)(376014)(22082099003)(18002099003)(6133799003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?03dvk2u8LMZzxeuyaZLaYklySi5YNGU4o0nU69AhFZG8bjxnvqUxPQ9KRb?=
- =?iso-8859-1?Q?n3atiRhNgdM5B+mI/RZw7xuc11OFo7fqkeUtHkiMSeGfGOENz6tjq1jrYC?=
- =?iso-8859-1?Q?+9ho+FSy3PYwb6hAZ1z55uvQFUb01tl711tLd79x7BG+8DQiL5kuc87O0B?=
- =?iso-8859-1?Q?SQTKQPmgMX//aoBv9pNr3g/2Ml0n+QlNn3kTCNj1WL1Ji38iyArPe8uqKr?=
- =?iso-8859-1?Q?BBiKpwNa3aVhuW/AAzsu591hTVmw5f96Wmmcxz6X7RUfg1TKKtgv9I1Hl8?=
- =?iso-8859-1?Q?X6n3QWJFujteMRtt8xpuWdaDNDPLl7bDNg+/+4Ia88WFaSJCHzIS0NNtwY?=
- =?iso-8859-1?Q?VTU+zh8Qm3OxG52/sjaLcPyFFExdhyY5m1bJHaOQx5psAcMrP2oIrL1d6j?=
- =?iso-8859-1?Q?ErciNx3NVOCV50SEBGnwYLWI+3RGrgyppy9/2fzRu1MFWeOa9qc2wRvA43?=
- =?iso-8859-1?Q?1eyOtrBiweQJlS+0ofaegB9eIlHOaNEz8Q0YubEKWCfPUCkKxdln/LJoDG?=
- =?iso-8859-1?Q?2bflC2zt4FtTSZxeqG+Kh47jMmZbQMYuNa+56MOrcsQ8DKpXqAMSndoFyD?=
- =?iso-8859-1?Q?RqRppFfkjQ/bsayDMgj11LneCtFWYjS9fy3jRtBOk4eYyliw9L+R6gs4wx?=
- =?iso-8859-1?Q?VYE3uTbs1mFE5esUJi7B8XM/QMztq8WACd/N8s6PcLiQxnw8qJ9c7S4bhf?=
- =?iso-8859-1?Q?jRRj7JVMGa20AVEEg6momrxP46lWkGn1wl1Ak5cF6Q9PJTlLtQJWrSdK+E?=
- =?iso-8859-1?Q?vF2Zu4JEicvSmiLZliKUwWJge49QbC5zISm1BeFIqhMO1w25IMVS4V9hVR?=
- =?iso-8859-1?Q?nnqC2zy9bu5KUqtSQHDyOevWc+g9Xj67yvtunOXWM+mVM5htgDiWx0R2up?=
- =?iso-8859-1?Q?VGKcaCP/VPiqFOYjPbypeatLeXA/iLcXQ5S1os8G3wAbmkTvH/W6OxKtZ3?=
- =?iso-8859-1?Q?LOv1qMPtoWWru74McxhhfhHN4r0iNxVytsjqusV5oAzNopmBjdQDufwyXg?=
- =?iso-8859-1?Q?+4EURRVLWOe3XuQyFaricC1AmB/VKMRXo76Y1srVfstnJVHTq1ALZ9ohtY?=
- =?iso-8859-1?Q?xh+eH4efEPlCsma+UuPDL1EfYi5VYaXQLA58W5cAAQ33Fynu2hc2/7KJZp?=
- =?iso-8859-1?Q?VaVf+pfe2dR06ssi2Dty2xBxRxO8yk32330n4m00y6Vb7bwnRUaieTH+YH?=
- =?iso-8859-1?Q?pJccazO5FfACTiZU3xpLwSrkg5mWSVZtNA9b3ah+hOaJtdN4kjSvsuqoXy?=
- =?iso-8859-1?Q?zycXwMEeATl9CCd/5wkHGTieI5dmnjPbVfqfNqDg2GIj9pINouiDljrc68?=
- =?iso-8859-1?Q?pm6bsiJqI8C1Jhpaj1lIeEzivWhnXYyDdC+3/SaB9Kt6C4i2iMjr62xVZ8?=
- =?iso-8859-1?Q?2zda6iT+TvAsx9oDiI2KO+WxjxE7zY5YOwp7JDxQg3XejgQz+GViNuZ75i?=
- =?iso-8859-1?Q?OqfpPM4D4n6fwlHnLGn4S07DxKMd8EDxPivP/QmvD246FaBgKWMBxaehY6?=
- =?iso-8859-1?Q?iAIqC8Ry5m6Xs0iJ8lOuZq4JYqDVZT7whT65cbIYdHjX40h9WsB3bSWs9v?=
- =?iso-8859-1?Q?Yy6DiW2uHPJDRTWTgZPR4S7rxj+F5992eLaeRw850X/NW4NcJt9ASKMpfv?=
- =?iso-8859-1?Q?WLMNPqU/MqivuljKuVoHYBVEMMgLTd1y6KM3pCGqH/lRUELhbwc/GyU1i9?=
- =?iso-8859-1?Q?J7ocwM7MxXw/VBKm9Mjk74Th/VRqoHG0eyk8McMxUUrXOBVvaeo30xiCtd?=
- =?iso-8859-1?Q?DflPXLjamPeM5hjT4XH/Rg9BhAp58jpJBJ/Ok81XuZysyGa7Qrc5EuhNha?=
- =?iso-8859-1?Q?pj7sw+ZoSisMYxYR7/njEUneeOHWtx3XwS4oosKRK7BmRiXUn7qF?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 35c79370-0b92-4f81-f38f-08dee10bb9c4
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 18:22:41.3562
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6NkRjhMuFZ6BBe7j6WtdSqXe28ZVputtwFDLXZeU+TXR1OqGWigIKA1NO78pk6/1drWHrqS7sAqjPoSbVD4o3v34hdIWvRGZDK/cNeGU7ZdKrgt9J4yWsCckl05vDWn8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7646
 
-On Mon, Jul 13, 2026 at 05:12:51PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] Non-atomic update of the DMA descriptor trigger field (`control`) due to `__packed` struct layout and lack of `WRITE_ONCE()`, which undermines the safe concurrent DMA updates intended by the patch.
-> --
->
-> --- Patch [1]: [PATCH v7 01/10] dmaengine: dw-edma: Move control field update of DMA link to the last step ---
-> commit bd1de63f1d8dc07b26abcdf63111eb18b82af133
-> Author: Frank Li <Frank.Li@nxp.com>
->
-> dmaengine: dw-edma: Move control field update of DMA link to the last step
->
-> This patch reorders the initialization of the DMA link list entries to write
-> the control field last, followed by a dma_wmb() barrier. This is intended
-> to safely signal readiness to the hardware and prepare the driver for updating
-> descriptors while the DMA is actively running.
->
-> > diff --git a/drivers/dma/dw-edma/dw-edma-v0-core.c b/drivers/dma/dw-edma/dw-edma-v0-core.c
-> > index cfdd6463252e6..ee5c3c317557b 100644
-> > --- a/drivers/dma/dw-edma/dw-edma-v0-core.c
-> > +++ b/drivers/dma/dw-edma/dw-edma-v0-core.c
-> > @@ -284,17 +284,18 @@ static void dw_edma_v0_write_ll_data(struct dw_edma_chunk *chunk, int i,
-> >  	if (chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL) {
-> >  		struct dw_edma_v0_lli *lli = chunk->ll_region.vaddr.mem + ofs;
-> >
-> > -		lli->control = control;
-> >  		lli->transfer_size = size;
-> >  		lli->sar.reg = sar;
-> >  		lli->dar.reg = dar;
-> > +		dma_wmb();
-> > +		lli->control = control;
->
-> [Severity: Medium]
-> Will this assignment safely guarantee an atomic update for the hardware?
->
-> Since struct dw_edma_v0_lli is defined as __packed, the compiler might emit
-> byte-wise stores or tear the write instead of doing a single 32-bit store.
-> Without WRITE_ONCE(), the compiler could also potentially reorder or split
-> the store.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-This problem is not existing because each field is 32bit aligned.
+Pre-existing issues:
+- [High] `i2c_imx_prepare_read()` fails to clear `I2CR_TXAK` for SMBus bloc=
+k reads, causing the block length byte to be incorrectly NACKed.
+- [High] The interrupt-driven SMBus block read path (`i2c_imx_isr_read_bloc=
+k_data_len`) fails to properly terminate the transaction when receiving an =
+invalid length (0 or > I2C_SMBUS_BLOCK_MAX), leaving the I2C bus stuck.
+--
 
-Frank
+--- Patch [1]: [PATCH v3 1/2] i2c: imx: fix locked bus on SMBus block-read =
+of 0 (atomic) ---
+commit a24ce0b5e738f113eb95ff9fc04f3d425bba30ce
+Author: Vincent Jardin <vjardin@free.fr>
 
+i2c: imx: fix locked bus on SMBus block-read of 0 (atomic)
+
+SMBus 3.1 6.5.7 allows a Block Read byte count of 0, but the atomic
+path rejects it as -EPROTO and returns without sending a nack and stop.
+This patch properly handles the in-flight dummy byte by extending the
+message length to emit a stop, releasing the bus.
+
+> SMBus 3.1 6.5.7 allows a Block Read byte count of 0, but the atomic
+> (polling) path rejects it as -EPROTO. Worse, it returns without a
+> NACK+STOP: the next receive cycle has already started, so the target
+> keeps holding SDA and the bus stays stuck until a power cycle for
+> this i2c controller.
+>=20
+> Reading I2DR to obtain the count likewise arms the next byte on the
+> count > I2C_SMBUS_BLOCK_MAX path, which also returned -EPROTO directly
+> and left the bus held.
+>=20
+> Handle both: NACK the in-flight dummy byte (TXAK) and extend msgs->len so
+> the existing last-byte handling emits STOP; the dummy byte is discarded.
+> A count of 0 is a valid empty block read; a count above
+> I2C_SMBUS_BLOCK_MAX is still reported as -EPROTO, but only after the bus
+> has been released.
+>=20
+> The interrupt-driven path has the same flaw from a later commit and is
+> fixed separately, as it carries a different Fixes: tag and stable range.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the interrupt-driven
+SMBus block read path in i2c_imx_isr_read_block_data_len() fail to properly
+terminate the transaction when receiving an invalid length?
+
+When a length of 0 or greater than I2C_SMBUS_BLOCK_MAX is returned:
+
+	if (len =3D=3D 0 || len > I2C_SMBUS_BLOCK_MAX) {
+		i2c_imx->isr_result =3D -EPROTO;
+		i2c_imx->state =3D IMX_I2C_STATE_FAILED;
+		wake_up(&i2c_imx->queue);
+	}
+
+This aborts the transfer and wakes up the thread to clear MSTA without
+gracefully nacking the in-flight dummy byte. Clearing MSTA while a
+byte reception is in flight causes the controller to drop its master
+state while the bus remains physically locked with SCL and SDA held low.
+
+I see the commit message acknowledges this flaw exists in the interrupt
+path but defers fixing it to a separate patch. Since that patch is not
+included in this series, the hang remains active in the codebase.
+
+>=20
+> Fixes: 8e8782c71595 ("i2c: imx: add SMBus block read support")
+> Cc: stable@vger.kernel.org # v3.16+
+> Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Acked-by: Carlos Song <carlos.song@nxp.com>
+> Reviewed-by: Stefan Eichenberger <eichest@gmail.com>
+> Signed-off-by: Vincent Jardin <vjardin@free.fr>
 >
-> If the goal is to safely update descriptors while the DMA is running, does
-> this need to use WRITE_ONCE() (along with ensuring proper alignment) so the
-> hardware doesn't observe a partially updated control field?
+> ---
+> drivers/i2c/busses/i2c-imx.c | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
 >
-> >  	} else {
-> >  		struct dw_edma_v0_lli __iomem *lli = chunk->ll_region.vaddr.io + ofs;
-> >
-> > -		writel(control, &lli->control);
-> >  		writel(size, &lli->transfer_size);
-> >  		writeq(sar, &lli->sar.reg);
-> >  		writeq(dar, &lli->dar.reg);
-> > +		writel(control, &lli->control);
-> >  	}
-> >  }
->
-> [ ... ]
->
-> > @@ -306,13 +307,14 @@ static void dw_edma_v0_write_ll_link(struct dw_edma_chunk *chunk,
-> >  	if (chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL) {
-> >  		struct dw_edma_v0_llp *llp = chunk->ll_region.vaddr.mem + ofs;
-> >
-> > -		llp->control = control;
-> >  		llp->llp.reg = pointer;
-> > +		dma_wmb();
-> > +		llp->control = control;
->
-> [Severity: Medium]
-> Would this also need WRITE_ONCE() since struct dw_edma_v0_llp is a __packed
-> struct?
->
-> [ ... ]
->
-> > diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-> > index 632abb8b481cf..1201f1ab5f359 100644
-> > --- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
-> > +++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-> > @@ -160,17 +160,18 @@ static void dw_hdma_v0_write_ll_data(struct dw_edma_chunk *chunk, int i,
-> >  	if (chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL) {
-> >  		struct dw_hdma_v0_lli *lli = chunk->ll_region.vaddr.mem + ofs;
-> >
-> > -		lli->control = control;
-> >  		lli->transfer_size = size;
-> >  		lli->sar.reg = sar;
-> >  		lli->dar.reg = dar;
-> > +		dma_wmb();
-> > +		lli->control = control;
->
-> [Severity: Medium]
-> Similar to the v0_lli struct above, dw_hdma_v0_lli is also __packed. Could this
-> store tear and cause the DMA hardware to observe an incomplete control field?
->
-> >  	} else {
-> >  		struct dw_hdma_v0_lli __iomem *lli = chunk->ll_region.vaddr.io + ofs;
-> >
-> > -		writel(control, &lli->control);
-> >  		writel(size, &lli->transfer_size);
-> >  		writeq(sar, &lli->sar.reg);
-> >  		writeq(dar, &lli->dar.reg);
-> > +		writel(control, &lli->control);
-> >  	}
-> >  }
->
-> [ ... ]
->
-> > @@ -182,13 +183,14 @@ static void dw_hdma_v0_write_ll_link(struct dw_edma_chunk *chunk,
-> >  	if (chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL) {
-> >  		struct dw_hdma_v0_llp *llp = chunk->ll_region.vaddr.mem + ofs;
-> >
-> > -		llp->control = control;
-> >  		llp->llp.reg = pointer;
-> > +		dma_wmb();
-> > +		llp->control = control;
->
-> [Severity: Medium]
-> Could this assignment to the __packed dw_hdma_v0_llp struct tear as well?
->
-> --
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260713-edma_ll-v7-0-6fb7498c901e@nxp.com?part=1
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 28313d0fad37e..cfd1e63359e75 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1415,6 +1415,7 @@ static int i2c_imx_atomic_read(struct imx_i2c_struc=
+t *i2c_imx,
+>  	int i, result;
+>  	unsigned int temp;
+>  	int block_data =3D msgs->flags & I2C_M_RECV_LEN;
+> +	int block_err =3D 0;
+> =20
+>  	result =3D i2c_imx_prepare_read(i2c_imx, msgs, false);
+
+[Severity: High]
+This is a pre-existing issue, but does i2c_imx_prepare_read() fail to clear
+I2CR_TXAK for SMBus block reads?
+
+In i2c_imx_prepare_read(), there is no check for I2C_M_RECV_LEN:
+
+	if (msgs->len - 1)
+		temp &=3D ~I2CR_TXAK;
+
+For an I2C_M_RECV_LEN transaction without PEC, the core initializes
+msgs->len to 1. This evaluates to 0, which leaves TXAK set and causes the
+controller to nack the very first byte (the length byte).=20
+
+A compliant SMBus slave will immediately abort the transaction upon receivi=
+ng
+a nack, causing all subsequent data bytes to read as 0xFF. Should this check
+include the I2C_M_RECV_LEN flag to properly clear TXAK?
+
+>  	if (result)
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713-for-upstre=
+am-i2c-lx2160-fix-v1-v3-0-073ac9e103a5@free.fr?part=3D1
