@@ -1,216 +1,276 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013029.outbound.protection.outlook.com [52.101.72.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9F42D9ECD;
-	Mon, 13 Jul 2026 06:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783922665; cv=none; b=fBZ13wcDZ6LBo5k1WZqC4S72dn0A7eTvZxx5356It2d1HnG+53ZwVcEQqVNansKCl35suQxALysVKunggZaZHx3UT0gdra5xGyx7LCtrrR2X7gq53Hu3u7wQh+h5sm1h98jWTINgiI7+Mkne2QbuqGaJGsH1KEEUtZMbS8jPGxk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783922665; c=relaxed/simple;
-	bh=U8Z3KMvT07Hn5kHGgku2KE+XiwV5ntpez3/rbYrPjv4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uEPheA+mqLxWU8hhDr3sVdVJx9TnUBE8mcBGXidu0Ooflu4z04NarRbwHhAouv/EMymirjeXbFfZT0B3Wx6wI9ayWUne+HK8LFPCOf1/7wOsFC6cuSLuFHc2D+/XeXRLSFEp4Mx/f6mq1fP7Ho2KcgLi+ixUkzkM4AHHMiUGwF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+6MFv4Y; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23E119C54E
+	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 06:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783922720; cv=fail; b=T+Kvba1bMAcKS/GKPkm9eAzuqTTF2RlnWqrLI3WomJQJU24A64sTTrj3h3NuynUsB+y94wPRzXmHl3HNGkeE9+TsYIuNAuvjthtvOEa9yalxm3WfXNVQmd8UbLc02R5IyyqP/0imdKQc8hTIco6Wi8dEwxs6B5aY6Hg05xrM10c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783922720; c=relaxed/simple;
+	bh=muG4HEz5pHBg9KAR6i76grz1F5TkBB9SWvJfUAhomp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=J0WzpC6gFYVc4ra2E3QB93olFf4JxsIBNU8/MN9+T0y19OLP0f+wxMqo1eCpJuAxtEkBmvuVnEedUc+R4GPWvvZk1iFsWix38qOqMAhth4UP9dvEub+tJYQELjfNyJ9mUcm8VTJTAk0yANlIpeLgnwC/XhanI2c8miHAT6FVVIY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=lLDwd3Fg; arc=fail smtp.client-ip=52.101.72.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+6MFv4Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3801F000E9;
-	Mon, 13 Jul 2026 06:04:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783922664;
-	bh=ZwkgoAx9sQwchO/02kiLeBrTBoKYcIvULajs4w5rp3k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=K+6MFv4YULyxMBET+bxFZagZcsLHHaOUR56ti8WX+yZ4ZWNAPHZkEe6WsKCOl3KQG
-	 WleVfcQHrhcBYRDiZNYy0QJMaXQDfTn+H5OX31ba8fLGdo6WMy9rwuwp5CPFbu4Gmk
-	 N5LyGMyxJVUejvy46zcug+svGerx1fDvml1M2bpl3ye6v7LcLGKwHZ3fFgZ4rO9t5b
-	 3OwEHJH2Qn6ZxNq2rqK+pX+RrBP6m5kvGgDzLvVR+htfBIhBfHrNqqW9fJbKLEjoNY
-	 g5zpHIAqFenLzqlfozNWTefLqqZBxVOneoLb5K4V7YHEBFPf0gSKmkfXI36XP8ZvVG
-	 ArM++/0rgD5uw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/2] thermal/drivers/imx: Add calibration offset
- support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "HaoNing Cheng" <Haoning.CHENG@cn.bosch.com>
-Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org
-In-Reply-To: <20260713-b4-symana21-11221-imx-thermal-support-upstream-6-18-v5-2-69405c306c6b@cn.bosch.com>
-References: <20260713-b4-symana21-11221-imx-thermal-support-upstream-6-18-v5-0-69405c306c6b@cn.bosch.com>
- <20260713-b4-symana21-11221-imx-thermal-support-upstream-6-18-v5-2-69405c306c6b@cn.bosch.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 Jul 2026 06:04:23 +0000
-Message-Id: <20260713060423.BC3801F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="lLDwd3Fg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RYaFNIYc5oHcRi115w8rs6ZwAaZv7XgaT2P84nnNH0GzZGgf6DGt61cmwPupIC0jA1fNBVU50IzZSRh2b7vJGYjLY9L3xSNwzu4hGWz3FislqW2ErdMjUP1ebGalepc2jDHzjGNtJn2NRaMQrGU3+M0Rq0DotSh7Okyg9aH3E1RvfcbFiB3jQS0DQOSPBjNejCIWuxZnb8zoeOgLW9Uj62pxSVGkmQuya5hoIfmJvl1GeC6IYkeLOQdYsSRrEc25VvW3ok0EH6FqR4Wo+tZ2J5YjhZ61KLFiEt+o8L1vC5TJf2LTwMoEWB5+4oY4STZttE/9Q9xtW1+nhqqN2PlsHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0+Ej4kYnV8UigC3va5GRZMRQzGuajp0vDks+RGAoSlw=;
+ b=iXRu4G1cCh4lmnCJccYqaJunikVKaw9FKlM8Tt2XnwUm6t1rn+fnrWNaw1tylY0zzX6Q0AtLveGqa+ohz0KHnSEIm0UvOQDyA/4riXmYCnnPtEOjHufXup9NA78uzDIxMD6YnJYT5HyZOnZNjE4e9GpyL80Nn5jYysYP3Hib+Bpgl+UPtHXKCEphLAPBSyheHoMkhGhSr2YC9m3VKb5YcdrAremWpywoy8hE3J2QosA7JwVzhYbPVSSlDPZiogW9BS8KribbMoOPJHqL4Y/D9rOx0hmhdghnyuJf0uGLPKj8q5azuwd+UmeQF69rjaMBSnNQkPLXc4zCkU0npkgghg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0+Ej4kYnV8UigC3va5GRZMRQzGuajp0vDks+RGAoSlw=;
+ b=lLDwd3FgBAdTPsilZBX+yrq9X2IFhzwt++y7TXRrLzlIJ7GLL2YUk5pylGuQ/ht5QJ4SF4aAZZ1N3YxCtYdlBJvzEjnMwYHorKqOLeCJlmHMnX9iMyppUTOgz85ayTBYlXZjcshQUOQO4B+7UmdhATA+FANaGRMVomVPs6WKT6aNQE1tCnhdSho05uDEnDPKYmAFHs0Mu31TouN/7i8pIcWrsEe4OcBVWE1rW0IaFH1kZN/odrUogdthmeCNNVvPz1DHsYXBICyqMNtsz65kQdABE0Ys5gMcoVMLVNHRDWjxdjerBUSnNZnOiHzckcf8Xvvt4xDK204M8DNWZtPO/g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
+ by AS8PR04MB8341.eurprd04.prod.outlook.com (2603:10a6:20b:3b0::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
+ 2026 06:05:14 +0000
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0202.014; Mon, 13 Jul 2026
+ 06:05:14 +0000
+From: Xu Yang <xu.yang_2@oss.nxp.com>
+To: gregkh@linuxfoundation.org
+Cc: christophe.jaillet@wanadoo.fr,
+	kees@kernel.org,
+	hataegu0826@gmail.com,
+	andrzej.p@samsung.com,
+	balbi@ti.com,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v2] usb: gadget: f_uac1_legacy: remove broken string configfs attributes
+Date: Mon, 13 Jul 2026 14:08:45 +0800
+Message-Id: <20260713060845.3759673-1-xu.yang_2@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5P287CA0062.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d3::15) To PAXPR04MB9422.eurprd04.prod.outlook.com
+ (2603:10a6:102:2b4::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|AS8PR04MB8341:EE_
+X-MS-Office365-Filtering-Correlation-Id: e30d317c-68b7-4dd6-a90e-08dee0a4b4d3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|23010399003|376014|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	FyzGKsR7dTIF73HSABbtJJcO4Sj1/U344itFoZNVMla/9MU9Lu7ZWLVpL+IiymjpFrFMqPXAOwktCw8QexAa+9Bu4oesIahG2tFD3pGIzQb/jo2zTRhcEtisVSusCDunVaxstWVOV5XgqwvHlgVUNV6yLJRJs+nv2RJp07LTDqj7kzTcilvXkhYC/KC5Sb6YnkIpekwVSC11ukPtLnrp7+WuJQUkwL74730/lyeflC5Ud0MyBA5hyt3wzCVMSug5Gi61pF7Ko8FBgDur4owQ0GmqkQVXX2oTfLaKLJZ/pvqNEJ9z71aQNsUC7YTAHQxI6C9z5FUnBoe8YeAkUCp7dypyDxqj7VaeIGrvqlR0hBFWMqXDzhV3GhBQp4jpWhMkT4mTbUnGfNmochdNYW9+LsqhPcKGtPyu23T20ZhgH19h+43qRxV+IUJ+7X26u18LZxKU59qXg8Bf3ko3DjvlVYW10JEkpHlfN0dbsamk+d4TCCaeztPXrznV/oPF69tLxMsplIU0ygGzF0ED0hUzxA5KZQ8I6S06L7FJL+gKiiaAh/iJE+doozeBYPEBFN2DMjtSwnct44GDFSk9g2FsTKB7h61PQUUh63Vv1zKDHjJXrz6ElSQXhdwGqPV+bk8zeAnmiDhiKLYQJEE6+SKb6CWuGIdZeHaB5vVfd678iJ0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(23010399003)(376014)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rriZBDyhn28GZ3YNu1UOPcuClfzwh5wVJW10LZbZc6WfDG9aQDUIqfurVtuL?=
+ =?us-ascii?Q?M59L1Tkwsv/gkLwjjew5EZBhG8tCZxW+Tx6b2cAz+44uO0eAM9inWyOBGnpt?=
+ =?us-ascii?Q?8pXGyQZqBRCeLIbVfLRY0w1HmkHrhGLJ0EF8gMaocfeYXeoCL/YWZX+tS1x4?=
+ =?us-ascii?Q?SJxJW8todAqGgo/ibT3L7BaflzLC/YJpxlmznYfwCzDAlVl2HBm3VJmn0zbf?=
+ =?us-ascii?Q?cqerDayUW0z6yBRuhAeUicwi3Voq2Z710za7dXiJb6v277SXYfW/FsaCDxiX?=
+ =?us-ascii?Q?Q2vD/s+dKJmKqoh6E8C7S6pYSMZf9nX1I3P712jOAZ8Rad3Npif1gHQhP/xu?=
+ =?us-ascii?Q?3XKthnv5AHXAc82sswKaP6Vtvs/MyG3gOauI5mt/szPBGAhvvQ5F7YH2cqVo?=
+ =?us-ascii?Q?PDemFz9e0XkzWo5a0zJp79EHU1JEAJr854YOkRqgePxIZql1oYw3joKryyRg?=
+ =?us-ascii?Q?CPvsWIwJoSGvT/hpt8ce5+NoIDcGAnxyCiamU7p/ndloucKb6Giwq7Z45ukw?=
+ =?us-ascii?Q?4dTZI99ElskMNhNOHAmB0Fzg9iIu+5aQih/Rt3x2arRoMB9OIMiWrIszjv66?=
+ =?us-ascii?Q?SLNmQNdYcMshsS9SlG39jUHIr5naNMdGF3JhrGFYJhHwfn2s8i6b+11zW/Nq?=
+ =?us-ascii?Q?QjxzMttebZyZW1rtZKqofLP7x7OgJO1aFfc8HqBuwKyVhorfegKA3wPXHb8a?=
+ =?us-ascii?Q?kIuggkrQYebGf4Iql+Oea7FGLjgGZ/Qz08oFiGXqjCMUKmGOV70K1EbZ4eGS?=
+ =?us-ascii?Q?WFWW5pIZ/ufwQd1zxaF77ukd8CKdvHwjFcbns6Ub722TO7swdsnXNIUh/4HE?=
+ =?us-ascii?Q?HlRDoZpXpeOJg2PBVNWQ1GEpmK/t5X8OUDoh78OhYPhNDKPjDHO+s3LOl4WE?=
+ =?us-ascii?Q?Ffzulyrrk/cPQt0OjtdGEoVV4vbuMnXqoKc/VsOm7DY/+FO+/K3rLMO2+4s4?=
+ =?us-ascii?Q?1Xr4T2DaGnvmWCT1CBHohcrgdQMZGSucPNi2gcc/DRxnlifYOt9xwGu5bigA?=
+ =?us-ascii?Q?KuIn4UYeUCVY2EC/BQnscRKqEpbJ8QKbLFoypj+SOvqRcuYXh7NbUhhzmECQ?=
+ =?us-ascii?Q?FRAKnRY4/rHw6bCDGucAnKhvOXhpXT/97NDIcvug4likUCajWxQKwVHQb6ri?=
+ =?us-ascii?Q?j5VdXPgVzg0N0geFn/Y1A9X+DILMylUWhK3IUvqVjkD+d0ZU7X9zw2sVpMzz?=
+ =?us-ascii?Q?Pag12VcoEMkLQO2J1pigoh5NIV4Xk/Jdkpn6nXLOTaEJZ6Cg4db7yVCTYZra?=
+ =?us-ascii?Q?09S49oTM51nUX/3IL86DzGwERoEdzSe80dhvPm+Z8zX0Fg9cF8qfNWHKU2yY?=
+ =?us-ascii?Q?C3AobevSsqho2nWgVRPxAKKXn6TR1k+dXNuAtAqsxFc2QR2zm4H6gn//Vj17?=
+ =?us-ascii?Q?2BKfUT/N3kCIHVGPtJAAGZSn6MCt9J8jf2aVNfB961xD9AO4qAi6FJ7ZELmZ?=
+ =?us-ascii?Q?OjFzhMlr7lIBIKaZ5uMrIeEUhyy90Hwlgyy7rZ9lS6NSHwYi14Itlz9qSkiE?=
+ =?us-ascii?Q?jL0lTTFtlmv7heMbWXDiUggpn/x2Jh3G83wM4khcPLwlwcSBR0yYz1idcA8J?=
+ =?us-ascii?Q?4vdK+36xh9eEtK6ZjTq9YKNKzBCnTsqoQzHBU6FUNLJvTDmUjec5wLWCij71?=
+ =?us-ascii?Q?5x2rLNOz4/vD24n8IXlwAgsi2aAKWc6YQLehE6/1t8MY8PBcM/aRPn1lbvie?=
+ =?us-ascii?Q?oKfsEwLtol1SZSVX1Wg/jzLSGvBo4odtBIskWyVwV1vIY/n9FBTcPZBovdC5?=
+ =?us-ascii?Q?BzNRS2ZvI8FAZISoTr8csvjenjV/aV40Gm27xCUIlYHn7g4MMWZc?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e30d317c-68b7-4dd6-a90e-08dee0a4b4d3
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 06:05:14.7642
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YxFVv520ua//ODw09GqDxklBbQrLyP0LeTkOpKZa52EHEVzzKTiOQzQTXIRgS6PFAAHJAc9Np/K07fRP8+fh7TDBED7+ClJJX6b4ZV8HPQjktwgovBk2EaGqnyGUkJKf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8341
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+From: Xu Yang <xu.yang_2@nxp.com>
 
-New issues:
-- [High] Hardware register corruption due to unmasked ALARM and PANIC values
+The UAC1_STR_ATTRIBUTE macro defines configfs show/store handlers for
+the fn_play, fn_cap, and fn_cntl string options. The store function
+contains an inverted null check on the kstrndup() return value.
 
-Pre-existing issues:
-- [Critical] Use-After-Free of device data due to skipped thermal zone unre=
-gistration on probe error path
-- [High] TOCTOU race on data->irq_enabled leads to permanent IRQ disablement
---
+This means every write attempt returns -ENOMEM on success and
+dereferences a NULL pointer on allocation failure. The attributes
+have been broken and unused for many years.
 
---- Patch [2]: [PATCH v5 2/2] thermal/drivers/imx: Add calibration offset s=
-upport ---
-commit 7348b3f0668ad3ef81c3864d07e94723c70b031c
-Author: HaoNing Cheng <Haoning.CHENG@cn.bosch.com>
+Remove the UAC1_STR_ATTRIBUTE macro and the three attributes it
+generated. The internal defaults (FILE_PCM_PLAYBACK, FILE_PCM_CAPTURE,
+FILE_CONTROL) set in f_audio_alloc_inst() are unaffected.
 
-thermal/drivers/imx: Add calibration offset support
+Fixes: 0854611a19ae ("usb: gadget: f_uac1: add configfs support")
+Link: https://lore.kernel.org/linux-usb/20260625113154.1954813-1-xu.yang_2@oss.nxp.com/
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Assisted-by: Claude:claude-sonnet-4.6
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-This patch reads an optional fsl,temp-calibration-offset-millicelsius
-property from the device tree and applies it to the calibration formulas
-for i.MX6/6SX/7D devices.
+---
+Changes in v2:
+ - Remove fn_play, fn_cap, and fn_cntl in gadget-testing.rst
+ - Remove fn_*_alloc variable
+---
+ .../testing/configfs-usb-gadget-uac1_legacy   |  3 -
+ Documentation/usb/gadget-testing.rst          |  3 -
+ drivers/usb/gadget/function/f_uac1_legacy.c   | 56 -------------------
+ drivers/usb/gadget/function/u_uac1_legacy.h   |  3 -
+ 4 files changed, 65 deletions(-)
 
-> diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-> index 5aaacbc534786..5e3cff69aced7 100644
-> --- a/drivers/thermal/imx_thermal.c
-> +++ b/drivers/thermal/imx_thermal.c
+diff --git a/Documentation/ABI/testing/configfs-usb-gadget-uac1_legacy b/Documentation/ABI/testing/configfs-usb-gadget-uac1_legacy
+index b2eaefd9bc49..6a681d219f43 100644
+--- a/Documentation/ABI/testing/configfs-usb-gadget-uac1_legacy
++++ b/Documentation/ABI/testing/configfs-usb-gadget-uac1_legacy
+@@ -5,8 +5,5 @@ Description:
+ 		The attributes:
+ 
+ 		audio_buf_size - audio buffer size
+-		fn_cap - capture pcm device file name
+-		fn_cntl - control device file name
+-		fn_play - playback pcm device file name
+ 		req_buf_size - ISO OUT endpoint request buffer size
+ 		req_count - ISO OUT endpoint request count
+diff --git a/Documentation/usb/gadget-testing.rst b/Documentation/usb/gadget-testing.rst
+index a6e8292f320a..4921e5307d49 100644
+--- a/Documentation/usb/gadget-testing.rst
++++ b/Documentation/usb/gadget-testing.rst
+@@ -714,9 +714,6 @@ The uac1 function provides these attributes in its function directory:
+ 
+ 	=============== ====================================
+ 	audio_buf_size	audio buffer size
+-	fn_cap		capture pcm device file name
+-	fn_cntl		control device file name
+-	fn_play		playback pcm device file name
+ 	req_buf_size	ISO OUT endpoint request buffer size
+ 	req_count	ISO OUT endpoint request count
+ 	=============== ====================================
+diff --git a/drivers/usb/gadget/function/f_uac1_legacy.c b/drivers/usb/gadget/function/f_uac1_legacy.c
+index 5d201a2e30e7..3f52099a4fdd 100644
+--- a/drivers/usb/gadget/function/f_uac1_legacy.c
++++ b/drivers/usb/gadget/function/f_uac1_legacy.c
+@@ -888,60 +888,10 @@ UAC1_INT_ATTRIBUTE(req_buf_size);
+ UAC1_INT_ATTRIBUTE(req_count);
+ UAC1_INT_ATTRIBUTE(audio_buf_size);
+ 
+-#define UAC1_STR_ATTRIBUTE(name)					\
+-static ssize_t f_uac1_opts_##name##_show(struct config_item *item,	\
+-					 char *page)			\
+-{									\
+-	struct f_uac1_legacy_opts *opts = to_f_uac1_opts(item);		\
+-	int result;							\
+-									\
+-	mutex_lock(&opts->lock);					\
+-	result = sprintf(page, "%s\n", opts->name);			\
+-	mutex_unlock(&opts->lock);					\
+-									\
+-	return result;							\
+-}									\
+-									\
+-static ssize_t f_uac1_opts_##name##_store(struct config_item *item,	\
+-					  const char *page, size_t len)	\
+-{									\
+-	struct f_uac1_legacy_opts *opts = to_f_uac1_opts(item);		\
+-	int ret = -EBUSY;						\
+-	char *tmp;							\
+-									\
+-	mutex_lock(&opts->lock);					\
+-	if (opts->refcnt)						\
+-		goto end;						\
+-									\
+-	tmp = kstrndup(page, len, GFP_KERNEL);				\
+-	if (tmp) {							\
+-		ret = -ENOMEM;						\
+-		goto end;						\
+-	}								\
+-	if (opts->name##_alloc)						\
+-		kfree(opts->name);					\
+-	opts->name##_alloc = true;					\
+-	opts->name = tmp;						\
+-	ret = len;							\
+-									\
+-end:									\
+-	mutex_unlock(&opts->lock);					\
+-	return ret;							\
+-}									\
+-									\
+-CONFIGFS_ATTR(f_uac1_opts_, name)
+-
+-UAC1_STR_ATTRIBUTE(fn_play);
+-UAC1_STR_ATTRIBUTE(fn_cap);
+-UAC1_STR_ATTRIBUTE(fn_cntl);
+-
+ static struct configfs_attribute *f_uac1_attrs[] = {
+ 	&f_uac1_opts_attr_req_buf_size,
+ 	&f_uac1_opts_attr_req_count,
+ 	&f_uac1_opts_attr_audio_buf_size,
+-	&f_uac1_opts_attr_fn_play,
+-	&f_uac1_opts_attr_fn_cap,
+-	&f_uac1_opts_attr_fn_cntl,
+ 	NULL,
+ };
+ 
+@@ -956,12 +906,6 @@ static void f_audio_free_inst(struct usb_function_instance *f)
+ 	struct f_uac1_legacy_opts *opts;
+ 
+ 	opts = container_of(f, struct f_uac1_legacy_opts, func_inst);
+-	if (opts->fn_play_alloc)
+-		kfree(opts->fn_play);
+-	if (opts->fn_cap_alloc)
+-		kfree(opts->fn_cap);
+-	if (opts->fn_cntl_alloc)
+-		kfree(opts->fn_cntl);
+ 	kfree(opts);
+ }
+ 
+diff --git a/drivers/usb/gadget/function/u_uac1_legacy.h b/drivers/usb/gadget/function/u_uac1_legacy.h
+index b5df9bcbbeba..b9ddae550ff3 100644
+--- a/drivers/usb/gadget/function/u_uac1_legacy.h
++++ b/drivers/usb/gadget/function/u_uac1_legacy.h
+@@ -62,9 +62,6 @@ struct f_uac1_legacy_opts {
+ 	char				*fn_cap;
+ 	char				*fn_cntl;
+ 	unsigned			bound:1;
+-	unsigned			fn_play_alloc:1;
+-	unsigned			fn_cap_alloc:1;
+-	unsigned			fn_cntl_alloc:1;
+ 	struct mutex			lock;
+ 	int				refcnt;
+ };
+-- 
+2.34.1
 
-[ ... ]
-
-> @@ -223,6 +224,7 @@ static void imx_set_panic_temp(struct imx_thermal_dat=
-a *data,
->  	struct regmap *map =3D data->tempmon;
->  	int critical_value;
-> =20
-> +	panic_temp -=3D data->calibration_offset;
->  	critical_value =3D (data->c2 - panic_temp) / data->c1;
-> =20
->  	regmap_write(map, soc_data->panic_alarm_ctrl + REG_CLR,
-
-[Severity: High]
-Does this code risk corrupting the panic_alarm_ctrl register if a large
-calibration offset is provided?
-
-The calibration_offset is subtracted from panic_temp, and critical_value
-is not masked before being shifted and written to the REG_SET register:
-
-drivers/thermal/imx_thermal.c:imx_set_panic_temp() {
-    critical_value =3D (data->c2 - panic_temp) / data->c1;
-    ...
-    regmap_write(map, soc_data->panic_alarm_ctrl + REG_SET,
-                 critical_value << soc_data->panic_alarm_shift);
-}
-
-If the offset causes critical_value to exceed its bitfield width, could the
-overhanging bits corrupt adjacent control bits?
-
-> @@ -239,11 +241,14 @@ static void imx_set_alarm_temp(struct imx_thermal_d=
-ata *data,
->  	int alarm_value;
-> =20
->  	data->alarm_temp =3D alarm_temp;
-> +	alarm_temp -=3D data->calibration_offset;
-> =20
-> -	if (data->socdata->version =3D=3D TEMPMON_IMX7D)
-> -		alarm_value =3D alarm_temp / 1000 + data->c1 - 25;
-> -	else
-> +	if (data->socdata->version =3D=3D TEMPMON_IMX7D) {
-> +		alarm_value =3D DIV_ROUND_UP(alarm_temp, 1000) + data->c1 - 25;
-> +		alarm_value =3D clamp(alarm_value, 0, 0x1ff);
-> +	} else {
->  		alarm_value =3D (data->c2 - alarm_temp) / data->c1;
-> +	}
-> =20
->  	regmap_write(map, soc_data->high_alarm_ctrl + REG_CLR,
-
-[Severity: High]
-Can similar register corruption occur here for IMX6/IMX6SX devices?
-
-While a clamp() was added for TEMPMON_IMX7D, the else branch for
-other versions calculates alarm_value without masking or clamping:
-
-drivers/thermal/imx_thermal.c:imx_set_alarm_temp() {
-    } else {
-        alarm_value =3D (data->c2 - alarm_temp) / data->c1;
-    }
-    ...
-    regmap_write(map, soc_data->high_alarm_ctrl + REG_SET,
-                 alarm_value << soc_data->high_alarm_shift);
-}
-
-Could an excessively large positive or negative calibration offset result
-in unmasked bits corrupting the high_alarm_ctrl register?
-
-[ ... ]
-
-> @@ -629,6 +635,10 @@ static int imx_thermal_probe(struct platform_device =
-*pdev)
-> =20
->  	platform_set_drvdata(pdev, data);
-> =20
-> +	of_property_read_s32(dev->of_node,
-> +			     "fsl,temp-calibration-offset-millicelsius",
-> +			     &data->calibration_offset);
-> +
->  	if (of_property_present(dev->of_node, "nvmem-cells")) {
-
-[Severity: Critical]
-This is a pre-existing issue, but does this function leave the thermal
-zone registered if pm_runtime_resume_and_get() fails later in the probe?
-
-If pm_runtime_resume_and_get() fails near the end of probe, the error
-path jumps to disable_runtime_pm:
-
-drivers/thermal/imx_thermal.c:imx_thermal_probe() {
-    ...
-    ret =3D pm_runtime_resume_and_get(data->dev);
-    if (ret < 0)
-        goto disable_runtime_pm;
-    ...
-thermal_zone_unregister:
-    thermal_zone_device_unregister(data->tz);
-disable_runtime_pm:
-    pm_runtime_put_noidle(data->dev);
-    pm_runtime_disable(data->dev);
-    ...
-}
-
-Because disable_runtime_pm is located after thermal_zone_unregister,
-it skips unregistering the thermal zone. Since the device data is managed
-by devm_kzalloc(), it will be freed when probe fails.
-
-Could subsequent polling by the thermal core invoke imx_get_temp() and
-dereference the freed data pointer, leading to a use-after-free?
-
-[Severity: High]
-This is a pre-existing issue, but is there a race condition that can
-lead to permanent loss of thermal interrupts?
-
-If a user-space process toggles the thermal zone mode via sysfs, it
-calls imx_change_mode() which performs a non-atomic check:
-
-drivers/thermal/imx_thermal.c:imx_change_mode() {
-    if (data->irq_enabled) {
-        disable_irq(data->irq);
-        data->irq_enabled =3D false;
-    }
-}
-
-If a hardware interrupt fires between the check and the call to
-disable_irq(), the hardirq handler modifies the same flag and disables
-the interrupt:
-
-drivers/thermal/imx_thermal.c:imx_thermal_alarm_irq() {
-    ...
-    disable_irq_nosync(irq);
-    data->irq_enabled =3D false;
-    ...
-}
-
-Would imx_change_mode() then call disable_irq() a second time,
-increasing the disable depth to 2? Since future enable attempts will only
-decrement the depth to 1, could this leave the interrupt permanently
-disabled and force the system to rely on slower polling?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713-b4-symana2=
-1-11221-imx-thermal-support-upstream-6-18-v5-0-69405c306c6b@cn.bosch.com?pa=
-rt=3D2
