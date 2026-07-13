@@ -1,37 +1,36 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281F63254A0
-	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 14:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD1C43935F
+	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 14:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783954529; cv=none; b=lAYbjdL4Ms2rAeeKGzAXXvRFOVV7mUIiI6RVBHofiKbqQWgGdXGwLnzaAdCNxJVDtSh2yNBveFD9yESxK9T0e6X/16A6E+kapQn5ia0xaTdFd5648muVkKOKUYTrJ2DKG1FWtuGMgdtReRlI5Xalgyw/J8ZNs5ONw5rpd2u/GsI=
+	t=1783954529; cv=none; b=HdMWAkdvyom2cHgyN6/nma9BQ0wnIRXP/S3GEEdYlEy1j1dO1ql45gUgaJ+iVj7UylE9EZumq7gjDN1ew89tg5vOHp+csGSu1YiH+Og5uTT604MJkNhk2NYx7xr2K69miFrIr+xGNDZcoZho9bmx0/mq46wLOtgQ/GytFke6v98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783954529; c=relaxed/simple;
-	bh=RMKccsJdmORllu7mAeK9CUY0zo7lNV6Gza5XaIwj5hE=;
+	bh=DvBLMFFMqhjcK/mtSmBXrkd1pVaKzFZPX4BOh+/c7bE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O0Iq0lHuyyLudSbRQ+ygER0E3A8BtIjCH/mAEQT14GwNwmrWcWAHhHBN9d7O/g+fStqHdOydW0GB8BhQjy8OORLviC4NjVSDQ4jbIHvI8gwCOMCASVfdb3aihzVh9kdSViQkDsnHDcBexDOSbvjBalzmF3K/M9ItAvr9sh2/doI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=lZfY5KeE; arc=none smtp.client-ip=116.203.77.234
+	 In-Reply-To:To:Cc; b=XsOsxZ30WzQWvKEtTiaGhEHKow0nPYM2X71RKXYdmcWiWDZSEs0bDKIWFhLmUpOS4IDfeTe2hPn0PLzJaE/0pqyAycYAcpIvvBh2UaX3IiPTuIKpe0eIno443bsZ/P4AX4jUvKBmq6E/sVFQPBNcWwUrDtGC/L7mp05vvz+CIOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=DoiWiU1C; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="lZfY5KeE"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="DoiWiU1C"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1783954518;
+	t=1783954517;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XGD1udeeLySjuRpVfJ/v+jq6I8kxIY1T8PFHbdXiRnU=;
-	b=lZfY5KeEKoMKm+cYODOfvY2ifUEkYid7GRvxHJt8VMnmANsd8L27AlIRcLYCa66khtCUkh
-	qoSMi0XjGoclkdRXu5NM58jUAvsd8PNym7gipxzS4QFnlYv8lRWwCB1T1pNvGQBRJHG8Qo
-	VGaTrUNILWoL8Op4Yh6dLChWMPnyOT7G1HRXqnEzYdl5HEIqRB44r2vORB9OQzKzc/Sfyf
-	EagMfr7qJqLnZDytLyeG+Gu4CmwEe6hD7dVOydZKZHteeZ7+VIa7+sgvS1lVEhhp9XdIu4
-	hnMCfViPxC6TYpY/Iit8QQtjsj3jDCooyGoYsC++ViDBG8N31kAa+zLZnFMRBQ==
-Date: Mon, 13 Jul 2026 16:53:46 +0200
-Subject: [PATCH v2 10/10] arm64: dts: imx93-kontron: Enable ELE firmware
- driver
+	bh=xoQzTXuDuiokYI38jvyMnODPwxI+8Eexv4gmNuBhtXI=;
+	b=DoiWiU1C4U7Jcn/9Y3d4tGZTtFbMttjXYEc9lygJCWCiQjt/d+0ZAmTjxgaxUpN1pDTuZ4
+	tzD2SsOus/2N+qLdN5emPOX7rYw57W5mVhbI3PRfgGNohYk5sYd5INw0DHvgZsp97LgwBx
+	yGY3l8vSBs/dwFAXvDOM5x2W3TLEbpAvj2DZqcRTvwF883EtEGMVjkA/CIC+67ZPDNT5nv
+	G/NWtjx0xkfCkTnFbpJUb3cqMpbmSR/U6GdDoD4SC1IEUIFmR79VjzOJBJeWpbnFZh/jct
+	ZnZLAEMxpiRmef9Aa1B2QZKOWtZ65tRSeMKqPTrAF+eZGNo4EMphXFt6Y8TWNQ==
+Date: Mon, 13 Jul 2026 16:53:43 +0200
+Subject: [PATCH v2 07/10] nvmem: imx-ocotp-ele: Support the ELE API
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -40,7 +39,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-10-b8266d93514b@kontron.de>
+Message-Id: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-7-b8266d93514b@kontron.de>
 References: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-0-b8266d93514b@kontron.de>
 In-Reply-To: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-0-b8266d93514b@kontron.de>
 To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -54,77 +53,286 @@ To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Frieder Schrempf <frieder.schrempf@kontron.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1625;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8311;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=d5GCeuaUDxb0XmrK6obvF5ioCBnvWAlVOzfPbhm5HFo=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JISvkT9Ajp7zzUUenF6/ckPFzrpxm0sacdbNbMha/f+3+N
- Eus2sOko5SFQYyLQVZMkUWK3+K1rVmsj/yx6iiYOaxMIEMYuDgFYCLxXxj+Ck09FZlUyq+Zry7d
- fM1s3ku5CgalLo+oSgbdaItflcGXGRm2TGnfcsf8qfqFEOUcK19Tc3fF0J9GG++GN8ulqJ1tsOU
- DAA==
+ bh=bexM75HEGaMazdG9kbnGppPaWEavFDTLd0QOTQKGZD0=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JISvkT9Dsi+E9tn2bgg/aNRiWCsTwFKQtmbh3I1vXjMzwa
+ IvUPxkdpSwMYlwMsmKKLFL8Fq9tzWJ95I9VR8HMYWUCGcLAxSkAExE8y8iwccGEexq9V184nbDL
+ WW16pGvtL4UyrdslWTsPPbsgsO/bG0aGyXYXvyxmiv6w/VP9HpvT8y8cXmbqYn1kEusPx4uMTyd
+ t5gUA
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Add the ELE firmware API node and pass its handle to the OCOTP
-driver. This allows us to gain read/write access to the OTP fuses.
+The fuses inside the Edgelock Secure Enclave are currently not
+accessed via its API but through the FSB block which provides
+limited access to some fuses.
+
+The ELE API allows us to access all fuses with read/write
+permissions. Therefore use it as primary method and only fall
+back to the limited FSB if the ELE API is not available.
 
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- .../boot/dts/freescale/imx93-kontron-osm-s.dtsi    | 26 ++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/nvmem/imx-ocotp-ele.c | 178 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 177 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi b/arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi
-index c79b1df339db..c1da4b52c878 100644
---- a/arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi
-@@ -24,6 +24,15 @@ chosen {
- 		stdout-path = &lpuart1;
- 	};
+diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+index 47ee6bd176a3..6ac7d588c4bd 100644
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -7,10 +7,12 @@
  
-+	firmware {
-+		hsm0: secure-enclave {
-+			compatible = "fsl,imx93-se-ele-hsm";
-+			mbox-names = "tx", "rx";
-+			mboxes = <&s4muap 0 0>, <&s4muap 1 0>;
-+			memory-region = <&ele_memory>;
-+		};
-+	};
-+
- 	reg_usdhc2_vcc: regulator-usdhc2-vcc {
- 		compatible = "regulator-fixed";
- 		pinctrl-names = "default";
-@@ -57,6 +66,19 @@ regulator-state-disk {
- 			regulator-off-in-suspend;
- 		};
- 	};
-+
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		ele_memory: ele-memory {
-+			compatible = "shared-dma-pool";
-+			alloc-ranges = <0 0x80000000 0 0x40000000>;
-+			size = <0 0x100000>;
-+			no-map;
-+		};
-+	};
+ #include <linux/cleanup.h>
+ #include <linux/device.h>
++#include <linux/firmware/imx/se_api.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+ #include <linux/nvmem-provider.h>
+ #include <linux/of.h>
++#include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/if_ether.h>	/* ETH_ALEN */
+@@ -45,8 +47,113 @@ struct imx_ocotp_priv {
+ 	struct nvmem_config config;
+ 	struct mutex lock;
+ 	const struct ocotp_devtype_data *data;
++	struct se_if_priv *se_data;
  };
  
- &flexcan1 { /* OSM-S CAN_A */
-@@ -253,6 +275,10 @@ &lpuart7 { /* OSM-S UART_A */
- 	pinctrl-0 = <&pinctrl_lpuart7>;
++/* ELE commands and message sizes used for OCOTP fuse access. */
++#define ELE_READ_FUSE_REQ		0x97
++#define ELE_READ_FUSE_REQ_MSG_SZ	0x08
++#define ELE_READ_FUSE_RSP_MSG_SZ	0x0c
++
++#define ELE_WRITE_FUSE			0xd6
++#define ELE_WRITE_FUSE_REQ_MSG_SZ	0x0c
++#define ELE_WRITE_FUSE_RSP_MSG_SZ	0x0c
++
++/*
++ * imx_ocotp_se_read_fuse() - Request the secure enclave FW to read a fuse.
++ * @priv: handle to the secure-enclave interface.
++ * @fuse_id: fuse identifier to read.
++ * @value: location to store the read fuse value.
++ *
++ * Secure enclaves like the EdgeLock Enclave manage the fuses. This requests
++ * the FW to read the fuse and returns the value reported by the FW.
++ *
++ * Return: 0 on success, a negative error code otherwise.
++ */
++static int imx_ocotp_se_read_fuse(struct se_if_priv *priv, u16 fuse_id, u32 *value)
++{
++	struct se_api_msg *tx_msg __free(kfree) = NULL;
++	struct se_api_msg *rx_msg __free(kfree) = NULL;
++	int ret;
++
++	if (!priv)
++		return -EINVAL;
++
++	tx_msg = kzalloc(ELE_READ_FUSE_REQ_MSG_SZ, GFP_KERNEL);
++	if (!tx_msg)
++		return -ENOMEM;
++
++	rx_msg = kzalloc(ELE_READ_FUSE_RSP_MSG_SZ, GFP_KERNEL);
++	if (!rx_msg)
++		return -ENOMEM;
++
++	ret = imx_se_fill_cmd_msg_hdr(priv, &tx_msg->header, ELE_READ_FUSE_REQ,
++				      ELE_READ_FUSE_REQ_MSG_SZ, true);
++	if (ret)
++		return ret;
++
++	tx_msg->data[0] = fuse_id;
++
++	ret = imx_se_msg_send_rcv(priv, tx_msg, ELE_READ_FUSE_REQ_MSG_SZ,
++				  rx_msg, ELE_READ_FUSE_RSP_MSG_SZ);
++	if (ret < 0)
++		return ret;
++
++	ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_READ_FUSE_REQ,
++					  ELE_READ_FUSE_RSP_MSG_SZ, true);
++	if (ret)
++		return ret;
++
++	*value = rx_msg->data[1];
++
++	return 0;
++}
++
++/*
++ * imx_ocotp_se_write_fuse() - Request the secure enclave FW to write a fuse.
++ * @priv: handle to the secure-enclave interface.
++ * @fuse_id: fuse identifier to write to.
++ * @value: value to write to the fuse.
++ *
++ * Secure enclaves like the EdgeLock Enclave manage the fuses. This requests
++ * the FW to program the fuse with the given value.
++ *
++ * Return: 0 on success, a negative error code otherwise.
++ */
++static int imx_ocotp_se_write_fuse(struct se_if_priv *priv, u16 fuse_id, u32 value)
++{
++	struct se_api_msg *tx_msg __free(kfree) = NULL;
++	struct se_api_msg *rx_msg __free(kfree) = NULL;
++	int ret;
++
++	if (!priv)
++		return -EINVAL;
++
++	tx_msg = kzalloc(ELE_WRITE_FUSE_REQ_MSG_SZ, GFP_KERNEL);
++	if (!tx_msg)
++		return -ENOMEM;
++
++	rx_msg = kzalloc(ELE_WRITE_FUSE_RSP_MSG_SZ, GFP_KERNEL);
++	if (!rx_msg)
++		return -ENOMEM;
++
++	ret = imx_se_fill_cmd_msg_hdr(priv, &tx_msg->header, ELE_WRITE_FUSE,
++				      ELE_WRITE_FUSE_REQ_MSG_SZ, true);
++	if (ret)
++		return ret;
++
++	tx_msg->data[0] = (32 << 16) | (fuse_id << 5);
++	tx_msg->data[1] = value;
++
++	ret = imx_se_msg_send_rcv(priv, tx_msg, ELE_WRITE_FUSE_REQ_MSG_SZ,
++				  rx_msg, ELE_WRITE_FUSE_RSP_MSG_SZ);
++	if (ret < 0)
++		return ret;
++
++	return imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_WRITE_FUSE,
++					   ELE_WRITE_FUSE_RSP_MSG_SZ, true);
++}
++
+ static enum fuse_type imx_ocotp_fuse_type(void *context, u32 index)
+ {
+ 	struct imx_ocotp_priv *priv = context;
+@@ -73,6 +180,7 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
+ 	u32 count, index, num_bytes;
+ 	enum fuse_type type;
+ 	u32 *buf;
++	int ret;
+ 	int i;
+ 	u8 skipbytes;
+ 
+@@ -93,6 +201,19 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
+ 	buf = p;
+ 
+ 	for (i = index; i < (index + count); i++) {
++		/*
++		 * All fuse registers can be read via ELE. If the SE device is
++		 * available, always prefer it.
++		 */
++		if (priv->se_data) {
++			ret = imx_ocotp_se_read_fuse(priv->se_data, i, buf++);
++			if (ret) {
++				mutex_unlock(&priv->lock);
++				return ret;
++			}
++			continue;
++		}
++
+ 		type = imx_ocotp_fuse_type(context, i);
+ 		if (type == FUSE_INVALID || type == FUSE_ELE) {
+ 			*buf++ = 0;
+@@ -112,6 +233,32 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
+ 	return 0;
  };
  
-+&ocotp {
-+	secure-enclave = <&hsm0>;
-+};
++static int imx_ocotp_reg_write(void *context, unsigned int offset, void *val, size_t bytes)
++{
++	struct imx_ocotp_priv *priv = context;
++	u32 word = offset >> 2;
++	u32 *buf = val;
++	int ret;
 +
- &tpm3 { /* OSM-S PWM_0 */
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_tpm3>;
++	/* allow only writing one complete OTP word at a time */
++	if ((bytes != 4) || (offset % 4 != 0))
++		return -EINVAL;
++
++	/*
++	 * The ELE API returns an error when writing an all-zero value. As
++	 * OTP fuse bits can not be switched from 1 to 0 anyway, skip these
++	 * values.
++	 */
++	if (!*buf)
++		return 0;
++
++	mutex_lock(&priv->lock);
++	ret = imx_ocotp_se_write_fuse(priv->se_data, word, *buf);
++	mutex_unlock(&priv->lock);
++
++	return ret;
++}
++
+ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
+ 			     unsigned int offset, void *data, size_t bytes)
+ {
+@@ -138,8 +285,10 @@ static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
+ static int imx_ele_ocotp_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
++	struct platform_device *se_pdev;
+ 	struct imx_ocotp_priv *priv;
+ 	struct nvmem_device *nvmem;
++	struct device_node *np;
+ 
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+@@ -151,16 +300,40 @@ static int imx_ele_ocotp_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->base))
+ 		return PTR_ERR(priv->base);
+ 
++	np = of_parse_phandle(pdev->dev.of_node, "secure-enclave", 0);
++	if (!np) {
++		dev_info(dev, "missing or invalid SE handle, using readonly FSB\n");
++	} else {
++		se_pdev = of_find_device_by_node(np);
++
++		of_node_put(np);
++		if (!se_pdev)
++			return dev_err_probe(dev, -ENODEV, "failed to find SE device\n");
++
++		priv->se_data = platform_get_drvdata(se_pdev);
++		if (!priv->se_data) {
++			put_device(&se_pdev->dev);
++			return dev_err_probe(dev, -EPROBE_DEFER, "SE device not ready\n");
++		}
++
++		if (!device_link_add(dev, &se_pdev->dev, DL_FLAG_AUTOREMOVE_CONSUMER)) {
++			put_device(&se_pdev->dev);
++			return dev_err_probe(dev, -EINVAL, "failed to link to SE device\n");
++		}
++
++		put_device(&se_pdev->dev);
++	}
++
+ 	priv->config.dev = dev;
+ 	priv->config.name = "ELE-OCOTP";
+ 	priv->config.id = NVMEM_DEVID_AUTO;
+ 	priv->config.owner = THIS_MODULE;
+ 	priv->config.size = priv->data->size;
+ 	priv->config.reg_read = imx_ocotp_reg_read;
++	priv->config.reg_write = imx_ocotp_reg_write;
+ 	priv->config.word_size = 1;
+ 	priv->config.stride = 1;
+ 	priv->config.priv = priv;
+-	priv->config.read_only = true;
+ 	priv->config.add_legacy_fixed_of_cells = true;
+ 	priv->config.fixup_dt_cell_info = imx_ocotp_fixup_dt_cell_info;
+ 
+@@ -169,6 +342,9 @@ static int imx_ele_ocotp_probe(struct platform_device *pdev)
+ 		priv->config.nkeepout = priv->data->nkeepout;
+ 	}
+ 
++	if (!priv->se_data)
++		priv->config.read_only = true;
++
+ 	mutex_init(&priv->lock);
+ 
+ 	nvmem = devm_nvmem_register(dev, &priv->config);
 
 -- 
 2.55.0
