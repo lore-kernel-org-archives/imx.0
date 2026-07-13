@@ -1,93 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4998E3CAE84;
-	Mon, 13 Jul 2026 09:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0083DF001;
+	Mon, 13 Jul 2026 09:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783934323; cv=none; b=SWmNBK2tQSI2nUhbfrWDprRntahkdaiHabnUtSsCIBJyTV6D8QGjK62sjwO2oFSJlC98aHg5CEw6MXDj52aKMF8PHZPY8CeWUlEPuVPIFRIbNLvrIR6oDp5z0e2UU7/xmnQykCRliiasEZA3IEbK9iGvHU9Ohixbu4lfbnzfzkk=
+	t=1783934384; cv=none; b=rAPM/Punc+AgmVl5QgLjcE0ffSYRZf5MKpmN9OR6oIsQWSF4ts0vSiDN7VLTul68uFIxTjOm/j7ltzhs7F7g6amLJHHZz6UFlE+y6JN/h6KVFg9t5p+q0w2EIuTxRFsoZUu4u8SeAt+j+gUdpY5K48iOaUMAPooywcsyiFLUvhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783934323; c=relaxed/simple;
-	bh=HoGudEA3/UGPUFZeHBs0goYGBX0tK9K3/9aUbf9KZA8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jehnsFIXUt8dRsGmwjBdzVxVp8mJsHr5PXjMMO/lLg3N8Aw+KiZyynA2313vcLwJSBwBxOHpjghW8HVKJ7YyOp5cRYWY1qQ0zK3y1mqGb9c9KAG7a3dHmqZTwFegbOHWX53mWc04EjDkKUKhGNXbRHuojyYmkHx9sqL0E2JFTIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpQpTRfj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783934384; c=relaxed/simple;
+	bh=7bQDH/OZ23fOmfWvFy1z4i4nRSQhcF9nRPCTaxhKRaM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FllJFbSSoHgmY9y4GHbRfva/DE5oOmLb7ntgop0lLHQu7icxWc96THXd2K/QEQwosi62W1wLqXqM9FNkUngJkTHpfVd6qppf/wJ6zVIHmeA7cpa7MTkJtKIEA7+g3LHZupT8EA2mrabPsq1f83MqZiMQXEPruHpEZqSWwQNBYEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=QGAnsDoO; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpQpTRfj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322D11F000E9;
-	Mon, 13 Jul 2026 09:18:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783934321;
-	bh=6yqUSN/e8kq6AbWr6U2lgOTKcyCUso6Rbl9W/U1G0ww=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TpQpTRfjeYU/avUD7cnPNJJB/8l7CdtQfFZzQH3GwW3QOGs28gjAVKYdbb4eE+XCW
-	 D78SlD22VMFZSXS16jJIa3OYYxtccp+uC2ndx62ZxF6OQV0euSgDATK1RRRNPjzRP7
-	 3tzqmOlvAw45eb/GNBvpeYPR3mfXu9H/TLSOYS+7N0swX3BH+HwfBwQv6sqPZ2Eiy9
-	 Bf9NGCRM2Nnl8bpGmUYXkp4atp/hF8pCNENPj1b7bTa6YLWY10ftIFn/THuwkT4pnR
-	 DWxYJ8O934L1pdk7ksvOT53RvZuIQhH+355DYF7dbDM6pVK1I5Dm8ymuzKcOWDGCWm
-	 mQwDjmXVzl6xg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 4/6] dt-bindings: can: fsl,flexcan: add NXP S32N79
- SoC support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
-Cc: "Vincent Mailhol" <mailhol@kernel.org>, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, linux-can@vger.kernel.org, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, "Oleksij Rempel" <o.rempel@pengutronix.de>, imx@lists.linux.dev, "Oliver
- Hartkopp" <socketcan@hartkopp.net>, conor+dt@kernel.org
-In-Reply-To: <20260713085306.2643794-5-ciprianmarian.costea@oss.nxp.com>
-References: <20260713085306.2643794-1-ciprianmarian.costea@oss.nxp.com>
- <20260713085306.2643794-5-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 Jul 2026 09:18:39 +0000
-Message-Id: <20260713091840.322D11F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="QGAnsDoO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=z9Ce94XR2IBdMohRvs8y69ajZ4JeAI2hb4QUuYehro4=; b=QGAnsDoOm0yhaw1y81UbA5kH0O
+	A9SLOzYZVLggRrrbHKx+ZpNF6jyeLdTTgV5jQ/37iJVfr0BfoT9qpwyhsXu9+L/9Ww7M37eehDgHr
+	W7AkDc2YvBetW/F3F0CFJfGc0qBJQM3W+vVNZ2DmYt2kD3vU6ynewcxo9tHF6XHCPYrzyxyPNBA5n
+	nOb/HJo4zpKGW8Wmy09niLZH8dXq3lAR2tAfyDTDuSyxXPyH8Jgp4jEYetKk1NMeWXyMLmL0fllf4
+	A7IePrx7Q1yf8fVR5v+VzGm8TmdUCrUGETV6W0eoYRBmgZTKZxr0uRhvIoGjv0sBLh47hlOV7ZACE
+	cD6b5BKQ==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wjCp8-0004Rx-1w;
+	Mon, 13 Jul 2026 11:19:38 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wjCp8-0004Bh-0f;
+	Mon, 13 Jul 2026 11:19:38 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com
+Subject: [PATCH v2 0/2] Support for TQMa91xx on MBa93xxCA
+Date: Mon, 13 Jul 2026 11:19:20 +0200
+Message-ID: <20260713091924.2319674-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28059/Mon Jul 13 08:25:07 2026)
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The flexcan driver fails to claim the newly added 'nxp,s32n79-fl=
-excan' compatible string.
---
+Hi,
 
---- Patch [4]: [PATCH v6 4/6] dt-bindings: can: fsl,flexcan: add NXP S32N79=
- SoC support ---
-commit 81a73119cf0179abcfa99d350e69491bfd8303b6
-Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+this small series adds support for TQMa91xx, i.MX91 based module, on
+MBa93xxCA. It supports most interfaces similar to TQMa93xx, but LVDS is not
+supported at all. Wake-on-LAN works on both interfaces.
 
-dt-bindings: can: fsl,flexcan: add NXP S32N79 SoC support
+Best regards,
+Alexander
 
-This commit adds the NXP S32N79 SoC compatible string and interrupt propert=
-ies
-to the FlexCAN device tree binding. On this platform, the IP uses separate
-interrupt lines for mailboxes and bus errors.
+Changes in v2:
+* Fixed commit message on patch 1
+* Adjusted description in bindings
+* Fixed PHY irq type (-> level low)
+* Collected Conor's A-b
+* Link to v1: https://lore.kernel.org/all/20260707091424.1702245-1-alexander.stein@ew.tq-group.com/
 
-> diff --git a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml b=
-/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-> index f81d56f7c12a5..d098a44c2b9c2 100644
-> --- a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-> +++ b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-> @@ -26,6 +26,7 @@ properties:
->            - fsl,ls1021ar2-flexcan
->            - fsl,lx2160ar1-flexcan
->            - nxp,s32g2-flexcan
-> +          - nxp,s32n79-flexcan
+Markus Niebel (2):
+  dt-bindings: arm: add MBa93xxCA as mainboard for TQMa91xxCA and
+    TQMa91xxLA SOM
+  arm64: dts: add devicetree for TQMa91xx on MBa93xxCA
 
-[Severity: Medium]
-Does the flexcan driver need to be updated to claim this new compatible
-string?
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +-
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../freescale/imx91-tqma9131-mba93xxca.dts    | 937 ++++++++++++++++++
+ 3 files changed, 942 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-tqma9131-mba93xxca.dts
 
-Because the binding does not provide a fallback compatible string, devices
-using nxp,s32n79-flexcan will fail to probe unless flexcan_of_match in
-drivers/net/can/flexcan/flexcan-core.c is also updated to include it. Is th=
-ere
-a companion patch planned to update the driver's match table?
+-- 
+2.54.0
 
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713085306.2643=
-794-1-ciprianmarian.costea@oss.nxp.com?part=3D4
