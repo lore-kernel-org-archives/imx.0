@@ -1,150 +1,225 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403EA3F1ABE
-	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 11:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5993F4DE2
+	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 11:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783943452; cv=none; b=SNeVzcUtUwL10ukqm/osxyNlLV+iT2us3JhSqosp2qJAfC8+uPCAatpKFcnjyaGqe/KGfr5npglI6WH1XZpQ0bLHqleCGV/2Sefwo4Fbz59J1hFpjaI6wqPEquR3mzAf8oSFP/Decq0DgF8Nc2gyrpbGvHAHbS719OFBU3umI14=
+	t=1783943626; cv=none; b=odnRpf/TFVKo5fbweltNGz4AJJRlHYSuevK6ecNlfniml8DCYVD1nmmLJPi0wuGW1QV3+NtJL6TrjvKTyyBNURy5mU+saz1k0HK648P2URL+RlLkYGkuqrXXeGULfu68R0Wf+sewAuHxKjvf/uI58faGSxDWD5dSGTf9IhCvcIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783943452; c=relaxed/simple;
-	bh=YujMEq/IYDCcyQvcmIyGcrQUVG3mK7GrieTZQ8bUe5A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pagRHkMjHXqT42vKVRepjVlxYB1BRJUbtYITMUWZAVm/SCWHj30JFHFpjK5b4nMutf/IftrtkCSwjBWrlLcId8rzQL7uDizh9I0/Azd4bNlR/oLzBpVJN6h2Savf3D1KFnvIVeH+Q6/fR/1VuC7no37FxkcAZsrvywRmB26NMbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bl5QtVgC; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iok73ITW; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1783943626; c=relaxed/simple;
+	bh=SRtXo7qoSqgK5l+umf1rMmWNg22khBPItUlyntwmvA0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=J/6vvYOf9p6f/7NMlxsfmQhqjE9tJOhuV+S2mRjFpQMw2qcarwvCuz8XvnKS72gqYXDd5OHh83jewpghjXCIJ+Xs69dhU7fC8OujHdrXj2io7ruH/vw4xWWQnN75K5NHhHRQqsZgkuZDjBwBpAKQ6Z7D7KaI/puDmApt6sbqJbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F6lfOHk1; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bl5QtVgC";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iok73ITW"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66DB1vZS731623
-	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 11:50:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	32BCUGnUu2Id1Yusst4iQdiV2C4tMZvFoGEnFIez6Eg=; b=bl5QtVgCx0H4EGBQ
-	I8Elbu/BOIru3VWc2N+TuPb/F0MVjmb6Aw+mbfJgX4mhmvEyZfIeHqR6v5ekqs9w
-	M/+JuJWBwpgvH4x3EPmM+D8u6tq2fYOSZnj87sX+upNew/WtTTM2Vnm6uFNXQD2i
-	AtG4l5sHTEXWG2rQMwaFpXVUdKNC02/iggPRN49fOXaxCN8RDxIX90VWZkt2oaVM
-	P1hGt/lISckK1zZ4cBuilzrLYYV1KgI6r7YnWloI0c0w+0hrWg7k9jSJlbR84McK
-	gUrRSqIvAEfjZjLj23Yv/shhT6jfyf85YA0O7jSgp6oFa4eu8+RI6bQUA/1BJKn+
-	aaxwLQ==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fcjn3abcg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 11:50:44 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38dad28e86eso4796566a91.0
-        for <imx@lists.linux.dev>; Mon, 13 Jul 2026 04:50:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783943444; x=1784548244; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=32BCUGnUu2Id1Yusst4iQdiV2C4tMZvFoGEnFIez6Eg=;
-        b=iok73ITWR8B8IQbjb6seeC+C+aCqCikEvMRMS8WzwJ2d1R+qz06pCtetzSMy/bLc0d
-         ZiZi6G2lG/+8TsYILxUF4va59iS6yTR1kMPjOMSZn0o1E+nWUaj6hkqqfLajEri6NZ0x
-         TXocMXqrHcOuVyDvHWnJ8qsyUobDE6WEOZmZw5IUS16Z7L65yGEoGjrwTZ2ZSRuneySs
-         R0pKNvejRA/u4sSRDEnfkpD0070a9tDM62RCFIAn+uuI1n3C3t3LIREx2Fu/dZcyCc5W
-         JUY45tqkVFbHq2mgoRjudaNZJ7Z6TkFpsLZPSz4/mVw2yovwR1rW+aVU1mcUNt54l1E/
-         Uvbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783943444; x=1784548244;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=32BCUGnUu2Id1Yusst4iQdiV2C4tMZvFoGEnFIez6Eg=;
-        b=SwPrs83/RD7uQA0QhBFPdTD2Mm891nUZfrpyFfLhzDDntkiqdq5XZ9NZHSUWEfGWER
-         32fFQPEMvkjeuVrRhmsPIonFtAEoOcHWdb8OPlII6MS15wESw9NAvfcCZGjmO2IrI0X/
-         S+ecVFQLSdiN5AlcjEdbeHP9OXC0vHdMsKUI0oWU8bvrk5HFnlc93BTWR3m1W2pMIetY
-         43rtG1J07JknMhYB2fSy1ehVREwl9ftdX6D7B1y0VMdmLv5RYrAjU3+wJgMo8UKkCUGk
-         DaFPLfZpxjIBjzUXKrNfUeF7lcUufqV1a1+tz/VG67D/W92n+hqFcnsGsTV2PRXK+D+S
-         KRyQ==
-X-Gm-Message-State: AOJu0YzMj0XcIW8v8UKAHs4eO28imnpxFf1owmud9LIzm0NjDJ7CO7Ho
-	E0iRJT77WjLkXzy2245rFtdCTPouzrXhqq6GarxT9ZCmQMcz4X9aGvdbb9tXeCBAjSB9QMSCUJM
-	xUOzMQGoWSP/BBh2HAxxEdVLfx06uCeDLKRTlejJEbwiHp51cULpEwUU=
-X-Gm-Gg: AfdE7cnrX7fpaorDdJEwwUjWDTvoB+StFwg/7mKTrQfMsMI5ACMoH9/+DY/M7DXba/a
-	bd/umB7g4xB5QT0VAMBACNZ1o/m+yRvwCFR4sv1ZL92WKGHJYVOTyeXnlT1NG6NXroXeVfMYQEz
-	XjxJhWwuMLBFg+KNewR3Jzvg+5of2SqiIgXMQFKYLp9FCuXR1tv570/2gy8oD9aA9ql0cGHqKM6
-	ThwVBLRJdbxWRrI9var+VBiniyO1jBT5qyv9qZeV5B7GJj3RjSxzDkzngjxGlSs4QSPYt2ZcJP3
-	e8ph2qt8pItnaOkHyIBUNguoO8EPnaE5teo1u219rO6wRcvgx98sjpM1WiVscfT/HP0cexW4fQl
-	BRrtRnt8VN8r+X12lhPbH7tt6600M1rh2U7hJ7g==
-X-Received: by 2002:a17:90b:4c4e:b0:38d:84ec:b03e with SMTP id 98e67ed59e1d1-38dc73bdd34mr7771146a91.6.1783943443997;
-        Mon, 13 Jul 2026 04:50:43 -0700 (PDT)
-X-Received: by 2002:a17:90b:4c4e:b0:38d:84ec:b03e with SMTP id 98e67ed59e1d1-38dc73bdd34mr7771128a91.6.1783943443533;
-        Mon, 13 Jul 2026 04:50:43 -0700 (PDT)
-Received: from [192.168.1.8] ([103.211.19.60])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3120c8e41fcsm36700629eec.15.2026.07.13.04.50.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jul 2026 04:50:43 -0700 (PDT)
-Message-ID: <0c791abb-9f55-492a-81e8-5232217831cf@oss.qualcomm.com>
-Date: Mon, 13 Jul 2026 17:20:38 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F6lfOHk1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783943624;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=B54XxYOgQOiIEJK7sD0ym83+/MGWSHFF64vmz3jQu+o=;
+	b=F6lfOHk1lyHuOzFepP/u0rez/kfRBEUAevNwR2nj3CQ4sgyWvbgGDD+ljf0aUq6TbK6Tjt
+	ZkQix+KgojgudMEkhtmnJP2mCl8/qCYHYgizqbunohzu1b6RUNovhvnifxkPAwR+fJrjek
+	liBc29jVTKscXX3GpotpdSMky7rddbs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-Dn27GUPQMfSOFm3Mg7PNRQ-1; Mon,
+ 13 Jul 2026 07:53:41 -0400
+X-MC-Unique: Dn27GUPQMfSOFm3Mg7PNRQ-1
+X-Mimecast-MFC-AGG-ID: Dn27GUPQMfSOFm3Mg7PNRQ_1783943616
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA9E61955D91;
+	Mon, 13 Jul 2026 11:53:33 +0000 (UTC)
+Received: from [192.168.1.153] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0CB6118005A0;
+	Mon, 13 Jul 2026 11:53:14 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+Subject: [PATCH v2 0/5] drm/panel: refcounting panel lookups and references
+Date: Mon, 13 Jul 2026 13:53:03 +0200
+Message-Id: <20260713-drm_refcount_wiring-v2-0-d3bb61f4bd4d@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/6] arm64: dts: qcom: shikra: Add CAMSS node
-To: sashiko-reviews@lists.linux.dev,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org,
-        robh@kernel.org, devicetree@vger.kernel.org,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-References: <20260713-shikra-camss-review-v5-0-db53be15dc4f@oss.qualcomm.com>
- <20260713-shikra-camss-review-v5-2-db53be15dc4f@oss.qualcomm.com>
- <20260713093919.B71F41F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-In-Reply-To: <20260713093919.B71F41F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NzQ6CMBCEX8Xs2Zq2/DR68j0MIaVdYA+0ZouoI
+ by7Fa8ev8nMNyskZMIEl8MKjAsliiGDPh7AjTYMKMhnBi11LStVCM9Ty9i7+Ahz+ySmMIgSKzS
+ VwbMsDeTlPRfotVtvTeaR0hz5vZ8s6pv+fLWu//oWJaRwzipruqLz2F8Z/Wjnk4sTNNu2fQCw2
+ Q5NtwAAAA==
+X-Change-ID: 20260513-drm_refcount_wiring-4e5e757e9047
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, Inki Dae <inki.dae@samsung.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
+ Linus Walleij <linusw@kernel.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
+ Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chen-Yu Tsai <wens@kernel.org>, Samuel Holland <samuel@sholland.org>, 
+ Jyri Sarha <jyri.sarha@iki.fi>, Jingoo Han <jingoohan1@gmail.com>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Peter Griffin <peter.griffin@linaro.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Alison Wang <alison.wang@nxp.com>, 
+ Paul Kocialkowski <paulk@sys-base.io>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ linux-rockchip@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+ linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org, 
+ Albert Esteve <aesteve@redhat.com>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783943594; l=5435;
+ i=aesteve@redhat.com; s=20260303; h=from:subject:message-id;
+ bh=SRtXo7qoSqgK5l+umf1rMmWNg22khBPItUlyntwmvA0=;
+ b=krKLhcYOsELwWzp4Mkmstg1CoAIW+2iQNP5Bx9vPTWdaJHFoUApmueGaj5CJ94aMN2hbmSM4Z
+ i48STMH6Q1GA5qfKEcIhF79Cp9o+131NV2sOs0w0IemF64ja2dO5wAc
+X-Developer-Key: i=aesteve@redhat.com; a=ed25519;
+ pk=YSFz6sOHd2L45+Fr8DIvHTi6lSIjhLZ5T+rkxspJt1s=
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: GhppIETEXDOoqoA_fQL659j7jS7PeCQNmyyo67wotAA_1783943616
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDEyMiBTYWx0ZWRfX4JPhROQSQpN9
- ruPS8z0UF0KRfGcmvxHKruWK13RKVs46zOkPHJDhqyHuTZ1G4oJw5OboHql2Sk3cc9exEqpHBTQ
- 3ouMVtFFL1X6o+SDze3iL24C2wsTTvXLvAfPrZjyY9Lfh+jq17Icg9DThHP3miWxlIQ4ev/0WsQ
- a9fEMyFilDN3d9qY8zkuZpIRJRjt2x3qp7ndDbULXB1Xise797tCX9THbnZS1Wdaz0QvfP+aZjJ
- fGkwxIGadmCSDvipqY0Z/Htr4hcAsI2LO4Qd0n1ZjKpgK7TdNzzvxA01P+n7FzO96DOHLnlUEpN
- spCUipS3fWimzBg17Pscz5hQ0zjcbpjA/Y8t//rjH3b2CipCVJ7DGEZwbA4fENrqX1hIiOFzW/T
- HB0l13LX6u7CWe80wBGD7QL5jyPpeJ8iaE74PCwGTCTqQHIZT70JSOeFrEyXuDegiHiDz0+zGYq
- /Zb+xlCOWfgR/n/hvlA==
-X-Proofpoint-ORIG-GUID: ka0GI_jMVzPPqJ-TBGXILFN6kZYQdQxU
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDEyMiBTYWx0ZWRfX+av5otOiLBGd
- MxNjMJ4yk49zmS5PMPCiNewVG4uFMSo6F4BM3roIwC+mkmYf3E/iUxTeQpl8pcyXCmz+GsZm5io
- sAaHmP9a5ZPEBBsRl2QmGogBJtJnHUM=
-X-Proofpoint-GUID: ka0GI_jMVzPPqJ-TBGXILFN6kZYQdQxU
-X-Authority-Analysis: v=2.4 cv=aaJRWxot c=1 sm=1 tr=0 ts=6a54d114 cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=PqZB0zJ+pwaroKfoAs2U/A==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=VwQbUJbxAAAA:8 a=beKYP8gAV9hXG197g18A:9 a=QEXdDO2ut3YA:10
- a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-13_02,2026-07-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
- adultscore=0 malwarescore=0 spamscore=0 suspectscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607130122
 
+The drm_panel subsystem provides kref-based reference counting [1]
+(drm_panel_get/put) but almost nothing in the tree actually uses it.
+This results in a systemic use-after-free pattern throughout the codebase.
 
+This series aims to close all those issues.
 
-On 13-07-2026 15:09, sashiko-bot@kernel.org wrote:
->> +			compatible = "qcom,shikra-camss", "qcom,qcm2290-camss";
-> [Severity: Low]
-> Could this node be placed out of order? 
-> 
-> Device tree node unit-addresses are generally sorted numerically, but here 
-> camss@5c11000 is placed before the geniqup@4ac0000 node, which breaks the 
-> numerical sorting under the soc node.
+Patches 1-2: fix the infrastructure. drm_panel_add/remove now keep
+a counted reference for the list entry. drm_panel_bridge_add_typed()
+now holds a counted reference for the lifetime of the panel_bridge.
 
-Reasonable, will fix. 
+Patch 3: change the semantics of of_drm_find_panel(). It now acquires
+a reference before returning, under panel_lock. All in-tree callers
+of of_drm_find_panel() and drm_of_find_panel_or_bridge() are updated.
+Two patterns are common in these fixes:
 
-@Konrad, could you review the DTS patches?
+- Bridge-wrapping: the panel is passed to devm_drm_panel_bridge_add()
+  or equivalent, which acquires its own reference. The caller (including
+  devm_drm_of_get_bridge() and drmm_of_get_bridge()) releases its lookup
+  reference immediately after.
+- Store-and-use: the panel pointer is kept in a driver struct and
+  used directly for the device lifetime. The reference is released in the
+  remove/unbind path, or via devm_add_action_or_reset() where no explicit
+  teardown function exists.
 
---
-Regards,
-Nihal Kumar Gupta
+Patch 4: extend the same fix to find_panel_by_fwnode(), a static helper
+used internally by drm_panel_add_follower(). Since it has no external
+callers, the fix is self-contained: drm_panel_remove_follower() is
+updated to call drm_panel_put() to balance the reference.
+
+Patch 5: update a remaining batch of drivers calling of_drm_find_panel()
+or drm_of_find_panel_or_bridge() to release the reference after wrapping
+the panel in a bridge or on error paths.
+
+In order to catch all places in the tree that required releasing the
+reference, the search was assisted by an AI model. Specifically, a
+Coccinelle script was designed by the agent to address the trivial changes
+(not included in the series). Although a few required manual fixes, with goto
+labels or bracket additions. Additionally, the model helped to discern implicit
+teardown paths that were addressed with devm_add_action_or_reset() calls.
+Thus, these commits have the Assisted-by label following the project guidelines.
+
+No functional change is intended for any driver. The reference
+counting only affects object lifetime; panel operations are unaffected.
+
+[1] https://lore.kernel.org/all/20250331-b4-panel-refcounting-v4-0-dad50c60c6c9@redhat.com/
+
+Signed-off-by: Albert Esteve <aesteve@redhat.com>
+---
+Changes in v2:
+- Squash of_drm_find_panel() API change with its caller fixes
+- Split find_panel_by_fwnode() into its own commit
+- Update kernel-doc for drm_of_find_panel_or_bridge()
+- Link to v1: https://lore.kernel.org/r/20260626-drm_refcount_wiring-v1-0-cca1a7b3bdef@redhat.com
+
+---
+Albert Esteve (5):
+      drm/panel: have drm_panel_add/remove manage a list reference
+      drm/bridge/panel: hold a reference to the wrapped panel
+      drm/panel: of_drm_find_panel() return a counted reference
+      drm/panel: find_panel_by_fwnode() return a counted reference
+      drm: release panel reference after panel bridge creation
+
+ drivers/gpu/drm/bridge/analogix/analogix-anx6345.c |  3 +++
+ drivers/gpu/drm/bridge/panel.c                     | 18 ++++++++++++----
+ drivers/gpu/drm/drm_of.c                           |  3 ++-
+ drivers/gpu/drm/drm_panel.c                        | 24 +++++++++++++++++-----
+ drivers/gpu/drm/exynos/exynos_dp.c                 | 10 +++++++++
+ drivers/gpu/drm/exynos/exynos_drm_dpi.c            |  3 +++
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_rgb.c          | 18 ++++++++++++++++
+ drivers/gpu/drm/imx/dcss/dcss-kms.c                |  3 +++
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c          |  4 +++-
+ drivers/gpu/drm/logicvc/logicvc_interface.c        | 12 +++++++++++
+ drivers/gpu/drm/mcde/mcde_drv.c                    |  1 +
+ drivers/gpu/drm/mcde/mcde_dsi.c                    |  1 +
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c                  |  1 +
+ drivers/gpu/drm/omapdrm/dss/output.c               |  1 +
+ drivers/gpu/drm/pl111/pl111_drv.c                  |  1 +
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_encoder.c  |  1 +
+ drivers/gpu/drm/renesas/rcar-du/rcar_lvds.c        |  1 +
+ drivers/gpu/drm/renesas/rz-du/rzg2l_du_encoder.c   |  1 +
+ drivers/gpu/drm/rockchip/analogix_dp-rockchip.c    | 11 ++++++++++
+ drivers/gpu/drm/rockchip/rockchip_lvds.c           |  1 +
+ drivers/gpu/drm/rockchip/rockchip_rgb.c            |  1 +
+ drivers/gpu/drm/sti/sti_dvo.c                      |  3 +++
+ drivers/gpu/drm/stm/ltdc.c                         |  1 +
+ drivers/gpu/drm/stm/lvds.c                         |  3 +++
+ drivers/gpu/drm/sun4i/sun4i_lvds.c                 | 13 ++++++++++++
+ drivers/gpu/drm/sun4i/sun4i_rgb.c                  | 13 ++++++++++++
+ drivers/gpu/drm/sun4i/sun4i_tcon.c                 |  2 ++
+ drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c             |  2 ++
+ drivers/gpu/drm/tegra/dsi.c                        |  1 +
+ drivers/gpu/drm/tegra/output.c                     |  3 +++
+ drivers/gpu/drm/tidss/tidss_kms.c                  | 16 ++++++++++-----
+ drivers/gpu/drm/tve200/tve200_drv.c                |  1 +
+ 32 files changed, 161 insertions(+), 16 deletions(-)
+---
+base-commit: 502d801f0ab03e4f32f9a33d203154ce84887921
+change-id: 20260513-drm_refcount_wiring-4e5e757e9047
+
+Best regards,
+-- 
+Albert Esteve <aesteve@redhat.com>
+
