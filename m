@@ -1,225 +1,157 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE9540242B;
-	Mon, 13 Jul 2026 12:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06C33FF8BD;
+	Mon, 13 Jul 2026 12:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783944485; cv=none; b=AxwI5CX/0HiZfgdA2LKx5d46ZHB/7GFPF3imyEci5JdEDsJL11uHeaEsR2yvYXgPD4qZsSgBfRVauEkw2SRbssiMddmso1U3hcFKPernQ8p98xKH0x/bWzede0yNw/rKTFvYv96lCw9qqpjoUut/U2sznWInLPGvdBuAUuXc6JM=
+	t=1783944532; cv=none; b=d5QY9BxO286MhE7Kc8y89Kr3zXkFKyRv8IGSEt5JzYq3vjZuAr8Az2Ev4UOJjCpENm8xoqlb63a+aioIECe8TrsBB7673pCecPq0/PD7CRa75aDyc+LOHZ8hvNTF8SBLdKNz9i59ENHCHXB3KIcZxDqZxiQtKFlMiIZABokie4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783944485; c=relaxed/simple;
-	bh=KyYThTkoDuFE9tkrgQiF64mXmcBGNR5413WVGfjoUtk=;
+	s=arc-20240116; t=1783944532; c=relaxed/simple;
+	bh=qPY+ftbHtdVh44IsU7zDhLZU5ZqcO4Q7S/bLvj77eFE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rE2p19HLfu5FBtDPfSWLkcj/zzMWg9IKAqOq3BGofLr6K5V/jCBwwzUPdV45y2OKWEgQhmjAPxxh0p0aGYSeHAn8NLRODIJVksFCQo37VcFQxwmi5pxqMfjEoqifg9NLVgaH6+10bgVShQZ2KHSorkfKRyttz980uZeL+mboWOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwqCuq98; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=LShIqmv9FmwD5KhAQxPFngvn1KFvHX1tenE/+Xz7T5AgpLAkd5VlJzVmKtZUSqf0QtnBAi1j+737ZIABWlkv8J8IGWUWP5h/RYQI65kum+pF6YO6URH+JPPk+W1/fjJ8LxrFxLBo0LljlLUjmyQxrpA/Tf5Ikt4zQa2O1/1D/CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PRGGotfK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwqCuq98"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF3C1F000E9;
-	Mon, 13 Jul 2026 12:08:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PRGGotfK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A971F000E9;
+	Mon, 13 Jul 2026 12:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783944483;
-	bh=/aYN/zji52JE50Z8K1sfRhmyCL9AH/yeX+d6wrZ8ZEM=;
+	s=k20260515; t=1783944530;
+	bh=FsObjmWYAUve1NK1KQo+HH5UBdK3xyiqAWwC+NNw56A=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iwqCuq98h+TMlXlWJU+siwxZqb3DX3Ltp75tAcg2JTXcZyDPjZ6FU6x8qjViiep6/
-	 lOFXBIg+B6J2gOUb9lapdXu5jLXiBJdIwRtQ7kzr3GeddoUg/15jiUYh5/UR0BomoX
-	 acjUEMbP6NaCa5IH/aO40azhC2oXNLxUcXyYGDpBjm6wL5xqGzWeDEdWjnaU2yWa4V
-	 zbWTXqWB9/NQ3pHjxUVSeyP3EtjoYZEzDn1kRdzNupZXrSeTEnOcksWM4CSU4Kcujc
-	 P+gpNSoD3IWTUNjPTNPNWwlwQqVNxpMx3jbp6iGZ71dXHRQk3ASao9zUrzmms9rYv9
-	 8yLSXLTPqtzEQ==
+	b=PRGGotfKuwCZoT9QGYvVXkHRw8K3zpSM9hZOPCZFH/yGLXk7YgNUlizgL9R31ZNie
+	 xJ0Qv7n4pxLvVyA/U3VXoP9zv2OnsmgpMRMGzDTe2nXa/gm05oGEFfzp9aZp+o4kn7
+	 eW9MJ2pDagm/8bcQKNs5425vWSlCqpW0OvN8OlMMCurQPe00ly27HLqFRN1aWIxjLu
+	 U26FlTBvRkGb5QKcwYXbVu1gFnsioAQa/+NwyZ5GswQZlTzDTCUOdWlM/blw4YjJFM
+	 Rr9QQLvkuY36BCjQkgJSirFxpyKlvt//IIGTO0nvk9nMZPaAERyYzp39hvfdaj2YGr
+	 4OouoOiGXiuow==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 5/5] drm: release panel reference after panel bridge
- creation
+Subject: Re: [PATCH v2 4/5] drm/panel: find_panel_by_fwnode() return a
+ counted reference
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Albert Esteve" <aesteve@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, wsa+renesas@sang-engineering.com, Frank.Li@kernel.org, imx@lists.linux.dev, linux-sunxi@lists.linux.dev
-In-Reply-To: <20260713-drm_refcount_wiring-v2-5-d3bb61f4bd4d@redhat.com>
+Cc: linux-sunxi@lists.linux.dev, Frank.Li@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, dri-devel@lists.freedesktop.org
+In-Reply-To: <20260713-drm_refcount_wiring-v2-4-d3bb61f4bd4d@redhat.com>
 References: <20260713-drm_refcount_wiring-v2-0-d3bb61f4bd4d@redhat.com>
- <20260713-drm_refcount_wiring-v2-5-d3bb61f4bd4d@redhat.com>
+ <20260713-drm_refcount_wiring-v2-4-d3bb61f4bd4d@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 Jul 2026 12:08:02 +0000
-Message-Id: <20260713120803.2CF3C1F000E9@smtp.kernel.org>
+Date: Mon, 13 Jul 2026 12:08:49 +0000
+Message-Id: <20260713120850.50A971F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
+New issues:
+- [Medium] Drivers calling of_drm_find_panel() directly leak the returned p=
+anel reference.
+
 Pre-existing issues:
-- [High] Calling `drm_panel_bridge_remove` with an `ERR_PTR` on the error p=
-ath causes a kernel oops.
-- [High] Missing `IS_ERR` check for `devm_drm_panel_bridge_add_typed` retur=
-n value leads to `ERR_PTR` dereference in `drm_bridge_attach`.
-- [High] Error handling failures in `rockchip_rgb_init()` lead to a danglin=
-g encoder in DRM core lists and a leaked panel bridge.
-- [Medium] Hijacking `bridge->funcs` in `rockchip_lvds_bind` breaks panel b=
-ridge cleanup, causing memory and reference leaks.
-- [Medium] The `mcde_drv` driver leaks the panel bridge and panel reference=
- on error paths and during teardown.
+- [High] TOCTOU race in drm_panel_add_follower() when acquiring the panel's=
+ underlying device, leading to a potential Use-After-Free of panel->dev.
 --
 
---- Patch [5]: [PATCH v2 5/5] drm: release panel reference after panel brid=
-ge creation ---
-commit 03ed59fea0a81ee259951270dc961716491dc0bd
+--- Patch [4]: [PATCH v2 4/5] drm/panel: find_panel_by_fwnode() return a co=
+unted reference ---
+commit 5cd4c479944cf29f6f5aa4a3e31207bf48dc0567
 Author: Albert Esteve <aesteve@redhat.com>
-Subject: drm: release panel reference after panel bridge creation
 
-This commit updates a second batch of drivers calling of_drm_find_panel() or
-drm_of_find_panel_or_bridge() to release the lookup reference after wrapping
-the panel in a bridge. It also handles paths where a panel is found but
-cannot be used by dropping the reference immediately.
+drm/panel: find_panel_by_fwnode() return a counted reference
 
-> diff --git a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c b/drivers/gpu/drm/=
-ingenic/ingenic-drm-drv.c
-> --- a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
-> +++ b/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
-> @@ -1297,9 +1297,11 @@ static int ingenic_drm_bind(struct device *dev, bo=
-ol has_components)
->  			goto err_drvdata;
->  		}
+This commit updates find_panel_by_fwnode() to return a refcounted pointer
+to the panel, mirroring a similar fix made to of_drm_find_panel(). It calls
+drm_panel_get() under the panel_lock before returning, ensuring the memory
+is not freed prematurely. Callers are now responsible for balancing this
+with drm_panel_put(), which is added to drm_panel_remove_follower().
+
+> diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+> index 72cf86253c0cd..a00ae98ed0956 100644
+> --- a/drivers/gpu/drm/drm_panel.c
+> +++ b/drivers/gpu/drm/drm_panel.c
+> @@ -542,7 +542,13 @@ int of_drm_get_panel_orientation(const struct device=
+_node *np,
+>  EXPORT_SYMBOL(of_drm_get_panel_orientation);
+>  #endif
 > =20
-> -		if (panel)
-> +		if (panel) {
->  			bridge =3D devm_drm_panel_bridge_add_typed(dev, panel,
->  								 DRM_MODE_CONNECTOR_DPI);
-> +			drm_panel_put(panel);
-> +		}
-> =20
-
-[Severity: High]
-This is a pre-existing issue, but I noticed devm_drm_panel_bridge_add_typed=
-()
-can return an ERR_PTR on failure. Since there is no IS_ERR() check here in
-ingenic_drm_bind(), the error pointer gets assigned to ib->next_bridge a few
-lines later and is passed indirectly to drm_bridge_attach().=20
-
-Could this cause the DRM core to dereference the error pointer (e.g., acces=
-sing
-bridge->dev) and crash during initialization?
-
-[ ... ]
-
-> diff --git a/drivers/gpu/drm/mcde/mcde_drv.c b/drivers/gpu/drm/mcde/mcde_=
-drv.c
-> --- a/drivers/gpu/drm/mcde/mcde_drv.c
-> +++ b/drivers/gpu/drm/mcde/mcde_drv.c
-> @@ -153,6 +153,7 @@ static int mcde_modeset_init(struct drm_device *drm)
->  		if (panel) {
->  			bridge =3D drm_panel_bridge_add_typed(panel,
->  					DRM_MODE_CONNECTOR_DPI);
-> +			drm_panel_put(panel);
->  			if (IS_ERR(bridge)) {
->  				dev_err(drm->dev,
->  					"Could not connect panel bridge\n");
+> -/* Find panel by fwnode. This should be identical to of_drm_find_panel()=
+. */
+> +/*
+> + * Find panel by fwnode, returning a counted reference.
+> + *
+> + * Behaves identically to of_drm_find_panel(). On success the returned
+> + * pointer has been passed through drm_panel_get(); the caller must call
+> + * drm_panel_put() when done with it.
+> + */
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but it looks like the unmanaged
-bridge created here in mcde_modeset_init() is never removed.=20
+Since the earlier patch in this series updated of_drm_find_panel() to
+also return a counted reference, do drivers that call it directly need
+to drop their reference to prevent a memory leak?
 
-If mcde_modeset_init() fails later (for example, if drm_vblank_init() fails=
-),
-or during standard driver teardown, does this permanently leak the panel br=
-idge
-and the panel reference?
+For example, in bridge drivers like lvds-codec.c:
 
-[ ... ]
+drivers/gpu/drm/bridge/lvds-codec.c:lvds_codec_probe() {
+    panel =3D of_drm_find_panel(panel_node);
+    of_node_put(panel_node);
+    ...
+    lvds_codec->panel_bridge =3D devm_drm_panel_bridge_add_typed(dev, panel,
+                                                lvds_codec->connector_type);
+}
 
-> diff --git a/drivers/gpu/drm/rockchip/rockchip_lvds.c b/drivers/gpu/drm/r=
-ockchip/rockchip_lvds.c
-> --- a/drivers/gpu/drm/rockchip/rockchip_lvds.c
-> +++ b/drivers/gpu/drm/rockchip/rockchip_lvds.c
-> @@ -605,6 +605,7 @@ static int rockchip_lvds_bind(struct device *dev, str=
-uct device *master,
+Because devm_drm_panel_bridge_add_typed() takes its own reference to the
+panel via drm_panel_get(), does this code leak the initial reference
+returned by of_drm_find_panel() since drm_panel_put() is never called?
+
+This same leak pattern appears to exist in other callers as well, such as
+samsung-dsim.c:samsung_dsim_host_attach() and
+rcar_du_encoder.c:rcar_du_encoder_init().
+
+>  static struct drm_panel *find_panel_by_fwnode(const struct fwnode_handle=
+ *fwnode)
+>  {
+>  	struct drm_panel *panel;
+> @@ -554,6 +560,7 @@ static struct drm_panel *find_panel_by_fwnode(const s=
+truct fwnode_handle *fwnode
 > =20
->  	if (lvds->panel) {
->  		lvds->bridge =3D drm_panel_bridge_add_typed(lvds->panel, DRM_MODE_CONN=
-ECTOR_LVDS);
-> +		drm_panel_put(lvds->panel);
->  		if (IS_ERR(lvds->bridge)) {
->  			ret =3D PTR_ERR(lvds->bridge);
->  			goto err_free_encoder;
-
-[Severity: Medium]
-This is a pre-existing issue, but right after this check in
-rockchip_lvds_bind(), the driver overwrites the bridge functions:
-
-	lvds->bridge->funcs =3D &rockchip_lvds_bridge_funcs;
-
-If drm_panel_bridge_remove() is called later in an error path or on unbind,=
- it
-checks the bridge identity via drm_bridge_is_panel(), which specifically lo=
-oks
-for bridge->funcs =3D=3D &panel_bridge_bridge_funcs. Does overwriting the f=
-unction
-pointers here cause the removal to fail silently and leak the panel bridge?
-
-[ ... ]
-
-> diff --git a/drivers/gpu/drm/rockchip/rockchip_rgb.c b/drivers/gpu/drm/ro=
-ckchip/rockchip_rgb.c
-> --- a/drivers/gpu/drm/rockchip/rockchip_rgb.c
-> +++ b/drivers/gpu/drm/rockchip/rockchip_rgb.c
-> @@ -139,6 +139,7 @@ struct rockchip_rgb *rockchip_rgb_init(struct device =
-*dev,
->  	if (panel) {
->  		bridge =3D drm_panel_bridge_add_typed(panel,
->  						    DRM_MODE_CONNECTOR_LVDS);
-> +		drm_panel_put(panel);
->  		if (IS_ERR(bridge))
->  			return ERR_CAST(bridge);
->  	}
+>  	list_for_each_entry(panel, &panel_list, list) {
+>  		if (dev_fwnode(panel->dev) =3D=3D fwnode) {
+> +			drm_panel_get(panel);
+>  			mutex_unlock(&panel_lock);
 
 [Severity: High]
-This isn't a bug introduced by this patch, but returning ERR_CAST(bridge)
-directly here skips the err_free_encoder label. Since the embedding rgb str=
-uct
-is allocated with devm_kzalloc(), does this leave a dangling encoder in the
-DRM core lists when the memory is freed, potentially leading to a
-use-after-free?
+This is a pre-existing issue, but is there a time-of-check to time-of-use
+race condition when callers attempt to pin the underlying device?
 
-Additionally, in the err_free_encoder error path later in rockchip_rgb_init=
-(),
-drm_encoder_cleanup() is called but drm_panel_bridge_remove() is skipped. D=
-oes
-that path permanently leak the unmanaged panel bridge?
+When find_panel_by_fwnode() (or find_panel_by_dev()) returns, the panel's
+internal refcount is incremented under panel_lock, but the underlying
+struct device (panel->dev) is not pinned.
 
-[ ... ]
+If a concurrent unbind occurs before the caller pins the device, the device
+memory could be freed. For example, looking at drm_panel_add_follower():
 
-> diff --git a/drivers/gpu/drm/tve200/tve200_drv.c b/drivers/gpu/drm/tve200=
-/tve200_drv.c
-> --- a/drivers/gpu/drm/tve200/tve200_drv.c
-> +++ b/drivers/gpu/drm/tve200/tve200_drv.c
-> @@ -84,6 +84,7 @@ static int tve200_modeset_init(struct drm_device *dev)
->  	if (panel) {
->  		bridge =3D drm_panel_bridge_add_typed(panel,
->  						    DRM_MODE_CONNECTOR_Unknown);
-> +		drm_panel_put(panel);
->  		if (IS_ERR(bridge)) {
->  			ret =3D PTR_ERR(bridge);
->  			goto out_bridge;
+drivers/gpu/drm/drm_panel.c:drm_panel_add_follower() {
+    panel =3D find_panel_by_dev(follower_dev);
+    if (IS_ERR(panel))
+        return PTR_ERR(panel);
+
+    get_device(panel->dev);
+}
+
+If the panel device driver unbinds immediately after panel_lock is dropped,
+could get_device(panel->dev) trigger a use-after-free on the destroyed
+device?
+
+>  			return panel;
 >  		}
 
-[Severity: High]
-This is a pre-existing issue, but when drm_panel_bridge_add_typed() fails h=
-ere
-in tve200_modeset_init(), the code jumps to out_bridge with an error pointe=
-r in
-the bridge variable.=20
-
-The out_bridge label handles cleanup like this:
-
-	out_bridge:
-		if (panel)
-			drm_panel_bridge_remove(bridge);
-
-Since drm_panel_bridge_remove() calls drm_bridge_is_panel() which dereferen=
-ces
-bridge->funcs, won't this cause an immediate kernel panic when it tries to
-dereference the error pointer?
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713-drm_refcou=
-nt_wiring-v2-0-d3bb61f4bd4d@redhat.com?part=3D5
+nt_wiring-v2-0-d3bb61f4bd4d@redhat.com?part=3D4
