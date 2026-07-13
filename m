@@ -1,98 +1,129 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0083DF001;
-	Mon, 13 Jul 2026 09:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B213D0914;
+	Mon, 13 Jul 2026 09:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783934384; cv=none; b=rAPM/Punc+AgmVl5QgLjcE0ffSYRZf5MKpmN9OR6oIsQWSF4ts0vSiDN7VLTul68uFIxTjOm/j7ltzhs7F7g6amLJHHZz6UFlE+y6JN/h6KVFg9t5p+q0w2EIuTxRFsoZUu4u8SeAt+j+gUdpY5K48iOaUMAPooywcsyiFLUvhI=
+	t=1783934392; cv=none; b=fqiTi3cizPmTlkIh3lcBWqx4CyVANpTXHklhOuW997m/OnUPvohrhbGH7agazeJGVNUmcjslP5ssyXv1Xi7riYMR50rjkMRtzRqvkT1+f9QxqqgR9SsI8GsLaMm1NQ+USjc32ti7BtZrRzopltoRDoDo0vVgOhuhWLjj4PxsY0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783934384; c=relaxed/simple;
-	bh=7bQDH/OZ23fOmfWvFy1z4i4nRSQhcF9nRPCTaxhKRaM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FllJFbSSoHgmY9y4GHbRfva/DE5oOmLb7ntgop0lLHQu7icxWc96THXd2K/QEQwosi62W1wLqXqM9FNkUngJkTHpfVd6qppf/wJ6zVIHmeA7cpa7MTkJtKIEA7+g3LHZupT8EA2mrabPsq1f83MqZiMQXEPruHpEZqSWwQNBYEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=QGAnsDoO; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1783934392; c=relaxed/simple;
+	bh=ouTRcIFjz+QYZNuSX6uuuPwKcabd7zspmQIFbqeA7Rs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=X1yZxMscnvF0osZtzcLS+S3IkXij4AttVe/MAeXMTB0Sto5mQwggf51tpbxOTWlU+CKpfPr1bSEosIpE0NucdQ6ssuSYkrZIWW3WjsPQXZiFQifU/mWD4J7jkTQw9GD53OKJXOY7xb21W5CqgVgPnvQGJ1JRPKgjGjURR0rAj5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1aSuhNZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="QGAnsDoO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=z9Ce94XR2IBdMohRvs8y69ajZ4JeAI2hb4QUuYehro4=; b=QGAnsDoOm0yhaw1y81UbA5kH0O
-	A9SLOzYZVLggRrrbHKx+ZpNF6jyeLdTTgV5jQ/37iJVfr0BfoT9qpwyhsXu9+L/9Ww7M37eehDgHr
-	W7AkDc2YvBetW/F3F0CFJfGc0qBJQM3W+vVNZ2DmYt2kD3vU6ynewcxo9tHF6XHCPYrzyxyPNBA5n
-	nOb/HJo4zpKGW8Wmy09niLZH8dXq3lAR2tAfyDTDuSyxXPyH8Jgp4jEYetKk1NMeWXyMLmL0fllf4
-	A7IePrx7Q1yf8fVR5v+VzGm8TmdUCrUGETV6W0eoYRBmgZTKZxr0uRhvIoGjv0sBLh47hlOV7ZACE
-	cD6b5BKQ==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wjCp8-0004Rx-1w;
-	Mon, 13 Jul 2026 11:19:38 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wjCp8-0004Bh-0f;
-	Mon, 13 Jul 2026 11:19:38 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com
-Subject: [PATCH v2 0/2] Support for TQMa91xx on MBa93xxCA
-Date: Mon, 13 Jul 2026 11:19:20 +0200
-Message-ID: <20260713091924.2319674-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1aSuhNZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047A01F00A3A;
+	Mon, 13 Jul 2026 09:19:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783934391;
+	bh=b80d1FGTgriFwEBTyhkzxIjSntfSE9mLoTvcQaX991I=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=L1aSuhNZA9IZ78B8MXNOSqdtXdo50nqUqs8DtmOUNUlI7H4S+6tBA265drxJPFssa
+	 fvB1LZqx+LmHoIAtVC1byWB+r6D3nOSnjKseQ/fITyP/vMIZ3XptJHHdj1XX5mmD7+
+	 y7vmuTBHVYjXBW6HLjwgDMH5fndi6u/evZq4DfhohwuvWwK4bXPGQ7BSFBrl3EPIUL
+	 GKdraD47xhl0IanmUr7NVcJlWNo+XaHIi5hDP1DsSXoi4Q1bu6KDWSNk7Kwo8HGH+S
+	 i2NSZq9TOPUXPs8/NGEz2KsM5dV07zlhPRjCp7uJw7Gg1WFqeoM1T43m80T3DocX2n
+	 UDHajYThuYSng==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 5/6] can: flexcan: add FLEXCAN_QUIRK_IRQ_BERR quirk
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
+Cc: "Oleksij Rempel" <o.rempel@pengutronix.de>, robh@kernel.org, imx@lists.linux.dev, "Marc
+ Kleine-Budde" <mkl@pengutronix.de>, "Vincent Mailhol" <mailhol@kernel.org>, "Oliver
+ Hartkopp" <socketcan@hartkopp.net>, linux-can@vger.kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260713085306.2643794-6-ciprianmarian.costea@oss.nxp.com>
+References: <20260713085306.2643794-1-ciprianmarian.costea@oss.nxp.com>
+ <20260713085306.2643794-6-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 13 Jul 2026 09:19:50 +0000
+Message-Id: <20260713091951.047A01F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28059/Mon Jul 13 08:25:07 2026)
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-this small series adds support for TQMa91xx, i.MX91 based module, on
-MBa93xxCA. It supports most interfaces similar to TQMa93xx, but LVDS is not
-supported at all. Wake-on-LAN works on both interfaces.
+Pre-existing issues:
+- [High] Concurrent execution of separate hardware interrupt handlers (`dev=
+->irq` and `priv->irq_err`) modifies the lockless `can_rx_offload` IRQ queu=
+e (`skb_irq_queue`), leading to list corruption.
+--
 
-Best regards,
-Alexander
+--- Patch [5]: [PATCH v6 5/6] can: flexcan: add FLEXCAN_QUIRK_IRQ_BERR quir=
+k ---
+commit 97d482f1edd202225930276cf268822cd49ea3d2
+Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-Changes in v2:
-* Fixed commit message on patch 1
-* Adjusted description in bindings
-* Fixed PHY irq type (-> level low)
-* Collected Conor's A-b
-* Link to v1: https://lore.kernel.org/all/20260707091424.1702245-1-alexander.stein@ew.tq-group.com/
+can: flexcan: add FLEXCAN_QUIRK_IRQ_BERR quirk
 
-Markus Niebel (2):
-  dt-bindings: arm: add MBa93xxCA as mainboard for TQMa91xxCA and
-    TQMa91xxLA SOM
-  arm64: dts: add devicetree for TQMa91xx on MBa93xxCA
+Introduce FLEXCAN_QUIRK_IRQ_BERR quirk to handle hardware integration
+where the FlexCAN module has a dedicated interrupt line for signaling
+bus errors and device state changes. This adds the flexcan_irq_esr() handler
+and is required for NXP S32N79 SoC support.
 
- .../devicetree/bindings/arm/fsl.yaml          |   6 +-
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../freescale/imx91-tqma9131-mba93xxca.dts    | 937 ++++++++++++++++++
- 3 files changed, 942 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx91-tqma9131-mba93xxca.dts
+> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/fle=
+xcan/flexcan-core.c
+> index 8b70952f7f05d..e7e3fb41f55e7 100644
+> --- a/drivers/net/can/flexcan/flexcan-core.c
+> +++ b/drivers/net/can/flexcan/flexcan-core.c
+> @@ -1300,6 +1300,22 @@ static irqreturn_t flexcan_irq_boff(int irq, void =
+*dev_id)
+>  	return handled;
+>  }
+> =20
+> +/* Combined bus error and state change IRQ handler */
+> +static irqreturn_t flexcan_irq_esr(int irq, void *dev_id)
+> +{
+> +	struct net_device *dev =3D dev_id;
+> +	struct flexcan_priv *priv =3D netdev_priv(dev);
+> +	irqreturn_t handled;
+> +
+> +	handled =3D flexcan_do_state(dev);
+> +	handled |=3D flexcan_do_berr(dev);
+> +
+> +	if (handled)
+> +		can_rx_offload_irq_finish(&priv->offload);
+> +
+> +	return handled;
+> +}
 
--- 
-2.54.0
+[Severity: High]
+This is a pre-existing issue, but could this lead to list corruption
+if these separate IRQs run concurrently on different CPUs?
 
+Since flexcan_irq_esr() and flexcan_irq_mb() are registered as separate
+interrupts, they might fire at the same time. If flexcan_irq_esr()
+processes a bus error and flexcan_irq_mb() processes a mailbox interrupt,
+they both end up modifying the lockless offload->skb_irq_queue.
+
+CPU1 handling dev->irq (flexcan_irq_mb):
+flexcan_irq_mb()
+  can_rx_offload_irq_offload_timestamp()
+    __skb_queue_add_sort(&offload->skb_irq_queue, ...)
+
+CPU2 handling priv->irq_err (flexcan_irq_esr):
+flexcan_irq_esr()
+  flexcan_do_berr()
+    flexcan_irq_bus_err()
+      can_rx_offload_queue_timestamp()
+        __skb_queue_add_sort(&offload->skb_irq_queue, ...)
+
+Furthermore, both handlers unconditionally call can_rx_offload_irq_finish(),
+which locklessly splices the skb_irq_queue list:
+
+can_rx_offload_irq_finish()
+  skb_queue_splice_tail_init(&offload->skb_irq_queue, ...)
+
+Are there existing synchronization mechanisms preventing these IRQ
+handlers from running simultaneously and corrupting the lockless
+skb_irq_queue list pointers?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713085306.2643=
+794-1-ciprianmarian.costea@oss.nxp.com?part=3D5
