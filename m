@@ -1,183 +1,150 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013068.outbound.protection.outlook.com [52.101.83.68])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B78941CB5F
-	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 14:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783954379; cv=fail; b=VaSeXyJ1nM5y19aqbvG246Tchf3PH0wbzibINlwkl7mhDu7Iu59GqHsLGZR7RMGsFWmvLweFkbA0qvEx/dhz51dr7QeNyemIV8XtPTQu5hyj0NX0wJAlSDBf3AZIrSQ7U7u/U2s0xlS+ZC09QJX7njPeCqMXucYsyu2q0B46WFQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783954379; c=relaxed/simple;
-	bh=FFl1ErWh7oFNvxlThSP2P67lHAtZ1n8E8pqUzgoNbIg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=c2z5/dQHE5OJbD02Q2u3MEuQRXKRkYrwizneO7PmhsaJtVFJTOy4Mnk40HQuCKDtaYBq8RRoI/xMaVcUN7GUSfoliuPWM/lpJYi++keWMnW/KGN2b5OQ8U7iSlhrgDSBgdGd7Us7HDwIuRlmOwRpAkpptUNVmzoUpCtSut93aa4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=hOyMxbDq; arc=fail smtp.client-ip=52.101.83.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184103749FE
+	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 14:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783954528; cv=none; b=oovVWTij5CNv2XodEbDgfdzC6yLUjHz4IxwTrwAFCEcCxATV4S6YiurVEXkO6/YrBS6Vs4ADpYoHBU0PUvSENoUbJOEuw9YrQkuSevILiR/nxrPaohoGgUod5LsvI9ji9e4l6ThQ1KFRRK/sX5En3x2dj1LIdlL6tf3N1NSwSKU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783954528; c=relaxed/simple;
+	bh=hguiKqe0Uuyua2AX1GYt1cNVLRmZaSGClWVkNI+fC/I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=b432DU2Iunmxy1SOLw9O6PNKjQmu+ny9dyXRd2aGTyF6z4bif70mvTWOw1f66KZP+vJTzUvqb2DWeW7fop4ltfZcWKtiH4yUEwboHkaJnV4KdDFt9GrcKCCUEBvHok4/dyuaS3kf4THxZJ+5sLFdkNxwUB/wo+n3NsMtm+ZqCNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=1r+6GHEa; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="hOyMxbDq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Zb0GZ44TCrgezJhuIqW65zPEIbgqWqCRs7IdoX3sSJj3m2mzT6EJruw/y0ogmNTcKLWTntDP/5bP6g7yZ7tJsG7/QhKTq2Xrq/C4LSLfDAtGe0N83IwKIHZ5v98X7lqVTjcoTRBVlzXTXOj7WQacU12IeEYaz8XFLUYlX62o2tS1yD7gIfcNr+qxoQvJEPN9jZSXx8wT/AEpmHnL6jAEP2xT9/NIs7S76ISKQZwwDu+SXSiu1E+PaU/NJU2t+nx7wj+6POc8GYe48GEVxFV5kAnc8+fcICoKfaDi+Yo2pkWpI/OHq4KgPMbGGvQyT8QTRuIH0IEVjhWf1N1gkahpYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3uiEQqHbvP5v7TCWNfpyK+13J1fdJFu+NQm4UFoidP4=;
- b=QtWIL+4H51qKQtSXgbw9c+JhS/D6a1sMDDj/ncXCz+hpMJN/qevWBPcwQK8hUbn0qNQBn6n5Iz9OLxEGlZdX9H72IaP1GWFGDWrp06/EyIGYWqPBxcdh8CCMitKEb6nXVoFfXdDwY4iOkLl44mV5amzO3RyfpLb9GgaCV7nX9k/U9QNgINKfLJwHs5MEj4vASDpOxNe5Z6g0AeV3Mlo5ln3I6GzGbWbs0JZGnBhS+YNQpbkQe2rUotBlwWApdBZNjIrSNcCMez2H3om9ORj9Q1tvdohYuk/euxGPCPhoTszyyb6x9WN+h6zZFPjy+cQYJ1yoZ2ZBPvIZsYlqGuVyAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3uiEQqHbvP5v7TCWNfpyK+13J1fdJFu+NQm4UFoidP4=;
- b=hOyMxbDq66cGsuh8dSeYdHYypwCv4G666KuSNM8FeePg4W5dS8vxPkWcy7EnhTj4ZmTbFFr9HMFC/H9JewfOX7JpxbEvUAYwPXFmAbmdMFjToiCWPwvPJrgcTQgftUhyNhDkpRqJLvtsimfk/I0eBfY7tCrnjV+07WZuiLdI6ovQBwOSF1+q7CGGXgZDlNnFa8ABuTA1LUN8DSghASfdufWdTEC+1924M1k7MMTx02inPMx4E/UjgDqzIa9xHKlxUzcxfjFbvxyzZCL+RgEN5vKM0eEaRZsRNziP+R0ddpM6+FQoABhvEfVtk0eDJw91TqTKbO2w8P8awSb9CTHAlw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM9PR04MB8416.eurprd04.prod.outlook.com (2603:10a6:20b:3b7::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
- 2026 14:52:54 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0181.019; Mon, 13 Jul 2026
- 14:52:54 +0000
-Date: Mon, 13 Jul 2026 09:52:43 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: ziniu.wang_1@oss.nxp.com
-Cc: adrian.hunter@intel.com, ulfh@kernel.org, haibo.chen@nxp.com,
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev, linux-mmc@vger.kernel.org,
-	s32@nxp.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 7/8] mmc: sdhci-esdhc-imx: make non-fatal errors
- non-blocking in suspend
-Message-ID: <alT7u_qNf8JqoXUX@SMW015318>
-References: <20260713043904.4144172-1-ziniu.wang_1@oss.nxp.com>
- <20260713043904.4144172-8-ziniu.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260713043904.4144172-8-ziniu.wang_1@oss.nxp.com>
-X-ClientProxiedBy: PH7P221CA0051.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:33c::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="1r+6GHEa"
+From: Frieder Schrempf <frieder@fris.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
+	t=1783954518;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mnjH8bUvLNMs032Y3RxCllB4beQC3Ai/Gw/n6qJweSY=;
+	b=1r+6GHEaUzeW7ARL5A1y4cF89AgFbIyWmXz3gysj4C8Lo1wZ5x1/ZcSeakLGgRT1wtQsVV
+	YDiQ6o1s1OY5aAbKQuaYeqgicH2EfUrdZE7x8TQOwYRg5ZVhC4jL0V2Eaydm8C/MJ7E4PO
+	PPBaAw006VKx7z1B92ZErkma0gbnjWJ1IlYMgHjfMwlZKtk3DNvXtbsuf8sZg0s53YYgmw
+	6X+nK8WAt5RMrWTgz1UVyrXQbXcBhDS59fetYRkkBo9js4hZAushUFtgq3gEj0EVf6ZRfd
+	ddgGL7DCdOi1ICx8Tc3YE9qei0OctQYZ8E+9aqGXuUpdX6jOgOcVARdPjSgkaA==
+Date: Mon, 13 Jul 2026 16:53:45 +0200
+Subject: [PATCH v2 09/10] nvmem: imx-ocotp-ele: Rename FSB access map
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB8416:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8908bcba-faa8-4f29-83d8-08dee0ee6b42
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|19092799006|1800799024|6133799003|18002099003|22082099003|11063799006|4143699003|5023799004|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	SgmfJUC9lanrywthj7TO75xN6lUFf59KBsjaPn+/CSq8LU+qffO7EXXCU3JN03POfRa/oWoEsBLsejinwxpgRk+oxGzZ4x3veK68V/7uryw5yWy09dSm+oknaf68y4GUsEHcpJIrejtgbXY0AC52dka8kG4SOhY50XNLQ0qEIBcmrdCUWf9PGxCer7OHAqUzxAGpz+ED3qGrPImhmkRYoRpJOn+i0VMR2Np9YdlihWjNiD2MxK4nc3M3ajwOroLUkV2mjfpJPzb1VK7fVHmdTNu9uSWKKoeVjdCaRd5ZNwzGz+SnIsAtyLQoRvTtnDAiZQ5EmSFKcyRHEdd9J02/xGlVG3d6qUY/9cO2azi8di4HRHQxzVHAS1t6Ej38HEuDrS48cK+uL0gfoFlQmohSg4j6oq/I0ryDX4WoUWqLQOZU8TsYn5SGWH74bnmkx1Fgvp4c7eZkq5yBXeGuCke2X2Nv2e3WLFhZj4TOhMHeCw8dKlcO9z3FMicStExlLQauA1H65ZKQWksqbHF4RmwFFsJ6YfjW3WtKAv+zRfi/ljRknGNScgQM7wq4fyzJ/4lDGR64WxGWU4/VZbo8aWauxOGFZ3Qcau1ZY82RgoGvESopACaoNB1vuAmvXEDff1zlUmJCoTRKhTJuXWe0rgHLQ706NMCFg+geKxhzhvb/i58=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(19092799006)(1800799024)(6133799003)(18002099003)(22082099003)(11063799006)(4143699003)(5023799004)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ikha65TL0LMQAqfiGjiI4TyjtvQsK/yDEKHDutJV2judof5QFOjfxzv4O1Rt?=
- =?us-ascii?Q?WT9CZsNeh3JFfr2NAMvtpoxImtkHGtS20wvmO4y+6Ih1412etY0MXglHOe5s?=
- =?us-ascii?Q?3NRLug+ePCrS5i94QpoHrSeQ25WytP3sUby4+rUfALidiCDdnfmKqnTgQrOM?=
- =?us-ascii?Q?oMOAOJ0HQbu5lK3J0YpMRCsJBKvaPZwKcDdDVxkV8NgExZ4wJdHR7B9k/YCm?=
- =?us-ascii?Q?NFUWrRRXWDuAogC7/v0mNIIcp1NpGjsBHw5MnL44bUvEEUawCtK/O918q0BW?=
- =?us-ascii?Q?hGIefGPaUUv+TpMz18ge2IBw4AVwkU1i+A0oTsqdpWQ/CJG+NHbdwBG8whZ7?=
- =?us-ascii?Q?txA6ugIlMG19zH34n7VPrpIuvQMOVdnf4tBoSVrraPeQJVJ4UBwr8M4Y41Bm?=
- =?us-ascii?Q?e7zRsywz/PsZpk0rdAE/qPxn5/Rd4TgL7Gfej5++DIEzL4QXgAGUMF/Xj74s?=
- =?us-ascii?Q?12vFG3Eg/9uIxYZvJveJ1RXRQiEbCXYPk7x0BATHAvu2G+W+9wvh/WTnY5uv?=
- =?us-ascii?Q?7rtnv57FDBMiDLq67/v+ylYOQ+LKhEteNKEL9XaLB3ftKk2Z1GhL4qiwFYO/?=
- =?us-ascii?Q?RUh2EzQoxiTWn8T1ViLQIK+QsnaFlOVrO8d2ggGGb4blfeXbEBS3BfZAS9HI?=
- =?us-ascii?Q?kF38yDYQer94I9tlRjf4LsGJKUgGyEj+MFZX1NfdlDjiseQW4wIXnCtJ7SuQ?=
- =?us-ascii?Q?9xhyckJYeJTGKgWwC/GMXrw2SpmEdHvu13CdsqisdtT/zQek8nkgofUNguss?=
- =?us-ascii?Q?yhKaZL84Au+mZceBDstIQDZjvoEpyEJBP2PxelMmdLD+BJ5HHbxzvorHaodd?=
- =?us-ascii?Q?qtoGSUEbWCK0wnOFQSdu/aniU+YoIVmnw1pTInmLWyELTID13I2cTUUjfqqV?=
- =?us-ascii?Q?zGgRwuwJBlzbquvvbI5/LlI+CKWIvZ/0AVPoerWP5iQViw/0sitz7FbToS1y?=
- =?us-ascii?Q?3QZ+GTnjxQ6l7ZEYocGQL+oFl4PfpwtYbV7YWD7B80TbdzAn0PIqyYowCSj5?=
- =?us-ascii?Q?O6Z+wA8aMGnyitDw04VxZMVe03ZAzl49vFwdu3ypOqoXOVTcZiD/uC8ZeKYV?=
- =?us-ascii?Q?G+Kd6ufy2jLSm8Yy89w+O3G2eO2era0dg1ee/7rgzB/faSFd9tRsMxQnuR4V?=
- =?us-ascii?Q?TmBbw2qpoC+OoqT8YzJbRdWVPtIp4gTKjE3FtGvUNDMricAczT0pTzBq4YdJ?=
- =?us-ascii?Q?GmXXLbvM8uE7jRsnL+GYFx+zgknTLc+D1MwetSHZ8HSv/Scs22RotvgitM3m?=
- =?us-ascii?Q?+tYNnV4urUSQR0E9IlEtkOmNHetHHj1c8ae2IEatQQ5d/yKt5JtIOQfO8Dgq?=
- =?us-ascii?Q?UO7Nz5pzWO/bIBHQHlVkoHtJLZJ7Imaq2rw39ABBKeYWhUJ4pIY8m1egWC2h?=
- =?us-ascii?Q?qEg8PY8rUSasmi4aX/6NY/d/yp9pMNPC6PsxuDvWSrjGYclQG4up/xwh40AV?=
- =?us-ascii?Q?akRA/SvFN7Kmn2KzPMfsdZamcshinq3La13CCg8sUrbCXLwtYM5XLBohXtSg?=
- =?us-ascii?Q?CRHg8wmMXYPTnIrgjsfMpQUlGnhav8lRtJcYnX+au7A9BhvGW0uc/GDhFzus?=
- =?us-ascii?Q?/KLk+kWeE2DlaN8XXgLzRl/F1vipGpxdaK3ZvTz1c4AumQQfmHvEvev26r9B?=
- =?us-ascii?Q?us9kN8Iljq/xIhwt6P90LBwgbwIhQutvJrlCEtG8I70o2vEz2KKqCz5VWnwz?=
- =?us-ascii?Q?diVirB+fx7iGdeCIAaoVChXlBKnTwJ8eZ79GLfh0a/qT3GctK10AMA3dPTOu?=
- =?us-ascii?Q?af+x3MwRMdeA2trgkHfx2xBrf1+cM1vppFB86UxU5fWOvlG3Loxp?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8908bcba-faa8-4f29-83d8-08dee0ee6b42
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 14:52:54.2310
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EBGWTwWMy35tgjEW8pR1z0uivZo9Y+ruhb1Wwcyr6LpCg7pAZ/WZWQcywWNBg/uh9hB7ri/OSj76oAI4gEACbmJYz3qzlYbwM5DASj0s2+RjHCuU+pRub+vt2nqr8r2n
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8416
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-9-b8266d93514b@kontron.de>
+References: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-0-b8266d93514b@kontron.de>
+In-Reply-To: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-0-b8266d93514b@kontron.de>
+To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Pankaj Gupta <pankaj.gupta@nxp.com>, 
+ "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2464;
+ i=frieder.schrempf@kontron.de; h=from:subject:message-id;
+ bh=Ui1yqAl2SncRGvJ6Cd8lkM+A+lQmMiIxti+ManRJv8M=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JISvkT1C3w/beB9E9Z2xvtbTFXdtnvVh5WsCH8LwKq4xJE
+ 6eV/37UUcrCIMbFICumyCLFb/Ha1izWR/5YdRTMHFYmkCEMXJwCMBF5TUaGXR+frjmv+OWmI+eT
+ r1tunniavijj7ZYph850/HBYOkuQ4S7DP631XGy3/7w1Sc47IRs8SaN+7VWno1vbOexnstv37u+
+ dygMA
+X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
+ fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-On Mon, Jul 13, 2026 at 12:39:03PM +0800, ziniu.wang_1@oss.nxp.com wrote:
-> From: Luke Wang <ziniu.wang_1@nxp.com>
->
-> Make pinctrl_pm_select_sleep_state() and mmc_gpio_set_cd_wake() failures
-> non-fatal in the suspend path. These failures only mean slightly higher
-> power consumption or missing CD wakeup capability, but should not block
-> system suspend.
->
-> Also change the function to always return 0 on the success path instead
-> of propagating non-fatal warning return values.
->
-> Fixes: 676a83855614 ("mmc: host: sdhci-esdhc-imx: refactor the system PM logic")
-> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index 7818f351a58a..6cb84690fde4 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -2097,10 +2097,12 @@ static int sdhci_esdhc_suspend(struct device *dev)
->  		 */
->  		ret = pinctrl_pm_select_sleep_state(dev);
->  		if (ret)
-> -			return ret;
-> +			dev_warn(dev, "Failed to select sleep pinctrl state\n");
->  	}
->
->  	ret = mmc_gpio_set_cd_wake(host->mmc, true);
-> +	if (ret)
-> +		dev_warn(dev, "Failed to enable cd wake\n");
->
->  	/*
->  	 * Make sure invoke runtime_suspend to gate off clock.
-> @@ -2108,7 +2110,7 @@ static int sdhci_esdhc_suspend(struct device *dev)
->  	 */
->  	pm_runtime_force_suspend(dev);
->
-> -	return ret;
-> +	return 0;
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-if other error path set ret as not zero, the real error may missed, I suggest
-don't set it let
+The table is used to declare which fuse registers are accessible
+through the FSB block. Name it accordingly to make this clearer for
+the reader.
 
-	if (pinctrl_pm_select_sleep_state(dev))
-		dev_warn(...)
+No functional changes intended.
 
-	still leave ret here.
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ drivers/nvmem/imx-ocotp-ele.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-Frank
+diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+index f07565c0a02d..1a125f9c5b1d 100644
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -33,11 +33,11 @@ struct ocotp_devtype_data {
+ 	u32 reg_off;
+ 	char *name;
+ 	u32 size;
+-	u32 num_entry;
++	u32 num_fsb_map;
+ 	u32 flag;
+ 	const struct nvmem_keepout *keepout;
+ 	unsigned int nkeepout;
+-	struct ocotp_map_entry entry[];
++	struct ocotp_map_entry fsb_map[];
+ };
+ 
+ struct imx_ocotp_priv {
+@@ -160,12 +160,12 @@ static enum fuse_type imx_ocotp_fuse_type(void *context, u32 index)
+ 	u32 start, end;
+ 	int i;
+ 
+-	for (i = 0; i < data->num_entry; i++) {
+-		start = data->entry[i].start;
+-		end = data->entry[i].start + data->entry[i].num;
++	for (i = 0; i < data->num_fsb_map; i++) {
++		start = data->fsb_map[i].start;
++		end = data->fsb_map[i].start + data->fsb_map[i].num;
+ 
+ 		if (index >= start && index < end)
+-			return data->entry[i].type;
++			return data->fsb_map[i].type;
+ 	}
+ 
+ 	return FUSE_INVALID;
+@@ -364,8 +364,8 @@ static const struct nvmem_keepout imx93_ocotp_keepout[] = {
+ static const struct ocotp_devtype_data imx93_ocotp_data = {
+ 	.reg_off = 0x8000,
+ 	.size = 2048,
+-	.num_entry = 2,
+-	.entry = {
++	.num_fsb_map = 2,
++	.fsb_map = {
+ 		{ 0, 52, FUSE_FSB },
+ 		{ 312, 200, FUSE_FSB }
+ 	},
+@@ -376,8 +376,8 @@ static const struct ocotp_devtype_data imx93_ocotp_data = {
+ static const struct ocotp_devtype_data imx94_ocotp_data = {
+ 	.reg_off = 0x8000,
+ 	.size = 3296, /* 103 Banks */
+-	.num_entry = 9,
+-	.entry = {
++	.num_fsb_map = 9,
++	.fsb_map = {
+ 		{ 0, 1, FUSE_FSB | FUSE_ECC },
+ 		{ 7, 1, FUSE_FSB | FUSE_ECC },
+ 		{ 9, 3, FUSE_FSB | FUSE_ECC },
+@@ -393,8 +393,8 @@ static const struct ocotp_devtype_data imx94_ocotp_data = {
+ static const struct ocotp_devtype_data imx95_ocotp_data = {
+ 	.reg_off = 0x8000,
+ 	.size = 2048,
+-	.num_entry = 9,
+-	.entry = {
++	.num_fsb_map = 9,
++	.fsb_map = {
+ 		{ 0, 1, FUSE_FSB | FUSE_ECC },
+ 		{ 7, 1, FUSE_FSB | FUSE_ECC },
+ 		{ 9, 3, FUSE_FSB | FUSE_ECC },
 
->  }
->
->  static int sdhci_esdhc_resume(struct device *dev)
-> --
-> 2.34.1
->
->
+-- 
+2.55.0
+
