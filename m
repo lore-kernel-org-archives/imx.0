@@ -1,306 +1,197 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013060.outbound.protection.outlook.com [52.101.83.60])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013066.outbound.protection.outlook.com [52.101.72.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412F9233937;
-	Mon, 13 Jul 2026 04:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50891B3B19
+	for <imx@lists.linux.dev>; Mon, 13 Jul 2026 04:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783915417; cv=fail; b=L5XM4BeA9fnbgege1M23AgpRDyUGqpDxbmIzq4ZjTycv5NQZA1y+khzE1IgXhigD0jj1JQgkyulIcMzzKLE01yOCFLbMWH98RVdVY2baqhXb+opvD/M4sVRpdliizssWctMkMNF3DOCPCDvJi2sNwvDFTuOE+QagqR9NUFFKRyo=
+	t=1783917389; cv=fail; b=m+K1eBfxIv8+GISrBQBa1y9zaNxUNEV0mKG46cpTjPr5dCx+9zQuPQTHB+euzlogI4oxLCaYGP+NFzHTkCzy+IIudp7go69slGB9WfiRDN4KffnJkNySRjz1bOGrCOZrYsArnzXDpoW6gLjgcIn3VA5uXI2XotmVAQlgm6P+Rio=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783915417; c=relaxed/simple;
-	bh=pRwhFfDDVfjMdi+22gJIIMVLx73AiEiq8bPrPkUFrow=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=qqUpA27epTyP0h4J5Yrn2H5It3pysZ9OqUmKeZkZLQErGKGRh8Vtxo+mLF6OnL2K51SPVFDv/jlrfpu1CONdXBIFWV9NFrraEHj+Hh8jX6o7BYK3B+r4jZzRtmmR/CDP9ZRiG9ymtBKtqsgFuGLaK1ME0DGM3UKV0RWlDtNsaqc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HiTrExDK; arc=fail smtp.client-ip=52.101.83.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1783917389; c=relaxed/simple;
+	bh=eOjLCPrzSaZGu7r/te0GZNuT0X7nBGBRxHdnYGsLV90=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=gVucuAuJYX0OQxdnRK7EBahR2Cm1Fu1m6z9QtjI4xovg2HG0UlVXbD8/RpDSKyYM9AmFdgVAV3mj7oNRchDOxQL58VtSJVklfsl2zahsa4YgYzR4i45TZ5hx+mZsGDLVKh1Fvp7FVm6UA415uyHOnWAbud10U5bzyjGSZXuGIjI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=VUs90Mtz; arc=fail smtp.client-ip=52.101.72.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HiTrExDK"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="VUs90Mtz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x+IqCTdGhlrDcx4FszaUpnJAUmwmot4k8KZ9v7p9bkEBDtSkgyS4YLDyWTjtxs7MC+5ejqkqvZjooG/AhzRKHhPTFkw58uZdUs4x1q9bNSArZecPHMU0bfFIT3tloDVXlpHdiykETC0fOv6ioxbE9N1j8D6z9BCSLP3cyYQPOOjkbOZLpG8gFDaLnRIwa0A5cdykluQqoq5uClHEOqpKb/kz49hnUPwvWb714ZMpFlBs1RUZa0O7QS/MC3pi7i0gxPHYcvi6zDLPBdHUylkv6VYtDy8xmQOrZxnM/MJrckTB941OKq+qIqvAL6EhtxaXRaZQS4f1NDTytHrOqCGgcw==
+ b=xjZrSjHxrbhXUJ23kuNYkQREovh5mxlah01bpDT1DToXYId9tZBQeuoetea0/ejJMM+I44fyWKhsQyx8GIxGivsbFf/9nxHxMHT15dyGMz3KMItiP92YdAcnmLFbGrMkzz3+YSjd/38Gl73uV6DTX5ottK696UzSTLDn9M2cMXEk02BxR6ujB1nz8q7T9hpfWvJrC3Qr2r9ayj2DneKb/gFkDP6f1LDjWvyoW7C4nTl70f160GiMnw8X0LrS4CpvVV/p4DQ849euSiwX8pV10M+aNB7cPvq/Lrj7SFvI+YQqZP96pm8t0PvDJETX9Nf0DxKWOvkTR3ptytn6oKkIEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HNnRZ30fV1IEmSkfVm+rGwmiD3L/3KR/Fd8KmVQOxDc=;
- b=j7ViI7tHH84ID5pIHt5PQFAqDp2/cnIpSh8UeDcf54ZoO7YrWaVQpXD9oGt5XJHV15GAFn8IMeu3Dri3dcNa41ciOhYk9n0tZ6TXepc8Cv4b1hMugb7lX0pow3/d6cyr+uVGo9Olw55v7egaiZ4+2R4DXzqoQUUiDn0IfaoJvRlSoymPhpi86cBGSFgu8uE6bXKMIs9lOcc4/h7eqGmsLn6+7JyBvGYOsPlvoGJhQYFvncWnByTtdNF+Q/sxqQamLRtzPjTNwcA8JbreEfvVXR+H90Ka5hLMm9m1oWO0CxsBz28BEMmOPxlAcWK+2lK+cnH7d7W3/rIpIYRcttCDcw==
+ bh=RG8o+8M16cDKS75DlKWtiOhlxqbfWDfKUWx3iWdJi08=;
+ b=s6B1jCW9K+Hoga7CcKxiJzhvYVUS9WsSJI00MavZTXREy9o44muxlXsnX3sFBCNItLBpt7VgXZQTqV+mMrkhGrsU6nCGWG4IxIBvsFrzbLGncd7B+gMLMXyVvqJkVCmMd/almlFjC8A6Ss09q9viag0LeGOBOWLFUx+P8CQsPmnACF72P6M3O/7IGhCdItSIVZ2lLFVEKPyiLPCwG2JjB8BrzP+iD91L2IWQRHTsaoz/1vMojXTm82hQmHfGTuGtxShvW9C6XPmTUnsLXgH2O3jPYMl1BMxwqV4pOb7LEH3WdprKAr+cNyA3kz64sTthXDAi6sOTLbr/q1NRhePoiQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HNnRZ30fV1IEmSkfVm+rGwmiD3L/3KR/Fd8KmVQOxDc=;
- b=HiTrExDK7xx7qy+ovhUTzMF2Xu+GD5qhX05Jn74r5wNMif7Ztl4kv0Yd5VGfrm4KkDlBwbN89BEbtazyi01L0t/joxstLjiLj7KN2GYStCHaqmtTu7KC4YBsAJNhwBeT0GjhHwTRo2zqA2onc0vRM2+/nHdLHe/H7Lkum6eBivmp6K11we9YWvCJIaF+8gwp935JNl7YXBZvzeWzE7+ql/uFu61gHlosOSNr3gIXFoL1D1DqIQSnxalhJ6M5rMzMXtCBXysLhGIX7L0OgWo6AQ2531IBhk0ROPBpr+o0CAdU7zz1NBROGbBM6AWRwKLjq/jWsumXSA63gu9sFkA8WQ==
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- (2603:10a6:800:315::13) by DU2PR04MB9212.eurprd04.prod.outlook.com
- (2603:10a6:10:2fb::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
- 2026 04:03:32 +0000
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994%6]) with mapi id 15.21.0181.019; Mon, 13 Jul 2026
- 04:03:32 +0000
-From: Sherry Sun <sherry.sun@nxp.com>
-To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>,
-	"Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "robh@kernel.org" <robh@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "Frank.Li@kernel.org"
-	<Frank.Li@kernel.org>
-Subject: RE: [PATCH V6 3/4] Bluetooth: btnxpuart: Add M.2 Bluetooth device
- support using pwrseq
-Thread-Topic: [PATCH V6 3/4] Bluetooth: btnxpuart: Add M.2 Bluetooth device
- support using pwrseq
-Thread-Index: AQHdEm/b8LfnBcjhvUCaiAiI6/01h7ZqvbcAgAAQYfA=
-Date: Mon, 13 Jul 2026 04:03:31 +0000
-Message-ID:
- <VI0PR04MB12114A2118BDD22D627F6E84192FA2@VI0PR04MB12114.eurprd04.prod.outlook.com>
-References: <20260713023435.235765-1-sherry.sun@oss.nxp.com>
- <20260713023435.235765-4-sherry.sun@oss.nxp.com>
- <20260713024251.36B3D1F000E9@smtp.kernel.org>
-In-Reply-To: <20260713024251.36B3D1F000E9@smtp.kernel.org>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI0PR04MB12114:EE_|DU2PR04MB9212:EE_
-x-ms-office365-filtering-correlation-id: c12d9383-602d-48fe-16da-08dee093b426
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|19092799006|18002099003|22082099003|4143699003|4133799003|3023799007|38070700021|56012099006|11063799006|6133799003;
-x-microsoft-antispam-message-info:
- 27QH9PgmIWblLdDbys4UXPchT6qHjDbHJpJSRYoqOtnWVKNQxKpwlmh5lMEuP12FzYwpB6QDoN5BAcvQJjnlPvfbAonJ1x1RdnGNJLCHhRHK1JJCGYbdv1DU9MXdU5dyQlLJAdx7YN20/VefiG4FO27tiK7OsN3tTo3O/CwoIdxFd/Sa9Wp0K4R2ESre5r9k46obcURrW/WCAZrLpJRZc6EHGHK0kO/wwwaN83SWCEqHvW2yvioS2mG55m4MEvb7YqZ22yaVpofEUzT5l35uuBpAZSMZNjrHx6dxYgJDnG6O2RAsQ3MQ4I7woGWObAU6XOf6F3+nL3GTJXHcQg3TmLMAhCkOvn4uggYE/woREySwcVmgQu+WU9eIZIysC5OyEVPIqCC3furT/S/j1ZuxT8hcCvDGhipevzsJSahcGWrGJmDVIOgS65OF7TGDAwCtdcxJGtYILDJMp5DUTVFT1n0w2WOntB7c3oYMRkVTL2mrDLyC6z2xGusslVwmy8ibsJOw8Zwn7oVdW22yrRLFarqa9kZsBCKP9fH7xL5wi6Oh4YBC1xPlbnP5Jh5dHM7NjVVY9cl3ylKG1+na/tfetecwrBEMdAwsGVz7hxb9EvM9VO8Jx06r+WxG4VVc22SYV6moj1cFCBWSTaOGcmkCr8O7Aclg+xubiOrT3tu6+O8=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(19092799006)(18002099003)(22082099003)(4143699003)(4133799003)(3023799007)(38070700021)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?cFk72hPZTehYuPfw/EcDDRvk/p6/8E3oEBB82D4bzziIUJl6ZzUyuai3Fgg4?=
- =?us-ascii?Q?NcRoHT6KOIx+dcqbUOjgwQumLngV0JLHJrJsfD+i1qgvT/tHR1xWc3LWt2MR?=
- =?us-ascii?Q?LHZMRrtvkIh+fnXAKFe4x5DdQbgo4a/oqezCbSFuz5L5UzgnsM82k3+M9HCp?=
- =?us-ascii?Q?jj+q6N1z77R6UgHo5oE/54UAh8KU9Q72U1D8c0gj/Bk/GZ/0EcVehj4Nb5rT?=
- =?us-ascii?Q?gCzhq9tepSghBoMqgGIvUqFdN9xgkNsEJ9oVNtKstn+OBTiptwB/PnKPy9e+?=
- =?us-ascii?Q?l55QVzQamkoF8k0WwGmWZ8KQ+mXl8XkngrMK/X/J1Pb33HE1dl7C9QMKWrLA?=
- =?us-ascii?Q?hXz1QecBLumvcQ5bxraScGLvrs7zmk0725q5xMKuULnut7mcGu1b+chnrvzp?=
- =?us-ascii?Q?Ewm+j3LRcWaFLjn6iNz7vrgCH2hW4RObpmEbHybyobsL5Qjva2N6UlLwkoVt?=
- =?us-ascii?Q?qhFRZOncX9CouVXZlw6Fd60jiR0o73Mqpf5gAyy3jYWEXxyOewTvLgX8piM1?=
- =?us-ascii?Q?EYIwYO5BiEDwhcUZSkmST5f0DrMyiHQKhGnw5SGzU2kxajQbbJU20ZGEoiF8?=
- =?us-ascii?Q?D7GtfRGwQStvKF/eeFU0naQq6646mGasHQjKIAYR8xWwWfUdjHLhwSii4tWv?=
- =?us-ascii?Q?bKsNJpc9mp5Ty/LEXz9G3wYhWZliMPsDg2AKFwZx+9Olyf+csqHQ5C2eeHiQ?=
- =?us-ascii?Q?+XFks8LVKfg0mzydFTXW3ZA5Dma3WRXWgMTJxDKsZ0xL+9vuLByW8kUJFh1+?=
- =?us-ascii?Q?jhiRBvaKLOwyofQVETwKj6OsfCQyicn9zmU9NpSRinzsS7a+AySOd3YUAp18?=
- =?us-ascii?Q?0jXqek+gmw2+KVG/WPSKcnaagXRE1PUaNz/tM1/om/+9kNNEx4zugqNa8M5u?=
- =?us-ascii?Q?WnFvLTbQYm1Uphp7uZvDba/senxpaUaUvITIkRFX4tnM9VLMIcEUgBhpaUSs?=
- =?us-ascii?Q?YUyj5QiRUIBOtrY/uUBxMFhYThJmR2ZCtT1gLuiOdkQDKRpaiIk2CAy5Gy1v?=
- =?us-ascii?Q?H/sHZsGgjDHY8lDXj5iSyXhVvXv3SAR0yOlT2DwjyxyUcoqe7H/huU9DIh+i?=
- =?us-ascii?Q?zxy0PFnPkgq6ofeoKV2qLCWPT7npPhlB45abBCq7XOI8xLGRi7Fb1RTOoxZi?=
- =?us-ascii?Q?OUGDxqeTvZR3/PKprSfzcss9sqeg2/DP76qzMZ+4MNPeZ/iWXkW8eGD/d3bH?=
- =?us-ascii?Q?r8XbBj2QjiuDpnZZreHKxWAunQPOmWMTm953yOxvZWORoJBhPwmImIkfB/oK?=
- =?us-ascii?Q?33fgWBanylkEweBUO9NE3eeDYDZNsJLVdvpFCNuU11lQOWUUna8jrfTvuIkv?=
- =?us-ascii?Q?jL2lkzE0GRmgO2WQmTtusWJDfsVzZkEAG2DLj6CjAAV8aqKrcBwG4aMNnkkZ?=
- =?us-ascii?Q?J8YPtlvA0dPft0TqvPOFUGHUhSjv3A/bMwrEpFBPYLDebdOu2N3NJ0+NW1yC?=
- =?us-ascii?Q?gS0M1YCCEXkPEMetR1YiEYuK3pKfKiK3WMCBz71Zkog5/6CoPPMfDw0Sz8bZ?=
- =?us-ascii?Q?ijJl3Gt/c+Tn6ehzvMikd49TyYe3dQwY/xuy6H/Eh3CUm44zRmpe85mKDdVT?=
- =?us-ascii?Q?ArimF4R9T/2mFHP1hlLoulkBpofRpMmshKkGkdzQqZw3VUx96KTOtzQO6UUn?=
- =?us-ascii?Q?ONBEKWvep+x8Fi431am5xstrZ01XKRYT7yK6Vc2hngAODt8DbaCEIRgvQDFy?=
- =?us-ascii?Q?q1D3YuKFwzfTCDdm/5jWjHdhZdZlIZT3P6Nil4RWIRG/wAtt?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ bh=RG8o+8M16cDKS75DlKWtiOhlxqbfWDfKUWx3iWdJi08=;
+ b=VUs90Mtz0f/F/spHXuoD8SyAz4cJCHXtXMJhUfBHZ4glqLo1o/bCV6FIY2i73ts8OFC/0r9M+qNDlXWjko6B3th2Tu1IeEz0IFYRiWSvALszClfV8MXTf0pclU7pyGDZcebWVHpYq8ZJEWVsqEtOi1pzgaWAAp/+lyBjV9+WHwQLTOnCkrfSKpgguCtAFZcZMcA+Mg0eOGpkWcePzqcSRgzW3kFrFtWAOuJYQk+6rEVS5pPUTAhK1VfzSYviB+6NWsh3avUbcvJR7vxGMsVtu5udV7I1Wg8mmS857h5P0QMi/oAgLFPFdWkoW2a+gaN8ZwycwAcJig9ZfDmxAf8TXA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU2PR04MB9180.eurprd04.prod.outlook.com (2603:10a6:10:2f7::6)
+ by VI2PR04MB10666.eurprd04.prod.outlook.com (2603:10a6:800:27f::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.22; Mon, 13 Jul
+ 2026 04:36:23 +0000
+Received: from DU2PR04MB9180.eurprd04.prod.outlook.com
+ ([fe80::f94c:ce27:1558:fb05]) by DU2PR04MB9180.eurprd04.prod.outlook.com
+ ([fe80::f94c:ce27:1558:fb05%6]) with mapi id 15.21.0181.014; Mon, 13 Jul 2026
+ 04:36:23 +0000
+From: ziniu.wang_1@oss.nxp.com
+To: adrian.hunter@intel.com,
+	ulfh@kernel.org,
+	haibo.chen@nxp.com,
+	Frank.Li@nxp.com
+Cc: s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-mmc@vger.kernel.org,
+	s32@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/8] mmc: sdhci-esdhc-imx: fix SDIO suspend/resume issues
+Date: Mon, 13 Jul 2026 12:38:56 +0800
+Message-Id: <20260713043904.4144172-1-ziniu.wang_1@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0016.apcprd04.prod.outlook.com
+ (2603:1096:4:197::7) To DU2PR04MB9180.eurprd04.prod.outlook.com
+ (2603:10a6:10:2f7::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB9180:EE_|VI2PR04MB10666:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81d1751e-166f-413c-bd6d-08dee0984b11
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|19092799006|3023799007|11063799006|56012099006|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	kD4P1wRD5nswkDHwFGt0BQUg0xsl/Mozl7wJOwz/U6hwQ1ekjea9XLpDZH5vM20zw/nmpLnrsmquvkeF37ygoVHSlki6aeVzzWtDPpYiDiif2VoMToQUs3pIGHavfbBGzQqVLbQQzXwC8ZYgcUQuWXCQ4oiklI9qfvQ+R1WO9GNfObfGtGtBsaFgIhMLpPZtYEHyBgDy/sZ9rttfRcAoAlRjZ1NvFXG9K829RCDUvwC0yJU6d9B3izL3Frp0VrG8lYIBJE9aZLXr27OaGCETeFDpIc8cJNHpwmrLwayhGQ4Y8AK5fgn7aHnh5y1nCtnlBXriwWl37sX2QSc9PDxNkInBAR4We0v2VeHEWvljKczbA3Qh20MevaGkxY67X5a8zxoQaY0y3iY61evn6v08lrXnQsJOhWSgSrKqwm4iZsqgdrZ72p3xsuF8mVyKquvphCN5rGxLUAUSgf+DOKEebAO2MMpAv6RNCn/f8wx/OGRWxcrwQOgPN78c9mwJtXdN1HjCYM2dGa72ihLS+lrxZinkhRG8I6tBeqf8UV7ecVUtC/EFQ5EVAJ9R7k9uLZEI17WPDRFiCIqxFQFVkQwAMDOKgpbIDqftQTQQ13NCEGaY2H9SBgFj+7QH2tiyy/jnmZu8K0GzZcQr7e75gecjuUSjId7UQAhAYQ53FdBBYsc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB9180.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(19092799006)(3023799007)(11063799006)(56012099006)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?cgFU6aFDiMeMmMzL6Mu8aaes5VLIBQnZ8Qnm+L92hz59nkwi+EzkIJ4bnoFZ?=
+ =?us-ascii?Q?suxh2Hjm4Ucr2Lp8GdYhep5+7tEtwGJh6c40S00RY2TTQFR3hIJughTRdFom?=
+ =?us-ascii?Q?MzUdzWkejxQgcz+Inw9+j02DNdaVQLqN33TTx+jW+omShvkjDz0m7WJOq5aC?=
+ =?us-ascii?Q?Jxj0zNnGRvENhbCQvKT7zRYR74W9UMdmkktoRJcvohV1+Fmvrx/w3x436Qqc?=
+ =?us-ascii?Q?O4i4NxLpmxOAMziUqKujP6OaUIiiKtS4SZYbjCONS/XI/VQUnkubxIQKCiFj?=
+ =?us-ascii?Q?v6z/ldarfI9qbQZGqDNKm3A7EWlMCROrEF8EvfNNYv/XDSrLpr/em/8MAgOV?=
+ =?us-ascii?Q?Db3jKObqe2hbnZXMbiKZf7CV+d3lVpB77Mch9RQQPICKdLyTbw020JBscccD?=
+ =?us-ascii?Q?nUV5VCHflPFYz6ZVX+c2p7KEJdwXJ2MghJlBSE9lzZy/rcquReEU8JQr80iw?=
+ =?us-ascii?Q?SC5DQiTJmGyIscgspLI17HEkduCnXO0e/QMWgPOEwteNY+0N9WKdJdVhOofx?=
+ =?us-ascii?Q?XF2PkQmJNzXbEh/oJbrOuweFIbMQPqOUZ3fc1WjKiTOtZ9Ze12Qi6IHOrEtS?=
+ =?us-ascii?Q?NPeNj5btpjSwhzZSWlP4C62k6eL0ApFPrz8b2D8MLdXORdEIRg4dyM0pA6xI?=
+ =?us-ascii?Q?CSiIQdQ9e+k2C1uHK9uf5sCaBf0pVPtj+/fa3gZjW2PhOKem8yi6hduWT6nq?=
+ =?us-ascii?Q?I917V/Ul1mkZQexYwVZqacD9m85nL/5yhTYTdRnS31UOVg94dF3CUbtkV77A?=
+ =?us-ascii?Q?Yuxxr6f/mLiaSxe1bvimi/yHCr3rYKfLc091mGBQJIean6Z9RUCPEo8jVrzL?=
+ =?us-ascii?Q?YchK1SCgl1qLz3zROlSjmb/AFsdOx5UujkQcJYMAr9wD62LEhlsDqDwfsYOz?=
+ =?us-ascii?Q?+9nMNMoAU1kAO2D2wgo0YG1cOmnCOCA+kxjJtMTWh8O0NSfVA95p830PJBoj?=
+ =?us-ascii?Q?rlBeX3fz4jfbJlspfpNeixi0FqOIFXMfURjbDDxzAWZgXmPheQXqB+KetjUz?=
+ =?us-ascii?Q?JyEAGADcZj1gyzWqFNS/zi2xLH/SFFhIzBTmKun4yB/FBwghIO2jWTUtCQ0n?=
+ =?us-ascii?Q?+HRcwx3kMCiV0BiUYa3B1+Wdn/ZIddx9saetYIz+TEf/TbafuWQfKLOv+8VJ?=
+ =?us-ascii?Q?uMKvCV+5+aq9ldYQ/6o8/kELgajgFpaB8Y+l9J+9lbX4lsH4wQ/gs0kqRfRk?=
+ =?us-ascii?Q?bx8ZnMAJ3o2ALObUL4FhHPMCDNpaEyeMWLuQSAJwXsuEN2FygKZ97NAblAKC?=
+ =?us-ascii?Q?wW4cTUxeujGSBGrlhKVuMRtl/s8nL+yQAaH4XzkQvJI4ztQEzqwAhzi+cy09?=
+ =?us-ascii?Q?7rVLTMXUBSViIkrJzmujMtPK5IjLvqmvxl8OdJgQn4WtCnkXEN8E1W63LEJE?=
+ =?us-ascii?Q?xysBcBeA66onG6JDwgnPGqs/23McwFLzishFfTbnUhHc4cRAt+/iCYOzkYRF?=
+ =?us-ascii?Q?jJw1fuPynvFpM3VAglNIX9yZwjblJ7XWGdpnkvTKhOouhpmz4WqAIirPY0XP?=
+ =?us-ascii?Q?+U9QlcEvXDDTkBmYmthTPO3z2HhhtryQXQSrSI44nMshb+6kujVooFvqb8w7?=
+ =?us-ascii?Q?DaChi/9WgAr9vF14aKhcdTOLL3HLJTaB1sSwTou2yRM+I1EAjhrgrzhF7KdE?=
+ =?us-ascii?Q?JkIjQiD29amuBtu39NEJDF3lZi/L2xS05Qhu/0YtY3I4WuB5kbw7/6NdnPUg?=
+ =?us-ascii?Q?yJr4LqaWOLGVPAtcgmb7ysVPEwkDj4GfbbhKlvmKsiI0snuaygTeDYG1C+m7?=
+ =?us-ascii?Q?2oPhIgTFGQVEXAjLbHZXwr/0Iop2MRbM2qoJ4oDz2R+wsnCqWQ2D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81d1751e-166f-413c-bd6d-08dee0984b11
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB9180.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c12d9383-602d-48fe-16da-08dee093b426
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jul 2026 04:03:31.9780
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 04:36:23.3759
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IlqZ68rqIzb23JuLMYMY5JUXrX7dLrdYYS1EkOE/V5qmKLq6fkb5wsLw3xGTStvPWVTqIgs+bK8kCmltsNEjDw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9212
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1D6aRIbAmGWORSJvKLWZkeNQ7t9wZhbJuCTNcNbBA+c6OD9+3MVA4V2DbEBXqZXWJStYSAYchfo8qilBl09Xipo7SgGWwv7C+8bjtY8aDYahX6EhtC5Mmqtn4PS93vl8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10666
 
-> Subject: Re: [PATCH V6 3/4] Bluetooth: btnxpuart: Add M.2 Bluetooth devic=
-e
-> support using pwrseq
->=20
-> Thank you for your contribution! Sashiko AI review found 3 potential issu=
-e(s)
-> to consider:
->=20
-> New issues:
-> - [High] Brittle logic causing probe failure on valid hardware topologies=
-.
->=20
-> Pre-existing issues:
-> - [High] Race condition exposing device before initializing synchronizati=
-on
-> primitives.
-> - [High] Use-after-free and locking a destroyed mutex during device teard=
-own.
-> --
->=20
-> --- Patch [3]: [PATCH V6 3/4] Bluetooth: btnxpuart: Add M.2 Bluetooth dev=
-ice
-> support using pwrseq --- commit
-> 885432311fa71ac754d16037ae3e761e8192452c
-> Author: Sherry Sun <sherry.sun@nxp.com>
->=20
-> Bluetooth: btnxpuart: Add M.2 Bluetooth device support using pwrseq
->=20
-> Power supply to the M.2 Bluetooth device attached to the host using M.2
-> connector is controlled using the uart pwrseq device. This commit adds
-> support for getting the pwrseq device if the OF graph link is present.
->=20
-> > diff --git a/drivers/bluetooth/btnxpuart.c
-> > b/drivers/bluetooth/btnxpuart.c
-> > --- a/drivers/bluetooth/btnxpuart.c
-> > +++ b/drivers/bluetooth/btnxpuart.c
->=20
-> [ ... ]
->=20
-> > @@ -1872,11 +1875,26 @@ static int nxp_serdev_probe(struct
-> serdev_device *serdev)
-> >  		return err;
-> >  	}
-> >
-> > +	if (of_graph_is_present(dev_of_node(&serdev->ctrl->dev))) {
-> > +		struct pwrseq_desc *pwrseq;
-> > +
-> > +		pwrseq =3D pwrseq_get(&serdev->ctrl->dev, "uart");
-> > +		if (IS_ERR(pwrseq))
-> > +			return dev_err_probe(&serdev->dev,
-> PTR_ERR(pwrseq),
-> > +					     "failed to get pwrseq\n");
->=20
-> [Severity: High]
-> If the parent UART node has an OF graph for other purposes, like audio
-> routing or multiplexing, will this unconditionally fail the driver probe?
->=20
-> When of_graph_is_present() returns true, pwrseq_get() might return an err=
-or
-> like -ENOENT if there is no power sequencer configured for the uart targe=
-t.
->=20
-> Could this logic be made less brittle to support valid hardware topologie=
-s
-> where the UART has an OF graph but no power sequencer?
->=20
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-This is not an issue, for btnxpuart specifically, the OF graph link on the =
-UART
-controller node is only ever present to describe a BT device attached via t=
-he
-M.2 Key E connector - that graph is the pwrseq link. There is currently no =
-other
-in-tree use of an OF graph on this controller node, so in every supported
-topology, graph-present implies a pwrseq provider and pwrseq_get() matches.
+This series fixes several suspend/resume issues in the sdhci-esdhc-imx
+driver, primarily affecting SDIO devices (e.g., WiFi).
 
-A similar pattern can be found in drivers/pci/pwrctrl/generic.c, which also=
- gates
-the pwrseq path on of_graph_is_present() + dev_err_probe().
+Issues fixed:
+- Tuning delay values not saved/restored for out-of-band wakeup devices
+- DLL override lost after resume for DDR modes
+- Pinctrl not restored before DDR_EN is set, causing CRC errors
+- Unhandled interrupt during resume causing "nobody cared" warning
+- Various error handling issues in suspend/resume paths
 
-Best Regards
-Sherry
+All patches now carry a Fixes tag pointing at v6.16. Patches 2-8 fix
+regressions introduced by commit 676a83855614 ("mmc: host:
+sdhci-esdhc-imx: refactor the system PM logic") in v6.16; patch 1 fixes
+commit c63d25cdc59a ("mmc: sdhci-esdhc-imx: Save tuning value when card
+stays powered in suspend"), also in v6.16.
 
-> > +
-> > +		nxpdev->pwrseq =3D pwrseq;
-> > +		err =3D pwrseq_power_on(pwrseq);
-> > +		if (err)
-> > +			goto err_pwrseq_put;
-> > +	}
->=20
-> [ ... ]
->=20
-> > @@ -1907,13 +1925,16 @@ static int nxp_serdev_probe(struct
-> serdev_device *serdev)
-> >  	if (bacmp(&ba, BDADDR_ANY))
-> >  		hci_set_quirk(hdev, HCI_QUIRK_USE_BDADDR_PROPERTY);
-> >
-> > -	if (hci_register_dev(hdev) < 0) {
-> > +	err =3D hci_register_dev(hdev);
-> > +	if (err < 0) {
-> >  		dev_err(&serdev->dev, "Can't register HCI device\n");
-> >  		goto probe_fail;
-> >  	}
-> >
-> > -	if (ps_setup(hdev))
-> > +	if (ps_setup(hdev)) {
-> > +		err =3D -ENODEV;
-> >  		goto probe_fail_unregister;
-> > +	}
->=20
-> [Severity: High]
-> This is a pre-existing issue, but does calling hci_register_dev() before
-> ps_setup() create a race condition during initialization?
->=20
-> When hci_register_dev() is called, it schedules the power_on work
-> asynchronously, which opens the UART port via btnxpuart_open().
->=20
-> Once the UART is open, incoming data triggers the receive path:
->=20
-> btnxpuart_receive_buf()
->   ps_wakeup()
->=20
-> ps_wakeup() attempts to lock psdata->ps_lock and schedule psdata->work.
->=20
-> If ps_setup() has not yet completed its initialization of these structure=
-s, could
-> this result in operating on an uninitialized mutex or workqueue?
->=20
-> >
-> >  	hci_devcd_register(hdev, nxp_coredump, nxp_coredump_hdr,
->=20
-> [ ... ]
->=20
-> > @@ -1952,6 +1976,8 @@ static void nxp_serdev_remove(struct
-> serdev_device *serdev)
-> >  		}
-> >  	}
-> >
-> >  	ps_cleanup(nxpdev);
-> >  	hci_unregister_dev(hdev);
->=20
-> [Severity: High]
-> This is a pre-existing issue, but does calling ps_cleanup() before
-> hci_unregister_dev() cause a use-after-free or a lock on a destroyed mute=
-x?
->=20
-> ps_cleanup() destroys psdata->ps_lock and cancels psdata->work.
->=20
-> However, hci_unregister_dev() shuts down the device. During this shutdown
-> process, the UART can still receive data or send commands.
->=20
-> If data is received or sent, the paths btnxpuart_receive_buf() to
-> ps_wakeup() or nxp_enqueue() will attempt to acquire the destroyed
-> psdata->ps_lock.
->=20
-> Should hci_unregister_dev() be called before cleaning up the synchronizat=
-ion
-> primitives?
->=20
-> >  	reset_control_assert(nxpdev->pdn);
-> > +	if (nxpdev->pwrseq)
-> > +		pwrseq_put(nxpdev->pwrseq);
-> >  	hci_free_dev(hdev);
-> >  }
->=20
-> --
-> Sashiko AI
-> review * https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2=
-F%2
-> Fsashiko.dev%2F%23%2Fpatchset%2F20260713023435.235765-1-
-> sherry.sun%40oss.nxp.com%3Fpart%3D3&data=3D05%7C02%7Csherry.sun%40
-> nxp.com%7C7fc8858da84f4a67665608dee088947e%7C686ea1d3bc2b4c6fa92
-> cd99c5c301635%7C0%7C0%7C639195074371576326%7CUnknown%7CTWFp
-> bGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4z
-> MiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3Dxmwpxx%
-> 2B1ofNIS08LXCuIRyjRW8g6PHY4iVOYOz6d9fg%3D&reserved=3D0
+Changes since v5:
+- Added Fixes tags to all remaining patches (patch 3, 6, 7, 8) so the
+  whole series is properly tagged for stable, as requested by Ulf.
+  No functional changes.
+
+Changes since v4:
+- New patch 3: Fix esdhc_change_pinstate() to move IS_ERR checks for
+  pins_100mhz/pins_200mhz into their respective switch cases, so that
+  legacy timing modes can still reach pinctrl_select_default_state().
+  This avoids log spam on resume for devices without UHS pin states (Sashiko)
+
+Changes since v3:
+- Patch 2: Remove unused 'boarddata' variable in esdhc_set_uhs_signaling()
+- Patch 7: Expand commit message to document intentional skip of enable_irq()
+  and sdhci_disable_irq_wakeups() on early return, and explain why the
+  PM runtime usage counter leak is acceptable (Sashiko)
+
+Changes since v2:
+- Patch 3: Updated commit message to explain the SoC IP integration
+  detail about internal loopback path change when switching pinctrl
+  from GPIO to USDHC function (per Bough Chen suggestion)
+- Patch 5 (v2): Split into three separate patches (5/6/7) so each
+  patch fixes one problem (per Frank Li suggestion)
+
+Changes since v1:
+- Added patch 5 to fix error handling issues identified during review
+- Use pm_runtime_resume_and_get() instead of pm_runtime_get_sync()
+- Make pinctrl and cd-wake failures non-fatal (dev_warn only)
+- Use esdhc_change_pinstate() instead of pinctrl_pm_select_default_state()
+  in resume to restore correct pin state based on timing mode
+- Skip pinctrl restore for wakeup devices to avoid SD bus glitch
+- Check pm_runtime_force_resume() return value in resume
+
+Luke Wang (8):
+  mmc: sdhci-esdhc-imx: remove unnecessary mmc_card_wake_sdio_irq check
+    for tuning save/restore
+  mmc: sdhci-esdhc-imx: restore DLL override for DDR modes on resume
+  mmc: sdhci-esdhc-imx: fix esdhc_change_pinstate() to allow default
+    state restore
+  mmc: sdhci-esdhc-imx: restore pinctrl before restoring ios timing on
+    resume
+  mmc: sdhci-esdhc-imx: disable irq during suspend to fix unhandled
+    interrupt
+  mmc: sdhci-esdhc-imx: use pm_runtime_resume_and_get() in suspend
+  mmc: sdhci-esdhc-imx: make non-fatal errors non-blocking in suspend
+  mmc: sdhci-esdhc-imx: fix resume error handling
+
+ drivers/mmc/host/sdhci-esdhc-imx.c | 84 ++++++++++++++++++++----------
+ 1 file changed, 56 insertions(+), 28 deletions(-)
+
+-- 
+2.34.1
 
