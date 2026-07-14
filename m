@@ -1,92 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AE940D590;
-	Tue, 14 Jul 2026 21:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82E73ECBD9;
+	Tue, 14 Jul 2026 22:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784064239; cv=none; b=sNm6gbXu704+RnLLedHRQXP65zl8n5q6uvC1kKKvmyORZC6z+bIpuE1KFRUd4p14FwnjuzOWELtZObpDa42yJYv5zECRePFsdZLnSx3MoAO7G6oTw9YMOMgarXrdMlWm0o0obyZzONVuFln+mRlnlo5CG8pccx0bgKuCub846C4=
+	t=1784069499; cv=none; b=T7Td5NY1uyDeNKtHIc7ikVGcyf0xzghs1MA6ZBnvjFiB6RWWZacFgCPelpjnIpWtpbBYyrJUkp+42Uu6hNAE61K7+FPhgEk3mApQtusxIDxijNYnA/1VRuUs+jAlp011BUdWaeCgu9phyDJti70ViRWueurnq3Pp/v+CP2ZzRgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784064239; c=relaxed/simple;
-	bh=yYxJXTxhaaQyRSn8NksEr8C19bj4QNr6+gLFsSI9u3Y=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=plto0N54X962pIp35qXI9VdZuqUXXx+E1z4bP6ou5brTZNHBozXGiiBSHlMARmN4n6JQcYKFhE4pzLJQd3sAAeXsozi1kJqDePUJ8uf3KOa/si1BeTpB6hf2ThRpFT/5Ew5etC7Ldh9AbRK2hKNtNGYCViZzrE2yr6kA/ruMpcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHUcFRUx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784069499; c=relaxed/simple;
+	bh=Up9898goBUiMUkw/XboqiGUJMigAXOWBOVGdW5oyLDI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oXC2DBuua+Z+9Xc2k5txly8Xr4RTuqI7E1RZMIQAuLt6AhZP5cfYtThA9egBu9V9GpHfDrVqxlnnoJRJ8jWVXkjRIOwhCXsvJ3JEME3qTEzTMY1yBZZc0V7BMgWdoBvgzAEAbK1/XmOZUUgpBM6O9dsFJpXQGyS0Avg6L03bWyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=EH/tcO3c; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHUcFRUx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA521F000E9;
-	Tue, 14 Jul 2026 21:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784064238;
-	bh=jHird4lTGKKujgL5cT6Qpafb/+B6Eck4ummSsIgsDwM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=aHUcFRUxeDZAawLZGPJexmH6w7sd7RuSnzHwwRhBC+4YQsjsaGwe/rUlgQzHnqVMA
-	 uzb8NrFU8y3LFZQYhRAoZupivh53DaPs1Q18cPmwSMEXI1tvTmraxduJAAEq0AXlQ0
-	 aFU8vAFMHkgsLYQDy4iCNOHYszhQHfPJAD0dLbWaQ+YefYAZ82TehrIJ741FUoj7Q/
-	 BneVHnaFupGJGnCkxPs84d+ZRJX03riSpUGSBVFworYVtQmS4MGfzNovwRaJ7T0C9E
-	 ixrXj2IuxrATyrBCAYI+OMXyNgT8ju+y96rTKD1pvRq5YQ9ahaAHOWQSNyMifa6YwU
-	 5ISJyl+7W18qw==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20260512224544.1223283-1-Frank.Li@nxp.com>
-References: <20260512224544.1223283-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] dt-bindings: regulator: convert ltc3589 to yaml
- format
-Message-Id: <178402792058.7661.255387093870553422.b4-ty@b4>
-Date: Tue, 14 Jul 2026 12:18:40 +0100
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="EH/tcO3c"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7ECCB118727;
+	Wed, 15 Jul 2026 00:51:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1784069488;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=JGJ7P9JE0QgzNJz4vJFVzGxVyrchjZ/YmcbKkfd9m1M=;
+	b=EH/tcO3cBwilFRGqxYjJ6qkrWWZTRuMClOQ360jfWZDpfLE0FI/j5/I+HHo01EshT1yetv
+	xUyOkhj0zqL7+h5MxuREVeQrtdgqwyBkCAOzbgfy2+2JGUINHT9iIB2vVTtLuxwyHKeodT
+	YwuRXLKddnKCjcN49naJ2w02qRvKetUpqgVmaBPbpP+08sohZDW4/u7FURgXLTR2RXwLW/
+	R6sGHCngU0pcGp5vG3c3MQCl+mLVNlW23+rd7AtwuPkJ8FYTrYSiH/YWHnZyMY/8yuoVc6
+	E2ASZ1HQkpliNn5VCcldaYCIg1R1ZO+LhSXd9O7j0q9q6xeUf8KwxqvQT7j4Hw==
+Message-ID: <a3602ef8-2b77-4cc3-adef-2c4cba08a5d9@nabladev.com>
+Date: Wed, 15 Jul 2026 00:51:26 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/6] arm64: dts: imx8mm: imx8mp: Add CM DTOs for Data
+ Modul i.MX8M Mini and Plus eDM SBC
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: sashiko-reviews@lists.linux.dev, devicetree@vger.kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org,
+ imx@lists.linux.dev
+References: <20260705200534.151803-1-marex@nabladev.com>
+ <20260705200534.151803-4-marex@nabladev.com>
+ <20260705202439.3F5771F000E9@smtp.kernel.org> <alUICTI-24tREZO8@SMW015318>
+ <f1e52327-42da-48e1-8e4a-dabf148ce216@nabladev.com>
+ <alWR66rjt-9jGEOV@SMW015318>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <alWR66rjt-9jGEOV@SMW015318>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1130; i=broonie@kernel.org;
- h=from:subject:message-id; bh=yYxJXTxhaaQyRSn8NksEr8C19bj4QNr6+gLFsSI9u3Y=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqVqjre36tpOXUHUcoJmenjFTDn8F0L1Mm4PQ2X
- apTWOrGmOeJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCalao6wAKCRAk1otyXVSH
- 0LvmB/9E7wHiah4E0N/B3Mg6ZyV1c1O6bnWXUT1L7k6tZ9bDDZ0ENEvaDSil8ZhXwYBpkQLmYoK
- p5WiuvL7MCRwQ4JTAVU4zeW9E2WT4Xx4+Db4FHODzBG4hUa3E0fvymYnjfIZT0DX4mWr5ddmT85
- os/desmkfuNFSWu0lw8N/nfuJl8/lCfXTDbgx8+mNnWB/wACmHA5Dui5f9K+8gS43Qlg5QBFHKQ
- dKad9m17Q8UhcyHIWOw8XLTCmVdQeVlbhSTt+IFHAbhk+iYbHfCFKiNn63Uol9+689ld9F4NRRO
- MlVLSbN5zSDHiocKPKXUcG8uzrHMR2zi04R1+0NPXswLN3cd
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, 12 May 2026 18:45:42 -0400, Frank Li wrote:
-> dt-bindings: regulator: convert ltc3589 to yaml format
+On 7/14/26 3:33 AM, Frank Li wrote:
 
-Applied to
+>>>> [Severity: Medium]
+>>>> Will this node name bypass the driver's carveout exclusion logic?
+>>>>
+>>>> Looking at imx_rproc_prepare(), it iterates over memory-regions and checks
+>>>> specifically for the name "vdev0buffer" to skip processing the vdev buffer:
+>>>>
+>>>> 	if (!strcmp(it.node->name, "rsc-table") ||
+>>>> 	    !strcmp(it.node->name, "vdev0vring0") ||
+>>>> 	    !strcmp(it.node->name, "vdev0vring1") ||
+>>>> 	    strstarts(res.name, "vdev0buffer"))
+>>>> 		continue;
+>>>>
+>>>> Because this node is named "vdevbuffer" instead of "vdev0buffer", it appears
+>>>> it will be mapped as a generic carveout via ioremap_wc() and unintentionally
+>>>> included in the remoteproc coredump.
+>>>>
+>>>> Could this node be renamed to "vdev0buffer" to avoid wasting vmalloc space
+>>>> and bloating the coredump?
+>>>
+>>> Look like make sense, please check it.
+>>>
+>>> It is not good to use node-name as ABI. Laurentiu is working on use
+>>> memory-region-namses.
+>> The memory regionss are referenced from imx8mm-cm4 { } node via the
+>> memory-region property:
+>>
+>> memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
+> 
+> I known, but now code parser node-name, At your case, it.node->name is
+> vdevbuffer, but driver expected vdev0buffer.  so above check will be failure.
+> 
+> suppose it should be
+> 
+>   vdevbuffer: vdev0buffer@b8400000
+>               ^^^^^^^^^^^
+> 
+> I know it is bad, but waiting for Laurentiu to fix it.
+Actually, if I look at "git log -p drivers/remoteproc/imx_rproc.c" in 
+current linux-next 20260714 , which has the entire history of 
+imx_rproc.c and the latest content, the code cited by the AI:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.3
+"
+	if (!strcmp(it.node->name, "rsc-table") ||
+	    !strcmp(it.node->name, "vdev0vring0") ||
+	    !strcmp(it.node->name, "vdev0vring1") ||
+	    strstarts(res.name, "vdev0buffer"))
+		continue;
+"
 
-Thanks!
+never existed in imx_rproc.c:
 
-[1/1] dt-bindings: regulator: convert ltc3589 to yaml format
-      https://git.kernel.org/broonie/regulator/c/c9b256e7900f
+"
+$ git log --follow -p next/master -- drivers/remoteproc/imx_rproc.c | 
+grep vdev0vring1
+     vdev regions are vdev0vring0, vdev0vring1, vdevbuffer and similar.
+"
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+It seems the AI hallucinated something which is not based in reality ?
