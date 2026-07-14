@@ -1,237 +1,178 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013039.outbound.protection.outlook.com [40.107.159.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69295363C5E
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 10:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.39
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784023898; cv=fail; b=gCBbD0Hs/cIlD4gjKvoq7NV1ulauAkJ/w7ik8/13BlU5aBKwoCFUkkc3VvsStnsqfxZr/pFBw/O57lIhi0qc2NjIUiuTzYK4xqM6Hc+1dLc5nByFKE7F3Zu7m/TTiUciBjMdd2eGIvlfGIu1bPK1Q0oSetacLk1z0/mFJ3DMw+c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784023898; c=relaxed/simple;
-	bh=lzJtQrtXHzWUD3GaOGO5i/rai6pl+GOZqhBoyHReBzY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dp+yc8sKw6E7UF89XJGJdDSkJpHTgaQ0w2vJkGCZ9I1NAres8mWxK+qvlJs1gi6S4lsRSA8Qr2H7/0SdlnuN0eZIkPwBw8UeY4MykMuZxBUkFEwKo7dv3aRIq0zR/+WgNNKGGzghYwWvHOOk0YonQYdYbCy2r7xGL57i/Kte8F0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XIUYhtXa; arc=fail smtp.client-ip=40.107.159.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2D036F90D;
+	Tue, 14 Jul 2026 10:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784024927; cv=none; b=jBMVui/6nrnvz4l9kRAVCB8FiW02qoZ+6V9DyRv19p0u1VnyCo/jnvFbpZaa/VCyXyO3+ZPLacY78n/MGeIFvPN4o7jjqwoC1nfG1oVIAi94jE1Rhn1W/2bmFQ9FZBRAwIZF5vs8u7oZxbWIK06J2xNrSoppHn5RjaaGOp0N5vU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784024927; c=relaxed/simple;
+	bh=CBpaQr5fKCtCP+D9Xse02LIAN+vOPSrGcX40hnCPS14=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EMIB+4wVC19MWXJb/efxM4IDGZBqUpswHCJuHfs5PkNhNadj7mZr8drAzjlGVc0bQoRgSi8roSsOWZZYG82SLMj9vFtSNdW0gPFJ1nlwCs+B+rE55Jr759lVdtthtnqPhMgVOLkxgoB2GqVmRVnNpyKF3C/ouQWcUFLeuonowUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hw03xDsD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XIUYhtXa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gilo8UCA6yMOko25U7z0mddDXkc65Tz3cQsHSFKRaTABeitjUG8ROUbWdFJN0X/xz7O5RGSLSOiq65juCIWwTCjbgP3U0LUliFMadP/IoPvu5rd7WZYO6x0ZJhKEmR8489jxcOh3RQXZwo1z2XXq/nQjChFDLfG4t5CEP/pBneBqzPRmRBYFtzOvZgUyttLraowPxYmYZLv2ZQgcDWDp2s2LvItwYqRSYXXcCpvAhWMAnYboQj/q3Y20fwJ39DSxYfPy3vtOgJFypo9zbA/LuccEWphviLTTfqw7gAhy2Tm2kgKakgBXn0awk57QKKiFs0S0Ar2jiws1f+B5E+nxPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lzJtQrtXHzWUD3GaOGO5i/rai6pl+GOZqhBoyHReBzY=;
- b=w8v8yLF53hF8aGZ9XcNVPEhdaoNkHNWtOe5JBRvmZO3OQN1h78+5uXQ+2xJeG2alz0InZKw3fcGbcFOxU4CCksfT/aQRLyiRn5YjU/C8xWSuBwd32Ty86i6gS6p1aUQtx20YV3vWZjpCAs/NLfGMvkOIa9cpKhNFol7RuJ77YisZlq4GmSj1cWffKbw8+iuGo8FNxPp24wJUjbkOcY98xNVRpLa4Pyqi4FraOdhy1DaZr+rzxxCKR7+IIG0Oyrhdx07bnRtsPATCbVL4hmEBE60EbFokdR3S8qKVYAo+yiK5scPCK8rEdvI2ObKSojIy7VNh9fNhfyM6J9Ws1i0Y5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lzJtQrtXHzWUD3GaOGO5i/rai6pl+GOZqhBoyHReBzY=;
- b=XIUYhtXalWZFH1vaGjBnvGU8ajEcTmd8redksNPJvr3dXCwsx3P6zGdFND1lNhxU4qX16y14QPI53JUsNrDYDteaCfd0/gCem2/gW24+Cp5pVGMWwSFV139eSm9xyoSBqvmf1WAz5XqdXCr0dGvNPrH5xj3LE5itIYtDxbhdJmdMMcHdiDE9QBmD+n+SSYqCpgCuSGxieHiXIUXBKoaXJWbgMa04qV0vX04QZpJ+jduKSArDDDVkEfHtCdgScOy61etAUzoC4xSCr05g9jM34CM+IOvAXg8LOQgedIfXAB2rrST+ed6bZQTtFmIa/ocC/qmEavtncIwoaNCKaK/sCg==
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- (2603:10a6:800:315::13) by GV2PR04MB11327.eurprd04.prod.outlook.com
- (2603:10a6:150:2ae::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.19; Tue, 14 Jul
- 2026 10:11:31 +0000
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994%6]) with mapi id 15.21.0223.008; Tue, 14 Jul 2026
- 10:11:31 +0000
-From: Sherry Sun <sherry.sun@nxp.com>
-To: "luiz.dentz@gmail.com" <luiz.dentz@gmail.com>
-CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, Frank Li
-	<frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, Amitkumar Karwar <amitkumar.karwar@nxp.com>, Neeraj
- Sanjay Kale <neeraj.sanjaykale@nxp.com>, "marcel@holtmann.org"
-	<marcel@holtmann.org>, Hongxing Zhu <hongxing.zhu@nxp.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org"
-	<lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>, "brgl@kernel.org"
-	<brgl@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-bluetooth@vger.kernel.org"
-	<linux-bluetooth@vger.kernel.org>, "linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>, Manivannan Sadhasivam <mani@kernel.org>
-Subject: RE: [PATCH V6 3/4] Bluetooth: btnxpuart: Add M.2 Bluetooth device
- support using pwrseq
-Thread-Topic: [PATCH V6 3/4] Bluetooth: btnxpuart: Add M.2 Bluetooth device
- support using pwrseq
-Thread-Index: AQHdEm/b8LfnBcjhvUCaiAiI6/01h7Zq4yGAgAHmK3A=
-Date: Tue, 14 Jul 2026 10:11:30 +0000
-Message-ID:
- <VI0PR04MB121142317154797575D4CA90B92F92@VI0PR04MB12114.eurprd04.prod.outlook.com>
-References: <20260713023435.235765-1-sherry.sun@oss.nxp.com>
- <20260713023435.235765-4-sherry.sun@oss.nxp.com>
- <mow4vuf6zf6c7uzb7zbvwuw3b5p5q5rfghw266f2eiesvhssle@7jzavek52rt7>
-In-Reply-To: <mow4vuf6zf6c7uzb7zbvwuw3b5p5q5rfghw266f2eiesvhssle@7jzavek52rt7>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI0PR04MB12114:EE_|GV2PR04MB11327:EE_
-x-ms-office365-filtering-correlation-id: 8f0cfa91-89de-4c0d-5425-08dee19046a9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|19092799006|23010399003|7416014|366016|1800799024|38070700021|6133799003|56012099006|11063799006|4143699003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- 87zmkH+sFzHs8qw2rX2bBkIyUT7TjENFBNWnhO/l5BZJjs8RGArc7edhoqpfm5DMSZ0zqyiwnprRbj30PoTNDMpmDnT2WYyFmlJ/6fsSZN/aIv33C1Mc1RS3XtjCI3A5uHJTBpabsOq60NbOeLjUlDVM4rMObXaXTs9onLGlvvJ3j2OFIGBNcPDhG2Lcv4L82pPk+VM2GmGNtvpEdFYLWa7UU5Tyieu+BgeNKga3OllMX5/hRWi+yG44YwmDU4YBO/2xCqV4fY8C+tUH8FA3H3BZc5pvfEa+Yp9PV04ZnDTq4Ko0PhBR55jaVcPwhuUh3w+93WKUl7wSekVl7dyHZ6M2oh+lcTK7cHA5XU9F2URhefAJvnv4wrRNn+RSAt6IJ49avKAPJEbvMRwxCgI53NZEL50UF60/Sqbo8i/8pGbQdUBCWUjZJXQ7I+rL3Dq0QdvdfJjVf0jW80ObNaPvcjrnBAbvAtq3njV9sEWn5nZfl8LQkV5iy/BOi8aX0avAbpVgUqs0QxSbL7I07DqCrXAbO83kj6P9TsXqx5EsybTTFRsqj06H62xERlKJL4xwHQgx+opvf9hgAxux6eH5YlgCV7jxA4K85dYLbpSwcGiMmSdvl4WbVubjMQfMDYTsi75DXMcVyqxiBVdNpWiXVaLWkydhE1JVh1Rg0WVkvZ71xTSKp24YOyF4Du21EldM0k8U3+UeOw18S9Q5gktSDmBaDkCLJ83qzbG9a013efs=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(23010399003)(7416014)(366016)(1800799024)(38070700021)(6133799003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?dkloQmxnenVBNHo4TGV2Vis2U0dQYWdHK1B2dEdGdmpjRGpNc3NuK3ViaXBC?=
- =?utf-8?B?MVc1TU5xR094cDVOaW5vZXgxR2dBYmtDVjNEKzNNRVhMdjQxUEpyL0w2d3cz?=
- =?utf-8?B?ZUUzRHpaUW50d01MZnQzTW9kVGVuWEpuSWlxSDJwTkt1Z29DQjJwSUZiNHNm?=
- =?utf-8?B?VGFlS3VPYTlnZkRKUHMzajJDZDlmNmdkY1dGM2o4dzU5dWVTd3dEZE8vMzcr?=
- =?utf-8?B?T05kRDBLQjlKMlJXUXpBV0NZb2ZOQjhCamVtT08vVHFLNDJwQ3dpeVE1SHJN?=
- =?utf-8?B?OEQzOVJyaXlqdVVFeGtoYnFBYWVqMFJWRlgvSDh6SytEcnJhejI5aUN1WHdo?=
- =?utf-8?B?bTBuaHRTOGc3ODgxVWliQUZYaFQ4WXNKaXZORnFka1FVZ3dPQ1hjTEovWTN6?=
- =?utf-8?B?a0JPSE42S0NTNldvdHRRZ05SR01lWDMxbGJNSzdxT2h6UnhOK2UyNm9hSDBv?=
- =?utf-8?B?dlhlcy92NHBldXJSQmplVDlnS0k3S1grcUdkaCtRZTNaWGVQd3ZKZjVvVC95?=
- =?utf-8?B?R3oxaFJEN0wrSG9OUDJVcmY0SCtQZVJobkx3SEZDY2czM2V3YkJuNUlzOHJG?=
- =?utf-8?B?bk1VcjM4MmJTQjRRRTlTQ2dCem5IOStueUt5OStRWU41WVB4Y2VHV05QVmdH?=
- =?utf-8?B?MmwvVWdnRzBkSWdNYkJtMnhHaE8xcWFQVGVLdjNOZlgwb3ZjRzRTeGVTVzBz?=
- =?utf-8?B?K1FjOUJRbjBqdE5YcW1oa0srOEJNVEhKOEtFWEh4OUNVQUExQTJUNWlvc29j?=
- =?utf-8?B?NjRVbmVndmFUTjZMOEJYaWVJcE5YbGZicW5nNUROc2ZMVkhhYmZEc1JqRUl0?=
- =?utf-8?B?OW9TWnB1eDB3RXhYVGlLSVZsR25yRGNGR2lEU2UwK0Zna0Fab1BzMDdiRGZ2?=
- =?utf-8?B?VFMyQlhFMEIrVkxvQ3lEVGhaS2JZNXNQbDkzY3dpTDhPeUI1UFRzdFdIbDVm?=
- =?utf-8?B?SzlqWVFIclloSEdDSkN2bTJPTzVRcXdQWUFzTzVFcVh6dXIrYzQwSnEvOE9t?=
- =?utf-8?B?cDNBMUEyVk96Q0ttRW1BNzB6bzdiaXdXQlo1bXJuc2J3NUwwQWVjWjhFbWQw?=
- =?utf-8?B?Y3lqM2t0MkFzZzV3NEtLZUpzaFBoVDJBbitpU25SNGJEdHNuL2J6R2ZCZTZy?=
- =?utf-8?B?c092c0diQ3lPNzVHN2tJOGVWTVUrb3RMMnlIZUNvRWduVGdrMHMrRVpNbDFV?=
- =?utf-8?B?L1hNZDJ3MkJMbUFEczZpMUZ2T280ZjZ1UytvWk5CMUg4T1Zma0hRWWV1NFJ0?=
- =?utf-8?B?TE0wVHBNdEZMdldQRHYxNWRCc2FmbnpzUXpZa0NITEVyTlhTU0t5dXYzMWVW?=
- =?utf-8?B?SEhJemxGd1FRZlh5TytzeWlyUkE0a3R1QXUyQ2FiYXgvRXFxbkpWM0xmTDBX?=
- =?utf-8?B?MU9LeTNRY05wZk5ITVRqcW1kTjNtRFpVOHQ5Tmt6dUZjK2RzUWxiUy9rMlZW?=
- =?utf-8?B?QmlyK01TQWFBTnlBK0s1dXMvMVRvRFArU1pWcTAxazl5eXA3OWtZdWhTRHpZ?=
- =?utf-8?B?N296Y3pqdXlXYjdJNkZpK1FpYklGeFEydlprQ05LTE42RERpTTVSekhRbXhK?=
- =?utf-8?B?MzRqNVFqbUpWeEhidzU2THMxS2p2ZDAyMEkzdjF3dDIxNzVUQTJEdWo1VnMr?=
- =?utf-8?B?WnE4NHpTTnFMTm5jbldBbFhPaWwvb05XWVAra0xvakxublowZkkrNHZkV0gy?=
- =?utf-8?B?RXgvU2lQQXZSUmxBc0ZRSzFSUm12cytPZFVlWVJaa0ZXc1FNTkFKYm50ayt2?=
- =?utf-8?B?dGh5aWphdllwYUc1UlNScVEza2VjUU1qc05OR3dmODNCb3BxaEJlWC9xM2hi?=
- =?utf-8?B?VUx2c1dqZ1R2bHkwbC9PU1J5WHJkb2xiS056OVFtUjBVeVdhSlVjZytUa1Ez?=
- =?utf-8?B?Q0R0NFlCVFV1czFLTFFMRDRrSmlQbDhjYkdZcTlTeWRDbWpFQ0dGSlJwTDEv?=
- =?utf-8?B?bXplaTRicFFMUW4zNHR6b0RQTURQMGY5VUpmY01kYms1TVREenU1MXFOank3?=
- =?utf-8?B?VDhmT2RlVk1pMjhVd29tTHFaYnRGQlpudXJUcTV6RFZYUlFYRjJPTjNEdk5S?=
- =?utf-8?B?Z0Z5N0pQd2xMQmZGVTRTaXptTzJjQnd6Tm5OMVJtRFlBQUc0ZldOeWk5cmhM?=
- =?utf-8?B?N0xiRjVRU2VSbHQ5UWFwT3NsR2xnNXdIUFRMNjYwdWkyQ3lMYjFhZVNoZkFG?=
- =?utf-8?B?cCszRFlPblJEbVlBaUdqUnY2cVhEOGtFSyt1NHdQaFZGK3crd25lZ3N2VHZ5?=
- =?utf-8?B?SzQzNTN3dStWS3pucmtxb3lVbG5NTGtHVVpaMmwvaTFRenJZWHRmOUN1a3Nq?=
- =?utf-8?Q?V5m+njyaobya5nx+U6?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hw03xDsD"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 99D7DC2BCB8;
+	Tue, 14 Jul 2026 10:28:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1784024926;
+	bh=CBpaQr5fKCtCP+D9Xse02LIAN+vOPSrGcX40hnCPS14=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Hw03xDsD8G+KgqoQG2vZDl/KhHS+qQUO0sAr1xghhRCo7u7tzO3hK1uF8zrJIqWLt
+	 g2BTdE0WzsBnQYOsb690iYeVPrD4U9LmTJ4996PJAUOtiTfNl0SmTlyrNlDJo+9e3F
+	 tcZ00RFzEHfrrPfiddzWvNPb8kBk3M/S4cRV82xbM3b6YlymaWHegxupiV2M3GFYx2
+	 HzX9X9v0UGrBpj+q665tyxUSI3P3ICbZrcB0lsooL5yuY3HuQC1UjBA4dHr0eRJgYY
+	 zhDgk5B7dlJ1i7ruYfovGc9kWOFhXvTtNJHQb1nH4T92cXf72yx4LNIHzjqQeBqXLW
+	 KubFXZENeCCfA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86EFFC44501;
+	Tue, 14 Jul 2026 10:28:46 +0000 (UTC)
+From: Haoning CHENG via B4 Relay <devnull+Haoning.CHENG.cn.bosch.com@kernel.org>
+Subject: [PATCH v8 0/3] thermal: imx: Add calibration offset support
+Date: Tue, 14 Jul 2026 18:28:40 +0800
+Message-Id: <20260714-b4-symana21-11221-imx-thermal-support-upstream-6-18-v8-0-d54d8690e16e@cn.bosch.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f0cfa91-89de-4c0d-5425-08dee19046a9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2026 10:11:31.0033
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qZmNCF+9gAT34+SA2XgNCixVj/bQ3vEEomPjf/8tNTiuLcmzsf5GbSKtXF8QtFdV2M6iJ7m/q4VO4lCYeivR1g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11327
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAFgPVmoC/63SyWrDMBQF0F8JWldB85BV/6N0IclPtUo9INkmI
+ eTfKyebULxKvRFceOhcpHdFBXKCgk6HK8qwpJKGvgbzdkChdf0X4NTUjBhhimhisRe4XDrXO0Y
+ xpayeqTvjqYXcuR9c5nEc8oTnsUwZXIcVpgY7YoQ1ogGvFao3jxliOt/Vj89HLrP/hjCt1DrRp
+ jIN+XKvtdB17n8NFooJJiQaEwWznPj30B/9UEJ7DEOH1hIL24FhDyZqJqwEJjYY/sRQ8hrDK9N
+ 4GwOzQgcpNxixAyMqQyNEqxsatCQbjHxm+GuMrIyygsjAiQpq62/UDoyqjDGOaxMdBLf1aHoHR
+ q8rYL2qu66sB/qHud1uvwK4PZx1AwAA
+X-Change-ID: 20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-a084984deb76
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Haoning CHENG <Haoning.CHENG@cn.bosch.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784024921; l=5106;
+ i=Haoning.CHENG@cn.bosch.com; s=20260709; h=from:subject:message-id;
+ bh=CBpaQr5fKCtCP+D9Xse02LIAN+vOPSrGcX40hnCPS14=;
+ b=OQT3KHxAhiSG0hrrgik3MncSWesBrq63j2XMmBphBM5fcyCje6Peb/xYIznzH6NwFFW+hAW7g
+ vNt6RaYakCWAcMlJTFxvalEnABh18BFDUvaZvQo9JZDoNFC/9Bo6tRF
+X-Developer-Key: i=Haoning.CHENG@cn.bosch.com; a=ed25519;
+ pk=glQGwad/fosRS5gZUJYbLDPPLGe7rFTrTV2VxY/ySdc=
+X-Endpoint-Received: by B4 Relay for Haoning.CHENG@cn.bosch.com/20260709
+ with auth_id=860
+X-Original-From: Haoning CHENG <Haoning.CHENG@cn.bosch.com>
+Reply-To: Haoning.CHENG@cn.bosch.com
 
-PiBTdWJqZWN0OiBSZTogW1BBVENIIFY2IDMvNF0gQmx1ZXRvb3RoOiBidG54cHVhcnQ6IEFkZCBN
-LjIgQmx1ZXRvb3RoIGRldmljZQ0KPiBzdXBwb3J0IHVzaW5nIHB3cnNlcQ0KPiANCj4gT24gTW9u
-LCBKdWwgMTMsIDIwMjYgYXQgMTA6MzQ6MzRBTSArMDgwMCwgU2hlcnJ5IFN1biAoT1NTKSB3cm90
-ZToNCj4gPiBGcm9tOiBTaGVycnkgU3VuIDxzaGVycnkuc3VuQG54cC5jb20+DQo+ID4NCj4gPiBQ
-b3dlciBzdXBwbHkgdG8gdGhlIE0uMiBCbHVldG9vdGggZGV2aWNlIGF0dGFjaGVkIHRvIHRoZSBo
-b3N0IHVzaW5nDQo+ID4gTS4yIGNvbm5lY3RvciBpcyBjb250cm9sbGVkIHVzaW5nIHRoZSAndWFy
-dCcgcHdyc2VxIGRldmljZS4gU28gYWRkDQo+ID4gc3VwcG9ydCBmb3IgZ2V0dGluZyB0aGUgcHdy
-c2VxIGRldmljZSBpZiB0aGUgT0YgZ3JhcGggbGluayBpcyBwcmVzZW50Lg0KPiA+DQo+ID4gT25j
-ZSBvYnRhaW5lZCwgcHdyc2VxX3Bvd2VyX29uKCkgaXMgY2FsbGVkIHRvIHBvd2VyIHVwIHRoZSBN
-LjINCj4gPiBCbHVldG9vdGggY2FyZC4gVGhlIHBvd2VyIHNlcXVlbmNlciBkZXNjcmlwdG9yIGlz
-IG9idGFpbmVkIHZpYQ0KPiA+IHB3cnNlcV9nZXQoKSB3aXRoIHRoZSBVQVJUIGNvbnRyb2xsZXIg
-ZGV2aWNlIChzZXJkZXYtPmN0cmwtPmRldiksDQo+ID4gc2luY2UgdGhlIE9GIGdyYXBoIGxpbmsg
-aXMgZGVmaW5lZCBvbiB0aGUgVUFSVCBjb250cm9sbGVyIG5vZGUuDQo+ID4NCj4gPiBBbHNvIGFk
-ZCB0aGUgZXhwbGljaXQgcHdyc2VxX3B1dCgpIGNhbGwgaW4gYWxsIGV4aXQgcGF0aHMsDQo+ID4g
-cHdyc2VxX3B1dCgpIGFscmVhZHkgY2FsbHMgcHdyc2VxX3Bvd2VyX29mZigpIGludGVybmFsbHks
-IHNvIG5vDQo+ID4gc2VwYXJhdGUNCj4gPiBwd3JzZXFfcG93ZXJfb2ZmKCkgY2FsbCBpcyBuZWVk
-ZWQuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTaGVycnkgU3VuIDxzaGVycnkuc3VuQG54cC5j
-b20+DQo+IA0KPiBSZXZpZXdlZC1ieTogTWFuaXZhbm5hbiBTYWRoYXNpdmFtIDxtYW5pQGtlcm5l
-bC5vcmc+DQo+ID4gDQoNCkhpIEx1aXosIHRoZSBCbHVldG9vdGggcGF0Y2ggaW4gdGhpcyBwYXRj
-aCBzZXQgaGFzIG5vIGRlcGVuZGVuY2llcyBvbiB0aGUNCnJlc3QuIFRoaXMgcGF0Y2ggc2V0IGlz
-IGJhc2VkIG9uIGxpbnV4LW5leHQsIGJ1dCB0aGlzIEJsdWV0b290aCBwYXRjaCBjYW4gYWxzbw0K
-YmUgYXBwbGllZCB0byBibHVldG9vdGgtbmV4dC4NClNob3VsZCBJIHNlbmQgaXQgc2VwYXJhdGVs
-eSwgb3Igd291bGQgeW91IGp1c3QgcGljayB0aGlzIEJsdWV0b290aCBwYXRjaCBpbiB0aGUNCnBh
-dGNoIHNldCBkaXJlY3RseSBhZnRlciB5b3VyIHJldmlldz8gVGhhbmtzIQ0KDQpCZXN0IFJlZ2Fy
-ZHMNClNoZXJyeQ0KDQo+ID4gUmV2aWV3ZWQtYnk6IEJhcnRvc3ogR29sYXN6ZXdza2kNCj4gPiA8
-YmFydG9zei5nb2xhc3pld3NraUBvc3MucXVhbGNvbW0uY29tPg0KPiA+IFJldmlld2VkLWJ5OiBG
-cmFuayBMaSA8RnJhbmsuTGlAbnhwLmNvbT4NCj4gPiAtLS0NCj4gPiBIaSBGcmFuayBhbmQgQmFy
-dG9zeiwgdGhpcyBWNiBwYXRjaCB1c2luZyBwd3JzZXFfcHV0KCkgaW4gYWxsIGV4aXQNCj4gPiBw
-YXRocyB0byBmaXggdGhlIHBvd2VyIHNlcXVlbmNlciByZWZlcmVuY2UgbGVhayBpc3N1ZSBkdXJp
-bmcgQlQgZHJpdmVyDQo+ID4gdW5sb2FkIGFuZCByZWxvYWQgYXMgcmVwb3J0ZWQgYnkgc2FzaGlr
-by4gSSdtIGtlZXBpbmcgeW91ciBSZXZpZXdlZC1ieQ0KPiA+IHRhZy4gSSBjYW4gcmVtb3ZlIGl0
-IGlmIHlvdSB0aGluayBpdCdzIGluYXBwcm9wcmlhdGUuDQo+ID4gLS0tDQo+ID4gIGRyaXZlcnMv
-Ymx1ZXRvb3RoL2J0bnhwdWFydC5jIHwgMzQgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-LS0tLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMzAgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMo
-LSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2JsdWV0b290aC9idG54cHVhcnQuYw0K
-PiA+IGIvZHJpdmVycy9ibHVldG9vdGgvYnRueHB1YXJ0LmMgaW5kZXggMGJiMzAwZWVmMTU3Li44
-MWExMWFjMDUxMTQNCj4gPiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL2JsdWV0b290aC9idG54
-cHVhcnQuYw0KPiA+ICsrKyBiL2RyaXZlcnMvYmx1ZXRvb3RoL2J0bnhwdWFydC5jDQo+ID4gQEAg
-LTksNiArOSw4IEBADQo+ID4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4L3NlcmRldi5oPg0KPiA+ICAj
-aW5jbHVkZSA8bGludXgvb2YuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L29mX2dyYXBoLmg+DQo+
-ID4gKyNpbmNsdWRlIDxsaW51eC9wd3JzZXEvY29uc3VtZXIuaD4NCj4gPiAgI2luY2x1ZGUgPGxp
-bnV4L3NrYnVmZi5oPg0KPiA+ICAjaW5jbHVkZSA8bGludXgvdW5hbGlnbmVkLmg+DQo+ID4gICNp
-bmNsdWRlIDxsaW51eC9maXJtd2FyZS5oPg0KPiA+IEBAIC0yMTEsNiArMjEzLDcgQEAgc3RydWN0
-IGJ0bnhwdWFydF9kZXYgew0KPiA+DQo+ID4gIAlzdHJ1Y3QgcHNfZGF0YSBwc2RhdGE7DQo+ID4g
-IAlzdHJ1Y3QgYnRueHB1YXJ0X2RhdGEgKm54cF9kYXRhOw0KPiA+ICsJc3RydWN0IHB3cnNlcV9k
-ZXNjICpwd3JzZXE7DQo+ID4gIAlzdHJ1Y3QgcmVzZXRfY29udHJvbCAqcGRuOw0KPiA+ICAJc3Ry
-dWN0IGhjaV91YXJ0IGh1Ow0KPiA+ICB9Ow0KPiA+IEBAIC0xODcyLDExICsxODc1LDI2IEBAIHN0
-YXRpYyBpbnQgbnhwX3NlcmRldl9wcm9iZShzdHJ1Y3QNCj4gc2VyZGV2X2RldmljZSAqc2VyZGV2
-KQ0KPiA+ICAJCXJldHVybiBlcnI7DQo+ID4gIAl9DQo+ID4NCj4gPiArCWlmIChvZl9ncmFwaF9p
-c19wcmVzZW50KGRldl9vZl9ub2RlKCZzZXJkZXYtPmN0cmwtPmRldikpKSB7DQo+ID4gKwkJc3Ry
-dWN0IHB3cnNlcV9kZXNjICpwd3JzZXE7DQo+ID4gKw0KPiA+ICsJCXB3cnNlcSA9IHB3cnNlcV9n
-ZXQoJnNlcmRldi0+Y3RybC0+ZGV2LCAidWFydCIpOw0KPiA+ICsJCWlmIChJU19FUlIocHdyc2Vx
-KSkNCj4gPiArCQkJcmV0dXJuIGRldl9lcnJfcHJvYmUoJnNlcmRldi0+ZGV2LA0KPiBQVFJfRVJS
-KHB3cnNlcSksDQo+ID4gKwkJCQkJICAgICAiZmFpbGVkIHRvIGdldCBwd3JzZXFcbiIpOw0KPiA+
-ICsNCj4gPiArCQlueHBkZXYtPnB3cnNlcSA9IHB3cnNlcTsNCj4gPiArCQllcnIgPSBwd3JzZXFf
-cG93ZXJfb24ocHdyc2VxKTsNCj4gPiArCQlpZiAoZXJyKQ0KPiA+ICsJCQlnb3RvIGVycl9wd3Jz
-ZXFfcHV0Ow0KPiA+ICsJfQ0KPiA+ICsNCj4gPiAgCS8qIEluaXRpYWxpemUgYW5kIHJlZ2lzdGVy
-IEhDSSBkZXZpY2UgKi8NCj4gPiAgCWhkZXYgPSBoY2lfYWxsb2NfZGV2KCk7DQo+ID4gIAlpZiAo
-IWhkZXYpIHsNCj4gPiAgCQlkZXZfZXJyKCZzZXJkZXYtPmRldiwgIkNhbid0IGFsbG9jYXRlIEhD
-SSBkZXZpY2VcbiIpOw0KPiA+IC0JCXJldHVybiAtRU5PTUVNOw0KPiA+ICsJCWVyciA9IC1FTk9N
-RU07DQo+ID4gKwkJZ290byBlcnJfcHdyc2VxX3B1dDsNCj4gPiAgCX0NCj4gPg0KPiA+ICAJcmVz
-ZXRfY29udHJvbF9kZWFzc2VydChueHBkZXYtPnBkbik7DQo+ID4gQEAgLTE5MDcsMTMgKzE5MjUs
-MTYgQEAgc3RhdGljIGludCBueHBfc2VyZGV2X3Byb2JlKHN0cnVjdA0KPiBzZXJkZXZfZGV2aWNl
-ICpzZXJkZXYpDQo+ID4gIAlpZiAoYmFjbXAoJmJhLCBCREFERFJfQU5ZKSkNCj4gPiAgCQloY2lf
-c2V0X3F1aXJrKGhkZXYsIEhDSV9RVUlSS19VU0VfQkRBRERSX1BST1BFUlRZKTsNCj4gPg0KPiA+
-IC0JaWYgKGhjaV9yZWdpc3Rlcl9kZXYoaGRldikgPCAwKSB7DQo+ID4gKwllcnIgPSBoY2lfcmVn
-aXN0ZXJfZGV2KGhkZXYpOw0KPiA+ICsJaWYgKGVyciA8IDApIHsNCj4gPiAgCQlkZXZfZXJyKCZz
-ZXJkZXYtPmRldiwgIkNhbid0IHJlZ2lzdGVyIEhDSSBkZXZpY2VcbiIpOw0KPiA+ICAJCWdvdG8g
-cHJvYmVfZmFpbDsNCj4gPiAgCX0NCj4gPg0KPiA+IC0JaWYgKHBzX3NldHVwKGhkZXYpKQ0KPiA+
-ICsJaWYgKHBzX3NldHVwKGhkZXYpKSB7DQo+ID4gKwkJZXJyID0gLUVOT0RFVjsNCj4gPiAgCQln
-b3RvIHByb2JlX2ZhaWxfdW5yZWdpc3RlcjsNCj4gPiArCX0NCj4gPg0KPiA+ICAJaGNpX2RldmNk
-X3JlZ2lzdGVyKGhkZXYsIG54cF9jb3JlZHVtcCwgbnhwX2NvcmVkdW1wX2hkciwNCj4gPiAgCQkJ
-ICAgbnhwX2NvcmVkdW1wX25vdGlmeSk7DQo+ID4gQEAgLTE5MjUsNyArMTk0NiwxMCBAQCBzdGF0
-aWMgaW50IG54cF9zZXJkZXZfcHJvYmUoc3RydWN0DQo+ID4gc2VyZGV2X2RldmljZSAqc2VyZGV2
-KQ0KPiA+ICBwcm9iZV9mYWlsOg0KPiA+ICAJcmVzZXRfY29udHJvbF9hc3NlcnQobnhwZGV2LT5w
-ZG4pOw0KPiA+ICAJaGNpX2ZyZWVfZGV2KGhkZXYpOw0KPiA+IC0JcmV0dXJuIC1FTk9ERVY7DQo+
-ID4gK2Vycl9wd3JzZXFfcHV0Og0KPiA+ICsJaWYgKG54cGRldi0+cHdyc2VxKQ0KPiA+ICsJCXB3
-cnNlcV9wdXQobnhwZGV2LT5wd3JzZXEpOw0KPiA+ICsJcmV0dXJuIGVycjsNCj4gPiAgfQ0KPiA+
-DQo+ID4gIHN0YXRpYyB2b2lkIG54cF9zZXJkZXZfcmVtb3ZlKHN0cnVjdCBzZXJkZXZfZGV2aWNl
-ICpzZXJkZXYpIEBADQo+ID4gLTE5NTIsNiArMTk3Niw4IEBAIHN0YXRpYyB2b2lkIG54cF9zZXJk
-ZXZfcmVtb3ZlKHN0cnVjdCBzZXJkZXZfZGV2aWNlDQo+ICpzZXJkZXYpDQo+ID4gIAlwc19jbGVh
-bnVwKG54cGRldik7DQo+ID4gIAloY2lfdW5yZWdpc3Rlcl9kZXYoaGRldik7DQo+ID4gIAlyZXNl
-dF9jb250cm9sX2Fzc2VydChueHBkZXYtPnBkbik7DQo+ID4gKwlpZiAobnhwZGV2LT5wd3JzZXEp
-DQo+ID4gKwkJcHdyc2VxX3B1dChueHBkZXYtPnB3cnNlcSk7DQo+ID4gIAloY2lfZnJlZV9kZXYo
-aGRldik7DQo+ID4gIH0NCj4gPg0KPiA+IC0tDQo+ID4gMi41MC4xDQo+ID4NCj4gDQo+IC0tDQo+
-IOCuruCuo+Cuv+CuteCuo+CvjeCuo+CuqeCvjSDgrprgrqTgrr7grprgrr/grrXgrq7gr40NCg==
+Some i.MX boards need a small per-design correction to align the
+reported CPU temperature with board-level measurements. This series
+adds an optional DT property to specify such a calibration offset
+and implements the corresponding support in the imx_thermal driver.
+
+Patch 1 documents the new fsl,temp-calibration-offset-millicelsius
+property in the i.MX thermal DT binding. The range is limited to
+±20 °C because a temperature sensor with such a high deviation
+would be unusable.
+
+Patch 2 fixes the i.MX7D alarm temperature conversion to use
+ceiling division (DIV_ROUND_UP() for non-negative, plain /
+for negative) and clamp() to stay within the 9-bit register range.
+
+Patch 3 reads this property in the imx_thermal driver and applies
+the offset to the i.MX6/6SX/7D calibration formulas. Out-of-range
+values are rejected with -EINVAL at probe time. When the property
+is absent, the default offset remains 0, preserving the current
+behavior.
+
+Signed-off-by: Haoning CHENG <Haoning.CHENG@cn.bosch.com>
+---
+Changes in v8:
+- binding: s/behaviour/behavior/ (Lukasz)
+- New prep patch: use ceiling division (DIV_ROUND_UP() for non-negative, plain /
+  for negative) and clamp() for i.MX7D, extracted into a separate patch (Frank)
+- driver commit message: add offset mechanism explanation with a +3000 m°C calculation example (Lukasz)
+- probe: reject out-of-range offset with -EINVAL instead of silently clamping (Lukasz)
+- prep patch: handle negative alarm_temp with plain division (C rounds toward zero)
+- Link to v7: https://patch.msgid.link/20260713-b4-symana21-11221-imx-thermal-support-upstream-6-18-v7-0-09b6b7669be1@cn.bosch.com
+
+Changes in v7:
+- Align the author name with the Signed-off-by trailer.
+- Link to v6: https://patch.msgid.link/20260713-b4-symana21-11221-imx-thermal-support-upstream-6-18-v6-0-88a378faeca5@cn.bosch.com
+
+Changes in v6:
+- Align the author name with the Signed-off-by trailer.
+- Link to v5: https://patch.msgid.link/20260713-b4-symana21-11221-imx-thermal-support-upstream-6-18-v5-0-69405c306c6b@cn.bosch.com
+
+Changes in v5:
+- Move calibration offset application out of c2 initialization, instead
+  apply it in imx_get_temp(), imx_set_alarm_temp() and imx_set_panic_temp()
+  for consistent style across i.MX6 and i.MX7D
+- Subtract calibration offset from alarm_temp before the if-else block in
+  imx_set_alarm_temp(), simplifying both SoC branches (Frank's suggestion)
+- Link to v4: https://patch.msgid.link/20260710-b4-symana21-11221-imx-thermal-support-upstream-6-18-v4-0-1fef97d1c750@cn.bosch.com
+
+Changes in v4:
+- dt-bindings: drop maxItems to allow minimum/maximum constraints for
+  temp-calibration-offset-millicelsius
+- Link to v3: https://patch.msgid.link/20260710-b4-symana21-11221-imx-thermal-support-upstream-6-18-v3-0-db9fc2947c55@cn.bosch.com
+
+Changes in v3:
+- dt-bindings: add minimum/maximum (-28580/+28580) for
+  temp-calibration-offset-millicelsius, as suggested by Conor Dooley
+- Link to v2: https://patch.msgid.link/20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v2-0-00ff72495e24@cn.bosch.com
+
+Changes in v2:
+- dt-bindings: Removed explicit `$ref: /schemas/types.yaml#/definitions/int32`
+  for fsl,temp-calibration-offset-millicelsius; the `-millicelsius` suffix
+  already resolves to int32-array via property-units.yaml (Rob).
+- dt-bindings: Fixed example indentation.
+- driver: Replaced C integer division (/) with DIV_ROUND_CLOSEST() in
+  imx_set_alarm_temp() to prevent off-by-one alarm threshold mismatch that
+  could cause IRQ storms on i.MX7D.
+- driver: Added clamp() bounds check for alarm_value [0, 0x1ff] to avoid
+  corrupting adjacent register fields (PANIC_ALARM).
+- Link to v1: https://patch.msgid.link/20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-v1-0-00f88f42930b@cn.bosch.com
+
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+To: Zhang Rui <rui.zhang@intel.com>
+To: Lukasz Luba <lukasz.luba@arm.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Shawn Guo <shawnguo@kernel.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: linux-pm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Haoning CHENG (3):
+      dt-bindings: thermal: imx: Document calibration offset property
+      thermal/drivers/imx: Fix rounding and clamp for i.MX7D alarm
+      thermal/drivers/imx: Add calibration offset support
+
+ .../devicetree/bindings/thermal/imx-thermal.yaml   | 11 ++++++
+ drivers/thermal/imx_thermal.c                      | 39 ++++++++++++++++++++--
+ 2 files changed, 47 insertions(+), 3 deletions(-)
+---
+base-commit: c50a940dcde35c647e097e89a9150003abd48329
+change-id: 20260709-b4-symana21-11221-imx-thermal-support-upstream-6-18-a084984deb76
+
+Best regards,
+--  
+Haoning CHENG <Haoning.CHENG@cn.bosch.com>
+
+
