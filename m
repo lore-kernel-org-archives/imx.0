@@ -1,252 +1,94 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013046.outbound.protection.outlook.com [52.101.83.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5204ADD86
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 19:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784055860; cv=fail; b=PXWtOjhXmnp4yrIfGu7N1kh7v2mNJ6t7MIwy1B54E9LGASGFWyjHjaa4RRdBfQbgyLJRs3Q4VpMhC6po3ijxAy4PSuIYN4Kd3oP3wgadhG6wbRrdxCtbzbN5UMVrSk4EMSFMseh5lFNXJYbvAOZjy18neuZ0HE/cDEyGWo05XFA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784055860; c=relaxed/simple;
-	bh=d2q+awOc96mR/+WZiGLFt8owLdiHE3pVyFNFajLWHmg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=t7Q+n4FwSjWcL9SKSYn7Hv4GbSwXbfbaFqpZMiROn1QlEZSbpjJP8GMltad3pMsTruZ12UCrLOq/ljaA3Up9/S/s0WWtrbxI5TAKw9t/5orkp36W6/JZU6nBui7FarEvnSYWmJz8gIplFk5Band1Lt0RSOCK7IgLs3cA6rwEAFk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=VzuQ3YrS; arc=fail smtp.client-ip=52.101.83.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C3E39CCF6
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 19:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784057798; cv=none; b=Xngyxlif+Ezz9SVO61PnwtfYNRdQkWemaduoL6MBL0yIW+0gJDK0Y/hqFlGyy8iBo5p9rjrHH7yZ19T8WNysSuVxBi6FH5ernhaaqWkMeKGcHD8RW2IzUGcFWfZW+P9am5Y4oj5lNb96C/C3wDn/a4iAavYwiNuUpoUE0uM1Cb8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784057798; c=relaxed/simple;
+	bh=skbhAi8pTUy8oSaNNYI6jEo0KjVaw8Twt6vyvVAhe9s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qp5C+GDA0RV6HtmkeVL8EA+l2SAFhxPsE1UMrkuU1wR/dIM4pD8olJUJ12y6IRrD+dkuyoRjqxgjTT8pXLYgxLZ+dn+dAqu1yYwoEKIJk1vNwG5eRHiLsB0CcNmXNLgjJM4LxUoBS0s1+Mzh0ZtFJPegkwfpqgha5LD05UpZ6rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=KLkmofSR; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="VzuQ3YrS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xsZ/yWDRb3bNf2JZvDRcNraztLZRvthx8Gf/qlobCrAkgSou0Qs8JFV8zWCAa3/ibd8dZgShUOjsx9VsPozHT/TdjnUZjo+gHgGObXhXylC5UPncPYJz8Ednj5Rf6U8CoseredPXiYFsRJCOy96/94bbnFkFoIBHeS5Lj6dmlo0zbvCfl+/adFEv37wTNytocvkfGUruxTFSVJG1h1XXizXakW1Lg2yPuMDZXdt9fv2xqOgJpHPA8dxOyCdz0V7HQbCSEzdku3aSvALfM2H9uCYorCSV35OOSseYElZqjiChRs0kuFVRI9fEOGf+WBqXbBf54zwmtIB7IKTdF1gjhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uWc34plD7LITbpAEnDxcw/AuXqrg6UcPptcYyu0lPAc=;
- b=nC2BJqlN0qKYh9afH5P97OIPKI0omuvDzHgcqrEd1pWEtMNaFtzITlxnTflkQKIQLmdLjssZ3KKPq4OmMU8Iw99cvyQFD4SeZdmxEIkW5sF+HIW6cozq3IGgY8d4wAvIWx1owSLlFwwdeFGZFGJAcHn6n2H6RwcwIPYPyNZG4/ErK7OXWQ+pSUhCZgZsP03ujAVszVOhd+i34wHld9L8CBc4/Y8dSFdwM8bPfYrazCXgAVDuTKICAz0gU6ZJhckWboGOZZ8XzyWWmQlAkgKkj6pjUmrdeAy70ENts/g7q76SVuyRqHK69a5HQOhOpd6rIzhO95EwkShasfC9r7qzJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uWc34plD7LITbpAEnDxcw/AuXqrg6UcPptcYyu0lPAc=;
- b=VzuQ3YrSI2w6MUSCu9r8XPLjrL5Bz0OTrbc7/62Nv3Vx8nl38TXKTPhT6p3QB0X2ZmPN9Ri7NI+EDi/myd38dm4nmgKK/5nZFzdyfcb9NUv1BrtvxEtcqYE06FaIlY1Pgj8TAK9ShXEV3FmXRDFgti0cy7TTvxJB2CpKCrBhtnETMVLpJIuvzvmnWSmU5sfGF/iCsVI5/eZhN4MSnh+cwdqVXSjPX66RgMxCufA3mF/Q1KpVl3EdU1ZVK44C1xE4MaSEiDtezQbF5gyGlSEUln4BtFAEuzQdewO5Ev+t25Dv78y2yUH7Wd9+HIfaeO9SsiI/Gn/FbhJHoxpC4sr3Dw==
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AM9PR04MB8619.eurprd04.prod.outlook.com (2603:10a6:20b:43a::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.9; Tue, 14 Jul
- 2026 19:04:09 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::b4c0:6119:2228:2ceb]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::b4c0:6119:2228:2ceb%5]) with mapi id 15.21.0181.016; Tue, 14 Jul 2026
- 19:04:09 +0000
-From: "Shenwei Wang (OSS)" <shenwei.wang@oss.nxp.com>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>, "Shenwei Wang (OSS)"
-	<shenwei.wang@oss.nxp.com>
-CC: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn
- Andersson <andersson@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
-	Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, "b-padhi@ti.com"
-	<b-padhi@ti.com>, Andrew Lunn <andrew@lunn.ch>
-Subject: RE: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver over
- rpmsg bus
-Thread-Topic: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver over
- rpmsg bus
-Thread-Index: AQHdE8OM5Pma2BJDKkCxecbC057kzQ==
-Date: Tue, 14 Jul 2026 19:04:08 +0000
-Message-ID:
- <PAXPR04MB918568AE7B2364EC9D16427689F92@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20260625155432.815185-1-shenwei.wang@oss.nxp.com>
- <20260625155432.815185-2-shenwei.wang@oss.nxp.com> <alUdg9iTysXCFUa5@p14s>
-In-Reply-To: <alUdg9iTysXCFUa5@p14s>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AM9PR04MB8619:EE_
-x-ms-office365-filtering-correlation-id: 81f697b2-6ebf-47ed-4b0b-08dee1daaf12
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|19092799006|23010399003|1800799024|38070700021|18002099003|22082099003|6133799003|4143699003|11063799006|56012099006|3023799007;
-x-microsoft-antispam-message-info:
- q2fOOLnnfCik6wDK8HNfIOvYT8Kg/7Wipaz5GoqOiBNjsrZ78jGhel32YmyCIoH1Z6tGjSnMdH8cX4eNabA/WiKQ4caaeWGRLXRe3euMmKRYVKpNJTHhPvjfWcRa3Iu4TWmHF9u4N7w1SL6WRYSqcGZPZc/thMhfksYpOzuNESToM8UBaruBBlY7CIiFZq9o3G4pJaLRZwSd8EgsxNJfIL28kc40hhripNQhg/IZh6mjtidmVvZEGqUWHKOV5ifKZvcfSvshE3x1kSWk2mvdrAEs3Qfdes3V+dJJXlgXac60vd+8GfYe8Ww1prfiQusIpegptB7qwzhwbm9ICMdYEjLfpStutOD91LzxMhl+Qwh+y2emYT9jwDGe0MHXfPrw4D3kOvliJHqF0HoKRxm/OjiWcXWgfB4QkO9PelMRAwhWt+Clknc087UQdOrfTg+Q/TDOli8G/nUfejknbB3Zpsp4jE/4zFamvgJJR230q6h54GAdljcv2kmGs+Q6ggTTgGC1FRdO9lsj9bgUvIgFHz3aPOtlCtiWHs7RSKWND8yV2P6xtHhSzN5zLznOPkxcW8+nWV/LSLlOqnPtDlCPqxQsUpwLXqMdPFw01apKJfsymN6dtlORHrSSUOE1bg3AfKXfNFLDv5gHZJhdjT5MlNG1enDlah42MnvUQOPJ29pIvxoLKqlrgwTzRaSxNzzWPCF3vhPz5tg3+R+9ZPKsVuLbfVr0yrcSbPqBarLcxBo=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(19092799006)(23010399003)(1800799024)(38070700021)(18002099003)(22082099003)(6133799003)(4143699003)(11063799006)(56012099006)(3023799007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?1N9FwYfVJRePMqYbI8cUdofuFpOQJNiIGoa9Vv91nP6X+b86UyXdEqkKMvGk?=
- =?us-ascii?Q?wY2ikyuWHydUJAZ6TzTHSU/m+GJ9UlcWaM+3su2DX6DoTBYdiZMZTNqWsuLe?=
- =?us-ascii?Q?gBdn90c5QOEsWFyDUBjijsqsA02TUrXX0pEUouhYqGmxd+vd1UyIEbBIdRa6?=
- =?us-ascii?Q?fpfwL+PkH8tqhNUqoQJGBEBkZ8wQun2me2exc77r5iSAPhMO1j0kNl0eD48Z?=
- =?us-ascii?Q?UP7Vm07woULaLoxQ57xzZcL4XJoDIy0NMxioQgi59VXBUsQ47o2kRpveaMJj?=
- =?us-ascii?Q?s196PCti4Mk/kTcGk7p8oyxOaiB6AN5Ajc7FXLgR3Sv4fV+HyNn9/5hd7UbS?=
- =?us-ascii?Q?Er3jN1YAnW6hGaiicCIiUiUCTGYZVVPcu5Pa+SpUTXWwRMvtozOGGJKBunbG?=
- =?us-ascii?Q?v8K2VwpNIzR2XSTtKA9fo0mAxQk5oGCWodjBCLJq9ZYgQYZp8j0l7uKd+dw2?=
- =?us-ascii?Q?K51Ru3dc+5sWmBj6CgZRA/Qpc44uAl0jb3LO+9ey6CIuSFW2GRDrmPcG1hW4?=
- =?us-ascii?Q?XL4RBJzNQEIfMstOIvNqvVEu1zvUs2HHP4vT/W3m/86RsAUi6UMqT6n0pkHA?=
- =?us-ascii?Q?3osmtRlX8dqOpqKQagH9b4E7LFAiyPD6j3HAiXHsinUsQ/v859PDPrlub+CT?=
- =?us-ascii?Q?o1WvHArXzyoT5/MSen15kPDLoR2BJDoaoav7pGmr1+Ocy9U/m4n1MFdC9xjw?=
- =?us-ascii?Q?reZpDqw6UHvAf18OQhJtvX8tRvvjxIi1UOGzFWR76f/DuYzow2eiVLyxzhsc?=
- =?us-ascii?Q?1DPadaMmgLr+tilgHHHFr3wx7jPkWzIrEExN07x2Utq4OGK7amyNmz4uwaPW?=
- =?us-ascii?Q?AzNv0bjOqupsS0uvFxF2FjDPUvJa/4BMu+1o4ZW0WxyaAp4GqGviRSrHAwFP?=
- =?us-ascii?Q?TWDhqOs0NIIVhzCmuhI3IPZJAgqMHkQD/p1/pNx+peZZNcK6KrC4w7ekHmJp?=
- =?us-ascii?Q?lBPAc9gfw3QgVZG4BioHuJXIGwrTJx8Dq1lPqL8ypf3vIyGS82o7sn8Eug8n?=
- =?us-ascii?Q?qyT+yA9BT77ngskru5a6On/IExNFJ07MAXTCqO0iIDmc0wMaWRlTPK66KQgp?=
- =?us-ascii?Q?jJ+AtNJucR/UON9dWk7r3ndgD/Uq5mcTcoXShJMmpkhKt3XHZY1T4hYEjPNV?=
- =?us-ascii?Q?to6tp8NNVlvadjJyb9v2MN7lDEKY4oLhtnh4Iq8ugPL18sOVv8/zSJoxS9m9?=
- =?us-ascii?Q?9ryqJIi2mQKqdBpH0EUdl+VEUR7+GyldHnol/S6mgPDCPGQG/w32Iv1tO8FZ?=
- =?us-ascii?Q?IlYkreT4ywoPQLkHdzCUCmqKWpULAqklQMgdW1ojahDwOhLRsoG/uk/odzoD?=
- =?us-ascii?Q?0UGA1CxbKQ3R5jJLGjvHUVcszMp10vMDgLpjTlLV9jyuRvMtJbRI7a7vJ6ow?=
- =?us-ascii?Q?+e0qCVszp3DOVVqpK2zUsC7mY0Tfiyf/RwSImD7DLgVslJOF+WLDnmuCD3dn?=
- =?us-ascii?Q?ndcKxcpFGwFbuxLAtqVA8Qy0+nmbe8nZBrF6Flm0XXW0jW8iwYviPsKWO589?=
- =?us-ascii?Q?c9agzM411vMkrgqPCMIQBPQwklzdrZ1Y5ms3S1Qt78nF/QuI3swPP2ZOyvzR?=
- =?us-ascii?Q?U9xdS3xXAE0z/8z9vdgQDOs1z206Y5OqCDcbPDOTPgurRn6KeuNqMWGYaBTQ?=
- =?us-ascii?Q?ywg+ZigE7XfaCxOC3YMsbNKGSa5w2GFXZTHlkJpvZm6NayaEpv2a0grrCzQA?=
- =?us-ascii?Q?sDqPkY9KF8j/3VK8NCjPBhTu20JTo9C2nb+vtyg02qoN57X2qK4p2FKfxP5T?=
- =?us-ascii?Q?YCKgyICY9g=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="KLkmofSR"
+Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
+	by mail11.truemail.it (Postfix) with ESMTPA id D7B871F8C1;
+	Tue, 14 Jul 2026 21:36:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1784057792;
+	bh=ouG4gU2sMxcP7NnkE/ZCp7siG/EcEqz4Sk7+xu/lKZg=; h=From:To:Subject;
+	b=KLkmofSRNvGp46eG5l7vx8V8L3VWhoxxkU0Qzios6IVZWT3JpLVXNXwOivqOqVmPd
+	 sKtwfZ5GN719FY3GWAyiu7jqsgou3YE6aQYbNGOifKGrtsbBN3aXT4aq+XC/EPSmiX
+	 cDUQTAuRXJJSjuOz6wiqeNQlRcbNzl4dWC68kqDFfJDPZGOIrR+2hnGuLWYv8JDp4S
+	 rPiH7+i3nNht+tpnPz5rNIAUofST5jjdtDCwWaoBcj6JEzzNvp/w/FMMnBqLKeRFIi
+	 KKT7/5yyufWUTZiT/+binA7KtPbKrRxfeKw5RqnO8tx9eJYfYmqQlvIzT05Sv+GpOL
+	 bVakEGMeY31zw==
+Date: Tue, 14 Jul 2026 21:36:27 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	p.zabel@pengutronix.de, airlied@gmail.com, simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, tglx@linutronix.de,
+	vkoul@kernel.org, kishon@kernel.org, Frank.Li@nxp.com,
+	lumag@kernel.org, aisheng.dong@nxp.com, agx@sigxcpu.org,
+	u.kleine-koenig@baylibre.com, francesco@dolcini.it,
+	dmitry.baryshkov@linaro.org
+Subject: Re: [PATCH v9 00/19] Add Freescale i.MX8qxp Display Controller
+ support
+Message-ID: <20260714193627.GA9616@francesco-nb>
+References: <20250414035028.1561475-1-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81f697b2-6ebf-47ed-4b0b-08dee1daaf12
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2026 19:04:08.9275
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fcHfkZAHCi4UMv+H3KhovtF8UQtlpG7qHUmpXt0swtXDOiXeO2KHc/uFC42y0ZKxYcdUycU1o6HJC6wlUtakzw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8619
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250414035028.1561475-1-victor.liu@nxp.com>
 
+Hello Liu,
 
+On Mon, Apr 14, 2025 at 11:50:09AM +0800, Liu Ying wrote:
+> Hi,
+> 
+> This patch series aims to add Freescale i.MX8qxp Display Controller support.
+> 
+> The controller is comprised of three main components that include a blit
+> engine for 2D graphics accelerations, display controller for display output
+> processing, as well as a command sequencer.
 
-> -----Original Message-----
-> From: Mathieu Poirier <mathieu.poirier@linaro.org>
-> Sent: Monday, July 13, 2026 12:17 PM
-> To: Shenwei Wang (OSS) <shenwei.wang@oss.nxp.com>
-> Cc: Linus Walleij <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.o=
-rg>;
-> Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzyszto=
-f
-> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn
-> Andersson <andersson@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha Hau=
-er
-> <s.hauer@pengutronix.de>; Shuah Khan <skhan@linuxfoundation.org>; linux-
-> gpio@vger.kernel.org; linux-doc@vger.kernel.org; linux-kernel@vger.kernel=
-.org;
-> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> <festevam@gmail.com>; Shenwei Wang <shenwei.wang@nxp.com>; Peng Fan
-> <peng.fan@nxp.com>; devicetree@vger.kernel.org; linux-
-> remoteproc@vger.kernel.org; imx@lists.linux.dev; linux-arm-
-> kernel@lists.infradead.org; dl-linux-imx <linux-imx@nxp.com>; Arnaud
-> POULIQUEN <arnaud.pouliquen@foss.st.com>; b-padhi@ti.com; Andrew Lunn
-> <andrew@lunn.ch>
-> Subject: Re: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver ov=
-er rpmsg
-> bus
->=20
-> > +
-> > +The RPMSG message consists of a 8-byte packet with the following layou=
-t:
-> > +
-> > +.. code-block:: none
-> > +.. code-block:: none
-> > +
-> > +   +------+------+--------+
-> > +   | 0x00 | 0x01 |  0x02  |
-> > +   |   2  | line | trigger|
-> > +   +------+------+--------+
->=20
-> 2 things here:
->=20
-> 1) You did not include messages that mask and unmask interrupts at the dr=
-iver
-> side.
->=20
-> 2) We are carrying virtio-gpio messages on top of RPMSG and as such, this=
- whole
-> protocol should be about thar:
->=20
-> +------+------+--------+--------
-> | 0x00 |       payload         |
-> |  Q   |                       |
-> +------+------+--------+--------
->=20
-> Q =3D 0 requestq
-> Q =3D 1 eventq
->=20
-> The "payload" part is simply the format of the messages as found in the v=
-irtio-
-> gpio specification.  From there, the only thing left to mention is which =
-messages
-> are not supported, i.e get line names.
->=20
-> > +
-> > +- **line**: The GPIO line (pin) index of the port.
-> > +
-> > +- **trigger**: Optional parameter to indicate the trigger event type.
->=20
-> Not part of the spec - remove.
->=20
+...
 
-The two fields above are required for rpmsg-gpio, but not for virtio-gpio.
+> 
+> To follow up i.MX8qxp TRM, I changed the controller name to "Display Controller"
+> instead of the previous "DPU".  "DPU" is only mentioned in the SoC block
+> diagram and represents the whole display subsystem which includes the display
+> controller and prefech engines, etc.
+> 
+> With an additional patch[1] for simple-pm-bus.c, this series facilitates
+> testing a LVDS panel on i.MX8qxp MEK.
+> 
+> Please do NOT merge patch 14-19.  They are only used to facilitate testing
+> the LVDS panel.
 
-In the rpmsg-gpio case, interrupt detection and handling occur on the remot=
-e processor. The=20
-interrupt information (such as the GPIO line and trigger type) must therefo=
-re be sent to Linux=20
-through this notification message.
+What's the plan to conclude this work? What's the latest status?
+I am looking forward to have a way to use the i.MX8QXP display with
+mainline, but to my understanding some required changes on the SOC dtsi
+are not merged.
 
-In contrast, for virtio-gpio, interrupt handling is performed on the local =
-processor. Since Linux already=20
-has all the necessary interrupt context, the information is not needed.
+Can you help?
 
-Shenwei
+Thanks,
+Francesco
 
-> Given the refactoring work that is still needed, I will not look at the
-> implementation.
->=20
-> Thanks,
-> Mathieu
->=20
-> > +
-> > diff --git a/Documentation/driver-api/gpio/index.rst
-> > b/Documentation/driver-api/gpio/index.rst
-> > index bee58f709b9a..e5eb1f82f01f 100644
-> > --- a/Documentation/driver-api/gpio/index.rst
-> > +++ b/Documentation/driver-api/gpio/index.rst
-> > @@ -16,6 +16,7 @@ Contents:
-> >     drivers-on-gpio
-> >     bt8xxgpio
-> >     pca953x
-> > +   gpio-rpmsg
-> >
-> >  Core
-> >  =3D=3D=3D=3D
-> > --
-> > 2.43.0
-> >
