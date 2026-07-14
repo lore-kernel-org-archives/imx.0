@@ -1,298 +1,116 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013064.outbound.protection.outlook.com [40.107.159.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A53E47CC71
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 13:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784037571; cv=fail; b=AJhXDB43zb1hqBBgWjQ9T0gazaADvYMiJNqjh+iCUIBn+c2gn3FcEHgG66Q+GWqyxDKAcSwWvAOC09ko3Bw4QHjLgRJty/ZcH4/E5embcEwdPBOm+E0YenOUj9aZrC9jAzvh/p0KGqe2sTWjQzdXoXJDPjIypBjT4ijZSJDnv2g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784037571; c=relaxed/simple;
-	bh=H9DuQ7uwCm41kN1wHBJhpP3uADStAFXK/GGXqksRTEM=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=h0sKxJojV8hYggOqUiQsX8/PZC6cH9hAvLVcCX9KXstEzW3giC1FplbxCQyTyjLpXDdc6/bWg59lrnNEJ3WaEzF4pzf+V1G3dr8LJ3p4R76u+gB/Yxf2klJ/ZOKHfTRrRIXQopF8l6+JT7oeKsX8Lo13AfuBl4e7JgLWpP3EWL0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=cGQelEd1; arc=fail smtp.client-ip=40.107.159.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB72A43F4B5;
+	Tue, 14 Jul 2026 14:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784037845; cv=none; b=LArqBOES336vGc4q824gcY8Dy2Ots3MrtaEXBDYXV960Phjiohom2szBIT1SCjUC7VRB3aY/LkKzr2Q6G0NPtTxJYymWUfRjW3bekzRy66lwQOjQ5LN0k/53Und8GpxO9fZFlFaEaF4fDM+vk1ayVp0Fn4ZkTZxsU1hdMU161js=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784037845; c=relaxed/simple;
+	bh=rmm9DE3itcfBcUVGLYDs+ypSzWD2oK86r/79baoRmgU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=UVAmuOitvVohy3/4b1KgObjK/VrxAy8Kb6pAXuEvv6O5INTTS4rpMZdIbK6A+nWImMXvQTtunSi6G0v1mO3gyiHGzi1RjvU6/iNUbEpMhENKFWNUGi4hD60KiTC8UMVEpK+PhzyXsgNx6clGIEADCL/vYt4aMJBC41EgdQYliUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l057zPmA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="cGQelEd1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B8YZZuE/8XlMAbUfrkONEBBeTmgxY/syzyduFsIss2eODpx92dJlPJfzDGQLhD6Q0QfzD9jP+Qcvl0pCnaixNJE2WM8FF8BaH/5OUjlFsWh9SNCq6YaNuxLd9kbL2cxMKURPzCVsblpplY6/s4HzBwB5fjD4GlT5mzMsIwI9srgYyxM0g8VEuaRslo3MJYkYkXYVmEf7AbAiUQ5rcIwUldvkpnxZ0vUc10QSjuObDf2yXESe+Bxedaw05noetSqmB/Sn54hX2Lf4MSpw4FWE2hmnJCPFvCWV7y1CNCWspe/gRHRFCeUtnb2mlv6bAvev4H5v4GU4VlBzjcKKR/M/nw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zJd8KOJeCrmOuwIi1H7RUUzlHeJR0F8Ww7f23Cipsp0=;
- b=oHe/e79+zEvQLkxe6/1iewyoYKL7cnwNNopZNDsQgaVbkITM+YFM235ttUxjYWo0I/F/EnSz++jOGjHHP0lRUf3p4jP9FWF0g4lbk4MgyC8gxRr9Hrn40rjNMBS+1orJfYKVccde6DiZf9m7p61NW9lxbAXUBYEOA+uZ9wmo+x55wOBLUi2X10oA2T8DWOFCFJBvAMKMLvFAjpfRZDvpyVvHlA6OdAc4y/moF1FPrCXHV5eZK7a3Qkbor06huQNttHx1f9+9GJrcYq27JkjProTpyqedljx0SbUCy9nmniebkSNhisqMPtLRBMd+6/4AHMG+x/ueZOvczuSgBfY+wQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zJd8KOJeCrmOuwIi1H7RUUzlHeJR0F8Ww7f23Cipsp0=;
- b=cGQelEd14Ly44buP4pD3/olWOBn77g2g20+EtgCHHHDbAVM131mxw3dRSK1rcdZvlNDg39+peDPC8HLSqilSH6kTd6z9o9jq5PDe5Tw2ahdLUbp8i+enphYBJG4khKNTaz97gr8jcBeeu32ApmpD2ifjZ1/EYozGI1xbphOpJxm9vwGTuRTTpRtZhxl2eaQYNp4Tu4fBA/28NjrZNFS49QhkQYmkIH8waDwtm+zBi6DUfY2NUgpXclQZdN+bHf8UJLohwB/pxSOltukTpAiu7S6yxfi9l95rDvNulrwtIc111TzGfgklw7wV3Tn+7LhS/9GVDtfkhFRYL+WpWvitOw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GVUPR04MB12193.eurprd04.prod.outlook.com (2603:10a6:150:33e::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Tue, 14 Jul
- 2026 13:59:19 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0202.018; Tue, 14 Jul 2026
- 13:59:19 +0000
-From: Frank.Li@oss.nxp.com
-Date: Tue, 14 Jul 2026 09:58:48 -0400
-Subject: [PATCH 6/6] arm64: dts: imx8dxl-evk: add lcdif overlay
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-dxl_lcdif-v1-6-6761a8a6592b@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l057zPmA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3D41F000E9;
+	Tue, 14 Jul 2026 14:04:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784037844;
+	bh=Psz2s/QJ0wuSbKBdRa87DaG1zgzj65QUqPJVExOKTB0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=l057zPmAKzBrNgvhCMY0aConPhwtSiKxK9IyeFo0RRKOJuArM2IbCt6T95ogJ18sm
+	 SEQOotsv2v/O2qkWaayfWvIx7slfHLf1jM3XjXRKLi8xKufiGvCfK6o9Trcz4fXx6z
+	 SmZOJ3l+SWp5Hvx2GoTRgkzzRqaNpYlPGbSmkCf0h/t1ekieEyK4Cj2TqSjbunfqEQ
+	 8JtRTO+lhZ3qxscXSmxhTPK5MdBZQco3j2+om/5OY16pJeWoHQQD4roaY/ISDhD8Hy
+	 U8WY3w5Jd3n2MAGz4aZZey6PuwbZ8OynD98fJBkUtNShPDa2+LhYV95OZthIHSNNqi
+	 5VcnE9Ga9frXw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/6] drm/panel: simple: Add waiken WKS101WX001-WCT
+ support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Frank.Li@oss.nxp.com
+Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <20260714-dxl_lcdif-v1-3-6761a8a6592b@nxp.com>
 References: <20260714-dxl_lcdif-v1-0-6761a8a6592b@nxp.com>
-In-Reply-To: <20260714-dxl_lcdif-v1-0-6761a8a6592b@nxp.com>
-To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Robert Chiras <robert.chiras@nxp.com>, 
- Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037527; l=3794;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=E3cBCZFHvVlN61oX5YXCDAviH/rZK8jt0J/OAROvPI8=;
- b=4DW0X2UNfXf5ShY2mypfasirBq0QT22hSwtlCEXjgThdFpKldJaR9lEDbDGAfyaqGRTHtcruc
- xmArdlTIJ1uCSmh0GXXBYlNX6zc93RF7PfiCuFXw5G/aglBtTP6Tz2c
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SN7PR04CA0162.namprd04.prod.outlook.com
- (2603:10b6:806:125::17) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ <20260714-dxl_lcdif-v1-3-6761a8a6592b@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 14 Jul 2026 14:04:03 +0000
+Message-Id: <20260714140404.2E3D41F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GVUPR04MB12193:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34653b40-8991-45e1-fb95-08dee1b0198e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|7416014|1800799024|376014|366016|921020|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	cwzvVDLo1IT5aZSiPGvDuuIt3KRrOVSvqZSyHi6i+19szW6C6VYvluKCyA98MhR8xbewR9gca8y4UT/hCbOHpTdB2XuyhJtHFBMAu58LZDcHwrWskgOnWIu8v3lhWbDbJnS2brz5K3O0gWLruA7zsnG1hfc9ZzmGRrPWTF5sCoVmGYkxMbbIzMWICOENRSBf/+6P5cGFAXpUOxyaGAxVXKCGH4QnmKIMlyGd+jr+YvV/K4+Mm/PzrVTQeFEU5tmHm3keo178NRT4Xb5tGpIu3z10wUxXisQ190f5LNhOU/xhenk8P/xfQfD9xpjrv0pqMcLwIOWp69DaWvrtNnU2eQCASJB8A68PAkcfFDMaq4agsPrtfFRblB9Xtrh63LjQ84Va8XTUwexAtc2xSpZSPMd0qYGnuj+Rj579Nqib0wvjPEqiXN3YZQJ/qg0KVdJPRWGBKS+Ce5j3bK1mBI4KwIwAR0dVT+ZyvfFM2HO4oDyqwGUCIhQ/hm+6Y1q2NoEi6A0TAxyCis43dXIoF2yY2vizbsTc2sHgJHSJs4pggToTpFP+TUM/DCUb5zx/6VnaVcbfE8+sxwz6zxYNYLd7CeHpqz/CFLYFIExFe30pO83i3dEodoGfiBk/vT9XCXDghGv7rP18J27Rhtdv4a2977jTwPHCwcikKyEN3Z2IzDZvWjosw/GDHizuBr7WuQ/SP+xw7LMJ/UCMfE4/CqCjmw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(7416014)(1800799024)(376014)(366016)(921020)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SldyWU9TYjZjQzg0ZDVRRU14VFYwL2w2amxpeVd1QUU2aUJKU3ZjYW9ZdmM5?=
- =?utf-8?B?cjNDOGhXUWp5bEhNTVI3aWJYNFZucjZHdzNNZkxnWEM4aHpEcDUzdWJBM2lC?=
- =?utf-8?B?RlNRYzdVRk1xZmoyS0NsTXlJU1VqRUpkM3RCbUVhTlJXaFE5K0hkUk9Xd0xa?=
- =?utf-8?B?STJyaGw1MVlkckIwZ25sQ09LRUpwOGY0QVdMaU5GTlUwQkcrSFlpYWFsaVdz?=
- =?utf-8?B?QlVrZTdOdHJPNHlnbkJMb0JRcTRnb2EvdVV3VENGVVR4TVMzQnlsWkwreURB?=
- =?utf-8?B?NSs3VFNMcVQzd0VwQkxxRFRIREgzZ1IvdXE3M2E0blJTdXBpY29WVXJ2MmpY?=
- =?utf-8?B?VFlPNzNnTDBucmlnTmMxKzN1NTVpbHdHUVhzNjhOYTcyOExLc1RoMzd0L2hM?=
- =?utf-8?B?Qjk2VHEyZXZkRG5XcTBLMjU0anZONFVVRXVXTVVKNzE0MVZrUDlHRTJoM2xT?=
- =?utf-8?B?b3lQSUhSRXNTcW5DSCtadWVydDViQS9rNkF0dGtpYzduS2NVbUdwbGVuTGhZ?=
- =?utf-8?B?MS9OMnZubVYzWnJ1MmFNb3ZpUVRSbWZKZFdYZnU1Wng5a2MrTkczcTJtY2Rp?=
- =?utf-8?B?Q09hS1o3WldtcXRocmZDRDcwYTVBVjkwWUk4M3o4STNlZkNYWmcvcENnRUtD?=
- =?utf-8?B?T0E3SHU0bkVSQmZYcW5vM0RrUnVuMm5paW9YcWlEbHk4c0lqOExRZ1ZvQzlF?=
- =?utf-8?B?dkUwTmZBTVpZR1JhL0wzWEFXckUvUU9rN1NvWGluTmRBRktabENreG5OOUM3?=
- =?utf-8?B?YURORjFGYnJ6SnRPQ0poYlQ4TEpnWDZNaTFNbWlqTHljZDhsZ3NXYnRPcmJ4?=
- =?utf-8?B?b0hXOWcvSVpaTHg4VzBwRld1QUNBYlMrWDRUeWQ4enFhaHlzWnNWWDZDcE1r?=
- =?utf-8?B?azQzMWFSNmtPcThwMG5LWkdTNTZDYm5pb0J2bEtIa0hzV05wMG0vQ2ZodlpJ?=
- =?utf-8?B?eUdySkREQXhodEQ5MFJrNnk5b3JLL0RSU0o2UVpiK3ZXeG9vRExOU3F2RWtq?=
- =?utf-8?B?MkZKeDk0TjBYRjZ3VVNwaEUvS0w1TkJ1bnNPY3NlN2VZVDRLc1diMlZ5YnIw?=
- =?utf-8?B?Yi9kYStVdHFDeG16bWplbUcrNEZzWlRHdmRERStvUFU4UGlhN1lQYitwSUZO?=
- =?utf-8?B?ZkoyN3JsaGp3VzlBNGxwYWlJMUI4bWlwYk4zbkhoSTJxNzBSbUxUQTQ1OEYv?=
- =?utf-8?B?UmVEU3JIMGlDd3J4azlUL1lQS002SDEyM0kzNlRiNEI4R3RaaERBU1FWeXFj?=
- =?utf-8?B?dUlzZkx4ZkxlRWIwbmduMWQwZWRlR1RxWHhWSVZsZEs2N3ZtWUVZaGEwQnBu?=
- =?utf-8?B?M1lvVWNMRTRNM3Nxa0hmT0NTbHl5clZIbmhSeHRCUWRhR3Y1TXJkbzMzTjFv?=
- =?utf-8?B?Q09BcktUY0tIOEJXb0EvREdnNVNkQWpYNTZ2SzlqOTB0NWFSeEN1WmRJSldJ?=
- =?utf-8?B?V0ZoOXg0TFJFKzdOb0o0dEE4ZDQvZXNoNEJiMWxBZjRVTmtQWjJNNTZRb08x?=
- =?utf-8?B?a0haK2h3T1crNTdJcFNsSXdlaitEZis2VmlMcEtOU3pydXhvdXpjeUlRdExE?=
- =?utf-8?B?UGd4dWZIcFdHZWZUWEJmbXpJNUNzRW5wY0dDbEhJaHpYMXhSc09QbEc2QWg0?=
- =?utf-8?B?akJEOFV4azIzLzRRd2xUdnJQMWhGdTFnWjVrQTZmc1ROR1krTTUxWkE2cTN4?=
- =?utf-8?B?OFNlSHJCZ1hRMkRIaW1HcWROa0I5V3JYVVVQaS9ldkVuZ1VMOXpXWFVuQzg1?=
- =?utf-8?B?V0RudTR1Q3ZiVWYrenYwZG51TG1LalZYS0hUVWVLbGJDVjY5QjUzeW5JcE1x?=
- =?utf-8?B?NnB3UzJJb2FKVHJwQm01cklQWW5JNFd5Q2I2emdadDYvUmhGZzJIQS9tcjU4?=
- =?utf-8?B?L0Z5elp1YUlxOVdvNVhWbzZCd0xNOGw2ZmFoY1pXZVNXUjNMYWE0ejZMT3VQ?=
- =?utf-8?B?MWhMTXgxcS96VlFJYjlkMWsrUGxSY2VZbWkvbmZGSURCdWJ2ZmYvcGUvUXdv?=
- =?utf-8?B?WGZTVmhBTzdtdVF0NStycVc3Tmx6YzMwK3hhcGlEMW5ab1NhRkdSZVRIdFhV?=
- =?utf-8?B?WWdQbWhQWmhaajY3U0xSQVk0bGdvNGJGK3dDMXhET05CMEdrV0dPS011akhm?=
- =?utf-8?B?WEtpS05OVHRhOTgwcUFndlNZOTc5dVpZc2FkWkZQWE1zKzM5UXU3Qm5OQ0dR?=
- =?utf-8?B?azA0RzZmaU5EU25KMktNbFk4aERuclBiS3BVbGIvM2JuT3BSZHpGaXcvZHRn?=
- =?utf-8?B?cVdjNnRhclFyaC94YmRNQlprZ0w5R1N6SW1IcDVsaUdiYUdjU3AvUHl0MkZo?=
- =?utf-8?B?VzRQaERiU20wUkJONjV0OU9WSm4xRURxSGxVOXBYcy9Bbzc3RUVTTHVrMlF3?=
- =?utf-8?Q?tCxfwVlfaou+D+NFetmU8ONECH/rmg9YQUHc8?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34653b40-8991-45e1-fb95-08dee1b0198e
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 13:59:19.4746
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2dmbwaGHLU4ErVRJAWOPKtA09FnF7EzozlG9r4bfYHvpPxgCAahzRznjjspLvSulVykQW6u8WexCzIAQNeA/xZg8FEy5152qpaKaJ4QBLxJ79fw2XXbHgoGZjOeyFl3H
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVUPR04MB12193
 
-From: Frank Li <Frank.Li@nxp.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] Mismatch in physical height specification between the display mode =
+and the panel description.
+--
 
-Add lcd panel (waiken,101wx001) support.
+--- Patch [3]: [PATCH 3/6] drm/panel: simple: Add waiken WKS101WX001-WCT su=
+pport ---
+commit 3308303d1b9690b2cd880fcdaaf60adb3ce4cea7
+Author: Frank Li <Frank.Li@nxp.com>
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/Makefile             |   3 +
- .../boot/dts/freescale/imx8dxl-evk-lcdif.dtso      | 114 +++++++++++++++++++++
- 2 files changed, 117 insertions(+)
+drm/panel: simple: Add waiken WKS101WX001-WCT support
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 8ddaab127ab9c..aef7bc3292484 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -111,6 +111,9 @@ dtb-$(CONFIG_ARCH_MXC) += imx8dx-colibri-iris-v2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8dx-colibri-iris.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8dxl-evk.dtb
- 
-+imx8dxl-evk-lcdif-dtbs += imx8dxl-evk.dtb imx8dxl-evk-lcdif.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8dxl-evk-lcdif.dtb
-+
- imx8dxl-evk-pcie-ep-dtbs += imx8dxl-evk.dtb imx-pcie0-ep.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8dxl-evk-pcie-ep.dtb
- DTC_FLAGS_imx8dxl-hummingboard-telematics := -@
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk-lcdif.dtso b/arch/arm64/boot/dts/freescale/imx8dxl-evk-lcdif.dtso
-new file mode 100644
-index 0000000000000..c0e573fb5f915
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk-lcdif.dtso
-@@ -0,0 +1,114 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2026 NXP.
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/pinctrl/pads-imx8dxl.h>
-+
-+&{/} {
-+	lcd_backlight: backlight {
-+		compatible = "gpio-backlight";
-+		gpios = <&pca6416_1 5 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	lcd-panel {
-+		compatible = "waiken,101wx001";
-+		backlight = <&lcd_backlight>;
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&lcdif_out>;
-+			};
-+		};
-+	};
-+};
-+
-+&adma_lcdif {
-+	pinctrl-0 = <&pinctrl_lcdif>, <&lcd_0_fun>, <&lcd_1_fun>, <&lcd_2_fun>, <&lcd_3_fun>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+
-+	port {
-+		lcdif_out: endpoint {
-+			remote-endpoint = <&panel_in>;
-+		};
-+	};
-+};
-+
-+&cm40_lpuart {
-+	status = "disabled";
-+};
-+
-+&eqos {
-+	status = "disabled";
-+};
-+
-+&iomuxc {
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			IMX8DXL_COMP_CTL_GPIO_1V8_3V3_GPIORHB_PAD  0x000514a0
-+		>;
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_lcdif: lcdifgrp {
-+		fsl,pins = <
-+			IMX8DXL_SPI3_SCK_ADMA_LCDIF_D00			0xe8000023
-+			IMX8DXL_SPI3_SDO_ADMA_LCDIF_D01			0xe8000023
-+			IMX8DXL_SPI3_SDI_ADMA_LCDIF_D02			0xe8000023
-+			IMX8DXL_ENET1_RGMII_TXD3_ADMA_LCDIF_D03		0xd0000023
-+			IMX8DXL_UART1_TX_ADMA_LCDIF_D04			0xe8000023
-+			IMX8DXL_UART1_RX_ADMA_LCDIF_D05			0xe8000023
-+			IMX8DXL_UART1_RTS_B_ADMA_LCDIF_D06		0xe8000023
-+			IMX8DXL_UART1_CTS_B_ADMA_LCDIF_D07		0xe8000023
-+			IMX8DXL_SPI0_SCK_ADMA_LCDIF_D08			0xe8000023
-+			IMX8DXL_SPI0_SDI_ADMA_LCDIF_D09			0xe8000023
-+			IMX8DXL_SPI0_SDO_ADMA_LCDIF_D10			0xe8000023
-+			IMX8DXL_SPI0_CS1_ADMA_LCDIF_D11			0xe8000023
-+			IMX8DXL_SPI0_CS0_ADMA_LCDIF_D12			0xe8000023
-+			IMX8DXL_ADC_IN1_ADMA_LCDIF_D13			0xe8200003
-+			IMX8DXL_ADC_IN0_ADMA_LCDIF_D14			0xe8200003
-+			IMX8DXL_ADC_IN3_ADMA_LCDIF_D15			0xe8200003
-+			IMX8DXL_ADC_IN2_ADMA_LCDIF_D16			0xe8200003
-+			IMX8DXL_ADC_IN5_ADMA_LCDIF_D17			0xe8200003
-+			IMX8DXL_SPI3_CS0_ADMA_LCDIF_HSYNC		0xd0000023
-+			IMX8DXL_SPI3_CS1_ADMA_LCDIF_RESET		0xd0000023
-+			IMX8DXL_MCLK_IN1_ADMA_LCDIF_EN			0xd0000023
-+			IMX8DXL_MCLK_IN0_ADMA_LCDIF_VSYNC		0xd0000023
-+			IMX8DXL_MCLK_OUT0_ADMA_LCDIF_CLK		0xd0000023
-+		>;
-+	};
-+};
-+
-+&lpspi3 {
-+	status = "disabled";
-+};
-+
-+&lpuart1 {
-+	status = "disabled";
-+};
-+
-+&sai0 {
-+	status = "disabled";
-+};
-+
-+&sai1 {
-+	status = "disabled";
-+};
-+
-+&wm8960_1 {
-+	status = "disabled";
-+};
-+
-+&wm8960_2 {
-+	status = "disabled";
-+};
-+
-+&wm8960_3 {
-+	status = "disabled";
-+};
+This commit adds support for the waiken WKS101WX001-WCT panel, which is an
+industrial-grade 10.1-inch IPS TFT LCD capacitive touch screen display
+module.
 
--- 
-2.43.0
+> diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel=
+/panel-simple.c
+> index c09bf3db5e78a..26fd150aa4454 100644
+> --- a/drivers/gpu/drm/panel/panel-simple.c
+> +++ b/drivers/gpu/drm/panel/panel-simple.c
 
+[ ... ]
+
+> +static const struct drm_display_mode waiken_101wx001_mode =3D {
+> +	.clock =3D 71100,
+> +	.hdisplay =3D 1280,
+> +	.hsync_start =3D 1280 + 70,
+> +	.hsync_end =3D 1280 + 70 + 10,
+> +	.htotal =3D 1280 + 70 + 10 + 80,
+> +	.vdisplay =3D 800,
+> +	.vsync_start =3D 800 + 10,
+> +	.vsync_end =3D 800 + 10 + 3,
+> +	.vtotal =3D 800 + 10 + 3 + 10,
+> +	.width_mm =3D 217,
+> +	.height_mm =3D 135,
+> +	.flags =3D DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+> +};
+> +
+> +static const struct panel_desc waiken_101wx001_panel =3D {
+> +	.modes =3D &waiken_101wx001_mode,
+> +	.num_modes =3D 1,
+> +	.bpc =3D 6,
+> +	.size =3D {
+> +		.width =3D 217,
+> +		.height =3D 136,
+
+[Severity: Low]
+Is there a reason the physical height differs between the display mode and =
+the
+panel descriptor?
+
+In waiken_101wx001_mode, height_mm is set to 135, but here in
+waiken_101wx001_panel the size.height is set to 136. This mismatch will
+cause userspace applications querying DRM properties to receive inconsistent
+dimension values depending on whether they read connector or mode propertie=
+s.
+
+> +	},
+> +	.bus_format =3D MEDIA_BUS_FMT_RGB666_1X18,
+> +	.connector_type =3D DRM_MODE_CONNECTOR_DPI,
+> +	.bus_flags =3D DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDG=
+E,
+> +};
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714-dxl_lcdif-=
+v1-0-6761a8a6592b@nxp.com?part=3D3
