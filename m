@@ -1,511 +1,378 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010043.outbound.protection.outlook.com [52.101.69.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B494C77D6
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 16:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784046956; cv=none; b=L/C0eiH3SmEMIPX25Bjvbjvg8hJAEJlReZhyyAHAX1SOHTM/lYJvzuoVpPaJz6ub492Xe0XteDOFSrb6mj8YxiYS7SW29Azx5+XotIsbPbg/DcNMOEeYoucXOz8jnczOlPFmn3Cyl+1r4o87LOXbt2HpZkrsEbRIpjA9xk1G2Bo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784046956; c=relaxed/simple;
-	bh=6z8HsUuKgrLx2/y0WOD8TNbRYLVORNbEn2kqa03cmH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YLhK5jXTVw/zSqr0vwDANwRVaix2mHklzNqYSYL1PVgpp9QUe8jnZ5Lkn3zbPv3stxdiALyXzxCknOcODtb0GyvkDHBe9djisN84gWtc0cZAT5wyqMD+r397J+ThFGvpIkBCFxjAzYL/oerNaKqGGWoNHdw0fpdaWLQupGaiij8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tfryIdYr; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1846141A906
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 18:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784054631; cv=fail; b=CiJkWKOn0yX+4c/6rlqf1jP9YKfIXHg0ztxAM/4nGqvYVlhksY8fdS9yBnJB6jcyrn38qWQKrD59ZKL3O67efzDh8VD59F9wpa3iaU9x3aJUofIDsZmBKT69RXmNZIJ7UX/quLvp+fXsIA0l/SDLA/W5M8zxNrJRl5WT+mu3Z+4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784054631; c=relaxed/simple;
+	bh=jRYNFRNAD0T7H4by4Cajdb5yJH8QKyKoLXTVH5uIGgI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=m9bHNCYRiVPDomhz07Q25zrw0eiwJTUliYMx4J/xpfqZBLrtC6qZMYzSSRe7yonsyWy71uIwZrl9R9EClHb6JI3LykOQd2zOgR48AZQ/p/6KGgFVZZlQBUPBrFDit4atj3zKRdtYrAUALrTNEWvlTpAupKBmCeqhLsNz5DGjzyE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Bg8j405j; arc=fail smtp.client-ip=52.101.69.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tfryIdYr"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c85b73ffb52so2476234a12.3
-        for <imx@lists.linux.dev>; Tue, 14 Jul 2026 09:35:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1784046954; x=1784651754; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mDfqLI3RfxmSiaSDiydNo7YcWiprzsWXHzTIYi3ikUo=;
-        b=tfryIdYrAzlvQLdIznzKed1X3gOZiC/M/M7z9tVzNrLQKFR+lNISrFcbGfP4Hwd3d/
-         SCi2s8xXnWM5tm0DKZbL9mDcWKCJWacUdfdS1frvpVqRed5Iee639MqKHZALobrhH16t
-         t+l/rCVI9DhactZqbeA7zXDIFn/T/MwWAfW2ddvLqxbNARjyNVE3xqYvn0O757cITHf5
-         8rM6pFbdrTQkMLSzoyiOvTYmJanJwNLpenySiFm+Aa6Qk2+/mW4z2O+0Tu0uXdD5yQP3
-         HTc2sP+Q2Qhk+IVQ5l8VhjbtbW2DA5ej0lGhKJN3RefF+Vtvq9cv7SqKY2tdwgtCUSXL
-         FQEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784046954; x=1784651754;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mDfqLI3RfxmSiaSDiydNo7YcWiprzsWXHzTIYi3ikUo=;
-        b=Njh1y1VQyGOIXHBXX0peydwDZE9IYPDO2IDFdcEu+meGFmVcV0S1ph96hHyArOkN01
-         FK7ibG0JDJ7xGti/Ygq2zr7jvjejuomcoNVuURfLMNjIIIMGkDgyZoZOAZU2mXfW1yja
-         /FPm2y+gJHm+AobXBx023/N67n106+Yu2W+IzJKcZBx843PHLYTPQz4MzFcorSqL9TY+
-         M7+oFTVdvKksWT7uA/QF8aAjVjEjUzrWLmxyKZXqgirSCiTiU4qZQrlZoKSy7aJHH5ii
-         ewvjqNcYyI0RIqDdFylK6dZNm6VkVNqO7Na68/7/pteQ+ur4FRJLPil9SPmlexJnRQMl
-         Dh6w==
-X-Forwarded-Encrypted: i=1; AHgh+Roa5UPOMuRxZ/NvZF0NMyyyZMuFVZF0DOJvWutVrww1vdzHXoxx95WYfAfUGNOBcoaMlo4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywx2lbfRerIM9SERDdrKblPfIOV67KxvzOmy4Ifv/W2dUKNJtA3
-	4yK7rx+HpfMxoVJPlV/vERxf7qqEI2kHLme/r/TuytHgMVgp9hwAHJB8tUvgz3VfO1Q=
-X-Gm-Gg: AfdE7cnHryV7SLg5bvnox7o3VfAV8Lw1+V9E6Yj2QawClmabJHV3uRuIaAQ/vWLN9Vm
-	JXvdgLjvIK4vAr0/FytgVoQo/FDINH1qLLtbQDd2RuC+wRoKYevsXUT18TjQpQI73sFHkUPilmb
-	ku8JUdl7cQzEoxNv2wgI8aaltoFWk5EM7GH7JkVq5QvYu9MfG//XofnfXR5pHKgJz+1nmv7AGyI
-	n868ce5XBhEeGO0thGTevqf+hLBAO1TYKZPzt9seVjqg+qoEcr/vj2Lf4+Pu8wCbSoD/BZBGLEX
-	wQJqQa3l/NDp95HOK/G+5d7WkBpzP+oFxPLFL22ojwefRvnxFjLsBiByGsMLuzf75pI8ZnnWkhT
-	gdys9Pxe6CvJBMZDNCewJ4V1uQC1juDEIWNlP+6hOu2c4NNBKeRrSZ7stv3XKl3JbY8qqnjBHZq
-	o2cnxnxe+9V83+07dl
-X-Received: by 2002:a05:6a00:124f:b0:846:7507:4e07 with SMTP id d2e1a72fcca58-8488975aac2mr12250820b3a.39.1784046953503;
-        Tue, 14 Jul 2026 09:35:53 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:24cc:3af8:4244:12fe])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f7dada6sm1772036b3a.42.2026.07.14.09.35.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 09:35:52 -0700 (PDT)
-Date: Tue, 14 Jul 2026 10:35:50 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: "Shenwei Wang (OSS)" <shenwei.wang@oss.nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>, Frank Li <frank.li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Bg8j405j"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yDF5vBGnNhMoJEcZqYcWdebuKqX08Hk84O6YCPvxFvhcl/6C+TiN+0PuFuOxQU6Lfa3wD8bltp5jBX45cb1Xgi+TLHdbkoXjrrOAkjnABWq2DSPOo9SeJB5EvLB32Rvx5wD6ZRGlV/QJbM3D496r/QgUIKQXYW/4xhSBHtgx7GEQ3sJWe9CEeHJyevml0uO0a3SxpDOb65ixGxxBXlfK/uiZzp6Lv+cInWherY0xwkLJEZ4Ndz3tsNj5N4pBr6Bx4mvom/yYFH8N/87PuJzDzxSLvNY1XrcxFi1sig2lzXmLliPZNVxjg+d+1oTEeCvXuTZrfzQf6t7GtlN7pkVbDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hNHT9h0/5iedFNXxcjTF9aJKHUHMEWf6C50U7cP7IqQ=;
+ b=aPZ3Btfl4RfUeoFMZpQyuB+qGA/m2ATv1zr8MUwgD4eWiL9cyKp2mzsM+bP7La29YGl4M7zamwzLom5ZAOD6eTN04nrEnJPhuNKJZUrcUahBJaHfwIv859nkqGprq5HhftS1rbBxKBL5jFtNtYg+TWos5gvbChg6SZKLLf01srUldwrpth0Up8+URrz7KcVpvusmuvySSM++QRgnvJ06z9yYfou0PRHF1sMwtNYJYUW1CXhg8GPwhgUip0cfUaDPxboKlFTnf9FYBUS0AFYfUlB6oFgzIQwImY/0GdzHpWHol7pU3IhAQEU+QEdKzaBl6k6tRLtgi+fPZ+oe32DJkg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hNHT9h0/5iedFNXxcjTF9aJKHUHMEWf6C50U7cP7IqQ=;
+ b=Bg8j405j3LKj4C95WAtaVPkBP9+oqXM5MrAUO3K1KABFOm6Hunstq1SSVJf8uHud9rwcWM/ENKVf7AecKwJpjQ/rGzxml5KMxoCox0sBcrBhw12vOyXl9maW1beVCY7WzeYNk8PWrp9xll59SrWT/sjk1Ra5dQ8VASnf4FqVnPof1km48A14QjIqAfYodDIU8c3ujJCB4fZz0SQPyONPk0eDjt9c5WYe8bi/k9q7mFA9SzaT0focs6DjDV8OQYT6Zgq5K9iAxu7pbuOEPEQpH+RUCTOX/ppxW24zl7V8aClj/CmJuT7YG1h1YcFsq7TL5mZxpl95Pp0zk8AQ6CkJ/A==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by PAXPR04MB9397.eurprd04.prod.outlook.com (2603:10a6:102:2b5::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Tue, 14 Jul
+ 2026 18:43:30 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb%5]) with mapi id 15.21.0181.016; Tue, 14 Jul 2026
+ 18:43:30 +0000
+From: "Shenwei Wang (OSS)" <shenwei.wang@oss.nxp.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>, "Shenwei Wang (OSS)"
+	<shenwei.wang@oss.nxp.com>
+CC: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn
+ Andersson <andersson@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
 	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
 	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
 	Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
 	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
 	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
 	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
-	"b-padhi@ti.com" <b-padhi@ti.com>, Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver over
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, "b-padhi@ti.com"
+	<b-padhi@ti.com>, Andrew Lunn <andrew@lunn.ch>
+Subject: RE: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver over
  rpmsg bus
-Message-ID: <alZlZvQQwq-g6VL3@p14s>
+Thread-Topic: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver over
+ rpmsg bus
+Thread-Index: AQHdE8Cq27ppElL+eEigN5N73Xpyyw==
+Date: Tue, 14 Jul 2026 18:43:30 +0000
+Message-ID:
+ <PAXPR04MB9185B1A3F16D82E8C0C76EE689F92@PAXPR04MB9185.eurprd04.prod.outlook.com>
 References: <20260625155432.815185-1-shenwei.wang@oss.nxp.com>
- <20260625155432.815185-2-shenwei.wang@oss.nxp.com>
- <alUdg9iTysXCFUa5@p14s>
+ <20260625155432.815185-2-shenwei.wang@oss.nxp.com> <alUdg9iTysXCFUa5@p14s>
  <PAXPR04MB91852808D2C7491AEF98CF1589F92@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <alZlZvQQwq-g6VL3@p14s>
+In-Reply-To: <alZlZvQQwq-g6VL3@p14s>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PAXPR04MB9397:EE_
+x-ms-office365-filtering-correlation-id: 790b92e8-166c-462c-f232-08dee1d7ccb6
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|376014|7416014|19092799006|366016|1800799024|38070700021|3023799007|6133799003|56012099006|18002099003|22082099003|4143699003|11063799006;
+x-microsoft-antispam-message-info:
+ gZ8JYN659EmXx3ztehAJjXPlY4hglNGc89YBePUsqJNPcK5D3bPnPibCbM/h3wQzOba2M7pZXSp+wEW9O3Xp/FgSLTJ/TvaGXkFpcgI9AB2xSfmyW98WftqzDP4Qfdh5GVtt3bGKLse46K51CTje00fN+X5wKDn22hO3pspzdWO8HUcEh6WiRJc0evkQG+sG4FOMAfbK/hE6btLGbxsLkezWE6dM3EuplvFPTM7k1lbNDjwNM/Nk0mYQ/nG/5XfX7hwy17etMyTv5M702yz9+rhFWZ5xgqMdFxT3jTqNjScngFCN5j6sr06nMj/JUuXHjWQA+7aysd/zXlEuPwY41Muf1+1nwP3wCl0aoTGzOMD4/kjtEgXkCLAaLi8cwgtDnhJ3uIi8MhITzgcnj/Iu2xprO0fc1vo084Q2Bj0BTKYtDcF3aUddw5sYP3G62uecCSRxzCeBneLjM0EAPhLthvol3KwXiT6JsFiOqF4M4x9Quxfo9APYP2jDGp2lHAaB8muu3DuPzFDslAjSmUgqJjS2qNLBXgMIOLvmUcBa2mmE9skXqVpBETqPjaMniAMDQCYOJo8hjWoM0RaroPtUzPUSPilSfUuGjeQztcCfcTtc0M3kgn8ZjQoETmFBsrSZPbkqbMwXz8vCcOW9/GbeiDJrWWlQnPehlpzYX3wSuG2ZtPghS+T2ZL+5ucuq8x0W+pMOpiUzdX3p6vrguJ0syzkNNDyN1IVLY9OEBiMH4O0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(19092799006)(366016)(1800799024)(38070700021)(3023799007)(6133799003)(56012099006)(18002099003)(22082099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?XYLNp7Qg6Su8GFT6VUe8U25vKsGr1WmcpYEHSUffTC1EbchcbZ7BWpBEAhaY?=
+ =?us-ascii?Q?9cg+ZI7a+sxrpQ8MZ1JM6aVhY6mqRMJ9wQeVffD32lfb+ocHpvrQxf7w+YeQ?=
+ =?us-ascii?Q?AFwMvLhZYA63OjN4MphrxD07cnl0xRFIV0vR9PHKH5/eV7pqpXinLiVq1/hV?=
+ =?us-ascii?Q?nS1DwJEuA69YDZeN0wwb6LTwyNz7SDU8xkL5B/cCheFbUuYwzwrcz28liJiu?=
+ =?us-ascii?Q?UWlXckIyjMtQKiED5VSZa72fU0RA6p5KaAxT0JTHWo5YRZDQLriNEnX2/IXn?=
+ =?us-ascii?Q?cT6pqXjAK4NQ1IGe6SVfc4YbsyassWWY7hx7Bk5sacC+qKBkeoca2Mxa22OZ?=
+ =?us-ascii?Q?YDo3yjqngEBaCvRgSo0BBxIUJlCg+byMAaHffvRyqQE5NGKTvMdtyIg696+3?=
+ =?us-ascii?Q?hS2J285VM06ucEs49dROpCh5FVe6U8QKhV1SJXybZI7ThftL0HxJgk4pJueO?=
+ =?us-ascii?Q?aAKP6KU8ciAkcYQ/I/UI+koPYNrjIDscUZWrXqDihvurC0Q8VNH3YHWO9fA4?=
+ =?us-ascii?Q?mM1l4L6EJISNfYO+OXqKaCWwpr+7bvYLIHBJNMHHvcaC6cSYEiOMc1CJCdeJ?=
+ =?us-ascii?Q?ODRsip69+NNP9XeZ27I4s+p7Yfsn5YvzjutE9KHeGf9eVlm28S7IniQcjblR?=
+ =?us-ascii?Q?AiFlPhlIXaGBaiRH27SkNlOmrL4udIpUeV8MJl/Cgn3K7vFR5vtUWco9ZqEI?=
+ =?us-ascii?Q?vqJR9yq3ucIzS6PQnhc8SDFPaTzPY+j1cqjo4NWxYK8Al/EWgcmSmUiquVty?=
+ =?us-ascii?Q?XSi5o3n5lbGC89M0xy8d2agmNq4CmN6aWSpcmH1G0TG8HHsO3PSW/raJ6lJR?=
+ =?us-ascii?Q?QFvGb0IVrJJJA3LS/uMdN6MDRIa7Sg7v72hCC+IImY0CW3qEHy6QK0uURMqm?=
+ =?us-ascii?Q?ROCKx0aLin+1sCQILz2nrtmWiA2p284OBeIdezsfr+B+GnJ3ttigRH3q30Y1?=
+ =?us-ascii?Q?JE20bnq7OF71cqcIpqcIPQ/8Jh4tPWJdY/Mt+f4ivM2q77g6VhD9TrRYNhk3?=
+ =?us-ascii?Q?B5YxKLPszK9xDD9pZmwxMBNQ3vFlYzMBeSsr6gLfg5R7++wADHSvCIahZuAL?=
+ =?us-ascii?Q?LnpFAZRhfwp+OTjMijScS04h7SRfPurr2cIC0duiZXsFZHUrRNLiGKTiEx46?=
+ =?us-ascii?Q?X2v0T5i9hPFGHu73Rk9LYyRcfcW6XPh37uTqaEp/WAqq6w1PhClP1JxwSvXI?=
+ =?us-ascii?Q?ZvN6XIiDvosqxQR6fEdmzwd8yI08DgrU0fyxJ/VyzoSxodb7OS+66CXmN7Uu?=
+ =?us-ascii?Q?cSFbzOf+1u0LooXa4aLiun7gJWBDmwK+M6agXaCEklvUEMpFz/ZAvWm90iGX?=
+ =?us-ascii?Q?2yO4qUON6V95CYCMgIiVnzLQ75d2fXFX4+Muc7ei2RoTBdlwjZlpAmr5Xewq?=
+ =?us-ascii?Q?/FhKf+tGJk9XeS+KlkD4uc071RpCBThVjpFbMhJm+jDd0s/kiFuGSBegXPPK?=
+ =?us-ascii?Q?A9HEb2N1CgNUyWULhROu0y4XGMWNopveP0uHH4FwdcYvT0DoQ0KCa9EIeaBq?=
+ =?us-ascii?Q?+0hdP4lF0NTMNcj+oG020mhAqKcFf61jhodWAWiSOgIg6Wv8IxBVRPn4iy44?=
+ =?us-ascii?Q?WKtyCDVgIvbgfFyJJQGsU28+oS+ym9Jr1lt7FPbD8xdZRvtnS0SUIjbDOSlw?=
+ =?us-ascii?Q?w2yOgXcQS+MrJSYKKzo9qzoL9W7WPxSHcQhdps/tU18ySf2GNCR9RnosC3jj?=
+ =?us-ascii?Q?3AvEGGIhpAX4+1XaOQNNu3TfJIJvHtW/DTl+lr02l8TWIug/wjexUdd2+9aW?=
+ =?us-ascii?Q?umq0euY5fg=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB91852808D2C7491AEF98CF1589F92@PAXPR04MB9185.eurprd04.prod.outlook.com>
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 790b92e8-166c-462c-f232-08dee1d7ccb6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2026 18:43:30.1422
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KNGvivI3RFv4hpOh00nmb9fx9EPZTY/nKFVDNGTcofNRknEqf3RwoqN5Ch12CZsw7gBTkySsmnjXOmNhHmo72g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9397
 
-On Tue, Jul 14, 2026 at 02:29:12PM +0000, Shenwei Wang (OSS) wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > Sent: Monday, July 13, 2026 12:17 PM
-> > To: Shenwei Wang (OSS) <shenwei.wang@oss.nxp.com>
-> > Cc: Linus Walleij <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>;
-> > Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof
-> > Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn
-> > Andersson <andersson@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha Hauer
-> > <s.hauer@pengutronix.de>; Shuah Khan <skhan@linuxfoundation.org>; linux-
-> > gpio@vger.kernel.org; linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> > <festevam@gmail.com>; Shenwei Wang <shenwei.wang@nxp.com>; Peng Fan
-> > <peng.fan@nxp.com>; devicetree@vger.kernel.org; linux-
-> > remoteproc@vger.kernel.org; imx@lists.linux.dev; linux-arm-
-> > kernel@lists.infradead.org; dl-linux-imx <linux-imx@nxp.com>; Arnaud
-> > POULIQUEN <arnaud.pouliquen@foss.st.com>; b-padhi@ti.com; Andrew Lunn
-> > <andrew@lunn.ch>
-> > Subject: Re: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver over rpmsg
-> > bus
-> > 
-> > On Thu, Jun 25, 2026 at 10:54:26AM -0500, Shenwei Wang wrote:
-> > > From: Shenwei Wang <shenwei.wang@nxp.com>
+
+
+> -----Original Message-----
+> From: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Sent: Tuesday, July 14, 2026 11:36 AM
+> To: Shenwei Wang (OSS) <shenwei.wang@oss.nxp.com>
+> Cc: Linus Walleij <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.o=
+rg>;
+> Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzyszto=
+f
+> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn
+> Andersson <andersson@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha Hau=
+er
+> <s.hauer@pengutronix.de>; Shuah Khan <skhan@linuxfoundation.org>; linux-
+> gpio@vger.kernel.org; linux-doc@vger.kernel.org; linux-kernel@vger.kernel=
+.org;
+> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> <festevam@gmail.com>; Shenwei Wang <shenwei.wang@nxp.com>; Peng Fan
+> <peng.fan@nxp.com>; devicetree@vger.kernel.org; linux-
+> remoteproc@vger.kernel.org; imx@lists.linux.dev; linux-arm-
+> kernel@lists.infradead.org; dl-linux-imx <linux-imx@nxp.com>; Arnaud
+> POULIQUEN <arnaud.pouliquen@foss.st.com>; b-padhi@ti.com; Andrew Lunn
+> <andrew@lunn.ch>
+> Subject: Re: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver ov=
+er rpmsg
+> bus
+>=20
+> On Tue, Jul 14, 2026 at 02:29:12PM +0000, Shenwei Wang (OSS) wrote:
+d
+> > > > +  - 3: Both edge trigger
+> > > > +  - 4: High level trigger
+> > > > +  - 8: Low level trigger
 > > >
-> > > Describes the gpio rpmsg transport protocol over the rpmsg bus between
-> > > the remote system and Linux.
+> > > I'm in agreement with cmd 3, 4, 5 and 6.
 > > >
-> > > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> > > ---
-> > >  Documentation/driver-api/gpio/gpio-rpmsg.rst | 271 +++++++++++++++++++
-> > >  Documentation/driver-api/gpio/index.rst      |   1 +
-> > >  2 files changed, 272 insertions(+)
-> > >  create mode 100644 Documentation/driver-api/gpio/gpio-rpmsg.rst
+> >
+> > How about cmd 2?
+>=20
+> Yes, I forgot cmd 2.
+>=20
+> >
+> > > > +
+> > > > +**Reply:**
+> > > > +
+> > > > +.. code-block:: none
+> > > > +
+> > > > +   +------+--------+--------+
+> > > > +   | 0x00 |  0x01  |  0x02  |
+> > > > +   |   1  | status |    0   |
+> > > > +   +------+--------+--------+
+> > > > +
+> > > > +- **status**:
+> > > > +
+> > > > +  - 0: Ok
+> > > > +  - 1: Error
+> > > > +
+> > > > +SET_WAKEUP (Cmd=3D16)
+> > > > +~~~~~~~~~~~~~~~~~~~
 > > >
-> > > diff --git a/Documentation/driver-api/gpio/gpio-rpmsg.rst
-> > > b/Documentation/driver-api/gpio/gpio-rpmsg.rst
-> > > new file mode 100644
-> > > index 000000000000..7d351ff0adb0
-> > > --- /dev/null
-> > > +++ b/Documentation/driver-api/gpio/gpio-rpmsg.rst
-> > > @@ -0,0 +1,271 @@
-> > > +.. SPDX-License-Identifier: GPL-2.0-or-later
-> > > +
-> > > +GPIO RPMSG (Remote Processor Messaging) Protocol
-> > > +================================================
-> > > +
-> > > +The GPIO RPMSG transport protocol is used for communication and
-> > > +interaction with GPIO controllers on remote processors via the RPMSG bus.
-> > > +
-> > > +Message Format
-> > > +--------------
-> > > +
-> > > +The RPMSG message consists of a 8-byte packet with the following layout:
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +   | 0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 |
-> > > +   |     cmd     |    line     |           value           |
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +
-> > > +- **cmd**: Command code, used for GPIO_RPMSG_SEND messages.
-> > > +
-> > > +- **line**: The GPIO line (pin) index of the port.
-> > 
-> > Here and throughout, please remove any mention of 'port'.  This is handled by the
-> > endpoint device, i.e one GPIO controller (port) per endpoint.
-> > 
-> > > +
-> > > +- **value**: See details in the command description below.
-> > > +
-> > > +
-> > > +GPIO Commands
-> > > +-------------
-> > > +
-> > > +Commands are specified in the **Cmd** field.
-> > > +
-> > > +The SEND message is always sent from Linux to the remote firmware.
-> > > +Each SEND corresponds to a single REPLY message. The GPIO driver
-> > > +should serialize messages and determine whether a REPLY message is
-> > > +required. If a REPLY message is expected but not received within the
-> > > +specified timeout period (currently 1 second in the Linux driver),
-> > > +the driver should return -ETIMEOUT.
-> > > +
-> > > +GET_DIRECTION (Cmd=2)
-> > > +~~~~~~~~~~~~~~~~~~~~~
-> > > +
-> > > +**Request:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +   | 0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 |
-> > > +   |      2      |    line     |             0             |
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +
-> > > +**Reply:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+--------+--------+
-> > > +   | 0x00 |  0x01  |  0x02  |
-> > > +   |   1  | status | value  |
-> > > +   +------+--------+--------+
-> > > +
-> > > +- **status**:
-> > > +
-> > > +  - 0: Ok
-> > > +  - 1: Error
-> > > +
-> > > +- **value**: Direction.
-> > > +
-> > > +  - 0: None
-> > > +  - 1: Output
-> > > +  - 2: Input
-> > > +
-> > > +
-> > > +SET_DIRECTION (Cmd=3)
-> > > +~~~~~~~~~~~~~~~~~~~~~
-> > > +
-> > > +**Request:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +   | 0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 |
-> > > +   |      3      |    line     |           value           |
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +
-> > > +- **value**: Direction.
-> > > +
-> > > +  - 0: None
-> > > +  - 1: Output
-> > > +  - 2: Input
-> > > +
-> > > +**Reply:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+--------+--------+
-> > > +   | 0x00 |  0x01  |  0x02  |
-> > > +   |   1  | status |    0   |
-> > > +   +------+--------+--------+
-> > > +
-> > > +- **status**:
-> > > +
-> > > +  - 0: Ok
-> > > +  - 1: Error
-> > > +
-> > > +
-> > > +GET_VALUE (Cmd=4)
-> > > +~~~~~~~~~~~~~~~~~
-> > > +
-> > > +**Request:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +   | 0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 |
-> > > +   |      4      |    line     |             0             |
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +
-> > > +**Reply:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+--------+--------+
-> > > +   | 0x00 |  0x01  |  0x02  |
-> > > +   |   1  | status | value  |
-> > > +   +------+--------+--------+
-> > > +
-> > > +- **status**:
-> > > +
-> > > +  - 0: Ok
-> > > +  - 1: Error
-> > > +
-> > > +- **value**: Level.
-> > > +
-> > > +  - 0: Low
-> > > +  - 1: High
-> > > +
-> > > +
-> > > +SET_VALUE (Cmd=5)
-> > > +~~~~~~~~~~~~~~~~~
-> > > +
-> > > +**Request:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +   | 0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 |
-> > > +   |      5      |    line     |           value           |
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +
-> > > +- **value**: Output level.
-> > > +
-> > > +  - 0: Low
-> > > +  - 1: High
-> > > +
-> > > +**Reply:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+--------+--------+
-> > > +   | 0x00 |  0x01  |  0x02  |
-> > > +   |   1  | status |    0   |
-> > > +   +------+--------+--------+
-> > > +
-> > > +- **status**:
-> > > +
-> > > +  - 0: Ok
-> > > +  - 1: Error
-> > > +
-> > > +
-> > > +SET_IRQ_TYPE (Cmd=6)
-> > > +~~~~~~~~~~~~~~~~~~~~
-> > > +
-> > > +**Request:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +   | 0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 |
-> > > +   |      6      |    line     |           value           |
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +
-> > > +- **value**: IRQ types.
-> > > +
-> > > +  - 0: Interrupt disabled
-> > > +  - 1: Rising edge trigger
-> > > +  - 2: Falling edge trigger
-> > > +  - 3: Both edge trigger
-> > > +  - 4: High level trigger
-> > > +  - 8: Low level trigger
-> > 
-> > I'm in agreement with cmd 3, 4, 5 and 6.
-> > 
-> 
-> How about cmd 2?
+> > > I already commented on messages that are not part of the virtio-gpio
+> > > specification.
+> > >
+> >
+> > I don't believe virtio-gpio needs a SET_WAKEUP command.
+> >
+> > In the RPMSG case, SET_WAKEUP is required because it performs an
+> > operation on the remote processor, so the remote side must be explicitl=
+y
+> notified.
+>=20
+> What operations would that be?
+>=20
 
-Yes, I forgot cmd 2.  
+The operation is enabling the line as a wakeup source. In practice, this in=
+volves configuring=20
+hardware-specific wakeup settings (e.g., register bits) on the remote proce=
+ssor, so the remote=20
+side must be explicitly notified through SET_WAKEUP.
 
-> 
-> > > +
-> > > +**Reply:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+--------+--------+
-> > > +   | 0x00 |  0x01  |  0x02  |
-> > > +   |   1  | status |    0   |
-> > > +   +------+--------+--------+
-> > > +
-> > > +- **status**:
-> > > +
-> > > +  - 0: Ok
-> > > +  - 1: Error
-> > > +
-> > > +SET_WAKEUP (Cmd=16)
-> > > +~~~~~~~~~~~~~~~~~~~
-> > 
-> > I already commented on messages that are not part of the virtio-gpio
-> > specification.
-> > 
-> 
-> I don't believe virtio-gpio needs a SET_WAKEUP command.
-> 
-> In the RPMSG case, SET_WAKEUP is required because it performs an operation on the 
-> remote processor, so the remote side must be explicitly notified.
 
-What operations would that be?
+> >
+> > For virtio-gpio, however, everything is handled locally. The other
+> > side does not need to perform any action, so sending a SET_WAKEUP comma=
+nd
+> appears unnecessary.
+>=20
+> What is "everything"?
+>=20
 
-> 
-> For virtio-gpio, however, everything is handled locally. The other side does not need to 
-> perform any action, so sending a SET_WAKEUP command appears unnecessary.
+I mean masking, unmasking, and marking the interrupt as a wakeup source. Al=
+l of=20
+these operations are handled on local processor.
 
-What is "everything"?
+Shenwei
 
-> 
-> 
-> > > +
-> > > +**Request:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +   | 0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 |
-> > > +   |      1      |    line     |           value           |
-> > > +   +------+------+------+------+------+------+------+------+
-> > > +
-> > > +- **value**: Wakeup enable.
-> > > +
-> > > +  The remote system should always aim to stay in a power-efficient
-> > > + state by  shutting down or clock-gating the GPIO blocks that aren't
-> > > + in use. Since  the remoteproc driver is responsible for managing the
-> > > + power states of the  remote firmware, the GPIO driver does not
-> > > + require to know the firmware's  running states.
-> > > +
-> > > +  When the wakeup bit is set, the remote firmware should configure
-> > > + the line  as a wakeup source. The firmware should send the
-> > > + notification message to  Linux after it is woken from the GPIO line.
-> > > +
-> > > +  - 0: Disable wakeup from GPIO
-> > > +  - 1: Enable wakeup from GPIO
-> > > +
-> > > +**Reply:**
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+--------+--------+
-> > > +   | 0x00 |  0x01  |  0x02  |
-> > > +   |   1  | status |    0   |
-> > > +   +------+--------+--------+
-> > > +
-> > > +- **status**:
-> > > +
-> > > +  - 0: Ok
-> > > +  - 1: Error
-> > > +
-> > > +Notification Message
-> > > +--------------------
-> > 
-> > "Interrupt Messages"
-> > 
-> > > +
-> > > +Notifications are sent by the remote core and they have
-> > > +**Type=2 (GPIO_RPMSG_NOTIFY)**:
-> > > +
-> > > +When a GPIO line asserts an interrupt on the remote processor, the
-> > > +firmware should immediately mask the corresponding interrupt source
-> > > +and send a notification message to the Linux. Upon completion of the
-> > > +interrupt handling on the Linux side, the driver should issue a
-> > > +command **SET_IRQ_TYPE** to the firmware to unmask the interrupt.
-> > > +
-> > > +A Notification message can arrive between a SEND and its REPLY
-> > > +message, and the driver is expected to handle this scenario.
-> > > +
-> > > +.. code-block:: none
-> > > +
-> > > +   +------+------+--------+
-> > > +   | 0x00 | 0x01 |  0x02  |
-> > > +   |   2  | line | trigger|
-> > > +   +------+------+--------+
-> > 
-> > 2 things here:
-> > 
-> > 1) You did not include messages that mask and unmask interrupts at the driver
-> > side.
-> 
-> Interrupt masking and unmasking are handled entirely on the local processor.
-> 
-> When an interrupt occurs, the remote system masks the interrupt and then sends a notification 
-> to Linux. After Linux processes the notification, it sends a SET_IRQ_TYPE message back to the 
-> remote system, which then unmasks the interrupt.
-
-This is the kind of information that should be part of this documentation.
-
-> 
-> Thanks,
-> Shenwei
-> 
-> > 
-> > 2) We are carrying virtio-gpio messages on top of RPMSG and as such, this whole
-> > protocol should be about thar:
-> > 
-> > +------+------+--------+--------
-> > | 0x00 |       payload         |
-> > |  Q   |                       |
-> > +------+------+--------+--------
-> > 
-> > Q = 0 requestq
-> > Q = 1 eventq
-> > 
-> > The "payload" part is simply the format of the messages as found in the virtio-
-> > gpio specification.  From there, the only thing left to mention is which messages
-> > are not supported, i.e get line names.
-> > 
-> > > +
-> > > +- **line**: The GPIO line (pin) index of the port.
-> > > +
-> > > +- **trigger**: Optional parameter to indicate the trigger event type.
-> > 
-> > Not part of the spec - remove.
-> > 
-> > Given the refactoring work that is still needed, I will not look at the
-> > implementation.
-> > 
+> >
+> >
+> > > > +
+> > > > +**Request:**
+> > > > +
+> > > > +.. code-block:: none
+> > > > +
+> > > > +   +------+------+------+------+------+------+------+------+
+> > > > +   | 0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 |
+> > > > +   |      1      |    line     |           value           |
+> > > > +   +------+------+------+------+------+------+------+------+
+> > > > +
+> > > > +- **value**: Wakeup enable.
+> > > > +
+> > > > +  The remote system should always aim to stay in a
+> > > > + power-efficient state by  shutting down or clock-gating the GPIO
+> > > > + blocks that aren't in use. Since  the remoteproc driver is
+> > > > + responsible for managing the power states of the  remote
+> > > > + firmware, the GPIO driver does not require to know the firmware's
+> running states.
+> > > > +
+> > > > +  When the wakeup bit is set, the remote firmware should
+> > > > + configure the line  as a wakeup source. The firmware should send
+> > > > + the notification message to  Linux after it is woken from the GPI=
+O line.
+> > > > +
+> > > > +  - 0: Disable wakeup from GPIO
+> > > > +  - 1: Enable wakeup from GPIO
+> > > > +
+> > > > +**Reply:**
+> > > > +
+> > > > +.. code-block:: none
+> > > > +
+> > > > +   +------+--------+--------+
+> > > > +   | 0x00 |  0x01  |  0x02  |
+> > > > +   |   1  | status |    0   |
+> > > > +   +------+--------+--------+
+> > > > +
+> > > > +- **status**:
+> > > > +
+> > > > +  - 0: Ok
+> > > > +  - 1: Error
+> > > > +
+> > > > +Notification Message
+> > > > +--------------------
+> > >
+> > > "Interrupt Messages"
+> > >
+> > > > +
+> > > > +Notifications are sent by the remote core and they have
+> > > > +**Type=3D2 (GPIO_RPMSG_NOTIFY)**:
+> > > > +
+> > > > +When a GPIO line asserts an interrupt on the remote processor,
+> > > > +the firmware should immediately mask the corresponding interrupt
+> > > > +source and send a notification message to the Linux. Upon
+> > > > +completion of the interrupt handling on the Linux side, the
+> > > > +driver should issue a command **SET_IRQ_TYPE** to the firmware to
+> unmask the interrupt.
+> > > > +
+> > > > +A Notification message can arrive between a SEND and its REPLY
+> > > > +message, and the driver is expected to handle this scenario.
+> > > > +
+> > > > +.. code-block:: none
+> > > > +
+> > > > +   +------+------+--------+
+> > > > +   | 0x00 | 0x01 |  0x02  |
+> > > > +   |   2  | line | trigger|
+> > > > +   +------+------+--------+
+> > >
+> > > 2 things here:
+> > >
+> > > 1) You did not include messages that mask and unmask interrupts at
+> > > the driver side.
+> >
+> > Interrupt masking and unmasking are handled entirely on the local proce=
+ssor.
+> >
+> > When an interrupt occurs, the remote system masks the interrupt and
+> > then sends a notification to Linux. After Linux processes the
+> > notification, it sends a SET_IRQ_TYPE message back to the remote system=
+,
+> which then unmasks the interrupt.
+>=20
+> This is the kind of information that should be part of this documentation=
+.
+>=20
+> >
 > > Thanks,
-> > Mathieu
-> > 
-> > > +
-> > > diff --git a/Documentation/driver-api/gpio/index.rst
-> > > b/Documentation/driver-api/gpio/index.rst
-> > > index bee58f709b9a..e5eb1f82f01f 100644
-> > > --- a/Documentation/driver-api/gpio/index.rst
-> > > +++ b/Documentation/driver-api/gpio/index.rst
-> > > @@ -16,6 +16,7 @@ Contents:
-> > >     drivers-on-gpio
-> > >     bt8xxgpio
-> > >     pca953x
-> > > +   gpio-rpmsg
+> > Shenwei
+> >
 > > >
-> > >  Core
-> > >  ====
-> > > --
-> > > 2.43.0
+> > > 2) We are carrying virtio-gpio messages on top of RPMSG and as such,
+> > > this whole protocol should be about thar:
 > > >
+> > > +------+------+--------+--------
+> > > | 0x00 |       payload         |
+> > > |  Q   |                       |
+> > > +------+------+--------+--------
+> > >
+> > > Q =3D 0 requestq
+> > > Q =3D 1 eventq
+> > >
+> > > The "payload" part is simply the format of the messages as found in
+> > > the virtio- gpio specification.  From there, the only thing left to
+> > > mention is which messages are not supported, i.e get line names.
+> > >
+> > > > +
+> > > > +- **line**: The GPIO line (pin) index of the port.
+> > > > +
+> > > > +- **trigger**: Optional parameter to indicate the trigger event ty=
+pe.
+> > >
+> > > Not part of the spec - remove.
+> > >
+> > > Given the refactoring work that is still needed, I will not look at
+> > > the implementation.
+> > >
+> > > Thanks,
+> > > Mathieu
+> > >
+> > > > +
+> > > > diff --git a/Documentation/driver-api/gpio/index.rst
+> > > > b/Documentation/driver-api/gpio/index.rst
+> > > > index bee58f709b9a..e5eb1f82f01f 100644
+> > > > --- a/Documentation/driver-api/gpio/index.rst
+> > > > +++ b/Documentation/driver-api/gpio/index.rst
+> > > > @@ -16,6 +16,7 @@ Contents:
+> > > >     drivers-on-gpio
+> > > >     bt8xxgpio
+> > > >     pca953x
+> > > > +   gpio-rpmsg
+> > > >
+> > > >  Core
+> > > >  =3D=3D=3D=3D
+> > > > --
+> > > > 2.43.0
+> > > >
