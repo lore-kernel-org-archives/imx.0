@@ -1,235 +1,235 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013042.outbound.protection.outlook.com [40.107.159.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB58631F9B9
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 13:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB9047884E
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 13:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784035535; cv=pass; b=HKmKaYzjV1zsmjz0K2s6mZNGIyTUqHJcrh68NQ1WO8G1it0CgIGfbTHLet1rmC43a3/JpfJGN/o4Xi26BjWBvd73AbFFNEr5CMX3l+4Y5h2Ozvi+JQ4+A+b8OpuQGTZN4g8dwzXuunQlQ60mhv6DGlwR7Ggmcryo1oh+Asjax00=
+	t=1784037303; cv=fail; b=GXG8oLSAzcBy2slZ8naoKwtjp55KicFfCTnJADJSqEgW/Tc8phXsSsy+ZDg2k0klKyMIdKqHQJP4XwT1Od4G97SwMSeVRsAo3HMClxJBoEf0XLNikyECqzsdNN1cU+U7jWdqhk4NZB7/jHSUG0Shx3FBX+4PwOUh+lg9fJsQ/Lw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784035535; c=relaxed/simple;
-	bh=U+IHAhlau1+FQ/9SnNbSqU3dkHQE3mjTxVianlAUiZY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A56UnHhoS42P/6d5IVPrvXJ+uFfTd6LZZNi+mvY6lx3kMAfv6rVRlC9cgu25cFRjU+A7+aagf1ureJydMcjpSJ6gKq2aobpo2J+MhW6+yFAYEhJeG+HK4VnOC4uQn0xbU6aMe4C4HqTUON9zIw1gsMKlVx1GpTpCxinLOPX+Ang=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aRyaAp7a; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=OcKe/TVJ; arc=pass smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1784037303; c=relaxed/simple;
+	bh=O/VD5rluim3zoB0CGYNPYktHOJ8svsifnOP7S6B7mPw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=M1os+DUzMjLjpGaAJF/A1tG7a1tc8dxBkwaw8vs6KijXriugjlDt75YGbUmaP8RayvBO1O4wo+0GH1lJ4W+UaHr/Kkxe5tw6LylRiovEJAVl/vvxVicwELXJgEhVgTuciObBj8O12dFhmmsCVNczlA33w0dsZYxWXDF+jNTENe8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=a0cWP8JI; arc=fail smtp.client-ip=40.107.159.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aRyaAp7a";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="OcKe/TVJ"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EBO2ud377645
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 13:25:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	717QVw0yJNdagVep2nzauZkl9EHE4Pz9tV4rojKV45c=; b=aRyaAp7aH5SEoQOK
-	km6Jmp/T234j31falyyM4QXkeHCbrZbFztEpbZvnNNmXArVNt3FbJjN1WhbJwh5T
-	2v8xcpJlodbeCawsXGGH/mEmKVsmcYyYcQ4ejfl9DQaiGcizak3TkjUdBJ0Mj3Te
-	Tli4AjYc8O2MtQtAhDgf8bAfjdn9oWY/GLlXMDEI4+njXIhhnqeI7Ll4jPJ3cCH8
-	oBxhFdUJhQi9o98L0UMDFRYUOnCBbT9Njm3AsTENO/q95S46WyLt7a5H7yv7Q2Ic
-	9idLhuTPPQ+miS7GRBhHle4zuMkm2bpsfojeVsmu++KmOWCLriII27sExOkUQnoC
-	omPPZA==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fdbr4ag00-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 13:25:32 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51c1d137a68so96155941cf.3
-        for <imx@lists.linux.dev>; Tue, 14 Jul 2026 06:25:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784035532; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fKn/1HT3UBPv/2EEJ2IzwWA+c5Mmctc9F7tIt+NHYI+uhNokfN+Vm3p+45FXWwXKVH
-         zbKAI5xjjjRgmk5UP5QZqpiHuXUCjRqlzqM6XOvcdlkLmNGNGp99ZUO/ZhVXM6IJFSl5
-         +dVRVEn5aOKU40Lu+L6IFxOJIRj7zQaunDTtmj5laVsJig7J60xv1WRmQ/3VN4l0JynK
-         4iKx/xIEIwKrHGVziYGghj/Xhensinkdfh1CYjOkL+aHRIXELiPrnF4B0hSu8e3HxlnK
-         l1VcWJpKNYS4beM7Aa20sVx7xqUcMmRiS8F/LUxb5PBxL+cjycD5mfVTAFOZhX7yWoDZ
-         pm7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=717QVw0yJNdagVep2nzauZkl9EHE4Pz9tV4rojKV45c=;
-        fh=tbf9b8/EfEUMuZ5qKH/jDyjjOypfsavpKxZUoRHDTPA=;
-        b=CF9HA2jU+FVohuB6wGnE0LMIPB5Sj98K4auAuhYUMoyG1yRTStCeWVWJSfplaoe9fY
-         2krZGYTfFwZq5tPD9l/8k80lBwkGTveo7HDRqIe+7S+CYytHT2WAgDVrLggyc9+cwqLp
-         CGJFnuUit9YZoe01aaivFt53z2LpkY4LL+H4fbIWbNEPS3DedL1axUd9nBFSSEeS80Od
-         0jIP212YPCdhCzGquaSS1w/UR0Ike3lw+LURpXXdOixvE6dCQBOdl+dB9BZkrKYoyjZB
-         L8yG40xjatxD1ERJ90Lbtn5ciCXZp9/KfD5cG9PeNyKEZ6EGTopkpdj35kqOY+EE7ZEA
-         t5RQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784035532; x=1784640332; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=717QVw0yJNdagVep2nzauZkl9EHE4Pz9tV4rojKV45c=;
-        b=OcKe/TVJrW9m6oINlDWcoQvgq7WH71mhauWVTzx7Q0vb207j9Qf87TfkWjHT4BujIe
-         xsdF85pX8nwmJyWhw9LRPgmice0yajLMWvYhhWBRHZ/YMj/M1vCtIAwEvMgAwaBqefTE
-         5kMlg9C70CKUM/bf+rTSOvhSRYyyZW4Tx8WnfuTWkmO+D6q4u2XNlvbeI6t82HaesakG
-         IbOkmPQNwmV7VOMC27xoybdEzqybKMPkiiKB21Tsk76O/KMMW8ag7f5PfqkYoDtCvT7g
-         KsbAt1K5TNO5ZbGyFarqHIGEbtTGavh5k4sJMosxEnq1wYVayrWK/iN027VadgA6YZ1m
-         0Nvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784035532; x=1784640332;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=717QVw0yJNdagVep2nzauZkl9EHE4Pz9tV4rojKV45c=;
-        b=Tr2Yy9Md0oj0PyH5MKLf7mE7Brr4DTqluKvrlqOX4RCGywo+coKHRm9p7JMkye1iQ5
-         CmjALqUyqX14iyl5tdEpKuACvCYLNs7go7PpB5aTUGbxDK7ho50p3S01YJW+o6wQkHFv
-         hluvQ9ImX7Ly5avmZXCFzHHLSw41tsTFY+0zt84TJ2/b0XykPgYktI8KNaj6aq0x9njI
-         2CTIUTPvbjl4M0CrflmI1Iv3lHf68/OKxa0uVkCdG9MognOjeRm1zLYbWQDCFYmOYMog
-         9FstLba5UcJYAmMGBnRPtuT/LXO8C5vtxaTXFZCjr2MD4BYvomvuRD2s0Pme8YatuySr
-         FWuA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr20fXMutD3yNrE7IyBZmyySc0tC6JhEyIysSjWsfE4QyiUoU/oyrBJjitZH0hhLCB6TbA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyJTHEOJkfupn5+rSuF0HoK3EDAgOduUhEPQpfpzprnAP276BAW
-	fE/w4DX7E5K4vnTUaSeLbnmp6uOdQVWMYzwi5k4vKWOqNdr06WIiikRpTEod276RXEXni5M4PEf
-	T4ukBnJDFEb7jyW9Os8p8sbjlNyUEQZbNkv8a5IUBF11CvOkJrkUI5WtsESPYSOQeQUBtHkiKNz
-	vzdzvt85eP68DjWjDCatpwhGjHh100MQ==
-X-Gm-Gg: AfdE7clCwZYL9Jb1IpH/VNwmLVHJs7mQXqhTzglLJN4QlUD/NrMy4ZZKhYqzm5wmpkj
-	J43tLF78lnlbst4Ggo1yygSiOFSWRrHLanVv34nvzIOd4dpMcdtyNeGrEDHqQNhNZeokhW5snwp
-	d72LZH8yh+LdCuHs7WB7qECI+lzKOuTay0OiCV6t/sEV2OxGUQchOdq5ya6XMpqWstjo5I
-X-Received: by 2002:a05:622a:4885:b0:51b:f0ab:2b1b with SMTP id d75a77b69052e-51cbf26daddmr133077611cf.49.1784035531792;
-        Tue, 14 Jul 2026 06:25:31 -0700 (PDT)
-X-Received: by 2002:a05:622a:4885:b0:51b:f0ab:2b1b with SMTP id
- d75a77b69052e-51cbf26daddmr133077151cf.49.1784035531296; Tue, 14 Jul 2026
- 06:25:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="a0cWP8JI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v49YIxlVyYwbMVFWiN1zX+n6YQlcTYCfz4ARfk9VRcWhVFo8PJJYec6PyrLbyZBZrSykBGXMe3GWGVP9vEdBm/XDGRunY4E81NyVWqSqVEEyQbkBt+5EbiG9/pNBvsle9XO9MFd/ZEZacbfjvJd6rwjTStizK8IwMG6YSW68S6hcRUu4PfH2XBV131xLNLpyMbMrd/qwHNGkMJTflStS6bKp497kJUVab1OSLX8wxZLrX8XSbmxqbclDi3Ix5XlEfHm5z4hi9dfqGSyBfNx/aNlj92cwKIuzjpQsy+cLYttTBow8kLkH72IaD2+m2HFll0xuI/fvG1mYP3osyZtgdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kgsiL2xSMEHMtUlHZtH7Sn10/NLSQ4sHN33Twgz7Bn8=;
+ b=ZwoOjFumA5XsoNi95UgusR1D4T3jQPZ821DcWSji1MkKNtKTk07xYF8k+vBmYP4jvwACGHvpd+2PZ48pBt8vPYlfIw2cxdEGn3j84mCl4f0ewQNWGOnbLm5lDJFnTZGlDmGd9ms522rQFAV7mj5Tg74bMcA5M8kY222D5pEqTU1cisiYvAG5B6yjbtXknTwSSQJ2/H5ndH36pq5XeYZwDjMKMNce/gu1LvOCDmKN7eYa2HjtIAQrhpWkf7x4Vz7IOLIFgYVkZdUOhmhVLii6SKwmOg2nQwE70/PRLRQgh76XcmUPzd6yEusya9dUMIBS8Iei6zguhpPKLq2rx7esEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kgsiL2xSMEHMtUlHZtH7Sn10/NLSQ4sHN33Twgz7Bn8=;
+ b=a0cWP8JIi3K2u+a9D0/aiyooPcBvGB2z9raIOj0q5cHU5kdS/OGqUN2LOywn5s4pv7en9CpZ8FvZtIaCsUxp8EimmAHZWxgtzPwXsOsMXnbMP8RMXTtxD6JBra/aQ1gp0UPkzO/cfHKkXfm6RbJz0c84lK1bK4FyFJOs4NzNDMaEGsykHdpa8EQVm2w/hNrDCmgZyGwC8d3jnwvmt+WKM73xFaEdUShq7HlPD8cHXwm4hh8HLtx9PjsHjh6f6/+9kpfk27pWwlkYkBCh/7pc1ylT9gDzpyW21pI+d8SypAOinDdKXZD1cXH81hTO6b31gVERSaeXMAoqmG6OUKV8WQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GV2PR04MB12138.eurprd04.prod.outlook.com (2603:10a6:150:327::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.20; Tue, 14 Jul
+ 2026 13:54:59 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0202.018; Tue, 14 Jul 2026
+ 13:54:58 +0000
+Date: Tue, 14 Jul 2026 09:54:50 -0400
+From: Frank Li <Frank.li@oss.nxp.com>
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com, carlos.song@nxp.com,
+	haibo.chen@nxp.com, linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v5] i2c: imx: mark I2C adapter when hardware is powered
+ down
+Message-ID: <alY_qiBhG7EMGfIl@lizhi-Precision-Tower-5810>
+References: <20260525030400.3182911-1-carlos.song@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525030400.3182911-1-carlos.song@oss.nxp.com>
+X-ClientProxiedBy: PH0P220CA0006.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:d3::15) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260420022254.302740-1-zhipeng.wang_1@nxp.com>
-In-Reply-To: <20260420022254.302740-1-zhipeng.wang_1@nxp.com>
-From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
-Date: Tue, 14 Jul 2026 15:25:20 +0200
-X-Gm-Features: AUfX_myUc1dBICALtzRuHVKIlbb7qfNnmRBTvv_VDYs9K5Gif0zPw5ow6tXTGB4
-Message-ID: <CAPx+jO8WidzjwnGspSTLa6urva3w3qrigJ46CDnqOTLAh06XBg@mail.gmail.com>
-Subject: Re: [PATCH v4] pmdomain: imx: Make IMX8M/IMX9 BLK_CTRL tristate
-To: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-Cc: ulfh@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
-        kernel@pengutronix.de, festevam@gmail.com, linux-pm@vger.kernel.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, xuegang.liu@nxp.com, jindong.yue@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: x4MYZ7-CpVZXtJbW1ilrFLHry2VG3Fx4
-X-Proofpoint-ORIG-GUID: x4MYZ7-CpVZXtJbW1ilrFLHry2VG3Fx4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDEzOSBTYWx0ZWRfX33mmEzzna6Tx
- NdDsXYfQIFDZyzAVL6yBBvNdr7X2ZZlzRwm0NzB8tKc59dA8nK7kEbyFkdZhff9v6eM0/r0ZiJU
- g4X/pejr17KryIIvQjupsA1zhOXdjfJ8V85DMQDVLU7qwcSkKAXI0KqFoqQsl7U15pUnbCBKKAZ
- /t2xWmjRh4Ik0eAKTgPnHVqoGPs7yrfejCVPlz+JiNyw8CjL40qsnl/Qeh7MNti3Gbt475V1ia1
- Zxpiqkj6tasZjDn1ELgbSiUhO7nQ1w2dXqF2/tEB5OpqoHkW6C51XmBj1iFSQnHOKUXMxLQ85A+
- JOk//8ChdiVMkJ0RJBhSu50kgo0rYrh5JnXdWYQKFNZLyYcLfSBZ9jwe3+y5mT6RSruRvi/ZS7O
- 6Sz7O5HP3148QyCZKE+pzxN2nyAE7VVGz5KpylrOqswYfC055AlpWdaSJUC9pB7B03a209SyKIL
- DOakPUbsxyqTeetCl8A==
-X-Authority-Analysis: v=2.4 cv=F5hnsKhN c=1 sm=1 tr=0 ts=6a5638cc cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=gowsoOTTUOVcmtlkKump:22 a=8AirrxEcAAAA:8 a=TQfnek6nW7prAsdi_scA:9
- a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22 a=ST-jHhOKWsTCqRlWije3:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDEzOSBTYWx0ZWRfXwX8zTqKP7xHB
- 1faZRpizf5YuGWbGCrbhZrX28BrTqW1XArYXF3wDIbCEjGrafoFeRhh4zIVWgj/n9pZadWLuVuz
- Oa4Gm5jgNftAFD4RhbvVfmKHLgDt4x4=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-14_03,2026-07-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
- clxscore=1015 adultscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140139
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV2PR04MB12138:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6cd4d4dc-481a-430d-b078-08dee1af7e3d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|19092799006|376014|7416014|6133799003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	g4ODdAyoVBWkoVaxGt/3hL8ZaV/Qy2egcLCwi9CogPv/Xapkj/aekUsp2HFJJuOg0wvwVnVyyqEEzhJVHrMFX4Ku38vz5FO6J/5cLq+En3EIUuX7KSRZRvFVRDxNStNTVrwJWW3kx8sgWxCIC8QzqSkD4riuF2TYK/SLgK5WgFylGlQM8lSOTWp+193Gx33rFxXXcIx0oWcw+OgnVbsm2qmwZGxFFb6LMQBSrdg7zIT5wdpgeoFaYwUYBkRk/g23+LODMnFNXa5nDVwZPktEHOVcbg1P4R9aG9+Asm4RguFmtLh2JIdj2JahhJgamOBU14euKlMPj6vV0mQT+/6MCmIBKE/cQPAP2uc9w4YmDzC0jWCJzV3tOPVxBG5gXvX9fjkVupVKi3Najn8p4TeMwAjMYS0ZfFa8Fd0tqTtDmCUG3aYqP1gT8za6Dvh1cCFmmqrsDHwjIoVNCb+O03G2D4EsZi1w80r5TKE56FmBrEd2Q1SB35MuGmsteb3lXFge8KKDcUpu6desCIS+bYxshT865T1kH3Wzo+z0GsxtYuKVNtAuhyyn7sH+oUobP6FfGiKr3wee7NmXNEXBJixBiL5wFyp0xgqsZoaKMs021N/MLDvc9STaJ5lYlZH0gwoyOWuj2wHnI3fBNYDNdO8TXXn1VuaNQMsWFkx8FLIG0/M=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(19092799006)(376014)(7416014)(6133799003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EidolT9byhPzPLB5edanrm8ahkc6S9QGslYtQPxGUlyNuWKHhImIah1ZIp7s?=
+ =?us-ascii?Q?Bxw2aENt4xfjeGjHDb9f/KT3e50m9Jv98Ng3sYpa7YOmWUQ3DoSrCfJYYAz0?=
+ =?us-ascii?Q?cjT+bWNNzYS3/3E5zehORkiWOkEt94istg71YIzSQVRnez0I/ortO0SSXvGt?=
+ =?us-ascii?Q?37JWZa7U2sZbQSY0voJW3oj/ZRsLTXM1KMmYbEEfex9MXr/BZBC9M3ZMLYGG?=
+ =?us-ascii?Q?SB5qJKEWamcfyJ+uK7hbJ694j9W05eN2fO2bW73MhHLjAsHs9XP3giY4jqbc?=
+ =?us-ascii?Q?FCjSEMHRgjlqAaSEWLhzn50GI5j0Ej75SHXcw7+tj4N1CqBwC2T6f2jKiGd7?=
+ =?us-ascii?Q?sZwBNBcUHXG8TVBEdSBuER5K0f6Ph/aSlxYMVxpFMRKHYhtDExcJdq5X2I6J?=
+ =?us-ascii?Q?XZjOvci3OisUlHY/RgjIj8qKcyOP43vYlH1Xoba52GagO8m0peeA3gwIKPHT?=
+ =?us-ascii?Q?I0IM3GhJ7mEnpp7JGeduyRLk1pZXMYA+VzvsaemWGj8+GcH5xqkiYXFQDB1n?=
+ =?us-ascii?Q?mShcBjufO+UXdu21xwEPXMCR8o1MQ+fucJILYBVgtj1UOp5RGCMwF2zyfPA7?=
+ =?us-ascii?Q?TlKZlBt5vLmjXQTL29m/Zs938qpS4dW/8KlXVb0LhBwfgMkvUmrnAv7+SkKs?=
+ =?us-ascii?Q?rF5Y6dsNtmaUSY8URB0o4g5QHmtlw0xJiFYURid4EUyoC0LHSoDWOyT8SIDV?=
+ =?us-ascii?Q?kIWmIps0OWNtFx0MHzxyGbAqrotk1+AKybi92pRorXcqHHIt5idEemp3QRLJ?=
+ =?us-ascii?Q?EXkoMrnzEnVqH0LnHDLaiiTgkF9ulRpisdrnlyIiNvCHyjNVY6SpZ40I3wId?=
+ =?us-ascii?Q?0yaedsWIqKRyr1vYWbmN7j61DWrb1bssbsNQ3Vzqi5B829J97UTDA8zcKcTd?=
+ =?us-ascii?Q?sjIpuYydNX9moVjS2U39YI8gwGvz3jQq7nGlvORwoe+Ygp/nhJ9yOptS4JRz?=
+ =?us-ascii?Q?hL67nha2wdd/2Of1ASYrnSZlc7lVgv42oeYudfpBWEFyDw6q1NQKKetwbbjw?=
+ =?us-ascii?Q?U+HXSdLYpCcUqEjf/R4asnzVKZeBS240UY08oB45Sifz/7fC17W8q650OsCm?=
+ =?us-ascii?Q?nDACeI/Dtje2KAocicEk6zMbMfuDueg9EIzZHma0cTKyBGlQJBpnUAqP92lX?=
+ =?us-ascii?Q?gjhf23hgVHZx9scinYdUwrR0LAkEWYNEaqFxyqlNYObKDfbDvKq1nwctG8e0?=
+ =?us-ascii?Q?WxlzsPGGW3lvUQfzGJPp42jkp24iPI08LVWQqJKfGID5enYN3Irsf0cqRfxN?=
+ =?us-ascii?Q?AXIpEYEKADfRNrhZraCsWR8uOHYz/nVxB40Br7yB2q8MJcTPmYueGb3yjtY6?=
+ =?us-ascii?Q?z4BLpbq8O1t/evt0EVnHwu1CW39qziUfwWslfdE++m3V73h99VwIo3yVWGsf?=
+ =?us-ascii?Q?TsG1wYowhQDBTAz8RjAnbOJDeVByOaIkMnPCMsj52V121DPaTOlM99R3hAgf?=
+ =?us-ascii?Q?XqKa3SPwFdzSKVU17e9w5ZhOXO8b0S3s6BVmRm+d9HgNlf252VQelGDOsMrK?=
+ =?us-ascii?Q?OlWpTOnQ4SAbO0YNWEN18oId8Cjmr/wPWA7LC1ce9BBv2sQvVnvbjWg00lcI?=
+ =?us-ascii?Q?rwdqCzxU22ayM0lEW8Ik8FZ3Ss+cxywokxf++b2moAnIad+HPO4HdFMJNF1b?=
+ =?us-ascii?Q?zpbjo0AgNDsUn6nIpOahmJ5kNAnIJdeV0wSeblcaBiGBhu7uaYAogVTqogNo?=
+ =?us-ascii?Q?t4togBLuwBpaZrI2Z44YucVO6PUc4WEeN8XaUdkRWT3qxRkHlDZSlPCN8/cW?=
+ =?us-ascii?Q?nqIoFmfezQoFPdn3uafemypVbu/5AgJUOEdP5DheHUBarovB8X53?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cd4d4dc-481a-430d-b078-08dee1af7e3d
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 13:54:58.8547
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KTYfsXPFd43wG+r/xyALaZynQbH3lRidMIsoZbZ5iNuKiYEOjn+M0KFpB+2ZVnb9qtEuBd/ttEEiIsQUDAz6pi3yoXliP5jhJ9KuQ2hnG/lDoDoYmc+c0Yg6xtOyg0XM
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12138
 
-On Mon, Apr 20, 2026 at 4:22=E2=80=AFAM Zhipeng Wang <zhipeng.wang_1@nxp.co=
-m> wrote:
+On Mon, May 25, 2026 at 11:04:00AM +0800, Carlos Song (OSS) wrote:
+> From: Carlos Song <carlos.song@nxp.com>
 >
-> Convert IMX8M_BLK_CTRL and IMX9_BLK_CTRL from bool to tristate
-> to allow building as loadable modules.
+> On some i.MX platforms, certain I2C client drivers keep a periodic
+> workqueue which continues to trigger I2C transfers.
 >
-> This change is required to support Android devices using Generic Kernel
-> Image (GKI) kernels, where SoC-specific drivers must be built as loadable
-> modules rather than built into the core kernel image.
+> During system suspend/resume, there exists a time window between:
+>   - suspend_noirq and the system entering suspend
+>   - the system starting to resume and resume_noirq
 >
-> For i.MX8M and i.MX9 devices running Android with GKI kernels, the
-> BLK_CTRL drivers therefore need to be loadable. Without tristate
-> support, power domains cannot be initialized correctly, making these
-> systems non-functional under GKI.
+> In this window, the I2C controller resources such as clock and pinctrl
+> may already be disabled or not yet restored.
 >
-> Add prompt strings to make these options visible and configurable
-> in menuconfig, keeping them enabled by default on appropriate platforms.
+> If a workqueue triggers an I2C transfer in this period, the driver
+> attempts to access I2C registers while the hardware resources are
+> unavailable, which may lead to system hang.
 >
-> Also remove the IMX_GPCV2_PM_DOMAINS dependency from IMX9_BLK_CTRL.
-> This dependency was incorrect from the beginning because i.MX93 uses a
-> different power domain architecture compared to i.MX8M series:
+> Mark the I2C adapter as suspended during noirq suspend and block new
+> transfers until resume, ensuring that I2C transfers are only issued
+> when hardware resources are available.
 >
-> - i.MX8M uses GPCv2 (General Power Controller v2) for power domain
->   management, hence IMX8M_BLK_CTRL correctly depends on it.
->
-> - i.MX93 uses BLK_CTRL directly without GPCv2. The hardware doesn't
->   have GPCv2 at all.
->
-> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
-Apologize for the delay, I have simply missed this one.
-
-Applied for next, thanks!
-
-Kind regards
-Uffe
-
-
+> Fixes: 358025ac091e ("i2c: imx: make controller available until system suspend_noirq() and from resume_noirq()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
 > ---
-> Changes in v4:
-> - No functional changes
-> - Added detailed explanation about GKI (Generic Kernel Image) requirement
->   in the commit message to clarify why tristate support is needed for
->   Android devices
->
-> Changes in v3:
-> - No functional changes
-> - Fixed typo reported by Frank
-> - Added Reviewed-by tag from Frank Li
->
-> Changes in v2:
-> - No functional changes
-> - Expanded commit message to explain the architectural differences betwee=
-n
->   i.MX8M and i.MX93 power domain management
-> - Clarified why IMX_GPCV2_PM_DOMAINS dependency removal is correct for
->   i.MX93
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+> Change for v5:
+>   - Remake commit log including the issue detail from Mukesh's
+>     suggestion.
+> Change for v4:
+>   - Restore hrtimer when pm_runtime_force_suspend failed when slave mode
+>     enabled.
+> Change for v3:
+>   - Add hrtimer_cancel in i2c_imx_suspend_noirq to cancel slave_timer for
+>     safe suspend in i2c slave mode.
+> Change for v2:
+>   - Call i2c_mark_adapter_suspended() before pm_runtime_force_suspend()
+>     to prevent potential deadlock if a transfer is active during suspend.
+>   - Roll back with i2c_mark_adapter_resumed() if pm_runtime_force_suspend()
+>     fails.
 > ---
->  drivers/pmdomain/imx/Kconfig | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+>  drivers/i2c/busses/i2c-imx.c | 45 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 43 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/pmdomain/imx/Kconfig b/drivers/pmdomain/imx/Kconfig
-> index 00203615c65e..9168d183b0c5 100644
-> --- a/drivers/pmdomain/imx/Kconfig
-> +++ b/drivers/pmdomain/imx/Kconfig
-> @@ -10,15 +10,18 @@ config IMX_GPCV2_PM_DOMAINS
->         default y if SOC_IMX7D
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 28313d0fad37..73317ddd5f02 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1922,6 +1922,47 @@ static int i2c_imx_runtime_resume(struct device *dev)
+>  	return 0;
+>  }
 >
->  config IMX8M_BLK_CTRL
-> -       bool
-> -       default SOC_IMX8M && IMX_GPCV2_PM_DOMAINS
-> +       tristate "i.MX8M BLK CTRL driver"
-> +       depends on SOC_IMX8M
-> +       depends on IMX_GPCV2_PM_DOMAINS
->         depends on PM_GENERIC_DOMAINS
->         depends on COMMON_CLK
-> +       default y
+> +static int __maybe_unused i2c_imx_suspend_noirq(struct device *dev)
+> +{
+> +	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	i2c_mark_adapter_suspended(&i2c_imx->adapter);
+> +
+> +	/*
+> +	 * Cancel the slave timer before powering down to prevent
+> +	 * i2c_imx_slave_timeout() from accessing hardware registers
+> +	 * while the clock is disabled.
+> +	 */
+> +	hrtimer_cancel(&i2c_imx->slave_timer);
+> +
+> +	ret = pm_runtime_force_suspend(dev);
+> +	if (ret) {
+> +		i2c_mark_adapter_resumed(&i2c_imx->adapter);
+> +		if (i2c_imx->slave) {
+> +			hrtimer_forward_now(&i2c_imx->slave_timer, I2C_IMX_CHECK_DELAY);
+> +			hrtimer_restart(&i2c_imx->slave_timer);
+> +		}
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused i2c_imx_resume_noirq(struct device *dev)
+> +{
+> +	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	ret = pm_runtime_force_resume(dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	i2c_mark_adapter_resumed(&i2c_imx->adapter);
+> +
+> +	return 0;
+> +}
+> +
+>  static int i2c_imx_suspend(struct device *dev)
+>  {
+>  	/*
+> @@ -1955,8 +1996,8 @@ static int i2c_imx_resume(struct device *dev)
+>  }
 >
->  config IMX9_BLK_CTRL
-> -       bool
-> -       default SOC_IMX9 && IMX_GPCV2_PM_DOMAINS
-> +       tristate "i.MX93 BLK CTRL driver"
-> +       depends on SOC_IMX9
->         depends on PM_GENERIC_DOMAINS
-> +       default y
->
->  config IMX_SCU_PD
->         bool "IMX SCU Power Domain driver"
+>  static const struct dev_pm_ops i2c_imx_pm_ops = {
+> -	NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+> -				  pm_runtime_force_resume)
+> +	NOIRQ_SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend_noirq,
+> +				  i2c_imx_resume_noirq)
+>  	SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend, i2c_imx_resume)
+>  	RUNTIME_PM_OPS(i2c_imx_runtime_suspend, i2c_imx_runtime_resume, NULL)
+>  };
 > --
-> 2.34.1
+> 2.43.0
+>
