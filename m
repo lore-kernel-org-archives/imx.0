@@ -1,92 +1,173 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62933412BED;
-	Tue, 14 Jul 2026 20:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6686427FB9;
+	Tue, 14 Jul 2026 20:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784060013; cv=none; b=mBs3GiHpFQKCKLcuUvzHo7Wm4+capB8bU9YsqpYrSHNOiP1z4Gz6wPYcO5An0YyzhVHLyA1ZGx7WhS3JakrM384fbyDIGw5Gri1KkBJDaqa2FVShG5RbquPGQamrjtZc/A0Ta5Cw+upZBUZj9XuPRkGpbUD+DLLY9XNhbnsrewg=
+	t=1784060224; cv=none; b=KcM81e993Gtqa9MaEuJa1vRIZVK/x73ifPFmWYJtbLVtL8vTN3yEE9ZZSNzzR+fQrpneYeWUnvdzSgbLS8xkup3suhL58oAGBjIzgXvhNLO8VgYt6DMgbC2MxxZCxPQnMhPAghCNe8dB3CaNqrfcIpENoghwRSw2/EBjMvcNzVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784060013; c=relaxed/simple;
-	bh=u+5POPI/BtTyXAnp0z7wIeJABK6jmiOfa+id3WMDL+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CX+HE/syb5PlRxWpyUpPeL9Z7a5ZYX6/vDz7rXWhHFhXXotxVeYvfdwHE0WqokBS4O7DNse2chAkYJGlk2yoGHLl5cJZgoIX4TCOOszWKMu/gDd3NaFl1CdlKrWhehd6wU22kV1Ppr3HrLL+IHzaNVSWMcNgRrMAiy3zt9KDcOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pDJ4GOG2; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784060224; c=relaxed/simple;
+	bh=001q9FtT+9kHpJQbsppljQNjwgh2ywXhsHAdWpMECKc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=MIIxZuYx6g/vA1pzbCewZyO05AqCKiN0zjMLEiIUlsPXG1NvUU7SqaoBuC7XjRw1MOsipev+kGUZgFdl8Nwn/x0SDrdkdVa5rs3GG9kgUk234PUfZiHyajtfctEwsGmM8Oys1VBv0jRmGXeE9hEerohGblx5FDGbIBFwxfmVrIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISaxym0/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pDJ4GOG2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GZnKgW+PTI85uwSvBTZx6tE/LVkjSY/LHRD2fDPNzO0=; b=pDJ4GOG290nNbD7p9pehUqbd6J
-	liRP7KZdmFIUYrnPXVRorJ+btZrptsNhTyOE6IcMio8Z7W0/PkmCvK/jiRDtGbzxLi5Rm1ihsYGcP
-	D6XqGXjWUEYD1ptZjY+ed8cKUhRvmUeZyVFvFrqTJk3NuFUrKT/o+vUrikzcxituPc94=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wjjVG-00CFLL-Bi; Tue, 14 Jul 2026 22:13:18 +0200
-Date: Tue, 14 Jul 2026 22:13:18 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Shenwei Wang (OSS)" <shenwei.wang@oss.nxp.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>, Frank Li <frank.li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
-	"b-padhi@ti.com" <b-padhi@ti.com>
-Subject: Re: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver over
- rpmsg bus
-Message-ID: <680d0633-cdec-4545-9114-79bfd6eaac41@lunn.ch>
-References: <20260625155432.815185-1-shenwei.wang@oss.nxp.com>
- <20260625155432.815185-2-shenwei.wang@oss.nxp.com>
- <alUdg9iTysXCFUa5@p14s>
- <PAXPR04MB91852808D2C7491AEF98CF1589F92@PAXPR04MB9185.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISaxym0/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDC51F000E9;
+	Tue, 14 Jul 2026 20:17:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784060223;
+	bh=8ud0eZN9paJBGQJD49RcaobEENGrf/LV2uz6TjLE71o=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ISaxym0/ARm1K2I8OKDM2c/4Dd7W6LVPyvv1T4fJdLg0fXLq7omA5+YrQUp0zlbtp
+	 7ULG/+dkiWR6zMPh+kH0MkHOLry1akNOCb7anu+GXyQFK5cSFAiAAFP2KManHdHm22
+	 hg8AlmnctyJlPALzH3htj/uhfwRa3tJbioQ8aw5RyGI/4kDJKQaP2MyW5NMk1RHobL
+	 rQMCcRZLRxcn2kQqwi6p8gz9lfys4ZcJcJteI4/AA2AFgDUaH/oPqePIAO6KTjf7eo
+	 rF4guJwVIWHm4ukVg1QIEOMJUxF7HKxMtvp82ZzoFLE/qJnlqxIYAeEDHXY0d+Dld3
+	 kddjaXuxv16/g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/3] arm64: dts: freescale: Add support for Variscite
+ VAR-SOM-MX8 QuadMax
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
+Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
+In-Reply-To: <f373059af209ed7ce8e63988066e730736e06e6e.1784059139.git.stefano.r@variscite.com>
+References: <cover.1784059139.git.stefano.r@variscite.com>
+ <f373059af209ed7ce8e63988066e730736e06e6e.1784059139.git.stefano.r@variscite.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 14 Jul 2026 20:17:02 +0000
+Message-Id: <20260714201703.3BDC51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB91852808D2C7491AEF98CF1589F92@PAXPR04MB9185.eurprd04.prod.outlook.com>
 
-> > 1) You did not include messages that mask and unmask interrupts at the driver
-> > side.
-> 
-> Interrupt masking and unmasking are handled entirely on the local processor.
-> 
-> When an interrupt occurs, the remote system masks the interrupt and then sends a notification 
-> to Linux. After Linux processes the notification, it sends a SET_IRQ_TYPE message back to the 
-> remote system, which then unmasks the interrupt.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The PMIC thermal zone's cooling map omits the high-power Cortex-A7=
+2 cores, severely limiting thermal mitigation.
+- [Medium] WiFi and Bluetooth enable/reset GPIOs are configured in pinctrl =
+but never bound to a driver, breaking power management and suspend/resume.
+--
 
-Masking and unmasking an interrupt are orthogonal to the interrupt
-type.
+--- Patch [2]: [PATCH v2 2/3] arm64: dts: freescale: Add support for Varisc=
+ite VAR-SOM-MX8 QuadMax ---
+commit 33df8d987b7061b5d0c8453d1a7834088b34ace9
+Author: Stefano Radaelli <stefano.r@variscite.com>
 
-When the interrupt fires, the interrupt core calls the irq_mask()
-operation on the interrupt. That should mask the interrupt. Once the
-handler has finished, the interrupt core, will call irq_unmask() to
-unmask the interrupt.
+arm64: dts: freescale: Add support for Variscite VAR-SOM-MX8 QuadMax
 
-Edge, level, high, low, raising, falling has nothing to do with
-masking. Please don't mix concepts which Linux keeps separate.
+Add device tree support for the Variscite VAR-SOM-MX8 QuadMax system on
+module. This SOM includes an i.MX8 QuadMax processor, RAM, eMMC, Ethernet,
+audio codec, and WiFi/Bluetooth.
 
-	 Andrew
+Link: https://variscite.com/system-on-module-som/i-mx-8/i-mx-8-quadmax-quad=
+plus/var-som-mx8/
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8qm-var-som.dtsi
+> new file mode 100644
+> index 0000000000000..e805c51eb27df
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi
+[ ... ]
+> +/* Bluetooth */
+> +&lpuart1 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_lpuart1>;
+> +	uart-has-rtscts;
+> +	status =3D "okay";
+> +};
+
+[Severity: Medium]
+Since this UART is used for Bluetooth, should it have a serdev child node
+(like compatible =3D "brcm,bcm4329-bt") with an 'enable-gpios' property?
+
+Without an explicit driver binding to manage the module, the Bluetooth
+device's power state cannot be controlled across suspend and resume.
+
+[ ... ]
+> +&thermal_zones {
+> +	pmic-thermal {
+> +		polling-delay-passive =3D <250>;
+> +		polling-delay =3D <2000>;
+> +		thermal-sensors =3D <&tsens IMX_SC_R_PMIC_0>;
+> +		trips {
+> +			pmic_alert0: trip0 {
+> +				temperature =3D <110000>;
+> +				hysteresis =3D <2000>;
+> +				type =3D "passive";
+> +			};
+> +			pmic_crit0: trip1 {
+> +				temperature =3D <125000>;
+> +				hysteresis =3D <2000>;
+> +				type =3D "critical";
+> +			};
+> +		};
+> +		cooling-maps {
+> +			map0 {
+> +				trip =3D <&pmic_alert0>;
+> +				cooling-device =3D <&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+> +						 <&A53_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+> +						 <&A53_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+> +						 <&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+> +			};
+
+[Severity: High]
+Is it intentional to omit the Cortex-A72 cores (<&A72_0> and <&A72_1>) from
+this cooling map?
+
+By only throttling the A53 cores during an overheat scenario, the system mi=
+ght
+fail to cool the PMIC sufficiently. This increases the risk of reaching the
+125=C2=B0C threshold and triggering a hardware thermal shutdown.
+
+> +		};
+> +	};
+> +};
+[ ... ]
+> +/* WIFI */
+> +&usdhc3 {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 =3D <&pinctrl_usdhc3>, <&pinctrl_wifi>;
+> +	pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>, <&pinctrl_wifi>;
+> +	pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>, <&pinctrl_wifi>;
+> +	bus-width =3D <4>;
+> +	non-removable;
+> +	status =3D "okay";
+> +
+> +	brcmf: wifi@1 {
+> +		compatible =3D "brcm,bcm4329-fmac";
+> +		reg =3D <1>;
+> +	};
+> +};
+
+[ ... ]
+> +	pinctrl_wifi: wifigrp {
+> +		fsl,pins =3D <
+> +			IMX8QM_SCU_GPIO0_07_SCU_DSC_RTC_CLOCK_OUTPUT_32K	0xc600004c
+> +			IMX8QM_SCU_GPIO0_03_LSIO_GPIO0_IO31			0x06000021
+> +			IMX8QM_SCU_GPIO0_02_LSIO_GPIO0_IO30			0x00000021
+> +			IMX8QM_QSPI1A_DATA0_LSIO_GPIO4_IO26			0x00000021
+> +		>;
+> +	};
+> +};
+
+[Severity: Medium]
+Are these WiFi enable/reset GPIOs left uncontrolled without an active driver
+binding?
+
+While pinctrl_wifi is attached to usdhc3, there is no mmc-pwrseq node
+consuming these GPIOs to control the power and reset sequencing. Relying on
+the bootloader for initialization prevents the kernel from managing the pow=
+er
+state during suspend and resume.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1784059139.gi=
+t.stefano.r@variscite.com?part=3D2
