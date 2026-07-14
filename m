@@ -1,171 +1,97 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF683B95E3;
-	Mon, 13 Jul 2026 23:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7C019CCF5
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 00:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783985243; cv=none; b=LzorIFQZvx+hyXhfT6DmoSHrQAEn6f8pSowg+5OsEGE6OV/YO/yd3VVuWj7fLOjki7HuneILtLDgkAWou6LsyaZvHlhRtf+rKPwHIUs3T2T/wwYvrJ93ij+cDowLzfEd94KC6ZHcopt2rDBdEwcAB0dF5xSdEj+bMOd36DVJpUI=
+	t=1783988670; cv=none; b=VYjsAq0JQTMd+sbj8BhUar07b6OwJWU3+vXWuHel07Qle2+X+y8ZOVCVX6V5wTVo9BBBs86Cneo4u8+oBNeS58FiydoFK14lrBebJS44whbL6AmmSnOmF5X+Lh7XYB9/6gkYZFwiNlvgKcn3pHSG46wC+y/vho/y7lfnSJ3fNhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783985243; c=relaxed/simple;
-	bh=XJf98y7AoS4YfUWnQO9snJ/cXMlzoIoxg3AYArm9QYg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M+jkcp9+IJSxVFrJL78j+4DZtvoTn9GtL5ezk0BWrJ9Wh7CU37z3UL7qvuWoBCLvTxN+9JEg7sZG0J8xe5d+RsSlA6coVeSLcUjF9CbJo3BK6t+ZO2BRBiupUpkCxqey6cLl7C4JGa8S+iJrgaW0JOuT52uCrTXDMJgPUBjbqf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=gMJEvuUq; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1783988670; c=relaxed/simple;
+	bh=DahsozGJhtrX2M1ALPwSJqOC4jAE0W3BpmRPgHqXack=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rq4AK0ugRnPQznng6KQ5RGA6wlj57PRCtKkNiCbZcNSk8ZK0/2hjVYea87ycSrHw8DzmG5irlQzqCpeO6l5eWR5d7REXveP7IEevNVkxThxrhcGksGkAh0REpDjFJG+G+N1W77JeiyzAm5BFy57EGT82Lury3pUrPZ/KykxmcpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LsA7x3K5; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="gMJEvuUq"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B96471199D6;
-	Tue, 14 Jul 2026 01:27:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1783985239;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=o/GWt+QYwjps3nuPm/JnZPXVZxL4jie70yU+1vvQkXQ=;
-	b=gMJEvuUqg81bjNsTgnh035UVY7LVDJJ10izi42gcm5MqLgScHqnlrL94Sqsu7Dd/qlDrgG
-	BdFv2bv0ghsc9Vahy2lYASm/Q4TSVxDf2oGv9y+e8KUzif9cFxzJ9wgCtgKyUCY4wLz/f6
-	wkLg7/LeY3DQfXMwQDJFtnWR9yGSUbSoXgoak/QOl8pGe/p/aX/TzFn076rsXed4505q02
-	/9qRGm5iqObje5ilJCmnP/SpTw0rQeg2X6r6aUEJTfbvVuF38mIDeEWn04OkaSSY7pdi4P
-	sWARCur1GDh+AIFrl15OHEtM1yIGRjQguqJkqLHixaJcYNq6yZc9c66nWRcLoQ==
-Message-ID: <aa134d00-df3d-4f0a-a598-4aea512d3cd0@nabladev.com>
-Date: Mon, 13 Jul 2026 18:41:02 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LsA7x3K5"
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5bbc717c52aso1178794e0c.0
+        for <imx@lists.linux.dev>; Mon, 13 Jul 2026 17:24:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783988668; x=1784593468; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GWMXzoVTprF/il3pTv3YOw63QQxuiitP828mB0/xOY0=;
+        b=LsA7x3K5KGakzzmx0shXRglI32s4DyOSb64bz5CCmXoUSeR4vBAkhcfnofIWgW2kHh
+         KM9aUOCnGtdZy6dKdq55lxWuFgENCsudd3KyrkqeziI8in+5RKtpKrOzqQ4eCRlTxDIQ
+         idGATJOmOcjv6Ly68cE7fBOpG6iSgbGfkDjZn8Gm3U8poU8wvt7jfNhv2RTOatlvaXth
+         fup+7pjl/oMnklrGzutVSdH/caDe7HhkNfEEtLb3Y/vYW4x+OTuyS4foIN0K8TwhpqtR
+         e2gux5QOSSY2PtVCAJfrAfzYEIZx0iyKS6Sh7kDeS7AJvHXiatjFpkRDvgeMTjwljWrb
+         jmMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783988668; x=1784593468;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GWMXzoVTprF/il3pTv3YOw63QQxuiitP828mB0/xOY0=;
+        b=d070CDiBDEQqBvLpVECT03fMuxdj7JZN2P5tyb97njbG8oMUCA4Dd1y+7sT6vK5nD4
+         8JEUQ61A63g8FK8TkvhSnp6RQWqszHdJ8ZwfeptE0m6yfOIYC8FMEomj/x2Oq+64BT9E
+         fRouTXopGrPvfdXEJZ16Dj7fPu5vZ54/SJS/bn0znAxmAu9C58dkZGQSDx71Mcylb5SM
+         V92ULUI6rPZgqYnTgu7EKyhDE/PCrMMxIHFf3FHxwlTEgPIJvFEZpsYCnPqiipuHdfUI
+         ng2p9S9nElgMolWh/XT4K5tGBYUXJTvPu2oUKCN/xNnvmaUsf1HumGVORT/iCLocFE/D
+         8IzQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrj2YTd2SHXiASg3C09AfCPtKvsfp0AsroAIUCLHLF5ANSWVOEh8Dsun3kWI/f7UT4KHmw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzHixjlB+JXgWlJGoN++z7bEeDcQQi/W9tUMTwVOq0YnuXvw8YS
+	WeDxISQ//DR/nm7AZG49hWBhTiCN3IYYW1rv3g+v5yMxxtan+I9peg2z
+X-Gm-Gg: AfdE7cmL1Ye/pADvSen6V6OD8s01Y2OOau6jM7q9Wpe8obXJovDmEZ6hvPMXkOlUkiY
+	t/pljX/H4MJkPCCWDyKuKqZn1WkAmIHfHTb91dDDofDCR37JCGEQnUoDNpx1ayRQxqcbKzAlolx
+	oG1QecHjpOp0K7vlqpP1V4qTkGiFP2xA51RgGxtrYEyP+xxpHlWjO037/ICYpQgvW4Ado8i//zo
+	G8t1gNVjskDZ/NsHEjGA2fE0G3V+xgrG9snahFY95PHgh16LhSIZ+ThU00lCRJ6lgGiPo5oB8Id
+	+sEqSqZncOIoNm7+VXWugjFzaxseNeJoyXnHYWM+yKySzfApRYd77pzUyvj2AU0BwMrZ7zVWAFd
+	vjBgLfb+96KAB7sZ1n1+uOsJ7rARG6wnviA81IOzVt742ocZWzH3op80qkaaQiUjP1fGjwnC02d
+	in5WjAN3/Gt7bnhG6l4CaOgoMYDHNGbjYrpz2UpJNbCpGdlAPlWEm34dLbq+rTsmuR/mQMwaVD
+X-Received: by 2002:a05:6122:6d19:b0:5c0:fb8d:998b with SMTP id 71dfb90a1353d-5c0fb8d9f40mr2719123e0c.7.1783988668344;
+        Mon, 13 Jul 2026 17:24:28 -0700 (PDT)
+Received: from sam-fedora (bras-base-mtrlpq0776w-grc-33-70-24-179-211.dsl.bell.ca. [70.24.179.211])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5bf6f66eb74sm9916940e0c.7.2026.07.13.17.24.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 17:24:27 -0700 (PDT)
+Date: Mon, 13 Jul 2026 20:24:17 -0400
+From: Samuel Kayode <samkay014@gmail.com>
+To: Pan Chuang <panchuang@vivo.com>
+Cc: Sebastian Reichel <sre@kernel.org>,
+	"open list:NXP PF1550 PMIC MFD DRIVER" <imx@lists.linux.dev>,
+	"open list:POWER SUPPLY CLASS/SUBSYSTEM and DRIVERS" <linux-pm@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 28/43] power: supply: pf1550-charger: Remove redundant
+ dev_err()/dev_err_probe()
+Message-ID: <alWBsRvgtGIbFSHb@sam-fedora>
+References: <20260709033428.362970-1-panchuang@vivo.com>
+ <20260709033428.362970-29-panchuang@vivo.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/6] arm64: dts: imx8mm: imx8mp: Add FIO1-Audio DTOs
- for Data Modul i.MX8M Mini and Plus eDM SBC
-To: Frank Li <Frank.li@oss.nxp.com>, sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org,
- devicetree@vger.kernel.org, conor+dt@kernel.org
-References: <20260705200534.151803-1-marex@nabladev.com>
- <20260705200534.151803-6-marex@nabladev.com>
- <20260705202221.E99291F000E9@smtp.kernel.org> <alUJIlUUo98_x0Lm@SMW015318>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <alUJIlUUo98_x0Lm@SMW015318>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260709033428.362970-29-panchuang@vivo.com>
 
-On 7/13/26 5:49 PM, Frank Li wrote:
-> On Sun, Jul 05, 2026 at 08:22:21PM +0000, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
->> - [High] The SAI2 interface is incorrectly configured with `fsl,sai-asynchronous` and an invalid `fsl,sai-bit-clock-swap` property, leading to audio capture and playback failure.
->> - [Medium] The overlays instantiate new `clock-controller` nodes at the exact same unit addresses as the existing `sai5` nodes, causing DTC warnings and resource conflicts.
->> - [Medium] Missing interrupt override for the PCA9554 GPIO expander in the i.MX8MP overlay causes the device to listen on a dead interrupt line.
->> - [Medium] The commit message claims features that are not implemented in the patch.
->> --
->>
->> commit 1e6ee57031100e82b436dac299b0eed194860d5b
->> Author: Marek Vasut <marex@nabladev.com>
->>
->> arm64: dts: imx8mm: imx8mp: Add FIO1-Audio DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
->>
->> This commit adds device tree overlays for the eDM-MOD-iMX8Mm-FIO1-Audio
->> feature connector expansion module. It provides support for the SGTL5000
->> codec, CAN, I2C, SPI, and other peripherals on the i.MX8M Mini and Plus
->> boards.
->>
->>> Add DT overlay for feature connector expansion module eDM-MOD-iMX8Mm-FIO1-Audio
->>> providing additional UARTs, CAN, PWM Beeper, I2C, SPI, GPIO breakout and
->>> SGTL5000 codec. This adapter can be optionally populated onto the eDM SBC.
->>
->> [Severity: Medium]
->> Is the commit message accurate regarding the features provided?
->>
->> The FIO1-Audio overlay only seems to enable a single UART (uart2, while uart4
->> is disabled) and doesn't contain a pwm-beeper node or PWM pin configuration.
->>
->> Could the commit message be updated to reflect only the features actually
->> implemented in this variant?
->>
->>> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi
->>> --- /dev/null
->>> +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi
->> [ ... ]
->>> +	gpio_feature: io-expander@20 {
->>> +		compatible = "nxp,pca9554";
->>> +		reg = <0x20>;
->>> +		#gpio-cells = <2>;
->>> +		gpio-controller;
->>> +		#interrupt-cells = <2>;
->>> +		interrupt-controller;
->>> +		interrupt-parent = <&gpio5>;
->>> +		interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
->>
->> [Severity: Medium]
->> Since this file is shared between i.MX8MM and i.MX8MP overlays, does the
->> interrupt configuration need to be overridden for i.MX8MP?
->>
->> On the i.MX8MP baseboard, this feature connector signal seems to be physically
->> routed to GPIO1_IO08 instead of GPIO5_IO04. The i.MX8MP overlay doesn't
->> currently override these properties for gpio_feature, which might cause the
->> expander to listen on a dead interrupt line.
+On Thu, Jul 09, 2026 at 11:34:07AM +0800, Pan Chuang wrote:
+> The devm_request_threaded_irq() and devm_request_irq() now automatically
+> log detailed error messages on failure. This eliminates the need for
+> driver-specific dev_err() and dev_err_probe() calls that previously
+> printed generic messages.
 > 
-> please check this
+> Signed-off-by: Pan Chuang <panchuang@vivo.com>
+> ---
+>  drivers/power/supply/pf1550-charger.c | 3 +--
 
-Its GPIO5_IO04 on both MX8MM and MX8MP.
+Reviewed-by: Samuel Kayode <samkay014@gmail.com>
 
->> [ ... ]
->>> +&sai2 {
->>> +	pinctrl-names = "default";
->>> +	pinctrl-0 = <&pinctrl_sai2>;
->>> +	assigned-clock-rates = <24576000>;
->>> +	fsl,sai-asynchronous;
->>
->> [Severity: High]
->> Does disabling internal synchronization between the TX and RX halves of the
->> SAI block break audio?
->>
->> The SGTL5000 codec only has a single set of I2S clocks, and the pinmux
->> settings only route one clock pair. This leaves the other half of the SAI
->> physically disconnected from any clock source.
->>
->> [ ... ]
->>> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
->> [ ... ]
->>> +&sai2 {
->>> +	assigned-clocks = <&clk IMX8MM_CLK_SAI2>;
->>> +	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
->>> +	fsl,sai-bit-clock-swap;
->>
->> [Severity: High]
->> Is fsl,sai-bit-clock-swap intended to fix the asynchronous clocking issue?
->>
->> This property is a downstream vendor leftover that does not exist in
->> mainline device tree bindings and is ignored by the upstream fsl_sai.c
->> driver. Should fsl,sai-asynchronous be removed from the shared .dtsi
->> instead so the SAI can operate in synchronous mode?
-> 
-> Please check this ?
-
-dc06cf4268a4 ("ASoC: fsl_sai: Add RX/TX BCLK swap support") implements 
-"fsl,sai-bit-clock-swap" so this is AI being confused.
-
->> [ ... ]
->>> +&spba2 {
->>> +	#address-cells = <1>;
->>> +	#size-cells = <1>;
->>> +
->>> +	sai5clk: clock-controller@30050000 {	/* SAI5 */
->>
->> [Severity: Medium]
->> Does declaring a new node here cause a duplicate unit-address warning and
->> potential resource conflicts?
->>
->> The base SoC .dtsi files already define sai5: sai@30050000 at this exact
->> address. Because the node names differ (clock-controller vs sai), DTC will
->> create two distinct sibling nodes rather than merging them.
->>
->> If the baseboard enables the existing &sai5 node, both drivers could attempt
->> to map the identical physical MMIO region using devm_platform_ioremap_resource,
->> causing a -EBUSY error. Should this overlay reference the existing &sai5 node
->> by label instead?
-> 
-> Make sense, please check it.
-No, it won't, the other node is sai@... so this is a non-issue too.
+Thanks,
+Sam
