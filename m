@@ -1,166 +1,161 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023096.outbound.protection.outlook.com [52.101.83.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC460409635
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 08:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.96
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784016563; cv=fail; b=or7bLupOf6Vo2GiaOIykgoDi7FhTk4OSDvvAEcg0OtkFX7uyLmHnFs1JrWewj3FR8EzLZ9jhuujHTubxtFz0Nd+6Uh85eDFeDXNcHVYiObXlB+kXBCiPDfIwC50h76FNA8Dv8vMfPPr/9Tmj6EGalcl95orH0LoBObRTIiO59Jw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784016563; c=relaxed/simple;
-	bh=hVWqaYmoGLnDBjEoJncRB4YN3ec+YqCVB16cpgYbk+M=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=eh6y6mplvyJ9YdWf7gpx6b/LeXFrKnURVYcnh2pigmh3gGQZVdwfZzvcF0dRGrkgrcmYPAaKHpQQzS9DlgIMXGh8HQLDBCd7gGFMb3cRaVKFJqlXnpPqdQJFh84+LKZ3v0H0UYgHVtYslcKXpb+0RxldBbObdmHT/8RfPEmHRTU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=O5jZnE7j; arc=fail smtp.client-ip=52.101.83.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96833F8EDE
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 08:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784016582; cv=none; b=Wq+J2URyogn+JpFq0zUo4g3xzyGertyboJcjBo9o3kmHgGjJg/7lxGnWTJgB0BdjLO1oQfrOv90YV4yImUVtLG2Vpev2xs6GAHdxuxWgUqSCBrHVSLhm4A2UdLITLcBEwzEWY4tCkHFyAlcXjRttv5WyGCLeyCpm9FTnK8yXQZE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784016582; c=relaxed/simple;
+	bh=CSopGfg/2uqJ9qyI6V5MUClcNoSB2YHdurPLNoXQC8w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bsqedo5Lj66zad19vHl+VEOcRdlNUWPzLeT1JA4PKJOW8QieByS6J6RezTKQtEVeZ0eA7Dig2+5gnVmNfOqCCr1Z7OlpSBIRx6LMTL/ampgP9B6NPZBlJvm9hjqlUpwjtB8wSZok3g4jYiyIWRhfQRQY5lfVPDwoQgHPKQGKdYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=abdjSF3t; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="O5jZnE7j"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OEZ+hy3exLfYZH0SlIjTAYkZPci796I5Cy+wJ4RQZRxpBRDRoehmVtfRr0WlgcdygJcJtaYVngrmXFM59rUhMvSXOm3HNVZbww0s682OTgKMTXBoGWHjddrbP+9kuOxpNQn52n8i7I26kV9xv5pGOPsNS7SLWbDou3p2NApwNy+wddaPkNn9zYj3UyLPmW/zC22XALMSqafFbUA4iiZBYdRoqiLu+08FLp1utksSE5oXRahBVNaR1MO40SmfHk9LVroA4EOXywaFM9HFDDtzlWS0KbZkIHJ40QXMgD5eX1ln0FhcjQaOxpo9fFit7VP8lTOC3uM/VYzSWkdiN2K3/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hSZSEoq0U+Z9WhVgdOm+kjK1UkgCCKy4mqX4dJKGnHY=;
- b=LqzU5t28uU+NPy4UTuOJf/jhPAM21iL90ftTNc1zuwWb6IMGUnxkfo6AqMMXOkDcdEXMixPGO7Y09hyqfpFtMLv6NWN9sdxNKT/nQ5b4V9a20KlPDCtcJea3OYUISpkLPXztqOuia4POfYEhHyPCTzqdHf+GVldC5HAfuXQS6/sGrXXRRPmreAVAMuIfJYhxIsIkXAnMRx+4bbC1x025VaZ2XetUpow6MkdzOA1v60YBNSd9prAUYqIqveK9zazQY/eV7BAlPbvXJJKLpNMjaH4hXF24BybAyI8lDUFhdswfTKgKZzxnVQa0cE+sFjvZIbs5/SxQtQs1f2zfUHySdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
- dkim=pass header.d=kontron.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hSZSEoq0U+Z9WhVgdOm+kjK1UkgCCKy4mqX4dJKGnHY=;
- b=O5jZnE7j2jcHtDS2vwwGQsGI3YnjN+J0gtz30gFmUiDOw4ea/bDMssJpA5s9g/HHFrdlN1p9vPS3XgAeIJWc6YXi80tcQ2APg4ctdfVad9mmg3Qocldw+C3d55jQEcMqJG6jvzyaBHdjzWh+cXoXCyHCyv5P20ZqiPuwfnVFKwzb2WyUxXCBq+TLCuV7X6uYU64YwnA1UvX9W6DbsfEYSICemqfyVOeZWr1Twh1ZnHXJZ3VFb4p1VooogImST3+v+tWq4xagI5NNUl5aWhdSzonhImdWwdCd5eZS744fRa3QaW5afTdr1nt8LW9hRk6KA3gQRbS9jV6IwIMB4GQSsg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kontron.de;
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
- by PAWPR10MB7389.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:2e6::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Tue, 14 Jul
- 2026 08:09:13 +0000
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22%6]) with mapi id 15.21.0223.008; Tue, 14 Jul 2026
- 08:09:13 +0000
-Message-ID: <e515a6c5-b32c-47b7-968b-0f6a66e4f24a@kontron.de>
-Date: Tue, 14 Jul 2026 10:09:11 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/10] arm64: dts: imx93-kontron: Enable ELE firmware
- driver
-To: Francesco Dolcini <francesco@dolcini.it>,
- Frieder Schrempf <frieder@fris.de>
-Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- Pankaj Gupta <pankaj.gupta@nxp.com>, "Peng Fan (OSS)"
- <peng.fan@oss.nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-0-b8266d93514b@kontron.de>
- <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-10-b8266d93514b@kontron.de>
- <20260714065947.GA22086@francesco-nb>
-Content-Language: en-US, de-DE
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
-In-Reply-To: <20260714065947.GA22086@francesco-nb>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0056.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:93::7) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:1fb::23)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="abdjSF3t"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so29542515e9.1
+        for <imx@lists.linux.dev>; Tue, 14 Jul 2026 01:09:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1784016577; x=1784621377; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aM36wlhWe5Za+7EYg7RTzmmHOw7LMbYpoEaZIu5nkYI=;
+        b=abdjSF3tTGi4TsIzv9XmbMp0DFlCUg0Q2zOZXtyCvwQW4utCvP8gqbomHCkDm2EWWT
+         JzMCYwbnJvZSRyJPogD9yP7wjvXmJz4lTUBxl02kBorUdbNC5DlhpVlZQzoQKhS2dxcI
+         JsLJtVMHyr4Tl3z3daXJVfz0GRqw8H1gm6NZAzul+FiAnszQtjQ06BbZWFKeLxkxxD4u
+         +FF4BBaYb5uCiJLtYHR4H9eozebz/faTjB/nzlUkhJvopNV23oc9iPESynx4BNi7r6Qd
+         yJbY8EorNhd2puSGk7iGPu5kccjGxv42UglmC90m6ej9Ft3Lj9DpY3DjBkmvjMn/tlQp
+         vpPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784016577; x=1784621377;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aM36wlhWe5Za+7EYg7RTzmmHOw7LMbYpoEaZIu5nkYI=;
+        b=N7m3Knm+TYrqIpMuxmNUnoqpFCs56sgpXoHqq8z7mR3ap8lNfuASqBwjPBK5uog7DS
+         LDMyPyoHn1Gzh/bCoCVI3IHVEDjCWVkqz/bPpEEh/0lsZuloZo9TJpJvPxucljOgOhPI
+         nDhYz5XcGSlNzm80pK1+GiIpM8rbxl1xEuSl0lwk5r48oCeBx9wkQ4WHJSA1iWmbDCMz
+         soqzrST6u1nq5JlZVB+UueclLMiJ4iDPdv+cQZm6BZOKpZeaXgxZYM0FkhhwcEAhfQ6V
+         w7rmr8sH5rIIue1ugk8FwKe5ZMinLidWWj+/lXaLlGagAwm1xma9qE+lNwU2TBC4JCr8
+         KVrg==
+X-Forwarded-Encrypted: i=1; AHgh+RrcS3eH6cAOydk1RBI5ux396BxXkrl1s+WAUE7bXoxng0yV4GhT4unLyh9WcjErJZRFKF0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx/FjQGLwzc2/QsMSms6yoHyZUZjosaZpXj1vNKDADPt094Hr5A
+	A8NCBraOF50GrT8yW+P14CeSYg0JjX8JTu1H8+zilnx3ZHGJ5+5Zkb3TyiFRiLL5lKMQ4SkYZcK
+	IHoYT
+X-Gm-Gg: AfdE7cmc9Bjw8zrZoYSMf5+KmjpfyLsupmhhsLAjN+Nfo9zgSQEMG3Wxsh9ghVhZGEI
+	eVZ6cdfLpiLKohS4eZAR0j51ODR68i7X4tDxtxaldGpqAQo7/uyva5iuS18ngqSqYP7Ge9BGP23
+	PTQzbKuGT4YRwUxcBUMuuM8drVqAlUPAd8ERQAIrZztmTEgZ8SRcttNobsNLg2nGj0KYP2osOwC
+	qu6/NhVyUuiOC35z9RMRnZqRfjWe9BkHw5v9R+/WtGOmE7pjtOHzmwGsk5kylszESvBp4mJ/4qr
+	LSJjg9sI8S+mzqvf07mfsXYg8D1hltzpG4mDGj5MuG5kyyQ6RPwb/5ArZUSg2jsmsIflNLWNPr3
+	epJ/etQMreCKWedWGdn+fQX3XPoYhOB8pAjB+2baxu26P8i2tr9X4k7zzIiocDfEcXLIhPu8VS9
+	x4Qhb/utmOfYL9ToxmPKYP7y7AwbO8n5Ni840Cu/8VApF+K6lkL/EFssCfd9eyKyXBbC9RsE8Wn
+	gBr
+X-Received: by 2002:a05:600c:6304:b0:493:bb23:152a with SMTP id 5b1f17b1804b1-49485739980mr44250605e9.34.1784016576650;
+        Tue, 14 Jul 2026 01:09:36 -0700 (PDT)
+Received: from localhost (p200300f65f47db04b44a80421173aa03.dip0.t-ipconnect.de. [2003:f6:5f47:db04:b44a:8042:1173:aa03])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4950a2f9402sm61598235e9.13.2026.07.14.01.09.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 01:09:35 -0700 (PDT)
+Date: Tue, 14 Jul 2026 10:09:34 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v1 07/20] gpio: Add missing OF module annotations
+Message-ID: <alXtMOwKmsfM0LDE@monoceros>
+References: <cover.1784013063.git.u.kleine-koenig@baylibre.com>
+ <72f0871dda4d65bb2b6ff8827da6a3b2dfdffab6.1784013063.git.u.kleine-koenig@baylibre.com>
+ <20260714073425.CA6181F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|PAWPR10MB7389:EE_
-X-MS-Office365-Filtering-Correlation-Id: 37aa9b44-85e2-4688-5a42-08dee17f3108
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|7416014|23010399003|22082099003|18002099003|3023799007|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	XMRoYyijFBBhnIaomNrLWBroN/OUqNydfOQ55Eg1xX9FVU5UL+CoFWPVzdehVqwk3a+e1bMgyfjUsJUwKlXfM2v5ZKATt6zcqGHmg0BtiABzYatAQjgRjImrGO0gR00fA7KNr+wJwvy6nhxdKo/5y5aBn1qqdBFWSXOKRle2IKcJSelpH7PAKCf+UrmjUk1jhYcSD7G2jV2Fs2WRUA9X0mS89Snrqq6ajVeqmwB+aNaBPNw3tOSB79O1HOonq8LM2NRZRPJkQ+V00cwpSKNoxu3z/yq0yUjEbKOnHHUsaPlqJtMKyGwsD1wh7+QFvFwAeo5DigJUQmSnH21KTuIW4nSYMX/dw7jCU7RpwrnlyuYr3Wv3JajYiMecTJTUZhLT+vzHJraeeaZkt7IQBFibb8h6yRUC4/H6agadTapnaM+YC86YEG86+QuXLHR/j4Gdp0QSQ0xsKcBMwMyQtQgrm2a2ISIDFhGAeR1tqRCaejK6SswJAdTtxiUWyXe5PDUkhl4arddr+EUTaWnUyQsDzA+QAYPz7bYbi+PnYoBMBMSFbLQYkk9aopahUAPbDv/caGt/jQ9VCI1wqz6tXfby30TVmxGQlGQOSNxb3BidwoO7R+p8p+KBttzkfG5Sgrp90D0Qj3PI75lyCrWSlndAgUzr/WJy6JKnfKLSRgcpZ5Y=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(23010399003)(22082099003)(18002099003)(3023799007)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SVJzUzhFOWhjR1o1SGlNV25sN1RDelRBdVhhYzkrVzhIdXlsZUNocHJueEc2?=
- =?utf-8?B?ays5am92ZkZ0MGpwRzU5NmN3a0dWa1FGOTFVMG9Ca2lTWDErcTFZTHFYaDBk?=
- =?utf-8?B?eWMrNXRKc1JMaFd3SEswemhnODFwTERxbVFDOHdLcTJzR0h0RHpFSTJJdVhs?=
- =?utf-8?B?RFoxVEpnL0JqcVpRWFZXTjg3L1JDTm40YkgvOE4xUHQzQ1Y4VkIrM0IzWmVq?=
- =?utf-8?B?RWQweTVGckxFTTFMaklscnMxLzFBY1crYkZlSzFOU0NzeHlGaGJPblU3eXhp?=
- =?utf-8?B?Mk03cGV4UFFhaUljQ1dOY2YwdEU3OXcvN2NGRmNrNjBvTUtSMzJ1TzR1MkUx?=
- =?utf-8?B?Y3BnRzBhSkRCSFI5T2VxYTVvdE54OWsvUFNyeXBKWEthN3NrbHRnWkt0SS9l?=
- =?utf-8?B?UEF3d0FFNjNyU20zRitWZzF2YUhCU0t1aGQyejRJMzEvVDYxT0ZUd3hjeFNw?=
- =?utf-8?B?M0oxUXFSaTZQL2UvL1RjZnBZY1pxS0NpRzF1UDkxZzR2WmRHcW5EYWJleWRr?=
- =?utf-8?B?QkhUczRBTncvSDhJWXRCT2hyRU52UUFXanU3QlFFdTFySmpTa3ZueElQQzFs?=
- =?utf-8?B?N1ZpVjh2ZThaVHJhOW00NW1HOHFCU2NXVjAzQWJlY3NWNEo2aHlSTUgvSUZa?=
- =?utf-8?B?czRza3RYcG0vWWVKa0tENmFpLzJvc0wxbkVjcnlaeXloTU1uVUU3aXpUaDM4?=
- =?utf-8?B?ZCtXYTByNmRKVzdydy9RdUZxWm5mT21lbkZOSmJybGNPTmlxRUgwOHlRaFUx?=
- =?utf-8?B?MUNMbzYzYVV6dHFjVjNzcmJlVWtPclJhNTluOHQ0U0dwY3VZMzVhTUNlZS9E?=
- =?utf-8?B?cTF0N2Q1M2IvSUJraDFJS0VQNmtFdmJBaW9VSm4zaDdEM2xDYkhudVk4bnhY?=
- =?utf-8?B?Z0ZWcGFnbUwxeUJQWkNWKzRJd01XakZiNWZFUmtXb1gxYnlSYUlhNXlMUEdX?=
- =?utf-8?B?UCtBa1VPTXBIRDBXVkZIc3dPOTZYaTZkcnZpSkt2RTZKWmhnbnlNenlpdHND?=
- =?utf-8?B?S0s3ZXBRV3l1S0RqMm5RaGozdGhraG1IS2kySEh0UWM2cDRicWRsWmtKMVFj?=
- =?utf-8?B?QnFtWnhSclFCd3JySjE2TWJYd2hHK1VldERZdENWUEs2WWlreCtPaEtCZVJx?=
- =?utf-8?B?WmdFM3NHLzUwWUpFekU2ZVZpbzA5OGVBbmk2T2JtQjd3QUFVMmoxVFNqNzRh?=
- =?utf-8?B?NVpLcWxpYlhhN3ZJeHBqbzBndEFMeTdCMTJvcFREV1BOcTBBN0hBSVh0Nk5E?=
- =?utf-8?B?dWFVb21YZ2t2UmRtQnhDeTJtWWRZZ0d4amVxaFpUUktBVi9RVE1kTGVGcmJN?=
- =?utf-8?B?MFI0YXE2bkMxUjBibnhsYzR3bmxjZG9sVDUwR3Q5SGhJWEZ4VWNEVEVQaEE2?=
- =?utf-8?B?aGRYU3VVNlNOVzF5MXQ5V3JnNHpEeUxTbFloaTVkZk8rVXBMTVV0NXNmS1R1?=
- =?utf-8?B?L3lNTXRnZkFaL2dKem15a3lRZkJHelVVNXoveURLV3dzNGlXR0Q2WnZ2Vjdq?=
- =?utf-8?B?RmxHT3V5bk9SSjhxUEJCR2w5S0tPT3ZndjBSbXJQYXBLell0cDJSUW5ETmli?=
- =?utf-8?B?K0JEdkZNdFpuazUxbEtrbWt3cXV2cGZpVERkRnB6U2ZVaVZFcmdqejJsVUZ4?=
- =?utf-8?B?Q21sR0JodGVDRGJiUURJblI4aWU5THg3bkFaeUJSbytiTmlwK2VjY1h1TG9I?=
- =?utf-8?B?dFdESHZSRzh5T1duZm12bG1yZ2JyNlZhZlZsOVUweStHUEpaWFk3STZUYlVT?=
- =?utf-8?B?ZTREelRJeUJleEVXZHBwMXRqS1VobmlxOGhiRGhPZUR5N2pGWjh3eE1wK0M3?=
- =?utf-8?B?Y1ZqMHpMZG5JVTROQXBhUUVQdUhvMHdsUkg1QUhieUlUYjVMaUtFOFpZbkNH?=
- =?utf-8?B?Z0cyK2l1UGU4cjdXbkVtSVBJM0xhMStrRkxTamtvSTdpMFJnMjJBQ0dTWVhi?=
- =?utf-8?B?NGFlclU2c2cwR3NpaUZNcHVkN2xDQmxpaEYraHpIaVN3RnBmcU4wMlNYaU9J?=
- =?utf-8?B?a3FMS0NYTW5FWkJRbk9meUN2ZEFhd1Frd0NXRUJ1YWZ1c1JyOWgwSS9oeCto?=
- =?utf-8?B?MHg1WGpGalN4bVhRV29HZEpyZVBJTWF6OW9XMFFRMDFGV2pwbEJYbFF3SG96?=
- =?utf-8?B?clRyV2o0NXdwN1J5c3Y0TzBPdjlqVzcwbGNZQmFVMENGWDZWQ25NanJubHBE?=
- =?utf-8?B?dUlNaVkvU2ZabER6MkZiTXNxZjlTWFJZTDFVdTF3eTJhTWFnUFZzNWhVTTN2?=
- =?utf-8?B?OG1JZnhxMXNmdXhUQkRhZHBHeWxwRG9lMXQ5aWhTM2Z3ZUg2TGxtUFBWdGw4?=
- =?utf-8?B?RWtOSTh0VU1HWm1pR0cxSFVQdUpobFNaYXlWTXI5S0lKMzFzRWtaVmk1OEdS?=
- =?utf-8?Q?+PVhtJitFPAW2vCo=3D?=
-X-OriginatorOrg: kontron.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 37aa9b44-85e2-4688-5a42-08dee17f3108
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 08:09:13.4075
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W8LU6C4cgIAJ/uvzl4SEJDUDgCjNmavygQYLFsNlBM+9jq5iJl2pzuo3ybVw6rbpisZFjQJChQSkPeVTwsCid6eikZIK6nt5YH0zwp9BuDg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR10MB7389
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="db73lwnkw6hdook6"
+Content-Disposition: inline
+In-Reply-To: <20260714073425.CA6181F000E9@smtp.kernel.org>
 
-Hi Francesco,
 
-On 14.07.26 08:59, Francesco Dolcini wrote:
-> Hello Frieder,
-> 
-> On Mon, Jul 13, 2026 at 04:53:46PM +0200, Frieder Schrempf wrote:
->> From: Frieder Schrempf <frieder.schrempf@kontron.de>
->>
->> Add the ELE firmware API node and pass its handle to the OCOTP
->> driver. This allows us to gain read/write access to the OTP fuses.
-> 
-> This seems something we should have in the soc dtsi (imx93/imx91), it
-> does not seems board specific.
+--db73lwnkw6hdook6
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 07/20] gpio: Add missing OF module annotations
+MIME-Version: 1.0
 
-My original intention was to move as much as possible into the SoC dtsi.
-The problem is that the memory node is somewhat board specific due to
-the DDR. And I can't move the firmware node into the SoC dtsi and assign
-the memory node in the board dts as the checks for all boards not
-specifying a memory node would fail then.
+Hello,
 
-But I'm open to any suggestions how to improve this.
+On Tue, Jul 14, 2026 at 07:34:25AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+>=20
+> Pre-existing issues:
+> - [High] Missing MODULE_DEVICE_TABLE export for the mpc52xx_simple_gpioch=
+ip_match table.
+> --
+>=20
+> --- Patch [7]: [PATCH v1 07/20] gpio: Add missing OF module annotations -=
+--
+> commit 292bbbdcede3ce86fe1309d514a852f272c27bac
+> Author: Uwe Kleine-K=F6nig (The Capable Hub) <u.kleine-koenig@baylibre.co=
+m>
+>=20
+> gpio: Add missing OF module annotations
+>=20
+> A driver module matching devices using an of device id table is supposed
+> to declare that in the module's metadata. Add this information for
+> several drivers that failed to declare these.
+>=20
+> [ ... ]
+>=20
+> > diff --git a/drivers/gpio/gpio-mpc5200.c b/drivers/gpio/gpio-mpc5200.c
+> > index 00f209157fd0f..2c828bc922ae3 100644
+> > --- a/drivers/gpio/gpio-mpc5200.c
+> > +++ b/drivers/gpio/gpio-mpc5200.c
+> > @@ -180,6 +180,7 @@ static const struct of_device_id mpc52xx_wkup_gpioc=
+hip_match[] =3D {
+> >  	{ .compatible =3D "fsl,mpc5200-gpio-wkup", },
+> >  	{}
+> >  };
+> > +MODULE_DEVICE_TABLE(of, mpc52xx_wkup_gpiochip_match);
+> > =20
+> >  static struct platform_driver mpc52xx_wkup_gpiochip_driver =3D {
+> >  	.driver =3D {
+>=20
+> [Severity: High]
+> This isn't a bug introduced by this patch, but since the patch focuses on
+> adding missing OF module annotations, should it also add one for the seco=
+nd
+> match table in this same file?
 
-Thanks
-Frieder
+Ah, this is snaky, there are two drivers in that file and thus two
+of_device_id arrays. My script only handles the first, so the style fixes
+are missing here, too.
+
+I will wait a bit for further review and then address this in a v2.
+
+Best regards
+Uwe
+
+--db73lwnkw6hdook6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpV7rwACgkQj4D7WH0S
+/k4XaAgAr47ojbzXcjqsjF1FttUvP817tdDTOildKlkxSlYP4gIjsiIubgQYdwg7
+MpSLhXX5sDIJmMklwzM5pALU2Ct5LQu6t/1MjKG6XHftyRj2LwgKbU2FbG2NNn+G
+JAQs0CdGH4mfmhux9mvhe39b0V4h5S3bpRe1lA2Iv9ex/dGL4bNEto3cM7QD31Ap
+FCw8wFkpbaZbBBppVbdK7o5utKerY5rA2f7Ns2vVPkLNhMx9ps61j4d8FB2BKaoJ
+0rPe6NVzC81WjsrwZUhpwUHucCbjsqHGxQrl7j3TaX77dy5pOXi9WxhTGNodm5JR
+z0Im+LrSjd/VfmFscgr6z0IU+KWrhA==
+=3L74
+-----END PGP SIGNATURE-----
+
+--db73lwnkw6hdook6--
