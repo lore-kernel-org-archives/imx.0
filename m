@@ -1,117 +1,163 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82E73ECBD9;
-	Tue, 14 Jul 2026 22:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CEB370ADA
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 23:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784069499; cv=none; b=T7Td5NY1uyDeNKtHIc7ikVGcyf0xzghs1MA6ZBnvjFiB6RWWZacFgCPelpjnIpWtpbBYyrJUkp+42Uu6hNAE61K7+FPhgEk3mApQtusxIDxijNYnA/1VRuUs+jAlp011BUdWaeCgu9phyDJti70ViRWueurnq3Pp/v+CP2ZzRgY=
+	t=1784072774; cv=none; b=jzLYbvn7CRcCMJLumq40SVbmhsZPfOiHrR0+HyrOFIYSUDGilLzqYM4WRnsGxsZYiCSO6nWY4OxfS1dQmDTUFSHmN87BRu8tGpYvCLwb6LcIK6gqxK/Wn2/zfiOgUhkXMg/W8XRlNct/GOCloprhAO9hehqgNjVkLu13txCHF8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784069499; c=relaxed/simple;
-	bh=Up9898goBUiMUkw/XboqiGUJMigAXOWBOVGdW5oyLDI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oXC2DBuua+Z+9Xc2k5txly8Xr4RTuqI7E1RZMIQAuLt6AhZP5cfYtThA9egBu9V9GpHfDrVqxlnnoJRJ8jWVXkjRIOwhCXsvJ3JEME3qTEzTMY1yBZZc0V7BMgWdoBvgzAEAbK1/XmOZUUgpBM6O9dsFJpXQGyS0Avg6L03bWyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=EH/tcO3c; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1784072774; c=relaxed/simple;
+	bh=xz5rGf8Wc+mjpEoKjw/Hm6IDCdOr4kMxjrR6BxaTuSo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qs0OXfJuThau7G8caZ0PAs54JM1xsJGMp024WR8uoU9ZAq02mDN6sGLpNP5ynKXLUjrV3JeXeUYBE5Kcw0WTPQnX84SZpvu57IPWjPQx5DmrvfUij3Zl7Y8hhueJ9ycNVfuwQFHRWIyGSGcnYb0xyCGghoNsdkq8L0VQbTiKyP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gd/wrKym; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="EH/tcO3c"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7ECCB118727;
-	Wed, 15 Jul 2026 00:51:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1784069488;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=JGJ7P9JE0QgzNJz4vJFVzGxVyrchjZ/YmcbKkfd9m1M=;
-	b=EH/tcO3cBwilFRGqxYjJ6qkrWWZTRuMClOQ360jfWZDpfLE0FI/j5/I+HHo01EshT1yetv
-	xUyOkhj0zqL7+h5MxuREVeQrtdgqwyBkCAOzbgfy2+2JGUINHT9iIB2vVTtLuxwyHKeodT
-	YwuRXLKddnKCjcN49naJ2w02qRvKetUpqgVmaBPbpP+08sohZDW4/u7FURgXLTR2RXwLW/
-	R6sGHCngU0pcGp5vG3c3MQCl+mLVNlW23+rd7AtwuPkJ8FYTrYSiH/YWHnZyMY/8yuoVc6
-	E2ASZ1HQkpliNn5VCcldaYCIg1R1ZO+LhSXd9O7j0q9q6xeUf8KwxqvQT7j4Hw==
-Message-ID: <a3602ef8-2b77-4cc3-adef-2c4cba08a5d9@nabladev.com>
-Date: Wed, 15 Jul 2026 00:51:26 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gd/wrKym"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c9d1fc053e0so1335176a12.1
+        for <imx@lists.linux.dev>; Tue, 14 Jul 2026 16:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784072772; x=1784677572; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kzUE7I1k14QX134cx6l+OWLqB5vco662yBKK277qQ00=;
+        b=Gd/wrKymvElJKI56wQhmD2n+Dtck8hRrmJaPoOG6DSWUVoDGkk6HZjAkAvb1246wdR
+         b3hPicL4wBhwg8iL+feR6t2kmIguhEPk2M65+B8+4TPamnY+81+6eM2aFx3NllbnPHf8
+         MjctkJ/Sh7kvzLmwPfxpPSbVJfgKdd9sN7pYV+VGnSkRgXGQz3Sy4RaYvbtgv7swuNsH
+         knUzEBz0kiwKnj2+mkQZmKDfOdVERGcSimimoYxdlJNCRIHMt06ktXwJWAoAwKbHgY/Z
+         OK3C3CkJ0RRsS/3Wh3wrxHIxxOWZPx6UMIvaw3+7UlJ9PWlmAG0yJCurE0GksaYp7R4S
+         K5Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784072772; x=1784677572;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kzUE7I1k14QX134cx6l+OWLqB5vco662yBKK277qQ00=;
+        b=Dy9ZZ5a1tktwZaM3faVHDYdb3YUQWTz3QsEfXUMmOq54CX6Ej/jvgaY7ViwsJqozIO
+         qLSte+S7PvKCJJFHZ3Ci4jjns3JsggGLJI4f6zrLQn+9GQB8TRccq6TGUlberfR6smL0
+         AQfhNhiNrHumQhDCwEKJbkaRm3ybttPgOa+BjQHeVtdpz2RP4CLx3dzKGSwuLj+rMqCa
+         QDYqIXJee0g2oFbmaa+F7uMghre9EXatDxxxTuu4IoPKQzlXHTXDBH6K1mKpsn1g5CUf
+         zW99av7FUBLGw/FGX64vZq7axpmnt58sD+cydvP14VwXtgroUtFQxFAs5Bzx/2ur/heL
+         hr3Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoCPABDMkKIytbST1vyCcYzNRQrIXkXJB9nCx5zphzqynmAsynhnI/pyPR/Vz6swGTwy2M=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/+GZPa+0K+Nok3BcJdyiN3i2bAUyOHPIBu+eEcGA+Juq/Zrrn
+	v7PVYNcgb2e4H54VuFmRvYFwv4HkC/M9Vep+hi18khexfT2bQvWl7do/
+X-Gm-Gg: AfdE7cmxOQyBsBxR7QXdJFIWmsadS6dmah+R3fwiDA52Hwxvm4aLQf1CfddFXDtOz2r
+	mP2m72ssYOJMbVFfiu+AseCoYXmVF7l7/CLZ3EyHXHOb6WWzwmDrO59hc01QRltHwAwVZpSYRYx
+	bgksrjnWlleqLbm+0B9Mb052QU873gdVv+Ed+vQZHMgrZ//WxRFgvDBFOIdE/nHfz75wCsneWFc
+	Uq6Z4pGf2ddDXkVrPvtnRM4uSbq3Mx2ZgvaTddG/7xhp6BI4ZrNoVqA3mvrMa83SC18wJ1L9IuF
+	eWIfPeM2dAfAV7J4zmA6LoFAWJvxlH21wjrtr47IioliKqzlbj+a674yhTDJc/60jkKdVjrCEAs
+	tYewBTxKZ5gGcZmpt6ascKEPVqz4X1fmPUhlA0GBYIMlYpp0n8rXu2nzNBkKnGHSFSmwN1GPxEs
+	K4J0P0ZTNsETC/mvsJBHcI+KfnsCBRpPJda9bqy4I4IBzvTvIb0sn0OCsfMJDMrNL0HU4oLy6Bh
+	4pg4gmj3tzMoSGP9IEIq3XxS9X22P74LKWH8LQAYauvTqxCSmDKIOurBHjjrQKLrdOlKigq3ORP
+X-Received: by 2002:a05:6a20:3d0c:b0:3c0:9c1b:d0be with SMTP id adf61e73a8af0-3c110a24bb4mr17834018637.73.1784072772474;
+        Tue, 14 Jul 2026 16:46:12 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e34])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5b3643399sm10988858a12.22.2026.07.14.16.46.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 16:46:11 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-edac@vger.kernel.org
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	imx@lists.linux.dev (open list:EDAC-FSL_DDR),
+	linux-kernel@vger.kernel.org (open list),
+	llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT:Keyword:\b(?i:clang|llvm)\b)
+Subject: [PATCH] EDAC: fsl_ddr: use devm_platform_ioremap_resource()
+Date: Tue, 14 Jul 2026 16:46:09 -0700
+Message-ID: <20260714234609.902367-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] arm64: dts: imx8mm: imx8mp: Add CM DTOs for Data
- Modul i.MX8M Mini and Plus eDM SBC
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: sashiko-reviews@lists.linux.dev, devicetree@vger.kernel.org,
- robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org,
- imx@lists.linux.dev
-References: <20260705200534.151803-1-marex@nabladev.com>
- <20260705200534.151803-4-marex@nabladev.com>
- <20260705202439.3F5771F000E9@smtp.kernel.org> <alUICTI-24tREZO8@SMW015318>
- <f1e52327-42da-48e1-8e4a-dabf148ce216@nabladev.com>
- <alWR66rjt-9jGEOV@SMW015318>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <alWR66rjt-9jGEOV@SMW015318>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On 7/14/26 3:33 AM, Frank Li wrote:
+Replace the open-coded of_address_to_resource() plus devm_request_mem_region()
+and devm_ioremap() sequence with devm_platform_ioremap_resource(), which folds
+the resource lookup, region reservation and mapping into one step and returns
+an ERR_PTR checked with IS_ERR()/PTR_ERR().
 
->>>> [Severity: Medium]
->>>> Will this node name bypass the driver's carveout exclusion logic?
->>>>
->>>> Looking at imx_rproc_prepare(), it iterates over memory-regions and checks
->>>> specifically for the name "vdev0buffer" to skip processing the vdev buffer:
->>>>
->>>> 	if (!strcmp(it.node->name, "rsc-table") ||
->>>> 	    !strcmp(it.node->name, "vdev0vring0") ||
->>>> 	    !strcmp(it.node->name, "vdev0vring1") ||
->>>> 	    strstarts(res.name, "vdev0buffer"))
->>>> 		continue;
->>>>
->>>> Because this node is named "vdevbuffer" instead of "vdev0buffer", it appears
->>>> it will be mapped as a generic carveout via ioremap_wc() and unintentionally
->>>> included in the remoteproc coredump.
->>>>
->>>> Could this node be renamed to "vdev0buffer" to avoid wasting vmalloc space
->>>> and bloating the coredump?
->>>
->>> Look like make sense, please check it.
->>>
->>> It is not good to use node-name as ABI. Laurentiu is working on use
->>> memory-region-namses.
->> The memory regionss are referenced from imx8mm-cm4 { } node via the
->> memory-region property:
->>
->> memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
-> 
-> I known, but now code parser node-name, At your case, it.node->name is
-> vdevbuffer, but driver expected vdev0buffer.  so above check will be failure.
-> 
-> suppose it should be
-> 
->   vdevbuffer: vdev0buffer@b8400000
->               ^^^^^^^^^^^
-> 
-> I know it is bad, but waiting for Laurentiu to fix it.
-Actually, if I look at "git log -p drivers/remoteproc/imx_rproc.c" in 
-current linux-next 20260714 , which has the entire history of 
-imx_rproc.c and the latest content, the code cited by the AI:
+Behaviorally equivalent with respect to region reservation: the driver
+already reserved the region, so the non-overlapping reg requirement was
+already satisfied. Drop the now-unused linux/of_address.h include.
 
-"
-	if (!strcmp(it.node->name, "rsc-table") ||
-	    !strcmp(it.node->name, "vdev0vring0") ||
-	    !strcmp(it.node->name, "vdev0vring1") ||
-	    strstarts(res.name, "vdev0buffer"))
-		continue;
-"
+Built for arm64 (defconfig + CONFIG_EDAC_FSL_DDR) with LLVM=1;
+drivers/edac/fsl_ddr_edac.o compiles cleanly.
 
-never existed in imx_rproc.c:
+Assisted-by: opencode:hy3-free
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/edac/fsl_ddr_edac.c | 30 ++++++------------------------
+ 1 file changed, 6 insertions(+), 24 deletions(-)
 
-"
-$ git log --follow -p next/master -- drivers/remoteproc/imx_rproc.c | 
-grep vdev0vring1
-     vdev regions are vdev0vring0, vdev0vring1, vdevbuffer and similar.
-"
+diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
+index b27dff96aeb6..ae1d54434e38 100644
+--- a/drivers/edac/fsl_ddr_edac.c
++++ b/drivers/edac/fsl_ddr_edac.c
+@@ -22,7 +22,6 @@
+ #include <linux/gfp.h>
+ 
+ #include <linux/of.h>
+-#include <linux/of_address.h>
+ #include "edac_module.h"
+ #include "fsl_ddr_edac.h"
+ 
+@@ -495,11 +494,15 @@ int fsl_mc_err_probe(struct platform_device *op)
+ 	struct mem_ctl_info *mci;
+ 	struct edac_mc_layer layers[2];
+ 	struct fsl_mc_pdata *pdata;
+-	struct resource r;
++	void __iomem *mc_vbase;
+ 	u32 ecc_en_mask;
+ 	u32 sdram_ctl;
+ 	int res;
+ 
++	mc_vbase = devm_platform_ioremap_resource(op, 0);
++	if (IS_ERR(mc_vbase))
++		return PTR_ERR(mc_vbase);
++
+ 	if (!devres_open_group(&op->dev, fsl_mc_err_probe, GFP_KERNEL))
+ 		return -ENOMEM;
+ 
+@@ -531,28 +534,7 @@ int fsl_mc_err_probe(struct platform_device *op)
+ 	 * Default is big endian.
+ 	 */
+ 	pdata->little_endian = of_property_read_bool(op->dev.of_node, "little-endian");
+-
+-	res = of_address_to_resource(op->dev.of_node, 0, &r);
+-	if (res) {
+-		pr_err("%s: Unable to get resource for MC err regs\n",
+-		       __func__);
+-		goto err;
+-	}
+-
+-	if (!devm_request_mem_region(&op->dev, r.start, resource_size(&r),
+-				     pdata->name)) {
+-		pr_err("%s: Error while requesting mem region\n",
+-		       __func__);
+-		res = -EBUSY;
+-		goto err;
+-	}
+-
+-	pdata->mc_vbase = devm_ioremap(&op->dev, r.start, resource_size(&r));
+-	if (!pdata->mc_vbase) {
+-		pr_err("%s: Unable to setup MC err regs\n", __func__);
+-		res = -ENOMEM;
+-		goto err;
+-	}
++	pdata->mc_vbase = mc_vbase;
+ 
+ 	if (pdata->flag == TYPE_IMX9) {
+ 		pdata->inject_vbase = devm_platform_ioremap_resource_byname(op, "inject");
+-- 
+2.55.0
 
-It seems the AI hallucinated something which is not based in reality ?
