@@ -1,108 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020089.outbound.protection.outlook.com [52.101.69.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A065125AA
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 07:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784014467; cv=none; b=SipB9nxg6t9XRZvIY+eZPbEZOSPVxLNo1qy9IgsyumDEI/sHl9XmXa5GFv4KlBTcVUfV0eJ4EjaaTYu/VjqATdoGFS5LPrjUy3nMEUdNKxjAEPR/VnsuJrONLSX9NOcHzKx/yr16et7ICPTzvpl+MeE9jCZwS08PEHftxOrKFNY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784014467; c=relaxed/simple;
-	bh=ByzCT3WQ1IC7Fj3hAaN0cXQyieggrGJY7iTNWe1HDEc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rv8U4pzTcCH1A9nqVOTlrngZSJKaV2VDptCu8jPVswtvxRl0cPxjkhxtYhbuoqztt7EX4j7Hpu8X077ZjfmF/kWgLnCChnhsBCRVgYmwChCJ91F8XLHLwR6f0igX86RpDQPICstKRtgx6gnJ5rIeZlwR57lCn1WHzF4T1e/QLUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVEiSHWk; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BBC3EDE43
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 07:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784014570; cv=fail; b=Ziw82xqcqCm8sWRHu960wJmPHJABw4G2Ot4BsMXSWNuNJCXZzeG8YrvFeAQ/ozq4adjOXP3OxUiFPOY7/v4KGtzFi5/NxskutnXaz/LAkocF5pim8V+vkUdOn21q40eS2E06S9u7/vMhVq5dy4993XvkTFRcdlbza4mp2qlv/v4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784014570; c=relaxed/simple;
+	bh=Gday1megTAtKDGqVY3wMI/33DE8AL4aS3RwVwXYErSg=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kNaAayZSTzvr2MCVO6brCw6ORZ5GdBYeWjkk+FKNoYNfTTq4R8WJsvXwPLbJnjvlqi+IGVBIwOyCD758cXYIyL67LKjiIFW7C88QCMUGh7bHgHkx+WBHmL/s9BkWvaf8qA4zHLjFcDfeEnKLBMk5XIKGFaGOfDClJkMX1qx+fFA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=anton-paar.com; spf=pass smtp.mailfrom=anton-paar.com; dkim=pass (2048-bit key) header.d=anton-paar.com header.i=@anton-paar.com header.b=UBnXhEyH; arc=fail smtp.client-ip=52.101.69.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=anton-paar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=anton-paar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVEiSHWk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6181F000E9;
-	Tue, 14 Jul 2026 07:34:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784014466;
-	bh=wWc3NNf4Mow64HmVvOEIy59FoIRTqGvqc3fXMO0d8NQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EVEiSHWkGBRyHWg9K4TaJUnZKeD6ETfCr8/T0HHm3F7vCR2RoNrh4magWSz5p+U2+
-	 BD3xPAGhECkeBLLqwyL5SCiEM1tMbu//hp3e5jfSatjalLpbViULEH9eIYYdOonYz4
-	 xf4RdFFuGOwd59IV4Zhbblx0TXdGcUvDiqrEhLWMBQVNuNpA1OwHyNVj/LYO6+GFV3
-	 hkLe4togIVB9QNuNUDbISbs1qv2XvPHDuNA2NnrqIROAokxOkCpprJ8lQEOTKUo5Gt
-	 0VH8EeGwWon3bIkZBMAzzCLpk6XXGVLt/BdWm/Tx/oJFnmTpcZDSfOJRqOucWrwFaW
-	 WXlO5J4RV5Sdg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 07/20] gpio: Add missing OF module annotations
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?= <u.kleine-koenig@baylibre.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <72f0871dda4d65bb2b6ff8827da6a3b2dfdffab6.1784013063.git.u.kleine-koenig@baylibre.com>
-References: <cover.1784013063.git.u.kleine-koenig@baylibre.com>
- <72f0871dda4d65bb2b6ff8827da6a3b2dfdffab6.1784013063.git.u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key) header.d=anton-paar.com header.i=@anton-paar.com header.b="UBnXhEyH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H0epOgXdwUh+epEoWfumKXr+NwNOFzOK1ONAhVsuhAInrEH/r7+8jHXjcw5N7TmY7P4149Niq8f0RW5erzjXkVXbdf32MEvRXScp/bZAAImWhfHgb3wh8GmZAQ7gydkEaNdJ/TCo/3HjdcFt4wN7s5IHhXLDGPYsixmiaQoFx4+tGKxCVx2R9htRruttJZpi7Q3VTKT8nN2xsBd9aMnJSvB6cjeaCH+TchgKU2d4KmRKoFNvberDcxEG5NwW2p86E9aa1mwHglDaiTV9ys4VRb1kAVxDBHX7M0L4CMfDecrhR9sv7sx/yvlGhJFD6q+usdgZ8lq9L13ka3G7IRxgoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Gday1megTAtKDGqVY3wMI/33DE8AL4aS3RwVwXYErSg=;
+ b=KQgG1vP41Wp+rr2fyzhIn/ke3NPTdTA6df4AAgUuG0/QQQN5bs+HG2MTzuh1d7NerNiZtEGVX2xMZ+/TghnDw9+aCwq1vW64dB1t4384A6s1eOsHv4JljOLOCmeLPjNOr12DkqfNIMvt+/VuJE3OxKyVZ+aZlXFKRXSg5tbtA3a6cJkUE8A8HFfWpex/AOq1i8zHpyBaIERgVkSOXMIYIMz4ej+ZFxccOps5ektpIIh+spgXdoJXCWNwykslzFSjklS+tazh+3BB+7kolmKNnnz7Mg1B0Y7pzNAXcnPetNzAcW4jmlecmT+D6NeAugHR366lsx/uE5+AA01tdwiJjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=anton-paar.com; dmarc=pass action=none
+ header.from=anton-paar.com; dkim=pass header.d=anton-paar.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anton-paar.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Gday1megTAtKDGqVY3wMI/33DE8AL4aS3RwVwXYErSg=;
+ b=UBnXhEyH0IQ7l0fUG/u25o3KBJvNaFFbTqTp1rmSybu+J37SvdxF8fwxt8gNxY9i+GTr8STcDEAhBvkR7PXdFZzrCcKEvyE346QITI+jGx4hM6Zlm+58+7MYFd7I5gSVlpEuO3Gk8wu0hz/fU5oFqWUM7YqCjxrr0Q+ie36AupRrX9q7azn0GP51RAz4g/QSgryAGKCht034dDFhO7qRgWTC9SdO3KT4/YgrEkEPVSzDmW+jzxFPh5usoA4LPrMmEo6EnYWU6rca1AKyrZgyBf1WWQwHcpTOtUJVF9Q/jdhpe4/Kl9iDjZKixWlOYMsXPDhADX+LGjKSrqp/wbM13w==
+Received: from AS8PR03MB6998.eurprd03.prod.outlook.com (2603:10a6:20b:23f::12)
+ by PA4PR03MB6781.eurprd03.prod.outlook.com (2603:10a6:102:e7::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Tue, 14 Jul
+ 2026 07:36:02 +0000
+Received: from AS8PR03MB6998.eurprd03.prod.outlook.com
+ ([fe80::cdb0:4678:1582:2a50]) by AS8PR03MB6998.eurprd03.prod.outlook.com
+ ([fe80::cdb0:4678:1582:2a50%6]) with mapi id 15.21.0202.018; Tue, 14 Jul 2026
+ 07:36:02 +0000
+From: "Lalaev, Andrei" <andrei.lalaev@anton-paar.com>
+To: "arnd@kernel.org" <arnd@kernel.org>
+CC: "airlied@gmail.com" <airlied@gmail.com>, "arnd@arndb.de" <arnd@arndb.de>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"festevam@gmail.com" <festevam@gmail.com>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "lumag@kernel.org" <lumag@kernel.org>,
+	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"mripard@kernel.org" <mripard@kernel.org>, "p.zabel@pengutronix.de"
+	<p.zabel@pengutronix.de>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "simona@ffwll.ch"
+	<simona@ffwll.ch>, "tzimmermann@suse.de" <tzimmermann@suse.de>
+Subject: Re: [PATCH] drm/imx: select DRM_DISPLAY_HELPER as needed
+Thread-Topic: Re: [PATCH] drm/imx: select DRM_DISPLAY_HELPER as needed
+Thread-Index: Ad0TYRiIjQy4bP9uS9G3PNFd40Aj1w==
+Date: Tue, 14 Jul 2026 07:36:02 +0000
+Message-ID:
+ <AS8PR03MB6998811B9AF89D4E64AC10E8C8F92@AS8PR03MB6998.eurprd03.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=anton-paar.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR03MB6998:EE_|PA4PR03MB6781:EE_
+x-ms-office365-filtering-correlation-id: db42c0c2-3016-4789-e838-08dee17a8e7d
+x-ms-reactions: disallow
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|56012099006|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ zX8eTnTBTEsjQ3JPfHiL+2ykD/IX4zZjPWIi1lY8NaVCpZ3xgCMOh3DorCtEAaFbUVHpuLR9ZybN+5nb7HAVo8jQ0wNT6MW1bndGEzPN1gVL89ruBqciMDHuZtfHMPxQoMTJMcqIS76rsOC541XrPHJNIIz4lNV09GIZI+XbOX89N3euDnvPe87bq4oamXZkEJYlnSxpJ3/5YCXGoD71fSS56er6SJf2KE5maU3nvtnTB/mL8ZkMtVd3fLdjDS5OS/f6HapQhNMrfN6or8yrE3fY6WubX8CSb6FJ2POe4AIBOXz78M01CGRQYmZEH5Zs8O/LqaxQq2mxMshCTxeiKGGQ5QWtMWbSKOnNMB5zCZdm4lfIlehydYmK5RyqSenXkwfVlydTg2DqMdlW40aCmkhpm1YF/7fBR9pZMtSY49vxP+aeRnPR5p0Jkax7U3pXy4oVWjPiQ3GkguQr6jPQle+iPP9ss8a/n0mSgzR/ckdK6gekGBbIeJzk3/CYP/qNmM7ty6EtaMN0j/rEEpzO1kC46P7WGBeNkfZ9h0ZVv9letFyFOibPgImTkASZubAVq3o27zL7rBOmL8uZjLl2tSXmJ+hsH8w+gMf/tgvI/mW6/nSFTVYdK7u7n+0HuRg/TmMOlw1oi7cQQf2hLddnwcdeXBb+NW46cqVLJMPWwxeCHpAY3PSQkGw4V4yfnUS6l/cooSSIp4STNBPOEzmkMktpdcx8DRwj+FxLz8DY9Ps=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR03MB6998.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(56012099006)(18002099003)(38070700021);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?/64usDnG/E0YjWURx5Un28gXE50+kAaR1c3+q99rtoOK7VFsTgClXxTV4dTK?=
+ =?us-ascii?Q?8ULSueWaIwM7RhbMhKMiyYhH5VpaNfd4975ENVIP9hPq1fy46KoWoYxlFIXm?=
+ =?us-ascii?Q?PVXcTTZFrURzwudebhX/K/FuXbDCEAGnQDQ62o+ov4irPjmX/sbZB04EgjSk?=
+ =?us-ascii?Q?XDqtt0rdVMJJ3blHQNS3FPYFnYQiNe81HdNR+Tmpya2oAGZ9zyLGHrJvDYqO?=
+ =?us-ascii?Q?2lBYnoq9YOw1NQey/FR1QqofuNgUBG57EPEGHjOxF6KadHpCk28ibBII6QmC?=
+ =?us-ascii?Q?7ZKTKHQF5Ak5MU5Yvx+pAtEdSoIZjJ8fLfBjbiIxix3ZZZr/nPGGYFtIHRtF?=
+ =?us-ascii?Q?kmgSQisQPOLCMlMdjLTazayZ9O03mCc3QIVfjNEfFu3PUT8N+UshfS1Bj6V8?=
+ =?us-ascii?Q?ADV5Zg/eLkUiQR9gZMgY0/7kZSdkywBN5cvMfa+pxWPnaBeLTqCQPfa3k3ms?=
+ =?us-ascii?Q?HQdRqLhyBZIofbdIBOIltZBYy0PO65u9v1u1iKDtvX47h+yQmlNAYt40GV9F?=
+ =?us-ascii?Q?n+TeXKo9GIgwodMhsOGCZiahHzzcjsdkRhJySvZgfqXIeQ2ElpA7+she/QQI?=
+ =?us-ascii?Q?kZBZvPaJsV6bsIu9bN73dDw2jT91j03x4TwFYniUwbNxdMyUIHwpG4Mq+lcE?=
+ =?us-ascii?Q?4xesx1z4DMykVGeDIMUBjMY0S/9jfR8h/v4gSSRCkeN3LVpEL6SWW0fwlgkd?=
+ =?us-ascii?Q?8yOcmcUygvpw8mvdvT80dhRfJLXAM1MDLIEoZ1N05qrtS242IY5mj7ZZvaFs?=
+ =?us-ascii?Q?IR6Lo4XpIyjLbhTBzrjv6BAC0ByFZ4o0smG900q1RYo3CLN0y96Q8MwZbR3C?=
+ =?us-ascii?Q?efWSWaxA8LEA5ukGPibTQxRgUsbnL0bpdXISFjHXMY0fpcy7KMy7qmcXMmHO?=
+ =?us-ascii?Q?lOuLBvhUQt5WcxdIFVCdxlTdRfMq1lx/R2XAy5E1ccMAe7BiM5oIcHwnOeDU?=
+ =?us-ascii?Q?YTm7ocAkfNeQL+lq8X9xQRjOZtuQ+4az4dz5djAKpCJe76I+EDJuw6Ol5CHB?=
+ =?us-ascii?Q?udEmKwqvwkQGmywwtNHJEVkN2VIHxXGNWZgpov6R9SER7pp6kVRyzNmOIqmo?=
+ =?us-ascii?Q?Kbny9E7Kcaf+ywC43hMoo1dQNYp1A9MYHvm4I1TJ2M2rperh3DKCETcKSCtr?=
+ =?us-ascii?Q?G/xAmqbN6azFbUnKhwJwXUE5AomteRTGpnNeK4K4QABhQLSLGKo0rgZyjQ3Z?=
+ =?us-ascii?Q?JXR6IUBp2Qar6Ek7UPwJIV5BWZ61UfCbzHU/ELixjjUCc9JLR2FGYel2NTWV?=
+ =?us-ascii?Q?+I+XVPmlsjAKpWHgwT34CS3Ie8LSk17glm36GDCWmKlPbF1PoWbSrCqug3O2?=
+ =?us-ascii?Q?cK33l9CA33IwxJeI6WvvOZarjpJ55CfgmjG3XeG/rPypj277zEw2c3Jj7zfE?=
+ =?us-ascii?Q?d4tmcpxeIiejQUqE2z4xslfn8oL5EY5b7dl8MU1BHE7+c2JUi0UKPlgf+M7r?=
+ =?us-ascii?Q?ybNiU8B0TzAMKf5p4gE6HIMNMVyaOcJ9zY08YMlbzG87HIUoS6dBin05y7jh?=
+ =?us-ascii?Q?nnCKjNZaWYIU+ydJmVSDNZlGHjNLFQ02YzkNnIAf4dOsWmSShA4LP3Ijkyrf?=
+ =?us-ascii?Q?p0G3Ixf6VwMkyBX1m1XnxJCmGC/5eTIYQnNT/sCVVO4S+XkB9wB1vJVWwoh+?=
+ =?us-ascii?Q?VEKu3sgrZ3uUXrJmcG5jg411+RzkGHcHaGFgjFUqt9rzgPAncik2U78bxHuZ?=
+ =?us-ascii?Q?acNujG8dXNTX++9vZyKjlDHzExfXkjKsc/LdFR8jg1XwjwtkirKCuAYVeGeT?=
+ =?us-ascii?Q?SHllF0h03Q=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 07:34:25 +0000
-Message-Id: <20260714073425.CA6181F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-OriginatorOrg: anton-paar.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR03MB6998.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db42c0c2-3016-4789-e838-08dee17a8e7d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2026 07:36:02.5500
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1650d056-0824-4040-8341-61f3c6069bbd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: FJC/02OlZTsXdWae6ml75gHkkSIo29jIPcpnRRo0iAQ5zqDs93+jaA5cDYH4vZ0WyRtsAZV78cRu186sqI/JMeYi/AcIN4dm5FiCDKnHTAQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR03MB6781
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+Hi,
 
-Pre-existing issues:
-- [High] Missing MODULE_DEVICE_TABLE export for the mpc52xx_simple_gpiochip=
-_match table.
---
+Gentle ping.
 
---- Patch [7]: [PATCH v1 07/20] gpio: Add missing OF module annotations ---
-commit 292bbbdcede3ce86fe1309d514a852f272c27bac
-Author: Uwe Kleine-K=C3=B6nig (The Capable Hub) <u.kleine-koenig@baylibre.c=
-om>
+I noticed that another patch [1] selects DRM_DISPLAY_HELPER for DRM_IMX_PAR=
+ALLEL_DISPLAY, but not for DRM_IMX_LDB.
 
-gpio: Add missing OF module annotations
+[1] - https://lore.kernel.org/lkml/20260121102607.4087362-1-martin.keppling=
+er-novakovic@ginzinger.com/
 
-A driver module matching devices using an of device id table is supposed
-to declare that in the module's metadata. Add this information for
-several drivers that failed to declare these.
-
-[ ... ]
-
-> diff --git a/drivers/gpio/gpio-mpc5200.c b/drivers/gpio/gpio-mpc5200.c
-> index 00f209157fd0f..2c828bc922ae3 100644
-> --- a/drivers/gpio/gpio-mpc5200.c
-> +++ b/drivers/gpio/gpio-mpc5200.c
-> @@ -180,6 +180,7 @@ static const struct of_device_id mpc52xx_wkup_gpiochi=
-p_match[] =3D {
->  	{ .compatible =3D "fsl,mpc5200-gpio-wkup", },
->  	{}
->  };
-> +MODULE_DEVICE_TABLE(of, mpc52xx_wkup_gpiochip_match);
-> =20
->  static struct platform_driver mpc52xx_wkup_gpiochip_driver =3D {
->  	.driver =3D {
-
-[Severity: High]
-This isn't a bug introduced by this patch, but since the patch focuses on
-adding missing OF module annotations, should it also add one for the second
-match table in this same file?
-
-Further down in drivers/gpio/gpio-mpc5200.c, mpc52xx_simple_gpiochip_match
-is also missing an export:
-
-static const struct of_device_id mpc52xx_simple_gpiochip_match[] =3D {
-	{ .compatible =3D "fsl,mpc5200-gpio", },
-	{}
-};
-
-static struct platform_driver mpc52xx_simple_gpiochip_driver =3D {
-	.driver =3D {
-		.name =3D "mpc5200-gpio",
-		.of_match_table =3D mpc52xx_simple_gpiochip_match,
-    ...
-
-Without exporting this second match table, the module lacks the modalias for
-"fsl,mpc5200-gpio". Could this prevent it from automatically loading if the
-system's device tree only contains the simple GPIO node (such as when the
-wakeup node is absent or disabled)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1784013063.gi=
-t.u.kleine-koenig@baylibre.com?part=3D7
+Best regards,
+Andrei Lalaev
