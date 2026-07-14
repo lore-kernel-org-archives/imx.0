@@ -1,61 +1,63 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75096443AA3
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 20:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED133432E99
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 20:05:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784059541; cv=none; b=JWYXD/teHGd/p7tQj7xoiUZ2eYDeYQMJ2515bOPd6jgbbVepVjkEMVbhk6NF+mXRG94yL8FP5SSROpfebs43/tgg37ZpY/iDeZ75aVgZDGXv8yy7mggf7rwRMeVwf7ICmfg10HWDA975km/W1uZdlXMrnCt0ecxMK7R+orcnL6A=
+	t=1784059544; cv=none; b=HDDQohyg3dmPaufGjftOj2b8S9vrOdPO791iag7leP0snpS+s4itAfIEMZE6PjglPHLLGEWldvTW+8rvlQUUKOPKCDm8UhhvDoeRBbM1+eOhexP2CoupfnUDXF8p2RAypmdOBgi4k+RIA3Ch9tpMzRreiEmoe5yOV66476OgEUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784059541; c=relaxed/simple;
-	bh=nJP75in4P3lswa4oWsjjX2TeYlHn/IYg0sncecBQJ3A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oMaEUDTTfglky51QsQ81A3N0s93c3cvj2oC0UK0rEwvNtHjgQ5NWP23p1Fbaaed00Fch653Zhm98SL8fglP6gwD7UwTuZ9/NtOLfllooaszYrSVh0vqJeibuzdo20c6Fk0tt5fl5AJPpKDPM4au2skwIoZiL7DtpN0Hm9673o2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RYkmWMCX; arc=none smtp.client-ip=209.85.221.41
+	s=arc-20240116; t=1784059544; c=relaxed/simple;
+	bh=YAr41Qh5cEcbszQriRLCfyjOuqs9uogE8Alk+L/ecgI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=f8SUTyOOkXVj8VehM2lQ11y+uvSReJNw5BXgh71X8dnhXBAAUuvVjycq2gyY3kItyj2akPOHv/Dgq+yAloJqvqhvgPEmnJaIV3rTg5yNGho2ErdpDOUgTvnXKMZpyMp89rqo7/ouvah/KN0r1Vo//eYochZQnntUZpWI6jXLhSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I1Xo68Ug; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RYkmWMCX"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4703bc0a99aso2803764f8f.3
-        for <imx@lists.linux.dev>; Tue, 14 Jul 2026 13:05:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I1Xo68Ug"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-493ae59eca6so7844715e9.1
+        for <imx@lists.linux.dev>; Tue, 14 Jul 2026 13:05:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784059535; x=1784664335; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JoWubUhSydBTzOYHJhhAjBoFYVBqYbpc3fDg9gsugJU=;
-        b=RYkmWMCXA6LsSpFNfsMLCu3prEL9rteB/qrNXwDF+jzN4shIramqTUNiR5FzRYcwaV
-         enayMPUr7ofcP/yHVD25uQyZjAhVCcEbTjA2FGgS9AE5PhlIo1iHoXV9BA8vg7u9xbZk
-         +9PuATHgmhxIDCRmfECNv+mx/6mjY0PjwFy5E5HIEDoIkVifRAYAoadbeLRnLu4PC74b
-         lVQsYYzc7nrywRCgX+exYZ3ta7TVFb6elzP0vlkJMIXCGSACrUV5s3nhFl16KAAcTTTg
-         E1Ht9KSG1H+tBdmYbuoMyVLNXDKHgMwEerVIlFM7gGW8CnEWdSRwpbnhOSeXyc9v/fGJ
-         cKLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784059535; x=1784664335;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784059540; x=1784664340; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JoWubUhSydBTzOYHJhhAjBoFYVBqYbpc3fDg9gsugJU=;
-        b=C9wEfzB/VvR5ru+dFTZGbXffzd9Zi/FX4Ds1DS08MYwFHXsjDcv/WAG4osty5xCEOp
-         I65Q5bTGmcYdqd+ywHeSg7MY56Uk4tQct7Z6bavbtAAit4Ui00Kx+CHZ9e2iDVzT2v47
-         965+simJ6ZDcr8u7PujKV4hfUGCpvgYU0QdxlBklWTM2/0/P6eCbQ2xau+rJJhbinddf
-         88cTOpifW3MMrJ8/34pQYZPKCVRXyQGd9TJPY5/8M50XMk1JbdEccoiKZew1FLTMAJ0F
-         Qnu+Q/CShhnMo5zfqMEB814bQcafIG6hdcjaC/UJZWEh3m6y0Lbvt59XHSjC7PD0OP2r
-         wGjw==
-X-Forwarded-Encrypted: i=1; AHgh+RoMl72T8zW9fifrI/IVoi+fvIurP+dpN9xg1jbU0W2c2Tm2GYJbeBqtmlIehdiDeLQYH9c=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw2WaupJtEpySct6ct189yibEVYTKskiK04aFGAHXj7euZCGj9M
-	yBIP9cDd8zzc82SBYzGwXl8yE79pOlaYGt6ReXjUszO0U9EqPbnh/CJg
-X-Gm-Gg: AfdE7cmHIOtFmMWPfEV8nhRBXwuZuJK43WeVvuej4YLAoAbXd1/gwtliqCO8753b6Y4
-	36whZnsEVfMU2S82aPV4GJcvWs4eSu5pDl5u6F14xG913eVufIaoj3PrrT10lcoBXN3Z+Iis3r7
-	GgWHq2t8R+OFbDrvX5fgix1cAvI7fBc7GvqIE7rhwmL6cnseKv7XPhC+mSVL+DXiNdtOpivgiB6
-	DjVJyImWAk5Hhuvl5MN8DzJCBaYx0X/D/xnmKbr64VKKms+qU+WMHx0WttxTjg4EaTNbn2cFNS1
-	L0pFbg1HehHdP9DsPmnQB7QX0x4wESZQUdOMUm88BSqssVjvEcytxDCrfUCNLUiGhFk4WF5bqSt
-	M1ElUSCBPVnetUYgUHQiQRtTXsN6IFTP4amNvVfQFH3JMbDfyA5/nTX6jhQhFqupGpd1ux7IZFJ
-	bBJGuGIhRjj1Wnm6Zx7ldUk6smrlQo3V2zTp2k3NTVqAv5szFM3Jch9TvK
-X-Received: by 2002:a05:6000:2008:b0:478:9d9a:d515 with SMTP id ffacd0b85a97d-47f2dcf7f47mr15914629f8f.44.1784059534751;
-        Tue, 14 Jul 2026 13:05:34 -0700 (PDT)
+        bh=MH685CMALDyk401jc071KaqStgWKFdqRyeyPqDFwC44=;
+        b=I1Xo68UgF2bwGNhBHWsSST87fVDOl6wRFCGtjVGM109ztIOtfOemOgt/gABBnXTLi2
+         z8SeSsLiOO1QYQXGIlKIw1cmPpO/41RE7v1T8hMsN7UA6/5kUEGnN56KaDKcYEyEMmq+
+         XgZ3oHCQvVLrN9109joAhmtV9S65yG/xC8VTYoJg/wm81JofvCbV97It+E2hj+bNfRcX
+         u+Xzz2ay3834NhIbmIb4hqsMTSy0RDslV5VwfLTdZe5BTuyRj3ZZqyBtJgctzXs71wcc
+         iEvBQ+NJ/DqPSsGKdNpnyoL4/TgxQrtVnQqDM4OT5S6J7tVxDPCdUqO1ldjyA44CLNm4
+         Cstw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784059540; x=1784664340;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MH685CMALDyk401jc071KaqStgWKFdqRyeyPqDFwC44=;
+        b=D/zhDSg1t1B4PtTCejIEngVM6Dym3ainq05Iagpqb6XGXbBGxPKn98eSajGJpqZcPT
+         e5LLpDxijEP5Rn+t8Y7cmxKuuLDkHBHjuZHkRjeSQiyWpXVemBlatJIv8ADQTd/kt3tL
+         BDFPgDuvTOD/4TCxcZv4V4vzi4cYBif2dZ0enpA4cF3L+myycdUp3BNbKi0YgWh9ufre
+         5QWcsyHCWwxsEWX2uFDkIm0sL9w484HBPQLJurA5/GCC77J+RdZH9F03qCgr4tWaYfHW
+         PG91Bw5HutEMv7vXuLhpDs14EKyJ5SUh1mL/AIGNtLeTooj6CINeS8Lqr68jS4YzS7tG
+         Eang==
+X-Forwarded-Encrypted: i=1; AHgh+RrjGNQ0wonD9GE8IFHbZr4xaDbkPJrtX+HKPs+1uFkLBDP2DXFPUwHhbq2lav7OyxgRYwc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx/Q0NXrD1ZVDv1sN/wh8bRSoNJCM4ckeEg38+8rLtEl7Llvmkn
+	/POKOO4CCK6kBr96u/W5/mcmpjFq7GaPqCIQXexwe/XCrTqcXp3aM9WJkUm71bP8
+X-Gm-Gg: AfdE7cleAD7z+324ciQUMlEOnFj5gAHTtavB/dl0fxB0sdr82a6tFCTCdpEMkX7RaH6
+	2wY5p3I+s6sAOeOXpHTI3olTPI1qHX8JSYazkHSmDtakWyIA1dbVfVf8tpCImk/Jf5Vf7frfB4l
+	SglIgA8iCfkdkV8KrBEX5YckVO5UnpCZgcP0oHjwXJWSiWf+dwfLACR2KziW0PVqjYOZmfTWJIr
+	tcv2wJyodN/p/xoh/qW0qUtOASC6RlNfUgGG61UokHXMaOddWVeoLfLnhkr0huR6xxPnR7Srzcx
+	loXiTVNkHlhkRGTY2D6g6eJQwWkfa5R7V6TxQ8Rp8WISmX7FJQUSBGOw8LxMufnD73CjMoWgpHJ
+	DkOzUSej9xU4Zyz9+SALc45sWoT3NE29zqftaHvIsc0hYm1yRY52LkVThrsppBgpyfAzmkWWbbp
+	q2b0I5+oytVgCZyOA+EzYFnE76OT8eHpLMlhy0Nmq7BashxQ==
+X-Received: by 2002:a05:600c:4515:b0:493:d21f:8f98 with SMTP id 5b1f17b1804b1-493f88375dfmr149562265e9.36.1784059539231;
+        Tue, 14 Jul 2026 13:05:39 -0700 (PDT)
 Received: from GLaDOS.station ([93.66.5.8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464a9879sm11669797f8f.22.2026.07.14.13.05.28
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464a9879sm11669797f8f.22.2026.07.14.13.05.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 13:05:30 -0700 (PDT)
+        Tue, 14 Jul 2026 13:05:37 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: Frank Li <Frank.Li@nxp.com>,
@@ -78,11 +80,14 @@ Cc: pierluigi.p@variscite.com,
 	Maud Spierings <maudspierings@gocontroll.com>,
 	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 0/3] Add support for Variscite VAR-SOM-MX8QM and Symphony board
-Date: Tue, 14 Jul 2026 22:05:18 +0200
-Message-ID: <cover.1784059139.git.stefano.r@variscite.com>
+	linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH v2 1/3] dt-bindings: arm: fsl: add Variscite VAR-SOM-MX8 QuadMax Boards
+Date: Tue, 14 Jul 2026 22:05:19 +0200
+Message-ID: <ab828fa11ee190cf703cf6a422c43fc2c2d60a60.1784059139.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1784059139.git.stefano.r@variscite.com>
+References: <cover.1784059139.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -91,50 +96,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series adds support for the Variscite VAR-SOM-MX8 QuadMax
-system on module and the Symphony carrier board.
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-The series includes:
-- SOM device tree with on-module peripherals
-- Symphony carrier board device tree with board-specific features
+Add DT compatible strings for Variscite VAR-SOM-MX8 QuadMax SoM and
+Variscite Symphony development carrier Board.
 
-The implementation follows the standard SOM + carrier board pattern
-where the SOM dtsi contains only peripherals mounted on the module,
-while carrier-specific interfaces are enabled in the board dts.
-
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
 v1->v2:
- - Added non-removable property to usdhc3
- - Removed unused fec gpio pinctrl
- - Fix ptn5150 interrupt
- - Fix ecspi1 cs gpio
+ - 
 
-Stefano Radaelli (3):
-  dt-bindings: arm: fsl: add Variscite VAR-SOM-MX8 QuadMax Boards
-  arm64: dts: freescale: Add support for Variscite VAR-SOM-MX8 QuadMax
-  arm64: dts: imx8qm-var-som: Add support for Variscite Symphony board
+ Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
- .../devicetree/bindings/arm/fsl.yaml          |   6 +
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../dts/freescale/imx8qm-var-som-symphony.dts | 488 ++++++++++++++++
- .../boot/dts/freescale/imx8qm-var-som.dtsi    | 529 ++++++++++++++++++
- 4 files changed, 1024 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi
-
-
-base-commit: d0c222c2e2ce577d801bdf129dc6c078f29e22df
-prerequisite-patch-id: 0996915f031a1d899202c5fba75a969d6ce2a53d
-prerequisite-patch-id: dbed47ecb907f6b7f7e284c5c1a3c325566eafd7
-prerequisite-patch-id: c758aa296e6effc94c30449cc7e4773f0ae02914
-prerequisite-patch-id: 31784fa7a3ee5c178b2f1ffa97c1dd7c1d3d898a
-prerequisite-patch-id: 5810f43cde9c24ee318d680c1852b3ded18f3aa0
-prerequisite-patch-id: 012c9c8ba4e290532a1b7f8642274b7c5f252e03
-prerequisite-patch-id: a57d576be42d5061bba453f0d5960132be55a1ff
-prerequisite-patch-id: e34a75fb6f7e01455dd5ca734dacad66b12de06c
-prerequisite-patch-id: cc7abadd0354d14bad0cac1fbacda14ab9d4e02b
-prerequisite-patch-id: c0276686c0247cb2385c56b96cbfd6de5128415c
-prerequisite-patch-id: 100c47538870af63194b407fae06183fee85fc09
-prerequisite-patch-id: 3a3b3e40f5fba785857091dda909d22bfc5e2d0e
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 6237fb2ae50e..532e4308dc46 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1381,6 +1381,12 @@ properties:
+               - fsl,imx8qm-mek-revd      # i.MX8QM MEK Rev D Board
+           - const: fsl,imx8qm
+ 
++      - description: i.MX8QM Variscite VAR-SOM-MX8 based Boards
++        items:
++          - const: variscite,var-som-imx8qm-symphony
++          - const: variscite,var-som-imx8qm
++          - const: fsl,imx8qm
++
+       - description: i.MX8QM Boards with Toradex Apalis iMX8 Modules
+         items:
+           - enum:
 -- 
 2.47.3
 
