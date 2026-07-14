@@ -1,173 +1,156 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6686427FB9;
-	Tue, 14 Jul 2026 20:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FC8427FB4;
+	Tue, 14 Jul 2026 20:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784060224; cv=none; b=KcM81e993Gtqa9MaEuJa1vRIZVK/x73ifPFmWYJtbLVtL8vTN3yEE9ZZSNzzR+fQrpneYeWUnvdzSgbLS8xkup3suhL58oAGBjIzgXvhNLO8VgYt6DMgbC2MxxZCxPQnMhPAghCNe8dB3CaNqrfcIpENoghwRSw2/EBjMvcNzVo=
+	t=1784060286; cv=none; b=Lc+U7k/oVazAsstVgDbPAjO2hxyneJCsevWUIGRXC1H9tvqRQFkmJBZxWQGKMQe4hqOr9IRk8FJEsBtFsKnhEpPKO0ov3XMSTHxjLIsReEcd0FLXEZSJN+sUlEVQEBPOqgQSVVu2xI1WRK07lAmtOGzzqjao1GjL8V4ATi9lMXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784060224; c=relaxed/simple;
-	bh=001q9FtT+9kHpJQbsppljQNjwgh2ywXhsHAdWpMECKc=;
+	s=arc-20240116; t=1784060286; c=relaxed/simple;
+	bh=0Yec0Ygvc7RrSQSs0yq1KLABSJU6ZO3DVY4taxPIJUE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MIIxZuYx6g/vA1pzbCewZyO05AqCKiN0zjMLEiIUlsPXG1NvUU7SqaoBuC7XjRw1MOsipev+kGUZgFdl8Nwn/x0SDrdkdVa5rs3GG9kgUk234PUfZiHyajtfctEwsGmM8Oys1VBv0jRmGXeE9hEerohGblx5FDGbIBFwxfmVrIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISaxym0/; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Wixb4hfuWNjXeDBmc4r9W5NavEQZs+4nSoU33m99Y7e413963I5SBUsd5BTd/l6fpLlAfJYg3wPJyVjCNUAB+Khkm/qm0W1mdpkasdSJLEBzkUsFSZWdcN6y0C09r3/fCXlkkuI+YgkPe70odRoi/YwZGtQ3hCHVMchpzoYNaS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FsHyQ83t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISaxym0/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDC51F000E9;
-	Tue, 14 Jul 2026 20:17:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FsHyQ83t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8681F000E9;
+	Tue, 14 Jul 2026 20:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784060223;
-	bh=8ud0eZN9paJBGQJD49RcaobEENGrf/LV2uz6TjLE71o=;
+	s=k20260515; t=1784060284;
+	bh=TEASTjAtNuGewKTXmMiS6bQDsA3WQY25wtFYplsOBH4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ISaxym0/ARm1K2I8OKDM2c/4Dd7W6LVPyvv1T4fJdLg0fXLq7omA5+YrQUp0zlbtp
-	 7ULG/+dkiWR6zMPh+kH0MkHOLry1akNOCb7anu+GXyQFK5cSFAiAAFP2KManHdHm22
-	 hg8AlmnctyJlPALzH3htj/uhfwRa3tJbioQ8aw5RyGI/4kDJKQaP2MyW5NMk1RHobL
-	 rQMCcRZLRxcn2kQqwi6p8gz9lfys4ZcJcJteI4/AA2AFgDUaH/oPqePIAO6KTjf7eo
-	 rF4guJwVIWHm4ukVg1QIEOMJUxF7HKxMtvp82ZzoFLE/qJnlqxIYAeEDHXY0d+Dld3
-	 kddjaXuxv16/g==
+	b=FsHyQ83tVtlHokx2Hgc0gcaUdgKds0qfkuKMuMkCh/tW3trIkmwPSLr9jRx512f1t
+	 1vzcs7NdNMU3dS2VH6zOyUN/f82k/H2kBTxqivZLw4DKO6ojo0aBdpBecT49qiUbnU
+	 bCrxXB6BJOHZYlycO/AS4rl8NiET6pxb4dRBdkeTUevf3NDlul4AEQRJB2kPfJ76gD
+	 5a7DwakfjfSYHSsccXFE6728nqzSeOqUpwKaZmzZkrlpSTdoX9aFHVjX37K34csaQo
+	 QleWfMHyCeM9swIaY0ef7UGQZaHvQ6V8GiPlKIh3vYsTaDgJF/mzUAC4NpYfCsAcuA
+	 A2ug/q56n6vkQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] arm64: dts: freescale: Add support for Variscite
- VAR-SOM-MX8 QuadMax
+Subject: Re: [PATCH v2 3/3] arm64: dts: imx8qm-var-som: Add support for
+ Variscite Symphony board
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <f373059af209ed7ce8e63988066e730736e06e6e.1784059139.git.stefano.r@variscite.com>
+Cc: robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <206397f61c47d3acc7b5a1dc4a12a33a049f1dce.1784059139.git.stefano.r@variscite.com>
 References: <cover.1784059139.git.stefano.r@variscite.com>
- <f373059af209ed7ce8e63988066e730736e06e6e.1784059139.git.stefano.r@variscite.com>
+ <206397f61c47d3acc7b5a1dc4a12a33a049f1dce.1784059139.git.stefano.r@variscite.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 20:17:02 +0000
-Message-Id: <20260714201703.3BDC51F000E9@smtp.kernel.org>
+Date: Tue, 14 Jul 2026 20:18:04 +0000
+Message-Id: <20260714201804.8D8681F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] The PMIC thermal zone's cooling map omits the high-power Cortex-A7=
-2 cores, severely limiting thermal mitigation.
-- [Medium] WiFi and Bluetooth enable/reset GPIOs are configured in pinctrl =
-but never bound to a driver, breaking power management and suspend/resume.
+- [Medium] The capacitive touch panel node `ft5x06_ts` lacks a `reset-gpios=
+` (or `wake-gpios`) property, stranding a configured pinctrl pad and potent=
+ially causing probing failures.
+- [Medium] The pinctrl for the USB VBUS regulator GPIO is incorrectly assig=
+ned to the USB controller node instead of the regulator node.
+- [Low] The PCIe node uses the deprecated `reset-gpio` property instead of =
+`reset-gpios`.
+- [Low] The LED node name `led-hearthbeat` contains a typo.
 --
 
---- Patch [2]: [PATCH v2 2/3] arm64: dts: freescale: Add support for Varisc=
-ite VAR-SOM-MX8 QuadMax ---
-commit 33df8d987b7061b5d0c8453d1a7834088b34ace9
+--- Patch [3]: [PATCH v2 3/3] arm64: dts: imx8qm-var-som: Add support for V=
+ariscite Symphony board ---
+commit f84a05986e6ac58f10d1a6e2091672e4f1bf919b
 Author: Stefano Radaelli <stefano.r@variscite.com>
 
-arm64: dts: freescale: Add support for Variscite VAR-SOM-MX8 QuadMax
+arm64: dts: imx8qm-var-som: Add support for Variscite Symphony board
 
-Add device tree support for the Variscite VAR-SOM-MX8 QuadMax system on
-module. This SOM includes an i.MX8 QuadMax processor, RAM, eMMC, Ethernet,
-audio codec, and WiFi/Bluetooth.
+This commit adds device tree support for the Variscite Symphony carrier boa=
+rd
+with the VAR-SOM-MX8 QuadMax system on module. It configures interfaces
+including SD card, USB, Ethernet, I2C, SPI, RTC, TPM, CAN, and PCIe.
 
-Link: https://variscite.com/system-on-module-som/i-mx-8/i-mx-8-quadmax-quad=
-plus/var-som-mx8/
+Link: https://variscite.com/carrier-boards/symphony-board/
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi b/arch/arm=
-64/boot/dts/freescale/imx8qm-var-som.dtsi
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts b/=
+arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts
 > new file mode 100644
-> index 0000000000000..e805c51eb27df
+> index 0000000000000..bf66786378301
 > --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts
 [ ... ]
-> +/* Bluetooth */
-> +&lpuart1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_lpuart1>;
-> +	uart-has-rtscts;
-> +	status =3D "okay";
-> +};
-
-[Severity: Medium]
-Since this UART is used for Bluetooth, should it have a serdev child node
-(like compatible =3D "brcm,bcm4329-bt") with an 'enable-gpios' property?
-
-Without an explicit driver binding to manage the module, the Bluetooth
-device's power state cannot be controlled across suspend and resume.
-
-[ ... ]
-> +&thermal_zones {
-> +	pmic-thermal {
-> +		polling-delay-passive =3D <250>;
-> +		polling-delay =3D <2000>;
-> +		thermal-sensors =3D <&tsens IMX_SC_R_PMIC_0>;
-> +		trips {
-> +			pmic_alert0: trip0 {
-> +				temperature =3D <110000>;
-> +				hysteresis =3D <2000>;
-> +				type =3D "passive";
-> +			};
-> +			pmic_crit0: trip1 {
-> +				temperature =3D <125000>;
-> +				hysteresis =3D <2000>;
-> +				type =3D "critical";
-> +			};
-> +		};
-> +		cooling-maps {
-> +			map0 {
-> +				trip =3D <&pmic_alert0>;
-> +				cooling-device =3D <&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-> +						 <&A53_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-> +						 <&A53_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-> +						 <&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
-> +			};
-
-[Severity: High]
-Is it intentional to omit the Cortex-A72 cores (<&A72_0> and <&A72_1>) from
-this cooling map?
-
-By only throttling the A53 cores during an overheat scenario, the system mi=
-ght
-fail to cool the PMIC sufficiently. This increases the risk of reaching the
-125=C2=B0C threshold and triggering a hardware thermal shutdown.
-
-> +		};
-> +	};
-> +};
-[ ... ]
-> +/* WIFI */
-> +&usdhc3 {
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 =3D <&pinctrl_usdhc3>, <&pinctrl_wifi>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>, <&pinctrl_wifi>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>, <&pinctrl_wifi>;
-> +	bus-width =3D <4>;
-> +	non-removable;
-> +	status =3D "okay";
+> +	gpio-leds {
+> +		compatible =3D "gpio-leds";
 > +
-> +	brcmf: wifi@1 {
-> +		compatible =3D "brcm,bcm4329-fmac";
-> +		reg =3D <1>;
+> +		led-hearthbeat {
+
+[Severity: Low]
+This isn't a bug, but there is a typo in the node name (hearthbeat instead
+of heartbeat).
+
+> +			function =3D LED_FUNCTION_STATUS;
+> +			color =3D <LED_COLOR_ID_GREEN>;
+> +			gpios =3D <&pca9534 0 GPIO_ACTIVE_LOW>;
+> +			linux,default-trigger =3D "heartbeat";
+> +		};
 > +	};
-> +};
+[ ... ]
+> +	/* Capacitive touch */
+> +	ft5x06_ts: touchscreen@38 {
+> +		compatible =3D "edt,edt-ft5406";
+> +		pinctrl-names =3D "default";
+> +		reg =3D <0x38>;
+> +		pinctrl-0 =3D <&pinctrl_captouch>;
+> +		interrupt-parent =3D <&lsio_gpio0>;
+> +		interrupts =3D <19 IRQ_TYPE_LEVEL_LOW>;
+> +		touchscreen-size-x =3D <800>;
+> +		touchscreen-size-y =3D <480>;
+> +		touchscreen-inverted-x;
+> +		touchscreen-inverted-y;
+> +		wakeup-source;
+> +	};
+
+[Severity: Medium]
+Is this touchscreen node missing a reset-gpios property?
+
+The pinctrl_captouch group configures LSIO_GPIO0_IO16 for the touch
+controller, but it is not assigned to reset-gpios here.=20
+
+Will the edt-ft5406 driver be able to toggle the reset line without it, or
+could this lead to initialization failures?
 
 [ ... ]
-> +	pinctrl_wifi: wifigrp {
-> +		fsl,pins =3D <
-> +			IMX8QM_SCU_GPIO0_07_SCU_DSC_RTC_CLOCK_OUTPUT_32K	0xc600004c
-> +			IMX8QM_SCU_GPIO0_03_LSIO_GPIO0_IO31			0x06000021
-> +			IMX8QM_SCU_GPIO0_02_LSIO_GPIO0_IO30			0x00000021
-> +			IMX8QM_QSPI1A_DATA0_LSIO_GPIO4_IO26			0x00000021
-> +		>;
-> +	};
+> +&pciea{
+> +	phys =3D <&hsio_phy 0 PHY_TYPE_PCIE 0>;
+> +	phy-names =3D "pcie-phy";
+> +	reset-gpio =3D <&pca6408 1 GPIO_ACTIVE_LOW>;
+
+[Severity: Low]
+Should this use reset-gpios instead of the deprecated reset-gpio property?
+
+> +	status =3D "okay";
+> +};
+[ ... ]
+> +&usbotg1 {
+> +	dr_mode =3D "host";
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_usbotg1>;
+> +	vbus-supply =3D <&reg_usb_otg1_vbus>;
+> +	srp-disable;
+> +	hnp-disable;
+> +	adp-disable;
+> +	disable-over-current;
+> +	status =3D "okay";
 > +};
 
 [Severity: Medium]
-Are these WiFi enable/reset GPIOs left uncontrolled without an active driver
-binding?
+Is pinctrl_usbotg1 assigned to the wrong node?
 
-While pinctrl_wifi is attached to usdhc3, there is no mmc-pwrseq node
-consuming these GPIOs to control the power and reset sequencing. Relying on
-the bootloader for initialization prevents the kernel from managing the pow=
-er
-state during suspend and resume.
+The reg_usb_otg1_vbus regulator uses the GPIO to provide power, but the
+pinctrl to configure the pad is placed here on the usbotg1 controller.
+
+Could this cause the GPIO pad to be incorrectly muxed when the fixed
+regulator framework tries to enable power before the USB driver probes?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1784059139.gi=
-t.stefano.r@variscite.com?part=3D2
+t.stefano.r@variscite.com?part=3D3
