@@ -1,111 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DB548B362;
-	Tue, 14 Jul 2026 15:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9970C370D54
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 15:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784043750; cv=none; b=pIbQm6WkPtABjayqGNwSlH3NQBgAa//rZnbHt8CsrpkZTalh9ydEXS22kuz/FVjeQyOaLj/9qctWRebUQvSn9HBI6RApFbvLNuimldvfVfhrDQuC0pkiNCQ/XngJOBopcFdOrB+ocps0g4Vdcv93OG8hXBg7AKhBE+Awt4SIAbc=
+	t=1784043942; cv=none; b=EV3K0WTRmq0ZBCDKthbJsTPDFruKOaI4jcuBoBJZcFv4U1yFwk18eodLnfJZAvnZPwdHsOYsFkyVk01JIsMoBObZE2JsmqWVNLDn0foSI/aw7/HKZ1bQ2cBlxawCIunfSe+nqfJo7MhjM4/DMqKJEP4rVMtEBe5gmXh9tgcMWuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784043750; c=relaxed/simple;
-	bh=ecpEtpd2R9T2OwxwM3wgPDhySyowjD4lLBTDHj/Um1Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=DmjvtLkTwnwq+jRRkRT+9NRXm6xlkRmydAPt/LMRexPpsnB7nOnYAtWhC5a4l0oPLSn8g9ZbG6zB6fW4KxJJ1qiV7dIu+ynKGfe6QdDQCwUQMMQI6l9XJqzImeCSaEY8HPI1oxAfdVRF7FUlI3qVEI7cFfr0iv6dvb9p+v1w6co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JaB+BSn1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784043942; c=relaxed/simple;
+	bh=Zlbztg6yiHPnkiE4IG2I/j2f7aZ060OxX5TItitbtV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sR853VSJuX0y8u+HDnNkcSxWCz4ODpyk6JSAEYwzgJPTrs1k55qGgHBWUuyeGzR7PL03HhN5rUp5/BEqvQitqLMRJS9a0cauVV4kj+Vxcpp0XRYt3nWLK4U09vUK2am5pscVgOHyh2G4evYkMAoTFD9XFBdjxzPLvJYa3mb1A+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=GRPBhngk; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JaB+BSn1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110201F000E9;
-	Tue, 14 Jul 2026 15:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784043748;
-	bh=KzLzlZEIQWdOfOHHccHzIxsuh8r8/GLHQufn8tqIl00=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JaB+BSn1vjJemZtx4BVnFEQqoC1yNc7sTpqpG+DByqrYclrLj47X5LIhBkfbKxNdT
-	 5pTP8eIIiVNMIrJ8JA3tDDPe7TJIVyQCB7esrAWnFnTT6mUl29wpgGJlmQZ9cExfjW
-	 QjY+Y/t/IN8398nR7LPPLvLrv6Fi2zqRmi818N8dPFhneBqIxieSEDmPu6c+TAO64U
-	 OgooZn4VQ7GGQDGLb5e4I0A/eRTqLXm5/yENf/xSoPDzeEgeulUjP/a3GfIhMk7IfJ
-	 ZjsDGSdMdaWiyuCHpTCbtWwCT/T77m2moMDTVCDu1ZNtPmgT0KXWzmEXHiTE8atouf
-	 hddsmjqFKX6Cw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v13 10/10] net: stmmac: qcom-ethqos: add
- support for sa8255p
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: neil.armstrong@linaro.org, linux-amlogic@lists.infradead.org, wsa+renesas@sang-engineering.com, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, linux-sunxi@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org
-In-Reply-To: <20260713-qcom-sa8255p-emac-v13-10-119f8699ef8e@oss.qualcomm.com>
-References: <20260713-qcom-sa8255p-emac-v13-0-119f8699ef8e@oss.qualcomm.com>
- <20260713-qcom-sa8255p-emac-v13-10-119f8699ef8e@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 15:42:26 +0000
-Message-Id: <20260714154227.110201F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="GRPBhngk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=Zlbz
+	tg6yiHPnkiE4IG2I/j2f7aZ060OxX5TItitbtV0=; b=GRPBhngk5B7vXiKudUsU
+	dSmlpTkEFwT9K5LvAcpwF+FcoE3Oa03IIyu9rGjZZVOY4LpetxduTNW64buNDxPV
+	jtASd5YPg6BF0WfuxBUGn5WisjrF2e5rESA67Xm8kqp3Kfdc8Jy0qtjSdBW7Mbdm
+	CBm+UD1fq9Vb+mothDffuyFmbHkfa0+sX1tv9PcWcBFnzyfDjS3QsxXXFUfuyJO3
+	1bijkbclwNqLEo9hHBTj8++NiFmg2R4nUA3JEAGycF8lEeNs7Yj6dCKWnLKQ28vM
+	h4lZAFpa1kJApspP3PgTg6zj9U0TXv+i8LhXwPWQdYRNH9FKputuIYtiqPcP/25/
+	Wg==
+Received: (qmail 330099 invoked from network); 14 Jul 2026 17:45:35 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Jul 2026 17:45:35 +0200
+X-UD-Smtp-Session: l3s3148p1@e5ADGZRWdoAujnsO
+Date: Tue, 14 Jul 2026 17:45:31 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Vincent Jardin <vjardin@free.fr>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Wolfram Sang <wsa@kernel.org>,
+	Kaushal Butala <kaushalkernelmailinglist@gmail.com>,
+	Shawn Guo <shawn.guo@freescale.com>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
+	Stefan Eichenberger <eichest@gmail.com>
+Subject: Re: [PATCH v3 0/2] i2c: imx: fix SMBus block-read of 0 locking the
+ bus
+Message-ID: <alZZmzQrnBptGEMQ@shikoro>
+References: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-0-073ac9e103a5@free.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-0-073ac9e103a5@free.fr>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] ethqos_scmi_setup omits manual invocation of ethqos_clks_config(),=
- which prevents MAC wrapper configuration during probe and leads to a DMA r=
-eset timeout.
---
+On Mon, Jul 13, 2026 at 08:11:58PM +0200, Vincent Jardin wrote:
+> i2c-imx rejects an SMBus Block Read byte count of 0 (valid per SMBus 3.1
+> 6.5.7) as -EPROTO and returns without emitting a NACK + STOP, leaving the
+> target holding SDA so the bus stays stuck until a power cycle.
 
---- Patch [10]: [PATCH net-next v13 10/10] net: stmmac: qcom-ethqos: add su=
-pport for sa8255p ---
-commit b7db35b4f8018859d3fc8937c25d0cfcf6c421f1
-Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Bigger picture: Linux does not support SMBus3 which also allows byte
+counts of up to 255. I started sketching support for all that but could
+never implement it.
 
-net: stmmac: qcom-ethqos: add support for sa8255p
+That being said, despite no SMBus3 support, it should not hang the bus
+like here.
 
-Extend the driver to support the sa8255p model, which uses SCMI power
-domains. This adds a new emac data variant and a separate setup callback.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/dr=
-ivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index 3af1608fc21cc..d34f20f868138 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-
-[ ... ]
-
-> @@ -756,6 +788,63 @@ static int ethqos_hlos_setup(struct qcom_ethqos *eth=
-qos,
->  	return 0;
->  }
-> =20
-> +static const char *const ethqos_scmi_pd_names[] =3D { "core", "mdio" };
-> +
-> +static int ethqos_scmi_setup(struct qcom_ethqos *ethqos,
-> +			     struct plat_stmmacenet_data *plat_dat)
-> +{
-
-[ ... ]
-
-> +	/*
-> +	 * Run on every runtime resume, which stmmac performs after the power
-> +	 * domains are on but before serdes_powerup() and the DMA reset, so the
-> +	 * wrapper is always configured ahead of the reset.
-> +	 */
-> +	plat_dat->clks_config =3D ethqos_clks_config;
-
-[Severity: High]
-Does this code need to explicitly call ethqos_clks_config() during probe?
-
-The stmmac core brings the device out of suspend using pm_runtime_set_activ=
-e()
-during probe, which only updates the PM status but does not invoke the
-runtime_resume callback. Without manually calling ethqos_clks_config() here,
-will the wrapper clocks remain disabled and cause a DMA reset timeout?
-
-> +	plat_dat->clk_ptp_rate =3D ethqos->data->ptp_clk_rate;
-> +
-> +	switch (ethqos->phy_mode) {
-> +	case PHY_INTERFACE_MODE_2500BASEX:
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713-qcom-sa825=
-5p-emac-v13-0-119f8699ef8e@oss.qualcomm.com?part=3D10
