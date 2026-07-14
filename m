@@ -1,200 +1,136 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7B838398E;
-	Tue, 14 Jul 2026 12:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAA9451071
+	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 12:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784031794; cv=none; b=G1DTAOaGmOLNNxHlzMe0WoRpYueVwuU53u+BOFw+TS2676hfqwgNoUb0EtbN2frgGhapPUGDP5TptdO7bJDNewixozMVaKnxaa/w+RuVjBOuDf/rEllqDHhsgdS8V2wNeI28tvKZrGRd00u62CKdF0UHUQaet7A6JaLEcb/n6iw=
+	t=1784032444; cv=none; b=nTHFKxz2hBRfdAf73nzTyRAxsrk12SeNutdMY2QT5wfp8piniBiryb+LuqNmtY5pu9yBt5UOiT5iFEt5QM0nB6Vw8dmE8qQeQAy9em/ILd3WyWEFhXFgiROpEQueb7QL9T4AhfdxiykU5Al7e9HAcDmuqui7vCExUNkzMi0djYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784031794; c=relaxed/simple;
-	bh=auZ4C5ReUYq7BzaciJn06uxsOqN9s9GqqIYihlqkBtI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cNfSpFtdXHCPpRgv6jVicq28V9XRXL7OdINwfZXEFiGX7Xghi0871jTShF2RuHbi/4ihuNaLHMn+NqDqKk5CwdbKBX8ixGgyz30IXzUt+q7/D0mOb9C/l6/tOfFrZ4AwC6AQLNmKOQKRsFiIkLVpMjcwAaM4dRyiYHRdmFgcIgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=JXCj53Rf; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1784032444; c=relaxed/simple;
+	bh=/BSX6xnz6AyluGspxS2z7y6Sbe4ysmU4pLabumaCCFg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ArlW7X7hUH8P9JpBHDVkU2ysnd5sX6l2j/ITRYrQpegLkzOQ+MCSpABWVQhFfbXoWlfBcy4InOTI3KMqZjh7Quth+beO9L/0dFN3tAVeFr6ZVAPtu1uvm4DXQuE6AzmHvJFOviILhpU6ax9S4WjNZwFFK0nJj8+DOhFFyiNhpwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=NapJO2Ic; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="JXCj53Rf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=XrrEeqFj/zMDMUWNJzoASYNNQtEig1sQZ0PwjZWRQSI=; b=JXCj53RfarxMkZ0ybH40l7TIjO
-	TQBzb5NkO+dqgXPkr9+f4SZNx5b8sPTLIhoksu1x4qiH+pjaxa0EwzhYK0ID17t9zDAN9bhTnSWT5
-	ENytREbChrPK93WpW/lkFh3vKaKWuqoybbbWlGGPat2uuh+i3XideXAMMS7TmxvRCTSpFgejWk4+O
-	ZXoWQitk4YJ/hDoGaxrYL+0nZHV5ampLcmS+Y/4quX3IdycgCFdbirTKTofmd/i70udidf5V+13hM
-	ZEbKdg4MEG5TYDKAE2HgqQfdS4z9pln4eXpHz/NQk+XvQYj6h7vwHfMCUFmwmL2qDqKayKw0/GJq8
-	hu+ofSQg==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wjcA3-000PTO-2X;
-	Tue, 14 Jul 2026 14:22:55 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wjcA3-0000xs-25;
-	Tue, 14 Jul 2026 14:22:55 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: sashiko-reviews@lists.linux.dev, Frank Li <Frank.li@oss.nxp.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org,
- Frank.Li@kernel.org, conor+dt@kernel.org, wsa+renesas@sang-engineering.com
-Subject: Re: [PATCH v7 1/1] arm64: dts: add tqma9596la-mba95xxca
-Date: Tue, 14 Jul 2026 14:22:54 +0200
-Message-ID: <1965063.tdWV9SEqCh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <alUO-oOtWBescUK6@SMW015318>
-References:
- <20260707062506.949806-1-alexander.stein@ew.tq-group.com>
- <20260707065956.124121F000E9@smtp.kernel.org> <alUO-oOtWBescUK6@SMW015318>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="NapJO2Ic"
+Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id 71F251F8CF;
+	Tue, 14 Jul 2026 14:33:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1784032432;
+	bh=MWvNBrHeXlEhZS8wQAuNy/d9zeBljXhXaKblZHhr78s=; h=From:To:Subject;
+	b=NapJO2IcmyttYRGBjttgER/rPTaXjCmBxw0Ev6BpdUafOmofqt8LTlow3QmmhovoF
+	 tmLrl6remRQzU+7mxgh9ZJjabrv9Yqu9151oziAJLmLrjnp3EmNI1YPBNCfpiNI871
+	 wZQlQqdkpqBuYG7zWoW4CGJBT5it0kSTzfKg/LsCkGXWxVd7dKVdx433z/hIkNROtf
+	 5PYZw25dwI0fTwf+nw2J8MT0WvuEWuYWlH1rM49ERitDLVW2uFeJDy5qUlit4qBX19
+	 IZqRL+80Xoee9SytrmFihy4CBbQYxCdSGgd8cl442c3flzsUIWkfMIUfsVgyKpAryc
+	 OMMRFCidWJrWw==
+Date: Tue, 14 Jul 2026 14:33:50 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	linux-arm-kernel@lists.infradead.org,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Frieder Schrempf <frieder@fris.de>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 10/10] arm64: dts: imx93-kontron: Enable ELE firmware
+ driver
+Message-ID: <20260714123350.GD22086@francesco-nb>
+References: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-0-b8266d93514b@kontron.de>
+ <4b7b7823-00c5-4801-8ba4-19e5670f339d@kontron.de>
+ <20260714093354.GC22086@francesco-nb>
+ <2420855.ElGaqSPkdT@steina-w>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2273617.irdbgypaU6";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28060/Tue Jul 14 08:25:07 2026)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2420855.ElGaqSPkdT@steina-w>
 
---nextPart2273617.irdbgypaU6
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: sashiko-reviews@lists.linux.dev, Frank Li <Frank.li@oss.nxp.com>
-Subject: Re: [PATCH v7 1/1] arm64: dts: add tqma9596la-mba95xxca
-Date: Tue, 14 Jul 2026 14:22:54 +0200
-Message-ID: <1965063.tdWV9SEqCh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <alUO-oOtWBescUK6@SMW015318>
-MIME-Version: 1.0
+On Tue, Jul 14, 2026 at 02:06:38PM +0200, Alexander Stein wrote:
+> Am Dienstag, 14. Juli 2026, 11:33:54 CEST schrieb Francesco Dolcini:
+> > On Tue, Jul 14, 2026 at 10:43:56AM +0200, Frieder Schrempf wrote:
+> > > On 14.07.26 10:32, Francesco Dolcini wrote:
+> > > > On Tue, Jul 14, 2026 at 10:09:11AM +0200, Frieder Schrempf wrote:
+> > > >> Hi Francesco,
+> > > >>
+> > > >> On 14.07.26 08:59, Francesco Dolcini wrote:
+> > > >>> Hello Frieder,
+> > > >>>
+> > > >>> On Mon, Jul 13, 2026 at 04:53:46PM +0200, Frieder Schrempf wrote:
+> > > >>>> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+> > > >>>>
+> > > >>>> Add the ELE firmware API node and pass its handle to the OCOTP
+> > > >>>> driver. This allows us to gain read/write access to the OTP fuses.
+> > > >>>
+> > > >>> This seems something we should have in the soc dtsi (imx93/imx91), it
+> > > >>> does not seems board specific.
+> > > >>
+> > > >> My original intention was to move as much as possible into the SoC dtsi.
+> > > >> The problem is that the memory node is somewhat board specific due to
+> > > >> the DDR. And I can't move the firmware node into the SoC dtsi and assign
+> > > >> the memory node in the board dts as the checks for all boards not
+> > > >> specifying a memory node would fail then.
+> > > > 
+> > > > What is the reason to have this memory address different on various
+> > > > boards? Can we have a default in the soc dtsi, and allow the board to
+> > > > override the address if needed?
+> > > 
+> > > There is no real point in having different addresses on different
+> > > boards. But the node describes memory that is physically on the board
+> > > and not on the SoC. And I think that is why DT maintainers want to have
+> > > it in the board DT. It's the same with the memory nodes for the
+> > > remoteproc drivers to communicate with the Cortex M-Cores in the i.MX.
+> > > But maybe I'm wrong and if there is a possibility to move this to the
+> > > SoC DT I will definitely take it.
+> 
+> We are talking about reserved memory, so this is highly board-specific.
+> So for different hardware variants with different amount of RAM you have to
+> go for the minimum anyway.
+> 
+> > > > 
+> > > > Or can't you add the address in all the boards, and keep everything else
+> > > > in the soc dtsi?
+> > > This could be a possible way, yes. In that case maybe we could even
+> > > create a generic dtsi to contain such defaults for all boards.
+> > 
+> > I would go for this solution, we could have something like
+> > `k3-am62-ti-ipc-firmware.dtsi`, include it from all the boards, have a
+> > sane default memory address, and have an easy way to override the memory
+> > address from the board dts, if needed.
+> 
+> So what is a sane default? At the end of the minimal possible RAM?
+> I'm not really fond of something you have to make sure matches to your
+> hardware, but won't raise an error if you forgot.
+> 
+> How about providing defaults for the SoC part and users have to provide their
+> memory on board-level? Similar to the VPU nodes on imx8qm/imx8qxp. There you
+> have to specify memory-region in your board.
 
-Hi Frank,
+I am personally ok with both solution.
 
-Am Montag, 13. Juli 2026, 18:14:50 CEST schrieb Frank Li:
-> On Tue, Jul 07, 2026 at 06:59:55AM +0000, sashiko-bot@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 2 potential is=
-sue(s) to consider:
-> > - [High] Conflicting GPIO assignments for M.2 Key-E SDIO Reset between =
-the `wifi-connector` device node and a leftover `gpio-hog`.
-> > - [High] The fan supply regulator `reg_pwm_fan` is never enabled, leavi=
-ng the fan unpowered.
-> > --
-> >
-> > --- Patch [1]: [PATCH v7 1/1] arm64: dts: add tqma9596la-mba95xxca ---
-> > commit c06cc8eb19eb4a69fc0547caa6773b503beae3a7
-> > Author: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-> >
-> > arm64: dts: add tqma9596la-mba95xxca
-> >
-> > This patch adds support for the TQMa95xxLA modules on the MBa95xxCA car=
-rier
-> > board. It introduces a common device tree include for the module and a =
-specific
-> > device tree for the carrier board.
-> >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca=
-=2Edts b/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts
-> > > new file mode 100644
-> > > index 0000000000000..db2fd6991d112
-> > > --- /dev/null
-> > > +++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts
-> > [ ... ]
-> > > +	wifi-connector {
-> > > +		compatible =3D "pcie-m2-e-connector";
-> > > +		vpcie3v3-supply =3D <&reg_v3v3_mb>;
-> > > +		vpcie1v8-supply =3D <&reg_v1v8_mb>;
-> > > +		i2c-parent =3D <&lpi2c2>;
-> > > +		w-disable1-gpios =3D <&expander2 9 GPIO_ACTIVE_LOW>;
-> > > +		w-disable2-gpios =3D <&expander2 10 GPIO_ACTIVE_LOW>;
-> > > +		/* UART_WAKE is connected to SM */
-> > > +		/* SDIO_WAKE is connected to SM */
-> > > +		sdio-reset-gpios =3D <&expander3 2 GPIO_ACTIVE_LOW>;
-> > > +	};
-> >
-> > [Severity: High]
-> > Does this sdio-reset-gpios assignment conflict with the gpio-hog on the=
- same
-> > line?
-> >
-> > The wifi-connector node requests expander3 line 2 here, but later in th=
-e file,
-> > m2-keye-sdio-rst-hog hogs the exact same GPIO line. Won't this conflict=
- cause
-> > the wifi-connector driver to fail probing with -EBUSY?
->=20
-> suppose needn't gpio hog for expander3 2 ?
-> can you double check it?
+I think it is easy to have a sane default in this case. You cannot have
+less than 256MiB in practice, and this is just about the offset, is not
+that you are going to want more memory reserved if the board has more
+memory available.
 
-Well pwrseq-pcie-m2.c doesn't support "sdio-reset-gpios" yet, so there is n=
-o -EBUSY.
-But I'm okay with remove the hog which seems appropriate.
+At the same time, having the memory range in the board dts is also ok to
+me.
 
-> >
-> > [ ... ]
-> > > +	fan_controller: fan-controller@2f {
-> > > +		compatible =3D "microchip,emc2301", "microchip,emc2305";
-> > > +		reg =3D <0x2f>;
-> > > +		#address-cells =3D <1>;
-> > > +		#size-cells =3D <0>;
-> > > +		#pwm-cells =3D <3>;
-> > > +		status =3D "okay";
-> > > +
-> > > +		fan: fan@0 {
-> > > +			reg =3D <0x0>;
-> > > +			pwms =3D <&fan_controller 40000 PWM_POLARITY_INVERTED 1>;
-> > > +			#cooling-cells =3D <2>;
-> > > +			fan-supply =3D <&reg_pwm_fan>;
-> > > +		};
-> > > +	};
-> >
-> > [Severity: High]
-> > Will the reg_pwm_fan regulator ever be enabled?
-> >
-> > The emc2305 driver does not parse or request the fan-supply property fr=
-om
-> > child nodes. Since reg_pwm_fan is not marked regulator-always-on earlie=
-r in
-> > this file, does this leave the fan unpowered?
->=20
-> look like make sense, but dts itself should be correct. You'd better upda=
-te
-> driver also.
-
-I'ts on my TODO, but I won't manage to add it for the time being. How do you
-want to procede? I'd rather remove the fan-supply and disable the reg_pwm_f=
-an
-for the time being.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
---nextPart2273617.irdbgypaU6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEByESxqszIvkmWRwbaS+g2M0Z/iUFAmpWKh4ACgkQaS+g2M0Z
-/iVX6gf8CPBANnI2cDftSXLqyxDSkPQeBrw29NY27Nf62/0kqw7KBe6+H3+dwo4p
-KXbgaJlOgIhwEdXVocHIQgzHvdziHS0gJrKFMm2ZYVby0ye3jPdQzwY4uZQcxDKP
-Qtwy8Diam4XANdlZ4olRnAk6USOxwEbocsELmeaq7ozh1n3HkAorNSEtMa3Dem6G
-knaMLQglNqkD/vcz+foCfe0stfWeSCj/S/HtqOH+f7+yhqPfHOC2sdaO43bGWSmI
-QzOHRKkRu3bmp/7Y5b1NNp3uHaxwVmhd8UqPZ7FC4why7EudcAeYMRQB9zXik1yn
-CbWZ5R9EAoopG/FhvhkN1KMXiJ6tyQ==
-=m9jA
------END PGP SIGNATURE-----
-
---nextPart2273617.irdbgypaU6--
-
-
+Francesco
 
