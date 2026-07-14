@@ -1,161 +1,114 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96833F8EDE
-	for <imx@lists.linux.dev>; Tue, 14 Jul 2026 08:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AB23FC5C1;
+	Tue, 14 Jul 2026 08:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784016582; cv=none; b=Wq+J2URyogn+JpFq0zUo4g3xzyGertyboJcjBo9o3kmHgGjJg/7lxGnWTJgB0BdjLO1oQfrOv90YV4yImUVtLG2Vpev2xs6GAHdxuxWgUqSCBrHVSLhm4A2UdLITLcBEwzEWY4tCkHFyAlcXjRttv5WyGCLeyCpm9FTnK8yXQZE=
+	t=1784017901; cv=none; b=uKnHr0qzDsSeh4WPC2b/8t5v1M9F5HWyEVVmR88FvgC7VnGthF91NPd3RL+wNs7jwWstCkiSdJIAGJB6AX5Jd/PQDrzhuqDbYMiBN9Qgag6xw+9zpskRC+yAO0uL+n2f/YlrLe/gzw9nen1cVvfGPGz7T5vv6N5HjGv57TonfCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784016582; c=relaxed/simple;
-	bh=CSopGfg/2uqJ9qyI6V5MUClcNoSB2YHdurPLNoXQC8w=;
+	s=arc-20240116; t=1784017901; c=relaxed/simple;
+	bh=w9RfwcP2qCQa01IxTu9/QU8zyWVnY63wLoObeR76F0M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bsqedo5Lj66zad19vHl+VEOcRdlNUWPzLeT1JA4PKJOW8QieByS6J6RezTKQtEVeZ0eA7Dig2+5gnVmNfOqCCr1Z7OlpSBIRx6LMTL/ampgP9B6NPZBlJvm9hjqlUpwjtB8wSZok3g4jYiyIWRhfQRQY5lfVPDwoQgHPKQGKdYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=abdjSF3t; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rtri6JjolgQxxBdlPT05HO8EYj2XjiZNMueuZWtsdyrB/nS357U+JN8jtnsmKxMHr1s21mfCH8FzVGezQQK6Q+dw3ZXq6m6P0G71uLTobH6Xmn5uk4glCylYBsNiOzFqFFKkCSn21q5vWxWyK+d96lrSo5Fgc4BSzln0DaNHlJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=phU4yKOn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8mm2NbvE; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="abdjSF3t"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so29542515e9.1
-        for <imx@lists.linux.dev>; Tue, 14 Jul 2026 01:09:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1784016577; x=1784621377; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aM36wlhWe5Za+7EYg7RTzmmHOw7LMbYpoEaZIu5nkYI=;
-        b=abdjSF3tTGi4TsIzv9XmbMp0DFlCUg0Q2zOZXtyCvwQW4utCvP8gqbomHCkDm2EWWT
-         JzMCYwbnJvZSRyJPogD9yP7wjvXmJz4lTUBxl02kBorUdbNC5DlhpVlZQzoQKhS2dxcI
-         JsLJtVMHyr4Tl3z3daXJVfz0GRqw8H1gm6NZAzul+FiAnszQtjQ06BbZWFKeLxkxxD4u
-         +FF4BBaYb5uCiJLtYHR4H9eozebz/faTjB/nzlUkhJvopNV23oc9iPESynx4BNi7r6Qd
-         yJbY8EorNhd2puSGk7iGPu5kccjGxv42UglmC90m6ej9Ft3Lj9DpY3DjBkmvjMn/tlQp
-         vpPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784016577; x=1784621377;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aM36wlhWe5Za+7EYg7RTzmmHOw7LMbYpoEaZIu5nkYI=;
-        b=N7m3Knm+TYrqIpMuxmNUnoqpFCs56sgpXoHqq8z7mR3ap8lNfuASqBwjPBK5uog7DS
-         LDMyPyoHn1Gzh/bCoCVI3IHVEDjCWVkqz/bPpEEh/0lsZuloZo9TJpJvPxucljOgOhPI
-         nDhYz5XcGSlNzm80pK1+GiIpM8rbxl1xEuSl0lwk5r48oCeBx9wkQ4WHJSA1iWmbDCMz
-         soqzrST6u1nq5JlZVB+UueclLMiJ4iDPdv+cQZm6BZOKpZeaXgxZYM0FkhhwcEAhfQ6V
-         w7rmr8sH5rIIue1ugk8FwKe5ZMinLidWWj+/lXaLlGagAwm1xma9qE+lNwU2TBC4JCr8
-         KVrg==
-X-Forwarded-Encrypted: i=1; AHgh+RrcS3eH6cAOydk1RBI5ux396BxXkrl1s+WAUE7bXoxng0yV4GhT4unLyh9WcjErJZRFKF0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx/FjQGLwzc2/QsMSms6yoHyZUZjosaZpXj1vNKDADPt094Hr5A
-	A8NCBraOF50GrT8yW+P14CeSYg0JjX8JTu1H8+zilnx3ZHGJ5+5Zkb3TyiFRiLL5lKMQ4SkYZcK
-	IHoYT
-X-Gm-Gg: AfdE7cmc9Bjw8zrZoYSMf5+KmjpfyLsupmhhsLAjN+Nfo9zgSQEMG3Wxsh9ghVhZGEI
-	eVZ6cdfLpiLKohS4eZAR0j51ODR68i7X4tDxtxaldGpqAQo7/uyva5iuS18ngqSqYP7Ge9BGP23
-	PTQzbKuGT4YRwUxcBUMuuM8drVqAlUPAd8ERQAIrZztmTEgZ8SRcttNobsNLg2nGj0KYP2osOwC
-	qu6/NhVyUuiOC35z9RMRnZqRfjWe9BkHw5v9R+/WtGOmE7pjtOHzmwGsk5kylszESvBp4mJ/4qr
-	LSJjg9sI8S+mzqvf07mfsXYg8D1hltzpG4mDGj5MuG5kyyQ6RPwb/5ArZUSg2jsmsIflNLWNPr3
-	epJ/etQMreCKWedWGdn+fQX3XPoYhOB8pAjB+2baxu26P8i2tr9X4k7zzIiocDfEcXLIhPu8VS9
-	x4Qhb/utmOfYL9ToxmPKYP7y7AwbO8n5Ni840Cu/8VApF+K6lkL/EFssCfd9eyKyXBbC9RsE8Wn
-	gBr
-X-Received: by 2002:a05:600c:6304:b0:493:bb23:152a with SMTP id 5b1f17b1804b1-49485739980mr44250605e9.34.1784016576650;
-        Tue, 14 Jul 2026 01:09:36 -0700 (PDT)
-Received: from localhost (p200300f65f47db04b44a80421173aa03.dip0.t-ipconnect.de. [2003:f6:5f47:db04:b44a:8042:1173:aa03])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4950a2f9402sm61598235e9.13.2026.07.14.01.09.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 01:09:35 -0700 (PDT)
-Date: Tue, 14 Jul 2026 10:09:34 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v1 07/20] gpio: Add missing OF module annotations
-Message-ID: <alXtMOwKmsfM0LDE@monoceros>
-References: <cover.1784013063.git.u.kleine-koenig@baylibre.com>
- <72f0871dda4d65bb2b6ff8827da6a3b2dfdffab6.1784013063.git.u.kleine-koenig@baylibre.com>
- <20260714073425.CA6181F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="phU4yKOn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8mm2NbvE"
+Date: Tue, 14 Jul 2026 10:31:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1784017891;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fqrW9zYSHaj6Xc9AQwV80EeJsGB55mOhWfKWF07FYTU=;
+	b=phU4yKOnD8pqqcRiZ6E0nYyLPEOcH3heyQioklUwQXBxaPLGeiNjLDDexqU7/+O0XtR6uQ
+	w29e0HOHkIg/YcBYz25n6ZpE0ucvcs8s1ZH2VbAfr9Xcmh5fsmZ1oiGrHz8/LeQT2ufczW
+	8qU0ltK4+bJ5ucrDpuB8D1jCL9Id0iY7opoHWr2PmD0vLYsuBQ7Cqz9IwLZnOUoprVrXgW
+	sK7Mku0treHtifQrPJsg0R17yTYK365s/roqrn3Fo9AQtzPzTBLO14wS/FizFcLyi75Lu0
+	JSGIcSNpEsTFaXO5SLnDPHXd4iXCiG0UWhtJRU0YeKCKTzx1v7kxrxa12Ly7vw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1784017891;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fqrW9zYSHaj6Xc9AQwV80EeJsGB55mOhWfKWF07FYTU=;
+	b=8mm2NbvEEJ/RjadJo3IVaT2oLIPDQcZiX9mcxVmr5tCdJY3JfJVDDqhY8320AZsCSKmbH3
+	5ZCVTPT6WmHs4pCQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v4] remoteproc: imx_rproc: Invoke the callback directly
+Message-ID: <20260714083130.ZsK0SgpX@linutronix.de>
+References: <20260703-imx_mbox_rproc-v4-1-67b10560a861@linutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="db73lwnkw6hdook6"
-Content-Disposition: inline
-In-Reply-To: <20260714073425.CA6181F000E9@smtp.kernel.org>
-
-
---db73lwnkw6hdook6
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 07/20] gpio: Add missing OF module annotations
-MIME-Version: 1.0
+In-Reply-To: <20260703-imx_mbox_rproc-v4-1-67b10560a861@linutronix.de>
 
-Hello,
-
-On Tue, Jul 14, 2026 at 07:34:25AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
+On 2026-07-03 10:24:18 [+0200], To imx@lists.linux.dev wrote:
+> The imx-mailbox driver moved the callback invocation into the threaded
+> IRQ handler. This means the callback is invoked in preemptible context
+> and there is no need to schedule the kworker for the
+> imx_rproc_notified_idr_cb() invocation.
 >=20
-> Pre-existing issues:
-> - [High] Missing MODULE_DEVICE_TABLE export for the mpc52xx_simple_gpioch=
-ip_match table.
-> --
+> This was tested with the rpmsg-tty driver on imx93.
 >=20
-> --- Patch [7]: [PATCH v1 07/20] gpio: Add missing OF module annotations -=
---
-> commit 292bbbdcede3ce86fe1309d514a852f272c27bac
-> Author: Uwe Kleine-K=F6nig (The Capable Hub) <u.kleine-koenig@baylibre.co=
-m>
+> Remove the workqueue handling and invoke the imx_rproc_notified_idr_cb()
+> callback directly.
 >=20
-> gpio: Add missing OF module annotations
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+
+A friendly ping.
+
+> ---
+> v3=E2=80=A6v4: https://lore.kernel.org/r/20260617-imx_mbox_rproc-v3-0-779=
+48112defc@linutronix.de
+>   - The mailbox bits are part of v7.2-rc1. This is just a repost of the
+>     imx_rproc driver which is left.
 >=20
-> A driver module matching devices using an of device id table is supposed
-> to declare that in the module's metadata. Add this information for
-> several drivers that failed to declare these.
+> v2=E2=80=A6v3: https://lore.kernel.org/r/20260603-imx_mbox_rproc-v2-0-a00=
+59dc3b69a@linutronix.de
+>   - Forward the error in imx_mu_generic_tx() to the caller (new patch
+>     #1)
+>   - Extend the patch description a bit for for "Start splitting the IRQ
+>     handler" to briefly explain why callbacks are moved to the threaded
+>     handler.
+>   - Drop imx_mu_con_priv::pending. The primary handler wakes its
+>     threaded handler. Once the handler is woken, the pending flag must
+>     be set and there is no need to set/ clear it.
+>   - Avoid the double clk_disable_unprepare() if
+>     devm_mbox_controller_register() fails.
 >=20
-> [ ... ]
->=20
-> > diff --git a/drivers/gpio/gpio-mpc5200.c b/drivers/gpio/gpio-mpc5200.c
-> > index 00f209157fd0f..2c828bc922ae3 100644
-> > --- a/drivers/gpio/gpio-mpc5200.c
-> > +++ b/drivers/gpio/gpio-mpc5200.c
-> > @@ -180,6 +180,7 @@ static const struct of_device_id mpc52xx_wkup_gpioc=
-hip_match[] =3D {
-> >  	{ .compatible =3D "fsl,mpc5200-gpio-wkup", },
-> >  	{}
-> >  };
-> > +MODULE_DEVICE_TABLE(of, mpc52xx_wkup_gpiochip_match);
-> > =20
-> >  static struct platform_driver mpc52xx_wkup_gpiochip_driver =3D {
-> >  	.driver =3D {
->=20
-> [Severity: High]
-> This isn't a bug introduced by this patch, but since the patch focuses on
-> adding missing OF module annotations, should it also add one for the seco=
-nd
-> match table in this same file?
+> v1=E2=80=A6v2: https://lore.kernel.org/r/20260529-imx_mbox_rproc-v1-0-b8f=
+fc36e11e5@linutronix.de
+>   - Using correct register to enable RXDB event.
+>   - Update commit description for the "threaded interrupt", "unmasks the
+>     interrupt" =3D> "masks the interrupt event".
+>   - Add a shutdown field so that the interrupt does not unmask the
+>     interrupt if it has been already disabled because the channel is
+>     about to be shutdown.  A possible race mentioned by sashiko.
+>   - Use devm_pm_runtime_enable(). This should avoid a possible race
+>     sashiko mentioned.
+>   - Use devm_of_platform_populate().
 
-Ah, this is snaky, there are two drivers in that file and thus two
-of_device_id arrays. My script only handles the first, so the style fixes
-are missing here, too.
-
-I will wait a bit for further review and then address this in a v2.
-
-Best regards
-Uwe
-
---db73lwnkw6hdook6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpV7rwACgkQj4D7WH0S
-/k4XaAgAr47ojbzXcjqsjF1FttUvP817tdDTOildKlkxSlYP4gIjsiIubgQYdwg7
-MpSLhXX5sDIJmMklwzM5pALU2Ct5LQu6t/1MjKG6XHftyRj2LwgKbU2FbG2NNn+G
-JAQs0CdGH4mfmhux9mvhe39b0V4h5S3bpRe1lA2Iv9ex/dGL4bNEto3cM7QD31Ap
-FCw8wFkpbaZbBBppVbdK7o5utKerY5rA2f7Ns2vVPkLNhMx9ps61j4d8FB2BKaoJ
-0rPe6NVzC81WjsrwZUhpwUHucCbjsqHGxQrl7j3TaX77dy5pOXi9WxhTGNodm5JR
-z0Im+LrSjd/VfmFscgr6z0IU+KWrhA==
-=3L74
------END PGP SIGNATURE-----
-
---db73lwnkw6hdook6--
+Sebastian
