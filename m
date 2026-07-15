@@ -1,351 +1,359 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD773AF641;
-	Wed, 15 Jul 2026 17:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05133AF641;
+	Wed, 15 Jul 2026 17:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784137011; cv=none; b=qZitxz4x2ee4uwkPq0asdSPn85TzcjADNRj+r5X6d37V55zADRPAxy2bBNWSgNGgXcLW8dITEs8wXDz0t7s1W+bQRf+ONZTcyFwhJ0csz/FovTbzUc0rWQfqcbR2CtyYEnFxmzsTwDIQaSWXrT07GX/A5yrf8lnYvdwxy0w8MUU=
+	t=1784137017; cv=none; b=egi+hGZ9s8EXdNzHiuw5rAhRZ0egHDhl2UFvInjnQXMo9WOEp2KUoYsSo+0XFUk09WPE+ei/be/Hc3UZAfp0a42KJrUk7WIQ9ShKvFm+GNjfia+uJNdaAM57LJ0zvhs5232yl92Rvb67iZyTXtcIZCNxtGCJEVeaA8/VIuIMzMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784137011; c=relaxed/simple;
-	bh=bH4L1v3KHe8BMx3tc3m2InmzIenvEmGsIIaTtz1ZJrA=;
+	s=arc-20240116; t=1784137017; c=relaxed/simple;
+	bh=fkccXmV066dwIIsp5/8k1sv0Ve/vlxRF2YHa3ptljdE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NCDfzQeaWd6G/ea8LdNaSpH5PPIFUwnArcih9GTkqLltBkMlP2jg6KPTAZxJ25AXfSBWtJnyRUFbZBMEP+sAZmJazKulb34zJU/EFHUiguWpeEh1mR9+Tcoxalfwd87DO/dVIlSeRKCvZf6AhCEZu3t6oMlu2evyhm1GKKCC/8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j96ry+HQ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=C23hFWcr8AVt7Xmf1xTAzVWD7/DquIIl+0lIUXzDprcIe3yFrN6UH6/NcA5M5yLWGNzuygUUmT13IeiYX5LLydO6r60CMhYL+W8N+uAyZ+BVR179MfLg8zuqUj055bFG8j+J74cShUAp3ALe4VqgW6bfofOMiHU9HW7+j1IovlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c1+EPynP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j96ry+HQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C7C1F000E9;
-	Wed, 15 Jul 2026 17:36:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c1+EPynP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC1F1F00A3E;
+	Wed, 15 Jul 2026 17:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784137009;
-	bh=jCgcXk21wwWjKVj1M+8dskbrq41++V4aF4ALs8d781U=;
+	s=k20260515; t=1784137015;
+	bh=p9ZcXMbPmnMurJbgB+suJk5o45o7JAG7j+HEXybVjIo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j96ry+HQZ4XrELpOHryakqSMVbNhB3ZKGdVt5hXtqa/OROkLYxIHqk/OuO9O6swpn
-	 9418JWZZssFI3ltzIHMWAlAkQeJzFCdFmxM/TiNEOty0A2G2dCw2m3sFH+u6EIT+cV
-	 r8Y3Ym2tlLe/EEePqFAgL7Zf9z7pYpulnYtX98KgoBi8Fu2BqIY89L3wGRAoET9+IH
-	 zJE74mxIcyZtm9Qqa2CK/2vuSItmni1E2eTCVe0Q81Wu6A4J4AQvuLJz2Y+FU+bnr7
-	 h3Pn/8O5jadFesX48oIysjk4xiCyPxrrL1PwmDS8RxPiJinz0/FXxpNlSXfGptcglI
-	 OXbya2ob2GJfA==
+	b=c1+EPynP/wfksbGRtBW7lnloqo6IdFZTnmaJusJkfXVjZSEM3t/8OLCQQs9ijfwsk
+	 0gQAkG8mOx4RtbwgBSiZ3jFB4PD1yKw9y+Nu2ZMrta440dZmBfiCEiwdMZzLQTwbYK
+	 zbQzu2x7QdZmIp/HfuvFI5bhVAc0z+V7zBZ8CNg5kDeeqaqvPNHMQQP+oxDhUiAtx+
+	 Z+GkyZehQnkrPaHqyIND+flZltu8KhJTIfSqiovbxtVfi7Wmvbcy6d4d38PqIR89pU
+	 MHMF9iXnL2NGNeib08qoAHb3+wAHc+ILjzYugHZLTXLZZv+R8UwEyQN6A5A83DOOw9
+	 DvYYq/ANG+iOg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v27 5/7] firmware: drivers: imx: adds miscdev
+Subject: Re: [PATCH v27 3/7] firmware: imx: add driver for NXP EdgeLock
+ Enclave
 Reply-To: sashiko-reviews@lists.linux.dev
 To: pankaj.gupta@oss.nxp.com
-Cc: conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260715-imx-se-if-v27-5-bb7c45952f06@nxp.com>
+Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260715-imx-se-if-v27-3-bb7c45952f06@nxp.com>
 References: <20260715-imx-se-if-v27-0-bb7c45952f06@nxp.com>
- <20260715-imx-se-if-v27-5-bb7c45952f06@nxp.com>
+ <20260715-imx-se-if-v27-3-bb7c45952f06@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 17:36:48 +0000
-Message-Id: <20260715173648.D6C7C1F000E9@smtp.kernel.org>
+Date: Wed, 15 Jul 2026 17:36:54 +0000
+Message-Id: <20260715173654.DFC1F1F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 13 potential issue=
+Thank you for your contribution! Sashiko AI review found 12 potential issue=
 (s) to consider:
-- [High] The `read()` path drops `fops_lock` and `clbk_rx_lock` before acce=
-ssing shared lists and `rx_msg`, leading to Use-After-Free and list corrupt=
-ion.
-- [High] KASAN slab-out-of-bounds read in `se_val_rsp_hdr_n_status` due to =
-insufficient response buffer size validation.
-- [High] Indefinite hang during module unload or device unbind when userspa=
-ce is blocked in `SE_IOCTL_CMD_SEND_RCV_RSP`.
-- [High] Hung task panic triggered by signal interruption during long firmw=
-are waits in `ele_msg_rcv()`.
-- [High] The `SE_IOCTL_CMD_SEND_RCV_RSP` ioctl silently swallows kernel-lev=
-el validation errors, returning success to userspace.
-- [High] Memory leak of dynamically allocated `se_buf_desc` structures when=
- a device fd is closed without cleaning up pending buffers.
-- [High] IOCTL error path zeroes out shared DMA memory buffers while the fi=
-rmware might still be actively accessing them due to a timeout.
-- [High] Fatal kernel crash during probe failure due to `dma_free_coherent`=
- on an uninitialized pointer for the internal device context.
-- [High] Unsynchronized clearing of `rx_msg_sz` in `se_if_fops_read()` caus=
-es lost commands and `-ENODEV` when interrupted by a signal.
-- [High] TOCTOU race during device context creation in `open()` against unb=
-ind cleanup allows file operations on an unbound driver.
-- [High] Race window during driver unbind between `cancel_work_sync()` and =
-`se_clear_fw_busy()` allows work scheduling on freed memory.
-- [Medium] Race condition exposing device node before probe initialization =
-completes.
-- [Medium] Mixing `goto`-based error handling with scope-based cleanup (`__=
-free` and `guard`) violates kernel cleanup rules.
+- [Critical] The `tx_msg` buffer can be freed while a dangling pointer rema=
+ins in the mailbox core's transmit queue, leading to a Use-After-Free read.
+- [High] A mathematically valid message checksum of `0` is treated as a fat=
+al error, causing spontaneous failures in `ele_service_swap()`.
+- [High] Global static variable `var_se_info.soc_rev` bypasses SoC device r=
+egistration and per-device IMEM initialization on re-probes or secondary MU=
+s.
+- [High] Overriding successful firmware transaction results with `-ERESTART=
+SYS` causes non-idempotent commands to be executed twice.
+- [High] DMA buffers are freed locally on timeout while the hardware firmwa=
+re transaction is still active, causing background memory corruption.
+- [High] The IMEM size returned by the firmware during export is not valida=
+ted against the allocated buffer size, causing an out-of-bounds DMA read du=
+ring resume.
+- [High] The driver fails to set a 32-bit coherent DMA mask, despite the ha=
+rdware requiring 32-bit physical addresses for key firmware commands.
+- [Medium] Mixing `goto`-based error handling with scope-based `__free()` a=
+nd `guard()` declarations within the same function.
+- [Medium] `ele_msg_rcv()` hardcodes a check against the wrong callback han=
+dle for deferred signals, breaking abstraction.
+- [Medium] Missing NULL check for dynamically allocated attributes in `get_=
+se_soc_info()`.
+- [Medium] Data race on global variable `var_se_info` during concurrent dev=
+ice probes.
+- [Low] Residual error check for `se_fill_cmd_msg_hdr` remains in `ele_serv=
+ice_swap` despite the changelog explicitly claiming its removal.
 --
 
---- Patch [5]: [PATCH v27 5/7] firmware: drivers: imx: adds miscdev ---
-commit 688f25f20d4d627be6c43a2c0f20ff6e2aa34b78
+--- Patch [3]: [PATCH v27 3/7] firmware: imx: add driver for NXP EdgeLock E=
+nclave ---
+commit 625c1bf0423b041b8486ca353501df5a7d5c4833
 Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-firmware: drivers: imx: adds miscdev
+firmware: imx: add driver for NXP EdgeLock Enclave
 
-Adds the driver for communication interface to secure-enclave, that
-enables exchanging messages with NXP secure enclave HW IP(s)
-like EdgeLock Enclave, from User-Space Applications via character driver.
+This commit adds a new driver for the NXP EdgeLock Enclave (ELE) on i.MX
+SoCs. It handles messaging unit communication, firmware loading, and
+provides a base API for the secure enclave.
 
-Link: https://lkml.kernel.org/r/20260629-imx-se-if-v26-0-146446285744@nxp.c=
-om?part=3D5
+> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
+le_base_msg.c
+> --- a/drivers/firmware/imx/ele_base_msg.c
+> +++ b/drivers/firmware/imx/ele_base_msg.c
+> @@ -0,0 +1,272 @@
+[ ... ]
+> +int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
+> +{
+[ ... ]
+> +	struct se_api_msg *tx_msg __free(kfree) =3D
+> +		kzalloc(ELE_GET_INFO_REQ_MSG_SZ, GFP_KERNEL);
+[ ... ]
+> +	ret =3D ele_msg_send_rcv(priv, tx_msg, ELE_GET_INFO_REQ_MSG_SZ, rx_msg,
+> +			       ELE_GET_INFO_RSP_MSG_SZ);
+> +	if (ret < 0)
+> +		goto exit;
+[ ... ]
+> +exit:
+> +	if (priv->mem_pool)
+> +		gen_pool_free(priv->mem_pool, (unsigned long)get_info_data,
+> +			      ELE_GET_INFO_BUFF_SZ);
+> +	else
+> +		dma_free_coherent(priv->dev, ELE_GET_INFO_BUFF_SZ,
+> +				  get_info_data, get_info_addr);
+> +
+> +	return ret;
+> +}
+
+[Severity: Medium]
+Is it safe to mix goto-based error handling with scope-based __free()
+declarations in this function?
+
+The subsystem cleanup guidelines state that functions should either use
+scope-based cleanup exclusively or goto-based cleanup exclusively to avoid
+ownership and double-free issues during refactoring.
+
+[Severity: Critical]
+If ele_msg_send_rcv() times out, tx_msg is automatically freed by
+__free(kfree) upon returning.
+
+However, mbox_send_message() places the tx_msg pointer into its transmit
+queue. Could this leave a dangling pointer in the mailbox core that will
+trigger a use-after-free when the mailbox interrupt eventually processes it?
+
+[Severity: High]
+If ele_msg_send_rcv() times out, this code frees the DMA buffer
+get_info_data via dma_free_coherent() on the exit path.
+
+Since the hardware firmware transaction might still be active in the
+background, could the firmware subsequently write to this freed memory and
+corrupt the kernel heap or cause IOMMU faults?
+
+[ ... ]
+> +int ele_service_swap(struct se_if_priv *priv,
+> +		     dma_addr_t addr,
+> +		     u32 addr_size, u16 flag)
+> +{
+[ ... ]
+> +	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
+> +			    ELE_SERVICE_SWAP_REQ, ELE_SERVICE_SWAP_REQ_MSG_SZ, true);
+> +	if (ret)
+> +		return ret;
+
+[Severity: Low]
+Since se_fill_cmd_msg_hdr() was modified to return void, is this error
+check on ret leftover dead code from a previous refactoring?
+
+> +
+> +	tx_msg->data[0] =3D flag;
+> +	tx_msg->data[1] =3D addr_size;
+> +	tx_msg->data[2] =3D ELE_NONE_VAL;
+> +	tx_msg->data[3] =3D lower_32_bits(addr);
+> +	tx_msg->data[4] =3D se_get_msg_chksum((u32 *)&tx_msg[0],
+> +					    ELE_SERVICE_SWAP_REQ_MSG_SZ);
+> +	if (!tx_msg->data[4])
+> +		return -EINVAL;
+
+[Severity: High]
+Can the payload XOR checksum naturally evaluate to 0?
+
+The se_get_msg_chksum() function computes a simple XOR across the payload
+words. If the randomly assigned DMA address results in a checksum of 0, this
+check would falsely treat it as an error and reject a valid command.
 
 > diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
 _common.c
-> index 955b7409ff9fc..7deff38c46132 100644
 > --- a/drivers/firmware/imx/ele_common.c
 > +++ b/drivers/firmware/imx/ele_common.c
-> @@ -67,6 +122,9 @@ int ele_msg_rcv(struct se_if_device_ctx *dev_ctx, stru=
-ct se_clbk_handle *se_clbk
->  			 * synchronized state.
->  			 */
->  			if (READ_ONCE(priv->waiting_rsp_clbk_hdl.dev_ctx)) {
-> +				if (!is_rsp_wait_with_timeout)
-> +					return ret;
+> @@ -0,0 +1,448 @@
+[ ... ]
+> +int ele_msg_rcv(struct se_if_priv *priv, struct se_clbk_handle *se_clbk_=
+hdl)
+> +{
+[ ... ]
+> +		if (ret =3D=3D -ERESTARTSYS) {
+[ ... ]
+> +			if (priv->waiting_rsp_clbk_hdl.rx_msg) {
+> +				WRITE_ONCE(se_clbk_hdl->signal_rcvd, true);
+> +				wait_uninterruptible =3D true;
+> +				continue;
+> +			}
+> +			break;
+> +		}
+
+[Severity: Medium]
+Does this hardcode the check against priv->waiting_rsp_clbk_hdl.rx_msg
+instead of checking the passed parameter se_clbk_hdl->rx_msg?
+
+If a different callback handle is passed, this could fail to handle the
+-ERESTARTSYS signal properly since it ignores the function parameter.
+
+[ ... ]
+> +int ele_msg_send_rcv(struct se_if_priv *priv, void *tx_msg, int tx_msg_s=
+z,
+> +		     void *rx_msg, int exp_rx_msg_sz)
+> +{
+> +	unsigned long flags;
+> +	int err;
 > +
->  				WRITE_ONCE(se_clbk_hdl->signal_rcvd, true);
->  				wait_uninterruptible =3D true;
->  				continue;
+> +	guard(mutex)(&priv->se_if_cmd_lock);
+[ ... ]
+> +	err =3D ele_msg_send(priv, tx_msg, tx_msg_sz);
+> +	if (err < 0)
+> +		goto clear_waiter;
+[ ... ]
+> +clear_waiter:
+> +	spin_lock_irqsave(&priv->waiting_rsp_clbk_hdl.clbk_rx_lock, flags);
+
+[Severity: Medium]
+Does mixing guard() scope-based resource management with the goto
+clear_waiter label violate the subsystem cleanup rules?
+
+The guidelines recommend converting all resources to scope-based cleanup or
+none to avoid ownership confusion and early-exit bugs.
+
+[ ... ]
+> +	if (priv->waiting_rsp_clbk_hdl.signal_rcvd) {
+[ ... ]
+> +		if (err > 0)
+> +			err =3D -ERESTARTSYS;
+> +		priv->waiting_rsp_clbk_hdl.signal_rcvd =3D false;
+> +		dev_err(priv->dev, "Err[0x%x]:Interrupted by signal.", err);
+> +	}
 
 [Severity: High]
-Can this sequence trigger a hung task panic on systems with the hung task
-watchdog enabled?=20
+If the hardware successfully processes the command and returns a positive
+result, does overriding the return value to -ERESTARTSYS force userspace to
+re-execute the command?
 
-In ele_msg_rcv(), if a signal interrupts the wait, the code sets=20
-wait_uninterruptible =3D true and continues waiting. Since the timeout for
-a standard command response is set to 5000 seconds, wouldn't waiting in
-TASK_UNINTERRUPTIBLE for this long reliably crash the system?
+For non-idempotent hardware operations, this could cause the operation to be
+executed twice.
+
+[ ... ]
+> +int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
+> +{
+[ ... ]
+> +	ret =3D ele_service_swap(priv, imem->daddr, ELE_IMEM_SIZE, ELE_IMEM_EXP=
+ORT);
+> +	if (ret < 0) {
+> +		dev_err(priv->dev, "Failed to export IMEM.");
+> +		imem->size =3D 0;
+> +	} else {
+> +		dev_dbg(priv->dev,
+> +			"Exported %d bytes of encrypted IMEM.",
+> +			ret);
+> +		imem->size =3D ret;
+> +	}
+
+[Severity: High]
+Does the size returned by the firmware during ELE_IMEM_EXPORT need to be
+validated against ELE_IMEM_SIZE?
+
+If the firmware returns an unexpectedly large size, it is saved directly to
+imem->size. During a later resume, this unvalidated size is passed to
+ELE_IMEM_IMPORT, which could cause the firmware to read past the end of the
+allocated DMA buffer.
 
 > diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
 l.c
-> index 25f9cd5441f90..fb82df5c58d56 100644
 > --- a/drivers/firmware/imx/se_ctrl.c
 > +++ b/drivers/firmware/imx/se_ctrl.c
-> @@ -197,11 +204,234 @@ static int get_se_soc_info(struct se_if_priv *priv=
-, const struct se_soc_info *se
->  	return 0;
->  }
-> =20
-> +static void cleanup_se_shared_mem(struct se_if_device_ctx *dev_ctx)
-> +{
-> +	struct se_shared_mem_mgmt_info *se_shared_mem_mgmt =3D &dev_ctx->se_sha=
-red_mem_mgmt;
-> +	struct se_if_priv *priv =3D dev_ctx->priv;
-> +
-> +	/* Free non-secure shared buffer. */
-> +	dma_free_coherent(priv->dev, MAX_DATA_SIZE_PER_USER,
-> +			  se_shared_mem_mgmt->non_secure_mem.ptr,
-> +			  se_shared_mem_mgmt->non_secure_mem.dma_addr);
-
-[Severity: High]
-Could this leak memory by failing to free the se_buf_desc items in the
-pending_in and pending_out lists when the device file descriptor is closed?
-
-[Severity: High]
-Can this cause a kernel crash during probe failure?=20
-
-If an internal command times out during probe, the internal context=20
-priv_dev_ctx might be marked fw_busy before shared memory is allocated=20
-(ptr is NULL).=20
-
-Calling dma_free_coherent() with a NULL pointer and a size of 65536 bytes=20
-could trigger a bug in the DMA subsystem.
-
-> +static void se_dev_ctx_shared_mem_cleanup(struct se_if_device_ctx *dev_c=
-tx)
-> +{
-> +	struct se_shared_mem_mgmt_info *se_shared_mem_mgmt =3D &dev_ctx->se_sha=
-red_mem_mgmt;
-> +	struct list_head *pending_lists[] =3D {&se_shared_mem_mgmt->pending_in,
-> +						&se_shared_mem_mgmt->pending_out};
-> +	struct se_buf_desc *b_desc, *temp;
-> +	int i;
-> +
-> +	for (i =3D 0; i < ARRAY_SIZE(pending_lists); i++) {
-> +		list_for_each_entry_safe(b_desc, temp, pending_lists[i], link) {
-> +			if (b_desc->shared_buf_ptr)
-> +				memset(b_desc->shared_buf_ptr, 0, b_desc->size);
-
-[Severity: High]
-Does this zero out the shared DMA memory buffers while the firmware might
-still be actively accessing them?=20
-
-If ele_msg_send_rcv() times out, this cleanup is called on the error path.=
-=20
-Modifying active DMA buffers or reusing them for the next command could=20
-corrupt firmware execution.
-
-> +static void cleanup_dev_ctx(struct se_if_device_ctx *dev_ctx, bool is_fc=
-lose)
-> +{
-> +	scoped_guard(mutex, &dev_ctx->fops_lock) {
-> +		if (dev_ctx->cleanup_done)
-> +			goto exit;
-
-[Severity: High]
-Can this cause an indefinite hang during unbind?=20
-
-If userspace is blocked in ele_msg_rcv() waiting for a firmware response,=20
-it holds fops_lock via scoped_cond_guard in se_ioctl(). This cleanup path=20
-uninterruptibly blocks trying to acquire the same fops_lock, deadlocking=20
-the unbind thread until the firmware replies or the timeout expires.
-
-[Severity: Medium]
-Does this violate the kernel cleanup subsystem rules?=20
-
-Using a goto to jump completely out of a scoped_guard() block creates=20
-confusing ownership semantics and can lead to bugs. The same issue appears=
-=20
-in ele_get_info() with __free(kfree).
-
-> +static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev=
-_ctx,
-> +					    void __user *uarg)
+> @@ -0,0 +1,410 @@
+[ ... ]
+> +static int get_se_soc_info(struct se_if_priv *priv, const struct se_soc_=
+info *se_info)
 > +{
 [ ... ]
-> +	if (cmd_snd_rcv_rsp_info.rx_buf_sz < sizeof(struct se_msg_hdr) ||
-> +	    cmd_snd_rcv_rsp_info.rx_buf_sz > MAX_ALLOWED_RX_MSG_SZ) {
-> +		se_ioctl_cmd_snd_rcv_cleanup(dev_ctx, uarg, &cmd_snd_rcv_rsp_info);
-> +		return -EINVAL;
-> +	}
-
-[Severity: High]
-Does this validation allow a user to allocate an rx_msg buffer of exactly
-4 bytes?=20
-
-In se_val_rsp_hdr_n_status(), msg->data[0] (bytes 4-7) is unconditionally=20
-read. If the command bypasses size-mismatch validation (like=20
-ELE_DEBUG_DUMP_REQ), this could cause a KASAN out-of-bounds read.
-
-> +	rsp_status_err =3D
-> +		se_val_rsp_hdr_n_status(priv, rx_msg, tx_msg->header.command,
-> +					cmd_snd_rcv_rsp_info.rx_buf_sz,
-> +					tx_msg->header.ver =3D=3D priv->if_defs->base_api_ver);
-> +
-> +	if (!rsp_status_err) {
-> +		err =3D se_dev_ctx_cpy_out_data(dev_ctx);
-> +		if (err < 0) {
-> +			se_ioctl_cmd_snd_rcv_cleanup(dev_ctx, uarg, &cmd_snd_rcv_rsp_info);
-> +			return err;
-> +		}
-> +	}
-
-[Severity: High]
-Is there a missing assignment to err here?=20
-
-If se_val_rsp_hdr_n_status() fails, rsp_status_err is populated but never=20
-assigned to err. The function falls through and returns the positive succes=
-s=20
-byte count from ele_msg_send_rcv(), silently swallowing the validation erro=
-r=20
-and misleading userspace.
-
-> +static ssize_t se_if_fops_read(struct file *fp, char __user *buf, size_t=
- size,
-> +			       loff_t *ppos)
-> +{
-[ ... ]
-> +	/* We may need to copy the output data to user before
-> +	 * delivering the completion message.
-> +	 */
-> +	err =3D se_dev_ctx_cpy_out_data(dev_ctx);
-> +	if (err < 0)
-> +		goto exit;
-
-[Severity: High]
-Can this result in a use-after-free and list corruption?=20
-
-The fops_lock is dropped before the blocking wait in ele_msg_rcv(). When=20
-resuming, this code unconditionally accesses the pending_in and pending_out=
-=20
-lists in se_dev_ctx_cpy_out_data() without reacquiring fops_lock. If the=20
-device was closed concurrently, the DMA memory and rx_msg could already be=
-=20
-freed.
-
-> +exit:
-> +	priv->cmd_receiver_clbk_hdl.rx_msg_sz =3D 0;
-> +	se_dev_ctx_shared_mem_cleanup(dev_ctx);
-> +
-> +	return err;
-> +}
-
-[Severity: High]
-Does clearing rx_msg_sz locklessly here cause lost firmware commands?=20
-
-If the wait in ele_msg_rcv() is interrupted by a signal, this jumps to exit=
-=20
-and clears the size. If a mailbox interrupt concurrently receives a message=
-=20
-and sets the size, this will overwrite it with 0. When userspace restarts=20
-the read(), it will reject the valid message because rx_msg_sz is 0.
-
-> +static int se_if_fops_open(struct inode *nd, struct file *fp)
-> +{
-[ ... ]
-> +	if (misc_dev_ctx->cleanup_done) {
-> +		err =3D -ENODEV;
-> +		goto out_unlock_misc;
-> +	}
-> +
-> +	priv->dev_ctx_mono_count++;
-> +	err =3D init_device_context(priv, priv->dev_ctx_mono_count, &dev_ctx);
-
-[Severity: High]
-Is there a TOCTOU race here against unbind cleanup?=20
-
-The fops_lock is dropped right after checking cleanup_done, but before=20
-init_device_context() adds the new context to dev_ctx_list under modify_loc=
-k.=20
-If se_if_probe_cleanup() runs in between, it could unbind the driver,=20
-resulting in open() returning a file descriptor for a fully unbound device.
-
-> +static void se_if_probe_cleanup(void *plat_dev)
-> +{
-[ ... ]
-> +	cancel_work_sync(&priv->fw_busy_work);
 > +	/*
-> +	 * A timed-out synchronous command may have retained a dev_ctx through
-> +	 * priv->fw_busy_dev_ctx even after the fd was closed and the context w=
-as
-> +	 * removed from dev_ctx_list. If no late response arrived, release that
-> +	 * retained context during driver teardown.
-> +	 *
-> +	 * se_clear_fw_busy() is idempotent and internally checks
-> +	 * priv->fw_busy_dev_ctx under fw_busy_lock.
+> +	 * This function should be called once.
+> +	 * Check if the se_soc_rev is zero to continue.
 > +	 */
-> +	se_clear_fw_busy(priv);
+> +	if (var_se_info.soc_rev)
+> +		return err;
+> +
+> +	err =3D ele_fetch_soc_info(priv, &data);
+> +	if (err < 0)
+> +		return dev_err_probe(priv->dev, err, "Failed to fetch SoC Info.");
+> +	s_info =3D (void *)data;
+> +	var_se_info.soc_rev =3D s_info->d_info.soc_rev;
+> +	load_fw->imem.state =3D s_info->d_addn_info.imem_state;
 
 [Severity: High]
-Could this race with a late mailbox interrupt to cause a use-after-free?=20
+If this driver probes multiple Messaging Unit instances, does returning ear=
+ly
+based on the static global var_se_info.soc_rev prevent secondary instances
+from initializing properly?
 
-cancel_work_sync() is called before se_clear_fw_busy() clears the fw_busy
-state flag. If a mailbox interrupt arrives between these two calls, it will
-see fw_busy is still set and call schedule_work() on the soon-to-be-freed
-priv->fw_busy_work structure.
-
-> @@ -312,15 +1449,22 @@ static int se_if_probe(struct platform_device *pde=
-v)
->  		return dev_err_probe(dev, ret,
->  				    "Failed to init reserved memory region.");
->  	}
-> =20
-> -	ret =3D init_misc_device_context(priv, 0, &priv->priv_dev_ctx);
-> +	ret =3D init_misc_device_context(priv, 0, &priv->priv_dev_ctx, &se_if_f=
-ops);
->  	if (ret)
->  		return dev_err_probe(dev, ret,
->  				     "Failed[0x%x] to create device contexts.",
+The early return skips setting the instance's load_fw->imem.state and
+registering the soc_device attributes for the secondary device.
 
 [Severity: Medium]
-Could this expose the device node to userspace before probe initialization
-completes?=20
+Could concurrent probes on multi-MU platforms cause a data race here?
 
-misc_register() is called inside init_misc_device_context(), but
-se_if_probe() continues to initialize load_fw and SoC info after this retur=
-ns.
-If userspace immediately opens the device and sends a command, it could byp=
-ass
-the se_load_firmware() step.
+The static global var_se_info.soc_rev is read and written without any
+synchronization, which could lead to redundant queries or corrupted state.
+
+[ ... ]
+> +	if (FIELD_GET(DEV_GETINFO_MIN_VER_MASK, var_se_info.soc_rev))
+> +		attr->revision =3D devm_kasprintf(priv->dev, GFP_KERNEL, "%x.%x",
+> +						FIELD_GET(DEV_GETINFO_MIN_VER_MASK,
+> +							  var_se_info.soc_rev),
+> +						FIELD_GET(DEV_GETINFO_MAJ_VER_MASK,
+> +							  var_se_info.soc_rev));
+> +	else
+> +		attr->revision =3D devm_kasprintf(priv->dev, GFP_KERNEL, "%x",
+> +						FIELD_GET(DEV_GETINFO_MAJ_VER_MASK,
+> +							  var_se_info.soc_rev));
+> +
+> +	attr->soc_id =3D se_info->soc_name;
+> +
+> +	err =3D of_property_read_string(of_root, "model", &attr->machine);
+> +	if (err)
+> +		return -EINVAL;
+> +
+> +	attr->family =3D "Freescale i.MX";
+> +
+> +	attr->serial_number =3D devm_kasprintf(priv->dev,
+> +					     GFP_KERNEL, "%016llX",
+> +					     GET_SERIAL_NUM_FROM_UID(s_info->d_info.uid,
+> +								     MAX_UID_SIZE >> 2));
+> +
+> +	sdev =3D soc_device_register(attr);
+
+[Severity: Medium]
+Do these devm_kasprintf() calls need NULL checks?
+
+If the system is under memory pressure, they could fail and return NULL,
+which would be silently passed along to soc_device_register().
+
+[ ... ]
+> +static int se_if_probe(struct platform_device *pdev)
+> +{
+[ ... ]
+> +		if (load_fw->se_fw_img_nm->prim_fw_nm_in_rfs) {
+> +			/* allocate buffer where SE store encrypted IMEM */
+> +			load_fw->imem.buf =3D dmam_alloc_coherent(priv->dev, ELE_IMEM_SIZE,
+> +								&load_fw->imem.daddr,
+> +								GFP_KERNEL);
+
+[Severity: High]
+Since the hardware firmware interfaces strictly require 32-bit DMA addresses
+(as verified by upper_32_bits() checks in ele_service_swap), should this
+driver restrict the device's coherent DMA mask?
+
+Calling dmam_alloc_coherent() without first setting
+dma_set_coherent_mask(..., DMA_BIT_MASK(32)) could fail deterministically
+on 64-bit systems mapping memory above 4GB.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715-imx-se-if-=
-v27-0-bb7c45952f06@nxp.com?part=3D5
+v27-0-bb7c45952f06@nxp.com?part=3D3
