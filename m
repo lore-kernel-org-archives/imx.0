@@ -1,195 +1,477 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010060.outbound.protection.outlook.com [52.101.69.60])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F3B3624C2;
-	Wed, 15 Jul 2026 20:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784146353; cv=fail; b=jZ4jXMJlc/TbkFb7+1rgHCxnQ5mUGb+MJdm2AkSfmW/g6BIWrhzzKDxE1NwY8GZXGxypVlDRxdQBPVVJDPNZ34kanUrFIOxKbeOkWnuoVRHMuu3kt6B72oEudZ7ynMCC5s34BtskUVvwVkmbc1Q/f2cL522j6YIeDMM7bUusoAY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784146353; c=relaxed/simple;
-	bh=v9tKo8bGP/e1Sh3G3vPcZN5Mnsa06UXjDBK3mMPmwO0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mj/8bPPstvIPxp9cyYeKOmkty3Q7fwUjTkpqROky0sDBkC+689ClagQvUvqS3x6ahH6BGywZxnuVYwkQE6zBdeS1T6QKgSdphww7hPVn10zfCtj4KRY7DmfxagjMMHeZktWIDx/5kjQ72EEQSr94I8qRZe23+oPp+weHUc8uHI0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=OmnrnxQk reason="signature verification failed"; arc=fail smtp.client-ip=52.101.69.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245BB4C6EF2
+	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 20:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784146864; cv=none; b=FHM+TUJ3QRa5k6Pp3uWocw581OMtwY88U9CGfLsehQFvuS/MHnDlXFQlA1qyuvN7WLpCSw9kvnb1rSTrvckj6vPOPZYpQigC5SqXBI+TU6EQOvARsBeEJG7d+jjWqT2OCzcJC3hqC7e+XA5r7NEq0In3crea72p/0FQK4XhMuzQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784146864; c=relaxed/simple;
+	bh=7BMarNZprxTK00Ozeb2zkhqjZlUscvtGPJ0SveidKHs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=EnEARA1YNmJodsYtWpoVytKupyKHgh2fcTenejub2ZByvD2RmECi6IT1LETGZnzB51qWS1fU0+6b1tv95fCOgfvXQfROFdT+DRCY1/KHHSJnDunYeqWXMQcpyuQ/ZSuFEvFze5mXVZOB/5DQdwyJthpq10Okjz+/2nL/AYe3IPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZlQaZeJy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="OmnrnxQk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QNgomUim8jRqeSglMGHc4OCjWvg5eMpXnCbGPC1A4ytcNZkHjUsgs6NJ3ulIdTXVGeVt/tzAd+QUnv2eakuhV8sRr6Vgzp7zKZuY2o3eWmzVxAll5fM25LACuewvVGbLLNm2S6DhbYVuVYk01Kd3rBRpqj5Cv54lGLuyqghaT8As+5Q/Ywc5gw9SnjP8AgUj9x1GfP40cCo7Y9g0qe7TBNe+eTM/feB7c8gLCMNFb+o9FiQc2yxwjGy2fzvLp64ngaj0yjPJigFU3zv+LYXgFoo1CykrtOTmBnHXJU0dLgZGEOrYbLEscxpV/qp4sdlYVZF6mlyYAjyZ/V/cUr/8BQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rWt0ECucVWPs6sa6W/zYXSvFV9moo3O/cRxNYnLH+Fo=;
- b=VYPT6s2yjG4ysQaJyfvplq1VBBPBWDYtq8RenNC1wr+jXAnKWq+8Rh2U3tnljQDrZ72bTqvGrOoR4ZES2SgIw7OCQcYYwBDJq+1Mgs9owHlKZowNLAEQAtnH9UoB4TwxA30cFuySEWlYSv8h5M61zKw3om17nlI7dZABpDn+1ZLDGUS//5fox/zGkbZX7WXRUfEzc4NaQIQ0Z9Bw+BZY7TFQ2qTTLLKnfroMLB+TPx5AfxmDMUTd3W3vxgmzZkhB4/Ok/OV3tggYwzT1YpAZ/Ayyf2bCA+P7wOyD1hv877ezb8qJXvxrtgcoUYlkYDb+dYnxG+t/rNQd5cTBCYjIYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rWt0ECucVWPs6sa6W/zYXSvFV9moo3O/cRxNYnLH+Fo=;
- b=OmnrnxQkM+EX57wnUW6Cuo2qeaTIe+qCyl43pJWBEiF+1GewFc/myQ0YnGMlW4o7d9wmOLsrqxueli+55bqm0z6GhiljgrkUoH7LZYCRUPx+b83hAMKnF6UUq89RZtxAt/6yyucsMsW+tY26xgqZ8ZVLHM7LNgor5umucMnluJrqvrRf47eWv4OwF1suMKH8Wf1WDun+tfk2S/2vf78OFKpRwdH7RtSgal7EpsN6qc14kLgxfBFighXI6nMydCijD4bTqahC4zg/tayRriSmq45ee9GJ2BB6akcfFdG2qHJ3kRIU4HNkE9OHm21RG3jKUUIGV578/4q4fis8CquD5Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DB9PR04MB9792.eurprd04.prod.outlook.com (2603:10a6:10:4c2::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.11; Wed, 15 Jul
- 2026 20:12:29 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0223.011; Wed, 15 Jul 2026
- 20:12:28 +0000
-Date: Wed, 15 Jul 2026 15:12:21 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] pinctrl: pinctrl-generic-mux: use
- mux_state_try_select()
-Message-ID: <alfppbOGE4bC5h2s@SMW015318>
-References: <20260715193546.2852108-1-Frank.Li@oss.nxp.com>
- <20260715195143.DEFC81F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260715195143.DEFC81F000E9@smtp.kernel.org>
-X-ClientProxiedBy: PH7PR17CA0045.namprd17.prod.outlook.com
- (2603:10b6:510:323::10) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZlQaZeJy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1CD1F000E9;
+	Wed, 15 Jul 2026 20:21:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784146862;
+	bh=Vt4Ij9BkEDrjHpf2FuVRD/sTwfgT130h+QRo36efLug=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZlQaZeJy3R+LrHLWfKEe/sl7UWw6D8TM3Dylhl1pFU60rzt9e4QOoFq5yMwLI7NCj
+	 1dJRim6zGSDcZLglf8qZjh/DXqQfMHvuCQCc8+WjSydAs3sGWOL/xWs2Xy34/Ubg6+
+	 +mlUeHTQQE4csbbTI9n1IU2tuTG9zgSlEOn/9l37zt+9916G/qrBfPjg74jizYIm9G
+	 iDimc7SZ+b0Rl5jTxI45eOub6aLfelhmc04oeGOYptKDhbN93Q7ZfDmaTjzt29hyVH
+	 hUZQjVkapD0U/5UGIP6boX/tVfBBIGMdndrNhiJtxTmlicWnfg6mUyccGKo+Mvlj9T
+	 D04skVEYs60mQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] nvmem: make all reg_write callbacks take const
+ void *
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Link Mauve" <linkmauve@linkmauve.fr>
+Cc: neil.armstrong@linaro.org, Frank.Li@kernel.org, ojeda@kernel.org, linux-amlogic@lists.infradead.org, imx@lists.linux.dev
+In-Reply-To: <20260715195520.25410-3-linkmauve@linkmauve.fr>
+References: <20260715195520.25410-1-linkmauve@linkmauve.fr>
+ <20260715195520.25410-3-linkmauve@linkmauve.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 15 Jul 2026 20:21:01 +0000
+Message-Id: <20260715202101.9E1CD1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DB9PR04MB9792:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7a95769-663d-4174-8952-08dee2ad64f4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|19092799006|1800799024|4143699003|5023799004|56012099006|11063799006|6133799003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	yfdCD5YiqSGJPOW5eLjqgpjo9JXuVtua5N1M6/1FVypSEbhyvbOJARDEFZ3Yv+yFyys8dMSLmvPlJhQH2GPt3DTHguDsTDbvS+pIeD682zot1prdDHzibKE+Mk2M/95bt1Ih66u+6s2K9u6dr0gzxqeDBWKNPyy4MqAQeQXhmcJBZV1Mqp0mSqaCJbEcRhyMjwFXsH3El3cQQH7m57yKIRxmCi4lFXx/SMkYxKc2xj1POxbxHvLnFg7DuuDMbmQos9B7N25Aq0eiXy32nsPWikpuqAtJJwgxD2SRg2aGpG6LIj5fTfvb3fNys36UHwDoPRlkh5lj6UE/vOIwUD0Y1X2FGSlQG9P7hnyllNCfN56Io7tlkaBN2LDTZHwSwP1NTalNhcI2WbrD91PIqrRVqIrYrH/nlvtHZ6h1BMwY4Xwtd5xcT0LLM17LvqDQ7gkZYZvtnAoRs942IDTcitg/A6QRFpkM+do1RBXeLcp58I870+H2sNup2SPLAZIQr2+DTxUfI0cUzfd6CcFEP2evxamFFiXL8SnwEkDbrQZK0aUXUD58ICcMUYz7Yl5uwyY6tYpJJ6wqBRic2QHg+poBwfjNUar72ycP8Xxr+rU2Lf0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(19092799006)(1800799024)(4143699003)(5023799004)(56012099006)(11063799006)(6133799003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?QikbtZmvqSsaaCdAN0hDsrGbQb5vpQarQXb0EVfDI70fPkKqS4jLdmp4nh?=
- =?iso-8859-1?Q?3qZKoDi18G7nWgysWj4xaITxe/S3l75hx9C7SC+aGwUvXwcBkc25s56I92?=
- =?iso-8859-1?Q?1KR6scuw9wdezaoBzXGPZJuNKYhI95GqVkhIq0+cwtch7knM/rHUlPwS6k?=
- =?iso-8859-1?Q?gvUJofnW+lxLgmZ5FL1GkCSY1yWNugfGtSc9fD1tG5r5TBcs+j72pdX4QR?=
- =?iso-8859-1?Q?BZfPBflrfdWM39ALmXieqz9BmqtJ26C9XDD1KlBUVwlP4f8CqkMQ9NOYSL?=
- =?iso-8859-1?Q?rv/mJ8sICeucnaoCu4NhvaL1YmXX2lQT5FFJYBSTpMxmcxFwUECxrX/TDX?=
- =?iso-8859-1?Q?X5TsuJnaZ/xum7j1LCTk8/QRJW/B4Bjo+BYVsykP7Vq84Yb0VKV7ilbOz5?=
- =?iso-8859-1?Q?T9nBa7TsPQPxkZ65xwbk2W5t5htk5iIFNRrUxmno8lrE4esiYZxaaa8f4R?=
- =?iso-8859-1?Q?DTHNs+1qfIegVELP5sOXKXlXeXoJOJR0/69972PFJgG0Vt7b/v13e4pAfO?=
- =?iso-8859-1?Q?G8PLiFrpKa8vLq4le7FDH/FASpt3dA2yeh6VCulmK+7FnjbKsbHnQJzqLs?=
- =?iso-8859-1?Q?A3utTE6KMFHVucS9q5nwwWFsDYtmlSK45WwK/jEImIDva4B8PqMujUk4fM?=
- =?iso-8859-1?Q?r98g1CM2KlSTOhb44iUtrDhANabDGxifqz1Jq271XzZf1zgeLO4DPwehZQ?=
- =?iso-8859-1?Q?bg2UCCyR4RIgxDgse9glgv2dtHAKqTVaing1khQC5E731K592iMmfyDk1q?=
- =?iso-8859-1?Q?dO/NG9eXfoM6c2W2HoQgQVhcK7zPwHgP0KiC2bpZs1kQKbAx9KV6c6CgB/?=
- =?iso-8859-1?Q?UYMGNT6ytvPSg7vxlC+WqCxpCSuF+I3hh6rDkahf0bdt0ELJKSkxs/aKI+?=
- =?iso-8859-1?Q?6ATI+9nkwwa1aCPOYsjtAaRUcV+lsP6cWZv/UOGRvkzJEEUOr9l//mAcfW?=
- =?iso-8859-1?Q?UyoVWLXf0f0cvt01rh67MTF13sqge2eYcighrLHzZ+l+Mh9B3miKkaQi7W?=
- =?iso-8859-1?Q?cdQQ95akZu1sJDquDRiNHZLfXoWZZNAZ+ol6kjHfEb1N6MHDCGtcvET87V?=
- =?iso-8859-1?Q?1hAjGxcSUKtTTi7EcvoY8VjAAWuQuwQVJ/Rfnz4NAwvkSwlMH3SE/S/DVu?=
- =?iso-8859-1?Q?E0Oaa/0dTcKAeb8EZ1lZkV76J0tOTdUU1s3vsmGnrDbQDNk3YsxgZzTFz8?=
- =?iso-8859-1?Q?Mj+oudcSxPs8Ah+EOH76c5aMugcEw/KrMUGQJOAkdcV0bLC3kwIxjbw/QR?=
- =?iso-8859-1?Q?jiQ8OifZ1v29q2BET07VgmGf4YEc808YaF/h/e/EjfBJ0LNtRw0sDIEtHv?=
- =?iso-8859-1?Q?r3QtTYAIH2k7RJEqO6HSzHqew4OWKbSkj7pScXGF13TWOtrYbpF8rRzHlH?=
- =?iso-8859-1?Q?pYZV53ADdMnDxaoganzIz8l+2jLAUOSu/iTJckK4FAnTnDqc7Mc6k7lzp+?=
- =?iso-8859-1?Q?6NMBz5t2OdBZ6mVGRmiwWOZlcBilLS30KFq+x1rYmShNu153heJl9UhGCJ?=
- =?iso-8859-1?Q?4MUh0WGfQmc+fZ0fZTpeT7J+ztQLddPS5s+2OWrej5pvaSuPH0aX7Llu4+?=
- =?iso-8859-1?Q?dd/o9jKiY7LbRNWWNd6Ig/lcpma/A8hzDxEfHndyZCMF+KuOiLWK/liWUF?=
- =?iso-8859-1?Q?LzkN/wrQOZGH30ph8Rl4SuntyrnWM0ExD5Rhmb2nu994qyatofhtYLMYE/?=
- =?iso-8859-1?Q?qFLsjBn+nD413cdoha/FGnfWpR5Ub60WM/8R72k2RE6q0zdift62K/8nH3?=
- =?iso-8859-1?Q?TKrCzNR2yxlamaAhv8C6XHchMlaUrcOAba597iO+qPlJTyeQDYT8x2mcOO?=
- =?iso-8859-1?Q?cKXRgAL24jH0B00ZbrCUgrcilkOOk/X94HcVCiCXI4cuSqL/La/w?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7a95769-663d-4174-8952-08dee2ad64f4
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 20:12:28.7444
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: t6x95OXlD1LYaGhJgKgMhS32w3f98h/vLNcS7q2Ln8npjGug2OMtGxQktrqZzyCli8r157kelzHx+At5DD1mCSpw7z0KKq8WHgurCJD/K/PN8yiM0jZi3c9T7FhHbtf7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9792
 
-On Wed, Jul 15, 2026 at 07:51:43PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
->
-> New issues:
-> - [High] Replacing `mux_state_select()` with `mux_state_try_select()` causes silent pin configuration failures during driver probe.
->
-> Pre-existing issues:
-> - [High] Concurrent radix tree insertions and data races due to missing lock in `mux_pinmux_dt_node_to_map`.
-> --
->
-> --- Patch [1]: [PATCH 1/1] pinctrl: pinctrl-generic-mux: use mux_state_try_select() ---
-> commit 8b69728953c0e1594fa409568136b389105c9d0b
-> Author: Frank Li <Frank.Li@nxp.com>
-> pinctrl: pinctrl-generic-mux: use mux_state_try_select()
->
-> This commit updates the generic mux driver to use mux_state_try_select()
-> instead of mux_state_select(). This prevents the consumer driver from
-> blocking during probe when the mux state is already selected.
->
-> > diff --git a/drivers/pinctrl/pinctrl-generic-mux.c b/drivers/pinctrl/pinctrl-generic-mux.c
-> > index da5a5ec015833..202b72351efb7 100644
-> > --- a/drivers/pinctrl/pinctrl-generic-mux.c
-> > +++ b/drivers/pinctrl/pinctrl-generic-mux.c
-> > @@ -93,7 +93,7 @@ static int mux_pinmux_set_mux(struct pinctrl_dev *pctldev,
-> >  	function = pinmux_generic_get_function(pctldev, func_selector);
-> >  	func = function->data;
-> >
-> > -	ret = mux_state_select(func->mux_state);
-> > +	ret = mux_state_try_select(func->mux_state);
->
-> [Severity: High]
-> Does returning -EBUSY here lead to silent pin configuration failures?
->
-> When mux_pinmux_set_mux() returns -EBUSY on contention during a consumer's
-> probe, the error propagates up to the pinctrl core in pinctrl_bind_pins().
->
-> Because the device core intentionally ignores most errors from
-> pinctrl_bind_pins() (only propagating -EPROBE_DEFER and -EINVAL), it
-> swallows the -EBUSY error. As a result, the probe silently succeeds while
-> the device's pins remain unconfigured.
+Thank you for your contribution! Sashiko AI review found 10 potential issue=
+(s) to consider:
 
-It is wrong, consumer driver return failure.
+New issues:
+- [Critical] The nvmem core incorrectly evaluates write permissions, causin=
+g all drivers providing only `.reg_write_const` to be unconditionally treat=
+ed as read-only.
 
-fsl_lpspi 5a030000.spi: error -EBUSY: Error applying setting, reverse things back
+Pre-existing issues:
+- [Critical] The Spreadtrum eFuse driver incorrectly calculates memory offs=
+ets and size constraints, leading to out-of-bounds MMIO writes, memory corr=
+uption, and kernel stack information leaks.
+- [High] The bcm-ocotp driver fails to disable programming mode on the erro=
+r path.
+- [High] The stm32-bsec-optee-ta driver leaks TEE sessions when unaligned w=
+rites are requested.
+- [High] The imx-ocotp-scu driver has a Time-of-Check to Time-of-Use (TOCTO=
+U) race condition when writing to ECC regions.
+- [High] The meson-sm firmware driver exposes a lockless shared memory race=
+ when interacting with meson-efuse.
+- [High] The lpc18xx-eeprom driver lacks serialization, causing a race cond=
+ition on the EEPROM power state that can crash the system.
+- [High] The qfprom driver modifies global clock rates and regulator voltag=
+es without serialization.
+- [High] The lan9662-otpc driver modifies hardware state and registers with=
+out locking, leading to race conditions and fuse corruption.
+- [High] The bcm-ocotp driver modifies command and address registers withou=
+t locking, leading to OTP fuse corruption.
+--
 
-Frank
+--- Patch [2]: [PATCH v2 2/2] nvmem: make all reg_write callbacks take cons=
+t void * ---
+commit 757b2f38ab10e7e5415fbd52779fa12f901c3ac4
+Author: Link Mauve <linkmauve@linkmauve.fr>
+Subject: nvmem: make all reg_write callbacks take const void *
 
->
-> >  	if (ret)
-> >  		return ret;
-> >
->
-> [Severity: High]
-> This is a pre-existing issue, but is it safe to add functions to the radix
-> tree without locking?
->
-> When multiple consumer devices probe concurrently, their execution paths
-> can run in parallel and invoke pinctrl_dt_to_map(), which calls
-> mux_pinmux_dt_node_to_map() on the shared generic mux:
->
-> drivers/pinctrl/pinctrl-generic-mux.c:mux_pinmux_dt_node_to_map() {
->     ...
-> 	ret = pinmux_generic_add_function(pctldev, np_config->name, group_names,
-> 					  1, function);
->     ...
-> }
->
-> Because pinmux_generic_add_function() modifies pctldev->pin_function_tree
-> and increments pctldev->num_functions without protection, concurrent
-> insertions can structurally corrupt the radix tree.
->
-> --
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260715193546.2852108-1-Frank.Li@oss.nxp.com?part=1
+The previous commit switched from a pointer to mutable data to a pointer
+to immutable data, so let=E2=80=99s fix all users of this API.
+
+> diff --git a/drivers/nvmem/apple-spmi-nvmem.c b/drivers/nvmem/apple-spmi-=
+nvmem.c
+> --- a/drivers/nvmem/apple-spmi-nvmem.c
+> +++ b/drivers/nvmem/apple-spmi-nvmem.c
+> @@ -29,7 +29,7 @@ static int apple_spmi_nvmem_probe(struct spmi_device *s=
+dev)
+>  		.stride =3D 1,
+>  		.size =3D 0xffff,
+>  		.reg_read =3D (void *)regmap_bulk_read,
+> -		.reg_write =3D (void *)regmap_bulk_write,
+> +		.reg_write_const =3D (void *)regmap_bulk_write,
+
+[Severity: Critical]
+By migrating to .reg_write_const and leaving .reg_write as NULL, does this
+inadvertently make all these devices read-only?
+
+Looking at the nvmem core in drivers/nvmem/core.c:
+
+nvmem_register() {
+    ...
+    nvmem->read_only =3D device_property_present(config->dev, "read-only") =
+||
+                       config->read_only || !nvmem->reg_write ||
+                       !nvmem->reg_write_const;
+    ...
+}
+
+bin_attr_nvmem_write() {
+    ...
+    if (!nvmem->reg_write || !nvmem->reg_write_const || nvmem->read_only)
+        return -EPERM;
+    ...
+}
+
+Because the core checks !nvmem->reg_write || !nvmem->reg_write_const,
+setting reg_write to NULL causes the core to strip write permissions and
+return -EPERM for all sysfs writes.
+
+> diff --git a/drivers/nvmem/bcm-ocotp.c b/drivers/nvmem/bcm-ocotp.c
+> --- a/drivers/nvmem/bcm-ocotp.c
+> +++ b/drivers/nvmem/bcm-ocotp.c
+> [ ... ]
+> @@ -179,11 +179,11 @@ static int bcm_otpc_read(void *context, unsigned in=
+t offset, void *val,
+>  	return 0;
+>  }
+> =20
+> -static int bcm_otpc_write(void *context, unsigned int offset, void *val,
+> +static int bcm_otpc_write(void *context, unsigned int offset, const void=
+ *val,
+>  	size_t bytes)
+>  {
+>  	struct otpc_priv *priv =3D context;
+> -	u32 *buf =3D val;
+> +	const u32 *buf =3D val;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is it possible for concurrent
+reads and writes to corrupt hardware state?
+
+In bcm_otpc_write():
+    for (bytes_written =3D 0; bytes_written < bytes;) {
+        set_command(priv->base, OTPC_CMD_PROGRAM);
+        set_cpu_address(priv->base, address++);
+
+And similarly in bcm_otpc_read():
+    for (bytes_read =3D 0; bytes_read < bytes;) {
+        set_command(priv->base, OTPC_CMD_READ);
+        set_cpu_address(priv->base, address++);
+
+Without serialization, concurrent sysfs operations could cause the command =
+and
+address registers to be overwritten mid-operation by another thread,
+potentially redirecting writes to unintended fuse locations.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the error path in
+bcm_otpc_write() permanently leave the hardware in programming mode?
+
+    ret =3D enable_ocotp_program(priv->base);
+    if (ret)
+        return -EIO;
+
+    for (bytes_written =3D 0; bytes_written < bytes;) {
+        ...
+        ret =3D poll_cpu_status(priv->base, OTPC_STAT_CMD_DONE);
+        reset_start_bit(priv->base);
+        if (ret) {
+            dev_err(priv->dev, "otp write error: 0x%x", ret);
+            return -EIO;
+        }
+    }
+
+If poll_cpu_status() returns an error, the function returns -EIO directly a=
+nd
+skips the disable_ocotp_program(priv->base) call at the end of the function,
+potentially leaving programming voltages applied.
+
+> diff --git a/drivers/nvmem/imx-ocotp-scu.c b/drivers/nvmem/imx-ocotp-scu.c
+> --- a/drivers/nvmem/imx-ocotp-scu.c
+> +++ b/drivers/nvmem/imx-ocotp-scu.c
+> @@ -178,11 +178,11 @@ static int imx_scu_ocotp_read(void *context, unsign=
+ed int offset,
+>  }
+> =20
+>  static int imx_scu_ocotp_write(void *context, unsigned int offset,
+> -			       void *val, size_t bytes)
+> +			       const void *val, size_t bytes)
+>  {
+>  	struct ocotp_priv *priv =3D context;
+>  	struct arm_smccc_res res;
+> -	u32 *buf =3D val;
+> +	const u32 *buf =3D val;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a race condition wh=
+en
+writing to ECC regions in imx_scu_ocotp_write()?
+
+    if (in_ecc(context, index)) {
+        pr_warn("ECC region, only program once\n");
+        mutex_lock(&scu_ocotp_mutex);
+        ret =3D imx_sc_misc_otp_fuse_read(priv->nvmem_ipc, index, &tmp);
+        mutex_unlock(&scu_ocotp_mutex);
+        if (ret)
+            return ret;
+        if (tmp) {
+            pr_warn("ECC region, already has value: %x\n", tmp);
+            return -EIO;
+        }
+    }
+
+    mutex_lock(&scu_ocotp_mutex);
+    arm_smccc_smc(IMX_SIP_OTP_WRITE, index, *buf, 0, 0, 0, 0, 0, &res);
+    mutex_unlock(&scu_ocotp_mutex);
+
+Because the lock is released after checking if the ECC region is programmed=
+ and
+then re-acquired for the SMC write, two concurrent threads could both pass =
+the
+initial check and perform a double-write to the write-once ECC region.
+
+> diff --git a/drivers/nvmem/lan9662-otpc.c b/drivers/nvmem/lan9662-otpc.c
+> --- a/drivers/nvmem/lan9662-otpc.c
+> +++ b/drivers/nvmem/lan9662-otpc.c
+> @@ -140,10 +140,10 @@ static int lan9662_otp_read(void *context, unsigned=
+ int offset,
+>  }
+> =20
+>  static int lan9662_otp_write(void *context, unsigned int offset,
+> -			     void *_val, size_t bytes)
+> +			     const void *_val, size_t bytes)
+>  {
+>  	struct lan9662_otp *otp =3D context;
+> -	u8 *val =3D _val;
+> +	const u8 *val =3D _val;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can concurrent accesses to
+lan9662_otp_write() and lan9662_otp_read() corrupt OTP operations?
+
+    for (i =3D 0; i < bytes; i++) {
+        if (val[i]) {
+            rc =3D lan9662_otp_read_byte(otp, offset + i, &data);
+            if (rc < 0)
+                break;
+            ...
+            rc =3D lan9662_otp_write_byte(otp, offset + i, newdata);
+
+Since these hardware register accesses and state changes (such as powering =
+up
+and polling) are performed without holding a local lock, concurrent sysfs
+operations might overwrite each other's commands in flight, potentially
+corrupting OTP data.
+
+> diff --git a/drivers/nvmem/lpc18xx_eeprom.c b/drivers/nvmem/lpc18xx_eepro=
+m.c
+> --- a/drivers/nvmem/lpc18xx_eeprom.c
+> +++ b/drivers/nvmem/lpc18xx_eeprom.c
+> @@ -88,7 +88,7 @@ static int lpc18xx_eeprom_busywait_until_prog(struct lp=
+c18xx_eeprom_dev *eeprom)
+>  }
+> =20
+>  static int lpc18xx_eeprom_gather_write(void *context, unsigned int reg,
+> -				       void *val, size_t bytes)
+> +				       const void *val, size_t bytes)
+>  {
+>  	struct lpc18xx_eeprom_dev *eeprom =3D context;
+>  	unsigned int offset =3D reg;
+> @@ -110,7 +110,7 @@ static int lpc18xx_eeprom_gather_write(void *context,=
+ unsigned int reg,
+>  	usleep_range(100, 200);
+> =20
+>  	while (bytes) {
+> -		writel(*(u32 *)val, eeprom->mem_base + offset);
+> +		writel(*(const u32 *)val, eeprom->mem_base + offset);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the lack of a lock arou=
+nd
+EEPROM power management in lpc18xx_eeprom_gather_write() and
+lpc18xx_eeprom_read() risk a system crash?
+
+    lpc18xx_eeprom_writel(eeprom, LPC18XX_EEPROM_PWRDWN,
+                          LPC18XX_EEPROM_PWRDWN_NO);
+    usleep_range(100, 200);
+    ...
+    writel(*(const u32 *)val, eeprom->mem_base + offset);
+
+    lpc18xx_eeprom_writel(eeprom, LPC18XX_EEPROM_PWRDWN,
+                          LPC18XX_EEPROM_PWRDWN_YES);
+
+If a read and write occur concurrently, one thread might power down the EEP=
+ROM
+while the other is still inside its memory access loop. Accessing powered-d=
+own
+MMIO regions typically causes a synchronous data abort.
+
+> diff --git a/drivers/nvmem/meson-efuse.c b/drivers/nvmem/meson-efuse.c
+> --- a/drivers/nvmem/meson-efuse.c
+> +++ b/drivers/nvmem/meson-efuse.c
+> @@ -27,12 +27,12 @@ static int meson_efuse_read(void *context, unsigned i=
+nt offset,
+>  }
+> =20
+>  static int meson_efuse_write(void *context, unsigned int offset,
+> -			     void *val, size_t bytes)
+> +			     const void *val, size_t bytes)
+>  {
+>  	struct meson_sm_firmware *fw =3D context;
+>  	int ret;
+> =20
+> -	ret =3D meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offse=
+t,
+> +	ret =3D meson_sm_call_write(fw, (void *)val, bytes, SM_EFUSE_WRITE, off=
+set,
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does meson_sm_call_write()
+expose a lockless shared memory race?
+
+In drivers/firmware/meson/meson_sm.c:
+    memcpy(fw->sm_shmem_in_base, buffer, size);
+    if (meson_sm_call(fw, cmd_index, &written, arg0, arg1, arg2, arg3, arg4=
+) < 0)
+        return -EINVAL;
+
+Since fw->sm_shmem_in_base is a global shared memory buffer and there is no
+locking, concurrent writes could overwrite each other's payloads before the=
+ SMC
+call executes, potentially writing corrupted or arbitrary data to the
+write-once eFuses.
+
+> diff --git a/drivers/nvmem/qfprom.c b/drivers/nvmem/qfprom.c
+> --- a/drivers/nvmem/qfprom.c
+> +++ b/drivers/nvmem/qfprom.c
+> @@ -253,13 +253,13 @@ static int qfprom_enable_fuse_blowing(const struct =
+qfprom_priv *priv,
+>   *
+>   * Return: 0 or -err.
+>   */
+> -static int qfprom_reg_write(void *context, unsigned int reg, void *_val,
+> +static int qfprom_reg_write(void *context, unsigned int reg, const void =
+*_val,
+>  			    size_t bytes)
+>  {
+>  	struct qfprom_priv *priv =3D context;
+>  	struct qfprom_touched_values old;
+>  	int words =3D bytes / 4;
+> -	u32 *value =3D _val;
+> +	const u32 *value =3D _val;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can concurrent calls to
+qfprom_reg_write() leave the system clock and regulators permanently unbala=
+nced?
+
+    ret =3D qfprom_enable_fuse_blowing(priv, &old);
+    ...
+    qfprom_disable_fuse_blowing(priv, &old);
+
+Inside qfprom_enable_fuse_blowing():
+    old->clk_rate =3D clk_get_rate(priv->secclk);
+    ret =3D clk_set_rate(priv->secclk, priv->soc_data->qfprom_blow_set_freq=
+);
+
+Because the old state is saved to a local stack variable without any mutex
+serialization, a concurrent write could save the already-elevated clock rate
+and regulator voltage as the "old" state. Upon completion, the hardware wou=
+ld
+be restored to this elevated state rather than the original one.
+
+> diff --git a/drivers/nvmem/sprd-efuse.c b/drivers/nvmem/sprd-efuse.c
+> --- a/drivers/nvmem/sprd-efuse.c
+> +++ b/drivers/nvmem/sprd-efuse.c
+> @@ -192,7 +192,7 @@ static void sprd_efuse_set_prog_en(struct sprd_efuse =
+*efuse, bool en)
+>  }
+> =20
+>  static int sprd_efuse_raw_prog(struct sprd_efuse *efuse, u32 blk, bool d=
+oub,
+> -			       bool lock, u32 *data)
+> +			       bool lock, const u32 *data)
+>  {
+>  	u32 status;
+>  	int ret =3D 0;
+> [ ... ]
+> @@ -321,7 +321,7 @@ static int sprd_efuse_read(void *context, u32 offset,=
+ void *val, size_t bytes)
+>  	return ret;
+>  }
+> =20
+> -static int sprd_efuse_write(void *context, u32 offset, void *val, size_t=
+ bytes)
+> +static int sprd_efuse_write(void *context, u32 offset, const void *val, =
+size_t bytes)
+>  {
+>  	struct sprd_efuse *efuse =3D context;
+>  	bool blk_double =3D efuse->data->blk_double;
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but does the offset handling in
+sprd_efuse_write() and sprd_efuse_read() lead to out-of-bounds access?
+
+In sprd_efuse_write(), the raw byte offset is passed directly as the block
+index to sprd_efuse_raw_prog():
+
+    ret =3D sprd_efuse_raw_prog(efuse, offset, blk_double, lock, val);
+
+Then, in sprd_efuse_raw_prog():
+
+    writel(*data, efuse->base + SPRD_EFUSE_MEM(blk));
+
+The macro SPRD_EFUSE_MEM(blk) shifts the offset by 2 (multiplying by 4).
+Because word_size =3D 1 and stride =3D 1, userspace can request arbitrary o=
+ffsets,
+causing this to write far outside the intended eFuse MMIO region.
+
+Additionally, in sprd_efuse_read():
+
+    u32 data;
+    ...
+    ret =3D sprd_efuse_raw_read(efuse, index, &data, blk_double);
+    if (!ret) {
+        data >>=3D blk_offset;
+        memcpy(val, &data, bytes);
+    }
+
+If userspace requests a read larger than 4 bytes, memcpy() will read past t=
+he
+local stack variable 'data' and copy uninitialized adjacent kernel stack me=
+mory
+to userspace.
+
+> diff --git a/drivers/nvmem/stm32-bsec-optee-ta.c b/drivers/nvmem/stm32-bs=
+ec-optee-ta.c
+> --- a/drivers/nvmem/stm32-bsec-optee-ta.c
+> +++ b/drivers/nvmem/stm32-bsec-optee-ta.c
+> @@ -203,7 +203,7 @@ int stm32_bsec_optee_ta_read(struct tee_context *ctx,=
+ unsigned int offset,
+> =20
+>  /* stm32_bsec_optee_ta_write() - nvmem write access using PTA client dri=
+ver */
+>  int stm32_bsec_optee_ta_write(struct tee_context *ctx, unsigned int lowe=
+r,
+> -			      unsigned int offset, void *buf, size_t bytes)
+> +			      unsigned int offset, const void *buf, size_t bytes)
+>  {	struct tee_shm *shm;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does an unaligned write requ=
+est
+leak TEE sessions?
+
+    ret =3D stm32_bsec_ta_open_session(ctx, &session_id);
+    if (ret)
+        return ret;
+
+    /* Allow only writing complete 32-bits aligned words */
+    if ((bytes % 4) || (offset % 4))
+        return -EINVAL;
+
+If the offset or bytes are not 32-bit aligned, the function returns -EINVAL
+directly, bypassing the call to stm32_bsec_ta_close_session(ctx, session_id=
+).
+Because the nvmem core allows unaligned writes by default, this could be
+triggered repeatedly to exhaust all available TEE sessions.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715195520.2541=
+0-1-linkmauve@linkmauve.fr?part=3D2
