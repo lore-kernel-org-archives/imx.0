@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06CE43F0A2;
-	Wed, 15 Jul 2026 18:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDF343F0B5;
+	Wed, 15 Jul 2026 19:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784141921; cv=none; b=FhK3EP6bTrA87jx29vTg41CoZdcjIkZshwf8b4wMu4MJtzOVbAMiyUy7Qq0bDAW35ux4qOyJhzWoFOgzlZUS9sFOD7H3TD8KR7mRzjpcMxGWJ3lygU9hF0vS+p8PbI5dL+kcCZz4dQCH09rvw/8sA3Uz/KYW784QXtW0PlRi/9E=
+	t=1784142163; cv=none; b=QNapw4oVZGSkco4O3UGjdUXzfXii24M9UGQvVs7RLY4zD1+NJa+Ox6SeXh2K69L33ibXXUmidHE30aFPvvm16cWkpcydQ5712w7pvClTcyr6vA63O/f2SjIbdCI4p+zjs6ZCrpDIjb2O9pRr6YxOrQi2Mvrk+44eYULHRICmRIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784141921; c=relaxed/simple;
-	bh=o1wdb3hvZg8Mwx/nf5Q5Kz1h9rVn80wGsO8ZhPlCSqA=;
+	s=arc-20240116; t=1784142163; c=relaxed/simple;
+	bh=jkRUcG0fpUKUz5oE5nA2qUlCbNkbkFNgmwTENQzAFys=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YsYlk4YSWp5AXkzLtk/o5rBi5vGdTfBIhpzA8FUjRmCJBgQ2bt8jAJ9dSjL/AHQI2zqorLkKn9LBVR2b8SnLK3rQjMuQowP23Yc81u88CO96BwuK33Q7Q58uLu8abHLFCn/i8UfIJ4hEmMvFhXg5N3moKZAJBtVUQVHHXpCQmZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=klXnfQiP; arc=none smtp.client-ip=192.198.163.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=fG8zDFKidRRyU+uvWf8D57IunS4VNyKhY4pNrfK11JKMGj6JBZQe+yKhhre0mJPurmwF2z9iti5b/HrJK8n8KOcNBUqfNWYaUjgRgx1jMEeHlxugz9/vzuyyUZ8iHR4kEWCj7vHGiNma+lBD38GOMtQ9LcIzhaMRpKNKYONPgWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ip1coy/z; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="klXnfQiP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ip1coy/z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784141916; x=1815677916;
+  t=1784142160; x=1815678160;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=o1wdb3hvZg8Mwx/nf5Q5Kz1h9rVn80wGsO8ZhPlCSqA=;
-  b=klXnfQiP56wwCyZc/itjAFbMzJt0c2TJ0BTRL3sy7MJwniHW/eQDe6BH
-   XoVig54V6r3TsivG6J0Qr243nsIM2H6Uj1i3fAti+lZ/NashHylOpiW1Y
-   wjcUTCbwXub7r71aCgR5CGkZ3eVC+4mpQNj05jsNNwma+jPIpZgz6HvVB
-   xZhgeqcwBzY4sY624nFV8zURLLR7HqmysdL1IZqufDvUdGH4cGa294nzf
-   PFVhC8CRK/UkifZzGiDIgwroTgFkVTLLpr7FA+C/V5fT4AZzf3gWRqG8d
-   /4njfu07kUg4jCKNg+T3xQ/a/LpZsLmU7JNfIZBDs9Nel7D9RcA9RHPBs
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=jkRUcG0fpUKUz5oE5nA2qUlCbNkbkFNgmwTENQzAFys=;
+  b=ip1coy/zTxoZK1rYDYaTgBguY3ClJvSy2sPOiT1fBiYZ5qr1H74PJDyZ
+   XPY29WKBDVai/pVPOXy3Nu9+dsSpq8OsFx4dU8HsDsf/owBSPuv5Asjr5
+   jHjMbTHZNH9aUTAy9gWy1VkTMZImG5ltgq319ndNtkglobQdFgXajdByt
+   Iv2ZMxQ1RzGPliTMk1QviIEUCRF6CTyxoasO0s362XHmTH9zrE31gFNPk
+   tnGvD9IaXNYKpfk+a4T8dN/3e4TUlPJdZFdw6pyQBv7Q4kB4VhA+3WicX
+   27jowCZiCuZuMblLwllgFgrD6KUrWLshmZX1XI79zgp6y2ozeQe/1tQ1w
    A==;
-X-CSE-ConnectionGUID: P4OO6D3mR0ubR4cPN0QdDQ==
-X-CSE-MsgGUID: j9CyiEHhRDmpg8VwtyAXRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84834927"
+X-CSE-ConnectionGUID: x6ngzcXiR5OLGpAFga2Q9A==
+X-CSE-MsgGUID: wRPytIM5R5KgfvgAzup+OQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84678516"
 X-IronPort-AV: E=Sophos;i="6.25,166,1779174000"; 
-   d="scan'208";a="84834927"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2026 11:58:31 -0700
-X-CSE-ConnectionGUID: 49XMinnBQ1q16eL0jxD8dg==
-X-CSE-MsgGUID: kjqxmeOcQsKaDHlmEkIC5Q==
+   d="scan'208";a="84678516"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2026 12:02:33 -0700
+X-CSE-ConnectionGUID: 8yyOrudNS+6KFBZjLwXtOQ==
+X-CSE-MsgGUID: YpTKP7aFT2KqlGQNWvtRZQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,166,1779174000"; 
-   d="scan'208";a="253661823"
+   d="scan'208";a="254517773"
 Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.129])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2026 11:58:10 -0700
-Date: Wed, 15 Jul 2026 21:58:08 +0300
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2026 12:02:16 -0700
+Date: Wed, 15 Jul 2026 22:02:13 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Link Mauve <linkmauve@linkmauve.fr>
 Cc: Srinivas Kandagatla <srini@kernel.org>,
@@ -119,29 +119,46 @@ Cc: Srinivas Kandagatla <srini@kernel.org>,
 	imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com, linux-rtc@vger.kernel.org,
 	linux-sunxi@lists.linux.dev, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/8] nvmem: core: make reg_write() take a const void *
-Message-ID: <alfYQP4a1U9pI6UR@ashevche-desk.local>
+Subject: Re: [PATCH 0/8] nvmem: make reg_write() take a const void *
+Message-ID: <alfZNQGcX0Z68eto@ashevche-desk.local>
 References: <20260715175229.24672-1-linkmauve@linkmauve.fr>
- <20260715175229.24672-2-linkmauve@linkmauve.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260715175229.24672-2-linkmauve@linkmauve.fr>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260715175229.24672-1-linkmauve@linkmauve.fr>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Jul 15, 2026 at 07:52:17PM +0200, Link Mauve wrote:
-> This callback used to take a mutable void * for no reason, this was
-> found while drafting the Rust abstraction.
+On Wed, Jul 15, 2026 at 07:52:16PM +0200, Link Mauve wrote:
+> This callback used to take a mutable void * for no reason, which causes
+> the compiler to be unaware that the val buffer should never be modified
+> by the callback.
+> 
+> This was found while drafting the nvmem-provider Rust abstraction.
+> 
+> I’ve split this series based on the subsystem each patch affects, but I
+> think it should go through the nvmem tree in one go after gathering the
+> acks from the other subsystem maintainers.
 
-I don't understand how it was compiled. const void * != void * in C and can't
-be implicitly covered, if I am not mistaken. So, this patch heavily should
-break the build. What did I miss?
+It's an option. The other option (and often we go this way) is to introduce
+a new name, convert users, convert the name back.
+
+See, for example, how GPIO subsystem changed a proto of .set() callback.
+
+> I’ve been told previously to not include too many maintainers in Cc, but
+> I don’t know which ones to remove from the get_maintainers.pl output, so
+> I’ve still included everyone, sorry about that.
+
+With this, rather standard, way you will fulfill the above requirement
+automatically. Also you won't need treewide change to bother everybody
+with this. And also increase the chances to go in (maybe in a few releases
+span).
 
 -- 
 With Best Regards,
