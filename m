@@ -1,105 +1,173 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EDA3C141F
-	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 07:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB22388E4E
+	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 07:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784100571; cv=none; b=ia5+dBt6qXuiBvESCVUCXBvLRwlKF0liNyiwsU2CopmpaASpjn9Ew5bS1WmPE+jWxa1dE4tOqgPzhSz3Nla2P2d4KOj8PoCEVw3BTf/RRzbHt61Y4na74MXy05h4jE0Q6DmoG+mpEsvilY3+qhQixM25K0RYmES2h9rZEV2d3AQ=
+	t=1784100589; cv=none; b=dULiOSxQW/ALVIfR24qFf1OjWHQaD+7wY/aqoYN43ZBwkhsYnkF9HDbBWHPbcbfd4HyUi/2NbCrSmCWn7DERtT7ot5oubUuGtnKdNIwQ2Jj0qUiJyUEOhq46QruHQDKoh09NefBcnDEwIuoYdEL6dq0djsTx3oi/V89YrfvoGCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784100571; c=relaxed/simple;
-	bh=MsXvHNOp7jRLeDUmwfDBA82AWHhFNBc6/5erc1wQXKY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AxtrZJVDB5T07BaEE3IQeI/35yqN2V6v+ABPMu9Ijw36gR4Z0hq/1hmT9Xj8egQcWFbTAZ81/nSY8Kktesz5iG9shGqCgNWzYv3voMAsN+r7S7m/8T2nLOSNOW69KdpD9G0FUByrvxyV9L8t4Gi97Wio21ZLKuE5ITopv1G+qUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=QsxDWt3K; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784100589; c=relaxed/simple;
+	bh=1Cjy7h9NI5wKKdxUXpfBBunoKbteu3mma70xOEYWk8c=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=H/aqQi2sWC4qLKabpFFuKc6UnpMhN0dsZ49ZdDboUGJj1E81ChozCekXiWbE8WeiBg4LCyBjh0SJ5uxLa+5ocyi2go07/GTVXMHG7qE7dcN/pggrRU2Qq5s/h/pG7jUU53euMH3EzkHqGqhKNiwOgM66nxGgRHUU4EPCIyiKk/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jlFGYzPM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="QsxDWt3K"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE8D5152B;
-	Wed, 15 Jul 2026 00:29:23 -0700 (PDT)
-Received: from [10.57.2.177] (unknown [10.57.2.177])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 58BF33F915;
-	Wed, 15 Jul 2026 00:29:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784100567; bh=MsXvHNOp7jRLeDUmwfDBA82AWHhFNBc6/5erc1wQXKY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QsxDWt3KD0gLwwOVoSwz6F9QcdMXkaoZzWSEXTWUDIGD8Wbyn3D8MGU6B6LhHga5H
-	 7BIEM0JS4ez1HsCRWPMHhfRoAtjGUsdKSVU/XGI2BRVs6ji9U/sUxioC0KlqV7r46w
-	 n5UTC4yHj6i0ZuJHGmRoDUwkvaiT8cfh48r7v5Eo=
-Message-ID: <a886ad87-d17a-4ace-8388-fab5c4c2ba3c@arm.com>
-Date: Wed, 15 Jul 2026 08:29:27 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jlFGYzPM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFA51F000E9;
+	Wed, 15 Jul 2026 07:29:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784100587;
+	bh=peqx7RUp3PVaHOuklDNRT/QimqGSHBzm6JgpV/jDUJE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jlFGYzPM9jpCZ09jaKhjYCwmwdkU5Uu6YlG6hsaKQczjdI78qWKN+Xh25XwfWL7jE
+	 m3+63O5BjqjYtVboUtsecymE0CVx1jbZKVtPYtXVYVEMQ3hAjNOsGz/yyxJf8Zo9s8
+	 zOqZ16pFnLJbUHwlZe1InC/5OmUzW0sjBNbN0Sboe9xOYjoG/kgBm1okKZX5a0DYyw
+	 A14WX/fTCH9hx5lIXpBFK0v1n4zFfxXS4NYmmtogIILfZLnYNUjr+BDSzcK0biuoTb
+	 G6qQaxzDLLCS643c6aI3imabmpWXQ32WTl7lRCyfqAUdWAVt6ijvyAiTjYD3r5qMeW
+	 3G79n+yqHvJWA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 1/8] mmc: sdhci-esdhc-imx: remove unnecessary
+ mmc_card_wake_sdio_irq check for tuning save/restore
+Reply-To: sashiko-reviews@lists.linux.dev
+To: ziniu.wang_1@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260715071818.272318-2-ziniu.wang_1@oss.nxp.com>
+References: <20260715071818.272318-1-ziniu.wang_1@oss.nxp.com>
+ <20260715071818.272318-2-ziniu.wang_1@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 15 Jul 2026 07:29:47 +0000
+Message-Id: <20260715072947.ABFA51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/3] thermal/drivers/imx: Fix rounding and clamp for
- i.MX7D alarm
-To: Haoning.CHENG@cn.bosch.com
-Cc: linux-pm@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>
-References: <20260714-b4-symana21-11221-imx-thermal-support-upstream-6-18-v8-0-d54d8690e16e@cn.bosch.com>
- <20260714-b4-symana21-11221-imx-thermal-support-upstream-6-18-v8-2-d54d8690e16e@cn.bosch.com>
-Content-Language: en-US
-From: Lukasz Luba <lukasz.luba@arm.com>
-In-Reply-To: <20260714-b4-symana21-11221-imx-thermal-support-upstream-6-18-v8-2-d54d8690e16e@cn.bosch.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+
+Pre-existing issues:
+- [High] Unbalanced `disable_irq()` and `enable_irq()` during suspend/resum=
+e for devices with out-of-band wakeup, causing the SDHCI IRQ to remain perm=
+anently disabled after system resume.
+- [High] The system suspend callback `sdhci_esdhc_suspend()` ignores the re=
+turn value of `pm_runtime_force_suspend()`, leading to an unbalanced `pm_ru=
+ntime_enable()` and PM state machine corruption on failure.
+- [High] The runtime resume callback `sdhci_esdhc_runtime_resume()` leaks h=
+ardware clocks and PM QoS requests if `cqhci_resume()` fails.
+--
+
+--- Patch [1]: [PATCH v7 1/8] mmc: sdhci-esdhc-imx: remove unnecessary mmc_=
+card_wake_sdio_irq check for tuning save/restore ---
+commit e08eb8101cb72edc4b3a76b418077811fe74beba
+Author: Luke Wang <ziniu.wang_1@nxp.com>
+
+mmc: sdhci-esdhc-imx: remove unnecessary mmc_card_wake_sdio_irq check for t=
+uning save/restore
+
+This commit removes the mmc_card_wake_sdio_irq() check from the tuning
+delay save and restore paths during system PM. The check is removed
+because tuning values need to be preserved based on whether the card keeps
+power, regardless of if it sets the SDIO IRQ wake flag.
+
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
+esdhc-imx.c
+> index d0fa83f67a806..6e06b3eeacce9 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -2064,8 +2064,7 @@ static int sdhci_esdhc_suspend(struct device *dev)
+>  	 * to save the tuning delay value just in case the usdhc
+>  	 * lost power during system PM.
+>  	 */
+> -	if (mmc_card_keep_power(host->mmc) && mmc_card_wake_sdio_irq(host->mmc)=
+ &&
+> -	    esdhc_is_usdhc(imx_data))
+> +	if (mmc_card_keep_power(host->mmc) && esdhc_is_usdhc(imx_data))
+>  		sdhc_esdhc_tuning_save(host);
+> =20
+>  	if (device_may_wakeup(dev)) {
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can the host IRQ remain
+permanently disabled after a system resume for devices with out-of-band wak=
+eup?
+
+In sdhci_esdhc_suspend(), the irq is unconditionally disabled and wakeups a=
+re
+enabled if the device may wake up:
+
+    disable_irq(host->irq);
+    if (device_may_wakeup(dev)) {
+        if (!sdhci_enable_irq_wakeups(host))
+            ...
+
+For SDIO devices using out-of-band GPIO wakeup, mmc_card_wake_sdio_irq()
+evaluates to false. This causes sdhci_enable_irq_wakeups() to return false
+immediately without setting host->irq_wake_enabled =3D true.
+
+If enable_irq() in sdhci_esdhc_resume() is explicitly gated behind=20
+host->irq_wake_enabled, does this leave the IRQ permanently disabled after
+the first suspend/resume cycle, requiring a system reboot or unbinding to
+recover?
 
 
+[Severity: High]
+This is a pre-existing issue, but does sdhci_esdhc_suspend() ignore the ret=
+urn
+value of pm_runtime_force_suspend()?
 
-On 7/14/26 11:28, Haoning CHENG via B4 Relay wrote:
-> From: Haoning CHENG <Haoning.CHENG@cn.bosch.com>
-> 
-> Convert the alarm temperature from millicelsius to degrees for i.MX7D
-> using ceiling division instead of integer division, ensuring rounding
-> errors do not cause the alarm to trigger below the intended threshold.
-> Use DIV_ROUND_UP() for non-negative values and plain integer division
-> for negative values, since C rounds toward zero which is equivalent to
-> ceiling when the divisor is positive.
-> 
-> Add clamp() to ensure the hardware register value stays within the 9-bit
-> range (0..0x1ff) of the i.MX7D alarm field, preventing silent truncation
-> if an out-of-range value is written.
-> 
-> Signed-off-by: Haoning CHENG <Haoning.CHENG@cn.bosch.com>
-> ---
->   drivers/thermal/imx_thermal.c | 12 +++++++++---
->   1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-> index 38c993d1bcb3..7f7d1116b9d6 100644
-> --- a/drivers/thermal/imx_thermal.c
-> +++ b/drivers/thermal/imx_thermal.c
-> @@ -240,10 +240,16 @@ static void imx_set_alarm_temp(struct imx_thermal_data *data,
->   
->   	data->alarm_temp = alarm_temp;
->   
-> -	if (data->socdata->version == TEMPMON_IMX7D)
-> -		alarm_value = alarm_temp / 1000 + data->c1 - 25;
-> -	else
-> +	if (data->socdata->version == TEMPMON_IMX7D) {
-> +		if (alarm_temp >= 0)
-> +			alarm_temp = DIV_ROUND_UP(alarm_temp, 1000);
-> +		else
-> +			alarm_temp /= 1000;
-> +		alarm_value = alarm_temp + data->c1 - 25;
-> +		alarm_value = clamp(alarm_value, 0, 0x1ff);
-> +	} else {
->   		alarm_value = (data->c2 - alarm_temp) / data->c1;
-> +	}
->   
->   	regmap_write(map, soc_data->high_alarm_ctrl + REG_CLR,
->   		     soc_data->high_alarm_mask);
-> 
+If pm_runtime_force_suspend() fails, it handles cleanup by calling
+pm_runtime_enable(dev) and returns an error code. Since sdhci_esdhc_suspend=
+()
+ignores this return value, the PM core considers the device successfully
+suspended.
 
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Upon system resume, sdhci_esdhc_resume() calls pm_runtime_force_resume(dev).
+Since the device failed to suspend and never set needs_force_resume, this s=
+kips
+the active resume step and executes its out path, which unconditionally cal=
+ls
+pm_runtime_enable(dev).=20
+
+Does this second pm_runtime_enable() drive dev->power.disable_depth below 0,
+triggering an unbalanced pm_runtime_enable kernel warning and corrupting the
+runtime PM state machine?
+
+> @@ -2124,8 +2123,7 @@ static int sdhci_esdhc_resume(struct device *dev)
+>  	 * restore the saved tuning delay value for the device which keep
+>  	 * power during system PM.
+>  	 */
+> -	if (mmc_card_keep_power(host->mmc) && mmc_card_wake_sdio_irq(host->mmc)=
+ &&
+> -	    esdhc_is_usdhc(imx_data))
+> +	if (mmc_card_keep_power(host->mmc) && esdhc_is_usdhc(imx_data))
+>  		sdhc_esdhc_tuning_restore(host);
+> =20
+>  	pm_runtime_put_autosuspend(dev);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does sdhci_esdhc_runtime_res=
+ume()
+leak hardware clocks and PM QoS requests if cqhci_resume() fails?
+
+If the device supports Command Queuing Engine (CQE), the function calls
+cqhci_resume():
+
+    if (host->mmc->caps2 & MMC_CAP2_CQE)
+        err =3D cqhci_resume(host->mmc);
+
+    return err;
+
+If cqhci_resume() returns an error, the function returns directly instead of
+jumping to the disable_per_clk labels to call clk_disable_unprepare() for t=
+he
+three clocks and cpu_latency_qos_remove_request().=20
+
+Does this leave the hardware resources permanently active while the PM core
+treats the device as runtime suspended or in an error state?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715071818.2723=
+18-1-ziniu.wang_1@oss.nxp.com?part=3D1
