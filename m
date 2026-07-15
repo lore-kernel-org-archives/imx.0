@@ -1,66 +1,65 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013053.outbound.protection.outlook.com [52.101.83.53])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011010.outbound.protection.outlook.com [52.101.70.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24FC3AE704
-	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 16:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993CF3AFD19;
+	Wed, 15 Jul 2026 16:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784131316; cv=fail; b=rBTUROXhjIAi6jvBUWvPyrtqhHf5uNOHVOqZXAGdX1HAXyOZ5CXyI70xi3wp+DuGZZO4IwCWl1CyYcMLtdSlYNawzJmT5+4fz8aqhQ3hwLLxbpOF1uAw27Yv7a56Z0cKhxnCzc+P9fyAVmVhKP7+8/+7g/dIxhnCQs+nCdfl/js=
+	t=1784131955; cv=fail; b=sCleCcBtqrB0uaKWYp3GJJzY6VCODnw1HpVV88D9SqrTQO9e33m+O2UAbRjJGHVv91ToFmH95YxC1pfbXiXiletbl/upasZkNgrXKLQRb/2xpHgnEMdta0rA1Pyr/zKu7TYJ4hnu+/5q5iq5I1IsqqrvleRN1QhKNwXO8oy3Qtg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784131316; c=relaxed/simple;
-	bh=lGvLGdVlR+qHijLFjR+pm/TszcyRggvHpI3vuRFm2do=;
+	s=arc-20240116; t=1784131955; c=relaxed/simple;
+	bh=LDGktG7JcC6bmwYp9UwuRGK/ojUqrccO0pUHYVM4I8U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jX/U01gwwFNPrnTVtDT0fDRJdXht9RufTODoyGW5hLXbx1USx8IjhbgqSSJzt7lTDuW11sHtTPAcgX/KBGmqKAslNzn8JTKCB/Z7Zged7blJFh595H9Q4yIoio6bZvkednw1mziDaXFnKjLaWk62I7dqoO0fgN7kIZ/XyLCV0fc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=U7v1XdN9; arc=fail smtp.client-ip=52.101.83.53
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FfvCwHzOvAYwHY2QHh2P+HK9NVMsKphJiNTG6f+GILQSbI5XIPwBaN17JA13GGYayMJETv2ycJ6iAfyQ9LzEURimuHgq2hEY7Fjoed1XGyARosEqHBa7EQXE2O9mouatSGzztvyhgsBUeQ7xhQsOOaOljXoxtjsPxcYzstCYU1E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FcnPxTwS; arc=fail smtp.client-ip=52.101.70.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="U7v1XdN9"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FcnPxTwS"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hcYzncpp+iRS03drt6cyZszSa+/hNl5xjCIpDev+YJDPrUGKEjlE23kFVEPJb9YMpw1rTK9rQw5EDwBZyV+Gw/ZhyrJwZrkDEmp1VIL9Ia9rpAi8pktKaPRf1I2W8yhtnlvKiIYz7jI7iTlLKk9638YB6iAX2GVbVO9kuUJDzx9yKcMWkHu9DpeLpTF+BaIvA7tTsw8GWAIoYElhwlMgE9QxiMFAZcH78VF8ZJo2MVou/F7M5Ok/AJ6IEyEuyJRo6wgjQsWgtJdq4QEJ+gZFbZ3xgxXfFqo4p8NR9YGQB7ajJK7iwf05azQaahELZFvo7Hu7TtsiSRF8bJEGmND8Qw==
+ b=W7KwjnSGcdc1Q2BBUpNSx8vBIHKe/L1whWFzAp+qwSCBQ23M3uDSN6ItLnakoMHvtECvPtTv21J+NzQ8/k6d9OP44j/AefLCNISHtkDpIggv57rY4qWtSj591+p05zDysb3OYTUinJwJ1fjuDRU7RspqxLQKNqF0QK+lhNIQjr5wdU1gjeC7p55ABsHvVsSzhaIX1h2SO+PWO3z7MSlgA82zs3ai6A/g88UVdmB6xpgg3Z/8tvvDYylgsBjLFvtsDJigFX0+QOu4448GpbSpy3zRbgMx0577EdqeOQYHEDcRayhfmV9SZ1huqSC0j3W4ZKPF+XhaNKjoECowEOIaHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VIwN137uhlbkvIJ0neqmcWiH5PccHs7CkA0vhdk/cwg=;
- b=o2QkCGwppygM/q3d0VZXeIZ0i4ihgZ5ggwq3fSd3BPLiSg9iT6/dInzWbsgEBTOQRVqCtGmnWveFcOGu3h4c/4h5G/Ilp7MOWBuxR4/ZU4J2dBE1X4nQjFVbTidgoFftAu4nyLdfyxN73QM0YAh9AvQnSvS1rCz5XVPRSE3P5DZDaTp0s8JgV9OIJgFlRpicjskV1qBIDI6kw010dwHdUwHt0pd6ITyBuGTPR/5id2B4k2922Gee/tEzFg75POUGVm0HctopW9uT2lnTPMWLh6rA9CrUfs67HvUUCvrS53yIGxyvEjHfWGJ7Wkju7JRk+UnXjX5JcTmCz1M4FKdYSQ==
+ bh=/nzhhW7ewkTuvM1mH9EIDPAHu1gRSB90KHSm9GvkGyo=;
+ b=qMHPUWSHMXMUp9YKiPz33xnIirzTTvL54UuwcWYJRdjQglQJ5g+I374swwCc/LDmukfYPuH0u2WDP/zmUPKIjc4lFK7rt4EkSeCmUVlmJ0HSN9ka5O94Jqfd3+YMKa6yb1z9JC4Naho35Zz58er9R0ienfrmMZt7x3q/YBfBdgjmkhZpLhCfP2HOYmMUQ9JSf/1+HyJqjUKIYcD5klDp0QAfymLCAyag76JYMSC0dsMZC/NeeidQ99aAs74kt8/wBd+O2GTnkChDlvqamUN1U7B6kwtYSD1Oyt90IlQm7yqjHtP5zvwnP06W6OYBgfhd/3ZH28LY+sU/F4pbrKNy0A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VIwN137uhlbkvIJ0neqmcWiH5PccHs7CkA0vhdk/cwg=;
- b=U7v1XdN9kuIs9V5CCUl1Va9ARmbWuZBJZPLFSpGNi1XrPoxCdxeSsbfzUkN7tQbtd1pKXyM+gLaJQ36FsPTCu8JE3AronzsbAY03oI1lf3rVlVhfKBsBfO80hk0cB/aY/uZC9ZsMj48X5Ln6gL9+UPh62V+yb6bMkb0ZyshwljzCp50tHRQKJv/N4ACte5ZpckNgXXYSszuWZ7QRG31F8vUZ5sO8rU9yjChXAir+s8TmDeubar2nUApw/VDSRmhba8NSx3V92oFJjZSdSdMfZ5/ZJj//lnpbHZ0W3K2p1RiPbF0PSQzAyYgwoeszlXDh2r0fMpD8u7MB4Nrxz/lIPA==
+ bh=/nzhhW7ewkTuvM1mH9EIDPAHu1gRSB90KHSm9GvkGyo=;
+ b=FcnPxTwSRHc2IFTiUoc74a202X3m+YZ7uXwuV9YBA1v3zjtE26p1Cpbd/oaHwvP4Vq9s09Gf+ldDl/GF02m3jRKAx1tILwGRlVnBK70xjj7BKiM1zEuKEwlMUgNEayY2KsSg+eeXr1904G7thLfOxz3dBVx9pCVnVSJ3LAtVhvNNtr4cHbXx5LSlRk/Cfm6J4NujBQDc/4XlH/Ow3A+1l6yMgVxryyEqA4JXL0MuBSHgvkPVVOhW0lN1bcx6Rd5XNk/a8znJie6qcxLYB/bivMJHgK2dbEj9Y4EdihyLD5zJ4jSaop3E0IMCgjFZdfAOP0AGy4rcmxAxrnmyaQGFzw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VE1PR04MB7358.eurprd04.prod.outlook.com (2603:10a6:800:1a5::9) with
+ by AMBPR04MB12309.eurprd04.prod.outlook.com (2603:10a6:20b:723::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.11; Wed, 15 Jul
- 2026 16:01:49 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Wed, 15 Jul
+ 2026 16:12:20 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0202.018; Wed, 15 Jul 2026
- 16:01:49 +0000
-Date: Wed, 15 Jul 2026 11:01:39 -0500
+ 16:12:20 +0000
+Date: Wed, 15 Jul 2026 11:12:13 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: joy.zou@oss.nxp.com
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>, Bough Chen <haibo.chen@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Ye Li <ye.li@nxp.com>, imx@lists.linux.dev,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Joy Zou <joy.zou@nxp.com>
-Subject: Re: [PATCH v5 4/4] Input: snvs_pwrkey - add press event reporting to
- avoid event loss during suspend
-Message-ID: <aleu49Lo4iycHRNS@SMW015318>
-References: <20260715-b4-pwrkey-v5-0-07e7353c319e@oss.nxp.com>
- <20260715-b4-pwrkey-v5-4-07e7353c319e@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
+To: sashiko-reviews@lists.linux.dev
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Frank.Li@kernel.org,
+	conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/4] arm64: dts: imx95-19x19-evk: Add CM7 node and
+ related memory nodes
+Message-ID: <alexXTYQHUs76J7v@SMW015318>
+References: <20260715-imx-rproc-dts-v1-0-d02b583c507b@nxp.com>
+ <20260715-imx-rproc-dts-v1-1-d02b583c507b@nxp.com>
+ <20260715071741.79CA81F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260715-b4-pwrkey-v5-4-07e7353c319e@oss.nxp.com>
-X-ClientProxiedBy: PH7P222CA0024.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:33a::24) To GV2PR04MB11799.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260715071741.79CA81F000E9@smtp.kernel.org>
+X-ClientProxiedBy: SA9PR13CA0054.namprd13.prod.outlook.com
+ (2603:10b6:806:22::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -69,237 +68,124 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VE1PR04MB7358:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd4db75b-79cb-4b8f-cda7-08dee28a6085
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AMBPR04MB12309:EE_
+X-MS-Office365-Filtering-Correlation-Id: 07563da9-8922-421c-fe18-08dee28bd924
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|19092799006|6133799003|10067099003|22082099003|18002099003|11063799006|56012099006|4143699003;
+	BCL:0;ARA:13230040|19092799006|23010399003|376014|366016|1800799024|56012099006|11063799006|22082099003|4143699003|18002099003|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	t+ufDkjaYYTrfX6uKeWLri8gVTol0fAXQt8HOJk2NDLQ6d+sCgsgzxOkxI7ioxCWycK7NIBMx+aN4Q/9JewNWfR2mSIcxupdnYUiZGqHHDLmxUbs6q2/j1Mr87idOrYe2z+aIp2ipl4XviJTTPC3QAKEF1b0Tror41+dZyBe1eWyGEyoU+FagTnsCuYSzjduPJwYh4UELlJIEW86RwBIxGykFrih1wpvE/fPt7ZbdrInFdS2I9EzLDe64LZFaXKDVKeU2sX1ZSR022K3vb2ovF/qh89Xop73kfLlBQl2jNtZz6IiT7kpYqDy1qNysUvYrcZ6Vy0ay/2y9ivKqHY3+5F9k90yAZTpkwl3Zo1vhbuBY11miGlBCu3etQF9kci8sbxOYjxLPrLq0F/XLvh171QMyrV5dKAhlzqZx4ozub2VXo9FTcM2AxIS0SnHXgLakZiWPEB/UnFSmsBHICID16YhcW2dNvVquQK1tnsA9VO1NTC8jzSrkpMsXg5gBJ2LKdAw4xNcEnkNMKT6ZH4ciIz1KjBuqEboU1KxoNMYqfHbXSxDpwkIVkeDRm3NW2tJiaAoJZPKPIvE0Ic/r6q/w+ghi8k0Kq7el02JX+z9aoVrqvkuITGdqLq9Jow/nIKBRQQCj454X0zAI+xh9XqelIJ9Zmyc24QCL+hMXCiunrQ=
+	RLvrR6Hw4sYaayz8rVUA7HUXXQuKQkABWwlzMGn7pqKN73RKSLWC+m/FY+VzIKjEkUw0ZkdFfY8kB4YXHUofe1Q+KIbH0T+NlhB2GU1O32yLj6m1v3I68lruQpYBTk8aAcQxExgSVjFm89j3WWu/1H+TPSJ2H9t9HnHA7CaxD4UtjOIABtLDH5kyRs6EyQfQp38vNBkCOPTcYs83CsbeLF4uC5NVTzgltQ1Q7Yjcn6qgyj1bzhT5pYui86eE8wYujCJZ8B3ZnYIzdytr9aqpXfTObzbNszK+RerfNZeSVWm19J7Bn2P6Jb9ax2QbLvPgs8tLA7ROrPEMT+TJnBl8EmZUG3CUSlNHAsegO2xl8xjMFTmA5e3/jkD5XmC2wvSfPSxO5CbLAY8/+05d+jbh1mnwYO+Ru/vBRtlKINNqxlAsSGjekk9DNZbufHdTedyIEFBE4SgsVPit30Qe5HJHsrUDPx+VW9GRFeHWHeyCwz05NePlfHaig12FJ93QwBebeXGvYSkklss8Zy41WXm/bOjpaUB9/rb14pyJ86jlpeMeqdBI2o7QuARZbKfEY+WLb+Uy80gKppJQOelmV9Ru8WwHS79sJy3/rw51MMD9quE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(19092799006)(6133799003)(10067099003)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(376014)(366016)(1800799024)(56012099006)(11063799006)(22082099003)(4143699003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KTwyX8T17tSRgcf4W9ykENNTHWfZ2QaT9U0D3w1IOXhIBTR7nUQwULztk7lk?=
- =?us-ascii?Q?FmQKH/yd2RrLJplFgNuZNPU7fFs7nj0H5aI1H7myQk/af7HvE6CyjImjPWbu?=
- =?us-ascii?Q?tt/Tlafw3t8lFy+EpIMwsNKXkUzE9Un4TlTEHkO+U5dYfYdl1G88mgh36Kiy?=
- =?us-ascii?Q?PRth/EHCEQh27tl74Kfu9iZqWZL5YRjdJtaghj/d69EtyXMYGoJdVjRoDTI2?=
- =?us-ascii?Q?fheMuoNJa6q3X+NrDT4OwjEuHidT4aSELI2dZwAk7BMLL065jxykO+8neblp?=
- =?us-ascii?Q?AriDhU7mqjH8sJPBb9eiD5qAJbz5mIl524JzuzF8/N02SoWB5NctQybKmxfB?=
- =?us-ascii?Q?k2JVNUDqIYvmVCIxKysGfDr0RmEDYzXAqsk+ZJAbQCqoKMNMzXoFbaOYvq+A?=
- =?us-ascii?Q?nZ297zfNMKEUzJtiFHbXvJwURIxi2SmX3sdEcA7oTwerMW0AL4Ae28kHY3QF?=
- =?us-ascii?Q?40SXv05+AwWjV/5bTtLb/TCQhB9/LQlQ5L7kHE4/w3mbg1LbVCafh5IHbCbZ?=
- =?us-ascii?Q?bds3dEJJaW/QnaLfWfMeuHRea23QhcswmIaczT0s1pcfIh+MNbEUJ3O7AnfA?=
- =?us-ascii?Q?tEdLbMUk48rBXJPAy3ZZkCeJCF8UqKLOs3N9LSt1LeUaU1FyXgjhir99CcEQ?=
- =?us-ascii?Q?ryMrq/pg9PE6hw794mlBcInJ+tYfeblOD00aG5qwWbm8pV+ODxKk3iOpF49r?=
- =?us-ascii?Q?pEfnk+YmXAB9aJrwbsqTekpYheuzXfDSOttODcHKsXECFT0wzv4cMvPONG0X?=
- =?us-ascii?Q?gsvLsl9ykgvaSFenKL0SkdwPQ0Zfy259aMT2j0Ag37uOmLMNl2EVPCSnPzzj?=
- =?us-ascii?Q?Ybtty1GFELhvosoCBZcdvuwhTJvyh4QuL8sXJ7uJ+qmO86uuJRv7MJGqP6ha?=
- =?us-ascii?Q?xQ2w8XvLb/2ajn7Pad1upIStibh/SPG6L3hb3pQqCO9dVhszO/W6n0MWraoF?=
- =?us-ascii?Q?em1S5EzSLv/GM9rGyKhKC8N1P+qwRPzZf9lA6erlyJJKjzzww1oZFBY0ah60?=
- =?us-ascii?Q?XJD91HMcfKnyqSu5l6kF6Iq2T6WyXfCB8qr+pdznXneMV9vU3zVoOEjjN0Xm?=
- =?us-ascii?Q?JC1m9xKlofyQPSjyFuLUlNmrbmjuXTUzCLqx0YhS9sQIHD4k3NmKucVwnOAU?=
- =?us-ascii?Q?w6e1mXHkB11BlE12a1e3ug8+RP/VeXCTr/dOhyHZiqc6EyM/xTKnrVYWcq8x?=
- =?us-ascii?Q?tcpLGSqiVYFT4VVyq09Fe+TunqGhdUIdPS14lgsYLSzYV/3Xv4MtX2c8LhqY?=
- =?us-ascii?Q?6A44RlrArX4KVQEgUuuYc32mmkjHFoXyV+sEIRMQeyerxJuCSnC74CrNvTzD?=
- =?us-ascii?Q?Kd09mbqrnU5UO3R44eAI2fbKB0zOiUL6ZmQllmefp3MheSPkHyypQ4DzOPO8?=
- =?us-ascii?Q?LJ/amGpRNWCh5r2TYuXLitQGrBxKJ/xGqQFyg8wCjLyv3Oa+haS2a7jEm7SB?=
- =?us-ascii?Q?9c2Pw2xh7ctx5MH2HV55ATl2pR3xJO+7Uo5gAY3m90Fw7grbVu7dYWFcltrL?=
- =?us-ascii?Q?2ce8BRCDc2DrCczSWK+/PoXSo8njETlxTKow9I7Bnl+8QMTwveSZ901HMxDr?=
- =?us-ascii?Q?C8qeSRhcto4RzLkF7JyWeTYciAiS9Srdr0KPwo4WaMjuvz2TGbWB3SgFvQcI?=
- =?us-ascii?Q?PIDCi+9CP75ld977Dj8IMRv9JoYV5pnUMhPfr7PD7tlWEUXpJKE7mXIXWLk/?=
- =?us-ascii?Q?Po6X4HTcqUL8NvgCZ4P95l1XLOBS9zozQjaHpIT9ssgWze/9Qx48qpv4k3L7?=
- =?us-ascii?Q?UbS3/43JLLc1DEHFiq8lfylln3SCN51D3STB3KAaC3I0DEg/ScgV?=
+	=?utf-8?B?QjQ3U3M5NkhnSXg5RWVyeDZVQ0NORHRDck9RZVJnRTRDaGN5dGlUbWpxbFls?=
+ =?utf-8?B?d1VZK1Q1cWVMb1dROGlWb1k2aGVDUEFQVTdmQmN1TUtJU0VBVnZoa3JXYUlW?=
+ =?utf-8?B?Smg3N1ExOW1tTlQ2NGpyeUp5UzR5aHVFMUhhbStUUkh6aWJ3ODM0K05SVU1K?=
+ =?utf-8?B?NUovdnNvNzV1QTRsT3ovR0Z5VXlKZFgzZXYyeFpYYVJsejA3cmR5YlFkMmRP?=
+ =?utf-8?B?ZVlKQ1lkUFVPY2lIcnRTNDdXN0M1SXdWOUFzcXczTThLcUJEdjBTOHdXN1Qy?=
+ =?utf-8?B?cGMzUWdtM0U1QTNxSkxXOVc5RHV0VWFGbDN0YkI2ckN3SDJLZXVyaWF5SVpa?=
+ =?utf-8?B?WS9iM3lIN25JOUVxRGU2SzRCR3p2T2tkRjRFTEl4a0lVVnk2aUJMNGRDU1Jx?=
+ =?utf-8?B?RVMwTUhnZU0vd1FHempFMkgwOUdKQ2hpRW8yKzM3cVd0SlYrQmdiM2J3cGpm?=
+ =?utf-8?B?V2QxWUlHT2wwdHN5TVdabGVxU2dIQ1BuK3JkQmZwY0NrZ3NGQzY5YURLeXRP?=
+ =?utf-8?B?Q1A4Q1pJV2NrZmRLT0hnRHdEWHJaZUdwdklBMEppYTNGNm4wcUlQa3VTaUlO?=
+ =?utf-8?B?YVBwTEFMbytheWxIQ09OUnpma2VFbFFTZjQwVkJOaXQyS3FySy82NmxIUFk2?=
+ =?utf-8?B?SnBPaXltZGIxM0dpU3Y2MnVESE5KUVl1aFRyS1ZjakN1ODR6M2ZWTmVKS29P?=
+ =?utf-8?B?cWVkdUNCTWkxZUw4WTM4RFlEa1QvUlcvbnNiSVNmcHdydVk2b3c0SjQwditr?=
+ =?utf-8?B?Zld0a0VhbEt1NmZIY2liVzA2dno1N3Z0OE50U2IzRnpVa1Jyd2Fwd2hMV1or?=
+ =?utf-8?B?SXZzVjBxLy9ONkVMd09IMTVKREFVMjNocldCZzM3dGxoVkprcDFicVpnMHNa?=
+ =?utf-8?B?YjVZdlNOYlBVc0p4T2svdElTdTNsdVpUWUFRZjdqbldPczFqMlIwZVdJMVAx?=
+ =?utf-8?B?TkowVVFMYm5YcGIyN3hQaGV1UjErTVM4a2JMeGZVT0pMK2UxN0RxSmdheVZz?=
+ =?utf-8?B?VUdEUzBqaHBQSHRUc1pBVER0b2dIYUtMOUMvMC9saWkxK04vUjlFbHZCUFpH?=
+ =?utf-8?B?UWNqOWpnOHJLUHdZRU8xVkFCbjJTeWM5dGF4R21tTDNDMkJIT1ljakRzWS84?=
+ =?utf-8?B?Wm9zOGhMSUowZFpMeFZ1WWFUUzJ5RWoyK0YzRXVGWVlEK3RFVGY3SmtWN1ph?=
+ =?utf-8?B?SWtDR2YxeFJYWkpObXFtaGdieWs0aW1sbzB3T0NtWkI4TkQwd3JaZlJaeCs4?=
+ =?utf-8?B?Ynd4RDRnZTc0UVFRdys1a3FyY0ZWdjFpb3Vaa1VJdVlEeFBhbmV1azNzVWNO?=
+ =?utf-8?B?SGRTZGRENy9ISzNVYVdMME5oOW5PdFd6ZjB1akxJVEhYdWtUVDcyWm5tRS9w?=
+ =?utf-8?B?T3ZTUFBtZVBwMlJGbWgrMmdORDhNRVgxcTV6R3RrTGtXR05rTlRlSVdnN3BZ?=
+ =?utf-8?B?SUJuK3hnRG1ZTTRDWXJ3bWJZMHl4VG01ZjlZRnBYY201Y1U2eVlCNmZEd2NB?=
+ =?utf-8?B?ZUxGRnRuWU45Ui8xcTNiMkxoZ0M3ZEFUVkRpN1puaDRKNFBhd0RWYkxGbysy?=
+ =?utf-8?B?eURxL3d0ajRxbjlLN1lOSE1uTHlvOEo3YjRjZk5BOEJKenNLZzBZOFYxVkRx?=
+ =?utf-8?B?bk0xcERzMmxDTit6REpDcmg5NGpLK3ljWG5qd2tLWFVVWWtMUFgxakc0SENN?=
+ =?utf-8?B?NmpLeWh5ZUk0dTNLTWU1TXBEN0xBblVGRzJ2dklYZXNvai9pb0NOQjBtVCt4?=
+ =?utf-8?B?bUFhRWwwTEpSbG9EakZoS0RLaDkzSFRBTDVDM0V0S21sdXlINENSMStjdk1Q?=
+ =?utf-8?B?di9idlZIUWlzSHlqKzl2RVdMWTVySm5iVVN4eFRMVnQ3dHY1R2k1QUFRbnB1?=
+ =?utf-8?B?cjM4NmpvdFVGcGtYTVRmNVVQczVOVnNRL3hkOFBMVnpWYXFsaUpUUStRWGFF?=
+ =?utf-8?B?YWcremczeUVrdFlkN0VuSGVtalQvZkNYZmxFMzlhWkFnVWxsT2JQaG9URG9N?=
+ =?utf-8?B?VVJ5TzYwTEdyaktSeGlOeEVwM3BtOWR1ZGFwRFNIVGNxdDg1UGUyUnVobVFr?=
+ =?utf-8?B?cFRlS1poaXpoWHpsY3Qrbk5VVWR2QUljY2lkL0lYWFFCNjhBd3ZjWmUrQ3Ez?=
+ =?utf-8?B?ZFNVQStaYUU3cjVZYkpGWmQ3ZG1GOUh5Y01ncmNGdnM5VXdmdVAyQlhubzJo?=
+ =?utf-8?B?ZWlxa2grMXBEbjdrU3NZWllIZlRTUXZSLzJzMExKcFBtcDZUTmpUQjd3TFox?=
+ =?utf-8?B?bWFIOUFCeGtsemxQMlpwVkJ2Y3NzR3JoNHoyaDZwUTB3Snh1cTlLbnkwd3Qz?=
+ =?utf-8?B?blFnL2xiZnViYVo0WVpObFAxeEFMTEMyWTMwNUNDajNXc3kwRjA5dzhUU25Z?=
+ =?utf-8?Q?X50Q6/qhNVLnIjsd5IJBYQFk3CACwyi1+hmdX?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd4db75b-79cb-4b8f-cda7-08dee28a6085
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07563da9-8922-421c-fe18-08dee28bd924
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 16:01:48.9603
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 16:12:20.7739
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S/KDm/S+GhazgghkqOdCUo0Yti8AGDrPaf/DwGAaUpK9EJv6+2OxJaVF1oyleb4yumA+ETGktyRtbezr42MfRGfUOPc9F3R3ewddFB4tNRZTiTJbZ9tNIeoPbfATfI5o
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7358
+X-MS-Exchange-CrossTenant-UserPrincipalName: dx9dWTYRocqVrzys32+TsP1TYgmqYEI/qcX1uesTGDH2MxlraqCBw92OfCPCpY0UDRHqL0IBFzq80OOkcWkybxFRe/aqGvAswECvh9NzW9kLFWFkUys6mWgpFbNbT2ZU
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB12309
 
-On Wed, Jul 15, 2026 at 05:33:54PM +0800, joy.zou@oss.nxp.com wrote:
-> From: Joy Zou <joy.zou@nxp.com>
+On Wed, Jul 15, 2026 at 07:17:41AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] The virtio device buffer memory region is named `vdevbuffer` which fails the driver's hardcoded check for `vdev0buffer`, leading to it being erroneously registered as a carveout and double-mapped.
+> --
 >
-> The driver implements debounce protection using a timer-based mechanism:
-> when a key interrupt occurs, a timer is scheduled to verify the key state
-> after DEBOUNCE_TIME before reporting the event. This works well during
-> normal operation.
+> --- Patch [1]: [PATCH 1/4] arm64: dts: imx95-19x19-evk: Add CM7 node and related memory nodes ---
+> commit b818b56116c9f6f62676b904ae89c90565f8f036
+> Author: Peng Fan <peng.fan@nxp.com>
 >
-> However, key press events can be lost during system resume on platforms
-> like i.MX8MQ-EVK because:
-> 1. During the no_irq resume phase, PCIe driver restoration can take up to
-> 200ms with IRQs disabled.
-> 2. The power key interrupt remains pending during the no_irq phase.
-> 3. If the key is released before IRQs are re-enabled, the timer eventually
-> runs but sees the key as released and skips reporting the event.
+> arm64: dts: imx95-19x19-evk: Add CM7 node and related memory nodes
 >
-> To prevent event loss during system suspend, set a pending_press flag in
-> the interrupt handler and report the press event from the timer callback
-> when the flag is set. This avoids out-of-order event delivery and keeps
-> the existing timer-based debounce mechanism for normal operation.
+> This commit adds a remoteproc CM7 node and reserved memory regions to enable
+> the Cortex-M7 remote processor. The reserved memory includes firmware memory,
+> vring buffers, a resource table, and a shared DMA pool for inter-processor
+> communication.
 >
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> ---
-> Changes for v5:
-> 1. Replace SIMPLE_DEV_PM_OPS with DEFINE_SIMPLE_DEV_PM_OPS and remove
->    __maybe_unused from suspend/resume callbacks.
-> 2. Use pm_ptr() to wrap pm_ops pointer in platform_driver.
-> 3. Replace suspended flag check in interrupt handler with a pending_press
->    latch: set pending_press in hardirq context, consume and report the
->    press event from the timer callback in softirq context.
+> > diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> > --- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> > +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> [ ... ]
+> > +		rsc_table: rsc-table@88220000 {
+> > +			reg = <0 0x88220000 0 0x1000>;
+> > +			no-map;
+> > +		};
+> > +
+> > +		vdevbuffer: vdevbuffer@88020000 {
+> > +			compatible = "shared-dma-pool";
+> > +			reg = <0 0x88020000 0 0x100000>;
+> > +			no-map;
+> > +		};
 >
-> Changes for v3:
-> 1. Add spinlock for pdata->keystate and pdata->suspended per AI review
->    comments.
-> 2. Replace hardcode value 1 with local variable keystate in input_report_key()
->    under suspended.
+> [Severity: Medium]
+> Will this node name cause the region to be mapped twice?
 >
-> Changes for v2:
-> 1. Add a boolean variable suspended and PM callback functions to replace
->    the use of the is_suspended field per AI review comments.
-> 2. Move event report handle to else branch in suspended state, since the
->    pdata->minor_rev == 0 branch has no debounce detection per AI review
->    comments.
-> 3. Modify the commit message.
-> ---
+> During device probe, the driver iterates over the memory-region nodes in
+> imx_rproc_prepare() and attempts to skip the virtio buffer by checking:
+>
+>     strstarts(res.name, "vdev0buffer")
+>
+> Because this node is named vdevbuffer instead of vdev0buffer, it appears the
+> strstarts() check will fail. Does this cause the 1MB region to be erroneously
+> registered as a carveout and unnecessarily double-mapped via ioremap_wc() into
+> the vmalloc space?
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Look like correct, it should be vdev0buffer@88020000 ？
 
->  drivers/input/keyboard/snvs_pwrkey.c | 72 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 68 insertions(+), 4 deletions(-)
+I hope laurentiu can speed up memory-region-names support. otherwise it
+missed CHECK_DTBS.
+
+Frank
 >
-> diff --git a/drivers/input/keyboard/snvs_pwrkey.c b/drivers/input/keyboard/snvs_pwrkey.c
-> index cbe44a38d2b3..970c7d65bd57 100644
-> --- a/drivers/input/keyboard/snvs_pwrkey.c
-> +++ b/drivers/input/keyboard/snvs_pwrkey.c
-> @@ -39,6 +39,9 @@ struct pwrkey_drv_data {
->  	int keycode;
->  	int keystate;  /* 1:pressed */
->  	int wakeup;
-> +	bool suspended;     /* Track suspend state */
-> +	bool pending_press; /* Key pressed during suspend, report from timer callback */
-> +	spinlock_t lock;    /* Protects keystate, suspended and pending_press */
->  	struct timer_list check_timer;
->  	struct input_dev *input;
->  	u8 minor_rev;
-> @@ -49,14 +52,38 @@ static void imx_imx_snvs_check_for_events(struct timer_list *t)
->  	struct pwrkey_drv_data *pdata = timer_container_of(pdata, t,
->  							   check_timer);
->  	struct input_dev *input = pdata->input;
-> +	bool state_changed = false;
-> +	bool pending_press;
->  	u32 state;
->
->  	regmap_read(pdata->snvs, SNVS_HPSR_REG, &state);
->  	state = state & SNVS_HPSR_BTN ? 1 : 0;
->
-> -	/* only report new event if status changed */
-> -	if (state ^ pdata->keystate) {
-> -		pdata->keystate = state;
-> +	scoped_guard(spinlock_irqsave, &pdata->lock) {
-> +		pending_press = pdata->pending_press;
-> +		if (pending_press) {
-> +			pdata->pending_press = false;
-> +			pdata->keystate = 1;
-> +		}
-> +		/* only report new event if status changed */
-> +		if (state ^ pdata->keystate) {
-> +			pdata->keystate = state;
-> +			state_changed = true;
-> +		}
-> +	}
-> +
-> +	/*
-> +	 * Report a press event latched during suspend. If the key is still
-> +	 * held, state_changed will be 0 (keystate already set to 1 above),
-> +	 * so no duplicate press is reported. If already released,
-> +	 * state_changed will fire next to report the release.
-> +	 */
-> +	if (pending_press) {
-> +		input_report_key(input, pdata->keycode, 1);
-> +		input_sync(input);
-> +	}
-> +
-> +	if (state_changed) {
->  		input_event(input, EV_KEY, pdata->keycode, state);
->  		input_sync(input);
->  		pm_relax(pdata->input->dev.parent);
-> @@ -92,8 +119,17 @@ static irqreturn_t imx_snvs_pwrkey_interrupt(int irq, void *dev_id)
->  			input_sync(input);
->  			pm_relax(input->dev.parent);
->  		} else {
-> +			/*
-> +			 * If the key is pressed during suspend, latch it so
-> +			 * the timer callback can report the press event in
-> +			 * softirq context, avoiding out-of-order events.
-> +			 */
-> +			scoped_guard(spinlock_irqsave, &pdata->lock) {
-> +				if (pdata->suspended)
-> +					pdata->pending_press = true;
-> +			}
->  			mod_timer(&pdata->check_timer,
-> -			          jiffies + msecs_to_jiffies(DEBOUNCE_TIME));
-> +				  jiffies + msecs_to_jiffies(DEBOUNCE_TIME));
->  		}
->  	}
->
-> @@ -151,6 +187,7 @@ static int imx_snvs_pwrkey_probe(struct platform_device *pdev)
->  	if (pdata->irq < 0)
->  		return pdata->irq;
->
-> +	spin_lock_init(&pdata->lock);
->  	error = of_property_read_u32(np, "power-off-time-sec", &val);
->  	if (!error) {
->  		switch (val) {
-> @@ -217,6 +254,32 @@ static int imx_snvs_pwrkey_probe(struct platform_device *pdev)
->  	return 0;
->  }
->
-> +static int imx_snvs_pwrkey_suspend(struct device *dev)
-> +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct pwrkey_drv_data *pdata = platform_get_drvdata(pdev);
-> +
-> +	scoped_guard(spinlock_irqsave, &pdata->lock)
-> +		pdata->suspended = true;
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx_snvs_pwrkey_resume(struct device *dev)
-> +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct pwrkey_drv_data *pdata = platform_get_drvdata(pdev);
-> +
-> +	scoped_guard(spinlock_irqsave, &pdata->lock)
-> +		pdata->suspended = false;
-> +
-> +	return 0;
-> +}
-> +
-> +static DEFINE_SIMPLE_DEV_PM_OPS(imx_snvs_pwrkey_pm_ops,
-> +				imx_snvs_pwrkey_suspend,
-> +				imx_snvs_pwrkey_resume);
-> +
->  static const struct of_device_id imx_snvs_pwrkey_ids[] = {
->  	{ .compatible = "fsl,sec-v4.0-pwrkey" },
->  	{ /* sentinel */ }
-> @@ -227,6 +290,7 @@ static struct platform_driver imx_snvs_pwrkey_driver = {
->  	.driver = {
->  		.name = "snvs_pwrkey",
->  		.of_match_table = imx_snvs_pwrkey_ids,
-> +		.pm = pm_ptr(&imx_snvs_pwrkey_pm_ops),
->  	},
->  	.probe = imx_snvs_pwrkey_probe,
->  };
+> >  	};
+> >
+> >  	flexcan1_phy: can-phy0 {
 >
 > --
-> 2.34.1
->
->
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260715-imx-rproc-dts-v1-0-d02b583c507b@nxp.com?part=1
