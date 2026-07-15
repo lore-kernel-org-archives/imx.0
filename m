@@ -1,160 +1,212 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1BF3CB57F;
-	Wed, 15 Jul 2026 18:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB6141A549;
+	Wed, 15 Jul 2026 18:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784138493; cv=none; b=q7yqkXu6bhE/5R4ppvLtzz729qx5Fo52s3dz9o5zjSdcZ/UDbLApNBTzPQrfh1zzJ+zKkJZtOYJaUrWeXAHs8sGQ/o2XJdI4rwzZaKmoCpmWar79jSQ74Fjw1OJkNh9oNr4Q5Acb7mq98cypwS8rjjcCnTmwsKAtj21Ozv2NGeM=
+	t=1784138588; cv=none; b=kF2EkRK6nIbAPacjxo2fcJorg1hOQfDO6gdJdpJoLu49fjMezorS5A0PKAwuGRiN0ooP1QEDUv7oxHrt4ZXh+H9dGF1nHl7gI96l+yYxISohG/LM6hbbsLZZ4kvr9DcI5qNFzE55lTB8c8iHti5eXQXZWMuX5Zwj4hZdD5YmFBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784138493; c=relaxed/simple;
-	bh=WVApe5VpNx1wY8noKbBLIB1nZ75rZxc1UuqR9nxWUeQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=A7jhlVQ4vmAoiv9WQn7DuoFmm3BjxUVdPfPewreffMO+UF4MMcE7kBYHWLmPnmsli4etbERakeEBrEe4mYKGGGIWRzXa10rtim78SdrnnzsY7FXDt80itiriBffifJIH5gt0gYl3lYxjtMcy5ZfNViG2f5lOUgO3Pbk87do23kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQiRJPpn; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQiRJPpn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22591F000E9;
-	Wed, 15 Jul 2026 18:01:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784138484;
-	bh=mlxZwrSj52gIvTUPUdAYBmpMOM91NMc8x8fb2guLXC4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oQiRJPpnZWv9R7Z2xH7O8qWxNmOgJ7Qz+OVrt4jR0NTAM6HOhwMXil/JASaTGkdng
-	 deBtvUH2FGrZHCqGVP36zIFRL3QWrxVIWaOx+l5xDbaLYyxUXsnflnBY/pedVdGOn1
-	 6oxQ9yUSnO4mxw/F4JlwgCtzosel5qarlhRFG9mQ+Iu8C3DRWC2YvSDtOG2mZHjEvE
-	 Z/VOvMRd+S6+lY57v7e60Om9gdNZ2N5vVK1K/tfGWwQja0op4kD5PD6dMSi/1miLR+
-	 dGPSQ3IGG2NaWjJ6GnBXXtYQZ1v3y6eLQmXLesKvPP1wr9NtoOPoE84q+cMo5wqhfo
-	 LdFvD/RlTUcuA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/8] rtc: make all reg_write callbacks take const void *
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Link Mauve" <linkmauve@linkmauve.fr>
-Cc: linux-amlogic@lists.infradead.org, mfd@lists.linux.dev, Frank.Li@kernel.org, linux-rtc@vger.kernel.org, linux-sunxi@lists.linux.dev, lee@kernel.org, imx@lists.linux.dev, ojeda@kernel.org, neil.armstrong@linaro.org, "Alexandre
- Belloni" <alexandre.belloni@bootlin.com>
-In-Reply-To: <20260715175229.24672-4-linkmauve@linkmauve.fr>
-References: <20260715175229.24672-1-linkmauve@linkmauve.fr>
- <20260715175229.24672-4-linkmauve@linkmauve.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 18:01:23 +0000
-Message-Id: <20260715180123.C22591F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1784138588; c=relaxed/simple;
+	bh=ke3E5EttLeWiiEpEeXKV5/D2Jy1tJKCKfZGCrohPCjA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RHm1hShlkK/xIIEjVHtHkJmfxMveNY6488VEUJkgPW0QkclbI6zFfDUdg90QLU0txGhWd+BBdfGyb53X7wJCufddzjT7NwUgMU7QktB3ppBCgtipmrTGmSLyUGKPGtjBLOKWAyCsp2zAK67rHaDbbIaIceUG47nEoBcfEnxjYT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id E9559F40D1B; Wed, 15 Jul 2026 19:52:33 +0200 (CEST)
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: Srinivas Kandagatla <srini@kernel.org>
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Lee Jones <lee@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	"Vaibhaav Ram T.L" <vaibhaavram.tl@microchip.com>,
+	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Praveen Teja Kundanala <praveen.teja.kundanala@amd.com>,
+	Kalyani Akula <kalyani.akula@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Joshua Kinard <linux@kumba.dev>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Ronald Claveau <linux-kernel-dev@aliel.fr>,
+	Salah Triki <salah.triki@gmail.com>,
+	Yury Norov <ynorov@nvidia.com>,
+	David Carlier <devnexen@gmail.com>,
+	Achim Gratz <Achim.Gratz@Stromeko.DE>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Patrick Wicki <patrick.wicki@siemens.com>,
+	Markus Heidelberg <m.heidelberg@cab.de>,
+	Markus Perkins <markus@notsyncing.net>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Kees Cook <kees@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	mfd@lists.linux.dev,
+	linux-i2c@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-rtc@vger.kernel.org,
+	linux-sunxi@lists.linux.dev,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 0/8] nvmem: make reg_write() take a const void *
+Date: Wed, 15 Jul 2026 19:52:16 +0200
+Message-ID: <20260715175229.24672-1-linkmauve@linkmauve.fr>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Implicit pointer conversions discard the 'const' qualifier, causing=
- compiler warnings.
---
+This callback used to take a mutable void * for no reason, which causes
+the compiler to be unaware that the val buffer should never be modified
+by the callback.
 
---- Patch [3]: [PATCH 3/8] rtc: make all reg_write callbacks take const voi=
-d * ---
-commit dcceba66c45aeb1e0da5dfaf4cd7b3e0828ec69e
-Author: Link Mauve <linkmauve@linkmauve.fr>
+This was found while drafting the nvmem-provider Rust abstraction.
 
-rtc: make all reg_write callbacks take const void *
+I’ve split this series based on the subsystem each patch affects, but I
+think it should go through the nvmem tree in one go after gathering the
+acks from the other subsystem maintainers.
 
-This commit updates various RTC drivers to use a const void * parameter for
-their nvmem_config write callbacks, aligning with the updated nvmem_config =
-API.
+I’ve been told previously to not include too many maintainers in Cc, but
+I don’t know which ones to remove from the get_maintainers.pl output, so
+I’ve still included everyone, sorry about that.
 
-> diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-> index fa04ece151b8b..09da71a0009e8 100644
-> --- a/drivers/rtc/rtc-cmos.c
-> +++ b/drivers/rtc/rtc-cmos.c
-[ ... ]
-> @@ -659,7 +659,7 @@ static int cmos_nvram_read(void *priv, unsigned int o=
-ff, void *val,
->  	return 0;
->  }
-> =20
-> -static int cmos_nvram_write(void *priv, unsigned int off, void *val,
-> +static int cmos_nvram_write(void *priv, unsigned int off, const void *va=
-l,
->  			    size_t count)
->  {
->  	struct cmos_rtc	*cmos =3D priv;
+Thanks,
 
-[Severity: Low]
-Does this cause a compiler warning for discarded qualifiers?
+Link Mauve (8):
+  nvmem: core: make reg_write() take a const void *
+  nvmem: make all reg_write callbacks take const void *
+  rtc: make all reg_write callbacks take const void *
+  misc: make all reg_write callbacks take const void *
+  iio: pressure: bmp280: make reg_write callback take const void *
+  firmware: meson_sm: make reg_write callback take const void *
+  mfd: twl-core: make reg_write callback take const void *
+  media: ov2740: remove NULL reg_write callback
 
-In the body of cmos_nvram_write(), the code assigns val to a non-const
-pointer just below the diff context:
+ drivers/firmware/meson/meson_sm.c                 | 2 +-
+ drivers/iio/pressure/bmp280-core.c                | 6 +++---
+ drivers/media/i2c/ov2740.c                        | 1 -
+ drivers/mfd/twl-core.c                            | 2 +-
+ drivers/misc/ds1682.c                             | 2 +-
+ drivers/misc/eeprom/at24.c                        | 4 ++--
+ drivers/misc/eeprom/at25.c                        | 2 +-
+ drivers/misc/eeprom/eeprom_93xx46.c               | 4 ++--
+ drivers/misc/eeprom/m24lr.c                       | 2 +-
+ drivers/misc/keba/cp500.c                         | 2 +-
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c | 8 ++++----
+ drivers/nvmem/bcm-ocotp.c                         | 4 ++--
+ drivers/nvmem/core.c                              | 2 +-
+ drivers/nvmem/imx-ocotp-scu.c                     | 4 ++--
+ drivers/nvmem/imx-ocotp.c                         | 4 ++--
+ drivers/nvmem/lan9662-otpc.c                      | 4 ++--
+ drivers/nvmem/lpc18xx_eeprom.c                    | 4 ++--
+ drivers/nvmem/max77759-nvmem.c                    | 2 +-
+ drivers/nvmem/meson-efuse.c                       | 4 ++--
+ drivers/nvmem/qcom-spmi-sdam.c                    | 2 +-
+ drivers/nvmem/qfprom.c                            | 4 ++--
+ drivers/nvmem/rave-sp-eeprom.c                    | 4 ++--
+ drivers/nvmem/snvs_lpgpr.c                        | 2 +-
+ drivers/nvmem/sprd-efuse.c                        | 4 ++--
+ drivers/nvmem/stm32-bsec-optee-ta.c               | 2 +-
+ drivers/nvmem/stm32-bsec-optee-ta.h               | 4 ++--
+ drivers/nvmem/stm32-romem.c                       | 6 +++---
+ drivers/nvmem/zynqmp_nvmem.c                      | 4 ++--
+ drivers/rtc/rtc-abx80x.c                          | 4 ++--
+ drivers/rtc/rtc-cmos.c                            | 2 +-
+ drivers/rtc/rtc-ds1305.c                          | 4 ++--
+ drivers/rtc/rtc-ds1307.c                          | 2 +-
+ drivers/rtc/rtc-ds1343.c                          | 2 +-
+ drivers/rtc/rtc-ds1511.c                          | 2 +-
+ drivers/rtc/rtc-ds1553.c                          | 4 ++--
+ drivers/rtc/rtc-ds1685.c                          | 4 ++--
+ drivers/rtc/rtc-ds1742.c                          | 4 ++--
+ drivers/rtc/rtc-ds3232.c                          | 2 +-
+ drivers/rtc/rtc-isl12026.c                        | 4 ++--
+ drivers/rtc/rtc-isl1208.c                         | 2 +-
+ drivers/rtc/rtc-m48t59.c                          | 4 ++--
+ drivers/rtc/rtc-m48t86.c                          | 2 +-
+ drivers/rtc/rtc-max31335.c                        | 2 +-
+ drivers/rtc/rtc-meson.c                           | 2 +-
+ drivers/rtc/rtc-omap.c                            | 4 ++--
+ drivers/rtc/rtc-pcf2127.c                         | 2 +-
+ drivers/rtc/rtc-pcf85063.c                        | 2 +-
+ drivers/rtc/rtc-pcf85363.c                        | 4 ++--
+ drivers/rtc/rtc-rp5c01.c                          | 4 ++--
+ drivers/rtc/rtc-rv3028.c                          | 6 +++---
+ drivers/rtc/rtc-rv3029c2.c                        | 2 +-
+ drivers/rtc/rtc-rv3032.c                          | 4 ++--
+ drivers/rtc/rtc-rv8803.c                          | 4 ++--
+ drivers/rtc/rtc-rx8581.c                          | 4 ++--
+ drivers/rtc/rtc-s35390a.c                         | 4 ++--
+ drivers/rtc/rtc-stk17ta8.c                        | 4 ++--
+ drivers/rtc/rtc-sun6i.c                           | 4 ++--
+ drivers/rtc/rtc-ti-k3.c                           | 2 +-
+ drivers/rtc/rtc-twl.c                             | 2 +-
+ include/linux/firmware/meson/meson_sm.h           | 2 +-
+ include/linux/mfd/twl.h                           | 4 ++--
+ include/linux/nvmem-provider.h                    | 2 +-
+ 62 files changed, 100 insertions(+), 101 deletions(-)
 
-    unsigned char *buf =3D val;
-   =20
-Should buf also be declared as const unsigned char * to avoid breaking
-builds where warnings are treated as errors?
+-- 
+2.55.0
 
-> diff --git a/drivers/rtc/rtc-rv3032.c b/drivers/rtc/rtc-rv3032.c
-> index 6bafdec637aea..b6b401be09bb5 100644
-> --- a/drivers/rtc/rtc-rv3032.c
-> +++ b/drivers/rtc/rtc-rv3032.c
-[ ... ]
-> @@ -493,7 +493,7 @@ static int rv3032_nvram_read(void *priv, unsigned int=
- offset, void *val, size_t
->  	return regmap_bulk_read(priv, RV3032_RAM1 + offset, val, bytes);
->  }
-> =20
-> -static int rv3032_eeprom_write(void *priv, unsigned int offset, void *va=
-l, size_t bytes)
-> +static int rv3032_eeprom_write(void *priv, unsigned int offset, const vo=
-id *val, size_t bytes)
->  {
->  	struct rv3032_data *rv3032 =3D priv;
->  	u32 status, eerd;
-
-[Severity: Low]
-Similar to the cmos driver, does this discard the const qualifier?
-
-The rv3032_eeprom_write() function assigns the new const void *val to a=20
-non-const pointer just below the quoted diff context:
-
-    u8 *buf =3D val;
-
-Should this be updated to const u8 *buf as well?
-
-> diff --git a/drivers/rtc/rtc-s35390a.c b/drivers/rtc/rtc-s35390a.c
-> index b72eef4fb0997..73ff0491f6750 100644
-> --- a/drivers/rtc/rtc-s35390a.c
-> +++ b/drivers/rtc/rtc-s35390a.c
-[ ... ]
-> @@ -67,7 +67,7 @@ struct s35390a {
->  	int twentyfourhour;
->  };
-> =20
-> -static int s35390a_set_reg(struct s35390a *s35390a, int reg, u8  *buf, i=
-nt len)
-> +static int s35390a_set_reg(struct s35390a *s35390a, int reg, const u8 *b=
-uf, int len)
->  {
->  	struct i2c_client *client =3D s35390a->client[reg];
->  	struct i2c_msg msg[] =3D {
-
-[Severity: Low]
-Does this assignment in s35390a_set_reg() trigger a discarded qualifiers
-warning?
-
-The struct i2c_msg defines its buf member as __u8 * (non-const). When the
-msg array is initialized just below this hunk:
-
-    struct i2c_msg msg[] =3D {
-        {
-            .addr =3D client->addr,
-            .len =3D len,
-            .buf =3D buf
-        },
-    };
-
-Will assigning the const u8 *buf to the non-const .buf field cause a compil=
-er
-warning? Would it be better to explicitly cast it like (u8 *)buf to satisfy
-the i2c_msg struct definition?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715175229.2467=
-2-1-linkmauve@linkmauve.fr?part=3D3
