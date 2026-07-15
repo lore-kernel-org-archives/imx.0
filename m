@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E66C1A8F7B;
-	Wed, 15 Jul 2026 05:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7D830BF70;
+	Wed, 15 Jul 2026 06:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784094068; cv=none; b=oZLELezftuTnL8xkVyIdUDE6fBYMBEA26UDzDSryXE/v20Qa/rojpesLE23HQX7V0ZluwhcnFJhGMV5OMZu0SRXDoIv8VZ0ibnUgqXjrYn9cvfJk2xkcTl+VpfIADM6ydIhDWCEka3F65MGPz6t37ETr5+6LQ1CS0wBNi0tT6Wc=
+	t=1784095232; cv=none; b=aDb/QVriVpoOe2YStSla5FQ9LVvJ9x5OGNmdVCSG9GAoy2rQqmpJd8U0QLydYGpN2XVUgzQauQpiYbIS5qC3v3saYpXRtCxvDA97tjZum14wsz/rBHPU6xablyuAQiDRSazmiNcc4DjHxgc00vKVJh/tDok2pG8lt99JWKVs1O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784094068; c=relaxed/simple;
-	bh=MqgU87tnw3x0VinNOOZYu2BJQGAzPMXZxgnk/r+TJm0=;
+	s=arc-20240116; t=1784095232; c=relaxed/simple;
+	bh=DR2GokEdTnlb2WGrPEPw2B8fvb2QXjSdklIfM2G3vCY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XQ8fTmWiaQbrPEu0pWq9/a8ymCecv8D/WDqn6UCajcc/xa+tlRY2kdqY4DbV5LfSnvM5AUyGxyqVdHcHWcX3BVTl6urHtKV3HMpSx60xW/gP3vx2CCu9MtRJlhehCuhV/16wSZ8wHJgjP41cOlktDvsIHvGP+X2X6T9bvkCbG9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AH4aTfvD; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=m3o+FJiThgvZgVvu4ZaYxjk9plCa2YjzmiGJ1Zz4nsD1KmxFqrh3URjdNP4PODORqG+3s43LrBJqUsgTUtz1STbREmMG3gMPU/wIlTSTmsc/1EwtW1w90+ro2CwV+8ideITQ2tzsXNXJtw7/zin8yJQb1eZjd/dwjnmt1NnQA7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RxKTiobV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AH4aTfvD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26371F000E9;
-	Wed, 15 Jul 2026 05:41:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RxKTiobV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9989D1F000E9;
+	Wed, 15 Jul 2026 06:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784094067;
-	bh=hMQq0jJEQshTzjxnb1XfDCm8LASdaJ7clh2uWi+5Tsc=;
+	s=k20260515; t=1784095231;
+	bh=H4zdzfLRDStiKGmrtSSfqV1H+dlpl2uN4SMT+of529U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AH4aTfvDY5e8DVBk0K2mX2cWVmPb+J7VHhpunZwIEDTNnFrO5WVUXGGmcFU/dQ1Ke
-	 Yj9YWaZRJsivMAhj0+0a+C/cbDat6h1jV++jjlpXYlSUVn1KB98ZxUyV8IXI9T1GCI
-	 2B2lhwXSZ8DCodJEu4Bcn1X7X0Rt2kj7F07FT9hjlOzfQQpkECoKE3iBz1PeWlWPOl
-	 kR9tng4/1i/fHV6IcH7KzySOPRYBjnyY4G0LPykQzJJrHpWfFyBuYTlkNIe7V6n/fR
-	 ruWs+8DAhXYmuYYfCqAfrk9Dk+0RDmgHSjSFCSrnge7TGpH0pm5L/Ti3t79QK6YIWY
-	 nFFuiD6yTZrIw==
-Date: Wed, 15 Jul 2026 07:40:59 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Soeren Moch <smoch@web.de>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, 
-	Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org, Lucas Stach <l.stach@pengutronix.de>, 
-	Frank Li <Frank.Li@nxp.com>, Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
-Message-ID: <6ayf4vt5wiftgz4myxpyze2wmmuxf5miakq6ffz2k3r6beiztu@lh5z5zjnljad>
-References: <20260427115804.134231-1-smoch@web.de>
- <2cbqhvfjszzuanp4i3rohntkxpfgftfjvzt66te3wkohsvw26g@yv4txuy74tvu>
- <465b1dcc-8e96-4edb-aebd-52937b8076d0@web.de>
+	b=RxKTiobV+xAsou1nwS1/l07tNu3RScEhT0vV7jpDuG31A9nUC9xw7Rq4xm876aseV
+	 u+JMv3/3J3n/3kqSkGb2tRtzf9NT5J4Nmre1/3CqM/SyTSU59Vf0nkrgAbS5UwhpDt
+	 oGeSn/RQlopx1fPO1/vq4naOaAJU1bcmKK2wNFWK+EBUiebKONhEn4wrgZ3+5pP6Z4
+	 mXZz1RemoC9oSzAs6ZmEDeqWm6YLnIZUqhylMWPGvHn/wZoT1BJdv3+Mb8tvAsE3ND
+	 Zi3D3QhPluXoGw9KMrf9tPQJSpiBZj7xf2fA4gp1hv47R+FgpOUsFi41y75Vo6/137
+	 VBV26dudZL/Tg==
+Date: Wed, 15 Jul 2026 11:30:26 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: dmaengine@vger.kernel.org, imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Griffin Kroah-Hartman <griffin@kroah.com>, stable@kernel.org,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] dmaengine: fl1-edma: Add error handling for
+ devm_kasprintf
+Message-ID: <alch-r9QvhyiblOC@vaman>
+References: <178403257631.822807.3647660559296965382.b4-ty@kernel.org>
+ <1ef78e50-0578-44cd-84ff-87a0f497c48f@web.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,40 +48,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <465b1dcc-8e96-4edb-aebd-52937b8076d0@web.de>
+In-Reply-To: <1ef78e50-0578-44cd-84ff-87a0f497c48f@web.de>
 
-On Wed, Jul 08, 2026 at 10:52:22AM +0200, Soeren Moch wrote:
-> On 06.07.26 12:29, Manivannan Sadhasivam wrote:
-> > On Mon, Apr 27, 2026 at 01:58:04PM +0200, Soeren Moch wrote:
-> > > Also on the NXP i.MX6Q chipset MSIs from the endpoints won't be received by
-> > > the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
-> > > 
-> > > Even though the Root Port MSIs won't be received by the iMSI-RX controller
-> > > due to design, this chipset has some weird hardware bug that prevents
-> > > the endpoint MSIs from reaching when the Root Port MSI capability is
-> > > disabled.
-> > > 
-> > > Hence, always keep the Root Port MSI capability for this chipset.
-> > > 
-> > > Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
-> > > PME and others won't be received by default. So users need to use
-> > > workarounds such as passing 'pcie_pme=nomsi' cmdline param.
-> > > 
-> > > Fixes: 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMSI-RX to work around hardware bug")
-> > This is not the correct fixes tag. Correct one is:
-> > f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port if iMSI-RX is used as MSI controller")
-> Thanks for the fix of the fixes tag!
-> > > Cc: <stable@vger.kernel.org> # 7.0.x
-> > > Signed-off-by: Soeren Moch <smoch@web.de>
-> > Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+On 14-07-26, 17:01, Markus Elfring wrote:
+> > > Add error handling statement to fls_edma3_irq_init() for the
+> > > devm_kasprintf call.
+> …
+> > Applied, thanks!
 > > 
-> > @Bjorn: Can you merge this patch for 7.2-rcS with correct fixes tag?
-> I can send a v2 of the patch if you prefer.
+> > [1/1] dmaengine: fl1-edma: Add error handling for devm_kasprintf
+> >       commit: bf1af4dfdc017dfe989c0dbcf0e608dc95f1d2cb
 > 
+> Frank Li requested a corrected patch subject.
 
-That'll help.
-
-- Mani
+Which was done while applying
+bf1af4dfdc01 dmaengine: fsl-edma: Add error handling for devm_kasprintf
 
 -- 
-மணிவண்ணன் சதாசிவம்
+~Vinod
