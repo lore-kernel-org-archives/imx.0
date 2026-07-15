@@ -1,42 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417363168EF
-	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 14:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982CC371D14
+	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 14:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784125390; cv=none; b=FSIQU/aK4llBm954QsBhVDwpecN5wWchojKchVmoD535SouT03O4pVrEWx4JYhRmV06hnGE9uiDulRqA6bnElMTXc8uXwxOnW9+zF5xifSGZsmF9kp9Hy1cXVUpyLtENQmKHDMShs7mMitRQ4Koq9UhWw948Hb/bwncU2DFHcKY=
+	t=1784125394; cv=none; b=cQ+8Ki+QiCwOIiLfT4v6tvHzOSntv+JX+p+zz5rTLJomlRAIMU2v2hhEEMOBhM8a8N69bq1sDA2ZmrD+FjpGUAggvq/BYyKorFWL8mVAxaDRlwfNgJTz3DGYTgtx0lS0BJHjnZhl/azd5wTHCfCaAhjfvkkj8pl2++NBVEqY5K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784125390; c=relaxed/simple;
-	bh=bQvA7RaITKm0leFu4CsMz36juYaBIh9nm8WiAQHba6s=;
+	s=arc-20240116; t=1784125394; c=relaxed/simple;
+	bh=IHC3taB/c1hjjbHV78+MpFaKPexGySK661G3gH5QQQ8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hKiMqiE8IuxyUTjWImxY6QmWCtEpE0C2bRznpf39ZVl/li2ESTi1NdZC/ob396jOm8nHZ12VM68aWAhoTwUsGfO/9PPh7tIdORlcxVvgiKLhF93wmJbtLQ7bV9ffg+OBOGgYzPpCV7AVqT6yeV8OuS19NXGW1ZMdGBJe+y8GfN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bpyJVEVD; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=dJodKhg4l2/iBCPelOxZORhHpOkwtyg/wopyaoXtgVKIO9fSz53mH3VPKwtBCO4YcoczvBeqbQRbtXeC/0yi2PjtFp4QPf0O6ItHodkds+9dBC/IZCGTqebTsho21YKf8Go3dpstGBFAdPhWDaPfeikrgjWqs5Q1w9SZjlN1qk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jCHh+5mS; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bpyJVEVD"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jCHh+5mS"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 69CF2C2B9DB;
-	Wed, 15 Jul 2026 14:23:24 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 308BA1A1019;
+	Wed, 15 Jul 2026 14:23:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 769566035C;
-	Wed, 15 Jul 2026 14:23:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A18FE11BD3C2A;
-	Wed, 15 Jul 2026 16:23:03 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 043626035C;
+	Wed, 15 Jul 2026 14:23:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6B13B11BD3C48;
+	Wed, 15 Jul 2026 16:23:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784125386; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1784125389; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=a9IuIIWMF3nn6MhJn3nVioRG/vLkyDShB0IZOzPkMNg=;
-	b=bpyJVEVDRQcCuY7bgy4f1zEOx/PzX9swqY44GNzAO/Rxye/iPSn+R+3b3uiK3rKEaJ6NGP
-	qqzBZn4hRodDBJYjRSRimupCI/zbro/5gVwCmaZQ2g/RAgARWEJSzVE9+x3iRS7sZ4XCQ8
-	p0u2SFv+rk1zx0AK/4FoJnkfjJmWjeFnaDcmcXGj9fEY2Ku6Gsj5kXUEIqIq7wihHQl6fj
-	CfzPV0qJUxvj85lAkoP6bKJYkwyricp2NjajB0I4KydKRxT5fFnYk5x9MS4y9Wbbmo0zFG
-	Sc/mdVU3WiPS6tHV2Svbpm1V2p+867kBJiwsm7/Ae/QlZmhSn0lfPuU7GVnKIQ==
+	bh=vqW9/RH3UDRT9Qj8/JqT5f9mnBCAvdontHcYO/WHgd0=;
+	b=jCHh+5mSqWJGPEMJCW2ZdS+hBNKqYUUIvmvD/r5Z3kKVCIMpFuLVM7LglyXS3hYez0zC7Q
+	lgzvKjHzRsoxs1M/J9LHI2G9OASSGx5lZRH5ch/3gt/URR5qdFew7QHX8zTR/q5gUCtA0y
+	9OcCIG7xVLbiBzEyJabvO/aIrEpXIpFhlDSU+z2tEu1Z71DBTyWZWckBxBt6DlnFfvlgzV
+	ozLJMv0Ex6uWKB374KCz01Laez/H+06iaNu4YYNW5ZpYRGy9sO7TYTNsqrIKTaDXPEkDqc
+	3f+OkZLafYTvt/SdD/D9yfqWXLdcPbh/S8sJQIN7pBYSj9vorF620JhRi8qbMQ==
 From: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-Date: Wed, 15 Jul 2026 16:22:22 +0200
-Subject: [PATCH v2 5/7] arm64: dts: hisilicon: hi3798cv200-poplar: Import
- optee node from u-boot device tree
+Date: Wed, 15 Jul 2026 16:22:23 +0200
+Subject: [PATCH v2 6/7] arm64: dts: nuvoton: npcm845-evb: Import optee node
+ from u-boot device tree
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260715-mathieu-uboot-dts-import-v2-5-bc931417bd0e@bootlin.com>
+Message-Id: <20260715-mathieu-uboot-dts-import-v2-6-bc931417bd0e@bootlin.com>
 References: <20260715-mathieu-uboot-dts-import-v2-0-bc931417bd0e@bootlin.com>
 In-Reply-To: <20260715-mathieu-uboot-dts-import-v2-0-bc931417bd0e@bootlin.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -66,11 +66,11 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Tom Rini <trini@konsulko.com>, Peter Robinson <pbrobinson@gmail.com>, 
  Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784125361; l=911;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784125361; l=914;
  i=mathieu.dubois-briand@bootlin.com; s=20241219; h=from:subject:message-id;
- bh=bQvA7RaITKm0leFu4CsMz36juYaBIh9nm8WiAQHba6s=;
- b=Y2p/yYf552wB6F+3f88xBut8s30oCKUbtMj+A0QRzGsASLKbwSWWM+CqICzmC5KCUiWnWdGsv
- /IdpeHYxmBtBv4IFWFix7v9Twjws8P3Xd31cSw4WySJ9C9N/ahMDCWi
+ bh=IHC3taB/c1hjjbHV78+MpFaKPexGySK661G3gH5QQQ8=;
+ b=bgWqx8KohO0XJrnfz+GLlQpVE6GEn8Z93UF4IF2roK3EhSVFxBk37S1KardQDiqfU77GWz0DV
+ L/kDBBfUD2jDqGn7tTv+Br97x5FKS88gkcUNYqdJaY2vbbKnW65ABzJ
 X-Developer-Key: i=mathieu.dubois-briand@bootlin.com; a=ed25519;
  pk=1PVTmzPXfKvDwcPUzG0aqdGoKZJA3b9s+3DqRlm0Lww=
 X-Last-TLS-Session-Version: TLSv1.3
@@ -81,16 +81,16 @@ added. Importing this node here will reduce these differences.
 
 Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
 ---
- arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts | 7 +++++++
+ arch/arm64/boot/dts/nuvoton/nuvoton-npcm845-evb.dts | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts b/arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts
-index 579d55daa7d0..f20fbfc1c954 100644
---- a/arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts
-+++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts
-@@ -70,6 +70,13 @@ reg_pcie: regulator-pcie {
- 		gpio = <&gpio6 7 0>;
- 		enable-active-high;
+diff --git a/arch/arm64/boot/dts/nuvoton/nuvoton-npcm845-evb.dts b/arch/arm64/boot/dts/nuvoton/nuvoton-npcm845-evb.dts
+index 5edf5d13342d..6be771e581df 100644
+--- a/arch/arm64/boot/dts/nuvoton/nuvoton-npcm845-evb.dts
++++ b/arch/arm64/boot/dts/nuvoton/nuvoton-npcm845-evb.dts
+@@ -26,6 +26,13 @@ refclk: refclk-25mhz {
+ 		clock-frequency = <25000000>;
+ 		#clock-cells = <0>;
  	};
 +
 +	firmware {
@@ -101,7 +101,7 @@ index 579d55daa7d0..f20fbfc1c954 100644
 +	};
  };
  
- &ehci {
+ &serial0 {
 
 -- 
 2.47.3
