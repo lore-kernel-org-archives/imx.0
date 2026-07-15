@@ -1,52 +1,26 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDF343F0B5;
-	Wed, 15 Jul 2026 19:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8370C4398E5;
+	Wed, 15 Jul 2026 19:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784142163; cv=none; b=QNapw4oVZGSkco4O3UGjdUXzfXii24M9UGQvVs7RLY4zD1+NJa+Ox6SeXh2K69L33ibXXUmidHE30aFPvvm16cWkpcydQ5712w7pvClTcyr6vA63O/f2SjIbdCI4p+zjs6ZCrpDIjb2O9pRr6YxOrQi2Mvrk+44eYULHRICmRIo=
+	t=1784142225; cv=none; b=DrbSSc0dqMqjkc/GKXWHVn0MpwxAxilE8ulhgfNbEMmdSqiv23973wm6gVy+7r+jESCqIXZJRSe16Awcqht03f8Xx2Adfv6758UlgSnqY5UzVtMSHYi5fpRDhkm/FMXkWI3jqFA27VEUnYyx4SK3QMTe47ZsZIG05aaHVN9i1EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784142163; c=relaxed/simple;
-	bh=jkRUcG0fpUKUz5oE5nA2qUlCbNkbkFNgmwTENQzAFys=;
+	s=arc-20240116; t=1784142225; c=relaxed/simple;
+	bh=QcRclczwWInW/m9Xbw/fiBz4XRN9PVU7yN3xi60RXRI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fG8zDFKidRRyU+uvWf8D57IunS4VNyKhY4pNrfK11JKMGj6JBZQe+yKhhre0mJPurmwF2z9iti5b/HrJK8n8KOcNBUqfNWYaUjgRgx1jMEeHlxugz9/vzuyyUZ8iHR4kEWCj7vHGiNma+lBD38GOMtQ9LcIzhaMRpKNKYONPgWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ip1coy/z; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ip1coy/z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784142160; x=1815678160;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=jkRUcG0fpUKUz5oE5nA2qUlCbNkbkFNgmwTENQzAFys=;
-  b=ip1coy/zTxoZK1rYDYaTgBguY3ClJvSy2sPOiT1fBiYZ5qr1H74PJDyZ
-   XPY29WKBDVai/pVPOXy3Nu9+dsSpq8OsFx4dU8HsDsf/owBSPuv5Asjr5
-   jHjMbTHZNH9aUTAy9gWy1VkTMZImG5ltgq319ndNtkglobQdFgXajdByt
-   Iv2ZMxQ1RzGPliTMk1QviIEUCRF6CTyxoasO0s362XHmTH9zrE31gFNPk
-   tnGvD9IaXNYKpfk+a4T8dN/3e4TUlPJdZFdw6pyQBv7Q4kB4VhA+3WicX
-   27jowCZiCuZuMblLwllgFgrD6KUrWLshmZX1XI79zgp6y2ozeQe/1tQ1w
-   A==;
-X-CSE-ConnectionGUID: x6ngzcXiR5OLGpAFga2Q9A==
-X-CSE-MsgGUID: wRPytIM5R5KgfvgAzup+OQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84678516"
-X-IronPort-AV: E=Sophos;i="6.25,166,1779174000"; 
-   d="scan'208";a="84678516"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2026 12:02:33 -0700
-X-CSE-ConnectionGUID: 8yyOrudNS+6KFBZjLwXtOQ==
-X-CSE-MsgGUID: YpTKP7aFT2KqlGQNWvtRZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,166,1779174000"; 
-   d="scan'208";a="254517773"
-Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.129])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2026 12:02:16 -0700
-Date: Wed, 15 Jul 2026 22:02:13 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=bXkbYri3O9yafVzDY079SO5iNgJkvGpBukzL9HPDGPSt2LS7Q+2NytnzOmwGnbmA5hvFkIkhAUAEXxQrawy0WKZoBUnFco+YOkQYfx+jGOxF6zEA0yncD8898OmHTUprCTeUi0OvxKXhQWphqUfEYawxcT6Vt0Zcc/wnPHZCf4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id EFB14F40D2C; Wed, 15 Jul 2026 21:03:19 +0200 (CEST)
+Date: Wed, 15 Jul 2026 21:03:19 +0200
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Srinivas Kandagatla <srini@kernel.org>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Kevin Hilman <khilman@baylibre.com>,
 	Jerome Brunet <jbrunet@baylibre.com>,
@@ -119,49 +93,41 @@ Cc: Srinivas Kandagatla <srini@kernel.org>,
 	imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com, linux-rtc@vger.kernel.org,
 	linux-sunxi@lists.linux.dev, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/8] nvmem: make reg_write() take a const void *
-Message-ID: <alfZNQGcX0Z68eto@ashevche-desk.local>
+Subject: Re: [PATCH 1/8] nvmem: core: make reg_write() take a const void *
+Message-ID: <alfZd_eHgNk9izcy@luna>
 References: <20260715175229.24672-1-linkmauve@linkmauve.fr>
+ <20260715175229.24672-2-linkmauve@linkmauve.fr>
+ <alfYQP4a1U9pI6UR@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260715175229.24672-1-linkmauve@linkmauve.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <alfYQP4a1U9pI6UR@ashevche-desk.local>
+Jabber-ID: linkmauve@linkmauve.fr
 
-On Wed, Jul 15, 2026 at 07:52:16PM +0200, Link Mauve wrote:
-> This callback used to take a mutable void * for no reason, which causes
-> the compiler to be unaware that the val buffer should never be modified
-> by the callback.
+On Wed, Jul 15, 2026 at 09:58:08PM +0300, Andy Shevchenko wrote:
+> On Wed, Jul 15, 2026 at 07:52:17PM +0200, Link Mauve wrote:
+> > This callback used to take a mutable void * for no reason, this was
+> > found while drafting the Rust abstraction.
 > 
-> This was found while drafting the nvmem-provider Rust abstraction.
+> I don't understand how it was compiled. const void * != void * in C and can't
+> be implicitly covered, if I am not mistaken. So, this patch heavily should
+> break the build. What did I miss?
+
+I think I missed a lot of those drivers while compiling, probably
+because I built it for my target hardware instead of doing a
+COMPILE_TEST.
+
 > 
-> I’ve split this series based on the subsystem each patch affects, but I
-> think it should go through the nvmem tree in one go after gathering the
-> acks from the other subsystem maintainers.
-
-It's an option. The other option (and often we go this way) is to introduce
-a new name, convert users, convert the name back.
-
-See, for example, how GPIO subsystem changed a proto of .set() callback.
-
-> I’ve been told previously to not include too many maintainers in Cc, but
-> I don’t know which ones to remove from the get_maintainers.pl output, so
-> I’ve still included everyone, sorry about that.
-
-With this, rather standard, way you will fulfill the above requirement
-automatically. Also you won't need treewide change to bother everybody
-with this. And also increase the chances to go in (maybe in a few releases
-span).
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Link Mauve
