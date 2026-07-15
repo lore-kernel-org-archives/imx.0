@@ -1,153 +1,124 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482633B8939;
-	Wed, 15 Jul 2026 19:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1AB42FCDF;
+	Wed, 15 Jul 2026 19:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784143194; cv=none; b=onS5zSi1oZrJyePoGKc5lyG1BTUx0wTiVBXrDyBNhchx5saXbXgxHE8Fr7LV5N7P19DUydJZ1t61AmVPDJ+V4n3r80asSPXqmdoeAOtk0qzPxfYH7bJ3rxD4KRF6YrK5fNMLS8u/v4VOrAgtxr5BBfiF+aMGANjL6XLBcUXTBzM=
+	t=1784143864; cv=none; b=WBNWBLfRreGSOLmXwXUfv6QrQsX5GjU1FAWiqom74zXIwkWZ3FFLZvMPwoaFR2F1qh8M9KZtn7Hv+iuY5h6UF/0dhB1YcFvYI8v751LPcENEI2r2P/Sx1RCX8ywZIUtPHlnv2Ru86d9AvAhT+zfJJ9SaEYeYyLuMycquuqwWq80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784143194; c=relaxed/simple;
-	bh=11rAngJJuF5zb0hMQIxjA6jLR+Jg2CSuzRhnrpzl47M=;
+	s=arc-20240116; t=1784143864; c=relaxed/simple;
+	bh=S74BMXboSmhL990KaoXfjtsSEdbuGY/AK1Q4jDeBHVQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NDW89M3fJ5/iKTZtx9Tum4frj13FU0zxuYcYDhCrwTNNT4IZqahWAJ1lrJyuEju1QyZh8TwgKnJwJZBGFDzj8nHEtFPIl11SB9zP/F1okcoplnLEARDN2Yr5rmRJFhWQACBL/rQnXBnA3WAhhXS3xedAWnWQsTGBEi8S9YE5F3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBsWnSwh; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WzD1mszhXFgN28sCeJ/C9D5i2c3ZYMibWt19lesE2i1C5vvtGvLN71SU8rKDBWQupdZkFERtdlgefpycVI+px8SjQ0EjeSNDEMiwgkXcGFeiBBQyj1QU1x0Ix2bLGPhll1Vb8mNadaJ51eM+O9i6V2FvKTccaJVUUh9QAaCj98M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dcfg56xK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBsWnSwh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1281F000E9;
-	Wed, 15 Jul 2026 19:19:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dcfg56xK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8357D1F000E9;
+	Wed, 15 Jul 2026 19:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784143188;
-	bh=LV4KiCr98vyYbmX2BOTe+goz8+ntsRbpB7ogofgrxjk=;
+	s=k20260515; t=1784143861;
+	bh=U+QSIKVOSwes8HHbAYFznucJMugZslchoiirUZ3Dev8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JBsWnSwhf84B1euVOkLJVtliuwD8z3CTeXCsY8byjZP1DfT4PwYBYtFfsUwP6u4Ry
-	 wt7Yl4VPRDNOljtWQqm/kzyzFawNVYVOG2Hx3+PJbKFXviS5lFp9sHjeinXq8BXClc
-	 SyuO+bcoKmwSdf6LzUFzCHwHgQSXxsuDzmFJL8o7n7L2vdRSeWBWgoEbrbVkqmqU1C
-	 1g7pFmU5N37uOHGgldn9wp6yw8wYdV7TxcHQbc+IlG1KGRrLNqf6iLkfj/k+i7wCe7
-	 5iLk5zA9zgnXYnQYUtmwhYzG+MkNnlcm1criBqM4AOWsDKXwRk0wEO2MuU2EZmVrO6
-	 +Sdl7k96KMm+Q==
+	b=Dcfg56xKGVgx/ajJb3bVseaVrMhGqkwb2x7w5gJqwI5MmeMIdio7V28k/1hvWx5Xl
+	 oxs09yExsezW6Pq49vm0clEzHBWd28ufgrl1RtbbfxOp8Gas/lX60y9Z0IXQTmniq9
+	 DGcXdzFxS0H2Pj/ldtQWjBMjEORly5x5DVDUOctNImp3Jae9dE0eqCwxlvI5ZWOuz6
+	 zt7Zdw7un4AI9A/C/W65Z2C/IjM5W84yB/KiAf2KaVlxsw3LUAmQruGd1vjZgPKmh5
+	 gITpPjeAe8f//4aMVEuhx080t4KHWShH/ZWkHZ3oCk+NM7/3heOQdmHjk3+puZnYOG
+	 h/NRFxtqbA2rw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/3] arm64: dts: freescale: Add support for Variscite
- VAR-SOM-MX8 QuadMax
+Subject: Re: [PATCH v5 3/3] arm64: dts: imx8qm-var-som: Add support for
+ Variscite Symphony board
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <0dab340bd29e1f4b1fab05a29532cad3177abc7f.1784142385.git.stefano.r@variscite.com>
+Cc: robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <354dc61e75c935f6a7adea7b8c64fc324651d63b.1784142385.git.stefano.r@variscite.com>
 References: <cover.1784142385.git.stefano.r@variscite.com>
- <0dab340bd29e1f4b1fab05a29532cad3177abc7f.1784142385.git.stefano.r@variscite.com>
+ <354dc61e75c935f6a7adea7b8c64fc324651d63b.1784142385.git.stefano.r@variscite.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 19:19:47 +0000
-Message-Id: <20260715191947.DB1281F000E9@smtp.kernel.org>
+Date: Wed, 15 Jul 2026 19:31:01 +0000
+Message-Id: <20260715193101.8357D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The `usdhc3` WiFi SDIO host is marked `non-removable` but assigns =
-user-space WiFi initialization GPIOs to its pinctrl state, breaking initial=
-ization.
-- [Medium] The statically defined `memory` node declares 1GB of RAM, but th=
-e `linux,cma` region is placed strictly outside this memory range.
-- [Low] The audio regulator node is named `regulator-3p3v` but configured f=
-or 1.8V.
+- [High] Ethernet PHY ethphy1 is reset while its power supply is off, leavi=
+ng it un-reset after power-up.
 --
 
---- Patch [2]: [PATCH v5 2/3] arm64: dts: freescale: Add support for Varisc=
-ite VAR-SOM-MX8 QuadMax ---
-commit e6616ac5ca38d036f01cf07cc3cd9713d0d5a5cc
+--- Patch [3]: [PATCH v5 3/3] arm64: dts: imx8qm-var-som: Add support for V=
+ariscite Symphony board ---
+commit ed29f608ccf1d279621863c6ecef72b6e1b3be60
 Author: Stefano Radaelli <stefano.r@variscite.com>
 
-arm64: dts: freescale: Add support for Variscite VAR-SOM-MX8 QuadMax
+arm64: dts: imx8qm-var-som: Add support for Variscite Symphony board
 
-Add device tree support for the Variscite VAR-SOM-MX8 QuadMax system
-on module. The module includes an i.MX8 QuadMax processor, LPDDR4 memory,
-eMMC, Ethernet, audio codec, and WiFi/Bluetooth connectivity.
+This commit adds device tree support for the Variscite Symphony carrier boa=
+rd
+equipped with the VAR-SOM-MX8 QuadMax system on module. It defines nodes and
+pinmuxing for various peripherals including USB, Ethernet, SD card, I2C, and
+PCIe.
 
-Link: https://variscite.com/system-on-module-som/i-mx-8/i-mx-8-quadmax-quad=
-plus/var-som-mx8/
+Link: https://variscite.com/carrier-boards/symphony-board/
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi b/arch/arm=
-64/boot/dts/freescale/imx8qm-var-som.dtsi
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts b/=
+arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts
 > new file mode 100644
-> index 0000000000000..28964de3b080a
+> index 0000000000000..7c7fc8958efc0
 > --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi
-> @@ -0,0 +1,531 @@
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts
+
 [ ... ]
-> +	memory@80000000 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x00000000 0x80000000 0 0x40000000>;
-> +	};
-> +
-> +	reg_audio_supply: regulator-3p3v {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "wm8904-supply";
-> +		regulator-min-microvolt =3D <1800000>;
-> +		regulator-max-microvolt =3D <1800000>;
 
-[Severity: Low]
-This isn't a bug, but the node name specifies 3.3V while the configured
-voltage is explicitly 1.8V. Should this node be named regulator-1p8v
-instead?
-
-> +		regulator-always-on;
-> +	};
-[ ... ]
-> +		/* global autoconfigured region for contiguous allocations */
-> +		linux,cma {
-> +			compatible =3D "shared-dma-pool";
-> +			/* VAR-SOM-MX8QM doesn't have 1GB variant */
-> +			alloc-ranges =3D <0 0xc0000000 0 0x3c000000>;
-
-[Severity: Medium]
-Does this CMA allocation succeed if the bootloader doesn't dynamically patch
-the memory size?
-
-The memory@80000000 node declares 1GB of RAM (ending at 0xBFFFFFFF), but
-this CMA region is hardcoded to start at 0xC0000000, which falls outside
-that default 1GB range.
-
-> +			size =3D <0 0x3c000000>;
-> +			linux,cma-default;
-> +			reusable;
-> +		};
-> +	};
-[ ... ]
-> +/* WIFI */
-> +&usdhc3 {
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 =3D <&pinctrl_usdhc3>, <&pinctrl_wifi>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>, <&pinctrl_wifi>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>, <&pinctrl_wifi>;
-> +	bus-width =3D <4>;
-> +	non-removable;
+> +&fec1 {
+> +	mdio {
+> +		ethphy1: ethernet-phy@5 {
+> +			compatible =3D "ethernet-phy-ieee802.3-c22";
+> +			reg =3D <5>;
+> +			vddio-supply =3D <&reg_phy_vddio>;
+> +			reset-gpios =3D <&pca9534 5 GPIO_ACTIVE_LOW>;
+> +			reset-assert-us =3D <10000>;
+> +			reset-deassert-us =3D <100000>;
 
 [Severity: High]
-Will this configuration prevent the WiFi module from initializing?
+Does this sequence cause the PHY to be reset while its power is still off?
 
-Since usdhc3 is marked non-removable, the MMC driver will attempt to probe
-the SDIO bus immediately during boot. Because the pinctrl_wifi group
-(containing the initialization GPIOs) is bound to the MMC driver here, user
-space cannot claim or toggle these pins to power up the WiFi chip.
+When fec1 probes and registers the MDIO bus, the MDIO core toggles the
+reset-gpios for this PHY. However, the main power supply (reg_fec_phy) might
+not be turned on yet because it's assigned to fec2 below.
 
-The probe may fail permanently since the chip is unpowered during the kernel
-probe. Could this be modeled using mmc-pwrseq-simple so the kernel handles
-the power sequence automatically before probing?
+[ ... ]
+
+> +&fec2 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_fec2>;
+> +	/*
+> +	 * The required RGMII TX and RX 2ns delays are implemented directly
+> +	 * in hardware via passive delay elements on the SOM PCB.
+> +	 * No delay configuration is needed in software via PHY driver.
+> +	 */
+> +	phy-mode =3D "rgmii";
+> +	phy-handle =3D <&ethphy1>;
+> +	phy-supply =3D <&reg_fec_phy>;
+
+[Severity: High]
+Should phy-supply be placed in the ethphy1 node rather than the fec2 node?
+
+If phy-supply is here in the MAC node, power is only turned on when fec2
+probes. This leaves the PHY un-reset after power-up, because the MDIO reset
+already happened earlier during the fec1 probe.
+
+This usually prevents the PHY from communicating over MDIO or establishing a
+link.
 
 > +	status =3D "okay";
-> +
-> +	brcmf: wifi@1 {
-> +		compatible =3D "brcm,bcm4329-fmac";
-> +		reg =3D <1>;
-> +	};
 > +};
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1784142385.gi=
-t.stefano.r@variscite.com?part=3D2
+t.stefano.r@variscite.com?part=3D3
