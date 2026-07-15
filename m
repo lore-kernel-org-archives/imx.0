@@ -1,203 +1,149 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011007.outbound.protection.outlook.com [40.107.130.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C8D30ACEE;
-	Wed, 15 Jul 2026 16:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784132545; cv=fail; b=fcoz7yxwWajPv7DFJc1EMckMHTDt9RZiYLolMVmwNyV/Aif71oWRmG/4rAAyXHONQeS5znL05LYNZ3zmnqSczKXdcF3zTrexsLGsVNZbLKCWVhRo2S5fXTv43QKKk1hYZ62xogGbPl1MiDx3YaoCIxSktN7dRGred4PuLLuwu3w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784132545; c=relaxed/simple;
-	bh=uifCllynZSud+oJ3rbzLUw0ENwvF3UoTP9oSobUMcwU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HpFKD5t1nwt/MB3T0Ad9HeBHmn9vAzZmAxIa+3gK41VoYVcjSun0tn421LrdmD4E/PM5BMl+ftMQcm2FXCdgm50knLezsCVH/7PXyRwlbAvB1602/rvXVFBah+QPZcLUsOXNICQ2xI9ivwoJgivt2jsWFOwUC5+hXioHcmS1STc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=KGGbolCK; arc=fail smtp.client-ip=40.107.130.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1D941C30F
+	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 16:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784133647; cv=none; b=suGNANbbE6EqvLrc+QxUqHHrcro08q4stTBdA7YXJKaydxnVzW0otqmQlIiu2RpHhGRyaF/Rtnd5KokrHLGcQqgulDtuRqbk+mClltPo01UJrMG1sDOv4G0Du5mEkW7BQNepfIP1dwOrRqAtMHuDzZJcq7W5Xit595czHzkQ4A4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784133647; c=relaxed/simple;
+	bh=eC1/k7DqW6hIUmJPKXuG+Z7nCfpB5iHXjqobLEUQhw8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cm/xeoSOJMQV2uxpHv5kTLAad83/IudncEkVN+8YvD0uWOuuuYxXEUD7LhIgB/REdLNwTFIxTFDf2F61wy+PK44pmEyfVkY32yCU1VSnEhLYbJD3ZMt8wHz8NP0xvLYjdHdrRB8zI6HiwtmAMhFEESaCrP6mHDItS2WJizjt7Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TZEJEmMM; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="KGGbolCK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iBtIDtwSNVYqbAZqOU40U2i+CKavX6Ubb6IXoVhNtxCsvE9MiSSvAidROWx4spnD1BncY7EMf2xv2//dLHNit48MWI917oP60wJ50awMkwPe3oS+esvWydCkib/3ARWI21Sw0fBbfwfhbtaYKC0snkp2VF8/97ND17rW2R9mU0eugyDBe5iT8YcNhYLdnFpPSx+B6cXwWNDlWa/MRlQHd9mbq2wH5eQbnDjsdu5/mVzYZpoJpbFiGbht5XMA2gmT/1vXYUGn02h/1yldLT4eMhi3Fz95HK4JALi725QNRM1gnf9BBHVe2GYBMR8Sk+B6F10zWLbJCo2kOABCEh1BFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Je5VLBZLvoSMozpEbZJplS14fHGgnzC0stnslW71pnE=;
- b=dPSxnGQJehZty3t1ZyKfyOTxfXqzwC9oRyqfqf5dV4WcfiU/J1LhJw/0XjSy5+XkIZwinh2LXbCxOesRYyKCocMioczQmwW8ltashrmhN1bxOS7E6pvqTCj5NY1IWoOp3c3sF4MJzCax+nRaeSwLgvSeNCEAQzawozFDMtzg4laK+MWxQ7qBk4nkObduMF7neXh64JjbeA6g9EHfu+qhmrkE+wQlRpY8i1gDc6lBJNvM+YC7Oy3VjT/mg8BAFysIVgV7Kn535XWTwsjvAl94GrfwHPb+1meOxJPU0W5t/IIxga+4d5MTK149ErhFDv5kwxRjEozOyx9ljrSSXvG8VA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Je5VLBZLvoSMozpEbZJplS14fHGgnzC0stnslW71pnE=;
- b=KGGbolCKgedIEBVK6pctnGFrkGFolOuEs9ri49G1p69Zf+RaszSntECJDmwue2QNHbicsoVvcutp75jmbHLy7QOG3Dz2iV3U4hMYvNkoZao2UnOl0Jn2HDWh/jyNQCNPeSSvGBGWu8YZkNncQNOTQgs1N3+herEGYfdY0/gXgSAqfiiGxR5lhvcAwL6YWYNJUaKQLpAuJRJYZOZikkrrNcrvZCN7XmwkiArwRMR5E2a8nXqnwnBLbvSWGEe7BYURnSopTgz0QlPVS4h/LHyADBwWL/FPc8pJO2GNeB2aTJv7z7KiDtnyH1Pi6I/sx8Mh/yP4+etHc+M951rVtDVMhQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM0PR04MB7170.eurprd04.prod.outlook.com (2603:10a6:208:191::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.11; Wed, 15 Jul
- 2026 16:22:16 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0202.018; Wed, 15 Jul 2026
- 16:22:16 +0000
-Date: Wed, 15 Jul 2026 12:22:08 -0400
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Marek Vasut <marex@nabladev.com>
-Cc: sashiko-reviews@lists.linux.dev, devicetree@vger.kernel.org,
-	robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v4 4/6] arm64: dts: imx8mm: imx8mp: Add CM DTOs for Data
- Modul i.MX8M Mini and Plus eDM SBC
-Message-ID: <alezsOsf61Zv6F4F@lizhi-Precision-Tower-5810>
-References: <20260705200534.151803-1-marex@nabladev.com>
- <20260705200534.151803-4-marex@nabladev.com>
- <20260705202439.3F5771F000E9@smtp.kernel.org>
- <alUICTI-24tREZO8@SMW015318>
- <f1e52327-42da-48e1-8e4a-dabf148ce216@nabladev.com>
- <alWR66rjt-9jGEOV@SMW015318>
- <a3602ef8-2b77-4cc3-adef-2c4cba08a5d9@nabladev.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a3602ef8-2b77-4cc3-adef-2c4cba08a5d9@nabladev.com>
-X-ClientProxiedBy: PH7P220CA0056.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32b::14) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TZEJEmMM"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4938d5f86f3so13996495e9.1
+        for <imx@lists.linux.dev>; Wed, 15 Jul 2026 09:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784133642; x=1784738442; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W28MgOlBEIrBDEwzq9cApro4f/MG3ayuQJC7ubK1/ik=;
+        b=TZEJEmMMzrTd8IBY8QB7cC8TFozBNsWO6i3+ICJ8VCL15nu1fryBhazwqi7VmYOscq
+         JmKafhvxrJT+87b7oP92tATRdqjZOeJkudClajTZMReWKD1F8PpdJquOfxT9q+Z0RYvo
+         X6m7CumZz6qSML8deVIPD2ydOdgMYcA9PZFrA1Y2/757uu0/SzWeMnigHA0gPkagCudw
+         Cb8kM1XXoYOsDgU9unue1Vqd9rbzmOhjoFrVVrzWhKkqVRuTMmqk4QzP91zjo6NV72pI
+         30MBZ3f8FbNY0kR7fF4F0GXME1VNsO85as6obbHFke0QaX+zK7IcX0IlfCndthRvdrGj
+         IKfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784133642; x=1784738442;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=W28MgOlBEIrBDEwzq9cApro4f/MG3ayuQJC7ubK1/ik=;
+        b=eyX4jrQzSRFPsngt9va6/BCGh30FVnjqGQipbWuLQR/0/LkIaIhxj4Tx0eUTd0Gkyp
+         gsmemEGqk3m7r+wE7LpF75XOjcKVn5XIVk2dV88cdI0SC3kDWi3gMkXVTfA7jXm8hVZ/
+         muoHVpOfDWgSn3LI1MmzKgLPfaPv9NPqqE6a3rAeA4cKdsZgiaLlzKOvV6Ahbc3eWgnx
+         WL7i48Aew5Vrg2FXc8O9TUFsxtFACc3Fsb4w+8m359Hxt/HVK91iH/nXAGa+4m+8iosE
+         kroGiBfAYrmDPACH4U/AsnPErVKzNHnpv8wWi+ibBR5VSNfwIo0/0/iCExt5FQ7sFnD1
+         49eA==
+X-Forwarded-Encrypted: i=1; AHgh+RplsYlL2MaOv1pDuwfzuhmg4jhIryKOcTea7nR9l3zo4YeY7BfEQKrasyyVBHc6CsJBuh8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxU93fJOfkx5oYqa7QnWZBP5RBruei4ZR4bbU/EbCJZUIQ6Ipf8
+	jUBweF/B4kDSbOs3edJUKJ4gdtRjOek4ZubsQVueJdX7XllDtGnjxEcy
+X-Gm-Gg: AfdE7clnbJqa5SuXcgTezFgsAbv1YKrQEtR124qTe6+jaNpQNdN8MnZYVmWhUBE8FSB
+	y3RIcoTsqLBDmfJehtUyVFgzI3tyRKhm5lYfjxBo6/HNnvQBBOEpNCaROmO59kmcj4UDsHtkwah
+	yD7iqgvNUCxp6KQMld5ptJs5YsQhWTMfWpG+BH7dwRj8KbhV3zf5fXlVIsd7Knf8gCjYDj/2H6n
+	m9ePfGdNARN5rkLNoy37+fJM5CXKP/GI4FeSYlsVhrAV4IqtEgz7v3o11Y+PKLTRTGIwNL1tVEL
+	Ih1XlTw40aYF0QgFO6ak5nKDgDQXP6ov5ZTyWypkJ3slXbW5kxrJ+O3UA3szBS2etkRgtiW056U
+	8BUexi2kZLnPzEECmuHcn13iwShvIvCJl2obXLQEzRnJk9rQ2a9bKJdrrlKoOt70sB7mrZig4PU
+	dlXd4XwRzDQ2+iA2T1hqk+XGkfx1Mj7AOyZDWTz7gSuPeRp6AbdykRuJV39w==
+X-Received: by 2002:a05:600c:6285:b0:495:3f64:26bf with SMTP id 5b1f17b1804b1-49540cdf249mr1832915e9.4.1784133641846;
+        Wed, 15 Jul 2026 09:40:41 -0700 (PDT)
+Received: from Lord-Beerus.station ([93.144.65.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464bbb0esm17836432f8f.28.2026.07.15.09.40.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 09:40:41 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH v4 0/3] Add support for Variscite VAR-SOM-MX8QM and Symphony board
+Date: Wed, 15 Jul 2026 18:40:34 +0200
+Message-ID: <cover.1784133402.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM0PR04MB7170:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d25aaa1-feed-45e2-a044-08dee28d3c29
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|19092799006|376014|56012099006|11063799006|4143699003|10067099003|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	LZwXdr2k/heosMoxZUy5zkHc0IxwDnpcAO+qXvD2Cgj2+EM/rLGGActKyGDgGYw6HahC+bjh546eGAf9t85u8IAKzrXualb2N0tH+jP2GHOAb883nk+lFjgPyvzSHrX7RZiWVPNIpPq/B1lGU/l1zBdnJnpQ6vcwAlXfK64QDodyqPK3EuqD79CWiabLaVwjcBfuV5WdTm5z+DOmmBfmMIiGvqesx12Jumil7n8JtvHIfmUihTD5VVkat87EX+DetTsvvV/yWGazB5mXfAZ8IgPOMpP44Lc7niYvMJ8LUUqlyqJ3hExEJzjl+dav1GLC9Rb0pRsdOpf/mSPFKoMQ9qJYfTZtRAmTD2Guko45JXv6mg6zBRQ0Fht0/rrH+fFGT2BjntwqCuuWMaP+QFV6+EbVeP//fxeaYJoFi/796vX8ydrFnq41WjmZn3iBuYBp/4li12UBaJv5gzo7TKCksnM+fqEi4S8/wNKfOfOkiOVYc9ZoTA2NUdy4n8Hm0RiNOLrg4Z6/Ao5IW9uNmOnZM2ze326+N3ZgRynnj6dfDale8nFFnpeTKmhCml+j7O4Giz3G7ZeSVfdMTovfCnjW9dIjmNL4oxY/ycJ3/4yteuGpb2f8yuqZyb8/UdXHiCcfugko9y+P+Dd5RY7zBZxjdbFEHFjFM/oQXvh2LntElMo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(19092799006)(376014)(56012099006)(11063799006)(4143699003)(10067099003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vdv9xg0SKwoxeRJU4EZFghmWMVz6CD31TbpGMb0rYC4tf15L4oa+Zzfz8Y6l?=
- =?us-ascii?Q?lApvveFaEc6Yl0ksOGa4P/iOXSkJSE8vDGGSODACbrWf9y2Aw5bh9bcOt4PU?=
- =?us-ascii?Q?QqXwPCk+JHE0kW9I7J5FmXoIOGaDb/p6sch56wjmfOJZdNzsbPSZ8mW0xh9+?=
- =?us-ascii?Q?fF9ibuBwRIFC/Eu+nZI9wvAutODTQh05uIAEIZXkVX7DgeDFBJFhJNXFiOJp?=
- =?us-ascii?Q?qJgZMuH/dfOLqC3qUgYfr6nTiDq215upQJXXPzLJKPaIzESL/iwlyW7w2Hl0?=
- =?us-ascii?Q?wqDiR29cbRZwoxrACPP4dMovDHsITA+QlGDU3Xtn9/juMrWzUX9zLsO1Pl0I?=
- =?us-ascii?Q?EaXalG6fEXrRPzZFU89QwypT+Rjwq/YoD5V1mXlcAvWxjzJUNRT1JQJdQaA/?=
- =?us-ascii?Q?FUGlvN1gAJWZgmI574ELfwnDiF2mLpaSsjDIQ5bRZOGSX95DPbDS3B9VWI6k?=
- =?us-ascii?Q?aA+hDJLuz3B8jJtmTqthINg4hXONX13hWJZiGztpYPqX02ry1n0noNjNjAGg?=
- =?us-ascii?Q?huDRMNQySS0RKwmuF6Qb31WQNrD8J+iYscXtGvSEc4h5XMmPw8HqB7r0BwbY?=
- =?us-ascii?Q?HL8z7imp99xKvkCcfGlxcjPTxLzssWaU8YGeOlz1ZXLm34JWKP6bR4n0yP3S?=
- =?us-ascii?Q?MzawMg1vMERKo9TPrvSCvFNAaQ+VJj53/Ip898ipIId/XMb1ZeOMlORXGRIy?=
- =?us-ascii?Q?JHa3l9vQpb26ohAejCuXFFuSA0jIMeGSKCN5ECVyMB3c9/dztKvLD8VBQDv/?=
- =?us-ascii?Q?XRb6vyl9urX1TMsw4q9rBazdntO8e0MGIyIJ2Kx03Oz7342BmTmhkz5d5yFc?=
- =?us-ascii?Q?k+TMsysSpBdMwyC5FIfYzQpx8y7kbUI16Mr/lRoQpNmBbzPAf6NgcPOfaHCz?=
- =?us-ascii?Q?pm6XFRCcB3MNFEltcRzLoZ5b5/dTEkNThzWwu0eImrkiMrdgVPEVbMlBlymt?=
- =?us-ascii?Q?2xjyVontwnZb4+i36jQL8JMPCy0KsuXeAbtLlk9zz9LOpPBql1SnaQCUptib?=
- =?us-ascii?Q?UbI7SKd65TSzavhOfatBfiPDtC/f1x82kmd3DxoFWyton22U1QUFWgPbrkNb?=
- =?us-ascii?Q?heqHRL9Ty3s69EpWa9F4Ctgxb+t8l05UtlPCjDHQrS/Hs8snmbuW/U6zR//r?=
- =?us-ascii?Q?lviM5J6aSmzxXIj3pOD7Kz9B7PPQNlmQvucQpEKcrIWNlR7/2+pTW7zmaAr6?=
- =?us-ascii?Q?NHntHVQ+i2kWaprfHLWR2Db00rvijlKospJNm8PQTELB7LQdhMVvBqdnDhba?=
- =?us-ascii?Q?oh1cH/dfNp0SqmpJ6sDpvP4quEb5QNmxgmMzzy8RFdgwSxM+Yk76jie35Evv?=
- =?us-ascii?Q?IA2hI9uw84ADK2Zi1ZXqoC6EFkMZbjOu5mTwRK7YxWuh0xbJNkhZHzRYOzxY?=
- =?us-ascii?Q?1mm7wnesNSMM5rXF1fAW48rTYrJmOv1m4cN466ucUNf15M/mrDRxn+0irDWX?=
- =?us-ascii?Q?yvxUzo1xaspQ/OwMCHtV9hhvM9p5LZG9ydh3Qfwa4netT8jHaZrlgMc3ZDC4?=
- =?us-ascii?Q?1Ool0QUuXpEyo/HeZZB9S/ETzYoj1fbtpBYObTWUkt3CVbKgjWJeFNdRsSzD?=
- =?us-ascii?Q?Z1HDrqz/22rKwwyneilZZBljVS2998GbxGgGt60roxOJLJ6XvSoeq+N+aLMh?=
- =?us-ascii?Q?kC7VhL2T40MbIxC34FUqRUI+KnjPCBd+AdaseD5YXeY+gMLvdahgbEctNgqg?=
- =?us-ascii?Q?Nr1tQcHIq5HDeD+rZpfEOD+VVsrhI4ydEMDX2rRnOPLY9GxoIaDKdxFWZ6E9?=
- =?us-ascii?Q?0BZin0aYHeTWU4Hn1d5gUC7v7poIayfdEX7Yifwj5QUrKk5CzRTy?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d25aaa1-feed-45e2-a044-08dee28d3c29
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 16:22:16.2852
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Va1Xfjg5eGaRTxkfBc6yd6grLauPeQMgXNsgv16mcPynRoALsReSZZeTujI39GkQm8GYW7QhWDNQti1I6md3wdLx+4ySpgG92maxdS9iDCC5XSA+kETPxaJezrbt96QM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7170
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 15, 2026 at 12:51:26AM +0200, Marek Vasut wrote:
-> On 7/14/26 3:33 AM, Frank Li wrote:
->
-> > > > > [Severity: Medium]
-> > > > > Will this node name bypass the driver's carveout exclusion logic?
-> > > > >
-> > > > > Looking at imx_rproc_prepare(), it iterates over memory-regions and checks
-> > > > > specifically for the name "vdev0buffer" to skip processing the vdev buffer:
-> > > > >
-> > > > > 	if (!strcmp(it.node->name, "rsc-table") ||
-> > > > > 	    !strcmp(it.node->name, "vdev0vring0") ||
-> > > > > 	    !strcmp(it.node->name, "vdev0vring1") ||
-> > > > > 	    strstarts(res.name, "vdev0buffer"))
-> > > > > 		continue;
-> > > > >
-> > > > > Because this node is named "vdevbuffer" instead of "vdev0buffer", it appears
-> > > > > it will be mapped as a generic carveout via ioremap_wc() and unintentionally
-> > > > > included in the remoteproc coredump.
-> > > > >
-> > > > > Could this node be renamed to "vdev0buffer" to avoid wasting vmalloc space
-> > > > > and bloating the coredump?
-> > > >
-> > > > Look like make sense, please check it.
-> > > >
-> > > > It is not good to use node-name as ABI. Laurentiu is working on use
-> > > > memory-region-namses.
-> > > The memory regionss are referenced from imx8mm-cm4 { } node via the
-> > > memory-region property:
-> > >
-> > > memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
-> >
-> > I known, but now code parser node-name, At your case, it.node->name is
-> > vdevbuffer, but driver expected vdev0buffer.  so above check will be failure.
-> >
-> > suppose it should be
-> >
-> >   vdevbuffer: vdev0buffer@b8400000
-> >               ^^^^^^^^^^^
-> >
-> > I know it is bad, but waiting for Laurentiu to fix it.
-> Actually, if I look at "git log -p drivers/remoteproc/imx_rproc.c" in
-> current linux-next 20260714 , which has the entire history of imx_rproc.c
-> and the latest content, the code cited by the AI:
->
-> "
-> 	if (!strcmp(it.node->name, "rsc-table") ||
-> 	    !strcmp(it.node->name, "vdev0vring0") ||
-> 	    !strcmp(it.node->name, "vdev0vring1") ||
-> 	    strstarts(res.name, "vdev0buffer"))
-> 		continue;
-> "
->
-> never existed in imx_rproc.c:
+This patch series adds support for the Variscite VAR-SOM-MX8 QuadMax
+system on module and the Symphony carrier board.
 
-AI refer old version code, but problem is the same
+The series includes:
+- SOM device tree with on-module peripherals
+- Symphony carrier board device tree with board-specific features
 
-if (strstarts(res.name, "vdev0buffer"))
+The implementation follows the standard SOM + carrier board pattern
+where the SOM dtsi contains only peripherals mounted on the module,
+while carrier-specific interfaces are enabled in the board dts.
 
->
-> "
-> $ git log --follow -p next/master -- drivers/remoteproc/imx_rproc.c | grep
-> vdev0vring1
-  ^^^^^^^^^^
+v3->v4:
+ - Fix sai peripherals clocks
+ - Add comment to clarify 1GB variant
 
-vdev0buffer
+v2->v3:
+ - Fix led typo
+ - Moved reset-gpios in pciea_port0
+ - Removed wrong captouch pinctrl gpio
 
->     vdev regions are vdev0vring0, vdev0vring1, vdevbuffer and similar.
-> "
->
-> It seems the AI hallucinated something which is not based in reality ?
+v1->v2:
+ - Added non-removable property to usdhc3
+ - Removed unused fec gpio pinctrl
+ - Fix ptn5150 interrupt
+ - Fix ecspi1 cs gpio
 
-git log --follow -p linux-next/master -- drivers/remoteproc/imx_rproc.c | grep vdev0buffer
--		if (!strcmp(it.node->name, "vdev0buffer"))
-+		if (strstarts(res.name, "vdev0buffer"))
+Stefano Radaelli (3):
+  dt-bindings: arm: fsl: add Variscite VAR-SOM-MX8 QuadMax Boards
+  arm64: dts: freescale: Add support for Variscite VAR-SOM-MX8 QuadMax
+  arm64: dts: imx8qm-var-som: Add support for Variscite Symphony board
 
-Frank
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx8qm-var-som-symphony.dts | 490 ++++++++++++++++
+ .../boot/dts/freescale/imx8qm-var-som.dtsi    | 531 ++++++++++++++++++
+ 4 files changed, 1028 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi
+
+
+base-commit: d0c222c2e2ce577d801bdf129dc6c078f29e22df
+prerequisite-patch-id: 0996915f031a1d899202c5fba75a969d6ce2a53d
+prerequisite-patch-id: dbed47ecb907f6b7f7e284c5c1a3c325566eafd7
+prerequisite-patch-id: c758aa296e6effc94c30449cc7e4773f0ae02914
+prerequisite-patch-id: 31784fa7a3ee5c178b2f1ffa97c1dd7c1d3d898a
+prerequisite-patch-id: 5810f43cde9c24ee318d680c1852b3ded18f3aa0
+prerequisite-patch-id: 012c9c8ba4e290532a1b7f8642274b7c5f252e03
+prerequisite-patch-id: a57d576be42d5061bba453f0d5960132be55a1ff
+prerequisite-patch-id: e34a75fb6f7e01455dd5ca734dacad66b12de06c
+prerequisite-patch-id: cc7abadd0354d14bad0cac1fbacda14ab9d4e02b
+prerequisite-patch-id: c0276686c0247cb2385c56b96cbfd6de5128415c
+prerequisite-patch-id: 100c47538870af63194b407fae06183fee85fc09
+prerequisite-patch-id: 3a3b3e40f5fba785857091dda909d22bfc5e2d0e
+-- 
+2.47.3
+
