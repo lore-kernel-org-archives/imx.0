@@ -1,150 +1,187 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD363B42C1;
-	Wed, 15 Jul 2026 16:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E8A189F43;
+	Wed, 15 Jul 2026 17:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784134655; cv=none; b=NGPPdk3uqasUcQR0Sx2LK48hWFE4sodbLxx7+oLHlLwsu4AMC5c36iDcNesz1KUnYaKeIGrJTnoXp10Qpnxpbg4fo5NtQMZ0Md8gN+fiZ6RNFJ5KyGLW/zaX553ZiU9yXmW0FbWQ7MbX9HZXSMO+vrxlneSZoDmzufgve2bX4zY=
+	t=1784134809; cv=none; b=TfT6IjbYz3qnWVxof2R3ysRT6S5fYgzFd+Ol2nEuHYSdoEmv7cAVrIN5jBbNX0lleXXFfjD3RLn88MG+AmV0lWDasDuWVQfn79EqhCoAXcY9rSevksfOlfkDnPzA1IjkjlGZ7h5nlNc5H4Tw0CK9IJ7qZor6kjs9c7b/gTXf2Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784134655; c=relaxed/simple;
-	bh=Pq4y6qnLtvjviP2Zi8BuhQDTnkCwN/9xPoVMO4J8Gnc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u0oSKWRuEn/SOQM4bisJZ0fREoZ0WpOSiM6zHcfpydKklwqWmu6PTBSZupPW6Y0fRkTt2xtkCfEVT3vCb0HwMQ7xZKRmF6pYWRDstG2LG+eA3USLIsdY04wk1eo1trmF5izy1ftlGRW4upjLLG7GHbneOOQUk9gkqC5Ubfoqpyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=US/Fxzwx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784134809; c=relaxed/simple;
+	bh=jlEmx1cUqAQJMcLDf0Ij7+0iFRi0f4OpMc2+e/n55ro=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=TY3t4shWv5cumGOEBX/csLnwL3G/aBfKhDocVcU4KYyi9oQkba7kQmMNcZc0F4C5q40kHUsOc1u3d6IaBAG9dSMEGY1oHrCLCmKIzisqHHHqIzi9qUtmHhA2yUbOdm2XESsdEZBvBGOxo4nZYgG4lk/EYUZvxWt/QNjE274JkaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFxNMRpm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="US/Fxzwx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DBB1F000E9;
-	Wed, 15 Jul 2026 16:57:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFxNMRpm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B8D1F00A3A;
+	Wed, 15 Jul 2026 17:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784134653;
-	bh=h8IsfLR7lhufmkHDSRLz+r+v8CXY6XC0EXO2JeuAauM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=US/FxzwxUlJ7/bxG680yEC1Jgx0JEE6EQob5n8V6GcuYnJNae2arDR+t2rt/gDPvW
-	 UVgROl+P5QO31pkX/hOgXooXYE9rKNx2/NQcvgVfEn3xn5ELd70EHnh2sbdErwo6n2
-	 S2CYqKtfSQavVU3lOyI6YFS8otqiWyQE5U+FRUQBmDyezlSnS+1eVA4XhoenOAVA8V
-	 tsPjcNubS7CL+LRDh84LqHRvFz+uH66YSksb5lXVaU6Ls/F5qgVS6MVxTVJV+2rZzl
-	 jLxuf8hW90YeOlCbr7YXhwKsETv16YdoAoprc8OFw7WAgUC9kxbljQHRF0N0MajefI
-	 RxSJbYqATxaAA==
-Date: Wed, 15 Jul 2026 18:57:24 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: hongxing.zhu@oss.nxp.com
-Cc: frank.li@nxp.com, jingoohan1@gmail.com, l.stach@pengutronix.de, 
-	lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Richard Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v1] PCI: dwc: Add force_l2 flag for platforms requiring
- L2 entry without D3cold
-Message-ID: <4d77g33u465lemzlal4mtf4b7vqxgrmjgtoars2yypbyuaz2ae@rrqsfc3ml4af>
-References: <20260706024752.3256106-1-hongxing.zhu@oss.nxp.com>
+	s=k20260515; t=1784134807;
+	bh=7UqIQL4muGvHCksA8ErHFmJKp05TCdFLaTRJ1TsOnp4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=kFxNMRpmqcLSf6rzvECbJVv+GEHdzxlMwMpGdd8QOx9S7ZibfByR3+sF/zez4yQrd
+	 y5Gk1eZbP4jAh002BHdYM7YuItf+ujYjmQ35FRm6TWCfRO4+drh13RMNF22F6FhaqD
+	 HJxhqCwmjdSiPkrdZfV33o1VYt5ysOURLF8oSc79TgvJrzvl9pK8JMhVJIpxEeTpBS
+	 OcoIns3jqFpD2xaz4/+8QUK1e1SIfwbndi30rl/0OlC44gXX+qBJwhsgtrvlTJRu1x
+	 O6AWiecURnjRBCej2kNIlbODq1iG3kyY11z2emvkVBuE+/QpjSiS1V6TWbqrO9siKr
+	 E3yR/ojtlJKUw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 2/3] arm64: dts: freescale: Add support for Variscite
+ VAR-SOM-MX8 QuadMax
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
+Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, conor+dt@kernel.org
+In-Reply-To: <41ef8c2a7c390ae5703c212e8b51fdd20ba9237c.1784133402.git.stefano.r@variscite.com>
+References: <cover.1784133402.git.stefano.r@variscite.com>
+ <41ef8c2a7c390ae5703c212e8b51fdd20ba9237c.1784133402.git.stefano.r@variscite.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 15 Jul 2026 17:00:06 +0000
+Message-Id: <20260715170007.63B8D1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260706024752.3256106-1-hongxing.zhu@oss.nxp.com>
 
-On Mon, Jul 06, 2026 at 10:47:52AM +0800, hongxing.zhu@oss.nxp.com wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
-> 
-> Some platforms like i.MX have their PCIe RC controllers powered off
-> during system suspend, requiring full re-initialization on resume.
-> These platforms need to enter L2 state to properly notify endpoints
-> before power loss, even when D3cold is not supported.
-> 
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] The CMA allocation range starting at 0xC0000000 falls entirely out=
+side the statically defined 1GB memory node bounds.
+- [High] Assigning a 3.3V regulator to the 1.8V WM8904 codec supply pins vi=
+olates absolute maximum hardware ratings.
+- [Medium] Delegating WiFi/Bluetooth hardware initialization to user space =
+scripts bypasses kernel power management and is a known DT anti-pattern.
+- [Medium] sai7 targets the wrong LPCG clock index (IPG clock instead of MC=
+LK) for its assigned clocks, leading to incorrect audio clock configuration.
+--
 
-So during suspend, RC goes down but the EP stays powered ON? And due to RC
-suddenly going down, EP is observing LDn?
+--- Patch [2]: [PATCH v4 2/3] arm64: dts: freescale: Add support for Varisc=
+ite VAR-SOM-MX8 QuadMax ---
+commit 62ffa3edc88c7bf11df029d0ed1df55635d9355b
+Author: Stefano Radaelli <stefano.r@variscite.com>
 
-Can you control RC power during suspend from pci-imx6 driver? I guess not.
+arm64: dts: freescale: Add support for Variscite VAR-SOM-MX8 QuadMax
 
-Also, is this behavior applicable to all i.MX6 platforms? If so, how the suspend
-worked before?
+This adds device tree support for the Variscite VAR-SOM-MX8 QuadMax system
+on module. It enables module-specific peripherals like the i.MX8 QuadMax MP=
+U,
+LPDDR4 memory, eMMC, Ethernet, WM8904 codec audio, and WIFI6/Bluetooth.
+Carrier board interfaces are left disabled by default.
 
-> Add a force_l2 flag to allow platform drivers to request L2 entry
-> during suspend regardless of D3cold capability, and enable it for
-> i.MX PCIe controllers.
-> 
+Link: https://variscite.com/system-on-module-som/i-mx-8/i-mx-8-quadmax-quad=
+plus/var-som-mx8/
 
-PCIe base spec r7.0, sec 5.2, mentions that the system software should
-transition the device into D3Hot before broadcasing the PME_Turn_Off message.
-So here we'd be violating that section of the spec if the endpoint is in
-non-D3Hot state.
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8qm-var-som.dtsi
+> new file mode 100644
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi
+> @@ -0,0 +1,531 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+[ ... ]
+> +	memory@80000000 {
+> +		device_type =3D "memory";
+> +		reg =3D <0x00000000 0x80000000 0 0x40000000>;
+> +	};
+[ ... ]
+> +	reserved-memory {
+> +		#address-cells =3D <2>;
+> +		#size-cells =3D <2>;
+> +		ranges;
+[ ... ]
+> +		/* global autoconfigured region for contiguous allocations */
+> +		linux,cma {
+> +			compatible =3D "shared-dma-pool";
+> +			/* VAR-SOM-MX8QM doesn't have 1GB variant */
+> +			alloc-ranges =3D <0 0xc0000000 0 0x3c000000>;
 
-But honestly, I don't have a better solution than intiating L2 entry sequence
-forcefully. Atleast, it should be documented in the comments and patch
-description.
+[Severity: High]
+Does this CMA allocation range fall entirely outside the statically defined
+system RAM?
 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c             | 5 +++++
->  drivers/pci/controller/dwc/pcie-designware-host.c | 8 ++++++--
->  drivers/pci/controller/dwc/pcie-designware.h      | 5 +++++
->  3 files changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index f55a68f60eea9..ea0b4eb03c1d0 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1966,6 +1966,11 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  		 */
->  		imx_pcie_add_lut_by_rid(imx_pcie, 0);
->  	} else {
-> +		/*
-> +		 * i.MX RC is powered off during suspend, force L2 entry to
-> +		 * ensure proper endpoint notification before power loss.
-> +		 */
-> +		pci->pp.force_l2 = true;
->  		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
->  			pci->pp.skip_l23_ready = true;
->  		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_KEEP_MSI_CAP))
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> index 06722259d2e37..e3f022d2d453a 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> @@ -1222,14 +1222,18 @@ static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
->  
->  int dw_pcie_suspend_noirq(struct dw_pcie *pci)
->  {
-> -	bool pme_capable = false;
-> +	bool d3cold, pme_capable = false;
->  	int ret = 0;
->  	u32 val;
->  
->  	if (!dw_pcie_link_up(pci))
->  		goto stop_link;
->  
-> -	if (!pci_host_common_d3cold_possible(pci->pp.bridge, &pme_capable))
-> +	d3cold = pci_host_common_d3cold_possible(pci->pp.bridge, &pme_capable);
-> +	/*
-> +	 * Enter L2 if D3cold is possible or platform requires forced L2 entry
-> +	 */
-> +	if (!d3cold && !pci->pp.force_l2)
->  		return 0;
->  
->  	if (pci->pp.ops->pme_turn_off) {
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> index de4b245b1758c..5e88459e0cfa0 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.h
-> +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> @@ -471,6 +471,11 @@ struct dw_pcie_rp {
->  	bool			native_ecam;
->  	bool                    skip_l23_ready;
->  	bool			skip_pwrctrl_off;
-> +	/*
-> +	 * Force L2 entry even if D3cold not possible (e.g., when RC loses
-> +	 * power).
-> +	 */
-> +	bool                    force_l2;
+The memory@80000000 node defined earlier establishes 1GB of memory starting
+at 0x80000000 and ending at 0xC0000000. However, this alloc-ranges property
+starts exactly at 0xC0000000. If the bootloader does not dynamically patch
+the memory node, could this cause CMA initialization to fail or trigger
+panics?
 
-Can it be called, 'suspend_poweroff' to indicate the actual quirk?
+> +			size =3D <0 0x3c000000>;
+> +			linux,cma-default;
+> +			reusable;
+> +		};
+> +	};
+[ ... ]
+> +&i2c0 {
+> +	clock-frequency =3D <100000>;
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_i2c0>;
+> +	status =3D "okay";
+> +
+> +	wm8904: codec@1a {
+> +		compatible =3D "wlf,wm8904";
+> +		reg =3D <0x1a>;
+[ ... ]
+> +		AVDD-supply =3D <&reg_audio_supply>;
+> +		CPVDD-supply =3D <&reg_audio_supply>;
+> +		DBVDD-supply =3D <&reg_audio_supply>;
+> +		DCVDD-supply =3D <&reg_audio_supply>;
 
-- Mani
+[Severity: High]
+Does assigning the 3.3V reg_audio_supply to these 1.8V WM8904 domains viola=
+te
+the absolute maximum hardware ratings?
 
--- 
-மணிவண்ணன் சதாசிவம்
+The reg_audio_supply is defined as a fixed 3.3V regulator, but the maximum
+voltage for WM8904 AVDD/CPVDD is 2.0V and DCVDD is 1.98V. Does this hardware
+description misrepresent the physical setup, or is the hardware actually
+supplied with 3.3V on these pins?
+
+> +		MICVDD-supply =3D <&reg_audio_supply>;
+[ ... ]
+> +&sai7 {
+> +	assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI7_MCLK_SEL>,
+> +			<&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
+> +			<&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BUS>,
+> +			<&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BUS>,
+> +			<&sai7_lpcg 0>;
+
+[Severity: Medium]
+Is sai7 targeting the wrong LPCG clock index here?
+
+This assigns a parent to <&sai7_lpcg 0> (the IPG clock, IMX_LPCG_CLK_0)
+instead of the MCLK (IMX_LPCG_CLK_4). The sai6 node correctly uses
+IMX_LPCG_CLK_4 for reparenting. Does this break the MCLK configuration
+for sai7?
+
+> +	assigned-clock-parents =3D <&aud_pll_div1_lpcg 0>;
+> +	assigned-clock-rates =3D <0>, <786432000>, <98304000>, <24576000>, <983=
+04000>;
+> +	fsl,sai-asynchronous;
+> +	status =3D "okay";
+> +};
+[ ... ]
+> +	pinctrl_wifi: wifigrp {
+> +		fsl,pins =3D <
+> +			/* GPIOs used by user space WiFi init */
+> +			IMX8QM_SCU_GPIO0_07_SCU_DSC_RTC_CLOCK_OUTPUT_32K	0xc600004c
+> +			IMX8QM_SCU_GPIO0_03_LSIO_GPIO0_IO31			0x06000021
+> +			IMX8QM_SCU_GPIO0_02_LSIO_GPIO0_IO30			0x00000021
+> +			IMX8QM_QSPI1A_DATA0_LSIO_GPIO4_IO26			0x00000021
+> +		>;
+> +	};
+
+[Severity: Medium]
+Does delegating the WiFi and Bluetooth hardware initialization to user space
+scripts bypass kernel power management?
+
+This pinctrl group explicitly reserves pins to be toggled from user space.
+Should the power sequence be modeled in the device tree via mmc-pwrseq-simp=
+le
+or fixed regulators so the kernel can manage power sequencing autonomously
+instead?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1784133402.gi=
+t.stefano.r@variscite.com?part=3D2
