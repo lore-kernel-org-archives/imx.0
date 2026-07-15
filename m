@@ -1,163 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC9048165E;
-	Wed, 15 Jul 2026 14:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB6143D516
+	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 15:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784126311; cv=none; b=i0lX2MNYHxuSR7XuZfcnFSDpODZB/q6wyQS5bLS36gFDwxqkytxd1xUb7BF61OfWA3a8SZ+Kbc+QSdJs+AxQ3hTWmhM8zUy6QPVejU79l4577B9bIIfxHRir3r/b1DOQpB9syryz7bsKaxckWXVEu4KW3SvBNxcz/NDQ6I0R6cg=
+	t=1784127687; cv=none; b=arybP3PSEEY/kLy/aNY/PRjXKqxPNmzy6+cHClhu+FRIIjGmK8MJI6ABt9G3xBemL03H4ZptvSUorDVYg4iSB36Q9rpDu8TTlIEUNjvg/4xGIXU6h1+PTaEpv06YuauRTMoqnADWoZaZmoFJyhFizrgu9qAtczQ15tpSYPByHXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784126311; c=relaxed/simple;
-	bh=Jb7kFcmNYVymDCC+BdCblS2A453NigHo4lz0bhHonOY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m0p/G4o4QMUCXlLDprurxhGBR1yANMoJYk0GhlV8YcptL9Mk4k/OzAo5QWmq1s9SScTyXvtqXEL5omVe/wmpHrsPFE5LZG/yhVK5QKaKpFBx84Y2Emh/ojgay5Y8KOmSe3D08gUcMFrH/lyZwsURuBnittJPvIgMtJ4+wMVe0fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TM5Rzz1u; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TM5Rzz1u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5A91F000E9;
-	Wed, 15 Jul 2026 14:38:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784126302;
-	bh=p3bXxUe1YA2cg2wUt1Er8zoc65NLXK8fX+dBGveP4o0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TM5Rzz1uzDQHrG61nEX0C/1QEb5N2lVThMVbMvD5hy/H8w939yHvvJFLHysHJ8Q/1
-	 pAndvfq9jzVwui9He9mXITp6qkGFYwmGviqyAWD81alGzYa2JtdlVgzBwf/kmVwOjK
-	 t9/RCu+AFXSVP7kr4M5VUWLPZOQAsC+c5bYXXiiqaHofAG/TNXFD1c1fvw+bNEcXtA
-	 absqFxIqBOg7jkz0WK7+OBKhe7OLDKyXYT4MlnCHGXqKlYBVCgUEzLcLONOMZZ+gQa
-	 uMfIrfXuYYg8LHUChoGhDeMRR1yqECaECLY6Biid/HxyikJHZK8YvoRG15NFTed112
-	 0Pa8zrMims5Rg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/7] arm: dts: st: Import optee node from u-boot
- device trees
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Mathieu Dubois-Briand" <mathieu.dubois-briand@bootlin.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260715-mathieu-uboot-dts-import-v2-3-bc931417bd0e@bootlin.com>
+	s=arc-20240116; t=1784127687; c=relaxed/simple;
+	bh=9B8mJW78aKeY26YNWzJNj0aTbMWSb6IGklsxm96nXnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R/blX+93EDMJT+1Sn6RSXlOa3KdLbA10LkxakIaBL6deZTmRLKb+cjJr4qPrXe2pDSTPTXBMXMcWrLfdtgyxOSluKt9BD5f2c3iFxlK2xRZhvr3HzKfq5vCz6FWWqp98b43Yt0jI15PNhw9gYWHSShlgnyhNgVpVUzws0VE2Ifo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9A94B201CD0;
+	Wed, 15 Jul 2026 17:01:11 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wk16l-001xBS-1i;
+	Wed, 15 Jul 2026 17:01:11 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wk16l-0000000BlOO-1dv7;
+	Wed, 15 Jul 2026 17:01:11 +0200
+Date: Wed, 15 Jul 2026 17:01:11 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Wei Xu <xuwei5@hisilicon.com>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Avi Fishman <avifishman70@gmail.com>, 
+	Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, 
+	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, 
+	Benjamin Fair <benjaminfair@google.com>, devicetree@vger.kernel.org, Tom Rini <trini@konsulko.com>, 
+	imx@lists.linux.dev, openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>, Peter Robinson <pbrobinson@gmail.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 0/7] Import optee node from u-boot device trees
+Message-ID: <f225zh7v6z2a2lwbtk3lhw3mcsttneba364de5vjl4pcj5gr65@ckuo6hyj46vx>
 References: <20260715-mathieu-uboot-dts-import-v2-0-bc931417bd0e@bootlin.com>
- <20260715-mathieu-uboot-dts-import-v2-3-bc931417bd0e@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 14:38:22 +0000
-Message-Id: <20260715143822.7D5A91F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260715-mathieu-uboot-dts-import-v2-0-bc931417bd0e@bootlin.com>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Critical] The `bootph-pre-ram` property is missing from the `optee@fe000=
-000` node and its parent `reserved-memory` node in `stm32mp157c-ed1.dts`, w=
-hich will crash U-Boot on this board.
-- [High] The patch unconditionally reserves 32MB of RAM for OP-TEE in the b=
-ase board device trees, permanently removing this memory for users booting =
-without OP-TEE.
-- [High] The OP-TEE nodes were added to the DK1 base DT but omitted from th=
-e DK2 base DT, which will silently break OP-TEE support for DK2 when U-Boot=
- drops its local overrides.
-- [Low] The newly added `optee@de000000` and `optee@fe000000` nodes duplica=
-te definitions that already exist in the corresponding `-scmi.dts` variants.
---
+Hi Mathieu,
 
---- Patch [3]: [PATCH v2 3/7] arm: dts: st: Import optee node from u-boot d=
-evice trees ---
-commit 455c0e25ccd33494a8e1d7d65c591a7e9158f5c7
-Author: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+On 26-07-15, Mathieu Dubois-Briand wrote:
+> In a recent discussion on the U-Boot mailing list [1], it was found out
+> that several platforms were adding the OP-TEE device tree-node thanks to
+> some U-Boot specific dtsi. This was deemed as a bad solution, as this
+> should instead be added in the DTS files hosted in Linux sources,
+> particularly for platforms already using the "upstream" (Linux) device
+> tree.
+> 
+> Most i.MX8 and i.MX9 platforms are already using OF_UPSTREAM
+> configuration in U-Boot. Some are not, but are fairly new, so we can
+> expect them to use the Linux device tree once their support is a bit
+> more stable. So they will benefit from these changes once upstream
+> device trees are refreshed in U-Boot.
+> 
+> STM32MP157 platforms are using OF_UPSTREAM, with similar consequences.
+> 
+> The two other platforms are using an U-Boot specific device tree, yet
+> adding these nodes on the kernel side will help to reduce the
+> differences.
+> 
+> The zynqmp platform was ignored, as a similar change was previously
+> reverted [2]. I also ignored a few platforms without direct match
+> between U-Boot and Linux dts files.
 
-arm: dts: st: Import optee node from u-boot device trees
+We do the same in barebox bootloader for all OP-TEE supported i.MX
+platforms. Therefore this change would cause a regression for barebox as
+well.
 
-This commit imports OP-TEE firmware nodes and reserved-memory regions from
-U-Boot device trees into the upstream kernel device trees. The goal is to
-allow U-Boot to drop its local additions and use the kernel device trees
-directly for these platforms.
+Furthermore, this change would cause an anyoing dmesg warning on
+platforms which don't use OP-TEE at all, because it's not ensured that
+the OP-TEE firmware was actually loaded.
 
-> diff --git a/arch/arm/boot/dts/st/stm32mp157a-dk1.dts b/arch/arm/boot/dts=
-/st/stm32mp157a-dk1.dts
-> index 0da3667ab1e0e..236da589eb909 100644
-> --- a/arch/arm/boot/dts/st/stm32mp157a-dk1.dts
-> +++ b/arch/arm/boot/dts/st/stm32mp157a-dk1.dts
+Therefore the bootloader adds the OP-TEE nodes only if the OP-TEE binary
+was actually loaded.
 
-[ ... ]
+Therefore I vote for dynamic adding the nodes and not this static
+approach.
 
-> @@ -22,4 +22,21 @@ aliases {
->  	chosen {
->  		stdout-path =3D "serial0:115200n8";
->  	};
-> +
-> +	reserved-memory {
-> +		bootph-pre-ram;
-> +
-> +		optee@de000000 {
+Furthermore OP-TEE can provide a DTB overlay fragment with all the
+required nodes, which you only need to apply within the bootloader. This
+is cleanest way. You only need to provide OP-TEE the DTB location during
+runtime.
 
-[Severity: High]
-Since stm32mp157c-dk2.dts does not include stm32mp157a-dk1.dts, won't adding
-this only to the dk1-specific file silently break OP-TEE on the DK2 board o=
-nce
-U-Boot drops its local overrides? Should these nodes be placed in the shared
-stm32mp15xx-dkx.dtsi instead?
+Regards,
+  Marco
 
-[Severity: High]
-Does this unconditionally consume 32MB of RAM for users booting the standard
-stm32mp157a-dk1.dtb without OP-TEE?=20
+> Also add the OP-TEE node on the imx93 FRDM platform device tree: while
+> this is not part of U-Boot code today, it is the change that triggered
+> the U-Boot discussion.
+> 
+> [1]: https://lore.kernel.org/all/20260706145906.GW749385@bill-the-cat/
+> [2]: https://lore.kernel.org/all/20251125-revert-zynqmp-optee-v1-1-d2ce4c0fcaf6@vaisala.com/
+> 
+> Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+> ---
+> Changes in v2:
+> - Splitting i.MX8 SoC changes in a separate commit.
+> - Adding bootph-pre-ram on stm32mp157c-ed1 reserved memory.
+> - Rebased on v7.2-rc3.
+> - Link to v1: https://lore.kernel.org/r/20260710-mathieu-uboot-dts-import-v1-0-ffe0210e50c9@bootlin.com
+> 
+> ---
+> Mathieu Dubois-Briand (7):
+>       arm64: dts: freescale: Import optee node from u-boot i.MX91 and i.MX93 device trees
+>       arm64: dts: freescale: Import optee node from u-boot i.MX8 device trees
+>       arm: dts: st: Import optee node from u-boot device trees
+>       arm: dts: st: stm32mp157c-ed1: Add bootph-pre-ram tag on optee reserved memory
+>       arm64: dts: hisilicon: hi3798cv200-poplar: Import optee node from u-boot device tree
+>       arm64: dts: nuvoton: npcm845-evb: Import optee node from u-boot device tree
+>       arm64: dts: freescale: imx93-frdm: Add OP-TEE device tree node
+> 
+>  arch/arm/boot/dts/st/stm32mp157a-dk1.dts                | 17 +++++++++++++++++
+>  arch/arm/boot/dts/st/stm32mp157c-ed1.dts                | 14 ++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx8mm.dtsi               |  7 +++++++
+>  arch/arm64/boot/dts/freescale/imx8mn.dtsi               |  7 +++++++
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi               |  7 +++++++
+>  arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts       |  7 +++++++
+>  arch/arm64/boot/dts/freescale/imx91-11x11-frdm.dts      |  7 +++++++
+>  arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts  |  7 +++++++
+>  arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts       |  7 +++++++
+>  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts      |  7 +++++++
+>  arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts         |  7 +++++++
+>  .../arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts |  7 +++++++
+>  arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts  |  7 +++++++
+>  .../arm64/boot/dts/freescale/imx93-var-som-symphony.dts |  7 +++++++
+>  arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts    |  7 +++++++
+>  arch/arm64/boot/dts/nuvoton/nuvoton-npcm845-evb.dts     |  7 +++++++
+>  16 files changed, 129 insertions(+)
+> ---
+> base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+> change-id: 20260710-mathieu-uboot-dts-import-69f51bc097d7
+> 
+> Best regards,
+> -- 
+> Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+> 
+> 
+> 
 
-ST provides dedicated *-scmi.dts variants for OP-TEE environments that alre=
-ady
-contain these exact memory reservations. By placing this in the base device
-tree, it looks like standard non-secure users permanently lose this memory =
-to
-the memblock allocator.
+-- 
+#gernperDu 
+#CallMeByMyFirstName
 
-[Severity: Low]
-Since stm32mp157a-dk1-scmi.dts includes this base file, does adding
-optee@de000000 here duplicate the node already existing in the -scmi.dts
-variant?
-
-> +			reg =3D <0xde000000 0x02000000>;
-> +			no-map;
-> +			bootph-pre-ram;
-> +		};
-> +	};
-
-[ ... ]
-
-> diff --git a/arch/arm/boot/dts/st/stm32mp157c-ed1.dts b/arch/arm/boot/dts=
-/st/stm32mp157c-ed1.dts
-> index 49dd555cc228c..7da7260350869 100644
-> --- a/arch/arm/boot/dts/st/stm32mp157c-ed1.dts
-> +++ b/arch/arm/boot/dts/st/stm32mp157c-ed1.dts
-
-[ ... ]
-
-> @@ -70,6 +70,18 @@ retram: retram@38000000 {
->  			reg =3D <0x38000000 0x10000>;
->  			no-map;
->  		};
-> +
-> +		optee@fe000000 {
-
-[Severity: Critical]
-Is the bootph-pre-ram property missing here and in the parent reserved-memo=
-ry
-node?=20
-
-During pre-relocation, U-Boot allocates memory downwards from the top of RAM
-where OP-TEE also resides. Without bootph-pre-ram, U-Boot's DT parser will
-ignore the reservation. Won't this cause U-Boot to relocate its code and st=
-ack
-directly into OP-TEE's secure memory space and trigger a synchronous abort?
-
-[Severity: Low]
-Similar to the DK1 file, does adding optee@fe000000 to the base ED1 device
-tree duplicate the reservation that already exists in the
-stm32mp157c-ed1-scmi.dts variant?
-
-> +			reg =3D <0xfe000000 0x02000000>;
-> +			no-map;
-> +		};
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715-mathieu-ub=
-oot-dts-import-v2-0-bc931417bd0e@bootlin.com?part=3D3
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
