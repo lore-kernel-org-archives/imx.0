@@ -1,52 +1,95 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB6143D516
-	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 15:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C54347B426
+	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 15:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784127687; cv=none; b=arybP3PSEEY/kLy/aNY/PRjXKqxPNmzy6+cHClhu+FRIIjGmK8MJI6ABt9G3xBemL03H4ZptvSUorDVYg4iSB36Q9rpDu8TTlIEUNjvg/4xGIXU6h1+PTaEpv06YuauRTMoqnADWoZaZmoFJyhFizrgu9qAtczQ15tpSYPByHXc=
+	t=1784128256; cv=none; b=jqCTs7H3fp+WGvfS7wSreCpu+/3UulrbO6W5ABBgLwAZklOgQxVRM9Np0FoY+2D8j5aqei3KCWOhnyeRSByt52eGSi+MNvG5oYVOa4L8gNWTILNrez+cqulzVZD/F12hKMqYRrbn3/ctHdk0IYrKh78VhSKMX75pw/agYFTDZwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784127687; c=relaxed/simple;
-	bh=9B8mJW78aKeY26YNWzJNj0aTbMWSb6IGklsxm96nXnk=;
+	s=arc-20240116; t=1784128256; c=relaxed/simple;
+	bh=cUtM9nCXCjAw/x4a+bjTLJgqufLVfuAa653qViepFAQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R/blX+93EDMJT+1Sn6RSXlOa3KdLbA10LkxakIaBL6deZTmRLKb+cjJr4qPrXe2pDSTPTXBMXMcWrLfdtgyxOSluKt9BD5f2c3iFxlK2xRZhvr3HzKfq5vCz6FWWqp98b43Yt0jI15PNhw9gYWHSShlgnyhNgVpVUzws0VE2Ifo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9A94B201CD0;
-	Wed, 15 Jul 2026 17:01:11 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1wk16l-001xBS-1i;
-	Wed, 15 Jul 2026 17:01:11 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1wk16l-0000000BlOO-1dv7;
-	Wed, 15 Jul 2026 17:01:11 +0200
-Date: Wed, 15 Jul 2026 17:01:11 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Wei Xu <xuwei5@hisilicon.com>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Avi Fishman <avifishman70@gmail.com>, 
-	Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, 
-	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, 
-	Benjamin Fair <benjaminfair@google.com>, devicetree@vger.kernel.org, Tom Rini <trini@konsulko.com>, 
-	imx@lists.linux.dev, openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>, Peter Robinson <pbrobinson@gmail.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 0/7] Import optee node from u-boot device trees
-Message-ID: <f225zh7v6z2a2lwbtk3lhw3mcsttneba364de5vjl4pcj5gr65@ckuo6hyj46vx>
-References: <20260715-mathieu-uboot-dts-import-v2-0-bc931417bd0e@bootlin.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=M/0zr5U6mQnZ6TZ0bcCn7BTNBEH1vJTdexlhUYlawTtQEnuAvOrP3tplNE4McUO0sPcULGugxjzWE9qnswqc5qf1WhIHD2TltuFJa2d2+5hRun3wrbeqKCmCI+Y05wn0DNFwTHR1A9JWJbPjXwlgBNkm15GWalDO3cNL+fWlEdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jl30/8ul; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jl30/8ul"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c6b67d5fa1so92869255ad.2
+        for <imx@lists.linux.dev>; Wed, 15 Jul 2026 08:10:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1784128253; x=1784733053; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0f1V+XLP/pNL55h1xnCAtGPJkQJwQhVW+vGDr0a9svY=;
+        b=Jl30/8ulTO/sr+Ljs1R8MlZPlnik59AFmAlsml0dYYY1FoM93eMfhFL5mSxczDBEmz
+         Wm7u+AFQvLUmarYmmu3x+81qmuDH3vuZuWolz/41IkTkRfJK0Qs/mUi3UOBiP+t4FvSW
+         lyKR7xFUXn5GuvOGeBeTJIYKAs3ijTXXNEtdTr4coG5GoWkV0nVqgjNJnMIj6zSJVM51
+         NMzSCBymkUxaMiY/pYyEH/NNOBKOW23OsS5SJhzwh+aw7IN9mhHadOAcpQ5wS23sdIu8
+         DGtd9qHbmV2OSnzaLAQnGAAWy/MG6taui2kCJXhrg6LnTEbEnBkDPOVZpbY2n9O3iOmv
+         AO6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784128253; x=1784733053;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0f1V+XLP/pNL55h1xnCAtGPJkQJwQhVW+vGDr0a9svY=;
+        b=AeOjQKeo1rHOQ7Ic90f8RsbdQ0uixxlW3uuRSrLuuUeip+v+hkMN9krtULXil/g7lr
+         DA2Ht4lIdYn44CSu/m0I7QGIeZ4D1hDjGmyDl/lmabZXl4ypd+KY7F+FY/hlJm2D6M2r
+         7zXG95xKWe54S/TqrgIYIjMTljzoTOczK7HJvnoqu/eMjYpL2TxILMuw29wDR97Fn7E9
+         RNkC+COqGQjx2eSUmj+gE63FhdZleoWpC+/4DGtShUhYrNDtkpInXSftw7A172sqvCRe
+         L/9mIDrHkE1kzWltPQTdS2QVHg7S083+lBmMEH2tMHLdT4pO8u9ODkRnXKNSE85bk33G
+         80xg==
+X-Forwarded-Encrypted: i=1; AHgh+RovFqRNlqvy4yBQVFu7biFJo/KP9/EU/FNbmy/3+v7Wb2NO3gxvmIHNXiyKeqXOTY9zuHs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzkloK13mqVFy7R2qN/WUVloQOkA1ChGApeCkakN2gVNtPbTuNb
+	vvNBBJfkR8cSY8E5mt6RxorZNvNrqfJT3sP7Xdwh7fKP+e/XlkcfNjJJMSZ5TY4tE9A=
+X-Gm-Gg: AfdE7cn19le54/F2nzfM2uk7jzS01YtPYgK+gXVC4qUABgdkiWSqivj1TE/3aBQkSjx
+	l02/FhoA/2HM19J3a8Ac2dZhEjKG6z9DavakO6eVG8mMbl8o5M0aGFBDUBxyVWAUZ8YpLKlzVZO
+	BbXKS5WIEfpvikUXBQhjYZFy22dSv0PkBV7WwLfJhZ19SOaduwAn90osHmqt7fxF4KCaXZcFdFZ
+	TcgXDws/trJsiBZNOfzANOfymJan5cfJ5lOdVabCUrLckC2bykqPomE/FP0b5qqpAOXC76ByHt/
+	wYBuKlpyiKv8IIPus4rbeeZyVglKiYPwE1oYFM4oA98udWeLcoeuoGNnCM3OQV8r60yTZkK/R2v
+	B86stcLnesTvAuotOJgJVIILGf1Q/v07FvPRxvNuYVThYWmk6cXK27Tv8s7Uwcd5RSdl883R6jy
+	/wYgPrFZ3gci3PwdEb4AekduObaj8=
+X-Received: by 2002:a17:903:1a2e:b0:2cc:eec6:558 with SMTP id d9443c01a7336-2cef14ad047mr75726665ad.39.1784128252771;
+        Wed, 15 Jul 2026 08:10:52 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:4f38:9a5e:fd18:7a9b])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf0fdb3a0asm4417715ad.0.2026.07.15.08.10.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 08:10:52 -0700 (PDT)
+Date: Wed, 15 Jul 2026 09:10:49 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: "Shenwei Wang (OSS)" <shenwei.wang@oss.nxp.com>
+Cc: Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>, Frank Li <frank.li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	dl-linux-imx <linux-imx@nxp.com>,
+	Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
+	"b-padhi@ti.com" <b-padhi@ti.com>, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver over
+ rpmsg bus
+Message-ID: <alei-dNIXo7Z7uT1@p14s>
+References: <20260625155432.815185-1-shenwei.wang@oss.nxp.com>
+ <20260625155432.815185-2-shenwei.wang@oss.nxp.com>
+ <alUdg9iTysXCFUa5@p14s>
+ <PAXPR04MB918568AE7B2364EC9D16427689F92@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,114 +98,107 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260715-mathieu-uboot-dts-import-v2-0-bc931417bd0e@bootlin.com>
+In-Reply-To: <PAXPR04MB918568AE7B2364EC9D16427689F92@PAXPR04MB9185.eurprd04.prod.outlook.com>
 
-Hi Mathieu,
+On Tue, Jul 14, 2026 at 07:04:08PM +0000, Shenwei Wang (OSS) wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > Sent: Monday, July 13, 2026 12:17 PM
+> > To: Shenwei Wang (OSS) <shenwei.wang@oss.nxp.com>
+> > Cc: Linus Walleij <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>;
+> > Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof
+> > Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn
+> > Andersson <andersson@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha Hauer
+> > <s.hauer@pengutronix.de>; Shuah Khan <skhan@linuxfoundation.org>; linux-
+> > gpio@vger.kernel.org; linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> > <festevam@gmail.com>; Shenwei Wang <shenwei.wang@nxp.com>; Peng Fan
+> > <peng.fan@nxp.com>; devicetree@vger.kernel.org; linux-
+> > remoteproc@vger.kernel.org; imx@lists.linux.dev; linux-arm-
+> > kernel@lists.infradead.org; dl-linux-imx <linux-imx@nxp.com>; Arnaud
+> > POULIQUEN <arnaud.pouliquen@foss.st.com>; b-padhi@ti.com; Andrew Lunn
+> > <andrew@lunn.ch>
+> > Subject: Re: [PATCH v14 1/5] docs: driver-api: gpio: rpmsg gpio driver over rpmsg
+> > bus
+> > 
+> > > +
+> > > +The RPMSG message consists of a 8-byte packet with the following layout:
+> > > +
+> > > +.. code-block:: none
+> > > +.. code-block:: none
+> > > +
+> > > +   +------+------+--------+
+> > > +   | 0x00 | 0x01 |  0x02  |
+> > > +   |   2  | line | trigger|
+> > > +   +------+------+--------+
+> > 
+> > 2 things here:
+> > 
+> > 1) You did not include messages that mask and unmask interrupts at the driver
+> > side.
+> > 
+> > 2) We are carrying virtio-gpio messages on top of RPMSG and as such, this whole
+> > protocol should be about thar:
+> > 
+> > +------+------+--------+--------
+> > | 0x00 |       payload         |
+> > |  Q   |                       |
+> > +------+------+--------+--------
+> > 
+> > Q = 0 requestq
+> > Q = 1 eventq
+> > 
+> > The "payload" part is simply the format of the messages as found in the virtio-
+> > gpio specification.  From there, the only thing left to mention is which messages
+> > are not supported, i.e get line names.
+> > 
+> > > +
+> > > +- **line**: The GPIO line (pin) index of the port.
+> > > +
+> > > +- **trigger**: Optional parameter to indicate the trigger event type.
+> > 
+> > Not part of the spec - remove.
+> > 
+> 
+> The two fields above are required for rpmsg-gpio, but not for virtio-gpio.
 
-On 26-07-15, Mathieu Dubois-Briand wrote:
-> In a recent discussion on the U-Boot mailing list [1], it was found out
-> that several platforms were adding the OP-TEE device tree-node thanks to
-> some U-Boot specific dtsi. This was deemed as a bad solution, as this
-> should instead be added in the DTS files hosted in Linux sources,
-> particularly for platforms already using the "upstream" (Linux) device
-> tree.
-> 
-> Most i.MX8 and i.MX9 platforms are already using OF_UPSTREAM
-> configuration in U-Boot. Some are not, but are fairly new, so we can
-> expect them to use the Linux device tree once their support is a bit
-> more stable. So they will benefit from these changes once upstream
-> device trees are refreshed in U-Boot.
-> 
-> STM32MP157 platforms are using OF_UPSTREAM, with similar consequences.
-> 
-> The two other platforms are using an U-Boot specific device tree, yet
-> adding these nodes on the kernel side will help to reduce the
-> differences.
-> 
-> The zynqmp platform was ignored, as a similar change was previously
-> reverted [2]. I also ignored a few platforms without direct match
-> between U-Boot and Linux dts files.
+I agree that the line is required but not the trigger.  The driver (using the
+same terminology as the specification) knows what trigger the pin has been
+configured for.  Adding the trigger information to the interrupt notification is
+redundant.
 
-We do the same in barebox bootloader for all OP-TEE supported i.MX
-platforms. Therefore this change would cause a regression for barebox as
-well.
-
-Furthermore, this change would cause an anyoing dmesg warning on
-platforms which don't use OP-TEE at all, because it's not ensured that
-the OP-TEE firmware was actually loaded.
-
-Therefore the bootloader adds the OP-TEE nodes only if the OP-TEE binary
-was actually loaded.
-
-Therefore I vote for dynamic adding the nodes and not this static
-approach.
-
-Furthermore OP-TEE can provide a DTB overlay fragment with all the
-required nodes, which you only need to apply within the bootloader. This
-is cleanest way. You only need to provide OP-TEE the DTB location during
-runtime.
-
-Regards,
-  Marco
-
-> Also add the OP-TEE node on the imx93 FRDM platform device tree: while
-> this is not part of U-Boot code today, it is the change that triggered
-> the U-Boot discussion.
 > 
-> [1]: https://lore.kernel.org/all/20260706145906.GW749385@bill-the-cat/
-> [2]: https://lore.kernel.org/all/20251125-revert-zynqmp-optee-v1-1-d2ce4c0fcaf6@vaisala.com/
+> In the rpmsg-gpio case, interrupt detection and handling occur on the remote processor. The 
+> interrupt information (such as the GPIO line and trigger type) must therefore be sent to Linux 
+> through this notification message.
 > 
-> Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-> ---
-> Changes in v2:
-> - Splitting i.MX8 SoC changes in a separate commit.
-> - Adding bootph-pre-ram on stm32mp157c-ed1 reserved memory.
-> - Rebased on v7.2-rc3.
-> - Link to v1: https://lore.kernel.org/r/20260710-mathieu-uboot-dts-import-v1-0-ffe0210e50c9@bootlin.com
+> In contrast, for virtio-gpio, interrupt handling is performed on the local processor. Since Linux already 
+> has all the necessary interrupt context, the information is not needed.
 > 
-> ---
-> Mathieu Dubois-Briand (7):
->       arm64: dts: freescale: Import optee node from u-boot i.MX91 and i.MX93 device trees
->       arm64: dts: freescale: Import optee node from u-boot i.MX8 device trees
->       arm: dts: st: Import optee node from u-boot device trees
->       arm: dts: st: stm32mp157c-ed1: Add bootph-pre-ram tag on optee reserved memory
->       arm64: dts: hisilicon: hi3798cv200-poplar: Import optee node from u-boot device tree
->       arm64: dts: nuvoton: npcm845-evb: Import optee node from u-boot device tree
->       arm64: dts: freescale: imx93-frdm: Add OP-TEE device tree node
+> Shenwei
 > 
->  arch/arm/boot/dts/st/stm32mp157a-dk1.dts                | 17 +++++++++++++++++
->  arch/arm/boot/dts/st/stm32mp157c-ed1.dts                | 14 ++++++++++++++
->  arch/arm64/boot/dts/freescale/imx8mm.dtsi               |  7 +++++++
->  arch/arm64/boot/dts/freescale/imx8mn.dtsi               |  7 +++++++
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi               |  7 +++++++
->  arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts       |  7 +++++++
->  arch/arm64/boot/dts/freescale/imx91-11x11-frdm.dts      |  7 +++++++
->  arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts  |  7 +++++++
->  arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts       |  7 +++++++
->  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts      |  7 +++++++
->  arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts         |  7 +++++++
->  .../arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts |  7 +++++++
->  arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts  |  7 +++++++
->  .../arm64/boot/dts/freescale/imx93-var-som-symphony.dts |  7 +++++++
->  arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts    |  7 +++++++
->  arch/arm64/boot/dts/nuvoton/nuvoton-npcm845-evb.dts     |  7 +++++++
->  16 files changed, 129 insertions(+)
-> ---
-> base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
-> change-id: 20260710-mathieu-uboot-dts-import-69f51bc097d7
-> 
-> Best regards,
-> -- 
-> Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-> 
-> 
-> 
-
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+> > Given the refactoring work that is still needed, I will not look at the
+> > implementation.
+> > 
+> > Thanks,
+> > Mathieu
+> > 
+> > > +
+> > > diff --git a/Documentation/driver-api/gpio/index.rst
+> > > b/Documentation/driver-api/gpio/index.rst
+> > > index bee58f709b9a..e5eb1f82f01f 100644
+> > > --- a/Documentation/driver-api/gpio/index.rst
+> > > +++ b/Documentation/driver-api/gpio/index.rst
+> > > @@ -16,6 +16,7 @@ Contents:
+> > >     drivers-on-gpio
+> > >     bt8xxgpio
+> > >     pca953x
+> > > +   gpio-rpmsg
+> > >
+> > >  Core
+> > >  ====
+> > > --
+> > > 2.43.0
+> > >
