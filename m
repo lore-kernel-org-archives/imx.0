@@ -1,212 +1,146 @@
-Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB6141A549;
-	Wed, 15 Jul 2026 18:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93BC431A33;
+	Wed, 15 Jul 2026 18:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784138588; cv=none; b=kF2EkRK6nIbAPacjxo2fcJorg1hOQfDO6gdJdpJoLu49fjMezorS5A0PKAwuGRiN0ooP1QEDUv7oxHrt4ZXh+H9dGF1nHl7gI96l+yYxISohG/LM6hbbsLZZ4kvr9DcI5qNFzE55lTB8c8iHti5eXQXZWMuX5Zwj4hZdD5YmFBI=
+	t=1784138649; cv=none; b=Mf33xn6dvakCUDQONrBO42j3fCrnoGRMUCXRdViw9x9tuAaDAVHcxPAtse53qr11NMl/DWYyhih6NgQhZck999Vd69qW3ZcxWJ38UinewGZCdf/fml/nN2eGYO90DDC6B9HMvmrIAMHdINZ1cYqK5GVWvpgpDjVqMCJFIlniEkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784138588; c=relaxed/simple;
-	bh=ke3E5EttLeWiiEpEeXKV5/D2Jy1tJKCKfZGCrohPCjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RHm1hShlkK/xIIEjVHtHkJmfxMveNY6488VEUJkgPW0QkclbI6zFfDUdg90QLU0txGhWd+BBdfGyb53X7wJCufddzjT7NwUgMU7QktB3ppBCgtipmrTGmSLyUGKPGtjBLOKWAyCsp2zAK67rHaDbbIaIceUG47nEoBcfEnxjYT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by luna.linkmauve.fr (Postfix, from userid 1000)
-	id E9559F40D1B; Wed, 15 Jul 2026 19:52:33 +0200 (CEST)
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Srinivas Kandagatla <srini@kernel.org>
-Cc: Link Mauve <linkmauve@linkmauve.fr>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Lee Jones <lee@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	"Vaibhaav Ram T.L" <vaibhaavram.tl@microchip.com>,
-	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Praveen Teja Kundanala <praveen.teja.kundanala@amd.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Joshua Kinard <linux@kumba.dev>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Salah Triki <salah.triki@gmail.com>,
-	Yury Norov <ynorov@nvidia.com>,
-	David Carlier <devnexen@gmail.com>,
-	Achim Gratz <Achim.Gratz@Stromeko.DE>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Patrick Wicki <patrick.wicki@siemens.com>,
-	Markus Heidelberg <m.heidelberg@cab.de>,
-	Markus Perkins <markus@notsyncing.net>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Kees Cook <kees@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	mfd@lists.linux.dev,
-	linux-i2c@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-rtc@vger.kernel.org,
-	linux-sunxi@lists.linux.dev,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH 0/8] nvmem: make reg_write() take a const void *
-Date: Wed, 15 Jul 2026 19:52:16 +0200
-Message-ID: <20260715175229.24672-1-linkmauve@linkmauve.fr>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1784138649; c=relaxed/simple;
+	bh=AxvVICqh9sKD9vJ4mnVOagf+69/KaAL/ID1Y7fKL9MU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=SkvN5bVCx27M32zGTqiC+wLCxwieUlfXFMTyQqwAsJUKL3sYsJzclD+xDee2uJ+5nGmTJ5lcgj0VQrONpSYhHXLZCPqPjXHb+f6v2LIiLshLyFiJV0AxZ3TuD+9QENsDHEY4S0ZNyjRvCstAiIEifcGLHt1n5OlvkRIsSPRHyDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKuHNa/2; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKuHNa/2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC1F1F000E9;
+	Wed, 15 Jul 2026 18:03:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784138632;
+	bh=+hLdvm5bi4I2pqi5e5o8weLMk1N1xO7kttAv7fJ38vc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jKuHNa/2hlrkqgW4gS/thhfVqTVLy80WzuC8MPPxLC/E2kl0bPlcJtGeLSbvQD3No
+	 QTat5XKZQGKmzmFX3OHAMOq1zpTiHGHIWeom+MXrmdWKyWrdYLPuN8jr/YOVqsy7jG
+	 E/BOsE4J4KnKjUE785UpU1xSQAagbhfAAnNG0uz6uzYfPE9LXnuYUTDoZdikeakdJu
+	 nGi0HEQLP+diJuVmiHLdj4Bm0B8VWtuSpZ7IrKf2LMLDiMwnD4jl1nYJ+rz73RNg3/
+	 lCkAGKWwIqAA7pz1ukvwX5oYjHMRTWUSXBI6HoX2v2RTglHF8gI/96sPZTqk3KyjZT
+	 aUlVPYpzkVdGw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 5/8] iio: pressure: bmp280: make reg_write callback take
+ const void *
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Link Mauve" <linkmauve@linkmauve.fr>
+Cc: mfd@lists.linux.dev, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, ojeda@kernel.org, "Alexandre
+ Belloni" <alexandre.belloni@bootlin.com>, Frank.Li@kernel.org, lee@kernel.org, linux-sunxi@lists.linux.dev, linux-rtc@vger.kernel.org, neil.armstrong@linaro.org
+In-Reply-To: <20260715175229.24672-6-linkmauve@linkmauve.fr>
+References: <20260715175229.24672-1-linkmauve@linkmauve.fr>
+ <20260715175229.24672-6-linkmauve@linkmauve.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 15 Jul 2026 18:03:51 +0000
+Message-Id: <20260715180352.3EC1F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-This callback used to take a mutable void * for no reason, which causes
-the compiler to be unaware that the val buffer should never be modified
-by the callback.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-This was found while drafting the nvmem-provider Rust abstraction.
+New issues:
+- [Low] Syntax error due to 'void void *_val' parameter in qfprom_reg_write.
 
-I’ve split this series based on the subsystem each patch affects, but I
-think it should go through the nvmem tree in one go after gathering the
-acks from the other subsystem maintainers.
+Pre-existing issues:
+- [Critical] m48t59_nvram_read and m48t59_nvram_write completely ignore the=
+ requested offset.
+--
 
-I’ve been told previously to not include too many maintainers in Cc, but
-I don’t know which ones to remove from the get_maintainers.pl output, so
-I’ve still included everyone, sorry about that.
+--- Patch [5]: [PATCH 5/8] iio: pressure: bmp280: make reg_write callback t=
+ake const void * ---
+commit bd8404c8c6d692d9a700578455111f78fd0eaf2a
+Author: Link Mauve <linkmauve@linkmauve.fr>
 
-Thanks,
+iio: pressure: bmp280: make reg_write callback take const void *
 
-Link Mauve (8):
-  nvmem: core: make reg_write() take a const void *
-  nvmem: make all reg_write callbacks take const void *
-  rtc: make all reg_write callbacks take const void *
-  misc: make all reg_write callbacks take const void *
-  iio: pressure: bmp280: make reg_write callback take const void *
-  firmware: meson_sm: make reg_write callback take const void *
-  mfd: twl-core: make reg_write callback take const void *
-  media: ov2740: remove NULL reg_write callback
+The previous commit switched from a pointer to mutable data to a pointer
+to immutable data, so let=E2=80=99s fix all users of the nvmem_config API.
 
- drivers/firmware/meson/meson_sm.c                 | 2 +-
- drivers/iio/pressure/bmp280-core.c                | 6 +++---
- drivers/media/i2c/ov2740.c                        | 1 -
- drivers/mfd/twl-core.c                            | 2 +-
- drivers/misc/ds1682.c                             | 2 +-
- drivers/misc/eeprom/at24.c                        | 4 ++--
- drivers/misc/eeprom/at25.c                        | 2 +-
- drivers/misc/eeprom/eeprom_93xx46.c               | 4 ++--
- drivers/misc/eeprom/m24lr.c                       | 2 +-
- drivers/misc/keba/cp500.c                         | 2 +-
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c | 8 ++++----
- drivers/nvmem/bcm-ocotp.c                         | 4 ++--
- drivers/nvmem/core.c                              | 2 +-
- drivers/nvmem/imx-ocotp-scu.c                     | 4 ++--
- drivers/nvmem/imx-ocotp.c                         | 4 ++--
- drivers/nvmem/lan9662-otpc.c                      | 4 ++--
- drivers/nvmem/lpc18xx_eeprom.c                    | 4 ++--
- drivers/nvmem/max77759-nvmem.c                    | 2 +-
- drivers/nvmem/meson-efuse.c                       | 4 ++--
- drivers/nvmem/qcom-spmi-sdam.c                    | 2 +-
- drivers/nvmem/qfprom.c                            | 4 ++--
- drivers/nvmem/rave-sp-eeprom.c                    | 4 ++--
- drivers/nvmem/snvs_lpgpr.c                        | 2 +-
- drivers/nvmem/sprd-efuse.c                        | 4 ++--
- drivers/nvmem/stm32-bsec-optee-ta.c               | 2 +-
- drivers/nvmem/stm32-bsec-optee-ta.h               | 4 ++--
- drivers/nvmem/stm32-romem.c                       | 6 +++---
- drivers/nvmem/zynqmp_nvmem.c                      | 4 ++--
- drivers/rtc/rtc-abx80x.c                          | 4 ++--
- drivers/rtc/rtc-cmos.c                            | 2 +-
- drivers/rtc/rtc-ds1305.c                          | 4 ++--
- drivers/rtc/rtc-ds1307.c                          | 2 +-
- drivers/rtc/rtc-ds1343.c                          | 2 +-
- drivers/rtc/rtc-ds1511.c                          | 2 +-
- drivers/rtc/rtc-ds1553.c                          | 4 ++--
- drivers/rtc/rtc-ds1685.c                          | 4 ++--
- drivers/rtc/rtc-ds1742.c                          | 4 ++--
- drivers/rtc/rtc-ds3232.c                          | 2 +-
- drivers/rtc/rtc-isl12026.c                        | 4 ++--
- drivers/rtc/rtc-isl1208.c                         | 2 +-
- drivers/rtc/rtc-m48t59.c                          | 4 ++--
- drivers/rtc/rtc-m48t86.c                          | 2 +-
- drivers/rtc/rtc-max31335.c                        | 2 +-
- drivers/rtc/rtc-meson.c                           | 2 +-
- drivers/rtc/rtc-omap.c                            | 4 ++--
- drivers/rtc/rtc-pcf2127.c                         | 2 +-
- drivers/rtc/rtc-pcf85063.c                        | 2 +-
- drivers/rtc/rtc-pcf85363.c                        | 4 ++--
- drivers/rtc/rtc-rp5c01.c                          | 4 ++--
- drivers/rtc/rtc-rv3028.c                          | 6 +++---
- drivers/rtc/rtc-rv3029c2.c                        | 2 +-
- drivers/rtc/rtc-rv3032.c                          | 4 ++--
- drivers/rtc/rtc-rv8803.c                          | 4 ++--
- drivers/rtc/rtc-rx8581.c                          | 4 ++--
- drivers/rtc/rtc-s35390a.c                         | 4 ++--
- drivers/rtc/rtc-stk17ta8.c                        | 4 ++--
- drivers/rtc/rtc-sun6i.c                           | 4 ++--
- drivers/rtc/rtc-ti-k3.c                           | 2 +-
- drivers/rtc/rtc-twl.c                             | 2 +-
- include/linux/firmware/meson/meson_sm.h           | 2 +-
- include/linux/mfd/twl.h                           | 4 ++--
- include/linux/nvmem-provider.h                    | 2 +-
- 62 files changed, 100 insertions(+), 101 deletions(-)
+> diff --git a/drivers/nvmem/qfprom.c b/drivers/nvmem/qfprom.c
+> index a872c640b8c5a..bacdcb5610bae 100644
+> --- a/drivers/nvmem/qfprom.c
+> +++ b/drivers/nvmem/qfprom.c
+> @@ -253,13 +253,13 @@ static int qfprom_enable_fuse_blowing(const struct =
+qfprom_priv *priv,
+>   *
+>   * Return: 0 or -err.
+>   */
+> -static int qfprom_reg_write(void *context, unsigned int reg, void *_val,
+> +static int qfprom_reg_write(void *context, unsigned int reg, void void *=
+_val,
+>  			    size_t bytes)
+>  {
 
--- 
-2.55.0
+[Severity: Low]
+Does this syntax error in qfprom_reg_write() prevent the qfprom driver from
+compiling?
 
+It looks like "void void *_val" was introduced during a find-and-replace
+to make the callback take a const void pointer.
+
+>  	struct qfprom_priv *priv =3D context;
+>  	struct qfprom_touched_values old;
+>  	int words =3D bytes / 4;
+> -	u32 *value =3D _val;
+> +	const u32 *value =3D _val;
+>  	u32 blow_status;
+
+[ ... ]
+
+> diff --git a/drivers/rtc/rtc-m48t59.c b/drivers/rtc/rtc-m48t59.c
+> index 4e608bc8bbd36..ad407faecf1f8 100644
+> --- a/drivers/rtc/rtc-m48t59.c
+> +++ b/drivers/rtc/rtc-m48t59.c
+> @@ -325,7 +325,7 @@ static int m48t59_nvram_write(void *priv, unsigned in=
+t offset, void *val,
+>  	struct m48t59_private *m48t59 =3D platform_get_drvdata(pdev);
+>  	ssize_t cnt =3D 0;
+>  	unsigned long flags;
+> -	u8 *buf =3D val;
+> +	const u8 *buf =3D val;
+> =20
+>  	spin_lock_irqsave(&m48t59->lock, flags);
+> =20
+
+[Severity: Critical]
+This is a pre-existing issue, but does the loop in m48t59_nvram_write()
+completely ignore the requested offset?
+
+It appears that cnt starts at 0 and is used as the hardware address instead
+of adding the requested offset:
+
+drivers/rtc/rtc-m48t59.c:m48t59_nvram_write() {
+    ...
+	for (; cnt < size; cnt++)
+		M48T59_WRITE(*buf++, cnt);
+    ...
+}
+
+Any subsystem or user-space application performing an NVMEM write at an
+offset greater than 0 will silently overwrite data at the very beginning
+of the NVRAM.
+
+The same issue seems to be present in m48t59_nvram_read(), which could
+lead to incorrect data disclosure:
+
+drivers/rtc/rtc-m48t59.c:m48t59_nvram_read() {
+    ...
+	for (; cnt < size; cnt++)
+		*buf++ =3D M48T59_READ(cnt);
+    ...
+}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715175229.2467=
+2-1-linkmauve@linkmauve.fr?part=3D5
