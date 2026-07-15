@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A22448D18
-	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 11:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4524C449ED6
+	for <imx@lists.linux.dev>; Wed, 15 Jul 2026 11:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784115988; cv=none; b=u48cBTmlIhaloaFZ530fRktcscHIw4qEOlFI55cK3oMk5+QIbF1QLRfB80BACscQrmLSxOEApILaTMDG+9s4YT++8EE7mzhNydDf4Y2sZn1+NFTxmaXvlEQXIdlB6e9/8SRe2eY33JfsSPwreVJwx/w7bbwLpl5Tny3OTlzQFNk=
+	t=1784116368; cv=none; b=uq0R5ns1/8AOHfnXHRu09IZneZjk9MTLNi5xjdJDwh3MObcDvLqzHGTCGuHPVKPAc83G+M1d4znjwJ/fbL5ad6I41o90axu7rvPgjU3d8ylktUqIZZ9gwtXHyTfQiEsUEUcmKUucvXfFiR8D52JX0RRl/IuqgPMnl9oAnuhIT8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784115988; c=relaxed/simple;
-	bh=Oo9xbLZsoZKX6EXZrgsb36k3Hj/YptABMNQ051uPiUk=;
+	s=arc-20240116; t=1784116368; c=relaxed/simple;
+	bh=Thb61blW9JD4adfpev5hpA87KH3ldj9SOmcmA4e/D6c=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=karglzNCCOSlGS9eAIhybyth3xXKwIAp8zQQdTbKMDMwSECO3glCroaVocdyAe04qNYLfYKzFyFpSb4gBCqGqjRulgtXJVARjCjhbB7vaTrveV5USwrHHQgQRJMSyZeIIaphY8Vw5Ad4BUyQV7BlFyIf9Jg5riPoo2FpaU5C94Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E18VYdKR; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=gveMjadCkZhnpcOL+18b5dMYZ85d070Si7m8V5J64uX77avYuIwVNAkfjiBAg9pVUQXJdc9I5BEu/qrC6gjzPixicmysZI2U0VByaOIc9f2YQlzVdEOwDYBzAEEokdtcfK6+cqwY0hOaiVfFaRCN6FqIh9yWWBEeYH8zr8raumY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fa5eJh0G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E18VYdKR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651A81F000E9;
-	Wed, 15 Jul 2026 11:46:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fa5eJh0G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0271F00A3A;
+	Wed, 15 Jul 2026 11:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784115986;
-	bh=ekrBjfIl7BjbkDN6Q+ueSSQFmNTt7ZNCEjtHU0p4KW8=;
+	s=k20260515; t=1784116366;
+	bh=8WqZ8bb1F26TclUSKsQJWwuIFfBQNPQsGug8Bxh2k0U=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E18VYdKRWLZqCtm3cdmzo/OaKBBkxmDaXVxfRyvPyYaB72rH6T7ij3ggr7odssQIC
-	 gAsI74Ewm0RH6ZGJgqaHppupuFU6A3I0NulnY9hYpGFl2BMBwDFaxzSXo5ho4+UBdf
-	 +MzuKkjJqvCgilsDery0DhzSVWxq7bYatbzGc4YAec7WA/gWD0fvSm5OWN/zfV8+QV
-	 Nhr6/6lQaOqKZGHBUtl00QrW+yy7lImlhzBCzSU2BpSwCm69ONVnjDaYTuT9IZ7f0F
-	 DFrNd4PVvp0GSIsXOzHig+EU2L3JdJVKVuRtEzfLG3cf06MX00cNRfFWXY5CHclrDX
-	 Bqg3/21lU55Yw==
+	b=fa5eJh0Gk0fbGSed649s/i4stEPtZd2Wbup2S168A0DOSD3zrywBKMsKCjvXI/0d8
+	 soPqVT5UlO5n/Q7nJ6xaVsWm7YKiehf3TBlb/3e369sDYRb/gID3YaEOUk59xU9+0x
+	 aaoCE8f4SMgEnXGPwLLF27facOx91qMMp6MT/B4RWJtKy1Hizolp+tqFL7LyplkEnT
+	 Ilp9hnP3lJ9n5ViA5KRy0WanAhSJA2StsvFRX4+CAA5D68IasjBEkLGz+pAEDVTfSQ
+	 doCoC9HLsnXZMKn4lbeoK0O3SFMHjQuS8VqNxzrPWFacpZBkvhOxQl9ufjIokE0ynz
+	 Bx7CDJsYv+W1w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/6] phy: fsl-imx8mq-usb: fix typec switch leak on
- probe error path
+Subject: Re: [PATCH v6 3/6] phy: fsl-imx8mq-usb: add runtime PM support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Xu Yang" <xu.yang_2@oss.nxp.com>
-Cc: olteanv@gmail.com, linux-phy@lists.infradead.org, imx@lists.linux.dev, vkoul@kernel.org, Frank.Li@kernel.org, neil.armstrong@linaro.org
-In-Reply-To: <20260715-imx8mp-usb-phy-improvement-v6-1-00d95e270e4c@nxp.com>
+Cc: neil.armstrong@linaro.org, imx@lists.linux.dev, linux-phy@lists.infradead.org, Frank.Li@kernel.org, olteanv@gmail.com, vkoul@kernel.org
+In-Reply-To: <20260715-imx8mp-usb-phy-improvement-v6-3-00d95e270e4c@nxp.com>
 References: <20260715-imx8mp-usb-phy-improvement-v6-0-00d95e270e4c@nxp.com>
- <20260715-imx8mp-usb-phy-improvement-v6-1-00d95e270e4c@nxp.com>
+ <20260715-imx8mp-usb-phy-improvement-v6-3-00d95e270e4c@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 11:46:25 +0000
-Message-Id: <20260715114626.651A81F000E9@smtp.kernel.org>
+Date: Wed, 15 Jul 2026 11:52:46 +0000
+Message-Id: <20260715115246.7A0271F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,65 +46,71 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] The Type-C switch callback `tca_blk_typec_switch_set` can be invok=
-ed after the PHY driver is unbound, leading to a Use-After-Free of the driv=
-er context.
+- [High] `PM_RUNTIME_ACQUIRE` falsely succeeds when runtime PM is disabled =
+(e.g., during system sleep), leading to a system hang when disabled hardwar=
+e registers are accessed.
 --
 
---- Patch [1]: [PATCH v6 1/6] phy: fsl-imx8mq-usb: fix typec switch leak on=
- probe error path ---
-commit 5e0093cfdd6e9dd648ed3549eb93bacb54164be2
-Author: Felix Gu <ustc.gu@gmail.com>
+--- Patch [3]: [PATCH v6 3/6] phy: fsl-imx8mq-usb: add runtime PM support -=
+--
+commit d85e441d52a7fee829fc860ee8795964a99e4555
+Author: Xu Yang <xu.yang_2@nxp.com>
 
-phy: fsl-imx8mq-usb: fix typec switch leak on probe error path
+phy: fsl-imx8mq-usb: add runtime PM support
 
-This commit fixes a typec switch resource leak when probe fails after
-imx95_usb_phy_get_tca() succeeds. It transitions the cleanup of the switch
-to use devm_add_action_or_reset() so that it is properly freed on both
-probe failure and driver removal.
+This commit adds runtime PM support to ensure the PHY is properly powered
+and clocked during register access. It guards register accesses in PHY
+operations and Type-C orientation switching.
 
 > diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/fre=
 escale/phy-fsl-imx8mq-usb.c
-> index b05d80e849a14..9a33c06d6fc39 100644
+> index 3a5788c609e1b..bc804d2b5aeeb 100644
 > --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
 > +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> @@ -173,9 +173,9 @@ static struct typec_switch_dev *tca_blk_get_typec_swi=
-tch(struct platform_device
->  	return sw;
->  }
-> =20
-> -static void tca_blk_put_typec_switch(struct typec_switch_dev *sw)
-> +static void tca_blk_put_typec_switch(void *data)
->  {
-> -	typec_switch_unregister(sw);
-> +	typec_switch_unregister(data);
-
-[Severity: High]
-This is a pre-existing issue, but does typec_switch_unregister() guarantee
-that no consumers will invoke the .set callback afterwards?
-
-If a consumer acquires the switch using fwnode_typec_switch_get() and holds
-a reference, it appears typec_switch_unregister() removes the device from
-sysfs but doesn't revoke the consumer's ability to call sw_dev->set().
-
-Because imx_phy and tca are allocated with devm_kzalloc() during probe, they
-are automatically freed when the provider unbinds. Could this lead to a
-use-after-free if the consumer asynchronously calls typec_switch_set():
-
-tca_blk_typec_switch_set()
-    struct imx8mq_usb_phy *imx_phy =3D typec_switch_get_drvdata(sw);
-    struct tca_blk *tca =3D imx_phy->tca;
-
-where imx_phy has already been freed by the devm teardown?
-
->  }
-> =20
->  static void tca_blk_orientation_set(struct tca_blk *tca,
 
 [ ... ]
 
+> @@ -136,17 +137,15 @@ static int tca_blk_typec_switch_set(struct typec_sw=
+itch_dev *sw,
+>  {
+>  	struct imx8mq_usb_phy *imx_phy =3D typec_switch_get_drvdata(sw);
+>  	struct tca_blk *tca =3D imx_phy->tca;
+> -	int ret;
+> =20
+>  	if (tca->orientation =3D=3D orientation)
+>  		return 0;
+> =20
+> -	ret =3D clk_prepare_enable(imx_phy->clk);
+> -	if (ret)
+> -		return ret;
+> +	PM_RUNTIME_ACQUIRE(&imx_phy->phy->dev, pm);
+> +	if (PM_RUNTIME_ACQUIRE_ERR(&pm))
+> +		return -ENXIO;
+
+[Severity: High]
+Does this check falsely succeed when runtime PM is disabled, such as during
+system sleep?
+
+During system suspend, pm_runtime_force_suspend() disables runtime PM
+(disable_depth > 0) and turns off the PHY clocks. If a Type-C orientation
+change occurs via interrupt at this time, PM_RUNTIME_ACQUIRE (which wraps
+pm_runtime_get_active with RPM_TRANSPARENT) will return success despite the
+device being suspended.
+
+The driver would then proceed to tca_blk_orientation_set(), which accesses
+unclocked PHY registers, potentially causing a synchronous external abort or
+system hang.
+
+Could PM_RUNTIME_ACQUIRE_IF_ENABLED() be used here instead to safely check
+if the device is active and fail appropriately if runtime PM is disabled?
+
+> =20
+>  	tca_blk_orientation_set(tca, orientation);
+> -	clk_disable_unprepare(imx_phy->clk);
+> =20
+>  	return 0;
+>  }
+
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715-imx8mp-usb=
--phy-improvement-v6-0-00d95e270e4c@nxp.com?part=3D1
+-phy-improvement-v6-0-00d95e270e4c@nxp.com?part=3D3
