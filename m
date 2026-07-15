@@ -1,21 +1,21 @@
 Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6E34A1399;
-	Wed, 15 Jul 2026 17:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6414A2E01;
+	Wed, 15 Jul 2026 17:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784137997; cv=none; b=HzhopjhtySTOTZIRqEwouFr1im3SKAX+hQdcA9g647yZWuTHmY9EhGSEEj6iFNNqGmMnUsJtAo/CKngbzn12Qd7sJrFjJRchd/PNQ2tU40a8kRH0lNtcv5Yq+dy56ihxquBL3qV557lxF8ifV5nko/wXXvZsRlNHA5Zeg2kJ/LQ=
+	t=1784137997; cv=none; b=UKQvnDfC+buSzI/W/tFk4tgvqWiRVJtlp1fD6dANqLxq9U5O0GPjlYeSMI3v+jPu/Nb3U6zJ/GIzj6FqpwDbMagz9vKmLEM2unMVYTAvBg7BTnhpOBzl8w+aGpiaX9rK52YzS6qJe0HCmv4AKcftoqZgtaOs+NEjZeCsOgu0YMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784137997; c=relaxed/simple;
-	bh=9OgfLL5KgScCxZBmXsZuyUZVZq0idXb05mKOPsKZp4o=;
+	bh=e2X4aAIB35tnuNFFrR/sMDVNB8hl9ij7Uv+uzc+FvF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LYII1k1I3/0F47DdrChTdF5mkmIw8JHbVwdqe7up1qPARjbCJaS8/KOQSwVYeMFvXdrNmLyRme0zEhY2oJm8DhcKD8KvDHQN7diwpN3llECg1AdN9YnQQirEO47XiWxB3kGMpcS96bT2SVWDvtJjGKpF1xbshJb89qQ86ow09MQ=
+	 MIME-Version:Content-Type; b=fA2aG7PWmpsxBo0Z0pCL1sgHkTV5HkP35M/jgP5odoDctuhm1P8FUw8njITi3VlrefYb5MwRcIprQveUtCCHuYoa9WR5FGyE/JvNoR1hpF9CZGLw3Vni+XxD3mjAAq4umYY4V+IHjmYnwKjmk6hWfqo0fdp753JjXkpfe79zvPg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
 Received: by luna.linkmauve.fr (Postfix, from userid 1000)
-	id 093A2F40D21; Wed, 15 Jul 2026 19:52:42 +0200 (CEST)
+	id D52EEF40D22; Wed, 15 Jul 2026 19:52:45 +0200 (CEST)
 From: Link Mauve <linkmauve@linkmauve.fr>
 To: Srinivas Kandagatla <srini@kernel.org>
 Cc: Link Mauve <linkmauve@linkmauve.fr>,
@@ -105,9 +105,9 @@ Cc: Link Mauve <linkmauve@linkmauve.fr>,
 	linux-rtc@vger.kernel.org,
 	linux-sunxi@lists.linux.dev,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH 4/8] misc: make all reg_write callbacks take const void *
-Date: Wed, 15 Jul 2026 19:52:20 +0200
-Message-ID: <20260715175229.24672-5-linkmauve@linkmauve.fr>
+Subject: [PATCH 5/8] iio: pressure: bmp280: make reg_write callback take const void *
+Date: Wed, 15 Jul 2026 19:52:21 +0200
+Message-ID: <20260715175229.24672-6-linkmauve@linkmauve.fr>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260715175229.24672-1-linkmauve@linkmauve.fr>
 References: <20260715175229.24672-1-linkmauve@linkmauve.fr>
@@ -125,134 +125,36 @@ to immutable data, so let’s fix all users of the nvmem_config API.
 
 Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
 ---
- drivers/misc/ds1682.c                             | 2 +-
- drivers/misc/eeprom/at24.c                        | 4 ++--
- drivers/misc/eeprom/at25.c                        | 2 +-
- drivers/misc/eeprom/eeprom_93xx46.c               | 4 ++--
- drivers/misc/eeprom/m24lr.c                       | 2 +-
- drivers/misc/keba/cp500.c                         | 2 +-
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c | 8 ++++----
- 7 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/misc/ds1682.c b/drivers/misc/ds1682.c
-index cb09e056531a..4e42a45c17d4 100644
---- a/drivers/misc/ds1682.c
-+++ b/drivers/misc/ds1682.c
-@@ -209,7 +209,7 @@ static int ds1682_nvmem_read(void *priv, unsigned int offset, void *val,
- 	return ret < 0 ? ret : 0;
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 990340a9b10c..0a39c5f39378 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -2261,11 +2261,11 @@ static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
+ 	return ret;
  }
  
--static int ds1682_nvmem_write(void *priv, unsigned int offset, void *val,
-+static int ds1682_nvmem_write(void *priv, unsigned int offset, const void *val,
+-static int bmp580_nvmem_write_impl(void *priv, unsigned int offset, void *val,
++static int bmp580_nvmem_write_impl(void *priv, unsigned int offset, const void *val,
+ 				   size_t bytes)
+ {
+ 	struct bmp280_data *data = priv;
+-	u16 *buf = val;
++	const u16 *buf = val;
+ 	int ret, addr;
+ 
+ 	guard(mutex)(&data->lock);
+@@ -2322,7 +2322,7 @@ static int bmp580_nvmem_write_impl(void *priv, unsigned int offset, void *val,
+ 	return ret;
+ }
+ 
+-static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
++static int bmp580_nvmem_write(void *priv, unsigned int offset, const void *val,
  			      size_t bytes)
  {
- 	struct i2c_client *client = priv;
-diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-index 772c4d9fa651..cd38cf8aad45 100644
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/misc/eeprom/at24.c
-@@ -477,11 +477,11 @@ static int at24_read(void *priv, unsigned int off, void *val, size_t count)
- 	return 0;
- }
- 
--static int at24_write(void *priv, unsigned int off, void *val, size_t count)
-+static int at24_write(void *priv, unsigned int off, const void *val, size_t count)
- {
- 	struct at24_data *at24;
- 	struct device *dev;
--	char *buf = val;
-+	const char *buf = val;
- 	int ret;
- 
- 	at24 = priv;
-diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
-index bc2cfb75d9bb..28f1dc1b9be7 100644
---- a/drivers/misc/eeprom/at25.c
-+++ b/drivers/misc/eeprom/at25.c
-@@ -235,7 +235,7 @@ static int at25_wait_ready(struct at25_data *at25)
- 	return bounce[0];
- }
- 
--static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
-+static int at25_ee_write(void *priv, unsigned int off, const void *val, size_t count)
- {
- 	u8 *bounce __free(kfree) = kmalloc(min(count, io_limit), GFP_KERNEL);
- 	struct at25_data *at25 = priv;
-diff --git a/drivers/misc/eeprom/eeprom_93xx46.c b/drivers/misc/eeprom/eeprom_93xx46.c
-index f9c3ab52c2f9..813f295af096 100644
---- a/drivers/misc/eeprom/eeprom_93xx46.c
-+++ b/drivers/misc/eeprom/eeprom_93xx46.c
-@@ -268,10 +268,10 @@ eeprom_93xx46_write_word(struct eeprom_93xx46_dev *edev,
- }
- 
- static int eeprom_93xx46_write(void *priv, unsigned int off,
--				   void *val, size_t count)
-+			       const void *val, size_t count)
- {
- 	struct eeprom_93xx46_dev *edev = priv;
--	char *buf = val;
-+	const char *buf = val;
- 	int ret, step = 1;
- 	unsigned int i;
- 
-diff --git a/drivers/misc/eeprom/m24lr.c b/drivers/misc/eeprom/m24lr.c
-index 7a9fd45a8e46..22f3221e232b 100644
---- a/drivers/misc/eeprom/m24lr.c
-+++ b/drivers/misc/eeprom/m24lr.c
-@@ -374,7 +374,7 @@ static int m24lr_nvmem_read(void *priv, unsigned int offset, void *val,
- 	return 0;
- }
- 
--static int m24lr_nvmem_write(void *priv, unsigned int offset, void *val,
-+static int m24lr_nvmem_write(void *priv, unsigned int offset, const void *val,
- 			     size_t bytes)
- {
- 	ssize_t err;
-diff --git a/drivers/misc/keba/cp500.c b/drivers/misc/keba/cp500.c
-index 6c65fbf22e75..ee7889cb63a8 100644
---- a/drivers/misc/keba/cp500.c
-+++ b/drivers/misc/keba/cp500.c
-@@ -590,7 +590,7 @@ static int cp500_nvmem_read(void *priv, unsigned int offset, void *val,
- 	return 0;
- }
- 
--static int cp500_nvmem_write(void *priv, unsigned int offset, void *val,
-+static int cp500_nvmem_write(void *priv, unsigned int offset, const void *val,
- 			     size_t bytes)
- {
- 	struct cp500_nvmem *nvmem = priv;
-diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-index a2ed477e0370..f2759e9b4138 100644
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-@@ -159,11 +159,11 @@ static int pci1xxxx_eeprom_read(void *priv_t, unsigned int off,
- }
- 
- static int pci1xxxx_eeprom_write(void *priv_t, unsigned int off,
--				 void *value_t, size_t count)
-+				 const void *value_t, size_t count)
- {
- 	struct pci1xxxx_otp_eeprom_device *priv = priv_t;
- 	void __iomem *rb = priv->reg_base;
--	char *value = value_t;
-+	const char *value = value_t;
- 	u32 regval;
- 	u32 byte;
- 	int ret;
-@@ -262,11 +262,11 @@ static int pci1xxxx_otp_read(void *priv_t, unsigned int off,
- }
- 
- static int pci1xxxx_otp_write(void *priv_t, unsigned int off,
--			      void *value_t, size_t count)
-+			      const void *value_t, size_t count)
- {
- 	struct pci1xxxx_otp_eeprom_device *priv = priv_t;
- 	void __iomem *rb = priv->reg_base;
--	char *value = value_t;
-+	const char *value = value_t;
- 	u32 regval;
- 	u32 byte;
- 	int ret;
+ 	struct bmp280_data *data = priv;
 -- 
 2.55.0
 
