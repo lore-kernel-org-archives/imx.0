@@ -1,222 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34997388E58
-	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 09:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784194105; cv=none; b=nA150Cmur6z9qzhiyNCzRiYvu/HjBLztwVhLNLERfiR92e2B5ONztRmA9VXGSlBWDWn1yeB7YtZ3xEEEEchteZhR8RhXylaf22sj2+dTFg+M5m8rgWdzYIo4RMAZtIjhH402kMFgVjC9stTM5MPoLFs23ayPl8YqsJVDaBMcqow=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784194105; c=relaxed/simple;
-	bh=ZPSz8w+aPab5c0kYtDjC5EO4NuevovJ+Nd8SMkR37es=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GTLu/xILeD6hJ2U2piA84fjfjTYq0wzbFeMq+Ygob+VlMI5tNeV5Gl7k62Bgf0c7XKcu0N2cz6q9LXQq6iXX9MCJIYlMX3AlkMop41uQtjh8RJVJ9PXpIDBltGUYU0W0Jb0vLIRGhvH+jcmkOooHAW4f8QhwiXE4BS334mCSoCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2nQjMbQ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5E73CC31F
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 09:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784195448; cv=pass; b=lrQCmtMzD6I418KMn4ZhLGMtZoCUYH6G0aMvrG9ijrpMO7quuFPd/cmySbiMPPKGVk/2Fzq3t/nadQzYT+KrnxwfVoNfcRn3mLUP4ER3gSeKR1x43xZC0TsGLeEVsxly37isQpIXfvixbxmDCCapEz3r9AAy9vXPgNsI7hWZIRE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784195448; c=relaxed/simple;
+	bh=4PHDdxADWcJXcHELSsybkbYwxBBaZNxU4xqJtB2mqtY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=RQeSL4nZDZM7RdFTe1mV7EwszuKoyXBMk0lAvl8YOt3iKbKX7/ZpzTMRzf/fcHdCSbPDnq/+cE6U/iAvoz31xHJepLnTQdvfb0BLItM8dQJqTRDRnrHLEZc/y2BfiHSVXyLRdZHgVRDfr5Yxt7QqTUuuQ7ASoiebuxUDsqAS29Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mechasystems.com; spf=pass smtp.mailfrom=mechasystems.com; dkim=pass (2048-bit key) header.d=mechasystems.com header.i=@mechasystems.com header.b=LIPPpTrj; arc=pass smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mechasystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mechasystems.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2nQjMbQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0941F000E9;
-	Thu, 16 Jul 2026 09:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784194102;
-	bh=ox80bVAjERr9E6luimNbMz2v6ARzkJVHlZVI10y3Hm0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=c2nQjMbQsYUdE1Orbf0GsuHvHF1NMLAbiBCaLVl5gfqPLCjiltx5i3cGEosLHzjHy
-	 W9oAE/UWhCaZ0l0jsyjKDAyGLZIQ1w92e0W8c7CivZEmJOJztNcHJTM9OoJ0R22N3A
-	 +MnkWYH52HLPvwUAHxgyXtMRas6P2s2BC/bXkmU447bbezdVNOYJSI3Z8zeJiY60zf
-	 9dPiz5S1CQLNPM6xDZF4cTKyKYvHyLQcvZTuhCLd5Tm2K5l4394sdcnCcNrD/i3QlY
-	 Cn4RRmNiuO5V7sni3eq3OBOobt6Cm4cEBLyNzPdzS5txr3xRjsVZGEyJ1Vda7eCCKf
-	 NJdNclR7+gMcw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 8/8] drm/xen: replace struct drm_simple_display_pipe
- with regular atomic helpers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ze Huang" <ze.huang@oss.qualcomm.com>
-Cc: dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260716-drm-simple-kms-removal-v2-8-1133a8fc3785@oss.qualcomm.com>
-References: <20260716-drm-simple-kms-removal-v2-0-1133a8fc3785@oss.qualcomm.com>
- <20260716-drm-simple-kms-removal-v2-8-1133a8fc3785@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 09:28:22 +0000
-Message-Id: <20260716092822.8E0941F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=mechasystems.com header.i=@mechasystems.com header.b="LIPPpTrj"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cca0c5799eso38629775ad.0
+        for <imx@lists.linux.dev>; Thu, 16 Jul 2026 02:50:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784195446; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AF5NE2Ne1FZ7/ybvsZyMHDSW8IIQoJtmx2AKUQxqZQMNBWHp2+ysgjj/tf50bt0Dmc
+         SpSndWhzXAvomIU1TJCTzT//vkkYUB/EcwagfFChgOiXMkHMd4yzUWSkBUihy9G7ofBW
+         hMk1Y/Z7U/ccnRhGGhRMVMjU7UMeiMkeY4vRl6sLZVfZV3NwGSL4zj0jYWrMlBS1YaGQ
+         de1ALNcIdtSicrzrXFWHJULUk/i3/CmB5M4cqxR5TEZT+0k249Upq8q33FYZg4UzusQd
+         nTCXTgjONF7HwABjvFG1/7XI/Ouyvi3A3mmqBvD0X2fVNxAVsrSk35vFpD99bPvhUdWw
+         E0cw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=7BnpV4VIJWWIXN3EfRYg7aDjYvj13ejddTvZNuKOsQM=;
+        fh=QcJNWqvAtH06k/2wVADT2dfXyoeqq0j6YcrG3AM6Lus=;
+        b=r3mlLMVjl/C3iGeBpGWi5EpBpeBomCQjUXxaFWdpgNfhBCbfppOf4OiK1Y9VCU6+Yu
+         S3aYzumsXQFMVMZL+fTOJNDUorJZLVWC8SlcFR5pZ8iXXE8SXDFiT9nKzcoRfiZcAU34
+         f4OWcDkylcd7FTW30qLK/JZQTEIWazFv3HRXg+q1lyaJWKB44HydA4oBVGqyV2MkATvs
+         fAHbpRNm9W+zt6YTlQthsab4x5Fk7zV6qO8ljmSPIILkDLXRn4MjIFUY7iQxibOvHt6f
+         aLFFh1JRAblEaSmMw6D6trJRP0jJfF0VBRM0oOPznPzO1TifLCe3F6hOQo6I2mk2sn5q
+         Acag==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mechasystems.com; s=google; t=1784195446; x=1784800246; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7BnpV4VIJWWIXN3EfRYg7aDjYvj13ejddTvZNuKOsQM=;
+        b=LIPPpTrjBnTU04os57mnXEoK9wtDy1G3F+9SkMV0y9Di69WRuWkjr+KONg9qtbU7Ba
+         egB9bYknZ2DA3bpOJbBXFICN7OUNFbKxwlYmPQ/F1sW9eeb2C4CAtAwu/ykJN+mkcD7y
+         MefrQzfoDpgZqT2FXdeLd6XiDWhYiaj+Qu1lgZmhgpRw4y6jz80cEV1lV6iv9+SphM2b
+         E4b1l5jHnQ/1NQSKVBV/+20xKaLipBBeJhvTAU6FZWSKoXrqA7z9mEb1FqdOiNVkeyU6
+         Ve0SJ3YsWQ2XlS1alPs/aIIBt+AJZEzCNP/vrgUz+Z7jKo2Uww5BU5snbdf9tL3IHHfX
+         RExw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784195446; x=1784800246;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7BnpV4VIJWWIXN3EfRYg7aDjYvj13ejddTvZNuKOsQM=;
+        b=WeHp+wK1qxEHBuI9+d5i+DZtAdDQcLB+jznLSTSAJ/nnzLnSota6m9iL9yxbKpy1YQ
+         +AD1RuCQrEGwglTL7NYyoKL+A95BcrvIhRnNXqT/TypKjGfMWpT2euR/QeI4h2ew1u6/
+         jb8s3wdR1kw+zwacuFkC9Hf7AAB4FBssi6Ox/4CUY3lwCwIf86AfIQ1ZY8lwjHHHeKzC
+         opuvu0ep2QFJZETsQB5F+hEiqo8ylWjIfS+XQ5LE2cwKf6AK3rlXBrRzGGn1aEgWRBTW
+         gC0hJg4RiiJau/ke+ef8mgixlZUp4J7sQbWqG6CutSVg91ov8ZAjFM+zOCrCqQgoCVGn
+         jL5Q==
+X-Forwarded-Encrypted: i=1; AHgh+Ro2dcb5x/vaYqy9jkabSWB4vcK7tELQ+DZKh1WK+53prXWx0XaPdF5dxbdnxYo2Ap/JKRw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyOZ/lyC/DCimSfBL8+zqOrXXazNVOG5sPQvpG/yhOsF5rNF4sA
+	dOT5HQ37Iwe2alqtUPjlWJMI/GmmyOxDZUXq9uyKUjgAbbp6zFoBARwtNDeb4X/bHlZ/yfmck2q
+	X4HmifqmXoBU5J3dEqX07vyHXlKGe5l07ofQUMCS2OAhikp/5QulRrDg=
+X-Gm-Gg: AfdE7clu+RO7AdjTd6SbDsJOKz+t3RFefXEU8dKaMfks/lv/WyRUOUYy+6Pk4y7gZaF
+	zvkHBG46BSIR+Leb3rPAT6Z6t4EHFYPoddGqXVZfIZEiTjxmKpMJ6DxM8OPjeghXjHfPXqCRUO/
+	Qy1bcBT5U0vEGXXC4tKiXR0y7GRR1fnjhA2Kjsb0nYIND467x6ifYxgrgiBPwBYm0XrZwuZEWMF
+	0pYhrg+tKnsBlbTnbJbcyF0YyCD4JlH4P5w8EF18tnRnjG6Nu3zh7BPfM0k
+X-Received: by 2002:a05:6a20:c989:b0:3c3:94bb:ceb4 with SMTP id
+ adf61e73a8af0-3c394bbd078mr1152070637.70.1784195446147; Thu, 16 Jul 2026
+ 02:50:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+From: Advait Dhamorikar <advaitd@mechasystems.com>
+Date: Thu, 16 Jul 2026 15:20:33 +0530
+X-Gm-Features: AUfX_mxWjVGz1D1bqa6lo_mj3pKzEhFiBc4uYqQMLANU_mgqiNhYY5CmMp3yH84
+Message-ID: <CAAPs2HTo=4+AEw1+vcU6c9vt_O2BfF+gv3FFvx9G3KLLzCOsHw@mail.gmail.com>
+Subject: pmdomain: imx8m[p]-blk-ctrl: resume hangs when waking from suspended state
+To: linux-pm@vger.kernel.org, imx@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, ulfh@kernel.org, Frank.Li@nxp.com, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	bhushan.shah@machinesoul.in
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+Hello all,
 
-New issues:
-- [Critical] Global state data race in `atomic_enable` leading to a NULL po=
-inter dereference.
-- [High] Pending vblank events are leaked when the CRTC is disabled, causin=
-g userspace to hang.
+I'm debugging a suspend/resume issue on an i.MX8MP board, where my board
+suspends itself just fine but it gets stuck when I try to resume it using the
+SNVS powerkey.
 
-Pre-existing issues:
-- [High] Global state data race in `atomic_update` causing stolen events an=
-d userspace hangs.
---
+```
+[  127.955231] imx-pgc imx-pgc-domain.6: PM: calling
+genpd_resume_noirq @ 963, parent: 303a0000.gpc
+[  127.966055] imx-pgc imx-pgc-domain.6: PM: genpd_resume_noirq
+returned 0 after 3 usecs
+[  127.975922] etnaviv-gpu 38008000.gpu: PM: calling
+genpd_resume_noirq @ 963, parent: soc@0
+[  127.986183] etnaviv-gpu 38008000.gpu: PM: genpd_resume_noirq
+returned 0 after 44 usecs
+[  127.996201] imx-mipi-csis 32e40000.csi: PM: calling
+genpd_resume_noirq @ 963, parent: 32c00000.bus
+```
 
---- Patch [8]: [PATCH v2 8/8] drm/xen: replace struct drm_simple_display_pi=
-pe with regular atomic helpers ---
-commit 545da3a98a8e32db9ed9bc44680620afafb3b601
-Author: Ze Huang <ze.huang@oss.qualcomm.com>
+I added some logs inside `imx8m_blk_ctrl_power_on()` in `imx8m-blk-ctrl.c`
+as well as in `imx_pgc_power_up` in `gpcv2.c` and have observed that the
+problem appears to occur during the first MMIO access to the Media BLK CTRL
+during resume.
 
-drm/xen: replace struct drm_simple_display_pipe with regular atomic helpers
+```
+[   65.145718] MMIO: writel complete
+[   65.149030] MMIO: reg_write returned
+[   65.152617] PGC[gpu2d]: clear PCR -> 0
+[   65.156369] PGC[gpu2d]: deassert reset
+[   65.160124] PGC[gpu2d]: clk_bulk_disable_unprepare()
+[   65.165096] PGC[gpu2d]: ===== power_up success =====
+[   65.170067] etnaviv-gpu 38008000.gpu: PM: genpd_resume_noirq
+returned 0 after 137496 usecs
+[   65.178348] imx-mipi-csis 32e40000.csi: PM: calling
+genpd_resume_noirq @ 652, parent: 32c00000.bus
+[   65.187316] BLKCTRL[mediablk-mipi-csi2-1]: ===== power_on begin =====
+[   65.193762] BLKCTRL[mediablk-mipi-csi2-1]: pm_runtime_get_sync(bus)
+[   65.200034] BLKCTRL[mediablk-mipi-csi2-1]: pm_runtime_get_sync(bus) -> 1
+[   65.206740] BLKCTRL[mediablk-mipi-csi2-1]: asserting reset
+rst_mask=0xc phy_rst=0x10000
+[   65.214760] clear BLK_SFT_RSTN begin
+[   65.218340] MMIO: readl begin reg=0x0
+```
 
-Replace Xen frontend simple display pipe with explicit plane, CRTC and
-encoder objects for each pipeline.
+No further messages are printed. The CPU never returns from the
+first readl() performed by regmap_clear_bits().
 
-> diff --git a/drivers/gpu/drm/xen/xen_drm_front_kms.c b/drivers/gpu/drm/xe=
-n/xen_drm_front_kms.c
-> --- a/drivers/gpu/drm/xen/xen_drm_front_kms.c
-> +++ b/drivers/gpu/drm/xen/xen_drm_front_kms.c
-> @@ -105,24 +111,21 @@ static void send_pending_event(struct xen_drm_front=
-_drm_pipeline *pipeline)
->  	spin_unlock_irqrestore(&dev->event_lock, flags);
->  }
-> =20
-> -static void display_enable(struct drm_simple_display_pipe *pipe,
-> -			   struct drm_crtc_state *crtc_state,
-> -			   struct drm_plane_state *plane_state)
-> +static void xen_drm_crtc_helper_atomic_enable(struct drm_crtc *crtc,
-> +					      struct drm_atomic_commit *commit)
->  {
-> -	struct xen_drm_front_drm_pipeline *pipeline =3D
-> -			to_xen_drm_pipeline(pipe);
-> -	struct drm_crtc *crtc =3D &pipe->crtc;
-> +	struct xen_drm_front_drm_pipeline *pipeline =3D xen_drm_pipeline_from_c=
-rtc(crtc);
-> +	struct drm_plane_state *plane_state =3D pipeline->plane.state;
-> +	struct drm_framebuffer *fb =3D plane_state->fb;
->  	int ret, idx;
-> =20
-> -	if (!drm_dev_enter(pipe->crtc.dev, &idx))
-> +	if (!drm_dev_enter(crtc->dev, &idx))
->  		return;
-> =20
->  	ret =3D xen_drm_front_mode_set(pipeline, crtc->x, crtc->y,
->  				     fb->width, fb->height,
+Has anyone observed this behaviour before?
 
-[Severity: Critical]
-Can this sequence cause a NULL pointer dereference?
+Here are the full suspend/wake logs with PM debug enabled:
+https://paste.debian.net/hidden/5b4133dd
 
-In xen_drm_crtc_helper_atomic_enable(), the global plane state is
-read asynchronously and fb is dereferenced directly.
+Same logs with more verbose info:
+https://paste.debian.net/hidden/9f544ae7
 
-If userspace submits two non-blocking atomic commits rapidly (the
-first enabling the CRTC and plane, and the second disabling the plane),
-the global state pointer (pipeline->plane.state) is swapped
-synchronously during the ioctl.
+Any suggestions on what to investigate next would be greatly appreciated.
 
-When the first commit's worker executes, it reads the newer state where
-fb is NULL, and unconditionally dereferences fb->width.
-
-Would it be safer to extract the state from the commit object using
-drm_atomic_get_new_plane_state(commit, &pipeline->plane)?
-
->  				     fb->format->cpp[0] * 8,
->  				     xen_drm_front_fb_to_cookie(fb));
-> -
->  	if (ret) {
->  		DRM_ERROR("Failed to enable display: %d\n", ret);
-
-[ ... ]
-
-> @@ -131,13 +134,13 @@ static void display_enable(struct drm_simple_displa=
-y_pipe *pipe,
->  	drm_dev_exit(idx);
->  }
-> =20
-> -static void display_disable(struct drm_simple_display_pipe *pipe)
-> +static void xen_drm_crtc_helper_atomic_disable(struct drm_crtc *crtc,
-> +					       struct drm_atomic_commit *commit)
->  {
-> -	struct xen_drm_front_drm_pipeline *pipeline =3D
-> -			to_xen_drm_pipeline(pipe);
-> +	struct xen_drm_front_drm_pipeline *pipeline =3D xen_drm_pipeline_from_c=
-rtc(crtc);
->  	int ret =3D 0, idx;
-> =20
-> -	if (drm_dev_enter(pipe->crtc.dev, &idx)) {
-> +	if (drm_dev_enter(crtc->dev, &idx)) {
->  		ret =3D xen_drm_front_mode_set(pipeline, 0, 0, 0, 0, 0,
->  					     xen_drm_front_fb_to_cookie(NULL));
->  		drm_dev_exit(idx);
-> @@ -147,6 +150,11 @@ static void display_disable(struct drm_simple_displa=
-y_pipe *pipe)
-> =20
->  	/* Make sure we can restart with enabled connector next time */
->  	pipeline->conn_connected =3D true;
-> +
-> +	/* release stalled event if any */
-> +	send_pending_event(pipeline);
-> +}
-
-[Severity: High]
-Does this function leak the vblank event when the CRTC is disabled?
-
-When moving away from drm_simple_kms_helper, the driver loses the core
-helper's automatic consumption of crtc_state->event during CRTC
-disable.
-
-If userspace submits an atomic commit that disables the CRTC and
-requests a vblank event (e.g., modeset to 0 or DPMS off),
-xen_drm_crtc_helper_atomic_disable() completely omits the consumption and
-signaling of the event.
-
-This leaves the event dangling, which causes a kernel warning in the
-commit tail and hangs the userspace compositor indefinitely as it waits
-for the pageflip event.
-
-Should this function pull and signal the event from
-drm_atomic_get_new_crtc_state(commit, crtc)->event?
-
-[ ... ]
-
-> @@ -242,12 +261,12 @@ static int display_check(struct drm_simple_display_=
-pipe *pipe,
->  	return 0;
->  }
-> =20
-> -static void display_update(struct drm_simple_display_pipe *pipe,
-> -			   struct drm_plane_state *old_plane_state)
-> +static void xen_drm_plane_helper_atomic_update(struct drm_plane *plane,
-> +					       struct drm_atomic_commit *commit)
->  {
-> -	struct xen_drm_front_drm_pipeline *pipeline =3D
-> -			to_xen_drm_pipeline(pipe);
-> -	struct drm_crtc *crtc =3D &pipe->crtc;
-> +	struct drm_plane_state *old_plane_state =3D drm_atomic_get_old_plane_st=
-ate(commit, plane);
-> +	struct xen_drm_front_drm_pipeline *pipeline =3D xen_drm_pipeline_from_p=
-lane(plane);
-> +	struct drm_crtc *crtc =3D &pipeline->crtc;
->  	struct drm_pending_vblank_event *event;
->  	int idx;
-
-[Severity: High]
-This is a pre-existing issue, but can this code steal events from
-future commits?
-
-In xen_drm_plane_helper_atomic_update(), the global CRTC state's event
-is accessed directly:
-
-event =3D crtc->state->event;
-
-Since crtc->state is swapped synchronously, it may reflect a future
-commit's state by the time this worker runs. The worker would then steal
-the future commit's event and clear it.
-
-When the future commit's worker runs, it finds no event, while the
-current commit's original event is stranded on its old state object and
-never signaled, resulting in userspace hangs.
-
-Should the event be fetched reliably from the specific commit object
-using drm_atomic_get_new_crtc_state(commit, crtc)->event?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716-drm-simple=
--kms-removal-v2-0-1133a8fc3785@oss.qualcomm.com?part=3D8
+Best Regards,
+Advait
