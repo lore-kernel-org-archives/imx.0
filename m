@@ -1,236 +1,471 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022092.outbound.protection.outlook.com [52.101.96.92])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013043.outbound.protection.outlook.com [40.107.159.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CE33385AC;
-	Thu, 16 Jul 2026 15:23:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3747D36D503;
+	Thu, 16 Jul 2026 16:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784215436; cv=fail; b=WRITnS7MYxhjCgsi8vaJJ7pmvgT+7VPmuXdGmu8wnrLun+4zCO9rNd0ItZ5/hiRkyRXvRyvNP7TmOYs642Vs3s3JovAwjjrHGUsNz8fsuyubqXGykCKigj57cmiNsSBGz3gP+o6Muz73Ha0/COrt11LYGp3Ue6s2UoNFG06hnr4=
+	t=1784218122; cv=fail; b=K3Dljnu0wdSpZQigzEI4aC38OCGgzOw4JHco8XdlPEb6Ri3eHUN+albpc/0TQmtS/yUAtv0TKCAcAU3OZ0dskPA+cgTQmFd//A+AFX9NTce4B3dr73YZd25F4w9sgEEfpMqUuiTsCLK5nA6CZe1veOOTsa/OxrCeBOH0zHMJgI4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784215436; c=relaxed/simple;
-	bh=ElX0ovtlsMmQpEGZbL2eevmXwy+n0OY4GwxQUFchUFs=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=rkgjQGiNiJSoNAcVell1SwRM5U+bjs2iEmus73eRZlStCl1moEVnJZpoLxyCVMJeJ3IT6xdbOYFZe17cYQR4DAFW1lYpWaoSoyfrnSn1xys7himPbOYrBSwIPjzUaSI0dy56Dmx03cx3WZ72rU6MgPyjovda9CQmUzT/ZP5f/y4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=UI2h/GFf; arc=fail smtp.client-ip=52.101.96.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1784218122; c=relaxed/simple;
+	bh=PVCzVByii/Ap+WCVbCU3yuWjzyF39kYdwMS1Dt3oUEw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qfIOuCzTqEKTBHSHbWdl1gO5j9YiPMFyRPCOyZHGKwp6Vh8yl3JUVIcmQ1jjkg5oP2mWO7kA0BXn/Oogn7VpTzBBKd2YNAKoqBRWvyUK7MpmplWv8fwqGvlGqELCX/0au1FSTmyClOJi9T3bEvHB9f3CF+S2UcqqqQ0RbFRxY1U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=NyvPBvkg; arc=fail smtp.client-ip=40.107.159.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="UI2h/GFf"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="NyvPBvkg"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HF6vgeCcAwVwak/CZC1G8m18yZtJAY1tZlplX9GRsT3xwY38EZx5iRTOHnuNFKx61nCvJVGffD+kCzjGWZtNUePLn093BX7/TF2jfR2kVwHKb6xL6WzHwofMo3jiJaLqAIUpwj6E9JSmK+Scon1Nj/KcND0pGdDOdBuuqcxwWsG84L/OKFttW5McqIxpveqLoHvISX8/pdw2DTMJVTTB62gtxHAHlj2L9LvUutATEn6iWZUKuelFbMMd/vTeEEXERyTj49MVd9gCyvRW2L0uUA9ueaG6dMh6oqMEpbI0i9NuUJmE7pOMs0l50azelgAaqA+g8sVyoyZ5IfTt4foIXg==
+ b=FuqevhtSjSKN7UCOSMhV2s+zCJUU0tGdS2YfKONdbNMq05/C4hn51ErR5Jb8Xbt52mWl8N6Iy4N+delieBNsLUABNOFpH6qKuYSHtp2A2QrLHMsvVVOLfNm0SHRTAGqcB5TZCkN7ojBPwoAoP/xZ/ZYtGKIjEXOM64MjqIVWNReTS6XGaZpZxbSmDG/YYm4pnKMt8uKpAIhXMib1h/KurdY3CeEy3sjcfLVK18b6VdE1Jz7vgYev7t6sz0EUQxyyKGbReS+e4BcKK4wEj0HjccF1v8FgKwjyuvzDOEGCKoz3XH65pAe4CJWHOIjb5F6ETM9LrF83aIm8ThOOnrWKIQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jjta1IMoeWuR+Tk3AelrBcb43oQk+2/qwBFW4GV0pK0=;
- b=Tn7t72u36x+trkZBpogVd9pCrsJVs2ilHITwEiWca0gcM2rVY6RGdKTtyuThxGgAIQdCphamu7CMV3XCa22g2UiUfpvfjZ/x0FNy7/raQTFsGoYoqQ95UA5CPXLdn7v6+D7QYfvzEt+ju0d+hq8Sydp5P2rOh0pHHI4QuZxiXPEvBPFAOqHVUWp2NgMPky4s3ZGUxtF6nDrYgr0z5l8GwlaakwSNc10IJ2Q6AM/IG8qIdo7MSlRkYmCrVJzhe4hohGhLHan2q5Lx7Fd/wqGVRVJU3V/mr/+vtlysMxJOPjofkZ7Dd+2C0YqJIk+gQe4W43qcC+RI90of0GzwrzsAKg==
+ bh=5FlaGoD4YR3J4VUZSnY0HHTVIC5svK6IdAOSb1SAedc=;
+ b=w0i7J5Fi9cwL/vuUIJRDJuFw06vnN7xH/8NdBoSjMSa+5CCvDkOVRTTxhjGvrcr8I04CTEW3K/HK1qmvLQu5hVN6OwTpfbr9kDg8hZh4xvm4cAUZ8eq7XNt6yly3Jdz6sh2viH39MbjUXvMqjIFgYzUyJH/j+zN/bcBKF4bfhu8Bi2SxPSH5grsWWQ2OCVpWiQFnObRUTtX0aehGo/Zy3gB/nUpPHcwYkHU9Uh89pYQq6SxjMgupt8YE271i+66EB9Oabl6U1OKTYaO+hI/lcnk74ByDUwbmmlPNXEuX1s+q7O3K5ClG5wIy6gbe1Lj6rwMLlojOM1PLO1Q3qrk+hA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jjta1IMoeWuR+Tk3AelrBcb43oQk+2/qwBFW4GV0pK0=;
- b=UI2h/GFfWGjRvYr/peuvAhKLIAnxYZSJLQZ4BuPefWncIZ80lfQgE3d32go6BOzgtATVcmXdOeJK8NFk1fJhr+B8mNzY3ZFFnWjFrpYd6oW3uymZGIspUbeqDZetARXhGfXhjMsswZPW8EXNc7xo7VuMkU9KD1lBSyOExC6ihYM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO7P265MB8325.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:466::17) with
+ bh=5FlaGoD4YR3J4VUZSnY0HHTVIC5svK6IdAOSb1SAedc=;
+ b=NyvPBvkga2J5nWtEn9BIONs1efQL+67aT6xkKWqCVEz9T8gKmzljzpn6k2yA/5Ex+royN00JqXGpMSe1tNN2lmqX21SVY5ktmGKRbGo70f/GUyMxsFBqd3jlKX18wX1Ex6PRuISr/3tTXujgsZxg7R0C/RoxAZyjc2tBa1DvCoQQuGt93dcTMH9Nct6xqpAyflrMm2FLrqS+KZJS6rNbocQtWLTWA9Kw9aXR1te3Uvnh0l6SoPtzjUHbtXAPbOnzasqNLOWRKDYXIC7/4vXAyDmLKswU258DNdvjjJCBRvgdJZcBg5UEl05wzGV7WcEu107A8NOywARBy/bwl7kwsQ==
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
+ by AS5PR04MB9998.eurprd04.prod.outlook.com (2603:10a6:20b:67e::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.11; Thu, 16 Jul
- 2026 15:23:47 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0223.008; Thu, 16 Jul 2026
- 15:23:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Thu, 16 Jul
+ 2026 16:08:31 +0000
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb%6]) with mapi id 15.21.0223.011; Thu, 16 Jul 2026
+ 16:08:31 +0000
+From: "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
+To: "Frank Li (OSS)" <frank.li@oss.nxp.com>, "sashiko-reviews@lists.linux.dev"
+	<sashiko-reviews@lists.linux.dev>
+CC: "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>, "Frank.Li@kernel.org"
+	<Frank.Li@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "media-ci@linuxtv.org"
+	<media-ci@linuxtv.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH v12 3/3] media: nxp: Add i.MX95 CSI pixel formatter v4l2
+ driver
+Thread-Topic: [PATCH v12 3/3] media: nxp: Add i.MX95 CSI pixel formatter v4l2
+ driver
+Thread-Index: AQHdFPI2BxCx6oGQ30ixtkjati0BTbZvvV8AgABer4CAADK14A==
+Date: Thu, 16 Jul 2026 16:08:30 +0000
+Message-ID:
+ <AS8PR04MB90802814B5BCDD9FF1C89742FAC72@AS8PR04MB9080.eurprd04.prod.outlook.com>
+References: <20260716-csi_formatter-v12-0-2601d17fc4af@oss.nxp.com>
+ <20260716-csi_formatter-v12-3-2601d17fc4af@oss.nxp.com>
+ <20260716072052.A20961F000E9@smtp.kernel.org> <aljVwX1wzPqV3c_7@SMW015318>
+In-Reply-To: <aljVwX1wzPqV3c_7@SMW015318>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB9080:EE_|AS5PR04MB9998:EE_
+x-ms-office365-filtering-correlation-id: f610835b-9102-4b57-abc1-08dee3547acc
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|376014|1800799024|19092799006|366016|56012099006|11063799006|5023799004|4143699003|6133799003|18002099003|22082099003|10067099003|38070700021;
+x-microsoft-antispam-message-info:
+ rKG8WSt7z39LSHJtXjYTzskwpnxBVB1q185BCUIiL9J7LqfNbPNo+8RsAA3cst0zhXHvjtyCN/rEdNMDDI7BxQyAk+r7jB3dfId1x1WaUf7HRcx8Ozgt1WdpDDVyweKovLCRDd8gRCZCEUkMDfffdDWrNLTVRh/MgB+09FCkpk3S38lNmtlUVGnX88m0nwZJ2nfHyANqOPh6ak38OPaPr9InBQCh1mUavpbEb6ZupopTEixrL8UZ2TotqvWTC5p6/vTjhci0cTcO12fEm2ESzrFrKQ+tZNZ+iBezB/wsEdbbau8efc8hsnVLzEH2WYn0yaUGR+PfFkOtqXKyS9mqpeT2OofziXfPwTI4UY0e6z6EpDgFgBXx240me4d8dmWI2+tO2NwJGFPiDCrH7kQrOa7mLTCKTFkoU6XJbG/cjtCGahFA8asb8bTtcKAuW4IdF/hV+k95qZlM3dHhLsmtRq3BJONbkBWFhYLBbbWYV7XYxhmvFtNWzatfBOZOX6ibchMEnDe+ztL1q7cMvO4VjcujoIuYvuIWi1jKIRWJEb/uILtvQ+9a96BpLfzbgNs5QysqGinNZ1gD73/exyTQ18mLJDwJuM/Ooy5M5wGGahYy8+EKKRXPzUZV8VI4QeWfp6PmBFI44tnLMjIgDwXgksteCMPQLmALuy640Ng5l4g=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(19092799006)(366016)(56012099006)(11063799006)(5023799004)(4143699003)(6133799003)(18002099003)(22082099003)(10067099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?7tvlatccyYlMuzmdVrWZgfZYtOTDLrDnm5/6FcrSQin24UyUs5w9FEUaPUHE?=
+ =?us-ascii?Q?dhbzQRBl0kDuNALJYiplgO5v6DYIF7rPMU8dhqF6rmAZkGhYUyRqMWoC9yw/?=
+ =?us-ascii?Q?N7z9V71j2imkBJDdct0ullYt2tpsJF1JY07FmuimyHExrIad6YEH3GXjsXYD?=
+ =?us-ascii?Q?zbPUedYczjt47x4zeqPWR3lqPWn8VlG9jmEnd4ZPuydxxCczVkwN0Ta25OWx?=
+ =?us-ascii?Q?WhmbXmMviu4B7IdeUiHzbus271p6apa9r9k66vEKqSiiBBPDRS2LZWkW8WYz?=
+ =?us-ascii?Q?p3+7F2w2UoMRZDWEB+7igyaUUa7LIdsw2lJx6IzDwScdQJsqSHCoO0JLDl7H?=
+ =?us-ascii?Q?cz/La/2eNshqupYfeBAWsUbjBBOMUyADbbIUpWAnQBD14XPIluk1Dy+3pRYT?=
+ =?us-ascii?Q?IEuG9vhQagpQe3DYKcW6AMg+O/rdYJ3E8soU/OhlEWMfJ/s89YKET1qI37vt?=
+ =?us-ascii?Q?RWl6hFAQ1NL/kbMGw4OAe7pCcWJciDHYfMHRkkSD5sw/DLz624cFOs5ptU2w?=
+ =?us-ascii?Q?1dyER8OqZMaRd2bcpWOU+zpkim63K04k5iaXRWQkwGU4fhgyBGdtsusBgmBu?=
+ =?us-ascii?Q?SmbOuDPOIdJdId3MlgM6+sRzk0+zlPWcxfdW20RH/a16zer6TW9Cxu1ghtyw?=
+ =?us-ascii?Q?c54hsfhJ/fMAHZw58CCpH3XW6g2Hq+PpFnB59pUyVPGfNjyj5kXHQ6/l85K9?=
+ =?us-ascii?Q?eazsx+q88wrTS9ClMEcllFUeWN53CHqNQqJUWqCN2cfBK9F7hFc6/beT05v+?=
+ =?us-ascii?Q?PEn6KVkygAlj9rBDB402p7EGbrOBRyLbgCK6zfXYezMlkmzyih8zE0plAs9O?=
+ =?us-ascii?Q?YJ3Lydn+lU88cze9aaQ/mPtsUO3rWcWyc0Cu8cg/zcZ3pTu55+wkmtqBbYrQ?=
+ =?us-ascii?Q?OwjtEumWGBqALUlE+ddWzE9GkmbxvbPtcY7MErjBbf0f/s3U7YH2VXyAmIJN?=
+ =?us-ascii?Q?543lPPaCX+E/rg33UDbVM5JImoqABhCc1zQKKZ22DQu4CwcUHDmT6wvw/S7A?=
+ =?us-ascii?Q?V0CmgjKwaUPbABRx4AMceqwiknbuO8WV9oWQhn5OzWJexAT0nJmhI5P4Ag6L?=
+ =?us-ascii?Q?atCjaINbei8V85rerw3LPHtEA5jop7iYSRuSCCqvbJDwJU+jjBHCTto9ooJP?=
+ =?us-ascii?Q?qSLBmEZ4uBNiffFd6vo7HkrJVSz1Gp8LG4gA6wcDWQPWOBlKQGJjkh8RMU/q?=
+ =?us-ascii?Q?zW1eILvVhtTOT5dR6sZMKadXKR4ut9l5PqEocF+QqdOZy8fld79Q6NmnVw5B?=
+ =?us-ascii?Q?TVqr0nu4IjsWdyCGmvqWyNFUzDfnmfPtf18hUJeOgeE13bdDMKfILWKC10EV?=
+ =?us-ascii?Q?fOtKOAFH5TO1hWWFAvkz8VGw/j8wwHTKiXzxa2FwNLf+fp6u7g0YJOwAku8g?=
+ =?us-ascii?Q?TeErfTXme2Jabz28JWKlBpA3Mv29uPJhWE9aTFadHzp1+HTG87T90ZH1tAfa?=
+ =?us-ascii?Q?nxiRFqcHt760Z+MRSuysuAxaenL7p0hvBfnNT4Alt20kWzshknTWikU0MmlI?=
+ =?us-ascii?Q?xR2FugmYZ6v4zo06HHAHWyczYPPhCtloDcp5MBHlIUQlNRc927MLB5HBq1Mr?=
+ =?us-ascii?Q?j9IXiuOnFfeurePFSaEuSAIxqCsh6BNFLWT2dnQDzmOLr9eKN+xPZ71fy7uy?=
+ =?us-ascii?Q?lW0hJGumImExHmmU6A+MvBxxKzceyc3MF6x9WuZv5WcEfpK2dYKz8YxcudT+?=
+ =?us-ascii?Q?sBaT+FxpMWX7OvvLBFLn9uAsQ2xH9h4saXOGBUiAwJ8iYP8X/0NeMJ6se/H6?=
+ =?us-ascii?Q?xXFz+AZqiA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Jul 2026 16:23:46 +0100
-Message-Id: <DK03KZBE5E3T.3VQJY9DIBYON7@garyguo.net>
-To: "Link Mauve" <linkmauve@linkmauve.fr>, "Srinivas Kandagatla"
- <srini@kernel.org>
-Cc: "Andy Shevchenko" <andriy.shevchenko@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Kevin Hilman" <khilman@baylibre.com>, "Jerome
- Brunet" <jbrunet@baylibre.com>, "Martin Blumenstingl"
- <martin.blumenstingl@googlemail.com>, "Sven Peter" <sven@kernel.org>,
- "Janne Grunau" <j@jannau.net>, "Neal Gompa" <neal@gompa.dev>, "Frank Li"
- <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
- "Vladimir Zapolskiy" <vz@mleia.com>, =?utf-8?q?Andr=C3=A9_Draszik?=
- <andre.draszik@linaro.org>, "Orson Zhai" <orsonzhai@gmail.com>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Chunyan Zhang"
- <zhang.lyra@gmail.com>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
- "Alexandre Torgue" <alexandre.torgue@foss.st.com>, "Kalyani Akula"
- <kalyani.akula@amd.com>, "Michal Simek" <michal.simek@amd.com>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Johan Hovold"
- <johan@kernel.org>, "Ronald Claveau" <linux-kernel-dev@aliel.fr>, "Daniel
- Lezcano" <daniel.lezcano@kernel.org>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-amlogic@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <asahi@lists.linux.dev>, <imx@lists.linux.dev>,
- <linux-arm-msm@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 0/4] nvmem: fix a const-unsoundness in reg_write
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260716142415.28718-1-linkmauve@linkmauve.fr>
-In-Reply-To: <20260716142415.28718-1-linkmauve@linkmauve.fr>
-X-ClientProxiedBy: LO4P123CA0647.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:296::22) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO7P265MB8325:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1764aef4-e3ca-43ee-5c86-08dee34e3af1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|23010399003|7416014|376014|366016|5023799004|56012099006|6133799003|22082099003|18002099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	n9p6E+IQ5Ec24YRxYYSTdUZ2t1WbiFfsOeKKBN6ok7WaTx+SaoK4AJZaAkH8gf+qACSFJZQgDPvhtEaGSiloOEfkdnkQlOtgdS5fKtRUn49/FAWfGa94naofpPnhDC7mjfvZKXLBMjYy9zNR5nbO5+RY/CCHRzyYOC8GuN86nRmVAHunE/+KO3/gEIAvcMJ1c2BobPL7Rzp/cEBVvjHGnL4rp5H+xcnkxBSq4qAoQawbwQkOXPxray83/IEinGouxslBP0VYuPqwjMYSRt5BpGcSTi6Shv5ltb21cPyhjvEhGRRAxriu6WAzyJs00jaBGEEJoWXmp4i3SeBk4gzFlFvptNN2ZH+GBrUxQDmh6wEVerjdnnX2etOTCZAhW6cylCn0OhfiTRa9RhP6yG6HlYQXvZyg5WPWcCA2Z0lXWD5GAchykEsDg0YC6HwYogv3iZg48VylJxqtMeCHAZDjEv2heqlM914SfpxhlC3nlYY6l86wOgg4x82q0Q2ovFrgP8IDt7ktTior/NQ9U2Tpy/3gtQ2CxNlAHqc8HrF7O5e3AOTgce7ALe03u3Aw6iBYESazteXiXvNpH9yP+sHqto1rVSdkpwHNovspR6/WxMlhXaofG8PAF0jL04rQ0LPfLaWbe+P4rvTYsHHg/Rm3ne8gvRkbsVCa2oH7T7lfF9Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(23010399003)(7416014)(376014)(366016)(5023799004)(56012099006)(6133799003)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VVNWbS9PQ2tTVDVLMDBZQXphUEVZRk94anlDMjhjVm4yblJGbnNFK0F0blQy?=
- =?utf-8?B?a0tXQ1VlSzhWTm5DS2tQM3BOWGlPNDVpVTBZVHZXWi9vL1MvMThWWnB1V2dx?=
- =?utf-8?B?NmE3TW84RG93VXpYd1pmQUxtQkE3L09DUXUyT1UwSlk2R3BweVdiQitSTDlS?=
- =?utf-8?B?Q29CQXFURGdKamYya1JpZXRydVZaeUUvV1ZRbjliNlB4d2R1aS9XeDNlUW03?=
- =?utf-8?B?NjBhMjVFcHJEeVZnMU95U0wxQnBZUG9RTks4eHpHYlltdHZzU2dWTlBoNmlX?=
- =?utf-8?B?MlU4WE9abnJLQmlUclJsZ3lvVjFxTHFyU3puTVNYVFFTQThscis5MmZoek9l?=
- =?utf-8?B?blFxVmF1bUd4UGRlUXhrcHJ1cnlUVnRNTmg3QitsQkgzVWRRdHlWT3VlWkdm?=
- =?utf-8?B?QlFDaHFMUmcvR3Y3QVBPVjlhYnQ2Ui9xMWlzaE1pUXdHVmpsTW9BMVdJMDd1?=
- =?utf-8?B?RmJGNnE4b2VYT2EwZzIvc1VSb29QSnc2elE4a3hLaFFKNnRjVWhDUSswdU5V?=
- =?utf-8?B?UVZkd2QwWHB6dS9YempibXdoQ00wNkpUQVZwZmFXa2dYTVJDQzdKdENKNHFj?=
- =?utf-8?B?azlhTHh3dlNjS1lxTkR2b3RMUjczTGE4ZVRCY2lxVFhiNEdaa29tZmc5TkJx?=
- =?utf-8?B?MGZnNTJUWjJFcjRPVTNHNklUUWJ4NSt1WmhsTGRCelREQmJrZmdPUS9URDEr?=
- =?utf-8?B?QVAzS1JVZkNYQXBlMTJjUytXZGh0Q1V2QnlqZUgyRkgyVFFsb3dEdXNyNStl?=
- =?utf-8?B?YU1zRDFaY1JBeUJwNy95L0gyajFWa2tPQ0NzRnRvTUpId1FZMHl4dXdEbXRn?=
- =?utf-8?B?ajBPRURkbGk1ajVDNzRteityV1JYalNjam9mUlc1WnZWdWFoU1EreFdIY3dL?=
- =?utf-8?B?WHdqNmNsUi9WYVVNYXVqR1VuTmRURXFWRGpYdExYL2hqZ0hrOUFJOS91cHZH?=
- =?utf-8?B?aU05Q0FSSnRUT3VZUjRMMnBIL0NCVGRTaFQzaHNGRHF4dnF4QzhYclJJNEZi?=
- =?utf-8?B?VHFWZExWZkZpZEZWODNDcC9WUjk4b3dFYmNNUEwvcjRzTGdJWFJoOWFva2w3?=
- =?utf-8?B?Q1czZkJMR04rSlRHbDI5TU51Q1ZOVCtKb3lKWXNWOGxIL2RCY3hWbGZGUU9s?=
- =?utf-8?B?MGkrUnA4dDN2R1U4MVAxVzVEaXQzMGhyUEEyVUNYTlorYjd0UjZMcSs0MHFp?=
- =?utf-8?B?U21NR2tpbW52TWcvbEo2MHF2Z2xRbTFIS2JBWTZFOWxaUzZwVmxkWXhkdDc5?=
- =?utf-8?B?cXZETDhING1ZY0NNTk1rVU5jdnR3dmFqSDJ3eUViS1d1SmZlQlREWnVRQkdC?=
- =?utf-8?B?SEpDc3NZRkl1OHRWeno0eUN2WlBhWFNRazhjb3JKYnBXUmlodTEvMWFZVGxW?=
- =?utf-8?B?QkpvT1kxbkNjY2FkTG1KSnowVEUwTE44ekpLdlNZWUd0RkRmOHZhZ1ZJbGFR?=
- =?utf-8?B?K09JYmFKU3FVVG5JdnhUaUdKZURuZjI2c0dYUS9xNnhZbzlsSXJXWWMrMjJ2?=
- =?utf-8?B?QUVRblJFTTJLWm9JUmVaSUlXYTUwVG56bFF6QVhqN0lCSHM5UFJ4Zkwxdm5I?=
- =?utf-8?B?VElDS1NZZUgzMzBLcDZ0VDZyc3Q1YzR0WXV1N2tlVXN3REtqTGpxbUhhbWtM?=
- =?utf-8?B?Q3g1Z0dtMlMrQktLVStCb29hMDlWUnhLOXRhTnU5SXJ6T3ZZZWtjeGgrVzVI?=
- =?utf-8?B?SW9yTDd4WUpkSzh1YzNvaFJxTHRmL3BxTno2WG1wU3VBRkpJOGdNV0lrQXB4?=
- =?utf-8?B?ajhpRWFxM2MxSGpXOTN0Nld4aWpoYjZ1ME9FaitIbS8zeE5BR2dvQ3VKQ3hw?=
- =?utf-8?B?dGJhemk1Z0R5Z3pCVk1NMjVIVFpJdCtQMktlZ2lITnlGZURhMWc1eDEyckZN?=
- =?utf-8?B?R1A1U2JTUU1OK0pRa2hQeFNzdTJSekZIc3p4YzRkUks0YXdyQktUelJjTSs3?=
- =?utf-8?B?eFpRaE9YZWlma3Rac2x5L25Ldm1tN2oycVIwbTFkL2gyUzdjWUtoOGdrc2Nm?=
- =?utf-8?B?aStMaE1zK3VLYnUzUU43cFhsd1ZyN1hydXRjazdjY3hMeW5GOW9Db3cvNjlD?=
- =?utf-8?B?TDZWQVlRanZKd1N6a3I4WTRjYlc0cVgwQkZpOW5NSXh5STV2M0Y3c2puV0Mv?=
- =?utf-8?B?ajI5cXZEZ2lSREY3QVBZcW9zUGRnS25NeWNUL0ttZW9SRGZtKzBodS9WN2Zm?=
- =?utf-8?B?TTJQeFlEblJ2TWxJRGZPTFhlREdMS21EV090ejZkdDdlaU9nM2dMaGZSOFdY?=
- =?utf-8?B?Vk9sZFJ1SzE0UHZGN2haZnEwTzdjbVk2SDloS2RDMW81UTVvbVArdmJFMWlH?=
- =?utf-8?B?QXBCeFZWOXArbTB2VytVL2cwN0wrcEFjaDJqTnpDbzFaUnhCeEwyUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1764aef4-e3ca-43ee-5c86-08dee34e3af1
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-OriginatorOrg: oss.nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 15:23:47.0178
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f610835b-9102-4b57-abc1-08dee3547acc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jul 2026 16:08:30.9672
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 345MzfAWA8p8zb/1ZFejTJFcYJiUP4HsDAYwK3bX3MopVX3NQuFyGBlZf6BdR7sFub/du2/gw1nEgU0mrLqZyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO7P265MB8325
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hRu8QyPqdQhY4B8wjHXtGa8s+HJaWYn8IqTKeTWxjHAwnSxMmgRDGFsh27F7bz8CRjPWGCEXoEBM0D7j/qFAQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9998
 
-On Thu Jul 16, 2026 at 3:24 PM BST, Link Mauve wrote:
-> This callback used to take a mutable void * for no reason, which causes
-> the compiler to be unaware that the val buffer should never be modified
-> by the callback.
->
-> This was found while drafting the nvmem-provider Rust abstraction.
->
-> Thanks to the guidance of Andy Shevchenko, this now introduces a new
-> callback and deprecates the existing one, with the goal of renaming the
-> new one into the old one once no user remains in the kernel.
+Hi Frank,
 
-I wouldn't call the series "const-unsoundness fix". There's nothing wrong (=
-in
-the sense of UB) in using "void *" for constant data as long as it is not
-actually mutated. Yes, it's better to use "const void *", but just call it
-"migrate to const void * in reg_write" or something similar.
+> -----Original Message-----
+> From: Frank Li (OSS) <frank.li@oss.nxp.com>
+> Sent: Thursday, July 16, 2026 9:00 PM
+> To: sashiko-reviews@lists.linux.dev
+> Cc: G.N. Zhou (OSS) <guoniu.zhou@oss.nxp.com>; Frank.Li@kernel.org;
+> robh@kernel.org; conor+dt@kernel.org; media-ci@linuxtv.org;
+> devicetree@vger.kernel.org; imx@lists.linux.dev
+> Subject: Re: [PATCH v12 3/3] media: nxp: Add i.MX95 CSI pixel formatter v=
+4l2
+> driver
+>=20
+> On Thu, Jul 16, 2026 at 07:20:52AM +0000, sashiko-bot@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 5 potential is=
+sue(s) to
+> consider:
+> > - [High] Missing NULL checks for the return value of
+> `v4l2_subdev_state_get_format()` allow userspace to trigger a kernel pani=
+c.
+> > - [High] The driver caches a pointer to the remote subdevice when bound=
+, but
+> fails to implement an `.unbind` callback to clear it, leading to a Use-Af=
+ter-Free.
+> > - [Medium] Mixing `goto`-based error handling with scope-based cleanup
+> (`__free` and `guard`) in the same function violates kernel cleanup guide=
+lines.
+> > - [Medium] `csi_formatter_subdev_set_fmt` partially modifies the subdev=
+ice
+> state but returns `-EINVAL` if the stream has no active route.
+> > - [Medium] The `csi_formatter_read` wrapper ignores the return value of
+> `regmap_read`, potentially leading to uninitialized stack variable usage.
+> > --
+> >
+> > --- Patch [3]: [PATCH v12 3/3] media: nxp: Add i.MX95 CSI pixel
+> > formatter v4l2 driver --- commit
+> > 0cff6156940653a6a408d93ee678b339b7218ebb
+> > Author: Guoniu Zhou <guoniu.zhou@nxp.com>
+> > Subject: media: nxp: Add i.MX95 CSI pixel formatter v4l2 driver
+> >
+> > The CSI pixel formatter is a module found on i.MX95 used to reformat
+> > packet info, pixel and non-pixel data from CSI-2 host controller to
+> > match Pixel Link(PL) definition. Add data formatting support.
+> >
+> > > diff --git a/drivers/media/platform/nxp/imx95-csi-formatter.c
+> > > b/drivers/media/platform/nxp/imx95-csi-formatter.c
+> > > new file mode 100644
+> > > index 0000000000000..cea60327c9729
+> > > --- /dev/null
+> > > +++ b/drivers/media/platform/nxp/imx95-csi-formatter.c
+> >
+> > [ ... ]
+> >
+> > > +static int csi_formatter_subdev_enum_mbus_code(struct v4l2_subdev *s=
+d,
+> > > +					       struct v4l2_subdev_state *sd_state,
+> > > +					       struct
+> v4l2_subdev_mbus_code_enum *code) {
+> > > +	if (code->pad =3D=3D CSI_FORMATTER_PAD_SOURCE) {
+> > > +		struct v4l2_mbus_framefmt *fmt;
+> > > +
+> > > +		if (code->index > 0)
+> > > +			return -EINVAL;
+> > > +
+> > > +		fmt =3D v4l2_subdev_state_get_format(sd_state, code->pad,
+> > > +						   code->stream);
+> > > +		code->code =3D fmt->code;
+> >
+> > [Severity: High]
+> > Can this cause a NULL pointer dereference?
+> >
+> > The V4L2 core does not validate the stream ID provided by userspace in
+> > VIDIOC_SUBDEV_ENUM_MBUS_CODE against the active routing table before
+> > calling this function. If a user passes an invalid stream ID,
+> > v4l2_subdev_state_get_format() returns NULL, which is then
+> > unconditionally dereferenced here.
+>=20
+> Is it true?
 
-Best,
-Gary
+No, it will not cause a NULL pointer dereference since V4L2 core's check_st=
+ate validates first.
+If NULL, it returns early and never calls the callback, so the callback won=
+'t encounter NULL.
 
->
-> Changes since v2:
-> - Link to v2:
->   https://lore.kernel.org/rust-for-linux/aljAqBNVXV1aVJqx@luna/T/
-> - Rebase on top of linux-next/master.
-> - Fix logic error which made all devices read-only.
-> - Remove a blanket cast of function pointers to void * in
->   apple-spmi-nvmem (patch 3).
-> - Also fix constness of write buffer in firmware: meson, which is used
->   exclusively by meson-efuse (patch 4).
-> - Re-review all changes to make sure the passed types are more correct
->   than they were before.
-> - Actually test with COMPILE_TEST, which I forgot to enable before=E2=80=
-=A6
->
-> Changes since v1:
-> - Link to v1:
->   https://lore.kernel.org/rust-for-linux/20260715175229.24672-1-linkmauve=
-@linkmauve.fr/
-> - Removed all changes to other subsystems than nvmem.
-> - Added a new reg_write_const callback instead of changing the exisitng
->   reg_write.
-> - Deprecated the existing reg_write callback, it will get removed once
->   all users in the kernel will be done migrating to the new one.
->
-> Link Mauve (4):
->   nvmem: core: deprecate reg_write callback and add reg_write_const
->   nvmem: make all reg_write callbacks take const void *
->   nvmem: apple-spmi: improve calling safety with wrapper functions
->   firmware: meson: pass a const buffer to meson_sm_call_write()
->
->  drivers/firmware/meson/meson_sm.c       |  2 +-
->  drivers/nvmem/apple-spmi-nvmem.c        | 18 ++++++++++++++--
->  drivers/nvmem/bcm-ocotp.c               |  8 +++----
->  drivers/nvmem/core.c                    | 28 ++++++++++++++-----------
->  drivers/nvmem/imx-ocotp-scu.c           |  6 +++---
->  drivers/nvmem/imx-ocotp.c               |  6 +++---
->  drivers/nvmem/internals.h               |  1 +
->  drivers/nvmem/lan9662-otpc.c            |  6 +++---
->  drivers/nvmem/lpc18xx_eeprom.c          |  6 +++---
->  drivers/nvmem/max77759-nvmem.c          |  4 ++--
->  drivers/nvmem/meson-efuse.c             |  8 +++----
->  drivers/nvmem/qcom-spmi-sdam.c          |  6 +++---
->  drivers/nvmem/qfprom.c                  |  6 +++---
->  drivers/nvmem/rave-sp-eeprom.c          |  6 +++---
->  drivers/nvmem/snvs_lpgpr.c              |  4 ++--
->  drivers/nvmem/sprd-efuse.c              |  6 +++---
->  drivers/nvmem/stm32-bsec-optee-ta.c     |  2 +-
->  drivers/nvmem/stm32-bsec-optee-ta.h     |  4 ++--
->  drivers/nvmem/stm32-romem.c             | 10 ++++-----
->  drivers/nvmem/zynqmp_nvmem.c            |  6 +++---
->  include/linux/firmware/meson/meson_sm.h |  2 +-
->  include/linux/nvmem-provider.h          |  6 +++++-
->  22 files changed, 87 insertions(+), 64 deletions(-)
->
->
-> base-commit: b8809969e1d7a591e0f49dd464a5d04b3cf02ab1
+>=20
+> >
+> > > +		return 0;
+> > > +	}
+> >
+> > [ ... ]
+> >
+> > > +static int csi_formatter_subdev_set_fmt(struct v4l2_subdev *sd,
+> > > +					struct v4l2_subdev_state *sd_state,
+> > > +					struct v4l2_subdev_format *sdformat) {
+> > > +	struct csi_formatter_pix_format const *format;
+> > > +	struct v4l2_mbus_framefmt *fmt;
+> > > +
+> > > +	if (sdformat->pad =3D=3D CSI_FORMATTER_PAD_SOURCE)
+> > > +		return v4l2_subdev_get_fmt(sd, sd_state, sdformat);
+> > > +
+> > > +	format =3D csi_formatter_find_format(sdformat->format.code);
+> > > +	if (!format)
+> > > +		format =3D &formats[0];
+> > > +
+> > > +	v4l_bound_align_image(&sdformat->format.width, 1, 0xffff, 2,
+> > > +			      &sdformat->format.height, 1, 0xffff, 0, 0);
+> > > +
+> > > +	fmt =3D v4l2_subdev_state_get_format(sd_state, sdformat->pad,
+> > > +					   sdformat->stream);
+> > > +	*fmt =3D sdformat->format;
+> >
+> > [Severity: High]
+> > Does this also risk a NULL pointer dereference for the same reason?
+> > Userspace can provide an invalid stream ID during VIDIOC_SUBDEV_S_FMT,
+> > resulting in v4l2_subdev_state_get_format() returning NULL.
+> >
+> > > +
+> > > +	/* Set default code if user set an invalid value */
+> > > +	fmt->code =3D format->code;
+> > > +	sdformat->format =3D *fmt;
+> > > +
+> > > +	/* Propagate the format from sink stream to source stream */
+> > > +	fmt =3D v4l2_subdev_state_get_opposite_stream_format(sd_state,
+> sdformat->pad,
+> > > +							   sdformat->stream);
+> > > +	if (!fmt)
+> > > +		return -EINVAL;
+> >
+> > [Severity: Medium]
+> > Does this leave the subdevice in an inconsistent state?
+> >
+> > If a user configures the format on a sink pad stream that does not
+> > currently have an active route to a source pad,
+> > v4l2_subdev_state_get_opposite_stream_format()
+> > returns NULL. This causes the driver to return -EINVAL after the sink
+> > format has already been updated in the state earlier in this function.
+> > Setting a format on an unrouted stream is generally a valid V4L2 operat=
+ion.
+>=20
+> look like make sense,
+>=20
+> Does v4l2_subdev_state_get_opposite_stream_format() call before fmt->code=
+?
+
+No, this does not leave the subdevice in an inconsistent state since in V4L=
+2, setting
+a format on an unrouted stream is a valid operation. The sink pad format ca=
+n be
+configured independently of routing. The state remains consistent - the sin=
+k format
+is updated as requested by userspace. The -EINVAL return when trying to pro=
+pagate
+to a non-existent opposite stream is correct behavior, as there's no active=
+ route to
+propagate to. This is expected and does not corrupt the state.
+
+Best Regards
+G.N Zhou
 
 
+>=20
+> >
+> > > +
+> > > +	*fmt =3D sdformat->format;
+> > > +
+> > > +	return 0;
+> > > +}
+> >
+> > [ ... ]
+> >
+> > > +static inline void csi_formatter_read(struct csi_formatter *formatte=
+r,
+> > > +				      unsigned int reg, unsigned int *value) {
+> > > +	u32 offset =3D formatter->reg_offset;
+> > > +
+> > > +	regmap_read(formatter->regs, reg + offset, value); }
+> >
+> > [Severity: Medium]
+> > Can this write uninitialized stack memory to hardware registers?
+> >
+> > The wrapper csi_formatter_read() ignores the return value of regmap_rea=
+d().
+> > If the read fails, local stack variables remain uninitialized.
+> >
+> > For example, when called from csi_formatter_start_stream():
+> >
+> >     u32 val;
+> >     ...
+> >     csi_formatter_read(formatter, CSI_VC_PIXEL_DATA_TYPE(vc), &val);
+> >     val |=3D BIT(csi_formatter_get_index_by_dt(pix_fmt->data_type));
+> >     csi_formatter_write(formatter, CSI_VC_PIXEL_DATA_TYPE(vc), val);
+> >
+> > The driver performs bitwise operations on val and writes it back to
+> > the CSI_VC_PIXEL_DATA_TYPE register. If regmap_read() failed, this
+> > writes garbage data to the hardware.
+>=20
+> It should be fine. MMIO never return failure.
+>=20
+> >
+> > [ ... ]
+> >
+> > > +static int csi_formatter_subdev_enable_streams(struct v4l2_subdev *s=
+d,
+> > > +					       struct v4l2_subdev_state *state,
+> > > +					       u32 pad, u64 streams_mask) {
+> > > +	struct csi_formatter *formatter =3D sd_to_formatter(sd);
+> > > +	struct device *dev =3D formatter->dev;
+> > > +	u64 sink_streams;
+> > > +	int ret;
+> > > +
+> > > +	sink_streams =3D v4l2_subdev_state_xlate_streams(state,
+> > > +
+> CSI_FORMATTER_PAD_SOURCE,
+> > > +
+> CSI_FORMATTER_PAD_SINK,
+> > > +						       &streams_mask);
+> > > +	if (!sink_streams || !streams_mask)
+> > > +		return -EINVAL;
+> > > +
+> > > +	guard(mutex)(&formatter->lock);
+> > > +
+> > > +	if (!formatter->enabled_streams) {
+> > > +		ret =3D pm_runtime_resume_and_get(formatter->dev);
+> > > +		if (ret < 0) {
+> > > +			dev_err(dev, "Failed to resume runtime PM: %d\n", ret);
+> > > +			return ret;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	ret =3D csi_formatter_start_stream(formatter, state, streams_mask);
+> > > +	if (ret)
+> > > +		goto err_runtime_put;
+> > > +
+> > > +	ret =3D v4l2_subdev_enable_streams(formatter->csi_sd,
+> > > +					 formatter->remote_pad,
+> > > +					 sink_streams);
+> > > +	if (ret)
+> > > +		goto err_stop_stream;
+> > > +
+> > > +	formatter->enabled_streams |=3D streams_mask;
+> > > +
+> > > +	return 0;
+> > > +
+> > > +err_stop_stream:
+> > > +	csi_formatter_stop_stream(formatter, state, streams_mask);
+> > > +err_runtime_put:
+> > > +	if (!formatter->enabled_streams)
+> > > +		pm_runtime_put(formatter->dev);
+> > > +	return ret;
+> > > +}
+> >
+> > [Severity: Medium]
+> > Is it safe to mix guard() with goto labels in the same function?
+> >
+> > The kernel cleanup guidelines note that the expectation is that usage
+> > of goto and cleanup helpers is never mixed in the same function to
+> > avoid resource leaks or double-free bugs during future maintenance.
+>=20
+> This should be fine if goto to error path only
+>=20
+> Frank
+>=20
+> >
+> > [ ... ]
+> >
+> > > +static const struct v4l2_async_notifier_operations formatter_notify_=
+ops =3D {
+> > > +	.bound =3D csi_formatter_notify_bound, };
+> >
+> > [Severity: High]
+> > Could this result in a use-after-free?
+> >
+> > The driver saves the remote subdev pointer in
+> > csi_formatter_notify_bound() via formatter->csi_sd =3D sd, but there is
+> > no unbind callback in formatter_notify_ops to clear formatter->csi_sd.
+> >
+> > If the remote subdevice is unbound (e.g. the sensor module is
+> > removed), the
+> > V4L2 async framework tears down the link. Because the pointer isn't
+> > cleared, subsequent calls to VIDIOC_SUBDEV_ENABLE_STREAMS on the
+> > still-registered formatter video node will dereference the freed
+> > formatter->csi_sd pointer in csi_formatter_subdev_enable_streams().
+> >
+> > [ ... ]
+> >
+> > > +static int csi_formatter_async_register(struct csi_formatter
+> > > +*formatter) {
+> > > +	struct device *dev =3D formatter->dev;
+> > > +	struct v4l2_async_connection *asc;
+> > > +	int ret;
+> > > +
+> > > +	struct fwnode_handle *ep __free(fwnode_handle) =3D
+> > > +		fwnode_graph_get_endpoint_by_id(dev_fwnode(dev), 0, 0,
+> > > +
+> 	FWNODE_GRAPH_ENDPOINT_NEXT);
+> > > +	if (!ep)
+> > > +		return -ENOTCONN;
+> > > +
+> > > +	v4l2_async_subdev_nf_init(&formatter->notifier, &formatter->sd);
+> > > +
+> > > +	asc =3D v4l2_async_nf_add_fwnode_remote(&formatter->notifier, ep,
+> > > +					      struct v4l2_async_connection);
+> > > +	if (IS_ERR(asc)) {
+> > > +		ret =3D PTR_ERR(asc);
+> > > +		goto err_cleanup_notifier;
+> > > +	}
+> > > +
+> > > +	formatter->notifier.ops =3D &formatter_notify_ops;
+> > > +
+> > > +	ret =3D v4l2_async_nf_register(&formatter->notifier);
+> > > +	if (ret)
+> > > +		goto err_cleanup_notifier;
+> > > +
+> > > +	ret =3D v4l2_async_register_subdev(&formatter->sd);
+> > > +	if (ret)
+> > > +		goto err_unregister_notifier;
+> > > +
+> > > +	return 0;
+> > > +
+> > > +err_unregister_notifier:
+> > > +	v4l2_async_nf_unregister(&formatter->notifier);
+> > > +err_cleanup_notifier:
+> > > +	v4l2_async_nf_cleanup(&formatter->notifier);
+> > > +	return ret;
+> > > +}
+> >
+> > [Severity: Medium]
+> > Does mixing __free() scope declarations with goto error labels here
+> > risk cleanup ordering issues?
+> >
+> > The kernel guidelines specify that functions should either convert all
+> > resources that need a goto cleanup to scope-based cleanup, or convert
+> > none of them.
+> >
+> > --
+> > Sashiko AI review *
+> > https://sashiko.dev/#/patchset/20260716-csi_formatter-v12-0-2601d17fc4
+> > af@oss.nxp.com?part=3D3
