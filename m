@@ -1,152 +1,289 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011053.outbound.protection.outlook.com [52.101.70.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C97E36DA0D;
-	Thu, 16 Jul 2026 05:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784180374; cv=none; b=gxyCQkwoQU1l+sWqKnFzADyjEGSc5Q//qjBdNRkbStY0eH/ds4J7L9t+sZwcHhII83hRaSxVeH7342fns/5QNoi3oabSlBnKkojV6m48NfNHp2O1R3qG1M7dMk6t6eDhnI7Kx37klF0ylfKVWEDdygEv3XJeLcI+y8MOPiRvl6g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784180374; c=relaxed/simple;
-	bh=OzV8K/HP/1iZwZHlRvlRr551cc6p86QiqmtxfigEHxU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hOj8PeAmykeVXV0xZtxwT0aukzC1Ew7MrEOyC0kBq1gnmeTgg7QCoNILGUis85CZefDG3PugvJU8gB9q55VwUYX7XwAOm/9xZu/G5Pgmv/fwEX+O4yP4ndGMu5YYJRsSacrqnEI4VFG4HwizMPZ8lE54WymaMU7+vD2qBkUqffs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=CT5qQ7Fm; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F3338886F
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 05:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784181358; cv=fail; b=jRo073jeiS/RiB+VahJgn6ojQ+cEgbHCHjgfP8u/xfmfF/zjVl+FsZQjNEKwVZUqGIkotNujsFXBslSuer63rhMGYUAfp6GrLWRwVPl6g9uo3KjZOVdq1MW0NJzbbCEuWGbYdfjWFftlpdJKP+mUviSL0z8vbF4kb1tVXUYj544=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784181358; c=relaxed/simple;
+	bh=FcvJ00fUks6LOtY5R8c15MkjpHAEzYuIsylZhUyJzUc=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=TBz0izIz2Rw9ZbLSnPuvaLgbvDpT5XzALR7t43q15+cJYo2O2F3Mp/yQ5uvEhXzr37Xxl6TaRI4qJb22IGkO+gPrlIKPOd5D8Lz2KJd35kK5uG1YRdqs8NA3mHaEOZWW6bRJM98pwTANf496eXic2ULmndlMZIJdgQeDgOUR/No=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S2SK0+Yk; arc=fail smtp.client-ip=52.101.70.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="CT5qQ7Fm"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D623119B41;
-	Thu, 16 Jul 2026 07:39:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1784180363;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=PpI4q3/2Dkx3mceJVBfFoGBFN2uhwy2+sNYNJl9A4qk=;
-	b=CT5qQ7Fm3RrmYQ6t4IfCGZOkLydtHieEXKtkDtihEPfVoV01gCIuEJG8wVb0hDZYq1Pqgk
-	Z4cnS04qkn3pFirZaBf2EHJYs8RUDMzpoWWOOQuqf9vQif1wv/eUSpGQI4LoWw7FraRYHB
-	tL/CRORnPXgEE8WlD9ch7pglt0LmE55MtuzCRoKJLqYOJu+oXO679a6kVow19sgE3nTj6V
-	JV96k1s0OMYf3lxfpP8xyNS3ZfT6pFzo9gcH8Td1iB7c4asxzvLda5GNcKsqdrRIFyuSxQ
-	a3KjjxW7dVobbA5SVVaBpKlTJd6p12XgBngHRH1+Y/akGsE+KPdib7C04q9Jqg==
-Message-ID: <56953f06-2e3d-4137-a51a-ed91e9b0d577@nabladev.com>
-Date: Thu, 16 Jul 2026 01:30:17 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S2SK0+Yk"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TevZIkh742poxHbfM4mFRCbTaQiJ1iMUMQKX1aqUjdAIupiwMAlaR7akcesjnboHRmfb5Y1RlmxEJnglUy6Q1PGx7WIhnVOooRxqU6hgcC9dxM4uEXCgRt7iB8xyM/xg1YxdDgjcaiPHDf7dnQK/4PatIfjnYtlJtaXrtdmgqpc13skqe/boWGBtvqxeYUlPWH/QGarSwao8SlH2T8dRrBYf8z0udmrMXYuGLA8SoA/m7YydP7a2v/a5hThlI/bODRsmjjijtc3z9UHJr793aZV2L0FuLHqpqREioxr0rOq+oN6vk2odP+nlDIgoZFOZIgJgjbiWmeYvXnk9Zvb2mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=verBriGhwe7eyfyBUEt7vn5G31kfVQw/wFF6n8edzQM=;
+ b=nzehxff1Fu2HaBxwHmTjWNtj6mmmTWbXtDHP3Kg05mYm6CyxWpgSNDNEHBGLG7IiCfyH0EkjvU+dfInijJtaXuGLvPsyb1j1SRvzyOqglBoZojab0kzUstKIIzqLPNbjZmPbvHEpPynYUZT4DHYnsxD1HQwNrSt4kSgAfDZAOCpak8Pte20tw1LUdPQJ5s7ryenOZT0YmUpWyxYuNpAr3R6GU25M5G972MSYUzeh1kS5Hq0Le2c42vy4wM1z+PBKC1HDie0BmFIhkIJzdTrq0p/VMnXTSQ8mYx44BforgM6R28benTiokfRwLUBEvsN4hyLhYhY87qG06KH/QOG2nw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=verBriGhwe7eyfyBUEt7vn5G31kfVQw/wFF6n8edzQM=;
+ b=S2SK0+YkQy8X6tmLkeiad0EpZprOATj2SFzNB9IhBMTknowLA44sH+xRPe9ONrX3JqHLo3V9KUn3FOfGQBey470/FLCiijkKXfirVe7S9g/uQLIyc+L2FBcatgokfnc2+ld3zB7jewt1pOCSEUXiGA5nj+/slu6lWXk4gclvKd5pifOa+/xc3a5iZMMSWcPAutm3BU6j8CoIqgFA8WgcksH+HAfCn0FEnzygN9HV+SaCE012JaUWkXBdBxPzvmsT0KhdMbmbOjRwCTYMw9+A1nANZTsK7a5BHdSPmWISX1mk7WvaAHk7rrEc9a1PxSGwOl4L3Od+RzZXnu2e62iSQQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ by GVXPR04MB10235.eurprd04.prod.outlook.com (2603:10a6:150:1be::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Thu, 16 Jul
+ 2026 05:55:49 +0000
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0223.008; Thu, 16 Jul 2026
+ 05:55:49 +0000
+From: Liu Ying <victor.liu@nxp.com>
+Date: Thu, 16 Jul 2026 13:57:12 +0800
+Subject: [PATCH v4] drm/bridge: imx93-mipi-dsi: Fix mode validation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260716-imx93-mipi-dsi-fix-mode-validation-v4-1-411db05bf1ec@nxp.com>
+X-B4-Tracking: v=1; b=H4sIALdyWGoC/5XNTQ6CMBAF4KuYrh1Dp0CtK+9hXJR20EnkJ9Q0G
+ MPdLWzQHS7fZN733iLQwBTEafcWA0UO3LUp5PudcHfb3gjYpywwwzJD1MDNaBQ03DP4wFDzCE3
+ nCaJ9sLfPVIccC3fUaDE3SiSoHyi9LSOXa8p3Ds9ueC2bUc7Xv/goQYI1zpfaGInH7NyO/cF1j
+ ZjxiCtYSNwEYgK1JacqKrxF9wuqb7DYBKoEGllrj1hhTfkKTtP0AZTTuLB0AQAA
+X-Change-ID: 20260227-imx93-mipi-dsi-fix-mode-validation-425c872a2493
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Liu Ying <victor.liu@nxp.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: MA5PR01CA0083.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ad::9) To AS1PR04MB9287.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] arm64: dts: imx8mm: imx8mp: Add CM DTOs for Data
- Modul i.MX8M Mini and Plus eDM SBC
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: sashiko-reviews@lists.linux.dev, devicetree@vger.kernel.org,
- robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org,
- imx@lists.linux.dev
-References: <20260705200534.151803-1-marex@nabladev.com>
- <20260705200534.151803-4-marex@nabladev.com>
- <20260705202439.3F5771F000E9@smtp.kernel.org> <alUICTI-24tREZO8@SMW015318>
- <f1e52327-42da-48e1-8e4a-dabf148ce216@nabladev.com>
- <alWR66rjt-9jGEOV@SMW015318>
- <a3602ef8-2b77-4cc3-adef-2c4cba08a5d9@nabladev.com>
- <alezsOsf61Zv6F4F@lizhi-Precision-Tower-5810>
- <c9a67cbd-fda8-4016-9cff-9125f3191b74@nabladev.com>
- <alf9pp3c_zI4rwC0@SMW015318>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <alf9pp3c_zI4rwC0@SMW015318>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|GVXPR04MB10235:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4c0e95d-8764-43e8-64f5-08dee2fee2e4
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|19092799006|366016|376014|7416014|921020|56012099006|5023799004|11063799006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+ m/COj0+mkGtc0+7BrC1I227ZfDJrG+lmSESr56fyAvakOu/BitIRn+sahlwrw/T18r0xvJ8RJzP5uLvxbVwKnuhYxPQI1qcPeMX9hiN/KcTXMh0Wx5mdk1F+UFMPgINi4V0MGrnJ1cvRUioNEQ+xPoFRTFjwKAgqoI8LETJdObryvJT7VO/XuqA4eGZ/4DUaTyqqVO0xjtUWO+9NrgP4MhHxUbsgZntii94ytojJpqbNgunLQcqpmQmA6HUyi0sMVzMqukB9pf0RapmUBVkcLjekkafxlQLtBMtWu0TZS2ETj5xohEJ8jA0+6Wcx6MvsJ8B+c7stKt9CbKM7LuS+ih8zEpK70CR3Pa7EH3YzMC4EKjnUG8Y8MENJgZHWwSAuxGOIK3SCadAAx2krvhMMDWDntk/iwE09FIENqVB/ELaH0kHTfa5H/vi+Vrbf5lr1U+30JnUg/3eLDk4wSZ9b1tFsUUF6SOYWXOHxLFPU/9OA08PRgowETLd8S62lvX8v+EEk8vVejanp8aunrqSNSJIJIcqI9lsomUxY0YwpaWYVCGPfMmiakh8jVg67WP+B0wF+eQXzMBLrFOhqEg9IfFm1CxG2NYob2a3US2aDBT3dufqjJ6fI5jyCZDrHlLZOJz6jsugSqma2+8OsNUPykQ0yygR8pRbIT+DtbMJnGR4=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(19092799006)(366016)(376014)(7416014)(921020)(56012099006)(5023799004)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?aGNyL3lTQ2hNVFVGMXBvWTVxMUxzVDN4K2U4ZFlKMmZia2FhZjB4eDhmeEto?=
+ =?utf-8?B?VitQTWY5cXVMSUdERG1aTzNaSFFDUEtiTFBiOVpyRkMrQStaKyt3blFPOUdY?=
+ =?utf-8?B?Y3hldXlPR2hoNFdIYU1qM3hRUENDbzlCZ0VvZDFQL0o0UU9IakczTzdkRmZw?=
+ =?utf-8?B?aWdUVEVYcG5YNmpoVnVjUkl4QzZQTkllMjk0ZDBWZld0aXRLb0lGaEFSY2lM?=
+ =?utf-8?B?RTFIU2lORUNSNkdIY3g0a3oyQWY5TDFIWUlLclUvVnI2RUJGUHg1UTdyRzZj?=
+ =?utf-8?B?NFlhdnNtL0ZZQVBiZUdSY2hGUWNnSUhvYTE3YUNQNG1JaEVYZCtWc3Qzd2xn?=
+ =?utf-8?B?Tjk3UUFjdmF5V1VDNU9rRmlWQnVvY0ZiczZ0cUF0dDNOWlUyZ09jekRWSWVy?=
+ =?utf-8?B?MC9XWkVYZHBRSGFhSURNVGwrS3NDZW1Iam8vUkhSMjJXRVR2T1J0NjZvT29s?=
+ =?utf-8?B?UHlQaWpiSExUaE51eGF5RGM1aVZ5a0t5K1BLSlAzZTZtazFJQ0RHOWE1a0lm?=
+ =?utf-8?B?K3B0aVBkMVVvMDJHMXBlVEU4MTI3RW9aQVBiVThyWFAyTUh6TEwxUmJkQStZ?=
+ =?utf-8?B?U0lRdGtLdGpYT0NVS0dqL1ZpNXlrZ20vVVBjR3k2b2NlTkVjb2Y5Wm1oN3NY?=
+ =?utf-8?B?REtZcmUyMHd4aDZ0c2FDdXlTLzRRTW5hbXA5MFg4ZFRCanRPRHVOeW14dW1G?=
+ =?utf-8?B?OEltRHkrbkdnbFBuZUlKNERmbUZHeUVSS1YveWNzbGNyRitDb3VZTnBCUVNB?=
+ =?utf-8?B?SzlFQk5XZlBKOXdkQUdsMERkRU1JL3JlSkI2M0RuczV5Q2FJK3V6MWROOWFs?=
+ =?utf-8?B?d2RMaitjYXgwMVZCOFRFN0U4dFplNXJLemZOQ0tEM2pGSUh6RlBCVGVZcmtM?=
+ =?utf-8?B?K1VXSnRPQldUSlFoeGRuZlZMRkUvYVNGcUpFa25CTDNCeGtFKzk2WmJUdE1R?=
+ =?utf-8?B?cW9ISGVRMUJhOXNRVThYR21Zd1dyNExPUlgvVXMzM1ZvS0Z2Z05DU0l3S1dB?=
+ =?utf-8?B?MUdpcVc4ajhEQkJYWVRhckttbUlnSlIxWnFYREpGWWlEVzZ1STQvWllxU0Na?=
+ =?utf-8?B?ZndpaCtYMW9CSUZ1a04xa3p5ZDhEZ0pPMmxlRDc2dVNBYXlleWY0ZVpXNk11?=
+ =?utf-8?B?UmpkODlWcC9xTUREY3ZZb0MzVkhicXo3eUc4RXFmZXhYOEdmSXhWcmZoOVR0?=
+ =?utf-8?B?Nmd2bSsxcUlzWmR3dlBQL0VxREd3ajI3anU3TXZLdlhEb2Y1Nnl0Y243MDB5?=
+ =?utf-8?B?YWNnWG9vNy9zaSsvNmpkeEpqMTh3TGl3RjIxTTQwYW1ORmZVM214N3E1TEhm?=
+ =?utf-8?B?UGhFVFFYZVpEWCtoSGNsR2FqSXc1SVJpMUFoUU8zaDNWclhSbVU3bWUzM1pm?=
+ =?utf-8?B?cWd6R0R0UDZVRTM0MjZqQnh6cGRBb0ZIN0trMVhxNVdnZmw2NE5iWGFQcnMr?=
+ =?utf-8?B?R3prSWNIajgrQTJjdmYxc21KZFhnWjRNZFl2WXI0OEFPMnFOd3Bjd2JqYTlp?=
+ =?utf-8?B?ekcrYUg4MHJhMS9ZVXhpMWtlSHdNQjVwWnNUaDByRFpjdzN2UWVzLzRFeEFs?=
+ =?utf-8?B?eFI4ZVZKY3psS1JSdHAvZTZqbjRqSkhpQ3ZnamMzVU04Y20vUmxLS1BhbXZj?=
+ =?utf-8?B?NkxaQXdNYXVTcXhrTFdxa2Nwa3k0WnI5WHdqcHhkVjhHMGdWSDdDcEFmZGF3?=
+ =?utf-8?B?bkZPaGxTelRTQXFnZFEwSm4waTZRL3RTM0R1WVkwZk1Za05LRkovL282QjF6?=
+ =?utf-8?B?RkFhYXowS2JuNWY1S3pndnFRNitoaUZWelAwRnZMRms5YlVJbmhhY0dqeHJa?=
+ =?utf-8?B?akRmKzRYaU1sbGdKRlJaUVVZa216WEs3Z1p6WTcxSDQzNU9MTnNmd1RQK2Fl?=
+ =?utf-8?B?SlIwWmdwK0NrOE1Xb1YrWWNNczJuSi9lRTBLUmxwNCtqRzhMWW5lWExrUERT?=
+ =?utf-8?B?dkFSODZrcy90VnZDaGs1aDBPeCtBUDA4OHY5M3NKRytHRHFPY0pSSlEwbXgw?=
+ =?utf-8?B?UUFxTDJXZnV5WkFCbjZMVDJqcVZnd0RHWGJLdEJwdGU1Ri9OK3BQSXl0RFp0?=
+ =?utf-8?B?NDJpL1VTZ2dLOHVOQyt4enRveHphVXRNZ2kyYVRTOGpjUktFVjZza2FTcGZO?=
+ =?utf-8?B?bWlFQjZIalEwZ3h6UTRSdWFzL0JES0VtLy9ZREtuOTdLc0RENmJKR0NCYTlz?=
+ =?utf-8?B?TVFZTENudDIxZHlWb3hEd05nSE91aUZnWVNzallxck1pdDdYOEFJR0twQ3Ns?=
+ =?utf-8?B?K0ZLWDBRd2pyWUZ6bytHYVBBUnNZYm1Gc2JoYnZVL2MvYnBQeldRTTUwQTZ4?=
+ =?utf-8?B?S2dpQW1JWWNQeWwwRnFucFd4NFo1c0VmR1QxRG1MdHU1QjdsUk1lZz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4c0e95d-8764-43e8-64f5-08dee2fee2e4
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 05:55:49.2587
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Uw1UxPIRigh5WKf/RGRikMdYrQHT3x/wza9hnJhUb9MVDLe9tnrHvr6QlACYM8aNaVxfUcDvBXwaRcbtnbxZDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10235
 
-On 7/15/26 11:37 PM, Frank Li wrote:
+i.MX93 MIPI DPHY PLL has limitation for matching with some pixel clock
+rates, e.g., the best DPHY PLL frequency is 445.333333MHz for a typical
+1920x1080p@60Hz CEA/DMT display mode with a pixel clock rate running
+at 148.5MHz with 4 data lanes + RGB888 pixel in MIPI DSI sync pulse mode,
+while the expected PLL frequency is (148.5 * 24) / 4 / 2 MHz = 445.5MHz.
+Fortunately, VESA Display Monitor Timing Standard allows +/-0.5% pixel
+clock rate deviation for timings.  So, for those display modes read
+from EDID through a bridge with DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP_EDID
+operation bit masks set, pixel clock rate could be adjusted to match
+with the PLL frequency(for the above example, the pixel clock rate is
+adjusted to be 148.444444MHz with about -0.03% deviation from the 148.5MHz
+nominal rate so that the adjusted rate matches with the 445.333333MHz PLL
+frequency).
 
-Hello Frank,
+Instead of checking the last bridge's operation bit masks against
+DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP_EDID to determine if allowing
++/-0.5% pixel clock rate deviation, check any bridge after this bridge,
+because the last bridge is usually a display connector bridge without
+any operation bit mask when the clock rate deviation is allowed.
 
->>>>>>>> [Severity: Medium]
->>>>>>>> Will this node name bypass the driver's carveout exclusion logic?
->>>>>>>>
->>>>>>>> Looking at imx_rproc_prepare(), it iterates over memory-regions and checks
->>>>>>>> specifically for the name "vdev0buffer" to skip processing the vdev buffer:
->>>>>>>>
-> ...
->>>>
->>>> never existed in imx_rproc.c:
->>>
->>> AI refer old version code, but problem is the same
->>
->> No, sorry, the aforementioned piece of code never existed in imx_rproc.c
->> according to git log. There is no old version of the code that looked
->> anything like what the AI produced above.
->>
->>> if (strstarts(res.name, "vdev0buffer"))
->>>
->>>>
->>>> "
->>>> $ git log --follow -p next/master -- drivers/remoteproc/imx_rproc.c | grep
->>>> vdev0vring1
->>>     ^^^^^^^^^^
->>>
->>> vdev0buffer
->>
->> The AI generated review content above does refer to vdev0vring1 , which is a
-> 
-> No, AI talk about "vdev0buffer" at beginning, never said vdev0vring1 at all.
+Fixes: ce62f8ea7e3f ("drm/bridge: imx: Add i.MX93 MIPI DSI support")
+Fixes: 5849eff7f067 ("drm/bridge: imx93-mipi-dsi: use drm_bridge_chain_get_last_bridge()")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+---
+Changes in v4:
+- Add a comment to imx93_dsi_validate_mode() to tell readers that it assumes
+  locking for the encoder chain is already in place.  (Luca)
+- Link to v3: https://patch.msgid.link/20260515-imx93-mipi-dsi-fix-mode-validation-v3-1-91f7d22b2fe4@nxp.com
 
-This is the code the AI quoted in the review feedback:
+Changes in v3:
+- Iterate over next bridges manually instead of calling
+  drm_for_each_bridge_in_chain_from() to avoid deadlock issue.  (sashiko bot)
+- Fix a typo in commit message - s/modes/mode/.
+- Link to v2: https://patch.msgid.link/20260512-imx93-mipi-dsi-fix-mode-validation-v2-1-7aec3be5da2c@nxp.com
 
-"
-	if (!strcmp(it.node->name, "rsc-table") ||
-	    !strcmp(it.node->name, "vdev0vring0") ||
-	    !strcmp(it.node->name, "vdev0vring1") || <-------- HERE
-	    strstarts(res.name, "vdev0buffer"))
-		continue;
-"
+Changes in v2:
+- Collect Frank's R-b tag.
+- Add an explanation to commit message about the reason why mode validation
+  checks bridge's operation bit masks.  (Dmitry)
+- Copy Dmitry.
+- Link to v1: https://lore.kernel.org/r/20260227-imx93-mipi-dsi-fix-mode-validation-v1-1-a9cd67991280@nxp.com
 
-It does not matter which identifier we use to look up the AI quoted code 
-snippet in git log, the important point is, that the aforementioned code 
-snippet never existed in the Linux kernel as far as I can tell.
+To: Liu Ying <victor.liu@nxp.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>
+To: Robert Foss <rfoss@kernel.org>
+To: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+To: Jonas Karlman <jonas@kwiboo.se>
+To: Jernej Skrabec <jernej.skrabec@gmail.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: Maxime Ripard <mripard@kernel.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+To: David Airlie <airlied@gmail.com>
+To: Simona Vetter <simona@ffwll.ch>
+To: Frank Li <Frank.Li@nxp.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c | 50 +++++++++++++++++++++--------
+ 1 file changed, 37 insertions(+), 13 deletions(-)
 
-But as far as I understand this, I should adjust the DT to cover the 
-test in the aforementioned non-existent code snippet ?
+diff --git a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
+index 8f312f9edf97..64beedde7c46 100644
+--- a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
++++ b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
+@@ -489,25 +489,49 @@ static int imx93_dsi_get_phy_configure_opts(struct imx93_dsi *dsi,
+ 	return 0;
+ }
+ 
++static inline struct drm_bridge *
++imx93_dsi_get_next_bridge_in_chain(struct drm_bridge *bridge)
++{
++	struct drm_bridge *next = drm_bridge_get_next_bridge(bridge);
++
++	drm_bridge_put(bridge);
++
++	return next;
++}
++
+ static enum drm_mode_status
+ imx93_dsi_validate_mode(struct imx93_dsi *dsi, const struct drm_display_mode *mode)
+ {
+ 	struct drm_bridge *dmd_bridge = dw_mipi_dsi_get_bridge(dsi->dmd);
+-	struct drm_bridge *last_bridge __free(drm_bridge_put) =
+-		drm_bridge_chain_get_last_bridge(dmd_bridge->encoder);
++	struct drm_bridge *bridge;
+ 
+-	if ((last_bridge->ops & DRM_BRIDGE_OP_DETECT) &&
+-	    (last_bridge->ops & DRM_BRIDGE_OP_EDID)) {
+-		unsigned long pixel_clock_rate = mode->clock * 1000;
+-		unsigned long rounded_rate;
++	/*
++	 * This function is called by DRM bridge infrastructure core code
++	 * when validating a mode against all bridges in the encoder chain,
++	 * so it assumes that the locking for the encoder chain is already
++	 * in place and handled by the core code.
++	 */
++	for (bridge = drm_bridge_get_next_bridge(dmd_bridge);
++	     bridge;
++	     bridge = imx93_dsi_get_next_bridge_in_chain(bridge)) {
++		if ((bridge->ops & DRM_BRIDGE_OP_DETECT) &&
++		    (bridge->ops & DRM_BRIDGE_OP_EDID)) {
++			unsigned long pixel_clock_rate = mode->clock * 1000;
++			unsigned long rounded_rate;
+ 
+-		/* Allow +/-0.5% pixel clock rate deviation */
+-		rounded_rate = clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
+-		if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
+-		    rounded_rate > pixel_clock_rate * 1005 / 1000) {
+-			dev_dbg(dsi->dev, "failed to round clock for mode " DRM_MODE_FMT "\n",
+-				DRM_MODE_ARG(mode));
+-			return MODE_NOCLOCK;
++			/* Allow +/-0.5% pixel clock rate deviation */
++			rounded_rate = clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
++			if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
++			    rounded_rate > pixel_clock_rate * 1005 / 1000) {
++				dev_dbg(dsi->dev,
++					"failed to round clock for mode " DRM_MODE_FMT "\n",
++					DRM_MODE_ARG(mode));
++				drm_bridge_put(bridge);
++				return MODE_NOCLOCK;
++			}
++
++			drm_bridge_put(bridge);
++			break;
+ 		}
+ 	}
+ 
 
-> "   Looking at imx_rproc_prepare(), it iterates over memory-regions and checks
->     specifically for the name "vdev0buffer" to skip processing the vdev buffer:
-> "
-> 
->> unique identifier, but that unique identifier exists only once is the entire
->> history of drivers/remoteproc/imx_rproc.c and that is as a code comment .
->> That proves my point that the aforementioned AI generated review feedback is
->> not based on code that ever existed in the kernel.
->>
->>>>       vdev regions are vdev0vring0, vdev0vring1, vdevbuffer and similar.
->>>> "
->>>>
->>>> It seems the AI hallucinated something which is not based in reality ?
->>>
->>> git log --follow -p linux-next/master -- drivers/remoteproc/imx_rproc.c | grep vdev0buffer
->>> -		if (!strcmp(it.node->name, "vdev0buffer"))
->>> +		if (strstarts(res.name, "vdev0buffer"))
->>
->> "
->> if (strstarts(res.name, "vdev0buffer"))
->> "
->>
->> and
->>
->> "
->> 	    strstarts(res.name, "vdev0buffer"))
->> "
->>
->> looks like different code , and the AI reported "strstarts(res.name,
->> "vdev0buffer"))" which never existed in drivers/remoteproc/imx_rproc.c as is
->> clearly visible from the command output you shared above.
->>
->> So, what exactly is the problem here , can you please clarify it without
->> referencing the AI generated content above ?
-> 
-> The problem is simple, node name should use
-> 
-> 	vdevbuffer: vdev0buffer@b8400000
->                          ^
-I see.
+---
+base-commit: 877552aa875839314afad7154b5a561889e87ea9
+change-id: 20260227-imx93-mipi-dsi-fix-mode-validation-425c872a2493
+
+Best regards,
+--  
+Regards,
+Liu Ying
+
