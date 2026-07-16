@@ -1,253 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79B53C455C
-	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 09:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404073D3314
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 09:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784193984; cv=none; b=AtLHZa0MR2lNqyYUpVgFxWrvEXfGvNjd6KW0x+OthuUgGx9nLDzQml1WA5Jewvn0/rw5o1G3sq6a689IFCU8N5jpsFU3ibXezfPfJsQCVkD6M7A9MSulgrueJxGh8mI59g9tLKNmTkH6JMtChz0PdQ4xepKaACQTJjRTGBafcAc=
+	t=1784194072; cv=none; b=uJ0NlHY++8byIX/k8qSsCFGUQNUeHTrGPv9+mhbaiCNR+Ow51fR9W5UVXn+zVsdVWKc1SKK3Syndu+H1HaDTw7HYKIkauZZ9ohBxRGx5gFRldXLM12PG9GnpYjYkYuzvi/n4xEGuVVS66k5J9pnpG2LkqQEgfL5TRdMX99lkkO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784193984; c=relaxed/simple;
-	bh=rmjejBk//SSkle7upqcRXhR2BfLEEz+AFHgpIjJIkIE=;
+	s=arc-20240116; t=1784194072; c=relaxed/simple;
+	bh=rZrNyr9IQF/0Plzlsag5XK/d84b0HdJBfemxG7U52/I=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bWuSsu1oD5eBaoXQhlZAJcqtMSxNz/vnzYBga8I2CToPIYUrpS9Sm9qecAbHR86XS/kdNn03mzr1JAJbgs5e9RP1OpqXJVMJjbVoEdFrF6nWLRDJvvf9VM9mrM2uDI17cGC+I/SUtEicCBrIIvZCBmtDDQ0hfaLhktL767nMniQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kf9Z3JaT; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=eQ2Ar8VUlg+ZYAIGRERZmmVsEKkfEwDYD5az83aCYeZ0zQI7gF7hzANFZIe47BqK0JG496/yMRYuR0RUhKHpb+fTcFv3ufPS1aDfgaKA+2QDU159wTv8GD7olEklIN6Ok7qpHGYHF8zV1kJOm2WuJO0mKuYaH/IBhP0AyW/5aoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2StTSEU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kf9Z3JaT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C091F00A3A;
-	Thu, 16 Jul 2026 09:26:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2StTSEU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933B81F00A3A;
+	Thu, 16 Jul 2026 09:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784193982;
-	bh=nCSwnqQabuJMg8q90sAMwf14yyJp0QSnd6qco2rkM5U=;
+	s=k20260515; t=1784194070;
+	bh=rZrNyr9IQF/0Plzlsag5XK/d84b0HdJBfemxG7U52/I=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Kf9Z3JaTqc2FLQqXll7oyB3RgdSEKkWMohpV9z6ATmTQl66lGPE8LBFlBb+6WOGgC
-	 xSjmmci5y60CHltYc/sc9VieAEoYvH0qVks/IeXRyVF0XR8s0hOmFGJqDyQfT0fLvt
-	 7VWdFsMTAobklwMkmoDHyp13MbRLKAYONn1sCse76PEyZYhgAwn6YkJfjCJr1Thtnm
-	 kB1CpwIZdmpsigmwLGnEOV/MsiZ72OUGzu2OVEsMWts8xOXoaaVMC21LMf3akMW8PR
-	 TFssdxuLeGlr7qums9GsiYQ2THxWiu1rfPcPrqUyvo4CmMFg90AX92iNzFmYopfv7G
-	 ghrIOn96NPGBw==
+	b=f2StTSEUsTyUWQRKaplskYPjjStNJasAhwK7tMcxEzfDJs5aYwPhwRwE+GBijmCLK
+	 hPhjJMPwY8AEkH8HrDS/4wxVg8porjjRxBUFzBlIqd0VU4PmVoIBsMrVHLysfTs77N
+	 HNon8Ff4odZw99ArQ2uKQThTgudEI41WgnNEYsIXCNhrk4kE01IcPIabOI9BmKm3/z
+	 wRzP6j7BCQOjG3oFt+6RJnxDFFZzDEPUvRuAqJDYWNn9VXpnnX4NYdQ8x91h6XJfxh
+	 knqyzPPynFPQKzq6rRSl0Gyody76/PPnvVwlot+gzkpdtEnz33+kbhYEVmYRZORl9E
+	 4DxCZ3OxHOLcA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/8] drm/pl111: replace struct
+Subject: Re: [PATCH v2 2/8] drm/aspeed: replace struct
  drm_simple_display_pipe with regular atomic helpers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ze Huang" <ze.huang@oss.qualcomm.com>
-Cc: dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260716-drm-simple-kms-removal-v2-4-1133a8fc3785@oss.qualcomm.com>
+Cc: Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+In-Reply-To: <20260716-drm-simple-kms-removal-v2-2-1133a8fc3785@oss.qualcomm.com>
 References: <20260716-drm-simple-kms-removal-v2-0-1133a8fc3785@oss.qualcomm.com>
- <20260716-drm-simple-kms-removal-v2-4-1133a8fc3785@oss.qualcomm.com>
+ <20260716-drm-simple-kms-removal-v2-2-1133a8fc3785@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 09:26:21 +0000
-Message-Id: <20260716092621.D8C091F00A3A@smtp.kernel.org>
+Date: Thu, 16 Jul 2026 09:27:50 +0000
+Message-Id: <20260716092750.933B81F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
+New issues:
+- [Low] Missing `inline` keyword on `to_aspeed_gfx` in a header file.
+
 Pre-existing issues:
-- [High] Pending vblank events are leaked during CRTC disable. The DRM subs=
-ystem requires that pending vblank events requested by userspace (e.g., dur=
-ing a pageflip) are consumed and sent when the CRTC is disabled. In this pa=
-tch, event consumption is implemented in `pl111_crtc_helper_atomic_flush()`=
-. However, the DRM core (`drm_atomic_helper_commit_planes`) only calls `ato=
-mic_flush` for active CRTCs. When a CRTC is being disabled, `atomic_flush` =
-is skipped, and the event must be consumed in the `atomic_disable` hook. `p=
-l111_crtc_helper_atomic_disable()` fails to check for or consume `cstate->e=
-vent`. As a result, the event is leaked.
-- [High] Unsafe access to global plane state in `pl111_crtc_helper_atomic_e=
-nable()`. The function retrieves the framebuffer using `priv->plane.state->=
-fb` directly instead of using the committed atomic state via `drm_atomic_ge=
-t_new_plane_state()`. In the DRM core, non-blocking atomic commits synchron=
-ously swap the global state pointers before the asynchronous commit workers=
- run. This creates a Time-of-Check to Time-of-Use (TOCTOU) vulnerability.
-- [High] Sleeping functions are called from atomic context. The DRM subsyst=
-em guide explicitly defines CRTC `atomic_enable` and `atomic_disable` callb=
-acks as executing in an atomic context during non-blocking commits, where s=
-leeping is strictly forbidden. However, `pl111_crtc_helper_atomic_enable()`=
- and `pl111_crtc_helper_atomic_disable()` call blocking functions: `clk_pre=
-pare_enable()`, `clk_disable_unprepare()`, and `msleep(20)`.
+- [Critical] Direct dereference of `obj->state` inside atomic helpers leads=
+ to potential use-after-free and NULL pointer dereferences.
 --
 
---- Patch [4]: [PATCH v2 4/8] drm/pl111: replace struct drm_simple_display_=
-pipe with regular atomic helpers ---
-commit 07a755e3243c0f70ec87dc33910c7d68aa70590c
+--- Patch [2]: [PATCH v2 2/8] drm/aspeed: replace struct drm_simple_display=
+_pipe with regular atomic helpers ---
+(Note: The format of this report is altered to a free-form summary due to
+automated recitation restrictions. Code snippets are not quoted directly.)
+
+commit d1e92d6b727d3655d12a72430c723784264108f5
 Author: Ze Huang <ze.huang@oss.qualcomm.com>
+Subject: drm/aspeed: replace struct drm_simple_display_pipe with regular at=
+omic helpers
 
-drm/pl111: replace struct drm_simple_display_pipe with regular atomic helpe=
-rs
-   =20
-Replace PL111 simple display pipe with explicit plane, CRTC and encoder
-objects. Keep the existing PL111 timing, format and pitch validation, but
-move it into the explicit atomic check paths. Move event handling to the CR=
-TC
-commit path.
+This commit replaces the simple display pipe with explicit plane, CRTC, and
+encoder objects in the aspeed DRM driver. It moves callbacks to their
+respective atomic helpers and shifts page-flip event handling to the CRTC
+atomic flush path.
 
-> diff --git a/drivers/gpu/drm/pl111/pl111_display.c b/drivers/gpu/drm/pl11=
-1/pl111_display.c
-> index 5d10bc5fdf1f6..beb6423d4d439 100644
-> --- a/drivers/gpu/drm/pl111/pl111_display.c
-> +++ b/drivers/gpu/drm/pl111/pl111_display.c
+Issue 1: Missing inline keyword
+File: drivers/gpu/drm/aspeed/aspeed_gfx.h
+Function: to_aspeed_gfx
 
-[ ... ]
+[Severity: Low]
+Does this function need the inline keyword? The to_aspeed_gfx function is
+defined as static in a header file without being marked inline. Could this
+cause duplicate unreferenced copies of the function to be emitted in every
+translation unit that includes the header, potentially leading to binary
+bloat or compiler warnings when compiled with -Werror?
 
-> @@ -117,16 +137,14 @@ static int pl111_display_check(struct drm_simple_di=
-splay_pipe *pipe,
-> -static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
-> -				 struct drm_crtc_state *cstate,
-> -				 struct drm_plane_state *plane_state)
-> +static void pl111_crtc_helper_atomic_enable(struct drm_crtc *crtc,
-> +					    struct drm_atomic_commit *commit)
->  {
-> -	struct drm_crtc *crtc =3D &pipe->crtc;
-> -	struct drm_plane *plane =3D &pipe->plane;
->  	struct drm_device *drm =3D crtc->dev;
->  	struct pl111_drm_dev_private *priv =3D drm->dev_private;
-> +	struct drm_crtc_state *cstate =3D drm_atomic_get_new_crtc_state(commit,=
- crtc);
->  	const struct drm_display_mode *mode =3D &cstate->mode;
-> -	struct drm_framebuffer *fb =3D plane->state->fb;
-> +	struct drm_framebuffer *fb =3D priv->plane.state->fb;
+Issue 2: Direct state dereference in atomic context
+File: drivers/gpu/drm/aspeed/aspeed_gfx_crtc.c
+Functions: aspeed_gfx_set_pixel_fmt and aspeed_gfx_crtc_mode_set_nofb
 
-[Severity: High]
-This is a pre-existing issue, but does this direct access to the global pla=
-ne
-state in pl111_crtc_helper_atomic_enable() introduce a time-of-check to
-time-of-use vulnerability?
+[Severity: Critical]
+This is a pre-existing issue, but is it safe to directly dereference the
+object state pointers here? In aspeed_gfx_set_pixel_fmt, the code directly
+accesses priv->plane.state->fb->format->format. Similarly, in
+aspeed_gfx_crtc_mode_set_nofb, it directly accesses
+priv->crtc.state->adjusted_mode.
 
-By retrieving the framebuffer using priv->plane.state->fb directly instead
-of fetching the committed atomic state via drm_atomic_get_new_plane_state(),
-this might race with subsequent commits. If userspace submits a non-blocking
-commit to enable the CRTC, followed immediately by another commit that
-disables the primary plane (setting fb to NULL), the global state pointer
-updates to the second commit. When the first commit's asynchronous worker
-executes this function, it could read the new global state where fb is NULL,
-causing a null pointer dereference when accessing fb->format->format.
-
->  	struct drm_connector *connector =3D priv->connector;
->  	struct drm_bridge *bridge =3D priv->bridge;
->  	bool grayscale =3D false;
->  	u32 cntl;
->  	u32 ppl, hsw, hfp, hbp;
->  	u32 lpp, vsw, vfp, vbp;
->  	u32 cpl, tim2;
->  	int ret;
-> =20
->  	ret =3D clk_set_rate(priv->clk, mode->clock * 1000);
->  	if (ret) {
->  		drm_err(drm,
->  			"Failed to set pixel clock rate to %d: %d\n",
->  			mode->clock * 1000, ret);
->  	}
-> =20
->  	clk_prepare_enable(priv->clk);
-
-[Severity: High]
-This is a pre-existing issue, but are blocking functions being called from =
-an
-atomic context here?
-
-The DRM subsystem explicitly defines CRTC atomic_enable and atomic_disable
-callbacks as executing in an atomic context during non-blocking commits,
-where sleeping is strictly forbidden. However,=20
-pl111_crtc_helper_atomic_enable() calls blocking functions such as=20
-clk_prepare_enable() and msleep(). This might lead to system instability,=20
-kernel warnings, or deadlocks.
-
-[ ... ]
-
->  	/* The PL110 in Integrator/Versatile does the BGR routing externally */
->  	if (priv->variant->external_bgr)
->  		cntl &=3D ~CNTL_BGR;
-> =20
->  	/* Power sequence: first enable and chill */
->  	writel(cntl, priv->regs + priv->ctrl);
-> =20
->  	/*
->  	 * We expect this delay to stabilize the contrast
->  	 * voltage Vee as stipulated by the manual
->  	 */
->  	msleep(20);
-
-[Severity: High]
-This is a pre-existing issue, but similar to the clk_prepare_enable() call,
-does calling msleep() in pl111_crtc_helper_atomic_enable() violate the DRM
-subsystem guidelines for atomic context execution?
-
-Sleeping from this path could cause warnings or deadlocks during non-blocki=
-ng
-commits.
-
-[ ... ]
-
-> @@ -355,9 +373,9 @@ static void pl111_display_enable(struct drm_simple_di=
-splay_pipe *pipe,
->  		drm_crtc_vblank_on(crtc);
->  }
-> =20
-> -static void pl111_display_disable(struct drm_simple_display_pipe *pipe)
-> +static void pl111_crtc_helper_atomic_disable(struct drm_crtc *crtc,
-> +					     struct drm_atomic_commit *commit)
->  {
-
-[Severity: High]
-This is a pre-existing issue, but does pl111_crtc_helper_atomic_disable() l=
-eak
-pending vblank events during CRTC disable?
-
-The DRM subsystem requires that pending vblank events requested by userspace
-(like during a pageflip) are consumed and sent when the CRTC is disabled. In
-this code, event consumption happens in pl111_crtc_helper_atomic_flush().
-However, the DRM core skips atomic_flush() for disabled CRTCs, meaning the
-event must be consumed in the atomic_disable hook.
-
-Since pl111_crtc_helper_atomic_disable() fails to check for or consume
-cstate->event, the event might be leaked. This could trigger a kernel warni=
-ng
-in drm_atomic_helper_commit_hw_done() and cause the userspace compositor to
-hang indefinitely.
-
-> -	struct drm_crtc *crtc =3D &pipe->crtc;
->  	struct drm_device *drm =3D crtc->dev;
->  	struct pl111_drm_dev_private *priv =3D drm->dev_private;
->  	u32 cntl;
-
-[ ... ]
-
->  	/* Power Down */
->  	cntl =3D readl(priv->regs + priv->ctrl);
->  	if (cntl & CNTL_LCDPWR) {
->  		cntl &=3D ~CNTL_LCDPWR;
->  		writel(cntl, priv->regs + priv->ctrl);
->  	}
-> =20
->  	/*
->  	 * We expect this delay to stabilize the contrast voltage Vee as
->  	 * stipulated by the manual
->  	 */
->  	msleep(20);
-> =20
->  	if (priv->variant_display_disable)
->  		priv->variant_display_disable(drm);
-> =20
->  	/* Disable */
->  	writel(0, priv->regs + priv->ctrl);
-> =20
->  	clk_disable_unprepare(priv->clk);
->  }
-
-[Severity: High]
-This is a pre-existing issue, but does calling msleep() and
-clk_disable_unprepare() in pl111_crtc_helper_atomic_disable() block executi=
-on
-in an atomic context?
-
-Since this callback runs in an atomic context during non-blocking commits,
-these blocking calls might lead to system instability or deadlocks.
+Since this is accessed during atomic commits, if a second non-blocking
+commit disables the plane before the first commit reaches its atomic enable
+execution, the plane state could be updated to a new state with a NULL
+framebuffer. When the first commit's worker eventually reads the state,
+could this lead to a NULL pointer dereference and a kernel crash? Would it
+be safer to pass the specific plane and CRTC states down from the atomic
+helpers instead of reading them directly from the objects?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716-drm-simple=
--kms-removal-v2-0-1133a8fc3785@oss.qualcomm.com?part=3D4
+-kms-removal-v2-0-1133a8fc3785@oss.qualcomm.com?part=3D2
