@@ -1,133 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125863B2D39;
-	Thu, 16 Jul 2026 13:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586C841F5C7
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 13:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784208165; cv=none; b=sisEnAY6M8VE0ljzjprftTy5NtHuJXm+MlWF0xgloIPFJ//yUQFaZpfLFxqvwp8f7MdABb2CotmZjUNGLr6sR1pfkKXBJfLc6mumRrw2fuJuJyJck2PAE3uDl/iN+ZBpvvByeGjMHiVM0bgXxWxxmtMj5y4tDLzZENsaFvUCEro=
+	t=1784208385; cv=none; b=FuFJRwgWJqhtYp4mkvmseallvBlAXPpk0xuNYlzHM8hutNAwCgnJqsijHAQK3wG8zIX3FyATLD5OsZfdE/Lc7X7MtRpV89fgMjruOFDmJdzQQypaLVQbaZGs4crhv1eO3i/P+G3mzdSNF8/KZENmGmNe28IaMz9FVOi+m3X6a6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784208165; c=relaxed/simple;
-	bh=qh6AAjxrZJB7gljWnu3dJSd++tdEQoc2IVrKcTRL1A8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X8NEeosIQlEi4rHkNuJYVf47o5leu6oVzZ7YO6CwtltS9MMgRuFC7Y87HwvzaKGsRtSY9m5qR43Im+lt/XcWnP0iMHvtBbdQ+1htmnurU44i943nZQUkCEaRgtjfVNoWw2G2A1Y8XiB+fc16EIDqZaXJTw8nr5hOLo7zz3r4dQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3jU/vXL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784208385; c=relaxed/simple;
+	bh=NHARLWYGn7PxNM5VybiPt8610aUjwy8ufPU3G4O7DKc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LS6MxGBuoBohnEaP76TtEVXzjMmzRK9Mo8UV1IMWXGOOw8swUYhhi/6zvc6viW3e6mx/Ev8Vq1BeR1VdFDUXz+jk7ZVHWozfPUScMQyLkWsAh7VdHP1fOukuEhQi7D0L5veTONaW1nydvPT10ZFrLN6sxKAa1JJ6qG9Y3LDQlY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=EE5hHNL6; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3jU/vXL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE8F1F000E9;
-	Thu, 16 Jul 2026 13:22:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784208163;
-	bh=J1RcUzFubrLSPOJNAhV5g/NysrNzTE7RrFaLaVTbccY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e3jU/vXLz1kCVPN9lk57N/39U6sesNTekwEhhOhKLCJpwWQeRRkvy85ApYKpAbHr7
-	 OHbvhz2KSV8mgXOlnjzugYt1f0B0lj2c8fjKuzxe4P4ekCdmrOKTtGmMKDZJjD9Oi+
-	 pkIC2Ub5uINhYp7N27YXS3MtVPn2lfeb6bUArRfW1pR+l0/g3UI+UKbodoubFHdYJd
-	 uCLqVTxT/2ZUzWHbZpsffXcIiRHfFGPkLaq/WukCsLFBtqfC/1jLrkdnSucx7W+6Xt
-	 +8RHcpBDa2cownZYwQP+9CqmbTuaJtcqAkyAFqEWKdw0K3VADVqJOSXDd6Jg6bAxsH
-	 l3c7SMtzsOzMA==
-Date: Thu, 16 Jul 2026 15:22:41 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
-	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code creating
- the connector to a subfunction
-Message-ID: <20260716-stoic-muskox-from-asgard-c12b65@houat>
-References: <DJ735MTNMYD1.3LPNV404V8PIU@bootlin.com>
- <20260624-proud-unbiased-pony-ecc3c3@houat>
- <DJHEAWSEZR79.19UFIKS8QJBQ7@bootlin.com>
- <20260626-polite-hairy-perch-25e1aa@houat>
- <DJJ1MPCEJGZD.UZM9183V6ZE5@bootlin.com>
- <20260626-classy-nightingale-of-romance-1cacad@houat>
- <DJJ4X22CJ3FG.5EYF84LVRNOG@bootlin.com>
- <20260707-warping-goshawk-of-swiftness-beea4a@penduick>
- <20260707123205.GB211515@killaraus.ideasonboard.com>
- <DJZUXUBO8DI4.2J2NI3S0KYNUE@bootlin.com>
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="EE5hHNL6"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4629051c9d1so2026614f8f.2
+        for <imx@lists.linux.dev>; Thu, 16 Jul 2026 06:26:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1784208379; x=1784813179; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZFzMVT/fxpUw3oGY/5v1mJvn+DMLkKwLSq2ofWAuoMc=;
+        b=EE5hHNL6mPHUa5xxuIhUOil5JQkyBosKAHJh8oSt/KQNDpo9OX0KAPT+JCJW1RHGye
+         nuDRNgIZcrXU7MpvBS3+uWDYUxVckWIulyzlFYJgdrXq5oMuuUMs1GEz98w/86r0DMsc
+         8mXeT/B3qTKuWlCVFGihS+CZJT1a7Xa2qkKg9heusaqQrEr8LxmpLmklowIQBYtno42x
+         5i3gEXstEb5gHQiwO3H8YHN/lPrTRyYpKaJg06vY9QcJZ63Yo+JQBpMQcX2/Lw7fhhme
+         9wpiNQ2B5jZiiJNTs2AnnnvodvrIebljdv4ggGpUzl+lvueYgqiDKk9neLyneZE+6Y0B
+         r7ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784208379; x=1784813179;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZFzMVT/fxpUw3oGY/5v1mJvn+DMLkKwLSq2ofWAuoMc=;
+        b=E+2EZ6awx5KgXVJAK8sEmrSjP3L3W9MQLqIItBnjnJSu8UVxi3NscUrRbbR2N/WtDs
+         CCuSAWQ7Cev2F6wTcPvy3Bw6ETe5t2styTBn22v/s/xZPCUcd6GNNw1XCHt/fH9l8Urp
+         pCzGVBI8+wC/VKAFUprNxISBTUdJ31+FyOrAotSzGkKh1lMF7X9M9xldWH2m2CW/jTlr
+         XV3KOag5/Mw2hV3IdBnfgiLEQWMVOF68p1/OAmmRDdhyTR0hT+L/VHSpRy58S0UO6iIv
+         BNkHL7poA2PBBVOn5kh+DNXayldfp4pJVN6xTmZozmZU8O6hOCUT+2aeXtFTYLhlSyAk
+         q1zQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6YX/QyVlXmX67sGUnVkTC6KzSd/DHk6FiqJtf86xUxZtnYS8k+ioJ3WHiEV0fm9R7cR0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywo23vfcRafQJlHtcx5NDVPDi9i0lry45y1+bwGr60Uq0r6Qf9L
+	PLyIb3BDqB8OIvTmq9KT6QnShpBri/1HHOHMp8mLqwgVRrKY38Y2b1ELzKdNIMoheKA=
+X-Gm-Gg: AfdE7cl2+6ExvAFv19UaWM+gmlluTfGqpeIRrNVnK332L0xX0ffqT3i/4PzrMO93HQ/
+	/+q4de19S2h/xaIg4MILDuNvbdLxJUNseqA7VOj9EUd/Gn4aVG3aPv2Za3iaigip5FekD3dSXTo
+	ZTH2Gaikd+xpHJ5BLOT/uYU601umW3Lzli7WhqWFCn79/auVj4c4n7gQT7IVoyYxq5tweRmNdDT
+	5C54W0lTBvznoqPWJtQjPXxN5Rj1n7xDu0FdTFciFkoYVMm6Kkm7W85sSJm0HWlw2RxKCzqRdvZ
+	Zg/VYe53472HE+777aHD6XE0iHO8diDI14b6wIdvuFN65tVM+AMhLTXMUnmQsOuWzwMbntEXRom
+	M4BzDEXXXo50IDRpFv6E+cb7VExysu/k5TjDj4LRgLksfcHGWRxCMozvP7w++xzKsmEKoUhNfVt
+	IaY1FN7uDQpD+BbJ+PyrJpY6QPqi/C1NUGUfUpylvkwG5KBoE+rj0AAcwQ2qrtwDANuw==
+X-Received: by 2002:a05:6000:4020:b0:474:d7a5:4b7a with SMTP id ffacd0b85a97d-47f2dcd7881mr26682749f8f.28.1784208379566;
+        Thu, 16 Jul 2026 06:26:19 -0700 (PDT)
+Received: from localhost (p200300f65f47db046a548a0537ec1e67.dip0.t-ipconnect.de. [2003:f6:5f47:db04:6a54:8a05:37ec:1e67])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47f4635c86csm24865590f8f.16.2026.07.16.06.26.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 06:26:19 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Ulf Hansson <ulfh@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] pmdomain: imx8m{p,}-blk-ctrl: Add MODULE_DESCRIPTION
+Date: Thu, 16 Jul 2026 15:26:03 +0200
+Message-ID: <20260716132603.2327847-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="hy4gwehtz7opgsid"
-Content-Disposition: inline
-In-Reply-To: <DJZUXUBO8DI4.2J2NI3S0KYNUE@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1475; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=NHARLWYGn7PxNM5VybiPt8610aUjwy8ufPU3G4O7DKc=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqWNvr7p362KrSgGq/MwLyX8ePENAWBwuUho0S1 lBUfqJ+5pyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaljb6wAKCRCPgPtYfRL+ ThA4B/9DIt4u0eyuHj/nw4Z16VgiLTd8MFcgifqNi2C8wE6iMPf1Zrnp0omeMA/j5+vNpgbrl1b 4kV0Lnmg20mwZG+5yg7Ql0i/JqOSnv7SsM1fuhOHM19Hj8Gma+5H8Rk9T8aZtgxA05fXFrRJrRY wHgH3WWKLd6+TTw/qQHH+Bur8l+ACjmM4uKMH5t/5HmbwkrIQ8MlVVS6ETk8MwfWSVeq9cOjFHq nxA8HWCFjQBuoQQBICzPidpgeR5Lx+otFs9lV6TzFmz2vYRuOg0x0D7q/Ar8H267Ztm8rJFHFPZ A4FQIv2xwLveDoTdFYFpyClqJUquC1pZUib48KBQZ468YQ9F
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
+Without a module description modpost emits a build warning:
 
---hy4gwehtz7opgsid
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code creating
- the connector to a subfunction
-MIME-Version: 1.0
+	WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pmdomain/imx/imx8m-blk-ctrl.o
+	WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pmdomain/imx/imx8mp-blk-ctrl.o
 
-On Thu, Jul 16, 2026 at 10:37:24AM +0200, Luca Ceresoli wrote:
-> >> > Now if the bridges start doing it themselves we should go back to
-> >> > those encoder drivers and ditch all the drm_bridge_connector from
-> >> > there?
-> >> >
-> >> > I must be missing something. Can you elaborate on this?
-> >>
-> >> drm_bridge_connectors bring together a (complete) bridge chain and a
-> >> connector. If you don't have either anymore, then we shouldn't keep it
-> >> around.
-> >>
-> >> What I was suggesting before was only a suggestion. I guess we could
-> >> also make the encoder own the hotplug handling code and create the
-> >> drm_bridge_connector when the chain is complete, and remove it when it=
-'s
-> >> no longer the case.
-> >
-> > That's an interesting option. We don't have to keep drm_bridge_connector
-> > in its current form, but I don't think we should go back to individual
-> > bridge driver creating connectors, especially now that we have bridge
-> > chains where the connector ops are implemented collectively by multiple
-> > bridges.
->=20
-> I definitely agree we don't want to add burden back on the encoder.
+So add the required string to these two drivers.
 
-I don't think Laurent mentioned the encoder anywhere.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c  | 1 +
+ drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-> >> We can discuss alternatives too. But either way, we shouldn't have it
-> >> stick around.
->=20
-> Bottom line, I roughly see three ideas mentioned:
->=20
->  1. (this series) extend the drm_bridge_connector to create the
->     drm_connector based on bridge hotplug events [+rename it]
->  2. - keep the drm_bridge_connector (mostly) as is
->     - let each encoder driver add/remove it based on bridge hotplug events
->     =3D> more burden on encoder drivers -> no
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index 99d100e1d923..479789009c7f 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -953,4 +953,5 @@ static struct platform_driver imx8m_blk_ctrl_driver = {
+ 	},
+ };
+ module_platform_driver(imx8m_blk_ctrl_driver);
++MODULE_DESCRIPTION("NXP i.MX8M power domain driver");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+index 3f5b9499d30a..d255c20f58e2 100644
+--- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+@@ -890,4 +890,5 @@ static struct platform_driver imx8mp_blk_ctrl_driver = {
+ 	},
+ };
+ module_platform_driver(imx8mp_blk_ctrl_driver);
++MODULE_DESCRIPTION("NXP i.MX8MP power domain driver");
+ MODULE_LICENSE("GPL");
 
-Can you motivate that with *any* reason? Because I really feel like it's
-the best solution going forward.
+base-commit: b8809969e1d7a591e0f49dd464a5d04b3cf02ab1
+-- 
+2.55.0.11.g153666a7d9bb
 
-Maxime
-
---hy4gwehtz7opgsid
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaljbHAAKCRAnX84Zoj2+
-dqTdAX929rSvBRbObFUgBFSbAjeGJKAihEQm5mwvUemnQR8RPQTHUpIFoxoU64cT
-+ncZYoIBf2oprQXmliswkjFLbOXkrIghOFzxcuJlTTV7xnm4UrAXDjJgcRCFFbs8
-Equ80zFtIg==
-=nsi0
------END PGP SIGNATURE-----
-
---hy4gwehtz7opgsid--
