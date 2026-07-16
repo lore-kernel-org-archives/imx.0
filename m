@@ -1,117 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC83383328;
-	Thu, 16 Jul 2026 16:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23B1439912
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 17:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784220258; cv=none; b=sDR/ETRkpSPVqh4eeFb91VJ6QoFH7YnQSrU36ifSWfDe2mDllYGAeoJHt1Y6sWcUsAYr+oAS1bkVlcpfH7V5wrAoH2uUa80FNx5bEgdPR9oboF1+I1uOH66YU7KkXh3hqhDw35N0qTquedzrD2c6EmuSM/IrtqcQF0oFRth1uTI=
+	t=1784221761; cv=none; b=dHrEQf7UMzGh2b8eA6Kp+8624eHK3b+LGF382G0aIpZoFnLMwHi00TUwoBInRw2bdsXvYgM3bFihARKuyK2v9zgsBK7b4Gaunn5xm/+JFkBwSIIdcGnfqf1A00bpUY6HxxbJgfIzZ5OS+7uSdD5P9N1kLDjNi7nWKM+WoFTI4YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784220258; c=relaxed/simple;
-	bh=U92FztNr8d9j3me6XSOeGW9RVf958zGBdqW3sqV4cJI=;
+	s=arc-20240116; t=1784221761; c=relaxed/simple;
+	bh=tEPuH0w8ovN1LWEjJQMK9Q1Z1vEJ7za/094ayvYh7Mg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qReiPTT37TSaDjix0yDSZfqlk8Pv1MxbjL31sGJbK1M7bKJ38qEnm8beyMt9XHcxHW28DQ7t6TWf6LGDRXnz+v4OB1G+ZOhWJ495lD/idkPdQBTlQUwKZbPKFaktQos9VIsZ9LjEKrTA1QwrtSifzMwon2tLqkvqUAsg6/IUG8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSVWybz7; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=bINIwvwNtJ3/SrPE+fA05vve5+jXJLeW4GvFD4BYXtZ+WQV6x7RymkgnPn95NikDEu68B1n30WSX+TcnDwo1S8+L+5XOIThR6A8TwBcj9ZxDJcCN3T1Wtg004wja/LzRe4uNXjOuCzjhMFu4p4VQVr1J79JbEO2uiCVY1EddQhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z1jdM+Gb; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSVWybz7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59961F000E9;
-	Thu, 16 Jul 2026 16:44:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784220247;
-	bh=KRQXasdSjh/IVyj+LLVVvuKUHT3n1CA/5KP9qz5vin8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bSVWybz7hoRT6SwmRrOHtV4PdMzz02I7aAxH9ydTXI3xq2ij/ySjxL7NobDNDmx/Q
-	 l6Ckz+/LD6fkpfqrSabZew2DjAM4oDQZ2FC11ziHvNXI9uCZQ/4k63fEK2pBmgpLeM
-	 7Qervo37/1gwY7R18JunzNEJfvtzWKEgzctHXQ6wkphF+N0UHmRki/A0UUNkvtAX1r
-	 mJEMhXsuCbcgXqi8JScXu9dxnNx+S18xanJWKwOUNFjRVN8wLfceYfYgV47j5lE1Nn
-	 Zuz6yeztWML3Udeycwve/w68HrGv4fL/zA6MgtJd7iMzjxrTJkGTRndNZJ1m+EcZ1a
-	 MJiRKzNIsdDAg==
-Date: Thu, 16 Jul 2026 18:43:48 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: hongxing.zhu@oss.nxp.com
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v2] PCI: imx6: Add runtime PM support for i.MX95
-Message-ID: <aprkipjl3lpdn37dlcdv7wx6piepbbqjsd6ljfgpa5pmua2axu@etxjfuahtg3u>
-References: <20260708035928.580236-1-hongxing.zhu@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z1jdM+Gb"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-80a123ef90aso16517967b3.0
+        for <imx@lists.linux.dev>; Thu, 16 Jul 2026 10:09:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784221756; x=1784826556; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=519dNdxGkZChACNROtarKLrXjiSKkCZfa7q39zzxKTI=;
+        b=Z1jdM+Gbk2apQajaWDsMhqHlSRkwWANhUyMdvf3bu6m5ud0shFzp6epm96T5jLbFBn
+         RqIw+Cf7Me8mDFs8ajzUIvNyHtwdPeveYTluQL3yn4fiIc9WAUNKVCupOm0GQOELli6S
+         2cIgtfCg6ZrwVq+2CD0iIHI+1CGDxAesH+lLdGmBL9ydEdQmFBa9UZ7FPlabzo62/vCi
+         4uqo09GXEY9jzzQEEemPXTNPcZ0+E8mkiy1iLro4TDw19m02S4q3zAd5jIzpZui22W6y
+         hj9hEkQYmXMlVinZVmnN5fq1SpKG0VSRWiFxAlC7mrAP1haEF/X745OnRDsBAW4VCnsv
+         TmkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784221756; x=1784826556;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=519dNdxGkZChACNROtarKLrXjiSKkCZfa7q39zzxKTI=;
+        b=YnVJd5CstVZoW3mN90s4+bbT3mKTIemBHY/viStXb876bur0oyByn7zIwRgvQVuJ5N
+         EeKi8g5+BMEixJt2JUhRd/T5JYf1dAQksGoITulMdXECQt2Rg6NlnXFnf0oa+M7SXnAd
+         4zQjSfhpHQ0OKr6V5vKc21pPnhr36hIdNvstU0rImRDx+JUdvwRWWDooCbmpovhu54IX
+         wCN6ScMKPxNVDfKugdxnQD5JXm263xDkgHg0tUpUNJR9Tlp07l98B+oFpiDaPNlXUgQD
+         5fg8zxcJoInfjJkFp3fcNVWURgPWniwClsOPma8cjxZSJc/goF2JqUOfPSxF8y9VtwVQ
+         IA3w==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3+M6r1LsLDRrKTZS2bZbLoIcMfTAJVzOwVBSbwlfj5ER5+glcqPYfWwl2cilfKZnhnQQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxtbJ2nSXUal31tZB236I6ytXB3TXACzy9OkyBxv0+aeoWmLytE
+	vFULHsE3A9+V1VpR6mxkvIl3vxnc1bsXoEg4wtGBneZVYMZxJt7sG2dG
+X-Gm-Gg: AfdE7clPOu+DXdbfa/E1uHzzcszRQv0zC7JA2r4EyyOsG0Mblp/03gdzqKzzncPazM3
+	McTtkgvlJ5c4b11ljIZ+89/zeGZDD2ATEpDwSH4zxpP3AVl9SyzMLvRZJMo23F3dtowhCiQlLNt
+	NlU3u7jHlKk/o0u7P4S/Et+Hab51pGfiFezQomhENEqU13ME51PjbQOZPI4Tvp0CHNNsKSLQCDm
+	5/UgIlnGtXbyIzsuVxMin0V4wEppylzhqbZHNdG9tHfWbfQd1eAsbD7gKBhhYhqSCyEI913PMA9
+	mAeCaxhPV0mnLMaDps4AfLTWmBhHF04+5Z+sOz9Om2Wpo6+zpWOu5FqIvEicSc28FPngLew3Gu9
+	tSS7YmMv1R+8q58lLd5J+88Lf/lUUgMiQqYWEOZqg4py+rI2nD///G9tuUIUPp1YNOhDQ0kEEcw
+	/blqIbpuR1nIbbQKzhz+/IDPPzDGHWUpqHl66jzTsDqp4zJC8b0PqP2FtgAD3aVakraArC4w==
+X-Received: by 2002:a05:690c:6983:b0:81e:429f:24ba with SMTP id 00721157ae682-81ee298087bmr22881717b3.36.1784221756342;
+        Thu, 16 Jul 2026 10:09:16 -0700 (PDT)
+Received: from leonardoc-nb ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81e6c249b87sm199484877b3.49.2026.07.16.10.09.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 10:09:15 -0700 (PDT)
+Date: Thu, 16 Jul 2026 14:09:08 -0300
+From: Leonardo Costa <leoreis.costa@gmail.com>
+To: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, 
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, 
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>, 
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
+	"festevam@gmail.com" <festevam@gmail.com>, "leonardo.costa@toradex.com" <leonardo.costa@toradex.com>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, Sherry Sun <sherry.sun@nxp.com>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Hongxing Zhu <hongxing.zhu@nxp.com>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
+Message-ID: <i6x6wpua7wlwmdq3hitoo53wkptgp62tvegmkabcru3d54eqg3@yk4eehwaarn2>
+References: <20260629143439.361560-1-leoreis.costa@gmail.com>
+ <20260715234736.GA288957@bhelgaas>
+ <VI0PR04MB1200862BE9B7C137EC7C18AF18CC72@VI0PR04MB12008.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260708035928.580236-1-hongxing.zhu@oss.nxp.com>
+In-Reply-To: <VI0PR04MB1200862BE9B7C137EC7C18AF18CC72@VI0PR04MB12008.eurprd04.prod.outlook.com>
 
-On Wed, Jul 08, 2026 at 11:59:26AM +0800, hongxing.zhu@oss.nxp.com wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
+On Thu, Jul 16, 2026 at 02:15:42AM +0000, Hongxing Zhu (OSS) wrote:
+> Hi Leonardo,
 > 
-> Enable runtime PM support for i.MX95 PCIe Root Complex to allow dynamic
-> power management when the PCIe link is idle.
+> Would you be able to test this patch on your affected boards? Your testing
+> would help expedite the merge process and ensure the fix resolves the boot
+> issue you're experiencing.
 > 
-> The i.MX95 PCIe controller supports entering D3hot state when PCIe
-> devices are not actively in use. This implementation uses
-> pm_runtime_no_callbacks() to leverage the PCI core's generic runtime PM
-> handling. The PCI core automatically manages D-state transitions based
-> on the runtime PM state of connected endpoint devices.
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Best Regards
+> Richard Zhu
 
-Please resend this patch separately. Currently, you've sent other patches as a
-reply to this patch which just messes up the order.
+Hi Richard,
 
-- Mani
+Sorry for taking long to respond, I was caught up with something. I
+tested the patch and it solved the issue. I sent a Tested-by tag there.
+Thanks for looking into this!
 
-> ---
-> Changes in v2:
-> Use devm_pm_runtime_set_active_enabled() simplify the codes and error
-> path.
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index eae495a1b7990..578410f262aed 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -130,6 +130,7 @@ enum imx_pcie_variants {
->  #define IMX_PCIE_FLAG_SKIP_L23_READY		BIT(12)
->  /* Preserve MSI capability for platforms that require it */
->  #define IMX_PCIE_FLAG_KEEP_MSI_CAP		BIT(13)
-> +#define IMX_PCIE_FLAG_PM_RUNTIME		BIT(14)
->  
->  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
->  
-> @@ -1973,6 +1974,13 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  		 */
->  		imx_pcie_add_lut_by_rid(imx_pcie, 0);
->  	} else {
-> +		if (imx_pcie->drvdata->flags & IMX_PCIE_FLAG_PM_RUNTIME) {
-> +			pm_runtime_no_callbacks(dev);
-> +			ret = devm_pm_runtime_set_active_enabled(dev);
-> +			if (ret < 0)
-> +				return ret;
-> +		}
-> +
->  		/*
->  		 * i.MX RC is powered off during suspend, force L2 entry to
->  		 * ensure proper endpoint notification before power loss.
-> @@ -2121,6 +2129,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.flags = IMX_PCIE_FLAG_HAS_SERDES |
->  			 IMX_PCIE_FLAG_HAS_LUT |
->  			 IMX_PCIE_FLAG_8GT_ECN_ERR051586 |
-> +			 IMX_PCIE_FLAG_PM_RUNTIME |
->  			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
->  		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
->  		.ltssm_mask = IMX95_PCIE_LTSSM_EN,
-> -- 
-> 2.34.1
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+Best Regards
+Leonardo
