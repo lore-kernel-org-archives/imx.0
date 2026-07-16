@@ -1,149 +1,151 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011023.outbound.protection.outlook.com [52.101.70.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5E73CC31F
-	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 09:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599823FD155
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 10:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784195448; cv=pass; b=lrQCmtMzD6I418KMn4ZhLGMtZoCUYH6G0aMvrG9ijrpMO7quuFPd/cmySbiMPPKGVk/2Fzq3t/nadQzYT+KrnxwfVoNfcRn3mLUP4ER3gSeKR1x43xZC0TsGLeEVsxly37isQpIXfvixbxmDCCapEz3r9AAy9vXPgNsI7hWZIRE=
+	t=1784198282; cv=fail; b=qoF00ipBfgdaiRCKd4X2D2t2hHtnvSDrWCBJAyBoumz4fDIzRydYhIsDs5B5Trg5oujjaOY6cvcZ2l4OfYdGhHBFXs/yAufJjte9hFdi4lEKDHT37KsXtByLMoe1ErdAmTIiuw9TiBcfbSUImeSboWs1f9396WC+N3m6gDxnu9s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784195448; c=relaxed/simple;
-	bh=4PHDdxADWcJXcHELSsybkbYwxBBaZNxU4xqJtB2mqtY=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=RQeSL4nZDZM7RdFTe1mV7EwszuKoyXBMk0lAvl8YOt3iKbKX7/ZpzTMRzf/fcHdCSbPDnq/+cE6U/iAvoz31xHJepLnTQdvfb0BLItM8dQJqTRDRnrHLEZc/y2BfiHSVXyLRdZHgVRDfr5Yxt7QqTUuuQ7ASoiebuxUDsqAS29Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mechasystems.com; spf=pass smtp.mailfrom=mechasystems.com; dkim=pass (2048-bit key) header.d=mechasystems.com header.i=@mechasystems.com header.b=LIPPpTrj; arc=pass smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mechasystems.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mechasystems.com
+	s=arc-20240116; t=1784198282; c=relaxed/simple;
+	bh=Q27L5o52u2wlYnkQvR4Ig5qzAQqcjLu131mtIkUnk4s=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=H7GhA2JTAVEnoSJrXl6Ya7PJOwbOmWut+PjYNGwb3/MEnvfW+FuBJS6BefDO8aAw1ups6VP6UM5aeIkXfz+3Iant4qsMhbI8jE/D8UNpeJuEq6HLit82SxSVXip+ctX4jHfnNKd9yMZ6gapOBkdG56+JMi6awF3CGZEWNnsl1G4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=NbSIs2vW; arc=fail smtp.client-ip=52.101.70.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mechasystems.com header.i=@mechasystems.com header.b="LIPPpTrj"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cca0c5799eso38629775ad.0
-        for <imx@lists.linux.dev>; Thu, 16 Jul 2026 02:50:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784195446; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AF5NE2Ne1FZ7/ybvsZyMHDSW8IIQoJtmx2AKUQxqZQMNBWHp2+ysgjj/tf50bt0Dmc
-         SpSndWhzXAvomIU1TJCTzT//vkkYUB/EcwagfFChgOiXMkHMd4yzUWSkBUihy9G7ofBW
-         hMk1Y/Z7U/ccnRhGGhRMVMjU7UMeiMkeY4vRl6sLZVfZV3NwGSL4zj0jYWrMlBS1YaGQ
-         de1ALNcIdtSicrzrXFWHJULUk/i3/CmB5M4cqxR5TEZT+0k249Upq8q33FYZg4UzusQd
-         nTCXTgjONF7HwABjvFG1/7XI/Ouyvi3A3mmqBvD0X2fVNxAVsrSk35vFpD99bPvhUdWw
-         E0cw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=7BnpV4VIJWWIXN3EfRYg7aDjYvj13ejddTvZNuKOsQM=;
-        fh=QcJNWqvAtH06k/2wVADT2dfXyoeqq0j6YcrG3AM6Lus=;
-        b=r3mlLMVjl/C3iGeBpGWi5EpBpeBomCQjUXxaFWdpgNfhBCbfppOf4OiK1Y9VCU6+Yu
-         S3aYzumsXQFMVMZL+fTOJNDUorJZLVWC8SlcFR5pZ8iXXE8SXDFiT9nKzcoRfiZcAU34
-         f4OWcDkylcd7FTW30qLK/JZQTEIWazFv3HRXg+q1lyaJWKB44HydA4oBVGqyV2MkATvs
-         fAHbpRNm9W+zt6YTlQthsab4x5Fk7zV6qO8ljmSPIILkDLXRn4MjIFUY7iQxibOvHt6f
-         aLFFh1JRAblEaSmMw6D6trJRP0jJfF0VBRM0oOPznPzO1TifLCe3F6hOQo6I2mk2sn5q
-         Acag==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mechasystems.com; s=google; t=1784195446; x=1784800246; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7BnpV4VIJWWIXN3EfRYg7aDjYvj13ejddTvZNuKOsQM=;
-        b=LIPPpTrjBnTU04os57mnXEoK9wtDy1G3F+9SkMV0y9Di69WRuWkjr+KONg9qtbU7Ba
-         egB9bYknZ2DA3bpOJbBXFICN7OUNFbKxwlYmPQ/F1sW9eeb2C4CAtAwu/ykJN+mkcD7y
-         MefrQzfoDpgZqT2FXdeLd6XiDWhYiaj+Qu1lgZmhgpRw4y6jz80cEV1lV6iv9+SphM2b
-         E4b1l5jHnQ/1NQSKVBV/+20xKaLipBBeJhvTAU6FZWSKoXrqA7z9mEb1FqdOiNVkeyU6
-         Ve0SJ3YsWQ2XlS1alPs/aIIBt+AJZEzCNP/vrgUz+Z7jKo2Uww5BU5snbdf9tL3IHHfX
-         RExw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784195446; x=1784800246;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=7BnpV4VIJWWIXN3EfRYg7aDjYvj13ejddTvZNuKOsQM=;
-        b=WeHp+wK1qxEHBuI9+d5i+DZtAdDQcLB+jznLSTSAJ/nnzLnSota6m9iL9yxbKpy1YQ
-         +AD1RuCQrEGwglTL7NYyoKL+A95BcrvIhRnNXqT/TypKjGfMWpT2euR/QeI4h2ew1u6/
-         jb8s3wdR1kw+zwacuFkC9Hf7AAB4FBssi6Ox/4CUY3lwCwIf86AfIQ1ZY8lwjHHHeKzC
-         opuvu0ep2QFJZETsQB5F+hEiqo8ylWjIfS+XQ5LE2cwKf6AK3rlXBrRzGGn1aEgWRBTW
-         gC0hJg4RiiJau/ke+ef8mgixlZUp4J7sQbWqG6CutSVg91ov8ZAjFM+zOCrCqQgoCVGn
-         jL5Q==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2dcb5x/vaYqy9jkabSWB4vcK7tELQ+DZKh1WK+53prXWx0XaPdF5dxbdnxYo2Ap/JKRw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOZ/lyC/DCimSfBL8+zqOrXXazNVOG5sPQvpG/yhOsF5rNF4sA
-	dOT5HQ37Iwe2alqtUPjlWJMI/GmmyOxDZUXq9uyKUjgAbbp6zFoBARwtNDeb4X/bHlZ/yfmck2q
-	X4HmifqmXoBU5J3dEqX07vyHXlKGe5l07ofQUMCS2OAhikp/5QulRrDg=
-X-Gm-Gg: AfdE7clu+RO7AdjTd6SbDsJOKz+t3RFefXEU8dKaMfks/lv/WyRUOUYy+6Pk4y7gZaF
-	zvkHBG46BSIR+Leb3rPAT6Z6t4EHFYPoddGqXVZfIZEiTjxmKpMJ6DxM8OPjeghXjHfPXqCRUO/
-	Qy1bcBT5U0vEGXXC4tKiXR0y7GRR1fnjhA2Kjsb0nYIND467x6ifYxgrgiBPwBYm0XrZwuZEWMF
-	0pYhrg+tKnsBlbTnbJbcyF0YyCD4JlH4P5w8EF18tnRnjG6Nu3zh7BPfM0k
-X-Received: by 2002:a05:6a20:c989:b0:3c3:94bb:ceb4 with SMTP id
- adf61e73a8af0-3c394bbd078mr1152070637.70.1784195446147; Thu, 16 Jul 2026
- 02:50:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="NbSIs2vW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hjnz5gAWAK3QoXHYVuUzRw/+166LHUQHctqEMXtLkfte6CkNsDlh09KrYVbjg8JyMz60bRDxPoJgpwk8Oze5DQ2F0Ji2wM+/TN+WhBRvNS0B1xKj/XEnBqcvA2dloaqqycjboXZ/gT8wUPBdSsNBtnH8AMndr2wUf96gl+tsepbtntnSqmyjgzUn41/zOhatOw+lyKu0wLIGXZA4uOCJioSWWOPfPtjrffO6C8zvHoRozIRv+rxhrnW4sF1FtcmooDf5Fo3Rr/3MG5FgQce9vuTKfosn3bmkq4p+IX2qgkK/Xf8bNMGeLZbgY5eWf0oQj6sCpG8KFvreZGNPTyjo9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Zag423CWt0Yv1/uW5EicCumxKw7yityq8c0crZ1g5GY=;
+ b=jl+E203DWjWJOSfPqkdcFhjwB/YlmPuAMia5XqVdkPszj+Bv3C4zX2sNG4VSHLWD/dcWNdyZEimEXG51MOgCXfeRw6mJ9KUcn6pSyqaNGy1J1pfvYd0yTPQW/WWk0QDADWQtju7O8c6aQT7mf2t8cO1wjmcJmJizF00e13omxkt4a9XjGtZw97X1Jm56jC2z2h6dSRSQEvAqutKBSVfPLyyPMVfXW/sPP8R8FfXQzmmzpEGARdwbRElfQU2n04Tn5VzM8ITtMhbOzgcrXXEyP12aQPQPPV4Arrvf171BYOmkAmVgbn47bhQHK8xZ5bvPI6UttSVOD+JH5PxyfpBthA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Zag423CWt0Yv1/uW5EicCumxKw7yityq8c0crZ1g5GY=;
+ b=NbSIs2vWGAT2TqqoXE0kR7fSlk7JtOUj4glQvZtduhY0e99fFz1ZHw6BZElnVRaYu6EPVGs4sQyQrmwMAkVjdOIE8UliXaWX/3s9zDveOZ3EJVpI0Uwff6ZCM+tO72BN4bDLU2oNBRe5Pz0J87qAaqFfeBJgzKTpyY5NEt0S+xsflNOLlZCYL0aDp0L3ETBVi0HeLPoHhl1zwfSyto8NYUpZKlr54Gf8nFHSInfvUmAkx0vQKkEB0yMwH0NZtw9zY8lIH3Xxmo4k2j48NF5wG+UqDyqmhylLmV74J5gHS8tww1EaUGdL09rD0kRjj9f9D6smVq+tdg77qpD0jiCNbg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
+ by PA1PR04MB11036.eurprd04.prod.outlook.com (2603:10a6:102:48b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Thu, 16 Jul
+ 2026 10:37:54 +0000
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0223.011; Thu, 16 Jul 2026
+ 10:37:54 +0000
+From: Xu Yang <xu.yang_2@oss.nxp.com>
+To: peter.chen@kernel.org
+Cc: gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	jun.li@nxp.com
+Subject: [PATCH] usb: chipidea: fix usage_count leak when autosuspend_delay is negative
+Date: Thu, 16 Jul 2026 18:41:26 +0800
+Message-Id: <20260716104126.2763454-1-xu.yang_2@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5PR01CA0032.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:178::12) To DU0PR04MB9418.eurprd04.prod.outlook.com
+ (2603:10a6:10:359::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Advait Dhamorikar <advaitd@mechasystems.com>
-Date: Thu, 16 Jul 2026 15:20:33 +0530
-X-Gm-Features: AUfX_mxWjVGz1D1bqa6lo_mj3pKzEhFiBc4uYqQMLANU_mgqiNhYY5CmMp3yH84
-Message-ID: <CAAPs2HTo=4+AEw1+vcU6c9vt_O2BfF+gv3FFvx9G3KLLzCOsHw@mail.gmail.com>
-Subject: pmdomain: imx8m[p]-blk-ctrl: resume hangs when waking from suspended state
-To: linux-pm@vger.kernel.org, imx@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, ulfh@kernel.org, Frank.Li@nxp.com, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	bhushan.shah@machinesoul.in
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|PA1PR04MB11036:EE_
+X-MS-Office365-Filtering-Correlation-Id: c31b3a80-b2aa-4aad-d426-08dee3264ab8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|19092799006|366016|1800799024|56012099006|11063799006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ttXk5dbjG4sq2lQ7xVbXopcuLlPba1O2QisAhPbdGELgMPiZxeHmVvgNragkYmGXuMWzaPwBltxoLGL7qCSzcza30XRcm+AMlcKTZP7FLaLKH/t0py82Iif9dZEiN6kt30ChnYJAWNQLypzI8EpKf2ozXl0bNeQTo8S9JcNfgDKJf0de9ELgIoTVVXKVUrDECDbzvSX5CkYu9SgXAdjmX8BteZJg4kKKFQsAyHfA6cToW1+Bk7Q8ww6bh2uARUOHjML23EpkIxf5AuuamBsKPsnfAByq03yVO71Sqw/9DOKH+RvK1b1LbP46DqrQWNbija4GDO9ANFEOm8MSt1SXS1Lk0NMGG6BWB+MHm/P8WiwLIMAoQ4eH/F593aiPljrXE/3JSED1yr4uXYuY0lInE8PsSoPF0yK/PXYouFVMZlzDt+btEaPNLXP6y32qg5TeYRleqdnUyT2/aZZKKI33G9b6Au8vr1jmTpOxoRkMnkDbFJCdi2pLYB9fdTy0QGx6I28SbTvrTiVvF+iGvL+WxTckmkbBav77WauWGMPx4HRztaqusa7/UXCvJKvy5rf0pG3vOOwCN7ORORAb8qgep1FHYEHqSKnEzyLy/gchj1IfWraSmpiPcgP7+FYrGgbmJUfL0xoHuH9yox6Gk/uU8T3zScFqt8GYQIjWVNyb9xM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(19092799006)(366016)(1800799024)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7FKtEG2xDjXbQU09sM4Zg9YeNNfYi+G7xWUO0KKvf7B8OUQx2mnBhurGw8Cy?=
+ =?us-ascii?Q?6f8yKaXUTxwDuwVg8o5svTp8IB/+fs/BGpeyOwKQ2+5JvguUXBfA/4op1uAQ?=
+ =?us-ascii?Q?kDQHBornP43SKWOP8grdiW6BK2kDQp1ZX4oB5O6dE7cHKPTzKXNJVoDLRlMb?=
+ =?us-ascii?Q?HLugsLUb9k+MUym9x9lQkNDYj+N1+RUR3mocP0xmrhlBdENXA/ufotiivZeh?=
+ =?us-ascii?Q?T4AUL5nB8Bwie1T10cUmEnSd8zYCNbVe2VNwxrVCiEHLLbxZIXG8DGgX5eod?=
+ =?us-ascii?Q?ny5U93ksYXvOdVHlxy0kZWYmpFrNKhfUAkcZDxo4tzLMMcheVCKThSLGg9BM?=
+ =?us-ascii?Q?dPkv+RNwvlCRLU6/KpQsovzVhQcIjqg+JejLW4zX3KGqH244yUsbPt9HaNA2?=
+ =?us-ascii?Q?0qK03fYHzPvzlpBzoTLctgyh/TZqSHjGOB0ryysEJ4/4/eP8hviQq7Tm7lrC?=
+ =?us-ascii?Q?e8K0qEmr9YdUQ7SERIzQ4GTP8PnGUEzm/Ka1dsu5JlVthF5GHIaP1FAG+k9I?=
+ =?us-ascii?Q?9D6+s0VPEOxFf3L4F4cI/ZQV/Xt7HeMB38pL8s7wfgwgKnMWPyve5Hgru64Q?=
+ =?us-ascii?Q?g3/HxmP42RHfewJS2PBK01YkwlJStt1ixiTb7ziH9kbOOhcfg5eP2bU6wgd5?=
+ =?us-ascii?Q?i41DgbhQ1uKBqSz9Qb9wDMSNVXXKZa6y01INDJbdvw11slsIDrNtsyAQsSgS?=
+ =?us-ascii?Q?hz17lnBYo+EjP7ndmAMq1wnSsWB+M6bHFsWRZOZEP41/C+Yv0iymW5oYhelu?=
+ =?us-ascii?Q?VOkZ+FwSvIELvzY2Nd1DCQDinsvZRKGfNjBVrlnWv0qoVpSh//TBTSl+nQ/6?=
+ =?us-ascii?Q?qpq5YOdzadnxhTnLxCCIYbmsCI7iYWAcferyYwggH1XnDG3sP9G5/kvgYZlh?=
+ =?us-ascii?Q?eWbnZzpxWYHFTf+7CN0M67W3RxinFzSfERvQZ9eSWfA5pwDPKmtv0LDSO0QP?=
+ =?us-ascii?Q?eAaIpg0TBv8xT2jY/ForTL2g4Be0nkW8LQgJEMcqNdrmdPkpA+svYHVbYCxE?=
+ =?us-ascii?Q?lo9dDATm+76dSmGJTgevW42OpPZAp+9q+g5W+iCA6olbppFUcNahk/A7z3GX?=
+ =?us-ascii?Q?yYzSLOBd0E/lOsk8wTaeCoOcOAZWjuw4VGO5Uhspob8VQHoyuv4zUZA3ID98?=
+ =?us-ascii?Q?2MD+2FcBJ22wbtYac5rZhQeVSN/7lcysGjsBVZsNoDvohdF/livvPDX60i2c?=
+ =?us-ascii?Q?U+Y+Xya3+SlDMGKStoFz6BIylc6roMO3wp+MyyjkZ+6TNglEfdGxhu8eNQrH?=
+ =?us-ascii?Q?79N0q6GJCd9RajPZ85rg2RtP8JqfhMHU4J4GCgzhW9ALk59AF9qfNsY8f1P7?=
+ =?us-ascii?Q?+xq8jHYX4noj3xo8a1ZlmRIfGBjMBsBJ1U6f5iz+QZq4xz3xKcdHFJuyGEVL?=
+ =?us-ascii?Q?Hrm2ciceO5kHRWLAlmukeGEawPYlm4tYK6/FxeFx8K8uzgoVlcpbRDyBqbUK?=
+ =?us-ascii?Q?LKUDiS3sHFtypf40EeHUGLC4lobOM49daeMcpXaeU5uR3H8OFqL0wLyefuWT?=
+ =?us-ascii?Q?YmkRIcIFIDd64sFDq7Q4mB8t38bdkGROjdo8EE6gWocGlkglz5BKRQZNvHlK?=
+ =?us-ascii?Q?Mugu0in1I+JUmaaUiqpWKGnGyXJBxerLiU+aX/4W8AtMeOLB1RHhKw1SopqD?=
+ =?us-ascii?Q?BjDVb03vlz4s4k6yx2BG/Jj+WQgRS451N1bTwUHSSlmGsAscPuNppENjnfJA?=
+ =?us-ascii?Q?pCqB/sBSw9BPuE+k8p67CenIjF8QoZyVCPjZieFfyyCillwxALVqTyVQ9Obc?=
+ =?us-ascii?Q?yCfieEObpIZBr0RN19so39bzvT3w31pyM4Qnm4LH+8GIX72IHSaL?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c31b3a80-b2aa-4aad-d426-08dee3264ab8
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9418.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 10:37:54.4906
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: g9Wab2OvBhBgRJBz4erlX7X6Kobjf/L0WgEKuj/NjJeleReRnC/UHkpELwU/D7XnA5KE4sd43+qhFHB5ppBTN7KOW4HeMT1Mz3DSjvpyYfBQPoe/sl3nkW9JAirYJwzR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11036
 
-Hello all,
+From: Xu Yang <xu.yang_2@nxp.com>
 
-I'm debugging a suspend/resume issue on an i.MX8MP board, where my board
-suspends itself just fine but it gets stuck when I try to resume it using the
-SNVS powerkey.
+The probe() calls pm_runtime_use_autosuspend(), but remove() does not call
+pm_runtime_dont_use_autosuspend(). This can lead to a usage_count leak if
+autosuspend_delay is set to a negative value.
 
-```
-[  127.955231] imx-pgc imx-pgc-domain.6: PM: calling
-genpd_resume_noirq @ 963, parent: 303a0000.gpc
-[  127.966055] imx-pgc imx-pgc-domain.6: PM: genpd_resume_noirq
-returned 0 after 3 usecs
-[  127.975922] etnaviv-gpu 38008000.gpu: PM: calling
-genpd_resume_noirq @ 963, parent: soc@0
-[  127.986183] etnaviv-gpu 38008000.gpu: PM: genpd_resume_noirq
-returned 0 after 44 usecs
-[  127.996201] imx-mipi-csis 32e40000.csi: PM: calling
-genpd_resume_noirq @ 963, parent: 32c00000.bus
-```
+The pm_runtime_use_autosuspend() also notes that it's important to undo
+this with pm_runtime_dont_use_autosuspend() at driver exit time.
 
-I added some logs inside `imx8m_blk_ctrl_power_on()` in `imx8m-blk-ctrl.c`
-as well as in `imx_pgc_power_up` in `gpcv2.c` and have observed that the
-problem appears to occur during the first MMIO access to the Media BLK CTRL
-during resume.
+Fixes: 1f874edcb731 ("usb: chipidea: add runtime power management support")
+Assisted-by: Claude:claude-sonnet-4.6
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+---
+ drivers/usb/chipidea/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-```
-[   65.145718] MMIO: writel complete
-[   65.149030] MMIO: reg_write returned
-[   65.152617] PGC[gpu2d]: clear PCR -> 0
-[   65.156369] PGC[gpu2d]: deassert reset
-[   65.160124] PGC[gpu2d]: clk_bulk_disable_unprepare()
-[   65.165096] PGC[gpu2d]: ===== power_up success =====
-[   65.170067] etnaviv-gpu 38008000.gpu: PM: genpd_resume_noirq
-returned 0 after 137496 usecs
-[   65.178348] imx-mipi-csis 32e40000.csi: PM: calling
-genpd_resume_noirq @ 652, parent: 32c00000.bus
-[   65.187316] BLKCTRL[mediablk-mipi-csi2-1]: ===== power_on begin =====
-[   65.193762] BLKCTRL[mediablk-mipi-csi2-1]: pm_runtime_get_sync(bus)
-[   65.200034] BLKCTRL[mediablk-mipi-csi2-1]: pm_runtime_get_sync(bus) -> 1
-[   65.206740] BLKCTRL[mediablk-mipi-csi2-1]: asserting reset
-rst_mask=0xc phy_rst=0x10000
-[   65.214760] clear BLK_SFT_RSTN begin
-[   65.218340] MMIO: readl begin reg=0x0
-```
+diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
+index 7edc512cc37d..3461dd763a6e 100644
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -1250,6 +1250,7 @@ static void ci_hdrc_remove(struct platform_device *pdev)
+ 		usb_role_switch_unregister(ci->role_switch);
+ 
+ 	if (ci->supports_runtime_pm) {
++		pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 		pm_runtime_get_sync(&pdev->dev);
+ 		pm_runtime_disable(&pdev->dev);
+ 		pm_runtime_put_noidle(&pdev->dev);
+-- 
+2.34.1
 
-No further messages are printed. The CPU never returns from the
-first readl() performed by regmap_clear_bits().
-
-Has anyone observed this behaviour before?
-
-Here are the full suspend/wake logs with PM debug enabled:
-https://paste.debian.net/hidden/5b4133dd
-
-Same logs with more verbose info:
-https://paste.debian.net/hidden/9f544ae7
-
-Any suggestions on what to investigate next would be greatly appreciated.
-
-Best Regards,
-Advait
