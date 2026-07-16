@@ -1,101 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011033.outbound.protection.outlook.com [40.107.130.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66BF38AC8C;
-	Thu, 16 Jul 2026 06:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784182488; cv=none; b=D4paqZxMkc8NvL7ccg/mfN/lVUZfpj1ppyyXpzHQPiyv8rKg6DRiTPOmuVRxMrcR0Du4Nv3XFfqB5D95ed3r6jefdWUHn234+w1FZ0GMTh7omMnANL7xnmdnpGsEeTt0nbso3gao6oY5Hqi95eqwx5MkEQx3vVZLmTKbnFNVWqo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784182488; c=relaxed/simple;
-	bh=gZHIGsbVCAH/9juShh9PTazUhA3F5WQ53zzUwWn2D+Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Gh+PoLefqrTqLJqCszvwpFHJpS+RhxcqNLPFOeIbNf4G69+cr1PgxuWY+Wk9JGwLvq2e/XicolKoQszxREKakws0nGMU0aMVplMCQibMNQjyc7wk0pKL5JSZSVAZ2IK1CFB+bxqIGbvnXJFb5ZwbhFE+8tIkbME8EAIqF3DhEnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dopYfAzc; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066F2221FCD
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 06:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784182812; cv=fail; b=INHo5qzEU/E8zkvJyXThIfQMeZNd62iUneItbi+y7HVqZTP0wyBd8m88Bt0i5IaMdIkDJV6GgcsECIHKlKs603sNY9IXPT/TpuONifYV49JH8FptzRau2zVTCbwnztlgczJ8AaF9RJqrT5thnMwDX79zrIhXbFvWC808/vpNPVI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784182812; c=relaxed/simple;
+	bh=fbG1Zv/Aa7vSNe4WDk7vX6XEqU3WGoluUJQwWaNmFbI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qgOGffwZp/z87X8/zj9ju9G1M+RtypVQOHS1aNjpfETTUaSM2n4Z3pmuyTfz2MvxVajoLeg64OWqYibzRRg35qZtkmj+cNky02gSX70DVy59PAv7ZlWXR2bKLXQuKwwzgP5XNRDaFKplR4SKpSJQa4eQ2lXnfZkiiWtk4hW8fks=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PNeVF1Fg; arc=fail smtp.client-ip=40.107.130.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dopYfAzc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D231F000E9;
-	Thu, 16 Jul 2026 06:14:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784182486;
-	bh=iz89qM5ZRR0KeyhZi0jO1JpPCY2KT90TKWlBUGHdlE4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dopYfAzcIwuED+2Z/I4uEFv6J2T48PuaI3r5HjEAYfEnFlvTF4Qa/Z3WM0ijfhwhH
-	 WBSFeZ6Ixk2MpI/aEHisnaYU8E9YkONtGFZXKB8hQqR6YOHbJUf5wkyYx7m24heL7o
-	 9XM3q7XjP95Css+kUpxroziTo8iBQo3ZELNE6V1l3z2ni+mJWjBnAnhQvb0KdWXUJ1
-	 39G91cJMMxBRKdIX63ZYnjFoabJbdfk9SwXkTSjA5QxWEx+T3QJeDRv9CcVEBEyss+
-	 LXtQBcbQEAGGa6tKtM0td67d/3l/Khu1kFb8XqMPjrt5THhDmCJwonDNtho56Kckdl
-	 /DugSQbqoH/wQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/6] arm64: dts: imx8mm: imx8mp: Add legacy board
- DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marek Vasut" <marex@nabladev.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260716055751.279033-2-marex@nabladev.com>
-References: <20260716055751.279033-1-marex@nabladev.com>
- <20260716055751.279033-2-marex@nabladev.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 06:14:45 +0000
-Message-Id: <20260716061445.A1D231F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PNeVF1Fg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tSzpkwwlBLKkIowKoTOR4JFInVF+bC66JULPRTGYywST2ma+jZsJEpxydI8kVPVEamNnNMIp4RFzhm69zwPS+GJHsRZd2AGP7NDLHSB3nW/5C+NVXpPXhcPChmPGtsbT3qQcd1G4Pkfulo3ixEkxuSpBfxskoqj59ce8yjMzbtkHR/I1zClOIJn6H8mTN2XCk8AnnqJ7nyEgvcHG5T2kLNuyu6vU26kONFRRYg9iR1Gie5lsWjCVd3jR+Tg0MoU20Twn/FTE+dS6rwVPzDTiJy4E6IqMCQOwmUYnOJhcQTYyuP1XJjdy1bsOei5mhXYfSq+hBQSAzaTXEHtkuqND1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EzPzdbTkxncmlnuaXT/WkcPUKIFpkefBekSlGQrfdaM=;
+ b=VHrNKiG5lTJPQoOYNmWA6iFoHbTs5JxzQczGAY8hzKJrdLa5d+NymOc5eX/NSRvYrPcu3Qpv4VmKnup3ILs8vXvJXeRGzZgAkBTiV098rKG9wXFriLwWl8rJPlhK1yBMiiYurEfk0mzhdJx+29kJFw8ty3UUqWpQJC51LzD80Kf34DPdEmRcQ0ZoAuCPn2hVfYl9L1R0cWVov2i6VyHH6vtksy1XWlaicskjXtZr7vDJVcoAHHUZPPrvRayvsBqYgnwMOc9q1Q2yC+Jol0vGaEKPNvM9CUxJ75AIenYdXZyal6zUhIfvaaastjB0BqNkn63PieS8Joe1zzw1zcQerA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EzPzdbTkxncmlnuaXT/WkcPUKIFpkefBekSlGQrfdaM=;
+ b=PNeVF1FgebyHa1rxfQ84VIbqh0oWBT4z2ckhVeuernXHp1uxbsfI+P37snpflSecy2LE5yrd7A8g3JlF96b5GhYUuGSA0g+1/dO0/OjW/gXTzaV+9hmICzsUMHXXnZDld/7evsX1pXajzu2Gv8A+ab84sAk1iF+A6j3oVbuYPC1Ld3aV+1pTBuboitx9xWvOBVKXTz+/YcSz9hfKzN3ep6JNjsAqLP5NItf6ikiEoJndm6XF3cKrZo5b0jxP9Om3guwLEo0uUeIG9ElmWdZ1G8UsWeQxFkbU+S/Acfq9eXISucryBIjgIvQGYHwWE/hSlIMSqt4JFpNrvQ9pJCKXOg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ by GVXPR04MB11066.eurprd04.prod.outlook.com (2603:10a6:150:224::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Thu, 16 Jul
+ 2026 06:20:05 +0000
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0223.008; Thu, 16 Jul 2026
+ 06:20:05 +0000
+Date: Thu, 16 Jul 2026 14:21:31 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	p.zabel@pengutronix.de, airlied@gmail.com, simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, tglx@linutronix.de,
+	vkoul@kernel.org, kishon@kernel.org, Frank.Li@nxp.com,
+	lumag@kernel.org, aisheng.dong@nxp.com, agx@sigxcpu.org,
+	u.kleine-koenig@baylibre.com, dmitry.baryshkov@linaro.org
+Subject: Re: [PATCH v9 00/19] Add Freescale i.MX8qxp Display Controller
+ support
+Message-ID: <alh4a66fEro05ShA@raspi>
+References: <20250414035028.1561475-1-victor.liu@nxp.com>
+ <20260714193627.GA9616@francesco-nb>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714193627.GA9616@francesco-nb>
+X-ClientProxiedBy: MA5P287CA0192.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b6::10) To AS1PR04MB9287.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|GVXPR04MB11066:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c8bbcaa-95aa-4612-6bc6-08dee30246cb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|366016|23010399003|7416014|376014|3023799007|22082099003|18002099003|10067099003|4143699003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	Iba9lV/A6/TKpNXI0JwRNUgweT0KDFQi+30Gb4wKVDpWq2xuKmpVKZjBb+7zjStBNk9kJVu/4yHUhn9B+5D7XjeQ9vTEu6yVd/EnfB+YanbuRt547j440FDl8ZSiDWeLwVdyj87GbMuKOvSb8pFNRanwIkC7kiQkaXyDVXdHDsIYGzLB7/a/xm4f1X+Sa+mozUuNxQk4V8NdHHgqBjJ54soCvyUuGdy/ONeGmFnGV5H2FbQ/eSfSl2ggAEqcxwWTeq5GcA1OPeKIdyb1fl/cvClpmNkXqBiiMP+zZlMof9u7mGpxMuaNzKJ8AQZUmafdxSHoBMvRR4BMtWAcNi18Q7DHvYmCYL/MpBWIv+wz/P0xXlGc23Hyt9cun3vXphg1Sj9d/qZPfWfR8E/vfiAhE2C4IjKoaWp0RnVRgBsM5ggFKa4iyvQXkCx6ZW3i3wKmG3dtm97M21dVvxWDkSlvezZHPkRz3A7xXg8BrxQOXrnEikJqKQNamgou78FsYVU5U3GZC0utnqFvjPpZxZVide/B+O5hAj36NleZhPLNI9/Pg4fXxp4HgWiRHEdK957Yn9TUHtcH0lO8Ifts9Suhv0Rc7RMQaKSNmhLF4cccJ1+VCp2g5nCIoxNV7wkJy1g1SGJ8lqEQc61TjjeAxin/Miu9AQpJ5GU3kkyv+jdxpJ0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(23010399003)(7416014)(376014)(3023799007)(22082099003)(18002099003)(10067099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RVadUeAgOxSv8KYR3Abjy9NGCjypXlGMus+3qc34H3SaLEQ4S7JnkY3kNMcV?=
+ =?us-ascii?Q?7W/MGOcxofhiefUS8xtxRIeNChfcodelQTuFS4UAETMcgQ/ZzFsdJT+tHVea?=
+ =?us-ascii?Q?+w1dmQZOF2VtdwR+hdVMLlzF14MOCycjDAfICh5GTH6/k0w8XAJ3mUMwEDD7?=
+ =?us-ascii?Q?dmduLkU3nKdzy/VhsUlRfPsDOn9u65ohAcIbVqRFtvxInuHo9oUJBJblVpro?=
+ =?us-ascii?Q?jN9d+o69QR98huPDd/vKxL4EANz5lmUgLZLiC96m+0De588X98x6+ilY5iy8?=
+ =?us-ascii?Q?aW8Ok2/QWAuUPvyy1HG2DsU5lngX1LcrZuHa4u/SnV1zXaTVFuAWOYcG9Pmn?=
+ =?us-ascii?Q?7jFVb94iU1xUeILW9Qy+O7WOK/ySu9Mut8G+nCpKY86Kdd7LaZ68xmdapil6?=
+ =?us-ascii?Q?2A0/n7YZt5ZSesbJj00k/ksEADOjXLqwCHSPwGx7C5c0jyoHpOVfeD4l9ZNv?=
+ =?us-ascii?Q?/qCt+24oDFkrdVSqMzOnTCu6C98wKTQEiBypPKRc6Gk/dIIwashyCHOGLsMh?=
+ =?us-ascii?Q?T0eYwDE/RVKKaBXg/tdRp5EOcAcYnsE4R3kPKtg95j8FInk1VgTdcqJQ8Bgb?=
+ =?us-ascii?Q?+wsRhcFte9wf+3jn+9YlFMOdBFuQ9RWaZzvfvFp0WGAlHPPwdBbCUOPt5K5L?=
+ =?us-ascii?Q?+rOexZ4ZqnNs198pAHN7ZKznQD38GMkvrgYatdwvuRl/qW+0JBccC/uqh1C4?=
+ =?us-ascii?Q?l4kIgqS2YapY3kq7Gfh5CvSlReT/Ql2kb78DLwgQxDKI4kwE8r0OEUwFbdWk?=
+ =?us-ascii?Q?JIIOKyceVD0FUX1r9gNz5/CAPO9xPoTXBranqbAnUD7O5focDiGeWF4LRX8t?=
+ =?us-ascii?Q?HxWq9NJIc/IhB3ylkjZ7K8+9V2ntfBskGvNM/DYC0yKJknKa9KzxhbzH1kj0?=
+ =?us-ascii?Q?9mupr/tmD/DxpmmQbKjn6VH/xsmFbJfgOuhRAobrLJwy7A1IQxReFfdd3ykp?=
+ =?us-ascii?Q?+ya4aTqgzOf10VpVWOwarCSR5mvAe4qsfHPhoxPcGAlBlW0whthIWoI4w51x?=
+ =?us-ascii?Q?8+Uf9g0/9wqxj4aAeLOh5EEtDu8jmXLy3KPQFGP/8JpHSBDY3AFUUT3q9USd?=
+ =?us-ascii?Q?DVbDfWD2iQlA1PegSOuXx9rNkptDsH/Z96o3vWbVOkKMKh0OiY3b+Dyo3CYo?=
+ =?us-ascii?Q?ExFQHS7ZmNAuHf13fHj6jcm0Nb1zGUNsuZgzRDbPwwkticoGCuc7M2n0bAg3?=
+ =?us-ascii?Q?iL33p1nz109Tan0G7KNITbhZ6uXk8xsskhW/G0nzAN1fGd2ykCVSyIuKwXmK?=
+ =?us-ascii?Q?n5U3PINJ5hnj6aBxOnfzmnvP59xDHH0tMGvPT901P5iWLy1moLjv1n+jyAF5?=
+ =?us-ascii?Q?Tc+qEzVz3x1XjjCP1WlKY7dQ642/hNfFjhMN07YO9VSD893vmo+LCFUAKi6j?=
+ =?us-ascii?Q?Q52YlMnhpFO1k+6eKIUHQhFD90RvpcE4OaUKKODo9vwGlItI61fxDH6bLX+6?=
+ =?us-ascii?Q?NA6DVICkdYwEdbD0txFuiFmo69zj6qiAQSmx7Z3kPP7FXifk9K9S+KFd+wZM?=
+ =?us-ascii?Q?PGjXDs0wXKrGDbm4i+7q5gfFkIEioPE2IakjGPb840D75SdnzIa6oJOD7dJ2?=
+ =?us-ascii?Q?brk860rAijm4gKOl7bAz2zEpgySEMadOs7luz3rpLJbNbbc0zqpyuh1qQYDH?=
+ =?us-ascii?Q?PcM3h2tDMuihHoDIzLHP6SztGN/SEj+a04XWAfFqF0D+sSpfg8ODhEXv7ej1?=
+ =?us-ascii?Q?kRzzAF2Iv50OMtyq7SP5wYdR31Z6T6W4SDKpRDBNd9TtXklvAfhNeO9ixpjo?=
+ =?us-ascii?Q?+Wv2z+0Tow=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c8bbcaa-95aa-4612-6bc6-08dee30246cb
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 06:20:05.2887
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mu/X/UJqwVkVh12GajahEFOm+aNJWvsCkbBWCessg4n4wC80hTapKNy6iFKRXgpuUaIJV7bRNkUmSkIXn/rZyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB11066
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Devicetree Makefile targets for rev900 and rev902 LVDS boards in=
-correctly include the DSI-to-LVDS adapter overlay instead of the native LVD=
-S overlay.
---
+On Tue, Jul 14, 2026 at 09:36:27PM +0200, Francesco Dolcini wrote:
+> Hello Liu,
 
---- Patch [2]: [PATCH v5 2/6] arm64: dts: imx8mm: imx8mp: Add legacy board =
-DTOs for Data Modul i.MX8M Mini and Plus eDM SBC ---
-commit 9cbdc6e353675bf76d693179ba857291f2e7ba5e
-Author: Marek Vasut <marex@nabladev.com>
+Hello Francesco,
 
-arm64: dts: imx8mm: imx8mp: Add legacy board DTOs for Data Modul i.MX8M Min=
-i and Plus eDM SBC
+> 
+> On Mon, Apr 14, 2025 at 11:50:09AM +0800, Liu Ying wrote:
+> > Hi,
+> > 
+> > This patch series aims to add Freescale i.MX8qxp Display Controller support.
+> > 
+> > The controller is comprised of three main components that include a blit
+> > engine for 2D graphics accelerations, display controller for display output
+> > processing, as well as a command sequencer.
+> 
+> ...
+> 
+> > 
+> > To follow up i.MX8qxp TRM, I changed the controller name to "Display Controller"
+> > instead of the previous "DPU".  "DPU" is only mentioned in the SoC block
+> > diagram and represents the whole display subsystem which includes the display
+> > controller and prefech engines, etc.
+> > 
+> > With an additional patch[1] for simple-pm-bus.c, this series facilitates
+> > testing a LVDS panel on i.MX8qxp MEK.
+> > 
+> > Please do NOT merge patch 14-19.  They are only used to facilitate testing
+> > the LVDS panel.
+> 
+> What's the plan to conclude this work? What's the latest status?
+> I am looking forward to have a way to use the i.MX8QXP display with
+> mainline, but to my understanding some required changes on the SOC dtsi
+> are not merged.
+> 
+> Can you help?
 
-This patch adds legacy board revision compatibility DT overlays for both
-i.MX8M Mini and Plus eDM SBC boards. It also includes adjustments to
-support legacy board revisions.
+I planned to add display controller DT node after prefetch engine support [1]
+is picked up so that the prefetch engine could be enabled together with the
+display controller.  Just want to avoid a DT that only enables the display
+controller or bypasses the prefetch engine.  It makes the display controller
+driver simpler.
 
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts=
-/freescale/Makefile
-> index fbfd0e79f118d..09ea330884ad4 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-[ ... ]
-> @@ -338,6 +344,24 @@ imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvd=
-s-mi1010z1t-1cp11-dtbs :=3D \
->  	imx8mp-data-modul-edm-sbc.dtb \
->  	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-mi1010z1t-1cp11.d=
-tbo
-> =20
-> +imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev900-dtbs :=3D \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev900.dtb \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev900.dtbo
-> +
-> +imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev902-dtbs :=3D \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev902.dtb \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev902.dtbo
+[1] https://lore.kernel.org/all/20251027-imx8-dc-prefetch-v5-0-4ecb6c6d4941@nxp.com/
 
-[Severity: Medium]
-Do these targets incorrectly include the DSI-to-LVDS adapter overlay
-(edm-mod-imx8mm) instead of the native LVDS overlay (edm-sbc-imx8mp-lvds)
-for the SBC?
+> 
+> Thanks,
+> Francesco
+> 
 
-If so, this might cause the LVDS display pipeline for the rev900 and rev902
-i.MX8MP SBCs to be misconfigured. They might expect the lt9211 DSI-to-LVDS
-adapter instead of the native lcdif2 and lvds_bridge, which could lead to a
-display probe failure at runtime.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716055751.2790=
-33-1-marex@nabladev.com?part=3D2
+-- 
+Regards,
+Liu Ying
