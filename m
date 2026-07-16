@@ -1,103 +1,133 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112213D522C;
-	Thu, 16 Jul 2026 13:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125863B2D39;
+	Thu, 16 Jul 2026 13:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784208008; cv=none; b=OVLeyA3atBq1Ij/ahnEJGB/fr/u0q3rIusT8X5hj/09ZriinAhZbqhOo8GEIfKy6cvSgX3kDK38INXqWBDWWC9XNJV7ExqQH2wvoJU5HVENHMXPlnsfLgNfhQZSLvTqh6egpgCgnYdsZEV2Yk3wBuJ7G6CkAFpA5HB6TYGpEUKE=
+	t=1784208165; cv=none; b=sisEnAY6M8VE0ljzjprftTy5NtHuJXm+MlWF0xgloIPFJ//yUQFaZpfLFxqvwp8f7MdABb2CotmZjUNGLr6sR1pfkKXBJfLc6mumRrw2fuJuJyJck2PAE3uDl/iN+ZBpvvByeGjMHiVM0bgXxWxxmtMj5y4tDLzZENsaFvUCEro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784208008; c=relaxed/simple;
-	bh=1I3UeytjrpTm1Zxt6N8iRSRngsveCRIzG81oAYMn87Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XYl59S1I/9Fm9MlgJYKMa2GWjBt0VTGSz2MRb4MNhmiUf5lYit8PzamCRQoiJsswART29uh5IDhO+uKF7j1FO/Q2jIW6cMqFGanTRI/4fQ7SHoqnBxTBF/3sbaU4zEJRaOten9uWGmas7DcZNhMc7wNqK/WqwnyTLtAzgN/2Tkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRbjkQcR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784208165; c=relaxed/simple;
+	bh=qh6AAjxrZJB7gljWnu3dJSd++tdEQoc2IVrKcTRL1A8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X8NEeosIQlEi4rHkNuJYVf47o5leu6oVzZ7YO6CwtltS9MMgRuFC7Y87HwvzaKGsRtSY9m5qR43Im+lt/XcWnP0iMHvtBbdQ+1htmnurU44i943nZQUkCEaRgtjfVNoWw2G2A1Y8XiB+fc16EIDqZaXJTw8nr5hOLo7zz3r4dQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3jU/vXL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRbjkQcR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421181F000E9;
-	Thu, 16 Jul 2026 13:20:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3jU/vXL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE8F1F000E9;
+	Thu, 16 Jul 2026 13:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784208006;
-	bh=G9TdbDqBLIgYoXEokaUX6Znn1R65A/jD89s8AWApvkw=;
-	h=From:To:Cc:Subject:Date;
-	b=oRbjkQcR/w8JCQbBajwuQeUYIyWdhQjZSXtS9hdHyhYj/pAFim58GsWKiSJsWpZx2
-	 oDBIzUSOxNbVIHfDemBiH4VqUHwfkWsok2MK6Sax36E5yz7mMgcqdUFXbuabgkY2Ml
-	 KUWaTj4R18cPKEgfEHhT3JC+ICH1HullgL98MnsmlAQiJBzYtSNI6OMLRIjk6peMC8
-	 1FAvzSRwYXBilnt0rwQtuu0DB+ROm7J8HMTFhtWFbSziMZ+wh53xxrMzvWbyAVMnqM
-	 0h3nekRVyhGUIf4ETc1ZxI629+hgc/GfqBn98oCHmjvuyh7t1Xkuigzn6hixNEmTok
-	 x/L7CFujQMZXQ==
-Received: from johan by xi.lan with local (Exim 4.99.4)
-	(envelope-from <johan@kernel.org>)
-	id 1wkM0S-00000006Z6m-0Dkz;
-	Thu, 16 Jul 2026 15:20:04 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH] drm/imx/tve: take i2c adapter module reference
-Date: Thu, 16 Jul 2026 15:19:37 +0200
-Message-ID: <20260716131937.1564892-1-johan@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	s=k20260515; t=1784208163;
+	bh=J1RcUzFubrLSPOJNAhV5g/NysrNzTE7RrFaLaVTbccY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=e3jU/vXLz1kCVPN9lk57N/39U6sesNTekwEhhOhKLCJpwWQeRRkvy85ApYKpAbHr7
+	 OHbvhz2KSV8mgXOlnjzugYt1f0B0lj2c8fjKuzxe4P4ekCdmrOKTtGmMKDZJjD9Oi+
+	 pkIC2Ub5uINhYp7N27YXS3MtVPn2lfeb6bUArRfW1pR+l0/g3UI+UKbodoubFHdYJd
+	 uCLqVTxT/2ZUzWHbZpsffXcIiRHfFGPkLaq/WukCsLFBtqfC/1jLrkdnSucx7W+6Xt
+	 +8RHcpBDa2cownZYwQP+9CqmbTuaJtcqAkyAFqEWKdw0K3VADVqJOSXDd6Jg6bAxsH
+	 l3c7SMtzsOzMA==
+Date: Thu, 16 Jul 2026 15:22:41 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
+	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
+	Ian Ray <ian.ray@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code creating
+ the connector to a subfunction
+Message-ID: <20260716-stoic-muskox-from-asgard-c12b65@houat>
+References: <DJ735MTNMYD1.3LPNV404V8PIU@bootlin.com>
+ <20260624-proud-unbiased-pony-ecc3c3@houat>
+ <DJHEAWSEZR79.19UFIKS8QJBQ7@bootlin.com>
+ <20260626-polite-hairy-perch-25e1aa@houat>
+ <DJJ1MPCEJGZD.UZM9183V6ZE5@bootlin.com>
+ <20260626-classy-nightingale-of-romance-1cacad@houat>
+ <DJJ4X22CJ3FG.5EYF84LVRNOG@bootlin.com>
+ <20260707-warping-goshawk-of-swiftness-beea4a@penduick>
+ <20260707123205.GB211515@killaraus.ideasonboard.com>
+ <DJZUXUBO8DI4.2J2NI3S0KYNUE@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="hy4gwehtz7opgsid"
+Content-Disposition: inline
+In-Reply-To: <DJZUXUBO8DI4.2J2NI3S0KYNUE@bootlin.com>
 
-The i2c subsystem currently blocks during adapter deregistration
-whenever there are consumers holding a reference.
 
-Switch to using of_get_i2c_adapter_by_node() which also takes a
-reference to the adapter module so that an attempt to unload the module
-while in use fails gracefully instead of blocking uninterruptibly.
+--hy4gwehtz7opgsid
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code creating
+ the connector to a subfunction
+MIME-Version: 1.0
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/gpu/drm/imx/ipuv3/imx-tve.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+On Thu, Jul 16, 2026 at 10:37:24AM +0200, Luca Ceresoli wrote:
+> >> > Now if the bridges start doing it themselves we should go back to
+> >> > those encoder drivers and ditch all the drm_bridge_connector from
+> >> > there?
+> >> >
+> >> > I must be missing something. Can you elaborate on this?
+> >>
+> >> drm_bridge_connectors bring together a (complete) bridge chain and a
+> >> connector. If you don't have either anymore, then we shouldn't keep it
+> >> around.
+> >>
+> >> What I was suggesting before was only a suggestion. I guess we could
+> >> also make the encoder own the hotplug handling code and create the
+> >> drm_bridge_connector when the chain is complete, and remove it when it=
+'s
+> >> no longer the case.
+> >
+> > That's an interesting option. We don't have to keep drm_bridge_connector
+> > in its current form, but I don't think we should go back to individual
+> > bridge driver creating connectors, especially now that we have bridge
+> > chains where the connector ops are implemented collectively by multiple
+> > bridges.
+>=20
+> I definitely agree we don't want to add burden back on the encoder.
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/imx-tve.c b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
-index e861b8b9d8fa..389f45d54faa 100644
---- a/drivers/gpu/drm/imx/ipuv3/imx-tve.c
-+++ b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
-@@ -528,11 +528,11 @@ static const struct component_ops imx_tve_ops = {
- 	.bind	= imx_tve_bind,
- };
- 
--static void imx_tve_put_device(void *_dev)
-+static void imx_tve_put_adapter(void *_adap)
- {
--	struct device *dev = _dev;
-+	struct i2c_adapter *adap = _adap;
- 
--	put_device(dev);
-+	i2c_put_adapter(adap);
- }
- 
- static int imx_tve_probe(struct platform_device *pdev)
-@@ -554,11 +554,11 @@ static int imx_tve_probe(struct platform_device *pdev)
- 
- 	ddc_node = of_parse_phandle(np, "ddc-i2c-bus", 0);
- 	if (ddc_node) {
--		tve->ddc = of_find_i2c_adapter_by_node(ddc_node);
-+		tve->ddc = of_get_i2c_adapter_by_node(ddc_node);
- 		of_node_put(ddc_node);
- 		if (tve->ddc) {
--			ret = devm_add_action_or_reset(dev, imx_tve_put_device,
--						       &tve->ddc->dev);
-+			ret = devm_add_action_or_reset(dev, imx_tve_put_adapter,
-+						       tve->ddc);
- 			if (ret)
- 				return ret;
- 		}
--- 
-2.54.0
+I don't think Laurent mentioned the encoder anywhere.
 
+> >> We can discuss alternatives too. But either way, we shouldn't have it
+> >> stick around.
+>=20
+> Bottom line, I roughly see three ideas mentioned:
+>=20
+>  1. (this series) extend the drm_bridge_connector to create the
+>     drm_connector based on bridge hotplug events [+rename it]
+>  2. - keep the drm_bridge_connector (mostly) as is
+>     - let each encoder driver add/remove it based on bridge hotplug events
+>     =3D> more burden on encoder drivers -> no
+
+Can you motivate that with *any* reason? Because I really feel like it's
+the best solution going forward.
+
+Maxime
+
+--hy4gwehtz7opgsid
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaljbHAAKCRAnX84Zoj2+
+dqTdAX929rSvBRbObFUgBFSbAjeGJKAihEQm5mwvUemnQR8RPQTHUpIFoxoU64cT
++ncZYoIBf2oprQXmliswkjFLbOXkrIghOFzxcuJlTTV7xnm4UrAXDjJgcRCFFbs8
+Equ80zFtIg==
+=nsi0
+-----END PGP SIGNATURE-----
+
+--hy4gwehtz7opgsid--
