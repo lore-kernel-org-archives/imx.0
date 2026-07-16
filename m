@@ -1,176 +1,132 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013033.outbound.protection.outlook.com [40.107.162.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCA942E8EE
-	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 14:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784212331; cv=fail; b=fgtf7r6mo/+BTKr923aJKHqvXz/t5HlK0qyoUU2k+a5kv7W0eRgtef1IDjtH83N44tvw1LiZOP4ppUoAXPBbd/zruy21BX7ZoRsSJ+aJhjJo+tFTb6569qGujR4vo9CvkcMdsuznNeFbVJlLNtNzmE7EmnCHHZJiIvL6G6Nt6PI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784212331; c=relaxed/simple;
-	bh=uhjIUhlgrXMC02J/978c7UTswK+u6dwuURC1PbvQD5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WlOo2YQtl2TtYSUvb8CZMPuhwWyFr/6qgb8wrpXyoIwfRchN0XWUZc8zNZ5S2QRmx62ZaVX27R/p+nwYV8AfnSxXmI0o5MsMpWamLPMKLA1hozBgOB0wvFSzZdq5FcpoJ8HwfZhy2ZlFgTbXP1ixIefDIpyn/UALUUom+74/MoY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Ux+S5Dto; arc=fail smtp.client-ip=40.107.162.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E193B7B76
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 14:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784212613; cv=none; b=Q4ei3E4DuhhtE06/2KJ1G2dTguy03ao0bV03a4l8n/KHtMh5988SXy0XmyRa38afN3nzqNFzQpfF/pQ8qDgOGDycpyi/dldJKJcFK1KVoshTyDVGzX7MBYNZkys+YTzTpjq45lt3xDnOvx9Ho65SXa3nrlBT34yYHuH26XhHLJI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784212613; c=relaxed/simple;
+	bh=7PDQnVRz0xMvuNKzbSF900t2BnPCrRevWccLbmBb3/c=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=OqDjL+IT/GmsfG1CkkwWOrg8WSNwzPrwd+xHaXglj3tj+5OQ9HCb3WByhxb8YdngYea02jslINvo0a7+yxK75/R75ZEDiuF4JE5WknmDSDOxf1mQXC8I0cE5Md/6trAccxCzUStPsNukkrkEnOMTG6vEcI3WniwubZjz6+ZM7qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TojUgrUm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Ux+S5Dto"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HYwmYOzD86GCtyMNbud53g62XM+GM6/8P7x0JGto9WREDuOqOqGjVWrRh71lxuHkVU6ztmdNuq8pTiEw4Lwq8CbvTyGrXgWPCeB/WSqt6JudVLdGGjhKOC/vs57/BprlSXAbceUotI4xe/f6gZge8M6hAbLFBuAQ9y3CZaBc4jfDJcwZyqW2wNsbvttsnqEVWRRm07ubzE7Ed7zvncdn5LbYQOcKC1lLA4T9SODI/oN+/ciuNBL7PWegtrYSYzujCxm8M+hSW1M5XhlH2zuVjfDCxb5B/wCr3PmBU2uCrZ3oHZi6Rn8o3gvx3bn2p4g+h7Usrg07S99kEL1SU6TUpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4HW8V3I+UGmB0Vuvp5Lv2WM4xuUM+UbgCUuQhoBp6xg=;
- b=jF/FgUZ9dHKpYM/FkhQiIJ47a18XkQbOTA3JNSzFwqVfajT5zofVbI7OxGGOiycA10AbI2thZ7Kkc8ToQhQjtCI3+bJ3dRxq6xBiT7y2zH6SK1ilb5A4dy3lwioqmobCajNjU9UQJcNTvNnnmXdmeIbDktEynBZUTOOMI3GDEKwKGNYAP6SlfOTuLs7ew8Dk0PoGpFFm80MicRPA1WCwrVM9Uf5/MlDaGyf0yhHCDdt6HyXXIqRn/KXs/eCoYWk76PLS+nvgG2x7NiMQUTwv48TZK6y5FnbTgKihnVHarHlg9N00AgxV26sgHq45xrMXwEjuePanMa4LKhob3iqeKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4HW8V3I+UGmB0Vuvp5Lv2WM4xuUM+UbgCUuQhoBp6xg=;
- b=Ux+S5DtoUm0zTdyTH+Xok9UJbfJ2iJCCF/qh07s14MFGBPKutvO4u2jm4xMMCgiZX9BetUtHInzJ9c8gTY+qvdx3iD6+vEmOmBTRcSQGyPY718htJVhHP1EQW116oTloefaTmRhhbWpOkIX2ja+yNhHBiiT4SVTDe0uDfnDqc3YXHGN0sOMahJFL32TGCvQvUf8r3u725y5n5O+q8wQidao4xWo55bzqhSzk1txy+fibvyBMu0xwN9NV1aRbFbB3GevidpbyeLQeSDFxypDsozdXOzpRw/Lxn8DueBZUV4EQWkPGl5m4ZO3tBLAWJR/0Ar8a9a4KwkY6LvEtfXrFmg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DBBPR04MB7961.eurprd04.prod.outlook.com (2603:10a6:10:1ee::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Thu, 16 Jul
- 2026 14:32:02 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0223.011; Thu, 16 Jul 2026
- 14:32:02 +0000
-Date: Thu, 16 Jul 2026 09:31:53 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Joy Zou <joy.zou@oss.nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Ye Li <ye.li@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/3] arm64: dts: imx8mq-evk: add regulator-off-in-suspend
- for VGEN1/VGEN6
-Message-ID: <aljrWQc4HEpOSOKu@SMW015318>
-References: <20260716-b4-regulator-pf01-v1-0-8c1519d54bd4@oss.nxp.com>
- <20260716-b4-regulator-pf01-v1-3-8c1519d54bd4@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260716-b4-regulator-pf01-v1-3-8c1519d54bd4@oss.nxp.com>
-X-ClientProxiedBy: SA1PR02CA0017.namprd02.prod.outlook.com
- (2603:10b6:806:2cf::23) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TojUgrUm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5741F000E9;
+	Thu, 16 Jul 2026 14:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784212611;
+	bh=cc/rUnB2f0Hj2xStKlqesGJ5W+XViSIpkOWjpFEnuzM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=TojUgrUmMMLlz8B5jvLBTSRtycWn5bZw4r5cx+Rc/j/nrp4fXHA/jZSuoyVGitBT/
+	 QlkHcc+4MmmGJlqWdoawZ/QlY35mNrfekvM5w/bSFXMUCNoG9tNkZdtCQ0JdzuRMD3
+	 kRGQbo2heD/o5VavCU46V0bXlb8YauCkyeZzPZ7O16FlmTXGydftou75DhOajh88Df
+	 sODuxn5wN5wuxiSNFozG/8+VIjPf81XRHMfbehVK5B0BKZhS66oBmezI6/z8dDbMvL
+	 qlNkVXp6JywAIqmQtjZJeKmGhSio3hVH3ohH94VrtlxLybDHY3hC8X2FWocgttC/Jg
+	 pnRw9ydx8VRXg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 4/4] firmware: meson: pass a const buffer to
+ meson_sm_call_write()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Link Mauve" <linkmauve@linkmauve.fr>
+Cc: neil.armstrong@linaro.org, Frank.Li@kernel.org, imx@lists.linux.dev, ojeda@kernel.org, linux-amlogic@lists.infradead.org
+In-Reply-To: <20260716142415.28718-5-linkmauve@linkmauve.fr>
+References: <20260716142415.28718-1-linkmauve@linkmauve.fr>
+ <20260716142415.28718-5-linkmauve@linkmauve.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 16 Jul 2026 14:36:51 +0000
+Message-Id: <20260716143651.6A5741F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBBPR04MB7961:EE_
-X-MS-Office365-Filtering-Correlation-Id: 318f6202-b73a-4a3b-8cde-08dee3470080
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|19092799006|1800799024|366016|56012099006|10067099003|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	tblAqDjFAn8keYKFkn3jodmgC3aB8AsoUkpkwgklQtcXxmyJncmDk6slENBlXfOufLiH8Hu2nWwmReHeBEoPNzporIVX5lM7kGah61pKHjToKDxaatr5VJkrY3TLnFSy5L/C2jzHHEcoHcoJ+91/TNoxTfvgAgc8BJyiz7P3bg3l6KhhKMVpz+x1PMywPb6lsp4zCwryF85H8x6+S5q+RM4Moez492lTVJlUz286EDrNAr82NQhCBnAs0o5wAO8CsRdNdAYbGcUkI4O7E1ll197aZZpr3L3WZTlJQcKyQmERIwvUSEPc+EhUNI+tfIWGLIGU9NvlfGy/H6bnAqyZWndcOzDvodqrJlqk8srz/b3K9gRLxJcrwZ4UwjxvmUdgGPLBNDTZ7EXNoYiSh76YKc3IMM0DAjvGWhGoxTrB7LGhoB6DHMI++lWQHI3PuMbQCCpWGT93WZk9XwpGa+FqceZEAJCWjSdfYqRenoaR/zQGXbFWQtytMt96mag+SnjRtKJs1O+C3CU2hpOLOQVO/NTR2Hgi0oaCiITnVHVoICwx+vMSY7LLcJEUePeqjbcPtni2DskVjwOM7/fTD7DrWAZ5qHSv1cvjXbJR7utUQPljh2FsyOa9n5r5FwQXs/zb55uTsLvSdkn1N6b9bTAXqcZ3KcatA/LEsHRIYbDqo/4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(19092799006)(1800799024)(366016)(56012099006)(10067099003)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YwWQTpFM2DIvLciia824QM7XcteydB9+T07nrmElKsBBCORYve/+pyeewRGi?=
- =?us-ascii?Q?QMXHkQQvdqz02UzwLRX8B49PDZ/5uUQLGUnR6aaaWHCohkV5BxtlQ2WY/GNo?=
- =?us-ascii?Q?7qfqqbqJOk1xRwxDe721psbSxi8OZ0XyVuGEoc+Jot+7iHPX3vQQkeRAD2Hz?=
- =?us-ascii?Q?DngWGAcplQ8iKZX9ZS6mNx0r03/XJycLB11NZmB67qR0PJ/kRT+CbL7z2J+2?=
- =?us-ascii?Q?/WITA/7foxU9RjBpyUjlt1Ym6nNzXybmblU0Z+mj5NHpS5ViGcZ6stqJ+07x?=
- =?us-ascii?Q?kRNoNJtOxh1qesiUlX9ZMoR6VYAsR71qhePJhRtw6/33ChMRBeBnevxqn5Mq?=
- =?us-ascii?Q?jQ0GaiVvlcQx5lYTYEqQieNq8+CGOwgMrnj5mLmKKgst8wyWedXcymyuJNfm?=
- =?us-ascii?Q?cuq7BcIQdUG3D6BD6EMtMnyHnSt09afbXkEqd8L327YN9pE2JbLtNUv77qFk?=
- =?us-ascii?Q?OW5Pjs5p5I+toKGGYH5aR6XOBBPXs9h4pU+8NK6aiK9TiHQQZWejyCBLIV/l?=
- =?us-ascii?Q?HTQLxU44eSCX4KfbWRgAbItjieOxQ4SikUk9TPN72kwJVe2Gpa2+j1ZNb9IK?=
- =?us-ascii?Q?cvv33DFFhJmmMeeWqYMkTWBdKqJN0pRtoc8jQxLWl93NB5EShKtyinFn8Y1t?=
- =?us-ascii?Q?HTB8QhkAJzBBQTchnGTGfOLCxaznsFrmQSyitj2nJ9M7SqQllnbxv1Xqy7w5?=
- =?us-ascii?Q?67QS1gU/XC9jWp93cbKYZO0f5S78+/lY5AytR1c+MhHjSyVduA0l+KIolzxx?=
- =?us-ascii?Q?dEaHwpGNxw6/rawPlE/mQ7i4cXVlhtkGlJ03Yj0Bnw7M5v4+KSkajPa+/0K8?=
- =?us-ascii?Q?3iHcOmOpNCXFQRVkz24ZZwuNlKCyHc5gvQPEd9iL1TmTNeLb11B5QsWMc9tJ?=
- =?us-ascii?Q?TOoNS9BU2rKDGnYgtUtvU+SC2g+ermj/IVE/OaRkm/83e4C8/F60eQ9KJM04?=
- =?us-ascii?Q?Jih+CT0CRQsKI3wpz9uA/DoT0e11CQ8PXoCr4irbFjaRCroU2QP9MHwQ21pq?=
- =?us-ascii?Q?l6v16C662n5Qt5RaFD1s13iHoLx7CSBAEIhikNboc6+BOThgk0Wap999EcBG?=
- =?us-ascii?Q?omnGXBsbvjZBD5twq56RnTBFkVlqMy/7hK9LDSvCHzvARGkhMmPuaIPJIkix?=
- =?us-ascii?Q?bwr4MZr7oe6UjjyZ1sU6fyG4Vn9zfN4RbsJ54ylB30zfiFpkXG2YEv+PZNFI?=
- =?us-ascii?Q?8ECxLCgptHzWjpYWTmGmGtB5duVjC8s3q766Ib0OIVSw9Ot3Z4rV0PZTQMYL?=
- =?us-ascii?Q?wLXZl8tlUhp2GytIMLswqWJVJqd50crxqkg+DH/DW3pFJ09aSHPRHyYImDIB?=
- =?us-ascii?Q?jXR1aZDlFDlKLpKyBe7RN6KnQkiALB6pWHk0OntV1Ye++YnT5j1elfiSAiXN?=
- =?us-ascii?Q?d3cO/MmNb5SFCPaOK9upZEu1Fi77YWY2UCI8bUybjvwBcuOK2MVtnrHzbyac?=
- =?us-ascii?Q?o/4um5BWNB3pgwAcWe2nDcHCntn2qQrMsESq0DFzMQn5ssNiruxhJvjPys18?=
- =?us-ascii?Q?w30iGEEvWGVFLqQ2D+fMD2ccPwpYAZrS1cXVIgzhF0z2fSVH6BhiFhND8AtX?=
- =?us-ascii?Q?UesORs72fcaCpcCcTwCJWLYyMzrELL3065Q2uUC8vSisqQlN8x2alO5hlqBe?=
- =?us-ascii?Q?ulBS5BFCcnSZMEFGZMsP2ubweHGi/euuMfikdE8MNdekRwo/Woq2aCinwZwI?=
- =?us-ascii?Q?scUp8wXnNrXzxZFQjkOIaUlI1spIENVTXyVd0KbKXd3KYrllPDd9FbqfbQqt?=
- =?us-ascii?Q?VJl5cmRYVAC7CVGEAtl1xVGRvIz8v6Bfi8nRxCUmZH6sgo/YWYwZ?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 318f6202-b73a-4a3b-8cde-08dee3470080
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 14:32:02.7487
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v74uJu8RqF69dMdPvw2/lEqC9tcNyisxi+OE9knqnOXloVkF7ZfuMm+liPnlbzc70DIgq9j6czGtPpcm/IgxsraYHMWYzZvpMKKf4x+SvkDektjovWOEXmPKoyysWKUA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7961
 
-On Thu, Jul 16, 2026 at 11:50:55AM +0800, Joy Zou wrote:
-> VGEN1 and VGEN6 have no consumers and are not always-on, causing the
-> regulator cleanup work to race with PM suspend.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-why cause race? You first patch set workqueue to system_freezable_wq
+Pre-existing issues:
+- [High] `meson_sm_call()` propagates SMC failures via its output parameter=
+ `*ret` but unconditionally returns 0 on success. Callers incorrectly check=
+ the return value instead of validating the output parameter, leading to si=
+lently ignored errors and state corruption.
+- [High] Missing mutual exclusion in `meson_sm_call_read` and `meson_sm_cal=
+l_write` when accessing the shared IO memory buffers `fw->sm_shmem_in_base`=
+ and `fw->sm_shmem_out_base`.
+--
 
-Frank
+--- Patch [4]: [PATCH v3 4/4] firmware: meson: pass a const buffer to meson=
+_sm_call_write() ---
+commit dafeddcc00e60d8baf4fc20e8f8f2f6286a33db3
+Author: Link Mauve <linkmauve@linkmauve.fr>
 
-> Mark them as
-> regulator-off-in-suspend to disable them properly during suspend and
-> reduce power consumption.
->
-> Signed-off-by: Joy Zou <joy.zou@oss.nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mq-evk.dts | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-> index 5ea04703ddd7..fc0303e44433 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-> @@ -299,6 +299,9 @@ vref_reg: vrefddr {
->  			vgen1_reg: vgen1 {
->  				regulator-min-microvolt = <800000>;
->  				regulator-max-microvolt = <1550000>;
-> +				regulator-state-mem {
-> +					regulator-off-in-suspend;
-> +				};
->  			};
->
->  			vgen2_reg: vgen2 {
-> @@ -328,6 +331,9 @@ vgen5_reg: vgen5 {
->  			vgen6_reg: vgen6 {
->  				regulator-min-microvolt = <1800000>;
->  				regulator-max-microvolt = <3300000>;
-> +				regulator-state-mem {
-> +					regulator-off-in-suspend;
-> +				};
->  			};
->  		};
->  	};
->
-> --
-> 2.34.1
->
->
+firmware: meson: pass a const buffer to meson_sm_call_write()
+
+This commit updates the meson_sm_call_write() signature to accept a
+const void *buffer instead of void *buffer. It also removes unnecessary
+casts to (u8 *) in meson_efuse_read() and meson_efuse_write() when
+passing the buffer to the SMC call functions.
+
+> diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/m=
+eson_sm.c
+> index ab9751a59b552..5d4da2e3c3a94 100644
+> --- a/drivers/firmware/meson/meson_sm.c
+> +++ b/drivers/firmware/meson/meson_sm.c
+> @@ -196,7 +196,7 @@ EXPORT_SYMBOL(meson_sm_call_read);
+>   *
+>   * Return:	size of sent data on success, a negative value on error
+>   */
+> -int meson_sm_call_write(struct meson_sm_firmware *fw, void *buffer,
+> +int meson_sm_call_write(struct meson_sm_firmware *fw, const void *buffer,
+>  			unsigned int size, unsigned int cmd_index, u32 arg0,
+>  			u32 arg1, u32 arg2, u32 arg3, u32 arg4)
+>  {
+
+[Severity: High]
+This is a pre-existing issue, but while reviewing this function, is there a
+missing lock when accessing shared IO memory?
+
+In meson_sm_call_write(), we copy data to shared IO memory and execute
+an SMC call:
+
+	memcpy(fw->sm_shmem_in_base, buffer, size);
+
+	if (meson_sm_call(fw, cmd_index, &written, arg0, arg1, arg2, arg3, arg4) <=
+ 0)
+
+If multiple threads call meson_sm_call_write() or meson_sm_call_read()
+concurrently, could they clobber the shared IO memory buffers before the
+Secure Monitor executes the command? Access to fw->sm_shmem_in_base and
+fw->sm_shmem_out_base does not appear to be serialized with a mutex.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does meson_sm_call() mask
+SMC execution failures?
+
+Looking at meson_sm_call_write(), it checks the return value:
+
+	if (meson_sm_call(fw, cmd_index, &written, arg0, arg1, arg2, arg3, arg4) <=
+ 0)
+		return -EINVAL;
+
+However, meson_sm_call() unconditionally returns 0:
+
+drivers/firmware/meson/meson_sm.c:meson_sm_call()
+	lret =3D __meson_sm_call(cmd, arg0, arg1, arg2, arg3, arg4);
+
+	if (ret)
+		*ret =3D lret;
+
+	return 0;
+
+Because it always returns 0, callers checking the return value instead of
+the output parameter will silently ignore errors. Could this cause drivers
+like meson-efuse or amlogic_thermal to treat error codes as valid data and
+corrupt state?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716142415.2871=
+8-1-linkmauve@linkmauve.fr?part=3D4
