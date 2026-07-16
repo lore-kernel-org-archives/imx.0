@@ -1,270 +1,238 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011066.outbound.protection.outlook.com [40.107.130.66])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCAB412BF5
-	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 11:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784201668; cv=fail; b=A3s42IJrDXuSq7RFInR8N99zYqjM+pY1iJTJsMYkGkxPXJ1n3IP+rEj7RzXRb85tjnYkFy2YvIUpkn4Uq2GNgovRgNwLI9kux2HlxjjxwQ+bP+ofHREhczjC75QAn6OWRXT3xE6EYxFeUmPkDnqM57lv6rZzg8s/BnDtZFMtEig=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784201668; c=relaxed/simple;
-	bh=EpLA/Ny8Qnz5tgfD5e5/IeD4YzXqll3gRl4CWcYRkdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kKMCZU7lmP90vYMNyCZsfqYOUvCund6F4hKwJUVk+KW/nOBdb7sCMvbV2cdWZIBo7OJvf34DZkxkS9Q+gQIQ2cjVjMB9WJ+g9EQv/Cv3wQnMxsk/REhfEl2euzoUUyKoYp67rxNhTx6IgMAItYkwcagIdUObI+U+/FaMQ6oYqvs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=aD4vap3u; arc=fail smtp.client-ip=40.107.130.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6022F41D4F2
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 11:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784202473; cv=none; b=DUzlnsZP8j2+mo1N0ssLp1+cKYd1eubgvH62Vq/E/oUcWwpma7mqOUjQQa0pjCbW2kaIKTFL44rLgHqdYXTxGjrMCTB996Rr3yLcxj+WqCrnm8tIv57uouFpE593CYdC4ZJ+plpa+ojxGRql1vMhVsR677c12VTrzsCMqiA8FPc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784202473; c=relaxed/simple;
+	bh=WFGxEqj5teLAtdm6TUJPPXIunLCbSK9EmD6oiIoa/6Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KXzhapOVjpzQPriR+4T3tMGPinx5XBVAI58mUe8ZGDhZlJcfTaSq01i8Qnjf4iKuzJokJW1rfMOVVyJJAsIrV6Etxyzk7/ieP8Df0q0SZHGHP9l5hYb5iKInUk7XhIfLUkBTU68IU650vklsux8RKFBiSlkBmYOIgJNr/ytJbck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K1ltrENi; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="aD4vap3u"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DtnVAGCMyEPAf8dSdTZ3m9SIHAtCKK1J20JDcK1poYCDYlLbj6GonYPK1NAQy66RAbpk38K1ejHcY/jxCDJjeZfE4nw/29K4o6Ty40VnkSMgHIusFgh5Gbjt9M0nO7w3L51Cpb1VGCeiLskfKdTI9sV3j9QEu3JBo2/1Wf10iqytO7bzKBI0j0J8QK37/v10Qiivth9T99aQUYCeUqTxulunUtRwbW8OI2myb+RKB2H3jid6Q40bou9LmSwcXFBttnNA0XJS0UvhY15KrlAarpvdqrOpkgjX8NsOHHmpJPTjhfj6E8D8XYW83gL3WXXd2kEIDTyB4Y4CuAhy2qFaeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gxJwoKSLGMvqhFD29ObAKWXCdqdVk3mvFVopVvt1ThM=;
- b=FDhvkInR8aMSttmrdRPlOSuO2HRZba3x3talX7k+kgmbAxu0pGjlgGOujNP5NA9xANqut8LLsCYy85Bzd9hsXANK/7OaKGo2f2PYlh9UhfWC8sM1QgTshH/APaQlOwHk856lsZoqMvH7dM8JtxQlIEBb+IgXvU8a+f4RXKDIFZRnUr6B8pQh+UoBRqCW9MTz4dWBLTm1Ex0v7HkLf+TSbRWgeugqYFoIshGJiOM251ZkpWoKl+TcZikmEwi0VSQ0vEhnLRSoo/iD7FGi8ELqoQwuAxHDCyjcYdDaLJ319yA4F/6sBh8zA+hQbIv7S7MYyqgRKt4KAR4+zYaiKXsgyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gxJwoKSLGMvqhFD29ObAKWXCdqdVk3mvFVopVvt1ThM=;
- b=aD4vap3uCLAyDbNkDPiFdkdncLaAgBCIHUvWPPagfK6zLVtbocI9XMzShuaUWQ+4QUX0R7Qea0QZN4v8akarBYrUE38Q8XqecVOp0+780rgeMKRuMw6jOtrCtvn4v9wlB76fKyQHz24v+DYlJ0WXxN1FbXWGbz9iZkbPkPaWSGKQnFi/lGjuWCq5PCK57UhukAdBvP9UqjGV6vtzofgJRlOX/rCDCxJfoosGFApKd6svERW9evGqPoZEEKc0qxN+8HhYghXv32iAm/m3H6mrjt2oVRjJXJX92yq1fB9uMcqV1nC6DjrZt7P9m/UOAPX7TYISAapnADaBFYdKeAFMyw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
- by VI2PR04MB10979.eurprd04.prod.outlook.com (2603:10a6:800:277::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.11; Thu, 16 Jul
- 2026 11:34:23 +0000
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0223.011; Thu, 16 Jul 2026
- 11:34:22 +0000
-Date: Thu, 16 Jul 2026 19:32:59 +0800
-From: Xu Yang <xu.yang_2@oss.nxp.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jun Li <jun.li@nxp.com>, linux-phy@lists.infradead.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Xu Yang <xu.yang_2@nxp.com>
-Subject: Re: [PATCH v6 3/6] phy: fsl-imx8mq-usb: add runtime PM support
-Message-ID: <omitpksxmr657vlmjs3ybzhiq6zj4znrsp2tereofqees27z36@m3lhmrbufqay>
-References: <20260715-imx8mp-usb-phy-improvement-v6-0-00d95e270e4c@nxp.com>
- <20260715-imx8mp-usb-phy-improvement-v6-3-00d95e270e4c@nxp.com>
- <alenBaMOTSPo7DJV@SMW015318>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alenBaMOTSPo7DJV@SMW015318>
-X-ClientProxiedBy: FR4P281CA0302.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f6::8) To PAXPR04MB9422.eurprd04.prod.outlook.com
- (2603:10a6:102:2b4::21)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K1ltrENi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784202470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UAIX8vflpEyEoElDzYTggPPmyd+hUNgJkFp1xG3W/a0=;
+	b=K1ltrENi5kDUlSCZlwaz+nD16cj12kkLkqWrOpIYJ7BXPxF89xjYmRhEDfg3Uknh4/L+5t
+	7k4TBGkYd29RpKQhC/AO6ZoPRoB53hgIFb5uWNJALEZTHvX/y/1gbQCEsXnQMc4+YHnGFg
+	/4gFQxIy5Qmt/kHTqKKPi9vMayomi9k=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-691-oMdu-NhoPKq_1KYRsXpgBg-1; Thu, 16 Jul 2026 07:47:49 -0400
+X-MC-Unique: oMdu-NhoPKq_1KYRsXpgBg-1
+X-Mimecast-MFC-AGG-ID: oMdu-NhoPKq_1KYRsXpgBg_1784202469
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-81e8a76a273so26816807b3.1
+        for <imx@lists.linux.dev>; Thu, 16 Jul 2026 04:47:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784202469; x=1784807269;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UAIX8vflpEyEoElDzYTggPPmyd+hUNgJkFp1xG3W/a0=;
+        b=KZfmHEtUdMLXbb0qMgHd2LXm1aYvrXhHuILvHQuhZTjrGXN716c7MA4zFKSLfn/CHf
+         gM47gx+W8v71CjZA3wSwJjVrBujdgjWTtKKtR9/xQS8lK2EyxcTQk8zH7TyC3yf8KOZh
+         vxX/bsRr3UU7M0ONg7HUNAOfz5s23QPfKBlxhM1LRtgBRDIBeN/KyxNDVMD54YR7n9NU
+         Ah5EBnoHZnCCMoRo2cpHCX0HscTft+cm9PDXnqFswGuDKWhcnR3i25wYiqCNhg22D8UD
+         XGrmyGBPOm8BpYdNaxqj94Wan/NNJta6Vp1fIqyzng1/kttbXQQ8AR56waYIbJq1ULqX
+         T/4g==
+X-Forwarded-Encrypted: i=1; AHgh+RqpzxiTHqB4vYYh99h9pj7Q+O3Jmdg+HnBYYBzgYS2qO4EXTS1cL9wAj1UPn/fCj30D9RA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzleKkfKhcL/eaaiLHRzEoHqb9LgoLUu/sDDTzyIAHR2UFgoF4w
+	A1NhVXdYlSlet0OyxW6QctnXFC6CTfR742W/ob54IpA2uY6+z3ApmqtpS/LE28VV1EJ6BKqR5Nt
+	V8adWyJjgMOKSy38jvB1wDBnEVh7CUakIlTc3d9D5VoAcmILhets6pP/Ic7E53WGAb3Uvb/+lTO
+	uFdlXXBQ4R5qkwb8hdSjF+Smd2BfN8
+X-Gm-Gg: AfdE7cl6hDPISwNQtMZv26n5YyompR3+eTmBeRJmkJv13WuZW5/Hgj4X+IP3TmZjfZK
+	1YHGQbN/XERk3Que4TFcaxPfoGTAuZktbO8dIMiQ3pXTp/+/ZNS4L2A2SyQYI09rUgQ5DBEVHLy
+	c510QFwN0G9kb8zE29UoTnudAPsus6wpjKDbwbWWcTfmFJmxCyFCCmrG6i
+X-Received: by 2002:a05:690c:6a89:b0:81e:c898:bc51 with SMTP id 00721157ae682-81ecfb77678mr53197317b3.70.1784202468590;
+        Thu, 16 Jul 2026 04:47:48 -0700 (PDT)
+X-Received: by 2002:a05:690c:6a89:b0:81e:c898:bc51 with SMTP id
+ 00721157ae682-81ecfb77678mr53196867b3.70.1784202468141; Thu, 16 Jul 2026
+ 04:47:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|VI2PR04MB10979:EE_
-X-MS-Office365-Filtering-Correlation-Id: 773c5768-3876-4a43-4e6e-08dee32e2ed9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|19092799006|22082099003|18002099003|3023799007|56012099006|11063799006|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	s8ojrW1yYH+wtFH3G1RJ2BipEvcTeYh0QygMeN46mNtKwwpFObZSMbDmd6NEkLLETxC/Eq6JHFr5GFxFggmmDJPz5SI1WdRKa4unvgnVnbBNm2SVUP3CBGxKy+a7Y/Bu0zFqBLBanxVbOY8azzXFshJCK3wh961iIB9u3+Xcg8wf0SBxme6oQ2152lzeg22oUPt496hEXz+pTa9S6q+AdCSpfjYKaODoU/XbLcSc37UxRY7IZhVeDBSaGRwlSuGPl4EcuPjAl/SSOU1UwxkwRbLvZWEhCrstzWkXckPd9wanIxVGEpvkeaQVb2yN6CA9p1t8puepCkuVd0ZL6JVPHiVs0wuUSkF5pGm8zFmjqzJcNu4bfUqpFBMzsBG0hhWM+ovzM4E/4soIb8KYifgTZvpMXCWJxG1KW0um7utHao9+kdyloWmfw/Eskg/KG4KRpf2juh2VlPj78+IK0CJ0H6aA/oyouTFPwF0Cdy/NJhWQzcKe3UHd3gDPA6o20xhzJwXlQg6xbMY7CQjtNZOSv9W1auNj8jtooL376pkpDXM4ktZshSkY1mvNR8NDZKmjKSJTdN6d6UBO8rCyy5csp7AT/BUuR9frXOMerZJGp7b2nrwZjUZ72rnZGS90AMcxH/IkIGuuI0vaHzXgzghvxOFqgz3mOpOI1q/O5HHQuLw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(19092799006)(22082099003)(18002099003)(3023799007)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MwUiQZ9BgmaaM4HUIQBcjwXBc9EptPeh+32lki+CgI0hB3szRNGwmOGAK+2A?=
- =?us-ascii?Q?1GIloW15H+JXBtiXhoxcT2cag6EadthwoeTyrKQ3eFQhiEnx7ZxhejqMlwuA?=
- =?us-ascii?Q?aSys5PvD1Xd+hI1iyFdQJAAO80wW3QgyEefqO7KVJa79G80EQA8Q0/b9rIf6?=
- =?us-ascii?Q?+ApPG4oBsLU1R3I8lCQWjgSZMi9ww+DL58KdiQFqNvSLS2d8UDXc0F9xrvxn?=
- =?us-ascii?Q?r19OTVZ43KFVWuX+6Nkk3hWohV1FoYL+xWngHB0KfONlpfBSHrxHqjR+ABup?=
- =?us-ascii?Q?J51f3cBVbCDRD7AlEU6W8wVLlT4xC0sxeoW1Fda6lmBXTITZZbyD+05mU+K9?=
- =?us-ascii?Q?QLaqZ6cmvj7Z4DmPBF3DPLTuHhZcTJ98w2CG05miOvJbeghi6LLWOGTJMfqq?=
- =?us-ascii?Q?4UFU0GowezoYGPGD5DIX+Imgrb3hLi8eaDwR2QfSUtiU7lqY2E/atuUjqUku?=
- =?us-ascii?Q?EliJkpr7iOKzc6JMf4MINEi9kmeESOND4+dFMrbqC6WnUKT7TLkZZAraphRx?=
- =?us-ascii?Q?sOTQiVuQ0MoUmOF69CIFKIvEC3w/shX/EOI+aezAjUTqJFG7pv5swtxW78t/?=
- =?us-ascii?Q?hcMhlxK+Cs7TVhcNjxeqCqjg1wCIL5mmrzro7/TgXuqiYo0P1Pjl9Adtz8p4?=
- =?us-ascii?Q?4jNdrjr/Q9rDbxLPRrmrIOCxk1d+cTNmWRV0JgC1ZHctETfGhE8zlVdztxPk?=
- =?us-ascii?Q?ec6ssG79d7xpSYOCZSY8qvoECiLA2G+jgcOT6971MPRvdxGvLd8JPGG8iXHs?=
- =?us-ascii?Q?J26m9nh2YiZZRVaWuJoGjHIbrHDKE5jU7cXQP2g+3RF6+JD1+pWsk/YMHdBs?=
- =?us-ascii?Q?NNpS74gt8r84JCfp0laccfIYajNeJtge0a7vhOBZs+1BMTlhpJTySU9nMepT?=
- =?us-ascii?Q?QsgkF8TuYMMJpvZCDSv6Q8xCO+hlo+i59oPX4oYaUa5oldzwh0CdBsgy8etj?=
- =?us-ascii?Q?/SFsv0b7jOkMSb23ZFQQC5raejGfeUAc8zdsNAXSdWBF50QwU3l/NP2fIi2p?=
- =?us-ascii?Q?FzEnRoSibSMbQ/SWGtGl4squv8P09+QZkbItbcweaWWfqmjJDU5hR2UuHLUc?=
- =?us-ascii?Q?Lr/DSoxvMN3V4gSFYTaaTZSK9C4WLSi5CR2MuVS1vJEa6BNvh9+GyN9Iqnkt?=
- =?us-ascii?Q?oAg+ONzvxyvHn0lBWXFw7J2Da3sgyWCwwVTQHphReYjUGz050HCZWVhpz1hu?=
- =?us-ascii?Q?sN1LQ4Kjif+oO0zanopvTuUQz4wx+i9j+kuUcBgdH0WtZu1dBTUmn3JceQFQ?=
- =?us-ascii?Q?Rc/CbZ1o0qCxUVrKWuK58Jo7Ztf0Llf1HadpJAW0fJ03CwllEbFSrMa5iEyg?=
- =?us-ascii?Q?2Aaynlk567MlOSzlwC+ZRT3BPv0QyPv1/Q37sfCOgNSG8olMDCngBFNKsq/D?=
- =?us-ascii?Q?MiM5gsdImK6rF5CAIdMXf2xypfAl4jMH/ErVDAtk5hjNgBZDfepa1vp/CPpI?=
- =?us-ascii?Q?N5NxEq6Oyc2pmaZCp+w8n6100mm0IiXTxUfxIgZNZaLA01sxX1uQ2akMwhB5?=
- =?us-ascii?Q?kHMTyofDOlks4JBC3XFGQqmvXZczeqlxExxzLBCRdzE/jmOspz9+7dVFhYrb?=
- =?us-ascii?Q?tp9KTWbQa0OrRdy5R9wIcIOxB8KxEvkG1CbvpIZZl9n8YV81L2V3JZgDVe5R?=
- =?us-ascii?Q?yVdQQ0P4QZYFX3E5DElTjKAtp59qIWbt8tF7vsNRClpZiI40AmCkHLC3G2ru?=
- =?us-ascii?Q?hJH4MvNHyprFYbj5Sxr9RGqU7eGdNEuLfzhvBd95F26qxKgihpliv3ULdBYO?=
- =?us-ascii?Q?lz2Wj+VwOGKyinXmGdmyT2VxH/3fv0lQ0JLE2jVwLrjJ+bX1BQ1R?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 773c5768-3876-4a43-4e6e-08dee32e2ed9
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 11:34:22.8435
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XILQFTAOskcyR8OZcRRjJ19vY6IKUq5Qu+xYuz5KN8H8qwV6BgK6ZgAP78eKrRS1C7FyRJoXHpz9JVWzDrUKxUOwegCdSOdHOAS41+7LybS3tWMtFdFMYqP2xGqKlgHt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10979
+References: <20260713-drm_refcount_wiring-v2-0-d3bb61f4bd4d@redhat.com>
+ <20260713-drm_refcount_wiring-v2-3-d3bb61f4bd4d@redhat.com> <hm3gW14-QtmZmT6DKePecw@nvidia.com>
+In-Reply-To: <hm3gW14-QtmZmT6DKePecw@nvidia.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Thu, 16 Jul 2026 13:47:37 +0200
+X-Gm-Features: AUfX_mzB2JkO-VIACloxhbX7HbPpRRw8TGetupyA1jCWwziSfKUaXthnbS4hOYU
+Message-ID: <CADSE00Lsr9gsW6HEFrrc6Aq+ecN5mN9Kev_mf5XKjKjAk44-GA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] drm/panel: of_drm_find_panel() return a counted reference
+To: Mikko Perttunen <mperttunen@nvidia.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
+	Linus Walleij <linusw@kernel.org>, Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, Sandy Huang <hjc@rock-chips.com>, 
+	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Andy Yan <andy.yan@rock-chips.com>, Yannick Fertre <yannick.fertre@foss.st.com>, 
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+	Philippe Cornu <philippe.cornu@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	Samuel Holland <samuel@sholland.org>, Jyri Sarha <jyri.sarha@iki.fi>, 
+	Jingoo Han <jingoohan1@gmail.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Alison Wang <alison.wang@nxp.com>, Paul Kocialkowski <paulk@sys-base.io>, 
+	Alain Volmat <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-sunxi@lists.linux.dev, linux-samsung-soc@vger.kernel.org, 
+	linux-tegra@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: LUqdESr9HGBRbwJGit4diZHHmp-rs9UtxKSiEDUadik_1784202469
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 15, 2026 at 10:28:05AM -0500, Frank Li wrote:
-> On Wed, Jul 15, 2026 at 07:33:58PM +0800, Xu Yang wrote:
-> > From: Xu Yang <xu.yang_2@nxp.com>
+On Wed, Jul 15, 2026 at 9:14=E2=80=AFAM Mikko Perttunen <mperttunen@nvidia.=
+com> wrote:
+>
+> On Monday, July 13, 2026 8:53=E2=80=AFPM Albert Esteve wrote:
+> > Callers of of_drm_find_panel() receive a pointer with no reference
+> > held, creating a window where the panel device can be unregistered
+> > and freed between the lookup and first use (e.g., drm_panel_prepare()).
 > >
-> > Add runtime PM to ensure the PHY is properly powered and clocked during
-> > register access, preventing potential system hangs.
+> > Fix the lookup function by acquiring a reference with drm_panel_get()
+> > before returning, under panel_lock. Callers are now responsible for
+> > calling drm_panel_put() when they no longer need the pointer.
 > >
-> > It guards register access in the following scenarios:
-> > - PHY operations: init() and power_on/off() callbacks are guarded by
-> >   phy core
-> > - Type-C orientation switching when PHY/Controller are suspended which
-> >   needs explicitly care
-> > - Future PHY control port register regmap debugfs access
+> > For bridge drivers that immediately wrap the panel in a panel_bridge
+> > (which acquires its own reference), release the lookup reference right
+> > after the bridge creation call.
 > >
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > For analogix-anx6345, which stores the panel for direct use, release
+> > the reference in the i2c remove path.
 > >
+> > For platform drivers using analogix_dp_core with a component lifecycle
+> > (exynos_dp, rockchip analogix_dp), release the lookup reference in the
+> > platform remove() function. The panel_bridge created during bind() hold=
+s
+> > a separate reference that devm cleanup releases after remove() returns.
+> >
+> > Also fix devm_drm_of_get_bridge() and drmm_of_get_bridge() in
+> > bridge/panel.c itself: both call drm_of_find_panel_or_bridge() and
+> > then pass the panel to devm/drmm_panel_bridge_add(), which acquires
+> > its own reference via drm_panel_bridge_add_typed(). The lookup
+> > reference was never released; add drm_panel_put() after each bridge
+> > creation call.
+> >
+> > Assisted-by: Claude:claude-opus-4-6
+> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
 > > ---
-> > Changes in v6:
-> >  - use devm_pm_runtime_enable() to disable runtime PM when probe fails
-> >  - simply pm_runtime_get_sync/disable/put_noidle() to pm_runtime_resume()
-> > Changes in v5:
-> >  - use non-devm PM runtime callback to correctly enable/disable clocks
-> >    when unbind the device
-> > Changes in v4:
-> >  - replace guard() with PM_RUNTIME_ACQUIRE()
-> > Changes in v3:
-> >  - new patch
-> > ---
-> >  drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 67 +++++++++++++++++++++---------
-> >  1 file changed, 48 insertions(+), 19 deletions(-)
+> >  drivers/gpu/drm/bridge/analogix/analogix-anx6345.c |  3 +++
+> >  drivers/gpu/drm/bridge/panel.c                     |  8 ++++++--
+> >  drivers/gpu/drm/drm_of.c                           |  3 ++-
+> >  drivers/gpu/drm/drm_panel.c                        | 12 ++++++++----
+> >  drivers/gpu/drm/exynos/exynos_dp.c                 | 10 ++++++++++
+> >  drivers/gpu/drm/exynos/exynos_drm_dpi.c            |  3 +++
+> >  drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_rgb.c          | 18 ++++++++++++++=
+++++
+> >  drivers/gpu/drm/logicvc/logicvc_interface.c        | 12 ++++++++++++
+> >  drivers/gpu/drm/rockchip/analogix_dp-rockchip.c    | 11 +++++++++++
+> >  drivers/gpu/drm/sti/sti_dvo.c                      |  3 +++
+> >  drivers/gpu/drm/stm/lvds.c                         |  3 +++
+> >  drivers/gpu/drm/sun4i/sun4i_lvds.c                 | 13 +++++++++++++
+> >  drivers/gpu/drm/sun4i/sun4i_rgb.c                  | 13 +++++++++++++
+> >  drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c             |  2 ++
+> >  drivers/gpu/drm/tegra/dsi.c                        |  1 +
+> >  drivers/gpu/drm/tegra/output.c                     |  3 +++
+> >  16 files changed, 111 insertions(+), 7 deletions(-)
 > >
-> > diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> > index 3a5788c609e1..bc804d2b5aee 100644
-> > --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> > +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> > @@ -9,6 +9,7 @@
-> >  #include <linux/of.h>
-> >  #include <linux/phy/phy.h>
-> >  #include <linux/platform_device.h>
-> > +#include <linux/pm_runtime.h>
-> >  #include <linux/regulator/consumer.h>
-> >  #include <linux/usb/typec_mux.h>
+> > ...
+> > diff --git a/drivers/gpu/drm/tegra/dsi.c b/drivers/gpu/drm/tegra/dsi.c
+> > index 7f25c50621c94..57a016f47434d 100644
+> > --- a/drivers/gpu/drm/tegra/dsi.c
+> > +++ b/drivers/gpu/drm/tegra/dsi.c
+> > @@ -1516,6 +1516,7 @@ static int tegra_dsi_host_detach(struct mipi_dsi_=
+host *host,
+> >       struct tegra_output *output =3D &dsi->output;
 > >
-> > @@ -136,17 +137,15 @@ static int tca_blk_typec_switch_set(struct typec_switch_dev *sw,
+> >       if (output->panel && &device->dev =3D=3D output->panel->dev) {
+> > +             drm_panel_put(output->panel);
+> >               output->panel =3D NULL;
+> >
+> >               if (output->connector.dev)
+> > diff --git a/drivers/gpu/drm/tegra/output.c b/drivers/gpu/drm/tegra/out=
+put.c
+> > index 49e4f63a5550d..90db39dbdd332 100644
+> > --- a/drivers/gpu/drm/tegra/output.c
+> > +++ b/drivers/gpu/drm/tegra/output.c
+> > @@ -195,6 +195,9 @@ int tegra_output_probe(struct tegra_output *output)
+> >
+> >  void tegra_output_remove(struct tegra_output *output)
 > >  {
-> >  	struct imx8mq_usb_phy *imx_phy = typec_switch_get_drvdata(sw);
-> >  	struct tca_blk *tca = imx_phy->tca;
-> > -	int ret;
-> >
-> >  	if (tca->orientation == orientation)
-> >  		return 0;
-> >
-> > -	ret = clk_prepare_enable(imx_phy->clk);
-> > -	if (ret)
-> > -		return ret;
-> > +	PM_RUNTIME_ACQUIRE(&imx_phy->phy->dev, pm);
-> > +	if (PM_RUNTIME_ACQUIRE_ERR(&pm))
-> > +		return -ENXIO;
-> >
-> >  	tca_blk_orientation_set(tca, orientation);
-> > -	clk_disable_unprepare(imx_phy->clk);
-> >
-> >  	return 0;
-> >  }
-> > @@ -620,16 +619,6 @@ static int imx8mq_phy_power_on(struct phy *phy)
-> >  	if (ret)
-> >  		return ret;
-> >
-> > -	ret = clk_prepare_enable(imx_phy->clk);
-> > -	if (ret)
-> > -		return ret;
-> > -
-> > -	ret = clk_prepare_enable(imx_phy->alt_clk);
-> > -	if (ret) {
-> > -		clk_disable_unprepare(imx_phy->clk);
-> > -		return ret;
-> > -	}
-> > -
-> >  	/* Disable rx term override */
-> >  	value = readl(imx_phy->base + PHY_CTRL6);
-> >  	value &= ~PHY_CTRL6_RXTERM_OVERRIDE_SEL;
-> > @@ -648,8 +637,6 @@ static int imx8mq_phy_power_off(struct phy *phy)
-> >  	value |= PHY_CTRL6_RXTERM_OVERRIDE_SEL;
-> >  	writel(value, imx_phy->base + PHY_CTRL6);
-> >
-> > -	clk_disable_unprepare(imx_phy->alt_clk);
-> > -	clk_disable_unprepare(imx_phy->clk);
-> >  	regulator_disable(imx_phy->vbus);
-> >
-> >  	return 0;
-> > @@ -686,6 +673,7 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
-> >  	struct device *dev = &pdev->dev;
-> >  	struct imx8mq_usb_phy *imx_phy;
-> >  	const struct phy_ops *phy_ops;
-> > +	int ret;
-> >
-> >  	imx_phy = devm_kzalloc(dev, sizeof(*imx_phy), GFP_KERNEL);
-> >  	if (!imx_phy)
-> > @@ -693,13 +681,13 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
-> >
-> >  	platform_set_drvdata(pdev, imx_phy);
-> >
-> > -	imx_phy->clk = devm_clk_get(dev, "phy");
-> > +	imx_phy->clk = devm_clk_get_enabled(dev, "phy");
-> >  	if (IS_ERR(imx_phy->clk)) {
-> >  		dev_err(dev, "failed to get imx8mq usb phy clock\n");
-> >  		return PTR_ERR(imx_phy->clk);
-> >  	}
-> >
-> > -	imx_phy->alt_clk = devm_clk_get_optional(dev, "alt");
-> > +	imx_phy->alt_clk = devm_clk_get_optional_enabled(dev, "alt");
-> >  	if (IS_ERR(imx_phy->alt_clk))
-> >  		return dev_err_probe(dev, PTR_ERR(imx_phy->alt_clk),
-> >  				    "Failed to get alt clk\n");
-> > @@ -708,6 +696,11 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
-> >  	if (IS_ERR(imx_phy->base))
-> >  		return PTR_ERR(imx_phy->base);
-> >
-> > +	pm_runtime_set_active(dev);
-> > +	ret = devm_pm_runtime_enable(dev);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "failed to enable runtime PM\n");
+> > +     if (output->panel)
+> > +             drm_panel_put(output->panel);
 > > +
-> 
-> no place to call pm runtime suspend, so whole driver's life cycle runtime
-> pm is on, is it expected?
+> >       if (output->hpd_gpio)
+> >               free_irq(output->hpd_irq, output);
+> >
+> >
+>
+> tegra_output_probe's error cleanup paths need to be updated to clean up
+> the refcount. Also, it can technically call drm_of_find_panel_or_bridge
+> and then overwrite that value with of_drm_find_panel. While there's
+> already a WARN_ON for that case, I think it would be good to fix the
+> refcounting there as well for consistency.
 
-First, at the end of __driver_probe_device(), it will call pm_request_idle()
-for the device. So runtime_suspend() will run.
-Second, this platform device is the parent of created phy device, the runtime status
-of phy device is managed by phy core, so this platform device will be managed by phy
-core indirectly.
+Agreed. I really missed those. I am doing another general check in
+case I missed similar cases.
 
-Just found it's not suitable to call devm_pm_runtime_enable() here. Because
+>
+> As a note, the tegra-dsi code also uses tegra_output and can overwrite
+> the panel field with its own -- but in those cases tegra_output should
+> never populate the panel and we've been talking about removing that
+> code path anyway, so the dsi code can continue to assume that
+> tegra_output_probe doesn't populate a panel.
 
-pm_runtime_disable_action()
-  pm_runtime_dont_use_autosuspend()
-    update_autosuspend()
-      rpm_idle()
+Thanks. I will add a note before of_drm_find_panel() in tegra/dsi.c to clar=
+ify.
 
-then after remove(), runtime suspend func will still be called. Clocks may be
-disabled twice. I will use non-devm version pm_runtime_enable() in next version.
+BR,
+Albert
 
-Thanks,
-Xu Yang
+>
+> Cheers
+> Mikko
+>
+> > --
+> > 2.54.0
+> >
+> >
+>
+>
+>
+>
+
