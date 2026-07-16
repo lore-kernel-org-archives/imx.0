@@ -1,71 +1,71 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012022.outbound.protection.outlook.com [52.101.66.22])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011007.outbound.protection.outlook.com [52.101.70.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB6A42F71F;
-	Thu, 16 Jul 2026 14:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F2342A172
+	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 14:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784212024; cv=fail; b=TZX2VJFzYaQa2o4Zq94k6ucR9hMn0x7HgXYNsP20py4rlVEOnEIcFAMrJogQMUUc0QeXHuujJMpdHP3aNAmqTG42mFYYeG4CLGEcJ29zefgc795AyUZeJDidxNob5lUWBMl23YuOorAfvv3THZXHB0lCB6T9PI6Tgq2594xvtkw=
+	t=1784212059; cv=fail; b=PfmLCuolbx1FLcIRdYm3eb/Ge8cCz7FPDX4k6gZ3VQqwEWuPttqnl2qPr1GLoPuau6qiV5biQZyXT0KfK0Y8gA1NRRRmHTRGeWhFoWVgVy5rnsZ+hgodsijIRKZBLPcVhdVFQKme01ANYWp9JWXP1A+/DouBsfO9escyjP0PbD4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784212024; c=relaxed/simple;
-	bh=Mzr0WNPi8MAQaIJKu2/rRUQdaLq88qjefpboWe+zlDk=;
+	s=arc-20240116; t=1784212059; c=relaxed/simple;
+	bh=05vpYCMF5xMzWY7QjuSCFgrIcTh7+lxR9sEvZxvhk3k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UAA4PVfHsEMbiikMnNblX+WjGHdYHBqqU55jBi6c/adXo00DKYvm6P3R/HerQGEtOVDXuie9Jp7TEWH+bP884SrqSnwO2RUjiBJpQbqtGlG2dxjIblwz2jtibO+fuVPOPrAF0YBrno38eY/UaWq0xGHoQZdADwPKsqAkqLF2Cu8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ltLfHD74; arc=fail smtp.client-ip=52.101.66.22
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UIjOxkSEFKruOXUAfX5V3b/4ALrjpllqRAJaZdWozf7uESs1mnzGjJiHt7O2Igyy/bLiQwRdZt3jy0srop4U/IMaxmZONxGcoXCoue1Hvxm3eshmfX3s7BYmm0KZZghKElSSdQTAyx7E85eOOv6xZ6FAGcvHZMe3bI9w6oX3qkA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=iAQa0TbB; arc=fail smtp.client-ip=52.101.70.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ltLfHD74"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="iAQa0TbB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YOt+DtHJi9KPhzCCcLur/KyTQ63U1PCTz280+dRSwRWLQjX4wnJzoIlyLmNQxouBcFHWyxkwlTvie7J/QQEspLLyC9qtQIXbuxBCKtC9m/1H4nQlGz/uGCdshbHuuOu4AY274JH3fpYnDknIu/37+HUObPJBKBs1tUz95CK0LcN54SlvEw2smoN3JgKJQlWR43kY20r4aGfxiTR9jicTUsuN3+TNP/f9GANbNWZ7gDypGUWKcb9kCwzcB2WXZmaVR9XbfTOAtbz7aCrIws09dVHSuZIyah3bstASX2wr67ZLFiqZzWPsoYeHGECz1dtYaOl5VyGCMQhhG8dSdYI45g==
+ b=JPEDlxDDR/LRt0snYO544C9wnMXUiY2fivW+hsWGbXO3cZpMLu9nw2pXgTz66D2WOKsApzodwQbbkeql+AL51rKsXMMpIimqnpIQtC9AC1dVdd29ERDaBNQUqUtMukCug0rKtrC4GnADfs7U3STbBe0bPaFGQLHLYL/3QhxmOqf3gDF8IbCTFk166h0m762SvsdXg1quIPCrDON1NzjrOXt1twQ3fESiLgMJpFFruwqhPsWMyz58Owve8RrJpNXwjjOxy0iSDASi2kQmfBD5GRUDHUMSLNBgbsMSfYo+sqFMSOsxTwkFofTRomhXB1Y2YTtdIx9UTYZuBE44beCZrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=olLs4zG2FjXERRCsCKPuPrfX/9BhSzp1N4aGQstr+P0=;
- b=P3SEYHcyQZgK8bQKgIyBY3end1HDxGEnsjBmn7JtC/skDsweEh5C5++zDFNqh1KKmqDLKwNUFxyhfvIMhN82LAURiDLrAFqfT79q9vE0Nb2MWqZWJQb5LPdUWT9tG8Od9EDq3xKAj1KntXMcxxiOEUuFESR9CfroXqL5/47CveUbTofHkk2Sj7Oco3yd+1Mc1KzKGSzLA/y16kSagbRr1WIcsl9y8rUllEV8RaQV0ow7qgbO+rdOFH8hA13bzC27r2XF+yvO627huh6UYQ2ve/nRJQHXDIc7drIDvt+/Fhpg2WF7JOw+gKM7YLLqX80uYJxCi7ov6f8/04s9Rnq9bw==
+ bh=NmPXYIgXudJdk7ilCxuMA28BkeiLmN6JDPGWMpU9QJ8=;
+ b=YWJoA5SHlcsN1tLuH1uqnIxZdFbCkAsqoa3EQoxQUtnmR/7TT0b/8gEFrDYUe4W5KPKWB82SWoZHoTPL2KuudqX270rtjlPqJJhD7xofvgGjJ6Tnn1RPSKb+E22HOuhL33VrOSUaTKUDXKa7fP61EJShABa3FRiquJcfaTcUysp6VRj+fdtNXk0TICqhmWQyO+YYnhbaqnOOVpZraq4E8zQ+Vu4H0OvFJXf5WP1TXcKuvM7MSHBaHFYX5LLzxo9dqs+dLPDfEFKNrd2ule2ifoiZbo1h9xv8SDZsdpA6fsw+xne+AC+IjcmIIxVLt5Vtv6eoFgRuR3dL2lXT2HxiVA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=olLs4zG2FjXERRCsCKPuPrfX/9BhSzp1N4aGQstr+P0=;
- b=ltLfHD74OxnpAP7qd4UKBCjPVMq/osIUWnsjwQCBvA9nypX8x0+x0c2FLOjPDT2jBigtwvRbIRCCoxHHR/mker7RT7eXxcnNAFxu4QoRtbo2KQBJ2s3mPtaXwWMBJwNNshrPJibibqxMozvfiJM6VwzOVvIzlvMH850IbT/vZmtZEmtYD9Edx/ArTU7r3gIIIS1Ip7C6fJazTNXPACG4vhbYR/idcEL+flS4rlhX1VqYhpIT7wrNPaDEQMuAAnP8nnl5LPEnnNtpryqgHIGbyOouRCYvykT0pl/63hZAMGtS5cjFmaxvz2ZQCFM1Ex9f9nYMRcLLArPLGR4tFkKEvw==
+ bh=NmPXYIgXudJdk7ilCxuMA28BkeiLmN6JDPGWMpU9QJ8=;
+ b=iAQa0TbBsKhSopoZm5kxwGFkECvQgmzBcAfS0YEL5rHnw0FzmPMkkBHuvYzlE9gqYOof31oujJx/QUgQHlEhmtk4SPK0YwEW3wJEDLyt3Akui+8iiKHTzIGTEIbGobzt94In32Qtgp4jjU4KX79/51uGFlFm3dN2konW8F3yPQsDh6l7WdY10JyhBPfl4fvsnDjjs1PSHZSwEcA6R3+lZKyhP2GsY4SqlyzM1mbFuevmWuLLe4nIf3X289wsmJWcjh2Rl7qM/2OviXFdkkI6P1mX1HzespOgF8ExLrESohHxIPFD5wPE+tEGoefgBNIrleQ+6j+aGHH/LiARMmaXlg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM9PR04MB7649.eurprd04.prod.outlook.com (2603:10a6:20b:2d8::16) with
+ by DU2PR04MB9148.eurprd04.prod.outlook.com (2603:10a6:10:2f7::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Thu, 16 Jul
- 2026 14:26:58 +0000
+ 2026 14:27:34 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0223.011; Thu, 16 Jul 2026
- 14:26:58 +0000
-Date: Thu, 16 Jul 2026 09:26:50 -0500
+ 14:27:33 +0000
+Date: Thu, 16 Jul 2026 09:27:25 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Marek Vasut <marex@nabladev.com>
-Cc: sashiko-reviews@lists.linux.dev, devicetree@vger.kernel.org,
-	robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v4 4/6] arm64: dts: imx8mm: imx8mp: Add CM DTOs for Data
- Modul i.MX8M Mini and Plus eDM SBC
-Message-ID: <aljqKuQN096QtUks@SMW015318>
-References: <20260705200534.151803-4-marex@nabladev.com>
- <20260705202439.3F5771F000E9@smtp.kernel.org>
- <alUICTI-24tREZO8@SMW015318>
- <f1e52327-42da-48e1-8e4a-dabf148ce216@nabladev.com>
- <alWR66rjt-9jGEOV@SMW015318>
- <a3602ef8-2b77-4cc3-adef-2c4cba08a5d9@nabladev.com>
- <alezsOsf61Zv6F4F@lizhi-Precision-Tower-5810>
- <c9a67cbd-fda8-4016-9cff-9125f3191b74@nabladev.com>
- <alf9pp3c_zI4rwC0@SMW015318>
- <56953f06-2e3d-4137-a51a-ed91e9b0d577@nabladev.com>
+To: Joy Zou <joy.zou@oss.nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Ye Li <ye.li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/3] regulator: core: use system_freezable_wq for init
+ complete work
+Message-ID: <aljqTb1SGP487wJz@SMW015318>
+References: <20260716-b4-regulator-pf01-v1-0-8c1519d54bd4@oss.nxp.com>
+ <20260716-b4-regulator-pf01-v1-1-8c1519d54bd4@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <56953f06-2e3d-4137-a51a-ed91e9b0d577@nabladev.com>
-X-ClientProxiedBy: PH7P220CA0141.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:327::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260716-b4-regulator-pf01-v1-1-8c1519d54bd4@oss.nxp.com>
+X-ClientProxiedBy: SA0PR11CA0051.namprd11.prod.outlook.com
+ (2603:10b6:806:d0::26) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,167 +74,140 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB7649:EE_
-X-MS-Office365-Filtering-Correlation-Id: 39773be9-ea27-4d4c-91bb-08dee3464b03
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DU2PR04MB9148:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0fc0a1ce-a08d-4b5e-3046-08dee346602d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|19092799006|1800799024|23010399003|3023799007|56012099006|4143699003|11063799006|10067099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|23010399003|7416014|376014|19092799006|366016|1800799024|6133799003|56012099006|11063799006|10067099003|4143699003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	WR/a3rHy5K2gcb+wn2HuwkuTGG41mAs8jWR8borKZVPsGJAVV8+wViAnJ/FWeB6t9f4TX2zY+O+VplyyPKFkoRHoWm29gC6k3VedhChMVBy1L/tUGQzatXOMRzbelLL1jEEaCbnXX1nbpGbMlYozaaTB9PU1ZMkiuKjEd9u7OmD/oN1iDLWvNktnclT6o/t9V2OZOtJVBqwodggjs/Q/UPtSGSvTZg8ucWMV3GwyhTijby00wu8QiyIcs4RpVcr8PNbFkr7Ly4pz4H+igHuDS1AXsIW4paZlVZLH+iuMG8OGETSxi7UFmMvA0jDGr/1HqMN/DEf5oPrSE1JDuHzvKclJz347a5f78YeXoSnUUe8ICef3oxOieNMqGqvJfs04cCGmV8JxXx60jZrJeEGQG+UzR4CQ8NWGHlZ0I6sGfR9wPggfZ1lQ6yRcdWVG/NOJxnUxuVWk/qCkT4+22EjPiBBWueJAC9M508SIZW3XxuJ8qSalpOtbnLiJsR7mileYhxdDCyLuY75oDeiALtwcwE9WxdIQdMpeVHQbIHVb6CIBy7O8o3vzuNV3ofUxT4XvYiGqj0ZfniYSziOLeN/uWErlqqn+BONyCqnARkrbTI58gyB4TJ8sLbCOdbICZcRzijsNowtFuLXlOKhVVwa6dpDbBQhoFr5P3mf0oy3fE0k=
+	mWnTIangnnGCa0NryFPD0uaP//BMo0jfG7by9ZlbK4YWBDmlGSWTANPErmZoqrEEn+bvoAi5cnWdikUo8msduJpl+lDh1FMknNJ/p6SKMTPN3Q69I1VQitjsRLoceo/r88CVW0J62tpj5dyJqU2kIUWrXACKic/Ya1xt7aLWOUeFD9vjaUXGxoMTrovbq9IzUdAbBC+MB+5z80ErI0FxuL7h6qVJY9qTJiKfcv465cPQ7eCasPkMPx6eT8CvwDKLzYh6urwwhzpAWhoy9bozIfZgvB+glZugqL4SzZL+cZVyef5Wt3PZ5gXRBBEY8wPDZWRL37MN9oURgo5O6YCHiWLJOuLmyazayIzL9xjrRBCWej4ACGBXwsleQPdEu8wI4e+hoohizcLVdJgY1X87UIx/sPFAgiajyoXsoy8QHCt330rt+dly4C9ADj8TyaqfwFBleyqT1nDZ5/Y7rOdHeO7HfoH7znQdWmtSFh507WhcJMoFwRCS+ByjX8BzoO9mN6bPWC+RSumBNvcFjUxd3qNYYRZBW/F9rJpiYdc9R8Uo9s8P7vnQj0PmvSSwf1H07i+sSsb2QsSB7lfnwBwVY5O4Eye3GuU6cBwJVM3CLwvuz7eCWVtd4a8ARR50EZ/rtyAclTdjQvV34E2K1WuI6GQQSBMsw4g/PYd3E4yQtkM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(19092799006)(1800799024)(23010399003)(3023799007)(56012099006)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(19092799006)(366016)(1800799024)(6133799003)(56012099006)(11063799006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LJ9i172YKm5CztHmqemQvumDQdCmsGkGs3F0RyKN9h0MT8MMfSUx4wbJMgc/?=
- =?us-ascii?Q?rOgy+9yGyiaeKi1Fk+YAuFH6RQsZqhlZj0GsqSxQyrFFBWVy1Z9Cnchl68yD?=
- =?us-ascii?Q?gGGCL9mohONTdaG4Tbgd+72EO1npSb3GjTyl18B1WIGqIqT80FBwIdizpqiC?=
- =?us-ascii?Q?/X4GonLCk94n1uNs74ztDNMHwYCesFsYew9VqJTbbt0pt4K8We3xSZVrmmnk?=
- =?us-ascii?Q?40VOjmVMAORELM88ZNEWgXSCX6JttgIlLmFBqdxVVxw3wvwM39x3l8qjt8Jd?=
- =?us-ascii?Q?bc/pMsxVOhVkWc/CaeZZ7kFD+bMY8AKLraWwRCXMWfrddxPTOuEzRh562h0i?=
- =?us-ascii?Q?eC1snhyafW3icFvVa9rRzR2joc9mVHeEWi04l0Jbk2rDj4es7BLBH92s3uZk?=
- =?us-ascii?Q?dCdTk/9DI2WVbE1s3R0It9YNR/bwG3UphDzv5JN7XGY8KnpaP8aXXX+6LZZI?=
- =?us-ascii?Q?peYyCtGreTYiNv92l0TjALAYQKdpRVHjx0ty9x8Yd+zgZq4NfQPsgM+T7XAu?=
- =?us-ascii?Q?k5ptrDY+FsOGIWisw58TcxNVf/6xzXsxabESINAKPBIkzESGoH71sRPJZZKK?=
- =?us-ascii?Q?Hzlt6pApYy4MlRD61MjaKDxtjndbZ9So0wpNUhCfsqEsoxCLImzo3Lo5n0PE?=
- =?us-ascii?Q?c88RY5cnW6NfGJc/TQwHWkEBtTRApMMnU8is4O6gQYXS57L1TgaSqn6A8w9h?=
- =?us-ascii?Q?NutLalb30sRbVIa01FydLKZzlhfMH+aW+TK8W+PtZ+/WiagetK0lZAxieYfZ?=
- =?us-ascii?Q?X+U9vSnBQ9JmySD9a+GxCXJBfJOllMgMO8x+Gi+joO6PbwlgJttfaaR+tNu8?=
- =?us-ascii?Q?WFuEE6AoDme+rqDAve+nsDHXZtXpN2xpzGgOSoxvZFrC9f3JoRsBW8/DyAzR?=
- =?us-ascii?Q?rc5W4SQvdEWi0WnVm6FFP7vdVi4AfHYKOewTxdCaxhCZk2oQPUZ8yZv8jpaO?=
- =?us-ascii?Q?18tUpXDv3owwbI/oWDXWGHRflT/RTc6iH7holo1grnCQkiR/e8LL+YJt5GLi?=
- =?us-ascii?Q?Chexg27rT6Hd3lfIl0aton55T7okRNz3dFEG5ZwskMqfbhl/I6fwwPkIMg0g?=
- =?us-ascii?Q?vCzXrurenhN8pGgHO3garQohvX8l34HCNAIJ+iLzalcZuRxtl2qu33WVU4w+?=
- =?us-ascii?Q?CtHBqrjS0H/nXpEFVnP1H/VpJs3LbvSVg3aTEemml0jlqowz8a6jWyXhlUWD?=
- =?us-ascii?Q?n05p25HCtmgvWyigyDq+oXBv0YZQQkbOI/MYEYjrd6L/o26n/UFJH4POvyWv?=
- =?us-ascii?Q?wMghhyf3mLqWdSVSDkCN3nZ9dXjp1mH1RNG59szNv35/4dYVgZOVkV9IayMH?=
- =?us-ascii?Q?R4gicyg56IEmOtJ/9b9hLfrSVwMwmoiGIZbYCmf24IdBQvRpeT6T1N4RU96f?=
- =?us-ascii?Q?y4Vz1WQWqbuXcaZ5DSb9VYjILP5GMsr/gElgBe6oslgpsAHDGrN22u2GDOue?=
- =?us-ascii?Q?OFA2DRVt9dMVqRtZct3nJenmYxwidcx7Jujlqmwo8rd/e9kWEoXMtubMdzU0?=
- =?us-ascii?Q?Nu2KM6oUqjteQv/jHncPpjzPuQRW4lyPgkWea3tagWyEg7nQNIL40HgMR32Z?=
- =?us-ascii?Q?n2O7GBcgdrMiTCeJ1a9NmU2ZpjMe8kueywc0LR6K3rK0HqghbySPAZp1gyf9?=
- =?us-ascii?Q?rZvFWWsu8N2WbPvpHptlbzMw+447Gv78PfQbKsJds0tHIfntVdbN4wuVi6TG?=
- =?us-ascii?Q?z7tiCBswmUAtmfgQ5nzbIrsmii2RHrRZW4efXpL/zT8OEt+e/2BjAW9aijIT?=
- =?us-ascii?Q?BLq6SoUsWMmY2iRxIw2jBFte7azjUgBkEAVqYaSHyd2WMjY2WDoF?=
+	=?us-ascii?Q?c0ucm4i0vpumJ7WFRHJcSYU4uQtiKFN4zTZ688vLR6AnG5Q4E3shqDvEsJsR?=
+ =?us-ascii?Q?xKb3tpxZ7WKiMR2h5+CfpPfjwI69lI+DZCHtrywsq7wEPM0hKCs+Q40EPr7f?=
+ =?us-ascii?Q?RFa2/QOmZEqFOJ9BwL/1bllClDqLjvecAFCi25LfXHk19NojuYPabIPXTidj?=
+ =?us-ascii?Q?IYqfRH3lDw0E9DVIypLGGITQHV8MHso58kRgqPsXaQC7yqLWz5yXVa7Xahob?=
+ =?us-ascii?Q?gioOpPTVbx0e4zoxzTKvCaOFakBOwuAS/8TdtxEDssUQCzkRstwbqt/JeKpf?=
+ =?us-ascii?Q?gQEzdy2lczg+4L6lVYD34t+a0eN4+8xhiogwS1pB5r/fmYOg5aYNwpgn3iwF?=
+ =?us-ascii?Q?rY7oMVU259S/Hoc7oNhJPuC1jRjTICg0tDjZn+rxqVpJIKM20zvNJfnrRMLc?=
+ =?us-ascii?Q?QPBMaC8kloV3sVtBu/zlC94RCNC1aeevq3BbmL8TqNFQU4YNQzKxkWfjWfFN?=
+ =?us-ascii?Q?1MA2THRWj9lyE1vUa2LhU6PKQv9+ktL7IiQ+0KrQ7prBXytJGcUf5ukHlyUG?=
+ =?us-ascii?Q?CNi9Z0OK6otlnWxzuWZ0juetPVj3m/Q9/bgCFhQtpIZC36QwXRE3SCMrCwjV?=
+ =?us-ascii?Q?EDNRoCGN/t0vy4QnFTBdyTzgP0hQlSHKqFmsO4XI/vp7Ojb53YQkuVd3QvwS?=
+ =?us-ascii?Q?LWgliBCMgLmvY/T32bLgmSSb5D/LgpGLhmfVxQO/tpfTS5QUEfblpBtv/CoA?=
+ =?us-ascii?Q?X2Q74niqQ/9RlS+t4yXI9tohw/3dFyn1WDGS1C51ksZF2OohjKOQQfKUKPV8?=
+ =?us-ascii?Q?OqYJa+v2qvAkP6ksh2F+I0lmT1OhxdwaCWgkVJkFN1MIF2UhgcT9d2MjH1jz?=
+ =?us-ascii?Q?o9gLjEV2zZ6HbM/dx8mGZIfKeuHbjOT87zjBlJOFCWp2kQDmGeVP7iyEN9FL?=
+ =?us-ascii?Q?gGYl4PLBG1304IAvAx/bCa12xnBbLNbFOzqXu3AToffdOcPFgh4qKqOFd+5E?=
+ =?us-ascii?Q?H8v7h1knPIsUUmwBy639eORqF+HQl74A+r+AtNTTNUBC6TBuFtYEkTWfYyb3?=
+ =?us-ascii?Q?Lls9ftDo9I7Bee3tNXblzLYHMJBUvbovcJd5Axm+uauksGteRN7rTZ8NmWGq?=
+ =?us-ascii?Q?0k2Uma/XNUjVUQJMPrCKU0H7vdN9uIaPk7J7grow9s/+4aNOqMlS4UxM7JPu?=
+ =?us-ascii?Q?7qPuz+A+oaVku1Bqf5csHNlLTtwTI6SvZadkXhbQLnCg1FViL8+w7QcNjJHn?=
+ =?us-ascii?Q?dP+5fwXPs2hU79lwbm6wonEDDSYz4VoT7puj4b4Op5UVMnDGaXLSf1BLnDJk?=
+ =?us-ascii?Q?5LCwmlEPpaipz0fpyp8Nj6elreGW/IVWnnqXVDOQ6sM6Y14GgTgtmtGY6+wx?=
+ =?us-ascii?Q?TJAlgnAokbWPs90Qou52mxYU8Xm4gcDV7IcpvtrCli9nuwSiJ4Id6LJwL0aq?=
+ =?us-ascii?Q?hAjNq7wzGSJexMw/NmhejlIOvWaxUH5ID1/6NL8yJgObJ/galXqvhooyhbKE?=
+ =?us-ascii?Q?dJ0zdCnRIENSCLJPBAcOHzq+j9Ys9IAlmxqKuQU4QY0qyDbb0FJ97mpN2dJK?=
+ =?us-ascii?Q?q26+rRwYTcw2O4jtzshEDVr/9biGJtskpJCtcon/u4MZ18tXn5l1fkWOiNhX?=
+ =?us-ascii?Q?zhJi9WGkX/czrioVGVAhc6bkI+3OkUFY3vQY/FnS7lDxyzbRfWoEjAfUVB3j?=
+ =?us-ascii?Q?NAqbPL0yKWAETVoye1OmZ7dEGJ8BaY2oNxywv3xKgOo3x7XxBembFhz2JMBH?=
+ =?us-ascii?Q?QN/AtOK9qTsjM6WAERQsvuXjmgf+MeqSqVpdXGr3v/oyGjpfpuqKfypeEaHQ?=
+ =?us-ascii?Q?YSqRLMJNesR9QKuYCH5GuI0PcKQ961mLfep39SVeBGTMMSwfEFdl?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39773be9-ea27-4d4c-91bb-08dee3464b03
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fc0a1ce-a08d-4b5e-3046-08dee346602d
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 14:26:58.1560
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 14:27:33.8287
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XM5EODsdIZvnrfjZPA9HfMkuq8Kat3lqmdRrb225wwB3Hb5RtJo57T7Mi8xbNpW0iEfZiq/qJ40wixJasMD8eFsfTnTG+l0szcYcC+TOYlhYwIelLU73oBEPGhv5JH61
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7649
+X-MS-Exchange-CrossTenant-UserPrincipalName: NfZFXNnwBwqUM3q2BToP5UJTlYbYqXusbcre1+rwyD1XsE5w46TiAEnv957rqaxXNt+2Q2Q783+DXJ9smTITismesIAwbEQd+BCopJDICGLw/TidTuCX1a2duQxGXGAA
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9148
 
-On Thu, Jul 16, 2026 at 01:30:17AM +0200, Marek Vasut wrote:
-> On 7/15/26 11:37 PM, Frank Li wrote:
+On Thu, Jul 16, 2026 at 11:50:53AM +0800, Joy Zou wrote:
+> schedule_delayed_work() uses system_wq, which is non-freezable, allowing
+> regulator_init_complete_work to run concurrently with system suspend. This
+> work fires ~30s after boot to disable unused regulators via I2C. When it
+> races with PM suspend, the I2C adapter may already be suspended, triggering
+> a -ESHUTDOWN warning dump.
 >
-> Hello Frank,
+> [   33.707233] pc : __i2c_transfer+0x36c/0x3c8
+> [   33.707240] lr : __i2c_transfer+0x36c/0x3c8
+> [   33.707246] sp : ffff80008239ba50
+> [   33.707249] x29: ffff80008239ba50 x28: 0000000000000001 x27: 0000000000000000
+> [   33.707259] x26: 0000000000000000 x25: 0000000000000001 x24: ffff0000c025c0e0
+> [   33.707268] x23: 0000000000000000 x22: ffff0000c025c0e1 x21: 0000000000000001
+> [   33.707277] x20: ffff80008239bae8 x19: ffff0000c0f54880 x18: fffffffffffeb320
+> [   33.707287] x17: 000000040044ffff x16: 0000000000000000 x15: ffff800082086fd8
+> [   33.707296] x14: 0000000000000000 x13: 0a6465646e657073 x12: 757320656c696877
+> [   33.707305] x11: 0000000000000058 x10: 0000000000000018 x9 : ffff800082087060
+> [   33.707314] x8 : 0000000000057fa8 x7 : 000000000000027d x6 : 0000000000000000
+> [   33.707323] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000ffffffff
+> [   33.707333] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c0123480
+> [   33.707343] Call trace:
+> [   33.707346]  __i2c_transfer+0x36c/0x3c8 (P)
+> [   33.707356]  i2c_transfer+0x6c/0xf8
+> [   33.707364]  i2c_transfer_buffer_flags+0x5c/0xa0
+> [   33.707372]  regmap_i2c_write+0x20/0x60
+> [   33.707382]  _regmap_raw_write_impl+0x5cc/0x660
+> [   33.707389]  _regmap_bus_raw_write+0x60/0x80
+> [   33.707396]  _regmap_write+0x58/0xc0
+> [   33.707403]  _regmap_update_bits+0x11c/0x140
+> [   33.707409]  regmap_update_bits_base+0x54/0x80
+> [   33.707416]  regulator_disable_regmap+0x40/0x5c
+> [   33.707424]  _regulator_do_disable+0x94/0xbc
+> [   33.707435] CPU2 is up
+> [   33.707433]  regulator_late_cleanup+0xe0/0x1e8
+> [   33.707442]  class_for_each_device+0x104/0x13c
+> [   33.707450]  regulator_init_complete_work_function+0x54/0x80
+> [   33.707458]  process_one_work+0x150/0x290
+> [   33.707467]  worker_thread+0x180/0x2f4
+> [   33.707473]  kthread+0x12c/0x204
+> [   33.707484]  ret_from_fork+0x10/0x20
+> [   33.707493] ---[ end trace 0000000000000000 ]---
 >
-> > > > > > > > > [Severity: Medium]
-> > > > > > > > > Will this node name bypass the driver's carveout exclusion logic?
-> > > > > > > > >
-> > > > > > > > > Looking at imx_rproc_prepare(), it iterates over memory-regions and checks
-> > > > > > > > > specifically for the name "vdev0buffer" to skip processing the vdev buffer:
-> > > > > > > > >
-> > ...
-> > > > >
-> > > > > never existed in imx_rproc.c:
-> > > >
-> > > > AI refer old version code, but problem is the same
-> > >
-> > > No, sorry, the aforementioned piece of code never existed in imx_rproc.c
-> > > according to git log. There is no old version of the code that looked
-> > > anything like what the AI produced above.
-> > >
-> > > > if (strstarts(res.name, "vdev0buffer"))
-> > > >
-> > > > >
-> > > > > "
-> > > > > $ git log --follow -p next/master -- drivers/remoteproc/imx_rproc.c | grep
-> > > > > vdev0vring1
-> > > >     ^^^^^^^^^^
-> > > >
-> > > > vdev0buffer
-> > >
-> > > The AI generated review content above does refer to vdev0vring1 , which is a
-> >
-> > No, AI talk about "vdev0buffer" at beginning, never said vdev0vring1 at all.
+> Switch to system_freezable_wq so the work is frozen before any device
+> is suspended, eliminating the race.
 >
-> This is the code the AI quoted in the review feedback:
+> Fixes: 55576cf18537 ("regulator: Defer init completion for a while after late_initcall")
+> Signed-off-by: Joy Zou <joy.zou@oss.nxp.com>
+> ---
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+>  drivers/regulator/core.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
-> "
-> 	if (!strcmp(it.node->name, "rsc-table") ||
-> 	    !strcmp(it.node->name, "vdev0vring0") ||
-> 	    !strcmp(it.node->name, "vdev0vring1") || <-------- HERE
-> 	    strstarts(res.name, "vdev0buffer"))
-> 		continue;
-> "
+> diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+> index 1797929dfe56..d5d24a940f31 100644
+> --- a/drivers/regulator/core.c
+> +++ b/drivers/regulator/core.c
+> @@ -27,6 +27,7 @@
+>  #include <linux/regulator/driver.h>
+>  #include <linux/regulator/machine.h>
+>  #include <linux/module.h>
+> +#include <linux/workqueue.h>
 >
-> It does not matter which identifier we use to look up the AI quoted code
-> snippet in git log, the important point is, that the aforementioned code
-> snippet never existed in the Linux kernel as far as I can tell.
+>  #define CREATE_TRACE_POINTS
+>  #include <trace/events/regulator.h>
+> @@ -6882,8 +6883,9 @@ static int __init regulator_init_complete(void)
+>  	 * we'd only do this on systems that need it, and a kernel
+>  	 * command line option might be useful.
+>  	 */
+> -	schedule_delayed_work(&regulator_init_complete_work,
+> -			      msecs_to_jiffies(30000));
+> +	queue_delayed_work(system_freezable_wq,
+> +			   &regulator_init_complete_work,
+> +			   msecs_to_jiffies(30000));
 >
-> But as far as I understand this, I should adjust the DT to cover the test in
-> the aforementioned non-existent code snippet ?
-
-AI is not 100% accurate. Need focus on the problem itself. AI find the
-problem, vdev0buffer, not vdevbuffer, which is really existed at kernel
-code, which use strstarts(res.name, "vdev0buffer").
-
-But AI's provide reason or create refer code is wrong, like what you quoted
-AI review feedback.
-
-The same problem, AI provide difference report at
-https://lore.kernel.org/imx/20260715071741.79CA81F000E9@smtp.kernel.org/
-
-Or another words,  AI found the real problem, but provide partial correct
-reason.
-
-We focus on the problem itself, not partial wrong part of reason.
-
-Frank
-
+>  	return 0;
+>  }
 >
-> > "   Looking at imx_rproc_prepare(), it iterates over memory-regions and checks
-> >     specifically for the name "vdev0buffer" to skip processing the vdev buffer:
-> > "
-> >
-> > > unique identifier, but that unique identifier exists only once is the entire
-> > > history of drivers/remoteproc/imx_rproc.c and that is as a code comment .
-> > > That proves my point that the aforementioned AI generated review feedback is
-> > > not based on code that ever existed in the kernel.
-> > >
-> > > > >       vdev regions are vdev0vring0, vdev0vring1, vdevbuffer and similar.
-> > > > > "
-> > > > >
-> > > > > It seems the AI hallucinated something which is not based in reality ?
-> > > >
-> > > > git log --follow -p linux-next/master -- drivers/remoteproc/imx_rproc.c | grep vdev0buffer
-> > > > -		if (!strcmp(it.node->name, "vdev0buffer"))
-> > > > +		if (strstarts(res.name, "vdev0buffer"))
-> > >
-> > > "
-> > > if (strstarts(res.name, "vdev0buffer"))
-> > > "
-> > >
-> > > and
-> > >
-> > > "
-> > > 	    strstarts(res.name, "vdev0buffer"))
-> > > "
-> > >
-> > > looks like different code , and the AI reported "strstarts(res.name,
-> > > "vdev0buffer"))" which never existed in drivers/remoteproc/imx_rproc.c as is
-> > > clearly visible from the command output you shared above.
-> > >
-> > > So, what exactly is the problem here , can you please clarify it without
-> > > referencing the AI generated content above ?
-> >
-> > The problem is simple, node name should use
-> >
-> > 	vdevbuffer: vdev0buffer@b8400000
-> >                          ^
-> I see.
+> --
+> 2.34.1
+>
+>
