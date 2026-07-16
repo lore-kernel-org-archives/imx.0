@@ -1,88 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE68314A6F;
-	Thu, 16 Jul 2026 16:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC83383328;
+	Thu, 16 Jul 2026 16:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784220072; cv=none; b=HEKvn82acLIDiN1SGR0bdLfLzq1wzxWHXr3bDJCwSK+mfRRu7ZrY6/R8PRyyliDt8QMvHSMpgSKJaVZ49sFdfF+Jiw58/9gpRR42Xe0kD6JxQFLoPmyTTh4mdhnuajkoG1ao1fMp2Mj7ahI6FFK0ZJXJJXcgqGWq2kpYlyOp/UM=
+	t=1784220258; cv=none; b=sDR/ETRkpSPVqh4eeFb91VJ6QoFH7YnQSrU36ifSWfDe2mDllYGAeoJHt1Y6sWcUsAYr+oAS1bkVlcpfH7V5wrAoH2uUa80FNx5bEgdPR9oboF1+I1uOH66YU7KkXh3hqhDw35N0qTquedzrD2c6EmuSM/IrtqcQF0oFRth1uTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784220072; c=relaxed/simple;
-	bh=Qs2htlUW0dPVM84nKGOGKjeZztBuqvLtB5UPJmqhRJk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Vr7a+KQ7YQxEXnoYf62OyiNWeDciiqqarZ3glgM6mqM/MpRNOoX52oAgLMyVuaC4Lpa7kXGV3P6MEv8qTDZ1GlmQ4rM667xTCAAQl10bPlrJCh3eBlY1yvLM0ucI9/HzcV3O8tCDtRajHgZz1g/vhdT1d1sSWLXzrWJgEN3yu+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MT+Yp0fX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784220258; c=relaxed/simple;
+	bh=U92FztNr8d9j3me6XSOeGW9RVf958zGBdqW3sqV4cJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qReiPTT37TSaDjix0yDSZfqlk8Pv1MxbjL31sGJbK1M7bKJ38qEnm8beyMt9XHcxHW28DQ7t6TWf6LGDRXnz+v4OB1G+ZOhWJ495lD/idkPdQBTlQUwKZbPKFaktQos9VIsZ9LjEKrTA1QwrtSifzMwon2tLqkvqUAsg6/IUG8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSVWybz7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MT+Yp0fX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EB71F000E9;
-	Thu, 16 Jul 2026 16:40:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSVWybz7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59961F000E9;
+	Thu, 16 Jul 2026 16:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784220060;
-	bh=88UMF+eU7HiAKdmWyHdi8ruaFAzo0R90LbSMbDbrqWc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=MT+Yp0fXYwTGnaSkIHjy79XOarEsKn3ydw7f9xPZP6R/37qfbxtN4MeTXYox9p9mm
-	 K81jwZd8nnHX6DbVK8xWFQ06ybwVlgK7Wd01X+hLha4h6NV8o0Hu1NTwINky05Bvlx
-	 Em7qhBhd4C6rfQqFHitDWmbAUonbKPS5161cyz1AENMb/2YDUL/VDxFd18Y4C1YhK7
-	 TAqft2VkXHf0nivVmzHnA0MqF50dHqGpudxL2b83oEPFdHMPqdkMzvj+mP7Ml4h30n
-	 sZMdqNnYIl/3f4PR1417cMt5bxFKYUTRuo1kYyj1B6YlEPoi/lpUzElPRW4w9G8tPw
-	 zCTwHvxfQaGxw==
-Date: Thu, 16 Jul 2026 11:40:58 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
-Cc: Leonardo Costa <leoreis.costa@gmail.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"leonardo.costa@toradex.com" <leonardo.costa@toradex.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Hongxing Zhu <hongxing.zhu@nxp.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
-Message-ID: <20260716164058.GA16414@bhelgaas>
+	s=k20260515; t=1784220247;
+	bh=KRQXasdSjh/IVyj+LLVVvuKUHT3n1CA/5KP9qz5vin8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bSVWybz7hoRT6SwmRrOHtV4PdMzz02I7aAxH9ydTXI3xq2ij/ySjxL7NobDNDmx/Q
+	 l6Ckz+/LD6fkpfqrSabZew2DjAM4oDQZ2FC11ziHvNXI9uCZQ/4k63fEK2pBmgpLeM
+	 7Qervo37/1gwY7R18JunzNEJfvtzWKEgzctHXQ6wkphF+N0UHmRki/A0UUNkvtAX1r
+	 mJEMhXsuCbcgXqi8JScXu9dxnNx+S18xanJWKwOUNFjRVN8wLfceYfYgV47j5lE1Nn
+	 Zuz6yeztWML3Udeycwve/w68HrGv4fL/zA6MgtJd7iMzjxrTJkGTRndNZJ1m+EcZ1a
+	 MJiRKzNIsdDAg==
+Date: Thu, 16 Jul 2026 18:43:48 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: hongxing.zhu@oss.nxp.com
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: Re: [PATCH v2] PCI: imx6: Add runtime PM support for i.MX95
+Message-ID: <aprkipjl3lpdn37dlcdv7wx6piepbbqjsd6ljfgpa5pmua2axu@etxjfuahtg3u>
+References: <20260708035928.580236-1-hongxing.zhu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <VI0PR04MB1200862BE9B7C137EC7C18AF18CC72@VI0PR04MB12008.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260708035928.580236-1-hongxing.zhu@oss.nxp.com>
 
-On Thu, Jul 16, 2026 at 02:15:42AM +0000, Hongxing Zhu (OSS) wrote:
-> > On Mon, Jun 29, 2026 at 11:34:32AM -0300, Leonardo Costa wrote:
-> > > We are seeing a regression on Apalis iMX6 where the kernel
-> > > doesn't boot in the newest v7.2-rc1 (it was working before, in
-> > > v7.1). The device tree being used is the imx6q-apalis-eval.dtb.
-> > > The kernel configuration
-> > > used is the one shown below:
-> ...
-
-> > Can somebody confirm that reverting 610fa91d9863 fixes this
-> > regression, or at least that 610fa91d9863^ works and 610fa91d9863
-> > fails?
->
-> Sorry for this severe regression. I have posted a fix that has been
-> tested on my i.MX6Q SabreSD board:
+On Wed, Jul 08, 2026 at 11:59:26AM +0800, hongxing.zhu@oss.nxp.com wrote:
+> From: Richard Zhu <hongxing.zhu@nxp.com>
 > 
-> https://lore.kernel.org/imx/20260708035928.580236-2-hongxing.zhu@oss.nxp.com/
+> Enable runtime PM support for i.MX95 PCIe Root Complex to allow dynamic
+> power management when the PCIe link is idle.
+> 
+> The i.MX95 PCIe controller supports entering D3hot state when PCIe
+> devices are not actively in use. This implementation uses
+> pm_runtime_no_callbacks() to leverage the PCI core's generic runtime PM
+> handling. The PCI core automatically manages D-state transitions based
+> on the runtime PM state of connected endpoint devices.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 
-My question was whether somebody had actually bisected to 610fa91d9863
-("PCI: imx6: Assert PERST# before enabling regulators").  I don't see
-anything specific on the mailing list, so I don't know how
-610fa91d9863 got blamed for the regression.
+Please resend this patch separately. Currently, you've sent other patches as a
+reply to this patch which just messes up the order.
 
-https://linux-regtracking.leemhuis.info/regzbot/mainline/ lists this
-as a regression caused by 610fa91d9863, which means we need (1) the
-details to prove that 610fa91d9863 actually caused it and (2) a tested
-revert or fix.
+- Mani
+
+> ---
+> Changes in v2:
+> Use devm_pm_runtime_set_active_enabled() simplify the codes and error
+> path.
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index eae495a1b7990..578410f262aed 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -130,6 +130,7 @@ enum imx_pcie_variants {
+>  #define IMX_PCIE_FLAG_SKIP_L23_READY		BIT(12)
+>  /* Preserve MSI capability for platforms that require it */
+>  #define IMX_PCIE_FLAG_KEEP_MSI_CAP		BIT(13)
+> +#define IMX_PCIE_FLAG_PM_RUNTIME		BIT(14)
+>  
+>  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
+>  
+> @@ -1973,6 +1974,13 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  		 */
+>  		imx_pcie_add_lut_by_rid(imx_pcie, 0);
+>  	} else {
+> +		if (imx_pcie->drvdata->flags & IMX_PCIE_FLAG_PM_RUNTIME) {
+> +			pm_runtime_no_callbacks(dev);
+> +			ret = devm_pm_runtime_set_active_enabled(dev);
+> +			if (ret < 0)
+> +				return ret;
+> +		}
+> +
+>  		/*
+>  		 * i.MX RC is powered off during suspend, force L2 entry to
+>  		 * ensure proper endpoint notification before power loss.
+> @@ -2121,6 +2129,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  		.flags = IMX_PCIE_FLAG_HAS_SERDES |
+>  			 IMX_PCIE_FLAG_HAS_LUT |
+>  			 IMX_PCIE_FLAG_8GT_ECN_ERR051586 |
+> +			 IMX_PCIE_FLAG_PM_RUNTIME |
+>  			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
+>  		.ltssm_mask = IMX95_PCIE_LTSSM_EN,
+> -- 
+> 2.34.1
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
