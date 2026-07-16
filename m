@@ -1,170 +1,145 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011023.outbound.protection.outlook.com [52.101.70.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FDC28505E
-	for <imx@lists.linux.dev>; Thu, 16 Jul 2026 14:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784211099; cv=fail; b=ZlNFsyuUdJVHIGXeu2FtSp8xe6lQNxyUtXNv33+EaOy5jPsRWhXI2pBVLvhubDq9wEjiXiFZZzMKzIi/S3G9h6VWVcfdJJUIateblL8zrptioAR8oe7uJhim81xZ3Gto2InV58zTrsHHloqlSU6XWnaCC4GpMt38bvT6oXRQMAs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784211099; c=relaxed/simple;
-	bh=oO8ZrEX93k90FWC7h6zdA2M2JBBzyrRtLnTJWYChp54=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Bp3r7CLjwtkndFG12tz1yqeoQy93fk6Vc2tbAMKSACJIkH4QkGkZZ9i2/mtzuNImK0xZdH3GIvSDST3sXeqamT2vntGEfqDoILWqgA6dPPbzTgIu/tIRJQUBpMNdv7t3gQ1VRSd3hdehCGBfOJdL/HG+8z33Q6LkgD/AjH/Pqf4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=uWkmBW8u reason="signature verification failed"; arc=fail smtp.client-ip=52.101.70.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="uWkmBW8u"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vyK0P4r6LX+LPn0JfbCpzfwfiXmhEGvQC06vYNw/qEieb4yyeucljSTHTZ8+xcKdcodXMAWqRtQATEVJVgLRsU9GcQhoSyTpYADdpjDIGltYjegfAzN4NodHfjx3EqUsqmvjjSyj78VuMqgvo2M+xx6lsNHi33yngGpspYsyWtPpDosxfeLWLNF3oKQoopOFDJKgDZlNQumfQmbo03B+HzjnLd2/NNqGGQtGlB+pDW/+1UNRVzGtosQ31xoG5AiNL8/+FC2vpZ9gPxe8mAuszQOLzMtVrHBLQYrNjULI111gsiQ+n5igBlETzN1A2jzm9ELIydskG9csxlCVgoOVjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RKzLSsOH9tQWd94OZAEJI1s5d32RAM4zheBnSGKawSU=;
- b=Sd9ezOaLXquwCpuy7IymHsPg2V7AkRRCSM0xOAAQx/+9A/73xSlwQFZa+G2EcQtIuMBvTFrmp+OTG397K02i3N9KYF3aik7X+Vvd+Q2UvPIksO63pi/S05rWxdhDZJQVA4OFLh3yJNs4FI6/j2xZfwysHU4fJ8qCWNSZiCRdO88v0q4IvjPsBvHwBZkUGJNrwnGCwJdjJ+N3BLV/QKwmzUEF6sVAVyhEsJwThR5W6Tjya0vXq5vGldnCX+7snNv4/dmVLbyMiYNgg9GJPmS3CrpW61QSFAhy9b0fGkgn6ZhVmV+1iwRYD4d2XkzHznPd71465/3ZJ8MGHzKTrQe9ZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RKzLSsOH9tQWd94OZAEJI1s5d32RAM4zheBnSGKawSU=;
- b=uWkmBW8uvJHyUkCUxPPfCarC4gOxx3pcj87oT0Kh75tog6pibDOs7bVMI5vjJ/k2uiH4YmdAMSPNQ5jDwFwR6tgKBqIoBFiLHCfR7U+f/GYT8CaSnzsM6Ytzdrrn9Ozd99xMAx7JAUts18F4UZSPaxiPj1gEnc2Ilpoh9sFN8/rXt1pCuwTokSRvWa44HLwd79aM0lmoeH5hhh39cBy0rbtncKYBPIJLZngwjcA4UTL1UJfUr52UPDuFQ2GuJmoeczT8umSIh8QP7vKrPqdDoGnNT2S7STFoZBEEV7ycgsKgi2eji7YBwKDJKAFW6Tn/R/0XDhA4nNp0jwA9e0Ycgw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VI2PR04MB10689.eurprd04.prod.outlook.com (2603:10a6:800:26f::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Thu, 16 Jul
- 2026 14:11:33 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0223.011; Thu, 16 Jul 2026
- 14:11:33 +0000
-Date: Thu, 16 Jul 2026 09:11:24 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD8C41F5CB;
+	Thu, 16 Jul 2026 14:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784211874; cv=none; b=oe9aUeg/Dqj5DmBbkfrnpo2xBtZdTgjGxnWLK26G9hvPInhUaVWO7AmDmAJGedpjArrlG6g5yhlqSdEAeOZsr6PYrLaKc8Dh+v/LdE1fmmvbDBjOslx0EYLehZnF6u3bRT5NOQ2MJg2t3xQZ5j49CzKyzB4yhd2FuW0iasi4oJw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784211874; c=relaxed/simple;
+	bh=RY1oakEHZPcR04P3E/jQOjwC71U3ozImnIbLgrsEf3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HvGVlXVWaKVjiPirE+ejFwSV54shIJYR17lS2VTuGshztOO83YpwQTBlrmmYl20pl89m4aFEAiMa+/bLrSNGy3iTppKcYv0CLxrkTXw9smNXGjo7GJ8zrdc2ujBVCCNtaIE0PVio62Oa7VQrLRGRPWz5fJuh1aGudaqyfjFRfic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id 62DE9F40D31; Thu, 16 Jul 2026 16:24:24 +0200 (CEST)
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: Srinivas Kandagatla <srini@kernel.org>
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>, Ming Qian <ming.qian@oss.nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] pmdomain: imx8m{p,}-blk-ctrl: Add MODULE_DESCRIPTION
-Message-ID: <aljmjGXpbTOvdvvg@SMW015318>
-References: <20260716132603.2327847-2-u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260716132603.2327847-2-u.kleine-koenig@baylibre.com>
-X-ClientProxiedBy: PH8P222CA0014.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:2d7::20) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Kalyani Akula <kalyani.akula@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Johan Hovold <johan@kernel.org>,
+	Ronald Claveau <linux-kernel-dev@aliel.fr>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v3 0/4] nvmem: fix a const-unsoundness in reg_write
+Date: Thu, 16 Jul 2026 16:24:07 +0200
+Message-ID: <20260716142415.28718-1-linkmauve@linkmauve.fr>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI2PR04MB10689:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1aadd16c-7c63-49bc-0c11-08dee34423f3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|19092799006|56012099006|11063799006|6133799003|22082099003|18002099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	dR2ARhXUe+fIeua4rNee1+bNhvJOoEujqH+8waj+BVaHzzAQ5MbXEK+FY20K4NrO3Sntj1HopY2VCMBiOBGZm0m8ouUtw4BbanJQErGZkiHK/twvKSIFngheQiGJuPDsWcGnerEtXg3Vft0JrISE5IQQHhNn8ZNppzaEyw7voKv82LGbP0d+AHXqu2O1bTGE3g3fOawZjtttOgjDd1WjJnMAeLCtILoZLrmftYXy+U1e8QZrw3NSEPS0HE8z0Way3h9fnVQzE+6+1v/ABXrqQXsNqWrRC9oMSeywzUOTmmpTHPrCJ5tYWnHu5pOoKX9lZKC2ghRhrkHPG1wp8WeN86U9ogOxqZL3n4em+6JlSaNdnv23FeqJnlBk33iZifCTnlehXIsOekb5VJLqsJRobMxSK3A0TkQ4JCTEuBCv30XgeQIwLUWQKDZ+Yr/fHX8OJNFazbbdEbdceK1i3xk+DweYg0UK0hKpIaRT1jx/DnIEnUQ3aNTgXbWqZgHcZlfr46l1pM3NSWtp2rH/Yv2EAiBqWjTA3iBNJs/otjw+40kaD3+FqOjC3qMTDH4O0sPBuCYPYn76wHNChL/W0YhZ23etdAaw740TgliPiDwhYB9TFeaG2K4lh9mR3Y0/tKIHW8th+TbZKTyQFrMRFK3dnrr34RG2LCC3IWAlReZbaB0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(19092799006)(56012099006)(11063799006)(6133799003)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?+XRqxNhWFacUgw/kQpxofPiYv47MTBjDw9pEmF9iS72I7QepW8/Wb2UxHg?=
- =?iso-8859-1?Q?RLOjZLfMcTPC7ZYBs9WLaGm0L3dxum+jkmmDizws9/dR8helnuPzNahcbH?=
- =?iso-8859-1?Q?1caBwcpyVj3hNGCRKd/nfpHUW2VuxtTPrWNOGnVfvEXGySDfXOf6uS2U+G?=
- =?iso-8859-1?Q?BBbRA7WqS09KRrxIXscuJ9Nqyh8j4g9d7MBAg0HBkPgKX6lhuzsjT77h6A?=
- =?iso-8859-1?Q?DrsCjmiOmBCn0zI9/l1lVEu2A8f5AuCLOqKqfFPQn0dl1J8C+bQp2EL5mc?=
- =?iso-8859-1?Q?72W7tHPh3yxw8fJiAccv90dIYLuahBw4LnbyC0D9ZHvQ2mf4H1l5WQO33q?=
- =?iso-8859-1?Q?19T6afrzvyWGTVS0vDgsfk0WTUISpwtlbHyJkeH0KexQb5ZfdoLPQnOHox?=
- =?iso-8859-1?Q?1AoIWVJKUNF7iJrnmxTL9XJMvxPXI48cNtMwGmSv5pN1QlA7xelgeLvxRG?=
- =?iso-8859-1?Q?snC372dZpUSfFvKwS9HLP/vUn4WXiv5rZ0VM/mB3Edo9duIlC99Xa2RHGw?=
- =?iso-8859-1?Q?gYTqab1Q0+qD5KJfW8B2jkno65UpdAx2BriK2wKyRxxnLBCnarGTFiVn8e?=
- =?iso-8859-1?Q?XklagVCF75dvsUOkpfLw7Ag1q9UlilLpyFv10OQjIo7hEzGO/cZxa8HdPD?=
- =?iso-8859-1?Q?cijueA2CrozI+3JF/NblskCAMg2sXd6eUqUnDQ0SagxURJy58zsdcfM2Yx?=
- =?iso-8859-1?Q?zVZQmXIUAvVGhXKvL+s1Vs2e4H258R14wEie++6fQcWVMjph+Z4N+lD79o?=
- =?iso-8859-1?Q?dYzpnB/Ge5D5gyIj2APip0iLe9xVVuU6x8VmYD9JqiBa2haKbjmGZVn+H4?=
- =?iso-8859-1?Q?T/z3sUOyQY59vug2KtbMGei4GM9CROITmgMjzrY/gvvzC8GGqjDvEZLydd?=
- =?iso-8859-1?Q?2kj2HqbhfR/5ThbLZSyoaoISHi67ummoInCeI82lwGstwueLSytPY48WT+?=
- =?iso-8859-1?Q?lhpIPEwxMWygHRwkLxdRRJzkCXhkmG7sAdusbfXYRCTGF0CZSZMKxQToYl?=
- =?iso-8859-1?Q?QD6u+oBiCuUzgTmcUCIv9ne+QAniHeS8fpbQRKmxPemK5cw/tZbVmsxz7n?=
- =?iso-8859-1?Q?GzZnE7TTU204M6An4m5mwvAMYkcDzdb14d4qIS8Hd6SecD+rTkw1AscFaN?=
- =?iso-8859-1?Q?bFWX6I4hd7nimXElj7EMTEW630eaVPFV3bwSZ9+jO+5BuHZsTqAwnG+MFN?=
- =?iso-8859-1?Q?KLzwvam/C0QoyFv9w7T8FRKrRyvwoJHKIJMGoSstfg6T8NQ/u5pvUuWmGx?=
- =?iso-8859-1?Q?t8SLuF9KBLB4WdhR4b7iLExVqIfVeF84JEHJXXLqgdRyc7ZacEixha/o/G?=
- =?iso-8859-1?Q?NZ5cmoxHZ7cqvsKsO7Q4k467OYKGURTH8FqNDQ3RI730uWkc/pmFQZQY3z?=
- =?iso-8859-1?Q?Ajkk83Fx5ANzc8yLOakMX4gH67SiUwAlzp4FGB+KksW7sH8eR/B6rLgdvV?=
- =?iso-8859-1?Q?6Y0PqKoqDbWe1FGJ5zdnNbD6M03hSBy4mLYepmyYRHyQwf0pnpK/QAhG45?=
- =?iso-8859-1?Q?IfL4VE6UcNxFC/RrB59lMnq57ZSXWoV3UlRyIXRqcLsXJjBlLYxOQuQZDe?=
- =?iso-8859-1?Q?c/LxbYYfsh2nB9A8u7lR144Equy/17vuRLr8wjbc/ZQD6V/UyaXGKRKeRG?=
- =?iso-8859-1?Q?n6X6m2KZRFqudjpTYgIMDHTC+ZK4LTwsfAwCdZqNfkCUoOVl/sUxeRS1c7?=
- =?iso-8859-1?Q?pfNMVmTVwN8qGk3AcpzgaOUjZC+NJcT+HKZyOszBS3jS1widYgbm0hW4D2?=
- =?iso-8859-1?Q?qsX/MzpXryJm4JrkK0i9wfRZ90IJFM2IAdUqulQAhKF9zKwt0aIwXq338B?=
- =?iso-8859-1?Q?0rXEd3DDTmlT92ldkDQM9EzpiVYKatqfbAPiNPL9zk1UXYg2n8H8?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1aadd16c-7c63-49bc-0c11-08dee34423f3
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 14:11:33.7232
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T8/UYRfi40oAcJvXLUiwnJFPa6gqwteK0lVP6TT6ZQcJF53bhKSuF8Yc8A9PPJdbhL/NCwE4msGBJDqKk1xHJ9hlpB93eXRLwL8Fm1TpGDA8JRak9mmdPlLlTtOkEZ6h
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10689
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 16, 2026 at 03:26:03PM +0200, Uwe Kleine-König wrote:
-> Without a module description modpost emits a build warning:
->
-> 	WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pmdomain/imx/imx8m-blk-ctrl.o
-> 	WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pmdomain/imx/imx8mp-blk-ctrl.o
->
-> So add the required string to these two drivers.
->
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> ---
+This callback used to take a mutable void * for no reason, which causes
+the compiler to be unaware that the val buffer should never be modified
+by the callback.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+This was found while drafting the nvmem-provider Rust abstraction.
 
->  drivers/pmdomain/imx/imx8m-blk-ctrl.c  | 1 +
->  drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 1 +
->  2 files changed, 2 insertions(+)
->
-> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> index 99d100e1d923..479789009c7f 100644
-> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> @@ -953,4 +953,5 @@ static struct platform_driver imx8m_blk_ctrl_driver = {
->  	},
->  };
->  module_platform_driver(imx8m_blk_ctrl_driver);
-> +MODULE_DESCRIPTION("NXP i.MX8M power domain driver");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> index 3f5b9499d30a..d255c20f58e2 100644
-> --- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> @@ -890,4 +890,5 @@ static struct platform_driver imx8mp_blk_ctrl_driver = {
->  	},
->  };
->  module_platform_driver(imx8mp_blk_ctrl_driver);
-> +MODULE_DESCRIPTION("NXP i.MX8MP power domain driver");
->  MODULE_LICENSE("GPL");
->
-> base-commit: b8809969e1d7a591e0f49dd464a5d04b3cf02ab1
-> --
-> 2.55.0.11.g153666a7d9bb
->
->
+Thanks to the guidance of Andy Shevchenko, this now introduces a new
+callback and deprecates the existing one, with the goal of renaming the
+new one into the old one once no user remains in the kernel.
+
+Changes since v2:
+- Link to v2:
+  https://lore.kernel.org/rust-for-linux/aljAqBNVXV1aVJqx@luna/T/
+- Rebase on top of linux-next/master.
+- Fix logic error which made all devices read-only.
+- Remove a blanket cast of function pointers to void * in
+  apple-spmi-nvmem (patch 3).
+- Also fix constness of write buffer in firmware: meson, which is used
+  exclusively by meson-efuse (patch 4).
+- Re-review all changes to make sure the passed types are more correct
+  than they were before.
+- Actually test with COMPILE_TEST, which I forgot to enable beforeâ€¦
+
+Changes since v1:
+- Link to v1:
+  https://lore.kernel.org/rust-for-linux/20260715175229.24672-1-linkmauve@linkmauve.fr/
+- Removed all changes to other subsystems than nvmem.
+- Added a new reg_write_const callback instead of changing the exisitng
+  reg_write.
+- Deprecated the existing reg_write callback, it will get removed once
+  all users in the kernel will be done migrating to the new one.
+
+Link Mauve (4):
+  nvmem: core: deprecate reg_write callback and add reg_write_const
+  nvmem: make all reg_write callbacks take const void *
+  nvmem: apple-spmi: improve calling safety with wrapper functions
+  firmware: meson: pass a const buffer to meson_sm_call_write()
+
+ drivers/firmware/meson/meson_sm.c       |  2 +-
+ drivers/nvmem/apple-spmi-nvmem.c        | 18 ++++++++++++++--
+ drivers/nvmem/bcm-ocotp.c               |  8 +++----
+ drivers/nvmem/core.c                    | 28 ++++++++++++++-----------
+ drivers/nvmem/imx-ocotp-scu.c           |  6 +++---
+ drivers/nvmem/imx-ocotp.c               |  6 +++---
+ drivers/nvmem/internals.h               |  1 +
+ drivers/nvmem/lan9662-otpc.c            |  6 +++---
+ drivers/nvmem/lpc18xx_eeprom.c          |  6 +++---
+ drivers/nvmem/max77759-nvmem.c          |  4 ++--
+ drivers/nvmem/meson-efuse.c             |  8 +++----
+ drivers/nvmem/qcom-spmi-sdam.c          |  6 +++---
+ drivers/nvmem/qfprom.c                  |  6 +++---
+ drivers/nvmem/rave-sp-eeprom.c          |  6 +++---
+ drivers/nvmem/snvs_lpgpr.c              |  4 ++--
+ drivers/nvmem/sprd-efuse.c              |  6 +++---
+ drivers/nvmem/stm32-bsec-optee-ta.c     |  2 +-
+ drivers/nvmem/stm32-bsec-optee-ta.h     |  4 ++--
+ drivers/nvmem/stm32-romem.c             | 10 ++++-----
+ drivers/nvmem/zynqmp_nvmem.c            |  6 +++---
+ include/linux/firmware/meson/meson_sm.h |  2 +-
+ include/linux/nvmem-provider.h          |  6 +++++-
+ 22 files changed, 87 insertions(+), 64 deletions(-)
+
+
+base-commit: b8809969e1d7a591e0f49dd464a5d04b3cf02ab1
+-- 
+2.55.0
+
