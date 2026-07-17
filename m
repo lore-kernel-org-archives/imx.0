@@ -1,46 +1,46 @@
 Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011048.outbound.protection.outlook.com [52.101.65.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56933D9544
-	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 12:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE74D3D9544
+	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 12:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784290013; cv=fail; b=gLgVsbDyp8A40A85yedvVFzM4DqpZe1CgoY/5Qe5DZTwhRO6lk8fJB8dSVkq9VEXJ89u9TJ4wwGV4z2/oS9ME35B7X9PO586wj9qEcEUudg1HvmserS1lrNA9WOC39EIZJ5uYm6YMKcHTVfN/RvV4UuytjxEkmHosXgbmvUgzIU=
+	t=1784290016; cv=fail; b=Glg0ynIGedJwl0qVDVqXRHY6JeSog+0sGs/CmqGYfqg+BAB1iNbFv8H8jNZemHjFLVoyRBKJIVzFEUU6f4EAK24xtpTCnS5UFFTzyLRnleHnLq7nYDV8toaWMlnD8iNII4MAFB1l+6M/geeBve1Vl1yszv/nJem2z3zAlvuDfyw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784290013; c=relaxed/simple;
-	bh=IXXxKf48Rci7Em0Yp03cfry3lz2uu76rBe+KYrkNDig=;
+	s=arc-20240116; t=1784290016; c=relaxed/simple;
+	bh=rEwIz4V7Kbim2V+A7yb1sRiUGVtC0ajYed145pPqyXo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=q57LSMbFVW0kAMNpXossUGWqHZc8NFiy5mbS5P09oQYQfyQVT/s/wjx1puBZhzHqjpO3QeNpCGA0M5jV5n0e/xIKFrx5p9rsIEXrox7WMvjMWjISOXORYcpbgyVKRbKe98KS+kZ1GyL34ssKUrbHkSzbQyUTJpbQpy3EjxaFA4U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Xyv7E4mc; arc=fail smtp.client-ip=52.101.65.48
+	 Content-Type:MIME-Version; b=ObgQr/fEr1UTirxEfq7HTk2WWG8P0onqJPb/sq8O1EwB3Kh9ONZVf2ptvzWACnESWpDLAtlg9y/Q0dTx8uGETzQfU841BgFLGsh+PKUtoTD/tRzd9LL3RL1dSL0rj85o1cXV4keu2yQARt4IbisvBG/go58D4OUNwMmxTRZB7Yo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UogNj0zr; arc=fail smtp.client-ip=52.101.65.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Xyv7E4mc"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UogNj0zr"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XaaHqH2LC19UMf1mlaoKDv2GZnIh6A7CT65btW0O6dPnuoqnv7eaqX/823+1I6q1cZKr9vlhbnN2XjN2zfr7QugiiAVCpbAhkKlXfvxAkGuOsYrn1X1sE7cuSCno7qXywQEEiBzHEZMLzq7ZXHrAY+SdCROqMNH/uwmQ28FGRy7AZ7zZa58t/9ZgVoAKdG4Uu1TVB3yZrXlg7YeVY/q25yTTu6oeUP5fnv/XorR04I+wia1bVGuPx4braFUPGl+kAZ3789cuNPWigzW1m52OARnpE+R0q2tp8b5gpWo1wWkAdt/HYVn/ichm1if4XxzP/p6O8a76ZHISvT+pIFryMA==
+ b=HsXFPZXqjd9d9o4PwFv5lRKR9k/mJ3A6Va8j3SdzXU+2d8itf3SKfF0T9Oo1BSVe4tUPUUoD5aPm09+NzLg32vfyqayH5YsLGdvk+GymBtb4vozqYC76hNCau/WTSciLB2U4D0gKWBqEdm+tEAvX5Lkp+7d+B7dUwJFvxLNY8+EBKeS3WSWWxfQYtxDC7A3W98mJKte7JlJZrK4LNjBS/aAkHHEinZjkEH0y4bEhmWawk+4jIy6zOMIgFWrK8u+PBHpSSZdQgv+BSPfdTRFZJEQ7uWJhSjR2Y+TSjEQVTPQT7LzJ72POet/BXilESn9zR4/F3EhYTtwRp9NIrAB8rQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SiJu2skQlEWNiAa16mlqt3/KVHzf5IMcERMD/a+0AhU=;
- b=fqwtXM7w3py6nVz1KLYF3WmoyEjTzVo6AT5RFXUp8Bxoj3EH8JfifVGxKXJT+4OQ39dHQQjaxC8HtYR+GDXOqe1us8Mx+hAE483pyuVlE+eqmVXqA4AhdsL1tE6qn/SKf70NhmwHvVfLr42lb4fRCLrCmBdb2O+1DtMpSH3RSoBkYtIv/WtsNetYUrFo6YY1X9Nb9XhWZekRD60oM1G7mqU9Koz1+L8fw2eEuyZ7Z6U5h8mG3dimLFBKj8d0T+aTsxcxoDDUMuYrQlPa9ngrAtGvtxIWh9sk1xA/SNROwJwfOry9KnP8va5ZGIUULNiPgF21fa+y51eZsj2D25UDOA==
+ bh=esadwtDRqjPvzbK6oeJ7VNhxcfXPaLoA0qMrKXOsIn4=;
+ b=f9WQdDA0UC8mXXMTsyeLlTniYN5wwX/gwMepCg7Y0pYACgbPl2H6GZJXv6HqG4erS7yebyoUSOZsqs0mBVTwjmFJKlGiMuVpNXMqtSClTHp0WtbDeXzLUSFPe7AbnvWnWFqxGajxOyR049agFANB6dOLXMfEeaRf6ghtDlN0Un4x1+uRFdF9ivNvT5ao78OAUdmI2Q8YtY/sPt3t8bPtXO6uFZuN9aUUHi8C+NU3Os9wOe4t897Rpk3TuUodkWixHKIEKKWuRQOcpglojRvpZHBf4I+niYRUJHuYzMGWiJH/mB6qOJz52JjRMUCJVrt2L/tHzuCKWHRuC+Gkfgd0Wg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SiJu2skQlEWNiAa16mlqt3/KVHzf5IMcERMD/a+0AhU=;
- b=Xyv7E4mcCSYEismaIRw+TxGyhpcMMr5so13ZmYYhBDPz5YSoexIjIs40rQDDouTylgpoAC1IizwS6HZG3/1q/O4aS/5N5ppSkT0ZyIeLKK1yU2LQRjBGqRZxpB2FyjQdaCHBu/lX5ZLWAXs2dtShFUiW/W891A9rlg7sALP0fXySJRk78a1MFElPcllhfeIQusIp0sNhEP3oxx1bV08p5+QuBCNUO9tNmU6M5a/LoUl5XyUM0OUu9Oqj852ks0LkVbyunD+gSYMSCQ1qOOc9xfCRwVOMGb6No8QpQk/mfjq1wWwzGd+0DHAqWxRIIB+kN1TUvBS35YGyN2kmazw3rg==
+ bh=esadwtDRqjPvzbK6oeJ7VNhxcfXPaLoA0qMrKXOsIn4=;
+ b=UogNj0zrq3uv+2dfW/vFEPbxW91PkyC8G/FVuDJD1y/0eYbOffA6TwtqNoH6IkIiIiFnQyXvIV69C4QWFcgF+5h51cKLguIX7muvbZO+HaoRXuLNwyTKvUWSaAieulw6Ew/AzAk7QaOh2P3RTXeSHL3h3OuTJWdVC08fRtamEHndwvRa++L3tFfB8ZSqmtTZuD3K3GgnZHykw1M/BRpTM+vxdLTaAjxoqQGAsNsqPcn/RDO+hkEnrgQlt/YV7OZEwglKP11lvmd7d7TPxEeOLnPZRCF7i/tpFBTBVKot+Pv1b850UO7tuT0Poov/D7e4OKeEGl8PpDGxB+i7ySbzng==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
  (2603:10a6:150:319::13) by PA4PR04MB7645.eurprd04.prod.outlook.com
  (2603:10a6:102:eb::14) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
- 2026 12:06:48 +0000
+ 2026 12:06:51 +0000
 Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
  ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
  ([fe80::1739:3404:2175:33dd%6]) with mapi id 15.21.0223.011; Fri, 17 Jul 2026
- 12:06:48 +0000
+ 12:06:51 +0000
 From: Ioana Ciornei <ioana.ciornei@nxp.com>
 To: Frank.Li@nxp.com,
 	robh@kernel.org,
@@ -52,16 +52,16 @@ Cc: vladimir.oltean@nxp.com,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux@ew.tq-group.com
-Subject: [PATCH v3 01/11] arm64: dts: lx2160a: explicitly enable serdes_1 node
-Date: Fri, 17 Jul 2026 15:06:25 +0300
-Message-Id: <20260717120635.2118610-2-ioana.ciornei@nxp.com>
+Subject: [PATCH v3 02/11] arm64: dts: lx2160a: extract the PCIe nodes into a separate dtsi
+Date: Fri, 17 Jul 2026 15:06:26 +0300
+Message-Id: <20260717120635.2118610-3-ioana.ciornei@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260717120635.2118610-1-ioana.ciornei@nxp.com>
 References: <20260717120635.2118610-1-ioana.ciornei@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0100.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cb::14) To GVXPR04MB12290.eurprd04.prod.outlook.com
+X-ClientProxiedBy: FR4P281CA0097.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cb::8) To GVXPR04MB12290.eurprd04.prod.outlook.com
  (2603:10a6:150:319::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,134 +71,446 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|PA4PR04MB7645:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2126478-c706-4692-b11c-08dee3fbe132
+X-MS-Office365-Filtering-Correlation-Id: 5cdf7b5d-3102-4bf0-99f3-08dee3fbe2b8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|19092799006|10067099003|11063799006|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|19092799006|10067099003|6133799003|11063799006|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	9VwY+0ed/Dx3fp5JFMB7nG8CP8xPGVYTKcv1ePBYXKFa3TKa00Y+9TUZbWhhhheTNfvVYPfr6dbCZsEYn92bbUdgGL+8WUfwov/J0ex7aQwxsSHAOZrvBC5dZtEAHxFrK3903gW3Z2FtAHzOOhWxm0ZauGZrxtTYBXs741vK6gzc5JL9r4EI91WUUbijwZi2+XU/zUgCo/WC018vHsLupfSP9N6AnSnKEj96NOfNPwS7hBja471prcENCno/Y3fwXQ35Qb6VFnavFKvH8k/gJ9hiy0AzMuCQiH2MKuH17f4SfzMGJNUcot5G6byK48LRFKnjQ8VpBpLCid+brkXPQtfyQwPuPt6gXzLJzOb2v5C8G5aPdFOZul24xLTxtKOS7vT1EV4ALma8wZihNhfQW7MMy0q9LLVdlBw5J7RB1Xs32FASYIHISq3tFJqdpBkkT8N6p4hsqWuKUNxjlo9fWmU9bjlYaf2o6EZT2pdgkdJLEAR2MhtIzzGeZEhv5Wpu7yH7/2B183l8Z6RQnLmUoZ5/PpzM7KFmm9kxFY+ad+mVhxtxHmbY2oQZ5SVssBvhHK6XrAkGayOF5sIzC8mLzTM/fBzsx+OBaEKmUUOexyzVW8Y44Cuqga1fxfhjmucNh877r1ycmsLuzWxGiwdrkb4HEdNBR/qiQp7Z2UXlXtc=
+	6d1auUTvtCyyxnscsG5cG/ebMBKvhr3yls+Vv4BpCIkyHBg+iimznAQSVSRgvc+YFiw4mIEdlQqCRLEvkvcK02Z1nANt2kYq8wYkz9azvhBbD0SNoPMbnjegfemaEMr7fFJfotcjG1619hPWtS4QLn/eY+K3tf5es9vD7kXvqXVfR4tml9OUsJG4+iltPs0NXec0rpz1oromQ4QxbXkVz5XRIMGOtwjdTTwNxQn0+xjFiQxNPk4X6QTAnnkHPzmnyrcEY4T1FLKY5RXaCR4ZkJLq+molky7rBV8ySIxG1CLM+2c0HoFVv2vjKplw8FYaSMYvgRMB5J7ulPuAPdGR5bwQ2dzqOh5Or8Q58n1AC9+K22jH6AIvMfjGrfyjPtBKcDl1Z3fmtfF2725l7GXcyFmQDCmZWbxroK5E9WxlGZfz8g05WjS02WigP2BX/7KPzrmZwjuthsaoMspv9dgGwo1gRiGAppssXgJPgxqX8JSyvUrxVtt/f8pMWWFpkbD5pkmjZi/5jt57J3BU1PrUzn8tXwYHzRPpknBnU69FSH5ElRLDx422Da0q8hn5FqK9SfHIomwCHFp3Q2f2dbBgdCmB0sdsdXIMjpxXPyQSHflZhEcxgQsr/X/PoQ1OeC72InQAI2CEdTdtlW9NY8Sy8wL1aPSfoKa0aXMBIrf/MRc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(19092799006)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(19092799006)(10067099003)(6133799003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?U9sPuWADyeG3XLKvFEsVrPTWpFIxqK+/ptn7HkaojwoaicT7IurG9H5hU18R?=
- =?us-ascii?Q?NjiuASJgyZ94EOX9rFXGTmreYbD2r0SqE3wnG1szNiLC7BQC/iplImeGvMG7?=
- =?us-ascii?Q?35vIlMeifioP9KGMFTQWUfMb0AEqU1yaS+qQYRRml6Xhrv3ZAGEzOZAtb+Im?=
- =?us-ascii?Q?xeUq2WlB3mJrdlNbBztqr6OTIaCQWpess+cB2sqFJ5zRYJwLcl/EgABExr0Y?=
- =?us-ascii?Q?zHs0fjKT+sR1eDXhM89PlO/KCp2zT38TodbfZXkTzG+c5nBKdpSCQzBzxqrY?=
- =?us-ascii?Q?8aLjGDAHb3uGaIIhUQfb8CgF87vnxSO0Yq5gZ2hUt3LLzBARKumVon5zZ0i+?=
- =?us-ascii?Q?d8deYGUTEEG+ldK8gJeM1exokIxRQN2bYwvgKhJkvF5ZAVR6X2NaWnlUvG0G?=
- =?us-ascii?Q?6UVUSYpaCMA32reTS4rdZDSYDDEzNIUMaWEZBQvOe8yO4uhEe7RDJTIO5DGn?=
- =?us-ascii?Q?wYTo81Gqed5PTcvqeyiiEHYLmQlEw4h0o/XFfHe9TVvOqxS6f1KKRSNM7MsG?=
- =?us-ascii?Q?G0sTyoov+k1uWOi0sJkJ/wuL2Cw0b+omN6KhAiP1L6nHQu7aVKJoYJM8a570?=
- =?us-ascii?Q?j/KOH/X7KE3DoBZr5i26Z3W08/L+yXDTsU7KE2aQkuxHdM48iQjeiZenYdOu?=
- =?us-ascii?Q?jDAK3YB/z6MTsHud6ffPQSkRsxfVIfCWvIcKA/B4uMOF8CigAke5oZdEFyn9?=
- =?us-ascii?Q?wQOXte3cBUMd9WL5rO5psWiDJz9BO6SG4iEw8NY7nlz+UZpIfhoKLAXOxrTB?=
- =?us-ascii?Q?ZgdRaUYtqBqs7u3tMO0jnGSX5o5lyFEM2nwOrOh+GFNsFPizPJ2wV7tghGEi?=
- =?us-ascii?Q?hLTmW8BwBJ0hBM5MxSVvg2hE1QkLSlJ/8iDVFkzCsnHIj255zvzZKXANvwB7?=
- =?us-ascii?Q?A0D7RrmWn96wsN8P6cDvDV4cYfrgiGJm7cRnAdO5bC2gKmlafyS395nbm40k?=
- =?us-ascii?Q?XlSf6YQESZKrSZ5A8bzHlvI0zL1MCwJarY1nRN58Tq8jQO8jRiPA5yYJf7Cq?=
- =?us-ascii?Q?aG1+eqrxlDouFmWtrsOomJWe4P2WVot6+2sXXRLkODccn16wCrv/dLple8G6?=
- =?us-ascii?Q?SO/pnNfGT4xBrj9LIkiZWEB92i5lnYxzIjvbyoDcB9F+7ip3rPsXb1sNeWF0?=
- =?us-ascii?Q?MA7PUOHyQfwmyMKT0cQQCS7pdYCmut0VBbBZwNbkRzfojk2aI0w90On12xaw?=
- =?us-ascii?Q?R2b/KTtaVp54mB6CFlv+2uxSJ++nIIiRp6lNJS3FsTiA++SkzsatJqXaOjvR?=
- =?us-ascii?Q?kYNE5gTmhPSLFHdzc/QaKTKfdOwD/f0eEguZhqS6DRkfYSBJJq5xPC96HfTD?=
- =?us-ascii?Q?Mijr6ju8QteaWPJ7JGortpUe0z/DvAMqpVI7gaJJObDqZgUKdMHY2SNRCRHC?=
- =?us-ascii?Q?kj669AbV65MQ+5y2Zk4qq52LIhl6NxioxMXovYNU5zlDaB2d6BmtQ3I3Krk6?=
- =?us-ascii?Q?aaDHmoBf5VQ6UojJCIbMtzg5fDxQgXJ2W14cNAQPLP9gJRQl5qGJsjMWBSQp?=
- =?us-ascii?Q?dwDF1L3NGsHfNdP/Gip5q+Boa0Ra17vpv+AmaJTUYQcXhQTC3sQMp+uF3EKS?=
- =?us-ascii?Q?bRCcPtGAjaBjUsvtDDoEcJJAE2nsMApICSrRMEpe+ZPWwoFdZ2tGdeYZE7Jv?=
- =?us-ascii?Q?leoqhF2ajdyYPdyAft6T40wcvUfvbcYIdMpoZjn7D0vuuwH2b/lDfepsEo1D?=
- =?us-ascii?Q?WwlcPWiQ9yjhKRZkIbABIc8zZgwFMxVy6oxTuCNJrbhnyf3FPjt8ycgQS6wX?=
- =?us-ascii?Q?AfyA8YOJHA=3D=3D?=
+	=?us-ascii?Q?9jog7Gj+638aYJ+fSBERt7JHJGpXtDcIdE7NTYZcmY+MNjvDFiCIhl5Ywiep?=
+ =?us-ascii?Q?Sei+M+Hhcz6SskKTB6RbtIGj03kWUeHEfYWPWzarTybDNXySYUIEKw+90tz7?=
+ =?us-ascii?Q?XtKqMNz6zB3zhJDmXuM3lZ2P7FOuyiX1gYhhPZ4OxpYOwfxrd0SpCYR7dBE0?=
+ =?us-ascii?Q?ihPaNUWA8kuKvZj3OlD5joRuXRuf8ttqffECu0XN76/pO3xnXTlVQ3OCallW?=
+ =?us-ascii?Q?xkVkd+o7vhWW6cFN+ZWwu/hQ7n2P/QVkT/u2OA4IAUZTy0PHhvfEkmg0cbE8?=
+ =?us-ascii?Q?2cTn39MACHDi7fDg9AzpKjbUlM46HJVdbOC7+2vPwnRch3Y53Xu6qZa9pEjE?=
+ =?us-ascii?Q?DjBaA2wZdwrymyKP8JdgmsUaoGzri9K2ox7Yu2564xMxgDVZQus384tpsWgU?=
+ =?us-ascii?Q?G0fo3qz98rkZFLSrIhFDaEgrp1j4maFgPlgbLsB/0Dk9YT/YhzPIAqC4lsND?=
+ =?us-ascii?Q?HLQqVbHt+aEe7ljnJ7n6c8oIoGzJWZnu5A2iVyiih+GE3goHxSba52av9WKG?=
+ =?us-ascii?Q?dzdKsMBupXov4NWCWHtoW02TdNMsWTK4Q4df6Ih6uFav6033Zjhifnd/GeSz?=
+ =?us-ascii?Q?W7j1hHXFHdnwB/hblj59hPr2yo9WdebtbJCX5DkThD7FcZJkOwfO2eQ+RBqW?=
+ =?us-ascii?Q?64lcm/C+ffrfy3gaQ1ED0lSonn2+ctsytORhcq360WNC5i1DHolWJmezD8Rl?=
+ =?us-ascii?Q?LEDR7uZTymDT5C1e8q2CCxxzWsIwPC3g7vRBghLmBI5aRU36EyuFF4CLsSU8?=
+ =?us-ascii?Q?FniB02g4VsnT0NcbR/FKg97rgxJJ6x92NthoUMpkodIv6C8F5fmRpGrj5Mlq?=
+ =?us-ascii?Q?H0srNzNQaLTKoJep13eRH5tmPRIrI1Bcq8fEwrQUkHXjmX+CeyNdQC2sErD9?=
+ =?us-ascii?Q?GeGHLFbleLHOAi1H8YhTIC+xArojZQjPEN/mp0H0APR2C/+MT1zu7xDvLzj9?=
+ =?us-ascii?Q?OAijwMeipW860OkXvgn+c9zfS/4etU4f2UmgFEvL5LBMD49UAIfihZ8nQXm8?=
+ =?us-ascii?Q?OhyVrQGLE1Iv4WaUnOC1+XoYhIeIw7gV2rPSa0Rb1M/BRuLJEFScNBE8nlC/?=
+ =?us-ascii?Q?GManh//D2npZqAvjtt01zwJWdOJ8mzqn4UgKG70REEJkvioLP4/ndHRlQoaC?=
+ =?us-ascii?Q?/ja7IwxH3WdGVvaYPEghuFnGzsclJhnIH08VVtB8/k8XCRqcxoZ549tibNlY?=
+ =?us-ascii?Q?OFIQFXy53ySVw3fJTXWuMqKrK+mFoJNt6GvNNFzBTR+19y4jCDFAIZSwu1xG?=
+ =?us-ascii?Q?gIw8lTdMDJpT3oheRIMhT43nBPX1G9E0QsrvB/37cdaKNkNJATaAJz0Ibzkc?=
+ =?us-ascii?Q?nM3S1iic1slmGtuG0wV36s/Dk6dSvDOZ6rx1IOazLDIvVlBjjIteV+VRS0CG?=
+ =?us-ascii?Q?xxIxmawpn0cGlIkfDFc2eS9IFt7X7y3bhPAH/3RVCcSIpAkpwQOR3Dxwvsls?=
+ =?us-ascii?Q?2zzxJz6hZFaTH0nwyfBcXvUWey/WR28F0OX6EmdELSmcN89wS3bFZB9yNvJE?=
+ =?us-ascii?Q?aZ5ZGOzvVuNZdqQc7uXQh2lsE5xRg3kMtZAQTa/xVCIJA8G65qvsdONZDNO9?=
+ =?us-ascii?Q?vb2mMHqnM9EyoRbgRfhex8FZKS9xdyn4+T/2HRz7HiNe0u21rLPrqW//HINB?=
+ =?us-ascii?Q?cneiEfwpogkoojOvCNyVFrOJt+9Ei4sqjkF89ixdrO+Usqsp/CFnjVTHqOQo?=
+ =?us-ascii?Q?wULCm/x64crUTWWdOTuLPCbXOjpD4DXwsegYTcxp82MgdduTFvHO6ct6vhVd?=
+ =?us-ascii?Q?T0hVev8bow=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2126478-c706-4692-b11c-08dee3fbe132
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cdf7b5d-3102-4bf0-99f3-08dee3fbe2b8
 X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 12:06:48.8586
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 12:06:51.4806
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bhgY0BU99T6GfHmYs2vmvzOIQT8xXdFEyLVoY6xybc04kttRYYwXULiB0Spakmp5YuQ5YMiAF37Mlgp0u6XgNQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0MtyVDo7vNXrC99V9i4zwdd39nSujUXmgueNxwi368SZEcy5e/v9LBm1uwjnDWJhLxPiJNDaTGRGt7STScmgQg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7645
 
-Explicitly enable the serdes_1 node in all board DT files. This is
-needed in order to be able to change the default status of the node to
-"disabled" from the SoC DT file.
+One of the major differences between LX2160A Rev1 and Rev2 is the PCIe
+controller used. With the final goal of removing any usage of
+delete-node or delete-property from the current LX2160A related dts
+files, move the PCIe nodes found on the LX2160A Rev1 into a separate
+dtsi file. This will make it easier to include the appropriate dtsi
+file describing the PCIe controller depending on the SoC revision in a
+follow-up patch.
+
+No actual change in the DT nodes found in the final DTBs is intended.
 
 Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 ---
 Changes in v3:
-- new patch
+- New patch
 ---
- arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi | 4 ++++
- arch/arm64/boot/dts/freescale/fsl-lx2160a-half-twins.dts    | 4 ++++
- arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts           | 4 ++++
- arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts      | 4 ++++
- 4 files changed, 16 insertions(+)
+ .../dts/freescale/fsl-lx2160a-pcie-mbvl.dtsi  | 176 ++++++++++++++++++
+ .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 170 +----------------
+ 2 files changed, 178 insertions(+), 168 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/fsl-lx2160a-pcie-mbvl.dtsi
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
-index 4bc151d721dd..1f946d3a4ec0 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
-@@ -135,6 +135,10 @@ &sata3 {
- 	status = "okay";
- };
- 
-+&serdes_1 {
-+	status = "okay";
-+};
+diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-pcie-mbvl.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a-pcie-mbvl.dtsi
+new file mode 100644
+index 000000000000..871f5d5d8f75
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-pcie-mbvl.dtsi
+@@ -0,0 +1,176 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++//
++// Device Tree file describing the PCIe Mobiveil's GPEX 4.0 IP
++// found on LX2160A Rev1
++//
++// Copyright 2026 NXP
 +
- &uart0 {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-half-twins.dts b/arch/arm64/boot/dts/freescale/fsl-lx2160a-half-twins.dts
-index d16e27307275..954b9955b1b3 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-half-twins.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-half-twins.dts
-@@ -805,6 +805,10 @@ &rgmii_phy1 {
- 	status = "disabled";
- };
- 
-+&serdes_1 {
-+	status = "okay";
-+};
++&soc {
++	pcie1: pcie@3400000 {
++		compatible = "fsl,lx2160a-pcie";
++		reg = <0x00 0x03400000 0x0 0x00100000>, /* controller registers */
++		      <0x80 0x00000000 0x0 0x00002000>; /* configuration space */
++		reg-names = "csr_axi_slave", "config_axi_slave";
++		interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
++			     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
++			     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
++		interrupt-names = "aer", "pme", "intr";
++		#address-cells = <3>;
++		#size-cells = <2>;
++		device_type = "pci";
++		dma-coherent;
++		apio-wins = <8>;
++		ppio-wins = <8>;
++		bus-range = <0x0 0xff>;
++		ranges = <0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
++		msi-parent = <&its 0>;
++		#interrupt-cells = <1>;
++		interrupt-map-mask = <0 0 0 7>;
++		interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
++		iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
++		status = "disabled";
++	};
 +
- &serdes_2 {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-index 935f421475ac..39b2b04be532 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-@@ -325,6 +325,10 @@ &sata3 {
- 	status = "okay";
- };
- 
-+&serdes_1 {
-+	status = "okay";
-+};
++	pcie2: pcie@3500000 {
++		compatible = "fsl,lx2160a-pcie";
++		reg = <0x00 0x03500000 0x0 0x00100000>, /* controller registers */
++		      <0x88 0x00000000 0x0 0x00002000>; /* configuration space */
++		reg-names = "csr_axi_slave", "config_axi_slave";
++		interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
++			     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
++			     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
++		interrupt-names = "aer", "pme", "intr";
++		#address-cells = <3>;
++		#size-cells = <2>;
++		device_type = "pci";
++		dma-coherent;
++		apio-wins = <8>;
++		ppio-wins = <8>;
++		bus-range = <0x0 0xff>;
++		ranges = <0x82000000 0x0 0x40000000 0x88 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
++		msi-parent = <&its 0>;
++		#interrupt-cells = <1>;
++		interrupt-map-mask = <0 0 0 7>;
++		interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 2 &gic 0 0 GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 3 &gic 0 0 GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 4 &gic 0 0 GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
++		iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
++		status = "disabled";
++	};
 +
- &uart0 {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts b/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
-index 99ee2b1c0f13..df2568ec7f1a 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
-@@ -367,6 +367,10 @@ &pcs_mdio18 {
- 	status = "okay";
- };
- 
-+&serdes_1 {
-+	status = "okay";
-+};
++	pcie3: pcie@3600000 {
++		compatible = "fsl,lx2160a-pcie";
++		reg = <0x00 0x03600000 0x0 0x00100000>, /* controller registers */
++		      <0x90 0x00000000 0x0 0x00002000>; /* configuration space */
++		reg-names = "csr_axi_slave", "config_axi_slave";
++		interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
++			     <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
++			     <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
++		interrupt-names = "aer", "pme", "intr";
++		#address-cells = <3>;
++		#size-cells = <2>;
++		device_type = "pci";
++		dma-coherent;
++		apio-wins = <256>;
++		ppio-wins = <24>;
++		bus-range = <0x0 0xff>;
++		ranges = <0x82000000 0x0 0x40000000 0x90 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
++		msi-parent = <&its 0>;
++		#interrupt-cells = <1>;
++		interrupt-map-mask = <0 0 0 7>;
++		interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 2 &gic 0 0 GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 3 &gic 0 0 GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 4 &gic 0 0 GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>;
++		iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
++		status = "disabled";
++	};
 +
- &serdes_2 {
- 	status = "okay";
++	pcie4: pcie@3700000 {
++		compatible = "fsl,lx2160a-pcie";
++		reg = <0x00 0x03700000 0x0 0x00100000>, /* controller registers */
++		      <0x98 0x00000000 0x0 0x00002000>; /* configuration space */
++		reg-names = "csr_axi_slave", "config_axi_slave";
++		interrupts = <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
++			     <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
++			     <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
++		interrupt-names = "aer", "pme", "intr";
++		#address-cells = <3>;
++		#size-cells = <2>;
++		device_type = "pci";
++		dma-coherent;
++		apio-wins = <8>;
++		ppio-wins = <8>;
++		bus-range = <0x0 0xff>;
++		ranges = <0x82000000 0x0 0x40000000 0x98 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
++		msi-parent = <&its 0>;
++		#interrupt-cells = <1>;
++		interrupt-map-mask = <0 0 0 7>;
++		interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 2 &gic 0 0 GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 3 &gic 0 0 GIC_SPI 126 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 4 &gic 0 0 GIC_SPI 127 IRQ_TYPE_LEVEL_HIGH>;
++		iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
++		status = "disabled";
++	};
++
++	pcie5: pcie@3800000 {
++		compatible = "fsl,lx2160a-pcie";
++		reg = <0x00 0x03800000 0x0 0x00100000>, /* controller registers */
++		      <0xa0 0x00000000 0x0 0x00002000>; /* configuration space */
++		reg-names = "csr_axi_slave", "config_axi_slave";
++		interrupts = <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
++			     <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
++			     <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
++		interrupt-names = "aer", "pme", "intr";
++		#address-cells = <3>;
++		#size-cells = <2>;
++		device_type = "pci";
++		dma-coherent;
++		apio-wins = <256>;
++		ppio-wins = <24>;
++		bus-range = <0x0 0xff>;
++		ranges = <0x82000000 0x0 0x40000000 0xa0 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
++		msi-parent = <&its 0>;
++		#interrupt-cells = <1>;
++		interrupt-map-mask = <0 0 0 7>;
++		interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 2 &gic 0 0 GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 3 &gic 0 0 GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 4 &gic 0 0 GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH>;
++		iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
++		status = "disabled";
++	};
++
++	pcie6: pcie@3900000 {
++		compatible = "fsl,lx2160a-pcie";
++		reg = <0x00 0x03900000 0x0 0x00100000>, /* controller registers */
++		      <0xa8 0x00000000 0x0 0x00002000>; /* configuration space */
++		reg-names = "csr_axi_slave", "config_axi_slave";
++		interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
++			     <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
++			     <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
++		interrupt-names = "aer", "pme", "intr";
++		#address-cells = <3>;
++		#size-cells = <2>;
++		device_type = "pci";
++		dma-coherent;
++		apio-wins = <8>;
++		ppio-wins = <8>;
++		bus-range = <0x0 0xff>;
++		ranges = <0x82000000 0x0 0x40000000 0xa8 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
++		msi-parent = <&its 0>;
++		#interrupt-cells = <1>;
++		interrupt-map-mask = <0 0 0 7>;
++		interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 2 &gic 0 0 GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 3 &gic 0 0 GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>,
++				<0000 0 0 4 &gic 0 0 GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>;
++		iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
++		status = "disabled";
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+index 1d73abffa6b7..387cd677cdc7 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+@@ -1177,174 +1177,6 @@ sata3: sata@3230000 {
+ 			status = "disabled";
+ 		};
+ 
+-		pcie1: pcie@3400000 {
+-			compatible = "fsl,lx2160a-pcie";
+-			reg = <0x00 0x03400000 0x0 0x00100000>, /* controller registers */
+-			      <0x80 0x00000000 0x0 0x00002000>; /* configuration space */
+-			reg-names = "csr_axi_slave", "config_axi_slave";
+-			interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
+-				     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
+-				     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
+-			interrupt-names = "aer", "pme", "intr";
+-			#address-cells = <3>;
+-			#size-cells = <2>;
+-			device_type = "pci";
+-			dma-coherent;
+-			apio-wins = <8>;
+-			ppio-wins = <8>;
+-			bus-range = <0x0 0xff>;
+-			ranges = <0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+-			msi-parent = <&its 0>;
+-			#interrupt-cells = <1>;
+-			interrupt-map-mask = <0 0 0 7>;
+-			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
+-			iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
+-			status = "disabled";
+-		};
+-
+-		pcie2: pcie@3500000 {
+-			compatible = "fsl,lx2160a-pcie";
+-			reg = <0x00 0x03500000 0x0 0x00100000>, /* controller registers */
+-			      <0x88 0x00000000 0x0 0x00002000>; /* configuration space */
+-			reg-names = "csr_axi_slave", "config_axi_slave";
+-			interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
+-				     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
+-				     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
+-			interrupt-names = "aer", "pme", "intr";
+-			#address-cells = <3>;
+-			#size-cells = <2>;
+-			device_type = "pci";
+-			dma-coherent;
+-			apio-wins = <8>;
+-			ppio-wins = <8>;
+-			bus-range = <0x0 0xff>;
+-			ranges = <0x82000000 0x0 0x40000000 0x88 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+-			msi-parent = <&its 0>;
+-			#interrupt-cells = <1>;
+-			interrupt-map-mask = <0 0 0 7>;
+-			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 2 &gic 0 0 GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 3 &gic 0 0 GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 4 &gic 0 0 GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
+-			iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
+-			status = "disabled";
+-		};
+-
+-		pcie3: pcie@3600000 {
+-			compatible = "fsl,lx2160a-pcie";
+-			reg = <0x00 0x03600000 0x0 0x00100000>, /* controller registers */
+-			      <0x90 0x00000000 0x0 0x00002000>; /* configuration space */
+-			reg-names = "csr_axi_slave", "config_axi_slave";
+-			interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
+-				     <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
+-				     <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
+-			interrupt-names = "aer", "pme", "intr";
+-			#address-cells = <3>;
+-			#size-cells = <2>;
+-			device_type = "pci";
+-			dma-coherent;
+-			apio-wins = <256>;
+-			ppio-wins = <24>;
+-			bus-range = <0x0 0xff>;
+-			ranges = <0x82000000 0x0 0x40000000 0x90 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+-			msi-parent = <&its 0>;
+-			#interrupt-cells = <1>;
+-			interrupt-map-mask = <0 0 0 7>;
+-			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 2 &gic 0 0 GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 3 &gic 0 0 GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 4 &gic 0 0 GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>;
+-			iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
+-			status = "disabled";
+-		};
+-
+-		pcie4: pcie@3700000 {
+-			compatible = "fsl,lx2160a-pcie";
+-			reg = <0x00 0x03700000 0x0 0x00100000>, /* controller registers */
+-			      <0x98 0x00000000 0x0 0x00002000>; /* configuration space */
+-			reg-names = "csr_axi_slave", "config_axi_slave";
+-			interrupts = <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
+-				     <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
+-				     <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
+-			interrupt-names = "aer", "pme", "intr";
+-			#address-cells = <3>;
+-			#size-cells = <2>;
+-			device_type = "pci";
+-			dma-coherent;
+-			apio-wins = <8>;
+-			ppio-wins = <8>;
+-			bus-range = <0x0 0xff>;
+-			ranges = <0x82000000 0x0 0x40000000 0x98 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+-			msi-parent = <&its 0>;
+-			#interrupt-cells = <1>;
+-			interrupt-map-mask = <0 0 0 7>;
+-			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 2 &gic 0 0 GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 3 &gic 0 0 GIC_SPI 126 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 4 &gic 0 0 GIC_SPI 127 IRQ_TYPE_LEVEL_HIGH>;
+-			iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
+-			status = "disabled";
+-		};
+-
+-		pcie5: pcie@3800000 {
+-			compatible = "fsl,lx2160a-pcie";
+-			reg = <0x00 0x03800000 0x0 0x00100000>, /* controller registers */
+-			      <0xa0 0x00000000 0x0 0x00002000>; /* configuration space */
+-			reg-names = "csr_axi_slave", "config_axi_slave";
+-			interrupts = <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
+-				     <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
+-				     <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
+-			interrupt-names = "aer", "pme", "intr";
+-			#address-cells = <3>;
+-			#size-cells = <2>;
+-			device_type = "pci";
+-			dma-coherent;
+-			apio-wins = <256>;
+-			ppio-wins = <24>;
+-			bus-range = <0x0 0xff>;
+-			ranges = <0x82000000 0x0 0x40000000 0xa0 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+-			msi-parent = <&its 0>;
+-			#interrupt-cells = <1>;
+-			interrupt-map-mask = <0 0 0 7>;
+-			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 2 &gic 0 0 GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 3 &gic 0 0 GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 4 &gic 0 0 GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH>;
+-			iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
+-			status = "disabled";
+-		};
+-
+-		pcie6: pcie@3900000 {
+-			compatible = "fsl,lx2160a-pcie";
+-			reg = <0x00 0x03900000 0x0 0x00100000>, /* controller registers */
+-			      <0xa8 0x00000000 0x0 0x00002000>; /* configuration space */
+-			reg-names = "csr_axi_slave", "config_axi_slave";
+-			interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
+-				     <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
+-				     <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
+-			interrupt-names = "aer", "pme", "intr";
+-			#address-cells = <3>;
+-			#size-cells = <2>;
+-			device_type = "pci";
+-			dma-coherent;
+-			apio-wins = <8>;
+-			ppio-wins = <8>;
+-			bus-range = <0x0 0xff>;
+-			ranges = <0x82000000 0x0 0x40000000 0xa8 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+-			msi-parent = <&its 0>;
+-			#interrupt-cells = <1>;
+-			interrupt-map-mask = <0 0 0 7>;
+-			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 2 &gic 0 0 GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 3 &gic 0 0 GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>,
+-					<0000 0 0 4 &gic 0 0 GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>;
+-			iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
+-			status = "disabled";
+-		};
+-
+ 		smmu: iommu@5000000 {
+ 			compatible = "arm,mmu-500";
+ 			reg = <0 0x5000000 0 0x800000>;
+@@ -2021,3 +1853,5 @@ optee: optee {
+ 		};
+ 	};
  };
++
++#include "fsl-lx2160a-pcie-mbvl.dtsi"
 -- 
 2.25.1
 
