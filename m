@@ -1,302 +1,185 @@
-Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012020.outbound.protection.outlook.com [40.107.75.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCBC3E00BE
-	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 08:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784275317; cv=fail; b=q1AFWfWFnmYrw5bvyW3oKmC20g2pti/AazSMX9IdO0yJDBJ/dtEPhK/2s0qZH0ZnP7+MFNODoQsKGKk7HzsnDhXkyDuLJVCWu+nxGtf6pEdr8DiXY5GZxBWZYZoLOjrYZW0wOaR9/02yOfhcr6FQGES1IXdGzXWi+uv01IOsKBE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784275317; c=relaxed/simple;
-	bh=TsRpyqLHrPjPcn/B+DCtWxQq3MNPi8bWFZgdBhybqgA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Jv8jUXDj9IB/Q4XRVfGHibv4lKAa8vD73xiV8gVvkrUNTYXnETGPlybzgm3wMrc/exI9eI61QQol1G/obNyz3dPao9TG4KhEW1rKUmWEWqqKZUltWLuFkJpMMINqjW/ToQrRmFGPuMnpdUQLgITmxW1TFXXynAcheS0RryybkMs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=Zo8fuOnz; arc=fail smtp.client-ip=40.107.75.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262DF3002DC
+	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 08:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784276188; cv=none; b=cZuIi8SiJBNVAiHqhh6oI5HfDy0tGNcxt91pdMv1f4dGYuYOlfgQgaO3W/B6y60qsg2ib05aoLFBF8g3cuuBwTvgxh6pG7gUSGTjWZ+4DwC6pVp/+pfVm5AnbFlk0XA8fLbty1gKpcttJsyJ7BTUCYD6/3xWLdw3TT8Z20dnHqw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784276188; c=relaxed/simple;
+	bh=LlG3XdagHMLZT1ZrvrOajQUT4i6TPbt3TDDBZurXLaY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=WZpWWcPjD+TdPNijbbngTRWZyKivDa/6/e8bv03gNfzkXaoL3GiJQga3NVSJOyMU4szOX+JByUeFB/fO0ZoH25Dk3rg+DW1I6Vae0XRnu0wL/nT+8uWCWmvsy3/8oPEnaQkVJGMY/8MSRZdTCl7JaS/bNt8nckk8J82xV/i5w4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFA2AMqf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="Zo8fuOnz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qcUZ8xvwpImov5GgFnp3soMYtWfH4+gR+DOBM1Dob6P83dDkoqk/7so1QhUPQpx53FkNmKSG6FmM0SvpN6XmR/bZ/8htAnPSA6DWnD60QHOULAEgx02l/j+9x+T9zNjUy6NhX3sPMqplZvpUjrQIhR7w5/dswXcJu3KuNZlHfD8ZUZP5p02dUo6SggIiRqX3t1EPOZdywPC1S+jh04cgfO9hocgG9FSqZeuukP6mSNTKrMraVfRfofp9P6hvI8Gw9EelPq+Siyc+wdYl0b4oIXFlAcx4plMnsl8QLqj/ld3fgHs06OSnyBBYArN9l0kFo/SrmuW3GBHOud0ga9UIqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ACko2jIklcEFLtPjiqT0xhlckaB5B7kVy6Xt9x8cUms=;
- b=Y0mWPBXv2o4n4Bo2xCmwVE2IwzcWRFhFKWCbNlnFVzv/ncNw6HR+oPxrl7lKtoV+/pqqzUzWovD+dlVw8L86SCInwMQWeU44P9cQ5ySqVuBJioaOcf3N7f/yEn7bAa+XORNdVrdAH8KoA6kDKRuYNG0dmVgO6biRp2G4bIPmS3PbNdn+ErHp3auOc+RjDeMjTktuhW0Gqb4VOHg+h8MZF1lrhNtNkuAKvFsNZYy94xsGoBplk3JPVXUM3FtcCyciDuy/zQwUrKMTrrnnGhCYn9mCCz6TAIIDsmpWV8lzprYjs9QjDB93SeOMCliFrRkWPoYFP7i5hXWzw9B+FDw2zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ACko2jIklcEFLtPjiqT0xhlckaB5B7kVy6Xt9x8cUms=;
- b=Zo8fuOnzBq5dUTDbEAnJvbtHiuxDDfKU3nLMHR2+x1vzxp6iZza+Uo2XTS2zx6euLMNhu6jCwqzuj5jd+NSy5SdeRETWPNmXNGZu9KHUJG+rWLPTm+sDhh0jfVu9fW95TlHJVCTARTdMvfbNwpJuSirdS5LsOS+Cc9gtcW0P6gO1oQ/59+mMECqTUF+AnLUQcTviwev//2icWVb64I9Q6Fv0hQIthyOy4rArHi5cdLEjY5gr3YLbNZgS8UjdtcxTQWfFAN6sxwl1lU2jY67731ojSThxltmcISsuh3dS2FschDiCOmzMVK3AV95PhQdAir4mzsaAMCMFvkRFtNploA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SEZPR06MB5832.apcprd06.prod.outlook.com (2603:1096:101:c8::12)
- by TY0PR06MB5104.apcprd06.prod.outlook.com (2603:1096:400:1b8::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
- 2026 08:01:51 +0000
-Received: from SEZPR06MB5832.apcprd06.prod.outlook.com
- ([fe80::f98:5e32:4ccb:d07b]) by SEZPR06MB5832.apcprd06.prod.outlook.com
- ([fe80::f98:5e32:4ccb:d07b%6]) with mapi id 15.21.0223.011; Fri, 17 Jul 2026
- 08:01:51 +0000
-From: Pan Chuang <panchuang@vivo.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-crypto@vger.kernel.org (open list:CRYPTO API),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Microchip (AT91) SoC support),
-	linux-kernel@vger.kernel.org (open list),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE)
-Cc: Pan Chuang <panchuang@vivo.com>
-Subject: [PATCH 04/12] crypto: Remove redundant dev_err()/dev_err_probe()
-Date: Fri, 17 Jul 2026 16:00:18 +0800
-Message-Id: <20260717080045.191538-5-panchuang@vivo.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260717080045.191538-1-panchuang@vivo.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFA2AMqf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5101F000E9;
+	Fri, 17 Jul 2026 08:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784276186;
+	bh=jcVcPTQggKrT5Cmqsvs+/KkNTh/8m3/7QKE0nXWMSOQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bFA2AMqfnwRef+LNPdGbnFKa9uZLKL4lDvwWakJAGsWUpL2/SGiy8ZxNJuME278fo
+	 q/UUqcd2+k+oONB5k30CPDZzeYmKLKb8Rb3rw1+vj0rFw4zIvb3O9BejlxvXfpJ1tq
+	 FVY+F0ezkdfyi+dmB08HAxFEA6vUZF3kpzudRM7ru4mkd7kgazYfIWwjprhtc5MJyJ
+	 OlNslnYC2UPP29i8MbmMdxjfz3bMoX3iNz27/IG/NwQf2ZaZ5GYFifmS9LP/b0lwMl
+	 RIaRv+Bg5PRX3pxV9mXuB9lVyJKGGsXU8vqbgrtc0nHm+lSnD700oW/dQW83ZCek2M
+	 KfDeYeSdAyvZA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 04/12] crypto: Remove redundant
+ dev_err()/dev_err_probe()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Pan Chuang" <panchuang@vivo.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260717080045.191538-5-panchuang@vivo.com>
 References: <20260717080045.191538-1-panchuang@vivo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TP0P295CA0054.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:3::18) To SEZPR06MB5832.apcprd06.prod.outlook.com
- (2603:1096:101:c8::12)
+ <20260717080045.191538-5-panchuang@vivo.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 17 Jul 2026 08:16:25 +0000
+Message-Id: <20260717081625.CA5101F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEZPR06MB5832:EE_|TY0PR06MB5104:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b7a9b7a-1334-42ef-fdf2-08dee3d9a8ce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|52116014|1800799024|921020|6133799003|38350700014|18002099003|22082099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	W94MYB1Vdz6yEJ01V0QZ49LJ82bjuDS55gLCNYUzK/ix4+o7jLDT8w8xdtZX/eusYXlMYHF82ZgVrUSPdSSCKgSIf4jmrwgkKP0V2570QFaom177zx+9m3bu7Nss/Ce5s7gvu5obFE0tIckG3pMf8jto3jagHQCvyyzKDlVDJ6xEdA+z7oCFqqCJXRXULgn/fuUuU7LqM3FDumZMWsnPHwAIINzSqVrq5xg90Cr/f1urAvpx1a/8ui335CZVlBfr4CoIJpDBcz8fU5mruBVRFvv+x4e4ueUkBk+lLB/rfyENjMqpv27yq6asVL1Am7GNnjj5uv4brogxeWssxOMf32jnRaoW9r/CVomODMauKaQYKzxNKbPrq0bIF1EPHQUUHpHbGIjE67+ZUbtU75D6ueuY5lgnsHdJRwGqkMBuELASLbFdBHujSsrSMkwG4rO0UQedswzCvTctRb/cPL8rUE/bvgAkyPNkyJSXxRP6pz3cBiT6zOLuRuxCsf+cK+7jgeYK5MT27beJbuEMt9UwXQvrzL09SO+n5YMA/aFMur90B3Cjh4BEGoxXIBHVJlQRL9tIyxXhFz695G8lTjiEUOEGnpY2woMDKfi7DwPtV/2jwkSICNyTz/NV87J6We6LhYfIQBFWV/iqEBiqCRDizRO3bAYEB5droy7Cu61L6sRaQfghl0n+YR3R+DtAHksFzn1ByFDn+NZxVkmO2wWHEni9AY4ny8L/xYh7y3jLKwHpLbWfV02c6nZeyHdUT1oj
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5832.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(52116014)(1800799024)(921020)(6133799003)(38350700014)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LbVJxforEz4ARKNHD4u/8WEcnYYIBhHGnD4bV4eeNGyaj88p67Vqdxu92yy8?=
- =?us-ascii?Q?Rn6QZ0PC6GLVlKlTFVJ653/FWf8ictE5ZjA7IuTud6gom4kzIoSUsBrHeYmE?=
- =?us-ascii?Q?/VOo+dNJ53VgFpirA8HiLnyr+17ukPzbjd1TAunklNWL/nzpP57b2UvTv1Is?=
- =?us-ascii?Q?rKwTOyioIXZFZje6j+O2hfhYDkZNib3hmPaNKK3niata3TZZlN6QJJfBebDs?=
- =?us-ascii?Q?sRau/VPLE1VdfsphxGhMQmcnT2gkZEtBrXcox1ZrSOVUOAwPvSNQmA5Uua1H?=
- =?us-ascii?Q?Mq7Gphs0gVQv2pqFbiq8fZkuDm1EPdJrBhtium8mSt2X57cFl0Uv3wjAi+LA?=
- =?us-ascii?Q?bHbuSZWnY0KV+f4ng978jfBJCEaS/5Uo+mSPeUbfoaV3bSgVd1o0+dH4P7pA?=
- =?us-ascii?Q?7oGAoTs8n4SgDMFfgEC9fNMdJlC6hdjIisrt/jR+u7/g2l7sD/7F3lA0YWCZ?=
- =?us-ascii?Q?3J/OGDDhDg0ZVRn6QLDRMtNIJDVdqiKxwYdA1+YLHW+16sIRBjRGDcTa3eCj?=
- =?us-ascii?Q?HV1WFlHxYbEa+cMORDeYx06l8EuWtknv8vGAU21lYj+wcZhJ11p/n83kga7V?=
- =?us-ascii?Q?bhrwWCOFs22U8E0AT5SJHaIMPYToA87PRvbXpzeguGSjtKcb3z2Dj9J6zKDb?=
- =?us-ascii?Q?AB9ahfQjvjfqY1uskHt1/Gdas5e4Xu8DVhH32kuvmZYhz3QeGaqfLAKugVrr?=
- =?us-ascii?Q?zFu6zgrBB2cARATvw/KMFzz3TyBhBhHVSDRQiSms1KV6GiFGd4QKYzmxBDQO?=
- =?us-ascii?Q?IQEqmNgdQI5hI1LFSJeGW+LEZZmSYWAXf+FON6f57Cnl7RBChP9LFdrGfBv/?=
- =?us-ascii?Q?Xwj4bF3HGKokyOTGBzC/KVUptfF9G2xlcUKg1vOXActEwsSMSG8NbaIEs2VO?=
- =?us-ascii?Q?TqpHXhqRC56eGjfy/VpOvgNuqOZGY8lJGthwU1e9LSU1xk6dikW4wNPOnCOJ?=
- =?us-ascii?Q?lSeZrl+UxcGVX2WnPnBnTv0ecstgO6WI+EOLk5XOfcDJu3R2KHiBFQKpil6l?=
- =?us-ascii?Q?KEodLz4dOLU+J6mntkCxw5/O4qoM9mXTUneprebf1bbNzQvmbA8XNuLTO8QA?=
- =?us-ascii?Q?oytRo71bvVpPDlE6i0pRflxadYBfNEYisXMSUZCWoEVigor71YFb55sjddzg?=
- =?us-ascii?Q?nCNM3b2G3h1ip9q8kaOtHczXZzz8rFkFE53Fr0rtFyOzoHoTS/VBYDqV+mHN?=
- =?us-ascii?Q?GOswDXpGW0r3vq4bOVyTDAZC454Jp3zZ0fk+4srcc7jd29rfPL+3vkIpeJin?=
- =?us-ascii?Q?KSc9100weJLyTlSDGeLJjKuwUZYTDjTNdpDYiyklLlkcspp0tVt9xdpa9D5f?=
- =?us-ascii?Q?1nEJnHWBM2RUz7EKu2vSOSujs8in3YLRvPg7AASf8qkBRKlCRw6j+rEXkm8H?=
- =?us-ascii?Q?kMCcD7u07OmwB/R3Fg55JiC1wAYgRgNwVU6Kq6RNorX8D4GOHHm1D8gEqgvr?=
- =?us-ascii?Q?0DeXuqy+ileku2mlXQ27TeGC8hbTeZ3gphYrg6DipBrCH73/R5ZpgP9jtVEJ?=
- =?us-ascii?Q?hZS3ShbN+z5yTsdiuenSuU/w/iGTfyV6Cc3seC3kMlWGFEY8Te4jP1/sO8wc?=
- =?us-ascii?Q?PdoNlp/t9DrSl88r6vEtYOfO5lX4XS1HiggZ/YbgMKaxfsVeKYPwo6kp7vxF?=
- =?us-ascii?Q?AEMOxArZJm8Lppq/9VOvtUJXaR+IZEZBREZ4vkit3Z3DFe6QfE980XGR7kZs?=
- =?us-ascii?Q?aRC6LrSBNg5oHvVpbynv8FZEWmIcBrb7cohdPUwzXFgnGx45AaykSOkEcSI2?=
- =?us-ascii?Q?ZLJpIkeS5A=3D=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b7a9b7a-1334-42ef-fdf2-08dee3d9a8ce
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5832.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 08:01:51.4668
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iCtefbXODrXzqKrQjyPIvozNuMxJ6FSHQRcjTdC30Zg37z7us22XcUA+HY2w0lEXrQobrnjUizSjnIkA6zM3aQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR06MB5104
 
-Since commit 55b48e23f5c4 ("genirq/devres: Add error handling in
-devm_request_*_irq()"), devm_request_irq() automatically logs
-detailed error messages on failure. Remove the now-redundant
-driver-specific dev_err() and dev_err_probe() calls.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Signed-off-by: Pan Chuang <panchuang@vivo.com>
----
- drivers/crypto/atmel-aes.c  | 4 +---
- drivers/crypto/atmel-sha.c  | 4 +---
- drivers/crypto/atmel-tdes.c | 4 +---
- drivers/crypto/img-hash.c   | 4 +---
- drivers/crypto/mxs-dcp.c    | 8 ++------
- drivers/crypto/omap-aes.c   | 4 +---
- drivers/crypto/omap-des.c   | 4 +---
- drivers/crypto/omap-sham.c  | 5 +----
- drivers/crypto/sahara.c     | 3 +--
- 9 files changed, 10 insertions(+), 30 deletions(-)
+Pre-existing issues:
+- [High] Premature IRQ registration before clocks and driver state are init=
+ialized
+--
 
-diff --git a/drivers/crypto/atmel-aes.c b/drivers/crypto/atmel-aes.c
-index 30acfd937d54..50d97cef75b8 100644
---- a/drivers/crypto/atmel-aes.c
-+++ b/drivers/crypto/atmel-aes.c
-@@ -2364,10 +2364,8 @@ static int atmel_aes_probe(struct platform_device *pdev)
- 
- 	err = devm_request_irq(&pdev->dev, aes_dd->irq, atmel_aes_irq,
- 			       IRQF_SHARED, "atmel-aes", aes_dd);
--	if (err) {
--		dev_err(dev, "unable to request aes irq.\n");
-+	if (err)
- 		goto err_tasklet_kill;
--	}
- 
- 	/* Initializing the clock */
- 	aes_dd->iclk = devm_clk_get_prepared(&pdev->dev, "aes_clk");
-diff --git a/drivers/crypto/atmel-sha.c b/drivers/crypto/atmel-sha.c
-index 66323ac63406..48f54b615504 100644
---- a/drivers/crypto/atmel-sha.c
-+++ b/drivers/crypto/atmel-sha.c
-@@ -2604,10 +2604,8 @@ static int atmel_sha_probe(struct platform_device *pdev)
- 
- 	err = devm_request_irq(&pdev->dev, sha_dd->irq, atmel_sha_irq,
- 			       IRQF_SHARED, "atmel-sha", sha_dd);
--	if (err) {
--		dev_err(dev, "unable to request sha irq.\n");
-+	if (err)
- 		goto err_tasklet_kill;
--	}
- 
- 	/* Initializing the clock */
- 	sha_dd->iclk = devm_clk_get_prepared(&pdev->dev, "sha_clk");
-diff --git a/drivers/crypto/atmel-tdes.c b/drivers/crypto/atmel-tdes.c
-index 48cd537f001e..4511166fd74d 100644
---- a/drivers/crypto/atmel-tdes.c
-+++ b/drivers/crypto/atmel-tdes.c
-@@ -978,10 +978,8 @@ static int atmel_tdes_probe(struct platform_device *pdev)
- 
- 	err = devm_request_irq(&pdev->dev, tdes_dd->irq, atmel_tdes_irq,
- 			       IRQF_SHARED, "atmel-tdes", tdes_dd);
--	if (err) {
--		dev_err(dev, "unable to request tdes irq.\n");
-+	if (err)
- 		goto err_tasklet_kill;
--	}
- 
- 	/* Initializing the clock */
- 	tdes_dd->iclk = devm_clk_get(&pdev->dev, "tdes_clk");
-diff --git a/drivers/crypto/img-hash.c b/drivers/crypto/img-hash.c
-index 0f19dcc2f388..1ccfc0eccc73 100644
---- a/drivers/crypto/img-hash.c
-+++ b/drivers/crypto/img-hash.c
-@@ -966,10 +966,8 @@ static int img_hash_probe(struct platform_device *pdev)
- 
- 	err = devm_request_irq(dev, irq, img_irq_handler, 0,
- 			       dev_name(dev), hdev);
--	if (err) {
--		dev_err(dev, "unable to request irq\n");
-+	if (err)
- 		goto res_err;
--	}
- 	dev_dbg(dev, "using IRQ channel %d\n", irq);
- 
- 	hdev->hash_clk = devm_clk_get_enabled(&pdev->dev, "hash");
-diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
-index 595b2fd84667..c75a06999787 100644
---- a/drivers/crypto/mxs-dcp.c
-+++ b/drivers/crypto/mxs-dcp.c
-@@ -1085,17 +1085,13 @@ static int mxs_dcp_probe(struct platform_device *pdev)
- 
- 	ret = devm_request_irq(dev, dcp_vmi_irq, mxs_dcp_irq, 0,
- 			       "dcp-vmi-irq", sdcp);
--	if (ret) {
--		dev_err(dev, "Failed to claim DCP VMI IRQ!\n");
-+	if (ret)
- 		return ret;
--	}
- 
- 	ret = devm_request_irq(dev, dcp_irq, mxs_dcp_irq, 0,
- 			       "dcp-irq", sdcp);
--	if (ret) {
--		dev_err(dev, "Failed to claim DCP IRQ!\n");
-+	if (ret)
- 		return ret;
--	}
- 
- 	/* Allocate coherent helper block. */
- 	sdcp->coh = devm_kzalloc(dev, sizeof(*sdcp->coh) + DCP_ALIGNMENT,
-diff --git a/drivers/crypto/omap-aes.c b/drivers/crypto/omap-aes.c
-index f31555c0d715..711909de2013 100644
---- a/drivers/crypto/omap-aes.c
-+++ b/drivers/crypto/omap-aes.c
-@@ -1172,10 +1172,8 @@ static int omap_aes_probe(struct platform_device *pdev)
- 
- 		err = devm_request_irq(dev, irq, omap_aes_irq, 0,
- 				dev_name(dev), dd);
--		if (err) {
--			dev_err(dev, "Unable to grab omap-aes IRQ\n");
-+		if (err)
- 			goto err_irq;
--		}
- 	}
- 
- 	spin_lock_init(&dd->lock);
-diff --git a/drivers/crypto/omap-des.c b/drivers/crypto/omap-des.c
-index dfaf831dd8ec..3b7104cb4487 100644
---- a/drivers/crypto/omap-des.c
-+++ b/drivers/crypto/omap-des.c
-@@ -1017,10 +1017,8 @@ static int omap_des_probe(struct platform_device *pdev)
- 
- 		err = devm_request_irq(dev, irq, omap_des_irq, 0,
- 				dev_name(dev), dd);
--		if (err) {
--			dev_err(dev, "Unable to grab omap-des IRQ\n");
-+		if (err)
- 			goto err_irq;
--		}
- 	}
- 
- 
-diff --git a/drivers/crypto/omap-sham.c b/drivers/crypto/omap-sham.c
-index be1ac640ee59..8f95c381f4c8 100644
---- a/drivers/crypto/omap-sham.c
-+++ b/drivers/crypto/omap-sham.c
-@@ -2092,11 +2092,8 @@ static int omap_sham_probe(struct platform_device *pdev)
- 
- 	err = devm_request_irq(dev, dd->irq, dd->pdata->intr_hdlr,
- 			       IRQF_TRIGGER_NONE, dev_name(dev), dd);
--	if (err) {
--		dev_err(dev, "unable to request irq %d, err = %d\n",
--			dd->irq, err);
-+	if (err)
- 		goto data_err;
--	}
- 
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 533080b0cddc..d586f1315de1 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -1305,8 +1305,7 @@ static int sahara_probe(struct platform_device *pdev)
- 	err = devm_request_irq(&pdev->dev, irq, sahara_irq_handler,
- 			       0, dev_name(&pdev->dev), dev);
- 	if (err)
--		return dev_err_probe(&pdev->dev, err,
--				     "failed to request irq\n");
-+		return err;
- 
- 	/* clocks */
- 	dev->clk_ipg = devm_clk_get_enabled(&pdev->dev, "ipg");
--- 
-2.34.1
+--- Patch [4]: [PATCH 04/12] crypto: Remove redundant dev_err()/dev_err_pro=
+be() ---
+commit 1a1461364ed2dcfb8ce0bfe3945b90a7c3d3835d
+Author: Pan Chuang <panchuang@vivo.com>
+Subject: crypto: Remove redundant dev_err()/dev_err_probe()
 
+Since devm_request_irq() automatically logs detailed error messages on
+failure, this patch removes the now-redundant driver-specific dev_err()
+and dev_err_probe() calls across multiple crypto drivers.
+
+> diff --git a/drivers/crypto/atmel-aes.c b/drivers/crypto/atmel-aes.c
+> index b393689400b4c..1bf00df864e8f 100644
+> --- a/drivers/crypto/atmel-aes.c
+> +++ b/drivers/crypto/atmel-aes.c
+> @@ -2369,10 +2369,8 @@ static int atmel_aes_probe(struct platform_device =
+*pdev)
+> =20
+>  	err =3D devm_request_irq(&pdev->dev, aes_dd->irq, atmel_aes_irq,
+>  			       IRQF_SHARED, "atmel-aes", aes_dd);
+
+[Severity: High]
+This is a pre-existing issue, but can this premature IRQ request cause a cr=
+ash?
+
+Since IRQF_SHARED is used here, if another device sharing this IRQ line tri=
+ggers
+an interrupt before the aes_clk is enabled, atmel_aes_irq() will unconditio=
+nally
+read from the AES_ISR register:
+
+    atmel_aes_irq()
+       reg =3D atmel_aes_read(aes_dd, AES_ISR);
+
+Could this result in a bus fault because the hardware is still unclocked?
+
+> -	if (err) {
+> -		dev_err(dev, "unable to request aes irq.\n");
+> +	if (err)
+>  		goto err_tasklet_kill;
+> -	}
+> =20
+>  	/* Initializing the clock */
+>  	aes_dd->iclk =3D devm_clk_get_prepared(&pdev->dev, "aes_clk");
+
+[ ... ]
+
+> diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
+> index 133ebc9982362..49cd6b036a86c 100644
+> --- a/drivers/crypto/mxs-dcp.c
+> +++ b/drivers/crypto/mxs-dcp.c
+> @@ -1085,17 +1085,13 @@ static int mxs_dcp_probe(struct platform_device *=
+pdev)
+> =20
+>  	ret =3D devm_request_irq(dev, dcp_vmi_irq, mxs_dcp_irq, 0,
+>  			       "dcp-vmi-irq", sdcp);
+
+[Severity: High]
+This is a pre-existing issue, but does this request the IRQ too early?
+
+If a pending interrupt from the bootloader fires immediately here, mxs_dcp_=
+irq()
+might access uninitialized data structures, as the locks in sdcp->completion
+aren't initialized until later in the mxs_dcp_probe() function.
+
+> -	if (ret) {
+> -		dev_err(dev, "Failed to claim DCP VMI IRQ!\n");
+> +	if (ret)
+>  		return ret;
+> -	}
+
+[ ... ]
+
+> diff --git a/drivers/crypto/omap-aes.c b/drivers/crypto/omap-aes.c
+> index f31555c0d715b..711909de20130 100644
+> --- a/drivers/crypto/omap-aes.c
+> +++ b/drivers/crypto/omap-aes.c
+> @@ -1172,10 +1172,8 @@ static int omap_aes_probe(struct platform_device *=
+pdev)
+> =20
+>  		err =3D devm_request_irq(dev, irq, omap_aes_irq, 0,
+>  				dev_name(dev), dd);
+
+[Severity: High]
+This is a pre-existing issue, but could this lead to a BUG_ON crash?
+
+The IRQ is requested after the device is suspended via pm_runtime_put_sync(=
+),
+and dd->in_sg is still NULL. If a pending interrupt fires right after this
+registration, could the handler try to access the suspended device or trip
+a BUG_ON over the NULL scatterlist?
+
+> -		if (err) {
+> -			dev_err(dev, "Unable to grab omap-aes IRQ\n");
+> +		if (err)
+>  			goto err_irq;
+> -		}
+>  	}
+
+[ ... ]
+
+> diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+> index 533080b0cddc9..d586f1315de1f 100644
+> --- a/drivers/crypto/sahara.c
+> +++ b/drivers/crypto/sahara.c
+> @@ -1305,8 +1305,7 @@ static int sahara_probe(struct platform_device *pde=
+v)
+>  	err =3D devm_request_irq(&pdev->dev, irq, sahara_irq_handler,
+>  			       0, dev_name(&pdev->dev), dev);
+
+[Severity: High]
+This is a pre-existing issue, but can the handler execute before the
+clocks are ready?
+
+The ipg and ahb clocks are retrieved and enabled after this IRQ registratio=
+n.
+If a bootloader left an interrupt pending, could sahara_irq_handler() attem=
+pt
+to access unclocked hardware registers?
+
+>  	if (err)
+> -		return dev_err_probe(&pdev->dev, err,
+> -				     "failed to request irq\n");
+> +		return err;
+> =20
+>  	/* clocks */
+>  	dev->clk_ipg =3D devm_clk_get_enabled(&pdev->dev, "ipg");
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717080045.1915=
+38-1-panchuang@vivo.com?part=3D4
