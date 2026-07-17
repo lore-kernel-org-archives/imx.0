@@ -1,169 +1,157 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013016.outbound.protection.outlook.com [52.101.83.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B5B3D3489
-	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 10:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784283670; cv=fail; b=B1uFhTHRERv97FqWp0TQDtGNTlY19ltR97neMiVFv9vqVckdk0bIsoyEjot8Mgrdg6lfJuThDe0R2w+YDQC+dK0nhT/U0/njFDfpyWfP66+X5FRnBDg+l1ZUA5cltWnGXZVoDoKktGqVxqN5fHM0ViUgS1sefjHShoQmyKBWrwI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784283670; c=relaxed/simple;
-	bh=XUk+44MWn2Awp7p4CUniOBnPDzKlv/6tvYs0IRFzoKI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=r4ykf0/q6O6R8tdOHsJHH5abe3+YFbYJfDPRCTQbVe+fuRPNKlbIa7CKxu8GgQkQRpVqKGOLnolvXjcdwoqgvmd+0x4mxH1I4oPNycpNb0anKPd5IbUQF5Ep4mOMelIvaF+TREKUwStBFXXrBPDH15EpLD83VcvfpdDCt0t13sc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W4pZTVkd; arc=fail smtp.client-ip=52.101.83.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B133EC699
+	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 10:29:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784284189; cv=none; b=H1UT3NDU0yntfR6o9BdLCYAkqiFQXMnedKLFN1ak9Ingpw/SmK/r6gfNi8cyyMizPqc+eOb8zIcqHpctUIZhYcqEgIgOKbDW3cT5RrwdmhusEHwRIOZhE0dPJ4pIk7CtL2E9AFNq3utxIhNGrNJyk+1ajneeckt9vmH1USs62cU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784284189; c=relaxed/simple;
+	bh=Y9Mgf/wObsu5bH01+fY7QOGJVcJqNiSbSPNUNqnfhZQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FtKhCCIrzwlvQS4T5vatXmPjJd73zoCH9RAJSgeiZjrE0oRes8w+NK11I52x0ZMkeLDcbbIEmDi+Z+T10vWnTbAl0jqvdEkzrDeorz9gtGN7SAJ7NYgjZLfdYHASsGXbSc0s0yghUuij03TRgBXgHLR81riCs/KEGdY8CQ1CcA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k0ZXm1nG; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W4pZTVkd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uVFH6+EmX/K6Fde3tK++BQBXum9sMgaoSrVqwfK9RqXNp3clGSRp+bWawF2LcEGg7SRrG0oGCW8a53yCjunhqDDZULlFjveDB9Crn2+T5KettdX6EUzLerJ+X3th+6IITWQRbvADIzZt7BBK2pO9TegZCmdowRFwgyGkVnMlfFa7WVZVHgE45I6s4+jG7l3dyDSayQNhcWJDYXtFrqGhCBvIVssz58u8XN0VoI0tysxwghoH7MwdXRdV9vMJFg+rjq9MlHmdze1iEqWJekE7t1jUxdM4ZdDxOL5q+OFpvaOXmkYDlVCKL9BuFOUXiNEUA11pz8Oyifcc/a+Hbl7qhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BQgkoMUhLpYJ5bThF2m6WOlYd0vzp5vylngUWvxfjXU=;
- b=uSxvt0++QqDM4i2xjXxQYnXrR5QYEwIU3ZJvFu5Wp/OyVtSHYJI7kyOlh1mbV4pUgNTs9MH+6BYvb2y6inI10fc+MZRRgCR55hyl2i/BsTLBEEGJxgngd+KilVX5VxzKTt0DDvGfJ8PyvgiragTY/GvPNiLOrhbVTV4WRWHgMmzi8iiDRzIlUVYAOfscg1LEqQrQR3Izve4g3c4X8fD3SzIIlTZRO3uTaP1+3wxQtFldTMLV4EMpytUUeOojvz6y3WB/GvoXeQa7A+q6a2ZkxYrIoTeKZgtXfMjPcxy1bHhFbWpWpWj9fj934wKanWVPlUbWe0hSFv7DhZfDx7WICA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BQgkoMUhLpYJ5bThF2m6WOlYd0vzp5vylngUWvxfjXU=;
- b=W4pZTVkd99wFW+LOGQjumDTyAqp8aV/LRNSfVR362vW/diWrOAhoc+T4jAqPQAi5uJIR6jSSI33j/+OU2mB6OUQgVd9vC0cT9kjdc1ix0C5/jBfC8O++5iTrS9itCw0uaPENsuTYGNm53vy7JNQv36aZRQEN7BM99sEyn0Sr/4p6SVOfFajJ1mkdw2goawqMKtsVCwwcAo178ECCIThTAROnqrN9YMZC2+H4IkbpwOAU22xN4SUC7ITq1jVD+KMyNUNV/dQzs1eCv49dug4+dwx0UPFrN6Li+l0PuLqFFBWViFwZRwTCIfrCRSd6/u1PAmIVRfbIxqQ+lrBZCtiG1A==
-Received: from GV2PR04MB12213.eurprd04.prod.outlook.com
- (2603:10a6:150:336::11) by PAXPR04MB8176.eurprd04.prod.outlook.com
- (2603:10a6:102:1c9::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
- 2026 10:21:04 +0000
-Received: from GV2PR04MB12213.eurprd04.prod.outlook.com
- ([fe80::52ff:eacf:430f:494]) by GV2PR04MB12213.eurprd04.prod.outlook.com
- ([fe80::52ff:eacf:430f:494%4]) with mapi id 15.21.0223.008; Fri, 17 Jul 2026
- 10:21:03 +0000
-From: Clark Wang <xiaoning.wang@nxp.com>
-To: "Clark Wang (OSS)" <xiaoning.wang@oss.nxp.com>, "Frank.Sae@motor-comm.com"
-	<Frank.Sae@motor-comm.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
-	"leitao@debian.org" <leitao@debian.org>, "hkallweit1@gmail.com"
-	<hkallweit1@gmail.com>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH net V3] net: phy: motorcomm: read EEE abilities in
- yt8521_get_features()
-Thread-Topic: [PATCH net V3] net: phy: motorcomm: read EEE abilities in
- yt8521_get_features()
-Thread-Index: AQHdFc0GEZawUmxlBES9wrA9teDb3LZxfplQ
-Date: Fri, 17 Jul 2026 10:21:03 +0000
-Message-ID:
- <GV2PR04MB1221388D7AC6F8346CB442760F3C62@GV2PR04MB12213.eurprd04.prod.outlook.com>
-References: <20260717091652.230617-1-xiaoning.wang@oss.nxp.com>
-In-Reply-To: <20260717091652.230617-1-xiaoning.wang@oss.nxp.com>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB12213:EE_|PAXPR04MB8176:EE_
-x-ms-office365-filtering-correlation-id: d5f9dfc9-7f0a-4d03-448d-08dee3ed1b32
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|7416014|19092799006|366016|1800799024|38070700021|921020|56012099006|11063799006|10067099003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- wL2s1Ey2DC2wdLhy+A6BBAY8sg+5XKgUMC3hHSP84xXtZs76jdMBcaFFeIGMNd2Lqm1GBTmZATAE6kmPMwuBd+HUt/Q6cJl+GWiYq91NtbcEHopUlokVjt6RwJm8NAnw/rboMv7pd6VPvo7MNLu1EVPh2CIYFHkLmQ1YZ4qK+tFpJTfxqX9KM++X9WrT3XmouQTYDMQqXmvP/Q3H7dtInPAXCV+wfK0kxe8Rrk9gDY0PsmQITxPQpWu3GQkQrjxZDuHYv4zHRvV/uEv/EZgyPcJ53zM2C9vHt7fgQ3HfzaALX9BvZwEV4SDD3W9FtquVI0JVBVkt/ludYFfWnoqtHc2L+w6g6wXy9xjW5oeG2xOIycUxcSiZnjOTm7eWhOEOKAQ+H6Opo0F4VKCsYYDs5oDEt0DYNGCt56vm+Het80o9sv+DSGQxVmwEuNFjwjfPV9c22bjg9GMBDQa+zJpLrl38RubA1X78/aEJrhUr0r0RUR96BfdHZ9cKZwomnmgxbPxxYyNGUfkQxhM8n8HMnbtCg2tIiST+06v8xG+OvZ9CgQkndYvWRDrsFv52aXCaA+R1bVzqNgOmOo3pOsAk4RtoAgOaNc+3VYFX8Q1OljQW5ldcMXsPq4kHpCuB0dAZGTEy7V0tgYNaBDoJTSokmJysX69jRujMnHjBsTgmqGBXbDEKEtPh6rLLe+657D9I
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12213.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(19092799006)(366016)(1800799024)(38070700021)(921020)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?rBGeBYGjcsnhSr3JaBSw+RD/TotYLnjDKu4NcXTFyt6yaH4wnUDF8zt38NZg?=
- =?us-ascii?Q?yLzvNuio0NYnNY5F1R6Cx94OmcULnZ+bgK1Wej4f1tCfkACQYSF52tPDJ01u?=
- =?us-ascii?Q?sTkyX4WsMtL0NbWcMwrOnvrCZ9cDYE+sbY7l6LV0msdyloCWLtEHZiaL3zjS?=
- =?us-ascii?Q?6kqkaI6BcapWNHXl4ABv6Y0JOtCTLXTztxJqx08QINvtXxoCBnhBdlGmT0YJ?=
- =?us-ascii?Q?omKLN8b4WnBGa29OZmLEdqoz0e4DM2avOr/9WLObQ9X7BuhL3rRVQwlky3Gn?=
- =?us-ascii?Q?HYn04CHCfYWEHED6oua5Q8CHsdAwyW4ZY+9G4tLxyNvWNNvA2acQE63zfavY?=
- =?us-ascii?Q?hXenmjCCPNiybNPdir4Phkfp+NqB/crsIiBdNW3lKtWecF9pdV46wndTFHJ3?=
- =?us-ascii?Q?CwyYpupP6EVuP8rRDSadiuT0lT6z3R6fsdzcINoPFVkhxPFnfW3JtNLE5+cp?=
- =?us-ascii?Q?H79R7Gv9RYCr5/4bMM5Ui5b6cJRO0CiP0tf2WEyIaz2gBSBcsZNdWrBLvP2K?=
- =?us-ascii?Q?uxZp+XegLA209Cs1ekmtr+bqC7FXCPtInKSwGBiPT8hrxhKebb3DnkkEzp5h?=
- =?us-ascii?Q?jKI6n0JxrIPFdv2aQUXQ2SH9QVDXzSSW8nFrbY0vm58w1VAqC/2Bn8ljmxV2?=
- =?us-ascii?Q?Qhnpc3Gws2yXd1Mp828H9bX40ZFY5QLGz99amn0CwfDDoVH58X0Fp2DPxwf4?=
- =?us-ascii?Q?HJw68wCjZ+63zsostJvYLlLizEGJFBgI1tlAuH8aMpGbd+nJ0ZYHPxtzIngU?=
- =?us-ascii?Q?Ma5vQYh2qCSZWj6tsBGmwqZW9fH/L1qh5qfWI3TDEyg5g4tPXbvyDTJCsWw1?=
- =?us-ascii?Q?l4Q78ryTC3GPiS/wjs5EkoYEvXHQjk+1Tg4yihK+0gaHY7KZ6ObOxlOYNpGm?=
- =?us-ascii?Q?P+6YLd5fae+jhrMMPHqCB9m2foMxIhjVf8QGH0AfOi/i70jBgqA317QlGgvl?=
- =?us-ascii?Q?zbvrI/5bhTKQEG8zJYkEPQyj5pohimH1ADb5iyKghu1uG2WQC3sBqlzQeLKh?=
- =?us-ascii?Q?/Qm+K0H9MjVKKqGKE5b97py/d7L4XDtMBaBEgvJabysIUn4VaCeIlkaiBYqm?=
- =?us-ascii?Q?jeGOFcZXejvGUnJrWwNu5j2QyflxocBGOB6rHFkH4FjSTDvCslFBEkCFxlvT?=
- =?us-ascii?Q?nG0nKjzRnUBxJF1qVV9FDeSFN04QuoREnv1ZuUJ+wl5t/nxS8xMCYFkgxCFD?=
- =?us-ascii?Q?7dhmIw6JE1oJ7irRn7tCWjslqvFAcvMXfC+SQ7gisAYnT6d62OnX1jM1GPIG?=
- =?us-ascii?Q?CQMbjrZ8StwxenX+i5wKl2BQjVm4sVtOrej4Uh3Mw2qWNq5ID7UuXyTxJkk6?=
- =?us-ascii?Q?J8lrf0qrUd0z+hQQ5UQKD+/GDWnqftRq+9SU27phknXSUssu03jldi1zQSXT?=
- =?us-ascii?Q?2WVTBUob2iozw67iQ5M3Cf7iqA6ksSf/FPd41qXcp+M9aXfsuwXL/vFq1fTV?=
- =?us-ascii?Q?JkZIJAOfPGotf879CkSeQG4RR/SfN07UXlw4yLd0qB8Yct5Ydvf6G28oXSZd?=
- =?us-ascii?Q?aoEpPTh0RDSL2LWS//pkGoPy/18JeO2hEOja27N0uNEbjq48ZeIZNl/MTxLM?=
- =?us-ascii?Q?CzD4HFGdEWYhPHt9P8o7H+vo6IG4caTQnFlrdcRGQJi5vov8KmJjz8fOehjF?=
- =?us-ascii?Q?yPrQh7jTw3Y+n4uQY1FoXibDQ60JtIMzJWnMvbD7NER9l1AsIz4GuCkF7+Mc?=
- =?us-ascii?Q?2K6jmfkVS0Vtt1EWxwSkUN0TaWLPs8DezRrnu6vsFBxt5tqaizGJM/r2qksm?=
- =?us-ascii?Q?PncquyKo0Q=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k0ZXm1nG"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47640541585so3822350f8f.1
+        for <imx@lists.linux.dev>; Fri, 17 Jul 2026 03:29:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784284185; x=1784888985; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=U6hKrX+f54qW1llsOGRsC3hsxY9DfQDweyuPaxBt6U0=;
+        b=k0ZXm1nGu6ULY2l/28g6n8HN5kdaLmQ7j5+UTggCkXO1sBYnr/P1NGJ7cq1hwjJ8Kv
+         /B9TIYXv/RfpPZKpGREOwpcT4XAYnxUtohGkWHan3ERZbB8QSh08dgn/5BUs7QrxIgeY
+         Vs1bPukNc70QLaXvId1mhXkWIznIFV8dDn7K71Y1lr4xtkVvatXBl56NdY1rN3fuMTKY
+         AGyZtXeLol2BvXmYa1RtxcwZh8tAClp52LuO9lM/F2WjxYI3FU1AaH4v7JYO4k5mFoLR
+         LI5YywLJD1+jGy4erV4xHpwslfGGLHVN6GEdK+EauFkjuMTOTxyi5xW7MaMg6YwqNoba
+         B5CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784284185; x=1784888985;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=U6hKrX+f54qW1llsOGRsC3hsxY9DfQDweyuPaxBt6U0=;
+        b=l6MopcdAO2Z4FnFJOys8pxidms2lbxiXfnz2Zft6IOipx5y21+KV4Nwkj2p73vG7YM
+         ba7B5k2vgZHIeuzap7Y6qgrvoNee8hnkeVHQFcUGiH0OSdQsn1qaTRI5YFdviBW70Sr7
+         GG9UhX44HKiJjwleb3LNJb75khmiIqcw7oKVqLlznR4nnglKF09BBo1x9JQ8Q+Ub2I/O
+         QKqTAXV887U2qxSEY41toO5jB8IExu8eSjS6CLk8jyXeE4pXyjDTXI9XSTHKdwq60Iis
+         uCTf0PgvqrJdmZfaZo96ZSLgvJtm61ENiOhW5a/p0dUu+a9V7VIvzgbUjI9+IOU5WvNU
+         Q+1Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rolml+/9IO+SqIfFymUIZ4GtW1CEArBl/kRSGhxGY/kG7UTClytAJdbRWomQTcXfioRrk8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwrPcc6Gtas2Z0gPFt+cfip2cUK4hLlbJtrvM9Hl/S3kcQvewae
+	4PeZOIRhyDohLclXDwq1nHeDwZ2oPXNNC2OiqFmz802zraYmPxN1eddY
+X-Gm-Gg: AfdE7clwjNbsZbFkjmXguICwz3FKIMKvzzSjxFnD7HBMl46n623JAxh10uVCztmoFdH
+	gDSFQj4XZX6ivajN7wU3juB3w9GMkAKgC8Q1Z8WxnB2/+y9IJ0Alhkw2D6PQVqftj8MTszbS38V
+	QvYLbVhwxgAFFAutjjmz1943MYS9RpUiZ3s87j3tYygtOCe4/tp+Eoz2NYTLd0uhkh2JBqRulWs
+	LOYTY8VlYxl2a8jBFMCt/YkDNZuSM60k+8dzVlQk5cTW2RrACQU5NLjAuhtGqx+v+1WRZZfqy+6
+	kIjIyDk1EwPF6jffKW/7rW33kfyNaetSWcr8lQz+lFZR4ksQNJUFuFWNzQiFq3PZ45M9IXgBE5v
+	Uio3hVbvZngJrKNzxWGURr0iIRZYpc5yho+wJdOYtXsDQxOofdo0SsVVgtqY5bR4blvILEvX+Rp
+	Tnhm7K5Q6gRJCLo9N68f4tGptUUizPCohP+jdjqeP+/2zq3P3rpsBffFR4yYIASpoA5aL4YxS5b
+	5p+LIDOzXQMDkM=
+X-Received: by 2002:a05:600c:46d0:b0:495:3e81:770f with SMTP id 5b1f17b1804b1-4954a3f398amr21164725e9.15.1784284184783;
+        Fri, 17 Jul 2026 03:29:44 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-65-248.cust.dsl.teletu.it. [93.144.65.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49549a3f07esm39931735e9.6.2026.07.17.03.29.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 03:29:44 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH v6 0/3] Add support for Variscite VAR-SOM-MX8QM and Symphony board
+Date: Fri, 17 Jul 2026 12:29:36 +0200
+Message-ID: <cover.1784284092.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12213.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5f9dfc9-7f0a-4d03-448d-08dee3ed1b32
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jul 2026 10:21:03.5679
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Jr38vFSWY7WGicOTSfEkJgkRztrQDJrRpb5d59nVkHW9llNIyKG3uedkBLa/cux26UrYEtuAUre9SLeL+dvhUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8176
+Content-Transfer-Encoding: 8bit
 
-> From: Clark Wang <xiaoning.wang@nxp.com>
->=20
-> In phy_probe(), genphy_c45_read_eee_abilities() is only called when a
-> driver uses phydrv->features. Drivers that implement .get_features are
-> responsible for reading the EEE abilities themselves.
->=20
-> yt8521_get_features() does not do this, so phydev->supported_eee stays
-> empty for YT8521/YT8531S and "ethtool --show-eee" reports "EEE status:
-> not supported", even though the PHY has the standard EEE capability
-> registers.
->=20
-> Call genphy_c45_read_eee_abilities() at the end of yt8521_get_features()
-> to populate supported_eee.
->=20
-> Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521 gigabit
-> ethernet phy")
-> Reviewed-by: Breno Leitao <leitao@debian.org>
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> ---
-> V3 changes:
-> - Replace the uncommon "ret ? : ..." expression with the usual
->   check, and move the check right after the first
-> yt8521_get_features_paged()
->   call, which was the only path missing it.
-> - Collect Reviewed tag from Breno.
->=20
-> V2 changes:
-> - Return the value from genphy_c45_read_eee_abilities.
-> ---
+This patch series adds support for the Variscite VAR-SOM-MX8 QuadMax
+system on module and the Symphony carrier board.
 
-Sorry for the noise.
-I think sashiko's discovery on V2 makes sense. I will fix the issues mentio=
-ned in V4.
-https://sashiko.dev/#/patchset/20260710080018.1070789-1-xiaoning.wang@oss.n=
-xp.com?part=3D1
+The series includes:
+- SOM device tree with on-module peripherals
+- Symphony carrier board device tree with board-specific features
 
-Best regards,
-Clark Wang
+The implementation follows the standard SOM + carrier board pattern
+where the SOM dtsi contains only peripherals mounted on the module,
+while carrier-specific interfaces are enabled in the board dts.
+
+v5->v6:
+ - Fix regulator typo
+
+v4->v5:
+ - Fix sai7 clock
+ - Fix codec regulator voltage
+
+v3->v4:
+ - Fix sai peripherals clocks
+ - Add comment to clarify 1GB variant
+
+v2->v3:
+ - Fix led typo
+ - Moved reset-gpios in pciea_port0
+ - Removed wrong captouch pinctrl gpio
+
+v1->v2:
+ - Added non-removable property to usdhc3
+ - Removed unused fec gpio pinctrl
+ - Fix ptn5150 interrupt
+ - Fix ecspi1 cs gpio
+
+Stefano Radaelli (3):
+  dt-bindings: arm: fsl: add Variscite VAR-SOM-MX8 QuadMax Boards
+  arm64: dts: freescale: Add support for Variscite VAR-SOM-MX8 QuadMax
+  arm64: dts: imx8qm-var-som: Add support for Variscite Symphony board
+
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx8qm-var-som-symphony.dts | 490 ++++++++++++++++
+ .../boot/dts/freescale/imx8qm-var-som.dtsi    | 531 ++++++++++++++++++
+ 4 files changed, 1028 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8qm-var-som-symphony.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi
+
+
+base-commit: d089adef10f380cbdf65cbb87a59a9aab86cb0d2
+prerequisite-patch-id: 0996915f031a1d899202c5fba75a969d6ce2a53d
+prerequisite-patch-id: dbed47ecb907f6b7f7e284c5c1a3c325566eafd7
+prerequisite-patch-id: c758aa296e6effc94c30449cc7e4773f0ae02914
+prerequisite-patch-id: 31784fa7a3ee5c178b2f1ffa97c1dd7c1d3d898a
+prerequisite-patch-id: 5810f43cde9c24ee318d680c1852b3ded18f3aa0
+prerequisite-patch-id: 012c9c8ba4e290532a1b7f8642274b7c5f252e03
+prerequisite-patch-id: a57d576be42d5061bba453f0d5960132be55a1ff
+prerequisite-patch-id: e34a75fb6f7e01455dd5ca734dacad66b12de06c
+prerequisite-patch-id: cc7abadd0354d14bad0cac1fbacda14ab9d4e02b
+prerequisite-patch-id: c0276686c0247cb2385c56b96cbfd6de5128415c
+prerequisite-patch-id: 100c47538870af63194b407fae06183fee85fc09
+prerequisite-patch-id: 3a3b3e40f5fba785857091dda909d22bfc5e2d0e
+-- 
+2.47.3
+
