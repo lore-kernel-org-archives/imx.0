@@ -1,199 +1,143 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011021.outbound.protection.outlook.com [52.101.70.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651443E51D2
-	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 11:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784286504; cv=fail; b=QxXIQm7B18to6xijBC6XlhcAMEppvm3g8biIqAMCvoaSHkD2M7S1RvNZm1ptSmre57hYZl5KQg0m4lAp6Uf2z63WXScTDTnd8cXOj6ltV/f9L2E4qB6RKSEwyk1wri2d94IVCYShB0VEuIhSZa0Er/dOSQ/honoVqM+8mfacSEI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784286504; c=relaxed/simple;
-	bh=nAGiLNLFEFeowfiHg8lFTT7vKVo3vxP1kN+y8I9g4kA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SrJkbAmLIq8JHFxKmz3geEZ/0vsehFVtL86opEFE7ur0T+C4Cf1VHSDLP5xHVPAKy60WE7SVm0tfoVbf07GzMJEaQ9rZFPARjDaRuf9zu1giDTsl8BypUM3SoBjRspzSZtyCXlpN3LSU35FHk/Ej9eYiNyR8b3jTKrQaQ5nqf0M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=EPvyjyAc; arc=fail smtp.client-ip=52.101.70.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31103F7888;
+	Fri, 17 Jul 2026 11:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784286556; cv=none; b=NyO2P2ioq/cUEFJRljxeznddlr4YN5yYWsL64kWcGL22misn6UwF7OePt+PIk1ZecspVTCoE6mWxCOBTTWeFw0fua+rDcG37f8j7uJAel3VS096RKxCBqvq0Hf3tk3iAx72nd2Lvge3iIUO9EwYFZZMb6jOjFFcq4/BgN8p5kW8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784286556; c=relaxed/simple;
+	bh=TnKMW3KIzDbiRS+WCCvbOX2d9PQkepWShG6g06xL/84=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=B0M4/pRyTUEVaaTD778XB7axZngpE0nxFPQkHEsxXtq9lPR393vAHE6+RHh5HEAmz8PfYivXx4NZ5wQb+V2XCdMq2lwD7AKuN/QbwYlOjsDr2hhKMwlDhOQG/BkEScYdvPSaTmxwI7dV3BidS495cHzsvTNHmP5xDWD75t8sxig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEBrkHwc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="EPvyjyAc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zMNHH8Gvj3EfjqDHSZRNVpyuQkkNmzrbue6M4mg7bRfs07pe3qnw4msyZzv3XMhQ8zY/TDzMo5kU6DkztJmTyJGcSOgt0Cp/tzeXqqKUPYjYDcPb1eGa6mZ6A00CHeaSEoY+1ULjjdWu3EMUcLz6knwQJDMzPlKfiZ9WlRGfDaY4vevHNVavkWIg4pxhPagVyTN2JXrUx9S8bq7xRGZmex4t1fRPwMDVhXgFJQJK5Ooc6nIY+TVByCIjUJVCmywvZm0hRudEY82L3W0HTXj+nN9OamJdFhWajQsFm2bBkbBWBnOvo5S4jy2a5lwqbZCaUBvLuSdS6sf//ke/7MOd5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pIOso+/f6mheDtStsIgmtOw91R8YgWoOFYrywLkxQdg=;
- b=H7TnxbFI58pOb2Ego1lFd7Zh5GpLlvfB8JUnPjCkOgeQ29gDtygDnute0wJivqnfjCE65jPUnapbYdOr7LCmRQJLuqkvotrgYJv3b1N2I9c2x0yrwRtnvVDOGl4VBS5R1jJsU+q/VlUk/NkarZZRQjY1N+h5rJ3IXYFQggvmt0OMkhH8/wiCsJAJuAJO+wQ3IZqcI4RHaKTi7hJzu0MkSTKi9cE/YPXrvOls/ImbtBGSicpmfA1jwnz8mehs7P9BP2rkYVQwvNIKC+paXU5Bpp426M0drE8trsx66db14SRYgi4YdfmXm2syF7hgSrjsT3D5crfydWbaMq+daiWmLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pIOso+/f6mheDtStsIgmtOw91R8YgWoOFYrywLkxQdg=;
- b=EPvyjyAc1JoRfjVCpDGmQL4iKDa9NBQfbeiTbwwoat0JIJtXLcZjG1WgKsyqJy19WU9JrPjhNJ0HZgKekE5YRW+BFpCZ8lds0pPRLRsr9/k7/G2LkeUr/JMJEmRWu91pMhB8kN2bAoZayq7FWRLxliNxSzgUUD3j54oSNbPU430s9VTlrL02a0QVVXav1OGpyCnnolzseEpqNWY09/y13LX0395rWT9UQBHjDb7Imr9jhveg7oof+TqR8SKOSXudMwleXD35OfVo9ultX0anx02BL1763QTl0LbVWDFUcgjX8Y/j8kBpRpRYKoe0T3B8UGBgE1CDSZOSkdgzjFVS5A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
- by VI1PR04MB9834.eurprd04.prod.outlook.com (2603:10a6:800:1d8::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
- 2026 11:08:15 +0000
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0223.011; Fri, 17 Jul 2026
- 11:08:15 +0000
-Date: Fri, 17 Jul 2026 19:06:50 +0800
-From: Xu Yang <xu.yang_2@oss.nxp.com>
-To: Pan Chuang <panchuang@vivo.com>
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Frank Li <Frank.li@nxp.com>, Xu Yang <xu.yang_2@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Ji Sheng Teoh <jisheng.teoh@starfivetech.com>, 
-	Khuong Dinh <khuong@os.amperecomputing.com>, 
-	"moderated list:ARM PMU PROFILING AND DEBUGGING" <linux-arm-kernel@lists.infradead.org>, 
-	"open list:ARM PMU PROFILING AND DEBUGGING" <linux-perf-users@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>
-Subject: Re: [PATCH 1/3] perf: Remove redundant dev_err()/dev_err_probe()
-Message-ID: <va7tqd5fjr2lwivkbipphkfawkegroyvqf6kugvmbsylaxf3zt@kxo4a524zieu>
-References: <20260717103123.34887-1-panchuang@vivo.com>
- <20260717103123.34887-2-panchuang@vivo.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717103123.34887-2-panchuang@vivo.com>
-X-ClientProxiedBy: FR4P281CA0339.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ea::13) To PAXPR04MB9422.eurprd04.prod.outlook.com
- (2603:10a6:102:2b4::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEBrkHwc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F661F000E9;
+	Fri, 17 Jul 2026 11:09:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784286543;
+	bh=Yd4FjM1y0K+z4qkw3/6BpjEybSAgejUBHiNrNNQ4Q+w=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=QEBrkHwchFxwIbuAx85NGa5SG65p/RyEDVXHOwgwsDfR2rq4RqLan9kItzasx2/Z4
+	 kdcvhaQF/zU5/Qj/Rt4Ik83qKOhCboZY3ZUFOfUi/XqfXphQE7DWWmct8UK5qivoe8
+	 lo1tKrN+6FVUCq94vGr3d09YhQvj9DM3J7E8pplANlEDd6+PJIkeb+fX3DGmwIyN3n
+	 /UM4sbJZda63WPLAX9ginYmM9ssnA9GKhNuj4N4mSIvG1CAHM/9S+EYJ/4NEjgQw6r
+	 /p0a/nKD02uTTNIDPp+I7JEjcm/qD4nHTEkaVpmm6/dsuGKVAGxEIECmbz6cTtMb0e
+	 d/bVSCpIs030Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v28 6/7] arm64: dts: imx8ulp: add secure enclave node
+Reply-To: sashiko-reviews@lists.linux.dev
+To: pankaj.gupta@oss.nxp.com
+Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260717-imx-se-if-v28-6-0a9659c7e69d@nxp.com>
+References: <20260717-imx-se-if-v28-0-0a9659c7e69d@nxp.com>
+ <20260717-imx-se-if-v28-6-0a9659c7e69d@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 17 Jul 2026 11:09:02 +0000
+Message-Id: <20260717110902.F2F661F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|VI1PR04MB9834:EE_
-X-MS-Office365-Filtering-Correlation-Id: f77a84b7-0ca8-446d-7de7-08dee3f3b2fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|7416014|376014|23010399003|366016|6133799003|18002099003|22082099003|11063799006|10067099003|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	MTDrZtqIvkC0xXBFv1RVBHAHLiecM01HXq/+AJ7FcfpZ1mAeotVP10C1lndcUvy3yVRwN56y028GWQ3+6AzaJI5bLh2c+vHxLMZfn1U9PS6peIbu50KsTK4oLNFJwC2cJ/NmbzTtzc9MAspNdi60CHBKZstnsAORHKShyv1G2MoVsrv2THwy5LTuqnntzHK1jIdCvxOB4wZ4XXhUKpY82XqRP+b4SxKgrPBm2ftuSlM+JecPrRX6qoUrRDb3idUwtKk0mX/PZMVpojmyGJ2QHkZE+FBFQtPRdmFnVi9DSqLdU8xl+MPjtAktMxeBoHag+LcrhqMidFGdg1bMT5/FdEBd/ujqjQi/RV+iAMsuGDffqnFiZPaxMGZC/+68ThmIqZ4P38WkN7Ma2vJcnpnzVb9guqKHk00yIXLACZFR6Ek4YYOG9N5JesfdGzjMvr5n76gg5SkylOblT9/0FZOSoFkoBWaJO1LFYm6OzF3OTSWj9/RfOpyblm3Q7HB3Ks/ro3+PcbdiSXGd6SngLfoIvOkBR5KFWaJivsom6CS/bYS9mynK+DAxAycN8P5RLJ2A33O6/w3qUYpQE/LgkbmrwNh0P+AnK/xQr1nNBD0SpDIWPLTMVaEF+ydNKLHgQRQygT7qPkWtVzQhUsdqzcFK/BeffXS9Cwi20q73fQryVWA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(7416014)(376014)(23010399003)(366016)(6133799003)(18002099003)(22082099003)(11063799006)(10067099003)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SmVP4x9lTviJkAnyzUT34DsrLlobdOLH8o5ZdU++hKUBy2zFnN76ZBWqpCcV?=
- =?us-ascii?Q?y/NMhK2GsiIpUYBN4VsIM/2BAcHnf6CJ8Eheh9ZOz6FCds7j/PRWAX4Uh1Bc?=
- =?us-ascii?Q?j1ipnzfy9NIpocwPv95iRAfZAS6FpYgShUXMTky+NExJtkxXvapKo9Zs6QCD?=
- =?us-ascii?Q?RtlaFBCImi9FuZWm76hbqJo7fZcvihB+H7ThhYR8ao0HO2JMJ2b7hxKoBew4?=
- =?us-ascii?Q?nmxPM+rKxhbKAAScbnzD8Qpb2abKYNmyD8fuIJ2KSHyVNDPT6A/gCXsxUfA1?=
- =?us-ascii?Q?lDT8C7fugWRJFhBt/RSS24LKcy/U3ZK4gMTvKz0JJ8wdB/pa5ro66SXr17wt?=
- =?us-ascii?Q?JfhxPSuUEwF9h+ztLBeY3lreISdTBjuXzZjSy7xkL1yq5aJLr0BTEfhIu0jh?=
- =?us-ascii?Q?CLTJ2/4TCCEikTNC2PC+R4HY/t+yLkH4e3dsQ7A6SwMIIrDFvj0afRfMt6n7?=
- =?us-ascii?Q?wc2L5B4a3fPJ9VEphxkoBdgpC6yc4tLabxya7OjYJPRHBG/OiUM+zzOcHJu9?=
- =?us-ascii?Q?MgqOuVObAjaZbHpagSEk8gl4GRzmx/ydWk37jHzYCnF057W+FkSjcDhDXMiH?=
- =?us-ascii?Q?SuYhVhzCsfv9uOY5TBUEWfpEvxmhEnUKoQINVE5b/RHlcTcN7elAk2qjVpRP?=
- =?us-ascii?Q?aUsHWNed9AY1WMNUU/sFwMUJB8NBiN2+IXFF7e368RVEjO8cYhwPGznP2FBE?=
- =?us-ascii?Q?Fb3zrnykX7iM0eLDFK2p6G0JpdMq+lqo4KX79eqMVt3lQ0PL4VMoJQeOVyja?=
- =?us-ascii?Q?Q4it0QHjlLPJq6kugShrJfasA8vSGhFVS7J58UYUwNsv2sPRzhZifBkFMYWG?=
- =?us-ascii?Q?LBkCJdJGAmJj72GZYlEAhXp+ZLGd6R02oGPStOd7uMoqluni4U1BH1mfBQx2?=
- =?us-ascii?Q?pPJ9vqWgO4OrxzD6noU4QOyiRTjJZCquesUg+qdTehoLXWIkxYwJkmM3Blxu?=
- =?us-ascii?Q?EpmygC4D5Nwp03Md3I8AobZnIBxiKflRJtO+sE8USC7eGeFk0ydnjDuHv1rF?=
- =?us-ascii?Q?SUQ1y00eih60nt0Qkkq9hDn+v9TEfX+EeX4qmGSPPrrpusjooA4u47iLv6qj?=
- =?us-ascii?Q?3F9zr87aYYVahYBeuEWYpqN/9Uav6jWluWBAWs/vWYcStRg2C1P51fAel1Vn?=
- =?us-ascii?Q?cUPaZLlGqK8RixXGHuEoFGHSeJKFKif/oXPLgZBkpGxS5Odv8COP+QzZ/yWk?=
- =?us-ascii?Q?e+QpohG68ys4SifszbDqi7KqYNxIFARWQJp9zlVQQMfd7xALg+krmePg1wib?=
- =?us-ascii?Q?o447gafSTI2BkQFfUzZ449f7hSrM/Lo6KmFlT811WgAIXuRF0B7wHcxyWx0n?=
- =?us-ascii?Q?8PMVfy6dtrH/KZ3g4BL9FH/gCwWbIpI0oAlCLEjG5Aly9rHyUEi4mQwQ8AYd?=
- =?us-ascii?Q?Dx5szUww4nGm2KEjoT5c4qP3wLUKIknZfjbq1eZ9Rs56WfrGET2dK1Sf+kBb?=
- =?us-ascii?Q?/czpQ/B0Uea0KPYGIdrnRFIzxpN9gGawjnxoEznXHiSzu+WGqIIHm3Lg67rb?=
- =?us-ascii?Q?Dmn/NGZieme7W6yxDCki1F29UqOtfAxAuyWFibVtuuXUCWgIQMPjdfqYTjK7?=
- =?us-ascii?Q?wcg/QH/iT/rVBbMfUbG8H8Nis/dl45o6G1UA9X9g31pd91ypHr82XqaI6dRR?=
- =?us-ascii?Q?Elu4BsGbkTh84lUmCOVFn0ngpNo1tIxB2NbuFvDWrmF6qFfa0IlhanooXfZ1?=
- =?us-ascii?Q?sacpqAeIPZfKZB6VAK+hpCQBQT6+JHXKxmdYQ05zDqliD2xX8bPMMutqvfyI?=
- =?us-ascii?Q?pSQWoeQOykyTyLySAyb4zCJ/l2jCf/fmSx0zfunSfXbbH/qFK5bQ?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f77a84b7-0ca8-446d-7de7-08dee3f3b2fc
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 11:08:15.5130
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8kwJl/HWJhjwbkg5FLFo/KytWQfe2Ge9EdYs9VZPQro7CbgzXDqG3TruS1NLy+3EYxtXbTjpMULWgxMRygMcBS0PITt0YFpADJxadx1yZcxz2k79axgWBuQ4p/0Mt7MZ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9834
 
-On Fri, Jul 17, 2026 at 06:31:17PM +0800, Pan Chuang wrote:
-> Since commit 55b48e23f5c4 ("genirq/devres: Add error handling in
-> devm_request_*_irq()"), devm_request_irq() automatically logs
-> detailed error messages on failure. Remove the now-redundant
-> driver-specific dev_err() and dev_err_probe() calls.
-> 
-> Signed-off-by: Pan Chuang <panchuang@vivo.com>
-> ---
->  drivers/perf/alibaba_uncore_drw_pmu.c | 5 +----
->  drivers/perf/fsl_imx8_ddr_perf.c      | 4 +---
->  drivers/perf/fsl_imx9_ddr_perf.c      | 4 +---
->  drivers/perf/fujitsu_uncore_pmu.c     | 2 +-
->  drivers/perf/qcom_l2_pmu.c            | 5 +----
->  drivers/perf/qcom_l3_pmu.c            | 5 +----
->  drivers/perf/starfive_starlink_pmu.c  | 2 +-
->  drivers/perf/xgene_pmu.c              | 4 +---
->  8 files changed, 8 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/perf/alibaba_uncore_drw_pmu.c b/drivers/perf/alibaba_uncore_drw_pmu.c
-> index 74786a5dd6a2..fc934bccf4a6 100644
-> --- a/drivers/perf/alibaba_uncore_drw_pmu.c
-> +++ b/drivers/perf/alibaba_uncore_drw_pmu.c
-> @@ -449,11 +449,8 @@ static struct ali_drw_pmu_irq *__ali_drw_pmu_init_irq(struct platform_device
->  	 */
->  	ret = devm_request_irq(&pdev->dev, irq_num, ali_drw_pmu_isr,
->  			       IRQF_SHARED, dev_name(&pdev->dev), irq);
-> -	if (ret < 0) {
-> -		dev_err(&pdev->dev,
-> -			"Fail to request IRQ:%d ret:%d\n", irq_num, ret);
-> +	if (ret < 0)
->  		goto out_free;
-> -	}
->  
->  	ret = irq_set_affinity_hint(irq_num, cpumask_of(irq->cpu));
->  	if (ret)
-> diff --git a/drivers/perf/fsl_imx8_ddr_perf.c b/drivers/perf/fsl_imx8_ddr_perf.c
-> index 3760ebe02674..dd8046265584 100644
-> --- a/drivers/perf/fsl_imx8_ddr_perf.c
-> +++ b/drivers/perf/fsl_imx8_ddr_perf.c
-> @@ -858,10 +858,8 @@ static int ddr_perf_probe(struct platform_device *pdev)
->  					IRQF_NOBALANCING | IRQF_NO_THREAD,
->  					DDR_CPUHP_CB_NAME,
->  					pmu);
-> -	if (ret < 0) {
-> -		dev_err(&pdev->dev, "Request irq failed: %d", ret);
-> +	if (ret < 0)
->  		goto ddr_perf_err;
-> -	}
->  
->  	pmu->irq = irq;
->  	ret = irq_set_affinity(pmu->irq, cpumask_of(pmu->cpu));
-> diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
-> index 6fee5eb5087a..d59bc5ea3155 100644
-> --- a/drivers/perf/fsl_imx9_ddr_perf.c
-> +++ b/drivers/perf/fsl_imx9_ddr_perf.c
-> @@ -830,10 +830,8 @@ static int ddr_perf_probe(struct platform_device *pdev)
->  	ret = devm_request_irq(&pdev->dev, irq, ddr_perf_irq_handler,
->  			       IRQF_NOBALANCING | IRQF_NO_THREAD,
->  			       DDR_CPUHP_CB_NAME, pmu);
-> -	if (ret < 0) {
-> -		dev_err(&pdev->dev, "Request irq failed: %d", ret);
-> +	if (ret < 0)
->  		goto ddr_perf_err;
-> -	}
->  
->  	pmu->irq = irq;
->  	ret = irq_set_affinity(pmu->irq, cpumask_of(pmu->cpu));
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] Bypass of the fw_busy circuit breaker when a signal interrupts=
+ ele_msg_rcv() at or after the timeout deadline, leading to DMA memory corr=
+uption.
+- [Medium] The `hsm0` (`secure-enclave`) device tree node is missing the ma=
+ndatory `memory-region` property, causing device tree schema validation to =
+fail and the driver probe to unconditionally abort.
+--
 
-Reviewed-by: Xu Yang <xu.yang_2@nxp.com>
+--- Patch [6]: [PATCH v28 6/7] arm64: dts: imx8ulp: add secure enclave node=
+ ---
+commit 241fbc418ec78fd2d90f05f09b33f7f8fd2d525e
+Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-Thanks,
-Xu Yang
+arm64: dts: imx8ulp: add secure enclave node
+   =20
+Add support for NXP secure enclave called EdgeLock Enclave firmware (se-fw)
+for imx8ulp-evk.
+   =20
+Add label sram0 for sram@2201f000 and add secure-enclave node
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot=
+/dts/freescale/imx8ulp.dtsi
+> index c6d1bb9edf388..182f1444b6434 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+[ ... ]
+> @@ -185,6 +185,13 @@ scmi_sensor: protocol@15 {
+>  				#thermal-sensor-cells =3D <1>;
+>  			};
+>  		};
+> +
+> +		hsm0: secure-enclave {
+> +			compatible =3D "fsl,imx8ulp-se-ele-hsm";
+> +			mbox-names =3D "tx", "rx";
+> +			mboxes =3D <&s4muap 0 0>, <&s4muap 1 0>;
+> +			sram =3D <&sram0>;
+> +		};
+
+[Severity: Medium]
+Does this node need a memory-region property to probe successfully?
+
+Looking at se_if_probe() in drivers/firmware/imx/se_ctrl.c, when the
+compatible string has reserved_dma_ranges set to true (as this one does),
+it calls of_reserved_mem_device_init().
+
+If the memory-region property is missing, that function returns -ENODEV,
+which the driver converts into a probe error:
+
+	if (if_node->reserved_dma_ranges) {
+		ret =3D of_reserved_mem_device_init(dev);
+		if (ret)
+			return dev_err_probe(dev, ret,
+					    "Failed to init reserved memory region.");
+	}
+
+Will this cause the secure enclave device to unconditionally fail
+initialization out-of-the-box?
+
+[Severity: Critical]
+Is it possible for the driver's firmware busy circuit breaker to be bypassed
+when communicating with this device?
+
+Looking at ele_msg_rcv() in drivers/firmware/imx/ele_common.c, if a signal
+interrupts wait_for_completion_interruptible_timeout() at or after the
+timeout deadline, an early break bypasses the circuit breaker:
+
+		if (is_rsp_wait_with_timeout) {
+			if (time_after_eq(jiffies, deadline_jiffies)) {
+				ret =3D -ETIMEDOUT;
+				break;
+			}
+			remaining_jiffies =3D deadline_jiffies - jiffies;
+		}
+
+Because this breaks early, the loop skips the call to se_mark_fw_busy().
+
+Later, in se_dev_ctx_shared_mem_cleanup() in drivers/firmware/imx/se_ctrl.c,
+since the fw_busy flag wasn't set, the DMA memory allocator resets the buff=
+er
+position to 0:
+
+	is_fw_busy_dev_ctx =3D se_is_fw_busy_ctx(dev_ctx);
+
+	/* ... */
+
+	if (!is_fw_busy_dev_ctx)
+		se_shared_mem_mgmt->non_secure_mem.pos =3D 0;
+
+Could this allow the active firmware DMA to overwrite the memory of
+subsequent requests since the firmware is still running and will DMA
+to the shared buffer?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717-imx-se-if-=
+v28-0-0a9659c7e69d@nxp.com?part=3D6
