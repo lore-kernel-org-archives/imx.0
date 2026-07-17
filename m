@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3F63EDAC9;
-	Fri, 17 Jul 2026 12:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1B4325701;
+	Fri, 17 Jul 2026 12:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784291295; cv=none; b=M8NwT4mhOx9LYahfxlja6Hs/aRp85DitrmvsrDvfwSPvDO1aG7EjMDaWelqdVK88o48TWVGz5AxSLXbPPUXmVMKLSP+Yu5T88l+lMrq1XjH/J9GLgHdwHwp0PVp7dLYmsmQbS1xv6A+WPT30Q5X+W4Mvq2VvPuiRsnEWIHRkPwM=
+	t=1784291433; cv=none; b=iFSSk94Qsq9igOax+ZJlA0Klqz6irQdabKomxlyqfw8UI6ky9fa8urJZlSaFocz26hro/bXKgmN+uehDEGz26DLIbo8ABRGibPUBtL7SycHZuzp66DfL7N7EWMeAMUxH+TTM/snIlfMnTnYXk5HNbaKSkg7OEwjDB/lSmhoZqjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784291295; c=relaxed/simple;
-	bh=jgyoMbC4/kBLBBf3ArnlKCLVia+4jd5r5fkGoCzrlkA=;
+	s=arc-20240116; t=1784291433; c=relaxed/simple;
+	bh=1ycxZC2wtNKQ+x4yH6H19ifoAwp4Ht+9QQRRfMv/9cA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KlJ66xA96Xj+sXWF2E9HGyxKDJVJkRtST/4jgR4exZ0H7sr0FMHxXA5U+1QVn+PNNKMcwn4i7XD2H5RL+MN1bMWc2Yvx4AJwOgA6xTLPsvUZ2O1fmQDHdcnCNmyBcpVOPk9abTj6tu5MDErQhaAZwYrJc+JJeyPSNqdyOcHRwkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BAAstyqs; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=DjwFCVL88qgqIPLr8x11HzMJQCWHCVJV878z93zjGUyLmC0GzSqUN+IO4L2x7Xw5LVJS/keigMDkxE+ewvNw2xqjJfPR85bCRdwfnzOyey4fYgreV0Th2Xpk2hUWqZcKSwSBT3SxJMCkac0blQWC0JUQPus/tH0Yh+Sv+xEx4qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jDuNfiXx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BAAstyqs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693211F000E9;
-	Fri, 17 Jul 2026 12:28:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jDuNfiXx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1F91F000E9;
+	Fri, 17 Jul 2026 12:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784291288;
-	bh=mLUhEODnpqoOCbWwLaXeT4x8ON01RupU/xxbO4MV1LE=;
+	s=k20260515; t=1784291431;
+	bh=1ycxZC2wtNKQ+x4yH6H19ifoAwp4Ht+9QQRRfMv/9cA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BAAstyqs33CZc4v/2JHllCtggkNKz0uQSvIGuZJanBZn+0vmKqrDXWjKJF3yEARNe
-	 AXMEWG3oh0lDGEL6gjnlvpXe0HSTlr4MrTYj5jdmuEK1k0sIAxVwVAnQGCNsfzcjq0
-	 4I3FIjvosJmfP1+LCDlWqWwN9pOGR2k/KKA5grcBHPiTP64CgROYpBibVcB8T+zhOM
-	 YIiyqdQwmMO3NpWwAHaade4fQIyq83ONCUOWYv16MkvTaHW5jh81BdQ7DxOIVpGJTk
-	 ykhnklu5JuJ8wDeOr1viPrgv9LXHg9kTAqI5SNP+8V7SqTqd1JvRTK7WIs4QWXpT8R
-	 1oI1fDDZ8eqBQ==
+	b=jDuNfiXxdU5RGxPNgAiyQ5iZk95BXrK97EtOXeJKZjrq4D94wXzsos90UBYoZy0ts
+	 RCT48wG3acwQ4HNumc1fPprNXj5i2NCxJOOdswcT0gUW/RVX11i0/8OdnikXPEqFrz
+	 ep9aSkB88V8EHrh1DKApN0Ra7ptHpg4okIytOt1bMKIMPSKgw8MKYwRQkcO75pkCr6
+	 NAOzUL4YYbOMs4lM4wtoMz1478j2JWi1SbeDSpV5n2Bc05x9mmdP91swiRI4xy8Qrv
+	 +zLNUUh1LTOU2zSGjOEpLQQWOs7p3axqPKNInRaI86EWI/q3sYm+/FtKKEaTsp3OWQ
+	 NTM+GIFJsYmlg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 1/4] dt-bindings: lcdif: Add interface pixel format
+Subject: Re: [PATCH v1 4/4] ARM: dts: imx7-colibri: Set LCDIF format
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Francesco Dolcini" <francesco@dolcini.it>
-Cc: devicetree@vger.kernel.org, robh@kernel.org, dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260717121847.488148-2-francesco@dolcini.it>
+Cc: imx@lists.linux.dev, robh@kernel.org, dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260717121847.488148-5-francesco@dolcini.it>
 References: <20260717121847.488148-1-francesco@dolcini.it>
- <20260717121847.488148-2-francesco@dolcini.it>
+ <20260717121847.488148-5-francesco@dolcini.it>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 12:28:07 +0000
-Message-Id: <20260717122808.693211F000E9@smtp.kernel.org>
+Date: Fri, 17 Jul 2026 12:30:30 +0000
+Message-Id: <20260717123031.6B1F91F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,57 +46,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Introduction of the legacy, non-standard `interface-pix-fmt` proper=
-ty for a standard hardware concept (parallel bus width), violating modern D=
-T principles.
+- [Medium] The commit message body incorrectly refers to `colibri imx6ull` =
+instead of `colibri imx7`.
 --
 
---- Patch [1]: [PATCH v1 1/4] dt-bindings: lcdif: Add interface pixel forma=
-t ---
-commit 7225ea545d2ff50540972dd75d375b8ecea4f315
+--- Patch [4]: [PATCH v1 4/4] ARM: dts: imx7-colibri: Set LCDIF format ---
+commit 9c45712860f8ad12db4bc3a18c8c4e7039c7f51b
 Author: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-dt-bindings: lcdif: Add interface pixel format
+ARM: dts: imx7-colibri: Set LCDIF format
 
-This commit updates the fsl,lcdif device tree binding to support the
-interface-pix-fmt property. The property is used to describe the hardware's
-parallel data bus transfer width to match board wiring and prevent shifted
-colors.
+This commit updates the device tree for the Colibri i.MX7 to explicitly set
+the LCDIF pixel format to rgb666 for its 18-bit width bus.
 
-> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/D=
-ocumentation/devicetree/bindings/display/fsl,lcdif.yaml
-> index 2dd0411ec6516..209ee5a96e393 100644
-> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> @@ -58,6 +58,13 @@ properties:
->      items:
->        - const: rx
-> =20
-> +  interface-pix-fmt:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum:
-> +      - rgb24
-> +      - rgb565
-> +      - rgb666
+> The lcd DPI interface on colibri imx6ull uses a 18-bit width bus, set
+> the interface-pix-fmt accordingly.
 
-[Severity: Low]
-Is this introducing a legacy, non-standard property into the new schema ABI=
-?=20
-
-Standard devicetree guidelines usually prefer endpoint properties like
-bus-width (defined in video-interfaces.yaml) to describe physical parallel
-data line configurations, such as setting bus-width =3D <18> for RGB666.
-
-If a custom property is strictly necessary here rather than using the stand=
-ard
-endpoint properties, does this require a vendor prefix like
-fsl,interface-pix-fmt to comply with modern devicetree naming conventions?
-
-> +
->    interrupts:
->      items:
->        - description: LCDIF DMA interrupt
+[Severity: Medium]
+Is this description accurate for this patch? The subject and the modified=20
+file (imx7-colibri.dtsi) both target the i.MX7 hardware, but the commit=20
+message body mentions the colibri imx6ull. Should this text be updated to=20
+refer to the i.MX7?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717121847.4881=
-48-1-francesco@dolcini.it?part=3D1
+48-1-francesco@dolcini.it?part=3D4
