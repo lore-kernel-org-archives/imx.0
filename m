@@ -1,180 +1,141 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33379246BCD;
-	Fri, 17 Jul 2026 14:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3246F422532
+	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 14:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784298694; cv=none; b=o8/Pxa6GqhtIFDUYu/YLX2McMjzyPbmxavWxB5ZPsr2jxTGbbmTbRHD9G+JeqKKFsw8CaGBWu+u/fpPLyDfkshlBzhTovyrFrMOO7JAU2ByZyg5dKYf+7OxdwWA3txgS3X8e6bWDFVhUpqEKwfKDHUv3ZTeXJNyKW1G+X9HCcJM=
+	t=1784299340; cv=none; b=AVB3IKblt8AjQckQydj/TbZUNxrM4tRMkPEO2R7Ldas6wZlNS5Nim4+ESLfIJfPrYL25ICex7pcf9h/gh3Y4BOJ510WOC7+h7ZEbgMd+ALvIXmkI6A+sSvhesAGfjltS7lksNviCPfddlw4FrjB8KMYn26CAFi4acgZa6r1Oo50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784298694; c=relaxed/simple;
-	bh=npqcF82ONkjwD220EDGAy9z5SBDZRK77i+mM/cMiG3I=;
+	s=arc-20240116; t=1784299340; c=relaxed/simple;
+	bh=fPh7o6c2x7gOcOLMv+HBFn1lltlEWMe7k9DiWxoCRko=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZiY4LAFh20wPwvVL9ZXW1Vickt5NTiiL6T7nYJfME0nqwmKqsJntbvhwXJOpoJL8ccuOj8gk2XSG1WpqodWRGGHe6cTyvrR3vA6+V3ZHfKnklhMK1BrrRr1XjcWMXHZYOWa6Axn5cGK9J75xV0rqOcQM1uSn1Br74WxsRqajUQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cui97pRK; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WsBOB/RwllSmT8/iLbNWnAvj85bpN6h7i78ODi8Jpq34WdClyGAqMh1zQYtAQgbsZJFIV/ImAy9U/S4zMZiQp565NaxzeiIHreWku/wfDrRO/7II80rX2b2hJtapfebj0pKeiYr1OuAXJu///bsJTefPxn5MkX/sXg8/40kq05Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NT0ZbaC5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cui97pRK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1461F000E9;
-	Fri, 17 Jul 2026 14:31:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NT0ZbaC5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9514C1F000E9;
+	Fri, 17 Jul 2026 14:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784298692;
-	bh=U8NpefZYQvR5+qGNffnGRppGKx0+pfM2H3KJR95qoiY=;
+	s=k20260515; t=1784299338;
+	bh=vhLRC5CNfUjlIU0d3j5Xz8gKGivHdxOYs1bM2s+5an4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Cui97pRKV5RWzfBg6OW8SI43q6J7uQ78Xc9VS5tOjE1Ecc7yicSSZQfQet6+iD6NT
-	 yUlOLXMAmMYZK1h0T/VEKHG98xn+n0Gir870n47FYPGphmWVho8svG0/uCcWKqp14A
-	 /MqBwimNZjIvfhELTYFiaQGVWXcJH4Qfu29XW0WJSWUqbBiddx7F/+SBg3uJqZmPTK
-	 3k9VIGw+2ssOgPhzi3FJpQtWuDpJEj9xGl2um1wiAPFcf+ColFFC90xNARuJJ5QTVH
-	 zCnmv+p2Y/z/37pV3MwmRdbTNoW+2I2L7xTwl/qzoCjVZDH3CJP87RKu1B4DFY5Lw8
-	 nUYOlAsVY2xOw==
+	b=NT0ZbaC5G5GlVa3PsjBZDMWVMEdup2Wt8qcZ6iNq9YS+6PmarKbYMWlqPHDvskz3k
+	 wmmWAEDpgDCMVRZKnFaty3AKVUJwxGJ1Yxxo/kCAODPH/bmGGzIu53AxRQ4CMzHfk3
+	 kwLIp8ODa80BjjSnYzErlOF3Jm74GW0mxlVRzlwz8aOHxiwgPyGVf5QRlKITm57IdH
+	 L1pRUAwoQ3J/q6778BN5vR/Up1Vh4gyxr5RwbnzkO62ZJ8misCwIhG9J/8pfYrrauP
+	 k7Trv6oevsPfDIJt0gQnbz3b7zaPF9QKmJ4lUkwGkm3Y91ATYhcpNY/UWd3LFJTk2Y
+	 wT0PqKBx7OIgQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/4] drm/panel: have drm_panel_add/remove manage a
- list reference
+Subject: Re: [PATCH] ARM: imx: Fix suspend/resume crash with Clang CFI
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Albert Esteve" <aesteve@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, Frank.Li@kernel.org, linux-sunxi@lists.linux.dev
-In-Reply-To: <20260717-drm_refcount_wiring-v3-1-023900c32e01@redhat.com>
-References: <20260717-drm_refcount_wiring-v3-0-023900c32e01@redhat.com>
- <20260717-drm_refcount_wiring-v3-1-023900c32e01@redhat.com>
+To: =?utf-8?b?WW8nYXYgTW9zaGU=?= <linux@yoavmoshe.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260717141648.1007059-1-linux@yoavmoshe.com>
+References: <20260717141648.1007059-1-linux@yoavmoshe.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 14:31:32 +0000
-Message-Id: <20260717143132.8B1461F000E9@smtp.kernel.org>
+Date: Fri, 17 Jul 2026 14:42:18 +0000
+Message-Id: <20260717144218.9514C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 New issues:
-- [High] Modifying drm_panel_add() to take a reference replaces a list-iter=
-ation crash with a memory leak and a devres Use-After-Free for drivers that=
- fail to call drm_panel_remove().
+- [High] The `__nocfi` annotation on `imx6q_suspend_finish` creates a KCFI =
+bypass gadget and unnecessarily removes CFI protection from standard kernel=
+ indirect calls.
 
 Pre-existing issues:
-- [High] Lookup functions return raw pointers without acquiring references,=
- failing to protect the caller from concurrent panel removal.
-- [High] Use-After-Free in the drm_panel_follower API when a panel is unbou=
-nd.
+- [High] The KCFI panic bypass for dynamically-copied assembly routines is =
+incomplete, as identical patterns exist in other ARM platforms that will st=
+ill panic when KCFI is enabled and suspend is triggered.
 --
 
---- Patch [1]: [PATCH v3 1/4] drm/panel: have drm_panel_add/remove manage a=
- list reference ---
-commit 2e9c2d76403b7b7e3caee78c96bffbb1f61d8df7
-Author: Albert Esteve <aesteve@redhat.com>
+--- Patch [1]: [PATCH] ARM: imx: Fix suspend/resume crash with Clang CFI ---
+commit aea4e29393049bd454bac337e0878d861ebe299d
+Author: Yo'av Moshe <linux@yoavmoshe.com>
 
-drm/panel: have drm_panel_add/remove manage a list reference
+ARM: imx: Fix suspend/resume crash with Clang CFI
 
-The commit adds a reference acquisition to drm_panel_add() and a release=20
-to drm_panel_remove() to prevent the panel from being freed while still=20
-linked in panel_list. The global registry now holds a counted reference=20
-for as long as the panel is listed.
+This patch annotates imx6q_suspend_finish with __nocfi to bypass strict
+CFI violations during suspend when CONFIG_CFI=3Dy is active. The crash
+occurs because relocated suspend code in OCRAM lacks compiler-generated
+CFI type signatures.
 
-> diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
-> index 2c5649e433dfb..545fe93dc28fe 100644
-> --- a/drivers/gpu/drm/drm_panel.c
-> +++ b/drivers/gpu/drm/drm_panel.c
-> @@ -81,6 +81,7 @@ static void drm_panel_init(struct drm_panel *panel, str=
-uct device *dev,
->   */
->  void drm_panel_add(struct drm_panel *panel)
->  {
-> +	drm_panel_get(panel);
+> diff --git a/arch/arm/mach-imx/pm-imx6.c b/arch/arm/mach-imx/pm-imx6.c
+> index a671ca498f887..d9b0c18032c68 100644
+> --- a/arch/arm/mach-imx/pm-imx6.c
+> +++ b/arch/arm/mach-imx/pm-imx6.c
+[ ... ]
+> @@ -360,7 +360,7 @@ int imx6_set_lpm(enum mxc_cpu_pwr_mode mode)
+>  	return 0;
+>  }
+> =20
+> -static int imx6q_suspend_finish(unsigned long val)
+> +static int __nocfi imx6q_suspend_finish(unsigned long val)
 
 [Severity: High]
-Does taking a reference here replace a list-iteration crash with a memory
-leak and a devres use-after-free for drivers that fail to call=20
-drm_panel_remove()?
+Does applying __nocfi to the entire function expose the globally writable
+imx6_suspend_in_ocram_fn pointer as a potential KCFI bypass gadget?
 
-If a driver calls drm_panel_add() but fails to call drm_panel_remove() on=20
-unbind, the new drm_panel_get() reference prevents the struct drm_panel fro=
-m=20
-being freed, leaving it in panel_list. However, the driver's devres teardow=
-n=20
-still executes, freeing all underlying hardware resources like clocks,=20
-regulators, and GPIOs.=20
+Since imx6_suspend_in_ocram_fn is defined without __ro_after_init:
 
-If another driver later discovers this 'zombie' panel via=20
-of_drm_find_panel() and invokes its callbacks, will the panel driver access=
-=20
-freed devres resources, causing a use-after-free or hardware lockup?
+arch/arm/mach-imx/pm-imx6.c:
+static void (*imx6_suspend_in_ocram_fn)(void __iomem *ocram_vbase);
 
->  	mutex_lock(&panel_lock);
->  	list_add_tail(&panel->list, &panel_list);
->  	mutex_unlock(&panel_lock);
+Could an attacker with an arbitrary write primitive overwrite this pointer
+and bypass KCFI execution validation when system suspend is triggered?
+Also, does annotating the whole function unnecessarily disable CFI
+protection for standard kernel calls like cpu_do_idle() and
+flush_cache_all() that occur in the same scope?
+
+>  {
+>  	if (!imx6_suspend_in_ocram_fn) {
+>  		cpu_do_idle();
+>  	} else {
+>  		/*
+>  		 * call low level suspend function in ocram,
+>  		 * as we need to float DDR IO.
+>  		 */
+>  		local_flush_tlb_all();
+>  		/* check if need to flush internal L2 cache */
+>  		if (!((struct imx6_cpu_pm_info *)
+>  			suspend_ocram_base)->l2_base.vbase)
+>  			flush_cache_all();
+>  		imx6_suspend_in_ocram_fn(suspend_ocram_base);
+
+[Severity: High]
+This is a pre-existing issue, but do identical patterns exist in other ARM
+platforms that will still trigger a KCFI panic on suspend?
+
+For example, mx5_suspend_enter() in arch/arm/mach-imx/pm-imx5.c calls the
+dynamically copied imx5_suspend_in_ocram_fn() via an indirect C call:
+
+arch/arm/mach-imx/pm-imx5.c:mx5_suspend_enter() {
+    ...
+    imx5_suspend_in_ocram_fn(suspend_ocram_base);
+    ...
+}
+
+Similar patterns exist in arch/arm/mach-at91/pm.c for
+at91_suspend_sram_fn() and arch/arm/mach-socfpga/pm.c for
+socfpga_sdram_self_refresh_in_ocram().
+
+Because fncpy does not copy the KCFI type hash located 4 bytes before the
+assembly function entry, will these platforms also crash on suspend when
+CONFIG_CFI_CLANG=3Dy is active?
+
+>  	}
+> =20
+>  	return 0;
 >  }
 
-
-This isn't a bug introduced by this patch, but lookup functions return raw
-pointers without acquiring references, failing to protect the caller from
-concurrent panel removal:
-
-drivers/gpu/drm/drm_panel.c:of_drm_find_panel() {
-    ...
-	list_for_each_entry(panel, &panel_list, list) {
-		if (panel->dev->of_node =3D=3D np) {
-			mutex_unlock(&panel_lock);
-			return panel;
-		}
-	}
-    ...
-}
-
-[Severity: High]
-While the commit message claims holding a reference in the registry ensures
-the object outlives concurrent lookups, does this only protect the list=20
-iteration? Once the mutex is unlocked, if a concurrent thread executes=20
-drm_panel_remove() (e.g. due to driver unbind), could it drop the registry'=
-s=20
-reference and potentially free the panel memory while the caller is activel=
-y=20
-using the unprotected pointer?
-
-
-This is also a pre-existing issue, but there appears to be a use-after-free
-in the follower API when a panel is unbound:
-
-drivers/gpu/drm/drm_panel.c:drm_panel_add_follower() {
-    ...
-	panel =3D find_panel_by_dev(follower_dev);
-	if (IS_ERR(panel))
-		return PTR_ERR(panel);
-
-	get_device(panel->dev);
-	follower->panel =3D panel;
-
-	mutex_lock(&panel->follower_lock);
-    ...
-}
-
-[Severity: High]
-Does acquiring a reference to the panel's underlying device via=20
-get_device(panel->dev) fail to keep the devres-allocated struct drm_panel=20
-alive? Because the panel is allocated via devm_drm_panel_alloc(), its memor=
-y=20
-is tied to the driver's devres lifecycle, not the struct device refcount.
-
-If the panel driver unbinds, devres frees the struct drm_panel memory=20
-regardless of the device refcount, leaving the follower driver with a dangl=
-ing=20
-follower->panel pointer.
-
-When the follower unbinds, it calls drm_panel_remove_follower():
-
-drivers/gpu/drm/drm_panel.c:drm_panel_remove_follower() {
-	struct drm_panel *panel =3D follower->panel;
-	int ret;
-
-	mutex_lock(&panel->follower_lock);
-    ...
-}
-
-Won't attempting to lock the freed memory (mutex_lock(&panel->follower_lock=
-))=20
-cause a direct use-after-free?
-
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717-drm_refcou=
-nt_wiring-v3-0-023900c32e01@redhat.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717141648.1007=
+059-1-linux@yoavmoshe.com?part=3D1
