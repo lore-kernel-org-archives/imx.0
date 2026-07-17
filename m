@@ -1,126 +1,164 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0403B39CCF9;
-	Fri, 17 Jul 2026 10:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2507B3B2D18;
+	Fri, 17 Jul 2026 10:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784284834; cv=none; b=P0LasKyV9za5AAfXAsysC13BCFXLxbvpEA/az34JnusGdcZFF2z/nsaJ+6Yy6BsXEEo7X3LZlKAKomwfC+d4JrEh+0PEeUl3b4ZlZr8Mq/yW9RJLWYdKpwyPQv7l2vm/11GDn4r3YpeZlYSH0Cd3/foYN3fpo+Qptl+cfR0B7TY=
+	t=1784284994; cv=none; b=UPjbe76fmwVTr1wCSiStwC0I3I50jzgO4178oths4fGVXSIyxIFgNb0pIimspiDhvjlAiwrZ6dQ4OamN6dmKVVgIDAjYchzNhbAS2fm7iaMrk6om7KHOLNLx0rL4MkXZqSgvgjbq5LO2KywAu9VkkvVvdjjZCgtInO7gm4ALPt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784284834; c=relaxed/simple;
-	bh=vEh8AyqeaR4/6a9EDVW4FLWHpyuzr8hiSJBxaiN+8RA=;
+	s=arc-20240116; t=1784284994; c=relaxed/simple;
+	bh=zMN/Fqyb89XihaW2OLNqlgLr7BesIV4Revh8TpH+c9Q=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hrYqPWPUMAIGZs+fzcBzBxv8bkXdd3NAk9OhmFiRuBVpzKVXcb4LO0mTil3NA2V+BklhyboN95jBPWmWmoFZyt/8eisyfzpPEF13C+3KjAiI2JycsLB/lGALtdsFhRgQtUJCHcVObW4Je8TDM9xS4fCXURjczpSe/4yT+0kxJDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q04XtXi/; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=FT0ntOllN0ABnb8VmsVVt76q9SCwcRviMxZySbKCxRVzjbzUcpbCmzEzVnQ28U7dkg3fw1NJdUgURB33vsDanES0OAcEA6pXhonSwH9FcFSs9g1REw0CfANxiDqYsVIKC1FnyjKmZY7rahm5e9SJQTOZtF1kCOpIS68tO0bJf3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UsMGtu31; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q04XtXi/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354AC1F000E9;
-	Fri, 17 Jul 2026 10:40:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UsMGtu31"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD071F000E9;
+	Fri, 17 Jul 2026 10:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784284831;
-	bh=kVWn+9PTiJdcHTS+KAn7U3hZ39CunVSAUXk1FcJvjmc=;
+	s=k20260515; t=1784284993;
+	bh=TPq1W25HMVIS5gnpZgWWmfKXoYx295Je6Qmbb4tEV7E=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Q04XtXi/XX9W3K+KbmKcLAEqkbCrWkBuPx1axYvV7dwCGycuCPJgZ3EEkeOnUPxUW
-	 v6MVlfxBykMaMoMKZoGD/7Dwy+3F7cup8CojjP6kpRdwflFfGQvXsbTt0nAQBwbe1a
-	 hqWqhtwMSAhiWmTCHt8+m0qSjpjkh5oMazFk4EaY4IF4RT0LIKrdFfDEUN6HnknaCS
-	 r/Sgr/MaMf/lavcgVxaAbn/xbs1Dt+eyFopnspG+vOGwMICmqan7+anFHqN5pyGIuV
-	 w83Uc39jixfHJILPM2KJy2rKfn6HuZ/KM/gHkwIQvk8SkM5+1oqIN1EVTZSmXD5Xaq
-	 Gw8xY7ViK4lZw==
+	b=UsMGtu31pRDRGAGCB7hD9/DG4fpKQC8JXEp/Pzs167saLMUj3GsONi12pkMoxmxMR
+	 KvQnO9PzpnSWmgypmsMEH2tDrxmig9e49yMt9mg4eHxs9r1NgLLWTTwAY2ZUCJ1n2g
+	 QCzg5aUTv12lyNdgY6aj6eEhXcOAaZGND1TfLmYPx9ri0+ejkAYpnLACdXVHQsBI1L
+	 FmOUHf0wV/z6ZaObE07eCkiwwuER5Cu28Ex8mzT+rN997aek9GbmUFqT7jiO7R552j
+	 IVnfgBi6Yr6sWVXcqTeUf+bOm1dXwrxbWvLf/jMTSZRgpse3ibPq7FCfD0F5Qn2x/l
+	 Jr/4Hk6fESh3Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 2/3] arm64: dts: freescale: Add support for Variscite
- VAR-SOM-MX8 QuadMax
+Subject: Re: [PATCH 1/3] perf: Remove redundant dev_err()/dev_err_probe()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <ad9656f3a07243b014340615e2be4aaefbe5eed4.1784284092.git.stefano.r@variscite.com>
-References: <cover.1784284092.git.stefano.r@variscite.com>
- <ad9656f3a07243b014340615e2be4aaefbe5eed4.1784284092.git.stefano.r@variscite.com>
+To: "Pan Chuang" <panchuang@vivo.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev, linux-perf-users@vger.kernel.org
+In-Reply-To: <20260717103123.34887-2-panchuang@vivo.com>
+References: <20260717103123.34887-1-panchuang@vivo.com>
+ <20260717103123.34887-2-panchuang@vivo.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 10:40:30 +0000
-Message-Id: <20260717104031.354AC1F000E9@smtp.kernel.org>
+Date: Fri, 17 Jul 2026 10:43:12 +0000
+Message-Id: <20260717104312.DAD071F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] Missing Cortex-A72 cores from the PMIC thermal cooling map.
+
+New issues:
+- [Low] The `memrc` variable is no longer used after the removal of the `de=
+v_err()` call, leaving an unused local variable.
+
+Pre-existing issues:
+- [High] The IRQ handler context is freed via kfree() before the devm_reque=
+st_irq() resource is released, creating a use-after-free vulnerability.
+- [High] Missing cleanup of CPU hotplug instance registration when perf_pmu=
+_register() fails, leaving a freed pointer in the global hotplug list.
 --
 
---- Patch [2]: [PATCH v6 2/3] arm64: dts: freescale: Add support for Varisc=
-ite VAR-SOM-MX8 QuadMax ---
-commit 7c5c452bc5aa9e24a57d1f6d97a7c92202c04f7f
-Author: Stefano Radaelli <stefano.r@variscite.com>
+--- Patch [1]: [PATCH 1/3] perf: Remove redundant dev_err()/dev_err_probe()=
+ ---
+commit 83d88878cd6553e7af185d501c3dfdb2c01816e8
+Author: Pan Chuang <panchuang@vivo.com>
 
-arm64: dts: freescale: Add support for Variscite VAR-SOM-MX8 QuadMax
+perf: Remove redundant dev_err()/dev_err_probe()
 
-This commit adds device tree support for the Variscite VAR-SOM-MX8 QuadMax
-system on module. It defines basic hardware allocations including memory,
-regulators, audio, and Ethernet, leaving carrier-specific interfaces disabl=
-ed.
+Since commit 55b48e23f5c4, devm_request_irq() automatically logs
+detailed error messages on failure. This patch removes the now-redundant
+driver-specific dev_err() and dev_err_probe() calls.
 
-Link: https://variscite.com/system-on-module-som/i-mx-8/i-mx-8-quadmax-quad=
-plus/var-som-mx8/
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi b/arch/arm=
-64/boot/dts/freescale/imx8qm-var-som.dtsi
-> new file mode 100644
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi
-
-[ ... ]
-
-> +&thermal_zones {
-> +	pmic-thermal {
-> +		polling-delay-passive =3D <250>;
-> +		polling-delay =3D <2000>;
-> +		thermal-sensors =3D <&tsens IMX_SC_R_PMIC_0>;
-> +		trips {
-> +			pmic_alert0: trip0 {
-> +				temperature =3D <110000>;
-> +				hysteresis =3D <2000>;
-> +				type =3D "passive";
-> +			};
-> +			pmic_crit0: trip1 {
-> +				temperature =3D <125000>;
-> +				hysteresis =3D <2000>;
-> +				type =3D "critical";
-> +			};
-> +		};
-> +		cooling-maps {
-> +			map0 {
-> +				trip =3D <&pmic_alert0>;
-> +				cooling-device =3D <&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-> +						 <&A53_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-> +						 <&A53_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-> +						 <&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+> diff --git a/drivers/perf/alibaba_uncore_drw_pmu.c b/drivers/perf/alibaba=
+_uncore_drw_pmu.c
+> index 74786a5dd6a23..fc934bccf4a64 100644
+> --- a/drivers/perf/alibaba_uncore_drw_pmu.c
+> +++ b/drivers/perf/alibaba_uncore_drw_pmu.c
+> @@ -449,11 +449,8 @@ static struct ali_drw_pmu_irq *__ali_drw_pmu_init_ir=
+q(struct platform_device
+>  	 */
+>  	ret =3D devm_request_irq(&pdev->dev, irq_num, ali_drw_pmu_isr,
+>  			       IRQF_SHARED, dev_name(&pdev->dev), irq);
+> -	if (ret < 0) {
+> -		dev_err(&pdev->dev,
+> -			"Fail to request IRQ:%d ret:%d\n", irq_num, ret);
+> +	if (ret < 0)
+>  		goto out_free;
 
 [Severity: High]
-Are the Cortex-A72 cores intentionally omitted from this cooling map?
+This is a pre-existing issue, but since we are modifying the error path
+here, can this lead to a use-after-free if a subsequent step fails?
 
-The i.MX8 QuadMax contains both Cortex-A53 and higher-power Cortex-A72 core=
-s.
-If the PMIC temperature reaches the 110=C2=B0C alert threshold, this passiv=
-e cooling
-map will throttle the A53 cores but leave the A72 cores unaffected.
+In __ali_drw_pmu_init_irq(), if devm_request_irq() succeeds but a later
+function like irq_set_affinity_hint() fails, the code jumps to out_free:
 
-Could an unprivileged workload heavily stressing the A72 cores cause the PM=
-IC
-to continue heating up until it hits the 125=C2=B0C critical trip point, re=
-sulting
-in a hard thermal shutdown? Should &A72_0 and &A72_1 be added to the
-cooling-device list?
+out_free:
+        kfree(irq);
+        return ERR_PTR(ret);
 
-> +			};
-> +		};
-> +	};
-> +};
+Since devm_request_irq() uses the IRQF_SHARED flag, another device sharing
+this IRQ could trigger an interrupt immediately. If ali_drw_pmu_isr()
+executes before the devres cleanup deregisters the handler, will it
+dereference the already freed irq pointer?
+
+> -	}
+> =20
+>  	ret =3D irq_set_affinity_hint(irq_num, cpumask_of(irq->cpu));
+>  	if (ret)
 
 [ ... ]
 
+> diff --git a/drivers/perf/qcom_l3_pmu.c b/drivers/perf/qcom_l3_pmu.c
+> index c8d259dd1f807..e18d0f94e8d86 100644
+> --- a/drivers/perf/qcom_l3_pmu.c
+> +++ b/drivers/perf/qcom_l3_pmu.c
+> @@ -767,11 +767,8 @@ static int qcom_l3_cache_pmu_probe(struct platform_d=
+evice *pdev)
+> =20
+>  	ret =3D devm_request_irq(&pdev->dev, ret, qcom_l3_cache__handle_irq, 0,
+>  			       name, l3pmu);
+> -	if (ret) {
+> -		dev_err(&pdev->dev, "Request for IRQ failed for slice @%pa\n",
+> -			&memrc->start);
+> +	if (ret)
+>  		return ret;
+
+[Severity: Low]
+The patch removes the dev_err() call which was the only reader of the
+memrc variable in qcom_l3_cache_pmu_probe(). Does this leave memrc
+populated but entirely unused?
+
+Could the code be cleaned up to use devm_platform_ioremap_resource()=20
+instead of devm_platform_get_and_ioremap_resource() and remove memrc=20
+completely?
+
+> -	}
+> =20
+>  	/* Add this instance to the list used by the offline callback */
+>  	ret =3D cpuhp_state_add_instance(CPUHP_AP_PERF_ARM_QCOM_L3_ONLINE, &l3p=
+mu->node);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this function leak the
+CPU hotplug instance if perf_pmu_register() fails later in the probe?
+
+qcom_l3_cache_pmu_probe() registers the instance here:
+
+    ret =3D cpuhp_state_add_instance(CPUHP_AP_PERF_ARM_QCOM_L3_ONLINE,
+                                   &l3pmu->node);
+
+But if perf_pmu_register() fails right after, it returns immediately:
+
+    ret =3D perf_pmu_register(&l3pmu->pmu, name, -1);
+    if (ret < 0) {
+        dev_err(&pdev->dev, "Failed to register L3 cache PMU (%d)\n", ret);
+        return ret;
+    }
+
+Since devres will automatically free the l3pmu struct on probe failure,
+will the freed l3pmu->node remain linked in the global list and cause a
+use-after-free during subsequent CPU hotplug events?
+
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1784284092.gi=
-t.stefano.r@variscite.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717103123.3488=
+7-1-panchuang@vivo.com?part=3D1
