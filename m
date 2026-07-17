@@ -1,160 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A0D306741;
-	Fri, 17 Jul 2026 14:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784297756; cv=none; b=M8xhdbKNY/xHhh69WrB5qR2j58GHSRj5nZnvFo9CKgfBi6QPdxB8W9EzWsmFBeI7WqYQ49VfqMlwOReSiiu8/lTEblJ2K4yKw6YO8NMCrlm6iITTHewPY2kOdCa7buxMig12fk4zyfk+IQ5L+iLG9UouqD5rWMYrSz26dG9og98=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784297756; c=relaxed/simple;
-	bh=CXk01RR3vB73ryuK7LbafSXnCPLGm87louVntksnMw8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=t5mWENfxPS9S5UNW2T+E6bHnJK5hCmFmpwYHUevEzRmaJiNzeEn9MCsAmIjy3wSK97xjNtwnOZxjqN7aHGbs5vy2FlUBns+3PW0zzcPxx00fUNWAzYc7hJIIdC9tsvYPF5U3XEpj0Pje+pGhrW2WnuT0/OBmoj/mwPrbDmWjUkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PAi9eNQh; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D9F2E5B21;
+	Fri, 17 Jul 2026 14:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784297839; cv=pass; b=SLxz1xBmX4wEEyX3mEt6BM/4cruYtaARkJ04kTUdX8ar/vFyD2TQDIGge/A7nCmaeCwqdZUCHnE4d9wE0ipQtAkxtSgouFS4fL87XU0CfdWkwwHPJMQaM8MaBS8ZUyQl+d9e0S5g6j4k1AEjHhIhL45RRkmx6GjuK2du/xzMh1g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784297839; c=relaxed/simple;
+	bh=1NzIq33Rk1skyMOZjZs6TKz7uab11yLglT40Ls7rp+c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K1P1J0kU0P14dL9EXMEy2xHpl1nAfO/GCKE/qsZejKCkki/AYK0+7cThQGeq2Qbs5P9z19gru+TPDHALLDSW24jpJCOQ1nnek4A8BgLzTMJfr5t27eEH3E0MvwMzzD9ZcI/HUKwbBAUh9sRGMh8KVdxgSUo1rq6zdEU+8SyOYO0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com; spf=pass smtp.mailfrom=yoavmoshe.com; dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b=IovFTTOd; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoavmoshe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PAi9eNQh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4062F1F000E9;
-	Fri, 17 Jul 2026 14:15:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784297754;
-	bh=PWmynWdmJCbGEA4s7/7QkezQ2K2zoHYSwhB5f30EMsQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PAi9eNQh9aH1Lw/SeI2hO2ZGtmNWMDDvAV2jiC2CrbcsK3VK6hLDFd27bfuAef+RU
-	 FO50LXPoxmv2IKSyBvkca/PQT4iqPqQLzrYOyqjnBe4oWlVP2qaFVIMGEZXhpe1EcY
-	 LWHXXjGH/wtBRG0/goiNOIdLyWYr6lg/TRCob7AF3Ir2xs8nT/I4TiRDC9yGU/RhXo
-	 nC7CXdPWtFidhif5q4ZJuJfgaZZ7/Uoefa94JQCqXN/7t8QeFfRggfuyuaKNn4werG
-	 TH2aeh0T2VCv/K8qIIJXMScB3aBW2GkzaXmOyoU6atuRJfU2OzZN2+N1hlKb5wPd8N
-	 zKefFIqBghhrw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/4] drm/bridge/panel: hold a reference to the
- wrapped panel
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Albert Esteve" <aesteve@redhat.com>
-Cc: imx@lists.linux.dev, wsa+renesas@sang-engineering.com, Frank.Li@kernel.org, linux-sunxi@lists.linux.dev, dri-devel@lists.freedesktop.org
-In-Reply-To: <20260717-drm_refcount_wiring-v3-2-023900c32e01@redhat.com>
-References: <20260717-drm_refcount_wiring-v3-0-023900c32e01@redhat.com>
- <20260717-drm_refcount_wiring-v3-2-023900c32e01@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 14:15:53 +0000
-Message-Id: <20260717141554.4062F1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b="IovFTTOd"
+ARC-Seal: i=1; a=rsa-sha256; t=1784297826; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=CDkMTTxuUuk7SF1KddlgIXqNWa+X+ryUZ6W7ZBjtxo2+tVrR8KCgP9NZPYzos+A7cA7MVkWBHliKgNl1v2IL3m+8NWaAH1CJ0Nm1fSJMP3fMugyZ1HtCUyGuB161uveZoGaRcrkaziS2TMdHTJi4/Cqi8fBjvEDmZ5emCh2GTy8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1784297826; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=epmNXjS7d94Ny0G3QrInR/+5Mb0BLlrxlvJkC02EnzE=; 
+	b=lxVfX2xUkWcVskpBJpSlIB/adeVtQFT4Q/gi1No48Zvh2n4F2/PtLd905EcLQV0qeSQPzM9Kb1nHAOGn5qKOeGJu4E/VrK2VAI40GaUcieNPecHI9CO8Cqsh77Ga1wMnsUNNhi6y3p+R1dfrF30U6Dbm3Sj861nCoGV5Sq0/X9c=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=yoavmoshe.com;
+	spf=pass  smtp.mailfrom=linux@yoavmoshe.com;
+	dmarc=pass header.from=<linux@yoavmoshe.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784297826;
+	s=zoho; d=yoavmoshe.com; i=linux@yoavmoshe.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=epmNXjS7d94Ny0G3QrInR/+5Mb0BLlrxlvJkC02EnzE=;
+	b=IovFTTOdduyuOxDCRlNJ6SZVMU99gB64Zo1SoVFAAIsF7eiDSryxPaP9nNl/sjpl
+	SUsYKCICECArOdFUQdKF3wUYlI2WO2xKACFSd2KkW+Ysf6eiWwVSQRmTHKN+KEUbhBg
+	k9RjqdlDBdQKK7p0oVVV8V40jCbL0UOaFp3cP0JI=
+Received: by mx.zohomail.com with SMTPS id 1784297824078494.6809075628678;
+	Fri, 17 Jul 2026 07:17:04 -0700 (PDT)
+From: Yo'av Moshe <linux@yoavmoshe.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	llvm@lists.linux.dev,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yo'av Moshe <linux@yoavmoshe.com>
+Subject: [PATCH] ARM: imx: Fix suspend/resume crash with Clang CFI
+Date: Fri, 17 Jul 2026 16:16:48 +0200
+Message-ID: <20260717141648.1007059-1-linux@yoavmoshe.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Relocated suspend code in OCRAM lacks compiler-generated CFI type
+signatures. When CONFIG_CFI=y is active, the indirect call to
+imx6_suspend_in_ocram_fn triggers a strict CFI violation panic.
 
-New issues:
-- [High] Releasing the panel reference in the unregister paths instead of a=
- .destroy callback introduces a Use-After-Free.
+Annotate imx6q_suspend_finish with __nocfi to bypass CFI checking
+for this specific indirect call.
 
-Pre-existing issues:
-- [High] Accessing `panel->dev` in `drm_panel_bridge_remove()` can cause a =
-Use-After-Free of a `struct device` if the panel device has been unregister=
-ed.
---
+Cc: stable@vger.kernel.org
+Signed-off-by: Yo'av Moshe <linux@yoavmoshe.com>
+---
+Tested on a Kobo Clara HD (i.MX6SLL SoC) running postmarketOS edge. 
+Before this patch, suspending the device caused an immediate silent 
+hang requiring a hard-reboot. With this patch applied, suspend and 
+resume work successfully.
 
---- Patch [2]: [PATCH v3 2/4] drm/bridge/panel: hold a reference to the wra=
-pped panel ---
-commit ac2f873b583c71488e3debe5277a8e3347eee2cd
-Author: Albert Esteve <aesteve@redhat.com>
+ arch/arm/mach-imx/pm-imx6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-drm/bridge/panel: hold a reference to the wrapped panel
+diff --git a/arch/arm/mach-imx/pm-imx6.c b/arch/arm/mach-imx/pm-imx6.c
+index a671ca498..d9b0c1803 100644
+--- a/arch/arm/mach-imx/pm-imx6.c
++++ b/arch/arm/mach-imx/pm-imx6.c
+@@ -360,7 +360,7 @@ int imx6_set_lpm(enum mxc_cpu_pwr_mode mode)
+ 	return 0;
+ }
+ 
+-static int imx6q_suspend_finish(unsigned long val)
++static int __nocfi imx6q_suspend_finish(unsigned long val)
+ {
+ 	if (!imx6_suspend_in_ocram_fn) {
+ 		cpu_do_idle();
+-- 
+2.55.0
 
-This commit acquires a reference to the drm_panel in=20
-drm_panel_bridge_add_typed() to prevent dangling pointers. It then=20
-releases the reference in each teardown path.
-
-> diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/pane=
-l.c
-> index 4978ec98a0828..3bfa18167dd26 100644
-> --- a/drivers/gpu/drm/bridge/panel.c
-> +++ b/drivers/gpu/drm/bridge/panel.c
-
-[ ... ]
-
-> @@ -316,6 +316,7 @@ EXPORT_SYMBOL(drm_panel_bridge_add_typed);
->  void drm_panel_bridge_remove(struct drm_bridge *bridge)
->  {
->  	struct panel_bridge *panel_bridge;
-> +	struct drm_panel *panel;
-> =20
->  	if (!bridge)
->  		return;
-> @@ -326,10 +327,12 @@ void drm_panel_bridge_remove(struct drm_bridge *bri=
-dge)
->  	}
-> =20
->  	panel_bridge =3D drm_bridge_to_panel_bridge(bridge);
-> +	panel =3D panel_bridge->panel;
-> =20
->  	drm_bridge_remove(bridge);
->  	/* TODO remove this after reworking panel_bridge lifetime */
-> -	devm_drm_put_bridge(panel_bridge->panel->dev, bridge);
-> +	devm_drm_put_bridge(panel->dev, bridge);
-
-[Severity: High]
-This is a pre-existing issue, but could accessing panel->dev here lead to a=
-=20
-use-after-free if the panel device has already been unregistered?
-
-While drm_panel_get() keeps the drm_panel alive, it doesn't appear to acqui=
-re
-a reference to the underlying struct device. If the device is unbound and=20
-freed, panel->dev becomes a dangling pointer.
-
-Could devm_drm_put_bridge() then dereference it when traversing the devres=
-=20
-list?
-
-> +	drm_panel_put(panel);
-
-[Severity: High]
-Does this drop the panel reference prematurely and cause a regression?
-
-Since drm_bridge objects are refcounted, calling drm_bridge_remove() only=20
-unregisters the bridge and drops the list reference. The bridge could remai=
-n=20
-alive if an active DRM pipeline holds a reference.
-
-If the panel is freed here, could subsequent DRM operations on the bridge=20
-dereference panel_bridge->panel and trigger a use-after-free?
-
-Would it be safer to move the drm_panel_put() to a new .destroy callback in=
-=20
-panel_bridge_bridge_funcs, which is invoked by __drm_bridge_free() when the=
-=20
-bridge's refcount reaches zero?
-
->  }
->  EXPORT_SYMBOL(drm_panel_bridge_remove);
-> =20
-> @@ -357,11 +360,16 @@ EXPORT_SYMBOL(drm_panel_bridge_set_orientation);
->  static void devm_drm_panel_bridge_release(struct device *dev, void *res)
->  {
->  	struct drm_bridge *bridge =3D *(struct drm_bridge **)res;
-> +	struct panel_bridge *panel_bridge;
-> +	struct drm_panel *panel;
-> =20
->  	if (!bridge)
->  		return;
-> =20
-> +	panel_bridge =3D drm_bridge_to_panel_bridge(bridge);
-> +	panel =3D panel_bridge->panel;
->  	drm_bridge_remove(bridge);
-> +	drm_panel_put(panel);
-
-[Severity: High]
-Similarly, if the bridge is kept alive by a reference elsewhere, does dropp=
-ing=20
-the panel reference here risk a use-after-free regression in bridge callbac=
-ks=20
-later on?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717-drm_refcou=
-nt_wiring-v3-0-023900c32e01@redhat.com?part=3D2
