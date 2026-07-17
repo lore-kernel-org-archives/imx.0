@@ -1,46 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB32314D35;
-	Fri, 17 Jul 2026 18:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF45314D35;
+	Fri, 17 Jul 2026 18:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784313840; cv=none; b=r/jzoNKXS7It+Fi8zBnlI3hEQ2eThhyzrfACTauaDBfmNmrNaKYsNKoFtKwO9X/1nK/2fwCR9RBUUnziL6RSnVP4N1oSzhHezEWx0c6E+zXgGW142OFgbtfcA2nUJYl+D00O0fLOSC1pZt/29615lNnaggPi6wYKnM+8rgzNziY=
+	t=1784313890; cv=none; b=SKppfp6+D1mxKGT5S31cwjym/SOsKp1O8SKXw7WVvyMeqXwoy4nWbh8ccEPIjabQ1RKTlm7OGuwNZEqIxJMHytz7HDnt55GDFgKv/XOYuGDgeJPPjNChoe+k7PsiyqGtcjCsybRQFn0eEazaVHXjfrLtEfovparrHU3tTLVckNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784313840; c=relaxed/simple;
-	bh=TGMFu4c3VcpXs7vuvyQyBW5BiVDYt7TNCx4cPiM4E6A=;
+	s=arc-20240116; t=1784313890; c=relaxed/simple;
+	bh=lVyvHni4rzG44iubr8q9WSF+rfVgABiBcpupHxV/Vj0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lVJR5rYkgeYrVRISZLMykicsBqwF547+JSAUHj/G3xW+Jp1w/W+7bOpk1MwvDfuKyIi7po/kE5CLzR7E2JFbRLD8m8U+SZrhB0liAOax4NTQoIX+uW7xc3T/FBNT4eyfxWXCm66GbAWPvXMdXiSrEYepziAporkH9XHcolIAqzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MbJV9CL3; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oc/GrGXIEcDcxh7xI+JwNznbkcJ4Q79/ap8tfOkuDHvUS+107aA/EI2uV7wTCZHuSPLvymcn8k7GJUhbEVi+Hp2vAewRghImGsYdKaBadI1Y+jp86u/YOUKjsjAajyYwfmxA5qdQWD6ypf2n0pinINk5F5EYxXBCObqarHIXGOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z36jQ+nx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MbJV9CL3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B051F000E9;
-	Fri, 17 Jul 2026 18:43:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z36jQ+nx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180351F000E9;
+	Fri, 17 Jul 2026 18:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784313839;
-	bh=P1b9DeYrFDNJXSmhHkvkSVwxA9oSUUdj93hOLCrfhtk=;
+	s=k20260515; t=1784313889;
+	bh=GDf0SHTCTXzajyFneAnVkXteY4zVvuU8fcfR6nj7tFI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MbJV9CL39vRQMy2v/CN3jcpLY6clKVcc/kJEtuwRWFP5I6XZWtmd0F374u+m0u0LP
-	 Z8aSfnF6sBxzl9bNULI/oiKqnkmBZVMxLhQjV72/+84dDvvUAw+1eHq/LN5OqR1EOV
-	 EOnDSqwZytgo1rXC2lnnrfPKOralZwgqYCb3jVbR40l2nfZWFPpri/Oc6CQqMay2Im
-	 Ub6NfcUc0ehh9cqiA2a41ayCfi0/61486Qik2KE+VcxaKX4RGW3rc+u+2Z9FTCNUT3
-	 tQqJZDgP7wS0kMUizFUS8PhNnhNo5vLFmSq+Mc3Ox45WkgQuOmKIA6rqXB08WBP7gz
-	 tx4OqaF8o+u8Q==
-Date: Fri, 17 Jul 2026 13:43:58 -0500
+	b=Z36jQ+nxUJfkvV9idRAd2w0tSjY+NJGePRRNPqyp+IDVeGeJG/EX/8CtX+CPfGAAG
+	 DmSFUaF0YhEtKkItXGVn433F6SJQYsAW0Cd6lQQZ/ZWe8b1qr90c5OZCmdTlWtdT9d
+	 LhumZWncdKSvi3J0BEInpl42oTIFfwHpDOIjpdKmiuoAk/5vbxH837ZweYRSrQcoDA
+	 9NgmfhV1a3MaLX6S4Lp+sqPThmNgTFTDao15RQ2S0YHmWl6duMzSHhajxK7u3buv0f
+	 pqOWkgbhkc+9MZZ8iFYbDJ2Rh1AbcH32SK6inzi1vOCWy9G0rkV7MoiS3sU4Yjtyqc
+	 0qvWP8uJ0foxg==
+Date: Fri, 17 Jul 2026 13:44:48 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank.Li@oss.nxp.com
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+Cc: linux-kernel@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	Stefan Agner <stefan@agner.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	David Airlie <airlied@gmail.com>, Frank Li <Frank.Li@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: soc: imx: Add fsl,eim-bus
-Message-ID: <178431383816.1803857.6272472582726116965.robh@kernel.org>
-References: <20260708-imx53-eim-v1-0-913b4559e5b5@nxp.com>
- <20260708-imx53-eim-v1-1-913b4559e5b5@nxp.com>
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Peng Fan <peng.fan@nxp.com>, linux-arm-kernel@lists.infradead.org,
+	Sascha Hauer <s.hauer@pengutronix.de>, Marek Vasut <marex@denx.de>,
+	Conor Dooley <conor+dt@kernel.org>, Simona Vetter <simona@ffwll.ch>
+Subject: Re: [PATCH 1/4] dt-bindings: display: bridge: ldb: allow a single
+ reg for fsl,imx6sx-ldb
+Message-ID: <178431388818.1805043.6740193643637538952.robh@kernel.org>
+References: <20260708-arm_dts_ldb-v1-0-4f5579b85797@nxp.com>
+ <20260708-arm_dts_ldb-v1-1-4f5579b85797@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,24 +55,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260708-imx53-eim-v1-1-913b4559e5b5@nxp.com>
+In-Reply-To: <20260708-arm_dts_ldb-v1-1-4f5579b85797@nxp.com>
 
 
-On Wed, 08 Jul 2026 16:00:44 -0400, Frank.Li@oss.nxp.com wrote:
+On Wed, 08 Jul 2026 16:29:02 -0400, Frank.Li@oss.nxp.com wrote:
 > From: Frank Li <Frank.Li@nxp.com>
 > 
-> Add the fsl,eim-bus compatible strings for i.MX51 variants.
+> The i.MX6SX LDB only provides a single register region for the LDB block,
+> while other supported LDB variants require two register regions.
 > 
-> These compatibles are only intended for existing legacy chips (more than 15
-> years old) and will not be used for new device trees.
+> Update the binding schema to allow a single reg entry for
+> fsl,imx6sx-ldb while keeping the existing constraints unchanged for the
+> other compatible strings.
 > 
-> Fix below CHECK_DTBS warnings
-> arch/arm/boot/dts/nxp/imx/imx53-ard.dtb: /eim-cs1@f4000000: failed to match any schema with compatible: ['fsl,eim-bus', 'simple-bus']
+> Fix below DTB_CHECK warings:
+>   arch/arm/boot/dts/nxp/imx/imx6sx-nitrogen6sx.dtb: bridge@18 (fsl,imx6sx-ldb): reg: [[24, 4]] is too short
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  Documentation/devicetree/bindings/bus/fsl,spba-bus.yaml | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Related two theads:
+> - https://lore.kernel.org/imx/178154922879.1630652.11500293336634076421.robh@kernel.org/
+> 
+> Mixing the addressable and non-addressable child nodes is allowed according to discussion [1].
+> 
+> Link: https://lore.kernel.org/all/n6akxiayi3g6gxcqhreb4iaohmeokoalnqup6h5r2fwdt4zijt@u2wyps55ayqm/ [1]
+> ---
+>  .../bindings/display/bridge/fsl,ldb.yaml           | 23 +++++++++++++---------
+>  1 file changed, 14 insertions(+), 9 deletions(-)
 > 
 
 Acked-by: Rob Herring (Arm) <robh@kernel.org>
