@@ -1,200 +1,207 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011046.outbound.protection.outlook.com [52.101.65.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27E433D4E9
-	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 03:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784257204; cv=none; b=ERJkMnO3ndZ59yi2i3/7NlsEkx7JllP1CkeZJNhpkcGobRcbB444vDaISyQbl8NVY2ZO7kYC1JxSx+6kUcOGTQxsL7BSRkadustLEBHqYgYNTnZj2//787/y3v+Abe0NynvcqJwqUd92AulmhvAGkF4DwdH2PePQ5ZfNSM97YdU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784257204; c=relaxed/simple;
-	bh=XB+6zRIlXSDtIUYSlZ18JnfhRNHQtab6s6o8D1mLlFQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HemefXVQyzaSo9m8Pr2hB8IVjzY3IPQTjbtYELuIBb649JChxFvQ5145EIWZUqB+OAb3wPQz05LmUFSiDVJg5pHVdT1OGLD60ahtik4bDU66jVd5RQNUrKIrADJi7IV1vi0iG20sXNTJFOs+8iNdJQ4sEWgS5yOx8rUxnV0GCVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDd8VrR/; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EDA2931C6
+	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 03:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784258958; cv=fail; b=fny6XDa+ZoCDltdv4NDBdTUx2v19s6eG5bcqCHxrrtqD9eMi/pqmGUSjVOWYK0wk3I9Ziv/9h2YMtYzZx+INugCd7jRb8u3Gs9inx4BRAxsfSfqY274YCIChhkDO91SVytWygWlnL5q/CTfN9FVVJhvm8r1wHLh9AYk4MwOnLBU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784258958; c=relaxed/simple;
+	bh=jGq5FDmXuG9hdrBjMZuDTtmbfqEp6LU35C6+BQrV7fk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=MyKvGwEbKM46zf3ZCt63vI640UO0/U89aT77DO0969gVlVEC7rRhiWo4lJZV7+wAwlPeaIkEVJYwC01YlnDox01pRanAi7OGY9NedLfYdQvq25/k/SsPIb7bY2wIV2XT2mYk8yOYeFFFxC2ztY17hyraSP0LFnbNmea+f65iCYQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=vA7pJd16; arc=fail smtp.client-ip=52.101.65.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDd8VrR/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3141F1F000E9;
-	Fri, 17 Jul 2026 03:00:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784257202;
-	bh=GEeUXHf6FwMrQyrJqHyWsQfPHLtj/I3hSbpRaFB4YwI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kDd8VrR/ZSvRdovI7v79dAjJbiOwqUkEh82e5EpYv05Z03OBC0o8jzdbX0B45+p4Q
-	 /cxqFiXtJ9YToD5iReBbrjZ6+iQ/BxqZQa69TngpV9thurkU+I0rr94kfrIJ4LZZ3m
-	 cJZfwHvoKzm2880JLQidn3IRoyzMBT9V8Dks8wT15iaxHJzBWgDC/O3LvSs4M+YaXG
-	 TOKZRu7KWkCzvoyqYUDElDbBbw6qywDy2laDC42sUmWn9cGAaTHqr3eFp8fY2dPjei
-	 8sI4PWDJfdQDi2L6gmj3MCjhsR8QxpL1irsddj1zo2PCFyil4JEqREGWnBeDlwdQ3W
-	 2d+i+iYnpJItg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] thermal/drivers: Remove redundant error messages on
- IRQ request failure
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pan Chuang" <panchuang@vivo.com>
-Cc: imx@lists.linux.dev, wsa+renesas@sang-engineering.com, Frank.Li@kernel.org
-In-Reply-To: <20260717024733.374913-1-panchuang@vivo.com>
-References: <20260717024733.374913-1-panchuang@vivo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 03:00:01 +0000
-Message-Id: <20260717030002.3141F1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="vA7pJd16"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vs6VMrCzWJgl49Zj2YSYy0OyagtTLMSPU6YB8TOsuT9TQpI7BXTNkTiArVRVhAOXNZAYGlDu4Qe6dbvY8d5eKPhiMHh2EmlhF+/+8mUa5thH5RLrWHmRo0+82N81G158HMINVc0f3IbKIPna3tvmQuEMvVQ/fwoxrU9e5r1b2lbWVd9DQR8ZLHCpkH72vhkFPZSF6i0OTcfsxSFDFIdEc1gSzapi2YAJDoxDnnirbCyXqPJ1dY4r93iwjlDrJTUoBQ6YF/gEC2BxWSphkqb6WW7roTpsa/5EVgf94JjPxc1Wph8Sg9RnIO3+BiAYSFnwXyHECiG5kUe0379ejHWvog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8vovqymC24lsh7WEhnvm0s+MaJD2xLhfJFjDKpeYHuY=;
+ b=NOVKQy+CrD+sJqssKhBoI84KN+35X6PI9zr6Pvghej4USengxLHiNC+Gs513kmG7vTQWiQYSo+oY4gsUCR+usB0ThMaDrO6IZNcHxphDRO8q2hn46U4wzg9wB2kwu4AKCXH8UnqzC2R/vlYSFcQiJvfd7MOiMPsMrBEMoSkPsWdoKSoCn58lWciaDflLB1qv7uqRdelCsXDF6oIGLgKFowhUVpiOluIxgOolfUgzG0mGfT6MbibqH4rvxkT+wV5yc9MiptJ21/5T9NaxN4fExfJ+8GTXKeIW22hTEJHdoslYstiVEXClqpHVnQAaV53b3HieObDFcD8lxNdODygG4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8vovqymC24lsh7WEhnvm0s+MaJD2xLhfJFjDKpeYHuY=;
+ b=vA7pJd16M/7AUcl5QOnkPu8Oh9TrnHDl4IB3OY8t4O3dV1BdRGcajJv+gtAR4WCLbjPBfzAVLGtRYWKwSc/5dVtIhanVvgezw/ZqNJonBP921ffpDgP9POjYLPeBD4eRfk7B94Ol7bUGSMxbjWh44WlPR3rG9crZpG3/PDsZdV4y4yfeC8AxSGItK/vHlzQC+9Npjb/d/6VWJlBfbvdbHzV11axCnOPBOHvnQrwxfVoNosDeDhiQoHbIcSSL7fNeWZnMLhGcfWhZafHYpt0GcxYtlnSgbuoF6vFrKrJlHwMVevVJdPOD8GjBM02hHwfIBx4XYNri0n8opnHYLvsGwA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8096.eurprd04.prod.outlook.com (2603:10a6:102:1c7::19)
+ by VI0PR04MB11482.eurprd04.prod.outlook.com (2603:10a6:800:2c9::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
+ 2026 03:29:12 +0000
+Received: from PAXPR04MB8096.eurprd04.prod.outlook.com
+ ([fe80::68be:f721:5000:3f2d]) by PAXPR04MB8096.eurprd04.prod.outlook.com
+ ([fe80::68be:f721:5000:3f2d%5]) with mapi id 15.21.0223.011; Fri, 17 Jul 2026
+ 03:29:12 +0000
+From: hongxing.zhu@oss.nxp.com
+To: frank.li@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Soeren Moch <smoch@web.de>,
+	stable@vger.kernel.org,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v3] PCI: imx6: Keep i.MX6Q Root Port MSI capability with iMSI-RX to work around hardware bug
+Date: Fri, 17 Jul 2026 11:32:03 +0800
+Message-Id: <20260717033203.2965045-1-hongxing.zhu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5P287CA0129.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d2::14) To PAXPR04MB8096.eurprd04.prod.outlook.com
+ (2603:10a6:102:1c7::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8096:EE_|VI0PR04MB11482:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5aef7be3-944b-4dde-25be-08dee3b391fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|19092799006|18002099003|10067099003|56012099006|11063799006|921020|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	okdJSTU5qstFGoQD6++QzfZR0bdiNSZuVsGf/Y9Q/JRaqUqQbLKlv+tu7Eu0WfLGqpS9CKtkxVmE/sYOXM4suPdaNUgF30QaExg/XFwUlQKfc43CU80/bbn1W4Z0Kf9o/aCek2rU53s6T/K6AAMNfE9yvlr+uDgii/70ClhlI6nILmMVPy80B9jwQb+JChV0yolhDCZYTaLMJNT7YaGwrzJny/qLXUaY1MlQwNxe0ZghP2k8YI+tkfio14Uj3pEE+2g+E2jxDQUyWsSa4+IETiFROyyDpewdzcrc6iVu16P6T2LGkdDlEV3g5dxPE3SNax+Ola5SnsroJQ01qkoufZBCsxmKbzUcLdiEHOwFNj8RDvxd++3nqcQzlTAwVrcEjnRy49/JJQ0QM2o3hSzJOO9Zu8nAiQGGm516nbo7D65+vJFK4lcDGwz7tvD3scgNlvtg396OQ94Py7dH+KJnhU6YgW0gUgu/Wpw1Ly434RI26NHIz7oXLl2mSP/3CycNvyoMWJaetqSGYVvGwdFdG3tD6Yjn+XUIsyAVvmH2gh5Ic3tKgZNj5/NSgoQ5euLrOfzWhMuwMLSAXW6gRuevF59YF7koCJbmFYPkqmDo4/1XFKlFQYeWg1vGUbH6eWrzC34wvMqzOhI5XrkvLCJ5FdaZ/RmtxYSoZ5kZdzUdMZdORveEWbu8KgHCmsYRgMiUcMRYaH5I6/xIj4ScYa4ueQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8096.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(19092799006)(18002099003)(10067099003)(56012099006)(11063799006)(921020)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KRDJXFx/fkN0bXg1sxQp5oden7BI8BMCh/hBYuB3wK9PyFqfjj3x8gK7LjHS?=
+ =?us-ascii?Q?wz319qBjYSWXQ3wzUl/yBl/Ou2+3TNjaOMVnnIzasE4PKfmQ4FQsqQ/b+MAx?=
+ =?us-ascii?Q?nHBt8jaaenBHQuO56vhFgpZxSTApgi5/2zmb5mY1hLa/A27Wo17r8KqL6GGa?=
+ =?us-ascii?Q?6HFHp/35VyLTL/TnW8gwymJCTX7firfcj0eTqRwuT7OTdnR6ThMdbkosr0AU?=
+ =?us-ascii?Q?KlOLexbbfVsoWBCeyLveQWr2Yn9ZSIUKW7J6MjnExIEbET4zDCr+VcwUnoXf?=
+ =?us-ascii?Q?oGzz1L6MQ/smtxpMkvy/zoi+eDxV99I/Y+BMhGf1g7/KPpTnjVVkSk3V8Q4v?=
+ =?us-ascii?Q?4DH5N3J58lmHV2+wiMDJwDWnzD4/15ktD8AfQ28P4CUCJ17MgFHfGeNLnsae?=
+ =?us-ascii?Q?xLhOhNuMA4rfVWae5udKa/p64vL7NsYL8Q3PU+KoMj3mP6ItNlKIIq7La6D4?=
+ =?us-ascii?Q?DgbdInIcKEbgyx6it7HDhuhtdLYXE2e/DPamY2JBZ5F099GdQcR9D4ZHUDYR?=
+ =?us-ascii?Q?LDa0nLMzeYuSlIvYOjWevFQNL0xJKo3rDe2K737jwGZvd91JPpsGR7qsXOSG?=
+ =?us-ascii?Q?iIXySUmbRIO7/WIx11rT5VAugSYjnOA4zvi/QYNcPJV+iDw0yn8Lky3glNOe?=
+ =?us-ascii?Q?52ARnjgfHalj6PE6baHfJpptaIECxzSmnt/GW9ELP1LGgL2NVS+uzBf9ldvb?=
+ =?us-ascii?Q?WTWua7dyg5spusUpr3mMIM7z4gLh3nBeJVUK8M5c81f3ldA+wOatIsS4veZl?=
+ =?us-ascii?Q?7XopkaFHTppkFlm1b4bewc1mLkh625RiPdWTFHScsjEPNn567Lpmsc1tMCIH?=
+ =?us-ascii?Q?Dy1SqYz8f3/7qQ0Vq6Nhnf/t48RetXDWRGJIJYsobYyg6+oyZd3FO6DCRn0H?=
+ =?us-ascii?Q?JDI5AoPTU5Qb9etFC6hcCTA3ghAbBkfYAw91URKFWAMLuQgs8S1nraDDkMg/?=
+ =?us-ascii?Q?D9qdPYSXuOnJrBijtvMUJRlGGuknfHp20fOF5ePPA/rTiY0IvX2vDSKdlMDz?=
+ =?us-ascii?Q?DZXxJCztbp/kEieiE7UCYF2e1ve9QpmGOs8In+QgmONrokul3fB85RNVQ25n?=
+ =?us-ascii?Q?zJKM78K/VRxvhIpFPqxQaaEc+kWSsgAb9Uc+fkN5IIf8hLolJHSIl2XxdkiV?=
+ =?us-ascii?Q?2PhPb84n5gHDmEr0rnQrSXTDcuvk+41tK5NsX0uwvQr3IQrmnh2l2sfoa6kc?=
+ =?us-ascii?Q?vOX0INfWxtSIzEzU0D05o8C3Q/lB4e+J0RcFVPAc39JkPr86RA4dkVO9nKcM?=
+ =?us-ascii?Q?TDWa7x9DsV8ysA6w++8HVfolpo5SP9FIbbgCAlXRXc4qjWZCDHPYRxLBXb86?=
+ =?us-ascii?Q?LWSc9A8DltwnnONFBJ4nbm7tIh0Q67xDcB8Ix3j21XHZzQlOVDWyesK+euQT?=
+ =?us-ascii?Q?N6mwpO9sYsCMqQYOUm8c14FVRi7feqHmH9cXaVU3MjXvHgUqFLZOn4NTP9HK?=
+ =?us-ascii?Q?F0dO4JycRwt4boQ8shwdsPVKQQDfTcGe3g2TGcWw3lEVbA6gqGz6xPq/qCgZ?=
+ =?us-ascii?Q?spE7nSddgmVyWCZ4rJ3gQzEetuCrvXC3eA5fRHz0NSElRv+DDDR2ukVB8Ebk?=
+ =?us-ascii?Q?DpfasdYiy6dCFKYVyADYMpbRiiYtzMnO9V5xMOdNl/GpNU6D9pP3456aBUg0?=
+ =?us-ascii?Q?CqQSavSr4vPbjd1nLn5jWQUXaERsepDlqqrna107RSIIty8c8KN87pnnz/Wm?=
+ =?us-ascii?Q?Jcg2+OLfVVL67JOx6+uVVeekumxNA7Cf4PzJVi/UT8zeIpRmW307e9VSCd6U?=
+ =?us-ascii?Q?F4lPpl71JIXbCHrueqRfHE98N4JR+us+bkh01yGsuiRA+h7KN20E?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5aef7be3-944b-4dde-25be-08dee3b391fb
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8096.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 03:29:12.6335
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BS8QYW6gudDbXkounQU0SCJ5POH4QikUuBHPXc5Am3lz6DJG8Vq8Jif5ie8AQJUNsG5SflDS5Fd7tvE0KJ9U1fflk/2UrfoeS785HfL48m0oml1RZAu7KsNOPu8ZPM1b
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11482
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+From: Soeren Moch <smoch@web.de>
 
-Pre-existing issues:
-- [High] PM runtime usage counter is leaked on multiple error paths in `imx=
-91_tmu_probe()`.
-- [High] Double decrement of the Runtime PM usage counter in the error hand=
-ling path of `imx_thermal_probe()`.
-- [High] Global static array `proc_thermal_msi_map` is corrupted across dev=
-ices and on probe failures.
-- [High] The IRQ domain created for over-current interrupts in `soctherm_oc=
-_int_init()` is permanently leaked and can cause a Use-After-Free.
---
+On some NXP chipsets, disabling Root Port MSI/MSI-X Capabilities blocks
+MSIs originating from Endpoints from reaching the iMSI-RX controller.
 
---- Patch [1]: [PATCH v2] thermal/drivers: Remove redundant error messages =
-on IRQ request failure ---
-commit c2aa5d21cea82c30c0f98a72f0af891902e951bd
-Author: Pan Chuang <panchuang@vivo.com>
-Subject: thermal/drivers: Remove redundant error messages on IRQ request fa=
-ilure
+To address this hardware bug, commit 3a4e8302e72f ("PCI: imx6: Keep Root
+Port MSI capability with iMSI-RX to work around hardware bug") preserves
+Root Port MSI and MSI-X Capabilities on i.MX7D, i.MX8MM, and i.MX8MQ
+when iMSI-RX is in use.
 
-This patch removes redundant driver-specific dev_err() and dev_err_probe()=
-=20
-logging when devm_request_irq() or devm_request_threaded_irq() fails across=
-=20
-various thermal drivers. The core IRQ subsystem already provides detailed=20
-error messages for these failures.
+The same applies to i.MX6Q, i.MX6QP and i.MX6SX. So preserve Root Port
+MSI/MSI-X Capabilities there as well.
 
-[ ... ]
+Note that preserving these Capabilities means Root Port-originated MSIs
+such as AER and PME won't be received due to separate hardware limitations.
+Users may need to use workarounds such as passing the 'pcie_pme=nomsi'
+command-line parameter.
 
-> diff --git a/drivers/thermal/imx91_thermal.c b/drivers/thermal/imx91_ther=
-mal.c
-> index 25915bb702bea..274eee3031429 100644
-> --- a/drivers/thermal/imx91_thermal.c
-> +++ b/drivers/thermal/imx91_thermal.c
-> @@ -331,7 +331,7 @@ static int imx91_tmu_probe(struct platform_device *pd=
-ev)
->  					IRQF_ONESHOT, "imx91_thermal", tmu);
-> =20
->  	if (ret < 0)
-> -		return dev_err_probe(dev, ret, "failed to request alarm irq\n");
-> +		return ret;
+Fixes: f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port if iMSI-RX is used as MSI controller")
+Cc: <stable@vger.kernel.org> # 7.0+
+Signed-off-by: Soeren Moch <smoch@web.de>
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+---
+changes in v3:
+- Extend the fix to i.MX6QP and i.MX6SX variants as well.
+- Update the commit descriptions suggested by Bjorn.
 
-[Severity: High]
-This is a pre-existing issue, but does this error path leak the PM runtime
-usage counter?
+changes in v2:
+- collect a-b and r-b tags
+- use correct fixes tag (Manivannan)
+  (reference commit that introduced the bug, not the incomplete fix)
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Looking at imx91_tmu_probe(), the usage counter is incremented earlier with
-pm_runtime_get_noresume(). If devm_request_threaded_irq() fails, returning
-directly bypasses the pm_runtime_put(dev) call at the end of the function.
-Because the device persists across probe failures like -EPROBE_DEFER, the
-usage counter will accumulate on every retry, preventing the device from
-ever entering runtime suspend.
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 98e1db751132a..dba27eac6bff6 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1995,7 +1995,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 		.flags = IMX_PCIE_FLAG_IMX_PHY |
+ 			 IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
+ 			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
+-			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
++			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
++			 IMX_PCIE_FLAG_KEEP_MSI_CAP,
+ 		.dbi_length = 0x200,
+ 		.gpr = "fsl,imx6q-iomuxc-gpr",
+ 		.ltssm_off = IOMUXC_GPR12,
+@@ -2011,7 +2012,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 		.flags = IMX_PCIE_FLAG_IMX_PHY |
+ 			 IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
+ 			 IMX_PCIE_FLAG_SKIP_L23_READY |
+-			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
++			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
++			 IMX_PCIE_FLAG_KEEP_MSI_CAP,
+ 		.gpr = "fsl,imx6q-iomuxc-gpr",
+ 		.ltssm_off = IOMUXC_GPR12,
+ 		.ltssm_mask = IMX6Q_GPR12_PCIE_CTL_2,
+@@ -2026,7 +2028,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 		.flags = IMX_PCIE_FLAG_IMX_PHY |
+ 			 IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
+ 			 IMX_PCIE_FLAG_SKIP_L23_READY |
+-			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
++			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
++			 IMX_PCIE_FLAG_KEEP_MSI_CAP,
+ 		.dbi_length = 0x200,
+ 		.gpr = "fsl,imx6q-iomuxc-gpr",
+ 		.ltssm_off = IOMUXC_GPR12,
+-- 
+2.34.1
 
-[ ... ]
-
-> diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-> index 5aaacbc534786..416d89c6287ad 100644
-> --- a/drivers/thermal/imx_thermal.c
-> +++ b/drivers/thermal/imx_thermal.c
-> @@ -732,10 +732,8 @@ static int imx_thermal_probe(struct platform_device =
-*pdev)
->  	ret =3D devm_request_threaded_irq(dev, data->irq,
->  			imx_thermal_alarm_irq, imx_thermal_alarm_irq_thread,
->  			0, "imx_thermal", data);
-> -	if (ret < 0) {
-> -		dev_err(dev, "failed to request alarm irq: %d\n", ret);
-> +	if (ret < 0)
->  		goto thermal_zone_unregister;
-> -	}
-
-[Severity: High]
-This is a pre-existing issue, but is there a double decrement of the PM
-runtime usage counter on error paths in imx_thermal_probe()?
-
-pm_runtime_resume_and_get() automatically drops the usage counter if it
-fails. If it fails, the code jumps to the disable_runtime_pm label:
-
-disable_runtime_pm:
-        pm_runtime_put_noidle(data->dev);
-        pm_runtime_disable(data->dev);
-
-Since the usage count was already dropped internally by the failed get
-operation, this second decrement underflows the usage counter, corrupting
-the PM core state tracking.
-
-[ ... ]
-
-> diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_devi=
-ce_pci.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_p=
-ci.c
-> index c693d934103af..c5131423ec9bd 100644
-> --- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-> +++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-> @@ -308,10 +308,8 @@ static int proc_thermal_setup_msi(struct pci_dev *pd=
-ev, struct proc_thermal_pci
->  		ret =3D devm_request_threaded_irq(&pdev->dev, irq, proc_thermal_irq_ha=
-ndler,
->  						proc_thermal_irq_thread_handler,
->  						0, KBUILD_MODNAME, pci_info);
-> -		if (ret) {
-> -			dev_err(&pdev->dev, "Request IRQ %d failed\n", irq);
-> +		if (ret)
->  			goto err_free_msi_vectors;
-> -		}
-> =20
->  		proc_thermal_msi_map[i] =3D irq;
->  	}
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the use of the global
-static array proc_thermal_msi_map cause corruption across devices?
-
-If multiple PCI thermal devices exist on the system, probing a second
-device overwrites the mappings in this shared array. When an interrupt
-arrives, proc_thermal_match_msi_irq() will fail to match the IRQ for any
-device except the last probed one, leading to ignored thermal events.
-Additionally, on probe failure, proc_thermal_free_msi() looping over this
-shared array might attempt to free IRQs belonging to another active device.
-
-[ ... ]
-
-> diff --git a/drivers/thermal/tegra/soctherm.c b/drivers/thermal/tegra/soc=
-therm.c
-> index d8e988a0d43e9..f74acf13b24d2 100644
-> --- a/drivers/thermal/tegra/soctherm.c
-> +++ b/drivers/thermal/tegra/soctherm.c
-> @@ -2007,10 +2007,8 @@ static int soctherm_interrupts_init(struct platfor=
-m_device *pdev,
->  					IRQF_ONESHOT,
->  					dev_name(&pdev->dev),
->  					tegra);
-> -	if (ret < 0) {
-> -		dev_err(&pdev->dev, "request_irq 'thermal_irq' failed.\n");
-> +	if (ret < 0)
->  		return ret;
-> -	}
-
-[Severity: High]
-This is a pre-existing issue, but does returning early here leak the IRQ
-domain created in soctherm_oc_int_init()?
-
-soctherm_oc_int_init() allocates a new linear IRQ domain and assigns it to
-the static global pointer soc_irq_cdata.domain. If we return ret here, the
-domain is abandoned. Furthermore, tegra_soctherm_remove() does not call
-irq_domain_remove(). Since the ops pointer points to module memory, this
-leaves a dangling pointer in the kernel's global IRQ domain list, leading
-to a potential Use-After-Free after module unload.
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717024733.3749=
-13-1-panchuang@vivo.com?part=3D1
