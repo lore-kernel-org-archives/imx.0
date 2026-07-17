@@ -1,142 +1,192 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010001.outbound.protection.outlook.com [52.101.84.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6719B37204C
-	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 05:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784265130; cv=none; b=ZVDX7wfk0v+JXvJLSG1SrJUq/kJkceDDLdM1gGI7+SSCA3lRrQsz8OGWhwVPgN03avozUx63W0gtQsbbAhhcmQjBmc1lXfrk7wqQTJlfKqbpERt0uWHkPkUZdNy461BbLa1XvqNsXISfRK9/4TdNQw/PgSrxZTqOtG9zB1snRxA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784265130; c=relaxed/simple;
-	bh=rFR1VSayt2OVJUkDppwqa9ZiDJIiRa4WVrFcRZEYjAE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HFAeB2jN+hrVLCeS4aTIAWpmN81wTGne09ldWOURNb0HrtsyD341/X+tNpxaNP5dD9csv1wkf8jVqUMA/bNnVc0oUhj/qZ0y53FfNtRNz+CmURMj0Z5KdRc04vx8mlLkQz7rbHFoixIP2zhZxfHLlD/pErUJiq4kKkQSbQziHDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD88230F55B
+	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 05:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784265499; cv=fail; b=dT3yY7p3uHDLXlvqNWIRruQ7qhp2iDOKgiCNbNU4Vd1bjuZYNWH+2AXvjltyOQ52w3djrHgLCL8N6EDwIHaUiach5fO9vsM4mGW0yernEGoIOiXW4lY9YkmekYsvtrHxmcQq5Po3+fU04RFEJgiOAHoZVpMq4gz7cNY4f1sV03Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784265499; c=relaxed/simple;
+	bh=NrRXJWoKvRQLxfu1KyaqbbJmQyoNPQgsgF1Zgi9i7yc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=D08FtO/3Qn7zw+nqvffrlJjv6oBI4DnMeuO+cH6llAZ6PnUalmG06Nagxq3xB7YDlATDpCWkXItkmoA0wMBoSwzV6IzoD3XJk7RxnvaqdWRYXnB6NcFXbHmCGtz0yD9kDIGbzpZFKGSH8Ce/gJRYcu7hDSdjCeDtpzr8VVcrILI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eg9aiq5q; arc=fail smtp.client-ip=52.101.84.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id F325F20019A;
-	Fri, 17 Jul 2026 07:12:00 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id BBE9B200181;
-	Fri, 17 Jul 2026 07:12:00 +0200 (CEST)
-Received: from lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com [10.52.9.99])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id ED71E18000B5;
-	Fri, 17 Jul 2026 13:11:58 +0800 (+08)
-From: Joseph Guo <qijian.guo@nxp.com>
-Date: Fri, 17 Jul 2026 14:11:54 +0900
-Subject: [PATCH 3/3] arm64: dts: imx93: Add i.MX93 Wireless FRDM board
- support
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eg9aiq5q"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hhnrYLzy1EWfIyoqHMQV7RcMHqBGlRD6S3VZfBvRdVtg8KV5Jv5Q9kQ97mG4Kk2ONWQ3UdZnXB6UDJsJln0fnf+Isg4FK2UoCy4tMUM+n65JAvLt2woIFdUdP75k5Il9hwcBEl8X5JjHQXvxcfgXV/MD3H7kpjQyRw+Miyh9E4hrhzbLVFxKdPfS2boIdloTn6EksZadUaE0+pGRj1X+Bhe5Ky6m17q0O2MYFQfehl6JaVZNk7VbGqJt99/f4fihoiG/QfknBFQMm8IKrEt8X+Ra8g4DQZhc3TsRp7nB4unzaOlF8t87NY+1nPVZkXA9N5bLn/i5+4CUguClipimWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YiUBAgom9XfeTiiJSf/VbZuIfnfNE/Jw4jXpOY0fbeU=;
+ b=RfQR2a503lQzDdI9dsr2kVoBo2u9Baa6OdllfAKPy6NSSqBTzUpSDcj9tOO0WjJ/JQdKXsyM1jdwyibUz1/JiB825Oh/5Nar8HExUpEhmJKKAzb6D7lCRMa0V9B9lmXUs+fn9osfAr0rrQmDLbxEoFTz1sKGD8rSUp/bssNmPgKSpBI2OS01h3v0FPtqfB6aRIATzoGw5zRYk5q7ucsKdyAGRs+lXpYrI2iVGBdlMCBNmxYd3y8Y5Guq9kLmK4luJSb2FMPb5S9aCzCdcmrmgDaD0KNwiB7ymsGU4sKgejysqxmklI4JwFRUMHtFthS3YOcPwqVSzLrqkCZ/vSjTaQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YiUBAgom9XfeTiiJSf/VbZuIfnfNE/Jw4jXpOY0fbeU=;
+ b=eg9aiq5qDeOGypMEceoMWe+gurMPzlJHxhTG41B/THCuRV1HN0WVLIojskOQ+nFli9DloTnd56Hl8I3D9VaLPJBnXsAvCoRl4n3VvdTsf3MB0BR8ZgTLD8rykrMlyDp5GlDxeiHvInGI/TiGZXoOyO5ZH2rcg84H9NSKmpqGD+JK1pPBHCQy6yjZWXviGs7T5ShY7CQGbGJwNABhsk9uJvdJmWXwnkTFJdnoZrtUlF4ZuXsZUe5D775lUtyeQHQmk2idtmuEpeTHTjPID+50KA7TKYWkWN7wf5fxuvgMjoSxt6czkDq3qCZwTa/Hkl8qH70vSq65PSaWsNXb1n0x3g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ by VI2PR04MB10548.eurprd04.prod.outlook.com (2603:10a6:800:27d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
+ 2026 05:18:11 +0000
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0223.008; Fri, 17 Jul 2026
+ 05:18:10 +0000
+Date: Fri, 17 Jul 2026 13:19:40 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Frank.Li@oss.nxp.com
+Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Robert Chiras <robert.chiras@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/7] dt-bindings: lcdif: add compatible string for
+ i.MX8QXP and i.MX8DXL
+Message-ID: <alm7bB64Y4fPYO_C@raspi>
+References: <20260715-dxl_lcdif-v2-0-da797562636e@nxp.com>
+ <20260715-dxl_lcdif-v2-1-da797562636e@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260715-dxl_lcdif-v2-1-da797562636e@nxp.com>
+X-ClientProxiedBy: SI2PR01CA0003.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::16) To AS1PR04MB9287.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260717-imx93w_frdm-v1-3-0cca6c0ba2f5@nxp.com>
-References: <20260717-imx93w_frdm-v1-0-0cca6c0ba2f5@nxp.com>
-In-Reply-To: <20260717-imx93w_frdm-v1-0-0cca6c0ba2f5@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Joseph Guo <qijian.guo@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784265114; l=3045;
- i=qijian.guo@nxp.com; s=20250519; h=from:subject:message-id;
- bh=rFR1VSayt2OVJUkDppwqa9ZiDJIiRa4WVrFcRZEYjAE=;
- b=JLaIS9ghT8hTEVbVqATesK26tuc3lNCXY1XHm0V88s2IkrBnD1SwlWMiaFODLzFV/nvpYYiIx
- DUXrbJ0Zj3jD5LvxnhoHqFK7STC5JzR0XgMy9dEqRBu+tpG4ourdvWu
-X-Developer-Key: i=qijian.guo@nxp.com; a=ed25519;
- pk=VRjOOFhVecTRwBzK4mt/k3JBnHoYfuXKCm9FM+hHQhs=
-X-Virus-Scanned: ClamAV using ClamSMTP
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|VI2PR04MB10548:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d53c6da-bf83-4c9a-a88c-08dee3c2cae6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|7416014|376014|366016|18002099003|22082099003|10067099003|4143699003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	ChoYheWG68Ej4YQ9WU5q0v2ynRsAHbd2jjTtj0JImNtrSIMPXoAQRgWC/Mus92fKhQumqAwDSfrADIkQ+zCXXfLjqeGsejkgtAOIC2fJ1fqTMtttcgC4PKCziAsq3uwEFc1L4GXp10Mm5CLwcBvZ7cxgNXoKtkZlFvL82C9oFtwv3pTFWKWL/LPSkIbN1UEc+l/YbYzWNndvc1Q9XeeZ74ugv3bf1G08yQAzqMfONliBwvrG9BLQgvdBhtEROoAnNsruBGslEW00LXVZ47wVVJOwucWhq8IDev0U1IWGuIin4hADqoEVJQF2k5TLQ/jzhRrYzlSS0FLBtYOFZ9vFix9utsD3E+0M21qq7/vk7eYHw7a46fQ26UDAiTqlvznUX4+qL4UstQ+p1cUSIhsnNORKzvmDHHd5IVXdC9VViea6Ebr6yu5pWFayY1BfHNZee5Pgv68D/6TjOaYrxLx6zKnb2GiOOSsNr/yIR+vLKVU0DOWQqES2gyGxpjMsn+pLyWuFSOj7MmOzhRQLndhG8ymmNkP2qvVEPiA7lIUPEpQRGESiP9NKyUx/T3GQrqnhvIBG9tJ3Hj4G0ib+4iTiiQsCTXsTiS/vVdQ7StJVOpi3Hmoftn4jDxIg6a2JrJwhBUcjC9+uOWHJuy+ikfioxOFqSqMa5v6/R6qzEj6LNNw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(7416014)(376014)(366016)(18002099003)(22082099003)(10067099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1dUPtKZ8yUijHvR9noTpvAHiCHFJmLw+Rln1Z3stQHsHoOXDQyoLVUHUoObc?=
+ =?us-ascii?Q?CCXWdlD/adMbaGVM+H9fq1ukZyGtNepiILTfVD5rLwYC65KwqOca1f5EOKVz?=
+ =?us-ascii?Q?/Nvj3l48x4TgS566+bopDPYmkkQzm3MTeC83rk39YxnfYQFGzW8KWamEeURY?=
+ =?us-ascii?Q?dilXMOjT0LfGAme4fIwQ8bfIns1QPFpvpwcoTsiL5SmauMJJ+oPZzUAYYGyX?=
+ =?us-ascii?Q?nQAN+2iyh4zk0zu0O9U8hR+Zrji7OkMkmfp3uZRwBdB/+9YtzpjBRQs8wEqr?=
+ =?us-ascii?Q?IzGzp95tfcXR0vfQKmRH7oKiMwigGVTIc/GBZJZusEB7l1n50Xfja9oNo2FJ?=
+ =?us-ascii?Q?iSnmsq7gpZRHqdLPW5hmGlA6YOPC/wWgLXVzX9bfMl0YsnlI0txm2PBDw8aq?=
+ =?us-ascii?Q?lXk/TT7FLgZhzgtADGTA4C2DOV5KogDmElPu2FwbvRKshsAWwZu2iBKiBeaw?=
+ =?us-ascii?Q?W9hf2Ljwi2NfSyenXzruRMx7fok6+ZI7pUuuLmw4Ot+1W9qdDb65+WjYQdeE?=
+ =?us-ascii?Q?ajAdQgG0abb6fGjcj3U0USIlOoK9nO1mOrAf6F3xim98sWMb1mmp3UF+TDv1?=
+ =?us-ascii?Q?b4vVAbXT4H2JZsA3Twnb6tndZ3zxDKrs89mK+sTX+EqvsG9OY7Zs6V8aAfYY?=
+ =?us-ascii?Q?FjaRvRSWxh0oxh0DqX5Iy4U5yZ/ZByIC9cTEBoM9FZfOceTObA55/6EpmDfp?=
+ =?us-ascii?Q?9/1T4Yg4UuvHNiOnS+BmAgh3nQvUcwfp+LKQ1jffFGgY7ewV9MTr75ZSu8OP?=
+ =?us-ascii?Q?oD28n5GqPWzpssJRBF+Zs+SnN+RJ9o0oiXmHemm8AgiJHuRNYSL3kUiyE84I?=
+ =?us-ascii?Q?MygHau29WxOCCAhob7hqG01VOZskcs6TiF+AwMA5mX/VxQwWrkIaVYBekRfZ?=
+ =?us-ascii?Q?8uRsF5jDfzVu/N/tLYxG1/zHU+pkBOrfYXl1Yi1/xYtOBcW80j6BRWqdzjZ+?=
+ =?us-ascii?Q?BjMS9n5aITjOi03k6IsjgWD4lfrPxuKrUTXThcCgW33j1gL5URzWeVdhO764?=
+ =?us-ascii?Q?kWyTESl8dUuE2ngkBO33x2S7EXs7NrsyNjF0sxOEJJAmpo8zBGsf6d52g/Cc?=
+ =?us-ascii?Q?8PHuwxpeV5Croz/KVeiyTIxETSDaqkG4M9B9mMBWAgsJZo+a/8iLZxcIJ9VF?=
+ =?us-ascii?Q?1jRabkZNRNW/Gj5FqrojG3D4YwGsZ/1nxShVfxblScLo8SwqguboDjI0uXZK?=
+ =?us-ascii?Q?QKS1XoHPo4x8spcwZl5u8ALy0jMSEnkgBBubiUZLySpzAsBoxdbf61EFwcCa?=
+ =?us-ascii?Q?5JAjZmgC0Vlql3ZYHuNwTgheP10PNJbN2zGc/dQqvx/99WZp3aeAKqZeh2Yw?=
+ =?us-ascii?Q?ju7o3t+zFDcnFrSv/leIMLd7ZvyRpWv4v6Dokr+PwK5SV4XE+xSXYjwcmSRA?=
+ =?us-ascii?Q?tiVg6JaVdavXwEM7si5SQc00/w1vuy1ITJRcQewN5kTOPMUdxhvLPPZJEzFn?=
+ =?us-ascii?Q?BRdMACzlHm1meGigQ+sMmuaAwmHaI9gEOtYMLQw2+4v9UKzR10m6Rm2HRQZn?=
+ =?us-ascii?Q?aMZ08gJJV8t2ktFJvxPrJNyOMTgAHo4iw+ld/PFVOTRt3dHoFWwyWnbPZotz?=
+ =?us-ascii?Q?+24gErjRfHomdFZr05fs+VsCRZv+y3XuaJWRgnqzepxOr2PBG5ASaqHHIAAi?=
+ =?us-ascii?Q?v7n43zuO5lorqu6aEJeG+DL2QmRp+N2P7oCGJL0mHz0vfs6KBTuBkTR8sqLx?=
+ =?us-ascii?Q?4tBfjUMPX2nPSqpCDMDkkQ7priX7w4nuObQkSi8b+23ivjR+vnv57wUsNFT6?=
+ =?us-ascii?Q?vEoJ7fSGqQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d53c6da-bf83-4c9a-a88c-08dee3c2cae6
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 05:18:10.8530
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1DZLeEeEnIYOI5QVw4T84SOOyRMaWk3Yec7mPKIuiVU2C5DoZPDd/7z6iWG4UF/7vvbutzWO7np/Axy81Xr6vw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10548
 
-i.MX93 Wireless FRDM board(FRDM-IMX93W) is a low-cost and compact board featuring
-the i.MX93W applications processor:https://www.nxp.com/products/IMX93W
+On Wed, Jul 15, 2026 at 02:34:46PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> i.MX8QXP and i.MX8DXL have lcdif, which back compatible with i.MX6SX. Add
+> front compatible string "fsl,imx8dxl-lcdif" and "fsl,imx8qxp-lcdif", which
+> fallback to "fsl,imx6sx-lcdif".
+> 
+> Required power-domains for both.
 
-FRDM-IMX93W board basically reuse the FRDM-IMX93 board, with some minor
-functional and pin connection differences. Reuse the
-imx93-11x11-frdm-common.dtsi and add the board-specific changes.
+Need to add a constraint for both that only allows 3 clocks and clock-names?
 
-Here are the detailed differences between FRDM-IMX93 and FRDM-IMX93W board.
-
-Function differences:
-Function	FRDM-IMX93W			FRDM-IMX93
-WIFI/BT		IW610 in i.MX93W		IW612 M.2 module
-MQS		N				Y
-M.2		N				Y
-RPi 40-pin HDR	Limited support(pin conflict) 	Y
-
-Pin connection differences:
-Function  Signal name	i.MX93W EVK		i.MX93 EVK
-WIFI/BT	  SPI_FRM	SAI1_TXFS (spi1.PCS0)	GPIO_IO08 (spi3.PCS0)
-	  SPI_TXD	SAI1_TXC (spi1.SIN)	GPIO_IO09 (spi3.SIN)
-	  SPI_RXD	SAI1_RXD0 (spi1.SOUT)	GPIO_IO10 (spi3.SOUT)
-	  SPI_CLK	SAI1_TXD0 (spi1.SCK)	GPIO_IO11 (spi3.SCK)
-	  SPI_INT	CCM_CLKO1		on-board IO expander
-	  NB_WAKE_IN	PDM_CLK			on-module IO expander
-	  WL_WAKE_IN	PDM_BIT_STREAM0		on-module IO expander
-	  IND_RST_WL	PDM_BIT_STREAM1		on-module IO expander
-	  IND_RST_NB	GPIO_IO28		on-module IO expander
-	  PDn		GPIO_IO29		on-module IO expander
-	  NB_WAKE_OUT	GPIO_IO14		on-board IO expander
-	  WL_WAKE_OUT	GPIO_IO15		CCM_CLKO1
-I2C3	  I2C3_SDA	GPIO_IO00		GPIO_IO28
-	  I2C3_SCL	GPIO_IO01		GPIO_IO29
-
-Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
----
- arch/arm64/boot/dts/freescale/Makefile        |  1 +
- arch/arm64/boot/dts/freescale/imx93w-frdm.dts | 23 +++++++++++++++++++++++
- 2 files changed, 24 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index be3c858f1eeb1a807cb8ac36269c581143f755df..d48ba7dee1861e0b39ab025c4b8108ffa68c9bf3 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -655,6 +655,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93w-evk.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx93w-frdm.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx943-evk.dtb
- 
- imx943-evk-pcie0-ep-dtbs += imx943-evk.dtb imx-pcie0-ep.dtbo
-diff --git a/arch/arm64/boot/dts/freescale/imx93w-frdm.dts b/arch/arm64/boot/dts/freescale/imx93w-frdm.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..766e942fe6638330b602577c541d93f3526afe51
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93w-frdm.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2026 NXP
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx93w.dtsi"
-+#include "imx93-11x11-frdm-common.dtsi"
-+
-+/ {
-+	model = "NXP i.MX93W FRDM board";
-+	compatible = "fsl,imx93-wireless-frdm", "fsl,imx93";
-+};
-+
-+&iomuxc {
-+	pinctrl_lpi2c3: lpi2c3grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO00__LPI2C3_SDA			0x40000b9e
-+			MX93_PAD_GPIO_IO01__LPI2C3_SCL			0x40000b9e
-+		>;
-+	};
-+};
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v2
+> - require power-domains (sashiko)
+> ---
+>  Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+> index 2dd0411ec6516..f16bef7f68535 100644
+> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+> @@ -28,9 +28,11 @@ properties:
+>                - fsl,imx6sll-lcdif
+>                - fsl,imx6ul-lcdif
+>                - fsl,imx7d-lcdif
+> +              - fsl,imx8dxl-lcdif
+>                - fsl,imx8mm-lcdif
+>                - fsl,imx8mn-lcdif
+>                - fsl,imx8mq-lcdif
+> +              - fsl,imx8qxp-lcdif
+>            - const: fsl,imx6sx-lcdif
+>  
+>    reg:
+> @@ -152,9 +154,11 @@ allOf:
+>            contains:
+>              enum:
+>                - fsl,imx6sl-lcdif
+> +              - fsl,imx8dxl-lcdif
+>                - fsl,imx8mm-lcdif
+>                - fsl,imx8mn-lcdif
+>                - fsl,imx8mp-lcdif
+> +              - fsl,imx8qxp-lcdif
+>                - fsl,imx93-lcdif
+>      then:
+>        required:
+> 
+> -- 
+> 2.43.0
+> 
 
 -- 
-2.34.1
-
+Regards,
+Liu Ying
