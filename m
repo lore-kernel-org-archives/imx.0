@@ -1,184 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ECA3F12CD
-	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 14:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B45282F0A;
+	Fri, 17 Jul 2026 14:14:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784297032; cv=none; b=QYj1vERQAv6xlEGBIuYJDFaVGi10PPJlMQkqVWyMQR4OTyB4ka4EUKFixfdQqcApqEEE+x95Tre2bEnE6hTktZKR3mOK4nRu3GAd40+SDTUTHnc1n1EmBHz/QxeECmFjV4/3F3VodkbGBQaKrwg+vhxRi1leENGnwTO2p1tyGRY=
+	t=1784297661; cv=none; b=qS39Lt6pV1OmnP5cjFWm2vlrcHJ/2+m83WoKKD0xRxpZKAq5jV9HCsBNlvKfx2FF1szFwCc44ziEzzXoUUBO4wCHlXGpihNNMCxM9QItIx8rA+DVWJk0rbzrU23Y42r2aRoOpVVNaaOpIZc+XBugB8yyKaM+c13SxPXG4ndNGi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784297032; c=relaxed/simple;
-	bh=ex8HZdHS1q/bkU1HItgMEr14uQTiGY8DQ0yP+8KWPg4=;
-	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
-	 To:Cc:Content-Type; b=jiEcY/8NuZTUw7qFO17nYXVSOLLoTtr3rvQaSaxVUFFkBlUPDzm6g/sTZDL1UCcWHnYQchlVwMFcEGx7f6hy5Z2NOaE3dgdrgY6+Xj+0e7ULJjVLlPXIIMfbpVMpxGlP7PcPQVA/O1H0W8JY902ratiXXc1eMdioxkaiVgTgJNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Gj5nOrZG; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784297661; c=relaxed/simple;
+	bh=mAnjIlL8AIdTHsGjDYrxj6vC2VhSyuTI77mskkCxabk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=f9tnJu13ngWdcQ4JldeZcpnJ8kxeXWaLzjAyUWpg8omiUf8ILHI0GLzbLGtC2/9AdJkqG2u9ahEZkytDUnD0liv6WnofxpqqQUIcpYKRiV/TJCLbN65TVLvPnYb5DxvJFjoNC5JQKlFi8dtewMVZ0MFe+NNIlNAsufOLrv/8W50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UO7rqgSz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gj5nOrZG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784297030;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SaIYeA/Jygw7ChE2lz/n+i9CMUk9dImhyfQVRWidUS0=;
-	b=Gj5nOrZGNQ6fzMesdS7BoCIXJVMm1Nzbs1OJj0YGM8O14LJfCUjOMqGX3UTJmhZsKqiSz5
-	Z0N3zBhqAiCfZhGMdg0bFgwDS33bsTJopm/rcWutLBJ/Gs7u6rJFTPl22TMOzQa5J8GuJs
-	tgD8Jqi63wPR2JXlsjjmhj6/6PZYe2g=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-6LE9oJsXOzKaae6rZxynlg-1; Fri,
- 17 Jul 2026 10:03:46 -0400
-X-MC-Unique: 6LE9oJsXOzKaae6rZxynlg-1
-X-Mimecast-MFC-AGG-ID: 6LE9oJsXOzKaae6rZxynlg_1784297018
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ACD101945CB2;
-	Fri, 17 Jul 2026 14:03:37 +0000 (UTC)
-Received: from [192.168.1.153] (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5682B18005B3;
-	Fri, 17 Jul 2026 14:03:24 +0000 (UTC)
-From: Albert Esteve <aesteve@redhat.com>
-Date: Fri, 17 Jul 2026 16:02:07 +0200
-Subject: [PATCH v3 4/4] drm/panel: find_panel_by_fwnode() return a counted
- reference
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UO7rqgSz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2500C1F000E9;
+	Fri, 17 Jul 2026 14:14:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784297660;
+	bh=QGEPxinQPATW4/n79/tOeVM9ZGeVG81OvW++RWAT+Xs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UO7rqgSzBtNxk+2IoFOo0+3sUeooTZq5i8IC5ToW2Xft4u/E60NeX3DAKtXCQsebl
+	 aJuhLtZiobGg90rQaG+qnGOc6NbasfJA7xNvUzv30bXoeEQR7NnLUcH5jZx6dxt5bO
+	 Qr+6NyLc7mwppJaPTZzChgOB4zj6JSsUgPxKG57FFWw11707sqO62g4vFXCPXLlaD+
+	 kvDpYSf/8KXwso6+UxsGP1Vkk/zzLuad0p9IUbyhdXUTEfJEeHCV2gRQ6OSBClVP4P
+	 eC5YJlwWFjWlfGcNb3gNB7yjOHZE2sjbNul+ooUUbundHTz2wUYya7SZOjsK976ChM
+	 /d3yO4FHkYtHw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 4/4] drm/panel: find_panel_by_fwnode() return a
+ counted reference
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Albert Esteve" <aesteve@redhat.com>
+Cc: Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-sunxi@lists.linux.dev, wsa+renesas@sang-engineering.com
+In-Reply-To: <20260717-drm_refcount_wiring-v3-4-023900c32e01@redhat.com>
+References: <20260717-drm_refcount_wiring-v3-0-023900c32e01@redhat.com>
+ <20260717-drm_refcount_wiring-v3-4-023900c32e01@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 17 Jul 2026 14:14:19 +0000
+Message-Id: <20260717141420.2500C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Message-Id: <20260717-drm_refcount_wiring-v3-4-023900c32e01@redhat.com>
-References: <20260717-drm_refcount_wiring-v3-0-023900c32e01@redhat.com>
-In-Reply-To: <20260717-drm_refcount_wiring-v3-0-023900c32e01@redhat.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Inki Dae <inki.dae@samsung.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
- Linus Walleij <linusw@kernel.org>, Marek Vasut <marex@denx.de>, 
- Stefan Agner <stefan@agner.ch>, 
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
- Sandy Huang <hjc@rock-chips.com>, 
- =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
- Andy Yan <andy.yan@rock-chips.com>, 
- Yannick Fertre <yannick.fertre@foss.st.com>, 
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
- Philippe Cornu <philippe.cornu@foss.st.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chen-Yu Tsai <wens@kernel.org>, Samuel Holland <samuel@sholland.org>, 
- Jyri Sarha <jyri.sarha@iki.fi>, Jingoo Han <jingoohan1@gmail.com>, 
- Seung-Woo Kim <sw0312.kim@samsung.com>, 
- Kyungmin Park <kyungmin.park@samsung.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Peter Griffin <peter.griffin@linaro.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, Alison Wang <alison.wang@nxp.com>, 
- Paul Kocialkowski <paulk@sys-base.io>, 
- Alain Volmat <alain.volmat@foss.st.com>, 
- Raphael Gallais-Pou <rgallaispou@gmail.com>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Mikko Perttunen <mperttunen@nvidia.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-rockchip@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
- linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org, 
- Albert Esteve <aesteve@redhat.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784296938; l=2362;
- i=aesteve@redhat.com; s=20260303; h=from:subject:message-id;
- bh=ex8HZdHS1q/bkU1HItgMEr14uQTiGY8DQ0yP+8KWPg4=;
- b=Wcce0+dlDbxIuiF5oRxS8RYLj+33umEtxbC6TZM1cuTwUBliy7161daQ/+tCXoUYL4W3a37d/
- 0s6+jw8bH9ICEbkzQuS6NDHRpePGlnBJV0pWJFJJycLYHlBwtjWs2V+
-X-Developer-Key: i=aesteve@redhat.com; a=ed25519;
- pk=YSFz6sOHd2L45+Fr8DIvHTi6lSIjhLZ5T+rkxspJt1s=
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FFhRm9uhiWFBBqxkkniEgtXauNUZxFgCwizWF-yuKik_1784297018
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 
-find_panel_by_fwnode() is the fwnode-based counterpart to
-of_drm_find_panel(), used internally by drm_panel_add_follower().
-Like of_drm_find_panel(), it returned an unrefcounted pointer,
-leaving a window where the panel could be freed between the lookup
-and first use.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-drm_panel_add_follower() worked around the missing panel kref by
-calling get_device() on the panel's underlying struct device.
-However, get_device() only prevents the device kobject from being freed.
-It does not prevent the panel's kzalloc()'d container memory from being
-released when the kref reaches zero.
+Pre-existing issues:
+- [High] TOCTOU race condition in `drm_panel_add_follower` leading to Use-A=
+fter-Free of `panel->dev`.
+--
 
-Apply the same fix: call drm_panel_get() under panel_lock before
-returning. Since find_panel_by_fwnode() now transfers a counted
-reference to drm_panel_add_follower(), drm_panel_remove_follower()
-must balance it with a matching drm_panel_put().
+--- Patch [4]: [PATCH v3 4/4] drm/panel: find_panel_by_fwnode() return a co=
+unted reference ---
+commit 2c073e53f181794d94244eff0882b1f1a661d995
+Author: Albert Esteve <aesteve@redhat.com>
 
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
----
- drivers/gpu/drm/drm_panel.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+drm/panel: find_panel_by_fwnode() return a counted reference
 
-diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
-index 72cf86253c0cd..a00ae98ed0956 100644
---- a/drivers/gpu/drm/drm_panel.c
-+++ b/drivers/gpu/drm/drm_panel.c
-@@ -542,7 +542,13 @@ int of_drm_get_panel_orientation(const struct device_node *np,
- EXPORT_SYMBOL(of_drm_get_panel_orientation);
- #endif
- 
--/* Find panel by fwnode. This should be identical to of_drm_find_panel(). */
-+/*
-+ * Find panel by fwnode, returning a counted reference.
-+ *
-+ * Behaves identically to of_drm_find_panel(). On success the returned
-+ * pointer has been passed through drm_panel_get(); the caller must call
-+ * drm_panel_put() when done with it.
-+ */
- static struct drm_panel *find_panel_by_fwnode(const struct fwnode_handle *fwnode)
- {
- 	struct drm_panel *panel;
-@@ -554,6 +560,7 @@ static struct drm_panel *find_panel_by_fwnode(const struct fwnode_handle *fwnode
- 
- 	list_for_each_entry(panel, &panel_list, list) {
- 		if (dev_fwnode(panel->dev) == fwnode) {
-+			drm_panel_get(panel);
- 			mutex_unlock(&panel_lock);
- 			return panel;
- 		}
-@@ -690,6 +697,7 @@ void drm_panel_remove_follower(struct drm_panel_follower *follower)
- 	mutex_unlock(&panel->follower_lock);
- 
- 	put_device(panel->dev);
-+	drm_panel_put(panel);
- }
- EXPORT_SYMBOL(drm_panel_remove_follower);
- 
+This patch updates find_panel_by_fwnode() to return a reference-counted
+drm_panel pointer, preventing the panel's container memory from being
+released prematurely. It also updates drm_panel_remove_follower() to
+balance the reference with drm_panel_put().
 
--- 
-2.55.0
+> diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+> index 72cf86253c0cd..a00ae98ed0956 100644
+> --- a/drivers/gpu/drm/drm_panel.c
+> +++ b/drivers/gpu/drm/drm_panel.c
+[ ... ]
+> @@ -554,6 +560,7 @@ static struct drm_panel *find_panel_by_fwnode(const s=
+truct fwnode_handle *fwnode
+> =20
+>  	list_for_each_entry(panel, &panel_list, list) {
+>  		if (dev_fwnode(panel->dev) =3D=3D fwnode) {
+> +			drm_panel_get(panel);
+>  			mutex_unlock(&panel_lock);
 
+[Severity: High]
+This is a pre-existing issue, but does releasing the panel_lock here leave
+a TOCTOU race window where panel->dev can be freed before it's used by the
+caller?
+
+If the panel's device is unregistered concurrently (e.g., via sysfs unbind
+of its parent), the following sequence seems possible:
+
+CPU1 in find_panel_by_fwnode():
+    drm_panel_get(panel);
+    mutex_unlock(&panel_lock);
+    return panel;
+
+CPU2 concurrently unregisters the device:
+    drm_panel_remove() runs, removing the panel from panel_list.
+    The device's reference count drops to zero and the struct device behind
+    panel->dev is freed.
+
+CPU1 in drm_panel_add_follower():
+    get_device(panel->dev);
+
+Since panel->dev now points to a freed device, could this cause a
+use-after-free?
+
+>  			return panel;
+>  		}
+>  	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717-drm_refcou=
+nt_wiring-v3-0-023900c32e01@redhat.com?part=3D4
