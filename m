@@ -1,100 +1,329 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D9F2E5B21;
-	Fri, 17 Jul 2026 14:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784297839; cv=pass; b=SLxz1xBmX4wEEyX3mEt6BM/4cruYtaARkJ04kTUdX8ar/vFyD2TQDIGge/A7nCmaeCwqdZUCHnE4d9wE0ipQtAkxtSgouFS4fL87XU0CfdWkwwHPJMQaM8MaBS8ZUyQl+d9e0S5g6j4k1AEjHhIhL45RRkmx6GjuK2du/xzMh1g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784297839; c=relaxed/simple;
-	bh=1NzIq33Rk1skyMOZjZs6TKz7uab11yLglT40Ls7rp+c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K1P1J0kU0P14dL9EXMEy2xHpl1nAfO/GCKE/qsZejKCkki/AYK0+7cThQGeq2Qbs5P9z19gru+TPDHALLDSW24jpJCOQ1nnek4A8BgLzTMJfr5t27eEH3E0MvwMzzD9ZcI/HUKwbBAUh9sRGMh8KVdxgSUo1rq6zdEU+8SyOYO0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com; spf=pass smtp.mailfrom=yoavmoshe.com; dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b=IovFTTOd; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoavmoshe.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A165539281B;
+	Fri, 17 Jul 2026 14:24:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784298275; cv=none; b=G4erpq6lY13YOUZdP9mvvcB8HrpHrA4d0cdhhCEXlMtw1MYnPKobV2KxjjvRZitm9n+1tzac1Xm38AxyJ3vZ3mlV/oLoxZLAKlu8wTRQmSEs/Mxm2UIZPK6HqB8pyaXwaDvM6gPrAgNWokjq+UHiaN5izU9J1EK/aQT346tEVoU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784298275; c=relaxed/simple;
+	bh=8lSMqCt4gFqwKyhReCYMP31iH0Y4xH78l6/2F9pEopc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=izrR3tuKit52uJ4azG7l4NWppCT4JMaTHn7qZWmZTV39zF8T2OcUMTc3sR4t8nJLdfCkkZjo48sO8nm6DIfD7sv/cnTpo5b2eT+qbdskRzP3v+NAtE0cmQEfh1QKreCIvrRuqWhVWkm5SwiKge4tiXzrZFbkl7e0XswgS60YFP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V18+U9mT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b="IovFTTOd"
-ARC-Seal: i=1; a=rsa-sha256; t=1784297826; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=CDkMTTxuUuk7SF1KddlgIXqNWa+X+ryUZ6W7ZBjtxo2+tVrR8KCgP9NZPYzos+A7cA7MVkWBHliKgNl1v2IL3m+8NWaAH1CJ0Nm1fSJMP3fMugyZ1HtCUyGuB161uveZoGaRcrkaziS2TMdHTJi4/Cqi8fBjvEDmZ5emCh2GTy8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784297826; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=epmNXjS7d94Ny0G3QrInR/+5Mb0BLlrxlvJkC02EnzE=; 
-	b=lxVfX2xUkWcVskpBJpSlIB/adeVtQFT4Q/gi1No48Zvh2n4F2/PtLd905EcLQV0qeSQPzM9Kb1nHAOGn5qKOeGJu4E/VrK2VAI40GaUcieNPecHI9CO8Cqsh77Ga1wMnsUNNhi6y3p+R1dfrF30U6Dbm3Sj861nCoGV5Sq0/X9c=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=yoavmoshe.com;
-	spf=pass  smtp.mailfrom=linux@yoavmoshe.com;
-	dmarc=pass header.from=<linux@yoavmoshe.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784297826;
-	s=zoho; d=yoavmoshe.com; i=linux@yoavmoshe.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=epmNXjS7d94Ny0G3QrInR/+5Mb0BLlrxlvJkC02EnzE=;
-	b=IovFTTOdduyuOxDCRlNJ6SZVMU99gB64Zo1SoVFAAIsF7eiDSryxPaP9nNl/sjpl
-	SUsYKCICECArOdFUQdKF3wUYlI2WO2xKACFSd2KkW+Ysf6eiWwVSQRmTHKN+KEUbhBg
-	k9RjqdlDBdQKK7p0oVVV8V40jCbL0UOaFp3cP0JI=
-Received: by mx.zohomail.com with SMTPS id 1784297824078494.6809075628678;
-	Fri, 17 Jul 2026 07:17:04 -0700 (PDT)
-From: Yo'av Moshe <linux@yoavmoshe.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Russell King <linux@armlinux.org.uk>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	llvm@lists.linux.dev,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yo'av Moshe <linux@yoavmoshe.com>
-Subject: [PATCH] ARM: imx: Fix suspend/resume crash with Clang CFI
-Date: Fri, 17 Jul 2026 16:16:48 +0200
-Message-ID: <20260717141648.1007059-1-linux@yoavmoshe.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V18+U9mT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6EE1F000E9;
+	Fri, 17 Jul 2026 14:24:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784298273;
+	bh=3XjrOuqHA7mYLwjd+EZ8PT/2Yl3q8MM7mwSvFIsrdKc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=V18+U9mTy9meP4PwSN5Uz7ZcOdmmU4+0nAMKyMjGzWgL/F4r1/8MlngZLo+Z7Kh+1
+	 Nr+sD6WA3CddbTBfuLb4uVPyPIoJoAGeYYnvPLn5ywGKtn3vM1foZvNxtMFNhzjGim
+	 ck6VEUc8UuMzDDiTGeaiRUC9r/iBBEe+gMiZOS+VskybFwf69GwY0Eh9ovC4eAgmkV
+	 doJ98va5m69ZqUtvpa4yJSsngiXqvqFzNc7tVzsfHXF3kOyaQWfxc7TpMkxh0joIw8
+	 GWQuUbeNL/PQJCJs8jnLS/l/3TTKyub2dbid0vFBE7wtcxYwLrpr80Z7jFlJjCDVYV
+	 if57DUTrR9NqA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 3/4] drm/panel: of_drm_find_panel() return a counted
+ reference
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Albert Esteve" <aesteve@redhat.com>
+Cc: linux-sunxi@lists.linux.dev, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com, dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+In-Reply-To: <20260717-drm_refcount_wiring-v3-3-023900c32e01@redhat.com>
+References: <20260717-drm_refcount_wiring-v3-0-023900c32e01@redhat.com>
+ <20260717-drm_refcount_wiring-v3-3-023900c32e01@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 17 Jul 2026 14:24:32 +0000
+Message-Id: <20260717142433.3B6EE1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-Relocated suspend code in OCRAM lacks compiler-generated CFI type
-signatures. When CONFIG_CFI=y is active, the indirect call to
-imx6_suspend_in_ocram_fn triggers a strict CFI violation panic.
+Thank you for your contribution! Sashiko AI review found 9 potential issue(=
+s) to consider:
 
-Annotate imx6q_suspend_finish with __nocfi to bypass CFI checking
-for this specific indirect call.
+New issues:
+- [Critical] Using `devm_add_action_or_reset()` to manage panel references =
+inside component bind callbacks causes reference leaks, devres accumulation=
+, and double-free on rebind.
+- [High] Panel reference acquired in `tegra_output_probe()` is leaked in `t=
+egra_dc_rgb_init()`.
+- [High] Panel reference is leaked if `component_add()` or `analogix_dp_fin=
+ish_probe()` fails in `exynos_dp_probe()`.
+- [High] Panel reference is leaked if `component_add()` fails in `analogix_=
+dp_aux_done_probing()`.
+- [High] Panel reference is leaked if `component_add()` fails in Exynos FIM=
+D / DECON probe error paths.
+- [Medium] Panel reference is leaked when looping over multiple endpoints i=
+n `pl111_modeset_init()`.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Yo'av Moshe <linux@yoavmoshe.com>
----
-Tested on a Kobo Clara HD (i.MX6SLL SoC) running postmarketOS edge. 
-Before this patch, suspending the device caused an immediate silent 
-hang requiring a hard-reboot. With this patch applied, suspend and 
-resume work successfully.
+Pre-existing issues:
+- [High] An `ERR_PTR` is passed to `drm_panel_bridge_remove()` in the error=
+ path of `tve200_modeset_init()`, causing a kernel panic.
+- [High] The panel bridge, encoder, and internal panel reference are leaked=
+ if encoder attachment fails in `rockchip_rgb_init()`.
+- [High] Dereferencing `ERR_PTR` causes a kernel panic in the Ingenic DRM d=
+river.
+--
 
- arch/arm/mach-imx/pm-imx6.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--- Patch [3]: [PATCH v3 3/4] drm/panel: of_drm_find_panel() return a count=
+ed reference ---
+commit 5ff0041b676bfa0b0285edf9631f1c23402a5814
+Author: Albert Esteve <aesteve@redhat.com>
+Subject: drm/panel: of_drm_find_panel() return a counted reference
 
-diff --git a/arch/arm/mach-imx/pm-imx6.c b/arch/arm/mach-imx/pm-imx6.c
-index a671ca498..d9b0c1803 100644
---- a/arch/arm/mach-imx/pm-imx6.c
-+++ b/arch/arm/mach-imx/pm-imx6.c
-@@ -360,7 +360,7 @@ int imx6_set_lpm(enum mxc_cpu_pwr_mode mode)
- 	return 0;
- }
- 
--static int imx6q_suspend_finish(unsigned long val)
-+static int __nocfi imx6q_suspend_finish(unsigned long val)
- {
- 	if (!imx6_suspend_in_ocram_fn) {
- 		cpu_do_idle();
--- 
-2.55.0
+Callers of of_drm_find_panel() and drm_of_find_panel_or_bridge() receive a
+pointer with no reference held, creating a window where the panel device can
+be unregistered and freed between the lookup and first use. Fix the lookup
+function by acquiring a reference with drm_panel_get() before returning,
+under panel_lock. Callers are now responsible for calling drm_panel_put()
+when they no longer need the pointer.
 
+Link: [not provided in metadata]
+
+> diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/=
+exynos_dp.c
+> index b805403281504..a418011f7d4d6 100644
+> --- a/drivers/gpu/drm/exynos/exynos_dp.c
+> +++ b/drivers/gpu/drm/exynos/exynos_dp.c
+[ ... ]
+> @@ -182,8 +182,15 @@ static int exynos_dp_probe(struct platform_device *p=
+dev)
+> =20
+>  out:
+>  	dp->adp =3D analogix_dp_probe(dev, &dp->plat_data);
+> -	if (IS_ERR(dp->adp))
+> +	if (IS_ERR(dp->adp)) {
+> +		/*
+> +		 * The driver core does not invoke remove() for failed probes,
+> +		 * so release the probe-time panel reference here.
+> +		 */
+> +		if (dp->plat_data.panel)
+> +			drm_panel_put(dp->plat_data.panel);
+>  		return PTR_ERR(dp->adp);
+> +	}
+> =20
+>  	if (dp->plat_data.panel || dp->plat_data.next_bridge)
+>  		return component_add(&pdev->dev, &exynos_dp_ops);
+>  	else
+>  		return analogix_dp_finish_probe(dp->adp);
+
+[Severity: High]
+Does this leak the panel reference if component_add() or
+analogix_dp_finish_probe() fails?=20
+
+The failure path for analogix_dp_probe() correctly drops the reference, but
+the subsequent returns do not seem to handle failures. Because failed probes
+do not trigger the remove() callback, the reference acquired via
+of_drm_find_panel() might remain permanently leaked in those paths.
+
+> diff --git a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c b/drivers/gpu/drm/=
+ingenic/ingenic-drm-drv.c
+> index 42c86f195c66b..1887e01d29701 100644
+> --- a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
+> +++ b/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
+[ ... ]
+> @@ -1297,9 +1297,11 @@ static int ingenic_drm_bind(struct device *dev, bo=
+ol has_components)
+>  			goto err_drvdata;
+>  		}
+> =20
+> -		if (panel)
+> +		if (panel) {
+>  			bridge =3D devm_drm_panel_bridge_add_typed(dev, panel,
+>  								 DRM_MODE_CONNECTOR_DPI);
+> +			drm_panel_put(panel);
+> +		}
+> =20
+>  		ib =3D drmm_encoder_alloc(drm, struct ingenic_drm_bridge, encoder,
+>  					NULL, DRM_MODE_ENCODER_DPI, NULL);
+
+[Severity: High]
+This is a pre-existing issue, but does this code cause a kernel panic if
+devm_drm_panel_bridge_add_typed() fails?=20
+
+When the bridge allocation fails, it returns an ERR_PTR. This value is=20
+eventually assigned to ib->next_bridge and passed to drm_bridge_attach().=20
+Since drm_bridge_attach() checks for NULL but not IS_ERR(), it will=20
+dereference the error pointer.
+
+> diff --git a/drivers/gpu/drm/pl111/pl111_drv.c b/drivers/gpu/drm/pl111/pl=
+111_drv.c
+> index ac7b1d12a0f59..8ec659b3c08eb 100644
+> --- a/drivers/gpu/drm/pl111/pl111_drv.c
+> +++ b/drivers/gpu/drm/pl111/pl111_drv.c
+[ ... ]
+> @@ -145,6 +145,7 @@ static int pl111_modeset_init(struct drm_device *dev)
+>  	if (panel) {
+>  		bridge =3D drm_panel_bridge_add_typed(panel,
+>  						    DRM_MODE_CONNECTOR_Unknown);
+> +		drm_panel_put(panel);
+>  		if (IS_ERR(bridge)) {
+>  			ret =3D PTR_ERR(bridge);
+>  			goto finish;
+
+[Severity: Medium]
+Will this overwrite and leak panel references when looping over multiple
+endpoints?=20
+
+In pl111_modeset_init(), for_each_endpoint_of_node() iterates over endpoints
+and calls drm_of_find_panel_or_bridge() on each. If multiple panels are
+found, the assignment:
+    panel =3D tmp_panel;
+overwrites the previously acquired pointer without calling drm_panel_put()
+on the old one, leaking all but the last panel found.
+
+> diff --git a/drivers/gpu/drm/rockchip/rockchip_rgb.c b/drivers/gpu/drm/ro=
+ckchip/rockchip_rgb.c
+> index add3123e5ce70..c908ea4cfa67a 100644
+> --- a/drivers/gpu/drm/rockchip/rockchip_rgb.c
+> +++ b/drivers/gpu/drm/rockchip/rockchip_rgb.c
+[ ... ]
+> @@ -139,6 +141,7 @@ struct rockchip_rgb *rockchip_rgb_init(struct device =
+*dev,
+>  	if (panel) {
+>  		bridge =3D drm_panel_bridge_add_typed(panel,
+>  						    DRM_MODE_CONNECTOR_LVDS);
+> +		drm_panel_put(panel);
+>  		if (IS_ERR(bridge))
+>  			return ERR_CAST(bridge);
+>  	}
+
+[Severity: High]
+This is a pre-existing issue, but does the error path fail to clean up the
+bridge created by drm_panel_bridge_add_typed()?=20
+
+If a panel is found, a bridge is allocated and a panel reference is acquire=
+d.
+If subsequent calls like drm_bridge_attach() or drm_bridge_connector_init()
+fail, the code jumps to err_free_encoder. This cleans up the encoder but=20
+appears to miss calling drm_panel_bridge_remove() to free the bridge and dr=
+op
+the panel reference.
+
+> diff --git a/drivers/gpu/drm/sun4i/sun4i_lvds.c b/drivers/gpu/drm/sun4i/s=
+un4i_lvds.c
+> index 6716e895ae8a4..e1b342c922224 100644
+> --- a/drivers/gpu/drm/sun4i/sun4i_lvds.c
+> +++ b/drivers/gpu/drm/sun4i/sun4i_lvds.c
+[ ... ]
+> @@ -113,6 +118,14 @@ int sun4i_lvds_init(struct drm_device *drm, struct s=
+un4i_tcon *tcon)
+>  		return 0;
+>  	}
+> =20
+> +	if (lvds->panel) {
+> +		ret =3D devm_add_action_or_reset(tcon->dev,
+> +					       sun4i_panel_put_action,
+> +					       lvds->panel);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+
+[Severity: Critical]
+Can using devm_add_action_or_reset() here cause lifecycle mismatches?
+
+This code is called during sun4i_tcon_bind(), which is a component bind
+callback. Devres actions are tied to the device's probe/remove lifecycle,
+not the component bind/unbind lifecycle.=20
+
+When the component unbinds, the action will not execute, leaking the panel
+reference. If the component rebinds, it adds another action. When the device
+is finally removed, the accumulated actions will execute multiple times,
+causing a double-free or refcount underflow on the panel.
+
+> diff --git a/drivers/gpu/drm/sun4i/sun4i_rgb.c b/drivers/gpu/drm/sun4i/su=
+n4i_rgb.c
+> index dfb6acc42f02e..0066bec5a9e5a 100644
+> --- a/drivers/gpu/drm/sun4i/sun4i_rgb.c
+> +++ b/drivers/gpu/drm/sun4i/sun4i_rgb.c
+[ ... ]
+> @@ -205,6 +210,14 @@ int sun4i_rgb_init(struct drm_device *drm, struct su=
+n4i_tcon *tcon)
+>  		return 0;
+>  	}
+> =20
+> +	if (rgb->panel) {
+> +		ret =3D devm_add_action_or_reset(tcon->dev,
+> +					       sun4i_panel_put_action,
+> +					       rgb->panel);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+
+[Severity: Critical]
+Can using devm_add_action_or_reset() here also cause lifecycle mismatches f=
+or
+the same reasons as in sun4i_lvds.c?
+
+> diff --git a/drivers/gpu/drm/tve200/tve200_drv.c b/drivers/gpu/drm/tve200=
+/tve200_drv.c
+> index 562f3f11812a3..f858c58ccb994 100644
+> --- a/drivers/gpu/drm/tve200/tve200_drv.c
+> +++ b/drivers/gpu/drm/tve200/tve200_drv.c
+[ ... ]
+> @@ -84,6 +84,7 @@ static int tve200_modeset_init(struct drm_device *dev)
+>  	if (panel) {
+>  		bridge =3D drm_panel_bridge_add_typed(panel,
+>  						    DRM_MODE_CONNECTOR_Unknown);
+> +		drm_panel_put(panel);
+>  		if (IS_ERR(bridge)) {
+>  			ret =3D PTR_ERR(bridge);
+>  			goto out_bridge;
+
+[Severity: High]
+This is a pre-existing issue, but does this lead to a kernel panic in the
+error path?=20
+
+If drm_panel_bridge_add_typed() fails, it returns an ERR_PTR. The code then
+jumps to out_bridge and unconditionally calls drm_panel_bridge_remove(bridg=
+e).
+Since drm_panel_bridge_remove() only checks if (!bridge) before dereferenci=
+ng
+the pointer, passing an ERR_PTR will cause a crash.
+
+
+Additional observations about panel references in related files:
+
+[Severity: High]
+Could the panel reference acquired in tegra_output_probe() be leaked in
+tegra_dc_rgb_init()?=20
+
+When tegra_dc_rgb_init() (in drivers/gpu/drm/tegra/rgb.c) wraps the panel i=
+n a
+bridge using devm_drm_panel_bridge_add(), it sets output->panel =3D NULL. T=
+his
+seems to break the cleanup path in tegra_output_remove(), which checks
+if (output->panel) before calling drm_panel_put(), resulting in the probe-t=
+ime
+reference being permanently leaked.
+
+[Severity: High]
+Can the panel reference leak in the error paths of decon_probe() and
+fimd_probe()?=20
+
+The exynos_dpi_probe() function acquires a panel reference and relies on the
+callers to explicitly call exynos_dpi_remove() to release it. However, if
+component_add() fails in exynos7_drm_decon.c:decon_probe() or
+exynos_drm_fimd.c:fimd_probe(), they branch to an error path that skips
+calling exynos_dpi_remove(), potentially leaking the reference.
+
+[Severity: High]
+Looking at analogix_dp_aux_done_probing() in analogix_dp_core.c, does this
+code leak the panel reference if component_add() fails?=20
+
+A reference is acquired via drm_of_find_panel_or_bridge(), but if
+component_add() fails, the error is propagated back without dropping the
+reference.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717-drm_refcou=
+nt_wiring-v3-0-023900c32e01@redhat.com?part=3D3
