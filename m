@@ -1,113 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C37B330B07;
-	Fri, 17 Jul 2026 20:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2717933D506;
+	Fri, 17 Jul 2026 20:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784321315; cv=none; b=SOqfR4/n1mROPj2Uc7QL+k97dODKjcNbpdp9z571JJaJjHHyrmRMxX52LDIUEUp3mQ8TKyOPwrkBjc4oVCHpSCfEfjMlApdo2EUJ1mY36eTTjj0NgTAHlzMpk8CGZJvXQXw7erTEHHCAZ+FeacrrA01ylnB08vmK8lBO4JKctSc=
+	t=1784321500; cv=none; b=fokcRAhlk2EH4Dsyvh6YrnObYbkrU+cndSnb9J8fixICy463KdpdahjWusyY6BbTQ7FXWogbHnuc9PgQL63VnI9shJonFBvJ31heIlnDMeg0R809YxbrjBRfcx2MaZo0DSpAZgK8yWuIM5fNjgIGDDsqK7X3Pw2HlUXARQcDBbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784321315; c=relaxed/simple;
-	bh=SUaX4TV2wDbgYvgeqJdba/vkB3LRa2gim407WqGl4FE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Q+EMK1yeGFSw1OQIlQ6DpMpBCj9uFCz3nMIoERrMfkrla55WlJG87r7WdFVMj7ITltvUwYRhRyT21Ac0bNLdWcQGX8xQ09yI0MmjoZkG0kOdd3VVXcRQUnjgyVn8coMQtWYANPzwwPZQ2xtG+d9MUiD/fXPuxgyphILJMtifbUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZs2VDUG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784321500; c=relaxed/simple;
+	bh=/asGhjL99Y/ckW/Mykn+Rb6H3Zr+aYYbctYwphHgGDk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JK1nSf0GoUBBz/Q12fRTFkum+MOKdLiOVcwVydAnBs9Tu3UFd2/aOhlf2Gyth95OUltPMDaw9V0FHGzGxELx1BkDLXqtqj9XCKGf9nJv+Ss5a5fvUEguer91Qox1vFVioCFIC5nBOjXndE/mdB5ZNGZVOEYzKgPeuQuz/q7izsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NRg7MiSz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZs2VDUG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A3B1F000E9;
-	Fri, 17 Jul 2026 20:48:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NRg7MiSz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434DC1F000E9;
+	Fri, 17 Jul 2026 20:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784321314;
-	bh=H2Ah9PPkxDX3WyCZCKPf61yrqddq5IS275SB6cUnUlE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bZs2VDUG9WXZaAPI9mSTgh/qtao9xMjjlaGM0zivcV9/mzm3d9LfhBIsNi0j0eY5Z
-	 xIoQET+PHDF0jEKQ1BKC05kT6u3R+IFOctPE1hGnH8NzHkFBA1SAiuobDo6tgTbk7/
-	 wO44uM5jxWX6frdMHvYuOiAH4ukwffy2b3aruszKPCMNWnlfYctj0oZyNiySVsvr9B
-	 ww95bu2URiB0xTivc6414utTIJgziuR3RZaf+eS6CkQBjXveENZNC8iJRZXu8o+YM2
-	 0roB4gPVHxBRitce3qWaL+Op+aFZzpa8jyAy1Dd0NY5CB6DTmkaGr8IP24LCYDv1tf
-	 irLLEFTlOiJOQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7] arm64: dts: s32g: Add GPR syscon region
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jared Kangas" <jkangas@redhat.com>
-Cc: robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
-In-Reply-To: <20260717-upstream-s32g-gpr-syscon-v7-1-ee198f287682@redhat.com>
-References: <20260717-upstream-s32g-gpr-syscon-v7-1-ee198f287682@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 20:48:33 +0000
-Message-Id: <20260717204833.C7A3B1F000E9@smtp.kernel.org>
+	s=k20260515; t=1784321498;
+	bh=PxLLYNa6RAENhKM3OF2t55M5ReroSFj/K6F97XXmPn4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NRg7MiSztadctgc6UDz5CLWAA5sMOYg19GkDABTzWkykkf4MOqn3Ck68JxrXl1/uL
+	 Sa0drK2Lvp2lczg8m1bPy0kH1cyU7swwTKBTtKfWwaMa7+cBOeTmd4WFj77eZ1GSgJ
+	 pRXDJgKOwnVlDGYH1CDX2QSdsPjGX1JzoLLg5AEBqzr6Fp5iEeae3LMoCYXySMROCB
+	 38iFoC0xtk3ISafqY50uW6LgnFBs89wZgSVld1Lyu196N/9BOV4bEnWrA503W0zhaa
+	 TCdGhaB/FtIL/UbOWvDQu0hCFlt3KgKtVaVz7ubxArFU/6yRyAOaN8jxAjmPUwpQ7D
+	 lSfBLlKxnJIIw==
+Message-ID: <dc27e64d-bc50-4294-83eb-8f9c1f6dfa68@kernel.org>
+Date: Fri, 17 Jul 2026 22:51:29 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7] arm64: dts: s32g: Add GPR syscon region
+To: Jared Kangas <jkangas@redhat.com>, Chester Lin <chester62515@gmail.com>,
+ Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+ NXP S32 Linux Team <s32@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dan Carpenter <error27@gmail.com>
+References: <20260717-upstream-s32g-gpr-syscon-v7-1-ee198f287682@redhat.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260717-upstream-s32g-gpr-syscon-v7-1-ee198f287682@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The newly added `gpr: syscon@4007c000` node is inserted out of nume=
-rical address order in the device tree.
---
+On 17/07/2026 22:33, Jared Kangas wrote:
+> From: Dan Carpenter <error27@gmail.com>
+> 
+> Add the GPR syscon region for the s32 chipset.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> [jkangas@redhat.com: GPR syscon resized from 0x3000 to 0x100]
+> Tested-by: Jared Kangas <jkangas@redhat.com>
 
---- Patch [1]: [PATCH v7] arm64: dts: s32g: Add GPR syscon region ---
-commit 1ee5b4988128c1ccf8969bc9b1f12c66a53c7919
-Author: Dan Carpenter <error27@gmail.com>
+Your SoB implies that. We do not add Tb tags to own work. Otherwise, why
+would you send code which you did not test? Same for Rb tag.
 
-arm64: dts: s32g: Add GPR syscon region
+> Signed-off-by: Jared Kangas <jkangas@redhat.com>
 
-This commit adds the GPR syscon region for the s32 chipset. It resizes the
-GPR syscon from 0x3000 to 0x100 to avoid a panic when reading the debugfs
-regmap's registers file. The changes update the device tree files for both
-s32g2 and s32g3.
-
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g2.dtsi
-> index 809019ea0e299..81280ec6b07a9 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> @@ -325,6 +325,11 @@ usdhc0-200mhz-grp4 {
->  			};
->  		};
-> =20
-> +		gpr: syscon@4007c000 {
-> +			compatible =3D "nxp,s32g2-gpr", "syscon";
-> +			reg =3D <0x4007c000 0x100>;
-> +		};
-
-[Severity: Low]
-This isn't a bug, but should the gpr: syscon@4007c000 node be inserted in
-numerical address order? It appears to be placed after the pinctrl@4009c240
-node (which contains usdhc0-200mhz-grp4). To maintain standard numerical
-sorting, it would typically be positioned before pinctrl@4009c240.
-
-> +
->  		ocotp: nvmem@400a4000 {
-
-[ ... ]
-
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g3.dtsi
-> index 22e80fc03f9c7..da35083a5e0e5 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> @@ -383,6 +383,11 @@ usdhc0-200mhz-grp4 {
->  			};
->  		};
-> =20
-> +		gpr: syscon@4007c000 {
-> +			compatible =3D "nxp,s32g3-gpr", "syscon";
-> +			reg =3D <0x4007c000 0x100>;
-> +		};
-
-[Severity: Low]
-This isn't a bug, but similarly to the s32g2.dtsi changes, does this node
-also break numerical address sorting? It seems to follow a node with a high=
-er
-address.
-
-> +
->  		ocotp: nvmem@400a4000 {
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717-upstream-s=
-32g-gpr-syscon-v7-1-ee198f287682@redhat.com?part=3D1
+Best regards,
+Krzysztof
