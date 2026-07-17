@@ -1,264 +1,222 @@
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11013067.outbound.protection.outlook.com [40.107.44.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645D52F0661
-	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 07:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784274868; cv=none; b=EKWrQxLqPw1hmwmRcFs9NuLHQ3NICeRxBAfM0+zsN3TaNBMLjSR497k9qrtYmOToA5FMafV7USWyPZZAvQHF2E6Owg5qn15cMxSXrWgtVDSNuMbvPSepETH06KvEAKp9abD0Q/Z9uJ5y+N7FKMBg9QVh0C02sLbw2mjY42gCP4I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784274868; c=relaxed/simple;
-	bh=WsP30KAFEJ+qcG/zhU2jgpPp/t1beHgxrTAyeST3kSk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gmtb63d7JDhuNhLpvMNi43ezSrM318LY02NvzqbP9R4VBgW9Pr84bm/UFllQAW8yZ7mjrxw+mtvxTasyBK3gL37MN8N8ZZfsvyGnm84Y0NaUnF9L9Dc+PjHNvFZVgNcy/YH8OY+Cak/6ElgQ+MJ2qDOshs/eftoV3LYPH0zH9SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=smoch@web.de header.b=nQF9XBBr; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBCF311C2D;
+	Fri, 17 Jul 2026 08:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.44.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784275303; cv=fail; b=ZMQRYDnuxKkJC+nW4CzYrnAcoImSQrsByMhyMOZjKSAcQBbxjrvVxBGNmohCKGXRRab0n4vvp1VN9uLDRstSDK4GiA9n929phzqMHAfQsVMtlF/wxhnX3g7HioohmSDNggX19sxotXW3jsfThOkdpBwNh9tYGknH9vI14cdV438=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784275303; c=relaxed/simple;
+	bh=h58MRY5rsmRwaQrVOtmyrPjCbHX7KuDrIedgNZSXiaw=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=sS27QOuNmAmrrV4zfnzKC6tSGHJBIGbMAg6dPaNQBCAclm3FkhWuphobikSmvtUmmlJw/94hkEZ78oJom/OI8TdIZLkWJIDsNZXYt7eX24oxeG07unbCt6bS6PP8n8f6o0GkJA8RfQBt9/n+xp2oxKOGKQCY4Pvo/ooqhUtzB7s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=R6CTc1Ae; arc=fail smtp.client-ip=40.107.44.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=smoch@web.de header.b="nQF9XBBr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1784274862; x=1784879662; i=smoch@web.de;
-	bh=MigHTOds7D7N1IpWdhIGfmpNkDbNAMOil7JP4NziY8o=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=nQF9XBBrciKoTqgtiPeMp8GbC+zF+psJLIeNFPvmDc7OfJq9UbFluCSo+qtYzXXh
-	 Qq5xtX2VaiWXLZZg/u1TXvGghk3xFNU64HBbJgZ6Tow3xbgcgrww4Af+iVijdbtZm
-	 AFLcwTSdnvKrtJSrSGxP2m9KVZCHNQKQlFHhhOmG5TFmPYMidvCxBjEx4I3JlWqNV
-	 l6+9UnRK1UhO0HM1hWzRsLH79TnZJt6i80u2whmNgGNRUct5rRcvSdu0LW+IFVcpo
-	 YACdqSFeo8FsJ6o2K+ztLhNk2rjibeLOnhTRL2uw2wQrNyfydgVzLEF/x/frf9g4S
-	 9qb+Jjku34tJjncHWQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MP3CA-1wNRBJ3b3c-00WalI; Fri, 17
- Jul 2026 09:54:21 +0200
-Message-ID: <12e68e09-d123-467a-8058-2ff02ae24880@web.de>
-Date: Fri, 17 Jul 2026 09:54:20 +0200
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="R6CTc1Ae"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XUNsu7v3dNmEGdRmrCIH961da77AklCaqAFfopFfRmvTPS/uVUIK6vyrEDFhvmXXsN6lynZ7vWcJVOtgh6BE8Hh2SZig4YIxpLm3mcJfOr0GZ/f564t0+ligmqxW627XEeSZkkdpR/MKsdJLoU0OC9HkRj/veKeOLhO9ybAoUFf/Az9kgCL3dhZX9jhH2BqdJFcj2P32o5tz0tEWkIqgMTKi8weIrCuw6i5TAQe/uLsXoll6bl4ZBVMKnIEzvetx5Mm1W+iLLmOHj4Zpx/V1+Tl6JaXIFEoqt+J5Zq++VIJak3z/2BvK2LrN9VytP17AjdVCpn1zTx/86GfpYNWk8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5MCo8v2+T6if2n6tsHrJXX5FivAvS8l2QmhjT4NCrog=;
+ b=oR+uLRbsF94MBwv+OVP1EGaaFOhY0HmiOEtR3+gP8dJGivhlqzKShrPBjfa87DMOXvQSD+0ajhCxSI/IOhkjq1IavBk2p18zXd3tQMrvUSaqraHwUVrEKc4/GH64xrZLuyvEXSk2p8kp1dsfCLNlbPFSRPj4EiQ2oXCwXxky4M4rv1pC+UR0axdEV3Sa3TvtfgJk10dH6vEaYz+Gkmy6HlP9BBf9QpurQF8MiTJG00AlkRWV3ppcFokiLTqCR45ssahgbpl+w5Ksyz6z+gyvUOIcmdDVGLHiaU83g/w2HEmhIY7kN2VxDgXkgQiVQqIHRKYREwaDtXBakflcgdddOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5MCo8v2+T6if2n6tsHrJXX5FivAvS8l2QmhjT4NCrog=;
+ b=R6CTc1AesVBSJsD6zMZ/8mmxenXq1OeWk0+rT1qbidxOOS7h4zMu/Ght541fjgGk8yDo0hSvu6osRYV2NDrLUxaDsKWZLUEMYWK+Ntn6bBx7/DFyrVzOESvBRVhdsERJr5FWU8ZnEKAsjQdKv5Vw14fJvAMF9TmyWaaLalYq0cqe1Jkc1vxxem/5dWXSTjdIBCaErQVZBR5QsR4bafvwCvncU8HXZYOBoDvz1Ux/zxftaMUF5J1S+hAv4TKguIO4bx9pNVyKLnJD6gQqPbLnozBf15fdgnagOoIr81tncdxpNjZjPlcNJflMjzHpU2ISMpvjM9aERNNDVMDNhd2amw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SEZPR06MB5832.apcprd06.prod.outlook.com (2603:1096:101:c8::12)
+ by TY0PR06MB5104.apcprd06.prod.outlook.com (2603:1096:400:1b8::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
+ 2026 08:01:35 +0000
+Received: from SEZPR06MB5832.apcprd06.prod.outlook.com
+ ([fe80::f98:5e32:4ccb:d07b]) by SEZPR06MB5832.apcprd06.prod.outlook.com
+ ([fe80::f98:5e32:4ccb:d07b%6]) with mapi id 15.21.0223.011; Fri, 17 Jul 2026
+ 08:01:35 +0000
+From: Pan Chuang <panchuang@vivo.com>
+To: Corentin Labbe <clabbe.montjoie@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Neal Liu <neal_liu@aspeedtech.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	Gilad Ben-Yossef <gilad@benyossef.com>,
+	Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Antoine Tenart <atenart@kernel.org>,
+	Prabhjot Khurana <prabhjot.khurana@intel.com>,
+	Declan Murphy <declan.murphy@intel.com>,
+	Srujana Challa <schalla@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Pan Chuang <panchuang@vivo.com>,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Ijae Kim <ae878000@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Kees Cook <kees@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-crypto@vger.kernel.org (open list:ALLWINNER CRYPTO DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Allwinner sunXi SoC support),
+	linux-sunxi@lists.linux.dev (open list:ARM/Allwinner sunXi SoC support),
+	linux-kernel@vger.kernel.org (open list),
+	linux-amlogic@lists.infradead.org (open list:ARM/Amlogic Meson SoC Crypto Drivers),
+	linux-aspeed@lists.ozlabs.org (moderated list:ASPEED CRYPTO DRIVER),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-rockchip@lists.infradead.org (open list:ARM/Rockchip SoC support),
+	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE)
+Subject: [PATCH 00/12] crypto: Remove redundant error messages on IRQ request failure
+Date: Fri, 17 Jul 2026 16:00:14 +0800
+Message-Id: <20260717080045.191538-1-panchuang@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TP0P295CA0054.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:3::18) To SEZPR06MB5832.apcprd06.prod.outlook.com
+ (2603:1096:101:c8::12)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] PCI: imx6: Keep Root Port MSI capability also for
- i.MX6Q
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
- Richard Zhu <hongxing.zhu@nxp.com>, Frank Li <Frank.Li@nxp.com>,
- Manivannan Sadhasivam <mani@kernel.org>, Lucas Stach
- <l.stach@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260716222704.GA240248@bhelgaas>
-Content-Language: en-US, de-DE
-From: Soeren Moch <smoch@web.de>
-In-Reply-To: <20260716222704.GA240248@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gcQA79xf+XIhmEg2GzU17lTN4hc4sofqw9NvP3Mb79oOkV+yWmK
- wkDnUfa+QzADfkPP0JenW5lHGUgnuFr/s/fZ13BfbI47NZWBpPC3nm7fjt3ntU7IKvlUrUe
- Zs8u3qJajewKY5Z1BM+3Qke/JB7+5x0+UaAOeDwwUcOQbkdOs7x/+8fzoiOpX0whPuJIEmn
- JReFgVbJdZgNelL2qS3QQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:VvT2jkzoaBE=;RscoxlYH/5jS9LelJ2xLHV/+nrL
- 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
- DaXDNfXFIsJU
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEZPR06MB5832:EE_|TY0PR06MB5104:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81ccfe5f-a030-4375-dba6-08dee3d99f3b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|52116014|1800799024|921020|6133799003|38350700014|18002099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	34dtc/qzKmODa2mZIzKVxc8EPzpyepLCrxe6387w4z3Zo9xVSc+lnG5PD+695FCCNVuFKvs+MUBKMLDVwMJV7w8HhT6MAXFPZ1MsDt1soiSAZ5tDo+Lmjj/j4hom5KmznByxBCcAjK0R/utcZkzw7Dd9a5fNakoXwB/26YwhlqHaSkh64kRitSZUWqhBiizoZC9x7zBm/ICRMo5zgV0KBJNl4MsJ9uvDhHQaUhspyDLpYIhzRTmPnaPmOAZqq1XfpwXdN8qUFy/2Iz0DbQ8+BWI5NJ+7f0w5ub/nxzKOh+dJ9sIYWfnA/8yxbtgg40a0XTa7sR8Opd0Ihxu0EliovffLN1Lfw/XyO3shItw/DoAh7VHuQEX3S7v4+r3eUNKFx7fuKk+Q1pVKnmc1rpboTtjJmc36uKwzRyscoND/qp3OuAP1ohCF74iGqEdEQxgnFM4lipEUJwOQob60lYGbLX8RJ+24qSKoicWfoR9HYjmz9TRnxkRj5oZVaFfLeyQDMpVpPmnwkyufv7wd0tyjQSoEdve4AFwr+B6fyF1rYoV27V0bB7+GrRLweHSoK1VkKFw5+nDb289bnhltj7NxLmOiacgXqzg60MpgmpJEMQNFRr7Ljz8M+vl8cutuSMbalbbx5qU6shjFscyIFaUXxHULYYk3QbuCv/ksfNCq5ARLy1t8lghmeuFaMiY2nTnEcg9XfG/4AQNA+yUlpicFO5/XwhsTgj1HrlzRNUfc6ghklceXdh0PVnG2vSOqlB4o
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5832.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(52116014)(1800799024)(921020)(6133799003)(38350700014)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?n6TQh2/SOT+FoAdpro+aNdpoy+yyCp/6A4aiOy7Sc9u8Zg6Pc9nSOHhwnlNO?=
+ =?us-ascii?Q?2Y6ii6kYH4zSBgg0QwQpLB72gU85gxsoNNbyYVqK75cM1RoNmCWQ+vfB3Pd3?=
+ =?us-ascii?Q?W5sVe35aqhk80IG5TrxAZq7elb/wJ6h9E8IPr6Ka1GpoGbcILkzmHkkLF8xS?=
+ =?us-ascii?Q?lV3/BfImXulmc7iylm3t3IB4ib+2e7hT8cOR7cjZ5h3E8RdwUlc4yb0PhVqL?=
+ =?us-ascii?Q?vFYs41vvE6ii2ySQG9e5GlbslqqX/ukEWppNDo5VK+R40tG8VDH4kOkqsW57?=
+ =?us-ascii?Q?dADLjVYmS6K5neE9kmos9W1H0uCsbNxrD3MKDRRuYHhKiX7QvUfzhlZA86xD?=
+ =?us-ascii?Q?+YnEVIGwNcZ59pfO85AuorAbb2qZCCvPDRFmd3DTr7AqTka4wkhCnTrw3wwN?=
+ =?us-ascii?Q?mArm2eOJ1j3wAELnzlurvTUrZdA/wQ9zOhhIyMeNeg8yDwItbm9C8GtWL5dc?=
+ =?us-ascii?Q?T85LizYlkmN54QBS7FQYjqx/GWSkaC5SfR/0WS9UWyDSjEwVkWYx+5Stm2Th?=
+ =?us-ascii?Q?XIciTETf/N/08+8TMmoC/yO+0Y2fYpk95DGK1k0jx7irJkUcznqhUPkVk2W5?=
+ =?us-ascii?Q?XWCcSGSYnZu8BEAJ5e+v2R+McTSmpzMOnPQ1r7E771vloum9QBaGTuwEELf/?=
+ =?us-ascii?Q?nfewV7u4GcaTyGgbkVkc/rowZqqBVzBnOJjFPdjSqSsmRZa/4oVRNn/QjH29?=
+ =?us-ascii?Q?1r69rNTQxsXwL4EhjiHiGFUkXvOu4er3+O5/6DJN0T3CiwCDaDGqdvIRnWi3?=
+ =?us-ascii?Q?8rOgqGwgEEffcbLdY9CsKL3bn8yn7rbAztUVg9MLmDA+/XyJhV2Q7VQ27OtH?=
+ =?us-ascii?Q?8djBA4AdTzxKcDL0nvkCPD1lOES2R+dYUSsiTQnKJkjc8/tEMlMdW+cefpiV?=
+ =?us-ascii?Q?V2B/9oJhntoQTVTsmC/Lo1JkrJXPjd8qtajk9m9yzleLTK121YC/T/tbX4Pd?=
+ =?us-ascii?Q?nVkjaOPVeuGwaJ5cQpNCRf8m3KezNQdyy7E2/izP7fYqmplxZYIrmfIBuwyf?=
+ =?us-ascii?Q?STP3vJ5E6JvJPDGPEaepaWrBQM88AG0/JOsZSpLyK3nR7q0TCgHWOwJ6zoI8?=
+ =?us-ascii?Q?sN6f5xPOwG1HiOh94HngXc4rx3myTlsfOx7zqxrLGz3tn7EYwvgyU2SNSTI+?=
+ =?us-ascii?Q?VxRjGcURZ4uYTVKi9Z8vBjjDoFDaAjRYgUXQ8RooEKmQZrKfHkjE3mxwLhOb?=
+ =?us-ascii?Q?BgBe4e5DAhybIZRtKfttQZ7WQ6YkNz721BFYCMLXH+NHsJuVWTkfAbTofvGc?=
+ =?us-ascii?Q?TfxxKI3hG70xcjd1Qkr+pFRbl3cNkWgxD3GO7/nKwdiGiZDy3ryzYXgtALEC?=
+ =?us-ascii?Q?ySJGK33z6feMZ62njRmJqR/UEwyoDx+KsofdiS9clELHo6IX9GgRKhqlXFhT?=
+ =?us-ascii?Q?jfNYMSMNh2iy88sosLfAJgoahSEXtABiqOtGs17LDNfz+rpYcPEF9mS/LUxC?=
+ =?us-ascii?Q?nmVL6dmIy/fBhmshx8CxDnESNIgla7slHx3Sm9tsbqe1wFOPFPll/CGxWXa8?=
+ =?us-ascii?Q?L2UNA0cXLrQaOjY/8PMRy+ueu9bTc4nMxkDJOlKe/r2iA1Ytj3vgwDpQZsii?=
+ =?us-ascii?Q?89kyQOdjOU+3k/mUQlHsusNGuMijvPnzXewtZMcRlllFxTK+uTNqhern0GIh?=
+ =?us-ascii?Q?//ynYVtEhaD9aqzwpIhZ37qrtyyjm/F+z/FjHrbObLrmY75W0dH2ZbzabLBF?=
+ =?us-ascii?Q?VBdgsS6noAIqH0Tz8pGEMMAsSPKu/8ZAduFxtNGw0KOC3CPH9CWQd3y8xcYL?=
+ =?us-ascii?Q?J3wZm6ZBYQ=3D=3D?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81ccfe5f-a030-4375-dba6-08dee3d99f3b
+X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5832.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 08:01:35.4525
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BscJEqqE/kOVHY9RaaBKm3rOHs8KQOcBMLOW1ZCpNVm9nd3wtICwdGsB6DFxbb3/mtswHwwRuqKZm06sHU/OpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR06MB5104
 
+Commit 55b48e23f5c4 ("genirq/devres: Add error handling in
+devm_request_*_irq()") added automatic error logging to
+devm_request_threaded_irq() and devm_request_any_context_irq()
+via the new devm_request_result() helper, which prints device
+name, IRQ number, handler functions, and error code on failure.
 
+Since devm_request_irq() is a static inline wrapper around
+devm_request_threaded_irq(), it also benefits from this
+automatic logging.
 
-On 17.07.26 00:27, Bjorn Helgaas wrote:
-> On Thu, Jul 16, 2026 at 11:40:54PM +0200, Soeren Moch wrote:
->> On the NXP i.MX6Q chipset MSIs from the endpoints won't be received by
->> the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
->>
->> Even though the Root Port MSIs won't be received by the iMSI-RX control=
-ler
->> due to design, this chipset has some weird hardware bug that prevents
->> the endpoint MSIs from reaching when the Root Port MSI capability is
->> disabled.
->>
->> Hence, always keep the Root Port MSI capability for this chipset.
->>
->> Note that by keeping Root Port MSI capability, Root Port MSIs such as A=
-ER,
->> PME and others won't be received by default. So users need to use
->> workarounds such as passing 'pcie_pme=3Dnomsi' cmdline param.
-> I'd like to align the subject a little more with 3a4e8302e72f and
-> avoid repeating the ".. from reaching when the Root Port MSI ..." part
-> of the commit log, which seems to be missing a word.  So I propose the
-> following (if you think it's accurate):
-Your proposed new patch subject and commit message is totally fine for me.
+Remove the now-redundant dev_err() and dev_err_probe() calls
+in crypto drivers that follow these devm_request_*_irq()
+functions, as the core now provides more detailed diagnostic
+information on failure.
 
-Thanks,
-Soeren
->
->    PCI: imx6: Keep i.MX6Q Root Port MSI capability with iMSI-RX to work =
-around hardware bug
->
->    On some NXP chipsets, disabling Root Port MSI/MSI-X Capabilities bloc=
-ks
->    MSIs originating from Endpoints from reaching the iMSI-RX controller.
->
->    To address this hardware bug, 3a4e8302e72f ("PCI: imx6: Keep Root Por=
-t MSI
->    capability with iMSI-RX to work around hardware bug") preserves Root =
-Port
->    MSI and MSI-X Capabilities on i.MX7D, i.MX8MM, and i.MX8MQ when iMSI-=
-RX is
->    in use.
->
->    The same applies to i.MX6Q, so preserve Root Port MSI/MSI-X Capabilit=
-ies
->    there as well.
->
->    Note that preserving these Capabilities means Root Port-originated MS=
-Is
->    such as AER and PME won't be received due to separate hardware limita=
-tions.
->    Users may need to use workarounds such as passing the 'pcie_pme=3Dnom=
-si'
->    command-line parameter.
->
-> Also, we need to resolve the Sashiko question about whether IMX6QP and
-> IMX6SX also need this.  NXP folks, can you verify?
->
->> Fixes: f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Po=
-rt if iMSI-RX is used as MSI controller")
->> Cc: <stable@vger.kernel.org> # 7.0+
->> Signed-off-by: Soeren Moch <smoch@web.de>
->> Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
->> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->> Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
->> ---
->> Cc: Manivannan Sadhasivam <mani@kernel.org>
->> Cc: Richard Zhu <hongxing.zhu@nxp.com>
->> Cc: Lucas Stach <l.stach@pengutronix.de>
->> Cc: Bjorn Helgaas <bhelgaas@google.com>
->> Cc: Frank Li <Frank.Li@nxp.com>
->> Cc: Fabio Estevam <festevam@gmail.com>
->> Cc: linux-pci@vger.kernel.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: imx@lists.linux.dev
->> Cc: linux-kernel@vger.kernel.org
->>
->> This patch is similar to
->> 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMSI-RX to=
- work around hardware bug")
->>
->> Tested on a tbs2910 board [1]
->> [1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
->>
->> changes in v2:
->> - collect a-b and r-b tags
->> - use correct fixes tag (Manivannan)
->>    (reference commit that introduced the bug, not the incomplete fix)
->>
->> Since this is a fix for a regression in linux-7.0+, can this still be m=
-erged for 7.2-rcS ?
->> ---
->>   drivers/pci/controller/dwc/pci-imx6.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/contro=
-ller/dwc/pci-imx6.c
->> index 98e1db751132..8130cf93c2bb 100644
->> --- a/drivers/pci/controller/dwc/pci-imx6.c
->> +++ b/drivers/pci/controller/dwc/pci-imx6.c
->> @@ -1995,7 +1995,8 @@ static const struct imx_pcie_drvdata drvdata[] =
-=3D {
->>   		.flags =3D IMX_PCIE_FLAG_IMX_PHY |
->>   			 IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
->>   			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
->> -			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
->> +			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
->> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP,
->>   		.dbi_length =3D 0x200,
->>   		.gpr =3D "fsl,imx6q-iomuxc-gpr",
->>   		.ltssm_off =3D IOMUXC_GPR12,
->> --=20
->> 2.43.0
->>
+Pan Chuang (12):
+  crypto: allwinner - Remove redundant dev_err()
+  crypto: amlogic - Remove redundant dev_err()
+  crypto: aspeed - Remove redundant dev_err()
+  crypto: Remove redundant dev_err()/dev_err_probe()
+  crypto: caam - Remove redundant dev_err()
+  crypto: ccree - Remove redundant dev_err()
+  crypto: sl3516 - Remove redundant dev_err()
+  crypto: safexcel - Remove redundant dev_err()
+  crypto: keembay - Remove redundant dev_err()
+  crypto: octeontx2 - Remove redundant dev_err()
+  crypto: rockchip - Remove redundant dev_err()
+  crypto: stm32 - Remove redundant dev_err()
+
+ drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c   | 4 +---
+ drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c   | 4 +---
+ drivers/crypto/amlogic/amlogic-gxl-core.c           | 4 +---
+ drivers/crypto/aspeed/aspeed-acry.c                 | 4 +---
+ drivers/crypto/aspeed/aspeed-hace.c                 | 4 +---
+ drivers/crypto/atmel-aes.c                          | 4 +---
+ drivers/crypto/atmel-sha.c                          | 4 +---
+ drivers/crypto/atmel-tdes.c                         | 4 +---
+ drivers/crypto/caam/jr.c                            | 2 --
+ drivers/crypto/ccree/cc_driver.c                    | 4 +---
+ drivers/crypto/gemini/sl3516-ce-core.c              | 4 +---
+ drivers/crypto/img-hash.c                           | 4 +---
+ drivers/crypto/inside-secure/safexcel.c             | 4 +---
+ drivers/crypto/intel/keembay/keembay-ocs-aes-core.c | 4 +---
+ drivers/crypto/intel/keembay/keembay-ocs-ecc.c      | 4 +---
+ drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c | 4 +---
+ drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c  | 5 +----
+ drivers/crypto/mxs-dcp.c                            | 8 ++------
+ drivers/crypto/omap-aes.c                           | 4 +---
+ drivers/crypto/omap-des.c                           | 4 +---
+ drivers/crypto/omap-sham.c                          | 5 +----
+ drivers/crypto/rockchip/rk3288_crypto.c             | 4 +---
+ drivers/crypto/sahara.c                             | 3 +--
+ drivers/crypto/stm32/stm32-cryp.c                   | 4 +---
+ drivers/crypto/stm32/stm32-hash.c                   | 4 +---
+ 25 files changed, 25 insertions(+), 78 deletions(-)
+
+-- 
+2.34.1
 
