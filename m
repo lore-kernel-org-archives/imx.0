@@ -1,163 +1,110 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013006.outbound.protection.outlook.com [40.107.159.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E0D2165EA;
-	Fri, 17 Jul 2026 12:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784292579; cv=fail; b=TRB729VwZT+CnQ4lDdofOuD6HugfVX6ty8RrlQi6PRuJW08qDddpeikTGmCCD7OHKS2wKo0RKWNepXmzJXDyHksSrkrzfiFVNZnHVjdBQhkak59IOIBXgBAOTd65GNDQSQSBcwjUYV98K/kTp0QSuY1K7LJCgPcynmNMi/j+ONs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784292579; c=relaxed/simple;
-	bh=tBNBhv3KESEkOjPqH0Ou1ekIfgfBcbIqghKyx4DqkCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=B/UFujnpCnv7DZimuMvZdWGaPMWBk0nv+3eyj8EsCTH9etBV2UjhJpE6N/ETtXfAv6ZM0Q8vPtqBVTA/S9O0v7C56f/C7ZhqkaEq2yj+qkQVQzNg6lWn5x7TOnFWxXV+wFC+M7dXmasQ8y/vEo4SPpBx0nrEcRBH92SWkalUr5w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gAXU1E9n; arc=fail smtp.client-ip=40.107.159.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89979BA3D;
+	Fri, 17 Jul 2026 13:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784294555; cv=none; b=bZcCtMmTV10z0nhdj5YV/XhmLArDbGG1zRu+Gt7B3T2gGzZQAgoIfhxfniB/z06Cr6ihvEqp1Qq24CzE74QV9PSLg/wse0Au966FABf5KO83v/OHrHiyL6NcH7BdYBV2q0MuBDwmgxWx40lo35lgr/VnQvE+O/Q0IbYprNJ+s24=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784294555; c=relaxed/simple;
+	bh=zxcd7xDhYTrpgS2ua0mC2OoU2E2wC9SDIPNvJVfqnuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nRgFvrhv4Xelq928pME/Ruv9A1GUJJKCxqz32PnkK29TEBUy96KWYQJvzUl1PUyqTWpxSesRbza//cGpyaQeEcAKbb8BO+7WIGhQZO7bAxr4WKvrolAOvMEzsKI/CfG3YKvfyvRbnQNOyGDcW2+aXyIJjM2a23/GWvJHG/95Pa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OB4sFjOk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gAXU1E9n"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xVVVV2OJ2rk2yyhB43lR+0XNR9Sf2a7kjC4q2OrR46rvOOrSkKRqX1PhTiy2GVLq5e85kk8jvaTaxY/Qo2w7xxdmWGdXLKgHDw4S24d7bJ2cD+8oSDQsxtT3vfIaPW5KjhS+LYzUKYrljTG8hS8HG0rHm23iWqkIVTrgpCCNJfG831SZlFcJ3R+TNS/Niq2mSc1TPza78Vl3rjMRt0CjM3Y/D6u5CGRcLfy/ds/pFhZColDBb/vigswLIMQgUqKYP6zFTlgh3mnztHqctN6d7fGWJ7gaFnqFWnI6/7BTuPKM65PMviwl2ij8wuwb3vCDz31ft/a5+gJD4fO3+OKWpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VfQesn14yUsvkEs3rB6Lbe2k7LcEpfkgLp/oVsvn1zQ=;
- b=Q4AA1ViEFHwHGQUyUfuJ4DUGI+KlvB0H/SyZkSi2FnEk3ymyUzy1TeHgqJR1yP9583HVYwExRNsSOpcFKQDWp9IY/EWe1SgqtkGnIfjhPrETVeSxileZ0TFPK/4WKWhQMF9qIdfIXRqqGAadp1pTuYJhULw4snRvb6XpwLpZrCV4tPDN4Oi5BbEOEH8B2F2jPH3m9ZjBOQyTuIJoQ78Byo+q+1CJhnS/e1KkVCIIZmkPdcT3GDzAhuNqD0UMp74XdOvgxnJ8QnDlyHKGfwSCvWbkzcgs25/jRfbtMB9+2CZKjheMXy62A9bS9O+yAcQoVVp/qDGCghKSHPwFdQCkuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VfQesn14yUsvkEs3rB6Lbe2k7LcEpfkgLp/oVsvn1zQ=;
- b=gAXU1E9nmeY56in8ouy7mCIN3Ynd3r6vx1YhtEW428UiATo9Fjocyt3oyPNuplPNYwzWpklZ1+KoUTKXaUWROGLxHxeMusxHU7HlfyPBli3ztWNd8EfeJEqvsHD88TMtCeWsLPoXNMFd4OHe4gmReuDBDS8yvSJRV1OTME6pQXU3JTq0cHZWhS4wmxyQ0ck7rZdoqA7bYI+gPzgy6O4/ZGbwQyUwD7E4AlkjCTAalpxQGRY8Km+64Ug84rFmlH5XXur+jrMPYpTBb9OfLmbUMXoNm0HU/nRr2pgfMq5HWiwH4ji8Eo8pri0gxKmawZlCJWXILoPuVQ6TXnfxjKIrFQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13) by VE1PR04MB7407.eurprd04.prod.outlook.com
- (2603:10a6:800:1ab::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
- 2026 12:49:33 +0000
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd%6]) with mapi id 15.21.0223.011; Fri, 17 Jul 2026
- 12:49:32 +0000
-Date: Fri, 17 Jul 2026 15:49:28 +0300
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, 
-	conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 01/11] arm64: dts: lx2160a: explicitly enable serdes_1
- node
-Message-ID: <2236nfta2gms555mcetel7ojvychatt6z4vypgwxyeljr2nqva@hjwixlln6i2a>
-References: <20260717120635.2118610-1-ioana.ciornei@nxp.com>
- <20260717120635.2118610-2-ioana.ciornei@nxp.com>
- <20260717122225.2D5BB1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717122225.2D5BB1F000E9@smtp.kernel.org>
-X-ClientProxiedBy: FR4P281CA0442.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c6::14) To GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OB4sFjOk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437F81F000E9;
+	Fri, 17 Jul 2026 13:22:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784294554;
+	bh=1kOJD1kFJV3xUAdZQqjPuTblJam8XpEuYK8dAO5fXE8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OB4sFjOkMLYMxOjflQc8muxxUs7V133H6x2O2zK7+3/xed0458zrQpJMT+12MhxY4
+	 nKD+Cc9opUf7loxx6rwHFe4jJ8hBDuhqbv2/fj6MnZnCOoVQpq7gaX6zbcPnL9umQP
+	 6soeO8bkJ9JInsJ7RhCPnxaQsYsegFkvffk1mHtCig7WaB50U0QzztYyJUGueA/tlF
+	 TTuj3PJw/fHgmxJZ56T6MOGua/mXXxsDureJt/nzkgNNGQjg5ProYnI06dCLsFRZ/p
+	 YPoJ/SIPW2ISEYtNm34v5SkEg2TJvt+TBpVpAA7Z+BlxTuT2BXIhUweT1BCmdJSpcg
+	 S/cvLb5rIm6Lg==
+Date: Fri, 17 Jul 2026 14:22:28 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Joy Zou <joy.zou@oss.nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Ye Li <ye.li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/3] regulator: pfuze100: add set_suspend_disable for LDO
+ ops
+Message-ID: <ad97113a-0898-415e-83e9-0e5db54a30a3@sirena.org.uk>
+References: <20260716-b4-regulator-pf01-v1-0-8c1519d54bd4@oss.nxp.com>
+ <20260716-b4-regulator-pf01-v1-2-8c1519d54bd4@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|VE1PR04MB7407:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a1cc7bd-65ce-4b5e-2076-08dee401d901
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|23010399003|19092799006|1800799024|10067099003|18002099003|22082099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	rM91Q4KEARB3JJBf8I0FJtmOuIdt4kpAqTtROK+cPsemgb4AlfM125xmRU0blIBAMzZvzgi6683r/bcWDRM7DsWLiJ8HJ+yikwXtHa9lUZlMT/ZDZPRJRspIwPjaGVXgiZlKYHJ8/g8qH3lDZsKM8eSaTMQDeG+NANQmn56ablc2+y1oyQ6sc9HNaF2TnFSn6kd20ZEan7E7ae1AAj9shrTn2z97rkR8VqhhnQPztuCMJuRnwWiLmViTfDFKSyIvB0I8h8c4Ij2arJAJv27/Rgvesxfyws8zdk0Ad8Y9dBMzy29/A+eyRrw3NkAGHTg3wL1J4kIW4yXnynb2ewkJgY67AuS1KEaB/BZ2i7v+ob5Ai4KPL4Fqv19EpmemeZy9NXeFmTeiT7iRayPlM2p7EvDk8fejImV6KYsRod2qdJOdyul0bxiFD6Hd9bp3V9yEt3D3CfqJB4GWGGSo06vNSB/xYaNMq+RI6ywGc4ZBWqk0I3DQiY6S2x4+bSzqthUdBd4bBKx1iUUpUc5CXxxJ321kFhzXdsa/4+3KLir+HKg2r4n+DB1dGCTEJLob0mnn/IrsmSHEn3TQa6AW2Cb4oPgA/xhJqb/jWRnfVMZRihqXJvHpZISAouKgUuTLG1qvhMs5CsTHbpjH3xnykO7y94Pi3PFj/HqS234Rf2eNmiA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(19092799006)(1800799024)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+0daa0exVHzetUZFR0x++nAMYRiP5qbpIDRNfXpUz15nZM6OCfT4y1pasuMK?=
- =?us-ascii?Q?peTgQcV6blaCmO+51AqjmVEVjwxJyS/VaUxF/deMdHX4TK20sPU89grC7bKM?=
- =?us-ascii?Q?CkUXmWuJT78MObdNr4BIid5xuFyoFPupnqujs/zbfmvft+fH3gsUom0Td2Oc?=
- =?us-ascii?Q?ASqXshh7mpRMWPvrxzAemDjsYJpmw7RUnebrLr8vwIDSUFhxoVx1rOUEEi2f?=
- =?us-ascii?Q?9wwUh/+gttDSFO7RwVRZExT6YWe2TUD4ImQooq1ozi1g13QlAUmnnGO7xSD6?=
- =?us-ascii?Q?D4opKGRHB4Qkk4Yxo9SCadGkkl98PuywBo/fZszdDsT7lUj29fXeC40LK9W/?=
- =?us-ascii?Q?1A/SFUgoRifyT9ftwAk3LduIuZ1Pqk0wN6ucjdMyU2Y+QfvrWISR/+8+L0uN?=
- =?us-ascii?Q?HLZ4M/CY0DZOxrll7quuCxSKoyGLX2BljUOuLyBZKpONEsLqbfJuzHRb4ANp?=
- =?us-ascii?Q?ulhTpp9f7Y5GzVf8CFbmHRccVa6KZdMUa6LtxHFzFdtp08e1qOt3UD82JViU?=
- =?us-ascii?Q?mQ9201Z34Jibvp7asV4zkXYHoDPDf1by+9Cwf69/36nJbD9H0H9MFoEJC186?=
- =?us-ascii?Q?dbWXkygrM0JBEZzN0a2axUt7zY3Xz6u0tIaprQtjWxjH54PiT32N2NHVIo7j?=
- =?us-ascii?Q?rLWaIfwuuhpn67vPAsKUbfU7LgXfYji5s9xoHUijdeyB1XwLDKRz5ofwg1Wf?=
- =?us-ascii?Q?Fv5JewkhJV9o8zu/E9r5sneMWyGYL/p+w0ieQzU8uo3oaRFUMrBFaatQ5fur?=
- =?us-ascii?Q?D0OqvUKnHWCyhJaMfdYqqixse6JwxUuyT4wua16fv5ieXHQ4eb2B3N5uElzN?=
- =?us-ascii?Q?6GalamrIjagBMro9vqUlfi7qDjTSxcEQ0DS22oXUCCAbqFXdDGWnXD3SfJAu?=
- =?us-ascii?Q?ZHaR59VS9ZPWF0AKHkiEREs9H1kP6ZUe/bgrXXvSEH/Lb9L0UiKRQUghclDz?=
- =?us-ascii?Q?nnIByT9pIup9nr9CXp7pwFTvbm65eD9fDUrghmtEr0snLGEWOXVEd/rGK7CB?=
- =?us-ascii?Q?b9rh9XkIl5BBNtsO0ZfXWGzCppcSKNDiuHUtWFPBh41CsMR4eU284nrji3xL?=
- =?us-ascii?Q?5/n4B0P6s8pukqUcy+uDoIgSi0PvsrTuzsfHqdwpbg0PGRYPvd9W0tufZ5FF?=
- =?us-ascii?Q?Gn7cSipJoKRpB0cJdzfxNWqf4vnCqPhHbj56+NKxlBFyf6N1TCYhk1vWTtjg?=
- =?us-ascii?Q?86VUM7Ck4TgG9JusVPmwIjVhnIfz/YCs7HRxhDUdqyUG9iAh4hPiwwjiETRx?=
- =?us-ascii?Q?wyDN2+5FvtshMtAyEKJphHW3VRTZraGULR5YRZTcc2oQ9ZNxf6y6uoWxS4AY?=
- =?us-ascii?Q?qXkW4sIxu22kZJ6bYbM921+4FLn6g4KsuZCLL89+EFyWOHTYyWLgkerpo8Si?=
- =?us-ascii?Q?AUKrBI9oBAtkV40h4PmagsOVZkI9J3JDJfPvDHu3VewIgCvsEpMcoOqWdVO5?=
- =?us-ascii?Q?XBWneXaBSY2+NDK05AOABL2vkscad5xE8VxLltea7FisQp1wrzAB6JuGD5CT?=
- =?us-ascii?Q?0w0SOH+shpX4mdgeOpGqTJSn7bHH2ZvhQj9UIHteu+mg4i4jh8YrTDVFzIe1?=
- =?us-ascii?Q?i/3YHJ5rQTGhT/vR3aW4z/l/9OYDuZ5yYkV6qi0eo9Lyi+veOSMCBEC7NJRs?=
- =?us-ascii?Q?kIevkGVn7VxVpA6s8HuVN1ApnGygSFVsITSef9VpTHS4EPmZ980ahJeB6C3i?=
- =?us-ascii?Q?IH7ZmZL6MYYwoFj2zfo742V1m218Ffa7lD50qyLUKfr1aaolLMeiQ1zmHjmy?=
- =?us-ascii?Q?HkoYWXfbgA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a1cc7bd-65ce-4b5e-2076-08dee401d901
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 12:49:32.0912
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IRonhScPLz6Qs5x3Y02ysJMkn+Fsm3r6VVg83YLdJ7319szvEdW5VTFllpG4+hSjkwtHQBszlYDBKNBTwRE85g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7407
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uKYEymIBh1Me1XMm"
+Content-Disposition: inline
+In-Reply-To: <20260716-b4-regulator-pf01-v1-2-8c1519d54bd4@oss.nxp.com>
+X-Cookie: Enjoy yourself while you're still old.
 
-On Fri, Jul 17, 2026 at 12:22:24PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Incomplete device tree update: the patch claims to explicitly enable the `serdes_1` node in "all board DT files" to prepare for an SoC default change, but misses several LX2160A and LX2162A board files.
-> --
-> 
-> --- Patch [1]: [PATCH v3 01/11] arm64: dts: lx2160a: explicitly enable serdes_1 node ---
-> commit d3826fcfc7d054169418a33dbec45e352c709bff
-> Author: Ioana Ciornei <ioana.ciornei@nxp.com>
-> 
-> arm64: dts: lx2160a: explicitly enable serdes_1 node
-> 
-> This commit enables the serdes_1 node in board-specific device tree files.
-> This change prepares for a subsequent update that will set the default
-> status of the serdes_1 node to disabled in the main SoC device tree.
-> 
-> > Explicitly enable the serdes_1 node in all board DT files. This is
-> > needed in order to be able to change the default status of the node to
-> > "disabled" from the SoC DT file.
-> 
-> [Severity: High]
-> Does this commit miss updating several other lx2160a and lx2162a board
-> files?
-> 
-> If the default status in the SoC device tree file is changed to disabled,
-> it appears boards that rely on serdes_1 for high-speed IO (PCIe,
-> networking, SATA) might be left without functional interfaces.
-> 
-> Could the following board files also need the serdes_1 node enabled:
-> - arch/arm64/boot/dts/freescale/fsl-lx2160a-bluebox3.dts
-> - arch/arm64/boot/dts/freescale/fsl-lx2160a-qds.dts
-> - arch/arm64/boot/dts/freescale/fsl-lx2162a-qds.dts
-> - arch/arm64/boot/dts/freescale/fsl-lx2160a-tqmlx2160a.dtsi
-> 
-> Is there a reason these files were omitted from this patch?
 
-This is not a valid concern.
+--uKYEymIBh1Me1XMm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The above listed board files were not updated because they are not
-active users of the serdes_1 node (no MAC node is currently referencing
-it), thus enabling it is not necessary.
+On Thu, Jul 16, 2026 at 11:50:54AM +0800, Joy Zou wrote:
+> Add set_suspend_disable callback to pfuze100_ldo_regulator_ops to
+> support regulator-off-in-suspend DTS property for VGEN regulators.
+> This allows unused LDO regulators to be properly disabled during
+> system suspend, reducing power consumption.
 
-Ioana
+> +static int pfuze100_set_suspend_disable(struct regulator_dev *rdev)
+
+This looks to be only used for LDOs but is named like it applies to all
+regulators the driver supports.
+
+> +{
+> +	struct pfuze_chip *pfuze100 = rdev_get_drvdata(rdev);
+> +	int id = rdev_get_id(rdev);
+> +
+> +	/*
+> +	 * Set VGENxSTBY and clear VGENxLPWR so that the LDO output is
+> +	 * disabled when the PMIC receives a STANDBY event.
+> +	 * EN=1, LPWR=0, STBY=1 results in output Off when STANDBY is asserted.
+> +	 */
+> +	return regmap_update_bits(pfuze100->regmap,
+> +				  pfuze100->regulator_descs[id].stby_reg,
+> +				  PFUZE100_VGENxSTBY | PFUZE100_VGENxLPWR,
+> +				  PFUZE100_VGENxSTBY);
+> +}
+
+This is a fixed bit in the register, but I see other regulators have
+_stby_mask configuration.  Are you sure that all the LDOs in all the
+regulators covered by this driver have this feature with this exact
+control bit?
+
+--uKYEymIBh1Me1XMm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpaLJMACgkQJNaLcl1U
+h9DJTwf+JXmWWGEhODznp7wN0yDnSK3YWvaKUh1/0xQaa0wJUAiNuME7187VMBmJ
+Bv9HmnfG90F/7d6ZKZKzyF7yfYF4GdBMac9cUnb9g7hWg9fDe9nbWgKf7CTDhJzR
+KfrE2QY62rkYYLXQ/87FFBjB6W8dEd1/yB4tkTsJ9ZdhaSckyNRSgwu9/0sWkGA2
+1zvHyJQnDeLRGoQgYUrCzfGdwbGyMOgbn1mVrXJJHs7Mkg+t2v6+hBOYAbPVmwK9
+bGGwI+GQMS5UrRVEgTOk4F6HkqQRnN7zO245kTV4dp+qeTZTo7UbPhV/6Ks69XYg
+K6jZslVrBD6V8jlziX9iDCzADUhkHA==
+=IpOL
+-----END PGP SIGNATURE-----
+
+--uKYEymIBh1Me1XMm--
