@@ -1,103 +1,99 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2793072618;
-	Fri, 17 Jul 2026 21:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11E7175A60;
+	Fri, 17 Jul 2026 21:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784322831; cv=none; b=TUsSSPlBoA6NDa2F/c9WFBsi/k1PHwmo4BxxUP4Fdfde8vuwTPbZclxv/qmf/TPw+3KcAGSehV6JnDno2EPsSAFZ3s0YWPGCnQjcmxKcYI7SUwgjKYOt04SfZHutfs2Ifs+9UdWPGqWxeZ93hMCzWWTfBqwSi6bDAXoSX8CfoCA=
+	t=1784323540; cv=none; b=m3zkCLr9P3c+9a83GXDavMhHD8HX6eLt0bzz8O7LZ6CKxcCTgyz3Hd2J+/3hvW4vSLYXk1loGQdox1BbJw8acpsdofOEk9x/w8MnhBeTqaFnC+64PNEcEIi03aU9OgK8NKRvzC8s2ydsrfm3j37AWh0u1rl3lpTtLr4PmrmaVaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784322831; c=relaxed/simple;
-	bh=wU1n0hOrlprQHWnhzkaItTdslJW+pRo/wRH8azhdL3g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Iln8d19EhHy5IlQtjIoUi1rCTTa2QrfRActnNDA2KZ3rkOKOEkKRFCod1UVCn1JCnQjICA5blMJcMnM2oVJvTyV+PY4GiRO+h4OwPVdqSWBNRL33UQYyG8Fo0AhFvmSX8uiDkJTeBElRYivkDD9tjY1+Z439ThSRjBmEKDSruFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Qa8WNCTN; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1784323540; c=relaxed/simple;
+	bh=yC0POvPsfRNhdhiUDbp40bKMTP/i1hzVEOnmK6V1bcw=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=WmeTU5bL5CGykD0qz25yn3YF+W+xW5aJ2c9M0IfSaF1JN2KUFYO0I5cgR+EF+CfCfkbFnuV63mLe8T/LegjhlLZAksHsRfMBWABAwTrMmwGP1/tA2o8hSpE2dv2yXEAOez5nGE8sRhz9IB61KMHeP3WyzxO0KhwwiwurNo8i7lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=daIMHzfC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Qa8WNCTN"
-Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
-	by mail11.truemail.it (Postfix) with ESMTPA id 00E771F9FE;
-	Fri, 17 Jul 2026 23:13:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1784322827;
-	bh=yMr4YvPSGTUuTkpmhzKNy6bqQMBEMI+em96DebwBIU4=; h=From:To:Subject;
-	b=Qa8WNCTNZQoAWiX+O4hlDcq7TKa5qf37Ez5FtotARqbMVnyVjyATdvE5ao5Jqqnqw
-	 3GuLyDRJ3XOkIAxbUWj6i3qzRhAYgkScI2QOPk2s2zXrh/lNaafOrt0NlneDRnfKJg
-	 XWG4nmNOSHJMQJLUrZ7jpAUi8hOsuWsQtCv0cBSZaN3Y1UdrHZgNGWD5cnTRPU9Gr3
-	 7c1vSn4gJLc2Tvcpaa7ejBJrXMmUHyvl18nSfxlFvFf6UgsdnXwXA1A3KFFi7fWMo1
-	 Ji9bohztIvHjTG8VOd4nSkY8mHP+vTpz7ytj3HXeYRXVIsm2phq3kxgAAjEA5moJSH
-	 j3XI+HZRUbeLg==
-Date: Fri, 17 Jul 2026 23:13:44 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Frank Li <Frank.li@oss.nxp.com>,
-	Francesco Dolcini <francesco@dolcini.it>
-Cc: sashiko-reviews@lists.linux.dev, devicetree@vger.kernel.org,
-	robh@kernel.org, dri-devel@lists.freedesktop.org,
-	Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v1 1/4] dt-bindings: lcdif: Add interface pixel format
-Message-ID: <20260717211344.GC512678@francesco-nb>
-References: <20260717121847.488148-1-francesco@dolcini.it>
- <20260717121847.488148-2-francesco@dolcini.it>
- <20260717122808.693211F000E9@smtp.kernel.org>
- <alpQh0ASY1HgdNqE@SMW015318>
- <20260717205754.GB512678@francesco-nb>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="daIMHzfC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E8F1F00A3A;
+	Fri, 17 Jul 2026 21:25:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784323538;
+	bh=QZH8NbU6Pjk6keXGAJ73rI0VCvSsVgApqc8JqdUGKRA=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=daIMHzfCeyc+1NhwDFp2eN/v/EtUrBeyqQcKZ/Bp5AL+omM1fSTL14slLwR/W2eNg
+	 wiiFr91N8b/dkhfrCUv76/9JOCeaihPzP1P/PICtVvKsZHGQDj9K5FHdfkpygMNYrk
+	 gNN+c9JOHgn0hivyAzehXjlcZWUem8ffgEMxA34SoRLCHslw+3W4WvvuwLcQHZ5gPy
+	 74s6R3CfAZE8LadZdjd7Ws9K8COvToRLzCR32mzThm4x4XKkiqFtaZuL6XLcCokZWJ
+	 R+U0XrKfZh5V/4PWLnfaP9nCWmyeY6QTnRPFVizsEC2r4T/PWE4qaZdbbWnW32dX+N
+	 4DfRE1fMklUXA==
+Date: Fri, 17 Jul 2026 16:25:37 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717205754.GB512678@francesco-nb>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>, 
+ devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>
+To: Frank.Li@oss.nxp.com
+In-Reply-To: <20260717201519.844259-1-Frank.Li@oss.nxp.com>
+References: <20260717201519.844259-1-Frank.Li@oss.nxp.com>
+Message-Id: <178432353778.2692844.15138095566024676604.robh@kernel.org>
+Subject: Re: [PATCH v2 1/1] dt-bindings: soc: imx-iomuxc-gpr: allow
+ bridge@18 as child node
 
-On Fri, Jul 17, 2026 at 10:57:54PM +0200, Francesco Dolcini wrote:
-> On Fri, Jul 17, 2026 at 10:55:51AM -0500, Frank Li wrote:
-> > On Fri, Jul 17, 2026 at 12:28:07PM +0000, sashiko-bot@kernel.org wrote:
-> > > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> > > - [Low] Introduction of the legacy, non-standard `interface-pix-fmt` property for a standard hardware concept (parallel bus width), violating modern DT principles.
-> > > --
-> > >
-> > > --- Patch [1]: [PATCH v1 1/4] dt-bindings: lcdif: Add interface pixel format ---
-> > > commit 7225ea545d2ff50540972dd75d375b8ecea4f315
-> > > Author: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > >
-> > > dt-bindings: lcdif: Add interface pixel format
-> > >
-> > > This commit updates the fsl,lcdif device tree binding to support the
-> > > interface-pix-fmt property. The property is used to describe the hardware's
-> > > parallel data bus transfer width to match board wiring and prevent shifted
-> > > colors.
-> > >
-> > > > diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> > > > index 2dd0411ec6516..209ee5a96e393 100644
-> > > > --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> > > > +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> > > > @@ -58,6 +58,13 @@ properties:
-> > > >      items:
-> > > >        - const: rx
-> > > >
-> > > > +  interface-pix-fmt:
-> > > > +    $ref: /schemas/types.yaml#/definitions/string
-> > > > +    enum:
-> > > > +      - rgb24
-> > > > +      - rgb565
-> > > > +      - rgb666
-> > >
-> > > [Severity: Low]
-> > > Is this introducing a legacy, non-standard property into the new schema ABI?
-> > >
-> > > Standard devicetree guidelines usually prefer endpoint properties like
-> > > bus-width (defined in video-interfaces.yaml) to describe physical parallel
-> > > data line configurations, such as setting bus-width = <18> for RGB666.
-> > 
-> > Make sense, can we use standard property?
+
+On Fri, 17 Jul 2026 16:15:17 -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
 > 
-> video-interfaces.yaml is for video capture interfaces (cameras and the
-> media/v4l subsystem). It does not apply here for DPI display interfaces.
+> The legacy i.MX6SX (>15 year) SoC imx-iomuxc-gpr contains one LDB_CTRL
+> register. Allow the LVDS Display Bridge(LDB) child node under
+> imx-iomuxc-gpr.
+> 
+> Fix below CHECK_DTBS warnings:
+>   arch/arm/boot/dts/nxp/imx/imx6sx-nitrogen6sx.dtb: syscon@20e4000 (fsl,imx6sx-iomuxc-gpr): '#address-cells', '#size-cells', 'bridge@18' do not match any of the regexes: '^ipu[12]_csi[01]_mux$', '^pinctrl-[0-9]+$
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v2
+> - remove status = "disabled" at example
+> ---
+>  .../bindings/soc/imx/fsl,imx-iomuxc-gpr.yaml  | 58 +++++++++++++++++++
+>  1 file changed, 58 insertions(+)
+> 
 
-ok, looking at this closer, it seems this is a used property also in the
-DRM subsystem. I'll appreciate a feedback from some DT maintainer before
-reworking this patch accordingly.
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/soc/imx/fsl,imx-iomuxc-gpr.example.dtb: syscon@20e4000 (fsl,imx6sx-iomuxc-gpr): bridge@18:reg: [[24, 4]] is too short
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/soc/imx/fsl,imx-iomuxc-gpr.example.dtb: bridge@18 (fsl,imx6sx-ldb): reg: [[24, 4]] is too short
+	from schema $id: http://devicetree.org/schemas/display/bridge/fsl,ldb.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/20260717201519.844259-1-Frank.Li@oss.nxp.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
