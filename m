@@ -1,77 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B145631AAA3;
-	Fri, 17 Jul 2026 03:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E72935950
+	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 05:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784259712; cv=none; b=fWmrXUcp0mrky0+SOTNr8SN+Fc/T0qNRWwJAMI4lc3vMIFQKXbA6KKmRlKmoOI9qhn4X4sngroCVKzpt8RQyDaIG4DQM+bD3A/sZQ9l+IrvDTzoFItg0qF8e3JpRNmp1oWzsXJfdfVju/C07xOdAQuQG4C936AvhBqQ1SbNKp1Y=
+	t=1784265125; cv=none; b=rpq8qxjYsgq5ZmZk4PkE9tdsIDUqeP8umaW8rsXiZ9qKQD5pLY6Nhf8hyLwLuS4oJ2kngX0H8pm1p6LLXWBys4ZoL3rPHNzq94wAvmpO6bl6VaHExlE6+J/i6IauJUMPy4f3I59NqJNYewVlam7Pft/+xZOWrHd80FXq3A9kymI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784259712; c=relaxed/simple;
-	bh=ETALU7ph05ykwHPzecIXWUaJH10QWzo8nD69Vt5jP8Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VAYF8/6n1yoXj3qb5/FeksJWER51jY2/SaIhf8lad2/XYl5HjYpmpNE+HbF3uV6FPqA8X3F0BLydO9vZBHRaOPaYxIwzfNZVeJeLajw8oos91B4oFOp+Un3MT1lePdTaEgGjEpExEPKTnJvk9rwhrIigGdFHEChUhsA2U43LhH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMfRHPCN; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMfRHPCN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E9C1F000E9;
-	Fri, 17 Jul 2026 03:41:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784259711;
-	bh=ETALU7ph05ykwHPzecIXWUaJH10QWzo8nD69Vt5jP8Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hMfRHPCNtA24jGiQIFPXmd1y3SSiIl2bSlOzpoknwOGVoEgQP9xi9v8OyjXDf1BT4
-	 Gyp/VUmhAgZf6qb5giGsZDWM3O2x+btgvRWHxUD8vaEpPopts76xQNu5ycOGWnyhlF
-	 Zz+PqiDgj8+aCdzaRDDdJt4zlgGA783V9J4D9yw5TctRAGDRx6adwqP3dp77lWbnh4
-	 JjqRt+eniG5hThcXAtRMimm3CefU+l9oBPHbO+TlaSx9cOA0R3UmrFFztX6/S3lNwB
-	 mov66M+8lNYFlv1a6FtvMzutmamgEOyXxBV+kAdEhi9Kuc8Rp8NBCHfG3b8eZvl4h9
-	 iN7qLgcccPSGw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] PCI: imx6: Keep i.MX6Q Root Port MSI capability with
- iMSI-RX to work around hardware bug
-Reply-To: sashiko-reviews@lists.linux.dev
-To: hongxing.zhu@oss.nxp.com
-Cc: linux-pci@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260717033203.2965045-1-hongxing.zhu@oss.nxp.com>
-References: <20260717033203.2965045-1-hongxing.zhu@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 03:41:50 +0000
-Message-Id: <20260717034150.B2E9C1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1784265125; c=relaxed/simple;
+	bh=Pz8rjupJB2ZM6ycmPL/h9gsGIcaLh9i3O3s2e7rrrGY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GI30TkhQADmjT9RjvoiSvTq/LVSWNDJuUeFApH8zniIN0mhR8QxN1pnUiFZfpXKBnfJmf5fieMHL0SFEja+NmPxh7QNjWQQ+ILHMro4OHJG4a1fMjLAnE7etBMegbnkcJhrPnuS1+JhuTJ628bdSuQQdbkGu8iS9Y3d4G6MpCpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id BBC3D1A0143;
+	Fri, 17 Jul 2026 07:11:56 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 75A571A013A;
+	Fri, 17 Jul 2026 07:11:56 +0200 (CEST)
+Received: from lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com [10.52.9.99])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id A768E18000B5;
+	Fri, 17 Jul 2026 13:11:54 +0800 (+08)
+From: Joseph Guo <qijian.guo@nxp.com>
+Subject: [PATCH 0/3] Add i.MX93 Wireless FRDM board support
+Date: Fri, 17 Jul 2026 14:11:51 +0900
+Message-Id: <20260717-imx93w_frdm-v1-0-0cca6c0ba2f5@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJe5WWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDc0Mz3czcCkvj8vi0opRcXSNTI4vElERzI2MTYyWgjoKi1LTMCrBp0bG
+ 1tQDcJy8LXQAAAA==
+X-Change-ID: 20260716-imx93w_frdm-2528ada72343
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Joseph Guo <qijian.guo@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784265114; l=1190;
+ i=qijian.guo@nxp.com; s=20250519; h=from:subject:message-id;
+ bh=Pz8rjupJB2ZM6ycmPL/h9gsGIcaLh9i3O3s2e7rrrGY=;
+ b=a2PwV3YNEBSPZgtC+a9YakjggLlvUrI6SOSWUjI9WZ/Gi/4gJrkgfNk83DPdKLyh3jlruo/ha
+ czGTOozzcDdBYfvmDw+87k5bs4YNxiK/BBF6SfI1cTgWPQXjoXH4baR
+X-Developer-Key: i=qijian.guo@nxp.com; a=ed25519;
+ pk=VRjOOFhVecTRwBzK4mt/k3JBnHoYfuXKCm9FM+hHQhs=
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-> From: Soeren Moch <smoch@web.de>
->=20
-> On some NXP chipsets, disabling Root Port MSI/MSI-X Capabilities blocks
-> MSIs originating from Endpoints from reaching the iMSI-RX controller.
->=20
-> To address this hardware bug, commit 3a4e8302e72f ("PCI: imx6: Keep Root
-> Port MSI capability with iMSI-RX to work around hardware bug") preserves
-> Root Port MSI and MSI-X Capabilities on i.MX7D, i.MX8MM, and i.MX8MQ
-> when iMSI-RX is in use.
->=20
-> The same applies to i.MX6Q, i.MX6QP and i.MX6SX. So preserve Root Port
-> MSI/MSI-X Capabilities there as well.
->=20
-> Note that preserving these Capabilities means Root Port-originated MSIs
-> such as AER and PME won't be received due to separate hardware limitation=
-s.
-> Users may need to use workarounds such as passing the 'pcie_pme=3Dnomsi'
-> command-line parameter.
->=20
-> Fixes: f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port=
- if iMSI-RX is used as MSI controller")
-> Cc: <stable@vger.kernel.org> # 7.0+
-> Signed-off-by: Soeren Moch <smoch@web.de>
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+i.MX93 Wireless FRDM board(FRDM-IMX93W) is a low-cost and compact board featuring
+the i.MX93W applications processor
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+FRDM-IMX93W board basically reuse the FRDM-IMX93 board, with some minor functional
+and pin connection differences. Factor common parts of FRDM-IMX93 and FRDM-IMX93W
+into imx93-11x11-frdm-common.dtsi and add the board-specific changes.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717033203.2965=
-045-1-hongxing.zhu@oss.nxp.com?part=3D1
+Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
+---
+Joseph Guo (3):
+      arm64: dts: imx93-11x11-frdm: factor out common parts into dtsi
+      dt-bindings: arm: fsl: Add i.MX93 Wireless FRDM board
+      arm64: dts: imx93: Add i.MX93 Wireless FRDM board support
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   1 +
+ arch/arm64/boot/dts/freescale/Makefile             |   1 +
+ .../dts/freescale/imx93-11x11-frdm-common.dtsi     | 692 +++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 686 +-------------------
+ arch/arm64/boot/dts/freescale/imx93w-frdm.dts      |  23 +
+ 5 files changed, 719 insertions(+), 684 deletions(-)
+---
+base-commit: b8809969e1d7a591e0f49dd464a5d04b3cf02ab1
+change-id: 20260716-imx93w_frdm-2528ada72343
+
+Best regards,
+-- 
+Joseph Guo <qijian.guo@nxp.com>
 
