@@ -1,185 +1,183 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA2C3DDDCD
-	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 09:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BA93EB114
+	for <imx@lists.linux.dev>; Fri, 17 Jul 2026 10:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784281310; cv=none; b=PDOcL2zitYFAKrfuulFnhzYbM4PRBkHP1pWAAoJlQ3cFtORUFRgxSWsAJ+gpxXmYW8lhAEojnyKOawSX29g245XIBb6M95d1LQ5yWbXY5Y3H0pmyngHiE9rKldZRtRKYfYIL0Q2SvRNPnEXYttAJufVUs9V7FSTM9lwfq9RiYGc=
+	t=1784283056; cv=none; b=qvExtbvBVso54wkcZKYKj+AMwO4NFeUh2108Gi06t90ThNBCBLtJ4NL8CM3uUGlfj+gn1gIKUbB8jAdWJAvZ9JJuXBoz2zxwAisJXOowEpOzpECTpmMY2Wb8yqSe5wUsdDNnurQBG8x7MxIS2XsAg62J/QSNwFQZ3u4Q2BPUYUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784281310; c=relaxed/simple;
-	bh=ncbhkuJjw1bqoeEUYLAmxHCJnGOmbk3KNzOKpjXQTgU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=gLNCjFpZFZQzHKnMQWlfJTk3hNr7T0QAi6OqzCeww6HS62iPmncRASnN56LU9xlaqrDySTmgMzkECnUxqPBTQwWY07EQW29R1S3DtS+mCFeQzrHY9f0AXZJddWMx/wBU1SfQMf9SOu1Nd9Nvm3KSPIAeyYYNRdo+i5p0vPZgmbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Gv9DBNlm; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1784283056; c=relaxed/simple;
+	bh=ldQ/iUGMrGHxKXxkUXAQa6J8x3uVZmvW1Kddq04F3bY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VscKVuIJPmltslJ+vinRgk67SS8Tf8zCVV0EoavNAIGMUPmDiwpC7NxiC0BO7LN8uLkYUjvuD49GhV+uibertiCiNO8VlnTMFNA0mi2kWrMj089RcTs+4VmqSHh8hoxU/Au1FvPXMJJH5PNM+Ax4WA8CLz32C0xIo4RTVvau/Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e6Eh4e2H; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Gv9DBNlm"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id F1DC2C2B9F7;
-	Fri, 17 Jul 2026 09:42:01 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4030E60361;
-	Fri, 17 Jul 2026 09:41:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3FDEB11BD0C84;
-	Fri, 17 Jul 2026 11:41:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784281302; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=fAKQhH4VyjFGHOAiPzbySG52oxOlgLNotod0GK1Rg6c=;
-	b=Gv9DBNlmj24qqgKf13r6OKTLvqMcvcQkJ9foBw4lnYqOj/rQ/VALitWCfWSH5/icZ5w/7G
-	HyS5rAKPVKhuR+BprwNvLg6UK0lRzvutLGRb1nrzxlB57qw8vyl9ublftyLxeVW3ULwEEd
-	OQoIJom7g45nMRwl7ZMBMEHlVw2qtvgZcF2W9Vn33bRI/QOJfwC44t1rVsVfM7H+6tCgzf
-	nNp1QQAvc28erX3NRS0C+Te4VMkmBNNbJ3lzoF4XLYG8dtZPl0GZlnHN8je1rAZ439fs6w
-	JRskRLZ0KTDfY1zC6eQBgS6HX7Ilqg67CV1vIWXTLiZlpo0u4+8BNVYSO2XOxA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e6Eh4e2H"
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-4566a5bc186so927114fac.1
+        for <imx@lists.linux.dev>; Fri, 17 Jul 2026 03:10:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784283053; x=1784887853; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vijqM8KLfxoJ7zWFWIhaauEg3BKDHA3EobwX8Ha/oEk=;
+        b=e6Eh4e2HB9onGrSjQw156aDCWbs05BepmR8E8eEl7gH1mNoGjPum/k51wDTppr8Z6z
+         TjM6sCq4MEAxDpBmfkY64m2+x/2dAIX83LOCtpRUD7nMjvannn2BDho4ISEgE56Mgn03
+         u8kBxRk5RxqzEyA3UNqNSIxuMPkjff8ZpFYz7KZ/4n97I1f+yDJ3kG4AU4Uq5pgq/gOL
+         ZEliHNJ+TN2UBt19KfgRopKb5hZswDsS9p2cG1hIkXPrDsKu3PBuq3dKLV27Z4x+f18j
+         mwk9aHuB9UlwHr0VPaNtAVH/TpcJgo9WjXXCMWcprQixblMfsAiLIoTU35I3pRHLhX7s
+         WHxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784283053; x=1784887853;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vijqM8KLfxoJ7zWFWIhaauEg3BKDHA3EobwX8Ha/oEk=;
+        b=SWU1vfmepj02M+McwU4/z3+vCqVpWMm2pnjGEfyBdvMMl3VGdKjwYzFO4FhKSeMWh0
+         fX/r/Yaa97h6mlqNsYL6D/VsXr3hIQ3MrP0uOVk1Y8+ko1n2+7xkFXfe3XUvULxaDIN7
+         7Co0xoBGBloE0TghkocY9qapMIaODpdW4qLYXKPe2YSWKoxoumfabdN8FPiA2zYBL/hk
+         BaOk+dlkJP+Wkc0jfllKY6/7BsEJK96bwMLQE+CL+GXvZBZY3XuP2psep9WtxmAgx/id
+         xXImHx8bd0d5VHxOsu+5d0H7+Eiam8qtGs98LvmlA+/PXtUJx1Ghosr1i9XVmVOSPwwD
+         chaA==
+X-Forwarded-Encrypted: i=1; AHgh+RpboNXYaSyW/OcnMMjdkI9bH3UEFiQK5VpJndGiSmf93siKNBSqe0udBQ+3rA/DOpV0kMA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzWzqUwWxE0TECaVCzJQQaLtQ+n+hKF3H0mUPLC1eP5zwKlFc/f
+	r+xnS8Xrcn7Cn9Zs+hTyDA/MaJu/1H+L34xU3FGjMnJFqgQSFHoe7zRZ
+X-Gm-Gg: AfdE7cn0Cbow2MjO8iucds/28SaVy8n1beE0n7KR9qMBGNz+VqQDuzXaXh5q3L3jDeG
+	kBWp0rprMkkAceQl8+NNeRoQwp0qbOQnHZn1M7mVLHx57giKiWZ0CCfYdS3xdZAYY0rd5LkHR+S
+	LajCAhAum+5uEkJEHL4w4ZHA5MPIWVQxdO9atlAMWUx8iLxj1ZlNndXU1x/X3rY6b6ALgOEsk7B
+	4iEdtJbUQQfkdhcEaWReCGS75F1D7CcE1gNDbhHJ7coYiWbV66mnNyOgdet+fPxtgYNf6r4mHZE
+	DKURSMDBOT67rjbGSucF9/rryuACpSJdCvTEgtRmrnnOkuCDMsN3h1KaIwgsZPfwpbzqqMAtASO
+	pDsZez1gm6pjcDdSIRwh/EnQY3g6qhabsd9JBlb64q812XP1+6nmW2AV+Ef6HA4O8IP5M0w==
+X-Received: by 2002:a05:6870:b3ed:b0:455:c1d1:9cc0 with SMTP id 586e51a60fabf-456901aa97bmr914974fac.19.1784283053390;
+        Fri, 17 Jul 2026 03:10:53 -0700 (PDT)
+Received: from localhost ([74.80.182.90])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4568e61cee3sm970024fac.9.2026.07.17.03.10.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 03:10:51 -0700 (PDT)
+Date: Fri, 17 Jul 2026 13:10:44 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: ziniu.wang_1@oss.nxp.com
+Cc: adrian.hunter@intel.com, ulfh@kernel.org, haibo.chen@nxp.com,
+	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, imx@lists.linux.dev, linux-mmc@vger.kernel.org,
+	s32@nxp.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, harshit.m.mogalapalli@oracle.com
+Subject: Re: [PATCH v7 8/8] mmc: sdhci-esdhc-imx: fix resume error handling
+Message-ID: <aln_pFNqL8495Y_a@stanley.mountain>
+References: <20260715071818.272318-1-ziniu.wang_1@oss.nxp.com>
+ <20260715071818.272318-9-ziniu.wang_1@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 17 Jul 2026 11:41:33 +0200
-Message-Id: <DK0QXI6KF7PC.3DJW38KB8MJED@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code
- creating the connector to a subfunction
-Cc: "Laurent Pinchart" <laurent.pinchart@ideasonboard.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>,
- "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
- <jernej.skrabec@gmail.com>, "Inki Dae" <inki.dae@samsung.com>, "Jagan Teki"
- <jagan@amarulasolutions.com>, "Marek Szyprowski"
- <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>, "Stefan Agner"
- <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
- <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
- <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
-To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.21.0
-References: <DJ735MTNMYD1.3LPNV404V8PIU@bootlin.com>
- <20260624-proud-unbiased-pony-ecc3c3@houat>
- <DJHEAWSEZR79.19UFIKS8QJBQ7@bootlin.com>
- <20260626-polite-hairy-perch-25e1aa@houat>
- <DJJ1MPCEJGZD.UZM9183V6ZE5@bootlin.com>
- <20260626-classy-nightingale-of-romance-1cacad@houat>
- <DJJ4X22CJ3FG.5EYF84LVRNOG@bootlin.com>
- <20260707-warping-goshawk-of-swiftness-beea4a@penduick>
- <20260707123205.GB211515@killaraus.ideasonboard.com>
- <DJZUXUBO8DI4.2J2NI3S0KYNUE@bootlin.com>
- <20260716-stoic-muskox-from-asgard-c12b65@houat>
-In-Reply-To: <20260716-stoic-muskox-from-asgard-c12b65@houat>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260715071818.272318-9-ziniu.wang_1@oss.nxp.com>
 
-Hi Maxime,
+On Wed, Jul 15, 2026 at 03:18:18PM +0800, ziniu.wang_1@oss.nxp.com wrote:
+> From: Luke Wang <ziniu.wang_1@nxp.com>
+> 
+> Check pm_runtime_force_resume() return value in resume. If it fails
+> (clock enable failure), return immediately since accessing hardware
+> registers on an unclocked device would cause a kernel panic.
+> 
 
-On Thu Jul 16, 2026 at 3:22 PM CEST, Maxime Ripard wrote:
-> On Thu, Jul 16, 2026 at 10:37:24AM +0200, Luca Ceresoli wrote:
->> >> > Now if the bridges start doing it themselves we should go back to
->> >> > those encoder drivers and ditch all the drm_bridge_connector from
->> >> > there?
->> >> >
->> >> > I must be missing something. Can you elaborate on this?
->> >>
->> >> drm_bridge_connectors bring together a (complete) bridge chain and a
->> >> connector. If you don't have either anymore, then we shouldn't keep i=
-t
->> >> around.
->> >>
->> >> What I was suggesting before was only a suggestion. I guess we could
->> >> also make the encoder own the hotplug handling code and create the
->> >> drm_bridge_connector when the chain is complete, and remove it when i=
-t's
->> >> no longer the case.
->> >
->> > That's an interesting option. We don't have to keep drm_bridge_connect=
-or
->> > in its current form, but I don't think we should go back to individual
->> > bridge driver creating connectors, especially now that we have bridge
->> > chains where the connector ops are implemented collectively by multipl=
-e
->> > bridges.
->>
->> I definitely agree we don't want to add burden back on the encoder.
->
-> I don't think Laurent mentioned the encoder anywhere.
-
-Ah, indeed, sorry! However, I think both the bridges and the encoder
-drivers should equally have the minimum burden on them.
-
-Right now the recommended practice is:
-
- - bridges do not create connectors (thanks to DRM_BRIDGE_ATTACH_NO_CONNECT=
-OR)
- - encoders just call drm_bridge_connector_init(), which does all the
-   common operations to populate a suitable drm_connector
-
-So all common operations involved in connector creation and bridge chain
-analysis are implemented in common code, not per-bridge or
-per-encoder. That's good.
-
->> >> We can discuss alternatives too. But either way, we shouldn't have it
->> >> stick around.
->>
->> Bottom line, I roughly see three ideas mentioned:
->>
->>  1. (this series) extend the drm_bridge_connector to create the
->>     drm_connector based on bridge hotplug events [+rename it]
->>  2. - keep the drm_bridge_connector (mostly) as is
->>     - let each encoder driver add/remove it based on bridge hotplug even=
-ts
->>     =3D> more burden on encoder drivers -> no
->
-> Can you motivate that with *any* reason? Because I really feel like it's
-> the best solution going forward.
-
-My understanding of your idea (maybe a bit overstressed just to ensure it's
-clear) is that:
-
- - the drm_bridge_connector should stay (almost) unmodified
- - there should be no new "manager" component (not sure this is actually
-   your opinion, can you comment on this specifically?)
- - every encoder driver would have to:
-   - register to receive hotplug events
-   - when receiving one such event, find out whether the hardware is
-     complete or not (by calling drm_bridge_connector_pipeline_is_complete(=
-)
-     or so)
-   - create/destroy a drm_bridge_connector based on hotplug events
-
-Is this somewhat close to what you have in mind?
+The commit message says "would" which implies maybe...  Is this something
+that happens in real life?
 
 
-To me the best solution to add hotplug support is that encoder drivers
-replace the single drm_bridge_connector_init() call with a single call to
-something new (let's call it a hotplug manager), which takes care of all
-the common aspects: registering to receive bridge hotplug events, finding
-out whether the hardware pipeline is complete or not, and add/remove the
-drm_connector based on that.
+> The early return intentionally skips enable_irq() and
+> sdhci_disable_irq_wakeups() because the IRQ handler reads
+> SDHCI_INT_STATUS, which would also fault without clocks. The PM runtime
+> usage counter leak only affects this already-broken device instance and
+> is an acceptable tradeoff to preserve system stability.
+> 
+> Remove the return value check for mmc_gpio_set_cd_wake(host->mmc, false)
+> since disable_irq_wake() called internally always returns 0.
 
-In other words, the changes on encoder drivers would be similar to patch
-37. In a nutshell:
+I kind of agree with Sashiko here that keeping the check is better future
+proofing.
 
-  -	connector =3D drm_bridge_connector_init(lcdif->drm, encoder);
-  +	drm_hotplug_manager =3D drm_hotplug_manager_init(lcdif->drm, encoder);
+> 
+> Also return 0 explicitly on the success path instead of propagating
+> stale return values.
 
-All the hotplug logic would be in common code, and any maintenance and
-future improvements to it would stay in a single place, benefitting all
-encoders at once.
+Unrelated cleans...  :/
 
-What do you think about this?
+> 
+> Fixes: 676a83855614 ("mmc: host: sdhci-esdhc-imx: refactor the system PM logic")
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+> ---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 290a3172931b..18f4905c15b9 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -2123,12 +2123,12 @@ static int sdhci_esdhc_resume(struct device *dev)
+>  			dev_warn(dev, "Failed to restore pinctrl state\n");
+>  	}
+>  
+> -	pm_runtime_force_resume(dev);
+> -
+> -	ret = mmc_gpio_set_cd_wake(host->mmc, false);
+> +	ret = pm_runtime_force_resume(dev);
+>  	if (ret)
+>  		return ret;
+>  
+> +	mmc_gpio_set_cd_wake(host->mmc, false);
+> +
 
-Luca
+copy-paste-checker says that similar code exists in:
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+drivers/mmc/host/sdhci-tegra.c
+  1879  static int sdhci_tegra_resume(struct device *dev)
+  1880  {
+  1881          struct sdhci_host *host = dev_get_drvdata(dev);
+  1882          int ret;
+  1883  
+  1884          ret = mmc_gpio_set_cd_wake(host->mmc, false);
+  1885          if (ret)
+  1886                  return ret;
+  1887  
+  1888          ret = pm_runtime_force_resume(dev);
+  1889          if (ret)
+  1890                  return ret;
+
+In this case we are calling mmc_gpio_set_cd_wake() before calling
+resume so it's surprising that that doesn't cause a panic..
+
+  1891  
+  1892          sdhci_tegra_program_stream_id(host);
+  1893  
+  1894          ret = sdhci_resume_host(host);
+  1895          if (ret)
+  1896                  goto disable_clk;
+  1897  
+  1898          if (host->mmc->caps2 & MMC_CAP2_CQE) {
+  1899                  ret = cqhci_resume(host->mmc);
+  1900                  if (ret)
+  1901                          goto suspend_host;
+  1902          }
+  1903  
+  1904          return 0;
+  1905  
+  1906  suspend_host:
+  1907          sdhci_suspend_host(host);
+  1908  disable_clk:
+  1909          pm_runtime_force_suspend(dev);
+  1910          return ret;
+  1911  }
+
+regards,
+dan carpenter
+ 
