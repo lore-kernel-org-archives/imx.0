@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89979BA3D;
-	Fri, 17 Jul 2026 13:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CBB3932EE;
+	Fri, 17 Jul 2026 13:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784294555; cv=none; b=bZcCtMmTV10z0nhdj5YV/XhmLArDbGG1zRu+Gt7B3T2gGzZQAgoIfhxfniB/z06Cr6ihvEqp1Qq24CzE74QV9PSLg/wse0Au966FABf5KO83v/OHrHiyL6NcH7BdYBV2q0MuBDwmgxWx40lo35lgr/VnQvE+O/Q0IbYprNJ+s24=
+	t=1784295019; cv=none; b=M4bskRR3Z7dHrL2F7sIfMxm9B3nwoirzEkihMPJVb+t2AeTq2zl1RyYOWTYi61q72bmluc1kRoFVqDsvqBtoK139qVwBYgYHqtNGt/nI6F3E9m1YIAKK5GRWRy/VqUk+OIwPOYjfqP6mogdLTZJ0YvhZMvl1DW1ztG/qqNHJI2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784294555; c=relaxed/simple;
-	bh=zxcd7xDhYTrpgS2ua0mC2OoU2E2wC9SDIPNvJVfqnuY=;
+	s=arc-20240116; t=1784295019; c=relaxed/simple;
+	bh=S8QGagXM+2blv7k6a7C1kYUVfOf3FO9ccezRP4LAdjQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nRgFvrhv4Xelq928pME/Ruv9A1GUJJKCxqz32PnkK29TEBUy96KWYQJvzUl1PUyqTWpxSesRbza//cGpyaQeEcAKbb8BO+7WIGhQZO7bAxr4WKvrolAOvMEzsKI/CfG3YKvfyvRbnQNOyGDcW2+aXyIJjM2a23/GWvJHG/95Pa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OB4sFjOk; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=chD6KmoF17odJvnhh0jAIWign3Uj+dY16tqud1fLKjjOzlZ/tSyiIUI2laiUHVVkFp/hAH72eN5uUUT6DbPfWbCyTbfIyTBygsNGvVfHgBLK2xv8UWXjiPX+lce9JnPFWAwuazzeUq843UwiiosXQSb0VyNqOhFibSAeJOsjL60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWT+6Yue; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OB4sFjOk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437F81F000E9;
-	Fri, 17 Jul 2026 13:22:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWT+6Yue"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428991F000E9;
+	Fri, 17 Jul 2026 13:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784294554;
-	bh=1kOJD1kFJV3xUAdZQqjPuTblJam8XpEuYK8dAO5fXE8=;
+	s=k20260515; t=1784295018;
+	bh=xGlp8KZfLYz11331+0ua0wVaurpq8y2M0MqWFjk1jXs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OB4sFjOkMLYMxOjflQc8muxxUs7V133H6x2O2zK7+3/xed0458zrQpJMT+12MhxY4
-	 nKD+Cc9opUf7loxx6rwHFe4jJ8hBDuhqbv2/fj6MnZnCOoVQpq7gaX6zbcPnL9umQP
-	 6soeO8bkJ9JInsJ7RhCPnxaQsYsegFkvffk1mHtCig7WaB50U0QzztYyJUGueA/tlF
-	 TTuj3PJw/fHgmxJZ56T6MOGua/mXXxsDureJt/nzkgNNGQjg5ProYnI06dCLsFRZ/p
-	 YPoJ/SIPW2ISEYtNm34v5SkEg2TJvt+TBpVpAA7Z+BlxTuT2BXIhUweT1BCmdJSpcg
-	 S/cvLb5rIm6Lg==
-Date: Fri, 17 Jul 2026 14:22:28 +0100
+	b=bWT+6Yueqif1X8QSrCS/ZX6DeC4Za6wMrL2MP5Ja+A4VPCHjiKwKYQQYS5XVuOdQ7
+	 6ArHvy8jgE0hlfaCcffwEa2J064Hcg3ANOX2FC9gc0ZracEmvfLSULIt/hAXN3WiEQ
+	 3i0YENaaf8STyLMIU/I2P/h1LN6kSM06ua4xAaZlCYEX6GDopc0jlD1Y+GitZHjFoO
+	 MhQdSVkIe2zoaZXL/ZCI0pA3BVr/i4sK8+Gr2aHQ+m5AmNseqwbIs70qAev3ks5trQ
+	 gLipilHwmPxInoCejW4/kAW6sHKZbNklHP3N6lflKI8JSNrwbKSExn/l9O7c9pdGMk
+	 xq2d6C0cGTMKA==
+Date: Fri, 17 Jul 2026 14:30:12 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Joy Zou <joy.zou@oss.nxp.com>
 Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
@@ -39,11 +39,11 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
 	Dong Aisheng <aisheng.dong@nxp.com>, linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/3] regulator: pfuze100: add set_suspend_disable for LDO
- ops
-Message-ID: <ad97113a-0898-415e-83e9-0e5db54a30a3@sirena.org.uk>
+Subject: Re: [PATCH 1/3] regulator: core: use system_freezable_wq for init
+ complete work
+Message-ID: <60e9bf03-0ef6-4851-a725-dfa8c4ecbbf9@sirena.org.uk>
 References: <20260716-b4-regulator-pf01-v1-0-8c1519d54bd4@oss.nxp.com>
- <20260716-b4-regulator-pf01-v1-2-8c1519d54bd4@oss.nxp.com>
+ <20260716-b4-regulator-pf01-v1-1-8c1519d54bd4@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,60 +51,48 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uKYEymIBh1Me1XMm"
+	protocol="application/pgp-signature"; boundary="P6LhjmYohIZAHzyR"
 Content-Disposition: inline
-In-Reply-To: <20260716-b4-regulator-pf01-v1-2-8c1519d54bd4@oss.nxp.com>
+In-Reply-To: <20260716-b4-regulator-pf01-v1-1-8c1519d54bd4@oss.nxp.com>
 X-Cookie: Enjoy yourself while you're still old.
 
 
---uKYEymIBh1Me1XMm
+--P6LhjmYohIZAHzyR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jul 16, 2026 at 11:50:54AM +0800, Joy Zou wrote:
-> Add set_suspend_disable callback to pfuze100_ldo_regulator_ops to
-> support regulator-off-in-suspend DTS property for VGEN regulators.
-> This allows unused LDO regulators to be properly disabled during
-> system suspend, reducing power consumption.
+On Thu, Jul 16, 2026 at 11:50:53AM +0800, Joy Zou wrote:
+> schedule_delayed_work() uses system_wq, which is non-freezable, allowing
+> regulator_init_complete_work to run concurrently with system suspend. This
+> work fires ~30s after boot to disable unused regulators via I2C. When it
+> races with PM suspend, the I2C adapter may already be suspended, triggering
+> a -ESHUTDOWN warning dump.
 
-> +static int pfuze100_set_suspend_disable(struct regulator_dev *rdev)
+> [   33.707233] pc : __i2c_transfer+0x36c/0x3c8
+> [   33.707240] lr : __i2c_transfer+0x36c/0x3c8
+> [   33.707246] sp : ffff80008239ba50
+> [   33.707249] x29: ffff80008239ba50 x28: 0000000000000001 x27: 0000000000000000
 
-This looks to be only used for LDOs but is named like it applies to all
-regulators the driver supports.
+Please think hard before including complete backtraces in upstream
+reports, they are very large and contain almost no useful information
+relative to their size so often obscure the relevant content in your
+message. If part of the backtrace is usefully illustrative (it often is
+for search engines if nothing else) then it's usually better to pull out
+the relevant sections.
 
-> +{
-> +	struct pfuze_chip *pfuze100 = rdev_get_drvdata(rdev);
-> +	int id = rdev_get_id(rdev);
-> +
-> +	/*
-> +	 * Set VGENxSTBY and clear VGENxLPWR so that the LDO output is
-> +	 * disabled when the PMIC receives a STANDBY event.
-> +	 * EN=1, LPWR=0, STBY=1 results in output Off when STANDBY is asserted.
-> +	 */
-> +	return regmap_update_bits(pfuze100->regmap,
-> +				  pfuze100->regulator_descs[id].stby_reg,
-> +				  PFUZE100_VGENxSTBY | PFUZE100_VGENxLPWR,
-> +				  PFUZE100_VGENxSTBY);
-> +}
-
-This is a fixed bit in the register, but I see other regulators have
-_stby_mask configuration.  Are you sure that all the LDOs in all the
-regulators covered by this driver have this feature with this exact
-control bit?
-
---uKYEymIBh1Me1XMm
+--P6LhjmYohIZAHzyR
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpaLJMACgkQJNaLcl1U
-h9DJTwf+JXmWWGEhODznp7wN0yDnSK3YWvaKUh1/0xQaa0wJUAiNuME7187VMBmJ
-Bv9HmnfG90F/7d6ZKZKzyF7yfYF4GdBMac9cUnb9g7hWg9fDe9nbWgKf7CTDhJzR
-KfrE2QY62rkYYLXQ/87FFBjB6W8dEd1/yB4tkTsJ9ZdhaSckyNRSgwu9/0sWkGA2
-1zvHyJQnDeLRGoQgYUrCzfGdwbGyMOgbn1mVrXJJHs7Mkg+t2v6+hBOYAbPVmwK9
-bGGwI+GQMS5UrRVEgTOk4F6HkqQRnN7zO245kTV4dp+qeTZTo7UbPhV/6Ks69XYg
-K6jZslVrBD6V8jlziX9iDCzADUhkHA==
-=IpOL
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpaLmQACgkQJNaLcl1U
+h9B6ogf/XG2Pr96VE8Ouwqc4bzyEa7GUAJWD053fEs/8dvoOCZVgSzOpvk7tTgsi
+jlK1LKZLFGtzRsGSnIqPxq4Q7o6un1/f5hl9x4u3dMhowtdMCHua8LDA83lMuR+r
+CU4xLZx8JiOK8gIpq6RKRKI1c8ZX6GqkIbg+I5rCMBfUobrMAR2zrFoefkyB5n+O
+uI9z9wuwOoDRyZJzQge/wni+iqUTpWyQK1pxJPfFWXTWJosxjeUhxQN26DpBQoUn
+D3uQFlENsuNvZOeRw+H13aisKiElYscf4HAHf9fGrxkIkktnlY/4hvWLPhvuC+Fw
+ozhvW4l8JNLLq7kpeZiwIXxfP2ZUpg==
+=y2j4
 -----END PGP SIGNATURE-----
 
---uKYEymIBh1Me1XMm--
+--P6LhjmYohIZAHzyR--
