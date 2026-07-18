@@ -1,84 +1,83 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13242F8E82
-	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 17:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BEC2135C5
+	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 17:52:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784395283; cv=none; b=UqyBagd6A7A81Zb6Fhl+CCXpFQ+NLT0ZeAisemghWiAUFHhF+K7nfcUnBqIwZrnGZfAr9Ejtkpx9FG4xIvSjlzcfjTEur00pmsy+efPONpIUvyMRa5GyvQuSNSQZCjRdE9FGY8yIz/o8kUuEK/Wtd8jw52ZbT+SxQ5UAeTrhL48=
+	t=1784397172; cv=none; b=Fxhzney8SPISzkJAMxw2ZzdrB5I7sQmwkjm+uoagC26Fx9Y+JGDan+3XFjzPPZwiL7O0+BsRh1PuxTg/8P5XRA7cfMSlY0v8aKCyfhj41PhYKjCJjmCaWSvd6DRXTHVwn66+elgn9VypTjmDn+1+sQ8JvbLtETNJ1tTXund3iMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784395283; c=relaxed/simple;
-	bh=UVKN3gjb8JCRV0Htlzk37E2U2/BGELValmkZ+BpUkoU=;
+	s=arc-20240116; t=1784397172; c=relaxed/simple;
+	bh=BwOpSe7JiGk12m8cUmf5cb6VBW1WNos65J1jQjtaDWw=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=DUvc0xMVmKwe7XAji+0GFT15lF4tgbINGdfga85VDFC8UMe5W/p03ie2OhWTo7VuVzeTGVI+Zz+ZUD+pWqrfXhoaiQ6TiWeWSDxU1P1kfOWDPpuV83Ps6Tubl3T/JcWtC1ZBTKwtUQ99ICXDcg/157+oFqdkdim/ri0a3Ng9SOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JQzWVyoK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=G+umC2aY; arc=none smtp.client-ip=205.220.180.131
+	 References:In-Reply-To; b=hcFXF5lKotjntTQ8xdx5bxnpp4LkRsj1pz2sC0qMyPGZfddWjWBWIf4KfxnigiRUJB1nZ4MKoiT+/xAXkrpfg+Tinxw7DVUQ35D+mgoK1HeIp6A044DebbhTjIJ1jZYROZOVY7vPG0HlPTyxTefhB36QZR5XHGXVwEDO4+vbaiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hmFR5E0X; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WxnjqJa9; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JQzWVyoK";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="G+umC2aY"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66IGQPva1182848
-	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 17:21:20 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hmFR5E0X";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WxnjqJa9"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66IGOWMM930900
+	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 17:52:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UVKN3gjb8JCRV0Htlzk37E2U2/BGELValmkZ+BpUkoU=; b=JQzWVyoKNWr7/CdY
-	EoWdvERzkOkFAXj4c1oP11acOzt3Tvgnc0DpCsrvRrl4pmDfNHnSje1QFtIr/9zJ
-	lPebJwrfblbFXQrVdhB9OFF+PWptxHR5X7gUIQEyXknpTjNWT70WE/euSOlK4j7b
-	PocW4MDpW5lBki8/eAHI478nDsAD2gYCwSxvXmajuHG5zitmEvUVJZr9jN/Xetn2
-	gp01fX2fADntQFzUdLFb46ccdC9SWYMJJpGQPXe2BGghYfcR1ZnT1d/4CxsE2O28
-	jui1s1ALoT9EnYvM41/cfholOFvEUU4lf9w92gCKBraDAKYDQ5VdigOXhri/BLZl
-	E2RvpA==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fg2dc1731-1
+	ClAQZqqpLrSxh/ilTgA975QpkExyJZmFR6ENFCfm7tI=; b=hmFR5E0X/+1xE8EW
+	qd3ZPOT5/IAiqwzLyYhjTjLTveCAW77lVphkLvzn9l1iua5G/HJ1p+6IFxAGzDnU
+	hQiZlK+/AyENuM9ndPkeGU5owVIa/tl16ycykf45J27jKP9UCvGeEtLDGmV578sS
+	GDrn/M2DCmPNGp6om6Fmbfg3cBHnvlLpWlLMSIMCys1/vv9SZYldDCWewLBtk+qX
+	vKY3fDK/WQ+gTrJkWL3zYWkNImprLTBbPzujsSBXoT2BH/tH81AWjYGTGWJmhKCG
+	BAF1+JOY64FvG3Cpn3NqxPVcsfoOc2E3WUatEUGuplXM48coZMbxiZbkp/npysLI
+	iYrKvA==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fg2s7s6xb-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 17:21:20 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38ce7fabf76so12396128a91.2
-        for <imx@lists.linux.dev>; Sat, 18 Jul 2026 10:21:20 -0700 (PDT)
+	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 17:52:50 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e6d253330so183050a91.1
+        for <imx@lists.linux.dev>; Sat, 18 Jul 2026 10:52:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784395279; x=1785000079; darn=lists.linux.dev;
+        d=oss.qualcomm.com; s=google; t=1784397169; x=1785001969; darn=lists.linux.dev;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=UVKN3gjb8JCRV0Htlzk37E2U2/BGELValmkZ+BpUkoU=;
-        b=G+umC2aYThPa1eBQhxejDjKeELHpx/vGFIZrSkXPXPzfHzJop5t4tFH+bw8sj+45M3
-         FxI8FltrOsVuGQpNevHnEzCFSNqCEA7Vy+wa2VqesZCKcLBN38AQtRM2gvMQEGQ1Kx0V
-         7qu0AXPGK1TnWSph9MJhb6lErFUosvpar0/SNSv9+4UmENy1HpTSvd3gjlpMTy1Hti0r
-         jPChm1fP2H2h6mMqVmuQUmD6JAvrWSQcEhPwR7w/rKjhANoddVOrwg2OP2g5s2DOvkOd
-         YoHg+KEfrm9KN6NWlK91KWdBdadXQQoFhvDL2CK3YDKYP+bU4Z2wEapSIvXjXUX7iH3f
-         LZYA==
+        bh=ClAQZqqpLrSxh/ilTgA975QpkExyJZmFR6ENFCfm7tI=;
+        b=WxnjqJa9RsnctTNMHPgI2EYmzJiDtQ3+PZ3U/aRke0SmfMy15KWnW/p2i2+8Ifk1Vl
+         5y5qtmxr8zatcFq6eVSwrDOyu1mqmJ03nZc4jpSRocqm+dFOGUBSqQQg6rY9GuG+p6PJ
+         F9AOWltrP31NmdoWSJUaDQ3kHdXMteJhvBCy0wJJHgp0zFhZJPeLGzNuJG5F+zq02mTO
+         AKJjXN+Z4BLNEq+heHZVn1WxwLWsnR0pcMmTIILEmvnuRNL1PRW+0dPrw5xafxZB2AkY
+         lCNK8WxEa8HuMeWD2KqREbIBoSxTlY/z4n3Ggn7Qqubz4UrbSd9qwX9qyzCjM4sS1PgA
+         NWTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784395279; x=1785000079;
+        d=1e100.net; s=20251104; t=1784397169; x=1785001969;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UVKN3gjb8JCRV0Htlzk37E2U2/BGELValmkZ+BpUkoU=;
-        b=XfktBUBgBqNv0QsHJLOjxxCbsG6W2xqp//RHd/E2KfUnh8CMZ0Dv5heY0/9zPLwfiG
-         mTkRoWrailoDZZdT7NzsCBeFBor0wZkeja3eJjenWLIWrs1IbsWTlVOp6IBpIIkW06UN
-         EdGP5XdFZV9tFi/k1XtK6ovXNI+40R7NaKQRegQsklpXLViU34AyMP+6sTP+8V2X5vtf
-         xuhXjcAeJM2zM3VUtEoG1voll8aJQZVHKXq/HKbnjT3r1HPa+oEbYSpGzVhNVPB7s8qi
-         Jxa/BzTkD7E+5BCSMx4glkJ++m0tU68ytwB3DXHRWwl3WcXCxcDw0CvYwxmGldzywCGd
-         Nb8Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoxR2KGIph33Y7pqO52qMwk2WXYwAGrlo4tX0CYGNoY8WsNtzi28WuLu7pS24yL0yCW/cU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywm5zqICq+jgEnakhQoAo16hXFvRYnxZPlsvcrrVetot5aSRJ6a
-	7gxOPeQCr+iVodJb+eaAIfptqTjx38avu22NCkLOCR9sgTF90vOCFXgHfZuNDUq2bwwrxTpRZ3z
-	aa6YET73HQL3p+few0avBGCKFld4ExHZU8ewhtKzC58wHuS5OybrQHYg=
-X-Gm-Gg: AfdE7cmhok3DQaTkhxvGThKxewUfztpSB3lyfyGGMpGm8jRp3nEyYpR9AHjIi0hbLMT
-	qfwDvP/BbCmdVaBox00j6bhOQEsKA4Vh53SXT6VAfWGDqADmWaSeCisBvHIoOyH1CeOx0JAolbY
-	bGYkAsMrjIXF6fibwIttzhBRFj9/DxA240gjD8jT4Xe/jv/u+ftDebHN4N8RbTtGk1SJcpjjjdp
-	WeDgJvMEDRB2iGHhUrl32iIQEP6gVzZj9IlMXIGNK12xFTvcvqObLs7kJfVNCxDOkRV0HjrFfhu
-	RdCzoFSjExAP6VNqckCRCN/Sx0PIzmvKajgwHi7gahXEzTMwOP9gERzCkluWAxDmObiPUdFtSqa
-	oYhqkCg==
-X-Received: by 2002:a17:90b:3b44:b0:38e:1fba:fd79 with SMTP id 98e67ed59e1d1-38e4b5753bamr7566341a91.36.1784395279398;
-        Sat, 18 Jul 2026 10:21:19 -0700 (PDT)
-X-Received: by 2002:a17:90b:3b44:b0:38e:1fba:fd79 with SMTP id 98e67ed59e1d1-38e4b5753bamr7566304a91.36.1784395278949;
-        Sat, 18 Jul 2026 10:21:18 -0700 (PDT)
+        bh=ClAQZqqpLrSxh/ilTgA975QpkExyJZmFR6ENFCfm7tI=;
+        b=Ty0vL5AMWmHL34EYkbkzztNIBzL6R1TpBUyCnP8AiAPIwhphkGHaWkD5jwd8GUDAHT
+         0t8ZWHzTQ7hG28ZbMu0mqR1IVLVsC30ioVIr6elJV0ajvCBZYFc2YEMLXj8Yn6rLHJWk
+         OtZvD2dUwcyliaqWAtCYUDFCEG6I42lZeNbs+3zXiL7G7GnGGoeCIwWMT9DIt/Kyhwzb
+         XFuvrAqOHIOTRAraYcz2PmjVzBjvqZL5JvvozZwuj+d2EADRB74Uv3OR3VyvZlib4cZd
+         e9rzuK6wQE6WF0uVSC9dHAujD2FcK9T64Bs9RgG9sa9heS7lsErx09DIsA3i1+i0IPR/
+         zrsQ==
+X-Gm-Message-State: AOJu0Yy4q6UogiXQJUKKhtcKIc80OO73ez6QByNoOpEQGFLmdI4prKf3
+	tkFj7w0NKNOk6NKhF++ttnXM7gjXNx5Y4iHQ34F73+R+fiyzHEP+8ttissbnwZ0Y2sduv1djDKQ
+	p9QdZSkV0h3uejuxCmYtdYGQBCLVgnn/XHd96uOCfCDg0tQSBGXhnnzIakdWFOXpKHnbn
+X-Gm-Gg: AfdE7cmrTAEQQ1W8DI9gcfY18DdPkEMs242cK+NjtCa4gVJ2ziceWF9+Q/kKF/f0Jve
+	L5+07w7d3CC4wg7+4RTI0/TdU+s3MOqpZucIzb6vgB2fFvimh7ZH0jr9vikaYftzCkpRmW+gZxK
+	HCrj3+TaOfU4/p6MkxbZLR1GtEC8GGpGkj1Znt10hSnnygpKHJNnRtvDdSVLnPCKHjiv0wFZzKc
+	/iVtIpHcTPvSBWSAyrCFcUwLsrcdOr2uWwekBPUnodcyNTkL2R9RYl62GW2vL/7rmykoB+nSU9D
+	+xgG71EDiqZgpvn1EFX0twtr5V60fhXeXa4hPB0S4ZlwxPPTWAmC/i6eQ/z+b/Jtk1fpBWr9w0b
+	dWsJ2Rw==
+X-Received: by 2002:a17:90b:590e:b0:387:d5bd:622f with SMTP id 98e67ed59e1d1-38e4b691d21mr6469917a91.18.1784397169403;
+        Sat, 18 Jul 2026 10:52:49 -0700 (PDT)
+X-Received: by 2002:a17:90b:590e:b0:387:d5bd:622f with SMTP id 98e67ed59e1d1-38e4b691d21mr6469894a91.18.1784397168875;
+        Sat, 18 Jul 2026 10:52:48 -0700 (PDT)
 Received: from localhost ([188.253.117.185])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3142a1bbda9sm18795128eec.19.2026.07.18.10.21.16
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31429f9d439sm23819967eec.5.2026.07.18.10.52.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Jul 2026 10:21:18 -0700 (PDT)
+        Sat, 18 Jul 2026 10:52:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -87,113 +86,155 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 19 Jul 2026 01:21:14 +0800
-Message-Id: <DK1VC0BQUHEL.3R0D087PCM7KY@oss.qualcomm.com>
-Cc: <Frank.Li@kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <imx@lists.linux.dev>
-Subject: Re: [PATCH v2 2/8] drm/aspeed: replace struct
- drm_simple_display_pipe with regular atomic helpers
+Date: Sun, 19 Jul 2026 01:52:44 +0800
+Message-Id: <DK1W04LF68WN.3LEHUKMBX3JJO@oss.qualcomm.com>
+Cc: <imx@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+        <Frank.Li@kernel.org>
+Subject: Re: [PATCH v2 3/8] drm/mcde: replace struct drm_simple_display_pipe
+ with regular atomic helpers
 From: "Ze Huang" <ze.huang@oss.qualcomm.com>
 To: <sashiko-reviews@lists.linux.dev>, "Ze Huang"
  <ze.huang@oss.qualcomm.com>
 X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260716-drm-simple-kms-removal-v2-0-1133a8fc3785@oss.qualcomm.com> <20260716-drm-simple-kms-removal-v2-2-1133a8fc3785@oss.qualcomm.com> <20260716092750.933B81F00A3A@smtp.kernel.org>
-In-Reply-To: <20260716092750.933B81F00A3A@smtp.kernel.org>
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE4MDE4MSBTYWx0ZWRfX+sCSRrIFN3lh
- T9sFdloyYMynfI5eTGHQSms+loJ4m1K1RqJvVeVLpfnZfX5asYte8rBRKX+Wl/0g/QNRBGuy1LI
- DN7U/A3s9Y5WGEL1U9l+J10H48llsxs=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE4MDE4MSBTYWx0ZWRfXyQr4oPVV3W6d
- kRT/vUQfu9ilNX1L82PcrPqYvEkBKaFLhtqBezEaYYYcH7MHHqzC/22lU15Pv4cjELbp5oPZ78N
- 97j4KFRM3abySYzDsRZh0EEyBOIYZ7ucwfIUihgkpr2Fy4CsuNYzqrNbcDiyD5ejW+HqxUTXU+0
- jRhPemGJmITjZHn6gf2WqasvnzCeyC/cBLz+9/Sua3UkTGf+/G1atYfljA5imnxeaNR+BplPWhJ
- CJlz14f3Q9HyE5TNOhSfcFcrECHJXsoz+MAMErxLUvr+D1qM2NBSAKbw75/H3n/fJzj2vN+TxRJ
- d9gumvYqZepbeXmN7jHdNEue/BEMqpqNfogKVQLWOISNoYaRIsZwetnoAoABPXHxv8pMpCr5GrY
- +geXzcKvrY6fEGseBUCYp9KJWCdIbUk5AZzKyX75ibpDkxZQTyqYYOJ/kUA+q4wW+VLgJs+I6Pk
- k1kQSsdO1syFOUBIUqQ==
-X-Proofpoint-ORIG-GUID: IUscpFmRotP8S3ul14VmcN-i37EuKClp
-X-Proofpoint-GUID: IUscpFmRotP8S3ul14VmcN-i37EuKClp
-X-Authority-Analysis: v=2.4 cv=FOQrAeos c=1 sm=1 tr=0 ts=6a5bb610 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=RQ3dwY0XcLBFaqRX7rIGyg==:17
+References: <20260716-drm-simple-kms-removal-v2-0-1133a8fc3785@oss.qualcomm.com> <20260716-drm-simple-kms-removal-v2-3-1133a8fc3785@oss.qualcomm.com> <20260716092109.A755F1F00A3A@smtp.kernel.org>
+In-Reply-To: <20260716092109.A755F1F00A3A@smtp.kernel.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE4MDE4NyBTYWx0ZWRfX+dVGTjdZMtob
+ 6Bu0QlqnarbgNUmWeycxXWn6Iis48uiOZfOalKliGFPZujjQm8BFziKtuuHgayIRAKUiJLTXxtt
+ /Iuoqge2TygiQvKwAc0B3RSKXqCch9aZamfhb3zwr85OA3zCxWDbv0CvV1KZcq674mrZNZcB29o
+ 2Hk0lAX/Y75D63hM9Y7NTCTV/RB12RSZ+reMxuOoQN7dvtyJyNi+gum5VCuZdlK3BZLFO6pztDw
+ 7ljArEEukDWzINrAe/CWTGe6HFDtFoMu76FxD6NQ4Q80nTuOoXr8skWp0+dnOKHAQiZDxQdW8AC
+ 8Aj11niiEpZJNOU8lmlN8yyvtR/qoQN2Zf4AllWAiAs78rUnekYXpEf8tPMeIrXC12QgHte5cqv
+ guSJP9hYYoNumD14k8pTUA2ZvCTH1AWt+kjzlQ4WWlf+6atBVZXB0jjv9yHhyP6BQdAae2sLd/p
+ rFhHmAnukZbXZyd2uYQ==
+X-Authority-Analysis: v=2.4 cv=eKsjSnp1 c=1 sm=1 tr=0 ts=6a5bbd72 cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=RQ3dwY0XcLBFaqRX7rIGyg==:17
  a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=EUspDBNiAAAA:8 a=6pLJlD1J5kOrFlOB4ZIA:9 a=QEXdDO2ut3YA:10
- a=mQ_c8vxmzFEMiUWkPHU9:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=EUspDBNiAAAA:8 a=Xo--NF9sZlCFNlXQFFYA:9 a=QEXdDO2ut3YA:10
+ a=rl5im9kqc5Lf4LNbBjHf:22
+X-Proofpoint-ORIG-GUID: KlMvIdvAHgGKwTogp6PkB_jVIg4Oguhx
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE4MDE4NyBTYWx0ZWRfX+3fhhSBkV3kO
+ +A7ahf+qVGYqse8Gtd8OjePO80PAPsiH/x6QBIH3HaUQEfNRLOUkzSZ+OBN/hHtIpc4cQVprEwp
+ gvBo8T1U88OAFqUWOtvNI10wkQZDi5k=
+X-Proofpoint-GUID: KlMvIdvAHgGKwTogp6PkB_jVIg4Oguhx
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-18_05,2026-07-17_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 adultscore=0 bulkscore=0 spamscore=0
- malwarescore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ priorityscore=1501 suspectscore=0 impostorscore=0 malwarescore=0
+ clxscore=1015 phishscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607180181
+ definitions=main-2607180187
 
-On Thu Jul 16, 2026 at 5:27 PM CST, sashiko-bot wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issu=
+On Thu Jul 16, 2026 at 5:21 PM CST, sashiko-bot wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
 e(s) to consider:
->
-> New issues:
-> - [Low] Missing `inline` keyword on `to_aspeed_gfx` in a header file.
->
-> Pre-existing issues:
-> - [Critical] Direct dereference of `obj->state` inside atomic helpers lea=
-ds to potential use-after-free and NULL pointer dereferences.
+> - [High] Race condition in atomic commit causing display hang in oneshot =
+mode due to premature hardware start.
 > --
 >
-> --- Patch [2]: [PATCH v2 2/8] drm/aspeed: replace struct drm_simple_displ=
-ay_pipe with regular atomic helpers ---
-> (Note: The format of this report is altered to a free-form summary due to
-> automated recitation restrictions. Code snippets are not quoted directly.=
-)
->
-> commit d1e92d6b727d3655d12a72430c723784264108f5
+> --- Patch [3]: [PATCH v2 3/8] drm/mcde: replace struct drm_simple_display=
+_pipe with regular atomic helpers ---
+> commit 24a767bb6a2c4adfefe9e0a5de7e9c8bbe7b2a64
 > Author: Ze Huang <ze.huang@oss.qualcomm.com>
-> Subject: drm/aspeed: replace struct drm_simple_display_pipe with regular =
-atomic helpers
 >
-> This commit replaces the simple display pipe with explicit plane, CRTC, a=
-nd
-> encoder objects in the aspeed DRM driver. It moves callbacks to their
-> respective atomic helpers and shifts page-flip event handling to the CRTC
-> atomic flush path.
+> drm/mcde: replace struct drm_simple_display_pipe with regular atomic help=
+ers
 >
-> Issue 1: Missing inline keyword
-> File: drivers/gpu/drm/aspeed/aspeed_gfx.h
-> Function: to_aspeed_gfx
+> Convert MCDE to explicit plane, CRTC and encoder objects. Handle pending
+> page-flip events from the CRTC atomic flush path using the commit-local
+> CRTC state.
 >
-> [Severity: Low]
-> Does this function need the inline keyword? The to_aspeed_gfx function is
-> defined as static in a header file without being marked inline. Could thi=
-s
-> cause duplicate unreferenced copies of the function to be emitted in ever=
-y
-> translation unit that includes the header, potentially leading to binary
-> bloat or compiler warnings when compiled with -Werror?
+>> diff --git a/drivers/gpu/drm/mcde/mcde_display.c b/drivers/gpu/drm/mcde/=
+mcde_display.c
+>> index 257a6e84dd583..86edf94c52372 100644
+>> --- a/drivers/gpu/drm/mcde/mcde_display.c
+>> +++ b/drivers/gpu/drm/mcde/mcde_display.c
+> [ ... ]
+>> @@ -1381,44 +1398,13 @@ static void mcde_set_extsrc(struct mcde *mcde, u=
+32 buffer_address)
+>> -static void mcde_display_update(struct drm_simple_display_pipe *pipe,
+>> -				struct drm_plane_state *old_pstate)
+>> +static void mcde_plane_helper_atomic_update(struct drm_plane *plane,
+>> +					    struct drm_atomic_commit *commit)
+>>  {
+>> -	struct drm_crtc *crtc =3D &pipe->crtc;
+>> -	struct drm_device *drm =3D crtc->dev;
+>> -	struct mcde *mcde =3D to_mcde(drm);
+>> -	struct drm_pending_vblank_event *event =3D crtc->state->event;
+>> -	struct drm_plane *plane =3D &pipe->plane;
+>> -	struct drm_plane_state *pstate =3D plane->state;
+>> +	struct drm_plane_state *pstate =3D drm_atomic_get_new_plane_state(comm=
+it, plane);
+>> +	struct mcde *mcde =3D to_mcde(plane->dev);
+>>  	struct drm_framebuffer *fb =3D pstate->fb;
+>> =20
+>> -	/*
+>> -	 * Handle any pending event first, we need to arm the vblank
+>> -	 * interrupt before sending any update to the display so we don't
+>> -	 * miss the interrupt.
+>> -	 */
+>> -	if (event) {
+> [ ... ]
+>> -		spin_unlock_irq(&crtc->dev->event_lock);
+>> -	}
+>> -
+>>  	/*
+>>  	 * We do not start sending framebuffer updates before the
+>>  	 * display is enabled. Update events will however be dispatched
+> [ ... ]
+>> -static int mcde_display_enable_vblank(struct drm_simple_display_pipe *p=
+ipe)
+>> +static void mcde_crtc_helper_atomic_flush(struct drm_crtc *crtc,
+>> +					  struct drm_atomic_commit *commit)
+>> +{
+>> +	struct drm_crtc_state *crtc_state =3D drm_atomic_get_new_crtc_state(co=
+mmit, crtc);
+>> +	struct drm_pending_vblank_event *event =3D crtc_state->event;
+>> +
+>> +	/*
+>> +	 * Handle any pending event first, we need to arm the vblank
+>> +	 * interrupt before sending any update to the display so we don't
+>> +	 * miss the interrupt.
+>> +	 */
+>> +	if (!event)
+>> +		return;
+>
+> [Severity: High]
+> Does this split introduce a race condition that could hang the pipeline i=
+n
+> oneshot mode?
+>
+> Because the DRM core executes the plane's atomic_update callback before t=
+he
+> CRTC's atomic_flush callback, the hardware flow is now started before the
+> vblank event is armed.
+>
+> If mcde_start_flow() is triggered during mcde_plane_helper_atomic_update(=
+)
+> (which happens just below the quoted block), it could complete the hardwa=
+re
+> transfer and fire its interrupt before the vblank event gets armed later =
+in
+> mcde_crtc_helper_atomic_flush().
+>
+> The relocated comment in atomic_flush still notes this exact requirement:
+> "we need to arm the vblank interrupt before sending any update to the
+> display so we don't miss the interrupt."
+>
+> If the interrupt fires early in oneshot mode, it will be missed, and the
+> atomic commit could wait indefinitely for an event that will never comple=
+te.
 
-Will do, here and other places in series
+Hi, Thomas
 
->
-> Issue 2: Direct state dereference in atomic context
-> File: drivers/gpu/drm/aspeed/aspeed_gfx_crtc.c
-> Functions: aspeed_gfx_set_pixel_fmt and aspeed_gfx_crtc_mode_set_nofb
->
-> [Severity: Critical]
-> This is a pre-existing issue, but is it safe to directly dereference the
-> object state pointers here? In aspeed_gfx_set_pixel_fmt, the code directl=
-y
-> accesses priv->plane.state->fb->format->format. Similarly, in
-> aspeed_gfx_crtc_mode_set_nofb, it directly accesses
-> priv->crtc.state->adjusted_mode.
->
-> Since this is accessed during atomic commits, if a second non-blocking
-> commit disables the plane before the first commit reaches its atomic enab=
-le
-> execution, the plane state could be updated to a new state with a NULL
-> framebuffer. When the first commit's worker eventually reads the state,
-> could this lead to a NULL pointer dereference and a kernel crash? Would i=
-t
-> be safer to pass the specific plane and CRTC states down from the atomic
-> helpers instead of reading them directly from the objects?
+Would it make more sense to move this pending vblank event handling to
+the CRTC's atomic_begin(), or should it simply go back to update()?
 
-As noted in my reply to patch 5, I'll access the state with atomic helpers
-instead.
+From the comment in the original code, the event needs to be armed
+before the update is triggered, otherwise the completion interrupt could
+be missed in oneshot mode.
+
+Thanks,
+Ze
