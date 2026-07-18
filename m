@@ -1,158 +1,102 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFA937FF7B
-	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 23:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDB314A60F
+	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 23:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784417813; cv=none; b=kcs1/0mtB9DHwUpSR5dHNSmkxVgpRhm33JW8BNAYelbtu6z6AIEjdnpKebye9wyXtnBUwPVhez7AcAuoDwemgnKdNFEnAf9goB8BAiN7ddxZyOj1DvhZlyiu65VmUHn7xRvAWoEAAq9zUMK51og28DP8g9nuT5yVC5O+z5lymVo=
+	t=1784418687; cv=none; b=gXf3jdZmyTEF9BmEhS4nn783+SuQoglQWelrl3zCECCR/A+Mq/FQFElk3xWfVqY6XK5moncK5mddqgTVT+nSp8R+NM3ybqCLjqAyqQUqMRQhRuHwoM//qMBlVkusrZYQ9fw2jdMzA5SHCkv5zPFTlSGO+kvoPF5qjV3p12IuQtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784417813; c=relaxed/simple;
-	bh=EhmF3j+M4AduWGCg7EqLVWPIxAwmTTCxT2Gz0yXqaxA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Zse90nhvlfAMYXB3BnCewbegGIXzpWLETFP1sBEMvw+PyuSKl4jiO7Y9//pgY64/iGDMrq6JDB1CUSFB4TFhtoZDLBNIaqxdWehJUmgZLL19tB4kSeBS9kWafp4aByXWndNDVIO205uKHwFulE+J9mKN051h9J/VQKoCSCsLSZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mhNt7TWp; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784418687; c=relaxed/simple;
+	bh=B2dKnCCi4tQ4OHALpR2KNMaMSjRt9Y+wGZWlPLtsgxU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=t3g9nXMy8uStJZGI6/yBNIqVIoqPe6MBA1PjBNRHJAmIwgxXv7JMKEOjO22nqYlWQbrNS+SjRtKJ6PUa3UbuJOERPvamyMNh1uySiwxBUmipAND+KyfBugTrqY0EzvtZKEHipEjSCKDKzLPSBZc7CwczfWL7eYM/CQHx8mq2FPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgSZz3sX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mhNt7TWp"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493b966dd74so36650065e9.3
-        for <imx@lists.linux.dev>; Sat, 18 Jul 2026 16:36:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784417810; x=1785022610; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=77r3PWO7yo5+W5LQS9FlqiYUpbSGXMMaR8d5GZmSOF4=;
-        b=mhNt7TWpiLft/BBPNjMWafMZlK7FawVl+G9EEf62+pZjSU2CKcfoDio2731g7bhzNV
-         PJILYJlGu/Ce2NyXWYtxvkaxyWSRj4xP8ksvqXqrGcZt9wxoxQc/9qGhW1xNyJ/AR9TT
-         NDfsQEFkSdqhszVQU+yQ8ZPmf8PqFaAOo560cmLT6qFRaSvaVyDZFZ9DePGjetns9/T5
-         Bpt9G6Hc5N0VG5ZTwA4DO6bguE6cDf5NpudgAQECJ58DmdCe512O/tipxu2diFsdlnbr
-         b7AWEzsQB/qOfApov+BncxjJg5HYr67GEIjIfqwM7JIov4ojo6x//mcbT2bkzcRL5UfI
-         fkVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784417810; x=1785022610;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=77r3PWO7yo5+W5LQS9FlqiYUpbSGXMMaR8d5GZmSOF4=;
-        b=rUaCdy5IASIBl9jXPmSQsS1SLS2qrg5gJ4Pqnb1WdZqq2NW1BT26tRXRtbCZgECZtD
-         DElvAPyVdF/rAJ6PUKZZPwVRVuKm+mO0dSiExGmvnJNF8Ft0Ft8+MXRa5QmKd6d800kP
-         jlFOY3A4I7QJlrryRp9UebLaYWdlqmzSzpAJBmhwmwVCyu9otqY78C2RX+hT+xx7ur9X
-         oqWdGwBy42aBiqjQgQ0hrivPlkqvDeUTw1AVO3QgJ3wgsffVzzoEILDhtVdc3boJHjS5
-         KFU0B1FV7rd+efbbDcSifr25WkmMYTyv7Buoojr6RTK9cJ3Su2fi3pdcGoF5fqxIm/fs
-         nCzw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp2VM1Ug2MocF5d6IA3uRyaHonN7emSUyihURAuJ0rQBJXiCPVVlKtmv273doV0cLehgms=@lists.linux.dev
-X-Gm-Message-State: AOJu0YySoJUllojg8cKMYTvk4+UFr2rX5WgpBajhXR+UJ9pwrxbITCxY
-	gR6dbnw0282MrtF9yhK89QRvTD0w5+I+YZk++DbYcsT7QAalhk8Aeti1
-X-Gm-Gg: AfdE7cmkS56YL7f3We624FPR8RCQ3v6aHMi5hm54VWB6qWBL0TJ9p8beB4pvorT5nFJ
-	gVFGm0DKXPJh9+lQz2Bnga5bm8tj6+sYxCs54RLZvCrwYgTsqLPWGcYAKFG+6dYgeE5g17u5stl
-	KLadCOjBAtpGiUK8rcb8e1NlgCnHyCipXLRPE73/WbT6XgpzrTGt+Hg8/f6fCz4S0uK9mKTLyt0
-	xPmLANXl0DHaKXP25EqLanBwfdQHsh44TfoLGa+6gvXi7hZqSIRNWt0YSPpXoJ5cRFieZXxVyCo
-	Pi6ALKoVMzA5qb1BYuhDnYFyO5mOcAFxLSvug8WlUhH954QvR2RBS426fk/PThrRVJQXYQLGyYq
-	GZdLph749/fsd3BUvl3KII+xP8cS0dm6QEik5Zf72HWSM9LySolYGirZLuo9+Kv8eWBKEp5aLlj
-	c6hiq68k85mg==
-X-Received: by 2002:a05:600c:3b28:b0:493:a623:d090 with SMTP id 5b1f17b1804b1-4954a3f36b6mr89247115e9.10.1784417809642;
-        Sat, 18 Jul 2026 16:36:49 -0700 (PDT)
-Received: from [127.0.0.2] ([2a01:14:111:ccf0:645b:9e5c:7fe3:c09f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954a2a24b6sm160964675e9.3.2026.07.18.16.36.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 16:36:49 -0700 (PDT)
-From: Diogo Silva <diogompaissilva@gmail.com>
-Date: Sun, 19 Jul 2026 01:35:46 +0200
-Subject: [PATCH 15/15] Documentation/gpu: remove completed
- drm_simple_encoder_init() todo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgSZz3sX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66121F000E9;
+	Sat, 18 Jul 2026 23:51:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784418685;
+	bh=4OVsQf/yiuG67ARP6+Rl9z4GLpfAIYz6W7pHbzFxoRU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=FgSZz3sXBEyoc4ZJPqe6zXYKq7KFDW6SjfP6hN3kTqIG/6AhnzVeXH+ZtOPmnIAv6
+	 Ef2XmFgYqEFgLICSlNXfLI1GfECIMVvxwfVf+6xoz3tSGGVxGwhURkMcvm9iScM9jS
+	 +vvp38J5I2UxJYxfS9WhBrdEEmF8yv9ObZo2SzmTsdDdiWFvg1xci6/PlMXxAkWG7u
+	 oQbAMBOHcf7nt2lTbIA8CPs3q5DKGnmfA+Mk5rk4Tk0yOhAmvU1DBwqGTHcd6BHgMB
+	 TFHfM7ZEUrLyeeWStrBOzceTrCtUHvl6/DYwGUBtieb1G077Zed9lyxQRoAiS3Wk2b
+	 w28Jde70pzdCQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 14/15] drm/drm_simple: remove deprecated
+ drm_simple_encoder_init function
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Diogo Silva" <diogompaissilva@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, neil.armstrong@linaro.org, wsa+renesas@sang-engineering.com, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org
+In-Reply-To: <20260719-drm_simple_encoder_init-v1-14-a78c509e3062@gmail.com>
+References: <20260719-drm_simple_encoder_init-v1-0-a78c509e3062@gmail.com>
+ <20260719-drm_simple_encoder_init-v1-14-a78c509e3062@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 18 Jul 2026 23:51:24 +0000
+Message-Id: <20260718235124.C66121F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260719-drm_simple_encoder_init-v1-15-a78c509e3062@gmail.com>
-References: <20260719-drm_simple_encoder_init-v1-0-a78c509e3062@gmail.com>
-In-Reply-To: <20260719-drm_simple_encoder_init-v1-0-a78c509e3062@gmail.com>
-To: Jingoo Han <jingoohan1@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
- Seung-Woo Kim <sw0312.kim@samsung.com>, 
- Kyungmin Park <kyungmin.park@samsung.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk@kernel.org>, 
- Peter Griffin <peter.griffin@linaro.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Michal Simek <michal.simek@amd.com>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Mikko Perttunen <mperttunen@nvidia.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Stefan Agner <stefan@agner.ch>, 
- Alison Wang <alison.wang@nxp.com>, 
- Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
- David Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- Gurchetan Singh <gurchetansingh@chromium.org>, 
- Chia-I Wu <olvaffe@gmail.com>, Jyri Sarha <jyri.sarha@iki.fi>, 
- Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Xinliang Liu <xinliang.liu@linaro.org>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
- Liviu Dudau <liviu.dudau@arm.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
- imx@lists.linux.dev, linux-mediatek@lists.infradead.org, 
- linux-renesas-soc@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- linux-doc@vger.kernel.org, Diogo Silva <diogompaissilva@gmail.com>
-X-Mailer: b4 0.15.2
 
-All drm_simple_encoder_init() users have been removed, so drop the
-completed todo item.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The patch successfully removes `drm_simple_encoder_init()` but fail=
+s to remove its corresponding completed task from the GPU TODO list.
+--
 
-Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
----
- Documentation/gpu/todo.rst | 15 ---------------
- 1 file changed, 15 deletions(-)
+--- Patch [14]: [PATCH 14/15] drm/drm_simple: remove deprecated drm_simple_=
+encoder_init function ---
+commit 7fd5be63f48ba2540ec1b5b7dc137c54a85997f8
+Author: Diogo Silva <diogompaissilva@gmail.com>
 
-diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-index 14cf37590fc7..b7351467dc74 100644
---- a/Documentation/gpu/todo.rst
-+++ b/Documentation/gpu/todo.rst
-@@ -29,21 +29,6 @@ refactorings already and are an expert in the specific area
- Subsystem-wide refactorings
- ===========================
- 
--Open-code drm_simple_encoder_init()
-------------------------------------
--
--The helper drm_simple_encoder_init() was supposed to simplify encoder
--initialization. Instead it only added an intermediate layer between atomic
--modesetting and the DRM driver.
--
--The task here is to remove drm_simple_encoder_init(). Search for a driver
--that calls drm_simple_encoder_init() and inline the helper. The driver will
--also need its own instance of drm_encoder_funcs.
--
--Contact: Thomas Zimmermann, respective driver maintainer
--
--Level: Easy
--
- Replace struct drm_simple_display_pipe with regular atomic helpers
- ------------------------------------------------------------------
- 
+drm/drm_simple: remove deprecated drm_simple_encoder_init function
 
--- 
-2.54.0
+This patch removes the deprecated drm_simple_encoder_init() helper since all
+driver users have been converted to drm_encoder_init(). It also open-codes
+the remaining internal use to prevent any new users.
 
+> diff --git a/drivers/gpu/drm/drm_simple_kms_helper.c b/drivers/gpu/drm/dr=
+m_simple_kms_helper.c
+> index 8e1d07b9f1e30..7878b9d7d5248 100644
+> --- a/drivers/gpu/drm/drm_simple_kms_helper.c
+> +++ b/drivers/gpu/drm/drm_simple_kms_helper.c
+
+[ ... ]
+
+> diff --git a/include/drm/drm_simple_kms_helper.h b/include/drm/drm_simple=
+_kms_helper.h
+> index cb672ce0e856d..c95f86ff355ff 100644
+> --- a/include/drm/drm_simple_kms_helper.h
+> +++ b/include/drm/drm_simple_kms_helper.h
+> @@ -68,10 +68,6 @@ int drm_simple_display_pipe_init(struct drm_device *de=
+v,
+>  			const uint64_t *format_modifiers,
+>  			struct drm_connector *connector);
+> =20
+> -int drm_simple_encoder_init(struct drm_device *dev,
+> -			    struct drm_encoder *encoder,
+> -			    int encoder_type);
+> -
+>  void *__drmm_simple_encoder_alloc(struct drm_device *dev, size_t size,
+>  				  size_t offset, int encoder_type);
+> =20
+
+[Severity: Low]
+This isn't a bug, but since this patch successfully removes the
+drm_simple_encoder_init() helper, should it also remove the corresponding
+completed task from Documentation/gpu/todo.rst?
+
+Leaving the item in the TODO list might confuse future contributors since t=
+he
+refactoring effort is now complete.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260719-drm_simple=
+_encoder_init-v1-0-a78c509e3062@gmail.com?part=3D14
