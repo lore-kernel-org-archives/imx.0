@@ -1,469 +1,178 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2A4340413
-	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 19:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C13332EC5
+	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 23:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784401990; cv=none; b=cvubgq2fPsJjss/4IlpCS+X06aeCpwnaRraKiGFj58g9VDeQqOOinoBjIZ/OuUajkuL4Ogw7KGLzC6lSx1rvIBU5N8f9moQgXxmxCZvDey1lZMEJVn6Cb1ucc1Zm5E40qfp8masP0dJAF0qJEvfkan8/qcRhLoF70lnBGnGet4U=
+	t=1784417761; cv=none; b=iQW5U4vOB0xBaCq5ODMiMf6ItVOX68tI5L2dzcLVBTQ0q6FuPwtpmoGNPUahqhfgLVuxqfeBZDIm0xQqpAs+wSTUO3ntmIUUziWOOT0d1XzMBCH0VJogWaW1ZNRiiazCdqtf+cHvckZKq6WaMBSwC+DeWeX12XxwxmsGI6//60k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784401990; c=relaxed/simple;
-	bh=5iJjm+Cwqc2e2XmTZvFfoaLpR18809rdT/qceEtiENU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ImX0mr/NxBEnqhJ/lR8FF7SZwvxkz0gJiuQCMESvz4jAqVpRMd3hljFYVqFCBQmMXBRFhTdLJLqFop/5Jm65giiqCpfnzjvSKmWhFfAI8O93wskd1/MVPvt5i7kW2xZH8mKuWtA+CI8GAGLY6d2jCcAhodeRnAHEKmvqvtzvB0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=owp3YvJ3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Tr5Rc8CC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1784417761; c=relaxed/simple;
+	bh=4VckNmYkZcMe07k6xO/fIqj/JsCM+9ZJGLo0Ai8FnTM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kbl/C0UTVI7blxTCQ2fczT0IRzBYqJj470bhOITab68sK3+r4cKhEg3GPZUGs7U2EDksVZYCHpuCU2mFojUDE1Vb1hE6/ZFO2PMrhQOBQK/cg7/Ux6pm2yFezr7imnV9OML4s0n75ywNhShiqOAmzcygojuZa9fstBh4bEqeDVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=orKSji0F; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="owp3YvJ3";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Tr5Rc8CC"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66IGOf9v1345730
-	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 19:13:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	css553ETwH3ipHar7HV+Vwy4upNKK/INFB2fJhyJi/Q=; b=owp3YvJ3u7KHLBln
-	9PzWLL7aNJ8479neSeSX1m+sgSWp0e+ICvG2XPGs2u0rJiLGZb32VvuR4sPJYMh1
-	ZGzGLROi5mULK+b9sKS1Vr1NgrDUWfuyr3iSIcFz3NPf1K84y/0akNqXURr5ZvuW
-	B5SkY8oRJ/lm7KU8/DFhSJvaMHPhKB7Kc6+g0WE3ARG6lGLBfW2quOwH54IQ+IiA
-	RlXpwC7jkLmBRjoEiHsZzHNPzdgo3OdBTSiPvQFWmdP8P4R66dTx6X8M7mDkjqYy
-	SJSnkGnv4iW3hug+vtLE5nSBDZdwUES3XCeHQVMGASDQ9sB25/6tQdt2Aa2DRavz
-	bPkV9A==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fg2d91cnp-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sat, 18 Jul 2026 19:13:05 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-380b630c505so11022976a91.1
-        for <imx@lists.linux.dev>; Sat, 18 Jul 2026 12:13:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="orKSji0F"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4954c0833b4so9389535e9.1
+        for <imx@lists.linux.dev>; Sat, 18 Jul 2026 16:35:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784401985; x=1785006785; darn=lists.linux.dev;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=css553ETwH3ipHar7HV+Vwy4upNKK/INFB2fJhyJi/Q=;
-        b=Tr5Rc8CCAP3QbVGnDzvAgpJ1nHCOp9kB3gXYWHKFMq+gu3rGuMCOxB6TwzRtTCeCRc
-         fZcqZtY7mEaQxDfaqqhCX89WrDlkAgJsHRsXrec1GQpV6Nrhwu4AgpkIsT7zYqSuPtSs
-         Z0F0uYvCqf/1DSyPo41RDpQoQh+umAT1YseeC5hjDVsZ1gRcvaZHCaMxtCaK4eoB527X
-         pJumSD/5UgLnNkKRSshwJQDxLY9huTKxUYsIxw8rJgCB3MW4fVEX+S5SAON04iMyKIKr
-         XkIDyM+J3Orc7iBTWAdZmBvvTTIWxKfWGMsZyjA6lCbKJ7BR2iSPWt4776oL4Iv94LTR
-         ctEg==
+        d=gmail.com; s=20251104; t=1784417758; x=1785022558; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=fbveywkXEOoKA5l+wqrU0DqqoG4NoX/G8iLvkPe8hb4=;
+        b=orKSji0FwMx83XvlwxI38wc3UjkquIRTquZ37RUHgKeZIeWWe1F3Gfffl+YC1Bdtf1
+         86zx7NkrotZ0R4RxO9NhH1fkrHMhW+m8+0bkkStFbSypXZIW0DchAdSajIKZOOlPe4xL
+         EOF/7RRZR/1tx3AiWxpE60HXLzI3A1zl0xPIrNUVTAQVZdj0t6j6tSi6nTzqIc/8maR6
+         1ubE3IUAnQHijeUrCiDhYdX5aapBe/XWr4CPfZ5OQMQ8FqHz8qV8zWT78CdDStdhZM5K
+         GvZKibh1nUsonbFibJF6IZxCBTLX5P957HUj6amb70Phr4/loIki+8hXc+U3I1nZCt3n
+         T3fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784401985; x=1785006785;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=css553ETwH3ipHar7HV+Vwy4upNKK/INFB2fJhyJi/Q=;
-        b=PbH+ac2GzwHPQxBURvI2oCmIWluy+Gqaw08vuSuB3gbyVfiq1/QiVyjCuABbbpfp0z
-         nqPP9bOadg6UEXEZjT1XooMruZn/HcOz3Z6ev9Jci/av9CbBFt1GC+trE/brf8Mjf0CL
-         JwPW+FEKfDXrp66ktwsgn00dwgOZlfX0hOWLW4mOpKyFQOCImMuEVugO04B/dfyJaAys
-         rhS0Up4NSz9fIDa/kP/Vi2zYUJ2eoF9ZOxu/MgJPG5TlnCdNeXcrPXiF21BjtJ5No2Af
-         tkUaKt3xkUtRuRiHOSH2ItWMH4hmM3rSO4AkAcqdbE10IiXUdIYUAk7bkXVU3d7M0RxY
-         evfg==
-X-Forwarded-Encrypted: i=1; AHgh+RpJuZ/HDqbOZikvRNqsPHzQyuy7Q9l8KXZnVEsA7QpukihNcA/P19yNBhAszmG2qJWiLSA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyRV/ZD7kry9sQG7ScMxIHRz3fNEplhiJ8jP7xVXsExZUq8yqly
-	YqyIdKNU25fUwY2cokUtwIiZ4H/4zLjYEPlp+gf/iA1y5SHjrdXYu1J2yqUWzAunxuV0IIzxihb
-	X56qb7o1MErnwdB/2WP3Rn0ehotCDiJbfLf0Gb71/FWCQzYJcSHsoLh5JWOkDFN+30b3c
-X-Gm-Gg: AfdE7clRrUiZQ+f5PgSdxGxV/obykAaR6HriS9H9lZyleW2zzefPsipqbd9+LrV6RDK
-	RF2M1mdCPIZ2pxVCG5U//gtcc0yLdH7LEegBI0tIPy0jJiqVAXId6HdPhiGX/QagTsbgC8D/vHc
-	dcejAYFgubCo0nKoajb3cBGC4ytL2uTZHSskXUP0JpTqKzk8y2F0xomNdLQJPmV9NDObvGNTTGO
-	7h4vVN7xTtDrWBaVvsoZExh1Qr9uanyw2mhLNgQ4/IsFSIJupkSEqQPoDTqwW7WXG/KmD4BcyQa
-	pvpGWv0fMFehzvwpmBGpsoIoN80kV0gluzjxr7RFRP0t2KeAVdL6mEmKsQqF2n3/+nY157yispz
-	8+2b7Ig==
-X-Received: by 2002:a17:90b:2244:b0:381:bc4c:da5b with SMTP id 98e67ed59e1d1-38e4b43cb05mr8052626a91.18.1784401984521;
-        Sat, 18 Jul 2026 12:13:04 -0700 (PDT)
-X-Received: by 2002:a17:90b:2244:b0:381:bc4c:da5b with SMTP id 98e67ed59e1d1-38e4b43cb05mr8052596a91.18.1784401983929;
-        Sat, 18 Jul 2026 12:13:03 -0700 (PDT)
-Received: from localhost ([188.253.117.185])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2900a37sm16169441c88.0.2026.07.18.12.13.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Jul 2026 12:13:03 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784417758; x=1785022558;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=fbveywkXEOoKA5l+wqrU0DqqoG4NoX/G8iLvkPe8hb4=;
+        b=EoNbSEMPlXDJR35FUV+Lb35fcv9hppJpZ7jp0zliwDBO+5rrdbYzQgBf8nL+9tBN0z
+         s4zd1stMOQqbOpR6r82eWl8ONUG1MJYTowkXZKiFcZas1S0+5dVs+rhya3AP2MrINqSO
+         WsbI69+hTrdsnqHK+r1biR9zafUV3i+IONvvKD5mUQ3m5h6qThpRnyOimV84jOpEF+QJ
+         0fwtJA6NXJgJm2cq8iXPL2HOxVNnuUgbfarK7moH7eyF8A1N2PzrEtwLJdpCwmKqFRHy
+         1ngdqAUwSsmyIwjYLtfvdR2jv6HkTduV8gBtRgOuOa3ku9ieqlt5eVWHgpdFgDaiBna4
+         1X5A==
+X-Forwarded-Encrypted: i=1; AHgh+RpwAbHqQvbLFEzv96mHC2xvB6C0fGLuaWPE36Cqvf9H/tYBbgEdYNsiqmaDWCaZSOhWkfI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwSZ6CiS4UGvseUAiagLhABOmHVpUHqwdQQxSRhm9jBjmeDPNVa
+	r82XuOpqq7WjAHmddNsV4vWz4sg1LPJGjfWoEGoEZ4GLvcwUOXgFptom
+X-Gm-Gg: AfdE7cmAwVHD0cXDq/lWYFy5vygDLoOaVZKD4Chd7lmYBUdpMjOPOGJOA+IchnG1xML
+	RPDJ8ZLFHvg0jHcG9xQ8Op0WY/uGJCvRJ0r7Se4Zq/rJAPWd7mXz3Eue45R0TiiNfW9eo6Hn663
+	Xy+mtpVYvHQN0tl67nCT9jwm+s2eq0wxyXHh/ZKNCJWYSP7B1dkVrKsZAAp5HR9k9wZ+fNdLLC7
+	u45qatA9EpYg9vMl0ufpOOk9CQPS/D3mUMhUPWOz9GFQXHmKWUhHouGGKMKMcfjj+2C14YY2oEM
+	/K/yPfDPOl7O9RvGygl8mSmHSlbwOguCIsPMjw6Ubvu5vMNbWR1IsoLlU9hWg1k6m3y0E5F8n0q
+	eOAyV7yXw6QCN+h8PM0giMQD/B7MNATScLngN7G37Ld5u+4jMX4qX9v+lnGGH8aySacbiKcBaLo
+	+HzP2emGgtlw==
+X-Received: by 2002:a05:600c:1989:b0:495:699:84ca with SMTP id 5b1f17b1804b1-4954a798f17mr83663665e9.28.1784417757432;
+        Sat, 18 Jul 2026 16:35:57 -0700 (PDT)
+Received: from [127.0.0.2] ([2a01:14:111:ccf0:645b:9e5c:7fe3:c09f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954a2a24b6sm160964675e9.3.2026.07.18.16.35.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jul 2026 16:35:56 -0700 (PDT)
+From: Diogo Silva <diogompaissilva@gmail.com>
+Subject: [PATCH 00/15] drm/drm_simple: remove drm_simple_encoder_init
+Date: Sun, 19 Jul 2026 01:35:31 +0200
+Message-Id: <20260719-drm_simple_encoder_init-v1-0-a78c509e3062@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 19 Jul 2026 03:12:58 +0800
-Message-Id: <DK1XPK73QJHC.JWFUMTTLOD1D@oss.qualcomm.com>
-Cc: <dri-devel@lists.freedesktop.org>, <Frank.Li@kernel.org>,
-        <imx@lists.linux.dev>
-Subject: Re: [PATCH v2] drm/imx: replace struct drm_simple_display_pipe with
- regular atomic helpers
-From: "Ze Huang" <ze.huang@oss.qualcomm.com>
-To: <sashiko-reviews@lists.linux.dev>, "Ze Huang"
- <ze.huang@oss.qualcomm.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260716-drm-simple-kms-removal-v2-1-7e4a6b8528e6@oss.qualcomm.com> <20260716091459.1D8101F000E9@smtp.kernel.org>
-In-Reply-To: <20260716091459.1D8101F000E9@smtp.kernel.org>
-X-Authority-Analysis: v=2.4 cv=HpxG3UTS c=1 sm=1 tr=0 ts=6a5bd041 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=RQ3dwY0XcLBFaqRX7rIGyg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=P-IC7800AAAA:8 a=U8GEcZiWL5moPHtnF8wA:9
- a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22 a=FO4_E8m0qiDe52t0p3_H:22
- a=d3PnA9EDa4IxuAV0gXij:22
-X-Proofpoint-GUID: IO1a9wKax1Er__EAVG0VrZV8LgaAohYy
-X-Proofpoint-ORIG-GUID: IO1a9wKax1Er__EAVG0VrZV8LgaAohYy
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE4MDIwMiBTYWx0ZWRfXyPrIFOXNR4tG
- kP5ARVA8QIiDRmMzzY7Ye3+OT3YcWI15xzVE4PqwLfsuPSOPYd/RN+z1AjzsrKOeFQ32GZyH7Jq
- FNQa9uENh8VRPgtTR9iQRvUObp6RmpSjrGoGSmW6NlZMNOStRxN1nXaHmEGt1IZ/xoDJDayqrRw
- PVikTC3ovCVVlMqKfCpgUF+pMrZuqkyYdcwHZSIuMtHL7+i/n1Tfvwtr/U+ToDj4gREDmaJdKrX
- aPyujCoG9eKyetfk0ZsdUgvOC4m0qjJnX0mEUxHcFZY5CMyqWnLRxlOxQUGurdZWCqiFhzX1Lg6
- iHC4WsTpv489+ldPvbQIyJVD8R+3GS3dW7uig5RqMlMYW7968I8WsCOhiTiWl+QwnnZOsyWijtc
- wo9VJJcxreF+lT6ABs+w1JBO4GB2SchLrmBGp2oDNnjKIT0yiwz9OLzq2K9e6RpgOQa5RHLKSdn
- aQ2Z9voYG1OcT+tVIgw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE4MDIwMiBTYWx0ZWRfXzoHE9v2o7NzH
- JxlFsi+uRENvAucxGqAjwZPmanNJVvb1AhlqVhzR5JusAku/y0SQklJGSEwss6z/e6sfdBx0U4M
- jWcAfeIWKWhzIoqDYSdVoO2wyOwdhJs=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-18_05,2026-07-17_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 malwarescore=0 clxscore=1015 priorityscore=1501
- adultscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607180202
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMQNXGoC/yXM0QqCQBBG4VeRuW5hlVDrVSIWnf2tiVxlRiMQ3
+ 72tLr+LczYyqMDoXGykeInJlDLKQ0F879INTmI2Vb6qfVO2LuoYTMb5iYDEU4QGSbK46OtTd2R
+ uhranXM+KQd6/8+X6t639A7x8d7TvHyUPD1h7AAAA
+X-Change-ID: 20260718-drm_simple_encoder_init-d069a4cc7f8b
+To: Jingoo Han <jingoohan1@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Peter Griffin <peter.griffin@linaro.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Michal Simek <michal.simek@amd.com>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, Stefan Agner <stefan@agner.ch>, 
+ Alison Wang <alison.wang@nxp.com>, 
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
+ David Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ Gurchetan Singh <gurchetansingh@chromium.org>, 
+ Chia-I Wu <olvaffe@gmail.com>, Jyri Sarha <jyri.sarha@iki.fi>, 
+ Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Xinliang Liu <xinliang.liu@linaro.org>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
+ Liviu Dudau <liviu.dudau@arm.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
+ imx@lists.linux.dev, linux-mediatek@lists.infradead.org, 
+ linux-renesas-soc@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+ linux-doc@vger.kernel.org, Diogo Silva <diogompaissilva@gmail.com>
+X-Mailer: b4 0.15.2
 
-On Thu Jul 16, 2026 at 5:14 PM CST, sashiko-bot wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential issu=
-e(s) to consider:
->
-> New issues:
-> - [High] Missing framebuffer validation in atomic paths leads to an uncon=
-ditional NULL pointer dereference when a plane is configured without a fram=
-ebuffer.
-> - [High] `imx_lcdc_plane_helper_atomic_check` fetches a potentially NULL =
-CRTC state, causing a kernel panic in core helpers.
-> - [High] Redundant clock enable calls cause a persistent reference count =
-leak for `clk_per` on every display modeset.
->
-> Pre-existing issues:
-> - [Critical] The driver accesses peripheral MMIO registers and leaves int=
-errupts unmasked while the AHB and IPG bus clocks are disabled.
-> - [High] The CRTC atomic check unconditionally overwrites the `mode_chang=
-ed` flag, potentially discarding modeset requests initiated by the DRM core=
-.
-> - [High] VBLANK completion events are signaled prematurely during display=
- disable/modeset sequences.
-> --
->
-> --- Patch [1]: [PATCH v2] drm/imx: replace struct drm_simple_display_pipe=
- with regular atomic helpers ---
-> commit 78bda5593353310f7405860b2b4d7ea3060e0afa
-> Author: Ze Huang <ze.huang@oss.qualcomm.com>
-> Subject: drm/imx: replace struct drm_simple_display_pipe with regular ato=
-mic helpers
->
-> This commit converts the i.MX LCDC driver to explicit primary plane, CRTC=
-,=20
-> and encoder objects, removing the dependency on the simple-KMS framework.=
-=20
-> It preserves most of the previous callbacks by rewiring them into the=20
-> standard atomic helper paths.
->
-> Link: https://patch.msgid.link/20260705-drm-simple-kms-removal-v1-0-b4e1c=
-a053623@oss.qualcomm.com
->
->> diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/l=
-cdc/imx-lcdc.c
->> index c67fe80b8115e..5c858fc81a78c 100644
->> --- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
->> +++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
->
-> [ ... ]
->
->> -static void imx_lcdc_pipe_enable(struct drm_simple_display_pipe *pipe,
->> -				 struct drm_crtc_state *crtc_state,
->> -				 struct drm_plane_state *plane_state)
->> +static void imx_lcdc_crtc_helper_atomic_enable(struct drm_crtc *crtc,
->> +					       struct drm_atomic_commit *commit)
->>  {
->>  	int ret;
->>  	int clk_div;
->>  	int bpp;
->> -	struct imx_lcdc *lcdc =3D imx_lcdc_from_drmdev(pipe->crtc.dev);
->> -	struct drm_display_mode *mode =3D &pipe->crtc.mode;
->> +	struct imx_lcdc *lcdc =3D imx_lcdc_from_drmdev(crtc->dev);
->> +	struct drm_crtc_state *cstate =3D drm_atomic_get_new_crtc_state(commit=
-, crtc);
->> +	struct drm_plane_state *plane_state =3D lcdc->plane.state;
->
-> [Severity: High]
-> Does this code result in a NULL pointer dereference when a primary plane =
-is
-> configured without a framebuffer?
->
-> If userspace submits an atomic commit that enables the CRTC but sets the
-> primary plane's FB_ID to 0, plane_state->fb will be NULL.
->
+The simple KMS helpers are deprecated because they only add an
+intermediate layer between drivers and atomic modesetting.
 
-Will access plane_state with drm_atomic_get_new_plane_state()
+This series open-codes all remaining drm_simple_encoder_init() users by
+calling drm_encoder_init() directly and providing driver-local
+drm_encoder_funcs where needed. After the driver conversions, the helper
+is removed and the completed DRM todo item is dropped.
 
->
-> Since drm_atomic_helper_check_crtc_primary_plane only verifies that the
-> primary plane is present in the plane mask, it does not prevent a NULL
-> framebuffer. This causes an unconditional dereference shortly after this =
-line
-> when extracting the format via imx_lcdc_get_format(), as well as inside=
-=20
-> imx_lcdc_update_hw_registers() when calling drm_fb_dma_get_gem_addr().
->
->> +	struct drm_display_mode *mode =3D &cstate->mode;
->>  	struct drm_display_info *disp_info =3D &lcdc->connector->display_info;
->>  	const int hsync_pol =3D (mode->flags & DRM_MODE_FLAG_PHSYNC) ? 0 : 1;
->>  	const int vsync_pol =3D (mode->flags & DRM_MODE_FLAG_PVSYNC) ? 0 : 1;
->
-> [ ... ]
->
->> @@ -230,40 +232,46 @@ static void imx_lcdc_pipe_enable(struct drm_simple=
-_display_pipe *pipe,
->> =20
->>  	ret =3D clk_prepare_enable(lcdc->clk_ipg);
->>  	if (ret) {
->> -		dev_err(pipe->crtc.dev->dev, "Cannot enable ipg clock: %pe\n", ERR_PT=
-R(ret));
->> +		dev_err(crtc->dev->dev, "Cannot enable ipg clock: %pe\n", ERR_PTR(ret=
-));
->>  		return;
->>  	}
->
-> [Severity: Critical]
-> This is a pre-existing issue, but does this perform memory-mapped writes =
-to
-> peripheral registers before the IPG and AHB bus clocks are enabled?
->
-> Just prior to enabling the IPG clock here, the driver performs multiple
-> writel() configuration writes to the LPCR and LCPR registers. Accessing
-> registers of an unclocked IP block on i.MX platforms can hang the bus and
-> trigger a synchronous external abort. Could we ensure the clocks are
-> prepared and enabled before doing configuration writes?
->
->>  	ret =3D clk_prepare_enable(lcdc->clk_ahb);
->>  	if (ret) {
->> -		dev_err(pipe->crtc.dev->dev, "Cannot enable ahb clock: %pe\n", ERR_PT=
-R(ret));
->> +		dev_err(crtc->dev->dev, "Cannot enable ahb clock: %pe\n", ERR_PTR(ret=
-));
->> =20
->>  		clk_disable_unprepare(lcdc->clk_ipg);
->> =20
->>  		return;
->>  	}
->> =20
->> -	imx_lcdc_update_hw_registers(pipe, NULL, true);
->> +	imx_lcdc_update_hw_registers(crtc, NULL, true);
->> =20
->>  	/* Enable VBLANK Interrupt */
->>  	writel(INTR_EOF, lcdc->base + IMX21LCDC_LIER);
->> +
->> +	drm_crtc_vblank_on(crtc);
->>  }
->> =20
->> -static void imx_lcdc_pipe_disable(struct drm_simple_display_pipe *pipe)
->> +static void imx_lcdc_crtc_helper_atomic_disable(struct drm_crtc *crtc,
->> +						struct drm_atomic_commit *commit)
->>  {
->> -	struct imx_lcdc *lcdc =3D imx_lcdc_from_drmdev(pipe->crtc.dev);
->> -	struct drm_crtc *crtc =3D &lcdc->pipe.crtc;
->> +	struct drm_crtc_state *old_crtc_state =3D drm_atomic_get_old_crtc_stat=
-e(commit, crtc);
->> +	struct drm_crtc_state *new_crtc_state =3D drm_atomic_get_new_crtc_stat=
-e(commit, crtc);
->> +	struct imx_lcdc *lcdc =3D imx_lcdc_from_drmdev(crtc->dev);
->>  	struct drm_pending_vblank_event *event;
->> =20
->> +	drm_crtc_vblank_off(crtc);
->> +
->>  	clk_disable_unprepare(lcdc->clk_ahb);
->>  	clk_disable_unprepare(lcdc->clk_ipg);
->> =20
->> -	if (pipe->crtc.enabled)
->> +	if (old_crtc_state->enable)
->>  		clk_disable_unprepare(lcdc->clk_per);
->> =20
->>  	spin_lock_irq(&lcdc->drm.event_lock);
->> -	event =3D crtc->state->event;
->> +	event =3D new_crtc_state->event;
->>  	if (event) {
->> -		crtc->state->event =3D NULL;
->> +		new_crtc_state->event =3D NULL;
->>  		drm_crtc_send_vblank_event(crtc, event);
->>  	}
->
-> [Severity: High]
-> This isn't a bug introduced by this patch, but does consuming the event
-> during the disable phase signal completion to userspace prematurely?
->
-> Sending the event here signals to the compositor that the modeset is comp=
-lete
-> before the new mode is programmed and flushed, which could lead to frame
-> submission races or compositor stalls.
->
->>  	spin_unlock_irq(&lcdc->drm.event_lock);
->> @@ -272,17 +280,20 @@ static void imx_lcdc_pipe_disable(struct drm_simpl=
-e_display_pipe *pipe)
->>  	writel(0, lcdc->base + IMX21LCDC_LIER);
->
-> [Severity: Critical]
-> This is a pre-existing issue, but are the bus clocks disabled before clea=
-ring
-> the VBLANK interrupt?
->
-> Similar to the enable path, writing to the LIER register while the IPG an=
-d
-> AHB clocks are disabled can trigger a bus fault. Furthermore, since the
-> interrupt is unmasked before the clocks are disabled, an incoming IRQ cou=
-ld
-> cause the handler to read the LISR register while clocks are off.
->
->>  }
->> =20
->> -static int imx_lcdc_pipe_check(struct drm_simple_display_pipe *pipe,
->> -			       struct drm_plane_state *plane_state,
->> -			       struct drm_crtc_state *crtc_state)
->> +static int imx_lcdc_crtc_helper_atomic_check(struct drm_crtc *crtc,
->> +					     struct drm_atomic_commit *commit)
->>  {
->> +	struct drm_crtc_state *crtc_state =3D drm_atomic_get_new_crtc_state(co=
-mmit, crtc);
->> +	struct drm_crtc_state *old_crtc_state =3D drm_atomic_get_old_crtc_stat=
-e(commit, crtc);
->>  	const struct drm_display_mode *mode =3D &crtc_state->mode;
->> -	const struct drm_display_mode *old_mode =3D &pipe->crtc.state->mode;
->> +	const struct drm_display_mode *old_mode =3D &old_crtc_state->mode;
->> +	int ret;
->> =20
->> -	if (mode->hdisplay < LCDC_MIN_XRES || mode->hdisplay > LCDC_MAX_XRES |=
-|
->> -	    mode->vdisplay < LCDC_MIN_YRES || mode->vdisplay > LCDC_MAX_YRES |=
-|
->> -	    mode->hdisplay % 0x10) { /* must be multiple of 16 */
->> -		drm_err(pipe->crtc.dev, "unsupported display mode (%u x %u)\n",
->> +	if (crtc_state->enable &&
->> +	    (mode->hdisplay < LCDC_MIN_XRES || mode->hdisplay > LCDC_MAX_XRES =
-||
->> +	     mode->vdisplay < LCDC_MIN_YRES || mode->vdisplay > LCDC_MAX_YRES =
-||
->> +	     mode->hdisplay % 0x10)) { /* must be multiple of 16 */
->> +		drm_err(crtc->dev, "unsupported display mode (%u x %u)\n",
->>  			mode->hdisplay, mode->vdisplay);
->>  		return -EINVAL;
->>  	}
->> @@ -291,46 +302,116 @@ static int imx_lcdc_pipe_check(struct drm_simple_=
-display_pipe *pipe,
->>  		old_mode->hdisplay !=3D mode->hdisplay ||
->>  		old_mode->vdisplay !=3D mode->vdisplay;
->
-> [Severity: High]
-> This is a pre-existing issue, but does this direct assignment to
-> mode_changed discard modeset requests initiated by the DRM core?
->
-> The core drm_atomic_helper_check_modeset() function may have already set
-> mode_changed to true due to connector routing changes or userspace forcin=
-g a
-> modeset. Using a direct assignment instead of a bitwise OR (|=3D) silentl=
-y
-> clears that flag if the spatial dimensions haven't changed.
->
->> -	return 0;
->> +	if (crtc_state->enable) {
->> +		ret =3D drm_atomic_helper_check_crtc_primary_plane(crtc_state);
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	return drm_atomic_add_affected_planes(commit, crtc);
->>  }
->> =20
->> -static void imx_lcdc_pipe_update(struct drm_simple_display_pipe *pipe,
->> -				 struct drm_plane_state *old_state)
->> +static void imx_lcdc_plane_helper_atomic_update(struct drm_plane *plane=
-,
->> +						struct drm_atomic_commit *commit)
->>  {
->> -	struct drm_crtc *crtc =3D &pipe->crtc;
->> -	struct drm_pending_vblank_event *event =3D crtc->state->event;
->> -	struct drm_plane_state *new_state =3D pipe->plane.state;
->> +	struct drm_plane_state *old_state =3D drm_atomic_get_old_plane_state(c=
-ommit, plane);
->> +	struct drm_plane_state *new_state =3D drm_atomic_get_new_plane_state(c=
-ommit, plane);
->> +	struct drm_crtc *crtc =3D new_state->crtc ?: old_state->crtc;
->>  	struct drm_framebuffer *fb =3D new_state->fb;
->>  	struct drm_framebuffer *old_fb =3D old_state->fb;
->>  	struct drm_crtc *old_crtc =3D old_state->crtc;
->>  	bool mode_changed =3D false;
->> =20
->> +	if (!fb)
->> +		return;
->> +
->>  	if (old_fb && old_fb->format !=3D fb->format)
->>  		mode_changed =3D true;
->>  	else if (old_crtc !=3D crtc)
->>  		mode_changed =3D true;
->> =20
->> -	imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
->> +	imx_lcdc_update_hw_registers(crtc, old_state, mode_changed);
->> +}
->
-> [Severity: High]
-> Does calling imx_lcdc_update_hw_registers() here cause a persistent refer=
-ence
-> count leak for clk_per?
->
-> During a modeset, imx_lcdc_crtc_helper_atomic_enable() already calls
-> imx_lcdc_update_hw_registers() which increments the clock reference count
-> when the CRTC is enabled.
->
-> When the plane helper subsequently calls it again here, the clock prepare
-> enable block is hit a second time. However, during display disable, the
-> plane update returns early due to a NULL fb, meaning the clock is only
-> disabled once in the CRTC disable path.
->
->> =20
->> -	if (event) {
->> -		crtc->state->event =3D NULL;
->> +static int imx_lcdc_plane_helper_atomic_check(struct drm_plane *plane,
->> +					      struct drm_atomic_commit *commit)
->> +{
->> +	struct drm_plane_state *plane_state =3D drm_atomic_get_new_plane_state=
-(commit, plane);
->> +	struct drm_crtc *crtc =3D plane_state->crtc;
->> +	struct drm_crtc_state *crtc_state =3D NULL;
->> =20
->> -		spin_lock_irq(&crtc->dev->event_lock);
->> +	if (crtc)
->> +		crtc_state =3D drm_atomic_get_new_crtc_state(commit, crtc);
->> =20
->> -		if (crtc->state->active && drm_crtc_vblank_get(crtc) =3D=3D 0)
->> -			drm_crtc_arm_vblank_event(crtc, event);
->> -		else
->> -			drm_crtc_send_vblank_event(crtc, event);
->> +	return drm_atomic_helper_check_plane_state(plane_state, crtc_state,
->
-> [Severity: High]
-> Can fetching the CRTC state this way cause a kernel panic in the core ato=
-mic
-> helpers?
->
-> If userspace submits a commit that modifies only plane properties without
-> affecting the CRTC, the CRTC is not implicitly added to the atomic commit
-> state.
->
-> In this scenario, drm_atomic_get_new_crtc_state() returns NULL. Passing t=
-his
-> NULL pointer directly to drm_atomic_helper_check_plane_state() causes a c=
-rash
-> when it dereferences crtc_state->enable.
->
-> Could this use drm_atomic_get_crtc_state() instead to ensure the state is
-> brought into the commit if it is missing?
+Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
+---
+Diogo Silva (15):
+      drm/exynos: remove dependency on DRM simple helpers
+      drm/xlnx/zynqmp_dpsub: remove dependency on DRM simple helpers
+      drm/tegra: remove dependency on DRM simple helpers
+      drm/fsl-dcu: remove dependency on DRM simple helpers
+      drm/kmb: remove dependency on DRM simple helpers
+      drm/virtio: remove dependency on DRM simple helpers
+      drm/tidss: remove dependency on DRM simple helpers
+      drm/imx: remove dependency on DRM simple helpers
+      drm/mediatek: remove dependency on DRM simple helpers
+      drm/renesas/shmobile: remove dependency on DRM simple helpers
+      drm/hisilicon/kirin: remove dependency on DRM simple helpers
+      drm/arm/komeda: remove dependency on DRM simple helpers
+      drm/meson: remove dependency on DRM simple helpers
+      drm/drm_simple: remove deprecated drm_simple_encoder_init function
+      Documentation/gpu: remove completed drm_simple_encoder_init() todo
 
-I think it is fine here; I'll just copy the pattern from [1].
+ Documentation/gpu/todo.rst                        | 15 ---------------
+ drivers/gpu/drm/arm/display/komeda/komeda_crtc.c  |  9 +++++++--
+ drivers/gpu/drm/drm_simple_kms_helper.c           | 13 ++-----------
+ drivers/gpu/drm/exynos/exynos_dp.c                | 13 +++++++++++--
+ drivers/gpu/drm/exynos/exynos_drm_dpi.c           | 14 ++++++++++++--
+ drivers/gpu/drm/exynos/exynos_drm_dsi.c           | 11 +++++++++--
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c          | 14 ++++++++++++--
+ drivers/gpu/drm/exynos/exynos_hdmi.c              | 15 +++++++++++++--
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_rgb.c         | 10 +++++++---
+ drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c      |  9 +++++++--
+ drivers/gpu/drm/imx/dc/dc-kms.c                   |  8 ++++++--
+ drivers/gpu/drm/kmb/kmb_dsi.c                     |  9 +++++++--
+ drivers/gpu/drm/mediatek/mtk_dsi.c                | 10 +++++++---
+ drivers/gpu/drm/meson/meson_encoder_cvbs.c        | 11 ++++++++---
+ drivers/gpu/drm/meson/meson_encoder_dsi.c         | 11 ++++++++---
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c        | 11 ++++++++---
+ drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c | 10 +++++++---
+ drivers/gpu/drm/tegra/dsi.c                       | 17 ++++++++++++++---
+ drivers/gpu/drm/tegra/rgb.c                       | 14 ++++++++++++--
+ drivers/gpu/drm/tidss/tidss_encoder.c             | 10 +++++++---
+ drivers/gpu/drm/virtio/virtgpu_display.c          | 12 ++++++++++--
+ drivers/gpu/drm/xlnx/zynqmp_kms.c                 | 13 +++++++++++--
+ include/drm/drm_simple_kms_helper.h               |  4 ----
+ 23 files changed, 185 insertions(+), 78 deletions(-)
+---
+base-commit: e55c6b9a3522aaf1441a0662d534c1c7bfa9b860
+change-id: 20260718-drm_simple_encoder_init-d069a4cc7f8b
 
-[1] https://elixir.bootlin.com/linux/v7.1.2/source/drivers/gpu/drm/mgag200/=
-mgag200_mode.c#L487
+Best regards,
+--  
+Diogo Silva <diogompaissilva@gmail.com>
+
