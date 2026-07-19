@@ -1,104 +1,128 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F8935979
-	for <imx@lists.linux.dev>; Sun, 19 Jul 2026 22:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4117235979
+	for <imx@lists.linux.dev>; Sun, 19 Jul 2026 22:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784498535; cv=none; b=lryiwlBe+I9FTQZmd1WgwM03enA8AmH6ER+Yg9K/QF5fjc8Oi64+2tuCKiEPOm/pyE1eU8mT3gdBRvVDIzHWhT0+wLiTn043IFaslhATUuQyAtQHeR7metE8zcqBFUqBdmarToJnC+NghOsFjSeqWDgMnVdRbHMNk2V0CHI3tFI=
+	t=1784499033; cv=none; b=sTFgRSa9FEYQtYaEB9cER0bzz6qDhKId3iHpc4OWlsNnR/3LUGsbz5XSM8Bx67cllX+fLwr+bdqfrD7u2i7OFljZIoGl0fTomMcCE0DhaqB/APo/4vn0N+MP0CeVdQxeuMGqdlG3+WbfWMQb93jbab3dDtURJruPASVuJYDtewM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784498535; c=relaxed/simple;
-	bh=67kSqJxBYeYORHm3dPY68gMhUJtatG/gvs2HaazGZ88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MdK7f/7Wua8Y8Dcl2NCx1pDz77w5OUaF9w0MjBypXQ5NRZS28HaaVvtbBeNWXDFbQR3EUw4Gyl2mhDLRnRu/ihB+3rZPtbliNVwLMKrO2mpaFM9earmOedpM4UftTARLSi61jBLwPEx1/tntLfKB0mzDhHEjNVKLUghLEuTTkbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E/mChse9; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1784499033; c=relaxed/simple;
+	bh=WKG4aYWvJjBpvDHeWFwlKSa+4vrtqttZ1i+2fGHy390=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IWBYJ7w69iuXH8X8CiH7LShC0qZXaoCwRtlqow8yRNYItwtQhm0/CVKGuteM5qLEszVTBmdgjzxOzm3uvhKJDhseoBa/7QZKMilNEUU6AsSawh3sgTBgFsLUv4Vbh8uc57xSWlruR1wMjUTj8w34tN+4E1rhEv+8tILXnxSLTF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WMADNQb8; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E/mChse9"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49554ebb87dso11372895e9.3
-        for <imx@lists.linux.dev>; Sun, 19 Jul 2026 15:02:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WMADNQb8"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47f785467faso132311f8f.2
+        for <imx@lists.linux.dev>; Sun, 19 Jul 2026 15:10:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784498532; x=1785103332; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CtzMPjTew5PFKy9cuAsUj9YRpPA5Fe9E0O8jZqCNoi0=;
-        b=E/mChse9yRP9FAWMFSb6vzZwxAHKsYSKUuMOjj5NkVuayVSGLA9ETAfsCk06Moyavs
-         fC/HSL+XL/XHcKakgYCdLXg6HmWeJxfSUsfDylqQ1vIKEXKUAv7EqqczXuNGC8SS6W/k
-         x3sg3unHDayDuraJvwGjgz5Iu0pguqvTwFiCr/V+uIHj4O2lcYpyVyUAJ6pRdkYNJNK5
-         1KYhXpoOPXOvM1mYYMjJJN+77u5Q9FrH2FYqOp5MyGtFZapWrRQdEoZqtv/nHrjygVXq
-         xVOAtbRB3gbwtoadwyoVzncVwEWq69IViYgb0ke/gWongnaXATeNUMbfGu2Ts2RXPgy4
-         OQsA==
+        d=gmail.com; s=20251104; t=1784499030; x=1785103830; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uvinVPUoJhsV28WHeBTxSrSEvMvTNBW/BR+fiFjpbyw=;
+        b=WMADNQb85KOU/Jz0uD0k0n5V6Jdv3oeNagZDxWtib4cKVrDKhmp9pM6XoUwbc99/Fe
+         gB9j9y2Wn2c1pIMaBqzLbvh8NSOFSHyPGH1uF53gvlPfijZrufzdGedxN7k/+gyY3E3x
+         OEiHdGLkpZCpyCy2/mVr2lGT2kJiSzfAR3kJsuAAuR1SzN+JVW9qM3OS1FXmip+qRSpW
+         +7VQWPw2qeA3tmKTlqG0uHnVXZ1s8ZH1PxT7zIPX9a5dIYHYscntahxhoAL5ihuh7TY8
+         7AyvNRswrFohtF7zS9muObb4uamaitmwfZW6n3UsFIfkBbhhco7ptLXitFsdDU7l3X8V
+         JCnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784498532; x=1785103332;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CtzMPjTew5PFKy9cuAsUj9YRpPA5Fe9E0O8jZqCNoi0=;
-        b=YIo1wv+ddtPPgT51nh34Gy4CKl+ktXEpX9gs4DRqUgeE4xaTqRu/7YnWGZ1yoU4rwG
-         cNVIKOEBKhIrotEIPU5sHlUxW5h82R5ObTaUIj7CCpTBNLx8i9r3EiIty7PwfSgLZTBZ
-         yeiwFH9SmmKkaon1OssvYrqPso4+0XMvKM62IfAHDJy4C95TbUTirQdB57wz7b4fIPK3
-         OrBwgkfhjQljszrHfT0CA3TIlt6nFeEV4gJx9MmT3DCTdIuINHlCHsQ5uaCI8fKWIHXA
-         040GXRmjf6qaKhws4BO7sG+wK62tP2ew8VzWBrVzDwXZieb7q5CHZowFKGhcEYyoqCle
-         VK3Q==
-X-Gm-Message-State: AOJu0YzF1Srli15UqZWnW2mDSWrIziU0y+7yYXD17JKmtPfK63gzHOAf
-	naav5ZXeGkDk8lpbvBU25oyHsDha6vnCmoo+XVFnKyG/F1cnEJsaxMC/
-X-Gm-Gg: AfdE7cmOjBO4cp+2ZtfGCc628WtfZR18jVGN5KlmDqpS35ExgHCH+a4ZP3qyd/aK19E
-	V6iLHYRvC3+ITK9boDzHlzdV+FbQJ76KimGSfAi4tgt1rKUeNQ5kGVNhN0Als2ut8vwA7KQ4QMx
-	sXX/qfss2WnamrteHWEUho4PyYVgctQbSXYfJYr1d/Ao3IBTa8CoLSQ6EqhJ84Qy9DUFFJKE65+
-	9Ru/akYKd5UmoevuzqBr7A0GCvlRD+89nhUwQMj31WEUFIOKT8zfvSWtJ43mYvEzjk3pygs8o07
-	YoVKeDbHsKGibWNIpDax9HQU6zk9VR5WqBBg/uVGTu7q4sAR0zxcq5QjSsaS+R+JOZ3Hy9v99KA
-	AZeUAl2KSpLOIrvCNUQU1KOLpBJC7Wk5m4acL5UeP3ZOQQL+CGlyTJJTpbBILuFKMh53A1XrbQN
-	+uDujFjBZuI1HjjMuGlnSeMsoGrCEtG2H2ShwXSeE6I1BEisff14hJYjnj0e32ouIDgYGI+1OS9
-	h4fTrArZrx0AVM1FS4plnoEVm4xRzKbN2wFqfyX+xBeb9bcvNloht4TyNI9cGS2b4JsmDDTQHWN
-	1LhNFOAt
-X-Received: by 2002:a05:600c:6a0b:b0:493:c453:6002 with SMTP id 5b1f17b1804b1-4954a516453mr75828265e9.35.1784498531930;
-        Sun, 19 Jul 2026 15:02:11 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl (dynamic-2a02-3100-aeaf-bd01-78a0-2a2d-507f-c97c.310.pool.telefonica.de. [2a02:3100:aeaf:bd01:78a0:2a2d:507f:c97c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954995b78dsm151510615e9.0.2026.07.19.15.02.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 15:02:11 -0700 (PDT)
-Date: Mon, 20 Jul 2026 00:02:09 +0200
+        d=1e100.net; s=20251104; t=1784499030; x=1785103830;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uvinVPUoJhsV28WHeBTxSrSEvMvTNBW/BR+fiFjpbyw=;
+        b=lxfh/xcQJKa5AKWZhL0XdxYax1ffyZpX5I7Bl3L4ud9WhmLu5aC1fqLqZ++GxeIbz5
+         38W+CKz3TtxrRpniLnVBX/qc6n/AelcLb8GenHvWcIk9U0XfZtp7+P62HR1ljKW2EF1X
+         HvrJrhJAVU37NNShIaa4dvr/8WicN30e3PyIx3Y0ZILScIcm9yMdES6NSJPDA/LBzhwG
+         M7dyVtAx16uPs5oU67laTZFNX2mS3OLgM+/3jE16uuJ9mFWi/Q+uAxZAnXT5xDVz6VAd
+         9HGOtviFJGVKNnK5tsvl8jnMvu6FaXhJ4p2QxMQG/VRaILl4ZRQN+FZMj/rnJquzxfwj
+         B5sA==
+X-Forwarded-Encrypted: i=1; AHgh+RpPOk84g7DU/CzJIMqOgv8Spc0PM6mxHeVVR0mHWtuL4zOe6HVuVO5EEWA6covHG/LGaGo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwMkdyXz+NTcga6L6m0yXx09qYRvWv7N2RU++KnERmIVokOfTOF
+	/7zxMUsLZXOR5E+rW8RuUuAvzFPTpc4cJtpzwUY/ulESzOJvvwonP8CAXMJDJXRl
+X-Gm-Gg: AfdE7clwPCY5iVFw75kJ2KrKGAX9lTHo/8J4zsXsSenpWXynMxKvhZQrD5rqRzzH70x
+	2BbYjoWxlOZzxZmVFtFfUYitPp577gtWuIH9A0Gye64obVrgtrEtHmK3V1Wzoz820oSVKnuzCk+
+	qW3uurNzHMKlrqzVt7v0T4o0vKawFEJ5O/u1FK5vO6MvYRsfIE2/oAunxJKqzkUCf2VWhsaPWOz
+	jNqLTxZpCw417Kk/7UmIbxuI55C7NLIhwzmTSVw/jZClZR32om1ywa3x3cw8o7+HwBFUfvUfT9O
+	XVEpOhVbtmH72P21awj2sx4CAgnxu3wV6bSnqPz8a9vF4ayFOJC+U6T9BPlG7qS/VA/ffqrieQK
+	myoFCV+ar3oj/JGcM+/NCUwSJPp/oUV3JlqZb/HnerZx3s6lO1cHEZq7DpQPERHfi0+YG00pzcB
+	VMZGGW8gNjLTkyQAA55NHPUraivDMHaQuq3tU0xpP5PhNZA49jggKILRxcRs3Dw8vK2TYfMdK6k
+	r46xuS2nF+8oj4QLpfFO3DQtASnL3FZTsG4GQX5OheNbsxf1hVrksvC3N8fKS/fhNj7xSwSPADS
+	Dwcc4qbLBEpbdsXexdvylltS
+X-Received: by 2002:a05:600c:c117:b0:495:4b1d:915f with SMTP id 5b1f17b1804b1-4954b1d91ffmr117504925e9.23.1784499030391;
+        Sun, 19 Jul 2026 15:10:30 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-aeaf-bd01-78a0-2a2d-507f-c97c.310.pool.telefonica.de. [2a02:3100:aeaf:bd01:78a0:2a2d:507f:c97c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4955370d78csm114492445e9.12.2026.07.19.15.10.29
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 19 Jul 2026 15:10:29 -0700 (PDT)
 From: Karl Mehltretter <kmehltretter@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-Subject: Re: [PATCH 4/4] serial: imx: clear imx_uart_ports[] entry on probe
- failure and removal
-Message-ID: <al1CmLgNC4Tf5amR@gmail.com>
-References: <20260719160812.35407-1-kmehltretter@gmail.com>
- <20260719160812.35407-5-kmehltretter@gmail.com>
- <20260719162850.043B41F000E9@smtp.kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 0/4] serial: fix console lifetime bugs on failed bind and removal
+Date: Mon, 20 Jul 2026 00:10:10 +0200
+Message-Id: <20260719221014.44354-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260719162850.043B41F000E9@smtp.kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 19, 2026 at 04:28:49PM +0100, sashiko-bot@kernel.org wrote:
-> >  	uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
-> > +	imx_uart_ports[line] = NULL;
-> 
-> [Severity: High]
-> Does clearing imx_uart_ports[] after uart_remove_one_port() create a race
-> condition with concurrent sibling probes?
-> 
+This series fixes three serial/tty bind-error bugs and an i.MX console
+port-table lifetime bug. The fixes were found with failslab fail-nth sweeps
+and sysfs bind/unbind sequences under KASAN on QEMU's raspi1ap and
+mcimx6ul-evk machines.
 
-Yes, this is valid, but the underlying issue is not new.
+Patches 1-3 fix shared serial/tty core code. Patch 1 moves fallible serial
+core allocations before console registration; patch 2 clears serial-core
+pointers after uart_driver registration fails; and patch 3 makes a non-NULL
+tty cdev slot mean that the cdev is live.
 
-Before this change, a dangling pointer remained in the table and could
-be used by a later sibling probe.
+Patch 4 clears i.MX's devm-allocated port-table entry on probe failure and
+removal. It keeps the entry valid through console unregistration and
+serializes the table updates against sibling probes.
 
-This change narrows it to a window where a NULL-pointer dereference is
-possible.
+Backporting note: the probe-failure half of patch 4 relies on patch 1, which
+ensures that uart_add_one_port() cannot fail after registering the console.
+For complete coverage, patches 1 and 4 should be backported together.
 
-I'll send a v2 with a driver-wide mutex around the table updates and
-port add/remove.
+Validation for patch 4 includes reproducing the sibling-probe race under
+KASAN with and without the fix, a sequential unbind/rebind regression, and
+the same test with CONFIG_PROVE_LOCKING=y. The fixed kernel keeps the
+console unregistered and survives an explicit printk in each applicable run.
 
-Thanks,
-Karl
+Changes in v2:
+- Patch 4: serialize port registration and removal with imx_uart_ports[]
+  updates to close the reported sibling-probe race.
+- Patches 1-3 are unchanged.
+
+v1: https://lore.kernel.org/r/20260719160812.35407-1-kmehltretter@gmail.com
+
+Karl Mehltretter (4):
+  serial: core: do fallible allocations before the console can be
+    registered
+  serial: core: clear freed pointers on uart_register_driver() failure
+  tty: don't oops in tty_unregister_device() when no cdev is registered
+  serial: imx: serialize imx_uart_ports[] lifetime
+
+ drivers/tty/serial/imx.c         | 21 ++++++++++++++++++--
+ drivers/tty/serial/serial_core.c | 33 ++++++++++++++++++--------------
+ drivers/tty/tty_io.c             |  6 ++++--
+ 3 files changed, 42 insertions(+), 18 deletions(-)
+
+-- 
+2.53.0
