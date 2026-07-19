@@ -1,190 +1,162 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED153115B8
-	for <imx@lists.linux.dev>; Sun, 19 Jul 2026 22:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759DA315D23
+	for <imx@lists.linux.dev>; Sun, 19 Jul 2026 22:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784499054; cv=none; b=nqK6P2MT8myHO1G7M+tX95GV/BgumPKUDCYhGO9tlGU1nWnw8SuT5eaUsXfLi98WSCzDohGY6adAbZxMG/S6Iw7tVOYWEZ8wVYB6QOUcLYonT9d5v703bpPdNT4LqHWwMOelJVjX4+2nrVpMZe1vF+3S62gNaPnbTdjenYj6jOU=
+	t=1784499903; cv=none; b=GZc+18KzjcSngELCj2kw6ZW6hgjL14+XS/RrX+qQgUOA0g0LPQ8nfheFkJEdab7utcaTGII1sq2eGgI1oQuzzrO13Cjgxpdv6Ap1WEJ+O3DHwJtK7L+t4vRFPwwtIJLN4ylnv8HSeDbiyMlncV4j0rjQBfCKL9y/6cH+EPkJK+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784499054; c=relaxed/simple;
-	bh=e/TsC2jyQghy+fHjzGFRoV6KHp39YYSJL7Ig0TqCdS4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QfhI+ALLrJcWPI/BCME7mVsZ9HDe2QmU5ibX7ChKb/+xMfKs5lZzLXmGBv1wwhBf9WoVYgp3sx0xz8mrRBUgX0qD3pbchTCG4N6VvH+DYyYrLKDY8rljGPmyM+VljfOvpnWpGxN6JW/qFjraCOc4Js8JJY+PoeOgGz4lh3Mt5os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UEcQ7Jqz; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784499903; c=relaxed/simple;
+	bh=VyP8Rhfalaj/2GSNADh7qlwoShl/z98G4S6MRXUKsBQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=D7Jp0hTKdGxImx9ZyaXsNjcVx2oA8nX1Ejp2Yyfv5iO0ufwdD3Lb//5RoDd1/1a8GFjBbVwetzpy0Dyzv3SFadsfjLBayc6eUw2oDz+qz7wKNNAJSUOApASXMMy3K7byWRRNvtdB0FdhHkDu0MvBdnr16qfqjEJxKFvhvdfAnLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJcaWINC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UEcQ7Jqz"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4954a2e73a9so14655745e9.3
-        for <imx@lists.linux.dev>; Sun, 19 Jul 2026 15:10:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784499051; x=1785103851; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3PWe1Y8pYuAa7B+GagSYE8D0P3UeZCJcEkhdzL5G7fY=;
-        b=UEcQ7JqzIxUqSPUGA9/wr6BkcP762tVjdeWiv/R35erPZt1Xlk8ZeLlqnH2GnU5BBZ
-         jwsNsCymXvkZy+bfFwazbgAdZyT+QotuBvsAvbv6B1/yudofnq2jkYM0TmVTo0VSyy3c
-         eV5CKQPlO84exnsxGJsNDpcaCLxwyxisi8N8GoAO/nyYrwQ2qJzy5bJ7qTc66k6NMHtJ
-         voMM0JsEzWySAPlcDSD7/P+8RChkDccwc/1cyY9AgcN2OXHIRpEJc4pWZhgCT2tOUJ8U
-         kwS7LnUE0XLTn7wDhSuqw1MwtL3yZFwtoGQxmVLpbmYknz/6dl8eYGuhkfmQEhX0SH0i
-         B/pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784499051; x=1785103851;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3PWe1Y8pYuAa7B+GagSYE8D0P3UeZCJcEkhdzL5G7fY=;
-        b=YlPnBX8TnB2Wyoq2/vgFTxA/6/Zs4IaKdm67FpbApGc6PNPldBAXlDgV7X4znEg9MQ
-         XFarhO/AV0qvQ5EhNeDd7v8VvTN9zHUj6PQxGsnqIJ/DapMC9UMb1wuW6RzeTYnH1iSX
-         kB00Vzem1PAgw1LG1K7gCSZZMpr+669yP62/YKa1PdonD/aAu4S5fJo0blLMec84drr3
-         eJ8Fids8bThHealX+n/CgDLQ1iobCD6noYlDfbJ3UHaeeuiWIDoXVNB7o3gwOWtgr8pf
-         5zvt/j7czv0bhjolId1Dy27K7EMjJgOZMn1/hMMy19snwD+/ijDF7CECs1FVi7u+bGVm
-         Eprw==
-X-Forwarded-Encrypted: i=1; AHgh+RoVN51PVY9fajYoneF8NLHxEDVnZQUNCp83VhQ+2B4U2NtJCj3TUp2vH/qgnXDUxphaYMA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyfSNqQSDPw/OdkgPk/lo1q3rOzxTPKlrH8lovDhCHdpRPDE0qd
-	0YktnJL7APbhU1P78+3aJ3CxHt00Gl4cwD8V0xSi9nwu5LW9M0MZ1fqL
-X-Gm-Gg: AfdE7cltKunHoP7pN9D2wBIGpDC3IKmNXqNJ/MAazsEAU1MFrMlYszMOs+NrL2UvH2M
-	S9wZh0i6djJohBpwJ5ebjjWexqpdb1AsJEZdBgyCbxKOmXHxYFVbqsQxwBvsuapXZJFQ39lqgwY
-	JOkjqjFiIeqoyaxy2X3KYsiQP9yBBt9XYA5ZuSXQF3myAlF7bNLbSyJf62APQjMbAn3SNXXEzlF
-	4jNXP139EJK9xKtwpDVGce0f2KPVWhEvxckSOds32yVRicFpYQQrQMh+jNzlPJ91l/ZnZnDnJKj
-	yAUJiolCnpoZSbPEwqdIWigbG+2HiAyI+0w4LnMDQ7EraRHaWBP+0ScJVMnKQUkkabidOrHRU7a
-	T7GFBMcZv3tPbawuEMiUieVInPB1uvPllVUfCdDkGR3bx2HGor0nM23SP6iWX9/+RLkPfkVEUI3
-	19ZbTlnqJ+u2hnwwrA2ierpEtTLu97riALZ6tSPegoZQy2HcX/jqPiuJZf+jbaZwL3MITGkoCl6
-	NhE7GGr+zJS50epRQmW4GwLPP3eaBY7IQufE8h/PgiY7ByRAhv/PbbrbLUgofImvNeqn3aaMi8o
-	NWsfAmEa8bT6StPNomutHb/N/6in7HtnTQo=
-X-Received: by 2002:a05:600c:1f93:b0:493:c8c6:4989 with SMTP id 5b1f17b1804b1-4954a3d64d4mr124694595e9.6.1784499050684;
-        Sun, 19 Jul 2026 15:10:50 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-aeaf-bd01-78a0-2a2d-507f-c97c.310.pool.telefonica.de. [2a02:3100:aeaf:bd01:78a0:2a2d:507f:c97c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4955370d78csm114492445e9.12.2026.07.19.15.10.48
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 19 Jul 2026 15:10:49 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Sashiko <sashiko-bot@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 4/4] serial: imx: serialize imx_uart_ports[] lifetime
-Date: Mon, 20 Jul 2026 00:10:14 +0200
-Message-Id: <20260719221014.44354-5-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260719221014.44354-1-kmehltretter@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJcaWINC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4CB1F000E9;
+	Sun, 19 Jul 2026 22:25:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784499902;
+	bh=7yLQQA2TU4VmXffhr9oSwyNYsBWs20OCkRJIhyBJDVI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=dJcaWINCRVWokWmSFL/gYE1bUPxkZroG+NnQKdI6zVwb6Wv/EcWieXVy7/RgKVHRD
+	 Rs8Cf0x8Gn+H4ITH3ZsS+AFGH0bdXuAnrYWMOT9DDmSH27LeuL5AYyZGkqz8fwV27z
+	 lWd0pm5zNpaUyZp48ubHcuH848z9fnKdeCfZa5aWqjZOGGf+l9h50anXjX2ZEjc02h
+	 +7Xs+RspCZwP4xONmik9gb51kVlxBMi45ws+3gG1g1SIRNX60y6/tk/pXMcSajT9BN
+	 CHuREzb+QaWdmHH9p6nITePo5ZvFvDikS/GQwyMthTqOaIP55V7HPDoLNyEz1i15Do
+	 GsuPufjIpCI0g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 4/4] serial: imx: serialize imx_uart_ports[] lifetime
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Karl Mehltretter" <kmehltretter@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260719221014.44354-5-kmehltretter@gmail.com>
 References: <20260719221014.44354-1-kmehltretter@gmail.com>
+ <20260719221014.44354-5-kmehltretter@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 19 Jul 2026 22:25:00 +0000
+Message-Id: <20260719222501.CB4CB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+
+New issues:
+- [High] Clobbering of an active port entry in `imx_uart_ports` during a du=
+plicate-line probe leads to a NULL pointer dereference.
+
+Pre-existing issues:
+- [High] Missing explicit cancellation of hrtimers during device removal le=
+ads to Use-After-Free.
+- [High] imx_uart_probe() requests interrupts before sport->port.state is i=
+nitialized, without fully clearing all hardware interrupt enable bits.
+--
+
+--- Patch [4]: [PATCH v2 4/4] serial: imx: serialize imx_uart_ports[] lifet=
+ime ---
+commit 7a4c9e19ce793ebaff93921ddc3c70f324874180
+Author: Karl Mehltretter <kmehltretter@gmail.com>
+
+serial: imx: serialize imx_uart_ports[] lifetime
 
 imx_uart_probe() publishes the port in imx_uart_ports[] before
 uart_add_one_port(), because console setup during that call uses the
-table. The entry is not cleared if adding the port fails or after
-imx_uart_remove() removes it.
+table. Use a driver-wide mutex to serialize table publication, port
+addition and rollback with port removal and table clearing.
 
-The port is devm-allocated, so a failed probe or unbind leaves the table
-pointing at freed memory. A later registration of the shared console can
-then dereference the stale entry. Reproduced on QEMU's mcimx6ul-evk by
-unbinding a sibling UART, unbinding the console UART and rebinding the
-sibling:
+Link: https://lore.kernel.org/all/20260719162850.043B41F000E9@smtp.kernel.o=
+rg
 
-  BUG: KASAN: slab-use-after-free in imx_uart_console_setup+0xd0/0x3d8
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index 251a50c8aa387..def874f9cd000 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+[ ... ]
+> @@ -2632,11 +2642,14 @@ static int imx_uart_probe(struct platform_device =
+*pdev)
+>  		}
+>  	}
+> =20
+> -	imx_uart_ports[sport->port.line] =3D sport;
+> -
+>  	platform_set_drvdata(pdev, sport);
+> =20
+> +	mutex_lock(&imx_uart_ports_lock);
+> +	imx_uart_ports[sport->port.line] =3D sport;
+> +	ret =3D uart_add_one_port(&imx_uart_uart_driver, &sport->port);
+> +	if (ret)
+> +		imx_uart_ports[sport->port.line] =3D NULL;
 
-The entry must remain valid until uart_remove_one_port() unregisters the
-console. Clearing it afterward without serialization still races a
-sibling probe: the sibling can register the shared console using the
-dying entry before it is cleared. The next console write then
-dereferences NULL.
+[Severity: High]
+If a duplicate UART alias is probed, such as from a misconfigured device
+tree, does this unconditionally overwrite an already active port's entry
+in imx_uart_ports?
 
-Use a driver-wide mutex to serialize table publication, port addition
-and rollback with port removal and table clearing. Console callbacks
-remain lockless because uart_add_one_port() may invoke setup while
-probe holds the mutex.
+When uart_add_one_port() subsequently fails for the duplicate, this error
+path sets the entry to NULL. The original port remains active, but will
+console callbacks that rely on imx_uart_ports[] encounter a NULL pointer
+dereference and crash the system?
 
-The probe-failure path also relies on "serial: core: do fallible
-allocations before the console can be registered", which moves the
-uport->name and uport->tty_groups allocations before console
-registration. Both changes should be backported together.
+[Severity: High]
+This is a pre-existing issue, but I noticed that just before this code in
+imx_uart_probe(), devm_request_irq() is called before sport->port.state is
+initialized by uart_add_one_port().
 
-Fixes: dbff4e9ea2e8 ("IMX UART: remove statically initialized tables")
-Fixes: 9f322ad064f9 ("imx: serial: handle initialisation failure correctly")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/all/20260719162850.043B41F000E9@smtp.kernel.org
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- drivers/tty/serial/imx.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+Since UCR4 interrupt flags (like UCR4_TCEN) are not fully cleared, could an
+early spurious interrupt fire immediately if left enabled by the bootloader
+or a previous crash kernel?
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 251a50c8aa38..def874f9cd00 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -22,6 +22,7 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/ktime.h>
-+#include <linux/mutex.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/rational.h>
- #include <linux/slab.h>
-@@ -2080,6 +2081,15 @@ static const struct uart_ops imx_uart_pops = {
- 
- static struct imx_port *imx_uart_ports[UART_NR];
- 
-+/*
-+ * Store the port in imx_uart_ports[] before uart_add_one_port() and clear
-+ * it only after uart_remove_one_port() returns. Console callbacks in both
-+ * calls use the table, so this mutex serializes these sequences between
-+ * sibling ports. Callbacks must not take it because uart_add_one_port()
-+ * may invoke setup while it is held.
-+ */
-+static DEFINE_MUTEX(imx_uart_ports_lock);
-+
- #if IS_ENABLED(CONFIG_SERIAL_IMX_CONSOLE)
- static void imx_uart_console_putchar(struct uart_port *port, unsigned char ch)
- {
-@@ -2632,11 +2642,14 @@ static int imx_uart_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	imx_uart_ports[sport->port.line] = sport;
--
- 	platform_set_drvdata(pdev, sport);
- 
-+	mutex_lock(&imx_uart_ports_lock);
-+	imx_uart_ports[sport->port.line] = sport;
- 	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
-+	if (ret)
-+		imx_uart_ports[sport->port.line] = NULL;
-+	mutex_unlock(&imx_uart_ports_lock);
- 
- err_clk:
- 	clk_disable_unprepare(sport->clk_ipg);
-@@ -2647,8 +2660,12 @@ static int imx_uart_probe(struct platform_device *pdev)
- static void imx_uart_remove(struct platform_device *pdev)
- {
- 	struct imx_port *sport = platform_get_drvdata(pdev);
-+	unsigned int line = sport->port.line;
- 
-+	mutex_lock(&imx_uart_ports_lock);
- 	uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
-+	imx_uart_ports[line] = NULL;
-+	mutex_unlock(&imx_uart_ports_lock);
- }
- 
- static void imx_uart_restore_context(struct imx_port *sport)
--- 
-2.53.0
+If the interrupt fires, the ISR would call:
+
+imx_uart_transmit_buffer()
+    struct tty_port *tport =3D &sport->port.state->port;
+
+Would this dereference the uninitialized sport->port.state and cause a
+kernel panic?
+
+> +	mutex_unlock(&imx_uart_ports_lock);
+> =20
+>  err_clk:
+>  	clk_disable_unprepare(sport->clk_ipg);
+> =20
+>  	return ret;
+>  }
+> =20
+>  static void imx_uart_remove(struct platform_device *pdev)
+>  {
+>  	struct imx_port *sport =3D platform_get_drvdata(pdev);
+> +	unsigned int line =3D sport->port.line;
+> =20
+> +	mutex_lock(&imx_uart_ports_lock);
+>  	uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
+> +	imx_uart_ports[line] =3D NULL;
+> +	mutex_unlock(&imx_uart_ports_lock);
+
+[Severity: High]
+This is a pre-existing issue, but does imx_uart_remove() need to explicitly
+cancel any pending hrtimers before returning?
+
+During imx_uart_shutdown(), if the TX state is SEND (e.g., in RS485 mode)
+and the hrtimer fires late, the shutdown loop forces the state to OFF upon
+timeout but does not cancel the timer:
+
+imx_uart_shutdown()
+    if (sport->tx_state !=3D OFF) {
+        dev_warn(sport->port.dev, "unexpected tx_state\n");
+        ...
+        sport->tx_state =3D OFF;
+    }
+
+Since sport is devm-allocated, it is freed immediately after
+imx_uart_remove() returns. Could the pending trigger_stop_tx hrtimer then
+fire and cause a use-after-free on the sport structure?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260719221014.4435=
+4-1-kmehltretter@gmail.com?part=3D4
