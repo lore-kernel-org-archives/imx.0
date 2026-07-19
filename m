@@ -1,63 +1,65 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4117235979
-	for <imx@lists.linux.dev>; Sun, 19 Jul 2026 22:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C247233D9E
+	for <imx@lists.linux.dev>; Sun, 19 Jul 2026 22:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784499033; cv=none; b=sTFgRSa9FEYQtYaEB9cER0bzz6qDhKId3iHpc4OWlsNnR/3LUGsbz5XSM8Bx67cllX+fLwr+bdqfrD7u2i7OFljZIoGl0fTomMcCE0DhaqB/APo/4vn0N+MP0CeVdQxeuMGqdlG3+WbfWMQb93jbab3dDtURJruPASVuJYDtewM=
+	t=1784499041; cv=none; b=Vm9T3svfGstrGxGdSdjUdJWjqdjGODumvIH7eG16+cI6r+0uPp2cthS6og0Dwy67hUFNsRb3PmRyeTpIRgZDL8nHew25AkKwfATdL8RCUoL3fbtSeCqq+AmqxxFnvbDJDeWVFZ/pX7szOmQNm9sIOCs10WMYkzSrIy0n2ZoYYBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784499033; c=relaxed/simple;
-	bh=WKG4aYWvJjBpvDHeWFwlKSa+4vrtqttZ1i+2fGHy390=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IWBYJ7w69iuXH8X8CiH7LShC0qZXaoCwRtlqow8yRNYItwtQhm0/CVKGuteM5qLEszVTBmdgjzxOzm3uvhKJDhseoBa/7QZKMilNEUU6AsSawh3sgTBgFsLUv4Vbh8uc57xSWlruR1wMjUTj8w34tN+4E1rhEv+8tILXnxSLTF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WMADNQb8; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1784499041; c=relaxed/simple;
+	bh=1RQ8k9otHSPFMO2zg/Ml6BOTg9wSwQhmSZS4Ik9eJdY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=If6HWmqFTet8G2gWrz0md8YaqKQ8CNIZ5PVy7a1OFFgqbepgvSjbtTaze4POFXEfvAoouwk1zvel3xRjPXzACoUZCNC0QPUDxA0sCY9IljjeX94Lf0cXYGA6MdcYJGA3HjfXoo5mQ4IAco2ouMbTtr43Mxnf/UI+VpDgYWTIa94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H/svBLkj; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WMADNQb8"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47f785467faso132311f8f.2
-        for <imx@lists.linux.dev>; Sun, 19 Jul 2026 15:10:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H/svBLkj"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4955e639f5dso2368075e9.0
+        for <imx@lists.linux.dev>; Sun, 19 Jul 2026 15:10:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784499030; x=1785103830; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uvinVPUoJhsV28WHeBTxSrSEvMvTNBW/BR+fiFjpbyw=;
-        b=WMADNQb85KOU/Jz0uD0k0n5V6Jdv3oeNagZDxWtib4cKVrDKhmp9pM6XoUwbc99/Fe
-         gB9j9y2Wn2c1pIMaBqzLbvh8NSOFSHyPGH1uF53gvlPfijZrufzdGedxN7k/+gyY3E3x
-         OEiHdGLkpZCpyCy2/mVr2lGT2kJiSzfAR3kJsuAAuR1SzN+JVW9qM3OS1FXmip+qRSpW
-         +7VQWPw2qeA3tmKTlqG0uHnVXZ1s8ZH1PxT7zIPX9a5dIYHYscntahxhoAL5ihuh7TY8
-         7AyvNRswrFohtF7zS9muObb4uamaitmwfZW6n3UsFIfkBbhhco7ptLXitFsdDU7l3X8V
-         JCnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784499030; x=1785103830;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784499038; x=1785103838; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uvinVPUoJhsV28WHeBTxSrSEvMvTNBW/BR+fiFjpbyw=;
-        b=lxfh/xcQJKa5AKWZhL0XdxYax1ffyZpX5I7Bl3L4ud9WhmLu5aC1fqLqZ++GxeIbz5
-         38W+CKz3TtxrRpniLnVBX/qc6n/AelcLb8GenHvWcIk9U0XfZtp7+P62HR1ljKW2EF1X
-         HvrJrhJAVU37NNShIaa4dvr/8WicN30e3PyIx3Y0ZILScIcm9yMdES6NSJPDA/LBzhwG
-         M7dyVtAx16uPs5oU67laTZFNX2mS3OLgM+/3jE16uuJ9mFWi/Q+uAxZAnXT5xDVz6VAd
-         9HGOtviFJGVKNnK5tsvl8jnMvu6FaXhJ4p2QxMQG/VRaILl4ZRQN+FZMj/rnJquzxfwj
-         B5sA==
-X-Forwarded-Encrypted: i=1; AHgh+RpPOk84g7DU/CzJIMqOgv8Spc0PM6mxHeVVR0mHWtuL4zOe6HVuVO5EEWA6covHG/LGaGo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwMkdyXz+NTcga6L6m0yXx09qYRvWv7N2RU++KnERmIVokOfTOF
-	/7zxMUsLZXOR5E+rW8RuUuAvzFPTpc4cJtpzwUY/ulESzOJvvwonP8CAXMJDJXRl
-X-Gm-Gg: AfdE7clwPCY5iVFw75kJ2KrKGAX9lTHo/8J4zsXsSenpWXynMxKvhZQrD5rqRzzH70x
-	2BbYjoWxlOZzxZmVFtFfUYitPp577gtWuIH9A0Gye64obVrgtrEtHmK3V1Wzoz820oSVKnuzCk+
-	qW3uurNzHMKlrqzVt7v0T4o0vKawFEJ5O/u1FK5vO6MvYRsfIE2/oAunxJKqzkUCf2VWhsaPWOz
-	jNqLTxZpCw417Kk/7UmIbxuI55C7NLIhwzmTSVw/jZClZR32om1ywa3x3cw8o7+HwBFUfvUfT9O
-	XVEpOhVbtmH72P21awj2sx4CAgnxu3wV6bSnqPz8a9vF4ayFOJC+U6T9BPlG7qS/VA/ffqrieQK
-	myoFCV+ar3oj/JGcM+/NCUwSJPp/oUV3JlqZb/HnerZx3s6lO1cHEZq7DpQPERHfi0+YG00pzcB
-	VMZGGW8gNjLTkyQAA55NHPUraivDMHaQuq3tU0xpP5PhNZA49jggKILRxcRs3Dw8vK2TYfMdK6k
-	r46xuS2nF+8oj4QLpfFO3DQtASnL3FZTsG4GQX5OheNbsxf1hVrksvC3N8fKS/fhNj7xSwSPADS
-	Dwcc4qbLBEpbdsXexdvylltS
-X-Received: by 2002:a05:600c:c117:b0:495:4b1d:915f with SMTP id 5b1f17b1804b1-4954b1d91ffmr117504925e9.23.1784499030391;
-        Sun, 19 Jul 2026 15:10:30 -0700 (PDT)
+        bh=pTekW+ENVi0Z1ogLAr2oe8Uj7dHDNrRZFKBwQW5P7mc=;
+        b=H/svBLkjKFOvxdgsUx86ZQRh3YPR8BlwJ/Bc/m4OtuwRpzsXURcFxON535GCGeUZKC
+         CFx2vCZ0bqDQL+qovXaY5Swq3F5dGdY4oIvjb0Zft6c8IeKgfWoY1W6TIjuJ9GzF4yM0
+         kMwQLS9iLm94UsRJnekH8usRFPz1tlLmLHZuwPFvYnyTpa4jOYYuYZUMEWAUeB1tNgcD
+         tJ+ZqGyEdTjiqlMMj+EhOwByegKVy/bMOshu0hVn1U7yYv67EKUdH4UxAv6kyf47GRZn
+         NnM7d9fKzvT8CkhRbJjotit5L9MX2XXWrPW3y5LPk6inohr+4SUYnq0AciLLZDM5c/AT
+         +eIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784499038; x=1785103838;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pTekW+ENVi0Z1ogLAr2oe8Uj7dHDNrRZFKBwQW5P7mc=;
+        b=oobP72wNXRqTXrCvRxhotZLmsWNX7t9wfvaPz5d1wbN2gDKOIdD9kwV8idsNSRYPu0
+         NOZmbu85MLB0n3rzZggeHO0A8yemDv/h/a8wrM2if6S1tQHjGukW7xTGO1mjUCJrNNbg
+         vsDA6dbggMgktHfviLAf+bo394fp+A9p0KMfPi5oXFeysoANbwc25RzPzJxKxoYIUdBF
+         lEol2EVBfk2cxlYZj/FHMY0GajWMNJp/1jcfIsZ2jtwLHbY1RuzT22WJ+lf2p6XXWAC8
+         Q8Q86e7Lrt9il9F4rbOaB1G09AcMmyG0B+SDr4yRrwqVqYgOx6i66URHG2MjRjJazyok
+         SpfA==
+X-Forwarded-Encrypted: i=1; AHgh+RpzRDGyNx08t9l8qvTaPiOB5SLs726Mbpp4Ggp6fqn/D0V6sec5AoEU8zlHNDC0Ffmd9mE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy+YVmpV2WBPogfUVekqYuMYrEckxKOthjEbeGNqCrxGJrOvP2e
+	VrJrzD+jSdDn9KlTrVoBHiI09IQo5On7Ew5Z8c2X2ZeW6DIYlnf29+Z9
+X-Gm-Gg: AfdE7cklZMY8EGIp/1G7rYYziEVSQpFLpZzli26yNkIV29pdjFdUgaUYx674P95obbK
+	+VTIqm/lhIfVe2CbwvmpwZWAe8nj7BQHMYyAphClzU4MNcM9X79JRrlx6lAo4IHEFol5KVp6dW/
+	fDH1ruOI0+XnOQjn/HSWfRmvZrzh0xP7Q3VW/1lrgiJ3HQBuHE6lmH2wvymh7IHfop3ojEl23mX
+	l8STqj0hxBIPakWPVsHrFV5ey/QMCKAh18UWvH2lNFnSLzMNmRIHFKReLTQIWAjDFhrNI8ko67T
+	HhWqA3yF0FNq+eC9b8OCgsoM3sSa5kKs8o4Ox9HvV0Aug+u9g0Quj5wsHHUJr4yO9q+g8CQfYP6
+	/9u08pJ/APPv6ssRb8Z+NdrgPfMiTHKxrZhPXe/lslLlI9+tHhlzEtNTp+wmZ+QD2z3W1fFcbgg
+	HY0rKDi6hOv0J/3h45C8k1BdP1p97o6hfgiptZEMIRP90QJPj+9rNz389sV0o9N27rytgzJFSAS
+	5tKK2j90Vzs5FHeuh6PZeDrPeR78Z2f/kDer2kJ9J/fEXodYC+/acp7jXNI2Odj66nljZOaGd/n
+	RsUSy6XNbqb0nZiZxU8TyfOF
+X-Received: by 2002:a05:600c:3586:b0:493:e504:cbef with SMTP id 5b1f17b1804b1-4954a38def9mr127029085e9.0.1784499037536;
+        Sun, 19 Jul 2026 15:10:37 -0700 (PDT)
 Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-aeaf-bd01-78a0-2a2d-507f-c97c.310.pool.telefonica.de. [2a02:3100:aeaf:bd01:78a0:2a2d:507f:c97c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4955370d78csm114492445e9.12.2026.07.19.15.10.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4955370d78csm114492445e9.12.2026.07.19.15.10.34
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 19 Jul 2026 15:10:29 -0700 (PDT)
+        Sun, 19 Jul 2026 15:10:36 -0700 (PDT)
 From: Karl Mehltretter <kmehltretter@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiri Slaby <jirislaby@kernel.org>
@@ -69,11 +71,14 @@ Cc: Karl Mehltretter <kmehltretter@gmail.com>,
 	linux-serial@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 0/4] serial: fix console lifetime bugs on failed bind and removal
-Date: Mon, 20 Jul 2026 00:10:10 +0200
-Message-Id: <20260719221014.44354-1-kmehltretter@gmail.com>
+	linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/4] serial: core: do fallible allocations before the console can be registered
+Date: Mon, 20 Jul 2026 00:10:11 +0200
+Message-Id: <20260719221014.44354-2-kmehltretter@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20260719221014.44354-1-kmehltretter@gmail.com>
+References: <20260719221014.44354-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,47 +87,132 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes three serial/tty bind-error bugs and an i.MX console
-port-table lifetime bug. The fixes were found with failslab fail-nth sweeps
-and sysfs bind/unbind sequences under KASAN on QEMU's raspi1ap and
-mcimx6ul-evk machines.
+serial_core_add_one_port() allocates uport->tty_groups after
+uart_configure_port() has already registered the port's console. If
+that allocation fails, the function returns -ENOMEM with the console
+still registered, and the driver's probe error path then tears down
+the port state the console callbacks depend on.
 
-Patches 1-3 fix shared serial/tty core code. Patch 1 moves fallible serial
-core allocations before console registration; patch 2 clears serial-core
-pointers after uart_driver registration fails; and patch 3 makes a non-NULL
-tty cdev slot mean that the cdev is live.
+Reproduced with fault injection on qemu's raspi1ap board. Failing the
+tty_groups allocation during a PL011 sysfs bind makes
+uart_add_one_port() return -ENOMEM. pl011_register_port() then clears
+amba_ports[0], but ttyAMA0 remains registered as a console. The nbcon
+printer thread dereferences the NULL entry and oopses:
 
-Patch 4 clears i.MX's devm-allocated port-table entry on probe failure and
-removal. It keeps the entry valid through console unregistration and
-serializes the table updates against sibling probes.
+  Unhandled fault: page domain fault (0x01b) at 0x00000178
+  CPU: 0 UID: 0 PID: 43 Comm: pr/ttyAMA0 Not tainted 7.2.0-rc3+ #1
+  PC is at pl011_console_write_thread+0x2c/0x168
 
-Backporting note: the probe-failure half of patch 4 relies on patch 1, which
-ensures that uart_add_one_port() cannot fail after registering the console.
-For complete coverage, patches 1 and 4 should be backported together.
+This is not PL011-specific: the failing allocation is in serial core,
+after uart_configure_port() has registered the console, so any console
+UART driver is exposed. On i.MX the retained console references a
+devm-allocated port that the failed probe frees, causing a
+use-after-free. Reproduced on qemu's mcimx6ul-evk using the same
+fail-nth harness under KASAN:
 
-Validation for patch 4 includes reproducing the sibling-probe race under
-KASAN with and without the fix, a sequential unbind/rebind regression, and
-the same test with CONFIG_PROVE_LOCKING=y. The fixed kernel keeps the
-console unregistered and survives an explicit printk in each applicable run.
+  BUG: KASAN: slab-use-after-free in imx_uart_console_write_thread+0x50/0x278
+  Read of size 4 at addr c5246048 by task pr/ttymxc0/63
+   imx_uart_console_write_thread from nbcon_emit_next_record+0x360/0x50c
+   nbcon_emit_next_record from nbcon_emit_one+0x140/0x184
+  Allocated by task 1:
+   devm_kmalloc from imx_uart_probe+0x90/0xa5c
+  Freed by task 1:
+   devres_release_all from device_unbind_cleanup+0x38/0xdc
+   device_unbind_cleanup from really_probe+0x2b4/0x388
 
-Changes in v2:
-- Patch 4: serialize port registration and removal with imx_uart_ports[]
-  updates to close the reported sibling-probe race.
-- Patches 1-3 are unchanged.
+The pre-existing kasprintf() failure path has a related problem: it
+returns with state->uart_port already pointing at a port whose probe
+is about to unwind and free it.
 
-v1: https://lore.kernel.org/r/20260719160812.35407-1-kmehltretter@gmail.com
+Reorder the function so the uport->name and uport->tty_groups
+allocations both happen before the port is linked into the driver
+state table and before uart_configure_port() registers the console:
 
-Karl Mehltretter (4):
-  serial: core: do fallible allocations before the console can be
-    registered
-  serial: core: clear freed pointers on uart_register_driver() failure
-  tty: don't oops in tty_unregister_device() when no cdev is registered
-  serial: imx: serialize imx_uart_ports[] lifetime
+ 1. Allocate uport->name.
+ 2. Allocate the tty_groups array with room for three entries
+    unconditionally (serial core group, optional driver group, NULL
+    terminator). The optional group cannot be examined at this point:
+    config_port() may only supply uport->attr_group during
+    uart_configure_port(), e.g. 8250 sets it after autodetection.
+ 3. Only then link the port into the driver state table and run
+    uart_configure_port().
+ 4. Fill in the optional attr_group slot afterwards.
 
- drivers/tty/serial/imx.c         | 21 ++++++++++++++++++--
- drivers/tty/serial/serial_core.c | 33 ++++++++++++++++++--------------
- drivers/tty/tty_io.c             |  6 ++++--
- 3 files changed, 42 insertions(+), 18 deletions(-)
+A fail-nth sweep over the whole bind path on both boards left the
+console unregistered after every failed bind and did not reproduce the
+i.MX use-after-free.
 
+Fixes: 266dcff03eed ("Serial: allow port drivers to have a default attribute group")
+Fixes: f7048b15900f ("tty: serial_core: Add name field to uart_port struct")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-fable-5
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ drivers/tty/serial/serial_core.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index a530ad372b43..887b1dd80ad2 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -3056,7 +3056,6 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
+ 	struct uart_state *state;
+ 	struct tty_port *port;
+ 	struct device *tty_dev;
+-	int num_groups;
+ 
+ 	if (uport->line >= drv->nr)
+ 		return -EINVAL;
+@@ -3068,6 +3067,23 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
+ 	if (state->uart_port)
+ 		return -EINVAL;
+ 
++	uport->name = kasprintf(GFP_KERNEL, "%s%u", drv->dev_name,
++				drv->tty_driver->name_base + uport->line);
++	if (!uport->name)
++		return -ENOMEM;
++
++	/*
++	 * uart_configure_port() may set uport->attr_group and register the
++	 * console. Allocate room for both groups and a NULL terminator first.
++	 */
++	uport->tty_groups = kzalloc_objs(*uport->tty_groups, 3);
++	if (!uport->tty_groups) {
++		kfree(uport->name);
++		uport->name = NULL;
++		return -ENOMEM;
++	}
++	uport->tty_groups[0] = &tty_dev_attr_group;
++
+ 	/* Link the port to the driver state table and vice versa */
+ 	atomic_set(&state->refcount, 1);
+ 	init_waitqueue_head(&state->remove_wait);
+@@ -3084,10 +3100,6 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
+ 	state->pm_state = UART_PM_STATE_UNDEFINED;
+ 	uart_port_set_cons(uport, drv->cons);
+ 	uport->minor = drv->tty_driver->minor_start + uport->line;
+-	uport->name = kasprintf(GFP_KERNEL, "%s%u", drv->dev_name,
+-				drv->tty_driver->name_base + uport->line);
+-	if (!uport->name)
+-		return -ENOMEM;
+ 
+ 	if (uport->cons && uport->dev)
+ 		of_console_check(uport->dev->of_node, uport->cons->name, uport->line);
+@@ -3102,15 +3114,6 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
+ 
+ 	port->console = uart_console(uport);
+ 
+-	num_groups = 2;
+-	if (uport->attr_group)
+-		num_groups++;
+-
+-	uport->tty_groups = kzalloc_objs(*uport->tty_groups, num_groups);
+-	if (!uport->tty_groups)
+-		return -ENOMEM;
+-
+-	uport->tty_groups[0] = &tty_dev_attr_group;
+ 	if (uport->attr_group)
+ 		uport->tty_groups[1] = uport->attr_group;
+ 
 -- 
 2.53.0
