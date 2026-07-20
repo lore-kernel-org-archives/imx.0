@@ -1,244 +1,90 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3109242CB16
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 14:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34C042DFE6;
+	Mon, 20 Jul 2026 14:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784558310; cv=none; b=hXZAx7fa8kzJVg1Js6cCNvsYOdFR9jr2Ip6U4Mj49zNjerP4wBH2YHWsTR81SLIt4wE7qRqEktRtMaf76o1mT34s87P+OppGl7myG1GvsnbzAIOhL/LpEo6haAOR97ru/LOjyexNkKKAgJW1i0DAkvMONxkxb03tbO4iotvhHKo=
+	t=1784558354; cv=none; b=fZfp+IgMEhUogiwpnOvrfwSgDk4B5NwRcOLw6GzOcxP2wX7tJ5aHmHRmeh3BbxEl+hFZCXZCixITEAuFNAs3/Ckr8f23FH8hbx/j4bHfCCACwoTQ78GAX6lBdKe8e/gPgANnGvPn+R+5xhQaeUqgNBpde0U1i6bGO3KiMhTRmHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784558310; c=relaxed/simple;
-	bh=n7O8f3S6Cnzx1DNjtsRdcdGb9/JLYIhLgnZZlL5zNiQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IAEBCxn6bZhSS6dLTYIH5hobo0dD+3wc1Nf/Rc3XuvEHRtrgSs6R11h6StKfDQ8T2V7tIXnAD0POaQn7C4RHvBZSKqWy9leT4heIvFhitFFBfc7MQCSwnfZjzX44YYbx3dotnAJln9w2eyrGep1gBcN4rMe3BZcvOmPIQ980ask=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZfLkGEyw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hObceBdX; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZfLkGEyw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hObceBdX; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1784558354; c=relaxed/simple;
+	bh=ddFtt++l0cIrQRJwpibRCXO1NHpBQQmpdZB/oy/A9IA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=We97/hX6ZF7x4MRICxm5BAQWpBYoqnsOebncBBGmAt04SAzst6UVeVhuq0twYUxaQWRq15CxmLH5vJMMN2Vcz/QqwJtwO4RNPsuScR0B6uYfQsEStLx5VD9MdW2+ZlUDSdhyy857Jvp6HPOBIqtQJG+WP3SetvMkghvwpCSYzPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jlS/QNzG; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZfLkGEyw";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hObceBdX";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZfLkGEyw";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hObceBdX"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 313B179FDA;
-	Mon, 20 Jul 2026 14:38:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784558307; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Bt3+PoEJX3fHBQCDGcRsQBo0tTv+9Oajtm9xIzjy8wM=;
-	b=ZfLkGEywmMRWX/G/+/iAfswkgjrvARXI4jVXMfvN2+5JHa4AMhaPCRhhqbFSwaANepsYXM
-	RFExNWiwnbRNMJq1Lr7g36FJVJZMXQzTOX4mqKfXnsv4Kn59tDvWSXmc/nJ0LW52+DIxxr
-	He/qLJ0gIB8jMlO05dX+FpzLq+eVUeE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784558307;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Bt3+PoEJX3fHBQCDGcRsQBo0tTv+9Oajtm9xIzjy8wM=;
-	b=hObceBdXKj9Dit4x5HbKVLRCMdLNezObAp6XAIat6Wv0HkFA7Izu2UTrg6ntFlxE9j6Y5H
-	SxwQg7OPpvXYqdCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784558307; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Bt3+PoEJX3fHBQCDGcRsQBo0tTv+9Oajtm9xIzjy8wM=;
-	b=ZfLkGEywmMRWX/G/+/iAfswkgjrvARXI4jVXMfvN2+5JHa4AMhaPCRhhqbFSwaANepsYXM
-	RFExNWiwnbRNMJq1Lr7g36FJVJZMXQzTOX4mqKfXnsv4Kn59tDvWSXmc/nJ0LW52+DIxxr
-	He/qLJ0gIB8jMlO05dX+FpzLq+eVUeE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784558307;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Bt3+PoEJX3fHBQCDGcRsQBo0tTv+9Oajtm9xIzjy8wM=;
-	b=hObceBdXKj9Dit4x5HbKVLRCMdLNezObAp6XAIat6Wv0HkFA7Izu2UTrg6ntFlxE9j6Y5H
-	SxwQg7OPpvXYqdCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 03E80779AA;
-	Mon, 20 Jul 2026 14:38:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bltEO+IyXmpXVwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 20 Jul 2026 14:38:26 +0000
-Message-ID: <3749a60a-a8bb-45a0-a06e-a21017990c10@suse.de>
-Date: Mon, 20 Jul 2026 16:38:26 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jlS/QNzG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=RMjWEzu38tseHoFo/YUCFGtCdWHHOcvPUTf8wfVO9l4=; b=jlS/QNzG8jL6ztl+koDV7jIKGy
+	hJ8MoU4EgaQgOE1qzjLmdtFbbmi/0fgZfb4iTHwPI1fG+fHHula2om3ezgCqqfeAdRQe4ZBDMr05+
+	gPG4MNS98XzezJlKLfyz2QX0gg43IJlG3DiKv4snsRh78RHhZP5X+0/L4MTdSThyYxYo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wlp8g-00DH7Y-1A; Mon, 20 Jul 2026 16:38:38 +0200
+Date: Mon, 20 Jul 2026 16:38:38 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Srinivas Kandagatla <srini@kernel.org>, brgl@kernel.org,
+	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+	iommu@lists.linux.dev, netdev@vger.kernel.org,
+	linux-pm@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 4/8] net: bcmgenet: use platform_device_set_fwnode()
+Message-ID: <ae9da5dd-3528-4270-ada0-d17ed14478e0@lunn.ch>
+References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-4-2dee93f42c54@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/imx: replace struct drm_simple_display_pipe with
- regular atomic helpers
-To: Maxime Ripard <mripard@redhat.com>
-Cc: Ze Huang <ze.huang@oss.qualcomm.com>, sashiko-reviews@lists.linux.dev,
- dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, imx@lists.linux.dev
-References: <20260716-drm-simple-kms-removal-v2-1-7e4a6b8528e6@oss.qualcomm.com>
- <20260716091459.1D8101F000E9@smtp.kernel.org>
- <DK1XPK73QJHC.JWFUMTTLOD1D@oss.qualcomm.com>
- <63cca05a-ec83-430c-abcf-c2f0b508446f@suse.de>
- <20260720-bold-jasmine-goldfish-d979e5@penduick>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260720-bold-jasmine-goldfish-d979e5@penduick>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.com:url]
-X-Spam-Level: 
-X-Spam-Score: -4.30
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-4-2dee93f42c54@oss.qualcomm.com>
 
-Hi
+On Mon, Jul 20, 2026 at 11:24:51AM +0200, Bartosz Golaszewski wrote:
+> Prefer the higher-level platform_device_set_fwnode() over the
+> OF-specific platform_device_set_of_node() for dynamically allocated
+> platform devices.
 
-Am 20.07.26 um 16:08 schrieb Maxime Ripard:
-> On Mon, Jul 20, 2026 at 02:36:19PM +0200, Thomas Zimmermann wrote:
->> Hi
->>
->> Am 18.07.26 um 21:12 schrieb Ze Huang:
->> [...]
->>>>> -	if (event) {
->>>>> -		crtc->state->event = NULL;
->>>>> +static int imx_lcdc_plane_helper_atomic_check(struct drm_plane *plane,
->>>>> +					      struct drm_atomic_commit *commit)
->>>>> +{
->>>>> +	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(commit, plane);
->>>>> +	struct drm_crtc *crtc = plane_state->crtc;
->>>>> +	struct drm_crtc_state *crtc_state = NULL;
->>>>> -		spin_lock_irq(&crtc->dev->event_lock);
->>>>> +	if (crtc)
->>>>> +		crtc_state = drm_atomic_get_new_crtc_state(commit, crtc);
->>>>> -		if (crtc->state->active && drm_crtc_vblank_get(crtc) == 0)
->>>>> -			drm_crtc_arm_vblank_event(crtc, event);
->>>>> -		else
->>>>> -			drm_crtc_send_vblank_event(crtc, event);
->>>>> +	return drm_atomic_helper_check_plane_state(plane_state, crtc_state,
->>>> [Severity: High]
->>>> Can fetching the CRTC state this way cause a kernel panic in the core atomic
->>>> helpers?
->>>>
->>>> If userspace submits a commit that modifies only plane properties without
->>>> affecting the CRTC, the CRTC is not implicitly added to the atomic commit
->>>> state.
->>>>
->>>> In this scenario, drm_atomic_get_new_crtc_state() returns NULL. Passing this
->>>> NULL pointer directly to drm_atomic_helper_check_plane_state() causes a crash
->>>> when it dereferences crtc_state->enable.
->>>>
->>>> Could this use drm_atomic_get_crtc_state() instead to ensure the state is
->>>> brought into the commit if it is missing?
->>> I think it is fine here; I'll just copy the pattern from [1].
->>>
->>> [1] https://elixir.bootlin.com/linux/v7.1.2/source/drivers/gpu/drm/mgag200/mgag200_mode.c#L487
->> It could be that there's a long standing problem in the overall logic. Not
->> having a CRTC (and hence crtc_state) should also mean !fb, so we'd return at
->> [1]. If we have a CRTC on the plane but pass a crtc_state of NULL, we could
->> get a panic at [2], where it does crtc_state->crtc.  I'm not aware of any
->> bug reports about this problem, but it's still an issue.
->>
->> A number of drivers get this wrong by using
->> drm_atomic_helper_get_new_crtc_state(). The bot suggests to use
->> drm_atomic_helper_get_crtc_state() instead.  This helper also returns the
->> new state. But  if there's no new state, it duplicates the CRTC's existing
->> state. That's a bit of an overhead, but probably not an issue.  Several
->> drivers use this helper, but also get it wrong. They tend to return early in
->> the case of !crtc or !fb without calling _check_plane_state(). See [3] and
->> [4] for examples.
->>
->> I think, going with the bot's suggestion to use
->> drm_atomic_helper_get_crtc_state() might be the best resolution for now. It
->> still needs a crtc pointer, so the pattern is
->>
->> crtc_state = NULL
->> if (plane_state->crtc)
->>      crtc_state = drm_atomic_helper_get_crtc_state(plane_state->crtc)
->>
->> _check_plane_state(plane_state, crtc_state);
->>
->> And in this case, _check_plane_state() should work correctly. But you can
->> only use _get_crtc_state() in the atomic_check helpers! In the
->> atomic_update, atomic_enable, etc helpers, it's too late for the helper to
->> copy the CRTC state.
->>
->> I think some other DRM dev should look over this as well. It's one of the
->> trickier things in DRM to get right.
-> drm_atomic_helper_get_crtc_state is safe in atomic_check. It's
-> everything after that must use either get_new_crtc_state or
-> get_old_crtc_state, as the global state cannot be modified anymore.
+Why?
 
-Thanks a lot for confirming.
+This driver is OF only. It does not support ACPI, and probably never
+will. In general, networking and ACPI don't go together, ACPI is not
+sufficiently advanced.
 
-Wrt. the logic in plane atomic_check, we might have to fix a number of 
-drivers. As I outlined above, some use _get_new_crtc_state(), some use 
-_get_crtc_state() incorrectly. But that's for another series.
+What is you use case here?
 
-Best regards
-Thomas
-
->
-> Maxime
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
-
-
+	Andrew
