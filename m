@@ -1,220 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013066.outbound.protection.outlook.com [40.107.159.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F3242A14B
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 14:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784556540; cv=none; b=JQq8DJb7jsDFh6jM4eRMMVncy8AX+d+eK6Lu/IwJVBuo+WqonScQOzH+zMQEIWWmdGO2NF6/3Yq0uP0Wx/mqaIUe+psE9OioYqxkrpyS6PTZ4HaJrXVzINNnqrDij0/wJ0z1bkDveojvjPMjuQPbFt8CrfzdO6A3wrCOscQrdv8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784556540; c=relaxed/simple;
-	bh=4/QLGXVN3YtC8wbV86UX79GdVGNiO0IzNFsiHKzoyk8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LO8DFB/SW0KLab5wljqyyAIhJGI97bTiGAhQvxIesGey0Ox+BJPh8SWPUQRH2FJ8AqXKpfcxd2UJnzdpDoWDnq1yWFCSeFzpcJoyhqhVZT8ol3IyEoj0yHVXFNYpPU/g3C5LyV/K3kpZ9HVkulN+Lh+cPprQis3maQlp3lrG+8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BtwYG2No; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Uq9QTgzO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868894189C3
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 14:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784556542; cv=fail; b=OAuMxfxC/afqg2p3ogDIfDt0b/mGG+8fh26XrhKg8EZOmz9p081Qoo8RnNX7S2e26o0tSd095figjKszCjJPIrl8mw2+iN14kf/Y30dEuBiCS29T2jnKrdMqGZbhgUVvpi85rrITsS/gOyHPSWiiyZ/DcAFHc/vTMjv3/BIIWco=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784556542; c=relaxed/simple;
+	bh=TGKub3DE+MT9ft0m8Qvhg8ZdMJZZdPCvCjO85gqH2wM=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=mNSwZ5zLCQZeoW7Rw4lQBcuqB/lnKb28vpWdc40pGLxisgtyNtonRHFlASD1OTStw9dBQCRDCuC/n6tZPHcMD8kGMIPAe+K2HGGJC57FyxiOwmLLvEqw6KT+WBSMkHv23fVqZcOVEaAan9vCU/gQXeIgzkGNxn5X00LTugaK/4g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=uSDjC44d; arc=fail smtp.client-ip=40.107.159.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BtwYG2No";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Uq9QTgzO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784556537;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bYhdFOpmK669qfgd8VOdJ1wWxaKRFhsnw8y+lE3N65U=;
-	b=BtwYG2NoRblnK9DD0FBnMTZhS6HfWm/EsD0HS3nDBB4Tt3eFSse69I6P3+cKPg1DcVy/yM
-	ZjgziuuwBvKxW3g3XvEKpAJMJGj/JOSX9qRSXf9823SsyVlZM/3Um43E1OJ8ELW835ktBO
-	6v46eVgWmYABzD+P0Mr/E0v/8hspnqs=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-U3X5ub9IOFi6MwEP0_-qkg-1; Mon, 20 Jul 2026 10:08:52 -0400
-X-MC-Unique: U3X5ub9IOFi6MwEP0_-qkg-1
-X-Mimecast-MFC-AGG-ID: U3X5ub9IOFi6MwEP0_-qkg_1784556530
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47407691804so7174680f8f.1
-        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 07:08:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784556530; x=1785161330; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bYhdFOpmK669qfgd8VOdJ1wWxaKRFhsnw8y+lE3N65U=;
-        b=Uq9QTgzO4f7Wjkb76TN3aNBZS8HuDhu22p40axPQDZT2rP1xPmEq2KawL4dk7VbIvK
-         xLvdwGXDBDKR0cIpfa9KMlFMyBWW4Ftd80+htgWZuHA8+J0cu/mMJuylTlxqwK5kGj+1
-         cvFkyibykSl/DPVgA3c4hUiKALK+ycCEIsKM9Y/ciLHE8nnLIWQlloj2pTbBSNQSrHQp
-         ikwP0XhS8CdaeoBQVyEOVmtooev/efeeX3V7l5ETa4wt+6ZKd7It8WuNCKsfNPg0T/7M
-         4qr35MdggAk4Zsx7cGkkKuD28jzJYRs7gANpI94QoeVfYg+CIZL4gpQEM7VENcUSuYk/
-         +e6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784556530; x=1785161330;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bYhdFOpmK669qfgd8VOdJ1wWxaKRFhsnw8y+lE3N65U=;
-        b=YUxdTaugAbtRMGh1+s6EnA+Yuk7vcDoGCXITeD5KNJwQSEhedeNO0S+NX18wrjeOPf
-         iLo2QirzW1BgsXdiiJu/3sOhaPcJPwqnEDPA2HEa4bOqLPhEp6Z+teZdSsC7q0zAssNu
-         a5IS/kSSedVrNukmakb8/Dx2VczYEHJaRB/6hZVtqa+hIUzmPiYWrPVFc8eesyXt8dcJ
-         qqVs9AWm2dNoZIrSKaqrRIOcCWNNqg34VMtBZ86LfQCqontTW4nKgJmQ63ejsLC0UZDH
-         Xklp+j0qA3L2QD+cDpMPWJsaHUNn8YnXsXb+gShmq2zTgzeIJZjGZk+ZVrdYcIq5guc6
-         AHGQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqNCVEBShI5c1M3I1BNavZqw1FXVHLJJo1j83SDHaqY/K0RSwTPDn52Q3wePRsYta/p2vI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyKCKe7Cg/567BmD/7W0S5tCTa1sobaRqB4V7qljm8BMVdNcT13
-	4F+F3EdyW4TqBa+Kgr9ugVKAVa8aEk03dtm/6E1kglD9qN551rZH0+Vuhhm67xktar1RdsKyQDx
-	k39CBSCbt206A/N8x4sLAwC4HPVEkojf63hS1bcNAVrqD2SkUTBGejg==
-X-Gm-Gg: AfdE7ckggBVgT0UPO46bE4MuWsOy5afIQvFnfBRFww4tLOK70/atYnoDgfO2iM4IAGX
-	PiIlP35X0RzkUUo2VFp2Zqncf0lUkQIClc65qXxXYRrgPIvnPtnDLJvVJqJSS5t5JysK4ff0c5A
-	LdVHgo15HA437zTzUfW5Kxt7CK/BHsMazkd2UfCeADhQ5fxCP4iSRmbhBcTJNNZnNH+m+pzyuMs
-	bFLgcs8j0+1Z3ZAmdfsvSCu54tRHCAYMkjanEFSJR6cATIwwvRYqH0OeFmSJYpdwyAu1pzxCZm7
-	a1VXAzAPnn4ca+JVq/3XeMJrp9/6+VoewrtUmberYzy5txw9WIJhXH9a5wnrL7LFDd77bi7mDQ=
-	=
-X-Received: by 2002:a05:600d:8486:20b0:495:6022:5a20 with SMTP id 5b1f17b1804b1-49560319fe9mr26968525e9.33.1784556529554;
-        Mon, 20 Jul 2026 07:08:49 -0700 (PDT)
-X-Received: by 2002:a05:600d:8486:20b0:495:6022:5a20 with SMTP id 5b1f17b1804b1-49560319fe9mr26967995e9.33.1784556528895;
-        Mon, 20 Jul 2026 07:08:48 -0700 (PDT)
-Received: from localhost ([2a01:e0a:a99:9822:edbd:5894:eb1d:c2c7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e499c2sm28394845f8f.4.2026.07.20.07.08.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 07:08:48 -0700 (PDT)
-Date: Mon, 20 Jul 2026 16:08:47 +0200
-From: Maxime Ripard <mripard@redhat.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Ze Huang <ze.huang@oss.qualcomm.com>, sashiko-reviews@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2] drm/imx: replace struct drm_simple_display_pipe with
- regular atomic helpers
-Message-ID: <20260720-bold-jasmine-goldfish-d979e5@penduick>
-References: <20260716-drm-simple-kms-removal-v2-1-7e4a6b8528e6@oss.qualcomm.com>
- <20260716091459.1D8101F000E9@smtp.kernel.org>
- <DK1XPK73QJHC.JWFUMTTLOD1D@oss.qualcomm.com>
- <63cca05a-ec83-430c-abcf-c2f0b508446f@suse.de>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="uSDjC44d"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZVLpKRMQ6STtO15BSijNYQiKfxzlKireLO0m5lkRGbV5y8+5xSpzrS/+o5Whj7vEC+kL/QCoRJABdUnbmZ69Q7zP+LlB5qc2OO6zrmWfPMzHhytVrPMU4wxx4mqWzyNFFT9/202+umXAyOJfJ+Vmz1Xd58+rdF3pqobIYOSqsvs7Tk/mu5a0DeCxnqUKDkEw+nsUvjjCM6NlmjKwrZk0Obndjoyma6inyG+yXLGBvper/1Jf6Eza/d7f+8sh6guBFiwWl96hnO4PuhLV0WZpQ9sh3j5afjdimDAD3gEdhvucTmiHauksBL09EVqp4xTqoFNMx+Nt+yJ2pY9Neg5LpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QXrUuq0tM3Tt5cd3R7xN8Gqj4ACEzWi4BmncjonszM0=;
+ b=S2DNdsXfXVdhLhRDAcXK5YVLPtoZrFL+8tqy9JE6rszlG847ROGtiurkwyf4NbbTVDYPzphcRDMPVuTyBSbv4jwzcSItg+WQvZvNzpKDBLsPvEHybA3L5QTmxZTF8xbDIXZpAwRQox9f5u2AD7sRc9aOiHeQiP4YNnmXjqxCK+Nh6NZnuvi4DQTi9/mO486Pu7bIiHtLYaOYhO5LVkCx1n0dKTDAwuBcSFMon7yGN3t6PtFJ7QeHV6GIee637VmvxxhQXSF+oL+bj4Mo8eJxUCQ4Mi5DhmPaDC6XUqbC8JuLoz6+ADvI/iU/MVeolak48YDUb5pBsTeePuu92wi4NA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QXrUuq0tM3Tt5cd3R7xN8Gqj4ACEzWi4BmncjonszM0=;
+ b=uSDjC44dnOP+SZpBusDZ2s4dYYtF2K9Jo5iScRjlwfl5RMM/2sXOEgCHgSdK8eNbUsevu4KkI82gl5LE4OtVEnpra9ho1UDsB9XGcXXA1SgO1WdFES30xjb0C3JIa0C4GasOuwCTEfEXruoq92jmCRCDYb/yRQoTmYWquheerbxAxdAp0PxKoYiQF5680hqwqh/FGvOUB4ro2HctzRkWO5YLwl+qZyZ1C/+gk/c4ZZ+jf50/McBg0eRCzxXHs1BowTTcLJ8BfXxs1HaUMgkYL3XhlFKrORMLKSrCEorTLZtyZr2drwTS3/s5xrbfT0HGoqAiEuLop6bG8Y6iFsZCZA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by AS4PR04MB9412.eurprd04.prod.outlook.com (2603:10a6:20b:4eb::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
+ 2026 14:08:58 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0223.015; Mon, 20 Jul 2026
+ 14:08:58 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Date: Mon, 20 Jul 2026 22:12:11 +0800
+Subject: [PATCH v2 3/9] arm64: dts: imx8ulp: Correct SRAM node address and
+ size to cover full SSRAM P2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260720-imx8ulp-dts-v2-3-d05c67676f53@nxp.com>
+References: <20260720-imx8ulp-dts-v2-0-d05c67676f53@nxp.com>
+In-Reply-To: <20260720-imx8ulp-dts-v2-0-d05c67676f53@nxp.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.16-dev-7bc12
+X-ClientProxiedBy: SG2PR02CA0121.apcprd02.prod.outlook.com
+ (2603:1096:4:188::21) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="lkbwojfab5zeg2qh"
-Content-Disposition: inline
-In-Reply-To: <63cca05a-ec83-430c-abcf-c2f0b508446f@suse.de>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|AS4PR04MB9412:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1fbfc65b-a7cf-4689-6473-08dee66870f5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|19092799006|22082099003|18002099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	iPfIAiNHGlRmAcK6f3WwqTOBEWJ/szHu6KQtPOcjtotNGOffY/lk2zC77d26YSgKRMqI8jIrXMiRmmbO+rnb1/KJeb2s+PKEQKsgtuTatDhhVnVA+vwiBwXZ3ATCpL1Q9gPx6g0vXFomENEY+1+IcYKbx7UoUsD2JxVnA3wUwtWDo+vreGC5X+cAIFbh+cUdxTVM6Da7PlaYYPrwrERLgV3UJQ5/DwrlCeltCNm+nnjyMkID6bYUkCmH+/DlUuviP1Fsud1TNXDydpSB2AWcjgnhf2dzVfIt9zj/fl+7f/Bh+UkTmRmYK4nI0Gqn/zUjUxAYKazOj7Sk5Bgh+qJjVoiuedzcuPUAueLKp8ZemxlRFAW1Lymw3qtLwqWK3hWkzkwVOqTlCj/vkF8IXOdZK8RUFBRHXBRamdMxymCKIeuPDImUo2MuKdKqMno1hhMMoOqMzS0S3CshPVmaDZUJz782EqwDjrIZ4mgfW3RvAUI+EzinY4K4tM8QxhtRbHvAJzXik5hOZpytZ2SyHR20n7IIIYoPA2LLKhfr2QRMmDDKuU8h36zwq5ogzoOudFXLKMyiABH1P5LcwWm4WOgkfQI9p8wsBDGIk+FkC2JycRAZ5V/i68aq0zyoHAmCPXHaYexWsfYiqTB8Tfpqd62DylUxwivv3QgYs/oGBqgAxI0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(19092799006)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?czFpc3l1NUZ6VGxtZVgwU04ya2V2aWp3cWZvSUNvL3dwOFRDcFV4NFRIamFl?=
+ =?utf-8?B?NndjMFdETGpMUDlaUmhic0FWTkI2clRTazRvR2VZMWxTcTV4QkxqYnVXNyt3?=
+ =?utf-8?B?SjFvZHJaZGZkTlNtMElzWU5BRUpibnVFWXRpMG94Z1pSUGlxNmN1R3g4SlYw?=
+ =?utf-8?B?Zlc2K0VzaHlsYU0rNTN3eGRnL0FFNFcwMnF0Q0NwM0FRcGZTL0xYRTJwcnMv?=
+ =?utf-8?B?aXZsUEJlVGhMSzdLeTlvRnpFR3hDdFlRZU5KRXVvdytaOUxzUUd3MWxpYyt0?=
+ =?utf-8?B?dlNNMnF5Zit0eFNzc2pJTjlSb2U3a1c4L09lenpWVzRHbmxFcndwSDI2V2R1?=
+ =?utf-8?B?M0NLRVhzVzJNaEFKckpMVmZqcEtURUtxQ1Bnc25sZ0ttR3ZpQk9Jc3lteVZ0?=
+ =?utf-8?B?dFFqSk1sd21JUWNDZFpGaVZZQlRPSVZpZHI2NkVEM2F4QjJCd0VTWDJWaGhF?=
+ =?utf-8?B?aUFPTmJLTnFYdkErYjhTci9veTZiSVVCNUxCZGJvdFRqRXVPblJyRkppaUx2?=
+ =?utf-8?B?aHlVa2QzSWlyNmphN0pqUmV1WlFXUHFIeDl5WTJ3RTJFQkFGVzdyd0haVTQz?=
+ =?utf-8?B?TGttSW04dEJwYS9lUjFxcjFlSnJJdnUxdEU0WlpnY2N1NFBQYjVUTmQwdHhp?=
+ =?utf-8?B?Y1loV0p6OXh5Tm4wdzhTRXR0bHJsMTNLcnhIVlM4MHhNb1FiUlc5Tmw4ZGtS?=
+ =?utf-8?B?ZnBjbUxHYm1EUTh0TDN0L0pCRVI5UDdIczREb3hXV2lUdjUxTHdDOTJibmJh?=
+ =?utf-8?B?blpmckJSWGdpS3dWSDFxckw3MlgzTXJPcTdkSkJJRllDK0t6THJ4ditJc0JF?=
+ =?utf-8?B?Z3RlUkdCaW0yR2Q1VUNlK3l4c2tGYXNObWVDMXo0QUxxSGxET1pRS1lxSE5q?=
+ =?utf-8?B?bHRqNzBUM1NnbWNMS0ZNYUlWV2MzYnpRM2RZU3p3dUFiaEZLeTNUc1RaOGN3?=
+ =?utf-8?B?QzBoeUhoSllhSDVnZnd1ZVp4ejNWWU9JTEdaVjNQaHluUjI0V3Q2M2NCMGpW?=
+ =?utf-8?B?aHNLeTBrZVRiRTkyUFhTNmZ4VEZpbVozSHVTbzVqeHZRbXZyR29KdlhBejlH?=
+ =?utf-8?B?MFNaclNpb2pjSW1EeWpqQ1B0bThDbUgrekpBSHVDZVFWb0s5R0hQWEpDNkZC?=
+ =?utf-8?B?bytmR2NQejhsaXFCRDRhejg3U3k1YUdJeEdYS2RhN0VOQVozS0dmUnQwdnNK?=
+ =?utf-8?B?RkE0bk43Yzhud1NsM3piakR0Rkg1Rk81enJyRXE2Nnhodm9Tb3U5Tzd5K0hL?=
+ =?utf-8?B?c2YyeGV0bzNBckpmOXRIZmc1RDVBZWoydGIzRW5sZ21yaVhBdVZsOWJZeVE0?=
+ =?utf-8?B?ajBmRXlwWndiRkRNUTlnTGQ3L2xKcTN3cWlZaGtPV0pzUlBhUTdrWmNyQmpx?=
+ =?utf-8?B?dVIyLzhVdExQRTZjeGRRUDlxQndndVJtakNodG1UTzVJcXpFRHZMV3htUysv?=
+ =?utf-8?B?aHpCMW05SEx2RkJrblBnZDdvUnI1U2lDSU9Bd1VlVEV2ZUxMd2wraDVYUnFE?=
+ =?utf-8?B?elg3Uy9Cd3hZZktCL0xweE1HRTNoUTBhMWZTSUg1cGQwQkFYeGpSckpqVDlM?=
+ =?utf-8?B?OUpCSjNkMEE2S1BaL1pDNzZSVExWNk4wVHVyT3Z5OFlEOE9mU0JWZmk2c3ZK?=
+ =?utf-8?B?Y1A1enJZL3l3YlkyaG8rUElYRllVK2ZzUkI4UUZuSVJldHQvMEx6MFJ4RHVO?=
+ =?utf-8?B?alJpNnNXblJwbktsdG45V2xvV2w2RTVqNzI3OHJxaEtOaUExZHVKOFUycW0r?=
+ =?utf-8?B?V0QvV0NHTFZmMk1LRUwwQUZJYWtnbk15SjFmNG00cVZucjd5K09taWEySXd5?=
+ =?utf-8?B?UUFGMUpqWG1uN1hmbkF6OHhTK09TaGRIdFBxNGhkUVdKRGlvQ1lHRk5mVWZ2?=
+ =?utf-8?B?TElKVTVnc0UxTjhFUWJFZzhIZEFSQ3h3YXcxWEhKWUp6U0UxQzZqSEZZOGhh?=
+ =?utf-8?B?S3g0TmhMVDFhcFlsWUtHYWU0d2hndWh5Y21SVVB5QjM0RjV4eldiTDRPQ3Rr?=
+ =?utf-8?B?blY1L2tvMlpUT2Nnclo2K2JkSU9PeFVVeHVkWlE3bnNkYThPeGUydG5oWEF1?=
+ =?utf-8?B?MUxFNXJod2lKQUdWS1FmUTlXVzY0a2FXelByN2l5VVpzcFVPUWo1QnBxeUR3?=
+ =?utf-8?B?NklTVmI3cHBaVE50cjRUdmxSRm1JYWVyc1FVR3dBM3pueEpGaklrMGN4UDNt?=
+ =?utf-8?B?UzllcnZvUS94Q2xHSGZXSUVoLzdmbFlocnppWFVKK1dKajNCbDVMbFFpaGox?=
+ =?utf-8?B?eFl0MDVVeGlSeDhSOENTRlVmZTYvSzZsa2hvbUkyQ0hiS0VjelgrRVFpNFdQ?=
+ =?utf-8?B?ZDJsWm9nY3pwL3lQUjJCQStwb1ZHbFhEQmt1N1lMTnFYUzFkUjZEU096SlQw?=
+ =?utf-8?Q?/cukn7LxPpSI/z+iyOCfMikvqEGxILQ38yqIX?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1fbfc65b-a7cf-4689-6473-08dee66870f5
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 14:08:58.2233
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xmSPVQRlkXscPzuSGYugGJx9qTt1JcrqQCvEx93461xnmfquh9TsIjMs9zJBM1ZvAiBcyogDJ+RMtJIMRqlmjUdUBd9uWjEdFjRVCO4k+vVw1960y/3sGDd7qB9SGmgt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9412
 
+From: Peng Fan <peng.fan@nxp.com>
 
---lkbwojfab5zeg2qh
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2] drm/imx: replace struct drm_simple_display_pipe with
- regular atomic helpers
-MIME-Version: 1.0
+The SSRAM P2 partition starts at 0x22010000 with a size of 64 KB.
+The previous node only mapped the last 4 KB (0x2201f000, 0x1000) which
+was used for the SCMI shared memory buffer. Update the base address and
+size to cover the full P2 region so it can also serve as a general
+purpose SRAM pool.
 
-On Mon, Jul 20, 2026 at 02:36:19PM +0200, Thomas Zimmermann wrote:
-> Hi
->=20
-> Am 18.07.26 um 21:12 schrieb Ze Huang:
-> [...]
-> > > > -	if (event) {
-> > > > -		crtc->state->event =3D NULL;
-> > > > +static int imx_lcdc_plane_helper_atomic_check(struct drm_plane *pl=
-ane,
-> > > > +					      struct drm_atomic_commit *commit)
-> > > > +{
-> > > > +	struct drm_plane_state *plane_state =3D drm_atomic_get_new_plane_=
-state(commit, plane);
-> > > > +	struct drm_crtc *crtc =3D plane_state->crtc;
-> > > > +	struct drm_crtc_state *crtc_state =3D NULL;
-> > > > -		spin_lock_irq(&crtc->dev->event_lock);
-> > > > +	if (crtc)
-> > > > +		crtc_state =3D drm_atomic_get_new_crtc_state(commit, crtc);
-> > > > -		if (crtc->state->active && drm_crtc_vblank_get(crtc) =3D=3D 0)
-> > > > -			drm_crtc_arm_vblank_event(crtc, event);
-> > > > -		else
-> > > > -			drm_crtc_send_vblank_event(crtc, event);
-> > > > +	return drm_atomic_helper_check_plane_state(plane_state, crtc_stat=
-e,
-> > > [Severity: High]
-> > > Can fetching the CRTC state this way cause a kernel panic in the core=
- atomic
-> > > helpers?
-> > >=20
-> > > If userspace submits a commit that modifies only plane properties wit=
-hout
-> > > affecting the CRTC, the CRTC is not implicitly added to the atomic co=
-mmit
-> > > state.
-> > >=20
-> > > In this scenario, drm_atomic_get_new_crtc_state() returns NULL. Passi=
-ng this
-> > > NULL pointer directly to drm_atomic_helper_check_plane_state() causes=
- a crash
-> > > when it dereferences crtc_state->enable.
-> > >=20
-> > > Could this use drm_atomic_get_crtc_state() instead to ensure the stat=
-e is
-> > > brought into the commit if it is missing?
-> > I think it is fine here; I'll just copy the pattern from [1].
-> >=20
-> > [1] https://elixir.bootlin.com/linux/v7.1.2/source/drivers/gpu/drm/mgag=
-200/mgag200_mode.c#L487
->=20
-> It could be that there's a long standing problem in the overall logic. Not
-> having a CRTC (and hence crtc_state) should also mean !fb, so we'd return=
- at
-> [1]. If we have a CRTC on the plane but pass a crtc_state of NULL, we cou=
-ld
-> get a panic at [2], where it does crtc_state->crtc.=A0 I'm not aware of a=
-ny
-> bug reports about this problem, but it's still an issue.
->=20
-> A number of drivers get this wrong by using
-> drm_atomic_helper_get_new_crtc_state(). The bot suggests to use
-> drm_atomic_helper_get_crtc_state() instead.=A0 This helper also returns t=
-he
-> new state. But=A0 if there's no new state, it duplicates the CRTC's exist=
-ing
-> state. That's a bit of an overhead, but probably not an issue.=A0 Several
-> drivers use this helper, but also get it wrong. They tend to return early=
- in
-> the case of !crtc or !fb without calling _check_plane_state(). See [3] and
-> [4] for examples.
->=20
-> I think, going with the bot's suggestion to use
-> drm_atomic_helper_get_crtc_state() might be the best resolution for now. =
-It
-> still needs a crtc pointer, so the pattern is
->=20
-> crtc_state =3D NULL
-> if (plane_state->crtc)
-> =A0 =A0 crtc_state =3D drm_atomic_helper_get_crtc_state(plane_state->crtc)
->=20
-> _check_plane_state(plane_state, crtc_state);
->=20
-> And in this case, _check_plane_state() should work correctly. But you can
-> only use _get_crtc_state() in the atomic_check helpers! In the
-> atomic_update, atomic_enable, etc helpers, it's too late for the helper to
-> copy the CRTC state.
->=20
-> I think some other DRM dev should look over this as well. It's one of the
-> trickier things in DRM to get right.
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-drm_atomic_helper_get_crtc_state is safe in atomic_check. It's
-everything after that must use either get_new_crtc_state or
-get_old_crtc_state, as the global state cannot be modified anymore.
+diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+index cb0d73327d86c..7d00fe8360948 100644
+--- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+@@ -154,17 +154,17 @@ sosc: clock-sosc {
+ 		#clock-cells = <0>;
+ 	};
+ 
+-	sram@2201f000 {
++	sram@22010000 {
+ 		compatible = "mmio-sram";
+-		reg = <0x0 0x2201f000 0x0 0x1000>;
++		reg = <0x0 0x22010000 0x0 0x10000>;
+ 
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+-		ranges = <0 0x0 0x2201f000 0x1000>;
++		ranges = <0 0x0 0x22010000 0x10000>;
+ 
+-		scmi_buf: scmi-sram-section@0 {
++		scmi_buf: scmi-sram-section@f000 {
+ 			compatible = "arm,scmi-shmem";
+-			reg = <0x0 0x400>;
++			reg = <0xf000 0x400>;
+ 		};
+ 	};
+ 
 
-Maxime
-
---lkbwojfab5zeg2qh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCal4r6QAKCRAnX84Zoj2+
-djhGAYCtixMssCdv8dqBLhL8AGCbqHVEcB24miO1/lrC21m8xRJjw/XtwiTe9uk3
-u4LZbpABgJqkOJIhKLmzGuvYfOvGsyd49cCHHxPbfZ61/iBr5yCbvhnk0bm7yW/6
-PWaUe1AQtQ==
-=Kjek
------END PGP SIGNATURE-----
-
---lkbwojfab5zeg2qh--
+-- 
+2.34.1
 
