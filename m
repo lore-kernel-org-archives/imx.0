@@ -1,48 +1,48 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011027.outbound.protection.outlook.com [52.101.70.27])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013044.outbound.protection.outlook.com [52.101.72.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E461C384CE0
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455BD3B8D50
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784561669; cv=fail; b=tI7Wj+dLJ6LUAaaa9fQpUy0DQs+sM3CL0n0y8w3xeGP0RBAb1PqFilgO8BNtJJCI2/i2aLRHyQU+haKIy4lArj7johVApCIBanhwekofBvcmkPCGUyvd64Fga0ydlt4zb4dTenuntIzAE/bNhpcu2a2Es1fDU5svPrQeGXf22DQ=
+	t=1784561839; cv=fail; b=j/paik3r5OxwrrL1uQ3oFeNEhpDPoGnn3f5l58MC7Tl1ELDZUQFKIQgb++uGYkEMIgO6yDQtyn6Vk1AHkAyJ8wV2Yn3VLFkO52oog2AZ/gma4uACrLCdrCnakNQi7sgSBrdj8uvximJsxG3DW4jS1iVldmGfg5YX39xKqwAGVrg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784561669; c=relaxed/simple;
-	bh=eG78SK0H6UEhzyF+eEu5wV7/R+1p4o7xSu97Kr72CSM=;
+	s=arc-20240116; t=1784561839; c=relaxed/simple;
+	bh=YfzX4olXiOsYKOTS15cBLonto2AegpaH6FI1iKWjI88=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PycfmTyi+bVX6QayjH+5uZQ5gBbevaZqqjFvZPm5SO/UVo11J6kV7nRtprGryGNk/QVFgyBnET/x32hAH6OeqpxNmszjKxxrAzEzSO/wgQVPa3glLC36WkNh6e7uRGaB276XFXng5NrfhhpIunAVngyFo59CduZEO8tFR9LQ4rQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qaKjBD5p; arc=fail smtp.client-ip=52.101.70.27
+	 Content-Disposition:In-Reply-To:MIME-Version; b=j6Y1vfYZI2JyfVZ8wmxPbnOW8PS6j49Xo3AYPebeRzWcZBtSI2+VxMwUhw2hN14l2kyGwww7Kmp4IKFoF2l0BS5kADr+vovw2tJ1BliflvmxEFYNEgkYg5gdQY+dPBzIITn/FFUfM8nTb4BYCaP06BUzrSTM1BwLPEDhOEMhhsM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=CGEIXhYo; arc=fail smtp.client-ip=52.101.72.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qaKjBD5p"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="CGEIXhYo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O8lWDdFHDMzHkPGQ7yejpvUBBPIc5J8U30BhYWmiCELcwSBO93/hGpz4lRkJ0HqIEOy8FhZ0GasC3YYwftfL3IIrlTeapNayP8y57/9v7RSF5Gri/4PTwpRknbC9fPZ9UzAdoDA6tYF+BcFr8mg6xhn+T7n2LXKX68q+Pp6wGoMfB+wOm34FexQx7QyOKQX2Mk0pNmyQvN4lSxmQI2020q4eMWx4zOGeeo4BSd9y6MrPrJSdOw9lnQbMjPQkaszYqvjW+Qcq068+iqH5PL1XPRei9AtFWcIO3sK9vZsYG95veO/yAtQvNu+O8roM9WRwUMlPbFK9JUeMDtjR5d+QhQ==
+ b=v7cFaUyBAV9l9wxrpwyKPbFXFGP03MAsNvn0h7wH41WpyXDkPgingbUYQz+8D8fGQpp4RwrCoonl1XqDI8MYnusNeaj1e6B47eaItC1n2/S4IKgBAPIXSlla7Clev7Az/o6ml+X+Bywa+QvAbhrgkROKSWwzQU+wQmPpzytbhMG5eQSElO6f/q/S11sQF9bh/1oO/n3upT4UXGB57JiIpkF5YL1QKzZd5ax4Poe2ZSMf0l2f0zoEqlRYfRJLfGMWhZX8F9U4tvNG15xA8e2kSM9g3y7qPAgk+e/zosj4i+RhvYvkIEaqMQgqH4mTyL3tOICq+xY/jAXZon5Gcswumg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SmytSW5t85CAAUF8zU1nLaZq19UYTLcY0RXfcP0CySQ=;
- b=GSXQAuvMrAPTQ9DhhP5kZAVfsvdZNH1Vp8Cah9sUeST7RzpyOXQlML3fdEnWT262UbBo2wjlFSo27VMTNI/+e69yowo4bFrfJdLgovuu89H5E1AY6oD7L8dF0ubzBJ8m/HKuZGzZ+VjFh0rNLHKO8WrGEt0dmGU1ew5s4ogk4g7C634T4sKDcSbuicrKFLDAmjxQliRh1SzOC21FbhEVhzByAY/DAu1FNiqfxPoVnoSNuRfzfYrGT12HlXGLGyhsk8/toAqDlOb1GMDMhiGQP1GAuGBt3tx50pcMF9q2BhDtnQmPuGeI4sKoXJjFc7OueMqEKZYCr/IfTQHFA4UYRw==
+ bh=jk3ho9lH9e94DKXc/n2ERZzz1vmPbGjF4U78iqh9izQ=;
+ b=o/4vlFETnK7+wJeaQcVADGdecyYHUUR7wDqNKt3hPpOFkNy3AfSEBwjF8OztTDJc1r4NX49rMPSDn9+dyznHs7kBeNQs3nMeIFP1VEasePaw0v6xSQF2Wa7Lq/f9SOiPR+L8kdKSjM9od2WQAaA+TuhRzXWwjWnTsjCdTsgWbER+KoXvSKt0ZmFv7JgH6hCA03UP+z43VRiRULYoRv+7tTcCZIkiEXgGOFb8fhfJGJ2hyfUycZxKwMlomO18EQhJUSNgp96qyHs6dVBzXI2tr36VgRB68zR/k8OUAB7tSE13sy1WtP4g4s+MPvJicEi1KO3/s/9ddttXWOIZK5QyTA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SmytSW5t85CAAUF8zU1nLaZq19UYTLcY0RXfcP0CySQ=;
- b=qaKjBD5pNo8du7eM9kksEi1wq9BLEn1SL+Kn676MZKfuBE3fUnHDd/8RpvZbf0hfjw21+PJz+IUk9WWmUcMFbnrwgNGFYb9mgSWcDYcdKXCLgRSJ7YR0ompuFse9Vij8y2CXYSZgUXpO7xqG+gjXh/eY/T4hBzwkJbBcZT91ScD91mVqmh5s/ZtnFzDvOMCSKshNSLIN5MMRVIQepNbrHetcnuo6OWB7ke0DwHqQteGP9UqsiVCC4VwwToBSSt+m3EUVsmy4AXIFoHDw7yK3oa29dh7f1xIfr/YcD74FhN4UoQ6SzNyh8npWxKgLb87opXi2yc5ACCqeyPolzQT/Qg==
+ bh=jk3ho9lH9e94DKXc/n2ERZzz1vmPbGjF4U78iqh9izQ=;
+ b=CGEIXhYoZLTusiBryb81Vgec1tq9my6HSq5M2+oDn6IbHhPgCJA6VsDs+H5M+969IbIAMHQ/hGeRV7l9wIHayqOs8Vl2pRrMmzOuH/gdtGAFl+FyZ8Vh5n+sj38ykozSy6UbkfBCrBFt8kaw823Y/E7OmgfXDBrb4oGPTxsuerYtQjMM2s9Y5F6e00BszuxX2Hit4sosH7LHIUc7FVoGE9GVcga9SFRFBqVWJB+X6PAMd0ZZvLvD0hPp16J7KuVsEp0bgMTJAkXQ1PIxH243zt+NJM61j0V5e7JCBryp6Ab26Zy9Y3u60Ct+8ew83ACK6LGv8vh2bMCZ8bF8uiEceA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB8152.eurprd04.prod.outlook.com (2603:10a6:20b:3fb::20) with
+ by PA1PR04MB11506.eurprd04.prod.outlook.com (2603:10a6:102:4df::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
- 2026 15:34:24 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
+ 2026 15:37:13 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0223.012; Mon, 20 Jul 2026
- 15:34:24 +0000
-Date: Mon, 20 Jul 2026 10:34:12 -0500
+ 15:37:13 +0000
+Date: Mon, 20 Jul 2026 10:37:02 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
 To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -59,16 +59,16 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Guoniu Zhou <guoniu.zhou@nxp.com>, linux-media@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] media: nxp: imx8-isi: Fix per-stream reference
- counting for multiplexed streams
-Message-ID: <al4_9MFuz0lVzxHc@SMW015318>
+Subject: Re: [PATCH v2 5/6] media: nxp: imx8-isi: Correct color map between
+ V4L2 and ISI
+Message-ID: <al5Anrko0EjD5ory@SMW015318>
 References: <20260720-isi-v2-0-45845bc5d4fa@oss.nxp.com>
- <20260720-isi-v2-3-45845bc5d4fa@oss.nxp.com>
+ <20260720-isi-v2-5-45845bc5d4fa@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260720-isi-v2-3-45845bc5d4fa@oss.nxp.com>
-X-ClientProxiedBy: PH0PR07CA0097.namprd07.prod.outlook.com
- (2603:10b6:510:4::12) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260720-isi-v2-5-45845bc5d4fa@oss.nxp.com>
+X-ClientProxiedBy: PH7PR17CA0055.namprd17.prod.outlook.com
+ (2603:10b6:510:325::16) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -77,179 +77,91 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8152:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ece4a0f-ecb1-4021-d196-08dee6745fef
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PA1PR04MB11506:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26b5df7c-6fd5-4fe5-e699-08dee674c4fe
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|7416014|376014|19092799006|23010399003|366016|6133799003|18002099003|22082099003|56012099006|4143699003|11063799006|10067099003;
+ BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|19092799006|22082099003|18002099003|56012099006|11063799006|4143699003|10067099003;
 X-Microsoft-Antispam-Message-Info:
- ZHLfmea0FUwVCyYRMautEqiSBqw3nhRazZDTWgZhrdnfUew6G4zJL/VkTLpm0EldyZWUI7E6cJfTY9uOJe9NAFMf3YtfMSw50xyIgcrkWZcwqs45g0DKdZfZzIxK0mOjM4TYgrsjjpRIOwlKuUHLSgW4xRimvUwZ+daISQhuRa986g2ka6xLccStoTZ2F7MEfl3lRJaXQLWTRZ1s9MTtqwQz1ZCrzRzYAVRsU1Bu8rUlxnXvyUl5NzH+Tk4ByFRecMPu2miqq/LDKnUrnKp5hc0CN6AEL2qogUcNsabnMpcw4by7TPs2J0GpGitTjpmZoFCpAU5aHxIXCD/pwH2nqw4ltaHM4/JyaonhZ2Ryea1BvoPKrZeRprPzH9apAmlfDKrQWjcAefORHh0TBuM2UuiaeZe0NkEKi7O5BwL0ITLABg3U2YzyjViCATWyUrR+omX4CZJQBKTw+jebnfc3wnZrzGtpyd6ngt9P/7oynPuomTnS71Sp2jFyl0DtNJFMvOuy2N0JVGMS54rQm4PDNvDQC3DGXZzHxKRVI/DKvOAkW6iMGJqnVxn2AwW8caPsctK5OxJ3+SyN1wlmF55P+GP6N2LwJuzNvW0I3Jl9R0mStSeqP4HvVxED3II9aH/ttMJOEF4nTkyiAGkn48JZHfpGYEVwXJpxZTQyNcjOjoU=
+ j/0e95x2PKCU9xwbUn4fRBDJU2zOH+957UzOGekvYUBhjv64/0E/yg+QTT6vJWdsolvhcnVbNbqlK7B30GuAgjYNki11a7/XmLDsCpaKCKlWSNQI1J4HPnPfShGtU9mPIVCooTnSRs4NVPp94wYBoLdrpKgAchqTTwwly71Xpqodpf+zCe54LWgOdLox3IkwGFMJtZw/Txbua015dsSh0Y2ipLXXNeGwjlpVOGzyJWq6jRxiLcuyhDLhOLWo3vj5UPev/wbVKsZUTQ/Bbm8amdZAQiLJFCAu2quEqZ4TD763YfEh/kgKNX8oAwwaWMX/DPhguNu+G/bIf78G14k2EydVyT2spG7Kjgt0NH/LW9zkDGvW1EARJo49lSI6MkE8E1ggLehXSZ5vE7mvsNhUGwQPe/sFTxCcRZ2S7bwW/CFl0M6hb+kpJHsPx/dDNqiwJIDACYG5+1lYWaWKnodxApp1+UNAJWewTiOU5koXJ59j4XENrvPsDWmZTcrSuUz1W5oJfnta1kVcKifc8pBiNOOabbi4gjz32Y8DXgv5shKuQf1Qaj8D9EjMZ1Nq6fOH8QR9R4BtZBtnFdSeBgB6UrQ5QdeGMkEH+zXDPKt1WJ9Bq3NwfZ2Pvx+HfjOZuI+y9IZUm6D5lJOXjdYRhooyzeo+KzpyLbXANxSbq3/YWO8=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(19092799006)(23010399003)(366016)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(19092799006)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?vs8uI+Ytdg/s+yhE/jHdfxLixo/gy4tVz9aFf8hGZoRkst1eOUloY1akdE8k?=
- =?us-ascii?Q?x8rVvLpCFh/9tnjv6Xey2pd8XgFER5+ZRoqH2itgj/HoHJyvWhmvOSC5qU3V?=
- =?us-ascii?Q?ObxgH5zZfSZYXZ79WnlpaaOEliPGEEn4roexjoIQJRDtwEulQAwD+6S99GDE?=
- =?us-ascii?Q?k0d0nRYNr43h6zQRsmOyikMvw7Z/zuxkJB+x4UAW54+8DaxiGDTSEzqo3pgj?=
- =?us-ascii?Q?17Vy8Il5yL81lf9A0TPnQ5Pf4quOa5ywDU+Cy67xanEh8QW1eP3TH69I1D1g?=
- =?us-ascii?Q?ZeRi9eOUqamdHbsffAcdgsXNfdH08CbslDTXOsafCjo3pN4X+3uXq2ioobwr?=
- =?us-ascii?Q?AY9TOTpK4ScoWv18VMRBpxem+PWPldbJjk1V2CMieGH5PdqdLryr/x3sQHOg?=
- =?us-ascii?Q?N6SCDsCmrjcVr4Y2idjPJZ+2bVEhAfuBfAqxp5L8TC9UwB8GiJkSTmFkCjHw?=
- =?us-ascii?Q?84R5Qc7a71ftu8eo3NRkv795pVGq7yGDe/qtSu45wEkxlw6nkRazv1Aln1Jo?=
- =?us-ascii?Q?/PX+EOTELujTiY6Se+cdHaDM7GsI0dRLfuODEud6wylvJoNJGerS9aXNXbvK?=
- =?us-ascii?Q?Tl1khjzOkd1z/P1mzcBy2FiqAM4ryMOyIBsYf+zsac0mGXgomSiPErDsX6Pi?=
- =?us-ascii?Q?MgIteulMaSmgsI02LNgHQdFBjV1/HCotXWYX5ti5SUdTFjVol4272FvbKZfz?=
- =?us-ascii?Q?3bw7OHgoaWz75ksd/a2EmlduZRLjhj3IOS71mxCniWHN1C+GLFdITOaeOtKa?=
- =?us-ascii?Q?pG31jFsp+6JuhdoyRxK6dsNxv3KFFKbWs7Zsa+fMq7iArsmUSYM2ES2FhBUj?=
- =?us-ascii?Q?4oF5VLkE1hnFaJoM5UJNc8LQJkTeAcoOKQkGm5rUgNWrzHVsY+lcsWGDWkVf?=
- =?us-ascii?Q?PA8Dyvk3aacCSR+Wqqv3katXGRFrCELTBUYV95y0TXCuJDJ3+5Scx4Grkt7l?=
- =?us-ascii?Q?/9AI2sYrn/xRa8AgwTHQflxN0lz94Xqh9EcXWX3DEza6hcGVh6wqPmczb1fx?=
- =?us-ascii?Q?eIL1nsFIQdCZtqMcNf3Te2fQ1JxcIj1awq0Jh6mjTEbXWitQrCPVLZE/n62R?=
- =?us-ascii?Q?aKTQskYVTMsSUHT8MSWXpPEzRrSKNfglf+YPF1iod7qMzy74jyNaXyz05Hmb?=
- =?us-ascii?Q?gJottp0ekv/omD8cVBxWDNvlJBWoXzR7MTDe+/f/bFsyCQHvXKWHLQp6y50Y?=
- =?us-ascii?Q?yWZiC+QkiN7njYKEpNyNATSMm/KAsQN1erfnGPY6zMwwWtEXJc8/LRLq3uvm?=
- =?us-ascii?Q?Vc/20Nl6X7DN4Is+qa8+zSA4Zp3I5/iC981KmxlwvzUvbqCAQ4putmXa4tED?=
- =?us-ascii?Q?VZp7e0VHzzLALp2TU0tzSRLvJSOYzD5/mHJNnWZ7vuBu/PBzad66MYJzekO+?=
- =?us-ascii?Q?VMwl74crHvF6DWVPijTxUdp/8vVjkDE9/vjXDX+3r3/lF/9IVjkWogX4OhwT?=
- =?us-ascii?Q?syXru8ghtXcZOXNknYahT+7VkBBI4ZtDdj6U6mRmd9RmvWGkn1lxVoaPra8h?=
- =?us-ascii?Q?DsZIjaPYIQMXifILjVaQ4H5D3/1tTArHC7aRzH8nt5T8dDt9ItTt7HLI1Hz3?=
- =?us-ascii?Q?m+SUwNBi5C+LG8TIlCShH7xDAHG4Q1Iw9U4pGyD7zrdV6mQfS+Yg0kKJ1w0F?=
- =?us-ascii?Q?dVEgdeOGqL4YcNeDrhp+0VelbUrUbNer0kRV5u4lPMuisBHSGeMylabHWf2h?=
- =?us-ascii?Q?B3IVY6M/jNQgG5BF/SUD/HJQnVYp+mUYh2zB6tq1hVXRotbNy9wTQPC9Mibp?=
- =?us-ascii?Q?2VM7OJlBRg5dUyyqdYydJgP8ynN7KeFJhxzqKPOb1PCN8DMXn0uE?=
+ =?us-ascii?Q?V3SAmUbQASMJbbU/tyGrzCheu03F+gV7WSviJKTx8xrDbCYbD0ghbqC0sh08?=
+ =?us-ascii?Q?RRMOTPKs9AEB00fOHMh4o2wYJybYCYNhii8OekrI2vB+e/dookmwBvZVndhM?=
+ =?us-ascii?Q?IjQrV9vpB9uWbC7c/IcQ4SVTK/x5Yb6JJL7bD07LWr1/2CtsOApdeT8xc63z?=
+ =?us-ascii?Q?W6NuEWvTYsxhqY5MWeVYSbf6XjzBw9lnZFSvTzcAipGOdwgOHWcwUcoDAFh9?=
+ =?us-ascii?Q?pCZFlRmgMOhcQzR3OZiSeqcys5WAWVWki1Z52ehMn8biGpQDffQm9i3BkWCe?=
+ =?us-ascii?Q?VoOFnWMw0gBcPOrpqpciAttnman6ZSEqJwHPG++/QwvRMp7M33DJXc6rZInW?=
+ =?us-ascii?Q?jqoGkoV7m7bH30h+pJcylWR5GpyV3rQ7sRTM9OlyUuEuhuqrO0PnG0OXWB4i?=
+ =?us-ascii?Q?krqhMkMLIiQhz4npRCEtUOIa12iP0/l9x5o08dkFxq8fwgs0c2J+hgXo1jFl?=
+ =?us-ascii?Q?WLRo5qVqoGC0+AQmVcTqUsX/8fQNUnp+KNdw6Pr3lN2/8E2pkNSureXm3txv?=
+ =?us-ascii?Q?5BtBQFPgFyv+ylHE9JGSWh7YKzAGWIR+MypI8AsZM8+Px94UQm3tMJr7d4rl?=
+ =?us-ascii?Q?BWk4G+6UFoWbk0xLj156E46oGjb4s1axksYUrrmgY0TDB6SrITW0eZCMYkKj?=
+ =?us-ascii?Q?Ys63PQxFuTCWfIbv2wxuTLpv2MBYOj/PTUsi8xF80J0Xmm/qkFIAKWlJ/8Vv?=
+ =?us-ascii?Q?9G8IqQUSMfNnp9XrtZI0BbCu+Z2VzKyVZRo64D5rDEzxEZC4FDrGPdDq4Ske?=
+ =?us-ascii?Q?eHwSgIGMaH4pFo8REMQREosu6H3bZ80qyysub7JuJUcJRH8kKjljVv/iJatj?=
+ =?us-ascii?Q?Hrjlgarvv4UOBesfx7/GYr/ezSkveBPXGchA14Enw6GLYFds2dq4XSrEMK2z?=
+ =?us-ascii?Q?hidlz5xjDx76NppG0c9qgUuxotdqcvBrzvTNj4/oMM1i3QXkCiXVsWcsyM4N?=
+ =?us-ascii?Q?yXzHYByrAIiuRDWPZC1h2ku1Tbv/abF8QZbJZBJVPMz9EhnAYoeZ5J5awWDT?=
+ =?us-ascii?Q?XS9D6qgqLmZwBGSPKCKUuZXS1a+K7dxvnozsoE8s2gcqAYuXceFX37WGUsPV?=
+ =?us-ascii?Q?78I61Vq9nzxXT0p7vdUj60VeoJe6cY1cCcyF+E/ZU6vUKqEwPjyhgSBP6QhN?=
+ =?us-ascii?Q?Sqo0ACKQrlzt34Hime+e1Wu+D2sr4q/oaCDvI84NgT7rsV8z3mLgOqEvpBqn?=
+ =?us-ascii?Q?wfA8qg8TYGpapWujUR0AbZjZosg1uWwAwl3hwVM2ETa52DqbXyorSumRH/Wg?=
+ =?us-ascii?Q?+7U6ljSqvkT+Nx6w0w/KFv6YhNrzcgt+bXK9KV23AKHokPgcm1+Q3RtumAJw?=
+ =?us-ascii?Q?JgwjeiMW0wVPBZ6gZ5fUZqfW7gxHk1mAwbDiKMndNRpiIm+bABrDgqRcptPT?=
+ =?us-ascii?Q?/FFUa22zHlucEKoIYk/ShKVqAORI4yf0P6IT0QsnA87dxLU6pcOwFsjPQzSI?=
+ =?us-ascii?Q?AK0C/b7dzPGoZKt3dUmFHrK2Kj0CrNpn9oj2XCZoYpMj8GVhchV5ZISIFJ45?=
+ =?us-ascii?Q?+P+J9jDHSwolf8MrDYWWVSKDKXdfbttZXhDkyR8mGc6zXBDqdAjfJvRLy9aL?=
+ =?us-ascii?Q?y9vLiw+QioTgv8zKzZMXQ6G9ZVynupBA/CUwx9Cz4H1v7tbizUsb2WgcDftE?=
+ =?us-ascii?Q?AG0ngLx/FtQVMVPdfd5PevEiBU3sCLUsLoQ5KxD4y7zMo4M+5UcyNdEigfXs?=
+ =?us-ascii?Q?JD+I29nKFBkCHAsPCpDSaJNF7pDZcdhOamLfU/WgXIT+AI4tSaqTbdKsLSKk?=
+ =?us-ascii?Q?HoAxpeU8W0zudbq2AKdl+MwkB5P5dMjEPXadfedDGQxcGs3LWrPa?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ece4a0f-ecb1-4021-d196-08dee6745fef
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26b5df7c-6fd5-4fe5-e699-08dee674c4fe
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 15:34:24.1463
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 15:37:13.0520
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YjjMo4LsttB+36GT+XxEH3n4fytq4KvZF9VTqpXMJ9aI+lGdL1BIIKL0TWvCqh6SVGi9hp+hBjo5YThbsCayEiWXHMKQA1GCsEMyUogM5pvSzC0XDxLWzp6Dt6eXmwA8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8152
+X-MS-Exchange-CrossTenant-UserPrincipalName: yoNF5colVzNj0Fkl28ORGbT7h5zEFymg42RCVwDu9NeGGYzAGZaY/A+2jD2EtcRqHOkjsg2OBhGG+MtwaCorTYOUFbwxmW+2zC7/2XRQfYa1VZHwbPsdB2nJPMEbKMex
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11506
 
-On Mon, Jul 20, 2026 at 11:34:05AM +0800, Guoniu Zhou wrote:
-> The ISI crossbar fails to properly enable multiple streams from different
-> virtual channels on the same input pad. Only the first stream gets enabled
-> in hardware, subsequent streams are silently ignored.
->
-> The driver uses a single enable_count per input to track the input state.
-> When enable_count is non-zero, the code assumes the input is already active
-> and skips calling v4l2_subdev_enable_streams() for additional streams:
->
->   Call 1: enable_streams(stream 0)
->     -> enable_count == 0, enable gasket and stream 0 in hardware
->     -> enable_count = 1
->
->   Call 2: enable_streams(stream 1)
->     -> enable_count == 1, skip hardware enable (BUG!)
->     -> enable_count = 2
->     -> stream 1 never gets enabled
->
-> Similarly on disable, when enable_count reaches zero, ALL streams are
-> disabled regardless of which streams are actually still active.
->
-> Fix this by tracking per-stream state using:
-> - enabled_streams (u64 bitmask): tracks which streams are currently enabled
-> - enabled_count[] (array): per-stream reference counter to support the same
->   stream being enabled/disabled multiple times
->
-> Now each stream is independently enabled/disabled in hardware based on the
-> enabled_streams bitmask, while enabled_count[] provides reference counting
-> for scenarios where the same stream is enabled multiple times, such as
-> duplicate cases in the ISI stream.
+On Mon, Jul 20, 2026 at 11:34:07AM +0800, Guoniu Zhou wrote:
+> Fix the ISI input format for the color map V4L2_PIX_FMT_XBGR32 in
+> memory-to-memory mode.
 >
 > Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 > ---
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
 > Changes in v2:
-> - Use fixed-size array for enabled_count instead of dynamic allocation
-> - Use BIT_ULL() macro for u64 bitmask operations
-> - Use MXC_ISI_MAX_STREAMS (64) as loop boundary instead of num_sources
-> - Remove mxc_isi_stream_counters_alloc/free functions
+> - Reword commit description for clarity (Frank Li)
 > ---
->  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  7 +-
->  .../platform/nxp/imx8-isi/imx8-isi-crossbar.c      | 76 ++++++++++++++++------
->  2 files changed, 63 insertions(+), 20 deletions(-)
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> index 7547a6559d4c..9adbe2fe7cf8 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> @@ -184,8 +184,13 @@ struct mxc_isi_dma_buffer {
->  	dma_addr_t			dma;
->  };
->
-> +/* V4L2 subdev max stream ID is 63, need 64 counters (0-63) */
-> +#define MXC_ISI_MAX_STREAMS		64
-
-Any existing Macro define max stream ID as 63? it'd better to use such
-macro
-
-> +
->  struct mxc_isi_input {
-> -	unsigned int			enable_count;
-> +	u64				enabled_streams;
-> +	/* Per-stream reference counter */
-> +	unsigned int			enabled_count[MXC_ISI_MAX_STREAMS];
->  };
->
-...
-> @@ -396,19 +417,36 @@ static int mxc_isi_crossbar_disable_streams(struct v4l2_subdev *sd,
->
->  	input = &xbar->inputs[sink_pad];
->
-> -	input->enable_count--;
-> +	/*
-> +	 * Decrease the enable count for each stream. Only disable streams
-> +	 * whose count reaches zero.
-> +	 */
-> +	for (stream = 0; stream < MXC_ISI_MAX_STREAMS; stream++) {
-> +		if (!(sink_streams & BIT_ULL(stream)))
-> +			continue;
-
-for_each_set_bit() ?
-
-Frank
->
-> -	if (!input->enable_count) {
-> -		ret = v4l2_subdev_disable_streams(remote_sd, remote_pad,
-> -						  sink_streams);
-> -		if (ret)
-> -			dev_err(xbar->isi->dev,
-> -				"failed to disable streams 0x%llx on '%s':%u: %d\n",
-> -				sink_streams, remote_sd->name, remote_pad, ret);
-> +		if (!(input->enabled_streams & BIT_ULL(stream)))
-> +			continue;
->
-> -		mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
-> +		if (--input->enabled_count[stream] == 0)
-> +			streams_to_disable |= BIT_ULL(stream);
->  	}
->
-> +	if (!streams_to_disable)
-> +		return 0;
-> +
-> +	ret = v4l2_subdev_disable_streams(remote_sd, remote_pad,
-> +					  streams_to_disable);
-> +	if (ret)
-> +		dev_err(xbar->isi->dev,
-> +			"failed to disable streams 0x%llx on '%s':%u: %d\n",
-> +			streams_to_disable, remote_sd->name, remote_pad, ret);
-> +
-> +	input->enabled_streams &= ~streams_to_disable;
-> +
-> +	if (!input->enabled_streams)
-> +		mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
-> +
->  	return ret;
->  }
->
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> index 5eb448f4c26f..05b51b98344b 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> @@ -151,7 +151,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
+>  		.fourcc		= V4L2_PIX_FMT_XBGR32,
+>  		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_OUT
+>  				| MXC_ISI_VIDEO_M2M_CAP,
+> -		.isi_in_format	= CHNL_MEM_RD_CTRL_IMG_TYPE_XBGR8,
+> +		.isi_in_format	= CHNL_MEM_RD_CTRL_IMG_TYPE_XRGB8,
+>  		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_XRGB888,
+>  		.mem_planes	= 1,
+>  		.color_planes	= 1,
 >
 > --
 > 2.34.1
