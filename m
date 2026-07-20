@@ -1,256 +1,81 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62DA395AC5
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 10:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E663DB334;
+	Mon, 20 Jul 2026 10:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784543659; cv=none; b=TWjqC1Afi3gmAwC515J92COf/PlRh5Wtzuq20serCuM4ML3gjvVVq98lgXyaFVxJPYenwgFDjwlPhU1ezU4z2h2nEnv1XRuNAEpKUhp9KyEM5o/MpJluKSGqbfqPDeBoIxc11J9lNkyVfL6paKR82o0rA4OOiMki6jzad0Q55eY=
+	t=1784543782; cv=none; b=r9nX+gQHZP/+52WbNjmA/Sql3o5o9m2PMjYrNRNAxPAUq+sLuSSDsPPJHdL7lP3Hi/SnWmulMzDtevSnMT0Y8eUoKxqo29JAR6ruOjBG0/SNF8HbomfEDxjjt4kLChDpg29Arrhi5MDuic0HBLAx3MVYSHVtrp1WKJ3Sa14gHZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784543659; c=relaxed/simple;
-	bh=nfb9wr1IkGcOE/xOB087/ooy5UHg3twujjs8ono0J50=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=JATwh4vsGCxdYS2d263RGItr1lTtdmDAArgkIISLH6bY2P6HRD+usMzHnyIQ8BzfInAPBCiMufrGhay4SWO1O/kBczqzU1/yfyVYLZDGciUx4dLfzIogI90fqgsfWp+wfaAoxuEwlAYLtZ/kkTrEhfmKXwOWhEfJca5LLlR0rXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hwhQA1Ms; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=a7cb5CxG; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1784543782; c=relaxed/simple;
+	bh=Asw/uy0Cae9cPhW/rY/eXjhAmjWgPfoVTN2V4pueuvM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EkI844puj+FHukUxaDefmyt85jWMQPAcJdsvb0vE6e4qUtqiWE9IcKC0BxtMcV+KEzIkmqoYasMTUhrSKHE/IzKQ5N4hsNrp5jU+sO4jjmoHZvrC+cyophF03D3JbQuKb1f2HCiRGf+yPqlUmPpxnz4EDYSrWMeAEFcfRqJF76M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Et7nuXNm; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hwhQA1Ms";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="a7cb5CxG"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66K9vtPn2189053
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 10:34:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	dHewdeqeVNcntSNtq50xsoiwCnZXmMXQMckL5dStHcY=; b=hwhQA1MsitD5btdd
-	JqsR13zTYhd8UuvDpj3UXwKAUPj0TaA5iOiiU4fX3Dl0h9mYVWFrxWQnM99+iJ4g
-	ANjDaLE4FRRQuJu80TqDoXekVCzaxkVLwtmfcI6PJATKmGrTqGCbOwiZ6OYuFEI8
-	jOh4DmrE1VTsI8P1lcjSb7gPcsmo/WiWwBtB1y7hkqOgW7fehnlM2UbgKLWXfV/O
-	0zqdnt3bPWdecuslW7LhPv33ZFqcWXsEp5FqPXPeNcHWCq9XKRAlNqK/qi2+P7In
-	a+NLjlbpaVpOdDkCchhe5vLBtRiXesNklo53o2kwUF+jj/a2DAXWu6+yKeS9pNvl
-	II1jsg==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fgd04vrsf-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 10:34:16 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e6ed4fe99so2190588385a.0
-        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 03:34:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784543656; x=1785148456; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dHewdeqeVNcntSNtq50xsoiwCnZXmMXQMckL5dStHcY=;
-        b=a7cb5CxGjc5RQBSjwvVPGl/fIOxCcRdCZ+5pH8pCtustV/XDAjZBNZaWf+QLZOa3Bq
-         XPDfiZZbrNgfMD8dGbC/GtKv1Rp7PahdeHBt/7yrHSXCK31GY0xusvYcM2EPneamA808
-         VJDBZgHC43yTtlLqnY9mX3L2ZwIN8cOH1iBX/anm4slakbKorFGWWa5nabEpa3V2y7OO
-         DMrPjLoJepgd4ItxKv3sqPT21eJAZfuTT1Cn+UT0wv6FUl6Ukt8v807AXOGL5SSujOFQ
-         kOAO+le0els+M1N6cdUaFyOxLqCVKT7YG3sEuRZl0fG+f4U74HYj6fSeLzDC3q1ZgseW
-         EHXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784543656; x=1785148456;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dHewdeqeVNcntSNtq50xsoiwCnZXmMXQMckL5dStHcY=;
-        b=ZRBZGtVwKKrH+stoUQcd3XzjgUBM35qm2bz8A1FBQM3povynppuGk6sfXoHJjAnPbz
-         uqTDQBPkZJo70WdwVFe8WEhTxjks1eRmx42fYhWZS9CJw4GoCKuovemYg5ZEiWtd4Z2R
-         lncJ9ATh/c+JTMSxDXJVaOU2yupVvUwnk7MAPcrOpy3cHBP16d0xDvsn9cF7smHNKWQa
-         Nz7kIV1Qz9QsmljLFazJZUAkU2wnYJH71m32XRB6CVvpgcVjr2NkNPTK//ozvwCXDtUn
-         xb6dvYjy1cQiDXyHZVB/OSxTHviFpkGYBP4LUMxWwMjon58J9nZkxFxy+yd6+mBURoS4
-         X+Mg==
-X-Forwarded-Encrypted: i=1; AHgh+RqrqcVFjCs7GeR5xAHVboPQs9lvxU5C+dz3FNzbX8BgIZs2U5FH10gp9hukzPV4mYoad3w=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwjwSbcJvhSYdoWB97e0asT1BZjmaTrdv2+M1XhUEtrrUx1HQ3K
-	Z7crbEJjMZ25EKJujiwI2xYksroHGeINpSY4CSEi6W17+FWoLgvjl4kckgMXszDRXCowRRRkiH9
-	wduOsZzP+tDxHRn0CICywYvtzqe8moCUieqX4FWnLuj1UDdE5PtTgtJc=
-X-Gm-Gg: AfdE7clUQE7REHgyRoNuYQzNGeWEC9Ed5+I5PHr1gAbylzdOYabfcBQJ2LhCRT55/fz
-	feSxHSKghN1cjY9Xk0CNf4M3zyNGZBqSXMbNRhk6ZSchFOGW7USr3Ed6NGKgKzLCCtfh+dsVAtT
-	YvTWrtHhBh19sLP7EhKqxSm7usqlumQFBBTvnXEOb5fbRWYXQ/TpIRv4iACJkyWsjOgCIAqJhvC
-	M/vE6siWsfwZ7mEU4jd26nlKm9NYYFD3CpWyKKhZWgsyx5GS8NHUIHmkZX/jLZxepG2/4CwRE2Y
-	YA6/2p/qnebWhjMFt+3BX+rwqugj4CcLC9rS7PyWi9swJemiX0UHt0iR86lFXI6OoaYMyC1Fkpe
-	kIzeRCYGw5ag3XxK6X0AbKc1wdDClc7rUoBBRJlGvtjLxI+HXdq+3a0f4979pXkQZFo/NJjlMwb
-	JttfS/Urz5DetWvqylAaQX4irj6Cu0aabmeMVYfBwe/Jo5aXkV48mSJhgwZE59qbbyQmY=
-X-Received: by 2002:ac8:5d88:0:b0:519:55c0:a1e5 with SMTP id d75a77b69052e-5213c8e3aa1mr118701411cf.8.1784543655306;
-        Mon, 20 Jul 2026 03:34:15 -0700 (PDT)
-X-Received: by 2002:ac8:5d88:0:b0:519:55c0:a1e5 with SMTP id d75a77b69052e-5213c8e3aa1mr118700261cf.8.1784543654369;
-        Mon, 20 Jul 2026 03:34:14 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c17009adff3sm439489566b.2.2026.07.20.03.34.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jul 2026 03:34:13 -0700 (PDT)
-Message-ID: <8d86ca46-d329-4e65-a7bf-2b79fccddf05@oss.qualcomm.com>
-Date: Mon, 20 Jul 2026 12:34:10 +0200
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Et7nuXNm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lsJ7ycZqmNfZ4qcNV3YiKPKQ1rFYnrAAMeqziv8zi0A=; b=Et7nuXNmeSqF3viCX0rn8wephK
+	NZYeYohV0vJLexKKxsyzFYDczkmxIvyqfMT0NQFIzpURT/8YTcqpqoPIp8hdj7mKe8ZVqhkWN/UyL
+	y1iInzlC1zdGXkoSU8qapDGiGDU94xDGt12UuDw4vkK5j+iBoapJ3yUyx0zupgC2MXBED5AlSyHZE
+	NZqKX2qLYX5lfnEloJDKEfljT4019Ean/R8sy6WSOWv9b4tas332v+HNZ2lCmfoVaMj0eoVNMjcCT
+	9m7e3n7XvCDRj1ucIc3iFLOZJtQGZVXapXThzL7LG8P0WNPAt6IotBB4qcVCrr7y/PRCaumXtI3DQ
+	Rnxf/I8w==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wllLz-001NQI-1e;
+	Mon, 20 Jul 2026 10:36:07 +0000
+Date: Mon, 20 Jul 2026 03:36:01 -0700
+From: Breno Leitao <leitao@debian.org>
+To: wei.fang@oss.nxp.com
+Cc: richardcochran@gmail.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	Frank.Li@nxp.com, vadim.fedorenko@linux.dev, wei.fang@nxp.com, imx@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND v1 net] ptp: netc: explicitly clear TMR_OFF during
+ initialization
+Message-ID: <al36BnzPjbQ0gSao@gmail.com>
+References: <20260720012508.23227-1-wei.fang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: johannes.goede@oss.qualcomm.com
-Subject: Re: [PATCH 8/8] media: ov2740: remove NULL reg_write callback
-To: Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Link Mauve <linkmauve@linkmauve.fr>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        David Lechner <dlechner@baylibre.com>,
-        =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Mauro Carvalho Chehab
- <mchehab@kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-        Lee Jones <lee@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        "Vaibhaav Ram T.L" <vaibhaavram.tl@microchip.com>,
-        Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
-        Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
-        =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang
- <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Praveen Teja Kundanala <praveen.teja.kundanala@amd.com>,
-        Kalyani Akula <kalyani.akula@amd.com>,
-        Michal Simek <michal.simek@amd.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Joshua Kinard <linux@kumba.dev>,
-        Antoniu Miclaus
- <antoniu.miclaus@analog.com>,
-        Chen-Yu Tsai <wens@kernel.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>, Miguel Ojeda <ojeda@kernel.org>,
-        Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        Tamir Duberstein <tamird@kernel.org>,
-        Alexandre Courbot
- <acourbot@nvidia.com>,
-        =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
-        Daniel Lezcano <daniel.lezcano@kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Ronald Claveau <linux-kernel-dev@aliel.fr>,
-        Salah Triki <salah.triki@gmail.com>, Yury Norov <ynorov@nvidia.com>,
-        David Carlier <devnexen@gmail.com>,
-        Achim Gratz <Achim.Gratz@stromeko.de>,
-        Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-        Patrick Wicki <patrick.wicki@siemens.com>,
-        Markus Heidelberg <m.heidelberg@cab.de>,
-        Markus Perkins <markus@notsyncing.net>,
-        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?=
- <u.kleine-koenig@baylibre.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
-        Chen Ni <nichen@iscas.ac.cn>, Kees Cook <kees@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-omap@vger.kernel.org, mfd@lists.linux.dev,
-        linux-i2c@vger.kernel.org, linux-gpio@vger.kernel.org,
-        imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, linux-rtc@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, rust-for-linux@vger.kernel.org
-References: <20260715175229.24672-1-linkmauve@linkmauve.fr>
- <20260715175229.24672-9-linkmauve@linkmauve.fr>
- <al3sxMUgeK49dwNs@kekkonen.localdomain>
-Content-Language: en-US, nl
-In-Reply-To: <al3sxMUgeK49dwNs@kekkonen.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=POs/P/qC c=1 sm=1 tr=0 ts=6a5df9a8 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=VwQbUJbxAAAA:8
- a=2y0c4oOAfBMx015UTLoA:9 a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDExNyBTYWx0ZWRfX2XvlfeGAjEvP
- lbsb2it7Vqy61VHjCyGqcBlfSL0x0/AVd9u5t1Bz2paeS8gpwFHt0qjyr0IZod7V2FsV46YFtZV
- zQmvgpvMaK6C/OCy3oclmh18yoWXYR6zHXGMwpVJyijczPBCJHg7PTfaqtn2L9wad4SyQJy35GD
- sxJoxS9MBW8G3lxPpJCDa6Z40J5DzYWF4920JYASMw1Y/s1Y+GMmQMVEoSwCFVsGhhxDZWHcssf
- zlxnn5+nhht5pNr5cMshDrM45PXMBiF825FcG00vAQfVPcMdQm0wJHobd3DOE2iO+kTbtyB1eWo
- lDGvYo/rCxLa2XqDBPJtlNgSaQi4ao1V2Spg1yCke0pjhR/ME/dioI4U0tI5qppQnZ/LrVeDFiK
- OcwACrX16UURTXyS9IN7Wwmh+sm6DIyfVQF0wwZ10u/jvRjdRL8mI0991/vIQeYbmv+bhWNAqHR
- soiVm3xlCjQF1BxRdfw==
-X-Proofpoint-ORIG-GUID: L9JCCRnIU8XH6_s6D_hKY9DQtfFvc26n
-X-Proofpoint-GUID: L9JCCRnIU8XH6_s6D_hKY9DQtfFvc26n
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDExNyBTYWx0ZWRfX6DkOwAdhOcIA
- VLoS/8/gFPEmJHe5fmXEUBzG0+GB7O+O53E5PhQfxqAuWhZdNpZbquK97A6hjM6GpIrrACZT9ID
- RrNqZ8DJ1hmUvrItg92RzDVH81AA7lY=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-20_02,2026-07-17_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607200117
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720012508.23227-1-wei.fang@oss.nxp.com>
+X-Debian-User: leitao
 
-Hi Sakari,
-
-On 20-Jul-26 11:39, Sakari Ailus wrote:
-> Hi,
+On Mon, Jul 20, 2026 at 09:25:08AM +0800, wei.fang@oss.nxp.com wrote:
+> From: Clark Wang <xiaoning.wang@nxp.com>
 > 
-> On Wed, Jul 15, 2026 at 07:52:24PM +0200, Link Mauve wrote:
->> This field is already initialized to NULL, so there is no reason to
->> write it again.
->>
->> This prevents it from appearing while grepping for reg_write in the
->> future.
->>
->> Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+> The NETC timer does not support function level reset, so TMR_OFF_L/H
+> registers are not cleared by pcie_flr(). If TMR_OFF was set to a
+> non-zero value in a previous binding, it will persist across driver
+> rebind and cause inaccurate PTP time.
 > 
-> I believe we need a real name here.
-
-We don't need a real name / official name here, just a "known identity",
-IOW not "anonoymous1234" since Link has clearly is using Link Mauve as
-their internet identity (given they went through the trouble of
-registering it as a domain) I believe the S-o-b here is fine as is.
-
-See: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d4563201f33a022fc0353033d9dfeb1606a88330
-where the "real name" policy was weakened to "known identity".
-
-Regards,
-
-Hans
-
-
-
+> There is also a hardware issue: after a warm reset or soft reset,
+> TMR_OFF_L/H registers appear to be cleared to zero, but the timer clock
+> domain internally retains the stale value. When the timer is re-enabled,
+> TMR_CUR_TIME continues to track the old offset until TMR_OFF is written
+> explicitly. This can cause incorrect PTP timestamps and even PTP clock
+> synchronization failures.
 > 
->> ---
->>  drivers/media/i2c/ov2740.c | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/drivers/media/i2c/ov2740.c b/drivers/media/i2c/ov2740.c
->> index fb590dfadda1..799eca4023da 100644
->> --- a/drivers/media/i2c/ov2740.c
->> +++ b/drivers/media/i2c/ov2740.c
->> @@ -1271,7 +1271,6 @@ static int ov2740_register_nvmem(struct i2c_client *client,
->>  	nvmem_config.compat = true;
->>  	nvmem_config.base_dev = dev;
->>  	nvmem_config.reg_read = ov2740_nvmem_read;
->> -	nvmem_config.reg_write = NULL;
->>  	nvmem_config.priv = nvm;
->>  	nvmem_config.stride = 1;
->>  	nvmem_config.word_size = 1;
+> Per the recommendation from the IP team, explicitly write 0 to TMR_OFF
+> in netc_timer_init() to flush the internally cached value and ensure
+> TMR_CUR_TIME follows the freshly initialized counter.
 > 
-> I think it'd be nicer to do the initialisation in variable declaration --
-> all the information is available already there.
-> 
+> Fixes: 87a201d59963 ("ptp: netc: add NETC V4 Timer PTP driver support")
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
+Reviewed-by: Breno Leitao <leitao@debian.org>
