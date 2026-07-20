@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FC7437127
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E45C437878
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784562657; cv=none; b=tkoqSMp014N7PYMSFqtjEXX5rOrGZqOOVicD3ppwvi8g50hV3tSpuacyDSJhh/I8fxIRXanSi5v+692Q+66Xz+pmpKoxd8GY3JJLnkfy73zoUIZuOCmtkLJ4nl0Av8FYioCQgaMgZD45gU+FOS0n4nTRm5Z5x869+Ylsa6/Ix5E=
+	t=1784562761; cv=none; b=Pph9wCxDLKUuOqYjqBw8GgglJWdKnzwy19I4Lt8sFyBgN9i8L/98vcdtcJG+UndTKKlGCCRmj3f4n8a5IxU2q1kh4fCpebW3gjgY4RCm8zHJNmkrdD2WMT9mSphcZ2w73BvMs2i4IW/BXfhMmE8MBjexPpqw2F8Yb8bbfjMbQro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784562657; c=relaxed/simple;
-	bh=ZjiTStp7sJgzd6YmI8CvTJ/KS2g9ZEeq6LQx7g+yjbs=;
+	s=arc-20240116; t=1784562761; c=relaxed/simple;
+	bh=b11FkTP+hItNR/CgbqUkq7cOeCt9z52TASGYg9wNUu0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=l5OYi9AvWag9l1016DF9wIPow5X95VSbojrXpNUZQF9jj5YEo2/DKomVkIP0Cr+9w1ftAPDPw12NFS7iaFSnyByIe+lCXRvWvZ12gGuKg9z0brlvfmqwpKn9zk9JRdnkqRK3/XCpZH6/ilAcPeAsmZaNvqREmToGha3DhBIgpYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1sF0eU/; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=A8ppb3nEyov/GxUPnH6r8hnc5xyzWh5kzKcN44x7QNNJ6RtCWOjta5SoRKbB1dteB+VAOK8DbnXZ9qp6Bp+79R+MTno7wKXGzJEFJVeZgV4f/pFvfbPaTbS5F3tei7i5Y5NbGwym8T+NBNvlaCEH560rkZJRtuxb5UKkqpksibI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lgp+DB77; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1sF0eU/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC5D1F000E9;
-	Mon, 20 Jul 2026 15:50:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lgp+DB77"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977A51F00A3A;
+	Mon, 20 Jul 2026 15:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784562656;
-	bh=qJQU5tT4gBWPtLIh3ibKXTeM8itlzBuYVgP05V0atv8=;
+	s=k20260515; t=1784562760;
+	bh=nGdQxqcaIC04tyTye7SFtUtqtKsuT9hgPtoDK04EPgQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=h1sF0eU/to38WbjOxI4rKStfKZXgTUuGYSwOT/8ZSG4nslE/0S+ZLaTo36X6bXpjD
-	 muMARxPlmMavvJjYjkgQ1M/uhyphfqBE0zMf8YFeegyRUqiquY/0U0e6WkCwjzJtyf
-	 dM+mhK7oaVL0Gy+DuuO2lJiHFewqWHSfTAS5GI2VOA9c73DO+UHCmtySNths9ioBTn
-	 XqWm3ipLKW9CDiWc8gfQUm3eR3kBnCzkoLbgoUxVCM6SA5Il6EJoqU1nNI7GAzIDTa
-	 s2gTDvG4zU5P4O1BOhIXvrIhre9Q0RFAeNxtRFj7UTrrHwPtREOL8XftS1H7aSN6b1
-	 nOBItbX9MYvbQ==
+	b=Lgp+DB77KA0glEGY2KC3kK7SGwXXDWcymcYVLNkJX/iJPvDbZ/wjSCfHYtH9bA17q
+	 RsePj2B38Hza3XWDiLs1CzU/fnLKX5bX62+fwvh06ja77yT7oJQQZi4WgZnNcziRSh
+	 VU9BHGcpdQVURVCip3a40uIxVQxBDcFM40QjyPoJQPBYiP6j1ODf80N3JPqCK+XMDX
+	 xR58yaP42uYK5BpHpcXXCtwzrg/sTDz8C5aYkyGtJXHFDS0xLBT5AyjFND6xAoAfep
+	 b94bXG3sFn7ltkeJ/LAYihpSJB7yOeNE7aFPT0dHB/Y8bjZ1+lTlLG/ws9xZ8b3kDS
+	 dXfYFDM0S5zqQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 11/15] drm/hisilicon/kirin: remove dependency on DRM
- simple helpers
+Subject: Re: [PATCH v2 01/15] drm/exynos: remove dependency on DRM simple
+ helpers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Diogo Silva" <diogompaissilva@gmail.com>
-Cc: Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, wsa+renesas@sang-engineering.com, neil.armstrong@linaro.org
-In-Reply-To: <20260720-drm_simple_encoder_init-v2-11-5020b630668a@gmail.com>
+Cc: Frank.Li@kernel.org, neil.armstrong@linaro.org, wsa+renesas@sang-engineering.com, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <20260720-drm_simple_encoder_init-v2-1-5020b630668a@gmail.com>
 References: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
- <20260720-drm_simple_encoder_init-v2-11-5020b630668a@gmail.com>
+ <20260720-drm_simple_encoder_init-v2-1-5020b630668a@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 15:50:55 +0000
-Message-Id: <20260720155055.EEC5D1F000E9@smtp.kernel.org>
+Date: Mon, 20 Jul 2026 15:52:39 +0000
+Message-Id: <20260720155239.977A51F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,71 +49,70 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [Critical] The `dsi_data` structure, which embeds the `drm_encoder` objec=
-t via `dw_dsi`, is allocated using `devm_kzalloc`. This violates DRM lifeti=
-me rules and leads to a use-after-free when the platform device unbinds.
+- [High] This problem wasn't introduced by this patch, but the DP AUX chann=
+el and resources registered by analogix_dp_bind() are leaked if drm_bridge_=
+connector_init() fails, leading to a Use-After-Free (UAF).
 --
 
---- Patch [11]: [PATCH v2 11/15] drm/hisilicon/kirin: remove dependency on =
-DRM simple helpers ---
-commit b9a0117f6ac1e860030dfb53be58e44730659ad8
+--- Patch [1]: [PATCH v2 01/15] drm/exynos: remove dependency on DRM simple=
+ helpers ---
+commit c403fdd838b4dabbda14312eb449cb97a7566462
 Author: Diogo Silva <diogompaissilva@gmail.com>
+Subject: drm/exynos: remove dependency on DRM simple helpers
 
-drm/hisilicon/kirin: remove dependency on DRM simple helpers
-
-This patch removes the deprecated simple KMS helpers by open-coding
-drm_simple_encoder_init() to call drm_encoder_init() directly and
+The simple KMS helpers are deprecated because they only add an
+intermediate layer between drivers and atomic modesetting. Open-code
+drm_simple_encoder_init() by calling drm_encoder_init() directly and
 providing driver-local drm_encoder_funcs.
 
-> diff --git a/drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c b/drivers/gpu/d=
-rm/hisilicon/kirin/dw_drm_dsi.c
-> index 15042365dec00..62c5bd3277da1 100644
-> --- a/drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c
-> +++ b/drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c
+> diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/=
+exynos_dp.c
+> index b805403281504..957382223956a 100644
+> --- a/drivers/gpu/drm/exynos/exynos_dp.c
+> +++ b/drivers/gpu/drm/exynos/exynos_dp.c
 
 [ ... ]
 
-> @@ -687,6 +687,10 @@ static int dsi_encoder_atomic_check(struct drm_encod=
-er *encoder,
->  	return 0;
->  }
+> @@ -95,7 +99,12 @@ static int exynos_dp_bind(struct device *dev, struct d=
+evice *master, void *data)
 > =20
-> +static const struct drm_encoder_funcs dw_encoder_funcs =3D {
-> +	.destroy =3D drm_encoder_cleanup,
+>  	dp->drm_dev =3D drm_dev;
+> =20
+> -	drm_simple_encoder_init(drm_dev, encoder, DRM_MODE_ENCODER_TMDS);
+> +	ret =3D drm_encoder_init(drm_dev, encoder, &exynos_dp_encoder_funcs,
+> +			       DRM_MODE_ENCODER_TMDS, NULL);
+> +	if (ret) {
+> +		drm_err(drm_dev, "Failed to initialize encoder\n");
+> +		return ret;
+> +	}
+> =20
+>  	drm_encoder_helper_add(encoder, &exynos_dp_encoder_helper_funcs);
 
-[Severity: Critical]
-This is a pre-existing issue, but could this setup lead to a use-after-free
-when the platform device unbinds?
+[Severity: High]
+This isn't a bug introduced by this patch, but looking further down in
+exynos_dp_bind(), if drm_bridge_connector_init() fails, does this code leak
+the DP AUX character device and resources registered by analogix_dp_bind()?
 
-The encoder is embedded in the dsi_data structure, which is allocated
-using devm_kzalloc() in dsi_probe():
+Currently, if the bridge connector init fails:
 
-drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c:dsi_probe() {
-    ...
-    data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-    ...
-}
+	connector =3D drm_bridge_connector_init(dp->drm_dev, dp->plat_data.encoder=
+);
+	if (IS_ERR(connector)) {
+		ret =3D PTR_ERR(connector);
+		dev_err(dp->dev, "Failed to initialize bridge_connector\n");
+		return ret;
+	}
 
-If userspace holds an open file descriptor when the platform device unbinds,
-the DRM device and its mode objects will outlive the platform device. The
-devres cleanup will free the dsi_data memory, but the DRM device will still
-hold a pointer to the encoder in its internal lists.
+The error path returns directly without calling analogix_dp_unbind() to roll
+back the earlier success of analogix_dp_bind().
 
-When the DRM device is finally released, drm_mode_config_cleanup() will
-iterate over its encoder list and invoke this .destroy callback
-(drm_encoder_cleanup) on the already-freed memory.
+Since the component bind fails, the master DRM bind will also fail, and the
+component's unbind hook (exynos_dp_unbind()) is never invoked.
 
-Since you are refactoring the encoder initialization here, would this be a
-good time to transition to drmm_encoder_alloc() or drmm_kzalloc() to tie the
-allocation lifetime to the DRM device instead of the platform device?
-
-> +};
-> +
->  static const struct drm_encoder_helper_funcs dw_encoder_helper_funcs =3D=
- {
->  	.atomic_check	=3D dsi_encoder_atomic_check,
->  	.mode_valid	=3D dsi_encoder_mode_valid,
+When the devres framework later frees the struct analogix_dp_device, could
+the still-registered /dev/drm_dp_auxN character device cause a
+Use-After-Free if accessed from userspace?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-drm_simple=
-_encoder_init-v2-0-5020b630668a@gmail.com?part=3D11
+_encoder_init-v2-0-5020b630668a@gmail.com?part=3D1
