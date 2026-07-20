@@ -1,151 +1,439 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7237A3EFFC8;
-	Mon, 20 Jul 2026 11:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEFB3F12ED
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 11:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784545361; cv=none; b=JgaJ0nGxE0OSlmL4WHXCte2HASlEM0mpHJAX2+WW0K14LOeKbvryXYKk2EktdFAIXxH9RKtPMudwCJl728m+8e8yyvRajrmSt4eZf9/BAB3GQsRqnlJQn8iSTNv8mD3hQoB0/eI3KNMD3N1lPd2yO9EZXxpEH899Ixrk6RyNzDQ=
+	t=1784545514; cv=none; b=Oxsiy3j1brPTURL9ljy4BxRU2d2JNnmhzINSZDZdS8Q+BAkTylOMoTEvV61PNqUWRzlGTSk2i69FIqV5/Gig9bEVQWuBWanJVAFufMxuJ3iczh2rcFR1zFzRjRwb7v48e7Mg9GmQvxE7QDMgI99/hEndb9+HgSea63Ha9fQKq+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784545361; c=relaxed/simple;
-	bh=xCN1mk1FMy4KfCd0OITCSdYAljjG4eZ/dbWYz1AjSGg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=DGRYjTju2BWphwfb2A4Dstk4ZLCcmvtNUxiIfCKrcLSz4Jfxn45yHs5sqafhx4Xweb70jtV2rDGtUWyesG9o+c+Y6zcxWDqoORxUTacEZQMTo0Wr8zSrLnY0rP+WXcylNS50+AjDcEFRJkOW7HHju4wdunobEJAkXsotQ85iHzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWR2Ih8Z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784545514; c=relaxed/simple;
+	bh=Cr0D8IrXdc7M3cfjxvsuMeRGNkhVfxYYqCumwIz6RgQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZSom+eed6Gg0aNLukWCmoUZZkGYeQMUfUocj/zAiVtO26W5bwK4jJBARub8a4o4j08sb2lqD1CR5p9QBTxHpoU6RWW2jXgxxZrkRiHrARTcRQW4Zw4E61xKwwtFT60BazvsVh7Eb/uCb/SucSpoViDwyKTMMKb/0NUWxzRbaQx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=y2FwkocI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SF9cBLWT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=y2FwkocI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SF9cBLWT; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWR2Ih8Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080CF1F000E9;
-	Mon, 20 Jul 2026 11:02:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784545360;
-	bh=8eOs/ngiXJv2wHNupc+79ZWEgSRrZ9y/U9NPug89TSk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mWR2Ih8ZJV5N8vRyAdkWjgUfufR7D90Xy/75Su/DmtldoS0u/XVjJ3TcfY99MkJ+c
-	 d7uu6tv+jO24bFaSSpqtjP/6DzOypqoeuZbmG4nlluIzp1JHjhpIC4bIMne/CaM09E
-	 3UFHK9OKjIzJXTrW0HukMYI8U3UVI2wz2bj65aMZ25Bba4MhjxY4Jexnrji0mNiLrY
-	 hmT8PNhn+EzprFeN8sZ7hccywK+1whDo6ndPs3gsL1s3tTyKQy54ZjJcKKbRV37DMH
-	 yexvYk5rjKTjXPW2hVFwtX1wiEyoR7X24seNGk8/A7x8UWMA/HkCS9BzZiFca/eieW
-	 WD0Xqpy4bSK5w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/2] device property: add test cases for
- fwnode_for_each_child_node()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xu Yang" <xu.yang_2@oss.nxp.com>
-Cc: Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260720104730.1285552-2-xu.yang_2@oss.nxp.com>
-References: <20260720104730.1285552-1-xu.yang_2@oss.nxp.com>
- <20260720104730.1285552-2-xu.yang_2@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 11:02:39 +0000
-Message-Id: <20260720110240.080CF1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="y2FwkocI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SF9cBLWT";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="y2FwkocI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SF9cBLWT"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 30D0A3E09;
+	Mon, 20 Jul 2026 11:05:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784545507; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jy7YQBE9HAIVBFE0VOkSBBzLYevZIQzBSEslKdqseyw=;
+	b=y2FwkocI3YQIQJFXqrW9ZKICtrgU7bGVS3vz/2uDjZt14w7zVOXlNMnQ4XTNJUK34rzpem
+	JLpUktCdpsjMGideeJkQRJwuSLFJDvapFsfvDgZzS0FCBSnObDwNE5QRv++UUjkN1mcj24
+	5ZICafeK/+n3gCHZyy4tZSyWy5JZ2yo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784545507;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jy7YQBE9HAIVBFE0VOkSBBzLYevZIQzBSEslKdqseyw=;
+	b=SF9cBLWTd+GoNKIEYOgPttCZT+F5hmFW/zHjyXOkatbqIxXJH/pnUErjpIGt+RTdjV8E6n
+	kYPGn/y9Fv7Ta9Bg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784545507; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jy7YQBE9HAIVBFE0VOkSBBzLYevZIQzBSEslKdqseyw=;
+	b=y2FwkocI3YQIQJFXqrW9ZKICtrgU7bGVS3vz/2uDjZt14w7zVOXlNMnQ4XTNJUK34rzpem
+	JLpUktCdpsjMGideeJkQRJwuSLFJDvapFsfvDgZzS0FCBSnObDwNE5QRv++UUjkN1mcj24
+	5ZICafeK/+n3gCHZyy4tZSyWy5JZ2yo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784545507;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jy7YQBE9HAIVBFE0VOkSBBzLYevZIQzBSEslKdqseyw=;
+	b=SF9cBLWTd+GoNKIEYOgPttCZT+F5hmFW/zHjyXOkatbqIxXJH/pnUErjpIGt+RTdjV8E6n
+	kYPGn/y9Fv7Ta9Bg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BEE11779AA;
+	Mon, 20 Jul 2026 11:05:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cqwbLeEAXmpUBAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 20 Jul 2026 11:05:05 +0000
+Message-ID: <4af254a4-beb7-4f77-830f-42d5bacb10a4@suse.de>
+Date: Mon, 20 Jul 2026 13:05:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/15] drm/exynos: remove dependency on DRM simple helpers
+To: Diogo Silva <diogompaissilva@gmail.com>, Jingoo Han
+ <jingoohan1@gmail.com>, Inki Dae <inki.dae@samsung.com>,
+ Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Peter Griffin <peter.griffin@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Michal Simek <michal.simek@amd.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Stefan Agner <stefan@agner.ch>,
+ Alison Wang <alison.wang@nxp.com>,
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+ David Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
+ <olvaffe@gmail.com>, Jyri Sarha <jyri.sarha@iki.fi>,
+ Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Xinliang Liu <xinliang.liu@linaro.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Yongqin Liu
+ <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>,
+ Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-tegra@vger.kernel.org, virtualization@lists.linux.dev,
+ imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
+ linux-renesas-soc@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-doc@vger.kernel.org
+References: <20260719-drm_simple_encoder_init-v1-0-a78c509e3062@gmail.com>
+ <20260719-drm_simple_encoder_init-v1-1-a78c509e3062@gmail.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260719-drm_simple_encoder_init-v1-1-a78c509e3062@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.981];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_RCPT(0.00)[renesas];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,samsung.com,ffwll.ch,kernel.org,linaro.org,ideasonboard.com,linux.intel.com,amd.com,nvidia.com,agner.ch,nxp.com,intel.com,redhat.com,collabora.com,chromium.org,iki.fi,pengutronix.de,glider.be,google.com,arm.com,baylibre.com,googlemail.com,lwn.net,linuxfoundation.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RL6e75e7xiqh135443e1d3zo16)];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[59];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Level: 
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Hi
 
-New issues:
-- [Medium] The KUnit test fails to use `kunit_add_action()` for global stat=
-e cleanup, permanently leaking software nodes on test aborts.
-
-Pre-existing issues:
-- [High] The newly added tests expose pre-existing infinite loop and double=
--put bugs in `fwnode_get_next_child_node()` when transitioning between prim=
-ary OF nodes and secondary SW nodes.
---
-
---- Patch [2]: [PATCH v5 2/2] device property: add test cases for fwnode_fo=
-r_each_child_node() ---
-commit 6f128f7ffab2a2787ad6820b967d94a17fcbcbc2
-Author: Xu Yang <xu.yang_2@nxp.com>
-device property: add test cases for fwnode_for_each_child_node()
-
-Add test cases for fwnode_for_each_child_node() API.
-
-> diff --git a/drivers/base/test/property-entry-test.c b/drivers/base/test/=
-property-entry-test.c
-> index a8657eb06f94e..a3d1caf28cc7d 100644
-> --- a/drivers/base/test/property-entry-test.c
-> +++ b/drivers/base/test/property-entry-test.c
-[ ... ]
-> @@ -489,6 +491,139 @@ static void pe_test_reference(struct kunit *test)
-[ ... ]
-> +	/* 2. Test SW node child iteration */
+Am 19.07.26 um 01:35 schrieb Diogo Silva:
+> The simple KMS helpers are deprecated because they only add an
+> intermediate layer between drivers and atomic modesetting.
+>
+> Open-code drm_simple_encoder_init() by calling drm_encoder_init()
+> directly and providing driver-local drm_encoder_funcs.
+> Also check the return value from drm_encoder_init() to avoid silent
+> failures.
+>
+> Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
+> ---
+>   drivers/gpu/drm/exynos/exynos_dp.c       | 13 +++++++++++--
+>   drivers/gpu/drm/exynos/exynos_drm_dpi.c  | 14 ++++++++++++--
+>   drivers/gpu/drm/exynos/exynos_drm_dsi.c  | 11 +++++++++--
+>   drivers/gpu/drm/exynos/exynos_drm_vidi.c | 14 ++++++++++++--
+>   drivers/gpu/drm/exynos/exynos_hdmi.c     | 15 +++++++++++++--
+>   5 files changed, 57 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
+> index b80540328150..1598892c602b 100644
+> --- a/drivers/gpu/drm/exynos/exynos_dp.c
+> +++ b/drivers/gpu/drm/exynos/exynos_dp.c
+> @@ -24,11 +24,11 @@
+>   #include <drm/drm_bridge.h>
+>   #include <drm/drm_bridge_connector.h>
+>   #include <drm/drm_crtc.h>
+> +#include <drm/drm_encoder.h>
+>   #include <drm/drm_of.h>
+>   #include <drm/drm_panel.h>
+>   #include <drm/drm_print.h>
+>   #include <drm/drm_probe_helper.h>
+> -#include <drm/drm_simple_kms_helper.h>
+>   #include <drm/exynos_drm.h>
+>   
+>   #include "exynos_drm_crtc.h"
+> @@ -79,6 +79,10 @@ static void exynos_dp_nop(struct drm_encoder *encoder)
+>   	/* do nothing */
+>   }
+>   
+> +static const struct drm_encoder_funcs exynos_dp_encoder_funcs = {
+> +	.destroy = drm_encoder_cleanup,
+> +};
 > +
-> +	error =3D software_node_register_node_group(group);
-> +	KUNIT_ASSERT_EQ(test, error, 0);
-> +
-> +	sw_node =3D software_node_fwnode(&node);
-> +
-> +	i =3D 0;
-> +	num =3D ARRAY_SIZE(sw_child_array);
-> +	fwnode_for_each_child_node(sw_node, child) {
-> +		KUNIT_ASSERT_LT(test, i, num);
+>   static const struct drm_encoder_helper_funcs exynos_dp_encoder_helper_funcs = {
+>   	.mode_set = exynos_dp_mode_set,
+>   	.enable = exynos_dp_nop,
+> @@ -95,7 +99,12 @@ static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
+>   
+>   	dp->drm_dev = drm_dev;
+>   
+> -	drm_simple_encoder_init(drm_dev, encoder, DRM_MODE_ENCODER_TMDS);
+> +	ret = drm_encoder_init(drm_dev, encoder, &exynos_dp_encoder_funcs,
+> +			       DRM_MODE_ENCODER_TMDS, NULL);
+> +	if (ret) {
+> +		dev_err(dp->dev, "Failed to initialize encoder\n");
 
-[Severity: Medium]
-If KUNIT_ASSERT_LT() fails, it will immediately abort the test execution.
-Does this bypass the manual software_node_unregister_node_group() call at
-the end of the function?
+Preferably use drm_err and drm_dev.
 
-To prevent leaking the software nodes and causing sysfs conflicts on
-subsequent test runs, should kunit_add_action() be used to register the
-cleanup immediately after registration?
-
-> +		KUNIT_EXPECT_STREQ(test, sw_child_array[i++], fwnode_get_name(child));
+> +		return ret;
 > +	}
-> +	KUNIT_EXPECT_PTR_EQ(test, child, NULL);
+>   
+>   	drm_encoder_helper_add(encoder, &exynos_dp_encoder_helper_funcs);
+>   
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_dpi.c b/drivers/gpu/drm/exynos/exynos_drm_dpi.c
+> index 0dc36df6ada3..4e42a1da81d1 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_dpi.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_dpi.c
+> @@ -12,10 +12,10 @@
+>   #include <linux/regulator/consumer.h>
+>   
+>   #include <drm/drm_atomic_helper.h>
+> +#include <drm/drm_encoder.h>
+>   #include <drm/drm_panel.h>
+>   #include <drm/drm_print.h>
+>   #include <drm/drm_probe_helper.h>
+> -#include <drm/drm_simple_kms_helper.h>
+>   
+>   #include <video/of_videomode.h>
+>   #include <video/videomode.h>
+> @@ -140,6 +140,10 @@ static void exynos_dpi_disable(struct drm_encoder *encoder)
+>   	}
+>   }
+>   
+> +static const struct drm_encoder_funcs exynos_dpi_encoder_funcs = {
+> +	.destroy = drm_encoder_cleanup,
+> +};
 > +
-> +	/* 3. Test OF (primary) + SW (secondary) node child iteration */
+>   static const struct drm_encoder_helper_funcs exynos_dpi_encoder_helper_funcs = {
+>   	.mode_set = exynos_dpi_mode_set,
+>   	.enable = exynos_dpi_enable,
+> @@ -194,7 +198,13 @@ int exynos_dpi_bind(struct drm_device *dev, struct drm_encoder *encoder)
+>   {
+>   	int ret;
+>   
+> -	drm_simple_encoder_init(dev, encoder, DRM_MODE_ENCODER_TMDS);
+> +	ret = drm_encoder_init(dev, encoder, &exynos_dpi_encoder_funcs,
+> +			       DRM_MODE_ENCODER_TMDS, NULL);
+> +	if (ret) {
+> +		DRM_DEV_ERROR(encoder_to_dpi(encoder)->dev,
+
+It just failed to init the encoder, so better not use it here. The 
+device should be the same as passed to the function via 'dev'.
+
+> +			      "failed to create encoder ret = %d\n", ret);
+> +		return ret;
+> +	}
+>   
+>   	drm_encoder_helper_add(encoder, &exynos_dpi_encoder_helper_funcs);
+>   
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_dsi.c b/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+> index c4d098ab7863..6b7561ac9bb0 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+> @@ -13,7 +13,7 @@
+>   
+>   #include <drm/bridge/samsung-dsim.h>
+>   #include <drm/drm_probe_helper.h>
+> -#include <drm/drm_simple_kms_helper.h>
+> +#include <drm/drm_encoder.h>
+>   
+>   #include "exynos_drm_crtc.h"
+>   #include "exynos_drm_drv.h"
+> @@ -22,6 +22,10 @@ struct exynos_dsi {
+>   	struct drm_encoder encoder;
+>   };
+>   
+> +static const struct drm_encoder_funcs exynos_drm_dsi_encoder_funcs = {
+> +	.destroy = drm_encoder_cleanup,
+> +};
 > +
-> +	of_node->secondary =3D sw_node;
-> +	sw_node->secondary =3D ERR_PTR(-ENODEV);
+>   static irqreturn_t exynos_dsi_te_irq_handler(struct samsung_dsim *dsim)
+>   {
+>   	struct exynos_dsi *dsi = dsim->priv;
+> @@ -79,7 +83,10 @@ static int exynos_dsi_bind(struct device *dev, struct device *master, void *data
+>   	struct drm_device *drm_dev = data;
+>   	int ret;
+>   
+> -	drm_simple_encoder_init(drm_dev, encoder, DRM_MODE_ENCODER_TMDS);
+> +	ret = drm_encoder_init(drm_dev, encoder, &exynos_drm_dsi_encoder_funcs,
+> +			       DRM_MODE_ENCODER_TMDS, NULL);
+> +	if (ret)
+> +		return ret;
+>   
+>   	ret = exynos_drm_set_possible_crtcs(encoder, EXYNOS_DISPLAY_TYPE_LCD);
+>   	if (ret < 0)
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+> index 67bbf9b8bc0e..59dea853d364 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+> @@ -13,10 +13,10 @@
+>   
+>   #include <drm/drm_atomic_helper.h>
+>   #include <drm/drm_edid.h>
+> +#include <drm/drm_encoder.h>
+>   #include <drm/drm_framebuffer.h>
+>   #include <drm/drm_print.h>
+>   #include <drm/drm_probe_helper.h>
+> -#include <drm/drm_simple_kms_helper.h>
+>   #include <drm/drm_vblank.h>
+>   #include <drm/exynos_drm.h>
+>   
+> @@ -403,6 +403,10 @@ static void exynos_vidi_disable(struct drm_encoder *encoder)
+>   {
+>   }
+>   
+> +static const struct drm_encoder_funcs exynos_vidi_encoder_funcs = {
+> +	.destroy = drm_encoder_cleanup,
+> +};
 > +
-> +	i =3D 0;
-> +	num =3D ARRAY_SIZE(of_sw_child_array);
-> +	fwnode_for_each_child_node(of_node, child) {
-> +		KUNIT_ASSERT_LT(test, i, num);
+>   static const struct drm_encoder_helper_funcs exynos_vidi_encoder_helper_funcs = {
+>   	.mode_set = exynos_vidi_mode_set,
+>   	.enable = exynos_vidi_enable,
+> @@ -445,7 +449,13 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
+>   		return PTR_ERR(ctx->crtc);
+>   	}
+>   
+> -	drm_simple_encoder_init(drm_dev, encoder, DRM_MODE_ENCODER_TMDS);
+> +	ret = drm_encoder_init(drm_dev, encoder, &exynos_vidi_encoder_funcs,
+> +			       DRM_MODE_ENCODER_TMDS, NULL);
+> +	if (ret) {
+> +		DRM_DEV_ERROR(dev, "failed to initialize encoder ret = %d\n",
+> +			      ret);
 
-[Severity: High]
-This isn't a bug introduced by this patch, but these new tests appear to
-expose a pre-existing infinite loop and double-put bug in the core fwnode
-iterator.
+Again, you rather want drm_err() with drm_dev here.
 
-When fwnode_for_each_child_node() transitions from primary OF children to
-secondary SW children, of_fwnode_get_next_child_node() drops the reference
-on the last OF child and returns NULL. The core iterator then passes this
-same child pointer to the secondary node's iterator:
+I've briefly looked over the series and many patches seem affected. 
+Please prefer drm_ logging functions and DRM devices over the plain 
+device equivalents.
 
-drivers/base/property.c:fwnode_get_next_child_node() {
-    ...
-    next =3D fwnode_call_ptr_op(fwnode, get_next_child_node, child);
-    if (next)
-        return next;
-    return fwnode_call_ptr_op(fwnode->secondary, get_next_child_node, child=
-);
-}
+Best regards
+Thomas
 
-Does this cause the secondary iterator (software_node_get_next_child) to
-unconditionally drop the reference a second time?
 
-Furthermore, when iterating over the secondary children, the returned SW no=
-de
-is eventually passed back to the primary iterator. Since to_of_node()
-evaluates to NULL for SW nodes, of_get_next_available_child() restarts from
-the first OF child:
+> +		return ret;
+> +	}
+>   
+>   	drm_encoder_helper_add(encoder, &exynos_vidi_encoder_helper_funcs);
+>   
+> diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+> index 09b2cabb236f..f44586ce0fdf 100644
+> --- a/drivers/gpu/drm/exynos/exynos_hdmi.c
+> +++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+> @@ -36,9 +36,9 @@
+>   #include <drm/drm_atomic_helper.h>
+>   #include <drm/drm_bridge.h>
+>   #include <drm/drm_edid.h>
+> +#include <drm/drm_encoder.h>
+>   #include <drm/drm_print.h>
+>   #include <drm/drm_probe_helper.h>
+> -#include <drm/drm_simple_kms_helper.h>
+>   
+>   #include "exynos_drm_crtc.h"
+>   #include "regs-hdmi.h"
+> @@ -1575,6 +1575,11 @@ static void hdmi_disable(struct drm_encoder *encoder)
+>   	mutex_unlock(&hdata->mutex);
+>   }
+>   
+> +static const struct drm_encoder_funcs exynos_hdmi_encoder_funcs = {
+> +	.destroy = drm_encoder_cleanup,
+> +};
+> +
+> +
+>   static const struct drm_encoder_helper_funcs exynos_hdmi_encoder_helper_funcs = {
+>   	.mode_fixup	= hdmi_mode_fixup,
+>   	.enable		= hdmi_enable,
+> @@ -1862,7 +1867,13 @@ static int hdmi_bind(struct device *dev, struct device *master, void *data)
+>   
+>   	hdata->phy_clk.enable = hdmiphy_clk_enable;
+>   
+> -	drm_simple_encoder_init(drm_dev, encoder, DRM_MODE_ENCODER_TMDS);
+> +	ret = drm_encoder_init(drm_dev, encoder, &exynos_hdmi_encoder_funcs,
+> +			       DRM_MODE_ENCODER_TMDS, NULL);
+> +	if (ret) {
+> +		DRM_DEV_ERROR(dev, "failed to initialize encoder ret = %d\n",
+> +			      ret);
+> +		return ret;
+> +	}
+>   
+>   	drm_encoder_helper_add(encoder, &exynos_hdmi_encoder_helper_funcs);
+>   
+>
 
-drivers/of/property.c:of_fwnode_get_next_child_node() {
-    ...
-    return of_fwnode_handle(of_get_next_available_child(to_of_node(fwnode),
-                                                        to_of_node(child)));
-}
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
 
-Will this restart cause an infinite loop in the test runner when testing
-mixed primary and secondary firmware nodes?
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720104730.1285=
-552-1-xu.yang_2@oss.nxp.com?part=3D2
