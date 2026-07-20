@@ -1,142 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9397A27AC4D
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 03:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680E83955F6
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 03:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784518953; cv=none; b=CnL3W+bGydJJieWksA3T3kuEzBinT9NUcTjksHlkSTXHvYSjOEuL9z5t8UYxBhy6Qp+vrMSx/2NEbZXleO+Fk68PUwJWVvNEqP6/laBAY2GQEgKV+NPzUmszJbcZcx9wrjk7aVmXJeWqL/EebLjOwNDkV1rM++trjTsM72QGSmA=
+	t=1784518954; cv=none; b=jPcf6DYp/DrADs69ufTchNuYwiJaJYfi1JyNZNpM3VspK0YMDXhUhM7agcktJi6wysFjyouxbcFJT42y6pjrzmR37WWJe0m4y3y3q08evSxdZMYatw7bUm3RUuugx5KKX9BB5RVzUWX7icRxolyJaCWoX2LBeelCyknOb0SnqCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784518953; c=relaxed/simple;
-	bh=YYaGS6b2Cqx680dEch6bvEsE6kmyKF/+eJn0qRnwZYs=;
+	s=arc-20240116; t=1784518954; c=relaxed/simple;
+	bh=78CCLJIPuXn3N3Y7Jw2cWa4X9YYgPGz0X9sOnCZVpAA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=QGIMddZBVq671crTWLrlK/W7Qb5P3908uxRcX4ubjaOm+TbXCGvphU6PWlINon7mAAUJy6W7AR0GDUOqh/PgFoTOrp0LfqokcH788FWb5u6h+MV7y1o8wnUz/PUzjQSDMMshqqpKr0T2HrB0BRDlp/XzpF/6DtlOYcelJE+uCdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8ES+J7v; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=gAjdzA/C223bZeqe2XrvziOPJWh6w1aStWpS1YqW52Nlp6UGTLkphMgdVRaGYvkML54ZXYLtNR+7DDNdw5SPcytXZ4gNPt8DrWRpyIwnNDjESOGCEgqaxOEuq2we+xXA7SqJNwgVUNC/caVdgt6IS4jk/FRFsuhCSvkAUoWtWfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KarMIW2d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8ES+J7v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0696E1F000E9;
-	Mon, 20 Jul 2026 03:42:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KarMIW2d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2331F00A3A;
+	Mon, 20 Jul 2026 03:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784518952;
-	bh=G/s/qQBFrYjpVA519bRNs/ikjsya/Nt7XGqUHSVvkS0=;
+	s=k20260515; t=1784518953;
+	bh=Mmeg0pCDLjQDHj1U3Gx1Eg8JRqopdRg61BZGQIHR3OU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=G8ES+J7vdxhwCJscVsjQwOKtZW6i0OZJ4MyYz6zhrAOBNt4Bc/ZUOaQiNPqyu+Pyk
-	 znfZW+88jWnIW8UxiloDujtXnoUgOhzHZcZsF1W/UOpy7tGLkubxd3NLKMx6+17ALj
-	 788Vnuw7gcKDUn9Wbv43Fl6hTdBA9jvrnD1mw6G/rUNQ8tJMnBMGz/SwYcf5B8/eXx
-	 5+W/h23v9myXccnrriH5BtM5+uUEhXfckJqa4s4z1fdgSpVoKd7A2/e78UUxN6JPaC
-	 /9WIi6FPbeUixgwxvOE4owo2YX54VuAFN2Xx4aspiEuBaXtIDdl/oJfTQlFqNlSivq
-	 knlIOt9+mA00w==
+	b=KarMIW2dknX7Irmf6p156aiTl11t8LHPZ9GfwSNV96lbKZ3kLGa2U9fkO2weuJQtw
+	 B7yFmU5d2G8+zxmVtdxeMzzlG75mwG9rH0vOFz0ePIbnCevrl1muEkf08P05fSN51e
+	 UQJnOHj4+AASPVChddri2jzgn1xwGzf2PJyO8c5ZhP8tTe7WfXqE3oSxPVikVtmSm3
+	 1nclFYO+94k7uONCHtF2a1JVosDbuqTNuSH5gIyvslk8LQb9W9R+PCg0faAhLbwa1N
+	 nxZAVdQd9ozwHQNLktrxe859FpduEjHDKYYzKUy514kaomdesG2PnsP+9R8hxlRVrK
+	 9p3/Qz4O66FqQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/6] media: nxp: imx8-isi: Fix per-stream reference
- counting for multiplexed streams
+Subject: Re: [PATCH v2 2/6] media: nxp: imx8-isi: Add stream ID validation
+ for crossbar routing
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Guoniu Zhou" <guoniu.zhou@oss.nxp.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, media-ci@linuxtv.org
-In-Reply-To: <20260720-isi-v2-3-45845bc5d4fa@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, media-ci@linuxtv.org
+In-Reply-To: <20260720-isi-v2-2-45845bc5d4fa@oss.nxp.com>
 References: <20260720-isi-v2-0-45845bc5d4fa@oss.nxp.com>
- <20260720-isi-v2-3-45845bc5d4fa@oss.nxp.com>
+ <20260720-isi-v2-2-45845bc5d4fa@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 03:42:31 +0000
-Message-Id: <20260720034232.0696E1F000E9@smtp.kernel.org>
+Date: Mon, 20 Jul 2026 03:42:32 +0000
+Message-Id: <20260720034232.CC2331F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Unchecked return value from `media_pad_remote_pad_first()` causes =
-a NULL pointer dereference if the sink pad has no enabled link.
-- [Medium] Use of `BIT()` macro for 64-bit stream IDs causes undefined beha=
-vior and bitwise truncation on 32-bit platforms.
+- [High] The driver uses the `BIT()` macro on 64-bit stream masks (`source_=
+streams` and `sink_streams`), which will cause undefined behavior on 32-bit=
+ platforms if the stream ID exceeds 31.
 --
 
---- Patch [3]: [PATCH v2 3/6] media: nxp: imx8-isi: Fix per-stream referenc=
-e counting for multiplexed streams ---
-commit 976517cc78165ba12439fb004220b58271a0beea
+--- Patch [2]: [PATCH v2 2/6] media: nxp: imx8-isi: Add stream ID validatio=
+n for crossbar routing ---
+commit d756aed8e216cd683009378d45743e6351a90389
 Author: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 
-media: nxp: imx8-isi: Fix per-stream reference counting for multiplexed str=
-eams
+media: nxp: imx8-isi: Add stream ID validation for crossbar routing
 
-The driver uses a single enable_count per input to track the input state.
-This fails to properly enable multiple streams from different virtual
-channels on the same input pad. This patch tracks per-stream state using
-enabled_streams bitmask and enabled_count[] array.
+This commit adds validation to enforce hardware constraints in the crossbar
+routing configuration. It ensures that the SOURCE stream is strictly set to
+0, as ISI pipes are hardcoded to stream 0. It also ensures memory input
+respects routing limitations to the first pipeline.
 
 > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/dr=
 ivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> index 328d08a278eaf..64576f6bd45c2 100644
+> index 84871bceb31db..328d08a278eaf 100644
 > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
 > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> @@ -337,6 +337,8 @@ static int mxc_isi_crossbar_enable_streams(struct v4l=
+> @@ -106,8 +106,20 @@ static int __mxc_isi_crossbar_set_routing(struct v4l=
 2_subdev *sd,
->  	struct mxc_isi_crossbar *xbar =3D to_isi_crossbar(sd);
->  	struct v4l2_subdev *remote_sd;
->  	struct mxc_isi_input *input;
-> +	u64 streams_to_enable;
-> +	unsigned long stream;
->  	u64 sink_streams;
->  	u32 sink_pad;
->  	u32 remote_pad;
-> @@ -350,30 +352,47 @@ static int mxc_isi_crossbar_enable_streams(struct v=
-4l2_subdev *sd,
+>  	if (ret)
+>  		return ret;
 > =20
->  	input =3D &xbar->inputs[sink_pad];
+> -	/* The memory input can be routed to the first pipeline only. */
+> +	/*
+> +	 * Validate routes against hardware constraints:
+> +	 * - SOURCE stream must be 0 (pipes are hardcoded to stream 0)
+> +	 * - Memory input can only route to the first pipeline
+> +	 */
+>  	for_each_active_route(routing, route) {
+> +		if (route->source_stream !=3D 0) {
 
 [Severity: High]
-This is a pre-existing issue, but can this lead to a NULL pointer dereferen=
-ce
-if the remote link is disabled?
+This is a pre-existing issue, but while reviewing this stream ID validation,
+I noticed a potential bit shift overflow regarding stream IDs in the related
+mxc_isi_crossbar_xlate_streams() function:
 
-When userspace configures a V4L2 subdev route connecting a source pad to a
-sink pad on the crossbar, but leaves the incoming media link to that sink p=
-ad
-disabled, media_pad_remote_pad_first() will return NULL.
-
-In drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c:
-mxc_isi_crossbar_xlate_streams() {
+drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c:mxc_isi_crossbar_xl=
+ate_streams() {
     ...
-	pad =3D media_pad_remote_pad_first(&xbar->pads[sink_pad]);
-	sd =3D media_entity_to_v4l2_subdev(pad->entity);
-	if (!sd) {
+    if (!(source_streams & BIT(route->source_stream)))
+        ...
+    sink_streams |=3D BIT(route->sink_stream);
     ...
 }
 
-The media_entity_to_v4l2_subdev() macro immediately dereferences pad to
-access pad->entity before any NULL check is performed.
+Does this code cause undefined behavior on 32-bit platforms if userspace
+provides a V4L2 routing configuration with a sink_stream or source_stream
+greater than or equal to 32?
 
-[Severity: Medium]
-This is also a pre-existing issue, but might there be bitwise truncation and
-undefined behavior on 32-bit platforms when computing sink_streams?
+Since the BIT() macro evaluates to a 32-bit value on 32-bit architectures,
+shifting it by 32 or more results in a bit shift overflow. This could allow
+the compiler to make unsafe optimization assumptions, potentially corrupting
+the 64-bit stream mask logic.=20
 
-When userspace configures a routing table using VIDIOC_SUBDEV_S_ROUTING with
-a sink_stream ID greater than or equal to 32, using BIT() will cause issues
-on 32-bit systems where BIT() operates on a 32-bit unsigned long.
+Should this use BIT_ULL() instead?
 
-In drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c:
-mxc_isi_crossbar_xlate_streams() {
-    ...
-	for_each_active_route(&state->routing, route) {
-		...
-		sink_streams |=3D BIT(route->sink_stream);
-		sink_pad =3D route->sink_pad;
-	}
-    ...
-}
-
-Could BIT_ULL() be used instead to safely construct the u64 sink_streams
-bitmask?
-
-> -	/*
-> -	 * TODO: Track per-stream enable counts to support multiplexed
-> -	 * streams.
-> -	 */
+> +			dev_dbg(xbar->isi->dev,
+> +				"route to pipe %u must use source_stream=3D0, got %u\n",
+> +				route->source_pad - xbar->num_sinks,
+> +				route->source_stream);
+> +			return -ENXIO;
+> +		}
+> +
+>  		if (route->sink_pad =3D=3D xbar->num_sinks - 1 &&
+>  		    route->source_pad !=3D xbar->num_sinks) {
+>  			dev_dbg(xbar->isi->dev,
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-isi-v2-0-4=
-5845bc5d4fa@oss.nxp.com?part=3D3
+5845bc5d4fa@oss.nxp.com?part=3D2
