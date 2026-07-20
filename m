@@ -1,103 +1,205 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950B142D752;
-	Mon, 20 Jul 2026 14:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE38342B31C
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784558642; cv=none; b=GWnqllMV7JunNieHCvxzqU2Gs9/BaSOTW/PXLwRgq8A1t5MZ6YrLv3vvFhv1VpvD5zFIutIFL/mKEaoNjkdrkNoVpi9G74ezMUyjRDkifm2XeZvpKSEg7kGYQXNEboxCD8xJsMY/+4Kup5zebdg+oa4AjWLTK+vIr0mDBPweXQU=
+	t=1784559970; cv=none; b=jupwQmvvm4VldXGO/2Ms4UVGVaEQEuTf/fpabfxg8p/eaKolzgoUMWYL8vMU/Fa/+uVCX6WafALDq/JFgJoyRQHBRZh9qQdu+PBLlpIWOMf4eAC1r2sgSUP0YuK25uFtFkDmJJD2IzthcMAyVzOaYPNyxkH9GwA193bDil6pJsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784558642; c=relaxed/simple;
-	bh=CQJGspfiB/NAwgT88jIh/m4ZZrG8ah3eLPy3cB4vUOM=;
+	s=arc-20240116; t=1784559970; c=relaxed/simple;
+	bh=kx2U3JzsAJE/W0InIkz6dN6aTr44P0qWHwoMKu4ZJ68=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NDORlzVpDyKVc5H/Ie68JyauIXkFdy4BRRJwf/R2BfajYk4ahwvNMXu9RlIxROZViPDytNqVMPfYFcDO6p2fHh7I4ZGw+nuj79KVR7RQjMiUiaN/8my8RhNlEr1E7pobcTv2wy7ZZuURphmzXN6xmPBo4tzg6EoqPy03Xyalzmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=u87EBpi0; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=QdnyFe8HnWCPJ1Ol/7NT01+FyFPb2aT6nn77DMbDubUaKu3pbwlMNSmzXUT7tXC8/zDMnlQGIfQZwe7jbGkOXLhQHgO6s4WYwIZuCBpS30gzHiGJ0h/AnEo0CLth2uCwbbC8zDEvyzZGcxgfd2krGlEDSuLNpNLprfJt9wKgJiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bXYdBR+5; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="u87EBpi0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=BXhfFoqflgF82KRwFNK0K4F+WC7W4X52vQ4MqWkibHk=; b=u87EBpi0W7PcezV9DBKXdXN4/P
-	p9UYaLCZFtgUyOGYdytHLutMvSSNyvUcIgRfwGDopHvUqq9ZIlniLUGgYPwPRrDPsFmM1fCmmLkzn
-	A985PR89vvPMIsZsJvQqT/OtMNtLd8+M4EQYIuLAiGvk2F3QoNojNtnckKSJnLpXICWU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wlpDY-00DHCs-Cz; Mon, 20 Jul 2026 16:43:40 +0200
-Date: Mon, 20 Jul 2026 16:43:40 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bXYdBR+5"
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 51D76289;
+	Mon, 20 Jul 2026 17:05:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1784559908;
+	bh=kx2U3JzsAJE/W0InIkz6dN6aTr44P0qWHwoMKu4ZJ68=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bXYdBR+5FvG2b17Bc1D4J6FIL6CHtumZ4wPEVZMShKSWykoXKiyfHvqCbS55s/PTF
+	 pHHB7qyYt0BykwdCGAtjoE1rBL9qt0OiNR+pIw1PYattdRLbczEcUM5KdZFDLfI9Lh
+	 t/ojktcf4tAd2pLuBoOD1ZkVe9IrmFwiYWALWriQ=
+Date: Mon, 20 Jul 2026 18:06:05 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: guoniu.zhou@oss.nxp.com
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Srinivas Kandagatla <srini@kernel.org>, brgl@kernel.org,
-	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, netdev@vger.kernel.org,
-	linux-pm@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 7/8] net: mv643xx: use platform_device_set_fwnode()
-Message-ID: <86b2aba7-b049-47e6-bc94-6cb499b30ce4@lunn.ch>
-References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
+	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Bryan O'Donoghue <bod@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v13 1/3] media: dt-bindings: Add CSI Pixel Formatter DT
+ bindings
+Message-ID: <20260720150605.GA27524@killaraus.ideasonboard.com>
+References: <20260720-csi_formatter-v13-0-4dc9a80e4cfd@oss.nxp.com>
+ <20260720-csi_formatter-v13-1-4dc9a80e4cfd@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
+In-Reply-To: <20260720-csi_formatter-v13-1-4dc9a80e4cfd@oss.nxp.com>
 
-On Mon, Jul 20, 2026 at 11:24:54AM +0200, Bartosz Golaszewski wrote:
-> Prefer the higher-level platform_device_set_fwnode() over the
-> OF-specific platform_device_set_of_node() for dynamically allocated
-> platform devices.
+Hi Guoniu,
+
+Thank you for the patch.
+
+On Mon, Jul 20, 2026 at 05:59:46PM +0800, guoniu.zhou@oss.nxp.com wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
 > 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> The i.MX95 CSI pixel formatting module uses packet info, pixel and
+> non-pixel data from the CSI-2 host controller and reformat them to
+> match Pixel Link(PL) definition.
+> 
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
 > ---
->  drivers/net/ethernet/marvell/mv643xx_eth.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Changes in v11:
+> - Add Rb tags from Frank Li and Krzysztof Kozlowski
 > 
-> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
-> index 9caa1e47c174c9d7a161b7f2e2ee12a829b813d4..2f2d6cce8d852b9ec3ab42678a04a7915d1f00cc 100644
-> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
-> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
-> @@ -2780,7 +2780,7 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
->  		goto put_err;
->  	}
->  	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
-> -	platform_device_set_of_node(ppdev, pnp);
-> +	platform_device_set_fwnode(ppdev, of_fwnode_handle(pnp));
+> Changes in v10:
+> - Drop syscon parent node from example
+> - Drop Reviewed-by tags from Frank and Krzysztof due to binding changes
+> - Add description for reg property
+> - Add space after formatter@20 before opening brace in example
+> - Enhance the port description with more detailed information
+> - Delete the blank line immediately following the endpoint in example
+> 
+> Changes in v9:
+> - Use direct node instead of syscon wrapper in example
+> 
+> Changes in v8:
+> - Use standard port reference instead of video-interfaces.yaml
+> - Add parent syscon node in example to show device integration
+> - Add required constraints for port@0 and port@1 in ports node
+> 
+> Changes in v7:
+> - Change compatible to imx95-csi-formatter as IP is i.MX95 specific per Marco's suggestion
+>   Link: https://lore.kernel.org/linux-media/20260511-csi_formatter-v6-0-01028e312e2b@oss.nxp.com/T/#mcd135b3de179b3cb69daa1fd6e0e8e27c85b3332
+> ---
+>  .../bindings/media/fsl,imx95-csi-formatter.yaml    | 88 ++++++++++++++++++++++
+>  1 file changed, 88 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.yaml b/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.yaml
+> new file mode 100644
+> index 000000000000..58c4e1cc056b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/fsl,imx95-csi-formatter.yaml
+> @@ -0,0 +1,88 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/fsl,imx95-csi-formatter.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: i.MX95 CSI Pixel Formatter
+> +
+> +maintainers:
+> +  - Guoniu Zhou <guoniu.zhou@nxp.com>
+> +
+> +description:
+> +  The CSI pixel formatting module found on i.MX95 uses packet info, pixel
+> +  and non-pixel data from the CSI-2 host controller and reformat them to
+> +  match Pixel Link(PL) definition.
+> +
+> +properties:
+> +  compatible:
+> +    const: fsl,imx95-csi-formatter
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description: Register offset and size within the parent syscon
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +
+> +    properties:
+> +      port@0:
+> +        $ref: /schemas/graph.yaml#/properties/port
+> +        description:
+> +          Input port, connects to MIPI CSI-2 receiver output (IDI interface)
+> +
+> +      port@1:
+> +        $ref: /schemas/graph.yaml#/properties/port
+> +        description:
+> +          Output port, connects to ISI input via Pixel Link (PL)
+> +
+> +    required:
+> +      - port@0
+> +      - port@1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - power-domains
+> +  - ports
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/nxp,imx95-clock.h>
+> +
+> +    formatter@20 {
+> +        compatible = "fsl,imx95-csi-formatter";
+> +        reg = <0x20 0x100>;
+> +        clocks = <&cameramix_csr IMX95_CLK_CAMBLK_CSI2_FOR0>;
+> +        power-domains = <&scmi_devpd 3>;
+> +
+> +        ports {
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            port@0 {
+> +                reg = <0>;
+> +
+> +                endpoint {
+> +                    remote-endpoint = <&mipi_csi_0_out>;
+> +                };
+> +            };
+> +
+> +            port@1 {
+> +                reg = <1>;
+> +
+> +                endpoint {
+> +                    remote-endpoint = <&isi_in_2>;
+> +                };
+> +            };
+> +        };
+> +    };
 
-This is definitely an OF only driver. There are no other calls to
-fwnode functions in this driver, so this is the wrong thing to do.
+-- 
+Regards,
 
-Sorry, NACK.
-
-       Andrew
+Laurent Pinchart
