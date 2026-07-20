@@ -1,182 +1,122 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0263F18B0A
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 21:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B593A4F3D;
+	Mon, 20 Jul 2026 21:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784582133; cv=none; b=UFcmDxH1jAcon2kpaYtCps66iZl9l5T33Qt1o62yLLncbwwpWkrhXtGgUwdt9PM4s6YaLqA7uhxWWcjzvHvUi8CRdshZKewQU5cvulkML8OP5gaHnRAkMIUvQUEnN9AWXzpX2PstB2U2cDykdS+IgkfE4cOZA+gNfhYTNDj46eI=
+	t=1784582643; cv=none; b=ctLYwAOXQTJZZDTCzniBi7gJufEDUqRm5kEDBnrXPDJY1f64UAXSlzWTfJTEfnrXFtI5PgE8WSDRqonoOxJbnRpBzmY70InOhcZcBGBBLsOl7fvkyv6X83y810vpONrXbRj2JFp9f0d7XCIocqJEAv8I0IL9y+FN9upMI+H/yrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784582133; c=relaxed/simple;
-	bh=fwkvO1BlTuFLr5TUGCzW1d48NNwgkil0zWOpeTLxt3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aGNKzM9erkJRIb9C2gh0hUuFtrFtxQGymuJSXBg2J9ArMBYGQH9qLYMKrDG8YnEJx3ru/dlCGUbq2XbeeXBx2hQ5Q5FfRmvHuPJQYWyUdEteGT7T2u4Jb0px6IWlXrYqA+PpstGZ7ICrrk8sv8w6k7bDkOAPbUqVkXdBRVK4a3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=a2vj4h5f; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1784582643; c=relaxed/simple;
+	bh=4+Cdz7goO1btKTh9Q/3cbIs4cIOzE4pkrzeCVqRBOMo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=SNGB64dDBcfNOa7OkH3UfKmrq+AiOWE+GKePNgdLM7n/ybfXBL03pDxdjvmRMmLZaz9XfG6hX7zWOOOd7ObFGmaOHyBtKP5FyXqDi88+lAquttjetKX3zwciT1vOemV+NMNecqAn5xELBXlR7clhjDD+dBJaMSj/WW2FnolaSfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWYcmm4H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="a2vj4h5f"
-Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 16078C1;
-	Mon, 20 Jul 2026 23:14:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1784582071;
-	bh=fwkvO1BlTuFLr5TUGCzW1d48NNwgkil0zWOpeTLxt3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a2vj4h5fb+jeY11Sxl4+xM2vB02xWxZmhqISZwnk38K2AFshkUYgo8wH3mDnooQOq
-	 YcPww7sOzpbMtaR9spni/jA6FAE4mE5RzUxpDo2YTtMP5AMrEZcyEny99fcc3CZAfO
-	 FvXoo2M2GGPJWnBY6tZJW+RUZO48CwPUybAMuWoU=
-Date: Tue, 21 Jul 2026 00:15:28 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: guoniu.zhou@oss.nxp.com
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Christian Hemp <c.hemp@phytec.de>,
-	Stefan Riedmueller <s.riedmueller@phytec.de>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Guoniu Zhou <guoniu.zhou@nxp.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Subject: Re: [PATCH v2 4/6] media: nxp: imx8-isi: Add 16-bit raw Bayer format
- support
-Message-ID: <20260720211528.GE50424@killaraus.ideasonboard.com>
-References: <20260720-isi-v2-0-45845bc5d4fa@oss.nxp.com>
- <20260720-isi-v2-4-45845bc5d4fa@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWYcmm4H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BD31F000E9;
+	Mon, 20 Jul 2026 21:24:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784582642;
+	bh=msRU8AzBVVLcoKhnf+aDEvVJgQ3xLtsl8P2k04/bRwc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=aWYcmm4Hg01GrR/l3K/Ol+0nzCy977Ga7nR+SBMJ5jYfjUVPAUUPQv1LsKJnKbn41
+	 DgZvbDCNISkTVNHTLuC8G/jXGBEOpVt52fQ7Mh4fGwXNdVPuWJbPcfcBY0Q/aBezYF
+	 eU6Qq/2PT7iX18IZtMyNIG8dFwoYlUL0EGBwEvt4fJAeOTynUyni1108XqsxI0LKSI
+	 SW1fGvgUc0jcKtDEjrsHWHPB4hNAbCAG9zON2Qf82xfgaa3f0ONkdgqCNVLPu4nk28
+	 VDBFah+ui7EdwkTxgji2i3PxGsUL2xcs17oF03RRDpuBaJrtg2jcSD8ruQjW+BAlvT
+	 ZqaP+tOtR1bgA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] arm64: dts: imx8qm-ss-conn: Add HSIC usb@5b0e0000
+ node
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Frank.Li@oss.nxp.com
+Cc: devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260720-qm_smmu-v1-2-3689fbd8b516@nxp.com>
+References: <20260720-qm_smmu-v1-0-3689fbd8b516@nxp.com>
+ <20260720-qm_smmu-v1-2-3689fbd8b516@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 20 Jul 2026 21:24:01 +0000
+Message-Id: <20260720212401.C2BD31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260720-isi-v2-4-45845bc5d4fa@oss.nxp.com>
 
-Hello Guoniu, Laurentiu,
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] The `usbphynop2` node requests the wrong power domain (`IMX_SC_R_U=
+SB_0_PHY` instead of `IMX_SC_R_USB_1_PHY`).
+- [Medium] The `usbh1` node is enabled by default (missing `status =3D "dis=
+abled";`), violating SoC `.dtsi` practices and causing unconditional probin=
+g.
+- [Low] Missing required `#phy-cells` property in the `usbphynop2` node.
+--
 
-Thank you for the patch.
+--- Patch [2]: [PATCH 2/2] arm64: dts: imx8qm-ss-conn: Add HSIC usb@5b0e000=
+0 node ---
+commit 9497d73ee79f69a11e0a9347cd596ca4c9842914
+Author: Frank Li <Frank.Li@nxp.com>
 
-On Mon, Jul 20, 2026 at 11:34:06AM +0800, guoniu.zhou@oss.nxp.com wrote:
-> From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> 
-> Add support for 16-bit raw Bayer formats (SBGGR16, SGBRG16, SGRBG16,
-> SRGGB16) to both the pipeline subdev and video capture interface.
-> 
-> These formats are commonly used by high-end image sensors that output
-> 16-bit raw data, enabling the ISI to process and capture full dynamic
-> range from such sensors.
+arm64: dts: imx8qm-ss-conn: Add HSIC usb@5b0e0000 node
 
-It's not really high-end any more :-) Lots of sensors can output RAW16
-today.
+Add usb@5b0e0000 and related node for i.MX8QM.
 
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-> ---
-> Changes in v2:
-> - Add Reviewed-by tag from Frank Li
-> ---
->  .../media/platform/nxp/imx8-isi/imx8-isi-pipe.c    | 24 +++++++++++++++
->  .../media/platform/nxp/imx8-isi/imx8-isi-video.c   | 36 ++++++++++++++++++++++
->  2 files changed, 60 insertions(+)
-> 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> index 2d0843c86534..e58925d71164 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> @@ -179,6 +179,30 @@ static const struct mxc_isi_bus_format_info mxc_isi_bus_formats[] = {
->  		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
->  				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
->  		.encoding	= MXC_ISI_ENC_RAW,
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> index 1370a571153a5..c7063aaac4a34 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> @@ -4,6 +4,40 @@
+>   *	Dong Aisheng <aisheng.dong@nxp.com>
+>   */
+> =20
+> +&{/} {
+> +	usbphynop2: usbphynop2 {
+> +		compatible =3D "usb-nop-xceiv";
 
-While at it, could you please also add support for
-MEDIA_BUS_FMT_Y16_1X16, for 16-bit monochrome sensors (here and in
-mxc_isi_formats) ? With that,
+[Severity: Low]
+Does this node need a #phy-cells =3D <0>; property?  The usb-nop-xceiv.yaml
+binding schema typically requires this property to be present, and omitting
+it might cause dtbs_check validation failures during the build.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> +		clocks =3D <&usb2_lpcg IMX_LPCG_CLK_7>;
+> +		clock-names =3D "main_clk";
+> +		power-domains =3D <&pd IMX_SC_R_USB_0_PHY>;
 
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SBGGR16_1X16,
-> +		.output		= MEDIA_BUS_FMT_SBGGR16_1X16,
-> +		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
-> +				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SGBRG16_1X16,
-> +		.output		= MEDIA_BUS_FMT_SGBRG16_1X16,
-> +		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
-> +				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SGRBG16_1X16,
-> +		.output		= MEDIA_BUS_FMT_SGRBG16_1X16,
-> +		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
-> +				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SRGGB16_1X16,
-> +		.output		= MEDIA_BUS_FMT_SRGGB16_1X16,
-> +		.pads		= BIT(MXC_ISI_PIPE_PAD_SINK)
-> +				| BIT(MXC_ISI_PIPE_PAD_SOURCE),
-> +		.encoding	= MXC_ISI_ENC_RAW,
->  	},
->  	/* JPEG */
->  	{
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> index fe4adfa3a1f0..5eb448f4c26f 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> @@ -356,6 +356,42 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
->  		.color_planes	= 1,
->  		.depth		= { 16 },
->  		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SBGGR16_1X16,
-> +		.fourcc		= V4L2_PIX_FMT_SBGGR16,
-> +		.type		= MXC_ISI_VIDEO_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 16 },
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SGBRG16_1X16,
-> +		.fourcc		= V4L2_PIX_FMT_SGBRG16,
-> +		.type		= MXC_ISI_VIDEO_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 16 },
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SGRBG16_1X16,
-> +		.fourcc		= V4L2_PIX_FMT_SGRBG16,
-> +		.type		= MXC_ISI_VIDEO_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 16 },
-> +		.encoding	= MXC_ISI_ENC_RAW,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_SRGGB16_1X16,
-> +		.fourcc		= V4L2_PIX_FMT_SRGGB16,
-> +		.type		= MXC_ISI_VIDEO_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 16 },
-> +		.encoding	= MXC_ISI_ENC_RAW,
->  	},
->  	/* JPEG */
->  	{
+[Severity: High]
+Is IMX_SC_R_USB_0_PHY the correct power domain for usbphynop2?  Since this =
+is
+for the USB_1 controller (usbh1), should this be IMX_SC_R_USB_1_PHY instead?
 
--- 
-Regards,
+If it requests the USB_0 PHY domain, the USB_1 PHY hardware might remain
+unpowered, causing the HSIC port to fail.
 
-Laurent Pinchart
+> +		status =3D "disabled";
+> +	};
+> +};
+> +
+> +&conn_subsys {
+> +	usbh1: usb@5b0e0000 {
+> +		compatible =3D "fsl,imx7ulp-usb", "fsl,imx6ul-usb", "fsl,imx27-usb";
+> +		reg =3D <0x5b0e0000 0x200>;
+
+[Severity: Medium]
+Should this node include a status =3D "disabled"; property?  Without it, the
+usbh1 node is enabled by default and will probe unconditionally on all i.MX=
+8QM
+boards, even if the hardware interface isn't wired up.
+
+Since the required usbphynop2 PHY is disabled, the controller might fail to
+initialize, leading to boot delays and unnecessary resource allocation.
+
+> +		interrupt-parent =3D <&gic>;
+> +		interrupts =3D <GIC_SPI 268 IRQ_TYPE_LEVEL_HIGH>;
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-qm_smmu-v1=
+-0-3689fbd8b516@nxp.com?part=3D2
