@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91013C4551
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 16:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5503E120C
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 16:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784563647; cv=none; b=c8UkmAhtIFAd+7erj5INcN2EJCBBEtwxeyGBUNIgqEejOyscyp/R7gRX6p4wxNvh4aKY25y2eYzB0nImPf5SYKk7ahaCVjJztXDcB2cJ8F44tQsgg7qr/9RojcDu014PAOsiEmu6Gn5vID6Hoala/R5A/TzoEITsPdZ0pGSWq28=
+	t=1784563715; cv=none; b=lPPhhp4PNotuRm1FPlWu7RfLQCtAw89EsFBjwl4xvqotQ44mdm5vqSvetycLouYHENO+UAOvR0xnQvyZ6qVvEmlmOo6L4FkLSJM0RuNtbD6CXe3MgZrueQdzRwUEw7ffGFaWsna+svvj/N0fV/GJew66oouuVJGkYtPagL+2DE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784563647; c=relaxed/simple;
-	bh=na12D40f4ttfQV+rUysmO9h6nH5lFPFIzcBpbuxMEf8=;
+	s=arc-20240116; t=1784563715; c=relaxed/simple;
+	bh=giyil3ueNLayBfDEVhbiAo+zx/udTRqTRxqXgvEVEaQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Uebgra4L+HaoEF3uUckWPx1t/V99UEcaFV8KKMxps9bDUFpWXQQIpVMM7DGFapV7+do6IIrnWGfA83QeSLdMrWV9Yr62UAg9MApMu3PMT8sci58F27ID7yiqTO484pW0GLPzSNBXk0vnLoi6qK5QHR6I8dawSJk9NtoaasnoMWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmzVp+RI; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ZXCETi0VRwo6LnuLnn237H6XElR4d5xIZOb26TqyZ1lBMcf0sxKGskWndmXuS1z14QrZQp/JpFUS0KPdX5ar6kUH0/Ag4UHKfrUNAo/5ZIMDPRGSLd6K2q4OJ0Ty8ex822eild/rNv7wC4ie/pEqUOH91GuPw4PEguamY88qlzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dt9TPmxz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmzVp+RI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26491F00A3A;
-	Mon, 20 Jul 2026 16:07:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dt9TPmxz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3311F000E9;
+	Mon, 20 Jul 2026 16:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784563646;
-	bh=JF6x3v05IF6JcSqACDd1Ioo37Y1aQR5NcKaWwtQBaB4=;
+	s=k20260515; t=1784563714;
+	bh=9KrDL8WVRykRNu0EQzamEj6Vx3hZLwfviLgeAZ2Q/J0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VmzVp+RI15t4zvpJkkWoY9d5TgC9d8RG2zYDlPpM2oK3npFP9nwgV3cXY+pke5mmq
-	 vFo+jBvr17XZC09CRsqIaj2HYL30DebOdI7t48fRQQUFtvhdG6nDh24Ty1n+2cRYxM
-	 /PyZnH7vNUnhJk0Gndyq94EpLFthhgQKiXWcEi0i2AQHeDzJSG7Dmld5uZGfUuFMQp
-	 Du66Ttodx3dFesyvQ9GGRB0rkVaAz4NtLZIqmd4ZJfTYLDOPp+NuPK7XdiSU5awLT5
-	 rKOmXx6cKBoL2RMl3f5NDn2TFhpMF8yRvGaMFI0tAURRhEicgYGSwpQpvbQh23OgkV
-	 Beycik5fCTH2A==
+	b=Dt9TPmxzdzl8Hq/nfOa3hH2HizLmhwCwmeBMcDGIvwGxdrRXIdqqOyLqyHXrMuPm3
+	 XS6aNl53STL8Ioyfc2oczocKjyHgZylMIfCEO6GKyAUY9ThGrqxvwWqjt0iguPtugz
+	 oQDczUi/99qQbh+PBU0t/8WqcEkIIlu427lZzD8yib2DT5w7Brl/ntb2FRb8fhzRCZ
+	 6WZca3vlz4dEMpoc74ngnl3Uv5zOxPcQn7ao/EdshKtZgPn0KaRG6YZjpiQfZ6DSh2
+	 mov3C1s4SrTufUBBmavRqjxHdsGH6UPHovayAZKP5licQDAzA4ill6rUHxrI6XH8Mf
+	 XkayUWLC5+3FQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 15/15] Documentation/gpu: remove completed
- drm_simple_encoder_init() todo
+Subject: Re: [PATCH v2 07/15] drm/tidss: remove dependency on DRM simple
+ helpers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Diogo Silva" <diogompaissilva@gmail.com>
-Cc: linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, neil.armstrong@linaro.org, wsa+renesas@sang-engineering.com, dri-devel@lists.freedesktop.org, imx@lists.linux.dev
-In-Reply-To: <20260720-drm_simple_encoder_init-v2-15-5020b630668a@gmail.com>
+Cc: Frank.Li@kernel.org, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, dri-devel@lists.freedesktop.org, neil.armstrong@linaro.org
+In-Reply-To: <20260720-drm_simple_encoder_init-v2-7-5020b630668a@gmail.com>
 References: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
- <20260720-drm_simple_encoder_init-v2-15-5020b630668a@gmail.com>
+ <20260720-drm_simple_encoder_init-v2-7-5020b630668a@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 16:07:25 +0000
-Message-Id: <20260720160725.F26491F00A3A@smtp.kernel.org>
+Date: Mon, 20 Jul 2026 16:08:33 +0000
+Message-Id: <20260720160833.BD3311F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,69 +47,66 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Incomplete refactoring causes build failure in the gma500 driver du=
-e to unconverted usages of `drm_simple_encoder_init()`.
+
+Pre-existing issues:
+- [High] Missing drm_encoder_cleanup() on error paths causes an immediate U=
+se-After-Free during probe failure due to devm/drmm lifecycle mismatch.
 --
 
---- Patch [15]: [PATCH v2 15/15] Documentation/gpu: remove completed drm_si=
-mple_encoder_init() todo ---
-commit ecefbc42ff1cbd0e228a1785c066cd3cab8deafc
+--- Patch [7]: [PATCH v2 07/15] drm/tidss: remove dependency on DRM simple =
+helpers ---
+commit e1bc7736cc3d912bd63a6e7abbb830479e2c82e1
 Author: Diogo Silva <diogompaissilva@gmail.com>
 
-Documentation/gpu: remove completed drm_simple_encoder_init() todo
+drm/tidss: remove dependency on DRM simple helpers
 
-All drm_simple_encoder_init() users have been removed, so drop the
-completed todo item.
+The simple KMS helpers are deprecated because they only add an
+intermediate layer between drivers and atomic modesetting. This commit
+open-codes drm_simple_encoder_init() by calling drm_encoder_init()
+directly and providing driver-local drm_encoder_funcs.
 
-> diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-> index 14cf37590fc7e..b7351467dc74c 100644
-> --- a/Documentation/gpu/todo.rst
-> +++ b/Documentation/gpu/todo.rst
-> @@ -29,21 +29,6 @@ refactorings already and are an expert in the specific=
- area
->  Subsystem-wide refactorings
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
+> diff --git a/drivers/gpu/drm/tidss/tidss_encoder.c b/drivers/gpu/drm/tids=
+s/tidss_encoder.c
+> index 698f8d964ca00..10dbcc6cdf6a8 100644
+> --- a/drivers/gpu/drm/tidss/tidss_encoder.c
+> +++ b/drivers/gpu/drm/tidss/tidss_encoder.c
+[ ... ]
+> @@ -95,8 +99,8 @@ int tidss_encoder_create(struct tidss_device *tidss,
+>  	if (IS_ERR(t_enc))
+>  		return PTR_ERR(t_enc);
 > =20
-> -Open-code drm_simple_encoder_init()
-> ------------------------------------
-> -
-> -The helper drm_simple_encoder_init() was supposed to simplify encoder
-> -initialization. Instead it only added an intermediate layer between atom=
-ic
-> -modesetting and the DRM driver.
-> -
-> -The task here is to remove drm_simple_encoder_init(). Search for a driver
+> -	ret =3D drm_simple_encoder_init(&tidss->ddev, &t_enc->encoder,
+> -				      encoder_type);
+> +	ret =3D drm_encoder_init(&tidss->ddev, &t_enc->encoder,
+> +			       &tidss_encoder_funcs, encoder_type, NULL);
+>  	if (ret)
+>  		return ret;
+> =20
 
-[Severity: Low]
-Are there still remaining users of drm_simple_encoder_init() in the tree?
+[Severity: High]
+This isn't a bug introduced by this patch, but does this function leak the
+initialized encoder into the global mode_config list on subsequent error
+paths?
 
-Looking at the gma500 driver, it appears there are several unconverted calls
-remaining, such as in drivers/gpu/drm/gma500/cdv_intel_crt.c:
+If drm_bridge_attach() or drm_bridge_connector_init() fails later in this
+function, they return an error directly without cleaning up the initialized
+DRM encoder:
 
-cdv_intel_crt_init() {
-    ...
-    ret =3D drm_simple_encoder_init(dev, encoder, DRM_MODE_ENCODER_DAC);
-    ...
-}
+	ret =3D drm_bridge_attach(enc, &t_enc->bridge, NULL,
+				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+	if (ret) {
+		dev_err(tidss->dev, "bridge attach failed: %d\n", ret);
+		return ret;
+	}
 
-There also seem to be similar calls in cdv_intel_dp.c, cdv_intel_hdmi.c,
-cdv_intel_lvds.c, oaktrail_hdmi.c, oaktrail_lvds.c, and psb_intel_lvds.c.
+Because t_enc is allocated via devm_drm_bridge_alloc(), devres frees t_enc
+as soon as probe fails. The DRM device itself is also devres-managed, so
+its cleanup runs after t_enc is freed.
 
-Will this cause a build failure when compiling with CONFIG_DRM_GMA500 if the
-underlying function is removed before these are converted?
-
-> -that calls drm_simple_encoder_init() and inline the helper. The driver w=
-ill
-> -also need its own instance of drm_encoder_funcs.
-> -
-> -Contact: Thomas Zimmermann, respective driver maintainer
-> -
-> -Level: Easy
-> -
->  Replace struct drm_simple_display_pipe with regular atomic helpers
->  ------------------------------------------------------------------
+When drm_mode_config_cleanup() iterates over the encoder_list and calls the
+.destroy hook on the now-freed t_enc->encoder, will this trigger a
+use-after-free?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-drm_simple=
-_encoder_init-v2-0-5020b630668a@gmail.com?part=3D15
+_encoder_init-v2-0-5020b630668a@gmail.com?part=3D7
