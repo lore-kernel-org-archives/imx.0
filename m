@@ -1,74 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D620E419FAC;
-	Mon, 20 Jul 2026 12:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0611941B358;
+	Mon, 20 Jul 2026 12:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784551674; cv=none; b=Q4GDRlraZY8FVZlibID6AX0odS2Uds/09mJCfYJcn3a2DksSKx8MBMv37h5/5qz3Eb46qo1gjWs9MwuBb5H1Qe2otkSc/gCKQ3ES52h22k/0jOlGHomEvjMjKUfN56M+970OzQOpXLao3KsOVcAms2NqFQ5PiQAIeXWysvAzH28=
+	t=1784552347; cv=none; b=UNyoewOa9kEed1t1SUbo0f+bCff5BFr7dsZDK1oSj9/EU5pcXA6uncOJ08xo9og3hRrAfkUSBpFELiFHvWkrjPL0OE0qfPSpSeQ48RLnkZ1RVRGT7/T654vNBR2Ngs5QK2Jv37UJVcnBdgj8KwqaMM/xI7IALH0GALcZfCT5Cug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784551674; c=relaxed/simple;
-	bh=/tRP9dKRDg5T0dFJ+56y2diT+nUgMjq6OiIf4j29wJw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=kL2KFMsWc5kJcKB8vRRwQKkrS9ea3PXhK3mu2qhmDpQjTZWo6jJ9h7+2CRWSeqw1nXVy0WTYakcY/fyHTptNDoutFcOvkwWuM/9EQa0w+dC4l9KDFkqINaT6NrO7zv06fbnF4QNAalVYVpaciBZKA1cCsUKJNOXrLVlhXTVtjPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+oYlfKa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784552347; c=relaxed/simple;
+	bh=tj7DETiWrYqcYhPQBV0lQIQF5ojnhC7kaKJUMMnBNUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uGppQ2KRZX+kqr+alDOlU7LkR7DipqQLs24YCHKHCNSgZH6k9hDLDyzmXwb1RUWwz9NHqQyYU/4cdrs70cjxLmCsot4k+x11lnFlJnSpG16UGSAPzRbO0EfTtLLhmWjH0wPnhx1aYutwk4QroSyKAC3AT0ktGSuNWogtnVEHUWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=dKmABXHE; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+oYlfKa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632BB1F000E9;
-	Mon, 20 Jul 2026 12:47:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784551673;
-	bh=GF3I0FN9NaDCRvNKAGKjBQscJbimvB5IvicxLWR9+EA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=T+oYlfKaz12OFo9mI5spxNIhMZ91plK9R8yMAVwFB+AjuVwTVIwcrYA9589+St3XK
-	 xyC0Z27KiAI+B/chFeeVDVUkesYMbJesoRaNdjhQNkrT4dSPR9tWv2u9yBb6RlyvB/
-	 6kIPGyib3LZDb8xeZwoB07OtAFKOAIQgfBds8vF5NwxBo7Zlo37EaJvoWtBCbX0YCb
-	 bSnfxyOZ6KLXSnE403Punoqsfce0dEKZHzSj6+PLEcFCRMZzT19/uPLVkgZc9x4pvW
-	 70aqRhvRe0mW+Tyw9Tpif3Vt+Cl/hgyXO+p2yhunOhPD7rcH3dkqgxEEDF2vbjriFX
-	 Jev1F7aGLIADg==
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
- kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, 
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
- hongxing.zhu@oss.nxp.com
-Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
- Richard Zhu <hongxing.zhu@nxp.com>
-In-Reply-To: <20260715073024.1377228-1-hongxing.zhu@oss.nxp.com>
-References: <20260715073024.1377228-1-hongxing.zhu@oss.nxp.com>
-Subject: Re: [RESEND PATCH v2] PCI: imx6: Add runtime PM support for i.MX95
-Message-Id: <178455166894.22240.7222803146225421685.b4-ty@b4>
-Date: Mon, 20 Jul 2026 14:47:48 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="dKmABXHE"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F0EC2B;
+	Mon, 20 Jul 2026 05:59:01 -0700 (PDT)
+Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B928E3F99C;
+	Mon, 20 Jul 2026 05:58:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784552345; bh=tj7DETiWrYqcYhPQBV0lQIQF5ojnhC7kaKJUMMnBNUs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dKmABXHEllSGT7FeFg6oxaG2ujJktWVxIXZ3hFzKw45EJWrXdCv86Cdi8Lk3ybb+P
+	 2eyzZw9sSqz4kKd+F7OoRuZNUZsH093wu+fiiSmVRvRLMFKAt3uEPGr18dcBdv9V/F
+	 kKFNdv+XlRp4DjEuV/4GCCvpzaekEZeXf66xmNSY=
+Message-ID: <e4f9b266-8d9e-48fe-99c0-58b61e02c9bd@arm.com>
+Date: Mon, 20 Jul 2026 13:58:27 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/8] iommu/fsl: use platform_device_set_fwnode()
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Andi Shyti <andi.shyti@kernel.org>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Doug Berger <opendmb@gmail.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Srinivas Kandagatla <srini@kernel.org>
+Cc: brgl@kernel.org, driver-core@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-i2c@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org,
+ linux-pm@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org
+References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-3-2dee93f42c54@oss.qualcomm.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-3-2dee93f42c54@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 20/07/2026 10:24 am, Bartosz Golaszewski wrote:
+> Prefer the higher-level platform_device_set_fwnode() over the
+> OF-specific platform_device_set_of_node() for dynamically allocated
+> platform devices.
 
-On Wed, 15 Jul 2026 15:30:24 +0800, hongxing.zhu@oss.nxp.com wrote:
-> Enable runtime PM support for i.MX95 PCIe Root Complex to allow dynamic
-> power management when the PCIe link is idle.
+This is very much non-portable code specific to OF-only platforms, but 
+if the intention is to remove platform_device_set_of_node() again 
+already, then FWIW,
+
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+
+(Although I'm slightly puzzled by the cover letter - AFAICS in -next, 
+platform_device_set_of_node() is itself very much a user of 
+platform_device_set_fwnode(), however in terms of symbol exports, 
+perhaps the former could now just be a static inline wrapper?)
+
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+>   drivers/iommu/fsl_pamu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> The i.MX95 PCIe controller supports entering D3hot state when PCIe
-> devices are not actively in use. This implementation uses
-> pm_runtime_no_callbacks() to leverage the PCI core's generic runtime PM
-> handling. The PCI core automatically manages D-state transitions based
-> on the runtime PM state of connected endpoint devices.
+> diff --git a/drivers/iommu/fsl_pamu.c b/drivers/iommu/fsl_pamu.c
+> index c83bbc3faad56d6ee1c89b0a7f74028af02c81e9..268a1f752fbceab4fd24013aeea5df1b6982fbb1 100644
+> --- a/drivers/iommu/fsl_pamu.c
+> +++ b/drivers/iommu/fsl_pamu.c
+> @@ -975,7 +975,7 @@ static __init int fsl_pamu_init(void)
+>   		goto error_device_alloc;
+>   	}
+>   
+> -	platform_device_set_of_node(pdev, np);
+> +	platform_device_set_fwnode(pdev, of_fwnode_handle(np));
+>   
+>   	ret = pamu_domain_init();
+>   	if (ret)
 > 
-> [...]
-
-Applied, thanks!
-
-[1/1] PCI: imx6: Add runtime PM support for i.MX95
-      commit: c2b9620359b759d2c73be47689b3a344cb4e091b
-
-Best regards,
--- 
-மணிவண்ணன் சதாசிவம்
-
 
