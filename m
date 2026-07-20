@@ -1,268 +1,219 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011061.outbound.protection.outlook.com [52.101.70.61])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF2D2F28EA
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 09:17:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784539080; cv=fail; b=lXcbU21GaC04voo2kOrZ9l38AoYIINBC+T2hxxhi5SIJClHbFATk+aEtVpw5rK4QXy+IXts+T2RrRKCpuHPMdYrtBQt/dUz72zQvVlPyk8FmNo2hh2geyyPrejvPKrp1QW8uedK2CxmWHl9uCkDM2x1E8KCFYkUVd9apQo4HzoQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784539080; c=relaxed/simple;
-	bh=BWZwvRpV9ZpE0BqOvetm+zvES6GyEoR0cTqNS6czxcc=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=MaG2dj185aHdDwpXaynB44pTVZkizu5c7SmLHtM1n6kM/1cT8p+lH1+Oj+pmtafRTsozwwIXPjjwvhY52YZttz7JKIYX/n0mpyMDf20GvckasPKySrq/TXw816CKCcgU4+jatwcoBq4Q7cuUFoRpcQkQFOR7PuFhjg5AMub9hBc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ej2SIC5X; arc=fail smtp.client-ip=52.101.70.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B323BB11F
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 09:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784539528; cv=none; b=Z0xdPQ8iNyskHAOHnKB7SQof7daMmRGg7UEyRQUn3BA6J6K4tvSfpois97kWo7oGI5A/GvRZzYJKgQkz+Pq1LYAUr2gtpNfunvLLYwl1wptt/tdirs8GC8prpBrhUeJoymZxz99HuUvhehRaOvilfPRXAAGjDYPDgDyAIr0nIxk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784539528; c=relaxed/simple;
+	bh=y+3A5/VLvAorU5dstuzQ20g0vs1cTbJrLg8xUVeJe9k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MpC3BLV+x6vLRD7YlAwnj5ra01A9ID65NYjyjlaq47jXyo3If5c0EFAtj1vASJAjAKoyi318GHLzpeoXGx6REcFD+ammJQPWCErI8yh2IYP5q/TpGebzQE/QPOelV/psMcYrCQSmR/53ftD+s75zuOuJ/YKZ/GkDUXf2IDewem0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RhycOz9Z; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UKuG9x3J; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ej2SIC5X"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Yd/3VV/mDhleYaams7kr5i3E/hhKuQt8PykGjrDUcjveIrWq7n7yYdpXE793mTS5JICNsR6qlBV76dJmtciZ2dECOTnY4cOnvJXG+NpfAAnhjbNyf9697g4CNjKskaBqEcqAr6O8CQ6GBlgFWSuXEQbW9cyEG7L7w0vKpyg9xLw/tIjHv4Pv35RX6pdWEQe60+OIrPTra6iOLlnpzPKXVFUUhzzwb9teccyWjqjSqGs0+2WpHN1NqodW69KWhnlAgs72+LTITDofks4OkDLrSHE1Le4alTMWN00C4uEf8H6i9ETZjTKIWrFzSJJ6+hDfiQMscAIhWZgBenwpNUUwMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D67ER+pEZjUXHwoT9q7g1nZ2VURsBvo64qDpb9IAj5k=;
- b=Ipymo92D53pXA2y952pOTwpLsYKPXCLq8+pkDYYI5ZJbjI/Wr95NRI741bW64cCweOPIT22uACkiFU9ARSHPUyoCOj0h2mhQ/YPywx510SVsDCfxFvX+gbOxHe0+pLD2+4e6TdE/MiPUov9nG3YSNO+NQsVngecncAht7XMdcrIfDWRSRlQple/xm7L0GL1NJ4/+WbXSUXLrkAC4E0TOvZPVCAVMPqnEfA8Pq0JJvqAAk2YOQ/+ZBE9+JWJTroKm38hOEYP5yGG8phpvAyRT5HxPkm9HCdgcU2LxbTJv/oA64Z2/fplA5HWBhPOizjgUzZ7C7HMV2a5jxXkiB9KQCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D67ER+pEZjUXHwoT9q7g1nZ2VURsBvo64qDpb9IAj5k=;
- b=ej2SIC5XlUw38wa5PKuqq6z62xOz9/imXhd88CQa7YDkcFB5tRr5v5Ab/8/3SPrMQmeLwx2RDsXtv1gBWYO8s4BJPxltUkWIY4xpqEP7ui6QkbfW0F7bRe/12RGHZRvQDfdDdOtgnoNE66ma4SdVjpLaDB6sxvPX62awllFIzMRwQ4AKspbokz5YFU2k1As4uFmEgBeG3rEobGDm4526JXZbniLhp9RzqzDMti0U3fdViyvW0GtO0hQxV7JkLdPd0VmIeC2u6cpNtNUje84kt+dpZbS4aDPpDmw0IJ7ObI3Z/bUrTkTr/roga8RWeh69WE6/wLTH3NeHEf9gDs85TQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB7PR04MB4698.eurprd04.prod.outlook.com (2603:10a6:10:1c::21)
- by PAXPR04MB8126.eurprd04.prod.outlook.com (2603:10a6:102:1bc::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
- 2026 09:17:55 +0000
-Received: from DB7PR04MB4698.eurprd04.prod.outlook.com
- ([fe80::c571:bdf2:afe7:c03c]) by DB7PR04MB4698.eurprd04.prod.outlook.com
- ([fe80::c571:bdf2:afe7:c03c%4]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
- 09:17:55 +0000
-From: Ming Qian <ming.qian@oss.nxp.com>
-Date: Mon, 20 Jul 2026 18:17:26 +0900
-Subject: [PATCH] media: v4l2-ctrls: Allow unknown HDR10 white point and
- luminance
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-hdr10-unknown-v1-1-11e33d90bd6a@oss.nxp.com>
-X-B4-Tracking: v=1; b=H4sIAKXnXWoC/yXMQQqDMBBG4avIrBuYBIniVaSLVn91FMaS1CqId
- zfV5bd4b6eIIIhUZTsF/CTKrAn2kVEzvLSHkTaZHDvPhWMztMGyWXTSeVXjfQ7X5bZkgFLzCeh
- ku37183Zc3iOa739Cx3ECSM/UqXEAAAA=
-X-Change-ID: 20260720-hdr10-unknown-664e2f4180ee
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil@kernel.org>, 
- Stanimir Varbanov <stanimir.varbanov@linaro.org>, 
- Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Frank.li@nxp.com, 
- eagle.zhou@nxp.com, xiahong.bao@nxp.com, linux-imx@nxp.com, 
- imx@lists.linux.dev, linux-media@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Ming Qian <ming.qian@oss.nxp.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: MA5P287CA0025.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:17a::15) To DB7PR04MB4698.eurprd04.prod.outlook.com
- (2603:10a6:10:1c::21)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RhycOz9Z";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UKuG9x3J"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66K7YNup2044281
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 09:25:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=LemIgIdjk5eM3AXQKute2f
+	Wvk4y9PhORePmOHO5weFo=; b=RhycOz9ZM0sBTG+JXF14kS7s/iqaTNli8PXQKJ
+	C72kD/luWZS45Go3+a4DbMmI4SDf2il2GgK4FwpqIcWEAz55lViHRkySGBPuPOsY
+	IUxnfqfr12rU5+egoIxWfhubYRyJ/AMPdL2Lz70pptI5AwygrnUPRzfl50jRkev+
+	lOhWY1hAqSk8fhT3+/pogMIioSoDehy8uDJTmwuGXFf9Pu/cJ6a8gZpATQETlZL+
+	z5xtt8+URVfsZWGAdcCwZmV491HqQxz1dKgxV5ERPyXQCO5Vtdz6uxI7zUwgPL+5
+	y57TYAujaast9gunXtb+8OzA0tHevb0p1pH9eJ1FO99Kbnwg==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fhfdcggr2-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 09:25:26 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-5174a236220so183715151cf.3
+        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 02:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1784539525; x=1785144325; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=LemIgIdjk5eM3AXQKute2fWvk4y9PhORePmOHO5weFo=;
+        b=UKuG9x3J+9asES4Sis+dmsZW/OhLA6LxpzNiRymzffhLcQdWlP+BpyjTPEhMsh2S/3
+         A/GOo//78Xxq9bgdSby6H7HaZuq615esc2si22hX3+4uW9l3VbSpTSamH17VLN44CZdI
+         MUZxBLNPSofvPjBaG9JFooi6W6WmHk/PsCSMDcOD+Al7OOnrYQfl3jM4j41rPxLtLVzr
+         yi4nnpSLjejYR58ykHJkL+ZiBAzBYZthozdoHNGTMUTzNs2PMa2PpxG0YRNM3EdswaDZ
+         ylzKBaV0BOCZ58F43bWW7DOdEprvBFmskTYZW151+hQLxTY4trK7pXKNogjNcsKEcGv/
+         zkXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784539525; x=1785144325;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=LemIgIdjk5eM3AXQKute2fWvk4y9PhORePmOHO5weFo=;
+        b=nFBFUO1vB9CNiuqLArtksuMjrW6Z9BEsObeGXjOcAD2r1SnUCKlhY+fy5viwR3H8Yy
+         5xSGrb7ZlCU670BjsDx/f1kelsZb1Ya/Hty0coQ8I2L8qliTjkimMqtKB8j9gsUVQelN
+         G455ImhGCGWUe5Bc4kLJ+zcN9+OK5DOgL500GnME9MFnuw7msgBBppW4c5GQRJsAlifc
+         b0f9xfwluzwOtE0RXXy2cP4M/KMSvjEoC5MhASquc+mxO8UdpMUe59pNbrLZ9NYlnKzX
+         sKwkSnTfRmQmIkFTzRl3Ckir4w2mVb2xaYKRgMnhWG4J0xP81cCSINPRAk5JvcKkjUtr
+         3RBA==
+X-Forwarded-Encrypted: i=1; AHgh+RrzuLVwsWN+iYutnuuT6HzLmES/9s+Lg37g6kZoaDuJm5PUTegToqN0d1Pr7BrCb5dY6K8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyfersHP8nZsCYW8yU7581fr29BYwlzNDvoaQdiORqqGqScslTj
+	juG+ScJtspK5FTJ5FRxQG/hWJ+HQUn/IIebntL7WSxESsghd3joGO7iN/apW0gx5qO2I+3BVz4c
+	4jdyIBgW5FacidMrqTvnvApyYebyYd1yzFLrM6F/VreG7+Wo+2TgrG2Q=
+X-Gm-Gg: AfdE7ckUQkemnadVwbJRD9vnTIhCZAcyjHtGahfvHOBFh0I7loPaY1T+ehKhTUjIrIK
+	6ngpoNxuARTyFWP/u7FdKTtm1OZaXRvAzFjnt3MMRQZPSY3w8+LPO3/5x1aCntm1xoK9GgeLGcT
+	7Pbjb6B3rikP+MWcai/zE3wVCll1jMb2VlX8FUKyBdEv9VII3Or/L8b2CtvyiyZgIxIPJoh7lQa
+	ybl1ZbsqhkhmPHxz+M07uRdTaPRWY5DJFu7+9efDmk8ZkGXCwNfWobOaTF/tMlnXkQmngwjVRcg
+	QDEwJkIiJBE0QF0LhwhUxM6SNra1gVcOGDiLQl/vXk3Pc0RLRH9Uvg/0iwg9eFXroDxCC3GidWl
+	l3e9bKh16vHAVQKwi9ADto+JJUDCwAw==
+X-Received: by 2002:ac8:7f8f:0:b0:517:8011:3a4b with SMTP id d75a77b69052e-5213c7e50cdmr116346931cf.21.1784539524947;
+        Mon, 20 Jul 2026 02:25:24 -0700 (PDT)
+X-Received: by 2002:ac8:7f8f:0:b0:517:8011:3a4b with SMTP id d75a77b69052e-5213c7e50cdmr116346691cf.21.1784539524509;
+        Mon, 20 Jul 2026 02:25:24 -0700 (PDT)
+Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:65fa:60cb:c205:d511])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4955de88951sm62228205e9.3.2026.07.20.02.25.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 02:25:23 -0700 (PDT)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 0/8] driver core: prefer platform_device_set_fwnode()
+Date: Mon, 20 Jul 2026 11:24:47 +0200
+Message-Id: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR04MB4698:EE_|PAXPR04MB8126:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41b336c4-f1b8-49f1-3b26-08dee63fc81d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|23010399003|376014|1800799024|56012099006|11063799006|10067099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	f+NHYAkQeUKECYtKYlFZd7Rahg5O2zX749geZ4b2L4SQ2EZiRemp5q/vuKVYTfXzKxcqOAP7vFXrhgZUlGTfXRtWcYeXoQASFvFOHNxEDK/zGYQrOr72cZiIW9WXpa/xce+p6ng4VIDyfXdLXqNtF40uX2oELnYjOM1Byn0wM2gNnn8Slnhr5f0VALSAFQi/q7emzvVgvKoC79LzTn7n0ApxvE4DR0dv/ccJqk2pNmPiWQF3td6l1Ths5dhrv2oyyd13hYUJ2yi57Be1O4EqDOntmGRtTuzK+U/xQlTl6uMtu3y4WT2ciV3z1HuHHm04/Oo5ZSYTlUTBdwlmGYlxxNElA6Mf899Zq+z8XoAlK55KsRpQORqgsUYAR/tvsPLijp09QNthHupOeDDGGtvjbbo0Dt7WwNLd+bAhnKxuUJaHf1BjKM6BUhUxWNcpHqdtedaUnB1UAmLSlDnB+ihMrpFXfE9/sQs8bSKxY4UMZBgBPYaTOGVryHUP0PuEWb7QYKLCfq8W8oFwK4glswXjQDA8qB8Gt9CVMEIXbAjGlxsL8RL+7swBq1HvSZFB/QebxgRnxv2AzGyS0FKTWDHCB730XN4ni/e3PkWhg6zJqdCQDwMC7sgIuXZmjxjd8j2YRofmTxSKddMDjRf0VfxskegcGl7i6fJh/FTXjZKP6PM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4698.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(23010399003)(376014)(1800799024)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjNvTkZxeGlBREJCVWttWWZETTdNbml0Mkp0UWZ5cXZMKzZUUTVMaGFVVnRr?=
- =?utf-8?B?RFRScXVldEEzWXo2UjhSS3pMbTV5T0JqK08weDZQMFI4NVp0aHBSYkNOQ2Zm?=
- =?utf-8?B?MjdoUko1a3ZDRmZ6N3QzTC9ZQ2h4cXB0bDYzdGxRY1pIOVc2cW5GME9hSEUw?=
- =?utf-8?B?UHNBRzNWNTJ1S015RGFydWFNL0RHOTdnR1RSTUpoWVVOYzIwZ1B0SUpNZG94?=
- =?utf-8?B?ZzFOMUViSWIwTzRJaE1yeVd3T2pSY0ZJanhnVkpSZVF4eTdNb2R4bnJZY21W?=
- =?utf-8?B?V0Uvc1B6UExudlhZMlBLbHI4cHNkUTJsWXFRWHdhaHNIMUowSW9Vd2ZaTDNj?=
- =?utf-8?B?YytDVDh0cXZrTHUwc3dOMzVUSnQ4TjlCbEF1cFViNTYwbWhaTkQ1WVhrOFdG?=
- =?utf-8?B?NnhjeDJBay9aVFRsR2JPd0xUTlNxVmtpa1J4QVF4eE9Qa2lHaVpxMVErNTUx?=
- =?utf-8?B?amVkYUh1SkVob1NvQUlhWEQ2TmhxN2RWMVNsWXRxakVoNUNrZU0rcmU4WnBW?=
- =?utf-8?B?dkwzc3d4SFJqYkxXbTFzeWFUWDZ6NFppdnlXQ29MWTNJSjNGNUdtNzVRaU9y?=
- =?utf-8?B?OWxSRzVEcHUydFh0djVmeWUzdkNlV1JPMitMMEVtUkVOWHUvSms2M2pXc3Uz?=
- =?utf-8?B?ajdmc1pMRm5FV1BKOTN5dEV2Y1BpQlI3R0hveXEyYlFRQlhRYmhOMURrenZm?=
- =?utf-8?B?dThFVkJSM3Z3aVhRNmV1V0hoQjVSR3FxaVpILzFha1gxRWxjVUVGWDNvSTAr?=
- =?utf-8?B?TDRoRXRLZmRsMVFWKzc2ZlZVeVFmUHNubGxUdWZiOTh0UHRCdzMwZ0plSDNs?=
- =?utf-8?B?eEg3Wmd5YUdFN01wK3hKb2dwQTdvRVJWMVBxOHJJUmZtSkhaUmdtanhZY0Iv?=
- =?utf-8?B?MmtpZTFXcDkxVFIxWm9acW1pdTZ6M2tEVmM1WG9zRWFkWGt2cHh0RExjb2p2?=
- =?utf-8?B?T0R5YVk1VWx0QnlobE1SYUNKUndYekw4NzBkbnl5R0FGL2Vxd0RpUk8vVkww?=
- =?utf-8?B?dUpHblFLc0tJNWRxa0tSaHNBS2RmY2dGbjMxVElhUllTRGYwQm5oKzZCRVpk?=
- =?utf-8?B?YmxzOWEzenYwZzJZQk93L20vYVRKOCtGUC9TNjJKYTNyaGwvYXRVWU9EbEZ3?=
- =?utf-8?B?MGduNkpVRDc0dE1aUXU5WHowTVBLeURScFNXcVg0RzhMQVlGOEl3Q21KUW53?=
- =?utf-8?B?eE1hQkdWMnVoNDBvZFVkVXA1Mk9NZzdWZzNxdWJ4UUJVVkZhUUhJV2laUCtr?=
- =?utf-8?B?SDBJZ0J5Y3dZK1hhWlkwdml5Mk9tc1FTZjFUdXUwUVFWZEJwenhaKzE3aFJW?=
- =?utf-8?B?U3dkOGFwY1hCNkgrR2FjcWN2OFZwSTJSMlBYZWxKZWhtZTFYVHJRMjlHYkFh?=
- =?utf-8?B?dC83NHJxSWFreFJkTmtici9zc3dlZisvUytjeW5OYnBEcUZhMlFMaDlJVDY1?=
- =?utf-8?B?Z1IzN2NzcWlnRkVBNFJMZXoyOHpkaktOdjh4ZFc4L1JpMGhPbWVrc21zMnp4?=
- =?utf-8?B?eEJoZ3BsaFFVUUVmZERjRlR6UGtjUkhyc2VYbGV4V0FHdUI4WnRHbWFIVzNt?=
- =?utf-8?B?b3VkcE0wTVVUV1V3b2ZLS1ZBNWh3TU5mQXlRMnhHeE4weDZvYklDeFdrT2RL?=
- =?utf-8?B?TDdocWZ5bW1QWjI3U0M3RjFFR25RQUpHU1FKdnprTEdtVlY3R241MnpCOXBC?=
- =?utf-8?B?MUlHU1VMSEtsSHNEd2kzSkx6ZjFzS00yZlhxdmw3c0lMZEw1S2s5clJXeGJ6?=
- =?utf-8?B?WWFFcU1jSVZlSFZocnBkRmVDVXpsbWJPOUQrcmNkS3JvNkExMDZVSnA3V0tI?=
- =?utf-8?B?djVMM0w3YUZRS3dEZEFZUFpiZittOTBFRHR0N1BPL1c1ZWp1UjVjeEljd28v?=
- =?utf-8?B?ZllydytPSVlIMnJRbDZsTFREcWVBV0o3Z2NicSs0bGgybFBRVkY2U2IvYjg5?=
- =?utf-8?B?MkZYdzhWVjEzWDhTclJIUS8ra0lGYXkxWnBVTnlSRm5oTS9MY2tSVWFNalFk?=
- =?utf-8?B?clNIK0ZneklISzFuT2I3U3VpUnpuMlRyeUk5cEJYSlRvVzJ4T3lLUlo0akxm?=
- =?utf-8?B?SWZranAvNXVyTlE3OStkcDNhZERtOS9lQ2VwMUR0cTIzSmY0bzUvdExmWWx4?=
- =?utf-8?B?bFpCWVlFc3IrWm5Rdkd1d0U1b0FUVWhaZVNFQ21DSGh0Wm5DS1VQVDYwMWdC?=
- =?utf-8?B?MnM1TXRuZmloL29xUnU2VDV4eldnUnRrK0JFS0FCdEp4TFViN2JUNWV1SGdh?=
- =?utf-8?B?WEl4eGt4Rk93UzJ6VVhCelB0ZEpvYk50VEZtbE1QQk45MWR5dmlQTHRSYzBp?=
- =?utf-8?B?cUZYUzJCL0NJbVNQS0VsSktWUzNHUWx5M2ROZC8rcFNkbi9BMEcxWHl3YWE2?=
- =?utf-8?Q?lrhbDLksLCG8kuvcznNU0koHs9EZr8Iq6k1jV?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41b336c4-f1b8-49f1-3b26-08dee63fc81d
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4698.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 09:17:55.2232
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4TOUCi5v4KYp3iwKpqOv+pNUzdnPr7jweKBs+pAMbhHBMRygDzD/t0BBJQkumGooZSOUo5OjI9a8A34mzQobnZSwqx9YBETHTPuhbF88ym6plEPZNypjSyH1MDQNetKe
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8126
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF/pXWoC/x2NwQqDMBBEf0X23IUYaVP9leJBzKTdSyJZUUH8d
+ 9PAXN48mDlJkQVKQ3NSxiYqKRZoHw3Nvyl+weILkzX2ZZw1vHhsrFg57DH5oqOumDyn8E+t8O4
+ wo3Pt0/RUhpaMIEc9+YzXdQP5bB3HdAAAAA==
+X-Change-ID: 20260720-pdev-set-fwnode-instead-of-of-node-e83ece371509
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Doug Berger <opendmb@gmail.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>,
+        Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Srinivas Kandagatla <srini@kernel.org>
+Cc: brgl@kernel.org, driver-core@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, iommu@lists.linux.dev,
+        netdev@vger.kernel.org, linux-pm@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
+        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2116;
+ i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
+ bh=y+3A5/VLvAorU5dstuzQ20g0vs1cTbJrLg8xUVeJe9k=;
+ b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBqXelzKWZE6870gD3WWYpCRNtH/x/7TnWJA+MWI
+ +18iI+ok1yJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCal3pcwAKCRAFnS7L/zaE
+ wwVFEAC39JKLu5OuBinyDLYXI20Qwbj5iJgddspKDBrIHwzbE8GYvwxR4tbccRRa382Fmzdct8y
+ EzujI9HvhuEvuRGbzYN7nXKISM2Di8/vbjW+fYvgUH0d61sNqxWxNpyhA+RjY+bO2ovYCYgitp4
+ KAuedXV8aifMRqUntG8OUyDK7/pRU/OYeBjdQqP86+KfJROziANbRE6R13AsREnvOsOpXp5rxyf
+ Nt6Hq0D2M1mUJWKYKcqaBHXnY9HMNXXOzc+1UK6ohzMTFcE+JjZXbkZpOBfkNqimGJXIfXglvMO
+ vQyEV1EzrURqAEx+qx4RAqS1LAMEjW6NWVmfKZwViSO4RFnifrncA74OhKxw4imku2YwssQ1ZAT
+ X1fkgdX8b5xMz70t2a3rvbGmwvSksfSCz2RzAbhkD2CbvxkaN6/J7yDasBLy/iYvfmCsDWt0g+o
+ lQe7N4WegbVPHnOq3qaCeCE1A7AeqAPWEDnzj01qMuNcvv6BsYMBI5+5nWHFw2X5pFbGQntKtIE
+ y2IHrZix8Z8c+8zw1ZC6CCaW/8PZ/bZt8nHiPN97ndbD6joCGFMKOo1R/yAr0eychf3fUsa34MQ
+ 543Wud8L0J+bI8TjoQFUK8AhP4uQe4aVi0URHHakNa+jsR5rhwd9SKHNKnMG95SngYBbKD8g+Vf
+ pAe3KSxbxKULFDg==
+X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+X-Proofpoint-ORIG-GUID: gP89fhoA8pF2hJbF--QZSBVKPr8aTFpP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDEwNCBTYWx0ZWRfX6HGAqCqPqIHv
+ HMVngsQKykzlXuoZDhClE239/Y89oMv8SLO+bv0dlXfZ3eItygw43Ng90kyfVVBbCxaOsUEIRZn
+ gq8/kVuDzTWygJLOCvodKovtyYpoWpctLvsfWxwlVd3qVGJChcc60gC7Dxf72lQZwdUjt3nOxzc
+ H7vYre99i+zDx2ltYbtme3bd3n4zJLn5bpS/30DKp5a29FGwuo/U3JeG6PdBcmCqhc8TSeN6pZF
+ ECm/Al5W/C+XzKIoAj0QSh8ITR9Xe3jmsuuQ39k4OyN/UWETMgEkZK8CH71CjYrYDAJ/oo1PPJ9
+ OFF3xJaVysNPTWNChqBy5parKeZmHaS1NIr5JTHprHkzWKJnXrtZMuGqgw2kLhEpy7cG5O27e8L
+ PCEgUVnS6YFVui87PXAHgKup62Bbxh35rtw8ZrKh5gX54C/kxnLPcpt0E6vJonl4RtR4/qhs5WX
+ cttLcyBaOBW+SrG48Pg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDEwNCBTYWx0ZWRfXwrPcvRTFtP45
+ mFAruAEYsbJwBfdkLOsin+7uWIP+o7MgQoeo5TrfdgOAtsy5Az6Pqghh/HxGpE/dyYdGoWfqV/t
+ LR4yWj51oCf1e4vM0FkDL+Zho88WXZk=
+X-Proofpoint-GUID: gP89fhoA8pF2hJbF--QZSBVKPr8aTFpP
+X-Authority-Analysis: v=2.4 cv=bv58wkai c=1 sm=1 tr=0 ts=6a5de986 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=EUspDBNiAAAA:8
+ a=dfxIzRrD6tu8yhXxuZUA:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-20_01,2026-07-17_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 spamscore=0 malwarescore=0
+ phishscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607200104
 
-SMPTE ST 2086 defines the nominal ranges for mastering display
-chromaticity and luminance values. Its Annex A also documents that
-CTA 861-G uses zero maximum and minimum luminance values to signal
-that the corresponding values are unknown, and the xy chromaticity
-coordinate (0, 0) to signal that the white point chromaticity is
-unknown.
+With the final platform device and software node rework changes having
+been queued in the driver core tree, Danilo pointed out that
+platform_device_set_fwnode() is no longer used and should be removed. I
+argued that instead we should prefer it over the OF-specific
+platform_device_set_of_node().
 
-The V4L2 HDR10 mastering display compound control currently rejects
-these values. Consequently, an unknown white point or luminance value
-prevents the entire compound control from being updated, making the
-other valid mastering display metadata unavailable to userspace.
+This series converts drivers using platform_device_set_of_node() to
+platform_device_set_fwnode() and does not intend any functional change
+as the semantics of:
 
-Accept (0, 0) as an unknown white point and zero as an unknown maximum
-or minimum mastering luminance. Continue to reject partially zero white
-point coordinates and non-zero values outside the nominal ranges.
-Display primary validation remains unchanged.
+  platform_device_set_of_node(pdev, np);
 
-Document the newly accepted unknown values in the V4L2 userspace API.
+should be equal to those of:
 
-Fixes: 1ad0de78e794 ("media: v4l: Add HDR10 static metadata controls")
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+  platform_device_set_fwnode(pdev, of_fwnode_handle(np));
+
+The prerequisite changes are currently in the driver core tree so this
+entire series should follow them as well with Acks from maintainers. If
+it doesn't make v7.3 for some reason, then I will resend these next
+cycle separately targetting individual trees.
+
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 ---
-Relax the V4L2 HDR10 mastering display validation to accept the
-"unknown" sentinels (white point (0, 0), zero max/min luminance)
-defined by SMPTE ST 2086 Annex A / CTA 861-G, instead of rejecting
-the whole compound control. Details in the patch.
----
- .../media/v4l/ext-ctrls-colorimetry.rst            | 12 ++++-
- drivers/media/v4l2-core/v4l2-ctrls-core.c          | 53 ++++++++++++++--------
- 2 files changed, 46 insertions(+), 19 deletions(-)
+Bartosz Golaszewski (8):
+      powerpc/powermac: use platform_device_set_fwnode()
+      i2c: pxa-pci: use platform_device_set_fwnode()
+      iommu/fsl: use platform_device_set_fwnode()
+      net: bcmgenet: use platform_device_set_fwnode()
+      pmdomain: imx: use platform_device_set_fwnode()
+      mfd: tps6586: use platform_device_set_fwnode()
+      net: mv643xx: use platform_device_set_fwnode()
+      slimbus: qcom-ngd-ctrl: use platform_device_set_fwnode()
 
-diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-colorimetry.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-colorimetry.rst
-index 38a4136d7220..0a7da2f16850 100644
---- a/Documentation/userspace-api/media/v4l/ext-ctrls-colorimetry.rst
-+++ b/Documentation/userspace-api/media/v4l/ext-ctrls-colorimetry.rst
-@@ -80,15 +80,25 @@ Colorimetry Control IDs
-       - ``white_point_x``
-       - Specifies the normalized x chromaticity coordinate of the white
-         point of the mastering display in increments of 0.00002.
-+        When both ``white_point_x`` and ``white_point_y`` are zero,
-+        the white point chromaticity is unknown. If either coordinate is
-+        non-zero, both coordinates shall be within their valid ranges.
-     * - __u16
-       - ``white_point_y``
-       - Specifies the normalized y chromaticity coordinate of the white
-         point of the mastering display in increments of 0.00002.
-+        When both ``white_point_x`` and ``white_point_y`` are zero,
-+        the white point chromaticity is unknown. If either coordinate is
-+        non-zero, both coordinates shall be within their valid ranges.
-     * - __u32
-       - ``max_luminance``
-       - Specifies the nominal maximum display luminance of the mastering
-         display in units of 0.0001 cd/m\ :sup:`2`.
-+        A value of zero indicates that the nominal maximum display
-+        luminance is unknown.
-     * - __u32
-       - ``min_luminance``
--      - specifies the nominal minimum display luminance of the mastering
-+      - Specifies the nominal minimum display luminance of the mastering
-         display in units of 0.0001 cd/m\ :sup:`2`.
-+        A value of zero indicates that the nominal minimum display
-+        luminance is unknown.
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-index 1214e7744ac0..5b8a594fb9e2 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -1322,24 +1322,41 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
- 				return -EINVAL;
- 		}
- 
--		if (p_hdr10_mastering->white_point_x <
--			V4L2_HDR10_MASTERING_WHITE_POINT_X_LOW ||
--		    p_hdr10_mastering->white_point_x >
--			V4L2_HDR10_MASTERING_WHITE_POINT_X_HIGH ||
--		    p_hdr10_mastering->white_point_y <
--			V4L2_HDR10_MASTERING_WHITE_POINT_Y_LOW ||
--		    p_hdr10_mastering->white_point_y >
--			V4L2_HDR10_MASTERING_WHITE_POINT_Y_HIGH)
--			return -EINVAL;
--
--		if (p_hdr10_mastering->max_display_mastering_luminance <
--			V4L2_HDR10_MASTERING_MAX_LUMA_LOW ||
--		    p_hdr10_mastering->max_display_mastering_luminance >
--			V4L2_HDR10_MASTERING_MAX_LUMA_HIGH ||
--		    p_hdr10_mastering->min_display_mastering_luminance <
--			V4L2_HDR10_MASTERING_MIN_LUMA_LOW ||
--		    p_hdr10_mastering->min_display_mastering_luminance >
--			V4L2_HDR10_MASTERING_MIN_LUMA_HIGH)
-+		/*
-+		 * SMPTE ST 2086 Annex A documents that CTA 861-G uses
-+		 * (0, 0) to indicate that the white point chromaticity
-+		 * is unknown.
-+		 */
-+		if (p_hdr10_mastering->white_point_x ||
-+		    p_hdr10_mastering->white_point_y) {
-+			if (p_hdr10_mastering->white_point_x <
-+				V4L2_HDR10_MASTERING_WHITE_POINT_X_LOW ||
-+			    p_hdr10_mastering->white_point_x >
-+				V4L2_HDR10_MASTERING_WHITE_POINT_X_HIGH ||
-+			    p_hdr10_mastering->white_point_y <
-+				V4L2_HDR10_MASTERING_WHITE_POINT_Y_LOW ||
-+			    p_hdr10_mastering->white_point_y >
-+				V4L2_HDR10_MASTERING_WHITE_POINT_Y_HIGH)
-+				return -EINVAL;
-+		}
-+
-+		/*
-+		 * SMPTE ST 2086 Annex A documents that CTA 861-G uses zero
-+		 * maximum and minimum luminance values to indicate that
-+		 * the corresponding values are unknown.
-+		 */
-+		if (p_hdr10_mastering->max_display_mastering_luminance &&
-+		    (p_hdr10_mastering->max_display_mastering_luminance <
-+				V4L2_HDR10_MASTERING_MAX_LUMA_LOW ||
-+		     p_hdr10_mastering->max_display_mastering_luminance >
-+				V4L2_HDR10_MASTERING_MAX_LUMA_HIGH))
-+			return -EINVAL;
-+
-+		if (p_hdr10_mastering->min_display_mastering_luminance &&
-+		    (p_hdr10_mastering->min_display_mastering_luminance <
-+				V4L2_HDR10_MASTERING_MIN_LUMA_LOW ||
-+		     p_hdr10_mastering->min_display_mastering_luminance >
-+				V4L2_HDR10_MASTERING_MIN_LUMA_HIGH))
- 			return -EINVAL;
- 
- 		/* The following restriction comes from ITU-T Rec. H.265 spec */
-
+ arch/powerpc/platforms/powermac/low_i2c.c    | 2 +-
+ drivers/i2c/busses/i2c-pxa-pci.c             | 2 +-
+ drivers/iommu/fsl_pamu.c                     | 2 +-
+ drivers/mfd/tps6586x.c                       | 2 +-
+ drivers/net/ethernet/broadcom/genet/bcmmii.c | 3 ++-
+ drivers/net/ethernet/marvell/mv643xx_eth.c   | 2 +-
+ drivers/pmdomain/imx/gpc.c                   | 2 +-
+ drivers/slimbus/qcom-ngd-ctrl.c              | 2 +-
+ 8 files changed, 9 insertions(+), 8 deletions(-)
 ---
-base-commit: a52e6f7923c17a672135b485ffd96fbd72f46267
-change-id: 20260720-hdr10-unknown-664e2f4180ee
+base-commit: 27edebd505791748a77703e311d76f0f55a8d7ec
+change-id: 20260720-pdev-set-fwnode-instead-of-of-node-e83ece371509
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
