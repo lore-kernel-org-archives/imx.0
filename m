@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098033D333D;
-	Mon, 20 Jul 2026 10:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0852E395AE7;
+	Mon, 20 Jul 2026 10:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784542616; cv=none; b=EX3zHjasPSAc9w3gTezSuaScslVwb93PwNY7lwANgtaIAKyBWwIQBWBjPEhLivhRBTWZ0V9Ov/u0+cK24NAsFC5T5gEif9r9GMukaFImnbbxdx8HOVQp0z0yUveAJlFDpVOCxjYDYktFbNk/zTkU+sgW1YSA3h9gNpOj3HBV94w=
+	t=1784543624; cv=none; b=GwQjIw41XhrDKFdOTXLbA1M388sgy++Fnx8nIhetPif1jtY+xT4ntDmwU14kDN1h/70YByNPA1C2c5kC/h69Chl5el/2P1rQLhtR7ceokCXRI6ASViMsJ6+/YDaXs9K2txsOAAPJpVWek9cXLiCaIfQMZe/Jplexc8k3mTI5dLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784542616; c=relaxed/simple;
-	bh=gWTijb0RecfMlB/ZHA9hvNBNgdJ+6IUSbKp7GKGc6Z8=;
+	s=arc-20240116; t=1784543624; c=relaxed/simple;
+	bh=cmzbzGJRWjbJ5VG6d3ZkYIr5P7R4/vswxfsA0G08Nm8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PIKHGM0dBu+MtxaxfJmR/uTIkgN6Ar9YhmkMzNW4X8IviG9xx0RP3u6FW7eqvOmAWh/si7DlBpXye7wXxvQbxueNTs0zDtX6zJ++vhwS64WQ5fKzv5uH5OEFWoOY8SwL5x9+2Pgt6UBL9lKzQlH4hkLh9W0bl+QaJ4G3SvbnC+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAl7K+rE; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ZsAv/zJFXzyo7RJe2/gB6CMDxOv57QnDtSg8eMoyXnjAPSBe+vHLCyA9CpLHKwY6F3Gczgd98FS3enjSH2VhSBg9FEVLaFePfYvoY2HabDDf79stsvWPnLr3s5xXUBBwCwZ16iqGoDcqvbmQCdbVq11J4UH6YbDR2/vla0CQnOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/E7Rg8t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAl7K+rE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A46A1F000E9;
-	Mon, 20 Jul 2026 10:16:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/E7Rg8t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A751F00A3E;
+	Mon, 20 Jul 2026 10:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784542614;
-	bh=Sp+tlnbmDrwaYMDLUUQ373DtpEEqscLBZSsPx9h9BpE=;
+	s=k20260515; t=1784543622;
+	bh=JMt/Vf1aO0LyFc1X57tt9vGZLV1FnvlV8s5bAIKnLbI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GAl7K+rE/djdUV1imPnc7Q+VRydTG9t6yE2LivJumvaqTJ1CISU6lj1HW1Wm+mwb0
-	 cznWX6d1QSEeeqgvZCpe4crN4WhoaF4oeKJduwkSlIytHseCRqu+JDqLjpEloz/mNu
-	 HstLryTjU95TgYEH+JReh+Awl7ADdbq9z+i1sIb8wlJYa246+eoAje7wq22sC+kYTa
-	 v+b4O2NgLkAfT4Bwt5jfhIGTk5zC6ON0WjFAOC30qhU7TdS3M/XODWqeEh7JSKL72q
-	 6Mn+DckyomdKcyZ7cRhDFGe0NVcFeyWSbB7QpZSp2wZXk1ttyU8NF+5tJ5909n1lZy
-	 bqqjgqv0qhBtg==
+	b=V/E7Rg8tf7Y/q8W39EcG3/qBd0pRkZuslA2VSEuY5v60Pb9J5Keo20W2YMFspmOzd
+	 GW5SAftLCjqu3DvGNIE06j58ulvFhlMWRFsa3WL/akZnY71e2u03ihbPrmQF6Youef
+	 8O2/TAP8PhMFeEg1x/5kRHD+RNZ/iy0F76/q1+CA0WUa9ntykPED4Pb0wabz8CALIG
+	 b1GZnamVecUJIxCKJnK9fZiTJEn/Simy5vHil6RQrbfec03VfsCXE/f/dm1Z+MvByP
+	 p7wYTunokguFqKOtEkMmEwSO4k48Q9vEuHKmWdc2Cj32DAD56FjjupZ5egD9zHkeAP
+	 LPP27dBP1V9jA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] dt-bindings: sound: fsl,easrc: add ports binding
- for multiple contexts
+Subject: Re: [PATCH 3/4] ASoC: fsl_asrc: expose individual DAIs per
+ conversion pair
 Reply-To: sashiko-reviews@lists.linux.dev
 To: shengjiu.wang@oss.nxp.com
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260720095450.1618747-3-shengjiu.wang@oss.nxp.com>
+Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org
+In-Reply-To: <20260720095450.1618747-4-shengjiu.wang@oss.nxp.com>
 References: <20260720095450.1618747-1-shengjiu.wang@oss.nxp.com>
- <20260720095450.1618747-3-shengjiu.wang@oss.nxp.com>
+ <20260720095450.1618747-4-shengjiu.wang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 10:16:52 +0000
-Message-Id: <20260720101654.3A46A1F000E9@smtp.kernel.org>
+Date: Mon, 20 Jul 2026 10:33:41 +0000
+Message-Id: <20260720103342.41A751F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,53 +47,72 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] The schema fails to restrict the `ports` container to the 4 support=
-ed contexts (ports 0-3), allowing invalid extraneous ports to silently pass=
- validation.
+- [High] The newly registered DAIs (`paira`, `pairb`, `pairc`) share the ex=
+act same `dma_params_tx` and `dma_params_rx` structures, causing a data rac=
+e and potential DMA misconfiguration when multiple streams are configured c=
+oncurrently.
 --
 
---- Patch [2]: [PATCH 2/4] dt-bindings: sound: fsl,easrc: add ports binding=
- for multiple contexts ---
-commit 0461b121d300fd40233634f4b977c32906d647ce
+--- Patch [3]: [PATCH 3/4] ASoC: fsl_asrc: expose individual DAIs per conve=
+rsion pair ---
+commit 71178f6edf2667b8ee88b95ef47b739e170cca4b
 Author: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-dt-bindings: sound: fsl,easrc: add ports binding for multiple contexts
+ASoC: fsl_asrc: expose individual DAIs per conversion pair
 
-The i.MX EASRC hardware supports up to four conversion contexts
-(A, B, C, D). Add a ports container property to the binding to allow
-each context to be represented as an individual audio-graph port.
+The i.MX ASRC hardware supports three independent conversion pairs
+(A, B, C). This commit replaces the single fsl_asrc_dai instance
+with an array of three DAI drivers, one per pair, allowing them
+to be routed to separate audio paths simultaneously.
 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml b/Doc=
-umentation/devicetree/bindings/sound/fsl,easrc.yaml
-> index d5727f8bfb0b5..0f579870110d9 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
-> @@ -55,6 +55,29 @@ properties:
->        - const: imx/easrc/easrc-imx8mn.bin
->      description: The coefficient table for the filters
-> =20
-> +  ports:
-> +    $ref: /schemas/graph.yaml#/properties/ports
-> +    properties:
-> +      port@0:
-> +        $ref: audio-graph-port.yaml#
-> +        unevaluatedProperties: false
-> +        description: port for context A
-
-[Severity: Low]
-Is this ports container missing a constraint to reject unsupported unit
-addresses?
-
-Since the inherited graph.yaml schema permits any port@.*, a device tree
-defining port@4 or higher will currently pass dt-validate without an error,
-even though the hardware only supports 4 contexts.=20
-
-Would adding patternProperties: "^port@[0-3]$" or unevaluatedProperties: fa=
-lse
-to the ports block help catch invalid device tree configurations?
+> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+> index 0b28bcfa47fed..f83d6cdc6412d 100644
+> --- a/sound/soc/fsl/fsl_asrc.c
+> +++ b/sound/soc/fsl/fsl_asrc.c
 
 [ ... ]
 
+> @@ -1404,7 +1453,7 @@ static int fsl_asrc_probe(struct platform_device *p=
+dev)
+>  		goto err_pm_get_sync;
+> =20
+>  	ret =3D devm_snd_soc_register_component(&pdev->dev, &fsl_asrc_component,
+> -					      &fsl_asrc_dai, 1);
+> +					      fsl_asrc_dai, ARRAY_SIZE(fsl_asrc_dai));
+
+[Severity: High]
+Since this registers multiple DAIs to enable concurrent stream access, can =
+this
+cause a data race with the shared DMA parameters?
+
+In fsl_asrc_dai_probe(), all three DAIs are assigned pointers to the exact =
+same
+shared DMA parameter structures:
+
+	snd_soc_dai_init_dma_data(dai, &asrc->dma_params_tx,
+				  &asrc->dma_params_rx);
+
+When multiple streams are configured concurrently, they will race to overwr=
+ite
+these shared parameters without locking.
+
+For example, in fsl_asrc_dma_hw_params():
+
+	dma_params_fe =3D snd_soc_dai_get_dma_data(snd_soc_rtd_to_cpu(rtd, 0), sub=
+stream);
+	dma_params_fe->addr =3D asrc->paddr + asrc->get_fifo_addr(!dir, index);
+	dma_params_fe->maxburst =3D dma_params_be->maxburst;
+
+Could this concurrent mutation cause DMA channels to be programmed with inc=
+orrect
+FIFO addresses or maxburst values, resulting in audio cross-talk or DMA eng=
+ine
+errors?
+
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to register ASoC DAI\n");
+>  		goto err_pm_get_sync;
+
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720095450.1618=
-747-1-shengjiu.wang@oss.nxp.com?part=3D2
+747-1-shengjiu.wang@oss.nxp.com?part=3D3
