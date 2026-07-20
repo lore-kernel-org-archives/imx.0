@@ -1,114 +1,128 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F95438464
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D15438FE8
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784562860; cv=none; b=mgnIUYB40goctpVlgYS8T9RI8uG+BTrvJJmaIEFDvFVv+EaPkMiQOk1vBu3u4A82HtpWI9sd3uMSM88pBtdWGcfvEaGuUb5mLydwwLKKTDJ2h0qKzRUrT+G4gQrAoCoOVWxesakMZ+wBZmnkHDhw6emZk/N/2aPfQOEAE5m2i6M=
+	t=1784563013; cv=none; b=fj1PI0YvmNAe67lqHGJE/walo8u4z7auNHP3ahNfvhDarqaXpPEyc+RJfbnAF2W2eottzlCLdfdA3Hwq+kgtIuZGVQ9B2SSE+fYRzh+DF6tUdFW0dzlLgwpEjlT+ZSdGJ+DHc6TAmOEMtwi8zirz57WNlFd2UjjqaeBzL86w2uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784562860; c=relaxed/simple;
-	bh=8FdJ4eZW+PsVWWv1YG9aE+derJzdrC6TQH5IPjsYR/8=;
+	s=arc-20240116; t=1784563013; c=relaxed/simple;
+	bh=PWAay6JbT2WP4sSuIxV14qUOH9tYk4gS0pz4MR7RM18=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iIk2T8JJeZB0G6lGWj140RUoW3bobHoSPu73a2b1qkMdRM6Oy4WhYYT6yEEZyjq+zhTyKc47LY+q1BHf5ofWw5qhD/5kcbV/RKpIod7hhhIWFmBjGFEx+mltNl0jsfBbychXa7eRrBzK1xexlhnUJdhiq8iQM5umoIWAX+NIT0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DcveVqC7; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=GBIHgHW+nbVsRgOEqCYuH/D94PpqKDppi7lnBqxhePr45zDjlQrwMwXI++Pnr+ZNPaSAHxRwvUBmyzk/OeZ6dNUUtS+7NyHtD9IF1RiYTLcmHIsPUU2UxdVO8lVr18+QmkG8YPWAYS/CuX+0jBQBcTdspcHejiq4+OkYiLVM7wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IYYZIZnH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DcveVqC7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773541F000E9;
-	Mon, 20 Jul 2026 15:54:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IYYZIZnH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FCB1F00A3D;
+	Mon, 20 Jul 2026 15:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784562858;
-	bh=h4FtL+GwCY7Mo+W4nkJ1CUNyHo99Pgq0iuKUvWe5hNE=;
+	s=k20260515; t=1784563011;
+	bh=Q8EeV4dGpp0/VfWB9tiXvyOV2F3Tc9aWT6jOzV7G/80=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DcveVqC7Fgu3NEKvExRHo/w/gxLBE1kaLqLiFg1uNuhrCYPCD78scfcOdN6DIzVEB
-	 Svw5cGQvBNW+Yfvr+RHLA5T8UzhpTX2oPn1wT1SKPJKl9dLd6tdwDoqEgtRjWoJ2v5
-	 fCDLPchrOSFks4mpbuCW6E1iYo63m3GLApCauvxx8ORdIOHvX0C63Ex8tFdjASzE3A
-	 fEf4VRqIwjtPNk4XYZ5N5HVTVoz7O7a08PDoLEG9CKEzAYe3PtwnSU1Eb8X2o4SC07
-	 /rqW/i+42Hp1Zu+N3H4Es3ndto56dbneUc0Kus8tzUqb24C+rDPzZLkcttl8FdF+N5
-	 M9lEpBET7OPyg==
+	b=IYYZIZnHi7WqVfRSOuIM4Sdg7NIHX5hgthdAaOh039bvb/JubnaIWM5hyO7TTN+jY
+	 oHaADd5dQXiZQi2BLjH5sei6lLYsrsJqezzsSLviGTisK243azPxxZSnG7jIEUEZ2W
+	 XKiJ8Qus969ZD7k4GQeE4ykFoyMeeYx/N4qVvQHuQXN2jzDhsbqXhqOUhio7mTUFP7
+	 B5Hti+wgK9cD7p+erURLpG7x9y8B5wKenVDa2kTRIKfuDbYLQJ59H+ysz/nEeOQhr+
+	 nLam9ynx0EWTS6uUiosL9hTspeL4enJgMseSV6aSyVdX76hqZKL7xVGuxRvazrRnOA
+	 Y40bKOmqjjTcA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 14/15] drm/drm_simple: remove deprecated
- drm_simple_encoder_init function
+Subject: Re: [PATCH v2 13/15] drm/meson: remove dependency on DRM simple
+ helpers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Diogo Silva" <diogompaissilva@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org, wsa+renesas@sang-engineering.com, neil.armstrong@linaro.org
-In-Reply-To: <20260720-drm_simple_encoder_init-v2-14-5020b630668a@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com, neil.armstrong@linaro.org, imx@lists.linux.dev
+In-Reply-To: <20260720-drm_simple_encoder_init-v2-13-5020b630668a@gmail.com>
 References: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
- <20260720-drm_simple_encoder_init-v2-14-5020b630668a@gmail.com>
+ <20260720-drm_simple_encoder_init-v2-13-5020b630668a@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 15:54:18 +0000
-Message-Id: <20260720155418.773541F000E9@smtp.kernel.org>
+Date: Mon, 20 Jul 2026 15:56:50 +0000
+Message-Id: <20260720155651.66FCB1F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Removing drm_simple_encoder_init() breaks the build for the gma500 =
-driver, which still has unconverted callers.
-- [Low] The task to remove `drm_simple_encoder_init()` is still listed in t=
-he GPU TODO list, leaving the documentation stale.
+
+Pre-existing issues:
+- [High] Potential Use-After-Free due to mixing devres (`devm_`) allocation=
+ with DRM object lifecycle.
 --
 
---- Patch [14]: [PATCH v2 14/15] drm/drm_simple: remove deprecated drm_simp=
-le_encoder_init function ---
-commit 017140dd8a05d473cb61f897db90d827140d76fc
+--- Patch [13]: [PATCH v2 13/15] drm/meson: remove dependency on DRM simple=
+ helpers ---
+commit f601252d45634d954a7087cd68009adce3fbf5f7
 Author: Diogo Silva <diogompaissilva@gmail.com>
 
-drm/drm_simple: remove deprecated drm_simple_encoder_init function
+drm/meson: remove dependency on DRM simple helpers
 
-The simple KMS helpers are deprecated because they only add an
-intermediate layer between drivers and atomic modesetting.
+This patch replaces the deprecated simple KMS helper drm_simple_encoder_ini=
+t()
+with drm_encoder_init() across the CVBS, DSI, and HDMI encoders in the meson
+DRM driver.
 
-All driver users of drm_simple_encoder_init() have been converted to
-drm_encoder_init(). Drop the helper and open-code its remaining internal
-use in drm_simple_display_pipe_init() to prevent new users.
-
-> diff --git a/drivers/gpu/drm/drm_simple_kms_helper.c b/drivers/gpu/drm/dr=
-m_simple_kms_helper.c
-> index 8e1d07b9f1e30..7878b9d7d5248 100644
-> --- a/drivers/gpu/drm/drm_simple_kms_helper.c
-> +++ b/drivers/gpu/drm/drm_simple_kms_helper.c
-> @@ -20,16 +20,6 @@ static const struct drm_encoder_funcs drm_simple_encod=
-er_funcs_cleanup =3D {
->  	.destroy =3D drm_encoder_cleanup,
+> diff --git a/drivers/gpu/drm/meson/meson_encoder_cvbs.c b/drivers/gpu/drm=
+/meson/meson_encoder_cvbs.c
+> index 22cacb1660c4f..cdb84d2283f83 100644
+> --- a/drivers/gpu/drm/meson/meson_encoder_cvbs.c
+> +++ b/drivers/gpu/drm/meson/meson_encoder_cvbs.c
+[ ... ]
+> @@ -218,6 +218,10 @@ static const struct drm_bridge_funcs meson_encoder_c=
+vbs_bridge_funcs =3D {
+>  	.atomic_create_state =3D drm_atomic_helper_bridge_create_state,
 >  };
 > =20
-> -int drm_simple_encoder_init(struct drm_device *dev,
-> -			    struct drm_encoder *encoder,
-> -			    int encoder_type)
-> -{
-> -	return drm_encoder_init(dev, encoder,
-> -				&drm_simple_encoder_funcs_cleanup,
-> -				encoder_type, NULL);
-> -}
-> -EXPORT_SYMBOL(drm_simple_encoder_init);
+> +static const struct drm_encoder_funcs meson_encoder_cvbs_funcs =3D {
+> +	.destroy =3D drm_encoder_cleanup,
+> +};
+> +
+>  int meson_encoder_cvbs_probe(struct meson_drm *priv)
+>  {
+[ ... ]
+> @@ -257,8 +261,9 @@ int meson_encoder_cvbs_probe(struct meson_drm *priv)
+>  	meson_encoder_cvbs->priv =3D priv;
+> =20
+>  	/* Encoder */
+> -	ret =3D drm_simple_encoder_init(priv->drm, &meson_encoder_cvbs->encoder,
+> -				      DRM_MODE_ENCODER_TVDAC);
+> +	ret =3D drm_encoder_init(priv->drm, &meson_encoder_cvbs->encoder,
+> +			       &meson_encoder_cvbs_funcs,
+> +			       DRM_MODE_ENCODER_TVDAC, NULL);
 
-[Severity: Low]
-Does removing this helper break the build for the gma500 driver?
+[Severity: High]
+This is a pre-existing issue, but does using devres for the encoder allocat=
+ion
+create a use-after-free risk during device unbind?
 
-The commit message states that all driver users have been converted, but
-it looks like the gma500 driver still has unconverted callers.
+Looking earlier in meson_encoder_cvbs_probe(), the structure containing the=
+ DRM
+encoder is allocated with devres:
 
-For example, in drivers/gpu/drm/gma500/cdv_intel_crt.c:cdv_intel_crt_init():
+	meson_encoder_cvbs =3D devm_drm_bridge_alloc(priv->dev,
+						   struct meson_encoder_cvbs,
+						   bridge,
+						   &meson_encoder_cvbs_bridge_funcs);
 
-    ret =3D drm_simple_encoder_init(dev, encoder, DRM_MODE_ENCODER_DAC);
+If the physical device is unbound (e.g., via sysfs) while a user application
+holds a DRM file descriptor open, the devres framework will free this memor=
+y,
+including the embedded struct drm_encoder.
 
-and in drivers/gpu/drm/gma500/cdv_intel_dp.c:cdv_intel_dp_init():
+Later, when the file descriptor is closed and the DRM core tears down the
+device, it will call drm_encoder_cleanup() on the already-freed encoder.
 
-    drm_simple_encoder_init(dev, encoder, DRM_MODE_ENCODER_TMDS);
+The exact same devres allocation pattern is also present in=20
+meson_encoder_dsi_probe() for meson_encoder_dsi, and in
+meson_encoder_hdmi_probe() for meson_encoder_hdmi.
 
-Removing the definition and declaration here causes implicit function
-declaration and undefined reference errors when building with
-CONFIG_DRM_GMA500 enabled.
-
-Also, this isn't a bug, but should the task to remove
-drm_simple_encoder_init() be removed from Documentation/gpu/todo.rst
-as well, since this patch completes that task?
+Could these be converted to use DRM-managed allocators (like drmm_kzalloc) =
+to
+ensure the memory safely outlives the physical device unbind?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-drm_simple=
-_encoder_init-v2-0-5020b630668a@gmail.com?part=3D14
+_encoder_init-v2-0-5020b630668a@gmail.com?part=3D13
