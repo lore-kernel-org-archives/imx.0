@@ -1,67 +1,68 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8A6432BEC
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F44433025
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784562069; cv=none; b=AsTMciWn/L+ja8aAzKC/vvdNBoCkE9IZQDaICd0IngXuIO3mmR8FGxYQXjw9Tcg1P9gd9w6JBSckneQ8B5HbhBXWCY28bVajY/HlbgMX0I2q3It0iEKpG7XTNJ/q6EPEFHt4X5+FiWHjGWprbu1QtnoLAHZ5a9QsAPY5dHWNMAw=
+	t=1784562073; cv=none; b=bl0d+oAuMnEk2p+G93n7BkCjcasHZiRGX4M46+OcUJOb/go2ZRW6kZcoi5Z78FNPwr+awwcIBTYu/zq0JVtsDHhY3TueJ+MK+6wneuMA9+G+DCs3oufVPkNLj6daVfk3iE4qoyTOav6Mwa9dDt81IcrqwmDyT0zmyVKoAjehtNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784562069; c=relaxed/simple;
-	bh=FzaaA8oyQ+zKZNM1VMh3E01ofgfkWOkBgZAPrI0ucuw=;
+	s=arc-20240116; t=1784562073; c=relaxed/simple;
+	bh=uAbddcMyRgpLPl1Ml7UGFgQr7U5XL5NUVGp3YEItfuo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eaDv8dbwZfuPI6q4836Dkg2QyjzhVXSL0SkS3RkTRB4F0BPrsyYFoqvKU7a+sjIJ4CR/SJzCUd2c4zh6rPBA41nBabkChjcXTywdf8v17XWeo2uucQuw+Yqx7tKTZGQRRuWX4g9DQ2y61GUJ8DCpVkcPcTGIxTLh7MrIQWmvnAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PPB+ls7B; arc=none smtp.client-ip=209.85.128.44
+	 In-Reply-To:To:Cc; b=cfuJiWwWxg23TR7XeY1OvccCwmKKWWvSW5jZZlanfsS6jtixiHOALZcLMd+jFqXdxAJAbBEs9JtnRIH6NREIih8EFSFAl8lQdZYfxvAalsZYPfeqap+kjX1wK/lqI8U2SWCPjT1L47QN+QYm+PYbsRTdFlkWr9lrY0TL1yhgy+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gaEzz6xV; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PPB+ls7B"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4954dff6536so18773725e9.0
-        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 08:41:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gaEzz6xV"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49554ebb87dso19358405e9.3
+        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 08:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784562065; x=1785166865; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1784562069; x=1785166869; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Vjd+2BbZ6IkIhW8JUSKZxdlN+XT2WH08r3urmJQpGFU=;
-        b=PPB+ls7BC5kbQT1jBQvg3bpqw0fekL8nJahnzyIgXx/5LpOcaFsPT90AV+45gTSsIA
-         JqJiswKIXyKBO3UrlQeeOUGWI+TrAMJ5aojnII2cd/PRKQS6WmnJcFq5I7le6md6ndVN
-         SVJcZMf/HYltC3DXYiCkjWWb7TMWIJhkrH/rCinylAutfGQT+y/H6dsT029QBo+6T14T
-         JCVEoj+lTpoD3Asgoyzlz9IlpVirR/Mv5t/2w9wrv1QN8UEDowr37tIqrKdj+56Gx8bY
-         XurQlLxZUINeFRp1BE/CkKoq/iAYt+Zzl0xh+CIQQVsH7H9bWsKT0Tke4oTRmFfDvYtn
-         an0g==
+        bh=/m2It/8MnIxoX8xbOWjx4p2UhJgFTMfhBAqsULip3yI=;
+        b=gaEzz6xV+RHtypBrxLmJCU81v3Y9Erya153zcdtWGbrU2Eon4a9AgskiUIlrNlR00D
+         rQgn4v21QsA18jAd12tFT3LwoIKS1rVlTn+yxEXKxtBY0pssqzlo1yX+pjbmWjcmBnBp
+         ThdPSV6HMcwkOp+q1DKKkTVeDUSIKVkFK6kkym9jWnwgeJMSfPvDKJM6CkNiY8RnPTUO
+         lOJB0lTfL8+nFlNPvGGUfqpDm4XIXaBsR+UeShdJ8Ruddk3Hlx0mX1WeH039umBxQ4Ic
+         uc7wJOpykttVscx3OpghabHAPfSnfpPoJTWlFeEZGOeLYkzoHOHsgNcOewhtoZ2tTGwg
+         Endg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784562065; x=1785166865;
+        d=1e100.net; s=20251104; t=1784562069; x=1785166869;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Vjd+2BbZ6IkIhW8JUSKZxdlN+XT2WH08r3urmJQpGFU=;
-        b=lE6V/J4gWG1CffFhjXrDTlJGvbKR8IpigU05mZ5v/fKymfNumiUtFppb0lKWxPYjKu
-         U+N+qqvZEnlosutmVoJbB55YdMKLVU4i3prWGaIrtnwvuc5Fn4C4/PmXYQE5YgLOSl5l
-         F1TXN4lXY8c39q1poQWHIJYQ/5lPhJOVg9QkbdNN+rfW1aO2YQrrXMrPUwkGVpi8LfaP
-         LKJEwTWftrJaDbwO6WXQOBQDbuNI/ZNvOCvNskFFuV7qsKcxYkc0cUVMHt3DR9a2UOK4
-         qDwxs1RaLZEeGCBdMJE/EseI5gGiqFYkHeWHUXMB98Wv0Qj91CQfAo1H2KA82PeoANlw
-         sZYg==
-X-Forwarded-Encrypted: i=1; AHgh+RoTeLbfEKfhhZxhafex6Ydm8p1VMNMgRRnB8cPIE+DGYpFMgDma1pLDZTah8LUJpTLsjWA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwIIpDSrjoHtbZ+z3ZRUtCVDuQe+ixU7Oo8knN3zBehzZbjkRcB
-	mXnEYwn/9ap6rpQUW7oifQD7Zn7QMRd9Py7G1cmGkSUO7xiq/LRmxJih
-X-Gm-Gg: AfdE7clwrcuoDxXSbBAWXHWgkf3M8o4iSQS8/kHxmiGx5zKsCivB7lDfxOh79QNokGz
-	EEGnKoOdl4D2zYChky3oS5EU/XtTB45Sb3ssXZq+qAAKFsDpDRe3xWdp9kZiwJPYwo8yin0yQSw
-	ZJTQp55xJ+R9S5EqsnPznW/JE6Ql0GYqcqq3QbysS+GIrlADTfnN3RwnixoaJ4EqknVgLwtEBKu
-	cHpkThMR048VXA4U0iecsOzetDfl1DFa2dVGU2hsjIdDsdA8Jf1INqtYeCyb/PlPgM06XUACyQ8
-	dOmX4bBdaAP1t3Qv3nXZgwsmBx2ysUJnkW4eaIPTLJJEBVLjo9IUbk1pciNRahRzuVTfnbBIrC9
-	CnGcl4LxhHb5BvpZ3ATjfsaa0TNAJaYNb3Mk3Ga8fAnLz5G1E/cxbNmzqgRW5HLQQkpXNYrDGmH
-	GV2dCWcnyOBw==
-X-Received: by 2002:a05:600c:1d1b:b0:493:f7c8:eae2 with SMTP id 5b1f17b1804b1-4954a3db7dbmr155975945e9.15.1784562065028;
-        Mon, 20 Jul 2026 08:41:05 -0700 (PDT)
+        bh=/m2It/8MnIxoX8xbOWjx4p2UhJgFTMfhBAqsULip3yI=;
+        b=ouNY3uYmif5kMxTXx6EOMtUpf1eP0agsstnfPvVAKDbIdGm7diCuVTe1SM+Zivnvx0
+         uQS0l+TTvb/O1n2PoxKzst/HITxt1AIw+bKwM49eCkLSQSfWUMNTKldHzhhu2CuJlees
+         e4rArGvbcZnLG3MWSE2gWMGXJu59PDllME+isfy14DZ9BLT0h9nZqpsat0PtQYWBpkxA
+         j665rAiw4pns4Gwj5E1J2GrCKuK3yeI7lU5HXixSg4ljbaOqha89Pq7VYq3TLOYFCtdH
+         SXK7yZXn4Ja0FxrFqhSXB989PxkOtWtX93Yj4hY8aNtcbulLlnIEafsSc5vCvibdpdrQ
+         +16A==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0Uf2IXiJq/s+wSon00fDkrAOao6+9YU0w+QCDSWM6CdbDakLn1Vv1zVWmWx4PkEzqr2Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwIUak73+G7zeIo+dubMdSUtZGyJiffU9ZbEteTkEGaJAcC9XzH
+	uLpsE8b5JwEHkQGsrGIxCahU+DhoeomGDBYi/N95sdJJwtDxtP005/1Y
+X-Gm-Gg: AfdE7clI2ZBOGVB7AmYCcx5F4iyvH2XQGk+7HCsKBkTza1kTHPGecO5t4Rd+9U5zVvi
+	SdN//oFHhWiChvXBUOuv3wvmED6pHvpErzMAVaTZgvEOWGM1BLSGp2CnOlp/H/ng8ubj2Q1fpST
+	/ck9HBDDulUwN+MbPFR6bcqIGxIIukJH+F0UL8bDR+DNn34/AYrO9TA8ivkAsBGxfVXkP5Oitol
+	Wk2S3WiQ2H6GbtfZLEbWaAAOQXG+Wf1mVftuJhZcIQlbFdf/5g0mzyxrfAs41gw075gFBNtoKEX
+	NVPKA+S4tYYx9N4WvA8REtnZFVRuJD+T7seYIg2xFKnBCKObnmZx+D4NJzJq1e3p8MdEoamBjox
+	t7o++4PuuprHc8QQw+zN+Wa3s97FOB9znM53Tb9+mjboW6Vd2YRuIFxbwQ1CcJ1pekc8apcO4N+
+	UFV1yPQXABYw==
+X-Received: by 2002:a05:600c:1f8c:b0:493:cefc:d113 with SMTP id 5b1f17b1804b1-4954a3e6e29mr174459165e9.5.1784562068798;
+        Mon, 20 Jul 2026 08:41:08 -0700 (PDT)
 Received: from [127.0.0.2] ([2a01:14:111:ccf0:e9c1:2f80:10a9:c708])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f67466e09sm32667936f8f.21.2026.07.20.08.41.01
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f67466e09sm32667936f8f.21.2026.07.20.08.41.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 08:41:04 -0700 (PDT)
+        Mon, 20 Jul 2026 08:41:08 -0700 (PDT)
 From: Diogo Silva <diogompaissilva@gmail.com>
-Date: Mon, 20 Jul 2026 17:40:37 +0200
-Subject: [PATCH v2 05/15] drm/kmb: remove dependency on DRM simple helpers
+Date: Mon, 20 Jul 2026 17:40:38 +0200
+Subject: [PATCH v2 06/15] drm/virtio: remove dependency on DRM simple
+ helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,7 +71,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-drm_simple_encoder_init-v2-5-5020b630668a@gmail.com>
+Message-Id: <20260720-drm_simple_encoder_init-v2-6-5020b630668a@gmail.com>
 References: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
 In-Reply-To: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
 To: Jingoo Han <jingoohan1@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
@@ -122,47 +123,55 @@ intermediate layer between drivers and atomic modesetting.
 
 Open-code drm_simple_encoder_init() by calling drm_encoder_init()
 directly and providing driver-local drm_encoder_funcs.
+Also check the return value from drm_encoder_init() to avoid silent
+failures.
 
 Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
 ---
- drivers/gpu/drm/kmb/kmb_dsi.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/virtio/virtgpu_display.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/kmb/kmb_dsi.c b/drivers/gpu/drm/kmb/kmb_dsi.c
-index 59d0e856392f..13adba96bc78 100644
---- a/drivers/gpu/drm/kmb/kmb_dsi.c
-+++ b/drivers/gpu/drm/kmb/kmb_dsi.c
-@@ -14,8 +14,8 @@
+diff --git a/drivers/gpu/drm/virtio/virtgpu_display.c b/drivers/gpu/drm/virtio/virtgpu_display.c
+index 44ffffec550f..67023d91d40b 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_display.c
++++ b/drivers/gpu/drm/virtio/virtgpu_display.c
+@@ -28,11 +28,11 @@
  #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
- #include <drm/drm_bridge_connector.h>
+ #include <drm/drm_damage_helper.h>
+ #include <drm/drm_edid.h>
 +#include <drm/drm_encoder.h>
- #include <drm/drm_mipi_dsi.h>
--#include <drm/drm_simple_kms_helper.h>
+ #include <drm/drm_fourcc.h>
+ #include <drm/drm_gem_framebuffer_helper.h>
  #include <drm/drm_print.h>
  #include <drm/drm_probe_helper.h>
+-#include <drm/drm_simple_kms_helper.h>
+ #include <drm/drm_vblank.h>
+ #include <drm/drm_vblank_helper.h>
  
-@@ -1427,6 +1427,10 @@ struct kmb_dsi *kmb_dsi_init(struct platform_device *pdev)
- 	return kmb_dsi;
+@@ -232,6 +232,10 @@ static enum drm_mode_status virtio_gpu_conn_mode_valid(struct drm_connector *con
+ 	return MODE_BAD;
  }
  
-+static const struct drm_encoder_funcs kmb_dsi_encoder_funcs = {
++static const struct drm_encoder_funcs virtio_gpu_enc_funcs = {
 +	.destroy = drm_encoder_cleanup,
 +};
 +
- int kmb_dsi_encoder_init(struct drm_device *dev, struct kmb_dsi *kmb_dsi)
- {
- 	struct drm_encoder *encoder;
-@@ -1437,7 +1441,8 @@ int kmb_dsi_encoder_init(struct drm_device *dev, struct kmb_dsi *kmb_dsi)
- 	encoder->possible_crtcs = 1;
- 	encoder->possible_clones = 0;
+ static const struct drm_encoder_helper_funcs virtio_gpu_enc_helper_funcs = {
+ 	.mode_set   = virtio_gpu_enc_mode_set,
+ 	.enable     = virtio_gpu_enc_enable,
+@@ -306,7 +310,11 @@ static int vgdev_output_init(struct virtio_gpu_device *vgdev, int index)
+ 	if (vgdev->has_edid)
+ 		drm_connector_attach_edid_property(connector);
  
--	ret = drm_simple_encoder_init(dev, encoder, DRM_MODE_ENCODER_DSI);
-+	ret = drm_encoder_init(dev, encoder, &kmb_dsi_encoder_funcs,
-+			       DRM_MODE_ENCODER_DSI, NULL);
- 	if (ret) {
- 		dev_err(kmb_dsi->dev, "Failed to init encoder %d\n", ret);
- 		return ret;
+-	drm_simple_encoder_init(dev, encoder, DRM_MODE_ENCODER_VIRTUAL);
++	ret = drm_encoder_init(dev, encoder, &virtio_gpu_enc_funcs,
++			       DRM_MODE_ENCODER_VIRTUAL, NULL);
++	if (ret)
++		return ret;
++
+ 	drm_encoder_helper_add(encoder, &virtio_gpu_enc_helper_funcs);
+ 	encoder->possible_crtcs = 1 << index;
+ 
 
 -- 
 2.54.0
