@@ -1,205 +1,242 @@
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E08E3F8235
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 11:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784547537; cv=pass; b=i1Oj1IcmZqbEUdHNpsxFxq9rpEQBCsxNmsrWdLrKnRnxqi1qFEShyeMFIiICthN1tBiFabnnvPx/Gugyz3USjIC6kHlNwpqjxL2oauW335cALCVF74ts53qXqG6GqXL6jzZgJ4xIuWF2bAxKA2+FpI/OhjwwhejK3+qceUh1cZ4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784547537; c=relaxed/simple;
-	bh=3mFDRcZDbh/vAxE726hbAA84Hj/VP9ketvV+yl9H0x8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CZrzYzh39ydK813OJ/ocPy/E9WM+l+9NUvrDABH2nrAR+WepXA+fgUwj3KlvAo3x/DjU26W07SP6pY/9J3nrf2GdDVAF8mzDUc+jmFqQ+UmbgVdl/zltTE3CCeUIVRO7HaGS+EklFKShdN5UJ5mo/JLBS+fu/g7028la7Zq3jP8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sEQB53A0; arc=pass smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32827418A44
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 12:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784550984; cv=none; b=nmObHNOL2WpP/JRT5N9pKFWNHmfR0IT60aGUbe19zclPNJ/UFmDyo6sBGuUg9Hv8CSlcRalvThPj7fRU4/DZg4QZjQ7pzzGXM+gXoQ913yYYliP4kHDPmghAMHVQ3hGvQx8xpTVoT6xPLf4XmwClBdixPuEfZhMla9MRYkKegN8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784550984; c=relaxed/simple;
+	bh=w6T1m6LSQH/DF/XHTmFYvyE31D5F+54HvaLnYW5+BVE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B+2tSVUHMGjMejUFr5ps+HQrkKjwZLgRFGoWXRCJen0Cix3arrpd+ezHQHPmbB3NxTvb5s9YBt2GcuWLtZgoboguHHxajUe/7fJOyf3PYAe2TnN7TTDRfVBOem4fY1u42lQWKYFYYCDUypu4nqrI0xj0i5uQrHk11Ss+8GWW3nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fFR1VBHJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hyX256ub; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=pTtsy8sL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=O8QYjiFk; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sEQB53A0"
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-4a456e44e01so3363359b6e.1
-        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 04:38:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784547531; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rU4N4QNumZeGC1UBwtmdlk0CXe/V3etmJvm79OK8GD8Sf00gDQl0GSSFO7DdBkYPUU
-         risGZFTKa8mXan4S6FXKee+QtuulWNrzDWHgzadMCPkC0YIF/4PgepuNKgW41wAq5/oc
-         abmLipLVNcJPlj+FTQA0iQ7ae84jFPhk0iNGX53I7dBYZYx7KFpJ0bSQgm2BOKAov8S/
-         M4eELSphPWQJxf98m9v/cIDN79fMwyKgQCDLW4TDmTmwZc2rSrwA3k24q9n7iRsu7rjK
-         VkdPWLXOl0gRSKlB/o9Elm5kgDDHnizsUeN5r1uRQUEApBWPTeQaI4NQ5e8oulaYw+yB
-         OdlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=f/gXgCuauhGKcFUWfulPTHzrfiJTz+du/PeQqhHatQk=;
-        fh=ckZuMs3sKmB7XuEBW0z7IE0LKafnXsxLjzyCkC+DhRI=;
-        b=GhYfFJuDZmE2PSBRSVBJ3W+VZr6PRr5sRfB1Vihk5wCGDUBY5Ga+dTy4qItRMv0uGp
-         uDSTvrkJJeBbZ6RV1YTjqDP8BQIeTLDDxNjEjzrWlvz5G+wuhwt3kCc35Gw5T+q9xxBx
-         c17BO3l+cX/sS6PHiVKdUmOQosxUD/yRh2cpsAac8/Vu77Dyw5VtqDT0Rrp9ELGOWv7n
-         3M7rrEVFqd877RnXGcm6HpfRI9eNK7LbxP5EEaJnWnm1UcRx9PMV3Dp+w7Cqld5tJofA
-         W8oFA/noa+uKF9jLYE3xgAwIdzntE8gXiGzPsSN7NZ56MDUjEFWm4n8t1V7LPBx0SJVz
-         SbxQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784547531; x=1785152331; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=f/gXgCuauhGKcFUWfulPTHzrfiJTz+du/PeQqhHatQk=;
-        b=sEQB53A0L2yw9czj/FzO6qJIPYD3DX1G0cBwYA7GOo74tOZR8zljz4/CLM4V4TQGdi
-         +OHmz9bykBPd34V0lf1T9KgFGXGzKMUUSsGqkkm/bEteb+n3edKjEV/Bf7BUKpHkt9+e
-         4J+HPWTFDLMfMR5FTL07BTckm+vzmpNNLDEq29qE2YM6k1nFd9RqGMwL3ywwWHzzU9Zy
-         rc3iBi7sXeVUp+FolI9DvqGE8zUn4dtRjTlLS6DzR/9OZxGMB283qwgy73Y4DpZZYOk1
-         W8fDNU6TA4PaRO6nUPQ2NSOY0i4IUCvamTuW5tG9S3QSQWcxMbzFZ8rSARyZEhxTiI7D
-         qfSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784547531; x=1785152331;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=f/gXgCuauhGKcFUWfulPTHzrfiJTz+du/PeQqhHatQk=;
-        b=jX4aC+iLpKdRSKijeo7jslR7UaOzEbKukRuHlAXWgoQzDOhHY/v5ATeEF88/A96pII
-         gEdpz6dtwoaE3IIu/MIFFxbDZcRGkolepdH+zpgqyFnLpT+R4DFIdWJ5uIKp9JjvOPFX
-         JZgZ9HQGaLRIXaU6XsRxbRMzWYRBWRohC6GwzVBByHHDWy52sRDgZol7oH0aOBrokJB9
-         XkW54banY3iMFlfrfNrrqrSkuVb9PM2qziEGKO3IeGg3pigfKo9iuYDhq9Ah23qZz/8p
-         1A5/ZUjobgRuayyPIFrID26ozlYp/P5w9WdaPaQu3c/mByIHl4Y0dHy+X63e5IU98Ise
-         UZFA==
-X-Forwarded-Encrypted: i=1; AHgh+Rpul/aZeb26QCjpEnX0X8Axa2cqi5k+U5O47UdHPfBAKVYycEs59W1fyKgMj1fHuQAON5o=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yweebcer8i3dlWUe0wbJia+EigDElH7rtIBFQIQI4qvNKvDi7ML
-	JnyGG4qvuKO5jzJeOaty+dbS3FHJAWHvmQD+RRmWP/MN3z2/zYhpczE0llE43sn/t0pt+iQESBI
-	qjBuup5RFExe9VtDDUp5dOJ83+d9zBd5L7w8eg3QU
-X-Gm-Gg: AfdE7cksbl1JbdkOJ1NtpCDURUFoU6QskpCGqLsXxkaBN5ThWrWwQoJXpD16JDw+NzR
-	WP4kqsPwthZ+60TOS4zaJcDBIlM1aArC+WPjYlw5NjOLPJwVvcbmAEe/WdENPx+bI2W7QicB3FN
-	/gtZuqRAowk4MazsE9ijdednmOX79wFRFlr8/hsIOsI8HjhduskE0d+DJ2eDyIQznGucXIXeTU8
-	u9CH9S00zQthXfwV8oToJrL+uz2b4a1G1Tv1XIzyl22t5RRPNr6wf6xKlS9zK3Jv0DWT9iDdRGh
-	SPlox2ouOxfLVKEmKw==
-X-Received: by 2002:a05:6808:150b:b0:49a:3094:57bc with SMTP id
- 5614622812f47-4a4d057091emr7828138b6e.43.1784547530438; Mon, 20 Jul 2026
- 04:38:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fFR1VBHJ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hyX256ub";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="pTtsy8sL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="O8QYjiFk"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EC5C23E09;
+	Mon, 20 Jul 2026 12:36:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784550981; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=f8pLKE53MsMSJHxP6tUJaXAsP0fNPXLjKYgxqynHKRE=;
+	b=fFR1VBHJmAcu8jGbXAlibPGlPfI7cLx/3FgsEdHg5guy6rydO9dyl+RjcoTTyGoKFHqg4e
+	dNeBZfJ4q2+Yu+haQ2T17nizBw9X5Z6oUG37HwKJWqDoD4yI3jG0awsDizGZKq3mj5PNki
+	Uk3bb2YwB9YW256tBn1uigNwVFPLViI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784550981;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=f8pLKE53MsMSJHxP6tUJaXAsP0fNPXLjKYgxqynHKRE=;
+	b=hyX256ubhGpAPeB1jULKvqfQ/q7jtWXlaZ2IxBMFKzXdo1RmzXVHdQlythLgzMbmS8dqpb
+	3g6V7XplZ3NgtPCA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784550979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=f8pLKE53MsMSJHxP6tUJaXAsP0fNPXLjKYgxqynHKRE=;
+	b=pTtsy8sL4ovlj3iNTrmc9A1wlOkcnk8Hi668U7diBMT2+rwiknYWHs0CquEfiX+D99rWZZ
+	gkZv9oRmV4oF8Czm7iIywKlooZF8pwEPBkwUH/DwZvRfcc66JkqSLdLPLitfo7Sv0MbBHa
+	EXU1hN1m4/kjScY1OcO7HVNkr73CrL0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784550979;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=f8pLKE53MsMSJHxP6tUJaXAsP0fNPXLjKYgxqynHKRE=;
+	b=O8QYjiFkJMUEi2PPji9osqkX81ilMzc5mYnwhQqYmLpUFk7lRLB4rPF/6BqZlRHakt982B
+	79it1bDxtBV7k/Bw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3584779AA;
+	Mon, 20 Jul 2026 12:36:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Ndd2LkMWXmrrXAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 20 Jul 2026 12:36:19 +0000
+Message-ID: <63cca05a-ec83-430c-abcf-c2f0b508446f@suse.de>
+Date: Mon, 20 Jul 2026 14:36:19 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260719-usb-ptr_err_patchset-v1-0-85f7f2e4fefb@gmail.com> <20260719-usb-ptr_err_patchset-v1-3-85f7f2e4fefb@gmail.com>
-In-Reply-To: <20260719-usb-ptr_err_patchset-v1-3-85f7f2e4fefb@gmail.com>
-From: Badhri Jagan Sridharan <badhri@google.com>
-Date: Mon, 20 Jul 2026 04:38:13 -0700
-X-Gm-Features: AUfX_mxW23vWV4YHSucfnpNg2RwqWb4K0lV2PtTDbAAqVY6VN7Bv5eoCWZEPBx8
-Message-ID: <CAPTae5L7CaQoa+Zy7r3ezZQ_giY5nWOut82P5rC_8v6YeC-0Ag@mail.gmail.com>
-Subject: Re: [PATCH 3/3] usb: typec: Use %pe to print error pointers
-To: Subasri S <subasris1210@gmail.com>
-Cc: Peter Chen <peter.chen@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Duncan Sands <duncan.sands@free.fr>, Chas Williams <3chas3@gmail.com>, 
-	Minas Harutyunyan <hminas@synopsys.com>, Hans de Goede <hansg@kernel.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, linux-usb@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/imx: replace struct drm_simple_display_pipe with
+ regular atomic helpers
+To: Ze Huang <ze.huang@oss.qualcomm.com>, sashiko-reviews@lists.linux.dev
+Cc: dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, imx@lists.linux.dev
+References: <20260716-drm-simple-kms-removal-v2-1-7e4a6b8528e6@oss.qualcomm.com>
+ <20260716091459.1D8101F000E9@smtp.kernel.org>
+ <DK1XPK73QJHC.JWFUMTTLOD1D@oss.qualcomm.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <DK1XPK73QJHC.JWFUMTTLOD1D@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:url,bootlin.com:url,suse.de:mid]
+X-Spam-Level: 
+X-Spam-Score: -4.30
 
-On Sun, Jul 19, 2026 at 5:56=E2=80=AFAM Subasri S <subasris1210@gmail.com> =
-wrote:
->
-> Use the %pe format specifier instead of %ld with PTR_ERR() for printing
-> error pointers in various typec drivers. This prints symbolic
-> error names (e.g.-ENOMEM) instead of errno numbers (e.g. -12),
-> making error logs more readable.
->
-> This patch fixes coccinelle reported warnings:
-> ./typec/tcpm/tcpm.c:4799:60-67: WARNING: Consider using %pe to print PTR_=
-ERR()
-> ./typec/mux/pi3usb30532.c:143:3-10: WARNING: Consider using %pe to print =
-PTR_ERR()
-> ./typec/mux/pi3usb30532.c:155:3-10: WARNING: Consider using %pe to print =
-PTR_ERR()
-> ./typec/wusb3801.c:281:5-12: WARNING: Consider using %pe to print PTR_ERR=
-()
->
-> Compile tested only.
->
-> Signed-off-by: Subasri S <subasris1210@gmail.com>
+Hi
 
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-> ---
->  drivers/usb/typec/mux/pi3usb30532.c | 8 ++++----
->  drivers/usb/typec/tcpm/tcpm.c       | 2 +-
->  drivers/usb/typec/wusb3801.c        | 4 ++--
->  3 files changed, 7 insertions(+), 7 deletions(-)
+Am 18.07.26 um 21:12 schrieb Ze Huang:
+[...]
+>>>   
+>>> -	if (event) {
+>>> -		crtc->state->event = NULL;
+>>> +static int imx_lcdc_plane_helper_atomic_check(struct drm_plane *plane,
+>>> +					      struct drm_atomic_commit *commit)
+>>> +{
+>>> +	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(commit, plane);
+>>> +	struct drm_crtc *crtc = plane_state->crtc;
+>>> +	struct drm_crtc_state *crtc_state = NULL;
+>>>   
+>>> -		spin_lock_irq(&crtc->dev->event_lock);
+>>> +	if (crtc)
+>>> +		crtc_state = drm_atomic_get_new_crtc_state(commit, crtc);
+>>>   
+>>> -		if (crtc->state->active && drm_crtc_vblank_get(crtc) == 0)
+>>> -			drm_crtc_arm_vblank_event(crtc, event);
+>>> -		else
+>>> -			drm_crtc_send_vblank_event(crtc, event);
+>>> +	return drm_atomic_helper_check_plane_state(plane_state, crtc_state,
+>> [Severity: High]
+>> Can fetching the CRTC state this way cause a kernel panic in the core atomic
+>> helpers?
+>>
+>> If userspace submits a commit that modifies only plane properties without
+>> affecting the CRTC, the CRTC is not implicitly added to the atomic commit
+>> state.
+>>
+>> In this scenario, drm_atomic_get_new_crtc_state() returns NULL. Passing this
+>> NULL pointer directly to drm_atomic_helper_check_plane_state() causes a crash
+>> when it dereferences crtc_state->enable.
+>>
+>> Could this use drm_atomic_get_crtc_state() instead to ensure the state is
+>> brought into the commit if it is missing?
+> I think it is fine here; I'll just copy the pattern from [1].
 >
-> diff --git a/drivers/usb/typec/mux/pi3usb30532.c b/drivers/usb/typec/mux/=
-pi3usb30532.c
-> index 985683fe49e9..a2357a28ecf4 100644
-> --- a/drivers/usb/typec/mux/pi3usb30532.c
-> +++ b/drivers/usb/typec/mux/pi3usb30532.c
-> @@ -139,8 +139,8 @@ static int pi3usb30532_probe(struct i2c_client *clien=
-t)
->
->         pi->sw =3D typec_switch_register(dev, &sw_desc);
->         if (IS_ERR(pi->sw)) {
-> -               dev_err(dev, "Error registering typec switch: %ld\n",
-> -                       PTR_ERR(pi->sw));
-> +               dev_err(dev, "Error registering typec switch: %pe\n",
-> +                       pi->sw);
->                 return PTR_ERR(pi->sw);
->         }
->
-> @@ -151,8 +151,8 @@ static int pi3usb30532_probe(struct i2c_client *clien=
-t)
->         pi->mux =3D typec_mux_register(dev, &mux_desc);
->         if (IS_ERR(pi->mux)) {
->                 typec_switch_unregister(pi->sw);
-> -               dev_err(dev, "Error registering typec mux: %ld\n",
-> -                       PTR_ERR(pi->mux));
-> +               dev_err(dev, "Error registering typec mux: %pe\n",
-> +                       pi->mux);
->                 return PTR_ERR(pi->mux);
->         }
->
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.=
-c
-> index 89eec20a2064..ad10470ea73b 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -4796,7 +4796,7 @@ static void tcpm_typec_connect(struct tcpm_port *po=
-rt)
->                         port->partner_desc.accessory =3D TYPEC_ACCESSORY_=
-NONE;
->                 partner =3D typec_register_partner(port->typec_port, &por=
-t->partner_desc);
->                 if (IS_ERR(partner)) {
-> -                       dev_err(port->dev, "Failed to register partner (%=
-ld)\n", PTR_ERR(partner));
-> +                       dev_err(port->dev, "Failed to register partner (%=
-pe)\n", partner);
->                         return;
->                 }
->
-> diff --git a/drivers/usb/typec/wusb3801.c b/drivers/usb/typec/wusb3801.c
-> index 6062875fb04a..86d13ab41670 100644
-> --- a/drivers/usb/typec/wusb3801.c
-> +++ b/drivers/usb/typec/wusb3801.c
-> @@ -277,8 +277,8 @@ static void wusb3801_hw_update(struct wusb3801 *wusb3=
-801)
->                 if (partner_type !=3D WUSB3801_STAT_PARTNER_STANDBY) {
->                         wusb3801->partner =3D typec_register_partner(port=
-, &desc);
->                         if (IS_ERR(wusb3801->partner))
-> -                               dev_err(dev, "Failed to register partner:=
- %ld\n",
-> -                                       PTR_ERR(wusb3801->partner));
-> +                               dev_err(dev, "Failed to register partner:=
- %pe\n",
-> +                                       wusb3801->partner);
->                 }
->
->                 data_role =3D pwr_role =3D=3D TYPEC_SOURCE ? TYPEC_HOST :=
- TYPEC_DEVICE;
->
-> --
-> 2.43.0
->
+> [1] https://elixir.bootlin.com/linux/v7.1.2/source/drivers/gpu/drm/mgag200/mgag200_mode.c#L487
+
+It could be that there's a long standing problem in the overall logic. 
+Not having a CRTC (and hence crtc_state) should also mean !fb, so we'd 
+return at [1]. If we have a CRTC on the plane but pass a crtc_state of 
+NULL, we could get a panic at [2], where it does crtc_state->crtc.  I'm 
+not aware of any bug reports about this problem, but it's still an issue.
+
+A number of drivers get this wrong by using 
+drm_atomic_helper_get_new_crtc_state(). The bot suggests to use 
+drm_atomic_helper_get_crtc_state() instead.  This helper also returns 
+the new state. But  if there's no new state, it duplicates the CRTC's 
+existing state. That's a bit of an overhead, but probably not an issue.  
+Several drivers use this helper, but also get it wrong. They tend to 
+return early in the case of !crtc or !fb without calling 
+_check_plane_state(). See [3] and [4] for examples.
+
+I think, going with the bot's suggestion to use 
+drm_atomic_helper_get_crtc_state() might be the best resolution for now. 
+It still needs a crtc pointer, so the pattern is
+
+crtc_state = NULL
+if (plane_state->crtc)
+     crtc_state = drm_atomic_helper_get_crtc_state(plane_state->crtc)
+
+_check_plane_state(plane_state, crtc_state);
+
+And in this case, _check_plane_state() should work correctly. But you 
+can only use _get_crtc_state() in the atomic_check helpers! In the 
+atomic_update, atomic_enable, etc helpers, it's too late for the helper 
+to copy the CRTC state.
+
+I think some other DRM dev should look over this as well. It's one of 
+the trickier things in DRM to get right.
+
+Best regards
+Thomas
+
+
+[1] 
+https://elixir.bootlin.com/linux/v7.1.3/source/drivers/gpu/drm/drm_atomic_helper.c#L912
+[2] 
+https://elixir.bootlin.com/linux/v7.1.3/source/drivers/gpu/drm/drm_atomic_helper.c#L907
+
+[3] 
+https://elixir.bootlin.com/linux/v7.1.3/source/drivers/gpu/drm/mediatek/mtk_plane.c#L230
+[4] 
+https://elixir.bootlin.com/linux/v7.1.3/source/drivers/gpu/drm/tidss/tidss_plane.c#L31
+
+
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
+
+
