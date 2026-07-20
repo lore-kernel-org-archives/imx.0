@@ -1,171 +1,211 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010042.outbound.protection.outlook.com [52.101.84.42])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011063.outbound.protection.outlook.com [52.101.70.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0477B2C031E
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 01:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DDA264619
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 02:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784510504; cv=fail; b=VHQYO1SxSb9WZfVQA1vRKnLtRmugh4IegPjBn54oxtbhltlpAy98mf/Pl7cOWGJ2rI+c3fKsMUAhQGfLr//diS/o7IfO2+IRCA402wWvT9tR6BWb5omGfoHY3Y9LC/ilqL7wPq3YS6E50CNsxSMMrRV2koeu67uDoh7R01manOk=
+	t=1784513419; cv=fail; b=C2sa9lI8itOQ9EasXwoWDX/dCF/OCtXyfec7ShYO1VGEuh1j4K1/ApfljRun/MUz5P5KpNWOmctIXI5lwzSFF90I7VR1JUto7CGA74DAU4nVt5geagMdRdLWbQ+TYSi+ESpGGYUfl4Be3T3b678iSwfj7nlGBPa7719KeNjZbGc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784510504; c=relaxed/simple;
-	bh=5/Bc5Un0GdpHJDd1r7BgwqhZVWL+xMcrfc9fkh6rjK4=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PxXT9qikXsfvYwh2VZfp8w7DhObRd3tFynUUU0ftnJaX9U7oL9xg+W/ZsSVrPobrZrz50vLEMqIPoajTlLcXG6ZP9dqsBeS5ogckAl6dyEIZcgQ2iAbwvSs5WHaxBB+VnO9QSYvAKrm3nXlJDqDaf+9wjGhdLMyaDp+KYLhgpl4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=F7igHP1N; arc=fail smtp.client-ip=52.101.84.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1784513419; c=relaxed/simple;
+	bh=XyP3beKTqKy7/tm4NGhKSSOYn9FOIhNtE617thQbnkU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=C806ipuUUDWjO07/RTeqK5B0nfxC016kM1VKKwg0P3hUI2jBNuOtoIcy7U031uuZ0mOf2Vr0G6ur+uLa35AXyWcanUHmXpKBYnhSv1OEGfSsQgHiqV9aVijWbS5gTYmIZK8b78qjBpdvz8ypriyaANuPbHGt36TpPDtldBdGAaw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cn.bosch.com; spf=pass smtp.mailfrom=cn.bosch.com; dkim=pass (2048-bit key) header.d=cn.bosch.com header.i=@cn.bosch.com header.b=UyBYuORW; arc=fail smtp.client-ip=52.101.70.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cn.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cn.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="F7igHP1N"
+	dkim=pass (2048-bit key) header.d=cn.bosch.com header.i=@cn.bosch.com header.b="UyBYuORW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JtVxJC7S4YAV3893VaUDmh4yDLTTOAoNby/08CfrjIDPGTZAwUMSMgWCH/guxCPJ6rSyJaWEIr2hdjltrKA4iwZF0ve95vagtC6g0UduR3seN9UEeDtVd+ofC1axsTGZvak9a005L0i0Z1p7+vBnLR1NWoRxbPdABODdMFmsrbgp8PZmOku5wp7USTj79SYMClHhk8xDHLCLthsbrmCWc3fMsnxeiQK93dOre4bjvTdQ17onLM9EIi5kv0ZonRkPoi0PYaPKFtGDUap3ywK0DUZhRSv+VMxeFUl6Wtl0740ehHI6HK3a8e3KF0F7HwDsOGGB+6evR2DVfwu0bf7+kw==
+ b=x1oBf0IpiB1U0sClW86H5gqsWmrbDDgi/qcZCEd5swAFUF2Z9bV5QkG5XZOgj1o9QnuY+fKplilT2ukAGPhs9Xw/d26TknaRSTooclcC4+z4/2Zt/4D3gTkY/kgJ4r2bu50iip+D/54Ut1mR9/b5/IoUtPd6l6xR4pzCh4FtQklW4Dp0V/4eHSypNgTXydTnCLJYnPsFMVtySzIOTv2U4mO8R8FfDrKxQBoufxDYPrn9IKBNKTnQuZlONiBscFfH/qfP851oiME/D/LgrmYBfLkzuEw0YampJmX+AaDrQzIeswaW2sdsagrthmGTWAidANT3Dz8bVjtuPyrAKN+SKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XzBDseF5+L0KoATMQnQCe5n3WNMCksWRsxOdlZolFHY=;
- b=rJhPWIDwi5bqiq+nLqSdj5RxcMsEJ4SWRUk9Qtk+XELSTqdKuX0JJbddFCRldxmK31nIu/Ux1ubTDdNPmLgzvlC/OJAEjKB2mqeC5UgWwCRIDPbFUFG2P31gEd5gZUUE8PTRb6YJ9tSDE8UFGNdk6eLpeP/K6+iaO2mnSGidZFhjnlQBWWryMVE8J6tZIDnulbJ7FznCHKqEYfijdDtW6o95iwruQHvTDT99MJiF9P6esuyLPChVPgAZAIwaAh20tkNRnlyGSxLNDIeBh97+qVwYy5HD4hlP3OW8xN9cSVWVinChQXRCS698oOTfdGLmAoxeHRRHTCRO4u6dR38CKQ==
+ bh=XyP3beKTqKy7/tm4NGhKSSOYn9FOIhNtE617thQbnkU=;
+ b=wW82cp6NZnJ4V8lVPNQwEPVGUbDZ8G8cA5bUafktXP6NWUBgvsVe/DU4X2UFURhcZCQglRTk8Fkd2KrvWnyqt0puvbp2iWc1eBjdbPTxc2LthDDKAYuoYEJ8i8XnZbtg7gzYlY0BWD06tx0drUz1PPrgWNxBgDI0MRHNXj8ntp8Z4n5aBpVtHnorBPstlVKNgfDWiyLbDp5G/SIB3EXjjjKijb/MtRPkw/9xGYtCZuRuhSFSHtBivX0Ug/QsjXS3DgGWBaDLnmNCKa73Wlr/Y72f1BU0runnrXqU7TlTQsYgxIs8QgcNsei16WPwiYATP2KY3GpFG+Ynd1Ax62UHWw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=cn.bosch.com; dmarc=pass action=none header.from=cn.bosch.com;
+ dkim=pass header.d=cn.bosch.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cn.bosch.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XzBDseF5+L0KoATMQnQCe5n3WNMCksWRsxOdlZolFHY=;
- b=F7igHP1NYjkuFdmDeI2ctFq3X2cMf0dlpyM6dtRlBv0JvjcPMLMDxjsOXFYm8bb7+2heOB5GGLX9KytdB7gATmiveAah7pbHd3VbAZfRoF+dmmcSO0ecChqJYFsVnZ78ButAYeNwCwyrX9YAaBXH5Njc4jMflYVxHMaQ076q2E69J38bBmHHZVWryJRdmaSoKyCHnNNa2b7Y88muSipuXSJHN4m0oKyeDflB4bRuLzIt1KiOtLPO/2AeLcXobRMduf+74/EqxGZdZ0LoPOw5cnvNw5sx7ALk2wCTyB0Swn9vNhbiDnufuFz3ZIZfT9gVBZkVVFGn46IMz+D12zGTAQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by DB9PR04MB10011.eurprd04.prod.outlook.com (2603:10a6:10:4c4::20) with
+ bh=XyP3beKTqKy7/tm4NGhKSSOYn9FOIhNtE617thQbnkU=;
+ b=UyBYuORWgCOBjMPCrZkujyIRLA2JB0h8e6ww+y+fxrFa0xLVvpPB4dFT3OH+qCCd5pHDzScsB60Qf0TOH3gsqJWXXwkH7ctxRMiVkHt/u/QGXBKKhQJisytfexGKjPakda6my5YebY0oVg3wZ8O0o8C7rCWjctvEVtci5C2ZibWQQ8mPQrbyEQd0yC8SAuGjUc2j0wYXsYEJieYAm36OExeWa4qXB87wNJ3aiSDgoAlDLObtTFJQuJ4544f2khJaW2cGII9C119UrIP3GtRfQ6MIuiEfvUPnFlWr8frSxGbIJxrq3B9akh3KSdABF3Ad4DbGTRpwwspoyFxKrLV6vg==
+Received: from PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:2ee::8)
+ by DB4PR10MB6285.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:383::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
- 2026 01:21:38 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0223.015; Mon, 20 Jul 2026
- 01:21:38 +0000
-From: wei.fang@oss.nxp.com
-To: richardcochran@gmail.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Frank.Li@nxp.com,
-	vadim.fedorenko@linux.dev
-Cc: wei.fang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND v1 net] ptp: netc: explicitly clear TMR_OFF during initialization
-Date: Mon, 20 Jul 2026 09:25:08 +0800
-Message-Id: <20260720012508.23227-1-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0083.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1ad::9) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+ 2026 02:10:09 +0000
+Received: from PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::fa9a:794b:21d4:ae9b]) by PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::fa9a:794b:21d4:ae9b%5]) with mapi id 15.21.0223.008; Mon, 20 Jul 2026
+ 02:10:09 +0000
+From: "CHENG Haoning (BCSC/ENG1)" <Haoning.CHENG@cn.bosch.com>
+To: Frieder Schrempf <frieder.schrempf@kontron.de>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano
+	<daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Lukasz Luba
+	<lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 3/3] thermal/drivers/imx: Add calibration offset
+ support
+Thread-Topic: [PATCH v8 3/3] thermal/drivers/imx: Add calibration offset
+ support
+Thread-Index: AQHdE3uQOwhGQ7gvREa8/JzAX/2zpLZuS2CAgAL3SOCABHAl0A==
+Date: Mon, 20 Jul 2026 02:10:09 +0000
+Message-ID:
+ <PAWPR10MB7415DE998EA3CCA639F14EF2C2C32@PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM>
+References:
+ <20260714-b4-symana21-11221-imx-thermal-support-upstream-6-18-v8-0-d54d8690e16e@cn.bosch.com>
+ <20260714-b4-symana21-11221-imx-thermal-support-upstream-6-18-v8-3-d54d8690e16e@cn.bosch.com>
+ <5a000235-5e17-4d54-8bbe-42fda0b59db0@kontron.de>
+ <PAWPR10MB741520A95E4822E935A0B7C0C2C62@PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM>
+In-Reply-To:
+ <PAWPR10MB741520A95E4822E935A0B7C0C2C62@PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+dlp-product: dlpe-windows
+dlp-version: 11.11.3.81
+dlp-reaction: no-action
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cn.bosch.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAWPR10MB7415:EE_|DB4PR10MB6285:EE_
+x-ms-office365-filtering-correlation-id: 03119b5c-d9e6-4135-62cf-08dee604064f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|11063799006|4143699003|56012099006|10067099003|6133799003|18002099003|22082099003|38070700021;
+x-microsoft-antispam-message-info:
+ 3kJ1emsaDpw/4M+G7TPcNCFquyBdEPJoXbsp6Qbn50YG9k6mcWDo+fdl6fK6YrswiTes9HBkggkBWL+uXFbfe0gy72zezh5sKo8xcue9E/7kwC+b4ZDwz8b/lL0SshULZM4eHXYXP1TppYmkF/dl3KRdExbJWdIg56S2jewYeQfa1/qcFVjSI/MjHMN7ejmts1D41mR7FtierQY2Sbx/miVA/qHdHwiAleU/Cuwew/awP376BEbqbrf1Je1tDGAJx4Qk63w8oO6ZWcYa6+Seo/UN8U7w70kQ52+Y9AYMLTYKB9SYEpDl69yfDUwlGR7AVovktlWmsHUr87pVFl5kDb/BvHt0vhSxdMP6yKpbC6thvk1JCHZbAHszuroojumrBUiiQPn75vk12E8AeKxjWTyipPiRjGlG+ODFpQ5t/fw+8cdqVv2JRfO9jb7+gcko3r2vN0m6sifLVSpsA2EkH14gb/JZsw6qmcD66WPVl39wy5i7GbLufHQTJR2ijT9qE9hexsupkry632xrusoWNofKKkH2Uqb7cqSNdOjDCRpH3zk67AWE6Ww2Aopu09cfNY6WtabDBnJ5zJIHrAaspequuO4qBuNl6RFFEEt8IVye8eFcPj5Sy7Qz2RXsKEvSBJWaGklEGWNOsC7EZsh5/lth1Fp7O92neProjh5ymf8iUd0LUQbYH0IhR1fQyByk0pJxMdP3c4JZNdXDHX1KspAcn2b7uM6IEivalPSAEfA=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(11063799006)(4143699003)(56012099006)(10067099003)(6133799003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?o3OdH4hCEhmv1qhVPehSBgRTfuGCpX6F1T4qB1hKvpou8QybS4SP/6FpYCmC?=
+ =?us-ascii?Q?6MMLKIq0j9C3v+1L+pYuSvYngwvkTnKTOZtVrbG24/ojNYzcvyg1mKNmah4X?=
+ =?us-ascii?Q?DNJh4e2+hsk7VsrN+qrjzn3BtJ0PJruU3uwEK8WOVIEuQWpDfhmSKnX5jTTZ?=
+ =?us-ascii?Q?ho5Ng73rFEk/EbC03K+3yW5xXmXqn8xOap/yEULIK3Xsur+P+00pBasCiLBL?=
+ =?us-ascii?Q?8j6oCo7EKdQF9KRkN3/5RqvU31EUkPZxUYdB+t3xoKdzQWHTmhACBrtqxsri?=
+ =?us-ascii?Q?Lfabl7xDr6IEt6LKxpsF4GWKqYeaaor6tyFePn8PZdIlo5ymV3IHnvJYLxJy?=
+ =?us-ascii?Q?8K5FaVezJDoko+9PQ6PcmZs6OFebU0hfi0IMZp0cbEWV9oEw1YEI6MXFYZ4o?=
+ =?us-ascii?Q?RFZatxiMymZbC7b9jpmoPuMkplo7DxudxoMoLKUTAh+7qcnB9fg1H5rGBxIM?=
+ =?us-ascii?Q?ZSeXDmqKKa8D92d62MF1+7owE+OBSmXW6TXyFcyhr2JsJJ5Se61cFY0Mquhv?=
+ =?us-ascii?Q?ouYpPdTrYHgWJ9txHTR2RlT4FWrsGMTs5ybAgdJSFxAp38DBTlgfqKhaGEi4?=
+ =?us-ascii?Q?PnHdy40pH9u9i0hE63L/sKqXYkQnt2/ViKYK699XwKhslBJ7oTYjPJPw6eVH?=
+ =?us-ascii?Q?Idj8rZyzv01tl7cm8PYF4vydcmXPLsWQ2t6I1IhKizzvlw28/XqOhAOqZ3DM?=
+ =?us-ascii?Q?tKUmWOzBKlYHrRlBeJRYrzPDIQW9GCaNwYTsIDgHUdFFQy8kRvhiWWdLtzbx?=
+ =?us-ascii?Q?CFrqh6k7nv70yTfiDq+rci2lIK4lGDiBHM2TTQVWGVZK+sCWVzU6HEfkGzDq?=
+ =?us-ascii?Q?kFg4uvZGz+iw5LdXsW3QRfjieEERQ9w5Mcn0Xi8l1/tVitqtx0+MZNSMIfOn?=
+ =?us-ascii?Q?EkFea2AbBrWNVJK2lQ1RDmo3ao6Jigr798KZhBlEEUj/xQsB315KczQICqTt?=
+ =?us-ascii?Q?MSHMa6ewfVu4rucSgnlbf1TsnpxsbDw2E50xb6XA48B+8kSMPbgHlru0opVM?=
+ =?us-ascii?Q?50Z9QqWwCJnypDHwX5LKqczz2+FoG5yjdbqSvylDkhzBwsI5RHhsTIeLkcGg?=
+ =?us-ascii?Q?5RQFUIuHdySpc7Zp8LyADWDTjuA1nSdUZdWHK7TOk0MjZCcosQJr0zdT+Qp9?=
+ =?us-ascii?Q?1/zNGpuqjwJMuWp9Gky6RufChgjv14uO/L0rfvMMaTrUUeyPgLYsPKhETtui?=
+ =?us-ascii?Q?AMTM1Rh60GP8T6gRKEQm77chz9et4BkjYEayJoRXTTXzXFt8bGIwInJ3IsRt?=
+ =?us-ascii?Q?S0sKxmQ6i2ZUpnVrBSwUMx0XsnW5aHWC8dN/w2WLXEfDd9j8X3+WwmjIAqi9?=
+ =?us-ascii?Q?jwb+Aa3TlolMY+pUsBRqE4g9ek/pJGy42SfY6WoiPGxufCgPYUBBixGzcLyE?=
+ =?us-ascii?Q?Ghs3UNeIdh+2d8Ci8Gs14nIADw8dMlSX8cIGugP/DqIiTgyu8noMo1EdWMPP?=
+ =?us-ascii?Q?jFqmojwKSBOsVkHk4p0/979B5M2NWHb3yJ10kezP/PAiS74aCvDi0Zjm4nzg?=
+ =?us-ascii?Q?KmmfNDbNTK9N9hJQ0ueiRAhXsH1WZmxc5IZeDq9/9lBNrwKF+AkUShFn+o0W?=
+ =?us-ascii?Q?Jp8+lBMc1bvREBhx1uvdblUnP0IAiKFcYFyW4QlNrTu+CDJ10k7WGjbFG+1w?=
+ =?us-ascii?Q?/YEbvnO3Sw/D80a27Lwjx2JTI0ZB6asiGrUmKv4aJDKW/Wp4SsQZpxBljNx+?=
+ =?us-ascii?Q?D1hTnEwHkbQ8G26XkDNwAuTs0ZtpZd+gNOVNqIYXhwps6k15?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|DB9PR04MB10011:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e74d71a-78a7-44d3-e97f-08dee5fd3eed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|23010399003|7416014|376014|18002099003|56012099006|10067099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	B+3JsG6JczHZxf+WIfWtOU1GrU/xU3tCU7KsB6ifWpJ7SDGo4FVGrWKslupnXMEe8Mt46UshvYamz0JMs+Elm7fBfoHw1zXfUZ1ujrbt+D6MKcCkMTyHHcGMExvfnwOoLiC/APPoHzyPJ4Q1qN1IQvYYI5yDulRqwAzgx6KvKeYAPBgCkrHndXH+qUsflm5MbTs/aHyKUaM6rmKA8triQlWs0iT3KB9C2CDn/xx+TPo05rdELJlBxe8LxLntYKbmFD566DuL+F3Ur5IaugEk+A3R5nKMKMMuaeFUaSf65R6lFlwck5+zYfS8Y6r74gnwcGi/+YrJ7g9/BgewnybsonHDdsUHNa9oWYO8jQJqNJGdljJSWoCM8rFmG0etv8uY3SUIkCbxMCLTq8Il85j9irQRMGrX0K21mpLCdUdeOIAXtD52kSvY7vX7532abT1+yzgoLE3aKxL9WyNik/6P/HUZ26UGXRQs7AEu2YwiJW2oT683oPc6OVq7wTcFIRZptP+jp6lrhwh6bDJvH7bdU0pR6vYacSXNPX7reEoJvIi5QASxhsIaW0TqRXkmrD/Iap9otlmTmmC8Z8ChzDr0yjbme9HOxE8cYHPA12Nf6jrL0EM6pRRE2XF5pEm9FzjKELYte4MPfV6CgziENiH476O5TzX6b52Hwp5HQwN/HE4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(23010399003)(7416014)(376014)(18002099003)(56012099006)(10067099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jwN7nwdlIE36FHwLw8nVoeqIRWN65MdyKM3b9MdaV6guXKjXkREpRpLso1DM?=
- =?us-ascii?Q?DIIxE4SpJAikOn5Q+BJaVVEO/e82+IfXgZd7zNkj12aSA28i4kkqyRGj3tmj?=
- =?us-ascii?Q?DYC/0kk5m+ANMSbhdLqVfO/azNi8YwehOJ5zstfKD4t6HvnLOnUeFeNTNQPT?=
- =?us-ascii?Q?iegO9GkJVyqdlF9B+Q+dzodfESS8e5fBYQ3BtPPhsySNSx431qb8I1S949yL?=
- =?us-ascii?Q?8CZUOw7XAxDGNSTANJuNfbBHN9S74bWDdbFRuJyBmq6BUAcJM6+j2Ppmjnz7?=
- =?us-ascii?Q?X+krcIDe4J8aXMj4kXTGazwd5JF5E4DViw/u9sZ0uGu2b84MBwZNSEL5cHlQ?=
- =?us-ascii?Q?2Y/iKYgXWZVsIGWsM5IMs86RxC/VYVsVlrIDy/v3j5i5yyP4GDRdNycUrMLj?=
- =?us-ascii?Q?0BEl4GPXYfnSRgdjbZRMWKHBJrQmlPup+qj0OUy1w/9X3khFtOQA+FKV8BXV?=
- =?us-ascii?Q?mgpTrWmyeOl5zKDM5bLyCGdQO2uUGz4lBGu3fWxZODUt5qKCLC//ZYYnlORD?=
- =?us-ascii?Q?xY0lT3KTnE5hA8R+nE11rGIUhJ64IOtrQPqLi3AW8hYPHcpzRqRjJTgKGG0F?=
- =?us-ascii?Q?94lxZQHWVxMsP6c2Gu/vemWGFQ9uXfnoKC9KQl8hFE9OQSuR7zIiiemW63oA?=
- =?us-ascii?Q?LBF7ynG24BuWfkRC0hw+aNfZVkYtRlZwPHuXYU5dUepSwombUeElPArJp6Vn?=
- =?us-ascii?Q?ohKD+nQfy1ZW+Dai0ZUS9p5fDYl8ZYOQbR0Bx1bd6Ke9McV9+Lr177V29x9j?=
- =?us-ascii?Q?zbgphjVCfsCayaGIroRY8L6RxCgJPDqDt0R1tN8Ux98EU1UoC0TxV0DmGb3n?=
- =?us-ascii?Q?NL3kPby8iuPutrWJg/j/Fe5OP1CG3a889GEWQiyBjMOdcE5vshpn1anEPLXD?=
- =?us-ascii?Q?13YQlgjkshRiyv8zwqBx3NTiIk6KAgtDBmCe0kGaf4tZKOWRVSRPUHBougym?=
- =?us-ascii?Q?KKyxH6StRO2jryPJVI7MrKY9HincHvcayuH1+HMnAV/+YPuR49oEeqJDeOBN?=
- =?us-ascii?Q?dTy9kuxp9bG7X5WUBokLo/nZMWS8yhd30VUYmi6GtQe49ekCS++FJsEnXhfc?=
- =?us-ascii?Q?heLwEV7y3HM7guMPiuWU770FmCdhQhzQR5YxwGpOMK0leGO2t/4puFsGR5I2?=
- =?us-ascii?Q?uM5NusVGOGDPYDzIYvlc7zwddaddSWE+V5b6vC2Hp+i6wlhoAEAxxKL5PJ6j?=
- =?us-ascii?Q?BQaU7VatCYYcD4JeG2vzxwJC9pCmYh3XoHhujOUjs6iKpgqt30Jx5XMXbn4l?=
- =?us-ascii?Q?cVY22eid5Kx5MN09/4wfL3Gl3xb6iOi5PkpkAeoO721vl9KqBr8F70H5oW9R?=
- =?us-ascii?Q?00lmdnlpxP50tztd6Xdyd98FuNU29DEfOhq55UUsbdXNKKD06Jsfrk4PJYFf?=
- =?us-ascii?Q?fYmjKFcQeWpcC03pr9vVbE7jvU+LY0X1amtjUpUp2nD8oZn3hr8fY4lK7Py6?=
- =?us-ascii?Q?uLo9cAnpX1WcvQt+YW+Ec64qrmDWWluReqCy0uvnXCZ5yRtt+2n1cWV73Fk5?=
- =?us-ascii?Q?g0o+9zRJi7iVz1cyxDO23K7kJReBkkpW8D143sSZ9lRAldEHhY9tZexKQv8+?=
- =?us-ascii?Q?uLAumJRIIhXOjujoL4ByaEh7aBRXDrXSQ7//Ht5aKK3KIJWbIe7yfVelHKsL?=
- =?us-ascii?Q?2LE0uVoWI7yiJeAl/mjnnvqUlbQKWco7nSn4Wfzrsf61Vunv7xiNaK9brzDb?=
- =?us-ascii?Q?ykCcgXXE3VfllLkfzg7kEv+p462leyjptHpRHMrW111NKzjzQma1PwRdkWfu?=
- =?us-ascii?Q?7Ecu4wnEu1qb8LEkRDZgHh5297Q2Nj1zWs/eNgoeW66FuO12mIHe?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e74d71a-78a7-44d3-e97f-08dee5fd3eed
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-OriginatorOrg: cn.bosch.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 01:21:38.1335
+X-MS-Exchange-CrossTenant-AuthSource: PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03119b5c-d9e6-4135-62cf-08dee604064f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jul 2026 02:10:09.3088
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4sxRgaHF8+CaC7HnC85n8Kr0zsJoCYIwrF0F2TOEi1VSVjG5/J5PB08gc++BkZrLHa+NToJRqpkHLN8QynKVUojzLK7tHcki/oJnG+Xiu1ekMYU9C1VXSPkOsZO9oPvF
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB10011
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: FGLUKlXUdMJiscDCwUKOWWmjlC3ZEe5FEpzX0n+bxPeObQfTc9OWa1fSqZSdyoDUja0UrHWStwUAY48/o1XqmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB4PR10MB6285
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+On 2026-07-17 06:23:44+00:00, CHENG Haoning (BCSC/ENG1) wrote:
+> On Wed, Jul 15, 2026 at 11:06:07AM +0200, Frieder Schrempf wrote:
+>
+> > On 14.07.26 12:28, Haoning CHENG via B4 Relay wrote:
+> >
+> > Sorry to chime in so late. I just want to understand what this
+> > calibration offset is about. Why would there be a need of a
+> > board-specific offset? The sensor is in the SoC and if you add a
+> > board-specific offset, you no longer measure the SoC core temperature,
+> > right?
+> >
+> > How would you determine the offset in the first place? How would I know
+> > what fsl,temp-calibration-offset-millicelsius should be set to? I could
+> > put a sensor on the SoC case and use the delta as offset, but then I
+> > would just account for the thermal resistance of the casing and not
+> > measure the SoC core temperature anymore, right?
+>
+> Hi Frieder,
+>
+> Thanks for pointing this out. Your understanding is correct: after
+> applying the offset, the reported value no longer represents the raw
+> SoC die or junction temperature.
+>
+> For this board, the required "SoC temperature" is the package-surface
+> temperature. The offset was derived by comparing the TEMPMON reading
+> against a calibrated external sensor placed near the SoC package
+> surface under steady-state thermal conditions, and is used to
+> approximate the package-surface temperature from the internal TEMPMON
+> reading.
+>
+> The Linux thermal framework does not require a thermal zone to use a
+> specific temperature reference. It only requires the reported
+> temperature and trip points to use the same temperature domain.
+>
+> In this driver, the offset is added in get_temp() and subtracted in
+> set_alarm() and set_panic() when programming the hardware thresholds.
+> This keeps the reported temperature and trip points in the same
+> package-surface temperature domain. Doing this in the driver is
+> necessary because the hardware alarm thresholds must also be offset-
+> corrected; applying the offset only in userspace would cause the
+> TEMPMON IRQ to fire at the wrong die temperature.
+>
+> I agree that "calibration offset" is misleading, since this does not
+> calibrate TEMPMON to a more accurate junction temperature. In the next
+> revision, the commit messages and DT binding have been updated to
+> describe this as a board-specific conversion offset from the internal
+> sensor reading to an estimated package-surface temperature.
+>
+> Thanks,
+> Haoning
+Hi Frieder,
 
-The NETC timer does not support function level reset, so TMR_OFF_L/H
-registers are not cleared by pcie_flr(). If TMR_OFF was set to a
-non-zero value in a previous binding, it will persist across driver
-rebind and cause inaccurate PTP time.
+I need to correct my previous reply. After further discussion with our hard=
+ware team, the offset does NOT convert die temperature to package-surface t=
+emperature.
 
-There is also a hardware issue: after a warm reset or soft reset,
-TMR_OFF_L/H registers appear to be cleared to zero, but the timer clock
-domain internally retains the stale value. When the timer is re-enabled,
-TMR_CUR_TIME continues to track the old offset until TMR_OFF is written
-explicitly. This can cause incorrect PTP timestamps and even PTP clock
-synchronization failures.
+Their thermal characterization shows that the raw TEMPMON sensor reading it=
+self deviates from the theoretical junction temperature - this deviation ex=
+ists even at the die level, before any board or package influence. The offs=
+et corrects the sensor reading toward the actual junction temperature, so i=
+t is a genuine sensor calibration.
 
-Per the recommendation from the IP team, explicitly write 0 to TMR_OFF
-in netc_timer_init() to flush the internally cached value and ensure
-TMR_CUR_TIME follows the freshly initialized counter.
+Board-level effects may contribute additionally, but they are not the prima=
+ry reason for this feature. I apologize for the confusion - my earlier desc=
+ription was inaccurate. The v10 series reflects this corrected understandin=
+g.
 
-Fixes: 87a201d59963 ("ptp: netc: add NETC V4 Timer PTP driver support")
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
-No changes, just collect Reviewed-by tag
-v1 link: https://lore.kernel.org/imx/20260706081232.3661826-1-wei.fang@oss.nxp.com/
----
- drivers/ptp/ptp_netc.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-index 94e952ee6990..5e381c354d74 100644
---- a/drivers/ptp/ptp_netc.c
-+++ b/drivers/ptp/ptp_netc.c
-@@ -779,6 +779,7 @@ static void netc_timer_init(struct netc_timer *priv)
- 	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
- 	netc_timer_wr(priv, NETC_TMR_ECTRL, NETC_TMR_DEFAULT_ETTF_THR);
- 
-+	netc_timer_offset_write(priv, 0);
- 	ktime_get_real_ts64(&now);
- 	ns = timespec64_to_ns(&now);
- 	netc_timer_cnt_write(priv, ns);
--- 
-2.34.1
-
+Thanks,
+Haoning
