@@ -1,112 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5503E120C
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 16:08:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604E4439903
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 16:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784563715; cv=none; b=lPPhhp4PNotuRm1FPlWu7RfLQCtAw89EsFBjwl4xvqotQ44mdm5vqSvetycLouYHENO+UAOvR0xnQvyZ6qVvEmlmOo6L4FkLSJM0RuNtbD6CXe3MgZrueQdzRwUEw7ffGFaWsna+svvj/N0fV/GJew66oouuVJGkYtPagL+2DE4=
+	t=1784564168; cv=none; b=U6FZVvzq9CXxEUXeYWwftK8C8GoFbVMtBvn4GbGhnhxfEztnVYl7YCEb8HCvYfiAjUK3Uf6zdSeKE9y/7ItNxPCw4uJJi9AtkH5RajsFd4KavCsjWOVYbWsPCfiCzzJrYkfJ9uREpkhNKmPcBL6Tm1IW9GRsodlejalxKSmgqu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784563715; c=relaxed/simple;
-	bh=giyil3ueNLayBfDEVhbiAo+zx/udTRqTRxqXgvEVEaQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZXCETi0VRwo6LnuLnn237H6XElR4d5xIZOb26TqyZ1lBMcf0sxKGskWndmXuS1z14QrZQp/JpFUS0KPdX5ar6kUH0/Ag4UHKfrUNAo/5ZIMDPRGSLd6K2q4OJ0Ty8ex822eild/rNv7wC4ie/pEqUOH91GuPw4PEguamY88qlzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dt9TPmxz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784564168; c=relaxed/simple;
+	bh=P/ojslEuJM4hNVKRndw9YD2wD/XJjiCB/s+Ribjs3Mo=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VYk2vUvIq5Wcle5rvf20bHcMGaRKbl9jk1mIUp6OzZKEIDzIV2xXMwMl6o+fAsjwdMjqQx28U9Mf1FD4hhkObcjxCuKVUwYModMntJkm2sqpKwFapZdNK+NoTjn2hBOcoyHKOoT3Uvu2DjM3qAUN0QkgrZ0kKUIOW09+a+Piv10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1Xl27wOf; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dt9TPmxz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3311F000E9;
-	Mon, 20 Jul 2026 16:08:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784563714;
-	bh=9KrDL8WVRykRNu0EQzamEj6Vx3hZLwfviLgeAZ2Q/J0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Dt9TPmxzdzl8Hq/nfOa3hH2HizLmhwCwmeBMcDGIvwGxdrRXIdqqOyLqyHXrMuPm3
-	 XS6aNl53STL8Ioyfc2oczocKjyHgZylMIfCEO6GKyAUY9ThGrqxvwWqjt0iguPtugz
-	 oQDczUi/99qQbh+PBU0t/8WqcEkIIlu427lZzD8yib2DT5w7Brl/ntb2FRb8fhzRCZ
-	 6WZca3vlz4dEMpoc74ngnl3Uv5zOxPcQn7ao/EdshKtZgPn0KaRG6YZjpiQfZ6DSh2
-	 mov3C1s4SrTufUBBmavRqjxHdsGH6UPHovayAZKP5licQDAzA4ill6rUHxrI6XH8Mf
-	 XkayUWLC5+3FQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 07/15] drm/tidss: remove dependency on DRM simple
- helpers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Diogo Silva" <diogompaissilva@gmail.com>
-Cc: Frank.Li@kernel.org, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, dri-devel@lists.freedesktop.org, neil.armstrong@linaro.org
-In-Reply-To: <20260720-drm_simple_encoder_init-v2-7-5020b630668a@gmail.com>
-References: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
- <20260720-drm_simple_encoder_init-v2-7-5020b630668a@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 16:08:33 +0000
-Message-Id: <20260720160833.BD3311F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1Xl27wOf"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2CB5E4E40E75;
+	Mon, 20 Jul 2026 16:16:00 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D766360360;
+	Mon, 20 Jul 2026 16:15:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ED2B711BD3CC1;
+	Mon, 20 Jul 2026 18:15:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784564158;
+	h=from:subject:date:message-id:to:mime-version:content-type:in-reply-to:
+	 references; bh=E+KW8apzPeuJJFrU4ZzXm/UBjJRlt54+RYJ6SJW+mtY=;
+	b=1Xl27wOfuq3BTeu9UHmjXTLT4Tz0BR4YjxJbZI05DPWE8VT+3t9XfEJe3H9AktcxRzwX1o
+	vy8KeVgxwWTMV4hkW2tB2R0acIQdzRNAzvqTTN02LYX+Qw6Fh5QXsh+JJsedt9tegkqXBb
+	sycqkWK0gORgnVg7sLZWzqrDseSWqXG4egMTMszLqbsmd9ilJ0gUwThgtENJFrJW0UtB/N
+	zjRxbdbLCBenRXU4guB2O5Ae/5fbyhbEPwAxB0OqO0dO6HASJ7i4HC8/AnKm7wKXqFRBJH
+	BVj0rUbqxX65us8JrDA7LbcYijPaVwprbPy618/fJ1XNHyjJrOXa8I/eQ6u5Iw==
+Date: Mon, 20 Jul 2026 18:15:54 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jorge Marques <jorge.marques@analog.com>,
+	=?utf-8?Q?Przemys=C5=82aw?= Gaj <pgaj@cadence.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>, imx@lists.linux.dev,
+	tze.yee.ng@altera.com
+Subject: Re: [PATCH v6 0/5] i3c: Improve CCC reliability with actual_len,
+ validation, and Direct GET retry
+Message-ID: <178456413898.83935.17006528519078741282.b4-ty@b4>
+References: <cover.1783493867.git.tze.yee.ng@altera.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1783493867.git.tze.yee.ng@altera.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Wed, 08 Jul 2026 00:17:36 -0700, tze.yee.ng@altera.com wrote:
+> From: Tze Yee Ng <tze.yee.ng@altera.com>
+> 
+> This series improves I3C Common Command Code (CCC) handling in the I3C
+> core and master drivers. It separates requested and received GET payload
+> lengths, validates GET responses centrally, and retries failed Direct GET
+> CCCs once by default.
+> 
+> [...]
 
-Pre-existing issues:
-- [High] Missing drm_encoder_cleanup() on error paths causes an immediate U=
-se-After-Free during probe failure due to devm/drmm lifecycle mismatch.
---
+Applied, thanks!
 
---- Patch [7]: [PATCH v2 07/15] drm/tidss: remove dependency on DRM simple =
-helpers ---
-commit e1bc7736cc3d912bd63a6e7abbb830479e2c82e1
-Author: Diogo Silva <diogompaissilva@gmail.com>
+[1/5] i3c: ccc: Add actual_len to struct i3c_ccc_cmd_payload
+      https://git.kernel.org/i3c/c/2805eb4d075b
+[2/5] i3c: master: Report actual GET CCC payload length on success
+      https://git.kernel.org/i3c/c/295508ae7c30
+[3/5] i3c: master: dw: Map CCC hardware errors to I3C M0/M2
+      https://git.kernel.org/i3c/c/b5151c6e9cdf
+[4/5] i3c: master: Validate GET CCC payload length and retry Direct GET once
+      https://git.kernel.org/i3c/c/02cc832191dd
+[5/5] i3c: master: Add optional_bytes for variable-length GET CCC validation
+      https://git.kernel.org/i3c/c/4a51ae0a1b11
 
-drm/tidss: remove dependency on DRM simple helpers
-
-The simple KMS helpers are deprecated because they only add an
-intermediate layer between drivers and atomic modesetting. This commit
-open-codes drm_simple_encoder_init() by calling drm_encoder_init()
-directly and providing driver-local drm_encoder_funcs.
-
-> diff --git a/drivers/gpu/drm/tidss/tidss_encoder.c b/drivers/gpu/drm/tids=
-s/tidss_encoder.c
-> index 698f8d964ca00..10dbcc6cdf6a8 100644
-> --- a/drivers/gpu/drm/tidss/tidss_encoder.c
-> +++ b/drivers/gpu/drm/tidss/tidss_encoder.c
-[ ... ]
-> @@ -95,8 +99,8 @@ int tidss_encoder_create(struct tidss_device *tidss,
->  	if (IS_ERR(t_enc))
->  		return PTR_ERR(t_enc);
-> =20
-> -	ret =3D drm_simple_encoder_init(&tidss->ddev, &t_enc->encoder,
-> -				      encoder_type);
-> +	ret =3D drm_encoder_init(&tidss->ddev, &t_enc->encoder,
-> +			       &tidss_encoder_funcs, encoder_type, NULL);
->  	if (ret)
->  		return ret;
-> =20
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this function leak the
-initialized encoder into the global mode_config list on subsequent error
-paths?
-
-If drm_bridge_attach() or drm_bridge_connector_init() fails later in this
-function, they return an error directly without cleaning up the initialized
-DRM encoder:
-
-	ret =3D drm_bridge_attach(enc, &t_enc->bridge, NULL,
-				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
-	if (ret) {
-		dev_err(tidss->dev, "bridge attach failed: %d\n", ret);
-		return ret;
-	}
-
-Because t_enc is allocated via devm_drm_bridge_alloc(), devres frees t_enc
-as soon as probe fails. The DRM device itself is also devres-managed, so
-its cleanup runs after t_enc is freed.
-
-When drm_mode_config_cleanup() iterates over the encoder_list and calls the
-.destroy hook on the now-freed t_enc->encoder, will this trigger a
-use-after-free?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-drm_simple=
-_encoder_init-v2-0-5020b630668a@gmail.com?part=3D7
+Best regards,
