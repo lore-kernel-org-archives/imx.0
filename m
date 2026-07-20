@@ -1,164 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDB530DD11;
-	Mon, 20 Jul 2026 15:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76B330E82C
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784561342; cv=none; b=S2cn+SrPyjpuH95xE1J/EWc9wzAM0Inh6EB011HsbIQfSTK/Pj9kBlxtI0ZATadHOTgH/KHlwFjxA6yWNi9ZU8MM8IQnp4s1BvcgDYQyOA8KmKN/KhqyEYmrudZABgRC18eCW7aCrcVAiP+XBOe47lOcG/uREJcg7KqQ+sLMd1E=
+	t=1784561342; cv=none; b=SFiUX6CwS+z/T0xfZu8DHNFPIhKJ3GSX5jGTjV6XkwWqdi/agRemV3hkIwukwnSJ+Y9UVkjwR0Y3jQ3LIzqIXCH3pDSnAmUcy6PdXiW8tnooCGkZhlLGqegAUoYBK0OTteOeujBbc9LAcpBl4DwZoX0mlIhbVpLXR6NVZZU6J7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784561342; c=relaxed/simple;
-	bh=bS59bsexk7Y1qcyfUhrTvgTV4NITiDxL0etcJ7UUTj8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=QtYK4d0Yi8pinZsvnSIx00WbS3KvuzVRXKduI8s31TVmQ62WOg2eRc/x6XpJoCdg5fxP1Vijyzg7VAHXoERXr0Gqd6x8wiXT2v8sr/7e/wimWFtOD8EIDvQIAvF8JCCRLYBRQerP4ufVLloJ4vM0tplTzawGCJ1xxVVCSQbbxHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxhpIzmx; arc=none smtp.client-ip=100.103.45.18
+	bh=U4t0Ha5aQQnsOVS92ULllJOo0551YVcY8yAgy7W+cCg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ViFBuBGFiqpuCki4zxW2VHJtQdctv8/ZufouiSihmrws55mGzV5jztZFLyqTioc24TpoQxDPxDJlLvZ8o4/VKr2YAkFCNrBOAvhq6nvTC4yuheeg4AbTrg1IxJa3Kvi/8ky/JYCqJczilGRSqvKvBoFPB2j+78EIqb4sg6EXFZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=N0RAcv+7; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxhpIzmx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B149B1F000E9;
-	Mon, 20 Jul 2026 15:28:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784561339;
-	bh=k4tfXZpVPdc5h7uRxAV7A3+7LziVLeKXHPXqV3dcWDo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CxhpIzmxHWNPVzq0yogacdMFXSQH+EfpAfV0yeIuofIORk94cDmfgImC0MTUlN3mN
-	 jaTE7MXxCbOC2jUV+Qxw0eFZhBLtAMRRkD5h+V76PeZdrp5x23LVZysyMseASGlWU8
-	 6cQOqx5oBT6zJapgP9HNUCFKjc09YJjPACid1JlrpPLcTKyQDdJJbaxq6r7hfkEpM7
-	 GGcDT69tPYPZo8B81Cx1S19vAeDIS0jEOwXLDLqeurDQ9D8hapMTgaZ0oUcLkmlne5
-	 WkgzrYNHLxXMiHBejCvfxrqiYoKGVau1vN+FBJomWzDgKgpS3CpxbcAQbuxWvytS/J
-	 vLT8hy2/OiV0w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 02/16] PCI: dwc: Use cached PCIe capability offset in
- core
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Hans Zhang" <18255117159@163.com>
-Cc: linux-amlogic@lists.infradead.org, imx@lists.linux.dev, linux-pci@vger.kernel.org, neil.armstrong@linaro.org, Frank.Li@kernel.org
-In-Reply-To: <20260720150619.24733-3-18255117159@163.com>
-References: <20260720150619.24733-1-18255117159@163.com>
- <20260720150619.24733-3-18255117159@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 15:28:59 +0000
-Message-Id: <20260720152859.B149B1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="N0RAcv+7"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ceae1ed204so81131685ad.0
+        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 08:29:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784561339; x=1785166139; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bgz7Y8qBkufWfij3p6tfrGVbR4yOWWu3669don02deQ=;
+        b=N0RAcv+7RtI9VwEdNIjLWyo2T1mhIVk/oPk7E3dT3p71aJNTqnioenhaYwxLrT9bDR
+         xJ3WXQj8uAnoQ+RVJ9n7rVEe8sICaCHGK1ENemuBLRokOcR69j7MV5QIg+GowUUJ9fXB
+         msg4t1Vyrj+VmWoeUiUY8KjCbgXW7k4l4COJZBbxEZypwsPnSc1snYu3x0T5KJAFShYO
+         OZXRS/e+PK84BVXG6hghefOG7SRN7V3SsR5bq035wM2PgEpQz45kbqs0oN9uoWrcCaWZ
+         RsTDu0VEfAPHbXDtlzwl0FgxTjcuPzmNxwBSaDeL6/qd4b7xSED58tRzqyWKrVa5F2FG
+         nVIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784561339; x=1785166139;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=bgz7Y8qBkufWfij3p6tfrGVbR4yOWWu3669don02deQ=;
+        b=LTl1leFUk2FIqld102s2L9HCIZswlIbucErxsAbclQecrr20OdfPAeSOFUZY9jQXws
+         NLbOnHjQfDBPvTlEFaTSvXW0aPfZrMgzGKImjXIHH/h9Ilrn296MPxLBQaJsl/O3Ew+/
+         p8m4gP9qR+tukZpPKjRYimltJeAnQjaTeIQ8oE8Ma95wHC06cRh7O65VgswNfaKz4EFD
+         aItyG9/NvKeXYEHKGQmMAtVYFXIITaVv342kDm5v++GrT7H7cytFIrEW/euNE6mwE3hR
+         +bCc89y7tDIRjT3UDQCYmDKtUm+tTvpUK+NGe40KAR8Gtb79qUrmbeSCtckSIbEnHMsx
+         B3Dw==
+X-Forwarded-Encrypted: i=1; AHgh+RrKA7Lrrg2dhqgE/viChY64leP2GNNfFeft4fY7iljPBgkFLs+qB5EGNx/HGNrIn4w3kBo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxHaD/iGOiWPmlqHeP7AP9U9FMomwlBMPy7D7HSyFXE7luF9MM2
+	hfwsisYP2500Cyh9pS03YZlUwp6X0wc6FC+OEb02DHfopvXYBXYFH5kEbI59yInNMco=
+X-Gm-Gg: AR+sD11VE4VGHt+TahiEP8fFGOR7mqSfiUZqH6iqqpY+P/YAQDPlTyUo6/vJrfQ4Lle
+	HEbIACdGPsUS4pUarvpYL4cOguNDv7HY8hpYF2efThTvKJ1ok44NkjraV6bJXQic9r7yr/gs7gf
+	8FUvuOPC4Q5J2160dIq4UlacwNCcxWRKk3ehY/kkKh4BwKL1KlwmAZDmpDh22onNQqRo7V8XplZ
+	tDGAKA9b6jCtIzexdhii7TDiNjny1BHy6lZaPGArB6zjlu7dnnlbckHTigNdKU+R7VSKpXXSYjZ
+	OK4c2M1Zy5d+9TTw7HXm+XDFPIemApqOHiJMRUrVtQAIF9NytfDz6/XQjYgya+ui8EdL5pF9q1o
+	FP5v302z078qUuRi7jSHqHq2RJ7gw2fEqnxiFo+C8TE77OxZqQxGzzR4LCiA=
+X-Received: by 2002:a17:903:1b25:b0:2ca:3b31:ef4f with SMTP id d9443c01a7336-2cf34a0a6b5mr140652465ad.40.1784561339559;
+        Mon, 20 Jul 2026 08:28:59 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:51::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf34730e35sm58695305ad.64.2026.07.20.08.28.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 08:28:58 -0700 (PDT)
+Date: Mon, 20 Jul 2026 08:28:58 -0700
+From: Joe Damato <joe@dama.to>
+To: wei.fang@oss.nxp.com
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+	wei.fang@nxp.com, chleroy@kernel.org, maxime.chevallier@bootlin.com,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RESEND v4 net-next 11/14] net: enetc: move
+ enetc_set_si_vlan_promisc() to enetc_pf_common.c
+Message-ID: <al4+uiiXKgaNBa91@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, wei.fang@oss.nxp.com,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux@armlinux.org.uk, wei.fang@nxp.com, chleroy@kernel.org,
+	maxime.chevallier@bootlin.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
+ <20260720014317.1059359-12-wei.fang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720014317.1059359-12-wei.fang@oss.nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Uninitialized `pci->pcie_cap` used in Endpoint mode causes severe =
-PCIe configuration space corruption.
-- [Low] Unnecessary PCIe capability search and unused variable left intact.
---
+On Mon, Jul 20, 2026 at 09:43:13AM +0800, wei.fang@oss.nxp.com wrote:
+> From: Wei Fang <wei.fang@nxp.com>
+> 
+> The PSIPVMR in ENETC v4 has the same bit layout and functionality as the
+> PSIPVMR register in ENETC v1: bit n (n <= 15) controls VLAN promiscuous
+> mode for SI n. The only difference between the two hardware generations
+> is the register address offset.
+> 
+> Since the register functionality is identical, the VLAN promiscuous mode
+> setting code can be shared between ENETC v1 and v4 drivers.
+> 
+> Move enetc_set_si_vlan_promisc() from enetc_pf.c to enetc_pf_common.c
+> and export it so that it can be shared between the two drivers. Add a
+> revision check using is_enetc_rev1() to select the correct register
+> offset (ENETC_PSIPVMR for v1 and ENETC4_PSIPVMR for v4) while keeping
+> the same logic.
+> 
+> Remove the v4-specific enetc4_pf_set_si_vlan_promisc() from enetc4_pf.c
+> and replace its call site with the new common enetc_set_si_vlan_promisc()
+> to eliminate code duplication.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  .../net/ethernet/freescale/enetc/enetc4_pf.c  | 17 ++------------
+>  .../net/ethernet/freescale/enetc/enetc_pf.c   | 16 --------------
+>  .../freescale/enetc/enetc_pf_common.c         | 22 +++++++++++++++++++
+>  .../freescale/enetc/enetc_pf_common.h         |  1 +
+>  4 files changed, 25 insertions(+), 31 deletions(-)
 
---- Patch [2]: [PATCH v3 02/16] PCI: dwc: Use cached PCIe capability offset=
- in core ---
-commit 1e2ce6ece477d5f9c179f2ac4c13cd06cf764f59
-Author: Hans Zhang <18255117159@163.com>
-
-PCI: dwc: Use cached PCIe capability offset in core
-   =20
-Modify the DWC core functions to use the cached pcie_cap offset instead
-of calling dw_pcie_find_capability() each time.
-
-[ ... ]
-
-> dw_pcie_ep_init_non_sticky_registers() now assumes pci->pcie_cap is
-> valid. if not, it prints a warning and skips the operation. The other
-> functions run after probe, so pci->pcie_cap is already valid and can
-> be used directly.
-
-[Severity: High]
-The commit message mentions adding a warning and skipping the operation if
-pci->pcie_cap is not valid, but this check appears to be missing in the
-code below.
-
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pc=
-i/controller/dwc/pcie-designware-ep.c
-> index 7d2794945704e..14228be8bbce7 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> @@ -1246,7 +1246,7 @@ static void dw_pcie_ep_init_non_sticky_registers(st=
-ruct dw_pcie *pci)
->  	 * to all other functions as well.
->  	 */
->  	if (funcs > 1) {
-> -		offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +		offset =3D pci->pcie_cap;
-
-[Severity: High]
-Without the validation check mentioned in the commit message, if
-pci->pcie_cap is uninitialized (0), will this lead to corrupting the
-standard PCI configuration space header registers instead of the intended
-capability registers?
-
-[ ... ]
-
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/c=
-ontroller/dwc/pcie-designware.c
-> index ec4722ed93032..810729b918928 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware.c
-> @@ -806,8 +806,7 @@ int dw_pcie_wait_for_link(struct dw_pcie *pci)
-> =20
->  	pci_host_common_link_train_delay(pci->max_link_speed);
-> =20
-> -	offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> -	val =3D dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKSTA);
-> +	val =3D dw_pcie_readw_dbi(pci, pci->pcie_cap + PCI_EXP_LNKSTA);
-
-[Severity: High]
-If pci->pcie_cap is 0, this will read from 0 + PCI_EXP_LNKSTA (0x12) instead
-of the actual capability offset. Could this lead to failed link status
-checks?
-
-[ ... ]
-
-> @@ -890,7 +889,7 @@ static void dw_pcie_link_set_max_speed(struct dw_pcie=
- *pci)
->  int dw_pcie_link_get_max_link_width(struct dw_pcie *pci)
->  {
->  	u8 cap =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> -	u32 lnkcap =3D dw_pcie_readl_dbi(pci, cap + PCI_EXP_LNKCAP);
-> +	u32 lnkcap =3D dw_pcie_readl_dbi(pci, pci->pcie_cap + PCI_EXP_LNKCAP);
-
-[Severity: Low]
-Is the cap variable still needed here? It looks like it is now unused, which
-might cause an unnecessary MMIO read during the capability search and trigg=
-er
-a compiler warning.
-
->  	return FIELD_GET(PCI_EXP_LNKCAP_MLW, lnkcap);
->  }
-> @@ -898,7 +897,6 @@ int dw_pcie_link_get_max_link_width(struct dw_pcie *p=
-ci)
->  static void dw_pcie_link_set_max_link_width(struct dw_pcie *pci, u32 num=
-_lanes)
->  {
->  	u32 lnkcap, lwsc, plc;
-> -	u8 cap;
-> =20
->  	if (!num_lanes)
->  		return;
-> @@ -935,10 +933,9 @@ static void dw_pcie_link_set_max_link_width(struct d=
-w_pcie *pci, u32 num_lanes)
->  	dw_pcie_writel_dbi(pci, PCIE_PORT_LINK_CONTROL, plc);
->  	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, lwsc);
-> =20
-> -	cap =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> -	lnkcap =3D dw_pcie_readl_dbi(pci, cap + PCI_EXP_LNKCAP);
-> +	lnkcap =3D dw_pcie_readl_dbi(pci, pci->pcie_cap + PCI_EXP_LNKCAP);
->  	FIELD_MODIFY(PCI_EXP_LNKCAP_MLW, &lnkcap, num_lanes);
-> -	dw_pcie_writel_dbi(pci, cap + PCI_EXP_LNKCAP, lnkcap);
-> +	dw_pcie_writel_dbi(pci, pci->pcie_cap + PCI_EXP_LNKCAP, lnkcap);
->  }
-
-[Severity: High]
-If pci->pcie_cap happens to be 0 here, this will perform a read-modify-write
-at offset 0 + PCI_EXP_LNKCAP (0x0C). Could this destroy the standard
-PCI Header Type and BIST registers?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720150619.2473=
-3-1-18255117159@163.com?part=3D2
+Reviewed-by: Joe Damato <joe@dama.to>
