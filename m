@@ -1,148 +1,210 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BA43563EB
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 05:27:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02693ADB92
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 06:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784525279; cv=none; b=fAFIix/18MSHU7FumU7wEeK6gkzyugjtGhplcCewfTX/mozMhFEUFLjl9ZRqk7fpncMBuBail6gOrrbzsqEasWRaLRnbAOC9xnvI/Srbfz8FH9SyDHd0gGYV+/EKBNEK66QMxVxSHUwT/7/a4jLzg0iZ+sjyFx31eniKHookdAg=
+	t=1784528660; cv=none; b=P9LJewXMN7necaLQmTfMMfvYnVpekNyWihgsTgIWCw7K9jzwQR3s92k+MGRNEHyijVraUL6Y7sE0ZYjuhFgUhPpEQa6qQoo72qg9q/3F1YH679VKriKjit9wL8NRNSSfnV3kXkhq07HAne7y1aALbihicVXpce7kq30thw51ry0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784525279; c=relaxed/simple;
-	bh=hV3hmVCFcy/Pf7QbmtUHRE7zXPXJ3jzOywRyM+89BVc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=HoPl2bPuM/S5R6M1Uwf+io6R8S9WcMESaP4elhBAZsPZdMikONd4nqpdtuUoRsAxe7GsN9+8Ev0yGJR1xZ6sdKy0jgOxWgSLzhZxpbMzcniv91b+g83vttyVT3JV4ozuBkYMFA7iQbQfFkQ86WcpNrvkgOqqDb+K6bPukXdAnw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=R6QsLCPb; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1784528660; c=relaxed/simple;
+	bh=4tB+67YMPAYA+Fp7hKThmFDs4EE5gnppfw4oTodipEM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jqPdrvJigr/4drj+UFJCV6U7HFUm5agEzUh06BQNIkaSix4f4KW3VyIFTJ2uUhZPXdCCPg9c8jCA6mkrvweX9WwZPLDby9HQj5NzrmQm0JJWV2uurxFzXu/tszyZmnuenoKPHhT6uw7oHFeXBpl/eyieArgKz3N51xNap1qukpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=p0dWhOTa; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="R6QsLCPb"
-Received: from francesco-nb (93-38-200-139.ip72.fastwebnet.it [93.38.200.139])
-	by mail11.truemail.it (Postfix) with ESMTPA id AD8E41FDC6;
-	Mon, 20 Jul 2026 07:27:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1784525267;
-	bh=uQbfFBez37Wkn4R0iQjQQgdVIH7amzo82kFj7d+pTUQ=; h=From:To:Subject;
-	b=R6QsLCPbKty/FkgiZbbzO++1xAcX2/sRHzB3WneIN7KRZViZLloSWuRKRSgEctvQa
-	 1JtymYJUpPTbGxCpjX2kfdUEaikDhJP8yNNNire3Px1GfEkPoUUS0aVCQkrJML2VIb
-	 14pG4k6Oz8BtUf/H5W7InzinHBE2KSHwAHWIXVmj4GbTizh1sLTCudbzs8ynZQjzai
-	 IaIlsw1xcCEzMYVx5FU9vm0E5LKm6ZwtlsZly9ARSQ39OeZkbXR/fdkY/rY/PntYm+
-	 QExYm4YP71yTPTK9Oph5k4NXhAnsGRj2lEco1LlcrHUDy8XbPDsjYvBJRHGbrQxhtr
-	 FZOhYXECoLcvQ==
-Date: Mon, 20 Jul 2026 07:27:42 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Richard Zhu <hongxing.zhu@nxp.com>, frank.li@nxp.com,
-	linux-pci@vger.kernel.org, imx@lists.linux.dev
-Cc: l.stach@pengutronix.de, lpieralisi@kernel.org, kwilczynski@kernel.org,
-	mani@kernel.org, robh@kernel.org, bhelgaas@google.com,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org
-Subject: Non systematic PCIe error on resume on i.MX8QP on Linux 7.2
-Message-ID: <20260720052742.GA6753@francesco-nb>
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="p0dWhOTa"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4954aff6088so15951185e9.3
+        for <imx@lists.linux.dev>; Sun, 19 Jul 2026 23:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1784528649; x=1785133449; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=G/H3laF11WeRlQ2NHJchQO+2MbI7YG6ixP9fYh5lWUc=;
+        b=p0dWhOTa8p/L62JHnpZHmhowwYU9l0hsuLPKSTV9SmUcZRPgr4B8Oeh/06Y9DWJn5g
+         2p5S9sfQR7SEHd8LKQKFkqZy1vNWrEcmbwjuv74MBS/Ys7jH/6rqY8f1EJQYSt5WcE/s
+         BwuGyzEDS6XTsosF6yNUoz8E/6Ok/cIX7L8iYZL+9UfL6Z51qOvJ6fEJFq6wnVLNgvmX
+         7O2n4NH/bxQnEaEgjMGiFd5Cf3MQ7y7WUPrfCU0Eey21mU1K0ZfgkFFmVLr9+lVAKVEH
+         TKzKUbvqsHOdom9QfVA+INoc2e3Ly52MUKx1EfGuZ9B+Vnak50/RE/dFY0n2ad+Qqoej
+         g+Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784528649; x=1785133449;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=G/H3laF11WeRlQ2NHJchQO+2MbI7YG6ixP9fYh5lWUc=;
+        b=gP4wZ9/mWauyo8goFSnqiviWBS4JOjlIsV5eF9ydCsC4aV6Nc6ykqL0wxWfyfIj665
+         UaR5igFpSAj9Da5xA96cGH3DZDmrphVKgoEFbPLV/BZyBC+FqObnOQKmlYO9OXK/Vl0m
+         0gxbpdP1T+I1tQEd0819lHdzdmWxnvJ38mQzE2FIK8LtJ4dnffOxjaE01jvokfj3o0r0
+         q8ANhIxTV6O4oLmIQHrDDEkdxGAwX5gy4OCX4A5mqdlUG5zLewuOn9/8iIoNejU7kfFj
+         ReDDGTznwiOBNYj7Vj2Z4XY/bjS5XWmoMQTHzqB1WnP63WR5bNzh8YJPoWH1JVeEw5FU
+         J6Hw==
+X-Forwarded-Encrypted: i=1; AHgh+RrMNMmAkp0tioJusSM/+rO6lrVw/vb4byB+aWg8kZgjgwlPCJK1ZCBWnafrNcp0MFeHviw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzzBEc4Qc6s7X0OnpPrfxAXgd9xDcGKg3qHoXIkUAiSd06AvdWP
+	AfCT22j5S+BGJnqDWAhDoere5hw5mOobElMsOUDQr8UZwbXViF2h8dXsOSE6AY6tvsY=
+X-Gm-Gg: AfdE7clfXxeixnQHLRmEDNT/ek66BVT5IGXCdH1lM+cXPzYnRin/hphvQxOfdBTzR4g
+	RvV8XmdDz6sZlQ0+U+EQDpT6WsMbdRdfaHBUVOtYvHtYjss8xkELr/ywWzvPYfaBWVvCJgQjMXg
+	XX7ft4AaOACpPO0fVXhAHwARyB2ganEobnzpKhRufkOuspdPLK5A/cLgFarfhxDfvW6xAl8/Wjr
+	V52TgwPExNQMNkfhqXBWWLRmFOXiUIRQ76J9iuNhopRvSFseG+kxjv+QaJnl7hAn/HPeZbTL80K
+	Is0mQf3GJN13BFEH4lFB0k1sC5mTpQkEcFZBmlHxbZRz21+ULtmVEbjvZln7yDq29X0LdpvBdhW
+	eb2NRyMUXjGBAJoPXLj0TbN+c4AzssKxYetZSgLoQumefpnTxiOYf3F5//y04EJGh3v2DjXZbk6
+	9iYoXd/mSYiMFjcb0i1/HEMtEgMW4h
+X-Received: by 2002:a05:600c:6a08:b0:493:bcba:46a4 with SMTP id 5b1f17b1804b1-4954a404528mr88685635e9.20.1784528648411;
+        Sun, 19 Jul 2026 23:24:08 -0700 (PDT)
+Received: from localhost ([2a02:8071:56d1:2de0:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4954a2e83ddsm243760905e9.10.2026.07.19.23.24.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 23:24:07 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Syed Saba Kareem <Syed.SabaKareem@amd.com>,
+	Aaron Ma <aaron.ma@canonical.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Hasun Park <hasunpark@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Kees Cook <kees@kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	James Ogletree <jogletre@opensource.cirrus.com>,
+	Fred Treven <fred.treven@cirrus.com>,
+	Ben Bright <ben.bright@cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	Mac Chiang <mac.chiang@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	patches@opensource.cirrus.com,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	=?utf-8?q?Amadeusz_S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	linux-arm-msm@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev
+Subject: [PATCH v2 0/6] ASoC: Use named initializers for platform_device_id arrays
+Date: Mon, 20 Jul 2026 08:23:44 +0200
+Message-ID: <cover.1784528081.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.55.0.11.g153666a7d9bb
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3614; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=4tB+67YMPAYA+Fp7hKThmFDs4EE5gnppfw4oTodipEM=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqXb7wZqEDAgS99aNcA7ppupT1jNl9C2tgs/w94 zfkKA6R2EeJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCal2+8AAKCRCPgPtYfRL+ TkJUCACIvjuWjtW0zv6qwyWNZ4eR11ChZWhjx4507jdswfBcqPRWzrztk9x5ZcJAFrtD89Hy1O3 dIQROoiGwIt6/ZT0XrIIuG6ch21Ra870AZs5MZLjQlFKaIK8Ax0Vlhfjs3HuLGrkGESBlhEcUJ7 bb0eoRYQIqpt1vO10ZxC/wn0B3HhG+8aRkBuumyMvo2JoZ2uUuIdxEM38BlZbb61zBzcB/V2Pnp 55oCYIi6Fq8nNZpLZM9cPX7FOwbZDzmX7kNiAY9S+Ewa2h/SCetXD2vMA0WFQcRZ5DGh3zqawwa 3wR1GjDeaQaO5rHw1kluRx9mB4APLagFmV3CpMXKfxK28zan
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
 Hello,
-our CI spotted this error on resume. It is not systematic, and it is
-possible that this is not a new issue from 7.2.
 
-Does it rings any bell?
+the objective of this series is still to prepare making struct
+platform_device_id::driver_data an anonymous union. See
+https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com/
+for the details about that.
 
-[  745.849237] imx8qm-hsio-phy 5f180000.phy: HSIO_PM_REQ_CORE_RST is set
-[  745.855800] phy phy-5f180000.phy.1: phy poweron failed --> -110
-[  745.861824] imx6q-pcie 5f000000.pcie: waiting for PHY ready timeout!
-[  745.868378] imx6q-pcie 5f000000.pcie: Host init failed: -110
-[  745.874144] imx6q-pcie 5f000000.pcie: PM: dpm_run_callback(): genpd_resume_noirq returns -110
-[  745.882791] imx6q-pcie 5f000000.pcie: PM: failed to resume noirq: error -110
-[  745.889979] Internal error: synchronous external abort: 0000000096000210 [#1]  SMP
-[  745.897647] Modules linked in: can_raw can 8021q garp stp mrp llc bluetooth ecdh_generic ecc uas nls_iso8859_1 nls_cp437 mwifiex_pcie mwifiex cfg80211 ahci rfkill sd_mod cdns caam_jr caamhash_desc spidev caamalg_desc rng crypto_engine kpp rng_core libdes snd_soc_fsl_asoc_card aes_ce_blk ghash_ce snd_soc_simple_card snd_soc_imx_audmux leds_gpio gf128mul imx_sc_thermal rtc_imx_sc nvmem_imx_ocotp_scu snd_soc_simple_card_utils led_class gpio_fan ahci_imx libahci_platform libahci phy_fsl_imx8qm_hsio libata fsl_imx8_ddr_perf ci_hdrc_imx ci_hdrc ulpi phy_cadence_salvo ehci_hcd roles usbmisc_imx phy_mxs_usb cdns3_imx usb3503 snd_soc_sgtl5000 flexcan can_dev imx8qxp_adc snd_soc_fsl_spdif snd_soc_fsl_sai imx_pcm_dma snd_soc_fsl_utils snd_soc_fsl_asrc pwm_imx27 spi_fsl_lpspi caam etnaviv error gpu_sched amphion_vpu fuse autofs4
-[  745.970466] CPU: 2 UID: 0 PID: 53 Comm: kworker/u21:2 Tainted: G   M                7.2.0-rc4-0.0.0-devel #1 PREEMPT
-[  745.981181] Tainted: [M]=MACHINE_CHECK
-[  745.985018] Hardware name: Toradex Apalis iMX8QP V1.1 on Apalis Ixora V1.2 Carrier Board (DT)
-[  745.993643] Workqueue: async async_run_entry_fn
-[  745.998279] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  746.005337] pc : pci_generic_config_read+0x64/0xc0
-[  746.010231] lr : pci_generic_config_read+0x24/0xc0
-[  746.015118] sp : ffff800080513ba0
-[  746.018520] x29: ffff800080513ba0 x28: 0000000000000000 x27: 0000000000000000
-[  746.025761] x26: ffff00000043d400 x25: 0000000000000000 x24: ffff0000004d1e05
-[  746.033000] x23: 0000000000000003 x22: ffffa79a09fe3118 x21: ffff000003a000d0
-[  746.040242] x20: 0000000000000002 x19: ffff800080513be4 x18: 0000000000000001
-[  746.047482] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000002
-[  746.054720] x14: ffff000000718f90 x13: ffffa79a09f6f068 x12: 0000000000000003
-[  746.061959] x11: 0000000000000028 x10: 000000016a2a9b62 x9 : 000000000000003c
-[  746.069197] x8 : ffffa79a09861b20 x7 : ffff0000067fe800 x6 : ffffa79a0a6bf000
-[  746.076438] x5 : 0000000000000000 x4 : ffff800080513be4 x3 : ffffa79a0989d904
-[  746.083676] x2 : 0000000000000044 x1 : 0000000000000000 x0 : ffff8000827c0044
-[  746.090917] Call trace:
-[  746.093455]  pci_generic_config_read+0x64/0xc0 (P)
-[  746.098345]  pci_bus_read_config_word+0x74/0xe0
-[  746.102971]  pci_read_config_word+0x2c/0x48
-[  746.107252]  pci_power_up+0x50/0x1e4
-[  746.110927]  pci_pm_power_up_and_verify_state+0x2c/0xa0
-[  746.116249]  pci_pm_resume_noirq+0xe8/0x1ac
-[  746.120528]  dpm_run_callback+0x4c/0x108
-[  746.124550]  device_resume_noirq+0x110/0x3c4
-[  746.128917]  async_resume_noirq+0x20/0x40
-[  746.133024]  async_run_entry_fn+0x34/0x164
-[  746.137215]  process_one_work+0x15c/0x2a0
-[  746.141317]  worker_thread+0x18c/0x2e0
-[  746.145159]  kthread+0x11c/0x13c
-[  746.148486]  ret_from_fork+0x10/0x20
-[  746.152167] Code: 52800000 a8c27bfd d50323bf d65f03c0 (79400000)
-[  746.158371] ------------[ cut here ]------------
-[  746.163077] WARNING: /usr/src/kernel/kernel/printk/printk.c:4627 at __wake_up_klogd+0xf4/0x100, CPU#2: kworker/u21:2/53
-[  746.173972] Modules linked in: can_raw can 8021q garp stp mrp llc bluetooth ecdh_generic ecc uas nls_iso8859_1 nls_cp437 mwifiex_pcie mwifiex cfg80211 ahci rfkill sd_mod cdns caam_jr caamhash_desc spidev caamalg_desc rng crypto_engine kpp rng_core libdes snd_soc_fsl_asoc_card aes_ce_blk ghash_ce snd_soc_simple_card snd_soc_imx_audmux leds_gpio gf128mul imx_sc_thermal rtc_imx_sc nvmem_imx_ocotp_scu snd_soc_simple_card_utils led_class gpio_fan ahci_imx libahci_platform libahci phy_fsl_imx8qm_hsio libata fsl_imx8_ddr_perf ci_hdrc_imx ci_hdrc ulpi phy_cadence_salvo ehci_hcd roles usbmisc_imx phy_mxs_usb cdns3_imx usb3503 snd_soc_sgtl5000 flexcan can_dev imx8qxp_adc snd_soc_fsl_spdif snd_soc_fsl_sai imx_pcm_dma snd_soc_fsl_utils snd_soc_fsl_asrc pwm_imx27 spi_fsl_lpspi caam etnaviv error gpu_sched amphion_vpu fuse autofs4
-[  746.246751] CPU: 2 UID: 0 PID: 53 Comm: kworker/u21:2 Tainted: G   M                7.2.0-rc4-0.0.0-devel #1 PREEMPT
-[  746.257464] Tainted: [M]=MACHINE_CHECK
-[  746.261300] Hardware name: Toradex Apalis iMX8QP V1.1 on Apalis Ixora V1.2 Carrier Board (DT)
-[  746.269921] Workqueue: async async_run_entry_fn
-[  746.274548] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  746.281605] pc : __wake_up_klogd+0xf4/0x100
-[  746.285881] lr : wake_up_klogd+0x14/0x20
-[  746.289899] sp : ffff800080513920
-[  746.293304] x29: ffff800080513920 x28: ffff000000718f00 x27: 0000000000000000
-[  746.300545] x26: ffff00000043d400 x25: 0000000000000000 x24: 00000000000000c0
-[  746.307786] x23: ffffa79a09861b84 x22: 0000000000000000 x21: ffff800080513a60
-[  746.315026] x20: ffffa79a0a202cc0 x19: ffffa79a0a678370 x18: 000000000000000a
-[  746.322266] x17: 3430306337323830 x16: 3030386666666620 x15: 0730076307330730
-[  746.329506] x14: 0766073507360764 x13: 0730076307330730 x12: 0766073507360764
-[  746.336746] x11: ffffa79a0a55c7c0 x10: 00000000000002af x9 : ffffa79a0a55c7c0
-[  746.343986] x8 : 3fffffffffffefff x7 : ffffa79a0a5b47c0 x6 : 0000000000000000
-[  746.351226] x5 : 00000000000002b0 x4 : 0000000000000000 x3 : 0000000000000000
-[  746.358467] x2 : 0000000000000000 x1 : 0000000000000001 x0 : 0000000000000001
-[  746.365708] Call trace:
-[  746.368241]  __wake_up_klogd+0xf4/0x100 (P)
-[  746.372520]  bust_spinlocks+0x4c/0x60
-[  746.376279]  die+0xc0/0x144
-[  746.379166]  arm64_notify_die+0xa0/0xa4
-[  746.383099]  do_sea+0x68/0x80
-[  746.386163]  do_mem_abort+0x40/0x9c
-[  746.389745]  el1_abort+0x44/0x64
-[  746.393068]  el1h_64_sync_handler+0x50/0xac
-[  746.397348]  el1h_64_sync+0x6c/0x70
-[  746.400934]  pci_generic_config_read+0x64/0xc0 (P)
-[  746.405821]  pci_bus_read_config_word+0x74/0xe0
-[  746.410448]  pci_read_config_word+0x2c/0x48
-[  746.414727]  pci_power_up+0x50/0x1e4
-[  746.418398]  pci_pm_power_up_and_verify_state+0x2c/0xa0
-[  746.423721]  pci_pm_resume_noirq+0xe8/0x1ac
-[  746.427998]  dpm_run_callback+0x4c/0x108
-[  746.432013]  device_resume_noirq+0x110/0x3c4
-[  746.436380]  async_resume_noirq+0x20/0x40
-[  746.440482]  async_run_entry_fn+0x34/0x164
-[  746.444674]  process_one_work+0x15c/0x2a0
-[  746.448778]  worker_thread+0x18c/0x2e0
-[  746.452620]  kthread+0x11c/0x13c
-[  746.455943]  ret_from_fork+0x10/0x20
-[  746.459614] ---[ end trace 0000000000000000 ]---
-[  746.464322] ---[ end trace 0000000000000000 ]---
-[  746.469033] note: kworker/u21:2[53] exited with irqs disabled
-[  746.474916] note: kworker/u21:2[53] exited with preempt_count 1
+If you consider the last patch mostly churn, just drop it.
 
+v1 of this series can be found at
+https://lore.kernel.org/linux-sound/cover.1779958164.git.u.kleine-koenig@baylibre.com.
+
+Changes since then:
+
+ - Rebase to current next
+ - Some grammar improvements in the commit log for patch #1
+ - Split the changes to sound/soc/amd/acp in separate changes.
+ - The 2nd patch used to be "ASoC: renesas: fsi: Simplify driver_data
+   handling" which removed fsi_id_table[0].driver_data, but with commit
+   38d3273075d6 ("ASoC: renesas: fsi: remove platform data style
+   support") that needed to change.
+ - The last patch now touches a few more files. (I didn't check if these
+   are new offenders or if I failed to catch them in v1.) I didn't add
+   Cezary Rojewski's ack because of that.
+
+If splitting off the amd/acp changes was requested because they go in
+via a separate tree: That's possible, in fact each file is touched only
+once, so the patches can be reordered freely and applied via different
+trees if needed.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (The Capable Hub) (6):
+  ASoC: codecs: mt6357: Drop unused assignment of platform_device_id
+    driver data
+  ASoC: renesas: fsi: Drop platform probing metadata
+  ASoC: amd: acp: Use named initializers for platform_device_id arrays
+  ASoC: amd: acp: Unify code style for platform_device_id array
+  ASoC: Use named initializers for platform_device_id arrays
+  ASOC: Unify code style for platform_device_id arrays
+
+ sound/soc/amd/acp/acp-sdw-legacy-mach.c |  4 ++--
+ sound/soc/amd/acp/acp-sdw-sof-mach.c    |  4 ++--
+ sound/soc/amd/acp/acp-sof-mach.c        | 14 +++++++-------
+ sound/soc/au1x/db1200.c                 |  2 +-
+ sound/soc/codecs/adau7118-hw.c          |  2 +-
+ sound/soc/codecs/bt-sco.c               | 10 +++-------
+ sound/soc/codecs/cs40l50-codec.c        |  4 ++--
+ sound/soc/codecs/cs42l43.c              |  4 ++--
+ sound/soc/codecs/mt6357.c               |  4 ++--
+ sound/soc/codecs/wcd934x.c              |  6 ++----
+ sound/soc/fsl/imx-pcm-rpmsg.c           |  6 +++---
+ sound/soc/intel/avs/boards/da7219.c     |  6 ++----
+ sound/soc/intel/avs/boards/dmic.c       |  6 ++----
+ sound/soc/intel/avs/boards/es8336.c     |  6 ++----
+ sound/soc/intel/avs/boards/hdaudio.c    |  6 ++----
+ sound/soc/intel/avs/boards/i2s_test.c   |  6 ++----
+ sound/soc/intel/avs/boards/max98357a.c  |  6 ++----
+ sound/soc/intel/avs/boards/max98373.c   |  6 ++----
+ sound/soc/intel/avs/boards/max98927.c   |  6 ++----
+ sound/soc/intel/avs/boards/nau8825.c    |  6 ++----
+ sound/soc/intel/avs/boards/pcm3168a.c   |  6 ++----
+ sound/soc/intel/avs/boards/probe.c      |  2 +-
+ sound/soc/intel/avs/boards/rt274.c      |  2 +-
+ sound/soc/intel/avs/boards/rt286.c      |  2 +-
+ sound/soc/intel/avs/boards/rt298.c      |  2 +-
+ sound/soc/intel/avs/boards/rt5514.c     |  2 +-
+ sound/soc/intel/avs/boards/rt5640.c     |  2 +-
+ sound/soc/intel/avs/boards/rt5663.c     |  2 +-
+ sound/soc/intel/avs/boards/rt5682.c     |  2 +-
+ sound/soc/intel/avs/boards/ssm4567.c    |  2 +-
+ sound/soc/intel/boards/sof_sdw.c        |  4 ++--
+ sound/soc/renesas/fsi.c                 |  4 ++--
+ sound/soc/samsung/i2s.c                 |  2 +-
+ 33 files changed, 61 insertions(+), 87 deletions(-)
+
+
+base-commit: 0718283ab28bc3907e10b61a6b4be6fefa1cbb2f
+-- 
+2.55.0.11.g153666a7d9bb
 
