@@ -1,282 +1,347 @@
-Received: from mail-oo1-f100.google.com (mail-oo1-f100.google.com [209.85.161.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83434446E2
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 17:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D85A4446EF
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 17:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784567032; cv=none; b=X3luGPtGrfVwsjxJMVlUxAB7X3TttiSynfdqbMGk7wnm/lfq7sEVIHM0c4ZuXF4EuVsJqyPe3t8rPjuRh3HCYlJUtIIbRcYVH6bh73tcSSAs9ktsDaTArlkO71Qz4c0vlyTraeWC/VkvkQU3qFgmAtf2wZ+lzCvTuy4NacgWGV4=
+	t=1784567158; cv=none; b=Fid6O5uK+ZClV4PtjJnyXqFTuLgbhRvVg70xSLAk8mF/D/HlkK0Nv/jyVeL+ZZRU6PaRE6HGDNc3WJ/bBhBpj+IgPwhgWv7BAHGTPDW098JMUfxn1EJdMr56Cz84POGHtmGWT1l/3YMEmfE7a8Pyn2CU5uZJp+AHqNWcWvvokx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784567032; c=relaxed/simple;
-	bh=tIavcZDerQwPcNn02JS8QeAlqQJQjEGzI/LhnDkAJbg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PPjA8i7SYBQmAX1IFAP7wNZ89KiYnwnCnJqjaE6tL7OgmPCOgrK7ptU+U/N5Xy7j4/mGtiXSG1Cc9tAQqZevDOLLJukmBAIAmzEqg0zA3+/musUbkGUHL9YBQD776f15MFPUg9Lvb0APYWNYCi0eN0wtnNnmC25jlSEu2El9y2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=O7u+CRic; arc=none smtp.client-ip=209.85.161.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1784567158; c=relaxed/simple;
+	bh=zOd4fmr8g7iB1tL/nkX4lZvsQbt/xhYZxfKsMTFQEBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FzS7eIpmSIDjdKC7QjUkoa93nZ3uqXcwalvELWUCezRqX25fbYwYoU6mAc1dhKwh5Ti2eEGiegKzP6zgTDlkHrhDiOxBwMMzPjqf/2uXRXlSqGTOulhNt//ZIL1F9lSdbucb9O7CUZ3UHfk0UrQTmfNqqPXOCPGNfZwxMabnuIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=mQOAoK3X; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="O7u+CRic"
-Received: by mail-oo1-f100.google.com with SMTP id 006d021491bc7-6a375ba035eso3860808eaf.3
-        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 10:03:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784567025; x=1785171825;
-        h=content-type:in-reply-to:autocrypt:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FCHZ2rL2kAdDyn7dYtMejYOmbRTbW2AJrWwc8wo44lA=;
-        b=b8E4j7Sp9q1zjvJ/6uKNPNNs8U7Ab8jgb9W3mX8WFJSZ88fPJt4kiiJ0eERTR88rHW
-         8J/Ld3SUdoAWh2cqBPIxCNL38Zrrgayl0FCxI43fA2suOAxjk2WeEI8yRZ7Ez0FiP4jL
-         zPAs9FnggH9LUJeOjpew8Mc9RAOzAfCwCCCh0r+wmxF2sKnc8lFVdVfGyp+14TO5zZLg
-         nJz5mRyGGE0xyXpmCtYUID9Sg3AmNlfIM/3HPZusnDqDH2JAp+q7Xf4zjgDO9VOl7hzD
-         KNaoFbHhKTvsXSQBENvEe8FbBQ0/RCh9vroyrNAqBd06vrq1/DgUMJmKraxBmi6LuhZ1
-         MyMQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpvpzKUN2NW3NImjhlWgpXakX0syoB+8oc6P20npkiD9/urpaS0ZZXNjFXxzOjHIEBm0Vw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyK8hoJmx69jhanJ5rYNzTYmw0b6VH/C3gASF4rzKKgtBdP1MNe
-	Jm2oFFGeUT7Qcx6zNtLVbyPxSN1MLlJLCaJBzJ7HVGx9+95HyMK6mZHpyy5ZVrJdumQdgQ4PadJ
-	txRwtiWTWtzuPTLhelbAax+ZjEssp4qQvpqzdSJeWJ8bRKLghxRUArViF9EptWPEuztBQUV9j37
-	s9a6M9hWBEghVUddmAoJZE3WWwS+Mtj3ID5aslAgwVlgBUHNwVmvBjpN68tq2tSYMLGVg3JWLOx
-	dhLWG/lhbiA
-X-Gm-Gg: AfdE7cl9i5gsdKJaRvrqMf76ZqYd/om9nyG0JUE9ifMV7u3MYqib0BFkgoTEF5zqzIw
-	4ZYF0eYgSrVWp6ag58sNX6nEkSISwzciaDe4zsVRN6OROSQxXbiIrDkLe/HolK4yrRxyuNHRXKb
-	AavbWGKxJAxVWDNRNSO0YWDmBUchNh8ecsWk3RtiRsaB5xyBT6pyE4cMZIaKynU5PLRwL6Kd7m8
-	2VPH36Y7RVbvruY2JT2AKg9fJIr1+wp+z33WurNZaV3bjfpWNvSVAtmjfj3wNwjvVRwuGmZXxeA
-	wvi7hxyQXT7OMXhJW3YJLbhM/MvvF8jW7qfyRA+h0lbGlHIRKR+Gi8jUrMDQC7RexeOXKyDCGVb
-	7GxiVBKqZcFLi/fxTlymZFnd2BX52WX4QpoulHuiqU1lz+7QzOwYHg70ZbO4I24CSvWzQznKVVH
-	lGBUdony3EzhiSQkgIAOmb2/eoCx4hoLgqiQJkoN7sNqY=
-X-Received: by 2002:a05:6820:4cc7:b0:6a3:7976:7059 with SMTP id 006d021491bc7-6a53680465cmr7728544eaf.24.1784567025326;
-        Mon, 20 Jul 2026 10:03:45 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-4568e07534fsm814639fac.2.2026.07.20.10.03.44
-        for <imx@lists.linux.dev>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 Jul 2026 10:03:45 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-698ae260973so17650005a12.2
-        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 10:03:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1784567023; x=1785171823; darn=lists.linux.dev;
-        h=content-type:in-reply-to:autocrypt:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FCHZ2rL2kAdDyn7dYtMejYOmbRTbW2AJrWwc8wo44lA=;
-        b=O7u+CRicF3qRbmb3ex3PB3JppimAw0DtlLM/ukO31wjRxFillzceES8IuSr5TAG6mn
-         Gl1vzezka8gNpW0lg+XcFWChy/AqtfzpmDe6pZJ8aAElltyBdzWP4c2ivdn+uK33Fsia
-         AIH1chUzeDT2ICi06+YLeutVFUoz26ghYCq44=
-X-Forwarded-Encrypted: i=1; AHgh+RoK+kZvD0nQPWbLtpEzdQS3fXFEO6DjRoz6iZssD0/8ThIEQo1aDK1soxGZGMzbKfQwrTE=@lists.linux.dev
-X-Received: by 2002:a05:6512:b93:b0:5aa:8822:c945 with SMTP id 2adb3069b0e04-5b28f9b72bdmr3591638e87.47.1784566668640;
-        Mon, 20 Jul 2026 09:57:48 -0700 (PDT)
-X-Received: by 2002:a05:6512:b93:b0:5aa:8822:c945 with SMTP id 2adb3069b0e04-5b28f9b72bdmr3591622e87.47.1784566668133;
-        Mon, 20 Jul 2026 09:57:48 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b291e1887esm2450178e87.59.2026.07.20.09.57.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jul 2026 09:57:39 -0700 (PDT)
-Message-ID: <b8062978-128c-4129-a803-1d02910122c8@broadcom.com>
-Date: Mon, 20 Jul 2026 09:57:27 -0700
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="mQOAoK3X"
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C9725289;
+	Mon, 20 Jul 2026 19:04:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1784567091;
+	bh=zOd4fmr8g7iB1tL/nkX4lZvsQbt/xhYZxfKsMTFQEBo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mQOAoK3X3q5Df3CvTO/taog4X044TnOODo1YS5I7eg5giG2TCmtE70JEtYUbfkVkg
+	 YJvvvyyFmx8jCRRhE5mnlBs/IZwzhJsjT9JkRDMN+xti6Mqj58o30iX/zJuzmv3U0l
+	 qgcN7CQGIj/e/kKnE9JOMte5YgKespXizEG8vBNU=
+Date: Mon, 20 Jul 2026 20:05:48 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Aisheng Dong <aisheng.dong@nxp.com>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH v5 2/2] media: nxp: imx8-isi: Add virtual channel support
+Message-ID: <20260720170548.GC42426@killaraus.ideasonboard.com>
+References: <20260521-isi_vc-v5-0-a38eb4fcd58e@oss.nxp.com>
+ <20260521-isi_vc-v5-2-a38eb4fcd58e@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] net: bcmgenet: use platform_device_set_fwnode()
-To: Andrew Lunn <andrew@lunn.ch>,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Andi Shyti <andi.shyti@kernel.org>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Doug Berger <opendmb@gmail.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Srinivas Kandagatla <srini@kernel.org>, brgl@kernel.org,
- driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
- iommu@lists.linux.dev, netdev@vger.kernel.org, linux-pm@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- mfd@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-sound@vger.kernel.org
-References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-4-2dee93f42c54@oss.qualcomm.com>
- <ae9da5dd-3528-4270-ada0-d17ed14478e0@lunn.ch>
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <ae9da5dd-3528-4270-ada0-d17ed14478e0@lunn.ch>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000087f70606570de357"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260521-isi_vc-v5-2-a38eb4fcd58e@oss.nxp.com>
 
---00000000000087f70606570de357
-Content-Language: en-US, fr-FR
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi Guoniu,
 
-On 7/20/26 07:38, Andrew Lunn wrote:
-> On Mon, Jul 20, 2026 at 11:24:51AM +0200, Bartosz Golaszewski wrote:
->> Prefer the higher-level platform_device_set_fwnode() over the
->> OF-specific platform_device_set_of_node() for dynamically allocated
->> platform devices.
+Thank you for the patch.
+
+On Thu, May 21, 2026 at 05:10:05PM +0800, Guoniu Zhou wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
 > 
-> Why?
+> The ISI supports different numbers of virtual channels depending on the
+> platform. i.MX95 supports 8 virtual channels, and i.MX8QXP/QM support 4
+> virtual channels. They are used in multiple camera use cases, such as
+> surround view. Other platforms (such as i.MX8/MN/MP/ULP/91/93) don't
+> support virtual channels, and the VC_ID bits are marked as read-only.
 > 
-> This driver is OF only. It does not support ACPI, and probably never
-> will. In general, networking and ACPI don't go together, ACPI is not
-> sufficiently advanced.
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+> Changes in v5:
+> - Return -EPIPE instead of -EINVAL for stream configuration errors
+> - Clear VC_ID_1 after generic mask to follow generic-then-conditional order
+> - Pass vc as function parameter instead of storing in pipe structure.
+> - Drop get_frame_desc fallback as crossbar now implements the operation
+> - Remove redundant num_entries check in mxc_isi_get_vc().
+> - Set vc to 0 for M2M as it doesn't support virtual channels.
 > 
-> What is you use case here?
+> Changes in v4:
+> - Fix VC boundary check: use num_vc (virtual channels count) instead of
+>   num_channels (ISI pipelines count)
+> - Set VC to 0 when frame descriptor has no entries
+> - Move platform-specific comments to block style to fix line length warnings
+> 
+> Changes in v3:
+> - Add num_vc field to platform data to indicate VC support
+> - Clear VC_ID_1 bit after reading CHNL_CTRL for proper VC switching
+> - Set VC_ID_1 only on platforms with num_vc > 4
+> - Improve mxc_isi_get_vc() error handling
+> - Add back CHNL_CTRL_BLANK_PXL and document platform-specific register fields
+> ---
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    |  3 ++
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  2 +
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c  | 17 +++++++-
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c |  2 +-
+>  .../media/platform/nxp/imx8-isi/imx8-isi-pipe.c    | 50 +++++++++++++++++++++-
+>  .../media/platform/nxp/imx8-isi/imx8-isi-regs.h    | 12 ++++--
+>  6 files changed, 79 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> index 4bf8570e1b9e..837ac7046cf2 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> @@ -318,6 +318,7 @@ static const struct mxc_isi_plat_data mxc_imx95_data = {
+>  	.model			= MXC_ISI_IMX95,
+>  	.num_ports		= 4,
+>  	.num_channels		= 8,
+> +	.num_vc			= 8,
+>  	.reg_offset		= 0x10000,
+>  	.ier_reg		= &mxc_imx8_isi_ier_v2,
+>  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> @@ -329,6 +330,7 @@ static const struct mxc_isi_plat_data mxc_imx8qm_data = {
+>  	.model			= MXC_ISI_IMX8QM,
+>  	.num_ports		= 5,
+>  	.num_channels		= 8,
+> +	.num_vc			= 4,
+>  	.reg_offset		= 0x10000,
+>  	.ier_reg		= &mxc_imx8_isi_ier_qm,
+>  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> @@ -340,6 +342,7 @@ static const struct mxc_isi_plat_data mxc_imx8qxp_data = {
+>  	.model			= MXC_ISI_IMX8QXP,
+>  	.num_ports		= 5,
+>  	.num_channels		= 6,
+> +	.num_vc			= 4,
+>  	.reg_offset		= 0x10000,
+>  	.ier_reg		= &mxc_imx8_isi_ier_v2,
+>  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> index 14d63ec36416..2957119c81f2 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> @@ -169,6 +169,7 @@ struct mxc_isi_plat_data {
+>  	enum model model;
+>  	unsigned int num_ports;
+>  	unsigned int num_channels;
+> +	unsigned int num_vc;		/* Number of VCs, 0 = no VC support */
+>  	unsigned int reg_offset;
+>  	const struct mxc_isi_ier_reg  *ier_reg;
+>  	const struct mxc_isi_set_thd *set_thd;
+> @@ -377,6 +378,7 @@ void mxc_isi_channel_unchain(struct mxc_isi_pipe *pipe);
+>  
+>  void mxc_isi_channel_config(struct mxc_isi_pipe *pipe,
+>  			    enum mxc_isi_input_id input,
+> +			    unsigned int vc,
+>  			    const struct v4l2_area *in_size,
+>  			    const struct v4l2_area *scale,
+>  			    const struct v4l2_rect *crop,
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
+> index 0187d4ab97e8..a98d7bec731d 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
+> @@ -301,6 +301,7 @@ static void mxc_isi_channel_set_panic_threshold(struct mxc_isi_pipe *pipe)
+>  
+>  static void mxc_isi_channel_set_control(struct mxc_isi_pipe *pipe,
+>  					enum mxc_isi_input_id input,
+> +					unsigned int vc,
+>  					bool bypass)
+>  {
+>  	u32 val;
+> @@ -312,6 +313,10 @@ static void mxc_isi_channel_set_control(struct mxc_isi_pipe *pipe,
+>  		 CHNL_CTRL_SRC_TYPE_MASK | CHNL_CTRL_MIPI_VC_ID_MASK |
+>  		 CHNL_CTRL_SRC_INPUT_MASK);
+>  
+> +	/* Clear the VC_ID_1 bit on platforms supporting more than 4 VCs. */
+> +	if (pipe->isi->pdata->num_vc > 4)
+> +		val &= ~CHNL_CTRL_VC_ID_1_MASK;
+> +
+>  	/*
+>  	 * If no scaling or color space conversion is needed, bypass the
+>  	 * channel.
+> @@ -338,7 +343,14 @@ static void mxc_isi_channel_set_control(struct mxc_isi_pipe *pipe,
+>  	} else {
+>  		val |= CHNL_CTRL_SRC_TYPE(CHNL_CTRL_SRC_TYPE_DEVICE);
+>  		val |= CHNL_CTRL_SRC_INPUT(input);
+> -		val |= CHNL_CTRL_MIPI_VC_ID(0); /* FIXME: For CSI-2 only */
+> +		val |= CHNL_CTRL_MIPI_VC_ID(vc); /* FIXME: For CSI-2 only */
+> +
+> +		/*
+> +		 * On platforms with more than 4 VCs (i.MX95), the VC ID is
+> +		 * split across VC_ID_0 (bits 7:6) and VC_ID_1 (bit 16).
+> +		 */
+> +		if (pipe->isi->pdata->num_vc > 4)
+> +			val |= CHNL_CTRL_VC_ID_1(vc >> 2);
+>  	}
+>  
+>  	mxc_isi_write(pipe, CHNL_CTRL, val);
+> @@ -348,6 +360,7 @@ static void mxc_isi_channel_set_control(struct mxc_isi_pipe *pipe,
+>  
+>  void mxc_isi_channel_config(struct mxc_isi_pipe *pipe,
+>  			    enum mxc_isi_input_id input,
+> +			    unsigned int vc,
+>  			    const struct v4l2_area *in_size,
+>  			    const struct v4l2_area *scale,
+>  			    const struct v4l2_rect *crop,
+> @@ -374,7 +387,7 @@ void mxc_isi_channel_config(struct mxc_isi_pipe *pipe,
+>  	mxc_isi_channel_set_panic_threshold(pipe);
+>  
+>  	/* Channel control */
+> -	mxc_isi_channel_set_control(pipe, input, csc_bypass && scaler_bypass);
+> +	mxc_isi_channel_set_control(pipe, input, vc, csc_bypass && scaler_bypass);
+>  }
+>  
+>  void mxc_isi_channel_set_input_format(struct mxc_isi_pipe *pipe,
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> index a39ad7a1ab18..291907ef44cb 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> @@ -144,7 +144,7 @@ static void mxc_isi_m2m_device_run(void *priv)
+>  			.height = ctx->queues.cap.format.height,
+>  		};
+>  
+> -		mxc_isi_channel_config(m2m->pipe, MXC_ISI_INPUT_MEM,
+> +		mxc_isi_channel_config(m2m->pipe, MXC_ISI_INPUT_MEM, 0,
+>  				       &in_size, &scale, &crop,
+>  				       ctx->queues.out.info->encoding,
+>  				       ctx->queues.cap.info->encoding);
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> index a41c51dd9ce0..03e0115b5b5a 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> @@ -232,6 +232,47 @@ static inline struct mxc_isi_pipe *to_isi_pipe(struct v4l2_subdev *sd)
+>  	return container_of(sd, struct mxc_isi_pipe, sd);
+>  }
+>  
+> +static int mxc_isi_get_vc(struct mxc_isi_pipe *pipe)
+> +{
+> +	struct mxc_isi_crossbar *xbar = &pipe->isi->crossbar;
+> +	struct device *dev = pipe->isi->dev;
+> +	struct v4l2_mbus_frame_desc fd = { };
+> +	unsigned int source_pad = xbar->num_sinks + pipe->id;
+> +	unsigned int max_vc;
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	ret = v4l2_subdev_call(&xbar->sd, pad, get_frame_desc,
+> +			       source_pad, &fd);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to get source frame desc from pad %u\n",
+> +			source_pad);
+> +		return ret;
+> +	}
+> +
+> +	/* Find stream 0 in the frame descriptor */
 
-The driver has been, or was used on ACPI-based platforms:
+	/* Find stream 0 in the frame descriptor. */
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=99c6b06a37d4cab118c45448fef9d28df62d35d8
+> +	for (i = 0; i < fd.num_entries; i++) {
+> +		if (fd.entry[i].stream == 0)
+> +			break;
+> +	}
+> +
+> +	if (i == fd.num_entries) {
+> +		dev_err(dev, "Failed to find stream from source frame desc\n");
+> +		return -EPIPE;
+> +	}
+> +
+> +	max_vc = pipe->isi->pdata->num_vc ? : 1;
+
+Let's name this num_vc, as it's the number of supported virtual
+channels, not the maximum VC identifier.
+
+> +
+> +	/* Check virtual channel range */
+
+	/* Check virtual channel range. */
+
+> +	if (fd.entry[i].bus.csi2.vc >= max_vc) {
+> +		dev_err(dev, "Virtual channel %u exceeds maximum %u\n",
+> +			fd.entry[i].bus.csi2.vc, max_vc - 1);
+> +		return -EPIPE;
+> +	}
+> +
+> +	return fd.entry[i].bus.csi2.vc;
+> +}
+> +
+>  int mxc_isi_pipe_enable(struct mxc_isi_pipe *pipe)
+>  {
+>  	struct mxc_isi_crossbar *xbar = &pipe->isi->crossbar;
+> @@ -244,6 +285,7 @@ int mxc_isi_pipe_enable(struct mxc_isi_pipe *pipe)
+>  	struct v4l2_subdev *sd = &pipe->sd;
+>  	struct v4l2_area in_size, scale;
+>  	struct v4l2_rect crop;
+> +	unsigned int vc;
+>  	u32 input;
+>  	int ret;
+>  
+> @@ -280,8 +322,14 @@ int mxc_isi_pipe_enable(struct mxc_isi_pipe *pipe)
+>  
+>  	v4l2_subdev_unlock_state(state);
+>  
+> +	ret = mxc_isi_get_vc(pipe);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	vc = ret;
+> +
+
+As vc values are small, you make the variable an int, and write
+
+	vc = mxc_isi_get_vc(pipe);
+	if (vc < 0)
+		return vc;
+
+There's no need to send a new version for this, I can handle it when
+applying your patches.
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+>  	/* Configure the ISI channel. */
+> -	mxc_isi_channel_config(pipe, input, &in_size, &scale, &crop,
+> +	mxc_isi_channel_config(pipe, input, vc, &in_size, &scale, &crop,
+>  			       sink_info->encoding, src_info->encoding);
+>  
+>  	mxc_isi_channel_enable(pipe);
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
+> index 1b65eccdf0da..e795f4daf3ff 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
+> @@ -6,6 +6,7 @@
+>  #ifndef __IMX8_ISI_REGS_H__
+>  #define __IMX8_ISI_REGS_H__
+>  
+> +#include <linux/bitfield.h>
+>  #include <linux/bits.h>
+>  
+>  /* ISI Registers Define  */
+> @@ -19,9 +20,14 @@
+>  #define CHNL_CTRL_CHAIN_BUF_NO_CHAIN				0
+>  #define CHNL_CTRL_CHAIN_BUF_2_CHAIN				1
+>  #define CHNL_CTRL_SW_RST					BIT(24)
+> -#define CHNL_CTRL_BLANK_PXL(n)					((n) << 16)
+> -#define CHNL_CTRL_BLANK_PXL_MASK				GENMASK(23, 16)
+> -#define CHNL_CTRL_MIPI_VC_ID(n)					((n) << 6)
+> +/*
+> + * CHNL_CTRL_BLANK_PXL: i.MX8{QM,QXP} only
+> + * CHNL_CTRL_VC_ID_1, CHNL_CTRL_VC_ID_1_MASK: i.MX95 only
+> + */
+> +#define CHNL_CTRL_BLANK_PXL(n)					FIELD_PREP(GENMASK(23, 16), (n))
+> +#define CHNL_CTRL_VC_ID_1(n)					FIELD_PREP(BIT(16), (n))
+> +#define CHNL_CTRL_VC_ID_1_MASK					BIT(16)
+> +#define CHNL_CTRL_MIPI_VC_ID(n)					FIELD_PREP(GENMASK(7, 6), (n))
+>  #define CHNL_CTRL_MIPI_VC_ID_MASK				GENMASK(7, 6)
+>  #define CHNL_CTRL_SRC_TYPE(n)					((n) << 4)
+>  #define CHNL_CTRL_SRC_TYPE_MASK					BIT(4)
+
 -- 
-Florian
+Regards,
 
---00000000000087f70606570de357
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
-2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
-phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
-a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
-ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
-07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
-SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
-rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGnzCCBIeg
-AwIBAgIMaT9V748TBL0gqLOFMA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
-ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
-MDIzMB4XDTI1MDYxOTA4NDMwM1oXDTI3MDYyMDA4NDMwM1owgeMxCzAJBgNVBAYTAlVTMRMwEQYD
-VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
-MDExNzERMA8GA1UEBBMIRmFpbmVsbGkxEDAOBgNVBCoTB0Zsb3JpYW4xFjAUBgNVBAoTDUJST0FE
-Q09NIElOQy4xJjAkBgNVBAMMHWZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tMSwwKgYJKoZI
-hvcNAQkBFh1mbG9yaWFuLmZhaW5lbGxpQGJyb2FkY29tLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD
-ggEPADCCAQoCggEBAK9u0aBdl51z/nEmpFSqdvC3Bu87AnBaOq1NGLM4vKTwCRuh1hSPhQOJkIB0
-X3lGlHAEUufNmKYb1aeLHW2kToCe+9mr2cBXqHP0aWl/Oy/ZjQabOsXzOzE0SfGLnLfGJMLV7yFB
-pwKwqxC8t5MBK+6zhQZGcnnuz9wF1tWGdczOeCmQCTO9+MlB1fNac8pKSB8bUhOSC4fr0ev7BfPA
-KmfMr9BBremQmDCaHeTwYy6wZLdj4dZzGMfF6PZOLiV5DU61ehA+spBd00RbowgJfmI525dEWihB
-DaLZim3cCy0sCU9GfGm2sHUX+3B0S6twomZzsrTE02PfoUuxXAqf0gMCAwEAAaOCAeEwggHdMA4G
-A1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcw
-AoY6aHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIz
-LmNydDA5BggrBgEFBQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1l
-Y2EyMDIzMGUGA1UdIAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0
-MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNV
-HR8EOjA4MDagNKAyhjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAy
-My5jcmwwKAYDVR0RBCEwH4EdZmxvcmlhbi5mYWluZWxsaUBicm9hZGNvbS5jb20wEwYDVR0lBAww
-CgYIKwYBBQUHAwQwHwYDVR0jBBgwFoAUACk2nlx6ug+vLVAt26AjhRiwoJIwHQYDVR0OBBYEFCuk
-Rbf0cgc52/dpv3u8tk5QBzfLMA0GCSqGSIb3DQEBCwUAA4ICAQCEf8H6iR/fp2Yv2FycUR0XNfkZ
-5C5jGago+UGEiNDE1ZEz27RO9dIuFrh6TPwC7Z9zkRxSSEPoXEF9UmaNZpUK9hIOLja4nh2xD83z
-udss8gNXHS7AePBy6asDTxJVl+S+Ls7j1mr9udBw4WCD6pSa8PfyTKjG+zhD6BWxBuajysSfyXNJ
-lQkOmI4EW0SH3VOIIwZRb1QjxFhPyJI6rqp4osvjzNY3YFtK/F1ylmGI5m0RkwtqgJ/0Lx115i9U
-uIo/v/g1BPD0rQqHpVtLvfH4s75U0vw8Cd+Wg7QQUk21PxweqcwnuFakkHi6xarxwnlijKgv9vZn
-5p3Gf6TWVrCD7mXWDbl4D+KndfIa6E7hc4xPUA+idcQ02s1s6lfZ36s9f/5ZY9L+BwR12LFvzKcf
-JhVO78ugQDvSIrbq4lgDk4HILUi7se+UWdSWg/GvaglFs28PE9DoxG3MOX4wrbXPqpD3lrnZDFMM
-uPID5U7ukJqoVbHLZU3u11CcI5k9ko1s9A1Q11sOaUcJHvma/vYz0K0mub0Li4MBym/O5K+kJ98p
-sguXKkldCDDtyTm5mFBVXOqbXFDn/oBPRIcHEgjXf8xZVEU6Sh90+k87Vm91WZMWona3POJKJVhe
-9sd9RXscJiiFPaZ7E2d3IHNuRetYSfVr9qZl1mOcJIB1i0f1djGCAlcwggJTAgEBMGIwUjELMAkG
-A1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKDAmBgNVBAMTH0dsb2JhbFNpZ24g
-R0NDIFI2IFNNSU1FIENBIDIwMjMCDGk/Ve+PEwS9IKizhTANBglghkgBZQMEAgEFAKCBxzAvBgkq
-hkiG9w0BCQQxIgQgtguLygfxrhNVB5QxIrqOmU3TKZb0RS+lv6/SRrX5y/UwGAYJKoZIhvcNAQkD
-MQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjYwNzIwMTcwMzQzWjBcBgkqhkiG9w0BCQ8x
-TzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJYIZIAWUDBAECMAoGCCqGSIb3DQMHMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAKcWhBZn34Wns8V/hM56P
-htcOiPsonjELZh9zfsDQNgtj1nrCCUAF8mcAhqgZThGBLuR8vC3oi97ONQX2cdvh3pmVKTqMlUoC
-siGwdwUDQ/ujmLdq+N/jWDRLYOq0Hbm75t8gWqVVJyoLXTLbP/MDtA7R3rELhbzv9+ktlQoHwqc/
-76M3w4TwS1aHSKmKgRxvg+Tp7VbWg0BdH1IO0fG+HJej9ByH8vMhmL7+yoWEZbdiSj5XgXEgydZx
-G+srZbyPjbGYiy47YXtAFk44d73b2BlSuWD1wvfF0bRVzHXeb5iXo+HdGRN3BYUXy+JKlBZZN9ik
-w62RNtJpCO+NMS6Fgg==
---00000000000087f70606570de357--
+Laurent Pinchart
