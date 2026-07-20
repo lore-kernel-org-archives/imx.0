@@ -1,151 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BE427AC4D
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 03:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BA43563EB
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 05:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784518990; cv=none; b=dvZmSdsYv1HZ+EMHl/5Fl4CezW7iml93+OFVEMm+OduiM2v7+kcZtl8CDSrTkyqB2OnqUdNdtClPF3oKsAXnj6zFkTEglgf21tvPJPUfsFl1O8ReOINWhzS+YmottSQLE6l6wCdvJW/T3tj06uC+addKrfR/CQURtyw+KJiZYIo=
+	t=1784525279; cv=none; b=fAFIix/18MSHU7FumU7wEeK6gkzyugjtGhplcCewfTX/mozMhFEUFLjl9ZRqk7fpncMBuBail6gOrrbzsqEasWRaLRnbAOC9xnvI/Srbfz8FH9SyDHd0gGYV+/EKBNEK66QMxVxSHUwT/7/a4jLzg0iZ+sjyFx31eniKHookdAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784518990; c=relaxed/simple;
-	bh=uM3A0saObXwS6OeSH7l9Xk624FDHIVVaysI/SQIEdUM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PetT6XIGugD5N6hJRfzLVvL/QKlQfvFZV3IvMxbwZxfMs5qVT9NezM/hmiQgNZUOvxZIZkrtEOssnAZhmlNmpk3VtATn8yhIGXeMT+3N9LkIg8NiMiRha0x8Fe46Z3Fb4hRRB47gJ4VmxRqlHVyT3ZQQlJjgnWpE92xJ5HcICI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mv6st2U7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784525279; c=relaxed/simple;
+	bh=hV3hmVCFcy/Pf7QbmtUHRE7zXPXJ3jzOywRyM+89BVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=HoPl2bPuM/S5R6M1Uwf+io6R8S9WcMESaP4elhBAZsPZdMikONd4nqpdtuUoRsAxe7GsN9+8Ev0yGJR1xZ6sdKy0jgOxWgSLzhZxpbMzcniv91b+g83vttyVT3JV4ozuBkYMFA7iQbQfFkQ86WcpNrvkgOqqDb+K6bPukXdAnw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=R6QsLCPb; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mv6st2U7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD4E1F000E9;
-	Mon, 20 Jul 2026 03:43:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784518989;
-	bh=/C5CEEToyMgJyZSUqs9yGeFur7xu1MYfmvrwFW9XftE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mv6st2U7fgtEU2kcVOwOkN3Oj58UxMdxL3X7crvcg3YiBm9PV8NyCajVcl4mLNcSQ
-	 eNyu73Mlon0SgCeUne9fjBMZ73kixJUqighXQQdygne3P7rqfhliwlxOmbz145EP+U
-	 W2XGTlFLn7D3H78pgoArYKaWKNeZl4sTFrv0zQYTBc0K3WM5xqdupLKxpvkyk+Gjtq
-	 TmZ9u/j17+Kp3NJQiB4ebBN9ZOWlTMxWLu9y/NLTXsNQH2Y7zYjowSiAgQKSSgSX0I
-	 AOqqwAt02omKJxUrzc9HN3mCiQwDyktQMZhtGrLVFo3Q/BFyVn4OV1LD81obRa1lbM
-	 In81QIdr5g1vA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/6] media: nxp: imx8-isi: Fix stream ID validation
- bypass in crossbar routing
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guoniu Zhou" <guoniu.zhou@oss.nxp.com>
-Cc: media-ci@linuxtv.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260720-isi-v2-1-45845bc5d4fa@oss.nxp.com>
-References: <20260720-isi-v2-0-45845bc5d4fa@oss.nxp.com>
- <20260720-isi-v2-1-45845bc5d4fa@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 03:43:08 +0000
-Message-Id: <20260720034309.2FD4E1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="R6QsLCPb"
+Received: from francesco-nb (93-38-200-139.ip72.fastwebnet.it [93.38.200.139])
+	by mail11.truemail.it (Postfix) with ESMTPA id AD8E41FDC6;
+	Mon, 20 Jul 2026 07:27:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1784525267;
+	bh=uQbfFBez37Wkn4R0iQjQQgdVIH7amzo82kFj7d+pTUQ=; h=From:To:Subject;
+	b=R6QsLCPbKty/FkgiZbbzO++1xAcX2/sRHzB3WneIN7KRZViZLloSWuRKRSgEctvQa
+	 1JtymYJUpPTbGxCpjX2kfdUEaikDhJP8yNNNire3Px1GfEkPoUUS0aVCQkrJML2VIb
+	 14pG4k6Oz8BtUf/H5W7InzinHBE2KSHwAHWIXVmj4GbTizh1sLTCudbzs8ynZQjzai
+	 IaIlsw1xcCEzMYVx5FU9vm0E5LKm6ZwtlsZly9ARSQ39OeZkbXR/fdkY/rY/PntYm+
+	 QExYm4YP71yTPTK9Oph5k4NXhAnsGRj2lEco1LlcrHUDy8XbPDsjYvBJRHGbrQxhtr
+	 FZOhYXECoLcvQ==
+Date: Mon, 20 Jul 2026 07:27:42 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Richard Zhu <hongxing.zhu@nxp.com>, frank.li@nxp.com,
+	linux-pci@vger.kernel.org, imx@lists.linux.dev
+Cc: l.stach@pengutronix.de, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-pci@vger.kernel.org
+Subject: Non systematic PCIe error on resume on i.MX8QP on Linux 7.2
+Message-ID: <20260720052742.GA6753@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Hello,
+our CI spotted this error on resume. It is not systematic, and it is
+possible that this is not a new issue from 7.2.
 
-Pre-existing issues:
-- [High] Undefined behavior from bit shift overflow when using BIT() macro =
-on user-controlled stream IDs on 32-bit architectures.
-- [High] Missing V4L2_SUBDEV_ROUTING_NO_SOURCE_STREAM_MIX flag in routing v=
-alidation allows stream mixing, violating driver assumptions and causing pi=
-peline state corruption.
---
+Does it rings any bell?
 
---- Patch [1]: [PATCH v2 1/6] media: nxp: imx8-isi: Fix stream ID validatio=
-n bypass in crossbar routing ---
-commit c48b83ab851ce7535e8d8249fb85d35c57bb63e1
-Author: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+[  745.849237] imx8qm-hsio-phy 5f180000.phy: HSIO_PM_REQ_CORE_RST is set
+[  745.855800] phy phy-5f180000.phy.1: phy poweron failed --> -110
+[  745.861824] imx6q-pcie 5f000000.pcie: waiting for PHY ready timeout!
+[  745.868378] imx6q-pcie 5f000000.pcie: Host init failed: -110
+[  745.874144] imx6q-pcie 5f000000.pcie: PM: dpm_run_callback(): genpd_resume_noirq returns -110
+[  745.882791] imx6q-pcie 5f000000.pcie: PM: failed to resume noirq: error -110
+[  745.889979] Internal error: synchronous external abort: 0000000096000210 [#1]  SMP
+[  745.897647] Modules linked in: can_raw can 8021q garp stp mrp llc bluetooth ecdh_generic ecc uas nls_iso8859_1 nls_cp437 mwifiex_pcie mwifiex cfg80211 ahci rfkill sd_mod cdns caam_jr caamhash_desc spidev caamalg_desc rng crypto_engine kpp rng_core libdes snd_soc_fsl_asoc_card aes_ce_blk ghash_ce snd_soc_simple_card snd_soc_imx_audmux leds_gpio gf128mul imx_sc_thermal rtc_imx_sc nvmem_imx_ocotp_scu snd_soc_simple_card_utils led_class gpio_fan ahci_imx libahci_platform libahci phy_fsl_imx8qm_hsio libata fsl_imx8_ddr_perf ci_hdrc_imx ci_hdrc ulpi phy_cadence_salvo ehci_hcd roles usbmisc_imx phy_mxs_usb cdns3_imx usb3503 snd_soc_sgtl5000 flexcan can_dev imx8qxp_adc snd_soc_fsl_spdif snd_soc_fsl_sai imx_pcm_dma snd_soc_fsl_utils snd_soc_fsl_asrc pwm_imx27 spi_fsl_lpspi caam etnaviv error gpu_sched amphion_vpu fuse autofs4
+[  745.970466] CPU: 2 UID: 0 PID: 53 Comm: kworker/u21:2 Tainted: G   M                7.2.0-rc4-0.0.0-devel #1 PREEMPT
+[  745.981181] Tainted: [M]=MACHINE_CHECK
+[  745.985018] Hardware name: Toradex Apalis iMX8QP V1.1 on Apalis Ixora V1.2 Carrier Board (DT)
+[  745.993643] Workqueue: async async_run_entry_fn
+[  745.998279] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  746.005337] pc : pci_generic_config_read+0x64/0xc0
+[  746.010231] lr : pci_generic_config_read+0x24/0xc0
+[  746.015118] sp : ffff800080513ba0
+[  746.018520] x29: ffff800080513ba0 x28: 0000000000000000 x27: 0000000000000000
+[  746.025761] x26: ffff00000043d400 x25: 0000000000000000 x24: ffff0000004d1e05
+[  746.033000] x23: 0000000000000003 x22: ffffa79a09fe3118 x21: ffff000003a000d0
+[  746.040242] x20: 0000000000000002 x19: ffff800080513be4 x18: 0000000000000001
+[  746.047482] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000002
+[  746.054720] x14: ffff000000718f90 x13: ffffa79a09f6f068 x12: 0000000000000003
+[  746.061959] x11: 0000000000000028 x10: 000000016a2a9b62 x9 : 000000000000003c
+[  746.069197] x8 : ffffa79a09861b20 x7 : ffff0000067fe800 x6 : ffffa79a0a6bf000
+[  746.076438] x5 : 0000000000000000 x4 : ffff800080513be4 x3 : ffffa79a0989d904
+[  746.083676] x2 : 0000000000000044 x1 : 0000000000000000 x0 : ffff8000827c0044
+[  746.090917] Call trace:
+[  746.093455]  pci_generic_config_read+0x64/0xc0 (P)
+[  746.098345]  pci_bus_read_config_word+0x74/0xe0
+[  746.102971]  pci_read_config_word+0x2c/0x48
+[  746.107252]  pci_power_up+0x50/0x1e4
+[  746.110927]  pci_pm_power_up_and_verify_state+0x2c/0xa0
+[  746.116249]  pci_pm_resume_noirq+0xe8/0x1ac
+[  746.120528]  dpm_run_callback+0x4c/0x108
+[  746.124550]  device_resume_noirq+0x110/0x3c4
+[  746.128917]  async_resume_noirq+0x20/0x40
+[  746.133024]  async_run_entry_fn+0x34/0x164
+[  746.137215]  process_one_work+0x15c/0x2a0
+[  746.141317]  worker_thread+0x18c/0x2e0
+[  746.145159]  kthread+0x11c/0x13c
+[  746.148486]  ret_from_fork+0x10/0x20
+[  746.152167] Code: 52800000 a8c27bfd d50323bf d65f03c0 (79400000)
+[  746.158371] ------------[ cut here ]------------
+[  746.163077] WARNING: /usr/src/kernel/kernel/printk/printk.c:4627 at __wake_up_klogd+0xf4/0x100, CPU#2: kworker/u21:2/53
+[  746.173972] Modules linked in: can_raw can 8021q garp stp mrp llc bluetooth ecdh_generic ecc uas nls_iso8859_1 nls_cp437 mwifiex_pcie mwifiex cfg80211 ahci rfkill sd_mod cdns caam_jr caamhash_desc spidev caamalg_desc rng crypto_engine kpp rng_core libdes snd_soc_fsl_asoc_card aes_ce_blk ghash_ce snd_soc_simple_card snd_soc_imx_audmux leds_gpio gf128mul imx_sc_thermal rtc_imx_sc nvmem_imx_ocotp_scu snd_soc_simple_card_utils led_class gpio_fan ahci_imx libahci_platform libahci phy_fsl_imx8qm_hsio libata fsl_imx8_ddr_perf ci_hdrc_imx ci_hdrc ulpi phy_cadence_salvo ehci_hcd roles usbmisc_imx phy_mxs_usb cdns3_imx usb3503 snd_soc_sgtl5000 flexcan can_dev imx8qxp_adc snd_soc_fsl_spdif snd_soc_fsl_sai imx_pcm_dma snd_soc_fsl_utils snd_soc_fsl_asrc pwm_imx27 spi_fsl_lpspi caam etnaviv error gpu_sched amphion_vpu fuse autofs4
+[  746.246751] CPU: 2 UID: 0 PID: 53 Comm: kworker/u21:2 Tainted: G   M                7.2.0-rc4-0.0.0-devel #1 PREEMPT
+[  746.257464] Tainted: [M]=MACHINE_CHECK
+[  746.261300] Hardware name: Toradex Apalis iMX8QP V1.1 on Apalis Ixora V1.2 Carrier Board (DT)
+[  746.269921] Workqueue: async async_run_entry_fn
+[  746.274548] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  746.281605] pc : __wake_up_klogd+0xf4/0x100
+[  746.285881] lr : wake_up_klogd+0x14/0x20
+[  746.289899] sp : ffff800080513920
+[  746.293304] x29: ffff800080513920 x28: ffff000000718f00 x27: 0000000000000000
+[  746.300545] x26: ffff00000043d400 x25: 0000000000000000 x24: 00000000000000c0
+[  746.307786] x23: ffffa79a09861b84 x22: 0000000000000000 x21: ffff800080513a60
+[  746.315026] x20: ffffa79a0a202cc0 x19: ffffa79a0a678370 x18: 000000000000000a
+[  746.322266] x17: 3430306337323830 x16: 3030386666666620 x15: 0730076307330730
+[  746.329506] x14: 0766073507360764 x13: 0730076307330730 x12: 0766073507360764
+[  746.336746] x11: ffffa79a0a55c7c0 x10: 00000000000002af x9 : ffffa79a0a55c7c0
+[  746.343986] x8 : 3fffffffffffefff x7 : ffffa79a0a5b47c0 x6 : 0000000000000000
+[  746.351226] x5 : 00000000000002b0 x4 : 0000000000000000 x3 : 0000000000000000
+[  746.358467] x2 : 0000000000000000 x1 : 0000000000000001 x0 : 0000000000000001
+[  746.365708] Call trace:
+[  746.368241]  __wake_up_klogd+0xf4/0x100 (P)
+[  746.372520]  bust_spinlocks+0x4c/0x60
+[  746.376279]  die+0xc0/0x144
+[  746.379166]  arm64_notify_die+0xa0/0xa4
+[  746.383099]  do_sea+0x68/0x80
+[  746.386163]  do_mem_abort+0x40/0x9c
+[  746.389745]  el1_abort+0x44/0x64
+[  746.393068]  el1h_64_sync_handler+0x50/0xac
+[  746.397348]  el1h_64_sync+0x6c/0x70
+[  746.400934]  pci_generic_config_read+0x64/0xc0 (P)
+[  746.405821]  pci_bus_read_config_word+0x74/0xe0
+[  746.410448]  pci_read_config_word+0x2c/0x48
+[  746.414727]  pci_power_up+0x50/0x1e4
+[  746.418398]  pci_pm_power_up_and_verify_state+0x2c/0xa0
+[  746.423721]  pci_pm_resume_noirq+0xe8/0x1ac
+[  746.427998]  dpm_run_callback+0x4c/0x108
+[  746.432013]  device_resume_noirq+0x110/0x3c4
+[  746.436380]  async_resume_noirq+0x20/0x40
+[  746.440482]  async_run_entry_fn+0x34/0x164
+[  746.444674]  process_one_work+0x15c/0x2a0
+[  746.448778]  worker_thread+0x18c/0x2e0
+[  746.452620]  kthread+0x11c/0x13c
+[  746.455943]  ret_from_fork+0x10/0x20
+[  746.459614] ---[ end trace 0000000000000000 ]---
+[  746.464322] ---[ end trace 0000000000000000 ]---
+[  746.469033] note: kworker/u21:2[53] exited with irqs disabled
+[  746.474916] note: kworker/u21:2[53] exited with preempt_count 1
 
-media: nxp: imx8-isi: Fix stream ID validation bypass in crossbar routing
 
-The crossbar routing validation has a bug where it validates the wrong
-routing table, allowing userspace to bypass validation entirely. This
-commit fixes it by validating the routing table that will actually be
-applied.
-
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/dr=
-ivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> index c580c831972ec..84871bceb31db 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> @@ -107,7 +107,7 @@ static int __mxc_isi_crossbar_set_routing(struct v4l2=
-_subdev *sd,
->  		return ret;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the routing validation
-here miss the V4L2_SUBDEV_ROUTING_NO_SOURCE_STREAM_MIX flag?
-
-The validation in __mxc_isi_crossbar_set_routing() does not pass this
-flag:
-
-imx8-isi-crossbar.c:__mxc_isi_crossbar_set_routing() {
-    ...
-	ret =3D v4l2_subdev_routing_validate(sd, routing,
-					   V4L2_SUBDEV_ROUTING_NO_N_TO_1);
-    ...
-}
-
-This allows stream mixing, violating an explicit assumption in
-mxc_isi_crossbar_xlate_streams(), where the driver silently overwrites
-sink_pad for matching routes:
-
-imx8-isi-crossbar.c:mxc_isi_crossbar_xlate_streams() {
-    ...
-	/*
-	 * Translate the source pad and streams to the sink side. The routing
-	 * validation forbids stream merging, so all matching entries in the
-	 * routing table are guaranteed to have the same sink pad.
-	 */
-    ...
-		sink_streams |=3D BIT(route->sink_stream);
-		sink_pad =3D route->sink_pad;
-    ...
-}
-
-If userspace configures a routing table via VIDIOC_SUBDEV_S_ROUTING with
-multiple routes from different sink pads ending at the same source pad,
-mxc_isi_crossbar_enable_streams() will only enable streams on the last
-matched remote subdevice, leaving others disabled and leading to hardware
-pipeline hangs.
-
-> =20
->  	/* The memory input can be routed to the first pipeline only. */
-> -	for_each_active_route(&state->routing, route) {
-> +	for_each_active_route(routing, route) {
-
-[Severity: High]
-This is a pre-existing issue, but can using the BIT() macro on
-user-controlled stream IDs cause undefined behavior on 32-bit architectures?
-
-The core framework limits stream IDs to 63 (V4L2_SUBDEV_MAX_STREAM_ID), but
-the driver uses BIT() on these IDs in mxc_isi_crossbar_xlate_streams():
-
-imx8-isi-crossbar.c:mxc_isi_crossbar_xlate_streams() {
-    ...
-		if (route->source_pad !=3D source_pad ||
-		    !(source_streams & BIT(route->source_stream)))
-			continue;
-
-		sink_streams |=3D BIT(route->sink_stream);
-    ...
-}
-
-On 32-bit architectures, unsigned long is 32 bits. If userspace provides a
-routing table via VIDIOC_SUBDEV_S_ROUTING with stream IDs >=3D 32, this
-causes a shift out of bounds. This can result in incorrect bitmasks,
-causing the driver to start or stop the wrong hardware streams and hang
-the pipeline.
-
->  		if (route->sink_pad =3D=3D xbar->num_sinks - 1 &&
->  		    route->source_pad !=3D xbar->num_sinks) {
->  			dev_dbg(xbar->isi->dev,
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-isi-v2-0-4=
-5845bc5d4fa@oss.nxp.com?part=3D1
