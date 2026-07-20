@@ -1,254 +1,134 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D3637FF4E
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0C13839B8;
+	Mon, 20 Jul 2026 15:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784561469; cv=none; b=t6v5Z8xdxIn5lXYX/Frvyalex9gePIft6+dM32V1jO5jXQaHf1uMswCQdAOmlJoZ4ghzRM8vRa/yt4fOrnax77jCY6nfoLt9bLZOJVF2ioaU+zjlzGniv7Qd45P47/cX/xnvFWPoT0B2KDv3ec0mRouDnL6e9y709q5cozSB0bE=
+	t=1784561618; cv=none; b=QB44UgvuUY1hfehn02VMPsQFiNtpJ1ggJBpitU0hanYgDGpVquA6KT4Q1IIgi/Yxsgoz+JYZwCKGqEaYRT4CmAWrxNvR9fMyR4lM1lLNwoH3fWeImOJNG9liGnRkYCQ0TdODoy2ahIgcEKr90u3qa4Y82fPcMfpWkGQFyUmCDtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784561469; c=relaxed/simple;
-	bh=N6ea8qz0o7yam1C499Z9qNtu9cV4v5HuCKZ0hXyEdB4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UTjGEUTBIQa072wKsJMhrmO/nDMqC1fdd3BA4F0B39iLlC80zW2F7jfAGlTS0UnJfhw/xVigTGPpr+0LZVfy5nrZECdDan74dls5OD2gCw2LVz8XkzzAipPeptsZjBVh9f5zWioP8I17yQEBfv/MwVbDeNXfWSizOQF38oCW0QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xZf1BRst; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sC843PgU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xZf1BRst; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sC843PgU; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1784561618; c=relaxed/simple;
+	bh=IZRduAq1r6NaPM5YROFadleqTlO2yjFkjToY3ZTZvqk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=i4LGaen2VoQL2d1buM9QHtBV5KNicFAdD3RMlT6uEFfHgJjniKdgmwry3MgM+f4viK1DzwSLMG2rgrTtvldcJ6pi8B0DX17qTarBBasXWzJgxVAJD+cYY0MGdV+BXdkW8OsjkbEFIqeHl3SOp0jCFQ8NEgkoIWaJ+2Kod+eIwv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=at563S0/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xZf1BRst";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sC843PgU";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xZf1BRst";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sC843PgU"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2579C3E22;
-	Mon, 20 Jul 2026 15:31:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784561466; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AQEhKEAigYY/0ZQLtZwn9KGRO4/KpUVIKXBaH3yztko=;
-	b=xZf1BRstikPeb/ug/kgoyVQq517yrOHwXxm2Or18ZUtVBM5XjUReVMaWaULjSd2LL2DpDV
-	WfnqoYaA8POELYdxOySlMcDMtH5We58xRgZ2EXmx0cIT425cMUz853vt44eMSryCj80AvG
-	88My+8I0zwV8zNTAtj6qRMkUT7NkORU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784561466;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AQEhKEAigYY/0ZQLtZwn9KGRO4/KpUVIKXBaH3yztko=;
-	b=sC843PgUVTqTqECuoTUbp6IvdO7Q1L9kMLECtiukE0wY3RJg5hL1LgyFQ/qFxq5wXqaCWH
-	OclBh0lnHmc4CRCA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784561466; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AQEhKEAigYY/0ZQLtZwn9KGRO4/KpUVIKXBaH3yztko=;
-	b=xZf1BRstikPeb/ug/kgoyVQq517yrOHwXxm2Or18ZUtVBM5XjUReVMaWaULjSd2LL2DpDV
-	WfnqoYaA8POELYdxOySlMcDMtH5We58xRgZ2EXmx0cIT425cMUz853vt44eMSryCj80AvG
-	88My+8I0zwV8zNTAtj6qRMkUT7NkORU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784561466;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AQEhKEAigYY/0ZQLtZwn9KGRO4/KpUVIKXBaH3yztko=;
-	b=sC843PgUVTqTqECuoTUbp6IvdO7Q1L9kMLECtiukE0wY3RJg5hL1LgyFQ/qFxq5wXqaCWH
-	OclBh0lnHmc4CRCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ED089779AA;
-	Mon, 20 Jul 2026 15:31:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Zh6fNjk/XmrfDgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 20 Jul 2026 15:31:05 +0000
-Message-ID: <6b65d48a-24ac-468d-a9a2-571a9e39d283@suse.de>
-Date: Mon, 20 Jul 2026 17:31:05 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="at563S0/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F431F000E9;
+	Mon, 20 Jul 2026 15:33:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784561613;
+	bh=/8xIWWV58JRVzHpzaPTCwgzSCb+umOikg0RXZPGeIzs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=at563S0/ufpfWRdNOrlPsCQBM2H8OdDGCqBfK/qasglcuwCV6oMYiQxRvn6N1/aJa
+	 O8qdcUtBFAuf4RLNtGzXOGIRQNDHBTnzsF4iwUfb2phzEIYyyudE+rXYBVM2kStsq8
+	 bhklFpS7PxhiO30zzJlsJcDReADYDWGzSWFA8NDTqjl/d2K14WUPg3/f0Cuy3X5KRq
+	 5VEeudSqmHA6G+EZT5ZRWlEuiesbkqpT3J0psmLnqMtGizZFO98QF7A62M5Owd9+/4
+	 oAHErDWmD6omVNsiXGdwNSvKJo5hfIQcg3e2xHCOmVWB1TBgUXoJUJyqiIKhBh+LGY
+	 tUhwlf5lmnLpA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 16/16] PCI: dwc: ultrarisc: Use cached PCIe
+ capability offset
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Hans Zhang" <18255117159@163.com>
+Cc: linux-amlogic@lists.infradead.org, linux-pci@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, neil.armstrong@linaro.org
+In-Reply-To: <20260720150619.24733-17-18255117159@163.com>
+References: <20260720150619.24733-1-18255117159@163.com>
+ <20260720150619.24733-17-18255117159@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 20 Jul 2026 15:33:31 +0000
+Message-Id: <20260720153332.A6F431F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/imx: replace struct drm_simple_display_pipe with
- regular atomic helpers
-To: Maxime Ripard <mripard@redhat.com>
-Cc: Ze Huang <ze.huang@oss.qualcomm.com>, sashiko-reviews@lists.linux.dev,
- dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, imx@lists.linux.dev
-References: <20260716-drm-simple-kms-removal-v2-1-7e4a6b8528e6@oss.qualcomm.com>
- <20260716091459.1D8101F000E9@smtp.kernel.org>
- <DK1XPK73QJHC.JWFUMTTLOD1D@oss.qualcomm.com>
- <63cca05a-ec83-430c-abcf-c2f0b508446f@suse.de>
- <20260720-bold-jasmine-goldfish-d979e5@penduick>
- <3749a60a-a8bb-45a0-a06e-a21017990c10@suse.de>
- <20260720-sly-tricky-elephant-c8afa1@penduick>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260720-sly-tricky-elephant-c8afa1@penduick>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,imap1.dmz-prg2.suse.org:helo,suse.com:url,suse.de:mid]
-X-Spam-Level: 
 
-Hi
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Am 20.07.26 um 17:06 schrieb Maxime Ripard:
-> On Mon, Jul 20, 2026 at 04:38:26PM +0200, Thomas Zimmermann wrote:
->> Am 20.07.26 um 16:08 schrieb Maxime Ripard:
->>> On Mon, Jul 20, 2026 at 02:36:19PM +0200, Thomas Zimmermann wrote:
->>>> Hi
->>>>
->>>> Am 18.07.26 um 21:12 schrieb Ze Huang:
->>>> [...]
->>>>>>> -	if (event) {
->>>>>>> -		crtc->state->event = NULL;
->>>>>>> +static int imx_lcdc_plane_helper_atomic_check(struct drm_plane *plane,
->>>>>>> +					      struct drm_atomic_commit *commit)
->>>>>>> +{
->>>>>>> +	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(commit, plane);
->>>>>>> +	struct drm_crtc *crtc = plane_state->crtc;
->>>>>>> +	struct drm_crtc_state *crtc_state = NULL;
->>>>>>> -		spin_lock_irq(&crtc->dev->event_lock);
->>>>>>> +	if (crtc)
->>>>>>> +		crtc_state = drm_atomic_get_new_crtc_state(commit, crtc);
->>>>>>> -		if (crtc->state->active && drm_crtc_vblank_get(crtc) == 0)
->>>>>>> -			drm_crtc_arm_vblank_event(crtc, event);
->>>>>>> -		else
->>>>>>> -			drm_crtc_send_vblank_event(crtc, event);
->>>>>>> +	return drm_atomic_helper_check_plane_state(plane_state, crtc_state,
->>>>>> [Severity: High]
->>>>>> Can fetching the CRTC state this way cause a kernel panic in the core atomic
->>>>>> helpers?
->>>>>>
->>>>>> If userspace submits a commit that modifies only plane properties without
->>>>>> affecting the CRTC, the CRTC is not implicitly added to the atomic commit
->>>>>> state.
->>>>>>
->>>>>> In this scenario, drm_atomic_get_new_crtc_state() returns NULL. Passing this
->>>>>> NULL pointer directly to drm_atomic_helper_check_plane_state() causes a crash
->>>>>> when it dereferences crtc_state->enable.
->>>>>>
->>>>>> Could this use drm_atomic_get_crtc_state() instead to ensure the state is
->>>>>> brought into the commit if it is missing?
->>>>> I think it is fine here; I'll just copy the pattern from [1].
->>>>>
->>>>> [1] https://elixir.bootlin.com/linux/v7.1.2/source/drivers/gpu/drm/mgag200/mgag200_mode.c#L487
->>>> It could be that there's a long standing problem in the overall logic. Not
->>>> having a CRTC (and hence crtc_state) should also mean !fb, so we'd return at
->>>> [1]. If we have a CRTC on the plane but pass a crtc_state of NULL, we could
->>>> get a panic at [2], where it does crtc_state->crtc.  I'm not aware of any
->>>> bug reports about this problem, but it's still an issue.
->>>>
->>>> A number of drivers get this wrong by using
->>>> drm_atomic_helper_get_new_crtc_state(). The bot suggests to use
->>>> drm_atomic_helper_get_crtc_state() instead.  This helper also returns the
->>>> new state. But  if there's no new state, it duplicates the CRTC's existing
->>>> state. That's a bit of an overhead, but probably not an issue.  Several
->>>> drivers use this helper, but also get it wrong. They tend to return early in
->>>> the case of !crtc or !fb without calling _check_plane_state(). See [3] and
->>>> [4] for examples.
->>>>
->>>> I think, going with the bot's suggestion to use
->>>> drm_atomic_helper_get_crtc_state() might be the best resolution for now. It
->>>> still needs a crtc pointer, so the pattern is
->>>>
->>>> crtc_state = NULL
->>>> if (plane_state->crtc)
->>>>       crtc_state = drm_atomic_helper_get_crtc_state(plane_state->crtc)
->>>>
->>>> _check_plane_state(plane_state, crtc_state);
->>>>
->>>> And in this case, _check_plane_state() should work correctly. But you can
->>>> only use _get_crtc_state() in the atomic_check helpers! In the
->>>> atomic_update, atomic_enable, etc helpers, it's too late for the helper to
->>>> copy the CRTC state.
->>>>
->>>> I think some other DRM dev should look over this as well. It's one of the
->>>> trickier things in DRM to get right.
->>> drm_atomic_helper_get_crtc_state is safe in atomic_check. It's
->>> everything after that must use either get_new_crtc_state or
->>> get_old_crtc_state, as the global state cannot be modified anymore.
->> Thanks a lot for confirming.
->>
->> Wrt. the logic in plane atomic_check, we might have to fix a number of
->> drivers. As I outlined above, some use _get_new_crtc_state(), some use
->> _get_crtc_state() incorrectly. But that's for another series.
-> Sigh... I removed all of them a couple of years ago, I guess some crept
-> back in. Maybe we should warn loudly if it happens?
+New issues:
+- [Critical] In Endpoint (EP) mode, `pci->pcie_cap` remains uninitialized (=
+0), causing `dw_pcie_setup()` to silently corrupt standard PCI header regis=
+ters.
 
-I think the handling of atomic state is non-trivial and not easily 
-discoverable. So yeah. Once sorted out, there should probably be a 
-WARN_ONCE of some kind.
-
-Best regards
-Thomas
-
-
->
-> Maxime
-
--- 
+Pre-existing issues:
+- [High] 32-bit read-modify-write (RMW) of 16-bit PCIe Control registers ac=
+cidentally clears Write-1-to-Clear (W1C) bits in the adjacent Status regist=
+ers.
 --
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
 
+--- Patch [16]: [PATCH v3 16/16] PCI: dwc: ultrarisc: Use cached PCIe capab=
+ility offset ---
+commit 4d9321bed75fe3c10535cf01ea0a69ce527cb616
+Author: Hans Zhang <18255117159@163.com>
 
+PCI: dwc: ultrarisc: Use cached PCIe capability offset
+
+This commit updates ultrarisc_pcie_host_init to use dw_pcie_get_pcie_cap
+to obtain the PCIe capability offset, as the core has not cached it yet.
+Hardware is already enabled before this point.
+
+> diff --git a/drivers/pci/controller/dwc/pcie-ultrarisc.c b/drivers/pci/co=
+ntroller/dwc/pcie-ultrarisc.c
+> index 6ee661ceff67a..3f6e3ab0aa697 100644
+> --- a/drivers/pci/controller/dwc/pcie-ultrarisc.c
+> +++ b/drivers/pci/controller/dwc/pcie-ultrarisc.c
+> @@ -49,7 +49,7 @@ static int ultrarisc_pcie_host_init(struct dw_pcie_rp *=
+pp)
+>  	FIELD_MODIFY(PORT_FLT_SF_MASK, &val, PORT_FLT_SF_VAL_64);
+>  	dw_pcie_writel_dbi(pci, PCIE_TIMER_CTRL_MAX_FUNC_NUM, val);
+> =20
+> -	cap_exp =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> +	cap_exp =3D dw_pcie_get_pcie_cap(pci);
+
+[Severity: Critical]
+Does caching the capability offset here expose an uninitialized value
+in Endpoint mode?
+
+If the broader patch series replaced dw_pcie_find_capability with direct
+reads of pci->pcie_cap in the EP paths without initializing it,
+pci->pcie_cap could remain 0.
+
+For example, in drivers/pci/controller/dwc/pcie-designware-ep.c:
+
+dw_pcie_ep_init_non_sticky_registers() {
+    if (funcs > 1) {
+        offset =3D pci->pcie_cap;
+        func0_lnkcap =3D dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
+        [ ... ]
+}
+
+If dw_pcie_get_pcie_cap() is not called before this in the EP
+initialization sequence, offset evaluates to 0. This causes
+dw_pcie_setup() to write into standard PCI header registers like Cache
+Line Size or BIST instead of the PCIe capability space, silently
+corrupting the header.
+
+>  	val =3D dw_pcie_readl_dbi(pci, cap_exp + PCI_EXP_LNKCTL2);
+>  	FIELD_MODIFY(PCI_EXP_LNKCTL2_TLS, &val, PCI_EXP_LNKCTL2_TLS_16_0GT);
+>  	dw_pcie_writel_dbi(pci, cap_exp + PCI_EXP_LNKCTL2, val);
+
+[Severity: High]
+This is a pre-existing issue, but does this 32-bit read-modify-write
+sequence unintentionally clear Write-1-to-Clear bits in the adjacent
+Status register?
+
+When ultrarisc_pcie_host_init() reads and writes 32 bits starting at
+PCI_EXP_LNKCTL2:
+
+drivers/pci/controller/dwc/pcie-ultrarisc.c:ultrarisc_pcie_host_init()
+    val =3D dw_pcie_readl_dbi(pci, cap_exp + PCI_EXP_LNKCTL2);
+    FIELD_MODIFY(PCI_EXP_LNKCTL2_TLS, &val, PCI_EXP_LNKCTL2_TLS_16_0GT);
+    dw_pcie_writel_dbi(pci, cap_exp + PCI_EXP_LNKCTL2, val);
+
+The read includes the 16-bit Link Control 2 register and the adjacent
+16-bit Link Status 2 register. If any W1C bits are set in the status
+register, writing the 32-bit value back will clear those events. This
+can drop hardware events like Link Equalization Requests or Device Errors,
+potentially breaking link training or Advanced Error Reporting.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720150619.2473=
+3-1-18255117159@163.com?part=3D16
