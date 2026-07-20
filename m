@@ -1,158 +1,119 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44419432BF4
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FC7437127
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784562107; cv=none; b=jD5k6G5jhIxzkAMiVrXuFdFjUPfSdY2J7TJVYXtrY4ny1qO80Wa0Oi+Gbx+yUszcuw67tP4zLRbDeRb0S/ZPOwR/rY52fDNPPooteDl5EM6IozFbIjOhDsGobvInyavYhlHAbOUgu6PO+2J4aXV9Xur2b5/iKk0MKlNUJrlswRA=
+	t=1784562657; cv=none; b=tkoqSMp014N7PYMSFqtjEXX5rOrGZqOOVicD3ppwvi8g50hV3tSpuacyDSJhh/I8fxIRXanSi5v+692Q+66Xz+pmpKoxd8GY3JJLnkfy73zoUIZuOCmtkLJ4nl0Av8FYioCQgaMgZD45gU+FOS0n4nTRm5Z5x869+Ylsa6/Ix5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784562107; c=relaxed/simple;
-	bh=EhmF3j+M4AduWGCg7EqLVWPIxAwmTTCxT2Gz0yXqaxA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=scvsGOFWCsRUDu/gD+tllTspY5Zhs4BG6k4hXzAz3DQMoHdIZmW83DMAuUQmACkCfgaGlPARKhAdUmknzUNEtpGFFTGOsYAhyZt2bOyhJR1ox6SmutqFDJX2tFyMCmlXwmQ81rI5Is1oxxBXa8Fr6ynsspPrZHyIsQRAy07v7wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V7seNkDz; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784562657; c=relaxed/simple;
+	bh=ZjiTStp7sJgzd6YmI8CvTJ/KS2g9ZEeq6LQx7g+yjbs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=l5OYi9AvWag9l1016DF9wIPow5X95VSbojrXpNUZQF9jj5YEo2/DKomVkIP0Cr+9w1ftAPDPw12NFS7iaFSnyByIe+lCXRvWvZ12gGuKg9z0brlvfmqwpKn9zk9JRdnkqRK3/XCpZH6/ilAcPeAsmZaNvqREmToGha3DhBIgpYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1sF0eU/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V7seNkDz"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-471eeac43bfso9603417f8f.3
-        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 08:41:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784562104; x=1785166904; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=77r3PWO7yo5+W5LQS9FlqiYUpbSGXMMaR8d5GZmSOF4=;
-        b=V7seNkDz8MovfkKgpaU426MLms33MZa0zBRbLjtgPzNvGE9G7vIAJULdW1P4YEXYHm
-         TaOyGHkGedOKWO2kwwJFHZkEvBS5xt+q3nSN6r9egFI92uF8pysIP91t388oakKxksZo
-         vCU4f6ieBaEazBXGHpS4xJvveNC5RCbHLsZJNV5dWO1xWVcwAWQFS8uViOFRz4a6/AQx
-         ni9d8zVkiA7dnrXy5LQ2D8v6HdAgYhlXQX2jIbmCdjiNsN0AfGk/pxCub/LzTQryI8OQ
-         A7GUZR7orKtLtS2/AKFoAfC5GUEJJDd+H14cg2U6Jv94UwmddhD6ywOUtl10az8Axwym
-         tmMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784562104; x=1785166904;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=77r3PWO7yo5+W5LQS9FlqiYUpbSGXMMaR8d5GZmSOF4=;
-        b=C+6yfFmpGJZ+HDn8THXBW5bX8r0lCU2UFgmfZIA3ODXkLjZO2EEaeeY88gldsXGlCH
-         sTMI4JfEumOrDJ++XmKa+GU98+NA2LdNIKTiQM6dkd6vax9gPFQZVovDGxfLWj7UFqqB
-         j+gYxo344LwFy8NtRepU/zW0OfGsRCIuMraM4VfBQRC8y+sBB0Cx+DZa60WbiIxA9ipb
-         fZx0sg/jhieJ2MaJlp/bvBetPVWvbBPNT/HooHuL2XoFBfjEMhMThOkMyr1HI16YLcJi
-         2RIjk491vQ2fEuG7jEEnPPr4cnSiwriB2a+lBNRWzn31aSL12uTLp/5Pn4PXaIZfNKQ4
-         ZPyQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr1fkdo2Urj//1c9yC1JxPZEAUKaVl7h6zFrUuEwbeqMQfZ+vukIkgERk6hNFFhlX1oXLo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyqeZ02s3YqxdohpTVeCfOl1k1uhn/q/r30VukBuZgZ9XW5bp2L
-	aN4JEeneldRzKsIDai6xrS8u32eBAUbcbSdJl1D9kZ4U8Cj1hizOmhET
-X-Gm-Gg: AR+sD103o0qJ2EebSc0cm005b+2iKC/dJL5gjpE2uJ+zgVe5urfhqE1BhX1Sg1BdyaV
-	efWZbHpCD3qY/OXdpsqPeFIg3P6WVQipRDcM4uoz7hZ8EskC+Bwdc1aCXxSH041eKgPCq/Rntn1
-	dciik7dhoMooGsZjw0BJJF07duWV2tDZEJv9zeIa/nCfdCKqu2rwpfwhcJ+xf3XV0/0/fJR35Yh
-	hT/d+CmSd4qUmI6LMp6pi28Sb3IeVDT54kUOJLCFhaAY0S5945gjY4TYzsrWzGpM5zuYGpkO8Zb
-	GWuhF5rUJf06+FyGuujhc0YUzQkHowcZoBomsPrLfwYQXRPwOrPlhVDC0/KASxou4A26ivYpP+W
-	m4ZcfEhth1fRPgzoIrCD+bgjnKCw5eFnvzFXYoyBvkmbHrkVEw0fWRgB/KT5lTDzNxTUjKw4QGr
-	qmNwvmYAsdXA==
-X-Received: by 2002:a5d:584f:0:b0:47f:6d57:5a93 with SMTP id ffacd0b85a97d-47f6d575ccbmr10955450f8f.38.1784562103442;
-        Mon, 20 Jul 2026 08:41:43 -0700 (PDT)
-Received: from [127.0.0.2] ([2a01:14:111:ccf0:e9c1:2f80:10a9:c708])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f67466e09sm32667936f8f.21.2026.07.20.08.41.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 08:41:42 -0700 (PDT)
-From: Diogo Silva <diogompaissilva@gmail.com>
-Date: Mon, 20 Jul 2026 17:40:47 +0200
-Subject: [PATCH v2 15/15] Documentation/gpu: remove completed
- drm_simple_encoder_init() todo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1sF0eU/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC5D1F000E9;
+	Mon, 20 Jul 2026 15:50:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784562656;
+	bh=qJQU5tT4gBWPtLIh3ibKXTeM8itlzBuYVgP05V0atv8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=h1sF0eU/to38WbjOxI4rKStfKZXgTUuGYSwOT/8ZSG4nslE/0S+ZLaTo36X6bXpjD
+	 muMARxPlmMavvJjYjkgQ1M/uhyphfqBE0zMf8YFeegyRUqiquY/0U0e6WkCwjzJtyf
+	 dM+mhK7oaVL0Gy+DuuO2lJiHFewqWHSfTAS5GI2VOA9c73DO+UHCmtySNths9ioBTn
+	 XqWm3ipLKW9CDiWc8gfQUm3eR3kBnCzkoLbgoUxVCM6SA5Il6EJoqU1nNI7GAzIDTa
+	 s2gTDvG4zU5P4O1BOhIXvrIhre9Q0RFAeNxtRFj7UTrrHwPtREOL8XftS1H7aSN6b1
+	 nOBItbX9MYvbQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 11/15] drm/hisilicon/kirin: remove dependency on DRM
+ simple helpers
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Diogo Silva" <diogompaissilva@gmail.com>
+Cc: Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, wsa+renesas@sang-engineering.com, neil.armstrong@linaro.org
+In-Reply-To: <20260720-drm_simple_encoder_init-v2-11-5020b630668a@gmail.com>
+References: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
+ <20260720-drm_simple_encoder_init-v2-11-5020b630668a@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 20 Jul 2026 15:50:55 +0000
+Message-Id: <20260720155055.EEC5D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-drm_simple_encoder_init-v2-15-5020b630668a@gmail.com>
-References: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
-In-Reply-To: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
-To: Jingoo Han <jingoohan1@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
- Seung-Woo Kim <sw0312.kim@samsung.com>, 
- Kyungmin Park <kyungmin.park@samsung.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk@kernel.org>, 
- Peter Griffin <peter.griffin@linaro.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Michal Simek <michal.simek@amd.com>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Mikko Perttunen <mperttunen@nvidia.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Stefan Agner <stefan@agner.ch>, 
- Alison Wang <alison.wang@nxp.com>, 
- Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
- David Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- Gurchetan Singh <gurchetansingh@chromium.org>, 
- Chia-I Wu <olvaffe@gmail.com>, Jyri Sarha <jyri.sarha@iki.fi>, 
- Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Xinliang Liu <xinliang.liu@linaro.org>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
- Liviu Dudau <liviu.dudau@arm.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
- imx@lists.linux.dev, linux-mediatek@lists.infradead.org, 
- linux-renesas-soc@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- linux-doc@vger.kernel.org, Diogo Silva <diogompaissilva@gmail.com>
-X-Mailer: b4 0.15.2
 
-All drm_simple_encoder_init() users have been removed, so drop the
-completed todo item.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
----
- Documentation/gpu/todo.rst | 15 ---------------
- 1 file changed, 15 deletions(-)
+Pre-existing issues:
+- [Critical] The `dsi_data` structure, which embeds the `drm_encoder` objec=
+t via `dw_dsi`, is allocated using `devm_kzalloc`. This violates DRM lifeti=
+me rules and leads to a use-after-free when the platform device unbinds.
+--
 
-diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-index 14cf37590fc7..b7351467dc74 100644
---- a/Documentation/gpu/todo.rst
-+++ b/Documentation/gpu/todo.rst
-@@ -29,21 +29,6 @@ refactorings already and are an expert in the specific area
- Subsystem-wide refactorings
- ===========================
- 
--Open-code drm_simple_encoder_init()
-------------------------------------
--
--The helper drm_simple_encoder_init() was supposed to simplify encoder
--initialization. Instead it only added an intermediate layer between atomic
--modesetting and the DRM driver.
--
--The task here is to remove drm_simple_encoder_init(). Search for a driver
--that calls drm_simple_encoder_init() and inline the helper. The driver will
--also need its own instance of drm_encoder_funcs.
--
--Contact: Thomas Zimmermann, respective driver maintainer
--
--Level: Easy
--
- Replace struct drm_simple_display_pipe with regular atomic helpers
- ------------------------------------------------------------------
- 
+--- Patch [11]: [PATCH v2 11/15] drm/hisilicon/kirin: remove dependency on =
+DRM simple helpers ---
+commit b9a0117f6ac1e860030dfb53be58e44730659ad8
+Author: Diogo Silva <diogompaissilva@gmail.com>
 
--- 
-2.54.0
+drm/hisilicon/kirin: remove dependency on DRM simple helpers
 
+This patch removes the deprecated simple KMS helpers by open-coding
+drm_simple_encoder_init() to call drm_encoder_init() directly and
+providing driver-local drm_encoder_funcs.
+
+> diff --git a/drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c b/drivers/gpu/d=
+rm/hisilicon/kirin/dw_drm_dsi.c
+> index 15042365dec00..62c5bd3277da1 100644
+> --- a/drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c
+> +++ b/drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c
+
+[ ... ]
+
+> @@ -687,6 +687,10 @@ static int dsi_encoder_atomic_check(struct drm_encod=
+er *encoder,
+>  	return 0;
+>  }
+> =20
+> +static const struct drm_encoder_funcs dw_encoder_funcs =3D {
+> +	.destroy =3D drm_encoder_cleanup,
+
+[Severity: Critical]
+This is a pre-existing issue, but could this setup lead to a use-after-free
+when the platform device unbinds?
+
+The encoder is embedded in the dsi_data structure, which is allocated
+using devm_kzalloc() in dsi_probe():
+
+drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c:dsi_probe() {
+    ...
+    data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+    ...
+}
+
+If userspace holds an open file descriptor when the platform device unbinds,
+the DRM device and its mode objects will outlive the platform device. The
+devres cleanup will free the dsi_data memory, but the DRM device will still
+hold a pointer to the encoder in its internal lists.
+
+When the DRM device is finally released, drm_mode_config_cleanup() will
+iterate over its encoder list and invoke this .destroy callback
+(drm_encoder_cleanup) on the already-freed memory.
+
+Since you are refactoring the encoder initialization here, would this be a
+good time to transition to drmm_encoder_alloc() or drmm_kzalloc() to tie the
+allocation lifetime to the DRM device instead of the platform device?
+
+> +};
+> +
+>  static const struct drm_encoder_helper_funcs dw_encoder_helper_funcs =3D=
+ {
+>  	.atomic_check	=3D dsi_encoder_atomic_check,
+>  	.mode_valid	=3D dsi_encoder_mode_valid,
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-drm_simple=
+_encoder_init-v2-0-5020b630668a@gmail.com?part=3D11
