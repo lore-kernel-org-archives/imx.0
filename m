@@ -1,123 +1,186 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76B330E82C
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A0A30F94D;
+	Mon, 20 Jul 2026 15:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784561342; cv=none; b=SFiUX6CwS+z/T0xfZu8DHNFPIhKJ3GSX5jGTjV6XkwWqdi/agRemV3hkIwukwnSJ+Y9UVkjwR0Y3jQ3LIzqIXCH3pDSnAmUcy6PdXiW8tnooCGkZhlLGqegAUoYBK0OTteOeujBbc9LAcpBl4DwZoX0mlIhbVpLXR6NVZZU6J7s=
+	t=1784561343; cv=none; b=kVlD1k6cZ+tsXBm4X8XU6AOgvStH1dIfJlSO2rQPfnwo6BJrMOPE9BkPawyCviZmOvJCjA+ym19uwgHsx/UT2NXqCTw2fnAwhw8Age7r6my7e7CHmbYRqpwhxHv9GCtXiEdACi7aDl97APkMoRwWJEr3NxXyCJcrrQvgHbRxZe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784561342; c=relaxed/simple;
-	bh=U4t0Ha5aQQnsOVS92ULllJOo0551YVcY8yAgy7W+cCg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ViFBuBGFiqpuCki4zxW2VHJtQdctv8/ZufouiSihmrws55mGzV5jztZFLyqTioc24TpoQxDPxDJlLvZ8o4/VKr2YAkFCNrBOAvhq6nvTC4yuheeg4AbTrg1IxJa3Kvi/8ky/JYCqJczilGRSqvKvBoFPB2j+78EIqb4sg6EXFZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=N0RAcv+7; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1784561343; c=relaxed/simple;
+	bh=7O0vC6/yqYA0BI4cZmKbu1kjJIMuCL0aau+hjeo2LCA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=WY1CoxxkmqockXnwPSsIh6hSiScm+q6Sbnt310WKunJSgwyGBCBxSvApSNoIkyGQ+w6llEdaieAerFWd/+ICM2YA6Am1Xu7gb9Xh01NtzWdelebCevuPJtRECHRXAFA+HbfSTi+Y/l+s78OmRg4UqxmTIg9qk9IbvXud9zm21Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cWqsMtpy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="N0RAcv+7"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ceae1ed204so81131685ad.0
-        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 08:29:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784561339; x=1785166139; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bgz7Y8qBkufWfij3p6tfrGVbR4yOWWu3669don02deQ=;
-        b=N0RAcv+7RtI9VwEdNIjLWyo2T1mhIVk/oPk7E3dT3p71aJNTqnioenhaYwxLrT9bDR
-         xJ3WXQj8uAnoQ+RVJ9n7rVEe8sICaCHGK1ENemuBLRokOcR69j7MV5QIg+GowUUJ9fXB
-         msg4t1Vyrj+VmWoeUiUY8KjCbgXW7k4l4COJZBbxEZypwsPnSc1snYu3x0T5KJAFShYO
-         OZXRS/e+PK84BVXG6hghefOG7SRN7V3SsR5bq035wM2PgEpQz45kbqs0oN9uoWrcCaWZ
-         RsTDu0VEfAPHbXDtlzwl0FgxTjcuPzmNxwBSaDeL6/qd4b7xSED58tRzqyWKrVa5F2FG
-         nVIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784561339; x=1785166139;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=bgz7Y8qBkufWfij3p6tfrGVbR4yOWWu3669don02deQ=;
-        b=LTl1leFUk2FIqld102s2L9HCIZswlIbucErxsAbclQecrr20OdfPAeSOFUZY9jQXws
-         NLbOnHjQfDBPvTlEFaTSvXW0aPfZrMgzGKImjXIHH/h9Ilrn296MPxLBQaJsl/O3Ew+/
-         p8m4gP9qR+tukZpPKjRYimltJeAnQjaTeIQ8oE8Ma95wHC06cRh7O65VgswNfaKz4EFD
-         aItyG9/NvKeXYEHKGQmMAtVYFXIITaVv342kDm5v++GrT7H7cytFIrEW/euNE6mwE3hR
-         +bCc89y7tDIRjT3UDQCYmDKtUm+tTvpUK+NGe40KAR8Gtb79qUrmbeSCtckSIbEnHMsx
-         B3Dw==
-X-Forwarded-Encrypted: i=1; AHgh+RrKA7Lrrg2dhqgE/viChY64leP2GNNfFeft4fY7iljPBgkFLs+qB5EGNx/HGNrIn4w3kBo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxHaD/iGOiWPmlqHeP7AP9U9FMomwlBMPy7D7HSyFXE7luF9MM2
-	hfwsisYP2500Cyh9pS03YZlUwp6X0wc6FC+OEb02DHfopvXYBXYFH5kEbI59yInNMco=
-X-Gm-Gg: AR+sD11VE4VGHt+TahiEP8fFGOR7mqSfiUZqH6iqqpY+P/YAQDPlTyUo6/vJrfQ4Lle
-	HEbIACdGPsUS4pUarvpYL4cOguNDv7HY8hpYF2efThTvKJ1ok44NkjraV6bJXQic9r7yr/gs7gf
-	8FUvuOPC4Q5J2160dIq4UlacwNCcxWRKk3ehY/kkKh4BwKL1KlwmAZDmpDh22onNQqRo7V8XplZ
-	tDGAKA9b6jCtIzexdhii7TDiNjny1BHy6lZaPGArB6zjlu7dnnlbckHTigNdKU+R7VSKpXXSYjZ
-	OK4c2M1Zy5d+9TTw7HXm+XDFPIemApqOHiJMRUrVtQAIF9NytfDz6/XQjYgya+ui8EdL5pF9q1o
-	FP5v302z078qUuRi7jSHqHq2RJ7gw2fEqnxiFo+C8TE77OxZqQxGzzR4LCiA=
-X-Received: by 2002:a17:903:1b25:b0:2ca:3b31:ef4f with SMTP id d9443c01a7336-2cf34a0a6b5mr140652465ad.40.1784561339559;
-        Mon, 20 Jul 2026 08:28:59 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:51::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf34730e35sm58695305ad.64.2026.07.20.08.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 08:28:58 -0700 (PDT)
-Date: Mon, 20 Jul 2026 08:28:58 -0700
-From: Joe Damato <joe@dama.to>
-To: wei.fang@oss.nxp.com
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
-	wei.fang@nxp.com, chleroy@kernel.org, maxime.chevallier@bootlin.com,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RESEND v4 net-next 11/14] net: enetc: move
- enetc_set_si_vlan_promisc() to enetc_pf_common.c
-Message-ID: <al4+uiiXKgaNBa91@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, wei.fang@oss.nxp.com,
-	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	linux@armlinux.org.uk, wei.fang@nxp.com, chleroy@kernel.org,
-	maxime.chevallier@bootlin.com, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
- <20260720014317.1059359-12-wei.fang@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cWqsMtpy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D8B1F00A3D;
+	Mon, 20 Jul 2026 15:29:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784561341;
+	bh=dWPGGLsF2G/6ezyrvFhnGo/wg7YMOtfz7V0dnxZgbtA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cWqsMtpydBlML83AsA+ikPeWf7b22QD++F4XPMvZRe2Qz4eOHwMQ2u9LXL1sjC39k
+	 qKFGMcAjldB5Pdr328XAPBDnL9qol6ffXYSNuRVEzXwlI7KKHDOKEVnM796DoCOOxt
+	 NpOk7+CprQRS84R16g1BoHeVGlYHk4yrEm4vzSOPH3ZCBjBC0ony/x6r7qRs/Yeiyn
+	 u1PwgDbgp8jPKW+jZUDVo8/iXuj81udUAxK6IghMOiENM3vLEuJV0H5P7ajF2966TV
+	 +cB8ayydU1sV4XCoQex3ZqGjC/wqdcNDIbix5TronbPlXTdsN/QSGJc9Mv71K5kiIY
+	 EBOM5tJhZ9aKA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 10/16] PCI: dwc: qcom-ep: Use cached PCIe capability
+ offset
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Hans Zhang" <18255117159@163.com>
+Cc: linux-pci@vger.kernel.org, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, imx@lists.linux.dev, neil.armstrong@linaro.org
+In-Reply-To: <20260720150619.24733-11-18255117159@163.com>
+References: <20260720150619.24733-1-18255117159@163.com>
+ <20260720150619.24733-11-18255117159@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 20 Jul 2026 15:29:00 +0000
+Message-Id: <20260720152900.B1D8B1F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720014317.1059359-12-wei.fang@oss.nxp.com>
 
-On Mon, Jul 20, 2026 at 09:43:13AM +0800, wei.fang@oss.nxp.com wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> The PSIPVMR in ENETC v4 has the same bit layout and functionality as the
-> PSIPVMR register in ENETC v1: bit n (n <= 15) controls VLAN promiscuous
-> mode for SI n. The only difference between the two hardware generations
-> is the register address offset.
-> 
-> Since the register functionality is identical, the VLAN promiscuous mode
-> setting code can be shared between ENETC v1 and v4 drivers.
-> 
-> Move enetc_set_si_vlan_promisc() from enetc_pf.c to enetc_pf_common.c
-> and export it so that it can be shared between the two drivers. Add a
-> revision check using is_enetc_rev1() to select the correct register
-> offset (ENETC_PSIPVMR for v1 and ENETC4_PSIPVMR for v4) while keeping
-> the same logic.
-> 
-> Remove the v4-specific enetc4_pf_set_si_vlan_promisc() from enetc4_pf.c
-> and replace its call site with the new common enetc_set_si_vlan_promisc()
-> to eliminate code duplication.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
->  .../net/ethernet/freescale/enetc/enetc4_pf.c  | 17 ++------------
->  .../net/ethernet/freescale/enetc/enetc_pf.c   | 16 --------------
->  .../freescale/enetc/enetc_pf_common.c         | 22 +++++++++++++++++++
->  .../freescale/enetc/enetc_pf_common.h         |  1 +
->  4 files changed, 25 insertions(+), 31 deletions(-)
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Reviewed-by: Joe Damato <joe@dama.to>
+New issues:
+- [High] `pci->pcie_cap` is used uninitialized (as 0) in `qcom_pcie_ep_icc_=
+update()` if the global IRQ triggers before `perst_irq` completes.
+
+Pre-existing issues:
+- [High] Lost interrupt events due to mutually exclusive `if-else if` chain=
+ dropping concurrently pending status bits.
+- [High] Concurrent execution of global IRQ and PERST IRQ leads to unclocke=
+d MMIO accesses and system crash.
+--
+
+--- Patch [10]: [PATCH v3 10/16] PCI: dwc: qcom-ep: Use cached PCIe capabil=
+ity offset ---
+commit 66f17f8dee9121b185f046f6247725965823798a
+Author: Hans Zhang <18255117159@163.com>
+
+PCI: dwc: qcom-ep: Use cached PCIe capability offset
+   =20
+dw_pcie_ep_init() no longer caches the offset automatically. For qcom-ep,
+hardware (clocks, PHY) is enabled only after PERST# deassert. Therefore,
+we must call dw_pcie_get_pcie_cap() in qcom_pcie_perst_deassert() after
+the resources are enabled, before any DBI access. This ensures the cached
+offset is valid for subsequent uses in interrupt handlers and ICC updates.
+
+> diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/cont=
+roller/dwc/pcie-qcom-ep.c
+> index 56184e6ca6e69..16b0891f95713 100644
+> --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> @@ -307,15 +307,13 @@ static void qcom_pcie_ep_icc_update(struct qcom_pci=
+e_ep *pcie_ep)
+>  {
+>  	struct dw_pcie *pci =3D &pcie_ep->pci;
+> -	u32 offset, status;
+> -	int speed, width;
+> -	int ret;
+> +	int speed, width, ret;
+> +	u32 status;
+> =20
+>  	if (!pcie_ep->icc_mem)
+>  		return;
+> =20
+> -	offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> -	status =3D readw(pci->dbi_base + offset + PCI_EXP_LNKSTA);
+> +	status =3D readw(pci->dbi_base + pci->pcie_cap + PCI_EXP_LNKSTA);
+
+[Severity: High]
+Does this read from an uninitialized offset if the global IRQ triggers
+before the PERST IRQ completes?
+
+qcom_pcie_ep_enable_irq_resources() requests the global IRQ without
+IRQ_NOAUTOEN, making it active immediately. If the PCIe link is already
+established (e.g., by the bootloader or firmware), the IRQ can trigger
+before pci_epc_start() enables the PERST IRQ and qcom_pcie_perst_deassert()
+caches the offset.
+
+If this happens, pci->pcie_cap would be 0, causing the function to read
+from DBI offset 0x12 instead of PCI_EXP_LNKSTA. This would compute arbitrary
+speed and width values to pass to icc_set_bw(), which could misconfigure the
+system interconnect bandwidth.
+
+> =20
+>  	speed =3D FIELD_GET(PCI_EXP_LNKSTA_CLS, status);
+>  	width =3D FIELD_GET(PCI_EXP_LNKSTA_NLW, status);
+
+[ ... ]
+
+> @@ -491,14 +489,15 @@ static int qcom_pcie_perst_deassert(struct dw_pcie =
+*pci)
+> =20
+>  	dw_pcie_dbi_ro_wr_en(pci);
+> =20
+> +	dw_pcie_get_pcie_cap(pci);
+> +
+>  	/* Set the L0s Exit Latency to 2us-4us =3D 0x6 */
+> -	offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> +	offset =3D pci->pcie_cap;
+>  	val =3D dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
+
+[ ... ]
+
+
+drivers/pci/controller/dwc/pcie-qcom-ep.c:qcom_pcie_ep_global_irq_thread() {
+...
+	writel_relaxed(status, pcie_ep->parf + PARF_INT_ALL_CLEAR);
+
+	if (FIELD_GET(PARF_INT_ALL_LINK_DOWN, status)) {
+...
+	} else if (FIELD_GET(PARF_INT_ALL_BME, status)) {
+...
+}
+
+[Severity: High]
+This is a pre-existing issue, but does this if-else chain lose concurrent
+interrupt events?
+
+qcom_pcie_ep_global_irq_thread() clears all pending events simultaneously in
+hardware. If the host sends multiple events in close succession (e.g., both
+Bus Master Enable and Link Up are set in PARF_INT_ALL_STATUS), the else-if
+logic will process the first matching event and discard the others.
+
+Since the discarded events are already cleared from the register, they would
+be permanently lost, potentially leaving the endpoint in an incorrect logic=
+al
+state.
+
+
+drivers/pci/controller/dwc/pcie-qcom-ep.c:qcom_pcie_ep_global_irq_thread() {
+...
+	u32 status =3D readl_relaxed(pcie_ep->parf + PARF_INT_ALL_STATUS);
+...
+}
+
+drivers/pci/controller/dwc/pcie-qcom-ep.c:qcom_pcie_disable_resources() {
+...
+	clk_bulk_disable_unprepare(pcie_ep->num_clks, pcie_ep->clks);
+...
+}
+
+[Severity: High]
+This is a pre-existing issue, but can the global IRQ thread race with
+PERST deassertion/assertion and cause an unclocked MMIO access?
+
+Both the global and PERST IRQs are requested as threaded IRQs without mutual
+exclusion. If the host toggles PERST, qcom_pcie_ep_perst_irq_thread() calls
+qcom_pcie_perst_assert(), which unconditionally disables the PCIe clocks via
+clk_bulk_disable_unprepare().
+
+If a simultaneous link state change triggers qcom_pcie_ep_global_irq_thread=
+()
+and it reads from PARF_INT_ALL_STATUS after the clocks are disabled, this
+would cause a synchronous external abort (SError) and crash the system.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720150619.2473=
+3-1-18255117159@163.com?part=3D10
