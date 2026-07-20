@@ -1,180 +1,237 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEED30C606;
-	Mon, 20 Jul 2026 15:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F395D30DEB0
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784561220; cv=none; b=nijz16wgWhQTfDgTNTqzR18EIATtI3z8xn039QSNhc8jEdnpuPI1Jh+HpcNjk1obJBPlHICLk5um9omVOR7wnSvDrY0Xse/TFVD8MzGs+bFmKm1ArlnxI7fBHbVEvpTsjIvQIcmI4+/Qh6ytL1ZIHAIC8N6iK/3e4g+gN6ggyvk=
+	t=1784561260; cv=none; b=MCvXonivOluqe+b34cRwJediZ5NTe1uvBeNY40ngX0k6eX6k9YMhJ6atSqrBIiqYJe8mPv7yWjbVG5+VBq1bzTKPh9wLczgluKyz7ICfHVS+9ewPxw9DtLKnOilvNgFTy8XBB564q6J+ViAww4EwXHkTKzdAo+/mnxmoasFqi/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784561220; c=relaxed/simple;
-	bh=OgaxjBhEa6Ca5r56R7HzvVcZBs0Y1Q787/QCUpRvqsk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Tk4dzCuquikh9+JBPMEW5gqS3CIN+GSksU/nH5NwzY+szMxMzTelGRq0W4r9yup7makC6DO9LiblMaf5S3kv3niF4G6B2EltzjtAXIH7SUD55/YWeLebORHnl8gjpB7jD7Xpimxc1eCV+XyS9iVQ+4323au8tRkY+KtTzzDYngs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M2/H/MXr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784561260; c=relaxed/simple;
+	bh=SZnPsEZ4Oc/rmge1omndByJn26hKDSDG/xKh1Ckq+tI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BSm+mbX7J/3C9yrubBFDO0XXX8mw0xOQppVx1FioRwjvXqikhpW9WbQy8LOd1kwLHj60bzoEIiLWurIERDmmpZIm8IpytSXF9gBbZM5ME0CYzEM7tolyyXxxxmRcM/lscDVRwKW1jITKdrmkf9G2AKjni3LySgfMNkvWs8aorTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rSvtzNjt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=s8wRfVdc; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=FZxXkRq3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Y8b71xct; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M2/H/MXr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6101F00A3A;
-	Mon, 20 Jul 2026 15:26:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784561218;
-	bh=NKMMf/o3lV9WryRPgZshT1tMeaccZ8lfExMbz1lt68g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=M2/H/MXrKQFzMc+xl/qWN4r6E64csL6kzRTtp8tILKFtk8egLUGbtnE4PJHp6QHLL
-	 9ZI28KrRIsXdO6RO0XyraZBrsRNarI0T4OFisjl6wJUhjqZsMT7xOmOlKGfOUL6NMT
-	 KLsPZHDyRJMR+mNnzXQwbecDJT8iyxi3iKtofScLT0KQvza18DNaioFW6B7UZSBUz8
-	 hasdDKQyP+QHQsXmjsFaDrlHl6XUi/aBAGUCUm3Mtv/WhkeAvg++XTUaJK/Q0P4RyH
-	 pTuaRtiyOwly/DWFjj4eCoaDs6fNXMtVHYS231GM9mqh6Yxu6po4er16fvEUFRWR9l
-	 kFn2O4HIJKJ/A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 08/16] PCI: dwc: fu740: Use cached PCIe capability
- offset
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Hans Zhang" <18255117159@163.com>
-Cc: linux-amlogic@lists.infradead.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, neil.armstrong@linaro.org
-In-Reply-To: <20260720150619.24733-9-18255117159@163.com>
-References: <20260720150619.24733-1-18255117159@163.com>
- <20260720150619.24733-9-18255117159@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 15:26:58 +0000
-Message-Id: <20260720152658.7F6101F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rSvtzNjt";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="s8wRfVdc";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="FZxXkRq3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Y8b71xct"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D6B0C7A027;
+	Mon, 20 Jul 2026 15:27:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784561257; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kTyehpI+Frpde8vx4Y/usVDlefaVXjVPd9jl0F472DA=;
+	b=rSvtzNjtQIY+oL+pZb9Z7HxTl+ceaV1jIAfd90ZAviR/KUdRbN4YOiCjyazpvR/PA8g13I
+	ip5sL7rxrk6wVoZAmzi5W+OJ21reUcDlrXqBqAlP21vQD/uy2TKtSNu0eD5pqwlCf2Cqco
+	gOhOjJhe8gZ/bQnsuYOvQXir2Yofj1o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784561257;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kTyehpI+Frpde8vx4Y/usVDlefaVXjVPd9jl0F472DA=;
+	b=s8wRfVdc+ajxxOiSm5qAIaGfAxpSWN8FFiWUMl5Yc+Ptht+dAYpKm8TNx1SLbM9xPYbOfS
+	Cf52o18/LCbbAECQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FZxXkRq3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Y8b71xct
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784561256; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kTyehpI+Frpde8vx4Y/usVDlefaVXjVPd9jl0F472DA=;
+	b=FZxXkRq3+XPfr7HNKL1iVxiYCbadfG59H8SS/f9s+AF23Ta/lCVqEMyoohir+bgO3Ke9Vd
+	JSl0eAlwz5EfzTdCiIMUWLNn646doRy/KWZdlfAumSJ/cFlSztw6LK3sQBX/brF7xhaspw
+	tXlSGTPQrGIB6//gEfBWfCy/G5kYSZ8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784561256;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kTyehpI+Frpde8vx4Y/usVDlefaVXjVPd9jl0F472DA=;
+	b=Y8b71xctD+F7nWJ+3Jr4a4km6bsocJJhhQYVVlZpixDP72DjWw0E/dHkBsnpIKueaP1lzm
+	Ns4Kbl11JgHIHvAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4F75C779AA;
+	Mon, 20 Jul 2026 15:27:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id BHEDEmc+XmrzCgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 20 Jul 2026 15:27:35 +0000
+Message-ID: <bde20e63-ec55-4ad4-872e-a7a983424100@suse.de>
+Date: Mon, 20 Jul 2026 17:27:34 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/15] drm/exynos: remove dependency on DRM simple helpers
+To: Diogo Silva <diogompaissilva@gmail.com>
+Cc: Jingoo Han <jingoohan1@gmail.com>, Inki Dae <inki.dae@samsung.com>,
+ Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Peter Griffin <peter.griffin@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Michal Simek <michal.simek@amd.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Stefan Agner <stefan@agner.ch>,
+ Alison Wang <alison.wang@nxp.com>,
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+ David Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
+ <olvaffe@gmail.com>, Jyri Sarha <jyri.sarha@iki.fi>,
+ Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Xinliang Liu <xinliang.liu@linaro.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Yongqin Liu
+ <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>,
+ Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-tegra@vger.kernel.org, virtualization@lists.linux.dev,
+ imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
+ linux-renesas-soc@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-doc@vger.kernel.org
+References: <20260719-drm_simple_encoder_init-v1-0-a78c509e3062@gmail.com>
+ <20260719-drm_simple_encoder_init-v1-1-a78c509e3062@gmail.com>
+ <4af254a4-beb7-4f77-830f-42d5bacb10a4@suse.de>
+ <CAJpoHp73S2_cavgV3aVwC5PS8H1GRqTdDV-Xu8n6nXavBnV2=g@mail.gmail.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <CAJpoHp73S2_cavgV3aVwC5PS8H1GRqTdDV-Xu8n6nXavBnV2=g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,samsung.com,ffwll.ch,kernel.org,linaro.org,ideasonboard.com,linux.intel.com,amd.com,nvidia.com,agner.ch,nxp.com,intel.com,redhat.com,collabora.com,chromium.org,iki.fi,pengutronix.de,glider.be,google.com,arm.com,baylibre.com,googlemail.com,lwn.net,linuxfoundation.org,lists.freedesktop.org,lists.infradead.org,vger.kernel.org,lists.linux.dev];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RL5qdohruh175rhiw1bqi96ifb)];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCPT_COUNT_GT_50(0.00)[59];
+	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:url]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: D6B0C7A027
+X-Spam-Score: -3.01
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] DWC endpoint core uses uninitialized `pci->pcie_cap` during se=
-tup, leading to severe PCI configuration space corruption.
-- [Low] Unused variable `cap` in `dw_pcie_link_get_max_link_width()`, leadi=
-ng to redundant MMIO reads.
+Hi
+
+Am 20.07.26 um 17:15 schrieb Diogo Silva:
+> Hey,
+>
+>> Again, you rather want drm_err() with drm_dev here.
+>>
+>> I've briefly looked over the series and many patches seem affected.
+>> Please prefer drm_ logging functions and DRM devices over the plain
+>> device equivalents.
+> Thanks. I will submit a v2 with consistent usage of drm_err().
+
+Thanks
+
+>
+> Also, is there any ongoing task or would it be useful to submit patches
+> changing the usage of DRM_DEV_* functions with drm_* equivalents?
+> Or from dev_* to drm_* when possible ?
+
+Possibly. DRM_DEV_ logging is supposed to be replaced with drm_ logging 
+helpers. That would be a simple follow-up series.  Whether to prefer 
+drm_ over dev_ logging depends on the context and the driver maintainer.
+
+Best regards
+Thomas
+
+
+>
+> BR,
+> Diogo
+
+-- 
 --
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
 
---- Patch [8]: [PATCH v3 08/16] PCI: dwc: fu740: Use cached PCIe capability=
- offset ---
-commit 184aa9285c97c29f412656a3e7f63a515288813c
-Author: Hans Zhang <18255117159@163.com>
 
-PCI: dwc: fu740: Use cached PCIe capability offset
-
-This patch series updates the DesignWare PCIe core and several controller
-drivers to cache the PCIe capability offset. By storing the offset in
-pci->pcie_cap, it eliminates the need to repeatedly search for the
-capability during link setup and initialization.
-
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pc=
-i/controller/dwc/pcie-designware-ep.c
-> index 7d2794945704e..14228be8bbce7 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> @@ -1246,7 +1246,7 @@ static void dw_pcie_ep_init_non_sticky_registers(st=
-ruct dw_pcie *pci)
->  	 * to all other functions as well.
->  	 */
->  	if (funcs > 1) {
-> -		offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +		offset =3D pci->pcie_cap;
-
-[Severity: Critical]
-Since the generic endpoint initialization path never caches the capability
-offset (unlike the Root Complex initialization path), doesn't this mean
-pci->pcie_cap remains 0?
-
-If it remains 0, this direct assignment will corrupt offset 0x0C when
-reading and writing the capability.
-
-Furthermore, earlier in this function:
-
-drivers/pci/controller/dwc/pcie-designware-ep.c:dw_pcie_ep_init_non_sticky_=
-registers() {
-    ...
-    dw_pcie_setup(pci);
-    ...
-}
-
-Calling dw_pcie_setup() unconditionally invokes dw_pcie_link_set_max_speed()
-and dw_pcie_link_set_max_link_width(). These functions now use pci->pcie_cap
-which evaluates to 0, causing severe corruption of standard PCI header
-registers (such as Header Type and Cache Line Size at offset 0x0C).
-
->  		func0_lnkcap =3D dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
->  		func0_lnkcap =3D FIELD_GET(PCI_EXP_LNKCAP_MLW |
->  					 PCI_EXP_LNKCAP_SLS, func0_lnkcap);
-
-[ ... ]
-
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/c=
-ontroller/dwc/pcie-designware.c
-> index ec4722ed93032..810729b918928 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware.c
-
-[ ... ]
-
-> @@ -843,7 +842,7 @@ EXPORT_SYMBOL_GPL(dw_pcie_upconfig_setup);
->  static void dw_pcie_link_set_max_speed(struct dw_pcie *pci)
->  {
->  	u32 cap, ctrl2, link_speed;
-> -	u8 offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +	u8 offset =3D pci->pcie_cap;
-
-[Severity: Critical]
-When called from the endpoint initialization path via dw_pcie_setup(),
-doesn't pci->pcie_cap evaluate to 0?
-
-If so, this base offset resolves to standard PCI header bytes instead of
-the PCIe capability registers, corrupting configuration space when
-writing back the updated speed values.
-
-> =20
->  	cap =3D dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-> =20
-
-[ ... ]
-
-> @@ -890,7 +889,7 @@ static void dw_pcie_link_set_max_speed(struct dw_pcie=
- *pci)
->  int dw_pcie_link_get_max_link_width(struct dw_pcie *pci)
->  {
->  	u8 cap =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> -	u32 lnkcap =3D dw_pcie_readl_dbi(pci, cap + PCI_EXP_LNKCAP);
-> +	u32 lnkcap =3D dw_pcie_readl_dbi(pci, pci->pcie_cap + PCI_EXP_LNKCAP);
-
-[Severity: Low]
-Is the cap variable still needed here?=20
-
-It seems this performs a redundant MMIO search via dw_pcie_find_capability()
-but the result is completely ignored since the next line directly accesses
-pci->pcie_cap.
-
-> =20
->  	return FIELD_GET(PCI_EXP_LNKCAP_MLW, lnkcap);
->  }
-
-[ ... ]
-
-> @@ -935,10 +933,9 @@ static void dw_pcie_link_set_max_link_width(struct d=
-w_pcie *pci, u32 num_lanes)
->  	dw_pcie_writel_dbi(pci, PCIE_PORT_LINK_CONTROL, plc);
->  	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, lwsc);
-> =20
-> -	cap =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> -	lnkcap =3D dw_pcie_readl_dbi(pci, cap + PCI_EXP_LNKCAP);
-> +	lnkcap =3D dw_pcie_readl_dbi(pci, pci->pcie_cap + PCI_EXP_LNKCAP);
-
-[Severity: Critical]
-Similar to dw_pcie_link_set_max_speed(), if this is called from the endpoint
-setup path where pci->pcie_cap remains uninitialized, doesn't this result in
-writes to standard PCI header registers instead of the PCIe capability?
-
->  	FIELD_MODIFY(PCI_EXP_LNKCAP_MLW, &lnkcap, num_lanes);
-> -	dw_pcie_writel_dbi(pci, cap + PCI_EXP_LNKCAP, lnkcap);
-> +	dw_pcie_writel_dbi(pci, pci->pcie_cap + PCI_EXP_LNKCAP, lnkcap);
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720150619.2473=
-3-1-18255117159@163.com?part=3D8
