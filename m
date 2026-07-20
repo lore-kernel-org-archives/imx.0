@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF5B433BC4;
-	Mon, 20 Jul 2026 15:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0DC435AA8;
+	Mon, 20 Jul 2026 15:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784560109; cv=none; b=o3ptH5pnl227DNFqFHLBhhRFjMkuIMt4VSdI5EC62ZRcWHVBs7HfXt58fkulTl96VZWZwEVfstUnc/JZ7VFZ+VBBcMopc7ZGAlu9Jb7Al84MPivZ9ev9qty2v2oxa+GJwrv/q2LfCgOgPkizXImybCYnGRSovp2IFrlJDKyqCsA=
+	t=1784560111; cv=none; b=evAVTlNgzpDb1vboxB+cbP7NCXw5iUlZjLZbWX6QLBSK0bTqcD1y71PXT1O4jno8sEpHbGKnE4v5Wgn1QoTMLID1m/BfvdryXS84eN8E+L6Qxi2DOauDnDU6/vcJwLVh8yJBmDvEeXFXJOz5h0WCwJLhLFSRZhCafsyVeaUFL48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784560109; c=relaxed/simple;
-	bh=BePf2KXw3Xz0TGMtMlkVqDuyGHpfO2RjsdeP0lX1uXk=;
+	s=arc-20240116; t=1784560111; c=relaxed/simple;
+	bh=Aif5jRlv7FbAEr+ujojpAGSKgOIGUwI6prHdmq3qkhQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tW42M/Jq+vhmEmqT3kwm3xbrrlSxUqqy1W4G5tYeQ/KAvAw5/VnN2KJGzjBMtnoQbTmSZ79AoeZBe4513lIR3+x+ghnHXg0/zv018sZ9AjQQ0j5jcqFCtxI0iRRRPW0KM8J5o9uMTYpw+ZetisusQxUcrQ1rW/euD8EYV3opPrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=mjcdWVKA; arc=none smtp.client-ip=220.197.31.2
+	 MIME-Version; b=OCUOGX6dM9x7owboTkEPsucMfQ8I4c53cighFCkZFsiWeC1UmfkWtTqe728VOCJvPVO6Ew5kI9oN4JRvxDrIFKBY5x8qZAeVsUzfMUTmiNhgj5oqYMmRrdyrOGhiQyb/5IrgxAbt34AFQab2C2zWGHoMiax8QRYalN8XL6/CYc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=P7co5Xrj; arc=none smtp.client-ip=117.135.210.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="mjcdWVKA"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="P7co5Xrj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=VU
-	TpNwnx9GB412jRFvqDOQChNSZ1zG4+eKVBbgWXW+o=; b=mjcdWVKAVye0opVEIp
-	B7cvAgIgtvrGvWmFeBHOAgQT2pfdzVZgQej9yN+2nEzaPS9/hfGcCmjy81iVQECm
-	DhY9+X7ka1kcVkXXeWa+7upsUKJbcV64VG37ZB8MCW4Lb7Ptx2of6aUryfNniK21
-	dwjxOH5X7HLBV+J+Z3gz4wujA=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=e2
+	nYu9u3Jutd+nElU90XXHobR87pV+uv8qFn8mq8pVQ=; b=P7co5XrjYMyTZkVAHt
+	/cKwUjkvIhjJZ13ufrkXHk5vM5fgZrivLl6avaptV5bMUovq4jhXCIXZtygS/sZR
+	+JL7x8K/M6DAAQjnRDkZdy7NaHhN1mmKSkHIMUfKsECCiFfOhpsrgmMKlhUTM4b5
+	w7hQcCHbDNxtAcEn3lZ7fPc2E=
 Received: from zhb.. (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDX+mO9OV5q8LEOKg--.8910S5;
-	Mon, 20 Jul 2026 23:07:46 +0800 (CST)
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3b1rIOV5qyHOjKQ--.35310S3;
+	Mon, 20 Jul 2026 23:07:56 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: bhelgaas@google.com,
 	lpieralisi@kernel.org,
@@ -43,9 +43,9 @@ Cc: imx@lists.linux.dev,
 	linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hans Zhang <18255117159@163.com>
-Subject: [PATCH v3 03/16] PCI: dwc: imx6: Use cached PCIe capability offset
-Date: Mon, 20 Jul 2026 23:06:06 +0800
-Message-Id: <20260720150619.24733-4-18255117159@163.com>
+Subject: [PATCH v3 09/16] PCI: dwc: intel-gw: Use cached PCIe capability offset
+Date: Mon, 20 Jul 2026 23:06:12 +0800
+Message-Id: <20260720150619.24733-10-18255117159@163.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260720150619.24733-1-18255117159@163.com>
 References: <20260720150619.24733-1-18255117159@163.com>
@@ -56,68 +56,44 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDX+mO9OV5q8LEOKg--.8910S5
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CF18ZFW7uF45Zr4ktry7ZFb_yoW8uF43pa
-	y3u3yFyr4rJF42qFsFy3Z8Zr13tas0kw47Jw47Kw1Sqry7JryDWFy0yryfta1akr4kKFy7
-	AF1xtFyfJ34FyF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zipBTrUUUUU=
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbCxAKwVGpeOcIFMgAA3a
+X-CM-TRANSID:_____wD3b1rIOV5qyHOjKQ--.35310S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7GF1xWrW8JrykKFy3Cr1fCrg_yoW8JF17pa
+	y5Xr1jyFn5XF429F17A3Z8XF1Yy3ZxA3s3Ga97Gr1SvF9rCryDK3yqkryFkF9rGFW0vw1a
+	kw1Utw17Grn8JrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pig_-QUUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC7AyzV2peOcx2MwAA3A
 
-Thus, the cached offset is available when these functions are called, and
-DBI access occurs only after hardware is enabled.
+dw_pcie_host_init() calls .init before caching the offset, so inside
+.init we must call dw_pcie_get_pcie_cap() to obtain the offset (hardware
+is already enabled). The helper will cache the result for later use.
 
 Signed-off-by: Hans Zhang <18255117159@163.com>
 ---
-In pci-imx6, dw_pcie_find_capability() is called in the following
-call chain:
+In pcie-intel-gw, the call chain is:
 
-  static const struct dw_pcie_ops dw_pcie_ops = {
-    .start_link = imx_pcie_start_link,
+  static const struct dw_pcie_host_ops intel_pcie_dw_ops = {
+    .init = intel_pcie_rc_init,
   };
-  imx_pcie_start_link()
-    -> dw_pcie_find_capability()
-    -> imx_pcie_ltssm_enable()
-      -> dw_pcie_find_capability()
-
-Replace these calls with the cached pci->pcie_cap. The call chain after
-modification becomes:
-
-  dw_pcie_host_init()
-    -> pp->ops->init() [imx6_pcie_host_init]
-    -> dw_pcie_get_pcie_cap()  (caches offset)
-    -> pci->ops->start_link = imx_pcie_start_link
-      -> uses pci->pcie_cap
-      -> imx_pcie_ltssm_enable()
-        -> uses pci->pcie_cap
+  intel_pcie_rc_init()
+    -> intel_pcie_host_setup()
+      -> intel_pcie_link_setup()
+        -> dw_pcie_find_capability()
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-intel-gw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 98e1db751132..74b28b4df484 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -966,10 +966,10 @@ static void imx_pcie_ltssm_enable(struct device *dev)
+diff --git a/drivers/pci/controller/dwc/pcie-intel-gw.c b/drivers/pci/controller/dwc/pcie-intel-gw.c
+index 348e579e683f..a891c3f8eb01 100644
+--- a/drivers/pci/controller/dwc/pcie-intel-gw.c
++++ b/drivers/pci/controller/dwc/pcie-intel-gw.c
+@@ -119,7 +119,7 @@ static void intel_pcie_ltssm_disable(struct intel_pcie *pcie)
+ static void intel_pcie_link_setup(struct intel_pcie *pcie)
  {
- 	struct imx_pcie *imx_pcie = dev_get_drvdata(dev);
- 	const struct imx_pcie_drvdata *drvdata = imx_pcie->drvdata;
--	u8 offset = dw_pcie_find_capability(imx_pcie->pci, PCI_CAP_ID_EXP);
-+	struct dw_pcie *pci = imx_pcie->pci;
- 	u32 tmp;
+ 	u32 val;
+-	u8 offset = dw_pcie_find_capability(&pcie->pci, PCI_CAP_ID_EXP);
++	u8 offset = dw_pcie_get_pcie_cap(&pcie->pci);
  
--	tmp = dw_pcie_readl_dbi(imx_pcie->pci, offset + PCI_EXP_LNKCAP);
-+	tmp = dw_pcie_readl_dbi(pci, pci->pcie_cap + PCI_EXP_LNKCAP);
- 	phy_set_speed(imx_pcie->phy, FIELD_GET(PCI_EXP_LNKCAP_SLS, tmp));
- 	if (drvdata->ltssm_mask)
- 		regmap_update_bits(imx_pcie->iomuxc_gpr, drvdata->ltssm_off, drvdata->ltssm_mask,
-@@ -995,7 +995,7 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
- {
- 	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
- 	struct device *dev = pci->dev;
--	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-+	u8 offset = pci->pcie_cap;
- 	u32 tmp;
- 	int ret;
+ 	val = pcie_rc_cfg_rd(pcie, offset + PCI_EXP_LNKCTL);
  
 -- 
 2.34.1
