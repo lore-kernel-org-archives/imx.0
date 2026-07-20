@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D15438FE8
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 15:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B325383983
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 16:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784563013; cv=none; b=fj1PI0YvmNAe67lqHGJE/walo8u4z7auNHP3ahNfvhDarqaXpPEyc+RJfbnAF2W2eottzlCLdfdA3Hwq+kgtIuZGVQ9B2SSE+fYRzh+DF6tUdFW0dzlLgwpEjlT+ZSdGJ+DHc6TAmOEMtwi8zirz57WNlFd2UjjqaeBzL86w2uY=
+	t=1784563223; cv=none; b=huSwhLk/18TNfrUBSjkla01kw5dNZVpM5Y0Bi6uaFsZUgB1t0rX/Aa4Zz0WU980/V0YvxmNgT7PSxIbWEG85Bu684tC821FHs1UmpDpHxY7t5p5tuaEf8iMHk6qAVcmRvgfO3EYYtmZQ8fLaKWBbaKOatuqIBMGou1H1mbFgReY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784563013; c=relaxed/simple;
-	bh=PWAay6JbT2WP4sSuIxV14qUOH9tYk4gS0pz4MR7RM18=;
+	s=arc-20240116; t=1784563223; c=relaxed/simple;
+	bh=EsSQroHh481bu2cEKzRSpxZ6PzAFmcLUfnJ/ybNxzdQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GBIHgHW+nbVsRgOEqCYuH/D94PpqKDppi7lnBqxhePr45zDjlQrwMwXI++Pnr+ZNPaSAHxRwvUBmyzk/OeZ6dNUUtS+7NyHtD9IF1RiYTLcmHIsPUU2UxdVO8lVr18+QmkG8YPWAYS/CuX+0jBQBcTdspcHejiq4+OkYiLVM7wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IYYZIZnH; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=jk9d+uCJvFJiLTo8fQMsXnqyaoXtFDaWopRTaoz5ym35PzOym93DdSFTMQOJ+7Jzze4N83Pkul+sxLA/ZJh2yAK2xFPSj3STXbjDcXW9cq4clKhnZ9hoowtzZSnCQnEBcVgwg3huI6CeXJVkC4OQL/uY2wpvLwHYJIqVH6ShOUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OAq+Qpxt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IYYZIZnH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FCB1F00A3D;
-	Mon, 20 Jul 2026 15:56:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OAq+Qpxt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2561F00A3A;
+	Mon, 20 Jul 2026 16:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784563011;
-	bh=Q8EeV4dGpp0/VfWB9tiXvyOV2F3Tc9aWT6jOzV7G/80=;
+	s=k20260515; t=1784563222;
+	bh=4LlIpLHzPCnxK1ITIZgjXOXeMb70YEarXXhHjS20X7Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IYYZIZnHi7WqVfRSOuIM4Sdg7NIHX5hgthdAaOh039bvb/JubnaIWM5hyO7TTN+jY
-	 oHaADd5dQXiZQi2BLjH5sei6lLYsrsJqezzsSLviGTisK243azPxxZSnG7jIEUEZ2W
-	 XKiJ8Qus969ZD7k4GQeE4ykFoyMeeYx/N4qVvQHuQXN2jzDhsbqXhqOUhio7mTUFP7
-	 B5Hti+wgK9cD7p+erURLpG7x9y8B5wKenVDa2kTRIKfuDbYLQJ59H+ysz/nEeOQhr+
-	 nLam9ynx0EWTS6uUiosL9hTspeL4enJgMseSV6aSyVdX76hqZKL7xVGuxRvazrRnOA
-	 Y40bKOmqjjTcA==
+	b=OAq+QpxtYaFDOr4ryR+MRNSzY7HcYB1s63Kw9QI47Sx5xekr9a0l6JI6wBSmsLZSG
+	 e4uYwH7m8N/T6t7kiY341kRnaeFZ9rJK30eZ9QGtuX/QLq5nCnXczELM45iRAFn8Fs
+	 PQvy9A0Nj3CraKtBkY2vEzDf5dL/SodKOckX4N1IoMwKrbEvdtnNd0zj0TCxTXV1oT
+	 jXq0NhsCvDbcMXwi9152R4PSQv117feCzYuzpkz1z1SCu/NEeoGYcyAkDTrgCaZJaj
+	 AICazzkGUZQfDz6kRptebqbD0H9Vpu55AqmbffgY5PIYE0rwixcPu0yVdtVLabiFTV
+	 QEd45yFUTAYeA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 13/15] drm/meson: remove dependency on DRM simple
+Subject: Re: [PATCH v2 06/15] drm/virtio: remove dependency on DRM simple
  helpers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Diogo Silva" <diogompaissilva@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com, neil.armstrong@linaro.org, imx@lists.linux.dev
-In-Reply-To: <20260720-drm_simple_encoder_init-v2-13-5020b630668a@gmail.com>
+Cc: imx@lists.linux.dev, neil.armstrong@linaro.org, wsa+renesas@sang-engineering.com, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <20260720-drm_simple_encoder_init-v2-6-5020b630668a@gmail.com>
 References: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com>
- <20260720-drm_simple_encoder_init-v2-13-5020b630668a@gmail.com>
+ <20260720-drm_simple_encoder_init-v2-6-5020b630668a@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 15:56:50 +0000
-Message-Id: <20260720155651.66FCB1F00A3D@smtp.kernel.org>
+Date: Mon, 20 Jul 2026 16:00:21 +0000
+Message-Id: <20260720160021.8D2561F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,80 +49,56 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Potential Use-After-Free due to mixing devres (`devm_`) allocation=
- with DRM object lifecycle.
+- [High] Unhandled return value of drm_connector_init() leading to potentia=
+l kernel oops on allocation failure.
 --
 
---- Patch [13]: [PATCH v2 13/15] drm/meson: remove dependency on DRM simple=
+--- Patch [6]: [PATCH v2 06/15] drm/virtio: remove dependency on DRM simple=
  helpers ---
-commit f601252d45634d954a7087cd68009adce3fbf5f7
+commit c3e48910730cab2ede63c55569b1ea2f386b9c60
 Author: Diogo Silva <diogompaissilva@gmail.com>
 
-drm/meson: remove dependency on DRM simple helpers
+drm/virtio: remove dependency on DRM simple helpers
 
-This patch replaces the deprecated simple KMS helper drm_simple_encoder_ini=
-t()
-with drm_encoder_init() across the CVBS, DSI, and HDMI encoders in the meson
-DRM driver.
+This commit removes the deprecated DRM simple KMS helper dependency
+by open-coding drm_simple_encoder_init() into drm_encoder_init()
+and correctly checking the return value to prevent silent failures.
 
-> diff --git a/drivers/gpu/drm/meson/meson_encoder_cvbs.c b/drivers/gpu/drm=
-/meson/meson_encoder_cvbs.c
-> index 22cacb1660c4f..cdb84d2283f83 100644
-> --- a/drivers/gpu/drm/meson/meson_encoder_cvbs.c
-> +++ b/drivers/gpu/drm/meson/meson_encoder_cvbs.c
+> diff --git a/drivers/gpu/drm/virtio/virtgpu_display.c b/drivers/gpu/drm/v=
+irtio/virtgpu_display.c
+> --- a/drivers/gpu/drm/virtio/virtgpu_display.c
+> +++ b/drivers/gpu/drm/virtio/virtgpu_display.c
+
 [ ... ]
-> @@ -218,6 +218,10 @@ static const struct drm_bridge_funcs meson_encoder_c=
-vbs_bridge_funcs =3D {
->  	.atomic_create_state =3D drm_atomic_helper_bridge_create_state,
->  };
-> =20
-> +static const struct drm_encoder_funcs meson_encoder_cvbs_funcs =3D {
-> +	.destroy =3D drm_encoder_cleanup,
-> +};
-> +
->  int meson_encoder_cvbs_probe(struct meson_drm *priv)
->  {
-[ ... ]
-> @@ -257,8 +261,9 @@ int meson_encoder_cvbs_probe(struct meson_drm *priv)
->  	meson_encoder_cvbs->priv =3D priv;
-> =20
->  	/* Encoder */
-> -	ret =3D drm_simple_encoder_init(priv->drm, &meson_encoder_cvbs->encoder,
-> -				      DRM_MODE_ENCODER_TVDAC);
-> +	ret =3D drm_encoder_init(priv->drm, &meson_encoder_cvbs->encoder,
-> +			       &meson_encoder_cvbs_funcs,
-> +			       DRM_MODE_ENCODER_TVDAC, NULL);
+
+> @@ -306,7 +310,11 @@ static int vgdev_output_init(struct virtio_gpu_devic=
+e *vgdev, int index)
+>  	if (vgdev->has_edid)
+>  		drm_connector_attach_edid_property(connector);
 
 [Severity: High]
-This is a pre-existing issue, but does using devres for the encoder allocat=
-ion
-create a use-after-free risk during device unbind?
+This is a pre-existing issue, but looking at the context just
+above these lines in vgdev_output_init(), the return value of
+drm_connector_init() is ignored.
 
-Looking earlier in meson_encoder_cvbs_probe(), the structure containing the=
- DRM
-encoder is allocated with devres:
+Since this patch corrects missing error handling for drm_encoder_init(),
+would it make sense to also catch errors from drm_connector_init() in this
+same function?
 
-	meson_encoder_cvbs =3D devm_drm_bridge_alloc(priv->dev,
-						   struct meson_encoder_cvbs,
-						   bridge,
-						   &meson_encoder_cvbs_bridge_funcs);
+If drm_connector_init() fails (such as from resource exhaustion), the
+connector structure is left uninitialized. Calling drm_connector_helper_add=
+()
+and drm_connector_attach_edid_property() subsequently will dereference this
+uninitialized state, which can lead to a crash.
 
-If the physical device is unbound (e.g., via sysfs) while a user application
-holds a DRM file descriptor open, the devres framework will free this memor=
-y,
-including the embedded struct drm_encoder.
-
-Later, when the file descriptor is closed and the DRM core tears down the
-device, it will call drm_encoder_cleanup() on the already-freed encoder.
-
-The exact same devres allocation pattern is also present in=20
-meson_encoder_dsi_probe() for meson_encoder_dsi, and in
-meson_encoder_hdmi_probe() for meson_encoder_hdmi.
-
-Could these be converted to use DRM-managed allocators (like drmm_kzalloc) =
-to
-ensure the memory safely outlives the physical device unbind?
+> -	drm_simple_encoder_init(dev, encoder, DRM_MODE_ENCODER_VIRTUAL);
+> +	ret =3D drm_encoder_init(dev, encoder, &virtio_gpu_enc_funcs,
+> +			       DRM_MODE_ENCODER_VIRTUAL, NULL);
+> +	if (ret)
+> +		return ret;
+> +
+>  	drm_encoder_helper_add(encoder, &virtio_gpu_enc_helper_funcs);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-drm_simple=
-_encoder_init-v2-0-5020b630668a@gmail.com?part=3D13
+_encoder_init-v2-0-5020b630668a@gmail.com?part=3D6
