@@ -1,352 +1,161 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011018.outbound.protection.outlook.com [52.101.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF95271443
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 21:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784581433; cv=none; b=uREgJQOAD2XtHFbzQSUukqOFGAjMXwJtCfkWLkICNUkMeoz/synSAEE9k6Ew4EQRIQvpW4xP93yDd2uir+GFDpgHVzmOLzZkuHB+TaUA1R5vyCugGVg2RA0ruH3K/7NGjgcQUbiI4kLwXH04xYG65bM8z4+5ZAhSRUyAuXSwXag=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784581433; c=relaxed/simple;
-	bh=Vow20Z1JLPafCgEs8/gHRfDCbYGdzjMYj1szkVCn+CM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oV9dsm8oOUf82up+OSyC3v48cshAf3/f60BM0un8YB8KJ80ZXT8m9tQ0Z1waeUC+T8J5W9LafMya2qJ499UQ6kCg2pt5DyYCQxnXONHfrfUWzn1e8R39Skoivrsipm+IEsZtMUt7QfUV2p/0dfsyMV5csZm6c7JY31EtTeD1Jn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ee3yBIp+; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6903D16EF
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 21:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784581859; cv=fail; b=hwrpJRxWfqI4VFl0cPHBZsX/dhT01Qf0CNTRarvwYIaydD2lr+VYFw/Pjw7b9ZgYa1nDNDM83FPjwH8r5QgmKarA6nmoCL7nhdpwm5NJlGSpvMwdPB85QaOIAKGSuedglZ0Ddm+h1pqqrsgTJMLk7JlWXdI/TGDOpF5md9QZR3Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784581859; c=relaxed/simple;
+	bh=X8qqqK43Xjxgua9WqZGJ1+fW2BsTY5GcVRk9Sw+x+Vg=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=BCspMTKthg3iuL2/gpHl1B+q3lithjkMLiVP3MkoSv3gV8wemiIiNSeGyAnk7sItjDzaaFkwpq9KaolSLqFRhIgzsFN73/eSrp8hW7/Vh9T1mcOrgzilu1SHrgN8L9S02fF4smZW479QqmWtuISRrv7iYkQQ+WifoZl0uQP2vZE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JTD48T4k; arc=fail smtp.client-ip=52.101.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ee3yBIp+"
-Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A1F84BB;
-	Mon, 20 Jul 2026 23:02:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1784581369;
-	bh=Vow20Z1JLPafCgEs8/gHRfDCbYGdzjMYj1szkVCn+CM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ee3yBIp+bJBisa3yefDNA4grWWXvkxPkcYh8o2p0j92ILX1LJ314kX6SwzgNFC/I0
-	 wRMBhxcIxBPbXSW3Iqbz4KQQSPUOURDkoNmI9oZ/KwvmRY8zAtLyfXMWgdsAP91uko
-	 HooJCrD6EULlMNtw3tfPMsK44SzxuyNIBwmMEGmY=
-Date: Tue, 21 Jul 2026 00:03:46 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Christian Hemp <c.hemp@phytec.de>,
-	Stefan Riedmueller <s.riedmueller@phytec.de>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Guoniu Zhou <guoniu.zhou@nxp.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] media: nxp: imx8-isi: Fix per-stream reference
- counting for multiplexed streams
-Message-ID: <20260720210346.GD50424@killaraus.ideasonboard.com>
-References: <20260720-isi-v2-0-45845bc5d4fa@oss.nxp.com>
- <20260720-isi-v2-3-45845bc5d4fa@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="JTD48T4k"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j20EVLVb+OBXeh+u1a7bDez5KlkI1CFNzAhKtMqN5VJkCgwttEOrVXj3KfISoYOVIvFlq/2ncX9kkbA2YE0RbXO9UJsmSP8QMCnpvw8kn8LLDVXUT9Ebdf2HWnAPKpOFCKR9Q0OIfTMNYK2Zgw9Rq6KbsUj/qXH9uyTdyF/MBI8/0CwSqh+eo19fXegrH6cTBzJ1d55fI5YhebE3kn/Vx1lJ6NXc15vbNL3W0dodopk/S5VlRZcvYC8v7cqCX5JN9iw+VE5Q1klpg+ZQ3X+xOjhSuzJxsKhYTIGHYKLwRq1uMBA1s+j7g4v5Ch04LmV9aaXjBBmViKtPs16YTSzl+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FTdXOWy3ed/D4Bj7Fisqs9W87MUsn70k8yzLHR59L10=;
+ b=kzMImNQLn2+04t9JwDijPMYCqqngLhcavEjPvSG3TPnyiMhXDPee0W9IDko3MAF2Nw2y2rerUUs7FZu6R5F1RYf4C44yFz24nEzh0FwElvO/CV0Id7o1b122Kc/1dx9LY93rSSuZtyOT1507B4408q3PXPFsCn85doglfElBK9aXCo3rltyaHMGWi39kZe7yU1OZhy8UNpS9h3hgOgZRJc5PsQsqW48rVTQpN8NRZL8Ze0kO2ERoYJGh4ILWb7FEBBhMR0S4+BBOLdeUT/ZFkQXWDEfcQVfNoJ9gpph2WOJUr34rFYTggSjoFcwYyAUEpZRIaTeq+HncYRkVe2WJ5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FTdXOWy3ed/D4Bj7Fisqs9W87MUsn70k8yzLHR59L10=;
+ b=JTD48T4k2sSPtkVUuiyOPyCQcYssJvP9vCFcrChlyWPXQoe0IIlaqDLHwSo0xGkXITipx1kaZoMx+lSCpSJotQW0abVjX6Qv2oAYZG8sg6LH/jGR5UIhqMCkGvsRnLbOCxOshBBbTlEcZ+VkzWCFALXYdz6IR2fGAijPIoysFvl4JJ3KGACNfjce1bVWOw8y7Xc5ZYJIiqKEsz5PggXdfZgFK4pn7g0uC2mvmnG9jDnmgsN2wdmC6LI4zGqx0MVmMg8gXDILk9J3RqR43P3p8Y3tykGC/iLzbfcRjKKnevcW0UYc2jK7iLgHMJ7uS9mtebSAZo/9OjNW94DsmxVeDg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by VI0PR04MB10565.eurprd04.prod.outlook.com (2603:10a6:800:25b::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
+ 2026 21:10:50 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
+ 21:10:50 +0000
+From: Frank.Li@oss.nxp.com
+Subject: [PATCH 0/2] arm64: dts: imx8qm: add smmu information for usb and
+ add hsic usb port
+Date: Mon, 20 Jul 2026 17:10:32 -0400
+Message-Id: <20260720-qm_smmu-v1-0-3689fbd8b516@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMiOXmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDcyMD3cLc+OLc3FJdE0PzVEtD0+Qkc0NjJaDqgqLUtMwKsEnRsRB+cWl
+ SVmpyCUi7Um0tAJwkzX5rAAAA
+X-Change-ID: 20260720-qm_smmu-417e915cb713
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Xu Yang <xu.yang_2@nxp.com>, Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784581845; l=518;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=X8qqqK43Xjxgua9WqZGJ1+fW2BsTY5GcVRk9Sw+x+Vg=;
+ b=IUz8/qNszlZafa2YjYN4IeqBV/yEk8SV9mCFqgtSnkvb2tigQqXJqTVw9Eg9TS+bn360YWBbd
+ Bjb4f5MykXPCOH4kL/xvCtfp1u5GWoQ1ywHabtNyGOV9m7rzYDT7Zdg
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: PH8P221CA0028.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:2d8::28) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260720-isi-v2-3-45845bc5d4fa@oss.nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI0PR04MB10565:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3ea2cd37-9f20-488e-8bb7-08dee6a36032
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|376014|7416014|366016|23010399003|56012099006|11063799006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	OFH+0XpzRGNTLbs2TTFB43vKvh8dREeaHDat8lva38k0D7i8adztkY9Wc2fSEiA0heryWOAtJH7MCUlpBr0AIPJ9b9XpmERKkSRv+7x60jIdiTEpMuedOcmIiRtlBcMMf8Ro3ClU3NbfXgz5XWcs/n6jKRG0+oXG9JITxtr4iOgaVvynmXDclTpn3k+AIQdQygK/HXRWqWq6S2F7LRdZtPLJESxe28203yRWVVlQJdviWBI5ujvMeKnQA0MVa+rnrJ7Atxv/dHVqH5LdMEr2eMNX1pKkMpp5aX1Osnsn9YLhNLSNO++h4+ZdRcGYkdrhUfQYklEe1yNUqfVZdNbB2xaeChLbfVWf1bKG3oMCUIAjmptdFvMlRCSP4lctxTMKvIersGK5ompfjpsL3gAdnnyYlV09k866kmqvQRK/j9h2iMfUgkjdQqLXy8GrQwx4KPBKixIeOv4i4/96fx4If9g2tUDs+J1F2cYjt7xLRCo6v7QPHBgrdFpgXlnplxvXGH18v1mPEQHtQgKBoqb/TdH+G+piB/lvCQcvuwbsr/1IiFF/S+UEFkuKTunUIVv8k3zNH1+R9je0zkl2efaG1vosXN+/JIGCjfUtGu3QhznL0Jb5DzkTQb0x2+kSlSAUCNHidt6mHmt/8I1ufHSXaPsy3woPGvOtPGt6bG3td8w=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(7416014)(366016)(23010399003)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WThPOEFEVUNiYmlVK0lPWUNXNlE4U2F6MXBvTEhNV2dxc01HOXM3anFpdkxF?=
+ =?utf-8?B?UkMzZUJSMndaWmh6NGc1R3ZRbWxOSzZyT1RNZXVTZUdwZHUyQVNCa3A2dkFq?=
+ =?utf-8?B?UlNqWElmWDhYbUFJK0J2bkJrK2hIYmlFSXBOdk1qdy9QcHBQaEtWMzVxbi9t?=
+ =?utf-8?B?dXlnK3pzNkc0RjU4QzFNM0RHTWltMUVUM0x3a0Q0ZGtqbmJGQjhVL3NnUEdU?=
+ =?utf-8?B?ZVNmWTBNRTNaUGtXdVZUQzBxQ0M3Y0xyYitzekErVWdiM3o1UDhqZUt5c2Jt?=
+ =?utf-8?B?MXhyRFQrVjd3UkJDeXZwZEFSWmJwWitsbWNxMFdqWUxTeGhhN1B6NTB4ZUoy?=
+ =?utf-8?B?YTlQc0hCY0Z6LzJrWGNobXZOVWJzSUx4bU9VNEpjak9DTXVaOVI3S2xqaS9j?=
+ =?utf-8?B?NUg4emFEcGFwRTdtYkVNbEFBdkl2eUFqTEUvYmoyaEdRdTl5eXY0WGtIamFS?=
+ =?utf-8?B?dnJHazRnUW1kcmsxVDYxRUpFZU11UHJWcnpoaFU2OEJLa2YvRGY2SDBmRVdQ?=
+ =?utf-8?B?WVpSVXg4Y001R0ZuSXB2YWYySGpEcmZaREV5bG1aVUloRGlobVQ0THBGY3ZO?=
+ =?utf-8?B?aE9KLzhSaU1aR2ozV2xpQyt1bi8xTmFTRk9SK1J1UEU4T1ZVNDlOSlRJMXZF?=
+ =?utf-8?B?NFd0RDQ4aHRQQlhmN1lobnBFL05hYUxBYUZVZTFiVTNKcGo1ZU5EeWhBbFky?=
+ =?utf-8?B?VFZBeWM5WFUwaW12NkNjNmpvTHc0bUtDT05yRkMwbnN0R25BNG10b0FCSGti?=
+ =?utf-8?B?TU0xUFlnc3ZJVml2ZkhCVFhkdlNrbVJOT0RhMzhQbWF3MGQwbTd5VlBpcjdU?=
+ =?utf-8?B?V1ZSaDFPZG4zemxNMlB5RHkzQWVPVkZkeEFSUVR0Y0l4eVlQQ01MMDJQc3Fl?=
+ =?utf-8?B?WEIxWGt3QXUwOHlFZjFwT1ZmNnBzaFBRTS9STTZKQy9zd0RYWWJRVEp6eWc2?=
+ =?utf-8?B?SnR0elpVZzlYckx3eWI3ZE9lTStjcDV5Ym9KM1RTMWVUcjRnNG5NZ2N0Zkh5?=
+ =?utf-8?B?emZoTkRlODdTRVZoRlVQaS9ST2xObXV3NHhsSUsyamJjUkJaRThTT1c4QmFu?=
+ =?utf-8?B?ZjNNM09PbVA0dHRFY2JMQTFzeTUyMTJQODZnUm00a0xucy9GYUQvazB3U3BM?=
+ =?utf-8?B?NHJ6SlZJdjJUaGtBR21qczRUcC9tM2M4MUg5c1RNTDZ5UXJ3dHJrcytPRnYr?=
+ =?utf-8?B?VTJqTGU3dHV0MS8vRXhPdXdVTEtFMmVVOXJFUzNZZTZpS1Z6NkVQa2xqZktS?=
+ =?utf-8?B?N2pGNlk5a3NiV21TTUtsbEVaWWtmVmoreVVSaHFlcWhGZ3hYQ0Jtb2F3eHB4?=
+ =?utf-8?B?Umlvc2UweEd0bUFCTjBOeFVsL1ZGUEZ3Z1BjNnM2Vk1STkVhWVZjNWNZMTFy?=
+ =?utf-8?B?SzA3UUZoRlVxemxUbDY4VW1mVzZ0YTZEcE5aRXVCTUV0V1lmRGJ4alFHRFVh?=
+ =?utf-8?B?ZEZkZWFYVkZlSklTVHM5R1RaYlFwVkg4YkNYYW1mRjJkM3owdDRZamlCbUh3?=
+ =?utf-8?B?cklCV0VHbXZESlBqSUNhaEl2d3hUVHgvUVJleENUaFBGZ0F3YmZYZUxvaity?=
+ =?utf-8?B?dlM2am93UE1qWXBybWt0MWdpcVpMWlBPLzZpUjU1M2FnQ0RZNDNta1pjOE5a?=
+ =?utf-8?B?SWNqTjlXdkdBYXhxTTFiNlBlZE8yV1pYaXNTcjBoZURLcWhLbllPZHp2c1hY?=
+ =?utf-8?B?OTlwSXVYYlRDZTRLTEphQWp2Sko4ZWxTSklJb1VWOGFwdWpKekVOQUoxZ2pR?=
+ =?utf-8?B?bHQvM1B3SWZwaC9jTDZRYVVORFZsYVNNT0cxeDNpNDdIWnVKKzVMY0diQTZK?=
+ =?utf-8?B?ZmM3RXdWYnQvaFVQUFp4ZnU1MlJqdWI3amRCT0EwbTBHYXFIN000bzZBYklQ?=
+ =?utf-8?B?eTE3RkFCL3FaQkVEQThCSEQvc281cENpU0JGSXozdmVQSlNTZ3RtUi8xMGoz?=
+ =?utf-8?B?UDJMeVVGbGZ2RzI2WDJLUlFqQTZweTNDKzlVT0ZsMitpWGx6b1l5Nks0czdM?=
+ =?utf-8?B?RHRUblFFZHdTeHdNMko3SHVFa0JVdHAwWWJMemJtWHk2eDBiQnlEZGo3dkU0?=
+ =?utf-8?B?c0wxemsrRFVxRjE1TEcvQlQvVmk0bmJaVmhyVk1sM0xLc25WTzk2SWdpdzNE?=
+ =?utf-8?B?OUl6N0UyYVFSalJJdXpjRlJTMXVNWEVQYVh5aGFNcUpjdlBXZmxhMERnRnZq?=
+ =?utf-8?B?UzBnYnZqOWdWV0RvTmg5eG9IU25Kc1hKUDQ4Y050SXpybVA5QzVlWkxnVm8r?=
+ =?utf-8?B?MVduTyt5clgvbW81SlpNVHVpM0V0MDJadEdZU29WWWg3WHJ3QW9ZMnhSdjJu?=
+ =?utf-8?B?YXQycHpDdXpuRDBnbHQ5eHNNeFo4aWdtQTkwQ05jSGtuUndpSm9qTU9kZTh0?=
+ =?utf-8?Q?Rr/+zGoEjlXwS8aBxshu02uv5j4x0gI97h00b?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ea2cd37-9f20-488e-8bb7-08dee6a36032
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 21:10:50.2994
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8EbiHkBcYf6CuiAJIqfUX3oniW+MH9B8P9aa+Z++jLlk2DAL0torQX3NBSkc9WN6AvruZb+TdjZXoTwFT7LF/yo3+Te2NDB4r07sUlXrIfaK9Zu2r4cTOIPGGPiEWVeP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10565
 
-On Mon, Jul 20, 2026 at 11:34:05AM +0800, Guoniu Zhou wrote:
-> The ISI crossbar fails to properly enable multiple streams from different
-> virtual channels on the same input pad. Only the first stream gets enabled
-> in hardware, subsequent streams are silently ignored.
-> 
-> The driver uses a single enable_count per input to track the input state.
-> When enable_count is non-zero, the code assumes the input is already active
-> and skips calling v4l2_subdev_enable_streams() for additional streams:
-> 
->   Call 1: enable_streams(stream 0)
->     -> enable_count == 0, enable gasket and stream 0 in hardware
->     -> enable_count = 1
-> 
->   Call 2: enable_streams(stream 1)
->     -> enable_count == 1, skip hardware enable (BUG!)
->     -> enable_count = 2
->     -> stream 1 never gets enabled
-> 
-> Similarly on disable, when enable_count reaches zero, ALL streams are
-> disabled regardless of which streams are actually still active.
-> 
-> Fix this by tracking per-stream state using:
-> - enabled_streams (u64 bitmask): tracks which streams are currently enabled
-> - enabled_count[] (array): per-stream reference counter to support the same
->   stream being enabled/disabled multiple times
-> 
-> Now each stream is independently enabled/disabled in hardware based on the
-> enabled_streams bitmask, while enabled_count[] provides reference counting
-> for scenarios where the same stream is enabled multiple times, such as
-> duplicate cases in the ISI stream.
-> 
-> Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-> Cc: stable@vger.kernel.org
+Add smmu information for usb and add hsic usb port.
 
-As far as I understand, only newer SoCs support multi-stream for ISI
-inputs (please tell me if that's incorrect). Those SoCs were not
-supported when the ISI driver was merged, so I don't think this should
-be backported to stable kernels. The subject line should then read
-"Implement per-stream ..." instead of "Fix per-stream ..." and the
-commit message adapted accordingly.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Frank Li (2):
+      arm64: dts: imx8qm-ss-conn: add usbotg3 iommu information
+      arm64: dts: imx8qm-ss-conn: Add HSIC usb@5b0e0000 node
 
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-> ---
-> Changes in v2:
-> - Use fixed-size array for enabled_count instead of dynamic allocation
-> - Use BIT_ULL() macro for u64 bitmask operations
-> - Use MXC_ISI_MAX_STREAMS (64) as loop boundary instead of num_sources
-> - Remove mxc_isi_stream_counters_alloc/free functions
-> ---
->  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  7 +-
->  .../platform/nxp/imx8-isi/imx8-isi-crossbar.c      | 76 ++++++++++++++++------
->  2 files changed, 63 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> index 7547a6559d4c..9adbe2fe7cf8 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> @@ -184,8 +184,13 @@ struct mxc_isi_dma_buffer {
->  	dma_addr_t			dma;
->  };
->  
-> +/* V4L2 subdev max stream ID is 63, need 64 counters (0-63) */
-> +#define MXC_ISI_MAX_STREAMS		64
-> +
->  struct mxc_isi_input {
-> -	unsigned int			enable_count;
-> +	u64				enabled_streams;
-> +	/* Per-stream reference counter */
-> +	unsigned int			enabled_count[MXC_ISI_MAX_STREAMS];
+ arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi | 38 +++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+---
+base-commit: 3fe08b9796f36ef437ab9328e7dd1e5ff2d66603
+change-id: 20260720-qm_smmu-417e915cb713
 
-You can save some memory here by replacing unsigned int with u8. The
-counter can never go above the number of ISI outputs, as streams can be
-enabled once only.
+Best regards,
+--  
+Frank Li <Frank.Li@nxp.com>
 
->  };
->  
->  struct mxc_isi_crossbar {
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> index 328d08a278ea..64576f6bd45c 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> @@ -337,6 +337,8 @@ static int mxc_isi_crossbar_enable_streams(struct v4l2_subdev *sd,
->  	struct mxc_isi_crossbar *xbar = to_isi_crossbar(sd);
->  	struct v4l2_subdev *remote_sd;
->  	struct mxc_isi_input *input;
-> +	u64 streams_to_enable;
-> +	unsigned long stream;
-
-unsigned int is enough, this is a counter, not a bitmask.
-
->  	u64 sink_streams;
->  	u32 sink_pad;
->  	u32 remote_pad;
-> @@ -350,30 +352,47 @@ static int mxc_isi_crossbar_enable_streams(struct v4l2_subdev *sd,
->  
->  	input = &xbar->inputs[sink_pad];
->  
-> -	/*
-> -	 * TODO: Track per-stream enable counts to support multiplexed
-> -	 * streams.
-> -	 */
-> -	if (!input->enable_count) {
-
-Let's keep a short comment here:
-
-	/* Enable the gasket when the first stream is enabled for this input. */
-
-> +	if (!input->enabled_streams) {
->  		ret = mxc_isi_crossbar_gasket_enable(xbar, state, remote_sd,
->  						     remote_pad, sink_pad);
->  		if (ret)
->  			return ret;
-> +	}
->  
-> +	/*
-> +	 * Track per-stream enable counts to support multiplexed streams.
-> +	 * Only enable streams that are not already enabled.
-> +	 */
-> +	streams_to_enable = sink_streams & ~input->enabled_streams;
-> +
-> +	if (streams_to_enable) {
->  		ret = v4l2_subdev_enable_streams(remote_sd, remote_pad,
-> -						 sink_streams);
-> +						 streams_to_enable);
->  		if (ret) {
->  			dev_err(xbar->isi->dev,
->  				"failed to enable streams 0x%llx on '%s':%u: %d\n",
-> -				sink_streams, remote_sd->name, remote_pad, ret);
-> -			mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
-> -			return ret;
-> +				streams_to_enable, remote_sd->name, remote_pad, ret);
-> +			goto err_gasket_disable;
->  		}
-> +
-> +		input->enabled_streams |= streams_to_enable;
->  	}
->  
-> -	input->enable_count++;
-> +	/* Increment reference count for all requested streams */
-> +	for (stream = 0; stream < MXC_ISI_MAX_STREAMS; stream++) {
-
-	for (unsigned int stream = 0; stream < MXC_ISI_MAX_STREAMS; stream++) {
-
-and drop the local variable above.
-
-> +		if (!(sink_streams & BIT_ULL(stream)))
-> +			continue;
-> +
-> +		input->enabled_count[stream]++;
-> +	}
-
-Each ISI pipe processes a single stream (the driver uses the
-V4L2_SUBDEV_ROUTING_NO_N_TO_1 validation flag, and patch 2/6 ensures
-that only stream 0 is accepted on the source side of the crossbar). This
-means that that, after translating streams_mask to the sink side,
-sink_streams should have a single bit set, and streams_to_enable will
-have either 0 or 1 bit set.
-
-If that explanation is correct (please let me know if you disagree),
-then this loop can be replaced with
-
-	input->enabled_count[__ffs64(sink_streams)]++;
-
->  
->  	return 0;
-> +
-> +err_gasket_disable:
-> +	if (!input->enabled_streams)
-> +		mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
-> +
-> +	return ret;
->  }
->  
->  static int mxc_isi_crossbar_disable_streams(struct v4l2_subdev *sd,
-> @@ -383,6 +402,8 @@ static int mxc_isi_crossbar_disable_streams(struct v4l2_subdev *sd,
->  	struct mxc_isi_crossbar *xbar = to_isi_crossbar(sd);
->  	struct v4l2_subdev *remote_sd;
->  	struct mxc_isi_input *input;
-> +	u64 streams_to_disable = 0;
-> +	unsigned long stream;
-
-unsigned int here too.
-
->  	u64 sink_streams;
->  	u32 sink_pad;
->  	u32 remote_pad;
-> @@ -396,19 +417,36 @@ static int mxc_isi_crossbar_disable_streams(struct v4l2_subdev *sd,
->  
->  	input = &xbar->inputs[sink_pad];
->  
-> -	input->enable_count--;
-> +	/*
-> +	 * Decrease the enable count for each stream. Only disable streams
-> +	 * whose count reaches zero.
-> +	 */
-> +	for (stream = 0; stream < MXC_ISI_MAX_STREAMS; stream++) {
-
-	for (unsigned int stream = 0; stream < MXC_ISI_MAX_STREAMS; stream++) {
-
-> +		if (!(sink_streams & BIT_ULL(stream)))
-> +			continue;
->  
-> -	if (!input->enable_count) {
-> -		ret = v4l2_subdev_disable_streams(remote_sd, remote_pad,
-> -						  sink_streams);
-> -		if (ret)
-> -			dev_err(xbar->isi->dev,
-> -				"failed to disable streams 0x%llx on '%s':%u: %d\n",
-> -				sink_streams, remote_sd->name, remote_pad, ret);
-> +		if (!(input->enabled_streams & BIT_ULL(stream)))
-> +			continue;
->  
-> -		mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
-> +		if (--input->enabled_count[stream] == 0)
-> +			streams_to_disable |= BIT_ULL(stream);
->  	}
-
-Similarly here, the whole loop could be replaced by
-
-	if (--input->enabled_count[__ffs64(stream)] == 0)
-		streams_to_disable |= BIT_ULL(stream);
-
-Another option is to store the information in the mxc_isi_pipe structure
-in the form of two new fields:
-
-	unsigned int input;
-	unsigned int input_stream;
-
-The fields would be set to the input index and the sink stream mask in
-mxc_isi_crossbar_enable_streams():
-
-
-	struct mxc_isi_pipe *pipe = &xbar->isi->pipes[pad - xbar->num_sources];
-
-	...
-
-	pipe->input = sink_pad;
-	pipe->input_stream = sink_streams;
-
-In this function you would then do (completely untested)
-
-	struct mxc_isi_pipe *pipe = &xbar->isi->pipes[pad - xbar->num_sources];
-
-	...
-
-	pipe->input = 0;
-	pipe->input_stream = 0;
-
-	/*
-	 * Check if any other pipe receives the same input stream. If so we
-	 * can't disable it yet, so return immediately.
-	 */
-	for (i = 0; i < xbar->isi->pdata->num_channels; ++i) {
-		struct mxc_isi_pipe *pipe = &xbar->isi->pipes[i];
-
-		if (pipe->input == sink_pad &&
-		    pipe->input_stream == sink_streams)
-			return 0;
-	}
-
-	input->enabled_streams &= ~sink_streams;
-
-The advantage of this is that we won't have to add a 64 entries array to
-each input. I'm not too concerned about the memory usage (even if
-reducing memory usage is always nice, more for the improvement in cache
-locality than for the memory saving itself), but the 64 entries feel a
-bit arbitrary.
-
-What do you think is best ?
-
-> +	if (!streams_to_disable)
-> +		return 0;
-> +
-> +	ret = v4l2_subdev_disable_streams(remote_sd, remote_pad,
-> +					  streams_to_disable);
-> +	if (ret)
-> +		dev_err(xbar->isi->dev,
-> +			"failed to disable streams 0x%llx on '%s':%u: %d\n",
-> +			streams_to_disable, remote_sd->name, remote_pad, ret);
-> +
-> +	input->enabled_streams &= ~streams_to_disable;
-> +
-> +	if (!input->enabled_streams)
-> +		mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
-> +
->  	return ret;
->  }
->  
-
--- 
-Regards,
-
-Laurent Pinchart
