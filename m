@@ -1,219 +1,183 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013045.outbound.protection.outlook.com [40.107.162.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E720942F704
-	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 14:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784558378; cv=fail; b=I6cOicesyFNkFfX1gBPm2MS7a8EzceccI/vjBZrfpNHhDLnnjytx8J7YDlkpfcys3O54m1YoKIjl7YsAGbelzP3T6rPERHbaJmqiteFG0cUrTBbzRCvZZGtTtdlCkmERjpgwhx/hIsgjsurRLJQUeQL1vEirEbchCjIbRYpy4ok=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784558378; c=relaxed/simple;
-	bh=WADz2WeRb9f+19d1bZptZbRLIl975xVBKwgNvA5fQh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=M37Kz3w3GryJW3eub6S0eeROPf6AlVwDzYEWyMcwug1TXDQxpEJ2xiocRbXWg/N7twzbMVPY8oHLRlQeSbJYkS0KApTz/LRKXREJ0qyINstNXb06cnq2jItB1GlUwmzAM0t6IM2AYA2WmxczANtqc1qOqwyu6zx2nhXdn6wIwCs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gD1W2t3y; arc=fail smtp.client-ip=40.107.162.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B530742F702
+	for <imx@lists.linux.dev>; Mon, 20 Jul 2026 14:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784558612; cv=none; b=HD4THUB1REpi5P+6WHmg8PHQrSzieJeBX1ob07uYCthCFi1sq8RcmPW4tRgaQRhV6YMZeI/yEwnEkeEyRVk+StvYFSb8lfFm2Kv/M0YBCcODBqWwAIVB/xEISnc4iDTAVgmJQcirY5mO74+0Psvr1IUXHSWhLy7MTyLVIje91+0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784558612; c=relaxed/simple;
+	bh=z4xNGYkf4fETdRDY/WXmkgQmHnFeScnUkN9aeJpb0+8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JkzZZ7XK4tJOm+qJQgnY0YSnBobY1VYvXpgoVeaZv3tG6ho3bVEfW4qgxKqeTPSWZOB8Uap3j9+Tb4YNQdiQYxD1fxjDONf4l3wnroA73sb6s3JcxbfyycomWEgZgWMs1qjCfElO8DxhPb6uF/PzvKh4sp7A7P92cV2TUXrRh4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pS7QBL1X; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gD1W2t3y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JH2OqdcbXxteojvc04t0pWQPH3nmqNYmozTthEV7e2pxVigC9l1Fn3doxgB26PbaePaHUVt5LL/UeJFw3XEozzC87CppjP1Jf/Wdm2sWwB0IZ2ug2FeBSVUDGXGRIuTrJvviIrs1IRy0DAs6KoKhhL+YRXl95pafEYm1VFx5xAuhCxvo+cuW74FO8Q7cy5h2t7bCGY4UxYIfvKEFnpbAewG0+A9saKKhuspxbV48hKHcePKRGaOtQfn00VdaNBUtalow9SWHOFo9+Pa7BVlGJg8dZ3ZFEE8d/mFZXzd7eW2Ksn8+0J1w+qFJV1NfOljiPsgd5U+RpcSFNSfEz04Oqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gSecXEPGRFd/zl25jxCLYbBJ4nEmgNoEaHGj3LOGPeA=;
- b=bdGK7MIStNdLsqW+BZknKdpYxrsOo9BIAk1Tf9KDisuzLsUpNma0gdY+r+0Dh0vUU8FNxRcXHQxkyxxxPZmloQP9czS2bTVzYhARe22EYolvsoI9jupCxuDMZ2SSyyIl2A0RcvAKcIvX6n/6aliZI88CCmflFc7sCbj/gwqfSOYO4lHGrqLtCI41LlNokVAPDZI3NbbYhkAXzZpUnOQJEUuCogpyHtH5SuDRYwJjBdhkzepuLJi2SS0lrUN8FQdW6PukQBxvtLOoN/OIScXjUOPmobzWeJS4fVqIDg8A2OstFbcQxNiBazI6EXKZQ9IUihhUsCTnV2oKf2LuQSIWkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gSecXEPGRFd/zl25jxCLYbBJ4nEmgNoEaHGj3LOGPeA=;
- b=gD1W2t3yC5c/XsT8+/XhvpVpgYAggp89taDRmDvvWoa1I3S6YCIgnwxcV87JIS+4kuRp8ChgkR/mNBa1TKrhdu7FngYnBsM8Ooq2nphbUL3AoOdgNWOvG68Vj47SOny1WQ3qHLTHvHFarlTCQAV9MrPVvSyxRtIj3m0sYF7s5XH3o7ts30m0/rEpj323bBm8lZ4Je9wIQmeQgWSC4+k3L/Jstvx/GYPICY4fBCQsk6vHAGEHc4FrnXk7Om/fCoecuB0F/lPdVW4jmqzQLPsyT+4r2ukHxCDXGJNF3Iu7IbbGqDn1bPFN2aLd9b85utyziMxZffoVmVO2HWzM7yqg+Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PA1PR04MB11360.eurprd04.prod.outlook.com (2603:10a6:102:4f2::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
- 2026 14:39:28 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0223.012; Mon, 20 Jul 2026
- 14:39:27 +0000
-Date: Mon, 20 Jul 2026 09:39:16 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Subasri S <subasris1210@gmail.com>
-Cc: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Duncan Sands <duncan.sands@free.fr>,
-	Chas Williams <3chas3@gmail.com>,
-	Minas Harutyunyan <hminas@synopsys.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
-Subject: Re: [PATCH 1/3] usb: chipidea: Use %pe to print error pointers
-Message-ID: <al4zFG3zCD5FJ7eB@SMW015318>
-References: <20260719-usb-ptr_err_patchset-v1-0-85f7f2e4fefb@gmail.com>
- <20260719-usb-ptr_err_patchset-v1-1-85f7f2e4fefb@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260719-usb-ptr_err_patchset-v1-1-85f7f2e4fefb@gmail.com>
-X-ClientProxiedBy: PH7P221CA0068.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:328::17) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pS7QBL1X"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c9aea40d799so3255472a12.0
+        for <imx@lists.linux.dev>; Mon, 20 Jul 2026 07:43:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784558609; x=1785163409; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YRPQsRwj+n1ng0H+WDG2QV9LkRG40/jMmpAbf3NOmNY=;
+        b=pS7QBL1XAlkz+av02EFkl5jb+xVq5Kl/TAqiqdp25Wlt7IBPt+R21uYJEUFbJRgLnz
+         2gaIu2EOQMh5FER3hi2mUNyxTSnzB0nt5Z4njE8AxEYi+V3Ss5NiY5jut0Npn4dGbjJF
+         Z9w3qlHMUgLRFUSX+LP/WM1e+354qQpNiqJUMPP0nWa3qAjb8ZKAkYH+cvgsZWT3BhA6
+         mzWb1T10BPVIFzX/MEMZmxQrWZ47Geck+tJlnVWoU9aeebrchgOpv6sUIPm8AWY7lBn3
+         X31ZLv6kWp4gD91AYRH17rBtBO752v//B67c1kmoFVMDPUciuZ7H+wuWHxxRLoVsPjY7
+         BbWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784558609; x=1785163409;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=YRPQsRwj+n1ng0H+WDG2QV9LkRG40/jMmpAbf3NOmNY=;
+        b=s933s1EIUEMIkY5LcnZAdGJIvFEmWFTRFEnUGf4tSijrcWwdTGekeWbfKxhQZ8jFpu
+         rWBfaRqmDzdbxRw4JNPG9RnkFESr6PC/TAJT6xAhlLjI5NCvEmwRMKNGu2KbuhhEDPNf
+         84g24vXZAcypAKNyVqJBEH7UJyjc3oJ/loXLeRK3BsJN/LZer5joN+PI5NggEeBe4Ctg
+         f2Gend/CgCOzTLKSgi8Zsnk0OxAv27bCljwWgQspRFslJy+Nq7hYHeUNoXR6UiX60e+F
+         gYGCWrt0K2gARtnG81I9uKayXGbAlvIXxE5NizOAD9wFqYCCg43oCU7L968CrMTYE+QF
+         09AQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6H9QeNmMr3WMON2uQBQBy0tcQflG0sNb3eYyW6iqJ782DhiJLnJA1lmBdHqh73SV0aJI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwdgYY3nrRWZXpcAU0F9ddJ6X/Z52EZDwIOSCc1LnPpg/neRYMS
+	fASjISxK/byU+YuBQvVDK0gl2VFHkHxS0bS+1Nsx9LAkhw/MLOvtpm5h
+X-Gm-Gg: AfdE7cmvx00g5Rn/w8E/pAPmHx8ZTLTDTC/nbkAyPN18lyj3WwSiKlBKDp/uXBoJR6e
+	o9b4eusnv/7UvH/NnVm98a3fIq4BK9wRKOD6EtCzFt8bJU1pjQ8edRL6RXlsLKinBnPZYlZpB3N
+	WV1dRtlceoV/F/TUAGbVE5qdsISbzPsBEo5GQWYNxfjWxktc9N6CC2+wdQ1nPDXoow6CSIeMsV2
+	JY9WO7ikvYp/7SJmsRvuiUzIh5DR770ozeWnqspk8cUK3BgEC68aARV5DCD0YtxcZHka3jTSP+r
+	aY3fOIX9VlfqE6degyybZvg68zRtyuNYC/lMYbFUUMDTc7dAfsHEicbULNFDpw7ftOYyvkSiwGX
+	FF+5fmQNuHe3Fjzkm12No97sN1WOkm67EIYgqgGiElly1VqzgiuEv39WyC0erVjF+Q+hIgcE+Qn
+	axqa+8b6p7qV5nbwH1Owo16ePPs0TICAVVyQU6mF4UMi4iPQwYgws=
+X-Received: by 2002:a05:6a21:3981:b0:3c0:adec:b3bd with SMTP id adf61e73a8af0-3c3ad9646afmr16051848637.49.1784558608970;
+        Mon, 20 Jul 2026 07:43:28 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31429f9bb62sm35894013eec.2.2026.07.20.07.43.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jul 2026 07:43:28 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <612e3496-2917-4d4c-8794-69c3b5b27c5c@roeck-us.net>
+Date: Mon, 20 Jul 2026 07:43:25 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PA1PR04MB11360:EE_
-X-MS-Office365-Filtering-Correlation-Id: 44b28cb2-24d4-4a65-d3da-08dee66cb37f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|23010399003|376014|7416014|22082099003|18002099003|4143699003|10067099003|11063799006|56012099006|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	7y8itcQbTdIfWPPEVhyJgJ+pFrFT5MLYmL6RJ6zxzupEWiPgz6n2pklXFU5guC/D62jN4yRBVywX9AS03LYWuY1LivHrFdSS8HrtD+qaRb2R3pSs3Yn+xPLgHZi0D2PecT6U2g9HzDj6rdtgnOyWrFjxkzq7NeyZzujSiNqUvc9KDd3chIHKhLXSZ3OS8tCO9FWEL2xy+EU6jrC/0jDbR1Cbh+HgOOZak8oXLDZDE4eB+eMFWtsEfUXVVOL/y91n7MDRnybDiPb5LXn4/NBJAfC8JU/VCU3rwc1YKWD2GfIhYnwrv/96TTJMOmS+N0Vha+UpKHrKMni79g9paqSUQxP84fTbx7OWIWhzA3pHaK7k0f+ijH3aUf0TtCGtPcDg3v/O1v5dzJ/O8YwViXEq5g6nFPzrIq003DPxu/PHR4csRSgl1hNhCfV4xAY4jfUmVaCja1m3QZFgRhmS2l1Qeji/0rR/pB2iH20zUuvXT9PGg5B8N9oc3rkzRi7ma/tZglhwYycl56ZIy7d//JRmV4VCReD6Z6EcpOqdj3SLnOfLcoGVATgGUNRzckHpERA8GU3PWGGv3ise/6QWjkYvEcbmp9ySTomot+GftvZ+ZLdGMdKmj+gKY4biDdjmpjKy+u7V7mjQRsA/AQAA0IHfk6veiT/1r2+LSkz+SKgNV2EQszN8FyAVQYwt0IPOEspqxafPJmjEFPkmkhEs5cUxdAMAxjJ4e4DLnBaSra72X9g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(23010399003)(376014)(7416014)(22082099003)(18002099003)(4143699003)(10067099003)(11063799006)(56012099006)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vS/c7Zpqg+m4Vo8nR/8RBILmAeLsM+EcpqVO0cHNRiN/7sZnGMNm/ritZM58?=
- =?us-ascii?Q?UJIeezOoqrwvjj08huDhmBoRvtiM8bCtVNILMX5ZVA2ICt+BtZS3eDze6j9o?=
- =?us-ascii?Q?96Oa3QMyWFvyMBVt3Qw5qxrzjW4FB4GcHehUdJvnUM7xLyBlM/iw7DhwT1TG?=
- =?us-ascii?Q?fYpOULEZyEnvEgDeQyFNn1d1euYbK+dovRJnHO8X/sjQuABNe4zFAf9l2jA0?=
- =?us-ascii?Q?3E9SLCf5RqitwcKFj3UDhFvAres4jKH5NAuI9+fs9TMyCrYOT9oaID3j+I91?=
- =?us-ascii?Q?kxdIzvuW23cBvJfJ8E2E18UfOgOr6M4/WOZ2awL09XObWxJhWykGPDBlsi0g?=
- =?us-ascii?Q?TyYeYxqtJ4I+Ld8bUpFTNgI8p5M73Lha059swBIZ6+ydMnWBGm/DFp02SjQF?=
- =?us-ascii?Q?sQbdeYVUKx8qYNVGfCC9DVibj22nCrB012NUbhEbslu23/K01Rk02/v4zMyx?=
- =?us-ascii?Q?HGsvhpOHe0qDkdqL2OTdTMMpjW/WIKZwakM8HQpo2LXuumTfGjoWwrtIFc6F?=
- =?us-ascii?Q?zYka0GvWrSjp2SHPMH4sx1DEd6mMgxjiUzim1iXrSs2Y6Brgofkj2WOpXj0v?=
- =?us-ascii?Q?YGA6zJgO995XLT/LIj24rvQqIBzvZTHholpVxRIZGw670Opi68DLtX+IY9cZ?=
- =?us-ascii?Q?OsKOwO6w433vCusiZc0SoVvnw4e2eacuPbRd8rN6DVmz/ThHSayWEkZ5ESEh?=
- =?us-ascii?Q?gfrF/UfJDHwBVpOxRpoJgWS4GQqDVNzpRXC0Nod+bf37OZUOD9ib929t051Y?=
- =?us-ascii?Q?3LLBrdDYi5Pr5PFfGRX2C12JO5y2SX+0FsM1v2aFpH2BheDhQ0ADrBe5pTpu?=
- =?us-ascii?Q?qt1nlLjHb2oOtbfJkn5LaP2/CDnvmFA1LHwut39h8Z3w9ye1VW2mq8faSggX?=
- =?us-ascii?Q?D65zhbdlsH1cuKv6QeosoYPpaqvtUzj87ZElKXiKP/0cbNcCd1bN0ngBvJfn?=
- =?us-ascii?Q?x+wS+EiU8gnJJ/P5npRhinowAq2YYc++kLuoFqwhBnU1rSojyBKW/GL8d7Z5?=
- =?us-ascii?Q?LwZ72HubA2DNsWaaMQ/b0E8tFFBaLa6A5BgBAbPJqUi3jxZl04laqF+2Ouw5?=
- =?us-ascii?Q?xdXC2MwxIlqbsnmRgdWfMwWT6hktLcVOLhlgTfhSVIvXuAtnoffs0OTitmSI?=
- =?us-ascii?Q?eMndTPUfTclQt5B40mULXuJK+l+Bn1VC8bqyJnjST/xQf5TvhRmz+a2sUZnC?=
- =?us-ascii?Q?/f/yY5y88Ioisyue3O9rgsH68yq42J2WpCabK3O+AeZ90RHMqCd9D2bOaSId?=
- =?us-ascii?Q?6hlUi+B1Yd39m4h+LE6D26xJ2yrhg4qcrro1G/RCz61C2iog0jnDzeZb6efe?=
- =?us-ascii?Q?aim+8YWQ2eCsEcIXaZBj/mFrg3zZqjky8aGdAPA5uH8jVxrIYMdbYO6FZZe1?=
- =?us-ascii?Q?QnlHFX0/iop4CctwJHmP8ddMYCCIThNUI32lKSIJaZVKA96sdJ9FxFtSw9al?=
- =?us-ascii?Q?Ws4aMMP9vlqTjecn/0wNzvkAlw2lJLdr7IRFLGEoF429sZJ/YZIdXdz3ki5k?=
- =?us-ascii?Q?Q2sLYqRGaBTvO1P4UoLz/CjvhpoH5u9BGijpGL+CYvCj4zDvrV8OwVHwL1Xc?=
- =?us-ascii?Q?sJZTC3k/0hH1QWFkjKdtdjCKR0Mp5Je+7v4tQZ1XlYqOWOmjvWB5bNfBxUnR?=
- =?us-ascii?Q?aoHO11sqxscIvzJK0uJuom1ylSNwLWSi+y9N3So5jhjy8JmgkYCwL4tHIQmC?=
- =?us-ascii?Q?QpwPOjuSp4UYwT4VcTaQC1rmFHzC6BU4i0nXKN4YWtdVD7Zmli99hw7eQDYd?=
- =?us-ascii?Q?C/cwI5xeK623EzLvvm61sTi96SqPrdBgsJccGJtSwy09OBH0znad?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 44b28cb2-24d4-4a65-d3da-08dee66cb37f
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 14:39:27.8765
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AKVxxTPTBsE3v+zbnZqgpBOGj8NpwYs6QEmIuN34B8+9CJoW934Pt3T+4rBJ99iE6atCdl8Fs5Zzsd8yGYyiqj2knNQnbFJDzbpzILrSg+q0oHjNuJssjwt0L2oKGBsO
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11360
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] firmware: scmi: Make SCMI arch independent
+To: Ulf Hansson <ulf.hansson@oss.qualcomm.com>,
+ Cristian Marussi <cristian.marussi@arm.com>
+Cc: Michal Simek <michal.simek@amd.com>, linux-kernel@vger.kernel.org,
+ monstr@monstr.eu, git@amd.com, vincent.guittot@linaro.org,
+ Souvik.Chakravarty@arm.com, Alex Shi <alexs@kernel.org>,
+ Andy Shevchenko <andy@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Brian Masney <bmasney@redhat.com>, David Lechner <dlechner@baylibre.com>,
+ Dongliang Mu <dzm91@hust.edu.cn>, Fabio Estevam <festevam@gmail.com>,
+ Frank Li <Frank.Li@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Linus Walleij <linusw@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>, Mark Brown <broonie@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Pavel Machek <pavel@kernel.org>,
+ Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Philipp Zabel <p.zabel@pengutronix.de>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shuah Khan
+ <skhan@linuxfoundation.org>, Stephen Boyd <sboyd@kernel.org>,
+ Sudeep Holla <sudeep.holla@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>, Yanteng Si <si.yanteng@linux.dev>,
+ arm-scmi@vger.kernel.org,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ linux-arm-kernel@lists.infradead.org,
+ "open list:COMMON CLK FRAMEWORK" <linux-clk@vger.kernel.org>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+ "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+ "open list:ENERGY MODEL" <linux-pm@vger.kernel.org>
+References: <d7f7e8c9589d937b60e43168845ab4fda15037a3.1783603600.git.michal.simek@amd.com>
+ <ak_Eu_eQKalPMwo-@pluto>
+ <CAPx+jO9KMcxnmt-wT5jaApj9p7s11B6eSG6K08Jt9J=-vXxjhA@mail.gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <CAPx+jO9KMcxnmt-wT5jaApj9p7s11B6eSG6K08Jt9J=-vXxjhA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 19, 2026 at 06:25:46PM +0530, Subasri S wrote:
->
-> Use the %pe format specifier instead of %ld with PTR_ERR() for printing
-> error pointers in imx_get_clks(), ci_hdrc_imx_probe(), and
-> ci_get_platdata(). This prints symbolic error names (e.g. -ENOMEM)
-> instead of errno numbers (e.g. -12), making error logs more readable.
->
-> This patch fixes coccinelle reported warnings:
+On 7/14/26 06:16, Ulf Hansson wrote:
+> On Thu, Jul 9, 2026 at 5:56 PM Cristian Marussi
+> <cristian.marussi@arm.com> wrote:
+>>
+>> On Thu, Jul 09, 2026 at 03:27:00PM +0200, Michal Simek wrote:
+>>> On heterogenious systems like AMD/Xilinx FPGA there is a need to talk to
+>>> SCMI server from different architectures than ARM that's why remove
+>>> ARM/ARM64 Kconfig dependency with also remove ARM from description and
+>>> rename folder to reflect it.
+>>
+>> While I understand dropping the dependency on ARM (I always wanted to do
+>> that and test if it worked at all on some otehr archs with QEMU), I am
+>> not sure about the whole renaming party ? why is needed just for
+>> cosmetic reasons ? it is at the end an arm originated protocol so I dont
+>> see it as a being wrong to be named as such even though used by other
+>> archs...I have not really strong opinion on this...
+> 
+> This is certainly not my call to make, but I have to admit that I
+> fully agree with the above.
+> 
+> Usually we don't rename files that indicate a legacy platform name,
+> just because a new company/platform wants to make use of it.
+> 
 
-Avoid use words "This patch", just
+I agree.
 
-Fix coccinelle reported warnings:
+Guenter
 
-> ./chipidea/ci_hdrc_imx.c:452:5-12: WARNING: Consider using %pe to print PTR_ERR()
-> ./chipidea/ci_hdrc_imx.c:468:5-12: WARNING: Consider using %pe to print PTR_ERR()
-> ./chipidea/ci_hdrc_imx.c:222:4-11: WARNING: Consider using %pe to print PTR_ERR()
-> ./chipidea/ci_hdrc_imx.c:222:24-31: WARNING: Consider using %pe to print PTR_ERR()
-
-keep one is enough
-
-> ./chipidea/core.c:684:4-11: WARNING: Consider using %pe to print PTR_ERR()
->
-> Compile-tested only.
->
-> Signed-off-by: Subasri S <subasris1210@gmail.com>
-> ---
->  drivers/usb/chipidea/ci_hdrc_imx.c | 12 ++++++------
->  drivers/usb/chipidea/core.c        |  4 ++--
->  2 files changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> index 56d2ba824a0b..7bfe37ed68ae 100644
-> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> @@ -218,8 +218,8 @@ static int imx_get_clks(struct device *dev)
->                 if (IS_ERR(data->clk)) {
->                         ret = PTR_ERR(data->clk);
->                         dev_err(dev,
-> -                               "Failed to get clks, err=%ld,%ld\n",
-> -                               PTR_ERR(data->clk), PTR_ERR(data->clk_ipg));
-> +                               "Failed to get clks, err=%pe,%pe\n",
-> +                               data->clk, data->clk_ipg);
->                         return ret;
->                 }
->                 /* Get wakeup clock. Not all of the platforms need to
-> @@ -448,8 +448,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->                 pinctrl_hsic_idle = pinctrl_lookup_state(data->pinctrl, "idle");
->                 if (IS_ERR(pinctrl_hsic_idle)) {
->                         dev_err(dev,
-> -                               "pinctrl_hsic_idle lookup failed, err=%ld\n",
-> -                                       PTR_ERR(pinctrl_hsic_idle));
-> +                               "pinctrl_hsic_idle lookup failed, err=%pe\n",
-> +                                       pinctrl_hsic_idle);
->                         ret = PTR_ERR(pinctrl_hsic_idle);
->                         goto err_put;
->                 }
-> @@ -464,8 +464,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->                                                                 "active");
->                 if (IS_ERR(data->pinctrl_hsic_active)) {
->                         dev_err(dev,
-> -                               "pinctrl_hsic_active lookup failed, err=%ld\n",
-> -                                       PTR_ERR(data->pinctrl_hsic_active));
-> +                               "pinctrl_hsic_active lookup failed, err=%pe\n",
-> +                                       data->pinctrl_hsic_active);
->                         ret = PTR_ERR(data->pinctrl_hsic_active);
->                         goto err_put;
->                 }
-> diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-> index 07563be0013f..09db8a4eace2 100644
-> --- a/drivers/usb/chipidea/core.c
-> +++ b/drivers/usb/chipidea/core.c
-> @@ -680,8 +680,8 @@ static int ci_get_platdata(struct device *dev,
->                         /* no vbus regulator is needed */
->                         platdata->reg_vbus = NULL;
->                 } else if (IS_ERR(platdata->reg_vbus)) {
-> -                       dev_err(dev, "Getting regulator error: %ld\n",
-> -                               PTR_ERR(platdata->reg_vbus));
-> +                       dev_err(dev, "Getting regulator error: %pe\n",
-> +                               platdata->reg_vbus);
->                         return PTR_ERR(platdata->reg_vbus);
->                 }
->                 /* Get TPL support */
->
-> --
-> 2.43.0
->
->
