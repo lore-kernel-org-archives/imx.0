@@ -1,112 +1,141 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5051E434E38;
-	Tue, 21 Jul 2026 09:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D53F434E30;
+	Tue, 21 Jul 2026 09:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784625967; cv=none; b=gbpK28jtTPyVtBehw9eeErZlHyekHV+wIWZwxX9pcvMxqlwMXDdaWEPQQ07VSRT1Sfw8kMLytUTIVK1/08kHeh0K+/UDJxYCu735viQktkEa/0Z9dW8RLg/tgYOspFhWlhUtErSIHSpfZHralXNnLqvEjVFKPH2Q5zQ0O8UEIqQ=
+	t=1784625968; cv=none; b=uotIJ9pJp+1wDnGGgsNQnHz7ILllaRouxku/qTLUiVROyTHDKZGrClsRDzlOTNMkht0octHcTDPeGhLYz+IPP040vdStW88ldevhlVLTQgTHpUHITwVvh67HwXfMPTP3KTLUK4XtJe/8jFvykSK3A0wMPXSUGGenHQiL31G0/wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784625967; c=relaxed/simple;
-	bh=lHNhqHMNv0HRrTUnmYbQgTBMbfalTzMIcudhq/yjb0M=;
+	s=arc-20240116; t=1784625968; c=relaxed/simple;
+	bh=vqjUtXFK+AhMT5mwM5PVBi8bVf/LqOB4BguUp7uQrHU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GH7GsrGpOF68mjqOHlrzgQkT0pDGWyh4XY8NqVqx+bi1vX8dY3BTdqJL7PDt+YMFH50f5SBH2jAzaBa2h/PjRmOXMtvKSAWvG7+eHAwOA9wkcUdbjDgRDgvnJggajE2maHBaosygJol4jIRd0FMod0kYk6a13MnC+2ZJ28wrBdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aa2d0EPw; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=e5uoVmicnSUGIktzXwozeziK2+QCK0lRGegK7kpMIdEt73GlLjCIHtuLVQAo8EkjAn2EoAOBAUFymcgTTThxcw2ewq69UakuIedWFkz2CfU73ZonJxwHEOC4c7iSaJzQKVuph73WzNXTnW9lYFV4XsuxBBvINL5znOnpJROH2PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FK5pFlQY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aa2d0EPw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBFA1F00A3D;
-	Tue, 21 Jul 2026 09:26:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FK5pFlQY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B1D1F00A3A;
+	Tue, 21 Jul 2026 09:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784625966;
-	bh=0e595y6VFu+CPsEplt8sdaX23lvDx9si+hr+p+PnvKc=;
+	s=k20260515; t=1784625967;
+	bh=OMvpcMN/wkwJlv7cv3UaGRItgzDdSvJqu7MFzciTQbA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aa2d0EPw7LUQOYoCVRJlJ7BEnaereL3IISdzoxM733gnKvCeQRNyrzJ6qnb+XZFgN
-	 WKTDzW1uci9ZQ72CPySiQq3YcdUuliW+SwruaWs3CvEJoeMTTdEHkCKBsir15yqIuG
-	 Ac6aFbR2aDCFvALAZeliYJ3qXrOVpCAY01y4kLgpNHP/m+XsDvhFUuc7UDJj1tiE3Z
-	 tFZL4wwxyvrEdE9pQ2ZwSgQELRahTVbo3davjK4KIEd52CW7MPmp3a7KmsIUY3dPR3
-	 s2ufnDSU0NRZRnJI+MO8v4T71bF4H/aQx0mBQ95nsfwgPdop8F2Vzi6vQyKDpJb/NP
-	 nXuCFhFrKVfvg==
+	b=FK5pFlQYu56ioFKJAJgrbwtvGk5al/YD7WbDEZbP/4Q2sVSltqM8KsLin/Bw6/Dl7
+	 sQkv/ihrwUvFq8qKKk3WgTGvgRxUWL88haIhWUjSzMkLDnCFDMqWSJDmYpxdL01rSk
+	 AVd+s1HSST9xgjzn/mJxTX3yWz3LPdnmxZF+r9gQ4OF8HgskZUI61GTuSlft548bUq
+	 8k5d3Kl5lAbMpCo7Dm1V6cdJB6v1HpERtrC9RKdPHm0HIYfekcVLPSLYm42snVk/Wl
+	 +9L0H1Wt2R5jMJKNdp+8FeBTb0C6rX7QTEQrY6SYE0H3jnwhHyPz3IOFNqLwyRLt/t
+	 di8aZDqbs2tdA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5/8] pmdomain: imx: use platform_device_set_fwnode()
+Subject: Re: [PATCH 7/8] net: mv643xx: use platform_device_set_fwnode()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, lee@kernel.org, mfd@lists.linux.dev
-In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-5-2dee93f42c54@oss.qualcomm.com>
+Cc: mfd@lists.linux.dev, Frank.Li@kernel.org, imx@lists.linux.dev, lee@kernel.org
+In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
 References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-5-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 Jul 2026 09:26:05 +0000
-Message-Id: <20260721092605.DCBFA1F00A3D@smtp.kernel.org>
+Date: Tue, 21 Jul 2026 09:26:06 +0000
+Message-Id: <20260721092606.B4B1D1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Pre-existing leak of dynamically added child `platform_device`s on=
- probe error or unbind, leading to use-after-free of parent's devm-managed =
-resources.
+- [High] The driver permanently leaks dynamically allocated platform device=
+s, their resources, platform data, and fwnode references during teardown.
+- [High] DMA mappings are leaked and the TX ring state becomes corrupted if=
+ descriptor mapping fails during TSO processing.
 --
 
---- Patch [5]: [PATCH 5/8] pmdomain: imx: use platform_device_set_fwnode() =
----
-commit 4ab43e8055c75d8cfe06f1c383c67f571e59d263
+--- Patch [7]: [PATCH 7/8] net: mv643xx: use platform_device_set_fwnode() -=
+--
+commit d4dc0688026958e8569e1e6212a8ec7a37b4fb45
 Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-pmdomain: imx: use platform_device_set_fwnode()
+net: mv643xx: use platform_device_set_fwnode()
+   =20
+Prefer the higher-level platform_device_set_fwnode() over the
+OF-specific platform_device_set_of_node() for dynamically allocated
+platform devices.
 
-This commit updates the driver to prefer the higher-level
-platform_device_set_fwnode() over the OF-specific
-platform_device_set_of_node() for dynamically allocated platform devices.
+> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/eth=
+ernet/marvell/mv643xx_eth.c
+> index 9caa1e47c174c..2f2d6cce8d852 100644
+> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
+> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+[ ... ]
 
-> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-> --- a/drivers/pmdomain/imx/gpc.c
-> +++ b/drivers/pmdomain/imx/gpc.c
-> @@ -487,7 +487,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
->  			domain->ipg_rate_mhz =3D ipg_rate_mhz;
-> =20
->  			pd_pdev->dev.parent =3D &pdev->dev;
-> -			platform_device_set_of_node(pd_pdev, np);
-> +			platform_device_set_fwnode(pd_pdev, of_fwnode_handle(np));
-> =20
->  			ret =3D platform_device_add(pd_pdev);
->  			if (ret) {
->  				platform_device_put(pd_pdev);
->  				return ret;
->  			}
+While reviewing this patch, I noticed a couple of pre-existing regressions =
+in
+this file:
+
+> static int txq_submit_tso(struct tx_queue *txq, struct sk_buff *skb,
+> 			  struct net_device *dev)
+> {
+[ ... ]
+> 	/* clear TX_END status */
+> 	mp->work_tx_end &=3D ~(1 << txq->index);
+>=20
+> 	/* ensure all descriptors are written before poking hardware */
+> 	wmb();
+> 	txq_enable(txq);
+> 	txq->tx_desc_count +=3D desc_count;
+> 	return 0;
+> err_release:
+> 	/* TODO: Release all used data descriptors; header descriptors must not
+> 	 * be DMA-unmapped.
+> 	 */
+> 	return ret;
+> }
 
 [Severity: High]
-This isn't a bug introduced by this patch, but does this error path leave
-previously added child platform devices registered?
+This is a pre-existing issue, but does this err_release path leak DMA memory
+mappings and permanently corrupt the transmit ring state?
 
-In imx_gpc_probe(), the child imx-pgc-power-domain platform devices are
-added in a loop. If a subsequent iteration fails and returns here, it
-triggers devres cleanup for the parent device, freeing resources like
-the devm-managed regmap.
+If txq_put_data_tso() fails (e.g., due to a dma_map_single() failure), the
+code jumps to err_release and returns the error without rolling back already
+configured descriptors.
 
-Because the previously added child devices are not unregistered on this
-error path, will they remain bound with a dangling domain->regmap pointer?
+Since txq->tx_desc_count is not incremented for the already processed
+descriptors, the subsequent txq_reclaim() loop will never clean them up. The
+txq->tx_curr_desc index has already advanced, which seems like it would cau=
+se
+the ring pointers to lose synchronization.
 
-Additionally, looking at imx_gpc_remove(), it entirely omits child
-unregistration when the new DT binding is used, leaving the child
-devices registered while parent devm resources are torn down:
+[ ... ]
+> static void mv643xx_eth_shared_of_remove(struct platform_device *pdev)
+> {
+> 	struct mv643xx_eth_platform_data *pd;
+> 	int n;
+>=20
+> 	for (n =3D 0; n < 3; n++) {
+> 		if (!port_platdev[n])
+> 			continue;
+> 		pd =3D dev_get_platdata(&port_platdev[n]->dev);
+> 		if (pd)
+> 			of_node_put(pd->phy_node);
+> 		platform_device_del(port_platdev[n]);
+> 		port_platdev[n] =3D NULL;
+> 	}
+> }
 
-drivers/pmdomain/imx/gpc.c:imx_gpc_remove() {
-    ...
-		}
-	}
+[Severity: High]
+This isn't a bug introduced by this patch, but does this loop permanently l=
+eak
+dynamically allocated platform devices and their resources?
 
-	of_node_put(pgc_node);
-}
-
-Could this also lead to a similar use-after-free of the regmap struct
-on an explicit sysfs unbind?
+The code calls platform_device_del() to remove the device from the hierarch=
+y,
+but it appears to be missing a call to platform_device_put() to drop the
+initial reference count.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-pdev-set-f=
-wnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com?part=3D5
+wnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com?part=3D7
