@@ -1,145 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7912FD1DA
-	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 03:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784603573; cv=none; b=LrJzvhUJiEXefHHYn8vAAmBnb7eTEEYLh02Bu3aoYFktf+toajB4j2sY6vNqAmEphNb5Q7OT0vSTpueIUtH+wl5YCMgjQb09xiQbJOCKiR8pbgEV/TmaUTBJigAEHhvToeM+noGSyuJ8V0UoaVsIq1VISXRbmcbCum2tdtvqr/Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784603573; c=relaxed/simple;
-	bh=8vh+hgCu1A0cEENjmWIcM8d6+6hS8xS/7qRjN0xDDsE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Rtses78h0jlsBTD2JqnWAOmQY7plEtvR2a9zblve1QF53gzqT/stpsHTvq2zo6IdRMb16vigu2alPTWOPT8/CJOAHIZC0UANdBbWdO1k04RsDLuEeCZhgkt1cb4TVnnrTWan0OS8k6jQSSSYzBNyLXZg9V97nZyAh7wY6LuSHxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SQenjo8m; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C182D7393;
+	Tue, 21 Jul 2026 05:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784611231; cv=pass; b=DTD0jnAnj+HTDGpbIn6CK7ihPI6+nMVOhcdtWnze+mIzRw/upQHoO0JjGKH6YeDGy4DTpST2y96bp9/zWS/kka7MAOOywzqxt0ajErxECyuJ8Ll4EdjQxNfLupwcxS+ItvsZz3NRcyrKcAHv1wk8b1dALpMJpzr4zScRLRD7QU0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784611231; c=relaxed/simple;
+	bh=Sqyd2iI5fkWmHnSlSSQrdsfjb/NYarTLfaWlS+hcGYE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ufJZJlsf8UdUu4FWftwQKIScbt+BRe8Ew2i1AgXyPDVCt2qXLsmEQuBOwfL9IVWqt3Dc2ouFFNEd7V/kDQNdWYnZOrATWtLkRaINjJC+p2irZo6Tw2YRplSa/zKDzGNkUE11sWnl75xLU4/pFzN80UmS5PQ0/puSXtzUKelwWIY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com; spf=pass smtp.mailfrom=yoavmoshe.com; dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b=ClKTDFa1; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoavmoshe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SQenjo8m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7B01F000E9;
-	Tue, 21 Jul 2026 03:12:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784603571;
-	bh=83NC/emtb84NDgEDY0QxD6XyWIS3uBXtTdyg7pbjsws=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SQenjo8m5YIA/oo8G77AA/OCW3KM4CdE2UR2Q+5wlML0wps6vXT59TLtSo0L2yqAT
-	 YKqpGBGnIfYxwSqkbvsCBVlDP75iHY8occ/BBd2S9KRonmz4SFmIWsff6iIZI2/8ln
-	 wm4ALDLsFNgx56/HLH+bj9XXmnl3+mfIUIE0I9UB0Pl/iYQfovY+bnUMuqgVBilrYU
-	 lncMw4jO3OZEFfCTXPaxFCW4s/ujHb+vGRl3fcwWM7PUWLpg1+l6NwqLq4VFcEF3ZF
-	 d6QJkc94Ti1RX0KZCxk7Z68slmamXMET1qKF1u1RUGhbi4IGQdYQRjIdqNaigY4fyJ
-	 tfl4ZyQDV1sWw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V7] Bluetooth: btnxpuart: Add M.2 Bluetooth device
- support using pwrseq
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?U2hlcnJ5IFN1biAoT1NTKQ==?= <sherry.sun@oss.nxp.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260721030458.1160824-1-sherry.sun@oss.nxp.com>
-References: <20260721030458.1160824-1-sherry.sun@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 Jul 2026 03:12:50 +0000
-Message-Id: <20260721031251.5D7B01F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b="ClKTDFa1"
+ARC-Seal: i=1; a=rsa-sha256; t=1784611218; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=YXldcrMVRv9AwB2SCKvjY5ah80LK7PLbegwI5zE7S33lG/zc8ZuXYp2ztLQFu3okbgIWEjZ8C2gu7RdVwU4ouOXmT8yjzVQbbASBSbVoJ+3DqzhT+gTuLdSACs+kWCU1SunSKB1qK/J7qwE6V50VdCEJ0Kp/0xd8X42UWk+ffPU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1784611218; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=MeAIg/nFoLV4HPdy7uK9Th+eYhFPpG/Q07Hu7di9WW4=; 
+	b=f538/rQMV8XuRF0T0jIM11UM/z50ftLwDvASkGvmQFRmJQu3cwvby3BwzD9xCAa86dPEFvIvg3/NK3Hg1/Nqk7+e1g74CsiWPm1kP1t5takI1wYzUDsn31MRyar80CZ7FaNiPm0QQcysVyR5fqFKCHHOJlSmKnz5Bk8fY48ttjY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=yoavmoshe.com;
+	spf=pass  smtp.mailfrom=linux@yoavmoshe.com;
+	dmarc=pass header.from=<linux@yoavmoshe.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784611218;
+	s=zoho; d=yoavmoshe.com; i=linux@yoavmoshe.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=MeAIg/nFoLV4HPdy7uK9Th+eYhFPpG/Q07Hu7di9WW4=;
+	b=ClKTDFa1P9nJhbRjKKoB9/a6FYZyD47U4yY7+fn5Ub2/dgBWFIa+EI02zvx4/U+I
+	4JkT+KJA5zRFF9gRqRPPobS/1eBtGpiW/qtuVc4+1roCziNf+cdGN1iBwVRVo62efW/
+	3/aUJGqVIsGXJy4hPnl15PvXXXHOTVg1h+6MnYT4=
+Received: by mx.zohomail.com with SMTPS id 1784611216000751.5066369487145;
+	Mon, 20 Jul 2026 22:20:16 -0700 (PDT)
+Message-ID: <38fd4fc1-7aad-464d-9d8c-5667ebcff89f@yoavmoshe.com>
+Date: Tue, 21 Jul 2026 07:20:11 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] ARM: imx: Fix suspend/resume crash with Clang CFI
+To: Nick Desaulniers <ndesaulniers@google.com>,
+ Yo'av Moshe <linux@yoavmoshe.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Russell King <linux@armlinux.org.uk>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ llvm@lists.linux.dev, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260718111340.159896-1-linux@yoavmoshe.com>
+ <CAKwvOd=eAC-Mz0kZhbHQMFOY=ba=WXDH6X_Zzh6KGfuq5PmJ4A@mail.gmail.com>
+Content-Language: en-GB, sv-SE
+From: Yo'av Moshe <linux@yoavmoshe.com>
+In-Reply-To: <CAKwvOd=eAC-Mz0kZhbHQMFOY=ba=WXDH6X_Zzh6KGfuq5PmJ4A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On 2026-07-20 6:53 PM, Nick Desaulniers wrote:
+> 
+> Are we able to just put __nocfi on the declaration of
+> `imx6_suspend_in_ocram_fn`, rather than bother with a wrapper
+> (imx6_suspend_in_ocram)? I don't know if that works, but surely you
+> can test that quickly?
+Thanks for the suggestion! I tested placing __nocfi directly on the
+imx6_suspend_in_ocram_fn variable declaration:
 
-Pre-existing issues:
-- [High] Initialization ordering race in probe where the device is exposed =
-to the system before synchronization primitives are fully initialized.
-- [High] Teardown ordering bug leading to Use-After-Destroy of synchronizat=
-ion primitives during device removal.
---
+    static void (* __nocfi imx6_suspend_in_ocram_fn)(void __iomem *ocram_vbase);
 
---- Patch [1]: [PATCH V7] Bluetooth: btnxpuart: Add M.2 Bluetooth device su=
-pport using pwrseq ---
-commit aa33fbd5b00c9432b2b3b5cc158c49ae5ac11d72
-Author: Sherry Sun <sherry.sun@nxp.com>
+Unfortunately, Clang ignores no_sanitize("cfi") on variable declarations and
+emits a compiler warning:
 
-Bluetooth: btnxpuart: Add M.2 Bluetooth device support using pwrseq
-   =20
-Power supply to the M.2 Bluetooth device attached to the host using M.2
-connector is controlled using the 'uart' pwrseq device. So add support
-for getting the pwrseq device if the OF graph link is present.
+    warning: 'no_sanitize' attribute argument 'cfi' not supported on a
+    global variable [-Wignored-attributes]
 
-> diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-> index 0bb300eef157c..81a11ac051146 100644
-> --- a/drivers/bluetooth/btnxpuart.c
-> +++ b/drivers/bluetooth/btnxpuart.c
+Because Clang ignores it, it still injects the CFI check at the call site.
+I tested this on physical hardware (Kobo Clara HD), and it crashes on suspend.
 
-[ ... ]
-
-> @@ -1907,13 +1925,16 @@ static int nxp_serdev_probe(struct serdev_device =
-*serdev)
->  	if (bacmp(&ba, BDADDR_ANY))
->  		hci_set_quirk(hdev, HCI_QUIRK_USE_BDADDR_PROPERTY);
-> =20
-> -	if (hci_register_dev(hdev) < 0) {
-> +	err =3D hci_register_dev(hdev);
-> +	if (err < 0) {
->  		dev_err(&serdev->dev, "Can't register HCI device\n");
->  		goto probe_fail;
->  	}
-> =20
-> -	if (ps_setup(hdev))
-> +	if (ps_setup(hdev)) {
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this probe initializati=
-on
-order expose the device to incoming traffic before its synchronization
-primitives are fully set up?
-
-In nxp_serdev_probe(), hci_register_dev() is called before ps_setup().
-hci_register_dev() exposes the device and queues the power_on work which
-calls hci_dev_do_open() -> btnxpuart_open() -> serdev_device_open().
-
-Once opened, incoming UART data can trigger btnxpuart_receive_buf().
-This calls ps_start_timer(), which executes mod_timer(). Because ps_setup()
-(which initializes the timer via timer_setup()) hasn't executed yet, could
-this cause an Oops on an uninitialized timer?
-
-> +		err =3D -ENODEV;
->  		goto probe_fail_unregister;
-> +	}
-> =20
->  	hci_devcd_register(hdev, nxp_coredump, nxp_coredump_hdr,
->  			   nxp_coredump_notify);
-
-[ ... ]
-
-> @@ -1952,6 +1976,8 @@ static void nxp_serdev_remove(struct serdev_device =
-*serdev)
->  	ps_cleanup(nxpdev);
->  	hci_unregister_dev(hdev);
->  	reset_control_assert(nxpdev->pdn);
-
-[Severity: High]
-This is a pre-existing issue, but does this teardown order lead to a
-use-after-destroy of the synchronization primitives?
-
-In nxp_serdev_remove(), ps_cleanup() is called before hci_unregister_dev().
-ps_cleanup() explicitly destroys psdata->ps_lock and shuts down
-psdata->ps_timer.
-
-However, the underlying UART (serdev) is not closed until
-hci_unregister_dev() executes (which calls hci_dev_do_close() ->
-btnxpuart_close() -> serdev_device_close()).
-
-If UART data arrives in the window between ps_cleanup() and
-hci_unregister_dev(), btnxpuart_receive_buf() will run and call
-ps_start_timer(), manipulating the destroyed timer. Additionally, it can
-trigger btnxpuart_tx_wakeup() -> btnxpuart_tx_work() -> ps_wakeup(), which
-attempts to lock the destroyed psdata->ps_lock.
-
-> +	if (nxpdev->pwrseq)
-> +		pwrseq_put(nxpdev->pwrseq);
->  	hci_free_dev(hdev);
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721030458.1160=
-824-1-sherry.sun@oss.nxp.com?part=3D1
+Best regards,
+Yo'av
