@@ -1,197 +1,95 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011010.outbound.protection.outlook.com [52.101.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199A54C77A1
-	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 10:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784630046; cv=fail; b=Pc9XJQixuUxjZ7u1p2XKpa4i8BOUd0W7R+T064usdPFY2hV/Re0iozV116zlSa1AN72w/+iy+i8P0nwxC9k5ItfXefmAbwBqlM2tRzTmlHZ+XiQXJvB+XRDK2QTt+ABBlwixp3DsUxObOdz3CGM4eVN+0OF0AH9TOn8VIQ954+U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784630046; c=relaxed/simple;
-	bh=rXCz+RjRryPw6okSsLS2gT1n2zw3GWgVY8tsmT6TdRg=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=PUKwx1fWvUq7nKNA88oizkAm4Rga1tTUgwIdQLz4/xKwh2h2Usunw+zZd2+fvHCh49j4+7iMxiea2faSMarLdoDRXDUlRYDTqkG7z+/tOaCVy+K35TW4Eaj3XNHUAX6Hf/zmigUz3+Iqyn1LYEnZ7fvCgEosrBIigM0o2iojofI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=BlJenJWG; arc=fail smtp.client-ip=52.101.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99219332906;
+	Tue, 21 Jul 2026 10:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784630244; cv=none; b=Zkh5Z7kkSWnCKLhO27sBilDv1wWzfkGMPJCJJhjy2vDNfldY20r2WQtd0r8pWiMDDLnJK+BT4ij87OO7OBvRWSE3PCjCn+nVAsudWZ3MSruVeXlHsUwj/qhIY0i4BpC/NeQM4qijJDg/Bx5NEmpHHPy645NAGnbUE5l3ojO45vM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784630244; c=relaxed/simple;
+	bh=eWLF6M4l3DSUELfbHBYZmDUooFf/KO4B/NbcTFCPzkc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=sjEQANw/vkisqoTr4cvJvz/5dhoC4p8VzWq4Z13ZLG6L6jN0clpaYVpbEXN2t7mnIkG1JXC2JjWYckMWioq+YuipoB2XgT99rtmYbeoTycUAt1TLjIUFpdVGo4oVn3iD12CD+4uHNiWOch8UICK2rfucwLEfvNPkk9TXr/mbdjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOde2LCk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="BlJenJWG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fe95QHymPTAiZJMkJ+Nis9VzpZCuKwkbH2YPqj4NA1NkFM1CQAKPQRo0WyKJMyPFYMeNYCLOpKJQTFkYh4RKA52FcP4VV3zb6xhIwsMl7Qx20g4T5nLr9m58799sxggq4vFR/N+OtM2Urih1qTRVgGjPmRFkDbUOHY6Oain1KVR9FllMGnId3rBEPk2Cwh9bkEFv4xNB0TRb0EvCvHyoqGFRwTyouy3qOfjqQWxYbcsHFjxR4oEqYf9Hbd7IZo0hDSWuBAiUMTJ2ZapOMRH596K0YlpV6kzQ91iAB0iKYbIyQHiSmExJuQy9Fqz08SeMJ6flNxmDNG+BPw+GnEso9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zuCQjnIjcHcsCbC4CeSNrKK4n8UqQjP5j6wVuK5Frmw=;
- b=w1Yyi7jGIt0myCYjNx6G8S9Mf7YnTW3TubRw09IH7cFdETzb3m7YmnRBuochNvpCDbXsmsyAiJVimw4fhwKyU8vKO+xvWKjyug2RcRZWnflrLiVFqjTH4Npl/Kxoq2DmpjTq5Hwnk872sJbSmthOCSwBx01AeRO521uZGuXzME5JdtBQaTY1XwA4jXUlwZhRGhdWDplBwLTuwtDnVyNaqq5hXSMdBxpPth/fOozOCWFjYJAM2+VyxgebzBtZSrFuCWQ57RhJtKmgLr5rqmMzZgfNXdUnnzN5GVqcrnMXHRUEkuY8qYTLhsSLo9GdQe+hu+ak1XVmdbLKElIChZK2Iw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zuCQjnIjcHcsCbC4CeSNrKK4n8UqQjP5j6wVuK5Frmw=;
- b=BlJenJWGxyd7ehCCAAbGsT7BkvmikUy9xBNT4qZHeU6eT9+C5OPK1MWsyDCLJO5ctxEGTM26hVVy9eSYj7PijovhMUECYtwjnjIM6X/fpFcOjRe1y+c4sd4UZhGcFnWqvgzZZxsfxG3Vc8FO3lrJHRZzaKAq98jPl5mvKMdO/pi/s0qTafLNia0/RJCY+PcktmSjVGD4G0yGnx8zSxDXfpqNhGkXyoOKYeYlamJN87lW7qXaBZMrhT7i5lPMW5GuGhdjGergyHG3E5FhdQsCfcF+1IywzTvN5lgq50Hqd8WbHAm0vh+sZLTI6mJkQ4yEYzXeWgcgDkUU5UsPPN82Sw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM9PR04MB8469.eurprd04.prod.outlook.com (2603:10a6:20b:414::15)
- by AS5PR04MB10042.eurprd04.prod.outlook.com (2603:10a6:20b:67e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Tue, 21 Jul
- 2026 10:33:59 +0000
-Received: from AM9PR04MB8469.eurprd04.prod.outlook.com
- ([fe80::1f31:d3d0:6150:b49c]) by AM9PR04MB8469.eurprd04.prod.outlook.com
- ([fe80::1f31:d3d0:6150:b49c%4]) with mapi id 15.21.0245.009; Tue, 21 Jul 2026
- 10:33:59 +0000
-From: pankaj.gupta@oss.nxp.com
-Date: Tue, 21 Jul 2026 16:53:38 +0530
-Subject: [PATCH v29 7/7] arm64: dts: imx8ulp-evk: add reserved memory
- property
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260721-imx-se-if-v29-7-04a362f4fcca@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOde2LCk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBABB1F000E9;
+	Tue, 21 Jul 2026 10:37:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784630243;
+	bh=jPiV/GHqNwGBkrN3BpUgbzr0W7EuSdtk4MMVVjc9s00=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UOde2LCkxd8Avim6N7VjcWY51lACAg7q2P8NG/ZLZrUmVKZZKVWcHGbd5crdoNyHq
+	 fGrXhopVVrJdZCHavKhsHXXMnlRWgIrA9iLJw8+YumAQ/+agemBx7ONrgv4rDWjYkl
+	 Hm9Ccu+SO9QM3hSMlvwkBxCR6NXdrOHoI4RXZJ4r7txMBFpeXioPJ1ZXU1JKod3Bht
+	 1QvTLOl4CKwkrpq3d8mXc35WG5vNTqN8uhoY2sJ/b4BE9qXaVdhesViP8sSOnmVoGX
+	 7+ZrNwerJtb9I40G6GPh96YCbETrZAkXRgFiAugm28zl4R0T4MCum2otsL0tWefeXG
+	 2/GZXco/7fCEw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v29 1/7] Documentation/firmware: add imx/se to
+ other_interfaces
+Reply-To: sashiko-reviews@lists.linux.dev
+To: pankaj.gupta@oss.nxp.com
+Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260721-imx-se-if-v29-1-04a362f4fcca@nxp.com>
 References: <20260721-imx-se-if-v29-0-04a362f4fcca@nxp.com>
-In-Reply-To: <20260721-imx-se-if-v29-0-04a362f4fcca@nxp.com>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784633013; l=1279;
- i=pankaj.gupta@nxp.com; s=20240523; h=from:subject:message-id;
- bh=hnPFsRK9/RoyluFDiCjFX7uqhb3SO3ctyv+6dqueb4c=;
- b=hqUqyYVgAWmlM5K9Tf7p5o/F1J6XNoX8xwycCmb5XrJPfHIrRTHvBiSaWp42gBylMvKdkHRIP
- Y4h7rXLT8kQC+GoLKW6Lbh9K8XaXuW9FT4jCf+o6nZUES6BMHS05a9z
-X-Developer-Key: i=pankaj.gupta@nxp.com; a=ed25519;
- pk=OA0pBQoupy5lV0XfKzD8B0OOBVB6tpAoIf+0x1bYGRg=
-X-ClientProxiedBy: MA5P287CA0057.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d3::7) To AM9PR04MB8469.eurprd04.prod.outlook.com
- (2603:10a6:20b:414::15)
+ <20260721-imx-se-if-v29-1-04a362f4fcca@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 21 Jul 2026 10:37:22 +0000
+Message-Id: <20260721103722.CBABB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8469:EE_|AS5PR04MB10042:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67203ab8-6937-454b-ce82-08dee7139355
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|7416014|376014|1800799024|366016|10067099003|11063799006|56012099006|921020|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	VelBFznNLWxraXceFRNKGftW9rf/DrfTfzI+Eux/Cd1+1InzfOevO6c4pmx3Z6d3PgFWDwWY/ULqpf2Ilv5pwxaL801pAjEYuxKLnop2NcHd0XJHDyfVJFEBDrFsAZ6kGbns0sHmLcNjlQ4AT/8j7vc6JalOI/Z0ArExgtOGeVmfU9OhJv+eAG96Mgm1q3YNlsAc5t53dvd4wwcXVXujgBEd9YRAKKDMBwCXQmT5JuAsRnuy3BkCeDsW16dwtimmiRtHijNQ/PQDCFCo4ofKTOlXwt5xViIDyUmJ4aNx40X7Z8gPlrX8QMFSWb0qmdbKw/ULd2z6k5Z2pIuPZ1JzEZ9WXor/ZPyKOg2GT5EdC4yosuxdh/isLWeV9xKlgAhRhpCu87hiKo+NGU86phh1cY52gaSL1VTqonOkRLysted8vD5i9pPCl7zz0Xz8BWJh9lQgm8PrgMPfPoiYwV9INNhna7q1t5JAfS+5z8ych49UL4MbRSV9ni5M8MmLTkZjIfsHqmboQD2J8pe1O+6zz6k+5M0h+C4iZW8Vxs+6FB02iBY49WDv4XPjOpAVrM2vnxlHn+KFsEm2LzufF8+ve2tyvMCZqp7as7v3dl48sZeBMIGzL+Sg41pKph6bavAnItAKHa/c8MZJ8tYFdcyEn/aIM4Rsq+z87KrJF7F2HwMXKzD0RX7AX0HN6eWC4Mo6Nb8kX6im7NYWDhcgk1I5AA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8469.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(7416014)(376014)(1800799024)(366016)(10067099003)(11063799006)(56012099006)(921020)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MDlmT0YreXJXc21yVVpmM3Q1VkxRUEtWd3hNSmhsZXQ1Q3hlcTNaeHBjR29O?=
- =?utf-8?B?aFp4OWQ3MUwreW5CUndLeWtjTktvQ3BKUzdzTmJFQ1I5VkxGejZmS25wOEFQ?=
- =?utf-8?B?VFowM01JRWY3c3VUc3R2bk4vdCs2NlgrbUZsU0NvWkR2VnZpSFFBS0dhSDYz?=
- =?utf-8?B?bk5La1llbG0vVzZqZVdpYjNkbDV1TmRQQjVhVWJrZkRDK0pwYUkyMnN4dk9t?=
- =?utf-8?B?UG5IcXk1WHRVSlpxajNnMUl6UmFETGZ4L0tOYVRGZk9JUHZkQnlQOThNbWJR?=
- =?utf-8?B?bG1LWTNrUGRxaXZBakxFMTE4b25CWGY2SlVJY3VSK1NENDFvV0E2VmJhM2lm?=
- =?utf-8?B?Y256dHdDRXdrL0tRRGlWSDVFYzUxVUowWEx3SWFuTEJyTGR4VGlKSHhQeWxL?=
- =?utf-8?B?OHdFK21YRmY1UVV3L2VJNUJwZlFodmNFZzJON1gxenFybE9pL3BTbldoeWl4?=
- =?utf-8?B?TGY3VXgrc3JTQ3dlRTk3VDBWcDNjanNjUUxaclJsbUJOSUROL2hCY0tzTzR6?=
- =?utf-8?B?SVh1Wm9heFh1MndwaFZGcUVxN0RMWGhNaGlBbDdzVkMzRGdwK21ZYzZqbzNX?=
- =?utf-8?B?eDREbWRGU09SeUxpejEraFlpMHYwYmd6aU04T082MTM2K0M4bWM1UHg5ZnhY?=
- =?utf-8?B?WEoxaVRUODBHL254UVBQbHVCQmtDTnF0aVlqUkFmK203RlVBWkJQN1ZpOXFX?=
- =?utf-8?B?SWs2UEU1OSs0K0ZIdlhTTkVWU0tiRVJYSDl3WHV2UmN4VWxLQWI1RCtUWGF1?=
- =?utf-8?B?ZnVuVWFWQUdFWUVuU3pMUmZYaDIwaXVmN3FmTDhiRC8zK2xuM1JadjRBRjU1?=
- =?utf-8?B?YXRHRGRiNlpvOTUrcFpGQU9sanFSblNjN21SRFZIMVFScG9icWQ3TmJyOVZ6?=
- =?utf-8?B?SW5oN0tGK1ZtODU2MUNiZitQVU9yZm9wcTVZMlR0Z3FmK0JKWXhOZjlmWGhO?=
- =?utf-8?B?VEdkUnMxTU03alkvMlBRcm1HSlZoVGtIdzVqOVBjWGgvRHJVTnUyVG5BUlE2?=
- =?utf-8?B?dkhXRHVUQ25WN3hqelkwSnRxRENkSFdKTFU4YUo0ZHNJVFJWTjhBYXNOQWpx?=
- =?utf-8?B?ZU8vRFhpbE9RYjVRaEkyVVVzSXBkL2FONlF6OVBmdmc0VUJRUHFPZG5aeHVa?=
- =?utf-8?B?L1BzQWxGZnpWcWJyR1JHTTBNdE16RXd3R0FRdTFyUGM1ZW1yNTEyM1lvQjh4?=
- =?utf-8?B?WHplQzlFLytOV1ZOUUYwYXdxQ2w1UE03RXQ5UVVqRUU5OGJqWStnTTJ2emFt?=
- =?utf-8?B?NURXV0R0a0ZFR0FKVDR5YTUzTWdhdFd6NzdSREdSN0c5RmZKSjdHM2RNYkxV?=
- =?utf-8?B?bzE1MGV2YlF0VTU1Z0NTV01uMmwrSXl4SEJkMS9RQnByempaZzJTZlRqVm12?=
- =?utf-8?B?NktyNHhKL1FwaVNhTG11VFRjWkVKbUFPUkJubU1lWkRsYWUzeGswK25kSVpK?=
- =?utf-8?B?SUEySzIydkxIWENKRjh6VklRSTJrSXBGQTJVVVc1bjFrRzZjT1lBUTlTOUVq?=
- =?utf-8?B?WUh2aUdDSTRWRXJPZmJmeHpVOEZoekE0MTdzeFZ6VXlqR2NQK09xdjNOMFlx?=
- =?utf-8?B?VFF1R09pNUNncTRxS0pvRDREL1piekJrRUpteXNmZ3REWUhsYlBHYnNFM0dZ?=
- =?utf-8?B?UUErV0tJS2VMU2xnblhSMGgrZmszNTJ6UjFFRkFiZmc1cFpBeitkWlF4dTNn?=
- =?utf-8?B?WVcxQVV2cFNoWHVBUXhLdW9sS0taT29XVFVBMldLRURUeWREbnNhVGZ3LzJh?=
- =?utf-8?B?TytpaGxuZW5zZjY3VFhQdXFZcFcvYzZFa2ZHNXBjMFRkQTBob2xjTDgvRjNm?=
- =?utf-8?B?ZE9TQVRza2RObEFrelpOY21lRERuejF1eFEwOFRzcEhRT3VHMDZ3L21TbmhS?=
- =?utf-8?B?MndpaG15VERPd295UTRJcE1nSmhQM3BHb3pVZnFnUmtablZ6L2dlL1BKNXRT?=
- =?utf-8?B?RFJMb2dPY3pUSGxGaytjbTVjbnNtMHJEeE5aQVpaNndUeHgwTEFvRUxiKzhB?=
- =?utf-8?B?R1k4a1NId0tBYjk0Rk9kRmFyQVUya3RSd2x3UXBKeHFkTlhjUUlLNWc0a0xO?=
- =?utf-8?B?TXMveEc3TGVJM3JJM1hjY2d4K0E5K2dVYnNiUTJ5akVVS09PTmltNHJHWndY?=
- =?utf-8?B?NHRxdFBoWkhyUU85QmtiU3dpelJQY3JBWEN4UWYwYWVXVVcwWFdaMTFZMGpN?=
- =?utf-8?B?cXA3NEI5SDhZeTdWQm0xb3diZE1Qb2ZKK0t2NkxyeUFNZzZLTDdYRXZNS05G?=
- =?utf-8?B?QkdxK3ZRNEhBQ2s1dlg2d01YYlg2NFBOcXdqaHU4bzJPVFlLZ3lCcDdJNU4z?=
- =?utf-8?B?bGdiS2JWcW1mdDVrdzFvSUFNTzIzTmdnY1ZZREZGNXpsNW9LdHlUTktqR25I?=
- =?utf-8?Q?z6ho/uU9bpt6F40j2DtTDPngk7x8zBYpyRvWA?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67203ab8-6937-454b-ce82-08dee7139355
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8469.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2026 10:33:59.6548
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tjuFL44GwRSSsHdvqKc8PBTwbqa3QJtMVOCvrQBbIYmAxoe3uqLDt1EX6Y+MiKL6CGHP9CHHKWw+z8mb0yMQW8L+D4rlh1bQsgCD5lxlUClGQ7y/PNVWp/4dZl4FRHh2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB10042
 
-From: Pankaj Gupta <pankaj.gupta@nxp.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The patch adds a kernel-doc directive referencing `drivers/firmware=
+/imx/se_ctrl.c`, but this file does not exist in the repository at this com=
+mit, causing a documentation build warning.
+--
 
-Reserve 1MB of DDR memory region due to EdgeLock Enclave's hardware
-limitation restricting access to DDR addresses from 0x80000000
-to 0xafffffff.
+--- Patch [1]: [PATCH v29 1/7] Documentation/firmware: add imx/se to other_=
+interfaces ---
+commit a3ebc2d6148d8ccb6cc329a101fcbc2ad8e624ff
+Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8ulp-evk.dts | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+    Documentation/firmware: add imx/se to other_interfaces
+   =20
+    Documents i.MX SoC's Service layer and C_DEV driver for selected SoC(s)
+    that contains the NXP hardware IP(s) for Secure Enclaves(se) like:
+    - NXP EdgeLock Enclave on i.MX93 & i.MX8ULP
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-index 5dea66c1e7aa..16399d921e04 100644
---- a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
- /*
-- * Copyright 2021 NXP
-+ * Copyright 2021, 2025 NXP
-  */
- 
- /dts-v1/;
-@@ -37,6 +37,12 @@ linux,cma {
- 			linux,cma-default;
- 		};
- 
-+		ele_reserved: memory@90000000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0x90000000 0 0x100000>;
-+			no-map;
-+		};
-+
- 		m33_reserved: noncacheable-section@a8600000 {
- 			reg = <0 0xa8600000 0 0x1000000>;
- 			no-map;
-@@ -259,6 +265,10 @@ &usdhc0 {
- 	status = "okay";
- };
- 
-+&hsm0 {
-+	memory-region = <&ele_reserved>;
-+};
-+
- &fec {
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&pinctrl_enet>;
+> diff --git a/Documentation/driver-api/firmware/other_interfaces.rst b/Doc=
+umentation/driver-api/firmware/other_interfaces.rst
+> index 06ac89adaafba..6c6fa9a0ba1df 100644
+> --- a/Documentation/driver-api/firmware/other_interfaces.rst
+> +++ b/Documentation/driver-api/firmware/other_interfaces.rst
 
--- 
-2.43.0
+[ ... ]
 
+> +When a user sends a command to the firmware, it registers its device_ctx
+> +as waiter of a response from firmware.
+> +
+> +Enclave's Firmware owns the storage management over a Linux filesystem.
+> +For this c_dev provisions a dedicated slave device called "receiver".
+> +
+> +.. kernel-doc:: drivers/firmware/imx/se_ctrl.c
+> +   :export:
+
+[Severity: Low]
+Is this kernel-doc directive pointing to a missing file?
+
+The file drivers/firmware/imx/se_ctrl.c does not appear to exist in the
+tree at this commit.
+
+Will this cause a regression when generating the documentation by introduci=
+ng
+a new build warning?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721-imx-se-if-=
+v29-0-04a362f4fcca@nxp.com?part=3D1
