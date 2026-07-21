@@ -1,112 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77B243303B;
-	Tue, 21 Jul 2026 09:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7534F42D750;
+	Tue, 21 Jul 2026 09:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784625964; cv=none; b=Kk5VLBe2B/udpR/PrKSyGgOzTiPxgbLA0VpAE0rEr2GzWSQScsz1RauVohPhtz9s4faFaj2kCoDg6Dr1MfeXYRVUwIw0M/EV2luuD65T3nvpE29106aXiCLPSn4ybh12HWABNTczUgAkMOgfSZApMo4FuAchUzE93Vr/4jiEFs8=
+	t=1784625966; cv=none; b=mXrMiiWmnTCfao+Lc9+xZBWVUEv9dFcMLQF2n6VA3VbsCNnCTrsoi890t+GbG7Xd5o5C1OomiwIHiQPe2w3+RQPic5iycEW7e3Vl8hqgNDti3Cg6EAWUGQb6ow8lWZssN9nEkluUYWW+n6bCmuElybD+3pN2RiuOQX9bQvOvlig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784625964; c=relaxed/simple;
-	bh=hHYDCICXMeEN52dm4OPnvmMR/dIW1SLgIDoQFovzzdY=;
+	s=arc-20240116; t=1784625966; c=relaxed/simple;
+	bh=eqw7g09hPKNYRdKS1Fku7qVQ8Eh+wXwmiYXrqZfCSEs=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nw9N9fYGhXaMSxRrJZ8vf3pSspskHS8ORh/hA06eSmO5VliDhR08OipLJk6h5aqpPT3xbzH4ttXVnRFh242PiMWqJy4V+hDwFATAH+cK7FmGruWzpatPbk51gIAGMzNMpaKxzZoroW1Ro6i7FApxVshZ4UVtrjTg3QAcCYavl6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/GRrawj; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=TcKtbrHo34o8Itz4lQBMr102mUOKEpQ8tV8fGRHNcFMCVDjCYlXj9PFQ9pWgco/xKFCOwty2XrAgRLsvzrMAxy42Al/NEHuVgi3jy0LlsR8d3PtKamI80/PqfX716RqxnizRKxr5BAU7/zs1h5dTRieejMlOLTlihnQyBiEQ6Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGfASbJ6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/GRrawj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BB41F00A3A;
-	Tue, 21 Jul 2026 09:26:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGfASbJ6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FD41F00A3A;
+	Tue, 21 Jul 2026 09:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784625963;
-	bh=DobvS7g6dj3yeshc+hCK/FxRJrzcJvf2cKDFlnTYGXY=;
+	s=k20260515; t=1784625965;
+	bh=fXLG2YX580lqBehxCNaw2qWzwIi+bOW0ZBOk+41UPus=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=P/GRrawjodyAPCluqh/eurC4IqvrlA3Tv5rNcUeQxy29XOc7yzO0hp79/jrxUWbae
-	 mvZaNjQr5MfYq2iQeSyEMqZ1ZrHHX6ZjN4ImUXa7nnE+XU2paIQQoMcz6c9P031rwQ
-	 82ewoInTAauxp0WnU7Xt1jxZ5JWn6+4rYwbc9XKryKXRZOT8vSvNwS5+YiR29A1NxO
-	 d04XfzaZ58ofi7hqKtYJSDkK/2Wq8EKlQERbx20ahbzt3+EEHQ05K+BZl3sPd7GFxf
-	 B4nTlJZ9poNdfkmnMb7gHproaldWnxRBf181+eMCElvCLvDesMNoLKq70ESaVBgyDF
-	 z3yUolRGi7kIg==
+	b=jGfASbJ655HHeFPEIXDyAUCDlg3vpkbmnVdiGgpaB0PNg5aLCMfo1aQixUASjzFu3
+	 9rj5wJbK2DPfnxcKmaxjhe7r20kyOJymZ2eUoqjUUBUrldtDmuLu5aKVlXXnbMKewd
+	 SSos8ATAYhRusa7Rb5yLk3+RPp/UhNTRV92KhGT0XVfflxJ/r0VDXQ3/KhqPHfUhnc
+	 dA2m0Nudt499e/RKegl6EaHyO5gPvt84sriClC6WtAT1wRD5A7R6J5MG5sgvJjFGXs
+	 jkvGOcZNE74BGGN16b6As387P/DV7AraxFzS2UKYHQRxqw2Yq3TVkeMRpBnsui4MTt
+	 7dQ0vavnbKq4w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 6/8] mfd: tps6586: use platform_device_set_fwnode()
+Subject: Re: [PATCH 4/8] net: bcmgenet: use platform_device_set_fwnode()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, lee@kernel.org, mfd@lists.linux.dev
-In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-6-2dee93f42c54@oss.qualcomm.com>
+Cc: lee@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, mfd@lists.linux.dev
+In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-4-2dee93f42c54@oss.qualcomm.com>
 References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-6-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-4-2dee93f42c54@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 Jul 2026 09:26:02 +0000
-Message-Id: <20260721092603.42BB41F00A3A@smtp.kernel.org>
+Date: Tue, 21 Jul 2026 09:26:03 +0000
+Message-Id: <20260721092605.16FD41F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-New issues:
-- [Low] The commit message uses non-standard capitalization for the descrip=
-tion, violating MFD subsystem prefix rules.
-
-Pre-existing issues:
-- [High] Manual assignment of `pdev->dev.platform_data` bypasses `platform_=
-device_add_data()`, causing a bad free and kernel panic during device relea=
-se.
+- [Low] The static function `bcmgenet_mii_of_find_mdio()` becomes completel=
+y unreferenced and triggers a compiler warning (`-Wunused-function`) when `=
+CONFIG_OF` is disabled.
 --
 
---- Patch [6]: [PATCH 6/8] mfd: tps6586: use platform_device_set_fwnode() -=
---
-commit 0c67148d3505d89af495783abc48f5f8ff3075d3
+--- Patch [4]: [PATCH 4/8] net: bcmgenet: use platform_device_set_fwnode() =
+---
+commit 91caf438269ceae68bf14d692c72b6702b3b3004
 Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-mfd: tps6586: use platform_device_set_fwnode()
+net: bcmgenet: use platform_device_set_fwnode()
 
-This commit updates the tps6586 driver to prefer the higher-level
-platform_device_set_fwnode() over the OF-specific
-platform_device_set_of_node() for dynamically allocated platform devices.
+This patch changes dynamically allocated platform devices to use the
+higher-level platform_device_set_fwnode() rather than the OF-specific
+platform_device_set_of_node().
 
-> mfd: tps6586: use platform_device_set_fwnode()
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/e=
+thernet/broadcom/genet/bcmmii.c
+> index 0f0dbabfaabbc..6f471723bd53f 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+[ ... ]
+> @@ -492,7 +492,8 @@ static int bcmgenet_mii_register(struct bcmgenet_priv=
+ *priv)
+>  	ppdev->dev.parent =3D &pdev->dev;
+> =20
+>  	if (dn)
+> -		platform_device_set_of_node(ppdev, bcmgenet_mii_of_find_mdio(priv));
+> +		platform_device_set_fwnode(ppdev,
+> +					   of_fwnode_handle(bcmgenet_mii_of_find_mdio(priv)));
 
 [Severity: Low]
-This isn't a bug, but should the description after the subsystem prefix
-be capitalized?
+Will this cause a -Wunused-function warning for bcmgenet_mii_of_find_mdio()
+when CONFIG_OF is disabled?
 
-The MFD subsystem guidelines dictate always capitalizing the description
-after the subsystem prefix for MFD, LED, and Backlight subsystems.
+When CONFIG_OF is not set, include/linux/of.h defines of_fwnode_handle(node)
+as just NULL. Because the macro discards its argument during preprocessing,
+the call to bcmgenet_mii_of_find_mdio() is completely dropped, leaving the
+static function unreferenced in this configuration.
 
-> diff --git a/drivers/mfd/tps6586x.c b/drivers/mfd/tps6586x.c
-> --- a/drivers/mfd/tps6586x.c
-> +++ b/drivers/mfd/tps6586x.c
-
-[ ... ]
-
-> @@ -397,7 +397,7 @@ static int tps6586x_add_subdevs(struct tps6586x *tps6=
-586x,
-> =20
->  		pdev->dev.parent =3D tps6586x->dev;
->  		pdev->dev.platform_data =3D subdev->platform_data;
-
-[Severity: High]
-This is a pre-existing issue, but does assigning the platform_data pointer
-directly like this cause a bad free and kernel panic during device release?
-
-When platform_device_release() is called, either due to a failure in
-platform_device_add() or when the device is unregistered later, it
-unconditionally calls kfree() on the platform_data pointer.
-
-Since subdev->platform_data is typically statically allocated by board files
-rather than dynamically allocated by the platform bus, bypassing the proper
-duplication handled by platform_device_add_data() can lead to a crash.
-
-> -		platform_device_set_of_node(pdev, subdev->of_node);
-> +		platform_device_set_fwnode(pdev, of_fwnode_handle(subdev->of_node));
-> =20
->  		ret =3D platform_device_add(pdev);
->  		if (ret) {
+Should bcmgenet_mii_of_find_mdio() be marked with __maybe_unused to prevent
+build failures on setups using -Werror?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-pdev-set-f=
-wnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com?part=3D6
+wnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com?part=3D4
