@@ -1,228 +1,184 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFF645DF5C;
-	Tue, 21 Jul 2026 21:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBFE44AB9B;
+	Tue, 21 Jul 2026 21:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784667758; cv=none; b=pzpIUXh1qie9wfXu9MjQ/6DFLz6yvoHs07Fx4iPk2A7Wg1ZwHl7mmWmTmVJmy4V60aqDhnyyV/crBAAehVKqI9BNTBcjzmWr29zPWtssNoUO8e5d+x2ZXmgYEJZt2qPsXT1VmWwdP1gwNqbMaMs/5qVCz9D6ffsXJh6boOj7UCs=
+	t=1784668669; cv=none; b=MbquUmOgl7y45fkXOzlzpk9xeGfc429EL9QlG3WviMGIy7zAY5WQ+mpO2XlwI2KH0Vbv10UtufK12kXhjK4E6sDdH7V8CrBu5DI59wycLMhVeOF1S9kg0EwSwekksiRrNItXSOn/KdTTGzekPsnhlfHRkRqvw7p/QbX2oSwzSKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784667758; c=relaxed/simple;
-	bh=D1AfetnminDL8zMg+HV11XUeR2zX74dz2xzmL4NZ8Jk=;
+	s=arc-20240116; t=1784668669; c=relaxed/simple;
+	bh=DROmEZTrW91/ie0pQj28M1laiTyzyWJBIfv5F3DKc8k=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RfPjwK77BriLFK05ZrlHmzodS6EvskzXwZnjK5v8VfGj47f3jP8Mbe+BtOOjSPW4QYcMO+wSJMM+z45/CH3y+6bCZrla1Xxnu+PrrsG0kveVIYND8JJx8eZPPcYjpGxhZbQeB4UWbtevaogEImD3JkhGCssT693pJHjU5h0ZaCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RQI1btu0; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=q0Z17V77i+pZsUY7J/QE0q3Q+KbK4YvPiK1c6uE6IlIbodKIDnNAMj/Me/i/Mj0QRyqTuJup9cLhI9B0HRpE/ED3WShuFfdpylwRxDawvjjSUCOBRkPAm7p1OwpQFiVpZOSoL6tMCYxE4njEZKUww1HiWyRvVOQ79J352S4afGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2oylF7t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RQI1btu0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA2D1F00A3A;
-	Tue, 21 Jul 2026 21:02:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2oylF7t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263B61F00A3A;
+	Tue, 21 Jul 2026 21:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784667751;
-	bh=NVV/pWhOZrG6JJxmlSr8aaR0EitqasKNH3vf3Kp3gkg=;
+	s=k20260515; t=1784668668;
+	bh=/Smr69hZM9UoxeBU7rG5/ig983JkRJimVFrfLB5+mNo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RQI1btu0QN5Cu6iRknqvsWH3oIMvYbf8Aqp1r2KJi757rcS1Bm1ZSSCGHWYvsAlYB
-	 MQwG62xtgLOqrG2mvBzTj4E6CJ7hrRfsdxK8OwIZ4SV0OaPIJiC0qY0yk5mIcvxlhp
-	 A+2h7YTVUs4TmFVKl2zj/k7DOf9rjIm36q5t6W8w6O4sRyv3U0jmQa2uFfzqedf+Tm
-	 Ig4FoiGvtHLdr09g4/5aTPfMFYznXUbQDLtrMn+78lz8U/VsP1VqfnoN755mCQcM74
-	 kVrJO7zxQH7QzOU0y8340AMf7113sUEtdg2harf1KYPCXY+VfcWNsKFfj4CR9cOaJx
-	 Ah+Bwuz2hI0Xg==
+	b=S2oylF7t2yFPkMi7QmvlMfXqu38KY+TTc8kbxX/3xtT7Pqkra8jMnQECer9LGG1V+
+	 Sl0WLVWfn/26npLfX/xEq4/qgUkA7ZW45Oul8OxlOMqHje1976+Il9uVuk19zEYC5K
+	 tidUbvO9+RZMlvznaU4H7sr92VGgRCdNSubHWZD6gRqnaWqjXhQsuioFDt/kwi1K9j
+	 osBTJ88H+mi65N8T2o2sdwjm4HsD0X8udajIuusZTtuXEBQOUOPA2PAj6fh1ChblKv
+	 4xvXWuYLCFHG4HnLe3Xbwo1kqykAd+A2G0etH7iUr0ajs2DNQ89LAnszCegi/PMAqP
+	 HrA/0WWN7ZucQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v15 4/5] gpio: rpmsg: add generic rpmsg GPIO driver
+Subject: Re: [PATCH v2 2/3] spi: nxp-xspi: Improve AHB read performance with
+ DMA
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shenwei Wang" <shenwei.wang@oss.nxp.com>
-Cc: robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260721204704.400781-5-shenwei.wang@oss.nxp.com>
-References: <20260721204704.400781-1-shenwei.wang@oss.nxp.com>
- <20260721204704.400781-5-shenwei.wang@oss.nxp.com>
+To: han.xu@oss.nxp.com
+Cc: robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260721-xspi_dma_upstream-v2-2-9e19d80e7762@nxp.com>
+References: <20260721-xspi_dma_upstream-v2-0-9e19d80e7762@nxp.com>
+ <20260721-xspi_dma_upstream-v2-2-9e19d80e7762@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 Jul 2026 21:02:30 +0000
-Message-Id: <20260721210231.0CA2D1F00A3A@smtp.kernel.org>
+Date: Tue, 21 Jul 2026 21:17:47 +0000
+Message-Id: <20260721211748.263B61F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] Data race between `gpio_rpmsg_eoi_irq()` and `gpio_rpmsg_eoi_work(=
-)` causes lost End-Of-Interrupt (EOI) signals.
-- [High] Explicitly disabling an IRQ fails to mask it on the remote hardwar=
-e and causes an infinite interrupt storm.
-- [High] A timeout in `rpmsg_gpio_send_message()` permanently corrupts the =
-request/response synchronization of the RPMSG channel.
-- [High] Use-After-Free vulnerability due to incorrect teardown ordering be=
-tween `devm_gpiochip_add_data`, `cancel_work_sync`, and the RPMSG endpoint.
-- [High] Missing `gc->can_sleep =3D true` causes "scheduling while atomic" =
-panics.
-- [Medium] The RPMSG callback does not validate the incoming message length=
-, risking out-of-bounds memory reads.
-- [Medium] Implicit padding in `struct rpmsg_gpio_response` breaks cross-pl=
-atform IPC.
+
+New issues:
+- [High] Resource Leak of DMA Channel on probe failure
+- [Medium] Missing dma_map_resource for AHB physical address
+- [Low] Build Failure: 64-bit modulo by 32-bit variable on 32-bit platforms
+
+Pre-existing issues:
+- [High] Data Truncation of physical memory-mapped address
 --
 
---- Patch [4]: [PATCH v15 4/5] gpio: rpmsg: add generic rpmsg GPIO driver -=
---
-commit 1ad498fb1fd9abd6b832044bd985e9e16c8577db
-Author: Shenwei Wang <shenwei.wang@nxp.com>
-Subject: gpio: rpmsg: add generic rpmsg GPIO driver
+--- Patch [2]: [PATCH v2 2/3] spi: nxp-xspi: Improve AHB read performance w=
+ith DMA ---
+commit e55bddd05b9c54ad3776775a32876cb677ace5d2
+Author: Han Xu <han.xu@nxp.com>
 
-On an AMP platform, the system may include multiple processors communicating
-via the RPMSG protocol. The driver implements the standard GPIO interface,
-allowing the Linux side to control GPIO controllers which reside in the
-remote processor via RPMSG protocol.
+spi: nxp-xspi: Improve AHB read performance with DMA
 
-diff --git a/drivers/gpio/gpio-rpmsg.c b/drivers/gpio/gpio-rpmsg.c
-new file mode 100644
-index 0000000000000..5d2d59e6314b5
---- /dev/null
-+++ b/drivers/gpio/gpio-rpmsg.c
-@@ -0,0 +1,587 @@
+Use eDMA for XSPI AHB read to improve the performance.
+
+> diff --git a/drivers/spi/spi-nxp-xspi.c b/drivers/spi/spi-nxp-xspi.c
+> index 037eac24e6fd2..0658c0557ff17 100644
+> --- a/drivers/spi/spi-nxp-xspi.c
+> +++ b/drivers/spi/spi-nxp-xspi.c
 [ ... ]
-> +struct rpmsg_gpio_response {
-> +	__u8 type;
-> +	union {
-> +		/* command reply */
-> +		struct {
-> +			__u8 status;
-> +			__u8 value;
-> +		};
+> @@ -796,6 +807,82 @@ static int nxp_xspi_ahb_read(struct nxp_xspi *xspi, =
+const struct spi_mem_op *op)
+[ ... ]
+> +static int nxp_xspi_ahb_dma_read(struct nxp_xspi *xspi,
+> +				 const struct spi_mem_op *op)
+> +{
+> +	struct dma_async_tx_descriptor *desc;
+> +	struct dma_chan *chan =3D xspi->dma_rx;
+> +	unsigned long timeout;
+> +	dma_addr_t dma_addr;
+> +	int ret =3D 0;
 > +
-> +		/* interrupt notification */
-> +		struct {
-> +			__le16 line;
-> +		};
-> +	};
-> +};
+> +	dma_addr =3D dma_map_single(chan->device->dev,
+> +				  op->data.buf.in, op->data.nbytes,
+> +				  DMA_FROM_DEVICE);
+> +
+> +	if (dma_mapping_error(chan->device->dev, dma_addr)) {
+> +		dev_err(xspi->dev, "failed to map DMA buffer for AHB read\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	desc =3D dmaengine_prep_dma_memcpy(chan, dma_addr,
+> +					 xspi->memmap_phy + op->addr.val,
+> +					 op->data.nbytes,
+> +					 DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+
+[Severity: High]
+This is a pre-existing issue, but since memmap_phy is declared as a u32 in
+struct nxp_xspi, will physical addresses located above the 4GB boundary be
+silently truncated to 32 bits? If so, this addition to op->addr.val might
+cause the DMA controller to access the wrong physical memory.
 
 [Severity: Medium]
-Does the implicit padding inserted after type break cross-platform IPC if
-the remote firmware uses packed structures or a compiler with different
-padding rules?
+If the eDMA controller operates behind an IOMMU that does not identity-map
+this MMIO region, will this raw physical address trigger an IOMMU translati=
+on
+fault?
 
-[ ... ]
-> +static int rpmsg_gpio_send_message(struct rpmsg_gpio_port *port)
-> +{
-[ ... ]
-> +	ret =3D wait_for_completion_timeout(&port->cmd_complete,
-> +					  msecs_to_jiffies(RPMSG_TIMEOUT));
-> +	if (ret =3D=3D 0) {
-> +		dev_err(&port->rpdev->dev, "rpmsg_send timeout! cmd=3D%d\n",
-> +			port->send_msg->type);
-> +		return -ETIMEDOUT;
+Should xspi->memmap_phy + op->addr.val be mapped via dma_map_resource()
+to obtain a dma_addr_t before being passed into dmaengine_prep_dma_memcpy()?
+
+> +	if (!desc) {
+> +		dev_err(xspi->dev, "failed to prepare AHB RX DMA descriptor\n");
+> +		ret =3D -EIO;
+> +		goto err_unmap;
 > +	}
+[ ... ]
+> @@ -1029,6 +1127,7 @@ static int nxp_xspi_exec_op(struct spi_mem *mem, co=
+nst struct spi_mem_op *op)
+>  static int nxp_xspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_o=
+p *op)
+>  {
+[ ... ]
+> +		/*
+> +		 * For AHB DMA read, align the transfer to the DMA alignment
+> +		 * boundaries. If the start address is unaligned, shorten this
+> +		 * transfer so the next one starts on an aligned boundary.
+> +		 * Otherwise, if the length is unaligned, round it down.
+> +		 */
+> +		if (xspi->dma_rx && !needs_ip_only(xspi) &&
+> +		    (op->data.nbytes >=3D xspi->devtype_data->ahb_buf_size)) {
+> +			if (op->addr.val % alignment)
+> +				op->data.nbytes =3D
+> +					ALIGN(op->addr.val, alignment) - op->addr.val;
+
+[Severity: Low]
+Because op->addr.val is a 64-bit integer (u64) and alignment is a 32-bit
+integer, will this modulo operation cause an unresolved symbol error for
+__umoddi3 or __aeabi_uldivmod during the final link stage on 32-bit
+architectures?
+
+> +			else if (op->data.nbytes % alignment)
+> +				op->data.nbytes =3D
+> +					ALIGN_DOWN(op->data.nbytes, alignment);
+> +		}
+>  	}
+> =20
+>  	return 0;
+[ ... ]
+> @@ -1252,6 +1371,11 @@ static int nxp_xspi_probe(struct platform_device *=
+pdev)
+>  	if (irq < 0)
+>  		return dev_err_probe(dev, irq,  "Failed to get irq source");
+> =20
+> +	/* DMA is optional, failure(other than -EPROBE_DEFER) falls back to CPU=
+ */
+> +	ret =3D nxp_xspi_dma_init(dev, xspi);
+> +	if (ret =3D=3D -EPROBE_DEFER)
+> +		return ret;
+> +
+>  	pm_runtime_set_autosuspend_delay(dev, XSPI_RPM_TIMEOUT_MS);
+>  	pm_runtime_use_autosuspend(dev);
+>  	ret =3D devm_pm_runtime_enable(dev);
 
 [Severity: High]
-If the remote processor replies after this timeout, won't the next request
-immediately complete using the stale response?
+Since nxp_xspi_cleanup() is registered via devm_add_action_or_reset() at the
+end of nxp_xspi_probe():
 
-Since the protocol lacks transaction IDs, a single delayed response might
-permanently break the channel synchronization for all future transactions.
+    init_completion(&xspi->c);
+    ret =3D devm_request_irq(dev, irq,
+            nxp_xspi_irq_handler, 0, pdev->name, xspi);
+    ...
+    ret =3D devm_add_action_or_reset(dev, nxp_xspi_cleanup, xspi);
 
-[ ... ]
-> +static void gpio_rpmsg_irq_bus_sync_unlock(struct irq_data *d)
-> +{
-> +	struct rpmsg_gpio_port *port =3D irq_data_get_irq_chip_data(d);
-> +	u32 line =3D d->hwirq;
-> +
-> +	/*
-> +	 * For mask irq, do nothing here.
-> +	 * The remote system will mask interrupt after an interrupt occurs,
-> +	 * and then send a notification to Linux system. After Linux system
-> +	 * handles the notification, it sends an rpmsg back to the remote
-> +	 * system to unmask this interrupt again.
-> +	 */
-> +	if (port->lines[line].irq_mask && !port->lines[line].irq_unmask) {
-> +		port->lines[line].irq_mask =3D 0;
-> +		mutex_unlock(&port->lock);
-> +		return;
-> +	}
-
-[Severity: High]
-When Linux explicitly disables an IRQ via disable_irq(), it sets the mask
-flag. Will returning early here without sending a hardware mask command
-cause the remote processor to endlessly send interrupts, creating an
-interrupt storm?
-
-[ ... ]
-> +static void gpio_rpmsg_eoi_work(struct work_struct *work)
-> +{
-> +	struct rpmsg_gpio_port *port =3D
-> +		container_of(work, struct rpmsg_gpio_port, eoi_work);
-> +	unsigned long pending[BITS_TO_LONGS(GPIOS_PER_PORT_MAX)];
-> +	unsigned int line;
-> +
-> +	guard(mutex)(&port->lock);
-> +
-> +	bitmap_copy(pending, port->pending_eoi, port->ngpios);
-> +	bitmap_zero(port->pending_eoi, port->ngpios);
-
-[Severity: High]
-Can this non-atomic clearing race with gpio_rpmsg_eoi_irq()?
-
-If a new interrupt fires and calls set_bit(d->hwirq, port->pending_eoi)
-between this bitmap_copy() and bitmap_zero(), won't the new
-end-of-interrupt signal be unconditionally overwritten and lost, locking
-up that GPIO line?
-
-[ ... ]
-> +static int rpmsg_gpiochip_register(struct rpmsg_device *rpdev, u32 idx,
-> +				   struct device_node *np, const char *name)
-> +{
-[ ... ]
-> +	gc->direction_input =3D rpmsg_gpio_direction_input;
-> +	gc->direction_output =3D rpmsg_gpio_direction_output;
-> +	gc->get_direction =3D rpmsg_gpio_get_direction;
-> +	gc->get =3D rpmsg_gpio_get;
-> +	gc->set =3D rpmsg_gpio_set;
-
-[Severity: High]
-Since the get and set callbacks wait on a completion and use a mutex (both
-of which can sleep), should gc->can_sleep be set to true?
-
-Without it, gpiolib might allow atomic fast-path accesses, which could
-trigger scheduling while atomic panics.
-
-[ ... ]
-> +static int rpmsg_gpio_channel_callback(struct rpmsg_device *rpdev, void =
-*data,
-> +				       int len, void *priv, u32 src)
-> +{
-> +	struct rpmsg_gpio_response *msg =3D data;
-> +	struct rpmsg_gpio_port *port =3D NULL;
-> +	u32 line;
-> +
-> +	port =3D dev_get_drvdata(&rpdev->dev);
-> +
-> +	if (!port) {
-> +		dev_err(&rpdev->dev, "port is null\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (msg->type =3D=3D GPIO_RPMSG_REPLY) {
-> +		*port->recv_msg =3D *msg;
-
-[Severity: Medium]
-Is there a risk of an out-of-bounds read here if the remote processor
-sends a malformed message smaller than sizeof(struct rpmsg_gpio_response)?
-
-[ ... ]
-> +static void rpmsg_gpio_channel_remove(struct rpmsg_device *rpdev)
-> +{
-> +	struct rpmsg_gpio_port *port =3D dev_get_drvdata(&rpdev->dev);
-> +
-> +	cancel_work_sync(&port->eoi_work);
-> +}
-
-[Severity: High]
-Does the use of devm_gpiochip_add_data() during registration cause the GPIO
-chip to remain active after rpmsg_gpio_channel_remove() completes?
-
-If an interrupt arrives right after this cancel_work_sync(), couldn't the
-work be re-queued and executed on freed memory once devres finally cleans
-up the port?
+what happens if devm_pm_runtime_enable() (or any other initialization step
+before the cleanup action is registered) fails? Will the DMA channel
+allocated in nxp_xspi_dma_init() leak on these early error returns?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721204704.4007=
-81-1-shenwei.wang@oss.nxp.com?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721-xspi_dma_u=
+pstream-v2-0-9e19d80e7762@nxp.com?part=3D2
