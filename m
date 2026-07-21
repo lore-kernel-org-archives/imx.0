@@ -1,181 +1,148 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1BB353EE0;
-	Tue, 21 Jul 2026 06:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03466437111
+	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 07:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784614597; cv=none; b=hz3ShifxQwj11xOMB9lgaPlILJTKbC0QJEhAf6KyPJaL94fEwjIy7iRyKUNJD/bjdOJbVSbLleqilyKi9k1GW6ScFa/WO+IXkFeAGhzRcSaYoWAlaRIXm0OAE91TGP7iqO9EF5NBYtVfhkjjEwMUvd16j3oqUV/rr8ERNzOgB/8=
+	t=1784620681; cv=none; b=cT94s92v8YUbMS8odtVTudEYeWhb+JWCC8UIg3IeUIPErC3hgRgmTKJp/nfQtq8O0jo121uyYT/89sNJhZfXHjh8Y9DcFcgu0inMT1hGv0XZM8FTsYKIyU+aeGiJdaqI4yReTFj//Lim5kAT5Wi8RGT2uVHvWQ2sedpyUdhOh3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784614597; c=relaxed/simple;
-	bh=4sY465NWSwzqiWTdW7X0mX4+rz2Abo/1QgfDXYFtMGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OaAqMYfQrwABWaSp5WX7L09VKPe7+7s3z8JIiOaW8DKyjCpOWsc0xfaHg+Y1YD/XoOLLr1FszLQ38M3qpxvK9KfFz7ExfBlqj+4qqlAZTnwVipJUZzvM6oCJHwc/OgK1oLKO9Ff9xXAjQByRa8Ms0OuywJ8x+zy2SipFKAX8DXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfuNRcYX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784620681; c=relaxed/simple;
+	bh=Qu6V/jFa3L0ra7v1UlZyzgbe/1V/e5d4AsjK/MKCp8c=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hUlFwQ4WdKbOK6BeU4SWAb3rajFgVrCBZOHNnmtG9QZ47/i5UmpCSvoRaAxT1fYv/zrp/yZnyBEA5LRsUroyELOD0xgAcTrTrSov4HsPC5hj9pLrE6UUWL3W1HKstDmFwt1uZIjN83bVAuzQPxZZt5W8YtQWvs9PTMimviub7J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVmvwJVT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfuNRcYX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D191E1F000E9;
-	Tue, 21 Jul 2026 06:16:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVmvwJVT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7A81F00ADB
+	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 07:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784614595;
-	bh=PTn588y+YtF/kkI2+86cN1oYQblIbgof5q8GqN2Q5Tc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hfuNRcYXY4vav7TsUn2QWb6Za1LbY9rNzNTBS/3l8hFDFNNVWXTRvGhcJzlrRtL8K
-	 HXYWVjPu3kk0s2yKiTcbABNNo08j5M62SscJsSWMv/YQX7RmqHaeFIXup9P6hlrgFp
-	 FuDflMHOexe8Xxf+/usZsHs0/j0TK2emGxvNUUpb18cy8M77ztGAurdx+M+s3Gtd+t
-	 teHKobGXbJ2eFmCtefpJtcpw93Lct6WW6oAFxvzMzZqf46YR1DPJKS4ZZTSrWSqEkg
-	 mRPNQ/fmDrjhjJEK/Lli/CGdrf9lZK0QRva8RQos/0tUXFn/O04SzKflOJmfkpzMHn
-	 invJ9sr43p89Q==
-Date: Tue, 21 Jul 2026 08:16:24 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, 
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "robh@kernel.org" <robh@kernel.org>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Hongxing Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v2] PCI: imx6: Fix i.MX6Q/DL boot hang by separating PHY
- power and reference clock control
-Message-ID: <6oooulhpzzvmgdzwniwhmhrbhthernnbc2jy4j3x5yj5axj3qe@plst6pzx767f>
-References: <20260708035928.580236-1-hongxing.zhu@oss.nxp.com>
- <20260708035928.580236-2-hongxing.zhu@oss.nxp.com>
- <afwyhy7npuvtecdbuzaytazbifu2ytb6admq4xbzbmxwx47vpq@wrc5dp62mtng>
- <GV2PR04MB1201914A80BB2BF78A10465748CC62@GV2PR04MB12019.eurprd04.prod.outlook.com>
- <GV2PR04MB12019C0F0554EC9A598512ABD8CC32@GV2PR04MB12019.eurprd04.prod.outlook.com>
+	s=k20260515; t=1784620679;
+	bh=y8ZQiTN586DKOzGjE0xQTVjSc0oG6CWcbCqpe2Jy2M4=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=YVmvwJVT9Qyay4HbMhb49B9CjDlZz7ft+lQj9lbS0gACumnC1Iv2/dsdm1MV9mu4c
+	 zAFU0hI7Xau7B4/YM37CP9pXGedF5Cl9Ux1RfADSqooiQWl5++I9UPNLx9bYcxW1m8
+	 dWwOXXbyLjJgKyY5IIabDL3n7y2Qbv9FbuP/aoVu6GwF4dZ4uDwHKNeaHY0jS2eqLz
+	 RXoTf9r6Ejv9blA7uC5ei4TYzAeV966wu8kwI6AZd0WBupxsdSKzxFL2wT4iB1WSxL
+	 qBk3K/JlKeou8FmssItan6rHnzpwi6jaVlRe/TmBqMy6lmtyvBR91Q78CeI2qT2hly
+	 ZQt1jND0CNHjw==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b015532f7bso10877444e87.0
+        for <imx@lists.linux.dev>; Tue, 21 Jul 2026 00:57:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoWkzhWAmrCbUgACjebq0j2wyhNcBg0jXFhWoJFzKGC+5NLBJUg88AZfaqujE4YzNXTXb4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyBxqmVqkLTlHITalrjbYe15obg4Pm/vZhdTPum+E4tyaTylJy7
+	t/oBlosKauU1K/AvvXIOT5VAzLT4EQ9ydWUWBOKXKgJgrDOzzM61w2OlUhWBs0E2dyibxD2d0mx
+	GJU8qZ//xKQ5ZqC65foBV9CBSVL6NXPGPGraaZ1IbOg==
+X-Received: by 2002:ac2:554c:0:b0:5ae:bcf8:e7d0 with SMTP id
+ 2adb3069b0e04-5b28f9bd551mr2209166e87.55.1784620678478; Tue, 21 Jul 2026
+ 00:57:58 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 21 Jul 2026 00:57:57 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 21 Jul 2026 00:57:56 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <3e14e41f-ecd5-432b-9f52-690a05b38a8a@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <GV2PR04MB12019C0F0554EC9A598512ABD8CC32@GV2PR04MB12019.eurprd04.prod.outlook.com>
+References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
+ <86b2aba7-b049-47e6-bc94-6cb499b30ce4@lunn.ch> <CAMRc=Mduv_KiB42d4AZddTrFSHmKogd2wh6vBDXomW6ssdfq9A@mail.gmail.com>
+ <3e14e41f-ecd5-432b-9f52-690a05b38a8a@lunn.ch>
+Date: Tue, 21 Jul 2026 00:57:56 -0700
+X-Gmail-Original-Message-ID: <CAMRc=Md_zUwYW5KL+p=BRixSaf3Rrc5jnBA3x8Ze+fK+fAOctQ@mail.gmail.com>
+X-Gm-Features: AUfX_mxrzWF5f1w8uOBbvKVmYCYI9DGFBZVEBrX2uI1sc7agH6iCfKo0CQST8Mw
+Message-ID: <CAMRc=Md_zUwYW5KL+p=BRixSaf3Rrc5jnBA3x8Ze+fK+fAOctQ@mail.gmail.com>
+Subject: Re: [PATCH 7/8] net: mv643xx: use platform_device_set_fwnode()
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Doug Berger <opendmb@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Srinivas Kandagatla <srini@kernel.org>, 
+	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	iommu@lists.linux.dev, netdev@vger.kernel.org, linux-pm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	mfd@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-sound@vger.kernel.org, Bartosz Golaszewski <brgl@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jul 20, 2026 at 08:32:31AM +0000, Hongxing Zhu (OSS) wrote:
-> > -----Original Message-----
-> > From: Hongxing Zhu (OSS) <hongxing.zhu@oss.nxp.com>
-> > Sent: Friday, July 17, 2026 4:57 PM
-> > To: Manivannan Sadhasivam <mani@kernel.org>; Hongxing Zhu (OSS)
-> > <hongxing.zhu@oss.nxp.com>
-> > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > kwilczynski@kernel.org; robh@kernel.org; bhelgaas@google.com;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com; linux-
-> > pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
-> > linux-kernel@vger.kernel.org; Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Subject: RE: [PATCH v2] PCI: imx6: Fix i.MX6Q/DL boot hang by separating PHY
-> > power and reference clock control
-> > 
-> > > -----Original Message-----
-> > > From: Manivannan Sadhasivam <mani@kernel.org>
-> > > Sent: Friday, July 17, 2026 12:35 AM
-> > > To: Hongxing Zhu (OSS) <hongxing.zhu@oss.nxp.com>
-> > > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de;
-> > > lpieralisi@kernel.org; kwilczynski@kernel.org; robh@kernel.org;
-> > > bhelgaas@google.com; s.hauer@pengutronix.de; kernel@pengutronix.de;
-> > > festevam@gmail.com; linux- pci@vger.kernel.org;
-> > > linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
-> > > linux-kernel@vger.kernel.org; Hongxing Zhu <hongxing.zhu@nxp.com>
-> > > Subject: Re: [PATCH v2] PCI: imx6: Fix i.MX6Q/DL boot hang by
-> > > separating PHY power and reference clock control
-> > >
-> > > On Wed, Jul 08, 2026 at 11:59:27AM +0800, hongxing.zhu@oss.nxp.com wrote:
-> > > > From: Richard Zhu <hongxing.zhu@nxp.com>
-> > > >
-> > > > Commit 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling
-> > > > regulators") introduced a boot hang on i.MX6Q/DL variants by
-> > > > changing the initialization sequence.
-> > > >
-> > > > The issue stems from coupling PHY power (TEST_PD) and reference
-> > > > clock
-> > > > (REF_CLK_EN) control in imx6q_pcie_enable_ref_clk(). When these are
-> > > > managed together, the timing between PHY power-up and reference
-> > > > clock enablement cannot be properly controlled, leading to
-> > > > initialization failures.
-> > > >
-> > >
-> > > What is the timing requirement here?
-> > The timing requirement is that TEST_PD must be deasserted (cleared) before link
-> > training starts.
-> > 
-> > Before commit 610fa91d9863:
-> > - imx_pcie_assert_core_reset(): Assert TEST_PD and REF_CLK_EN
-> > - imx_pcie_clk_enable(): Deassert TEST_PD and assert REF_CLK_EN
-> > - Link training starts with TEST_PD properly cleared
-> > 
-> > After commit 610fa91d9863:
-> > - imx_pcie_clk_enable(): Deassert TEST_PD and assert REF_CLK_EN
-> > - imx_pcie_assert_core_reset(): Assert TEST_PD and assert REF_CLK_EN again
-> > - Link training starts with TEST_PD still asserted (never cleared again)
-> > 
-> > This commit corrects the sequence, and makes sure the TEST_PD is cleared
-> > before link training starts.
-> > >
-> > > > Fix this by separating the two concerns:
-> > > >
-> > > > - Move PHY power control (TEST_PD) to imx6q_pcie_core_reset() where it
-> > > >   logically belongs with reset operations. This ensures PHY power state
-> > > >   is managed as part of the core reset sequence.
-> > > >
-> > > > - Update imx6qp_pcie_core_reset() to call imx6q_pcie_core_reset() for
-> > > >   shared PHY power management, avoiding code duplication.
-> > > >
-> > > > - Make imx6q_pcie_enable_ref_clk() responsible only for reference clock
-> > > >   (REF_CLK_EN) control, simplifying its purpose.
-> > > >
-> > > > - Remove the 10us delay workaround from imx6q_pcie_enable_ref_clk() as
-> > > >   proper sequencing is now handled by the core_reset functions.
-> > > >
-> > > > This refactoring ensures PHY power is controlled during reset
-> > > > operations, fixing the boot hang while improving code maintainability.
-> > > >
-> > >
-> > > This patch does too many things at once. Can't you split it and keep
-> > > the minimal fix in one patch?
-> > Okay, I'll split this into a patch series in v3.
-> > Thanks.
-> Hi Mani:
-> I've attempted to split the changes as below:
-> 1. Set/Clear TEST_PD in assert_core_reset()/deassert_core_reset()
-> 2. Clean up imx6q_pcie_enable_ref_clk() to only manipulate the REF_CLK_EN bit
-> 
-> However, I found that patch 1 alone doesn't work correctly. Here's what happens:
-> 
-> With only patch 1 applied:
-> - The board boots successfully, but fails to detect the remote endpoint device
-> - Problem sequence:
->   Begin (TEST_PD asserted by default) 
->   → TEST_PD cleared + REF_CLK_EN asserted in clk_enable()
->   → TEST_PD asserted again in assert_core_reset()
->   → TEST_PD cleared in deassert_core_reset()
-> 
-> With both patches applied:
-> - The board boots and detects the remote endpoint device successfully
-> - Correct sequence:
->   Begin (TEST_PD asserted by default)
->   → REF_CLK_EN asserted in clk_enable() (TEST_PD remains untouched)
->   → TEST_PD asserted in assert_core_reset()
->   → TEST_PD cleared in deassert_core_reset()
-> 
-> The issue is that patch 1 relies on patch 2 to avoid prematurely clearing TEST_PD 
-> in clk_enable(). Both changes are mandatory for the fix to work.
-> 
-> Given this dependency, would you prefer:
-> - A two-patch series with the dependency clearly documented, or
-> - A single combined patch since they cannot function independently.
-> 
+On Mon, 20 Jul 2026 20:28:39 +0200, Andrew Lunn <andrew@lunn.ch> said:
+> On Mon, Jul 20, 2026 at 06:01:37PM +0200, Bartosz Golaszewski wrote:
+>> On Mon, 20 Jul 2026 16:43:40 +0200, Andrew Lunn <andrew@lunn.ch> said:
+>> > On Mon, Jul 20, 2026 at 11:24:54AM +0200, Bartosz Golaszewski wrote:
+>> >> Prefer the higher-level platform_device_set_fwnode() over the
+>> >> OF-specific platform_device_set_of_node() for dynamically allocated
+>> >> platform devices.
+>> >>
+>> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+>> >> ---
+>> >>  drivers/net/ethernet/marvell/mv643xx_eth.c | 2 +-
+>> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >>
+>> >> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
+>> >> index 9caa1e47c174c9d7a161b7f2e2ee12a829b813d4..2f2d6cce8d852b9ec3ab42678a04a7915d1f00cc 100644
+>> >> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
+>> >> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+>> >> @@ -2780,7 +2780,7 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
+>> >>  		goto put_err;
+>> >>  	}
+>> >>  	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+>> >> -	platform_device_set_of_node(ppdev, pnp);
+>> >> +	platform_device_set_fwnode(ppdev, of_fwnode_handle(pnp));
+>> >
+>> > This is definitely an OF only driver. There are no other calls to
+>> > fwnode functions in this driver, so this is the wrong thing to do.
+>> >
+>> > Sorry, NACK.
+>> >
+>>
+>> I'm not going to die on this hill but drivers are OF-only until they're not.
+>> For example, Qualcomm is now working on a hybrid ACPI-OF approach for
+>> laptops[1] and we may end up needing to start converting drivers to fwnode
+>> after all.
+>>
+>> There's no real benefit to sticking to OF-specific APIs unless you need to
+>> iterate over all properties of a node or use some other functionality not
+>> available in fwnode. The overhead is minimal and it's never a hot path.
+>
+> There is a lot of benefit to sticking to OF specific APIs, because
+> within the kernel OF is well maintained, has active maintainers, there
+> are tools to validate bindings, etc. ACPI is a Wild West, each driver
+> is a snow flake, there is no review, no binding documentation, no
+> validation tools etc.
+>
+> I hope you allow plenty of time to convert any networking drivers,
+> where Linux is driving the hardware, to ACPI. Your first stop will be
+> the UEFI forum making a proposal for MDIO busses, because that
+> currently is not part of ACPI. You will then need to spend time
+> understanding the DT bindings, and figuring out which properties are
+> deprecated so need to stay OF only, and which can be converted to dual
+> OF/ACPI. I've seen too many naive attempts which blindly convert
+> everything, copying all the past errors in the DT binding into the
+> brand new ACPI binding. That will get NACKed.
+>
+> OF != ACPI
+>
 
-Hmm, then you should combine both in a single patch. But the commit message
-should be accurate and properly describe what was causing issue, and why both
-changes are necessary.
+I've never said that and ACPI is actually irrelevant to this discussion. Fwnode
+is the abstraction layer and OF happens to implement it. Unless you need
+fine-grained control (only exposed by the lower-level abstraction) or
+performance - neither of which is the case here - you should use the top-level
+API. As I said: there's no good reason to stick to OF-specific interfaces for
+drivers that don't really require it - and even then, we should strive to fill
+the gaps in the fwnode API instead.
 
-You should justify the delay removal also.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Bart
