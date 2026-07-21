@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8763749E3;
-	Tue, 21 Jul 2026 10:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64443446C7;
+	Tue, 21 Jul 2026 11:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784631430; cv=none; b=iOGX8OVMZKDuvbxL8z19BZdED7RvkmOPIgFJIpHauv6MWVmOEURlNXg4925Tp1r8KFBUe149k3/VgGl98da5DuOVYd5DM64/thO3fuWbFqVsnfsn08U56JU3uGHuoNegaW2MTun3BlonkcDtJYJ2A2Yyr9bC6msD4hA5qWKsrrE=
+	t=1784631839; cv=none; b=Xv6UCHXiKZKMqQBpksyy2kC+elapIX2KW0B2aBIB2PTCeKkYQAdIooyiOL5g58f2vc7Y2RqDSPRqWgjB6C7Zfkzg6XKa6MlgTeYlDt+zy9bhurNKk1WM8Kms5udn8o3HEqV6f25/Ee5FLD+ajas5eVV9HLf85ywmaFJh6hlRZEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784631430; c=relaxed/simple;
-	bh=ngYcpy+pG+FNWskbQboh/gKrvlecxbaWroiCjEptyRo=;
+	s=arc-20240116; t=1784631839; c=relaxed/simple;
+	bh=C1rlkpUTrT8vdptyu+2BfFrmkLFVcsCOXELYYhBuc7o=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aPsvSMNEBXF+pNCAF7WB3ZixQiDdHiJ3SQ62XXTikWf7gU8C4KEznF5D4jWArqYm3Fw4Z4IIyVfw5WpmJKfGKfVceZc84YH7ZzBMSZLBqvkYmKS+9o2OoQiCnyJa31p0ocU88khZ0KjcJ0kgJfKYi86H69wrVN+5GSy4K/3dWiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2m+Lvrd; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=T61bBHzUf5g9UtjhdhMPMWS9eTpl03ZQxKk+XZnAEvt+N6Zd5zWYzgANeudQNXNRCDePB2m2dpFNK0pktQXqdFCeND4iaCI/cJ5vpyvuAY56LoLJ/bcL83vUmkXGP1lfRQmSaZUcetSad411TXDYktFkGfai6aF9zQeYkxNLdPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PsueS3/T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2m+Lvrd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FFE1F000E9;
-	Tue, 21 Jul 2026 10:57:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PsueS3/T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168A71F000E9;
+	Tue, 21 Jul 2026 11:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784631429;
-	bh=2v/41pbYfyw00HbKgnncr2RjI8IHNYdrOAE5zTLxDoQ=;
+	s=k20260515; t=1784631838;
+	bh=CSjdpYNSmsbl8k8uDlJ10euMOBf5L5uZNJn+8JFl3k4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=g2m+LvrdoRRfsFGmTn6fEozIfJD7oGn9oP5Re6IEvv/8BFKf7wwrKDTIkUZ8AWUrO
-	 D+bAK2fs0C3jhJh9gTYYQH/5jU2jWA7ZINBBuS+1ylULDuQqRo+k9VVKgMZbgoLnUq
-	 e3ugXq9NYvqjOq0wKIoEUZjr8RjT/vJFpHWjP9AHWIvhs+TktKC07blduWDhz2YfpE
-	 oy6RwXmPncA8MzzaNmIeYGlRvqyUORN6gxPYHwePlycev5/sp9ZozqAeVp8uZn4jSo
-	 96iUgce4+zINx1jZGNo/W6hfNQXc6g70e5J5nQTZtK8rVLR222BN+brN4Xk+ZLwNko
-	 yxM+UqqvCpLig==
+	b=PsueS3/TNsMpqTu480rNm6YkIc7R0T8zU4ycpISmaqSHsdlCm02IEFaoZMSNsT+9F
+	 qxpU86xWUFj7aptTqeMGpWSUB0ztxjBUgTznbGS0cd81SScQ0HZH3w3WNk0lmXlI7Y
+	 bSIIOIFsJevKQxw0qavZ9kkTMVz5y9mcbOArimLggRcsuSGKoCipEkhfV8QPfajP1+
+	 PuF50FZ/KkH9ChnF/QmWsl9XrtrFDel9EkeQTYXnCa/KOOCKsr3I8aEZTeHDyZ4kkr
+	 H7Qde5MRWYRjTbSPtk0XpZw2V3cQeZk8v9iLxNjoa5c2yfrdOwqpeYJh6/2bwk33z4
+	 52oITyDV0onDg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v29 6/7] arm64: dts: imx8ulp: add secure enclave node
+Subject: Re: [PATCH v6 1/2] of: kobj: export of_node_ktype for use by
+ modules
 Reply-To: sashiko-reviews@lists.linux.dev
-To: pankaj.gupta@oss.nxp.com
-Cc: Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
-In-Reply-To: <20260721-imx-se-if-v29-6-04a362f4fcca@nxp.com>
-References: <20260721-imx-se-if-v29-0-04a362f4fcca@nxp.com>
- <20260721-imx-se-if-v29-6-04a362f4fcca@nxp.com>
+To: "Xu Yang" <xu.yang_2@oss.nxp.com>
+Cc: imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260721105448.2109894-2-xu.yang_2@oss.nxp.com>
+References: <20260721105448.2109894-1-xu.yang_2@oss.nxp.com>
+ <20260721105448.2109894-2-xu.yang_2@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 Jul 2026 10:57:07 +0000
-Message-Id: <20260721105707.C9FFE1F000E9@smtp.kernel.org>
+Date: Tue, 21 Jul 2026 11:03:57 +0000
+Message-Id: <20260721110358.168A71F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,67 +47,62 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The `secure-enclave` node is missing the required `memory-region` =
-property, violating the DT binding and causing the `se_ctrl` driver to fail=
- probe unconditionally with `-ENODEV`.
+- [Medium] The patch misdiagnoses the root cause of the linkage error and i=
+ntroduces a new modpost namespace error, while leaving non-KUnit modules vu=
+lnerable.
 --
 
---- Patch [6]: [PATCH v29 6/7] arm64: dts: imx8ulp: add secure enclave node=
- ---
-commit 2de8edbeb186b1bf74b55f8e1113a94023d98cce
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
-arm64: dts: imx8ulp: add secure enclave node
+--- Patch [1]: [PATCH v6 1/2] of: kobj: export of_node_ktype for use by mod=
+ules ---
+commit b369d1afd3eb881423af86a559a0aec84ce01a01
+Author: Xu Yang <xu.yang_2@nxp.com>
 
-This commit adds support for the NXP EdgeLock Enclave firmware (se-fw)
-on imx8ulp-evk by defining the secure-enclave node in the device tree.
+of: kobj: export of_node_ktype for use by modules
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot=
-/dts/freescale/imx8ulp.dtsi
-> index c6d1bb9edf388..182f1444b6434 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+This commit attempts to fix a modpost build error where of_node_ktype is
+undefined in the KUnit property-entry test by exporting the symbol via
+EXPORT_SYMBOL_IF_KUNIT.
+
+Link: https://lore.kernel.org/oe-kbuild-all/202607181651.RnUuV8n6-lkp@intel=
+.com/
+
+> diff --git a/drivers/of/kobj.c b/drivers/of/kobj.c
+> index 1bb61a2c33994..081b8fa38603f 100644
+> --- a/drivers/of/kobj.c
+> +++ b/drivers/of/kobj.c
 
 [ ... ]
 
-> @@ -185,6 +185,13 @@ scmi_sensor: protocol@15 {
->  				#thermal-sensor-cells =3D <1>;
->  			};
->  		};
-> +
-> +		hsm0: secure-enclave {
-> +			compatible =3D "fsl,imx8ulp-se-ele-hsm";
-> +			mbox-names =3D "tx", "rx";
-> +			mboxes =3D <&s4muap 0 0>, <&s4muap 1 0>;
-> +			sram =3D <&sram0>;
-> +		};
+> @@ -27,6 +28,7 @@ static void of_node_release(struct kobject *kobj)
+>  const struct kobj_type of_node_ktype =3D {
+>  	.release =3D of_node_release,
+>  };
+> +EXPORT_SYMBOL_IF_KUNIT(of_node_ktype);
 
-[Severity: High]
-Does this node need a memory-region property?
+[Severity: Medium]
+Does this export actually resolve the build failure, or does it replace the
+undefined symbol error with a modpost namespace error?
 
-Looking at the driver side in drivers/firmware/imx/se_ctrl.c, when the
-hardware matches and sets reserved_dma_ranges =3D true, se_if_probe() execu=
-tes
-this logic:
+Since the property-entry test module likely lacks a corresponding
+MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING"), the build might still fail
+with an error indicating that the module uses a symbol from the
+EXPORTED_FOR_KUNIT_TESTING namespace but does not import it.
 
-drivers/firmware/imx/se_ctrl.c:se_if_probe() {
-    ...
-    if (if_node->reserved_dma_ranges) {
-        ret =3D of_reserved_mem_device_init(dev);
-        if (ret)
-            return dev_err_probe(dev, ret,
-                        "Failed to init reserved memory region.");
-    }
-    ...
+Additionally, is the root cause actually the static inline of_node_init()
+function in include/linux/of.h?
+
+include/linux/of.h:of_node_init() {
+#if defined(CONFIG_OF_KOBJ)
+    kobject_init(&node->kobj, &of_node_ktype);
+#endif
+    fwnode_init(&node->fwnode, &of_fwnode_ops);
 }
 
-Since the memory-region property is missing from the device tree node here,
-will of_reserved_mem_device_init() fail to parse the phandle and return
--ENODEV, causing the probe to unconditionally fail?
-
->  	};
-> =20
->  	cm33: remoteproc-cm33 {
+If non-KUnit modules include include/linux/of.h and are built with compiler
+flags that emit out-of-line copies of unused static inline functions (such
+as under KASAN or with keep-inline-functions), won't they still encounter
+the undefined symbol error since of_node_ktype is only exported for KUnit?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721-imx-se-if-=
-v29-0-04a362f4fcca@nxp.com?part=3D6
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721105448.2109=
+894-1-xu.yang_2@oss.nxp.com?part=3D1
