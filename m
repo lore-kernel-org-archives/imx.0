@@ -1,148 +1,145 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63683B9DA8
-	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 10:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD8545BD60
+	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 10:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784628424; cv=none; b=RpLcXVphOFz/ebRP95I47ydCZeI3krirQqUfskdqf1p1cfoIzae6nZLg0AwWa/F6onzVija6ClUFTgbysV1ejvMO+lwplQ4UBRGcEah8aqe2oe/SZP5zyniKMOTgFeQ4BYJsZZUhXGS6I3AK0MOLlKTLY2JAPhBgNksf5gQzl0M=
+	t=1784628463; cv=none; b=VqYjjXEbZakWzPMwnFRpa91LnRRAU8jtgHShIPMxv8xIjwXepvxfCd81kqQ9ZRFaN1oXbaxCVBJhNu4HZ8+GUM1XQIBqVA11p3oqeUxgrgYLJirjOaTS6lej+2hgUqN5uc9LJI4g01pHJPAi3n3/8dbcAF8D6XwIxZ3fiaZGlT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784628424; c=relaxed/simple;
-	bh=VANzIkJ3FO3d1eEChd5rVkRwzLMtnCQbztbjkoZBYXk=;
+	s=arc-20240116; t=1784628463; c=relaxed/simple;
+	bh=he+Y03TnDXc0yxsHbydHhh0np5s0P+srFgA4cQ7tjUo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JvvNSwI01l20n0RqBE25BCoUGVyydABpYa/qj+eBZ8esksNcxemgcLTHVEOuY1d9X4ZlCdUCFH5QqjbGwTultZva1Wqp2HO7OIWkvgALF65duw/UcFayXBAxssOV+hT6CCS60rQDNs5SrBb8QW+4RHoQ4SsBEd+nrH7+EK98vZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MawvEDNc; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=sWFVUxYFk0RHUWIBdC3cFVRMRsFX6Y+emfOeW98JbPJ9fkyN07/Q2VHSidRJiBRGvivo4CAlORefdzseZjufbvgUkXn0X6XpdLIETHdKLb8j/OlmtDm00iJYWSqRLV0HznBIw3TtfOzQFcPrlHOmNt1o9vZprLMJmWyKQ1Ml8HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g7P53Zt9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MawvEDNc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B3A1F000E9;
-	Tue, 21 Jul 2026 10:07:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g7P53Zt9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F220C1F00A3A;
+	Tue, 21 Jul 2026 10:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784628423;
-	bh=sIbe05UtoPzoJvetiFdI3zF0j2VtFS0o8LQ1pcYbIZE=;
+	s=k20260515; t=1784628462;
+	bh=UJaQ9qD3CTopUL/2RNGT2AXld7DaYA3+pcWXs9gfPHE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MawvEDNcfYo5QemSi4eFrW3q8HVcQUpUnOpeIrQBls4MOsrIzyT00JfFX5Ulu/nb6
-	 zJjRbXEuE/+eR6ump4CjtmoUGgePaRZldDkfAY2e8DL/GJN3Xo/zl60NXXzi30FrAX
-	 XxMBAlXei2So3bsNQG8/0Jn+CBUZix96n3C16RdMyn41jX+mxFGFpYqZdJIHDClTW5
-	 qEO9va9N9GQCvUakCKIJhwDMA9fZs78mig0UYH7yCucQC427WO1QK1Cvj8Rap29UJJ
-	 ch2JiRj70LvtVR6iaEMvl7JuKYtQPUEv7H3m6EJVNz/ENBuNXgOKmHeqv/iGj6l+jD
-	 vOfc5i+Cc1yfQ==
+	b=g7P53Zt9tm6Sm3Pb4LxYGWebCsne4fJX9oC3hxIcchAFdQIYzapT45tJb4Jazbypo
+	 h1q9GrMv/5UuoGMXklNsoK0VB8Qbe7dwEJr8pRUWcMZ2STi0wpJBRUBKLs8KabIfor
+	 BOdX2vrdWaCH3NESEw1+lpnB8XRZFJQk1Sk8/MNR05mgGWUvf4J/Y7p6KvJvR1l+gA
+	 kMOHXI++1Yi9JVXLlSatmr9EW2TlTuSP7KniHqObHjRKwsEkUhClwN2qNyHjwj7Gnr
+	 EhysUajChuqEArJ88K66tOUjrYne8saXhjsRHHc25qApjMQewLxSXFg8KbkWCwcD4R
+	 s8J4AErjhUdWg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] regulator: fp9931: Fix Runtime PM usage count
- underflow in v3p3 ops
+Subject: Re: [PATCH 1/2] regulator: fp9931: Fix VPOS/VNEG voltage selector
+ table
 Reply-To: sashiko-reviews@lists.linux.dev
 To: robby.cai@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260721095959.1855436-3-robby.cai@oss.nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260721095959.1855436-2-robby.cai@oss.nxp.com>
 References: <20260721095959.1855436-1-robby.cai@oss.nxp.com>
- <20260721095959.1855436-3-robby.cai@oss.nxp.com>
+ <20260721095959.1855436-2-robby.cai@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 Jul 2026 10:07:02 +0000
-Message-Id: <20260721100703.44B3A1F000E9@smtp.kernel.org>
+Date: Tue, 21 Jul 2026 10:07:40 +0000
+Message-Id: <20260721100741.F220C1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 New issues:
-- [High] Dropping the Runtime PM reference in the regulator enable path all=
-ows the device to auto-suspend while the regulator is logically active, cau=
-sing silent power failure.
+- [High] The VPOSNEG_table lacks padding for selectors 0x29-0x3F, causing v=
+alid hardware states to be rejected, and shrinking the array introduces a r=
+egression for selector 0x29.
 
 Pre-existing issues:
-- [High] The VCOM regulator's disable callback unconditionally drops a runt=
-ime PM reference, causing a usage count underflow if disabled during cleanu=
-p.
-- [High] Calling `regulator_enable()` from within a `runtime_resume` callba=
-ck triggers a WW Mutex nesting deadlock and lockdep BUG.
+- [High] The vcom regulator specifies an off-by-one n_voltages limit, incor=
+rectly rejecting the highest valid selector (0xFF).
 --
 
---- Patch [2]: [PATCH 2/2] regulator: fp9931: Fix Runtime PM usage count un=
-derflow in v3p3 ops ---
-commit e0c7f5e5591f4d063d494917c2e53d290ddca4e4
+--- Patch [1]: [PATCH 1/2] regulator: fp9931: Fix VPOS/VNEG voltage selecto=
+r table ---
+commit 69720a9d40de43e41550a108ea7fe0d153732240
 Author: Robby Cai <robby.cai@nxp.com>
 
-regulator: fp9931: Fix Runtime PM usage count underflow in v3p3 ops
+regulator: fp9931: Fix VPOS/VNEG voltage selector table
 
-This patch attempts to fix a runtime PM usage count underflow by scoping
-the PM reference lifetime strictly to the register accesses in the v3p3
-enable and disable callbacks.
-
-> As a result, fp9931_v3p3_disable() may call pm_runtime_put_autosuspend()
-> when the device runtime PM usage count has already reached 0, triggering:
->=20
->   fp9931 1-0018: Runtime PM usage count underflow!
-
-[Severity: High]
-This is a pre-existing issue, but doesn't this warning actually stem from
-the VCOM regulator's fp9931_clear_enable() unconditionally dropping a
-runtime PM reference?
-
-If the regulator framework disables VCOM during late init cleanup (for
-example, if it is marked boot-on but has no active consumers),
-fp9931_clear_enable() calls pm_runtime_put_autosuspend() without a
-corresponding get. This unbalanced put drops the shared usage count, which
-seems to be the actual root cause of the underflow warning mentioned here.
+This commit updates the VPOS/VNEG voltage selector table to match the
+datasheet mapping by removing a duplicate 7.04V entry, ensuring the
+selector 0x05 correctly aligns with 7.26V.
 
 > diff --git a/drivers/regulator/fp9931.c b/drivers/regulator/fp9931.c
-> index 5eee21034f6b7..3ffba6fb75ff2 100644
+> index 002b41f53eff8..5eee21034f6b7 100644
 > --- a/drivers/regulator/fp9931.c
 > +++ b/drivers/regulator/fp9931.c
-> @@ -243,8 +243,7 @@ static int fp9931_v3p3_enable(struct regulator_dev *r=
-dev)
->  		return ret;
-> =20
->  	ret =3D regulator_enable_regmap(rdev);
-> -	if (ret < 0)
-> -		pm_runtime_put_autosuspend(data->dev);
-> +	pm_runtime_put_autosuspend(data->dev);
+> @@ -42,7 +42,6 @@ static const unsigned int VPOSNEG_table[] =3D {
+>  	7040000,
+>  	7040000,
+>  	7040000,
+> -	7040000,
 
 [Severity: High]
-Does dropping the runtime PM reference immediately after enabling the
-regulator allow the device to auto-suspend while the regulator is logically
-still active?
+Does shrinking VPOSNEG_table[] introduce a regression for selector 0x29?
 
-If the usage count reaches 0, the device will suspend. The auto-suspend
-triggers fp9931_runtime_suspend(), which calls
-regulator_disable(data->vin_reg). This would cut physical power to the IC,
-causing silent power failure for any consumers using the v3p3 regulator.
+By removing this entry, the array size decreases from 42 to 41. However,
+the datasheet and commit message indicate that selectors 0x28 through 0x3F
+are all valid and map to 15.06V.
 
-> =20
->  	return ret;
->  }
-> @@ -254,6 +253,10 @@ static int fp9931_v3p3_disable(struct regulator_dev =
-*rdev)
->  	struct fp9931_data *data =3D rdev_get_drvdata(rdev);
->  	int ret;
-> =20
-> +	ret =3D pm_runtime_resume_and_get(data->dev);
+Because the vposneg regulator configures n_voltages based on the array size:
+
+drivers/regulator/fp9931.c:regulators[] {
+	...
+	.name =3D "vposneg",
+	...
+	.n_voltages =3D ARRAY_SIZE(VPOSNEG_table),
+	.vsel_reg =3D FP9931_REG_VPOSNEG_SETTING,
+	.vsel_mask =3D 0x3F,
+	...
+}
+
+the core will now reject selector 0x29 which was previously accepted.
+Furthermore, since vsel_mask is 0x3F, if the hardware boots with a selector
+between 0x29 and 0x3F, it will be rejected because it is >=3D n_voltages,
+causing a failure during probe.
+
+Should the array be explicitly padded up to index 63 to match the vsel_mask?
+
+>  	7260000,
+>  	7490000,
+>  	7710000,
+
+[ ... ]
+
+Looking further down in the file at the vcom regulator configuration:
+
+drivers/regulator/fp9931.c:regulators[] {
+	...
+	{
+		.name =3D "vcom",
+		...
+		.n_voltages =3D 255,
+		.min_uV =3D 0,
+		.uV_step =3D 5000000 / 255,
+		.vsel_reg =3D FP9931_REG_VCOM_SETTING,
+		.vsel_mask =3D 0xFF,
+	},
+	...
+}
 
 [Severity: High]
-This is a pre-existing issue, but does calling pm_runtime_resume_and_get()
-from within a regulator callback trigger a WW mutex nesting deadlock?
+This is a pre-existing issue, but does the vcom regulator have an off-by-one
+error in its n_voltages limit?
 
-The regulator framework holds the v3p3 regulator's WW mutex when calling
-this disable callback. The synchronous resume triggers
-fp9931_runtime_resume(), which executes:
+Since vsel_mask is 0xFF, the hardware supports 256 states (0 to 255).
+However, n_voltages is set to 255. If the core reads a hardware initializat=
+ion
+state of 0xFF, or a consumer requests the maximum voltage, it will be
+incorrectly rejected because the maximum selector is equal to n_voltages
+instead of strictly less than it.
 
-fp9931_runtime_resume()
-    regulator_enable(data->vin_reg);
-   =20
-This attempts to acquire the vin regulator's WW mutex using a new context
-while already holding another WW mutex of the same class
-(regulator_ww_class).
-
-> +	if (ret < 0)
-> +		return ret;
-> +
->  	ret =3D regulator_disable_regmap(rdev);
->  	pm_runtime_put_autosuspend(data->dev);
->
+Should n_voltages be 256?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721095959.1855=
-436-1-robby.cai@oss.nxp.com?part=3D2
+436-1-robby.cai@oss.nxp.com?part=3D1
