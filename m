@@ -1,80 +1,49 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C06047042E
-	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 16:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC8E415F34;
+	Tue, 21 Jul 2026 18:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784651117; cv=none; b=A8knvElKyPmlS0NQ3G5KYxONwRgoKcVKrpEBvJyYpVzODN1Fh0Ty2Uy4cQElom28YJLa7/OeeRFX2sgUxyrIIvutuv4jSEXAyFNFARgofUI3lIMW9GPws2Sv5Kl3UumCY6s6UwD/AISlEJZP46Wdnupn9Wt9QR7yk2DlyM8uGik=
+	t=1784657397; cv=none; b=bP650zOO+8W97VrSv+GvE1dqHRFr64FxSxmf9xuD1cI+CEy7Tag2iYFZhzRceFxHlqarH7I2wHYUVhY/0wJVb6PnPmP47FQj88W8ZXN/9/eTbMaRsOUXxP10PPGDPN3JmtVXMS65lWGC0z09qR9MNcJLI+Qv/Ri4IpnPuEc8WcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784651117; c=relaxed/simple;
-	bh=s/yMrjuLZs4dlIxARYODOB36Qj1/rm+uTo5X+/vlq80=;
+	s=arc-20240116; t=1784657397; c=relaxed/simple;
+	bh=nuNTVFD1rwit60S2Kw4SKK+ZZrTvA/PLDNyslBAOzUQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cStJpQfwgI8XFmRWaSyNcn7AgCsbSr//qQEqIXmyGzi0kqGDc1R+eRr66MAo+yqQt5SPhuV8+Gt+lfslnP/ALNCfPbVDF8Gj8jEn/9UWSG6JD/nlZqJTtieoAGoQIqYoBzx+Sr7vCAr4b9DEGQ6nMwejO+6+NudHJDBG3qsGcPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VgZsSxRN; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=AujEiYJrglDwou4HtD8pPHtxT+jaN0n9bQgV0rJrUVbfbq1if05PAInTUBIe9bEpaz2HtW+9TiNruAIS2zfglhdSUXeKSK3MQEkjDqCHGR/RNthI0XEFfYFX2FfimWtzosbhDIZ1PAwOdpeH3peInBs+xTrYnSHgvrVHzkxdGhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M30dXX/s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VgZsSxRN"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8484f229529so5128876b3a.2
-        for <imx@lists.linux.dev>; Tue, 21 Jul 2026 09:25:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784651116; x=1785255916; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eZ3n3CdOMEFHPEcP0edo4YZhgg3xpqPwg4esUDVoRBk=;
-        b=VgZsSxRNSZHOaHTRQokVpAKWCmio6GLFv2pJOje9HJqAdCI+IzoOtuO3buCswg0UXs
-         An8eIogkA4lOQTsXUyUl3Ir7G0ycGH3omX+f3Y9XGrwYcmvK7HuSwyNNcuWlpQ4DK7gb
-         PU5Z1cT0s7jz9vUNPfJJNtUJ6u3v/mzbLLcY+GeotfiWgPD66sXKt0IQg8YnF2sAy4PP
-         c3XqnCZeB4KI7h2E3Ro+7pUO7La5HJhGYHRXTJ8dJttR5Tpo2ysilxOVdZBXBe/hPc62
-         txBaM1bVvNmUItSWbgG9jgFwS7d00HxovsjDBCfCWk2eTOn5JMJkgZYuaqFgz2zFhrXW
-         cLGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784651116; x=1785255916;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eZ3n3CdOMEFHPEcP0edo4YZhgg3xpqPwg4esUDVoRBk=;
-        b=RGHNyTw0tAHFGQbxjZz5A3zZxcOcovSWe5HRfPZh8sa+opzE72QlfKodxzqA6WmO4G
-         +HVwnDCMk3Zfzi0dg26k5B3mY/4jtHAPlOgiLh3KgPKKe8FgxTz0bOxJB87cHNgmJ2sc
-         +7LDAO5vHdl6L2z4KQ4fFIgkccbtx8voDDjMhlF2yfpnMiKGfRlXZHsUu3VqOXzjIhPM
-         WGtvCN/kEgfx0mQ1ktC+t6UbT+UKtwR4656d2qKAicmERsc2og2bfMCu/VXOc3+HLXZr
-         b9LBvAG3Fa+a2Is829ucfj/etrGkhkoHdylY//24uRW70gTp4N1gUYgSjJRk82t58dw8
-         TePw==
-X-Forwarded-Encrypted: i=1; AHgh+RrRlha865a+4gbPESLc5Wso/kdoIjXhzSem8jAuNF5W2UfTnieL/SHIKOIe+i0VmEPOBdA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yws6i3913cXSBh35m0/DYQR+LV5SrNcawFNqBgLebkdpgm1zGst
-	+JXSXK42swoAshZLfX2ZOG+Oq/XyI5NiQZo/e03uIjozE8YS5i4lX2TI
-X-Gm-Gg: AR+sD11iurcN1MSaUnLKYtlU1IsHbLWkmZheXAIe9bPs1Hyk3t9IEYYW/yjbz+qyDgc
-	SkoRN1MW7tkEWqkQhG/qF0P9PFbDGZc8ABf0oEyrsgNoPZKd1ZiV+3sExXuGL9vh0eBdZlIfbvO
-	CJbCv/93EMVB5MPi87vU+PkUIOqHCGWGvN+Fka/zeCACKczrk+egSMC9jJWg9UFMhmORX9LavSW
-	cA/7ExhAUSF9ydJjSXKazSIbS88dbxDvI8RnhBfjry9KhmXicubAOG6vCPhdiiLvVb2R5tARzJf
-	XTFR7pujtBH1RV5/irApJ89G01EYBB95fa9Z1M3T3BaGDYw6z7XQxdu/l6a9P5m7eJy6ACBqy5z
-	1gXTgctb3KI3uoVYjiALaLsS2aXj2jolXMK50Lm0sPeEmaQOaveabiecGtXc5Ihm3lVEen2fP
-X-Received: by 2002:a05:6a00:1708:b0:848:2e53:3f63 with SMTP id d2e1a72fcca58-84c292743ecmr19202537b3a.21.1784651115769;
-        Tue, 21 Jul 2026 09:25:15 -0700 (PDT)
-Received: from localhost ([172.216.252.18])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2adc3466sm8021278b3a.15.2026.07.21.09.25.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 09:25:14 -0700 (PDT)
-Date: Tue, 21 Jul 2026 19:25:07 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Jared Kangas <jkangas@redhat.com>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M30dXX/s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D841F00A3A;
+	Tue, 21 Jul 2026 18:09:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784657396;
+	bh=qJ2PC1oOUN/lV90CXEwewsm2mx2rssquszpJHMN4XBo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=M30dXX/sgOYHq+tH0rU+Ulien6D5uQDu69XilF4cR/c3jFtGoo2SJPKmaS7FkkXyo
+	 SRRTaoplw7zDgeiBuqWblypHcZoV3vCAKWZfW3yldRXo5GQvUS4qhW6a7w0q4drL7E
+	 aYjxieBNBz8lO9XjSOhH76uxRl8d1lS/7V+FcPElHJezohJqjofl4Wc4JNeQe0C/81
+	 VecKSQXkI7rmMBXB3l1320zMCTKDepfA7f8t2yXeAHyh6kktizMqfmD8+77ucLgNRh
+	 UCyQY05HDxt5gcsA1cdsncRpq2NzPsHGXA3+FvXZU4Q9SrwAfdOKizX1aJTz1xtPvS
+	 WvxVgtwAQ+9Sg==
+Date: Tue, 21 Jul 2026 11:09:50 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Yo'av Moshe <linux@yoavmoshe.com>
+Cc: Sami Tolvanen <samitolvanen@google.com>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Russell King <linux@armlinux.org.uk>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8] arm64: dts: s32g: Add GPR syscon region
-Message-ID: <al-dY5TA9jiR8706@stanley.mountain>
-References: <20260721-upstream-s32g-gpr-syscon-v8-1-49c308536aa6@redhat.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, llvm@lists.linux.dev,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] ARM: imx: Fix suspend/resume crash with Clang CFI
+Message-ID: <20260721180950.GA3684684@ax162>
+References: <20260718111340.159896-1-linux@yoavmoshe.com>
+ <CABCJKudqGL+BFFcz3qsuoJB6S_OAt-vs2yqePC_=oy+JzmPpVw@mail.gmail.com>
+ <3046e60d-509f-471f-bd15-3ce78c87500b@yoavmoshe.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,20 +52,56 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260721-upstream-s32g-gpr-syscon-v8-1-49c308536aa6@redhat.com>
+In-Reply-To: <3046e60d-509f-471f-bd15-3ce78c87500b@yoavmoshe.com>
 
-On Tue, Jul 21, 2026 at 09:12:41AM -0700, Jared Kangas wrote:
-> From: Dan Carpenter <error27@gmail.com>
+On Tue, Jul 21, 2026 at 07:29:50AM +0200, Yo'av Moshe wrote:
+> On 2026-07-20 9:29 PM, Sami Tolvanen wrote:
+> > Would it be possible to just copy the 4-byte CFI hash prefix to OCRAM
+> > when relocating the function? If not, the __nocfi approach seems
+> > reasonable to me.
+> > 
+> > Sami
 > 
-> Add the GPR syscon region for the s32 chipset.
+> I gave this a try - I tried copying 4 bytes from before imx6_suspend
+> into OCRAM, but when I tested it on physical hardware (Kobo Clara HD),
+> it still crashed on suspend.
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> [jkangas@redhat.com: GPR syscon resized from 0x3000 to 0x100]
-> Signed-off-by: Jared Kangas <jkangas@redhat.com>
-> ---
+> I suspect it's because imx6_suspend is written in assembly
+> (suspend-imx6.S) rather than C, so Clang doesn't emit a CFI hash prefix
+> before it in the first place.
 
-Thanks, Jared!
+Does using SYM_TYPED_FUNC_START for imx6_suspend() make that work?
+Something like this builds fine for me and I see
+__kcfi_typeid_imx6_suspend generated by Clang.
 
-regards,
-dan carpenter
+diff --git a/arch/arm/mach-imx/suspend-imx6.S b/arch/arm/mach-imx/suspend-imx6.S
+index 63ccc2d0e920..6ded29a38c99 100644
+--- a/arch/arm/mach-imx/suspend-imx6.S
++++ b/arch/arm/mach-imx/suspend-imx6.S
+@@ -3,6 +3,7 @@
+  * Copyright 2014 Freescale Semiconductor, Inc.
+  */
+ 
++#include <linux/cfi_types.h>
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+ #include <asm/asm-offsets.h>
+@@ -148,7 +149,7 @@
+ 
+ 	.endm
+ 
+-ENTRY(imx6_suspend)
++SYM_TYPED_FUNC_START(imx6_suspend)
+ 	ldr	r1, [r0, #PM_INFO_PBASE_OFFSET]
+ 	ldr	r2, [r0, #PM_INFO_RESUME_ADDR_OFFSET]
+ 	ldr	r3, [r0, #PM_INFO_DDR_TYPE_OFFSET]
+@@ -329,4 +330,4 @@ resume:
+ 	resume_mmdc
+ 
+ 	ret	lr
+-ENDPROC(imx6_suspend)
++SYM_FUNC_END(imx6_suspend)
 
+-- 
+Cheers,
+Nathan
