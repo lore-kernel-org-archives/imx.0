@@ -1,181 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53863FFABF
-	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 02:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591873FFABF
+	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 02:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784600012; cv=none; b=FMYfQI147+4qkytWD+XxWrHOe5RsdD1KqZMBpG0YAq8fX4ASmU2XjMzwOEEIvmeBzADPMUKYvHHqh/wffjzoz5PmR2DE2c9CsFsLeblkwM3M+5oqQMBxPJOPoOlx9GPiLOfHCOhDxfq03k7I5rdWAtg/ohWHGcgGAAR2dFt/bxc=
+	t=1784600014; cv=none; b=rcaztGcHHLNFy0PuVWeiaHJo1dORn9gkR95XjqbJgA2lmv//QNBfYAPFtn2qwXDHfU2eXOE8yigOt0534Jbl3CUfVrPCZSeqCAA6PriZ9Nezgoih4kN2/de+ejlvdgFCX6AvSbbQRbUG4ku2Z6Mq9D4qVlPKR+PF22T+U8B32JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784600012; c=relaxed/simple;
-	bh=wkvOjStHBni8Vhh9lb2y8BqaOqXJ3YiUX2w2uWBRPDQ=;
+	s=arc-20240116; t=1784600014; c=relaxed/simple;
+	bh=s4PfDS3Ar581cuWfxN0lJreDawVKXF93Fnwbp/C5zJg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hCldY00SJnzCaycteh5jHrAv4en3nbVNUeh1Q8qWxf8YsatLLv9copz/APuKbg5Sukf9d/jiTG4NQBfJ5sNHAROYGp51/mvUfsOFThlD5vp1f6ettPNmXfaAz8Or+ZpoVYj+FgPx2B8z0essDsE1ycQWBUvfA3JpFoU2PkdS6Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDfiI3qo; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=m26NVykoZ7Dh07tyh17louBsVyOwjTP4KijiVSMycR4RD/NaG2ECRDNPXH57E6U3FzDH52QJV6BqYfKf1lgBfsLuhL2zhbuMPvQVy7vDQp8JMXR2CRLghXZEdrNG6ExnyR9yJanDem4I+nEWD0+Ihovrnah97S7pbcx4bQUgfnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wvxd3KDD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDfiI3qo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5DD1F00A3A;
-	Tue, 21 Jul 2026 02:13:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wvxd3KDD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B431F000E9;
+	Tue, 21 Jul 2026 02:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784600011;
-	bh=krgnpYWKRF77547Owqtkt0upX06XFdz3apRXzzjD1x8=;
+	s=k20260515; t=1784600013;
+	bh=j1TL9KaoH+fA/akNKvlLwq4CAe4STludofjopQKh/7I=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HDfiI3qomzy6KYb/CJYrDzcSLdS2qiChKdC1RhQq8+WgrSnNMyYOPY/z/k6pXXvBb
-	 xHnwXiD7bm9l8oeTz6MAL/5D8aRMDlb9iCX44PWnzPLh2QUBMCJgMPkXAe/jl0Qd0c
-	 w0NRCXmAcatiXDSh6W9qH5WTbOumDlqD1mCoiheyjnl1pbrgFZAVyuJ+t0FY/HFohB
-	 Ml6p/V4VYwORZ2gnVTqSbQZz1W72+qYPIz6nsrip8RKA8JXrKP8Tw0Uo9fDsM4cLXd
-	 SaXxd6v6qjVYVA8A7jh1cisgWucLAUk8pB1DvJdS1xutXH4bQP2gztM+Gsdl4COjrh
-	 146ovcbyQfaBg==
+	b=Wvxd3KDDibYO0orQou/at4bDwDQEtktmExSeEXEDtXEaucHv6/ofEced4L069Ztbj
+	 5vTUJpVO7/YsdC5U/DRcRCahl2PIzFDIDjbhXp3a6YyH0OJd5OCE9OqsZoHgn650z1
+	 ERAR9lhK9xOCMprLeX36QET1MZZhBi0u/1nyv8pGtHaZ8bCx4bhUDq/AX5Mk4FAyB4
+	 f9vjdJPxXa5neFnWkh1UOdxAbkxhyEO+BGXTwIts0hjcXi00HQpL4oMyRpk/QBBb82
+	 qMIlMAH2v4YBEu6igNc89WpohNGLuZaGGL+gwpT06On4SkMiOgfbtpd3gWqgq+P4U6
+	 PmNL8UIkGS7lw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v4 net-next 07/14] net: enetc: differentiate
- phylink capabilities for pseudo-MAC and standalone MAC
+Subject: Re: [PATCH RESEND v4 net-next 13/14] net: enetc: use
+ alloc_etherdev_mqs() to create netdev for VF driver
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260720014317.1059359-8-wei.fang@oss.nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260720014317.1059359-14-wei.fang@oss.nxp.com>
 References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
- <20260720014317.1059359-8-wei.fang@oss.nxp.com>
+ <20260720014317.1059359-14-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Tue, 21 Jul 2026 02:13:31 +0000
-Message-Id: <20260721021331.6E5DD1F00A3A@smtp.kernel.org>
+Message-Id: <20260721021332.C1B431F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 New issues:
-- [High] The patch advertises `PHY_INTERFACE_MODE_10GBASER` as a supported =
-interface to phylink despite the feature being incomplete and explicitly un=
-supported.
+- [Low] Passing 0 to alloc_etherdev_mqs() triggers a pr_err() inside the ne=
+tworking core if the hardware reports 0 rings.
 
 Pre-existing issues:
-- [High] The hardware configuration function `enetc4_mac_config()` does not=
- handle `PHY_INTERFACE_MODE_1000BASEX`, leading to runtime errors and an un=
-configured MAC.
-- [High] ENETC v4 fails to probe for any PCS-dependent PHY interface modes =
-because `enetc4_pf_ops` lacks a `create_pcs` callback.
+- [Critical] Hardware-provided ring counts are not bounded against driver s=
+tatic array sizes, causing out-of-bounds writes.
 --
 
---- Patch [7]: [PATCH RESEND v4 net-next 07/14] net: enetc: differentiate p=
-hylink capabilities for pseudo-MAC and standalone MAC ---
-commit 87cae554b380c00e9f19136c8479811aa8887e05
-Author: Claudiu Manoil <claudiu.manoil@nxp.com>
+--- Patch [13]: [PATCH RESEND v4 net-next 13/14] net: enetc: use alloc_ethe=
+rdev_mqs() to create netdev for VF driver ---
+commit 79eef0d032f82d691851f474deed33cca36dd548
+Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: differentiate phylink capabilities for pseudo-MAC and standalon=
-e MAC
+net: enetc: use alloc_etherdev_mqs() to create netdev for VF driver
 
-This patch restricts ENETC pseudo-MACs to PHY_INTERFACE_MODE_INTERNAL while
-configuring standard full-duplex speeds. For standalone ENETC (v4), it upda=
-tes
-the interface modes to include 10GBASER (as preparation) and explicit duplex
-capabilities.
+This commit changes the VF driver to use alloc_etherdev_mqs() instead of
+alloc_etherdev_mq(), allowing TX and RX queue counts to be set independently
+based on the actual hardware capabilities up to ENETC_MAX_NUM_TXQS.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc4_pf.c
-> index f24269a48c26b..75ee117e9b1df 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> @@ -602,7 +602,6 @@ static void enetc4_mac_config(struct enetc_pf *pf, un=
-signed int mode,
->  		val |=3D IFMODE_SGMII;
->  		break;
->  	case PHY_INTERFACE_MODE_10GBASER:
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/ne=
+t/ethernet/freescale/enetc/enetc_vf.c
+> index 9cdb0a4d6bafb..7dcb4a0246f52 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> @@ -317,7 +317,14 @@ static int enetc_vf_probe(struct pci_dev *pdev,
+> =20
+>  	enetc_get_si_caps(si);
+> =20
+> -	ndev =3D alloc_etherdev_mq(sizeof(*priv), ENETC_MAX_NUM_TXQS);
+> +	/* Currently, the supported SoCs have a max of 6 CPUs and the VFs
+> +	 * have less than 6 RX/TX rings. So no issues for these supported
+> +	 * SoCs, but for future SoCs which have more CPUs or more TX/RX
+> +	 * rings, all the related logic needs to be improved.
+> +	 */
+> +	ndev =3D alloc_etherdev_mqs(sizeof(*priv),
+> +				  min(si->num_tx_rings, ENETC_MAX_NUM_TXQS),
+> +				  min(si->num_rx_rings, ENETC_MAX_NUM_TXQS));
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does enetc4_mac_config() in=
-=20
-drivers/net/ethernet/freescale/enetc/enetc4_pf.c fail to handle=20
-PHY_INTERFACE_MODE_1000BASEX?
+[Severity: Low]
+Does this code handle the case where the hardware reports 0 rings?
 
-If phylink configures the MAC for 1000BASEX, which is advertised as support=
-ed,=20
-it looks like it will fall through to the default case here and leave the M=
-AC=20
-unconfigured:
+If si->num_tx_rings or si->num_rx_rings is 0, this passes 0 to
+alloc_etherdev_mqs(), which triggers a "Unable to allocate device with zero
+queues" pr_err() in the network core and returns NULL. The previous hardcod=
+ed
+ENETC_MAX_NUM_TXQS guaranteed a valid count.
 
-    default:
-        dev_err(priv->dev, "Unsupported PHY mode:%d\n", phy_mode);
-        return;
+Should there be a check to ensure the ring counts are at least 1?
 
-> -	case PHY_INTERFACE_MODE_XGMII:
->  	case PHY_INTERFACE_MODE_USXGMII:
->  		val |=3D IFMODE_XGMII;
->  		break;
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/dri=
-vers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> index 3597cb81a7ccb..781b22198ca86 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-[ ... ]
-> @@ -359,7 +359,8 @@ static bool enetc_port_has_pcs(struct enetc_pf *pf)
->  	return (pf->if_mode =3D=3D PHY_INTERFACE_MODE_SGMII ||
->  		pf->if_mode =3D=3D PHY_INTERFACE_MODE_1000BASEX ||
->  		pf->if_mode =3D=3D PHY_INTERFACE_MODE_2500BASEX ||
-> -		pf->if_mode =3D=3D PHY_INTERFACE_MODE_USXGMII);
-> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_USXGMII ||
-> +		pf->if_mode =3D=3D PHY_INTERFACE_MODE_10GBASER);
->  }
+[Severity: Critical]
+This is a pre-existing issue, but is it possible for the hardware to report
+ring counts that exceed the internal array sizes, causing an out-of-bounds
+write?
 
-[Severity: High]
-This is a pre-existing issue, but does ENETC v4 fail to probe for any
-PCS-dependent interface modes?
+Looking at enetc_init_si_rings_params(), the hardware-provided ring counts
+are assigned without validating them against the internal array bounds:
 
-Since enetc_port_has_pcs() returns true for SGMII, 1000BASEX, 2500BASEX,=20
-USXGMII, and now 10GBASER, enetc_imdio_create() will be called during probe=
-.=20
+drivers/net/ethernet/freescale/enetc/enetc.c:enetc_init_si_rings_params() {
+	...
+	priv->num_tx_rings =3D si->num_tx_rings;
+	priv->bdr_int_num =3D priv->num_rx_rings;
+	...
+}
 
-However, enetc4_pf_ops in drivers/net/ethernet/freescale/enetc/enetc4_pf.c=
-=20
-lacks a .create_pcs callback. Won't this trigger the check in=20
-enetc_imdio_create():
+Subsequently, enetc_alloc_msix() loops over these values and writes to the
+statically sized arrays in enetc_int_vector_init():
 
-    if (!pf->ops->create_pcs) {
-        dev_err(dev, "Creating PCS is not supported\n");
-        return -EOPNOTSUPP;
-    }
+drivers/net/ethernet/freescale/enetc/enetc.c:enetc_int_vector_init() {
+	...
+	priv->tx_ring[idx] =3D bdr;
+	...
+}
 
-and cause the entire probe sequence to fail for these modes?
+A malicious or misconfigured PCI hypervisor or Physical Function (PF) could
+supply arbitrary values to the Virtual Function (VF) driver. If the hardware
+reports huge ring counts, this causes a buffer overflow on the heap when
+writing to priv->int_vector (size 6) and priv->tx_ring (size 16), which cou=
+ld
+lead to a panic or arbitrary code execution.
 
-[ ... ]
-> @@ -400,25 +401,42 @@ int enetc_phylink_create(struct enetc_ndev_priv *pr=
-iv, struct device_node *node,
->  {
-[ ... ]
-> +		if (!is_enetc_rev1(priv->si)) {
-> +			mac_caps |=3D MAC_5000FD | MAC_10000FD;
-> +			__set_bit(PHY_INTERFACE_MODE_10GBASER,
-> +				  pf->phylink_config.supported_interfaces);
-> +		}
+Could these values be strictly bounded against the array sizes during probe?
 
-[Severity: High]
-The commit message explicitly states that 10GBASE-R mode is not supported y=
-et
-and is added simply as preparation.=20
-
-Will advertising an unsupported interface mode to phylink in=20
-enetc_phylink_create() cause it to accept configurations for it, leading to=
- a=20
-broken configuration state or a hard probe failure when it attempts to=20
-configure the MAC and PCS?
-
-> +
-> +		phy_interface_set_rgmii(pf->phylink_config.supported_interfaces);
-> +	} else {
-> +		mac_caps |=3D MAC_10FD | MAC_100FD | MAC_1000FD | MAC_2500FD |
-> +			    MAC_5000FD | MAC_10000FD | MAC_20000FD |
-> +			    MAC_25000FD;
-> +	}
-> +
-> +	pf->phylink_config.mac_capabilities =3D mac_caps;
->  	phylink =3D phylink_create(&pf->phylink_config, of_fwnode_handle(node),
->  				 pf->if_mode, ops);
->  	if (IS_ERR(phylink)) {
+>  	if (!ndev) {
+>  		err =3D -ENOMEM;
+>  		dev_err(&pdev->dev, "netdev creation failed\n");
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720014317.1059=
-359-1-wei.fang@oss.nxp.com?part=3D7
+359-1-wei.fang@oss.nxp.com?part=3D13
