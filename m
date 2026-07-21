@@ -1,148 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03466437111
-	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 07:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84F3445AC3;
+	Tue, 21 Jul 2026 08:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784620681; cv=none; b=cT94s92v8YUbMS8odtVTudEYeWhb+JWCC8UIg3IeUIPErC3hgRgmTKJp/nfQtq8O0jo121uyYT/89sNJhZfXHjh8Y9DcFcgu0inMT1hGv0XZM8FTsYKIyU+aeGiJdaqI4yReTFj//Lim5kAT5Wi8RGT2uVHvWQ2sedpyUdhOh3A=
+	t=1784621827; cv=none; b=csJD2ByKwitlt8cAsCjEZOdaLWrTrth3uXD5/XoOEkPgfXX+fk87WhrjDbJka+N2jtS9OFkZvMjXvrsaAjvbsIY204kCEu4fLdcWB6T/opfHN4BTeQJJv/wU9js4+GYt1jmZLp+2gr6ASuJJD3gNGtd/fEPo97Y8WLs4p6JP9yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784620681; c=relaxed/simple;
-	bh=Qu6V/jFa3L0ra7v1UlZyzgbe/1V/e5d4AsjK/MKCp8c=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hUlFwQ4WdKbOK6BeU4SWAb3rajFgVrCBZOHNnmtG9QZ47/i5UmpCSvoRaAxT1fYv/zrp/yZnyBEA5LRsUroyELOD0xgAcTrTrSov4HsPC5hj9pLrE6UUWL3W1HKstDmFwt1uZIjN83bVAuzQPxZZt5W8YtQWvs9PTMimviub7J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVmvwJVT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784621827; c=relaxed/simple;
+	bh=Mxh5rA6eMZ5HaHlazAu8CfBn2aYMqbfmWNRyDwwJNjs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eqR0EPJ9fqB1vNdXnHGzzF9MuWjkzbaYHaImQtjmfZWT/eERL7KeWCcGjIgMC+J9seE7/NiJDeNAaGA3QC0YcTRsRn1d9qHSk5u4yg0WIUfFQDNF4WrRMaVsj3a85cdFZqMqrTo34eaVDvn/GloX/oBb4iDWaineMfgXBfiVrE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=KM7Qc+2Y; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVmvwJVT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7A81F00ADB
-	for <imx@lists.linux.dev>; Tue, 21 Jul 2026 07:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784620679;
-	bh=y8ZQiTN586DKOzGjE0xQTVjSc0oG6CWcbCqpe2Jy2M4=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=YVmvwJVT9Qyay4HbMhb49B9CjDlZz7ft+lQj9lbS0gACumnC1Iv2/dsdm1MV9mu4c
-	 zAFU0hI7Xau7B4/YM37CP9pXGedF5Cl9Ux1RfADSqooiQWl5++I9UPNLx9bYcxW1m8
-	 dWwOXXbyLjJgKyY5IIabDL3n7y2Qbv9FbuP/aoVu6GwF4dZ4uDwHKNeaHY0jS2eqLz
-	 RXoTf9r6Ejv9blA7uC5ei4TYzAeV966wu8kwI6AZd0WBupxsdSKzxFL2wT4iB1WSxL
-	 qBk3K/JlKeou8FmssItan6rHnzpwi6jaVlRe/TmBqMy6lmtyvBR91Q78CeI2qT2hly
-	 ZQt1jND0CNHjw==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b015532f7bso10877444e87.0
-        for <imx@lists.linux.dev>; Tue, 21 Jul 2026 00:57:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoWkzhWAmrCbUgACjebq0j2wyhNcBg0jXFhWoJFzKGC+5NLBJUg88AZfaqujE4YzNXTXb4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyBxqmVqkLTlHITalrjbYe15obg4Pm/vZhdTPum+E4tyaTylJy7
-	t/oBlosKauU1K/AvvXIOT5VAzLT4EQ9ydWUWBOKXKgJgrDOzzM61w2OlUhWBs0E2dyibxD2d0mx
-	GJU8qZ//xKQ5ZqC65foBV9CBSVL6NXPGPGraaZ1IbOg==
-X-Received: by 2002:ac2:554c:0:b0:5ae:bcf8:e7d0 with SMTP id
- 2adb3069b0e04-5b28f9bd551mr2209166e87.55.1784620678478; Tue, 21 Jul 2026
- 00:57:58 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 21 Jul 2026 00:57:57 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 21 Jul 2026 00:57:56 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <3e14e41f-ecd5-432b-9f52-690a05b38a8a@lunn.ch>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="KM7Qc+2Y"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=+N5FscJywt+YqGXuLUzhGm/vFoyaAsakSzYz7zyBkkM=; b=KM7Qc+2Y2fY88mqpbZfgd0x/Fa
+	4ANU8+fOSVPxZjDuMSNs9aa98/gE33fw2FPd3YM41lZh/OjooCfxZl3z70Knyv6Vl5LfwSt4cGWgH
+	Ebu6Fu+WfG9kociLblneNsXzqxSvnkf/z84A87nq61i7h7OlaLFxcZHpidTV5dkhgQSUNT4f+aXP8
+	4LIzmq+jpZ0Y0LztV+0t+yUb8aqgfUzDEdv/qi9SrQ4OPmxqV4fxbyTLtNeIJvrdexVe3r41hpefw
+	JDtyWqAC3GQD81Re3RNmsnWpj2fSICN9klBadgPQEJLV5PP+vj6K2vTPaLcOQUkMSkEnwO7KiesWe
+	G+7A5UIA==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wm5D8-000OWD-1X;
+	Tue, 21 Jul 2026 09:48:18 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wm5D7-000OyO-1Y;
+	Tue, 21 Jul 2026 09:48:18 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Xu Yang <xu.yang_2@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+ Frank.Li@oss.nxp.com
+Subject:
+ Re: [PATCH 1/2] arm64: dts: imx8qm-ss-conn: add usbotg3 iommu information
+Date: Tue, 21 Jul 2026 09:48:16 +0200
+Message-ID: <2844770.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260720-qm_smmu-v1-1-3689fbd8b516@nxp.com>
+References:
+ <20260720-qm_smmu-v1-0-3689fbd8b516@nxp.com>
+ <20260720-qm_smmu-v1-1-3689fbd8b516@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
- <86b2aba7-b049-47e6-bc94-6cb499b30ce4@lunn.ch> <CAMRc=Mduv_KiB42d4AZddTrFSHmKogd2wh6vBDXomW6ssdfq9A@mail.gmail.com>
- <3e14e41f-ecd5-432b-9f52-690a05b38a8a@lunn.ch>
-Date: Tue, 21 Jul 2026 00:57:56 -0700
-X-Gmail-Original-Message-ID: <CAMRc=Md_zUwYW5KL+p=BRixSaf3Rrc5jnBA3x8Ze+fK+fAOctQ@mail.gmail.com>
-X-Gm-Features: AUfX_mxrzWF5f1w8uOBbvKVmYCYI9DGFBZVEBrX2uI1sc7agH6iCfKo0CQST8Mw
-Message-ID: <CAMRc=Md_zUwYW5KL+p=BRixSaf3Rrc5jnBA3x8Ze+fK+fAOctQ@mail.gmail.com>
-Subject: Re: [PATCH 7/8] net: mv643xx: use platform_device_set_fwnode()
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Doug Berger <opendmb@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Srinivas Kandagatla <srini@kernel.org>, 
-	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	iommu@lists.linux.dev, netdev@vger.kernel.org, linux-pm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	mfd@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-sound@vger.kernel.org, Bartosz Golaszewski <brgl@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28067/Tue Jul 21 08:23:56 2026)
 
-On Mon, 20 Jul 2026 20:28:39 +0200, Andrew Lunn <andrew@lunn.ch> said:
-> On Mon, Jul 20, 2026 at 06:01:37PM +0200, Bartosz Golaszewski wrote:
->> On Mon, 20 Jul 2026 16:43:40 +0200, Andrew Lunn <andrew@lunn.ch> said:
->> > On Mon, Jul 20, 2026 at 11:24:54AM +0200, Bartosz Golaszewski wrote:
->> >> Prefer the higher-level platform_device_set_fwnode() over the
->> >> OF-specific platform_device_set_of_node() for dynamically allocated
->> >> platform devices.
->> >>
->> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
->> >> ---
->> >>  drivers/net/ethernet/marvell/mv643xx_eth.c | 2 +-
->> >>  1 file changed, 1 insertion(+), 1 deletion(-)
->> >>
->> >> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
->> >> index 9caa1e47c174c9d7a161b7f2e2ee12a829b813d4..2f2d6cce8d852b9ec3ab42678a04a7915d1f00cc 100644
->> >> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
->> >> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
->> >> @@ -2780,7 +2780,7 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
->> >>  		goto put_err;
->> >>  	}
->> >>  	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
->> >> -	platform_device_set_of_node(ppdev, pnp);
->> >> +	platform_device_set_fwnode(ppdev, of_fwnode_handle(pnp));
->> >
->> > This is definitely an OF only driver. There are no other calls to
->> > fwnode functions in this driver, so this is the wrong thing to do.
->> >
->> > Sorry, NACK.
->> >
->>
->> I'm not going to die on this hill but drivers are OF-only until they're not.
->> For example, Qualcomm is now working on a hybrid ACPI-OF approach for
->> laptops[1] and we may end up needing to start converting drivers to fwnode
->> after all.
->>
->> There's no real benefit to sticking to OF-specific APIs unless you need to
->> iterate over all properties of a node or use some other functionality not
->> available in fwnode. The overhead is minimal and it's never a hot path.
->
-> There is a lot of benefit to sticking to OF specific APIs, because
-> within the kernel OF is well maintained, has active maintainers, there
-> are tools to validate bindings, etc. ACPI is a Wild West, each driver
-> is a snow flake, there is no review, no binding documentation, no
-> validation tools etc.
->
-> I hope you allow plenty of time to convert any networking drivers,
-> where Linux is driving the hardware, to ACPI. Your first stop will be
-> the UEFI forum making a proposal for MDIO busses, because that
-> currently is not part of ACPI. You will then need to spend time
-> understanding the DT bindings, and figuring out which properties are
-> deprecated so need to stay OF only, and which can be converted to dual
-> OF/ACPI. I've seen too many naive attempts which blindly convert
-> everything, copying all the past errors in the DT binding into the
-> brand new ACPI binding. That will get NACKed.
->
-> OF != ACPI
->
+Hi Frank,
 
-I've never said that and ACPI is actually irrelevant to this discussion. Fwnode
-is the abstraction layer and OF happens to implement it. Unless you need
-fine-grained control (only exposed by the lower-level abstraction) or
-performance - neither of which is the case here - you should use the top-level
-API. As I said: there's no good reason to stick to OF-specific interfaces for
-drivers that don't really require it - and even then, we should strive to fill
-the gaps in the fwnode API instead.
+Am Montag, 20. Juli 2026, 23:10:33 CEST schrieb Frank.Li@oss.nxp.com:
+> From: Frank Li <Frank.Li@nxp.com>
+>=20
+> Add usbotg3 iommu information.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> index ccf9f510e0f88..1370a571153a5 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> @@ -32,3 +32,7 @@ &usdhc3 {
+>  	compatible =3D "fsl,imx8qm-usdhc", "fsl,imx8qxp-usdhc", "fsl,imx7d-usdh=
+c";
+>  	iommus =3D <&smmu 0x11 0x7f80>;
+>  };
+> +
+> +&usbotg3_cdns3 {
+> +	iommus =3D <&smmu 0x4 0x7f80>;
 
-Bart
+Where in the RM can you get these values?
+
+Thanks and best regards,
+Alexander
+
+> +};
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
