@@ -1,126 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C213E2AD6
-	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 03:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784692656; cv=none; b=Nv6DRtCn4J/yuT8GSKqFCMiRNjhVFB2ASPdBPP85JFUIs9G41O0rgmFqVaW9yG7HIAK+OYUOrl7JxiGmCS+IwYKvmWF7S7H1PBsKy8DbrkC31hIXiIaG/gQ8DsLhxfZ6TPwkcsUhnAX8kf4GVluHa7U+GHwNK0nn0I0/8/Mrl2A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784692656; c=relaxed/simple;
-	bh=QOoFUEMAQK7HCVwS/+1DJtgwDdCKhS6c9nQJMqwxVis=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Bagwd6+3/3N45xJ1nY6PozOKguvFALTaQ7HFvTPgEDywawrfX8vqG7drXc+qzQePqUCAF4q4XTlRCkDa1PX5tVcUfBqVF4Rc2HBDNHEDS4IkOQWPEzCoz9CRNK1sthtlPP3mSxYYa1M2vP8X8emqYmX7zk5OnTUONLX2Dda5d4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NLCn07aK; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2160133EB1A
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 06:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784700673; cv=pass; b=jKt4a/cihXg8uTJuW/HVpk6IWph2q/2dXy7KaeyKklsEZm5lC1ddDmkGiDPSZJbJt+GpTId97hx9uDuRkkPGRJegFNV8kWCCh+W1ukzaYwdDBRjJuzFILcap2WtjhV44hIFcEMA5Ma4tW5EJf1odXJavR3OtQhAhV/PJ0gyZ0o4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784700673; c=relaxed/simple;
+	bh=OkMxB1ADgZoX24fSd2GYMMEAXbeVXA9oKqgABoNYoMs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ioFIYqx1KIpf36IV3UT8GVntGQBvy4fX8E90pUBb6liw8E4Uu494rtcnuc/hs2F1jVP8vq76mqokRxKyEZR6Fs//jIjY3F/ZKu5Ra9Li/14LsdxdL96oC946+eUoSusplR7KfMUpukgMg4E3BNvkpND7UtoQxaKLPyzOSOx7w9E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mechasystems.com; spf=pass smtp.mailfrom=mechasystems.com; dkim=pass (2048-bit key) header.d=mechasystems.com header.i=@mechasystems.com header.b=YnXuVEYe; arc=pass smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mechasystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mechasystems.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NLCn07aK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDDE1F000E9;
-	Wed, 22 Jul 2026 03:57:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784692651;
-	bh=06uGU640yW33z/uwx0PljR4xLQM9M3VW2s/kx0Pd2D0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NLCn07aK3EG6yQ51DvYy+t+IUpUsibEzfNPGKhTQeNuDPyGEuLDvYZ2d+r8/88pZs
-	 enVKkhnzdi5heYcDlwQr1woygcZnS9HpPzYqGye5a922JH3zPol4/mgn7xokKFU/0c
-	 JDq90apcn1/HePhsY2Lnb0dJBfH7nr0CdMkigf8GaZe0J1LXUEEFLDBCGrvbhcWYJe
-	 srtj1PLd/ahXIaViOVIrK6sek4Xi19IYMcZbHxRhQrevQ5ux/K4mVZIQENDUFZwshw
-	 QGlBq6xj1xdYbcFmOh5uOJEUQ1v1fkNLuNPa4sxXELFcCC4CpVZaIspU+jv5sjKVMW
-	 BtBfhfHYHWmiA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/5] serial: imx: Remove redundant dev_err()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pan Chuang" <panchuang@vivo.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260722034342.316755-3-panchuang@vivo.com>
-References: <20260722034342.316755-1-panchuang@vivo.com>
- <20260722034342.316755-3-panchuang@vivo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Jul 2026 03:57:31 +0000
-Message-Id: <20260722035731.8CDDE1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=mechasystems.com header.i=@mechasystems.com header.b="YnXuVEYe"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-ca7bea5e5b3so8740128a12.1
+        for <imx@lists.linux.dev>; Tue, 21 Jul 2026 23:11:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784700671; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BJN5C6JVeQNt07DABMNVLEw+ZWaXS+1WnqrvF76q9jooKukzPjCWvtdsoxc7afIfJt
+         zc80WCDYJKeHW2WEQDjx1mbfQaH25mIXiTfegikylUpvWAeLwAZW5CumtVJXTdTHBnHC
+         COs5J3203qTwEuGkYwx6mxd/QRQtcTdUqEdXm5qGN7bh8JDl1yUUQDNxF2m/myt4WNkp
+         Eh2m9LbG7EX3gUpEO7BCf3t0BU3hQWE54VzHWzSVtxX0Ij6mGm/Xo7ncLq/pMavInxQ1
+         2eEFSUx1x7MBic8djDR+Bw4uM/WTS1koZcvHjQQpZ+oxL8gYX75bhTtgFZL+O331U72H
+         Lg1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=OkMxB1ADgZoX24fSd2GYMMEAXbeVXA9oKqgABoNYoMs=;
+        fh=2b/W7uAuQ6TFQBPULORE6N2zvkxP8j3zqnmeveY0/Ww=;
+        b=CO8Q0Wk3ykkVvXWpkt1Z4cBb6rHdcWuYDQ74CzL/LDX4n0ecAHfZEopD1R1lslxn9y
+         6HXzDDtox3a8X2Pig2zNjDNzMTgPO+Ual98ri9WaVqqGY4pv0avHslEVsBBZM5IAzthi
+         3OvcG/fNYobLCkeRmd7IvOqdjHh7j11JWQHgO6uZjhId0DByiG5L+MFVttW3fqp5W4l6
+         dDzziwmoKwAUXFLerbokYLrOrBkfLC2Lnv+ymqa89xobsrYOvmxnpd2dPqMrdhRWpC/w
+         aSAiolwWfCyppwKzFfY16hWK4IvHVVYysddoUCBDr++KLhByX2YrTZIG6E/L+Fuk3i36
+         om1Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mechasystems.com; s=google; t=1784700671; x=1785305471; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OkMxB1ADgZoX24fSd2GYMMEAXbeVXA9oKqgABoNYoMs=;
+        b=YnXuVEYe2+1PM2A8b00SOeD1wB+j2ET3R5H9AkZiktQtcChDr9gUWNeyiDL0IrHLok
+         F+I4nSub9yelVTLIXspMiTDMLKPO61xLt3aGNP4ni/UEOkn0PvkDFtK8G3NxuYfL4MmJ
+         CD23eUfRNdkhLZLhz42E6pn33kCW8g1lYzTXmZiXx+bqYdgda7aSeDbGI9g77GhKrQ7A
+         j9sXzrmmAqMNWZW9m7CCwZquegq9EZHeRTQxZ6p6aRMcA56FOMr7ZyYF0vGy6lRytkT3
+         wUC7cprfSh4R7Ml7CRV8JHX6f0A3BGVMS1T9u3ZdTXjVGlh1r767nGvNWPyZFVmW7oWC
+         nDYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784700671; x=1785305471;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=OkMxB1ADgZoX24fSd2GYMMEAXbeVXA9oKqgABoNYoMs=;
+        b=KCk3I9Q0w3ChAFzhAsRWblQHqLcEBa7cGrqIkrjkrNyEMtrpBmVXkuDw2px7wQTWcl
+         yfXDaEdZmg9p3HwLZdyrlmNyA7g0cBLQ7bQTTmAlCPB2AR7KmU7lnVu8kQESh3FL6yrT
+         L/WfX1GqFZJbbQPKagdw3TN6EtCRxftHZiXaWit1zXDjd3XuTV2q4RsQAGqu/P/LpLWP
+         scQ2WpScQEAx/JuhGqFMQ1cC5vc9TpsAqkoldHgp59T5+p/waG/CfAjRcESfk0p9yz4P
+         xbnNNVs1fvsewN7BpES38oWo/COSklmbRVmDXxecQuXVDvGcbB88nbQVDH/1L4ayjjbT
+         6GHg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7EN/YqksgvSlIRo7xUOrhWgvsWxTblQs+sdNwfXDO3MIx2FV3hhGjsEwd4AgpJ8C/sI4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz30+hrhMAbe4E/kLtVcAC0sXlKS9FAyEOiUIkI3ZCGukhWhZYV
+	Je/7Ep8yPnTFAZpoTbavdEBGtj8DsS4WwWbyvyDVbfqu0gthdQq+SmKpjBcqW/41OEmBW06hLTk
+	R5q0IRej4w9f3Vo7bgq+Xt4hdWdk7sR/Q/AsuG7udvQ==
+X-Gm-Gg: AR+sD11lsGgiYwTairguEwWNh+vKTd/xNyHa8scgPAkWkYerapnvaXyPKoKdF9f9ufA
+	XNPRR47zev85Ase2g5wIdlCuD1Jzw7WHSPCZA7DQ5S651AJP6yPduKJaD7uG8jCted3ljDro+hr
+	Erph6ro1h2bP/UilhDDEzt6WZIRfrhgFXJM38o+WfgNFijVZ5S26Ma9InJ1NQhT5OZhnjJnRkfK
+	xA8bhmROZVDI+t058Qs2ZCS2Tck1p/CSt4s5+vracr/BqGsfn2eymaQXMAR1jM=
+X-Received: by 2002:a05:6a21:1f81:b0:3b2:8685:118b with SMTP id
+ adf61e73a8af0-3c3ad66b6f7mr24333720637.20.1784700671391; Tue, 21 Jul 2026
+ 23:11:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <CAAPs2HTo=4+AEw1+vcU6c9vt_O2BfF+gv3FFvx9G3KLLzCOsHw@mail.gmail.com>
+In-Reply-To: <CAAPs2HTo=4+AEw1+vcU6c9vt_O2BfF+gv3FFvx9G3KLLzCOsHw@mail.gmail.com>
+From: Advait Dhamorikar <advaitd@mechasystems.com>
+Date: Wed, 22 Jul 2026 11:40:59 +0530
+X-Gm-Features: AUfX_mwknoj-Deg8-Dcg-e3PqQ1pi3R_hwflRITqu0EFCqpynuUYicNGSZbPQgo
+Message-ID: <CAAPs2HQcHpDGqhiBXSLOKmXWGevmWbGO3UtfV1pmoiF+wC6aLg@mail.gmail.com>
+Subject: Re: pmdomain: imx8m[p]-blk-ctrl: resume hangs when waking from
+ suspended state
+To: linux-pm@vger.kernel.org, imx@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, ulfh@kernel.org, Frank.Li@nxp.com, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	bhushan.shah@machinesoul.in
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Another observation I have is that if I disable the MIPI-CSI related
+nodes(MIPI-CSI, ISP, ISI), HDMI and VPU nodes from the DTS, or else
+unbind their respective drivers before suspending, the suspend
+wake sequence works just fine.
 
-Pre-existing issues:
-- [High] The global `imx_uart_ports` array retains a dangling pointer to a =
-freed `sport` structure if `uart_add_one_port()` fails or when the driver i=
-s unbound.
-- [High] The hrtimers `trigger_start_tx` and `trigger_stop_tx` are never sy=
-nchronously cancelled during device teardown, leading to a potential Use-Af=
-ter-Free.
---
+Could this indicate that the issue is related to the media clocks or the PHY
+during the suspend/resume sequence?
 
---- Patch [2]: [PATCH 2/5] serial: imx: Remove redundant dev_err() ---
-commit 44174bba1c656c63bfedf3dc6b8ca0b3fa1165cb
-Author: Pan Chuang <panchuang@vivo.com>
-
-serial: imx: Remove redundant dev_err()
-
-This commit removes driver-specific dev_err() calls after devm_request_irq(=
-),=20
-as the core function already logs detailed error messages on failure since=
-=20
-commit 55b48e23f5c4.
-
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 251a50c8aa387..95fdb60e06a77 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -2602,34 +2602,23 @@ static int imx_uart_probe(struct platform_device =
-*pdev)
-[ ... ]
->  	} else {
->  		ret =3D devm_request_irq(&pdev->dev, rxirq, imx_uart_int, 0,
->  				       dev_name(&pdev->dev), sport);
-> -		if (ret) {
-> -			dev_err(&pdev->dev, "failed to request irq: %d\n", ret);
-> +		if (ret)
->  			goto err_clk;
-> -		}
->  	}
-> =20
->  	imx_uart_ports[sport->port.line] =3D sport;
-
-[Severity: High]
-This is a pre-existing issue, but does this leave a dangling pointer in
-the global array if uart_add_one_port() fails later in the probe function?
-
-If uart_add_one_port() fails, the function returns an error and devm
-automatically frees the sport structure. However, the pointer was already
-assigned to imx_uart_ports[sport->port.line] and is never cleared on the
-error path. Could this lead to a use-after-free if the console subsystem or
-sysrq accesses the array?
-
-Similarly, it looks like imx_uart_remove() does not clear this array entry
-before devres frees the memory during driver unbind.
-
-[Severity: High]
-This is also a pre-existing issue, but are the trigger_start_tx and
-trigger_stop_tx hrtimers synchronously cancelled during device teardown?
-
-Looking at the unbind path in imx_uart_remove():
-
-static void imx_uart_remove(struct platform_device *pdev)
-{
-        struct imx_port *sport =3D platform_get_drvdata(pdev);
-
-        uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
-}
-
-During unbind, imx_uart_shutdown() tries to stop the port and calls
-hrtimer_try_to_cancel() implicitly. However, hrtimer_try_to_cancel() doesn't
-wait for a currently executing callback to finish.
-
-Since explicit hrtimer_cancel() is never called in imx_uart_remove(),
-could devres free the sport structure while the hrtimer callback is still
-running or pending on another CPU, resulting in a use-after-free?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722034342.3167=
-55-1-panchuang@vivo.com?part=3D2
+Best Regards,
+Advait
