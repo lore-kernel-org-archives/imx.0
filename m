@@ -1,242 +1,136 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B04840F72C
-	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 10:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2CD33938E
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 10:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784716044; cv=none; b=WNIqBymD1Vl8kOHt7PLxG4sbOyZ6Q2O5t7FghJrn8HKt+Ym3eky9bhexKRH2k1sz8Xf4VW/+I2qHnHtPJFul1hBW24Kkbpdyin9sKmpROiO3Qbb8ZWI8Zs4dr0AAmY1npe5BD1gU7tQWysqQtdbYkus14WM7i2KCfqM8Sk2WsQI=
+	t=1784716235; cv=none; b=sjhTdtxF3cdPjNFDs1bjhu2wJRgONFhY6hgLbIreGN2ndNgcgjxtp3tZif739pKj+b9PygsIfgRt7d0PCpCWvTsWD0qDPkUmtzdGAbHQ/LXxqx/B+uC67md1JWhehSZ8IcXpPZf1YyUW4ruihsDk4XaWbnq/81wsJi0XV4l/8bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784716044; c=relaxed/simple;
-	bh=PlsHKisGfXiis2A+4r0Xh4ebhgMOZE8m81CXGHgzBNQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OGq1NdRheRwsOzdNTvgoVYM1MBTHdI1ULMjBUh8QGU1lIigEDxLUhgp05ECZ75kkDcbDOLbW7eRWnKhWM3x8aUAwFiHzXkQnXF87gtNzEAAByOUG0NgIdPRdoTh0UUt5+i7GWAom8XQUyy9AeIHV92vKu52qtGnnXAkaicZ0etk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eo/zbBmT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9XhPfdBa; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eo/zbBmT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9XhPfdBa; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1784716235; c=relaxed/simple;
+	bh=WLv1NkIuFdslnB3lO6t5E/jNo8c9nJpw4Hrm3G2sqfc=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=O2BkcPtmWYD346g6fx+HgZ/XdnFm/AKBoCmz3MBjr/JTbgEvsQuYq3w2uND+OiCp0Zf3o8A1zRVOdpTO7zH3pfitp4JaA/CbglHQ5sgjt6QqQJEOPo1mDjoUW3bToyFDPCf4qW0RYGir9u4jpQkNpcADX4SIEstZUB2vMT+zRz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=m3/Qrnom; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eo/zbBmT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9XhPfdBa";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eo/zbBmT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9XhPfdBa"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5AEA23DF3;
-	Wed, 22 Jul 2026 10:27:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784716041; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IxW/vV2un4Yj21F+g4YGmA5/b/By2dnt0VtZgb052AQ=;
-	b=eo/zbBmT0ZQ2wbYOWky8601C4n8Jmj4TD/MHExC6ugYOuo0FA6LjDw5ajuPxavdwv0H+4d
-	sS8dV7zpZ6QcImLNCUMOzABK3L4vvQGsaICwO7RdA7aVnSOCHIp826343d4tcYFZUw3swr
-	8ZN/INjhyGxovvFpdtftalMWDpodWMs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784716041;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IxW/vV2un4Yj21F+g4YGmA5/b/By2dnt0VtZgb052AQ=;
-	b=9XhPfdBaU+I8CejeLQ82f9UCa4JkELPmqpxKb/L59ZJMC3ztbM5AzH9hlojzOKzptVL+Qc
-	giiJ8LpztxtG3NBA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="eo/zbBmT";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9XhPfdBa
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784716041; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IxW/vV2un4Yj21F+g4YGmA5/b/By2dnt0VtZgb052AQ=;
-	b=eo/zbBmT0ZQ2wbYOWky8601C4n8Jmj4TD/MHExC6ugYOuo0FA6LjDw5ajuPxavdwv0H+4d
-	sS8dV7zpZ6QcImLNCUMOzABK3L4vvQGsaICwO7RdA7aVnSOCHIp826343d4tcYFZUw3swr
-	8ZN/INjhyGxovvFpdtftalMWDpodWMs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784716041;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IxW/vV2un4Yj21F+g4YGmA5/b/By2dnt0VtZgb052AQ=;
-	b=9XhPfdBaU+I8CejeLQ82f9UCa4JkELPmqpxKb/L59ZJMC3ztbM5AzH9hlojzOKzptVL+Qc
-	giiJ8LpztxtG3NBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7F206779B0;
-	Wed, 22 Jul 2026 10:27:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0QrSHQibYGoadwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 22 Jul 2026 10:27:20 +0000
-Message-ID: <4cda6ecd-5727-42bf-8df9-289244549a6e@suse.de>
-Date: Wed, 22 Jul 2026 12:27:20 +0200
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="m3/Qrnom"
+Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 3C0A2447;
+	Wed, 22 Jul 2026 12:29:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1784716171;
+	bh=WLv1NkIuFdslnB3lO6t5E/jNo8c9nJpw4Hrm3G2sqfc=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=m3/QrnomGMN98IKkxI3JhTOOEPJeWtjSrGgXu8oSmMMVQpE83+JZfaezN+0OuStRO
+	 UC0Zk07S3nQbm5k+9lbybLfuHAqHlmtNh2de0HMZ3GrdLO798KY3dA53WBv4ufUJr+
+	 jSynp7Y952/5N1dSAKZtkxWZYLNWDz5xq1MdYnN8=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm: fix missing header include for drm_panel_put()
-To: Neil Armstrong <neil.armstrong@linaro.org>,
- Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
- Lucas Stach <l.stach@pengutronix.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>,
- Stefan Agner <stefan@agner.ch>, Yannick Fertre <yannick.fertre@foss.st.com>,
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
- Philippe Cornu <philippe.cornu@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Albert Esteve <aesteve@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20260722-panel-fix-kms-panel-put-v1-1-ebde56446ee5@linaro.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260722-panel-fix-kms-panel-put-v1-1-ebde56446ee5@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 5AEA23DF3
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FREEMAIL_TO(0.00)[linaro.org,oss.nxp.com,pengutronix.de,linux.intel.com,kernel.org,gmail.com,ffwll.ch,nxp.com,denx.de,agner.ch,foss.st.com,redhat.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,linaro.org:email,suse.com:url,suse.de:dkim,suse.de:email,suse.de:mid]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <3ak4ffamwvdrtgw3bivzvrbtkmyh7g3lvuk4xwvdiuzizi3iu3@uxqvyif7rvpx>
+References: <20260713-v1-verdin-imx8mm-dtbos-v1-0-4acd63db4504@toradex.com> <20260713-v1-verdin-imx8mm-dtbos-v1-6-4acd63db4504@toradex.com> <al5mDqeFE8QVbUd9@lizhi-Precision-Tower-5810> <3ak4ffamwvdrtgw3bivzvrbtkmyh7g3lvuk4xwvdiuzizi3iu3@uxqvyif7rvpx>
+Subject: Re: [PATCH 6/8] arm64: dts: freescale: imx8mm-verdin: Add Toradex OV5640 CSI Cameras
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Francesco Dolcini <francesco.dolcini@toradex.com>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>, Frank Li <Frank.li@oss.nxp.com>
+Date: Wed, 22 Jul 2026 11:30:29 +0100
+Message-ID: <178471622928.2174993.5439033710284861967@ping.linuxembedded.co.uk>
+User-Agent: alot/0.9.1
 
+Quoting Ernest Van Hoecke (2026-07-22 10:27:32)
+> On Mon, Jul 20, 2026 at 02:16:46PM -0400, Frank Li wrote:
+> > On Mon, Jul 13, 2026 at 05:06:27PM +0200, Ernest Van Hoecke wrote:
+> > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > >
+> > > Add device tree overlays for the Toradex OV5640 CSI Camera on Verdin =
+CSI_1.
+> > >
+> > > The default overlay describes the current CSI Camera Set 5MP OV5640 w=
+ith a
+> > > 27 MHz on-board oscillator. Add a separate 24 MHz overlay for the leg=
+acy
+> > > camera module.
+> > >
+> > > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-=
+camera-module-5mp-ov5640-arducam
+> > > Link: https://www.toradex.com/accessories/csi-camera-ov5640
+> > > Link: https://developer.toradex.com/hardware/legacy-products/other/cs=
+i-camera-module-5mp-ov5640/
+> > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/Makefile             |  6 ++
+> > >  .../dts/freescale/imx8mm-verdin-ov5640-24mhz.dtso  | 17 +++++
+> > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtsi   | 78 ++++++++++++=
+++++++++++
+> > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtso   | 18 +++++
+> > >  4 files changed, 119 insertions(+)
+> > >
+> > > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot=
+/dts/freescale/Makefile
+> > > index c465aa19e526..ed3d678e7c5e 100644
+> > > --- a/arch/arm64/boot/dts/freescale/Makefile
+> > > +++ b/arch/arm64/boot/dts/freescale/Makefile
+> > > @@ -189,6 +189,8 @@ dtb-$(CONFIG_ARCH_MXC) +=3D imx8mm-verdin-nonwifi=
+-mallow.dtb
+> > >  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mm-verdin-nonwifi-yavia-dsi-to-hdmi.=
+dtb
+> > >  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mm-verdin-nonwifi-yavia.dtb
+> > >  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mm-verdin-nonwifi-zinnia.dtb
+> > > +dtb-$(CONFIG_ARCH_MXC) +=3D imx8mm-verdin-ov5640-24mhz.dtbo
+> > > +dtb-$(CONFIG_ARCH_MXC) +=3D imx8mm-verdin-ov5640.dtbo
+> >=20
+> > Need not add dtbo here,
+> >=20
+> > +dtb-$(CONFIG_ARCH_MXC) +=3D imx8mm-verdin-wifi-dev-ov5640-24mhz.dtb can
+> > auto dtbo build dtbo.
+> >=20
+> > check other dtbo.
+> >=20
+> > Frank
+> >=20
+>=20
+> Hi Frank,
+>=20
+> Thanks for the review.
+>=20
+> Our desire is that these dtbo's are standalone targets that are shipped
+> for runtime overlay application. Users might, on dev boards especially,
+> want to enable or disable any combination of these overlays, and change
+> the combination between boots.
+>=20
+> The combined dtb targets validate the overlay and in some listed cases,
+> provide a ready-to-use combo. They are not intended to cover all
+> possible use-cases.
+>=20
+> My understanding is that indeed a dtb-y targeting a combined DTB will
+> build the prerequisite dtbo, but it would not be an install target.
 
+I think with the Toradex ecosystem there would be some value in
+supporting or helping with the ongoing dt-connectors or dt-addons topics
+so that we can abstract the hardware which is being 'added'.
 
-Am 22.07.26 um 12:07 schrieb Neil Armstrong:
-> Some DRM drivers lacked the drm_panel.h include to use drm_panel_put()
-> after the commit b71a623598d3 ("drm/panel: of_drm_find_panel() return a counted reference").
->
-> Fixes: b71a623598d3 ("drm/panel: of_drm_find_panel() return a counted reference")
-> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+I think it's important that we tackle the problem of combinatorial
+explosions of overlays when we can add a component to multiple
+platforms.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+For example, your OV5640 camera could be added to many different boards
+- and each board could have many different cameras - in different ports.
 
-> ---
->   drivers/gpu/drm/imx/dcss/dcss-kms.c | 1 +
->   drivers/gpu/drm/mxsfb/mxsfb_drv.c   | 1 +
->   drivers/gpu/drm/stm/ltdc.c          | 1 +
->   3 files changed, 3 insertions(+)
->
-> diff --git a/drivers/gpu/drm/imx/dcss/dcss-kms.c b/drivers/gpu/drm/imx/dcss/dcss-kms.c
-> index 01e0c10b6ea1..7c5a6e2bc89a 100644
-> --- a/drivers/gpu/drm/imx/dcss/dcss-kms.c
-> +++ b/drivers/gpu/drm/imx/dcss/dcss-kms.c
-> @@ -13,6 +13,7 @@
->   #include <drm/drm_gem_dma_helper.h>
->   #include <drm/drm_gem_framebuffer_helper.h>
->   #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->   #include <drm/drm_probe_helper.h>
->   #include <drm/drm_vblank.h>
->   
-> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-> index 7cb19c15bf39..8b4a500347fb 100644
-> --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-> +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-> @@ -29,6 +29,7 @@
->   #include <drm/drm_mode_config.h>
->   #include <drm/drm_module.h>
->   #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->   #include <drm/drm_probe_helper.h>
->   #include <drm/drm_vblank.h>
->   
-> diff --git a/drivers/gpu/drm/stm/ltdc.c b/drivers/gpu/drm/stm/ltdc.c
-> index daf198edb42f..8818dcf98da7 100644
-> --- a/drivers/gpu/drm/stm/ltdc.c
-> +++ b/drivers/gpu/drm/stm/ltdc.c
-> @@ -34,6 +34,7 @@
->   #include <drm/drm_gem_atomic_helper.h>
->   #include <drm/drm_gem_dma_helper.h>
->   #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->   #include <drm/drm_print.h>
->   #include <drm/drm_probe_helper.h>
->   #include <drm/drm_simple_kms_helper.h>
->
-> ---
-> base-commit: 0f065acf44aeb8c32691d88cc87004fd2e54e902
-> change-id: 20260722-panel-fix-kms-panel-put-38c079412f83
->
-> Best regards,
-> --
-> Neil Armstrong <neil.armstrong@linaro.org>
->
+We should not be copy/pasting overlays for each combination, or we'll
+have 'thousands' of identical overlays.
 
--- 
 --
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
+Kieran
 
 
+>=20
+> Kind regards,
+> Ernest
+>
