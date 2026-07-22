@@ -1,204 +1,114 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49209.qiye.163.com (mail-m49209.qiye.163.com [45.254.49.209])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46350440A32
-	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 16:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D632E3C943F
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 16:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784736964; cv=none; b=qHDEBDlzlJmuRsMgQI9oRz0G2mjE0K5N7qxQLkL8b3aobxuGWtLHZAWzB2KPKM9c+nNdNESGjZ5iAAWlnxw5iSzWgsQ8Z4DdGay5IEas+azk2Hof6MmjMuNzr/nkp6k4O5GPwP8uJMhLrXXU15kBFAIoiErsrpAAmwtCxmSnk0c=
+	t=1784737104; cv=none; b=t3cik3wIWp+cH7BD4wd8pae6qw0LsODG3ECuesJ/NSS39rdTmRGJpTY7lqrRywd0op/3UEReQ2R1gytiVaObro4TA6hP5xqRIejUmbdIVwZyQYX6RE2OtoYGh7hofTY7SQtI3mfBoHu1NOFzH3xBcR6AkFVtBxXA0f+jmCk+ikM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784736964; c=relaxed/simple;
-	bh=24bg439gGrrRBlP2VrHnaGsYz3H8VEMfuqaUGo9f+2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BC0F0f9CYCSb7KAZLJ2KdqkOyMe2mXKJ9S7OHngnD7+jtM+jo7asNGOFuGvWcEPVoSTV0tU8+RPIBVAv2QOjyvgIr+V7EhUJnLVdJ6Zh6lzKzHWC/jutNERJkIkqh6R0kYRHO6hgS2axh81/QEXwuCtNT2Gi6gizLgsaDBaIBxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d6HC0dpk; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784737104; c=relaxed/simple;
+	bh=XKSyz3rotSlKX1BqouvmaSVj7RopHzI3qas4x53oa+M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=FT+JUNSCHhKrI9lxldNAbfU/GmSNzM7kT/qMciFM0Nmigg1c0rJZ0lX2vIaJZN3uFFFs2VHJSgifK80RiR4LQIAbDfj7udkbqD0fmZeLKERcLTcL/i4KRmuGeW/osfXpBpKVqBGcoRZFSIvdVjsHzex0cM853trTF903jEi4nqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com; spf=pass smtp.mailfrom=thundersoft.com; dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b=Xq8Lvvev; arc=none smtp.client-ip=45.254.49.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thundersoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d6HC0dpk"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-495590dde14so37889315e9.0
-        for <imx@lists.linux.dev>; Wed, 22 Jul 2026 09:15:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784736953; x=1785341753; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hdAhWxxku1ExCVmeOf7trOMVycxMJvkpBoDlah5X6ic=;
-        b=d6HC0dpklRxd6GM+qT8GGP6+Ru62Ggynit2CvqeqBmEDCsvyiaoSeN2KNR3iZs3Smg
-         Wab304qHbw/9IEeaY/99JcnfdVu5aHYu8ayYhFrf4m9thtslvQ524/JsIG42S57e/MTS
-         MuHngHiyyUJd3XUuRdNmxGLL461XcmG/MTLk+pK+DSShhy6YXSXBIC/LV5TSU7JPGLwk
-         u4D+Pju5vF3MATmwE6ifB+y9TtLj3QWpu19kjY7AG18btdss0MdyMqRavz0FeqZ+YJ8i
-         VxSpnafqS/jinG4IzCdZtsx9g+H8i1U1j0yPRoalFXe/+AGe3uZaEZuI+RHCmPOYv0Ec
-         sM4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784736953; x=1785341753;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hdAhWxxku1ExCVmeOf7trOMVycxMJvkpBoDlah5X6ic=;
-        b=i6YWUxZp87jjh0pwtOBQB6vN9ihP0nS+DVb7/Z260H3vRD1qvY32uJT7NA47DLpKr0
-         ijThrOg4IfrDidL5KLnpDuUhg9JL4105uQ/srA1azOrtcssF/+LDDTAXkvMZpzBptwSZ
-         2UOj7j4dMcfpTXn8IvVLIOk07ZiDna3iOjuzkVdMapIKGjZX4692ffvKBw5pu306wBp0
-         6nfCuFLuA3dn9MB1LETdT6sUd/y13f2mhbI+bqY1BJN2oSN5d++oRt1cCpm1Io2wDxQj
-         C6lTB7rlZRsiaLprYGAEksyGa+1tN9EVVOjYVCkOgi13G9aVSOA/XGaQndUdCN2+A6vP
-         MlCA==
-X-Forwarded-Encrypted: i=1; AHgh+RqXe/pL5tJGkrBk5XNuoQB5RP+baBGUVbCHm2wo+G4VFGkLx+tDW3COaS8SHXuzDCWwDoo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMMkbdNnBGyuq7Y7WNzsA2+2o2b4eaw0E364NzZQBZKXFMaQH7
-	SAp/7JzAWgMU3PvIiKD/LZy8WMJR50AtUoPfcm0j3XNlrb8M2ftGZ6xc
-X-Gm-Gg: AR+sD118bhdp5wuDhR7AamkmwPDBlMhGccN1NpcJ6/UtEDWOJwmF6VdcPPny1koZrTy
-	XHeRYhKGpRMZRcaCSP6U+dRmnKYAWeFZm61AvZePIvUgWODWe+T2SmkuHo0qKmc9uprcV/pntyH
-	TzGy2fYIqkqTWpiqFTX5gz6Q2/99XYmLIiTscooHiybgYLJumHEKzOjCTp7QOm87KzaoBqa2PkX
-	T3ITXoSIyTPzVzNWSTQCUygTf9SI2aNhRbU2d/iLBHdAJ8zPi7tMfO/yPBbrI8qj9yLQ0trrZWe
-	LvBGGGUjX2cbHKkRFZfZLju8wtwHmZr8oUr30qIX8xdPobAK6yHzBi0xl4zpxcG/s2nG/eEtec0
-	gYDulwCInYOvF0fOYRVs6/1E6/57lnyj7jkOKwMC9HV8Xy8CchZOnrYBiQOoxMTRw92XhfvE9sT
-	LlTLjw9tRpR6M0t73tJU4Goap4YpTUkuEgodkpY24sa/NFBWqf0opwICB2QWJPtkP0vp5fyMWJO
-	gKqMg==
-X-Received: by 2002:a05:600c:4685:b0:495:3f99:849c with SMTP id 5b1f17b1804b1-4954a3f48ebmr309531885e9.15.1784736952504;
-        Wed, 22 Jul 2026 09:15:52 -0700 (PDT)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49565304aefsm146049575e9.0.2026.07.22.09.15.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 09:15:52 -0700 (PDT)
-Date: Wed, 22 Jul 2026 18:15:50 +0200
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, 
-	Kieran Bingham <kieran.bingham@ideasonboard.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Subject: Re: [PATCH 6/8] arm64: dts: freescale: imx8mm-verdin: Add Toradex
- OV5640 CSI Cameras
-Message-ID: <vrw2wmtywuokachenclid4dnrosaq2xqlzqtyqe75tsdt27yzx@ntztzwyxoadw>
-References: <20260713-v1-verdin-imx8mm-dtbos-v1-0-4acd63db4504@toradex.com>
- <20260713-v1-verdin-imx8mm-dtbos-v1-6-4acd63db4504@toradex.com>
- <al5mDqeFE8QVbUd9@lizhi-Precision-Tower-5810>
- <3ak4ffamwvdrtgw3bivzvrbtkmyh7g3lvuk4xwvdiuzizi3iu3@uxqvyif7rvpx>
- <178471622928.2174993.5439033710284861967@ping.linuxembedded.co.uk>
- <20260722105914.GA72270@francesco-nb>
- <amDXGRT80HfyJwCt@SMW015318>
+	dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b="Xq8Lvvev"
+Received: from [127.0.1.1] (unknown [36.129.139.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 472ee9f29;
+	Thu, 23 Jul 2026 00:13:01 +0800 (GMT+08:00)
+From: Hongyang Zhao <hongyang.zhao@thundersoft.com>
+Subject: [PATCH v2 0/2] arm64: dts: qcom: qcs6490-rubikpi3: Add IMX219
+ camera overlays
+Date: Thu, 23 Jul 2026 00:12:38 +0800
+Message-Id: <20260723-rubikpi-next-20260615-v2-0-47c5add80114@thundersoft.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amDXGRT80HfyJwCt@SMW015318>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPbrYGoC/6WOQQqDMBREryJZN8VEjdpV71FcRP1pPkUjP1Es4
+ t0bpQcodPkG5s1szAMheHZLNkawoEc3RpCXhHVWj0/g2EdmMpUqVUJxmlt8TchHWAP/pgXPlcx
+ FqXWlCs1idyIwuJ7eRxPZkBt4sAT6F9siuOBZX6u2qrO6NOYe7Dz2QN6ZcO3ccExY9MHR+3y+i
+ GPof22z7/sHk3DASRMBAAA=
+X-Change-ID: 20260616-rubikpi-next-20260615-462417aa865a
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Roger Shimizu <rosh@debian.org>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Hongyang Zhao <hongyang.zhao@thundersoft.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784736781; l=2096;
+ i=hongyang.zhao@thundersoft.com; s=20260127; h=from:subject:message-id;
+ bh=XKSyz3rotSlKX1BqouvmaSVj7RopHzI3qas4x53oa+M=;
+ b=XADByVQZ4Absf2IRhJZ3nthW8M2bYqMEyC3OBhnlHKRuiJGMNYUFIo8mWIM9/agUNow1JBAlF
+ y8xdrSsHcJpC1xSKOFSuQZDgxjM9ztTRr4rHRVQYqIgiyp443uUtRRE
+X-Developer-Key: i=hongyang.zhao@thundersoft.com; a=ed25519;
+ pk=D9yL5W9Zj0lPBDAq9gzY++1849VlXuTWAkROzZ88J/4=
+X-HM-Tid: 0a9f8a9a13b409d5kunm8c572dff4a6e5a
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZH0lKVk5NQ01CSEJJQk1KGlYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlITVVKSUJVSkhCVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
+	lPT09IVUpLS1VKQktLWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=Xq8Lvvevs8CxyKd34U94tBj/KJmRvaQ0t51HccmhqPNgZ6Oo+TNpCC3ApEgH8ULD/6cayo+EUe53VBwjj2vZPTrBEkpgq5vZF62taNtYSQAVHYC2A9IXNn/jlkwyKaONcw8L1Ca69o77dIxGP5G4lyovCyksgw5WYKVpCILrkpM=; c=relaxed/relaxed; s=default; d=thundersoft.com; v=1;
+	bh=zeqQNC9dxpeHtC4McTJMo5VPAei5GmbsiOwZwfryttQ=;
+	h=date:mime-version:subject:message-id:from;
 
-On Wed, Jul 22, 2026 at 09:43:37AM -0500, Frank Li wrote:
-> On Wed, Jul 22, 2026 at 12:59:14PM +0200, Francesco Dolcini wrote:
-> > Hello Kieran,
-> >
-> > On Wed, Jul 22, 2026 at 11:30:29AM +0100, Kieran Bingham wrote:
-> > > Quoting Ernest Van Hoecke (2026-07-22 10:27:32)
-> > > > On Mon, Jul 20, 2026 at 02:16:46PM -0400, Frank Li wrote:
-> > > > > On Mon, Jul 13, 2026 at 05:06:27PM +0200, Ernest Van Hoecke wrote:
-> > > > > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > > >
-> > > > > > Add device tree overlays for the Toradex OV5640 CSI Camera on Verdin CSI_1.
-> > > > > >
-> > > > > > The default overlay describes the current CSI Camera Set 5MP OV5640 with a
-> > > > > > 27 MHz on-board oscillator. Add a separate 24 MHz overlay for the legacy
-> > > > > > camera module.
-> > > > > >
-> > > > > > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
-> > > > > > Link: https://www.toradex.com/accessories/csi-camera-ov5640
-> > > > > > Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
-> > > > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > > > ---
-> > > > > >  arch/arm64/boot/dts/freescale/Makefile             |  6 ++
-> > > > > >  .../dts/freescale/imx8mm-verdin-ov5640-24mhz.dtso  | 17 +++++
-> > > > > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtsi   | 78 ++++++++++++++++++++++
-> > > > > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtso   | 18 +++++
-> > > > > >  4 files changed, 119 insertions(+)
-> > ...
-> > > I think with the Toradex ecosystem there would be some value in
-> > > supporting or helping with the ongoing dt-connectors or dt-addons topics
-> > > so that we can abstract the hardware which is being 'added'.
-> > >
-> > > I think it's important that we tackle the problem of combinatorial
-> > > explosions of overlays when we can add a component to multiple
-> > > platforms.
-> > >
-> > > For example, your OV5640 camera could be added to many different boards
-> > > - and each board could have many different cameras - in different ports.
-> > >
-> > > We should not be copy/pasting overlays for each combination, or we'll
-> > > have 'thousands' of identical overlays.
-> >
-> > I see your point, and I agree that it would be valuable to move this
-> > topic forward. I will raise it internally at Toradex and see how we can
-> > contribute.
-> >
-> > At the same time, quoting Marex (https://lore.kernel.org/all/dec2a7f6-80fd-4692-8936-969f8837a555@nabladev.com/):
-> >
-> >  | DT connectors have been discussed for the last 10 or so years and three
-> >  | is still no real progress.
-> >  |
-> >  | I would be happy to send a follow up patchset which would convert the
-> >  | DTOs to whatever connector implementation format lands in the future,
-> >  | but I am concerned that waiting for DT connectors will block this
-> >  | patchset from landing for a long time.
-> >
-> 
-> I do quick check for ov5640, we can use partial connectors, which already
-> in kernel tree.
-> 
-> use duplicate label like
-> 
-> in mainboard
-> csi_io_i2c: &i2c3 {
-> 	...
-> }
-> 
-> csi_io_regualotor_3v3: ....
-> 
-> 
-> csi_io: connector_csi {
-> 	compatible = "...";
-> 	gpio-map = <0 0 &gpio1 3 3>;
-> 	...
-> 	irq-map =<0 &gpio1 4 1>;
-> 	...
-> }
-> 
-> in 5640 overlay
-> 
-> &csi_io_i2c {
-> 	camera@xx {
-> 
-> 		reset-gpios = <&csi_io 0 ACTIVE_HIGHT>;
-> 	}
-> }
-> 
-> https://lore.kernel.org/imx/AM9PR04MB8353AC7DF91C5F73C34019E0E3F72@AM9PR04MB8353.eurprd04.prod.outlook.com/
-> 
-> Only clock part have dependence. other parts. I am working mipi dsi for
-> display, almost work except panel show have some problem, which is not
-> related with connector.
-> 
-> Frank
+RUBIK Pi 3 provides two camera connectors but ships without camera
+modules, and each connector can be used with different sensors. Describe
+only the board-level 3.3 V output rail in the base DTS and add optional,
+per-connector overlays for Raspberry Pi Camera Module V2 IMX219 sensors.
 
-This is very interesting and I agree with both you and Kieran that it
-would be great to abstract these connections away and kill the need for
-so many variations.
+CAM1 is connected to CCI1 and CSIPHY1, while CAM2 is connected to CCI0
+and CSIPHY4. The overlays can be used independently or combined, and the
+Makefile provides composed DTBs for both single-camera configurations and
+the dual-IMX219 configuration.
 
-Certainly I will read up on this and spread it internally as well.
+Both dual-camera and single-camera configurations have been validated on
+the RUBIK Pi 3.
 
-That said, since there are still unresolved dependencies, I am not
-convinced that we should already head this way with this series. It
-supports hardware that exists today in the currently standard and clean
-way.
+Signed-off-by: Hongyang Zhao <hongyang.zhao@thundersoft.com>
+---
+Changes in v2:
+- Keep the optional IMX219 sensors out of the base board DTS and add one
+  overlay per camera connector.
+- Add composed DTBs for CAM1, CAM2, and dual-IMX219 configurations.
+- Correct the power model: VCC3V3_OUTPUT is board-level, while each
+  PWR_EN controls the module-local sensor rails.
+- Model the 24 MHz sensor input clock separately for each camera module.
+- Describe CAMERA1_GPIO and CAMERA2_GPIO as privacy indicator LEDs and
+  associate each one with the corresponding sensor.
+- Drop output-high and output-low from the GPIO pinctrl states.
+- Rebase onto next-20260721.
+- Link to v1: https://lore.kernel.org/r/20260616-rubikpi-next-20260615-v1-1-3d96b89397ff@thundersoft.com
 
-Can we consider moving to this once these patches are merged and we see
-benefit?
+---
+Hongyang Zhao (2):
+      arm64: dts: qcom: qcs6490-rubikpi3: Add 3.3 V output supply
+      arm64: dts: qcom: qcs6490-rubikpi3: Add IMX219 camera overlays
 
-Kind regards,
-Ernest
+ arch/arm64/boot/dts/qcom/Makefile                  |  15 +++
+ .../qcs6490-thundercomm-rubikpi3-cam1-imx219.dtso  | 117 +++++++++++++++++++++
+ .../qcs6490-thundercomm-rubikpi3-cam2-imx219.dtso  | 117 +++++++++++++++++++++
+ .../boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts |  24 +++++
+ 4 files changed, 273 insertions(+)
+---
+base-commit: 290aaf24a551d5a0dce037e3fab30820f9113a10
+change-id: 20260616-rubikpi-next-20260615-462417aa865a
+
+Best regards,
+-- 
+Hongyang Zhao <hongyang.zhao@thundersoft.com>
 
