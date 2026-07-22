@@ -1,228 +1,211 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013036.outbound.protection.outlook.com [52.101.83.36])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010034.outbound.protection.outlook.com [52.101.84.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0321A6810
-	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 00:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513C61A3166
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 01:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.34
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784678725; cv=fail; b=AyWJB4IwJO38lMPMx7o71rpTa15M6mFvkQhQMIpaSyfpCLM/a7kUnx6C0N7W2shFekZ6w6jg5eMOEpuoPFdPtsGch96ZEgrJpNR9RbLGXnlEiu+2NnUT8+gzS2h202XTuObOT+kGjEsUPZYOzF6P31SBODEogVyoS++gRFYIRVY=
+	t=1784684565; cv=fail; b=qPUfYnkjhoDdekmsDjf5xTZqcZfjrnfSjPA0MOTVKeI9oxgfQsQRogmguci/rTfptQv9KGS90/CKPm74X+C/4npyLTQJm8WRiXW8rkxE5a5HJC9SoGRA9zISNQccd5VWdF8qGnS0kcfh2wSDY+0cGDScRjbxrCAMhKyMuhoZSPM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784678725; c=relaxed/simple;
-	bh=vroCPDoujrx5ferZSQYQJIRKTR/Yc7nyuV6oixh71d4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=f5wQOzonYSy+W9sTebsTpfTEJSYNveNjnXbibjQsYgpsNFS6LGuOecwb7UNc3W8fCC434sHZytQlbOZL3N7H11DBzzj9vs3qlzU8yQrPo8pfbyDzr0YxOiWozEy4f9adMCfrlEVJ4N9z3KDvjlLkbFjG28SEBWisspd8QEmMzls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=aswCAvJz; arc=fail smtp.client-ip=52.101.83.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1784684565; c=relaxed/simple;
+	bh=EqXOFDl9ecgT0GXrvD1nmdRavHyRT2/X7OACABC+0/U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=TzHRfQFyQ87fO+gnhyn+fasqof5BJrF6H/9qJzP+OAhoJXW5XOtTDzw2BS9BtyAMyPt8c5YS7kCvqDL0Q7dAZs7D4NsspEZ42peRZkGpNkE2oo6ij+tVqYl1o9sFwel+JTgOmWDDyamTKDx87u9c+S2kP1ttfTA4wFcdnhfgfhs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cn.bosch.com; spf=pass smtp.mailfrom=cn.bosch.com; dkim=pass (2048-bit key) header.d=cn.bosch.com header.i=@cn.bosch.com header.b=edZncOS5; arc=fail smtp.client-ip=52.101.84.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cn.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cn.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="aswCAvJz"
+	dkim=pass (2048-bit key) header.d=cn.bosch.com header.i=@cn.bosch.com header.b="edZncOS5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EB7GYCR81JUjUK3m/2EQbJ+UiQ7KfmoOm9lcXIpc6njTrI4K5HvUcymNtipQcNGL1WnzO2OSlEgsv2940l6n89uGTxyC7ZCGi9LAg49czswaHdE8Y8wi3R3kqDPFCT7z7kbC5PxDInfnDHNtszAjuQiFwN85ChpOcBxjoTHL/zn5JovOnAzU7QNHUkiZ4BILSMOGbJz2cnqAhH0RFOKf4XGYtXXlKiqKJ0Jyn2QqkZokioi6vu9xkEtAl03xqy/e+7IKQryUWSVY9XhD4vfwAyXmq6RckBxolnPoP6h/qOM/2fwp6WkyTqRm7Rfsk42M4axmnj1Z1n4crcq+P8hYew==
+ b=AoYUsNpd1P/rmzfoCXXpXmygxB5mTRVYEDIsOPYzeba/7cLt3zEGl/poUsUL4TblFmWbxyrVqKzJDyGRJ6k+GO91/JlWSMP/pEc7CArB7RyvtaG4cnMUoEEzx+UvAbdAk5ViU0zwgGVQ8eoB37uWJInoKPEixk1fe7wsLJ+nWXI995a0PRhVmHLhZerS3MrGfK8jz5zXnmtbaO3lhiwgluMfvEDplvQS2uDqA86ZXiyM1OMF2vOMQuMGh/utXDoijk3UyFS6VfYEQPqwPHMPyh1DD5nBwZcqa/MVHqWmYAjKFoAv4NJXcd7lkombqHkKryoV+GNmpa++zX0Fv4AbXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=toWkJN/c66avFQrKLM7pNdxfiQk8eRZ7icrlTVm/3hY=;
- b=Rbkq3Wxmz+QHPsWvCE5ITxf8TCjt6o4sHO5aWxNPh+KhJO8soBc6IRcLpMDCwqx7JkCsvr955SazCgTtJH7Q4s6fnh02IpjbGAZKkBxIqSXhszhjX9fxh5RKWm1C5kXSjCLrOVeqqCRy/iwKteJEGH96V3UGGP57QYHvievxHiVksXcqV1LOYyrZzk3BDn8ZgeG/KhI7+8MxAvlTEz8xFbFoFfMsnNGKqbtcjCB5vLT1A5SedePof49pWoMTwAcvKsrvYPygieSc+rlztMDaqo8krYiRsbmQPQvUIS21TbLytMj/DjnGCGMg5Onboj61z5rNVAXnnlSidZYNWUmWQw==
+ bh=EqXOFDl9ecgT0GXrvD1nmdRavHyRT2/X7OACABC+0/U=;
+ b=dDE/99ZLhmzd0G443wFgsnhGtGdt7CEEYBC3VEX2gDj9k6qARLuYb5qlguk9fNgHYvSevsfpXvXCYTYoAFQuogMEMTxjG5fojzM05eoxnm0Hp01TfVwzzG18KHTdSRs3bGy/DxaPn6/0stRyvr4SrLMZ4Np7s65CJq9obHyF0AQSq1rNrd8ci7GkQOBdShXRAvcUH7r1OH9QWZcNt1eGS5qkXw/yT7Nd0daoHxFWUFvXF7UshdiEbr+qMS89Z80oZYh8eNVysDWGuP9PDe10A/eHXohtNRyT5DMqZIPjKAA9RyGdL0EJwgbrfTtIyCdtcx/JlCxkLuzWzpoCQ54dJA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=cn.bosch.com; dmarc=pass action=none header.from=cn.bosch.com;
+ dkim=pass header.d=cn.bosch.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cn.bosch.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=toWkJN/c66avFQrKLM7pNdxfiQk8eRZ7icrlTVm/3hY=;
- b=aswCAvJz5WFcVb1UmLdZDZqSTyqy+402ZHa2NCeHvqYKhGMVJ5mXuGisa0urlFfiSuuYH0xMAAegpP4bH7YqTiOJMZyxVsTtOgi4OoLTKis/743wLtqIgEMiiNwimFh9KR/7SdxSaL43jMrRl/yojWqGMRwbz53qtX/GHnlQDqrlS3qTacdWEx1gVitP127C6chvCGOADaRj7ycqaiUmbXiVvPySHeAQe9mIwwRvas91tZw0cVIV6O7J2fH9mrgUoO3Gp9x1meXVFqd5h64BA8agkkWLq6SZKevONIbYr4+lp7qzOYmq0wSxRl10ylu/BaW92Ka1zRMyDtlHDiuZkg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VE1PR04MB7359.eurprd04.prod.outlook.com (2603:10a6:800:1a0::15) with
+ bh=EqXOFDl9ecgT0GXrvD1nmdRavHyRT2/X7OACABC+0/U=;
+ b=edZncOS5heDFSOsJxLTK/vbtvN/oCTdlKLWd1OFB5JLj/q03uWknzoNePlkzfv1hqnsualawKGgZYKxkFhzbhfnps2YqhJltsvMgSeI9eaGQGEQtvY14QWtKNwJkEqBf/w2VIAMYIWX6eVF/7aoiEBWRmKQgyUzOq28at1VCyq5Mhcrh1tOJiF1xG+YrznEQO2Z45rxVHsamI3na764bM/L7lOT1gwG1Kkzz9kLSnccZCPY5wyoYe6q7ovKL6nxd7naRODAqbM+HAJa2jiPTvauM/ckYHfGSzxXLgcbq2qMlkjZiql/B4SKAjWYznyOuOU3FSmi60NFrMrcyW3I26w==
+Received: from PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:2ee::8)
+ by DU4PR10MB9618.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:642::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
- 2026 00:05:17 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
- 00:05:16 +0000
-Date: Tue, 21 Jul 2026 19:05:03 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Robert Chiras <robert.chiras@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 3/7] drm/panel: simple: Add waiken WKS101WX001-WCT
+ 2026 01:42:39 +0000
+Received: from PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::fa9a:794b:21d4:ae9b]) by PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::fa9a:794b:21d4:ae9b%5]) with mapi id 15.21.0223.017; Wed, 22 Jul 2026
+ 01:42:39 +0000
+From: "CHENG Haoning (BCSC/ENG1)" <Haoning.CHENG@cn.bosch.com>
+To: Frieder Schrempf <frieder.schrempf@kontron.de>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano
+	<daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Lukasz Luba
+	<lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 3/3] thermal/drivers/imx: Add calibration offset
  support
-Message-ID: <amAJL9TIcDAK7kbh@SMW015318>
-References: <20260715-dxl_lcdif-v2-0-da797562636e@nxp.com>
- <20260715-dxl_lcdif-v2-3-da797562636e@nxp.com>
- <alnCL7ylMyvGD-ui@raspi>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alnCL7ylMyvGD-ui@raspi>
-X-ClientProxiedBy: SA0PR11CA0186.namprd11.prod.outlook.com
- (2603:10b6:806:1bc::11) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+Thread-Topic: [PATCH v8 3/3] thermal/drivers/imx: Add calibration offset
+ support
+Thread-Index: AQHdE3uQOwhGQ7gvREa8/JzAX/2zpLZuS2CAgAL3SOCABHAl0IAAaXSAgAKzhlA=
+Date: Wed, 22 Jul 2026 01:42:39 +0000
+Message-ID:
+ <PAWPR10MB7415C0CD57F76103C5F858C4C2C12@PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM>
+References:
+ <20260714-b4-symana21-11221-imx-thermal-support-upstream-6-18-v8-0-d54d8690e16e@cn.bosch.com>
+ <20260714-b4-symana21-11221-imx-thermal-support-upstream-6-18-v8-3-d54d8690e16e@cn.bosch.com>
+ <5a000235-5e17-4d54-8bbe-42fda0b59db0@kontron.de>
+ <PAWPR10MB741520A95E4822E935A0B7C0C2C62@PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM>
+ <PAWPR10MB7415DE998EA3CCA639F14EF2C2C32@PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM>
+ <cf03ce93-bd08-411c-9ca3-2a3238e38eec@kontron.de>
+In-Reply-To: <cf03ce93-bd08-411c-9ca3-2a3238e38eec@kontron.de>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+dlp-product: dlpe-windows
+dlp-version: 11.11.3.81
+dlp-reaction: no-action
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cn.bosch.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAWPR10MB7415:EE_|DU4PR10MB9618:EE_
+x-ms-office365-filtering-correlation-id: a96d5bb6-4a2b-4a54-a27e-08dee79283aa
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|6133799003|4143699003|11063799006|10067099003|56012099006|38070700021|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ WVkPe4a1N56A079W3pnfjW0D5g3ehRCFo+9wQxD+kYULPKZkD+tjmsvMt8Sf9qW1EEPWS9ODOTyfckXs234AO6PLG2Lsv9HKQ3cgFaefiN+TZJk9ZxD+JIuUtZNxVu4/Jy0LNlEUBTYl2vo9f9AWabvUlX5IdCiG8lpNOYFQ9C8q9CxSWI8eXt4/IKo6PVnVDhSSjQ1OUOLcNcI/Vb2Da/VBb13oxPTqVPSV6LhNAg6D55xVXAkMi0wMyYmfZDIeLKpDZYXRLLwIJnCGyjfpBUElJcXp34BWanysnBt7SOoJfFioSZhQp1z4vUqhLXoYPkPctN6B2JITnKBj0lCsrlNJUbgmwMPN89heSpLOVU2GcNU7vdKWThNOvvxipj7Ss/XGAw9rxAgQvXhQ1x+0iWzWP6ebYlOR0nYQ0SuZY0Vk+r3qNooYhgneb/q87cUSQJvsw/wIOeDTkMMUTU5Ix6+3b1eoECcV/9kTDHT3l35BfleIyU9z4pX+3vRaDNybiuaWAM2Z/0SeMdS+qtuZrQw2JvDr9gb3qTueRxAObhllEVv5CMq2lnaOhX305e9suud+JZCKeZsNaxNQzKrtLC/WQQBy+y05YB6bhlBB5WcMdkzYQaVI9Q3t2rDaPUEEPv7Z6cpZ+zCgRE/1i2GMrpyHJvucOIcfmBkYe5qRL6r68p4mBVI7FvAb3P2kSNEAWTNEWNNWm2NJRNqoet9Kimd3ckp3vLBRmtPwYZhKsss=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(6133799003)(4143699003)(11063799006)(10067099003)(56012099006)(38070700021)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?b3bawG2+lYXz3nPaZmeERsk4XMcdTf9MLfWUfklc1YztKI4wFXdYWhBWC3sM?=
+ =?us-ascii?Q?RZTi1BRXkoVo1I5ZB+MJaoD7EKrEuuIX87T8UzskV3Bz1t2oYZRXaoDqjsU4?=
+ =?us-ascii?Q?mZuqzcjeQf4ubrDdqJM3Plq4aNJcaRnqX6ZmrODOLlCRDqiqO+Ti7kkHSpmW?=
+ =?us-ascii?Q?TSXYigOM50LeqoDq6sx4eKoSnUNKtpebfVqkyshPkV5zz37UPNz/fWg+lV4E?=
+ =?us-ascii?Q?KWiidpJKxU+GBJPgSUttQhqVOeccUGPd/ByUqzHKkaSX3BagBZpwZ9yMelCj?=
+ =?us-ascii?Q?kERajiawQ41H5Dblgwi+FC/iA9W31EbOhtM9TWiyI2NNZjSuhNjs4SACQPs1?=
+ =?us-ascii?Q?n4kBAuY4EtoOadpCO8ntMAjyYqArkP9rBKXFr52hhyWu4fO/opTo5mNohpHo?=
+ =?us-ascii?Q?uFNqpmdGudgrAj7nVjja/nlZF8bhPFOLdZCpTc8LrQVOkY4ia5FpQc3Im5rV?=
+ =?us-ascii?Q?0MrpRFK5UgC/yWyY5wL7qOF/dxRJw3AYeev8Sl+R3zuSC1dWvxEE93PNg9Gy?=
+ =?us-ascii?Q?pVCt3ghZBJ5T6rpDQgjAcgVlux3q86oseEVLhCuSiDKIsE+1Lo98MOZYR/lD?=
+ =?us-ascii?Q?PRXTqAyfe0VuTljDCTvouXcrnbSPhB7YrdmppzJEot8PAkCsD27REhhmWFvS?=
+ =?us-ascii?Q?lRePGLi7321GvT5i0PaIpsyf8fHeZ5PjOsnImxo2Y80EMsLxB8pkL6wqkKhk?=
+ =?us-ascii?Q?2I86EVy54p6rpOUKHXmni7dm8dYzY2lf3IXStiDH/TCC2HovG4PRAjQWBJFd?=
+ =?us-ascii?Q?/u+UshzaisUY+bij/NHcaSi9ihUhv5bLQtEAmUQ6yw0ZBVaHZ0mOxFWERCfK?=
+ =?us-ascii?Q?t9p6PyqJlgYPjDOiJY69woF7AHTYi8vY6Oke1wLS/AkUE/kXWrKGe8x/i2oK?=
+ =?us-ascii?Q?+kuG6SW9mPqZwkx0slinWg5Au37lJxa1i4oRmCJB3LoYUgk0YzfTvL1TirhZ?=
+ =?us-ascii?Q?amzsrhsJBkgJs42SeMx9BRrEkjUWyPFEBN146aurAn1ecITE6GOnl5GGqIZJ?=
+ =?us-ascii?Q?7QJTekYCXG1xtyGIuXlthSikB/IUDcRjj0ZDS12U4aBcjPt71Fq0XEL6Woxi?=
+ =?us-ascii?Q?e95+7brvrmC5qUZsYcPZr621SFSR8vR++qVFa35VG/SWbKT1X/W/7bt0VZhx?=
+ =?us-ascii?Q?s72MCGrPG3Dy6gRuOPdHI8KwDIyZo1gZwBkf6Sn+apiesV9qAwUrmEQhYa1N?=
+ =?us-ascii?Q?pErJF4ZlPPxIu9cJFp9FkR8dYYL/gb6WPelsLmsZW2w5MKqhybyE6OztN7cm?=
+ =?us-ascii?Q?8gK+K3yBawhQXSyneV3bDO9sFst//oGkPwYOayKzoANQjpRjXwA5X/7DBWwn?=
+ =?us-ascii?Q?1FdqntigW1N77aolTdBHuFp8rgee81x7GVHNU5UQgE8ox3L23cL8IGd65OdM?=
+ =?us-ascii?Q?6rs+YgXS5h6u2S3kEh0FqMVJ3cuqBq1qrEtWpp9FhtFrqt9oSABUbICwZazR?=
+ =?us-ascii?Q?HIuyaG9SNPZM0zrHrSb9txwqfpEoN7MJZmDgRQQ0jzSca/jh/XkE/fAMawem?=
+ =?us-ascii?Q?n6mBrn2khD6n9nv94vCSX4cAyS54Zo91I0yIYFV/6AJwngr6AS2xkUqbU7gP?=
+ =?us-ascii?Q?UREVqibC4pYqFFOsPTfAden1Vy9NYWM7MIRzC6vP9h2qFHLjLZeJYDQiW1MP?=
+ =?us-ascii?Q?GK9qIoQ3bKhGGM5F6sWJ75iovxNEg/SvGZEZVrbNTXKnF//WO0PozFVaUqdi?=
+ =?us-ascii?Q?wldBB8gp4oxFxCKYOyOxJrf0Uj3n4+AGDn5SKUGlm9otvlLc?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VE1PR04MB7359:EE_
-X-MS-Office365-Filtering-Correlation-Id: 04903307-522c-4a25-22d4-08dee784e8f3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|19092799006|56012099006|4143699003|11063799006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	lNVn+atDExTHZuHHagXdFzBXLbhVPDUjs9gz2rNfE3hG0o7+nto9J+e7Ln5nfpdCbwMuvGSTsSUQ1Xwtn+d7ZTiXvmBOZJCui4DKNulbGAlkSzyZKiK/rVNVP66JG9tmFr0Qht/VRKiz/7StHlAv7S9OGnSkORT/wLeBPyvCC0NHwg4CBHetOuSCdSfiPUmGYrhFj9k2VwAyhxWBiZ2xHkwdXAZI29fDJH+kRILM86TU2QDpduWJ5NLEsmU5Gyjjhsi5/qeITDatcrGC+TI3pcyBcc2AG4wIxHxYkHrtPW+LShVT/r1Ki9VFRqePVRrX6jBbSGtvBDIyh9i/2CH93mWZiod4BxOymNzEyR+T9JAMa0xzAyKkyyHr+DQMUmt1JVMMFmpod0WzsJQNZ6S8AVd0gn3Y3vU2p5uMRvzkjwPZ4wQxysZ3Fq63NVleIO7dL4EljmE4X8HuslscvoEYK2Yg7DBfUoPe9m2fkvbweF6M/82lDk2c/Q2XXdezDjWk187tt3lPP1nm4XCg1COzb2qpbXGRSBWCvm9H5muVnECGX09Znws0oU0iFOCCrS/279M2f4Q9x2rSDNu1PZwc0UuQBZaVpeExP7IP3wLVVr36fe6ww2sMfV4aDZG5tCds4hhQygwgMJ6xC+IrUaGOA9s1EgCOea06zhhH/4RunKc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(19092799006)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bmWss3XpY2BfDzKW0VfTU0c0mesPrt8Y3mw7XgP/YOTbRonDkBjvZxWtI3MZ?=
- =?us-ascii?Q?76Kej3j8Zs/IlmYsaTLRg51t6RJDfhv5FgTJhUKe6sZSSmDammpjLO3G1kKL?=
- =?us-ascii?Q?IAwl/OI10EBClB3EH09zaQSxJT/S9AxRnuZQr7y7uqA9ldux7a93H+NmxSoX?=
- =?us-ascii?Q?qov7zYtosP+m31Jjb67E4a4QRlR/NX0eQ+k/sB2V9VK3TkKrNY6zl+379il5?=
- =?us-ascii?Q?c8e+syAa/DKKB33wLIGFLtADoYG687ogrNUEi8KsYoXq/9Iien+4jn8reGKV?=
- =?us-ascii?Q?hCrYgbkO+u+WDxs9PO4MU4lqII73I1gEWs3EZCZeqHBDNPIP/tS+DPFjvpiR?=
- =?us-ascii?Q?gttWtoewvE1Knrn4130vbq5jSiBIqonkurTWo2h4u9ZhHErKhjPxhCN3Kum9?=
- =?us-ascii?Q?DIgedDDuQwUv3u/vBc95s0tEY+a6ZRWG2snYRDJLE+8qpMU/+AsdCzLiG/N1?=
- =?us-ascii?Q?wVEEnjoEiLDyDAdqb6KKc9q+n8p5fOfjAKew/Saf/d2lLBx5sJyCdKjCgopD?=
- =?us-ascii?Q?fGPY4dTx/fT8PV8Hiq1xShgSgIi2m6bUFcn5Sm6islds+khQLH7zz6RX/LgD?=
- =?us-ascii?Q?DpERI6iFZk+2N7ZGreie+F3Jg5Im3OO/a1OVii/spWYAhm+WsDvMRAyUVpej?=
- =?us-ascii?Q?ayigUcqlspBbq5IZWs7IWiQXFXDu7JBVDHBRUTfbSM07rML4WGoPJJDcBKo+?=
- =?us-ascii?Q?48NNNJLqJQ2jaZ9bk2CdxyR/88WZEAkNa8rgjCh/mslq0x+SKsLV1wMoBNDW?=
- =?us-ascii?Q?FhevoIZW/W9gGA2K7urGPAafBru9tCtOVdeBRAoNxcW9/t7qS3F+gAHZrrtb?=
- =?us-ascii?Q?yKq3p8hbgd2SgryrM8kRmTg+OmSewQMsDUGFYQI6zYE3sMCe3DvawJe/RUic?=
- =?us-ascii?Q?AU9kuDLejZvl9XqIzE3sovVfQlfGAAXvGCkD20D/KrwjoC5oZXgdEQyUiG9T?=
- =?us-ascii?Q?s2ZVaCw54KLgabEwjuzGHa14EQv4UWgeGx60XGERGKljHAu+LM+CllSf8T/Y?=
- =?us-ascii?Q?bk48xIMEJaWUHu2wMuTTjn5tzPI8fsa/dQLrhhoAXZ4DxHTscu18XB/I431G?=
- =?us-ascii?Q?9XwrmlIo3ZpO0xTxGA4jIqrb/Wh/pysToqr2ZLbLYg7bNI1pYmKvaph+JZng?=
- =?us-ascii?Q?hPAg4Wutuk41ynnQjbCkVhO4XPM44CMwafGTJjAP7wOC0IcN13Gf6l1sgIWX?=
- =?us-ascii?Q?82zGEW7n17piAiXxiArNbWZXCSIL0hhgONiTnj1N1MxHbv++USMv4c5NiI6E?=
- =?us-ascii?Q?oOMZsVSbdjbNnpl7M2/m0YcnU6C+hvtr8MGXLZrXUu5qG9zU9e7JN2d9y8tg?=
- =?us-ascii?Q?p0HDbSY3LJchnRd0gfIawT8kvC5/KOeY2oOHG5upgFGcD7KwkWjAAnn0DJHp?=
- =?us-ascii?Q?G0Re8Pd51FcCxqRJBXHv/dBCdKXpzgVQCVAZkrr/Gpp93zAbx2Ud2NN71lXp?=
- =?us-ascii?Q?PlZUA0gkzzAg6Wixnz37iV7rdwMR6Dp6L1QwaAa26KfxogymPETVfpM2FXf6?=
- =?us-ascii?Q?be/xble/2mR3j+gplqJ2bJ7qSP5IHl9RP87gd33NHWHLUAaJXZEcb16aPyet?=
- =?us-ascii?Q?UsF5P/UqDAKIKMhfP23/3016CypQ2f4KAzOOz6OjPsIf/teei4StZChEweHk?=
- =?us-ascii?Q?49d3pTK1gWR408bSdXt8qY3jrK9f1E8SpgPqeMt0rDYA/iURThBM0H9+ybop?=
- =?us-ascii?Q?DqR4nYwRLTaAMfbHvaVs8uVUMVhvV/5Clg3agGoNwTdCuEeCX8l4whVgSGIA?=
- =?us-ascii?Q?PROjarHBoCRdxXYuei0FCATK9kSQzPHxHeHH0gBhlHoH7575MUdp?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04903307-522c-4a25-22d4-08dee784e8f3
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-OriginatorOrg: cn.bosch.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 00:05:16.6125
+X-MS-Exchange-CrossTenant-AuthSource: PAWPR10MB7415.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: a96d5bb6-4a2b-4a54-a27e-08dee79283aa
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jul 2026 01:42:39.3372
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kH835lIDn0HF7uMUqzNg1dfYOV4KGP0nD6oQhG+/hUt3GgWC+aFBovbXbryKvgZr7n+NoXsYkMOLG6BceViA6DSzMB3uRdwKilY4O7brQRJE84JjOAqIpF+uebivjwY8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7359
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: eucdyC/30+uFajL9iJvyRnHJnPhyMHB2RVtBV7ZYb5u54QE07p2DUuKk119X+LcohsPOTS50R/GDAGHAhqb9PA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR10MB9618
 
-On Fri, Jul 17, 2026 at 01:48:31PM +0800, Liu Ying wrote:
-> On Wed, Jul 15, 2026 at 02:34:48PM -0400, Frank.Li@oss.nxp.com wrote:
-> > From: Frank Li <Frank.Li@nxp.com>
-> >
-> > Add support for WKS101WX001-WCT panel, which is an industrial-grade
-> > 10.1-inch IPS TFT LCD capacitive touch screen display module.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > change in v2
-> > - update height to 135 from 136 (sashiko)
-> > ---
-> >  drivers/gpu/drm/panel/panel-simple.c | 31 +++++++++++++++++++++++++++++++
-> >  1 file changed, 31 insertions(+)
-> >
-> > diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-> > index c09bf3db5e78a..73a21303a612a 100644
-> > --- a/drivers/gpu/drm/panel/panel-simple.c
-> > +++ b/drivers/gpu/drm/panel/panel-simple.c
-> > @@ -5171,6 +5171,34 @@ static const struct panel_desc vl050_8048nt_c01 = {
-> >  	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
-> >  };
-> >
-> > +static const struct drm_display_mode waiken_101wx001_mode = {
-> > +	.clock = 71100,
-> > +	.hdisplay = 1280,
-> > +	.hsync_start = 1280 + 70,
-> > +	.hsync_end = 1280 + 70 + 10,
-> > +	.htotal = 1280 + 70 + 10 + 80,
-> > +	.vdisplay = 800,
-> > +	.vsync_start = 800 + 10,
-> > +	.vsync_end = 800 + 10 + 3,
-> > +	.vtotal = 800 + 10 + 3 + 10,
-> > +	.width_mm = 217,
-> > +	.height_mm = 135,
-> > +	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
-> > +};
-> > +
-> > +static const struct panel_desc waiken_101wx001_panel = {
-> > +	.modes = &waiken_101wx001_mode,
-> > +	.num_modes = 1,
-> > +	.bpc = 6,
-> > +	.size = {
-> > +		.width = 217,
-> > +		.height = 135,
-> > +	},
-> > +	.bus_format = MEDIA_BUS_FMT_RGB666_1X18,
+On 2026-07-20 10:27:33+02:00, Frieder Schrempf wrote:
+> On 20.07.26 04:10, CHENG Haoning (BCSC/ENG1) wrote:
 >
-> I find a panel specification in link [1] and guess it's for this panel.
-> It indicates that each color component width is 8 in 'RGB Input Interface
-> Description' table.
+> > [Sie erhalten nicht h?ufig E-Mails von haoning.cheng@cn.bosch.com. Weit=
+ere Informationen, warum dies wichtig ist, finden Sie unter https://aka.ms/=
+LearnAboutSenderIdentification ]
+> >
+> > On 2026-07-17 06:23:44+00:00, CHENG Haoning (BCSC/ENG1) wrote:
+> > Hi Frieder,
+> >
+> > I need to correct my previous reply. After further discussion with our =
+hardware team, the offset does NOT convert die temperature to package-surfa=
+ce temperature.
+> >
+> > Their thermal characterization shows that the raw TEMPMON sensor readin=
+g itself deviates from the theoretical junction temperature - this deviatio=
+n exists even at the die level, before any board or package influence. The =
+offset corrects the sensor reading toward the actual junction temperature, =
+so it is a genuine sensor calibration.
+> >
+> > Board-level effects may contribute additionally, but they are not the p=
+rimary reason for this feature. I apologize for the confusion - my earlier =
+description was inaccurate. The v10 series reflects this corrected understa=
+nding.
 >
-> [1] https://community.nxp.com/t5/i-MX-RT-Crossover-MCUs/Optimizing-eLCDIF-throughput/m-p/982741/highlight/true?profile.language=en#M5348
+> Thanks for the update. If that is the case, then I would still be
+> interested to know:
 >
-> > +	.connector_type = DRM_MODE_CONNECTOR_DPI,
+> 1. How is the value for fsl,temp-calibration-offset-millicelsius
+> determined, if it is not provided by the SoC vendor.
 >
-> Seems that the panel also supports LVDS input according to the specification,
-> since it mentions 'RGB or LVDS Interface'?
+> 2. Why do we need an additional offset, if there is already a
+> calibration using the value that NXP stores in the OTPs.
+>
+> 3. Who is supposed to set this property and where does it belong? The
+> SoC dtsi, the board dts?
+>
+> Thanks
+> Frieder
+Hi Frieder,
 
-Need hardware rework to use LVDS. Need remove banch of resistors. Should it
-be treat as difference panel by different compatible string? hardware
-actually changed.
+On 1: The offset was determined during product-level thermal characterizati=
+on by comparing TEMPMON readings against the junction temperature, as estim=
+ated from calibrated external measurements and a validated thermal model. A=
+ repeatable residual bias was observed. This offset compensates for that bi=
+as and does not replace the NXP factory OTP calibration.
 
-Frank
+On 2: After applying the NXP factory calibration data and vendor-provided c=
+onversion formula, a repeatable residual error remains. The offset compensa=
+tes for this residual error. This correction is particularly important in t=
+he high-temperature range, where accurate trip points are most critical.
 
->
-> > +	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE,
-> > +};
-> > +
-> >  static const struct drm_display_mode waveshare_28_lcd_mode = {
-> >  	.clock = 50000,
-> >  	.hdisplay = 480,
-> > @@ -6155,6 +6183,9 @@ static const struct of_device_id platform_of_match[] = {
-> >  	}, {
-> >  		.compatible = "vxt,vl050-8048nt-c01",
-> >  		.data = &vl050_8048nt_c01,
-> > +	}, {
-> > +		.compatible = "waiken,101wx001",
-> > +		.data = &waiken_101wx001_panel,
-> >  	}, {
-> >  		.compatible = "waveshare,2.8inch-panel",
-> >  		.data = &waveshare_28_lcd_panel
-> >
-> > --
-> > 2.43.0
-> >
->
-> --
-> Regards,
-> Liu Ying
+The correction must be applied consistently in the kernel to both temperatu=
+re reporting and hardware alarm programming. imx_set_alarm_temp() converts =
+a thermal trip temperature into the raw threshold value programmed into the=
+ TEMPMON hardware comparator. If the correction were applied only in usersp=
+ace, the hardware IRQ threshold would not correspond to the corrected tempe=
+rature scale used by the thermal framework.
+
+On 3: The offset was determined and validated by the product integrator's h=
+ardware team during development, based on thermal characterization of repre=
+sentative devices. The resulting value is specified in the board DTS becaus=
+e it was derived and validated for this specific board/product configuratio=
+n. It should not be treated as a generic correction for all i.MX6UL devices=
+.
+
+Thanks,
+Haoning
