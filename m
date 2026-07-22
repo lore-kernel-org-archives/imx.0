@@ -1,76 +1,75 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013032.outbound.protection.outlook.com [52.101.83.32])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11021119.outbound.protection.outlook.com [40.107.130.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA5F360EF0
-	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 14:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BD1238C16
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 14:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.119
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784731435; cv=fail; b=C0kk3sgz8NV7d+rlWYodDLS4Murefg7BgTOT08WeTTrMfePhIbMRgnj5rDy6GdlWFjaEA6zCUzUG3WyzuDZs97Mn46gYn/v6ZfZslBbAb/bTkpfHRM5XekoccroErRgq97G2nFDenBiqo8W1DIrg9F0D2DyvClGUnH1FmZUBZHY=
+	t=1784731761; cv=fail; b=VdjvrGEgIKs1sdrTm6CyiF+b6jP35yGwpIahT2Kkh2ajdpd/BEPyjMxTNtHk79EdNU9ehv8vNOqNBHIaiyCWAvvDZITf27GZVttBbsSE4vHsdJR/ecBOzQ1hWnH4mWAfs5Atq6fnkj1wFCkM1WfYglqT4OENezjXjNclJ24jDC4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784731435; c=relaxed/simple;
-	bh=1RHKwATfJTgIp9DbVGMMNwBaO9vsTbUCOJUMvpLdm8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Mob7hOm5X0KdPdt8Ot3RwYpOJnVkV3FQtVQS3uhwz7oj8uXGb31IESAjVui/yfXE99c6OLG5tdxKddoJan5dR7IZjPvk2Tm5C8XA2z+Sfo9Mv9N9akXs0/OGguV1hsLEp3TMtVkLi8hZMy4dnJoq8pV8XOoMb82UHf3Zma5omBg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=TQMI/VOy; arc=fail smtp.client-ip=52.101.83.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1784731761; c=relaxed/simple;
+	bh=mN/TJ5MFeWVKmv6eK4m8/riz3tOzO9WYwSH5Ra4eASg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=M5rV+90UDqV2E48VhTmvZqIfu2OHZ0g12+pZ7LNfdJRdTKlys98CFdN8FycF18pV8Pd+fYhoUyKTblV8B1nZH2Lgn4p5dfSrz7SnZQ+oHtyLvnDOqlWh+7+hOrh+MkdpLHPTUicPQEIuYxzZW7+XDtEnztRtHewPOkWXvZ66sL8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=BJwlyeg7; arc=fail smtp.client-ip=40.107.130.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="TQMI/VOy"
+	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="BJwlyeg7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VPIMbvreAgCA7VWU3qUo7kcm7qsO9MMQqVtC1GAeWbjvb1OPXK4FEgZIUmePoN6LcNrKnsUyKrSJAlP0QzJdVayi8x51pF/O4UK1J4/hOYdK0DM8kFP8/VFhyvB00NRzyQWSbsL3xipYPmKWoujWmHlghI0KJqI6a5W1mXQgrttRiVs/RMuydd55UcbxnRwNRkViMM2CyB2kJBk/bZ2xJFktpVEZherIhS77zC4C33xKaX6VKJE46C0D9B9ZvzsxoLIGnixkD3nC+/JHA6Ywr8I0BcNTPzQQD+zEqHwZJ27iEdD0dbWpCkQnwIwXStM3NuOYGL7j98L+NvSu+e291A==
+ b=YlnHJG8j3hFCsBjXi7shSZ3/QfBseyyGHatzJ+xXylxWGL7u1BSVF5WAPnHQFHuYIdswDfPNAco/Pnk3BOEsoPX6xsaoemM8oaBkbgfsaZYF8l+Y8blLlfO43xGMfRSJRIWruVOL/IfPYKWELnGqXj7QJvibdvJo8NqAC66WYvUWHE+DUynSafCVFy0nKdk7eH7k7sfXYOFtvJp2edKH0FG1VlmW0SwECoJtakjU1Dt1LUNwZdG6sja7ZoQYkWiRw4NlSOeHia0krPc/pqUTn97YVoRwEw293eVEgc3le9i5g8lU33GEIBjAoTQ979XlDnFIa3PwUITG6M24q7e+4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SeXTAzCL6ltVwsUCzIu4CtXql8QHfHU0lz8YU3u0JIY=;
- b=P3BbI1MTcE8Q6D+/UQ4/igVi/dclEFw/Qj3q1ZiTJR5oI25Lx/QevzkDOdZqWYnSirjPd78u9EdR+7oAC/1Dkuvq8rkL+ofNLxNrJMofAnoQ3YuBTSIvxS39EtGpMCV6uYkXt1Ncd1q+mbxhqMUdCB008ymP8KA8XyqgLfUw3T8S7U9b4dGjblOseeJgg1C+5UHQljB7jotdNtMZ9iHkhNkhvxKjfWEgI9nYO0gjh4rvxjdNXXywyRO01Guj9AWgtfsTZIbJDg8tUSls+VtyARSOLy1FZrHFTLkgr8jw0DHC9z9mR4zpQALvkNNmCdlD83B+y4BxmouvWNArhiueww==
+ bh=cQ73H3bGQoaeEYC19ljWf7vTqmYu0YeC6DqeoEq6l/8=;
+ b=N3IoashRaXyAVfzOulV0vfVJqis2cATMtQI3VcUQXWTMo3KQ4ysg7ZFQWMNGuOngzlL65TAXsktEmmu8GSOPVhR4WENJjpPGBePxwO0e590mPOcwCg4GyfujmVSmsOsFICULQj33xsfLil8bxPMKkcmU8TqtAad6Jo9If1ZYEB/26D5pRP7ZOpyZZa7nvAnyeruh09sXbfnnCDSrsSMkQKZb5itp5l8+KdUhMBtcl8pobmTeQALuHnmgkpy8mZQaHQKcv2KkITgryH/W0LPJ993zdlhARs/w/DDGn6T+9/5aC5nXIgdvQajM2PVjIUV9Yv1nZXZIrjmEX2tpYdxoYw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SeXTAzCL6ltVwsUCzIu4CtXql8QHfHU0lz8YU3u0JIY=;
- b=TQMI/VOybldE5JA1rmHdnZ+eH+RjnsE0aUbH3sVBemMrcIO5zrunj3Pt+lCcQ9yxyUyMHj5xhAHJDSOrf/1sB3WhUaf+bVOwjA3p0Sx1E4gW3u22QQq1vYR0uvT6SS5JSlqXcM4mfHy6oBQiKqRcJ8yvBGCpCyd0o0wVoYd3CcmHj4YTo5Pd4iwOzslWDw4FKGGhwPGj3O4LPq6E/pKVm0eukQonNbqxY6fewXqu7iFOsD0mzWVoqQ4V2ugVvHOsE1if0J26wZO+Ythtj0oXR04xIZ5HFeI8qTd9WTaKDebaAkNPUMrFG1d+OIMzZatkGL5aQ2GNp/UUuCUJ9FF0Dg==
+ bh=cQ73H3bGQoaeEYC19ljWf7vTqmYu0YeC6DqeoEq6l/8=;
+ b=BJwlyeg7u2FJpQULS71hAmO3Dyz01l7F6lMS7Q1MAr6ApjY4M+WEg5fdjM2Bv893wHVkpdGyZOWQh3u457oHNVtSzG8KFfUq5sHTCSlUJvF6i+sTgAxdhhDESpMRRmIG5Pk9uba108XPCDVYK6axL9kTzJX+/GF54UF4u3YfgmLITXqKnh1nMlxlla0b8Rm35n6iRrT97qfRIj0nNYMjBW3KFbo/qSsg/W03SzgbLe5XykG4wznNBQOZ4XEoYZs/m7USD2rVE4rayZlEB8WVx6Hsf927K/KOiUqH/FxInoJNx7ObyKXmvrmma/1dHRquTg31ANoCniQ8/5H2hmgIeg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VI0PR04MB11046.eurprd04.prod.outlook.com (2603:10a6:800:269::13) with
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
+ by GVXPR10MB8742.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:1e8::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
- 2026 14:43:48 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
- 14:43:48 +0000
-Date: Wed, 22 Jul 2026 09:43:37 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Ernest Van Hoecke <ernestvanhoecke@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Subject: Re: [PATCH 6/8] arm64: dts: freescale: imx8mm-verdin: Add Toradex
- OV5640 CSI Cameras
-Message-ID: <amDXGRT80HfyJwCt@SMW015318>
-References: <20260713-v1-verdin-imx8mm-dtbos-v1-0-4acd63db4504@toradex.com>
- <20260713-v1-verdin-imx8mm-dtbos-v1-6-4acd63db4504@toradex.com>
- <al5mDqeFE8QVbUd9@lizhi-Precision-Tower-5810>
- <3ak4ffamwvdrtgw3bivzvrbtkmyh7g3lvuk4xwvdiuzizi3iu3@uxqvyif7rvpx>
- <178471622928.2174993.5439033710284861967@ping.linuxembedded.co.uk>
- <20260722105914.GA72270@francesco-nb>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722105914.GA72270@francesco-nb>
-X-ClientProxiedBy: SA0PR13CA0013.namprd13.prod.outlook.com
- (2603:10b6:806:130::18) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ 2026 14:49:12 +0000
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22%6]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
+ 14:49:12 +0000
+Message-ID: <9ceb5fb9-edd0-408f-8f7f-74d5145ae81f@kontron.de>
+Date: Wed, 22 Jul 2026 16:49:10 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 10/10] arm64: dts: imx93-kontron: Enable ELE firmware
+ driver
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Francesco Dolcini <francesco@dolcini.it>
+Cc: linux-arm-kernel@lists.infradead.org, Frieder Schrempf <frieder@fris.de>,
+ Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Pankaj Gupta <pankaj.gupta@nxp.com>, "Peng Fan (OSS)"
+ <peng.fan@oss.nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260713-upstreaming-next-20260609-imx-ocotp-ele-v2-0-b8266d93514b@kontron.de>
+ <2420855.ElGaqSPkdT@steina-w> <20260714123350.GD22086@francesco-nb>
+ <3056369.e9J7NaK4W3@steina-w>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <3056369.e9J7NaK4W3@steina-w>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0210.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e5::11) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:1fb::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,153 +77,156 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI0PR04MB11046:EE_
-X-MS-Office365-Filtering-Correlation-Id: 589424b8-b2fd-432c-4034-08dee7ffa3ab
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|GVXPR10MB8742:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85c07f8f-6bb0-4300-13b1-08dee80064dc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|19092799006|56012099006|4143699003|11063799006|10067099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
- fIlZqQLlUwmGDUKnRfTIy2CqpEQh5VvRerGC02TiEPnmv4FCWs0+y0eLe8qGPGry8CyTmqJhF0TD5iHf8clJR1GxvXKjkTT/DeJGhalZmFkAg8a2kxlKVg+OwrRXOjKcAUbbmSkWNkfx7SHO5kx3/NSvD9DQ3DAReI2773rQaxlwy1pXyv5AqGnBys8QLjviZJfXsj94s+407kkmflAhHCTgXK83pky+PTU2Wcy6zo3ajcHhiFYq44ta5iiUqyQRsMMQC1jK2I1jtR74kWmKuazO8IbXC20JDQ6tOfYugOVcLfRyE/PB323vvcpc0GuUggPouw+pHbLdgoJ1FGFyi7fXHGdOaWQVI7GjwpHhNA67gMOsazZxyUpV835Stn54WhIXT6bOKG38xGdEBvVlFE1ptP/g0YKAQSV+9+HddWm0fdMCMvMzIgijsNwL81iMkRw5rDspHnUyF+Z0Lmr/l0HltPgLHxPa9tTHHWFQTRMfIMNoMV+Xfc5Zx/GUP3MPHniO1JJ13fegZFo7RaI1pBnTUTzKS+p3yO30sT2wnfGSo2pR8kemB4eNvelRv5sWP/7CqU0seLpnoH9u6y37VzK854t+RMEvq5GovNw4k29e8BB1CNhUb+xTzSMPwrghlfjZlpeTLp9KQ9NzAfshrY5e4eaIDX7ta/Wla+aXBf8=
+	ejo6blgO6OOlLsOb7c7tqWwUIi5RF04j0oB5p1Ssy+7dt+v7j4UobJaj0LIiKJ9UfUbQ1Tiu2iswwkpZ2spYI76lojeuthZdGgGujpbCUzvmbtbvKdD4/ou5g9gR9emo6BrwnLukH+2h+7qYtnPQthwDmiVWhUiyhn9Zzs4MitN+0i8RVnxe2QrG9JN6KcKnvCpVyhn8iMgC7BzdtEzkd8Rz6M+gd5wCgQf7seMwJONWYIrDmhsVnqlw5u075Pj/IfBnrR03W/GxWEBJszzN93JywPpxmlvgQwkslsd/tFUG7kIlEpI/fJ1MOqCyXbCKXKLZuntU84/e8RxgJsQ0Su9WMDpOnvH96kJu9AmxNCu5pjxYSzEQ3nBcdm6SgIEsyR8J5VJIJCi8jj5f7yLcVEq0DWSAVNNgkC+9z6UpPNc/qrYYtuemTKsj01LVPxRGxau4+2EIh+kVxt3Whxmi0E8kYrJuAOBI9MX4FIcI/2MweWpUNMBaAkEJ9cUi0zL/AJZnDqLlLdCpqod/lNrCfEfQIl3rQNn2oOm17gQFO8+Ih3K/OmG0O3sXFdomFJFZtbQKumMRUbgGAOjmOkFZpp13E5OFgZa1qtBG9wTay/kALUfHa//kizD45wD0yfq+FUhsa5y5f8NoY2XENeVUErJ3CWytxjFprRCDSL/Qo6k=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(19092799006)(56012099006)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?r49gXxndzeJl/+1p8v7ftVTUmMaUa+PxHoG6eGfeSpwFAWGcl+eyfRNUGKDc?=
- =?us-ascii?Q?v8Yc5k2/OkpTqypNcN0ZruRcyFB/UeYow9MLQUZDnfBljts889uCLJyO97yj?=
- =?us-ascii?Q?ulF/eQT3XUWuawCieW5aeJA45TK0kcTo2UYrbg82YrwWHoqXfUpxXuaRpUnV?=
- =?us-ascii?Q?fObvnd/cAhMXQ/qvFFYHA2hepmnEI3UZ8opEG0M6YzoruY0LhInfWD0r9k2c?=
- =?us-ascii?Q?FJVnjiywx83pg7D/BUR8ytaou76mRmm6XgioW13Gh7myROJutV7JCYlgCgF2?=
- =?us-ascii?Q?po9WyrQ67SHhz+l0rw9yj3FrHoW1kcINnlwGVJzkHjg7lKxxe7mBWUmwC9zH?=
- =?us-ascii?Q?WXGwd4C9xyDJQUTg/rHkPPcAv/LtMs8/dTPKQVY9f+IQ4R5R913K+fIos4dw?=
- =?us-ascii?Q?gEX1HknUUOS7A8sRJp57I0OMWeLCcTCb/xx7E5ZZwHN1kTsIaWf7ncP2MsHw?=
- =?us-ascii?Q?fufCN3St9UrQ5NCKQUu75guedKARFRsJ4phYc+3ZUt0/nay9YfwRSGFPSYLn?=
- =?us-ascii?Q?WNXkMSawTZ7dkzTZLxCJ2ELbe33kkwREUTqpmx62KuEX7ONsqCNFy5kqENCs?=
- =?us-ascii?Q?DIt1gllYhTC9a3wnRoZIes3tvAqebmsj24GmpKF0t/Ju44OWW5Y6TnZLbt8M?=
- =?us-ascii?Q?U5skE2G5qZ4U+7afm+rWk4t7NktbSFwCuwVgJuNK0ZxXFjMVuGFJckqG7Qhd?=
- =?us-ascii?Q?3qgn9rQOL80f6flugrq8lAmYWIM5Z9nyfdBKehJpxwB8t7tbwaxGBanxEUbc?=
- =?us-ascii?Q?gjNfL3cpYWcM06vx0MIoSEm1pHyFM3U7uKGjU/LlXk+E1qtmZBrTzoE1UB4s?=
- =?us-ascii?Q?wlX8/FT/1mJJuzD4qxgINXB6KBKEumM+8uwftuDPMlrk7a8AeORzaj7QnN4i?=
- =?us-ascii?Q?hgZ4ntUmjDQa0xyc5eye4cdYu4Z4hvW1vIwMDd95wCcreFiYPd1ZFT9YxP2e?=
- =?us-ascii?Q?NauvJ9+3lmMzWsrPiTVXdkatDdre9eZuIir25g9vOW6to2l2kreN7lD7zaWZ?=
- =?us-ascii?Q?w4tLapDKll9LMcfMvGbIHbYl5k/y9toIGG4a50J4wzHeYorWf/HCrXrWMpoZ?=
- =?us-ascii?Q?2tfj77DmAZw8Sl//ZaER91pMIGFd5Z5ASakrYe+6+dlPqyrIbbImViDQUFQ4?=
- =?us-ascii?Q?woaUGKAvtGs9V/jG2zmNBbWIzhoJiA/b0Z4phKFEYINOf28yzdWH1Xn2cnJ+?=
- =?us-ascii?Q?ZQDDThBNK0fI1yyxXcJ6YipmngJZoKJFMFP621rM6g8hGQuXQ8+fsXvt72Qw?=
- =?us-ascii?Q?yeqBVntTLH+AEgDvo9YLn5dfeYG7ITa7aPP92jS+mmIw5zjONA3aQjv5K43S?=
- =?us-ascii?Q?065vRqtMqpDsQAQkg38HlXCHoZRfqfywl6I4qVmYZmpcl9jFtBKF08ilwKSL?=
- =?us-ascii?Q?uKox20TkCdObUhAKQkgh/tVIs08BxETdFX3s/XI0FWGGihXp6lhbOas5zI24?=
- =?us-ascii?Q?feYdMcf43o3tVV1/vjxdt90g8soBMmWmJnYYkgtUJNiz+Lys1ZIquCHpAySG?=
- =?us-ascii?Q?/cSt6br1b+A9QC0zarziwqbrSMWFOwWsN9u6zIpokNSSaneYFXw0aO3MUwpU?=
- =?us-ascii?Q?DXEnOYFRcnaCRRwW8hDKNiQQw5ow12oS3pwZ3KyLxpD0LRGiqB+7LQ16wkWH?=
- =?us-ascii?Q?xoBNk49sc9zWbUDTZijoERohwmEc7SFwcy8tSJU+7JKd8ygzhjz8tFDgjlJp?=
- =?us-ascii?Q?80t2GYuVeNMM43ipIOMVSKFa3NQ9TpLq5qMVxdDTFmTH/b2wUnBR5K/rQXfU?=
- =?us-ascii?Q?sNw3jkS+HhTxBukye9wd2eAsXJIZgorfmSU6+vycCQ2ddIjko1eJ?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 589424b8-b2fd-432c-4034-08dee7ffa3ab
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+	=?utf-8?B?SjM4eTBESExQSC9ERkZQRlZ2N3JjU3owNElWcXY2UUhGVVZuK2xqenErQ2tI?=
+ =?utf-8?B?UmFncXhOZkZLb0diaUtwNGhxVk5LSkZuQk1xQWxDdW5aVVViVStQMHZHWlN1?=
+ =?utf-8?B?OXp0ZEdmYmdNTmpkMzdZa1NIZlgxVklWL2hKS1V4WFd3VFZyUTMzWmdZb0pH?=
+ =?utf-8?B?d2I4bHFPUnJtaEZ3a09wUTNCelF0aWR5QlNZYmk3NzJ5RWMxYzk0T0FyY3Jz?=
+ =?utf-8?B?cFdyRjNJRGhiV2hjQ2p0RFE4VncwUTg4WURacmFXcmd3SnJMWG1lcW81Zkdo?=
+ =?utf-8?B?ZWxjNFhIYWZsWnhtN1g2L044T3hhb3dXQkVsN1dJcHphZDluYTZ3eGZUdGx2?=
+ =?utf-8?B?WkkvbFNXQ1E3K0UxNHdtZU1XaWk3NjNnN041cS9tY2I1U1B4dlVzMGd6WE93?=
+ =?utf-8?B?Q1NoL01tRWI0ZVVLaUtwMXVzMDdwMVVaazVnNDVFQVB3SG5CZkRGSTBKeUJ4?=
+ =?utf-8?B?NWdmUGoxRVUzTk5TSzNjRkVFVm0vUXlLQlBNU0l2UVYrSzNOM2xXaFZpWmhS?=
+ =?utf-8?B?UUl2MlVqcWxSWmVSWERHc29FcVBRVDVWVkZyTDY3Q2JCckhJS1JaZGtXSUxJ?=
+ =?utf-8?B?V3hLQ1VEdVRFYTNNYm04cXdabkozYk1IQjRNRktsZFRqMTB3aVYyb0VIZDBr?=
+ =?utf-8?B?SEVtNnVuV3hzSGc2eHlLNDRxRm1MaFNGK29LVDZObUNZVXk3MGVMdENFQ0tH?=
+ =?utf-8?B?dWxUZS9vNVhyeG9jbkY3OXp2S25hU3ZDQVlYbWs2MzcwUDFnaytpQVJmYzNs?=
+ =?utf-8?B?NjV6eXVJbDZReG8wNStFUTJndE04ZmlmWXF1STBYMmhtdCtja1UrMGw2TUZ6?=
+ =?utf-8?B?U2dBczAzTExyYVN4bnRtVnYrTE5yaFBCelVPWmUwV2RYUFpkbWx3NUtjNTVp?=
+ =?utf-8?B?L001Wll4cHFHOFhGUUM0Q0RIT1hCK0R0d0hiRG5WbEVCOVA5UXVWYlVWV2NI?=
+ =?utf-8?B?eTN4REdDUEp1VWdpYkQwbG5aV0g4S01CSGdoQ0F3RmNOKzczZXJsRzFEMTBs?=
+ =?utf-8?B?M2xBa3FzZmRaNGdjbG5RTWRVM3BvTmRqR0RWcnFLdjdhV3R6cjlONlYwZGlk?=
+ =?utf-8?B?d0Q1NDhVcEp6MHlyb1pnWWd1WDhzZWU4UXBxTi9GNU9pTjkrdlcwRUhYK0lm?=
+ =?utf-8?B?bXJQUnlFQWRYWERVMEpJNUpIWWxLVloyWi9rS2Vob3lZc1NEdWtEemVxV0Zw?=
+ =?utf-8?B?RHljU2U4RWQxU1dYcFJhWUI2NUF5bEVmQnVaWlplbkNxWldINmpGalZMdmQ1?=
+ =?utf-8?B?QysrVTR5aW5VajlocHNpYU0xR2ViazhlMGhqOS9Md01CTHdKTjZRSjR4djZq?=
+ =?utf-8?B?RDduTUtseWQ3VDhZaDZwbXlNSUF6bVM0MVZXZk5Lc2l3R3l2ZGZNZ1R1Z0Yx?=
+ =?utf-8?B?RFhZT2tCbU5sTDNnTWFWT1UwYnJCQmluaFpIU0RKd1poUVRiS2p1cGNueUhy?=
+ =?utf-8?B?dmtXdEJXeUNYcnM3QktBb3cvU240RmVqZFJyWFM5OFgveGRlVXNDK3JjSkIr?=
+ =?utf-8?B?RDZPbVlhd05LcXE5dlFwRHhLcUZUVWlZb2tSWldTRWF3OGxhek9BTFNFTTNV?=
+ =?utf-8?B?SktxNXBJVGFRR3dyTlNHN29zamlPRG5Ua2lTTGxOelBEMVJNclhZN2taVTN2?=
+ =?utf-8?B?S2VJTnlZUzVUTVE2alNFcncxOHc1b0RwdGRJaVhUUEVPbnViQlpMTTFlcjNx?=
+ =?utf-8?B?UytkTWs4WEs1NW1ramNWQTRrSzZndmNZb29qT3dhcG5obWFyZThtb1N3Rm5T?=
+ =?utf-8?B?T09hY2tvU3VITDIxR1VIaW5UaGxBcWpsRWJEM3pReEwvYTlzaXg2Y28rdDAw?=
+ =?utf-8?B?U2Z1L3lRTjJ3eDY0cUNBVjJsbzlOREpIb0FSSFR4TjErbERvUWlCaDl0YVlr?=
+ =?utf-8?B?cTU0aG1YZHNTQXFxOHp2NkdkOUR2eVZzMjVCMVZPNGxtb3ltOWVUTWVPcndF?=
+ =?utf-8?B?YS9XSFdTazRGTUlYbGVXT2xWTElUQklNTi8zY253dGIrQTBNTExZVDFQR0NN?=
+ =?utf-8?B?Z1dMb08zelk0UUZJSmVVZmpjVk02NkxOZ052RlFXQkdoZW16UzdDQTU1WCs1?=
+ =?utf-8?B?ZUJuU0ttNFBIUEFIZ0c3UkpuN013QTk2MmdsdmxKM2NXVEYrL3owT1ZuNmhx?=
+ =?utf-8?B?UDUxdi9kVzMrMEVZSFZaMVJoN0JKUjdzZU1kS25scW5mTzQvNkUyb1Jxd3hG?=
+ =?utf-8?B?Ry8ySWN4d2Nad3lIZUkzeDhpd3h6aG8wYUxFeVFrN09UNEF5Q21zTEthUFhC?=
+ =?utf-8?B?OEtjVmZrTFAxa0tCbzFYNkhYTkdwRVpxSElpaDE5aCtlelhoTy9MdXczSEFk?=
+ =?utf-8?B?dXliRHkxYzNiS1FBWGVHbUNxUWdMQVNaajk0WlpQR1JFaWh5Zyt3WWQzcXR1?=
+ =?utf-8?Q?qaH/6Oc+AtFaucrc=3D?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85c07f8f-6bb0-4300-13b1-08dee80064dc
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 14:43:48.5271
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 14:49:12.3849
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lUAwnLwKlJZbHiBAGGvs4GelT4AfjmElpVQUVf70y90Rz3sLA7MKju8MoJLnorEfFsJ7hd4ZLZ55Zw4nxYLGhofntTR6lyERk+Yy56sKaDLijw+drB2ARsjB+wAg0DuY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11046
+X-MS-Exchange-CrossTenant-UserPrincipalName: g9RZ+awgI832DJVDRUmThUte8eaam9Niwr3ZCQuKOHdYewhTkA4rWt8e7OtKoRariKcGB/5tQtr9HJsDZHAiBiMfU6W7/mOyWF7ZuRLtd6Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR10MB8742
 
-On Wed, Jul 22, 2026 at 12:59:14PM +0200, Francesco Dolcini wrote:
-> Hello Kieran,
->
-> On Wed, Jul 22, 2026 at 11:30:29AM +0100, Kieran Bingham wrote:
-> > Quoting Ernest Van Hoecke (2026-07-22 10:27:32)
-> > > On Mon, Jul 20, 2026 at 02:16:46PM -0400, Frank Li wrote:
-> > > > On Mon, Jul 13, 2026 at 05:06:27PM +0200, Ernest Van Hoecke wrote:
-> > > > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > >
-> > > > > Add device tree overlays for the Toradex OV5640 CSI Camera on Verdin CSI_1.
-> > > > >
-> > > > > The default overlay describes the current CSI Camera Set 5MP OV5640 with a
-> > > > > 27 MHz on-board oscillator. Add a separate 24 MHz overlay for the legacy
-> > > > > camera module.
-> > > > >
-> > > > > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
-> > > > > Link: https://www.toradex.com/accessories/csi-camera-ov5640
-> > > > > Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
-> > > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > > ---
-> > > > >  arch/arm64/boot/dts/freescale/Makefile             |  6 ++
-> > > > >  .../dts/freescale/imx8mm-verdin-ov5640-24mhz.dtso  | 17 +++++
-> > > > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtsi   | 78 ++++++++++++++++++++++
-> > > > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtso   | 18 +++++
-> > > > >  4 files changed, 119 insertions(+)
-> ...
-> > I think with the Toradex ecosystem there would be some value in
-> > supporting or helping with the ongoing dt-connectors or dt-addons topics
-> > so that we can abstract the hardware which is being 'added'.
-> >
-> > I think it's important that we tackle the problem of combinatorial
-> > explosions of overlays when we can add a component to multiple
-> > platforms.
-> >
-> > For example, your OV5640 camera could be added to many different boards
-> > - and each board could have many different cameras - in different ports.
-> >
-> > We should not be copy/pasting overlays for each combination, or we'll
-> > have 'thousands' of identical overlays.
->
-> I see your point, and I agree that it would be valuable to move this
-> topic forward. I will raise it internally at Toradex and see how we can
-> contribute.
->
-> At the same time, quoting Marex (https://lore.kernel.org/all/dec2a7f6-80fd-4692-8936-969f8837a555@nabladev.com/):
->
->  | DT connectors have been discussed for the last 10 or so years and three
->  | is still no real progress.
->  |
->  | I would be happy to send a follow up patchset which would convert the
->  | DTOs to whatever connector implementation format lands in the future,
->  | but I am concerned that waiting for DT connectors will block this
->  | patchset from landing for a long time.
->
+On 14.07.26 14:37, Alexander Stein wrote:
+> Am Dienstag, 14. Juli 2026, 14:33:50 CEST schrieb Francesco Dolcini:
+>> On Tue, Jul 14, 2026 at 02:06:38PM +0200, Alexander Stein wrote:
+>>> Am Dienstag, 14. Juli 2026, 11:33:54 CEST schrieb Francesco Dolcini:
+>>>> On Tue, Jul 14, 2026 at 10:43:56AM +0200, Frieder Schrempf wrote:
+>>>>> On 14.07.26 10:32, Francesco Dolcini wrote:
+>>>>>> On Tue, Jul 14, 2026 at 10:09:11AM +0200, Frieder Schrempf wrote:
+>>>>>>> Hi Francesco,
+>>>>>>>
+>>>>>>> On 14.07.26 08:59, Francesco Dolcini wrote:
+>>>>>>>> Hello Frieder,
+>>>>>>>>
+>>>>>>>> On Mon, Jul 13, 2026 at 04:53:46PM +0200, Frieder Schrempf wrote:
+>>>>>>>>> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+>>>>>>>>>
+>>>>>>>>> Add the ELE firmware API node and pass its handle to the OCOTP
+>>>>>>>>> driver. This allows us to gain read/write access to the OTP fuses.
+>>>>>>>>
+>>>>>>>> This seems something we should have in the soc dtsi (imx93/imx91), it
+>>>>>>>> does not seems board specific.
+>>>>>>>
+>>>>>>> My original intention was to move as much as possible into the SoC dtsi.
+>>>>>>> The problem is that the memory node is somewhat board specific due to
+>>>>>>> the DDR. And I can't move the firmware node into the SoC dtsi and assign
+>>>>>>> the memory node in the board dts as the checks for all boards not
+>>>>>>> specifying a memory node would fail then.
+>>>>>>
+>>>>>> What is the reason to have this memory address different on various
+>>>>>> boards? Can we have a default in the soc dtsi, and allow the board to
+>>>>>> override the address if needed?
+>>>>>
+>>>>> There is no real point in having different addresses on different
+>>>>> boards. But the node describes memory that is physically on the board
+>>>>> and not on the SoC. And I think that is why DT maintainers want to have
+>>>>> it in the board DT. It's the same with the memory nodes for the
+>>>>> remoteproc drivers to communicate with the Cortex M-Cores in the i.MX.
+>>>>> But maybe I'm wrong and if there is a possibility to move this to the
+>>>>> SoC DT I will definitely take it.
+>>>
+>>> We are talking about reserved memory, so this is highly board-specific.
+>>> So for different hardware variants with different amount of RAM you have to
+>>> go for the minimum anyway.
+>>>
+>>>>>>
+>>>>>> Or can't you add the address in all the boards, and keep everything else
+>>>>>> in the soc dtsi?
+>>>>> This could be a possible way, yes. In that case maybe we could even
+>>>>> create a generic dtsi to contain such defaults for all boards.
+>>>>
+>>>> I would go for this solution, we could have something like
+>>>> `k3-am62-ti-ipc-firmware.dtsi`, include it from all the boards, have a
+>>>> sane default memory address, and have an easy way to override the memory
+>>>> address from the board dts, if needed.
+>>>
+>>> So what is a sane default? At the end of the minimal possible RAM?
+>>> I'm not really fond of something you have to make sure matches to your
+>>> hardware, but won't raise an error if you forgot.
+>>>
+>>> How about providing defaults for the SoC part and users have to provide their
+>>> memory on board-level? Similar to the VPU nodes on imx8qm/imx8qxp. There you
+>>> have to specify memory-region in your board.
+>>
+>> I am personally ok with both solution.
+>>
+>> I think it is easy to have a sane default in this case. You cannot have
+>> less than 256MiB in practice, and this is just about the offset, is not
+>> that you are going to want more memory reserved if the board has more
+>> memory available.
+>>
+>> At the same time, having the memory range in the board dts is also ok to
+>> me.
+> 
+> I'm just saying, because we had lots of problem with assumed offsets/length
+> in code/DT for NXP boards. They usually come with big/huge amount of RAM.
+> This breaks for all hardware using a small amount of RAM.
+> So it's better to not have a default than silently breaking things because
+> the default doesn't match.
+I'm revisiting this now and think about how to do it. I would like to
+put a default memory node in the dtsi that dynamically puts the buffer
+somewhere in the first 256MB. I would include the dtsi in all
+i.MX91/i.MX93 boards. I think this should work for all boards.
 
-I do quick check for ov5640, we can use partial connectors, which already
-in kernel tree.
+If I put everything, but the memory node in the default dtsi, as
+Alexander proposed, I think I will run into DT validation errors if not
+all boards provide a memory node, as the property is mandatory.
 
-use duplicate label like
+Is there anything I might be missing?
 
-in mainboard
-csi_io_i2c: &i2c3 {
-	...
-}
-
-csi_io_regualotor_3v3: ....
-
-
-csi_io: connector_csi {
-	compatible = "...";
-	gpio-map = <0 0 &gpio1 3 3>;
-	...
-	irq-map =<0 &gpio1 4 1>;
-	...
-}
-
-in 5640 overlay
-
-&csi_io_i2c {
-	camera@xx {
-
-		reset-gpios = <&csi_io 0 ACTIVE_HIGHT>;
-	}
-}
-
-https://lore.kernel.org/imx/AM9PR04MB8353AC7DF91C5F73C34019E0E3F72@AM9PR04MB8353.eurprd04.prod.outlook.com/
-
-Only clock part have dependence. other parts. I am working mipi dsi for
-display, almost work except panel show have some problem, which is not
-related with connector.
-
-Frank
->
-> Francesco
->
+Thanks for your feedback!
