@@ -1,102 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010040.outbound.protection.outlook.com [52.101.84.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C083E51FC;
-	Wed, 22 Jul 2026 03:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784691564; cv=none; b=uYS+0eBSyY5BKNGr5v9+jUg/pQUlwwpH3jXPoHKawpyD4daQePqy/dq8N1ipJ8dV9s98K79LfzpcQIH33qIkECXB91ixHAHKbFERx3uNKxiXf5nFL/b5IClJkUTS57Z7sPRhH3UlxFms9ICzJmRyZkPwO+sJYFpsXMVlh6HR4PM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784691564; c=relaxed/simple;
-	bh=fEroTalEbO1l8sx0P6NBeQaMyXoTWRy2oz/DyWP8oFk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kIMQYcRbNwKZXA+HZ8vXwS6wFhZQ0GxpO2+dDdMGfFSzHEbk5gqN6ZP9mU9QLBQ2yjVqVJ8c7KPoWUS4/YPLFbLCzAdHsu85v2XcFQ53nQpafCH/vn6DymN4H87PqPc00kLk7pqOryIY6DCqnBlpsRGcpr+8rrU72bMeq6tu8I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BlAz3rQz; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDBB3AFD1F
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 03:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784691769; cv=fail; b=SGBuzm4g9++cN5OhjObIIbswRhLOks4f7ES2hpr7uaZ2MPSiPovLAooYy5LbCAa0gHVA9EaO2QGLLJ+gb0FHfUt1VJNtKFObiP9C4cnwISxQ5y/LJD4kQlS0pNQZEVDwyvPr0WJFpCV6qX6wmwvy9hHSLuz9OSaYdXP4l2byuP0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784691769; c=relaxed/simple;
+	bh=8NV3b0nzmfvL1cb2j+lJ3yw6mXy9Orb72spAL1dMIQk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hbTOSQthdqHclhoTzUXphssbXSPUAuQqZjBX+lBHtjscsl96ut+SU26RkJfDF+S9HsvuQ1Mlo2OiGxQKE2N1gj5w/BVpCM2Sbye+KQ4/1S8OurA3ZYB7L+c1E/Xoqf7QTgiMQS6qUxRX+k4NHPkSUs7UUIgicZqf0SC4yTPX900=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BzFWSp/d; arc=fail smtp.client-ip=52.101.84.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BlAz3rQz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200701F000E9;
-	Wed, 22 Jul 2026 03:39:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784691560;
-	bh=KFaLkDqjUTH533a0XPYRKc4Lmx7Y2sIzo9u4BoBHOUY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BlAz3rQzBjBYNsrhMXWGJHtUPzQ530DVlwM9KUY0FUZGjQQ5lhp//1Fk2nOFLAgtN
-	 Q5MZuz0+WIoAsUBdQqrcR37h3Y2o1ZRDCOOaLPyvvVkx7KyG8hpz1R1poMCwvoaS+Z
-	 a92GNkBfK404KDYFA9ivG9KlznsOwUGb8p/5Vd3Hw8YW9dG/kj3USZqAwRMiLXd7CM
-	 PypE26LttCb5Gk9qhGoydwr8t0aXQCgPo+LSLOkmPVY3R/7CJRYolEDbX2/W3m1eBD
-	 EsYLI8C08pjRgu20AGmTY+nLwjl9ruFJVyG24raf2HnLuNvmn/8lYCoq0Xp657Nr39
-	 i49XbKyFqzcIQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] pmdomain: imx: scu-pd: allow building as a
- module
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Zhipeng.wang_1@oss.nxp.com
-Cc: Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260722032321.2693300-3-Zhipeng.wang_1@oss.nxp.com>
-References: <20260722032321.2693300-1-Zhipeng.wang_1@oss.nxp.com>
- <20260722032321.2693300-3-Zhipeng.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Jul 2026 03:39:19 +0000
-Message-Id: <20260722033920.200701F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BzFWSp/d"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DMHyn+YfLncMrE7m09lg59qWT57SKeZS4GNGDpbrPUJ9m3+O3aiCdyLkC3O31J78WZkcVXYl9hRY21IgeoDofk9Unt4A/TPzkfCxiD9eTfmObOoAPS0doo2sLXjwOxELlojIwgODAVpjULkRSBfzKJnEEqyQWt3N1D9HGQqCvwsAVgIXa59OBiqf8ufrZQ1txpWOLOwtjbwRNd7EpBHMunYv10fD478EH9XYtj5jC60yCKcPq0vP7qHdRwzTv3IP7zIcWrfC4A96sJg/7IZUfyqDmT2Z2PGm4Ab/fFJijlGmuZQ1YoZBrgcvAyfCV46JQYunNFGsk0oOFg6XjY29Fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NjfrUzOSwzQovcU11iasIbcbUTZt+aatoyMyKeP1//Q=;
+ b=Jt3kR6D/6nSgyODAnGPQj5MV1RQNhV6upSnOGisfv/aNuxkWlvw1r/TaKO0EU+qs+iQ+2St5fG/6q6RmJ3XSYnafkMMJ9dwaijKRPxyoYVbYwK+8Nq6O7VNmR28eAN7uyuZx1TsgGe4z4PjDOMW4ZXBW3auWQ+/Nca7WcXZAvB8FUy23bmscdAiGQ3bmUmKJ6NdAqXO/wXGcHBWYg+pG8Lu3F1py8GPvQGnWsP55QyFLkcVFnxTLWSkA8k0+Q5/uJuWUiwsAnEuLlilKiK4Op8NwS2nThH9d2Bm3QIAQxXqee2LP0E8Xnx4FM5mKTcxDdIw5qmURksMhati7uKD3Ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NjfrUzOSwzQovcU11iasIbcbUTZt+aatoyMyKeP1//Q=;
+ b=BzFWSp/dXbjS/KFJyDZg0XI56VsQeDszw5KK/URolzELRofG3seE/U276nQ7F0OjBxK7b0akVUmD9FImvGMWja5Vw9yCtnS49Hs6nq3aPpywGfUW9u85kWW9D8+dumyyluGCcpAKemmsGIjeCR+kzyDg3Qne8ibuSFCR9NcnyHchFAU14ZxWE8CxQviXnc8Iev4FJqPtn9U90bT7i1/HKFsT/Hmut0l5sivjjUgaF46m70CISUNPevwyVNRZYBHHD8da0uO5q8C8pxkjrUFp/Qs4bS/eIAoxjqYBxoAczFUvwb0xEnx905DIeDxz2b8A1UKUmiyOneh3cxgvhSnV+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ by PR3PR04MB7450.eurprd04.prod.outlook.com (2603:10a6:102:8a::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
+ 2026 03:42:43 +0000
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0223.008; Wed, 22 Jul 2026
+ 03:42:43 +0000
+Date: Wed, 22 Jul 2026 11:44:09 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Robert Chiras <robert.chiras@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 3/7] drm/panel: simple: Add waiken WKS101WX001-WCT
+ support
+Message-ID: <amA8iVS4c0exg6pT@raspi>
+References: <20260715-dxl_lcdif-v2-0-da797562636e@nxp.com>
+ <20260715-dxl_lcdif-v2-3-da797562636e@nxp.com>
+ <alnCL7ylMyvGD-ui@raspi>
+ <amAJL9TIcDAK7kbh@SMW015318>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amAJL9TIcDAK7kbh@SMW015318>
+X-ClientProxiedBy: MA5P287CA0252.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ae::8) To AS1PR04MB9287.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|PR3PR04MB7450:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4b7f6bc-271f-4c8c-c258-08dee7a349c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|19092799006|376014|7416014|1800799024|366016|10067099003|11063799006|4143699003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	QgMghmGOJFpM2/k5p3PK8j5Ktl+TiRAp0sz11ZyFOTtmIH7zNG2u02YXDII03FCQWckno/cPcSh3SaFboyy2a7YFTE8gafb8mJIsEek7KCDSnd79LCfJXu9xjOwsJJGA7m6LpIW1Q7ypGVQlvgjc/nz9b0/xuWzIp2h0D+Ye50l0cOIR0eNEZ7J+Er5Ts1QhhfkqY2SD8V4zb10wXivkmus8UVYe5JsLLgthkIuw/XdMuGsekL6XzwHc1M+eJCTjDbZYzy8Ts4pz8/99PdpuaHrd4xi0WCAtfGDiSYpFNW4OcZaFMimx/wtswpMTz/iz6mSbNrWhVUItpeLeIPrEjWuggMD4na0sguWS9kFGNp/vVyfw1RerXgP0NRVl/7y0SuoXqeKcvg554rnaxwHOUBQ8MjnDkg/FETkoUeVGULtj7vMcQJvLrv+5t+EvFvT+NjCVgzbfYAVp2sHRHLuTBllykTKi+JoMgHUTvj2i8iI5O63Vjy1xOvvfTOtdwgj6SeyzKfpCNh/rv9WE70Dfzu+DG01tsjN2gTvwSrmgbAtkwzHne/YWU2+R/6ztTt3N7YXSiu6GMgLozsa1USdNK4UIuDXfLu62W9XbvpFa/rwOr0lB48xoUKf7KBIsGM1kjfZxTkT0wXumSHplRD6o00RmkYAPWvsu7J7onkuyggE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(376014)(7416014)(1800799024)(366016)(10067099003)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9ocdHPE/L3fwc5BRThmNKj2WxVRNK6ZaGL2E5TxHy9T4VRIlkvrJm+TwD3hn?=
+ =?us-ascii?Q?83mOoYwhGC4bcRey2LUfiLKOsosu71vg478bfJf+SxWQWLxderxADOzpQHIc?=
+ =?us-ascii?Q?iJPTFnM0O90OBlEIUwnqjEcKSP9/DIDoVQnFi7TCfAzoNaf2KC2hdCa21yCM?=
+ =?us-ascii?Q?Neh1G4kZj1OSAob+kYKzJA2U8wo8L/5UKzKzPZjcbfdRULI4EdnlcyVU2UHw?=
+ =?us-ascii?Q?VO4Yq8e9SJ98by+kNKcsoEdHFq1y18OG0KdOu2i6Y1dqxfcmFvdGHoisjoBk?=
+ =?us-ascii?Q?YlpU/NOCJrg1KxvgI5T44eAdvC1FI777H+PGnaslK3NRkOdjS357zdf1/z02?=
+ =?us-ascii?Q?6Mr3QUrDraVEJZnPpecRsl37TjGxiyKE8S1FCztPiJCX6c85kSjfyuIfrqdF?=
+ =?us-ascii?Q?L1RR8WRLV2gDbblxU88K69HUkG7PdcIQ0mMOJrfnh7K0rAjZriPk7ZKb51oC?=
+ =?us-ascii?Q?5LtZfXt8MToFWSuwvgjJcUvWT3oPs9gnR7u5Plr0BYvm39V2PO9Ld+Rrk08U?=
+ =?us-ascii?Q?HZPopQwPOfWIsR4Np3ffdKXWa6joaUsKrD79oTTGs51j+0Bf7wnhEBVM2P1I?=
+ =?us-ascii?Q?it6mJiTCpw9BZLdArgFc/aL5a3BED5SiMCfu+511/A6cq+zrel5v2ebpVh+s?=
+ =?us-ascii?Q?k7gm/eZU4K2gRqO0FquSZ3s1b0gsFiRNgTPE3gML6lOqympeuInk3/qtXfSO?=
+ =?us-ascii?Q?EUcjT94RaDa8qFVnTbOQ06AJvTExclTlqyL98UxSckf2x0FFDf56nNyRxUJH?=
+ =?us-ascii?Q?lJ4Yu4NeiuP2gOGoLAs4yAXACZKn6VuAGu0xA/4PreFHSuX+JZSc3tAYXV3q?=
+ =?us-ascii?Q?dZ2gRFElHtRZnTrGJrHfjLnEa5j+tDS8NgBWPuaigwJhZq5iO2Y87xRWg7Y3?=
+ =?us-ascii?Q?SlG20Htq7pINhqrS/g3XOOPH5NhNkTdWqQ4QZQ2CL/rV8vX86Um6V22Q3jI/?=
+ =?us-ascii?Q?57t3xRE4iDBg2yp0WilkPEwa1HmgoHDSrfEo8aZGUFnCbTMFUSmzdhtPmT66?=
+ =?us-ascii?Q?NiReYOfMm04eK5OoS+sJJN0UI7AZW2GKJvYekb4ujWCI1IwmW1jWdo34Baw7?=
+ =?us-ascii?Q?BK6w+FYdBnc3TWYbKux3Xlznqq+4ZETE3XVApMzgH3IyL5VPaGOylzmPq5d+?=
+ =?us-ascii?Q?OFPrP821XUgYDZTO/tRwelKvrZDyUduSDURB/e/ZY4I/XQin0mi+h9bczfRe?=
+ =?us-ascii?Q?0FQPgYjP1xDoz2tCiqo2BONFnQFfaWWIRf2PA4h3D2KWFg8nN6k7jqMbH5OV?=
+ =?us-ascii?Q?1SNGmHM9l9wyL95MCJAaJTMuFzeapmnO4Xq0nCRVQlR2KGQV8rX/TyYQZLJg?=
+ =?us-ascii?Q?EKJoG3a2CE2XKg9nzos0bUWN1wiF0tv71ukWWJeR2ufNgeMfT+Mi2PKc+/Hi?=
+ =?us-ascii?Q?5qEV0UkzE3LHTtpVV61+cWBaNIbMvyec955BghnC/Jv3wOmNX56lFRHwzPMk?=
+ =?us-ascii?Q?8M5g6t4IswNMIQ2Eq6+VQ9smXu3XlMvSwx+ae5/VtLIeBhCHTwgOqubdASwL?=
+ =?us-ascii?Q?1leZ3Xe0l6SBwrd5OFiOiirP0+4uwdgy/8tj7SZHqsFBNrDiLn7/NTBacr5D?=
+ =?us-ascii?Q?zn1NqP0rBUPQLPmJ1Qsrc1uUg9wvWba3WM7ss0Ny9Qz6Wwadjl/HiuBpsrdB?=
+ =?us-ascii?Q?E+YI+dwY1DRzwufuMLxoAkVq21isagx15hdCwJku1S/GpG8kOssFarsg8ra9?=
+ =?us-ascii?Q?XI8fZ041fjqtPpbEGJP5CWLW2N4VrhO1kBCZhaxsxpS8yKfvrjMKJcVWs1Oz?=
+ =?us-ascii?Q?0c6mgFCysw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4b7f6bc-271f-4c8c-c258-08dee7a349c5
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 03:42:43.7572
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: URtPFno8S3G3+uB1ALBJvnMgwuVgbCWN9cwdg0eL2tiPDrezr4QHxxEPimjuVOw8QIINEmvlpFae5KKeTla5ZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7450
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Changing IMX_SCU_PD to a tristate exposes a critical probe order r=
-ace condition with the SCU clock driver, leading to unpowered hardware and =
-system crashes.
---
+On Tue, Jul 21, 2026 at 07:05:03PM -0500, Frank Li wrote:
+> On Fri, Jul 17, 2026 at 01:48:31PM +0800, Liu Ying wrote:
+> > On Wed, Jul 15, 2026 at 02:34:48PM -0400, Frank.Li@oss.nxp.com wrote:
+> > > From: Frank Li <Frank.Li@nxp.com>
+> > >
+> > > Add support for WKS101WX001-WCT panel, which is an industrial-grade
+> > > 10.1-inch IPS TFT LCD capacitive touch screen display module.
+> > >
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > > change in v2
+> > > - update height to 135 from 136 (sashiko)
+> > > ---
+> > >  drivers/gpu/drm/panel/panel-simple.c | 31 +++++++++++++++++++++++++++++++
+> > >  1 file changed, 31 insertions(+)
 
---- Patch [2]: [PATCH v2 2/2] pmdomain: imx: scu-pd: allow building as a mo=
-dule ---
-commit d3bf08bb865becc5d6316a0d9e70a9dbcc5e5ef3
-Author: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+[...]
 
-pmdomain: imx: scu-pd: allow building as a module
+> > > +	.connector_type = DRM_MODE_CONNECTOR_DPI,
+> >
+> > Seems that the panel also supports LVDS input according to the specification,
+> > since it mentions 'RGB or LVDS Interface'?
+> 
+> Need hardware rework to use LVDS. Need remove banch of resistors. Should it
+> be treat as difference panel by different compatible string? hardware
+> actually changed.
 
-This commit converts CONFIG_IMX_SCU_PD to tristate to allow building as a
-loadable module, which is required for Android Generic Kernel Image (GKI)
-support. It adds MODULE_DEVICE_TABLE and a module_init function since the
-driver cannot be safely removed.
+Not sure how to handle that.
 
-> diff --git a/drivers/pmdomain/imx/Kconfig b/drivers/pmdomain/imx/Kconfig
-> index 00203615c65e9..472e9dec6bd4e 100644
-> --- a/drivers/pmdomain/imx/Kconfig
-> +++ b/drivers/pmdomain/imx/Kconfig
-> @@ -21,7 +21,7 @@ config IMX9_BLK_CTRL
->  	depends on PM_GENERIC_DOMAINS
-> =20
->  config IMX_SCU_PD
-> -	bool "IMX SCU Power Domain driver"
-> +	tristate "IMX SCU Power Domain driver"
-
-[Severity: High]
-Does allowing this driver to be built as a module expose a probe order
-race condition with the SCU clock driver?
-
-If the power domain driver is loaded asynchronously after the SCU clock
-driver (clk-imx8qxp), the clock-controller DT node lacks a power-domains
-property, so fw_devlink cannot enforce the correct probe order.
-
-In this scenario, the clock driver manually looks up the power domain
-provider using of_find_compatible_node() and calls of_genpd_add_device().
-If the power domain driver has not probed yet, genpd_get_from_provider()
-will fail and return -ENOENT.
-
-The clock driver ignores this error in imx_clk_scu_alloc_dev() and
-registers the clock device without attaching it to the PM domain. When
-the clock is later requested, the Common Clock Framework's
-pm_runtime_resume_and_get() will succeed passively because there is no
-attached PM domain.
-
-Can this lead to system crashes or hardware access faults due to
-accessing unpowered hardware?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722032321.2693=
-300-1-Zhipeng.wang_1@oss.nxp.com?part=3D2
+-- 
+Regards,
+Liu Ying
