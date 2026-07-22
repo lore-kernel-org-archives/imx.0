@@ -1,246 +1,148 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2357A48C40B
-	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 09:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18DF33D6F0
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 09:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784711480; cv=none; b=iF6TmPY1iSNYbE1guEFAPFT+btuzH/RCU8U5LeHcv1Cr7QYJEQq7MGR9sFsxmvatn/lFy3weAXHS3YJ2Rq1tAU3ZMuKNqvgzjOV15uoIUUW9v0vgOzMp4GswxvvvoXCpJECqV02n738Z4RUe2CtHr/uHxdmLtGCfSKWp2jYdoKk=
+	t=1784712457; cv=none; b=sU+J+F+7/5ECLOlcoWqiPy0mFHU8UtFmY6U9ItPOgnarG8jacBfbFC6loEABLF8YTD1DMRDVqDSJ2b/Zfr+lrxL1vdvPJ2GCrGe/gCtSC8pn28hCs4cNaxfFplU0RoD//cE8G+1BLSkFqCM82q42oVUAKy7XDD+1tSwhkJy64VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784711480; c=relaxed/simple;
-	bh=4hko4dMb4gVJRUGHe2AET7hDHo5NBNQGfdT7aaSNWAs=;
-	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:Mime-Version:
-	 References:In-Reply-To; b=Pya+5+l3os5OaXK+gX/AF1PM5t7fg4Guemm76EwSqyD9zeVKrvB9w69sjLEnYS0po2WL2xmlhXQ4qiU7DNZ1l4bC/kukxalssVl4Bu3n5QMlnCXNaGZzXYHsc+3/mXAqeV7KQv33P0ZZ7k/5ODjFz6KOVC9prkiaSgEBHVy/V1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=z2mUyKFa; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1784712457; c=relaxed/simple;
+	bh=aR/8udB1OlDt7n9BzDaDVl6vLg49c0i4wm7eL+Txmw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TSG7yZCWIdSrF/pr0UXToggfdIWewzDyJnJBXXcH9mT5QS799AeAhEr5LuLB4EKjIPrbqPc/43/GCRMv+ZirUA+sisBomizTObVElFxWle8bOcM5PNwLvvUH5QTZ/4IfPOybS8TbuVFQgMVzrsy2oxvqn13tIZghxk/zUWEwrgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZN+4u8Gs; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="z2mUyKFa"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1C60A1A1144;
-	Wed, 22 Jul 2026 09:11:15 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DF2FE60388;
-	Wed, 22 Jul 2026 09:11:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2FAFF11BD0ADC;
-	Wed, 22 Jul 2026 11:11:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784711473; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=CVMvqT2UQr1txHFCMAIcwU7vZqub1auWVL1fnTiKFZE=;
-	b=z2mUyKFafy0l5dpLU+0DGap45Kxpu05bFTufLn+AejhY8o/GNw+bsMIGqsZ+wiE4M52cUb
-	tJ2kf9T2YiRxOqhr2rWzY6HX0HaZTrXAkwRwYkiIApKjq6ixTgX+STS1gkAJGd5e/6BVDK
-	GToI/hX/BbykAokOk8TWHpHPFG8V07FtMaqxnbrhnkb/T4rB9QWpMae8QNrsMiy7H/LA64
-	CBxKwBYvzKbIdeqwP++7cQtAxs+z3x9pM+K4I1TBW6Z2Gjrq8TuQOPUI1fgOKPRLrxeDV9
-	sIjNA1KMA98U1kfDDJO4VYRUgzaOUz1xNXwlEr4Ixh4tdw5zVeqvwFdXq3uDLw==
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 22 Jul 2026 11:10:53 +0200
-Message-Id: <DK4ZERBN7IS2.2T8E05JZI0IY8@bootlin.com>
-Subject: Re: [PATCH 05/37] drm/display: bridge-connector: split code
- creating the connector to a subfunction
-Cc: "Laurent Pinchart" <laurent.pinchart@ideasonboard.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>,
- "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
- <jernej.skrabec@gmail.com>, "Inki Dae" <inki.dae@samsung.com>, "Jagan Teki"
- <jagan@amarulasolutions.com>, "Marek Szyprowski"
- <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>, "Stefan Agner"
- <stefan@agner.ch>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
- <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
- <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
-To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZN+4u8Gs"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49555a0e68bso19055135e9.2
+        for <imx@lists.linux.dev>; Wed, 22 Jul 2026 02:27:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784712454; x=1785317254; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UxNgVJhMvwFWg/2Me6o/CdOE7h6LMTECv+bVDJcfX3U=;
+        b=ZN+4u8Gs4QW20R/qdoulBOeQ7x3g0qJ7+XpdiohTt0IBzU4M4+DgmIgaewb3lnlBpW
+         QJ8cvAP6z0iGTow0Fi0Iyt8kEWQfg+HpNeo6A9rfiD615UMrSbZg7jg9fwlaknBOUVqX
+         oxgb8VEQNFZayynyyLVH+fAUPuj0F71RecreGqgTnaTaIOvmUlf6xypC92f9xVXW/0cN
+         VDIdAz0M+ajy5ms1Zp0I5mr4FQWDdhDMXNk9Ryg7TLITNEgG+8G9OLsOKBYl6Go2tnym
+         EG8CLfSiGnH2yDeQHfluGYLrk6SWbJYRfgSt8cewzdUUy9ynVusfkxfyDH4Eai0lpVHM
+         lKEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784712454; x=1785317254;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UxNgVJhMvwFWg/2Me6o/CdOE7h6LMTECv+bVDJcfX3U=;
+        b=eNz2PHhntseJviIfaW7kDfnalb4S5z7ORsRnVfB1K/jlgJscPO6zt/d8gRWBbiDfEs
+         dFmFPJMLrXZBy1FvAsC7jqfV4y613qATQnHcwfXo+w9q3NTDlusKksvm9Xawx9DZNZu/
+         t+MCrkvP4yOZ70BP8Jlv4SYbaeiFIE4ZrVG27GbRVA5Co5w+mQLx7o2TfKxwSy4xHfky
+         4Vpt6zO6zsnCNOOB5S1mm2fYEoILK15WUeON0gvXKBjotCSmvG9dXo1RVARg+DiArCX4
+         Sp79o2M4ZhapV/w3OtbWYGFVZ0SGURO3IHpraRD5KTdc/vumDSwbZfk7XLpOlj3vIz44
+         z1hQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrOPZ/Af/p+RFpNIg3UtC02orsALOFkVLab/Jz7EdF5YGvaw74pLpT7YP5FN1dB9jWiwhE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxP/9N6DgrT05Q+X407YzArMuuIVAkTgk+LKKaWyrQh77ynqZF/
+	AB3FP1NDO+wZpbZGh3OCvf19wq4AxcxQf+LWE0NzueLMcq2oK4eTx3hX
+X-Gm-Gg: AR+sD13dw5V9/U9WeAd3kcgvYe7KcJITyo//hhr2xcKRMMK+JVpZDMo60fgSdEG9bGv
+	eLH4sJEjClSxFm2H85nS3uCBu2vGFJwGuaKZEP5DOjTOhCHp9A7um9eLukU4xArOUXKBe3eXBiV
+	rnbPCVXfO4Yq7T9QxecV29fgop3a/5j+4CSEvO5ePMJ6T3ggBRtLWZVRc4sj2mXs2mLeTVmAdEr
+	agBcyKiJd8mmwPEuxngncB+Jua9XCiMz3qML1wGz3iT+p1u7lIfcHBkripj02Bp2cFCoDB2vAre
+	P/abT31AvwEscwKM3nWegFlEvEptOfWN+h6FJsj9JB2ievAD9PS9aBbp9Sk0Zpya+s1kOPcxAIC
+	qVOumsBXygJQgJex9xFKo9JHk0cXbXCzZZOjiHrfG7O9qjOHOIz66gcNR4L2GFQQnmxT2Cw2POS
+	DmDqUL/nJM7rTV8rfIbLcqw9sNlwUXY/PIXsdwuth7DNtyb3cAKLaL81w5MIGe1+zSAkFuBnIAu
+	LchXw==
+X-Received: by 2002:a05:600c:350f:b0:493:e365:ace9 with SMTP id 5b1f17b1804b1-4954a3db7e8mr245764085e9.11.1784712453569;
+        Wed, 22 Jul 2026 02:27:33 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956a4f2453sm59985695e9.3.2026.07.22.02.27.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 02:27:33 -0700 (PDT)
+Date: Wed, 22 Jul 2026 11:27:32 +0200
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Francesco Dolcini <francesco.dolcini@toradex.com>, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Subject: Re: [PATCH 6/8] arm64: dts: freescale: imx8mm-verdin: Add Toradex
+ OV5640 CSI Cameras
+Message-ID: <3ak4ffamwvdrtgw3bivzvrbtkmyh7g3lvuk4xwvdiuzizi3iu3@uxqvyif7rvpx>
+References: <20260713-v1-verdin-imx8mm-dtbos-v1-0-4acd63db4504@toradex.com>
+ <20260713-v1-verdin-imx8mm-dtbos-v1-6-4acd63db4504@toradex.com>
+ <al5mDqeFE8QVbUd9@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: aerc 0.21.0
-References: <DJHEAWSEZR79.19UFIKS8QJBQ7@bootlin.com>
- <20260626-polite-hairy-perch-25e1aa@houat>
- <DJJ1MPCEJGZD.UZM9183V6ZE5@bootlin.com>
- <20260626-classy-nightingale-of-romance-1cacad@houat>
- <DJJ4X22CJ3FG.5EYF84LVRNOG@bootlin.com>
- <20260707-warping-goshawk-of-swiftness-beea4a@penduick>
- <20260707123205.GB211515@killaraus.ideasonboard.com>
- <DJZUXUBO8DI4.2J2NI3S0KYNUE@bootlin.com>
- <20260716-stoic-muskox-from-asgard-c12b65@houat>
- <DK0QXI6KF7PC.3DJW38KB8MJED@bootlin.com>
- <20260720-eel-of-immense-triumph-3e24e0@penduick>
-In-Reply-To: <20260720-eel-of-immense-triumph-3e24e0@penduick>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <al5mDqeFE8QVbUd9@lizhi-Precision-Tower-5810>
 
-Hi Maxime,
+On Mon, Jul 20, 2026 at 02:16:46PM -0400, Frank Li wrote:
+> On Mon, Jul 13, 2026 at 05:06:27PM +0200, Ernest Van Hoecke wrote:
+> > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> >
+> > Add device tree overlays for the Toradex OV5640 CSI Camera on Verdin CSI_1.
+> >
+> > The default overlay describes the current CSI Camera Set 5MP OV5640 with a
+> > 27 MHz on-board oscillator. Add a separate 24 MHz overlay for the legacy
+> > camera module.
+> >
+> > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
+> > Link: https://www.toradex.com/accessories/csi-camera-ov5640
+> > Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
+> > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/Makefile             |  6 ++
+> >  .../dts/freescale/imx8mm-verdin-ov5640-24mhz.dtso  | 17 +++++
+> >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtsi   | 78 ++++++++++++++++++++++
+> >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtso   | 18 +++++
+> >  4 files changed, 119 insertions(+)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> > index c465aa19e526..ed3d678e7c5e 100644
+> > --- a/arch/arm64/boot/dts/freescale/Makefile
+> > +++ b/arch/arm64/boot/dts/freescale/Makefile
+> > @@ -189,6 +189,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-mallow.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-yavia-dsi-to-hdmi.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-yavia.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-zinnia.dtb
+> > +dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-ov5640-24mhz.dtbo
+> > +dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-ov5640.dtbo
+> 
+> Need not add dtbo here,
+> 
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dev-ov5640-24mhz.dtb can
+> auto dtbo build dtbo.
+> 
+> check other dtbo.
+> 
+> Frank
+> 
 
-On Mon Jul 20, 2026 at 4:28 PM CEST, Maxime Ripard wrote:
-> On Fri, Jul 17, 2026 at 11:41:33AM +0200, Luca Ceresoli wrote:
->> Hi Maxime,
->>
->> On Thu Jul 16, 2026 at 3:22 PM CEST, Maxime Ripard wrote:
->> > On Thu, Jul 16, 2026 at 10:37:24AM +0200, Luca Ceresoli wrote:
->> >> >> > Now if the bridges start doing it themselves we should go back t=
-o
->> >> >> > those encoder drivers and ditch all the drm_bridge_connector fro=
-m
->> >> >> > there?
->> >> >> >
->> >> >> > I must be missing something. Can you elaborate on this?
->> >> >>
->> >> >> drm_bridge_connectors bring together a (complete) bridge chain and=
- a
->> >> >> connector. If you don't have either anymore, then we shouldn't kee=
-p it
->> >> >> around.
->> >> >>
->> >> >> What I was suggesting before was only a suggestion. I guess we cou=
-ld
->> >> >> also make the encoder own the hotplug handling code and create the
->> >> >> drm_bridge_connector when the chain is complete, and remove it whe=
-n it's
->> >> >> no longer the case.
->> >> >
->> >> > That's an interesting option. We don't have to keep drm_bridge_conn=
-ector
->> >> > in its current form, but I don't think we should go back to individ=
-ual
->> >> > bridge driver creating connectors, especially now that we have brid=
-ge
->> >> > chains where the connector ops are implemented collectively by mult=
-iple
->> >> > bridges.
->> >>
->> >> I definitely agree we don't want to add burden back on the encoder.
->> >
->> > I don't think Laurent mentioned the encoder anywhere.
->>
->> Ah, indeed, sorry! However, I think both the bridges and the encoder
->> drivers should equally have the minimum burden on them.
->>
->> Right now the recommended practice is:
->>
->>  - bridges do not create connectors (thanks to DRM_BRIDGE_ATTACH_NO_CONN=
-ECTOR)
->>  - encoders just call drm_bridge_connector_init(), which does all the
->>    common operations to populate a suitable drm_connector
->>
->> So all common operations involved in connector creation and bridge chain
->> analysis are implemented in common code, not per-bridge or
->> per-encoder. That's good.
->
-> I agree, but another way to phrase it is: bridges aren't aware of how
-> the chain is setup, the encoder ties it all together.
->
->> >> >> We can discuss alternatives too. But either way, we shouldn't have=
- it
->> >> >> stick around.
->> >>
->> >> Bottom line, I roughly see three ideas mentioned:
->> >>
->> >>  1. (this series) extend the drm_bridge_connector to create the
->> >>     drm_connector based on bridge hotplug events [+rename it]
->> >>  2. - keep the drm_bridge_connector (mostly) as is
->> >>     - let each encoder driver add/remove it based on bridge hotplug e=
-vents
->> >>     =3D> more burden on encoder drivers -> no
->> >
->> > Can you motivate that with *any* reason? Because I really feel like it=
-'s
->> > the best solution going forward.
->>
->> My understanding of your idea (maybe a bit overstressed just to ensure i=
-t's
->> clear) is that:
->>
->>  - the drm_bridge_connector should stay (almost) unmodified
->
-> Yes, and bridges should ideally remain as lightly affected as possible.
+Hi Frank,
 
-I fully agree.
+Thanks for the review.
 
-> We have probably around 100 bridge drivers at the moment, having some
-> kind of opt-in to enable hotplug would mean that we can't expect hotplug
-> to work on a new platform, which should be a last resort.
+Our desire is that these dtbo's are standalone targets that are shipped
+for runtime overlay application. Users might, on dev boards especially,
+want to enable or disable any combination of these overlays, and change
+the combination between boots.
 
-A few changes to each bridge wanting to support hotplug will unavoidably be
-needed. The .get_next_bridge callback we mentioned in the discussion for
-patch 30 at least. I'm keeping any other changes, if any, to a minimum.
+The combined dtb targets validate the overlay and in some listed cases,
+provide a ready-to-use combo. They are not intended to cover all
+possible use-cases.
 
->>  - there should be no new "manager" component (not sure this is actually
->>    your opinion, can you comment on this specifically?)
->>  - every encoder driver would have to:
->>    - register to receive hotplug events
->>    - when receiving one such event, find out whether the hardware is
->>      complete or not (by calling drm_bridge_connector_pipeline_is_comple=
-te()
->>      or so)
->>    - create/destroy a drm_bridge_connector based on hotplug events
->>
->> Is this somewhat close to what you have in mind?
->
-> Yes. To make things a bit more precise, we need two things: the encoder
-> to put the chain together, and "something" (that you used to call
-> manager) to react to hotplug events and handle the bridge
-> detach/destruction, connector creation/destruction, etc and should stick
-> around when we enable hotplug.
->
-> What I'm suggesting is that, since the encoder already owns and creates
-> the chain in the first place, and is there forever, it's only natural
-> for the encoder to be that "something", and we don't necessarily mean
-> creating a new entity or piece of code. A bunch of helpers and hooks a
-> probably going to be enough.
+My understanding is that indeed a dtb-y targeting a combined DTB will
+build the prerequisite dtbo, but it would not be an install target.
 
-That's the idea I had reached too, yes. Except the "bunch of helpers and
-hooks" could be perhaps as small as one single helper function or little
-more.
+Kind regards,
+Ernest
 
-> This is where the opt-in part should be, and I'd like, if possible, for
-> hotplug-enabled encoders to work with any bridge.
->
->> To me the best solution to add hotplug support is that encoder drivers
->> replace the single drm_bridge_connector_init() call with a single call t=
-o
->> something new (let's call it a hotplug manager), which takes care of all
->> the common aspects: registering to receive bridge hotplug events, findin=
-g
->> out whether the hardware pipeline is complete or not, and add/remove the
->> drm_connector based on that.
->>
->> In other words, the changes on encoder drivers would be similar to patch
->> 37. In a nutshell:
->>
->>   -	connector =3D drm_bridge_connector_init(lcdif->drm, encoder);
->>   +	drm_hotplug_manager =3D drm_hotplug_manager_init(lcdif->drm, encoder=
-);
->>
->> All the hotplug logic would be in common code, and any maintenance and
->> future improvements to it would stay in a single place, benefitting all
->> encoders at once.
->>
->> What do you think about this?
->
-> From a high level point-of-view, I think we mostly agree.
-
-Good.
-
-> We can argue
-> on the name, and if we should merge it with something else
-> (drm_encoder_init, drm_bridge_attach, something else?) but that's the
-> path forward I think.
-
-OK, let's see what I can come up with in v2.
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
