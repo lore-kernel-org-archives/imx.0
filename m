@@ -1,118 +1,129 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCD2366816
-	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 10:59:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835543ACA5D;
+	Wed, 22 Jul 2026 11:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784717970; cv=none; b=U+8WSYYrc3Zqe1hSkOkOKNHkXphkKDabXrVNNuPmh6oyNkMrRUvbIWWv7s84MQNuiyt1hdNdfT1bCeXSOwUU+9fVYjaaYV66Wm2fFh1UQknTAZOZgnA1GbPPoL99RwNzjdmiYklSIZhvuOFjMRdUQNlMRsectljrsIKRM1skCSg=
+	t=1784718682; cv=none; b=O7XljMuBVrdxtnjF5Y8NLk+i59dc30iu41+pgiIeeflqY4pKD+yt6W2JnCloWVSzr4Eg+Tm6HyN32Jzz1+qTOeyLCsiazVoLsA12dCzFl80GrRdfpnwDgLHU9YhwX51nWhaqqUoUn5atmTqavkGbyDico0UFBNT9Kh7DsifPSGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784717970; c=relaxed/simple;
-	bh=V9bVEocqPIA08OGfdELeuVnuyE/Cai86e/nWbNSdFwg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=roetXJUXHc1SR0SUrjXlsbOrsd2znkRqfGyHM+WlBr/KKWCdzgZGTR/Wf02/hxp4ZcpfY2HdzleNWb4OHs7OLGqNTxIDAk+ik3QJjfQ5zs8Xx7bR0LgadeU2f28dgimq6E8GxabGvkf6x7/9nljuoInVzORrCSvNDMZSG2107D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=hffUt9Vs; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1784718682; c=relaxed/simple;
+	bh=P89HSlZ1ehh6FK6tz3OeP73u8sJMdVoydfy5NBebVUk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JPPT/g4CpN9UWyQLe3Pg6T+6QweND9b6y64gsO6lGGXSQeZfkzgYQr3VjceMixuhw9SDifhWh9Ic2KVDfStZoLxOCaXfEJvCb5UNibjaGmYxyc1V7Q6+qrV16Pp9Up2/C1tShRpflLKeJsiRrbwBBmLpHjEs6h0miq/4QSludfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=I7Eu4Mj0; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="hffUt9Vs"
-Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
-	by mail11.truemail.it (Postfix) with ESMTPA id 93F491FDE6;
-	Wed, 22 Jul 2026 12:59:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1784717959;
-	bh=g6bjjE8MyCav7ckmLTNb9JRa4naTxSPm+UshKCPlRm4=; h=From:To:Subject;
-	b=hffUt9VsGA0OSrvL+rdaUUo0MdY+KrxYAgPaZPMMNYTtwSWC4ZD4+UcWZLf68hUwA
-	 zk684/lV9MCkbCc2vj2yF9D07AFXvpaBNHNfvHf4dWmBDwG1HyeHR8YVVB2fBYQ5qg
-	 F/J76FsaJ7LTkAdf4kj9FJZ85czCdJRUacuJ6JP+u68Q8JOw8DTEkJJOMRKF/+Mx3j
-	 iH3jdFGY4SEjjfQMxE7sCrr3hY3l6XzZ9jjoB2SjTUqLy4jZxsn8dPPHoZ0Xdnut5a
-	 bvcnn1p/7RfBQKCdMpieu6COQeeDuU138P9qFDuGmyyEfh9SNo7UiA5O3MJeknefD9
-	 SNqr+auMsPQmw==
-Date: Wed, 22 Jul 2026 12:59:14 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Ernest Van Hoecke <ernestvanhoecke@gmail.com>,
-	Frank Li <Frank.li@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Subject: Re: [PATCH 6/8] arm64: dts: freescale: imx8mm-verdin: Add Toradex
- OV5640 CSI Cameras
-Message-ID: <20260722105914.GA72270@francesco-nb>
-References: <20260713-v1-verdin-imx8mm-dtbos-v1-0-4acd63db4504@toradex.com>
- <20260713-v1-verdin-imx8mm-dtbos-v1-6-4acd63db4504@toradex.com>
- <al5mDqeFE8QVbUd9@lizhi-Precision-Tower-5810>
- <3ak4ffamwvdrtgw3bivzvrbtkmyh7g3lvuk4xwvdiuzizi3iu3@uxqvyif7rvpx>
- <178471622928.2174993.5439033710284861967@ping.linuxembedded.co.uk>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="I7Eu4Mj0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=dTfIheDloNnyvS/07ptSkTa3ttkId0J9LRZYffRoniY=; b=I7Eu4Mj00fcEEwtilBdFXLATzc
+	HGvVi1aRIu9gF405VHJS/J/977VV08+LQp5HWAsIYeuRgz+ogez6HTGpe0WLt1hXG2ozrgTy2Rr+o
+	YjpZhiwznBJIBljz0BCeZ9WWSxfr9Ke7tHQs+hefezEYNaJKbckgq/ywtDbrDhbA+Q4cFkub6zqmM
+	R6wfN2VvwFGflfeKTlFOXg6hM8WCvfQHGWhYMvMhvU2xIHuy22IZ12kS1jIGPN+XHJkQfJWID3AM3
+	QIymGSmu91N2clLXbSGNXo/cQfzFJxswCqZPWhBp6C/TZM9aRI6gUK9T7y6i6Ddp2Rc9mLv4u4BOE
+	MEr65I4w==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wmUr1-000JLh-2p;
+	Wed, 22 Jul 2026 13:11:11 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wmUr0-000K96-3A;
+	Wed, 22 Jul 2026 13:11:11 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com, Stefano Radaelli <stefano.r@variscite.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Stefano Radaelli <stefano.radaelli21@gmail.com>
+Subject: Re: [PATCH v1 1/1] arm64: dts: imx8qm-ss-dma: add LPUART4
+Date: Wed, 22 Jul 2026 13:11:10 +0200
+Message-ID: <3426538.aeNJFYEL58@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260722104200.17729-1-stefano.r@variscite.com>
+References: <20260722104200.17729-1-stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178471622928.2174993.5439033710284861967@ping.linuxembedded.co.uk>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28068/Wed Jul 22 08:24:50 2026)
 
-Hello Kieran,
+Hi Stefano,
 
-On Wed, Jul 22, 2026 at 11:30:29AM +0100, Kieran Bingham wrote:
-> Quoting Ernest Van Hoecke (2026-07-22 10:27:32)
-> > On Mon, Jul 20, 2026 at 02:16:46PM -0400, Frank Li wrote:
-> > > On Mon, Jul 13, 2026 at 05:06:27PM +0200, Ernest Van Hoecke wrote:
-> > > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > >
-> > > > Add device tree overlays for the Toradex OV5640 CSI Camera on Verdin CSI_1.
-> > > >
-> > > > The default overlay describes the current CSI Camera Set 5MP OV5640 with a
-> > > > 27 MHz on-board oscillator. Add a separate 24 MHz overlay for the legacy
-> > > > camera module.
-> > > >
-> > > > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
-> > > > Link: https://www.toradex.com/accessories/csi-camera-ov5640
-> > > > Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
-> > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > ---
-> > > >  arch/arm64/boot/dts/freescale/Makefile             |  6 ++
-> > > >  .../dts/freescale/imx8mm-verdin-ov5640-24mhz.dtso  | 17 +++++
-> > > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtsi   | 78 ++++++++++++++++++++++
-> > > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtso   | 18 +++++
-> > > >  4 files changed, 119 insertions(+)
-...
-> I think with the Toradex ecosystem there would be some value in
-> supporting or helping with the ongoing dt-connectors or dt-addons topics
-> so that we can abstract the hardware which is being 'added'.
-> 
-> I think it's important that we tackle the problem of combinatorial
-> explosions of overlays when we can add a component to multiple
-> platforms.
-> 
-> For example, your OV5640 camera could be added to many different boards
-> - and each board could have many different cameras - in different ports.
-> 
-> We should not be copy/pasting overlays for each combination, or we'll
-> have 'thousands' of identical overlays.
+Am Mittwoch, 22. Juli 2026, 12:42:00 CEST schrieb Stefano Radaelli:
+> From: Stefano Radaelli <stefano.r@variscite.com>
+>=20
+> Add the missing LPUART4 node to the i.MX8QM DMA subsystem description.
+>=20
+> The peripheral is present in the SoC and its LPCG clock controller is
+> already described, but the UART device node is currently missing.
+> Describe its registers, interrupt, clocks, power domain and eDMA
+> channels based on the NXP downstream device tree.
+>=20
+> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 
-I see your point, and I agree that it would be valuable to move this
-topic forward. I will raise it internally at Toradex and see how we can
-contribute.
+Commit d879cc948e6f7 ("arm64: dts: imx8qm-ss-dma: add lpuart4 node") landed
+in next-20260721, which is essentially the same patch.
 
-At the same time, quoting Marex (https://lore.kernel.org/all/dec2a7f6-80fd-4692-8936-969f8837a555@nabladev.com/):
+Best regards,
+Alexander
 
- | DT connectors have been discussed for the last 10 or so years and three 
- | is still no real progress.
- | 
- | I would be happy to send a follow up patchset which would convert the 
- | DTOs to whatever connector implementation format lands in the future, 
- | but I am concerned that waiting for DT connectors will block this 
- | patchset from landing for a long time.
+> ---
+>  arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> index 974e193f8dcb..25c5e4423163 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> @@ -8,6 +8,22 @@
+>  /delete-node/ &adma_pwm_lpcg;
+> =20
+>  &dma_subsys {
+> +	lpuart4: serial@5a0a0000 {
+> +		compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+> +		reg =3D <0x5a0a0000 0x1000>;
+> +		interrupts =3D <GIC_SPI 349 IRQ_TYPE_LEVEL_HIGH>;
+> +		interrupt-parent =3D <&gic>;
+> +		clocks =3D <&uart4_lpcg 1>, <&uart4_lpcg 0>;
+> +		clock-names =3D "ipg", "baud";
+> +		assigned-clocks =3D <&clk IMX_SC_R_UART_4 IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-rates =3D <80000000>;
+> +		power-domains =3D <&pd IMX_SC_R_UART_4>;
+> +		dma-names =3D "rx","tx";
+> +		dmas =3D <&edma2 20 0 1>,
+> +		       <&edma2 21 0 0>;
+> +		status =3D "disabled";
+> +	};
+> +
+>  	uart4_lpcg: clock-controller@5a4a0000 {
+>  		compatible =3D "fsl,imx8qxp-lpcg";
+>  		reg =3D <0x5a4a0000 0x10000>;
+>=20
 
 
-Francesco
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
