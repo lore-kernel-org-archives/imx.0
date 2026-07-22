@@ -1,124 +1,194 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52037476CE2
-	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 08:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A614848C3E2
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 09:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784710190; cv=none; b=b66RZNbDaxXftHdLanqe3ZfmeXdUm/5oBlnRZ7WhqSJKwV3FIwPXPcv8mPOjKJMfZKokrfrkhJNO3Q3t+J63t0IldraWnO2daZ1Vwtk8XMs5ji6utogfwp0N8C3uy4UYxwdoK7G9SzsS/hrnW2dSgnecdUbILHUGAWf36+dnqx8=
+	t=1784710812; cv=none; b=IA214LiWlXHkeji3sOzzdo+McwdaQiEsOlAtBT4Z3QgQZGJO+qxwmcW3smZZn/X8SSNfi4bpnj+I3kFdUb41LFY+Xja8cdypr6EyHj5L76v+Ms8+WcEtOt22FridDy8pfHF0EQldhf+j0mcrZ8XZjvOZC1Ru94/wmjMCb0yXSqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784710190; c=relaxed/simple;
-	bh=pKGbWwktgKS8hIsYPkDEJKHbEt3+8SdmXjZVJ89XdYI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lK9bK7O6jzNp49tgPvsnCffUaItyJh/KqraqE6eO6smvKaaKUMzks2lW8PREyQ92DM4nNa5L2gykrJOhx+Nj5lwMH2Soz/zV0N8/cgP5DhjuwwR4eNW8LnpWWe2suhNPLbgvXGGt8HfGbA0Rc1SR6tgY+6oua2105aNI1JuoxUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 44efcb8285aa11f1aa26b74ffac11d73-20260722
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:4612328b-8a2b-49d8-a191-45815e19401b,IP:15,
-	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-10
-X-CID-INFO: VERSION:1.3.12,REQID:4612328b-8a2b-49d8-a191-45815e19401b,IP:15,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:896384ec597e9bc3af9490702a4f8d11,BulkI
-	D:260722164940PZX1QA53,BulkQuantity:0,Recheck:0,SF:10|66|78|102|127|136|86
-	5|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,Q
-	S:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,
-	ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 44efcb8285aa11f1aa26b74ffac11d73-20260722
-X-User: pengcan@kylinos.cn
-Received: from lenovo [(116.128.244.171)] by mailgw.kylinos.cn
-	(envelope-from <pengcan@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 89399544; Wed, 22 Jul 2026 16:49:37 +0800
-From: Can Peng <pengcan@kylinos.cn>
-To: rafael@kernel.org,
-	daniel.lezcano@kernel.org
-Cc: rui.zhang@intel.com,
-	lukasz.luba@arm.com,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Can Peng <pengcan@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] thermal/drivers/imx: Disable clock on runtime resume failure
-Date: Wed, 22 Jul 2026 16:49:09 +0800
-Message-ID: <20260722084909.463437-1-pengcan@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1784710812; c=relaxed/simple;
+	bh=ZIl6ncBqbUrWujLXqP0hdbCr9CFAGTZM8uLxwa4vsB4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=nLpcTA1Qo6JxAGTBOGjWVx8nD7oOp6Y1tsUrRV5ObItli25JeyG5IkADRLw5rrGR8wZVMwUhRxfeRGyLyFXermRwyoq4zeyaIHutulGlWErXjY5dVfbbqSBUC9IpIT4v5Yzlje56UEAtVvjcmZD1fI1Nl3XEwSaWy4NtV3DPWow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WwT0ltC/; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WwT0ltC/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E021F000E9;
+	Wed, 22 Jul 2026 09:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784710811;
+	bh=GEjbdz2FGEBZx1ZDquUX9pefc2row75jYcGj71SXF1Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=WwT0ltC/vWtIAZP0ecXksO5pcLgLnx5wps+RjEwyaQ+lx4en1S0IeAWh2r/wfp7Ur
+	 TL3ix2kD/iYYSqrt43haQB6rBkI/GgVrPlx+aECvQIKskv/0Vs2NidvUyM50+IVsHg
+	 SaZRvoOL4IPbSTvG0YRtWY40y6+gSpm1LCv7Dieu/oPgZixcFS2+eoNHx5KrGk6VaI
+	 BTfIAbnz5GR2QeapygFxNF9M+OloQanOA6f65Uw8G3GRsHoS3geLv8Mjt+SAkh7wk8
+	 8K0x9oWXMdipl3SYfsZP4iTla7VncddEngZOey8QX5BfldF0PpessHAgnFW6HOb4Zp
+	 GHoGlmL6hRQLA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] thermal/drivers/imx: Disable clock on runtime resume
+ failure
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Can Peng" <pengcan@kylinos.cn>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260722084909.463437-1-pengcan@kylinos.cn>
+References: <20260722084909.463437-1-pengcan@kylinos.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 22 Jul 2026 09:00:10 +0000
+Message-Id: <20260722090011.11E021F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-imx_thermal_runtime_resume() enables the thermal clock before
-powering up the sensor and enabling measurements.
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
-If either regmap_write() fails, the function returns with the clock
-still enabled. This leaves the clock enable count unbalanced after a
-failed runtime resume.
+Pre-existing issues:
+- [High] Missing pm_runtime_put() in imx_get_temp() error path.
+- [High] Unbalanced pm_runtime_put_noidle() in probe error path and remove =
+causes usage counter underflow.
+- [High] Potential Use-After-Free of data->tz in the thermal alarm IRQ hand=
+ler during device removal.
+- [High] Missing thermal_zone_device_unregister() causes a resource leak wh=
+en pm_runtime_resume_and_get() fails during probe.
+--
 
-Disable the clock on those failure paths before returning the error.
+--- Patch [1]: [PATCH] thermal/drivers/imx: Disable clock on runtime resume=
+ failure ---
+commit 623893dc8c9eeba8997b3f891585bf7c9155faa2
+Author: Can Peng <pengcan@kylinos.cn>
+Date:   Wed Jul 22 08:49:09 2026 +0000
 
-Fixes: 4cf2ddf16e17 ("thermal/drivers/imx: Implement runtime PM support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Can Peng <pengcan@kylinos.cn>
----
- drivers/thermal/imx_thermal.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+    thermal/drivers/imx: Disable clock on runtime resume failure
+   =20
+    imx_thermal_runtime_resume() enables the thermal clock before
+    powering up the sensor and enabling measurements.
+   =20
+    If either regmap_write() fails, the function returns with the clock
+    still enabled. This leaves the clock enable count unbalanced after a
+    failed runtime resume.
+   =20
+    Disable the clock on those failure paths before returning the error.
 
-diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-index 5aaacbc53478..b0e88b6a9352 100644
---- a/drivers/thermal/imx_thermal.c
-+++ b/drivers/thermal/imx_thermal.c
-@@ -832,12 +832,12 @@ static int imx_thermal_runtime_resume(struct device *dev)
- 	ret = regmap_write(map, socdata->sensor_ctrl + REG_CLR,
- 			   socdata->power_down_mask);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(map, socdata->sensor_ctrl + REG_SET,
- 			   socdata->measure_temp_mask);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	/*
- 	 * According to the temp sensor designers, it may require up to ~17us
-@@ -846,6 +846,11 @@ static int imx_thermal_runtime_resume(struct device *dev)
- 	usleep_range(20, 50);
- 
- 	return 0;
-+
-+disable_clk:
-+	clk_disable_unprepare(data->thermal_clk);
-+
-+	return ret;
- }
- 
- static const struct dev_pm_ops imx_thermal_pm_ops = {
--- 
-2.53.0
+> diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
+> index 5aaacbc534786..b0e88b6a9352a 100644
+> --- a/drivers/thermal/imx_thermal.c
+> +++ b/drivers/thermal/imx_thermal.c
+> @@ -832,12 +832,12 @@ static int imx_thermal_runtime_resume(struct device=
+ *dev)
 
+[ ... ]
+
+>  	/*
+>  	 * According to the temp sensor designers, it may require up to ~17us
+> @@ -846,6 +846,11 @@ static int imx_thermal_runtime_resume(struct device =
+*dev)
+>  	usleep_range(20, 50);
+> =20
+>  	return 0;
+> +
+> +disable_clk:
+> +	clk_disable_unprepare(data->thermal_clk);
+> +
+> +	return ret;
+>  }
+
+[Severity: High]
+This isn't a bug introduced by this patch, but doesn't this error path in
+imx_get_temp() leak the PM usage counter permanently?
+
+drivers/thermal/imx_thermal.c:imx_get_temp() {
+    ...
+	ret =3D pm_runtime_resume_and_get(data->dev);
+	if (ret < 0)
+		return ret;
+
+	regmap_read(map, soc_data->temp_data, &val);
+
+	if ((val & soc_data->temp_valid_mask) =3D=3D 0)
+		return -EAGAIN;
+    ...
+}
+
+If pm_runtime_resume_and_get() succeeds, but the hardware returns an
+invalid temperature mask, the function returns directly without calling
+pm_runtime_put(). Does this prevent the device from ever entering runtime
+suspend?
+
+[Severity: High]
+This is a pre-existing issue, but does pm_runtime_put_noidle() cause a
+usage counter underflow when pm_runtime_resume_and_get() fails during probe?
+
+drivers/thermal/imx_thermal.c:imx_thermal_probe() {
+    ...
+	ret =3D pm_runtime_resume_and_get(data->dev);
+	if (ret < 0)
+		goto disable_runtime_pm;
+    ...
+disable_runtime_pm:
+	pm_runtime_put_noidle(data->dev);
+    ...
+}
+
+Since pm_runtime_resume_and_get() already decrements the usage counter
+internally on failure, doesn't calling pm_runtime_put_noidle() double-drop
+the count?
+
+A similar issue appears to be present in imx_thermal_remove():
+
+drivers/thermal/imx_thermal.c:imx_thermal_remove() {
+	struct imx_thermal_data *data =3D platform_get_drvdata(pdev);
+
+	pm_runtime_put_noidle(data->dev);
+	pm_runtime_disable(data->dev);
+    ...
+}
+
+Does unconditionally dropping the usage count here leave the hardware
+active without being synchronously suspended before removal?
+
+[Severity: High]
+This is a pre-existing issue, but is there a potential use-after-free
+involving data->tz during device removal?
+
+drivers/thermal/imx_thermal.c:imx_thermal_remove() {
+    ...
+	thermal_zone_device_unregister(data->tz);
+	imx_thermal_unregister_legacy_cooling(data);
+}
+
+The alarm interrupt was requested using devm_request_threaded_irq() in prob=
+e,
+so it remains active until after imx_thermal_remove() completes. If the
+interrupt fires during this window, wouldn't imx_thermal_alarm_irq_thread()
+dereference the freed data->tz?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a resource leak
+if pm_runtime_resume_and_get() fails during probe?
+
+drivers/thermal/imx_thermal.c:imx_thermal_probe() {
+    ...
+	ret =3D pm_runtime_resume_and_get(data->dev);
+	if (ret < 0)
+		goto disable_runtime_pm;
+    ...
+thermal_zone_unregister:
+	thermal_zone_device_unregister(data->tz);
+disable_runtime_pm:
+	pm_runtime_put_noidle(data->dev);
+	pm_runtime_disable(data->dev);
+    ...
+}
+
+By jumping to disable_runtime_pm, the code skips the thermal_zone_unregister
+label. Does this leave the thermal zone device registered and leak the
+subsystem structure?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722084909.4634=
+37-1-pengcan@kylinos.cn?part=3D1
