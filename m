@@ -1,112 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C0433936A;
-	Wed, 22 Jul 2026 10:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCD2366816
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 10:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784717552; cv=none; b=CLYehZj7LxOb1rSwlZ77Hcj0IhcuafnXd61p19cxusBTvfSeAVkP/D3NEiGstrOda8OrGonDLmJoUyQGylR+ZUj6fiqQzo09uTHLEMDLodxqDNM0s7nQEG85FacGg8B9qzIx53pj5WjQYGfBvvLBCrBJgrNSSwFqbcY/Dgghw2s=
+	t=1784717970; cv=none; b=U+8WSYYrc3Zqe1hSkOkOKNHkXphkKDabXrVNNuPmh6oyNkMrRUvbIWWv7s84MQNuiyt1hdNdfT1bCeXSOwUU+9fVYjaaYV66Wm2fFh1UQknTAZOZgnA1GbPPoL99RwNzjdmiYklSIZhvuOFjMRdUQNlMRsectljrsIKRM1skCSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784717552; c=relaxed/simple;
-	bh=mKxS9DIrToPB8q1OjpZFLuv9oMbxkEDehREPQZVLr1I=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Hnx5L4DTSO1SqAKF90oKNwXbcnbIlWNTGGU+XVVdOJUcF3YZkn5poom6JiC1MmN6Sy3gS2Zqw4IrSHFTHhwIvdXlyUi2SpbQ4nq8SGkJTg0NvrGshMWADe+BUNfLXx42DUvl7RepdgETBCF2JqP6JXM6g3DfwLDHezqln7kr7Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aiUKWd0I; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784717970; c=relaxed/simple;
+	bh=V9bVEocqPIA08OGfdELeuVnuyE/Cai86e/nWbNSdFwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=roetXJUXHc1SR0SUrjXlsbOrsd2znkRqfGyHM+WlBr/KKWCdzgZGTR/Wf02/hxp4ZcpfY2HdzleNWb4OHs7OLGqNTxIDAk+ik3QJjfQ5zs8Xx7bR0LgadeU2f28dgimq6E8GxabGvkf6x7/9nljuoInVzORrCSvNDMZSG2107D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=hffUt9Vs; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aiUKWd0I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8851F000E9;
-	Wed, 22 Jul 2026 10:52:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784717551;
-	bh=cz/AaSM8b4xozM+TmCkIqyTW+QTRuTcoeDKI2hgATjY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aiUKWd0IZAEqlpSez+ESzM5Ww0mBngn9Bb5g0iBZHxm43CQKFVWRLoVRWTowK/viV
-	 3p1yi0vjvlIg3eF2qUhtpv3mDdZykTWYxH/hrr+kz4D5LGiXxPdNlYn2gqb1PMzRgO
-	 Px5m2Kb437cex4v8C6qtaC7ATGsP2Y2MnKpteaw1XXFLWl+F0NQe5zT7TGtFORNxtV
-	 1b72zBh+Tfpp0P1ns3gBuSApRQUqTrPOdKq/XEabYzgBPlnEpxdsGClkP6EkpojRR6
-	 YraYbl/wzgOc4QyetJz3CxB9yiBKm2Kp/9nteMXSuzNONgQM1Tqux9fuC4ec3KdARK
-	 P3OWbbkPMIcBg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 1/1] arm64: dts: imx8qm-ss-dma: add LPUART4
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260722104200.17729-1-stefano.r@variscite.com>
-References: <20260722104200.17729-1-stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Jul 2026 10:52:30 +0000
-Message-Id: <20260722105230.BF8851F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="hffUt9Vs"
+Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
+	by mail11.truemail.it (Postfix) with ESMTPA id 93F491FDE6;
+	Wed, 22 Jul 2026 12:59:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1784717959;
+	bh=g6bjjE8MyCav7ckmLTNb9JRa4naTxSPm+UshKCPlRm4=; h=From:To:Subject;
+	b=hffUt9VsGA0OSrvL+rdaUUo0MdY+KrxYAgPaZPMMNYTtwSWC4ZD4+UcWZLf68hUwA
+	 zk684/lV9MCkbCc2vj2yF9D07AFXvpaBNHNfvHf4dWmBDwG1HyeHR8YVVB2fBYQ5qg
+	 F/J76FsaJ7LTkAdf4kj9FJZ85czCdJRUacuJ6JP+u68Q8JOw8DTEkJJOMRKF/+Mx3j
+	 iH3jdFGY4SEjjfQMxE7sCrr3hY3l6XzZ9jjoB2SjTUqLy4jZxsn8dPPHoZ0Xdnut5a
+	 bvcnn1p/7RfBQKCdMpieu6COQeeDuU138P9qFDuGmyyEfh9SNo7UiA5O3MJeknefD9
+	 SNqr+auMsPQmw==
+Date: Wed, 22 Jul 2026 12:59:14 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Ernest Van Hoecke <ernestvanhoecke@gmail.com>,
+	Frank Li <Frank.li@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Subject: Re: [PATCH 6/8] arm64: dts: freescale: imx8mm-verdin: Add Toradex
+ OV5640 CSI Cameras
+Message-ID: <20260722105914.GA72270@francesco-nb>
+References: <20260713-v1-verdin-imx8mm-dtbos-v1-0-4acd63db4504@toradex.com>
+ <20260713-v1-verdin-imx8mm-dtbos-v1-6-4acd63db4504@toradex.com>
+ <al5mDqeFE8QVbUd9@lizhi-Precision-Tower-5810>
+ <3ak4ffamwvdrtgw3bivzvrbtkmyh7g3lvuk4xwvdiuzizi3iu3@uxqvyif7rvpx>
+ <178471622928.2174993.5439033710284861967@ping.linuxembedded.co.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178471622928.2174993.5439033710284861967@ping.linuxembedded.co.uk>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Incorrect devicetree clock indices map both 'ipg' and 'baud' clock=
-s to the baud clock, leaving 'ipg' unenabled.
-- [Low] The `dmas` property hardcodes the magic number `1` instead of using=
- the `FSL_EDMA_RX` macro.
---
+Hello Kieran,
 
---- Patch [1]: [PATCH v1 1/1] arm64: dts: imx8qm-ss-dma: add LPUART4 ---
-commit 7ee265f098cc61c07a1f39c116e402d04752161d
-Author: Stefano Radaelli <stefano.r@variscite.com>
+On Wed, Jul 22, 2026 at 11:30:29AM +0100, Kieran Bingham wrote:
+> Quoting Ernest Van Hoecke (2026-07-22 10:27:32)
+> > On Mon, Jul 20, 2026 at 02:16:46PM -0400, Frank Li wrote:
+> > > On Mon, Jul 13, 2026 at 05:06:27PM +0200, Ernest Van Hoecke wrote:
+> > > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > >
+> > > > Add device tree overlays for the Toradex OV5640 CSI Camera on Verdin CSI_1.
+> > > >
+> > > > The default overlay describes the current CSI Camera Set 5MP OV5640 with a
+> > > > 27 MHz on-board oscillator. Add a separate 24 MHz overlay for the legacy
+> > > > camera module.
+> > > >
+> > > > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
+> > > > Link: https://www.toradex.com/accessories/csi-camera-ov5640
+> > > > Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
+> > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > > ---
+> > > >  arch/arm64/boot/dts/freescale/Makefile             |  6 ++
+> > > >  .../dts/freescale/imx8mm-verdin-ov5640-24mhz.dtso  | 17 +++++
+> > > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtsi   | 78 ++++++++++++++++++++++
+> > > >  .../boot/dts/freescale/imx8mm-verdin-ov5640.dtso   | 18 +++++
+> > > >  4 files changed, 119 insertions(+)
+...
+> I think with the Toradex ecosystem there would be some value in
+> supporting or helping with the ongoing dt-connectors or dt-addons topics
+> so that we can abstract the hardware which is being 'added'.
+> 
+> I think it's important that we tackle the problem of combinatorial
+> explosions of overlays when we can add a component to multiple
+> platforms.
+> 
+> For example, your OV5640 camera could be added to many different boards
+> - and each board could have many different cameras - in different ports.
+> 
+> We should not be copy/pasting overlays for each combination, or we'll
+> have 'thousands' of identical overlays.
 
-arm64: dts: imx8qm-ss-dma: add LPUART4
+I see your point, and I agree that it would be valuable to move this
+topic forward. I will raise it internally at Toradex and see how we can
+contribute.
 
-Add the missing LPUART4 node to the i.MX8QM DMA subsystem description.
+At the same time, quoting Marex (https://lore.kernel.org/all/dec2a7f6-80fd-4692-8936-969f8837a555@nabladev.com/):
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm6=
-4/boot/dts/freescale/imx8qm-ss-dma.dtsi
-> index 974e193f8dcb9..25c5e44231639 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
-> @@ -8,6 +8,22 @@
->  /delete-node/ &adma_pwm_lpcg;
-> =20
->  &dma_subsys {
-> +	lpuart4: serial@5a0a0000 {
-> +		compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
-> +		reg =3D <0x5a0a0000 0x1000>;
-> +		interrupts =3D <GIC_SPI 349 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupt-parent =3D <&gic>;
-> +		clocks =3D <&uart4_lpcg 1>, <&uart4_lpcg 0>;
+ | DT connectors have been discussed for the last 10 or so years and three 
+ | is still no real progress.
+ | 
+ | I would be happy to send a follow up patchset which would convert the 
+ | DTOs to whatever connector implementation format lands in the future, 
+ | but I am concerned that waiting for DT connectors will block this 
+ | patchset from landing for a long time.
 
-[Severity: High]
-Does this clock configuration leave the IPG clock unenabled and map both cl=
-ocks
-to the baud clock?
 
-The i.MX8QXP LPCG clock driver uses integer division to resolve the clock
-index (idx =3D clkspec->args[0] / 4). Both 1 / 4 and 0 / 4 truncate to inde=
-x 0,
-which corresponds to the baud clock.
+Francesco
 
-Because the IPG clock (which should be at index 16, or IMX_LPCG_CLK_4) is
-never referenced, accessing the unclocked UART peripheral can cause a
-synchronous external abort or bus hang.
-
-Should this use IMX_LPCG_CLK_4 and IMX_LPCG_CLK_0 instead of the literal 1
-and 0?
-
-> +		clock-names =3D "ipg", "baud";
-> +		assigned-clocks =3D <&clk IMX_SC_R_UART_4 IMX_SC_PM_CLK_PER>;
-> +		assigned-clock-rates =3D <80000000>;
-> +		power-domains =3D <&pd IMX_SC_R_UART_4>;
-> +		dma-names =3D "rx","tx";
-> +		dmas =3D <&edma2 20 0 1>,
-
-[Severity: Low]
-This isn't a bug, but does this hardcode the magic number 1 instead of using
-the standard FSL_EDMA_RX macro?
-
-> +		       <&edma2 21 0 0>;
-> +		status =3D "disabled";
-> +	};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722104200.1772=
-9-1-stefano.r@variscite.com?part=3D1
