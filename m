@@ -1,75 +1,73 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013021.outbound.protection.outlook.com [40.107.159.21])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012055.outbound.protection.outlook.com [52.101.66.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BA043F8CF
-	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 22:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A7B37FF5D;
+	Wed, 22 Jul 2026 22:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784757677; cv=fail; b=VwBkdbYW1H0xZnDtTkPwwNM+hsDkSLpF5MUDtjWcPAS+jUVPeZXXopja5aBhGLy1Zjvnib8ZbzdHa9b4d+1/B+XK8zOenJ3/KL9HhrByMCiDpPyRVyo57XaYkjPc8rZFexuK/ZViT9LZxgHJaveR3o64ZA3YcS2Qlm028CEuxzQ=
+	t=1784757891; cv=fail; b=ikv3QghWkypdiDNxh44gpOr3e+/F0CHXibvuSBQCTOCk1U2H/wKSRGNLmeP+EunaIRX0bFrRUq6aN5WUOjlc0QAstLroQ+5v1fVL6PkAwPjCUAAXtPGKAPBkD+ZynpqOdZGNNo4QqEq9XbOvvwyA4JiXbBB5/7i+oRts31ZgXAI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784757677; c=relaxed/simple;
-	bh=qC2MuxbiwI1dazDchoGku4cXFfmM9o6MbUMycaGk5mQ=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=U41l7VKfI+/DpVU2bG7PJ3fhhpDVvMplE6/4/FIaIPuIVhy1UQwIK7vG/VqrlgWepp6+bWmB+FVta1MI/SNJe2pWaSeMTGcxdTsEM0cg3wiFiwINkMsij+tW6+XHCqQK9fWYWxjrWZ2uCm8OCwtnbQx/B9cN+vq/AC8DFX3SZlM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=F1Iw/MT1; arc=fail smtp.client-ip=40.107.159.21
+	s=arc-20240116; t=1784757891; c=relaxed/simple;
+	bh=Sr+1XfZHQVcBTaAbjg/ngQ/Eq4cgNyFUKts5Kagc1Oc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=u92IHUOVuvuZifD06zLaVJIe9KTqiWlOq4yugoPM0GSw6bIpbllCUA0BL2wbJFXwmjlPN9jso4+IDXqH13/0/DN8a2DXaGFp13OrLUgmK5WWasiTZTsB3pZQ4z4sYhPDHHuyRr7tFpyYmJYcIwbZxG4ZmNjOywIuABkiNkKwmsY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dPwICV+r; arc=fail smtp.client-ip=52.101.66.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="F1Iw/MT1"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dPwICV+r"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L5PetWt7oc3mG+pZTiEvsWS9nBoEC6x0OmnAtpSqyDkoEZ1Q5LLWv54uxLQPgKY0tlmvB7W+e4cJGdzAxqc1vwHRp+YpsgryjMzeZS2IzvIBZkkgU/QegK/0/bcUOHzjCJ7rQKWIWBch9JzDpcopc7m3pXkdfTHIGpQruorGn8kC8oaxWF2doTVpk4v2v5xLLSHlITOUDEpjTqixgK6HDXla1UcOtz4km5FREnH3qSLRxy/kk2n45Z+Fcqh6PiRXRu5GCPRoohofmr5Ko4PFXooJkXpPoE1XKi8EX+HiO1anmq2ipqclGiRAV8QLkPH86KDSrFrvwvKUVJ45IJtiig==
+ b=Z8qugv6BflKEIYA76ulP2ifzjFxDV60NOW0rRH2D+oyO0EXzLPs5Yd3iu76ONukFIupF0ID0y4iL6U8RV82mo+9Jz4XOpkapnuZtLDM6NR/Tk2cls8pOwdIyRmbC2KqUjIYKm/tEcxvCMXQCa0w6HpfG3rE2RbMrVQW7u7Omm3nRyc4qQE+/FNAHK1N5uKdc5QZVjRLBVKnBRKuJeFSYe5vcQiCUpcK58D9CtJpfzfr3Q7e5oHUjCANPv1z6SERxvfmv183D2G95wDuUpc8V96/Il1FNKi8C1Ml+HBPEAyNUm4r2NS0x3gMYXkBnUTLw8s2mh3gIubp5zP3+PByhDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jpvPCPfsVrrM81pvHxdFj3wlD026RLV+ioUWciRQEDU=;
- b=lRtcfTta5d5wKQhRh58yMeRRQOnyoPFy2Fp+7YmoaGnvYL7sXEahZ3kQwihQdPZs1TPPGWyXNW6qSnbgqYOTvGlfTaqYWUGlsD3tAet8OEjhIKDL0Z+2o+2R2VRhSKg+S0hA4gsv4WEr/tdW918p8pp0W9VZt95JAqLdM3nBMg2zExs8qnHV3pzpiQpNJUYpk4q2H4lrEjQ7prbu0jlKtp5L8uBRGqGfTeQptO+dt0D9kTgTCga+1iQkuGTQY68ShHyHfykIZbD7tGfiggXZAa+zzzETOTqy14Ts79iApMNop0lIjpX6aA25gaWZDtr6rqOrMlsqNjVLoBfamy867g==
+ bh=RsS1/lMaSYHypTSDmw6BeXDux0II01fmAcc+5DdSL/s=;
+ b=ietFd5IPO6Bn90W8xjk8J6njqT/UWCaGTkw3FVzzkY+mr2AqqD1WTMRM5FLxcUNRrK4+7tNjK6N8u1bHTPeXrq9rigWrB2wrkUx/19w8NWib3Z1yD3HXvZ6r6yojihZ2/0BKJQqa6hI7ujaRWicJEfEjUCbn80wehYgs8YGQYpch1nEUxoNi6tO8fhDoYHctoNM2yBj+znNqx5BItQ/zFLL58/x0nTsQarXJMONjDveMAWtnSWmxnz9rr2gYHdL+KGE7Rq2NqarhH1T8V4TuWnZxsNv9T9Sexz22xlK/jNa5FJolYwL90ktucTTG7+cwZ/6JFF8q5m/6Chmdq1FSNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jpvPCPfsVrrM81pvHxdFj3wlD026RLV+ioUWciRQEDU=;
- b=F1Iw/MT1/qCGncAmo2O6hmiPLsaAcwTXTuSu3/ZB2m+I0T+GO8Vi4qG0d7LA8eNQPjPZl1nsD+he0jLhHelENm82TWsngybL1M5yv8Ixi48N3Kle/FGUuno2zndCyRy+ceRzQBWMvTGpH9VkY34+mWVPjlKccZ+cmloZLVPaJmFwkZuh+1Zm5Bn/A6GqlWItDYVll8ToHcLZNrHUrt6LtFyUSJyR8cn+vK2mnT4SM3vnJ+m3Cu5gbxTR29DLl832ppKCVsvGnPM0+HGNV2uug19Y6BdZVpVtDeEvew9kaDf1gov+eSWgaKONF5/3/jBLJyDmYfX6Q6fVhdlE7H+RzQ==
+ bh=RsS1/lMaSYHypTSDmw6BeXDux0II01fmAcc+5DdSL/s=;
+ b=dPwICV+r+3lFER/PYZG+e927RAg17HG3WfyjFDXyCULd94zU7ohvenwi5snTXU63/D8705ChzxOF+pxPr1yXzIejj/+XYNuxe+onY3+NmXtKI20iT3U3LJbEMi3B//Lx7epg5zIcj+KGw8xYKwD+EJEQdOqJGSk0ORMyu8qrjK9b4iyKGmWr2VuRUWDRpYnH45rocQ4RuwwLR25RhfMK43gRwHdpZBKwm4902yGDzsGXgeUpf1TPmOgW1YZKB/K9JUAfbJjWZYQuML+CJdxKVLUzLioM5s3Cz+R04P+Vr/2ZVcbdla4TxZf/BzYxDlBBdRAK0bpvcEcpXROkmB/+Uw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS8PR04MB9079.eurprd04.prod.outlook.com (2603:10a6:20b:446::12)
- by AMBPR04MB11809.eurprd04.prod.outlook.com (2603:10a6:20b:6ee::15) with
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DB9PR04MB9674.eurprd04.prod.outlook.com (2603:10a6:10:306::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
- 2026 22:01:10 +0000
-Received: from AS8PR04MB9079.eurprd04.prod.outlook.com
- ([fe80::9761:3d78:e9db:2308]) by AS8PR04MB9079.eurprd04.prod.outlook.com
- ([fe80::9761:3d78:e9db:2308%3]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
- 22:01:10 +0000
-From: han.xu@oss.nxp.com
-Date: Wed, 22 Jul 2026 17:00:44 -0500
-Subject: [PATCH v3 3/3] arm64: dts: imx94-xspi: add the DMA channels
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-xspi_dma_upstream-v3-3-6b7ff50cae8e@nxp.com>
-References: <20260722-xspi_dma_upstream-v3-0-6b7ff50cae8e@nxp.com>
-In-Reply-To: <20260722-xspi_dma_upstream-v3-0-6b7ff50cae8e@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
- Mark Brown <broonie@kernel.org>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, Han Xu <han.xu@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784757654; l=968;
- i=han.xu@nxp.com; s=20240131; h=from:subject:message-id;
- bh=DIvYzVJJ+Z7BGus1NDjEgVrT7HPmIigSFr3cNQeP53o=;
- b=PY2WZPRTkcLXciZnAVduNEhhTia2TDOT2tBEAW13cyjeR+3BvCGDJholI7kNgWzrOo+341/at
- 8r6068Fx7LaAdjg88erz/mtXu3UAtcMe1HYbpx69s6YmSJeZjA/wQ5C
-X-Developer-Key: i=han.xu@nxp.com; a=ed25519;
- pk=XSryOlQ4EKXqt7ZHz2D+BcDu1AWYF0m5bX48xQOVF5A=
-X-ClientProxiedBy: SN6PR2101CA0018.namprd21.prod.outlook.com
- (2603:10b6:805:106::28) To AS8PR04MB9079.eurprd04.prod.outlook.com
- (2603:10a6:20b:446::12)
+ 2026 22:04:46 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
+ 22:04:45 +0000
+Date: Wed, 22 Jul 2026 17:04:36 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: Joseph Guo <qijian.guo@nxp.com>,
+	"sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"Frank.Li@kernel.org" <Frank.Li@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [EXT] Re: [PATCH 2/2] arm64: dts: freescale: add i.MX952 FRDM
+ Board support device tree
+Message-ID: <amE-dICUsWdjZ_Nb@SMW015318>
+References: <20260720-imx952_frdm-v1-0-6d145eaaa5c4@nxp.com>
+ <20260720-imx952_frdm-v1-2-6d145eaaa5c4@nxp.com>
+ <20260720065549.C24301F000E9@smtp.kernel.org>
+ <56975936-9db1-431d-91a5-c038dc16c196@nxp.com>
+ <al45mQ_okIqpkDW1@SMW015318>
+ <AS8PR04MB8676EE994248F3F168E39F0A90C12@AS8PR04MB8676.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AS8PR04MB8676EE994248F3F168E39F0A90C12@AS8PR04MB8676.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: PH7PR17CA0024.namprd17.prod.outlook.com
+ (2603:10b6:510:324::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,102 +75,249 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB9079:EE_|AMBPR04MB11809:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7869abe6-43d7-4f04-f474-08dee83cbd67
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DB9PR04MB9674:EE_
+X-MS-Office365-Filtering-Correlation-Id: df1e919d-08f6-453d-ce8f-08dee83d3d69
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|19092799006|376014|7416014|11063799006|10067099003|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|366016|376014|19092799006|23010399003|22082099003|18002099003|4133799003|10067099003|11063799006|4143699003|5023799004|56012099006|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	lcU02yv0zXTX7rz6b5tIJclOK/cjtt2C6h8c9p+k/62yXPXn+/NqihZjaN6+uyZyRnOxczE/4BhQfKN0Y7F1s4mGmB+Stmxl2JX9ltBlduiaIufv7c0FHZPzut9qKSeO1MOkmzoU5NfHBvNRm3gaYbZIMbLN5ftNAWnLjrhGjyKCVP+kB9nv1HIuSdvQLiQfzQIic3w+nS8QP6Ik6ujo070zmHxTq+OnyJWB7uHrRimTpKfIjezjjNaV2W9Lp3YdAIOeGZB6UJgD3yq60sW9nEwQ5DDZuXVX3nM759c54m6xwial3KO30MTvaJxRJF+KSpHuP1f9rZJ4BoGuaCGkoMNwZcGkdquVnElZ7ZR6zy5Q4eznIqKj9b+KZKmXh6yd8nQMh6D9AAFURgBMlCqtdNqqLEVardoSlrfFarpRCGLlIgRDonmKTqWnW3ixnaaaP4mYO/PYraLiEuuSVOp41r1zIPfiVZpRVGpybchyrRP5ozAM1kVAVfpsrPk4K+oP594AwU5k9RRm64JRqO2fXtKRIhLt3tpMzh30eDRiH8xPLqW+FcH2ZQ1ONrLuovbMRdpMrrLznpgstRfWuywPeN1kkh2XGwFeZll9wQU46lBe88z76AkYQtp/bR+ueS3ROI7b+mZfwxyTbWOqICM7eiDSysOceRCArVofYAdcJMM=
+	eMWeQmcjeXehKzlmSrgbUPL8Zp4cXPF1jV6tMZqQNK6wiRxGA9T+qw8TwVbpQTFecLjQndhRq8Fo6IpDV7lIdGYATRk86O0TkYQKw1Rfr+wzSbRoQOKZ5649lWcbNZxsL4kebUAelBftYr9SS7ylyIwENueoShQxXK/4xZhciOJDeNpN06EHqev6ym+8eAnXHW94CLTWux9AoHaVIqUjXF7H/WhpN6qEx3ls8H+C/vfWqqm18pEgpqQctBhkIf5Wes+m8rGT6vhTauM5k/29eDqKghTigWyNN/eLFd6I1TJL3vgjRoCJneIzgcsRLpmDo8Ns+N9tf0II2hkTqOTIvSrtJC1OfBMq/dVCq9JQpiVOXiMmV3i7qg7Vh5ni0pMyvS62aDDoT1aj+7M5RlwLpxolnRVMBqTkQ/YbO0gCx9QdeR3da9XeqgnK5wqhmDtBtnCD0WR5gqsA5O0Kx6u0GAVXtNQ605WWj38ULhmL22hKZTpyZxFy6AObpZSW7bchhriJpgBh2LGBGPkyHs0sE434ryG5lTi3RLHy6sXN5ok2scn3qJlobR0Cp5fsfJeTfEki1AE/NGSw0zorIgjw466oIdh1jYHbt7ko8pZ9+Td12URjRymfav+BFeQwXA1y
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9079.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(19092799006)(376014)(7416014)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(19092799006)(23010399003)(22082099003)(18002099003)(4133799003)(10067099003)(11063799006)(4143699003)(5023799004)(56012099006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dUhiREhTNjh3RmgxZFdwWmR5VEVYSXJYbGhNcWplYmhQU1V1OTBObGlhY1pk?=
- =?utf-8?B?SkpsclgzNkM2NGM0V2Q0WWNEMGYwRzZoSEtpVVZxUnV6ZUt1YTdyZjFDRTNC?=
- =?utf-8?B?Q1RxcG5DZDZDeTYvUGtNaGpMRGUwU0ttTFFmakJvODJNWEtqSjYrSExFbUVH?=
- =?utf-8?B?ZWJYT3NUdmFBd1dzOGs5S0E3TEZha1VPUlBHTk5jb3cvKzZHQTYrVEl2UUU3?=
- =?utf-8?B?SnM0Z3BtSFVxVGdEd3hQVDlwelh1TWkyek9UcmNMK01ldW15VHZKOTYwd1Vk?=
- =?utf-8?B?Zi9zcGgwSXVhUm9ieG9xYVF0VU1xMTNJV1docFVtNFVIRi9vMktSMHVlNFNX?=
- =?utf-8?B?c3NpdGxFZzlSZ252WkNhUGhtL2V0N0xVTlQwb0ttRXltTEt6bGszNFFqQnFr?=
- =?utf-8?B?L0ttSkJ5MmdYZ2RDZ1Nxb0o3Tkh5N2piUW1XbzRtaGN1V08wc0wwaXR6ZDNU?=
- =?utf-8?B?MlJ1RTJxaG9sTXJCamtnL2xrcmszeU9aMS83QU1oeEpLNHZDajEwNXl1djJm?=
- =?utf-8?B?VkZzbTFvZkFhSnhoUUlhaGdqRmJFRkk2VGVQampDQisrdUw0L2dHWFpFK1R1?=
- =?utf-8?B?bUpLNmlrSjVPbmdjVWMwZnpCTGdBWGZ3ZFRTeXZTOWRSMnJQK1pleEtoVGVH?=
- =?utf-8?B?a3ZjdG1oTElVbVBuQy8rV1N0eDhleHFSOExDcndvRXk2YTJsb1pVS3NvZTFN?=
- =?utf-8?B?QmlYVGRXYWlYREN2RnFhTkRCZDNYS2x4azVuRUd3aEZ6dXdQVkV6WFoxSlVn?=
- =?utf-8?B?NDFFejNGcUZ2UTB2eHUxNkowU3NzTzQ2NDFJTExDaTlIeUlFd1JZUWNhVnQ1?=
- =?utf-8?B?c0ZCZnAraEJZbUF4dWI2TVJ4R2hOT1pFNDlYYVVCRUYrNUp2KzN4Vy9GRVo1?=
- =?utf-8?B?VU9NYlVyVGM2MlUyZUJrYmV3enJaQUlaMVJiYWZDUXBBaUV6NXkxcXFtZzZ1?=
- =?utf-8?B?ck1PckZsWkdsa0VKdDRXdVRZYkl2UmxweU9jU2xxcUpZTm5vY3IrMEo2aGto?=
- =?utf-8?B?c0JTUTVQYmxLRWVVcWU1dmhFb05JclBrSXQxSVh2b3JuRGJsd04zNFVZcThx?=
- =?utf-8?B?elZDTEYvNXVKUW83K1dvb24wS1JzeDlJb3ZwdmdsZmxzSE1uYlZIZjhZTU9r?=
- =?utf-8?B?VWRFcis4R2FWanJJWXpyMk40M2VEalY3WVVMdStvQkM0QVlLbFgraFUwMDVh?=
- =?utf-8?B?dzYrYmQ0cGlYZ0RjSEpjUjZzTHozT3N6bWFkVnVNZkVKTGQzbWs2S3VPTGlG?=
- =?utf-8?B?QWNFb0FNMHVsT2Z5NEYxcWlaTGRFZGlaWkgvcjFJbDBXYTkzalc0UnhocUgz?=
- =?utf-8?B?VXdnUmlhMjhYOFRrVjFFbmtnRXpnZ3NlNWh3QU9JUTRHNjFqQ0VsUEFQQmRU?=
- =?utf-8?B?Y2NQZTJ4UTlram9LQ3BFQ1lVdHlqK2N2aDdocVlBdy9kanBtR3JFYWhaRkZu?=
- =?utf-8?B?WEV4RnkwYjJoR1NzcjNBQWhZOHFEMGJ0U3Vnb0FTMmlEWmc2MUduM2MzYzdF?=
- =?utf-8?B?d3I1NFM1SS9Ba1o2bzRyZDRZV09ud1phR0d4eW1wbGF2SHJUU2plajNjbkJq?=
- =?utf-8?B?RVdmYXdoNHo0ZDgxRERRbkV2dlhjTFNXTGVQTWduMVJVS1lsR0JvQTVwSExs?=
- =?utf-8?B?bnVqazl4UXhmNmlKbW85bHRFS00xVHBDL2txTExvOHUyTXBpaTNya3NiUVQr?=
- =?utf-8?B?SHlFelN5YkpFc1dScFZqcnErOWFNbTQxQ2lFczc0TEo0Mklnb2hoN3lnUnB2?=
- =?utf-8?B?dkU1MEJ3TDRFWjRERFNjQ2hvcWJiUUM3VW5nUGs3ME5XTk12UFRwZ1ZxVWxD?=
- =?utf-8?B?ZEEwd1FWUDRnNElQeXZlRUFNZjF6TTVVZDMyTkRDWlpLL2FUbFNrRjFiLzZv?=
- =?utf-8?B?Y2lra0Nmb203S1VlTmtsTXcvTzRSQkZneHRtbHNFL0ZXTnZvRWlmcGZIQTlm?=
- =?utf-8?B?SHYxdEh2YUhwV1h4QXdaeVNwMWNtUVMvKzh3T3RiTWFwNGxMdWVrblpLaUpP?=
- =?utf-8?B?YUUrd2hrWVJpOGx2NlRhd0NRRFNpMENhQ1BiM2ZYM2s4S0hHM05lVFMyZ05t?=
- =?utf-8?B?dVQ3dG1halNGaGZseUN1TjhraGpIcVE3QnpxMFFvNmM1SUpORGxobm01M1ds?=
- =?utf-8?B?VE9FY25MZFNEVXEvclh3dUVKdGM0ZzRkUEtaMWVRdnFRVW9lb1ZvNUU0T0la?=
- =?utf-8?B?UjgxL3lqQ1hYd2lzSmhjTEpwdDZLK1YrVHVrUnpYVlJaYW1RQmdLSFRaSkxO?=
- =?utf-8?B?UTg0VWxHR1Q1aUEwOER6U0kzS3FRTG5mVHNRZzBIMENoUG1ZZC8vMkxwZmpZ?=
- =?utf-8?B?RjM1NW1pd1Fmd1doL2ZhcHlCenh2ejV1U3B3VGtGc2d0TGFCNlVsR01wNm1Z?=
- =?utf-8?Q?P1d5sZ2E4+se+DYNomGcSGUqMz1Ru4elekqR5?=
+	=?utf-8?B?WlFoZXAvR0hzR2xvZFJjQXN3SldaTGZnb2ZzQktVZ1dzUEZzdTZKTk1zNWRs?=
+ =?utf-8?B?enc1YmNGUitLbmZVNzQzd1RZejlFcFJ4dmJMa0w0OWVEVFEvVDFDVnhYQTMx?=
+ =?utf-8?B?RjdNc0tMdmMydVlhcHEzaDhWNW0wTUl0QWNoa2pxWlVMSFNmTVYyNzA1ZzR6?=
+ =?utf-8?B?SkpEbzNIWVd5RC8vUm02bUIvZnRFTWxGTFEyZjlRNWd6bjIwMFk0NzdseVhx?=
+ =?utf-8?B?aEFTVDE0azlhdUVRT2JCQ3ovTFQwc3BaNlZtUFJQL2xXMUtNeEFBV2FFZmto?=
+ =?utf-8?B?aWdVek9UaHBNRllaUURYYStXSWRkMkpiaGVDY3NQcWxyV2RWczAwbmZvRll0?=
+ =?utf-8?B?OFFGSXhId0tzZkkveE9oZnY3eVlFN1YxUVVkMXlJb0o1c1EzMUxjb1pCSVor?=
+ =?utf-8?B?OGtvcHVnVVdjQmF2MHJCT1QyQTM4eHJ2MWJ5SllrSzRDREFMZEhUcCthYmRE?=
+ =?utf-8?B?Wnk0OU5FSjY3YW43Ym1EaWh1b21aYTQrTnVGY0w0QlVtckd3T09GKzdXYXNW?=
+ =?utf-8?B?aXpmM0dMVzNGbS9qVUVhQ1grYTB6M3hkU21LWGZjbjZITWdwakkvT0RxWG5Z?=
+ =?utf-8?B?UWhlWElnbkhWekxIMGFtUnJSVk1zK0ZLWTl6T29BVWt3dk4rdGF1UytNRklM?=
+ =?utf-8?B?WExYc2hBWjlVZGtobmdWRDBaUFNVUzBXaVR2Sm9TOFJxeGw2bCtib3NBZEh3?=
+ =?utf-8?B?dER5TnRyTytmbG12Rkd1bXhCVTQ5d1hrajByTTc3NTAvbVl3aFdubzdDcVJy?=
+ =?utf-8?B?K2g1RmRRcmlQMk1RY3c5T1pRUUpFbUhGdXJsY2hLeW1LbkNvUmIzZ2NiWDNp?=
+ =?utf-8?B?eXo5bmdoRjdDMnRJMnBVd3hLMmdtWWlCU05zb0pJcHpvOVZCRmhia2o4OVBK?=
+ =?utf-8?B?aC9YVFBia3pLaE9tNXBKUEdWZy95ZHZKV2s4Nk04bjNEN29BRkRoVDAyaGFN?=
+ =?utf-8?B?cGRwSnJNWDVxOW02ZFRWMDVtYkdITjVFUDJFaVVuNCtqa3FsKzFWbmczQlZ0?=
+ =?utf-8?B?NlcxT2xyb1FYanFWQzBJelF6VXlBU3JwYUNUSjBFaDV6VDlveUlLZjVnY1la?=
+ =?utf-8?B?ck5aNisyb1YvZmlxblp3UlVhZ1pMM0RPcVJSZGpOM2UxTXppQ1RXNHFzSXZv?=
+ =?utf-8?B?N3NSRmZtUWhCb1ZLMC9hUkx2c1dSSlJzNVhMTjcxQXpBYW4xUWdKNCtoWk5B?=
+ =?utf-8?B?a1phSTI0cUlyeGdJUDZTcmxyVHJrRnRDWHA0ODI1VXdhUTJzNnNWaEZneHcy?=
+ =?utf-8?B?ZU1GS0JuRHlLc00zdmRoeDhqa2xkSHJoSXdxemRSbG9FMllreDUyRG5YbnZv?=
+ =?utf-8?B?V0R2SVd2VlpKY2FwRUJKUXFsQjQyTFIzT2JaV3JrcElhV0d3cGo4bXNXYWxi?=
+ =?utf-8?B?TVlzazQ2S045dCtKdEhTcDMvc0JmM0RwUkdjakd6ZlRReEFQZEZOaEo4N1RN?=
+ =?utf-8?B?RnVBZ0hIRTdqSTUzaVQ1OHpGL3gybDZ2eit4b1ZMOFg4U2Nnb3hFRjdJcW1H?=
+ =?utf-8?B?a0NZeG5UeEk2YWN2amVMTzRxU2VxL1JsRW02TUdTOUI0bUIxSnlibTR4L1c4?=
+ =?utf-8?B?cDZudEtudWp2TjVwS3craFZ1eVAvRFlKUjZZMUo4OTY1VUVCWXA1Y0ZqWDN3?=
+ =?utf-8?B?cHVoRmxBODZ0T0tabU92aGszb2RNQWZpajNXMkswQ0VVRVJ5YTVXRGpBRUpn?=
+ =?utf-8?B?a2o0U0dGTENzNGNnVm5KNHl0cXFwM2JYNndhaDN3SDdzaWxreVFyOUxpUG45?=
+ =?utf-8?B?US85TkR5YzlXZ3I5U1dnd21FWklBWEwxcThCQ2Zmc0l2MUU2Z3hTQ0RIZk9q?=
+ =?utf-8?B?TlYxRTdMWFBPYWIvREJoSTd4Sjc0TGpucXZVRjdMamlUN0Y3WVU2UXRZa2hU?=
+ =?utf-8?B?ZDBoZEVzVUw0Mm1IQ3k4bXN1Z2pBdnBlZTRSWi9ZZlBPYjNaYmRDMFpCM2pK?=
+ =?utf-8?B?VWNNcTVKSWpBV1YzeWc2UnA3MHFOUGx1bnVQV0h6eFZMRnQvenNXMkg4eE9D?=
+ =?utf-8?B?TG1EcEdFN1UyKzlua3M2QXpqaXRMdjc4eGdnbStmRk40TlZtZVRMNEhFYnlG?=
+ =?utf-8?B?OE5td1JEa1dtTDd3QnQvN2RSdlpIVFJlZnJJbDJnS2w4ZHpQQitxSTdKVkFT?=
+ =?utf-8?B?T1EyeXlFRStvMURQQjhkYmZOazBXRjVueUllRlV6aWNRQTFmWi9NaEtJVy9G?=
+ =?utf-8?B?VXljL0VEbGJHWlp3WVo3L0tNS3kvS0plMkN6UWtjamQzek9tdFV4K0R6cmdH?=
+ =?utf-8?B?ZVQwVnZJVkp0Zyt4S2dHRXpQOVlVSUs0NmNwcVdSNjl0Y2hmRGY2VEdHd01s?=
+ =?utf-8?B?cVp2bVFvS0xrdFZXODc2WW5xWEJ3WnVldURLaDVPMWdCR1NocVpXSFd6K2Rn?=
+ =?utf-8?Q?5WCd6+ZIwCPKYzRwMgHlF1pEADsTvFFaIG+3V?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7869abe6-43d7-4f04-f474-08dee83cbd67
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9079.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: df1e919d-08f6-453d-ce8f-08dee83d3d69
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 22:01:10.7850
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 22:04:45.7724
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iMMsrrjY5L9ZSQj1C4vy9t3VWZaENROzahRMeV6sMavmkXXJj7fp4IiB+zV4Qr9pEscsxPFzlhC2eXEr3th9a/wZ/UgdynyUT3vp2CH+gH8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11809
+X-MS-Exchange-CrossTenant-UserPrincipalName: TgdyJZ2PBp4NcEAlvgy6gZ18s/tzm4LhdnOTJiKQ+8/hp6quWnndjiE1UOPY6QLS2unzQPKCOKKLODsvUxCiW+T2+nY/zkpIrTgd/Yd4SIwj5Q+U02et/Q/Wkfs/NeTP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9674
 
-From: Han Xu <han.xu@nxp.com>
+On Wed, Jul 22, 2026 at 07:57:58AM +0000, Bough Chen wrote:
+> > -----Original Message-----
+> > From: Frank Li <Frank.li@oss.nxp.com>
+> > Sent: 2026年7月20日 23:07
+> > To: Joseph Guo <qijian.guo@nxp.com>
+> > Cc: sashiko-reviews@lists.linux.dev; robh@kernel.org; Frank.Li@kernel.org;
+> > conor+dt@kernel.org; imx@lists.linux.dev; devicetree@vger.kernel.org
+> > Subject: Re: [EXT] Re: [PATCH 2/2] arm64: dts: freescale: add i.MX952 FRDM
+> > Board support device tree
+> >
+> > On Mon, Jul 20, 2026 at 03:03:20PM +0800, Joseph Guo wrote:
+> > > On 7/20/2026 2:55 PM, sashiko-bot@kernel.org wrote:
+> > > > [You don't often get email from sashiko-bot@kernel.org. Learn why
+> > > > this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> > > >
+> > > > Caution: This is an external email. Please take care when clicking
+> > > > links or opening attachments. When in doubt, report the message
+> > > > using the 'Report this email' button
+> > > >
+> > > >
+> > > > Thank you for your contribution! Sashiko AI review found 2 potential
+> > issue(s) to consider:
+> > > > - [High] Shared GPIO requested exclusively by two CAN transceivers
+> > causes probe failure for the second transceiver.
+> > > > - [Low] Use of undocumented, downstream-only device tree property
+> > `fsl,cd-gpio-wakeup-disable`.
+> > > > --
+> > > >
+> > > > --- Patch [2]: [PATCH 2/2] arm64: dts: freescale: add i.MX952 FRDM
+> > > > Board support device tree --- commit
+> > > > 8bbcb28d08a05e0f4c57023333492b4e023f7caf
+> > > > Author: Joseph Guo <qijian.guo@nxp.com>
+> > > >
+> > > > arm64: dts: freescale: add i.MX952 FRDM Board support device tree
+> > > >
+> > > > Add basic device tree support for i.MX952 FRDM Board. The
+> > > > board-common hardware description is placed in imx952-frdm.dtsi so
+> > > > that it can be shared with future i.MX952-based FRDM derivative boards.
+> > > >
+> > > >> diff --git a/arch/arm64/boot/dts/freescale/imx952-frdm.dtsi
+> > > >> b/arch/arm64/boot/dts/freescale/imx952-frdm.dtsi
+> > > >> new file mode 100644
+> > > >> index 0000000000000..b9ef6bec2bd5a
+> > > >> --- /dev/null
+> > > >> +++ b/arch/arm64/boot/dts/freescale/imx952-frdm.dtsi
+> > > >> @@ -0,0 +1,727 @@
+> > > > [ ... ]
+> > > >> +     flexcan2_phy: can-phy0 {
+> > > >> +             compatible = "nxp,tja1051";
+> > > >> +             #phy-cells = <0>;
+> > > >> +             max-bitrate = <8000000>;
+> > > >> +             silent-gpios = <&pcal6416 6 GPIO_ACTIVE_HIGH>;
+> > > >> +     };
+> > > >> +
+> > > >> +     flexcan3_phy: can-phy1 {
+> > > >> +             compatible = "nxp,tja1051";
+> > > >> +             #phy-cells = <0>;
+> > > >> +             max-bitrate = <8000000>;
+> > > >> +             silent-gpios = <&pcal6416 6 GPIO_ACTIVE_HIGH>;
+> > > >
+> > > > [Severity: High]
+> > > > Does this cause a probe failure for the second transceiver?
+> > > >
+> > > > The first PHY node successfully requests this GPIO line, taking
+> > > > exclusive ownership. Because the phy-can-transceiver driver uses
+> > > > standard exclusive requests (without GPIOD_FLAGS_BIT_NONEXCLUSIVE),
+> > > > the second request for the exact same GPIO line fails with -EBUSY.
+> > > >
+> > > > This prevents the flexcan3_phy and the flexcan3 controller from
+> > > > probing and functioning.
+> > > >
+> > >
+> > > This two CAN PHY did share same pin as their silent-gpio on hardware.
+> >
+> > Hardware share gpio, but driver may not handle this case. Are you sure
+> >
+> > flexcan3_phy probed if can-phy0 already probed?
+>
+>
+> Hi Frank
+>
+> I dug into this. Both of you and sashiko are effectively right, but the outcome depends entirely on kernel config, so let me lay out the facts.
+>
+> The driver side confirms Frank's/Sashiko's concern. In drivers/phy/phy-can-transceiver.c the silent line is requested exclusively:
+>
+> silent_gpio = devm_gpiod_get_index_optional(dev, "silent", i,
+> 					    GPIOD_OUT_LOW);
+> No GPIOD_FLAGS_BIT_NONEXCLUSIVE, and tja1051_drvdata carries CAN_TRANSCEIVER_SILENT_PRESENT, so the line really is requested. On a plain build, the second phy referencing the same pin would hit test_and_set_bit(GPIOD_FLAG_REQUESTED) in gpiod_request_commit() and get -EBUSY, failing the second transceiver and its flexcan controller. And NONEXCLUSIVE cannot be set from DT - the DT gpio flags cell only encodes ACTIVE_LOW / OPEN_DRAIN / PULL etc. So DTS tweaks alone cannot fix it.
+>
+> Yet on the i.MX95 15x15 FRDM (same design: flexcan2_phy and flexcan5_phy both use silent-gpios = <&pcal6524 7 ...>) I tested it and both can0/can1 probe and pass traffic. The reason is the gpio-shared-proxy framework (drivers/gpio/gpiolib-shared.c, gpio-shared-proxy.c). At postcore_initcall gpiolib scans the DT; when the same controller+offset is referenced by
+>
+> 1 consumer via a "*-gpios" property, it claims the real line once (marked "shared") and hands each consumer its own proxy descriptor with vote-based arbitration - so the second probe no longer returns -EBUSY, with no DTS change.
+>
+> The important subtlety is how that framework got enabled in my build. It is gated by HAVE_SHARED_GPIOS, and in both your BSP tree(frank.li/linux.git) and current linux-next, the only selector is ARCH_QCOM (commit e511d484cbe4, "arm64: select HAVE_SHARED_GPIOS for ARCH_QCOM"). ARCH_MXC does NOT select it. My kernel has CONFIG_GPIO_SHARED=y because CONFIG_ARCH_QCOM=y is also set (as in the arm64 defconfig), which selects HAVE_SHARED_GPIOS -> GPIO_SHARED=y globally. Since the framework scans the whole DT regardless of SoC, our i.MX CAN nodes benefit from a config that Qualcomm pulled in. It works by coincidence of the multi-platform build, not because i.MX enables it.
+>
+> Consequences for upstreaming this DTS:
+>
+> Pure i.MX config (ARCH_MXC=y, no ARCH_QCOM): nothing selects HAVE_SHARED_GPIOS, GPIO_SHARED=n, the framework is compiled out, and the second CAN transceiver fails with -EBUSY. This is exactly Sashiko's scenario, and it is real.
+>
+> arm64 defconfig (QCOM + i.MX): framework is pulled in by QCOM and it works - what I tested.
+>
+> So the DTS is fine as written, but to make the shared silent-gpio robust for any i.MX-only configuration we should send a small prerequisite patch mirroring the Qualcomm one:
+>
+> --- a/arch/arm64/Kconfig.platforms
+> +++ b/arch/arm64/Kconfig.platforms
+> @@ config ARCH_MXC
+> 	 select IMX_GPCV2
+> 	 select IMX_GPCV2_PM_DOMAINS
+> +	 select HAVE_SHARED_GPIOS
+> 	 select PM
+> 	 select PM_GENERIC_DOMAINS
+> (and CONFIG_GPIO_SHARED_PROXY should be built-in/module in the i.MX defconfig; it is default m). With that in place, the shared silent-gpio in the FRDM DTSI probes correctly regardless of whether ARCH_QCOM is also enabled. If you think this method is okay, then I think Joseph can post this Kconfig patch alongside the board DTS.
+>
 
-Add the DMA channels for iMX94 XSPI controller.
+Thanks you for detail information. It is quite helpful.
 
-Signed-off-by: Han Xu <han.xu@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx94.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+Frank
 
-diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi b/arch/arm64/boot/dts/freescale/imx94.dtsi
-index a6cb5a6e848b3..70c9dbf10fa5e 100644
---- a/arch/arm64/boot/dts/freescale/imx94.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
-@@ -827,6 +827,8 @@ xspi1: spi@42b90000 {
- 				#size-cells = <0>;
- 				clocks = <&scmi_clk IMX94_CLK_XSPI1>;
- 				clock-names = "per";
-+				dmas = <&edma2 27 0 0>, <&edma2 28 0 FSL_EDMA_RX>;
-+				dma-names = "tx", "rx";
- 				status = "disabled";
- 			};
- 
-@@ -843,6 +845,8 @@ xspi2: spi@42be0000 {
- 				#size-cells = <0>;
- 				clocks = <&scmi_clk IMX94_CLK_XSPI2>;
- 				clock-names = "per";
-+				dmas = <&edma4 42 0 0>, <&edma4 43 0 FSL_EDMA_RX>;
-+				dma-names = "tx", "rx";
- 				status = "disabled";
- 			};
- 		};
-
--- 
-2.34.1
-
+> Separately, on the [Low] finding:  Joseph, please drop the downstream-only "fsl,cd-gpio-wakeup-disable" from &usdhc2 in the upstream DTSI - there is no upstream binding and no driver consumes it, so it is dead code and would trip make dtbs_check
+>
+> Regards
+> Haibo Chen
+>
+> >
+> > Frank
+> >
+> > >
+> > > The same design on i.MX95 15x15 FRDM. This should be fine.
+> > >
+> > > Regards,
+> > > Joseph
+> > >
+> > > >> +     };
+> > > > [ ... ]
+> > > >> +&usdhc2 {
+> > > >> +     bus-width = <4>;
+> > > >> +     cd-gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
+> > > >> +     pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+> > > >> +     pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+> > > >> +     pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+> > > >> +     pinctrl-3 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+> > > >> +     pinctrl-names = "default", "state_100mhz", "state_200mhz",
+> > "sleep";
+> > > >> +     vmmc-supply = <&reg_usdhc2_vmmc>;
+> > > >> +     fsl,cd-gpio-wakeup-disable;
+> > > >
+> > > > [Severity: Low]
+> > > > Is this out-of-tree vendor property invalid in the upstream kernel?
+> > > >
+> > > > The property fsl,cd-gpio-wakeup-disable does not exist in any
+> > > > upstream device tree bindings (such as fsl-imx-esdhc.yaml) and is
+> > > > not handled by any driver code in the upstream Linux tree. This acts
+> > > > as dead code and will trigger `make dtbs_check` validation warnings.
+> > > >
+> > > >> +     status = "okay";
+> > > >> +};
+> > > >
+> > > > --
+> > > > Sashiko AI review ・
+> > > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsa
+> > > >
+> > shiko.dev%2F%23%2Fpatchset%2F20260720-imx952_frdm-v1-0-6d145eaaa5
+> > c4%
+> > > >
+> > 40nxp.com%3Fpart%3D2&data=05%7C02%7Chaibo.chen%40nxp.com%7C29
+> > e9bc792
+> > > >
+> > 4f2455f2cdd08dee67565f4%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0
+> > %7C0%7
+> > > >
+> > C639201589065857811%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGk
+> > iOnRydWUs
+> > > >
+> > IlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D
+> > > > %7C0%7C%7C%7C&sdata=hQfdYq0rrk8kvruJk%2FGc32LxLfMMmRAJn7kG
+> > bT5BMjA%3D
+> > > > &reserved=0
+> > >
+> > > --
+> > > Best Regards,
+> > > Joseph
+>
