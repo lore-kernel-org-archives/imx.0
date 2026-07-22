@@ -1,88 +1,71 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C57119D8AC;
-	Wed, 22 Jul 2026 12:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784724853; cv=pass; b=rh/IPa5REsBikbpAZpqBU1+CvF9SZCA6ntHwsZrmEuJeHjzfaeyfJPVaSaqGhE9oQ3cLVeCfJYQo9CifhXYG91OS00fFFJL43IbfHRuN2FDKOVhAd73V3wBr5+GA/SAdFfbyB//47f3EtI3VoGZxQwUw7KPQoyT8yk2eMIkbe3k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784724853; c=relaxed/simple;
-	bh=7VnZGEAQ3DhtuSfZcpeNXBf163xSu0ZUGhkcLmOeRec=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tT4/QkrRwy4wepRTzVeY9GUuMw5ojL+zKfRkr7MF1InIyxVMe+9iIcOWLDMH0PKOfjULagH0c8Rpl9zOVDL5qeA5+YGKD5LBkqjI4HpGoX+rxdzd+wgTaIHDhok33O+tcmtcfaznz7cPifcvplOB9O/yppBdfi3S94hVYG4FbP8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com; spf=pass smtp.mailfrom=yoavmoshe.com; dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b=BftG2pab; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoavmoshe.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D8340F727;
+	Wed, 22 Jul 2026 13:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784726461; cv=none; b=czARkq7uh8XrCB2R3r4H4Jm/4CwjUPXXCjUpUsY5ZZEd/nQm5zmAjY/CElls9VuT+Foqh27cWOqlbnbq4fo19VOSMTkTyyHEam7G8e3603roS43IayBMVBII/LChwCGa+r+siT4iNbDJVRIOIStD1MmnNvdki6eRkNWjP4+quDw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784726461; c=relaxed/simple;
+	bh=UnZV/LUYvIHeFC3aPz9elCtqJhU/it9MWUpSvPInfXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=elNbqkaBBwr10EONRUU8eG70NmOihrTtwwbclMzntseqHLLy0WOQMzRcWSpryilWjuhaChOpaJ8BQtT5ONgfKN3T/w6PQvsndXzB3KW5pD+E4lB9nuxp7R8PdUofGfMdqjI792NrlqAMVvBxWmIIQxkmAN9IXzqYvFYPtr9RF3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFPc49IE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b="BftG2pab"
-ARC-Seal: i=1; a=rsa-sha256; t=1784724840; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=OabnKG3HRHohSmn1I6Aafm+nQlHcJwu/3SXwQJJVKzk8P7/M6HcHvBqEOkYlkT2eOtvyzE9s8KzsyRs4bIv0pZPEMDHiMJa8ZS9Lc4PPIFsgEKUzBLWgw+EVToBZISgsufIlrLn3FJxr+CQQmlH1KdJzNPiWvQ1pP+6lLEbnma0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784724840; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=FQdJhIsoV9JuLr/1dkO0z+WM7z+OAgZ2kqVl0g9tzyk=; 
-	b=nXuH92L+Qc5i72ZVLXq2YydKP2Rkp3KRCW30RxAciHUmZiwc08eDq4uuN/0q/1MuV4S3GVb7bnwB1K+vpCWwYRAHOlY64pRBGb5FRFvBlifBGfWvcRuUCGHkxzxMKswLeMHEOjiwJpZpB5my8iflmLjiF/LESyYooOXBvA8KWR0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=yoavmoshe.com;
-	spf=pass  smtp.mailfrom=linux@yoavmoshe.com;
-	dmarc=pass header.from=<linux@yoavmoshe.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784724840;
-	s=zoho; d=yoavmoshe.com; i=linux@yoavmoshe.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=FQdJhIsoV9JuLr/1dkO0z+WM7z+OAgZ2kqVl0g9tzyk=;
-	b=BftG2pab8i4ALZLaaOZtPiPoUwKgJnO+YZHtLYMgCXqyxzL6oGNQ1AiCiSJcWbP3
-	5ITRvP8B28usUg4oo+0QAFypqEW2vLV5RbQ6GOFTGj0P8arWlodIWUQVVE/zX+Lar/6
-	moydj4DfxPBlFhqetQ7g990tJinJjSGsWMfH+h/k=
-Received: by mx.zohomail.com with SMTPS id 178472481504875.2682977610848;
-	Wed, 22 Jul 2026 05:53:35 -0700 (PDT)
-Message-ID: <180001f5-bddd-4e58-8442-f7ef3c979500@yoavmoshe.com>
-Date: Wed, 22 Jul 2026 14:53:30 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFPc49IE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A621F000E9;
+	Wed, 22 Jul 2026 13:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784726459;
+	bh=qAlNbnHnnY+rCKoR4N4oHsWePJ7rqAQfDgKBIG1J7gE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SFPc49IED1QI/OTrVYaTIixCKmd3bAxMGU/eYA9hwHC6OpvXki7fnsOJpl6CoFOUc
+	 rdez07P4RBQhntdr28FaKT+3c8wlL+82Pf/kC1G73Qcj7mQScFf+Uu7VzlkJ+5PVHl
+	 /o8HZRLTsnXg+p8Q9+RMCqI6KGtmg2MiTYG18xjha9AZaN5fJJ5ot8bc1r8ThfzFSK
+	 HuGjc3KLxOitil2CSejcHTHzHIkR8osm0UmvNCxFtK27optrzWMabwKXyiCaS2Bnty
+	 qqPMu53uATsEaiWQ1ciGePxwnYXcpYBkWQaTIY9BzZ9V91TzL+PYWhk9XUcnemaflJ
+	 K0qXNp1l9SJZQ==
+Date: Wed, 22 Jul 2026 08:20:59 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Zhipeng.wang_1@oss.nxp.com
+Cc: festevam@gmail.com, jindong.yue@nxp.com, xuegang.liu@nxp.com,
+	saravanak@kernel.org, linux-clk@vger.kernel.org, ulfh@kernel.org,
+	imx@lists.linux.dev, peng.fan@nxp.com, aisheng.dong@nxp.com,
+	devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, Frank.Li@nxp.com,
+	s.hauer@pengutronix.de
+Subject: Re: [PATCH v4 1/3] of: export of_stdout symbol
+Message-ID: <178472645842.281535.12263465103149751658.robh@kernel.org>
+References: <20260722082522.3747962-1-Zhipeng.wang_1@oss.nxp.com>
+ <20260722082522.3747962-2-Zhipeng.wang_1@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] ARM: imx: Fix suspend/resume crash with Clang CFI
-To: Nathan Chancellor <nathan@kernel.org>, Yo'av Moshe <linux@yoavmoshe.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Russell King <linux@armlinux.org.uk>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- llvm@lists.linux.dev, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260718111340.159896-1-linux@yoavmoshe.com>
- <CABCJKudqGL+BFFcz3qsuoJB6S_OAt-vs2yqePC_=oy+JzmPpVw@mail.gmail.com>
- <3046e60d-509f-471f-bd15-3ce78c87500b@yoavmoshe.com>
- <20260721180950.GA3684684@ax162>
-Content-Language: en-GB, sv-SE
-From: Yo'av Moshe <linux@yoavmoshe.com>
-In-Reply-To: <20260721180950.GA3684684@ax162>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260722082522.3747962-2-Zhipeng.wang_1@oss.nxp.com>
 
-On 2026-07-21 8:09 PM, Nathan Chancellor wrote:
-> Does using SYM_TYPED_FUNC_START for imx6_suspend() make that work?
-> Something like this builds fine for me and I see
-> __kcfi_typeid_imx6_suspend generated by Clang.
-Hi Nathan,
 
-Thanks for the suggestion!
+On Wed, 22 Jul 2026 17:25:20 +0900, Zhipeng.wang_1@oss.nxp.com wrote:
+> From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> 
+> of_stdout is declared extern in include/linux/of.h alongside of_root
+> and of_chosen, but unlike those two it is not exported, preventing
+> modules from referencing it.
+> 
+> Export it with EXPORT_SYMBOL_GPL() so drivers that need the stdout
+> device node can be built as modules.
+> 
+> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> ---
+>  drivers/of/base.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-Unfortunately my physical board died, so I couldn't test this on hardware.
-However, I gave your patch a try under QEMU emulation (with CONFIG_CFI=y
-and copying the 4-byte hash into OCRAM before fncpy), and it still
-triggered a CFI panic when suspending:
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-    __und_svc_finish from imx6q_suspend_finish+0x78/0xd0
-
-It seems like the hash generated for assembly doesn't match what the C code
-expects at the call site.
-
-Best regards,
-Yo'av
