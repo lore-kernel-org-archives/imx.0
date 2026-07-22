@@ -1,115 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D3946EF8C;
-	Wed, 22 Jul 2026 16:46:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784738788; cv=none; b=YyUk+n7SW/VIa/ORi/e5nBf4DVGgjWS3LcHTiD29iwxh+rfqu9NVIvoiK/dqkqjbgUi2hNsMC2/KMNiOC5cFOq4xWj2x0KGEDuj+cfZ2L4P9+CnGtxzsg9/0wsk652OuR3yiiBICfk21585tIBQBPHpiL0hRHjmTqyLOqYHr2oE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784738788; c=relaxed/simple;
-	bh=wy9889ywZyXjB8TSkRKsFnyt1F8rIxKEnnNuJ4OM0YQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DjUmwtTyePBDcDW2AOCjqVLYpdGdyM/IgeA/+nrI/m6//j7wn4zHJQ1DTNpRNxIYAMMBpNy1csosC2oHe+WI/nVDqm+HHWG6bKJoDVNG8buunKaJlSlHTmUWG49LWLLJRy5qFAog3j32m0YYSCTwUggebDKMUQVdkDOjM8nBdqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cnxW2ckT; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E414749E6;
+	Wed, 22 Jul 2026 17:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784742424; cv=pass; b=bYCbH22wrYkmcyjbFibQi8u3PcLcIghgGDhAonxbDPgf9yKpBo6IliBNfX/HbkhATZaVDm4kX9/mh0u3RBIcNbcaJPyowHLRbIWvZMKpxgcjx+95jjR9yTlpOxsWNB4P1did2LgNXeFfAZq1KlZ+kumNydlvkN7abf2NEXoyiac=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784742424; c=relaxed/simple;
+	bh=XCrzWIHXMTC6vLxmZAYmJB0rVPxCp1X90KZnT66wKo8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H1kHYTEv5Za/mKT+/2g/vsk/qzjJ7mhbjOwPi7ADYOMFW4uYfde96UH8OJDPD3wxk6Iv2llMzEPFxcxklxTmr3kDpZBCtIv6Ah8KHmZr29FyepUtbFrw9OeB/1doMZyJtf2RFGWTcAhN6Vn6aZYX53/POx3zca4uwQ4CYk568VA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com; spf=pass smtp.mailfrom=yoavmoshe.com; dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b=VNxQAg5B; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoavmoshe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cnxW2ckT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4934B1F000E9;
-	Wed, 22 Jul 2026 16:46:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784738777;
-	bh=1AsC7BFG5mj92FJSoHowKooJs6gEPFD7nWYs6mjDbh0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cnxW2ckTw/3C5NxLkORl5zEfiqs3MuVpK71LXlX/M3EOPYsLP4fEOP5TG3KFwmZwL
-	 eXHbOns5sAw1gmrYHWLYxMzIJdRONeyyvIbd1rVKus/sJoBQ7iK1bKd6k+c+qvgZGU
-	 Hc2HeW6o7Ex9GmPXO8x8WiJSQj98rj/KqpSOIIZeZpNiJ1sTS23LnrNC/H+aUIaSY9
-	 oBilkqgwShMHwo1Y3GD2NInFd15JkDWknwaWMOC4XUTA3B05w2+xyXA5Ixpb8FuRwh
-	 Tj/WMuZWZEQ06ZuHY36i8inF0GtRb5lX2xnHo2mxmw4bNIE0t81fkWFLzqSrzTHAM3
-	 0ywAdQNCIO/aQ==
-Date: Wed, 22 Jul 2026 17:46:12 +0100
-From: Conor Dooley <conor@kernel.org>
-To: han.xu@oss.nxp.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Han Xu <han.xu@nxp.com>
-Subject: Re: [PATCH v2 1/3] spi: dt-bindings: nxp,imx94-xspi: add DMA
- properties
-Message-ID: <20260722-divinity-urethane-da0cab030adb@spud>
-References: <20260721-xspi_dma_upstream-v2-0-9e19d80e7762@nxp.com>
- <20260721-xspi_dma_upstream-v2-1-9e19d80e7762@nxp.com>
+	dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b="VNxQAg5B"
+ARC-Seal: i=1; a=rsa-sha256; t=1784742411; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=msFSU0cXWpZHma5l8e1RgE+vsAuTgCi0+2fZtmz2bkSkCak8aCcWxqaxHD8V+IKirv3a9/hpED5T5hW57OKAVI3q7upgQEOcKgWOBQGfyIaSSwQLYjGX9nak33gsU2VKXDC7FONDF/L36DB+9c96fDvaig4/YinNeSocTDlfzBM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1784742411; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=XCrzWIHXMTC6vLxmZAYmJB0rVPxCp1X90KZnT66wKo8=; 
+	b=jCiSzJ7J/PinuTxMmiSZpOKV6gQZKSVlq62LfvVEtNgC62cqMi1ejyraBHr6We+KPolbvQ0CQJD1RSp9S/GA5urWCEbJHsRe59pwqEWuXLMfmbkKpbmkgNZdRoN5aB2pCrxcnxhfsKAESFbgS90Liai9UGH6x3YRoAe5xe8EjvY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=yoavmoshe.com;
+	spf=pass  smtp.mailfrom=linux@yoavmoshe.com;
+	dmarc=pass header.from=<linux@yoavmoshe.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784742410;
+	s=zoho; d=yoavmoshe.com; i=linux@yoavmoshe.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=XCrzWIHXMTC6vLxmZAYmJB0rVPxCp1X90KZnT66wKo8=;
+	b=VNxQAg5BokdoSQOY/uISQM8jI/tpEcYc+vHRmCnkNiGXivOucZT3kDX9OihMBQrj
+	aClr0C5SbCXW7DI116JO7imxlKcYTrieUV6uxOkoX9rQW5nRSGnImtzCTIoD6Wr54eE
+	552Kz3FvsvldHt5mVRFsb4TkJQ4Wv/dQikURjbP0=
+Received: by mx.zohomail.com with SMTPS id 1784742407582988.2620092098992;
+	Wed, 22 Jul 2026 10:46:47 -0700 (PDT)
+Message-ID: <7f273a08-b29c-4e15-b340-898b251efe57@yoavmoshe.com>
+Date: Wed, 22 Jul 2026 19:46:42 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uzpimjthc/PatwgU"
-Content-Disposition: inline
-In-Reply-To: <20260721-xspi_dma_upstream-v2-1-9e19d80e7762@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] ARM: imx: Fix suspend/resume crash with Clang CFI
+To: Sami Tolvanen <samitolvanen@google.com>, Yo'av Moshe <linux@yoavmoshe.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Russell King <linux@armlinux.org.uk>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ llvm@lists.linux.dev, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260718111340.159896-1-linux@yoavmoshe.com>
+ <CABCJKudqGL+BFFcz3qsuoJB6S_OAt-vs2yqePC_=oy+JzmPpVw@mail.gmail.com>
+ <3046e60d-509f-471f-bd15-3ce78c87500b@yoavmoshe.com>
+ <20260721180950.GA3684684@ax162>
+ <180001f5-bddd-4e58-8442-f7ef3c979500@yoavmoshe.com>
+ <CABCJKufhvTxmVm8y7xr4RWWKsoZk0h8UGBnem+F5fknnimaqPA@mail.gmail.com>
+Content-Language: en-GB, sv-SE
+From: Yo'av Moshe <linux@yoavmoshe.com>
+In-Reply-To: <CABCJKufhvTxmVm8y7xr4RWWKsoZk0h8UGBnem+F5fknnimaqPA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
---uzpimjthc/PatwgU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2026-07-22 5:00 PM, Sami Tolvanen wrote:
+> Are relocations applied to this code before the function is copied?
+> Because SYM_TYPED_FUNC_START doesn't embed the actual CFI hash in the
+> binary, just a reference to a symbol that contains the hash, and it
+> relies on the kernel to apply relocations before indirect calls are
+> made to the function.
+Hi Sami,
 
-On Tue, Jul 21, 2026 at 04:01:42PM -0500, han.xu@oss.nxp.com wrote:
-> From: Han Xu <han.xu@nxp.com>
->=20
-> Add dmas and dma-names to describe TX and RX DMA channels for the i.MX94
-> XSPI controller.
->=20
-> Signed-off-by: Han Xu <han.xu@nxp.com>
+AFAICT, kernel relocations are already applied at boot before fncpy()
+is called during init.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+I think the issue might be a parameter mismatch: in C, the pointer is
+declared as taking a parameter `void (*)(void __iomem *)`, but in assembly
+`imx6_suspend` has no parameters, so Clang generates two different hashes
+for them?
 
-> ---
->  Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml b/=
-Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml
-> index 16a0598c6d033..ccf841f194c06 100644
-> --- a/Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml
-> +++ b/Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml
-> @@ -30,6 +30,16 @@ properties:
->        - const: base
->        - const: mmap
-> =20
-> +  dmas:
-> +    items:
-> +      - description: Transmit DMA
-> +      - description: Receive DMA
-> +
-> +  dma-names:
-> +    items:
-> +      - const: tx
-> +      - const: rx
-> +
->    interrupts:
->      items:
->        - description: interrupt for EENV0
->=20
-> --=20
-> 2.34.1
->=20
-
---uzpimjthc/PatwgU
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCamDz1AAKCRB4tDGHoIJi
-0gBjAQDDaTVY/p3HfrZwRPlKeI6O0mHfuCHsA7jzs8i8/hBsHQEAn37K39nj07xY
-j6UCwmnMPTvle1FzwgbmdqflUB0/0Ao=
-=Wa/1
------END PGP SIGNATURE-----
-
---uzpimjthc/PatwgU--
+Best regards,
+Yo'av
