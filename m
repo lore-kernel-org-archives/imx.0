@@ -1,146 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013024.outbound.protection.outlook.com [40.107.159.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E54376A13;
-	Wed, 22 Jul 2026 03:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784690421; cv=none; b=nH+t6KvvzHS4w7aPUlCDuY+OLoZDf2vfcGe4zUnuL60Dz9MVjlcg140/wxV2SzptNJ5grCDX7bzCX9h9T/MuQ8lU9SxP2TPaP0T5JpyjA8h0VsUFf5npUnxpFMNKbsgBzaJa4cWqK13HwtAkUFFtgrlZLg42OIPUfrtWv64A09M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784690421; c=relaxed/simple;
-	bh=YYsk06+SC2GGgso4AXbY4/Xlse3qgK6z9B097IGwelI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ORCXPQmugF10CpvMUtT+wcgB090u3a1eUrZ4Zix/j0fTP7/BtLdsgUnTh3shoitxxQQAwArUHkvxrXyRd1fIPykn0xYdE3KPpmtqYMYGqeyXOlnSkT9LuJpD23DLom2QDup4PYd7lLLqQhJYmj2iINXOavnrwVUTG/w0ZCXFckg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTSyvELP; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E770A3A7F57
+	for <imx@lists.linux.dev>; Wed, 22 Jul 2026 03:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784690614; cv=fail; b=b0YhiBXW5JJMlHzJBgyKgilLfdEQGO/KrvQaPQmoaPEXSw0O1BMc0r0/CB2VZXxhdKFexRRA0dL6XqvDLu5ZbpuPngWA4eaNYy2gZNCBtaEOnWZamuUjZ58i0NQXcjhQLL0hD4MdST5bPiX59tkEIdLcE0ONarnYBxX24qWTgwI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784690614; c=relaxed/simple;
+	bh=j9UPUZRewmQFFnUGboJFjtXjix/8xkBgg03WxY6zXas=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=HfwivFkQxCTqyc7QjiUra9cWDOEd/YYkr4MiGJk/nvk3L1gMSnDTwVo2B1qY5TPh9CNK/HKcFe27zEXawNi9WBAaD63nLGGYH78c7KSIdFYcWY2J9yCLYcYmrxG75Idh2zugH6aa6wToQPGIDAGXfd+rgBp72QKXvYazKJPMZk8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Y8CMAz10; arc=fail smtp.client-ip=40.107.159.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTSyvELP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70091F000E9;
-	Wed, 22 Jul 2026 03:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784690420;
-	bh=f5vlXSHvUu6X9bMg56VRITG7Px3L4OM4EGYWMiE44wY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eTSyvELPzq+B/jRPpsetOX6aGDjSVzUt6IHR7dH8QgcvxfZm4Qr30SRqupAxbnN03
-	 lUVlTleMMrg59yBPKZvD4/R/xT2XhtRKpP+yMsASUmsJYYouPHFz4r1F0DGpP1ANZ4
-	 z3g6Jr3p3lZQM3G7DccW/GSo7jSXMvOYAmVgxA2Z+M9u4I2jGMfVUrTrbB7skj/+Mm
-	 lPvWsTkTu5sU0BGnubLRQxKC47Pg0TF/TrsW5IDdoVT9z8XisArRYhpsp3pnoKK6Wb
-	 kMX5JzVN4jyaDTGwlwASX5E9e8qqtlu4tdHAKckRzhpZ5itGV+aMSkiZwA3kBculcA
-	 cNR7WGuCRv1IA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] PCI: imx6: Fix i.MX6Q/DL boot hang caused by
- improper PHY power sequencing
-Reply-To: sashiko-reviews@lists.linux.dev
-To: hongxing.zhu@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20260722030935.2328278-1-hongxing.zhu@oss.nxp.com>
-References: <20260722030935.2328278-1-hongxing.zhu@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Jul 2026 03:20:19 +0000
-Message-Id: <20260722032019.E70091F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Y8CMAz10"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H6kHtYoiar37Ehz7kiu8fjG42sjNM7YFSIgCzudS05L4huKn2Zp/noMcJonRcSTFMy5ZgTqLyVVD2f+N/4butk8LsDUyjEeGCYMn5zeOlq1M8y+imen1xDQYWYKM6peXu59TRWhc+KFFWzTpnF1Ej3jXTpm8bS4BOGieCa1EJyD1C71pOYj39KtMV0EC3ciPunh8bH5dV5l+ssV/ysRbIsCgLEVrFFF2v4LByAWGYTcruhSMkPxW/yhp8APrxhCVSEBdaRpAx7/9DWuONe8dP4bLNHD1a8E4zoBgscPJjTwH3tvpxfib1VNDiQ8k0k527BzdBxAXVf/Xl/LO5KOFuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PrYsc23QNWhkFCZxzlcJXweaSTTT9UiaFBEe05NwC6o=;
+ b=xqZT38URjfMKF3meRToVfGhdMC0A811kqJ0VDlK8L6eORGiEX2m1TRMKRd34dFLYhCM5JgONtiV82rtxq4KciKd/HWvYx/AcbpZha1HDcaq7MB772m9qjy+esgotwOvh2aYs+NFr0rK8DxOitD6zr+q+IQK5CltSDt4SSsuft6dwmjXdqIou8x7GjZhjiQ/bqRS8JwKeioJjtrzVdZ9RrCEJS8Y46fmP0jtKCYH4aQG8TYTvRhgkrhiirGQoZUWhLgx+JMmDog3OkMZfYAzriKeI6a0TfUw89zvEHqjR4Ze0uSRc5CZpdGtiLvQyNTsUIQR/Y/q1j8ZP4nvQUk18Rg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PrYsc23QNWhkFCZxzlcJXweaSTTT9UiaFBEe05NwC6o=;
+ b=Y8CMAz10I/SNvueSDNhRGCNLNatP3kLGRJbZHcvdWr26zmVf0Ux5DkrTdaG2U0b1DdaGVwSOZy1lm952xyTLtvCCiQ80MEqoxxB4nz5+W9taj7G8RvdU6QmdkqltgdDftfsF+9KFcW/s7KwiJhRTOozjKHrsX6xXJzgNR7fJwv4GI9raQ0sMKtQoxtTVqh9+We8OjoVvUcBOb/1PB5wpA+1yOtUzeG1j2t6ga+TkQ40BnVUa/7z0fUuTZhwKP3UIheOcbUobEN8nTCG0Zyc5Iz4uxsxWEkTK5enDel+8aCNHkOgD/XY5sAuy3m71a94JkpPjKm6zrnMmnIVSKP+p8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DB8PR04MB6858.eurprd04.prod.outlook.com (2603:10a6:10:113::9)
+ by AS8PR04MB7719.eurprd04.prod.outlook.com (2603:10a6:20b:29a::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
+ 2026 03:23:29 +0000
+Received: from DB8PR04MB6858.eurprd04.prod.outlook.com
+ ([fe80::bc6f:5fd7:462:d0b5]) by DB8PR04MB6858.eurprd04.prod.outlook.com
+ ([fe80::bc6f:5fd7:462:d0b5%4]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
+ 03:23:29 +0000
+From: Zhipeng.wang_1@oss.nxp.com
+To: robh@kernel.org,
+	saravanak@kernel.org,
+	ulfh@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	peng.fan@nxp.com,
+	jindong.yue@nxp.com,
+	xuegang.liu@nxp.com,
+	devicetree@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] pmdomain: imx: build the SCU power domain driver as a module
+Date: Wed, 22 Jul 2026 12:23:19 +0900
+Message-Id: <20260722032321.2693300-1-Zhipeng.wang_1@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0009.apcprd02.prod.outlook.com
+ (2603:1096:4:194::11) To DB8PR04MB6858.eurprd04.prod.outlook.com
+ (2603:10a6:10:113::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB8PR04MB6858:EE_|AS8PR04MB7719:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ee8299e-dbdf-4318-cc03-08dee7a098db
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|19092799006|1800799024|23010399003|11063799006|10067099003|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	CCkD89oi8GuluiobNp4cr/EPi69iyz53WhC3dvb+m5URUHGhKPFheSSa8osuRd2oylJaDhNIv4n+zZpEv/IqnUIz10xS4QtOEGX/8jCsY5y8fJCEAQ1vhY/+HKFUvhIiGnp2wrMgezWXyAedPe7n+UryzGA8sF6sYd4Ume2nhokZPXqMJLSvU+lLy8hShOm0l+fJ6t8xJKXIs82XLR+VkagmR76ZenKlcJ5y5eGooKFho8Nf9nYulUf9+/fjOY20iEjhugLIZoCBnJn/5GTqj8ZWxJkYZkXHQrOTe5dqbt+X3n2lXAHnEw5zZgrLZYODfbFIAOCwx3BM3aWQ7fq6yxhPhme6wkL80W+17qrl4zBkJEuA6FTg6UP8NjkvY7/K/kvDYAFtxYtzsLANtbjaAq+wZJTwnsudgjWwZPQoRArB38xFBZMfEceiOYjTMCXQhdFgO6bXkmKzYjKfZ3So6Q0jAWXbAghhZdeDFjTwhAe25j2YbTINBRw64rMbhG8+1pyqSBPtavpA1AnBc/65GxIv7TqV5v012YFRL8SaMS39SIN+uoGEtfci07Ut1W/I/8RGpi8Z3SY1IA38YIcDW2GmVddiwnpk2ay212bDBuszrYfWO/B4mGSgkA26hNF/UG9nG97k5pY5BGnl6qD5aaREQ13dhrmAMt774DDZd+w=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB6858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(19092799006)(1800799024)(23010399003)(11063799006)(10067099003)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xaZRQDYUOsxBZHFg7IAkJzrstX8CyK5GAVyY5qw5NHjOKzkSpnUweYDzfVs1?=
+ =?us-ascii?Q?p8NSoE0npi2/rC991PLDIRQJN4Ug/I57Oc0Iibs9NMum+tFoAsguakP0Pn9O?=
+ =?us-ascii?Q?rcn9UzhscTCa22GdpdEwLJ9lz7ZJ/Uy9IeymB7G5Zk4UhMINxOKvDe605DI6?=
+ =?us-ascii?Q?Euo0/S4ItEwQ7zWcoNk8vp0IKjZ59LEars1r27v+h1xdWlzTPRnHzMlH/4N2?=
+ =?us-ascii?Q?RhxT9jq6vYRgIs67nV12xdNxYnXdBers8nGUDdFbHShcvH1H1bYL27Wi6etn?=
+ =?us-ascii?Q?ewVuMWF7iEo9/wZWxfNKJvE1Bvdft+ohxkcQ1pIs2T9kO27Q4JL9zh6QgWuO?=
+ =?us-ascii?Q?qEc8lNnGjx4KOikIBsZTjdz1+iNDFCxzZml+UqaOnCmXabFjBO/rZQctMAhd?=
+ =?us-ascii?Q?80K8rlVHnUJ5exF/RK2FMmbA7cEM2r3TPUQSXnJe3ZoUGlFqI+Hep5pPe2Tq?=
+ =?us-ascii?Q?gGLRw5wFoEJKXHzXk/bmURyxoAjqr8/IMONLC8Sf8hV8GZx4wn1heqzJ+N0q?=
+ =?us-ascii?Q?2zXLOCZWiMPG9vRc9xTCS7q/qPDe+L0RFe02W5crvwPjaV8E8gWhJw3aiTy5?=
+ =?us-ascii?Q?SJfaDJNOeBTRDey0poGxhaoJCppDNkO5j8R7i8/Q7brhKAe1i2ORNsKDl9Ov?=
+ =?us-ascii?Q?q1NXA6nUtIDOxNTBgIMiJ3scmwBNmzfKzf8LnOpSv3fiDsQHhPwazmLXDR/n?=
+ =?us-ascii?Q?UiHD/LVXTVkRO/fBjLR/SP935WBnB662sUEuAfEQWOJjcXyya67Rw+YH1tE9?=
+ =?us-ascii?Q?iiKhxc0+JgkdYU/SNHKF3KL2vLBozo4OAJanxb8wwi2huTSGUlFIgK+FC1J6?=
+ =?us-ascii?Q?ECXv0uAw2HVgEDOQTQqsa/HE6WgCX27VEHwglszNXhAFxK5LE0nCHxaKRQ1x?=
+ =?us-ascii?Q?Hjhjrud4Z/fscjsn7SebGKH+NyIWookhlDiPBGiC5Ke3Se07EoJZPZYuEbFd?=
+ =?us-ascii?Q?r+d/A/cicdbu5v15B1R6Yn0ZN2jG0qBNti1BWjBVYU1gH+0HEgGKyLVsAdFH?=
+ =?us-ascii?Q?NGMsXN3nuqZkhjEXyYEitZr8UAow5aXImzacW+nYrt9k2iHsmsSFCckHU6bU?=
+ =?us-ascii?Q?jvPUYySVEylwIbo+Q6LGda4qSdzfG797N/zCFmZKjphaCpb6GF3HjsuAiQYV?=
+ =?us-ascii?Q?BqTxDyLpzOTBVhN2tv1/hM18eTWnFXdm5aArv5YEkui40Zp0qDMhmZJJT36w?=
+ =?us-ascii?Q?1tNVJ1K1yhglzXZ/PMsRSXHhtXzN+XuPh0Q1K9adqgRsZaOdi+/HzPzwxPEk?=
+ =?us-ascii?Q?10k9mFMSBQ9ObrMmAATwf9vhISd35rXXl1H1e0ZY+L743bUAfjbDnv1N+e4n?=
+ =?us-ascii?Q?oRKaNqrvUlrp8xxBa+3Eja3ouHcUUNSsLFlbEUwPMDXKoDARtjR6wA8PDGBB?=
+ =?us-ascii?Q?ECgRsfpgUze5F3L5olDlly7BZ0iZ0d1GoVhN9YrkpvpDAmx2Cvb+z1ccGMp3?=
+ =?us-ascii?Q?i1uf8nQeScDN4FhzdFDeIItXxfabG+GhX4432PY62p2har8hJji+cwA/9QY7?=
+ =?us-ascii?Q?srnPIJRviPk96cobE1lFotFWEcRnlAbExSzbWQxlZZPwDlX1zS2qZ/ZAF4Pu?=
+ =?us-ascii?Q?cq94wlPA8TYOM2aYhHm+CFbfHWHUhmfqmP4M7coQ/4p88/+YfXT7CLQ2nK8l?=
+ =?us-ascii?Q?oWOOibiltQHSDCF2YeRCzp0VxCV9oTEAGBYgucN3skJHIrFe+oUbHEYaj69n?=
+ =?us-ascii?Q?7UVeTkLJmi9FtKiBJ1KGMddG8Re+4Z5Uj40Lye4NDXKMkwHhDPNT3akJrfpc?=
+ =?us-ascii?Q?niKGwG/VCPH8xefqw8T1qxlQojnysQ9Do2AitrjsaE2wvErbZ4sf?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ee8299e-dbdf-4318-cc03-08dee7a098db
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB6858.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 03:23:29.0521
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: B23YHkK1ypwPpsW+/+uSsE1P9J5bNuMiBBCSMsTUk+kwOn8iJvnagGemm2B9RnLym7DF87O/tIvVGiacEWbWrGUGYQkF03MAJNkbxyavrS97++xR/C142ofuuu5jYHOz
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7719
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] The removal of explicit PHY power-up delays causes a boot regressi=
-on on boards without a PERST# GPIO or explicit Root Port nodes in the devic=
-e tree.
-- [Medium] Incorrect teardown ordering in `imx_pcie_host_exit()` violates L=
-IFO symmetry by asserting the core reset after the PHY is powered off and e=
-xited.
---
+From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 
---- Patch [1]: [PATCH v3] PCI: imx6: Fix i.MX6Q/DL boot hang caused by impr=
-oper PHY power sequencing ---
-commit 00ce7804e098bc0e8573a15a850f6250a9cb1245
-Author: Richard Zhu <hongxing.zhu@nxp.com>
-PCI: imx6: Fix i.MX6Q/DL boot hang caused by improper PHY power sequencing
+This series makes the i.MX SCU power domain driver buildable as a
+loadable module, which is required for Android devices using the
+Generic Kernel Image (GKI) where SoC-specific drivers must be modules.
 
-This commit fixes a boot hang on i.MX6Q/DL variants by correcting the PHY p=
-ower
-sequencing and TEST_PD control logic. It removes an explicit delay during c=
-lock
-enable, assuming the PERST# toggling sequence provides sufficient stabiliza=
-tion
-time. It also adds explicit core reset assertions in the error paths.
+Patch 1 exports of_stdout (which the driver references to find the
+console's power domain) from the OF core with EXPORT_SYMBOL_GPL().
 
-Link: https://lore.kernel.org/lkml/20260629143439.361560-1-leoreis.costa@gm=
-ail.com/
+Patch 2 converts CONFIG_IMX_SCU_PD from bool to tristate and adds
+MODULE_DEVICE_TABLE() for autoloading. Only module_init() is provided
+without module_exit(), since the provider cannot be safely removed at
+runtime.
 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
-er/dwc/pci-imx6.c
-> index e25f938eefe23..45ab21c9769a4 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -681,21 +681,12 @@ static int imx_pcie_attach_pd(struct device *dev)
-> =20
->  static int imx6q_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool ena=
-ble)
->  {
-> -	if (enable) {
-> -		/* power up core phy and enable ref clock */
-> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_T=
-EST_PD);
-> -		/*
-> -		 * The async reset input need ref clock to sync internally,
-> -		 * when the ref clock comes after reset, internal synced
-> -		 * reset time is too short, cannot meet the requirement.
-> -		 * Add a ~10us delay here.
-> -		 */
-> -		usleep_range(10, 100);
+Because of the cross-subsystem dependency (patch 1 touches drivers/of,
+patch 2 touches drivers/pmdomain), I would suggest taking the whole
+series through one tree.
 
-[Severity: High]
-The commit message states that the ~120us delay needed between TEST_PD
-de-assertion and link training is satisfied by the PERST# toggling sequence.
-Does this break boards that don't define a reset GPIO (like
-imx6qdl-sabrelite.dtsi)?
+Changes in v2:
+- Drop module_platform_driver() which provides module_exit() and could
+  lead to use-after-free on module unload. Use module_init() only, so
+  the module cannot be unloaded. (Sashiko bot)
 
-If the device tree lacks a PERST# GPIO or explicit Root Port nodes,
-imx_pcie_assert_perst() returns immediately:
+Zhipeng Wang (2):
+  of: export of_stdout symbol
+  pmdomain: imx: scu-pd: allow building as a module
 
-static void imx_pcie_assert_perst(struct imx_pcie *imx_pcie, bool assert)
-{
-        [ ... ]
-        if (!bridge || list_empty(&bridge->ports))
-                return;
-        [ ... ]
-}
+ drivers/of/base.c             | 1 +
+ drivers/pmdomain/imx/Kconfig  | 2 +-
+ drivers/pmdomain/imx/scu-pd.c | 8 +++++++-
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-Because of this early return, there will be no delay before link training
-begins in imx_pcie_host_init(). Could this lead to a boot hang on these
-boards due to the missing PHY stabilization delay?
-
-[ ... ]
-
-> @@ -1475,6 +1467,7 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *p=
-p)
->  		if (phy_power_off(imx_pcie->phy))
->  			dev_err(pci->dev, "unable to power off PHY\n");
->  		phy_exit(imx_pcie->phy);
->  	}
-> +	imx_pcie_assert_core_reset(imx_pcie);
-
-[Severity: Medium]
-Is the teardown ordering correct here?
-
-During initialization, the core reset is asserted before powering on the PH=
-Y.
-The error path err_phy_off in imx_pcie_host_init() correctly mirrors this
-by asserting the core reset before powering off the PHY.
-
-However, this sequence in imx_pcie_host_exit() asserts the core reset
-after the PHY has already been powered off and exited. Should
-imx_pcie_assert_core_reset() be called before phy_power_off() to maintain
-proper LIFO teardown symmetry?
-
->  	imx_pcie_clk_disable(imx_pcie);
-> =20
->  	if (!pci->pp.skip_pwrctrl_off)
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722030935.2328=
-278-1-hongxing.zhu@oss.nxp.com?part=3D1
+-- 
+2.34.1
