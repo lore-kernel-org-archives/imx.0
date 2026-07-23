@@ -1,33 +1,32 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2741439320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE15439008
 	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 09:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784799506; cv=none; b=pII7sj9PzxlZLBKuxgUdgNF30uFwzhjP6ZxLBfCN+V7haLV66/Wo/pbImjuwVqJqlOaeiIMRgBjFcsvE5h4aP2eM+be5G4OZU62tKSwQyoOyigEeYdZRVIo4PAJAsKYYvTsxqqXECsxHPbHwLIfZXivEmO+O7oSjciiJjFHiUN4=
+	t=1784799507; cv=none; b=fr2TPM0i0NVnF3xTPZjk6j8ppbzYMZlFix8/B21qLTgGgLImZnYK0Tex5eekcn2Nwc3qqRFsFCbUSyYlfVcY/iznLTeYdUOYQDAuhqtqfmMsuSbTwdNzQbnOgExoHb4u6GCYD42nhEG6UHgPQ0xuBdyZOj/sMtTxI+7GwKyn1Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784799506; c=relaxed/simple;
-	bh=ljb8ujNnGH12ELtjl0psHaInYjNQrSuU7zw4Kropg/Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwTgr0/vgQD1hVAtw+zrFJEi+ok/iayt40hUeFAFLooYHQ2f+mRdF4apZtQZMY05s4giZ5k+jMBvyR8x01G1qGuVrAfJskaBsfHfGsv/vbzN8DnZNImDUrkjCGcaVNLW9hz52lrJhYQAimPct7h0GB0voULz3darFHz5EuZOtis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=heYnw1Lp; arc=none smtp.client-ip=217.194.8.81
+	s=arc-20240116; t=1784799507; c=relaxed/simple;
+	bh=GJTs5OlJ9SKxLMi3iaVn3trVVgQFAhsQU610J3LnjyM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZJN7oYFwjjR3DEsRHI58emn3aoyG6wOFDzQDYHc3+LBTgJHwvY7Vezhn/25FF3t8Ia8cpt2J9q5PgSX7U6T8QGqxencXLxsuQ/1yR81H/UEOs7QTUjXMcw1CYSExHCyyZOzbG3nGLPnofcoPsKxNs6o46chHoqiH/nRGEY4g/x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=KmZioJc9; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="heYnw1Lp"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="KmZioJc9"
 Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 2E0BB1FB78;
-	Thu, 23 Jul 2026 11:38:22 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 583621FB1B;
+	Thu, 23 Jul 2026 11:38:21 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
 	s=default; t=1784799502;
-	bh=aNn9to8BGMc2D1UguBTJNMsLB1vfj4Mi248eeCFZJW8=; h=From:To:Subject;
-	b=heYnw1LpWwMjrkh1Rrxe3ZifWjH56zUGbOMkMOPkpRRsRBkAdba3zbWQhfAzCljmV
-	 Flzyz0xwfNlbbRxZPVGpSMAX+U7MfF7s2LJxcjieJ9pWYJZg8Npp7I+FuRsMjpOWv/
-	 R6Lau7GKPLmGlANiV1V29pbotqAvjfmlTLfSpK/OMBjwsBnn2n7SlcZ1oxz9bqqiJO
-	 801+ASwSPdXjw2GBp9ZDEe1rYxqFXM2m+86yqIuRM+f8+HvegCtyRwYf7dCTBcnpcN
-	 em2/hKrPib4GDQyQEcPzMA1k1cuYgLxgVAMZ9GAHfuVzeAr7UAAiGh9UPL8ZqogG5T
-	 iSCv81GQnCuLg==
+	bh=JJLBjhTwK9Uo53TmNSc/cJ9oL3cSqYdaSEVBlK9j7mw=; h=From:To:Subject;
+	b=KmZioJc9sYaepD7gYtFjjcIDXj72DQt0fCOxDqITgrd6g54GW5QKCMnSvFzi84PDi
+	 1R47KYfSgyI46cU3MvkLhIR+b3Inj9CYnkCPaJ9ep6d1YnoHHkILF8kYy0s435I2gT
+	 ClzG4DWgzGY6gY1GAgcw6JSG0aWWZ0zi/fOjCnxbo5+9NmoPFQeRSZsTXHSMLv8kCI
+	 +2B80fYvR2pfu+CnFN0/VaFjEPhynDnK7HLoE7HaGBsiRn96wpafF/OU/4zHZiq4Re
+	 21TFqmkVaHDyDwqTBdz4v0+esdjq7GsbMVxk5UVLxQxO/D1qZCRkMcOE1Ce4LID/1V
+	 u5yPp/5ZHaRug==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Marek Vasut <marex@denx.de>,
 	Stefan Agner <stefan@agner.ch>,
@@ -50,12 +49,10 @@ Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 1/4] dt-bindings: lcdif: Add endpoint bus-width property
-Date: Thu, 23 Jul 2026 11:38:08 +0200
-Message-ID: <20260723093813.180089-2-francesco@dolcini.it>
+Subject: [PATCH v2 0/4] drm: mxsfb: Support LCDIF interface bus width
+Date: Thu, 23 Jul 2026 11:38:07 +0200
+Message-ID: <20260723093813.180089-1-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260723093813.180089-1-francesco@dolcini.it>
-References: <20260723093813.180089-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,37 +63,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-The DPI output of the LCD interface can be configured with a bus width
-of 16, 18, or 24 bits. Introduce a bus-width property to the output
-endpoint, specifying the number of parallel RGB bits connected.
+The width of the physical LCDIF output bus can differ from the input bus
+format advertised by the downstream panel or bridge.
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
+Such a distinction is required when the LCDIF bus width does not match the
+width of the downstream display interface. For example, an 18-bit or
+16-bit LCDIF bus can drive a 24-bit display by wiring the available color
+bits to the appropriate display inputs. Configuring LCDIF solely from the
+display's 24-bit format in this case selects the wrong LCD_DATABUS_WIDTH
+mode, changing the color-bit assignment on the LCD_DATA pins and resulting
+in incorrect colors.
+
+Use the common OF graph endpoint bus-width property to describe the width
+of the physical LCDIF output bus. Make the mxsfb driver derive the
+corresponding media bus format from this property and use it in preference
+to the format reported by the downstream display. When the property is
+absent, the existing behavior is preserved.
+
+Set the endpoint bus width for the Colibri iMX6ULL and Colibri iMX7 boards,
+which route an 18-bit LCD interface.
+
 v2: use the common bus-width property instead of the legacy interface-pix-fmt
----
- Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 9 +++++++++
- 1 file changed, 9 insertions(+)
+v1: https://lore.kernel.org/all/20260717121847.488148-1-francesco@dolcini.it/
 
-diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-index 2dd0411ec651..6931f0ae3829 100644
---- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-+++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-@@ -71,6 +71,15 @@ properties:
-     $ref: /schemas/graph.yaml#/properties/port
-     description: The LCDIF output port
- 
-+    properties:
-+      endpoint:
-+        $ref: /schemas/graph.yaml#/$defs/endpoint-base
-+        unevaluatedProperties: false
-+
-+        properties:
-+          bus-width:
-+            enum: [ 16, 18, 24 ]
-+
-   display:
-     $ref: /schemas/types.yaml#/definitions/phandle
-     description: phandle to display panel
+Francesco Dolcini (4):
+  dt-bindings: lcdif: Add endpoint bus-width property
+  drm: mxsfb: Add optional DPI output bus-width configuration
+  ARM: dts: imx6ull-colibri: Set LCDIF bus-width
+  ARM: dts: imx7-colibri: Set LCDIF bus-width
+
+ .../bindings/display/fsl,lcdif.yaml           |  9 +++++++
+ .../arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi |  1 +
+ arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi   |  1 +
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c             | 24 +++++++++++++++++++
+ drivers/gpu/drm/mxsfb/mxsfb_drv.h             |  2 ++
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c             | 12 ++++++++++
+ 6 files changed, 49 insertions(+)
+
 -- 
 2.47.3
 
