@@ -1,48 +1,48 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013067.outbound.protection.outlook.com [40.107.159.67])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013059.outbound.protection.outlook.com [52.101.72.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8129484222
-	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 18:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0C8383C85
+	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 18:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784831706; cv=fail; b=h9Cr90m+LMj+35GrcA4vj77YwlRemFO/Sx5Z5JfCzZnW/MJsJlT3jdqBVKaKDb3ZqAYsx/AHumfyIPi+QJ9/DOwev1bB6mUSSlSe03CtMvhMdrlSGk8WlTmuPcGNNe+CGBtzo0eaKEg4nE2BLchd163uRCrLLN9O/2lPZi2HPQs=
+	t=1784831948; cv=fail; b=d6s+EDKBf/ZInyZ9aLhQv4C617abVJrE1IuYxolPa4smHUHOcOwFp8D0ve4Tc0wVdM9PdWQ+dK9K7FswSemJCB7ctzLEOexvnrdlDgibn7axItZNG/GtHza2Q0mlMq27S86Al9NSVVGkRU6usFZdM3VLeBp1vIgZVR+6eO6PGYU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784831706; c=relaxed/simple;
-	bh=ZP09ndYBZoXUXNma4mlPhQFaEirYHgMdLTuxbMYLECc=;
+	s=arc-20240116; t=1784831948; c=relaxed/simple;
+	bh=QD53CRavRRRuQKvnWXKzyyrquoDIrNHHT3r2Dadeo0I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uPE9M9WeDettfCL5t4Q1M6fJENb1dEolbf4wo/LxfL1zx23JutskT95d6vVDEKtnS8eR22+jEpHTlheffdcutkBHF/cxx1ChUZ6NewF6U0N+KzpAr/rHv1TJy9Rxfa/4ubz7viUL1TAuuTXJI+K+oY8b6BPOFys5EdkhKqvjGSM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=t98FcVPE; arc=fail smtp.client-ip=40.107.159.67
+	 Content-Disposition:In-Reply-To:MIME-Version; b=XOQBprCbZP2QKiPunJ3hWjHKZr5YMCIyhzDxHiYx2AU+si5Q7ebwWmkIoLc+CB92yLCvpMC/z8hEQYN1caGIvVlqs/bpgjeLbwQx6rk0sLVzhivyIJkqMskOAVqhKKPu3yRzC7uALGt8BBk5LKwxAAm7eH/i09ePo31TNfvW8Mo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=IFpzneoQ; arc=fail smtp.client-ip=52.101.72.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="t98FcVPE"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="IFpzneoQ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z8gw1dVDoUKXZsn8wPf5huvdc+U2kdoXfqjdicix/Ae44oDLFxiLRSf3YKDpui8C29FvcP8Jz5s4awoZEOLr1WktGw2u1KwAr2gwBcp2//VNhjWb1EYafQwIu28lBCNky9gdz15xVOYwAH9x8YWhGRY5191HplJ0txAEgVh5ezM4iI4dN07dq2qltvnLbJEpQ9vvKHofZh0lZ1ZtYP2fcR29JqhJKa9IQgl2vez/O1x9PVeyQs/+SwDFtRB78JXZ7LGqrVeSxXn2gW5/4XrUwfu1gR3fLml6Ka9es45PsOjJbFWix/upfDGj38JZmc8q2FCfwxjwbulhiZnTVXYzcQ==
+ b=K6P8Zl1frNZZI3PacLy/zucqsxyftBe6t8alxFeVkqmSN3E5rwBzgbIdtIRoqNRkN8hjr8yUlPj6lyJL0kY2v/gXWRhO3VtPAqWvtP1z9MBaZ+N5UC+/udTVqY+mwdfjfO5f3Tm+4AxNOS26YrHppMeMupwXTQ3nt3xZWh436uSHFxO6JZsLnaLeLaGKWOaKN7E5AjNXt+DL4z5NA9wba7OZYNnsIbRiNgeEgy0uBY7/mrvD94Lbox9pe6lIQRYlUOrydy3ea4qU84tYjSF0pYPKvHzL9tt0AZ2NNrWreOo433VrgtpplDFaBbje5qlpXXkAOdbm4aY7BPG/pya7Cg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CeLeFCHm3Fak8vEBW3rHQ8HD8+EilDqh5QmGS3mhuWc=;
- b=TC9h+AH+Oosqtt0dMPjgat+dnEYY+F2q1KaZbEa+YYUxvySwh/b2mPaI0Ex6xvFjQ4m9DAqaP+OVrNSPWlVMxddO2MZ63g2UqrKclo44dOnzTuy8bhGvgCBjCOBvRtKMDETj0OPMGVUfwYb45dTu7bKeMPoktgkdsFBZVMm292owMgy1fXt+5OflXsr+dkl3HM3ClHskAQTKynfipJ+TOt/QxEiYFqN9Ww8MbTAn8eQrLRlVatV8nethFY1xF95BBMebrpXpw9HWWMzci6t1FAVHOSFUslk4K+I4dyjkEa4l3OkGP1y6oH0hC6H/gTSq0fQJCPWw+70A4sg6jM1RKw==
+ bh=SL/I02jEEJLEbfO48Z0ZnKZB06PzoYlOP/F8sZ/0J4c=;
+ b=bBuqB2mdsGwNFZ8aies9kBxEdUI4utKzLPiJ/LEjUBa14BiGEQFEs0AgXpLMwlPEKwDLibPRwGPbtotSidFgl5lNsuQ86j8+QuHt84BcKOp2WeQqFKoFE/OsURnpESOd2ceVMRqR+mDOIjs4rND+wo1lm+hgL7NrzKBTTvOBS6mAWJ4/kV7Yey5pGc9biWJgZznIkhuIODAcyVrGbl7iKVcxOKnsEdHRUCZUcNOW8E1Y2aiqZ07m6I3+wE0U6Tu4cNSLoadGXr2pzVwWwlnlYH8NpRccgfnStH2odGfBs/Rotud2WpH8FZYVHd6YLYMmqWaAbJ5cknn8pa5S8pxinA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CeLeFCHm3Fak8vEBW3rHQ8HD8+EilDqh5QmGS3mhuWc=;
- b=t98FcVPEQu3ik138VOCmg1jb3ykMJ0Qnn4FrKGq8cPZP8raNBB7U66RxSXJVwM6IsiT1+WnNpOIT60WjK377gdn9btotSAkrGJtIwfy7rUsTUg8O6YB5pJCphZsny66mfBVrZiPcunoSh7+h148bAdI3SslN3bD/uM2QGVLV/Y5b0cvaf3XMRilaUgibOXI18so4SmOBa73ir7JRUQCbdyQfU+OLBjDTDNnaqTBnlx1gCkZulErFqb9AbddP/TRlN0EqA53xrBw60aQCRaGOWtH8/WT6PozvUEAagA0vJdlCUCIb2MSI+RhmFvkLdrB12iQNvuSOW47ZyU8X9NwASw==
+ bh=SL/I02jEEJLEbfO48Z0ZnKZB06PzoYlOP/F8sZ/0J4c=;
+ b=IFpzneoQ9JBN5+IrCNxLONn3i29NPbPRjB4/oK/jeb7oMS0iW9h0ltKQI9hpSSUcE+Bf3TseXb3T8PIILLXVdFXe/0blOZTZRNcsC4vCceazKYgeKvJbc49rS7nJ0UlwxvZwIIJIJ/8Kyv2KbcwTpdG6oTnwXc6CV2A3uoH+kELDthELddnS/obL/h24dK9nFiGVZbjB9mbI+ph3abSUjxzcJDw+oCJgzX+Y/QhUhUSr6a4Y8zX3zqRY/T0iT/fNTXIivbadjESUvZvNKnnNJ+ADrBCGRvM59DWEUN9Wut/rWFl/gjgpZaIDy4SOGHPDz2oHk25zaUD2UKrLI9el+A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS1PR04MB9632.eurprd04.prod.outlook.com (2603:10a6:20b:477::22) with
+ by VI0PR04MB10510.eurprd04.prod.outlook.com (2603:10a6:800:233::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
- 2026 18:34:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 18:39:02 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.010; Thu, 23 Jul 2026
- 18:34:53 +0000
-Date: Thu, 23 Jul 2026 13:34:43 -0500
+ 18:39:02 +0000
+Date: Thu, 23 Jul 2026 13:38:51 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
 To: Frieder Schrempf <frieder@fris.de>
 Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -56,15 +56,16 @@ Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org, linux@ew.tq-group.com,
 	Frieder Schrempf <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH v3 03/11] firmware: imx: ele: Export API functions
-Message-ID: <amJew0ynuWRybpJm@SMW015318>
+Subject: Re: [PATCH v3 05/11] nvmem: imx-ocotp-ele: Remove device-specific
+ reg_read()
+Message-ID: <amJfuz2eJugcQ1f7@SMW015318>
 References: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-0-e26930345b4c@kontron.de>
- <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-3-e26930345b4c@kontron.de>
+ <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-5-e26930345b4c@kontron.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-3-e26930345b4c@kontron.de>
-X-ClientProxiedBy: SA1P222CA0184.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c4::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-5-e26930345b4c@kontron.de>
+X-ClientProxiedBy: SA1P222CA0152.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c3::20) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,438 +74,122 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS1PR04MB9632:EE_
-X-MS-Office365-Filtering-Correlation-Id: f18033ca-6bfe-475d-79c3-08dee8e91648
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI0PR04MB10510:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c9e6da9-99f7-4b51-8f10-08dee8e9aaa2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|366016|7416014|376014|1800799024|6133799003|56012099006|11063799006|10067099003|4143699003|18002099003|22082099003;
+	BCL:0;ARA:13230040|19092799006|376014|7416014|366016|1800799024|23010399003|56012099006|11063799006|10067099003|4143699003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	oAn2QcCwddMp/bf0/JUCZGoTZScxQkU3qidyZ/b41QhrdQfUiQW+GirGTmUQJxTShqvl5f9jVdWYNKPhbY5Q1xLiNT/z9gx2bIaGoR1Z05ka/wUwKgII/3Q5FXLZ8jZBVU7CZKhsGMZ5cQSfBiy8INaCaJMRnypFNNciFKCEVkPrGmiFL9R8HCPwJQCJLYNOUELKU8LD8nJWIhEOHAu8VhDxRg09FQleyf3UO2ytUnumboTH/8nWGJlNR0FTYmnzTYAUQYYpEFQdTNrOPv+V0T11ZG65CKLH50Bpvs73nGxznWQgE2NTOMXOni3IjbVEko78NTPSQ57w7EOG6vWVze1iHpSsezYxvpYJGwL5Ib3nx/jPJVh+E5pjgUguqFDKrxUF/sH2PvWOTLkoer7rNlGzrdCXPBjHM/wZPX7q2hsF66kf/Ugf2IyB1Q6AGD6k5gjaB5qSO8XbgijWthsRPg6pC1ecRFsu3sdsix66kDp8OpjrHEcw/Llwaz6RYCBdVQSPJ6NxmJCEXX9s0q7Br9oZZpg8JXztGtFw4MkD5fXK+xWG97fCnoOD6SaOT3H3YUqeIV7R0eAifQ7znJ+rWj/lHjNCiLu76hzbjLLijDRo17ynOU4hQJ3ApLAAdvFZYybr2xJjEK2zU70Ph90s4+jtBkyGfHq6mvcGsJnreLM=
+	bc1YKUkFRedeWAO5VC0ZklYhpjnj/BNa8ai8v/QLrhfCQWaTGFiioJ+afjtMCvk7ZcNOnux0QbG3u0/E2dyXQ9AHNigxMoRwLwm5XJy/WNJ86ob97LIkJYwKuIpCvz35NNd4sMmXwine4YosqEL1lLV30a/xj13oDXayehDNdLNMi1r2B2CFBkjK4oaXbaG+yYl013vYkqM6kVqLk0fmoUx1gQsJdkcw0hpudrxzKbne5oZIekXOE5QjqJYwLBBrKgxoQkAQQZd3B6Hb0b9+Wxl//uDXch5ezrXF61dBgzXfcYwgBToQSyrGdVgFJjL0cIz4EQM6XcLRUJC764KUqWD0H5/I1RwYVLK3RUPC3BKnF4AjwemtW74jInAqIX2qyHm8AYXwNgHUkFKFGEkuM3rFg7ddDXNQmyfGwvFH05rMShiEhxB8pN5QxzMOtDK6k6q1xnXbE3Zt4Npf5gERG7MMg8N89Mb7odjTmb79RDPL5FLIWIHUlK0v78wbINyJXIp8lAxnwamsYw4OlCghab7lKJQAAh8MtJPt3L7eHtyzmGULlpdOyWrkX34yu5abmHcckBUsh8AGATG/jjulzAktjeRyQFTvxACrNn5oPISNWu7PjyPpXLNRzjhxXDm+HyvYNv0o+Hbq4VEagPeBYKAHDsD2/42brkW6hvBfpCI=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(366016)(7416014)(376014)(1800799024)(6133799003)(56012099006)(11063799006)(10067099003)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(366016)(1800799024)(23010399003)(56012099006)(11063799006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zsBmcirRtaNbxlVkE7leWKjQGCqiO28Bt/8bAz9IEcjXIpP3lSV6UOmMu7Me?=
- =?us-ascii?Q?zqlU4kMSkB1Inr32RezIYUs7CF4SVxelkrYLJI+W+kvc9Svj5siIWiLUYzxr?=
- =?us-ascii?Q?SbkafTNiX3vgyDvsQQcG7IAq/Tkgax4nSvX9EKp9zaLSjgZIiYfcmpAcpL10?=
- =?us-ascii?Q?WvY0EwzmxmmC3U2E8gES3vexKL1R9DuZt533IAk6p3sz3XXV/FsvJTGMU2Yi?=
- =?us-ascii?Q?ZOT0Ry00+9EhQTBuIOdTsMx3IROam9z9QoAbafUJRR3FRLGk34bSzqRB6m/P?=
- =?us-ascii?Q?Nvk8a7zNSNcUXFQpsNyH43ibH72C53n8VMiJUEWObm3TtUpu/C1S7vVRSjWq?=
- =?us-ascii?Q?HBtSgT62Y7KuSlpe9RMO6Eywt0ZmrrRD/dTHLG1a3dijfPSXA12dCL69r8JF?=
- =?us-ascii?Q?tmi6qnjKTmlwYDcsFyrEzW3OrwiLAwnK+9Qi/puWaE2idoRr0uh5VDE62MEF?=
- =?us-ascii?Q?QqzK4HXK0z5QWzmlOqVBPVZK2XRBqjpjaQYi1Mi+yK6EPe1Xt9Bxn/Bsut60?=
- =?us-ascii?Q?diiNO9r36d3Mtzph57A/rfkcXGJEO1pALzsC6pRbFjR/sTECAUbFHUgWdC5W?=
- =?us-ascii?Q?HJ7NQpnGuoYF1EzrMZyBijBdhUb8xLe0mNSsYhBi4noj9imhjKLr4ljU9wtn?=
- =?us-ascii?Q?j8YTJHdeEJHMSdZy03iwr1VqthjOpCSaLP9JVgYWOL5MobLLM9BdWjn14byl?=
- =?us-ascii?Q?4WcXbVYpqIkLdlKa/57+tACS688lWGp9BBepmHhqVmtcKBCB+tnKgiWZPTqb?=
- =?us-ascii?Q?xJaKmfYuHE55FfmqnqRA4gNeyW7t+w6uZGXcbYDlegXBQBcjnXbPvHgLp3r6?=
- =?us-ascii?Q?FGFzmRmL4NfxSWpYNdcAXkL99Mo98PieHg31TsCZ5Sh+H5g/GOWJOlV3GYdb?=
- =?us-ascii?Q?g0N+Bpy0Jj2qzX3GFrqelNwftJR4eRtrcCBux4bl14oiKsqnXzAzRGVvrvJF?=
- =?us-ascii?Q?KL0wD/CRNWmUvlCEYb2mtYSIa/GtGWSAIJZxFZTdI95621JBuDzIY70wh/Xi?=
- =?us-ascii?Q?B5Jcc6s79qjw2keSCjFL1Noo+CdXzOuDmLs+QBH76U1BbmyMmlxviahMrxLs?=
- =?us-ascii?Q?xcvsRjHZbNlNWCfkW40hKr04DsNKvMU2TKBJQ0/2+jO9nk79ZgE5B83Wem14?=
- =?us-ascii?Q?OEJRZEjBIH3+n4TNKaN2KkWX2mT7cov3abYt8Ec6qZ/Keo04gXVjrAs/FKHa?=
- =?us-ascii?Q?DRL9uohZt5SFEBLocUxJMVwq6S0ymh57MKG6VyaroHJEjOmUn2khCHjBUZ73?=
- =?us-ascii?Q?9rrHy1F7D1Rot2ldMnvUKyA47o2zTW+gJOX2ELJ2CTYUvcSgXvYoqMnq3asT?=
- =?us-ascii?Q?7qLfXluaYbILtFvluy+66vVoa54Lqtb8gv70CqWES+joEvk5olW/aU44mv+I?=
- =?us-ascii?Q?Q9kjvpJx8uTX33d7hLVOHTQYXwLJrGq3I2Zyai2stLNTYPdprSn8LoIG8F6x?=
- =?us-ascii?Q?TZB2HuGTDfz8KYxj1b9RB2kzxn+uaaodSB8Yl5LobsiC9bdPAchERskmcpAC?=
- =?us-ascii?Q?OGVWoTJZgrKWbCZ6UHrSQMQqfykvg6r+VL/tWn+DCHH3HYigSlB6W3UNBZX6?=
- =?us-ascii?Q?Z6tCjYCkL3AtYObZIvw0eBRwQ3Z4a+pxdWXwskRvkxgdJCx2v5XTe83W8Yfm?=
- =?us-ascii?Q?+b7S2r3qXa32N/1pxxA4WVmCfDNT09hfuEDHiUBNsyESRNbXoP4afIyE1QiH?=
- =?us-ascii?Q?pZOTXC/ewr3vQX2T5wDDPIROdP7sMhh8dIg2dULOCJLGqGocdJGBBDukz6fa?=
- =?us-ascii?Q?IAoqx+E/wMPdfZXZ1xWHhx1bfUpSQ2zzPmsgF7eJbS2v+OHqgOWO?=
+	=?us-ascii?Q?s85ilHzlWuqrB0oSgL4g7Gei/m5YcPvHN6PIX0bjeFeGOwowsDVYzxPgaDQJ?=
+ =?us-ascii?Q?V8sARXPdXg5q5Z96RrHA35yITcuW6tVH8iX9T5UmQEigWAGvl1soVLfcTXet?=
+ =?us-ascii?Q?yQoyNi1IG+UQysSbkX41svQ1EjaevhCeFDs7bEJXLJ/VD54biki4Wtdx7ect?=
+ =?us-ascii?Q?uGDXdsHHWPZtOQDViAPpiq3lfhyp46e7j1Mir5PHbXHzl68MPAWAXqrRaIfx?=
+ =?us-ascii?Q?6TdMN4X/H5SZ44Elm9Iwh0kawazaYWx/fttBw4+s3bUyS2e6pC4tZq8Ntxxq?=
+ =?us-ascii?Q?IzDDe5oQE0v3BD4hRtlwVPWPH0bEB3kHeiJKPdcoGS7bT3ptvTZaLDr7xQ2f?=
+ =?us-ascii?Q?WSHVhkijlm89iSzmTjm866i2M/207a4CdNBczsfxkvPdCv8NP4Wo8FKXtp04?=
+ =?us-ascii?Q?cqvJBq2UG9/dGZUkVB/GG51bYXHcpsUw4E4DNpF8dPEVRbmt9bC0AzrhkgSD?=
+ =?us-ascii?Q?a8Je+F5oNFT7Adi45HFg4xWoJNQdIwgH53VeyLjUbK2fq1cw1k9AJfWaKCou?=
+ =?us-ascii?Q?uEqPF03twJADcyZHgdIFsLx20hqv2WwYpkaAHVhhUdr/e2RUP5wwBAsLuHf8?=
+ =?us-ascii?Q?Hw5aZETRVzyOz+gPAgg3GSnL5nN+JCO6rsDeUleXYaoMgHl2IeeZrmw6D9i+?=
+ =?us-ascii?Q?ihsykHXTOGUMWVaJMntGcYSSo9rtP+xG1SQwF5UauMwDCTllVzxNHdaKjgf/?=
+ =?us-ascii?Q?GK+sDi6PBy07FtRst32jW0W6XlWIG+I4Pue7Rd73ExphgIPjsqZJ2P3Bgo+i?=
+ =?us-ascii?Q?GD+y461NYN9tCDmV8swYnAQxer3SupD841sedGZ7JrvDj1dHtBsChYfmGsBa?=
+ =?us-ascii?Q?cTp85ptYm4Bk08FZK0Aua7nTqMbY76t1WoMVQUrSDZTP2V1uKRG0xDoL4Y2X?=
+ =?us-ascii?Q?YfMT+2rqJVCEvq8lYCz2yE9962EgtlP6yY84t6ZIRXxStDl6IwwdwX4GLnOo?=
+ =?us-ascii?Q?KYnstbCSbPHwe3hdt+DId7JCfe3ZAKlV0uNqTnN2aB4CogwZeST62Vr7d264?=
+ =?us-ascii?Q?u//7thtxPEt+jmE8fnqL51Qdl5bb0ycW8EnAI1T0jxr9n52ayeDSsFxWyziU?=
+ =?us-ascii?Q?NAi2OmnrOPfHAAN59WVd6qRu9nOtZUHCnS6rNh5+7CAW7+03BbKJpGYbslk+?=
+ =?us-ascii?Q?0j8YQ6B6LOAadU4S2GQYD2tIZSgU5LGjVD6sR2FX4sLyIAu5s+sQzWUfkKmo?=
+ =?us-ascii?Q?bVVvlYSzil0vyKhzfAmrHmhk+Rl3pXdzn/qBKshA6F4GRT/Nexe1mzPgKi+3?=
+ =?us-ascii?Q?A4HoVX02f7Zd5bBC6jDxlaEqQga4JcCniIsbUvyLxOnKqRbPiR7/qOHFXB0o?=
+ =?us-ascii?Q?z9FB9IV4svw8bsmTF5DYNPWfeKaJgJRpQVGlil84Y3wig5atvaguLAowtoEp?=
+ =?us-ascii?Q?K4g/Mj8HRAmGMayRZHbN2V5jvxixKc/KhYfnvR60Ux9/1/U1DJMMtpBrIdTo?=
+ =?us-ascii?Q?BVEQQJjjA7lNvCPEnOIk6rOk4NCmGXt0sj32j8q7Z+nC5THXKN31ZiBsNnhs?=
+ =?us-ascii?Q?RMddeVePBHdWth+1hw3YidzybNjrY0rvx7pRxNO3SUGmIJ1wE7bMdGXDMhPf?=
+ =?us-ascii?Q?D9l3YaKxHjICAf706WxYjfrqloz+YwahXeKrOpb9nmHN/0L3hpWuhmau8+81?=
+ =?us-ascii?Q?Q7rQvJtXM0asUCbUFhRVVRT3X2ZWNDj9a50qQeFqRP3qX+Sd7hXYbY6rRipw?=
+ =?us-ascii?Q?7her0Sb6yDsL2T7K387QMWQdkIArbRnrr0tSI8dqGTjVbcRcZi7hAVWmnMo1?=
+ =?us-ascii?Q?gqYo5e1FAAC1W7mb6BPan+HQxGX+68IShrPdfHrp1HVbMexCh6oW?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f18033ca-6bfe-475d-79c3-08dee8e91648
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c9e6da9-99f7-4b51-8f10-08dee8e9aaa2
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 18:34:53.4503
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 18:39:02.4549
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eHQSQzvwPQ7q4ecvmZqZNv181q0aqD30Le7BeFVGBwwhEUIJVzwnPCcrqjkA/H+c7l/M+XYGOIZ2jfz0Mh8otkOhxy2AwBCeC/Hu6YMlYH4qfpUE1eNFD4D2iSyagGQ3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9632
+X-MS-Exchange-CrossTenant-UserPrincipalName: otXJQwtrj1O1eu3NA4ipq01uR9ONwuawTcJS4nUnPhjQqsPv3T6ZnTgrkUK85c9pTyrpM9xauGvGDzUGHItT6a3QBVj06hxec16k9JxHigHTuWfzFWdd3KjqiO1Gn/2P
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10510
 
-On Thu, Jul 23, 2026 at 09:27:25AM +0200, Frieder Schrempf wrote:
+On Thu, Jul 23, 2026 at 09:27:27AM +0200, Frieder Schrempf wrote:
 > From: Frieder Schrempf <frieder.schrempf@kontron.de>
 >
-> Export generic ELE API functions to send and receive messages. This
-> allows drivers to implement functions based on the ELE API.
+> We only have a single implementation of the read hook. There is no
+> need to store it in the device data.
+
+Remove .reg_read() callback in the device data because all is the same
+implementation.
+
+Frank
+
 >
-> Assisted-by: Claude:claude-opus-4-8
 > Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 > ---
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
->  drivers/firmware/imx/ele_base_msg.c | 42 ++++++++++----------
->  drivers/firmware/imx/ele_common.c   | 35 ++++++++++++++++-
->  drivers/firmware/imx/ele_common.h   | 14 -------
->  drivers/firmware/imx/se_ctrl.c      |  6 +--
->  drivers/firmware/imx/se_ctrl.h      | 14 +------
->  include/linux/firmware/imx/se_api.h | 78 +++++++++++++++++++++++++++++++++++++
->  6 files changed, 137 insertions(+), 52 deletions(-)
+>  drivers/nvmem/imx-ocotp-ele.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
 >
-> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/ele_base_msg.c
-> index 28b835f2880f..a4ab45efdd63 100644
-> --- a/drivers/firmware/imx/ele_base_msg.c
-> +++ b/drivers/firmware/imx/ele_base_msg.c
-> @@ -8,6 +8,7 @@
->  #include <linux/cleanup.h>
->  #include <linux/completion.h>
->  #include <linux/dma-mapping.h>
-> +#include <linux/firmware/imx/se_api.h>
->  #include <linux/genalloc.h>
+> diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+> index dadec19ca252..9d3f94e35508 100644
+> --- a/drivers/nvmem/imx-ocotp-ele.c
+> +++ b/drivers/nvmem/imx-ocotp-ele.c
+> @@ -33,7 +33,6 @@ struct ocotp_devtype_data {
+>  	u32 size;
+>  	u32 num_entry;
+>  	u32 flag;
+> -	nvmem_reg_read_t reg_read;
+>  	const struct nvmem_keepout *keepout;
+>  	unsigned int nkeepout;
+>  	struct ocotp_map_entry entry[];
+> @@ -158,7 +157,7 @@ static int imx_ele_ocotp_probe(struct platform_device *pdev)
+>  	priv->config.id = NVMEM_DEVID_AUTO;
+>  	priv->config.owner = THIS_MODULE;
+>  	priv->config.size = priv->data->size;
+> -	priv->config.reg_read = priv->data->reg_read;
+> +	priv->config.reg_read = imx_ocotp_reg_read;
+>  	priv->config.word_size = 1;
+>  	priv->config.stride = 1;
+>  	priv->config.priv = priv;
+> @@ -190,7 +189,6 @@ static const struct nvmem_keepout imx93_ocotp_keepout[] = {
 >
->  #include "ele_base_msg.h"
-> @@ -106,8 +107,8 @@ int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
->  		}
->  	}
+>  static const struct ocotp_devtype_data imx93_ocotp_data = {
+>  	.reg_off = 0x8000,
+> -	.reg_read = imx_ocotp_reg_read,
+>  	.size = 2048,
+>  	.num_entry = 6,
+>  	.entry = {
+> @@ -207,7 +205,6 @@ static const struct ocotp_devtype_data imx93_ocotp_data = {
 >
-> -	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-> -			    ELE_GET_INFO_REQ, ELE_GET_INFO_REQ_MSG_SZ, true);
-> +	imx_se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-> +				ELE_GET_INFO_REQ, ELE_GET_INFO_REQ_MSG_SZ, true);
+>  static const struct ocotp_devtype_data imx94_ocotp_data = {
+>  	.reg_off = 0x8000,
+> -	.reg_read = imx_ocotp_reg_read,
+>  	.size = 3296, /* 103 Banks */
+>  	.num_entry = 10,
+>  	.entry = {
+> @@ -226,7 +223,6 @@ static const struct ocotp_devtype_data imx94_ocotp_data = {
 >
->  	tx_msg->data[0] = upper_32_bits(get_info_addr);
->  	tx_msg->data[1] = lower_32_bits(get_info_addr);
-> @@ -120,8 +121,8 @@ int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
->  		return ret;
->  	}
->
-> -	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_GET_INFO_REQ,
-> -				      ELE_GET_INFO_RSP_MSG_SZ, true);
-> +	ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_GET_INFO_REQ,
-> +					  ELE_GET_INFO_RSP_MSG_SZ, true);
->  	if (ret < 0) {
->  		ele_get_info_cleanup(priv, get_info_data, get_info_addr, get_info_len);
->  		return ret;
-> @@ -156,16 +157,16 @@ int ele_ping(struct se_if_priv *priv)
->  	if (!rx_msg)
->  		return -ENOMEM;
->
-> -	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-> -			    ELE_PING_REQ, ELE_PING_REQ_SZ, true);
-> +	imx_se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-> +				ELE_PING_REQ, ELE_PING_REQ_SZ, true);
->
->  	ret = ele_msg_send_rcv(priv->priv_dev_ctx, tx_msg, ELE_PING_REQ_SZ,
->  			       rx_msg, ELE_PING_RSP_SZ);
->  	if (ret < 0)
->  		return ret;
->
-> -	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_PING_REQ,
-> -				      ELE_PING_RSP_SZ, true);
-> +	ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_PING_REQ,
-> +					  ELE_PING_RSP_SZ, true);
->
->  	return ret;
->  }
-> @@ -196,8 +197,9 @@ int ele_service_swap(struct se_if_priv *priv,
->  	if (!rx_msg)
->  		return -ENOMEM;
->
-> -	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-> -			    ELE_SERVICE_SWAP_REQ, ELE_SERVICE_SWAP_REQ_MSG_SZ, true);
-> +	imx_se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-> +				ELE_SERVICE_SWAP_REQ, ELE_SERVICE_SWAP_REQ_MSG_SZ,
-> +				true);
->
->  	tx_msg->data[0] = flag;
->  	tx_msg->data[1] = addr_size;
-> @@ -212,8 +214,8 @@ int ele_service_swap(struct se_if_priv *priv,
->  	if (ret < 0)
->  		return ret;
->
-> -	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_SERVICE_SWAP_REQ,
-> -				      ELE_SERVICE_SWAP_RSP_MSG_SZ, true);
-> +	ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_SERVICE_SWAP_REQ,
-> +					  ELE_SERVICE_SWAP_RSP_MSG_SZ, true);
->  	if (ret)
->  		return ret;
->
-> @@ -248,8 +250,8 @@ int ele_fw_authenticate(struct se_if_priv *priv, dma_addr_t contnr_addr,
->  	if (!rx_msg)
->  		return -ENOMEM;
->
-> -	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-> -			    ELE_FW_AUTH_REQ, ELE_FW_AUTH_REQ_SZ, true);
-> +	imx_se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-> +				ELE_FW_AUTH_REQ, ELE_FW_AUTH_REQ_SZ, true);
->
->  	tx_msg->data[0] = lower_32_bits(contnr_addr);
->  	tx_msg->data[1] = 0;
-> @@ -260,8 +262,8 @@ int ele_fw_authenticate(struct se_if_priv *priv, dma_addr_t contnr_addr,
->  	if (ret < 0)
->  		return ret;
->
-> -	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_FW_AUTH_REQ,
-> -				      ELE_FW_AUTH_RSP_MSG_SZ, true);
-> +	ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_FW_AUTH_REQ,
-> +					  ELE_FW_AUTH_RSP_MSG_SZ, true);
->
->  	return ret;
->  }
-> @@ -286,8 +288,8 @@ int ele_debug_dump(struct se_if_priv *priv)
->  	if (!rx_msg)
->  		return -ENOMEM;
->
-> -	se_fill_cmd_msg_hdr(priv, &tx_msg->header, ELE_DEBUG_DUMP_REQ,
-> -			    ELE_DEBUG_DUMP_REQ_SZ, true);
-> +	imx_se_fill_cmd_msg_hdr(priv, &tx_msg->header, ELE_DEBUG_DUMP_REQ,
-> +				ELE_DEBUG_DUMP_REQ_SZ, true);
->
->  	msg_ex_cnt = 0;
->  	do {
-> @@ -298,8 +300,8 @@ int ele_debug_dump(struct se_if_priv *priv)
->  		if (ret < 0)
->  			return ret;
->
-> -		ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_DEBUG_DUMP_REQ,
-> -					      ELE_DEBUG_DUMP_RSP_SZ, true);
-> +		ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_DEBUG_DUMP_REQ,
-> +						  ELE_DEBUG_DUMP_RSP_SZ, true);
->  		if (ret) {
->  			dev_err(priv->dev, "Dump_Debug_Buffer Error: %x.", ret);
->  			break;
-> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele_common.c
-> index fbb6e584341a..f9c56fd42af0 100644
-> --- a/drivers/firmware/imx/ele_common.c
-> +++ b/drivers/firmware/imx/ele_common.c
-> @@ -3,11 +3,26 @@
->   * Copyright 2025 NXP
->   */
->
-> +#include <linux/export.h>
-> +
->  #include "ele_base_msg.h"
->  #include "ele_common.h"
->  #include "ele_fw_api.h"
->  #include "se_ctrl.h"
->
-> +/* Fill a command message header with a given command ID and length in bytes. */
-> +int imx_se_fill_cmd_msg_hdr(struct se_if_priv *priv, struct se_msg_hdr *hdr,
-> +			u8 cmd, u32 len, bool is_base_api)
-> +{
-> +	hdr->tag = priv->if_defs->cmd_tag;
-> +	hdr->ver = (is_base_api) ? priv->if_defs->base_api_ver : priv->if_defs->fw_api_ver;
-> +	hdr->command = cmd;
-> +	hdr->size = len >> 2;
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(imx_se_fill_cmd_msg_hdr);
-> +
->  int se_chk_tx_msg_hdr(struct se_if_device_ctx *dev_ctx, struct se_msg_hdr *header)
->  {
->  	struct se_if_priv *priv = dev_ctx->priv;
-> @@ -261,6 +276,21 @@ int ele_msg_send_rcv(struct se_if_device_ctx *dev_ctx, void *tx_msg,
->  	return err;
->  }
->
-> +/*
-> + * Send/receive blocking call for external drivers, operating on the SE
-> + * interface private data (the misc device context is resolved internally).
-> + */
-> +int imx_se_msg_send_rcv(struct se_if_priv *priv, void *tx_msg, int tx_msg_sz,
-> +			void *rx_msg, int exp_rx_msg_sz)
-> +{
-> +	if (!priv)
-> +		return -EINVAL;
-> +
-> +	return ele_msg_send_rcv(priv->priv_dev_ctx, tx_msg, tx_msg_sz,
-> +				rx_msg, exp_rx_msg_sz);
-> +}
-> +EXPORT_SYMBOL_GPL(imx_se_msg_send_rcv);
-> +
->  static bool check_hdr_exception_for_sz(struct se_if_priv *priv,
->  				       struct se_msg_hdr *header)
->  {
-> @@ -402,8 +432,8 @@ void se_if_rx_callback(struct mbox_client *mbox_cl, void *msg)
->  	}
->  }
->
-> -int se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
-> -			    u8 msg_id, u8 sz, bool is_base_api)
-> +int imx_se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
-> +				u8 msg_id, u8 sz, bool is_base_api)
->  {
->  	struct se_msg_hdr *header = &msg->header;
->  	u32 status;
-> @@ -450,6 +480,7 @@ int se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
->
->  	return 0;
->  }
-> +EXPORT_SYMBOL_GPL(imx_se_val_rsp_hdr_n_status);
->
->  int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
->  {
-> diff --git a/drivers/firmware/imx/ele_common.h b/drivers/firmware/imx/ele_common.h
-> index b63a3fbf087a..8f0739960d4d 100644
-> --- a/drivers/firmware/imx/ele_common.h
-> +++ b/drivers/firmware/imx/ele_common.h
-> @@ -28,20 +28,6 @@ int ele_msg_send_rcv(struct se_if_device_ctx *dev_ctx, void *tx_msg,
->  		     int tx_msg_sz, void *rx_msg, int exp_rx_msg_sz);
->
->  void se_if_rx_callback(struct mbox_client *mbox_cl, void *msg);
-> -
-> -int se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
-> -			    u8 msg_id, u8 sz, bool is_base_api);
-> -
-> -/* Fill a command message header with a given command ID and length in bytes. */
-> -static inline void se_fill_cmd_msg_hdr(struct se_if_priv *priv, struct se_msg_hdr *hdr,
-> -				       u8 cmd, u32 len, bool is_base_api)
-> -{
-> -	hdr->tag = priv->if_defs->cmd_tag;
-> -	hdr->ver = (is_base_api) ? priv->if_defs->base_api_ver : priv->if_defs->fw_api_ver;
-> -	hdr->command = cmd;
-> -	hdr->size = len >> 2;
-> -}
-> -
->  int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem);
->
->  int se_restore_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem);
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctrl.c
-> index 3c14964830a6..53f252d2f111 100644
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-> @@ -911,9 +911,9 @@ static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev_ctx,
->  		"message received, start transmit to user");
->
->  	rsp_status_err =
-> -		se_val_rsp_hdr_n_status(priv, rx_msg, tx_msg->header.command,
-> -					cmd_snd_rcv_rsp_info.rx_buf_sz,
-> -					tx_msg->header.ver == priv->if_defs->base_api_ver);
-> +		imx_se_val_rsp_hdr_n_status(priv, rx_msg, tx_msg->header.command,
-> +					    cmd_snd_rcv_rsp_info.rx_buf_sz,
-> +					    tx_msg->header.ver == priv->if_defs->base_api_ver);
->
->  	if (!rsp_status_err) {
->  		err = se_dev_ctx_cpy_out_data(dev_ctx);
-> diff --git a/drivers/firmware/imx/se_ctrl.h b/drivers/firmware/imx/se_ctrl.h
-> index af7738ad76cd..76082e8b977c 100644
-> --- a/drivers/firmware/imx/se_ctrl.h
-> +++ b/drivers/firmware/imx/se_ctrl.h
-> @@ -7,6 +7,7 @@
->  #define SE_CTRL_H
->
->  #include <linux/bitfield.h>
-> +#include <linux/firmware/imx/se_api.h>
->  #include <linux/miscdevice.h>
->  #include <linux/mailbox_client.h>
->  #include <linux/semaphore.h>
-> @@ -95,22 +96,9 @@ struct se_if_device_ctx {
->  	struct kref refcount;
->  };
->
-> -/* Header of the messages exchange with the EdgeLock Enclave */
-> -struct se_msg_hdr {
-> -	u8 ver;
-> -	u8 size;
-> -	u8 command;
-> -	u8 tag;
-> -}  __packed;
-> -
->  #define SE_MU_HDR_SZ		4
->  #define SE_MU_HDR_WORD_SZ	1
->
-> -struct se_api_msg {
-> -	struct se_msg_hdr header;
-> -	u32 data[];
-> -};
-> -
->  struct se_if_defines {
->  	const u8 se_if_type;
->  	u8 cmd_tag;
-> diff --git a/include/linux/firmware/imx/se_api.h b/include/linux/firmware/imx/se_api.h
-> index b1c4c9115d7b..90104ecaaede 100644
-> --- a/include/linux/firmware/imx/se_api.h
-> +++ b/include/linux/firmware/imx/se_api.h
-> @@ -11,4 +11,82 @@
->  #define SOC_ID_OF_IMX8ULP		0x084d
->  #define SOC_ID_OF_IMX93			0x9300
->
-> +/**
-> + * struct se_msg_hdr - Header of the messages exchanged with the secure enclave.
-> + * @ver: API version the message conforms to (base or firmware API version).
-> + * @size: Message size in 32-bit words, including the header.
-> + * @command: Command identifier.
-> + * @tag: Message tag identifying it as a command or a response.
-> + */
-> +struct se_msg_hdr {
-> +	u8 ver;
-> +	u8 size;
-> +	u8 command;
-> +	u8 tag;
-> +}  __packed;
-> +
-> +/**
-> + * struct se_api_msg - A message exchanged with the secure enclave.
-> + * @header: Message header describing the command and its length.
-> + * @data: Command or response payload, sized per @header.size.
-> + */
-> +struct se_api_msg {
-> +	struct se_msg_hdr header;
-> +	u32 data[];
-> +};
-> +
-> +/* Opaque handle to a secure-enclave interface instance. */
-> +struct se_if_priv;
-> +
-> +/**
-> + * imx_se_fill_cmd_msg_hdr() - Populate the header of a command message.
-> + * @priv: Secure-enclave interface instance the command targets.
-> + * @hdr: Message header to be filled in.
-> + * @cmd: Command identifier to place in the header.
-> + * @len: Total message length in bytes, including the header.
-> + * @is_base_api: %true to tag the message with the base API version, %false to
-> + *               use the firmware API version.
-> + *
-> + * Fill in the tag, version, command and size fields of @hdr so that the message
-> + * can be sent to the secure enclave.
-> + *
-> + * Return: 0 on success.
-> + */
-> +int imx_se_fill_cmd_msg_hdr(struct se_if_priv *priv, struct se_msg_hdr *hdr,
-> +			    u8 cmd, u32 len, bool is_base_api);
-> +
-> +/**
-> + * imx_se_msg_send_rcv() - Send a command to the secure enclave and wait for the
-> + *                         response.
-> + * @priv: Secure-enclave interface instance to communicate with.
-> + * @tx_msg: Buffer holding the command message to send.
-> + * @tx_msg_sz: Size of the command message in bytes.
-> + * @rx_msg: Buffer receiving the response message.
-> + * @exp_rx_msg_sz: Expected size of the response message in bytes.
-> + *
-> + * Blocking send/receive helper for external drivers. The transaction is
-> + * serialized internally and the misc device context is resolved from @priv.
-> + *
-> + * Return: number of bytes received on success, or a negative error code.
-> + */
-> +int imx_se_msg_send_rcv(struct se_if_priv *priv, void *tx_msg, int tx_msg_sz,
-> +			void *rx_msg, int exp_rx_msg_sz);
-> +
-> +/**
-> + * imx_se_val_rsp_hdr_n_status() - Validate a response header and status code.
-> + * @priv: Secure-enclave interface instance the response came from.
-> + * @msg: Response message to validate.
-> + * @msg_id: Command identifier the response is expected to match.
-> + * @sz: Expected response size in bytes.
-> + * @is_base_api: %true if the command used the base API version, %false if it
-> + *               used the firmware API version.
-> + *
-> + * Check that the response tag, command identifier, size and API version match
-> + * the expectations, and that the enclave reported a successful status.
-> + *
-> + * Return: 0 if the response is valid and successful, or a negative error code.
-> + */
-> +int imx_se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
-> +				u8 msg_id, u8 sz, bool is_base_api);
-> +
->  #endif /* __SE_API_H__ */
+>  static const struct ocotp_devtype_data imx95_ocotp_data = {
+>  	.reg_off = 0x8000,
+> -	.reg_read = imx_ocotp_reg_read,
+>  	.size = 2048,
+>  	.num_entry = 12,
+>  	.entry = {
 >
 > --
 > 2.55.0
