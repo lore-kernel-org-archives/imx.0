@@ -1,97 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2E040BCB6;
-	Thu, 23 Jul 2026 09:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D73541A90F
+	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 09:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784800326; cv=none; b=mjAAh1lHoa+gDTVT31WEqHgdtqjRAOneWY7b/3MinQGSj0sliLEZBPWk/1MMG/Z/PhBDVCCk/j2zHJ6TWHGNdERnpYuYfIb/sf0dEwtl8twOmucF1mjG+zxYboJyaQ7Ky1wlS+WdJEvBBx5SAUwBbXwZ2tYsuUiNQj9kuJLPBuM=
+	t=1784800549; cv=none; b=C96ssdPeyq4vJTRVQcvXwx9uFF0Q+2gDU3OOeCVw6cHsiHpnPpryNFlbU/WLh0vi/7rLqPHfUcRHxDQVALz5Ei1MpgMaXtc6uTZjifTx3sXNjy0jqsNzGY/ASVl7bjJYaVGrEVSUvXbjdEUzlNQA1WeSKY5jK/DA+72bGIoPMhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784800326; c=relaxed/simple;
-	bh=hxm4F+54zdcxahjfLA9sZKq1mHIKpH2HOJX6f1fl+pk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rWwX4N6AFC5riWaj93wsWUAQLGQILKqtou5ilGr3DWIuqaQGGu6Dr8ycMOqua54BG3/6ZVl9a8tm1KBHcjFCCz9wAsiLj3r6BV8bJMubUiaveMipmSjM7lXmfs1LkaMKAROSq4y9rcHLF0BfvlpQyU8rMMp4jr/YSXykylcKg3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c+RaUYu1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784800549; c=relaxed/simple;
+	bh=fBAToUlNTSoiOkgB9iD1FNHc0p7ZWaDmhH+aiSQc9+s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G7B5b+EoQmk2I83XJa8pbHjklzaFJY+nRXzEPOK4U9aR0U99c//c0s2pOFGSYUA7/rENSbpcyodoAfx6emVXyQqtuxrnzmUFL2s4xQjJMIYax+onGRY3VO354RjFvoo6452t9Vqa8XeboGUWM19+6GWytdS4lt+DL5d7Fj9963o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=qaLWn5K1; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c+RaUYu1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953501F000E9;
-	Thu, 23 Jul 2026 09:52:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784800324;
-	bh=ATDPs2YydRvacSbpoNUJcY9xw6cEQZY3C8P6osHSgNk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=c+RaUYu1wZ+zEja9Oyq1J0YZHQHi1kYuxRbXNUXHKL2FZqThUc30mTlUaArUulNrn
-	 RZTWTYI7X6qNOVfWRiUdpb5oPukwqtdKKqCjO5hpIbjuola4z88IRyAXqnuLcJ89xg
-	 bwhoDxOflUC650vJLYlK/nnBABiuEB5cIN7e1iQcetp9REx0dq7ukdpAKxAaLcT5ah
-	 cZjUuNS1XgZT0zSOxKQJxSnHN3qW7RvLGIeOajlNvocP8r//yudd3CXoilB+SzO1KG
-	 +6frw+xVOuzESeb14oZ1ewHSDcYrBIl5EJCX9fd0jxZYj+5xrGgr+3LzslWwI6g/dT
-	 vUyW5vQV45Vdg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: lcdif: Add endpoint bus-width
- property
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Francesco Dolcini" <francesco@dolcini.it>
-Cc: robh@kernel.org, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260723093813.180089-2-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="qaLWn5K1"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 93A361FB1B;
+	Thu, 23 Jul 2026 11:55:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1784800545;
+	bh=Y3tZ5O24GEXnRTH52xgqivlFmeqGANuaEw/IVeFgWqc=; h=From:To:Subject;
+	b=qaLWn5K1d/MISN2NzJx2HXw7bDdBbvecuILtiHNRvSZhyp46mFlAwTbb8Qe+8eGFT
+	 GLaBdBwmbyw4K3/+6VuHJcjjQUPsR2v5ELfsah4//XT3newYLL96nefSjtF8D4u2NB
+	 zAwZhIi+vKXGDRdPTeZvg1iPu5prh4Wgd1NHHRS2uG+uNr5g/1XFDhvbOV0hy7TZx9
+	 vQ889N47V5i/SgaxofkXuUHobVY+odVGxV24t/I3fSEDPm4KaD8u7FH21W8h+dgK2q
+	 Zp9ONutZFDmFglyB2QKuEntZ9dhcRG13yMzzIZ7pRx85OpCbAFq/hCNSqMJJ5PkoHI
+	 u4LqSep0mTvWQ==
+Date: Thu, 23 Jul 2026 11:55:43 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Marek Vasut <marex@denx.de>,
+	Stefan Agner <stefan@agner.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 2/4] drm: mxsfb: Add optional DPI output bus-width
+ configuration
+Message-ID: <20260723095543.GB180480@francesco-nb>
 References: <20260723093813.180089-1-francesco@dolcini.it>
- <20260723093813.180089-2-francesco@dolcini.it>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 23 Jul 2026 09:52:03 +0000
-Message-Id: <20260723095203.953501F000E9@smtp.kernel.org>
+ <20260723093813.180089-3-francesco@dolcini.it>
+ <nwemnkwk5sjo5w6yelba5nmdlxgu7pxsalrxjixnrjlhfyceza@tamb54s7iswz>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <nwemnkwk5sjo5w6yelba5nmdlxgu7pxsalrxjixnrjlhfyceza@tamb54s7iswz>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Schema validation bypass for numbered endpoint nodes.
---
+Hello Marco,
+thanks for the review
 
---- Patch [1]: [PATCH v2 1/4] dt-bindings: lcdif: Add endpoint bus-width pr=
-operty ---
-commit 73f976bb84f0f0a26cb8385791e8483235c1fe74
-Author: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Thu, Jul 23, 2026 at 11:48:03AM +0200, Marco Felsch wrote:
+> On 26-07-23, Francesco Dolcini wrote:
+> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > 
+> > LCDIF programs LCD_DATABUS_WIDTH from the selected media bus format. The
+> > format reported by the downstream panel or bridge describes the display
+> > input, but it does not describe how the LCDIF data pins are physically
+> > wired on the board.
+> > 
+> > These can differ. For example, a 16-bit LCDIF bus can be connected to a
+> > 24-bit display by wiring the available color bits to the corresponding
+> > display inputs. In that case, using the display's 24-bit format to
+> > configure LCDIF selects the wrong data-bus mode and changes the assignment
+> > of color bits on the LCD_DATA pins.
+> > 
+> > Read the optional bus-width endpoint property from the LCDIF output port
+> > and use it to select the media bus format used to configure LCDIF. This
+> > allows the LCDIF bus mode to describe the physical interface
+> > independently of the downstream display format.
+> > 
+> > When the optional property is absent, continue using the format reported
+> > by the downstream display device, preserving the existing behavior.
+> > 
+> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > ---
+> > v2: use the common bus-width property instead of the legacy interface-pix-fmt
+> > ---
+> >  drivers/gpu/drm/mxsfb/mxsfb_drv.c | 24 ++++++++++++++++++++++++
+> >  drivers/gpu/drm/mxsfb/mxsfb_drv.h |  2 ++
+> >  drivers/gpu/drm/mxsfb/mxsfb_kms.c | 12 ++++++++++++
+> >  3 files changed, 38 insertions(+)
+> > 
+> > diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> > index 9b8fbda85d28..0545718a4b65 100644
+> > --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> > +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> > @@ -12,7 +12,10 @@
+> >  #include <linux/clk.h>
+> >  #include <linux/dma-mapping.h>
+> >  #include <linux/io.h>
+> > +#include <linux/media-bus-format.h>
+> >  #include <linux/module.h>
+> > +#include <linux/of.h>
+> > +#include <linux/of_graph.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/property.h>
+> >  #include <linux/pm_runtime.h>
+> > @@ -209,7 +212,10 @@ static int mxsfb_load(struct drm_device *drm,
+> >  		      const struct mxsfb_devdata *devdata)
+> >  {
+> >  	struct platform_device *pdev = to_platform_device(drm->dev);
+> > +	struct device_node *np = pdev->dev.of_node;
+> >  	struct mxsfb_drm_private *mxsfb;
+> > +	struct device_node *ep;
+> > +	u32 bus_width = 0;
+> 
+> With this beeing set to '0' and ...
+> 
+> >  	int ret;
+> >  
+> >  	mxsfb = devm_kzalloc(&pdev->dev, sizeof(*mxsfb), GFP_KERNEL);
+> > @@ -236,6 +242,24 @@ static int mxsfb_load(struct drm_device *drm,
+> >  	if (IS_ERR(mxsfb->clk_disp_axi))
+> >  		mxsfb->clk_disp_axi = NULL;
+> >  
+> > +	ep = of_graph_get_next_endpoint(np, NULL);
+> > +	if (ep) {
+> > +		of_property_read_u32(ep, "bus-width", &bus_width);
+> 
+> no bus-width property present, this ...
+> 
+> > +		of_node_put(ep);
+> 
+> Furthermore please see
+> 20260723-v6-18-topic-imx93-parallel-display-v13-1-ccf3f9bbc0fc@nxp.com
+> for a proper error handling.
 
-dt-bindings: lcdif: Add endpoint bus-width property
+Not sure if I see the value on doing this. You are just doing the
+validation of the DT again in the code. My understanding is that this is
+not the way to go.
 
-The DPI output of the LCD interface can be configured with a bus width
-of 16, 18, or 24 bits. Introduce a bus-width property to the output
-endpoint, specifying the number of parallel RGB bits connected.
+BTW, I assume you are suggesting something like this, if this is not the
+case please let me know
 
-> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/D=
-ocumentation/devicetree/bindings/display/fsl,lcdif.yaml
-> index 2dd0411ec6516..6931f0ae38297 100644
-> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> @@ -71,6 +71,15 @@ properties:
->      $ref: /schemas/graph.yaml#/properties/port
->      description: The LCDIF output port
-> =20
-> +    properties:
-> +      endpoint:
+	if (ep) {
+		err = of_property_read_u32();
+		of_node_put(ep);
 
-[Severity: Low]
-Will this schema validate device trees with multiple endpoints correctly?
+		if (err && err != -EINVAL)
+			return dev_err_probe(dev, err,
+					     "failed to query bus-width\n");
+	}
 
-Defining `endpoint:` under `properties` will only match nodes exactly named
-"endpoint". Any numbered endpoints like "endpoint@1" or "endpoint@2" will
-silently bypass these constraints and the `unevaluatedProperties: false`
-check.
+> 
+> > +	}
+> > +
+> > +	switch (bus_width) {
+> 
+> switch should fail. Therefore I would recommend to set the default to
+> 24 (bit) aka no limitation.
 
-Should this be defined using `patternProperties: "^endpoint(@[0-9a-f]+)?$":`
-instead to ensure the rules apply to all endpoint nodes?
+I would not do that.
 
-> +        $ref: /schemas/graph.yaml#/$defs/endpoint-base
-> +        unevaluatedProperties: false
-> +
-> +        properties:
-> +          bus-width:
-> +            enum: [ 16, 18, 24 ]
-> +
+We have an optional property, the DT is validated against the binding
+for correctness, we should not validate it again in the code. If the
+property is not present or it contains an invalid value it is
+just ignored, preserving the existing behavior.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260723093813.1800=
-89-1-francesco@dolcini.it?part=3D1
+Francesco
+
