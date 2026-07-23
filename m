@@ -1,443 +1,226 @@
-Received: from mail.fris.de (mail.fris.de [116.203.77.234])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011022.outbound.protection.outlook.com [52.101.65.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5493DB641
-	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 07:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784792244; cv=none; b=lBRlCiUyzQWeRMwXIE/mscyDI6Bp8aTVcUVOEE4NrQM0rUX9h0NcYH84PELoCJ6WrFHxFyihZIFoGjfDi1E6NYSkElwZ7wIRHcwKvBfLRryMwH5ouG28qSFzALAEMQC7V8g3IJuf7ybwGnhTP+EaRGa/f4U7Q0eupRJJ4k5BszY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784792244; c=relaxed/simple;
-	bh=pJ09Chr0zTsjTHGyMcYPOOvJN+s9GeC1D7S/zVmSMEA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ND1cfD5uDvaeH7s+ynNEIkQ+i0JmwOvJIVrqOgZhVGJfh46KcZ9c1PjPvNUiL04G+NInEj9h9hlUmdksNoGLW0qd1OIaV7Ocv3JARe7a/+a+g+PTV7gplCAjSJIIQ1CVXnyV2bnzIRifv09lsiBwwEiBbhOFTkGh1gsA7A1QAeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=PW0ZOTfE; arc=none smtp.client-ip=116.203.77.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55342D7386
+	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 09:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784797983; cv=fail; b=aI0od6b/TttU76onMOKMFRCBfEAs4G8pSLrPfSCailGzAFl9G0Mh41m3nhPDdnrCeLBkYB8ASfNkxSIhGlLbleXqapCvXzLIJQpHKM3HQlU2krg8RzkEi2Hn0GMBtp5cdfrhU6sKeBz+yMiKKmDrYNGzOiguZ98ACq2tRA5X534=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784797983; c=relaxed/simple;
+	bh=EjsagpwydBfLXQ5cq9FrJ8fN6LqLhoYX15UJmDPeH24=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=ELLgW3ce+MImeOULO2Udx+Ewg9va/DC88Qt8JuVmKZyJolWLgGuQbJsU8VXz8piC7S8AVcA0cpup7THjxeWPTrctDqD86coIxiOPqQVPXcsMe61Pgm6WKhRnMB93fUbQWrqb8QUp1TP/0czL8YgzplZyVHyMJws+Uh231tm5inw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mcuGtWMM; arc=fail smtp.client-ip=52.101.65.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="PW0ZOTfE"
-From: Frieder Schrempf <frieder@fris.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1784791737;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ovjESz4Mo1zxE81v9gf+AQ4y8FEezz8eXw4C5At3XN0=;
-	b=PW0ZOTfEiOzu+rfViSK48RX9fWikvezFckIoQzZ/AvHWQddJaex5NhyXjW1bablhBRe8Lt
-	lLgoMLsiIvnHNIjqAmx8dfbWRj7YHxLudyAX4fjk38K5dZSpo/OzEOIYVqppUe9hr8XVM6
-	iVI5F87EmY9pqsk/mO2XXZ7doFo+iKh9Zip/BHx4JGaDUacy5VtbqLVEHEcEcCUHifgKsn
-	4YvtRsXAZkal8nvogIcu2x4BqXK8J7KMNHSyHITK2Tlr9yPKkwgdfQSDvZTt2I46ulmn1X
-	A7PFlnFzNjgYYZQGR6G/YPR/VZxKPOIywBPVDz3ddnc/PHmh6p81nJKOhbOZqA==
-Date: Thu, 23 Jul 2026 09:27:25 +0200
-Subject: [PATCH v3 03/11] firmware: imx: ele: Export API functions
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mcuGtWMM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ho6PMjhEtPdLCNb3nMCiesQZBeI192r9xwhvrp4BSJTIXcSib3RlEdBLa97tbGw7hJqidjMvl6ABctsfdaC2IXYtuZ1/g6lwjLHTYaMYvCcT4FcmVElFT0+1F/tnHsq3OSU7t0AiOMc8vmoFfz+3ujwElbtUCaLzB9zyQOk9gFOnbiIEID6m45wDMtmwJqPlPZg9XfvLPDdrlOOMoNEExjmKKrdWnhS+Y1r98Mp/gOG8MzpNJE+4xy3WEWzlcvo2oh5YlYLChngZKFSPlUjdH4OAU2oaMoN1M9CeIWamPaJge9NcNHhRYAG0mMP0+dbZHWcwLvRwiAfxPd36aTibFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e6WsCFBlYRn1eppH/r0p2GAnXcM6Tcve6Mk4y0UJSa4=;
+ b=GHrlf+fv4e9h6DhbFG8L0G/rXpO9GF0OW4DVcsbj+GKUpKM3JX1b7+CsFNUI41ZYT3IzXhXvAw9t0hra+7N/MA4vHAyxo8a/6LDMCCgTlkOn5PdiMSJkWseURRgqaWZB43OrTc+abpCAZTCfGB1r9nSfBpGWmflp/LGbC4X4ShevExpSmN/n8Wl4l4ifwal1WZx9PD4ax7seR/zJMAjJsBka1k6xieULmDG4pm/RKN/bvqPkzx8VvAptgWH38mN+uVAK4FGbUVq95oJBHHY6zemm04/qPNayHTj4Qb2mXmP1wb6/QvetsU+mZ5uGRB4piJBn21348ulQU9rT/rUhAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e6WsCFBlYRn1eppH/r0p2GAnXcM6Tcve6Mk4y0UJSa4=;
+ b=mcuGtWMM/nW5tjK2hpKfv7otsNqUurcCPUatoe/S+JrwtMGoEAkd+OEPLaQrksdUGwvfxdjHOLB9tt1BoZbX0N0GS9toFHRYetXQmJ0Yhg1YcVxxzFDCfR1DGx+krnYKMzBI9Y0uscSGnj/5kJbeaPW+frwM8sOQCZrsRgWbuYuO/OqJ0rDPKWj7Y76O/Mqv1d1qoIRR9KmqdFH6JBtA2xggxd/gNydcLuafRK7Tm7RZmzeajRAPSuujN6CZQf5iwjkhuz6oQs531m3XJHiOq5Hi4JvRsqI9NbzvATfgwwOEt/C/V6N1QJsLe4IKrD3W7SRdWARta4t+Dc8nbp8GPg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV1PR04MB11513.eurprd04.prod.outlook.com (2603:10a6:150:284::9)
+ by DB9PR04MB8363.eurprd04.prod.outlook.com (2603:10a6:10:24b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Thu, 23 Jul
+ 2026 09:12:58 +0000
+Received: from GV1PR04MB11513.eurprd04.prod.outlook.com
+ ([fe80::29e0:98a1:4577:2cc7]) by GV1PR04MB11513.eurprd04.prod.outlook.com
+ ([fe80::29e0:98a1:4577:2cc7%3]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 09:12:58 +0000
+From: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Subject: [PATCH v3 0/3] imx8-isi: Format support enhancements
+Date: Thu, 23 Jul 2026 17:16:36 +0800
+Message-Id: <20260723-isi-v3-0-594919eae847@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPTbYWoC/1WMyw6CMBBFf4XM2pKhtiCu/A/joo+pdCElrWkwh
+ H+3YIxxeW7uOQskip4SnKsFImWffBgLHA8VmEGNd2LeFgaOvMWWt6w8GKJDqVEIZXoozymS8/N
+ eud4KDz49Q3zt0dxs69fvdz83DJkl0s7qRmOnLyGlepyn2oQHbIXMf1bH8WPxYgl5ElIbaYVT/
+ 9a6rm9pbmKNzgAAAA==
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Christian Hemp <c.hemp@phytec.de>, 
+ Stefan Riedmueller <s.riedmueller@phytec.de>, 
+ Jacopo Mondi <jacopo@jmondi.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Bryan O'Donoghue <bod@kernel.org>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Guoniu Zhou <guoniu.zhou@nxp.com>, 
+ linux-media@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Guoniu Zhou <guoniu.zhou@oss.nxp.com>, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+ Robert Chiras <robert.chiras@nxp.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784798197; l=3662;
+ i=guoniu.zhou@oss.nxp.com; s=20250815; h=from:subject:message-id;
+ bh=EjsagpwydBfLXQ5cq9FrJ8fN6LqLhoYX15UJmDPeH24=;
+ b=4tA0sUi19A/oWnDOT+R+lZ59nmIJ/U9nSUOqhe4doD3kLFyvsr1f+gAuHyEbMJGAjxI9TFICN
+ Nkzod8IF7QsCjrg52Sx0R9OtQ71yp0zW8YStdL/IYEbZ9YdruaQyBDp
+X-Developer-Key: i=guoniu.zhou@oss.nxp.com; a=ed25519;
+ pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
+X-ClientProxiedBy: SI3PR02CA0011.apcprd02.prod.outlook.com
+ (2603:1096:4:295::18) To GV1PR04MB11513.eurprd04.prod.outlook.com
+ (2603:10a6:150:284::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-3-e26930345b4c@kontron.de>
-References: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-0-e26930345b4c@kontron.de>
-In-Reply-To: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-0-e26930345b4c@kontron.de>
-To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
- Pankaj Gupta <pankaj.gupta@nxp.com>, 
- "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux@ew.tq-group.com, Frieder Schrempf <frieder.schrempf@kontron.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13631;
- i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=YFsACKIXpkDEbrz5+O+RlLnoul4hwtGYiLybgyAbYFc=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JISvx0NbTj+euEfDcrt73dY4Pi++RCXoRN1+tbO26n/Qgh
- P3p9plTO0pZGMS4GGTFFFmk+C1e25rF+sgfq46CmcPKBDKEgYtTACZybh3DPxW/81sPWT/9c6Zh
- 1znp1TtY/HIr3/o0b/4oNSVxsmRFGgcjw9kdL5WfC9banlmi+bhqdk5Xx+OfypJuhir7VJkOeZi
- xMgMA
-X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
- fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1PR04MB11513:EE_|DB9PR04MB8363:EE_
+X-MS-Office365-Filtering-Correlation-Id: b048d1a6-b2e0-4885-80e6-08dee89a9651
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|23010399003|19092799006|376014|7416014|1800799024|13003099007|921020|18002099003|56012099006|11063799006|10067099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+ OAVlRXZhTHySC0dXkXr2jZdj7BeCJrO/DJXPLQkzFoh90KnfQSQzaTyFR4ZXsxCWYkWNVVrSpYZJH5Bzi0tg7aW40F8qFLtZZ2e3vfpIQnlTSCk468O7+eL0HmXhhuqdhUGnBPNCfXl/bsY8fRAhJiOVr7ULt/Xvxj5WjCmEqdgDvr/KMtTSZ7ltUuJNMU5jnm7CESBE5vVf2I850a64gVk4+dhUIlVrCzGeUueSuNwdKdFBzjbfnqCb0iHs95PLjhYBJdap5gSA+Y3YsbxJluS22hQR4BRC8yTS/6EKwvi+hzy61CYI7GEmOe6Om6LnoBvVVQ9NkpvJdAdFwUe3h+S+yIv4jzKcFVJP2gMCNwuLz7KZFyJs7fxYRjUM2nCxl9d+R1ZJO7J7GHjnqELNPYtRuniBUXFALMwTe8y8Eb0l9/k2FQTL9FEBFbJfnzFmsDin3SHjYuGoGIKUhLW5TuIgZdONzF1+SlVSqHKXJCx2Jcy4fReCWr+nG5cwE5674iliqMx6qZIbKId3oRPyKde/E5qpreccf2fBra3rY3pL+93UtRYUn16PsPTBlaJbcYR53xR/KDw+Z7MqApdDe9PfNSwpc/HCD77w7hQjM6axtUWg++2BDiq5I42nxQ/XkmxiyxvYuLvu76lv0xvgeOs2+dG42OVrpvvhXwdSOv696ASJW9LtWhZn5bivqu/G78s82qouyOLPxJQ7JObPwQ==
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB11513.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(19092799006)(376014)(7416014)(1800799024)(13003099007)(921020)(18002099003)(56012099006)(11063799006)(10067099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?RUhUOWVtZVFzZFhybTZFQit4Ri9MbCszWlVIUTRRak5vZU83U2ZuTmRUMFZY?=
+ =?utf-8?B?d3dGRlhRaUZqVGI0YnB3TXZsNFRxZ2tKWlkxR3VqYXJ0Z0w4NkpYTkZYTC9p?=
+ =?utf-8?B?bm5JN0FPTDUvZkdHSmsrc2Y0UzkvTTAyVGFNYVRTd216UHhIRXZKeVJaN1hz?=
+ =?utf-8?B?U205MzBOenVkYUFOWDN1cExRV3k3bUpWd0FJZmZCTDJlQkEwVnRSNExsT2JZ?=
+ =?utf-8?B?T0hrRElsSC9maGRwTVVGQlFBY2w3dUM2Q1ZQMzVmUXZhaS9lWFY0ckVJVUpk?=
+ =?utf-8?B?RUZDTEFLa3ZKbS9QS1N6dEsyL2EzMnFEQkxiOXdOTkRJSEdrQnVBN2NtRGtS?=
+ =?utf-8?B?b3o2NUpHRDJxSzlzTnZHOEdjOEVaUHcxaXdOaytMY1JTRGl0V2hoN2pnR3Y3?=
+ =?utf-8?B?VmZVbHhQOVFUalp1RFhRaW5TM1VFVzcvVk9MbmpSWUV2Y0pWRkFFUDJDWmk4?=
+ =?utf-8?B?NGwzUEM2THFGVTl0MTh0S3kyOUxkTkVrV0RoT2MrVitTRDRFaS8rbmtiN1lt?=
+ =?utf-8?B?VURyRW1sQk9uSktmeTFwODdrcVpDOThFZDc0YUs4Y05SSWhWYUx5OFR2WWwr?=
+ =?utf-8?B?ZDlqcEk4eW5FdnpCY29TbU15TEVTUitSN0Rqc2pRV3o4SzFDZmpsYy9LSXJW?=
+ =?utf-8?B?eFJicVRpbTJMWVhNWFFFNlpVK1hvOGhRK0dIak9DYWhCQ2tCS1NXVU5MMjFO?=
+ =?utf-8?B?NlAxQUV3VW1yQjcyRU4wcFNNYVdQMW9GY2x1eTVwb0g0R0VMNjgyKy9mNytD?=
+ =?utf-8?B?ZGxXQnBENUxlMEUvNWY4K1JTYUUwKy9lbndBN0FNSmNRajFPOGJhdXRmVlpi?=
+ =?utf-8?B?aU5wSGdKdDRoQWh6WGVMNDhvVHBYZktHbGZJUFJ5dW5yM3FMUkFhNldpMWZj?=
+ =?utf-8?B?aTVaL0J1SE1sQ256Rng0UHpxRWVndGxuUmhqV3lyNjZtTGFGN1JQMm9Zb1RK?=
+ =?utf-8?B?enBTTk1UdE4vWktXd1ArSmZzRVB5QXFtK3FUOXl1TlpVNHhJOXlQS2JyKzdR?=
+ =?utf-8?B?WHFsQmtPNmM3aUxQcmMzNGlpaEM1bDFab1R0WFVCN0F2alBpRzV4ODNEVGUx?=
+ =?utf-8?B?Yy8wNmJkVHNOdWROUEtDajJ4SjFmNGlRQTE1L0VibytVV2hWRmdMc09LYTF4?=
+ =?utf-8?B?SGVqMm9UL2lhOUhCM3ZndXhNeEpQZ1NDK2g5QnJ6UDladHFMOXV6dTNiZzI1?=
+ =?utf-8?B?VU1RVEtRNnV4QWNzUEVSQTM2WS8rRTNzSHB0TGpTMG1wRmFiNllRZFA0RjhL?=
+ =?utf-8?B?UU5BZVZMNmFzVll4blp6Z2hUejlJanpUamtyck9EZWxrVFR3amE2N1Y3RUh5?=
+ =?utf-8?B?a2J0NEpYRkdsYml2d2p0S2NRY2hGaVFudHdBN3oreDZRd0ZoSWRqSW50R0to?=
+ =?utf-8?B?WTlEb1YrTXFXUzZmeU9UeXZNeG9ZOUZ4L01mRDU1MjlyQU1UMHU2a2NjaFYv?=
+ =?utf-8?B?UlBwN09xNmJiYkNxUWhKOTdRWUJ2WEhyNUM1YlZEUWErVGlQenhEalhkVmtF?=
+ =?utf-8?B?TDZDWTdNL2l2dFVUeDlvMGpYNjY3cDY0VDlhYkliUlY0MzNkNGdFRk04RGlt?=
+ =?utf-8?B?eDdhV2x1NmZuUnpzTnRFRmMrQWU4TTgwSG11SWtsMXltdkxYRTdUVE53K0cv?=
+ =?utf-8?B?a25zTExEUi9pWk9MNVROaFpINGtGVVhob1ppTXR1S2VDWkVML0JqOXYvMXBn?=
+ =?utf-8?B?R05qRW5XRnIwZFJsZHZVbzd3UnlsRWpoLzE2RU83dE40S2VjMlpkYVBoTTVx?=
+ =?utf-8?B?alVVcHg3d29yeG1YVzhZenZueUZJYjNuZUJGVUpjSi9SZndZVi8rb1dkWXlh?=
+ =?utf-8?B?bmk5SzlRamxoQUpaNktqMjQ1VVgxRVRuM3g4ZGF5dHg1d2V4dGF6c3M0NWtW?=
+ =?utf-8?B?WjY1R0N1SmlwVTZIWU1mZitTOGFBVXArMFNmSGRvamYzcE0wcW5qY09VdDVQ?=
+ =?utf-8?B?ckErYnZQc1VvbTE3dldwV3Npa2hxV2NRM2lvVWJKRWQ0R1dIZHhpeW1abUlv?=
+ =?utf-8?B?WHVGdmVZS1pmbFhkbHhDUUFNb1JXcHdsYUpqdzBwOFd1L2hXZUpnVHRZWlho?=
+ =?utf-8?B?eGZSMCtqUS9GQW5aT3lmY1IzVkwrVjJ3Z2o0czZ1N2FiNXU5NklVOUhXempZ?=
+ =?utf-8?B?SkZtUDRGdTdOZnBZRjdvaVQvVmk2NFBTNURZNERuTjg1cW8rdGIyN0c5V2F6?=
+ =?utf-8?B?TjdxclhBQlk1cjlzWXYvZk00VndQWlJhVTAvMjlNdVJhQ2hxN1hBcnR3ZFF2?=
+ =?utf-8?B?d0ErRFVBdWdlT2tYZzUzYmk3MUpFTlZoSmRrQWdqSGlOV1U1Mk5mbk44TlVh?=
+ =?utf-8?B?NGo5UTROZkx3WVpuWTNpWFZ5REZuSy9EYXduRUx4OTRVVTJNTEh1ZkJwRXVU?=
+ =?utf-8?Q?MCahZFAmqCoIY7BEWF4Ih8jF2ka1OfGjN6o8x?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b048d1a6-b2e0-4885-80e6-08dee89a9651
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB11513.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 09:12:57.9925
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: THxJEDTmrcnMIbHtcrFxwHnj5GogfigAtiBOg7Kf2D9Qiehs0QITPX1t+4D7IoFOxBeT5bFh6CHoC4iRGCxUU5St3YPXzSwRA78hmmOzAbNtKmfKcRuQflNkhtLnb9DO
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8363
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+This is a follow-up series to the imx8-isi bug fixes and format support
+patches [1]. Patches 1/6, 2/6, and 5/6 from v2 have been merged into the
+maintainer's branch (pinchart/for-next/media/nxp). This series contains
+the remaining 3 patches rebased on top of the merged changes.
 
-Export generic ELE API functions to send and receive messages. This
-allows drivers to implement functions based on the ELE API.
+Patch 1 implements per-stream reference counting in the crossbar to properly
+enable multiple streams from different virtual channels on the same input pad.
 
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Patch 2 adds support for 16-bit raw Bayer formats (SBGGR16, SGBRG16,
+SGRBG16, SRGGB16) and Y16 (16-bit monochrome).
+
+Patch 3 extends RGB format support by adding BGRA32, RGBA32, BGRX32, RGBX32,
+and ARGB2101010 formats.
+
+[1] https://lore.kernel.org/r/20260720-isi-v2-0-45845bc5d4fa@oss.nxp.com
+
+Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 ---
- drivers/firmware/imx/ele_base_msg.c | 42 ++++++++++----------
- drivers/firmware/imx/ele_common.c   | 35 ++++++++++++++++-
- drivers/firmware/imx/ele_common.h   | 14 -------
- drivers/firmware/imx/se_ctrl.c      |  6 +--
- drivers/firmware/imx/se_ctrl.h      | 14 +------
- include/linux/firmware/imx/se_api.h | 78 +++++++++++++++++++++++++++++++++++++
- 6 files changed, 137 insertions(+), 52 deletions(-)
+Changes in v3:
+- Rebased on maintainer's branch which already includes v2 patches 1/6,
+  2/6, and 5/6 (stream ID validation fixes and color map correction)
+- Series reduced from 6 patches to 3 patches (remaining unmerged patches)
+- Patch numbering updated: v2 3/6 -> v3 1/3, v2 4/6 -> v3 2/3, v2 6/6 -> v3 3/3
+- [1/3] Change from "Fix" to "Implement" as multi-stream support is for newer
+  SoCs not present when the driver was merged (Laurent)
+- [1/3] Remove Fixes and Cc: stable tags (Laurent)
+- [1/3] Store input/input_stream in mxc_isi_pipe instead of using per-stream
+  counters array, avoiding arbitrary 64-entry limit (Laurent)
+- [1/3] Use UINT_MAX to mark pipe as inactive to distinguish from valid pad 0
+- [2/3] Remove "high-end" from description as RAW16 is common now (Laurent)
+- [2/3] Add Y16 (16-bit monochrome) format support (Laurent)
+- [2/3] Add Reviewed-by tag from Laurent
+- [3/3] Drop M2M_OUT for ABGR32/BGRA32/RGBA32 as ISI ignores alpha bits (Laurent)
+- [3/3] Remove Android requirements from commit message as alpha formats
+  cannot be used as M2M input (Laurent)
+- [3/3] Add Tested-by tag from Laurent Pinchart
+- Link to v2: https://lore.kernel.org/r/20260720-isi-v2-0-45845bc5d4fa@oss.nxp.com
 
-diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/ele_base_msg.c
-index 28b835f2880f..a4ab45efdd63 100644
---- a/drivers/firmware/imx/ele_base_msg.c
-+++ b/drivers/firmware/imx/ele_base_msg.c
-@@ -8,6 +8,7 @@
- #include <linux/cleanup.h>
- #include <linux/completion.h>
- #include <linux/dma-mapping.h>
-+#include <linux/firmware/imx/se_api.h>
- #include <linux/genalloc.h>
- 
- #include "ele_base_msg.h"
-@@ -106,8 +107,8 @@ int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
- 		}
- 	}
- 
--	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
--			    ELE_GET_INFO_REQ, ELE_GET_INFO_REQ_MSG_SZ, true);
-+	imx_se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-+				ELE_GET_INFO_REQ, ELE_GET_INFO_REQ_MSG_SZ, true);
- 
- 	tx_msg->data[0] = upper_32_bits(get_info_addr);
- 	tx_msg->data[1] = lower_32_bits(get_info_addr);
-@@ -120,8 +121,8 @@ int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
- 		return ret;
- 	}
- 
--	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_GET_INFO_REQ,
--				      ELE_GET_INFO_RSP_MSG_SZ, true);
-+	ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_GET_INFO_REQ,
-+					  ELE_GET_INFO_RSP_MSG_SZ, true);
- 	if (ret < 0) {
- 		ele_get_info_cleanup(priv, get_info_data, get_info_addr, get_info_len);
- 		return ret;
-@@ -156,16 +157,16 @@ int ele_ping(struct se_if_priv *priv)
- 	if (!rx_msg)
- 		return -ENOMEM;
- 
--	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
--			    ELE_PING_REQ, ELE_PING_REQ_SZ, true);
-+	imx_se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-+				ELE_PING_REQ, ELE_PING_REQ_SZ, true);
- 
- 	ret = ele_msg_send_rcv(priv->priv_dev_ctx, tx_msg, ELE_PING_REQ_SZ,
- 			       rx_msg, ELE_PING_RSP_SZ);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_PING_REQ,
--				      ELE_PING_RSP_SZ, true);
-+	ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_PING_REQ,
-+					  ELE_PING_RSP_SZ, true);
- 
- 	return ret;
- }
-@@ -196,8 +197,9 @@ int ele_service_swap(struct se_if_priv *priv,
- 	if (!rx_msg)
- 		return -ENOMEM;
- 
--	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
--			    ELE_SERVICE_SWAP_REQ, ELE_SERVICE_SWAP_REQ_MSG_SZ, true);
-+	imx_se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-+				ELE_SERVICE_SWAP_REQ, ELE_SERVICE_SWAP_REQ_MSG_SZ,
-+				true);
- 
- 	tx_msg->data[0] = flag;
- 	tx_msg->data[1] = addr_size;
-@@ -212,8 +214,8 @@ int ele_service_swap(struct se_if_priv *priv,
- 	if (ret < 0)
- 		return ret;
- 
--	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_SERVICE_SWAP_REQ,
--				      ELE_SERVICE_SWAP_RSP_MSG_SZ, true);
-+	ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_SERVICE_SWAP_REQ,
-+					  ELE_SERVICE_SWAP_RSP_MSG_SZ, true);
- 	if (ret)
- 		return ret;
- 
-@@ -248,8 +250,8 @@ int ele_fw_authenticate(struct se_if_priv *priv, dma_addr_t contnr_addr,
- 	if (!rx_msg)
- 		return -ENOMEM;
- 
--	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
--			    ELE_FW_AUTH_REQ, ELE_FW_AUTH_REQ_SZ, true);
-+	imx_se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
-+				ELE_FW_AUTH_REQ, ELE_FW_AUTH_REQ_SZ, true);
- 
- 	tx_msg->data[0] = lower_32_bits(contnr_addr);
- 	tx_msg->data[1] = 0;
-@@ -260,8 +262,8 @@ int ele_fw_authenticate(struct se_if_priv *priv, dma_addr_t contnr_addr,
- 	if (ret < 0)
- 		return ret;
- 
--	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_FW_AUTH_REQ,
--				      ELE_FW_AUTH_RSP_MSG_SZ, true);
-+	ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_FW_AUTH_REQ,
-+					  ELE_FW_AUTH_RSP_MSG_SZ, true);
- 
- 	return ret;
- }
-@@ -286,8 +288,8 @@ int ele_debug_dump(struct se_if_priv *priv)
- 	if (!rx_msg)
- 		return -ENOMEM;
- 
--	se_fill_cmd_msg_hdr(priv, &tx_msg->header, ELE_DEBUG_DUMP_REQ,
--			    ELE_DEBUG_DUMP_REQ_SZ, true);
-+	imx_se_fill_cmd_msg_hdr(priv, &tx_msg->header, ELE_DEBUG_DUMP_REQ,
-+				ELE_DEBUG_DUMP_REQ_SZ, true);
- 
- 	msg_ex_cnt = 0;
- 	do {
-@@ -298,8 +300,8 @@ int ele_debug_dump(struct se_if_priv *priv)
- 		if (ret < 0)
- 			return ret;
- 
--		ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_DEBUG_DUMP_REQ,
--					      ELE_DEBUG_DUMP_RSP_SZ, true);
-+		ret = imx_se_val_rsp_hdr_n_status(priv, rx_msg, ELE_DEBUG_DUMP_REQ,
-+						  ELE_DEBUG_DUMP_RSP_SZ, true);
- 		if (ret) {
- 			dev_err(priv->dev, "Dump_Debug_Buffer Error: %x.", ret);
- 			break;
-diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele_common.c
-index fbb6e584341a..f9c56fd42af0 100644
---- a/drivers/firmware/imx/ele_common.c
-+++ b/drivers/firmware/imx/ele_common.c
-@@ -3,11 +3,26 @@
-  * Copyright 2025 NXP
-  */
- 
-+#include <linux/export.h>
-+
- #include "ele_base_msg.h"
- #include "ele_common.h"
- #include "ele_fw_api.h"
- #include "se_ctrl.h"
- 
-+/* Fill a command message header with a given command ID and length in bytes. */
-+int imx_se_fill_cmd_msg_hdr(struct se_if_priv *priv, struct se_msg_hdr *hdr,
-+			u8 cmd, u32 len, bool is_base_api)
-+{
-+	hdr->tag = priv->if_defs->cmd_tag;
-+	hdr->ver = (is_base_api) ? priv->if_defs->base_api_ver : priv->if_defs->fw_api_ver;
-+	hdr->command = cmd;
-+	hdr->size = len >> 2;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(imx_se_fill_cmd_msg_hdr);
-+
- int se_chk_tx_msg_hdr(struct se_if_device_ctx *dev_ctx, struct se_msg_hdr *header)
- {
- 	struct se_if_priv *priv = dev_ctx->priv;
-@@ -261,6 +276,21 @@ int ele_msg_send_rcv(struct se_if_device_ctx *dev_ctx, void *tx_msg,
- 	return err;
- }
- 
-+/*
-+ * Send/receive blocking call for external drivers, operating on the SE
-+ * interface private data (the misc device context is resolved internally).
-+ */
-+int imx_se_msg_send_rcv(struct se_if_priv *priv, void *tx_msg, int tx_msg_sz,
-+			void *rx_msg, int exp_rx_msg_sz)
-+{
-+	if (!priv)
-+		return -EINVAL;
-+
-+	return ele_msg_send_rcv(priv->priv_dev_ctx, tx_msg, tx_msg_sz,
-+				rx_msg, exp_rx_msg_sz);
-+}
-+EXPORT_SYMBOL_GPL(imx_se_msg_send_rcv);
-+
- static bool check_hdr_exception_for_sz(struct se_if_priv *priv,
- 				       struct se_msg_hdr *header)
- {
-@@ -402,8 +432,8 @@ void se_if_rx_callback(struct mbox_client *mbox_cl, void *msg)
- 	}
- }
- 
--int se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
--			    u8 msg_id, u8 sz, bool is_base_api)
-+int imx_se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
-+				u8 msg_id, u8 sz, bool is_base_api)
- {
- 	struct se_msg_hdr *header = &msg->header;
- 	u32 status;
-@@ -450,6 +480,7 @@ int se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(imx_se_val_rsp_hdr_n_status);
- 
- int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
- {
-diff --git a/drivers/firmware/imx/ele_common.h b/drivers/firmware/imx/ele_common.h
-index b63a3fbf087a..8f0739960d4d 100644
---- a/drivers/firmware/imx/ele_common.h
-+++ b/drivers/firmware/imx/ele_common.h
-@@ -28,20 +28,6 @@ int ele_msg_send_rcv(struct se_if_device_ctx *dev_ctx, void *tx_msg,
- 		     int tx_msg_sz, void *rx_msg, int exp_rx_msg_sz);
- 
- void se_if_rx_callback(struct mbox_client *mbox_cl, void *msg);
--
--int se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
--			    u8 msg_id, u8 sz, bool is_base_api);
--
--/* Fill a command message header with a given command ID and length in bytes. */
--static inline void se_fill_cmd_msg_hdr(struct se_if_priv *priv, struct se_msg_hdr *hdr,
--				       u8 cmd, u32 len, bool is_base_api)
--{
--	hdr->tag = priv->if_defs->cmd_tag;
--	hdr->ver = (is_base_api) ? priv->if_defs->base_api_ver : priv->if_defs->fw_api_ver;
--	hdr->command = cmd;
--	hdr->size = len >> 2;
--}
--
- int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem);
- 
- int se_restore_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem);
-diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctrl.c
-index 3c14964830a6..53f252d2f111 100644
---- a/drivers/firmware/imx/se_ctrl.c
-+++ b/drivers/firmware/imx/se_ctrl.c
-@@ -911,9 +911,9 @@ static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev_ctx,
- 		"message received, start transmit to user");
- 
- 	rsp_status_err =
--		se_val_rsp_hdr_n_status(priv, rx_msg, tx_msg->header.command,
--					cmd_snd_rcv_rsp_info.rx_buf_sz,
--					tx_msg->header.ver == priv->if_defs->base_api_ver);
-+		imx_se_val_rsp_hdr_n_status(priv, rx_msg, tx_msg->header.command,
-+					    cmd_snd_rcv_rsp_info.rx_buf_sz,
-+					    tx_msg->header.ver == priv->if_defs->base_api_ver);
- 
- 	if (!rsp_status_err) {
- 		err = se_dev_ctx_cpy_out_data(dev_ctx);
-diff --git a/drivers/firmware/imx/se_ctrl.h b/drivers/firmware/imx/se_ctrl.h
-index af7738ad76cd..76082e8b977c 100644
---- a/drivers/firmware/imx/se_ctrl.h
-+++ b/drivers/firmware/imx/se_ctrl.h
-@@ -7,6 +7,7 @@
- #define SE_CTRL_H
- 
- #include <linux/bitfield.h>
-+#include <linux/firmware/imx/se_api.h>
- #include <linux/miscdevice.h>
- #include <linux/mailbox_client.h>
- #include <linux/semaphore.h>
-@@ -95,22 +96,9 @@ struct se_if_device_ctx {
- 	struct kref refcount;
- };
- 
--/* Header of the messages exchange with the EdgeLock Enclave */
--struct se_msg_hdr {
--	u8 ver;
--	u8 size;
--	u8 command;
--	u8 tag;
--}  __packed;
--
- #define SE_MU_HDR_SZ		4
- #define SE_MU_HDR_WORD_SZ	1
- 
--struct se_api_msg {
--	struct se_msg_hdr header;
--	u32 data[];
--};
--
- struct se_if_defines {
- 	const u8 se_if_type;
- 	u8 cmd_tag;
-diff --git a/include/linux/firmware/imx/se_api.h b/include/linux/firmware/imx/se_api.h
-index b1c4c9115d7b..90104ecaaede 100644
---- a/include/linux/firmware/imx/se_api.h
-+++ b/include/linux/firmware/imx/se_api.h
-@@ -11,4 +11,82 @@
- #define SOC_ID_OF_IMX8ULP		0x084d
- #define SOC_ID_OF_IMX93			0x9300
- 
-+/**
-+ * struct se_msg_hdr - Header of the messages exchanged with the secure enclave.
-+ * @ver: API version the message conforms to (base or firmware API version).
-+ * @size: Message size in 32-bit words, including the header.
-+ * @command: Command identifier.
-+ * @tag: Message tag identifying it as a command or a response.
-+ */
-+struct se_msg_hdr {
-+	u8 ver;
-+	u8 size;
-+	u8 command;
-+	u8 tag;
-+}  __packed;
-+
-+/**
-+ * struct se_api_msg - A message exchanged with the secure enclave.
-+ * @header: Message header describing the command and its length.
-+ * @data: Command or response payload, sized per @header.size.
-+ */
-+struct se_api_msg {
-+	struct se_msg_hdr header;
-+	u32 data[];
-+};
-+
-+/* Opaque handle to a secure-enclave interface instance. */
-+struct se_if_priv;
-+
-+/**
-+ * imx_se_fill_cmd_msg_hdr() - Populate the header of a command message.
-+ * @priv: Secure-enclave interface instance the command targets.
-+ * @hdr: Message header to be filled in.
-+ * @cmd: Command identifier to place in the header.
-+ * @len: Total message length in bytes, including the header.
-+ * @is_base_api: %true to tag the message with the base API version, %false to
-+ *               use the firmware API version.
-+ *
-+ * Fill in the tag, version, command and size fields of @hdr so that the message
-+ * can be sent to the secure enclave.
-+ *
-+ * Return: 0 on success.
-+ */
-+int imx_se_fill_cmd_msg_hdr(struct se_if_priv *priv, struct se_msg_hdr *hdr,
-+			    u8 cmd, u32 len, bool is_base_api);
-+
-+/**
-+ * imx_se_msg_send_rcv() - Send a command to the secure enclave and wait for the
-+ *                         response.
-+ * @priv: Secure-enclave interface instance to communicate with.
-+ * @tx_msg: Buffer holding the command message to send.
-+ * @tx_msg_sz: Size of the command message in bytes.
-+ * @rx_msg: Buffer receiving the response message.
-+ * @exp_rx_msg_sz: Expected size of the response message in bytes.
-+ *
-+ * Blocking send/receive helper for external drivers. The transaction is
-+ * serialized internally and the misc device context is resolved from @priv.
-+ *
-+ * Return: number of bytes received on success, or a negative error code.
-+ */
-+int imx_se_msg_send_rcv(struct se_if_priv *priv, void *tx_msg, int tx_msg_sz,
-+			void *rx_msg, int exp_rx_msg_sz);
-+
-+/**
-+ * imx_se_val_rsp_hdr_n_status() - Validate a response header and status code.
-+ * @priv: Secure-enclave interface instance the response came from.
-+ * @msg: Response message to validate.
-+ * @msg_id: Command identifier the response is expected to match.
-+ * @sz: Expected response size in bytes.
-+ * @is_base_api: %true if the command used the base API version, %false if it
-+ *               used the firmware API version.
-+ *
-+ * Check that the response tag, command identifier, size and API version match
-+ * the expectations, and that the enclave reported a successful status.
-+ *
-+ * Return: 0 if the response is valid and successful, or a negative error code.
-+ */
-+int imx_se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
-+				u8 msg_id, u8 sz, bool is_base_api);
-+
- #endif /* __SE_API_H__ */
+Changes in v2:
+- [1/6] Split v1 patch 1/5 into two patches: this patch fixes the core
+  for_each_active_route() bug, next patch adds additional stream
+  validation (Frank Li)
+- [2/6] New patch split from v1 1/5: adds stream ID validation on top of
+  for_each_active_route() fix (Frank Li)
+- [2/6] Remove incorrect sink_stream validation
+- [3/6] Use fixed-size array for enabled_count instead of dynamic allocation
+- [3/6] Use BIT_ULL() macro for u64 bitmask operations
+- [3/6] Use MXC_ISI_MAX_STREAMS (64) as loop boundary instead of num_sources
+- [3/6] Remove mxc_isi_stream_counters_alloc/free functions
+- [4/6] Add Reviewed-by tag from Frank Li
+- [5/6] Reword commit description for clarity (Frank Li)
+- [6/6] Add Reviewed-by tag from Frank Li
+- Link to v1: https://lore.kernel.org/r/20260629-isi-v1-0-deebfdb1b07b@oss.nxp.com
 
+---
+Guoniu Zhou (2):
+      media: nxp: imx8-isi: Implement per-stream reference counting for multiplexed streams
+      media: nxp: imx8-isi: Add additional 32-bit RGB format support
+
+Laurentiu Palcu (1):
+      media: nxp: imx8-isi: Add 16-bit raw Bayer format support
+
+ .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  5 +-
+ .../platform/nxp/imx8-isi/imx8-isi-crossbar.c      | 66 ++++++++++-----
+ .../media/platform/nxp/imx8-isi/imx8-isi-pipe.c    | 31 +++++++
+ .../media/platform/nxp/imx8-isi/imx8-isi-video.c   | 96 ++++++++++++++++++++++
+ 4 files changed, 178 insertions(+), 20 deletions(-)
+---
+base-commit: 4d32fbba9d23f50d157ed4a37c9e8fbce61c904a
+change-id: 20260626-isi-00f05b044ac9
+
+Best regards,
 -- 
-2.55.0
+Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 
