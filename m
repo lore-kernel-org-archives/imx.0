@@ -1,37 +1,37 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B635A3EDE6C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A703E3EDE68
 	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 07:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784792243; cv=none; b=LbdAwJRCghoHQP9+IVsq6UpHOsIsgAsTtbicBWcKveE1uxGlDAICak6g3X1O9AaIhEoh+u/AszZhzm8XDH6X2gI5Ly+aN/fhK8B38/5kLTMcXqjuf7JxF7F7FV4vSPsG74NjOGntUiMN4++XeoEqnB0/T9lCgKzyZy7qPmAKtic=
+	t=1784792244; cv=none; b=l3MRSRz+ZyfLA90VJ08KzRcXOFQALmSaceXAXRygE9is6qW3ZIKB1u+tLZr+qlOJddFhzLTua6vZAyV5vNlXKEDDMiSTZ81fUUUuOXCztvtFd2MVpjPkup2lVL5F6TnwRf0XSx755GriYQRJTtYhzIsa1Ls88f9yuBGODT4OPGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784792243; c=relaxed/simple;
-	bh=BX+Sel3Ae4XusHp2wSzv2dwsS9SdIb3azp5qa3pJZL4=;
+	s=arc-20240116; t=1784792244; c=relaxed/simple;
+	bh=UZnOInwEGoVgpNBqq3Tztf3mf2B9K8wVmmfkFh/0KSY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=STm/Zz2b5KPNHxsoFgCxfXDNJZW1FmcqiU5r1e5bLymJ9fBxdVWPuFGDbuF6lbErV4c9SboieGVZTQr+eN88PjBvlpKt9BpX2KNgMh4Wxt+LExTfXTth4LHJXrOaaa8dpmUEdKgZYyGOzzy3LkUg6/qBB4hhAO2mV4EN2B8jM6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=ZPxvfK7q; arc=none smtp.client-ip=116.203.77.234
+	 In-Reply-To:To:Cc; b=gvCN3GpsNU9Zx9pDXVXi4DEJxTJAN6M1kX7jJlVaRlOG3X97+JaPx1snjouOwtnpPhOsTNhd6bs12twkQpWbWnDGKrW1SLWmYiRponroOKjhmCnKyk7j5+wk32C0bKD57D5NgVibtWxnZs4LcVj6LQj3s445q4YQgE19KDjGPKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=2UvurZwE; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="ZPxvfK7q"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="2UvurZwE"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1784791737;
+	t=1784791736;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6jRO/10N/zvQgQ5YhIHQJf/DZBZyqM7tDf/bFYg+EZU=;
-	b=ZPxvfK7qZCxP4NrsCCoFXhFRbfwafjiGoiAd/GHB3WsEXh9WQEIndemApyWPBsxKkRWBvB
-	55FpGfmDFGQM18kRRpXY+hNM+Kq5Eh9FoFZRK62CqaIgcP7SdtMW9TnN/W2XJV5BEkam/8
-	4aXQcFNZhccijeX1SteLHaoOVo20Uaj5rHwl5hoPmhB9iG5IAUvG3oRrG0RFpHUJRkWLMf
-	HzTxcsXvA351CXHzsjvP7798/MByy9fuMBBYD5mNzxtIYJmaa+/yYeSQNi2EDnfmoYs1Y2
-	2U7leuUy7J8B66oLwZMqH4+37LxlN/9v59YK7eMOKH5MJGHjuFZPeLWNhCweKg==
-Date: Thu, 23 Jul 2026 09:27:26 +0200
-Subject: [PATCH v3 04/11] nvmem: imx-ocotp-ele: Add keepout table for
- i.MX93
+	bh=TXqjLQdB/CoMuRR1aOwLEfFv4t1NiYQCsuxpxSLoiQc=;
+	b=2UvurZwEBzoIJOUcJbZATpImBaX2JRoSAuUKGCAFDQn1m+eusP07MLDd1bq2ZbY+bReYaw
+	RC9O8IdxAZAwsa1gBHbB1SLKg2yIhUuD15GRWNMPPMYcCoh92JbfYh76V/pHqGEKdTxNum
+	mT062GKIw6p2v6cUW8x6t4tK2nyNloCrRx737cDkpmbqxL6W/4pX+52WoHg9kzOQo3oBsP
+	VKK6uN6FY66jyf/8LOtQOhRQdbwbLBDA5yjmntAFpfG3z9CCbx5RzCjzemTgScVcjPWBOJ
+	OGky86yO1famtf8JZuqnYXnniuzZZBg3ghHp29KAIZ2Gc33nJo4y9OoNiPqjog==
+Date: Thu, 23 Jul 2026 09:27:24 +0200
+Subject: [PATCH v3 02/11] firmware: imx: ele: Fix indentation in
+ ele_base_msg.h
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-4-e26930345b4c@kontron.de>
+Message-Id: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-2-e26930345b4c@kontron.de>
 References: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-0-e26930345b4c@kontron.de>
 In-Reply-To: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-0-e26930345b4c@kontron.de>
 To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -54,76 +54,58 @@ To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  linux@ew.tq-group.com, Frieder Schrempf <frieder.schrempf@kontron.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1912;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1571;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=uWHeQFtm8hXfW7ZA55vuDeShYnRX7s0r6QBPlDcypKQ=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JISvx0FYmgxpXr/RVU84/ld9ma3fdTXH6/jatMwtu7+JcP
- 0GTw/dXRykLgxgXg6yYIosUv8VrW7NYH/lj1VEwc1iZQIYwcHEKwEQSNBkZLjaubgt9/m9Ck4Pn
- lZ3XgtdqshyYGsNy9ZXVFJN7h8Pe/GVkuPF722cLPRfP95N3p79Me8qVXVenXsF2wqk0lM3a93M
- FFwA=
+ bh=DGqUdZlhyphs8hR0tjgBUY5tl6ldZ12TestuLL1xzXU=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JISvx0Nblr/cGTfZxOWTF86uwamVEeUaAwcoVr+qUNr87s
+ eGs3vzfHaUsDGJcDLJiiixS/Bavbc1ifeSPVUfBzGFlAhnCwMUpABN5M5mRYcWj/wISfIXuepK1
+ rzg6jCdXZLt+SNHatPxv3PGDm4M/MjMyXJOz9f+1bKXaozdMTF/bRJQCs7NNI4qrF16zK18w52s
+ UKwA=
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Add an overall keepout table to describe which fuse registers are
-invalid and not accessible. No functional changes intended.
+The file uses mixed indentation characters. Use tabs everywhere.
 
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- drivers/nvmem/imx-ocotp-ele.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/firmware/imx/ele_base_msg.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index a0d2985c6d03..dadec19ca252 100644
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -34,6 +34,8 @@ struct ocotp_devtype_data {
- 	u32 num_entry;
- 	u32 flag;
- 	nvmem_reg_read_t reg_read;
-+	const struct nvmem_keepout *keepout;
-+	unsigned int nkeepout;
- 	struct ocotp_map_entry entry[];
- };
+diff --git a/drivers/firmware/imx/ele_base_msg.h b/drivers/firmware/imx/ele_base_msg.h
+index 475074580dd7..5c128bf56e88 100644
+--- a/drivers/firmware/imx/ele_base_msg.h
++++ b/drivers/firmware/imx/ele_base_msg.h
+@@ -28,19 +28,19 @@
+ #define ELE_GEN_KEY_BLOB_REQ		0xaf
+ #define ELE_GET_FW_STATUS_REQ		0xc5
+ #define ELE_XIP_DECRYPT_REQ		0xc6
+-#define ELE_WRITE_FUSE                  0xd6
+-#define ELE_DEV_ATTEST_REQ              0xdb
+-#define ELE_WRITE_SHADOW_FUSE_REQ       0xf2
+-#define ELE_READ_SHADOW_FUSE_REQ        0xf3
++#define ELE_WRITE_FUSE			0xd6
++#define ELE_DEV_ATTEST_REQ		0xdb
++#define ELE_WRITE_SHADOW_FUSE_REQ	0xf2
++#define ELE_READ_SHADOW_FUSE_REQ	0xf3
  
-@@ -163,6 +165,12 @@ static int imx_ele_ocotp_probe(struct platform_device *pdev)
- 	priv->config.read_only = true;
- 	priv->config.add_legacy_fixed_of_cells = true;
- 	priv->config.fixup_dt_cell_info = imx_ocotp_fixup_dt_cell_info;
-+
-+	if (priv->data->nkeepout) {
-+		priv->config.keepout = priv->data->keepout;
-+		priv->config.nkeepout = priv->data->nkeepout;
-+	}
-+
- 	mutex_init(&priv->lock);
+ #define ELE_GET_INFO_REQ		0xda
+ #define ELE_GET_INFO_REQ_MSG_SZ		0x10
+ #define ELE_GET_INFO_RSP_MSG_SZ		0x08
  
- 	nvmem = devm_nvmem_register(dev, &priv->config);
-@@ -172,6 +180,14 @@ static int imx_ele_ocotp_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static const struct nvmem_keepout imx93_ocotp_keepout[] = {
-+	{.start = 208, .end = 252},
-+	{.start = 256, .end = 512},
-+	{.start = 576, .end = 728},
-+	{.start = 732, .end = 752},
-+	{.start = 756, .end = 1248},
-+};
-+
- static const struct ocotp_devtype_data imx93_ocotp_data = {
- 	.reg_off = 0x8000,
- 	.reg_read = imx_ocotp_reg_read,
-@@ -185,6 +201,8 @@ static const struct ocotp_devtype_data imx93_ocotp_data = {
- 		{ 188, 1, FUSE_ELE },
- 		{ 312, 200, FUSE_FSB }
- 	},
-+	.keepout = imx93_ocotp_keepout,
-+	.nkeepout = ARRAY_SIZE(imx93_ocotp_keepout),
- };
- 
- static const struct ocotp_devtype_data imx94_ocotp_data = {
+-#define MAX_UID_SIZE                     (16)
+-#define DEV_GETINFO_ROM_PATCH_SHA_SZ     (32)
+-#define DEV_GETINFO_FW_SHA_SZ            (32)
+-#define DEV_GETINFO_OEM_SRKH_SZ          (64)
++#define MAX_UID_SIZE			(16)
++#define DEV_GETINFO_ROM_PATCH_SHA_SZ	(32)
++#define DEV_GETINFO_FW_SHA_SZ		(32)
++#define DEV_GETINFO_OEM_SRKH_SZ		(64)
+ #define DEV_GETINFO_MIN_VER_MASK	0xff
+ #define DEV_GETINFO_MAJ_VER_MASK	0xff00
+ #define ELE_DEV_INFO_EXTRA_SZ		0x60
 
 -- 
 2.55.0
