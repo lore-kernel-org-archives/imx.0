@@ -1,173 +1,171 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD99441609
-	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 10:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2EA26F2BE
+	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 11:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784803979; cv=none; b=eU8/lmFS7OrnhLYV5iC+53sSnFJgrGZeW1lyIr4fEJ2Nn8vbUvU7pi4c03qXJYlZdEsmQfLJrCJ1cf2CO2eNzGdZe4pF8g808QEwUSzdS65hFjHk1LDqb43/Nb7huq+Iu9OBRz8pi31d/I6BzZNAdYliinKmifooKCp0gXUAmd0=
+	t=1784804408; cv=none; b=MrSDitzCwCU/loPucaFIaNZRnpCrBmBKlp5/V2IRNvx7bY6iZAsTh833Zc9iyEsJlbchw5XzayOR/8UlsDMabqB37OV0uIrdHpKPYexQdipCZa38WjpTeL9YWpcBiS6aAFxOiLx9rXYNQ4r8fI8WCmFg0CXPUPvJ5hTHMEofE8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784803979; c=relaxed/simple;
-	bh=aVGX+vEJl5/Tov5LP2S1Hj/saSfevxiauKnCLCqgDJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3KPuMqY6PuatoewLuvMJ1GIsp46SEDFTgHMxXqRx1yHcrymaFF4MKAHcgrc8M9J7c2Ik+jS+Xqihl3l28Nc5FEb5tOjUEL3ik3+HJZBj7SS/qQsY0RzAwrDcFRJct8Bs8HV0qYmew0iJbwuSZXUE2vgDmroo+CbE1B/U9gaGxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=L9jBVNTc; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="L9jBVNTc"
-Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id F040C22817;
-	Thu, 23 Jul 2026 12:52:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1784803970;
-	bh=hEefO5HnPSQ3Kak6C4/A3JjED/ouocrTu89BGKOl+pk=; h=From:To:Subject;
-	b=L9jBVNTcWj2FiQVSypBm3sJr9IxGvG+FpFFVB38gzwyZ+PGkAgEjAy+INBU/sMNf0
-	 n0qBp0TMzkl9HaNt7AYJxmWqVLm3SV5Lxi8kNMTS2relbBCxetX2hlHHXaVTyOSUt5
-	 k8oia7axuP/ZEeg6rcHI2Msg939G2681hw7vvvl9SB532DQFNU2JYewQaEyGdRkdjj
-	 xMwVtSVP2eadmiTWAxH4uDwp7ZSsK24bCDPVZ6+1H2UhJYN1umaEHK70NUUyD7Srmf
-	 STzwDx3K7vdRHaNpmb2MzM7dP6UQVLXJATJH7TTiMijV3UdLii2uN3aqfmsVrAS6KZ
-	 56RhxI7UEZ8jw==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/3] ARM: dts: imx7d-colibri-emmc: Add Toradex Capacitive Touch Display 7" Parallel with Touch Adapter
-Date: Thu, 23 Jul 2026 12:52:18 +0200
-Message-ID: <20260723105225.194366-3-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260723105225.194366-1-francesco@dolcini.it>
-References: <20260723105225.194366-1-francesco@dolcini.it>
+	s=arc-20240116; t=1784804408; c=relaxed/simple;
+	bh=/P9ElN84lNEbcjOFE55hMXlYEmA1bI4K0SQfX/ffM/g=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VJAckop37auJikZQ5m/BWOiqBqNTP/eww47Nr7O0cifQ+dCRUczW+xEcDW4i4aeZdNuT8KKUT404pkH/KoAC6v7bvFchsc5jZXQK9govJjd7qo0v4+nZ2wCmAwQW3VN4Y7542aldWvi2UT03exRK7DM5N6bFBSlPfwOmi51FbC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62281F00A3A;
+	Thu, 23 Jul 2026 11:00:04 +0000 (UTC)
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] usb: typec: tcpci: pass correct rx_type to
+ tcpm_pd_receive()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Xu Yang" <xu.yang_2@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260723104614.3717623-1-xu.yang_2@oss.nxp.com>
+References: <20260723104614.3717623-1-xu.yang_2@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 23 Jul 2026 11:00:00 +0000
+Message-Id: <20260723110004.A62281F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
 
-Add a device tree overlay for the Capacitive Touch Display 7" Parallel
-on the Colibri iMX7 parallel RGB LCD interface.
+New issues:
+- [High] Returning a negative error code from `regmap_read()` directly in a=
+n IRQ thread function skips the interrupt acknowledgment, causing an interr=
+upt storm.
+- [High] Flawed 1:1 enum and bit mapping misclassifies Cable Reset messages=
+ as Hard Reset messages.
+- [Medium] Data race on `tcpci->rx_type_mask` between workqueue and IRQ con=
+text.
+- [Low] Passing an enum pointer to `regmap_read()` violates strict typing a=
+nd breaks the build.
 
-The panel is a LogicTechno LT161010-2NHC 7" WVGA TFT Transmissive LCD
-and the touch input is provided by an Atmel MaxTouch capacitive touch
-controller.
+Pre-existing issues:
+- [High] Uninitialized stack variables are used after potentially failed I2=
+C reads.
+--
 
-The touch controller is connected to the Toradex Capacitive Touch
-Adapter, the connection to the various carrier boards is documented in
-the datasheet [1].
+--- Patch [1]: [PATCH v2] usb: typec: tcpci: pass correct rx_type to tcpm_p=
+d_receive() ---
+commit f5e85aadc576c9a21ace1e250d65e3ad2d0b7a00
+Author: Xu Yang <xu.yang_2@nxp.com>
+usb: typec: tcpci: pass correct rx_type to tcpm_pd_receive()
 
-The overlay is also combined with the Eval carrier board device tree to
-provide a ready-to-use DTB.
+This patch updates the TCPCI driver to dynamically determine the RX frame t=
+ype
+instead of hardcoding it to TCPC_TX_SOP. It caches the TCPC_RX_DETECT regis=
+ter
+and verifies incoming messages against this mask before passing them to the
+TCPM core.
 
-Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
-Link: https://developer.toradex.com/hardware/accessories/add-ons/capacitive-touch-adapter/
-Link: https://docs.toradex.com/104615-capacitive-touch-adapter-datasheet.pdf [1]
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- arch/arm/boot/dts/nxp/imx/Makefile            |  5 ++
- ...ap-touch-7inch-parallel-touch-adapter.dtso | 58 +++++++++++++++++++
- 2 files changed, 63 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtso
+> diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpc=
+i.c
+> --- a/drivers/usb/typec/tcpm/tcpci.c
+> +++ b/drivers/usb/typec/tcpm/tcpci.c
+> @@ -488,6 +489,8 @@ static int tcpci_set_pd_rx(struct tcpc_dev *tcpc, boo=
+l enable)
+>  		if (tcpci->data->cable_comm_capable)
+>  			reg |=3D TCPC_RX_DETECT_SOP1;
+>  	}
+> +
+> +	tcpci->rx_type_mask =3D reg;
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 4d2730000202..3c16843c3071 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -428,6 +428,10 @@ imx7d-colibri-emmc-iris-v2-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx7d-colibri-emmc-iris-v2.dtb \
- 	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo
- 
-+imx7d-colibri-emmc-eval-v3-panel-cap-touch-7inch-parallel-touch-adapter-dtbs := \
-+	imx7d-colibri-emmc-eval-v3.dtb \
-+	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtbo
-+
- dtb-$(CONFIG_SOC_IMX7D) += \
- 	imx7d-cl-som-imx7.dtb \
- 	imx7d-colibri-aster.dtb \
-@@ -437,6 +441,7 @@ dtb-$(CONFIG_SOC_IMX7D) += \
- 	imx7d-colibri-emmc-iris-v2.dtb \
- 	imx7d-colibri-emmc-iris-v2-panel-cap-touch-7inch-parallel.dtb \
- 	imx7d-colibri-emmc-eval-v3.dtb \
-+	imx7d-colibri-emmc-eval-v3-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
- 	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo \
- 	imx7d-colibri-eval-v3.dtb \
- 	imx7d-colibri-iris.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtso
-new file mode 100644
-index 000000000000..890461f92442
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtso
-@@ -0,0 +1,58 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Toradex Capacitive Touch Display 7" Parallel connected through the 40-way
-+ * Unified Interface Display connector and Toradex Capacitive Touch Adapter.
-+ *
-+ * Toradex Capacitive Touch Adapter connection with the various carrier boards
-+ * is documented in the datasheet [1].
-+ *
-+ * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
-+ * https://www.toradex.com/accessories/capacitive-touch-display-7-inch-parallel
-+ * https://docs.toradex.com/104497-7-inch-parallel-capacitive-touch-display-800x480-datasheet.pdf
-+ * https://developer.toradex.com/hardware/accessories/add-ons/capacitive-touch-adapter/
-+ * https://www.toradex.com/accessories/capacitive-touch-adapter
-+ * https://docs.toradex.com/104615-capacitive-touch-adapter-datasheet.pdf [1]
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+&atmel_mxt_ts {
-+	pinctrl-0 = <&pinctrl_atmel_adapter>;
-+	/* SODIMM 28 / TOUCH_INT# */
-+	interrupt-parent = <&gpio1>;
-+	interrupts = <9 IRQ_TYPE_EDGE_FALLING>;
-+	/* SODIMM 30 / TOUCH_RST# */
-+	reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
-+
-+	status = "okay";
-+};
-+
-+&backlight {
-+	status = "okay";
-+};
-+
-+&lcdif {
-+	status = "okay";
-+};
-+
-+&panel_dpi {
-+	compatible = "logictechno,lt161010-2nhc";
-+
-+	status = "okay";
-+};
-+
-+/* Conflict with SODIMM 28 / TOUCH_INT# */
-+&pwm2 {
-+	status = "disabled";
-+};
-+
-+/* Conflict with SODIMM 30 / TOUCH_RST# */
-+&pwm3 {
-+	status = "disabled";
-+};
--- 
-2.47.3
+[Severity: Medium]
+Could this assignment to tcpci->rx_type_mask race with the read in tcpci_ir=
+q()?
+This variable is written in process context here and read in interrupt cont=
+ext,
+but lacks locking or READ_ONCE/WRITE_ONCE annotations, which might allow
+compiler optimizations to reorder or cache the variable unexpectedly.
 
+>  	ret =3D regmap_write(tcpci->regmap, TCPC_RX_DETECT, reg);
+
+[ ... ]
+
+> @@ -749,6 +752,7 @@ irqreturn_t tcpci_irq(struct tcpci *tcpci)
+>  	if (status & TCPC_ALERT_RX_STATUS) {
+>  		struct pd_message msg;
+>  		unsigned int cnt, payload_cnt;
+> +		enum tcpm_transmit_type rx_type;
+>  		u16 header;
+> =20
+>  		regmap_read(tcpci->regmap, TCPC_RX_BYTE_CNT, &cnt);
+
+[Severity: High]
+This is a pre-existing issue, but is it safe to use cnt unconditionally?
+If the I2C read fails here, cnt remains uninitialized. Could this lead to
+processing garbage data as USB PD messages and corrupting the state machine?
+
+>  		/*
+>  		 * 'cnt' corresponds to READABLE_BYTE_COUNT in section 4.4.14
+>  		 * of the TCPCI spec [Rev 2.0 Ver 1.0 October 2017] and is
+
+[ ... ]
+
+> @@ -773,10 +777,16 @@ irqreturn_t tcpci_irq(struct tcpci *tcpci)
+>  			regmap_raw_read(tcpci->regmap, TCPC_RX_DATA,
+>  					&msg.payload, payload_cnt);
+> =20
+> +		ret =3D regmap_read(tcpci->regmap, TCPC_RX_BUF_FRAME_TYPE, &rx_type);
+
+[Severity: Low]
+Does passing an enum pointer to regmap_read() violate strict typing?
+regmap_read() expects an unsigned int *, but &rx_type is of type
+enum tcpm_transmit_type *. Would this trigger -Wincompatible-pointer-types
+warnings and fail the build on modern kernels?
+
+> +		if (ret)
+> +			return ret;
+
+[Severity: High]
+Does returning a negative error code directly from this IRQ thread function
+skip the interrupt acknowledgment?
+
+tcpci_irq()
+    if (ret)
+        return ret;
+    ...
+    tcpci_write16(tcpci, TCPC_ALERT, TCPC_ALERT_RX_STATUS);
+
+Since the TCPC alert pin is level-triggered, would leaving the alert bit
+unacknowledged cause the interrupt to remain asserted and result in an
+infinite IRQ storm? Also, is returning a negative integer a valid irqreturn=
+_t
+value?
+
+> +
+>  		/* Read complete, clear RX status alert bit */
+>  		tcpci_write16(tcpci, TCPC_ALERT, TCPC_ALERT_RX_STATUS);
+> =20
+> -		tcpm_pd_receive(tcpci->port, &msg, TCPC_TX_SOP);
+> +		rx_type &=3D TCPC_RX_BUF_FRAME_TYPE_MASK;
+> +		if (tcpci->rx_type_mask & BIT(rx_type))
+> +			tcpm_pd_receive(tcpci->port, &msg, rx_type);
+
+[Severity: High]
+Does the 1:1 mapping between TCPC_RX_BUF_FRAME_TYPE and enum tcpm_transmit_=
+type
+hold true?
+
+The TCPCI spec maps TCPC_RX_BUF_FRAME_TYPE value 5 to 'Cable Reset', but
+TCPC_RX_DETECT bit 5 is 'Hard Reset'. Because the driver enables bit 5 for =
+Hard
+Resets, receiving a Cable Reset would evaluate as allowed, and pass rx_type=
+ 5
+to TCPM.
+
+In enum tcpm_transmit_type, 5 is TCPC_TX_HARD_RESET. Would the TCPM state
+machine then process a 0-byte hardware packet as an invalid Hard Reset RX
+message instead of a Cable Reset, corrupting the protocol state?
+
+>  	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260723104614.3717=
+623-1-xu.yang_2@oss.nxp.com?part=3D1
