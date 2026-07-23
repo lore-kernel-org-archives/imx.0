@@ -1,75 +1,87 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013043.outbound.protection.outlook.com [52.101.83.43])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010005.outbound.protection.outlook.com [52.101.84.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6294F3CAE84
-	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 06:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D81A37BE93
+	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 06:52:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784788583; cv=fail; b=ltrElRxDeKqpzVduqNCe+fFi+bEq0s+376jIOh1f4sO+69u25Cqd5u/X3rlsfbFjWeltLlFGmNhfKcBPr0vWcXBB4JVx+2bKq4yoZkMhX/ujRFsBuUVlUSqtlsAKYcLKUul2BOymyQ7aaSIHJGQWtCeY6uz5kL1F5spDDKR0NDo=
+	t=1784789534; cv=fail; b=ZBREhaMnAqZnyQIYFoneJezdb+dW+AFPiny2atrjpG2DRLBW+JIMtZj5nUajHGMNSGC1olp4BkdHf3wHHpkcW8RQOBsJqvDwrgdshVgYdHinzs1GBc1FFmq7NZeTKc5XCFruK2ZxyVevEv5KQW4t2w9Hy39WiJo72eFi3HY3JPk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784788583; c=relaxed/simple;
-	bh=fukvdHkK/uUKQRvWFAYAfkZ7okV9A9l3yHubgxHJhkg=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=ZqLRxeNSVZ31FErJ7GTgB1mB5E4jCklp5CCxjFReb2lkqU6ZElwoakxyc0bPdAXA/ElA0hWxXhz/ZUxK6cFSC0yK+iPs07qTNQ/Ck+2Lhn+pxqSFqQcR0YrQ8UifGEzAx6B98sB+1uu7pllTWbiwKp9TLZdcVhOo+f7R2QwYoM4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Z0szN4EE; arc=fail smtp.client-ip=52.101.83.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1784789534; c=relaxed/simple;
+	bh=cWf+g1o382B8X2HVUQYXPRTnLuuXWq+yJnu2c2Fijrc=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=QlsjeC7PYGEiTydNPZi4Ih+tq/30gntDukMH2HaLIgomwLJup13hcNCckySItrneWh4iPzX8hcxQALGcireAAiOEPxn1G6Oj5v+01VGgi63Xx3IMaa7pDKgvQpym+5OIadPVaJSZ3y04QX7SsbFincEJwjiVpyIVkgAljdyU/xQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=rwpIWENn; arc=fail smtp.client-ip=52.101.84.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Z0szN4EE"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="rwpIWENn"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HndDsbsXcIR6wMuYac+/AwNBIqVqm6L/0QzVnMOfMJHZoXWtNXADd7zzQzsTsLl0v1gsbG6ax4cXXrdJrlfqO5RzXAQFPaND/u9u22cMlEvTUw2dF9hF0OpYx9nGwoGFg2zSSXyLOPIK/2wiTyTN0NThfzsY9ZfM8xi9kCnzBI5q45c+gridHeqC8ciZQPCF8s9w39rVVoiEu03Ww6SxJusLf42mzYOoUKoqQS4N95uwpSpvNL4cc7u03edHuuSymXDfessdBHObFJwnghd2MdhYuUeBLp8+7YR0GCP5AIPkjdKzTrz00r3vfvkT2JwQbHdaXWAA7F3UPEPKVbwNYA==
+ b=RmIES36yR4tYQNFXCGVLHeDSDyNdn3cy+bRY0QOvIMXNPPJQAkMJR5JeKfxY/4vdeV1WwaOPblxxNF6LMKB19vgoYkfRU/FExZsZHeBI9u25Sac3azhALrgjN+uTlP8UMoWCrFlJIqenPeMoyY1zXfc4CwLqzooRky189+Z65kG8UIFxKRIYfwaaBcL5cy9BehAAA1ut/Sbx745skBJ8dhx64q7gm1yEel8Xi1AYEN/3l83XELPdbEPxNlm6LMoEqgsG4mlMjVDIKMT5aye2yNRoq3sjrvYDOK2nBxGgELivJ805fZG74TW1WF8v558XdPVM8TIdNYB3kmYM8ZgNsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3bcll1Z7gAXW7VYiRmfC/4GBFT5t2OsYs1JtyjGjvV8=;
- b=NCddg9Ub7J8YNxI0xigY4fKFYcevvxJczX68gHNwPrIOpiOx1oVk2OrdUe/4lqPzAFIh5tmR1eo6OKg5bg+kovpUZU2xTYo1AMh2Y4m8zVtNmh1dTqYzRXULWwsmRi7xGcIzxXpmAPg6PE6XA2OUmIhotWVLquJSU7jxh3DZ5rRoizWym3uBwnYySNlR5ITrEKoIuhGE8O7GSIgjPekqdkNU4KivlBQp/BzZPhPc8fkNtPrTNbN/cpgUj3yRc4ImpMTARP4+4DZN4Wq7o1FaZSZTMnqOh10oORPcAEmWbC9KRMrQt/djPZaVVkia7iBkmBeo42WiybiyxMNQmN3MFw==
+ bh=e4l9aDEtMRxmZnLBPFEV8hR/LxQKs17VjbEo5qkn0Kg=;
+ b=atT3VD5uYv/nyKckGlpSONg794nu0/DZDQ6LwzJKGHuMctV7x9RiSKmhpHWfxFc3WKrXw4QgvVFPtSH2DWuyuzNrxrKOXhUq3Ssp/8oywub+3fkktGv55YoNuHX606aF329rTNiRdQI9PpRkzEfziOtXRDGX4F4cCWGqLKbdpWV2zBz31CPdN9JH5AL55pjJa2jzPSmX3rluks7BeHXCdA1KwDBTiY1awp8K7Df1/UXwVC/Gfj5RHfFFl1xLnCxMRGmxMGtOeJSw67g+AlfO1dguzpi8SyW0fv1wZIaR7k9PXOJ30oM1qKuDqgPwBQVrhu5kuXIf2TWLNih68ECIaw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3bcll1Z7gAXW7VYiRmfC/4GBFT5t2OsYs1JtyjGjvV8=;
- b=Z0szN4EE+c6iV13bVVHjKfDhehaL8QNF4jnOg9kfG5javr6H1MimzDhF8rGsSwO4iECXIaJHJvKQvprnYP7OiODvbQQQXVPsRh8Nql4JMAIlkTxhMaRMo1W7nqeHSF9bIqaOccG7DvJVHMJWtP9/XaBgHoh6YTHD6ysOcxHWcBiR5MeMx8zIbpYO81sHT8d6+A3iNPR2QBZbEuco2t7HzOa4z5UW6OoYO3DLTRfYbxCwHuo/NH7LITxFzxrzME3Nu5aXKOGWt4HaOHtO6COq2hzWZKw0XoLf5NheyJLBNFlyeaXGlo1vmDqcBBE7Pff3VNnAhZZC+8LHI798ONNZNw==
+ bh=e4l9aDEtMRxmZnLBPFEV8hR/LxQKs17VjbEo5qkn0Kg=;
+ b=rwpIWENni5h2QZE5N37UsZHJ9hzTLKEJyw9PO/v0ehO9dkCR27I/hyp58RHDpFa621Cn894Bj55PMipsF3qtrX8EITA4IJGlLrREenQI3fD2QAYWlCznySMyoTRJBhqURxpFroZFPSLiV/3k266i7XGiXF0d/YPPGg2kjrbred+zn75FoSVZrAoyKcHW4zBDmbi2j2j9Bb978t+KJmOcecdIMeOieBJJ0Wfa3co2GuXU7fG/Ht0WIqa7jkmvNQ1Qpys37F2ygH6lfWzjETm9UU836ASBc6TVSt1Xpt6BRFsvwmlAmlDHhcTseBlH+02/fZpeWCXmBp5cdFC+9BagKQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
- by GVXPR04MB9878.eurprd04.prod.outlook.com (2603:10a6:150:116::20) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV1PR04MB11513.eurprd04.prod.outlook.com (2603:10a6:150:284::9)
+ by AM7PR04MB7045.eurprd04.prod.outlook.com (2603:10a6:20b:11e::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
- 2026 06:36:15 +0000
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0223.017; Thu, 23 Jul 2026
- 06:36:15 +0000
-From: Liu Ying <victor.liu@nxp.com>
-Date: Thu, 23 Jul 2026 14:37:32 +0800
-Subject: [PATCH v13] drm/bridge: imx: Add i.MX93 parallel display format
- configuration support
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 06:52:07 +0000
+Received: from GV1PR04MB11513.eurprd04.prod.outlook.com
+ ([fe80::29e0:98a1:4577:2cc7]) by GV1PR04MB11513.eurprd04.prod.outlook.com
+ ([fe80::29e0:98a1:4577:2cc7%3]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 06:52:07 +0000
+From: guoniu.zhou@oss.nxp.com
+Subject: [PATCH v15 0/3] media: nxp: Add CSI Pixel Formatter support
+Date: Thu, 23 Jul 2026 14:55:44 +0800
+Message-Id: <20260723-csi_formatter-v15-0-0f59837650b1@oss.nxp.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-v6-18-topic-imx93-parallel-display-v13-1-ccf3f9bbc0fc@nxp.com>
-X-B4-Tracking: v=1; b=H4sIAKu2YWoC/5XQy2rDMBAF0F8JWldBo6edVf6jZKHHOBE4tpBd4
- xD871UMJVl44S7nMpw7zJMMmCMO5HR4koxTHGLflQHE14H4m+2uSGMoAeGMK+AM6KQpVHTsU/Q
- 03uda0GSzbVtsaYhDau2D1qqpuZCu0d6TAqWMTZzXlu9LmW9xGPv8WEsn/Ur/xZcVRo1jSiOgc
- oDnhN31Z8x9F+djQPLqmMyny3e5prjcexQQtNSs2nSrP1czALHLrYorrfM+eGmEVZtu/emqXW6
- 93quYApQOpNx0gb1hsfMRwIqshWyQG1N5Y7dl/pYN3ylzCtSqOjgng/Mgzt2cjr6/k8uyLL/D+
- FbojwIAAA==
-X-Change-ID: 20251201-v6-18-topic-imx93-parallel-display-95f9234bf6cc
-To: festevam@gmail.com
-Cc: m.felsch@pengutronix.de, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+X-B4-Tracking: v=1; b=H4sIAPC6YWoC/23SS07EMAwG4KugrimyncRJWHEPhFCe0AVT1I4qE
+ Jq7kw5CkzZdJtL3O3b8081pGtLcPd79dFNahnkYT+WA6v6uC+/u9Jb6IZaLjoAUIqk+zMNrHqc
+ Pdz6nqU8cyQrkGBJ3xXxOKQ9f18Dnl3J+H+bzOH1f8xdcb/+SCMQuacEe+uRtQpTaS5ueTl+fD
+ 2H86NachSqLem+pWCZk47IBQthaUVu7t6JYwwYiR6PB4tbKf8uARHsr17qZc3ARgxBua1Vtm35
+ VsVF5AyIb1j5vLd9smfvecrGAQCYJpET+aZznh43XtTd7r4tXTF4rUEon0XpT+ebXF7P27Vkyl
+ fokD+rb2vPe2+KDE9GUockgbOsRbgHcNoCl/z6TMALKC7xTBwlYJbTjx3XfnLaUkw2ogA4S6Ja
+ gsWkC161b/zaizkG6fJAgqgSCJmHdPRmDdQaSDDkeJMg6oVkElNdJkrDZeylx94bL5fIL+SoqE
+ uMDAAA=
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: SG2P153CA0021.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::8)
- To AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ Fabio Estevam <festevam@gmail.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Frank Li <frank.li@nxp.com>, Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Bryan O'Donoghue <bod@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
+ Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev, linux-media@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+ Guoniu Zhou <guoniu.zhou@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784789746; l=15284;
+ i=guoniu.zhou@oss.nxp.com; s=20250815; h=from:subject:message-id;
+ bh=cWf+g1o382B8X2HVUQYXPRTnLuuXWq+yJnu2c2Fijrc=;
+ b=vD+G/+lWjwTYo5mHyo6YGG0/0vhocUNYmhwS3arQB+B5pexG8xRY9pLdCcb1ZNn0/wndbX8On
+ YGREKrbLmU5AixF5voPWbgyr/9EjGrjgJqqjHCmuuz7Ajk904E8UFgy
+X-Developer-Key: i=guoniu.zhou@oss.nxp.com; a=ed25519;
+ pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
+X-ClientProxiedBy: MA5P287CA0304.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:21e::16) To GV1PR04MB11513.eurprd04.prod.outlook.com
+ (2603:10a6:150:284::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,454 +89,392 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|GVXPR04MB9878:EE_
-X-MS-Office365-Filtering-Correlation-Id: 098a23b6-03e0-4f99-24e0-08dee884b1fd
+X-MS-TrafficTypeDiagnostic: GV1PR04MB11513:EE_|AM7PR04MB7045:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5178896e-c195-42bc-c6c7-08dee886e986
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|7416014|23010399003|19092799006|366016|1800799024|6133799003|11063799006|56012099006|10067099003|18002099003|3023799007;
+ BCL:0;ARA:13230040|366016|19092799006|23010399003|376014|7416014|1800799024|921020|7136999003|6133799003|56012099006|5023799004|11063799006|10067099003|18002099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
- sk7vIPKxKrfRwUXRvXbAukBC38ThNfnwRKXsgN4UwxgFdjQP9FKxhbps7ium+Aqyq+cnCuhYYYsAC0khe1ZWcJjU+rWlMO54oGMfCA70UMXEZZ0Y0+PFCxGoFrp9PoFcPYbkjWB+5fdf3xT061n9gq1onf3SkDkGd2plNpbLgJSHW62+tTi/XquDMNFmI6/ueCGG1AsJfytScAZi8Wh8yljxVBj6gZ/OzVxDltRI/1RaMLufakHQ8lLagYwO3CimwutUquzbNXwjys+vBiV9eIS5XWTq0QeTIuUdgO73MXGi74gDiCiFJbFwx6T/fNREt3GDdcrRucfqv6s6rrksB+cWbCjUphIxu/8duH/XOzlFQPUqCmuyXkdyPMtrYeQCoBi5dJ33MSrLUbw2oQz5JhH6WGPqWjeU/DQ2Gs8Pn76OuCdt/2tQnB3Ebx9Bs0YvE/ZOVGFzx9C+3UDIRNCIbc+DLrgQareuozwVlQfAb1Y2Qixb1RuDYqdy31yrjQv/odOyiXiBVQzV0yNw4H0GKNL5/LXW9gDOTXKcYhEjYsYsUyiLAxNReX2Y4J+yMAV4pgK094agesyPDzAVfypEsIsaAclMqspouTQl3C/IMNGR7OVR/YjS2XUXCk3V8TgA
+ vLzuq5jWxLX1NE9x579Wu7W+alY/QbW3L4I/VRGh4/aS8hnMSgoaQoWpm+rYBCh76QI0KB1/fHSaoAuQlr3ODh7FNPBouXpQuq94oqvMmCCJDKkPkFGbsSkU2Eu6MshKuvCHGsOU+s6HtNQT+kgbXzCtleEq2PiAjnT80VyEjUd6C/jNaGz1L7rkgiir5V1vmRN92hwJcqPOrns/UZKzyZEZ8YrpdGXRm7i1sLZGZyp+ur3yxJfNLAFRbCbzJAZiFot0hRpiuOzvnqbv9aR62PqgkRgkLrdhs41Kcx/HW2uUvh4LCwFpQ+Uimw0GJFje26oeFsh4tKjFlRbFj0Zpokye/N73eAEQcY4YgU4ZogFYBK4rgKp1kwehqkVp+NdKeX9A+LdRycJSJIiuWmkskyp5ziVVNhZbFeE35bVCzOwo0y5zfoW69YsY+Sw2nvZRKtNktlxIXC+IeXAAIU2959mTI7mg4H3OE07RxLlKORk8xwk4mrFOoBplYJt+t+Gy4SZ/IBEDSziUMHP5Q0NEUvCn0urn0vtogaRSGPfK2B5fU93RECQ2NsqOIoweStOq6tKaF7QLNKVBAIwpZyCudIzSa1vlQnPfjP6Pgp2uOAmPP7+ocm1OmBONTiIpSaChSUU7HzL6JizRpcg/45U9vRJdLbxx8JvOuvcSl74R9bU=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(19092799006)(366016)(1800799024)(6133799003)(11063799006)(56012099006)(10067099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB11513.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(23010399003)(376014)(7416014)(1800799024)(921020)(7136999003)(6133799003)(56012099006)(5023799004)(11063799006)(10067099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?ZEFKNCsrc2w3WVdmbGxnOEsxYVI5bGQxL05FMFh6WGJzMEZub0kwMDd4VGRT?=
- =?utf-8?B?enMzdUZwcE9yVkE5QzIzVGduWGlHWTVTVktxOUtiQ25GdVEvTWExT3NHdUtB?=
- =?utf-8?B?OUJ0dnFNcko1QkFnNGY1U3M3OFdCVFpnaE9uQWpUbnhuU3lSeldHMks0b004?=
- =?utf-8?B?STk3UDkrTEhZWnduejlaeXd0S0xhR2dEMTRPdFlnZk5rMUlGUFg2cnJOWVNJ?=
- =?utf-8?B?OXJWTXZZZG9EbG16Qmk0aGpRa0N2WldlcVZQWEwzYVJGM29hWlViNzRRemM2?=
- =?utf-8?B?b0R3QTQwOU0yM0Nnek9RdFMzakg3NS93QUJmZm5oS0dRWHNTNlVpdTFZRlhY?=
- =?utf-8?B?S3FFbzFnazg5MHFpV241Y3VydUpJTmp4QVcyNDVGQUNabnVXWDd0c0FjQ0du?=
- =?utf-8?B?VjFOenFwSTJRSkUwbzRvMUU0M0dGRDN1Wmkwdkg0WnFONlh0ZFVqK0JoWTgv?=
- =?utf-8?B?bFE4eVhNVzErVWEwcXdsYTVubmxGQzBTSnBrSnlGOTNSb0FSU3BobnlreFhO?=
- =?utf-8?B?bWZiNDRBOVlTWmMxZEFpT1RRdFpOeThCUkVKVGZMN3paZml5elUxdmwzVnly?=
- =?utf-8?B?cFlTeEdJd294VzB4MkIyUXk1WmxiR0Q2ZURBd3pBY283Zk9YUkJ4TmtoQzNX?=
- =?utf-8?B?bk91aERoWERQbXJ4TUtQNXViV1p5UTJHOGJjN3U4TExLZm1pcXkvR3FkcnY4?=
- =?utf-8?B?bDF2aFUwZ1VIU3JlZlgwMXIxZmpqL0k0eHZIWFQxU080ZklHQUdzMGtMV2h1?=
- =?utf-8?B?MUI3TmhYUml0VCswSkRzcWQvazRsczY1U3cxTkxUcHE5aEYyVU9vemFpQ3Z4?=
- =?utf-8?B?UmJVRlpXVE54OWNybHh5eG50VVRVZ3V0NlZka1ZUTlIwQ3BKRTQwandJUkFr?=
- =?utf-8?B?U1oyYnVuM1k0OXJ1Q3E0emZhR0xUaDl5QTMvTSs5eFVzK2NuZm1KRGlFSi9p?=
- =?utf-8?B?RExjVS9NUkUwcE0zYXQ4SUJOR1pGTmd6UytPMU02ckIyOWN6T2pYcVcyZzNI?=
- =?utf-8?B?TVI1YXZlYXRzdDRKaVROYWEyWVcwdTA0YVQ1Lzc3MjlKNE4yOHBkcE01cXZu?=
- =?utf-8?B?ODJ4M2NHREpKUW00eS8yOXRuQmlyMHJWeUZ2bTJlYXVJdTlXY3VGcXBhQjl3?=
- =?utf-8?B?MHNxbzVhZUdDdUpESEJnTmpQTFBXcjdqYlpoUkQveU1WU3JacGVwQ1NwNHdU?=
- =?utf-8?B?YnlxNHpKc0IvdG9BSjJUVHUxVFk5Rllxd2luUVVOeXpYa0VjZks0elN0SHNO?=
- =?utf-8?B?T3pRZkM3N0Fac1JyMVVKNzhyQUZGai9HVk5hZkM2T1FSTmRCaVAxUWJUdll2?=
- =?utf-8?B?MHh1VjdEVW13YzZWNFZkNHpnZ09qWUFFc2NrRHl0akhqVGVhdXR5T3ZTbVdL?=
- =?utf-8?B?OVRpOTluU0V6L3MrY1hiZUVWbDFiQk5oOTlBY09vTldoSGJaRnRiWEJIRE1v?=
- =?utf-8?B?NXRNTTRpaTJmdXArL1kwM3NZdW1Ka3BJTnFCVEU3ZCt0Z1QvWEQ2eEV6WUJ6?=
- =?utf-8?B?V3VxU0Y3ZElpWGNaOUhlbXEwNUUwVTFUaHFCbHRMVHlzNTNXYkl4QnZReFdD?=
- =?utf-8?B?SkxKSWVHS0RJL3REZ0IvdnZ5YjBET2w0MUZ6aHZtKzNwbUV4ZHNWWVh4Snht?=
- =?utf-8?B?dC80UmM1a0JncUhsYlM4Nno3TzZIWWdOVGprQ2h1M05DejlqNGpWVTQzc25o?=
- =?utf-8?B?SHhzc3QybHVuS0pZZWgwUFlDbmFQdHlnZ1B2MTZZMEVwSUVmRXVPMWUzK3RG?=
- =?utf-8?B?S0IxaXlZb01icFordTF2RVVUb0h6SDRyV3JKUC95Tmt0Qm92SEpLdDgzM3Bp?=
- =?utf-8?B?clJyRXpjKzF2TzlJaUxoU0JET1h6WlpWRG9yUFEyMjZxb1plbjRBSWR2Qkg2?=
- =?utf-8?B?K2FoTk9WUllPUzh0SFpmOFpualp5RHBoTlpxN2NGMUp3VjBEcGFQNTRqVUs2?=
- =?utf-8?B?TDQxNGpJQ2ZpOVY4dU01OVVlUnVCSlpWY0lUUWlnYUZoTVMrQ2xnRG1ybGRU?=
- =?utf-8?B?SkNSWnp4RTNtM1F4ZG9yUE4xUWtoWnhPNGpUUmZjUG9WNDFSMEUvM0FudVdZ?=
- =?utf-8?B?NnRWbkI4MXFObWdxd2VScmpSWkJzRlgxeThLMXJUaVpvbnFWQlNiNXcwNnVm?=
- =?utf-8?B?eXdIckRqYkdoWG9vaHhNNm1oVW10RllERWtyaHFPQ3lEekk5VFM0T3puWDcv?=
- =?utf-8?B?Mkx2WUIyKzBRcXBjeFF2NHd3dUpSZzh6NUYvczloZ3BFL3c4ZG92a3ZpQ0hk?=
- =?utf-8?B?WGx5Z285TEdocjNlSnI5bHBDQ0FQRzNJSDUrMHRSU3ZPRyt0UmpEUlpMSkhk?=
- =?utf-8?B?ZGgzQjQ2akJwcmFXNUNJYWVHVWF4ZDhyL1oxYmpwZ1ZUUTRCQk8yUT09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 098a23b6-03e0-4f99-24e0-08dee884b1fd
-X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+ =?utf-8?B?NjJqam5RMFdmRUZ6VkFMNWFHK1RRU2VJT0RLYlpoa0VuOERSR0Jqc1JIb0pJ?=
+ =?utf-8?B?a0k0dTl3QmdTTGgvL1dZZEIzYTBJNGErTE5UTlFYdmJ0U0VUZkdKcFA0UVpS?=
+ =?utf-8?B?UFJMaC9SSUJkTmthTDYxSjNqb1VNVDltRHA4ZkVDcXBiNzd1eitjTlRydk1W?=
+ =?utf-8?B?MXZYRDRCWVRMbVk1b25SRWZHcnFaUGRkOCsxUDZjVkJLN1dSek1NN1Rob3h6?=
+ =?utf-8?B?ODZJd1FRWWE3UTlGOXUyRSs4aXBaYjBiM1g1Z0I4NFZYcXgyMzV3bWg2ZnU4?=
+ =?utf-8?B?bXRBMUtsL1BrL1NnNlphL2RJTTFMT2JDdFlHMFpVTWhHaVh2RTZrZURZcFBv?=
+ =?utf-8?B?aGk2M1VkYTZvOFQ3NlJSYnRORDNiM1hFM1oxMTBiQjZDeENoczM5UTNWZGRP?=
+ =?utf-8?B?ZHJkVGFHdXF2T2FKNlB0S3VOc3phZjF1REZ1QTM4U2ZORGlrcGI0SmpCeUNH?=
+ =?utf-8?B?R1hxZ0hiMktzS2htdkQvRUgrUVVHVjhEYVluZFFDRWdRYWs4aW5wVEpxdE1z?=
+ =?utf-8?B?eTVlcG13UXRGbWUvTndMaHM0ektFR2FGblVRbFl0ZTlTcVk0SXpicENqTG1V?=
+ =?utf-8?B?ZmcyaGRkeHJwOU02WHZhaHQ2aGlXNEhuRllhaFFKUk41VG42YzRFTTVnSDJ4?=
+ =?utf-8?B?YnJndGtnQ2xqcExBSnUyNFlNemQ1bCtiSHUvdkUwU2pvM2RpS2dpbGNnNEdF?=
+ =?utf-8?B?cDRsWkpNc1plUkZhcktpRXFCOVVHUnF5bkcxaTNjZ01VdGhZaFdDWDJBZzc3?=
+ =?utf-8?B?NjR0MU5sQnM3bHZncEZuY3IyU1BUVlRLMjcrM2tLd0pKNmR0RDQ1WFVuSmUr?=
+ =?utf-8?B?RUU4ZGJld0JIY3Z2WEI3ZDBHaW1TdU1LUG5aaERSdlNtckg0RDh6OStYamFp?=
+ =?utf-8?B?YzgrREszZ1RLelF5Uy9uMlFUdXVZZHd0b2NYa0lYbUJnVFJ1VW03bWcwSkZq?=
+ =?utf-8?B?ZTUxTlRTUERGYm9RazVqYXJiSjZxOUVYTFgzK1k5dFR5NE5XdG53VjNxaFQx?=
+ =?utf-8?B?Nm5zU2VUb3BQekdxK3RUbmRkaVdudDhOaEt2K25aYjBXRG1KOVBUZXgvRmxT?=
+ =?utf-8?B?aVFjYzd5eTllbmxnQXppTFhYN3lWV3BkQnpsTzMyRFp2T1lrRnVHcW5abVRN?=
+ =?utf-8?B?YlFidlRNRGd5Rm1pcjJ1bUp2ejV2SHk4SWdLZXlEUlkzOE9CQ0x0d1pGcHRk?=
+ =?utf-8?B?Y2lNbTVNbCtDaTd4UlBDOFlvSHF5NVZlbWN0SUtPNU91NEZ3WlRLUWN2YTJy?=
+ =?utf-8?B?c3FvYUx1aUttbnQ1WXBRYTkzMGJnSmlmQ2d1TG5CZVNrMysvcHB0akFUTTB3?=
+ =?utf-8?B?SkZDSW5uVVlpTWwwRnlFbGJRR2NEdkVGWjZZU05hU0NZcFIrUkdSZUZ5RmVt?=
+ =?utf-8?B?akVTVjg4NnhnRmJWcVp0L3R2VUZLVllYbmorREZsdlNPVHByaGZKMDR6ekRE?=
+ =?utf-8?B?V1h5Z3F0ZGpSRXRFenU1NHgrQnplVXM4cmJaZm82QzQydExsdFJqck1hOUVq?=
+ =?utf-8?B?NU5YUUxBUGZsaUpCd2t0Ym5hVUpTeE5HeXNQQ0laZVVmWDVXV1NSemxWL2ta?=
+ =?utf-8?B?MTVqUEhyb1l4K3ZwVERwSWJQTWs0VmFTQk9qUU5QZWVNMFREVDJtSVc2U0ts?=
+ =?utf-8?B?NUlxQWtJS0tJZWYzQlNaUjlBT0loSHRCUHBKbUQ0eXJzajhYYVQ2cm56RjhU?=
+ =?utf-8?B?RWxGQTBqakNvUzdmNnNMcHlUM052Zm56YXBsTWFycEdvMFRvVGtLS2RYSGhG?=
+ =?utf-8?B?WXN5dy9SSzFSaE12SkNlTC9PTkxESFNyaS9xMExqNjY5RHUxdjdjTGp6aTNa?=
+ =?utf-8?B?SXlWM2RUb2xWRjc4NjU2UURUa0tkNXVtM05DUkJkQkhPMFlXWVExTHFlMm1n?=
+ =?utf-8?B?VGlZaGRESGdDZkxwUGFmZWk2UW5ZanJNbXlPd3FKNWpuMjl4WHA3QVZyRmtF?=
+ =?utf-8?B?dVBLVENTSmE1QndNUnl4eE9YcWdkZE9STWdiR3RhdGJBSTA3N2NUODJFN1g1?=
+ =?utf-8?B?Qmw1ZWduTmhyWlhReXBNU0ZsZXlZUGVmRkhMOVRzSTEvc1hBeUp4dFVmdEo5?=
+ =?utf-8?B?aFVvSGZ6RjAxQkNqQ2h1ck4vaGpUOEdjdU5FMDJFSDhDNjljOUJndkh5bWp0?=
+ =?utf-8?B?RWtYTFFSN0NmT0pyL29hQTBLaFdVdEJIQ3RGbW5RN1d0M29WYktKM1E0YUNl?=
+ =?utf-8?B?b3ppcXAyR1c3QituTzRML2VxcE1yZkZBNVo0NGVKTzI4OW01SDRGelk4NkVw?=
+ =?utf-8?B?ckJ5Nm90aEJKdzBEVlhuZkxUc2Q5OTB1RDBwbm5YNmZ0Z2ZMbmlRQlY0WmRM?=
+ =?utf-8?B?WExJY0MxaFJVMmhmejBWSGNqdHduZjV4eHkvQVRaYUJhRWhyc255eFc3eGZp?=
+ =?utf-8?Q?KkVMdDOQz2NO6Jfd6BIcFMarPuxjRtbtsdCa6?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5178896e-c195-42bc-c6c7-08dee886e986
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB11513.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 06:36:15.5342
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 06:52:07.7875
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cVA4YWdR8OGB1zmG8SLB17btG73b7479oPC8QMsstQ7wMyNiChUvs46cXNrYOdik0PRqWnubfCW/AzKhp0F4KA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9878
+X-MS-Exchange-CrossTenant-UserPrincipalName: tFK0xflZActGr1hOcKg+Z0ruKvASTO//bwhz+t1KGLVcKXoQaNjTVjZhvxoGcekS3nHw5+jTxksIriCNdmelIG0IFNHTUXDcMhU3WvzsnU4lxg3iQ2hU1YZgdbW/VzBz
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7045
 
-NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
-configures parallel display format by using the "PARALLEL_DISP_FORMAT"
-field. Add a DRM bridge driver to support the display format configuration.
+CSI Pixel Formatter is a module found on i.MX95. It could unpack the
+pixels received by the formatter and reformat them to meet the pixel
+link format requirement.
 
-[m.felsch@pengutronix.de: port to v7.0-rc1]
-[m.felsch@pengutronix.de: add review feedback (Alexander)]
-[m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
-[m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
-[m.felsch@pengutronix.de: add bus-width support]
-[ Liu Ying: Port to drm-misc/drm-misc-next(v7.2-rc2 based) ]
-[ Liu Ying: Add nxp,imx91-pdfc compatible string ]
-[ Liu Ying: Call drm_bridge_get() for next_bridge ]
-[ Liu Ying: Reject unsupported output bus fmt in .atomic_get_input_bus_fmts() ]
+This patch series adds a new V4L2 driver for CSI Pixel Formatter.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Background
+----------
+The Camera CSR binding was upstreamed during the pre-silicon phase when
+the hardware integration details were not fully finalized. At that time,
+the syscon binding focused on the CSR's primary role as a shared register
+provider for clock gating, QoS, and error handling across Camera domain IPs.
+
+However, the Camera CSR hardware is actually a mixed-function register
+container with varying control levels over different IP blocks:
+- ISP/CSI: Clock gating only
+- ISI: QoS configuration
+- CSI: Buffer overflow handling
+- LPCAC: Error handling only
+- ISP: Pixel link selection
+- Formatter: Complete IP control (full register set)
+
+Why Child Nodes Now
+-------------------
+The CSI formatter is unique among these IPs - it's an independent hardware
+block whose complete control registers reside within the CSR address
+space, not just a few configuration bits. This architectural detail was
+not reflected in the original binding because:
+
+1. The pre-silicon binding focused on simple register-level controls
+2. The syscon pattern for complete IP control was not initially considered
+
+Discussion with original CSR author(Peng Fan) confirmed this reflects the
+intended hardware design that wasn't fully captured during pre-silicon
+upstreaming.
+
+v4l2-compliance 1.28.1-5233, 64 bits, 64-bit time_t
+v4l2-compliance SHA: fc15e229d9d3 2024-07-23 19:22:15
+
+Compliance test for device /dev/v4l-subdev9:
+
+Driver Info:
+	Driver version   : 7.1.0
+	Capabilities     : 0x00000002
+		Streams Support
+	Client Capabilities: 0x0000000000000003
+streams interval-uses-which
+Required ioctls:
+	test VIDIOC_SUDBEV_QUERYCAP: OK
+	test invalid ioctls: OK
+
+Allow for multiple opens:
+	test second /dev/v4l-subdev9 open: OK
+	test VIDIOC_SUBDEV_QUERYCAP: OK
+	test for unlimited opens: OK
+
+Debug ioctls:
+	test VIDIOC_LOG_STATUS: OK (Not Supported)
+
+Input ioctls:
+	test VIDIOC_G/S_TUNER/ENUM_FREQ_BANDS: OK (Not Supported)
+	test VIDIOC_G/S_FREQUENCY: OK (Not Supported)
+	test VIDIOC_S_HW_FREQ_SEEK: OK (Not Supported)
+	test VIDIOC_ENUMAUDIO: OK (Not Supported)
+	test VIDIOC_G/S/ENUMINPUT: OK (Not Supported)
+	test VIDIOC_G/S_AUDIO: OK (Not Supported)
+	Inputs: 0 Audio Inputs: 0 Tuners: 0
+
+Output ioctls:
+	test VIDIOC_G/S_MODULATOR: OK (Not Supported)
+	test VIDIOC_G/S_FREQUENCY: OK (Not Supported)
+	test VIDIOC_ENUMAUDOUT: OK (Not Supported)
+	test VIDIOC_G/S/ENUMOUTPUT: OK (Not Supported)
+	test VIDIOC_G/S_AUDOUT: OK (Not Supported)
+	Outputs: 0 Audio Outputs: 0 Modulators: 0
+
+Input/Output configuration ioctls:
+	test VIDIOC_ENUM/G/S/QUERY_STD: OK (Not Supported)
+	test VIDIOC_ENUM/G/S/QUERY_DV_TIMINGS: OK (Not Supported)
+	test VIDIOC_DV_TIMINGS_CAP: OK (Not Supported)
+	test VIDIOC_G/S_EDID: OK (Not Supported)
+
+Sub-Device routing ioctls:
+	test Try VIDIOC_SUBDEV_G_ROUTING/VIDIOC_SUBDEV_S_ROUTING: OK
+	test Active VIDIOC_SUBDEV_G_ROUTING/VIDIOC_SUBDEV_S_ROUTING: OK
+
+Control ioctls:
+	test VIDIOC_QUERY_EXT_CTRL/QUERYMENU: OK (Not Supported)
+	test VIDIOC_QUERYCTRL: OK (Not Supported)
+	test VIDIOC_G/S_CTRL: OK (Not Supported)
+	test VIDIOC_G/S/TRY_EXT_CTRLS: OK (Not Supported)
+	test VIDIOC_(UN)SUBSCRIBE_EVENT/DQEVENT: OK (Not Supported)
+	test VIDIOC_G/S_JPEGCOMP: OK (Not Supported)
+	Standard Controls: 0 Private Controls: 0
+
+Format ioctls:
+	test VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: OK (Not Supported)
+	test VIDIOC_G/S_PARM: OK (Not Supported)
+	test VIDIOC_G_FBUF: OK (Not Supported)
+	test VIDIOC_G_FMT: OK (Not Supported)
+	test VIDIOC_TRY_FMT: OK (Not Supported)
+	test VIDIOC_S_FMT: OK (Not Supported)
+	test VIDIOC_G_SLICED_VBI_CAP: OK (Not Supported)
+	test Cropping: OK (Not Supported)
+	test Composing: OK (Not Supported)
+	test Scaling: OK (Not Supported)
+
+Codec ioctls:
+	test VIDIOC_(TRY_)ENCODER_CMD: OK (Not Supported)
+	test VIDIOC_G_ENC_INDEX: OK (Not Supported)
+	test VIDIOC_(TRY_)DECODER_CMD: OK (Not Supported)
+
+Buffer ioctls:
+	test VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: OK (Not Supported)
+	test CREATE_BUFS maximum buffers: OK
+	test VIDIOC_REMOVE_BUFS: OK
+	test VIDIOC_EXPBUF: OK (Not Supported)
+	test Requests: OK (Not Supported)
+
+Total for device /dev/v4l-subdev9: 47, Succeeded: 47, Failed: 0, Warnings: 0
+
+Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
 ---
-Hi,
+Changes in v15:
+- [3/3] Add pm_runtime_dont_use_autosuspend() on devm_pm_runtime_enable() failure (Laurent)
+- [3/3] Extract csi_formatter_get_frame_desc() helper for start/stop_stream (Laurent)
+- [3/3] Use dev_WARN() instead of dev_warn() + WARN_ON(1) (Laurent)
+- [3/3] Use pm_runtime_put_autosuspend() instead of pm_runtime_put() (Laurent)
+- [3/3] Add Reviewed-by tag from Laurent
+- Link to v14: https://lore.kernel.org/r/20260721-csi_formatter-v14-0-ca239fbb441f@oss.nxp.com
 
-I'm taking Marco Felsch's v11 work over and trying to add the imx93-pdfc.c
-driver.
+Changes in v14:
+- [3/3] Use select MFD_SYSCON instead of depends on MFD_SYSCON (Laurent)
+- [3/3] Remove unused v4l2-ctrls.h and v4l2-event.h includes (Laurent)
+- [3/3] Rename csi_sd to remote_sd and group with remote_pad (Laurent)
+- [3/3] Move reg_offset after clk to group generic resources (Laurent)
+- [3/3] Remove mutex lock as enable/disable_streams hold state lock (Laurent)
+- [3/3] Rename formatter_dt_to_index_map to csi_formatter_dt_to_index_map (Laurent)
+- [3/3] Rename formats to csi_formatter_formats (Laurent)
+- [3/3] Declare loop variables in for-loop and add braces (Laurent)
+- [3/3] Simplify set_fmt, rename sdformat to format, drop NULL check (Laurent)
+- [3/3] Set field to V4L2_FIELD_NONE as interlaced not yet supported (Laurent)
+- [3/3] Add streaming check in set_fmt to match set_routing (Laurent)
+- [3/3] Add WARN_ON for unsupported data type as it indicates driver bug (Laurent)
+- [3/3] Return -EPIPE instead of -EINVAL for invalid VC (Laurent)
+- [3/3] Refactor ENOIOCTLCMD handling and remove redundant pad check (Laurent)
+- [3/3] Use strscpy instead of snprintf for sd->name (Laurent)
+- [3/3] Remove redundant dev_dbg in notify_bound (Laurent)
+- [3/3] Simplify remote_pad assignment and drop NULL check (Laurent)
+- [3/3] Read reg property directly into formatter->reg_offset (Laurent)
+- [3/3] Store formatter pointer in drvdata to avoid sd_to_formatter calls (Laurent)
+- [3/3] Enable runtime PM autosuspend with 1s delay (Laurent)
+- [3/3] Use PM clock framework instead of manual clock handling (Loic)
+- [3/3] Add Reviewed-by tag from Loic Poulain
+- [3/2] Add Reviewed-by tag from Laurent Pinchart
+- [3/1] Add Reviewed-by tag from Laurent Pinchart
+- Link to v13: https://lore.kernel.org/r/20260720-csi_formatter-v13-0-4dc9a80e4cfd@oss.nxp.com
 
-DT binding patch and DT patch in v11 have already landed, so only need
-to send the driver patch out for review.
----
 Changes in v13:
-- Reject unsupported output bus fmt in .atomic_get_input_bus_fmts()  (Sashiko bot)
-- Tweak commit message about change log
-- Link to v12: https://patch.msgid.link/20260722-v6-18-topic-imx93-parallel-display-v12-1-a59dbb4dbc13@nxp.com
+- [2/3] Add Reviewed-by tag from Frank and Krzysztof
+- [3/3] Add Reviewed-by tag from Frank
+- [3/3] Replace pr_warn_once() with dev_warn() in csi_formatter_get_index_by_dt()
+  to provide device context and warn on every occurrence (Loic)
+- [3/3] Add WARN_ON() check for csi_formatter_find_format() return value in
+  start/stop_stream functions to catch unexpected NULL (Loic)
+- [3/3] Use regmap_set_bits()/regmap_clear_bits() instead of read-modify-write
+  pattern and remove unused csi_formatter_read/write helper functions (Loic)
+- Link to v12: https://lore.kernel.org/r/20260716-csi_formatter-v12-0-2601d17fc4af@oss.nxp.com
 
 Changes in v12:
-- Link to v11: https://lore.kernel.org/r/20260303-v6-18-topic-imx93-parallel-display-v11-0-1b03733c8461@pengutronix.de
-- Rebase onto latest drm-misc/drm-misc-next
-- Drop DT binding patch and DT patch because they have landed
-- Add nxp,imx91-pdfc compatible string
-- Call drm_bridge_get() for next_bridge
-- Cc Marco
+- Fix stream ID handling: iterate routing table instead of assuming
+  stream ID equals loop index (0-7)
+- Remove stream_to_vc[] array: derive VC from routing table and frame
+  descriptor on each start/stop operation
+- Remove V4L2_SUBDEV_FL_HAS_EVENTS flag since driver does not generate events
+- Support stream IDs 0-63 by using BIT_ULL() for stream masks
+- Add get_frame_desc call in stop_stream with proper error handling
+- Add csi_formatter_read() helper function for register reads
+- Use read-modify-write for CSI_VC_PIXEL_DATA_TYPE register to support
+  multiplexed streams sharing the same virtual channel
+- Use route->sink_pad instead of hardcoded CSI_FORMATTER_PAD_SINK
+- Write back coerced format in set_fmt before propagating to source stream
+- Drop Frank's Reviewed-by tag due to significant changes, requesting re-review
+- Link to v11: https://lore.kernel.org/r/20260623-csi_formatter-v11-0-a792fe9c1502@oss.nxp.com
 
 Changes in v11:
-- Link to v10: https://lore.kernel.org/r/20260302-v6-18-topic-imx93-parallel-display-v10-0-634fe2778c7a@pengutronix.de
-- Fix double space (Liu)
-- Drop 'const' (Liu)
-- Drop GFP_KERNEL from kmalloc_obj() (Liu)
-- Add r-b (Luca)
+- Drop [PATCH v10 1/4] dt-bindings: clock: imx95-blk-ctl: Use single quotes consistently (Krzysztof)
+- Move properties to top-level and use if:then:else (Krzysztof/Frank)
+- Link to v10: https://lore.kernel.org/r/20260618-csi_formatter-v10-0-f23830312ba5@oss.nxp.com
 
 Changes in v10:
-- Link to v9: https://lore.kernel.org/r/20260115-v6-18-topic-imx93-parallel-display-v9-0-2c5051e4b144@pengutronix.de
-- Add MEDIA_BUS_FMT_FIXED (Liu)
-- Drop next_bridge from driver struct and use bridge.next_bridge (Liu)
-- Drop linux/of_address.h include (Liu)
-- imx93-pdfc: drop bridge.driver_private usage++ (Liu)
-- Make use of kmalloc_obj() (Liu)
+- Rebase to latest media/next
+- [NEW PATCH] Use single quotes consistently (Krzysztof Kozlowski)
+- Drop syscon parent node from example
+- Drop Reviewed-by tags from Frank and Krzysztof due to binding changes,
+  requesting re-review
+- Add description for reg property
+- Add space after formatter@20 before opening brace in example
+- Enhance the port description with more detailed information
+- Delete the blank line immediately following the endpoint in example
+- Use single quotes for regex pattern to be consistent (Krzysztof Kozlowski)
+- Add formatter subnode binding and camera-csr syscon example
+- Update commit title and message
+- Use u8 for vc in csi_formatter_get_vc() and drop vc < 0 check
+- Add MFD_SYSCON dependency to Kconfig
+- Fix stream/VC mapping potential mismatch in start/stop_stream functions
+- Link to v9: https://lore.kernel.org/r/20260526-csi_formatter-v9-0-ca3d8c334c39@oss.nxp.com
 
 Changes in v9:
-- Link to v8: https://lore.kernel.org/r/20260113-v6-18-topic-imx93-parallel-display-v8-0-4abccdc473a5@pengutronix.de
-- dt-bindings: drop unncessary changes (Frank)
-- imx93-pdfc: drop bridge.driver_private usage (Luca)
-- Kconfig: Adapt Kconfig symbol and prompt (Luca)
+- [NEW PATCH] Fix formatter as syscon child node issue
+- Link to v8: https://lore.kernel.org/r/20260525-csi_formatter-v8-0-6b646231224b@oss.nxp.com
 
 Changes in v8:
-- Link to v7: https://lore.kernel.org/r/20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de
-- dt-bindings: add nxp,imx91-pdfc compatible (Liu)
-- dt-bindings: use video-interfaces.yaml# (Liu)
-- dt-bindings: s/data lanes/data lines/ (Liu)
-- dt-bindings: drop 'reg' poperty
-- dt-bindings: drop #address-cells, #size-cells
-- imx93-pdfc: drop drm/drm_print.h include (Liu)
-- imx93-pdfc: s/exist/exists/ (Liu)
-- imx93-pdfc: drop MEDIA_BUS_FMT_FIXED from imx93_pdfc_bus_output_fmts
-- imx93-pdfc: imx93_pdfc_bus_output_fmt_supported: make fmt const
-- imx93-pdfc: Rework input-fmt selection to always fallback to a sane
-              default.
-- imx93-pdfc: imx93_pdfc_bridge_atomic_check: make use of
-	      imx93_pdfc_bus_output_fmt_supported()
-- imx93-pdfc: drop 'reg' dt-property usage
-- imx93-pdfc: imx93_pdfc_bridge_probe: pass -1 for endpoint reg value (Liu)
+- Rebase to latest media/next
+- Use standard port reference instead of video-interfaces.yaml
+- Add parent syscon node in example to show device integration
+- Remove fmt field and look up format from subdev state instead
+- Unify function and structure naming to use csi_formatter_ prefix
+- Remove misleading alignment comment from set_fmt function
+- Optimize get_frame_desc to call once per start_stream
+- Replace V4L2_FRAME_DESC_ENTRY_MAX with CSI_FORMATTER_VC_NUM in loops
+- Remove redundant debug message in enable_streams
+- Use MEDIA_PAD_FL_MUST_CONNECT flag instead of manual link check
+- Link to v7: https://lore.kernel.org/r/20260518-csi_formatter-v7-0-562b750557e3@oss.nxp.com
 
 Changes in v7:
-- Link to v6: https://lore.kernel.org/r/20251201-v6-18-topic-imx93-parallel-display-v6-0-7b056e1e5b1e@pengutronix.de
-- Add missing bits.h and bitfield.h headers (lkp)
+- Change compatible to imx95-csi-formatter as IP is i.MX95 specific per Marco's suggestion
+  Link: https://lore.kernel.org/linux-media/20260511-csi_formatter-v6-0-01028e312e2b@oss.nxp.com/T/#mcd135b3de179b3cb69daa1fd6e0e8e27c85b3332
+- Update references from imx9 to imx95 for consistency with dt-bindings
+- Enable PM runtime before async registration
+- Link to v6: https://lore.kernel.org/r/20260511-csi_formatter-v6-0-01028e312e2b@oss.nxp.com
 
 Changes in v6:
-- Link to v5: https://lore.kernel.org/all/20250304082434.834031-1-victor.liu@nxp.com/
-- Add bus-width support
-- rebase onto v6.18-rc1
-- add review feedback (Alexander)
-- driver license "GPL v2" -> "GPL" (checkpatch)
-- make use of reg of-property
-- fix to short Kconfig description (checkpath)
-- add OF integration
+- Rebase to latest media/next
+- Update v4l2-compliace test
+- Remove unused header includes
+- Unify macro naming: VCx/VCX -> VC and parameter x -> vc
+- Remove unused format field from csi_formatter struct
+- Use compact initialization for formats array
+- Make find_csi_format() return NULL instead of default format
+- Use unsigned int for array index in find_csi_format()
+- Add err_ prefix to error handling labels
+- Add v4l2_subdev_cleanup() and reorder cleanup sequence
+- Update enable_streams debug output format
+- Rename VC_MAX to VC_NUM and fix boundary check
+- Update CSI formatter Kconfig description
+- Use v4l2_subdev_get_frame_desc_passthrough() helper
+- Fix error paths in async registration and probe
+- Add mutex to protect enabled_streams
+- Switch to devm_pm_runtime_enable()
+- Remove redundant num_routes check in set_routing
+- Optimize get_index_by_dt() and add warning for unsupported type
+- csi_formatter_start/stop_stream: Process all streams in mask
+- Link to v5: https://lore.kernel.org/r/20260123-csi_formatter-v5-0-d5b803f867bf@nxp.com
 
-To: Liu Ying <victor.liu@nxp.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-To: Robert Foss <rfoss@kernel.org>
-To: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-To: Jonas Karlman <jonas@kwiboo.se>
-To: Jernej Skrabec <jernej.skrabec@gmail.com>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-To: Maxime Ripard <mripard@kernel.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-To: David Airlie <airlied@gmail.com>
-To: Simona Vetter <simona@ffwll.ch>
-To: Frank Li <Frank.Li@nxp.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-To: Pengutronix Kernel Team <kernel@pengutronix.de>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Marco Felsch <m.felsch@pengutronix.de>
----
- drivers/gpu/drm/bridge/imx/Kconfig      |  11 ++
- drivers/gpu/drm/bridge/imx/Makefile     |   1 +
- drivers/gpu/drm/bridge/imx/imx93-pdfc.c | 222 ++++++++++++++++++++++++++++++++
- 3 files changed, 234 insertions(+)
+Changes in v5:
+- Remove CSI_FORMATTER_DRV_NAME macro since only use once.
+- Remove sd->owner = THIS_MODULE;
+- Simplify code by using DEFINE_RUNTIME_DEV_PM_OPS macro.
+- Link to v4: https://lore.kernel.org/r/20260122-csi_formatter-v4-0-6f6fcad1c33a@nxp.com
 
-diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-index 005a745e5c47..49fcecfee38e 100644
---- a/drivers/gpu/drm/bridge/imx/Kconfig
-+++ b/drivers/gpu/drm/bridge/imx/Kconfig
-@@ -107,4 +107,15 @@ config DRM_IMX93_MIPI_DSI
- 	  Choose this to enable MIPI DSI controller found in Freescale i.MX93
- 	  processor.
- 
-+config DRM_IMX93_PARALLEL_DISP_FMT_CONVERTER
-+	tristate "NXP i.MX91/i.MX93 parallel display format converter"
-+	depends on OF
-+	select DRM_KMS_HELPER
-+	help
-+	  On i.MX93 and i.MX91 SoCs the parallel display format output is
-+	  controlled via the MEDIAMIX BLK-CTRL DISPLAY_MUX.
-+
-+	  Say 'Y' or 'M' if you use the parallel display output path on a
-+	  i.MX93 or i.MX91 SoC.
-+
- endif # ARCH_MXC || COMPILE_TEST
-diff --git a/drivers/gpu/drm/bridge/imx/Makefile b/drivers/gpu/drm/bridge/imx/Makefile
-index 94ac8c40ebe9..99f28cd013ae 100644
---- a/drivers/gpu/drm/bridge/imx/Makefile
-+++ b/drivers/gpu/drm/bridge/imx/Makefile
-@@ -10,3 +10,4 @@ obj-$(CONFIG_DRM_IMX8QXP_PIXEL_COMBINER) += imx8qxp-pixel-combiner.o
- obj-$(CONFIG_DRM_IMX8QXP_PIXEL_LINK) += imx8qxp-pixel-link.o
- obj-$(CONFIG_DRM_IMX8QXP_PIXEL_LINK_TO_DPI) += imx8qxp-pxl2dpi.o
- obj-$(CONFIG_DRM_IMX93_MIPI_DSI) += imx93-mipi-dsi.o
-+obj-$(CONFIG_DRM_IMX93_PARALLEL_DISP_FMT_CONVERTER) += imx93-pdfc.o
-diff --git a/drivers/gpu/drm/bridge/imx/imx93-pdfc.c b/drivers/gpu/drm/bridge/imx/imx93-pdfc.c
-new file mode 100644
-index 000000000000..2d6ca95ed554
---- /dev/null
-+++ b/drivers/gpu/drm/bridge/imx/imx93-pdfc.c
-@@ -0,0 +1,222 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+/*
-+ * Copyright 2022-2025 NXP
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/media-bus-format.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_graph.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+
-+#include <drm/drm_atomic_state_helper.h>
-+#include <drm/drm_bridge.h>
-+
-+#define IMX93_DISPLAY_MUX_REG		0x60
-+#define PARALLEL_DISP_FORMAT		GENMASK(10, 8)
-+#define FORMAT_RGB888_TO_RGB888		FIELD_PREP(PARALLEL_DISP_FORMAT, 0)
-+#define FORMAT_RGB888_TO_RGB666		FIELD_PREP(PARALLEL_DISP_FORMAT, 1)
-+#define FORMAT_RGB565_TO_RGB565		FIELD_PREP(PARALLEL_DISP_FORMAT, 2)
-+
-+struct imx93_pdfc {
-+	struct drm_bridge bridge;
-+	struct device *dev;
-+	struct regmap *regmap;
-+	u32 phy_bus_width;
-+};
-+
-+static struct imx93_pdfc *bridge_to_imx93_pdfc(struct drm_bridge *bridge)
-+{
-+	return container_of(bridge, struct imx93_pdfc, bridge);
-+}
-+
-+static int
-+imx93_pdfc_bridge_attach(struct drm_bridge *bridge, struct drm_encoder *encoder,
-+			 enum drm_bridge_attach_flags flags)
-+{
-+	return drm_bridge_attach(bridge->encoder, bridge->next_bridge, bridge, flags);
-+}
-+
-+static void imx93_pdfc_bridge_atomic_enable(struct drm_bridge *bridge,
-+					    struct drm_atomic_commit *state)
-+{
-+	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
-+	const struct drm_bridge_state *bridge_state;
-+	unsigned int mask = PARALLEL_DISP_FORMAT;
-+	unsigned int val;
-+
-+	bridge_state = drm_atomic_get_new_bridge_state(state, bridge);
-+
-+	switch (bridge_state->output_bus_cfg.format) {
-+	case MEDIA_BUS_FMT_RGB888_1X24:
-+	case MEDIA_BUS_FMT_FIXED:
-+		val = FORMAT_RGB888_TO_RGB888;
-+		if (pdfc->phy_bus_width == 18) {
-+			/*
-+			 * Can be valid if physical bus limitation exists,
-+			 * therefore use dev_dbg().
-+			 */
-+			dev_dbg(pdfc->dev, "Truncate two LSBs from each color\n");
-+			val = FORMAT_RGB888_TO_RGB666;
-+		}
-+		break;
-+	case MEDIA_BUS_FMT_RGB666_1X18:
-+		val = FORMAT_RGB888_TO_RGB666;
-+		break;
-+	case MEDIA_BUS_FMT_RGB565_1X16:
-+		val = FORMAT_RGB565_TO_RGB565;
-+		break;
-+	}
-+
-+	regmap_update_bits(pdfc->regmap, IMX93_DISPLAY_MUX_REG, mask, val);
-+}
-+
-+/* TODO: Add YUV formats */
-+static const u32 imx93_pdfc_bus_output_fmts[] = {
-+	MEDIA_BUS_FMT_FIXED,
-+	MEDIA_BUS_FMT_RGB888_1X24,
-+	MEDIA_BUS_FMT_RGB666_1X18,
-+	MEDIA_BUS_FMT_RGB565_1X16,
-+};
-+
-+static bool imx93_pdfc_bus_output_fmt_supported(u32 fmt)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(imx93_pdfc_bus_output_fmts); i++) {
-+		if (imx93_pdfc_bus_output_fmts[i] == fmt)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static u32 *
-+imx93_pdfc_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
-+					    struct drm_bridge_state *bridge_state,
-+					    struct drm_crtc_state *crtc_state,
-+					    struct drm_connector_state *conn_state,
-+					    u32 output_fmt,
-+					    unsigned int *num_input_fmts)
-+{
-+	u32 *input_fmts;
-+
-+	*num_input_fmts = 0;
-+
-+	if (!imx93_pdfc_bus_output_fmt_supported(output_fmt))
-+		return NULL;
-+
-+	input_fmts = kmalloc_obj(*input_fmts);
-+	if (!input_fmts)
-+		return NULL;
-+
-+	*num_input_fmts = 1;
-+
-+	switch (output_fmt) {
-+	case MEDIA_BUS_FMT_RGB888_1X24:
-+	case MEDIA_BUS_FMT_RGB565_1X16:
-+		input_fmts[0] = output_fmt;
-+		break;
-+	case MEDIA_BUS_FMT_RGB666_1X18:
-+	case MEDIA_BUS_FMT_FIXED:
-+		input_fmts[0] = MEDIA_BUS_FMT_RGB888_1X24;
-+		break;
-+	}
-+
-+	return input_fmts;
-+}
-+
-+static int imx93_pdfc_bridge_atomic_check(struct drm_bridge *bridge,
-+					  struct drm_bridge_state *bridge_state,
-+					  struct drm_crtc_state *crtc_state,
-+					  struct drm_connector_state *conn_state)
-+{
-+	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
-+	u32 format = bridge_state->output_bus_cfg.format;
-+
-+	if (imx93_pdfc_bus_output_fmt_supported(format))
-+		return 0;
-+
-+	dev_warn(pdfc->dev, "Unsupported output bus format: 0x%x\n", format);
-+
-+	return -EINVAL;
-+}
-+
-+static const struct drm_bridge_funcs funcs = {
-+	.attach			= imx93_pdfc_bridge_attach,
-+	.atomic_enable		= imx93_pdfc_bridge_atomic_enable,
-+	.atomic_duplicate_state	= drm_atomic_helper_bridge_duplicate_state,
-+	.atomic_destroy_state	= drm_atomic_helper_bridge_destroy_state,
-+	.atomic_get_input_bus_fmts	= imx93_pdfc_bridge_atomic_get_input_bus_fmts,
-+	.atomic_check		= imx93_pdfc_bridge_atomic_check,
-+	.atomic_create_state	= drm_atomic_helper_bridge_create_state,
-+};
-+
-+static int imx93_pdfc_bridge_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct drm_bridge *next_bridge;
-+	struct imx93_pdfc *pdfc;
-+	struct device_node *ep;
-+	int err;
-+
-+	pdfc = devm_drm_bridge_alloc(dev, struct imx93_pdfc, bridge, &funcs);
-+	if (IS_ERR(pdfc))
-+		return PTR_ERR(pdfc);
-+
-+	pdfc->regmap = syscon_node_to_regmap(dev->of_node->parent);
-+	if (IS_ERR(pdfc->regmap))
-+		return dev_err_probe(dev, PTR_ERR(pdfc->regmap),
-+				     "failed to get regmap\n");
-+
-+	/* No limits per default */
-+	pdfc->phy_bus_width = 24;
-+
-+	/* Get output ep (port1/endpoint) */
-+	ep = of_graph_get_endpoint_by_regs(dev->of_node, 1, -1);
-+	if (ep) {
-+		err = of_property_read_u32(ep, "bus-width", &pdfc->phy_bus_width);
-+		of_node_put(ep);
-+
-+		/* bus-width is optional but it must have valid data if present */
-+		if (err && err != -EINVAL)
-+			return dev_err_probe(dev, err,
-+					     "failed to query bus-width\n");
-+	}
-+
-+	next_bridge = devm_drm_of_get_bridge(dev, dev->of_node, 1, 0);
-+	if (IS_ERR(next_bridge))
-+		return dev_err_probe(dev, PTR_ERR(next_bridge),
-+				     "failed to get next bridge\n");
-+	pdfc->dev = dev;
-+	pdfc->bridge.of_node = dev->of_node;
-+	pdfc->bridge.type = DRM_MODE_CONNECTOR_DPI;
-+	pdfc->bridge.next_bridge = drm_bridge_get(next_bridge);
-+
-+	return devm_drm_bridge_add(dev, &pdfc->bridge);
-+}
-+
-+static const struct of_device_id imx93_pdfc_dt_ids[] = {
-+	{ .compatible = "nxp,imx91-pdfc", },
-+	{ .compatible = "nxp,imx93-pdfc", },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, imx93_pdfc_dt_ids);
-+
-+static struct platform_driver imx93_pdfc_bridge_driver = {
-+	.probe	= imx93_pdfc_bridge_probe,
-+	.driver	= {
-+		.of_match_table = imx93_pdfc_dt_ids,
-+		.name = "imx93_pdfc",
-+	},
-+};
-+module_platform_driver(imx93_pdfc_bridge_driver);
-+
-+MODULE_DESCRIPTION("NXP i.MX93 parallel display format configuration driver");
-+MODULE_AUTHOR("Liu Ying <victor.liu@nxp.com>");
-+MODULE_LICENSE("GPL");
+Changes in v4:
+- Rebase to latest media/next.
+- Add comments to describe the index field in formatter_dt_to_index_map array.
+- Link to v3: https://lore.kernel.org/r/20251219-csi_formatter-v3-0-8680d6d87091@nxp.com
+
+Changes in v3:
+- Rename nxp,imx9-csi-formatter.yaml to fsl,imx9-csi-formatter.yaml.
+- Drop clock-names property.
+- Drop macro IMX95_PD_CAMERA definition and use a constant directly.
+  [PATCH 1/2] media: dt-bindings: Add CSI Pixel Formatter DT bindings
+- Remove the assignment driver.owner = THIS_MODULE.
+- Assign struct fwnode_handle *ep __free(fwnode_handle) when definition.
+- Update yaml file name for csi formatter in MAINTAINERS.
+  [PATCH 2/2] media: nxp: Add i.MX9 CSI pixel formatter v4l2 driver
+- Link to v2: https://lore.kernel.org/r/20251217-csi_formatter-v2-0-62168af80210@nxp.com
+
+Changes in v2:
+- Delete "|" for description key. 
+- Add empty line between child node and property.
+- Delete labels for endpoint of child nodes.
+  [PATCH 1/2] media: dt-bindings: Add CSI Pixel Formatter DT bindings
+
+- Update commit message.
+- Use the value defined by bellow macros directly since they are used only once.
+  #define CSI_FORMATTER_DEF_MBUS_CODE	MEDIA_BUS_FMT_UYVY8_1X16
+  #define CSI_FORMATTER_DEF_PIX_WIDTH	1920U
+  #define CSI_FORMATTER_DEF_PIX_HEIGHT	1080U
+  #define CSI_FORMATTER_MAX_PIX_WIDTH	0xffff
+  #define CSI_FORMATTER_MAX_PIX_HEIGHT	0xffff
+- Use macro pm_ptr() to fix build warning when CONFIG_PM is disabled. 
+- Finish route loop by break statement, instead of goto.
+- Return dev_err_probe() when meet errors in probe() function instead of dev_err().
+- Remove MODULE_ALIAS().
+- Refine .enable(.dsable)_stream callback implementation, include bellow changes:
+  Add stream checking.
+  Fix potential pm runtime count unbalance issue.
+  Add stop stream error handling when enabling remote subdev stream.
+- Use __free(fwnode_handle) to drop reference to a device node automatically.
+  [PATCH 2/2] media: nxp: Add i.MX9 CSI pixel formatter v4l2 driver
+
+- Link to v1: https://lore.kernel.org/r/20251203-csi_formatter-v1-0-eb9e1147b49e@nxp.com
 
 ---
-base-commit: 9499d3bc41a2c4e6a1badfb55f943b9d0c34f034
-change-id: 20251201-v6-18-topic-imx93-parallel-display-95f9234bf6cc
+Guoniu Zhou (3):
+      media: dt-bindings: Add CSI Pixel Formatter DT bindings
+      dt-bindings: clock: imx95-blk-ctl: Define formatter child node schema
+      media: nxp: Add i.MX95 CSI pixel formatter v4l2 driver
+
+ .../bindings/clock/nxp,imx95-blk-ctl.yaml          |  71 ++
+ .../bindings/media/fsl,imx95-csi-formatter.yaml    |  88 +++
+ MAINTAINERS                                        |   8 +
+ drivers/media/platform/nxp/Kconfig                 |  16 +
+ drivers/media/platform/nxp/Makefile                |   1 +
+ drivers/media/platform/nxp/imx95-csi-formatter.c   | 756 +++++++++++++++++++++
+ 6 files changed, 940 insertions(+)
+---
+base-commit: 06cb687a5132fcffe624c0070576ab852ac6b568
+change-id: 20251125-csi_formatter-e6d29316dce6
 
 Best regards,
---  
-Regards,
-Liu Ying
+-- 
+Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 
