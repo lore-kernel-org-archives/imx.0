@@ -1,185 +1,101 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011005.outbound.protection.outlook.com [52.101.65.5])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAB81DA62E
-	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 01:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784769491; cv=fail; b=rxSL49CUeCFeXx98Gjy3SIlRZb2+WlBbD+ea/Ak625VrsFjijCE7xj5/GyxChPVE301+B3mrP/KqIjjCWWu7mGYJ0Oeo1i4hABivuNZrBh2DBqaaF60hs5NdDBNLJZhUcr5mAI+YJRPOpQwf0OBW620yX7/ppJgL+QlqNIK1mAw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784769491; c=relaxed/simple;
-	bh=1aN9acHJ+9dPgzxERHRh8LvcTYnuw+/+tvUZwmnLh1g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cHid6vLJznnufuvbcd6zcCaMTzdLnBEk/4wqsyyM84/OC7me1EjEEAG1Ba+7/dQOAXWwOPInhH7qLwx5qMFqnhHA2vFZAAKhbZfuS6RM3MejGyBM4wGMnH5nh9yhrj0lZrFmmc5T26jZKWjJeqWSNF0emCscmqtFSW9J1Gkws1E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KbYWCBH/; arc=fail smtp.client-ip=52.101.65.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1322701BB
+	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 01:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784770354; cv=none; b=Tw1XZrmF5FpxykNEr+5E2QZF0OrMuc45dfTPtXjil3ldS3lUVS8rlqj3n04wSQ3RNyY6RaCFCke+6vc2udFlXEgv30cjGq6YyxgyuOAf9ZQmaWMFw1yUtMTJbEc6UJP5toPAOvDujutdEsOGzYolgeBMXUG/fqZSvNS7SxtkvnQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784770354; c=relaxed/simple;
+	bh=cyNydO2VqSvszUm4EjQWwLVzTcbah6H1Fw01t9ZSyjk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=WCWqXoHnT1gPjnriiSm/OzEC1y+5X9TzyqszxTc6maljHkv2KPBxP9dGepY8ZotZh33CWK0qe7vGnEC4DCrUDtJES9BGyivBvwcIUjsfufGOqNw13tuYU2IUOKa3A1+cPJdwmeUyPO5aApxgPntsCy+U1ik628fjzkP4kyPhBTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=jEmyjhJm; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KbYWCBH/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WL7J8zuZsL9n3I9LR+CtDuj6dh/r/1BeVHLefv7eE1juyvjW36uWcWRu2HdqX/z6jwUN4xXj/tTNMg3MjqBzf+pL9k9QlO4pXaNwox2l+kBcxjyZWyjcI/sculti7PNrYJPtQftY3q99OACdE3nEJcWfEbxjxjTFktyrD4ghbaxCvCkyIoSUC67YZUJUyvxWqV6Lq39JxeClK6yU+kjbBwmURPM+u9tUer75zs+DYHikKc2Cw9Iui8CHeF2KhcO2Sq9XW96GdBFb4ZC4YhPNQtTZD3DJtBbiHqBdK2EbDSR0sQjXFX8zjNeVSBl21kXyr9wWpN6ae/0LJKoBpr49RA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=klKU2GZtPXRyCh6iQm3N3OfLMwTD8mTqyzJhp1lf/8E=;
- b=y2huGvwn2402c8kseIreWg/+DEQQAH8HC+3HJw1piW0d1K9tNy2VQL3msgLiFSsnO8A+AL7zuB/u9FWGzeG6aOx2x75Ardgy4xO01fJjpoJOBLySax9h7XHmhsw378PSpVHeJJXB6MiC482o2dZl+RuhrWG7o0ksb11wsK23KiHc7+hKwu2KfLmm8z+Ohky76ESXfDx/fWLaYhDvbZqP7ugZ8aVWVyXD/Or5JQ8vP/exhgXn+B0f1/LhFgoLGPNq6rxx6C1BVA8WaKXeQqNM5mjAkXQLmOsvW5x/0hNRv3R8yVuaKqwoCE3KWtIut+ImvUmvEcQmt7F9SKlkRMCOmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=klKU2GZtPXRyCh6iQm3N3OfLMwTD8mTqyzJhp1lf/8E=;
- b=KbYWCBH/F5rsnJWtm29PBtHedIlCkKlr2PA8MW3DYOUgr5xk96RDKMM5CuFgIkO41UuZWe65kXkG5q3dpTeL5iCfGe1dhtW/lIjVV9vHMnTHil+ix7a1jBWJSxC22AsrfsfFTX2nM6z0SIDqN3MjXXqR0i2EgCtbqEZxwv/EcXNKHkcExTdv8PQCqf3j9LxvPtCOnXzOxnj0RbMXxpNxv2E2Dj3PHZFhQ2UBchGBtA7CQcdtO6TBok662UGsSJtvvjwvXMNXsDEp9Ttfa7nRUr8KyWUybmhmS66zwvVyAy40xgz/kBpfTl0vinpozm1WYm6bDzFHdmZZgvx83QHOrA==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by DB9PR04MB9991.eurprd04.prod.outlook.com
- (2603:10a6:10:4c4::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Thu, 23 Jul
- 2026 01:18:06 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
- 01:18:05 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Joe Damato <joe@dama.to>, "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "chleroy@kernel.org"
-	<chleroy@kernel.org>, "maxime.chevallier@bootlin.com"
-	<maxime.chevallier@bootlin.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH RESEND v4 net-next 10/14] net: enetc: refactor SI VLAN
- promiscuous mode configuration
-Thread-Topic: [PATCH RESEND v4 net-next 10/14] net: enetc: refactor SI VLAN
- promiscuous mode configuration
-Thread-Index: AQHdF+1I8fWr44qhJkG8IHPkqQ1oArZ5iywAgADG9dA=
-Date: Thu, 23 Jul 2026 01:18:05 +0000
-Message-ID:
- <GV2PR04MB1173938AA2F6026E023B8476588C02@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
- <20260720014317.1059359-11-wei.fang@oss.nxp.com>
- <amDEtJmcET788Lls@devvm20253.cco0.facebook.com>
-In-Reply-To: <amDEtJmcET788Lls@devvm20253.cco0.facebook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|DB9PR04MB9991:EE_
-x-ms-office365-filtering-correlation-id: ead0d4a2-cbc5-4d74-f937-08dee8583f98
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|23010399003|376014|22082099003|18002099003|38070700021|10067099003|5023799004|56012099006|4143699003|11063799006|6133799003;
-x-microsoft-antispam-message-info:
- wf1QCvX5Y8X4rqzJr0o451PMzNU6Bve5d6sPjQjHtF2utdy6qBBGDqAJO6cqRllsSUheEcBqOBqWmeiyE/cZTAy68cj5vIpg8Z5p7lTtwPVQ3rwKu2QldCMoagkhr3wkYbRdM22sHGflJ+2C9w7+fu8lUhfDcNnaCQR3KgJ9F6kRSjnhJj2JHMKttIzkmIF2gN9Hiyi1H4xHj5yruTJpz0NLtKXNa8BP1KMxAwI7Vry507jNXmeqtjqkCRVQjtAf22K1MaeU5m7uZhU6JNHtx5dQtuUJ4eGNoDJeGjjDClM7Y3oe9+h0p5H63QugiXGWU0CpmpYghzlfmKV4g8W5CTRl97yoxiAsWrszHSsLl2Kkabgayldz9e3bAFkbpfyoOyNY8zdu9F0ctVwqdv9ub/ImxvrEu7KEK+iiQjCqHf9Z4613Q6xXE+nEtzXapszz3uBoRKepGZLthvjmS6jJMBeS5VDHqtM+SnIa4ZTG1dgbpBe7GyQKldbcPCb/gNmx0iyxFGqOYwh6HR31zDN89Tz+LNXZmDv7CuQi1b4RQlPZkFWzEAuaHtp89XH2MkHoBZJkgdAtlkx7Ve5IpcqH4e4MfUpWsXBjxxipp6RQlHT5iNbotWKFdJf92a/JrELSIAr7Z4CmUwxVWP/ynRHzwlBc8ypyDfY374UpiSP9oOXyXyOYB6GK0BOiiKmZL6kYE3F7qfK1lfEDgrQeYTZZ/P8oMak/YQnborAYHyx/f1Q=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(23010399003)(376014)(22082099003)(18002099003)(38070700021)(10067099003)(5023799004)(56012099006)(4143699003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?cshZouDiUGd7q14uOvRy3hY2UAmv8/ACs685XIeIMNlFvDC0T5Ni1zEcz4lv?=
- =?us-ascii?Q?uX4nnDqV2/jx1lXW7QYGmUb7RsdscsfFkmTl2n/mMhqRvlFh14EkiRnKQgs3?=
- =?us-ascii?Q?D94HgDmS1t18e/j54QWWQREXGEhZJNovGPdY/EhfBeG2SozvgBAq3SsfuQq4?=
- =?us-ascii?Q?WoA8l5KXeW9UiQiXfVlV32sttxajdT/yoNvfgL6RqQHOJ641dpKKgRMwFNau?=
- =?us-ascii?Q?FQLUZiCY4J0ZO/uPiyCXRHagdWcF8aHhWwrVzl4j5fECshWH6yWUZsnX77yf?=
- =?us-ascii?Q?MdjT+l++qB/C5alOGF9V7KaAMW2pjsFbs6aSetU1IKaHvV/FktdwUXAIQQcS?=
- =?us-ascii?Q?AU6xfWjdMRcpUX2pK8/EZz5dhTQ06bjL6AT0VV8M6vvvFwTYrmZNRiTb+kv8?=
- =?us-ascii?Q?ZHPkikX1L35TJIJiRm6cUjPdE4mLKd1W8+acdGOEpLQDbk6AQcGuTBNcrnAn?=
- =?us-ascii?Q?jsnD0DMIQP+Q4PMq5OnS56cu39hTVWpodtJ7fc+P1QTU6gXOsLv9KbiEqtxt?=
- =?us-ascii?Q?tlqv3RMOLVeq8N16fntxf1HAP50kU6y3zQd80Uba1Qp9TSm8qlNDEtOvcZAW?=
- =?us-ascii?Q?t+s8GD5QeD4NfvyBw7nMqQ3sHXMPqcPOSlVSQGETetVpMId6hdIZ+GjoocDz?=
- =?us-ascii?Q?9rpJnwuKHPfhhWCgIscG0jP1qBz3JoXX2OIIboYjWjSEwg0UB1kasSZ/Xrxm?=
- =?us-ascii?Q?utm+fwq5xOMqKUtwXp1Kw1OVFpHhuV2RJarBXfektqsW1Foxrcf9oLH8InVo?=
- =?us-ascii?Q?luiu/kHGkDz82u35sXC/I8enIkR0D9GqmufhZwW+5bpsM1XTWQHWogb1vlh7?=
- =?us-ascii?Q?v9dsJj0YN6YKz1mdnQ//SDauYsO1BuvdodzkpzT/lO9KWIaEolehXrWiOIYk?=
- =?us-ascii?Q?6LJ2E/XKUYtKKkjdZQRl4747JNhWrMF98gZQ9yywVmDpgxecfebeLS5xoxNd?=
- =?us-ascii?Q?pUQPKwrLNLbqmppTkrZIsHzlUiwwDE0m9vpH0qm5wAziAyMFJXQGXOC+VBmS?=
- =?us-ascii?Q?zVUrymi/juyiTEr18jaMkBPANG+Qlqx9UQt60o8Syi5zslaWf/UcDMcWntM0?=
- =?us-ascii?Q?7wOqbDSkLk/lJb1DVucPidj+cyHHtxWjZBNLpv1ik/Aq417p+GG43rnPh/4K?=
- =?us-ascii?Q?09hMxCZcvZ6itNQlTAkTU6pzmC42+uciWdtVf68R+weViVMRqvmhSwWvlppi?=
- =?us-ascii?Q?8S1FKupdVpoWUMuBWv638Us97cLVX41fTAHfrHUeImlOEELk+8sVPuTtDdZX?=
- =?us-ascii?Q?ZFfARjjmtidiVfkls4b5Lqug+Qf0e7i4U596jos36JBldWlVFxkEzLIavTrJ?=
- =?us-ascii?Q?oFHKmNaYBr49eQdrqVYgZf9MXcR1wW/d7XpHLCGC3k5Toc8jtyue1kuideCO?=
- =?us-ascii?Q?+gqgpbXWAGJJ5qrr+dUzCjrBEC1nXX0RKat6+cMeVsViaYT8bR7VPjknTj2R?=
- =?us-ascii?Q?Hh/sMNwRytDzruVPCimJ5dhTyEVYsUZ/0a8SFH9fA+CHrnGHbjd/hqka15NS?=
- =?us-ascii?Q?v+MKVjH4lIXkwN3yrrLT6pHP6TI3f3kLRolMzFs24yVQs+3E7rkyTKAacNZ+?=
- =?us-ascii?Q?huz6UCEh2w+ZscKq8IismD7tqHLDYGv1zW5igNT8p5sTTtp2aYbzn0aJP5h8?=
- =?us-ascii?Q?/Ay8qb6PhH/ZhD8pxGtKfMM9BvOce0smFEa90yf2BNfWzNzbzvDwHMVDbu57?=
- =?us-ascii?Q?7P0pKbAwfTwKUI9QukfAi/iR8lwgoTZcWN2/EFtOyV/A0+Rx?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="jEmyjhJm"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784770349; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Ffb8HuUn7oxunFjlvB6SA3X4fMM99E5+jBR0sfFb7F0=;
+	b=jEmyjhJmRcnYGsJX5TwIahNLyjjcKXdvTSO4LQA7p2PLiDheMvoh1J2wmzO4uuUULDEcUp9XSBx20KE27oTem6lmGOG9ynr4U2dcgKMVkwEZZSMkdtdzYFw6s4Oop7Af7IMvKay7ZUFfJUVm01qzK7IPzR5pqvCsHQMFbB3LBCk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R861e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X7eTJH5_1784770346;
+Received: from 30.246.177.242(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0X7eTJH5_1784770346 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 23 Jul 2026 09:32:27 +0800
+Message-ID: <31bebd39-8534-417c-866d-6d6e3468473c@linux.alibaba.com>
+Date: Thu, 23 Jul 2026 09:32:26 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ead0d4a2-cbc5-4d74-f937-08dee8583f98
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2026 01:18:05.4307
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HTcVK1OUKWFAwFErFPmoFjGeljhCMDBMehQoGjuy3w7905O3aBBJPvE0F91VjWZZSyw7upp+zlESNNMjuqs90Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9991
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] perf: Remove redundant dev_err()/dev_err_probe()
+To: Pan Chuang <panchuang@vivo.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Frank Li <Frank.li@nxp.com>,
+ Xu Yang <xu.yang_2@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Ji Sheng Teoh <jisheng.teoh@starfivetech.com>,
+ Khuong Dinh <khuong@os.amperecomputing.com>,
+ "moderated list:ARM PMU PROFILING AND DEBUGGING"
+ <linux-arm-kernel@lists.infradead.org>,
+ "open list:ARM PMU PROFILING AND DEBUGGING"
+ <linux-perf-users@vger.kernel.org>, open list
+ <linux-kernel@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>
+References: <20260717103123.34887-1-panchuang@vivo.com>
+ <20260717103123.34887-2-panchuang@vivo.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20260717103123.34887-2-panchuang@vivo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> > Remove the enetc_set_vlan_promisc(), enetc_enable_si_vlan_promisc() and
-> > enetc_disable_si_vlan_promisc() functions, and introduce a new unified
-> > function enetc_set_si_vlan_promisc() to enable or disable VLAN
-> > promiscuous mode for a specific SI. This simplifies the logic and makes
-> > the interface more straightforward. The vlan_promisc_simap field in
-> > struct enetc_pf is no longer needed to track the current state.
-> >
-> > As ENETC V4 only changes the address offset of PSIPVMR register compare=
-d
-> > to V1 without any functional difference, enetc_set_si_vlan_promisc() ca=
-n
-> > be moved to enetc_pf_common.c in the future with minor adjustments to b=
-e
-> > reused by the ENETC V4 driver
-> >
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > ---
-> >  .../net/ethernet/freescale/enetc/enetc_hw.h   |  5 ++-
-> >  .../net/ethernet/freescale/enetc/enetc_pf.c   | 36 ++++++++-----------
-> >  .../net/ethernet/freescale/enetc/enetc_pf.h   |  1 -
-> >  3 files changed, 16 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > index 66bfda60da9c..16da732dc5de 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > @@ -185,9 +185,8 @@ enum enetc_bdr_type {TX, RX};
-> >  #define  PSIPMMR_SI_MAC_MP(n)	BIT((n) + 16)
-> >
-> >  #define ENETC_PSIPVMR		0x001c
-> > -#define ENETC_VLAN_PROMISC_MAP_ALL	0x7
-> > -#define ENETC_PSIPVMR_SET_VP(simap)	((simap) & 0x7)
-> > -#define ENETC_PSIPVMR_SET_VUTA(simap)	(((simap) & 0x7) << 16)
-> > +#define  PSIPVMR_SI_VLAN_P(n)	BIT(n) /* n =3D SI index */
->=20
-> I suppose it would have been nice to only have a single space after #defi=
-ne
-> above.
 
-I intentionally used two spaces for the macros that define the new register
-bit fields to distinguish them from the macros that define the register off=
-sets,
-making the hierarchy clearer. :)
 
->=20
-> The rest of the code looks right and I think the promisc logic is clearer=
-, so:
->=20
-> Reviewed-by: Joe Damato <joe@dama.to>
+On 7/17/26 6:31 PM, Pan Chuang wrote:
+> Since commit 55b48e23f5c4 ("genirq/devres: Add error handling in
+> devm_request_*_irq()"), devm_request_irq() automatically logs
+> detailed error messages on failure. Remove the now-redundant
+> driver-specific dev_err() and dev_err_probe() calls.
+> 
+> Signed-off-by: Pan Chuang <panchuang@vivo.com>
+> ---
+>   drivers/perf/alibaba_uncore_drw_pmu.c | 5 +----
+>   drivers/perf/fsl_imx8_ddr_perf.c      | 4 +---
+>   drivers/perf/fsl_imx9_ddr_perf.c      | 4 +---
+>   drivers/perf/fujitsu_uncore_pmu.c     | 2 +-
+>   drivers/perf/qcom_l2_pmu.c            | 5 +----
+>   drivers/perf/qcom_l3_pmu.c            | 5 +----
+>   drivers/perf/starfive_starlink_pmu.c  | 2 +-
+>   drivers/perf/xgene_pmu.c              | 4 +---
+>   8 files changed, 8 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/perf/alibaba_uncore_drw_pmu.c b/drivers/perf/alibaba_uncore_drw_pmu.c
+> index 74786a5dd6a2..fc934bccf4a6 100644
+> --- a/drivers/perf/alibaba_uncore_drw_pmu.c
+> +++ b/drivers/perf/alibaba_uncore_drw_pmu.c
+> @@ -449,11 +449,8 @@ static struct ali_drw_pmu_irq *__ali_drw_pmu_init_irq(struct platform_device
+>   	 */
+>   	ret = devm_request_irq(&pdev->dev, irq_num, ali_drw_pmu_isr,
+>   			       IRQF_SHARED, dev_name(&pdev->dev), irq);
+> -	if (ret < 0) {
+> -		dev_err(&pdev->dev,
+> -			"Fail to request IRQ:%d ret:%d\n", irq_num, ret);
+> +	if (ret < 0)
+>   		goto out_free;
+> -	}
+>   
+>   	ret = irq_set_affinity_hint(irq_num, cpumask_of(irq->cpu));
+>   	if (ret)
+For Alibaba PMU part,
+
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+
+Thanks,
+Shuai
