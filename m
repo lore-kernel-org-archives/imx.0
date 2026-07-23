@@ -1,132 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F31238E8C7;
-	Thu, 23 Jul 2026 04:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37183A5443
+	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 05:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784782491; cv=none; b=M9FAgLpX9WeqJgxPT5/W6dno4LA30bpqhENmTPtReDGVZroxrQwVwydi5RRaOW15cqTZSeFmDcF32zHLkbYti1WvQYtJiPPukT1l8tkXxaTXADfgVhg/iColeP1jLzFHGGhc+FZz06vUlhCjmfXXEcqrszh9FvCD6Tb4Mz/jVkw=
+	t=1784784628; cv=none; b=Qflq08FInZKJXFz9HLFxaYtiLfOG7XM+EOTl8cgPBDFZNWDLjFrnNOuYQgud50zvqj7eGu8P2y2YvdDBjjTo20ivEPy2YiRCeNc9LHuEze1pv3DqHcoAB9XuI9qhJMJk2nVAyEK07t9g8FzbrZkPSLWFOwEMvfiwTIDJMhB05/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784782491; c=relaxed/simple;
-	bh=fCEdPv83tQJnZ46Ma1MJPoidRJQh2aG6z2ZUkVMGiUU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=pFAQV6XmG9mpsbMJQhAlzTfbGolT0QYqAAuhovrVlDe+O4I5/1vGcJNHTjnb+yNmJLA/hwRNd/u9qe83IuB6+XQtVwriyVsuo6x0oDIu1SPgwA80quy48ji/nwbiwQdGztvEsVMV8i7rTblDCT99z+X40gPoG0qhXldHH4ah0dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGanFbuR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784784628; c=relaxed/simple;
+	bh=cIDAJnuOBt+rwzyUW445QgCOtd1xWXtIDuEa5qHVxuk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oiuwMUoHKt4iJDXxN0uMq+wPydBpWUIlyDfdoF8pLzdwz3t5tLFGyhpZWLUvytFckg74w3AiCwTItrQ6uONiqq/tDnrn+vSa7wmd352cST32OkLcEmBE2M2IlwdD+SYD6hJsgZxjj2mY3LNtduvLuxsAmUApJIysBu4px+hab2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=WIdKSPaU; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGanFbuR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A8D1F00A3A;
-	Thu, 23 Jul 2026 04:54:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784782483;
-	bh=uWntOyP+EyuvssIB5Ns/ZVYT6MSg9KBuMzAA0xrwouU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YGanFbuRUciFeFOM4BRU9RzxIQ93g10M0hpE5lhKTXL9n3Ibxn2lwjzafVR9dArgZ
-	 4d+Wiz4u5lhrZna5jj7mv0qhbtG2nWD0ky0azplNiLEBx5QW7+FvRj+mnqBt2Et+df
-	 MV0yL3xfivWBdKbciBMZ59ao39gk+/ingGCsMro/vrfJ48nkhT3rVaE5Wv8MPyT0rC
-	 vLvjBkgUDY7P5xAlfEBuw0rIfVeaIY8yXzpx4QgQJL5bY/vaqkDdyF26LSN3nbsnv5
-	 ySAyS1Qt9l/mNGAeSYgLtE5g5NQQWeqeCV+39lUJPc2cGr+DdyjWUtxPFBmxaki1C9
-	 pXQpv1y9gzFNQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/6] dt-bindings: media: qcom: Add Shikra CAMSS
- compatible
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Nihal Kumar Gupta" <nihal.gupta@oss.qualcomm.com>
-Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, media-ci@linuxtv.org, robh@kernel.org
-In-Reply-To: <20260723-shikra-camss-review-v6-1-7c46f9bbb4db@oss.qualcomm.com>
-References: <20260723-shikra-camss-review-v6-0-7c46f9bbb4db@oss.qualcomm.com>
- <20260723-shikra-camss-review-v6-1-7c46f9bbb4db@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 23 Jul 2026 04:54:41 +0000
-Message-Id: <20260723045442.78A8D1F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="WIdKSPaU"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47f8773ce8dso154268f8f.0
+        for <imx@lists.linux.dev>; Wed, 22 Jul 2026 22:30:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1784784624; x=1785389424; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Gbqp/BETAuL10zK/QjDMLkNML3uJVDKQA/suEZyhESk=;
+        b=WIdKSPaUNzC/Y+/7UNdQdsylfS5HqWPF54UI3vmllZsQyAwtA38xCwoWs2l2zHG3BG
+         Ko8LJrlVpGZto0OIRgVeEOSX7VqxR1119L2asGION+Ywvynvu/uUX1B7s1q95wivGZR0
+         TlGG1GLVgrPgR+l8zJco+Qgplk136k5iU5JOas5KHu/QYIxkCnKO9ClQMsT4FKqtXxmp
+         W7y/gZJ4XP4EmhS9/3irmIifskgRJkU3LwvojIjr+hwwE6uHLP2ie92jXBr9WYPDCAFM
+         ZOh9M1kafYPRASqJ04i87AI1en9R+Tl+NJuyJgwz3h8iMVzE9rQ5AIbVrWtCSeYxJ9/X
+         SOAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784784624; x=1785389424;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Gbqp/BETAuL10zK/QjDMLkNML3uJVDKQA/suEZyhESk=;
+        b=onjv42+Kp1NAQBzu8cio9EQFl22TOUzJsyGK5KHqwwhJMtV5amHWifNAu1y6G2Q6W/
+         6AGEJV7qMyuh+ezkcVmHZ+6KwKy0xIoxNt2alwNhCSLv5GHnSZ/qX1AxZrQiYiahW3C+
+         DDqu1Ni5lgKkv0AUgn1GCWZ6An1GSJ++jgN86Tg7pcvB1y2D0FVA2DxibhZ+FTlaZW1p
+         AtzmOwOTpcpgd1CpTNnqUH85HjfpJUee6XlUvfeiQRv84w8JfVexyCplImrrI0V4Ami7
+         CEIHzNe+mSldVRPv2In1S6t/ux5963R5EfRIPN5xqUXjWV9He0xZvUwVlX5W1Xm+B/kD
+         3roQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7sZ7NVqFHW0s7n85Ni+QwrBpMEg0poNwKaiIGaU9TLCo1jEfMlxdpS7FmvCN7IUSQ3T8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwLr+uE0GMtNLGg//uaJCqAPRgj4Y2hhLuO5+wHCtxBHCvUtfrZ
+	knIwReevc+tiuw/dd0Rl0LsWJF6q/tdF3zz1a5GdgWJ0xCgABuD0pvJb+tozE2l2sgE=
+X-Gm-Gg: AR+sD104oQZaJ8Ha+NFrlbHElmgm/23oEa/lH2H70bl8SXfXr2i/nbVpCULgqesNrva
+	MasqS3K3YYVkp67bVBD58xSz9Rb+z40Z1WF90qCTibjIV0MGYzf3TuaMT5AqxMmDyLSlzdyyQIx
+	+ZVebXu6OCOuSmtKGKIf8To0PsZ4g+XHLW3IonggXvmlGaVngEaXM9fpwD+Bi1JFU+n8f5B8xuo
+	kgwHG/M66aQYiQAoNcJXrujC5XKTG7FriprHPq31FmS0KDdkuV0EIwpZ8M8hYL0B0l2iFza9GTq
+	3+iAx1rWePzQwJvga3MTCu+h6C0ptwT21mLmYoWrDi/+SHYvxaPOQ4wULkJ11bG6ogBonEFkCKu
+	wwpjIM18S/UWjB/u/OL+Q0+42SjPSMwNBkiuKxpk1uycPcSV5Ozw7QXoef3RUda0EoXXeRgKIdW
+	0ug24pUFM=
+X-Received: by 2002:a05:6000:402a:b0:47f:4c9b:99b1 with SMTP id ffacd0b85a97d-47f8d754483mr1814550f8f.32.1784784624091;
+        Wed, 22 Jul 2026 22:30:24 -0700 (PDT)
+Received: from localhost ([2a02:8071:56d1:2de0:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47f85bc62basm11851732f8f.13.2026.07.22.22.30.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 22:30:23 -0700 (PDT)
+Date: Thu, 23 Jul 2026 07:30:21 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Cezary Rojewski <cezary.rojewski@intel.com>
+Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Srinivas Kandagatla <srini@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
+	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, 
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>, Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+	Sylwester Nawrocki <s.nawrocki@samsung.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+	Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>, linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 6/6] ASOC: Unify code style for platform_device_id
+ arrays
+Message-ID: <amGhHDDlwMdool_q@monoceros>
+References: <cover.1784528081.git.u.kleine-koenig@baylibre.com>
+ <093867d47c079d2aaab06bccaae734c54c342a7d.1784528081.git.u.kleine-koenig@baylibre.com>
+ <0f625961-8e2d-4ed9-ab5a-fd95bcb4c87a@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oygi6rynka5zevcn"
+Content-Disposition: inline
+In-Reply-To: <0f625961-8e2d-4ed9-ab5a-fd95bcb4c87a@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The YAML binding uses a global `oneOf` block for `iommus` instea=
-d of using `if-then` conditionals, failing to conditionally enforce the har=
-dware-specific constraints for each compatible string.
-- [Medium] The `qcom,shikra-camss` compatible string incorrectly uses `qcom=
-,qcm2290-camss` as a fallback despite being a hardware subset, violating De=
-vice Tree compatibility principles.
---
 
---- Patch [1]: [PATCH v6 1/6] dt-bindings: media: qcom: Add Shikra CAMSS co=
-mpatible ---
-commit 945dc84434e7636d9e3d6c379f213e274cca7db3
-Author: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
+--oygi6rynka5zevcn
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 6/6] ASOC: Unify code style for platform_device_id
+ arrays
+MIME-Version: 1.0
 
-dt-bindings: media: qcom: Add Shikra CAMSS compatible
+Hello Cezary,
 
-This commit adds a new compatible string for the Shikra CAMSS IP, using
-qcom,qcm2290-camss as a fallback. It modifies the iommus property to allow
-either one or four items, as Shikra omits the CDM and OPE blocks present in
-QCM2290.
+On Wed, Jul 22, 2026 at 07:55:26PM +0200, Cezary Rojewski wrote:
+> On 7/20/2026 8:23 AM, Uwe Kleine-K=F6nig (The Capable Hub) wrote:
+>=20
+> >   sound/soc/au1x/db1200.c                |  2 +-
+> >   sound/soc/codecs/adau7118-hw.c         |  2 +-
+> >   sound/soc/codecs/bt-sco.c              | 10 +++-------
+> >   sound/soc/codecs/wcd934x.c             |  6 ++----
+> >   sound/soc/fsl/imx-pcm-rpmsg.c          |  6 +++---
+> >   sound/soc/intel/avs/boards/da7219.c    |  6 ++----
+> >   sound/soc/intel/avs/boards/dmic.c      |  6 ++----
+> >   sound/soc/intel/avs/boards/es8336.c    |  6 ++----
+> >   sound/soc/intel/avs/boards/hdaudio.c   |  6 ++----
+> >   sound/soc/intel/avs/boards/i2s_test.c  |  6 ++----
+> >   sound/soc/intel/avs/boards/max98357a.c |  6 ++----
+> >   sound/soc/intel/avs/boards/max98373.c  |  6 ++----
+> >   sound/soc/intel/avs/boards/max98927.c  |  6 ++----
+> >   sound/soc/intel/avs/boards/nau8825.c   |  6 ++----
+> >   sound/soc/intel/avs/boards/pcm3168a.c  |  6 ++----
+> >   sound/soc/intel/avs/boards/probe.c     |  2 +-
+> >   sound/soc/intel/avs/boards/rt274.c     |  2 +-
+> >   sound/soc/intel/avs/boards/rt286.c     |  2 +-
+> >   sound/soc/intel/avs/boards/rt298.c     |  2 +-
+> >   sound/soc/intel/avs/boards/rt5514.c    |  2 +-
+> >   sound/soc/intel/avs/boards/rt5640.c    |  2 +-
+> >   sound/soc/intel/avs/boards/rt5663.c    |  2 +-
+> >   sound/soc/intel/avs/boards/rt5682.c    |  2 +-
+> >   sound/soc/intel/avs/boards/ssm4567.c   |  2 +-
+> >   sound/soc/samsung/i2s.c                |  2 +-
+>=20
+> This change is outstanding when compared to patches 1-4 which follow the
+> per-driver approach.  I'd expect one driver per scope e.g.: Intel's avs
+> split away from the rest.
 
-> diff --git a/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.y=
-aml b/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml
-> index 391d0f6f67ef5..490a7f3a8c5ff 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,qcm2290-camss.yaml
-> @@ -14,7 +14,11 @@ description:
-> =20
->  properties:
->    compatible:
-> -    const: qcom,qcm2290-camss
-> +    oneOf:
-> +      - items:
-> +          - const: qcom,shikra-camss
-> +          - const: qcom,qcm2290-camss
+Well, patches 1 and 2 primarily follow the one patch per type of change
+approach that happen to only affect one driver each. In the v1 thread I
+was asked to split out split out the amd/acp bits which resulted in
+patches 3 and 4. (And just now I notice you also replied and asked to
+split out intel/avs, too, which I missed. Sorry!)
 
-[Severity: Medium]
-Since the commit message states Shikra omits the CDM and OPE blocks, is it
-accurate to use qcom,qcm2290-camss as a fallback?
+Conceptually I think one commit per driver is the right approach[1] but
+most maintainers/reviewers seem to favour one commit adapting one thing
+for all drivers in a subsystem. And in my experience no matter how you
+make it, you get a reply to change.
 
-If an operating system driver binds to the qcom,qcm2290-camss fallback and
-assumes the presence of the CDM and OPE blocks, couldn't this lead to bus
-faults or initialization failures since those blocks are absent on Shikra
-hardware?
+Will split out intel/avs for v3 and maybe hit the sweet spot then.
 
-> +      - const: qcom,qcm2290-camss
-> =20
->    reg:
->      maxItems: 9
+> Nitpick: s/ASOC/ASoC/
 
-[ ... ]
+Fixed in my tree, so will be correct in v3.
 
-> @@ -76,7 +80,14 @@ properties:
->        - const: sf_mnoc
-> =20
->    iommus:
-> -    maxItems: 4
-> +    oneOf:
-> +      - items:
-> +          - description: S1 HLOS VFE non-protected (VFE only)
-> +      - items:
-> +          - description: S1 HLOS VFE non-protected
-> +          - description: S1 HLOS CDM non-protected
-> +          - description: S1 HLOS OPE read non-protected
-> +          - description: S1 HLOS OPE write non-protected
+Best regards
+Uwe
 
-[Severity: Medium]
-Does replacing maxItems with a global oneOf block weaken schema validation
-for the existing qcom,qcm2290-camss hardware?
+[1] My reason for that is the "one atomic change per patch" philosophy
+    that allows to document who reviewed/acked what in a fine-grained
+    way and allows selective reverting and backporting as needed.
+    The downside is that the number of patches explodes, but git is able
+    to handle that just fine in my experience. "commit count" is missing
+    in https://markcarrigan.net/2026/06/18/the-museum-of-meaningless-metric=
+s/
 
-By using a globally permissive oneOf instead of using if-then conditionals
-in an allOf block, a device tree specifying qcom,qcm2290-camss with only 1
-IOMMU will now silently pass validation, even though it requires 4 IOMMUs.
-Similarly, Shikra could incorrectly pass with 4 IOMMUs. Should these
-hardware-specific constraints be enforced conditionally based on the
-compatible string?
+--oygi6rynka5zevcn
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> =20
->    power-domains:
->      items:
+-----BEGIN PGP SIGNATURE-----
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260723-shikra-cam=
-ss-review-v6-0-7c46f9bbb4db@oss.qualcomm.com?part=3D1
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmphpusACgkQj4D7WH0S
+/k4QMAgAiodEGJ+3wdZbbFha1cyeXY/4KnGWZwIGS91iUn/fGAugHIQjGusXDdlf
+MK7Bm5B6RFc0nJmVRuK+dlVyvBjWnDiaqrcvEgW5iiGHt0e2d4B2yEu7aNVj1PDs
+wuPQOThaBv7yf9NP9ddxiGofvSIuKVv7TxVf+Qf/OQjSyYseX57zpPS9h19m71vl
+aVVtSUNPiwoeUnQWkRsq/qWZgnOeUrQTyXQekkv7uz1N43QnOnmb3m3iBX+mI1AN
+TAfJQ2rTyMYEyIZfvwHe4nD5Nz4TpjStRk1BmH/HE8616DR4stk5Ts4tvSv1f6KT
+qRSBSo9+7iG4nv7Avnq6gwIf7pTisw==
+=tSnN
+-----END PGP SIGNATURE-----
+
+--oygi6rynka5zevcn--
