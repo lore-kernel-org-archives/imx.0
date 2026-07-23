@@ -1,120 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E00D1F4181;
-	Thu, 23 Jul 2026 07:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A941D3E638C
+	for <imx@lists.linux.dev>; Thu, 23 Jul 2026 07:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784791517; cv=none; b=k3pCC+WNa/iFX2vsYizHzEv45YRmJD4MD7uFk6Do/hVoGTw/NSg1KSfuxnc5UXSNfrxdCXdqceN1SYzBe1TvlSapEq1GL3FjA9jH1brAL0UFWr/mS3BxPrVpyOIyy5S3krkB1JVMdx3NMvU/eA+srAPevQgg08x9xJ1nsJ/dGI8=
+	t=1784791748; cv=none; b=SYRN0q4qyRT4GiDqoyGu8sQbL/lqD7e1dVnWNFWl5csybYxGcPg8he9RE175Nlb3RC7pX71TK2Qmkxc5wvFbluRFk3+TMoc5zATkfouC1nrtS5QU2uQ8l3wrMlXLAzCHJKQIGxG9oMEJhPFP282HHfNd5mx5rKS4qGH58P6l0p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784791517; c=relaxed/simple;
-	bh=uFgVhRaWZwsLFlY0H5HZXuMWdn7i+N2PWgqfwCk6wMA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BL2+5npLknEfBdaUKT45VuSdgl0+6DRmxXEIX4HQsICZGWvsr855tlvN6Y8pOLNdyNvhUXo6nLh0KqPlK8vHWAEX1VF49O68d+hYstgnvFrLi5nYv8cdAJmszvJ4pL/l5qlDcasr8mxiX2nvubt0i81dNcYlFuHXPGHnhJtKZMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ore4WLTG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784791748; c=relaxed/simple;
+	bh=ezOWvH/osRE6H/cXFkg9H9smMaW9rStaT6bb3eJPa3Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WBdSpy8Y+sGT7gNnD0sZXidCqOzOCGNzToyveGPgjnKhaccLM0VDcs92COEHMBH1f6hLVyU/o3l8TtMAofhaQAvs05J9E0ZPq3wD5nAPInk/SEw3VjjkRylDSQckenbeBlirCo3wjDhP87TDEaG/ay0GetAn1sLmSKDwJtiWhiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=FGecPVHp; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ore4WLTG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713B51F000E9;
-	Thu, 23 Jul 2026 07:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784791515;
-	bh=PkojvKi0n1Y0dt2OmkKwjijlmwlhFzuu1C3U3MWMpc8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ore4WLTGzlCWsBA5lhgO9Atk0IywIicrGcTsOLiqQX3EO9w8qmOXRHqwODLnL3fnl
-	 bDakwMpMqYmpW1WM45okYQaCPou/3GHy2slIoD8AtOqPQ7+ie6b2Eot3sRw1eyD6Hm
-	 KUTTpeN4Uwa+aR9jag2Nw3nbBjMjf0htqA8Vh7YhzF8YNrYtK96nQn+rS5ZbRITDkv
-	 FDMDK7T67LWOqWDI2vReKNT+RU6KHGzmkjzbXtWUeypjPJtIDir4eeRIit3tsAt7Fo
-	 IrcB/QTW0kippRlcvStG29rvZ8mCvt+fZgViLC9capJPcT32+GGxgUptjcaTDfamYf
-	 6VakEdNc6v8wg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/3] arm64: dts: imx93: Add i.MX93 Wireless FRDM
- board support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joseph Guo" <qijian.guo@nxp.com>
-Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260723-imx93w_frdm-v2-3-b108a76b2e40@nxp.com>
-References: <20260723-imx93w_frdm-v2-0-b108a76b2e40@nxp.com>
- <20260723-imx93w_frdm-v2-3-b108a76b2e40@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 23 Jul 2026 07:25:14 +0000
-Message-Id: <20260723072515.713B51F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="FGecPVHp"
+From: Frieder Schrempf <frieder@fris.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
+	t=1784791739;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hg5tW1Rb6Nt7cG6Ff89MFT0HTZsA91xkclD1Vy8H15c=;
+	b=FGecPVHpATjEZnX7XDaq5cdnxFlQeDRSmp7e1SvrSmotHikb1MR0Iynup1vuIb5vB725r3
+	s+iaAfHyaxYmjiGWtz750pdV16K30gttjYJ19g2K9dmckno34sxOqfyWUKBoEwFHvle7YH
+	aKpf5/2N+u1d6YVi48u14oIJPfOOTJ2pPuTKK1+zI1tgYR3BwarChXzvGbTRZlxQzusXNI
+	ATs6ANElGu40r+s77xkjU/RpccSvX64WN9IykUeTXN8sRkJ9wfaNnoQZnwiLUYy4Yjslgp
+	Bhr5uiT4E+G+NtBBuFlreLYRtXOk5DloGTY3ynMRVO+vqv3wl5gAN5BKiqjIbA==
+Date: Thu, 23 Jul 2026 09:27:30 +0200
+Subject: [PATCH v3 08/11] nvmem: imx-ocotp-ele: Remove the FUSE_ELE type
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-8-e26930345b4c@kontron.de>
+References: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-0-e26930345b4c@kontron.de>
+In-Reply-To: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-0-e26930345b4c@kontron.de>
+To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Pankaj Gupta <pankaj.gupta@nxp.com>, 
+ "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux@ew.tq-group.com, Frieder Schrempf <frieder.schrempf@kontron.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2820;
+ i=frieder.schrempf@kontron.de; h=from:subject:message-id;
+ bh=CqKbLWJEprAuY0A/3w0FIvWFGg+83f0jb6ih5HsLxAE=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JISvx0DYb97SzdWYnl5fJ/HhX/oq9YyaP1L5/Z+MLfCSfX
+ 47iknXtKGVhEONikBVTZJHit3htaxbrI3+sOgpmDisTyBAGLk4BmMhnO4b/hQ800vmm1jrG/nj3
+ +gDHJvHTPJ+TkvPzH9xr1E6f/vFpAMNfiTsrXpe6aKXvWBiuyXCpeqVIdcSStVZ+Zp+qJD7Ef2n
+ hAAA=
+X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
+ fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The device tree fails to configure the Bluetooth reset and wake =
-pins documented in the commit message, leaving the inherited Bluetooth node=
- broken.
-- [Low] The commit message contains a copy-paste error in its hardware diff=
-erences table headers.
---
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
---- Patch [3]: [PATCH v2 3/3] arm64: dts: imx93: Add i.MX93 Wireless FRDM b=
-oard support ---
-commit 92706a692f2e24d9485918053962b1a10410a0ca
-Author: Joseph Guo <qijian.guo@nxp.com>
+There is no use in tracking the fuses that are only accessible via
+ELE API and the current lists are incomplete. If the ELE API is
+available it will be used as primary access method anyway, otherwise
+the fuses not listed as accessible through the FSB can be considered
+invalid.
 
-arm64: dts: imx93: Add i.MX93 Wireless FRDM board support
+No functional changes intended.
 
-This adds support for the i.MX93 Wireless FRDM board, reusing the
-imx93-11x11-frdm-common.dtsi with board-specific changes. It updates pin
-connections and functionality differences, mainly for WIFI/BT and I2C3.
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ drivers/nvmem/imx-ocotp-ele.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-> Pin connection differences:
-> Function  Signal name   i.MX93W EVK             i.MX93 EVK
+diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+index 6ac7d588c4bd..f07565c0a02d 100644
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -19,8 +19,7 @@
+ 
+ enum fuse_type {
+ 	FUSE_FSB = BIT(0),
+-	FUSE_ELE = BIT(1),
+-	FUSE_ECC = BIT(2),
++	FUSE_ECC = BIT(1),
+ 	FUSE_INVALID = -1
+ };
+ 
+@@ -215,7 +214,7 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
+ 		}
+ 
+ 		type = imx_ocotp_fuse_type(context, i);
+-		if (type == FUSE_INVALID || type == FUSE_ELE) {
++		if (type == FUSE_INVALID) {
+ 			*buf++ = 0;
+ 			continue;
+ 		}
+@@ -365,13 +364,9 @@ static const struct nvmem_keepout imx93_ocotp_keepout[] = {
+ static const struct ocotp_devtype_data imx93_ocotp_data = {
+ 	.reg_off = 0x8000,
+ 	.size = 2048,
+-	.num_entry = 6,
++	.num_entry = 2,
+ 	.entry = {
+ 		{ 0, 52, FUSE_FSB },
+-		{ 63, 1, FUSE_ELE},
+-		{ 128, 16, FUSE_ELE },
+-		{ 182, 1, FUSE_ELE },
+-		{ 188, 1, FUSE_ELE },
+ 		{ 312, 200, FUSE_FSB }
+ 	},
+ 	.keepout = imx93_ocotp_keepout,
+@@ -381,7 +376,7 @@ static const struct ocotp_devtype_data imx93_ocotp_data = {
+ static const struct ocotp_devtype_data imx94_ocotp_data = {
+ 	.reg_off = 0x8000,
+ 	.size = 3296, /* 103 Banks */
+-	.num_entry = 10,
++	.num_entry = 9,
+ 	.entry = {
+ 		{ 0, 1, FUSE_FSB | FUSE_ECC },
+ 		{ 7, 1, FUSE_FSB | FUSE_ECC },
+@@ -389,7 +384,6 @@ static const struct ocotp_devtype_data imx94_ocotp_data = {
+ 		{ 12, 24, FUSE_FSB },
+ 		{ 36, 2, FUSE_FSB  | FUSE_ECC },
+ 		{ 38, 14, FUSE_FSB },
+-		{ 59, 1, FUSE_ELE },
+ 		{ 525, 2, FUSE_FSB | FUSE_ECC },
+ 		{ 528, 7, FUSE_FSB },
+ 		{ 536, 280, FUSE_FSB },
+@@ -399,7 +393,7 @@ static const struct ocotp_devtype_data imx94_ocotp_data = {
+ static const struct ocotp_devtype_data imx95_ocotp_data = {
+ 	.reg_off = 0x8000,
+ 	.size = 2048,
+-	.num_entry = 12,
++	.num_entry = 9,
+ 	.entry = {
+ 		{ 0, 1, FUSE_FSB | FUSE_ECC },
+ 		{ 7, 1, FUSE_FSB | FUSE_ECC },
+@@ -407,9 +401,6 @@ static const struct ocotp_devtype_data imx95_ocotp_data = {
+ 		{ 12, 24, FUSE_FSB },
+ 		{ 36, 2, FUSE_FSB  | FUSE_ECC },
+ 		{ 38, 14, FUSE_FSB },
+-		{ 63, 1, FUSE_ELE },
+-		{ 128, 16, FUSE_ELE },
+-		{ 188, 1, FUSE_ELE },
+ 		{ 317, 2, FUSE_FSB | FUSE_ECC },
+ 		{ 320, 7, FUSE_FSB },
+ 		{ 328, 184, FUSE_FSB }
 
-[Severity: Low]
-This isn't a bug, but there's a copy-paste error in the table headers.
-Should these be FRDM-IMX93W and FRDM-IMX93 instead of EVK?
+-- 
+2.55.0
 
-[ ... ]
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx93w-frdm.dts b/arch/arm64/b=
-oot/dts/freescale/imx93w-frdm.dts
-> new file mode 100644
-> index 0000000000000..766e942fe6638
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx93w-frdm.dts
-> @@ -0,0 +1,23 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2026 NXP
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "imx93w.dtsi"
-> +#include "imx93-11x11-frdm-common.dtsi"
-> +
-> +/ {
-> +	model =3D "NXP i.MX93W FRDM board";
-> +	compatible =3D "fsl,imx93-wireless-frdm", "fsl,imx93";
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_lpi2c3: lpi2c3grp {
-> +		fsl,pins =3D <
-> +			MX93_PAD_GPIO_IO00__LPI2C3_SDA			0x40000b9e
-> +			MX93_PAD_GPIO_IO01__LPI2C3_SCL			0x40000b9e
-> +		>;
-> +	};
-> +};
-
-[Severity: Medium]
-Does this board-specific device tree need to include node overrides for
-&bluetooth to configure the reset and wake pins documented in the commit
-message?
-
-The commit message notes that IND_RST_NB uses GPIO_IO28 (which was freed up
-by rerouting I2C3), but there is no &bluetooth node override assigning it to
-reset-gpios. Could this leave the inherited Bluetooth peripheral in reset
-and broken?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260723-imx93w_frd=
-m-v2-0-b108a76b2e40@nxp.com?part=3D3
