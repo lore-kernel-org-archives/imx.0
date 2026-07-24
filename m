@@ -1,202 +1,363 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013006.outbound.protection.outlook.com [40.107.162.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65065349CC1
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4B0349CE7
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.6
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784906761; cv=pass; b=P7pTBUrQpolCFF/DBv9wnSw73238OSRRt0ptoe7kpZWVpM/f+h+UloyCL7Uy/CiVrlc91JEUBT8IhuiVJRgaNhPHE/O6gUGIWyYtNOsYXWMvBknO3WJqQuyP3eQDqLY1+WMZAd1KPAHV5ryMExJN0rSGbu82kWan+FRFwjv0+/k=
+	t=1784906978; cv=fail; b=hHmFx+tQUHX9s0OiX913PRU5h6hRADp/tborCc1F9fRo/ULan+KEMpxAP7OsH/+pE6FEgTxfBTYjaUD17ORZPeFBFSUzCirJWJP33tTVXTcMUsaTMqCzNCurPIR2zhNO8F9RTH0lypu/a5EqchNiS7W2L0rJMXGCbvT9xZ3YQkc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784906761; c=relaxed/simple;
-	bh=UwjP0NYSg24zOH8TZtLUTQOgPTNa9L+d73VzBNV/l60=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=st2ImjjgqtbjzPHJWGkip5LBn4FHD+tDooGDfMJQCYgxgZRryk7VJ0OZShmKrGRfruCiQQckjkYFDmO3urVw9NyYfaoY5ilwCm0+e9WLXt6Zg9lOHc/AlrqjWNohsaJ6xmAe+a4Wzr0rjGLoZkkCFj72bnkiicWyjeRc5KvzJ1k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nYWy1J4Y; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KtMW8mOL; arc=pass smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1784906978; c=relaxed/simple;
+	bh=/tnPeKWId3wSVJF6tchSsV3Qd94VpcdWFbQGe37j2xE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tEr6CAvE4pOITS26SGRh6ql1BeGF2D1aNsC9tfquXDKRbo4TXAQ2o5BF+NipvNB3Tjbeggl+mYsXmFfadtoFppLPVRLgtq7yBe6tcPCcmj/gyLKonNDnSKwuGek3/dZQxXrTEVvP24irKrvv4V7SzC8TTahSLvn5MFwLY0spxOQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=e4k+Fasz; arc=fail smtp.client-ip=40.107.162.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nYWy1J4Y";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KtMW8mOL"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66OEHU2v3467953
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:25:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	I8P/LRw5Av63ejvXZypK/le3J4llN8sJRzn4b+AZYkg=; b=nYWy1J4YvasGb28T
-	P7IuEzgm+jZE9tIL7w9A8gLlWpk4zyR82mseGSDhqeGl4HEaEJYLMWTxPk/RrXKA
-	jIom/zLXMzuEfoQ/l/4oCUjQfN1zcI3i+iqxX3eDtx1lqRTYjzdftBKX1wasjo5K
-	eZ2sI0PsDcf4NPappk6EErwhbsNVDsbR7zumQfdmdDZiKC8CnUM2AJOb5UNVHTBi
-	4xz1saDDYTRniPXaC/2wPn5RuP4Hdz6UsCrB5TzT33r62lQ8HCZyLDwJpvT1ghgH
-	7x6BoX1IVouJRZao0qUYSHuCBLKg06q+4VXr1gqjiv9nUxTEFZ2/2tOCLfLObO72
-	fE+2ZA==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fm9pd08fg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:25:59 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8f0867a75ecso10970466d6.3
-        for <imx@lists.linux.dev>; Fri, 24 Jul 2026 08:25:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784906759; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TbiWs3jAwuUro3uvT0arLVxiakfxwa9URhGGvS4y1muGB4U4tnsXuqK5Mz4vNMUI0h
-         OA+pVGf/esn1uqmA/ZiX5hKY5fTrEVkPOuobpLnaZd0v/1WMVXzpLgCckNeGOSma6ExS
-         x82NswseFht5lvRimRWP5JrC/fBnRcHp4N1by6RqWYF3AMcrankGShS4sczqr33oeIHI
-         9gCbgugdQo5BIHmUIdDqJiFoKUzCQZHuhFysyGJ60ACj3AptrA8DoKE9iPwYgo1UN4Z9
-         qvm1ea3v6mBr84Olpg2/IoUCZfTS/GEBF/VmgdIdyAhmfK2H0T7vCUYO+Ioh+ZXHgc/S
-         K7TA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=I8P/LRw5Av63ejvXZypK/le3J4llN8sJRzn4b+AZYkg=;
-        fh=cq7kQ3pGS1+Qh7fzr30OUfip2pha7kdz/fy2R/UYh0E=;
-        b=SumcpSdbO5uGUsyRjACWFRPr5+DbSALFHA4mXZv5J7I5nZQxY1HW/HdCKbW2q4EKZH
-         psCnklOifV5mixmoont/ZOxJlGdhhd/MDUmGYUsIwSax6Qt7EaLJ0l1cE5Uj+p4qDlSu
-         /SB0v3inPvgbJlh79Te9GbIv7bdTAB0MU9MgnU958NUnRbC1lEld3DgUnMgx3FvXIM4T
-         a/uoOHHTgbGYocwkGizv4JJYzUF5/og7fnvxnXYBi91T7G7M9iVkdnYu8/ljljHk+8tb
-         e0ChN82VpAS4OLQ1Spt4kuwbXQI7x+IjhvdTv/98WpTc/oz6kEka7+Ow0hW7t2DiM1je
-         TwNQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784906759; x=1785511559; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=I8P/LRw5Av63ejvXZypK/le3J4llN8sJRzn4b+AZYkg=;
-        b=KtMW8mOLX5c4nt8UUfoDXAkwuBAwVQTCFXzPCVJmQXCX/RBpL+3xsBaQ7quwwxTNjA
-         9rIKafv7QaV5IhPf+XekhCoZ36hCkkephm/KoYM6AyXrFf+/WDTfTvQDwEHOGl/jM1iD
-         cWIdKAXvyk1Xs2LqHjvnBvfGyBelowoNl9TTwS4wrk4id64t+eh5ZTDxquBLTWx5zQZl
-         f43PrBpqiMox58uBc9H9OBMnFCQaLBv98By6kbH8zy/AB3snxnWsdRD6j5UHHXg5Ecpc
-         gf5q7luN+mtOYY/0RHnZT1ohpX9Yn3+tFEF2eN2dTnY0lTJV/3pCuG27vFllshBG1c6e
-         c/ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784906759; x=1785511559;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=I8P/LRw5Av63ejvXZypK/le3J4llN8sJRzn4b+AZYkg=;
-        b=c6/7kJEIvJLUUUTxPsXsXpMYjZssqXSGAVXco8jKlCCUmmH/wlMFioS+gCmhCKIy+l
-         6Hr09Co3Wbr3S34Lepbp3PWBhq6/vVQIml1bky8VmiIqsQTSTr3JunLTL4pBoC7S/q5n
-         D/ZOloQzZbhdGnlv3P/ICF8hRz/25jHTTLCSUksG6NYCrtxhO7TTqUTbZ9RRL1U/j+jm
-         HwHDI+SGbvipxIdcj+FHpyXYcsCF6KagEgf6m2iUNCIley3kBKFaSM8NETDghiwku3pn
-         yhkNZ3iCOum87hGEL7A4r9awDGntn4IlWTTpwe58k12kirpr9tKGcemyqN64HThW/l82
-         GZsw==
-X-Forwarded-Encrypted: i=1; AHgh+RooXRRtZkJ69JKDBZFLRoLOLgx8K9TwciLjsCY42vJmBnPlNiGQ2t4aS9pIXyFbBmgggSM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzIoSVoUVqj8eM27R7UTJaQAfS0qnJAhu2V1on8qkTkLR5Z8fv9
-	6RpPQLWOLOr+1WYEFd6BjUB5JBV8URTIEz1jw7SQJKs+VtB33WqGb6dbtJFjzV+n+cSXWWudw7H
-	26JWZ28fhTo4CXSfhC3L9VcTvMqUjnS+8A3DSl5/BsaADhzZkyXKR/uqQbgLULxzP5zk8t5NMbz
-	Fft5Pai46zACdCFesD7EB32MprKAEZnQ==
-X-Gm-Gg: AR+sD11zrc5YGFfCpkRaYAI3z2T0SeOOHhq/7Tzis2HZARyowRWa1QbbNCLk4JkU9It
-	A53x7d1aXHDH5oHWkWvf1kpP2cTRth9gRtn5S0EFkslQ2gG2cE66DVNks9t7GztJKL3ddnYCeqJ
-	MHj09/a6Bi8qFVcAgCNKeKsPcywXlBOzy3uSUjHZVLtN3CbFW9MCUYXIrVqQ==
-X-Received: by 2002:a05:6214:29ce:b0:8fd:6e22:c7ec with SMTP id 6a1803df08f44-907ca57ac87mr92244486d6.61.1784906758554;
-        Fri, 24 Jul 2026 08:25:58 -0700 (PDT)
-X-Received: by 2002:a05:6214:29ce:b0:8fd:6e22:c7ec with SMTP id
- 6a1803df08f44-907ca57ac87mr92243986d6.61.1784906758119; Fri, 24 Jul 2026
- 08:25:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="e4k+Fasz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b286MeOC/LkNJKN3o6Ec6IVh8vV4rKvSG9HlEpnUODgPkKWkE4bnwAA4l0wCHmgw+lmdURNZCDU/NDwwZwQC2Ryi798pEsvKMKgphPl9Do7ONjam5co9fUf7pypqGJ7+6TWRt8Jcheo4v+O+8k2ms4qsllv4MBrmE74CIdJjyXdrLfn5fRbnr3uiOpek4B8QOBooG/7g4wXnqE2C2Zqr7i6srzhpPpHos6nx8EXTO5SYOCaOYMcPa4RQaiazXsW5YnGfqK34SXWk9lB4cGDToUDANQzOLfAerDXhcxl8Ua/pGe+p+aVskzMZeya/Z7A0zfwIkz7PZsdvq4bp1s8q/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I3reP4ukBDHXGVjk3dQmqRcVxZpWewzDKCdysd3jRqY=;
+ b=RNNMpshPxmSA01rlG+YxYQwV4klZS7qLryfuiPQnFq0xv6MmsypJhpjwXah4sCsodgta21WJYAnKRkv7pzH/NvGEsXbDlXq3EcZ2h3MeHxe2XCDd2JXnS+6MBDAOHOs1fMO13B5rgyh7ajFGdEDkW1OEahl33MPKPovbzX2IyhZNHSq/MnlaSpeZJTbZZe+bzPYlHeVPlQ3Z4WWVcxiTj2i94mUbKC6fj9jKkoqVbNAWjSWNPkU5t9GNrnGMKsrfHC9Ab/yGPpKbzjxYGWQ7aKDjuT3xU0UcG/s1QqejhXL4nUN1QPej1dk/Hh6qImBdDqSuSRH8EQJKrxWdT6Jncw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I3reP4ukBDHXGVjk3dQmqRcVxZpWewzDKCdysd3jRqY=;
+ b=e4k+Faszmk/P8tl5JieLfzVX+ESdtQPv/XxRcXJfmQLq8t3Yzl9a5qvx/GCF2bNJL4aFiXjNiEEQF/S+T2LJGLvp+0mVpufn5MuqYTSg54ibSFSwbxdTk55gF5PPInK6r9HeTjPee3uj38L9hm4yl4gK3TxMwTXH89C0N01i/zF75b69/1QnXiF4biVznAA/TGWd/8QkbRG5hbS2SAw4QmHr4qIV3XSKBzJpvpnGPvLW4IKEsHcBuPQla9YcBRxhbidpoBTEvZECYKjMNfijcDM9lgUq2yxym+//1nHgeliR+9aR3t/3qB9u6LkHF3ijY0b3Ed9KrpaxGgLKr3GbfA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AS8PR04MB8104.eurprd04.prod.outlook.com (2603:10a6:20b:3b1::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
+ 2026 15:29:32 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
+ 15:29:32 +0000
+Date: Fri, 24 Jul 2026 10:29:20 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Christian Hemp <c.hemp@phytec.de>,
+	Stefan Riedmueller <s.riedmueller@phytec.de>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Guoniu Zhou <guoniu.zhou@nxp.com>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] media: nxp: imx8-isi: Implement per-stream
+ reference counting for multiplexed streams
+Message-ID: <amOE0LR8QbcVx-rV@SMW015318>
+References: <20260724-isi-v4-0-27df7b5f6060@oss.nxp.com>
+ <20260724-isi-v4-1-27df7b5f6060@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260724-isi-v4-1-27df7b5f6060@oss.nxp.com>
+X-ClientProxiedBy: PH7PR17CA0027.namprd17.prod.outlook.com
+ (2603:10b6:510:323::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260716132603.2327847-2-u.kleine-koenig@baylibre.com>
-In-Reply-To: <20260716132603.2327847-2-u.kleine-koenig@baylibre.com>
-From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
-Date: Fri, 24 Jul 2026 17:25:45 +0200
-X-Gm-Features: AUfX_mxxKiB1do-atg-rTre7pVoswHFzTOplPvRF1EBywznaNQKzflz6UIrGwS8
-Message-ID: <CAPx+jO_k2fJRvXiNiqztHXDbCvkHrDzbM46egyiF7RQX0rsK0w@mail.gmail.com>
-Subject: Re: [PATCH] pmdomain: imx8m{p,}-blk-ctrl: Add MODULE_DESCRIPTION
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-        Xu Yang <xu.yang_2@nxp.com>, Ming Qian <ming.qian@oss.nxp.com>,
-        Jacky Bai <ping.bai@nxp.com>, linux-pm@vger.kernel.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: lCV0cVHNoki2h7ZGS5aICw4mJ7by3719
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDEzOCBTYWx0ZWRfX+zY9cRY+3EEP
- xizdxoG2GrZBISWKhiBQzD4HBiXRTGNAw/woN0lFZwtpzR7/DXks0g/2Zoj2drnA2LrFIGE4TdK
- RotH7lYFekRHewb6gYO4dIxSY23Xwm4Kw91prqSYLSC6t0pDTzvZyp2hW59js0NzidXGZrIoc2U
- gQT6N5FbPbumuEjWyQYIlRSu828CBm/D/XPMQXCgxaim6W4jYfhdH2DNf/B7gN3boYurVP4vor7
- NnQajthF1FSvz9hz2YUVt0TWcy38+3rTymZE60HlQvDkNtBAL0Ykt2PcwzGcQtsBiKXj1h/UzFC
- tyKPKu3KE1dPEtOpkxH0q2rwmGPy7EQkh2Na1EBcRvRfJ/9ELZHk4oZXgvHj5Siw0x2GWfw5IIk
- WUuXJNhvnnMh1TyNv732FRlGlBKRIJ9n2RGenrezsL8ISQdhrutIJEyen54UWMyUCUPhkmY80ks
- TuIFysUwKSG/3tOQutw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDEzOCBTYWx0ZWRfX9WEIXSh/uvDu
- 1PsTqRxE6KjoP0GaMUPhSOcw9djI3AcptdMGBSUylYvSX2uWwh8Cqi83rrstZ9zyjWwqGYol0pr
- Uioc5t5RQ0RHIYQYP/j0krUwu/pteP8=
-X-Authority-Analysis: v=2.4 cv=DLW/JSNb c=1 sm=1 tr=0 ts=6a638407 cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=_glEPmIy2e8OvE2BGh3C:22 a=IpJZQVW2AAAA:8 a=GSG5rVEFErVBAG7bqOoA:9
- a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22 a=IawgGOuG5U0WyFbmm1f5:22
-X-Proofpoint-ORIG-GUID: lCV0cVHNoki2h7ZGS5aICw4mJ7by3719
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-24_03,2026-07-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 phishscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 malwarescore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240138
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8104:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8fab0eea-216b-4a83-bf9b-08dee9985c02
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|366016|23010399003|19092799006|376014|7416014|6133799003|4143699003|56012099006|10067099003|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+ ZM+qRjaFVFXWSV/bPnfWmt2nSPBP9Z5NqAhio5rKLnAJsS9bjOjRfDpXYJx0dJws8qIuqtVKnGVehmHozapoXAacyE5jWDVgaHxt3/2BShuTis+eE7QNzPzuNOvxt15z+Mmj5cja3EeM7UZdK7YCiUv4zmDoikXQuAnQdj+rMPmyQa2Aq8W1qFVM9n9CP42VOwO6euir1dxuBBHjw76dOPnSmuuZuMpPyUkd/kW16vOvm3PCnn1mOnumGyJUp8+q1+XA+EQSmuDY0hAtCPPqwRW1BHx74Z3azr4Uql42hYm1KgPp/j00w/aqHNIhawdaOPS4CoJeysU2zlat8hYCeWIXLGo7gFqU9tdOT1wSJ6PE9hla3AsB9/C7wX2vxNnDrmotIdyIpV2IbgSG6u59bnPU6WR56brGKNO6okJLknZzfCq3fOJJo5oDP4mnMjm5GyGBs/J6cqhI80a7vHWLJk1pzvVP2npFYz6lqE5C63wriqdY5vpjzVGRtgAgwB3CQGsXlCLd1OYnylsXReHz5d75qFIQ3H6MeH8bxb/fqtIfXunwOSlwYGqYq9a8ktd1mVM1/q61cOX7jDg6MkJXD6wcnrWorvzxHIQ53x66WQ9GDfh4OhC26y9DB5XVu4UzouZwCSIvb47SHC9RNE6KUVgflXcFC/GR2e3k297zONY=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(19092799006)(376014)(7416014)(6133799003)(4143699003)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?ns9e5I1lEQAof+jnRUN69cSrx0RUUFR+a10bE6YGAyjZU5iYbRzIt5gc2M2p?=
+ =?us-ascii?Q?xSC0iYBHwShx/NjRD4SNFMUr7jtdr1vjMKMdk68oQO06Txq53O44IqqcHID+?=
+ =?us-ascii?Q?ZTiVtLvTFdiERuSuhjQTaqAvWfznKG1BxVy/12Z1InlknYmr53aoYBikGDyr?=
+ =?us-ascii?Q?bzggFohV3W3WuIs1DnvaDagomXh9++gFYEx9C0FUfsCH0veexj/6xx3esnUh?=
+ =?us-ascii?Q?JSrZM2ugvl/cqnEwM0Mpu3nN6YFcrLRNIXgdwXPBC3oL/tBvDHvuBYprdT3Y?=
+ =?us-ascii?Q?k7QCNdTwzG3oh2L5/8SpAkbi/qdpmX8QwoAobNqaGw9Ko50U8au9+cEjy4fK?=
+ =?us-ascii?Q?lfF2eCXTuNXQ6+6fg973DLjWYX3+CXR18w4Rm1HRFb5izUEhq9sJDo3glWSM?=
+ =?us-ascii?Q?v2yWhwF2AgaNi6+G8+teSMOa5+ezJ8cBdQoUEIYB5cd+dJd4msgNydkKcale?=
+ =?us-ascii?Q?G06sZ1yuQcec91Z1Z2cma3D29e10LMWuji1I8OAcvWXVf42aDWbjmP+t9YxG?=
+ =?us-ascii?Q?+oW5JdBFAO49sAwoeD7CZhxpuIh1PYDsGIeJ0bkwzydzBwK8lh1chUyglAeO?=
+ =?us-ascii?Q?+ScRQy/9bpfeeZXvPl4clW8UNZl3ZI6a2VeL62e8pppHujAc49pZ3udZDMwg?=
+ =?us-ascii?Q?k9sB8AfNKmf1B1IzniNOSWYV7//cfQZRg00XcmbbDijMlJ+LAGnHG+3v17MN?=
+ =?us-ascii?Q?QYgKFsznHxfeGiELZpPv/9W07LoTdgXGidxMtsbBvFzdErnCP+dvNQLzNOu+?=
+ =?us-ascii?Q?6MJU6yai/RQi3QgY4bVza9iF+dNWrMpbltxv2yz/i/LcV2eqP3GMfBUZRfRw?=
+ =?us-ascii?Q?Vo20cRtQAtWSMP5anKfdnsGFJUdOzrmH/gbqkRFPe7aHVZL1A84tf9JjiIVw?=
+ =?us-ascii?Q?qrnO1t121LJ3X5EXlrgor1R6qi/4AOKxyaz7cU5Obfx7wWK5C+ES1ojKAaak?=
+ =?us-ascii?Q?QyIe7sgRJz528FSDfXza3x2KusUtlQ7GntQNaUAGlz2Lo2AzcrwGc3etu8Ba?=
+ =?us-ascii?Q?/Hk/+BBbxpkp0Y426kaA6i64iU3K4SF5VAPWdIYYsn8EJv6r/aXnRn5NztG1?=
+ =?us-ascii?Q?TqtOh/4PvwHoCZ7cPDsvyJKjFf+Y5QPuQmFS2djFLIMHmbLa22D2ih6FFqJa?=
+ =?us-ascii?Q?0cHkVBaoqfpW9vnQ5lTFpKiAPR/LVIUIwxzmFnwWSaioR21tozTyCIRGmgvo?=
+ =?us-ascii?Q?Utma997Ou6w0oQ4D/hpFYra8AfvLLtaljwKGDI0SlEXNRZkR2VB3mJuiAam8?=
+ =?us-ascii?Q?o3sILuHZDnXY5QOwFrLCFFE+KhxqnLiNF/TnJ8aDOIa3r5MMYH1Yz6yxuEXu?=
+ =?us-ascii?Q?v+sNzAPM+SeYzUmKzSEbUOJ2We+4chUQz7HZ/rX+O5MrLIYoGj2dhLruBiO/?=
+ =?us-ascii?Q?0klKZimJcPM7ZBNnKouoi1mvagl86ZXjUG7AtEt/e2vQsh9zIGIRK0LC6OCL?=
+ =?us-ascii?Q?LI1fI58AqCwbeCWRbUPCfQ846QUr7EWpgF4bTncj29aBe5C3Hg7tfqusjB8B?=
+ =?us-ascii?Q?RMKBS95kuamF6G2+gVzMbCOiyelw46vZIz6RMtR1xNT+SaFPvDQqZwZChwkA?=
+ =?us-ascii?Q?zJdZ0W9oUpAZ9jC2Ha7/t+cdfgtFwlHJT8eLjae+JvvRtF3WxllCk9c1No06?=
+ =?us-ascii?Q?cOhPMObpKNAX1MDvZ8mQ+zWSs9y4OAWhxsJFatl3ZIZPz4hb1GLEOQwAF4iV?=
+ =?us-ascii?Q?k2cwp81nv+FDJLIELmidBaVdJyr846yOUqwMJrkBltbpqeNjUoe53im12/QC?=
+ =?us-ascii?Q?DBIv1eUhaXOKrYwOFp2nt8/vsly/8l9PdYW6G2UhKJ0gMJZ+LhGs?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fab0eea-216b-4a83-bf9b-08dee9985c02
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 15:29:32.4317
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: M0EVcPf7CFm9WPvnAdSWkFomb82erUNQCpOxPgWPPUZubDy4H1hY7KeAvpYgFGkXm59wrxgUDxtHzs4TehPMB2xt1HK75F8RpT2SvtpFQ89sMBo3SrQ+igsUNLInpLRZ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8104
 
-On Thu, Jul 16, 2026 at 3:26=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@baylibre.com> wrote:
+On Fri, Jul 24, 2026 at 03:52:56PM +0800, Guoniu Zhou wrote:
+> The ISI crossbar needs to properly enable multiple streams from different
+> virtual channels on the same input pad. Currently only the first stream
+> gets enabled in hardware, subsequent streams are silently ignored.
 >
-> Without a module description modpost emits a build warning:
+> The driver uses a single enable_count per input to track the input state.
+> When enable_count is non-zero, the code assumes the input is already active
+> and skips calling v4l2_subdev_enable_streams() for additional streams:
 >
->         WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pmdomai=
-n/imx/imx8m-blk-ctrl.o
->         WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pmdomai=
-n/imx/imx8mp-blk-ctrl.o
+>   Call 1: enable_streams(stream 0)
+>     -> enable_count == 0, enable gasket and stream 0 in hardware
+>     -> enable_count = 1
 >
-> So add the required string to these two drivers.
+>   Call 2: enable_streams(stream 1)
+>     -> enable_count == 1, skip hardware enable
+>     -> enable_count = 2
+>     -> stream 1 never gets enabled
 >
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-
-Applied for next, thanks!
-
-Kind regards
-Uffe
-
-
+> Similarly on disable, when enable_count reaches zero, ALL streams are
+> disabled regardless of which streams are actually still active.
+>
+> Implement per-stream state tracking by storing the input index and stream
+> mask in the mxc_isi_pipe structure. On enable, record which input and
+> stream the pipe is receiving. On disable, clear the pipe's record and
+> check if any other pipe is still using the same input stream before
+> actually disabling it.
+>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 > ---
->  drivers/pmdomain/imx/imx8m-blk-ctrl.c  | 1 +
->  drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 1 +
->  2 files changed, 2 insertions(+)
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+> Changes in v4:
+> - Make enable/disable symmetric by checking stream_in_use
+> - Add mxc_isi_crossbar_stream_in_use() helper for both paths
 >
-> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx=
-/imx8m-blk-ctrl.c
-> index 99d100e1d923..479789009c7f 100644
-> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> @@ -953,4 +953,5 @@ static struct platform_driver imx8m_blk_ctrl_driver =
-=3D {
->         },
->  };
->  module_platform_driver(imx8m_blk_ctrl_driver);
-> +MODULE_DESCRIPTION("NXP i.MX8M power domain driver");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/im=
-x/imx8mp-blk-ctrl.c
-> index 3f5b9499d30a..d255c20f58e2 100644
-> --- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> @@ -890,4 +890,5 @@ static struct platform_driver imx8mp_blk_ctrl_driver =
-=3D {
->         },
->  };
->  module_platform_driver(imx8mp_blk_ctrl_driver);
-> +MODULE_DESCRIPTION("NXP i.MX8MP power domain driver");
->  MODULE_LICENSE("GPL");
+> Changes in v3:
+> - Change from "Fix" to "Implement" as multi-stream support is for newer
+>   SoCs not present when the driver was merged (Laurent)
+> - Remove Fixes and Cc: stable tags (Laurent)
+> - Store input/input_stream in mxc_isi_pipe instead of using per-stream
+>   counters array, avoiding arbitrary 64-entry limit (Laurent)
+> - Use UINT_MAX to mark pipe as inactive to distinguish from valid pad 0
 >
-> base-commit: b8809969e1d7a591e0f49dd464a5d04b3cf02ab1
+> Changes in v2:
+> - Use fixed-size array for enabled_count instead of dynamic allocation
+> - Use BIT_ULL() macro for u64 bitmask operations
+> - Use MXC_ISI_MAX_STREAMS (64) as loop boundary instead of num_sources
+> - Remove mxc_isi_stream_counters_alloc/free functions
+> ---
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  5 +-
+>  .../platform/nxp/imx8-isi/imx8-isi-crossbar.c      | 84 ++++++++++++++++------
+>  .../media/platform/nxp/imx8-isi/imx8-isi-pipe.c    |  1 +
+>  3 files changed, 67 insertions(+), 23 deletions(-)
+>
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> index 9bb4d430d15e..c07abdd6a1f0 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> @@ -186,7 +186,7 @@ struct mxc_isi_dma_buffer {
+>  };
+>
+>  struct mxc_isi_input {
+> -	unsigned int			enable_count;
+> +	u64				enabled_streams;
+>  };
+>
+>  struct mxc_isi_crossbar {
+> @@ -259,6 +259,9 @@ struct mxc_isi_pipe {
+>  	u8				acquired_res;
+>  	u8				chained_res;
+>  	bool				chained;
+> +
+> +	unsigned int			input;
+> +	u64				input_stream;
+>  };
+>
+>  struct mxc_isi_m2m {
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+> index 9f0231ca47a3..f7a629b341cd 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+> @@ -330,11 +330,26 @@ static int mxc_isi_crossbar_set_routing(struct v4l2_subdev *sd,
+>  	return __mxc_isi_crossbar_set_routing(sd, state, routing);
+>  }
+>
+> +static bool mxc_isi_crossbar_stream_in_use(struct mxc_isi_crossbar *xbar,
+> +					   unsigned int sink_pad, u64 sink_streams)
+> +{
+> +	for (unsigned int i = 0; i < xbar->isi->pdata->num_channels; ++i) {
+> +		struct mxc_isi_pipe *pipe = &xbar->isi->pipes[i];
+> +
+> +		if (pipe->input == sink_pad &&
+> +		    pipe->input_stream == sink_streams)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static int mxc_isi_crossbar_enable_streams(struct v4l2_subdev *sd,
+>  					   struct v4l2_subdev_state *state,
+>  					   u32 pad, u64 streams_mask)
+>  {
+>  	struct mxc_isi_crossbar *xbar = to_isi_crossbar(sd);
+> +	struct mxc_isi_pipe *pipe = &xbar->isi->pipes[pad - xbar->num_sinks];
+>  	struct v4l2_subdev *remote_sd;
+>  	struct mxc_isi_input *input;
+>  	u64 sink_streams;
+> @@ -351,29 +366,44 @@ static int mxc_isi_crossbar_enable_streams(struct v4l2_subdev *sd,
+>  	input = &xbar->inputs[sink_pad];
+>
+>  	/*
+> -	 * TODO: Track per-stream enable counts to support multiplexed
+> -	 * streams.
+> +	 * Check if any other pipe already receives the same input stream.
+> +	 * If so, just record this pipe's usage and return.
+>  	 */
+> -	if (!input->enable_count) {
+> +	if (mxc_isi_crossbar_stream_in_use(xbar, sink_pad, sink_streams)) {
+> +		pipe->input = sink_pad;
+> +		pipe->input_stream = sink_streams;
+> +		return 0;
+> +	}
+> +
+> +	/* Enable the gasket when the first stream is enabled for this input. */
+> +	if (!input->enabled_streams) {
+>  		ret = mxc_isi_crossbar_gasket_enable(xbar, state, remote_sd,
+>  						     remote_pad, sink_pad);
+>  		if (ret)
+>  			return ret;
+> +	}
+>
+> -		ret = v4l2_subdev_enable_streams(remote_sd, remote_pad,
+> -						 sink_streams);
+> -		if (ret) {
+> -			dev_err(xbar->isi->dev,
+> -				"failed to enable streams 0x%llx on '%s':%u: %d\n",
+> -				sink_streams, remote_sd->name, remote_pad, ret);
+> -			mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
+> -			return ret;
+> -		}
+> +	ret = v4l2_subdev_enable_streams(remote_sd, remote_pad, sink_streams);
+> +	if (ret) {
+> +		dev_err(xbar->isi->dev,
+> +			"failed to enable streams 0x%llx on '%s':%u: %d\n",
+> +			sink_streams, remote_sd->name, remote_pad, ret);
+> +		goto err_gasket_disable;
+>  	}
+>
+> -	input->enable_count++;
+> +	input->enabled_streams |= sink_streams;
+> +
+> +	/* Record the input and stream for this pipe. */
+> +	pipe->input = sink_pad;
+> +	pipe->input_stream = sink_streams;
+>
+>  	return 0;
+> +
+> +err_gasket_disable:
+> +	if (!input->enabled_streams)
+> +		mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
+> +
+> +	return ret;
+>  }
+>
+>  static int mxc_isi_crossbar_disable_streams(struct v4l2_subdev *sd,
+> @@ -381,6 +411,7 @@ static int mxc_isi_crossbar_disable_streams(struct v4l2_subdev *sd,
+>  					    u32 pad, u64 streams_mask)
+>  {
+>  	struct mxc_isi_crossbar *xbar = to_isi_crossbar(sd);
+> +	struct mxc_isi_pipe *pipe = &xbar->isi->pipes[pad - xbar->num_sinks];
+>  	struct v4l2_subdev *remote_sd;
+>  	struct mxc_isi_input *input;
+>  	u64 sink_streams;
+> @@ -396,18 +427,27 @@ static int mxc_isi_crossbar_disable_streams(struct v4l2_subdev *sd,
+>
+>  	input = &xbar->inputs[sink_pad];
+>
+> -	input->enable_count--;
+> +	/* Clear the input and stream for this pipe. */
+> +	pipe->input = UINT_MAX;
+> +	pipe->input_stream = 0;
+>
+> -	if (!input->enable_count) {
+> -		ret = v4l2_subdev_disable_streams(remote_sd, remote_pad,
+> -						  sink_streams);
+> -		if (ret)
+> -			dev_err(xbar->isi->dev,
+> -				"failed to disable streams 0x%llx on '%s':%u: %d\n",
+> -				sink_streams, remote_sd->name, remote_pad, ret);
+> +	/*
+> +	 * Check if any other pipe receives the same input stream. If so we
+> +	 * can't disable it yet, so return immediately.
+> +	 */
+> +	if (mxc_isi_crossbar_stream_in_use(xbar, sink_pad, sink_streams))
+> +		return 0;
+> +
+> +	ret = v4l2_subdev_disable_streams(remote_sd, remote_pad, sink_streams);
+> +	if (ret)
+> +		dev_err(xbar->isi->dev,
+> +			"failed to disable streams 0x%llx on '%s':%u: %d\n",
+> +			sink_streams, remote_sd->name, remote_pad, ret);
+> +
+> +	input->enabled_streams &= ~sink_streams;
+>
+> +	if (!input->enabled_streams)
+>  		mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
+> -	}
+>
+>  	return ret;
+>  }
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> index 16085f23bc0b..c0ec59856374 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> @@ -816,6 +816,7 @@ int mxc_isi_pipe_init(struct mxc_isi_dev *isi, unsigned int id)
+>  	pipe->acquired_res = 0;
+>  	pipe->chained_res = 0;
+>  	pipe->chained = false;
+> +	pipe->input = UINT_MAX;
+>
+>  	sd = &pipe->sd;
+>  	v4l2_subdev_init(sd, &mxc_isi_pipe_subdev_ops);
+>
 > --
-> 2.55.0.11.g153666a7d9bb
+> 2.34.1
+>
 >
