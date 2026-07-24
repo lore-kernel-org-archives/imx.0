@@ -1,77 +1,89 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013008.outbound.protection.outlook.com [40.107.159.8])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012036.outbound.protection.outlook.com [52.101.66.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7FD364EB2
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2FB353A64;
+	Fri, 24 Jul 2026 15:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.36
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784907163; cv=fail; b=o25ue8bIuCJGC5co27hHYyT48s/Luhk9eXMGP+tRguZqWoT4Bo/Re7UNd7BtaMMvX9GtuLtKyNb9+DE3m+qfikKnGdeR2SD0oIf81QwwfRgyZatQMkunCzD0zqpCO1XTMCxNZYBeghzbqToPy6VJNAo7wtTXLfgcCrYdMdy64PY=
+	t=1784907844; cv=fail; b=avCCPHVkitqbq4s2ihjOUrlEwg3W3fCu6Bgy3YRhlBgt754yS8v/ixO0xiElczlFz1R0XRj0atTWH8hNxdHwiccTPYkut53RZLm9tRVcJN7PyUNly9ZOAPCZtNFAEKaS+BjGCaVaCKwViFrZ3nzCCvgi6WM6pU6ikA5bEr/VJ80=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784907163; c=relaxed/simple;
-	bh=/SQksir6mhn8ZchzyFiaZCxf8EKehLni84LcDr1VFms=;
+	s=arc-20240116; t=1784907844; c=relaxed/simple;
+	bh=sS7+3fueIAM5KEbA2oYyEz3cFlG2nw8F4TJFfI/OtHM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mCUYdd1N6vftCsowfdLVWAds4uKI92C/qT/6TKvbLRLOOgHiHtOgJ9C6mkHDTbhZfrPh5saz8p1Op3cCKOGt3looI/PF4gAHCQOAfdCctd3G8VedzuuTWrnM/AL6tiy/tHaooBgIBiZcQRot7RnDoIXEq7g1aJBtMsT7+mbq9dI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=sfJneQAT reason="signature verification failed"; arc=fail smtp.client-ip=40.107.159.8
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rS6olRk7CXrqgiRNHoCPPjZFBJLZF2FC58bTbmuHec/7ehc4fu6uJObiiStQH46VMslSbjWnbPpKP2RWhU6NE/KnLHIoqnANnSPuPwvHeKN1QZqxX85cJNU9SlhL5gUX/rO55XQMfnC8FfXDzNtwn8LTtz4NYxobH/NIP00Biwc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=H+Yj167t; arc=fail smtp.client-ip=52.101.66.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="sfJneQAT"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="H+Yj167t"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bEvxbz+mY/MsLLed2b0obYc8A2F6zvaNYQJtw90xQQWA69FOVsOaXTHKKLdIsGf6U40Ftmvn1XAYTsDibFtkFbkHXQdPdXDmM5z5RUcSVi+pfzfpwN5DpbEtfQz0hNS/h1hBrNUydQvtKbwtBxlp6enYLQQxT5y9+OQzctWEc0nBKopTbYtbdWjBK7epXs7uV2zYuDfUBTym9CDVDRSBBtBZenRrkIAfoqoBQUrj9iapDBP6DfjwOXIfcDa0iT5+sq/3rYz2dw+6Zq5x/Y8vrbZym65B99gQzhrgeYbvES1/XzIK1e8yBHoKZ0W+hVq7OLLHYY7WzPH/MVUKymlgqQ==
+ b=EVnnWdfAyKntoKVd23NdBJ9Fe9pf5hycQ/S5HyLuacc7cWdM1+3qVs5zq6QE6WZ/h50YHc+IIj0Uih43gStyS4vgLXMcA8FYY5ijbCG8nfBFpaOcdrf0Uw+gTd2cQLagttaakAgWr7w8ehyBcAkHqmjYp/rX2JvMxXWEvrzfwNPDJh8MOU3rHSDfMFYNMyeW0uCYxV9vgrAxaneUeyW330m799GkCX9GPHoCLBIdkMGSkP4IWGYkESXPm7DDrROqNms/qi8Jd/8RBAuHkBEzRzUyThTSraSYzPhGDxRdy+cGIual9tz5xFHIBLib2cBAgvXLoNzNkR7LZFC7cwQzSg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7VipkrXyhurW107jEETkKz5rj+IdrsyqAoP8b5fo7JA=;
- b=nHVmhILeZ/nzy4fRB3rFibx6fMhsd1LM3v7Wp8UJSf8snsJDuyhIZ0OS+UrWugDQIW3FXhGPUAq/N/vP6giBIisze3MwH0uSvl/lloRwiCQETzcanYUb8t3cUW66J8JFDxuXog9wc2xzj6YKHjo2iLRU5m3BSou+l0HyM/SfWszEgosZOks+Gb3B/khj5MgtvrRXRSG98haTwRDD83P/itMc5Nsqzrfvx12J3KCpbv/bcbWglFGfvuM3WSuKjl5x315MBCStHZqAj9XIGtIbOFfJSZr9sTeT/WnZDn0kDvmi9GSsHPbnnxh19AYM+zfTLZNDeX148Z4Mm9GErs6Mbg==
+ bh=aeojhf12d21dNy1YDIvGzHQ7OrxGSlOIQTP6xSyyLHo=;
+ b=ObpZme8v8LrfIiV/eL3EeCO3AjCXs7Qup4EmKCmzS7yR+gw+RntYWXb19g9zbtYtU0F8OiCJakQyYe/KhMtN/59ykMAe4qbS9UYTzMfZTdhc7U1aMv5YR0Ml/s7A1PKwCN8QCycP2VZWnP0obP8nw5mxJ6R3URWArqc9mSQh6Da0TypGSNelej1HUVcKKkeGg3W8HqMymFl4WV73EmbsqHYHXpnWpMnhtWgnjipV8d1AKAwqR2kl04bWaLUrwSgZWjc28tRNTcztIve/IwlIA6M3dCPX3Zaa3GF6m+H1Tyf63RbGK2fNDUL5JL8aLnA7JTyk7Y7F955bJAzneQOvYw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7VipkrXyhurW107jEETkKz5rj+IdrsyqAoP8b5fo7JA=;
- b=sfJneQATjrrW1vqqkOiOQmmKKEZmXHbqusrTGs45q7sG+3hnksdoVJF/Jn9ig2otWHLsLoQMLvZTzhVK9afCvZR471WL6Q21kUKEBzHPd1sRYN5nG3LaDlJvrpH14EvsQ8uuFUNKUNld1ojEJK7bQptBhRoq6ubGBUHhFX1Gx0QjXc0xyblQ54Db68lN3TwBFnmfxw3nlpFT77S+2w301mJSMfUUTzFZPPMZq+FO2orSi+mhXSyafMaMz0IqpP7gpv/MuiJbJNqgmsVPIBT2jaJkHixGeJn7JiCA3XBfSjEA03694OeQ4O84rLDF//gIfEOOTbbyFSpdgyVApAXkiA==
+ bh=aeojhf12d21dNy1YDIvGzHQ7OrxGSlOIQTP6xSyyLHo=;
+ b=H+Yj167tdt5MEK7QRb2FKikbktr/iReR7hy7B3E8H+bLy2e8T9gtpQzHqqXvdFimYdnxhrsVaX6QzUkqZ8+kK8CeNr8D1GgowTJmbgL1e7G0vwwO7hNa/Tax/PKq7dl5lf/9ULl2ck0LBDe8xttq7rkBXRWBDXWaaocDPAbEUzVypyKRY/7oQvC+Lozh7EKn/5KPda463jvlpyN6QlSOtjY5ngqMukXnMOqbLqrB4bH8A2VNbjC8dB0o4Pa1f+NNVeaj5jdjeOXE//0OM9r/UQEtZgTBhXMg20ZjtN6Cmt+8K7fBYh0hNPtx6CS6pQrk0YCIBBjHSNPuEn/3DRndeA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by MRWPR04MB12093.eurprd04.prod.outlook.com (2603:10a6:501:97::16) with
+ by DB9PR04MB9476.eurprd04.prod.outlook.com (2603:10a6:10:366::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Fri, 24 Jul
- 2026 15:32:36 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
+ 2026 15:43:58 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
- 15:32:36 +0000
-Date: Fri, 24 Jul 2026 10:32:23 -0500
+ 15:43:58 +0000
+Date: Fri, 24 Jul 2026 10:43:41 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Ray Jui <rjui@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Doug Berger <opendmb@gmail.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Imre Kaloz <kaloz@openwrt.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Daniel Palmer <daniel@thingy.jp>,
-	Romain Perier <romain.perier@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v1 07/20] gpio: Add missing OF module annotations
-Message-ID: <amOFh7KeLtO7ksCE@SMW015318>
-References: <cover.1784013063.git.u.kleine-koenig@baylibre.com>
- <72f0871dda4d65bb2b6ff8827da6a3b2dfdffab6.1784013063.git.u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset=iso-8859-1
+	Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Srinivas Kandagatla <srini@kernel.org>, brgl@kernel.org,
+	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+	iommu@lists.linux.dev, netdev@vger.kernel.org,
+	linux-pm@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 5/8] pmdomain: imx: use platform_device_set_fwnode()
+Message-ID: <amOILRFmlzcBaf4w@SMW015318>
+References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-5-2dee93f42c54@oss.qualcomm.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <72f0871dda4d65bb2b6ff8827da6a3b2dfdffab6.1784013063.git.u.kleine-koenig@baylibre.com>
-X-ClientProxiedBy: PH7P221CA0002.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:32a::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-5-2dee93f42c54@oss.qualcomm.com>
+X-ClientProxiedBy: PH0PR07CA0090.namprd07.prod.outlook.com
+ (2603:10b6:510:f::35) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -80,283 +92,88 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|MRWPR04MB12093:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3696f846-ed6a-49c6-cc39-08dee998c9e2
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DB9PR04MB9476:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f0a82bf-b269-4f7b-ea3e-08dee99a6001
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|19092799006|1800799024|11063799006|10067099003|4143699003|5023799004|56012099006|18002099003|22082099003|41080700001;
+	BCL:0;ARA:13230040|7416014|376014|19092799006|23010399003|1800799024|366016|22082099003|18002099003|11063799006|4143699003|56012099006|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	5kQOAZAg0I1kwD3JePmocgwu0sHSEoMxMwXX5i66QKU6er4dv2MMlyZ9bbpZEzY7L1QD7cPIdUE405eXdb0wr3Qoow7MVsHZR6WDEEKIU9rphNpCEqBYkhLdEjnzM73LyrRBFnEHCOD4yRpea2TpF4uZHEVAVmNk8dVtjD67PbDcnzKTtGkM2l9r+AHeWhClQ0icZa651v270FsAzw/BEe13YJV5K4Jtc/dfphrMemLkcpN5wUz6iKK7bLJhBEBKXT8R4FMW3/AeBjvTb6QdxOU806jA4dYxvccsJe8sWzkKuRUM0lhxsfr+B+KPUKA9r5AVAFlRXORyaNWTf1Uook0WIiBLvz6lW9JVFNRByLhSvls0rAMjqA0nJqu6N7PUCDFzLJfSI1EoM2t0OdXJfhoAGtvxg0GUl0uTl8Wv9KrYf+Q1f093l40tr/PQaEHRhfJHBxQBpC8Tuos5tlb+5dylzYs+4J/O+P0QLyVoaZdrXb6ryZieZO1H8s9FjhwVmROdhk/1ykJsZABms9uNBaNfNZuntVpwE9c97gPaHsWOobS8bIZReUHAHn+RzxkamZ+khi9leAEaTpkp7cp5L5Gy+iQLvzv7TVv4MYnSiXhqEmKBRUvUghraoG+ZkVBDXcMru5BklZcGnNUF+tpyQB8TWhF/SLbNTPQm9PEasrUG580HJxCxquAWPBEX0Ly9bIcyxNFoFaAxMf6ZloG5HEvQwYJ/ksDBTvTF4lFU914=
+	iVbQqVJP6oaB31hZxXqnp4kMtklhKHUXPhovTYDKuuVEa4yLQL7YP+LTKSVnnTJMiTvDdDQAmL5DeIsZrJ20/xSTYQd972Rfdw9822u3T1nDGQ3JKU0mxR7/2AzYTO3Vlsb12pfS457Z3WiJVt+jFCaUaVXPS7d7tyhRGqkQR7ipdQv94l3rtc87nyoPg7ezTqMR1nWGb3nNI6GhAbMUSPWZ4oIUyr2HXqhmKth477RTs9LEtgpyGrBU7SV69m7vp1B86mlo7qET5brzPsn0XGmgK6POMokNUlyoTzyuwivtC3tsoN8QkypZmH/L/SMXea1XUArJrFWS4DHGbrTz7Aa6nKTPFmWCGDyF30jhVYxg/4jjzm4J94cZ/eCoBOhmlrzWDy9cOs//n4/WQ7xNx68lWCRLWNKBjEumEzDChgLO/4QwgaLCNwI4LsXHprfdp5OoUbW/TJ7klleoabM5ZI+R2NehbtsV82QwP9z1cTvpUOyl52nXO3bTBY9jL+GtKPAvYHRrFfYQlr39DneomVkI8oWn46B4llYyfwdFU/YwWBLppqK2r9EJyBCbsNSpK+kHp1O384mO3bW9ZHtPwKSucnUofZ30FSBF6CjQwxDOmekW2PMeXKaBtFrunzJBwL4te+sBeIua3t6gHW/kwAFcXuQBBE4lK+SCWzvSgLg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(19092799006)(1800799024)(11063799006)(10067099003)(4143699003)(5023799004)(56012099006)(18002099003)(22082099003)(41080700001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(23010399003)(1800799024)(366016)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?IgXAlMWRgHcnv/TpyGNBOIlZNfpTo2q+7OkVQrCxSAQg3yPaavqI3Sqvvy?=
- =?iso-8859-1?Q?GHEf0YrFwgh+UGO8z6mQkIB27mksuGCjrbcdyAmj8KhKgbuFVFxbgTvbu5?=
- =?iso-8859-1?Q?LbH9YA2UtOx78zihaPeZAwH7YDPTM1R4zWuSNkQicv5FQXXDjzkxwzxI8L?=
- =?iso-8859-1?Q?Az0Yk51P9B1oFioTvVxyTRWJdfRF7iOYjMwZHF5ESIsFysCowFccJPF+dh?=
- =?iso-8859-1?Q?Th83/b56tt7Ba0cicnISxbEvZvr7aMoYn+J4PR8XXdRb9yfxCntC13kED1?=
- =?iso-8859-1?Q?JOCLXSfmdOlcXo/yK3QaL0RLL6+N1DLsVMqPioWodHpGniAVcahCVgyKaZ?=
- =?iso-8859-1?Q?GiK/M/YgnucDzuKMubfJ4h4HGCsVnjoJ6QNMQrUqP8ai6STPxoMKvrTnVm?=
- =?iso-8859-1?Q?KV4JmlzK8Pd/QQCd7+lOGFkOdyhgwWb0osp6YKMYIKkFHFWWLjzE7QtC9t?=
- =?iso-8859-1?Q?It1HzfmtTUgIX4vlwvTNiB+plSVsI8qpNLHeXtSvubKU81EPP9hsnCtVPQ?=
- =?iso-8859-1?Q?XSryxJKddV04E4Sr6QMsg8/OVLeJVZsgpoWPYRaDwjFVsNuu5Lac8gbngn?=
- =?iso-8859-1?Q?BdPHLMipBEt09yUiLcha0YeBj6IUfwJJRY5LcSAo6sRlNornKPkHYn2lZ9?=
- =?iso-8859-1?Q?HgtuTNXJqC+bFyKTN3s2q+yC75qZGKvuYpI8ABVfQkcdsbryeC1l2JpJSt?=
- =?iso-8859-1?Q?QC252flk6DfOS9Zz/2vQL5nruVH1rJHh93Y2s3LyroM4XZC9LmCC80q4zw?=
- =?iso-8859-1?Q?6M64JJeEIuH3kRj2QORxZf6MscOm0phyU7Aud2tV03ZbshYHS1YcsLzHbD?=
- =?iso-8859-1?Q?fl1kgsL60KzKgN0TgrAri6yJ1vqrpdkOsiq9cf+qkhoOX7OiMBZGpz05OG?=
- =?iso-8859-1?Q?BFXxf5erR89NRifGhdJ5iT2pgT4dIV7jFtSjW1+xYoZg/IRuYJE6mPgl+z?=
- =?iso-8859-1?Q?KvXhjFa2zRec6BW592bWC/jc8wvJlgBU0AlHNZGS/8iHK3WTzmEHjMOXFi?=
- =?iso-8859-1?Q?yYHoqRfckzaBZrOBCl7OKHM83KNVOFiu+0ILRObW3ubVNm01/WaiLZkoaD?=
- =?iso-8859-1?Q?wZ+/fhwPoE8m1rN60DOxkzZNAlC2mV3eqq8VNYVpM/TZn6qdEczPnxv+vw?=
- =?iso-8859-1?Q?mHDVcx75Fh7IbhSFNxc7Rs5ldxHuPluFsrdtQEPO6OAelkZuwe5kV0fbTK?=
- =?iso-8859-1?Q?ut7/vkoNYZkqVhBVUEY8LuIU85Uo6JKrWRqc8Budlq4+bvQ84vdw6qmKb1?=
- =?iso-8859-1?Q?k+OZxphpVeHZoxsj9kgj8clblDf8cffiMfakL/cPCGtSrC7E9SsS6MsJmT?=
- =?iso-8859-1?Q?/GmWuPblJiv/3Q6eaqHHHkfbg3mcFXogbdEZkXxUkhqhcPT3ONTFWfXDuP?=
- =?iso-8859-1?Q?NU5y9MUEZdzWvRzRA/h+bPtQyRZb0xaozmEpoDdwphnptwtOBufDtMQqa+?=
- =?iso-8859-1?Q?3QqW363MQH1TAHcNXhXPaB1OggowbuOKlM7Aax2gcrN6EsIK4wmBQ9OjDC?=
- =?iso-8859-1?Q?KE0DKq5oU2OTp4xX90zwr/7lVCtZ2LizA13+sTezXvT3hxUmvViWuO4W/d?=
- =?iso-8859-1?Q?AglhW6R9xWWx/htlMTTbgFYXyIlFWent8fCc0enBEadfG+d8Kb96Z/Qksw?=
- =?iso-8859-1?Q?Y//YraemUp4u0vkwFWaLFt9p+U2pOpRRLaOJoD2eB3n1JvwH+8/BtF6QIH?=
- =?iso-8859-1?Q?eOVHNSNhwwKCiIgS6Zk9Qby9sM39VdFyaa8TN133k1YzGlZvj7V48Wtimt?=
- =?iso-8859-1?Q?Wxw0bP/xxx0wc8thUP5H8EjOQfOZCNeS77KJEE3oZeuc8cSWtJ8v/PsOkv?=
- =?iso-8859-1?Q?6vc/uBcQbSXdexRahLrzaOfvE/MuB04I+Mv4cczSHqHVyJe0qTeE?=
+	=?us-ascii?Q?IEJyitdMY2gibfYCPqWeT0uI2+JQBbodwqW4HacPb8ifYktjZd8zo8oi0FjH?=
+ =?us-ascii?Q?VHIByAsqpNOCCoLx9uvODVf7E09fSFrHGmcIpcIWkc4ziGWhi6o6omk2QVPr?=
+ =?us-ascii?Q?ea9+YxIFqDos3911QPADr1qFyGRxSiG21oGxcGy54JDtakcVFqrO02gbgZvl?=
+ =?us-ascii?Q?eY659GLaw76wHAm8M167dHS0iK/YxxoRtEP5Oy4z7oRFgYdkCQqESvtJi83E?=
+ =?us-ascii?Q?nZnNMIHNTjS0369mnNE48HcV5AVdnwVncK3yRVJVq+GuI+4fX7lsE4Udkhro?=
+ =?us-ascii?Q?CqoV4Qw9j8hGDYwJ9Xy0Z+WFlkncaMLi/5dhdjjMDVJ18tjf+sn8suf47rJp?=
+ =?us-ascii?Q?Tjx0cu+qX7d3P05h/g7OJ0BtPr20yOkDJT46orNLAXrfIlApVz3uW0keQ7/X?=
+ =?us-ascii?Q?cwg5yQOVqd2zR8LeN5qdczvS7n5ni3zasdS64v9JBc5juFCceN8ZmwqSlu6y?=
+ =?us-ascii?Q?zR5f+9kgaVWvbjkJepiI7XLuGO4c3BZ/3fYqyTsbEgmb7/Vnbxy5bHkunwE6?=
+ =?us-ascii?Q?2M+In3Z5KVOR1zB1q45eESolyob7kPJZXOEGrtz9g2mF8t8/Nbg4WbuzY1qR?=
+ =?us-ascii?Q?nNhoEZes/eZbP1fGldr3y3XSZS0/5lqUKgCFKbFrfZffQ+TpTVN4xJ4KF1tB?=
+ =?us-ascii?Q?T94IqXgKm04xysibxYFmJAn5hA0fBm86oy13oSDiKvsqTsCbIfvDw4o6K2DL?=
+ =?us-ascii?Q?HFD6ArTB9XzLN4lloWcR4O3lBQKV5g2kTQdjiXBzjSgpGclTp5xWYC0/Xl1a?=
+ =?us-ascii?Q?Vq5COK8/VhSHJvCHtgOu5zAdaP8djJQhMZPF/pLsWNTmsG+/AB0q4GMG0OMK?=
+ =?us-ascii?Q?8CgW18adO/4/jfMcx1X+47pJFTEbqp9FqEvSJpjRas0JLsAJ4d3/2p4tCkjR?=
+ =?us-ascii?Q?vhXtTTTVzkFNdFiRvtYjVDQBu2Id6qikXSGQlsf/o84l/7w9hIaZGCLB8caD?=
+ =?us-ascii?Q?cHZdVkmwNpWrxayekv05Sa1yi9z8vBbfBlUXebkFsMth2Xf7kexTwRwqrqNS?=
+ =?us-ascii?Q?q7WMkrdMmSoad8L8gMH9m/fkLC1xX9JHABZOKsz20CHR0Zc1m+yfLxanYK1D?=
+ =?us-ascii?Q?gFXE43S43NV26jCSd2KOA8PPYMQwBdPaWKgNgMLcV2ZIB4ZLvhpm0UiB+bM4?=
+ =?us-ascii?Q?6x33HLvdZdEgM/zNepRpDKLgMXO2AtejSwhJSQCTOJ04oQYIJDoYywPCvg2r?=
+ =?us-ascii?Q?lnIchV1uDjKNkS3AWeIOkUN1mfGz3r9krgzcE2cImlrDwGfXuPf7lxKKTO6I?=
+ =?us-ascii?Q?99QL9ZLreC2PF4lp5HhGU7LlL1g8gkHHg5ZX4vJjAvBR8EFzxCpadefo3PYZ?=
+ =?us-ascii?Q?XhqF4yMdOcYn3Jtg0olD/LyfPRwlhNiNwbBipClTpkF6ib8gnWrnySYF7iSE?=
+ =?us-ascii?Q?Vw5lYxP0axcngr1mscmwCO1Q3kYZN+PLY9sEDVlZL53NFxJJGOKgP6CLtJuL?=
+ =?us-ascii?Q?T29xfQzP/oNQwQPEp4Qps2DE+zP51O4oA5Rl14SVnb0X2A2BEKYiaVjD29tE?=
+ =?us-ascii?Q?jLu/LTVzXB1KMuRzlzIAbzHIWt+T4RAiqJrrIcH0ygKBrKiysnUUBTwtmyim?=
+ =?us-ascii?Q?x0t2cUdawl1M4QOzVcmyA8zwrFGzUIpDo6yH/kM2NFq/RutUn4+6tVlyVcx2?=
+ =?us-ascii?Q?vcsyBiqF/x0nlhHqj+LWpgByqJng39I3ZQ45pKOhtCODfXjaJioPuFbt7dNR?=
+ =?us-ascii?Q?UdfxVgbEVpPOAvybIeFWvwI48HqzZXbv6MwOq9Z3eTz7qugQe5FgPZXdKG5T?=
+ =?us-ascii?Q?kj/JffN4o4iIxacjpHVyLk1CaLhWkNuXA7vNxn6gU+Nx3R77503d?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3696f846-ed6a-49c6-cc39-08dee998c9e2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f0a82bf-b269-4f7b-ea3e-08dee99a6001
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 15:32:36.7886
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 15:43:58.0181
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HD2GnBkiKmqVO6HuCozo5TUC8lZ3qsYKh5qGLprcmZDORexj4BLG7nd3AFP4DPoqJUjbWEjxtx7HtyGSH+BedDbaXKEBoPrZr5RJOoiFFJ5//VAocXOU/cmFJ1/tO8pC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB12093
+X-MS-Exchange-CrossTenant-UserPrincipalName: nusJO5leX/TBQXgmjmNrBx5Pi1N85mCyIrJYdnd0BcgJ/BqLRGy7AXWunP95vUSo5W/i0lD7N4z+Es3Aku35tkWHsWxBUHi2hboGHCS1Qg52aM4RJUksN4nrdQ4b3GRQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9476
 
-On Tue, Jul 14, 2026 at 09:24:08AM +0200, Uwe Kleine-König (The Capable Hub) wrote:
-> A driver module matching devices using an of device id table is supposed
-> to declare that in the module's metadata. Add this information for
-> several drivers that failed to declare these.
+On Mon, Jul 20, 2026 at 11:24:52AM +0200, Bartosz Golaszewski wrote:
+> Prefer the higher-level platform_device_set_fwnode() over the
+> OF-specific platform_device_set_of_node() for dynamically allocated
+> platform devices.
 >
-> Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 > ---
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
->  drivers/gpio/gpio-bcm-kona.c    | 1 +
->  drivers/gpio/gpio-creg-snps.c   | 1 +
->  drivers/gpio/gpio-ep93xx.c      | 1 +
->  drivers/gpio/gpio-ftgpio010.c   | 1 +
->  drivers/gpio/gpio-imx-scu.c     | 1 +
->  drivers/gpio/gpio-ixp4xx.c      | 2 +-
->  drivers/gpio/gpio-mpc5200.c     | 1 +
->  drivers/gpio/gpio-mpc8xxx.c     | 1 +
->  drivers/gpio/gpio-mpfs.c        | 1 +
->  drivers/gpio/gpio-msc313.c      | 1 +
->  drivers/gpio/gpio-mvebu.c       | 1 +
->  drivers/gpio/gpio-nomadik.c     | 1 +
->  drivers/gpio/gpio-pxa.c         | 1 +
->  drivers/gpio/gpio-spear-spics.c | 1 +
->  drivers/gpio/gpio-xgene.c       | 1 +
->  drivers/gpio/gpio-zevio.c       | 1 +
->  16 files changed, 16 insertions(+), 1 deletion(-)
+>  drivers/pmdomain/imx/gpc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
-> index b0beffe48b7d..9bcbee25f685 100644
-> --- a/drivers/gpio/gpio-bcm-kona.c
-> +++ b/drivers/gpio/gpio-bcm-kona.c
-> @@ -522,6 +522,7 @@ static struct of_device_id const bcm_kona_gpio_of_match[] = {
->  	{ .compatible = "brcm,kona-gpio" },
->  	{}
->  };
-> +MODULE_DEVICE_TABLE(of, bcm_kona_gpio_of_match);
+> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+> index abca5f449a226fbae4213926e1395c413160c950..c147eaf048ba2b79a744ec87029420981581e48e 100644
+> --- a/drivers/pmdomain/imx/gpc.c
+> +++ b/drivers/pmdomain/imx/gpc.c
+> @@ -487,7 +487,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
+>  			domain->ipg_rate_mhz = ipg_rate_mhz;
 >
->  /*
->   * This lock class tells lockdep that GPIO irqs are in a different
-> diff --git a/drivers/gpio/gpio-creg-snps.c b/drivers/gpio/gpio-creg-snps.c
-> index 157ab90f5ba8..2e159ea41791 100644
-> --- a/drivers/gpio/gpio-creg-snps.c
-> +++ b/drivers/gpio/gpio-creg-snps.c
-> @@ -131,6 +131,7 @@ static const struct of_device_id creg_gpio_ids[] = {
->  		.data = &hsdk_cs_ctl
->  	}, { /* sentinel */ }
->  };
-> +MODULE_DEVICE_TABLE(of, creg_gpio_ids);
+>  			pd_pdev->dev.parent = &pdev->dev;
+> -			platform_device_set_of_node(pd_pdev, np);
+> +			platform_device_set_fwnode(pd_pdev, of_fwnode_handle(np));
 >
->  static int creg_gpio_probe(struct platform_device *pdev)
->  {
-> diff --git a/drivers/gpio/gpio-ep93xx.c b/drivers/gpio/gpio-ep93xx.c
-> index 8784e433e1ff..278b1093dd22 100644
-> --- a/drivers/gpio/gpio-ep93xx.c
-> +++ b/drivers/gpio/gpio-ep93xx.c
-> @@ -377,6 +377,7 @@ static const struct of_device_id ep93xx_gpio_match[] = {
->  	{ .compatible = "cirrus,ep9301-gpio" },
->  	{ /* sentinel */ }
->  };
-> +MODULE_DEVICE_TABLE(of, ep93xx_gpio_match);
+>  			ret = platform_device_add(pd_pdev);
+>  			if (ret) {
 >
->  static struct platform_driver ep93xx_gpio_driver = {
->  	.driver		= {
-> diff --git a/drivers/gpio/gpio-ftgpio010.c b/drivers/gpio/gpio-ftgpio010.c
-> index 11e6907c3b54..e29df8d5e571 100644
-> --- a/drivers/gpio/gpio-ftgpio010.c
-> +++ b/drivers/gpio/gpio-ftgpio010.c
-> @@ -323,6 +323,7 @@ static const struct of_device_id ftgpio_gpio_of_match[] = {
->  	},
->  	{},
->  };
-> +MODULE_DEVICE_TABLE(of, ftgpio_gpio_of_match);
->
->  static struct platform_driver ftgpio_gpio_driver = {
->  	.driver = {
-> diff --git a/drivers/gpio/gpio-imx-scu.c b/drivers/gpio/gpio-imx-scu.c
-> index 0a75afecf9f8..3ebd3d73ed58 100644
-> --- a/drivers/gpio/gpio-imx-scu.c
-> +++ b/drivers/gpio/gpio-imx-scu.c
-> @@ -114,6 +114,7 @@ static const struct of_device_id imx_scu_gpio_dt_ids[] = {
->  	{ .compatible = "fsl,imx8qxp-sc-gpio" },
->  	{ /* sentinel */ }
->  };
-> +MODULE_DEVICE_TABLE(of, imx_scu_gpio_dt_ids);
->
->  static struct platform_driver imx_scu_gpio_driver = {
->  	.driver	= {
-> diff --git a/drivers/gpio/gpio-ixp4xx.c b/drivers/gpio/gpio-ixp4xx.c
-> index 669b139cd499..88d48cfc9017 100644
-> --- a/drivers/gpio/gpio-ixp4xx.c
-> +++ b/drivers/gpio/gpio-ixp4xx.c
-> @@ -341,7 +341,7 @@ static const struct of_device_id ixp4xx_gpio_of_match[] = {
->  	},
->  	{},
->  };
-> -
-> +MODULE_DEVICE_TABLE(of, ixp4xx_gpio_of_match);
->
->  static struct platform_driver ixp4xx_gpio_driver = {
->  	.driver = {
-> diff --git a/drivers/gpio/gpio-mpc5200.c b/drivers/gpio/gpio-mpc5200.c
-> index 00f209157fd0..2c828bc922ae 100644
-> --- a/drivers/gpio/gpio-mpc5200.c
-> +++ b/drivers/gpio/gpio-mpc5200.c
-> @@ -180,6 +180,7 @@ static const struct of_device_id mpc52xx_wkup_gpiochip_match[] = {
->  	{ .compatible = "fsl,mpc5200-gpio-wkup", },
->  	{}
->  };
-> +MODULE_DEVICE_TABLE(of, mpc52xx_wkup_gpiochip_match);
->
->  static struct platform_driver mpc52xx_wkup_gpiochip_driver = {
->  	.driver = {
-> diff --git a/drivers/gpio/gpio-mpc8xxx.c b/drivers/gpio/gpio-mpc8xxx.c
-> index a6868f673831..ee35da06cbc7 100644
-> --- a/drivers/gpio/gpio-mpc8xxx.c
-> +++ b/drivers/gpio/gpio-mpc8xxx.c
-> @@ -318,6 +318,7 @@ static const struct of_device_id mpc8xxx_gpio_ids[] = {
->  	{ .compatible = "fsl,qoriq-gpio",   },
->  	{}
->  };
-> +MODULE_DEVICE_TABLE(of, mpc8xxx_gpio_ids);
->
->  static int mpc8xxx_probe(struct platform_device *pdev)
->  {
-> diff --git a/drivers/gpio/gpio-mpfs.c b/drivers/gpio/gpio-mpfs.c
-> index 7f0751d7b1c4..1078b3018970 100644
-> --- a/drivers/gpio/gpio-mpfs.c
-> +++ b/drivers/gpio/gpio-mpfs.c
-> @@ -295,6 +295,7 @@ static const struct of_device_id mpfs_gpio_of_ids[] = {
->  	},
->  	{ /* end of list */ }
->  };
-> +MODULE_DEVICE_TABLE(of, mpfs_gpio_of_ids);
->
->  static struct platform_driver mpfs_gpio_driver = {
->  	.probe = mpfs_gpio_probe,
-> diff --git a/drivers/gpio/gpio-msc313.c b/drivers/gpio/gpio-msc313.c
-> index 7345afdc78de..38932986dc36 100644
-> --- a/drivers/gpio/gpio-msc313.c
-> +++ b/drivers/gpio/gpio-msc313.c
-> @@ -688,6 +688,7 @@ static const struct of_device_id msc313_gpio_of_match[] = {
->  #endif
->  	{ }
->  };
-> +MODULE_DEVICE_TABLE(of, msc313_gpio_of_match);
->
->  /*
->   * The GPIO controller loses the state of the registers when the
-> diff --git a/drivers/gpio/gpio-mvebu.c b/drivers/gpio/gpio-mvebu.c
-> index 8d3acadb0d68..4d1625be11ec 100644
-> --- a/drivers/gpio/gpio-mvebu.c
-> +++ b/drivers/gpio/gpio-mvebu.c
-> @@ -978,6 +978,7 @@ static const struct of_device_id mvebu_gpio_of_match[] = {
->  		/* sentinel */
->  	},
->  };
-> +MODULE_DEVICE_TABLE(of, mvebu_gpio_of_match);
->
->  static int mvebu_gpio_suspend(struct platform_device *pdev, pm_message_t state)
->  {
-> diff --git a/drivers/gpio/gpio-nomadik.c b/drivers/gpio/gpio-nomadik.c
-> index 208fed631975..90293329b40b 100644
-> --- a/drivers/gpio/gpio-nomadik.c
-> +++ b/drivers/gpio/gpio-nomadik.c
-> @@ -719,6 +719,7 @@ static const struct of_device_id nmk_gpio_match[] = {
->  	{ .compatible = "mobileye,eyeq5-gpio", },
->  	{}
->  };
-> +MODULE_DEVICE_TABLE(of, nmk_gpio_match);
->
->  static struct platform_driver nmk_gpio_driver = {
->  	.driver = {
-> diff --git a/drivers/gpio/gpio-pxa.c b/drivers/gpio/gpio-pxa.c
-> index 5d61053e0596..317e3bc925eb 100644
-> --- a/drivers/gpio/gpio-pxa.c
-> +++ b/drivers/gpio/gpio-pxa.c
-> @@ -583,6 +583,7 @@ static const struct of_device_id pxa_gpio_dt_ids[] = {
->  	{ .compatible = "marvell,pxa1928-gpio",	.data = &pxa1928_id, },
->  	{}
->  };
-> +MODULE_DEVICE_TABLE(of, pxa_gpio_dt_ids);
->
->  static int pxa_gpio_probe_dt(struct platform_device *pdev,
->  			     struct pxa_gpio_chip *pchip)
-> diff --git a/drivers/gpio/gpio-spear-spics.c b/drivers/gpio/gpio-spear-spics.c
-> index 96a0e1211500..3099deb2b290 100644
-> --- a/drivers/gpio/gpio-spear-spics.c
-> +++ b/drivers/gpio/gpio-spear-spics.c
-> @@ -157,6 +157,7 @@ static const struct of_device_id spics_gpio_of_match[] = {
->  	{ .compatible = "st,spear-spics-gpio" },
->  	{}
->  };
-> +MODULE_DEVICE_TABLE(of, spics_gpio_of_match);
->
->  static struct platform_driver spics_gpio_driver = {
->  	.probe = spics_gpio_probe,
-> diff --git a/drivers/gpio/gpio-xgene.c b/drivers/gpio/gpio-xgene.c
-> index ad0f1551c271..b34b0c58b67c 100644
-> --- a/drivers/gpio/gpio-xgene.c
-> +++ b/drivers/gpio/gpio-xgene.c
-> @@ -191,6 +191,7 @@ static const struct of_device_id xgene_gpio_of_match[] = {
->  	{ .compatible = "apm,xgene-gpio", },
->  	{},
->  };
-> +MODULE_DEVICE_TABLE(of, xgene_gpio_of_match);
->
->  #ifdef CONFIG_ACPI
->  static const struct acpi_device_id xgene_gpio_acpi_match[] = {
-> diff --git a/drivers/gpio/gpio-zevio.c b/drivers/gpio/gpio-zevio.c
-> index 288a86c8294a..f1c5c6a20673 100644
-> --- a/drivers/gpio/gpio-zevio.c
-> +++ b/drivers/gpio/gpio-zevio.c
-> @@ -213,6 +213,7 @@ static const struct of_device_id zevio_gpio_of_match[] = {
->  	{ .compatible = "lsi,zevio-gpio", },
->  	{ },
->  };
-> +MODULE_DEVICE_TABLE(of, zevio_gpio_of_match);
->
->  static struct platform_driver zevio_gpio_driver = {
->  	.driver		= {
 > --
-> 2.55.0.11.g153666a7d9bb
+> 2.47.3
 >
 >
