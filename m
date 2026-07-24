@@ -1,108 +1,282 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011053.outbound.protection.outlook.com [40.107.130.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7A82EACEF;
-	Fri, 24 Jul 2026 00:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784854723; cv=none; b=Ew9pYWISeknJ9za2NgCoLRcJ26uYZYsbG52CAIbpUGaOF/r3TbJ0d8WoHZaFU7+8579wyERRHh7V3CnZK+TolsRUh1KnZfFqs60saRxTmp497ep/LsQkOOpqMZSjOoPdH3XzEx10kRAXjsS/cSw/sfONLXxz1DZqscztOWgOuYg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784854723; c=relaxed/simple;
-	bh=paT0EgDOjc3vEpgjmtYJsq9rFphaCgtgbuM51+hgsUY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=e9cAWdvyI+4PdcjGLiGLtZKpJAJnKTDP8m72BQjWd5xO/B459RIFg7pHAWJhNteX5g5aRWwOyamkx+IU5NJ9u1IZHLf1LPt2j9vQWysCUpiMlZrNP+riMRDN2ex4gwDvh516/JSXC+U2iXQ4Lta+5kfA7HFAgexnTgW53uvz0ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MiRHR6My; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADB6175A93
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 02:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784859950; cv=fail; b=KIBMMeCfVVAKkh6uVxvs7TgWHY6kmfSIgZjO6X9EWkBW/EXyz2eDaEkm+5+zLFAaOp382sgvJLQ+PK8yWZ/g86wEzCBBsIgP/ZcYGOSnA0riGOg+KLKBFY+N77faPkOZqJWkW1Tv2Eg09uKS9KnFPmqH9X/Ul6TSe53NNjP8U6I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784859950; c=relaxed/simple;
+	bh=c3E7ou2b5jxjOMHoHU8TyEePpoRSEUnyFLcw4b/UKi4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Edu9u5av6+ItETAVARRM1jzjw6F1v5Lla6HiOgnv2K/XLNojM9T15j+uNw2bQHaxDo7cgL7EuXix2wvFhqrrH7ppPonanNxehqACKu5g8XqdwKqEUZdwJP2sHqAGoi+pOSNTGUInVcjps+SEoOHG71PVM5hCbUvRgkiLr5HwPxg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=f5xAFCAz; arc=fail smtp.client-ip=40.107.130.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MiRHR6My"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DACC1F000E9;
-	Fri, 24 Jul 2026 00:58:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784854722;
-	bh=MTE3ekRM/dUuD7swK2qnfDz3MgDaOVtmfU7rqUsKiP4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=MiRHR6MywchzHg5bAjcpNQsAP3QwCZ9F6go+5x2rrZmZBlEQSP3glnevKs3MZrq5Z
-	 0oWnwY3FqG/cc+HMdd3C0UlxVSYrRQRcj8uuFRsCIqplOKDZk6KHIdR90SJu2wxIsO
-	 maFC8w7owyJCu2TyrtgzbsXERxXrp5Zv+iFstjsxujzbjhbQF/o0a2xejuLxcQcSgl
-	 TxElx9XPZvETJVDkbO8whoOMtmwJ4MNp+VPJVwNrjjVfltgo8+j0eqq1AhnxxeeKYa
-	 sWG6TOxf7oLbkIqoO3jCYx/cglEGNrFQnF75MPwYvnKs9q/1FUMJSKxQQUQ+giFdVN
-	 lp2aPj34bWYWg==
-From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
- han.xu@oss.nxp.com
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, Han Xu <han.xu@nxp.com>, 
- Conor Dooley <conor.dooley@microchip.com>
-In-Reply-To: <20260722-xspi_dma_upstream-v3-0-6b7ff50cae8e@nxp.com>
-References: <20260722-xspi_dma_upstream-v3-0-6b7ff50cae8e@nxp.com>
-Subject: Re: (subset) [PATCH v3 0/3] Add DMA support for i.MX94 and improve
- AHB read performance
-Message-Id: <178481660524.53486.16709271966474677924.b4-ty@b4>
-Date: Thu, 23 Jul 2026 15:23:25 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="f5xAFCAz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xhz22k7qc+I+tikRk0NpDWmQi0DbMT4zS9rZoIrcB4CuJ+ZEZxjkPZskwT1c+ITZISPmpBUd1+9f60Gbu8+G6KsZnnEcggKTPLV+ghLc41z7fwCSSThkrhdTWKszw+hK8KRZamGZmtisfe4aVsSzFbxq0/r6TW/S3X+nUtkCkAybMEgfwVV7ToTbSX1/qPOM2PRfe8WudvCOQAGWxL7QrflU1BqFEmOZM4wMVZm25MLhyElTdN0wOC+abIg7/OC1an4w/RtI1JjaDhMF1ZE8SfxUTZXWkaPli/TXNjakacvcfsTHe06ezOIxvPT5IvTq1Ds3HMt1XB5SBBPAR0Au4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ixuvoYfoJYkUEx4+oSB66cEN5lAePAqdl2TR+wY3X2A=;
+ b=xWZ9JQglLj/4KCrenLI04ttIjCMoEKhd5a600H991+HmSuH3Az248EjltPeuaAHLeaecps4HxlaxH4rCCRZM3OX9gt7Y5artQSWJiQD9QaDE8AI+bmIUU1VbCbjOzpBThNvroLHL6g42w7cJ2p/Nx4XqZr/qEDffA0JhGKyhu0GyTNT+l/NSxeJ5nwgSB5qhyOpJTIzPETjLysS1gxW1yOpAdLSAgxYEVmoK1ooWudpo7vZ9k7BZH9ykJ6FNp12bcrDLL3kmVYV36eF0ynPD7AvPhXc2RjolEvh4XDop9Vla0Ww5Xof+Zya+/eAoqNRMxyPnRTRQX+4DPA3tcACeKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ixuvoYfoJYkUEx4+oSB66cEN5lAePAqdl2TR+wY3X2A=;
+ b=f5xAFCAzTY5dW8JBPmPKmhDaZuPRRLJsq2g2zBX6U7iXvCz/FmBf3XfUK2pfn1PZ2IppdKGjaLcyy7iUYGF09wdxRtJmrxEpg4+N5ICw5r19QMVXXCDttdreIhEui3DMKCjcT5ZIT3gSuKsp4EjVbANslWK9G5w/E8sFz8xpUL6rcJPT+ybz1BtQQgj0ZSAdB9ygVGME+EE4dhd0s6xJoOkLTEa07qPtVoDt/CWYBMlSQz9iJ0elJE1VQBwCbH7D3tDtKMIKK1c9T+a72YNjLNfHk7/sdfpht1auztOJrjMJVKyjBZcLvPd93kkfK3u2IrLF6ul70Fbmebog5WVWaA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
+ by VI2PR04MB10168.eurprd04.prod.outlook.com (2603:10a6:800:229::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Fri, 24 Jul
+ 2026 02:25:44 +0000
+Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
+ ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
+ 02:25:44 +0000
+Date: Fri, 24 Jul 2026 10:27:13 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Marek Vasut <marex@denx.de>,
+	Stefan Agner <stefan@agner.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Robert Chiras <robert.chiras@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 3/7] drm/panel: simple: Add waiken WKS101WX001-WCT
+ support
+Message-ID: <amLNge6hp25xHDYc@raspi>
+References: <20260715-dxl_lcdif-v2-0-da797562636e@nxp.com>
+ <20260715-dxl_lcdif-v2-3-da797562636e@nxp.com>
+ <alnCL7ylMyvGD-ui@raspi>
+ <amAJL9TIcDAK7kbh@SMW015318>
+ <amA8iVS4c0exg6pT@raspi>
+ <amA_lUpWkbOFal1y@raspi>
+ <amFAXwoM4j2sIENj@SMW015318>
+ <amF60o7yUcqAE24N@raspi>
+ <amKJZ4CZJbeBw6L6@SMW015318>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amKJZ4CZJbeBw6L6@SMW015318>
+X-ClientProxiedBy: SG2PR04CA0209.apcprd04.prod.outlook.com
+ (2603:1096:4:187::12) To AS1PR04MB9287.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dd::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1547; i=broonie@kernel.org;
- h=from:subject:message-id; bh=paT0EgDOjc3vEpgjmtYJsq9rFphaCgtgbuM51+hgsUY=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqYri+L5XkQxLBYrzQPKVS4j973YIp6flIsz7cu
- cgR3QQNbPmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCamK4vgAKCRAk1otyXVSH
- 0JXwB/9y9jkv9rM1aQpigs8h/xGon6ocqEPIndgStSKUfsm4LIyO9J7p58WgCdMBzxVSI92Tk8P
- c4XxY8edb5msw7tUI4kF4PN4HwQLuU4KaBHnedu4q0MNr2d0XeV550syZw7AUiJE6RS5YmTwlry
- TxqToN0IH3lpt7EpuScWdtrnJFx4mQWyWH0ODuYR3bWJ4W2+R3GMn9kmKZZq8ufjZbSdh7ZwdX5
- hEBBbkIYHNTavPNloeft0g2ZupEdq4KCET/Dx1E5Hqndi3ssen66KGr6zGpsVnK6tAIWZmsFh1G
- I76lI6lSD7gCTdCMy0mXRCngcLXT/YIVd8fC0u2ulIpQfBS9
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|VI2PR04MB10168:EE_
+X-MS-Office365-Filtering-Correlation-Id: 38eddd25-bd45-4a56-df07-08dee92add4c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|19092799006|376014|366016|1800799024|10067099003|11063799006|4143699003|56012099006|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	cRIx+NBFcwTSNc8q63I/3k64Z/91oIvMfHPjA5UqSpGutZGrYT53l4OwTEastUx57U/trrSYXLrrG/iHoT7E/H8ImlCuSIzpkR4tzPkiVXavPEzyF8SJNcE6u0whfJRYl/fq306Bbg/x1W+duzx9S5UjWzVW2WokG5sbyugkEAD0tRjBeFTmne6VIkSZ46liqPbCpLH/LEx0sRIawBV5ho8G3xfKElWN005DuGJ0RjF6e1RO+NsnCIcpcRmKwzPhP4q4sV/zPUdpuFUhwkHpb1eIegRCQ/iILIlaTWYfP6GOGgFUl/ZL1nDIsEBq+x/EACkf8sBXMlrgbTgRNo67WmKhzXm4d6LKTNvX+JNdr5e8dOnD/3e0LdoLZI44iS0JpPHUCjTQ1LeQQQXNdggQPT8AggRmyWan+vvBs+LGRhT+bvEKQvVPknrQGVrf82U3JU80Q+hibitL2f2FfM/JBMNRRRRx+WR77toTDc/DBuwfyaoC+z/jzK6su9GadWobmRxy0AN5pO/my5rGDBQ0HcicHghxHxDZJcK7rs7c5s7FmwbZvtlaXfkP/YRmvNtzCZjDmbGrpC+WgOVsfeX87KBF121JfvNEIiQQ8yW4JxCCFwF2iND05/wdvNSE9ExD7DY5pM8xIvwQt47OmUNDBzr4v+H6ttJJbrtgTqTV+NA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(19092799006)(376014)(366016)(1800799024)(10067099003)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zvv9iDLDYLo8gFsjkDGINz6ed+IMwAMVm5SBfzCDXJujEbgfkjRKx2H9g9W/?=
+ =?us-ascii?Q?rWBGGHnsNsOOF3ET01H4RPv+tIH9fs0SkKTvvOU2oO/Sm/kXtzfdh+RO/J+t?=
+ =?us-ascii?Q?VyyBQ5itJAUN5j9rrLRjeg9JgbeniPxX7CAVnsG/cublrXkv6kCw0b0fFUjX?=
+ =?us-ascii?Q?F3s9AJSq0iSkBR4wsNlRx7rM62LfKiGoVhym7dRGQLRrPLlULARD4pPdyB98?=
+ =?us-ascii?Q?gvxHHwXflX72dM5B5TqwfhpnXtfBnrB3ISYbC+NYnB584Ygnys2ufa0rKl/5?=
+ =?us-ascii?Q?X0pcyitGPPQdc48J+S9x0RlyteaohmJShPa+KHt3o63ZGxKeuVsGS03L1FjS?=
+ =?us-ascii?Q?g3RSomJNkSuzDv9RAkOMcI/IOC3PZTVBoKPZ7VvEI8lZcbXwi6ZLHHmCYbX/?=
+ =?us-ascii?Q?WEs5lYqCy1mMtb8/xTFH4ZXbhwCYCGZoGyC/414oBSY57lijhmKTCKnUrjos?=
+ =?us-ascii?Q?9UJ3wbgU0urYrXx6cht1ulZ9Ugq+Le+mGT7FuYCCpARIoTaylhDfD83OCG59?=
+ =?us-ascii?Q?fOAM6Rrd0nyJkvwG6spZ/fa4j5d0v7ITAxnDYpx31/aGDYEG3QYj2MhMU281?=
+ =?us-ascii?Q?uiy+3aU+kg4igeuxbGrbDnh/N+oBPxRoGIBXoLmivTGZUqG7O0CsRkcLSFd1?=
+ =?us-ascii?Q?qEEUWpIEqtd2kPtl/M8ILwdCeeiZf9SNcUg51MO5wn3lappZRJNb3cJl8dgg?=
+ =?us-ascii?Q?jUoJS+PdXf1YnVGAdJ4LzrB8Kw6pgv9gyO2jSEab/+QpP25HyosOJru/SeGB?=
+ =?us-ascii?Q?/MJKChQaaWt1IDluYuTa3VAhdG254O2w4dzqrHONgPejEaDdIv2KueaDihjH?=
+ =?us-ascii?Q?6L/OCWt60NYSJGKqhpDIyUXFyPDtCRHZ5Dovu9Cp/KbVYctZBQ55G2zsVIGn?=
+ =?us-ascii?Q?QT94cM7ujmJF1q7wxNIDkeFkzk1TSIeFc342G/SJug7A6/A+bYqlTUh22a0c?=
+ =?us-ascii?Q?EbJgLAxmpIqG2ZN7PufsDuza2gCE3d1PBQvhZwljjwxLsTrVX1u/P+dO4+JY?=
+ =?us-ascii?Q?cWiUgUTWKXo/cX8JndNxRnoqayq1ydaC6qpMPjBv9YO7/ffHcwwkkBr38Ede?=
+ =?us-ascii?Q?p6S2fsOp8YP6K/mKfmDc32cL+ESuxmdF0J9VX17nGpF6EgjMPx7qWdp/AkX8?=
+ =?us-ascii?Q?GVjtSVYnSYVyiXnBPqIonhMArYxgn+u+ngdU/Q5Wve6+vu/0JWqxFdn1NdX5?=
+ =?us-ascii?Q?OteM8MsA2Pn3ZIKVOhQ4uW5JMEcx0X9x/s8i5yLMYeVaH+oTEVH5AsaGYl6V?=
+ =?us-ascii?Q?BcMtevfDk/pRgjK41ni6EUw2rnuN6iWQXbsull/Jo93jl44rjiGAaUFEMicN?=
+ =?us-ascii?Q?INpnaGD0PW5hfRO1f/Ii9sCbkOz6tIZK7lpq+6HAPwYetg2sEWWnmI/gA/IL?=
+ =?us-ascii?Q?nwpD5M9z1lOkup7VncWCxTcQV7ezFCnKxUTgTmh0WFs9Y8LOPYP5/UWnynDf?=
+ =?us-ascii?Q?hY9A1BICMc/B8bZxQITzDMTDMcSD4+xf8cHACDT5UAZL7PxdcA188H1S5q4a?=
+ =?us-ascii?Q?4dtishsEpURRAtJQIk/pebMZApJQxYvxd9bpBndPlWCgOrqET/MUGW3uzKIR?=
+ =?us-ascii?Q?syh+QGgyIZk65oryXZd7YlOisAhdbsu5a38ByJxG48y6ePT3NefmayjW9+Gz?=
+ =?us-ascii?Q?8J8jSc54Ju3da79dtPtK8AHirz8zPJeWhvGBbtS7TxNy6kzpfik/sEFKoYjJ?=
+ =?us-ascii?Q?VQLHOZNDqf2FH5CBi63uJoq9JseqUmuuCaxHzPVb4Ni4UzWF5+5puCBYChbp?=
+ =?us-ascii?Q?0Tgo1E/57w=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38eddd25-bd45-4a56-df07-08dee92add4c
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 02:25:44.7088
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IcWvnSZVP0rNfv2ktUlc6KVH9lCPoogPRXYy6ukkUTiosEf1kB0h5AaQUgUNbBt01zU4/S2RL4c83IXeASiMOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10168
 
-On Wed, 22 Jul 2026 17:00:41 -0500, han.xu@oss.nxp.com wrote:
-> Add DMA support for i.MX94 and improve AHB read performance
+On Thu, Jul 23, 2026 at 04:36:39PM -0500, Frank Li wrote:
+> On Thu, Jul 23, 2026 at 10:22:10AM +0800, Liu Ying wrote:
+> > On Wed, Jul 22, 2026 at 05:12:47PM -0500, Frank Li wrote:
+> > > On Wed, Jul 22, 2026 at 11:57:09AM +0800, Liu Ying wrote:
+> > > > On Wed, Jul 22, 2026 at 11:44:09AM +0800, Liu Ying wrote:
+> > > > > On Tue, Jul 21, 2026 at 07:05:03PM -0500, Frank Li wrote:
+> > > > > > On Fri, Jul 17, 2026 at 01:48:31PM +0800, Liu Ying wrote:
+> > > > > > > On Wed, Jul 15, 2026 at 02:34:48PM -0400, Frank.Li@oss.nxp.com wrote:
+> > > > > > > > From: Frank Li <Frank.Li@nxp.com>
+> > > > > > > >
+> > > > > > > > Add support for WKS101WX001-WCT panel, which is an industrial-grade
+> > > > > > > > 10.1-inch IPS TFT LCD capacitive touch screen display module.
+> > > > > > > >
+> > > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > > > ---
+> > > > > > > > change in v2
+> > > > > > > > - update height to 135 from 136 (sashiko)
+> > > > > > > > ---
+> > > > > > > >  drivers/gpu/drm/panel/panel-simple.c | 31 +++++++++++++++++++++++++++++++
+> > > > > > > >  1 file changed, 31 insertions(+)
+> > > > >
+> > > > > [...]
+> > > > >
+> > > > > > > > +	.connector_type = DRM_MODE_CONNECTOR_DPI,
+> > > > > > >
+> > > > > > > Seems that the panel also supports LVDS input according to the specification,
+> > > > > > > since it mentions 'RGB or LVDS Interface'?
+> > > > > >
+> > > > > > Need hardware rework to use LVDS. Need remove banch of resistors. Should it
+> > > > > > be treat as difference panel by different compatible string? hardware
+> > > > > > actually changed.
+> > > > >
+> > > > > Not sure how to handle that.
+> > > >
+> > > > Wait, you probably may drop this patch, just document the compatible
+> > > > string in panel-simple.yaml and panel-lvds.yaml and use add a fallback
 > 
-> This series adds DMA support to the NXP XSPI controller on i.MX94
-> and enables the use of DMA for AHB read operations to improve
-> performance.
+> panel-simple.yaml don't allow fallback to panel-dpi. Need seperated yaml
+> for it.
+
+Really?  How does it disallow that?
+
+I can see newhaven,nhd-4.3-480272ef-atxl and osddisplays,osd070t1718-19ts
+are documented in panel-simple.yaml and used with the "panel-dpi" fallback
+compatible string.
+
+Documentation/devicetree/bindings/display/panel/panel-simple.yaml:244:      - newhaven,nhd-4.3-480272ef-atxl
+arch/arm/boot/dts/ti/omap/am437x-sk-evm.dts:127:                compatible = "newhaven,nhd-4.3-480272ef-atxl", "panel-dpi";
+
+Documentation/devicetree/bindings/display/panel/panel-simple.yaml:268:      - osddisplays,osd070t1718-19ts
+arch/arm/boot/dts/ti/omap/am437x-gp-evm.dts:89:         compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
+arch/arm/boot/dts/ti/omap/am43x-epos-evm.dts:45:                compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
+arch/arm/boot/dts/ti/omap/am57xx-evm.dtso:62:           compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
+
 > 
-> On i.MX943 EVK, the measured read throughput improves 4x higher, from
-> approximately 70 MB/s to 290 MB/s when DMA is used.
+> > > > compatible string "panel-dpi" or "panel-lvds" in device tree plus a
+> > > > panel-timing node.
 > 
-> [...]
+> previous dt-binding discuss, don't allow failback to two compatible string
+> sorry, I can't remember exactly thread.
+> 
+> like
+> items:
+>   - const: ws101w001-wct
+>   - enum:
+>        - panel-dpi
+>        - panel-lvds
 
-Applied to
+I meant just to document the panel in panel-simple.yaml and panel-lvds.yaml.
+No need to add a dedicated DT binding file with such a compatible property
+for this panel.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
+> 
+> > >
+> > > Look like recently prefer add panel-timing informaiton into c code instead
+> > > of put it into dts file. But I am not sure about it. Just check recent's
+> > > log history.
+> >
+> > If display timing is specified in panel-simple.c, then you have to specify
+> > the connector_type there too, right?  The problem here is that you don't
+> > know the connector_type, as it could be either LVDS or DPI, and I'd assume
+> > that we don't want two compatible strings - one for LVDS and the other for
+> > DPI.
+> 
+> If supported both type, generally need customer property and new panel
+> driver to switch between dpi / lvds
+> 
+> or use
+> 	ports {
+> 
+> 		port@0: //connect dpi
+> 		port@1: //connect lvds
+> 	};
 
-Thanks!
+I'd say a new panel driver for this panel is a bit overkill.
 
-[1/3] spi: dt-bindings: nxp,imx94-xspi: add DMA properties
-      https://git.kernel.org/broonie/spi/c/6f99efb11526
-[2/3] spi: nxp-xspi: Improve AHB read performance with DMA
-      https://git.kernel.org/broonie/spi/c/38d11bb2cd1d
+> 
+> 
+> I think we can defer this lvds work until it is actually used because
+> - need a big hardware rework to support lvds, most likely it will not be
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Per panel spec, just remove a few resistors, which doesn't sound like a
+big rework to me.  But, perhaps, this doesn't impact SW solution a lot though.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> appeared at real productions. If it mass production, vendor most likely use
+> difference module number for it.
+> - it may be end of life if there are not much users.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+I'd prefer a mature solution which handles both DPI and LVDS interfaces
+correctly in the first place.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Anyway, just my two cents here.  "DRM PANEL DRIVERS" maintainers or DRM
+subsystem maintainers may override me.
 
-Thanks,
-Mark
+> 
+> Frank
+> 
+> > Although display timing in panel-simple.c avoids duplicated panel-timing
+> > nodes across various potential DT files, I think you have the "good" reason
+> > here to use the panel-timing node + fallback compatible string with one single
+> > panel specific compatible string.
+> >
+> > >
+> > > Add Neil Armstrong for comments.
+> > >
+> > > Frank
+> > >
+> > > >
+> > > > --
+> > > > Regards,
+> > > > Liu Ying
+> >
+> > --
+> > Regards,
+> > Liu Ying
 
+-- 
+Regards,
+Liu Ying
