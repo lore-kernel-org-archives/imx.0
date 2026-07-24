@@ -1,123 +1,148 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF46343C069
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784908453; cv=pass; b=jAFMCamAk2O09N7FCXDtAWv/VI8XITpicAxFTqLuwg2scbJIIRfl6t2Tdhbi5L06mkzBb4qtHYTEAFSTflZl1kp8acv/4M560NclJ93VvUjXPoe1gzElpYOE+B0YgBMhlaQng3B3aZpv0KkfZpWgRo+sjZ18jyLPgAChKJrtaio=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784908453; c=relaxed/simple;
-	bh=ENUPkRl79pEx0BA0+dcKj8PnBBniGh5LL6VfEya2P3s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mGl5Zjs+1zA2xHAzZZmfrVC2OBrI/TicMum6Rsn1VgcfVbk/3XJzivFEHLh3gAKKsUsPydLKKcl7NC53tex+cTOfdafkfRpHeWUOCtq69Acug6q2ztCMuRKjABANRpf4cCsqeJ9ZGf1p23SUKTVgn/GC8twH1feFXnKe/fyBZkI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ctgBa6Be; arc=pass smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDF637F315
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 16:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784910283; cv=none; b=FCam2Bi7K0HwrCfR79uvTFiNFLGeP2rIU4jcbJ5wSz3eXUhyS3NdygVkHGma4+N/kd2+cFwqkKl4S/YYkH2nQMYBonAoSMRUHnC8gQv+7aWkT+5g/ovB9kPdPOsDJDHNa5ZYLwhMtccY1mEwWgwfRKjmz/ft0KGbPmwjz739/Fo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784910283; c=relaxed/simple;
+	bh=W4GflG547kCGGXAuWVfH79/VJBEGvcleAsQc8NOt4fQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uzpAVYPFeiYTBVFaMSMj+IzYNYa1+Kb8q1XhRE4xI85e51ZiA+LU1zsK+FFGzIS9RyZAap/kQIJSaCrSlC8Fz7WX5gRbOkddToQ4X37tZt1LTmvbEubqF8r3ryYNekdbxYoxnipxNPlW6KxjF4ExPvygCz/vFF2ur/yVuOWp0dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CIbcF/bg; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ctgBa6Be"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c10ed63c0so236931cf.1
-        for <imx@lists.linux.dev>; Fri, 24 Jul 2026 08:54:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784908449; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IQco/Pw0Bjjl5Fhksq3SPsskyFhYVmCC9l/TDLV6E5/m9cBpl1TCKStqL4Eap2W+GH
-         ZK8X1vvGIvc4vHHsjgRCiAuos6RuxOP9t9RpbJi0DxIhlIzeEunvoib7K7UD0HXjPudl
-         0/p41XlBhF3AyP871hRI+4hqf46JJnSEjtUi2E9uWPE0CNLWm2Lj7sgH1JBtFuwJLWoH
-         brHuITc3FdoiMg9t5UjxOeuH7xBuKcFofMqhSJrBvMNiy2MFIeGsGtI2BvSux67P25fb
-         +KOciUgJGcLBnLnSIikiAwWMou1vXzwqTOy/Nc/KNJESm9zgZQi7v5pt8Yf8/8K0t3RG
-         9aug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RK+0ydkVq3QkQA31vNi6A6UpE/xnLiLeTaBJXi8dr9A=;
-        fh=gApUPJYWazxbm7PTrxUpQrI1WnCuoK5oTKFqDhLBfPw=;
-        b=qhXLn41epeNLnlLxWucyvtiDZXf523GQ4iZWSvq5q5ZEruPNyRmKW8RzP0ClsWYj6I
-         eqVozhTrDYLTii8aHToqT2jPbhghTdiNUbAxISBqMW30FJpTy4dTgYiVfLCzbvkmZi0a
-         FFKYtariUsLdyUAW05psQ+8xO0lcKMXJeKvbHuH1lT2XfKtSz65PCsi8ihRBGFYJwcER
-         hfru4DhZrOJROJFrp+M1bLvPkbAQZy+R2sZEl4yNnf52m+VX0BjT8tti9j9USdVU3McX
-         O+GqHQGzgmkye+EQAH+LgUj4nK1icyTkaAWDpm8LayQa1lZEqE2o6iNM2gtNWj7KWgBu
-         E9kg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CIbcF/bg"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47640541585so436685f8f.1
+        for <imx@lists.linux.dev>; Fri, 24 Jul 2026 09:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784908449; x=1785513249; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RK+0ydkVq3QkQA31vNi6A6UpE/xnLiLeTaBJXi8dr9A=;
-        b=ctgBa6BetNbOTwzzBRmK1T2VeHgORmGgYnt/byssmqkJHUUUPUaBM79omWI4r4qQhe
-         vyhzvnNMU4Xf/qza961hGnitUhYYw/e0Mmv2n2cL5diyevwBQewEKRNx1QJgGNqj110S
-         qxIsGKwZprjxJvQ1+HLSKJttXcCOAmbtCTgisSrKYMCVQzoabUZnUzk7pH5wJdZne2MK
-         3IECw+UDXe+w7oap4jykJFL8ySRfftuygbj1Hdy742Z1kSmnx1UCJ8ILqpz7GfCLIzBB
-         KtMd8bCmpHfftI2sVHzbySv1V08WQb8n9+o5N95eCvA4SAaciDAnqfsNHr1G+rBUEaTr
-         I6Fw==
+        d=gmail.com; s=20251104; t=1784910279; x=1785515079; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=yWEo1m5U7JSWIhc+bgC37Go+1MRYNAMl/oywARAfabs=;
+        b=CIbcF/bgj56qHRLVHJjjWHm+gpzkPEG5J660m5/TRw8mdIDQT3ut2trfOY4GSJzMGf
+         j7xo8CxDYdTxr0zx4WEc2flmz45kbrb/9iZYRiLq4BEnxDEUr5Y9NVNRMWKsQIG11Pfp
+         noFjeH51TIVF5XdrWLM8nGWxggbewhnCLhK/UgNP/rbNriuCsQZ7VQC7v2bf4lXE0sQ0
+         O/LwiY0rgChyOT6YCiL1/N+LAV07B9Z5sXRWmbmOkUFSDoF64FTTo32J4t7G0+YhX1+0
+         TTT5XojvkGepufjshxNkyNTuZGYOm8IDOz/GcVRT5V+E1tApN2+JbPUjTFQTlmY5I2GS
+         ooDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784908449; x=1785513249;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RK+0ydkVq3QkQA31vNi6A6UpE/xnLiLeTaBJXi8dr9A=;
-        b=iqhKbM4D4MUXGijzqV2+4RH+kqMnwUZU7DEUmXjkHrt8sj7kBiWlxpfpfjQXHvLgfP
-         0MYn75SDG1W6xJ/O/yrQyXaD4cWDYceeNP18QHtoPxkokAew47vr+hYTwke1kwCMaBIo
-         yMbuECl39YQuh/SnpPiyK7oXCzOXAV+lRx90sc4o2Y3WhvYo37xpcW9xui8WTjr8nQvs
-         /iMOL4+PBDl7jL4+ppAG1K4vGEADfHiZyLgIO8+HRTtJ24KsP/rH9WYe/DEaUfKRpkfV
-         39U3P3LIBtocs4TFSvdDuYzTore4+U8pnXTwgTqzejtOD2jlGhFZLZZdTnkovDiTWNET
-         S5JA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro+/1Qi3nvzq9SNlCCXJW80BYIjD9WpZLhSegYgfrTWw2Aehm3KQLhNvNx0LugsmiImUVg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxJEtbE+eKuY6bPpsQpB0CoqWIzP0shmm6EPW6gFGAuZhSEheOI
-	14mRwRZpLW8uwYppXihv+SX1l28Ah+SonpXX4tuXmQ6lOEGKqjRqp5RjWbkiRNCvOwNRWMS65Dk
-	9mBgsqnayIPEPldCSgqkZS9KkOpsMAC4ryKlBqqWn
-X-Gm-Gg: AR+sD10XnjDRL8fc5pVdrPA688i1+h1AVXcM33VOmY5k96Alkc0IJ+B0ngulBomqpau
-	GnUYxhBhSe5l0lersnFR8sUZpEuaNdSuaN/C8AT+OTex2GwAwSH7TOyN1KwSkAx/b6zkI0bHupB
-	oSmaUusCx8xqBLkfc9WkgLdZlPt3Z+UYPQmzc9APva/pkEihGA/Cu5oRVL3cPiSTjGdPyM+QrP6
-	dy69yx+K2KfaSYRc8ukyiufdmd/S7K/sXnIic6pdx10+e4YDD+faqJT5Xg=
-X-Received: by 2002:ac8:7d47:0:b0:51b:ff0a:2048 with SMTP id
- d75a77b69052e-5285229262bmr9058571cf.3.1784908448716; Fri, 24 Jul 2026
- 08:54:08 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784910279; x=1785515079;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=yWEo1m5U7JSWIhc+bgC37Go+1MRYNAMl/oywARAfabs=;
+        b=j54NUqhamuwCOQ34GWV+vE8h+2WDf8jXfclOHrQTfsj4bIt95QYTIFidC75ZwB1KBO
+         xkaSeI1mjmxGiz62Gij0BJxMTTNFOLCpsN3SEVqrmN1DuovxBPAIdHFdww291sgUTwdD
+         k55Orj/BWnSKdqJIFSTLwie5rUFWMuOiAsgOSUqpI9GPoVhlkceE0nOqTV8Ok76o4I06
+         tgEZZcoQPTjGgGcO6ITpShrwsBvD1TZCtX86bJ9Q/9rvO+IOqPpa+wEvngVEXeZLj+la
+         58oYU71Es+ws3tf/DUA/tuHscp4Ch+3axjIpgqcCahudXHYaf6ETxbMU8/j6v1eDqdlq
+         ds9Q==
+X-Forwarded-Encrypted: i=1; AHgh+Ro4E254QEYoqzeJPXU+hRbI9f9rgK7tQICMxwJ+f2gjJXem7ot76jjJXi4jJTLT1iw7AwI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxMkXM9Mc+de8JfjfrLdjjD6TFXjPkh95WphWCmZ7eVUwWNS7yv
+	72ZgBN6CCmrrbJpDsPv10RIh02Xzl7ZtSl+cNtDF2WeXbSRxwz1d4CB3
+X-Gm-Gg: AR+sD12r+NDDdGfbrylNRaMtdvMFjr82gB+2oQSSjwQjFdBxSzLkXtq/u+R6TYgj/kR
+	YIsoMdPejPuUJVvbAa2MrFV+EmPhzry/+qnoNKTspEx094osWbz1hAbJ6nknNKHMYUjQ1RSNdAI
+	XLv1qG/CJrIsoiMtznqgAPDuEaUvsYoH+C94KaOLqtqlXpJTg0yCQ7YZ+m1e9MUmvyuVaZlthtz
+	M/4/jCMj33MTWSs7yQwgme7ccAxRIpzD3z32PSgHMjZAAwEs2hxdID1rmtsI9OKjQfeVKw224sd
+	kokq0C5PDCjKOhjLoDkL6tp7krElr1q7PPVLZn76FxlhHQhf4sv3MEwhI5gOF9cPxQtr1/m6qSi
+	m1zcItxpj4w8II/HqJDiVIOqLymyzvaGwStdhzUQ1VHOTklvofr5LFX1NLaSguyjHlj/qcTvxwh
+	c/1B4DTd47ggi1jTyFk0cw1lffcKNJAiY98h+FV9UU47zxO16ICz6jNjC3CirBNbxi5WPuilSNK
+	31tYK2f9QO3iM0n
+X-Received: by 2002:a05:6000:4802:b0:47f:763e:e03a with SMTP id ffacd0b85a97d-47f8dc7a25fmr9546533f8f.34.1784910279327;
+        Fri, 24 Jul 2026 09:24:39 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5d9sm24366255f8f.5.2026.07.24.09.24.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 09:24:38 -0700 (PDT)
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Subject: [PATCH v2 0/7] arm64: dts: freescale: Add Verdin iMX8M Mini
+ overlays
+Date: Fri, 24 Jul 2026 18:24:26 +0200
+Message-Id: <20260724-v1-verdin-imx8mm-dtbos-v2-0-9d7988bd76f6@toradex.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260718111340.159896-1-linux@yoavmoshe.com> <CABCJKudqGL+BFFcz3qsuoJB6S_OAt-vs2yqePC_=oy+JzmPpVw@mail.gmail.com>
- <3046e60d-509f-471f-bd15-3ce78c87500b@yoavmoshe.com> <20260721180950.GA3684684@ax162>
- <180001f5-bddd-4e58-8442-f7ef3c979500@yoavmoshe.com> <CABCJKufhvTxmVm8y7xr4RWWKsoZk0h8UGBnem+F5fknnimaqPA@mail.gmail.com>
- <7f273a08-b29c-4e15-b340-898b251efe57@yoavmoshe.com> <CABCJKud+GsBVv+XMTsi_4QAaTHo7jXD2Hyvi9wqKd7x3i2xyAg@mail.gmail.com>
- <415ffa24-a30b-43b2-aa6a-a1cde3bd4ef0@yoavmoshe.com> <CABCJKud9B8vB-J8f0HLHw6EgEKVWzy+Q1PrNxpO_6yCGtEyi8A@mail.gmail.com>
- <12a46993-82a5-4109-87fa-61b8fcf764aa@yoavmoshe.com>
-In-Reply-To: <12a46993-82a5-4109-87fa-61b8fcf764aa@yoavmoshe.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Fri, 24 Jul 2026 08:53:31 -0700
-X-Gm-Features: AUfX_mwjkzQa0aKFOYVTkcojOnlyLhgENNWtHi2USSUpXbUHkHbBUjoNeksPsS8
-Message-ID: <CABCJKufoQ0fX797M01t7CkTgMEwNCELY1=ptZsxr=jWOR-KAyA@mail.gmail.com>
-Subject: Re: [PATCH v3] ARM: imx: Fix suspend/resume crash with Clang CFI
-To: "Yo'av Moshe" <linux@yoavmoshe.com>
-Cc: Nathan Chancellor <nathan@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Russell King <linux@armlinux.org.uk>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, llvm@lists.linux.dev, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALqRY2oC/3WNQQ7CIBBFr9LM2jFAkRpXvYfpgsJoZ0Ex0JCap
+ ncXG7cu30v++xtkSkwZbs0GiQpnjnMFdWrATXZ+ErKvDEooIzrRYZFYKHmekcN6DQH9MsaMtlV
+ GauOMchrq+JXowesRvg+VJ85LTO/jp8iv/SVl+y9ZtUBtnTetH/VF6L4WrKf17GKAYd/3D50fR
+ OC+AAAA
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+X-Mailer: b4 0.13.0
 
-On Thu, Jul 23, 2026 at 12:56=E2=80=AFPM Yo'av Moshe <linux@yoavmoshe.com> =
-wrote:
->
-> On 2026-07-23 9:21 PM, Sami Tolvanen wrote:
-> > What's the value for the __kcfi_typeid_imx6_suspend symbol in
-> > vmlinux.o? I would expect the hash value to look a bit more random.
-> Checking vmlinux.o with `llvm-readelf -s vmlinux.o` indeed shows:
->
->   a488ebfc  0 NOTYPE  WEAK  DEFAULT  ABS __kcfi_typeid_imx6_suspend
+This series adds device tree overlays for the Toradex Verdin iMX8M Mini
+SoM. The overlays cover audio configuration, display adapters, DSI
+displays, and Cortex-M4F integration.
 
-OK, so the hashes should match. I can only assume that the hash prefix
-doesn't end up getting copied to OCRAM for some reason then, or
-perhaps the source of the copy operation doesn't have relocations
-applied? Either way, if this turns out to be infeasible, I think the
-__nocfi approach is reasonable in this case too.
+The series adds support for:
+- NAU8822 Bridge Tied Load configuration on the Verdin Development Board
+- DSI-to-HDMI adapter based on the Lontium LT8912B bridge
+- DSI-to-LVDS adapter based on the TI SN65DSI84 bridge, combined with the
+  Toradex Capacitive Touch Display 10.1" LVDS
+- Toradex Capacitive Touch Display 7" and 10.1" DSI variants
+- Cortex-M4F remoteproc support
 
-Sami
+Cortex-M4F support is split between the SoM description and an optional
+UART_4 overlay. The SoM dtsi describes the remote processor and RPMsg
+reserved-memory regions, while the overlay reserves Verdin UART_4 for
+Cortex-M4F firmware use.
+
+The Makefile entries build the standalone overlays as DTBOs, add
+ready-to-use composed DTBs for selected carrier board and accessory
+combinations, and add representative composed DTBs for build-time
+coverage.
+
+As discussed in v1, the overlays for the OV5640 cameras will follow
+later and use the partial connectors model to specify the Verdin CSI
+connector.
+
+Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+---
+Changes in v2:
+- Dropped the OV5640 overlays, they will be added by a later series
+- Link to v1: https://lore.kernel.org/r/20260713-v1-verdin-imx8mm-dtbos-v1-0-4acd63db4504@toradex.com
+
+---
+Ernest Van Hoecke (7):
+      arm64: dts: freescale: imx8mm-verdin: Add NAU8822 Bridge Tied Load
+      arm64: dts: freescale: imx8mm-verdin: Add DSI to HDMI adapter overlay
+      arm64: dts: freescale: imx8mm-verdin: Add Toradex DSI to LVDS adapter with 10.1" display
+      arm64: dts: freescale: imx8mm-verdin: Add Toradex Capacitive Touch Display 10.1" DSI
+      arm64: dts: freescale: imx8mm-verdin: Add Toradex Capacitive Touch Display 7" DSI
+      arm64: dts: freescale: imx8mm-verdin: Add Cortex-M4F remoteproc
+      arm64: dts: freescale: imx8mm-verdin: Add Cortex-M4F UART_4 overlay
+
+ arch/arm64/boot/dts/freescale/Makefile             |  35 ++++++
+ .../freescale/imx8mm-verdin-dev-nau8822-btl.dtso   |  14 +++
+ .../dts/freescale/imx8mm-verdin-dsi-to-hdmi.dtso   |  88 ++++++++++++++
+ ...-verdin-dsi-to-lvds-panel-cap-touch-10inch.dtso | 104 +++++++++++++++++
+ .../imx8mm-verdin-panel-cap-touch-10inch-dsi.dtso  | 129 +++++++++++++++++++++
+ .../imx8mm-verdin-panel-cap-touch-7inch-dsi.dtso   | 129 +++++++++++++++++++++
+ .../dts/freescale/imx8mm-verdin-uart4-mcu.dtso     |  14 +++
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi   |  33 ++++++
+ 8 files changed, 546 insertions(+)
+---
+base-commit: 4d0d3a3d1993a41b2bf8d28aa6c6071fa1a3bff7
+change-id: 20260707-v1-verdin-imx8mm-dtbos-a326146c62c4
+
+Best regards,
+-- 
+Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+
