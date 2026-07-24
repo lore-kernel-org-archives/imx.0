@@ -1,133 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59E63DAAC8
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 09:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1947041E6A0
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 09:55:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784884617; cv=none; b=ZqGVG8JbFdetc+qu14Oe+FIA0eaLgbyipfbXMpkYvP602WPBTXp68DqCdi9+osTmuUpW6UYGQGaA+DU/1dPnQR1vl8uSRsAb8W5mqhGTskJhOVC4v4sM39q0kWmDsKvG/9gtKvy4Q06uz7MPU4cl3VIgFPXd8eiPkO3SQuaNhjQ=
+	t=1784886925; cv=none; b=uLFFOibrdOB1s83A64aBKF95KCcdoESk1siMgvYFEHpKaqn7eTJ9i32D9fWtgn8DssGkV4+rjmdy1x83CUxYOBnaLsmxlNAYmsDuFeENNn39GdZEGrsQa6j+QWFlG6mrHwwLNTnUyFBVxx1IgQJweBbRVrFqvGaCqHLc79amdNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784884617; c=relaxed/simple;
-	bh=SF5OOxoUWob+aqUdZRacVxf8f9emMZJmdMOtJThxgFQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iVfeTp5AjlTRctMG1A8T555hPTak/RZUBcmBiGHNGTH5Gc1K05uPo+oBRPNH3ueYUB5z1jJ2fAwFPOtvDo6W7hxvnf6HiWvAdtlutRbnu/Y26ZD8Kl56/KAel4JUqr5HDNJzmw0lny4xTstZ3/l0MfpE2ixdPIZVmoAaudz2jzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FEMUaNRf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784886925; c=relaxed/simple;
+	bh=ISf/fcfsxb/7A12ng8flieQ6Km2aMX2qcDbWR0OVq60=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tB6Mz3qV8x28uPmouub1vPtwF+2SLFXncnSo5VQ1eDEjfMk4I5A+WfKf4RtrGmOXXkBV0c2+O0EZEEGvqcsLhygJc5E3HP1QlCunGoc+zzfsSIc9Zw4DiBUa3vgaTA3BLnZL5rqVJ5cYy4jEyvsRswJTb/uA+WO81klzzME3u7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=JZI9T3Ft; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FEMUaNRf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D081F000E9;
-	Fri, 24 Jul 2026 09:16:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784884612;
-	bh=GJ80ZrO8gk3KTzMOucen5uedac9Q5d9ZX/JnLqHM6Do=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FEMUaNRfGS+iFmW4uretmiRLGMA/ete2Kz6Y2ndPN2ksccxlmq+V1kFxvpYDOs5Om
-	 t9RHBSEbAGePLgjkfGNU6hKzhWNFtmLtgYrWhUCeaPY/dEUhB8w3c3WRTdHUwAMg2a
-	 Rru1mHmVYGDLuYFcc4wHHaQpJjK+HsA2HF462nvHoWVbZ4a+Fok712GIjObOn6hFLl
-	 dFQWvWb/otpTsdh/akQwnc0Kjd0xuiG829bN0c9cqE/yuO9+0KgWlwqB5CrvWCS/zw
-	 lTayLk7xUPFM30eavT041PTIC/xHNtvHQqeItmXffS1zTwHZLq3TKLV6TOo3sbSwSE
-	 3ExqDV1/nb4Tg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] power: supply: pf1550: enable charging when battery
- profile exists
-Reply-To: sashiko-reviews@lists.linux.dev
-To: raoxu <raoxu@uniontech.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <D5A5255CD2B683AC+20260724090341.297438-1-raoxu@uniontech.com>
-References: <D5A5255CD2B683AC+20260724090341.297438-1-raoxu@uniontech.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 24 Jul 2026 09:16:51 +0000
-Message-Id: <20260724091652.62D081F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="JZI9T3Ft"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1784886899;
+	bh=ESAfwVqYnYTkT6H8Hu9AQ967kCY6HTSE9AsbwnGyibE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=JZI9T3Ftsmw8xFFxWRaC32A0PjluMvnzqQRbcDiXfJy/V97BHVtCeEw9IKu/P+QGr
+	 erXR5yZjrq90ds4GB/z77Kh4fS7+S/UY2A9HJW3ZDUL2sV7rUlWWXSVR/0RMh0DLtc
+	 os+IdNCH3Sa2eF2uOe5oZiu9urYmL2gsrkyiHMSk=
+X-QQ-mid: esmtpsz18t1784886880t90f81de7
+X-QQ-Originating-IP: d2LkRACRXDf/JaT5K08zTTGPqYMCoLT1I65bSu3IuI8=
+Received: from PEN202512010004 ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 24 Jul 2026 17:54:39 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 11193573203578943115
+EX-QQ-RecipientCnt: 7
+From: raoxu <raoxu@uniontech.com>
+To: samkay014@gmail.com
+Cc: sre@kernel.org,
+	imx@lists.linux.dev,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	raoxu@uniontech.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2] power: supply: pf1550: enable charging when battery profile exists
+Date: Fri, 24 Jul 2026 17:54:37 +0800
+Message-ID: <097F0559A936ACCB+20260724095437.368905-1-raoxu@uniontech.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: M/f9iSOkHncYMgeJtDk19P9OR/hhcJUiJD+Tv7Iql6qY/o6W5EEUW5df
+	RBDPVbNHjABplmhj4AyiQqxR/ePMhDnu7vid6GufiBbukFZveclLTMfql9FiuWH64ZwXCob
+	UXOs6fVb5acQuW1sJ0W5vzAcc7EEw+shipaUO9sNaoJjra/3U7ucahZkZRcygigb/s7UZXt
+	VYfFITumhVW3WXlHpQlWPnRdqaEEqWnVsXlJt1vzSyhy3yqRvZtiPaqPk5YfSZHWWRpinJ/
+	eKWaY9EyKgj2WnQlQdhmxPunGkEQaziNz/zrnnGap2bZIWCgSiPan3nF5yiNspvbCe/oJLo
+	raFl0MX2Rje9QfJ9N5XsVUydFPcDcSXjntKWB4HJI3t19e1rVY8tAUYFN44iYPxwfUILwKG
+	e21c+PWYUSIvulC7heGNdxg9bMfDfBfQHhoQizwzihsld5VEhfb2HTUPnThjkKqRxA/HVI2
+	jGj61uHyrsc2VhyED1/zGoajX2wdui2EgsZUsCaT+xzr5UlpTiUKReQ/HaH1s8f3woFoOL2
+	Jg1d9U9PX4u+e+Mqbbg0PrqPLw98kUpf/JboxJqSEb1eF3w+n+usuCDylpTAPcanuVLqMzf
+	0mt8gwj32LEjDDrCQk0aiw2XoZE8Qp/aPUAbFF9C7gBfixzGUE2e9ZdHGPePwEkMYveAsIe
+	oWLO/7WCpq6pyMfoLH3oqd2N6aEhxQCyAzvae6MqUqzbz6jgT1VII02C2f8ZK+5octZUS3G
+	CBNxMotsqJNKxJyUhEUpCVeb2fvNLs5p5h/EuLDLZwtsDmaERe/7Xh763MTpdr91DloZQFV
+	2GspmvbNPKk02nusIp5rWRN/1V56AW1b1VQ2A+YO8Z1rvLARsTh1pO1y0lZUDVTES+g8PPM
+	vlO+DAJRxd8Msbn40kYI2D6rUsQwAaVBGxmUkObYUJt8DzbsnsZEIlp0Au6its/VR2GYYP3
+	YjBjE/2hXgGLqheIVRyukZJv4WDeVOgXhcUklLx29XYxcKsCReW2yeWDHy8vCd8lzyvCr2h
+	/1IKbHlqphLnkQFjAaEMT9KTlLeJEDfoNYsh8JcWz+XOvHxy0+xx75Fdu6t51DWwmd7pWl6
+	cJmPFPpb9730t87nezj9oNNTYWsxIXjjbz4rXAX2gXGZYGbg/uSmC+LFjzANCXOtFlos957
+	HqNgz27jXxVV2RZV3DYomVUCBg==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+From: Xu Rao <raoxu@uniontech.com>
 
-New issues:
-- [High] Calling power_supply_put_battery_info() on a static battery profil=
-e triggers a devm_kfree() WARN_ON.
+PF1550 starts in charger mode 1, where charging is disabled. The driver
+comment says that mode 2 should be selected for applications using a
+battery, but the condition is inverted: PF1550_CHG_BAT_ON is written only
+when power_supply_get_battery_info() fails.
 
-Pre-existing issues:
-- [High] Missing device tree property leads to probe failure due to -EINVAL=
- being cast to u32 and failing bounds checks.
---
+Consequently, a board with a valid monitored-battery profile is left in
+the default charger-off mode, while a board without battery information
+enables charging with fallback settings.
 
---- Patch [1]: [PATCH] power: supply: pf1550: enable charging when battery =
-profile exists ---
-commit f509c83fb1ae8cc54a888243d6c3052c45c3c791
-Author: Xu Rao <raoxu@uniontech.com>
+Select mode 2 when battery information is available.
 
-power: supply: pf1550: enable charging when battery profile exists
-
-This commit selects mode 2 for the PF1550 charger when a battery profile is
-available, allowing it to charge instead of remaining in the default off mo=
-de.
-It also adds calls to release the battery-info objects after use.
-
+Fixes: 4b6b6433a97d ("power: supply: pf1550: add battery charger support")
 Cc: stable@vger.kernel.org
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
+---
+Changes in v2:
+- Drop power_supply_put_battery_info() calls because static battery
+  profiles are not devm allocated.
+- Leave the pre-existing handling of an unspecified constant charge
+  voltage for a separate fix.
 
-> diff --git a/drivers/power/supply/pf1550-charger.c b/drivers/power/supply=
-/pf1550-charger.c
-> --- a/drivers/power/supply/pf1550-charger.c
-> +++ b/drivers/power/supply/pf1550-charger.c
+ drivers/power/supply/pf1550-charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[ ... ]
-
-> @@ -540,10 +543,12 @@ static void pf1550_dt_parse_dev_info(struct pf1550_=
-charger *chg)
->  				     &chg->thermal_regulation_temp))
->  		chg->thermal_regulation_temp =3D PF1550_DEFAULT_THERMAL_TEMP;
-> =20
-> -	if (power_supply_get_battery_info(chg->charger, &info))
-> +	if (power_supply_get_battery_info(chg->charger, &info)) {
->  		chg->constant_volt =3D PF1550_DEFAULT_CONSTANT_VOLT;
-> -	else
-> +	} else {
->  		chg->constant_volt =3D info->constant_charge_voltage_max_uv;
-
-[Severity: High]
-This is a pre-existing issue, but does assigning this value directly withou=
-t=20
-validation cause the probe to fail if the device tree omits the optional=20
-constant-charge-voltage-max-microvolt property?
-
-In power_supply_get_battery_info(), constant_charge_voltage_max_uv is=20
-initialized to -EINVAL. Since chg->constant_volt is a u32, the -EINVAL valu=
-e=20
-underflows to a very large unsigned number.
-
-When pf1550_set_constant_volt() later evaluates this out-of-bounds value=20
-against its allowed range, it looks like it will unconditionally reject it=
-=20
-and abort the driver probe.
-
-> +		power_supply_put_battery_info(chg->charger, info);
-
-[Severity: High]
-Will calling this on a static battery profile trigger a devm_kfree() warnin=
-g?
-
-If the device tree specifies a static battery profile (like a
-samsung,eb425161la battery), power_supply_get_battery_info() returns a
-pointer to the statically allocated samsung_sdi_batteries array.=20
-
-Because this array resides in the .data section rather than .rodata, when=20
-power_supply_put_battery_info() attempts to free it:
-
-power_supply_core.c:power_supply_put_battery_info()
-    devm_kfree(&psy->dev, info);
-
-The is_kernel_rodata() check bypasses, and the devres lookup fails, resulti=
-ng=20
-in a warning stack trace during probe.
-
-> +	}
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/D5A5255CD2B683AC+20=
-260724090341.297438-1-raoxu@uniontech.com?part=3D1
+diff --git a/drivers/power/supply/pf1550-charger.c b/drivers/power/supply/pf1550-charger.c
+index 41036f4cb64a..38cac156d2e6 100644
+--- a/drivers/power/supply/pf1550-charger.c
++++ b/drivers/power/supply/pf1550-charger.c
+@@ -514,7 +514,7 @@ static int pf1550_reg_init(struct pf1550_charger *chg)
+ 	 * a battery. The other supported mode is mode 2, the charger is turned
+ 	 * on to charge a battery when present.
+ 	 */
+-	if (power_supply_get_battery_info(chg->charger, &info)) {
++	if (!power_supply_get_battery_info(chg->charger, &info)) {
+ 		ret = regmap_write(chg->pf1550->regmap,
+ 				   PF1550_CHARG_REG_CHG_OPER,
+ 				   PF1550_CHG_BAT_ON);
+--
+2.50.1
