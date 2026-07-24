@@ -1,156 +1,136 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249BE448D1A
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 16:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB202D7DC6;
+	Fri, 24 Jul 2026 16:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784910293; cv=none; b=VIGauLNUGoyBJBAl+jIzgfk+ct6x7m9SCFZ4SLyW7LmCFQj1TzlvFMK6MyNgUIdcoOiWABlk5VCIFJRqlPJRJ7UOZkYt92PiE0Gzz9WQkyqtUIbPfkTQNople+Df1YDU/C89lWxwX5LltNc0YALFK/KFoDW10UrnJl/wkoSIQPA=
+	t=1784911298; cv=none; b=MtzS1qZntOct43nCHdVUseLd2LyAElTiUx+7WRGcSP3aROyOb2aPCcJJ6a/oGkTN9LfxaHFyFEvTNbIKWQBbb+/zEnxDPDURVM9AWo77AW66I7VNPFmihMAY8TOrmc5+4NqFKxMSMiMk246djA+6zbyIjXE9I4Sbrh9pnERxhOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784910293; c=relaxed/simple;
-	bh=Dt11JjlnXRNlsfRDZJaKONmkHC1Tz3sJpFyIwNZn6oU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=A7HOn6nGiAlB8oqYb5c7rG9PTvF6DyUzWvA2taDNLBDEFnEJ1ahNL8O5pOo0e44UnOg6n0VW6+DPJ2pjuMWOnIpyYfM8NB9GxGLiR7ZieHA/rSpth97YgX3vIoZdBunGIABgZYgjqdtGmtZnwinoQ8BtiV0D0F/olOvdvWyZxGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i+IYXE+p; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784911298; c=relaxed/simple;
+	bh=ty4j+1/oOGE25knCqpf7bj3e2UU9fugp8MDLwKbH1vk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=CfKe4BAv2BqQIwtC01rmEhgXwXGs6tQclrjUSRT/xlU7NcmwWt5DI0ssEPl9a5ChsZ63g9hNVhv+eFiZjRIHMkWelI+p69zl8D8K+QusjDv64gQUe039Gg2YvX7nmLHcCAzYerOLqTIU2WbZbRr1HV5WPGzmogtWJ0k2v2v0408=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nh/c5A2/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i+IYXE+p"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47f3b39f2a1so578216f8f.2
-        for <imx@lists.linux.dev>; Fri, 24 Jul 2026 09:24:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784910289; x=1785515089; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Oca1257RcNleArjY25A/HuTOrlgfLsamKajTMfVExe0=;
-        b=i+IYXE+pqp97cuf/Eo13LhNp1TI8OEdBNmmc4kd1YRGfF8Xyw749A4AIUxodHgzBI+
-         oe4jYEKHsP0P6P6FzkaMcCazfaXV02U3V47h/4ul+E1ounwHNPbekqAfzzTl4EubFmWC
-         q0Ru+G7ohf63gvK9wx99ZbinW5eGFRiiA07QIfU6jYoz+rwT79wXRDXnuKnOUsHLvBAD
-         O2XlIRYlHymM1HxRiGLesaFGHluEQWY0f+3I3AaoQjlHhYeOUSBVMa4Zf/BqMg4v5rgv
-         T6HWI18UNDvbMGpBQIYmEqIJr9z0QpcoHcXk847zGbSfIWZMbVw9Z0LW4ZKf8WnjCncP
-         NUcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784910289; x=1785515089;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Oca1257RcNleArjY25A/HuTOrlgfLsamKajTMfVExe0=;
-        b=JFhgIr4pC6yMWLTXIxS9TbjcbTIQqJBZLxh6qVXhvC2zYnEmnyvJ1wAAGVFlllvb32
-         LovNPU15qS0oBSgflpWxL4r/pp3l+K7kZReTpN1FWqmZmgNkH2gCRdj76rAmkeW0CKFA
-         Ul32lq7HL2Kg9/MyvASI9QrQLfEMSqsJtaMvHLhXVVXC8e0j3ZKP/5FXB/jXJQmTygRF
-         5R+6wBcS+1CwjZShIdVhjYZbFxb4GoO7WxDFE7DP7LuvmZrdmwMYP4Ah1wGaaWEWT9xB
-         t1VRGJ/eItrEv38QOyunyFJZWX2UQxHuBsOp042xi0EpCGi5++ZOE49fjKFh7+EfAMW3
-         kOWg==
-X-Forwarded-Encrypted: i=1; AHgh+RqoEwXxzKs/iJ9PPepVY3wj0/BZkcUGXuKv34MNvxGXRT4+Fvlpae1I6+8R1fnIit6cdEo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyZFj6lNVcQV9ddOWuO6mpaHApZmKvs6/FRbcdfUFJaXu+jrmUG
-	KhDGrBtCDjVb/CKgO1f8aoH7c64qSalQp2jaI/yaQviu/3XuKKnFqp1X
-X-Gm-Gg: AR+sD13h3VEMi49/HBaLF6O6ZAEYI+a/9O224JguAPjWfvdbf6D8vkzPfk7AFqkhDTe
-	3RxERsAZzQtyAtCupUszUOaiKNKYMNvhKKs5fI27F1vpjVdQWTziL34nR36h0hnCwxPGo8KxxgN
-	cAsW4Z41ndDaJNwaeZZZXWW5BJF5t+Wbw59q7IWvZmYHfrjeLJaKXCqPEW6Bf7e0Os9jEAx+1H/
-	1IlfddD5hSlzg4ySz+RRpNTsBmHz+qFSXNzToCYa+hOsLQ1f0s3qtlDK8EvyEXMppwQEslfOK8T
-	d2rx/1tVxOW9VkizEHA0DZcHmCzkn1N54P2MH3q6Urvr8VHBujkrV3jSRskbZLQwt405xOife96
-	doha9u2k06xis4BFqYbvdMn3t9FcC4zODLef83RhoLbzOW4Bj+9FE3MtTdGhu7k4Vxe9b8ubRKW
-	FELyt84PQXH5ljoo5H/4pkzxkyaJ0iE0w4vJy5aUwhJwhnXLpJbEMk6vBuLQuXtoJHlEyEl0B7E
-	8Ly8A==
-X-Received: by 2002:a05:6000:1869:b0:47e:8e8a:43f5 with SMTP id ffacd0b85a97d-47f8d71c758mr10505852f8f.20.1784910288925;
-        Fri, 24 Jul 2026 09:24:48 -0700 (PDT)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5d9sm24366255f8f.5.2026.07.24.09.24.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 09:24:48 -0700 (PDT)
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Date: Fri, 24 Jul 2026 18:24:33 +0200
-Subject: [PATCH v2 7/7] arm64: dts: freescale: imx8mm-verdin: Add
- Cortex-M4F UART_4 overlay
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nh/c5A2/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7527D1F000E9;
+	Fri, 24 Jul 2026 16:41:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784911292;
+	bh=6APhXfNITMyAOspWnFvMchwyWMxJZinVfcVV0utcYJ0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nh/c5A2/GWa8c5vPVYafe260vMPGGbl1P9g0nWEtMtFZ1feOY7P/aA6OFSwYHB42c
+	 UZ37BkZ55BmX1NMqYVCq7WhLTtuh6rzk90lrGPdnyD/PZKRCzKd5S//Sy45tEtlZdG
+	 Mfb1Py/2ifvS0kn3DoRYzggPX3oKBblzMQel4jTCMOQdtU1eR7kRX1BO0WA/OSr5IY
+	 hCUgFtNR7W/p4UILF2OVN4HtqPcPzU5p+gFiX/LTNyq0DfnuS7A1Lz8IjKlwFZx1aB
+	 e2LTtp7pXiMRGKzJOAEJQbQaCHWlXpjlqwdWYeB+gHjSkhyHDFKM7b5kTip50ymbF7
+	 fEr+9TONV7nag==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 6/7] arm64: dts: freescale: imx8mm-verdin: Add
+ Cortex-M4F remoteproc
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ernest Van Hoecke" <ernestvanhoecke@gmail.com>
+Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
+In-Reply-To: <20260724-v1-verdin-imx8mm-dtbos-v2-6-9d7988bd76f6@toradex.com>
+References: <20260724-v1-verdin-imx8mm-dtbos-v2-0-9d7988bd76f6@toradex.com>
+ <20260724-v1-verdin-imx8mm-dtbos-v2-6-9d7988bd76f6@toradex.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 Jul 2026 16:41:32 +0000
+Message-Id: <20260724164132.7527D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260724-v1-verdin-imx8mm-dtbos-v2-7-9d7988bd76f6@toradex.com>
-References: <20260724-v1-verdin-imx8mm-dtbos-v2-0-9d7988bd76f6@toradex.com>
-In-Reply-To: <20260724-v1-verdin-imx8mm-dtbos-v2-0-9d7988bd76f6@toradex.com>
-To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-X-Mailer: b4 0.13.0
 
-From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Unconditional enablement of the Cortex-M4 co-processor and its m=
+emory reservations in a base SoM device tree file.
+--
 
-Verdin UART_4 can be assigned to Cortex-M4F firmware. Add an overlay
-that marks the UART as reserved so Linux does not claim the port.
+--- Patch [6]: [PATCH v2 6/7] arm64: dts: freescale: imx8mm-verdin: Add Cor=
+tex-M4F remoteproc ---
+commit 5627e466b821e2ae1d5d44438ab0c467605d30f9
+Author: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
-The overlay is also combined with the Verdin iMX8M Mini Development
-Board device tree to provide a ready-to-use DTB for the WiFi SoM
-variant.
+arm64: dts: freescale: imx8mm-verdin: Add Cortex-M4F remoteproc
 
-Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
----
- arch/arm64/boot/dts/freescale/Makefile                     |  3 +++
- arch/arm64/boot/dts/freescale/imx8mm-verdin-uart4-mcu.dtso | 14 ++++++++++++++
- 2 files changed, 17 insertions(+)
+This patch describes the Cortex-M4F remote processor available on the
+Verdin iMX8M Mini SoM.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index fe261d7bdab5..95ae85ab4adf 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -192,6 +192,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-yavia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-zinnia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-panel-cap-touch-10inch-dsi.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-panel-cap-touch-7inch-dsi.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-uart4-mcu.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dahlia-dsi-to-hdmi.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dahlia-panel-cap-touch-10inch-dsi.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dahlia.dtb
-@@ -199,6 +200,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dev-dsi-to-hdmi.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dev-dsi-to-lvds-panel-cap-touch-10inch.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dev-nau8822-btl.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dev-panel-cap-touch-7inch-dsi.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dev-uart4-mcu.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-ivy.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-mallow.dtb
-@@ -220,6 +222,7 @@ imx8mm-verdin-wifi-dev-dsi-to-lvds-panel-cap-touch-10inch-dtbs := imx8mm-verdin-
- imx8mm-verdin-wifi-dev-nau8822-btl-dtbs := imx8mm-verdin-wifi-dev.dtb imx8mm-verdin-dev-nau8822-btl.dtbo
- imx8mm-verdin-wifi-dev-panel-cap-touch-7inch-dsi-dtbs := imx8mm-verdin-wifi-dev.dtb \
- 	imx8mm-verdin-panel-cap-touch-7inch-dsi.dtbo
-+imx8mm-verdin-wifi-dev-uart4-mcu-dtbs := imx8mm-verdin-wifi-dev.dtb imx8mm-verdin-uart4-mcu.dtbo
- imx8mm-verdin-wifi-yavia-dsi-to-hdmi-dtbs := imx8mm-verdin-wifi-yavia.dtb imx8mm-verdin-dsi-to-hdmi.dtbo
- 
- imx8mm-tqma8mqml-mba8mx-lvds-g133han01-dtbs += imx8mm-tqma8mqml-mba8mx.dtb imx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtbo
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin-uart4-mcu.dtso b/arch/arm64/boot/dts/freescale/imx8mm-verdin-uart4-mcu.dtso
-new file mode 100644
-index 000000000000..8dbecffe9e7b
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-uart4-mcu.dtso
-@@ -0,0 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Verdin iMX8M Mini UART_4 for Cortex-M4F
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+/* Verdin UART_4 */
-+&uart4 {
-+	status = "reserved";
-+};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8mm-verdin.dtsi
+> index 5fc177f589cb2..ac450fc6cbfb3 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> @@ -52,6 +52,18 @@ hdmi_connector: hdmi-connector {
+>  		status =3D "disabled";
+>  	};
+> =20
+> +	imx8mm-cm4 {
+> +		compatible =3D "fsl,imx8mm-cm4";
+> +		clocks =3D <&clk IMX8MM_CLK_M4_DIV>;
 
--- 
-2.43.0
+[Severity: Medium]
+Should this node default to disabled?
 
+Because it is added unconditionally to the base SoM dtsi, it defaults
+to "okay". This causes the imx_rproc driver to bind and call
+devm_clk_get_enabled() during probe, which keeps the IMX8MM_CLK_M4_DIV
+clock permanently running even if the M4 firmware is never booted.
+
+> +		mbox-names =3D "tx", "rx", "rxdb";
+> +		mboxes =3D <&mu 0 1
+> +			  &mu 1 1
+> +			  &mu 3 1>;
+> +		memory-region =3D <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
+> +				<&rsc_table>;
+> +		syscon =3D <&src>;
+> +	};
+> +
+
+[ ... ]
+
+> @@ -164,6 +176,27 @@ reserved-memory {
+> =20
+>  		/* Use the kernel configuration settings instead */
+>  		/delete-node/ linux,cma;
+> +
+> +		vdev0vring0: vdev0vring0@55000000 {
+> +			reg =3D <0 0x55000000 0 0x8000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev0vring1: vdev0vring1@55008000 {
+> +			reg =3D <0 0x55008000 0 0x8000>;
+> +			no-map;
+> +		};
+> +
+> +		rsc_table: rsc-table@550ff000 {
+> +			reg =3D <0 0x550ff000 0 0x1000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev0buffer: vdev0buffer@55400000 {
+> +			compatible =3D "shared-dma-pool";
+> +			reg =3D <0 0x55400000 0 0x100000>;
+> +			no-map;
+> +		};
+
+[Severity: Medium]
+Are we sure we want to unconditionally reserve these memory regions for
+all boards using this base SoM?
+
+Because of the no-map properties, this removes roughly 1.1MB of RAM
+from the kernel's linear mapping permanently across all Verdin i.MX8MM
+boards, even when the M4 coprocessor is not used.
+
+>  	};
+>  };
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724-v1-verdin-=
+imx8mm-dtbos-v2-0-9d7988bd76f6@toradex.com?part=3D6
