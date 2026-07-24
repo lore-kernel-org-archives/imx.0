@@ -1,255 +1,244 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013049.outbound.protection.outlook.com [52.101.83.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039F836F906
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 19:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784922348; cv=fail; b=svXc7ttDBeNOjjtdUwGvlpSfOUQQHShcgu+IMhd9axrgl0RFYGNEoq64HApjM/hKdhoA0X7Rs6Skqx6CVkYp8ZTviuA7h7qH9eYCz6BqL3zigWtEshx449nS6yEAGOgNtxPyFSWq1ibVNyt8q1yDRnsRRQ5vwOfrjO0KVn7sJTE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784922348; c=relaxed/simple;
-	bh=T7scPUik0N7aviWuCe5wdTvLDTavJr5ligzb97KwHrc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tVXX80E0wQjeO+NTN4oHh63Jqbrrvzze684Vw1Hh66ZK+3cR7DTZgDSJlKu3Bd+mUTklPe7/M9DBkVPUaPxSMvf6phADUziqlyBqojAf7F57BiZkN2IR6yxoVuHIkfXXCF7PrEp+hEyo3VFXwLhIubc+PGt7lpVYgZfBFl+/s5c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FrW4xmNK; arc=fail smtp.client-ip=52.101.83.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F564477EF
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 20:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784924048; cv=none; b=Q0vnuj6f5SMHaSWu46wtI7uIg4IzqAb6EtEEA4wwOwTgQLsjMUUM5+D0AJ4cbAAkuqOM4Aeey0xMI7ip1O1UUBP9H33HtZapt9XU9e+Z4av8wN+0cl0vjW1Eax0eMKKYrsCr/Nbnf0+jbhVMZcDyoqpTqgDIDopJLk461VDlahE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784924048; c=relaxed/simple;
+	bh=3BfKO1lcycbbs7e5gsWvcpH4V/zivQXN//VhP15u6gE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AuMebXkcranOS8y3YNpU01q+tzNBiEODDzTD2buEjWRbwQEpA30VEM74pKFL7NvxtG4JfT8jkru0q5wW+k58V8lk1kYjT69ARcVeuzxg3pszmbPDreqNU+rNjaJkl1g9uC8k+Ry+xlXSC2cGRLUUvOeZmvjshvXfO2E2Gq0UHe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eS3W5OBa; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FrW4xmNK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M+in6fMr0tA1I2qFBGA0uecdqUaTzHl9rj0teoaTTGE86bCsCdj3CR1JIcyx4cJDn+sVfpOaC4Dr86IMiSWyA+Iq7WsK9yABC7AeFJzNMOfulWvGdaBrYI8gqW1EVTB/ucoeYuT3o3r5XSYnMWSdUJURCDMnLZt6A3E+ZVHmPunc3sjPe0RrZEhKF4jTkk/Z474ndWaxHLrlnmTsdQyVJYCCFhmvaMMiks3TxASEO4BGijj8co3dIpelNZb8GOKKtOC8J/7I2FikDXgBMmZ4pFvJepr1GYqgjxqYQmR2pFR03UO8Ub0iBnHCcWP267+5M8JWRVT4qlnfX5tqi/ikJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bU1n2dWhStFwjtlowyX9rnIR85/o2yN2xnnyYtSUXCo=;
- b=hEJL3s4JQUkCz9eqpuOApZSsWOsvSHRxpMR9WtjhJ2vcAeukAlbc2w0A7pZrK/lrXt4uKcDalbwenOha9OWbLobmGGYGxXAHXJmpPXaGrFulaFOPOhVn17UHjf4MOXyqOxQy3iHI3l/DC6yIBfp+rlfK6oEpdC6CzJDxgaklPlD+CGGI/Ee95PCgFU9uAP1grRs7K/l8rNwx3EftVPnXEEqabZIi5UMovGA8JMaLpp0toA6H15x/55/aAybsf77uiczx7zuHJ6iIvnEQj4zmtMB+C8u/E/PzO7lEb6p5WBiShKmNq7AuCSEegOAbuYZrOTos3OAZAU2zATozBodTkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bU1n2dWhStFwjtlowyX9rnIR85/o2yN2xnnyYtSUXCo=;
- b=FrW4xmNKcaIPUcMmtfuPy16KQR2HU6TP1W1c0YzNK8IS7Qy//0ZTpXOBj9ChPd9wffJcp/Sn1HaUu6QUKRfBjYhj1V5TizmOdsG5VdNF22E6v7a7o1ReOM4ZJGZfX2VkQBGE6TCSpQSA52CbvHUB5II4dae/2zCHiROkrPFwb2gztly+KeOV5nyhB0dijD9MC9rxMzA8HaEKeQ1wpbllbz2hfbS+OwH1nJLARrNI4xQWwGKns76YYt8wJk1BnVWqSi83OCSkjMrbckm029M3Y5PI9NgAWG/uEgi2YjU+6zagVeAChcmneC0WyunIe3NK/rVNZYhcVYoeSaj7cn7g5Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DBBPR04MB7851.eurprd04.prod.outlook.com (2603:10a6:10:1e1::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
- 2026 19:45:42 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
- 19:45:41 +0000
-Date: Fri, 24 Jul 2026 15:45:34 -0400
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	"open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." <linux-sound@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-Subject: Re: [PATCH v4 1/1] ASoC: dt-bindings: Convert eukrea-tlv320.txt to
- yaml
-Message-ID: <amPA3hHmTQm42PP9@lizhi-Precision-Tower-5810>
-References: <20260515145205.1696584-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260515145205.1696584-1-Frank.Li@oss.nxp.com>
-X-ClientProxiedBy: SA1P222CA0188.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c4::16) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eS3W5OBa"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso9259795ad.3
+        for <imx@lists.linux.dev>; Fri, 24 Jul 2026 13:13:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784924036; x=1785528836; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b3eDk2AKIB7oouamFfigrUPQRcoPts0plkwt9xT+u6Y=;
+        b=eS3W5OBaPJ9olrhxRswrx3+tvT5TAZlfEGccVsScu6DjoZ0jPY/TaUT9j+tmYIbSAi
+         zAIVSziYxUUVm0E3L//BO4sgCWEbvj5OmGXvq4S8g1xf00dPGCxpJ/OK1UJf1qFB5FNJ
+         cprySDcEMuHppFOQ1jcWYsfLzWvGmMPIHM7lSJDhtpKL/LkdgKpaNzxIBUQZjcpUZ+FL
+         dgiUdQvL8MRIcNek+720ZD572WQu8ajhx9xNNOeS5IXfsiny8v3EY/gWRLXCRWmBIq2V
+         MJUcIzmYy88bMHpxJLmebBZdyVqzPn27ZdeVlge8HwIz9FppifJ+/otevQSACylZ+9cd
+         PKkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784924036; x=1785528836;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b3eDk2AKIB7oouamFfigrUPQRcoPts0plkwt9xT+u6Y=;
+        b=Zn7sKWlOAT/dBeq2Jo/QavMuKyrQhy2JIwBaCZ6ngXsSUhBz7fkuRoMH49VxJgLkZq
+         GxO/nGc6OYYcT2cU8phn4Tw1HMtw3hTztZQUhqT7vJoBnXwkPlzKQ/BAvT/HrsPfS5Kq
+         /7jQKiVxE9zJviOpW7cIlfVvVMrr9Ae+rnNmzwG71T/Qbz7LfR5GwC5Jsf1AAoI88ar1
+         mQuWARnl9EFX95MxS9qI32mueof8u+3z8rScTP6CZ+aAFveenUkNM2oLrTSiBcDqFRDX
+         2drQsIy0jjjfCGbz4Kx9mA7fM98zzxu2KO2zxv9uNBjbZPl4n7k47Lk/Q6kOOdB1kBN3
+         T+yQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoO1hiFv+mW5MI+UNEcVemK2sbjg8nuTg/N4KgobljR8QowmzxaGUbenxQBGEy3CtW9sz8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxe9kxt+8sRUpAjLMpbaPgyaUxI2uaMMW9xpdJHY9OACXxTo8o0
+	juDIXDSpJWU/xHEL3KlpThkpoz0KFJ2zbdUQo9kW5NmjTaQML86P7IcM
+X-Gm-Gg: AR+sD133EdDQlzaKp60RDz56gQLG/twyaXkXiKNzHtWBp6O/eq07cyS5s2LXK2p5M8o
+	dNiMWWlNzXvrt2YFi2GNGoTsp5F3jNnGOECmQH2QkAhufId1q88gn+fxlThm9qLhtK4VtKZ2GFv
+	M2swSe9ey0V/lHwxIoFJuq8AVOYf2q4++Vh9k7F3m71f00OGQ0os38IPMUkqtWG+MMMEvY+vG+c
+	vra5wDM4Wm8W/pXqw+3We6RQsDuAlKuqF4P06CZ/1QfwbOD8xcL4xo5GxfAcHhfGwAmf9BH2L4b
+	sjcIkcp1Rz4VQdF9nYu1Iwz35ko1C9Hrc1N3Rg8A2v2/SCZ5Lkd+s0IwsbaBchjIgFV2WzK++4R
+	dIcEZs/IyQtr4BEHty5SRLo1X4C4CskZNXjERANT0EUxlsWpl+6YkcytUy4J7moHToxpvCIYJ/i
+	jJTKUXCazwCSmM+MAZrt3LEsR5lS+LYzuTj+Pvb+sXkgYUb8cf5kw=
+X-Received: by 2002:a17:90b:568b:b0:38e:7d77:2fbb with SMTP id 98e67ed59e1d1-38ec6631f60mr8543951a91.32.1784924036263;
+        Fri, 24 Jul 2026 13:13:56 -0700 (PDT)
+Received: from fabio-X870-EAGLE-WIFI7.. ([2804:1b3:a801:60b4:ddf8:a4ba:150b:5c93])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d130158c0sm28850203c88.6.2026.07.24.13.13.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 13:13:55 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: broonie@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Fabio Estevam <festevam@nabladev.com>
+Subject: [PATCH] regulator: pca9450: Support regulator-off-in-suspend
+Date: Fri, 24 Jul 2026 17:13:22 -0300
+Message-ID: <20260724201322.73937-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBBPR04MB7851:EE_
-X-MS-Office365-Filtering-Correlation-Id: be6f2e58-e224-42c0-f98c-08dee9bc24f7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|23010399003|376014|56012099006|11063799006|10067099003|4133799003|3023799007|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	qs+DM7DUHSog1EXeU65ngPGbkg/9CqrS/yI2IMKDy8ctXR4YdPcYcoYOiZsvWKYY/FZDWBajXOclR9l5L1IpSqzSB9sJOi7sR9mgKv09zsjUl5G9fkJM7ErQPj6GvOyk5MZy0ZS84VCP5a8jzOJbV8gw2W5Hx8HklOZZU82HaL7iBtqE7xdx2YeZE8RPtbLHEyvkIca4o3yuAMYKv2tMfuUQ8ENLz8a+Gqi0DJm8HWZh4niZ5wgRACldvtGKobBiXeeZUoV1/X3TJ0s+L4jX1xiKxqwlvDf0dtRldiJaTH6/tXQ/bVrXQda6CdFET0dUXjIcL8AYOl3B4FUkbyBRUN/52ngwbjPLfoQyVC5soewEhE4JWFO0ZLKox83Au7oZnpFUuCvgHu4pQqCw9QVu3DLEfnZslUSGASy1spRgVLzdWf62mywAfMAdIQpjBhorZ9XhhtwFgL2enGa8sjJLTI4T+O7byc2NB+wE9vHXo/hKvPuCT3ksCEPW0B8jQ63Y22ptADWPSirgiBFSsJjMm5asxTP8Ki6B0SXrTFdE+S0xr/p6N2bdHTE7+hSKUpBJ41tTWZmAixeYAEbYxxgH1haagMwiFD6OfWW6cpj8WTBJitxMUhcrSsEf58PBL5vU
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(23010399003)(376014)(56012099006)(11063799006)(10067099003)(4133799003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aChao8pAf59+EAXjxMoHoK7ToMbpF18U5hV/45ts+uN8I2CaDhqbXRZtxwJ+?=
- =?us-ascii?Q?yxEtNSWsPXZRzWJnMXE5Lh5915nAKwt192hyamkYnl4CF3vCg8staPndWJHo?=
- =?us-ascii?Q?GyWyjSLCXb/uXleZp2c9nZfqrIcZg6O5uaxmoXFC0PLMMLF0cwbD0ZE8PTMg?=
- =?us-ascii?Q?u/47ihSW+ZaRtRmj8iQBx+eo0liU5/lymcfWp65GiAIiFQfL0MBwyWQCVAIQ?=
- =?us-ascii?Q?6KEZyVb/A0IZbQRWmMmzzqznXOFdKotqHLKg5LZQaZYTRn4xiDSfDsIBfyNe?=
- =?us-ascii?Q?Sx4rg9bd9VPZUgJHe8ysTvJ/j3YWgyv9dWYjMQaQ8DJ7K5dSqB0fV9T8i9mx?=
- =?us-ascii?Q?foRXFWLHHgl6bu6W6SamYU3X3BhbGXVySZjxAPiAYVdWCxtP3+pWFWpklnpC?=
- =?us-ascii?Q?mT2CymbFn/w6sk9O2RJkkHvweow/B9Y5TOQ70B0tBO5i2XED+W9b/bC5Y/rb?=
- =?us-ascii?Q?U1rh94oQkdwZOBErKtH7dkWFyrVGquf6GmgwbIPLNwi82FoMlYGcjumJ9gp7?=
- =?us-ascii?Q?6jYsK13osMCUefWoGLgKa9cd/xUyTW+HJuxWtGZTr4EzuOn7NUHZi/tA2XGF?=
- =?us-ascii?Q?euyUNPav8lH2Se2XzDCaxNelOHzzq+Q36AYnNEXGOQBzOwdpBO5aQ1rbX61S?=
- =?us-ascii?Q?BN0iR+ntakiiNkLNEl1TWqwpgC1vWS9/CLPwxihNARnnR1GczqoOil3e5yqV?=
- =?us-ascii?Q?tO/5OvSaAi0pmB4M4t2VHmIJ0GBD1f1XWaxYrrZ6nFyS44xxEXHDrGeLaKjn?=
- =?us-ascii?Q?RdDl2E0cA7cj6QBpsvAttm/bOhtU0mVOAbrXenSFRs6mLGs8fLlI9KUi2pCq?=
- =?us-ascii?Q?dOsQffjUuC4XLYWQJI7ksfgr/Fo2p48h2m/TFNyWtdqGQVOs9XxLpz3iaX4a?=
- =?us-ascii?Q?VY6puVnr4BJEi6UInWe13VznAW5P8kdkkNrYuRFSfR4Z1x9jD6cvqOjtjrTh?=
- =?us-ascii?Q?WNbOA4+p1Rm/1zLiz5R1/F3RUyPjEq2SA2ma3cUHq6Us2peF0zRNrHUQTo+T?=
- =?us-ascii?Q?+kx+7D2HNLhScVwU52nBaixBrImX+sDsjFgPtC0RkkTPsz6rk9aFj8Xp81uE?=
- =?us-ascii?Q?evNdZAOMrEDhh9tNjEVyS9I2Xa+NqVTVFbrrG0rpxcjfZhPdKKCxC6jjOCmm?=
- =?us-ascii?Q?dsExKHWo8W6Qcuom8SwKhwE+HffJDlaWCGHVbAlSTBDLNGjJuq9IiVBYIK3n?=
- =?us-ascii?Q?KpoDVz8qlUuMThUn4n+shqm73yOWCihlR8rg8aAtOzHMKVRkJCpvyJbnlvHP?=
- =?us-ascii?Q?uaj1HvF23O6KYaVSF6h5jK4iQz82Akt7IEBJbu18nY4c3DS3kPoysQbhRTAY?=
- =?us-ascii?Q?HCdNFJ6u0fZnygB8sIdfxS06Py7TgeBotE1QS3ex8Qam6ZKKDwvlX2lg62vs?=
- =?us-ascii?Q?QBTE5R4FNcgLf8Pa37p9vc/f6QKVNxEb5reQrxJlEHkyD0BdE2hVW4XIgykP?=
- =?us-ascii?Q?D1DIuaqVA0BrrZc3NdGzT5Wp6XS7pjEy/3dA40KC+RPjbaJ7kwNM/vOLcvVa?=
- =?us-ascii?Q?PEiEnky6/nwZHvpaD1z3/saHy66HRyt8rhgGadoK62fJhxGpoJGCgg+lOrw4?=
- =?us-ascii?Q?c/kdfA5lK4K8jsEhNAgf8sQcCjFxgxav8mcCKtIN6KVwJfGE2PaUtEX4BCXB?=
- =?us-ascii?Q?L5j7BhTCa2GmdpMqtB1UKpXET+jIH6DuwklIjUrnBMaL1u55LzgFAGQLOqwz?=
- =?us-ascii?Q?PqxOJHJowzi84nIEDwpjhaAGFMWHe1QVfpR3VZQP8J8N8PvWR3cEI2XooCKQ?=
- =?us-ascii?Q?CY38aTUCVdoE2kU6SUWhnkOIqTTEKo21YLQD917xNyHbmotyA22r?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be6f2e58-e224-42c0-f98c-08dee9bc24f7
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 19:45:41.8649
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U0i/UfluUY1aECZIdC4xjr93GwNaErqYVKs0OK24wRuaeOzEJ554mhzRpbHjZHa1O+moFvmcM9My5k0nnYf3Ys/zDiivAqUM65PsVPZhDPM041Ty+GxK05LJ+meoK4IS
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7851
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 15, 2026 at 10:52:03AM -0400, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
->
-> Convert eukrea-tlv320.txt to yaml format.
+From: Fabio Estevam <festevam@nabladev.com>
 
-Mark brown:
+The PCA9450 uses each regulator's ENMODE field to control whether the
+regulator remains enabled when the PMIC transitions from RUN to STANDBY
+mode.
 
-	Can you help to pick up this one?, Rob already acked.
+The driver does not currently implement set_suspend_disable(), so a
+regulator configured with regulator-off-in-suspend remains enabled
+during system suspend.
 
-Frank
+Implement set_suspend_disable() for the buck regulators and LDO3-LDO5
+by programming ENMODE to 10b. This keeps the regulator enabled in RUN
+mode, turns it off when PMIC_STBY_REQ is asserted, and enables it again
+when the PMIC returns to RUN mode.
 
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change in v4
-> - add minimum and maximum for fsl,mux-int-port and fsl,mux-out-port.
-> change in v3
-> - add fsl,mux-int-port and fsl,mux-out-port to required
-> change in v2
-> - Add comments about "The AUDMUX port numbering should start at 1"
->   v1: https://lore.kernel.org/linux-devicetree/CAEnQRZACes8EptdEgg0i0vzdcxgUJwZAfQHU0DEhMnXtA-g01Q@mail.gmail.com/
-> ---
->  .../bindings/sound/eukrea,asoc-tlv320.yaml    | 61 +++++++++++++++++++
->  .../bindings/sound/eukrea-tlv320.txt          | 26 --------
->  2 files changed, 61 insertions(+), 26 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
->  delete mode 100644 Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
->
-> diff --git a/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
-> new file mode 100644
-> index 0000000000000..24b793feb02df
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
-> @@ -0,0 +1,61 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/sound/eukrea,asoc-tlv320.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Audio complex for Eukrea boards with tlv320aic23 codec.
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: eukrea,asoc-tlv320
-> +
-> +  eukrea,model:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description:
-> +      The user-visible name of this sound complex.
-> +
-> +  ssi-controller:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description:
-> +      The phandle of the SSI controller.
-> +
-> +  fsl,mux-int-port:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      The internal port of the i.MX audio muxer (AUDMUX).
-> +      Note: The AUDMUX port numbering should start at 1, which is consistent with
-> +      hardware manual.
-> +    minimum: 1
-> +    maximum: 8
-> +
-> +  fsl,mux-ext-port:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      The external port of the i.MX audio muxer.
-> +      Note: The AUDMUX port numbering should start at 1, which is consistent with
-> +      hardware manual.
-> +    minimum: 1
-> +    maximum: 8
-> +
-> +required:
-> +  - compatible
-> +  - eukrea,model
-> +  - ssi-controller
-> +  - fsl,mux-int-port
-> +  - fsl,mux-ext-port
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    sound {
-> +        compatible = "eukrea,asoc-tlv320";
-> +        eukrea,model = "imx51-eukrea-tlv320aic23";
-> +        ssi-controller = <&ssi2>;
-> +        fsl,mux-int-port = <2>;
-> +        fsl,mux-ext-port = <3>;
-> +    };
-> diff --git a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt b/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
-> deleted file mode 100644
-> index 6dfa88c4dc1e8..0000000000000
-> --- a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
-> +++ /dev/null
-> @@ -1,26 +0,0 @@
-> -Audio complex for Eukrea boards with tlv320aic23 codec.
-> -
-> -Required properties:
-> -
-> -  - compatible		: "eukrea,asoc-tlv320"
-> -
-> -  - eukrea,model	: The user-visible name of this sound complex.
-> -
-> -  - ssi-controller	: The phandle of the SSI controller.
-> -
-> -  - fsl,mux-int-port	: The internal port of the i.MX audio muxer (AUDMUX).
-> -
-> -  - fsl,mux-ext-port	: The external port of the i.MX audio muxer.
-> -
-> -Note: The AUDMUX port numbering should start at 1, which is consistent with
-> -hardware manual.
-> -
-> -Example:
-> -
-> -	sound {
-> -		compatible = "eukrea,asoc-tlv320";
-> -		eukrea,model = "imx51-eukrea-tlv320aic23";
-> -		ssi-controller = <&ssi2>;
-> -		fsl,mux-int-port = <2>;
-> -		fsl,mux-ext-port = <3>;
-> -	};
-> --
-> 2.43.0
->
+Keep LDO1 and LDO2 on regulator operations without
+set_suspend_disable(), because these regulators supply the SNVS domain
+and must remain enabled in STANDBY mode.
+
+Measured on a custom i.MX8MP board, turning off NVCC_SD2 (LDO5) during
+system suspend reduced power consumption by approximately 64 mW.
+
+Signed-off-by: Fabio Estevam <festevam@nabladev.com>
+---
+ drivers/regulator/pca9450-regulator.c | 43 +++++++++++++++++++++++----
+ include/linux/regulator/pca9450.h     |  3 ++
+ 2 files changed, 40 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
+index c41db70fa052..13082585140f 100644
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -77,6 +77,24 @@ static const unsigned int pca9450_dvs_buck_ramp_table[] = {
+ 	25000, 12500, 6250, 3125
+ };
+ 
++/*
++ * ENMODE = 10b keeps the regulator enabled in RUN mode and disables it
++ * while PMIC_STBY_REQ is asserted.
++ */
++static int pca9450_buck_set_suspend_disable(struct regulator_dev *rdev)
++{
++	return regmap_update_bits(rdev->regmap, rdev->desc->enable_reg,
++				  rdev->desc->enable_mask,
++				  BUCK_ENMODE_ONREQ_STBYREQ);
++}
++
++static int pca9450_ldo_set_suspend_disable(struct regulator_dev *rdev)
++{
++	return regmap_update_bits(rdev->regmap, rdev->desc->enable_reg,
++				  rdev->desc->enable_mask,
++				  LDO_ENMODE_ONREQ_STBYREQ);
++}
++
+ static const struct regulator_ops pca9450_dvs_buck_regulator_ops = {
+ 	.enable = regulator_enable_regmap,
+ 	.disable = regulator_disable_regmap,
+@@ -88,6 +106,7 @@ static const struct regulator_ops pca9450_dvs_buck_regulator_ops = {
+ 	.set_ramp_delay	= regulator_set_ramp_delay_regmap,
+ 	.set_mode = pca9450_buck_set_mode,
+ 	.get_mode = pca9450_buck_get_mode,
++	.set_suspend_disable = pca9450_buck_set_suspend_disable,
+ };
+ 
+ static const struct regulator_ops pca9450_buck_regulator_ops = {
+@@ -100,6 +119,7 @@ static const struct regulator_ops pca9450_buck_regulator_ops = {
+ 	.set_voltage_time_sel = regulator_set_voltage_time_sel,
+ 	.set_mode = pca9450_buck_set_mode,
+ 	.get_mode = pca9450_buck_get_mode,
++	.set_suspend_disable = pca9450_buck_set_suspend_disable,
+ };
+ 
+ static const struct regulator_ops pca9450_ldo_regulator_ops = {
+@@ -111,6 +131,16 @@ static const struct regulator_ops pca9450_ldo_regulator_ops = {
+ 	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+ };
+ 
++static const struct regulator_ops pca9450_ldo_suspend_regulator_ops = {
++	.enable = regulator_enable_regmap,
++	.disable = regulator_disable_regmap,
++	.is_enabled = regulator_is_enabled_regmap,
++	.list_voltage = regulator_list_voltage_linear_range,
++	.set_voltage_sel = regulator_set_voltage_sel_regmap,
++	.get_voltage_sel = regulator_get_voltage_sel_regmap,
++	.set_suspend_disable = pca9450_ldo_set_suspend_disable,
++};
++
+ static unsigned int pca9450_ldo5_get_reg_voltage_sel(struct regulator_dev *rdev)
+ {
+ 	struct pca9450 *pca9450 = rdev_get_drvdata(rdev);
+@@ -164,6 +194,7 @@ static const struct regulator_ops pca9450_ldo5_regulator_ops = {
+ 	.list_voltage = regulator_list_voltage_linear_range,
+ 	.set_voltage_sel = pca9450_ldo5_set_voltage_sel_regmap,
+ 	.get_voltage_sel = pca9450_ldo5_get_voltage_sel_regmap,
++	.set_suspend_disable = pca9450_ldo_set_suspend_disable,
+ };
+ 
+ /*
+@@ -575,7 +606,7 @@ static struct pca9450_regulator_desc pca9450a_regulators[] = {
+ 			.of_match = of_match_ptr("LDO3"),
+ 			.regulators_node = of_match_ptr("regulators"),
+ 			.id = PCA9450_LDO3,
+-			.ops = &pca9450_ldo_regulator_ops,
++			.ops = &pca9450_ldo_suspend_regulator_ops,
+ 			.type = REGULATOR_VOLTAGE,
+ 			.n_voltages = PCA9450_LDO3_VOLTAGE_NUM,
+ 			.linear_ranges = pca9450_ldo34_volts,
+@@ -594,7 +625,7 @@ static struct pca9450_regulator_desc pca9450a_regulators[] = {
+ 			.of_match = of_match_ptr("LDO4"),
+ 			.regulators_node = of_match_ptr("regulators"),
+ 			.id = PCA9450_LDO4,
+-			.ops = &pca9450_ldo_regulator_ops,
++			.ops = &pca9450_ldo_suspend_regulator_ops,
+ 			.type = REGULATOR_VOLTAGE,
+ 			.n_voltages = PCA9450_LDO4_VOLTAGE_NUM,
+ 			.linear_ranges = pca9450_ldo34_volts,
+@@ -820,7 +851,7 @@ static struct pca9450_regulator_desc pca9450bc_regulators[] = {
+ 			.of_match = of_match_ptr("LDO3"),
+ 			.regulators_node = of_match_ptr("regulators"),
+ 			.id = PCA9450_LDO3,
+-			.ops = &pca9450_ldo_regulator_ops,
++			.ops = &pca9450_ldo_suspend_regulator_ops,
+ 			.type = REGULATOR_VOLTAGE,
+ 			.n_voltages = PCA9450_LDO3_VOLTAGE_NUM,
+ 			.linear_ranges = pca9450_ldo34_volts,
+@@ -839,7 +870,7 @@ static struct pca9450_regulator_desc pca9450bc_regulators[] = {
+ 			.of_match = of_match_ptr("LDO4"),
+ 			.regulators_node = of_match_ptr("regulators"),
+ 			.id = PCA9450_LDO4,
+-			.ops = &pca9450_ldo_regulator_ops,
++			.ops = &pca9450_ldo_suspend_regulator_ops,
+ 			.type = REGULATOR_VOLTAGE,
+ 			.n_voltages = PCA9450_LDO4_VOLTAGE_NUM,
+ 			.linear_ranges = pca9450_ldo34_volts,
+@@ -1040,7 +1071,7 @@ static struct pca9450_regulator_desc pca9451a_regulators[] = {
+ 			.of_match = of_match_ptr("LDO3"),
+ 			.regulators_node = of_match_ptr("regulators"),
+ 			.id = PCA9450_LDO3,
+-			.ops = &pca9450_ldo_regulator_ops,
++			.ops = &pca9450_ldo_suspend_regulator_ops,
+ 			.type = REGULATOR_VOLTAGE,
+ 			.n_voltages = PCA9450_LDO3_VOLTAGE_NUM,
+ 			.linear_ranges = pca9450_ldo34_volts,
+@@ -1059,7 +1090,7 @@ static struct pca9450_regulator_desc pca9451a_regulators[] = {
+ 			.of_match = of_match_ptr("LDO4"),
+ 			.regulators_node = of_match_ptr("regulators"),
+ 			.id = PCA9450_LDO4,
+-			.ops = &pca9450_ldo_regulator_ops,
++			.ops = &pca9450_ldo_suspend_regulator_ops,
+ 			.type = REGULATOR_VOLTAGE,
+ 			.n_voltages = PCA9450_LDO4_VOLTAGE_NUM,
+ 			.linear_ranges = pca9450_ldo34_volts,
+diff --git a/include/linux/regulator/pca9450.h b/include/linux/regulator/pca9450.h
+index 0df8b3c48082..8925e9c9376b 100644
+--- a/include/linux/regulator/pca9450.h
++++ b/include/linux/regulator/pca9450.h
+@@ -213,6 +213,9 @@ enum {
+ #define LDO5H_EN_MASK			0xC0
+ #define LDO5HOUT_MASK			0x0F
+ 
++/* LDO ENMODE value: ON in RUN, OFF while PMIC_STBY_REQ is asserted */
++#define LDO_ENMODE_ONREQ_STBYREQ	0x80
++
+ /* PCA9450_REG_IRQ bits */
+ #define IRQ_PWRON			0x80
+ #define IRQ_WDOGB			0x40
+-- 
+2.43.0
+
