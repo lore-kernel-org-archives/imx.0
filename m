@@ -1,183 +1,208 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011036.outbound.protection.outlook.com [52.101.65.36])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C004A447805
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04036448B9F
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784905607; cv=fail; b=St+Sbvl7AukAp+x45E5F2oPV5kDGKuc2mcK07ckqVTIJVDP5jOo0aUHhv5Emt5ueJ+ch/9PVKM55GlFKySoPVW1ciBdRQ28g+0Ea2nsmrtvCAUAhI4Xy1KoW5NCslJ8iqLaR/cFIaCBzLvMeUPAq0T5xTArmSC0r3MfkxbQd1Og=
+	t=1784905630; cv=pass; b=cYTkSug/u8rbSM3RDluH7NwNYKnvAXNWt0UR2nVsLVEYeDDDH7kGcWehp2fse4M7RiZveb9TQzV0PCfv9+I8u6HvAQoGDPnfM4ZwGfAx8X+I7Ly04sTtdByz/IyATQRZf6qdtZVeGMG92Ig/Z8PhndlxO8Eaj87QjNpp0FsMZgo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784905607; c=relaxed/simple;
-	bh=DzeWda64dq41xXj1ZsIR31SKCWaRB1ziXpOoK9WgrBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=E8wICxSvBXPsooN+ujKHpc5j/AoZR6aylBtJ2ID1w81rX0JCwcD+x85nlSxGrrsTKpwksm6oeQRfacTwUXpm777A6wIUUAKVHQExyYLh5xJUIZY2i4vex+nbLe1QDAXpV/WC7G6RSmI2vesrS8y19EOdSmqK4OoytttZNa4kwrQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gtTf0rlT; arc=fail smtp.client-ip=52.101.65.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1784905630; c=relaxed/simple;
+	bh=TqF3wLHIA1jAdZt0Tltgjjcw3xRF7uJIwJwkCK9UGR8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ukyGgysfvxpJP2hdQDR8BqwpS6cb8uFtgNirkhZjpQrP1eqL7hUUDFDDytu69qy0ohH8VM5tvie/Vh1r3rsrvzTPgg3sU6p64w5BhUEVPc25KucSl3Bs8V+oPc9wFFOR31HReXV8wnjdQUqLSLT1sG5SSwt2tBcaGtfuNrlxx1c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CMNYH8YK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DMFf3aBJ; arc=pass smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gtTf0rlT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ilVOBMyb4eiOLOSlQZYVk/bMJz06929WdKfCcif8KTCuo4TVDCoVHfcMNB3EzzXisF8GTYm9NgbzqLZKlY0tmbKSwkNZrhExnHrth9oIjIbNET1QzmNjBmtE2zWlAnRk6Csm1yBG+Cpx8HLF5IFnGYXO01znEWhP358gc2c/S/S0hqmX9PdasnH/PB+0v9ky1Lsb7uyp/iWXpAAuZGuwxKNPkqFz6opjeoZ1Nlq8MXK0hXYE3KtsUZ/3DZSprJjw5n2X3hG2o+biVDefjdpmIexBQIjJmob/Ufnk2Lp4HvRDZox6Zp94TqmznsdkyFN2l5mIl6DsJo52kwmSk/xgDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ns6So/MR9yYoUkMg1aaBezx1YokQRKtUkZ/9H5qCgh4=;
- b=oEuUWt6XRVKZe5oTiCwkrrW51L5Iw9DsqnHmvl7SmWOxZz0bSg4LDV2izz4FV9FW2ZkMsIF1dM2fl66Wueg8vCLLvFWlfjCqDB2ATiIeGtYvtJ2XsgPyxlZnayVVIbfnAznLeKGsAihsPlLobw4HRft2shwWtJdjocrYZhooy7i4Pg45/1FWjFL4NoTobtn3appr8TFKUnjlenZpVv+vrnGINsubVIkV/BmvBekOX5M5ss22fScQSXmEkpYzJCE3H+MQ2RJF9J7JcJ1m56YoHpTEmFZnkWphdp3+M+MPgy5pJsJRBa/o++28jW1WiGlyifk+YTrBVpqWPXLzELOqMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ns6So/MR9yYoUkMg1aaBezx1YokQRKtUkZ/9H5qCgh4=;
- b=gtTf0rlTMuT0krsQVeqQL+m2Q/EIzRQQ1StIZwye0xYK0aeNc+LcZp0IWGqPlcoV875Rolre4jGb9LKtfqDoUrGUKwZtgocj5PatK/CsGHL7xD6vihAwQE+jR5XK1JFOXOsj86e2VL2bV7z90em+JMreIxDOm/kqrkxDNvubUq2BBtAtQnygw/79kG7W0r8Q8g7xTu9cD2RLexJr3VlpAEHXXu0aI4NkeHIPRoruLdZwpL+GXRWblAn5xM2O84MhSqHsULYM85T3YdPLx4kOe+9zlnNGhRHHCGl1nGoxH03KG0Oa5QZpf9jQvXrCd3n8nJsg5/x5bJgN8bnXJjGSpw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV1PR04MB10870.eurprd04.prod.outlook.com (2603:10a6:150:20a::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
- 2026 15:06:37 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
- 15:06:37 +0000
-Date: Fri, 24 Jul 2026 10:06:29 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: raoxu <raoxu@uniontech.com>
-Cc: samkay014@gmail.com, sre@kernel.org, imx@lists.linux.dev,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] power: supply: pf1550: enable charging when battery
- profile exists
-Message-ID: <amN_dZj1p4KWcawu@SMW015318>
-References: <D5A5255CD2B683AC+20260724090341.297438-1-raoxu@uniontech.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D5A5255CD2B683AC+20260724090341.297438-1-raoxu@uniontech.com>
-X-ClientProxiedBy: SA0PR11CA0043.namprd11.prod.outlook.com
- (2603:10b6:806:d0::18) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CMNYH8YK";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DMFf3aBJ"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66ODbAFi151524
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:07:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6iZwoWyplh10gQFqizgnNT67wlnEGukSQwIPfNxV3K4=; b=CMNYH8YKsP0vLnKa
+	kg5kejSOcOGDDykg6w4NaAMhIZjMwg5Hvpg2qVVAeGFA6SXIkFXHAI/V9jYZZTSy
+	RttEgtp4bwm6aE9p1KGLNE0/MB+O/oivlVfzYqqXeDZ/TYz39Fv1fPEUWjQMmKmB
+	ZOhZL4fM89UgzYGiONz5xZQQ8LEp9cpVqsU7E9WNOiG8/iFseatouKgfxZnlVqh6
+	rWFhOjCyVDJkJyyzui4Pk9uGykx+T9GFLHJOTV+t4bciz5za3v7JZndxoHiqDk4w
+	c6pEZ4xZYfHEQPLIJ2zTQeesRUAuDTSkH8JP6vyj4qfAeEMOO27lPxff5lNMPRVs
+	QuKvrQ==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fm8ck8gn7-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 15:07:04 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e8004d60eso84893585a.1
+        for <imx@lists.linux.dev>; Fri, 24 Jul 2026 08:07:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784905624; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e18aUbu8XvAc0HdGHdVSE0JCV+qAEI/h0hIuGsSWVrP+p34sYQJ4YQvmkutXSkFvTe
+         /IIDccbg6fVuVy3U4t3Q9olCqbwtfYCd9Imbp/vZfX6TrAoJufSDKCkJ1rY3uQHn/MX9
+         +Aj5sJoOpDXrVpSab09XrOe/Rvp2XiXiaBTeD7ySCGCuuXbchyIbToRqF2FjnIgWA3HH
+         vAZXsY/gLwqdmVYhjgic4L1WIkPevX3eRb2GdjjNM0N094XnnST8QUa5JTHj9j+YSt14
+         3pVFuX41a9Psqqs8eZGYgpXj37nuwl04SbsXZGKBhjWzSCu8FtUE5FSRqMErH7LYaAHE
+         f05w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6iZwoWyplh10gQFqizgnNT67wlnEGukSQwIPfNxV3K4=;
+        fh=9a8/oh9YCTmQAprhqPljAGhoaGIBGkxJ6aUYlmaDlD0=;
+        b=IS2H8sizru9/cxIowGKmG+giiTyeujwmMvrhwJ80TbmHiEQsgpERof48sQFEDwzjyY
+         stGeaF/ZEQW433NPL1IJHParwslisA5O1NLQGK+5VhKHSsGKFUlLgzviQU4S47gymLu0
+         7t/OoVxoHtZTKk+lgjESAQSo6hHkdNnAZuF/mhJaPdOviQf173o+YL4AGIrIeReQhAo8
+         /lGCpabHwNKmXXe2Jju/Lad1HCy5okX3SQ5oXJ/TopgBgnVDkmI4V/mnpV9LDeIOze/n
+         vDuUxyNvZFPr2wUOidOgjShUumRqOP1mw+Uhdmtby4oyPlSmCmLHIvGI9K7F+Nn/Rgl7
+         mM2g==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1784905624; x=1785510424; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6iZwoWyplh10gQFqizgnNT67wlnEGukSQwIPfNxV3K4=;
+        b=DMFf3aBJXWZmEyyf3ZJpCzufZt2FEkCHIKwbIGE7H5jDnCfdk09N4s2P+DprWR5tqj
+         Oc1pSb5MRbgVUGaSGgoxE2x3CFhqlc42CTypFDiC9IPeNrvYLKcorUyLXcvWgwZP9bzr
+         ekZ8kGkkLzyZJrmblrvh/8id6VmFn33C0QKPZFGy67+u4hg1sx/RrphBW2TOO3M8q7cz
+         CE42U8Y5y7RetRWXSiW3WMgqaq8QJ4Rw8yp2hElK0kqOS4IzHbR40v/fO3bWe3Wshzk5
+         K31V49tVxjjKRg9l1x+6IzToM/QSLXFUeuC360eA9VAI4dyoZUCAIxni3SBO/f8EU9Qt
+         3Llg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784905624; x=1785510424;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6iZwoWyplh10gQFqizgnNT67wlnEGukSQwIPfNxV3K4=;
+        b=kHFV7JUZeqr2/BFd9JgaWSEd1/7OlYqF1lRdQriM9QC4oRALcm8Pkl7v/mvcohSvwA
+         MIagOHi9QmWGgX4lC8tGFLm1L8H0p/6Z9K+sa7x8AJQ5ZQsvoSEoyfZXaNPlbO5CPIPM
+         1j/sjZujPvEpYyQtzmJdutN4gxas4YX3DsOr3BQGQdqtrgy0EaeeRP6FL3309MNtItXm
+         Pmw1WBoMLM7ChIFF9PL5/Ftf89pVX76agxZOh7JGnqYESHt8IlVqQlHDN0fEtSgxdMpC
+         mk48bm530+8Ti6YP5ODwyBjdtrsUeJKqrR5dAYUOyO0jythYdUnkT4xTn3PTeZ5YizZc
+         BIOg==
+X-Forwarded-Encrypted: i=1; AHgh+Rovz3jjCsRIXNqaOSmoP5NVm0UPzvecwYcPox/31UaWaw5/8NEUh9mQ+GhRwDy0mneOuIc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz+PEnAEbkviudDbuJzbEnzhBm7MHCYC3xZjzJFzJjuwLIun0p8
+	SdB9Q0/O4tCnQirLoaQE2qHwJasrH2HQseHmau20hGNQ7iiNwtMTOYOAA7NxZNyIFPyR6vOaB7C
+	kj6iA9Sx8+3M3168KhFOS2QZ3jBFRM7fuCyJB5n8NDRxoI6UywDSHMKEtBaCO6Ud+NRnebC9h73
+	KvZqvEd3OI7KfSWLE5hiKDF6GBOqFx4g==
+X-Gm-Gg: AR+sD13hLXvD4ekUb6u1/xZ39tR9Z0t8sKhvSayvp/algREuOnKrS2lArBOp2xva4ir
+	Z780Hl0e1eFHolc5OFMiA6tIFlEFkXV19kYZUULpruseFCdPs4uA3+c6q5IxPLoPRHO5tRPWpth
+	1MQZq9B7DTlZbc4I8sLikiWyle7CrM1BhizKb6pmnXPurkUhaVPOeweifyIg==
+X-Received: by 2002:a05:620a:1b81:b0:92e:c118:18a9 with SMTP id af79cd13be357-93103a65117mr772235585a.92.1784905623950;
+        Fri, 24 Jul 2026 08:07:03 -0700 (PDT)
+X-Received: by 2002:a05:620a:1b81:b0:92e:c118:18a9 with SMTP id
+ af79cd13be357-93103a65117mr772229085a.92.1784905623517; Fri, 24 Jul 2026
+ 08:07:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB10870:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ff43a4b-7aa8-4b6f-65dc-08dee9952895
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|376014|1800799024|366016|11063799006|56012099006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	ymT7rTjrPlJ2TCFBIAXXJxRcw+vjofxhTEDvkBCarznXqVWdiD00OBDXVSpm2sUEIJB+nM3vUSzH7vAEXUmKwdWOOeZg4JvTCX2qiCdY8h7KoRFKoYM5kvc4AC7sVD6Oj3mQ3E1ZJzsZbL4QH6j87i2MYw/2hw/rcNK8Y3i+jgYFRjdpxJNmBFJjZJeAmxMxay4WHYbYJWSJXok8lPDbYYpV3o3vnON1vvFlvr5i110JTbZULnJ0H7zCiXcvHfBXnbpRaGb8XA5tL62BNx4HQ0M/Ao3d6LWrFqjZIYzBDNJFY6ymf2knwZmPaLCVEfGZsnf0es9e4guSXiPifWHyHWqai9GrlqAK8spbZNN4s8WfmLIXrkjKnPhUy5d7ojQ5yONSWibbTkEp7msJtyTc4uulN2ElA+FhUJVrY07W76BOATl/GdsgJCSVs8GXUSc4Zmc01zX2WuKIYdK6wDIVtrjJYRP+xxxiW41Kjs6XExNZNySPGxu1Qk7aPY6UhsXh3h2LHhBq4LXJIsc8GJ7LDOAwJCVtzbsSt3gPBOyXbiZI1q4vg37HUbQ85NL1Y6h46ycvJsfRxaAG2oRRQpVUeHbiScquYI3Hnq1I0qysl91LB2da7FLyEF130kHJFSK8cegkAba9gwIXgDipytR1oc/4Ms5bBGgNfvmy4U6Kj0A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(376014)(1800799024)(366016)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vJd1Ih6Eqk3y0dgS/5/s56Q7mcpRWgws8xwKPxYXXtOe8cZhennZFGiOsUII?=
- =?us-ascii?Q?XNKFFnOe5Wu0QiIV774ckFLiQl39ufU2qHr50u+sNrPrMOHHsGtZ6cNtIGYh?=
- =?us-ascii?Q?byWudUMuhVe2oM/EUJ0wzVNzcZHV/QZ7IODGsAlrpqwtnG/DZZUm1BFoJBJD?=
- =?us-ascii?Q?RvlLXXzDMVpBHO5vUq7btmzOJl3aOqCvnLayVlu2trJoWNCmYtv8ML6a0xis?=
- =?us-ascii?Q?49HRrzjR6hFZojE/CRrVXTl3s9isnzmGVzJiIs8pRK57vIYJTegD820B/csW?=
- =?us-ascii?Q?eCufCBIw3jdMciIGyabbMB11E6fScZ2oeab3Nl6BAfMt8KF5423L7LQF+Kae?=
- =?us-ascii?Q?fBrt35eVslfQS95ThxoFA52n9i3sj8fguZrrPKD44x/yK7Rpve5cY/z4YaBD?=
- =?us-ascii?Q?B5SJAPRbkXvQim/CpdBexhKsD8yhDVKRFlUyGNqhvPTsL7eHatV2ggyCamcn?=
- =?us-ascii?Q?lsmmPk9omQl9wwKjvA5zj0klwAjuruNXWqKDjJLeBnNQc1sXrPSG5KlelD5Z?=
- =?us-ascii?Q?RQ2l22LMb8hf0LUCod5tp7E8DbQRcCGkfLqb9xtalZ9iu1aUKkItN2WnpPi0?=
- =?us-ascii?Q?iXLUnd2pdIbhe127MixCknh3AyRmdlfEvGCcWBDWkQeqJxGOrUJ+fEVGbJoo?=
- =?us-ascii?Q?uVx67IDt4TkA+LoTArYlP/t136ehlX3JnngaDXPQ93WEXjK2V8zr5CN7u72R?=
- =?us-ascii?Q?LNEpp0ec78MBkN/TYWYjz9umAjz6CnWYoZymF81Rfh5vMX/txSvTZQsPugR5?=
- =?us-ascii?Q?4B9jRtKx5cg6Vt3r98LI8VP1Z5D2v2CVL5dAFcZLECwJC5ixFAWt0Q/sf6VT?=
- =?us-ascii?Q?UwWQWnFQrnA0QuioVFhXCyfFjuzth1C/TR9NMYbd0OJB5KCFBWNIgHRqdsJ1?=
- =?us-ascii?Q?6esRnb2Z1Xwu0NFQGVqDi+o8GnWudAOpAk2YMkONEKmb0wXx0CyFMWqshCcP?=
- =?us-ascii?Q?Dm166L4PCYiihRTFf7lzvt/afcL2UrlJtOZYyyk63lCCOdwz6EoJQq2x2T0k?=
- =?us-ascii?Q?bn/nOtY1O39+IT3PivQo94BlyM1wpJXCJ/q5SfdaDT2Eyixuet8h2emBQ+IS?=
- =?us-ascii?Q?8SMGQx1NDhQ2vMkd2On43dEX8GWucflev1O3MkjKiBElTy9rqdNYRvYuM2cT?=
- =?us-ascii?Q?o/tmuHascdU61+WYJzfUl9vRgYsJcn5KhMz6j0WQGvTKsnuRqLBod6IQ/FJK?=
- =?us-ascii?Q?4yiFo2ZRqcnVpOgkLUckcJSLISW4GF6CI62QZ9xfF94SwCSwOIlplrzEUzG/?=
- =?us-ascii?Q?J+QqP17pL1Tu0529eHj3ixSlRm6NGKi2JmxdVJwbc2cs8CS+xQLpfMJc/dI2?=
- =?us-ascii?Q?kWxc8NKFYp4uGsrWCePx81DElUdSaoqEgWIOlBY0QgiIhQRX6CpQHCtRP5rX?=
- =?us-ascii?Q?NkHjH4d4d23g0crb/MGBlqeXZURCR0fAw3f9gWoCUSm1a6MKlhPZOb6u1R7y?=
- =?us-ascii?Q?Ou+H+GfTtJKvXRSVsA/El71cv80DQ/cXYEAo/32y5PhUsp4IiBvahz/lhlO5?=
- =?us-ascii?Q?Guxx2mF7/K6YP+6Q9cNCJtPdB/5g00nzjv9D7PbiJ3XTg603Y5Zw8GRiEpk5?=
- =?us-ascii?Q?vFgz0DsUzWihKgGgFidNuCi8TrvGFiuBfrYiib6U+wGAtxyadI2eM5eY/Glx?=
- =?us-ascii?Q?hR6j/RSDqACecdz8gL4hpM5xZaFEfYXyAzXo0qoou+xrPGyyOGUC/eNpU43c?=
- =?us-ascii?Q?kCyEVlftdt3GrK9uMFdpGl4WiXyf93upVLczu5EV86YYWktxjT3YQULHNf64?=
- =?us-ascii?Q?vmINsK9wEE2O5iEkPLh3DFrY8wpJeqWuOXny89vMOXm//bWfQiC9?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ff43a4b-7aa8-4b6f-65dc-08dee9952895
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 15:06:37.6140
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Muw2FJJCBNsYUkXAeO6cObtt9E2wMCHom7WW3GZa80rGFxjMzM3iIyOF5x3oJDxdFbI8c9YTscwdpteAEj/jHuFHEWuu6DajzpN5Ct/DW3y52zvwnQ3GJN54sdO0zDAl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10870
+References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-5-2dee93f42c54@oss.qualcomm.com>
+In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-5-2dee93f42c54@oss.qualcomm.com>
+From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
+Date: Fri, 24 Jul 2026 17:06:51 +0200
+X-Gm-Features: AUfX_mxUpEE-_djVPIMU7ZvWbbzhCFmItK3_9wrfK5-RcRFUSwGHiGhMmnFjL0c
+Message-ID: <CAPx+jO9=HWwr4jGoCcWAM6fKTTrg3TphgPiNX+4yvfnyEZa_pg@mail.gmail.com>
+Subject: Re: [PATCH 5/8] pmdomain: imx: use platform_device_set_fwnode()
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Doug Berger <opendmb@gmail.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>,
+        Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Srinivas Kandagatla <srini@kernel.org>, brgl@kernel.org,
+        driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        iommu@lists.linux.dev, netdev@vger.kernel.org,
+        linux-pm@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
+        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDEzNiBTYWx0ZWRfX3+ltqq4Fcjx1
+ JHFNxlSaHzClE9Rn16iSsYsT9PQNeZ+1QVT76C/imKS1DtLzH5ZTRRztK5l55frzjsFeNPxrnoH
+ vzP/87b6cQx7TSXJ/o3ZrpKgsBg/HxcrzHPNl4FfQWGNUxR0NjuroM8fzO3esNVQGf8ejZCe1zF
+ z0iz0Sgs3Z748lMvHjTwraWUAMeIZ3W5cjCTcU1wGyRRVlV4dI2TvTLHQU/80nluWxcJZPPqWDh
+ HdlfHkVCYNT5TCr8IylQhFv2aMs+f8eUn4/rhd07GMdxtT74qRhr2nGZ0kYxROwuWWsDTYs8Dkm
+ Tt/HemD3ewyi/EAcfowuJtcYisKD6lG6vCWo5BMFlqFE0B4KOkYHReu6yXR/hz1rGugYVcbEJg9
+ Fzeh3egWR3YfGfs5So0189RWH1HkeU+oy3gLl1h3od9j6RRdV3CzunBHSiiqNjX8709AeMR1fFt
+ N1g/W6FHd7OBHP4c3TQ==
+X-Proofpoint-GUID: 98qpGN8Tfmap-n6vEGJsClfqfGx5DuCX
+X-Proofpoint-ORIG-GUID: 98qpGN8Tfmap-n6vEGJsClfqfGx5DuCX
+X-Authority-Analysis: v=2.4 cv=F79nsKhN c=1 sm=1 tr=0 ts=6a637f98 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8
+ a=RwuSGLWl7VkFDbmKPUAA:9 a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDEzNiBTYWx0ZWRfX/fMlkQVTuPCC
+ ar3nZxt6T3i40KP8TndfwgIs0bolk3JIvaRhzGAlQUoQ7SexFRF79hcsHRcddO9YLnm23YStN70
+ qfUU/nPikAh5JlBmPvFMYsw1gOgZNcU=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_03,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
+ phishscore=0 suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240136
 
-On Fri, Jul 24, 2026 at 05:03:41PM +0800, raoxu wrote:
-> [You don't often get email from raoxu@uniontech.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+On Mon, Jul 20, 2026 at 11:25=E2=80=AFAM Bartosz Golaszewski
+<bartosz.golaszewski@oss.qualcomm.com> wrote:
 >
-> From: Xu Rao <raoxu@uniontech.com>
+> Prefer the higher-level platform_device_set_fwnode() over the
+> OF-specific platform_device_set_of_node() for dynamically allocated
+> platform devices.
 >
-> PF1550 starts in charger mode 1, where charging is disabled. The driver
-> comment says that mode 2 should be selected for applications using a
-> battery, but the condition is inverted: PF1550_CHG_BAT_ON is written only
-> when power_supply_get_battery_info() fails.
->
-> Consequently, a board with a valid monitored-battery profile is left in
-> the default charger-off mode, while a board without battery information
-> enables charging with the fallback voltage.
->
-> Select mode 2 when battery information is available. Also release the
-> battery-info objects after use.
->
-> Fixes: 4b6b6433a97d ("power: supply: pf1550: add battery charger support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Rao <raoxu@uniontech.com>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+
+Acked-by: Ulf Hansson <ulfh@kernel.org>
+
+Kind regards
+Uffe
+
 > ---
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
->  drivers/power/supply/pf1550-charger.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+>  drivers/pmdomain/imx/gpc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/power/supply/pf1550-charger.c b/drivers/power/supply/pf1550-charger.c
-> index 41036f4cb64a..f698becd662a 100644
-> --- a/drivers/power/supply/pf1550-charger.c
-> +++ b/drivers/power/supply/pf1550-charger.c
-> @@ -514,7 +514,10 @@ static int pf1550_reg_init(struct pf1550_charger *chg)
->          * a battery. The other supported mode is mode 2, the charger is turned
->          * on to charge a battery when present.
->          */
-> -       if (power_supply_get_battery_info(chg->charger, &info)) {
-> +       ret = power_supply_get_battery_info(chg->charger, &info);
-> +       if (!ret) {
-> +               power_supply_put_battery_info(chg->charger, info);
-> +
->                 ret = regmap_write(chg->pf1550->regmap,
->                                    PF1550_CHARG_REG_CHG_OPER,
->                                    PF1550_CHG_BAT_ON);
-> @@ -540,10 +543,12 @@ static void pf1550_dt_parse_dev_info(struct pf1550_charger *chg)
->                                      &chg->thermal_regulation_temp))
->                 chg->thermal_regulation_temp = PF1550_DEFAULT_THERMAL_TEMP;
+> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+> index abca5f449a226fbae4213926e1395c413160c950..c147eaf048ba2b79a744ec870=
+29420981581e48e 100644
+> --- a/drivers/pmdomain/imx/gpc.c
+> +++ b/drivers/pmdomain/imx/gpc.c
+> @@ -487,7 +487,7 @@ static int imx_gpc_probe(struct platform_device *pdev=
+)
+>                         domain->ipg_rate_mhz =3D ipg_rate_mhz;
 >
-> -       if (power_supply_get_battery_info(chg->charger, &info))
-> +       if (power_supply_get_battery_info(chg->charger, &info)) {
->                 chg->constant_volt = PF1550_DEFAULT_CONSTANT_VOLT;
-> -       else
-> +       } else {
->                 chg->constant_volt = info->constant_charge_voltage_max_uv;
-> +               power_supply_put_battery_info(chg->charger, info);
-> +       }
->  }
+>                         pd_pdev->dev.parent =3D &pdev->dev;
+> -                       platform_device_set_of_node(pd_pdev, np);
+> +                       platform_device_set_fwnode(pd_pdev, of_fwnode_han=
+dle(np));
 >
->  static int pf1550_charger_probe(struct platform_device *pdev)
+>                         ret =3D platform_device_add(pd_pdev);
+>                         if (ret) {
+>
 > --
-> 2.50.1
->
+> 2.47.3
 >
