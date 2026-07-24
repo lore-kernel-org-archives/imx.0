@@ -1,323 +1,185 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010035.outbound.protection.outlook.com [52.101.84.35])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013027.outbound.protection.outlook.com [52.101.83.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E59C343D91
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 04:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CFC321457
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 05:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784866355; cv=fail; b=p33Ek7vi+dZG8jbpqtel68isk7A6bAeSR1wev4/guJab13B9bhXmyEgBr7ERAU2cjOnvznj3Bx5UlJaeKarAwUx1E8DkG5Dx/IPJAk97miNfXcFMO/YmSoN5fP9Vd9io1TzXZZQtvrV0Br5UvMB6r+RdjhCIAEuhGGXoyYarv1U=
+	t=1784872414; cv=fail; b=cPlOY2fbqmdMPHGbxiQ8BVRIkbRI2z0SveE9twJMKupjF5Tn5U6B3lmLOzFNdKS9Rbh41jYDfEX4VUWShu8tpj6gmoBaenexwL5fUJ+iyxs4KeHJOke5geri9SrxRAY7FMMAEyOCwFi29YeMgdsIm8rBtE0Yxr9vzeo4j4kguj0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784866355; c=relaxed/simple;
-	bh=EGzj6XkL02oa+VXu2r+QCvIkd+0afcFlTnMWl4Am7zw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=J0Bb8OLdQntz4J5yXS7+B/utCuVkhMi6eFDnMwNfqAGGnWwuFVoFWoQdE2sDiaQ5UAT2K96VyTQ+klWnIZ3IctixvJ+iZF1NaMuNA0Eyv6CxVJcrSaGuVMdoJznA8ms7BqQ/CUrxeHkdEFUrXtt3E+ATdNpD7JIFk9H/wnkhXcI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DM1k3Qc7; arc=fail smtp.client-ip=52.101.84.35
+	s=arc-20240116; t=1784872414; c=relaxed/simple;
+	bh=tXA2wOM7gOcE/m9XohdXAbk+oS2Oi29P3aiEBEBsD3g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZWaONR4QC0FhZA0QOTv50QjgD3czvd8zjDBynKDoPp4gBxkA1sAwyAhj9W1lzgYvdP6c2cVbO/dDgxv3rvxs9sqqCRJmlbE7CJmDkPqFJIsRjtXeMk/KCwfqZzti/+57bxjI5GjkSZpcCJ16rTksYBmSRhoAcccjNeFfIz+icWc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WdlOUqZE; arc=fail smtp.client-ip=52.101.83.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DM1k3Qc7"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WdlOUqZE"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TrnRrtBUHbr/0AifhOZ0AcA2OxJ2fjkS3bSub9EqKtxu2L6QjSkUyzplQ9Lf3PFDQhlNCV9JyO3w9FLnxxac+iUW4f0kBndFKYaZ1Zi1YaQTBYss33fDyk9sUBWnN2+lQyn3WZ9P4Ewo1noUvs1KcCfs+bKJj9smN6dtiX+gTXTEiwNrY47OUAqkB5Do41vtFvPFvJhYfUdyzkEx8WolbJai8ifoIIVOWPyOyieLhONjHjOjqoDDmwTt7hwDqk9E0Al3hB0TJ3iLW9+E/0u5X11WUTS+lTy38mmxIHDOmSP2tLv7lLQ36PPpMib4osnru6Va6+P4jDgspXgTj5mIVg==
+ b=efmyg/kDML1L5jOuPPFxmJUqcZiyuOoawdY4A6H3gaaDzqbzWN+R+MaLf3OHRkooUGqRwANrDYynUdegePPl3SkBrKUKg4Q4G+Z0PKEs4P7pcPYw95ITf6oAjtd+ahhCihs74K5w0K9fnXvpCVPfFqFPmqQRjBpHcrdH801POjdswbmIDca+8ZCWdeKCJFkKrz92c2M7OFGWi+m9T2cu8dqs1jgJlrxP+T2qIS6KUV4g3o6W6+fggi3uVwnoaTk/6eD6OocVKGbrCXWz+JFQHjbPu8jLTM7CG8DDL/XqOc0noYv4wvZ7uo682KKDn4zBP3HpGnwYFU+FAgzy0qdPSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bKx8j17VfXteH3cvoFAZazFKVUiyNadP4JgkdAICPV4=;
- b=G1cPYLsx/3hN8WjlwGx0Uh7UVYVXKeLUIekWBx5I4GezgiyIPsgCeWvXRLW9luliUsMRsij4PCF/wB86eLJKl57lAeQgYdIlYYUEIKkjivIPFI0pf/8loKwrxScZJr49cHpf9GQ3RMwEUbWywX+sSHu2UpPj8bJJbCr+w73qPAjMWfG9m3UGwGYAjecOiWc36jn1TYDqx1zQ5+YT1SzfwDvnBwKf1dJC/wX6F5HAqdi25aiCII5hCX0bNHjNCYdsvfbUWRtbARInAmV6zoNwHQxK5GOWcFHcENq0Ks5bNuKNAV+upO06nen6m9B+LEQNz/rE0szLLzdA248Ps3nrPA==
+ bh=UJR465BW38i0et97xOdywhGgOEM2QgSFsySKu8ltTPw=;
+ b=l0KO3mbE0i5yFPAjpy5c5ctlykHXFdqP/xUj7c9nGzrcsnIo7NTpV/f+rT8C3T/A7KVMpr5YyxnNhdERAUwIvPEq0r7pTz6RdGiUCxvo8RgfG430oRXb50WPgJFFpw+070U966X5EZN0BivYwiywEjzBaiy00FhUZc3HEe2Cpp6P/4E0dvpJ3Y90i4DxQC0LG2gvvqfR3ioIjseHLyH8cSeBffsJ3HH/SEquyWOA+qQjy4RyoKlIBhIj44GiVao/cVqwQzYnS7fOqSJlfNknwaOlueQeMslY51XjbDYNlan4m6No0dPkND7v4WrPvP/ibYD4c7VY1Wcm5DdKya8GlA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bKx8j17VfXteH3cvoFAZazFKVUiyNadP4JgkdAICPV4=;
- b=DM1k3Qc7UTjLEmRB0Vlh4OvJqArunUIUjG3vhjrDq99Z1UIpVsz9X+b48JuCmLkokBjR2Luqc+WVGz8Hp7JVKEOcjF8L9PaORSS1CVSVvO4wu13fxdxzA9+xBbxK+xBTs1ctJJVKZHjki55vpZGJzOuO39YciFJ+7mAY9Q6icg+ZBcCTkdMEf+HFVjF0kltb0Q4odShtPfEqVdTeT/6xNI7X70GIs0VuOOJYOO+Ka6uO3w4fQl0TMa4SVGp/ypaB7NwSfYAlxNqYeoLU9SUXmzIVPbUWknBOfGZcVp5UR5somiEvAANQNqAthDj1eYSnGsa4AnLVmGc81cSRrSxOyQ==
-Authentication-Results: dkim=none (message not signed)
+ bh=UJR465BW38i0et97xOdywhGgOEM2QgSFsySKu8ltTPw=;
+ b=WdlOUqZEsyOgGaE6YdGPFvUIqSbF3IJ4MvfCXhf+q8ULbaeMGfAoGqoD4IydQo3nwHVN7DFMLmxT8vrAlUtv6c8qfRPWJktqL3akqaqZdTke1Ng/vXixLvlpecgaN+7psSLNes/DIw3dbhg2rhYDaINBl7D1oBli2BffG7QhIojO0DzC9rX1cGEr/0VnONcNp577KjbV/zs41an7JsGXRLaGa329My51RGBS2z0o1w8bm/aETKKOFPB7THrn8wUls43sxH5s9wUD5gW0+PjOSw4Cj9qGikyIRqHN/x+JriR7IvLORByZO2FuvcAfQjqD+tC3zmUmGoZDAQzRwKRVAw==
+Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
+ (2603:10a6:150:30c::14) by DBBPR04MB7883.eurprd04.prod.outlook.com
+ (2603:10a6:10:1e9::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Fri, 24 Jul
+ 2026 05:53:29 +0000
+Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
+ ([fe80::ed75:bac1:2554:5cbe]) by GV2PR04MB12019.eurprd04.prod.outlook.com
+ ([fe80::ed75:bac1:2554:5cbe%4]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
+ 05:53:29 +0000
+From: Hongxing Zhu <hongxing.zhu@nxp.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+CC: Frank Li <frank.li@nxp.com>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org"
+	<lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"mani@kernel.org" <mani@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>, "s.hauer@pengutronix.de"
+	<s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>
+Subject: RE: Non systematic PCIe error on resume on i.MX8QP on Linux 7.2
+Thread-Topic: Non systematic PCIe error on resume on i.MX8QP on Linux 7.2
+Thread-Index: AQHdGAiCOS1Dv99svEq6/bYedmdjW7Z2GFCggAAOq4CABeOqEA==
+Date: Fri, 24 Jul 2026 05:53:29 +0000
+Message-ID:
+ <GV2PR04MB120197D555F17DCC9B0441EB88CCF2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+References: <20260720052742.GA6753@francesco-nb>
+ <GV2PR04MB1201926DADEFA97128E7C8CA68CC32@GV2PR04MB12019.eurprd04.prod.outlook.com>
+ <20260720093831.GC52182@francesco-nb>
+In-Reply-To: <20260720093831.GC52182@francesco-nb>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
- by AM9PR04MB9002.eurprd04.prod.outlook.com (2603:10a6:20b:409::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
- 2026 04:12:29 +0000
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
- 04:12:29 +0000
-Date: Fri, 24 Jul 2026 12:13:54 +0800
-From: Liu Ying <victor.liu@nxp.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Marek Vasut <marex@denx.de>,
-	Stefan Agner <stefan@agner.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Robert Chiras <robert.chiras@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 3/7] drm/panel: simple: Add waiken WKS101WX001-WCT
- support
-Message-ID: <amLmgrfQVrYo3knq@raspi>
-References: <alnCL7ylMyvGD-ui@raspi>
- <amAJL9TIcDAK7kbh@SMW015318>
- <amA8iVS4c0exg6pT@raspi>
- <amA_lUpWkbOFal1y@raspi>
- <amFAXwoM4j2sIENj@SMW015318>
- <amF60o7yUcqAE24N@raspi>
- <amKJZ4CZJbeBw6L6@SMW015318>
- <amLNge6hp25xHDYc@raspi>
- <amLZAu2RQXORogoG@SMW015318>
- <amLibmRsBY8lgj2K@raspi>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amLibmRsBY8lgj2K@raspi>
-X-ClientProxiedBy: MA5PR01CA0161.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1cf::16) To AS1PR04MB9287.eurprd04.prod.outlook.com
- (2603:10a6:20b:4dd::8)
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB12019:EE_|DBBPR04MB7883:EE_
+x-ms-office365-filtering-correlation-id: b7f0f5db-ec26-4252-9325-08dee947e2ef
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|23010399003|376014|22082099003|18002099003|38070700021|10067099003|4143699003|56012099006|11063799006|6133799003;
+x-microsoft-antispam-message-info:
+ F/hMkr/c1sQbC4yXp6psubXj5apvpAz+AzS8KdypDiFv6pc5E8cq3UCGQu/noWdFsRUzo75oZK5pFVEXC+0Iq/Ihx+ijOSkVEMLo6cAzbJzd2lciqP0dd5Xxh3be10lLCBRBw6mWrhvAcVbaJEz0QbySy2nHsOIhNwa7b1h2rl9bIKGnIa4yTEqkGAwZeCUOZFOh7D++lrF7c43ovU3amWcaUsP7IdHzECOYRYpmKTzoY4O6Y7Es6p9+IU5DVZRJrq1PC1JX1uVx+Ltj/cgsA16fLneKoONtX9J0FJTGTdViWxxjZQd877eBfxBPC2PccIqmDL5nFzOBSUczQx9gqlTP7oURi/8RBg9yVg65nN+2tWBwRW1lRs/yA9P3Efre6ZY+IWoeYFqdnJoFQCE/bO2K6M3Fv5Oz5pUdqUZkWdmPxKVllr6AAk5bbpaCxde2ItTd8PSl7z9K1+tJeZ4DXQA9ElfeZcUb93oUIKfVu/raT+AxW1krBxHxc305IpmYasqI3xUazjCYLkQTaQzfGmRvuJuZoUI/ArpVd2DE1MZiIZQVOX6MYUSGkMYfBSyaQB9O4y1CZt1HFAbjuHDJA/PrAXzzJUd0rOxczw8rpvhAxUFSAcOgknCbQyy9ejdlyAw80Uuc6nrywkpHwQDdTRN6ZtmZOCsz9NG2GRYjtH/gOHbgQ9Jm8SVXyPs3vgJx965aagYONDcfLciiYBegpqhMc0mV6EpR33lWewQQsZg=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12019.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(23010399003)(376014)(22082099003)(18002099003)(38070700021)(10067099003)(4143699003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?WwFoB/WQwMioqqKF6mhVMqB1m7xsL5zeXD8s/wpfOV4f8CjesDsl0dNuTg7M?=
+ =?us-ascii?Q?f4Lzq9UF4ex+/QBwooi+OAqdxKg3sg9sO7I6UZbrsG6kmvx7LX7hWk3kJUV8?=
+ =?us-ascii?Q?OXma0m518tdKqB9jzWvbckyGOE1QerYQGr/+Tvv0Pfv5C+zoeyTLwcKkin+/?=
+ =?us-ascii?Q?RARDNztnlK7YO4T0mhkONui13UytyM6QJiX5eKUbUhZX6vZFV+MhHNOUsZmc?=
+ =?us-ascii?Q?IOrsu4KTzy5tSsB3xBztXvStYzsiVF05+7eIF+AjSi0K+ujRTR7NsK70YMcv?=
+ =?us-ascii?Q?ih7NgwjrkQVoZhPA1PatZFeSfNka/aBPWUaX/KezTI0pahIUnsg0o54Dku7G?=
+ =?us-ascii?Q?gATwloAyYYizS6L0T1/Mps6bCiYo5jlbCXXgm4lysTuw8LKuBcsWAFS94OyS?=
+ =?us-ascii?Q?EasLEbMfBtdbzPpTDu4VGwTchs7BibQVSm/jQwqXYMqqzfgQfOcY+dZI5AV+?=
+ =?us-ascii?Q?lOtMMfypXXEEIqT2h3CinAGbjA2Xg23pDXwqBd+BVhFxvaGHnqFqDGzopZ4q?=
+ =?us-ascii?Q?07ZCZgw9hipyIS/xI4T0WisJWxMFWpf47cKuXDyszh+Xtqr9SDbu4mgId/9H?=
+ =?us-ascii?Q?KjP/yUaFKRpsyWQ1nM6zUCiGPmJOOjb3s+iZWPEEo7ADe6hnbvGd1jRGF4Xl?=
+ =?us-ascii?Q?RAM/dIRiqZHIuYF4Rw6On057YEAyDhwbTxJB76xDO9lK1OusUDCZg+/mZR1V?=
+ =?us-ascii?Q?2SIIm/4e3JB7FyROEOeFmmT+kY56EtYBb1gDdaHiHhv8NJabjDr/n5GG7fWD?=
+ =?us-ascii?Q?nuiv2onsYGwXOzBnM/9GhqQKCFFH+/GqkA0bIALDFwixdV9sq0uOQrHEaY7Y?=
+ =?us-ascii?Q?qwdbGP0FKEwU5qA/oLzSKJtySKGA3MVUqByWCoQd2z1caEPumSP1/zrlHixl?=
+ =?us-ascii?Q?7DvvIJ7b3MAzWLjAUMAr9pIc6VN4w+V5XvZW8+0CBx51FDQdieedpzuZaYhr?=
+ =?us-ascii?Q?yr9FT9gQQC28Zz5Phblm+W9TkDUVOW8NbL5U3fFsiOlDp0KshH+97J61gs0E?=
+ =?us-ascii?Q?YhSZ7hG+/dwArz3pMfOTOqO0iWKmXRF7AQ7ZkdhcMYGLdg6OMxFU9nKnHTPf?=
+ =?us-ascii?Q?8tWtgPJraZJPRyuECBYoLAT5Qb7+N3TVaQnOtrLmVVRwghQkR9APL++XXq1R?=
+ =?us-ascii?Q?fL1KbSlMlMdkGPslH0cG/q+tY6WMI5o//h7XYouPRBGcjnEdjEOoUFOD7r2Q?=
+ =?us-ascii?Q?GkXdlI/q8X4egBSATDR+ZBgxl4hhS+0jseBe+77qYsstKw0yP/LBarVGPm/J?=
+ =?us-ascii?Q?lcW6OokvkIyxPrWLvxUHIn3L9NX08bMWstB9OJcDfwPtlg791ZVXmCfwTfKo?=
+ =?us-ascii?Q?XISVPJQgv/2JwGIQggtJavyrvTy0yuH6Mg30kEjMfeaEMVGA20w2maInB1MG?=
+ =?us-ascii?Q?nOkndrJoE6+WeazMH6y0xudRxUa1D7Xx3yQGlbAUnZpyspkmXFIr121lxd6t?=
+ =?us-ascii?Q?Av+1NTsP/ZwQG8BySrDNoHpglnqfnNgnl7weEb0FhpzzRhoMd8hL6ibA+gL5?=
+ =?us-ascii?Q?qXuedATPEFjC7XlfgTQzFPkARpNLPeTZvWwme/Bn8qYwz3syJ9lyu3GJp59S?=
+ =?us-ascii?Q?UNxebUi3vZoGyY5dxFgT8dSjFBbIcRxzQfN63RRwX7lLbmkK+b4pl3am4HR/?=
+ =?us-ascii?Q?XASH8iJinmbtmnck1197cX5o8ngI0meT3J1tea71EUz3pdgHq00narI00st6?=
+ =?us-ascii?Q?cINe8ORe30ymeCo/xWEnCMpivy571nGOFceIXHfg+d+aleeD?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|AM9PR04MB9002:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d43ee81-f1cb-4dca-c9fc-08dee939c6a3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|23010399003|7416014|376014|56012099006|10067099003|11063799006|4143699003|3023799007|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Fid8l4iW0eyCZxYbW6hlh3pPAEvzaEYyLn69hoDxbsT81dT+GVtqgZLJjsxA1rkLcqKycAxZyphHohvuM0QSKuE7Ua9IywXEWqGQGwf3X7+1TwxUr9INRlZXEkDby7T9UGbejqsQYCmRAqfruTZQ1FxLUn+eEg+XsYKwhRYeAeeQ2xjacyA/RLtk7Z+ztuWu8MAUF9s7MSw+bScJZyLCBrzqLKJ0ivCIl4CgFhz1S9fZzba3CYITGRl68DAJrqhmOPk4BUuPlZhI2r8fyudiAdfyTg0wMXhxdkQweyczFb64MJTUyF6ASWiDNoU7feUZz1G1pN5MBpRztGAmIB5gQiDl6xFJiBMFR8KfpKqcIYebTtcYXETg+nE6qyfA5VHYvO1RcMNzzqyqvKrDmd+XKBlzwsJLRJs6mK54/egPhJ4+ZkYGkqvGA9mMfDzs8tfZsWY8i4sMIOyT+AziQpswTuh2FZBPII69GaFNiHs0cgaxwSCRhiebJwEr62GHJgNXiuJjRBckOFdUsFx3uI/+BX//g582uUjmzIxEBqli9VvkmChOR4qwj8LQhfvTcW/87FCraH2z9IOG8tprRDHGjppRmCU0O8Cw3UBl6h4vE9ZmeULGnW4p3KaiqODyr4E6btryCVKpTOZKNKRtjIo566Daj/tNBDauE84jwwgNeyY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(23010399003)(7416014)(376014)(56012099006)(10067099003)(11063799006)(4143699003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mK4h0/bJISodVHhyegrbWNp6qY3hhy9IUd3bBk0yzBXHPyZFlDZeogSY4YTw?=
- =?us-ascii?Q?HD6kzd3Fpgw6YjfKoYuHCw44Xw/4bOdHhJTRmU/C1hdRtvH3sUklSfhy/7UP?=
- =?us-ascii?Q?2UjG/Z57cMdQvixyovI4al9J4vA3wFRkeNnCjEY9viFeFsj1khmSNIg3FBzX?=
- =?us-ascii?Q?KqOz8EEj1Dq2xU6gtkAJBt2G2h1ppOSde+IVNFP1TuUcBLgJ+6oFqhMWvcQ7?=
- =?us-ascii?Q?yNt5ddK6WvICILbT9cyi11RS7wBOoZ17UumK4GsIh7jv9OrBlmF3IT0mD9ri?=
- =?us-ascii?Q?HWemh3gN7imznCwc5gW3x9geQRn7roRjQHbeLqn3McqJQAYjvqn15skSIeiL?=
- =?us-ascii?Q?86rZVwrhsdsGBDnrEv93/B+f9CWt2vPlH1QNSBKY6xGMiHWC43p6Laq6BeRY?=
- =?us-ascii?Q?0EOKyW+SSZEFkGr+jbe0sgZsnZ32AIGCvOLF6v7iXTGKE/fcl6R8HYDEOLpg?=
- =?us-ascii?Q?b/0vaYkJNj84dGFj9PSvBwryD2LgOdQJCapc6UAMS0xPbX+Mwp1mUOAruqSd?=
- =?us-ascii?Q?SNFS+ObmQ5XZgstcy//3rPfB3JUwSe+vVRHjk9XkoWljgp6VYuknyWm9iEc5?=
- =?us-ascii?Q?AEU0T2VrpSUPrFT+1yv+7clDhzpwgigQo4pjmHhQVJK+pMo7bgn2i+g2KsXC?=
- =?us-ascii?Q?fR7GeIRgkUbkQXQojmupAbth4BY8XhK9F3Uc4IOvSkIg5sprQ0DIIy4rVXXy?=
- =?us-ascii?Q?J2rFUKbExiFXxeL9kLzoBTU8dTh8zFq4sbxk4ihgG+hZGTbpsMJdgvw5Jemj?=
- =?us-ascii?Q?fLnTASpCIK085/UPUVAb5kM0TOoRcaXHmBqUYm+//IevoJqsLz685Wn2rW4A?=
- =?us-ascii?Q?1kBnp6MTy4LRDonyyn6s2BX6+lxFOgpoFTK72QkHH2tHcZGNLbfpq0fWEAdP?=
- =?us-ascii?Q?0zdxytOj3e0x8u6gnt/DBtK1eMQfnXAM18R0zKrIEfm0CWxWhOZ1XFHwSh8Q?=
- =?us-ascii?Q?1wj7Unphe4nvAs818pxUv4Ju1zoISmYP/fixq/Ha3eQEatBHAp68mkwH75t9?=
- =?us-ascii?Q?cNmUL6Bu/Bd/lJAHmN+QzaMGmeXcSbBSoh9eRS9KDWZ9cnUfGA1TCxYtSdQi?=
- =?us-ascii?Q?UAhhnHdk95182Nf7r718WmE4Awjt8iUBnIh3sayOZ/wK1jiCbT+bodCPPGFj?=
- =?us-ascii?Q?FE/JrtldOKAX26U5eYBTT5ycpyLCmP06UJa2OAcopB4NXQ3N29/HXvO++3g6?=
- =?us-ascii?Q?ExJr8YND5bhYjkD0s6ZnMifimJc2uV0TmcvAI+nk9nut3eZkdx1GXIMM2GPk?=
- =?us-ascii?Q?lJC3eKR5nNzGky+Kwctd2uvRKLhTE7OGnK1Jz3+Ha498uTkw/83neKmvr100?=
- =?us-ascii?Q?XkogvvevPJ7u5BAd/FS9AogNf/XCOOJEaA0l3/7nemI0K9dxX++q2LTUmEwU?=
- =?us-ascii?Q?g5idF1rVgxSzqKPpdfnjEJMieMrtuSD/02dyDCQx2auRyng3VkiZJuegjRzO?=
- =?us-ascii?Q?jcM41SzLoTPcJGN5TOeYuWabkDAGQxqouuhk3mXNYSq5ew5D9cAe6fN4Ag3M?=
- =?us-ascii?Q?PvXOXt3Ur5I8zr+pyifJKFElGU/7d2/RVlRkkRMRDQUV6Poq9ywTe3Nop3Ss?=
- =?us-ascii?Q?DdwYkYWpKm8ICoKtET6FgFjGtIzOEXO0/ke9kGrsA4mEyT+94lwvDeNiuk5a?=
- =?us-ascii?Q?km01E6xTwEx/vk7KqZyD96LaBTNwHLz399vqIb8JPWPESYJAMZzh0qy79h7n?=
- =?us-ascii?Q?O6bp4Y7vJNwwcxhx4sL/oF2W+a/dYHAMVMD+doket8hB9ipBhr4IiIyFh5xj?=
- =?us-ascii?Q?h7CtCY1YAg=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d43ee81-f1cb-4dca-c9fc-08dee939c6a3
-X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 04:12:29.0628
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12019.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7f0f5db-ec26-4252-9325-08dee947e2ef
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jul 2026 05:53:29.2073
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: scLdCXkuq9asa9N8fZtzk6LPESt+3uyR7EkX5ePWJQNSinQd7J+86fUwSR2BeDc0Kb2JojhMayuYHEW9zhJu8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB9002
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1zz82h86kqglBtCwoalliMuw1/XoXd9aTSuqqCQI6RlaPeTmu+Jn86bC4VX0CCw+yCxMN/gPKMATO/N19D/UZg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7883
 
-On Fri, Jul 24, 2026 at 11:56:30AM +0800, Liu Ying wrote:
-> On Thu, Jul 23, 2026 at 10:16:18PM -0500, Frank Li wrote:
-> > On Fri, Jul 24, 2026 at 10:27:13AM +0800, Liu Ying wrote:
-> > > On Thu, Jul 23, 2026 at 04:36:39PM -0500, Frank Li wrote:
-> > > > On Thu, Jul 23, 2026 at 10:22:10AM +0800, Liu Ying wrote:
-> > > > > On Wed, Jul 22, 2026 at 05:12:47PM -0500, Frank Li wrote:
-> > > > > > On Wed, Jul 22, 2026 at 11:57:09AM +0800, Liu Ying wrote:
-> > > > > > > On Wed, Jul 22, 2026 at 11:44:09AM +0800, Liu Ying wrote:
-> > > > > > > > On Tue, Jul 21, 2026 at 07:05:03PM -0500, Frank Li wrote:
-> > > > > > > > > On Fri, Jul 17, 2026 at 01:48:31PM +0800, Liu Ying wrote:
-> > > > > > > > > > On Wed, Jul 15, 2026 at 02:34:48PM -0400, Frank.Li@oss.nxp.com wrote:
-> > > > > > > > > > > From: Frank Li <Frank.Li@nxp.com>
-> > > > > > > > > > >
-> > > > > > > > > > > Add support for WKS101WX001-WCT panel, which is an industrial-grade
-> > > > > > > > > > > 10.1-inch IPS TFT LCD capacitive touch screen display module.
-> > > > > > > > > > >
-> > > > > > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > > > > > > ---
-> > > > > > > > > > > change in v2
-> > > > > > > > > > > - update height to 135 from 136 (sashiko)
-> > > > > > > > > > > ---
-> > > > > > > > > > >  drivers/gpu/drm/panel/panel-simple.c | 31 +++++++++++++++++++++++++++++++
-> > > > > > > > > > >  1 file changed, 31 insertions(+)
-> > > > > > > >
-> > > > > > > > [...]
-> > > > > > > >
-> > > > > > > > > > > +	.connector_type = DRM_MODE_CONNECTOR_DPI,
-> > > > > > > > > >
-> > > > > > > > > > Seems that the panel also supports LVDS input according to the specification,
-> > > > > > > > > > since it mentions 'RGB or LVDS Interface'?
-> > > > > > > > >
-> > > > > > > > > Need hardware rework to use LVDS. Need remove banch of resistors. Should it
-> > > > > > > > > be treat as difference panel by different compatible string? hardware
-> > > > > > > > > actually changed.
-> > > > > > > >
-> > > > > > > > Not sure how to handle that.
-> > > > > > >
-> > > > > > > Wait, you probably may drop this patch, just document the compatible
-> > > > > > > string in panel-simple.yaml and panel-lvds.yaml and use add a fallback
-> > > >
-> > > > panel-simple.yaml don't allow fallback to panel-dpi. Need seperated yaml
-> > > > for it.
+> -----Original Message-----
+> From: Francesco Dolcini <francesco@dolcini.it>
+> Sent: Monday, July 20, 2026 5:39 PM
+> To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> Cc: Francesco Dolcini <francesco@dolcini.it>; Frank Li <frank.li@nxp.com>=
+; linux-
+> pci@vger.kernel.org; imx@lists.linux.dev; l.stach@pengutronix.de;
+> lpieralisi@kernel.org; kwilczynski@kernel.org; mani@kernel.org;
+> robh@kernel.org; bhelgaas@google.com; s.hauer@pengutronix.de;
+> kernel@pengutronix.de; festevam@gmail.com
+> Subject: Re: Non systematic PCIe error on resume on i.MX8QP on Linux 7.2
+>=20
+> On Mon, Jul 20, 2026 at 09:16:27AM +0000, Hongxing Zhu wrote:
+> > > -----Original Message-----
+> > > From: Francesco Dolcini <francesco@dolcini.it>
+> > > Sent: Monday, July 20, 2026 1:28 PM
+> > > To: Hongxing Zhu <hongxing.zhu@nxp.com>; Frank Li
+> > > <frank.li@nxp.com>; linux- pci@vger.kernel.org; imx@lists.linux.dev
+> > > Cc: l.stach@pengutronix.de; lpieralisi@kernel.org;
+> > > kwilczynski@kernel.org; mani@kernel.org; robh@kernel.org;
+> > > bhelgaas@google.com; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > > festevam@gmail.com; linux- pci@vger.kernel.org
+> > > Subject: Non systematic PCIe error on resume on i.MX8QP on Linux 7.2
 > > >
-> > > Really?  How does it disallow that?
+> > > Hello,
+> > > our CI spotted this error on resume. It is not systematic, and it is
+> > > possible that this is not a new issue from 7.2.
 > > >
-> > > I can see newhaven,nhd-4.3-480272ef-atxl and osddisplays,osd070t1718-19ts
-> > > are documented in panel-simple.yaml and used with the "panel-dpi" fallback
-> > > compatible string.
+> > > Does it rings any bell?
 > > >
-> > > Documentation/devicetree/bindings/display/panel/panel-simple.yaml:244:      - newhaven,nhd-4.3-480272ef-atxl
-> > > arch/arm/boot/dts/ti/omap/am437x-sk-evm.dts:127:                compatible = "newhaven,nhd-4.3-480272ef-atxl", "panel-dpi";
-> > >
-> > > Documentation/devicetree/bindings/display/panel/panel-simple.yaml:268:      - osddisplays,osd070t1718-19ts
-> > > arch/arm/boot/dts/ti/omap/am437x-gp-evm.dts:89:         compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
-> > > arch/arm/boot/dts/ti/omap/am43x-epos-evm.dts:45:                compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
-> > > arch/arm/boot/dts/ti/omap/am57xx-evm.dtso:62:           compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
-> > 
-> > It can't pass DTB_CHECK. it may add at earily time. panel-simple.yaml
-> > have not fallback compatible string. I tried it. DTB_CHECK will complain
-> > too long compatible string if add "panel-dpi".
-> 
-> Yeah, I missed testing panel-simple.yaml with DTB_CHECK.
-> 
-> So, just don't document the panel compatible string in panel-simple.yaml
-> and only document it in panel-lvds.yaml(not today, but until someone really
-> uses it).  Then, I'd assume that the "fallback compatible" solution still
-> works.
+> > > [  745.849237] imx8qm-hsio-phy 5f180000.phy: HSIO_PM_REQ_CORE_RST is
+> > > set [  745.855800] phy phy-5f180000.phy.1: phy poweron failed -->
+> > > -110
+> > Based on the log, the PHY initialization is failing during resume.
+> > I'll set up a platform on my end to see if I can reproduce this issue c=
+onsistently.
+>=20
+> Thanks for the support, appreciated.
+>=20
+> > BTW, is this occurring on the i.MX8QM MEK board?
+> The issue is on apalis-imx8 (you can find the DT in the usual place in th=
+e linux
+> kernel tree).
+>=20
+> > What's the frequency of occurrence in CI (failure rate)?
+> The last batch was 3 failure in 10 executions, so 30%.
+Hi Francesco:
+I tried the stress PM tests on both i.MX8QM MEK and i.MX8QXP MEK boards.
+Unfortunately, I can't reproduce this random problem.
 
-I need to correct here that if we follow the "fallback compatible" solution,
-then we need to document the panel compatible string in panel-lvds.yaml today
-otherwise there would be the below error:
+Best Regards
+Richard Zhu
+>=20
+> Francesco
+>=20
 
-failed to match any schema with compatible: ['waiken,101wx001', 'panel-dpi']
-
-> 
-> > 
-> > >
-> > > >
-> > > > > > > compatible string "panel-dpi" or "panel-lvds" in device tree plus a
-> > > > > > > panel-timing node.
-> > > >
-> > > > previous dt-binding discuss, don't allow failback to two compatible string
-> > > > sorry, I can't remember exactly thread.
-> > > >
-> > > > like
-> > > > items:
-> > > >   - const: ws101w001-wct
-> > > >   - enum:
-> > > >        - panel-dpi
-> > > >        - panel-lvds
-> > >
-> > > I meant just to document the panel in panel-simple.yaml and panel-lvds.yaml.
-> > > No need to add a dedicated DT binding file with such a compatible property
-> > > for this panel.
-> > 
-> > panel-lvds.yaml allow fallback to panel-lvds, but panel-simple.yaml not.
-> > all binding which allow fallback to panel-dpi, there are seperate yaml file
-> > for it.
-> > 
-> > of course TI or old platform, especially arm32 platform wrongly use it
-> > regardless DTB check warning. But for new platform, we can't do that as it.
-> > 
-> > Frank
-> > >
-> > > >
-> > > > > >
-> > > > > > Look like recently prefer add panel-timing informaiton into c code instead
-> > > > > > of put it into dts file. But I am not sure about it. Just check recent's
-> > > > > > log history.
-> > > > >
-> > > > > If display timing is specified in panel-simple.c, then you have to specify
-> > > > > the connector_type there too, right?  The problem here is that you don't
-> > > > > know the connector_type, as it could be either LVDS or DPI, and I'd assume
-> > > > > that we don't want two compatible strings - one for LVDS and the other for
-> > > > > DPI.
-> > > >
-> > > > If supported both type, generally need customer property and new panel
-> > > > driver to switch between dpi / lvds
-> > > >
-> > > > or use
-> > > > 	ports {
-> > > >
-> > > > 		port@0: //connect dpi
-> > > > 		port@1: //connect lvds
-> > > > 	};
-> > >
-> > > I'd say a new panel driver for this panel is a bit overkill.
-> > >
-> > > >
-> > > >
-> > > > I think we can defer this lvds work until it is actually used because
-> > > > - need a big hardware rework to support lvds, most likely it will not be
-> > >
-> > > Per panel spec, just remove a few resistors, which doesn't sound like a
-> > > big rework to me.  But, perhaps, this doesn't impact SW solution a lot though.
-> > >
-> > > > appeared at real productions. If it mass production, vendor most likely use
-> > > > difference module number for it.
-> > > > - it may be end of life if there are not much users.
-> > >
-> > > I'd prefer a mature solution which handles both DPI and LVDS interfaces
-> > > correctly in the first place.
-> > >
-> > > Anyway, just my two cents here.  "DRM PANEL DRIVERS" maintainers or DRM
-> > > subsystem maintainers may override me.
-> > >
-> > > >
-> > > > Frank
-> > > >
-> > > > > Although display timing in panel-simple.c avoids duplicated panel-timing
-> > > > > nodes across various potential DT files, I think you have the "good" reason
-> > > > > here to use the panel-timing node + fallback compatible string with one single
-> > > > > panel specific compatible string.
-> > > > >
-> > > > > >
-> > > > > > Add Neil Armstrong for comments.
-> > > > > >
-> > > > > > Frank
-> > > > > >
-> > > > > > >
-> > > > > > > --
-> > > > > > > Regards,
-> > > > > > > Liu Ying
-> > > > >
-> > > > > --
-> > > > > Regards,
-> > > > > Liu Ying
-> > >
-> > > --
-> > > Regards,
-> > > Liu Ying
-> 
-> -- 
-> Regards,
-> Liu Ying
-
--- 
-Regards,
-Liu Ying
