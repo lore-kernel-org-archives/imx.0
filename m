@@ -1,129 +1,132 @@
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A375B3F3284
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 09:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BED280338
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 09:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784883877; cv=none; b=P5SbEINdJqHstVd8fPKVmy2k+pocR04u/9OLVTJUPmr+vSoJOOdCcEZAY7+wF0wA4AfK6ILfcM1rsiXIbHHzjTZY6zH5SHL3cTghI7YN+DnpNuPbUeMwJjcSRcQLMxhI6LY+5+/sqF+hWhRMjXp1SzuPEHSxQsCk9acVuuXUjQE=
+	t=1784884396; cv=none; b=YITDffjs86gZfx+/h+ZovoA4aQ65odPbyVKNi+cVvWfPjZkFBr1WvY33EkfPxx5TGIGedkxrs5pDVley0Y2MVIUfIXIHSvexxrKTHXj0PAl3fKr66cRbyc6LFCdXOKGRwBo5sdWPYpj1lBxt+/oT6xT1P6fNRYP8vGS+Vvu7bMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784883877; c=relaxed/simple;
-	bh=jnrZmWTFeMxFTUwStiBfwvMQ8RkfQc/nNrHZyeKGKeo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oD1i4dVjadwLt+LzaaKqZ5/4v4cjTLVtVCeXYQKfgh4INvR3kPvTtyGuQMq6l/nbSsUkIttoX/X2YydbuSmEw/9HLIxeRDb6p0Xguf4XcSt87iqmAtpiyFeXSuyh/RomnISUCYvn/DABk0Up3KTKh8XzBv8F07aiYI6QtQVZjMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=SmQdg2+P; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1784884396; c=relaxed/simple;
+	bh=7r75DutFQQU20SZ0Ux2dpXO45hEaYCmb6a29+619rQI=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=HuUOqJavYToj/vh2HmaXu2IAv8csC6LFyNddbKRNWJJiyafDyHevmg/bwJLAmvn8siPiKbMDWi/ic4iK1mUbCYGTXxLt69cq1Hei3CjuqbiQuwEFuvBcsUQXN2V4l6i3mVC/6h0xsITa6hJPjsQwCIOsPwVxaDRfRDpFl1i3Llo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N682lHHM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="SmQdg2+P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1784883844;
-	bh=hmRF4Eq5A6tckPpf8JZ4Rd+UeZxcZzoQLn9CAt6h6jw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=SmQdg2+Pb2usdZ+r3140GvI+Sy0CtSwG3t7qewIR3TwtxVF+aKquvnJo1fxnKCq2w
-	 V+wDoIzkDP1Qnzz2X2X1xlHfepv2uCAAjox+B+inXXSJHoi7WhpzC4/3a2HIv/i+XG
-	 oq7OVU6zgEk2DTVjrqe51LUpusk7+gRwK8cz3PnY=
-X-QQ-mid: zesmtpgz4t1784883824t58784818
-X-QQ-Originating-IP: 0ZLd6iLlcwCMXtIzKSUDmafX3fUFpYo/W0NNqky4P7Q=
-Received: from PEN202512010004 ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 24 Jul 2026 17:03:43 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 6979303866208148507
-EX-QQ-RecipientCnt: 7
-From: raoxu <raoxu@uniontech.com>
-To: samkay014@gmail.com
-Cc: sre@kernel.org,
-	imx@lists.linux.dev,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	raoxu@uniontech.com,
-	stable@vger.kernel.org
-Subject: [PATCH] power: supply: pf1550: enable charging when battery profile exists
-Date: Fri, 24 Jul 2026 17:03:41 +0800
-Message-ID: <D5A5255CD2B683AC+20260724090341.297438-1-raoxu@uniontech.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N682lHHM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5B41F000E9;
+	Fri, 24 Jul 2026 09:13:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784884394;
+	bh=eBBsmDK0TaHlVTtp3pT3mGLDL6AKN+GTqbcbGkhmxwI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=N682lHHMMUiak6isZdK/kMU7vp40D48h3xgyXfYnxK8A6ws6bq1BBpqgoWUwA17XP
+	 yP2kVibWCkCGAQbQRbDZlc4JxmryqOk1tldKbztc9euWPW8BuHCMsBtcF8uXHbT9rS
+	 Zp0mUoUcmk6p7q/4afZBScuj5JC3xTxB+jPm+NXZBCGYHwGw5GStRkmbR6gARGFSdK
+	 HREK/tdP25o9u1AkoYzjA5mXIJBbUflMhKfX5q42UkaydvWnv7V0U7Pnxe6dX7hWOz
+	 7zz4wzJwWq/03Nw0BHZYt4OVQRD3xJcVdWB2zc7Xuo70YnltY8fl+PjDbiEjuwMLp2
+	 Aai7hHtZOlrvg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] irqchip/imx-irqsteer: Allow building as module
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Zhipeng.wang_1@oss.nxp.com
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260724090136.3595894-1-Zhipeng.wang_1@oss.nxp.com>
+References: <20260724090136.3595894-1-Zhipeng.wang_1@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 Jul 2026 09:13:13 +0000
+Message-Id: <20260724091314.7A5B41F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MHVOuy5eETPyWBgdUDgEreV6/zlBevCEAv7fAAw06Gvf2hyLGYaf0WZG
-	2SqkwbHYQjsVRBj2rAbeSe9rk3KJFFVqkGi5GQpS0TmUcAXzdAAtaWjTC6HIcSIlSRq5Fcv
-	C8RLdaqTTF4C4meu9oBT7i+eEXe0FYeF/ygrwuaU+JI91Oq1AP8A8CX97Wlg15Lc67T5cqa
-	O8j+rhSgDCtHOcch6kjfIZbhfeU2SxWCkm7+m4mwnVY38hxSZj1Hlva/9Wy5M/ASywiaxTu
-	6y0K6aVNvA1pujYvwxe09FwA240QFRC60/y7ic34tvG3ahT4/EtsHFvTDcJC2pKluVQKHi1
-	2hEllD1N7N72t2B3g7SEqurGpfQAWH9EPlrxP9hDsjS8Mch3Yk7XfJVawrICStiTlMfD0ML
-	OJ9dw3+qINgHO530N8KKaHcoWwwgAxyBoHDMLOu8AsMqKKUKx/0jzDhEDeMKthF8IMmaL9j
-	gbyqGqNVLh4prAMGYPnBkK7YYy3kMHyK24hMF4oyqwy1PGOi+pGQk4IXnsNF/sVt4AirNYJ
-	8LvVGjz4O1sSQJNNcF/D/Ny8Irwlw14xTMqmo3b+Du2Vlu6Sg0lhOLWggTBUohw8k6eSHdp
-	LQf7CUpsw26jzTl8fi/oJXI9ee1LAOKFj34g+PFMzo0+x7IRoeX5sozQ6HJkIVpeRofFZ1W
-	ilNJ/BvbmHHmZvTsOXqtnANOQZLVha2erNRNtm6kTAmVuhtKuir3v+2l7m0EsrrIavGP+kK
-	qTzcBzv5Kchsyo3hEjCE0vILZ8hDuBVaBYRYOMC6VEM+0qWi3MCgggW91NAlgmih8zOtyPG
-	Icf555lceuRkfda5HnLVO8fmgnUT/gZjyMbYb7bRkkF2etRJ08A2XSqUW9j8Yrtf9ggpPBx
-	Ciit4fPP94aXkTuq2Z6AcyukWniIdSEwfnnKFSqUmYTbBz2vG6z3r52isSYEGXvS6k9Xa8P
-	YBm8Q2hqscYH04SWJf/YoAKajMalNODWOPsdKxNkZDq00sR9lR812MExBHRDcwek6sHYyrX
-	yKxfTFjHIjq7V03mI6N4Mn4QG7fFnk1gB2IaVlGOLItL9LkDKCcIN7xcBU42eW5tW4NX5Ig
-	2OOjA22PojDq/fanSk1HeeVGJ5YDqrBZS9L/Qv/5dP070fVggSSF4c=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
 
-From: Xu Rao <raoxu@uniontech.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-PF1550 starts in charger mode 1, where charging is disabled. The driver
-comment says that mode 2 should be selected for applications using a
-battery, but the condition is inverted: PF1550_CHG_BAT_ON is written only
-when power_supply_get_battery_info() fails.
+New issues:
+- [High] Unloading the irqchip module leaves dangling pointers to `imx_irqs=
+teer_irq_chip` in active `irq_desc` mappings, causing a Use-After-Free kern=
+el panic.
 
-Consequently, a board with a valid monitored-battery profile is left in
-the default charger-off mode, while a board without battery information
-enables charging with the fallback voltage.
-
-Select mode 2 when battery information is available. Also release the
-battery-info objects after use.
-
-Fixes: 4b6b6433a97d ("power: supply: pf1550: add battery charger support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
----
- drivers/power/supply/pf1550-charger.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/power/supply/pf1550-charger.c b/drivers/power/supply/pf1550-charger.c
-index 41036f4cb64a..f698becd662a 100644
---- a/drivers/power/supply/pf1550-charger.c
-+++ b/drivers/power/supply/pf1550-charger.c
-@@ -514,7 +514,10 @@ static int pf1550_reg_init(struct pf1550_charger *chg)
- 	 * a battery. The other supported mode is mode 2, the charger is turned
- 	 * on to charge a battery when present.
- 	 */
--	if (power_supply_get_battery_info(chg->charger, &info)) {
-+	ret = power_supply_get_battery_info(chg->charger, &info);
-+	if (!ret) {
-+		power_supply_put_battery_info(chg->charger, info);
-+
- 		ret = regmap_write(chg->pf1550->regmap,
- 				   PF1550_CHARG_REG_CHG_OPER,
- 				   PF1550_CHG_BAT_ON);
-@@ -540,10 +543,12 @@ static void pf1550_dt_parse_dev_info(struct pf1550_charger *chg)
- 				     &chg->thermal_regulation_temp))
- 		chg->thermal_regulation_temp = PF1550_DEFAULT_THERMAL_TEMP;
-
--	if (power_supply_get_battery_info(chg->charger, &info))
-+	if (power_supply_get_battery_info(chg->charger, &info)) {
- 		chg->constant_volt = PF1550_DEFAULT_CONSTANT_VOLT;
--	else
-+	} else {
- 		chg->constant_volt = info->constant_charge_voltage_max_uv;
-+		power_supply_put_battery_info(chg->charger, info);
-+	}
- }
-
- static int pf1550_charger_probe(struct platform_device *pdev)
+Pre-existing issues:
+- [High] The driver calls `pm_runtime_enable()` in `probe()` but fails to c=
+all `pm_runtime_disable()` in `remove()`, breaking runtime PM on module rel=
+oad.
 --
-2.50.1
 
+--- Patch [1]: [PATCH] irqchip/imx-irqsteer: Allow building as module ---
+commit 04000917a2f34d79136a34fa78a99d5b4adbc6e7
+Author: Jindong Yue <jindong.yue@nxp.com>
+
+irqchip/imx-irqsteer: Allow building as module
+
+Make the driver buildable as a module by turning the Kconfig symbol into
+a tristate and using module_platform_driver() instead of
+builtin_platform_driver().
+
+> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+> index 42f2278a702d0..07db3b678f94a 100644
+> --- a/drivers/irqchip/Kconfig
+> +++ b/drivers/irqchip/Kconfig
+> @@ -560,7 +560,7 @@ config CSKY_APB_INTC
+>  	  the controller's register.
+> =20
+>  config IMX_IRQSTEER
+> -	bool "i.MX IRQSTEER support"
+> +	tristate "i.MX IRQSTEER support"
+
+[Severity: High]
+Does allowing this driver to be unloaded as a module introduce a
+use-after-free?
+
+When the module is unloaded, imx_irqsteer_remove() calls irq_domain_remove(=
+),
+but this does not unmap existing child interrupts.
+
+If an interrupt remains mapped, the irq_desc->irq_data.chip pointer will
+continue to point to the statically allocated imx_irqsteer_irq_chip struct,
+which resides in module memory. Once the module is unloaded, this memory is
+freed.
+
+Could a subsequent read of /proc/interrupts cause a kernel panic when
+show_interrupts() attempts to access the freed imx_irqsteer_irq_chip->name?
+
+[ ... ]
+> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
+-irqsteer.c
+> index 87b07f517be35..2365fc04596ef 100644
+> --- a/drivers/irqchip/irq-imx-irqsteer.c
+> +++ b/drivers/irqchip/irq-imx-irqsteer.c
+[ ... ]
+> @@ -359,4 +361,7 @@ static struct platform_driver imx_irqsteer_driver =3D=
+ {
+>  	.probe		=3D imx_irqsteer_probe,
+>  	.remove		=3D imx_irqsteer_remove,
+
+[Severity: High]
+This is a pre-existing issue, but does imx_irqsteer_remove() need to call
+pm_runtime_disable() to balance the pm_runtime_enable() called in probe()?
+
+If the driver is unloaded and then reloaded, probe() will call
+pm_runtime_set_active(). Since pm_runtime_disable() was never called during
+removal, the disable_depth remains 0, causing pm_runtime_set_active() to
+return -EAGAIN.
+
+The subsequent call to pm_runtime_enable() in probe() will then trigger an
+"Unbalanced pm_runtime_enable!" warning and leave the device's PM state
+corrupted.
+
+While this imbalance was present before via sysfs unbind, converting the
+driver to a module now exposes it directly to standard rmmod and modprobe
+operations.
+
+>  };
+> -builtin_platform_driver(imx_irqsteer_driver);
+> +module_platform_driver(imx_irqsteer_driver);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724090136.3595=
+894-1-Zhipeng.wang_1@oss.nxp.com?part=3D1
