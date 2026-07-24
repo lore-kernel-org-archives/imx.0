@@ -1,219 +1,215 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010058.outbound.protection.outlook.com [52.101.84.58])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013036.outbound.protection.outlook.com [52.101.72.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCF83AD51E
-	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 08:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82973CEB83
+	for <imx@lists.linux.dev>; Fri, 24 Jul 2026 08:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.36
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784881327; cv=fail; b=Y9UT1iP6w9s/uvlBEvYR8nHj4YEwLFdodVJ8kmTWRvCaSPQOtGdEvfz/AfFGYK3Eh6j7FmXD6XUL1LaIYR/dEh4MSsRHofReo4IMb7YcZG8ROP2KIDHNXrit3CWFD4Gte/yzCJaC81sLy1x0lojp2sWdw8VUSWMFLCZZh7le3qk=
+	t=1784881724; cv=fail; b=AYxklCRThWUWS4g7f3qva+3AaVkwRj1yEYzJ3CzKmZ4A2K+Tl2TnZ74PmU623AXRkhPEmoUv26k6W92B0igdeZG3Ux0ngtkgJg7TrXwcFw7DbzxjVnnbZQP+UUkqUon+6TsOpESp+3Cy6GGTm9fD7Mk6EWSQEYp/Jc6MCplgqks=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784881327; c=relaxed/simple;
-	bh=+M1xWwBw3nDkZw/LDYzDbsD4GEAGwiawx0JW4E5fsAc=;
+	s=arc-20240116; t=1784881724; c=relaxed/simple;
+	bh=uxPqrCw6JfrMJYMbv9YtTMSAyfv2095qQpVNo4yTq6Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UYiL1j8MLnlccj3W46fKFN6diw/j0eNzhuDMgb86N3yEzKGO34iMmdtbmFjFL8wdUymc4jqZme6QAvSffIEg2LqY/RJv+7xXr/PlZsGj+vKviSE4xeJKN+ErAVoCTdGRKoMPkwRFV3TCryYS+uCkgzlZ1LqGhwuH1mfG69ZrmPE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HIxtr9bL; arc=fail smtp.client-ip=52.101.84.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FTFJ+XKf95EeNNhHquVwSV+hHynGcBRf7QDd5UZwMsj3T2X3HvXTFDNF2cHeawpDKv2vcH5Mikfzso/1IZ2mn/VEqmDqnVmPK/1/k40o61MdrD9tu4Gpy+/uQW5GNRvluWXBxvi5jWC2T/RrhRor/c5T96XtDIABJ6Q66vyqgG4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=sS1EoKlG; arc=fail smtp.client-ip=52.101.72.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HIxtr9bL"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="sS1EoKlG"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=baGANeupM0I0Xqzag4eE0bhywz6SserYfynDdL+8iaAOX+iOuN24M8b4I6zlJarB9+mevmtpKNjQ6WtRGEYs7NjMM1/g7AoM7yPUoMIE89m0gGy1++ZrrGtYP8+DyR+PFXPo5qJR/mUpcLewDeWZqq4yVgs9slSLQl48Ifmcqd0lcuo5DT3xN6lBlv4otRy/Yi62DhAl+K2iz3ClXeyolOK2mtGyY36lrf1IgBfBi3/FyzdtKIQrS2b+6wvSEaFzWeMJbVTGD3euKYa0Fas6vnVGhcdDAMATtSMuyEUB1/flvBNQKeQVDgYTVT81/44g9Ai8Sn0XckmcRl/wVNQjPg==
+ b=dNA8yfKednr6ls6DXjDKX5Cu3Bgphw4ND8IwDrehqZ5au9XmWcgBfcncm89Tvg/3KnF39lcAxHBO7mMIoldE6DqbDTCoAEyy/TfDHoukea3qYhYz++1YCNclUxQ7xrVPg9YGpcvgFWiWpCCXJZajMyuPq4Xdi3OU2p/JNwDb0PzrkcEwvuU2rplabksq0H/YfJXxAVxRiP9FFNtJj6UEHkZTooSrf5ZfWiPKh8g08rMu30vOnazntL7EuvrRjmvun3W/zGr6iuJ5Mo3jLhS+GAsXstPzmmUOzDSaLXH7VF/03si5aK53nLHLgruxoUESOWaqkBaXYnaV/02fNwr3LA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IMgKbft/PKzhjUOJiEym5qkhMSFj6rdbnVBxSR5rHBY=;
- b=dHOB1od69E1CKM5NHwnf6j6rH6YZ1acdhP21Kdo/OnZu5OMUBUNQDNU3F+bwCByxrrXWuSOIIXhxUHAtdYyv858A3ZuWT10/LxixIiNy9SQsHdnZVLmlQSoXfZKIueDU9xz8lWwpjlgV7sOg0iVlgtMxGgIOrSOqPCW5eRUAb+zk0RW0iswgTjnsNhcpEXLZM7xzKQoVjznGHH84otnQxoVvMbPx3n3+qI1YFIxbMXBFXwqx8nJ4D7hSxXwG64D6zqrHewZTm9fXrF9Bn0HSU/Qd1B2wb6dpBTNnTRbVc2wVFplCFe4CVdjTFl3xPGT0D7uv96s2CoYFhw5iIlqp9w==
+ bh=3DJFF9FH3iniYoHoKXNcBfeY6CFfhujls+8wWOhTmPQ=;
+ b=N/zB7az68Cf4kUk7Myho5075cRHndIZ57+wTQyiS3N9raf8IfyCTmx7SJc82PJ6iiN6HLX+/34edcTbiPOm1mIkq9uX35oHKBb96wN/bftN6PmsDiqnAo39ZcQ2vLpM/VBSfPRNDH1F0n/tL0Dj1iZ1kyj3DxgUBhoZzr6ytrjAar8vrzhQ8AVH3dYdLhMEvlHVKNz9dzac9e/McYrUc+//1PszY69Ng6Z5My5gOFeNOm+mATU9wq5OqtABYbrgWQKzhDI9XasTTPb7FwrUqG2Dm2qIej1XRGf5/wgeHEfRTRS9UupPQRS8kioLy7mJtAhCg+E6wdHh5x0IyI/z+8w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IMgKbft/PKzhjUOJiEym5qkhMSFj6rdbnVBxSR5rHBY=;
- b=HIxtr9bLv5wFF7LSK+/621igEqc/x/dgnd4uPQ+FceOzFNnv6p6eRgxFkVv3moaZDOX9nJHIgy9qBd6DA44MHh63ZfSTUBROPa0n8PdT1M84b6zlta3YPghzQorQqIVVpqDYsbjdOsrWvxs6EOvH/gaREBU7bPzM0hovnEasBYhL7qxzcAPRl/wSTLCdobDq7Hz3dwGy193nuCWamOfJqnSOkkhT4ln9SAO8rrbxYh1YJmm/SxLRwGJIlbGtMfUoQoKYG7ktsrwg1ZdTbkgXuI0u9ACy2ks2fJvWGnWGuspZ46cWFCTcm+wzC0a5mlaXnK4ys79Ad21JWL/RewJvXw==
+ bh=3DJFF9FH3iniYoHoKXNcBfeY6CFfhujls+8wWOhTmPQ=;
+ b=sS1EoKlGV8wRdc8NuBBsb9V4s0RfDR7gboySOfVL+sUKcGGCFxFrAKmSaM+FiDzYwOnnscNxUm69anIuBXWququ2PWbfYJwrqC0iIGFQZUm6p+tO/QKEPvAezVkGVI61aIX118pdeBmRNnvUW7pAg+rASG1ymq8VIsO7QjL+P60eh66/gptwvhxQhHlLZq408mrsQl1V9Tch9VrHS8KdxQNkOGf3nQCzW/J/us5qlNFKkL6klvRXdkgtzPabxSA5aRxS3O0S68p2Ik0vyycG1+kxzVZrVu+0CqamPhzd+G32dYE6d2Mk6dFSkvCn/2iJ7vojqIN5Oz3UrEUJct/bdQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
- by PAWPR04MB10006.eurprd04.prod.outlook.com (2603:10a6:102:380::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
- 2026 08:21:50 +0000
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
- 08:21:50 +0000
-Date: Fri, 24 Jul 2026 16:23:17 +0800
-From: Liu Ying <victor.liu@nxp.com>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: festevam@gmail.com, m.felsch@pengutronix.de,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19) by MRWPR04MB12330.eurprd04.prod.outlook.com
+ (2603:10a6:501:7f::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Fri, 24 Jul
+ 2026 08:28:34 +0000
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa%5]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
+ 08:28:34 +0000
+Date: Fri, 24 Jul 2026 11:28:29 +0300
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: festevam@gmail.com, m.felsch@pengutronix.de, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH v13] drm/bridge: imx: Add i.MX93 parallel display format
  configuration support
-Message-ID: <amMg9cOTWNzHsH35@raspi>
+Message-ID: <yu2tu5oa25hwfisrqrlnkonmeulz7mmrdunmsg3dgzulkw3gbb@uq277wwirdae>
 References: <20260723-v6-18-topic-imx93-parallel-display-v13-1-ccf3f9bbc0fc@nxp.com>
  <gvp7mfhjpgon6hju37ebswo5fjkdzio5lqgcdkhq25zfidayj5@kenuryj2sg3s>
+ <amMg9cOTWNzHsH35@raspi>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <gvp7mfhjpgon6hju37ebswo5fjkdzio5lqgcdkhq25zfidayj5@kenuryj2sg3s>
-X-ClientProxiedBy: MA0PR01CA0079.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ae::7) To AS1PR04MB9287.eurprd04.prod.outlook.com
- (2603:10a6:20b:4dd::8)
+In-Reply-To: <amMg9cOTWNzHsH35@raspi>
+X-ClientProxiedBy: FR2P281CA0024.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:14::11) To GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|PAWPR04MB10006:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6fcf32cf-f51f-466a-d8f8-08dee95c9c36
+X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|MRWPR04MB12330:EE_
+X-MS-Office365-Filtering-Correlation-Id: c5cc1c58-e6a1-4b43-4d10-08dee95d8d17
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|23010399003|19092799006|1800799024|366016|376014|7416014|10067099003|11063799006|3023799007|4143699003|56012099006|18002099003|22082099003|6133799003;
+ BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|23010399003|366016|10067099003|11063799006|4143699003|6133799003|56012099006|3023799007|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
- kPHPZ1WY3sZehgDvyUlUeVo6pQ/4Loe643+R8lzRkfUlNDbPnJw/p+4Z5mc6flPOwOnNAyuF8QaG8lXz8puGzQ6KI9/fTLpy3MUV+v1bld/xj6PZatgPNTbIdX8YsVGVXEqGwuRrumsZn0MvIFbTBYpOFpbS/kX8MNaZyls2caieiML4RF37nhyF780cMutLouycn25e1fKkszBdk66Q1iggSgThq558yHcRyzhx6vKTgL5pNu127Ibnu4V2ZWmrcyUe7xjm3PNy0hrm55lFevYW67+TqBa60OPpkp0ZBUCaVf9SGmSUGgHI1Lg24s2k/RTeDWVOIH75h1jwnCm3EyiahZ7QxBiX4CUxOYRhZpqaFNJy9pJOzLhCZxQM/qrf87b4EhmIewqFcTekAz5fanFXDNZedqZlxavKZE8+xjN3mnCoXgNIaxGR7dcRSw5crhBcGMQFfH/EF1GzPvXz7i72yhQoRwOUZGAMj/0Y+0dybR2Qd75mRE8QiP+rZ2bg3fDv486h8FOOW5VWLXxu2Tc0ArKxAu5t/2PCIacgmaEF42QUyceRRADQxu/RyURjPD6cXatzm4FfsqkttWFTbQZx67wXWzHjtb//7d5dsTOEO7+uJaIn25z0ydZ3zto0QW0DUz4CrB8e/NsNIYUNFeaIwXXQtSlGdnMMjiFscU4=
+ g2Gu3RmusL1/K0moWhm0HUZ7eUutg1jWLa7S4F3Ii/g9X9svjhBfgWG1UyYx71GUgsK+KkbrNL7/G6vuqs6K9D+YcpAa2mTlSwEhA5bgQXsuWjbUdcWtPGpWFGLZ+S3UrDM0pw9ayF0vb9FmFg4vKd7m1oMoSL6MMpCUwPEAc8XXl7zyApEpO5l3dc1O5uPT4+2dbSI4qZyJxlx6Ox1vS8JRntbil1ClcuSiy+g1O18tKgemIo4b3VdOy21AeASZu2swnl7HVax8cy3pGzxQ2UMOdzVxnvG/fvzxcDTA9S0U+LyfRPrhZ55NvLK7VKl6cphQ7QdiKRWv7TglC88pwiHic3fOqUGGwQMuOAqSqTDSuaAeb++BCt/jLZ327tZvaG/9G8HQEHeztJR5ykvH56lRS+nzveQOSjm+ZaDnVA/VEzBUhEUUHJaWF2Wk2I6HnNPaYlWZjcwepZ0DqP5sJJ2RP2fozItdiMYkqiPWGtL+46tIp+8+nWcpfj5A6deARI6qIeEEfyqghUCgqkSKRzTp0X6QFwaBXbMQGGku0ufXrxOh2CLEPPGeJJz3B2j/+u1LXV0rFrC/iprlgAkiyAAb3UrqH5yky0VnQEMrGn4Z+oU3wJc5DxWr5HNjCT+Fju/JmELh26ulkaSfflqvT1IpwXFFB/gMojx5QVjkqcc=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(366016)(376014)(7416014)(10067099003)(11063799006)(3023799007)(4143699003)(56012099006)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(23010399003)(366016)(10067099003)(11063799006)(4143699003)(6133799003)(56012099006)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?6QmVNpstnbZAl3Nj7d+NALSgOXwuj7WruLmdH0E0AwD4Uhr/B5zLGJEK1cv3?=
- =?us-ascii?Q?SgwuKizihed28v6fB4jDbDpL7YipG3INwnRMvc0HRrWUr45UYahTIOIw2c4n?=
- =?us-ascii?Q?OyjDWf6t8K1K2958Ld5BdSU05d0UPGjB3uf7Un/38SsJ9hE9A5Ka9hj5rD8b?=
- =?us-ascii?Q?F0naVdJlo4KU9SPSMiJAW/33WL5oyjU4FjBgvSABiJM1HDCTB3gmOwOJC1Fp?=
- =?us-ascii?Q?Ssbl5N+r4iDIJh5BzUe5ecXa8evRqukpHAxmBUAwP+DA7Oe/FXx5CA2nZH88?=
- =?us-ascii?Q?sesLgEMFDgbOn1NUlBtj0o2CjFs2JKwSQTZ3Y02UZJswSfkSoI2EkMAPf2+d?=
- =?us-ascii?Q?8tZjRO2QENmkQZ93NRf8wlEyL8l7Fw6UCSf3e1gaLysZVTuB99D1Ae/zeLNI?=
- =?us-ascii?Q?XbX4tpwcEYwPTjdK001HreOA/NGsZX2GO+Lo7oZ/aNwPLM39v0RnA+6qpwHo?=
- =?us-ascii?Q?5Suz5iA3oH0PtvGI/v6Eg51zd1GIi8KqKmsB5qKtpEQvaGUvo35NUOKz5c5c?=
- =?us-ascii?Q?HOIHKldkR9d5rF6yw7ClrRqDxk31mkKIzib+DVOyb0GgWVx5EpZ8gvnPkAVl?=
- =?us-ascii?Q?cOOOKYW2QaKpnVLOL2gapNTCuz92wotT4l008YHNIL2DLu2yosiLX2syclve?=
- =?us-ascii?Q?jFkCBnXxS+yiy8o0L1o3QQ002WU+sAYrbNS2hA7IDeoVcyynA/ivrHoJ/34M?=
- =?us-ascii?Q?XyT0n5VijClwf6idkVnUaNiIs+a1Lo2ZzdkhauOvDhUQyUqgI+w4Aone1WKX?=
- =?us-ascii?Q?Q57kivdf2waWPURkHgoSqXkLzAE1axoUCnkNm4Mei70V+jh4n3fiZ2ENHTX4?=
- =?us-ascii?Q?3djT0D6DsexzSCsQehaTvGI8PRW2YMin/1TmoyMooaScXeVxwkMR3uwx9ymT?=
- =?us-ascii?Q?Wp040bc9ZABhATaYaWAKl3NPIFI897Bcn2e/lMM+MUo2Bq3BOR4bREFUVQPP?=
- =?us-ascii?Q?yBwnpx65GPGbIET1L30afv66DdZIfSykqKGKsC0ExBUGcHFWtstWFRePvKny?=
- =?us-ascii?Q?TNLh41zhM+fwAxpsmTY9tRoPzzNClMJCdgIvtrbWUHDRVTo68Tdy8Vk2zUBF?=
- =?us-ascii?Q?U0C8qpQ1fHlLPxi6NY44PVgEsCRx6YsbVZyYEsc1ObQseYTcmUewLVpUQzoh?=
- =?us-ascii?Q?cRyPqgkSLj/Y9DTRDAQULoFSCPuFab1V+q+oERzPb1QJqsYiMMRal4NISiwp?=
- =?us-ascii?Q?P6Vr0Z9O736p1zTlMDpBMfF8Xt2/Ua/BFF1RurNQwZAy+oKFrPP4l8SH1kgD?=
- =?us-ascii?Q?PvkyJHTjqY3y7m5xdsGpAEWd1rAgKJ5dLyU5Ze060jp4UN/EFFStabYe5TaO?=
- =?us-ascii?Q?+2w4Yq2KcFaSsJCxFqsN4cs9kdH1dDzgpFR+DG5lVMhgtYFM4CDXlYLHgq1T?=
- =?us-ascii?Q?ES//XdHmpRChckYTJuPaS8LYLrI4OaZD3uSxIsDT2uxjPGIfsG+W2I1Ttma8?=
- =?us-ascii?Q?iP8sEOE8zgyU6OO4/g2/1XHSIcguzXu3y1mmE0oa4G4VMBSqycpvWC6VbfRC?=
- =?us-ascii?Q?PKgIYo3peMaK3n9tdFs1eTLi+6yiUhidzcS36jAZexZCJQUHAwoLiBtpqJf7?=
- =?us-ascii?Q?UwFoxVd9quc0xvDldgnJxs4n1zrugSeJbBtxLEVVj9aLhz+4CHmgLuDk1eE6?=
- =?us-ascii?Q?Hn0OILosiJs3DWh6emJh2NZnIxkI8cjO1lVZemVUBatrlju6SEN5iyiNXZT/?=
- =?us-ascii?Q?F/5+F/f4Xm/LiAqkAii+ChrOPhjiENt/Q048xkAzAs9zUow0xEk68h+fG+zj?=
- =?us-ascii?Q?H1hqRdo0gg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fcf32cf-f51f-466a-d8f8-08dee95c9c36
-X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
+ =?us-ascii?Q?wxrHusEqHnGq98DtW3UkE682skysTkEhCtzfNUvwc3qS3Z8bRgPlFJZrd9j/?=
+ =?us-ascii?Q?rMaFAzhNqG/dGz//V8LgAJdC9w9v4ZKoFOv6XNKAUjIVg0LE2oy54W12zO74?=
+ =?us-ascii?Q?v7zHUS7Z4MkRuZaDrI90ChjEJLRZ711tu5+Jl4N45K8Ir4XwtNbVet5O125U?=
+ =?us-ascii?Q?BXHtOGRTVW2IxuOVNI1yr/Fl4VpYyvHmt0s0U5TwBTIJOQpDbbUtTrvluu8z?=
+ =?us-ascii?Q?rq/f2N3ulFQCPWqJ0lQem9ss1bSvRAr+jAB7uP/++TWL6LyAGgA8MJkcmR3s?=
+ =?us-ascii?Q?2D4QmwDWVLcZ02CGN5ya6ziQ2x7QxeCbBLNeZqPOojo6oFy4cY0P5o4ArFmn?=
+ =?us-ascii?Q?fOtyjb215ZpAw2EdyTADW66CcPEO5jgkgFHy4DlDlYKaMasAZVBpph5330qX?=
+ =?us-ascii?Q?5Uyp0pPUKUG5R32fzdIuaAakYIfVmFJRhcSz/E8DvHr9nN25Z/TqymjtyPcB?=
+ =?us-ascii?Q?PTq2U2VhD50riQKTk99dMNXdODpTQMWxggo09voknOASHjobEXgAaXp/2xWp?=
+ =?us-ascii?Q?vOrr7m7umMjAzxYswO73UsHKGzBqMjhwMK6khLkXuCAxuzarTxb0xD8ok94a?=
+ =?us-ascii?Q?DbNxxvsyBIJwxxcNzB5PjVh0zaTgUiYNJi55U4hrGhn3Lk6l5BipqMoiAcOV?=
+ =?us-ascii?Q?LXLuXTXO5smskfmvot14UQQhaqhmecUSBsUvGTQRS160bruw7UXwCfrkbpu0?=
+ =?us-ascii?Q?Hhxrhy0GrkYG4HixzlCfGPifDCtKXef1J9HCOOJn4AZ4nwQZtQ2LXEn5cEbN?=
+ =?us-ascii?Q?qepGOG7TYPBIhKaJEJQWCfYwOjNo4IywMUJTvmqb8HPS50WuwBBJDpAkmC7a?=
+ =?us-ascii?Q?OLTq0aqPyB7afOj7tSOpc+/nrLiTPW/Mv6VwUbu9475+S5YSTj9CMP+jVLZD?=
+ =?us-ascii?Q?0z5PnmNl0krNfetGrNXbFimYMK9MT/CMik3HJSKQlA9Tk+d8C1gIvYet5q5r?=
+ =?us-ascii?Q?ZDA/4OH+K6hSUXFBOPtXHZu0VVHJdNhbx/GYEn3PiQ4gPRmkLj4aLImWpUwT?=
+ =?us-ascii?Q?7oIOSTwY2bM6et21hi0UMo8fRhxPiWntnIVuuf1e0QOl4OVqSSakm5X0qtuv?=
+ =?us-ascii?Q?939ISoBRa6fzKFZcTxSB5IdcXJAJftOXW/LkM6s/AHnOvnSDAglZhkvBQrgC?=
+ =?us-ascii?Q?6TVe6U78QSsm2pLFHakU/60iu/hdcsvOVPDUV0A9fy1uwFuyc0u1Cd+TyaCa?=
+ =?us-ascii?Q?bQn4Z23McITs6/7QAqDg/ctuWIfN8JVRygn7iTT9TdT1ckxYnx96wsBrK2UL?=
+ =?us-ascii?Q?7JMdNzllbXDRCRlVVMX4hgAdPssQz9+Ugx/lQ2CpeAPXFCcVLEf84pzFJFQk?=
+ =?us-ascii?Q?qbMtcmRyYtw8w72NDu1YnzCA+4u7kLBjv5/73Yar/CkNbVNr6W5qekiRxh8j?=
+ =?us-ascii?Q?hCitHtjbOtmR75dyhM54d1SY0jPPb3hA6uTXMPDVuvbGUpqSGQV0XGhPKSVI?=
+ =?us-ascii?Q?MzKZAi/fQYf4CnIIHoiZZpujBx92hbKSo+kL167FxvhDixkEpU39UIB1WY15?=
+ =?us-ascii?Q?rMlbafLCkQSV9CpD5Ms7Uzc9QAWpKZoCPmwFz80IRMf/FhcNXoe2BaaEVkcP?=
+ =?us-ascii?Q?QMoCNmzqWhe7qruq6G591Mtxa6E4Yq5oOw7mfGEwnVVKrRjxxkOg0P8h4NF2?=
+ =?us-ascii?Q?nwuK6MNlE9yFUHP0DH8u7WkcLZN9k7qR1UjSzSpUFf1A50El1g8Be0nRItGM?=
+ =?us-ascii?Q?KjH9+1YPRMKPnXhRCxWE9g/cRQdHaHBawzy2wI5pVyP/MZz9JJN/HWajQmje?=
+ =?us-ascii?Q?ombOZoJjomrMy1nf3QI7iONxyvpKBsY=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5cc1c58-e6a1-4b43-4d10-08dee95d8d17
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 08:21:50.3070
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 08:28:34.3589
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yG1e3hlmFbD4RaUsFkOdsqkME08dKwhsh+YPHMhqr/XRDCEXTt0EOYiTKyZLJxFp1CPB0aiVJpT4AKqyNze6uQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB10006
+X-MS-Exchange-CrossTenant-UserPrincipalName: 04nUd4JjgZ+CVNrTYfcRueavBuDcU2h4yPX2CerHIWu/2EyREtPfnMgl+9TflLLtdekJhJdJ7rPQ28Ci85XH5w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB12330
 
-On Fri, Jul 24, 2026 at 11:08:06AM +0300, Laurentiu Palcu wrote:
-> Hi Ying,
-
-Hi Laurentiu,
-
+On Fri, Jul 24, 2026 at 04:23:17PM +0800, Liu Ying wrote:
+> On Fri, Jul 24, 2026 at 11:08:06AM +0300, Laurentiu Palcu wrote:
+> > Hi Ying,
 > 
-> On Thu, Jul 23, 2026 at 02:37:32PM +0800, Liu Ying wrote:
-> > NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
-> > configures parallel display format by using the "PARALLEL_DISP_FORMAT"
-> > field. Add a DRM bridge driver to support the display format configuration.
+> Hi Laurentiu,
+> 
 > > 
-> > [m.felsch@pengutronix.de: port to v7.0-rc1]
-> > [m.felsch@pengutronix.de: add review feedback (Alexander)]
-> > [m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
-> > [m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
-> > [m.felsch@pengutronix.de: add bus-width support]
-> > [ Liu Ying: Port to drm-misc/drm-misc-next(v7.2-rc2 based) ]
-> > [ Liu Ying: Add nxp,imx91-pdfc compatible string ]
-> > [ Liu Ying: Call drm_bridge_get() for next_bridge ]
-> > [ Liu Ying: Reject unsupported output bus fmt in .atomic_get_input_bus_fmts() ]
+> > On Thu, Jul 23, 2026 at 02:37:32PM +0800, Liu Ying wrote:
+> > > NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
+> > > configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> > > field. Add a DRM bridge driver to support the display format configuration.
+> > > 
+> > > [m.felsch@pengutronix.de: port to v7.0-rc1]
+> > > [m.felsch@pengutronix.de: add review feedback (Alexander)]
+> > > [m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
+> > > [m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
+> > > [m.felsch@pengutronix.de: add bus-width support]
+> > > [ Liu Ying: Port to drm-misc/drm-misc-next(v7.2-rc2 based) ]
+> > > [ Liu Ying: Add nxp,imx91-pdfc compatible string ]
+> > > [ Liu Ying: Call drm_bridge_get() for next_bridge ]
+> > > [ Liu Ying: Reject unsupported output bus fmt in .atomic_get_input_bus_fmts() ]
+> > > 
+> > > Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> > > ---
 > > 
-> > Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > ---
+> > [...]
+> > 
+> > > +static void imx93_pdfc_bridge_atomic_enable(struct drm_bridge *bridge,
+> > > +					    struct drm_atomic_commit *state)
+> > > +{
+> > > +	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
+> > > +	const struct drm_bridge_state *bridge_state;
+> > > +	unsigned int mask = PARALLEL_DISP_FORMAT;
+> > > +	unsigned int val;
+> > > +
+> > > +	bridge_state = drm_atomic_get_new_bridge_state(state, bridge);
+> > > +
+> > > +	switch (bridge_state->output_bus_cfg.format) {
+> > > +	case MEDIA_BUS_FMT_RGB888_1X24:
+> > > +	case MEDIA_BUS_FMT_FIXED:
+> > > +		val = FORMAT_RGB888_TO_RGB888;
+> > > +		if (pdfc->phy_bus_width == 18) {
+> > > +			/*
+> > > +			 * Can be valid if physical bus limitation exists,
+> > > +			 * therefore use dev_dbg().
+> > > +			 */
+> > > +			dev_dbg(pdfc->dev, "Truncate two LSBs from each color\n");
+> > > +			val = FORMAT_RGB888_TO_RGB666;
+> > > +		}
+> > > +		break;
+> > > +	case MEDIA_BUS_FMT_RGB666_1X18:
+> > > +		val = FORMAT_RGB888_TO_RGB666;
+> > > +		break;
+> > > +	case MEDIA_BUS_FMT_RGB565_1X16:
+> > > +		val = FORMAT_RGB565_TO_RGB565;
+> > > +		break;
+> > > +	}
+> > > +
+> > > +	regmap_update_bits(pdfc->regmap, IMX93_DISPLAY_MUX_REG, mask, val);
+> > 
+> > Apparently, the 'mask' variable is only used in this call, nowhere else. Why
+> > not use PARALLEL_DISP_FORMAT macro directly here instead of declaring a
+> > variable just for that?
 > 
-> [...]
+> Marco introduced the mask variable to the code.  I'd say it makes the
+> regmap_update_bits() call fit into one line, so it doesn't look too bad
+> and I'm fine with it.
 > 
-> > +static void imx93_pdfc_bridge_atomic_enable(struct drm_bridge *bridge,
-> > +					    struct drm_atomic_commit *state)
-> > +{
-> > +	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
-> > +	const struct drm_bridge_state *bridge_state;
-> > +	unsigned int mask = PARALLEL_DISP_FORMAT;
-> > +	unsigned int val;
-> > +
-> > +	bridge_state = drm_atomic_get_new_bridge_state(state, bridge);
-> > +
-> > +	switch (bridge_state->output_bus_cfg.format) {
-> > +	case MEDIA_BUS_FMT_RGB888_1X24:
-> > +	case MEDIA_BUS_FMT_FIXED:
-> > +		val = FORMAT_RGB888_TO_RGB888;
-> > +		if (pdfc->phy_bus_width == 18) {
-> > +			/*
-> > +			 * Can be valid if physical bus limitation exists,
-> > +			 * therefore use dev_dbg().
-> > +			 */
-> > +			dev_dbg(pdfc->dev, "Truncate two LSBs from each color\n");
-> > +			val = FORMAT_RGB888_TO_RGB666;
-> > +		}
-> > +		break;
-> > +	case MEDIA_BUS_FMT_RGB666_1X18:
-> > +		val = FORMAT_RGB888_TO_RGB666;
-> > +		break;
-> > +	case MEDIA_BUS_FMT_RGB565_1X16:
-> > +		val = FORMAT_RGB565_TO_RGB565;
-> > +		break;
-> > +	}
-> > +
-> > +	regmap_update_bits(pdfc->regmap, IMX93_DISPLAY_MUX_REG, mask, val);
+> > 
+> > Otherwise,
+> > Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 > 
-> Apparently, the 'mask' variable is only used in this call, nowhere else. Why
-> not use PARALLEL_DISP_FORMAT macro directly here instead of declaring a
-> variable just for that?
+> If no objections, may I take this R-b tag as a valid one if keeping the
+> mask variable as-is?
 
-Marco introduced the mask variable to the code.  I'd say it makes the
-regmap_update_bits() call fit into one line, so it doesn't look too bad
-and I'm fine with it.
-
-> 
-> Otherwise,
-> Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-
-If no objections, may I take this R-b tag as a valid one if keeping the
-mask variable as-is?
-
-> 
-> -- 
-> Thanks,
-> Laurentiu
+ok
 
 -- 
-Regards,
-Liu Ying
+Thanks,
+Laurentiu
