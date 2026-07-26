@@ -1,86 +1,87 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0682339872
-	for <imx@lists.linux.dev>; Sun, 26 Jul 2026 19:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D67235295C
+	for <imx@lists.linux.dev>; Sun, 26 Jul 2026 19:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785095017; cv=none; b=Qnso9XSKer3pjP2KJIPEMvsoCnmboz7bgVBzTS/axvr9JdT5ZiZM7bBPT1DceIjfVSH9+q7zYD3GUusWYOdMEW5RxSS3A9DJDOmQQB2DuCqsErw51F2H6DLFgTDrlDXL9pdVSyiR52mD6xnq6BW+140mM5UxibBQJuNQqatqx1E=
+	t=1785095025; cv=none; b=ZYcOXi66JY1B2H0yeAJ0b4xTGOl5HMW7CrNEnxsPbSe1E8JkY/Dre97KmAibtGt/NefN/0UcFEyGDQ7NfL2E7m5D55jj8hb1W3z4FuV4M6CaITkpWcT0IAPM5RZE9uLzb+6cBIydkkxP7bJtjYrW/ZlZRfD0jlmKysnArwuAPlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785095017; c=relaxed/simple;
-	bh=SzrRHowXSa10BAHCyJ1LhewVqZLaXZNB44vA3ptkLd8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RWd4vQ7okUqQuFdh4OnyZeisoil3SxmFcfZ1NECDC30ZiDDOW2EntOvBJv8iIqeIgJ5fmErVoC3DqATGRS3WAIUdFdTiLxH2GuxyLnNQ85rh+IDt+5nZ8EpcKkc0OOvbz6UZ3m4YioeGhgstbvrz989WqHt1YS/k76bwm3Ex8Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pAZEOG1U; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=eWTymLXr; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1785095025; c=relaxed/simple;
+	bh=0iliuiHXJ6h0/St/QGB8FSTuTPg/hKE4ZxbThjkpOEk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ly8ZhaKKxLgBU87gDA8tkSm4Sz/dyaQ79Z46ZUTcJPsFDrIMAEr+sGHDctjqK5qjkbRLpyy+0BADAWOHlcMW+m/EN7DZRiQ8kMACgEUsDgKkKAkZkzgCQ7KN8cJnVDD5FFDnyBpL5OGtfVDoc2gDRlF6KqDnKxgqxZq2W68iaP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NPm9kHgZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZGE3deAO; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pAZEOG1U";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="eWTymLXr"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66QH6gwv1522854
-	for <imx@lists.linux.dev>; Sun, 26 Jul 2026 19:43:35 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NPm9kHgZ";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZGE3deAO"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66QH7rdn1127889
+	for <imx@lists.linux.dev>; Sun, 26 Jul 2026 19:43:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=FDQIeXpPD+dwLpKCV5Porv
-	y3ne6CU+pJakDyD+AScDY=; b=pAZEOG1UWrwTp6+Udv9XpGfugtOEAbIEc8xh32
-	izDKpGGoq0uH1WZWcQJmbJh+NgBE/f+Uy+hkdw7i28QDjdp4ViKCyfkO6VwS31Rf
-	mPq41EFbFh3JI6QUTWEmXHsgHUGiynrS2EXPL8ZkcGbth9TSJM0wOlwvSBZpQM8B
-	S9RjIOpjJQY3oPTTWsdlHzfSuVc90CxICcka85UZSEoOl5LywkG8t9kdG5gFsMwx
-	lewic+xOYkv8Oo6dLPBQixW7/Z3DgUgfa8U0YswMXMz76jIhiG6QgcCMmaHZOpAh
-	3/lvfjR7c+MmmS1k1XWZ+opI3fWzDVLKNYC2G95V8q3IShMg==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fmm3sbnxg-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	CNoRgYHBQCH+tsjxR75Szw9VyLMDvEKRkPSqMXEGBh8=; b=NPm9kHgZsDf1LGlX
+	jzlVHtMg0YUIG18rO33jutaRk1yFpZdsfUZVRWXI0ghtaU1/yaZpgmvF1zkkIkMO
+	Fx/GEM6lleoZ2OcTLU3bCQDNV8OfTPfNjRq65BaBvGXKNXhIMzq0ln7rci/Qk6fr
+	bhHa4Hm6Jd1qdtFzl/Ez17lREMOW1lrfDBpw5evnVY9Xoy1I6kuZkcMe/VXEJ+KX
+	Pn0yKJyoOgri+0JqUjlVmDNy54VMgGwyHkj89PveR+TywEoAf/HLoQ7s4fPsnpUE
+	ysQBHzdtZRRTpsO7e5MMXpwCaF2Eic1vfLqRYDOcebT3rm1E7+C2mEIsQneM6hEz
+	vMj/ZQ==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fmnweuf2p-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sun, 26 Jul 2026 19:43:34 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb6cf425e86so2613493a12.1
-        for <imx@lists.linux.dev>; Sun, 26 Jul 2026 12:43:34 -0700 (PDT)
+	for <imx@lists.linux.dev>; Sun, 26 Jul 2026 19:43:43 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb6cf425e86so2613548a12.1
+        for <imx@lists.linux.dev>; Sun, 26 Jul 2026 12:43:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1785095014; x=1785699814; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=FDQIeXpPD+dwLpKCV5Porvy3ne6CU+pJakDyD+AScDY=;
-        b=eWTymLXriGr9sMrQul57reB/PQCP7nhv2O47nRZlobYdTHDVszHgsCLg8TyDtlngpg
-         zmKp6MVQC+mouujB3wzu/N4DzYuZnnA/j9VhWT0R7nO8gluIYp94IiRaL0ubj3itETOI
-         vDZgANeHZgSLw+etyPafolJaabkOzpAixt4O/niUETyVNewjDxW55kgk0yCwvjnihHjx
-         QoLycjo+Kr+iBSSzfCXNXiMxOSJPaQDBzymC1TolXXdwSIgWwH3XJgQgVzzDZetnWXZq
-         L37tQLdGj/HUU7TfXtUJb0OFjWw2C1jSicc2Eg2OkTma4oZ3AkUxPwgCK6kdTLDEuJ29
-         Hjow==
+        d=oss.qualcomm.com; s=google; t=1785095023; x=1785699823; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CNoRgYHBQCH+tsjxR75Szw9VyLMDvEKRkPSqMXEGBh8=;
+        b=ZGE3deAO+FCWUUtP5FoNNOUoXhOZ/KhKlh3zpvJONMohs90fCBSBuUedjPIpus5qRS
+         BIGLFZp7J5MdaWko0TsJOQ2QUPsqAM9xmQQbE3oxiLcw+EzClsHLY9piGJCUQqRtGBpd
+         Pq5rSZHpf0QqwyjBd86kLPxq43DZOzTNFsVkpRdiWmwBhXS0PoIVYNNLnN38qzhc3cz/
+         nMArDcLk+sRhpe/Aa5nWGJX4sp+lv3JbnqebyV0f5ipNudv1xU8otNCxov152N1bcIFU
+         YJOPjKjPEAo5yySyEB2Me023Cs4Btda6DP0BFoeG+tLvgR12HZOkrwk12PymjUT3vejo
+         pdMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785095014; x=1785699814;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FDQIeXpPD+dwLpKCV5Porvy3ne6CU+pJakDyD+AScDY=;
-        b=olZkyXLLDmoaUG4AmGpKGsKHuDwLMmd4RduCBlDpcajZ3YaU4x/82EkrSTomDxo9P0
-         9XExqtBk/4nXyXQdXXsWDzVv6Q+RWTV9FRnGkNXo0dUpgcKSeVcFDm8iJ2CaRoK9hxW6
-         HsIF6CXGSACXEwYLwZ4EyKSUDANzBeQQ906ihzWX8dD0lEoqp7SUg+j1vX75iebQiR3U
-         0W5lh0IxPdbAQmhGoLn5qCpWqmLIMLMzZ/YNl7sJvNDX5bTJPuvZZHbmWFADlvE3IU7f
-         HHpA3mBvzfQQ51dfQ1NM/cFesPO2MW9iBJE/jHw1Miyr7APIy7HO2YQTejHhh/0CaAxK
-         1ulg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro43BwxVbqNB5JFwoyedAIE6hHsYaKGmfb9l+wUWd0UpkztvXp7GnAOTHPQPNHzVApkFZo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwfiYv0g6ccaaQfCNBsyZTLSlfS9l4b5X9GuxoeG/8Iw5MrLP2v
-	I0v8rD6Xn/gyihnS50+ZBZUsiZYkhUWpB6ApDKYYbNxKmATp5MMlFnBM+E28GVmrdqLe/AJowGA
-	TyZceE+3jy4/u2q1GASvbztk/Hgp86mpsLXfuVFMqr48WzZTcGfmpEE4=
-X-Gm-Gg: AR+sD13/zEzgrYk+2zsIp54ywXQ30hVyCaGZB8aEjXk1gUwvLdRLnDWNoc5TyPFgWe+
-	4BTO6H98gHwujVD5LmRORuKuD4ATKJjdlCm4iVaMby2vnjkNhNefNtkxamLSiL4ahbGZturjzrs
-	Rt6UGlEPV3DkMOxaL5Ui1E52JQN4ukKnpCtN9ntk0UrEmtKFuqzQJDX71I3wWPEhi1YXxuPkymw
-	lGIOx57ZJQg89E2mAF//sZGtq4ETun2eRKPdfaYUFF+PwewJefvPjOzC8QPyLNSWUWeEGb8JySO
-	KQ0z9VbiudV/rBEfOKCvEqD0IcSEy9CL3zVwMdm2uZgUhgW7i1ZvB2LtgvXViBSbtrvApvmbCXM
-	N+PdFo+ycobo1Wb7S5/cA
-X-Received: by 2002:a05:6a20:43ac:b0:3b3:2703:115 with SMTP id adf61e73a8af0-3c67dc41ae3mr5548170637.16.1785095014255;
-        Sun, 26 Jul 2026 12:43:34 -0700 (PDT)
-X-Received: by 2002:a05:6a20:43ac:b0:3b3:2703:115 with SMTP id adf61e73a8af0-3c67dc41ae3mr5548148637.16.1785095013838;
-        Sun, 26 Jul 2026 12:43:33 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785095023; x=1785699823;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CNoRgYHBQCH+tsjxR75Szw9VyLMDvEKRkPSqMXEGBh8=;
+        b=sK5RVcRJraZvLj+P9m/vgUQDgvZLjmNFQtjM60ZzmDIZG3ZpUqofJB+YOR49+YqiTG
+         3EJzINZrljEsYpXJv0rX+lvHSYdD1rcgAdVT2xbpQPJ2tnJu2rMz2VLML+sCHezjdMqi
+         AkKKq13jvRKCfZJdmktzvQfTG+r6iic1ieFs5ktAdiwYe4MDthkqd94UwjF2t0DixOQj
+         T6fRlWxaLO0eNWLysqeIzp1oe3Z1upJto3EinYiUcc6DFKrm09d5CwzWAgGSVzRo3Sk/
+         oOTs+qCjjLB+kWn/0mkX9YF0KAv53wTTnV/q+qlm+bDHygt95Vs9BTwIsNkNVHmSIUsV
+         XmcA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3rJ4Pz3xKCtD58I60UMJ9qcrNXb3jn1gij3soI2UHrqljpcZhGHUaxEgfflMJMX9xEig=@lists.linux.dev
+X-Gm-Message-State: AOJu0YydBCEq2eDAogTMthopbur/AAsjAmVup6v1UidH9ynO71FAa4fe
+	BfRl326pw5tYjz0lafQNE+6bhhcIAVD0plTNwugvgXVyiZo6zqw0mzlDNZWG6rnZ5JaWFmN5MDt
+	74ZzjR70tHlwSMtnrGmWzTnb/1QzCGlXCK854qkBua4XmPJhrbx/AZis=
+X-Gm-Gg: AR+sD10lBbRzRrFUg5ARDNpU0+ImFQe6VXDp6twFbfQmQeW/HkxXiPqgQkURz6Rr+sf
+	KeJo1hhgBsTgU0RmyrpVCDf111LaTXKJytCW11eEPD9GhcYwGMvJIBvxj76hc8FKNrJjmL7YDsU
+	IEv73LV7Iv9/wH8DxKNrAbOfOXUmLEfGplQCBB30iYyzoGdHj0YONLkLbW1CWaSxAwlOQQpXvKd
+	FdKLPHs0453JfHhsxFb6wtwiwwqWVjjiN21vp2xPX2hUBmKMvdP7mU4cNDHUvzqFYgAoWD1O/Dl
+	OtDTGHTadszDqw00VhvFFGiEjQYPbmOQP+WRqBqIFb29dPvRx/PyibA7EsBNmic1ZRCVjUC35ls
+	cUtj7UxhW5DgnQ/mEZ/2j
+X-Received: by 2002:a05:6a21:918c:b0:3bf:6c08:fb85 with SMTP id adf61e73a8af0-3c67e0e92fdmr5593395637.53.1785095022540;
+        Sun, 26 Jul 2026 12:43:42 -0700 (PDT)
+X-Received: by 2002:a05:6a21:918c:b0:3bf:6c08:fb85 with SMTP id adf61e73a8af0-3c67e0e92fdmr5593377637.53.1785095022117;
+        Sun, 26 Jul 2026 12:43:42 -0700 (PDT)
 Received: from le-cd01-lnx.qualcomm.com ([114.94.8.21])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb66dcd38sm2312070a12.29.2026.07.26.12.43.25
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb66dcd38sm2312070a12.29.2026.07.26.12.43.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 12:43:32 -0700 (PDT)
+        Sun, 26 Jul 2026 12:43:41 -0700 (PDT)
 From: Ze Huang <ze.huang@oss.qualcomm.com>
-Subject: [PATCH v3 0/2] drm: replace simple display pipe users with atomic
- helpers
-Date: Mon, 27 Jul 2026 03:42:31 +0800
-Message-Id: <20260727-drm-simple-kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com>
+Date: Mon, 27 Jul 2026 03:42:32 +0800
+Subject: [PATCH v3 1/2] drm/imx/lcdc: avoid duplicate clk_per enable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -89,11 +90,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAChjZmoC/3WOwQ6CMBBEf4Xs2SVtEYye/A/jodRVq5RitxCN4
- d9t0auXSSaZmTdvYAqWGHbFGwJNlq3vk6lWBZir7i+E9pQ8KKEasRFrPAWHbN3QEd4dYyDnJ92
- hkFpU0jRaqi2k8hDobJ/L8OH49Ty2NzIxr/0SgR5jIsZvDFrNhMY7Z+OuyJyenhEzGUWDagN56
- Go5+vBaDk9y6f2+1f++TRIFtmuSRou6alS198zlY9RdhpVJ4DjP8wccL41iDAEAAA==
-X-Change-ID: 20260704-drm-simple-kms-removal-01a031c6a129
+Message-Id: <20260727-drm-simple-kms-removal-v3-1-de36e534f7a1@oss.qualcomm.com>
+References: <20260727-drm-simple-kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com>
+In-Reply-To: <20260727-drm-simple-kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com>
 To: Alexey Brodkin <abrodkin@synopsys.com>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <mripard@kernel.org>,
@@ -115,103 +114,76 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         imx@lists.linux.dev, xen-devel@lists.xenproject.org,
         Ze Huang <ze.huang@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785095005; l=2679;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785095005; l=1575;
  i=ze.huang@oss.qualcomm.com; s=20260716; h=from:subject:message-id;
- bh=SzrRHowXSa10BAHCyJ1LhewVqZLaXZNB44vA3ptkLd8=;
- b=ygG0jOkfjjtOnpnb/85WRy8PlT/tiW1jcovVo98E9rFl6SsoVZpL7kFNMISeo+OC86QqJ04Aw
- LK0RRwuDsgNBhR/dSZRqnbW+r+gFyurTl3vHzvkgzWB3HgUd6B0UHHR
+ bh=0iliuiHXJ6h0/St/QGB8FSTuTPg/hKE4ZxbThjkpOEk=;
+ b=nuCUHzR6KH+1G4beZzHutnnOVPquBUhtAMv7nYpAmPcJwkzLDxQbdplnG0zdIkeIj2bMf6cbt
+ akZOj/szyIRD7rXgAh5kCjmvJ221hnITo+m6kuUDxyG75FWxOXTdMnr
 X-Developer-Key: i=ze.huang@oss.qualcomm.com; a=ed25519;
  pk=8uGhlZHInA8NXq7G6u/g59qEcwXwuMRI7nBSnT/ijtY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI2MDIwMCBTYWx0ZWRfXwYU3exLEox2/
- Zwr+wfUdo4Q98byr+KGWRzm0yxHeQ9h9376i/Jo1KV5ByiIzU+ItvjhgobiJdZZv3+4TnH55Ffr
- cJOh0jTeovJpYxG6YoaiXj8Ax3tqch/r1CtUJsjRcWkyM2TyuwAUhizrl8tXRGObPkGdd0EmOzJ
- RAsV7XkNcQcJXNxptbEYs60f9+OF6+wWysQqQ5VD7mgd9adYtqvfmciUxMiXzA3Ilmf7quT9CRW
- RLaLWBy7/WY+5FhLEz73KpoSA3XG9pOp8JGqlK1agwWTd1MPmC2+bqE0twy/jfPicF/jJkVOFMf
- SnN9Ja48S+822UlVxICJEefNA3GlusxF4jDqDC36sa/LERQQKPdI1jaksLdcyqK236qoPSZFu/8
- H6gsfpMyxyGdLRTSLecwWiu+m0KFxKRBcbdvo8xWT3BV/3DIpH2Mvmbg6Rgadr5BoC1i084uX2R
- 0c3xNOFAGSRU9EXxIjA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI2MDIwMCBTYWx0ZWRfX3YsLv794WVEh
- rZibQt4LpcjKMjoDOSsBE4Y1x3yt9oq8vAgjurEta6pnnq4bKpW98p3/1sMuzzFhB+32cuKOPtr
- 5FlmIYleznSRLKRLfA4oZZ643ibwBuo=
-X-Proofpoint-ORIG-GUID: -OmrAniMn4w_f6X9Wgcx7wdnLpgXDDP-
-X-Proofpoint-GUID: -OmrAniMn4w_f6X9Wgcx7wdnLpgXDDP-
-X-Authority-Analysis: v=2.4 cv=KanidwYD c=1 sm=1 tr=0 ts=6a666366 cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=Uz3yg00KUFJ2y2WijEJ4bw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI2MDIwMCBTYWx0ZWRfXx324qzIjhm8+
+ mbNCHHyZ7ikIPCy6QshpxsIeQfBY9FePQpL4D6i+VtTci7DhyYav0O0DfvbRyHX0/peW1T3AGhU
+ oFrQnMmYTr1V5TUY0JAww3FVON+ykv+VFO4BHweCxpiCLiQAogRh90KQ2Xe31wfLceTU4di9QVY
+ MVJdVDZEhyylp26k/FuYkVBya2ZJa4d+sAYCcVVZZGBfRjrRebwMb6iBLJtI+Iq5PXYtqmFDURd
+ VnRONnZ5za4rEWfo7driCr58oWUfCbDPxRAN+8EWf5hwu6VszxuDzfmV3pFNkhc4nxIpw2HAgUQ
+ 0vY7vm5s2qyeH+dO5mhH01LmYs8mxe2tN08cyw7E2WGfP3CxVhXXkQ7hfkDk3m9D53gj7OCWEpp
+ MTaNrmJwuZWc2v4BmaCNV3AiYcx6ksRjouGuj+Nq2ADqLxd2qB//XleQypgp8y+QRJlhzFwP16H
+ 22u394BmH+Crj9yQJiw==
+X-Proofpoint-GUID: 0jDZiPHBfw4_jhK43AL1bQWkRDQ-tv45
+X-Authority-Analysis: v=2.4 cv=S77pBosP c=1 sm=1 tr=0 ts=6a66636f cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=Uz3yg00KUFJ2y2WijEJ4bw==:17
  a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=Aa0Oat_sKGPK8WdvVJkA:9 a=QEXdDO2ut3YA:10
- a=3WC7DwWrALyhR5TkjVHa:22 a=FO4_E8m0qiDe52t0p3_H:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=EUspDBNiAAAA:8 a=xnl2VaEmiNnR3tlLptkA:9 a=QEXdDO2ut3YA:10
+ a=_Vgx9l1VpLgwpw_dHYaR:22
+X-Proofpoint-ORIG-GUID: 0jDZiPHBfw4_jhK43AL1bQWkRDQ-tv45
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI2MDIwMCBTYWx0ZWRfXzQgC88Gi4e6d
+ zwzFAm9Ta35tpLiKt7502aNhwlc9/oOgf+qzthm6wl+yO/daFk5MQRoK7bbXNWOQLojH83pGa9u
+ OCbOjBmY01JF87WwqoRimVIrLji2wxs=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-26_05,2026-07-24_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 clxscore=1015 priorityscore=1501 phishscore=0
- bulkscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0 spamscore=0
+ bulkscore=0 suspectscore=0 phishscore=0 clxscore=1015 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607260200
 
-struct drm_simple_display_pipe was meant to simplify simple DRM
-drivers, but instead adds an extra wrapper around normal DRM atomic
-helper setup. As noted in Documentation/gpu/todo.rst, remaining users
-should be converted to regular atomic helpers and stop depending on the
-simple-KMS interfaces.
+The simple-KMS helper calls the pipe update after enabling the CRTC.
+On an enable commit, imx_lcdc_pipe_enable() already programs the
+mode and enables clk_per. The following pipe update sees the plane move
+from no CRTC to the active CRTC, treats it as a mode update, and calls
+imx_lcdc_update_hw_registers() again.
 
-Each patch replaces drm_simple_display_pipe_init() with explicit
-primary plane, CRTC and encoder setup, and moves the old simple-pipe
-callbacks into regular plane and CRTC helper callbacks named according
-to local driver conventions.
+That second call has no old CRTC state to disable clk_per first, but it
+enables clk_per again at the end. The disable path only drops one
+reference, leaving clk_per enabled after each on/off cycle.
 
-The conversions preserve helper behavior that used to be implicit in
-drm_simple_kms_helper.c, including plane-state validation, CRTC
-primary-plane checks, affected-plane propagation, framebuffer prepare
-handling, and existing event/vblank flow where applicable.
+Skip the register update from the pipe update path when the CRTC already
+needs a modeset. The enable path has already programmed the hardware for
+that commit; keep the event handling in pipe update unchanged.
 
-Result is less helper indirection and more explicit driver-side atomic
-wiring, with no remaining simple-KMS dependency in these drivers.
-
-Changes are build-tested only. No hardware testing has been performed.
-
-This patch is based on drm-next-2026-06-27.
-
-AI usage disclosure:
-- AI tools were also used to review the code and suggest code changes for
-  the DRM atomic conversion.
-
-Thanks,
-Ze Huang
-
+Fixes: c87e859cdeb5 ("drm/imx/lcdc: Implement DRM driver for imx25")
 Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
 ---
-Changes in v3:
-- Add a new preparatory patch to avoid duplicate clk_per enables in
-  imx-lcdc pipe update after CRTC enable.
-- Use commit-local atomic state in enable/update/check paths.
-- Link to v2: https://patch.msgid.link/20260716-drm-simple-kms-removal-v2-1-7e4a6b8528e6@oss.qualcomm.com/
+ drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Changes in v2:
-- use 'commit' as name of struct drm_atomic_commit in atomic helpers
-- improve control flow in *_crtc_helper_atomic_check() and
-  *_plane_helper_atomic_check()
-- Moved page-flip/vblank event handling out of plane update paths and into
-  CRTC atomic_flush(), using atomic_flush and disable paths
-- decide clock disable by old crtc state
-- add calls to drm_crtc_vblank_on() and drm_crtc_vblank_off() in crtc
-  atomic_enable() and atomic_disbale()
-- test crtc_state->enable before mode size check
-- Link to v1: https://patch.msgid.link/20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com
+diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+index f52832b43aca..81024f7d9e96 100644
+--- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
++++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+@@ -311,7 +311,8 @@ static void imx_lcdc_pipe_update(struct drm_simple_display_pipe *pipe,
+ 	else if (old_crtc != crtc)
+ 		mode_changed = true;
+ 
+-	imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
++	if (!drm_atomic_crtc_needs_modeset(crtc->state))
++		imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
+ 
+ 	if (event) {
+ 		crtc->state->event = NULL;
 
----
-Ze Huang (2):
-      drm/imx/lcdc: avoid duplicate clk_per enable
-      drm/imx: replace struct drm_simple_display_pipe with regular atomic helpers
-
- drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 263 ++++++++++++++++++++++++++----------
- 1 file changed, 190 insertions(+), 73 deletions(-)
----
-base-commit: 3696d07837d1df13a5603d77f667685e7dfb3c53
-change-id: 20260704-drm-simple-kms-removal-01a031c6a129
-
-Best regards,
 -- 
-Ze Huang <ze.huang@oss.qualcomm.com>
+2.43.0
 
