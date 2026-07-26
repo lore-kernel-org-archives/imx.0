@@ -1,123 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065493890E7;
-	Sun, 26 Jul 2026 11:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6812F1E47CC;
+	Sun, 26 Jul 2026 12:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785065262; cv=none; b=BDw6WKIiflyceSlkUJLZtc6TlvL9Cuqg8+qsOdQYayLUZvnfgLSw23oj7ShpF6TfQy8KLze2p+ESYeq6DiFDcaL5dMHsffnJIiyluvUwp7DGI51BVNyMoVQenOE/DlItKMQAa77nE65gcVlmrdQGcSft1hkKqh5CEbPXhinJC0s=
+	t=1785070586; cv=none; b=jHd98EE3kAYZnWiBhz35W/E/Lg6MC8IQKfNVf1W3LZZxHFmsM6nyMm5ttoijT9JHo+/kZBfljIYJSXvATKvCCJUiF5TaJ753ARbH+hhU0CXuPFE6iPpZgqo3f7ZjX+0wVcG7JVIWtmIHh2KH9ybOZYNfALpG6p4/EQPiyb7K9hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785065262; c=relaxed/simple;
-	bh=0lIXeA/HukukbtwvcNzNyaonF0xu/24jaxHb9GjA9gM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iW3e+97nsbmjY1/BLEGxs0wn8LRFOgBJFuLaO0CioQ5h93B/7MF2nDJ3ks1ScZwa6rdFyKRB1fmsUIQSAk77W22kqE1UmZDwpXqzgnoiTuXKqBbkcsPFhAP3k4EZL7PFuS3RKAxtEQlsqPAKEUs67o1Y90qP7LbKraflxbr/tL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JhaPEe43; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JhaPEe43"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D95F1F000E9;
-	Sun, 26 Jul 2026 11:27:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785065253;
-	bh=SAGuHYLzec3TiXchYLxlBSFHawNmAE0FcVZoRl9MzV0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JhaPEe43r2Y9whJmEZzUG34GQC0C6KtVfXPNa219FRRpMOmJSPvn+z5KDoM7JMSks
-	 GJxCFVPR8KJ35fQoHbf3oZCbfJ/aFi2d++HzhK6BhkS8wYX46ZBLfPwI4D8MMDVYc7
-	 fT01nGVH4c8bGtADv9GBcJpvhfaz9aU4YxUAioQVYof/eRhyd0EYwIXmoWf95/ZFGW
-	 /BlYPwdjFVXziYWwIZgON9K6Ggpy33Cl9IYobondTexqbJLb2MWolqufz4FyUjRS0B
-	 g9CVnGEOeF8XIGGpd8t7lehqnBqYK3LlX2rwFtuVoPdOydLrap+utQC2eVTLUTlgZ4
-	 qWVPZJa/2VFpQ==
-Message-ID: <3f4397e4-fdf0-4c79-ad91-42c6b6f200d6@kernel.org>
-Date: Sun, 26 Jul 2026 13:27:19 +0200
+	s=arc-20240116; t=1785070586; c=relaxed/simple;
+	bh=qOWSLoFTRbEIxSauVxZ4vA0xfF8LEiuIbFTNM/LfThE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ftKbnf6RMAomj3nOPvIWdnHj0atfa2OmPZ1j2D+w7j6uTkp48dUlE9cV6Bjql2VuoEHqU6HVOHjvHRvfizM3PpPip3HGOZ53YLV8dV4L2ClEhNgTtHtHtc1od7xaDUlw7jTvQyd3QP3x13+AmmgRf5DNr/GWCasPGmsEg4X5KLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id 046A5F40DDF; Sun, 26 Jul 2026 14:56:17 +0200 (CEST)
+Date: Sun, 26 Jul 2026 14:56:16 +0200
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Kalyani Akula <kalyani.akula@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Johan Hovold <johan@kernel.org>,
+	Ronald Claveau <linux-kernel-dev@aliel.fr>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev, imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] nvmem: apple-spmi: improve calling safety with
+ wrapper functions
+Message-ID: <amYD8I6a1c01fnvs@luna>
+References: <20260716142415.28718-1-linkmauve@linkmauve.fr>
+ <20260716142415.28718-4-linkmauve@linkmauve.fr>
+ <alkd0WWr3KX7MS5O@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] dt-bindings: net: fix spelling errors
-To: "shaikh.kamal" <shaikhkamal2012@gmail.com>,
- Frank <Frank.Sae@motor-comm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Clark Wang <xiaoning.wang@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Linux Team <linux-imx@nxp.com>,
- Christophe Roullier <christophe.roullier@foss.st.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20260726052429.16807-1-shaikhkamal2012@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20260726052429.16807-1-shaikhkamal2012@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <alkd0WWr3KX7MS5O@ashevche-desk.local>
+Jabber-ID: linkmauve@linkmauve.fr
 
-On 26/07/2026 07:24, shaikh.kamal wrote:
-> Fix spelling errors reported by codespell:
+Ah, someone independently sent the same patch as this one in
+7089170e1df160f5f8fb395bc5aa2e2697b4e896, so I’ll drop it from v4.
+
+Sorry it took that long!
+
+On Thu, Jul 16, 2026 at 09:07:13PM +0300, Andy Shevchenko wrote:
+> On Thu, Jul 16, 2026 at 04:24:10PM +0200, Link Mauve wrote:
+> > This driver used to cast the regmap_bulk_*() functions to void *,
+> > bypassing any compiler safety around incompatible function pointers.
+> > 
+> > With two small wrappers, which just convert the void * priv parameter
+> > into the wanted struct regmap *, we can remove the void * cast
+> > altogether.
 > 
->   encompases -> encompasses (stm32-dwmac, sti-dwmac, nxp,dwmac-imx)
->   curren     -> current     (motorcomm,yt8xxx)
+> Reported-by: ?
 > 
-> No functional change.
+> > Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
 > 
-> Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
-> ---
->  Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml | 4 ++--
+> ...
+> 
+> > +static int apple_spmi_nvmem_read(void *priv, unsigned int offset,
+> > +				 void *val, size_t bytes)
+> > +{
+> 
+> > +	struct regmap *regmap = priv;
+> 
+> No need :-)
+> 
+> > +	return regmap_bulk_read(regmap, offset, val, bytes);
+> > +}
+> 
+> static int apple_spmi_nvmem_read(void *map, unsigned int offset,
+> 				 void *val, size_t bytes)
+> {
+> 	return regmap_bulk_read(map, offset, val, bytes);
+> }
+> 
+> ...
+> 
+> > +static int apple_spmi_nvmem_write(void *priv, unsigned int offset,
+> > +				  const void *val, size_t bytes)
+> > +{
+> > +	struct regmap *regmap = priv;
+> > +	return regmap_bulk_write(regmap, offset, val, bytes);
+> > +}
+> 
+> In the similar way as above.
+> 
+> ...
+> 
+> > -		.reg_read = (void *)regmap_bulk_read,
+> > -		.reg_write_const = (void *)regmap_bulk_write,
+> > +		.reg_read = apple_spmi_nvmem_read,
+> > +		.reg_write_const = apple_spmi_nvmem_write,
+> 
+> I think the proper ordering is to address this first (before your main change)
+> and update later with const argument. Yes, it will be a bit more changes, but
+> it will be cleaner.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
 
-
-Slow down. Same comments.
-
-Best regards,
-Krzysztof
+-- 
+Link Mauve
