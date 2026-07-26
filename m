@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BC83793AA
-	for <imx@lists.linux.dev>; Sun, 26 Jul 2026 19:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C4C379C23
+	for <imx@lists.linux.dev>; Sun, 26 Jul 2026 19:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785095961; cv=none; b=beolDLvhVk/0ZtGHHdCL/eWX5x5GDEhk5TwPuqAMJ4xNPAmstj+aUQDLTDyETLFOiwGyfF1dPPz8FJO6UdLifK3ECo7r9apgEMrkpHxacAzvq2dC6SanoUzQM0lxSDquy6mLKptVJLB9rUZTiDeUIXeuE7ILq7ohuwX59bk//cs=
+	t=1785095997; cv=none; b=qMkXkFdo4947PYim3Ho6sCNifmKHx+uk1KphWz9PUdjGiDzxZB2K0qJ8npJzhqr9KAZUuvBb01L31ck8oVFes88/o62jPq5da8QieyF+GTDYtQazU6Rf0KEsHQlu5eXxF8htrcKXeneJE9eY7g1zSL53z1anZDBl8NOiFV+Ibuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785095961; c=relaxed/simple;
-	bh=mRa3A/kv17icQbLc3AXBM2VxhUtRHTOLGJtso76HEgk=;
+	s=arc-20240116; t=1785095997; c=relaxed/simple;
+	bh=ssTz4AFrgWb7HEGyq3vlnqdHvTowJd7aqbQoKs7AwDg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tCpGkRCzpny09dqyS8OCTAJNwDRgnUDldNyCQRB6kx/o9XGIduJUNupWXsHQOAJcd4pqJvk95HZQ27i15HlOqtgIgD5zqQcajvzX3XzejDh8cDwRgqR9IZ6Zi8ie6pjT+g0nM5GcGIj4FQjFuoo2MDEdVNve18rkqwjw17qVZ9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SlA0HIr+; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=YrsIq/jASgsTP/9m4lXAYL3TlrlIWTVxi0f2eCLmHe0mXv3G0PQvDboIwil2F/mftKyC5Nc6ie7SPmbht87b0R25l2Ldz+jwG2LuAOeCh7godP4BkyS98KusbUvc6z4pqg8Ho5Uk2BO/wBzEpeCihVkGDp5ofDhpqTA2Q4YTvWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CTuW46Pm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SlA0HIr+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D70021F000E9;
-	Sun, 26 Jul 2026 19:59:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CTuW46Pm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36731F000E9;
+	Sun, 26 Jul 2026 19:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785095960;
-	bh=tDgBnfo9W8njKTHDwGQ1C2bWOZPCiYR1448n/Vy+uz8=;
+	s=k20260515; t=1785095995;
+	bh=5MpO2wjZ6Y+/a0vLgju6lRAC9fYKuQvEJPxbKzXYo10=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SlA0HIr+WqF9uOt63YfJ6df4q965mrYo8ccr/B2qT4OQqNwBBmHU6sZr3mlIHatVk
-	 xzMKd7ohtO0CzwFa6qwI/W3lwORj48bT59VT+TeDtqGQv2Db+qsCCm06dEoijtnnwI
-	 eILGperRKv99MJHaRWdoQMgcGla44eOUVPW33t3/zH1HD688ww7qWFGrUanxnJf90B
-	 ne/wpKBw5wf2GEj3pEjcwPkx2PdEedET8uztBVTUQxyybt//eRwVvUZDfog2HgGVQa
-	 IdvJT0b1WaGCmDmBiko3YBHTN2uwWT0YebskMNnPNPzRKFfbe4vMbwlx3lFFDE+ctX
-	 WGmenVf2osw7A==
+	b=CTuW46Pm74MAwvglggcP+Fi94j0CX03mFX/LANokalh21YEpW0uan1xO6jbcy+zFa
+	 179yrpMr8lbzIZv401v8+urtbFOwKVxyuiLAhOCfmyqYO9VLyGwJ2cXxGU6OXUEVFU
+	 a5RTJ7Hsa2tkx6JqLmP46IrWvu3mksbiJmyL6w/qtxQj2WKP1Ku77yMOFNAHKMFgj0
+	 v6FzCmKA3SEvf6aVK9n0KiboCRinnlEFJEMrp5Yul7a5MJVEFCPK/laDugxJuE8PXC
+	 VWf0iL3xU8O9cGGOSiL9hhzGE0tQtdq4kCaCmLjwCTL92B8ki48xfn1QO+VVJ99RwG
+	 Gbv9wh2APKipw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/2] drm/imx/lcdc: avoid duplicate clk_per enable
+Subject: Re: [PATCH v3 4/8] drm/pl111: replace struct
+ drm_simple_display_pipe with regular atomic helpers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ze Huang" <ze.huang@oss.qualcomm.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, dri-devel@lists.freedesktop.org
-In-Reply-To: <20260727-drm-simple-kms-removal-v3-1-de36e534f7a1@oss.qualcomm.com>
-References: <20260727-drm-simple-kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com>
- <20260727-drm-simple-kms-removal-v3-1-de36e534f7a1@oss.qualcomm.com>
+Cc: dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260727-drm-simple-kms-removal-v3-4-cd5dc89858c6@oss.qualcomm.com>
+References: <20260727-drm-simple-kms-removal-v3-0-cd5dc89858c6@oss.qualcomm.com>
+ <20260727-drm-simple-kms-removal-v3-4-cd5dc89858c6@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 26 Jul 2026 19:59:19 +0000
-Message-Id: <20260726195919.D70021F000E9@smtp.kernel.org>
+Date: Sun, 26 Jul 2026 19:59:55 +0000
+Message-Id: <20260726195955.A36731F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,58 +49,71 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Calls to sleeping functions (`clk_prepare_enable` and `clk_disable=
-_unprepare`) from the plane atomic update and CRTC enable/disable callbacks=
-, violating DRM atomic context requirements.
+- [High] CRTC atomic enable and disable callbacks call sleeping functions (=
+`msleep`, `clk_prepare_enable`, `clk_disable_unprepare`), which violates th=
+e subsystem rules regarding atomic contexts.
 --
 
---- Patch [1]: [PATCH v3 1/2] drm/imx/lcdc: avoid duplicate clk_per enable =
----
-commit 48c4f154b28e9de1d485ea56766c8a24df823739
+--- Patch [4]: [PATCH v3 4/8] drm/pl111: replace struct drm_simple_display_=
+pipe with regular atomic helpers ---
+commit e2dfe2bacf45ede4c23cfee6fb0f779ed622850c
 Author: Ze Huang <ze.huang@oss.qualcomm.com>
+Subject: drm/pl111: replace struct drm_simple_display_pipe with regular ato=
+mic helpers
 
-drm/imx/lcdc: avoid duplicate clk_per enable
+This commit replaces the PL111 simple display pipe with explicit plane, CRT=
+C,
+and encoder objects. It also moves timing and format validation to explicit
+atomic check paths, and page-flip event handling to the CRTC commit path.
 
-The simple-KMS helper calls the pipe update after enabling the CRTC,
-which causes imx_lcdc_update_hw_registers() to be called again. This
-patch avoids the duplicate clock enable by skipping the register update
-when the CRTC already needs a modeset.
-
-> diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lc=
-dc/imx-lcdc.c
-> index c67fe80b8115e..e00e52c1c46ec 100644
-> --- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-> +++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-> @@ -310,7 +310,8 @@ static void imx_lcdc_pipe_update(struct drm_simple_di=
-splay_pipe *pipe,
->  	else if (old_crtc !=3D crtc)
->  		mode_changed =3D true;
-> =20
-> -	imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
-> +	if (!drm_atomic_crtc_needs_modeset(crtc->state))
-> +		imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
+> diff --git a/drivers/gpu/drm/pl111/pl111_display.c b/drivers/gpu/drm/pl11=
+1/pl111_display.c
+> index 5d10bc5fdf1f6..deac1dee7838a 100644
+> --- a/drivers/gpu/drm/pl111/pl111_display.c
+> +++ b/drivers/gpu/drm/pl111/pl111_display.c
+[ ... ]
+> -static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
+> -				 struct drm_crtc_state *cstate,
+> -				 struct drm_plane_state *plane_state)
+> +static void pl111_crtc_helper_atomic_enable(struct drm_crtc *crtc,
+> +					    struct drm_atomic_commit *commit)
+>  {
 
 [Severity: High]
-This is a pre-existing issue, but does calling imx_lcdc_update_hw_registers=
-()
-from imx_lcdc_pipe_update() risk sleeping in an atomic context?
+This isn't a bug introduced by this patch, but does this function safely run
+in an atomic context?
 
-imx_lcdc_pipe_update() acts as a plane atomic update callback, which execut=
-es
-in an atomic context where sleeping is forbidden. However, it calls
-imx_lcdc_update_hw_registers(), which in turn calls sleeping functions:
+CRTC atomic enable callbacks execute in an atomic context where sleeping is
+forbidden. Looking at the wider implementation of
+pl111_crtc_helper_atomic_enable(), it appears to still call sleeping functi=
+ons
+like clk_prepare_enable() and msleep().
 
-imx_lcdc_update_hw_registers() {
-    ...
-    clk_disable_unprepare(lcdc->clk_per);
-    ...
-    clk_prepare_enable(lcdc->clk_per);
-    ...
-}
+Could this lead to scheduling-while-atomic kernel warnings or potential
+deadlocks when userspace sets a display mode and triggers the enable path?
 
-Will this cause 'scheduling while atomic' panics when a plane format changes
-without a full modeset?
+[ ... ]
+> -static void pl111_display_disable(struct drm_simple_display_pipe *pipe)
+> +static void pl111_crtc_helper_atomic_disable(struct drm_crtc *crtc,
+> +					     struct drm_atomic_commit *commit)
+>  {
+[ ... ]
+>  	/* Disable */
+>  	writel(0, priv->regs + priv->ctrl);
+> =20
+>  	clk_disable_unprepare(priv->clk);
+>  }
+
+[Severity: High]
+This is also a pre-existing issue, but is it safe to use sleeping functions
+like clk_disable_unprepare() and msleep() during the disable sequence?
+
+Similar to the enable path, pl111_crtc_helper_atomic_disable() operates as
+an atomic disable callback, which also runs in an atomic context. Could the=
+se
+sleep calls cause system instability or scheduling warnings when the CRTC is
+powered off?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727-drm-simple=
--kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com?part=3D1
+-kms-removal-v3-0-cd5dc89858c6@oss.qualcomm.com?part=3D4
