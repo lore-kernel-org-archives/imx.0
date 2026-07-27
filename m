@@ -1,136 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010034.outbound.protection.outlook.com [52.101.84.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043FA3F4108;
-	Mon, 27 Jul 2026 09:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785146047; cv=none; b=pbhNS+Soc18FG9AV6qxafWZDLbdCgxqfEu7Z3WZutXk5aqBZgd3wS/dc1MA5y75STy95FHXcCq/qtdat+4a59jYjyGnfkFLGNsGtGRzPGMLFoOZ051AYHjsreJ4yFc4nCA9Mby8xXNaSObFimGw1GKQ3JfFqLGBLkC2jwmnZqg4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785146047; c=relaxed/simple;
-	bh=ZhzxnG+yHPUvpfTdR9oIZKK7kx9PM62pDvMIzWkmtFI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TO03YYdggdhZxTUwEJnWsDTH36emrhYtnpSs7OkFUTwD64tns/YwZTzPF1bP4m7V9EUnHAE88PDyZ9bb2mczQ6rGYDfqBlqCN6I49Z0Ly35FgRomKazQfVxA9r4h8i8WPIxjj58wmJiqXJMXUqYN4sjyG5wocQI970vatvv6rqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M2r/nkDP; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA563F660B
+	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 09:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785146082; cv=fail; b=oLXAqaLviaROQH7lOXZuefSGq2KAIByxIYqmlRztT3C2WwD5eInAtojMWk6oCuelN7/slG9Qkt/PLZcPqKuQ9qtwYS5k1Znr5hKNDEU49KFiEnIMoqppJ8bdP5FVgGiuFTwO52jMobWLYp8kPcP2rFKHBiMFQWybXdRCombW+Jk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785146082; c=relaxed/simple;
+	bh=qF9bP6IaNv9e/3fDYYrCkxnfr7Or86tBn4pgLwObTO0=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=SmLyt74N5ikq83SXUo/sB7215KkKVoyqx4hitGXpNb4MiZTHXzMDBhkrvueUK1YgU4cor1zkDOWAoLHlBpnLsO+5QIaunFzOD7B8MY7rhYgQvQisIv4Paaj8eQQmcOHCc+IEKG5621Go+x4akcfckbYXgvYr95zGwZpKGdWMvG0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=GGR97G0p; arc=fail smtp.client-ip=52.101.84.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M2r/nkDP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481DD1F00A3A;
-	Mon, 27 Jul 2026 09:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785146039;
-	bh=kigReCWQ2TdDNk/++JY7Y7GQdJMkuvTYOQyEbcp2xdI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=M2r/nkDPuHpWx/utKty0VaoZT8TZXNcrZacCZVcBW4fcK9ySgYnixmD83fMd8gLBs
-	 ao1JL4ii4BEdv91r0Fzx3DsJilKzSdZhyRPv0MyV7MTkcIqLMSAUnjuUhr36VneUxp
-	 v+qaS5J/9K3XDLCNGmvWwhMCZby67FppsDqJRbipjFtTOOcrSuTehcq10FzvJRXEdC
-	 7fE5emc21FQxFytPy8hxVUMRT7Vb3HW97TO3U00AafR8bWwCLyPOZckZHhtpwaa5yE
-	 MLSRcETGO6+C1dL945S3UaiVqzm8wWhKQ+DIyz+VLfs4dlhyY4u8SHyY0PPaftl2UT
-	 euI8Q4I77QaZQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 5/5] arm64: dts: imx8mp-skov: support new 7inch panel
- board
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Trumtrar" <s.trumtrar@pengutronix.de>
-Cc: imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v5-5-67faa5ee0bf6@pengutronix.de>
-References: <20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v5-0-67faa5ee0bf6@pengutronix.de>
- <20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v5-5-67faa5ee0bf6@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 09:53:56 +0000
-Message-Id: <20260727095357.481DD1F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="GGR97G0p"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GqKMdJsNQKjQMZHrjr0aM8G3/pN9cjs1Swl6IMRvWP0k6ljf4PDkOMg7vTidFRC31mvbcuYM/bb5iaUbiqBHwqRxE+fJkSsMxnHwTcz/JuW4IjJwDJyIfsLxvk9ugEjgMxs0jL1ZuFuc+bFWALcD775Q8OwWn2qgxgmSE7mxVdDz622bpESIvrSxAqd1VN/pEhdX2Jo87EuqNK9jg6RwTt9s9Uebxlo7A4XIK8CR6pJZ5yX/Q1gfxVfAhHrryHvZUJJ9rybYy3+tuG5E5BWj2cGqFMvrY7l2TUZyblUYHLjFVcueHAO1Qj0ffV8b34INhIu+2/I44cChbwDZN0rARA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Jx+vNojNuzhSo0YYo6oEJQ5G7ImDrpac7zfifLQdGAE=;
+ b=v29cO5r+scuHQvmmJE2R7dIcEKk0k3d2MBV8YZSRbzbLZ+GVw9kecGKypNJshyfWUcEPI1qy8PrmL/KrbNZyTtDR51i2zgC8JNDZVuSntj8ny50WJaBuZTPfV49Qv5pvZ5sZFmYH5jrNWAx+5rDRuMmWhJUrrL1ey3ODDrQCjw7917EwZHnjmPMZ2pz1swFYFD2nauuqQ1+Rwuc86N7BbeZuK2OYMMh+hXvtyQKjKRlUFosjWlQ1Bh2yUseTtpZ0K7WYft3Ton2E3um6tPjGw9SqXsQrk8kcrH6mBrbEdTuccZ0my5qNC1LPqwPlgDGV4r+8WN7FoCuKEdN28dF6dA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Jx+vNojNuzhSo0YYo6oEJQ5G7ImDrpac7zfifLQdGAE=;
+ b=GGR97G0pWfqSwugNvxtgfMBgAEyaEVLu4PSGywsMg/CGoP1s2K8YPTGFeGlZEpT+Lnd4jpEI8D+AZBboIZIM5cJsPzgFJHRY2RrX531jh4GDbGlkpVQlS8dWmnfjUKwZyzSPB1TpQmabvogsDQ7/B3aO3x5F3zeS+lMuBfyROh96e8ut5UKa8Y1AvZwe81abhTxYQ0yXy/mc7x9o1BXY5qqe51dIOBZu0NhlHvrUpNAFY8N8GCi49oWHIyARJz9GPYJNLgSwouzMDurA5NIuu66n8xwwJojTJXZDKVri0Gyet5zwsz18/nHuXHEaGTYVwSAqLoXPCNaelXzXvMTqoQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22) by PA6PR04MB11778.eurprd04.prod.outlook.com
+ (2603:10a6:102:525::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 09:54:32 +0000
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2%5]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 09:54:32 +0000
+From: haibo.chen@oss.nxp.com
+Date: Mon, 27 Jul 2026 17:57:54 +0800
+Subject: [PATCH] leds: pca9532: check i2c_smbus_read_byte_data() return
+ value
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260727-led-fix-v1-1-d635c5037109@nxp.com>
+X-B4-Tracking: v=1; b=H4sIAKErZ2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDcyNz3ZzUFN20zApdI4s0AwvTVEOjtNQkJaDqgqJUoDDYpOjY2loAjWa
+ sxlkAAAA=
+X-Change-ID: 20260727-led-fix-28f085e12feb
+To: Riku Voipio <riku.voipio@iki.fi>, Lee Jones <lee@kernel.org>, 
+ Pavel Machek <pavel@kernel.org>
+Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785146294; l=1933;
+ i=haibo.chen@nxp.com; s=20250421; h=from:subject:message-id;
+ bh=WeKubR8MHR/WXFce0x/FXCZ9aBaJ27QD+YvuE2vS6UI=;
+ b=E7EUuDp+Fpw3qXblrvH+eUReav3ncdl+KGVzUryXhw3mbex/q7NwbfV+w/FF/DrIobNaA6Ud4
+ pTA24IiDQBLBv68o8BWwcPYue7VY+rcwu/+2cR2nxkW3n0b7Es3Lupu
+X-Developer-Key: i=haibo.chen@nxp.com; a=ed25519;
+ pk=HR9LLTuVOg3BUNeAf4/FNOIkMaZvuwVJdNrGpvKDKaI=
+X-ClientProxiedBy: MA5P287CA0026.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:17a::9) To PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|PA6PR04MB11778:EE_
+X-MS-Office365-Filtering-Correlation-Id: af405b4b-259a-45de-cb26-08deebc50ebe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|19092799006|23010399003|366016|11063799006|10067099003|56012099006|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	KS7OTDwe5YnHVFg5a6yqkgMMT0uw70ES3wQIQin56lv4tgIVFPbPQKehROibxBxGM8tmuaDwuxaPM27cjaqUF+T2VsTjy1bTESLrVsXqFJFY5t9uF73ACNcIV8sJXtqebo3ZG2eI/2XSLpxD96MJH4xyyn0T1l/atqpumU/c6xf0KjlTsa6GEL1vc93JE/g4KPXi1OOmgPe0VMxGoFH+zSHhqJffgFeYkcBx5BjJ1MLqrb/lyruYLGqj444Kd6SGNnD4J8vjgjiQIM7rJWIzRWNJs+4R4kLVHwH8XUpKwE5CZUCLL6YWJSAgeNC+qpX40XjW+eFKA0C03VdAbhsgzRK951zwz7xY9IhvY0vZ+1Egz/j0p5ApmohluqlLNmsa2xdqERAPBiLbWrOYBWCBSmN80RClRcHdUrmeP6DdEaImoV6ed+sAUoVcE+x21zYr6zv5SY8lMT3q7GbxjiGwlqZEjokNkAaW8pJjmD9tGBAotwHpoEpw/vsRtLtUhuKXnePCr9AqpT4YB8R1UBAJAHpfx0D4UhXjXzaVdjs40yWhJ3HC4Nmt+9z8d63aa6vN5BNuouh/i/n3Rp0loj+RHBTHbb7e4T9hPURyMItwJH6Hv/9RSAVl9gVDG9c/k3OV4A+DloJQc9W060fk2wyCTAMlKWLFZIIcxjVm/psBc/c=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(23010399003)(366016)(11063799006)(10067099003)(56012099006)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZXJBNnNXVFJwbUdqNEFLZk0xeUIzeUVjZ2FacUdINXNlOGUvbXJGYlY3NkQ2?=
+ =?utf-8?B?QStybm5wNW5LQkdTL0VzVVIrYVQ5UlhVd1Y4aWdYemphblV2SUgvcFFaSDdp?=
+ =?utf-8?B?bjhMdG4wL1c3dFl5cTg4OTk2eW9aNmo5VlNhL2lhTFNmR1R4dnRKN0FqVkF1?=
+ =?utf-8?B?Ym1BRnhzdjM0eXMwYUd2dVVpM2wyZ2xOTE9Gb2lXY29uY1hkc2sybEVLckZt?=
+ =?utf-8?B?K3BMbTVZS1ltWG9xcmkrUWlJSUFKTFZWb3hjWFAvTVo1Y0tteTdjMGo2aXll?=
+ =?utf-8?B?dCswR2ZsTk1RcFdBaHZjYTdTQVhHSmNNbkhsWFBsMnBjRGdNdVNRUWt4L2Nh?=
+ =?utf-8?B?bGVzalhFZE8xSVNxa2FxY1h6RFRtVkYwT0oxNk52d1lTWklucXlaQUhockhw?=
+ =?utf-8?B?b21vcVNjVlZiZVVOWXUxd0g2L2RBcHFWRjFnMVIxdFcyQ1N2bitsUW1hMG50?=
+ =?utf-8?B?NEZFd3Bocm9rTzBQbnJnRmp6dURKWU56UlFNamVWU3phSU1DbFgrcjgvbG1H?=
+ =?utf-8?B?bUdrVWRGcFpzM3NVQmN3NkowckRqeDkxck9yUDZwa3VYN2dtTU9UZzR5NFc4?=
+ =?utf-8?B?RTZaVWdxNytrNC9vK0tUYWtZcndWZ3ZiMnhrWkhDR2JGSXAxSzhrNmtmeXJy?=
+ =?utf-8?B?OE1nL2x6MEgxVFRVVXplQmNkWnhKcm9nVFc4eGdiT1VxdVo0QVVaL3IydFRa?=
+ =?utf-8?B?ZWkwOEpWUis3eHJhbnJGMklxRXRzOEF2VHBYQ2pTQmJjbWQ4V00vaENsQUlZ?=
+ =?utf-8?B?eFBTcmQ4amNxcHo1aTExdDRxZ1dqTm0yVkxVWnB4Wnp5eEVhcmYwc2s1RzBh?=
+ =?utf-8?B?NUs4WkNWdUsvQThOVDg5REI4S1grU3VQa2IrU2xvOFl5d09vZ0tnQmV3L0tk?=
+ =?utf-8?B?SnVSQU52TTNEV2Y4TWc4SjhuZE11aTN4MlNxQ0FEOTdyWEJUaU5sOUFnNjJ0?=
+ =?utf-8?B?TTVKU3ZtUnZCSlo4THRpbk5kL3RJRStpQjQvL2psL1ZGYkIyTURaSnNFZE9T?=
+ =?utf-8?B?d2ZNRmd3dFJRcEZZMEpFWENNWHpaYmgrZlJPTnpJSll3WmErUGZrODRqaTVM?=
+ =?utf-8?B?MEdLS0N0WTlFVG04N0laY0N0MjFVRFNFL2doeldvNGwxNHhNaXZQemtnUVhB?=
+ =?utf-8?B?VXk2azNqdCtvS1ZyZGpyWUFBZ09oVFNzdHBudWErNkVLZ1A5dTJHeGxzYkxh?=
+ =?utf-8?B?bDZoWEZuWXd4WDhleWRTM1VCMmF3US9MTWFOeDdlZUhMVjNSU1VONm40TldW?=
+ =?utf-8?B?dTJwSWd6ay9PVHB2ZnpQMEFhNitQclFnTGVwR2hoakE5ais0RmNrdTBFak01?=
+ =?utf-8?B?S2ppdWdJak01VWJiNnhQRTlzU0lEcWZxQzNTNmNvZDFFTWJXeGxPT3JKaUpO?=
+ =?utf-8?B?cDI3Y1FWZUVJMkZiOEl6dDM2NDZCTEFtakZHU0c2MytTOTdGR2xYSVlnbWhH?=
+ =?utf-8?B?TS9oUVViRXNJVjlWcHNVWk8zZnJOOXJPSW1GMTJsbllZdkhLL09GK0RuQkpm?=
+ =?utf-8?B?MjZnQkw1dGVaa3lGOUowZU5md1hGczJwVCtVbTAvc3dVWTl6N3EyNEE4cHF4?=
+ =?utf-8?B?Z3lvdmx6NmYwbEtLNVluS1ZiNFJXZnNmUDYzNE9ENjlXWkRSK0dmdVk4QkFk?=
+ =?utf-8?B?VHBWZnI2aG9PODByWFRmZ2JldzJyOVlPak05NkRkRmZOMUdkMTNaNi9Na2Fk?=
+ =?utf-8?B?T2QxUDBXYVRHQ1RWRy9pU2dya0RhSzBPUGNsTGNJeURQTGFVc1R6Z05BR1U1?=
+ =?utf-8?B?Q2Rvc1Q1SVAwazU0V2MvZS83OHByazNRZk5zajhTNUtIdVFUamo0enJnL0la?=
+ =?utf-8?B?TElIUTlsRTFHcWRBY1JvL0RkUy81eVdnZXFFU1d4ckJLVEdHNHN4VlkxZVha?=
+ =?utf-8?B?bW92RnMvZzFiNWk2RWh2K09KYlJHbVN3N1pRam4xY0daVi96TURiR2lOSXU5?=
+ =?utf-8?B?SThBbmFSeUsrMi9ZbC9CNGpLOUhJcWk4UGszWFZPZEtLSEpIQUJPZFJ3UjJh?=
+ =?utf-8?B?YjVrdENuNHpjTHNBbHlJZTRXK1ZZOUxaSG9EUFBPQkdnM3dzb2ZyS3loR2Nq?=
+ =?utf-8?B?TTV3RkRYdEhLZFBDbkswV0ZOYXVpQ1B6WTExNXVEVGhVdE15QUdJb0ExR3Fy?=
+ =?utf-8?B?NUczcE50ZFJic0VhQUg4WnlCcWZkVXdzRmxpQzdsbndXaGVZUHZRa1BPdlIr?=
+ =?utf-8?B?bS9vR3hxVEhlSnlaak5UWDlRSzkzNEpyWm9PK01YNFU4K0QrSVBsY3hCTmFU?=
+ =?utf-8?B?MjdGYlIvQm9PcjhIK3BhOERuejNub09DN0l3Wk44SWVCY2xjQlllT3AzL2Jw?=
+ =?utf-8?B?eHFwZEtaalpjTlJFbHV4UmRaVDZyam45UWJSYSs3b1NZZS9UUVQyc1IyaXp3?=
+ =?utf-8?Q?xqiPEsRjFQCj5Y7KzINSnw//E+O6EAw9pyybo?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: af405b4b-259a-45de-cb26-08deebc50ebe
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 09:54:32.5405
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UrOcRjGwNR06XuAYIWZahkvkT9ag8YSP07rD3hGOcCeK9acb8oTrUJes2se3x35jSADk1FA2JiNqxMS2d+ycNyDPA9WQX6cqVtq4y6h3MdqWehLtS/CrULuoq0k/4hUM
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR04MB11778
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] The touch controller node is missing from the device tree overlay,=
- despite the commit message explicitly claiming support for a new touch con=
-troller.
-- [High] The `lcdif2` display controller is not enabled, which will prevent=
- the display pipeline from working.
-- [Low] Missing `#address-cells` and `#size-cells` properties in the `ports=
-` node of the overlay causes a dtc compiler warning.
-- [Low] The closing brace for the `ports` node is indented with spaces inst=
-ead of tabs.
---
+From: Haibo Chen <haibo.chen@nxp.com>
 
---- Patch [5]: [PATCH v5 5/5] arm64: dts: imx8mp-skov: support new 7inch pa=
-nel board ---
-commit ad8d9c520b6e230240af8bd68c3a85a7288fc73b
-Author: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Coverity report INTEGER_OVERFLOW (tainted_data_return ->
+cast_underflow -> overflow) in pca9532_getled().
+pca9532_getled() stored the return value of i2c_smbus_read_byte_data()
+into a char and used it directly to compute the LED state without
+checking for an error. i2c_smbus_read_byte_data() returns a negative
+error code on failure. On an I2C read error the negative value was
+assigned to an unsigned type, triggering an integer underflow/overflow,
+and a meaningless LED state was returned to the caller.
 
-arm64: dts: imx8mp-skov: support new 7inch panel board
+Read the value into an int, check for the error, and fall back to
+PCA9532_OFF while emitting a warning when the read fails.
 
-This commit adds a device tree overlay to support the SKOV IMX8MP CPU revC
-board with a JuTouch JT070TM041 7-inch panel. The commit message notes
-that the board uses a different panel with a different touch controller.
+Assisted-by: VeroCoder:vero-1 [cli]
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+---
+ drivers/leds/leds-pca9532.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070=
-tm041.dtso b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm=
-041.dtso
-> new file mode 100644
-> index 0000000000000..2433b57aeed40
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm041.d=
-tso
-> @@ -0,0 +1,36 @@
-> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +&{/} {
+diff --git a/drivers/leds/leds-pca9532.c b/drivers/leds/leds-pca9532.c
+index 2d37e00e459dee9f0313830f4852b01f40977311..e8ee17b8bd547a92372a8e74a6781b95ae831fe2 100644
+--- a/drivers/leds/leds-pca9532.c
++++ b/drivers/leds/leds-pca9532.c
+@@ -298,12 +298,15 @@ static enum pca9532_state pca9532_getled(struct pca9532_led *led)
+ 	struct i2c_client *client = led->client;
+ 	struct pca9532_data *data = i2c_get_clientdata(client);
+ 	u8 maxleds = data->chip_info->num_leds;
+-	char reg;
+-	enum pca9532_state ret;
++	int reg;
++	enum pca9532_state ret = PCA9532_OFF;
+ 
+ 	mutex_lock(&data->update_lock);
+ 	reg = i2c_smbus_read_byte_data(client, LED_REG(maxleds, led->id));
+-	ret = (reg & LED_MASK(led->id)) >> LED_SHIFT(led->id);
++	if (reg >= 0)
++		ret = (reg & LED_MASK(led->id)) >> LED_SHIFT(led->id);
++	else
++		dev_warn(&client->dev, "failed to read LED register: %d\n", reg);
+ 	mutex_unlock(&data->update_lock);
+ 	return ret;
+ }
 
-[Severity: High]
-The commit message mentions support for a new touch controller, but there
-doesn't seem to be a touch controller node defined on any I2C bus in this
-overlay. Will the touchscreen hardware fail to initialize without this node?
+---
+base-commit: c5e32e86ca02b003f86e095d379b38148999293d
+change-id: 20260727-led-fix-28f085e12feb
 
-Also, is it necessary to enable the display controller here? It appears
-that without a node like &lcdif2 { status =3D "okay"; }; the display pipeli=
-ne
-might fail to probe because it remains disabled in the base device tree,
-which could leave the panel blank.
+Best regards,
+-- 
+Haibo Chen <haibo.chen@nxp.com>
 
-> +	model =3D "SKOV IMX8MP CPU revC - JuTouch JT070TM041";
-> +	compatible =3D "skov,imx8mp-skov-revc-jutouch-jt070tm041", "fsl,imx8mp";
-> +
-> +	panel {
-> +		compatible =3D "jutouch,jt070tm041";
-
-[ ... ]
-
-> +&lvds_bridge {
-> +	/* IMX8MP_VIDEO_PLL1 =3D IMX8MP_CLK_MEDIA_DISP2_PIX * 7 */
-> +	assigned-clock-rates =3D <0>, <358400000>;
-> +
-> +	ports {
-
-[Severity: Low]
-Does this ports node need explicit #address-cells =3D <1>; and
-#size-cells =3D <0>; properties? Without them, compiling this overlay
-independently could cause dtc to emit warnings about invalid property
-lengths for port@1 since it assumes the default #address-cells =3D 2.
-
-> +		port@1 {
-> +			reg =3D <1>;
-> +
-> +			ldb_lvds_ch0: endpoint {
-> +				remote-endpoint =3D <&in_lvds0>;
-> +			};
-> +		};
-> +        };
-
-[Severity: Low]
-This isn't a bug, but this closing brace is indented with spaces instead
-of standard tabs.
-
-> +};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727-v7-0-topic=
--imx8mp-skov-dts-jutouch-7inch-v5-0-67faa5ee0bf6@pengutronix.de?part=3D5
