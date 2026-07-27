@@ -1,21 +1,21 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9670140A945
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1CC3FB077
 	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 13:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785157315; cv=none; b=Q6rc47Wjqm5+TSBBTpysVYJ5jynPcf00qn06iDawAbaHKPms7dOHYnYlGBYc1sBbUCCV8N+cOkKZX8kERKaiTndZanS/iCWStUFYUTd3+dhk4ZYiVjEhye1vdNA3oQEW2+K6rD1Wrz98tV/9Qipcms63QPnIgpOTgoIdfgSElks=
+	t=1785157315; cv=none; b=RafOUBbp5Anqm+h+drJos5C+YX3wrg3Pi1Zs77AKb4oz1T7DOMdpvr5gpzCLH/1lJUNK/X0MfqEhciJNuQ3VI7iANZ1oZ35DDzEkWU1d8mix8p4FZgS2wI4jDjMXzXPtaK5nsQ9ofgS844Mn76c0Dn1WwsTprq7ErbQFxlUj7AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785157315; c=relaxed/simple;
-	bh=eU4lJ7dt54jgfXxvZDW1EFD+rf0Duqc1raLGPRpjid0=;
+	bh=0U6JS7tc5xanrGl32x2plbULO3/0fvjg8vVQRMF5T8g=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sREYUBuqZp7ZgRNUPtSuOIkzfm1jMLvpgIFPxoPK83rhZ9tswz3lwiut4/B053EKT13SRO0euPqlAyd7RGUr27wXMdZxt8t48rbI+onAr3f8dY2VRAfrUMGXR/9AahXvl9Df+ZZkTgXj8eZpXbqev0E+VohR3oMTdBNGJXCgOH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=lC33PrlZ; arc=none smtp.client-ip=116.203.77.234
+	 In-Reply-To:To:Cc; b=Fz3OA7Woqry7sqzaawZjlRYFlzteaChvW2IyP/n0UIhy01d15xa7y9XxuEjgn8Ci0X+r4Z3wiWprxGFecb2Tz06j7GUKdLs9gqpyNbTdH8jl7Coj4Eq+qtjM+bqPZ+7SrcLy6DRi+rmha+DwKhKfi+JIaS2N40fD64N/UYqLy+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=GgvkYbho; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="lC33PrlZ"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="GgvkYbho"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
 	t=1785157310;
@@ -23,14 +23,14 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xPGToe2khYkTL3Svcz6zEupnmAPpNugGEfUWxXk3tYs=;
-	b=lC33PrlZ9DSLmy8NFGvXbxau9Y3wV4c73T4Fe8SzokmDuGnYSyUGA280AIeRF+ruaiCsnS
-	w9GN25H+sJnc7hDjLMdw9CQdhalxynqG7fX6Sk3PjIQ/alIqDDFFJWzjYMceK/vVKoSmHj
-	8cbIFx5SQo8C9c0NL77FI4IKNhW3HA+2K4i9ZqX8dK32UICLOLjqpxgAsawx5Pm242JEwN
-	c7fu5wjzv2NwhRXQ7FKtgwFiEsrq4Ls0MRdxhIRptlui/Fy1Q+Kz656QkwcZxLs3erLt1K
-	UUknJqevQ8Y9761laxzTXMd8fsSbyNhdb1bWs+Qm3zS445cMpSdkELTVqfx+ag==
-Date: Mon, 27 Jul 2026 15:00:51 +0200
-Subject: [PATCH v4 08/11] nvmem: imx-ocotp-ele: Remove the FUSE_ELE type
+	bh=x8ppdLZtCLjVPI4RaDBrwUdqdDgKZtV4FSC053+OAWk=;
+	b=GgvkYbhoynX40X3V5FWSJbaotvFm11sraO+19uP0hsyP4gkZr+CMeDuKZ5DR6ufpzSG9K6
+	YJFowLVvSAnd05BK7BnnfZyMJ6wzXxtAB4HNlqgk2tIOvW3e8hhb70/zGl2pfbzpNiL7ja
+	29KYyDC6/9ier4b+y9c9URGW8+F+v2ssDLuQuZYF8JcS3zFWM7GhC3jN5hgoby80w0liaW
+	FG+SHQGue68HrHYuNiFsZPpXB/MDk372AzdQ8LGW7zxy4pmVEyBVo/goQou2JfdatsrHoD
+	quP4T3CdRSrjKvFyKfcQ88jwBV9U2lJGrEnG9Rcz8AbWmK7KLYSbdOjWDDwbhg==
+Date: Mon, 27 Jul 2026 15:00:52 +0200
+Subject: [PATCH v4 09/11] nvmem: imx-ocotp-ele: Rename FSB access map
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -39,7 +39,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260727-upstreaming-next-20260609-imx-ocotp-ele-v4-8-1a515de33093@kontron.de>
+Message-Id: <20260727-upstreaming-next-20260609-imx-ocotp-ele-v4-9-1a515de33093@kontron.de>
 References: <20260727-upstreaming-next-20260609-imx-ocotp-ele-v4-0-1a515de33093@kontron.de>
 In-Reply-To: <20260727-upstreaming-next-20260609-imx-ocotp-ele-v4-0-1a515de33093@kontron.de>
 To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -53,105 +53,97 @@ To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  linux@ew.tq-group.com, Frieder Schrempf <frieder.schrempf@kontron.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2820;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2464;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=VRuZKYzM4losAy2+ktkxwJxH6FIIrGyA4qs+o0vPijk=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JISs9bHW//mynqLclj24s2jvV12Czo9PjBZ4nNnBxnFnuf
- /ZCA/vejlIWBjEuBlkxRRYpfovXtmaxPvLHqqNg5rAygQxh4OIUgIl8smJkWNuw+E7GhAWZ/9/+
- NOW6+nhG9H+2xNoZYuZhuiz3uSI3JTH84Yh/Y/Yg1Dps+Ydqk9kzT6+fru9vfkiC315zs2rhG9k
- pXAA=
+ bh=kt1k3M6rIt/Nylyf9emvyw7oJdH44hrhkQwxDBoUJ/8=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JISs9bLX29gsTMr868GzfGCKe+yB22tJTm9qjTB/fZny07
+ cq8LRo8HaUsDGJcDLJiiixS/Bavbc1ifeSPVUfBzGFlAhnCwMUpABNJ387w363jRF77in2ZlUvt
+ 7rOm7ec0qDpxdevZf6Ffmnbmm1kXXGFkWFNpsq9CVdLozKxlfyx2vE65ctfs7pm5DG+lxDctXMP
+ nzgwA
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-There is no use in tracking the fuses that are only accessible via
-ELE API and the current lists are incomplete. If the ELE API is
-available it will be used as primary access method anyway, otherwise
-the fuses not listed as accessible through the FSB can be considered
-invalid.
+The table is used to declare which fuse registers are accessible
+through the FSB block. Name it accordingly to make this clearer for
+the reader.
 
 No functional changes intended.
 
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- drivers/nvmem/imx-ocotp-ele.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ drivers/nvmem/imx-ocotp-ele.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index 23e91775be5d..f691ad0cd1a1 100644
+index f691ad0cd1a1..e9b579753c78 100644
 --- a/drivers/nvmem/imx-ocotp-ele.c
 +++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -19,8 +19,7 @@
- 
- enum fuse_type {
- 	FUSE_FSB = BIT(0),
--	FUSE_ELE = BIT(1),
--	FUSE_ECC = BIT(2),
-+	FUSE_ECC = BIT(1),
- 	FUSE_INVALID = -1
+@@ -33,11 +33,11 @@ struct ocotp_devtype_data {
+ 	u32 reg_off;
+ 	char *name;
+ 	u32 size;
+-	u32 num_entry;
++	u32 num_fsb_map;
+ 	u32 flag;
+ 	const struct nvmem_keepout *keepout;
+ 	unsigned int nkeepout;
+-	struct ocotp_map_entry entry[];
++	struct ocotp_map_entry fsb_map[];
  };
  
-@@ -209,7 +208,7 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
- 		}
+ struct imx_ocotp_priv {
+@@ -156,12 +156,12 @@ static enum fuse_type imx_ocotp_fuse_type(void *context, u32 index)
+ 	u32 start, end;
+ 	int i;
  
- 		type = imx_ocotp_fuse_type(context, i);
--		if (type == FUSE_INVALID || type == FUSE_ELE) {
-+		if (type == FUSE_INVALID) {
- 			*buf++ = 0;
- 			continue;
- 		}
-@@ -352,13 +351,9 @@ static const struct nvmem_keepout imx93_ocotp_keepout[] = {
+-	for (i = 0; i < data->num_entry; i++) {
+-		start = data->entry[i].start;
+-		end = data->entry[i].start + data->entry[i].num;
++	for (i = 0; i < data->num_fsb_map; i++) {
++		start = data->fsb_map[i].start;
++		end = data->fsb_map[i].start + data->fsb_map[i].num;
+ 
+ 		if (index >= start && index < end)
+-			return data->entry[i].type;
++			return data->fsb_map[i].type;
+ 	}
+ 
+ 	return FUSE_INVALID;
+@@ -351,8 +351,8 @@ static const struct nvmem_keepout imx93_ocotp_keepout[] = {
  static const struct ocotp_devtype_data imx93_ocotp_data = {
  	.reg_off = 0x8000,
  	.size = 2048,
--	.num_entry = 6,
-+	.num_entry = 2,
- 	.entry = {
+-	.num_entry = 2,
+-	.entry = {
++	.num_fsb_map = 2,
++	.fsb_map = {
  		{ 0, 52, FUSE_FSB },
--		{ 63, 1, FUSE_ELE},
--		{ 128, 16, FUSE_ELE },
--		{ 182, 1, FUSE_ELE },
--		{ 188, 1, FUSE_ELE },
  		{ 312, 200, FUSE_FSB }
  	},
- 	.keepout = imx93_ocotp_keepout,
-@@ -368,7 +363,7 @@ static const struct ocotp_devtype_data imx93_ocotp_data = {
+@@ -363,8 +363,8 @@ static const struct ocotp_devtype_data imx93_ocotp_data = {
  static const struct ocotp_devtype_data imx94_ocotp_data = {
  	.reg_off = 0x8000,
  	.size = 3296, /* 103 Banks */
--	.num_entry = 10,
-+	.num_entry = 9,
- 	.entry = {
+-	.num_entry = 9,
+-	.entry = {
++	.num_fsb_map = 9,
++	.fsb_map = {
  		{ 0, 1, FUSE_FSB | FUSE_ECC },
  		{ 7, 1, FUSE_FSB | FUSE_ECC },
-@@ -376,7 +371,6 @@ static const struct ocotp_devtype_data imx94_ocotp_data = {
- 		{ 12, 24, FUSE_FSB },
- 		{ 36, 2, FUSE_FSB  | FUSE_ECC },
- 		{ 38, 14, FUSE_FSB },
--		{ 59, 1, FUSE_ELE },
- 		{ 525, 2, FUSE_FSB | FUSE_ECC },
- 		{ 528, 7, FUSE_FSB },
- 		{ 536, 280, FUSE_FSB },
-@@ -386,7 +380,7 @@ static const struct ocotp_devtype_data imx94_ocotp_data = {
+ 		{ 9, 3, FUSE_FSB | FUSE_ECC },
+@@ -380,8 +380,8 @@ static const struct ocotp_devtype_data imx94_ocotp_data = {
  static const struct ocotp_devtype_data imx95_ocotp_data = {
  	.reg_off = 0x8000,
  	.size = 2048,
--	.num_entry = 12,
-+	.num_entry = 9,
- 	.entry = {
+-	.num_entry = 9,
+-	.entry = {
++	.num_fsb_map = 9,
++	.fsb_map = {
  		{ 0, 1, FUSE_FSB | FUSE_ECC },
  		{ 7, 1, FUSE_FSB | FUSE_ECC },
-@@ -394,9 +388,6 @@ static const struct ocotp_devtype_data imx95_ocotp_data = {
- 		{ 12, 24, FUSE_FSB },
- 		{ 36, 2, FUSE_FSB  | FUSE_ECC },
- 		{ 38, 14, FUSE_FSB },
--		{ 63, 1, FUSE_ELE },
--		{ 128, 16, FUSE_ELE },
--		{ 188, 1, FUSE_ELE },
- 		{ 317, 2, FUSE_FSB | FUSE_ECC },
- 		{ 320, 7, FUSE_FSB },
- 		{ 328, 184, FUSE_FSB }
+ 		{ 9, 3, FUSE_FSB | FUSE_ECC },
 
 -- 
 2.55.0
