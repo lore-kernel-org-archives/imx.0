@@ -1,113 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E76342586E;
-	Mon, 27 Jul 2026 20:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4882566D3;
+	Mon, 27 Jul 2026 20:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785183263; cv=none; b=SAL6XmX7P1h6YC2kxtkVxcDBf/4YADj4NVd2a483qyZnXeTT2gKsBl/6V4hLTrwYWlqjqRLFSpFqD0QBrn5lIwSkANBfab4lgPqRJh0LARihfasnfeIe8morHXLyfS0qyn/+SGvncX8Ebb6UUcAxY/FN4MOjo0ayuEHyew2zUTw=
+	t=1785183438; cv=none; b=qEKX5R34XeuxAoyhu+zDSZGRdIKYBCE+q6HX9dl9BMr6MSJPY+e8TOx+XryIxKZkd98i6ifbTEd23biu5NGrn3LegnGuMhQ9Y/q8qJOL7x2SKpENK4n8EyokXZH3L3VQMMPQ6jJAfTZv0eXFZnuCuxQBflafuIVjS9R4H/c74ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785183263; c=relaxed/simple;
-	bh=u/ulQbj+3Rra9c5DXgwkJdZNNbh1gPdZByVNR2WSe5A=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fOWcdEjIu3BVRcJTXzraKJcM5SpoRGyJ1f22XMaX+Nz0YtAD4MjHTGByTZRs/Y0we+YgDk5iy67RznVMw+Iua9RH40/SKuZ3AeFbkUZc3WzYi5P1S+LDLHgW6bVIoQW8vbCLABIJbEp54rSuIBu8R8HQknEuJx4GmoY5KPpCWMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JeLQfVeN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785183438; c=relaxed/simple;
+	bh=HRTJfd9zZkQyG3G1nivM7uEr/3WXRcqlU6N5OA/wf/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kfw1m5FTXraco3aXmlZcG0nJwzx1UK4exqrdplXVknsb4EVmQsydkwkQnO3unz96ykm400CIY8rDfhguhQ27BmZDdpxcXw0lQ6rBWc4XJYo9Hj5PCSknAkMkcayMUCKRbYwl5L+fc0ZMqIWMfdK4fOWFeKiUdox5VZE2O+PMGoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QA3vodlO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JeLQfVeN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B831F000E9;
-	Mon, 27 Jul 2026 20:14:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QA3vodlO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716ED1F000E9;
+	Mon, 27 Jul 2026 20:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785183258;
-	bh=/O3VOL2meA1dzij/h6aLzmZsicQmeyfTXlJ0sMWwOZE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JeLQfVeNBnaDjE7wheQ4ebztHHAdjxf2MdHrkMAboAID/EZDHnTfJZWYV0ZhmgFuK
-	 IzFqecsLlW64gaN+VieLnz8RScWdNdCB8daAyqr16f55o+KAbUgNzNt6RwShyQueoZ
-	 rZMhI3WWKJ6p9Fby+cFvaTv9N5nfJWwpwHW+H3Tg7OBJ6BxR7w7tuASmmJoWu8nyiS
-	 sTSxIVNeUlpDMYl27+hdwWvFavuI0wuZWjE6rkiKtCG1PpXCcL33dVfkhoqB7qUJcV
-	 SD0tMRmXI4intyJtOM6afxTJH/Q63ft+DcJrPHhhFnZuf7wZa0FC+hR+75G/t6fOBo
-	 FGoD/rJ16ITwA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 3/7] arm64: dts: imx8mm: imx8mp: Add legacy board
- DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marek Vasut" <marex@nabladev.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260727195244.78199-3-marex@nabladev.com>
-References: <20260727195244.78199-1-marex@nabladev.com>
- <20260727195244.78199-3-marex@nabladev.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 20:14:18 +0000
-Message-Id: <20260727201418.A2B831F000E9@smtp.kernel.org>
+	s=k20260515; t=1785183437;
+	bh=HRTJfd9zZkQyG3G1nivM7uEr/3WXRcqlU6N5OA/wf/s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QA3vodlOd74UrFO0SXkn1wkDyme+d2yn1KGHFgZgFNrpeWhdXv/zaDadmtWsvhl9R
+	 Kld2SWNWghIFXbQRPjPRbOrq+vXQYHXgbMfY9Itero/OFg0LQjybGUIwtw5m6/U6+q
+	 RoL+9Dr+iCBnSK1e5CPmPJk8lxJ+0fhzR0FQnmJ6IaREo8aNa30sgZoWmNQHqhu7WD
+	 aLLGN79JFBrk8ErzQoeAZhk/TV9aYmuSX7KLh+elL+qbxN8gqI7VQEMn3PmBbNxvQD
+	 Wt57GetEKRXtYzsiOaey/zgYfrCvm4X0Slzz2YBsQ/4m5MumY3zx0ohPuo/BC6CbSF
+	 fehLsUpVON8MA==
+Date: Mon, 27 Jul 2026 22:17:13 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, =?utf-8?B?U8O4cmVu?= Andersen <san@skov.dk>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v7 2/5] dt-bindings: arm: fsl: add base compatible for
+ Skov i.MX8MP revC
+Message-ID: <20260727-onyx-copperhead-from-venus-8824ca@quoll>
+References: <20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v7-0-ca8a0446166a@pengutronix.de>
+ <20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v7-2-ca8a0446166a@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v7-2-ca8a0446166a@pengutronix.de>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Chaining overlays in a multi-dtb rule fails at build time because p=
-receding overlays do not export `__symbols__` for subsequent overlays to re=
-solve their `__fixups__`.
---
+On Mon, Jul 27, 2026 at 07:31:05PM +0200, Steffen Trumtrar wrote:
+> Add a generic compatible for revC-based Skov boards.
 
---- Patch [3]: [PATCH v6 3/7] arm64: dts: imx8mm: imx8mp: Add legacy board =
-DTOs for Data Modul i.MX8M Mini and Plus eDM SBC ---
-commit 68e606cc871d4844f2966698d1f9194823c8f933
-Author: Marek Vasut <marex@nabladev.com>
+We do not take generic compatibles.
 
-arm64: dts: imx8mm: imx8mp: Add legacy board DTOs for Data Modul i.MX8M Min=
-i and Plus eDM SBC
+Best regards,
+Krzysztof
 
-This patch adds legacy board revision compatibility DT overlays for both
-i.MX8M Mini and Plus eDM SBC boards. It includes adjustments to support
-these legacy board revisions.
-
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts=
-/freescale/Makefile
-> index 9da078bb6380b..c3de54507aae0 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-[ ... ]
-> @@ -344,6 +350,24 @@ imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvd=
-s-mi1010z1t-1cp11-dtbs :=3D \
->  	imx8mp-data-modul-edm-sbc.dtb \
->  	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-mi1010z1t-1cp11.d=
-tbo
-> =20
-> +imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev900-dtbs :=3D \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev900.dtb \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev900.dtbo
-
-[Severity: Low]
-Does this multi-dtb rule cause an fdtoverlay failure at build time?
-
-Because the Kbuild system compiles .dtbo files without the -@ flag unless
-explicitly requested, the first overlay (...lvds-g070y2-l01.dtbo) does not
-export __symbols__ for the subsequent overlay (...lvds-rev900.dtbo) to reso=
-lve
-its __fixups__ against.
-
-[ ... ]
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-over=
-lay-edm-sbc-imx8mp-lvds-rev900.dtso b/arch/arm64/boot/dts/freescale/imx8mp-=
-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev900.dtso
-> new file mode 100644
-> index 0000000000000..427585b78e45d
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm=
--sbc-imx8mp-lvds-rev900.dtso
-[ ... ]
-> +&reg_panel_bl_supply {
-> +	status =3D "disabled";
-> +};
-
-[Severity: Low]
-Will this label reference fail to resolve during the build since it relies
-on the preceding overlay in the chain which does not have symbols enabled?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727195244.7819=
-9-1-marex@nabladev.com?part=3D3
