@@ -1,93 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A25E3EAC71;
-	Mon, 27 Jul 2026 22:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85DD3FBEAB;
+	Mon, 27 Jul 2026 23:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785192890; cv=none; b=JKPwL7bBbfg4avfWNKYZzB0/zTdj3tqhmEykexaFE8XpFFMeDjNNrqpaeHksDUGnxZygpml7SP1n5MIOh+yQEkNMAZ5r6ZVzvAzkqrRu5ERDuOyKA+A+imMlusS6q4UMdWM+NkuZhKhulgplzbIrlp2jpGA1HbvJBxg7Xipg/rg=
+	t=1785195662; cv=none; b=AKcqSp57C17JJaoBcm1jrMo+LpJEQqVabRE+4WtJ65u7M96lo4nX7hv8KZMDpMQZWG7lLY2xusHgtYJtvHwi0b/dQowDvJWsaZpQDBYIS8QVH3x5+Yklb+9H14wxWZllbaNsQBXwORAJpy6t0bDApNm3tmHShaSEBafj1fsAkPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785192890; c=relaxed/simple;
-	bh=69hDR+DY8ZeCV/rIqXH9gllORsldT9/k5hnIwqieRvU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=XXKx3LoFsknJNgQCyKj4yEZU5Hz4s5i7EzEbXP9OT08HKn51MO5GavOvXlfI0ZLuWdbbK7jhyYD2+0hYRROoBAaBObR+iQA9iqkdOM9TbaWIq0kCYs+uaR2Wy006JQwL4JGXI3BFkrWfu1S+0w7B0v9N3KNMpon7g1W08s2JiP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJwBbj9F; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785195662; c=relaxed/simple;
+	bh=zc8S+Te32538dsqXhNyDDKcl9I5cteXaEMIU9pL6ObQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OEmlYzlN+tHd84l3yzwReHm5wzPAQUoFd3M6sX8gv2ku/9z8xGEm4ntNz1e/LI5jXQcw1j83buluk0OWWaX23KZVO5EgYvv1WI3UmJnzzQQ2yBEXrI1mH3CDPExB/zp7A2W2rnpN7Rdff7kAgHlHzUxCtqWW5O7cmszUUhq3KLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqNRNaMr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJwBbj9F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7D11F000E9;
-	Mon, 27 Jul 2026 22:54:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqNRNaMr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFEF1F000E9;
+	Mon, 27 Jul 2026 23:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785192889;
-	bh=RIniAWP8PYf9xS4bkvFeXlVjV+WdK8M7nevYPAXtPD4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=MJwBbj9FGT2UAy5LQWeZBtP9lsENNtCRVSVQ0wlZF/YgLN1jROOTxrnhLPzfK7jOm
-	 w3rI0cU6x9b2R71mbTO3DQgtn6qGugraALpS49B/utQnmfb0mDVoxSzzrWwn3YS8fd
-	 ZudZ8r9P8UVTXRNBQHsI6rT6bdZV6GTwIzdFtheP/Uw+Aob+1H6J7TEMrUBePM2/46
-	 3WSBXSksfBJJzKmS37E4CaN3Vql/lklbu4L4i+aWEDJ784Uic3dqdo1PbEFmsvdXPe
-	 7zRY54gVrO+4YHPS81eOo+dh//u/TPNnDCtJJYAUlcxvoEqY6HQ8eiuysltpwmO7fD
-	 7CaO4FfYcy+4w==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev
-In-Reply-To: <20260515145205.1696584-1-Frank.Li@oss.nxp.com>
-References: <20260515145205.1696584-1-Frank.Li@oss.nxp.com>
-Subject: Re: [PATCH v4 1/1] ASoC: dt-bindings: Convert eukrea-tlv320.txt to
- yaml
-Message-Id: <178515437896.50339.10065240640963936652.b4-ty@b4>
-Date: Mon, 27 Jul 2026 13:12:58 +0100
+	s=k20260515; t=1785195660;
+	bh=+AkDulFJvGbU+T4ibTyIoVY+rmeIInL85BGIirfLA5k=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=kqNRNaMrE1Z23E7OwSTuE8VhlwGmYwdoexj10/ehEOPMpB6r9rIS5aigWPz0UrFGP
+	 ZRevf6/7PzYKgG8YmSryF5fLbnPt23wvSxtkYPI2IEPAOwDYxOqjk9UKSXqRTwtYkJ
+	 niKE5vcMKJ2sOrvAwlftF7fAmTiiPoqj0u4U4e7kr0f4Q1X5NWMIyEtPWNi3rKa2pH
+	 bvLPZ7Ge1DzRee5WHPBqKIIqmj8LRU+2YISrm/OQDs814IdAndNM27o1VW5bkvcNwR
+	 XXNF1oE2pejeg6pIkWzrwHDX/KbtLGSoIxRaSb0S37Cv3wsL6Te60OIJ+ipH6JAguM
+	 26eI5t0Hjmiag==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198EC380CED4;
+	Mon, 27 Jul 2026 23:40:27 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1130; i=broonie@kernel.org;
- h=from:subject:message-id; bh=69hDR+DY8ZeCV/rIqXH9gllORsldT9/k5hnIwqieRvU=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqZ+G2n76fQR9/PuurmNtjfxbSytVmjXRhX28jz
- DEbFrIksRmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCamfhtgAKCRAk1otyXVSH
- 0CHTB/9liW+m8jwOHIn3sktDdFTy9PZIKWNTb8BB4f3BlxN9RetJBkqPpXWcKUpKEy4xRpSD9DC
- b3W50XywHJIk+FLAEuFsfOMkAVTNPd7jc7Dm94LKhLic7yoDR3FDdCQsxrZ8GzY5biBIixwRexx
- 3YubQ3XfitwQ3Rg2VpPriUUPI4AJOS7DIwBuoxZElJ/qzK1simqCoc9Qg/GNfOnroztMK2hZPay
- 9/phIJzQbt3Y8ID/ZU+5dTX8lBAzwVbdUYNj186Lo0dl1Xo2XyZN2KQ5rb9Nz3kRGpPiXrHLL8e
- y1i7xG1K+h5rjGxuLCAgPEI2+S1GDyhA0mzCgzd7KyUZlYBX
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH RESEND v4 net-next 00/14] net: enetc: cleanups and
+ improvements
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178519562589.1461983.12874776848447820701.git-patchwork-notify@kernel.org>
+Date: Mon, 27 Jul 2026 23:40:25 +0000
+References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
+In-Reply-To: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
+To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, wei.fang@nxp.com,
+ chleroy@kernel.org, maxime.chevallier@bootlin.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 
-On Fri, 15 May 2026 10:52:03 -0400, Frank.Li@oss.nxp.com wrote:
-> ASoC: dt-bindings: Convert eukrea-tlv320.txt to yaml
+Hello:
 
-Applied to
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.3
+On Mon, 20 Jul 2026 09:43:02 +0800 you wrote:
+> From: Wei Fang <wei.fang@nxp.com>
+> 
+> The first group of patches (1, 2, 5-7) eliminates code duplication
+> between the ENETC v1 and v4 drivers. Since both hardware generations
+> share identical register layouts for MAC promiscuous mode, MAC hash
+> filters, and VLAN promiscuous mode - differing only in register address
+> offsets - common helper functions are extracted into enetc_pf_common.c
+> and shared by both drivers.
+> 
+> [...]
 
-Thanks!
+Here is the summary with links:
+  - [RESEND,v4,net-next,01/14] net: enetc: extract common helpers for MAC promiscuous mode setting
+    https://git.kernel.org/netdev/net-next/c/2557834ad0ff
+  - [RESEND,v4,net-next,02/14] net: enetc: extract common helpers for MAC hash filter configuration
+    https://git.kernel.org/netdev/net-next/c/0ce10770963e
+  - [RESEND,v4,net-next,03/14] net: enetc: convert ndo_set_rx_mode() to ndo_set_rx_mode_async()
+    https://git.kernel.org/netdev/net-next/c/debf0c7a34fa
+  - [RESEND,v4,net-next,04/14] net: enetc: improve MAFT entry management with bitmap tracking
+    https://git.kernel.org/netdev/net-next/c/6228fc9c2bbe
+  - [RESEND,v4,net-next,05/14] net: enetc: use PCI device name for debugfs directory
+    https://git.kernel.org/netdev/net-next/c/9db43e6f35db
+  - [RESEND,v4,net-next,06/14] net: enetc: simplify enetc4_set_port_speed()
+    https://git.kernel.org/netdev/net-next/c/c969fbc01d9e
+  - [RESEND,v4,net-next,07/14] net: enetc: differentiate phylink capabilities for pseudo-MAC and standalone MAC
+    https://git.kernel.org/netdev/net-next/c/7c9a6ae0edb2
+  - [RESEND,v4,net-next,08/14] net: enetc: remove invalid code from enetc4_pl_mac_link_up()
+    https://git.kernel.org/netdev/net-next/c/59bb3d62489c
+  - [RESEND,v4,net-next,09/14] net: enetc: open-code enetc4_set_default_si_vlan_promisc()
+    https://git.kernel.org/netdev/net-next/c/75e134261f61
+  - [RESEND,v4,net-next,10/14] net: enetc: refactor SI VLAN promiscuous mode configuration
+    https://git.kernel.org/netdev/net-next/c/f7c6dcd6444b
+  - [RESEND,v4,net-next,11/14] net: enetc: move enetc_set_si_vlan_promisc() to enetc_pf_common.c
+    https://git.kernel.org/netdev/net-next/c/ba07e3bef1b5
+  - [RESEND,v4,net-next,12/14] net: enetc: remove redundant num_vsi field from enetc_port_caps
+    https://git.kernel.org/netdev/net-next/c/75b136cf0f6f
+  - [RESEND,v4,net-next,13/14] net: enetc: use alloc_etherdev_mqs() to create netdev for VF driver
+    https://git.kernel.org/netdev/net-next/c/f0c1f31afd97
+  - [RESEND,v4,net-next,14/14] net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
+    https://git.kernel.org/netdev/net-next/c/18bf0ac84334
 
-[1/1] ASoC: dt-bindings: Convert eukrea-tlv320.txt to yaml
-      https://git.kernel.org/broonie/sound/c/78a9d1426416
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 
