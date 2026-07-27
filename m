@@ -1,158 +1,74 @@
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0993126AC5;
-	Mon, 27 Jul 2026 00:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5528531F989
+	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 01:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785112546; cv=none; b=d3iVgczgKIcg2F/s3OP4k6y9GO16nTbXJ+Kxyk/YEThhDBncCYIifgzgodXruVelopJMmwDL93tdeTkMvV36cooc/aEN9koaEbELNQhXfRMyt4tjIVlfDjzfXgk1u3kgmR+Xopy7nvGk65V3LtNpn0aWziDhCliBKQexLte8KPg=
+	t=1785116240; cv=none; b=cl/nT8n3ltGrP517xgT5b+ZGFiPO09WLxK7VQISVOwzUqEgRdV0lGANlKf6ngWSRZAleVtcutmeP9ZUCYNSuv96CZhf3RvW88TDgSquZw1rfAwWxEDLbc48PNofTAa59XiqMTgoDEaiUugnBKcGI9nUN16fC2B3Khb4YNKqkNpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785112546; c=relaxed/simple;
-	bh=eVb8nGG4/wGsIe6tyVj4fTwW+mn7Hx/45L+rdm4ANxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvnh6DTB5anoVaIXdO+JdkbeFGX+XER95KP7UYxznkLYwNVDKq82eE9AuMECMVNn6Kv3m3BS2rILEskp8xMwZSEcmwSzdgkxIoKPzXC+C/vQ/5uqkEaHBy2zDx+bk1lPNjvY5TioN7YuLrXdwzdq9iYLHwWq+1lKRownMobP6MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=rb9lAWnl; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="rb9lAWnl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=7A3LFRZ61WV2Y8KMKIOzkO8WcMNetvJNv/MmH+S50Fg=; 
-	b=rb9lAWnlFuVHGfjZrw5RIvREO+1IsmUu1niONXWgUM8KCSkTgmtU8hfH1+1t+Qtb4msWXiLnKrj
-	cMWuLucHDCMSmoKPJMTmlm7BIgmH49UOS73r8LhYCw9cBlRWwYJKNiVdus1O3JL/DiAPk5wBI8kpe
-	XhAiQ9D7jOhqmixltxiXr1qvziPK+amMPN3LXJKBZBXKFfrxQcqo6do5JmwBIyt37ngtZE4eh3RVD
-	uORX81jQE/+c5UFRSogVHQkeIJ2TwJFl/ZQGx8aYLOKvXnyDZbCDD9Bu9jyO6jhSSdJaB+WwL6IU3
-	Lq/6pF/SB3lxUkiTVtXCwggoReXRXx4mYGrw==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1wo9JA-0000000Gz1z-1dOl;
-	Mon, 27 Jul 2026 08:35:05 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 27 Jul 2026 10:35:04 +1000
-Date: Mon, 27 Jul 2026 10:35:04 +1000
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Pan Chuang <panchuang@vivo.com>
-Cc: Corentin Labbe <clabbe.montjoie@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Neal Liu <neal_liu@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Gaurav Jain <gaurav.jain@nxp.com>,
-	Gilad Ben-Yossef <gilad@benyossef.com>,
-	Hans Ulli Kroll <ulli.kroll@googlemail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Antoine Tenart <atenart@kernel.org>,
-	Prabhjot Khurana <prabhjot.khurana@intel.com>,
-	Declan Murphy <declan.murphy@intel.com>,
-	Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, Eric Biggers <ebiggers@kernel.org>,
-	Myeonghun Pak <mhun512@gmail.com>, Ijae Kim <ae878000@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Kees Cook <kees@kernel.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"open list:ALLWINNER CRYPTO DRIVERS" <linux-crypto@vger.kernel.org>,
-	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>,
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:ARM/Amlogic Meson SoC Crypto Drivers" <linux-amlogic@lists.infradead.org>,
-	"moderated list:ASPEED CRYPTO DRIVER" <linux-aspeed@lists.ozlabs.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>
-Subject: Re: [PATCH 00/12] crypto: Remove redundant error messages on IRQ
- request failure
-Message-ID: <amanuOXfLwXXDuBk@gondor.apana.org.au>
-References: <20260717080045.191538-1-panchuang@vivo.com>
+	s=arc-20240116; t=1785116240; c=relaxed/simple;
+	bh=o3I//fWT/Ahu1TRVuSuKOsa5VptGAjlzU/RAQ0KA2Gs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=cCcR6M6s66eqtPt4VG/q/gsqSCorftBqfvedli3XBP7yDxWe8xuy5F6h8jpjhNWjdlpJ9/8p0Xe4SfxyHByBKRYD1ChQDEBMNHaca0HpPsQPw+nN2aMuii9Vp8KDU0tde3v6Fsrtdy1cRBVviK9JMWAM56Xa/eR/ffZPQb1xTA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717080045.191538-1-panchuang@vivo.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 27 Jul 2026 09:37:03 +0800
+Message-Id: <DK8YVZNAFKSP.1JHSI6NI6LLYZ@oss.qualcomm.com>
+Cc: "Alexey Brodkin" <abrodkin@synopsys.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Joel Stanley"
+ <joel@jms.id.au>, "Andrew Jeffery" <andrew@codeconstruct.com.au>, "Frank
+ Li" <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, "Hans de Goede" <hansg@kernel.org>, "Alex Lanzano"
+ <lanzano.alex@gmail.com>, "Oleksandr Andrushchenko"
+ <oleksandr_andrushchenko@epam.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <linux-aspeed@lists.ozlabs.org>,
+ <linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>,
+ <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH v3 0/8] drm: replace simple display pipe users with
+ atomic helpers
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Ze Huang" <ze.huang@oss.qualcomm.com>
+To: "Linus Walleij" <linusw@kernel.org>, "Ze Huang"
+ <ze.huang@oss.qualcomm.com>
+References: <20260727-drm-simple-kms-removal-v3-0-cd5dc89858c6@oss.qualcomm.com> <CAD++jL=x2Ya_MXrO7FGF6WDzr4dv83K8-TS2AWkA2O0Dko8G4g@mail.gmail.com>
+In-Reply-To: <CAD++jL=x2Ya_MXrO7FGF6WDzr4dv83K8-TS2AWkA2O0Dko8G4g@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Jul 17, 2026 at 04:00:14PM +0800, Pan Chuang wrote:
-> Commit 55b48e23f5c4 ("genirq/devres: Add error handling in
-> devm_request_*_irq()") added automatic error logging to
-> devm_request_threaded_irq() and devm_request_any_context_irq()
-> via the new devm_request_result() helper, which prints device
-> name, IRQ number, handler functions, and error code on failure.
-> 
-> Since devm_request_irq() is a static inline wrapper around
-> devm_request_threaded_irq(), it also benefits from this
-> automatic logging.
-> 
-> Remove the now-redundant dev_err() and dev_err_probe() calls
-> in crypto drivers that follow these devm_request_*_irq()
-> functions, as the core now provides more detailed diagnostic
-> information on failure.
-> 
-> Pan Chuang (12):
->   crypto: allwinner - Remove redundant dev_err()
->   crypto: amlogic - Remove redundant dev_err()
->   crypto: aspeed - Remove redundant dev_err()
->   crypto: Remove redundant dev_err()/dev_err_probe()
->   crypto: caam - Remove redundant dev_err()
->   crypto: ccree - Remove redundant dev_err()
->   crypto: sl3516 - Remove redundant dev_err()
->   crypto: safexcel - Remove redundant dev_err()
->   crypto: keembay - Remove redundant dev_err()
->   crypto: octeontx2 - Remove redundant dev_err()
->   crypto: rockchip - Remove redundant dev_err()
->   crypto: stm32 - Remove redundant dev_err()
-> 
->  drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c   | 4 +---
->  drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c   | 4 +---
->  drivers/crypto/amlogic/amlogic-gxl-core.c           | 4 +---
->  drivers/crypto/aspeed/aspeed-acry.c                 | 4 +---
->  drivers/crypto/aspeed/aspeed-hace.c                 | 4 +---
->  drivers/crypto/atmel-aes.c                          | 4 +---
->  drivers/crypto/atmel-sha.c                          | 4 +---
->  drivers/crypto/atmel-tdes.c                         | 4 +---
->  drivers/crypto/caam/jr.c                            | 2 --
->  drivers/crypto/ccree/cc_driver.c                    | 4 +---
->  drivers/crypto/gemini/sl3516-ce-core.c              | 4 +---
->  drivers/crypto/img-hash.c                           | 4 +---
->  drivers/crypto/inside-secure/safexcel.c             | 4 +---
->  drivers/crypto/intel/keembay/keembay-ocs-aes-core.c | 4 +---
->  drivers/crypto/intel/keembay/keembay-ocs-ecc.c      | 4 +---
->  drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c | 4 +---
->  drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c  | 5 +----
->  drivers/crypto/mxs-dcp.c                            | 8 ++------
->  drivers/crypto/omap-aes.c                           | 4 +---
->  drivers/crypto/omap-des.c                           | 4 +---
->  drivers/crypto/omap-sham.c                          | 5 +----
->  drivers/crypto/rockchip/rk3288_crypto.c             | 4 +---
->  drivers/crypto/sahara.c                             | 3 +--
->  drivers/crypto/stm32/stm32-cryp.c                   | 4 +---
->  drivers/crypto/stm32/stm32-hash.c                   | 4 +---
->  25 files changed, 25 insertions(+), 78 deletions(-)
-> 
-> -- 
-> 2.34.1
+On Mon Jul 27, 2026 at 4:32 AM CST, Linus Walleij wrote:
+> Hi Ze,
+>
+> On Sun, Jul 26, 2026 at 9:45=E2=80=AFPM Ze Huang <ze.huang@oss.qualcomm.c=
+om> wrote:
+>
+>> struct drm_simple_display_pipe was meant to simplify simple DRM
+>> drivers, but instead adds an extra wrapper around normal DRM atomic
+>> helper setup. As noted in Documentation/gpu/todo.rst, remaining users
+>> should be converted to regular atomic helpers and stop depending on the
+>> simple-KMS interfaces.
+>
+> Are these patches independent of other stuff so they can be tested on
+> top of v7.2-rc1 or do they need other stuff from drm-misc-next?
+>
+> Yours,
+> Linus Walleij
 
-All applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Hi Linus, patches are independent and can be tested on v7.2-rc1.
+
+I've seen others patches based on drm tree so I did the same. Would
+switch to v7.2-rc1 if that's preferred :)
+
+Thanks,
+Ze Huang
