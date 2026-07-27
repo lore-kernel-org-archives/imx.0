@@ -1,120 +1,203 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022132.outbound.protection.outlook.com [52.101.66.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131BA3ACF17
-	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 10:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785149380; cv=none; b=NaMrWJhTsgDk6AZeGfmFqaS5pqmbztYF0GSyMVblArIy3i1I9U2qj1YHkUQSo1oC6vf70e4ifX9yvoYjBhMR3uw6sRbbaYSC5v7rF7bCachHr7y/oGqIxKAJjthSoWmTYj1XhHKfGCJWr9UXidAN0Uw7p1pwgPHE/4GldyiQJCc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785149380; c=relaxed/simple;
-	bh=jStPYMXmFPqwTl0vq7UVe0m+/5Eqz8DD2z/KI52ZQo0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TFdKr2Uy62GQpAhJJBZ6jqSNuReMvkIF05+tpS5UJsvAJCQPWm+bxFUau2YBL0jfzULjlFVyeWInuOUww9jHFPybUFaIwndyUN32Jy0R+d/oQZK3AmxtIWg8BGA0IoaX3qLq02tIFZ0H1MEkmjCzPoHnU3eM+1x9EnuLfWU39lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f02tkfDD; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E3E323416
+	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 11:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.132
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785153100; cv=fail; b=Jb3mf2S3C+7l0546Y6mqFANHpvjFZgreRFBAuf/XS5m5NaFXoSWHFlW0lvcz/wzUtDleEPNwMJCV6mrzp3qIqZQ0Ol/195Sk1uDEIotM3gylZtW++JpopLLQ15Udwvi7tNag7EGDZ3o+Ae+fmsE+kG0OV2O6q2Sp+n8xLbVfTow=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785153100; c=relaxed/simple;
+	bh=9YyV0sKY4hxDMXedxyRYLKSm5o5Q8/ZbM9sTwbV6skM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=SmoZL5TETEkmjRpVnL6e4ehGuHoqUku3YHQaCqpwXWhe9ElwBxjYiLChWmYSNrDW+NqqaCqtfb3+TFoKDWRtqtDf60aCwKiUZyGltv5/CLVQj1D97Gs8ZxTtrStwYTtXFuyLYd4YDWMZd4+eiKRvkCcYMvYDTZe83mKx8lr+H64=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=MhBCfdMG; arc=fail smtp.client-ip=52.101.66.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f02tkfDD"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso2282619a91.3
-        for <imx@lists.linux.dev>; Mon, 27 Jul 2026 03:49:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785149378; x=1785754178; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=duRNht6et+Fl8R8XCxDZOkDs1DxWvcJnqfifU+vvHvo=;
-        b=f02tkfDDpKqgEGNPDDV/XxWli5OS8mGfb64Gsy9fPnkzjXRihYjizmR1qi3/sTZ2QF
-         BynxFDQFoPlBDAEJJUehun79o8QZbZ8M7GaTilwNHaa+X6VJoKJu051h1E27NDITkp02
-         snsEKB72z9NGQKwj51aKrEIgMVdQt0i3DLTYYZvXqTLFBLqaq+3j81uGNRb8S9kf+2jI
-         TPu+FEM/Izp9DTSJH6883gEyxhRwg0/ZoVFu5iK29uwLxGbz6lyZNIv4cVFCuDN1tyqj
-         YrH1DTJwE3L2P6rM9lJ5aLrRin6Wuu6T2Mk/55+cKBTSGMFfC0PXcVrQj97Z3AuR8xMk
-         peoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785149378; x=1785754178;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=duRNht6et+Fl8R8XCxDZOkDs1DxWvcJnqfifU+vvHvo=;
-        b=d1ecLlpb69aGSmg19Nhls9j46mksR6JQGe2DyM9LGugH/X1A6ff8VEdVSLlF7x2xCa
-         rcGPbKg0XJnB3r+ZtIHdugupXuiknmzzS1L7MCovUPx1ye4BC6BvDmPhc3j+YTmIciPk
-         izVBhzg9+eGmnb0r1CND67gme65R6MK0PtPCuoowABH7MfMH1WMd/6Tgu86GXcdM0gIQ
-         QEPym9KqiSWMl8H1iG+ov5ZWt20hKpyjozHOc9Nv44ZG0+EOLsYfbRpHVvq/uk0Keiu2
-         hMMm7jpraH3Ru2l0x9GfvHmeyK58U+xok3i+YMrPKzlY5nLBxl4R5ZQem3bOb4JBIxkQ
-         /ChQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqevjae/NZmMheQjAfI4ocxzUqwHYowpZv9kq437v0S9fo+sn42Uzb9H1sducTmGOeUlOU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwkVqqag4e7dMF8AUredmsHwuWdWtBV4/3Icxkql0ALiN4VsBgc
-	M9uJXt9DasE/E/w/qx4RsIpf17mJq2/FWkg+r3CHkti86zbR+dN6SuTq
-X-Gm-Gg: AR+sD118h+3zjKeWRifV9aHXPYPbRxZxig5FzuQrRfyVtp57OgDoaNUm4jZkS7KcDWa
-	ha8nO2lmFndxyk3oFiNRtBVfJ0RhBS3y/Q04eyqRsjRoKFrqHlYjoaQZETbj/4tqhI00josbK3o
-	n2MbhkwI4r8FGJ5dpUrVl6YZLRPs/8YUm9BhkM1NU7sWNTiyULi4QMcpKa3C/y035UMMzO4JBYP
-	CABPvzcvHPUHXiSC52laxVSwrryEUvk5ke3syMwvYaNV7dGJezk9rKUyUhvlLAdszHMa03WWUIW
-	2MoBFOWT3QoRrwd8clw/DrJ832DoGxUdlCb/cdV1APJrZGXiQ8r5KZtwr0jkYePJpTZ60IbpJI+
-	29EYTg+lWk/IplZO5kbvt5DAWqE0bXhJdZPHBWmYhaUAkqbRtYk9Gex65fW06b1mo4jLlf2IiU6
-	9sERfdgB3TCYc0KHUdqy0=
-X-Received: by 2002:a17:90b:554d:b0:38e:4f41:83df with SMTP id 98e67ed59e1d1-38f294ea1e4mr7649628a91.15.1785149378420;
-        Mon, 27 Jul 2026 03:49:38 -0700 (PDT)
-Received: from SGN-LDSENG.tasernet.com ([2405:4800:5cc3:11a:1ac0:4dff:fe8b:4a69])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc548e63sm31716481eec.19.2026.07.27.03.49.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 03:49:38 -0700 (PDT)
-From: Cong Nguyen <congnt264@gmail.com>
-To: Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	linux-media@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Cong Nguyen <congnt264@gmail.com>
-Subject: [PATCH] staging: media: imx: csc-scaler: fix ipu_image_convert_run leak on queue error
-Date: Mon, 27 Jul 2026 17:49:27 +0700
-Message-Id: <20260727104927.520546-1-congnt264@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="MhBCfdMG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wzrx0JUAe0JP8uOKQ8EpstUc4pPFvZuVPK7bcf2ED47C1H4Uy/vRMy75z8/euqdqruV07qH7bv1iTiRN9i9w3yeVUbN6Eshsn6da6ArOumnzWWZ61urhCb30Z+sBnrK0M+LDP+64iLXu2frid+WRuMCKeJ99YQ1ho8E0sSLCRRGgscjtaws+E+6Ur6pGx/yQt0jiATztVoGbfdyn4eusoLPDZiSaOk1qGHIQW4t1HQGzcdtVAy1bhJuitzV7YYQy8fhgJaaHYnU2ucIQhEDolG176vGiVr1VX9OKlUTQj5tXjGWLHQBqUhBC7TVr8vWbL2bPaGLoCzf7u1FN4qytQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yq0lxpdGrjX9AWCJahC0iERrTVH9tVPMpyME/8OvAvc=;
+ b=D/heg601EBGruOichZSwZbEn7MbIWEkbZ6oNNrekB+u6F5sLgZrWasHO+Krt3rx8fvm/sYYk5coztbVQwaUwBziCiEVXDIM4t9jIB6ql9XpWK+pfRQge7nPaKSUNZWlVYKPiIR51EziXon3tGU7ul2MwjthICujRgwJNHAqKUU0VSW77k5x2XADuXsQ8WODTYR1/8iMHwlzzY6zRneiihDUEqRYsK2UcnK8jK0+8MsdmV2oO5tRQHkpqzbckHi2AxDnexZovnt10kdZpZuej6+Rnirtp+n6TD3IQnowzBlcIqdKLmD9qqKhW1sCVHclBUMdN5UO3tGPUmF/x648JGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yq0lxpdGrjX9AWCJahC0iERrTVH9tVPMpyME/8OvAvc=;
+ b=MhBCfdMGbvs8aV53ktb5DvzkLmN5z8o8Oxv4ww87onBX4uAm5X2/yHnZhsDAvwgka3LBb5pqriIKivn0uiNYC8chj4XmMmGHiOLSNvNh3frh06dkwi4iXgzQ1Y9DB+Ri/l1BpBfrSYq1ogh3vUQegtlOgXAAr1KZxaKLDBMEpYIwGHLUvHQDDAQCcaHcnHVq7Y4h5tlILJRmqiUyonxU3RzEDPG2INI962jpTLnV77AYTHedlU+lXH3n6xGyW9sSewXB1DA01LA6eyiD9BYYyU52vDaFrtppX4bAewlrgzucWcRwbvZcyXOcR+m1Pi41YfrFTlW2MHREKYkcZnMFRg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
+ by AS8PR10MB7730.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:63c::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 11:51:28 +0000
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22%6]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 11:51:28 +0000
+Message-ID: <37e17ae8-c71e-4679-8597-3d04bd981c54@kontron.de>
+Date: Mon, 27 Jul 2026 13:51:25 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/11] nvmem: imx-ocotp-ele: Use __free(kfree) in
+ imx_ocotp_reg_read()
+To: Frank Li <Frank.li@oss.nxp.com>, Frieder Schrempf <frieder@fris.de>
+Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Pankaj Gupta <pankaj.gupta@nxp.com>, "Peng Fan (OSS)"
+ <peng.fan@oss.nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux@ew.tq-group.com
+References: <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-0-e26930345b4c@kontron.de>
+ <20260723-upstreaming-next-20260609-imx-ocotp-ele-v3-6-e26930345b4c@kontron.de>
+ <amJglJGsfw3rjNPL@SMW015318>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <amJglJGsfw3rjNPL@SMW015318>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0114.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:bb::15) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:1fb::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|AS8PR10MB7730:EE_
+X-MS-Office365-Filtering-Correlation-Id: f6f7ddab-8a27-4848-4f47-08deebd564b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|56012099006|11063799006|10067099003|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	qfTXZae+gAmkTfJu20/lcNv0qTakEarnRFjB2Dr20F31HqcEvdVOJKJNMKDk0Fmlchzdty6wowaYX4DvF69w93PbC8qFJEV4KSMx12lSi6vXlxJRJF6ZP3hMnxoqF0ZsFYH/A3ta3oB18rf5TAvwQogvBIUaZdDJsPtpdE4q1Lq1g45DwaT/mjZNYaJTkVA/jvTouzxY7j4UQvcI7MMR3DpnsQSVrJSxr5Ym/dvCaAM4NBeEIizkqqzBmoiK//2hSHfHWWp+eXhmucy0jX6omiifX1GDjnUCCtaRhLpjBhi7wxH4VXOsYcHGWeCFhI35c4UFMkOqCaIZ1Pw6nPRaWl6mKFaVcC4B5Jy5nnyHLFx2t7sCdkH+B32l3/lJ0PvKepjxBMJzM621BxQbrFM7c4sA1yA3LFH7SQf1i7hoeMCz2miNT1o8oTAmIt0q8pLNC8LzFyEFUQYF8IaDyFB8xrXhM6ZBQgyQtc4iKY7LRGmB0zzE87VJrqlcvpB9WnOm6iPKiqzhDjDtIP0I1NISEYaLdwOLIo+JyOZLme5qCX5c5hnUP6DPe92nP0E0/z//TXCjNAwVckJ1y17jGrru4ML9Vp4g+bDxVCLXY/wN3cH3K3PHRx4yR2q88K30aEpnvSziPC9H3QHjr1ACwJYOu7ahxtnnMisrf4JO04e/hho=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(56012099006)(11063799006)(10067099003)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QWlXMVUrMHFrQUZnaEhvSTRaQ2tDb1hRTG1sTkhOTWErUXo3a2E2Vys5VUdz?=
+ =?utf-8?B?Yk5mWUU3d2l0cHczUFQrWkFoWDZiSkt5NmZWOVgxRWZLTDkyWWpPaG16aklX?=
+ =?utf-8?B?K2hqNTNYWVc3YzdHVWhRNjNONm1YQWpoRC9LMEQxMzJkaUZxOUV1T2JBUG9o?=
+ =?utf-8?B?Sms5bVRYYW9mVzVhWVM5SzVrSzFRUTk4STdWS3pjQkJzZURDQURVaSsrUkdy?=
+ =?utf-8?B?K0VKQlM4T00rME9CL01HaU9uZ24rdURIS1A0OW1RQ2hPenZGZUVWQ3E1ZnZP?=
+ =?utf-8?B?RlhEQUN1aThSQ2tjZFhnY21RTG9Qb1hMSUhjaGg4NlgydVN0VkQ3eDgwVU1E?=
+ =?utf-8?B?cWZKMEJUbTVxM3ZwUGdaMmV1cVVYOUNPZ1g2ZFpTREUxaFVqUmVzMDZhd1hW?=
+ =?utf-8?B?djNaK1NPY3BmUVIxRGtpNnFhWGFJUFVYZERqc3dyRkFKSHlmemJtS2g0UGdM?=
+ =?utf-8?B?VEZsN3I5QVdjdm1nd0pIVno4UmRRNHhEUTFEZ1QrZWNrZ2UySkJQa25FeHBB?=
+ =?utf-8?B?VXFwbnl2bHJWYjNqM0JkcDFrbzk0WGdUL3JJaHhuTFBhZWYwVGgyTmJDSGQ2?=
+ =?utf-8?B?T2x3U2dFMHllUnY2Q2VlTkZucG5ldU83UFhUSWZRcmpUYlZYOG1lN0NQRURF?=
+ =?utf-8?B?M3RRV2ovL29rSlFMYTIrZDI5QmZRL0hoTlFTd1BIcDlyL3FIdGpqOWRRR2Na?=
+ =?utf-8?B?eW8rdjRCdUhyb21NOFd5QWF3aXJTQjh3Q09paHRSV0JZSXN4ZW9zWjNoNnJv?=
+ =?utf-8?B?S2FRUnpPQS80ZkJDcWFvUW53eUY3LzhsZ3dib3ZYNEhaMlBYUVJiaDUzZEVw?=
+ =?utf-8?B?czlzenJDN05ZZ3FUNTNuYW1aSEFSdWFXUWtTMnBXVUlMOVZhN3UrRkVRamFW?=
+ =?utf-8?B?bXNjT1Z1TnNEY0lLNWZBRVFHRmQrMVliL2lTL3laeUNOZlN2THFXeWJLQit1?=
+ =?utf-8?B?TGhDdGU0YVpjT2lBUGpkZU9oTks3NTFTT1NvYkNiblJScm1iR2VFckNDRFNS?=
+ =?utf-8?B?bzl1RXFxb2cyazN3N1YzcisrRGo1RDhKTmswajh6QVY0MXJNY3R0VGtsUGt2?=
+ =?utf-8?B?WlFWdEJ2a3dWcVBTV3lZS05mOXNDUVhReFdXNWJsRTBtWWFkYTVsVVQ3UjE1?=
+ =?utf-8?B?ZU12MWpyYWtDMW45THg1aURXZFhuMU5MTUJWeEZZREdCZHdsT0hHR2F6cUdG?=
+ =?utf-8?B?Y0dDRWhBMDVqUXdFaEtQUUZjZ0o4ZlltYVJ5ZFFsU0pSSnFHaC9JNVNGaG1G?=
+ =?utf-8?B?M3NkZWNaZTFteHhxdnp1WnZGNCtPOEx1M3ZCRjhuVFVoTUxvdjY0QjJTVFpD?=
+ =?utf-8?B?bHlwbE4yUXRLNHpramVmRDBvNWNNOGNiRDdaSHFuT0dOTUcvU0ZJS2RSdjBG?=
+ =?utf-8?B?Q2tEd3JWQWVDNG90Qnh4VFdpUUhVMGRpM2RKVkFRQ2FWUkFIMzlxc1RXZWZG?=
+ =?utf-8?B?RkUxZWtZZ3cwNGthM29kcTJscmk5YVRmUm0zb2E2bEhvbjFxdCtvQk1YbTVL?=
+ =?utf-8?B?ZlMwaHEyRGp0TDdodC9CZzRTaTVnTkJhZWdGQk1KOGJnYkxuWDZSRXd4bkcv?=
+ =?utf-8?B?NHd0YzBZWDZvWGZwTk1kSW52SHN0QTFYSmpqZWs0WjZ4ZTNvc1M0dmROOVZT?=
+ =?utf-8?B?Z0NpMUt5blVRRStpakpKYU52bWZkRzNZK0lGUXREWG9Cd1oxKzBpNnVkcmJE?=
+ =?utf-8?B?ZGU5QmdUL3lCVU92Ri9HdFdycEJPWVMzSFovQVJGVm9vNlNDSDVXRzJzYmJv?=
+ =?utf-8?B?ZWwzcjBnNUUyc2JVVW5rNUJ4OHJZK2lxNGlkUDRqcFgyOGdvZFRxQVViQ2pN?=
+ =?utf-8?B?YitpR0pncG03YzFqWWh4dlNZUEFhNnhnMUx3U3ZKSnc2b1lidEhlTU5oNVVn?=
+ =?utf-8?B?UTdTSThJUW1zSGRJK0xFaHQ2K3RsOTMxOWhmUk9QeEp4V0pjNkM4QTZPNG0y?=
+ =?utf-8?B?WmtienZWM3B1UkZCQzJJdkFSUTJnbk9xaGhPWWhzVWNFdVIxb2w1bitrbU1p?=
+ =?utf-8?B?VjdsRm9icWd0SVBibWhhalZ4UHBkOFpvdm1ZUGc4RG9FM3l4aHhYYjFvYWRk?=
+ =?utf-8?B?TTR0TWIybUlhY1pCNjYrQ1JZWHZ6ZERCcGJsbGo4WmZOTUVaUktad2hQS3J4?=
+ =?utf-8?B?eHBoMUJPb1h1R21WUUFwdm4wendwM0haSVhZdFc3ZTM3dXpQNVk4ZDZsTXJQ?=
+ =?utf-8?B?N1dVZ1lxU1NsRUwyVk9BalpDSjRhS25RcGZOdEJBc2RkZlZMcEpnTTdWVzYw?=
+ =?utf-8?B?R0RVaWFibGVXcUVBUG5qYWthQU1oV0pTanpYcTF2S1poSTNxd2VvZ005REpZ?=
+ =?utf-8?B?SEV4M0dXUWJ6WkI4dHY3MXM5d1d3ODZMSHQvd0daN1ZoZnVLcGFIY3dRZFNC?=
+ =?utf-8?Q?PVLn01zSBvl48jog=3D?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6f7ddab-8a27-4848-4f47-08deebd564b2
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 11:51:28.4342
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: T2cu+RmNsm5Gud41dxg87sE6G9UbynaBpUovKJqaN7DpQJ4QaEiq7Z5QLATVo5enBMocx6RhuZEMteGpHJrNW+Wfe2C9nwfCI6IAc+uXwzw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB7730
 
-device_run() allocates an ipu_image_convert_run object and, on the
-success path, hands it to the IPU image conversion core via
-ipu_image_convert_queue(); the run object is then freed asynchronously
-by the completion callback ipu_ic_pp_complete().
+On 23.07.26 20:42, Frank Li wrote:
+> On Thu, Jul 23, 2026 at 09:27:28AM +0200, Frieder Schrempf wrote:
+>> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+>>
+>> This is useful to make sure the buffer is always freed when
+>> its scope ends and makes the code slightly easier to read.
+>>
+>> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+>> ---
+>>  drivers/nvmem/imx-ocotp-ele.c | 5 ++---
+>>  1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+>> index 9d3f94e35508..47ee6bd176a3 100644
+>> --- a/drivers/nvmem/imx-ocotp-ele.c
+>> +++ b/drivers/nvmem/imx-ocotp-ele.c
+>> @@ -5,6 +5,7 @@
+>>   * Copyright 2023 NXP
+>>   */
+>>
+>> +#include <linux/cleanup.h>
+>>  #include <linux/device.h>
+>>  #include <linux/io.h>
+>>  #include <linux/module.h>
+>> @@ -68,10 +69,10 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
+>>  {
+>>  	struct imx_ocotp_priv *priv = context;
+>>  	void __iomem *reg = priv->base + priv->data->reg_off;
+>> +	void *p __free(kfree) = NULL;
+> 
+> according to cleanup.h, it should declare at where assign
+> 
+> void *p __free(free) =  kzalloc(num_bytes, GFP_KERNEL);
+> 
 
-However, if ipu_image_convert_queue() fails, the core never takes
-ownership of the run object and the completion callback is never
-invoked. The "err" label finishes the mem2mem job and reports the
-buffers as errored, but never frees the run object that was just
-allocated, leaking it on every queue failure.
+As far as I can see, NULL should be perfectly fine as an initializer, as
+we need to calculate num_bytes first.
 
-Free the run object in the error path. There is no risk of a double
-free: the completion callback only runs after the object was
-successfully queued, which is mutually exclusive with reaching the
-error path. It is also safe for the earlier "goto err" on allocation
-failure, since run is NULL there and kfree(NULL) is a no-op.
-
-Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
-Signed-off-by: Cong Nguyen <congnt264@gmail.com>
----
- drivers/staging/media/imx/imx-media-csc-scaler.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c b/drivers/staging/media/imx/imx-media-csc-scaler.c
-index 00fcdd4d0487..359d973d297f 100644
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -147,6 +147,7 @@ static void device_run(void *_ctx)
- 	v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_ERROR);
- 	v4l2_m2m_buf_done(dst_buf, VB2_BUF_STATE_ERROR);
- 	v4l2_m2m_job_finish(priv->m2m_dev, ctx->fh.m2m_ctx);
-+	kfree(run);
- }
- 
- /*
--- 
-2.25.1
+> 
+>>  	u32 count, index, num_bytes;
+>>  	enum fuse_type type;
+>>  	u32 *buf;
+>> -	void *p;
+>>  	int i;
+>>  	u8 skipbytes;
+>>
+>> @@ -108,8 +109,6 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
+>>
+>>  	mutex_unlock(&priv->lock);
+>>
+>> -	kfree(p);
+>> -
+>>  	return 0;
+>>  };
+>>
+>>
+>> --
+>> 2.55.0
+>>
+>>
 
