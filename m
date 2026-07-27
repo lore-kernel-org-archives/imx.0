@@ -1,392 +1,80 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28873D954C
-	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 19:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F6C35C1B0
+	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 20:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785182014; cv=none; b=NRYRsrV/dz7L03V7uLtPLYlbBzg3I0vv/Iu5/6hFslMuBJa9ZVFHyfy46kG+U7XuRVecSdZVukjqwh+c2zJgGBYLRGeTjORDkAyTcFZeya2Kv7FZdttxAtRvPvEGWQExGFKeGvOQU0yrDNs2UZNHYlZbWRUHKjOhnc1gwvOfX2g=
+	t=1785182765; cv=none; b=hZkuyaXc3waHhxAd4A3e4zuTUAEIM+9sJWQuoWOtkdScyUNAmeqQgCG1DxM6Nch656cjk0ZDxfkIQ5uIzSS9cnEvIMB4ZH9nuKDfcA9LTFVne3NPb1ib5xIU86+XBaE4n1NjVPuDibroNoDE4j27b+Xotx5wcmb+brh6ipg7tY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785182014; c=relaxed/simple;
-	bh=//2+NifSknT9xAriQvBmvA4i8th8fo82drO9dZKxtbc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PcRQ+XLIh0CVK9jqShE83o4jr1pqvGSoqK16+5jIMZckfuwRy7GweRkmPs5JvupuWDQW8rXjy+xhVjrAZEWQdT0bPqaI2r2Y79PZGaRj5t6dPcXswnLoas+S/0cpWJEkcKXUR8S7+wnYLzzIG/tgHgBGva4ueW3bA8qLI2rlfmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=eHuepWJV; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1785182765; c=relaxed/simple;
+	bh=XcvXLQlxS7Pr3e57S+wBcJe00z1ahG1O/bqchT3JOHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Sqw5AdKDBoAS0IOWeSoChU5GwTlj0BfN0DLhYgv8XfpO90easMY1JLASX/VTcp4HtyXni7WHZKs03A73Q5wHUt9vmDrpUrO/eM4Pnh/BVEo1IWZIOZmiv5TjdByrraU8geb9pH14cQ54ls7OHgn+KkZeYOM04dcXIemrB7eFiX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=VxpQgskq; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="eHuepWJV"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1413A1190A5;
-	Mon, 27 Jul 2026 21:53:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1785182005; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=i2qx/v+PJ5mvW66QZN99UPyEJ0gQWpu2Dvh4O4ZB+y4=;
-	b=eHuepWJVtVfO43PY+Es8wUoUf6otDCcSr0ZsjjN+dtlBkwksd3lo4gAd3Loveitx6gFkOa
-	fWJXD++YEVesUZm4lC+vpRr8h2lwxTGH+bcq/J4p67kyJtV6RR1u7gB9+71zJpipy0vnhD
-	nMDGJ2zTzfYRSIdeR965l/MzOTe8Lwc7AU9XZeaKh6aL9cYssoQszaB4FLxj4CEZBJylJ8
-	h4agZbTIsXaUbf7o7p5lWe3Tk44yU9i7OTQAeSSaRKBoBtkBJ9Goa4K1SuWh9bddnZx9gP
-	hdRaC4SRlf/FjMi1Wvv/IeIMwCDD74uFrRd/7iCH0qiR/kGgo4WmxRqCgT7Ehg==
-From: Marek Vasut <marex@nabladev.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marex@nabladev.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 7/7] arm64: dts: imx8mm: imx8mp: Add FIO1-Audio DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
-Date: Mon, 27 Jul 2026 21:52:22 +0200
-Message-ID: <20260727195244.78199-7-marex@nabladev.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260727195244.78199-1-marex@nabladev.com>
-References: <20260727195244.78199-1-marex@nabladev.com>
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="VxpQgskq"
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1woRaG-00000001H20-18Yu
+	for imx@lists.linux.dev;
+	Mon, 27 Jul 2026 22:05:56 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description;
+	bh=NspwG6ABO/FYOE9rIEFlIMurhhb6P0XuMLDrCAYAYl0=; t=1785182756; x=1786392356; 
+	b=VxpQgskql8CtZLKCycwH8kn20NkpEqo7auBZgAVwW6c6xuXLuPCbibut84Hi5OARqxyTAB3Sgnh
+	iADib5X0DNWQSY5OJBVRnNr6t0ZX4hTlI5oasDa0z2Srsej0/k8zll6UIifb8XJwK+ujFEC86KYlL
+	Bl7UzaXdR8gJuh+8i5Gou2pXEY2Z5ntjcG45wK6af/RlrzghXExUL6Bc4TTzm60lesa8WaI3vIJJs
+	Lg71eowZeYdoLmjHQCoqXK79GF1QVmLZ8lrl5YRGzHZmy6YQ/NICF4/Z9SvTUhb9sGXTX5pJluA7q
+	iGmYUtZYcOkGzbp7kcXKVc/z5n6Je6iC5kEw==;
+Date: Mon, 27 Jul 2026 22:04:38 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: robby.cai@oss.nxp.com
+Cc: lgirdwood@gmail.com, broonie@kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev
+Subject: Re: [PATCH 1/2] regulator: fp9931: Fix VPOS/VNEG voltage selector
+ table
+Message-ID: <20260727220438.2a5bf1a8@akphone>
+In-Reply-To: <20260721095959.1855436-2-robby.cai@oss.nxp.com>
+References: <20260721095959.1855436-1-robby.cai@oss.nxp.com>
+	<20260721095959.1855436-2-robby.cai@oss.nxp.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; aarch64-alpine-linux-musl)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add DT overlay for feature connector expansion module eDM-MOD-iMX8Mm-FIO1-Audio
-providing additional UARTs, CAN, PWM Beeper, I2C, SPI, GPIO breakout and
-SGTL5000 codec. This adapter can be optionally populated onto the eDM SBC.
+On Tue, 21 Jul 2026 17:59:58 +0800
+robby.cai@oss.nxp.com wrote:
 
-Signed-off-by: Marek Vasut <marex@nabladev.com>
----
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
-V2: Deduplicate the DTOs further
-V3: New patch split from the original megapatch
-V4: Rebase on next-20260703, drop dependency links which have all landed now
-V5: No change
-V6: Move compatible and reg properties to the beginning of sgtl5000_fio: codec@a {} node
----
- arch/arm64/boot/dts/freescale/Makefile        |  12 +++
- ...sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi | 101 ++++++++++++++++++
- ...sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso |  74 +++++++++++++
- ...sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso |  62 +++++++++++
- 4 files changed, 249 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
+> From: Robby Cai <robby.cai@nxp.com>
+> 
+> The VPOSNEG_table[] mapping does not match the FP9931/JD9930
+> datasheet.
+> 
+> The datasheet defines the VPOS/VNEG voltage mapping as:
+> 
+>   00h-04h ->  7.04V (-7.04V)
+>   05h     ->  7.26V (-7.26V)
+>   06h     ->  7.49V (-7.49V)
+>   ...
+>   28h-3Fh -> 15.06V (-15.06V)
+> 
+> However, the current table maps selector 0x05 to 7.04V instead of
+> 7.26V, causing all subsequent entries to be shifted by one position.
+> 
+> Update VPOSNEG_table[] to match the documented register encoding.
+> 
+> Fixes: 12d821bd13d4 ("regulator: Add FP9931/JD9930 driver")
+> Signed-off-by: Robby Cai <robby.cai@nxp.com>
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 3b3c73a430ed1..b4c769ae1937f 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -128,6 +128,10 @@ imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-dtbs := \
- 	imx8mm-data-modul-edm-sbc.dtb \
- 	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo
- 
-+imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio-dtbs := \
-+	imx8mm-data-modul-edm-sbc.dtb \
-+	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtbo
-+
- imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
- 	imx8mm-data-modul-edm-sbc.dtb \
- 	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
-@@ -169,6 +173,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-data-modul-edm-sbc.dtb \
- 			  imx8mm-data-modul-edm-sbc-overlay-cm4.dtbo \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtb \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo \
-+			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtb \
-+			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtbo \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtb \
-@@ -322,6 +328,10 @@ imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-dtbs := \
- 	imx8mp-data-modul-edm-sbc.dtb \
- 	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo
- 
-+imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio-dtbs := \
-+	imx8mp-data-modul-edm-sbc.dtb \
-+	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtbo
-+
- imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
- 	imx8mp-data-modul-edm-sbc.dtb \
- 	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
-@@ -405,6 +415,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-data-modul-edm-sbc.dtb \
- 			  imx8mp-data-modul-edm-sbc-overlay-cm7.dtbo \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtb \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo \
-+			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtb \
-+			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtbo \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtb \
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi
-new file mode 100644
-index 0000000000000..01cf5c89dbff4
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi
-@@ -0,0 +1,101 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2026 Marek Vasut
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+&{/} {
-+	can_osc: can-osc {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <20000000>;
-+	};
-+
-+	sound-fio {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,name = "SGTL5000-FIO1";
-+		simple-audio-card,format = "i2s";
-+		simple-audio-card,bitclock-master = <&codec_dai_fio>;
-+		simple-audio-card,frame-master = <&codec_dai_fio>;
-+		simple-audio-card,widgets = "Headphone", "Headphone Jack";
-+		simple-audio-card,routing = "Headphone Jack", "HP_OUT";
-+
-+		simple-audio-card,cpu {
-+			sound-dai = <&sai2>;
-+		};
-+
-+		codec_dai_fio: simple-audio-card,codec {
-+			sound-dai = <&sgtl5000_fio>;
-+		};
-+	};
-+};
-+
-+&ecspi2 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	can_fio: can@0 {
-+		compatible = "microchip,mcp2518fd";
-+		reg = <0>;
-+		clocks = <&can_osc>;
-+		spi-max-frequency = <10000000>;
-+	};
-+};
-+
-+&i2c_feature {	/* Feature connector I2C */
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	sgtl5000_fio: codec@a {
-+		compatible = "fsl,sgtl5000";
-+		reg = <0x0a>;
-+		#sound-dai-cells = <0>;
-+		clocks = <&sai5clk 1>;
-+		VDDA-supply = <&buck4_reg>;
-+		VDDD-supply = <&buck5_reg>;
-+		VDDIO-supply = <&buck4_reg>;
-+	};
-+
-+	gpio_feature: io-expander@20 {
-+		compatible = "nxp,pca9554";
-+		reg = <0x20>;
-+		#gpio-cells = <2>;
-+		gpio-controller;
-+		#interrupt-cells = <2>;
-+		interrupt-controller;
-+		interrupt-parent = <&gpio5>;
-+		interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
-+		gpio-line-names =
-+			"GPI0", "GPI1", "GPI2", "GPI3",
-+			"GPO0", "GPO1", "GPO2", "GPO3";
-+	};
-+
-+	eeprom@50 {
-+		compatible = "atmel,24c32";
-+		reg = <0x50>;
-+		pagesize = <32>;
-+	};
-+};
-+
-+&sai2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sai2>;
-+	assigned-clock-rates = <24576000>;
-+	fsl,sai-asynchronous;
-+	fsl,sai-mclk-direction-output;
-+	status = "okay";
-+};
-+
-+&uart2 {	/* RS422 J12 */
-+	linux,rs485-enabled-at-boot-time;
-+	uart-has-rtscts;
-+	status = "okay";
-+};
-+
-+/* UART4 is blocked by RDC and used as CM4 console UART */
-+&uart4 {	/* UART to 1-Wire J5 */
-+	status = "disabled";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
-new file mode 100644
-index 0000000000000..4a02bd026ac16
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
-@@ -0,0 +1,74 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024-2026 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/clock/imx8mm-clock.h>
-+
-+#include "imx8mm-pinfunc.h"
-+#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi"
-+
-+&can_fio {
-+	interrupts-extended = <&gpio4 25 IRQ_TYPE_LEVEL_LOW>;
-+};
-+
-+&iomuxc {
-+	pinctrl_codec_mclk: codec-mclk_feature-grp {
-+		fsl,pins = <
-+			/* GPIO4_IO27 */
-+			MX8MM_IOMUXC_SAI2_MCLK_SAI5_MCLK		0x2
-+		>;
-+	};
-+
-+	pinctrl_sai2: sai2_feature-grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI2_RXC_SAI2_RX_BCLK		0x90
-+			MX8MM_IOMUXC_SAI2_TXD0_SAI2_TX_DATA0		0x96
-+			MX8MM_IOMUXC_SAI2_RXD0_SAI2_RX_DATA0		0x90
-+			MX8MM_IOMUXC_SAI2_TXFS_SAI2_TX_SYNC		0x96
-+		>;
-+	};
-+};
-+
-+&pinctrl_hog_feature {
-+	fsl,pins = <
-+		/* GPIO5_IO03 */
-+		MX8MM_IOMUXC_SPDIF_TX_GPIO5_IO3				0x40000006
-+		/* GPIO5_IO04 */
-+		MX8MM_IOMUXC_SPDIF_RX_GPIO5_IO4				0x40000006
-+
-+		/* CAN_INT# */
-+		MX8MM_IOMUXC_SAI2_TXC_GPIO4_IO25			0x40000090
-+	>;
-+};
-+
-+&sai2 {
-+	assigned-clocks = <&clk IMX8MM_CLK_SAI2>;
-+	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
-+	fsl,sai-bit-clock-swap;
-+};
-+
-+&spba2 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	sai5clk: clock-controller@30050000 {	/* SAI5 */
-+		compatible = "fsl,imx8mm-sai-clock", "fsl,imx8mq-sai-clock";
-+		reg = <0x30050000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&clk IMX8MM_CLK_SAI5_IPG>,
-+			 <&clk IMX8MM_CLK_SAI5_ROOT>;
-+		clock-names = "bus", "mclk1";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_codec_mclk>;
-+		assigned-clocks = <&clk IMX8MM_CLK_SAI5>,
-+				  <&clk IMX8MM_CLK_CLKOUT1_SEL>,
-+				  <&clk IMX8MM_CLK_CLKOUT2_SEL>;
-+		assigned-clock-parents = <&clk IMX8MM_CLK_24M>,
-+					 <&clk IMX8MM_CLK_24M>,
-+					 <&clk IMX8MM_CLK_24M>;
-+		assigned-clock-rates = <24000000>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
-new file mode 100644
-index 0000000000000..90c2dd1e67248
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024-2026 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/clock/imx8mp-clock.h>
-+
-+#include "imx8mp-pinfunc.h"
-+#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi"
-+
-+&can_fio {
-+	interrupts-extended = <&gpio2 10 IRQ_TYPE_LEVEL_LOW>;
-+};
-+
-+&iomuxc {
-+	pinctrl_codec_mclk: codec-mclk_feature-grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_MCLK__AUDIOMIX_SAI5_MCLK	0xd6
-+		>;
-+	};
-+
-+	sai2-grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_TXFS__AUDIOMIX_SAI2_TX_SYNC	0xd6
-+			MX8MP_IOMUXC_SAI2_TXD0__AUDIOMIX_SAI2_TX_DATA00	0xd6
-+			MX8MP_IOMUXC_SAI2_TXC__AUDIOMIX_SAI2_TX_BCLK	0xd6
-+			MX8MP_IOMUXC_SAI2_RXD0__AUDIOMIX_SAI2_RX_DATA00	0xd6
-+		>;
-+	};
-+
-+	uart1-grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__UART1_DCE_TX		0x49
-+			MX8MP_IOMUXC_SD1_CMD__UART1_DCE_RX		0x49
-+			MX8MP_IOMUXC_SD1_DATA1__UART1_DCE_CTS		0x49
-+		>;
-+	};
-+};
-+
-+&sai2 {
-+	assigned-clocks = <&clk IMX8MP_CLK_SAI2>;
-+	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL2_OUT>;
-+};
-+
-+&spba5 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	sai5clk: clock-controller@30c50000 {
-+		compatible = "fsl,imx8mp-sai-clock", "fsl,imx8mq-sai-clock";
-+		reg = <0x30c50000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI5_IPG>,
-+			 <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI5_MCLK1>;
-+		clock-names = "bus", "mclk1";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_codec_mclk>;
-+		status = "okay";
-+	};
-+};
--- 
-2.53.0
-
+Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
