@@ -1,125 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE8742F70C;
-	Mon, 27 Jul 2026 17:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F59D3596E1
+	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 18:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785174029; cv=none; b=fmW8ZND6HIRCN3S1Si/XPzXvQFASNZ4dElg/qcsXb20SzwslyOeM3kyhFnwLnCPeeIFBF8Y2ed4YTmH5ZTlcV/+TjW9rz3knduvjbuisIM2tq7GJuS1orcxEDGfMiK33Z0YdzT04IBOMGg8w4TFVvahyUPOk0CnlpUwSTXbjnvk=
+	t=1785177990; cv=none; b=f8MF8K2Zd7EM4b4v1QJSF6yjA9reX+J6GFF3vc7VJyyvSI/k2yAog+W990KZVDo+j2RtiF6HBuN1ipwnCCCvIKMoUDCM4O2Od++3dECD3+FQ7V/W8mIzN3JH5BNT5uCVH3gIMjpF4BOv80+9tyZY3h+vPeEiZiTAmeHTBHEY10g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785174029; c=relaxed/simple;
-	bh=OfyA6PZVaQWAshfczWuLPB1WUaO/OnIoRetDQClVbgQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LeLQJLNOv5/CNJNinvjtZE3R2CLAkhQCFVOS+u3NfNUsKPvc2a4B3Q0zinmdYa2G2IytmuaIrAMfdMNrg4L8mGiZ72EYuIwzJtkP2AR81CrQ5H4KOUq6C+WpcYdd+W/AeAEkIe8QQTRXCu0ygHtA5YbDwNoYhbjtD0CDB2dh1EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jz+lcM3A; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785177990; c=relaxed/simple;
+	bh=Z/5pwo4klH/G5J4/WGhzTofwYGUJUpFmG7OVLRoY6CY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=daCTePm0EWTlluLDfRMbDapDJ/rUrdzKcecUKD/ykzKVXXYh9+x2k5l+90g8p9J/9tNaFjusyNVmFKiUUbYhRO98uRi6Pj4E2PEMR/siAuw/6T5k3pAuBnNi/FsoUHX40P4K5SWyTyK1JyuhWlVJ5JG7ofM63nOrmXpeRVccP6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=Pstfw6IK; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jz+lcM3A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA331F000E9;
-	Mon, 27 Jul 2026 17:40:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785174026;
-	bh=78g5g4GERQh1+fhJYRmrrE602dK4GP7Gh5jXNWY4E3c=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Jz+lcM3A7pCJxPC0h6sa7M7w+luB/PLuKF9n0tTGjbbxkDiHZCrqNZmu1rRRxD1ZV
-	 xuvPWjKrj5R8Cor4kdE8bjQBGZdWXzG2DmLR51APZli0oQq7Ul0azWdhJKY8zhUqNA
-	 MpopU1poA1krUCTG1KguD4s2ZS0DIBozR0Yxfnm0PvPan+ImU+mX43/LRPZFYpsNNl
-	 rWIlXpcoLPDmR9YpcINJ3pzi953old6HKWKTKaZi0HWfFHT8P5F7ODOleH0N9an/Pc
-	 ZYY5DlYhsQyONmE3pu9QjEpeDcisE6r+4KgpN8LR9YK6HZNs4bJMDS5sTiCD67sQsw
-	 T2tH28BlvWBuw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 5/5] arm64: dts: imx8mp-skov: support new 7inch panel
- board
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Trumtrar" <s.trumtrar@pengutronix.de>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v7-5-ca8a0446166a@pengutronix.de>
-References: <20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v7-0-ca8a0446166a@pengutronix.de>
- <20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v7-5-ca8a0446166a@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 17:40:25 +0000
-Message-Id: <20260727174025.EEA331F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="Pstfw6IK"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
+	s=key1; t=1785177974;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s0wH+ySFfCBVmnBojBZaXIoCALe+k/ClNs6fjt/QIh0=;
+	b=Pstfw6IK644jlNnRGZZRzPiUJEWtkwg3bh22GraX3/i7mt3gP1kE9IC1GsrEiZtN9HwtV0
+	MbmNO1kYDW2KbxEiOr9P49jzr3JFdam9Nv4GjjD4EnyoxMaeGntAA6aDHk6vcsi6R0udzB
+	+qL9WEAdvH37Xa/JrZBO5IRJVCi2wuT6cT0F3vO1i/01J0QVy6duT66k2KWM33tHsZvYjQ
+	IdWTyvdQr7nYV4CBGvN1dS+L/UTx/sY/MqpIXlJweYMZ4jPVhCOdsVHOTVktRuhWKjSlzx
+	xk9gIo5Z9YB9UXA4kdjs/bbuTUWyR74sGlTMCREYyq4Bzestgaw3iD+MdtjkZw==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 27 Jul 2026 20:45:58 +0200
+Message-Id: <DK9KRSOWRHY0.H7SC0R3BIIUZ@cknow-tech.com>
+To: "Neil Armstrong" <neil.armstrong@linaro.org>, "Jessica Zhang"
+ <jesszhan0024@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Luca
+ Ceresoli" <luca.ceresoli@bootlin.com>, "Inki Dae" <inki.dae@samsung.com>,
+ "Jagan Teki" <jagan@amarulasolutions.com>, "Marek Szyprowski"
+ <m.szyprowski@samsung.com>, "Laurentiu Palcu"
+ <laurentiu.palcu@oss.nxp.com>, "Lucas Stach" <l.stach@pengutronix.de>,
+ "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, "Paul Cercueil" <paul@crapouillou.net>, "Linus
+ Walleij" <linusw@kernel.org>, "Marek Vasut" <marex@denx.de>, "Stefan Agner"
+ <stefan@agner.ch>, "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>,
+ "Laurent Pinchart" <laurent.pinchart+renesas@ideasonboard.com>, "Kieran
+ Bingham" <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Biju
+ Das" <biju.das.jz@bp.renesas.com>, "Sandy Huang" <hjc@rock-chips.com>,
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, "Andy Yan"
+ <andy.yan@rock-chips.com>, "Yannick Fertre" <yannick.fertre@foss.st.com>,
+ "Raphael Gallais-Pou" <raphael.gallais-pou@foss.st.com>, "Philippe Cornu"
+ <philippe.cornu@foss.st.com>, "Maxime Coquelin"
+ <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Chen-Yu Tsai" <wens@kernel.org>, "Samuel
+ Holland" <samuel@sholland.org>, "Jyri Sarha" <jyri.sarha@iki.fi>, "Jingoo
+ Han" <jingoohan1@gmail.com>, "Seung-Woo Kim" <sw0312.kim@samsung.com>,
+ "Kyungmin Park" <kyungmin.park@samsung.com>, "Krzysztof Kozlowski"
+ <krzk@kernel.org>, "Peter Griffin" <peter.griffin@linaro.org>, "Alim
+ Akhtar" <alim.akhtar@samsung.com>, "Alison Wang" <alison.wang@nxp.com>,
+ "Paul Kocialkowski" <paulk@sys-base.io>, "Alain Volmat"
+ <alain.volmat@foss.st.com>, "Raphael Gallais-Pou" <rgallaispou@gmail.com>,
+ "Thierry Reding" <thierry.reding@kernel.org>, "Mikko Perttunen"
+ <mperttunen@nvidia.com>, "Jonathan Hunter" <jonathanh@nvidia.com>, "Albert
+ Esteve" <aesteve@redhat.com>
+Cc: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-mips@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
+ <linux-rockchip@lists.infradead.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>, <linux-sunxi@lists.linux.dev>,
+ <linux-samsung-soc@vger.kernel.org>, <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH v3 0/4] drm/panel: refcounting panel lookups and
+ references
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Diederik de Haas" <diederik@cknow-tech.com>
+References: <20260717-drm_refcount_wiring-v3-0-023900c32e01@redhat.com>
+ <178472247762.1745070.2847290153778032256.b4-ty@b4>
+In-Reply-To: <178472247762.1745070.2847290153778032256.b4-ty@b4>
+X-Migadu-Flow: FLOW_OUT
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] Missing device tree binding includes causes build failure.
-- [High] Incorrect touchscreen resolution properties (copy-paste logic erro=
-r).
-- [Medium] Missing #address-cells and #size-cells in &i2c2 node causes comp=
-ilation warnings.
---
+On Wed Jul 22, 2026 at 2:15 PM CEST, Neil Armstrong wrote:
+> On Fri, 17 Jul 2026 16:02:03 +0200, Albert Esteve wrote:
+>> The drm_panel subsystem provides kref-based reference counting [1]
+>> (drm_panel_get/put) but almost nothing in the tree actually uses it.
+>> This results in a systemic use-after-free pattern throughout the codebas=
+e.
+>>=20
+>> This series aims to close all those issues.
+>>=20
+>> Patches 1-2: fix the infrastructure. drm_panel_add/remove now keep
+>> a counted reference for the list entry. drm_panel_bridge_add_typed()
+>> now holds a counted reference for the lifetime of the panel_bridge.
+>>=20
+>> [...]
+>
+> Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (dr=
+m-misc-next)
+>
+> [1/4] drm/panel: have drm_panel_add/remove manage a list reference
+>       https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/61aebeadff4=
+0cded27168e53406e0120ad66e114
+> [2/4] drm/bridge/panel: hold a reference to the wrapped panel
+>       https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/8f79d34ea89=
+50fd825e0d6ecd713705a42f06417
+> [3/4] drm/panel: of_drm_find_panel() return a counted reference
+>       https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/b71a623598d=
+319cae2acd9df1b297cc948c58bc7
+> [4/4] drm/panel: find_panel_by_fwnode() return a counted reference
+>       https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/ac3baea883d=
+ab989178dd4186090d6bcf52b8d55
 
---- Patch [5]: [PATCH v7 5/5] arm64: dts: imx8mp-skov: support new 7inch pa=
-nel board ---
-commit 5301893644854d4544c31ab94b72a17eda53338e
-Author: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+That last commit resulted in an extra ``drm_panel.c.orig`` file which=20
+wasn't part of the patch and seems incorrect?
 
-arm64: dts: imx8mp-skov: support new 7inch panel board
-   =20
-This board is similar to the already upstream
-imx8mp-skov-revc-tian-g07017 and imx8mp-skov-revc-jt101tm023 but uses a
-different 7" panel with a different touch controller.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070=
-tm041.dtso b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm=
-041.dtso
-> new file mode 100644
-> index 0000000000000..f3f43e60a0aa7
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm041.d=
-tso
-> @@ -0,0 +1,53 @@
-> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +
-> +/dts-v1/;
-> +/plugin/;
-
-[Severity: High]
-Does this overlay need dt-bindings includes? The C preprocessor won't expand
-IRQ_TYPE_LEVEL_LOW and GPIO_ACTIVE_LOW without
-<dt-bindings/interrupt-controller/irq.h> and <dt-bindings/gpio/gpio.h>,
-which will cause a syntax error during device tree compilation.
-
-[ ... ]
-
-> +&i2c2 {
-
-[Severity: Medium]
-Will this parent node cause dtc warnings during overlay compilation? Since
-overlays are compiled in isolation, dtc will fall back to default
-#address-cells and #size-cells values, which conflict with the 1-cell reg
-property of the child node. Should it explicitly define #address-cells =3D =
-<1>;
-and #size-cells =3D <0>;?
-
-> +	touchscreen@2a {
-> +		compatible =3D "eeti,exc81w32", "eeti,exc80h84";
-> +		reg =3D <0x2a>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_touchscreen>;
-> +		interrupts-extended =3D <&gpio4 28 IRQ_TYPE_LEVEL_LOW>;
-> +		reset-gpios =3D <&gpio4 29 GPIO_ACTIVE_LOW>;
-> +		touchscreen-size-x =3D <1280>;
-> +		touchscreen-size-y =3D <800>;
-
-[Severity: High]
-Are these resolution properties correct for this panel? The jutouch,jt070tm=
-041
-7" panel has a native resolution of 1024x600. Setting the maximums to 1280x=
-800
-will cause miscalibration in userspace, where the touch pointer won't be ab=
-le
-to reach the edges of the screen.
-
-> +		vdd-supply =3D <&reg_vdd_3v3>;
-> +	};
-> +};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727-v7-0-topic=
--imx8mp-skov-dts-jutouch-7inch-v7-0-ca8a0446166a@pengutronix.de?part=3D5
+Cheers,
+  Diederik
