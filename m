@@ -1,48 +1,48 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013001.outbound.protection.outlook.com [52.101.72.1])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010039.outbound.protection.outlook.com [52.101.84.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA97642BE93
-	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 16:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA7336920C
+	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 16:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.39
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785171173; cv=fail; b=MIzuLdYqdZkm3BKRBUuIXhh4kpfKdQny40UESdxkIUA/nNv7CvNZDICR23SCf+c1a6QDb3EaC4SFUeAGlI2kLQOWqXD408vtsKiFaGr0dfez09if/X8tZrB+w7LlYeDSQwhyxGHzK+7WygihK1b4eaP6H67JFey1lEFkqeyzdBc=
+	t=1785171241; cv=fail; b=IJy792nx8Wa4uCZkGWwdefyOqjzm2mXIh6x0/Tn8i2QqAOq5jp9aeUaFV0u9Zk+lXYPbRze3YUKfbnDJ/rNvyFBL2ZK/xwGRsfGwMyhRDJZe3Fjt3xx/ZDNxofujB06iXYA2+DSkBzx7wmroDgCdKWEgKFJxB2r1ZfM116RFVCA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785171173; c=relaxed/simple;
-	bh=C77Cnez8DsGiSJT1KptLGFJSO2FdGZ9tCn7Dwhy5lsQ=;
+	s=arc-20240116; t=1785171241; c=relaxed/simple;
+	bh=VC7Mr0NVXuiPRAs7MasYOLsaHooeKrBg8ZYx8S4ErUo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uYpQ4d6Z+poUxQslNvZ51ubjYo/FSeI681opMLjtmuehoE9k3KQvYUYJ7M6g5TlnZv4Dy9xclki8sGgQHXe16aoHOk6RST4FyVH+ZhA+jTHBTyiG0T7Eo0CP41e1fk4nRJ994t/kqgRqI3wN2wzuIsW6g73X7U/GrVKGC/iIV4A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qKaab7Os; arc=fail smtp.client-ip=52.101.72.1
+	 Content-Disposition:In-Reply-To:MIME-Version; b=H4CUrI05To9UYW5yQ5gf3mnp3ajKGX50Ni6fNQdqLSUwQMPk5yAePczCgldi02478p/Q9EDA94uBleMIw7qvMBZGi2R8V+fFB+gytTzrLV8UCAspFTTTq42rOfLzkch3jU0Z6pfLDiAp7JiSsLFaHZLUTcCLdb9JstIRB+0Y5wE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Db+UC3Gx; arc=fail smtp.client-ip=52.101.84.39
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qKaab7Os"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Db+UC3Gx"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qrkZXLSjrHqAnB8ART4tlQsCl0dt+QVbDckjNYWhf/EHchoTdhcGq44c2quyCAM6zUaYO0qI7NW6MFRP04o91e5P7LsT6RJmDlEzAqQkh30OEwwS70fld+L9M5PUEXKqykAitUZ57lnWZsht+Ov5HfsyGvkQsJ0OpRfFnWQeY+TR11d5cXGRar8NyQ8PMMMrLjpW11dKgJ8uAHxaP2LxtEBmIMYTHIziupxaawnWY82ApHbTxIn+h2Ijaodc9D8ZS5V2KHhfJVBPbla+qqz4j4sDj2X3/fyPKvxrDZTr9tfTb1mu4WJSYQvmxpT8ii7nfyQR+j/TSTOM3LY1QctSAA==
+ b=n2m6xjwRkwcHxNVCZOTMaKitMfJnucXITM3+DbKqKrvkJe+ziUVbmuFuamfb7/WJ8IxIpvVXQdLhnWD/E+etAS6//gJ1MGYFPPpx//dmTnMpNUsrBVbJ8kAGDfe0LPSdzWYsXYyPGXv0nEVa1pwTBAbZOO6jbJ7800NNflXyZJl9yttCvpGqipN95VUrvvwKcEz3jqNmGD/vy3nQMpD82YuMA3ixH4UUZMpWvdMiedMee/NjExEaX2064/FoT6cOAMgLsHtevwBIfPDp59sM+b3V/Mz8edgO+sAZMxFqfFXWRRvruParm4sVpJazB75SFxMGlikk5C5sFbszg/AgvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xpQU4B9ayjOEs8+nSRTyDzl6GEX0Hue3ZG8N93KhoEo=;
- b=v3tUa+4zXqINdvL2ilzNwli6VQrq8K8qSYJOFELtUwtCktMT72UPLTCICvpE5wqKfGib+EGJeCSZACzGRxPq9BCJG7JWUuRBzCDzkLYmnncek+ml6crroT2tQkNWUI1Yngx+rQ+Q0YaCkLd8O/bNqr4ejevAw36DYf33hS+YXcG9ivytoa5JG1LFkhtBgiPP9bNn+0t22yQ1TLcIMtkHpGfT4Ydgd0u6NmGaTPmzcHx32lk2Z/bvHB9r0H1zfNVP8hkQHQrUuyJyuk8u4sKmKOCWPvRb9B7LsdsiQH3qPDsO/GcizV4Kd5Av+tgJWQAZcxePLBNnwYsRLORIM23blQ==
+ bh=/I429jyfNnd/6uwimQiwTDifFvEOWDu9gCKoeAGTy4o=;
+ b=C33F+xeoZbqf3ZriDdEn0AxhJuho4FCmm3wP6xGvtdbkMPNQe8nn/HLclbfpQ23oYTSKB449tfWbnLI+qhfXr8ogjiyCxSCdO3d89XDw/+m6ToHV4dcz/K7JgNybkP01y0G6MCwK1SNQQSAzZww9v7MeHVXCc1yeI+LWVWjbE1Vfw4nMfEy1beOIYnr1kqWLz8gRr2/cPzxxnHUP8vSKFQ4qTuUsoT74Xr7lS8RDrlDhc/I2zVRE8Wy1J/Fuy6SFIEEUqlnRwY1Lr6rIzOKQo+Dv6MS4glbrlsRe6Y9Lmu0S9UfDfd0bmVO9o9rkMNgGFtFHTJsiKcgY0rBtdkLGVA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xpQU4B9ayjOEs8+nSRTyDzl6GEX0Hue3ZG8N93KhoEo=;
- b=qKaab7OscT/HiKkUAF//R67+8mfHNLt5rAZxjlbxkwGKkoDlq7VFHqWhAfQckiaYNXzOCGUESzdp3Yuhvx4MoV+qgNjW1y/Qizvcn7jWReAAkLVc/xW9paFq03B318Gsnjs7MVfKxtrSnPrk1ZLOQR+Pm0qOTngHx24YGcrHxWKP3mH5h8vfpNfec4uuq8pMX7InNZVs1FusYydqUtBWtglhZLuOk38CfXwI+pFd7AAXxc2ik9T26f5WXjnBzqN/oBULC1dT/rEHmTExW4In2kYPiK0M6qSJG2GpinuHOP9Q3si8yVkBElvxjAk9oD6V5itp+18FM7U6iUiiQ48CCg==
+ bh=/I429jyfNnd/6uwimQiwTDifFvEOWDu9gCKoeAGTy4o=;
+ b=Db+UC3GxEvP3hM9uuKk+QPZA1ZhMJj758LK4QfhTaT7sQrNQLhQHiAJfdhW9tZB9os0vhaRU/e/AE3aEi1pyasLYiqq+kKnqXM4UIOsheBeVCP4pdwv4J/V6OMN/2CXt6J08XevuEFs4Lw5zGWJVGU5XzGy51UB3eW8nsZOV3hbqN5Foa+zEAivhA6s9z11jKBr7XJ8AZch4gGNlWqCUSg1ZU/IBwtkZ48RNp8F2V+xPcUojSgMcyatA1PADQ+AP5wZdWmBrMm705UhrnPoiGvMqdC7WrdxA/hGs5KPWNEgYb+a1SdGMR6Te9QKEqI5eQIsZEWsSExvBQ7E2HZb8wg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM9PR04MB8874.eurprd04.prod.outlook.com (2603:10a6:20b:409::5) with
+ by AS4PR04MB9622.eurprd04.prod.outlook.com (2603:10a6:20b:4cc::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
- 2026 16:52:44 +0000
+ 2026 16:53:52 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
- 16:52:44 +0000
-Date: Mon, 27 Jul 2026 12:52:35 -0400
+ 16:53:52 +0000
+Date: Mon, 27 Jul 2026 12:53:44 -0400
 From: Frank Li <Frank.li@oss.nxp.com>
 To: Marek Vasut <marex@nabladev.com>
 Cc: linux-arm-kernel@lists.infradead.org,
@@ -53,16 +53,16 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/6] arm64: dts: imx8mm: imx8mp: Add HDMI DTOs for
+Subject: Re: [PATCH v5 5/6] arm64: dts: imx8mm: imx8mp: Add FIO1 DTOs for
  Data Modul i.MX8M Mini and Plus eDM SBC
-Message-ID: <ameM0wo_aSuknWc7@lizhi-Precision-Tower-5810>
+Message-ID: <ameNGD-hNFuvzWMP@lizhi-Precision-Tower-5810>
 References: <20260716055751.279033-1-marex@nabladev.com>
- <20260716055751.279033-3-marex@nabladev.com>
+ <20260716055751.279033-5-marex@nabladev.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260716055751.279033-3-marex@nabladev.com>
-X-ClientProxiedBy: PH8PR20CA0008.namprd20.prod.outlook.com
- (2603:10b6:510:23c::18) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260716055751.279033-5-marex@nabladev.com>
+X-ClientProxiedBy: SA1PR05CA0004.namprd05.prod.outlook.com
+ (2603:10b6:806:2d2::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,64 +71,64 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB8874:EE_
-X-MS-Office365-Filtering-Correlation-Id: 43918930-108d-4a96-818c-08deebff7ad0
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS4PR04MB9622:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31036aa5-3c6d-466a-e8a6-08deebffa325
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|19092799006|1800799024|366016|4143699003|56012099006|10067099003|11063799006|18002099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|19092799006|366016|11063799006|10067099003|4143699003|56012099006|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	3CaYweuMwiFNfgtciUSvXqJ8OHShthjw3C0eEYSiQP8WV4vGG9uW/nUtTXPlO3rnGHtFKVr0S3eTLXfcMue4SZSxZDAmgfaZTDsmxOTYJqwtlfR1Gezv//O9LFnecyVNmjHQmd4XGwnSrGOoycPv7YfL/4N3+P9xxYqSUKJUpfFp2rXgrjEPkMz9mRVrQh3GYMsjk4tGIbXL+RIUU1zaJQ5INdtJZf3ty7ZE9cRqAyVsq7X2dZlb/xr6IgwMGrd75PXrDjoFD0u4frXlovb6ZNjRbqUrU7OCJQ7anRX5S6AgcMgThWtDCpB0TX8SIT+rYRPD6rQUb0tc7dDpsOeFPkrZ+0N9QhIvieqX5URsegZX42w4vA3Lt3XlWDDbojOY0K3WR57RDAfh5JJUS5pNRfmdHiuDz9Yd0kKkywzPzQH0rI9ok8JZfbNBdec//HZ8aaJ8Xp7ChOK+xism5vLe33Xwfz0dsOabbjCcpih6ZhZG+0VkHy7dY7R2tA9eNkC+aIzdwj+MAmOZmWyMPjSU8skxfzOJor9yglgPrdgnjgUbTSW5jvUDQHbba2eYfr2cWRHns+IDXeqjoN5sLyGfrcILcmi3r+n/Ayp27aHs7Db/c6S7WEtlAsnst04XmYC8mRNbAD0ZMcV2pz9gpeKnbL981mI/IDcmMloYFmIGMW8=
+	1G4zhAPGLTeI61tR7S3nw9s/tPeSEBIaioICnc4Kgv0ersc/N25k2Qhuqd64IwCwFnUzUxFUj2dCj4ifKxABYxqNKQQEoGVT8t96R1qO7iqQcFw9yaQ5gmwkDhtDd15KFcMc6DgSzOEMmn/+bvnfOkpTUvYY5HhZMXNH90yxGnh36PLpuNbth4PLT5M4TPTCWAxcnjPFGiZeHuLJWObwm++tJJPq8F0zsnQuhuaKhYezvzi217zlj+WOtJ5B7m/Js/PIvesHnxl0NPD1HHgNriejB1WVHLaPF7c5cubbkeGCy0XYLBNSYqapacmU+WrXvnerrgujaAEJ5HRXHceKgSTfiGWOmY0FRwjjqTgLpXw+TzGtjB2zohhcO4XDtdaxwNha4g49FFGBfDp1TEu5N7On+cbALSDz/ZVpO0L8AlH0TwFFLVIJ5vBflCNbyX3iOxeHdQQZKvpG2ojh5wnT2QXc/gSPrh9z7+ehC/1YBwK4y5qyD8qphDK+9LRexR3K3/FU9dF6BW76mYy0Sgh4gAJSmkqDUQ7wZloQJeZ4zOal7yJnt+WgnzphdH+mKHMoEH4MAJ6eNxPvRL8riSIN9IjkZXhlo7+H6WkL5IUSErRGeFepCMTiadvRSgq68/jsLE7Nk3qzhRXPo3TdnyHmpzjnPKct/inO51Ris6hLAPQ=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(19092799006)(1800799024)(366016)(4143699003)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(19092799006)(366016)(11063799006)(10067099003)(4143699003)(56012099006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uRRXDKu0ZI9aE7hdZiQ0A3xYSmAfFv2AIdN/Y6igrIHuyu+6/Y43TJVr3aDZ?=
- =?us-ascii?Q?ldYyL9KVRajpjTiYqeDbzRUcqGXm30YY/VMe8VEr4TUQoqTG/fTfGj02X3yr?=
- =?us-ascii?Q?UmAuc+vh/x+dN+Lp7BFRbf5w0x/hzTF8gcZC2G8XBXEr9Szwb1oGX+IbrBsP?=
- =?us-ascii?Q?embsi4sRBJ/eWCRP0BM5yYiZBScPwSsfye11yhiBMQz+8mKIMUXrI/yfeNUc?=
- =?us-ascii?Q?Iin5qULKCZ6jRxayy5Pf6uhqvVO9qCN97V3HfH++vVH7m7QQrY/ZW+wxVSmw?=
- =?us-ascii?Q?lsp6TKgi5RWnCCrbBOaZvNGSkDiniu39ypS/AsNzGZePdxjtrNECoyiz97u8?=
- =?us-ascii?Q?p5kR7iDZAtyN34jIDI3YYmZ+Bvk84Qfidjl1wk1n9rZ6O5xIRR/i/MQzGf5u?=
- =?us-ascii?Q?tPnQIsxUbFfU4+O7BORSLpWF4xVqj469Lruin7ruh1ho0AkgbZMI/ep/Zrnl?=
- =?us-ascii?Q?4fyFVQCGWGJ7LIm9MAxISZZaXdNXgKcC+3ejvWZ1ckrGtnBPYfqseaSMS0Ai?=
- =?us-ascii?Q?Vr3xYuh9tf3PGe3woAxpAWJSGTO9VZHtr64AoslTIIBBwrYXNZGwtDfPealJ?=
- =?us-ascii?Q?T/ClqkrVIosWB+pgdgWp0IcH9OvQ3UVLCdFAXAa44Lmk3HHQZPehQi6U9eBd?=
- =?us-ascii?Q?2e16QYtcCXEwHCopveDk6K35B6SnzHeuMJH0vgV5kHAsCUhmhwjb22kB8MtB?=
- =?us-ascii?Q?4QbQjLeZslR4OGRFuaqilTLCyrhAex4vROiWuppLzemrOz5g9d4zjCkbhyns?=
- =?us-ascii?Q?O+KOZOsxO51FDDwit/42lH0xmRblNLSwJhs4PfB1J375q3DNBglevly7415K?=
- =?us-ascii?Q?Efz5cHXSjIT3zqodgP5qkLLLSwAB7lfGbPVdvPn57N0Gwxu54VT+7vpiYi5e?=
- =?us-ascii?Q?AkLCO3TgzU9aExzK1i6VikeWDrHSR3BBhCjAk0y6n1NJBbtP0itT4b4MIi/g?=
- =?us-ascii?Q?Zb/uaHLo3IzxR7KH+lbN37QYURGRoSk2WDfkKXf1S+YzyhWqQAmqTmFxInZB?=
- =?us-ascii?Q?XODBccbVRizh99ko7693HlJUQSdHxOPdgoT9c/nACQY7mKQ7AtXCYNcOh6Zq?=
- =?us-ascii?Q?kPTY+b7aQXdTl/TZLD2ev8Ehz1T+YAD59WfNO7wGz10Th+GXMut8oNTKfqsY?=
- =?us-ascii?Q?Cb27M1YZEvDgBdiHds0eZZI/4MPsUvtaRqA7Fe6+0NgQks0iDJ7dLMKOol8T?=
- =?us-ascii?Q?FEUeD0KIrHbTUXeszFFslWLAU1SrO38gz4CB/jwF9CWWm80EOs0jQtstG+PV?=
- =?us-ascii?Q?gvMdLL463gR6SONs4rMRSsDMAn9Ah3UtFDHyykkkmkBDqhHsGcF1RBtL9oeA?=
- =?us-ascii?Q?ZUWoRZEACtwVRZ5XrLgtnH6dO/gtqIxYEoyZq/0+uZlnMLAAGIlyCcDWX8VF?=
- =?us-ascii?Q?epmSb7bzknVIvZTYoHdVYTQVwYHgQfoCrRyrUyCG5iUyF73PjltobkPD+eDL?=
- =?us-ascii?Q?pm4fotHYD3YdY2BCpivYYoGWRaFeXr9U4W3xmquFHyqy14avPijVDeypDDS7?=
- =?us-ascii?Q?ru1kTli7nslgKVQz0wBIlna2zFnJtGe88AGd3Hsi/IgWGNrdU0EBQcoI01N6?=
- =?us-ascii?Q?JOT87ligtLak6I/iD0sjcLnKAUGcas7tw6SCq0L4iM6YhAcnTS2aan8HokQE?=
- =?us-ascii?Q?DRbwJNdZEJGvYkEjRXMF1EXfrvdOLchyUMV1QNVbJCoj48as/4AhxTOoMcMI?=
- =?us-ascii?Q?8Jert64bTjVM6e/xbeIcJNiFv0TqKsCfalLK/wLGQE73SPdKK9PfHu4+0n4a?=
- =?us-ascii?Q?JB4t8JHs0XNDFsJ3KSlO4bF8KVMovlWxYbU+SI1ToAJ5+pf6gIIA?=
+	=?us-ascii?Q?SvWGrQERL6baA37JoPnm0RHbO8IbohLVEioV7cyQLt7CUozMK2k1wH1v4vys?=
+ =?us-ascii?Q?Fta5NjdCGPnR96wQK1ivw6J65WTq6XHnt7VyaUByASkhRStgaJpDKHXYVopH?=
+ =?us-ascii?Q?wLuUr6+FACDoI9jGZo63n+rpkAyVbpDhwGmKgjyDXvFUcVCBCOVAfWOqOOFX?=
+ =?us-ascii?Q?QfynJpkfxy8ZuWIpyHOB9QJNvQYh1LsTJP7Nkwc4e4WQf3YScVG0h+Dl8Ah0?=
+ =?us-ascii?Q?4VXllBVDrn9NJ9b0XTE9bayTuSGC0MKH+w6m/Y85bw5VkWkM3l2cI5LVmv2i?=
+ =?us-ascii?Q?lU2phruht7T7xVTk8PTFej16SUUCt6hTzGvGVtKml/cZ4lnuOY6vUWqNegJa?=
+ =?us-ascii?Q?dQLpPcd62f4tAJDeR1bj3HAP76jSmLFutkXlCASrlXnh+x/XMwWo8VXaUKrw?=
+ =?us-ascii?Q?H2XWQxqZR0CPu8WWoEtTYqNowXjkg5yvWonzxUIy+X6keUuRGrPhD/3mEz8Z?=
+ =?us-ascii?Q?bX058sFm5O2GFw/0PryG58fQJZxEnRg3RMk3xbdOt4gwdkr5zpKwMycni/Ij?=
+ =?us-ascii?Q?umsaIipSpcte3SlMgl1QTAwAtvfmPvtIHAy8Saf2E+QGD+6cplyQJRbZB5W2?=
+ =?us-ascii?Q?9kWdJRXuugSydbvX6XTILLw/FTogPJqhd817AZfuwoeO94qt+YpH7K7DtHZ+?=
+ =?us-ascii?Q?qkw6Y9bqRU33uolEqG2IlIU/fD70rKRTGMOcfL6A2KXeYEvAAFO9wM1UhT2O?=
+ =?us-ascii?Q?O6xU4cQHnEWwwODtXVm/6nxdZ3JiK3DV8psuvxnmgv0zevQixJnWnEhWQ4QI?=
+ =?us-ascii?Q?aAhpKt8+ipVlOofzcZB9E892dAXlHeK4ZlVq84OeL11QrfBqEN3yoQ1Neb1s?=
+ =?us-ascii?Q?Mt8nx0hJ7185ec9WweTZntCQqKLa5zyyyIQsJn2TOmApmK3qtNK/vTiW1DaC?=
+ =?us-ascii?Q?098ONCu9a7/m7SS0wW730cPqbW46moQjwFu+rLA2n55QAex/po6MZbU7QwMm?=
+ =?us-ascii?Q?372+sp0Fd+dWFFviaSpzk+/TJjjos50pLARIY5GgCexG5pBz4AQBjzUTjF6b?=
+ =?us-ascii?Q?Bq+3HrE30H66+Mv5qz2XvUlbA1bH/H45N6S1fX67GHipmWNjYy+6+w/k7frV?=
+ =?us-ascii?Q?7NK6+44TJAuomUY1vMivsI8UgpewNRooedlP5UFuPU0d3yl3Y+RGBgkmkEQr?=
+ =?us-ascii?Q?BJgY9RhtkN/TNK22u6iHjAzE/v0iDlLgOxANxlNiClS+sR7isgecR23DRA5A?=
+ =?us-ascii?Q?Gu14n6Wpgi8vCFgoPJxDdJuYP/J1PSAdRJxIfnVBEj9Ez52P+U/r8Jxj8iUW?=
+ =?us-ascii?Q?HlyY/Jg4BmpDLd28aTLIIaSdTbxG0r43P1hcOMIAlLGFeNiwcVt0ZK8Nq5/c?=
+ =?us-ascii?Q?gkieMNpY1dE73/VgtYaxSuBsB4PgrDmaDJQvHGrJMFDCTOzx8nLjMy/7EmYM?=
+ =?us-ascii?Q?pUCp6DaE335zcbQrJXNHMOAVT1uHv08CklnsAhyEFepPaTjZncBqXpWUzDGd?=
+ =?us-ascii?Q?8HXm8X2mF+nJ8C9b0qlY1KetWV2pGeil1LMAqs5kEZcV1cKJqjXXLGjqwbn+?=
+ =?us-ascii?Q?svdPBuvHcZI9ZhpCXCx9fgV8GgbvpZURkcPq+Hoersa4xjynsYEXOeamhDxr?=
+ =?us-ascii?Q?Ok9Lawhny7qeCtNj2Q2+7P4t9HqZ5XljYrTF1IF6hvMJZ3NCjgPXfBAo/AvU?=
+ =?us-ascii?Q?Km2U9dwsUxwCqgtlqp8f+wAMGDUIQ4W1W+h2phLjffAysKkxN59pm41KmgYH?=
+ =?us-ascii?Q?JleMQCUYlH0Ou4flO7e/46neN6bhYNBw14iLNzoi+wRkMripxV59gJjdXoL3?=
+ =?us-ascii?Q?yr9PH68LOXaUV9ihigljBVCjo8mtPwubXb2RQS2zcdlCPPJdNzQf?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43918930-108d-4a96-818c-08deebff7ad0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31036aa5-3c6d-466a-e8a6-08deebffa325
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 16:52:44.4456
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 16:53:52.2422
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IoRUIBxoqwbqJxVSU92KHmRjuMhS3vf/pKExsDl4zdr7EpBhzFce1LBO0SeTxe/xN+z+hm7JKwNnBZ+coqUMKeOHokrYQ/iypECMzvsLmKe/4O3emQgJ3mwwBxm+TAwA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8874
+X-MS-Exchange-CrossTenant-UserPrincipalName: XpkeIUNzbRR1LMj/INlhrOhz1SfPfCz5oSfsJ/fxWkEZ+QvLj1mAJ0KOF/7ezoDpKy4aZfHOySd1PSbNmHiBB1Gqh/biE5Y2D638LMnOFiwVZuP7mt4urmRCWbIyXN25
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9622
 
-On Thu, Jul 16, 2026 at 07:56:55AM +0200, Marek Vasut wrote:
-> Add DT overlay for the DSI-to-HDMI adapter eDM-MOD-iMX8Mm-HDMI populated
-> with Lontium LT9611 bridge. This adapter can be optionally populated onto
-> the eDM SBC.
+On Thu, Jul 16, 2026 at 07:56:57AM +0200, Marek Vasut wrote:
+> Add DT overlay for feature connector expansion module eDM-MOD-iMX8Mm-FIO1
+> providing additional UARTs, CAN, PWM Beeper, I2C, SPI and GPIO breakout.
+> This adapter can be optionally populated onto the eDM SBC.
 >
 > Signed-off-by: Marek Vasut <marex@nabladev.com>
 > ---
@@ -149,65 +149,65 @@ On Thu, Jul 16, 2026 at 07:56:55AM +0200, Marek Vasut wrote:
 > V4: Rebase on next-20260703
 > V5: No change
 > ---
->  arch/arm64/boot/dts/freescale/Makefile        | 12 +++
->  ...l-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi | 94 +++++++++++++++++++
->  ...l-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso | 17 ++++
->  ...l-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso | 17 ++++
->  4 files changed, 140 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
+>  arch/arm64/boot/dts/freescale/Makefile        | 12 ++++
+>  ...l-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi | 69 +++++++++++++++++++
+>  ...l-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso | 59 ++++++++++++++++
+>  ...l-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso | 46 +++++++++++++
+>  4 files changed, 186 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso
 >
 > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index e0630f7bc58b7..1c70271138577 100644
+> index 21902f095bf49..43ffdd70ce2e1 100644
 > --- a/arch/arm64/boot/dts/freescale/Makefile
 > +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -120,6 +120,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8dxp-tqma8xdp-mba8xx.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8dxp-tqma8xdps-mb-smarc-2.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mm-beacon-kit.dtb
->
-> +imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
-> +	imx8mm-data-modul-edm-sbc.dtb \
-> +	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
-> +
->  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01-dtbs := \
+> @@ -124,6 +124,10 @@ imx8mm-data-modul-edm-sbc-overlay-cm4-dtbs := \
 >  	imx8mm-data-modul-edm-sbc.dtb \
->  	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo
-> @@ -153,6 +157,8 @@ imx8mm-data-modul-edm-sbc-overlay-edm-sbc-imx8mm-rev900-dtbs := \
->  	imx8mm-data-modul-edm-sbc-overlay-edm-sbc-imx8mm-rev900.dtbo
+>  	imx8mm-data-modul-edm-sbc-overlay-cm4.dtbo
 >
->  dtb-$(CONFIG_ARCH_MXC) += imx8mm-data-modul-edm-sbc.dtb \
-> +			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
-> +			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
->  			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtb \
->  			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo \
->  			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtb \
-> @@ -295,6 +301,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-beacon-kit.dtb
->  DTC_FLAGS_imx8mp-cubox-m := -@
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-cubox-m.dtb
->
-> +imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
-> +	imx8mp-data-modul-edm-sbc.dtb \
-> +	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
+> +imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-dtbs := \
+> +	imx8mm-data-modul-edm-sbc.dtb \
+> +	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo
 > +
->  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01-dtbs := \
+>  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
+>  	imx8mm-data-modul-edm-sbc.dtb \
+>  	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
+> @@ -163,6 +167,8 @@ imx8mm-data-modul-edm-sbc-overlay-edm-sbc-imx8mm-rev900-dtbs := \
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-data-modul-edm-sbc.dtb \
+>  			  imx8mm-data-modul-edm-sbc-overlay-cm4.dtb \
+>  			  imx8mm-data-modul-edm-sbc-overlay-cm4.dtbo \
+> +			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtb \
+> +			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo \
+>  			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
+>  			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
+>  			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtb \
+> @@ -311,6 +317,10 @@ imx8mp-data-modul-edm-sbc-overlay-cm7-dtbs := \
 >  	imx8mp-data-modul-edm-sbc.dtb \
->  	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo
-> @@ -370,6 +380,8 @@ imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev902-dtbs := \
->  	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev902.dtbo
+>  	imx8mp-data-modul-edm-sbc-overlay-cm7.dtbo
 >
+> +imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-dtbs := \
+> +	imx8mp-data-modul-edm-sbc.dtb \
+> +	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo
+> +
+>  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
+>  	imx8mp-data-modul-edm-sbc.dtb \
+>  	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
+> @@ -392,6 +402,8 @@ imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev902-dtbs := \
 >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-data-modul-edm-sbc.dtb \
-> +			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
-> +			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
+>  			  imx8mp-data-modul-edm-sbc-overlay-cm7.dtb \
+>  			  imx8mp-data-modul-edm-sbc-overlay-cm7.dtbo \
+> +			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtb \
+> +			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo \
+>  			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
+>  			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
 >  			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtb \
->  			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo \
->  			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtb \
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi
 > new file mode 100644
-> index 0000000000000..c0f2aa462104f
+> index 0000000000000..7851ca73ccd8e
 > --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi
-> @@ -0,0 +1,94 @@
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi
+> @@ -0,0 +1,69 @@
 > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 > +/*
 > + * Copyright 2026 Marek Vasut
@@ -217,102 +217,142 @@ On Thu, Jul 16, 2026 at 07:56:55AM +0200, Marek Vasut wrote:
 > +#include <dt-bindings/interrupt-controller/arm-gic.h>
 > +
 > +&{/} {
-> +	hdmi-out {
-> +		compatible = "hdmi-connector";
-> +		type = "a";
-> +
-> +		port {
-> +			hdmi_con: endpoint {
-> +				remote-endpoint = <&lt9611_out>;
-> +			};
-> +		};
+> +	can_osc: can-osc {
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <20000000>;
 > +	};
 > +};
 > +
-> +&i2c_display {	/* Display connector I2C */
+> +&ecspi2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	status = "okay";
+> +
+> +	can_fio: can@0 {
+> +		compatible = "microchip,mcp2515";
+> +		reg = <0>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_can>;
+> +		clocks = <&can_osc>;
+> +		spi-max-frequency = <5000000>;
+> +	};
+> +};
+> +
+> +&i2c_feature {	/* Feature connector I2C */
 > +	#address-cells = <1>;
 > +	#size-cells = <0>;
 > +
-> +	lt9611_codec: hdmi-bridge@3b {
+> +	gpio_feature: io-expander@20 {
+> +		compatible = "nxp,pca9554";
 > +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_panel_expansion>;
-> +		compatible = "lontium,lt9611";
-> +		reg = <0x3b>;
+> +		pinctrl-0 = <&pinctrl_gpio_expander>;
+> +		reg = <0x20>;
 
-compatible is first property
-reg is second.
+compatible is first property, reg is second.
 
 Frank
-> +		vcc-supply = <&buck4_reg>;	/* X400 pin 55, +3V3_S0 */
-> +		vdd-supply = <&buck5_reg>;	/* X400 pin 51, +1V8_S0 */
-> +
-> +		/* Audio I2S not described */
-> +		#sound-dai-cells = <1>;
-> +
-> +		ports {
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +
-> +			port@0 {
-> +				reg = <0>;
-> +
-> +				lt9611_a: endpoint {
-> +					remote-endpoint = <&mipi_dsi_bridge1_out>;
-> +				};
-> +			};
-> +
-> +			port@2 {
-> +				reg = <2>;
-> +
-> +				lt9611_out: endpoint {
-> +					remote-endpoint = <&hdmi_con>;
-> +				};
-> +			};
-> +		};
+
+> +		#gpio-cells = <2>;
+> +		gpio-controller;
+> +		#interrupt-cells = <2>;
+> +		interrupt-controller;
+> +		interrupt-parent = <&gpio4>;
+> +		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+> +		gpio-line-names =
+> +			"GPIO1_output", "GPIO1_input",
+> +			"GPIO2_output", "GPIO2_input",
+> +			"GPIO3_output", "GPIO3_input",
+> +			"PCA9511A_READY", "";
 > +	};
 > +
 > +	eeprom@50 {
-> +		compatible = "atmel,24c02";
+> +		compatible = "atmel,24c32";
 > +		reg = <0x50>;
-> +		pagesize = <16>;
+> +		pagesize = <32>;
 > +	};
+> +};
+> +
+> +&uart1 {	/* J500/J501 */
+> +	status = "okay";
+> +};
+> +
+> +&uart2 {	/* RS485 J302/J303 */
+> +	linux,rs485-enabled-at-boot-time;
+> +	uart-has-rtscts;
+> +	status = "okay";
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso
+> new file mode 100644
+> index 0000000000000..ad410db5f5b76
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso
+> @@ -0,0 +1,59 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2022-2026 Marek Vasut
+> + */
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include "imx8mm-pinfunc.h"
+> +#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi"
+> +
+> +&{/} {
+> +	beeper {
+> +		compatible = "pwm-beeper";
+> +		beeper-hz = <1000>;
+> +		pwms = <&pwm3 0 250000 0>;
+> +	};
+> +};
+> +
+> +&can_fio {
+> +	interrupts-extended = <&gpio4 25 IRQ_TYPE_LEVEL_LOW>;
 > +};
 > +
 > +&iomuxc {
-> +	/* Free &pinctrl_panel_expansion from hog for lt9611_codec above */
-> +	pinctrl-0 = <&pinctrl_hog_misc>, <&pinctrl_hog_feature>,
-> +		    <&pinctrl_hog_panel>, <&pinctrl_hog_sbc>;
-> +};
+> +	pinctrl_can: can-feature-grp {
+> +		fsl,pins = <
+> +			/* CAN_INT# */
+> +			MX8MM_IOMUXC_SAI2_TXC_GPIO4_IO25		0x400000d6
+> +			/* CAN_RST# */
+> +			MX8MM_IOMUXC_SAI2_TXD0_GPIO4_IO26		0x6
+> +		>;
+> +	};
 > +
-> +&mipi_dsi {
-> +	/* HDMI 148.5 MHz x2 (DDR) x3 (24bpp / 8) */
-> +	samsung,burst-clock-frequency = <891000000>;
-> +	samsung,esc-clock-frequency = <10000000>;
-> +	status = "okay";
+> +	pinctrl_gpio_expander: gpio-expander-feature-grp {
+> +		fsl,pins = <
+> +			/* GPIO4_IO27 */
+> +			MX8MM_IOMUXC_SAI2_MCLK_GPIO4_IO27		0x6
+> +		>;
+> +	};
 > +
-> +	ports {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		port@1 {
-> +			reg = <1>;
-> +
-> +			mipi_dsi_bridge1_out: endpoint {
-> +				clock-lanes = <0>;
-> +				data-lanes = <1 2 3 4>;
-> +				/* Clock and data lanes have DN/DP swapped */
-> +				lane-polarities = <1 1 1 1 1>;
-> +				remote-endpoint = <&lt9611_a>;
-> +			};
-> +		};
+> +	pinctrl_pwm3: pwm3-buzzer-feature-grp {
+> +		fsl,pins = <
+> +			/* Buzzer PWM output */
+> +			MX8MM_IOMUXC_SPDIF_TX_PWM3_OUT			0x100
+> +		>;
 > +	};
 > +};
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
+> +
+> +&pinctrl_hog_feature {
+> +	fsl,pins = <
+> +		/* GPIO5_IO04 */
+> +		MX8MM_IOMUXC_SPDIF_RX_GPIO5_IO4			0x6
+> +	>;
+> +};
+> +
+> +&pwm3 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_pwm3>;
+> +	status = "okay";
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso
 > new file mode 100644
-> index 0000000000000..334ba299a3541
+> index 0000000000000..0eccb7f7c0a8c
 > --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
-> @@ -0,0 +1,17 @@
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso
+> @@ -0,0 +1,46 @@
 > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 > +/*
 > + * Copyright 2022-2026 Marek Vasut
@@ -320,38 +360,44 @@ Frank
 > +/dts-v1/;
 > +/plugin/;
 > +
-> +#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi"
+> +#include "imx8mp-pinfunc.h"
+> +#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi"
 > +
-> +&lt9611_codec {
-> +	interrupts-extended = <&gpio2 3 IRQ_TYPE_EDGE_FALLING>;
-> +	reset-gpios = <&gpio2 2 GPIO_ACTIVE_HIGH>;
+> +&can_fio {
+> +	interrupts-extended = <&gpio2 10 IRQ_TYPE_LEVEL_LOW>;
 > +};
 > +
-> +&lcdif {
-> +	status = "okay";
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
-> new file mode 100644
-> index 0000000000000..d8114fd869b54
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
-> @@ -0,0 +1,17 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2022-2026 Marek Vasut
-> + */
-> +/dts-v1/;
-> +/plugin/;
+> +&iomuxc {
+> +	pinctrl_can: can-feature-grp {
+> +		fsl,pins = <
+> +			/* CAN_INT# */
+> +			MX8MP_IOMUXC_SD1_RESET_B__GPIO2_IO10		0x400000d6
+> +		>;
+> +	};
 > +
-> +#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi"
-> +
-> +&lt9611_codec {
-> +	interrupts-extended = <&gpio4 19 IRQ_TYPE_EDGE_FALLING>;
-> +	reset-gpios = <&gpio4 0 GPIO_ACTIVE_HIGH>;
+> +	pinctrl_gpio_expander: gpio-expander-feature-grp {
+> +		fsl,pins = <
+> +			/* GPIO4_IO27 */
+> +			MX8MP_IOMUXC_SAI2_MCLK__GPIO4_IO27		0x6
+> +		>;
+> +	};
 > +};
 > +
-> +&lcdif1 {
-> +	status = "okay";
+> +&pinctrl_sai2 {
+> +	fsl,pins = <
+> +		MX8MP_IOMUXC_SAI2_TXFS__AUDIOMIX_SAI2_TX_SYNC	0xd6
+> +		MX8MP_IOMUXC_SAI2_TXD0__AUDIOMIX_SAI2_TX_DATA00	0xd6
+> +		MX8MP_IOMUXC_SAI2_TXC__AUDIOMIX_SAI2_TX_BCLK	0xd6
+> +	>;
+> +};
+> +
+> +&pinctrl_hog_feature {
+> +	fsl,pins = <
+> +		/* GPIO5_IO03 */
+> +		MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07		0x40000006
+> +		/* GPIO5_IO04 */
+> +		MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08		0x40000006
+> +	>;
 > +};
 > --
 > 2.53.0
