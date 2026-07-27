@@ -1,17 +1,17 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5528531F989
-	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 01:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4554E3446A6
+	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 01:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785116240; cv=none; b=cl/nT8n3ltGrP517xgT5b+ZGFiPO09WLxK7VQISVOwzUqEgRdV0lGANlKf6ngWSRZAleVtcutmeP9ZUCYNSuv96CZhf3RvW88TDgSquZw1rfAwWxEDLbc48PNofTAa59XiqMTgoDEaiUugnBKcGI9nUN16fC2B3Khb4YNKqkNpA=
+	t=1785116302; cv=none; b=FLsXKeKgTCliCAlq3VP+HNUuOPTQMEABipWCl9dAuLWcn7W/9qRumKDJrFc12cAyNkf3HHaCkJk78y23YVhhcXqe9XHgyGxgRnkEvGzjAjzVTwbseHwINA5bsQhoEK0wf0FjLNBZ20+P7S4RKuReb+b8gyKptMJqQeSHWt5x/z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785116240; c=relaxed/simple;
-	bh=o3I//fWT/Ahu1TRVuSuKOsa5VptGAjlzU/RAQ0KA2Gs=;
+	s=arc-20240116; t=1785116302; c=relaxed/simple;
+	bh=iGcAcujLAYiFRoTLLExD5c/GTX3QNk1LHPMICUEEsEE=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=cCcR6M6s66eqtPt4VG/q/gsqSCorftBqfvedli3XBP7yDxWe8xuy5F6h8jpjhNWjdlpJ9/8p0Xe4SfxyHByBKRYD1ChQDEBMNHaca0HpPsQPw+nN2aMuii9Vp8KDU0tde3v6Fsrtdy1cRBVviK9JMWAM56Xa/eR/ffZPQb1xTA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=91.218.175.172
+	 References:In-Reply-To; b=HH5/FTKoCBAXzsX0DMDJwqARTYdAQQgB6jev+zsiuKh+O1yKJ4Zk3axPMU9XsAVsfp9o9b3cylvwKRIb1k1vYi7eMEyV06ehgnphcr51j9Cuw8tJ0SFaRgDWTU7wlZqJbElJRR2irG5W3aC51ghSClwauxd/aPrqlvKEgMqry4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=91.218.175.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
@@ -22,53 +22,75 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 27 Jul 2026 09:37:03 +0800
-Message-Id: <DK8YVZNAFKSP.1JHSI6NI6LLYZ@oss.qualcomm.com>
-Cc: "Alexey Brodkin" <abrodkin@synopsys.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Joel Stanley"
- <joel@jms.id.au>, "Andrew Jeffery" <andrew@codeconstruct.com.au>, "Frank
- Li" <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
- <festevam@gmail.com>, "Hans de Goede" <hansg@kernel.org>, "Alex Lanzano"
- <lanzano.alex@gmail.com>, "Oleksandr Andrushchenko"
- <oleksandr_andrushchenko@epam.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <linux-aspeed@lists.ozlabs.org>,
- <linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>,
- <xen-devel@lists.xenproject.org>
-Subject: Re: [PATCH v3 0/8] drm: replace simple display pipe users with
- atomic helpers
+Date: Mon, 27 Jul 2026 09:38:09 +0800
+Message-Id: <DK8YWU9RLR0N.1S7LX5ZTBJAVP@oss.qualcomm.com>
+Cc: <imx@lists.linux.dev>, <Frank.Li@kernel.org>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v3 1/2] drm/imx/lcdc: avoid duplicate clk_per enable
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Ze Huang" <ze.huang@oss.qualcomm.com>
-To: "Linus Walleij" <linusw@kernel.org>, "Ze Huang"
+To: <sashiko-reviews@lists.linux.dev>, "Ze Huang"
  <ze.huang@oss.qualcomm.com>
-References: <20260727-drm-simple-kms-removal-v3-0-cd5dc89858c6@oss.qualcomm.com> <CAD++jL=x2Ya_MXrO7FGF6WDzr4dv83K8-TS2AWkA2O0Dko8G4g@mail.gmail.com>
-In-Reply-To: <CAD++jL=x2Ya_MXrO7FGF6WDzr4dv83K8-TS2AWkA2O0Dko8G4g@mail.gmail.com>
+References: <20260727-drm-simple-kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com> <20260727-drm-simple-kms-removal-v3-1-de36e534f7a1@oss.qualcomm.com> <20260726195919.D70021F000E9@smtp.kernel.org>
+In-Reply-To: <20260726195919.D70021F000E9@smtp.kernel.org>
 X-Migadu-Flow: FLOW_OUT
 
-On Mon Jul 27, 2026 at 4:32 AM CST, Linus Walleij wrote:
-> Hi Ze,
+On Mon Jul 27, 2026 at 3:59 AM CST, sashiko-bot wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
 >
-> On Sun, Jul 26, 2026 at 9:45=E2=80=AFPM Ze Huang <ze.huang@oss.qualcomm.c=
-om> wrote:
+> Pre-existing issues:
+> - [High] Calls to sleeping functions (`clk_prepare_enable` and `clk_disab=
+le_unprepare`) from the plane atomic update and CRTC enable/disable callbac=
+ks, violating DRM atomic context requirements.
+> --
 >
->> struct drm_simple_display_pipe was meant to simplify simple DRM
->> drivers, but instead adds an extra wrapper around normal DRM atomic
->> helper setup. As noted in Documentation/gpu/todo.rst, remaining users
->> should be converted to regular atomic helpers and stop depending on the
->> simple-KMS interfaces.
+> --- Patch [1]: [PATCH v3 1/2] drm/imx/lcdc: avoid duplicate clk_per enabl=
+e ---
+> commit 48c4f154b28e9de1d485ea56766c8a24df823739
+> Author: Ze Huang <ze.huang@oss.qualcomm.com>
 >
-> Are these patches independent of other stuff so they can be tested on
-> top of v7.2-rc1 or do they need other stuff from drm-misc-next?
+> drm/imx/lcdc: avoid duplicate clk_per enable
 >
-> Yours,
-> Linus Walleij
+> The simple-KMS helper calls the pipe update after enabling the CRTC,
+> which causes imx_lcdc_update_hw_registers() to be called again. This
+> patch avoids the duplicate clock enable by skipping the register update
+> when the CRTC already needs a modeset.
+>
+>> diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/l=
+cdc/imx-lcdc.c
+>> index c67fe80b8115e..e00e52c1c46ec 100644
+>> --- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+>> +++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+>> @@ -310,7 +310,8 @@ static void imx_lcdc_pipe_update(struct drm_simple_d=
+isplay_pipe *pipe,
+>>  	else if (old_crtc !=3D crtc)
+>>  		mode_changed =3D true;
+>> =20
+>> -	imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
+>> +	if (!drm_atomic_crtc_needs_modeset(crtc->state))
+>> +		imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
+>
+> [Severity: High]
+> This is a pre-existing issue, but does calling imx_lcdc_update_hw_registe=
+rs()
+> from imx_lcdc_pipe_update() risk sleeping in an atomic context?
+>
+> imx_lcdc_pipe_update() acts as a plane atomic update callback, which exec=
+utes
+> in an atomic context where sleeping is forbidden. However, it calls
+> imx_lcdc_update_hw_registers(), which in turn calls sleeping functions:
+>
+> imx_lcdc_update_hw_registers() {
+>     ...
+>     clk_disable_unprepare(lcdc->clk_per);
+>     ...
+>     clk_prepare_enable(lcdc->clk_per);
+>     ...
+> }
+>
+> Will this cause 'scheduling while atomic' panics when a plane format chan=
+ges
+> without a full modeset?
 
-Hi Linus, patches are independent and can be tested on v7.2-rc1.
-
-I've seen others patches based on drm tree so I did the same. Would
-switch to v7.2-rc1 if that's preferred :)
-
-Thanks,
-Ze Huang
+False positive
