@@ -1,233 +1,247 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011016.outbound.protection.outlook.com [40.107.130.16])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013021.outbound.protection.outlook.com [52.101.83.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45422DCF45
-	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 05:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E894374E5B
+	for <imx@lists.linux.dev>; Mon, 27 Jul 2026 06:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785131982; cv=fail; b=qPsgTP5V/+hPNDcdXGbhKsicgHLdU/y8HarSZD+mRY1CDf1j7DPkPNeiJjU15Vx2CZpdCy4KtvetV29RD5jJct3Z/8hncXCWLbH2lUx1VHOIvqSLAk1j/Ed7QnIZthGtOxgjPT/IthYouYvN5XiphKTrP3p5P/DIfRUY5aV+Cj4=
+	t=1785132051; cv=fail; b=eiUrTBPAQZkGIh602qSr4s5wMJBWFlsrxWOiJX1K9uQWjfLnJIG5T3x57W+49J+Yi/aqT/LqYzs66lASBvNGd9Sz90KiXNfsMtewGioKQbAti4ji0cOqZRaugKrWyj7KPCYJwHFnRtJ35OcOlYJ3PUu1Q3HClr2DnihFihV0i74=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785131982; c=relaxed/simple;
-	bh=63waxR9tvbXflbHHz6JVP49ydhrttvemaYn/LFQgls0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cqQKeKIKBpv3vNFMhmuiC0Rp6Se3XFjrmCf06wkC4z+SP4noFMW1tU2ieNZJ9NvGCx04mkl21xmR8TT1uDuMT6dC7WEgiZzNPn2+8jzNX55DSvcda1SvpVD9B6a3ZISZsdgIdhGB5W2dsczMzDzcJicrl0IH+Wnr8GdsfrRwme8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YtJZIuT4; arc=fail smtp.client-ip=40.107.130.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1785132051; c=relaxed/simple;
+	bh=xhlD/rKYCh6p773nWaSm8ZuW3xAkLnuoPWP5vTyLZmw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Zoa9qspY1g08E3ATrAUiHu/4QBZrhhnrwSSvoRdsRh1qqdQ31rKQp6hDOcwuUIKNYUW5IwhFnn5Qb4HZR0ns3motl47er2uPSaZTJKkjg1o1fJaCcoWti1ZvecPQOyaV2TD06D9brkmHZ16K1QU4EUrhWDJkbpG+TdOElt/aaBc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Mvkab9FU; arc=fail smtp.client-ip=52.101.83.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YtJZIuT4"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Mvkab9FU"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kcv+5GWxiSA8oTwyd+n2nrQ+VtX7+j1YEFMf2dKJs8dwKAuxHFYSLijeTrjtq2Y06GDbAgKKaX50I6dGoynSLXwmshG6FaVFjTMCj91n8wbZyy3Q+GjIaYfvC28Bw5wRCpvjVcM1jLz63cykrvsN19yIi1vcZjrIaG1hio7OXSMipB/3W+bMxhNLSBl4vWFdcbLI5CNOcfJXY5MnRVFyhO0C5HtHjpbzmzldSdJfFmro26jNDjMWOIfGUwycqwIY4JgMd6qXRhXFqXFLQR8+j4FpMFVUU2T4EnR216zlos1Zw2EivPAPyrQ6KCB3YfS9Fy0rukpQUjSeYrE4cM/wew==
+ b=Eq6iU/pz2o/IZ+e6EZzCFWZhiDNmBJFwKtpSvcflpY3boutA9kjeDlH5s0ZMFA0bxSJCBB+XuOEr1JqaCzph7mSN/KyRJl64XCWdAeU597yV2gXng0kzMRrWY++TbxPH6JOJLOURjw3g/1BYs1NIk8kUalrs2UPdwQvn0BA3KM7VvOm1CTf+vk3v5fycP/LW+kaclu5fx9nKDs/yrpPKwH+H7mtZknIxC2XXz67HpWXWL1xUMWjjToxAHMue+b0uGoEDZdg3YNCET7loSagCmoRK7pqTshNZkptWe19V4EEaKSyVc71lzAKO4glO+QsOjomdH+7ppaZcfjyHMAAUDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IoZXYp+JA47fX37Dwu7X2/DyJitVNezjqQuaMrerkDc=;
- b=C/UhlXLTZO6KHqX8rJI9t81eWzMLsXiTOTNo85LdZT2Hm+8qFXmKmeOBpkhbmfwbwQ0pJeItjuesVnQb/+4bt/zwI2bpBbCxLMGlSaPYhwUlsqwSWbxKOVoxepyLAj5Zh9Dm67YXG35TT62+6hTzA7hZPqEk36A5ygMq1yuW11Tb5Nj4aMhO9QyT4pyGaj6e56Jktdioz2C3wVk3X5Ex7ndzB/P3idW7xys/b282VsLh9AN/liH4dX0KNc7yX40xr5J0GIuGQqSdvahLcqysqeo8ViVT/bZea65E04n/sMryT38Zg6B51y0OI8ZhxufEG0w8n4QXIRSbIM8L6bEW5w==
+ bh=GqsLrZgcZFObHQCrOQuga6cYMfJrGcQ4ATZSaoJMp5w=;
+ b=DphkK9enM2UJi3cWghD2SkiW/q8GYbVCh08CRutfQBLF8PoNDsPDVPzUVA6C76Xz8kcH+1bTsPrrLbg3GXkJwP2V1tMljv6a7NWMa0AQxmhNwRHl3skl5apnZZOeytVUNslc+GW9dZasTQ8xZqSaXUlKKjS+iGbEpzh4JfmWGDp/Y6Q4MEYkRHaWgNdexnfk+Dc4bbQhAP4vn9aQkX0RsLbfWx17wLGXR46PP0Ti9ER1ghhID2WQE7jyLFKXKQ7XLcvYd6s7ltKW4Eu++R6xr9Xdv2cN6fQ8n3Hl9we849dsYP5g0pVYyzUGEFQ4bybRR4n9+e8efqHJOleAJxSWew==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IoZXYp+JA47fX37Dwu7X2/DyJitVNezjqQuaMrerkDc=;
- b=YtJZIuT4EHeh6mmDhBXpc83dljT7CsmGPTO+HcuHym/KQpHw1OANhwibLlVewNnRPuexkCBIqA/DUV/mYrkmvPCWLiqA1MegJzgHkmaYoSJCAvHbmFxu3FCeY+PVT3aqK5WCuosKz6NnB5Atwu2i7ato6mJUPd/IPVdQeNPD6EqGyEFZTZLkNFn+v9dp+fVSOZHFSIDO5kpxW0mY32G46kSsf6JX0MgbnnproXqzrne3dmd12fpBl9Tz/u/TrVZTL7Grx9rQ/xjyKwnTlyNPtUMg6YKh7A4SoXJvbs81Wa1QRFAC/dHSKuJNlhQonUiNuI8wza0UIDNS1MWp0jPZaQ==
-Received: from AM9PR04MB8570.eurprd04.prod.outlook.com (2603:10a6:20b:435::12)
- by DB8PR04MB7099.eurprd04.prod.outlook.com (2603:10a6:10:12b::19) with
+ bh=GqsLrZgcZFObHQCrOQuga6cYMfJrGcQ4ATZSaoJMp5w=;
+ b=Mvkab9FUgRXZS91D2YtB2d/heyJm4JBWRyIqL992omg4+0c5qesFlHns2+yHh/b/4wWMtmXTp1qCMd9MCUtpt+K8eSuUVhroMpQ+GgYYnDPUNbzUDH9/OR2SqnxpX/mQX08h4UdcUvtRgYtT5grHARvzi2Pn3A+w8/lIdkwSJRiIkbLIji+THZlXNaD/qJrhvFGkDUoeC3iCDXYnK7lYTywbH0jNzxl81eqq6bzkTcrKFO4JzlpyZzXbB7QkMOfFJ7jTMmQXCmluBAoLyj9TVGunHH8mG0xQFYvPvHV2kCYmNZ7vM4NmRbLMclwLjekPvrAW0ymgz9MBcwQn6CL87g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by BESPR04MB12585.eurprd04.prod.outlook.com (2603:10a6:b10:fe::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Mon, 27 Jul
- 2026 05:59:35 +0000
-Received: from AM9PR04MB8570.eurprd04.prod.outlook.com
- ([fe80::c9cc:24fa:6f6d:fb03]) by AM9PR04MB8570.eurprd04.prod.outlook.com
- ([fe80::c9cc:24fa:6f6d:fb03%4]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
- 05:59:35 +0000
-From: Ming Qian <ming.qian@nxp.com>
-To: Fan Wu <fanwu01@zju.edu.cn>, Mirela Rabulea <mirela.rabulea@nxp.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, Frank Li <frank.li@nxp.com>
-CC: "shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de"
-	<s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [EXT] [PATCH] media: imx-jpeg: cancel timeout worker when
- streaming stops
-Thread-Topic: [EXT] [PATCH] media: imx-jpeg: cancel timeout worker when
- streaming stops
-Thread-Index: AQHdAvuAx5vWS9eFlUazwMWcxSq8PLaBE8aQ
-Date: Mon, 27 Jul 2026 05:59:35 +0000
-Message-ID:
- <AM9PR04MB8570B0F336F244FF5F96253CE7CC2@AM9PR04MB8570.eurprd04.prod.outlook.com>
-References: <20260623103031.3051-1-fanwu01@zju.edu.cn>
-In-Reply-To: <20260623103031.3051-1-fanwu01@zju.edu.cn>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8570:EE_|DB8PR04MB7099:EE_
-x-ms-office365-filtering-correlation-id: eea42fa6-de41-4d09-2416-08deeba43c72
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|23010399003|19092799006|376014|7416014|366016|56012099006|38070700021|10067099003|18002099003|22082099003|5023799004|11063799006|3023799007;
-x-microsoft-antispam-message-info:
- jX5WY/cdJKoVxS4erQR8A3S4X1sV9usH6zRvgTbUp9NNsNpEDfLLZULJWTnmpPPyj3o2Qd2hWUytf45Pd4VDaFAf2aN6UAW4My6naD/R58DuA/cGYNH1KUyq8sSJiYTgmXqCsTr8lP7AR3Ldx+lIo1VVwmPEUhJmNJd7IE7ftu7Amg0CqYuEzaEQvw+aBypnK5MveD3+U/SX+R2BQ9uwus5UfIPjpj3Zaa4m71peiBrZMmgEG1g2IKRizqF5MTB+P+V8vJMMeKVHG05xLIieklfcm38im8raX4sN6WDS747/pHqoVoXuUjbdmHIksi8PJHgvfOQTcwhuRy1Aw8vdJP/LUkbB2Cuy4OBTNXsWzZDdjsX/DJhTCG7txCWtoTUenDIJSw/hkA9J9J+sQS+dVVdwypYxV5FVyE4y7lMNZIV8Ah1SIo7BpC5+IU7apaEIRA7IwDHFkMeyUfMHrQ8UYv1le32DKkTnU5R4GeIlqsAFIlOF9l//ANR0ubToqxBpkLyJ5Fpg2EFXKv5fjQClcY6tsBHrEAgyboywcPyIj9TrVPeZeDz2zn+PUqb/DAodLawG27zvMP1eYBOLIuAyYi0rjUjfl1ZO2v22upjRV6CefCyk1uS58F9+kCpdqpzEa+LjRmLtWRElDPyatF5mA4yX2s00XRunxS5Kg/2PkYJS6F0HIaZ39icJPZMBHC9Ynd5pCVVxC1j6oJhaskavbtMLMXZBgaWGxABn3dHNMOU=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8570.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(19092799006)(376014)(7416014)(366016)(56012099006)(38070700021)(10067099003)(18002099003)(22082099003)(5023799004)(11063799006)(3023799007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?mP9ki23FjUxd5YeuX3s8FYoL+Ttclvczd7T3OYBGzSemVIqgnbg1XVXOxJ0y?=
- =?us-ascii?Q?SfgaCcibGL/ynYFwrCxeQobEh/aEat0lY1bmeQo9cKvkaoCZMKhckheHsqNO?=
- =?us-ascii?Q?9/DoNVuP6ogkthucDsHZ0yIfFQIjojEQhqV/UzNLRZfH8mMomYHaTB5oHelB?=
- =?us-ascii?Q?AJ6pj/ULMSfZ2599c0Rwyna6kGAgmEKXAPIGNCwBK5upImQLU2NrMkhQoB2u?=
- =?us-ascii?Q?7XXUavj78h8clUsA24LtsYWFq/GBxJhpaoVOHMTj/YBeKwo+zz3J0ikDGLBr?=
- =?us-ascii?Q?0lTGJBcBpb2VpNpDgtv052t0cVRd6gV9U7jUKc+7KT0C05sedprzv6Pzr8m+?=
- =?us-ascii?Q?Rq8qyTVtTBDDRsY0O+IOkIGxAjKqb/OfLt38xDw5Wt9orMBkHiu8AVakJt+C?=
- =?us-ascii?Q?uscrg+xUAQ7t3Blr5ILMf5iJUDtyz8DNdNAm8Wd85/zW6l1W4qFqDdDn4BcZ?=
- =?us-ascii?Q?6nEvW/CkKbl893jhqQbkEcCBbYelqtwoXe6+nE7/uHQxB/0CFPqprM+oMSew?=
- =?us-ascii?Q?khGYdUt7vJDx/W4jy0LHRCQ3ly/Hx5jBuF+MR/GmvVlwd5CKMl/1S7L2DzYL?=
- =?us-ascii?Q?bgQj89IwX39xjEui3HUIPb/zvE25jr2ue1K2NjETngQCxWd+P5RLcS1DHixU?=
- =?us-ascii?Q?fchViRuiuFa/mPItF62ffat/YAcqyRTz0sYgpi68vk/JT7t4GiQZUt/sy1gT?=
- =?us-ascii?Q?rKn9WGAPzKxLAunMHmhSmNlX2H2KrVyBnqD/MHNcaIzIvYghz3EPC85HpbGL?=
- =?us-ascii?Q?M8uY1dlcivMEZB+u0bXIvJj81xVdCv5sxZd/aPPUBM/CkEQvqSSz+05Z0ryv?=
- =?us-ascii?Q?5QHBUXzLlT0Gt3c0yACZxkPcOJFPZH+dX6v/I6lKtxd8xFYY4iL/kQdOrslE?=
- =?us-ascii?Q?hxgvAiUTHjxiFjAU86Jhifim6wrFP5vP7jzgJVS9Up48PyqW4uNq6Edv6o78?=
- =?us-ascii?Q?hKDWrpZz/DBDZZRzjAvi1h7OIzVunSlcsBuLKx0AQHw48HBYrpUn/JqySWxA?=
- =?us-ascii?Q?f1TBIiEcIefsb/ZghmW0gEKOCPg2DiVkdCzGlhRlfc+Rc979Ze+MNspuekB7?=
- =?us-ascii?Q?LXSZ2T6mVm17lYNu71NKQueKuQtBwDmqEGo3FgcR8kGnuLmxtO5+oOMuUoFM?=
- =?us-ascii?Q?oskfD5LAX6zTfVjgMy32ej+pwGVU4sS1kA155AhSJ+/b80oDuKTBYMw1/8cG?=
- =?us-ascii?Q?5NW+Fxn+p3KJQFPI9UMMOlH3/F/BLpZvCQY5Ry7tfZEG1MExZmx+ymZHhkaY?=
- =?us-ascii?Q?+8vKdYNd/R1on8HT9mLjX4F1MkGLPp8Uqdu8uh9Zm+o3Xsc5XFJKS0Fi4Bza?=
- =?us-ascii?Q?pLVn1CNsfQKOiFULQYyU8sWTQWLdOiNWNwJ3XjDPYSl2DoL94ndeowCDJXiC?=
- =?us-ascii?Q?CGlcC5/NTwcJcOCwWQcjF6v+NqM/7t5uLqQReN3nA2aKELrcOswoamYB65Z9?=
- =?us-ascii?Q?rz9h/yfTz9FHo6dsSY8M9PVQ0iXSl6Ju+6s34SRtuSz/dEUMUmL5FzGWXHe/?=
- =?us-ascii?Q?seo9i9FLb/Ukd2BJJWKdTBIykD9V7zoPjwO874SxMvXEkGNLJc4Qmumi1JrC?=
- =?us-ascii?Q?NSXWBHJZC6fXY1jQWkv4yOaJrO1Cx/Nj9CBdoO8woxyAqRvT62j3jxLwMVQR?=
- =?us-ascii?Q?Ia0yXe59ap/9ZDTNmrRn/4RugsnlcGI/AFCTKmRztIO93Lv+6qyADjoBxPVk?=
- =?us-ascii?Q?luGWgQjA9/hXbH2iXd1chLf10Fp2hnyfreSHE6x+5epnlrxu?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 06:00:46 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 06:00:46 +0000
+From: wei.fang@oss.nxp.com
+To: richardcochran@gmail.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Frank.Li@nxp.com,
+	vadim.fedorenko@linux.dev
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 net] ptp: netc: fix potential interrupt storm caused by incorrect unbind order
+Date: Mon, 27 Jul 2026 14:03:48 +0800
+Message-Id: <20260727060348.1887464-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0022.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::9)
+ To VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|BESPR04MB12585:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12fdad3a-3388-4d6a-9ebd-08deeba4662f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|19092799006|56012099006|11063799006|10067099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	xVO8+s8RQqeCqi8XEBUU0n/ohYju67hcT5SEFEsIEhCqxdfxLoaIDiKAKv+nXcu8A4AjjcbRgRQNnzfiBqLM8Mnv0iYrOeva9XNEDRISN/5Ho+PVSDiZtJ5rlm3i3Em71bfj9tQfle7DACE2FlM/3dT2Sk1Qzm3iYh8L5NOTggj/uCYFZrL1zisAg9zog6t27xkSN7jP+gPU/bNnuK9e+erwrESZG/u4LTrtUN1Y2OtwXca+6LaPDFpZ6bZAQo655FAR3zO7GY37gXjNs7wDzvdJmSpRH9vvdzp9kPr6cUFAFT0Fd9vOk21M+f3LKE9UUS+G1o4nbDbRTiecGjM8fA7GEHBZYrrOvRpNIbXsWSfh69kVBxhGpLDlsAuhT0LFhMlNMRpSslUl6CXU1/Hu8ByJysPFRNeRK/ffYT4ygLXR2F6LBv4TClgr6/QNg8CAK2h35sy2KOrg0ttf1i0CqTWYLZvRBxmZU42SE5CmP+cH9Zp0vYVG/sufcG/qO8Gmp2RHUZkQfxQTej1w7kQmKwSj2gkcV/jDE8D1fsfBO4hDjDEuUOlQF0ecUdPygqCRpiEgQ2zyeQPfbwnDHT6ZDH/3wX7CI1u8RYz6e5DQcVA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(19092799006)(56012099006)(11063799006)(10067099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8eAZOJzU9b8pOTPS2lK3qM3ZQBEC5+5QmPO7mLBLzJhFonboJIqdKwNvjlhY?=
+ =?us-ascii?Q?CNpFqtJ5Fm4tnZ8yyCtPqCc38aS24KHy9zcACl4mGXmP9lsZTSax1ZfuZCzg?=
+ =?us-ascii?Q?FLWhoYMBhe0xPKbbHTgquit7YlbluntFXCsoZuNBWJr4e9f7YchxC+58w8+g?=
+ =?us-ascii?Q?D4SwoYuFD2ipP+GxuC6nCVZJmxKaexJhAv1/ZtVzCuGcRMBY9RVXxsoyqdOd?=
+ =?us-ascii?Q?ucE42ZZt4YIOF3hxUes4cTOlJLrGeSasHVOOFiXR+Jbwd06alNAik0GZO7FG?=
+ =?us-ascii?Q?6KxmD2iZQeObOrhgI5P/Fy4QSK8cqG4R6EX11MqSEfvAdZT1YoX0x+NUbiQd?=
+ =?us-ascii?Q?FjvJSwReQuJzdxbMPi6e7YyMj9kzGz2EoI1tj+fdw80uFxMpNTQxxBjtyNmH?=
+ =?us-ascii?Q?xbNy36QideADJf0VyFTDMJtVWrlTvm/hdd5e44jpWt9KHDNJZcYEPijvKcs2?=
+ =?us-ascii?Q?vSkkVnt45DAP3J2XCNqcWHKLSrv4Xgr7Zrm4ASzkf72Ao3UFoicnzeUpxJFX?=
+ =?us-ascii?Q?VYRnFut6hr3iKk3b3OAGDVgZwRlmnRLAQo7YBymxFS1X+NQiM/iCdj4gLnjn?=
+ =?us-ascii?Q?MjzxYHcEJmmpmszIVVt9srNsGnznYGqgjdFyy+zIYovFnKh3oO4F1DhMix/6?=
+ =?us-ascii?Q?erA8cSE1epAijnQJvrkmgbE60cO+XfHwrRLBO2FqFf3r1BjRNyO/aZLGWtLs?=
+ =?us-ascii?Q?JqM4lckD/7/Z1Cfg16hjzUG4emQGk7LGSixEOoOqt8PWYkm8ugZZrpdYXdqw?=
+ =?us-ascii?Q?nLbCkjLdoM/mb82gfHb2RBHU1to3u/isW92PAtDARDXQN9DU0yvccksPbIj4?=
+ =?us-ascii?Q?OlOitP4t4ebQBbaQWZ2bqXVshdWTH4CJRAFGQPcRdAVXcsNmXowfDcWNoplA?=
+ =?us-ascii?Q?wzvZ+wwLwG8bdg6jOYMHWVBMr98GHcbyV2k4o2tzmtFfiJV1xdH96BHDIjeq?=
+ =?us-ascii?Q?ZInC2tkLwK+9FUGvSRaZnTTkUxRTy8Za6M2vacBdnOG7Npocy6nMXwoKi+2+?=
+ =?us-ascii?Q?uFJttnehBNrsLpjAv9TqpsdE1f1HxYA62x2XBFKeVb82z+uYtvlaZQoSu2/r?=
+ =?us-ascii?Q?Xi342RmM4H0jbc4m5w4dljaGvw5wJ5XITXyiTbFE90wzVzvF+O0llfjaZ7hy?=
+ =?us-ascii?Q?pEpMgvkKiWeR0mWRVNQjTSKvpdCrMa+6Ec3IHn2P8QbIzW8fTrshJ1bQ8Gmg?=
+ =?us-ascii?Q?0HV0XQY0iP4D/4wxAXdPJqJ0mDKFPq5yseaTIA9T2lRZ90xoyzsGLj+ZA0O1?=
+ =?us-ascii?Q?LK0a0Ev1j9jdTNL34MrDRX1iG90nkihPHV4x9e4clB4VQY8IFRIKDjEFzTNY?=
+ =?us-ascii?Q?jlgztihyHdMRUoslWHcosaMXCiAW90IWoVRZxm1lbNzCvblq+CsdQJjJSFUl?=
+ =?us-ascii?Q?VBKaduJeReWwzhqE8iXxcbrUFopusWFuHxAeqlBNVr9TIyJ6GS8JbwEEGLEo?=
+ =?us-ascii?Q?1jw04+KwrlnCfF6xk+0O4KVPuQHNhnUa7lADREtVyWVAuTEQ8bfG+j/CN1yI?=
+ =?us-ascii?Q?vl82DCav6FLjPhWxenLbHPWJRgVH5eYUKnJAyfNCl6NOg7xZT1H7GS8rS+W7?=
+ =?us-ascii?Q?5OMsjnqz1S+mjXZ9uJxxJ8m/JBgiNjOicTRohxKgGFZ++BKcCJJQLQ7m17hM?=
+ =?us-ascii?Q?/zec6GKMkK26YKwEBipwnEq/eL6Ue74Cu3Yw0z/qCZYPtFkfl/J1Un46EolA?=
+ =?us-ascii?Q?yhY46bypnsq5yBi5DRt/mwrfUjm27FZrMQcYZ/33ti7nWp5meqcYNuOnqGKz?=
+ =?us-ascii?Q?4DQGwhzgyXbn33TBeFSx2a6rfl9NEELQB6KXlaVEgKilVaVEMXAO?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12fdad3a-3388-4d6a-9ebd-08deeba4662f
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8570.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eea42fa6-de41-4d09-2416-08deeba43c72
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jul 2026 05:59:35.4035
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 06:00:46.0426
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: whor/pBnoVMUL1kzceui2+zeIw8QSXHXgmRuhJN5Wng5jwd1mQxBnvAXXWSgIeFJ4QLUuftHgBe/4HDUa+ZsgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7099
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y+pafQTOlbPWysDxhv9LaLfViS0h40WgTIlpMeEdYI/KWDwF1ORFLc+Q8tRMdStAwGpcHq1q4O71pIaNuRAH7OnG1paL8IeLLT1Z51u7yWOdJSZnMRx3Q7Ob9Gf7T99y
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BESPR04MB12585
 
+From: Wei Fang <wei.fang@nxp.com>
 
+In netc_timer_remove(), hardware interrupts are disabled by clearing
+TMR_TEMASK before ptp_clock_unregister() is called. This may cause a
+race condition during driver unbind that could leave hardware interrupts
+active. For example, a concurrent PTP_CLK_REQ_EXTTS ioctl can re-enable
+TMR_TEMASK after it has been cleared, leaving a pending hardware
+interrupt when the driver unbinds.
 
->-----Original Message-----
->From: Fan Wu <fanwu01@zju.edu.cn>
->Sent: Tuesday, June 23, 2026 6:31 PM
->To: Mirela Rabulea <mirela.rabulea@nxp.com>; mchehab@kernel.org
->Cc: shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
->festevam@gmail.com; imx@lists.linux.dev; linux-media@vger.kernel.org;
->linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
->stable@vger.kernel.org; Fan Wu <fanwu01@zju.edu.cn>
->Subject: [EXT] [PATCH] media: imx-jpeg: cancel timeout worker when streami=
-ng
->stops
->
->[You don't often get email from fanwu01@zju.edu.cn. Learn why this is
->important at https://aka.ms/LearnAboutSenderIdentification ]
->
->Caution: This is an external email. Please take care when clicking links o=
-r
->opening attachments. When in doubt, report the message using the 'Report
->this email' button
->
->
->Each per-fd context ctx owns a delayed_work (ctx->task_timer, callback
->mxc_jpeg_device_run_timeout) armed via schedule_delayed_work() at the
->end of mxc_jpeg_device_run() to recover a stalled encode/decode job. The
->only existing cancellation is cancel_delayed_work() in the frame-done IRQ
->handler, which de-queues a pending work item but does not wait for a callb=
-ack
->that has already started, and it only runs when a frame completes.
->
->When the fd is closed while a job is in flight (the frame-done IRQ has not=
- fired
->yet), nothing syncs the worker before mxc_jpeg_release() frees ctx with kf=
-ree()
->after v4l2_m2m_ctx_release(). A queued or executing
->mxc_jpeg_device_run_timeout() can then recover ctx through
->container_of(&ctx->task_timer) and dereference it (ctx->mxc_jpeg, slot_dat=
-a,
->dev_warn) after ctx has been freed.
->
->Cancel the worker from mxc_jpeg_stop_streaming(). The cancel cannot live i=
-n
->mxc_jpeg_release(): mxc_jpeg_device_run() arms the timer while holding onl=
-y
->hw_lock, not the mxc_jpeg->lock mutex that release holds, so a cancel in
->release could still race a concurrent mxc_jpeg_device_run() that re-arms t=
-he
->timer afterwards. mxc_jpeg_stop_streaming() instead runs inside
->v4l2_m2m_ctx_release() -> vb2_queue_release(), i.e. after
->v4l2_m2m_cancel_job() has set TRANS_ABORT and waited for any in-flight job
->to finish (so __v4l2_m2m_try_queue() will not queue and
->v4l2_m2m_try_run() will not run any further job for this context, which
->prevents
->mxc_jpeg_device_run() from re-arming the timer) and before the m2m context
->is freed. cancel_delayed_work_sync() removes a pending work item and waits
->for a running callback, so the worker can no longer race with the subseque=
-nt
->kfree(). The cancel is placed before the buffer-release loop so a concurre=
-ntly
->running timeout callback cannot race with it over the same buffers. If the
->frame-done IRQ canceled a still-pending timer, this cancel is a no-op; if =
-the
->timeout callback has already started, it waits for the callback to finish.=
- The
->same mxc_jpeg_stop_streaming() call is also reached from
->VIDIOC_STREAMOFF, which drains the worker early, although STREAMOFF
->itself does not free ctx -- the use-after-free arises only when the fd is =
-later
->closed.
->
->This bug was found by static analysis.
->
->Fixes: cfed9632ca8e ("media: imx-jpeg: Add a timeout mechanism for each
->frame")
->Cc: stable@vger.kernel.org
->Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Since the NETC Timer does not support PCIe FLR, hardware state is not
+reset during probe. When the driver is rebound and the IRQ is registered,
+the pending interrupt fires immediately. At that point priv->tmr_emask
+is still zero, so netc_timer_isr() does not clear the interrupt status
+and unconditionally returns IRQ_HANDLED, resulting in an uninterruptible
+infinite interrupt storm.
 
-Reviewed-by: Ming Qian <ming.qian@oss.nxp.com>
+Fix this in several ways. First, request the IRQ with IRQF_NO_AUTOEN so
+it is not enabled when request_irq() runs, and clear TMR_TEMASK in
+netc_timer_init() before enabling it. The IRQ is only enabled at the end
+of probe once the timer has been reprogrammed and the PTP clock has been
+registered. This ensures a stale pending interrupt from a previous unbind
+or an unclean shutdown cannot be delivered before the driver is fully
+initialized.
 
->---
-> drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 2 ++
-> 1 file changed, 2 insertions(+)
->
->diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->index 9e4a813489c0..d85a9d196269 100644
->--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->@@ -1735,6 +1735,8 @@ static void mxc_jpeg_stop_streaming(struct
->vb2_queue *q)
->
->        dev_dbg(ctx->mxc_jpeg->dev, "Stop streaming ctx=3D%p", ctx);
->
->+       cancel_delayed_work_sync(&ctx->task_timer);
->+
->        /* Release all active buffers */
->        for (;;) {
->                if (V4L2_TYPE_IS_OUTPUT(q->type))
->--
->2.34.1
->
+Second, in netc_timer_remove() call disable_irq() before
+ptp_clock_unregister() and move the TMR_TEMASK/TMR_CTRL clearing after
+it. disable_irq() masks the line and waits for any in-flight
+netc_timer_isr() to finish, so no ISR can dereference priv->clock after
+ptp_clock_unregister() has freed it. Unregistering the PTP clock before
+clearing the mask also guarantees that no in-flight or concurrent ioctl
+can re-enable hardware interrupts.
+
+Finally, return IRQ_NONE from netc_timer_isr() when the masked event
+status is zero, so the kernel's spurious interrupt detection can disable
+a stuck line instead of looping forever.
+
+Fixes: 671e266835b8 ("ptp: netc: add periodic pulse output support")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260720012508.23227-1-wei.fang%40oss.nxp.com
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+v2:
+1. netc_timer_remove(): add disable_irq() before ptp_clock_unregister()
+   to avoid an ISR touching priv->clock after it is freed.
+2. request_irq(): use IRQF_NO_AUTOEN so the IRQ is not enabled too early.
+3. netc_timer_free_msix_irq(): drop redundant disable_irq() (free_irq()
+   already handles it).
+4. netc_timer_probe(): enable_irq() only at the end of probe.
+5. netc_timer_init(): clear TMR_TEMASK before enabling the IRQ.
+6. netc_timer_isr(): return IRQ_NONE when no masked event is pending.
+7. Commit message: rewritten to describe all of the above.
+---
+ drivers/ptp/ptp_netc.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+index 5e381c354d74..1c20d7efab92 100644
+--- a/drivers/ptp/ptp_netc.c
++++ b/drivers/ptp/ptp_netc.c
+@@ -769,6 +769,7 @@ static void netc_timer_init(struct netc_timer *priv)
+ 		   TMR_CTRL_TE | TMR_CTRL_FS;
+ 	netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
+ 	netc_timer_wr(priv, NETC_TMR_PRSC, priv->oclk_prsc);
++	netc_timer_wr(priv, NETC_TMR_TEMASK, 0);
+ 
+ 	/* Disable FIPER by default */
+ 	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+@@ -901,6 +902,11 @@ static irqreturn_t netc_timer_isr(int irq, void *data)
+ 	/* Clear interrupts status */
+ 	netc_timer_wr(priv, NETC_TMR_TEVENT, tmr_event);
+ 
++	if (!tmr_event) {
++		spin_unlock(&priv->lock);
++		return IRQ_NONE;
++	}
++
+ 	if (tmr_event & TMR_TEVENT_ALMEN(0))
+ 		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 0);
+ 
+@@ -936,7 +942,8 @@ static int netc_timer_init_msix_irq(struct netc_timer *priv)
+ 	}
+ 
+ 	priv->irq = pci_irq_vector(pdev, 0);
+-	err = request_irq(priv->irq, netc_timer_isr, 0, priv->irq_name, priv);
++	err = request_irq(priv->irq, netc_timer_isr, IRQF_NO_AUTOEN,
++			  priv->irq_name, priv);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "request_irq() failed\n");
+ 		pci_free_irq_vectors(pdev);
+@@ -951,7 +958,6 @@ static void netc_timer_free_msix_irq(struct netc_timer *priv)
+ {
+ 	struct pci_dev *pdev = priv->pdev;
+ 
+-	disable_irq(priv->irq);
+ 	free_irq(priv->irq, priv);
+ 	pci_free_irq_vectors(pdev);
+ }
+@@ -1005,6 +1011,8 @@ static int netc_timer_probe(struct pci_dev *pdev,
+ 		goto free_msix_irq;
+ 	}
+ 
++	enable_irq(priv->irq);
++
+ 	return 0;
+ 
+ free_msix_irq:
+@@ -1019,9 +1027,10 @@ static void netc_timer_remove(struct pci_dev *pdev)
+ {
+ 	struct netc_timer *priv = pci_get_drvdata(pdev);
+ 
++	disable_irq(priv->irq);
++	ptp_clock_unregister(priv->clock);
+ 	netc_timer_wr(priv, NETC_TMR_TEMASK, 0);
+ 	netc_timer_wr(priv, NETC_TMR_CTRL, 0);
+-	ptp_clock_unregister(priv->clock);
+ 	netc_timer_free_msix_irq(priv);
+ 	netc_timer_pci_remove(pdev);
+ }
+-- 
+2.34.1
 
