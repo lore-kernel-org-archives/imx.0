@@ -1,201 +1,147 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45CE3B5843
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 12:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3213AA4F7
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 14:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785243497; cv=none; b=a+cMrjdv/45NNriCXe342fA7zPuAXOBFjDy7fHhqRscdMxlsh5PKZPCT3QLZE0oS4x+rf0kmGhkLcITDSDxr0F74p3floV4MSbet3nYXubu7DCQiC1tyyeYeMr1Wew4LKSmAFXkr+qiv+6m8oX/GKNZUCm6AglQ0bRyk8oNz/O0=
+	t=1785247712; cv=none; b=Qcet1BuLrq7MXpMDkI5E89yOP6tskYc/KEMT/aoJqrGeSNqh7RVhy3/yyuIjinmVPfSXI08LRs20AV8HAJHlJW2mxRtSP3kxamNtUTTggqMSA/946sD1vVng6fEP7xbtsimwuN3SN34m2nHmnZbxKmq4FNd/28awEWBWzv2kuGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785243497; c=relaxed/simple;
-	bh=tGxFwd4Yde0qH9xNAfdWNzz5M/Wc1+ewUYouZUkWJP8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=tsUL4zl3AClOvOuVb0LTkpxRIY7UnwCEjHEjc3IVzNCX9UF1pNw8LWK80/wEllaqbQcXwHgk56gdd7BVQB3MTu2J/KN7s7EukQ+0Go2Reevje/kHA7PILnWDywUJDJaiALLxcETE3Bq5BOMG3oGIV6Ei0FRI1iJY61Q0fZbQQ4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=awXErIgo; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1785247712; c=relaxed/simple;
+	bh=x2+G/odJw4xHvMsf9arW1NonpHhYnLr/7o4P8OxuveA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qzx7d3wHfrGIMDL2lI2tpSWzPdv87oi7wGunZm3AKySx12QsIadQ7NfzxnYNnVOqDGtLAcXcWZFfdqtryULApvr31fuhvD2VD+KNYC3RVRmoli+50H3zSTGfEZVL3S0eBkpzEXEWK7Ec4H0kGUZdm1iU4Je00wlXTUFzAi0F9cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ca1LMq6V; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="awXErIgo"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4954f5e8020so18781365e9.2
-        for <imx@lists.linux.dev>; Tue, 28 Jul 2026 05:58:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785243494; x=1785848294; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:content-language:references:cc:to:subject:reply-to:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hC8sRjnafAE4kvTJxwUbBr2JgmCMzJbZTFX3udFXll0=;
-        b=awXErIgoo7oc5VqpSj/g6gN6hq9mFofH3UtU/5WYRdCJ7FbfHm/JRL2ZwpHaGAY9c9
-         3F0xvoj3c1fSJJFtIs9rbwZ/nAVQY5/81UFHLpvX5BYv3YN0dl4/3QywFlEk7GqNuxjF
-         uhYUde/opzORfHEsNprwSbuBMn0DF+fqSee0gWOUmEABHzRzkH5aDa905lCBVNPiJpcy
-         DM9IwLuEeH5pE7K/axVPo5e0FmTtLdQdd+Y5XCCOcePAu0lbfzD+/hcWzukZ7BYHfCpY
-         KT0mUOZWMrdftwlVmRPm7KCJ8PNPfmFwqoRI1HAAFPSWRRWE5fI7zcqqEAZ25yde9q76
-         bIDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785243494; x=1785848294;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:content-language:references:cc:to:subject:reply-to:from
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hC8sRjnafAE4kvTJxwUbBr2JgmCMzJbZTFX3udFXll0=;
-        b=iA+rdqPDOxRe/jqDMt5vcH86vY+LWusgnybAFIPjpPoFFy31XeFhnQhn3JdSn5rSha
-         QTEh6mo+fTdMUwcDcWqJLLpdm55Mg4MU374njqnYg8hRVJmYPgxP2KEgwnxR0P8s0+MR
-         UwDT/BjQQEnl9RSukUESFrNFbifuCpAm++q6oQK98C/Xv1RkAHqR8KYfu1mG2UC3y9Kf
-         xcLh0+jY4wQdJ/an5K1h1Xh9p70ZgfUwGw0DG0K5MVMtp/dliyclbQB4Ry6p3Z4LzlcQ
-         4Q2Dj0QHsYraW7F3h2YBDsZI5Ob5Hy0Z+MHF+K8lpJhO/jp1PjJ0rH+nYeaub8bZht5K
-         hDMA==
-X-Forwarded-Encrypted: i=1; AHgh+RpOt3JLVVL4o/z4WbM1G3uJi8+Q6EXJybsPMSjLkLEms5RqF0V0alxaZJj1U9D6TtSFHZA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx5rqBOGqq+3uH1Li/Eqv+FVtJjKZfflOaa+HqbE9U9zpWhnRML
-	Uq23zRhEIp6usKS+VXwnslB33RTDkMlDfVFelXwKNU4OADrk6Sgleu8yNWgFY+B1umY=
-X-Gm-Gg: AR+sD13lDQWsm56neTHobBv+xkGVUULeDiC8o1rRlFL3WSh3dD+5ehXZHYKaXXW1vLM
-	QfyBAqYt3WCuIQND2rCSYdo3QThyGo1J0dQC/Ed84r57oLPSLSDVc62wwGO3AnJMHpRvc+e2PJp
-	KomdI7GwF8MZZvjflQcO1ixccGCZwS8ogcX1AZEDzzxAP9awURVItcvk2Y06c0J88tXH4fTfoyc
-	/5Dbp022PiLpQNPg2Cm7UaGsCHaXyKwH+6QJDBRvh8dLdWQmHFMZU+sRg5CfwEWIF5I39Y1d67D
-	f7uYAfTfvxd6dtVcrtqcyZbSBcsTdwos3OJVZSvY1fL91P6oW58luzGs/nvEE+J3L+5f6/wQib1
-	pW30AFl/zYmUB8ZZYwkSwtK3UM65aFA08v6G++fPSDfLc3Oi9lEt9q3McsoSj6H/tJvZlBql7dk
-	vMDdQLytbDXf7R0e3Ru46ICHOGviSfu0AQScjEpGvjHiC1IZjIOXFtu1HARhuJaw6QfZ6m
-X-Received: by 2002:a05:600c:3b1e:b0:493:bd2a:93bb with SMTP id 5b1f17b1804b1-496c653d055mr24700215e9.3.1785243493668;
-        Tue, 28 Jul 2026 05:58:13 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:106d:1080:5788:c4e1:cf35:7211? ([2a01:e0a:106d:1080:5788:c4e1:cf35:7211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c4615681sm77642695e9.11.2026.07.28.05.58.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2026 05:58:13 -0700 (PDT)
-Message-ID: <df81c03b-6d2b-4c5d-8818-1aa42c146d44@linaro.org>
-Date: Tue, 28 Jul 2026 14:58:11 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ca1LMq6V"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id ED3A54E40FDD;
+	Tue, 28 Jul 2026 14:08:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A4D5F601BF;
+	Tue, 28 Jul 2026 14:08:27 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 80F1C11C141B0;
+	Tue, 28 Jul 2026 16:08:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785247702; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=Jh9FzmUGpN/j0uxY6oTxZkjjR7LOKAjS5e/Hq7TJIVU=;
+	b=Ca1LMq6VAo4ryoLTiBzR+az26ethIPkLJWd0ToGRolUFpp2ImaEurEdvL9kH+hww6USt8q
+	uJL15QpJ+EEoq9d/uzRwWrCh36VNb+kfk01vDRwGsw7e5/UW3wDWIqKhox//OvuztJL8y6
+	1pRVY6bUGBVwIqdt7ucIdHuFhntAQhFltDz5W8CTh15U+qT/dS6tmpDGpjEnwgJBXHWnLR
+	MrBZM24cjOKDozziLRHan4mRCfDeLS3Dq7KpkiRxbCnto7jBO/Lb2Yb+6Go4Jxg4GFTRqo
+	WtJ87LYQTSdVm4UNAMlmebkFzlp3frZEzvDIylwnfy48xrSVa6f+r+c1SUiVXw==
+From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+Subject: [PATCH v7 0/2] dmaengine: fsl-edma: Scatter/gather improvements
+Date: Tue, 28 Jul 2026 16:08:11 +0200
+Message-Id: <20260728-fsl-edma-dyn-sg-v7-0-10dffb4167c2@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v16 3/3] of: Respect #{iommu,msi}-cells in maps
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>,
- Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
- Lucas Stach <l.stach@pengutronix.de>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev,
- xen-devel@lists.xenproject.org,
- Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-References: <20260603-parse_iommu_cells-v16-0-dc509dacb19a@oss.qualcomm.com>
- <20260603-parse_iommu_cells-v16-3-dc509dacb19a@oss.qualcomm.com>
- <3f5c974f-425d-47a5-9fda-e05de1f39d79@linaro.org>
- <fuqnxdknkajqotzmmlknwnthqpku7as5kpvmgogexl5bi7x6y4@tthbasf5lqvc>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <fuqnxdknkajqotzmmlknwnthqpku7as5kpvmgogexl5bi7x6y4@tthbasf5lqvc>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAMu3aGoC/23QTU7DMBAF4KtUXmPk8b9ZcQ/EIrYnrVEbozhEV
+ FXujlOQGuQsn/Tmm9HcSMExYSEvhxsZcU4l5aEG83Qg4dQNR6Qp1kw445pJbmlfzhTjpaPxOtB
+ ypE4zIwCFiR0ndepzxD5938W3999cvvwHhmll1sYplSmP1/vKGdbeny5Yo89AGZXIMHjksdf61
+ ec8ndPwHPKFrP7MH4JiuhV4FbSWwoUYJUhsBbERAFpBVMHZDiwYo2K3I8it0P5ollWwAU10ykN
+ A1wrqIRjGW0FVAbSxBqzyKHcEvRFg55N6vUGAd9qj6AX8F5Zl+QG1uSuvDAIAAA==
+X-Change-ID: 20260428-fsl-edma-dyn-sg-960731e37da2
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 7/28/26 13:34, Dmitry Baryshkov wrote:
-> On Thu, Jul 23, 2026 at 03:17:24PM +0200, Neil Armstrong wrote:
->> Hi,
->>
->> On 6/3/26 09:13, Vijayanand Jitta wrote:
->>> From: Robin Murphy <robin.murphy@arm.com>
->>>
->>> So far our parsing of {iommu,msi}-map properties has always blindly
->>> assumed that the output specifiers will always have exactly 1 cell.
->>> This typically does happen to be the case, but is not actually enforced
->>> (and the PCI msi-map binding even explicitly states support for 0 or 1
->>> cells) - as a result we've now ended up with dodgy DTs out in the field
->>> which depend on this behaviour to map a 1-cell specifier for a 2-cell
->>> provider, despite that being bogus per the bindings themselves.
->>>
->>> Since there is some potential use in being able to map at least single
->>> input IDs to multi-cell output specifiers (and properly support 0-cell
->>> outputs as well), add support for properly parsing and using the target
->>> nodes' #cells values, albeit with the unfortunate complication of still
->>> having to work around expectations of the old behaviour too.
->>>
->>> Since there are multi-cell output specifiers, the callers of of_map_id()
->>> may need to get the exact cell output value for further processing.
->>> Update of_map_id() to set args_count in the output to reflect the actual
->>> number of output specifier cells.
->>>
->>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
->>> Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
->>> Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
->>> ---
->>>    drivers/of/base.c  | 168 +++++++++++++++++++++++++++++++++++++++++------------
->>>    include/linux/of.h |   6 +-
->>>    2 files changed, 135 insertions(+), 39 deletions(-)
->>>
->>> diff --git a/drivers/of/base.c b/drivers/of/base.c
->>> index d658c2620135..ac7961cbab94 100644
->>> --- a/drivers/of/base.c
->>> +++ b/drivers/of/base.c
->>> @@ -2116,19 +2116,49 @@ int of_find_last_cache_level(unsigned int cpu)
->>>    	return cache_level;
->>>    }
->>> +/*
->>> + * Some DTs have an iommu-map targeting a 2-cell IOMMU node while
->>> + * specifying only 1 cell. Fortunately they all consist of value '1'
->>> + * as the 2nd cell entry with the same target, so check for that pattern.
->>> + *
->>> + * Example:
->>> + *	IOMMU node:
->>> + *		#iommu-cells = <2>;
->>> + *
->>> + *	Device node:
->>> + *		iommu-map = <0x0000 &smmu 0x0000 0x1>,
->>> + *			    <0x0100 &smmu 0x0100 0x1>;
->>
->> So the sm8650 PCIe controllers has:
->>
->> pcie@1c08000:
->> 			iommu-map = <0     &apps_smmu 0x1480 0x1>,
->> 				    <0x100 &apps_smmu 0x1481 0x1>;
-> 
-> To silence the warning, update the iommu maps to:
-> 
-> 			iommu-map = <0     &apps_smmu 0x1480 0x0 0x1>,
-> 				    <0x100 &apps_smmu 0x1481 0x0 0x1>;
-> 
-> 
+This series adds support for scatter/gather DMA transfers via dma_vec
+and dynamic descriptor chaining to the Freescale eDMA controller driver.
 
-Will do, I was surprised none of the DT were fixed.
+The first patch implements the .device_prep_peripheral_dma_vec() callback,
+enabling the DMA engine to accept an array of dma_vec structures. This
+callback supports both regular and cyclic transfer modes.
 
-Thanks,
-Neil
+The second patch introduces dynamic scatter/gather chaining, which allows
+multiple DMA descriptors to be linked together without stopping the channel.
+This optimization eliminates idle periods when back-to-back transfers are
+submitted, improving throughput and reducing latency. The implementation
+carefully preserves cyclic transfer semantics and respects hardware
+constraints on platforms with split register layouts.
+
+I tested it on the i.MX93. The dynamic scatter/gather chaining should
+work with other eDMA controller with split register layout.
+
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+---
+Changes in v7:
+- In fsl_edma_prep_peripheral_dma_vec(), make sure that CITER/BITER
+  values fit in their registers.
+- Add the identifier to all TCD of a linked transaction so that we can
+  always identify it when handling the end-of-transfer interrupt.
+- Handle missed/coalesced end-of-transfer interrupt even when the transfer
+  is completed.
+- Link to v6: https://patch.msgid.link/20260710-fsl-edma-dyn-sg-v6-0-831b96be3f31@bootlin.com
+
+Changes in v6:
+- Link DMA transactions in fsl_edma_issue_pending() when they are issued,
+  not when submitted.
+- Add an identifier to linked transactions to handle missed/coalesced
+  end-of-transfer interrupt.
+- Link to v5: https://patch.msgid.link/20260702-fsl-edma-dyn-sg-v5-0-16787185be49@bootlin.com
+
+Changes in v5:
+- Rebased on v7.2-rc1.
+- Add a call to dma_wmb() to ensure that dlast_sga is updated
+  before csr when linking scatter/gather transactions.
+- Don't update TCD registers if updating csr requires clearing the
+  channel DONE bit to avoid a status mismatch in fsl_edma_tx_chan_handler().
+- Link to v4: https://patch.msgid.link/20260518-fsl-edma-dyn-sg-v4-0-8ce7d95b1ce9@bootlin.com
+
+Changes in v4:
+- To keep transactions in order, link DMA transaction to the end of
+  submitted list first, only lookup the issued list is the submitted
+  list is empty.
+- Link to v3: https://patch.msgid.link/20260511-fsl-edma-dyn-sg-v3-0-98a181775dae@bootlin.com
+
+Changes in v3:
+- Fix formatting errors reported by Frank Li.
+- Add fsl_edma_tx_submit() to link the DMA transactions
+  when they are submitted, not when they are prepared.
+- Link to v2: https://patch.msgid.link/20260506-fsl-edma-dyn-sg-v2-0-66439cdd414e@bootlin.com
+
+Changes in v2:
+- Drop the RFC prefix, as asked by Frank Li
+- No code change
+- Link to v1: https://patch.msgid.link/20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com
+
+To: Frank Li <Frank.Li@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Frank Li <Frank.Li@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: dmaengine@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Benoît Monin (2):
+      dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+      dmaengine: fsl-edma: Support dynamic scatter/gather chaining
+
+ drivers/dma/fsl-edma-common.c | 227 ++++++++++++++++++++++++++++++++++++++++--
+ drivers/dma/fsl-edma-common.h |   7 ++
+ drivers/dma/fsl-edma-main.c   |   2 +
+ drivers/dma/fsl-edma-trace.h  |   5 +
+ 4 files changed, 234 insertions(+), 7 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260428-fsl-edma-dyn-sg-960731e37da2
+
+Best regards,
+--  
+Benoît Monin, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
