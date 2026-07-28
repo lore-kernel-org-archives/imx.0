@@ -1,183 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392D63CB56C
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 08:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062BA3E49C1;
+	Tue, 28 Jul 2026 08:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785226714; cv=none; b=tR8NNLRrL6X423BpIW2uYjm9xDHNXFZ9luG40tydTGLV53TP6ed/dbJPsxanLs0psr4gcmgevgBuYWSL26ZKWsA/gISmOSAc7RR7/ClSwwBxtzlV1ZAyfBpxPqbmFFBLJ8N1j95BsdKY1efyBjsxZvpJefEpTkhpl8WuvyYY2p8=
+	t=1785226772; cv=none; b=UGWmiJCK17MN7Hmy1hYRzr2RhBwDoty/pxPOhv0WgQ5RYGVHU3ZAmMhTtPS81BxAHk7C0bidNKEdDTKk24t3lop8qSdOoN1y/MalCUjSkw8+FShu9AXFlQ61nYnAma0e5BwXbdv3W0iktILdYT8104s00WOLFJlVqTLHDURYYmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785226714; c=relaxed/simple;
-	bh=U4auexe6tsrgiDpLtA8k8VTUn4WsVeuh5cptUPdVlRI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Ke1w/z43Tst9zYNoHK++XL5j0J88owo5cO8ajim/8sXyAIdZhiNj0JSwBf6Bwd3tzAh7Hh/YknuJXCZCk8EBnRcQ0jicDgGfhZnRdGzQV5ZD4JNjJGvowLWpgXPcdhsEXpY+iRtJ/Mk/XTG6LYJNtc3Wnccvb5pUaFQWPE85Urw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAdJdyiw; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAdJdyiw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EBA1F000E9;
-	Tue, 28 Jul 2026 08:18:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785226712;
-	bh=P7Ojelg+srxYIimKzpcmD+DSjvlfd5GE9/BYPxlQ0nI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AAdJdyiw/rxhi2QQ5l/TIYL2xj1cEYCtTFImVp16VYOtLdnVmbUlS9E1afLatbnIB
-	 gz88g9Be/wMyV8dSqywF8aEX73YNmGBYte6j2f73u3U420C5h6t2f79/gbs+O+SVhz
-	 e+KnmRok/3zDcvoEqw9+kjVCHGrPTxomHGn8LChImIYBNY1W43D3xSFbblILVX4e6D
-	 dyJ3S5NfQlknX3C8tj2toD8iNZaWdzDNqp9OYg08jUrItnOtHy21P4z9/PYuwng8C1
-	 /lRtR6hvrG92oFworjAD5rlEQrjP8AJfsUerWAGq54iCNetpz/7J7Rjvdbtst+aMIN
-	 THK1lr+g6o9tg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] spi: nxp-fspi: propagate default setup failures
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jiawen Liu" <1298662399@qq.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <tencent_F25742D45315ED400AEA2E39210242FCFE0A@qq.com>
-References: <20260728080443.153827-1-1298662399@qq.com>
- <tencent_F25742D45315ED400AEA2E39210242FCFE0A@qq.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 08:18:31 +0000
-Message-Id: <20260728081832.91EBA1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1785226772; c=relaxed/simple;
+	bh=gPcTEODO5QHfXsCrSNwFtFHTNTQUpFzHaQy/9orEqOY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WY4wmNheM3kAKphf3yfjsoTMitFZkxBLAYWKPi0h4FqHWskWPsQbCoZkt0fpUHvTsRvCTKGVrUxDi1xNuZkBy7Nb7qVw9CvvFgXJn6vTwSJU21TSXeNgUKV0Zjj5mNkBS/DysWCsg3Po25ljpMdIpx5msGcvL7Q9uXx4MzNAFj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaiser.cx
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
+Received: from ipservice-092-209-184-216.092.209.pools.vodafone-ip.de ([92.209.184.216] helo=nb282.user.codasip.com)
+	by akranes.kaiser.cx with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <martin@kaiser.cx>)
+	id 1wod25-00000001A77-3ngN;
+	Tue, 28 Jul 2026 10:19:25 +0200
+Date: Tue, 28 Jul 2026 10:19:24 +0200
+From: Martin Kaiser <martin@kaiser.cx>
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev,
+	vkoul@kernel.org
+Subject: Re: [PATCH v2] dmaengine: fsl-edma: tracing: no ptr dereference
+ during log output
+Message-ID: <amhmDM2DWyL3ngRc@nb282.user.codasip.com>
+References: <20260718130024.341243-1-martin@kaiser.cx>
+ <20260718131453.A94821F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260718131453.A94821F00A3A@smtp.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+Thus wrote sashiko-bot@kernel.org (sashiko-bot@kernel.org):
 
-New issues:
-- [High] Failure in `nxp_fspi_default_setup()` during runtime resume leaks =
-the hardware clocks.
+> However, edma_writel() uses iowrite32() which assumes native CPU-endian
+> input:
 
-Pre-existing issues:
-- [High] Probe error paths following PM runtime auto-suspend guard acquisit=
-ion cancel the pending suspend, leaving clocks permanently enabled.
-- [High] The PM runtime usage counter is leaked in `nxp_fspi_exec_op()` if =
-`pm_runtime_get_sync()` fails.
-- [High] Missing error check for `pm_runtime_get_sync()` in `nxp_fspi_clean=
-up()` can cause a system crash and unbalanced clock disables.
---
+> drivers/dma/fsl-edma-common.h:edma_writel() {
 
---- Patch [2]: [PATCH v2 2/3] spi: nxp-fspi: propagate default setup failur=
-es ---
-commit aea7011ea2d11337a5d6f21669233c5dbd4bf29b
-Author: Jiawen Liu <1298662399@qq.com>
-Subject: spi: nxp-fspi: propagate default setup failures
+static inline void edma_writel(struct fsl_edma_engine *edma,
+			       u32 val, void __iomem *addr)
 
-nxp_fspi_default_setup() may fail while setting the controller clock rate
-or while preparing and enabling the clock. The probe and runtime-resume
-paths currently ignore that return value and continue as if the controller
-was usable.
+where val is always little-endian
 
-> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> index 6be78712b5343..3f1c3ed748eba 100644
-> --- a/drivers/spi/spi-nxp-fspi.c
-> +++ b/drivers/spi/spi-nxp-fspi.c
-> @@ -1361,7 +1361,9 @@ static int nxp_fspi_probe(struct platform_device *p=
-dev)
->  	if (reg)
->  		fspi_writel(f, reg, f->iobase + FSPI_INTR);
-> =20
-> -	nxp_fspi_default_setup(f);
-> +	ret =3D nxp_fspi_default_setup(f);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to setup controller");
+>     if (edma->big_endian)
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does returning an error here
-leak the hardware clocks?
+edma->big_endian is configured from a devicetree setting. It's possible that it
+doesn't match cpu endianness.
 
-Earlier in nxp_fspi_probe(), the PM guard is acquired:
-
-	PM_RUNTIME_ACQUIRE_AUTOSUSPEND(dev, pm);
-
-If probe fails and we return an error, the guard goes out of scope and
-queues an asynchronous suspend.
-
-Devres then unwinds devm_pm_runtime_enable(), which calls
-pm_runtime_disable().
-
-According to PM subsystem guidelines, pm_runtime_disable() cancels any pend=
-ing
-async suspend requests, which might leave the device powered on indefinitel=
-y.
-
->  	init_completion(&f->c);
->  	ret =3D devm_request_irq(dev, irq,
-
-[ ... ]
-
-> @@ -1408,7 +1410,10 @@ static int nxp_fspi_runtime_resume(struct device *=
-dev)
->  		return ret;
-> =20
->  	if (f->flags & FSPI_NEED_INIT) {
-> -		nxp_fspi_default_setup(f);
-> +		ret =3D nxp_fspi_default_setup(f);
-> +		if (ret)
-> +			return ret;
-
-[Severity: High]
-If nxp_fspi_default_setup() fails here, does this regression leave the hard=
-ware
-clocks enabled permanently?
-
-nxp_fspi_clk_prep_enable(f) was called earlier in nxp_fspi_runtime_resume()
-to enable the clocks.
-
-If this returns an error, the PM core aborts the resume and the device stays
-in the RPM_SUSPENDED state, but it doesn't look like
-nxp_fspi_clk_disable_unprep() is called to disable the clocks before return=
-ing.
+Could we check __BYTE_ORDER__ instead (or additonally)?
 
 
-[Severity: High]
-This is a pre-existing issue, but I noticed a potential leak of the PM
-runtime usage counter in nxp_fspi_exec_op() when pm_runtime_get_sync() fail=
-s:
+>         iowrite32be(val, addr);
+>     else
+>         iowrite32(val, addr);
 
-drivers/spi/spi-nxp-fspi.c:nxp_fspi_exec_op() {
-    ...
-	err =3D pm_runtime_get_sync(f->dev);
-	if (err < 0) {
-		dev_err(f->dev, "Failed to enable clock %d\n", __LINE__);
-		return err;
-	}
-    ...
-}
+The potential endianness issue affects only the value that's written to the
+hardware. It's unrelated to the tracing patch that is reviewed here.
 
-Because pm_runtime_get_sync() increments the usage counter regardless of
-success, returning directly on failure without calling pm_runtime_put_noidl=
-e()
-might permanently leak the counter and prevent the device from entering run=
-time
-suspend again.
+>     trace_edma_writel(edma, addr, val);
 
-Could this prevent the device from suspending in the future?
+The value that's traced is always little-endian. We might have to use
+le32_to_cpu(val) in the trace event definition. But again, that would be a
+separate patch.
 
+May I ask that we put the sashiko comments asided and merge the trace event
+fix? (I'm happy to submit another patch for le32_to_cpu in the event.)
 
-[Severity: High]
-This is a pre-existing issue, but is it safe to proceed without checking the
-return value of pm_runtime_get_sync() in nxp_fspi_cleanup()?
-
-drivers/spi/spi-nxp-fspi.c:nxp_fspi_cleanup() {
-    ...
-	pm_runtime_get_sync(f->dev);
-
-	/* disable the hardware */
-	fspi_writel(f, FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
-    ...
-}
-
-If pm_runtime_get_sync() fails to resume the device and enable clocks, the
-driver immediately writes to the FSPI_MCR0 register on unpowered hardware.
-
-Could this cause a synchronous external abort on ARM SoCs, and subsequently
-cause unbalanced clock disables when nxp_fspi_clk_disable_unprep() is calle=
-d?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728080443.1538=
-27-1-1298662399@qq.com?part=3D2
+Thanks,
+Martin
