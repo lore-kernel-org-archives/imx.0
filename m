@@ -1,108 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85DD3FBEAB;
-	Mon, 27 Jul 2026 23:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A32226C385
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 01:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785195662; cv=none; b=AKcqSp57C17JJaoBcm1jrMo+LpJEQqVabRE+4WtJ65u7M96lo4nX7hv8KZMDpMQZWG7lLY2xusHgtYJtvHwi0b/dQowDvJWsaZpQDBYIS8QVH3x5+Yklb+9H14wxWZllbaNsQBXwORAJpy6t0bDApNm3tmHShaSEBafj1fsAkPQ=
+	t=1785201976; cv=none; b=VEC2lrzocagIoASonbwaq+o8X99hhiediEcKIBqhMuBbn8NUitQu6gaKQ4WKEG94Igrl21vhxiTIpPbi7r5Zco8pIzcQTks4uKmDq9pwDZj/EfjDjv8VIhX/MtUN1yCtyEFheHm5zQlgCVoc4OyKeXm3ktZeKO0dMkdsgFvdK/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785195662; c=relaxed/simple;
-	bh=zc8S+Te32538dsqXhNyDDKcl9I5cteXaEMIU9pL6ObQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OEmlYzlN+tHd84l3yzwReHm5wzPAQUoFd3M6sX8gv2ku/9z8xGEm4ntNz1e/LI5jXQcw1j83buluk0OWWaX23KZVO5EgYvv1WI3UmJnzzQQ2yBEXrI1mH3CDPExB/zp7A2W2rnpN7Rdff7kAgHlHzUxCtqWW5O7cmszUUhq3KLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqNRNaMr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785201976; c=relaxed/simple;
+	bh=57edHnPfQ+aD2wL4qUOTWP1fNCiF4jaCA4MN2AcAij0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vBPQkllGzLviGuIvHCKILff1kHiqSLKJbgjoJq56+Hnt2GdiDCQmbMRow4XJF8rLW7d1Kjnre+yKCD8Nc0SCeLAE2vICvy/C4IPTTcNDU2MhtB5X71fQQ9L5+mKeeXsllMwPEZa/Z9aUHIHnbMtx6nGSzFW/Q7YYLbbTvPyg8Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ckTmdxs9; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=hErtWiox; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqNRNaMr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFEF1F000E9;
-	Mon, 27 Jul 2026 23:41:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785195660;
-	bh=+AkDulFJvGbU+T4ibTyIoVY+rmeIInL85BGIirfLA5k=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kqNRNaMrE1Z23E7OwSTuE8VhlwGmYwdoexj10/ehEOPMpB6r9rIS5aigWPz0UrFGP
-	 ZRevf6/7PzYKgG8YmSryF5fLbnPt23wvSxtkYPI2IEPAOwDYxOqjk9UKSXqRTwtYkJ
-	 niKE5vcMKJ2sOrvAwlftF7fAmTiiPoqj0u4U4e7kr0f4Q1X5NWMIyEtPWNi3rKa2pH
-	 bvLPZ7Ge1DzRee5WHPBqKIIqmj8LRU+2YISrm/OQDs814IdAndNM27o1VW5bkvcNwR
-	 XXNF1oE2pejeg6pIkWzrwHDX/KbtLGSoIxRaSb0S37Cv3wsL6Te60OIJ+ipH6JAguM
-	 26eI5t0Hjmiag==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198EC380CED4;
-	Mon, 27 Jul 2026 23:40:27 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ckTmdxs9";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="hErtWiox"
+Received: from smtp202.mailbox.org (unknown [10.196.197.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4h8Hq80jt3zMlGQ;
+	Tue, 28 Jul 2026 03:26:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1785201972;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DYj3Gwonno5tuigqL6BvnWApaq+2uBwSe5vHZ9bElX0=;
+	b=ckTmdxs9OkhWuPopV5aVBYLdi56OHydKkzRRtbTY8T4A3Ptc0tuBM2m9hxcis6VT3HqRBj
+	lhW/s8J892kWxhIECWC5npbZTxko9UerUFAkWIgLWjT0u5AenX6OBaO44m+sxkoeaJgAh9
+	Lt9YfrIYi5lifDN85sk+xK03/xyP9yHMIFEvqlB1rEVogpsHtroWwvBVXabEE00vD2EYRv
+	7L4aD8PeOTBeAv3EVR0bmyTGE8Vd1jOH9PLybGEmOBM+YjAOvvf+/xVlyV0a+O4fdlNp+u
+	BbwtUFXgtvrAXIbvmmNYk3tGT4sa0QwwjgzdQMh3DEOShsiy3ouT03g0eKQLoQ==
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1785201970;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DYj3Gwonno5tuigqL6BvnWApaq+2uBwSe5vHZ9bElX0=;
+	b=hErtWioxNzYcuQSR6cgc6HhLaPgVsgNE/fEjbEgRpLqlojUzXglToYGEZBvNc74x+5aFvB
+	stnAQBGxcLHP5s8ICl817uqN+RatiCaXAaY0KQbo0kDJJEm7h0FYpwm5Dxkts7tEoK1994
+	ycpKjNEdH40z2Aa048E8GKhxQkcidD5WFIugELy7BXuJT5o6Tb7HFvToF8GqUmxf5PZ7sh
+	4L3Wdi/9c+jOYh17SfoZ976Qrrc/O4wjlGGtdDh4BmuH1MtZ33Ygx/wH/8PtJxZhbTzDn0
+	VYPhfLnDrLh+Fzw8j+wqIJ8YYoUSyTLkeYepQJ1KQZub1czTVr5PBWJ8CUvbLg==
+To: linux-pci@vger.kernel.org
+Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Anand Moon <linux.amoon@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>,
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Qiang Yu <qiang.yu@oss.qualcomm.com>,
+	Rob Herring <robh@kernel.org>,
+	Roy Zang <roy.zang@nxp.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Yuho Choi <dbgh9129@gmail.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH 0/2] PCI: dwc: Handle return value from endpoint .init/.preinit callbacks
+Date: Tue, 28 Jul 2026 03:24:23 +0200
+Message-ID: <20260728012548.465139-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH RESEND v4 net-next 00/14] net: enetc: cleanups and
- improvements
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178519562589.1461983.12874776848447820701.git-patchwork-notify@kernel.org>
-Date: Mon, 27 Jul 2026 23:40:25 +0000
-References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
-In-Reply-To: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
-To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, wei.fang@nxp.com,
- chleroy@kernel.org, maxime.chevallier@bootlin.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+X-MBO-RS-ID: 50191466ca9f8db85b8
+X-MBO-RS-META: hmi6jyzzt1u6jydo7geudygbdrddrpon
 
-Hello:
+This is a trivial preparatory change which allows checking
+the struct dw_pcie_ep_ops .init/.pre_init return values.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Currently only the Layerscape PCIe controller benefits from this as
+its ls_pcie_ep_init() may fail in dw_pcie_ep_get_func_from_ep() call,
+but the Renesas R-Car Gen5 will benefit from this next.
 
-On Mon, 20 Jul 2026 09:43:02 +0800 you wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> The first group of patches (1, 2, 5-7) eliminates code duplication
-> between the ENETC v1 and v4 drivers. Since both hardware generations
-> share identical register layouts for MAC promiscuous mode, MAC hash
-> filters, and VLAN promiscuous mode - differing only in register address
-> offsets - common helper functions are extracted into enetc_pf_common.c
-> and shared by both drivers.
-> 
-> [...]
+Since this affects many controller glues and has a huge CC list,
+I am sending this separately from the R-Car Gen5 patches.
 
-Here is the summary with links:
-  - [RESEND,v4,net-next,01/14] net: enetc: extract common helpers for MAC promiscuous mode setting
-    https://git.kernel.org/netdev/net-next/c/2557834ad0ff
-  - [RESEND,v4,net-next,02/14] net: enetc: extract common helpers for MAC hash filter configuration
-    https://git.kernel.org/netdev/net-next/c/0ce10770963e
-  - [RESEND,v4,net-next,03/14] net: enetc: convert ndo_set_rx_mode() to ndo_set_rx_mode_async()
-    https://git.kernel.org/netdev/net-next/c/debf0c7a34fa
-  - [RESEND,v4,net-next,04/14] net: enetc: improve MAFT entry management with bitmap tracking
-    https://git.kernel.org/netdev/net-next/c/6228fc9c2bbe
-  - [RESEND,v4,net-next,05/14] net: enetc: use PCI device name for debugfs directory
-    https://git.kernel.org/netdev/net-next/c/9db43e6f35db
-  - [RESEND,v4,net-next,06/14] net: enetc: simplify enetc4_set_port_speed()
-    https://git.kernel.org/netdev/net-next/c/c969fbc01d9e
-  - [RESEND,v4,net-next,07/14] net: enetc: differentiate phylink capabilities for pseudo-MAC and standalone MAC
-    https://git.kernel.org/netdev/net-next/c/7c9a6ae0edb2
-  - [RESEND,v4,net-next,08/14] net: enetc: remove invalid code from enetc4_pl_mac_link_up()
-    https://git.kernel.org/netdev/net-next/c/59bb3d62489c
-  - [RESEND,v4,net-next,09/14] net: enetc: open-code enetc4_set_default_si_vlan_promisc()
-    https://git.kernel.org/netdev/net-next/c/75e134261f61
-  - [RESEND,v4,net-next,10/14] net: enetc: refactor SI VLAN promiscuous mode configuration
-    https://git.kernel.org/netdev/net-next/c/f7c6dcd6444b
-  - [RESEND,v4,net-next,11/14] net: enetc: move enetc_set_si_vlan_promisc() to enetc_pf_common.c
-    https://git.kernel.org/netdev/net-next/c/ba07e3bef1b5
-  - [RESEND,v4,net-next,12/14] net: enetc: remove redundant num_vsi field from enetc_port_caps
-    https://git.kernel.org/netdev/net-next/c/75b136cf0f6f
-  - [RESEND,v4,net-next,13/14] net: enetc: use alloc_etherdev_mqs() to create netdev for VF driver
-    https://git.kernel.org/netdev/net-next/c/f0c1f31afd97
-  - [RESEND,v4,net-next,14/14] net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
-    https://git.kernel.org/netdev/net-next/c/18bf0ac84334
+Marek Vasut (2):
+  PCI: dwc: Handle return value from endpoint .init callback
+  PCI: dwc: Handle return value from endpoint .pre_init callback
 
-You are awesome, thank you!
+ drivers/pci/controller/dwc/pci-dra7xx.c         |  4 +++-
+ drivers/pci/controller/dwc/pci-keystone.c       |  4 +++-
+ drivers/pci/controller/dwc/pci-layerscape-ep.c  |  6 ++++--
+ drivers/pci/controller/dwc/pcie-artpec6.c       |  4 +++-
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 14 ++++++++++----
+ drivers/pci/controller/dwc/pcie-designware.h    |  4 ++--
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c   |  4 +++-
+ drivers/pci/controller/dwc/pcie-keembay.c       |  4 +++-
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c     |  6 ++++--
+ 9 files changed, 35 insertions(+), 15 deletions(-)
+
+---
+Cc: "Krzysztof Wilczyński" <kwilczynski@kernel.org>
+Cc: Anand Moon <linux.amoon@gmail.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Jesper Nilsson <jesper.nilsson@axis.com>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: Koichiro Den <den@valinux.co.jp>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Magnus Damm <magnus.damm@gmail.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Minghuan Lian <minghuan.Lian@nxp.com>
+Cc: Mingkai Hu <mingkai.hu@nxp.com>
+Cc: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Cc: Niklas Cassel <cassel@kernel.org>
+Cc: Qianfeng Rong <rongqianfeng@vivo.com>
+Cc: Qiang Yu <qiang.yu@oss.qualcomm.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Roy Zang <roy.zang@nxp.com>
+Cc: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: Srikanth Thokala <srikanth.thokala@intel.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: Yuho Choi <dbgh9129@gmail.com>
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
+Cc: linux-rockchip@lists.infradead.org
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.53.0
 
