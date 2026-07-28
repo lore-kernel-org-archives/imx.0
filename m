@@ -1,158 +1,204 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BB941E6B6
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 10:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D8735F5E7
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 10:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785234215; cv=none; b=M0TgaygaeXTEixQzHu6Aumh6KBrSulqbEQfhweZy6O8dYTI35EozHBuTIGSI95uIOd7KIYCamrHlnua4hCh41cUhQcASN6QSKhk9+IuyfA5Mf2VJbQc/3Z2awlJF4YEm+QvSw7aY99c3KKNxhgPhPpG60lXCRrfF48CzXhhWI5I=
+	t=1785234514; cv=none; b=SgmX6BjvBmzRv+sGWruuEIgCXnccUB5Fx0Y6MA7Y8jciPgNQ6l++ZwkRehezPaKHrq+MKP0ZN3FDA7dU50pE1MrXrxbJMKWSCuFkcNL71y1qOXbHtNyqjL6bIDN/KTPh336ZQn3YjbS3A8G4Bz3sx/2Jlk/UroVh1sEKkDL1BJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785234215; c=relaxed/simple;
-	bh=I++X/IkeIPfa0GLwII2IO6WKhHVDz6RkphGXxwfFTmA=;
+	s=arc-20240116; t=1785234514; c=relaxed/simple;
+	bh=ryD6LIpT8rRhdZv2fuyxpSMhPdjuWmTFlsiAA/oKStg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PNcXJ1QjS4tSd22C17EaUJ3DcMcK+n3IaFB19YIqkYqUPQb8SWWwygZm8JQQA3oh9xxitUqSYirt/eGzbsrtJ1wi/luj4wUfdaYFQciLQJkq/jOllGy7++vZjvFyIIXCwXqBnNSdEiRM2S0mIjnCcVW+GRwCoG+SkxHOffAoDt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W1EZVAzU; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=snOa9E4e/2nDjG4QrhPKAffaAVQJmh1ASh+mgCAa+O1WadTS9kdkZzw0mxwDGQYrr94vI4PFVHrdPYUJUOj1r2JWJ2oNWAQ0IdvfbAISLq1CA+eJqq82gZnHnAIg4BfF4KUdeI+hqzGRvUNGE9n9jD4iuvVGXhuSCGxcHAIswuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QxGWqoPJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W1EZVAzU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C051F000E9;
-	Tue, 28 Jul 2026 10:23:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QxGWqoPJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55621F000E9;
+	Tue, 28 Jul 2026 10:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785234214;
-	bh=IOTffybjHGMDNzA1OGE6coV2LPvaSIqpRzDuNrG/TcA=;
+	s=k20260515; t=1785234511;
+	bh=rVXZCecJueW2Xd69nm+9AuctY4ckLwcyM1aDiNa4PY8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=W1EZVAzU6ogDyXx9Y54Mb0nqMT06F7KBUz2jihBmG54hpV3r0WmRe7RPBfyspKbLC
-	 3i1qYdilBfoCl3+JVEcSkYe5tZgF5MX6u3URU/ADROcV/N5qHTPKtANzUylGfXOAF/
-	 SEwRoZPE69gmGYazJv5deb+NWOrclpN0nuA7GVHujYug13wea76UmnU96rW0eoivhh
-	 Eebq8XbQRlHA9gQZvAHGG1BQ8Yi19NaI4KqkfxDt9ftCy02fhaykwuV0pcOnGY/JLe
-	 IUln0LQfAdXH0tdkB2uC1WZMC9mX9gm8JMjqkAVqvp5gTzoDpsSAVM9JglP7htGJDJ
-	 CYXDxX2r0NYzA==
+	b=QxGWqoPJsRbQRT4j0sJEQPzElczWx/ULLXdCqtnhUROhGFSxmHENxbngRyDO1bjvv
+	 yN0MHA2qiKMKdLKxQuIKtNQKRhc6NdqxR8I4MKy0YYGLOIGn2KsbqN3MA4QbQc8EGI
+	 GLh7QhhH/36PZ0TuIR+FtuBw8DDc9n6JAdZ5aZY45dDWsvjccgPopqEQGoDR+xcu21
+	 vhv9fMSn3cMXz7GQ7YCUQG4wMcchiQ3gZrgWAoIdTeg0etlLzS4MzPcNPSYHYOzX9s
+	 v0c2k3AmHJ6ZtOCNh3WLGd04sNRocS0rffjBCo6A7zUqgS2sVl06HDDeStePiTu5t9
+	 AP38jY9mwlltA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/3] spi: spi-nxp-fspi: add per-SoC SDR/DTR clock
- rate limits for all supported SoCs
+Subject: Re: [PATCH v2 3/3] spi: spi-nxp-fspi: propagate clock reconfig
+ failures in nxp_fspi_select_mem()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: haibo.chen@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260728-fspi-clock-v2-1-dbe786a4a6eb@nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260728-fspi-clock-v2-3-dbe786a4a6eb@nxp.com>
 References: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
- <20260728-fspi-clock-v2-1-dbe786a4a6eb@nxp.com>
+ <20260728-fspi-clock-v2-3-dbe786a4a6eb@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 10:23:33 +0000
-Message-Id: <20260728102334.19C051F000E9@smtp.kernel.org>
+Date: Tue, 28 Jul 2026 10:28:31 +0000
+Message-Id: <20260728102831.B55621F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
 
+New issues:
+- [Critical] Incomplete state rollback on `nxp_fspi_select_mem()` failure l=
+eaves cached flags out of sync and the controller permanently stuck in Stop=
+ mode.
+- [High] Error handling in `nxp_fspi_select_mem()` leaves hardware clocks d=
+isabled while PM runtime remains active, leading to deferred synchronous ex=
+ternal aborts and unbalanced clock disables.
+
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but clock configurat=
-ion failures in `nxp_fspi_select_mem()` and `nxp_fspi_default_setup()` are =
-silently ignored, leaving the controller unclocked and leading to system cr=
-ashes upon subsequent register accesses.
+- [High] Missing `pm_runtime_put_noidle()` when `pm_runtime_get_sync()` fai=
+ls, leaking the PM runtime usage counter.
+- [High] The return value of `nxp_fspi_default_setup()` is completely ignor=
+ed, masking initialization and clock setup failures.
+- [High] The timeout error from polling the controller status is completely=
+ discarded in `nxp_fspi_exec_op()`.
 --
 
---- Patch [1]: [PATCH v2 1/3] spi: spi-nxp-fspi: add per-SoC SDR/DTR clock =
-rate limits for all supported SoCs ---
-commit f96188480d6d41456b1f17269268e30b0c1612e5
+--- Patch [3]: [PATCH v2 3/3] spi: spi-nxp-fspi: propagate clock reconfig f=
+ailures in nxp_fspi_select_mem() ---
+commit dbeb737d74251745ba44e92f371ba23d08069151
 Author: Haibo Chen <haibo.chen@nxp.com>
 
-spi: spi-nxp-fspi: add per-SoC SDR/DTR clock rate limits for all supported =
-SoCs
+spi: spi-nxp-fspi: propagate clock reconfig failures in nxp_fspi_select_mem=
+()
 
-This commit corrects and updates the maximum clock rates for SDR and DTR
-modes across various supported NXP SoCs. It adds max_sdr_rate and
-max_dtr_rate fields to the devtype data and updates the runtime clock
-rate selection to respect these SoC-specific limits.
+This commit modifies nxp_fspi_select_mem() to return an error code if
+clk_set_rate() or clock enabling fails. It also updates nxp_fspi_exec_op()
+to check this return value and bail out to prevent accessing registers while
+the clock is gated off.
 
 > diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
 > --- a/drivers/spi/spi-nxp-fspi.c
 > +++ b/drivers/spi/spi-nxp-fspi.c
+> @@ -922,12 +922,19 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f,=
+ struct spi_device *spi,
+>  	nxp_fspi_clk_disable_unprep(f);
+> =20
+>  	ret =3D clk_set_rate(f->clk, rate);
+> -	if (ret)
+> -		return;
+> +	if (ret) {
+> +		/*
+> +		 * clk_set_rate() failed with the clocks already disabled.
+> +		 * Re-enable them so the enable count matches what the caller's
+> +		 * pm_runtime_put() (runtime_suspend) will drop.
+> +		 */
+> +		nxp_fspi_clk_prep_enable(f);
+> +		return ret;
+
+[Severity: Critical]
+If clk_set_rate() fails and we return early here, does this leave the
+controller permanently in stop mode?
+
+Earlier in nxp_fspi_select_mem(), the controller is placed into stop mode:
+
+    reg =3D fspi_readl(f, f->iobase + FSPI_MCR0);
+    fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+
+Since the early return bypasses the exit from stop mode at the end of the
+function, the controller remains stopped. Additionally, f->flags might have
+been updated with FSPI_DTR_MODE. If a subsequent SPI operation matches the
+fast-path check at the beginning of nxp_fspi_select_mem(), it would bypass
+reconfiguration and attempt to execute commands on a stopped controller,
+resulting in a hang.
 
 [ ... ]
 
-> @@ -691,10 +757,20 @@ static void nxp_fspi_select_rx_sample_clk_source(st=
-ruct nxp_fspi *f,
->  	reg =3D fspi_readl(f, f->iobase + FSPI_MCR0);
->  	if (op_is_dtr) {
->  		reg |=3D FSPI_MCR0_RXCLKSRC(3);
-> -		f->max_rate =3D 166000000;
-> +		/*
-> +		 * Use the SoC-specific DTR max rate if provided, otherwise
-> +		 * fall back to 166MHz (limit from IMX8MN datasheet =C2=A73.9.9).
-> +		 */
-> +		f->max_rate =3D f->devtype_data->max_dtr_rate ?
-> +			      f->devtype_data->max_dtr_rate : 166000000;
->  	} else {	/*select mode 0 */
->  		reg &=3D ~FSPI_MCR0_RXCLKSRC(3);
-> -		f->max_rate =3D 66000000;
-> +		/*
-> +		 * Use the SoC-specific SDR max rate if provided, otherwise
-> +		 * fall back to 66MHz (limit from IMX8MN datasheet =C2=A73.9.9).
-> +		 */
-> +		f->max_rate =3D f->devtype_data->max_sdr_rate ?
-> +			      f->devtype_data->max_sdr_rate : 66000000;
+> @@ -1132,7 +1141,16 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, c=
+onst struct spi_mem_op *op)
+>  				   FSPI_STS0_ARB_IDLE, 1, POLL_TOUT, true);
+>  	WARN_ON(err);
+> =20
+> -	nxp_fspi_select_mem(f, mem->spi, op);
+> +	err =3D nxp_fspi_select_mem(f, mem->spi, op);
 
 [Severity: High]
-This is a pre-existing issue, but I noticed that changing the maximum rate
-limit could potentially expose a silent failure path if the clock framework
-returns an error for these newly configured max limits.
+This is a pre-existing issue, but does assigning to err here discard the
+timeout error from fspi_readl_poll_tout() immediately above?
 
-In nxp_fspi_select_mem(), the clock is disabled before configuring the
-rate. If clk_set_rate() or nxp_fspi_clk_prep_enable() fails, the function
-returns early without propagating the error:
+If fspi_readl_poll_tout() times out, it returns -ETIMEDOUT to err, which is
+flagged by WARN_ON(), but the function does not abort. Instead, err is
+immediately overwritten by nxp_fspi_select_mem(), causing subsequent
+operations to execute on a busy controller.
 
-drivers/spi/spi-nxp-fspi.c:nxp_fspi_select_mem() {
-    ...
-    nxp_fspi_clk_disable_unprep(f);
+> +	if (err) {
+> +		/*
+> +		 * On failure the FlexSPI clock may be left disabled, so avoid
+> +		 * any further register access (which would trigger a synchronous
+> +		 * external abort) and bail out.
+> +		 */
+> +		pm_runtime_put_autosuspend(f->dev);
 
-    ret =3D clk_set_rate(f->clk, rate);
-    if (ret)
-        return;
+[Severity: High]
+If nxp_fspi_select_mem() fails and leaves the clocks physically disabled, d=
+oes
+calling pm_runtime_put_autosuspend() leave the PM runtime state out of sync?
 
-    ret =3D nxp_fspi_clk_prep_enable(f);
-    if (ret)
-        return;
-    ...
-}
+pm_runtime_put_autosuspend() maintains the RPM_ACTIVE state until the
+autosuspend timer expires. If a subsequent SPI operation begins before the
+timer fires, pm_runtime_get_sync() will succeed without re-enabling the
+clocks. nxp_fspi_exec_op() will then attempt register access while the clock
+is gated off, triggering a synchronous external abort.
 
-Since nxp_fspi_select_mem() returns void, its caller nxp_fspi_exec_op()
-continues executing and accesses registers in nxp_fspi_prepare_lut(), even
-though the clock is left disabled:
+If no operation occurs, the timer fires and runtime_suspend will disable
+the already-gated clocks, potentially causing an enable count underflow.
+
+> +		return err;
+> +	}
+> =20
+>  	nxp_fspi_prepare_lut(f, op);
+
+[ ... ]
+
+For pre-existing issues not directly modified by this patch, there are a few
+other observations in this file:
+
+[Severity: High]
+This is a pre-existing issue, but does nxp_fspi_exec_op() leak the PM
+runtime usage counter if pm_runtime_get_sync() fails?
 
 drivers/spi/spi-nxp-fspi.c:nxp_fspi_exec_op() {
     ...
-    nxp_fspi_select_mem(f, mem->spi, op);
-
-    nxp_fspi_prepare_lut(f, op);
+    err =3D pm_runtime_get_sync(f->dev);
+    if (err < 0) {
+        dev_err(f->dev, "Failed to enable clock %d\n", __LINE__);
+        return err;
+    }
     ...
 }
 
-Could this unclocked IP block access lead to a system crash (such as an
-external abort or kernel panic)?
+If pm_runtime_get_sync() returns a negative error code, the usage counter
+remains incremented. Returning immediately without calling
+pm_runtime_put_noidle() permanently prevents the device from runtime
+suspending again.
 
-Additionally, nxp_fspi_probe() seems to completely ignore the return value
-of nxp_fspi_default_setup():
+[Severity: High]
+This is a pre-existing issue, but are initialization and clock setup failur=
+es
+being masked during probe and resume?
 
 drivers/spi/spi-nxp-fspi.c:nxp_fspi_probe() {
     ...
     nxp_fspi_default_setup(f);
-
-    ret =3D pm_runtime_put_sync(dev);
     ...
 }
 
-Should these errors be propagated up the call chain to ensure we avoid
-accessing memory-mapped registers when the clock fails to initialize or
-enable?
-
->  	}
->  	fspi_writel(f, reg, f->iobase + FSPI_MCR0);
->  }
+The return value of nxp_fspi_default_setup() is completely ignored in both
+nxp_fspi_probe() and nxp_fspi_runtime_resume(). If clk_set_rate() or clock
+enabling fails inside setup, the driver proceeds as if the hardware is
+fully initialized, which could lead to silent failures.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728-fspi-clock=
--v2-0-dbe786a4a6eb@nxp.com?part=3D1
+-v2-0-dbe786a4a6eb@nxp.com?part=3D3
