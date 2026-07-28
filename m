@@ -1,297 +1,220 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013029.outbound.protection.outlook.com [52.101.83.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8039D3E5EFB
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 10:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785235194; cv=none; b=JZpmbaWd4X0I6IkwY0fgeQFQZT0juyzd7eI0li2ejVGx0ze6ZY125VZxI2HfRpoXQOV8sJWWcVJaWAPB3x4yccG0Unsytz4Mqsh3wdYD+trQk43FR3FDbpNJ51kiOSGmp28JEwcpBlmgTXitTyveAogBSxjwNsu4Rt1O/UwdtuA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785235194; c=relaxed/simple;
-	bh=mxUQnlQSOxQ+Qt6gXpPnHetW0JqV7Pc0c+ZHgP5GFes=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CfnNlB7nrekWslr9q6fVTiVOztCblmjgg3H4jObbps1KS/+KsmALtKC0goAbLvKeUXzIL/B1j24PHBAXIvVBi0Bm0SVJJgi7dxMBiIAoEuLflwlU0IT+nKked9TBY99bOo2GpOuVu+5IYgKzapZGQEb5lm/EP4zdOlVeyFogkr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iNnNA9ef; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RuPTUUCX; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152CF41DE1F
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 10:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785235332; cv=fail; b=WO2n9sjxZ8ngr5DkO7eOdPiDsSp37fbJhp+CDxrWztrlohLkhMs+Bx//jYvwLGsQVyxuo5XQKUo1p5AUrJQ12LTDIg4KGvaszbpCa56Z7psdXVIGXoGDjAhyxhbRXCN+S8wWtnjgAxgp/z9xjKlebwoYDdBOq8uZkmhsafsYC34=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785235332; c=relaxed/simple;
+	bh=cPHx/B0c8WKffrPHKWAi01b/Idc0ydzo5UyvepyLYMo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=hA7a5Gvp1SaK4BXgbpeiD6wYaUF97uRmLzkZmsucdp3iDyL9lPH/fOMLQpzj4SX/EPlJSb543DuDGRFE2Uw7MGdYjWy3CtqC6iyb0NfUYJWICdaHePc3NUIzQifRailUG+H6MbN80W2AJsn63HyDb1dXbAZaS8TmpILaRugfhUc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=DGVEq5A1; arc=fail smtp.client-ip=52.101.83.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iNnNA9ef";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RuPTUUCX"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SA2NFf2606174
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 10:39:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	tSdcsk71nOjiqCkvXi2nOvJunCqAD9QzbH9nuI5oGcM=; b=iNnNA9efeNppXLMI
-	ADfqnOz57Fup/AKKZao5OkovTB2j41hia1B62e6iILnw9Y7pzqFv0wGa10RfB08r
-	vxX9GZWNFUdPU/B5D3JzCTlxx8xlvh9dJ5Z8vqPHZDbmfF3bVqgh5iEz2W9zjQta
-	LcKdd1FRuxNdlJDfz4e3ynGGSscGi5e5wJyV/FFBfES5TElAacixzs3c5wOIp6jt
-	WMFKB3/YaThUZ/7YhzwgW62BP6nQbsPZHRZMUyWxvPEFXBTZpuIGlkZxXbRiOOcL
-	rUDpU8K4mSp/iPWhIAiqao5cGwoTXij3eMc81bs9/5NEFEIt/eKHndwsRCOJk7M7
-	yJCDtA==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fptatg4p2-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 10:39:50 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-385d2703b64so891608a91.1
-        for <imx@lists.linux.dev>; Tue, 28 Jul 2026 03:39:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1785235190; x=1785839990; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tSdcsk71nOjiqCkvXi2nOvJunCqAD9QzbH9nuI5oGcM=;
-        b=RuPTUUCXKA0KUM2Hgn6Xldy8eMVDA/YHRxbmfHdQqTUuLTlWWK5rHs+Irr37lkxkJV
-         2GAhBbf6qQ3gYM8SLwxuTaJzBaxhuOKEwA2BGu8KldrD3sYbTiTyCSm0HDreLr2kX3wZ
-         TmqT6B5T714PyXBk/7BLl38mfz5ZlzsgzFqo7NfzuBtQEHNTMkp2f3fhNbFVrYWDiv4X
-         dOIJ+fbKTb+TDdFMiUwTzTlvSea+yabr457AwSNQl7iMVUB/WsrrmUJkT7IljaUt6SWf
-         Rdx7QP80ACR2yBpnZOQ2xsMw8hwNB1Ogwzy2XZDImPfZQoN190Bi/Wd1HgCrxd9zKlqa
-         Bzbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785235190; x=1785839990;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tSdcsk71nOjiqCkvXi2nOvJunCqAD9QzbH9nuI5oGcM=;
-        b=U8maie2F9c/+K2y7qAND8ssn8bTM3E9rVp/Q9RO45/TUxTnHDvwT4sGtA53HNeRQh+
-         dYTjJHpaq/pDxTqdc20ivkQt9O7qxl9+b9yWVufZkeLI8aWFnfWc5poAf6R0I3ge59F/
-         N8VTWrn+n1Fb1u/nwk0B8yjbQmbNrMYyfH9tmNt/w+3BGdDHv5k2ZtojPw6YeES4Xspd
-         00Q381RKQgL78X7Pu+6uZGnncxNMCVUa4ouEb/9aFZQJhm663NvbkErK5VvTQl9+bbnj
-         QLS/lILz158sBY4Ipvo6a00fI+lwL3LO8NNt5JxUUpD8YvQdJpDnLXkTNJ4ZZ/ZwGnP6
-         5WUQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoWH4xZ2rKd6zeZ2ANrxcYUfk+2tD7+X+ePtUWOhDdLUb18x+UWCmLShrxD91I7d8vzkNs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy7H6hOKURi7tM0pYMa7DC8u6M33k7cZk46T/V+waUokDEctD0p
-	Pg4xRv0gGwNZvo0HamLKK2yYeZ368oaBx33E0pztkd4Rk5fXXK2S3Cwlib8tuAlotpDBsZ9AbYX
-	USk9pRYQ8QwBX35ZqCOcJOOp8/1QAL88lVgAKlln8RdoEXeBOYD3Z3J8=
-X-Gm-Gg: AR+sD12ECCBTKohtlFt0ihFA/kXOEMiLL6HC+6fcdYe36tddBAipJW5KrYkWXpL3u24
-	jSimtg6oCUneLuQRixq1SNItR2VfjaWyI+VM8FkSUsd/Z4USZbHq99GEUJn7l40xi2QwtlPBRVG
-	fuaUMyLYf6RZTdLl7reztiJxmw9yM3dscZmU2Sgcb1+shWGkPiZTaDbV+UEz++znaU8o5WYrMkf
-	mDBQkOhghEFU4h+MtLQTPoKDDFmJqPzjZM+HdUx8Na9lfssHCJM69ybEpdmEY6r7vF8WvsG51sn
-	cEvsqFYXibOXhweociYs37RZZ6/5QtjCVaPuRVFozAZQoGCZ+Vyhy/pNbX6CuZwhB+qK2ETXS9G
-	6e7ygbPJL1MJvjUQHxqphS/QPKUOaZyJFLSxL
-X-Received: by 2002:a17:90b:4ad0:b0:38e:4e61:c9e with SMTP id 98e67ed59e1d1-38f6a36a11fmr1788762a91.21.1785235189908;
-        Tue, 28 Jul 2026 03:39:49 -0700 (PDT)
-X-Received: by 2002:a17:90b:4ad0:b0:38e:4e61:c9e with SMTP id 98e67ed59e1d1-38f6a36a11fmr1788716a91.21.1785235189339;
-        Tue, 28 Jul 2026 03:39:49 -0700 (PDT)
-Received: from [192.168.1.14] ([103.28.245.139])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f08968de4sm4269200a91.2.2026.07.28.03.39.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2026 03:39:49 -0700 (PDT)
-Message-ID: <569bd4d8-2d77-457e-a0fb-388180c34711@oss.qualcomm.com>
-Date: Tue, 28 Jul 2026 16:09:36 +0530
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="DGVEq5A1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sSQHd0zm/tsZl3GZe4ETUrDzmqx8WBo9YcfcaGkY4mUVlmR72I/l+XJR/Do3fLo/u65ZpCHo4QriU1jzH/LXsORFeTLxSNz6uuJHKoNdkSWkYnD2yKkHEkr+Qesszk9LFMxHX9aQfRVy3+W7Jk7fY4eaakg7XJO2YT+cBpl6Yf0ymolOypHW64PckX8VixAtsS9Z/tZA6zJE/NKRmwZ4elSIR7KtTVZCi3si3M+8qD3EBneYMoeqNGfik8sdvkgyUT5mjR4ZwE3c1C/7IZoDLMQRex4qC175KRnqPvZpKXttEwxQfLRtkDdlKBtFLr2tBoNY435HttaJIv9XfcfJoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BT3wuPCocpfi1iaj68+sMtkg3RuwN5M4ai11tGNyBYs=;
+ b=G1fKREojBVydhDaTMKVYIxv+CoVbGO7uuyOcnBtR9rXpDzD4uyITVvOHJ9MFNbq+5FleDUJPxIbTHgHO/cteFBhL2nHqXDP2EqNjvNirPHf/qoU/Sjx5rdgTOkQNO7T92wqxNpNH5/H6quPMtlur5Xs4HsFRZVve3LJMcf+HOYG70n7hk+2nBcTdiZ9q1gb6qoKL8Op/I4GLxLSO6Jhmt0KC06Y+3emaJcJRltrCTj0UKUnOY8EWz1yQHPli6XgLq5aytaqOy35DNb8KzXcUZNqvOpnxx52b1qb4tK0kdVxRar/QdiCI1ZWH2dSGBf8Olqzv3dRzbvxaucvBg1Reww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BT3wuPCocpfi1iaj68+sMtkg3RuwN5M4ai11tGNyBYs=;
+ b=DGVEq5A1CVdCcA570691MLNvRNkCks6hkkGZojPS5dQE9m23bPLBKL2+sLxPRKsL8anxweT0YiuIJ7M+Hp9UtyUaKi3ldZKayGXmFx/QGclp0S2o1T9x2nmaRA3uWYGup9aC6vil5W5SWdQELjD54F16rFj6yjnWISpWkPqRes7KppGkw8CgKhRlZV8/vpJHlLiwjHmrjaS1D2vXw3+hVgQSDyvteC8hyg2XzrF4uxZ5kjAkBHe3uMFqasDTcBRElPKTWx8l/h6rLkCKkY7pYDsIyLvCqHVPyjTAJIIONUYRAOCcfRXr/kPfoUjwwhyM9CFTv6sMZjld23wAHXQP2g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DBAPR04MB7207.eurprd04.prod.outlook.com (2603:10a6:10:1b2::17)
+ by GV2PR04MB11835.eurprd04.prod.outlook.com (2603:10a6:150:2fe::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
+ 2026 10:42:06 +0000
+Received: from DBAPR04MB7207.eurprd04.prod.outlook.com
+ ([fe80::761a:f8dc:80dc:5e14]) by DBAPR04MB7207.eurprd04.prod.outlook.com
+ ([fe80::761a:f8dc:80dc:5e14%6]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
+ 10:42:06 +0000
+From: wei.fang@oss.nxp.com
+To: richardcochran@gmail.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com
+Cc: wei.fang@nxp.com,
+	chleroy@kernel.org,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH net-next 0/7] net: dsa: netc: add PTP support for NETC switch
+Date: Tue, 28 Jul 2026 18:45:41 +0800
+Message-Id: <20260728104548.3301214-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI3PR01CA0008.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:296::7) To DBAPR04MB7207.eurprd04.prod.outlook.com
+ (2603:10a6:10:1b2::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 3/3] of: Respect #{iommu,msi}-cells in maps
-To: Robin Murphy <robin.murphy@arm.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Nipun Gupta
- <nipun.gupta@amd.com>,
-        Nikhil Agarwal <nikhil.agarwal@amd.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-        Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Bjorn Helgaas
- <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-        imx@lists.linux.dev, xen-devel@lists.xenproject.org,
-        Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-References: <20260603-parse_iommu_cells-v16-0-dc509dacb19a@oss.qualcomm.com>
- <20260603-parse_iommu_cells-v16-3-dc509dacb19a@oss.qualcomm.com>
- <3f5c974f-425d-47a5-9fda-e05de1f39d79@linaro.org>
- <0d0896af-a4a5-445d-8db7-fdb9eecd07a2@oss.qualcomm.com>
- <69b1235a-832b-4a00-bcfd-f51991d23488@arm.com>
-Content-Language: en-US
-From: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
-In-Reply-To: <69b1235a-832b-4a00-bcfd-f51991d23488@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDA5MyBTYWx0ZWRfX7HU4Lrn7kn43
- A6WE3afphLdcdc5ozVn4Qe8d3/xKY2JO98fn9yoAAxwd2knXNY/L158Cp3ra/BScQ+E4eNZU7u6
- LaK4v8wzkZ2qn0F6AnuY4qnfHZvtsdM=
-X-Proofpoint-ORIG-GUID: 5lAN-n6PlVLSmNFkK17ZWm0wp82gjxCJ
-X-Authority-Analysis: v=2.4 cv=KtJ9H2WN c=1 sm=1 tr=0 ts=6a6886f6 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=4Zb5+qXS4S4qhaWSJ/zCzA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=7CQSdrXTAAAA:8 a=EUspDBNiAAAA:8 a=g5k_W2lUybaQNBh0X1UA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-GUID: 5lAN-n6PlVLSmNFkK17ZWm0wp82gjxCJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDA5MyBTYWx0ZWRfXzxY+T5idv923
- CgNd3qmWO7IyUGoubqUorhtxVphhYj9Vmwx03O13Uw68IgXvka8ZXEyifvDcuWtau4xKz3XYsDY
- +Se0LtbkOEdXr8tFu8o9UTiHucyAksNGn3pnCXwAqU1b9Ro24b42SKZpC+BwOcc+Z7dfnmnC4/C
- K/JvVV1kMUcxBdnG5gS72g8LmiLQwoVKEHeqzmGeAbLxb8NWLnQqNH9koZ001ZE9QxtD8GK+JyQ
- CCmdtSQSP1q5OzDCdzJvmek6AW/+w9f840RIq0ftv3E4GQ1nATspt4AMHQz9yjkPRo6Tfl7T8lE
- NKiRNf67G5iznkLXVC85w6DyAvpdlajdCcTUcFVZhrl1qs6gGrSeBfH3l6a7mruLxU/xCVQe5ou
- EIP+jAr7n7q/l8/UUN0AB8ljNmFSMwH08q5tdRC3HlwR0pGmJxLzebO0X5SawAvJI4GVKYa12mv
- NIrUv1gF/5PGjcANfXQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_02,2026-07-27_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 priorityscore=1501
- impostorscore=0 malwarescore=0 bulkscore=0 suspectscore=0 spamscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607280093
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DBAPR04MB7207:EE_|GV2PR04MB11835:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a0de393-3861-4cfc-d587-08deec94de17
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|366016|1800799024|7416014|376014|56012099006|10067099003|11063799006|6133799003|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	RTkmYBLVYC/H0LktXtpBl22N04edRoTLyiJx8Dvpe5HmeOjMNIsWhOEoKSixmDCfiBCJLRJcmHUNbe7JZgDnuhVBdkmAii+sYJLNbDhdueQTVOGkAcpwsDB4HZvbVNyWPQCOxKR1/dJS2C9YYz28xAMVL3xMYIPNcqstWfbQXvrP2b1aZPyJjrh4h5n1mZ8qQyQVSefsMfOpIdGKePPimxrZG7ovgEcOH0c+mT34WJGxntaagMukiKlymeQKFqTJVd4NeLuEhcUjpS0lA5eTwByFg6S9aWeYaO9t6ps6qel49ueXvjNJFMv7tBtQCI+hUq/zC2UN+Hyhd7aPxuT/DtSgY30rda65NGhyjxcPBbNYc6InMFc1bx/2Pqjsozqs6Hqfh68cUCf6JV9nCazQznTJj6JvapJB2WZ2lZaB2lbwCTWaZnyaZ6eb/DatvnaMmDNyqj+TLX7rweTHo02mCTf9EaBVWiZruRXK1jbowkUXS+8bu8bs/xtusH4zu2OfeYoPMoYtdhosDvuKf2X7xOYGvGHNBHFrw9/7PFkeERUnrjzdVlJlUyILwSLVW9+nj73ks5DzuZkEZkUZyGct+RmCXbe6qI4E54tud2eQbVdKBxyk5AlnHQhhlaXcY4IxSzj29WwxuyXI3LJkQBZPzDlz0DVxUZPuCZhUNhcuCN+7cDoM8HitWzt4zoc5lIFIxqgdtljaCRVybYr1qGqq5w==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBAPR04MB7207.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(366016)(1800799024)(7416014)(376014)(56012099006)(10067099003)(11063799006)(6133799003)(18002099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5uIUsLl4iXAbEnDXVOP0/O5WsM6MotPDg1jloCf+gbgd/E0tqLvReyBLVKHe?=
+ =?us-ascii?Q?nuXozJgRQO1XQpYpEOXmFPEwno7DfVhnqaj5AD+et5pws33EcVrgOtcm0pPv?=
+ =?us-ascii?Q?XVpZVvdV9OnsiDP8EVDw7dY9oHKSLq2zAj2RBvFv7MSjcErX2W9IMAdjmuTA?=
+ =?us-ascii?Q?Gn9jmd3iEAeDDpjU+eN/A914C8mT2hx3fWsj/0urxX/hsUkj9YQhckhS0c7P?=
+ =?us-ascii?Q?/xLeIzxSuwb6pbtiV6x/6VcwY8RTmAl2dGTq2qch0U4p7v5zadOgnonUUZDq?=
+ =?us-ascii?Q?TroeiIcM94HpdYjbYpJEuff/4xjB/78OuKXPSQQV5BM4nuUnqCNbPDNFrklF?=
+ =?us-ascii?Q?WYW7YiWEFO2gIXDTIxli5gYZ0RwwlKYr8nyFrWWtRkoaDrEJPe8p6G5bSWha?=
+ =?us-ascii?Q?GjHbtLSBo9hyqeYgiQdzcvDe9G+4x7sY8sGe15ZT9eo3iD19sNCoWByJj0mT?=
+ =?us-ascii?Q?YFqYifCo6knu48hfvb7qVqXFr4YwL08Fq9nyXrg8a+H6BP61pNFOUhwD/IfO?=
+ =?us-ascii?Q?ZsYI9J2+mKrAaEEG/iXSsqLF0em6mKA1d6tW6blaAkXIc7VA/YN9d18lHvbn?=
+ =?us-ascii?Q?ZHCsPfKJN9VmYPZmMUQEtBZkRWAFzg7XtRxNc3wsk17GpF+M99jUpuhT9gQA?=
+ =?us-ascii?Q?j0ErmmU/yB5sjWJ/BQfAhkG3JYPb0yXvWNJ6IZlkkSnQJYegCvXwy9mFyZm9?=
+ =?us-ascii?Q?jFo3ppr5i1B3jIjxCN+51+F6j1MWVX3J4K4wwGXvDPLYNtm3mOXkkXS+K2K9?=
+ =?us-ascii?Q?FFGXZRN99bLopBCwuDOT5pWwdJICBpEN3LaddQ03DIZaxjMnQP7UjyqOBjjm?=
+ =?us-ascii?Q?uWA8quNptkB59d2cRTXRFb8G9FxkKBTjGm6m6pfhMWmk9qZpkxQEldXobRjJ?=
+ =?us-ascii?Q?rgWy34piN8If53a6LDHKbNl5aiqbV0TA1ZvkTgnFezdBJKwSJvbpPpdCtyWW?=
+ =?us-ascii?Q?61i1WCep7aq7qqhF87UxoyKKgb63pfB0udWONVv5SQop6M25QkonTJPBcDTj?=
+ =?us-ascii?Q?PqJivEg0+o5OuWi/SEgZ4dmdWzEbp+UwqG5NQ2ZozrXK1zJfgPlHql6atafK?=
+ =?us-ascii?Q?v9n3BamWTkvVag0sDdrJ+EWSeUpFHxyDb9I/fgDzLY5hqOdu3MuA5rN3IjlM?=
+ =?us-ascii?Q?t0a95pJxpe1cSIw4cwMksqqp41K6MP9PNU6pDAXBFPcQclkS+jr9ubZBfB7n?=
+ =?us-ascii?Q?wPzksxqNZ95xL5Ikm9z0JbeNzjhRhYz0JkyUWgd+p47bmpC/TvgsXa+7lYOz?=
+ =?us-ascii?Q?uJPA5aZFUVVN4pA3ETE4P0KxHUlPwUcxzXzKjIlQrqxQORnTYC5Q44S1nyqI?=
+ =?us-ascii?Q?jExI1mzjPlVvDVqu0W76TbfA32uzhNTkZi0k9StLNPnBwV1G1B8aM7t98zIU?=
+ =?us-ascii?Q?yay/YcqMmN7GhgGUDFx+ghm5uhSW0rh+kmnJtzlrBXbN4oR0CJ6pkk8uPP40?=
+ =?us-ascii?Q?LHUjLbeicnOfwB2s6Iyq0xXRCLGG05xO+e1LxzzDsJ9U0zWcMCQHepHS3cCJ?=
+ =?us-ascii?Q?IYQIlaqTfYvF2Bc3v5fWxwyaMA5aQgsMEJY2zVHVfCdwr954hWeq8v0ZTpqC?=
+ =?us-ascii?Q?y8ra0pgZPaDTn4/aWRQg2nyJLrNEa+j3INPM4soxg7sBAWjW8HGFEtEMHrrF?=
+ =?us-ascii?Q?EqMl5V1wmpeI1gzDGzFz/4O1kgUOZeeu1WhjSrBXSN8gV43BKoXbPcekRi8q?=
+ =?us-ascii?Q?06ezBZOtaDsypeenRLnsqcqE80Fu+LXkNVv7gxrkazDNFM29tMjmFrhyUJRa?=
+ =?us-ascii?Q?9bvHYXTVL0t8Jl7DuvQPR3g6zdZcjplmCS4DxiT01wtrzANWbh0e?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a0de393-3861-4cfc-d587-08deec94de17
+X-MS-Exchange-CrossTenant-AuthSource: DBAPR04MB7207.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 10:42:06.1234
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gWAT2I22Kq9DZz0yeOlnmnudTiucXdxvmJ4szBHkE79xqmKksE38FpeMW5XQLhdZYln/ooSVCK9bGr5Luh4u/obPNI/4T4Y4KhZ+vQ26M6JK8lCgqpa/rBOpCnSHh82G
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11835
 
+From: Wei Fang <wei.fang@nxp.com>
 
+This series adds PTP hardware timestamping support to the NETC switch
+DSA driver. The NETC switch has no time registers of its own; it shares
+the PTP time base of the NETC Timer, which is a separate PCIe function
+driven by the ptp_netc timer driver. The series therefore first prepares
+the timer driver to expose the current PTP time to other drivers, then
+builds RX, two-step TX and one-step TX timestamping on top of it in the
+switch driver and its DSA tagger.
 
-On 7/28/2026 3:34 PM, Robin Murphy wrote:
-> On 28/07/2026 5:05 am, Vijayanand Jitta wrote:
->>
->>
->> On 7/23/2026 6:47 PM, Neil Armstrong wrote:
->>> Hi,
->>>
->>> On 6/3/26 09:13, Vijayanand Jitta wrote:
->>>> From: Robin Murphy <robin.murphy@arm.com>
->>>>
->>>> So far our parsing of {iommu,msi}-map properties has always blindly
->>>> assumed that the output specifiers will always have exactly 1 cell.
->>>> This typically does happen to be the case, but is not actually enforced
->>>> (and the PCI msi-map binding even explicitly states support for 0 or 1
->>>> cells) - as a result we've now ended up with dodgy DTs out in the field
->>>> which depend on this behaviour to map a 1-cell specifier for a 2-cell
->>>> provider, despite that being bogus per the bindings themselves.
->>>>
->>>> Since there is some potential use in being able to map at least single
->>>> input IDs to multi-cell output specifiers (and properly support 0-cell
->>>> outputs as well), add support for properly parsing and using the target
->>>> nodes' #cells values, albeit with the unfortunate complication of still
->>>> having to work around expectations of the old behaviour too.
->>>>
->>>> Since there are multi-cell output specifiers, the callers of of_map_id()
->>>> may need to get the exact cell output value for further processing.
->>>> Update of_map_id() to set args_count in the output to reflect the actual
->>>> number of output specifier cells.
->>>>
->>>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
->>>> Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
->>>> Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
->>>> ---
->>>>    drivers/of/base.c  | 168 +++++++++++++++++++++++++++++++++++++++++------------
->>>>    include/linux/of.h |   6 +-
->>>>    2 files changed, 135 insertions(+), 39 deletions(-)
->>>>
->>>> diff --git a/drivers/of/base.c b/drivers/of/base.c
->>>> index d658c2620135..ac7961cbab94 100644
->>>> --- a/drivers/of/base.c
->>>> +++ b/drivers/of/base.c
->>>> @@ -2116,19 +2116,49 @@ int of_find_last_cache_level(unsigned int cpu)
->>>>        return cache_level;
->>>>    }
->>>>    +/*
->>>> + * Some DTs have an iommu-map targeting a 2-cell IOMMU node while
->>>> + * specifying only 1 cell. Fortunately they all consist of value '1'
->>>> + * as the 2nd cell entry with the same target, so check for that pattern.
->>>> + *
->>>> + * Example:
->>>> + *    IOMMU node:
->>>> + *        #iommu-cells = <2>;
->>>> + *
->>>> + *    Device node:
->>>> + *        iommu-map = <0x0000 &smmu 0x0000 0x1>,
->>>> + *                <0x0100 &smmu 0x0100 0x1>;
->>>
->>> So the sm8650 PCIe controllers has:
->>>
->>> pcie@1c08000:
->>>              iommu-map = <0     &apps_smmu 0x1480 0x1>,
->>>                      <0x100 &apps_smmu 0x1481 0x1>;
->>>
->>> and
->>>
->>> pcie@1c00000:
->>>
->>>              iommu-map = <0     &apps_smmu 0x1400 0x1>,
->>>                      <0x100 &apps_smmu 0x1401 0x1>;
->>>
->>> and apps_smmu has #iommu-cells = <2>, but gets flagged at wrong:
->>>
->>> [    7.538800] OF: /soc@0/pcie@1c08000: iommu-map has 1-cell entries targeting 2-cell #iommu-cells, treating as 1-cell output
->>>
->>> Returning false in of_check_bad_map() triggers:
->>>
->>> [    7.642680] OF: /soc@0/pcie@1c08000: Unsupported iommu-map - cannot handle 256-ID range with 2-cell output specifier
->>>
->>> I don't understand the issue here, we use 2 cells as expected by
->>> the iommu-cells, so why is it wrong ? can somebody explain in
->>> comprehensive words ? I'm super confused, it worked like a charm until now.
->>>
->>> Neil
->>>
->>
->> Hi Neil,
->>
->> iommu-map = <0     &apps_smmu 0x1480 0x1>,
->>              <0x100 &apps_smmu 0x1481 0x1>;
->>
->>
->> Entries here are not 2-cell format, Even though apps_smmu declares #iommu-cells = <2>,
->> this DT only supplies one output cell (0x1480/0x1481) — the trailing 0x1 is the length field,
->> not a second output cell. (<id-base phandle out-base length>)
->>
->> The new code detects exactly this pattern (same target phandle across all entries, length always 1)
->> and falls back to treating the map as 1-cell output for backward compatibility — hence the pr_warn_once.
->> It's harmless and expected, your RIDs still resolve to the correct SIDs (0 → 0x1480, 0x100 → 0x1481).
->>
->> The second message is a different case and shouldn't be coming from this same map — once the 1-cell
->> fallback triggers on the first entry, it applies to the whole map, so you shouldn't hit both warnings
->> together on the same node. That error only fires for a genuine 2-cell output specifier combined with
->> an id_len > 1, e.g.:
->>
->> iommu-map = <0x0 &apps_smmu 0x1480 0x1 0x100>;
->>
->> (<id-base, phandle, out0, out1, length=256>) — which isn't supported, since there's no way to
->> linearly scale a multi-cell output specifier across a range of IDs.
->>
->> Are you seeing that second error on the same pcie node, or a different one?
->> If it's the same node, can you share the exact iommu-map entry that triggers it?
-> 
-> I think Neil is saying he bypassed the fallback check so that it *did* try to parse the given map with the real #iommu-cells=2 in precisely the way you've shown - so even if it could have got past that point, it would have then blown trying to parse the second "entry" of just <&apps_smmu 0x1481 0x1>, since 0x1481 almost certainly isn't a valid phandle to read an #iommu-cells value from.
-> 
-> Cheers,
-> Robin.
+The series is organized in two parts.
 
-Right, I get it now, so when it tried to parse with iommu-cells as 2,
+Preparation of the NETC Timer driver (patches 1-3):
 
-iommu-map = <0     &apps_smmu 0x1480 0x1>,
-            <0x100 &apps_smmu 0x1481 0x1>;
+  1) Convert the open-coded 64-bit register accesses to the
+     ioread64_lo_hi()/iowrite64_lo_hi() helpers, wrapped in
+     netc_timer_rd64()/netc_timer_wr64(), to reduce boilerplate and make
+     the access width explicit. No functional change.
 
-Above tuples would look something like <0  &apps_smmu 0x1480 0x1 0x100>, where 0x100 from next tuple would be seen as length. Hence, the above error log.
-And the next tuple <&apps_smmu 0x1481 0x1> won't be able to get parsed as you mentioned.
+  2) Drop the pcie_flr() call in probe. Per the reference manual, function
+     level reset does not apply to the Timer as a supporting function, so
+     the call has no effect.
 
+  3) Export netc_timer_get_current_time() so the switch driver, a separate
+     PCIe function, can read the shared PTP time. The helper is declared
+     in <linux/fsl/netc_global.h> under CONFIG_PTP_NETC_V4_TIMER with a
+     stub returning 0 when the timer is disabled, so callers need no hard
+     dependency on the timer driver, and returns 0 when the timer has not
+     probed or is gone so the caller can handle it gracefully.
 
-Thanks,
-Vijay
+NETC switch PTP support (patches 4-7):
 
+  4) Track the host flood rule by entry ID instead of by ipft_entry_data
+     pointer, freeing the descriptor as soon as the hardware entry is
+     committed. This removes a long-lived heap allocation and lets
+     netc_free_host_flood_rules() go away, in preparation for the
+     timestamping rules added next.
 
+  5) Enable the ingress port filtering lookup (IPFT) by default. A frame
+     that matches no entry is simply passed on, so leaving the lookup
+     always enabled simplifies the logic and avoids tracking whether a
+     port already has an IPFT entry, which the RX timestamping rules rely
+     on.
 
+  6) Add two-step TX timestamping and RX timestamping. RX installs IPFT
+     rules that redirect PTP frames (L2, L4 over IPv4/IPv6, event and
+     general) to the CPU port; the hardware prepends a To_Host tag with
+     the 64-bit ingress timestamp, which the tagger hands to
+     netc_port_rxtstamp(). Two-step TX clones the skb, allocates a 4-bit
+     request ID carried in a To_Port subtype 2 tag, and completes the
+     clone when the hardware echoes the ID and transmit timestamp back in
+     a To_Host response frame.
 
+  7) Add one-step TX timestamping for PTP Sync frames. The MAC updates the
+     correction field in flight using the per-port PM_SINGLE_STEP register,
+     which is a single register that must be programmed per frame, so
+     one-step Sync transmission is serialized per port with a per-port PTP
+     spinlock guarding an in-flight slot and a deferral queue. This patch
+     switches the Kconfig dependency to PTP_NETC_V4_TIMER because it reads
+     the shared PTP time through the helper exported in patch 3.
 
+Wei Fang (7):
+  ptp: netc: use ioread64_lo_hi/iowrite64_lo_hi for 64-bit register
+    access
+  ptp: netc: remove unnecessary pcie_flr() call in probe
+  ptp: netc: export netc_timer_get_current_time() for cross-driver use
+  net: dsa: netc: use entry ID instead of pointer to track host flood
+    rule
+  net: dsa: netc: enable ingress port filtering lookup by default
+  net: dsa: netc: add PTP two-step timestamping support
+  net: dsa: netc: add PTP one-step timestamping support
 
+ drivers/net/dsa/netc/Kconfig          |   1 +
+ drivers/net/dsa/netc/Makefile         |   3 +-
+ drivers/net/dsa/netc/netc_main.c      | 135 ++++--
+ drivers/net/dsa/netc/netc_platform.c  |   1 +
+ drivers/net/dsa/netc/netc_ptp.c       | 663 ++++++++++++++++++++++++++
+ drivers/net/dsa/netc/netc_switch.h    |  49 +-
+ drivers/net/dsa/netc/netc_switch_hw.h |   5 +
+ drivers/ptp/ptp_netc.c                |  86 ++--
+ include/linux/dsa/tag_netc.h          |  42 ++
+ include/linux/fsl/netc_global.h       |   9 +
+ net/dsa/tag_netc.c                    | 192 +++++++-
+ 11 files changed, 1091 insertions(+), 95 deletions(-)
+ create mode 100644 drivers/net/dsa/netc/netc_ptp.c
 
-
-
-
+-- 
+2.34.1
 
