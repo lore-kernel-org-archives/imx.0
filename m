@@ -1,63 +1,65 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013057.outbound.protection.outlook.com [40.107.159.57])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011039.outbound.protection.outlook.com [52.101.65.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACD8200110;
-	Tue, 28 Jul 2026 15:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EF1305057
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 15:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.39
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785251868; cv=fail; b=IQ7SBMBLqoZXgRJEFtSMA+9zn+cstM0L61qDsGGxnGZOo73Kd+eN1TiYDtct0BR8SMxQ9vHpnQG+WfJnAIvO8v439u/1rpbpmSkOz/u4/YpEiDscSoLNZuVhdBq4ICQsB4qY4cc2W8ZYEsWy3vdEk2ts0upc5y7KmnWdj3EwqFA=
+	t=1785252468; cv=fail; b=jKuadnoU3vN7oqBuxBX0zuYrnArqcufVUWI+DfqzNVjliwIYPlW4lH0u6qVMEFNNgswrdhd2jU65XYDJsW+WeGGnbXGvSTdVlOKlBOzfYha6vcA+ZSZlA9WE7ICppAE8BdR6EIKNrLIpqghpsyqLJIP7aTWW7hhDhzyUKKObPok=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785251868; c=relaxed/simple;
-	bh=hyMd6NI6gErZea8fjP2ZKqARFcR7yuhHzXGKV/MjQF8=;
+	s=arc-20240116; t=1785252468; c=relaxed/simple;
+	bh=aweQX5eOEA7bSa41IyF4hcgyfa84aSZP4ELDry0qMA8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Imt+LNQNx0zcKoYCMF3oJppZpmhAbqGskn6rHut4Mz5bXMkxdK1dvZl8K3AtpcS2odyLc3aiS5g5+5z/M6SvBsEqrA4af/XGguvcqcmx7Tw0X3B1FqmLqz1C+Ywp5LE0mprbl5iWacZg+CDNS/DFL1StlKLiqzqBXs/57Dd53z8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=P25gQu/u reason="signature verification failed"; arc=fail smtp.client-ip=40.107.159.57
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bKp72PJ2Tar31osO/+z7Ke+IgP+NnidibIiI9qlw3vQ/EaSlfNBIpkESh/SZjlMED0bxxQ4GF8vii7bMo0XvOT2CbY57HE9N0yrMfXgS6ZRRRPEWcWsw/AUlrcy5hlu7n8fdJxLNOgBZZr4aAwYRpq5WcXx5eANSkv7/yNEZqXw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AW4ZGLCT; arc=fail smtp.client-ip=52.101.65.39
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="P25gQu/u"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AW4ZGLCT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jB2B1CgIrgPwMG2FHdYBK0ybE2iYP3mgoUbKcKFLMcHrfOIoJzatPPUeDZnVWj3tV22BoWgBUd4Sxy3M0eEu1Ln54JOwcuF9rN0h2dX6Ne+Fq6zDvxYWe91moxcVfW6hjeV6XeV2qun0l7zPNZ1sar32OqzqqkndO3KDPfd7aY17v5ITNoy67jbOtzuLca95ZWghqXNhXAGuBQmlIcU6xpEvDfnAkRYUTZ+qduVE9I9BXjOBuvwvlnLY3X395qBmPe1VnU+xylq72HttCu8tdNGaJ9bnmmDp+Ubv6AnBY9bmMzyqjoiqAcTW1DzL/BjaeNorNTypsY6R/h2A5bRodg==
+ b=KRXLlIoZVcJlzfCq3DkmedHJNsG7wlxr75BnBAXt3IcPRgdAvTyPnhE4o3VppKEYnNol20daclv/1F9S1UNZi+l3Am6i9rkNriiqYvZgW6TFN2cbVUyTkziklmK00Z3+4oYkrFFThQAHcnHW++5Z7ZrwoAm7oGj6Z/+RJqbx4u6GLiVvsJB/UfDTu37yLUK0tKriRPX+aBsMwvL88zgJp5Rjwm6J5xrZadxd8t5RhSa3GFn2uI2XD57rAy+mmIemAP+QXGdG3PIfyzx4TR10vknspq9LZUq2W8vZS9MZajjGk0m5mGR+hquo/4G1YtipdK6XTTqe+H4HjpB855BKxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R6BO5ZobG43EU4zN4VsRVWjyY8z47lz74c7EDUvV/aU=;
- b=ja0q7vQnPCy0z2W/d+ak8b15fC74+h9rPeK2ZGYnf+tna/eX9lM8Ebri7lQmy/b4Dyi7XUINIMhyfv0M8LelWtgF+Hm/ZsFbX2TAUxe7165SQd/vtiuHyYjr/bM8laTbtM1QDQ2L+omKHLFDmZKLfqXetpawC/a/0bkZMeP/kbFwCRW2Sq7v129yiTaK02MR0kXn6mypSzf1hWpSira2jvoW4OAUToWoZPh9QRYQbeUymdQIvty4zrDL0H3eeIIGYJSLdJg6hdcQkq2/r8uH70V+Kme+F9C8JRRbIrTAUZdrfmiNvWbjv2AOQ0RB76QQIHbYQQOap47EiR+klqozdA==
+ bh=vcFCXglmhEg4hKzkFa9RNM2thtTsCGhSB/aHDJhlYV8=;
+ b=cEJPCFDlkPQJ2LHFrt9QKqr0IRFs8IM3i/5ij4PwG31XEV8rSA4ChihaN8MExfiBMLOHpXQC88tMpIIudgX2S6p80pR+jXElO2+4pZ5smvYw7tCeTPhaA1KG5EsIZMR9tgGK5ojmNjtwET23bc1CYOlKy5e5NvTPR4pzlAjhYzTq6I4vGqghQDtyrvHTYuwn2oKADX5gGAhoFOopcsDHq22hAnEEx0ESroAS/e7QI00awLkhAXyAbFqVll7/K3br6Z/LlZXon0j8kIXOa/L2O2kYxS1SS2dIY8hQBcDLGzpiYl/SRT8DVLYfVeFIBTA5MCDbTHnTLEce1wv/99SvmQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=R6BO5ZobG43EU4zN4VsRVWjyY8z47lz74c7EDUvV/aU=;
- b=P25gQu/uXJxLJjQp66lT8IX549l93+bDnufTVlYh5rBks6KTOQiis68ss5OtOAFarfJrkN9oE+sNnlCJXCPI62/yIdiBOQWXUMRdMWswRZ46AhAChLhc0O3vl6VPgkL6kG/PMGsTZElhVusV0o67usClr2XG/DB6YAaMfsVsUVcvGUEBgeVTPq2WJg1rW5uLiCaCkC9HL7iH7ryanApYCEa0ntx2iPTdykOnexbUCAMr8Wsz4fuLnVW2Qywbi0CRAOTQV0JVz37BRFttqlW7oy+GDBTpD1REC1wUMCkwLlMMzpeX1tmPESQb+MtYT4INIY5Z8hpkT6ni3VcUDOHH/A==
+ bh=vcFCXglmhEg4hKzkFa9RNM2thtTsCGhSB/aHDJhlYV8=;
+ b=AW4ZGLCT8OQtJKObgFoRGKmhjTIhb53sku2VUGRPQjlaZsiovIXARPkl4nF1+9WFA76niSJ86CJVW4Amq05opxp388JW1kOSA85P9eJYQ0O9frKKVKd8QEnAyxXuQti3dgAVEqkradacwuInqbKC/UPn/vwVYsk555L0sWfH1ma351OCLTYXeRFsnHDulrWu+Z1E9FrvF/UxDG/0Df4PKmGiX1+djZckcyRSv1R7OAR0MN2EH+k+x2BQBDY1r4Ka/XZJk9IFf0WW+M/18MzFNmShhjiOj3H/sqovS7okSsgr1XMN8JseN/mEJHceUW/DJd4mWmbwPExd3wJfJZ+Qtg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VI1PR04MB7184.eurprd04.prod.outlook.com (2603:10a6:800:125::15) with
+ by GV2PR04MB11589.eurprd04.prod.outlook.com (2603:10a6:150:2b1::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
- 2026 15:17:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
+ 2026 15:27:42 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 15:17:43 +0000
-Date: Tue, 28 Jul 2026 10:17:36 -0500
+ 15:27:42 +0000
+Date: Tue, 28 Jul 2026 10:27:33 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: haibo.chen@oss.nxp.com, imx@lists.linux.dev, Frank.Li@kernel.org
-Subject: Re: [PATCH v2 3/3] spi: spi-nxp-fspi: propagate clock reconfig
- failures in nxp_fspi_select_mem()
-Message-ID: <amjIEO7FSrJqyX9a@SMW015318>
-References: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
- <20260728-fspi-clock-v2-3-dbe786a4a6eb@nxp.com>
- <20260728102831.B55621F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
+To: Zhipeng.wang_1@oss.nxp.com
+Cc: Thomas Gleixner <tglx@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jindong Yue <jindong.yue@nxp.com>, xuegang.liu@nxp.com,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] irqchip/imx-irqsteer: Allow building as module
+Message-ID: <amjKZWmcbDfSMB5v@SMW015318>
+References: <20260728092219.525449-1-Zhipeng.wang_1@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260728102831.B55621F000E9@smtp.kernel.org>
-X-ClientProxiedBy: SN7PR04CA0222.namprd04.prod.outlook.com
- (2603:10b6:806:127::17) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260728092219.525449-1-Zhipeng.wang_1@oss.nxp.com>
+X-ClientProxiedBy: PH1PEPF00013309.namprd07.prod.outlook.com
+ (2603:10b6:518:1::18) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -66,205 +68,184 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI1PR04MB7184:EE_
-X-MS-Office365-Filtering-Correlation-Id: b89c38ef-b021-442c-4e55-08deecbb5efc
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV2PR04MB11589:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa923873-bee4-48ed-cc49-08deecbcc420
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|19092799006|6133799003|56012099006|11063799006|4143699003|10067099003|3023799007|22082099003|18002099003;
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|19092799006|366016|22082099003|18002099003|10067099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	sxMT1vZQk+jKKfFLLbtAvZyAz5ThQubRBgUAOcWq2rv+tgxrTO4HcfkA3H6BPSjonjgR3aETB0gOyIbn7G7B4okXPsUdZIIWCrC/BSLGp9fe5vhzQKltrSSI3KFQdhDnu8tyjF3NsD80ONj9d7KkvPBa4moiDz4l2M7cbw6WwVoH5+4k8i0cB+gTOp/tCTHDhlozl0z8c71Kn5c+Y9/94hs/s7yWy6L9S58zoHV86Yiv+V/iRqc4ppUxGjdblwyRNt4oNMWdlNpoZPbmZn5bH8ztXzPopfATet0SkSMzo0YQuKSHnC6/cOXbE+1F8qdulMKjMV/u9CgcJbDYilzVpO9dyoZTKV79Uy0B20dmLiWcMyITwHUASq+GGudFzW+XK8juS3d7foeoPzoAJl0G0aCAo9SqloRbki+E2iHyQ3iYSMX5bCB36w7TTqoOsMs4ADTmvex1yQvVhj6zwJSopO2bnRQVUOHVg+ZuaEkG9BXcWE1AtxEP5r5NUKBjhWNxUXDHS/OzxsAmEvknIpCLi7sT7yiyeTSaLvRoXpFhg5FvEJoUdhB8X1Qiep/aCGstm3VN/oOE0bmJfpKUMtBuPcirym5rFvHWwbTGElUaR00=
+	9m3oym4+8+UCncFBCo3Qm9VhycAVknqBFt/Bxcsc1WgIm0HYBpEVTkmWQBEp3W7z5KJnpdCPJkzJ+X8Y5sV1d0520/xrg2JqS7JlSlpymhScICRFu0xyRsRGjbGYfpueASVStNO0vks/MuzTINyZtqZtKrrneaQcHN/feeothGwocJGHHjaWxKhd7PzDDmL4w+o3s7pW1gKubVvjwU+HNz39RgP8H7UCqqAerF39A2QkhHESwk1cDSCR1aqqiLjDUEHEMh8zoxMYi/lnKrupjOa71irU9maY6Qw9ITV+IqNpLymfEfZOSNzq7Z5ojXoCYp5tM8nAF6XD1YZcb5eVaOcOseIskOfwj9dZ6Te6ZERM8rrhakFhvFSTMNmQgLDzZarZtSO/a0qktCHb5Y81j2zCwndekDUanwXPMfQDepj1Wt1MP7lNEnl8fNVF6Z5nBBsOFhpsqlioHe6HsHp6YYUlPB1gA0EisV9u4DKkSDH7sXI3ylwWdW+xOEEoizU9Hu1IP7gW+H5IDkGZb9DhVsnppBHQ+aMycjR+zpVVqwCfyZdCIh8aBMFulE1d1n1EgArY2ElXzf5ZPj+l2+SE5eHXzcrCAfOgdk1VKHkES7wHUQtlj0zSd/y4806FwQa087mDWYB3OE7ffkYpgBVinbWnyNvbDpim1TkZrbY8Nn0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(19092799006)(6133799003)(56012099006)(11063799006)(4143699003)(10067099003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(19092799006)(366016)(22082099003)(18002099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?rz8bZFvT5lAINqrwCWXFTR4oKUxdF/dt6nN5wfw7NVTcbPfrzpBhNLA0YJ?=
- =?iso-8859-1?Q?RwA6OpH8HU6wj4zvVNejjnYM9E6xzD6gQaMAkxpk+GqFsOSXI9al3+Sg2j?=
- =?iso-8859-1?Q?Du+c6rKHUSPoCmiqSaC9NMipk9yFYQ6bKEDyLhoFgCELkqn2Gr91RJIlcT?=
- =?iso-8859-1?Q?rVC9+DnzdDk1gXCcqV6GgyF1E57gXrnVaSHcgZb+A2BfAkKjlK7jMO4v1M?=
- =?iso-8859-1?Q?I0VVL+TtJEuKBeUDBaQEmmjDc/5FDXedCmVmInFGYuV5/geussEz/Qrunx?=
- =?iso-8859-1?Q?LtvjIlh+fJO+1vllWDhtgSsPAa5SGjTQNrCreXRjsLR6aCXGuMA/+WZ/4S?=
- =?iso-8859-1?Q?GzI308o+/lruJyebLo+Bc4StARSNqy6gQ6U78edXWVt4zB5ZDSz/FPmCie?=
- =?iso-8859-1?Q?tz1fwpSot133elsOmttu4b+EgndFaCfSMSg7zXL0nCqvQJk61rWDVwqrun?=
- =?iso-8859-1?Q?RBz3Dd4MBguuafOoYoOe7yppkTGT04gZpT3+odfQtGueX19jLhtbLffZ/e?=
- =?iso-8859-1?Q?5cI/jFO/NNW8CdMey9s/XhdebsVuKsaWZ5xyh/V8Ldseo5r9O4ltBFxO87?=
- =?iso-8859-1?Q?PouVs0PsRRzmjOFNpcqxfBYQJCoSsIQygOJpbMWIFId4aIKPsZA3IXuoKo?=
- =?iso-8859-1?Q?bVP1FLwHbDWX8UHoPfueKiRsIbf8ygr+X13z3k/sQbVmnKYjumwbT3CUNn?=
- =?iso-8859-1?Q?YNMmxILOd9Eej/4oK2s0FDs0Iij98fJ4nlTdkLlXPFbJ4Hl1d4sRFQFzEM?=
- =?iso-8859-1?Q?ZtDuvrUsfRKdC0EtioSkAVJDHwkKvFhnEh6L3rvTTzwGNYOmrK/4x3DIXj?=
- =?iso-8859-1?Q?OJ+wyZGYoJC4pwCoKJ66e6glj5ZbFKBeFdkNT35ja1h8c1RyZX7LvLuLfJ?=
- =?iso-8859-1?Q?q12bSFHeUnvyUCNulxns15Tru84uWoqphvce8FhvQDPJ+2QR/J1T97Hhns?=
- =?iso-8859-1?Q?LlisbtrwmE5BSxhvStD82PolwsORBpjefqJod2c1uPcdHuMf2fh68nlSPs?=
- =?iso-8859-1?Q?zj+2gZzqPHXqkpKYmbUvZpiCCR6qubrHtg1jrDFO6eW0OrwzeA3KWVxKH+?=
- =?iso-8859-1?Q?Lu05a042DRIFEn0iquaXaFV9p5wYQPEXzHV1olCJyaUf4D0pjZkyeaQVgc?=
- =?iso-8859-1?Q?zqWxoRoLFkZ2sxyXfQCb80neiKASJMWXDPlFtEGdXSudAp3eUMapr0/yY4?=
- =?iso-8859-1?Q?vAhhxY6PgZoLzvil9q6u4ki9AqUpLFO+lr0RIsCPjuXLnuwj9JXdt+hvZ5?=
- =?iso-8859-1?Q?c9H5+VM8IY4G7wKI7JZKbpiGb5uC8Jk2E04MfW8Y2XSj0HcHr8IfC5QkzH?=
- =?iso-8859-1?Q?aGEhvK3L9+PCx0RN/6Hyv17Ydr8xsccpelw0zISHf/1QmaCv9ZgtalUKyD?=
- =?iso-8859-1?Q?xY6A27zp2ot/h2WOgyiYngoVna9gLF2WYl3ObGK16CPhUuqxltgTA1JTMT?=
- =?iso-8859-1?Q?s7EFLWbOt3yXIFydOZu759J7/eQNaLIVy9B/InaV7bUaTAN3wdrLWVnH42?=
- =?iso-8859-1?Q?iDsiHuO13bpW73bNHuO1TAb4ArDZ5in8uqukEwRxPFy+hXAOaAKxyPmVxR?=
- =?iso-8859-1?Q?cQAkP4W78/OFVTg3ss3f9x3HMhJiiaJDjBEYCs3UE2fuDzsyEhHhMvu3L4?=
- =?iso-8859-1?Q?5tLQ0Lgfj3oQ3ywvwJUgui82q4xjSYqT+j5I1zfifiCdNQOzYZyp/jaIac?=
- =?iso-8859-1?Q?gKZ12G6BOTY0baTqnheRfNLBOhTe596NBO6uCsyaBITMSq2f0P/iH6ovy0?=
- =?iso-8859-1?Q?2J2QNB9pPM3qF38aZLRSUrWL47rhPiGI4dEirKfBnRPV3asmHo3MQXEzqL?=
- =?iso-8859-1?Q?nX0l9kYjuXS+Xo0YdRXwU5YAcvklERs2piUcGIaiKl0flt3sW2gC?=
+	=?us-ascii?Q?nB3Uu4bg7TpkCbEVKsS5I8QNisQIE/qsdHojlxEGKCqDZ36jbjewdBRCNvKu?=
+ =?us-ascii?Q?gls+PHIQP5uuNhn9chDZE8iSgS1t9+OV3vxOQe/TkmcfiaXvd1iYeMLc/KWq?=
+ =?us-ascii?Q?jlT39GAXHifYeK022iLceTe+M8zEiLMeqdgEdAHFFTD4GDkARn+fGuMBKj6Z?=
+ =?us-ascii?Q?1YwHp11HIqNvAgUQDvMW5dLuFIl+qZFXKJqew20j4/2TT0Rov9n9MR/o4WIz?=
+ =?us-ascii?Q?QORbAZ5GWuj7BfNA1WYPlfChUoEeXntsQjQooCWfFdejQUNa9WRiwOR87aTA?=
+ =?us-ascii?Q?HuAfTdCdr6EEPsfSHC+t7wqVqChVtO2aPRcZYvEuU0NXU9LAVzp2E7ZQBerN?=
+ =?us-ascii?Q?fl4NoSUdCeFjKCkXdHo3zNIgzF309u9/eLvIEOIsdVglFIxqG9eRSru3GYkL?=
+ =?us-ascii?Q?BEvxqWcd6dfcqDZ2a2nG8Ft4NyL+OvEqSNbJ1d1JWMMdrdieDPB0TzvXUU+X?=
+ =?us-ascii?Q?gH3u2pwsheSfHtNmzlSmB4dL1Lz/670kmnJ+8Z9ZkXIt0uFuyI+9dHr8T9Ld?=
+ =?us-ascii?Q?t8fBkRAv9zVj94Bi68/RqZ243E034nfjxVvxHqKDTFVneMs6Hiuux6X7sGTn?=
+ =?us-ascii?Q?ia1Zfc1nmiOpe/mRCyGi1haAV1cJf/KJuF4Anpy9gDAvU7YcSKKKkPT0DAs3?=
+ =?us-ascii?Q?zoCubbsvVpVrFzzC466Zx0Oed2MlifqAUDRQtDNpONb4AdrGdJzRzbQT2DkT?=
+ =?us-ascii?Q?pNk8TQUPo4NYMn6qIyqBUi5jUrq5C457Dng4z2Hju60kpiqscs1r8lU1C8oX?=
+ =?us-ascii?Q?Hk0FMXg0QQfXIfs7qJ9DBO84TP+StPfKfgCwNENEztFu84KKLpqV9Cd7o9lp?=
+ =?us-ascii?Q?2W19tDpkVEuS2/8r6H5tM75YIGsXCjcT8xkzCZZQSQSIQhbSYmGnR9TCrztC?=
+ =?us-ascii?Q?SGde3nmvhs+Y/zhc7+j6radS74NPmkYcikktoM4YGc6NdcHzla0cZbQ7jnyO?=
+ =?us-ascii?Q?8saZqM3RqIHEwcf9QbDRzSCcnHVgW8kIQ2dDoRK1Zyagcxp3OU1jg1ydyggi?=
+ =?us-ascii?Q?noSXZA/wgeR9S9gjZvDaCgUvGAFFZFEirvZdhARVsbKbJ2UglkU7WUd/gzMF?=
+ =?us-ascii?Q?eZTzvZSiSJE+9H7wYmchoUuhkogPR3sKAwzETb3Tf9KFlLURxD3Ojlur9Cws?=
+ =?us-ascii?Q?y/izk/VKmoFij3w02MqHnjE0aK4plZNVzpB2LJSZ6nLxXU+mXowkpIr3mI1e?=
+ =?us-ascii?Q?TnygtTg0HkXu67YUv8SkPHvMYbOMuqqMjmBzql+CNaJreW6VVIseEE83fdEL?=
+ =?us-ascii?Q?obcTMdftg0Qjj8bXCeu+L1EPbk83Fl0BuzdlOhBoydk2TtdDx4RI4IO1b7dU?=
+ =?us-ascii?Q?3nIgzZ42ME1Y6oeDXmU3bceIiUqalf5v7ws9BUQGkNfQPa5lAvC9QooACPgA?=
+ =?us-ascii?Q?fZ2kTDsZNWC8N1jBRpf2tJrkAsymAL06+uEPKEs6ec6PtIL+xneVu1P7fTpP?=
+ =?us-ascii?Q?0zgSb+ya2pTqQ2sqXixIpxLFYjp8sUU6vHARikhFxxtFemRajovVcKvspzKQ?=
+ =?us-ascii?Q?PW6y9gC5AbI6vxQhcAi3fsJasz7ozg10uRdpUesanX7WeMzror87mFTLAwSg?=
+ =?us-ascii?Q?mOd6RHdakrh+1qBsTHBxyXeMhFFg10l1E84jOqFLP0EKRZBACSVE0wxieOfg?=
+ =?us-ascii?Q?dJAnRUwbLYP1kGD0xlY8d/iaC+XTnU8SKceobenCOT+MxaJaGtikDTB4DXyO?=
+ =?us-ascii?Q?nT6gH0IKKNajP+1sBDHpN4jOIQGCRSy4FRnXscS7sUQQ8R3wP6aw7acEyElk?=
+ =?us-ascii?Q?i0gL++4QBYJOIQZPUbdIygeJWhB+u4/COD4Lr8ce1OnONkkK84BX?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b89c38ef-b021-442c-4e55-08deecbb5efc
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa923873-bee4-48ed-cc49-08deecbcc420
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 15:17:43.2411
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 15:27:42.5435
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yY0p8WbPcKVHR2IZmbz1Dgdd5W/+AoDqkrWtEzkhvcEPXDXTzWlPSxJ0d7IgLjt7XreShpp4rd2aJXVwQNvftCGNxuRknluJlXbcKVMsC/eAX//3ixkOsfpaH/EJrX1V
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7184
+X-MS-Exchange-CrossTenant-UserPrincipalName: roDv0kRQTjaPkyssHlvJW/OnM8jv1Xg4ASSINbWlSbZ9JpyB2MxEHktI2CcRv/DQWfjS9S2Ti/1oS6s5x5rHGrUfi3gr1HGafqqKF3+YiLZfKtLiI5/keeNag8c0k+Le
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11589
 
-On Tue, Jul 28, 2026 at 10:28:31AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 5 potential issue(s) to consider:
+On Tue, Jul 28, 2026 at 06:22:19PM +0900, Zhipeng.wang_1@oss.nxp.com wrote:
+> From: Jindong Yue <jindong.yue@nxp.com>
 >
-> New issues:
-> - [Critical] Incomplete state rollback on `nxp_fspi_select_mem()` failure leaves cached flags out of sync and the controller permanently stuck in Stop mode.
-> - [High] Error handling in `nxp_fspi_select_mem()` leaves hardware clocks disabled while PM runtime remains active, leading to deferred synchronous external aborts and unbalanced clock disables.
+> Make the driver buildable as a module by turning the Kconfig symbol into
+> a tristate and using module_platform_driver() instead of
+> builtin_platform_driver().
 >
-> Pre-existing issues:
-> - [High] Missing `pm_runtime_put_noidle()` when `pm_runtime_get_sync()` fails, leaking the PM runtime usage counter.
-> - [High] The return value of `nxp_fspi_default_setup()` is completely ignored, masking initialization and clock setup failures.
-> - [High] The timeout error from polling the controller status is completely discarded in `nxp_fspi_exec_op()`.
-> --
+> The existing remove() was incomplete for the module case, where the
+> driver can now be unloaded and reloaded. Fix it up:
 >
-> --- Patch [3]: [PATCH v2 3/3] spi: spi-nxp-fspi: propagate clock reconfig failures in nxp_fspi_select_mem() ---
-> commit dbeb737d74251745ba44e92f371ba23d08069151
-> Author: Haibo Chen <haibo.chen@nxp.com>
+>  - dispose the parent IRQ mappings from irq_of_parse_and_map(), which
+>    were leaked on unload;
+>  - dispose the child mappings before irq_domain_remove(), otherwise the
+>    irq_descs keep pointing at imx_irqsteer_irq_chip in the freed module,
+>    which blows up on the next /proc/interrupts read;
+>  - resume the device before clk_disable_unprepare(), since it may be
+>    runtime suspended with the clock already off, and skip the disable if
+>    the resume fails;
+>  - disable runtime PM to balance the pm_runtime_enable() from probe().
 >
-> spi: spi-nxp-fspi: propagate clock reconfig failures in nxp_fspi_select_mem()
+> Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
+> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> ---
+> Changes in v2 (addressing Sashiko AI review of v1):
+>  - remove(): dispose child and parent IRQ mappings before
+>    irq_domain_remove(), fixing a use-after-free of imx_irqsteer_irq_chip
+>    (in freed module memory) on the next /proc/interrupts read after
+>    unload;
+>  - remove(): disable runtime PM to balance the pm_runtime_enable() from
+>    probe(), so reload no longer warns about unbalanced runtime PM; resume
+>    the device first and skip clk_disable_unprepare() if the resume fails,
+>    keeping the ipg clock balanced.
 >
-> This commit modifies nxp_fspi_select_mem() to return an error code if
-> clk_set_rate() or clock enabling fails. It also updates nxp_fspi_exec_op()
-> to check this return value and bail out to prevent accessing registers while
-> the clock is gated off.
+> v1: https://lore.kernel.org/r/20260724090136.3595894-1-Zhipeng.wang_1@oss.nxp.com
+>  drivers/irqchip/Kconfig            |  2 +-
+>  drivers/irqchip/irq-imx-irqsteer.c | 26 +++++++++++++++++++++++---
+>  2 files changed, 24 insertions(+), 4 deletions(-)
 >
-> > diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> > --- a/drivers/spi/spi-nxp-fspi.c
-> > +++ b/drivers/spi/spi-nxp-fspi.c
-> > @@ -922,12 +922,19 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
-> >  	nxp_fspi_clk_disable_unprep(f);
-> >
-> >  	ret = clk_set_rate(f->clk, rate);
-> > -	if (ret)
-> > -		return;
-> > +	if (ret) {
-> > +		/*
-> > +		 * clk_set_rate() failed with the clocks already disabled.
-> > +		 * Re-enable them so the enable count matches what the caller's
-> > +		 * pm_runtime_put() (runtime_suspend) will drop.
-> > +		 */
-> > +		nxp_fspi_clk_prep_enable(f);
-> > +		return ret;
+> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+> index 42f2278a702d..07db3b678f94 100644
+> --- a/drivers/irqchip/Kconfig
+> +++ b/drivers/irqchip/Kconfig
+> @@ -560,7 +560,7 @@ config CSKY_APB_INTC
+>  	  the controller's register.
 >
-> [Severity: Critical]
-> If clk_set_rate() fails and we return early here, does this leave the
-> controller permanently in stop mode?
+>  config IMX_IRQSTEER
+> -	bool "i.MX IRQSTEER support"
+> +	tristate "i.MX IRQSTEER support"
+>  	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
+>  	default y if ARCH_MXC || ARCH_S32
+>  	select IRQ_DOMAIN
+> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+> index 87b07f517be3..da3889036182 100644
+> --- a/drivers/irqchip/irq-imx-irqsteer.c
+> +++ b/drivers/irqchip/irq-imx-irqsteer.c
+> @@ -10,6 +10,7 @@
+>  #include <linux/irqchip/chained_irq.h>
+>  #include <linux/irqdomain.h>
+>  #include <linux/kernel.h>
+> +#include <linux/module.h>
+>  #include <linux/of.h>
+>  #include <linux/of_irq.h>
+>  #include <linux/platform_device.h>
+> @@ -274,7 +275,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+>  static void imx_irqsteer_remove(struct platform_device *pdev)
+>  {
+>  	struct irqsteer_data *irqsteer_data = platform_get_drvdata(pdev);
+> -	int i;
+> +	int hwirq, i, ret;
 >
-> Earlier in nxp_fspi_select_mem(), the controller is placed into stop mode:
+>  	for (i = 0; i < irqsteer_data->irq_count; i++) {
+>  		if (!irqsteer_data->irq[i])
+> @@ -282,11 +283,26 @@ static void imx_irqsteer_remove(struct platform_device *pdev)
 >
->     reg = fspi_readl(f, f->iobase + FSPI_MCR0);
->     fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+>  		irq_set_chained_handler_and_data(irqsteer_data->irq[i],
+>  						 NULL, NULL);
+> +		irq_dispose_mapping(irqsteer_data->irq[i]);
+>  	}
 >
-> Since the early return bypasses the exit from stop mode at the end of the
-> function, the controller remains stopped. Additionally, f->flags might have
-> been updated with FSPI_DTR_MODE. If a subsequent SPI operation matches the
-> fast-path check at the beginning of nxp_fspi_select_mem(), it would bypass
-> reconfiguration and attempt to execute commands on a stopped controller,
-> resulting in a hang.
+> +	for (hwirq = 0; hwirq < irqsteer_data->reg_num * 32; hwirq++)
+> +		irq_dispose_mapping(irq_find_mapping(irqsteer_data->domain,
+> +						     hwirq));
+> +
+>  	irq_domain_remove(irqsteer_data->domain);
+>
+> -	clk_disable_unprepare(irqsteer_data->ipg_clk);
+> +	/*
+> +	 * Device may be runtime suspended, with the ipg clock already gated.
+> +	 * Resume it so the clock is balanced by the disable below; if resume
+> +	 * fails the clock stays gated, so skip the disable in that case.
+> +	 */
+> +	ret = pm_runtime_get_sync(&pdev->dev);
+> +	pm_runtime_disable(&pdev->dev);
+> +	pm_runtime_put_noidle(&pdev->dev);
+> +
+> +	if (ret >= 0)
+> +		clk_disable_unprepare(irqsteer_data->ipg_clk);
 
-Is it true?
+Is it okay by use devm_pm_rutime_set_acitve_enable() at probe, so you
+needn't manage clock.
 
 Frank
+
+>  }
 >
-> [ ... ]
+>  #ifdef CONFIG_PM
+> @@ -349,6 +365,7 @@ static const struct of_device_id imx_irqsteer_dt_ids[] = {
+>  	{ .compatible = "nxp,s32n79-irqsteer",	.data = &s32n79_data },
+>  	{},
+>  };
+> +MODULE_DEVICE_TABLE(of, imx_irqsteer_dt_ids);
 >
-> > @@ -1132,7 +1141,16 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> >  				   FSPI_STS0_ARB_IDLE, 1, POLL_TOUT, true);
-> >  	WARN_ON(err);
-> >
-> > -	nxp_fspi_select_mem(f, mem->spi, op);
-> > +	err = nxp_fspi_select_mem(f, mem->spi, op);
->
-> [Severity: High]
-> This is a pre-existing issue, but does assigning to err here discard the
-> timeout error from fspi_readl_poll_tout() immediately above?
->
-> If fspi_readl_poll_tout() times out, it returns -ETIMEDOUT to err, which is
-> flagged by WARN_ON(), but the function does not abort. Instead, err is
-> immediately overwritten by nxp_fspi_select_mem(), causing subsequent
-> operations to execute on a busy controller.
->
-> > +	if (err) {
-> > +		/*
-> > +		 * On failure the FlexSPI clock may be left disabled, so avoid
-> > +		 * any further register access (which would trigger a synchronous
-> > +		 * external abort) and bail out.
-> > +		 */
-> > +		pm_runtime_put_autosuspend(f->dev);
->
-> [Severity: High]
-> If nxp_fspi_select_mem() fails and leaves the clocks physically disabled, does
-> calling pm_runtime_put_autosuspend() leave the PM runtime state out of sync?
->
-> pm_runtime_put_autosuspend() maintains the RPM_ACTIVE state until the
-> autosuspend timer expires. If a subsequent SPI operation begins before the
-> timer fires, pm_runtime_get_sync() will succeed without re-enabling the
-> clocks. nxp_fspi_exec_op() will then attempt register access while the clock
-> is gated off, triggering a synchronous external abort.
->
-> If no operation occurs, the timer fires and runtime_suspend will disable
-> the already-gated clocks, potentially causing an enable count underflow.
->
-> > +		return err;
-> > +	}
-> >
-> >  	nxp_fspi_prepare_lut(f, op);
->
-> [ ... ]
->
-> For pre-existing issues not directly modified by this patch, there are a few
-> other observations in this file:
->
-> [Severity: High]
-> This is a pre-existing issue, but does nxp_fspi_exec_op() leak the PM
-> runtime usage counter if pm_runtime_get_sync() fails?
->
-> drivers/spi/spi-nxp-fspi.c:nxp_fspi_exec_op() {
->     ...
->     err = pm_runtime_get_sync(f->dev);
->     if (err < 0) {
->         dev_err(f->dev, "Failed to enable clock %d\n", __LINE__);
->         return err;
->     }
->     ...
-> }
->
-> If pm_runtime_get_sync() returns a negative error code, the usage counter
-> remains incremented. Returning immediately without calling
-> pm_runtime_put_noidle() permanently prevents the device from runtime
-> suspending again.
->
-> [Severity: High]
-> This is a pre-existing issue, but are initialization and clock setup failures
-> being masked during probe and resume?
->
-> drivers/spi/spi-nxp-fspi.c:nxp_fspi_probe() {
->     ...
->     nxp_fspi_default_setup(f);
->     ...
-> }
->
-> The return value of nxp_fspi_default_setup() is completely ignored in both
-> nxp_fspi_probe() and nxp_fspi_runtime_resume(). If clk_set_rate() or clock
-> enabling fails inside setup, the driver proceeds as if the hardware is
-> fully initialized, which could lead to silent failures.
->
+>  static struct platform_driver imx_irqsteer_driver = {
+>  	.driver = {
+> @@ -359,4 +376,7 @@ static struct platform_driver imx_irqsteer_driver = {
+>  	.probe		= imx_irqsteer_probe,
+>  	.remove		= imx_irqsteer_remove,
+>  };
+> -builtin_platform_driver(imx_irqsteer_driver);
+> +module_platform_driver(imx_irqsteer_driver);
+> +
+> +MODULE_DESCRIPTION("i.MX IRQSTEER interrupt multiplexer/remapper driver");
+> +MODULE_LICENSE("GPL");
 > --
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com?part=3
+> 2.34.1
+>
+>
