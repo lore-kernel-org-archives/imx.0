@@ -1,144 +1,242 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012008.outbound.protection.outlook.com [52.101.66.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958333AFAF8;
-	Tue, 28 Jul 2026 06:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785220061; cv=none; b=ACI4yiKadESRo5pArNUg4uCYjhfOh8LRIDs4rvPz9q/eknG2yi2ClsN8rmyAZ9IqWR5kieUCObDsEoX1RnLrKpQ1HigGpQsbL/LHaLWR4vHfuAU6dPGbfRogRE2HeJMRGJMfWeo9cbLUrcedwxB6UXHEiXdn4Bc575zf/JRKNho=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785220061; c=relaxed/simple;
-	bh=n61/Ko2KpmPXrNRArmSqenWM8pHBLVFT+MXAHy832ds=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=usHuoTpVNUtKSh8Hsyr8xyoXeM0DAG1JtWcdjO8dyMJ8adn5COvh5kDT2/E4DJ1DPdsT2Ue0qL0jSWfJ2NNZaDX1FMcyJKl8RC0Yrs99hAJdvWKtexVfQnrBeBYttkEHCAm3drI0EwQBwq407zNyy7BzI9e2yZJ0XdWKV93WlAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jyUt7N2l; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187243BF695
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 06:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785221729; cv=fail; b=hyePPpiiPck7HeufZfFBpGQiX20mJfar53qSChEL3YGyynLA/1IMz4XqXnokVKKXiOFBGhxZsIVSHQjLqxQcMIJUZNr2N42hFOnEzMEZMvJojHiUvWA/qyXKbuPuaRw2BbktQJnOS4RTRWqr3GzBXsYRc5012LksSFAIkaEmD7Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785221729; c=relaxed/simple;
+	bh=FmnhNwhHSndCGiuJ1KrTkNX9u5X5tqdePZP2r3e7Flo=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=I4lOCQblHlJBVGepojhHJPBRM2Uh5NErwsNEkKh6m8CKzn1WRoP0CtRe6rfeugSodjqS4kBjwsX2bpookpjUiIE3mDWv87alb6dpIqm9I/oX3KcCNGBkHrSWafCYJGjyR4uxVEBbYgMupJEpJ4j5QI8BrQMraJvtWttebqJEVuA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=xBtRDmbG; arc=fail smtp.client-ip=52.101.66.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jyUt7N2l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785220058; x=1816756058;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=n61/Ko2KpmPXrNRArmSqenWM8pHBLVFT+MXAHy832ds=;
-  b=jyUt7N2lHjKIGTV88R8aZZEViN1aFKYy/S6/MsxcuTYj4xVl97Kz/cNc
-   qGbcU7U5JtsW+YKlJ4auTHbnRhWHYY/Ms1LK52mZhNCKdMFGdS7C7b2jF
-   B7XByVAGfiKUHMQ6yJqn2Z1++8DdRP2nWLcBbLouBgbbyuOaQBjoKc9mW
-   /ref+0C2gkZddd2guAcrairRjoEE42nWsNxIbVJiFks9vLiKGbZban4RB
-   +rK7N8dMsZOCbWtkSGK+IqG5BxhESh6N4oIQYSS1AnY8iodOtrwFlO0dl
-   DJBFb9F8dOMRxNmlQR7wv8QlR9ljpvHVj0xGZEM+po7BYPmaEka01V92s
-   Q==;
-X-CSE-ConnectionGUID: fqaEcXWaQXiyNh4MkLEOQA==
-X-CSE-MsgGUID: QMMkbKlTTSuucy3cyh/hFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="85916862"
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="85916862"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:27:37 -0700
-X-CSE-ConnectionGUID: 7lUQRfEHQpKN9hWm0txrsQ==
-X-CSE-MsgGUID: YAB21esTSxytgpm7w8nVtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="284154898"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.69])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:27:32 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 1FDE0121C02;
-	Tue, 28 Jul 2026 09:27:32 +0300 (EEST)
-Date: Tue, 28 Jul 2026 09:27:32 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Frank.Li@oss.nxp.com, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Dafna Hirschfeld <dafna@fastmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	driver-core@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, Guoniu Zhou <guoniu.zhou@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>, Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Subject: Re: [PATCH v3 1/4] device property: Introduce
- fwnode_graph_for_each_endpoint_scoped()
-Message-ID: <amhL1BkIG0uTPceL@kekkonen.localdomain>
-References: <20260625-fw_scoped-v3-0-ffd0868e498d@nxp.com>
- <20260625-fw_scoped-v3-1-ffd0868e498d@nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="xBtRDmbG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MTocchHdl+2HPtUI9AxAfdHFaXt6xpdU33eHRAoShQy8pICz+B/0TaZb1Nh4HnT17/MHVbKuB5tvXbLf5iVsbLpseRV5JXi/07XRV2ufS8qdGuu1CvInjhEPfuS7ogsTn1v9T3trY5z84HbBTtPtEzQ5Kny4y4p0hegfRlVVS11R3xoUgu21Zto0mPNZr+wn3es4ZH3z0LUUnA+0Cw9/Gqm76NvpdSbBk0vg0Z9n8MUPC4F0oD/6lpM6eJGhsCMFIKC996hV3L6QU6dcMJvIBDM1rnZQAE5C1GOZeqz9tNtZJVLU2Aav1iArB0wpkTUHw6MarUdR8lFzNs29ZB5l6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sgJfoTdvfcDheJ0F1+kVzPCp5rqIdrxKXzQqtH0RqAk=;
+ b=HYb1e4nrbGx4OXJwFXJkcT5cghWbL5v+QmZVffdBZJW4HFiRqpb4Yjr/BU6aG8BiLlY6oAwJhJrK8sN9i3vHQMtQGWgYcdqwZ8kr5FVhhrVHhLhIpn20Y9XqphznW8XEq3fK47Je+Y5rvNz0w0Ir9R0fkf8rT2JsnStBrTlzv7JFS/mD3vwX0ZINMl605yqvUvGLpIMZ9WxVJlZkaA9RxiC+Iy14sCJdo1s91/PMBaYYB5nVYvzZtPpo+IoJoUafK3eCppiTBKboAgCTRzepzWbICdLvcshX+2ua3eqqaJ4tlmN4MyteARR21ez2t7XfzvW7qRWK+BD/gMlmgcId8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sgJfoTdvfcDheJ0F1+kVzPCp5rqIdrxKXzQqtH0RqAk=;
+ b=xBtRDmbGXYdFvMp4Er7u+5ZflpEHzqzxDJug2eSOOhfh9gZivD0Q9aK2QblVSLcagB9WuehlgLbjXFfM5eIH0GwDkLeeQl43tLMQB96GFISXjK1g6naHt8NnWI/p3cDQCNUo+Od1up+l6QC92v/Oh8dEOnWOobV5mZxlexzuIEMbj4aH/qxSXtVLFhlQdZRYQRV0jPxZqESFA4Eh0+q3sNfHyVVne1GBbLi6d/B6sF1YwxGr6Vq9c0weTjENzHnIpQj6+fjSylLMoLddwBTKK5fq2+GU2Kp6jECdprRP0haCDNkgls8fZhSHGwE5JR0zToXyd6XBPDRMWg/afjjl9A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV1PR04MB11513.eurprd04.prod.outlook.com (2603:10a6:150:284::9)
+ by AMDPR04MB11584.eurprd04.prod.outlook.com (2603:10a6:20b:71a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
+ 2026 06:55:22 +0000
+Received: from GV1PR04MB11513.eurprd04.prod.outlook.com
+ ([fe80::29e0:98a1:4577:2cc7]) by GV1PR04MB11513.eurprd04.prod.outlook.com
+ ([fe80::29e0:98a1:4577:2cc7%3]) with mapi id 15.21.0245.012; Tue, 28 Jul 2026
+ 06:55:21 +0000
+From: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Subject: [PATCH v5 0/4] imx8-isi: Format support enhancements
+Date: Tue, 28 Jul 2026 14:58:55 +0800
+Message-Id: <20260728-isi-v5-0-1d22ab91602a@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC9TaGoC/2XOQQ6CMBAF0KuYrq0ZypRSV97DuKB0Kl0IhBqiM
+ dzdEWLEsPyT/37mJRINkZI47l5ioDGm2LUc9H4n6qZqrySj5ywUqAIKVUhuSIAA2gFiVVvBzX6
+ gEB/zyvnCuYnp3g3PeXTMPtevt7MfMwnSE7ngXebAuFOX0qF99Ie6u4nPwqh+yihYlGKFukTta
+ u0xVFuVr1W+qJyVtmgzSxWVaLYK1woXhayU8cE4Hfhx+FfTNL0BxhoPXjoBAAA=
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Christian Hemp <c.hemp@phytec.de>, 
+ Stefan Riedmueller <s.riedmueller@phytec.de>, 
+ Jacopo Mondi <jacopo@jmondi.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Bryan O'Donoghue <bod@kernel.org>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Guoniu Zhou <guoniu.zhou@nxp.com>, 
+ linux-media@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Guoniu Zhou <guoniu.zhou@oss.nxp.com>, stable@vger.kernel.org, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+ Robert Chiras <robert.chiras@nxp.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785221945; l=4448;
+ i=guoniu.zhou@oss.nxp.com; s=20250815; h=from:subject:message-id;
+ bh=FmnhNwhHSndCGiuJ1KrTkNX9u5X5tqdePZP2r3e7Flo=;
+ b=ad1RWjcOZMxAvnnD/gykp7XthSYqNHpPjhB28j3a8T7x+UBon/xQNWGR7oUPxa6K2iWqwAlPT
+ 4lXSJ+/RhYfA/MnYMCwUQFuLlL24U8YEFBLEOuFMLx5VaWeu5LKMGLL
+X-Developer-Key: i=guoniu.zhou@oss.nxp.com; a=ed25519;
+ pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
+X-ClientProxiedBy: SI2PR02CA0040.apcprd02.prod.outlook.com
+ (2603:1096:4:196::6) To GV1PR04MB11513.eurprd04.prod.outlook.com
+ (2603:10a6:150:284::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625-fw_scoped-v3-1-ffd0868e498d@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1PR04MB11513:EE_|AMDPR04MB11584:EE_
+X-MS-Office365-Filtering-Correlation-Id: f0674b3e-d2b3-4a8b-0ac7-08deec753142
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|19092799006|7416014|376014|23010399003|1800799024|56012099006|10067099003|6133799003|11063799006|18002099003|921020|13003099007;
+X-Microsoft-Antispam-Message-Info:
+ UAwwH2DLVWW0ke1p93OsjiRhBL/vdZRGIiA318Cb7MED72K8WSZRUZirE2ufkMV+83BSAO+DZegSdOUox6MGmKs7RPDtL8pBCreWziKd9LD1cYjr4IQtfxXzbmjOuMxu3fKh+eFeX+ICFhuNOCLATOqxOxf9Yait6QPtxQ3BVevBVQA6pdQFrqDb5A9QRoPPjcfLubICTv750y2sCxk4ec5N6BdB/AKOlwURpyhAmWnsABPOD/PtXe1OsQY7VrgZoWRzPoSpKfTPMJhXZIE4gQTQondnCWQotv5B3ftA+vmNHjssNkNbu1U8uU7KhmlFru9XiahmWhrlUJEEVCDoyRoF8BfDAsL2Z/ozKL9WmVgHWgXBoinp0cAHYftsdPKICp1CWNZzv0/t69bftz+ZealJgXfJSIQoVQj/EvDWS9n+Zzgz4g869yQOzISG1BcGAuyDtHeYtj2UI/tMRd1uBoEnoCxHx1FEEGw0RWdZs3cqXUOzFCKTEoCRdNGrvkX+uOC5krKWfjwRgfK+RAINwwJltIUPZ1DxnXLmjuAbOMtq/k0Y/kYvUypyYvcdzYT0f8wthIAMnCc5hvb0TjLnbIPumVWADr37HbUnuAhVRKvMFa1u2xiVJI7YyPmIytu/GcH1XZKysf5eQKSL8UPcsmkHHdKKf8WorjH3SXjeClptXS96+eno6siBEOKem3jcLz5L3L81eUR6Lax83S1CXA==
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB11513.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(23010399003)(1800799024)(56012099006)(10067099003)(6133799003)(11063799006)(18002099003)(921020)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?d0IzWC9sZWwrQWxOQjBzQnJNODNWOEozYXQwY2ZhYjVvTW1GeFlxR3NFRldZ?=
+ =?utf-8?B?dzc3dk9CekN3SGZUZ3RadURPSGxQeUNSaXFiak1ReFZOWFNybnJGWGN2TWdM?=
+ =?utf-8?B?b0dTSkdyZThRTWtJbnRXRzVlOXRiRzNnMWhPbDhOWGVreEFSVEJTWUZKUWZJ?=
+ =?utf-8?B?QXYzRU16alB1NzR1dEJBNVJ1elVIczZoTElrSDNmVFdjc0djY25YK21IcXdp?=
+ =?utf-8?B?cWMvTm9DVnRxQkx3NkJDWTB4M2h1YVdXWDRhazFvUXRWYm9jUlZYb2xURmo1?=
+ =?utf-8?B?aGdkMnpnRTg1WHBacHNUOTh5T0hQWkc4NjU5T1NXYks3UlZrOXpHeTMzYUww?=
+ =?utf-8?B?K3Y4NllSVk9ERlQwQ2NDQlR3YVZRS2p3NG5UampVYjBGVGFTNlVqekovYUU2?=
+ =?utf-8?B?M0Zrb1VNcXlnVW9EYU15amxYaXA1MEp3OEFTaXlEdDcvekM1SS9NY1Q1eXBF?=
+ =?utf-8?B?ZGZmN0FzMU9HZk1nU0FmVDJXQ2lsTHgrVTZzQWlYQWlTaXFUUDEzcjJGc280?=
+ =?utf-8?B?dTdXUi94V2ptMU40Z3Z5ZExpTFFHblphOHBXdUZYNzByUTl4NDJBcmMwaXJ3?=
+ =?utf-8?B?Qy9oK05hank5eWlpSWdLQXdsMVhxNlV2SlRRLzQ5WUJOUWZmL0toK2orRDBZ?=
+ =?utf-8?B?N041ODRiemkyMVFhV3UySjhrc2tOMmpmVGtaOEZSRUNhRTdaUmZmU1V5VWky?=
+ =?utf-8?B?RW5QN3RrWDRxY0ZtdDdXR3NjMEhYRVUyaEZxdTZQbGZsdnlEcG1lRUFhNlVi?=
+ =?utf-8?B?SW4rVWRXYldzS2lTVXZMZVdQcHhMUFA5TEp1dGpjMUdRUUl4bmY5aHpTZ3ZP?=
+ =?utf-8?B?bTZUNlk2SVhmeFJzMVlhaWd0Q2FCbXViWUZlL1ZRay9mdHFEZU56YmJrNElt?=
+ =?utf-8?B?RUVYZDlIdzJaYnFVdTVVeTkreVpXTWNJK0M4RTJvRWVpUVloV1RkRThOYk9j?=
+ =?utf-8?B?Ym85RFUyVE5jeHZhRDQ1RkRzUTVHejhqQ1dMbGFRVmJGWTM3NVZjT2xnWmpW?=
+ =?utf-8?B?OW9uOEFCZGNGb1JvWjRCUWFEYWJDWjlib3hEd3luYUVDQzdrN2cwRFZYK2Ez?=
+ =?utf-8?B?RjBjWmtjSW5WSWxNR2Iwc1lkZUx4aGw3NUFXaEQrbjFlVjlncW51WC9Fdm41?=
+ =?utf-8?B?a053R25vV1VHREd3aVdVRjJ5bVhpeFA1RmJ2VjJ1RGQrSGtDN2lyMUJXY3dx?=
+ =?utf-8?B?Sm9QMmE0Q202YlNHWTdNRTdBa2dmTkNBVHpadit0K3IrTVErNlkzWEhoTE1B?=
+ =?utf-8?B?K3VmZ01QZmNUWVFLK29JMXRpL0FxQmFjWHVMNXV5dlJwN2tVKzVVQVlIVlhx?=
+ =?utf-8?B?UGg0aEZiZXpsOENkT1FNZjgrRngyeUhOcWFoV0Z2ZjYvNW42cnQ4RVdxaFp6?=
+ =?utf-8?B?akxsTFhDZEhPbGk0SDhiMjRzaHl6MktaSmZjdzZsaFJCQWRTbUw2a2NqTHZk?=
+ =?utf-8?B?bUY4M2pjUGhDUUZFU3NhTXNnTEZmZFU5ei8wV0xqbnNSM1M3Z0dtRWxDS2or?=
+ =?utf-8?B?SVhOMFJxZFJoY1p3UENzZWlsUmxDTFRaZnBSS0hxYmxsaCs3Q0N1RkEyU3Yz?=
+ =?utf-8?B?SW56WFlYVFpxMXZQSitBMjZjZGxURnhCeGxjMFkzb0tIbk1Ha20wWm1EZnZy?=
+ =?utf-8?B?SWZVQlM2SDBQRHNld0RIQVYxUWtlc1pvUzVFeXFKMkw0NXR3OHExSDNiT1pQ?=
+ =?utf-8?B?OEdUanJnQmdMUDZoNnpDV1lIbUJxK1RQM2tYbTFta05kODNPT050MkNVc1k5?=
+ =?utf-8?B?ZnhpS2pVM2R4dHhaSGQrakgxS0Y4bWpxbzlGZVFHWTdNK21pYlpGbUxjSXVo?=
+ =?utf-8?B?ZlpabkZDZDVEQjErM1M0ZGZKUHBOQlpwNjB2U3cxME8vVnQwaXZzKzVzZWNQ?=
+ =?utf-8?B?SkF1Wm1ZMjRNY2NUTFY0QTVLaXVISm5hTzB2WVVtNWk1a2czVkQvVkJ1azJK?=
+ =?utf-8?B?MGZLTWZkNFNUa1QzZkxwU3ltTnJJQy92ZFBjL2I2WENyWWRmSDJYcXBmaURT?=
+ =?utf-8?B?Vm5Ha0tHN1FtUy9kK1pmK0kyamlrS2xueDJHR2J6VHVmUE9PSTAxdm5QeTcy?=
+ =?utf-8?B?cXFHam5lOStCYnREWlJFOVZROEo0K2lzMXdlbDdGTjhlSWI4S21ad2tWdEpP?=
+ =?utf-8?B?eW9lZXBmVDNudkMzbXZsNmFWR3FXeUVicGsrdFJDcEgwbnVRZkhpMGRVL3pK?=
+ =?utf-8?B?TDlSNzR2Sng4Y0FZVHBUckxnZjF1dm0ybnpaUmU5c2FnNzVJdjFPeTJUTGpC?=
+ =?utf-8?B?NTFoMFdSSGdXN3o5TlFFQlNTdHdUOGFuTjQ0NW4va3hCM1dZYmZSTU5sWWhl?=
+ =?utf-8?B?RGtoc2RkRTRSM1Fhc2dLVVJ4K3dmcmlna1FXVmthdGJoUElSUHpRK0VBUkRk?=
+ =?utf-8?Q?TJB2k274gsx4zGHu1cxr8rgFLekr7yhWC6jqM?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0674b3e-d2b3-4a8b-0ac7-08deec753142
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB11513.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 06:55:21.7236
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v+akaN0ZqGvvgtg5ZnnYpR2y1IIcET0bo0WK/EX5iWprImN8zl7UPOwL002A0u/D5hs4GzIZZ8whxI+jUolktz7N1F/kb9qOHvTErtPsTZyOTl87jgDYpdET8b/zhAyb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR04MB11584
 
-Hi Rafael, Danilo,
+This is a follow-up series to the imx8-isi bug fixes and format support
+patches [1]. Patches 1/6, 2/6, and 5/6 from v2 have been merged into the
+maintainer's branch (pinchart/for-next/media/nxp). This series contains
+the remaining 3 patches rebased on top of the merged changes, plus a new
+bug fix patch.
 
-Can we merge this via the media tree (assuming you're fine with the
-change)?
+Patch 1 fixes BIT() usage on 64-bit stream masks which could cause incorrect
+results on 32-bit architectures when stream IDs are 32 or greater.
 
-On Thu, Jun 25, 2026 at 10:17:21AM -0400, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Similar to recently propose for_each_child_of_node_scoped() this new
-> version of the loop macro instantiates a new local struct fwnode_handle *
-> that uses the __free(fwnode_handle) auto cleanup handling so that if a
-> reference to a node is held on early exit from the loop the reference will
-> be released. If the loop runs to completion, the child pointer will be NULL
-> and no action will be taken.
-> 
-> The reason this is useful is that it removes the need for
-> fwnode_handle_put() on early loop exits. If there is a need to retain the
-> reference, then return_ptr(child) or no_free_ptr(child) may be used to
-> safely disable the auto cleanup.
-> 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v3
-> - fix missed a tab before \
-> 
-> change in v2
-> - collect Andy and Guoniu's reviewed-by tags
-> - fix indention
-> - remove extra space in commit message
-> ---
->  include/linux/property.h | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 14c304db46648..c71177ca16a95 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -545,6 +545,11 @@ unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
->  	for (child = fwnode_graph_get_next_endpoint(fwnode, NULL); child;	\
->  	     child = fwnode_graph_get_next_endpoint(fwnode, child))
->  
-> +#define fwnode_graph_for_each_endpoint_scoped(fwnode, child)			\
-> +	for (struct fwnode_handle *child __free(fwnode_handle) =		\
-> +		fwnode_graph_get_next_endpoint(fwnode, NULL);			\
-> +	     child; child = fwnode_graph_get_next_endpoint(fwnode, child))
-> +
->  int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
->  				struct fwnode_endpoint *endpoint);
->  
-> 
+Patch 2 implements per-stream reference counting in the crossbar to properly
+enable multiple streams from different virtual channels on the same input pad.
 
+Patch 3 adds support for 16-bit raw Bayer formats (SBGGR16, SGBRG16,
+SGRBG16, SRGGB16) and Y16 (16-bit monochrome).
+
+Patch 4 extends RGB format support by adding BGRA32, RGBA32, BGRX32, RGBX32,
+and ARGB2101010 formats.
+
+[1] https://lore.kernel.org/r/20260720-isi-v2-0-45845bc5d4fa@oss.nxp.com
+
+Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+---
+Changes in v5:
+- Add new patch 1/4: Use BIT_ULL() for 64-bit stream masks to fix potential
+  issues on 32-bit architectures (Sashiko)
+- Patch numbering updated: v4 1/3 -> v5 2/4, v4 2/3 -> v5 3/4, v4 3/3 -> v5 4/4
+- Link to v4: https://lore.kernel.org/r/20260724-isi-v4-0-27df7b5f6060@oss.nxp.com
+
+Changes in v4:
+- [1/3] Make enable/disable symmetric by checking stream_in_use
+- [1/3] Add mxc_isi_crossbar_stream_in_use() helper for both paths
+- Link to v3: https://lore.kernel.org/r/20260723-isi-v3-0-594919eae847@oss.nxp.com
+
+Changes in v3:
+- Rebased on maintainer's branch which already includes v2 patches 1/6,
+  2/6, and 5/6 (stream ID validation fixes and color map correction)
+- Series reduced from 6 patches to 3 patches (remaining unmerged patches)
+- Patch numbering updated: v2 3/6 -> v3 1/3, v2 4/6 -> v3 2/3, v2 6/6 -> v3 3/3
+- [1/3] Change from "Fix" to "Implement" as multi-stream support is for newer
+  SoCs not present when the driver was merged (Laurent)
+- [1/3] Remove Fixes and Cc: stable tags (Laurent)
+- [1/3] Store input/input_stream in mxc_isi_pipe instead of using per-stream
+  counters array, avoiding arbitrary 64-entry limit (Laurent)
+- [1/3] Use UINT_MAX to mark pipe as inactive to distinguish from valid pad 0
+- [2/3] Remove "high-end" from description as RAW16 is common now (Laurent)
+- [2/3] Add Y16 (16-bit monochrome) format support (Laurent)
+- [2/3] Add Reviewed-by tag from Laurent
+- [3/3] Drop M2M_OUT for ABGR32/BGRA32/RGBA32 as ISI ignores alpha bits (Laurent)
+- [3/3] Remove Android requirements from commit message as alpha formats
+  cannot be used as M2M input (Laurent)
+- [3/3] Add Tested-by tag from Laurent Pinchart
+- Link to v2: https://lore.kernel.org/r/20260720-isi-v2-0-45845bc5d4fa@oss.nxp.com
+
+Changes in v2:
+- [1/6] Split v1 patch 1/5 into two patches: this patch fixes the core
+  for_each_active_route() bug, next patch adds additional stream
+  validation (Frank Li)
+- [2/6] New patch split from v1 1/5: adds stream ID validation on top of
+  for_each_active_route() fix (Frank Li)
+- [2/6] Remove incorrect sink_stream validation
+- [3/6] Use fixed-size array for enabled_count instead of dynamic allocation
+- [3/6] Use BIT_ULL() macro for u64 bitmask operations
+- [3/6] Use MXC_ISI_MAX_STREAMS (64) as loop boundary instead of num_sources
+- [3/6] Remove mxc_isi_stream_counters_alloc/free functions
+- [4/6] Add Reviewed-by tag from Frank Li
+- [5/6] Reword commit description for clarity (Frank Li)
+- [6/6] Add Reviewed-by tag from Frank Li
+- Link to v1: https://lore.kernel.org/r/20260629-isi-v1-0-deebfdb1b07b@oss.nxp.com
+
+---
+Guoniu Zhou (3):
+      media: nxp: imx8-isi: Use BIT_ULL() for 64-bit stream masks
+      media: nxp: imx8-isi: Implement per-stream reference counting for multiplexed streams
+      media: nxp: imx8-isi: Add additional 32-bit RGB format support
+
+Laurentiu Palcu (1):
+      media: nxp: imx8-isi: Add 16-bit raw Bayer format support
+
+ .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  5 +-
+ .../platform/nxp/imx8-isi/imx8-isi-crossbar.c      | 88 ++++++++++++++------
+ .../media/platform/nxp/imx8-isi/imx8-isi-pipe.c    | 31 +++++++
+ .../media/platform/nxp/imx8-isi/imx8-isi-video.c   | 96 ++++++++++++++++++++++
+ 4 files changed, 195 insertions(+), 25 deletions(-)
+---
+base-commit: 4d32fbba9d23f50d157ed4a37c9e8fbce61c904a
+change-id: 20260626-isi-00f05b044ac9
+
+Best regards,
 -- 
-Kind regards,
+Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 
-Sakari Ailus
