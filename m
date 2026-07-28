@@ -1,87 +1,67 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67E743030C
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 12:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907993F58EB
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 12:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785240376; cv=none; b=Duu+0eDgXa8q//2soYCeLQ9pAThJYl3TQEtyQcyYg5bRa0IanWFdB933sbMMxNlFPi5fxggblJphh7MRnwaysksc7lbWOmALETHf/+m4aLjRGvNJJvDuGm1+vAf2nSYU5Kctfcow4BxXhQuM+kGtwvhCfX7HkjvUK/J4K3OVsm8=
+	t=1785243462; cv=none; b=RpabyZaEuYxHJoYCsPdb1Nvn5AijF3OVcrjyLxAYoYRiRi4svT/vZ1B3WjGHZ1sgnPliyS/2UFotP+arkfY1BHWMkdfdQ4P0x7kqP+o8qJ1RhuMy++V1H6gDh5Am42r3q36cmeE99GO89mQGf3XMJxuYP2nTihTTL03i/Xw/E18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785240376; c=relaxed/simple;
-	bh=DtghnU3zUVvgE4G94jCndqj827sk2LBqxMt8/WFWoWQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o9tgS/W+h+meFxut5QEoO8Ned36e1wv0vB3joeAhIerwPOsxu9+M83jp31PzkPdlwClu0zkbzpIJk24jb2IKeMpR/vHXYNN6UGW30yRRaZkObre8i+q4iipRjl+e/U3gnojofMdpmygj4Z38djO/7BuY2hiH7jRNDSmljyscPo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MjUUPzTz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jiPbwTZy; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1785243462; c=relaxed/simple;
+	bh=YyzoZ6HI7QG1iTizN/6C6qREGdKLNVzEs4R6cFLLcGc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=oReMEdCUJHCrhM0oU2MlykF9r92FdDRfRULp7XF3e4THc5wpelmSKTPopLTjrh51C5/almaMh/WSbuDrOf7Ch6nsCYXkwh4G1hHkV9FF6yopMpRdAa5g+p/CkKYZ2vMjOmW0tTVjHYqXeGMYPqO1Z+eqP8FdyyKKyfANTeriuN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VEX2OoER; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MjUUPzTz";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jiPbwTZy"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SBH4Em2776878
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 12:06:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	F6ytuslCG0pq1HL4h8Lyr149/N2ytTGcDm3j8uDWkuQ=; b=MjUUPzTzjv1KiOP6
-	Y3by7YgCgd8kY2oL7V+QmWTVqSeey8SNO0gAlL0D+r2X+m03cUtFF8wH8qJxMp73
-	BOgG/sEnJeQh8RmX+EkkNVws2rAHTkctc+5K23imjm/XHAuPd8f0N+A6cVYuYwOz
-	VXv9j6k/ndmMtliDkCyfDjBC6DTk40SttqSiUH0RUamuKtOxb2bYH7hByMgdhk7Z
-	tBt29KUvsN7kepcyh5AFutK7wuA3zP+v9XpB0uL4hiNeiScgN688bb9oFIIafL/e
-	qMKZmXn84eTF1q6n35enCul3Vcyx3v9Qx5iV8ODk+nrC9hZw1BVSVl7DmYac8C2k
-	omohWw==
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fptatgf4t-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 12:06:13 +0000 (GMT)
-Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-9775c49866dso48714241.2
-        for <imx@lists.linux.dev>; Tue, 28 Jul 2026 05:06:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VEX2OoER"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4728c12ba97so2290727f8f.0
+        for <imx@lists.linux.dev>; Tue, 28 Jul 2026 05:57:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1785240373; x=1785845173; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=F6ytuslCG0pq1HL4h8Lyr149/N2ytTGcDm3j8uDWkuQ=;
-        b=jiPbwTZymb8CMV65YVPoDyF4LoV3Zyhe6RC72g2JGW2ANdkI6kWRP5+NIATT9AhBVi
-         ITE2fQxV0566VSzGxMtnRJJYtIBcwCIol84WE49sxADJVjbKl/POP/ctoTHADgmLS4QO
-         l4RkpNTW2/9HArNpYYRIXYdYZTxHnk+w+Cxarb6vy1piD+lqJJMbBVzCZSwEQ+6n41vS
-         hZRDVcpEbuTIUebIKufyNe5QV2QSFUyBJI7i2fKYd+TXq+p9GEj46T/6o8IiqFQSl6op
-         PhUoGEqLTFcQRpsNIHlSNqhiIU6RCzVFFKNAghNv+qh8uua0l6gMpf9PnhVsEPyr6zAN
-         p3Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785240373; x=1785845173;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1785243459; x=1785848259; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:content-language:references:cc:to:subject:reply-to:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=F6ytuslCG0pq1HL4h8Lyr149/N2ytTGcDm3j8uDWkuQ=;
-        b=MiW0bQVn/rMtE3tgG0P+5FI1earK/KTkgVGgxC0lemTTmsyENvUhEtCuSPW40fqrqs
-         oAK0Fvhjr/Yww15UPasSevN5JiPESJPRwEPSG1fTOkXhVunZfvxcfCQZ5y3hakWKHUB0
-         Az9zuNcluMO7w613BkV3Gp80y2H1zJr3XOfExP4537Ol1UL5KYgTrF270Lffqck8Fpnm
-         /2ImZaA3beGheqj45AptGDGGwzBAtTw5THTOp42BF0hGKlM8oAS097/HxLedP88K8qWu
-         AXD8eppKdqf0uGDadlrpijC76Ay+v5yKrJcfZbIYmUKj8bYNwrELjJN0+2e5q/VHlKiW
-         5l4Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoGJJrvXiCMX406uSG02wYEjU0/OpzyQo+1rXBWufuTmH+TrnwVFwqzjfrs2MziCgnY/0E=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yynwy5vp9v9fP5YO9kSH63HeOH3Mp/gfwl5Bfy//PD8xfEVTs+5
-	NSrD6YQ01Oawab52e7I6AzmVw01PfeXiPY6umv78GDB6A6zMZxzGciisTZrl+64+vM7u9TGCBVD
-	HOwQ6A0Y99gRzd+bshXPbNanupGW9A8cm3S9wBBdX4TdXvt5+WcE85ms=
-X-Gm-Gg: AR+sD11eXhYehDHJYul6Wkwo/0rp48a4YYN7/Sljge1D18lkDSLezfme6f0ZGOYAxOd
-	T2Pq76Kk4ndexd2Zc65sAJN68wjK0d4dAxqkAC8ljj/TQUjvp4nojF5NyZkOii1AGhpGZeuDKD+
-	B3wcwuBc/3fLR7XK6qjcAxtoHaXdSXK/irCNn9TVbRTo8/r0FXXypUbmNI4b9mCdMMD/3OQ6EkH
-	Gmow6qjVLpsaN6zjIjHatKs8ftgnE4eycR+su7t2FOrGYzw/LPaDcFpHi6pSHP5k99WrCgbO3MJ
-	R9Y+XGmi2v89oW7YBA07cGmtyL2q9qUduJL9k5vA4B0SsDd3E2rajYpXRBaSGbmaJfbGQX66oDA
-	ogYfzruK0q+3Wov6LPSSoTIHH
-X-Received: by 2002:a05:6102:a49:b0:6d1:8f7:18a5 with SMTP id ada2fe7eead31-7549f65b2a2mr308538137.1.1785240372991;
-        Tue, 28 Jul 2026 05:06:12 -0700 (PDT)
-X-Received: by 2002:a05:6102:a49:b0:6d1:8f7:18a5 with SMTP id ada2fe7eead31-7549f65b2a2mr308523137.1.1785240372533;
-        Tue, 28 Jul 2026 05:06:12 -0700 (PDT)
-Received: from [192.168.120.193] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69fb51c98c5sm3883878a12.11.2026.07.28.05.06.08
+        bh=aHwnyYbdVqw8Gfk40ksLWUw1FSirv4HShvCRuaQuLzM=;
+        b=VEX2OoER4NYo6RYRYgpeS3laFVU/y4orQyRa1spJihaV+WSQYFf8x/82lSopYAzRHL
+         4ufIhpxy1YZ8ijx55eAHvn/noNGs7H4NL/4AdauZiS9utTpF8o9bdujWqivJyaCsnpoO
+         qP0CWcsAjwZtmlmokeqNG2SMqAk3QiN4coTIkUdwHgyJlWCRJTuN26q15aGhtldOYL2V
+         lNnwhr9mhx0xMEzidb/7OHhRRAQ6tidw+/vo0GuKsDWKPw3sKzDgkLFjBP4ahPeI+9oi
+         ZCDDiNewsu41NFnRtpPUtwBehj5Gbn+jU5Ro6bD7fDeCKfPKuOg6qQ+Bsnj9Ecq82SAm
+         LKOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785243459; x=1785848259;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:content-language:references:cc:to:subject:reply-to:from
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aHwnyYbdVqw8Gfk40ksLWUw1FSirv4HShvCRuaQuLzM=;
+        b=ko16yklCTv3L9XPZ1reimAG6hsUomCRYGTp2klJn7i6nRVrrPZnAReHwBITMqaUO9K
+         YFGL3WzZWBFQzwwTQT+SsOz1jkDMr28xDx6xQRRMU2dpi1LaYfH2u7wDjpG9s0+ANBLV
+         +ofclD0AxtFXQABd7AMH4YrSKWb7SHwCpnbd9aqrulbscfR2epf8xm7JKh1DzSNBOTT+
+         8/v4/SaWI8qK0R8YJrSC6xxNsuaC6u1sbDllXuZCwGFKlXyviXlyAZ4ycWt35y7legVl
+         7QiQcYU+01CI5JVUg5KsX1ixWsJwL4c33crrKDau8Uoi8X61IULVAePxNAsAL+IZItge
+         WIBg==
+X-Forwarded-Encrypted: i=1; AHgh+RrPVBWIAzgGT3Ucax+ppD27CxoEMZY5wZOPRSPNwjrRsOEu14rWuT8ELoNb/GyxoYxioRg=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywpi+Zb36tEOdDIsf5C9f9VcEl8GAWnvy690AbAnC2f6SgWP/8g
+	4soYvt9Gudmkm42+sRhglrWpUdwKP/P5sTDnWTIPhD+IugzkaQkOq1hnHPIKIhoRst8=
+X-Gm-Gg: AR+sD10idZMvTaOgrHSMSeO4RgIEQUZ0zX3c5L/NrDBrglWHNuhdJpOTdBDoF9IfmI/
+	6f76m7EpL0PkmrH7P7YEFL/2NcU8fHkcIH448Ythc8QqN48UIUqph+MiPbNgWpjbbHNczhkDS5i
+	/q6EmR1yPoT25i7Yf3DZdNgJHWdXTPZIYA4S7D8LNbqDwV8GsFXXfx4anDnDlQaEbqGaW5wZMEH
+	UpmbiJTIj1Z5Nu5CUXFJUN/51ENJg5sR1V2abu/IrP4LvaJH6mK9BJYTZrlQlR+kgwZjnh97zEU
+	czcxJgpdr2mPBHI3l4jyf02+n2diBDmhDzWoZmnhPhHZ1kx8cHFaBxu8bBVJhzulpVL2txfKGA7
+	/yhaPPf9X4yITSW5XASXnoqMZCgdPw2XxsNsKYIgFmEA35DmN5EYc+XTswPe7nyre/Y3yUPBeuJ
+	JkESliMK7vd95uKaJCLE6k9P8/Ay1RBY9cWTQ11XdpA8cHAWcA3Sx+lTuG6bkPjVfk7GdC
+X-Received: by 2002:a05:6000:4387:b0:47f:89cd:b48 with SMTP id ffacd0b85a97d-47fb1ecc2acmr2978593f8f.5.1785243458685;
+        Tue, 28 Jul 2026 05:57:38 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:106d:1080:5788:c4e1:cf35:7211? ([2a01:e0a:106d:1080:5788:c4e1:cf35:7211])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f9c4fe4c5sm38412732f8f.12.2026.07.28.05.57.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2026 05:06:11 -0700 (PDT)
-Message-ID: <ad142a95-ffcd-46fa-8d55-b3328bc00e20@oss.qualcomm.com>
-Date: Tue, 28 Jul 2026 14:06:07 +0200
+        Tue, 28 Jul 2026 05:57:38 -0700 (PDT)
+Message-ID: <13d040a7-4fe2-400b-99c8-433f19aad9bc@linaro.org>
+Date: Tue, 28 Jul 2026 14:57:37 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -89,89 +69,210 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] arm64: dts: qcom: qcs6490-rubikpi3: Add 3.3 V
- output supply
-To: Hongyang Zhao <hongyang.zhao@thundersoft.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>
-Cc: Roger Shimizu <rosh@debian.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20260723-rubikpi-next-20260615-v2-0-47c5add80114@thundersoft.com>
- <20260723-rubikpi-next-20260615-v2-1-47c5add80114@thundersoft.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260723-rubikpi-next-20260615-v2-1-47c5add80114@thundersoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDEwNiBTYWx0ZWRfXzX9rISFxFxX6
- etDRBTP9d0t6FjF+B1c8NZ0NJ5zdgyWELKIACuCsKzucJSP37+9ydlJXN0KFYVJCL46T2AMEaU3
- zlGKISQoW5KkwSAcnVXg1T2qP30Zjog=
-X-Proofpoint-ORIG-GUID: rFLJBN72JhMzQzqP53COKoWdINxezcOT
-X-Authority-Analysis: v=2.4 cv=KtJ9H2WN c=1 sm=1 tr=0 ts=6a689b35 cx=c_pps
- a=ULNsgckmlI/WJG3HAyAuOQ==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=Wdb1h0LgAAAA:8 a=zsjO2eMJKmvGp5MnGoAA:9 a=QEXdDO2ut3YA:10
- a=1WsBpfsz9X-RYQiigVTh:22 a=j5gyrzqu0rbr1vhfHjzO:22
-X-Proofpoint-GUID: rFLJBN72JhMzQzqP53COKoWdINxezcOT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDEwNiBTYWx0ZWRfX+B9v3n0/9Xsz
- X00V/GEOJyOsS9Z6BS3L+JOBS67LMPeo8D1UhzxDHBZ+YY7wViEoyeiSDef1+sbWyoEObaCv4DF
- 4VMk/aFbDKAaofxaUpxfctBghlQ7PInyMsURoIHxo/l5vUIpaMZYe/OTZFLmQ18YlptAfFOpqmA
- U81OuJaBU794dIW6so9P2TBXCC+nVjhdLqt09bvffZffeQ8BLhzSZNBfYojGPPmUExORkOhyFa4
- /7bdqM962EahSyfnPYSfAWUCUmV3H3nm9jycYnhRMnYRcXS1/u2vLqhh1Up1pZXc1v2/jU5F46O
- FAYfS/0pHT5zXF3+LTW9Wy9kkg3HpsJoktb7da1Ybse8HueEH3kTIPYWJOmfr89UQxBbbN8gaDi
- VWNsE2m8OO6oZsogR/vK0pPozsaTFm7LKn21kAShL48xNM2ZertKVn2daTPDfXc/LhqNux/zaqV
- t2M8tpNEz+qFsK5V7rg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_03,2026-07-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 lowpriorityscore=0 adultscore=0 priorityscore=1501
- impostorscore=0 malwarescore=0 bulkscore=0 suspectscore=0 spamscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607280106
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v16 3/3] of: Respect #{iommu,msi}-cells in maps
+To: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>,
+ Robin Murphy <robin.murphy@arm.com>, Nipun Gupta <nipun.gupta@amd.com>,
+ Nikhil Agarwal <nikhil.agarwal@amd.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
+ Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev,
+ xen-devel@lists.xenproject.org,
+ Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+References: <20260603-parse_iommu_cells-v16-0-dc509dacb19a@oss.qualcomm.com>
+ <20260603-parse_iommu_cells-v16-3-dc509dacb19a@oss.qualcomm.com>
+ <3f5c974f-425d-47a5-9fda-e05de1f39d79@linaro.org>
+ <0d0896af-a4a5-445d-8db7-fdb9eecd07a2@oss.qualcomm.com>
+ <69b1235a-832b-4a00-bcfd-f51991d23488@arm.com>
+ <569bd4d8-2d77-457e-a0fb-388180c34711@oss.qualcomm.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <569bd4d8-2d77-457e-a0fb-388180c34711@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 7/22/26 6:12 PM, Hongyang Zhao wrote:
-> Describe the GPIO-controlled VCC3V3_OUTPUT rail. This board-level rail
-> supplies the two camera connectors and the 40-pin expansion header.
+On 7/28/26 12:39, Vijayanand Jitta wrote:
 > 
-> Signed-off-by: Hongyang Zhao <hongyang.zhao@thundersoft.com>
-> ---
->  .../boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts | 24 ++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts b/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts
-> index d8a9a7e47bdc..45514918562b 100644
-> --- a/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts
-> +++ b/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts
-> @@ -214,6 +214,23 @@ vreg_usbhub_rest_1v8: regulator-usbhub-rest-1v8 {
->  		regulator-boot-on;
->  	};
->  
-> +	vreg_vcc3v3_output: regulator-vcc3v3-output {
-> +		compatible = "regulator-fixed";
-> +
-> +		regulator-name = "vcc3v3_output";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +
-> +		gpio = <&tlmm 14 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +
-> +		pinctrl-0 = <&vcc3v3_output_en>;
-> +		pinctrl-names = "default";
-> +
-> +		regulator-always-on;
-> +		regulator-boot-on;
+> On 7/28/2026 3:34 PM, Robin Murphy wrote:
+>> On 28/07/2026 5:05 am, Vijayanand Jitta wrote:
+>>>
+>>>
+>>> On 7/23/2026 6:47 PM, Neil Armstrong wrote:
+>>>> Hi,
+>>>>
+>>>> On 6/3/26 09:13, Vijayanand Jitta wrote:
+>>>>> From: Robin Murphy <robin.murphy@arm.com>
+>>>>>
+>>>>> So far our parsing of {iommu,msi}-map properties has always blindly
+>>>>> assumed that the output specifiers will always have exactly 1 cell.
+>>>>> This typically does happen to be the case, but is not actually enforced
+>>>>> (and the PCI msi-map binding even explicitly states support for 0 or 1
+>>>>> cells) - as a result we've now ended up with dodgy DTs out in the field
+>>>>> which depend on this behaviour to map a 1-cell specifier for a 2-cell
+>>>>> provider, despite that being bogus per the bindings themselves.
+>>>>>
+>>>>> Since there is some potential use in being able to map at least single
+>>>>> input IDs to multi-cell output specifiers (and properly support 0-cell
+>>>>> outputs as well), add support for properly parsing and using the target
+>>>>> nodes' #cells values, albeit with the unfortunate complication of still
+>>>>> having to work around expectations of the old behaviour too.
+>>>>>
+>>>>> Since there are multi-cell output specifiers, the callers of of_map_id()
+>>>>> may need to get the exact cell output value for further processing.
+>>>>> Update of_map_id() to set args_count in the output to reflect the actual
+>>>>> number of output specifier cells.
+>>>>>
+>>>>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+>>>>> Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+>>>>> Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+>>>>> ---
+>>>>>     drivers/of/base.c  | 168 +++++++++++++++++++++++++++++++++++++++++------------
+>>>>>     include/linux/of.h |   6 +-
+>>>>>     2 files changed, 135 insertions(+), 39 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/of/base.c b/drivers/of/base.c
+>>>>> index d658c2620135..ac7961cbab94 100644
+>>>>> --- a/drivers/of/base.c
+>>>>> +++ b/drivers/of/base.c
+>>>>> @@ -2116,19 +2116,49 @@ int of_find_last_cache_level(unsigned int cpu)
+>>>>>         return cache_level;
+>>>>>     }
+>>>>>     +/*
+>>>>> + * Some DTs have an iommu-map targeting a 2-cell IOMMU node while
+>>>>> + * specifying only 1 cell. Fortunately they all consist of value '1'
+>>>>> + * as the 2nd cell entry with the same target, so check for that pattern.
+>>>>> + *
+>>>>> + * Example:
+>>>>> + *    IOMMU node:
+>>>>> + *        #iommu-cells = <2>;
+>>>>> + *
+>>>>> + *    Device node:
+>>>>> + *        iommu-map = <0x0000 &smmu 0x0000 0x1>,
+>>>>> + *                <0x0100 &smmu 0x0100 0x1>;
+>>>>
+>>>> So the sm8650 PCIe controllers has:
+>>>>
+>>>> pcie@1c08000:
+>>>>               iommu-map = <0     &apps_smmu 0x1480 0x1>,
+>>>>                       <0x100 &apps_smmu 0x1481 0x1>;
+>>>>
+>>>> and
+>>>>
+>>>> pcie@1c00000:
+>>>>
+>>>>               iommu-map = <0     &apps_smmu 0x1400 0x1>,
+>>>>                       <0x100 &apps_smmu 0x1401 0x1>;
+>>>>
+>>>> and apps_smmu has #iommu-cells = <2>, but gets flagged at wrong:
+>>>>
+>>>> [    7.538800] OF: /soc@0/pcie@1c08000: iommu-map has 1-cell entries targeting 2-cell #iommu-cells, treating as 1-cell output
+>>>>
+>>>> Returning false in of_check_bad_map() triggers:
+>>>>
+>>>> [    7.642680] OF: /soc@0/pcie@1c08000: Unsupported iommu-map - cannot handle 256-ID range with 2-cell output specifier
+>>>>
+>>>> I don't understand the issue here, we use 2 cells as expected by
+>>>> the iommu-cells, so why is it wrong ? can somebody explain in
+>>>> comprehensive words ? I'm super confused, it worked like a charm until now.
+>>>>
+>>>> Neil
+>>>>
+>>>
+>>> Hi Neil,
+>>>
+>>> iommu-map = <0     &apps_smmu 0x1480 0x1>,
+>>>               <0x100 &apps_smmu 0x1481 0x1>;
+>>>
+>>>
+>>> Entries here are not 2-cell format, Even though apps_smmu declares #iommu-cells = <2>,
+>>> this DT only supplies one output cell (0x1480/0x1481) — the trailing 0x1 is the length field,
+>>> not a second output cell. (<id-base phandle out-base length>)
+>>>
+>>> The new code detects exactly this pattern (same target phandle across all entries, length always 1)
+>>> and falls back to treating the map as 1-cell output for backward compatibility — hence the pr_warn_once.
+>>> It's harmless and expected, your RIDs still resolve to the correct SIDs (0 → 0x1480, 0x100 → 0x1481).
+>>>
+>>> The second message is a different case and shouldn't be coming from this same map — once the 1-cell
+>>> fallback triggers on the first entry, it applies to the whole map, so you shouldn't hit both warnings
+>>> together on the same node. That error only fires for a genuine 2-cell output specifier combined with
+>>> an id_len > 1, e.g.:
+>>>
+>>> iommu-map = <0x0 &apps_smmu 0x1480 0x1 0x100>;
+>>>
+>>> (<id-base, phandle, out0, out1, length=256>) — which isn't supported, since there's no way to
+>>> linearly scale a multi-cell output specifier across a range of IDs.
+>>>
+>>> Are you seeing that second error on the same pcie node, or a different one?
+>>> If it's the same node, can you share the exact iommu-map entry that triggers it?
+>>
+>> I think Neil is saying he bypassed the fallback check so that it *did* try to parse the given map with the real #iommu-cells=2 in precisely the way you've shown - so even if it could have got past that point, it would have then blown trying to parse the second "entry" of just <&apps_smmu 0x1481 0x1>, since 0x1481 almost certainly isn't a valid phandle to read an #iommu-cells value from.
+>>
+>> Cheers,
+>> Robin.
+> 
+> Right, I get it now, so when it tried to parse with iommu-cells as 2,
+> 
+> iommu-map = <0     &apps_smmu 0x1480 0x1>,
+>              <0x100 &apps_smmu 0x1481 0x1>;
+> 
+> Above tuples would look something like <0  &apps_smmu 0x1480 0x1 0x100>, where 0x100 from next tuple would be seen as length. Hence, the above error log.
+> And the next tuple <&apps_smmu 0x1481 0x1> won't be able to get parsed as you mentioned.
 
-Is it really on by default at boot?
+Thanks for the explanation, clearer now.
 
-Konrad
+Neil
+
+> 
+> 
+> Thanks,
+> Vijay
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+
