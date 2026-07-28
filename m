@@ -1,292 +1,147 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010000.outbound.protection.outlook.com [52.101.69.0])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521C1364EB8
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 03:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785210518; cv=fail; b=K/qAMQfpiTr3J5XKimIAlvW8FBETEfNxp0nIZ9fK88TXb7cmBwFRJbra6/s6EuC7u1uxVrt6vsgNis+bxM8zLhivXFKvIWEr8MDk/h0H356arVF2neFvF6rItNE+yaWVYQTrVi9SwKiqqZy1JJdnRqQYBVtLkv/JKLYEKOHydI0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785210518; c=relaxed/simple;
-	bh=P06i+6mapUtaATsR0JRnIGOJZNIYinzp5IC+AGC/BiQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=lLevZII/OEfYqU8+iEBQNS5iBJtT3Y3TYUZb83OaZ/f7mgTpnOF+o7whRlzWWTnZj9hIccoI2r7g/369nqZu+LIkXff5ohAqXOsy/iWMCfDD3QPYUPbgeVbN+LLKHz4UOBV+by2jua2eexfoZXVnOArT2G6HLqovY6KheWArI3g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=OmSczWyq; arc=fail smtp.client-ip=52.101.69.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313853806D6;
+	Tue, 28 Jul 2026 04:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785211328; cv=none; b=SlXr9vA/7XML9suupHJrCudomtIpDOIhUIt3TaN5hn3GT5qBoH9Umsq8LY4fJbo7LfszNlWwfcGe2zi7u4oc42EPMOVTAkLoqqQAnxClfkXw6uSiXZOefRtpMUAxQ0DuV2Mtzy/khawktoELQ2J8DoAJfIpJ8N1aU39BAjLJOq4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785211328; c=relaxed/simple;
+	bh=mWDXdesxhwUEC/ETaTH/ABiI+bvEP3vtTKtmPT78L8w=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=udQRBtmdrioaKiv2jLWPYMBG1dzpONsX3a5QuZoolcYRoc5FIulMddaBRJ6zvaH/p+qf7sHSdq5IpozTaAGY3MGwYFUmKJBsJCPHO3eudlZKRCrFreu/PPk42dNdNzrERTvU/2T4JWtNBAOy59JISyL+S218LXdwijqlPDXY2tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUAo2GkV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="OmSczWyq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v7fph3ziVlH2fKmeDqHBOf/pgQ12m65VqB9Ji2kBr2IjmExYSHLKm3dsFjTsSfRV39UcGzh/2fOAd28mG7gZ9Pd9qxVhZbSg6zCysk+M6n+F6ddqKf5NpqxEgh1e/5Ff4eJdg3Y6mZN04Wr1go8FZ+sXsBrHr2X6CTJgT/tuAiTzQMkCIDZzJOm7A4KohQUgx3NhfuZbLGGbZqqmY/bq4Ry+BGZSPLJlse6gAyBibEPh5GXFbxATdZni4gQ5Hw6rz4np9NjoSMczMUF5siHdUw4h9I9gQWEZDQMC3W7mTgs+dLGcjV94QZYpVZ/GxUiYQE5wozGM2bOs6polmKvksA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+Q/AaRtHkrZwEhe251fe440ZehwwIHjkWumaFd8LZVg=;
- b=O79FpS9uUNpnoxRBkxPpTC2a2LCNkYgqbun1xdOmZsoBryufR9P3dmMdHYvqFLnAMoZmK89KXBw/SdET+nUkJ6WCmiFBnUSyrR9Ki5hJdH9Q1JWgczTjlMgAb496SX+wSw6bkjA+NL9dpN9WeFsvPX0Binuwq1qkVXR39vYOVcA/gHuyM8Fx3i0rR2DPlwe25Q/f93C1jWDwvhTh59Nd8UhYfn8l9F454Cqx6cnmDpSXsGOmq8VXfFw1L7QDTGHU5yiuCjHHybAvOajyXAWKV2rbYdQJ2yluGSArnJbxQrLFP2WIITb47aEllcWG16b9M4PhCUWAOs2y0tr9baR5+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Q/AaRtHkrZwEhe251fe440ZehwwIHjkWumaFd8LZVg=;
- b=OmSczWyqrzxGcq2Rj5WGNr65zk+Gx73ce+X5kdAItA6y8lJmabWT4GM1sACs8u1pnf1PtOYmZuKRTLEJbzFmmZDqIcNAoWLiegSNWIEmJoAgGBGUg4oirxBKnYnaF+X++Nt/0yPyFEvVGxecW47SlpGgz2qdQYfVWE/ecIrlqxXpCCTobPsflBS/pL29idJgSS0Et0H3l6rVnJHJBcITSTVKf5ABBJFQm2QF+3ufuZzFcF5srLuOkCubbt4Y3UP6qgOgBxZqgb2jkl+EFVdqz4kV59FiWMWwStbAAnIb8oEnbtuiRHUvisIpIIaAmTzJGXa85fN3u9lMFQsYUfilkg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8096.eurprd04.prod.outlook.com (2603:10a6:102:1c7::19)
- by AS8PR04MB8689.eurprd04.prod.outlook.com (2603:10a6:20b:428::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 03:48:33 +0000
-Received: from PAXPR04MB8096.eurprd04.prod.outlook.com
- ([fe80::68be:f721:5000:3f2d]) by PAXPR04MB8096.eurprd04.prod.outlook.com
- ([fe80::68be:f721:5000:3f2d%5]) with mapi id 15.21.0245.012; Tue, 28 Jul 2026
- 03:48:33 +0000
-From: hongxing.zhu@oss.nxp.com
-To: frank.li@nxp.com,
-	l.stach@pengutronix.de,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Leonardo Costa <leoreis.costa@gmail.com>,
-	Leonardo Costa <leonardo.costa@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v5] PCI: imx6: Fix i.MX6Q/DL boot hang caused by improper PHY power sequencing
-Date: Tue, 28 Jul 2026 11:51:59 +0800
-Message-Id: <20260728035159.2702021-1-hongxing.zhu@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2P153CA0025.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::12)
- To PAXPR04MB8096.eurprd04.prod.outlook.com (2603:10a6:102:1c7::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FUAo2GkV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977041F00A3A;
+	Tue, 28 Jul 2026 04:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785211326;
+	bh=/V0JnGUlZ5kM68UZ8vuRmuIODbAsSvBBMee9Qlx4Ba8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=FUAo2GkV6RyYtWvROH4L0DNuUy4N7x1+m6AZcUz/6F8a90wYEbBoxDOk8bASnYuCq
+	 1B+kZMpONDYqEefjZ9TUb1VUKrATAITcp805i2GubGqtO6b32bx0PGHqleo2Zx+S0q
+	 2srO8xB8C6mvH5hJ2EY1QdHgKd30KDjKidbWGuzRTmartWsCs1AGuCv39Y5C90PbZb
+	 wKeFsU/1YFjy/4Ramyf6rTq6Q6h1r/ray5HMa0SiUQ47kxDNKWjS8/Y1EnJVO5dTDd
+	 oHIZM/V0W+tn17r2/TeCl2cS6uz4Ur6dyusQE3t75Lpjww1tpJNJB0HPPCccOIZAnw
+	 UgDSBVt3FvUuQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5] PCI: imx6: Fix i.MX6Q/DL boot hang caused by
+ improper PHY power sequencing
+Reply-To: sashiko-reviews@lists.linux.dev
+To: hongxing.zhu@oss.nxp.com
+Cc: linux-pci@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260728035159.2702021-1-hongxing.zhu@oss.nxp.com>
+References: <20260728035159.2702021-1-hongxing.zhu@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 28 Jul 2026 04:02:06 +0000
+Message-Id: <20260728040206.977041F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8096:EE_|AS8PR04MB8689:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23443dc6-84c3-4e33-2917-08deec5b188c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|19092799006|366016|7416014|376014|11063799006|56012099006|10067099003|5023799004|6133799003|18002099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	gO5XIFkuLjncV9EL+VkeOMsFs+AibFSP9Fhk2gdpGdUtaWFyIoxiDMJDvfKWaxkOZWReAOol99qpCu9hANgb/o28PxHrgmGUowtmJSIBYfQ/0lVhU3VHDvX+kMLAGF0On2NDYtB+NU6Z9WsWJFb/b8IiiLD3kKNfzm5I7WSFWD0DmJcDYdYxDV+r1cS9VceJRwIFUS/QJ1GrMXI60KRdcR9OB5Udyg3exAEJQP968XKVyk6dABDcqFKCMAA7x72IZVHSqWR9pKmlO+PkkXXPYvEdTkg86mmvLnAZkWbbx62LA1NpEl+hUVnBms2LlhLg/ZHrOgtw8XDwaffitXPA7uA8Mji/CJn42z+p9aJmNyaDcrsNYU/KWlRQ/SbyjDRsU/1WSUjKMxeb2y9v+YaO1NpV3MCvVhzfK/qwHIxi3muoR/zDwNTRrc9PkpCDTNKHRkP6Eyuv787H2Brfy+9bo5sRe5R7sqE/JWpZTWJhexYxDfapj2VWQvsjDdaEYOtOIBNRGvRmoTykNTs/rKUi6p7UvPWHFsQBgNADZ4imOEBYRf1eohE1ujkBzlSDQCYrT78fPys1tEy78y7+85exD3enWmNdzwP0IKJo9zHAQV90d3hGIdKe3PcfNGKlCpmrqA/oxH6Gj9rTxlxWlyH7l2lhM9uPxNwab++cUREEECY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8096.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(19092799006)(366016)(7416014)(376014)(11063799006)(56012099006)(10067099003)(5023799004)(6133799003)(18002099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?AW9tE+TFCnARruF7z1DulLrATp5L0sFDZmHtnRswph0HNIBU655t3Gc04gEE?=
- =?us-ascii?Q?vPseyRee3+B8zfhwkDI0Rr1zyVquFH4oV2YuU9i9dPjcwFmrvOw3xStXkBMd?=
- =?us-ascii?Q?mFTIdG2FKafTZNs0EtdfFnuEI+AqyUZmi9FlZmmt6ph+GZSQlXy7o0ZNVorg?=
- =?us-ascii?Q?0KaOjQbB4jKRcQ9BmQwnneHleiZ7FIMoWM50s//KUixUzpFuAEdW5v4P4f1L?=
- =?us-ascii?Q?aMdMCU9Y6+gIlBpam6gC8tSfF/FVpn/eRUI0GCqlST4dFNPsaYMYk9UO81oy?=
- =?us-ascii?Q?u/EG2VRC37BqLOCpVsZ7QB1rbq+vJJpZs4YO0JHzdTXoVMeumLAfdarCViDP?=
- =?us-ascii?Q?RO3IlncLh3B0w59bn+SIUh4bpOBLP9qn4ISnapMVlWp8NQgXeN2wYF4U+oaI?=
- =?us-ascii?Q?mzrlKhRnvKoEcBqK0x8zQrn/buUzoyG+xDfmL4Mpnxxx5QuNDUoCNYYiYN9W?=
- =?us-ascii?Q?O4/C6T0fpfpd8zVKmXm5xupTXGkV/JFxkxO1Oyde8GPi3p/Vxjed2bC1ZWS+?=
- =?us-ascii?Q?sZ0DYIkTcMLRqn3Lrz3A4aHiC3oe/7O8+Z6Md+2rAf0PupYKcPbvi6wdXoY9?=
- =?us-ascii?Q?Kew3hSQzMVVqerrIE48ykw74VURivJbFPx0kXc7xJRZyOx3iroEQxkQb7k8I?=
- =?us-ascii?Q?rKxfAcHa0pGdhNq+hNH3IZo1uquKbs3w1B16z/HAW+6uQ7ID+uPMAxhAnBfB?=
- =?us-ascii?Q?usGnY0RmxY45NulfaWEKz5FS4FKPVvDMD1cjcpm/1OWn8aoYy5uz7wX7aarG?=
- =?us-ascii?Q?cUBEyrbDM8DGx43Z/vKyf6u8Vdvh/UAJGkEH5HLi6Pq7z79X+EUJIorUAGkm?=
- =?us-ascii?Q?yspiALlwtrYZ6gm9Uf30lJ6tL9NOt0IChrTqyAwa5El/tTQNfcb6MpfP/Gyi?=
- =?us-ascii?Q?3ttud3cXRyj9obWA3MxomSkqfeZF/68HIg+RU+nVe3bFasXPMQ+UL++ZoRJu?=
- =?us-ascii?Q?xqp4ZrJwp8H5/z5n1Fma8wCxohxiG2qbLqGCvnDMDsIr8pxqr6H1quQvKXHW?=
- =?us-ascii?Q?6sRY0d0H6pl7pX8PeGkdloKGoCdMxwn1sXdj+ZFBKOnIcFxs2mC5lmixJgld?=
- =?us-ascii?Q?HkrJ5ChyZUqAy0DRFPxNG3qXK8oQtlVY+OOTNKVQF260CbRBeTgwSLAawpvc?=
- =?us-ascii?Q?W/jjnOk3mEocfNF2lhsGzgQr919lxsIdItpko8abKpiPECwpmGvchcgJmbjr?=
- =?us-ascii?Q?ataPzeR8qJ+yDCMwJzRH24ZHMX78sdqfR57BT6hMzcHs/NepkQxtbR0wj1nK?=
- =?us-ascii?Q?VieWUOp+/3cQvJyb56FAAEeLBL1VJO6jQld7wUeza5JSUjkT7gCSV8MuT9A/?=
- =?us-ascii?Q?QsaGfzv3/sNy58sy7rY961j/hqjgugPEEFUDgCQSWlAomoBeQDCE5EWcJDof?=
- =?us-ascii?Q?FD8joC3TihWzKW3WA5NldoH6jC2zmfL9gAx0YewFBafCC8eWNy6/UF16OD/D?=
- =?us-ascii?Q?lWKASkKMKCYibsYrh7tA+WJ7wnNN/evoSmcE0zpp/d4HuOCX9047DRSUsIkB?=
- =?us-ascii?Q?sOcLKiKw1j66kch12vhK1ZEJAO4kat4rQHr6JQs6V/10MIxm1c/enPrFs934?=
- =?us-ascii?Q?uu3MJtjqWH/fjvnKtT5npCr6/GziTJ1Ee+gfjmd02zg9MPI73KuFiWuwz9FR?=
- =?us-ascii?Q?9h4l0YdVJoMWaFnO5RxfnAUqlLYj0odPe4j0EayjldSPoeE9u/1Uoqdc3Egc?=
- =?us-ascii?Q?5ZNjUNXjRf3wKQrfX6pF0VUKArQf/SvdKgRzrSx7snigzun7o8fF06PlSot4?=
- =?us-ascii?Q?xLyguK4CA7d8Xhm8u+lxEff9Gg1ngydvjvsv+HHiSKZmt/ySD6ID?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23443dc6-84c3-4e33-2917-08deec5b188c
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8096.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 03:48:33.6109
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KWDPkzfplW50M+UkNgs38TlfxnUc/s1bNbpyShI6FvzDxpCiK12nYolRcmERsmwczCCtFrPX5AvMCWD5ObUfxx3SpWtmfDKj+bW+gg24jibEs9gnqInOA59rCqLWw4Cg
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8689
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-commit 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
-introduced a boot hang on i.MX6Q/DL variants by reordering
-imx_pcie_host_init() to call imx6q_pcie_enable_ref_clk() (which powered up
-the PHY) before imx6q_pcie_core_reset() (which powered it back down).
+Pre-existing issues:
+- [High] The return value of `imx_pcie_host_init()` is ignored in `imx_add_=
+pcie_ep()`.
+- [High] Missing PERST# assertion in error and exit paths leaks power into =
+the PCIe slot when regulators are disabled.
+--
 
-Before 610fa91d9863, the sequence was:
+--- Patch [1]: [PATCH v5] PCI: imx6: Fix i.MX6Q/DL boot hang caused by impr=
+oper PHY power sequencing ---
+commit 5815e6ed3898888ef7843d167117ab98b00ad077
+Author: Richard Zhu <hongxing.zhu@nxp.com>
 
-  1. imx_pcie_assert_core_reset() - power down PHY (set TEST_PD), set
-     REF_CLK_EN
-  2. imx_pcie_clk_enable() - power up PHY (clear TEST_PD), set REF_CLK_EN
-  3. Link training starts with PHY powered up (TEST_PD cleared)
-  4. Link training succeeds
+PCI: imx6: Fix i.MX6Q/DL boot hang caused by improper PHY power sequencing
 
-After 610fa91d9863, the sequence became:
+This commit fixes a boot hang on i.MX6Q/DL boards by adjusting the power
+sequencing of the PCIe PHY. It separates TEST_PD and REF_CLK_EN controls,
+adds a delay for link training, and explicitly calls core reset assertions
+in the error and exit paths.
 
-  1. imx_pcie_clk_enable() - power up PHY (clear TEST_PD), set REF_CLK_EN
-  2. imx_pcie_assert_core_reset() - power down PHY (set TEST_PD), set
-     REF_CLK_EN
-  3. imx_pcie_deassert_core_reset() - does nothing
-  4. Link training starts with PHY powered down (TEST_PD set)
-  5. Link training fails and boot hangs
+Link: https://lore.kernel.org/lkml/20260629143439.361560-1-leoreis.costa@gm=
+ail.com/
 
-To fix this:
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
+er/dwc/pci-imx6.c
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
 
-  - Remove TEST_PD PHY power control from imx6q_pcie_enable_ref_clk()
-  - Remove REF_CLK_EN control from imx6q_pcie_core_reset()
-  - Add TEST_PD PHY power control to imx6qp_pcie_core_reset(), which
-    previously relied on imx6q_pcie_enable_ref_clk() to power up the PHY by
-    clearing TEST_PD
-  - Clear TEST_PD to power on PHY in imx_pcie_deassert_core_reset()
+[ ... ]
 
-These changes together ensure the correct sequence:
+> @@ -1445,6 +1446,7 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+>  	return 0;
+> =20
+>  err_phy_off:
+> +	imx_pcie_assert_core_reset(imx_pcie);
+>  	phy_power_off(imx_pcie->phy);
+>  err_phy_exit:
+>  	phy_exit(imx_pcie->phy);
 
-  1. REF_CLK_EN set in clk_enable() (TEST_PD untouched)
-  2. TEST_PD set in assert_core_reset() (PHY power off)
-  3. TEST_PD cleared in deassert_core_reset() (PHY power on)
-  4. Link training starts with proper PHY state
+[Severity: High]
+This is a pre-existing issue, but is it possible we are missing a PERST#
+assertion here?
 
-The i.MX6Q/DL PCIe PHY requires approximately 120us between TEST_PD
-de-assertion and link training start. Add usleep_range(200, 500) in
-imx6q_pcie_core_reset() after clearing TEST_PD to satisfy this requirement.
+If initialization fails (e.g., due to a PLL lock timeout), the error path
+disables the slot power via pci_pwrctrl_power_off_devices() and
+regulator_disable(). However, since PERST# was deasserted earlier, it
+remains driven to its inactive state.
 
-Add explicit imx_pcie_assert_core_reset() calls in error paths and
-host_exit() to ensure no power leak.
+Can this back-power the PCIe endpoint device through its reset pin while
+the main slot power is off?=20
 
-Fixes: 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reported-by: Leonardo Costa <leoreis.costa@gmail.com>
-Closes: https://lore.kernel.org/lkml/20260629143439.361560-1-leoreis.costa@gmail.com/
-Tested-by: Leonardo Costa <leonardo.costa@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
-Changes in v5:
-Update the commit log suggested by Bjorn.
+Should we call imx_pcie_assert_perst(imx_pcie, true) before powering off
+the slot?
 
-Changes in v4:
-Refer to Sashiko' reivew of v3 patch.
-- Adjust imx_pcie_assert_core_reset() in imx_pcie_host_exit().
-- Add the delay explicitly after TEST_PD is cleared, since the PERST# GPIO
-might be optional.
+[ ... ]
 
-Changes in v3:
-Update the commit descriptions to address the following items.
-- Clarify the root cause of this regresssion.
-- Describe why both changes are mandatory required to fix this
-  regression.
-- Justify the delay removal also.
+> @@ -1466,6 +1468,7 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *p=
+p)
+>  	struct dw_pcie *pci =3D to_dw_pcie_from_pp(pp);
+>  	struct imx_pcie *imx_pcie =3D to_imx_pcie(pci);
+> =20
+> +	imx_pcie_assert_core_reset(imx_pcie);
+>  	if (imx_pcie->phy) {
+>  		if (phy_power_off(imx_pcie->phy))
+>  			dev_err(pci->dev, "unable to power off PHY\n");
 
-Changes in v2:
-Per Sashiko's review, invoke imx_pcie_assert_core_reset() explicitly
-in error path of imx_pcie_host_init() and imx_pcie_host_exit().
----
- drivers/pci/controller/dwc/pci-imx6.c | 41 ++++++++++++++-------------
- 1 file changed, 22 insertions(+), 19 deletions(-)
+[Severity: High]
+This is a pre-existing issue, but similar to the error path above, when
+disabling the slot power during teardown in imx_pcie_host_exit(), do we
+also need to assert PERST# first to prevent back-powering the endpoint?
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index e25f938eefe23..c94b5e991aecd 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -681,21 +681,12 @@ static int imx_pcie_attach_pd(struct device *dev)
- 
- static int imx6q_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
- {
--	if (enable) {
--		/* power up core phy and enable ref clock */
--		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD);
--		/*
--		 * The async reset input need ref clock to sync internally,
--		 * when the ref clock comes after reset, internal synced
--		 * reset time is too short, cannot meet the requirement.
--		 * Add a ~10us delay here.
--		 */
--		usleep_range(10, 100);
--		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_REF_CLK_EN);
--	} else {
--		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_REF_CLK_EN);
--		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD);
--	}
-+	if (enable)
-+		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-+				IMX6Q_GPR1_PCIE_REF_CLK_EN);
-+	else
-+		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-+				  IMX6Q_GPR1_PCIE_REF_CLK_EN);
- 
- 	return 0;
- }
-@@ -826,6 +817,12 @@ static int imx6sx_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
- 
- static int imx6qp_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
- {
-+	if (assert)
-+		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-+				IMX6Q_GPR1_PCIE_TEST_PD);
-+	else
-+		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-+				  IMX6Q_GPR1_PCIE_TEST_PD);
- 	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_SW_RST,
- 			   assert ? IMX6Q_GPR1_PCIE_SW_RST : 0);
- 	if (!assert)
-@@ -836,11 +833,15 @@ static int imx6qp_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
- 
- static int imx6q_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
- {
--	if (!assert)
--		return 0;
-+	if (assert)
-+		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-+				IMX6Q_GPR1_PCIE_TEST_PD);
-+	else
-+		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-+				  IMX6Q_GPR1_PCIE_TEST_PD);
- 
--	regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD);
--	regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_REF_CLK_EN);
-+	if (!assert)
-+		usleep_range(200, 500);
- 
- 	return 0;
- }
-@@ -1451,6 +1452,7 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
- 	return 0;
- 
- err_phy_off:
-+	imx_pcie_assert_core_reset(imx_pcie);
- 	phy_power_off(imx_pcie->phy);
- err_phy_exit:
- 	phy_exit(imx_pcie->phy);
-@@ -1470,6 +1472,7 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
- 	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
- 
-+	imx_pcie_assert_core_reset(imx_pcie);
- 	if (imx_pcie->phy) {
- 		if (phy_power_off(imx_pcie->phy))
- 			dev_err(pci->dev, "unable to power off PHY\n");
--- 
-2.34.1
+[ ... ]
 
+[Severity: High]
+This isn't a bug introduced by this patch, but while reviewing the PCIe
+initialization, I noticed a potential issue in imx_add_pcie_ep() in the
+same file:
+
+drivers/pci/controller/dwc/pci-imx6.c:imx_add_pcie_ep() {
+    ...
+    imx_pcie_host_init(pp);
+    ...
+}
+
+Does this code safely handle initialization failures?
+
+imx_pcie_host_init() can fail and return an error code (for instance, if
+regulators or clocks fail to enable), which correctly cleans up and
+powers off the controller. But imx_add_pcie_ep() ignores this return
+value and continues execution.
+
+Later on, dw_pcie_ep_init_registers() unconditionally accesses the endpoint
+hardware registers. If the controller was powered off due to the previous
+failure, could reading these unclocked registers cause a synchronous
+external abort (kernel panic)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728035159.2702=
+021-1-hongxing.zhu@oss.nxp.com?part=3D1
