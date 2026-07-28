@@ -1,80 +1,101 @@
-Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062BA3E49C1;
-	Tue, 28 Jul 2026 08:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669673F6C4B
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 08:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785226772; cv=none; b=UGWmiJCK17MN7Hmy1hYRzr2RhBwDoty/pxPOhv0WgQ5RYGVHU3ZAmMhTtPS81BxAHk7C0bidNKEdDTKk24t3lop8qSdOoN1y/MalCUjSkw8+FShu9AXFlQ61nYnAma0e5BwXbdv3W0iktILdYT8104s00WOLFJlVqTLHDURYYmc=
+	t=1785226866; cv=none; b=txfwPBDKoIkUjiU/Df/IP/BzffkNqYQ3zi0DUgQjnM70lguHTvoktnWHKscrGtLkQePWieW07YrqSisD8DmQwonlThDWrTV1q1IP0+XCQ2fJ5PvF9OL1q9NntHvAGI+oqdILuT41s8ckq5yUT/UZOTcSZy1MTNR1wErU/mxEW78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785226772; c=relaxed/simple;
-	bh=gPcTEODO5QHfXsCrSNwFtFHTNTQUpFzHaQy/9orEqOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WY4wmNheM3kAKphf3yfjsoTMitFZkxBLAYWKPi0h4FqHWskWPsQbCoZkt0fpUHvTsRvCTKGVrUxDi1xNuZkBy7Nb7qVw9CvvFgXJn6vTwSJU21TSXeNgUKV0Zjj5mNkBS/DysWCsg3Po25ljpMdIpx5msGcvL7Q9uXx4MzNAFj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaiser.cx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
-Received: from ipservice-092-209-184-216.092.209.pools.vodafone-ip.de ([92.209.184.216] helo=nb282.user.codasip.com)
-	by akranes.kaiser.cx with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <martin@kaiser.cx>)
-	id 1wod25-00000001A77-3ngN;
-	Tue, 28 Jul 2026 10:19:25 +0200
-Date: Tue, 28 Jul 2026 10:19:24 +0200
-From: Martin Kaiser <martin@kaiser.cx>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev,
-	vkoul@kernel.org
-Subject: Re: [PATCH v2] dmaengine: fsl-edma: tracing: no ptr dereference
- during log output
-Message-ID: <amhmDM2DWyL3ngRc@nb282.user.codasip.com>
-References: <20260718130024.341243-1-martin@kaiser.cx>
- <20260718131453.A94821F00A3A@smtp.kernel.org>
+	s=arc-20240116; t=1785226866; c=relaxed/simple;
+	bh=pcXQQNP4q73BqwJldYZv8tDhTVk0+5tWl/r+eJhFIpE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=UORX54XP8EjbYAsMCpEUM+4aT4U/3tIxooobfSCSfSuGwcsPtTjqrwo/V2JfAFvtYjB4maL1Cd1MeMGHjSjuUIbLh9mLgq8JgiMVZhaiswuU6RUCwm0XJcUOKe1HleFcqPhFX8h9xdo/aIxsl4r4FyS8QIUmJvUvHDVA4KVRYZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OnFUHd6K; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OnFUHd6K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE14F1F00ACA;
+	Tue, 28 Jul 2026 08:21:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785226865;
+	bh=CkJWpHeGz/FMT7RVYbHdHw2b2jYwDBv5FuJWA2wrtoc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OnFUHd6KyFh0zusDF8kS1KWgsiVrDMvPesOGBUc0aytzZ15a5F6kNIC5xaR8Pguts
+	 DZfSyOPixp7Xkt2P9N32YDtcZaafG88wqqlVaBwuIiLruZFckl4L0IRD6AK6R21cBJ
+	 YQvtBOza1n+ACAj9OTfW4Tn/2MyMfelPsScUEKDesCLFb0Y64bgaBhT72hmgHIDZqE
+	 H8ayJukrY9oEfwBEmI1efUAPuO/e9COhUztDV9PpcaDuuSJ+cLTDYtAEhW373QRPO+
+	 T3Gux3ZSVcZa5tGT4/P/Xs6LByuo20/1ldYiHOzL4xWFBkjkEYQbkuYGbQH+qgl4nd
+	 uFIFeBQAujjAQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/3] spi: nxp-fspi: use devm runtime PM enablement
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jiawen Liu" <1298662399@qq.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <tencent_D07D657D7D49113424BFAEA7931F60DB2F06@qq.com>
+References: <20260728080443.153827-1-1298662399@qq.com>
+ <tencent_D07D657D7D49113424BFAEA7931F60DB2F06@qq.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 28 Jul 2026 08:21:04 +0000
+Message-Id: <20260728082104.BE14F1F00ACA@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260718131453.A94821F00A3A@smtp.kernel.org>
 
-Thus wrote sashiko-bot@kernel.org (sashiko-bot@kernel.org):
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Removing pm_runtime_disable() from nxp_fspi_cleanup() while keepin=
+g manual clock disablement causes a deterministic double clock disable (ref=
+erence count underflow) on driver unbind and probe error paths.
+--
 
-> However, edma_writel() uses iowrite32() which assumes native CPU-endian
-> input:
+--- Patch [1]: [PATCH v2 1/3] spi: nxp-fspi: use devm runtime PM enablement=
+ ---
+commit 274e174a430a74bbdd5c40d6aaca37aea56ac764
+Author: Jiawen Liu <1298662399@qq.com>
 
-> drivers/dma/fsl-edma-common.h:edma_writel() {
+spi: nxp-fspi: use devm runtime PM enablement
 
-static inline void edma_writel(struct fsl_edma_engine *edma,
-			       u32 val, void __iomem *addr)
+This commit replaces open-coded runtime PM enablement with
+devm_pm_runtime_enable() and uses PM_RUNTIME_ACQUIRE_AUTOSUSPEND() to
+simplify the error path and avoid leaving runtime PM state behind on
+failure.
 
-where val is always little-endian
+> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+> index 1e36ae084dd86..6be78712b5343 100644
+> --- a/drivers/spi/spi-nxp-fspi.c
+> +++ b/drivers/spi/spi-nxp-fspi.c
+> @@ -1275,7 +1275,6 @@ static void nxp_fspi_cleanup(void *data)
+>  	/* disable the hardware */
+>  	fspi_writel(f, FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+> =20
+> -	pm_runtime_disable(f->dev);
+>  	pm_runtime_put_noidle(f->dev);
+>  	nxp_fspi_clk_disable_unprep(f);
 
->     if (edma->big_endian)
+[Severity: High]
+Does removing pm_runtime_disable() here cause a double clock disable
+during driver unbind or late probe failure?
 
-edma->big_endian is configured from a devicetree setting. It's possible that it
-doesn't match cpu endianness.
+When devres executes nxp_fspi_cleanup(), it drops the usage count via
+pm_runtime_put_noidle() and manually disables the clocks with
+nxp_fspi_clk_disable_unprep(). However, the device remains in the
+RPM_ACTIVE state.
 
-Could we check __BYTE_ORDER__ instead (or additonally)?
+Later in the devres cleanup phase, the action registered by
+devm_pm_runtime_enable() executes and clears autosuspend. Because the PM
+usage count is 0 and autosuspend is now disabled, the PM core
+synchronously transitions the device to RPM_SUSPENDED by executing the
+driver's runtime suspend callback.
 
+Will the runtime suspend callback then blindly invoke
+nxp_fspi_clk_disable_unprep() a second time, triggering a clock reference
+count underflow?
 
->         iowrite32be(val, addr);
->     else
->         iowrite32(val, addr);
+[ ... ]
 
-The potential endianness issue affects only the value that's written to the
-hardware. It's unrelated to the tracing patch that is reviewed here.
-
->     trace_edma_writel(edma, addr, val);
-
-The value that's traced is always little-endian. We might have to use
-le32_to_cpu(val) in the trace event definition. But again, that would be a
-separate patch.
-
-May I ask that we put the sashiko comments asided and merge the trace event
-fix? (I'm happy to submit another patch for le32_to_cpu in the event.)
-
-Thanks,
-Martin
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728080443.1538=
+27-1-1298662399@qq.com?part=3D1
