@@ -1,133 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7493C6A5C
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 07:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007203BBFD0
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 07:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785222632; cv=none; b=fFECmyHHiG1uCbIIMWR/ER1Yt+i6ySua1d+BR/o8VdKssXCMfjLGQ45hVN8UdXWc5MbCMH6lyW3rKLqjRlOgmhRPvskHKh5CvbXc1eXJzq4EX+485J9kA1R/Sh8PWM1q5zATMogCu2Sj7lBlpMjoplZMWI4E//WN3aG8dqLigTg=
+	t=1785222800; cv=none; b=Nl/3fpq/iglJZuZyw/XuUrSQwR1//pBuL4LlgwOmtkYiLCg5joSJhu8m8a+gAN8+idpCA066FrRrCFR7VrGGt8JZIUWqygXMYzIzOZNn0OfFZksEo3VV50QYmqKLgwqKpmySj8wL6QCvyWVjiBbjo3eQ1VLJYkpnO+kd5K6SG/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785222632; c=relaxed/simple;
-	bh=FKY8pge4sd8Kcao4H5k9NGgJVZVcOtbLlZgxnwkRQVE=;
+	s=arc-20240116; t=1785222800; c=relaxed/simple;
+	bh=YFFh937MfXSJB8O3h+uNgxbZD+1lmszUVUdfSOdOEh4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fY/lktb1cktR4CaEqRb2f90fulRqd0LrN69j8eafoWKNiQFo+XCuDdkICyStjNe3Sj4yl17KTSRctCbzF6My1DiSSS2Vi9y3aAIif8Qtkfe/fZ1H/eVEFpeSxiPb3oasdeBjfKJLeikok2EydokhHisMNOVF3RdfG8TUH9CX/rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jdgh7bU/; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=J2HWbFKjrJGEPMzVvogiqDjCPpSBMHlwSR8wgvvlchKN+J2E60uKWhKNAGnesdjSzStbke+tBSb2uZMB6BGsM4wc/s9njqjQtNe8LPdutKRkJLyvJOCXZNevwq4PwXRZZoYH+pN6ct0sNNeT0rsDWxoO4p7eiOYDM89pOAVbN4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nFjY7ut8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jdgh7bU/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961E71F000E9;
-	Tue, 28 Jul 2026 07:10:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nFjY7ut8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54C81F000E9;
+	Tue, 28 Jul 2026 07:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785222630;
-	bh=3i4LpoTaSzvqTlTJ4CRzgpDCuyxAup7XF4p6M1L59i8=;
+	s=k20260515; t=1785222797;
+	bh=sj3uYvHP+0TfckSd6R5F0NUJrEwitMRepkNQF7Xctvc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jdgh7bU/X4Mennm5ogxRYVHW5cKYfH1YRXayVdn/2YtyWbaB4FCowV2WpeHHCi04E
-	 w2IkieOZFdDOL2iRYuhxP4DdERjQyvbeqNDx0wshe4Jb/uBkfH+C+r3MMuDn0FN6bs
-	 K+e26spuNmlZbKWHZi2a7hbQgOOUb6IG1B8Uudvwk7a9b3UxmGcTyKVBt3Ysbogo+d
-	 Q07imVafqjGmZ8JgMt23JuQwE1AhJ/AP9D+IFvLr1Ag0bZpw+j9d562YNb3Euv5WM4
-	 OWjA8Z/hEMyty64WH4ahh6ClIP+raI5It11+smeDyrQlV4/mq8jGBHaa7J3zpDfi/R
-	 2EsIwR0zdXHcg==
+	b=nFjY7ut8hwPBQ/e/xPqPVHrph8mkZmf0CXAvV95L4KUkf1jRYoJfyQ7V2gjqdV5vY
+	 SxHisKZuaLxbg4NlQ7tZllt4gZY/dNFxKezP2zawyTovvXcs7DysBBEtbE0u37EmIQ
+	 QucCk6MvIZ8vJlN/uzMyBGr9umPk51fuBmv6kCE0yt8b4AbeaLocJIQECPeR/txu9F
+	 mLNE2WsE5Ir8uSgAPkTI8vvgoJebbmNEJmXZNX0md502cQWLTY/aH8Vv5U0KJAZCa9
+	 Ft/THHsS4NaiQ+N5f1CiRHPZYV1XOU3u/cxZDva1OzGj4/oqOWKHuXnrELeMjjKA4T
+	 OQbAaGBoKUZTQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 1/4] media: nxp: imx8-isi: Use BIT_ULL() for 64-bit
- stream masks
+Subject: Re: [PATCH v5 4/4] media: nxp: imx8-isi: Add additional 32-bit RGB
+ format support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Guoniu Zhou" <guoniu.zhou@oss.nxp.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, media-ci@linuxtv.org
-In-Reply-To: <20260728-isi-v5-1-1d22ab91602a@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, media-ci@linuxtv.org
+In-Reply-To: <20260728-isi-v5-4-1d22ab91602a@oss.nxp.com>
 References: <20260728-isi-v5-0-1d22ab91602a@oss.nxp.com>
- <20260728-isi-v5-1-1d22ab91602a@oss.nxp.com>
+ <20260728-isi-v5-4-1d22ab91602a@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 07:10:30 +0000
-Message-Id: <20260728071030.961E71F000E9@smtp.kernel.org>
+Date: Tue, 28 Jul 2026 07:13:16 +0000
+Message-Id: <20260728071316.B54C81F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Routing validation checks the old routing state instead of the new=
-ly requested routing.
-- [High] Stream translation silently overwrites sink pad and mixes streams =
-from different inputs, violating hardware assumptions.
+- [High] Incorrect M2M input format mapping for V4L2_PIX_FMT_XBGR32 causes =
+Red and Blue channels to be swapped.
 --
 
---- Patch [1]: [PATCH v5 1/4] media: nxp: imx8-isi: Use BIT_ULL() for 64-bi=
-t stream masks ---
-commit 4ed3fcf5e835032b4860a0f0d335cd63bb0bee70
+--- Patch [4]: [PATCH v5 4/4] media: nxp: imx8-isi: Add additional 32-bit R=
+GB format support ---
+commit 14f1b0edd57844d1618923f42c7d14b79400e9d8
 Author: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Subject: media: nxp: imx8-isi: Add additional 32-bit RGB format support
 
-media: nxp: imx8-isi: Use BIT_ULL() for 64-bit stream masks
+This commit adds support for additional 32-bit RGB pixel formats,
+including BGRA32, RGBA32, BGRX32, RGBX32, and ARGB2101010. Formats with
+an alpha channel are configured to only support capture since the hardware
+ignores alpha bits when reading from memory.
 
-This commit replaces BIT() with BIT_ULL() for 64-bit stream masks to avoid
-incorrect results on 32-bit architectures when stream IDs are 32 or greater.
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drive=
+rs/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> index 92647ee1e7933..646a7c3d12639 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> @@ -166,6 +166,57 @@ static const struct mxc_isi_format_info mxc_isi_form=
+ats[] =3D {
+>  		.color_planes	=3D 1,
+>  		.depth		=3D { 32 },
+>  		.encoding	=3D MXC_ISI_ENC_RGB,
 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/dr=
-ivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> @@ -145,10 +145,10 @@ mxc_isi_crossbar_xlate_streams(struct mxc_isi_cross=
-bar *xbar,
->  	 */
->  	for_each_active_route(&state->routing, route) {
->  		if (route->source_pad !=3D source_pad ||
-> -		    !(source_streams & BIT(route->source_stream)))
-> +		    !(source_streams & BIT_ULL(route->source_stream)))
->  			continue;
-> =20
-> -		sink_streams |=3D BIT(route->sink_stream);
-> +		sink_streams |=3D BIT_ULL(route->sink_stream);
->  		sink_pad =3D route->sink_pad;
+[ ... ]
 
-[Severity: High]
-This isn't a regression introduced by this patch, but a pre-existing issue.
-Could this stream translation silently overwrite the sink pad and mix strea=
-ms
-from different inputs?
-
-In mxc_isi_crossbar_xlate_streams(), the loop iterates over all routes matc=
-hing
-the source pad and source_streams mask. It appears to blindly overwrite
-sink_pad and bitwise-OR the sink_streams without checking if they originate
-from the same sink pad.
-
-If userspace sets up routing where streams from different sink pads are rou=
-ted
-to the same source pad on different stream ids, could this cause only the l=
-ast
-overwritten sink_pad to be returned?
-
-This might lead to only one remote subdevice being enabled while abandoning
-others, passing an invalidly mixed stream mask to the enabled device.
-
->  	}
-> =20
-
-As an additional observation in this file:
+> +	}, {
+> +		.mbus_code	=3D MEDIA_BUS_FMT_RGB888_1X24,
+> +		.fourcc		=3D V4L2_PIX_FMT_RGBX32,
+> +		.type		=3D MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_OUT
+> +				| MXC_ISI_VIDEO_M2M_CAP,
+> +		.isi_in_format	=3D CHNL_MEM_RD_CTRL_IMG_TYPE_XBGR8,
+> +		.isi_out_format	=3D CHNL_IMG_CTRL_FORMAT_XBGR888,
+> +		.mem_planes	=3D 1,
+> +		.color_planes	=3D 1,
+> +		.depth		=3D { 32 },
+> +		.encoding	=3D MXC_ISI_ENC_RGB,
 
 [Severity: High]
-This isn't a regression introduced by this patch, but a pre-existing issue.
-Is the old routing state checked instead of the newly requested routing dur=
-ing
-validation?
+This is a pre-existing issue, but I noticed the newly added
+V4L2_PIX_FMT_RGBX32 format maps its isi_in_format to
+CHNL_MEM_RD_CTRL_IMG_TYPE_XBGR8. This happens to be the exact same mapping
+used for the pre-existing V4L2_PIX_FMT_XBGR32 format.
 
-In __mxc_isi_crossbar_set_routing():
+Since V4L2_PIX_FMT_XBGR32 and V4L2_PIX_FMT_RGBX32 have swapped Red and
+Blue byte orders in memory, they shouldn't map to the same hardware input
+format.
 
-    for_each_active_route(&state->routing, route) {
+Does the pre-existing V4L2_PIX_FMT_XBGR32 format in mxc_isi_formats
+incorrectly use CHNL_MEM_RD_CTRL_IMG_TYPE_XBGR8 instead of
+CHNL_MEM_RD_CTRL_IMG_TYPE_XRGB8? This would cause the Red and Blue channels
+to be swapped when a userspace application uses V4L2_PIX_FMT_XBGR32 for the
+M2M output queue.
 
-When userspace calls VIDIOC_SUBDEV_S_ROUTING with an invalid route mapping =
-the
-memory input to a pipeline other than the first, does this validate the
-request against the old routing table (&state->routing) rather than the new
-routing array passed as a parameter?
-
-Since the old table does not contain the invalid route yet, it appears this
-check might pass incorrectly and allow impossible hardware configurations to
-be accepted.
+> +	}, {
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728-isi-v5-0-1=
-d22ab91602a@oss.nxp.com?part=3D1
+d22ab91602a@oss.nxp.com?part=3D4
