@@ -1,217 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6824037F007;
-	Tue, 28 Jul 2026 16:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C176A3DA5D1;
+	Tue, 28 Jul 2026 18:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785256675; cv=none; b=CmNTuZC1eMy6hQjzVYi4ana5wXlVNCVNpDbyw2f7WhG2UBnB7dunL2Blc9LANPfemoLFSC9LMw5PO1DVrOh8+acsKVB8FXIykO4qrJlOgxijufcYaTJJfsmOasPOkSxvGKDHCBk0cXHf6C/4jPrsC9+8XNd7ol4GrWk71F5NMMw=
+	t=1785262694; cv=none; b=Gw7ojc95RYAdg1oKVvxjK6SORNFgUNTyomxT+di7FWHa+pq/dCIThpVGP9pT4Ak48FpngqmStS1inTOfCoPnfEGWoE7MzTR10nQaVYbQPVOH2I7uX74a6S+5aYPnEqCM35NL+XFdhCJpbZGeqJQhD2ZgEJkJS4Btk2aNFbxdbz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785256675; c=relaxed/simple;
-	bh=o2CyqqHeteFX7ZfU4lt6qqd4iQ7Yl2077KnKxTF2DQQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Eflkr5HSO2Xgt+amuHrkk1NVWfWHPo/w5cFFMyY+mHGaYKmqe/lI6b1g7GSRjjPUi8FC1jiYkRoME+sr2/IpwURXChEWd6xy+5Yw1CqU2qlWhm5P/cWFkBLVy4eKpLf2dJKAlPAQ/W8C18oPo0f5+jE/qr9q1LxSka/XvZBeS+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwZw/ie+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785262694; c=relaxed/simple;
+	bh=ptrtzQNyFp45Fqgu5UFx14/CruvvfMTO5V7TH1SvlbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PTXhnuIVaG2KBYv+QqwD/m9BPRHylgbFLmx2W1ts0qNp4Ziol9wDukx93ZP+pDg1GS8Yh7753HcRqEGy8LzWDylbZwqNu5DL9od528mGw8egaEzM2PGGBzqXKWo44KS7zQqLchGzu4G2g22RQjDCrhsFIKHAZih3IVfz27fcg/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RyyRcd1U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwZw/ie+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702EC1F000E9;
-	Tue, 28 Jul 2026 16:37:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RyyRcd1U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADFF1F000E9;
+	Tue, 28 Jul 2026 18:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785256673;
-	bh=VaDP40JoGOSQxXmgmR3af5oPCK1LSZo99YVjzP4O+2E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=MwZw/ie+VMuOaZJGGkyDSli4aTKGmcIXxhmj654dvcSKOlPloSaUaRxqJ6D7pWWd+
-	 ZYBfw24z09CfaOyJhubrf65ZWc5pSDK4BzDeJ4lHkQLBzczrKdveNGRHk4+QxMvCq/
-	 eAQ9jRhHaz85kZ6qSpaD3bUXFwc9/Ri3pIYipMvWCZbHJ9qws+2Yb76pLpQI3L480R
-	 CThzCvCl2QzsgSIU7NQiF7x6knRnIXBu+uwFN+EW3wkzj/GA2mdXkJA/o6Bs6ocfZy
-	 oDdBxtWAzEmOFaBTTc+MFa5XoGjTc1alEX5otaMoW7pCepT3G/gUGZPAuhuAxEytt7
-	 N35zj92SU8zUw==
-Date: Tue, 28 Jul 2026 11:37:52 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: hongxing.zhu@oss.nxp.com
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	bhelgaas@google.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Richard Zhu <hongxing.zhu@nxp.com>,
-	Leonardo Costa <leoreis.costa@gmail.com>,
-	Leonardo Costa <leonardo.costa@toradex.com>
-Subject: Re: [PATCH v5] PCI: imx6: Fix i.MX6Q/DL boot hang caused by improper
- PHY power sequencing
-Message-ID: <20260728163752.GA1328281@bhelgaas>
+	s=k20260515; t=1785262693;
+	bh=8LxXKACwBLKlrE6bOQShx1bKAyg57mIaWoZen71fZPM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RyyRcd1Umob9aNvg0n6JKmEUy2bmhkvRFWYgtC4tyGofsnxXyh2pwntWKOYthx+13
+	 pDnfHwdo78pZfCWxwJiU68xYyFkC8QCrd4XGINf8E7glrGXEvjZOsCgqPxnnaONbfT
+	 0PZUzugmCFslFMt+m1ICbHETnQ+3vdjYanfSP0ffaLwHqD3KJbc/paLfPUfao9FWRA
+	 3halOIeTzVniiaCqPNPhFNHMT/nSZkI/MyEhBWK/YvS3ppWaqSkFnXq9BN7Gpy53If
+	 pTcPWUW3PHPZJanGD9c+vd5chOkk2TisLe2lbL3B98wmXpM/jo1ZCYcH2HY8pP+sIg
+	 4DGKy8nzM93gQ==
+Date: Tue, 28 Jul 2026 19:18:09 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	Fabio Estevam <festevam@nabladev.com>
+Subject: Re: [PATCH] regulator: pca9450: Support regulator-off-in-suspend
+Message-ID: <4f1a89b9-41bc-4837-a057-f0e67f745e37@sirena.org.uk>
+References: <20260724201322.73937-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cmOIkxNy1o8AqOi7"
+Content-Disposition: inline
+In-Reply-To: <20260724201322.73937-1-festevam@gmail.com>
+X-Cookie: Stop me, before I kill again!
+
+
+--cmOIkxNy1o8AqOi7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260728035159.2702021-1-hongxing.zhu@oss.nxp.com>
 
-On Tue, Jul 28, 2026 at 11:51:59AM +0800, hongxing.zhu@oss.nxp.com wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
-> 
-> commit 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
-> introduced a boot hang on i.MX6Q/DL variants by reordering
-> imx_pcie_host_init() to call imx6q_pcie_enable_ref_clk() (which powered up
-> the PHY) before imx6q_pcie_core_reset() (which powered it back down).
-> 
-> Before 610fa91d9863, the sequence was:
-> 
->   1. imx_pcie_assert_core_reset() - power down PHY (set TEST_PD), set
->      REF_CLK_EN
->   2. imx_pcie_clk_enable() - power up PHY (clear TEST_PD), set REF_CLK_EN
->   3. Link training starts with PHY powered up (TEST_PD cleared)
->   4. Link training succeeds
-> 
-> After 610fa91d9863, the sequence became:
-> 
->   1. imx_pcie_clk_enable() - power up PHY (clear TEST_PD), set REF_CLK_EN
->   2. imx_pcie_assert_core_reset() - power down PHY (set TEST_PD), set
->      REF_CLK_EN
->   3. imx_pcie_deassert_core_reset() - does nothing
->   4. Link training starts with PHY powered down (TEST_PD set)
->   5. Link training fails and boot hangs
-> 
-> To fix this:
-> 
->   - Remove TEST_PD PHY power control from imx6q_pcie_enable_ref_clk()
->   - Remove REF_CLK_EN control from imx6q_pcie_core_reset()
->   - Add TEST_PD PHY power control to imx6qp_pcie_core_reset(), which
->     previously relied on imx6q_pcie_enable_ref_clk() to power up the PHY by
->     clearing TEST_PD
->   - Clear TEST_PD to power on PHY in imx_pcie_deassert_core_reset()
-> 
-> These changes together ensure the correct sequence:
-> 
->   1. REF_CLK_EN set in clk_enable() (TEST_PD untouched)
->   2. TEST_PD set in assert_core_reset() (PHY power off)
->   3. TEST_PD cleared in deassert_core_reset() (PHY power on)
->   4. Link training starts with proper PHY state
-> 
-> The i.MX6Q/DL PCIe PHY requires approximately 120us between TEST_PD
-> de-assertion and link training start. Add usleep_range(200, 500) in
-> imx6q_pcie_core_reset() after clearing TEST_PD to satisfy this requirement.
-> 
-> Add explicit imx_pcie_assert_core_reset() calls in error paths and
-> host_exit() to ensure no power leak.
-> 
-> Fixes: 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reported-by: Leonardo Costa <leoreis.costa@gmail.com>
-> Closes: https://lore.kernel.org/lkml/20260629143439.361560-1-leoreis.costa@gmail.com/
-> Tested-by: Leonardo Costa <leonardo.costa@toradex.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On Fri, Jul 24, 2026 at 05:13:22PM -0300, Fabio Estevam wrote:
 
-Applied to pci/for-linus for v7.2, thanks very much!
+> The PCA9450 uses each regulator's ENMODE field to control whether the
+> regulator remains enabled when the PMIC transitions from RUN to STANDBY
+> mode.
 
-> ---
-> Changes in v5:
-> Update the commit log suggested by Bjorn.
-> 
-> Changes in v4:
-> Refer to Sashiko' reivew of v3 patch.
-> - Adjust imx_pcie_assert_core_reset() in imx_pcie_host_exit().
-> - Add the delay explicitly after TEST_PD is cleared, since the PERST# GPIO
-> might be optional.
-> 
-> Changes in v3:
-> Update the commit descriptions to address the following items.
-> - Clarify the root cause of this regresssion.
-> - Describe why both changes are mandatory required to fix this
->   regression.
-> - Justify the delay removal also.
-> 
-> Changes in v2:
-> Per Sashiko's review, invoke imx_pcie_assert_core_reset() explicitly
-> in error path of imx_pcie_host_init() and imx_pcie_host_exit().
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 41 ++++++++++++++-------------
->  1 file changed, 22 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index e25f938eefe23..c94b5e991aecd 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -681,21 +681,12 @@ static int imx_pcie_attach_pd(struct device *dev)
->  
->  static int imx6q_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
->  {
-> -	if (enable) {
-> -		/* power up core phy and enable ref clock */
-> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD);
-> -		/*
-> -		 * The async reset input need ref clock to sync internally,
-> -		 * when the ref clock comes after reset, internal synced
-> -		 * reset time is too short, cannot meet the requirement.
-> -		 * Add a ~10us delay here.
-> -		 */
-> -		usleep_range(10, 100);
-> -		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_REF_CLK_EN);
-> -	} else {
-> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_REF_CLK_EN);
-> -		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD);
-> -	}
-> +	if (enable)
-> +		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				IMX6Q_GPR1_PCIE_REF_CLK_EN);
-> +	else
-> +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				  IMX6Q_GPR1_PCIE_REF_CLK_EN);
->  
->  	return 0;
->  }
-> @@ -826,6 +817,12 @@ static int imx6sx_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
->  
->  static int imx6qp_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
->  {
-> +	if (assert)
-> +		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				IMX6Q_GPR1_PCIE_TEST_PD);
-> +	else
-> +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				  IMX6Q_GPR1_PCIE_TEST_PD);
->  	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_SW_RST,
->  			   assert ? IMX6Q_GPR1_PCIE_SW_RST : 0);
->  	if (!assert)
-> @@ -836,11 +833,15 @@ static int imx6qp_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
->  
->  static int imx6q_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
->  {
-> -	if (!assert)
-> -		return 0;
-> +	if (assert)
-> +		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				IMX6Q_GPR1_PCIE_TEST_PD);
-> +	else
-> +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> +				  IMX6Q_GPR1_PCIE_TEST_PD);
->  
-> -	regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD);
-> -	regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_REF_CLK_EN);
-> +	if (!assert)
-> +		usleep_range(200, 500);
->  
->  	return 0;
->  }
-> @@ -1451,6 +1452,7 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  	return 0;
->  
->  err_phy_off:
-> +	imx_pcie_assert_core_reset(imx_pcie);
->  	phy_power_off(imx_pcie->phy);
->  err_phy_exit:
->  	phy_exit(imx_pcie->phy);
-> @@ -1470,6 +1472,7 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
->  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
->  	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
->  
-> +	imx_pcie_assert_core_reset(imx_pcie);
->  	if (imx_pcie->phy) {
->  		if (phy_power_off(imx_pcie->phy))
->  			dev_err(pci->dev, "unable to power off PHY\n");
-> -- 
-> 2.34.1
-> 
+> Implement set_suspend_disable() for the buck regulators and LDO3-LDO5
+> by programming ENMODE to 10b. This keeps the regulator enabled in RUN
+> mode, turns it off when PMIC_STBY_REQ is asserted, and enables it again
+> when the PMIC returns to RUN mode.
+
+> +static int pca9450_buck_set_suspend_disable(struct regulator_dev *rdev)
+> +{
+> +	return regmap_update_bits(rdev->regmap, rdev->desc->enable_reg,
+> +				  rdev->desc->enable_mask,
+> +				  BUCK_ENMODE_ONREQ_STBYREQ);
+> +}
+> +
+> +static int pca9450_ldo_set_suspend_disable(struct regulator_dev *rdev)
+> +{
+> +	return regmap_update_bits(rdev->regmap, rdev->desc->enable_reg,
+> +				  rdev->desc->enable_mask,
+> +				  LDO_ENMODE_ONREQ_STBYREQ);
+> +}
+
+This is the same register that is used to control runtime enable, I
+can't see how the runtime and suspend enable operations avoid corrupting
+each other's state?
+
+--cmOIkxNy1o8AqOi7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpo8mEACgkQJNaLcl1U
+h9BCCAf6A5B9Y0xt7dLLL1mO+6SSb0uwdSJPLUUXKhHn8YFbjCqomnZ+8aHbRLVY
+ytZChFWjk2DPh+Du+DtN01UPbURTHbs8Mw4hy7N0iLiRvpniRA/jxCAGDiCaaHFk
+88T4L7Od6RTWN0uy124T8H/T8ezPnL/vMMXv9p0vXLtSXbC7xRrsowXTMwyF2WPq
+Voyyfanr2N24hUR7VS1Td6x9zK5aESfoqm0J3YeRAUcmT1bsQoQSLoZ6KmN+hMSt
+nwt8Dqjt2EqKPMy0PAihltKwx4xvjxj/oeJpFyqb1iQ0VOHyzUoDhTggBH11sRBG
+s5dduD4jj7RTNX6U1QSWXphsjircCw==
+=1p8F
+-----END PGP SIGNATURE-----
+
+--cmOIkxNy1o8AqOi7--
