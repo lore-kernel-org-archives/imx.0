@@ -1,157 +1,177 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6194E42CAF0
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 11:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67E743030C
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 12:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785239081; cv=none; b=XcTQVB0YJCyW3r1ef5QC+Mh60VBsVFHq2jGgYJUD3+Q2t8u7uC1DH6U9yfhxtHePFeq7Ov3Dm56BrxA7+ZWAV9/GUz1gaqa85y9+FvhOZbU8hbGbd7h3how4f3oWNrkW2XpVQy6GVuyCGJD05iWnxVzxw3+7zYfCLg+1I+lDQuI=
+	t=1785240376; cv=none; b=Duu+0eDgXa8q//2soYCeLQ9pAThJYl3TQEtyQcyYg5bRa0IanWFdB933sbMMxNlFPi5fxggblJphh7MRnwaysksc7lbWOmALETHf/+m4aLjRGvNJJvDuGm1+vAf2nSYU5Kctfcow4BxXhQuM+kGtwvhCfX7HkjvUK/J4K3OVsm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785239081; c=relaxed/simple;
-	bh=c6Vqvc3Mc6dUZEOCGASd7IPojd6XeY3sxjbT0ZKnDR4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MDADfuagAeT5KPd+WqtO1ruLIpepI69amqrgS7lWAx9XYmx1JjI7LEuIIBuS55Td1sNKhBNUiiNC0Ql/KWoVpd2vTmpvv7pHFCwS/9k9SUO5GZ8vFBt3SbdqQ60CEGaWsiAC8pWdeSjWBEZtL9nkXGrS1bfBVZPycflYiRNv7ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XoKn5Nq2; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gFiXfcgi; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1785240376; c=relaxed/simple;
+	bh=DtghnU3zUVvgE4G94jCndqj827sk2LBqxMt8/WFWoWQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o9tgS/W+h+meFxut5QEoO8Ned36e1wv0vB3joeAhIerwPOsxu9+M83jp31PzkPdlwClu0zkbzpIJk24jb2IKeMpR/vHXYNN6UGW30yRRaZkObre8i+q4iipRjl+e/U3gnojofMdpmygj4Z38djO/7BuY2hiH7jRNDSmljyscPo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MjUUPzTz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jiPbwTZy; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XoKn5Nq2";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gFiXfcgi"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MjUUPzTz";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jiPbwTZy"
 Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SBHHxD2777079
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 11:44:39 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SBH4Em2776878
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 12:06:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Lmb7mLT6I+wUdBFIYH/lJzFOn0vXeKtWULk2K7WDTjQ=; b=XoKn5Nq2UwFWmGvi
-	1+fg/dE/t/nkXYXNR7Nc+yVnIKhyQmQ/NM6M7SNdltr7/bRVF2/2cMU9VgDPEQs/
-	NZyiN8t64y2I4IHcQVTnB3v92LlByKkOYptyp84DZoCgKBkZO6DJIRm14O0dEFwG
-	3CYow3eQyXguL2Ilvh0+xN1tHdKZmwF7iybuYcgKxsWsYWdIy5GoS2FODBGMcCOt
-	A3u7ckTbz0OCrHEx1MP6ncn0951yJgH7ApIbpykXkKU4G1iU/z3p/8KqH7sLRwDb
-	B3y7b2gmRvQByixGMZZXJ+jZ5tkEzF9tRdSZ+tYa6be8i+k/XTBXiunBQ5cLMKSn
-	5L8CkA==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fptatgc5a-1
+	F6ytuslCG0pq1HL4h8Lyr149/N2ytTGcDm3j8uDWkuQ=; b=MjUUPzTzjv1KiOP6
+	Y3by7YgCgd8kY2oL7V+QmWTVqSeey8SNO0gAlL0D+r2X+m03cUtFF8wH8qJxMp73
+	BOgG/sEnJeQh8RmX+EkkNVws2rAHTkctc+5K23imjm/XHAuPd8f0N+A6cVYuYwOz
+	VXv9j6k/ndmMtliDkCyfDjBC6DTk40SttqSiUH0RUamuKtOxb2bYH7hByMgdhk7Z
+	tBt29KUvsN7kepcyh5AFutK7wuA3zP+v9XpB0uL4hiNeiScgN688bb9oFIIafL/e
+	qMKZmXn84eTF1q6n35enCul3Vcyx3v9Qx5iV8ODk+nrC9hZw1BVSVl7DmYac8C2k
+	omohWw==
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fptatgf4t-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 11:44:39 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51bff5c7035so80985961cf.2
-        for <imx@lists.linux.dev>; Tue, 28 Jul 2026 04:44:39 -0700 (PDT)
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 12:06:13 +0000 (GMT)
+Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-9775c49866dso48714241.2
+        for <imx@lists.linux.dev>; Tue, 28 Jul 2026 05:06:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1785239079; x=1785843879; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Lmb7mLT6I+wUdBFIYH/lJzFOn0vXeKtWULk2K7WDTjQ=;
-        b=gFiXfcgipHNiti1kIsMDUh6awDRhdSMTGr5zLL7dUoXorkdMPD11+1zwWGeZgqCq2H
-         DekK4brmacl111sT0w1/AhK4EILd1mgsnp/paHc8pXkRiTKU+CHNXr8vRclmalAMuiG4
-         EidoqHwoMgB/Zkscgm8LR9uR4tu7K9Ul5Ha6NWMTGsZb+LXMaDVGcVTS35mCaEZ18f70
-         iElf75vPQAUyRaXiTqoHIq3/enX6SXrtPtMW2cCJZN92f2RQMEy4OaHMDaZRQeo+Xpc+
-         VOnXcKRtWa93T3skyv5VEFYG2XnrrneRNYkZjTOTJAItxJXVzyV4eTURZ2Z7xRh6tFM0
-         +n5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785239079; x=1785843879;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=oss.qualcomm.com; s=google; t=1785240373; x=1785845173; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Lmb7mLT6I+wUdBFIYH/lJzFOn0vXeKtWULk2K7WDTjQ=;
-        b=JeYhLuDCv2QtHJMjlpgHlQ+b8DE+gIWfVaFzB+jJx8zzgr0ylsiJqXMAySmzvZ1rU6
-         yLUITrmYe6UCfu3xZ9km49N2fioM9UobEY7pcRdFQotVsabmRWRibMgrOI+Fknhzp9dU
-         4vzzrf+CqKFj3q7Vrv8qxeteM+6fl8npaAUh2GiKfOYE1QduT0FDmMQRFLkW+Sez/IsQ
-         j76JMht5lHrcGcNkmmjmTcyxyYVCOAU713EOx+Khjt0K9CKGryQ4ren3R+QX2oAgV7SG
-         djNQhtn9iqYLeyO0l0UtyiCeIRrY0K24KZKPh3qXW0qFuDbHWysVyiHR7h8P0HYS5gWV
-         X4kg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr0xTdtMGndeHYd6FOExqnL6CJbn/x8Ccqn9mCEliGfZYviJXJq3fwl3UK15/Vy1Tgwq6k=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz2gfVjWkwMMrI90wxuCIY0B3EadWvnqXftnMCPuuZ5FhntiFOQ
-	C55jYikwE6IVab9sMoQ752hGtL6VlNldxa4LiL6EUSrCBoK7823ctmEtQR+hUZpUT1mLNPct9nj
-	JXt/E8Pf7j7j/HyPencbnbdmTtzLJRq7ZCw6rpQyrtSBxnHfXZuQJ6Ws=
-X-Gm-Gg: AR+sD12Sz+RyHi0JLfqHZMP34kh+DjtRZvZgXfNCF2fAw9JyMwajkL4ZyGfIQefW/j9
-	4ymWqD2+bwVIi7+int2od8Y4m8DX2pG6FQxD+k3LBsAMLJKSOJEZFE/bB2w7WilL81O/pAU+R1x
-	q+IJJa0XsHPtdHYhn6fzkg1vw0jEcr+fvb3H1GgLjBwNbcgaBvZ4aM3C/DXouMVscjck+7i47cq
-	+wyVCxUp3flbRGy3rUmBLfPEZrCTnB3Eribk5NEKQXtEOpxYmyCfHOsHbCpXdbAtfcE1z1ahUny
-	0nNrAbGX/SBb9KMtRy6nwu+ASC6vh95dAaj2AZSbrhOzOdyVaQr16NB0VUg52soNbUFTduKuPOH
-	IhIx9ROws3gCpgzX/MYx0mWnmMNc=
-X-Received: by 2002:ac8:5dc7:0:b0:527:2b06:2bcd with SMTP id d75a77b69052e-529d7182312mr16400931cf.79.1785239078433;
-        Tue, 28 Jul 2026 04:44:38 -0700 (PDT)
-X-Received: by 2002:ac8:5dc7:0:b0:527:2b06:2bcd with SMTP id d75a77b69052e-529d7182312mr16400061cf.79.1785239077097;
-        Tue, 28 Jul 2026 04:44:37 -0700 (PDT)
-Received: from hackbox.tail37bb1b.ts.net ([86.121.163.114])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c46160dfsm68407265e9.10.2026.07.28.04.44.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 04:44:36 -0700 (PDT)
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
-        Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3] clk: imx: Add audio PLL debugfs for K-divider control
-Date: Tue, 28 Jul 2026 14:44:11 +0300
-Message-ID: <178523892596.3206426.181670345541616200.b4-ty@b4>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260604-imx8m_pll_debugfs-v3-1-4e331ebc85d7@nxp.com>
-References: <20260604-imx8m_pll_debugfs-v3-1-4e331ebc85d7@nxp.com>
+        bh=F6ytuslCG0pq1HL4h8Lyr149/N2ytTGcDm3j8uDWkuQ=;
+        b=jiPbwTZymb8CMV65YVPoDyF4LoV3Zyhe6RC72g2JGW2ANdkI6kWRP5+NIATT9AhBVi
+         ITE2fQxV0566VSzGxMtnRJJYtIBcwCIol84WE49sxADJVjbKl/POP/ctoTHADgmLS4QO
+         l4RkpNTW2/9HArNpYYRIXYdYZTxHnk+w+Cxarb6vy1piD+lqJJMbBVzCZSwEQ+6n41vS
+         hZRDVcpEbuTIUebIKufyNe5QV2QSFUyBJI7i2fKYd+TXq+p9GEj46T/6o8IiqFQSl6op
+         PhUoGEqLTFcQRpsNIHlSNqhiIU6RCzVFFKNAghNv+qh8uua0l6gMpf9PnhVsEPyr6zAN
+         p3Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785240373; x=1785845173;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=F6ytuslCG0pq1HL4h8Lyr149/N2ytTGcDm3j8uDWkuQ=;
+        b=MiW0bQVn/rMtE3tgG0P+5FI1earK/KTkgVGgxC0lemTTmsyENvUhEtCuSPW40fqrqs
+         oAK0Fvhjr/Yww15UPasSevN5JiPESJPRwEPSG1fTOkXhVunZfvxcfCQZ5y3hakWKHUB0
+         Az9zuNcluMO7w613BkV3Gp80y2H1zJr3XOfExP4537Ol1UL5KYgTrF270Lffqck8Fpnm
+         /2ImZaA3beGheqj45AptGDGGwzBAtTw5THTOp42BF0hGKlM8oAS097/HxLedP88K8qWu
+         AXD8eppKdqf0uGDadlrpijC76Ay+v5yKrJcfZbIYmUKj8bYNwrELjJN0+2e5q/VHlKiW
+         5l4Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoGJJrvXiCMX406uSG02wYEjU0/OpzyQo+1rXBWufuTmH+TrnwVFwqzjfrs2MziCgnY/0E=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yynwy5vp9v9fP5YO9kSH63HeOH3Mp/gfwl5Bfy//PD8xfEVTs+5
+	NSrD6YQ01Oawab52e7I6AzmVw01PfeXiPY6umv78GDB6A6zMZxzGciisTZrl+64+vM7u9TGCBVD
+	HOwQ6A0Y99gRzd+bshXPbNanupGW9A8cm3S9wBBdX4TdXvt5+WcE85ms=
+X-Gm-Gg: AR+sD11eXhYehDHJYul6Wkwo/0rp48a4YYN7/Sljge1D18lkDSLezfme6f0ZGOYAxOd
+	T2Pq76Kk4ndexd2Zc65sAJN68wjK0d4dAxqkAC8ljj/TQUjvp4nojF5NyZkOii1AGhpGZeuDKD+
+	B3wcwuBc/3fLR7XK6qjcAxtoHaXdSXK/irCNn9TVbRTo8/r0FXXypUbmNI4b9mCdMMD/3OQ6EkH
+	Gmow6qjVLpsaN6zjIjHatKs8ftgnE4eycR+su7t2FOrGYzw/LPaDcFpHi6pSHP5k99WrCgbO3MJ
+	R9Y+XGmi2v89oW7YBA07cGmtyL2q9qUduJL9k5vA4B0SsDd3E2rajYpXRBaSGbmaJfbGQX66oDA
+	ogYfzruK0q+3Wov6LPSSoTIHH
+X-Received: by 2002:a05:6102:a49:b0:6d1:8f7:18a5 with SMTP id ada2fe7eead31-7549f65b2a2mr308538137.1.1785240372991;
+        Tue, 28 Jul 2026 05:06:12 -0700 (PDT)
+X-Received: by 2002:a05:6102:a49:b0:6d1:8f7:18a5 with SMTP id ada2fe7eead31-7549f65b2a2mr308523137.1.1785240372533;
+        Tue, 28 Jul 2026 05:06:12 -0700 (PDT)
+Received: from [192.168.120.193] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69fb51c98c5sm3883878a12.11.2026.07.28.05.06.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jul 2026 05:06:11 -0700 (PDT)
+Message-ID: <ad142a95-ffcd-46fa-8d55-b3328bc00e20@oss.qualcomm.com>
+Date: Tue, 28 Jul 2026 14:06:07 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDEwMyBTYWx0ZWRfX5a2L9lW+E4YW
- N4/uYc36O6cXuSaqBTftwuRbmFCzgHhkDFK5XPUKRC5dX+nPOdChwX5hfzPskBPa+2C+2QGQq2p
- lKb2fjeEXiVhtXOb1jJ2SDA/tEPVvdM=
-X-Proofpoint-ORIG-GUID: g-QBzPRTPnxI7JQWZ76iwgqXXERMr6Rc
-X-Authority-Analysis: v=2.4 cv=KtJ9H2WN c=1 sm=1 tr=0 ts=6a689627 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=6dw9+iwJWV8PcCi9M4lOBg==:17
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] arm64: dts: qcom: qcs6490-rubikpi3: Add 3.3 V
+ output supply
+To: Hongyang Zhao <hongyang.zhao@thundersoft.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+Cc: Roger Shimizu <rosh@debian.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20260723-rubikpi-next-20260615-v2-0-47c5add80114@thundersoft.com>
+ <20260723-rubikpi-next-20260615-v2-1-47c5add80114@thundersoft.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260723-rubikpi-next-20260615-v2-1-47c5add80114@thundersoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDEwNiBTYWx0ZWRfXzX9rISFxFxX6
+ etDRBTP9d0t6FjF+B1c8NZ0NJ5zdgyWELKIACuCsKzucJSP37+9ydlJXN0KFYVJCL46T2AMEaU3
+ zlGKISQoW5KkwSAcnVXg1T2qP30Zjog=
+X-Proofpoint-ORIG-GUID: rFLJBN72JhMzQzqP53COKoWdINxezcOT
+X-Authority-Analysis: v=2.4 cv=KtJ9H2WN c=1 sm=1 tr=0 ts=6a689b35 cx=c_pps
+ a=ULNsgckmlI/WJG3HAyAuOQ==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
  a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=EUspDBNiAAAA:8 a=1NP200KD9VQfxfjUtC4A:9 a=QEXdDO2ut3YA:10
- a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-GUID: g-QBzPRTPnxI7JQWZ76iwgqXXERMr6Rc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDEwMyBTYWx0ZWRfXxNR+4A+HPqqt
- GZod1C0QjIOv1yWgfrC6n4K/+qwT/0uM08Nm+257+PGbyxw0sVM7d/c+1pEMt573wBiAvohhyDH
- pRSduR7z4eBnErk83pba8ZieKmqWab8QYf0w8e3RmqRX8/IJ6ZcUAv7r9IpFZPGsr0+jqYjLvRL
- mlNT/SxSfbLVlZjBbahE3f4mkELCJOyF3F64NMmhocORZ93xn2uzcpEPy5Yt3suDuphF+EQF19B
- 4h1+UU6P/Fek0NdE6iSSEWcsNoQBuy2JR9alUHdfPeCu2JiFMsZhphdl2uYVmQ6IVlHSn85rDm9
- QJDznZL8wK0p6fiKaCHIuy+1D+0n0TyX50DUXW9aCr95hygF9mjVy7NQYnsmLQ3SlYzMhGlYtOn
- xKe7Ai2+6fO1Pb9IQdknB36nNZF0+3whb8MPqLVYmrCJ7pHu9Pyd4kX4H2ezhv5QI5ogi/D9tX2
- 7h8oeNb1bsCRNMSKgxA==
+ a=Wdb1h0LgAAAA:8 a=zsjO2eMJKmvGp5MnGoAA:9 a=QEXdDO2ut3YA:10
+ a=1WsBpfsz9X-RYQiigVTh:22 a=j5gyrzqu0rbr1vhfHjzO:22
+X-Proofpoint-GUID: rFLJBN72JhMzQzqP53COKoWdINxezcOT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDEwNiBTYWx0ZWRfX+B9v3n0/9Xsz
+ X00V/GEOJyOsS9Z6BS3L+JOBS67LMPeo8D1UhzxDHBZ+YY7wViEoyeiSDef1+sbWyoEObaCv4DF
+ 4VMk/aFbDKAaofxaUpxfctBghlQ7PInyMsURoIHxo/l5vUIpaMZYe/OTZFLmQ18YlptAfFOpqmA
+ U81OuJaBU794dIW6so9P2TBXCC+nVjhdLqt09bvffZffeQ8BLhzSZNBfYojGPPmUExORkOhyFa4
+ /7bdqM962EahSyfnPYSfAWUCUmV3H3nm9jycYnhRMnYRcXS1/u2vLqhh1Up1pZXc1v2/jU5F46O
+ FAYfS/0pHT5zXF3+LTW9Wy9kkg3HpsJoktb7da1Ybse8HueEH3kTIPYWJOmfr89UQxBbbN8gaDi
+ VWNsE2m8OO6oZsogR/vK0pPozsaTFm7LKn21kAShL48xNM2ZertKVn2daTPDfXc/LhqNux/zaqV
+ t2M8tpNEz+qFsK5V7rg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-28_03,2026-07-28_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 priorityscore=1501
+ clxscore=1011 lowpriorityscore=0 adultscore=0 priorityscore=1501
  impostorscore=0 malwarescore=0 bulkscore=0 suspectscore=0 spamscore=0
  phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607280103
+ definitions=main-2607280106
 
-
-On Thu, 04 Jun 2026 21:48:01 +0800, Jacky Bai wrote:
-> Add debugfs support for runtime tuning of the audio PLL K divider,
-> which enables fine-grained frequency adjustments for audio PLL.
-> This is used for:
->   - Audio clock calibration and testing
->   - Debugging audio synchronization issues
+On 7/22/26 6:12 PM, Hongyang Zhao wrote:
+> Describe the GPIO-controlled VCC3V3_OUTPUT rail. This board-level rail
+> supplies the two camera connectors and the 40-pin expansion header.
 > 
-> Two debug interfaces are exported to userspace:
->   - delta_k: It is used to adjust the K divider in PLL based on small
->     steps
->   - pll_parameter: It is used for get PLL's current M-divider,
->     P-divider, S-divider & K-divider setting in PLL register
+> Signed-off-by: Hongyang Zhao <hongyang.zhao@thundersoft.com>
+> ---
+>  .../boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts | 24 ++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
 > 
-> [...]
+> diff --git a/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts b/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts
+> index d8a9a7e47bdc..45514918562b 100644
+> --- a/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts
+> +++ b/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts
+> @@ -214,6 +214,23 @@ vreg_usbhub_rest_1v8: regulator-usbhub-rest-1v8 {
+>  		regulator-boot-on;
+>  	};
+>  
+> +	vreg_vcc3v3_output: regulator-vcc3v3-output {
+> +		compatible = "regulator-fixed";
+> +
+> +		regulator-name = "vcc3v3_output";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +
+> +		gpio = <&tlmm 14 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +
+> +		pinctrl-0 = <&vcc3v3_output_en>;
+> +		pinctrl-names = "default";
+> +
+> +		regulator-always-on;
+> +		regulator-boot-on;
 
-Applied, thanks!
+Is it really on by default at boot?
 
-[1/1] clk: imx: Add audio PLL debugfs for K-divider control
-      commit: 468238ced6c39dd4927392f16cedcde5f27cd0ef
-
-Best regards,
--- 
-Abel Vesa <abel.vesa@oss.qualcomm.com>
+Konrad
