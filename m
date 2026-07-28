@@ -1,329 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DFE3B38B9;
-	Tue, 28 Jul 2026 06:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958333AFAF8;
+	Tue, 28 Jul 2026 06:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785219798; cv=none; b=VuHh6oSrANKz5k5ic9Ftu46c5qsWITAiunHxb+KlL+thpNFQj3ltHVgh2Dz/JYtEWJDhWfan3wMSMbtSoEQz7QuZDg0tcI/VBi8XoahLHjQj4++VwMd9pXPzHyOFAgSLC/LPEIeI14AbZ/UZkyx1rOmhKHZm9JYQo/9Dp9IK6OI=
+	t=1785220061; cv=none; b=ACI4yiKadESRo5pArNUg4uCYjhfOh8LRIDs4rvPz9q/eknG2yi2ClsN8rmyAZ9IqWR5kieUCObDsEoX1RnLrKpQ1HigGpQsbL/LHaLWR4vHfuAU6dPGbfRogRE2HeJMRGJMfWeo9cbLUrcedwxB6UXHEiXdn4Bc575zf/JRKNho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785219798; c=relaxed/simple;
-	bh=NrMDAh5mR+8Uc2RqdmnVecIR8rfTIxs9kPhJkaoWQNI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=W6h6CslXiqkvKN+UKInSSINc5Fmgn1787h9fKulmsHmeFO28RNtT5VnqgYhoXgIchAO1V0j1ekBbDcRBAkNiZtriu7HDnQ0hJnZ0upLA939IhwbdpWY6TSTu/MzTPiPetDnKQU52kJIgJHWEct4CWFR3EWP1G1xSLMgN2y9aBAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CbvrS0ba; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785220061; c=relaxed/simple;
+	bh=n61/Ko2KpmPXrNRArmSqenWM8pHBLVFT+MXAHy832ds=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=usHuoTpVNUtKSh8Hsyr8xyoXeM0DAG1JtWcdjO8dyMJ8adn5COvh5kDT2/E4DJ1DPdsT2Ue0qL0jSWfJ2NNZaDX1FMcyJKl8RC0Yrs99hAJdvWKtexVfQnrBeBYttkEHCAm3drI0EwQBwq407zNyy7BzI9e2yZJ0XdWKV93WlAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jyUt7N2l; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CbvrS0ba"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0F81F000E9;
-	Tue, 28 Jul 2026 06:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785219796;
-	bh=HirmwKJxBpS8xAowd0fSuKIZgXPLaom+MAkmIfiTC8s=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CbvrS0baLiNzxyb9ujgTd/RCuwr0MGs3WGJpJgYSvn0p6Nsvr7tamf0VsOY6d1q4u
-	 2ZYX7jhyGz6XFFRdGDr5/67yw1/veZJu+vDQzfqbdzXQMfP/iqAzSjXubumhwznFSR
-	 BBOGyq2APETBsaB+W1PtgQd1HSGjZNXuFOd4t0wveNrJu3oltGj4eX7mIUwTQU3glM
-	 yUj597ezEMEUa6MJ2l831fQ++wumyMxpTeqRHyYhl8/hKiusoCPUS4d8lPe017Coqn
-	 hlSHIeK717/68IeCKerukMo/LHokz51dGx7bEWD35qJRTtXwI9AyRhwhcJsXcnIjJE
-	 3ULAp2SiaykFw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v16 3/3] media: nxp: Add i.MX95 CSI pixel formatter v4l2
- driver
-Reply-To: sashiko-reviews@lists.linux.dev
-To: guoniu.zhou@oss.nxp.com
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, media-ci@linuxtv.org
-In-Reply-To: <20260728-csi_formatter-v16-3-1065ba47530a@oss.nxp.com>
-References: <20260728-csi_formatter-v16-0-1065ba47530a@oss.nxp.com>
- <20260728-csi_formatter-v16-3-1065ba47530a@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 06:23:15 +0000
-Message-Id: <20260728062315.EC0F81F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jyUt7N2l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785220058; x=1816756058;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=n61/Ko2KpmPXrNRArmSqenWM8pHBLVFT+MXAHy832ds=;
+  b=jyUt7N2lHjKIGTV88R8aZZEViN1aFKYy/S6/MsxcuTYj4xVl97Kz/cNc
+   qGbcU7U5JtsW+YKlJ4auTHbnRhWHYY/Ms1LK52mZhNCKdMFGdS7C7b2jF
+   B7XByVAGfiKUHMQ6yJqn2Z1++8DdRP2nWLcBbLouBgbbyuOaQBjoKc9mW
+   /ref+0C2gkZddd2guAcrairRjoEE42nWsNxIbVJiFks9vLiKGbZban4RB
+   +rK7N8dMsZOCbWtkSGK+IqG5BxhESh6N4oIQYSS1AnY8iodOtrwFlO0dl
+   DJBFb9F8dOMRxNmlQR7wv8QlR9ljpvHVj0xGZEM+po7BYPmaEka01V92s
+   Q==;
+X-CSE-ConnectionGUID: fqaEcXWaQXiyNh4MkLEOQA==
+X-CSE-MsgGUID: QMMkbKlTTSuucy3cyh/hFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="85916862"
+X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
+   d="scan'208";a="85916862"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:27:37 -0700
+X-CSE-ConnectionGUID: 7lUQRfEHQpKN9hWm0txrsQ==
+X-CSE-MsgGUID: YAB21esTSxytgpm7w8nVtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
+   d="scan'208";a="284154898"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.69])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:27:32 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 1FDE0121C02;
+	Tue, 28 Jul 2026 09:27:32 +0300 (EEST)
+Date: Tue, 28 Jul 2026 09:27:32 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Frank.Li@oss.nxp.com, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Dafna Hirschfeld <dafna@fastmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	driver-core@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, Guoniu Zhou <guoniu.zhou@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Subject: Re: [PATCH v3 1/4] device property: Introduce
+ fwnode_graph_for_each_endpoint_scoped()
+Message-ID: <amhL1BkIG0uTPceL@kekkonen.localdomain>
+References: <20260625-fw_scoped-v3-0-ffd0868e498d@nxp.com>
+ <20260625-fw_scoped-v3-1-ffd0868e498d@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625-fw_scoped-v3-1-ffd0868e498d@nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
-s) to consider:
-- [High] Missing NULL check for `media_pad_remote_pad_first()` result can c=
-ause kernel panic.
-- [High] Unchecked dereference of `v4l2_subdev_state_get_opposite_stream_fo=
-rmat()` in `csi_formatter_subdev_set_fmt()` for inactive routes.
-- [High] Dangling `remote_sd` pointer leading to Use-After-Free if remote s=
-ubdevice is unbound.
-- [High] Contradictory routing restriction blocks multiplexing support.
-- [Medium] Mixing `__free()` scope-based cleanup with `goto`-based error ha=
-ndling in the same function.
-- [Medium] `csi_formatter_stop_stream()` silently bails out on `get_frame_d=
-esc` failure, leaving hardware streams enabled.
-- [Medium] Missing `pm_runtime_mark_last_busy()` causes immediate autosuspe=
-nd instead of respecting the configured delay.
---
+Hi Rafael, Danilo,
 
---- Patch [3]: [PATCH v16 3/3] media: nxp: Add i.MX95 CSI pixel formatter v=
-4l2 driver ---
-commit b8f475efe55d7eb6b5ee1f2f2cd145ec93b5b430
-Author: Guoniu Zhou <guoniu.zhou@nxp.com>
-Subject: media: nxp: Add i.MX95 CSI pixel formatter v4l2 driver
+Can we merge this via the media tree (assuming you're fine with the
+change)?
 
-This commit adds a V4L2 driver for the CSI pixel formatter found on i.MX95
-SoCs. It provides data formatting support to unpack pixels from the CSI-2
-host controller to match Pixel Link definitions.
-
-> diff --git a/drivers/media/platform/nxp/imx95-csi-formatter.c b/drivers/m=
-edia/platform/nxp/imx95-csi-formatter.c
-> new file mode 100644
-> index 0000000000000..9d4107b0ba202
-> --- /dev/null
-> +++ b/drivers/media/platform/nxp/imx95-csi-formatter.c
-> @@ -0,0 +1,758 @@
-[ ... ]
-> +static int __csi_formatter_subdev_set_routing(struct v4l2_subdev *sd,
-> +					      struct v4l2_subdev_state *state,
-> +					      struct v4l2_subdev_krouting *routing)
-> +{
-> +	int ret;
+On Thu, Jun 25, 2026 at 10:17:21AM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Similar to recently propose for_each_child_of_node_scoped() this new
+> version of the loop macro instantiates a new local struct fwnode_handle *
+> that uses the __free(fwnode_handle) auto cleanup handling so that if a
+> reference to a node is held on early exit from the loop the reference will
+> be released. If the loop runs to completion, the child pointer will be NULL
+> and no action will be taken.
+> 
+> The reason this is useful is that it removes the need for
+> fwnode_handle_put() on early loop exits. If there is a need to retain the
+> reference, then return_ptr(child) or no_free_ptr(child) may be used to
+> safely disable the auto cleanup.
+> 
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v3
+> - fix missed a tab before \
+> 
+> change in v2
+> - collect Andy and Guoniu's reviewed-by tags
+> - fix indention
+> - remove extra space in commit message
+> ---
+>  include/linux/property.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 14c304db46648..c71177ca16a95 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -545,6 +545,11 @@ unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
+>  	for (child = fwnode_graph_get_next_endpoint(fwnode, NULL); child;	\
+>  	     child = fwnode_graph_get_next_endpoint(fwnode, child))
+>  
+> +#define fwnode_graph_for_each_endpoint_scoped(fwnode, child)			\
+> +	for (struct fwnode_handle *child __free(fwnode_handle) =		\
+> +		fwnode_graph_get_next_endpoint(fwnode, NULL);			\
+> +	     child; child = fwnode_graph_get_next_endpoint(fwnode, child))
 > +
-> +	ret =3D v4l2_subdev_routing_validate(sd, routing,
-> +					   V4L2_SUBDEV_ROUTING_ONLY_1_TO_1);
+>  int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+>  				struct fwnode_endpoint *endpoint);
+>  
+> 
 
-[Severity: High]
-Does this routing restriction block the multiplexing support implemented
-elsewhere in the driver?
+-- 
+Kind regards,
 
-The V4L2_SUBDEV_ROUTING_ONLY_1_TO_1 macro includes
-V4L2_SUBDEV_ROUTING_NO_MULTIPLEXING, which causes the V4L2 core to reject
-any configuration with multiple streams on the same sink pad. This appears
-to prevent the multiplexing functionality that the hardware virtual channel
-handling was designed to support.
-
-> +	if (ret)
-> +		return ret;
-> +
-> +	return v4l2_subdev_set_routing_with_fmt(sd, state, routing,
-> +						&formatter_default_fmt);
-> +}
-[ ... ]
-> +static int csi_formatter_subdev_set_fmt(struct v4l2_subdev *sd,
-> +					struct v4l2_subdev_state *sd_state,
-> +					struct v4l2_subdev_format *format)
-> +{
-[ ... ]
-> +	/* Propagate the format from sink stream to source stream */
-> +	fmt =3D v4l2_subdev_state_get_opposite_stream_format(sd_state, format->=
-pad,
-> +							   format->stream);
-> +	*fmt =3D format->format;
-
-[Severity: High]
-Could this result in a null pointer regression if the stream route is inact=
-ive?
-
-When an inactive routing entry is configured (without
-V4L2_SUBDEV_ROUTE_FL_ACTIVE) and a format is set on its sink pad, the
-validation passes because a stream configuration exists. However,
-v4l2_subdev_state_get_opposite_stream_format() skips inactive routes and
-returns a null pointer.
-
-Would it be safer to verify fmt is not null before assigning to it?
-
-> +
-> +	return 0;
-> +}
-[ ... ]
-> +static void csi_formatter_stop_stream(struct csi_formatter *formatter,
-> +				      struct v4l2_subdev_state *state,
-> +				      u64 stream_mask)
-> +{
-[ ... ]
-> +	ret =3D csi_formatter_get_frame_desc(formatter, &fd);
-> +	if (ret)
-> +		return;
-
-[Severity: Medium]
-Could this early return leave hardware streams enabled if getting the frame
-descriptor fails?
-
-This silently bails out without clearing the hardware registers, which might
-leak the active stream state in the hardware and affect subsequent operatio=
-ns.
-
-> +
-> +	for_each_active_route(&state->routing, route) {
-[ ... ]
-> +static int csi_formatter_subdev_enable_streams(struct v4l2_subdev *sd,
-> +					       struct v4l2_subdev_state *state,
-> +					       u32 pad, u64 streams_mask)
-> +{
-[ ... ]
-> +err_stop_stream:
-> +	csi_formatter_stop_stream(formatter, state, streams_mask);
-> +err_runtime_put:
-> +	if (!formatter->enabled_streams)
-> +		pm_runtime_put_autosuspend(formatter->dev);
-
-[Severity: Medium]
-Should pm_runtime_mark_last_busy() be called here before putting the device
-into autosuspend?
-
-Without updating the last-busy timestamp, the PM core uses the elapsed time
-since the device was last marked busy. If this time exceeds the 1-second de=
-lay,
-the device may suspend immediately, bypassing the intended autosuspend dela=
-y.
-
-> +	return ret;
-> +}
-> +
-> +static int csi_formatter_subdev_disable_streams(struct v4l2_subdev *sd,
-> +						struct v4l2_subdev_state *state,
-> +						u32 pad, u64 streams_mask)
-> +{
-> +	struct csi_formatter *formatter =3D sd_to_formatter(sd);
-> +	u64 sink_streams;
-> +	int ret;
-> +
-> +	sink_streams =3D v4l2_subdev_state_xlate_streams(state,
-> +						       CSI_FORMATTER_PAD_SOURCE,
-> +						       CSI_FORMATTER_PAD_SINK,
-> +						       &streams_mask);
-> +	if (!sink_streams || !streams_mask)
-> +		return -EINVAL;
-> +
-> +	ret =3D v4l2_subdev_disable_streams(formatter->remote_sd, formatter->re=
-mote_pad,
-> +					  sink_streams);
-
-[Severity: Medium]
-Is it intentional to disable the remote subdevice before stopping the local
-stream?
-
-If the remote subdevice is disabled first, it might power down or refuse
-queries, which could cause csi_formatter_get_frame_desc() to fail when
-csi_formatter_stop_stream() is called shortly after.
-
-> +	if (ret)
-> +		dev_err(formatter->dev, "Failed to disable streams: %d\n", ret);
-> +
-> +	csi_formatter_stop_stream(formatter, state, streams_mask);
-> +
-> +	formatter->enabled_streams &=3D ~streams_mask;
-> +
-> +	if (!formatter->enabled_streams)
-> +		pm_runtime_put_autosuspend(formatter->dev);
-
-[Severity: Medium]
-Similar to the error path in enable_streams, is a pm_runtime_mark_last_busy=
-()
-call needed here to ensure the 1-second autosuspend delay is respected?
-
-> +
-> +	return ret;
-> +}
-[ ... ]
-> +static int csi_formatter_notify_bound(struct v4l2_async_notifier *notifi=
-er,
-> +				      struct v4l2_subdev *sd,
-> +				      struct v4l2_async_connection *asc)
-> +{
-> +	const unsigned int link_flags =3D MEDIA_LNK_FL_IMMUTABLE
-> +				      | MEDIA_LNK_FL_ENABLED;
-> +	struct csi_formatter *formatter =3D notifier_to_csi_formatter(notifier);
-> +	struct v4l2_subdev *sdev =3D &formatter->sd;
-> +	struct media_pad *sink =3D &sdev->entity.pads[CSI_FORMATTER_PAD_SINK];
-> +	int ret;
-> +
-> +	formatter->remote_sd =3D sd;
-> +
-> +	ret =3D v4l2_create_fwnode_links_to_pad(sd, sink, link_flags);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	formatter->remote_pad =3D media_pad_remote_pad_first(sink)->index;
-
-[Severity: High]
-Could this cause a null pointer regression if the remote pad is not found?
-
-If v4l2_create_fwnode_links_to_pad() returns 0 without creating any links
-(which can happen if the source subdevice has no matching endpoints in the
-device tree), media_pad_remote_pad_first() will return null. Dereferencing
-it immediately would cause a crash during initialization.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct v4l2_async_notifier_operations formatter_notify_ops =
-=3D {
-> +	.bound =3D csi_formatter_notify_bound,
-> +};
-
-[Severity: High]
-Is an unbind callback needed to clear the remote_sd pointer?
-
-The driver caches the remote subdevice pointer in formatter->remote_sd when
-bound. If the remote subdevice is unregistered, the pointer becomes danglin=
-g.
-If csi_formatter_subdev_disable_streams() is subsequently called, it passes
-the freed pointer to v4l2_subdev_disable_streams(), resulting in a
-use-after-free.
-
-> +
-> +static int csi_formatter_async_register(struct csi_formatter *formatter)
-> +{
-> +	struct device *dev =3D formatter->dev;
-> +	struct v4l2_async_connection *asc;
-> +	int ret;
-> +
-> +	struct fwnode_handle *ep __free(fwnode_handle) =3D
-> +		fwnode_graph_get_endpoint_by_id(dev_fwnode(dev), 0, 0,
-> +						FWNODE_GRAPH_ENDPOINT_NEXT);
-> +	if (!ep)
-> +		return -ENOTCONN;
-> +
-> +	v4l2_async_subdev_nf_init(&formatter->notifier, &formatter->sd);
-> +
-> +	asc =3D v4l2_async_nf_add_fwnode_remote(&formatter->notifier, ep,
-> +					      struct v4l2_async_connection);
-> +	if (IS_ERR(asc)) {
-> +		ret =3D PTR_ERR(asc);
-> +		goto err_cleanup_notifier;
-
-[Severity: Medium]
-Is it safe to mix __free() scope-based cleanup with goto-based error handli=
-ng
-in this function?
-
-According to the cleanup subsystem guidelines (include/linux/cleanup.h),
-mixing __free() declarations with goto-based error handling in the same
-function is prohibited as it creates confusing ownership semantics.=20
-
-Would it be better to convert the remaining cleanups to scope-based helpers
-or avoid using __free() here?
-
-> +	}
-> +
-> +	formatter->notifier.ops =3D &formatter_notify_ops;
-> +
-> +	ret =3D v4l2_async_nf_register(&formatter->notifier);
-> +	if (ret)
-> +		goto err_cleanup_notifier;
-> +
-> +	ret =3D v4l2_async_register_subdev(&formatter->sd);
-> +	if (ret)
-> +		goto err_unregister_notifier;
-> +
-> +	return 0;
-> +
-> +err_unregister_notifier:
-> +	v4l2_async_nf_unregister(&formatter->notifier);
-> +err_cleanup_notifier:
-> +	v4l2_async_nf_cleanup(&formatter->notifier);
-> +	return ret;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728-csi_format=
-ter-v16-0-1065ba47530a@oss.nxp.com?part=3D3
+Sakari Ailus
