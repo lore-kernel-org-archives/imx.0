@@ -1,271 +1,244 @@
-Received: from mx0a-0002e601.pphosted.com (mx0a-0002e601.pphosted.com [148.163.150.75])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011029.outbound.protection.outlook.com [52.101.70.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E584C40D58B
-	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 08:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.150.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFBD41A513
+	for <imx@lists.linux.dev>; Tue, 28 Jul 2026 09:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785228533; cv=fail; b=bNbGwI6tzyzkCNMBiW88Zk3VZSsjywJJ5tthkM7t3khX6nGZ1HTjU7MoyLCsxbIeiSwA/N7H9mdq9w2QriWjEO4P9J+4R6p3OFBxw4qzM7PhmU36b2WOyuMdj6vWNhnN2exBdxgw+rMEEFZAkZDl+eOcJQkypnp/I103jdrs98g=
+	t=1785230554; cv=fail; b=tyuid0ANobKuGjt6akeiX6secFbwLmIiMw+hyWw+oorNcTlT7AB5cDjVptncj4XG4KIifaQdLe8N6OeRT94bjoJa80LIKYp87+kQFmT2687wPGZaDbUmKo652uhZf4eQnWEeRsGDlDN5TsSlfustIbYYxyj97euoLCBOoOjJ6oM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785228533; c=relaxed/simple;
-	bh=YswpfPzMQLNNYgfbaBfjk651x9Nawk/gw224lbXutX8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=isN40J8CxQesKxH64ijKd1feNcTFWjd1yVS2R1a+QE+uQ6uXcLDyCvHrkjFVpIc5OrSMU8eWJFBaRPVzD3NMpjl/FDkx8hlukDitPLVsWPe57amgfeRZFxkiar+3s0E0CRdiQoHNX+CtxVf+S8fycyJmhl4N3Am5CCE1fx1vu90=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=edKpkpmj; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Q9BcsGje; arc=fail smtp.client-ip=148.163.150.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1785230554; c=relaxed/simple;
+	bh=ENEXhJgWpXnfG7RIPsXgHjxkLcTqncNJa2L1XqiyEKs=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=phEbVQh8EErfrAt8XgUg3KBqeh34WI7TuHom4pM/JGMAqNmfA5I4eLlrUzL+d1VqRNmWnAjcVSsp+7XRhZuslhtzqzgb9gdTy7RZ7GUeU3Dw6RBcJ4FRM+PXIyhEn4nQbhgKSQQXTLkTW58scmtH7yp/+ogtwA9GVtxhOvEanOs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=BxtlaqA7; arc=fail smtp.client-ip=52.101.70.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="edKpkpmj";
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Q9BcsGje"
-Received: from pps.filterd (m0380145.ppops.net [127.0.0.1])
-	by m0380145.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 66S80K2b3214163;
-	Tue, 28 Jul 2026 03:48:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	proofpoint-05-2026; bh=r1qf0lYX3XoEjHGfQZHN46+kl7KQRu5RzCtXHHKMM
-	Xk=; b=edKpkpmjZRBmCu9R0lLGNz9Sr+JVN63AklgeMvBUMdE3wTkidx/PHSLkU
-	ncAxiR1LEj6o4tAK5ZIhw5qLTvOS65W53eE4371vwSC1I7mn+ieCx+a+jHCf3o7z
-	rPuhJX2pRvm2N/cSCDV/Mvx6rt8d2I99rSZ+Jt3a/2eNb9NTAziwXZTOSE/Mu37a
-	9DnFUyjNbVhf7GSCmsAUM9c3XHKzz8nAdQKf3FKDLlGBgcV5wvDAKBP1uN8Bs7c0
-	S9QUw3VyaZXguzCBgP4ncVfLrt4tGD7hmZoDgCB71pjfUDJyKJQPjUZo4yl9AhZH
-	u5oRIRSW04DGdNLHfxlaUO+eN/zHg==
-Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011048.outbound.protection.outlook.com [40.93.194.48])
-	by m0380145.ppops.net (PPS) with ESMTPS id 4fpn6ss92m-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 03:48:34 -0500 (CDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="BxtlaqA7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cZdoRIEbdfnv2ZB+DJz/FGYw57dkqYjzjvwUqKYPa9xAzYmxO9sfd92Pb1yKig4odIBpUzfFkgvSvjips4ipiCL2/YFZY4etId5QbxqypEgvGuyU7CMmtjjK0JkHVWASHuo/PIdH0OfOJOZ6qV4wvekm9jO2WfX+qBAHxJaSKhqIoQBrzgHVMDlx6zTq9zFfEBElo8P/eXCwRWBnUkouXGBByQusfeuV7ALttQuh7IXUt/Q/Imj7Hyi58RAfjxV4aZeNXyrgt+zT1gUzJeP8ZxxCtnbDnsN+5wmNY4E5K3ULugX+X+PJmbfQerOY79G6X6Mm02m9nlKaugJKn6mCqA==
+ b=wSK7lIcEbqe35PYDlKdnntnfwMoY/xcddHvj8Qke4Ku4tSFlikH3HFHeXPlCW1TLYYkLn5qb4wwtcZpUTlHhac2OyD5y4TC2ZrSInUw1jkfV4DSH+EG9zS8x5zOdI+z2ztysdw2L/RreNiZ68QtXvhkonycPjwGd64qGw0zZPX+nNx0eQG17xYmK4/zqdNUR7wGJvVvBHH3sAdEpz/AxAuslsihkPYpcvbm0WqGr09tX98bUCCQ+wg2WoL2UD4cyd4r4AkN84yXl6xuKssYIXGWQ1z3PedtrgeNKEpU+q7X567Qgo6ACE8UiqNTK3bEKr8j/KsKNH9Prro6EKUZi3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r1qf0lYX3XoEjHGfQZHN46+kl7KQRu5RzCtXHHKMMXk=;
- b=L7/JB8HymMcQIqdrGYguY/t2bTX6/glmRIVOqiREVLK1gWAxcrzYdnpBdrzvna+3ci1uKU6IcxG5woroG0NVB2wRzUWXIaKqAUARlt9qZBdIJTZVOHge31uOrgkUC1RabllabUEVSuMVTHAz4FDW2L6hL4HHdYsNMNXEcRcjvXuLkAyF+3vfRc6zjvlLSD9DC2zZMOyT+j5YvKWEbqcIV9GDJ9x8PEghBh2OH5xJBAyPaRy8PAEUOBviam6aKctIZVHL/Yrby/dRo4gaAJSjc8jLklApv/SxooOimXIGEakKAVD6kZydAODXrC8MxDo0O6/JeRvBFCGHr+ShdIndig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ bh=WOIlg6hKgFhogHzKNMm3hBjWt4GiYXqg3A+qU6swZZw=;
+ b=deWFNg2W1WwejCGiCYH1V4389+8u4nqTmiPC1REGSK2J8ET7+8iUULEb6p41/JWOItwT99QyPVDPZDugsRwBJ8qrCwqn/1mbWpoB5sj+1iSHA5eg8NrEUWPJFiH+lbWwdEJ3KXvS0U63xGYgmGInPtUrMHBpUOosyIu2BOUNdYNm/tMiO1c62E+V2s8v9NCG+uW/Fda1fIXdwt8+GSC9jR4kH3XoI7CFTtHIJ0HUN3nqGMJhe/aVkhoQJwQnb4p3mINGsBQYZn7TeLLOBtfOZTwElhs8ZHihH3NAw0vV3AhRltbKhAiRvftUsKwjBH93FXOEob+H6rvwJdOHAqzaJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r1qf0lYX3XoEjHGfQZHN46+kl7KQRu5RzCtXHHKMMXk=;
- b=Q9BcsGjeJO0Z2hzLXjItunlrGTH66NG0t1SamwVs9dLXtSiMxCslCP1vuteFXE4r7HvznUEe8Q+OjoEF5wiIfAKlqOUhwiy39Hk0w31noeZdw6W+XVnFsTk446iV6nwnYOLyxpLy6fv54UDLHKZGBWeWn7g50sMEb/9Fih6EF/4=
-Received: from MN0P222CA0025.NAMP222.PROD.OUTLOOK.COM (2603:10b6:208:531::33)
- by CO6PR10MB5649.namprd10.prod.outlook.com (2603:10b6:303:14c::19) with
+ bh=WOIlg6hKgFhogHzKNMm3hBjWt4GiYXqg3A+qU6swZZw=;
+ b=BxtlaqA7sV31ardYNksMz23OVmeq4577WGJ3t9cK7sp4NGAqHF0e7slimlsXISX79lnykRfwjhbqghJU4+BG4825G3YcBw9ddCa1KvXI5d2dAoGHmjLo+GZ/5DpQ6ULbbxuA8NsWcYEPPSwa8vGrRYqAq7g1glPgv66ZCB7I+leSpyOjXnJ/foKreB6WA82jOB3/aDICD/eQMy2hsX3LPLScFAszQ1relA6z+sQMasounBIIgvQ5z/ehPWKkQwvxalV5k0UgGIlqwpt0AqsKNdQPboDHCZQQx9EcUX6yxNtH2UJGCGLAq7pZr7MIzIvU1uNE1FK4aXovvys045wrNA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DB8PR04MB6858.eurprd04.prod.outlook.com (2603:10a6:10:113::9)
+ by FRRPR04MB12569.eurprd04.prod.outlook.com (2603:10a6:d10:1cd::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
- 2026 08:48:29 +0000
-Received: from BL6PEPF0001AB55.namprd02.prod.outlook.com
- (2603:10b6:208:531:cafe::5e) by MN0P222CA0025.outlook.office365.com
- (2603:10b6:208:531::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.12 via Frontend Transport; Tue,
- 28 Jul 2026 08:48:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
-Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- BL6PEPF0001AB55.mail.protection.outlook.com (10.167.241.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Tue, 28 Jul 2026 08:48:28 +0000
-Received: from DFLE215.ent.ti.com (10.64.6.73) by flwvzet200.ext.ti.com
- (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 28 Jul
- 2026 03:48:06 -0500
-Received: from DFLE212.ent.ti.com (10.64.6.70) by DFLE215.ent.ti.com
- (10.64.6.73) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 28 Jul
- 2026 03:48:06 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE212.ent.ti.com
- (10.64.6.70) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Tue, 28 Jul 2026 03:48:06 -0500
-Received: from [10.24.51.219] (abhilash-hp.dhcp.ti.com [10.24.51.219])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 66S8lwRt2316953;
-	Tue, 28 Jul 2026 03:47:59 -0500
-Message-ID: <027b9706-9948-49ee-89ff-5a7bf72411e2@ti.com>
-Date: Tue, 28 Jul 2026 14:17:58 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
+ 2026 09:22:30 +0000
+Received: from DB8PR04MB6858.eurprd04.prod.outlook.com
+ ([fe80::bc6f:5fd7:462:d0b5]) by DB8PR04MB6858.eurprd04.prod.outlook.com
+ ([fe80::bc6f:5fd7:462:d0b5%4]) with mapi id 15.21.0245.012; Tue, 28 Jul 2026
+ 09:22:30 +0000
+From: Zhipeng.wang_1@oss.nxp.com
+To: Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jindong Yue <jindong.yue@nxp.com>,
+	xuegang.liu@nxp.com,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2] irqchip/imx-irqsteer: Allow building as module
+Date: Tue, 28 Jul 2026 18:22:19 +0900
+Message-Id: <20260728092219.525449-1-Zhipeng.wang_1@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5P287CA0057.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d3::7) To DB8PR04MB6858.eurprd04.prod.outlook.com
+ (2603:10a6:10:113::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/18] arm64: dts: ti: k3-j721e: Add overlay for fusion
- application daughter board
-To: "Kumar, Udit" <u-kumar1@ti.com>, <nm@ti.com>, <vigneshr@ti.com>,
-        <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>
-CC: <Frank.Li@nxp.com>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-        <festevam@gmail.com>, <andersson@kernel.org>, <geert@linux-m68k.org>,
-        <dmitry.baryshkov@oss.qualcomm.com>, <arnd@arndb.de>,
-        <ebiggers@kernel.org>, <luca.weiss@fairphone.com>,
-        <michal.simek@amd.com>, <sven@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
-        <r-donadkar@ti.com>, <devarsht@ti.com>
-References: <20260713113423.2310443-1-y-abhilashchandra@ti.com>
- <20260713113423.2310443-8-y-abhilashchandra@ti.com>
- <107e93d2-cf73-4d57-8b8b-7892ab964dbf@ti.com>
-Content-Language: en-US
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-In-Reply-To: <107e93d2-cf73-4d57-8b8b-7892ab964dbf@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB55:EE_|CO6PR10MB5649:EE_
-X-MS-Office365-Filtering-Correlation-Id: f5a10550-63bf-4a79-ed5b-08deec84fe73
+X-MS-TrafficTypeDiagnostic: DB8PR04MB6858:EE_|FRRPR04MB12569:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ffa8c73-bdf1-44c5-83bf-08deec89be80
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|376014|7416014|1800799024|23010399003|13003099007|56012099006|4143699003|10067099003|3023799007|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|1800799024|376014|19092799006|23010399003|11063799006|56012099006|10067099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	hMZpjap1jHlKfKQuNP4OmThPs47k/dcIXVKwJjUL3fxHoZQO7dZ5ZcyYeEC7yoQIHKxDubUWyg+AoTAGtrpeieTzVZdBfHwk3JH8+6SVwCrCZCLCYzf5tQtpt3szyvCBsXRR80SLrDC2bFkTPV5ml7tZDE4Z+62e0UVN1BgWZbkNeEb8IeEekrs7kRSEzPUEZD9UfiKOlQE/WX5i6g59uNwtovAFXv3/7utwU2l0Je5Ty2MgR0awD6mCgDTV5LMJtA1SUtHNHo2ZMjTAxYZy3cLHYoab7p/cz7LJ3s4Ggsw4eZLL0L0sxCcp4vhbi9aNyUS2LLfCPVitlhmKOpuEuCBAD2e5Cdf8CNJv93Z9J2XnOsxq3DcQZ20UDHR/wVOgvyU5NGUi4ArJjGCrfudL6bgXrMoECK7KcYOTjM+qB1zCfhXbTxm6OTYk1VQz311JarYtQ0kYFgT/8TRKCbLKLuiqqYwyl+Ooy8Oij3L8X71rzphwKj7yjNSIjQ8d8Eg5gsGs/YECo2ZilB9XuyxpXnMe6eECSxPRMwBTJE9JnelLmu96kULeS78R1FnxiKZSNJmxGWr2E2XlAJ2eq3Xnzj3s8h/6P0zyX/spmm2BqU7eyuITWVy1cMIG/zZCvU9FyrpCObapA9m+35irR/EtRg==
+	EI0kAtKMHZ0dosglu+Op70TaCufQh0HHMx9z1PQdSGwqcL7yGCtWik3+t2VRLUfCoz81yeWwdOJ1/diHHq8B6T5ICBLxEYSmUNESkm316AZ/fu85djgrIl0bZErquNmrzZVxtf6DEz7paZKTLGm8QEHeGRGvhNz+mHFhqVeuxFRJ7fFJ2YYnbOkKVYMn4LxBaqZhlSDHxLQs3jhl+znmlTxmBuu5kGRVIpUFkZFqDlPJZg0He/vBFnAb3BNxPZWJjUqjQfdLrtM+s4257SWaaxDUe5+JQ+3wCa2b+jr0KUAzNzEAGpZEd16U26Y0KNGIGIxcqpPa/Qy43ebphRc2NFDSPN/b74SUwAinIHOyzcaZhXsUs1dkSe0TqlMoalg8K2zV1U1J0TX7+tLfAHeOrgRrblFSmxVhCUbaiIVNZ99ELZndSqfQCzCVaMbp6CbqqgWMG3LrQsAl1eJqsPEaLVttQY3KTYYPTpvFrAo01Yw4bRtnXJMZtQsZuoycL9l/cl87fi7c39+UgdJGXDV3DZKV6TPaDzYSTM8g9+zIkvLekfpZigxdcn/IjqbyrqsJjAxKt5Umg6cF0S1rrvUB7BcVhfFwy8LRX5uDJJnL8E3k3JjGNpre7u2eW3jlYYse4bA2wx5jNpM2Ik+p0FeXjVm5pkqVD9pmiDBOed3A6SI=
 X-Forefront-Antispam-Report:
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(7416014)(1800799024)(23010399003)(13003099007)(56012099006)(4143699003)(10067099003)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB6858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(19092799006)(23010399003)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	4uXqrehLC8Xe/no8YCSCVSehsOF8j7goPMjD3IkeKnoNFywtIOED2wBLXqRAndb7lIsj8n3ss7MPk5EYGqh2nAd83KnXUTADitg98U0UT0BM2ZYGMyMBx2NjAMnfUIDyAChn8H5qiwkctTAy6ySBqqrM2Q07ad5skBEKc0MOFl2UjhQHbiqA1Ot1aLrs25aClyCh0t6hcN1YCu/CQMqcle0tOTrz+oYmCqMW6v/BHlxX/a4gpJ6oY9YkfN7Va2e1HnP/lr97RKo56+hb01nAXH1riKOOJtjr6p2MN1Lv677amxNuzOv98V5E2d0wk5S74GMpOcgFzTbUMxxMDfPfBU2ZK/hU9T9eE4UK8oA6HedTi/PMzFotyVwsxBz5Je3TLe20LoJxYy6j4XVA8G39YQ6IcdF0ZBrr1BGsvsRzq+TYuuBJ2jfA4slfxwq2Bg8p
-X-Exchange-RoutingPolicyChecked:
-	NfLp0+MPZL4Njl92LYhIZ1eBZZ7dN8dL8cXh0/uG8MivBe5ienl/4c44foUaaQX99kLEuNLSSoe+zY5mIwmqwOSnZO+6Hne+BESPlg8uC8ZGTKWcmPqAxH9YD4FahWu+GapZCbYejd3weZkezjfGHHtyDhAEP764h/nzymgtxMpHLt85gJoF6qHdmkYbFAGY/BHGRzp9VCtC7xm5xV6pu6JVL5AOJ7fd7dcc04vDJ+lyBqcE49/WqIKRv8ryJC1BmINd9qDE2wVABDsz5GtZvD2KCq9ydJ58Lgr6et55Kw/oKX4qkGl/9gNeD2Tckq6pqO7LQaIloUbY5Tv6d57NLA==
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 08:48:28.0903
+	=?us-ascii?Q?eELPCGNqv4I2j6sOUmTC9MVLmPhFV9EqxZWQMekyDOC+Ry6AmAbpzWL34hMu?=
+ =?us-ascii?Q?y0fCpHNsl3wOCvsgYRJsCIIirz+aY3vB9HeXdYs4aDW/QnTtpNNY8W1rC1e3?=
+ =?us-ascii?Q?HOl6ULnjP9QpYBg7JpseRiiIbi5N/wcSSZ1hsIo0biSVf3P+Q2JieD1f00eR?=
+ =?us-ascii?Q?7+737Tao1UzWIgPVBVMvIOqtFEHlD0421+X5Bw5EHKIIofsXr8TZ6F5j8GHS?=
+ =?us-ascii?Q?9tL96Jjxr5YZV7P64cVjU6jNIBCv4v4aJ8asje2Mjdm3Jm2m3kXAdW1fpHm2?=
+ =?us-ascii?Q?pGLq/W3nIhOHKBcGLA0KEEh4cAlGusmjjHc4hHo4tJRdHRizrfIW+IlRQJCI?=
+ =?us-ascii?Q?5cTO8EdTgil2MZiLFMiZQ0DQkhxPSiM/fWidlhDtwBw2HAASAJ08/ow61Mh/?=
+ =?us-ascii?Q?t3zG+GtPphmo9gxsn7ne5hjppKwg5OSOGuQ2MHKo43R7/ZvH5tg3BiMJynmf?=
+ =?us-ascii?Q?/eoIriFwrcMyo6kIDd8AVSmwki+oM60/94YeWqE7l9y/MqIitQn/XXwRLxk6?=
+ =?us-ascii?Q?iMsbdHrIlgA+ihvNo8uDmuhweiFHoHciSRmOKmO3d3ZVwdvYXMvCmdPidqX0?=
+ =?us-ascii?Q?2M4e5Y68NPfEmgHE8jKc4ktzdyps7kLRKvBbrv7XCSQ1BI7Y8TYTND3EmSjF?=
+ =?us-ascii?Q?jYXzvxOjDPs3+3K7Vcg3N/nYdsZkk7OiAlK7azLI3PLb/vVy0MELvDrQYaPu?=
+ =?us-ascii?Q?SkHA9WRTRtFfDrSXd8OsnxF6AK0EQg+UogFY2VtHqiHHKBgCM1ylEI9lOeox?=
+ =?us-ascii?Q?P7TYw9YF/HOCOwJUE64EZUHbPIhmgOmQw2oPkLQ39tfmihqcXKqIs/RzhPpF?=
+ =?us-ascii?Q?TWDyYQ4Yw+ANz2Hcv0GUnKVt6krhO6SgT0pmE3h3Y476tFYXsJurnefNQqOh?=
+ =?us-ascii?Q?i02Ku0FNc0M/Fnz02RUsnjJhgGgVhiPa0Y2sqp3oquLUtfp2q69+6GlzdVn/?=
+ =?us-ascii?Q?syOZdfwmXZv7js7ig76I948h5fUadqpsv6Ll/asVKY+74VhvPe+LcFGHR0gj?=
+ =?us-ascii?Q?hdBeYNM4Z69/ju0fJKdV88fCxJhIZDEMdaF7rIw/AJtQYnimViJD5i6qUdEh?=
+ =?us-ascii?Q?FVSghHhj75kN9kTAFIHuGXT/uJCW4I5jWZbBQuGJ9aKBR846dkmUtAFlShln?=
+ =?us-ascii?Q?StG9ZpmPV37UTdB04Vi/Ine8ngTxY/6S20yf/XLVCfbwx1KXT75ch3QgfaIX?=
+ =?us-ascii?Q?RIMckJ4WJ8bNC8XPgfiHtsLj6v3nch5y4shPP3Gz6awoRI2GyF5+xwt5tD+3?=
+ =?us-ascii?Q?llmK3j1XD9QF0cskb/6xsgrM5AUPr7ReKfY85J++8JUMqp4UdE1QLJBqgpT4?=
+ =?us-ascii?Q?DKDDp7k4MzVfD9jKoEv/px+5yaXvI0Yd68knpiYitzExM90KvyWCH1QadtLY?=
+ =?us-ascii?Q?pckFw2+S1uFlsA7nWLMxCPLcnUquey5/1+aCvez2g4zwB3iIvqnhMhuK79NB?=
+ =?us-ascii?Q?OopC3ckTngfV2uKJQsQmdatTSgLo9Pu7ltuCAnOFZIR7jYPm8Nj99BCHsten?=
+ =?us-ascii?Q?2XTAiD4VDRbGP/dKSMEHnDpRCOGJoQS2Dmn5ZE4FFHXMqeFsXiOy4oXab4Lw?=
+ =?us-ascii?Q?bBsRFsLi2KkYNSw1rsHIWOKS/pLUhR+zgfnLJF0ixS+0wVd8wOwLzq3ji5fP?=
+ =?us-ascii?Q?x4E60JZHdChsj5aYmup7lxzF7J6hWG8IrIFtBku7LP6P1d5/PW7YI9NhETAV?=
+ =?us-ascii?Q?lhDpIX0sKiZsxzT9d0l00rJ6sshqvnNvTI7zZvqLDjZ+BDOWPXT0QzriquEt?=
+ =?us-ascii?Q?V3kwB6eIo1E+tyGK6wjsPvXOLLSc5RxThaal82Do8hVwmXuPACdN?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ffa8c73-bdf1-44c5-83bf-08deec89be80
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB6858.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 09:22:30.2673
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5a10550-63bf-4a79-ed5b-08deec84fe73
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB55.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR10MB5649
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDA3NSBTYWx0ZWRfXzPgOyBHT1Hjw
- fJj2oOudPhUkDsnidUNzVx8R7pU0L07WhSscmgcu2aR+Ae+DCI5bhY0Jfzq0Z1ARsSms95jlBJl
- 8aykva6+7VkKebHhgO4LOrEkhu8BySvpqaxeW8BP9H+f431PjuU+At74icoTjZZMyNIOG8DJ1VQ
- GduAhpeAfDPO8lGCrdv7Zck9K2ziSWxfQ8a/1fBaUtQUNnd3up4xtb9fbP6X32cP6c+Xjq8XVJM
- sO3VJuIp2O3i1n2N5YKQucPUWhz4kyRTLfRM4o0v0O8dFmKIt9EnJ0A+qzLUu6PyaFEx18W1mGe
- dpWOrlwu43j2CVgg9HnllcO81oG1vCGOZKSzMB6pXpc2Lh2UFLyJPbCcBZBKDRyLcRMUNVPX+y5
- t5cABi4+85jPe+W5y6hk+bG7BSodJ51mRmzpPEUyMPD4GXOFX/po+NuWSH7UJ5LcuFK57a9NGhK
- F3X1bkzjGVB8as6ca2Q==
-X-Proofpoint-ORIG-GUID: V6v5pfna8UnRAIrql7_pO56ijhK_7nG8
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDA3NSBTYWx0ZWRfX60+NgFshPc4v
- hjcwBlo+Mq3zaqWvKEddbTunGxqDaxBvqINS5a60eQ5if66y8qVRXtYRekxa8Ew07eSsWjkupTz
- LQPYEM6O0WYQ9TddclnkHpbdm7Pd2Pc=
-X-Proofpoint-GUID: V6v5pfna8UnRAIrql7_pO56ijhK_7nG8
-X-Authority-Analysis: v=2.4 cv=dvnrzVg4 c=1 sm=1 tr=0 ts=6a686ce2 cx=c_pps
- a=56tib/hgGBcemyuyLZC9AQ==:117 a=iwqwCZQqcuTv3JOpYdM7/Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=V5UXEbMT0ywA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22
- a=gO1vWkAQAl3rybz1DQOp:22 a=iY-8cndAAAAA:8 a=sozttTNsAAAA:8
- a=cpm9HVpAnOFhCx2DeQoA:9 a=QEXdDO2ut3YA:10 a=spcmYsBHvreeK_59bKkA:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_02,2026-07-27_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 phishscore=0 spamscore=0 adultscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 bulkscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607280075
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nLxGT5f9lUXN5RZndWFJ7l0xccNwHB4Alc9BARngXRwFKNTCGdE3AQjp5eOqhJs4HaSL884Locd3W7IOXyC4uP4phDDdEZ0F7I9X2ju4wvrRNfD+dPfMqoUlr0xV/nz4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRRPR04MB12569
 
-Hi Udit,
-Thanks for the review.
+From: Jindong Yue <jindong.yue@nxp.com>
 
-On 27/07/26 10:59, Kumar, Udit wrote:
-> Thanks for patch
-> 
-> On 7/13/2026 5:04 PM, Yemike Abhilash Chandra wrote:
->> From: Vaishnav Achath <vaishnav.a@ti.com>
->>
->> Fusion application daughter board [1] can be used to connect multiple
->> FPDLink-III based sensors to TI EVMs. The board has two DS90UB960
->> deserializers, each of which aggregates input from up to 4x FPDLink-III
->> sensors. Up to 8x sensors can simultaneously stream over the two CSI RX
->> ports on J721E.
-> J721E to same of board, please
-> 
->>
->> [1]: https://svtronics.com/product/fusion-application-daughter-board-evm577pfusion-v1-0/?srsltid=AfmBOooMsRAd5ibFOGJaKbjsC3j9-loTPK2wWqsqPq2Adj55g1nPluxX
->>
->> Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
->> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
->> ---
->> Changelog:
->> Changes in v2:
->> - Add missing bus-type property in csi2_phy0 endpoint for cdns_csi2rx0 (sashiko)
->> - Fix minor DTS styling and whitespace inconsistencies in port definitions (sashiko)
->> - Remove unused gpio.h header (sashiko)
->>
->>   arch/arm64/boot/dts/ti/Makefile               |   4 +
->> [..]
->> +		deserializer_0_ports: ports {
->> +			#address-cells = <1>;
->> +			#size-cells = <0>;
->> +
->> +			port@0 {
->> +				reg = <0>;
->> +				status = "disabled";
->> +			};
->> +
->> +			port@1 {
->> +				reg = <1>;
->> +				status = "disabled";
->> +			};
->> +
->> +			port@2 {
->> +				reg = <2>;
->> +				status = "disabled";
->> +			};
->> +
->> +			port@3 {
->> +				reg = <3>;
->> +				status = "disabled";
->> +			};
->> +
->> +			/* CSI-2 TX */
->> +			port@4 {
->> +				reg = <4>;
->> +				ds90ub960_0_csi_out: endpoint {
->> +					data-lanes = <1 2 3 4>;
->> +					clock-lanes = <0>;
->> +					link-frequencies = /bits/ 64 <800000000>;
->> +					remote-endpoint = <&csi2_phy0>;
->> +				};
->> +			};
->> +
->> +			port@5 {
->> +				reg = <5>;
->> +				status = "disabled";
->> +			};
-> 
-> Little confused here on port number,
-> I am wondering, why 5 ports are defined.
-> 
-> as per DS90UB960, one single part can have 4 input (from sensors)
-> and 2 port output (towards SOC) page 5 from [0].
-> 
-> 
+Make the driver buildable as a module by turning the Kconfig symbol into
+a tristate and using module_platform_driver() instead of
+builtin_platform_driver().
 
-The DS90UB960 has 4 input ports (RX) and 2 output ports (TX).
+The existing remove() was incomplete for the module case, where the
+driver can now be unloaded and reloaded. Fix it up:
 
-Hence we define input ports starting from port 0 till port 3.
-Port 4 and 5 correspond to the two output ports.
+ - dispose the parent IRQ mappings from irq_of_parse_and_map(), which
+   were leaked on unload;
+ - dispose the child mappings before irq_domain_remove(), otherwise the
+   irq_descs keep pointing at imx_irqsteer_irq_chip in the freed module,
+   which blows up on the next /proc/interrupts read;
+ - resume the device before clk_disable_unprepare(), since it may be
+   runtime suspended with the clock already off, and skip the disable if
+   the resume fails;
+ - disable runtime PM to balance the pm_runtime_enable() from probe().
 
-So the ports definition here include both input and output ports
-of the DS90UB960.
+Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
+Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+---
+Changes in v2 (addressing Sashiko AI review of v1):
+ - remove(): dispose child and parent IRQ mappings before
+   irq_domain_remove(), fixing a use-after-free of imx_irqsteer_irq_chip
+   (in freed module memory) on the next /proc/interrupts read after
+   unload;
+ - remove(): disable runtime PM to balance the pm_runtime_enable() from
+   probe(), so reload no longer warns about unbalanced runtime PM; resume
+   the device first and skip clk_disable_unprepare() if the resume fails,
+   keeping the ipg clock balanced.
 
-Thanks and Regards,
-Yemike Abhilash Chandra
+v1: https://lore.kernel.org/r/20260724090136.3595894-1-Zhipeng.wang_1@oss.nxp.com
+ drivers/irqchip/Kconfig            |  2 +-
+ drivers/irqchip/irq-imx-irqsteer.c | 26 +++++++++++++++++++++++---
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-> 
-> https://www.ti.com/lit/ds/symlink/ds90ub960-q1.pdf
-> 
-> 
->> +		};
->> +
->> [..]
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 42f2278a702d..07db3b678f94 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -560,7 +560,7 @@ config CSKY_APB_INTC
+ 	  the controller's register.
+ 
+ config IMX_IRQSTEER
+-	bool "i.MX IRQSTEER support"
++	tristate "i.MX IRQSTEER support"
+ 	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
+ 	default y if ARCH_MXC || ARCH_S32
+ 	select IRQ_DOMAIN
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index 87b07f517be3..da3889036182 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -10,6 +10,7 @@
+ #include <linux/irqchip/chained_irq.h>
+ #include <linux/irqdomain.h>
+ #include <linux/kernel.h>
++#include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_irq.h>
+ #include <linux/platform_device.h>
+@@ -274,7 +275,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+ static void imx_irqsteer_remove(struct platform_device *pdev)
+ {
+ 	struct irqsteer_data *irqsteer_data = platform_get_drvdata(pdev);
+-	int i;
++	int hwirq, i, ret;
+ 
+ 	for (i = 0; i < irqsteer_data->irq_count; i++) {
+ 		if (!irqsteer_data->irq[i])
+@@ -282,11 +283,26 @@ static void imx_irqsteer_remove(struct platform_device *pdev)
+ 
+ 		irq_set_chained_handler_and_data(irqsteer_data->irq[i],
+ 						 NULL, NULL);
++		irq_dispose_mapping(irqsteer_data->irq[i]);
+ 	}
+ 
++	for (hwirq = 0; hwirq < irqsteer_data->reg_num * 32; hwirq++)
++		irq_dispose_mapping(irq_find_mapping(irqsteer_data->domain,
++						     hwirq));
++
+ 	irq_domain_remove(irqsteer_data->domain);
+ 
+-	clk_disable_unprepare(irqsteer_data->ipg_clk);
++	/*
++	 * Device may be runtime suspended, with the ipg clock already gated.
++	 * Resume it so the clock is balanced by the disable below; if resume
++	 * fails the clock stays gated, so skip the disable in that case.
++	 */
++	ret = pm_runtime_get_sync(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
++
++	if (ret >= 0)
++		clk_disable_unprepare(irqsteer_data->ipg_clk);
+ }
+ 
+ #ifdef CONFIG_PM
+@@ -349,6 +365,7 @@ static const struct of_device_id imx_irqsteer_dt_ids[] = {
+ 	{ .compatible = "nxp,s32n79-irqsteer",	.data = &s32n79_data },
+ 	{},
+ };
++MODULE_DEVICE_TABLE(of, imx_irqsteer_dt_ids);
+ 
+ static struct platform_driver imx_irqsteer_driver = {
+ 	.driver = {
+@@ -359,4 +376,7 @@ static struct platform_driver imx_irqsteer_driver = {
+ 	.probe		= imx_irqsteer_probe,
+ 	.remove		= imx_irqsteer_remove,
+ };
+-builtin_platform_driver(imx_irqsteer_driver);
++module_platform_driver(imx_irqsteer_driver);
++
++MODULE_DESCRIPTION("i.MX IRQSTEER interrupt multiplexer/remapper driver");
++MODULE_LICENSE("GPL");
+-- 
+2.34.1
 
